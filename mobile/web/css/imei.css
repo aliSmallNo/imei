@@ -987,7 +987,7 @@ section {
     .u-my-bar .avatar img {
       width: 7rem;
       height: 7rem;
-      border-radius: 3.5rem;
+      border-radius: 3.6rem;
       border: 3px solid #f491b2; }
     .u-my-bar .avatar:after {
       content: "";

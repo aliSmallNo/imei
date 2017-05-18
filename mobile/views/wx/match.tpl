@@ -58,10 +58,10 @@
 	</div>
 	<div class="m-tab-wrap">
 		<div class="m-tabs">
-			<a href="javascript:;" class="active">
+			<a href="javascript:;" class="active" data-tag="male">
 				<span>男生(10)</span>
 			</a>
-			<a href="javascript:;">
+			<a href="javascript:;" data-tag="female">
 				<span>女生(6)</span>
 			</a>
 		</div>

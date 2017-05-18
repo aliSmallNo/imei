@@ -81,6 +81,23 @@ require(["layer", "fastclick", "iscroll"],
 			}
 		};
 
+		var SingleUtil = {
+			list: null,
+			tag: 'male',
+			loading: 0,
+			init: function () {
+				var util = this;
+				util.list = $(".singles");
+				$(".m-tabs > a").on('click', function () {
+					var self = $(this);
+					util.tag = self.attr('data-tag');
+				});
+			},
+			reload: function () {
+
+			}
+		};
+
 		function locationHashChanged() {
 			var hashTag = location.hash;
 			hashTag = hashTag.replace("#!", "");
@@ -121,6 +138,7 @@ require(["layer", "fastclick", "iscroll"],
 		$(function () {
 			$("body").addClass("bg-color");
 			FootUtil.init();
+			SingleUtil.init();
 			// FastClick.attach($sls.footer.get(0));
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
