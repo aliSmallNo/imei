@@ -52,8 +52,8 @@
 </section>
 <section id="sgroup">
 	<div class="m-rows line-bottom">
-		<a href="javascript:;">扩大我的单身团</a>
-		<a href="javascript:;">新的单身团申请</a>
+		<a href="#sshare">扩大我的单身团</a>
+		<a href="#snewbie">新的单身团申请</a>
 		<a href="javascript:;">单身团动态</a>
 	</div>
 	<div class="m-tab-wrap">
@@ -82,7 +82,7 @@
 		</div>
 	</div>
 </section>
-<section id="sinvite">
+<section id="snews">
 	<div class="m-discovery-head">
 		<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_300,h_300,limit_0/auto-orient,0/quality,q_100">
 	</div>
@@ -116,11 +116,11 @@
 				<li><img src="https://img.1meipo.com/fe6f3459bbbe2f3870e912b1f93f4ef7.jpeg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
 					<span><b>罗安琴</b>的单身团增加了1位新单身收到1次牵线成功打赏</span>
 					<img src="https://img.1meipo.com/f2fb2f2f32fd45aff7a236e2e3ff9291.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
-									class="target_avatar"></li>
+							 class="target_avatar"></li>
 				<li><img src="https://img.1meipo.com/90944059eecfc242f3bfdf3c30457779.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
 					<span><b>聂凡鼎</b>的单身团增加了1位新单身收到1次牵线成功打赏</span>
 					<img src="https://img.1meipo.com/2537ea62f1919aaf9acf47f4771c632a.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
-									class="target_avatar"></li>
+							 class="target_avatar"></li>
 				<li><img src="https://img.1meipo.com/0cec62892ec3521c3dbec879b20aded6.jpeg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
 					<span><b>Alic...</b>收到1次牵线成功打赏</span> <!----></li>
 				<li><img src="https://img.1meipo.com/152eaf1964d7ad94942631a6d5ce4691.jpg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
@@ -146,21 +146,27 @@
 									src="https://img.1meipo.com/bb2d54cd7a42d8ae928c60ea620c5779.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
 									class="target_avatar"></li>
 				<li><img src="https://img.1meipo.com/69c1208246f86a15c8ad4d3f9c9ff454.jpeg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>缘小v</b>的单身团增加了1位新单身</span> <img
-									src="https://img.1meipo.com/022dbbd41b55604334a675a80320bb8b.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
-									class="target_avatar"></li>
+					<span><b>缘小v</b>的单身团增加了1位新单身</span>
+					<img src="https://img.1meipo.com/022dbbd41b55604334a675a80320bb8b.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
+							 class="target_avatar">
+				</li>
 				<li><img src="https://img.1meipo.com/e61e03154600d1650071eceb7c24ee6c.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>潘杨杨</b>的单身团增加了1位新单身</span> <img
-									src="https://img.1meipo.com/ac23f743a511e4a67c83e424c0ff49c8.jpeg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
-									class="target_avatar"></li>
-				<li><img src="https://img.1meipo.com/e866bec755ab6f685345f1ead6990f69.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>马云</b>的单身团增加了1位新单身</span> <img
-									src="https://img.1meipo.com/a82c8b2f47d1b92c9ecd3d7f99b900f7.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
-									class="target_avatar"></li>
-				<li><img src="https://img.1meipo.com/2100bd342be71dbc91d67bcf2b866493.jpeg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>李圆峰</b>的单身团增加了1位新单身</span> <img
-									src="https://img.1meipo.com/4f54e63d632ddc9ff163a779b770f0ed.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
-									class="target_avatar"></li>
+					<span><b>潘杨杨</b>的单身团增加了1位新单身</span>
+					<img src="https://img.1meipo.com/ac23f743a511e4a67c83e424c0ff49c8.jpeg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
+							 class="target_avatar">
+				</li>
+				<li>
+					<img src="https://img.1meipo.com/e866bec755ab6f685345f1ead6990f69.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
+					<span><b>马云</b>的单身团增加了1位新单身</span>
+					<img src="https://img.1meipo.com/a82c8b2f47d1b92c9ecd3d7f99b900f7.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
+							 class="target_avatar">
+				</li>
+				<li>
+					<img src="https://img.1meipo.com/2100bd342be71dbc91d67bcf2b866493.jpeg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
+					<span><b>李圆峰</b>的单身团增加了1位新单身</span>
+					<img src="https://img.1meipo.com/4f54e63d632ddc9ff163a779b770f0ed.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
+							 class="target_avatar">
+				</li>
 			</ul>
 		</div>
 	</div>
@@ -177,7 +183,7 @@
 			</div>
 		</div>
 		<div class="u-my-count">
-			<a href="javascript:;">
+			<a href="#sgroup">
 				单身团
 				<em>9</em>
 			</a>
@@ -192,7 +198,7 @@
 		</div>
 	</div>
 	<div class="m-rows line-bottom">
-		<a href="javascript:;">我的身份卡</a>
+		<a href="#smycard">我的身份卡</a>
 	</div>
 	<div class="m-rows line-bottom">
 		<a href="javascript:;">账户</a>
@@ -205,14 +211,57 @@
 		<a href="javascript:;">关注公众号</a>
 	</div>
 </section>
-<div class="nav-foot">
+<section id="sshare">
+	<div id="inviteInfo" class="invite-wrap">
+		<div class="title">
+			<span>大狮兄</span>
+			<em>和</em>
+			<span class="dl">姚劲波</span>
+			<br> <em>一起在这里当</em>
+			<span>「媒婆」</span></div>
+		<div class="video">
+			<video id="video" src="//zlpic.1meipo.com/h5/video/640%2A360.mp4" poster="//zlpic.1meipo.com/spa/hn/invite3/poster.jpg" controls="controls"></video>
+			<span id="play_btn" onclick="document.querySelector('#video').play();document.querySelector('#play_btn').style.display='none';" class="play"></span>
+		</div>
+		<div class="btns">
+			<a href="javascript:;" class="btn-s-1 s1">邀请单身朋友</a>
+		</div>
+		<div class="user">
+			<div class="nic"><img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png">
+				<p>大狮兄</p></div>
+		</div>
+		<div class="footer">
+			<p class="copy"><span>微媒100 | 挖掘优秀单身</span></p>
+		</div>
+	</div>
+</section>
+<section id="smycard">
+	<div class="mycard" style="min-height: 568px;">
+		<div class="img_idcard">
+			<img src="">
+		</div>
+		<div class="btn">长按上图保存</div>
+		<div class="tip">分享图片到朋友圈，邀请好友来加入</div>
+	</div>
+</section>
+<section id="snewbie">
+	<div class="newbie">
+		<div class="empty middle">
+			<p class="title">您没有待审核的新成员啦</p>
+		</div>
+	</div>
+</section>
+<section id="sdetail">
+
+</section>
+<div class="nav-foot on">
 	<a href="#slink" class="nav-link active" data-tag="slink">
 		媒婆
 	</a>
 	<a href="#sgroup" class="nav-group" data-tag="sgroup">
 		单身团
 	</a>
-	<a href="#sinvite" class="nav-invite" data-tag="sinvite">
+	<a href="#snews" class="nav-invite" data-tag="snews">
 		邀请
 	</a>
 	<a href="#sme" class="nav-me" data-tag="sme">

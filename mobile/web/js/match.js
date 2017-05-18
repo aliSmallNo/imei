@@ -49,26 +49,55 @@ require(["layer", "fastclick", "iscroll"],
 			}
 		});
 
+		var FootUtil = {
+			footer: null,
+			hide: 0,
+			init: function () {
+				var util = this;
+				util.footer = $(".nav-foot");
+			},
+			toggle: function (showFlag) {
+				var util = this;
+				if (util.hide != showFlag) {
+					return;
+				}
+				if (showFlag) {
+					setTimeout(function () {
+						util.footer.removeClass("off").addClass("on");
+					}, 60);
+					util.hide = 0;
+				} else {
+					util.footer.removeClass("on").addClass("off");
+					util.hide = 1;
+				}
+			},
+			reset: function () {
+				var util = this;
+				var self = util.footer.find("[data-tag=" + $sls.curFrag + "]");
+				if (!util.hide && self.length) {
+					util.footer.find("a").removeClass("active");
+					self.addClass("active");
+				}
+			}
+		};
+
 		function locationHashChanged() {
 			var hashTag = location.hash;
 			hashTag = hashTag.replace("#!", "");
 			hashTag = hashTag.replace("#", "");
 			$sls.hashPage = hashTag;
-
 			switch (hashTag) {
-				case "fhome":
-					$sls.footer.show();
+				case "smycard":
+				case "sshare":
+				case "snewbie":
+					FootUtil.toggle(0);
 					break;
 				default:
-					$sls.footer.show();
+					FootUtil.toggle(1);
 					break;
 			}
 			$sls.curFrag = hashTag;
-			var self = $("a[data-tag=" + hashTag + "]");
-			if (self.length) {
-				self.closest(".nav-foot").find("a").removeClass("active");
-				self.addClass("active");
-			}
+			FootUtil.reset();
 			var title = $("#" + hashTag).attr("data-title");
 			if (title) {
 				$(document).attr("title", title);
@@ -91,6 +120,7 @@ require(["layer", "fastclick", "iscroll"],
 
 		$(function () {
 			$("body").addClass("bg-color");
+			FootUtil.init();
 			// FastClick.attach($sls.footer.get(0));
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
