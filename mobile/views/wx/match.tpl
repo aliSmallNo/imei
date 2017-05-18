@@ -268,6 +268,22 @@
 		我的
 	</a>
 </div>
+<script type="text/template" id="tpl_single">
+	{[#items]}
+	<a href="javascript:;" class="single">
+		<div class="avatar">
+			<img src="{[avatar]}">
+		</div>
+		<div class="title">
+			<h4>{[name]}<i class="ico-gender {[gender]}"></i></h4>
+			<h5>{[location]}</h5>
+			<p class="note">{[note]}</p>
+			<p class="cnt">{[cnt]}个心动</p>
+		</div>
+		<button class="edit">写媒婆说</button>
+	</a>
+	{[/items]}
+</script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>

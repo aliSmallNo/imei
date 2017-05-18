@@ -85,16 +85,36 @@ require(["layer", "fastclick", "iscroll"],
 			list: null,
 			tag: 'male',
 			loading: 0,
+			page: 1,
+			tmp: $('#tpl_single').html(),
 			init: function () {
 				var util = this;
 				util.list = $(".singles");
 				$(".m-tabs > a").on('click', function () {
 					var self = $(this);
 					util.tag = self.attr('data-tag');
+					self.closest(".m-tabs").find("a").removeClass('active');
+					self.addClass('active');
+					util.page = 1;
+					util.reload();
 				});
 			},
 			reload: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				if (util.page === 1) {
+					util.list.html('');
+				}
+				$.post('/api/singles',
+					{
+						tag: util.tag,
+						page: util.page
+					},
+					function (resp) {
 
+					}, 'json');
 			}
 		};
 
