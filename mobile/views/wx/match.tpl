@@ -299,7 +299,69 @@
 			<p class="tip">您还木有收到过单身的打赏呦，<br>快去分享个人页招募更多的单身团成员吧 :)</p></div>
 	</div>
 </section>
-<section id="sdetail">
+<section id="smatch">
+	<div class="mm-page">
+		<div class="head">
+			<div class="nickphoto"><img
+								src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100"
+								style="position: absolute; left: -999px; top: -9999px;"> <span><img
+									src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100"></span></div>
+			<p class="name"><span>尹峰</span> <span class="vip big"></span></p>
+			<p class="wordtitle">咖啡之翼创始人</p>
+			<p class="desc"></p> <!---->
+			<div class="countInfo">
+				<div><span>单身团</span><strong>12</strong></div>
+				<div><span>牵线成功</span><strong>61</strong></div>
+				<div><span>粉丝</span><strong>405</strong></div>
+			</div>
+		</div>
+		<div class="titlebar"><a class="on">男生(5)</a> <a class="">女生(7)</a></div>
+		<div class="singles">
+			<ul id="userlist">
+				<li><a href="/user/p?uid=772ff1620ac14731a5406ca928996b74" class="">
+						<div class="img"><span class="photo"><img
+												src="https://img.1meipo.com/6e717e4b5fb5597fe33be1c9fee5ff51.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100"
+												alt="AAA张吕"></span> <span class="location">北京</span></div>
+						<div class="info"><p class="nickname"><span class="name">AAA张吕</span> <span class="icon male"></span></p>
+							<p class="otherinfo"><span>26岁</span> <span>.</span> <span>170cm</span> <span>.</span> <span>1.5w~2w</span> <span>.</span> <span>狮子座</span></p></div>
+					</a></li> <!----> <!---->
+				<li><a href="/user/p?uid=0019c81184d444789f60b2345094a15f" class="">
+						<div class="img"><span class="photo"><img
+												src="https://img.1meipo.com/f894ca19df336fec83480cf1b6d7a282.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100"
+												alt="张革龙kevin"></span> <span class="location">北京</span></div>
+						<div class="info"><p class="nickname"><span class="name">张革龙kevin</span> <span class="icon male"></span></p>
+							<p class="otherinfo"><span>33岁</span> <span>.</span> <span>174cm</span> <span>.</span> <span>2w~5w</span> <span>.</span> <span>天蝎座</span></p></div>
+					</a></li>
+				<li class="blank"></li>
+				<li class="blank"></li>
+				<li><a href="/user/p?uid=30299840cd99403ca0d60b9b858be89f" class="">
+						<div class="img"><span class="photo"><img
+												src="https://img.1meipo.com/ec9ee381e3d400083670b2176bd02338.jpeg?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100"
+												alt="Edward"></span> <span class="location">北京</span></div>
+						<div class="info"><p class="nickname"><span class="name">Edward</span> <span class="icon male"></span></p>
+							<p class="otherinfo"><span>26岁</span> <span>.</span> <span>181cm</span> <span>.</span> <span>1w~1.5w</span> <span>.</span> <span>狮子座</span></p></div>
+					</a></li> <!----> <!---->
+				<li><a href="/user/p?uid=1bf0bc3d55d3490da558073478dad97c" class="">
+						<div class="img"><span class="photo"><img
+												src="https://img.1meipo.com/783451081045bde54448cfc4c1fac7e1.jpeg?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100"
+												alt="花孔雀"></span> <span class="location">北京</span></div>
+						<div class="info"><p class="nickname"><span class="name">花孔雀</span> <span class="icon male"></span></p>
+							<p class="otherinfo"><span>22岁</span> <span>.</span> <span>175cm</span> <span>.</span> <span>2k~6k</span> <span>.</span> <span>天蝎座</span></p></div>
+					</a></li>
+				<li class="blank"></li>
+				<li class="blank"></li>
+				<li><a href="/user/p?uid=91358db7078f4138acce0f4333c619b2" class="">
+						<div class="img"><span class="photo"><img
+												src="https://image.1meipo.com/h5/default-avatar/default_avatar.jpg?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100"
+												alt="熊大熊二和熊三"></span> <span class="location">北京</span></div>
+						<div class="info"><p class="nickname"><span class="name">熊大熊二和熊三</span> <span class="icon male"></span></p>
+							<p class="otherinfo"><span>23岁</span> <span>.</span> <span>186cm</span> <span>.</span> <span>6k~1w</span> <span>.</span> <span>天蝎座</span></p></div>
+					</a></li> <!----> <!----></ul> <!----></div>
+		<div class="loadmore">全部加载完毕</div> <!----> <a href="/report?uid=350c88afa7d64c52b444735fafc7373c&amp;name=%E5%B0%B9%E5%B3%B0" class="report">举报</a>
+		<div style="height: 50px;"></div>
+		<a class="rcmd gradient-h"><span>推荐TA的单身团</span></a></div>
+</section>
+<section id="ssingle">
 
 </section>
 <section id="sqrcode">
