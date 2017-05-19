@@ -220,7 +220,7 @@
 			<br> <em>一起在这里当</em>
 			<span>「媒婆」</span></div>
 		<div class="video">
-			<video id="video" src="//zlpic.1meipo.com/h5/video/640%2A360.mp4" poster="//zlpic.1meipo.com/spa/hn/invite3/poster.jpg" controls="controls"></video>
+			<video id="video" src="//zlpic.1meipo.com/h5/video/640%2A360.mp4" poster="/images/poster.jpg"></video>
 			<span id="play_btn" onclick="document.querySelector('#video').play();document.querySelector('#play_btn').style.display='none';" class="play"></span>
 		</div>
 		<div class="btns">

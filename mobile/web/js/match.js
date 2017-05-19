@@ -64,7 +64,7 @@ require(["layer", "fastclick", "iscroll"],
 				if (showFlag) {
 					setTimeout(function () {
 						util.footer.removeClass("off").addClass("on");
-					}, 60);
+					}, 30);
 					util.hide = 0;
 				} else {
 					util.footer.removeClass("on").addClass("off");
