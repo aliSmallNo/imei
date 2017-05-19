@@ -124,13 +124,14 @@ require(["layer", "fastclick", "iscroll"],
 			hashTag = hashTag.replace("#", "");
 			$sls.hashPage = hashTag;
 			switch (hashTag) {
-				case "smycard":
-				case "sshare":
-				case "snewbie":
-					FootUtil.toggle(0);
+				case 'slink':
+				case 'sgroup':
+				case 'sme':
+				case 'snews':
+					FootUtil.toggle(1);
 					break;
 				default:
-					FootUtil.toggle(1);
+					FootUtil.toggle(0);
 					break;
 			}
 			$sls.curFrag = hashTag;

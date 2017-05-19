@@ -54,7 +54,7 @@
 	<div class="m-rows line-bottom">
 		<a href="#sshare">扩大我的单身团</a>
 		<a href="#snewbie">新的单身团申请</a>
-		<a href="javascript:;">单身团动态</a>
+		<a href="#srept">单身团动态</a>
 	</div>
 	<div class="m-tab-wrap">
 		<div class="m-tabs">
@@ -201,14 +201,14 @@
 		<a href="#smycard">我的身份卡</a>
 	</div>
 	<div class="m-rows line-bottom">
-		<a href="javascript:;">账户</a>
-		<a href="javascript:;">通知</a>
+		<a href="#saccount">账户</a>
+		<a href="#smsg">通知</a>
 	</div>
 	<div class="m-rows line-bottom">
-		<a href="javascript:;">意见反馈</a>
-		<a href="javascript:;">媒婆攻略</a>
-		<a href="javascript:;">单身玩法说明</a>
-		<a href="javascript:;">关注公众号</a>
+		<a href="#sadvice">意见反馈</a>
+		<a href="#sguide">媒婆攻略</a>
+		<a href="#sdeclare">单身玩法说明</a>
+		<a href="#sqrcode">关注公众号</a>
 	</div>
 </section>
 <section id="sshare">
@@ -220,7 +220,7 @@
 			<br> <em>一起在这里当</em>
 			<span>「媒婆」</span></div>
 		<div class="video">
-			<video id="video" src="//zlpic.1meipo.com/h5/video/640%2A360.mp4" poster="/images/poster.jpg"></video>
+			<video id="video" src="//zlpic.1meipo.com/h5/video/640%2A360.mp4" poster="/images/poster.jpg" controls="controls"></video>
 			<span id="play_btn" onclick="document.querySelector('#video').play();document.querySelector('#play_btn').style.display='none';" class="play"></span>
 		</div>
 		<div class="btns">
@@ -251,8 +251,65 @@
 		</div>
 	</div>
 </section>
+<section id="srept">
+	<div class="reports">
+		<div class="empty middle">
+			<p class="title">单身团暂无动态~</p>
+		</div>
+	</div>
+</section>
+<section id="smsg">
+	<div class="messages">
+		<div class="empty middle">
+			<p class="title">您目前没有通知~</p>
+		</div>
+	</div>
+</section>
+<section id="sadvice">
+	<div class="advices">
+		<p class="title">尽可能详细的描述您遇到的问题和操作步骤，以便我们更好的定位问题并解答您的疑惑。
+			<br>您也可以直接跟我们的公众号对话，我们的客服会直接回复您</p>
+		<ul class="chats"></ul>
+		<div class="form">
+			<div class="img">
+				<img src="/images/ico_default.jpg" alt="">
+			</div>
+			<textarea id="advice_t"></textarea>
+			<div class="action">
+				<a href="javascript:;" class="btn-s s3">发送</a>
+			</div>
+		</div>
+	</div>
+</section>
+<section id="saccount">
+	<div class="account">
+		<div class="head">
+			<div class="title">
+				<span>余额</span><b>1100.00</b>
+			</div>
+			<div class="action">
+				<a href="/hn/account/cashing">提现</a>
+			</div>
+			<a href="/hn/account/cashed" class="op-record">提现记录></a>
+		</div>
+	</div>
+	<div class="incomes">
+		<div class="empty middle">
+			<p class="title">暂无收益</p>
+			<p class="tip">您还木有收到过单身的打赏呦，<br>快去分享个人页招募更多的单身团成员吧 :)</p></div>
+	</div>
+</section>
 <section id="sdetail">
 
+</section>
+<section id="sqrcode">
+	<div class="qrcode-wrap">
+		<h4>想知道哪些好友加入了<br>你的单身团？</h4>
+		<h5>长按识别二维码<br>关注1号媒婆公众号</h5>
+		<div>
+			<img src="/images/ico_qrcode.jpg" class="qrcode">
+		</div>
+	</div>
 </section>
 <div class="nav-foot on">
 	<a href="#slink" class="nav-link active" data-tag="slink">

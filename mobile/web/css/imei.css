@@ -1,3 +1,4 @@
+@charset "UTF-8";
 body, html {
   font-size: 10px;
   font-size: -moz-calc(100vw / 32);
@@ -1029,7 +1030,9 @@ section {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
-  display: flex; }
+  display: flex;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem; }
   .u-my-count a {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
@@ -1038,7 +1041,10 @@ section {
     text-align: center;
     color: #727272;
     padding: 1rem;
-    font-size: 1.2rem; }
+    font-size: 1.2rem;
+    background: #fff; }
+    .u-my-count a:active {
+      background: #EEEFF3; }
     .u-my-count a em {
       font-size: 1.7rem;
       font-weight: 500;
@@ -1374,9 +1380,169 @@ section {
     color: #999;
     font-size: 1.6rem;
     font-weight: 500; }
+  .empty .tip {
+    font-size: 1.2rem;
+    color: #999; }
+
+.account .head {
+  background: #fbd6e3;
+  padding: 5rem 1.5rem 1.5rem;
+  overflow: hidden;
+  color: #fff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative; }
+  .account .head .title {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1; }
+    .account .head .title b {
+      font-size: 2.2rem;
+      font-weight: 500;
+      padding-left: 0.5rem;
+      height: 4.4rem;
+      line-height: 4.4rem;
+      display: inline-block;
+      color: #f06292; }
+      .account .head .title b:before {
+        content: "￥";
+        font-size: 1rem;
+        color: #f50;
+        color: #f06292;
+        font-size: 1.4rem; }
+    .account .head .title span {
+      font-size: 1.4rem;
+      font-weight: 300;
+      height: 4.4rem;
+      line-height: 4.4rem;
+      display: inline-block; }
+  .account .head .action {
+    -webkit-box-flex: 0 0 8rem;
+    -webkit-flex: 0 0 8rem;
+    -ms-flex: 0 0 8rem;
+    flex: 0 0 8rem;
+    text-align: center; }
+    .account .head .action a {
+      background: #fff;
+      color: #f491b2;
+      height: 4.4rem;
+      line-height: 4.4rem;
+      padding: 0 2.5rem;
+      border-radius: 4.4rem;
+      display: block;
+      font-size: 1.4rem; }
+  .account .head .op-record {
+    position: absolute;
+    display: inline-block;
+    width: 8rem;
+    line-height: 3rem;
+    font-size: 1.2rem;
+    top: 0.5rem;
+    right: 1rem;
+    text-align: center;
+    color: #f491b2; }
 
 .newbie .empty {
   background: url(../images/ico_no_user.png) no-repeat top center;
   background-size: 8rem 8rem; }
+
+.reports .empty {
+  background: url(../images/ico_no_report.png) no-repeat top center;
+  background-size: 8rem 8rem; }
+
+.messages .empty {
+  background: url(../images/ico_no_msg.png) no-repeat top center;
+  background-size: 8rem 8rem; }
+
+.incomes .empty {
+  background: url(../images/ico_no_cash.png) no-repeat top center;
+  background-size: 8rem 8rem; }
+
+.advices {
+  position: relative; }
+  .advices .title {
+    padding: 1rem;
+    color: #999;
+    font-size: 1.2rem;
+    line-height: 1.6rem; }
+  .advices .form {
+    width: 100%;
+    background: #fff;
+    border-top: 1px solid #E4E4E4;
+    display: -webkit-box;
+    height: 5rem;
+    z-index: 99;
+    padding: 0;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+    .advices .form .img {
+      -webkit-box-flex: 0 0 5.2rem;
+      -webkit-flex: 0 0 5.2rem;
+      -ms-flex: 0 0 5.2rem;
+      flex: 0 0 5.2rem;
+      justify-content: center;
+      align-items: center;
+      align-self: center;
+      text-align: center; }
+      .advices .form .img img {
+        width: 3.4rem;
+        height: 3.4rem;
+        border-radius: 1.8rem;
+        border: 1px solid #EEEFF3;
+        vertical-align: middle; }
+    .advices .form .action {
+      -webkit-box-flex: 0 0 7rem;
+      -webkit-flex: 0 0 7rem;
+      -ms-flex: 0 0 7rem;
+      flex: 0 0 7rem;
+      justify-content: center;
+      align-items: center;
+      align-self: center;
+      text-align: center; }
+      .advices .form .action a {
+        height: 3.4rem;
+        line-height: 3.4rem;
+        border-radius: 1.7rem;
+        align-items: center;
+        align-self: center; }
+    .advices .form textarea {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      border-radius: 1.6rem;
+      height: 3.2rem;
+      line-height: 3.2rem;
+      margin-top: 0.7rem;
+      display: block;
+      border: 1px solid #EEEFF3;
+      outline: 0;
+      padding: 0 0.8rem;
+      font-size: 1.4rem;
+      -webkit-appearance: none; }
+
+.qrcode-wrap {
+  text-align: center;
+  padding-top: 5rem; }
+  .qrcode-wrap h4 {
+    font-weight: 500;
+    font-size: 2rem; }
+  .qrcode-wrap h5 {
+    color: #333;
+    padding-top: 2rem;
+    font-size: 1.6rem;
+    font-weight: 300; }
+  .qrcode-wrap div img {
+    padding-top: 3rem;
+    width: 24rem; }
 
 /*# sourceMappingURL=imei.css.map */

@@ -1084,12 +1084,17 @@ section
 
 .u-my-count
 	@include displayFlex
+	padding-left: 1.5rem
+	padding-right: 1.5rem
 	a
 		@include displayFlex-1
 		text-align: center
 		color: $grayFontColor
 		padding: 1rem
 		font-size: 1.2rem
+		background: #fff
+		&:active
+			background: $borderColorLight
 		em
 			font-size: 1.7rem
 			font-weight: $weightBold
@@ -1319,11 +1324,11 @@ section
 			height: 100%
 			margin: 0
 			padding: 0
-		.play 
+		.play
 			display: block
 			width: 100%
 			height: 100%
-			background: url(../images/poster.jpg) rgba(255,255,255,.2) no-repeat center
+			background: url(../images/poster.jpg) rgba(255, 255, 255, .2) no-repeat center
 			-webkit-background-size: 100% 100%
 			background-size: 100% 100%
 			position: absolute
@@ -1404,7 +1409,151 @@ section
 		color: $grayFontColorLight
 		font-size: 1.6rem
 		font-weight: $weightBold
+	.tip
+		font-size: 1.2rem
+		color: $grayFontColorLight
+
+.account
+	.head
+		background: $mainColorLighter
+		padding: 5rem 1.5rem 1.5rem
+		overflow: hidden
+		color: #fff
+		@include displayFlex
+		position: relative
+
+		.title
+			@include displayFlex-1
+			b
+				font-size: 2.2rem
+				font-weight: $weightBold
+				padding-left: .5rem
+				height: 4.4rem
+				line-height: 4.4rem
+				display: inline-block
+				color: $mainColor
+				&:before
+					@include prefixYuan
+					color: $mainColor
+					font-size: 1.4rem
+			span
+				font-size: 1.4rem
+				font-weight: $weightNormal
+				height: 4.4rem
+				line-height: 4.4rem
+				display: inline-block
+		.action
+			@include displayFlex-w(8rem)
+			text-align: center
+			a
+				background: #fff
+				color: $mainColorLight
+				height: 4.4rem
+				line-height: 4.4rem
+				padding: 0 2.5rem
+				border-radius: 4.4rem
+				display: block
+				font-size: 1.4rem
+		.op-record
+			position: absolute
+			display: inline-block
+			width: 8rem
+			line-height: 3rem
+			font-size: 1.2rem
+			top: .5rem
+			right: 1rem
+			text-align: center
+			color: $mainColorLight
+
 .newbie
 	.empty
 		background: url(../images/ico_no_user.png) no-repeat top center
 		background-size: 8rem 8rem
+
+.reports
+	.empty
+		background: url(../images/ico_no_report.png) no-repeat top center
+		background-size: 8rem 8rem
+
+.messages
+	.empty
+		background: url(../images/ico_no_msg.png) no-repeat top center
+		background-size: 8rem 8rem
+
+.incomes
+	.empty
+		background: url(../images/ico_no_cash.png) no-repeat top center
+		background-size: 8rem 8rem
+
+.advices
+	position: relative
+	.title
+		padding: 1rem
+		color: $grayFontColorLight
+		font-size: 1.2rem
+		line-height: 1.6rem
+	.form
+		width: 100%
+		background: #fff
+		border-top: 1px solid $borderColor
+		display: -webkit-box
+		height: 5rem
+		z-index: 99
+		padding: 0
+		position: fixed
+		left: 0
+		right: 0
+		bottom: 0
+		@include displayFlex
+		.img
+			@include displayFlex-w(5.2rem)
+			justify-content: center
+			align-items: center
+			align-self: center
+			text-align: center
+			img
+				width: 3.4rem
+				height: 3.4rem
+				border-radius: 1.8rem
+				border: 1px solid $borderColorLight
+				vertical-align: middle
+		.action
+			@include displayFlex-w(7rem)
+			justify-content: center
+			align-items: center
+			align-self: center
+			text-align: center
+			a
+				height: 3.4rem
+				line-height: 3.4rem
+				border-radius: 1.7rem
+				align-items: center
+				align-self: center
+		textarea
+			@include displayFlex-1
+			border-radius: 1.6rem
+			height: 3.2rem
+			line-height: 3.2rem
+			margin-top: .7rem
+			display: block
+			border: 1px solid $borderColorLight
+			outline: 0
+			padding: 0 .8rem
+			font-size: 1.4rem
+			-webkit-appearance: none
+
+.qrcode-wrap
+	text-align: center
+	padding-top: 5rem
+	h4
+		font-weight: $weightBold
+		font-size: 2rem
+	h5
+		color: $fontColor
+		padding-top: 2rem
+		font-size: 1.6rem
+		font-weight: $weightNormal
+	div
+		img
+			padding-top: 3rem
+			width: 24rem
