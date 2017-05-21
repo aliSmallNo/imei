@@ -42,7 +42,7 @@ class WxController extends BaseController
 	public function actionError()
 	{
 		$msg = self::getParam("msg", "请在微信客户端打开链接");
-		return self::renderPage('err.tpl',
+		return self::renderPage('error.tpl',
 			[
 				"msg" => $msg
 			]);
