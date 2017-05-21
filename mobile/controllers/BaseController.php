@@ -11,6 +11,7 @@ namespace mobile\controllers;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
+use Faker\Provider\bn_BD\Utils;
 use Yii;
 use yii\web\Controller;
 
@@ -25,7 +26,7 @@ class BaseController extends Controller
 
 	public function beforeAction($action)
 	{
-		if (self::isLocalhost()) {
+		if (self::isLocalhost() || 1) {
 			self::$WX_OpenId = "localhost";
 			AppUtil::setCookie(self::COOKIE_OPENID, "localhost", 3600 * 40);
 			return parent::beforeAction($action);
@@ -77,7 +78,7 @@ class BaseController extends Controller
 		return parent::beforeAction($action);
 	}
 
-	public static function isLocalhost()
+	protected function isLocalhost()
 	{
 		$httpHost = Yii::$app->request->hostInfo;
 		if (strpos($httpHost, "localhost") === false) {
@@ -86,7 +87,7 @@ class BaseController extends Controller
 		return true;
 	}
 
-	public static function isWechat()
+	protected function isWechat()
 	{
 		$httpHost = Yii::$app->request->hostInfo;
 		if (strpos($httpHost, "localhost") !== false) {
@@ -99,7 +100,7 @@ class BaseController extends Controller
 		return false;
 	}
 
-	public function renderPage($view, $params = [], $layout = "imei")
+	protected function renderPage($view, $params = [], $layout = "imei")
 	{
 		$params["gIconOK"] = self::ICON_OK_HTML;
 		$params["gIconAlert"] = self::ICON_ALERT_HTML;
@@ -121,13 +122,13 @@ class BaseController extends Controller
 		return self::render($view, $params);
 	}
 
-	public function getParam($field, $defaultVal = "")
+	protected function getParam($field, $defaultVal = "")
 	{
 		$getInfo = \Yii::$app->request->get();
 		return isset($getInfo[$field]) ? trim($getInfo[$field]) : $defaultVal;
 	}
 
-	public function postParam($field, $defaultVal = "")
+	protected function postParam($field, $defaultVal = "")
 	{
 		$postInfo = \Yii::$app->request->post();
 		return isset($postInfo[$field]) ? trim($postInfo[$field]) : $defaultVal;
