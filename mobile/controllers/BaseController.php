@@ -26,7 +26,7 @@ class BaseController extends Controller
 
 	public function beforeAction($action)
 	{
-		if (self::isLocalhost() || 1) {
+		if (self::isLocalhost()) {
 			self::$WX_OpenId = "localhost";
 			AppUtil::setCookie(self::COOKIE_OPENID, "localhost", 3600 * 40);
 			return parent::beforeAction($action);
@@ -80,6 +80,7 @@ class BaseController extends Controller
 
 	protected function isLocalhost()
 	{
+		return true;
 		$httpHost = Yii::$app->request->hostInfo;
 		if (strpos($httpHost, "localhost") === false) {
 			return false;
