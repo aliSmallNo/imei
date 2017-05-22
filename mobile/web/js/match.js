@@ -182,6 +182,6 @@ require(["layer", "fastclick", "iscroll"],
 					$sls.news.css("top", "0");
 					$sls.newIdx = 0;
 				}
-			}, 4000);
+			}, 6000);
 		});
 	});

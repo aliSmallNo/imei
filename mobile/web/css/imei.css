@@ -304,6 +304,20 @@ section {
   padding-bottom: 1.5rem;
   line-height: 2rem; }
 
+.btn-outline {
+  height: 2.4rem;
+  line-height: 2.4rem;
+  padding: 0 1rem;
+  display: block;
+  font-size: 1.3rem;
+  border-radius: 1.3rem;
+  border: 1px solid #66afff;
+  color: #007aff;
+  background: #fff; }
+  .btn-outline:active {
+    background: #007aff;
+    color: #fff; }
+
 .progress {
   height: 0.3rem;
   background: #fbd6e3;
@@ -977,6 +991,12 @@ section {
   display: -ms-flexbox;
   display: flex;
   position: relative; }
+  .u-my-bar .btn-outline {
+    position: absolute;
+    right: 1rem;
+    top: 1rem; }
+    .u-my-bar .btn-outline.change-role {
+      right: 6.6rem; }
   .u-my-bar .avatar {
     -webkit-box-flex: 0 0 10rem;
     -webkit-flex: 0 0 10rem;
@@ -1140,8 +1160,8 @@ section {
     overflow: hidden;
     position: relative; }
   .news ul.animate {
-    -webkit-transition: 0.3s linear top;
-    transition: 0.3s linear top;
+    -webkit-transition: 0.4s linear top;
+    transition: 0.4s linear top;
     position: absolute;
     top: 0;
     left: 0;

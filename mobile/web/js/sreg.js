@@ -107,7 +107,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			},
 			progress: function () {
 				var util = this;
-				var val = parseFloat($sls.curIndex) * 5;
+				var val = parseFloat($sls.curIndex) * 4.8;
 				util.progressBar.css("width", val + "%");
 			}
 		};
@@ -160,10 +160,15 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			}
 			$sls.curFrag = hashTag;
 			$sls.curIndex = parseInt(hashTag.substr(4));
-			if ($sls.curIndex > 7) {
+			if ($sls.curIndex == 20) {
+				$sls.btnSkip.hide();
+				$sls.btnMatcher.hide();
+			}
+			else if ($sls.curIndex > 7) {
 				$sls.btnSkip.show();
 				$sls.btnMatcher.hide();
-			} else {
+			}
+			else {
 				$sls.btnSkip.hide();
 				$sls.btnMatcher.show();
 			}

@@ -411,6 +411,20 @@ section
 	padding-bottom: 1.5rem
 	line-height: 2rem
 
+.btn-outline
+	height: 2.4rem
+	line-height: 2.4rem
+	padding: 0 1rem
+	display: block
+	font-size: 1.3rem
+	border-radius: 1.3rem
+	border: 1px solid $linkColorLight
+	color: $linkColor
+	background: #fff
+	&:active
+		background: $linkColor
+		color: #fff
+
 .progress
 	height: .3rem
 	background: $mainColorLighter
@@ -1040,6 +1054,12 @@ section
 .u-my-bar
 	@include displayFlex
 	position: relative
+	.btn-outline
+		position: absolute
+		right: 1rem
+		top: 1rem
+		&.change-role
+			right: 6.6rem
 	.avatar
 		@include displayFlex-w(10rem)
 		text-align: center
@@ -1185,8 +1205,8 @@ section
 		overflow: hidden
 		position: relative
 	ul.animate
-		-webkit-transition: .3s linear top
-		transition: .3s linear top
+		-webkit-transition: .4s linear top
+		transition: .4s linear top
 		position: absolute
 		top: 0
 		left: 0
@@ -1557,3 +1577,5 @@ section
 		img
 			padding-top: 3rem
 			width: 24rem
+
+

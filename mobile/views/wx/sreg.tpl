@@ -263,8 +263,8 @@
 	</div>
 </section>
 <div class="m-footer-tip">
-	<a href="javascript:;" class="action-sm action-matcher">返回媒婆角色</a>
-	<a href="javascript:;" class="action-sm action-skip" style="display: none">跳过，以后再填</a>
+	<a href="/wx/match" class="action-sm action-matcher">返回媒婆角色</a>
+	<a href="#step20" class="action-sm action-skip" style="display: none">跳过，以后再填</a>
 </div>
 <input type="hidden" id="cMaxYear" value="{{$maxYear}}">
 <script type="text/template" id="tpl_wx_info">
