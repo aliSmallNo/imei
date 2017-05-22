@@ -10,7 +10,7 @@
 				<h4>大师兄</h4>
 				<h5>公司里的开发老司机</h5>
 			</div>
-			<a href="/wx/sreg#step0" class="btn-outline change-role">切换成媒婆</a>
+			<a href="/wx/match" class="btn-outline change-role">切换成媒婆</a>
 			<a href="/wx/mreg" class="btn-outline edit-role">编辑</a>
 		</div>
 		<div class="u-my-count">
