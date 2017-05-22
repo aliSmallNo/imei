@@ -39,6 +39,14 @@ class WxController extends BaseController
 		]);
 	}
 
+	public function actionSingle()
+	{
+		$this->layout = false;
+		return self::renderPage("single.tpl", [
+			"maxYear" => 1999
+		]);
+	}
+
 	public function actionError()
 	{
 		$msg = self::getParam("msg", "请在微信客户端打开链接");

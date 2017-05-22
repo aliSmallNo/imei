@@ -1,5 +1,5 @@
 if (document.location.hash === "" || document.location.hash === "#") {
-	document.location.hash = "#slink";
+	document.location.hash = "#sme";
 }
 require.config({
 	paths: {
@@ -14,6 +14,7 @@ require.config({
 		"wx": "/assets/js/jweixin-1.2.0",
 	}
 });
+
 require(["layer", "fastclick"],
 	function (layer, FastClick) {
 		"use strict";
@@ -29,95 +30,6 @@ require(["layer", "fastclick"],
 			newsTimer: 0
 		};
 
-		function eleInScreen($ele) {
-			return $ele && $ele.length > 0 && $ele.offset().top < $(window).scrollTop() + $(window).height();
-		}
-
-		$(window).on("scroll", function () {
-			var lastRow;
-			switch ($sls.curFrag) {
-				case "flist":
-				/*lastRow = GoodsUtil.list.find('li').last();
-				 if (lastRow && eleInScreen(lastRow) && GoodsUtil.pageIndex > 0) {
-				 GoodsUtil.reload();
-				 return false;
-				 }
-				 break;*/
-
-				default:
-					break;
-			}
-		});
-
-		var FootUtil = {
-			footer: null,
-			hide: 0,
-			init: function () {
-				var util = this;
-				util.footer = $(".nav-foot");
-			},
-			toggle: function (showFlag) {
-				var util = this;
-				if (util.hide != showFlag) {
-					return;
-				}
-				if (showFlag) {
-					setTimeout(function () {
-						util.footer.removeClass("off").addClass("on");
-					}, 30);
-					util.hide = 0;
-				} else {
-					util.footer.removeClass("on").addClass("off");
-					util.hide = 1;
-				}
-			},
-			reset: function () {
-				var util = this;
-				var self = util.footer.find("[data-tag=" + $sls.curFrag + "]");
-				if (!util.hide && self.length) {
-					util.footer.find("a").removeClass("active");
-					self.addClass("active");
-				}
-			}
-		};
-
-		var SingleUtil = {
-			list: null,
-			tag: 'male',
-			loading: 0,
-			page: 1,
-			tmp: $('#tpl_single').html(),
-			init: function () {
-				var util = this;
-				util.list = $(".singles");
-				$(".m-tabs > a").on('click', function () {
-					var self = $(this);
-					util.tag = self.attr('data-tag');
-					self.closest(".m-tabs").find("a").removeClass('active');
-					self.addClass('active');
-					util.page = 1;
-					util.reload();
-				});
-			},
-			reload: function () {
-				var util = this;
-				if (util.loading) {
-					return;
-				}
-				if (util.page === 1) {
-					util.list.html('');
-				}
-				$.post('/api/singles',
-					{
-						tag: util.tag,
-						page: util.page
-					},
-					function (resp) {
-
-					}, 'json');
-			}
-		};
-
 		function locationHashChanged() {
 			var hashTag = location.hash;
 			hashTag = hashTag.replace("#!", "");
@@ -128,14 +40,14 @@ require(["layer", "fastclick"],
 				case 'sgroup':
 				case 'sme':
 				case 'snews':
-					FootUtil.toggle(1);
+					// FootUtil.toggle(1);
 					break;
 				default:
-					FootUtil.toggle(0);
+					// FootUtil.toggle(0);
 					break;
 			}
 			$sls.curFrag = hashTag;
-			FootUtil.reset();
+			// FootUtil.reset();
 			var title = $("#" + hashTag).attr("data-title");
 			if (title) {
 				$(document).attr("title", title);
@@ -158,8 +70,8 @@ require(["layer", "fastclick"],
 
 		$(function () {
 			$("body").addClass("bg-color");
-			FootUtil.init();
-			SingleUtil.init();
+			// FootUtil.init();
+			// SingleUtil.init();
 			// FastClick.attach($sls.footer.get(0));
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);

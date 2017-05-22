@@ -259,7 +259,7 @@
 		<span class="count" style="display: none">0/150</span>
 	</div>
 	<div class="btn-s-wrap">
-		<a href="javascript:;" class="btn-s s3 btn-done">提交</a>
+		<a href="/wx/single" class="btn-s s3 btn-done">提交</a>
 	</div>
 </section>
 <div class="m-footer-tip">
