@@ -530,6 +530,9 @@ section
 		color: $linkColorLight
 		font-size: 1.2rem
 
+.line-space
+	height: 1rem
+
 .btn-s-wrap
 	padding-top: 2rem
 	padding-left: 1rem
@@ -583,7 +586,7 @@ section
 	height: 4.4rem
 	overflow: hidden
 	line-height: 2.4rem
-	border: 1px solid $borderColorDark
+	border: 1px solid $borderColor
 	border-radius: .7rem
 	box-sizing: border-box
 	padding: 1rem 1.5rem
@@ -622,6 +625,16 @@ section
 			@include displayFlex-w(11rem)
 			margin-left: 1rem
 			padding: 0
+	.textarea
+		@include borderBox
+		width: 100%
+		padding: 1rem
+		border-radius: .5rem
+		border: 1px solid $borderColor
+		line-height: 1.5
+		margin-bottom: 1rem
+		font-size: 1.4rem
+		-webkit-appearance: none
 
 .m-header
 	text-align: center
@@ -702,7 +715,7 @@ section
 		color: $mainColorLight
 
 .tips-bar-bg
-	background-color: rgba(0, 0, 0, 0.25)
+	background-color: rgba(0, 0, 0, 0.3)
 	position: fixed
 	top: 0
 	left: 0
@@ -821,6 +834,16 @@ section
 		@include arrowRight
 		border-color: $grayFontColor
 		right: 1.5rem
+	&:active
+		background: $mainColorLight
+
+.form
+	.action-row
+		background: #fff
+		border: 1px solid $borderColor
+		border-radius: .5rem
+		&:active
+			background: $borderColor
 
 .cells
 	margin-left: 0
@@ -979,6 +1002,9 @@ section
 
 .line-bottom2
 	margin-bottom: 1rem
+
+.line-bottom3
+	margin-bottom: 1.5rem
 
 .m-rows
 	display: block
@@ -1578,4 +1604,74 @@ section
 			padding-top: 3rem
 			width: 24rem
 
+@keyframes framesPopIn
+	from
+		opacity: 0
+		-webkit-transform: scale(.6)
+		transform: scale(.6)
+	to
+		opacity: 1
+		-webkit-transform: scale(1)
+		transform: scale(1)
 
+@-webkit-keyframes framesPopIn
+	from
+		opacity: 0
+		-webkit-transform: scale(.6)
+		transform: scale(.6)
+	to
+		opacity: 1
+		-webkit-transform: scale(1)
+		transform: scale(1)
+
+@keyframes framesPopOut
+	from
+		opacity: 1
+		-webkit-transform: scale(1)
+		transform: scale(1)
+	to
+		opacity: 0
+		-webkit-transform: scale(.6)
+		transform: scale(.6)
+
+@-webkit-keyframes framesPopOut
+	from
+		opacity: 1
+		-webkit-transform: scale(1)
+		transform: scale(1)
+	to
+		opacity: 0
+		-webkit-transform: scale(.6)
+		transform: scale(.6)
+
+.popup-wrap
+	display: none
+	background: #fff
+	position: absolute
+	left: 50%
+	top: 5rem
+	width: 30rem
+	margin-left: -15rem
+	border-radius: .5rem
+	box-shadow: 0 1px 4px $grayFontColor, 0 0 1px $grayFontColor, 0 0 1px $grayFontColor
+	z-index: 121
+	ul
+		margin: 0
+		padding: 0
+		&.col3
+			li
+				float: left
+				text-align: center
+				height: 5.5rem
+				line-height: 5.5rem
+				color: #fe8775
+				border: 1px solid $borderColor
+				border-radius: .5rem
+				margin-right: 1rem
+				margin-bottom: 1rem
+				width: 8rem
+
+.animate-pop-in
+	animation: framesPopIn .2s both
+	-webkit-animation: framesPopIn .2s both
+	display: inherit

@@ -1,16 +1,43 @@
-<div class="progress">
-	<div style="width: 0%;"></div>
-</div>
 <div class="tips-bar-bg"></div>
 <section id="step0">
-	<p class="m-header">请上传真人头像<i>否则不会审核通过</i></p>
-	<div class="nick_name">
+	<p class="m-header"><i>上传真实头像，提高牵线成功率哦</i></p>
+	<div class="nick_name" style="padding-top: 0; padding-bottom: .5rem">
 		<a href="javascript:;" class="photo photo-file">
 			<img class="avatar" src="" alt="">
 		</a>
-		<input type="text" placeholder="昵称" class="input-s big">
-		<div class="place-holder-s1"></div>
-		<a href="javascript:;" class="btn-s s3">下一步</a>
+	</div>
+	<div class="form">
+		<input type="text" placeholder="请输入您的真实姓名" class="input-s large line-bottom3">
+		<a href="javascript:;" class="action-row line-bottom3" data-tag="location">
+			<div class="location" data-tag="location">
+				<em>天津</em>
+				<em>河西</em>
+			</div>
+		</a>
+		<a href="javascript:;" class="action-row line-bottom3" data-tag="scope">
+			<span>IT互联网</span>
+		</a>
+		<textarea name="description" placeholder="公司职位或身份介绍，如百度市场经理、小米设计师、自媒体人" class="textarea"></textarea>
+		<p class="clew-msg" style="display: none">8/30</p>
+	</div>
+	<a class="m-next btn-match-reg">注册成为媒婆</a>
+	<div class="popup-wrap">
+		<ul class="col3">
+			<li>IT互联网</li>
+			<li>金融</li>
+			<li>文化传媒</li>
+			<li>服务业</li>
+			<li>教育培训</li>
+			<li>通信电子</li>
+			<li>房产建筑</li>
+			<li>轻工贸易</li>
+			<li>医疗生物</li>
+			<li>生产制造</li>
+			<li>能源环保</li>
+			<li>政法公益</li>
+			<li>农林牧渔</li>
+			<li>其他</li>
+		</ul>
 	</div>
 	<div class="tips-bar-wrap off">
 		<div class="title">上传本人照片，头像居中，五官高清，上半身最佳，例如：</div>
@@ -105,4 +132,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/sreg.js?v=1.1.1" src="/assets/js/require.js"></script>
+<script data-main="/js/mreg.js?v=1.1.1" src="/assets/js/require.js"></script>
