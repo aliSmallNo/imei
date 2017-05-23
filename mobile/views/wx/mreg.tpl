@@ -21,24 +21,6 @@
 		<p class="clew-msg" style="display: none">8/30</p>
 	</div>
 	<a class="m-next btn-match-reg">注册成为媒婆</a>
-	<div class="popup-wrap">
-		<ul class="col3">
-			<li>IT互联网</li>
-			<li>金融</li>
-			<li>文化传媒</li>
-			<li>服务业</li>
-			<li>教育培训</li>
-			<li>通信电子</li>
-			<li>房产建筑</li>
-			<li>轻工贸易</li>
-			<li>医疗生物</li>
-			<li>生产制造</li>
-			<li>能源环保</li>
-			<li>政法公益</li>
-			<li>农林牧渔</li>
-			<li>其他</li>
-		</ul>
-	</div>
 	<div class="tips-bar-wrap off">
 		<div class="title">上传本人照片，头像居中，五官高清，上半身最佳，例如：</div>
 		<ul class="images clearfix">
@@ -82,31 +64,8 @@
 		<a class="m-next btn-select-img">上传头像</a>
 	</div>
 </section>
-<section id="step1">
-	<p class="m-header s1 loc">正在为您定位中</p>
-	<a href="javascript:;" class="action-row">
-		<div class="location" data-tag="location">
-			<em>天津</em>
-			<em>河西</em>
-		</div>
-	</a>
-	<div class="btn-s-wrap">
-		<a href="#step2" class="btn-s s3">下一步</a>
-	</div>
-</section>
-<section id="step2">
-	<p class="m-header s1 intro">请用一句话自我介绍</p>
-	<div class="edit">
-		<textarea placeholder="50个字以内" data-tag="intro"></textarea>
-		<span class="count" style="display: none">10/150</span>
-	</div>
-	<div class="btn-s-wrap">
-		<a href="#step3" class="btn-s s3">下一步</a>
-	</div>
-</section>
-<section id="step3">
-	<p class="m-header s1 scope">请问您的行业是什么？</p>
-	<div class="cells col3 clearfix" data-tag="scope">
+<div class="popup-wrap">
+	<div class="options col3 clearfix">
 		<a href="javascript:;">IT互联网</a>
 		<a href="javascript:;">金融</a>
 		<a href="javascript:;">文化传媒</a>
@@ -122,10 +81,7 @@
 		<a href="javascript:;">农林牧渔</a>
 		<a href="javascript:;">其他</a>
 	</div>
-	<div class="btn-s-wrap">
-		<a href="javascript:;" class="btn-s s3 btn-done">提交</a>
-	</div>
-</section>
+</div>
 <input type="hidden" id="cMaxYear" value="{{$maxYear}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}

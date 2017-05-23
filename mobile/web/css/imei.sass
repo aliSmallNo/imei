@@ -25,7 +25,7 @@ $borderColorLight: #EEEFF3
 $borderColorDark: #d8d8d8
 $borderColorFooter: #d8d8d8
 $linkColor: #007aff
-$linkColorLight: lighten($linkColor, 20%)
+$linkColorLight: lighten($linkColor, 15%)
 $linkColorDark: darken($linkColor, 6%)
 $actionColor: #877575
 $actionColorLight: lighten($actionColor, 12%)
@@ -1607,8 +1607,8 @@ section
 @keyframes framesPopIn
 	from
 		opacity: 0
-		-webkit-transform: scale(.6)
-		transform: scale(.6)
+		-webkit-transform: scale(.7)
+		transform: scale(.7)
 	to
 		opacity: 1
 		-webkit-transform: scale(1)
@@ -1617,8 +1617,8 @@ section
 @-webkit-keyframes framesPopIn
 	from
 		opacity: 0
-		-webkit-transform: scale(.6)
-		transform: scale(.6)
+		-webkit-transform: scale(.7)
+		transform: scale(.7)
 	to
 		opacity: 1
 		-webkit-transform: scale(1)
@@ -1645,33 +1645,34 @@ section
 		transform: scale(.6)
 
 .popup-wrap
-	display: none
 	background: #fff
 	position: absolute
-	left: 50%
-	top: 5rem
-	width: 30rem
-	margin-left: -15rem
+	left: 1.5rem
+	top: 7rem
+	width: 29rem
 	border-radius: .5rem
 	box-shadow: 0 1px 4px $grayFontColor, 0 0 1px $grayFontColor, 0 0 1px $grayFontColor
 	z-index: 121
-	ul
+	display: none
+	@include borderBox
+	padding: 1rem 0 0 1.2rem
+	.options
 		margin: 0
 		padding: 0
 		&.col3
-			li
+			a
 				float: left
 				text-align: center
 				height: 5.5rem
 				line-height: 5.5rem
-				color: #fe8775
+				color: $linkColorLight
 				border: 1px solid $borderColor
 				border-radius: .5rem
 				margin-right: 1rem
 				margin-bottom: 1rem
 				width: 8rem
+				display: inline-block
 
 .animate-pop-in
 	animation: framesPopIn .2s both
 	-webkit-animation: framesPopIn .2s both
-	display: inherit

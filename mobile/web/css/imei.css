@@ -311,7 +311,7 @@ section {
   display: block;
   font-size: 1.3rem;
   border-radius: 1.3rem;
-  border: 1px solid #66afff;
+  border: 1px solid #4da2ff;
   color: #007aff;
   background: #fff; }
   .btn-outline:active {
@@ -426,7 +426,7 @@ section {
   height: 3.6rem;
   line-height: 3.6rem; }
   .help-block a {
-    color: #66afff;
+    color: #4da2ff;
     font-size: 1.2rem; }
 
 .line-space {
@@ -617,7 +617,7 @@ section {
   text-align: center;
   padding: 2rem; }
   .m-footer-tip .action-sm {
-    color: #66afff;
+    color: #4da2ff;
     font-size: 1.2rem; }
   .m-footer-tip .action-skip {
     color: #f491b2; }
@@ -720,7 +720,7 @@ section {
   .gender-opt.female {
     background: #f491b2; }
   .gender-opt.male {
-    background: #66afff; }
+    background: #4da2ff; }
   .gender-opt.female:before {
     background: url("../images/ico_gender_female_w.png") no-repeat center center;
     background-size: 100% 100%; }
@@ -906,7 +906,7 @@ section {
   border-radius: 1.5rem;
   text-align: center; }
   .btn-s-1.s1 {
-    background: #66afff;
+    background: #4da2ff;
     color: #fff; }
 
 .vip {
@@ -1144,8 +1144,8 @@ section {
     height: 4.4rem;
     line-height: 4.4rem;
     text-align: center;
-    border: #66afff 1px solid;
-    background: #66afff;
+    border: #4da2ff 1px solid;
+    background: #4da2ff;
     border-radius: 2.2rem;
     color: #fff;
     margin-bottom: 1.5rem; }
@@ -1261,7 +1261,7 @@ section {
       top: 3rem;
       right: 1.5rem;
       font-size: 1.2rem;
-      background: #66afff;
+      background: #4da2ff;
       display: block;
       width: 7rem;
       height: 3rem;
@@ -1595,8 +1595,8 @@ section {
 @keyframes framesPopIn {
   from {
     opacity: 0;
-    -webkit-transform: scale(0.6);
-    transform: scale(0.6); }
+    -webkit-transform: scale(0.7);
+    transform: scale(0.7); }
   to {
     opacity: 1;
     -webkit-transform: scale(1);
@@ -1604,8 +1604,8 @@ section {
 @-webkit-keyframes framesPopIn {
   from {
     opacity: 0;
-    -webkit-transform: scale(0.6);
-    transform: scale(0.6); }
+    -webkit-transform: scale(0.7);
+    transform: scale(0.7); }
   to {
     opacity: 1;
     -webkit-transform: scale(1);
@@ -1629,34 +1629,37 @@ section {
     -webkit-transform: scale(0.6);
     transform: scale(0.6); } }
 .popup-wrap {
-  display: none;
   background: #fff;
   position: absolute;
-  left: 50%;
-  top: 5rem;
-  width: 30rem;
-  margin-left: -15rem;
+  left: 1.5rem;
+  top: 7rem;
+  width: 29rem;
   border-radius: 0.5rem;
   box-shadow: 0 1px 4px #727272, 0 0 1px #727272, 0 0 1px #727272;
-  z-index: 121; }
-  .popup-wrap ul {
+  z-index: 121;
+  display: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 1rem 0 0 1.2rem; }
+  .popup-wrap .options {
     margin: 0;
     padding: 0; }
-    .popup-wrap ul.col3 li {
+    .popup-wrap .options.col3 a {
       float: left;
       text-align: center;
       height: 5.5rem;
       line-height: 5.5rem;
-      color: #fe8775;
+      color: #4da2ff;
       border: 1px solid #E4E4E4;
       border-radius: 0.5rem;
       margin-right: 1rem;
       margin-bottom: 1rem;
-      width: 8rem; }
+      width: 8rem;
+      display: inline-block; }
 
 .animate-pop-in {
   animation: framesPopIn 0.2s both;
-  -webkit-animation: framesPopIn 0.2s both;
-  display: inherit; }
+  -webkit-animation: framesPopIn 0.2s both; }
 
 /*# sourceMappingURL=imei.css.map */

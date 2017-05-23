@@ -129,10 +129,10 @@ require(["layer", "fastclick"],
 			toggle: function (showFlag) {
 				var util = this;
 				if (showFlag) {
-					util.content.addClass("animate-pop-in");
+					util.content.show().addClass("animate-pop-in");
 					util.background.fadeIn(200);
 				} else {
-					util.content.removeClass("animate-pop-in");
+					util.content.removeClass("animate-pop-in").hide();
 					util.background.fadeOut(200);
 				}
 			}
