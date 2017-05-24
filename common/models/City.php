@@ -18,7 +18,7 @@ class City
 	{
 		$items = RedisUtil::getCache(RedisUtil::KEY_PROVINCES);
 		$items = json_decode($items, 1);
-		if ($items && 0) {
+		if ($items) {
 			return $items;
 		}
 		$conn = ConfigUtil::db();
@@ -35,7 +35,7 @@ class City
 	{
 		$items = RedisUtil::getCache(RedisUtil::KEY_CITIES, $key);
 		$items = json_decode($items, 1);
-		if ($items && 0) {
+		if ($items) {
 			return $items;
 		}
 		$conn = ConfigUtil::db();
@@ -43,7 +43,7 @@ class City
  					from im_address_city where cPKey in (:key) and cName not in (\'其他\',\'其它\') order by cSort';
 		$items = $conn->createCommand($sql)->bindValues([':key' => $key])->queryAll();
 		$items = array_values($items);
-		foreach ($items as $key =>$item){
+		foreach ($items as $key => $item) {
 			if (isset($item['name']) && isset($item['nickname']) && $item['nickname']) {
 				$items[$key]['name'] = $item['nickname'];
 			}
@@ -56,7 +56,7 @@ class City
 	{
 		$item = RedisUtil::getCache(RedisUtil::KEY_CITY, $key);
 		$item = json_decode($item, 1);
-		if ($item && 0) {
+		if ($item) {
 			return $item;
 		}
 		$conn = ConfigUtil::db();
