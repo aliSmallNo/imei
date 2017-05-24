@@ -9,6 +9,8 @@
 namespace mobile\controllers;
 
 
+use common\models\User;
+
 class WxController extends BaseController
 {
 
@@ -26,8 +28,11 @@ class WxController extends BaseController
 
 	public function actionMreg()
 	{
+		$scopes = User::$Scopes;
+		$scopeString = implode(',', $scopes);
 		return self::renderPage("mreg.tpl", [
-			"maxYear" => 1999
+			"maxYear" => 1999,
+			'scopeString' => $scopeString
 		]);
 	}
 

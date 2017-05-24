@@ -32,6 +32,9 @@ $actionColorLight: lighten($actionColor, 12%)
 //#c93
 $actionColorDark: #630
 
+@mixin translucent
+	background-color: rgba(0, 0, 0, .65)
+
 @mixin borderBox
 	-webkit-box-sizing: border-box
 	-moz-box-sizing: border-box
@@ -190,12 +193,12 @@ main
 	top: 0
 	bottom: 0
 	color: #fff
-	background: rgba(0, 0, 0, .85)
 	font-size: 1.5rem
 	font-weight: $weightBold
 	z-index: 411
 	text-align: center
 	padding: 23rem 0
+	@include translucent
 
 .w-flyer
 	display: inline-block
@@ -715,7 +718,7 @@ section
 		color: $mainColorLight
 
 .tips-bar-bg
-	background-color: rgba(0, 0, 0, 0.3)
+	@include translucent
 	position: fixed
 	top: 0
 	left: 0
@@ -1604,11 +1607,66 @@ section
 			padding-top: 3rem
 			width: 24rem
 
+.m-popup-shade
+	position: fixed
+	left: 0
+	top: 0
+	width: 100%
+	height: 100%
+	display: none
+	@include translucent
+
+.m-popup-main
+	display: table
+	position: fixed
+	left: 0
+	top: 0
+	width: 100%
+	height: 100%
+	z-index: 121
+	.m-popup-wrap
+		display: table-cell
+		vertical-align: middle
+		text-align: center
+		.m-popup-content
+			background: $borderColor
+			position: relative
+			left: 1.5rem
+			width: 29rem
+			border-radius: .5rem
+			box-shadow: 0 0 .4rem rgba(0, 0, 0, .1)
+			@include borderBox
+			padding: 0
+			overflow: hidden
+			.options
+				margin: 0
+				padding: 0
+				&.col3
+					a
+						float: left
+						text-align: center
+						height: 5rem
+						line-height: 5rem
+						color: $grayFontColorDark
+						border-right: 1px solid $borderColorDark
+						border-bottom: 1px solid $borderColorDark
+						margin: 0
+						width: 33.3%
+						display: inline-block
+						background: #fff
+						font-size: 1.4rem
+						@include borderBox
+						&:nth-of-type(3n+2)
+							background: $bgColor
+						&:active
+							background: $linkColorLight
+							color: #fff
+
 @keyframes framesPopIn
 	from
 		opacity: 0
-		-webkit-transform: scale(.7)
-		transform: scale(.7)
+		-webkit-transform: scale(.8)
+		transform: scale(.8)
 	to
 		opacity: 1
 		-webkit-transform: scale(1)
@@ -1617,8 +1675,8 @@ section
 @-webkit-keyframes framesPopIn
 	from
 		opacity: 0
-		-webkit-transform: scale(.7)
-		transform: scale(.7)
+		-webkit-transform: scale(.8)
+		transform: scale(.8)
 	to
 		opacity: 1
 		-webkit-transform: scale(1)
@@ -1643,35 +1701,6 @@ section
 		opacity: 0
 		-webkit-transform: scale(.6)
 		transform: scale(.6)
-
-.popup-wrap
-	background: #fff
-	position: absolute
-	left: 1.5rem
-	top: 7rem
-	width: 29rem
-	border-radius: .5rem
-	box-shadow: 0 1px 4px $grayFontColor, 0 0 1px $grayFontColor, 0 0 1px $grayFontColor
-	z-index: 121
-	display: none
-	@include borderBox
-	padding: 1rem 0 0 1.2rem
-	.options
-		margin: 0
-		padding: 0
-		&.col3
-			a
-				float: left
-				text-align: center
-				height: 5.5rem
-				line-height: 5.5rem
-				color: $linkColorLight
-				border: 1px solid $borderColor
-				border-radius: .5rem
-				margin-right: 1rem
-				margin-bottom: 1rem
-				width: 8rem
-				display: inline-block
 
 .animate-pop-in
 	animation: framesPopIn .2s both

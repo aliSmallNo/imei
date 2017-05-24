@@ -112,28 +112,43 @@ require(["layer", "fastclick"],
 			}
 		};
 		var PopUtil = {
+			shade: null,
 			content: null,
-			background: null,
+			main: null,
+			btn: null,
+			scopeTmp: '<div class="options col3 clearfix">{[#opts]}<a href="javascript:;">{[.]}</a>{[/opts]}</div>',
 			init: function () {
 				var util = this;
-				util.content = $(".popup-wrap");
-				util.background = $(".tips-bar-bg");
+				util.shade = $(".m-popup-shade");
+				util.main = $(".m-popup-main");
+				util.content = $(".m-popup-content");
 				$(".action-row").on(kClick, function () {
-					util.toggle(!util.content.hasClass("animate-pop-in"));
+					util.btn = $(this);
+					var opt = util.btn.attr('data-opt');
+					if (opt) {
+						var opts = opt.split(',');
+						var html = Mustache.render(util.scopeTmp, {opts: opts});
+						util.toggle(html);
+					}
+					return false;
 				});
 
-				util.background.on(kClick, function () {
-					util.toggle(false);
+				util.main.on(kClick, function () {
+					util.toggle();
+					return false;
 				});
 			},
-			toggle: function (showFlag) {
+			toggle: function (content) {
 				var util = this;
-				if (showFlag) {
-					util.content.show().addClass("animate-pop-in");
-					util.background.fadeIn(200);
+				if (content) {
+					util.main.show();
+					util.content.html(content).addClass("animate-pop-in");
+					util.shade.fadeIn(160);
 				} else {
-					util.content.removeClass("animate-pop-in").hide();
-					util.background.fadeOut(200);
+					util.content.removeClass("animate-pop-in");
+					util.main.hide();
+					util.content.html('');
+					util.shade.fadeOut(100);
 				}
 			}
 		};

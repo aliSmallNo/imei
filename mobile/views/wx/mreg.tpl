@@ -14,7 +14,7 @@
 				<em>河西</em>
 			</div>
 		</a>
-		<a href="javascript:;" class="action-row line-bottom3" data-tag="scope">
+		<a href="javascript:;" class="action-row line-bottom3" data-tag="scope" data-opt="{{$scopeString}}">
 			<span>IT互联网</span>
 		</a>
 		<textarea name="description" placeholder="公司职位或身份介绍，如百度市场经理、小米设计师、自媒体人" class="textarea"></textarea>
@@ -64,22 +64,10 @@
 		<a class="m-next btn-select-img">上传头像</a>
 	</div>
 </section>
-<div class="popup-wrap">
-	<div class="options col3 clearfix">
-		<a href="javascript:;">IT互联网</a>
-		<a href="javascript:;">金融</a>
-		<a href="javascript:;">文化传媒</a>
-		<a href="javascript:;">服务业</a>
-		<a href="javascript:;">教育培训</a>
-		<a href="javascript:;">通信电子</a>
-		<a href="javascript:;">房产建筑</a>
-		<a href="javascript:;">轻工贸易</a>
-		<a href="javascript:;">医疗生物</a>
-		<a href="javascript:;">生产制造</a>
-		<a href="javascript:;">能源环保</a>
-		<a href="javascript:;">政法公益</a>
-		<a href="javascript:;">农林牧渔</a>
-		<a href="javascript:;">其他</a>
+<div class="m-popup-shade"></div>
+<div class="m-popup-main" style="display: none">
+	<div class="m-popup-wrap">
+		<div class="m-popup-content"></div>
 	</div>
 </div>
 <input type="hidden" id="cMaxYear" value="{{$maxYear}}">
