@@ -14,7 +14,7 @@ class FooController extends Controller
 {
 	public function actionRain()
 	{
-		var_dump("hello world!!");
-
+//		var_dump("hello world!!");
+		var_dump(is_string(null));
 	}
 }

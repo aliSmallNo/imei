@@ -33,9 +33,7 @@ class WechatUtil
 
 	public static function accessToken($refresh = false)
 	{
-		$redisKey = RedisUtil::keyWxToken();
-		$redis = ConfigUtil::redis();
-		$accessToken = $redis->get($redisKey);
+		$accessToken = RedisUtil::getCache(RedisUtil::KEY_WX_TOKEN);
 		if (!$accessToken || $refresh) {
 			$appId = \WxPayConfig::APPID;
 			$secret = \WxPayConfig::APPSECRET;
@@ -44,10 +42,8 @@ class WechatUtil
 			$res = json_decode($res, true);
 			$accessToken = isset($res['access_token']) ? $res['access_token'] : "";
 			if ($accessToken) {
-				$redis->set($redisKey, $accessToken);
+				RedisUtil::setCache($accessToken, RedisUtil::KEY_WX_TOKEN);
 				//过期时间一般是2个小时
-//				$redis->expire($redisKey, isset($res["expires_in"]) ? $res["expires_in"] : 7200);
-				$redis->expire($redisKey, 3600);
 			}
 			$newLog = [
 				"logKey" => "wx-token",
@@ -100,9 +96,7 @@ class WechatUtil
 
 	public static function getJsApiTicket()
 	{
-		$redisKey = RedisUtil::keyWxTicket();
-		$redis = ConfigUtil::redis();
-		$jsTicket = $redis->get($redisKey);
+		$jsTicket = RedisUtil::getCache(RedisUtil::KEY_WX_TICKET);
 		if (!$jsTicket) {
 			$accessToken = self::getAccessToken();
 			if ($accessToken) {
@@ -111,8 +105,7 @@ class WechatUtil
 				$res = json_decode($res, true);
 				$jsTicket = isset($res['ticket']) ? $res['ticket'] : '';
 				if ($jsTicket) {
-					$redis->set($redisKey, $jsTicket);
-					$redis->expire($redisKey, 60 * 60 * 1.5);
+					RedisUtil::setCache($jsTicket, RedisUtil::KEY_WX_TICKET);
 				}
 			}
 		}

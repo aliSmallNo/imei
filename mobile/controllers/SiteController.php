@@ -9,10 +9,18 @@
 namespace mobile\controllers;
 
 
+use Yii;
+
 class SiteController extends BaseController
 {
+
 	public function actionError()
 	{
+		$exception = Yii::$app->errorHandler->exception;
+		if($exception){
+			var_dump($exception);
+			exit();
+		}
 		return self::renderPage('error.tpl');
 	}
 }

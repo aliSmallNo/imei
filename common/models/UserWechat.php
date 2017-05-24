@@ -151,7 +151,7 @@ class UserWechat extends ActiveRecord
 
 	public static function removeOpenId($openId)
 	{
-		$redisUsersKey = RedisUtil::keyWxUserInfo($openId);
+		$redisUsersKey = RedisUtil::delCache(RedisUtil::KEY_WX_USER, $openId);
 		$redis = ConfigUtil::redis();
 		$redis->del($redisUsersKey);
 
@@ -195,10 +195,8 @@ class UserWechat extends ActiveRecord
 
 	public static function getInfoByOpenId($openId, $renewFlag = false)
 	{
-		$redisUsersKey = RedisUtil::keyWxUserInfo($openId);
-		$redis = ConfigUtil::redis();
-		$ret = $redis->get($redisUsersKey);
-		$ret = json_decode($ret, true);
+		$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
+		$ret = json_decode($ret, 1);
 		if ($ret && is_array($ret) && isset($ret["wid"]) && !$renewFlag) {
 			return $ret;
 		}
@@ -238,8 +236,7 @@ class UserWechat extends ActiveRecord
 			];
 			$wid = self::replace($ret["openid"], $values);
 			$ret["wid"] = $wid;
-			$redis->set($redisUsersKey, json_encode($ret));
-			$redis->expire($redisUsersKey, 3600);
+			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
 			return $ret;
 		}
 		return 0;
@@ -255,9 +252,7 @@ class UserWechat extends ActiveRecord
 		if ($ret && isset($ret["access_token"]) && isset($ret["openid"])) {
 			$openId = $ret["openid"];
 			if (!$renewFlag) {
-				$redisUsersKey = RedisUtil::keyWxUserInfo($openId);
-				$redis = ConfigUtil::redis();
-				$ret = $redis->get($redisUsersKey);
+				$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
 				$ret = json_decode($ret, true);
 				if ($ret && is_array($ret)) {
 					return $ret;
@@ -278,10 +273,7 @@ class UserWechat extends ActiveRecord
 						"subscribe" => $uInfo["wSubscribe"],
 						"wid" => $uInfo["wId"],
 					];
-					$redis->set($redisUsersKey, json_encode($ret));
-					$redis->expire($redisUsersKey, 3600);
-					/*$redis->set($redisKey, json_encode($ret));
-					$redis->expire($redisKey, 3600 * 32);*/
+					RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
 					return $ret;
 				}
 			}
@@ -292,7 +284,7 @@ class UserWechat extends ActiveRecord
 
 	public static function getRedirectUrl($category = "one", $strUrl = "")
 	{
-		$url = ConfigUtil::hostApi();
+		$url = ConfigUtil::getWechatHost();
 		if ($strUrl) {
 			if (strpos($strUrl, "http") === false) {
 				$url = trim($url, "/") . "/" . trim($strUrl, "/");

@@ -9,24 +9,45 @@
 namespace mobile\controllers;
 
 
-use common\utils\RespUtil;
+use common\models\City;
 use Yii;
+use yii\web\Controller;
+use yii\web\Response;
 
-class ApiController
+class ApiController extends Controller
 {
+	public $layout = false;
+
 	public function actionConfig()
 	{
 		$tag = trim(strtolower(self::postParam('tag')));
+		$id = self::postParam('id');
 		switch ($tag) {
 			case 'provinces':
 
 				break;
 			case 'cities':
-				break;
+				$items = City::cities($id);
+				$item = City::city($id);
+				return self::renderAPI(0, '', [
+					'items' => $items,
+					'item' => $item,
+				]);
 			default:
 				break;
 		}
-		return RespUtil::renderAPI(129);
+		return self::renderAPI(129);
+	}
+
+	protected function renderAPI($code, $msg = '', $data = [])
+	{
+		Yii::$app->response->format = Response::FORMAT_JSON;
+		return [
+			'code' => $code,
+			'msg' => $msg,
+			'data' => $data,
+			'time' => time()
+		];
 	}
 
 	protected function getParam($field, $defaultVal = "")

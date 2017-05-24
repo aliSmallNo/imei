@@ -9,13 +9,10 @@
 	<div class="form">
 		<input type="text" placeholder="请输入您的真实姓名" class="input-s large line-bottom3">
 		<a href="javascript:;" class="action-row line-bottom3" data-tag="location">
-			<div class="location" data-tag="location">
-				<em>天津</em>
-				<em>河西</em>
-			</div>
+			<em>天津</em><em>河西</em>
 		</a>
-		<a href="javascript:;" class="action-row line-bottom3" data-tag="scope" data-opt="{{$scopeString}}">
-			<span>IT互联网</span>
+		<a href="javascript:;" class="action-row line-bottom3" data-tag="scope">
+			<em>IT互联网</em>
 		</a>
 		<textarea name="description" placeholder="公司职位或身份介绍，如百度市场经理、小米设计师、自媒体人" class="textarea"></textarea>
 		<p class="clew-msg" style="display: none">8/30</p>
@@ -73,6 +70,10 @@
 <input type="hidden" id="cMaxYear" value="{{$maxYear}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
+</script>
+<script>
+	var mScopes = {{$scopes}};
+	var mProvinces = {{$provinces}};
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>

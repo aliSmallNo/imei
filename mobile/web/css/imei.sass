@@ -830,9 +830,10 @@ section
 	line-height: 4rem
 	position: relative
 	em
-		margin-right: .5rem
+		margin-right: .6rem
 		font-size: 1.4rem
 		color: $grayFontColorDark
+		font-weight: $weightBold
 	&:after
 		@include arrowRight
 		border-color: $grayFontColor
@@ -1617,6 +1618,7 @@ section
 	@include translucent
 	pointer-events: auto
 	z-index: 120
+
 .m-popup-main
 	display: table
 	position: fixed
@@ -1639,37 +1641,52 @@ section
 			@include borderBox
 			padding: 0
 			overflow: hidden
-			.options
+			.m-popup-options
 				margin: 0
 				padding: 0
+				a
+					float: left
+					text-align: center
+					height: 4.6rem
+					line-height: 4.6rem
+					color: $grayFontColorDark
+					border-right: 1px solid $borderColorDark
+					margin: 0
+					display: inline-block
+					background: #fff
+					font-size: 1.3rem
+					position: relative
+					@include borderBox
+					@include textTail
+
+					&:before
+						content: ' '
+						position: absolute
+						top: 0
+						left: 0
+						right: 0
+						height: 1px
+						background: $borderColorDark
+					&:active
+						background: $linkColorLight
+						color: #fff
 				&.col3
 					a
-						float: left
-						text-align: center
-						height: 5rem
-						line-height: 5rem
-						color: $grayFontColorDark
-						border-right: 1px solid $borderColorDark
-						margin: 0
 						width: 33.3%
-						display: inline-block
-						background: #fff
-						font-size: 1.4rem
-						position: relative
-						@include borderBox
-						&:before
-							content: ' '
-							position: absolute
-							top: 0
-							left: 0
-							right: 0
-							height: 1px
-							background: $borderColorDark
 						&:nth-of-type(3n+2)
 							background: $bgColor
-						&:active
-							background: $linkColorLight
-							color: #fff
+							&:active
+								background: $linkColorLight
+								color: #fff
+				&.col4
+					a
+						width: 25%
+						&:nth-of-type(4n+2),
+						&:nth-of-type(4n+4)
+							background: $bgColor
+							&:active
+								background: $linkColorLight
+								color: #fff
 
 @keyframes framesPopIn
 	from

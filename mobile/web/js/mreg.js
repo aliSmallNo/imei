@@ -116,7 +116,10 @@ require(["layer", "fastclick"],
 			content: null,
 			main: null,
 			btn: null,
-			scopeTmp: '<div class="options col3 clearfix">{[#opts]}<a href="javascript:;">{[.]}</a>{[/opts]}</div>',
+			shadeClose: false,
+			scopeTmp: '<div class="m-popup-options col3 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}">{[name]}</a>{[/items]}</div>',
+			cityTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="city">{[name]}</a>{[/items]}</div>',
+			provinceTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="province">{[name]}</a>{[/items]}</div>',
 			init: function () {
 				var util = this;
 				util.shade = $(".m-popup-shade");
@@ -124,23 +127,46 @@ require(["layer", "fastclick"],
 				util.content = $(".m-popup-content");
 				$(".action-row").on(kClick, function () {
 					util.btn = $(this);
-					var opt = util.btn.attr('data-opt');
-					if (opt) {
-						var opts = opt.split(',');
-						var html = Mustache.render(util.scopeTmp, {opts: opts});
+					var tag = util.btn.attr('data-tag');
+					var html = '';
+					switch (tag) {
+						case 'location':
+							html = Mustache.render(util.provinceTmp, {items: mProvinces});
+							break;
+						case 'scope':
+							html = Mustache.render(util.scopeTmp, {items: mScopes});
+							break;
+					}
+					if (html) {
 						util.toggle(html);
 					}
 					return false;
 				});
 
-				util.main.on(kClick, function () {
-					util.toggle();
+				$(document).on(kClick, '.m-popup-options > a', function () {
+					var self = $(this);
+					var text = self.html();
+					var key = self.attr('data-key');
+					var tag = self.attr('data-tag');
+					if (tag && tag == 'province') {
+						util.btn.html('<em data-key="' + key + '">' + text + '</em>');
+						util.getCity(key);
+					} else if (tag && tag == 'city') {
+						util.btn.append('<em data-key="' + key + '">' + text + '</em>');
+						util.toggle();
+					} else {
+						util.btn.html('<em data-key="' + key + '">' + text + '</em>');
+						util.toggle();
+					}
 					return false;
 				});
-				util.main.on('touchstart', function () {
-					util.toggle();
-					return false;
-				});
+
+				if (util.shadeClose) {
+					$(document).on('click touchmove', '.m-popup-main', function () {
+						util.toggle();
+						return false;
+					});
+				}
 			},
 			toggle: function (content) {
 				var util = this;
@@ -154,6 +180,17 @@ require(["layer", "fastclick"],
 					util.content.html('');
 					util.shade.fadeOut(100);
 				}
+			},
+			getCity: function (pid) {
+				var util = this;
+				$.post('/api/config', {
+					tag: 'cities',
+					id: pid
+				}, function (resp) {
+					if (resp.code == 0) {
+						util.content.html(Mustache.render(util.cityTmp, resp.data));
+					}
+				}, 'json');
 			}
 		};
 

@@ -9,6 +9,7 @@
 namespace mobile\controllers;
 
 
+use common\models\City;
 use common\models\User;
 
 class WxController extends BaseController
@@ -28,11 +29,17 @@ class WxController extends BaseController
 
 	public function actionMreg()
 	{
-		$scopes = User::$Scopes;
-		$scopeString = implode(',', $scopes);
+		$scopes = [];
+		foreach (User::$Scopes as $key => $scope) {
+			$scopes[] = [
+				'key' => $key,
+				'name' => $scope,
+			];
+		}
 		return self::renderPage("mreg.tpl", [
 			"maxYear" => 1999,
-			'scopeString' => $scopeString
+			'scopes' => json_encode($scopes, JSON_UNESCAPED_UNICODE),
+			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
 		]);
 	}
 

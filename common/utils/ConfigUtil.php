@@ -1,7 +1,9 @@
 <?php
+
 namespace common\utils;
 
 use Symfony\Component\Yaml\Yaml;
+use Yii;
 
 /**
  * Created by PhpStorm.
@@ -15,45 +17,80 @@ class ConfigUtil
 
 	private static function config($key)
 	{
-		$cacheKey = "connections";
+		$cacheKey = "_config";
 		if (isset(self::$cacheFile[$cacheKey][$key])) {
 			return self::$cacheFile[$cacheKey][$key];
 		}
-		// Rain: 把配置文件放在工程之外,出于安全考虑,为了不暴露各种连接账号
-		$filePath = __DIR__ . '/../../../imei_config.yaml';
-
+		//Rain: 不提交该yml文件，所以写了个.gitignore
+		$filePath = __DIR__ . '/_config.yml';
 		self::$cacheFile[$cacheKey] = Yaml::parse(file_get_contents($filePath));
-		return self::$cacheFile[$cacheKey][$key];
+		return isset(self::$cacheFile[$cacheKey][$key]) ? self::$cacheFile[$cacheKey][$key] : null;
 	}
 
-
+	/**
+	 * @return \yii\db\Connection
+	 */
 	public static function db()
 	{
-		return self::config("db");
+		return Yii::createObject(self::config("db"));
 	}
 
+	/**
+	 * @return \yii\redis\Connection
+	 */
 	public static function redis()
 	{
-		return self::config("redis");
+		return Yii::createObject(self::config("redis"));
 	}
 
+	/**
+	 * @return \yii\sphinx\Connection
+	 */
 	public static function sphinx()
 	{
-		return self::config("sphinx");
+		return Yii::createObject(self::config("sphinx"));
 	}
 
-	public static function scene()
+	public static function getScene()
 	{
-		return self::config("scene");
+		return self::configString('scene');
 	}
 
-	public static function hostApi()
+	public static function getNotifyUrl()
 	{
-		return self::config("hostApi");
+		return self::configString('hostnames', 'notify');
 	}
 
-	public static function hostAdmin()
+	public static function getApiHost()
 	{
-		return self::config("hostAdmin");
+		return self::configString('hostnames', 'api');
+	}
+
+	public static function getAdminHost()
+	{
+		return self::configString('hostnames', 'admin');
+	}
+
+	public static function getWechatHost()
+	{
+		return self::configString('hostnames', 'wechat');
+	}
+
+	/**
+	 * Rain: get config string
+	 * @param $key
+	 * @param string $subKey
+	 * @return string
+	 */
+	protected static function configString($key, $subKey = '')
+	{
+		$info = self::config($key);
+		if (!$subKey && is_string($info)) {
+			return $info;
+		}
+		if (isset($info[$subKey])) {
+			return $info[$subKey];
+		}
+		return '';
 	}
 }

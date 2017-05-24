@@ -12,32 +12,56 @@ namespace common\utils;
 class RedisUtil
 {
 	const GLUE = "::";
-	const FIXED_PREFIX = "im";
+	const FIXED_PREFIX = "imei";
 
-	public static function keyWxToken()
+	const KEY_PROVINCES = 'provinces';
+	const KEY_CITIES = 'cities';
+	const KEY_CITY = 'city';
+	const KEY_WX_TOKEN = 'wx_token';
+	const KEY_WX_TICKET = 'wx_ticket';
+	const KEY_WX_USER = 'wx_user';
+
+	static $CacheDuration = [
+		self::KEY_PROVINCES => 86400,
+		self::KEY_CITIES => 86400,
+		self::KEY_CITY => 86400,
+		self::KEY_WX_TOKEN => 4800,
+		self::KEY_WX_TICKET => 4800,
+		self::KEY_WX_USER => 3600 * 12
+	];
+
+	public static function getCache(...$keys)
 	{
-		return self::getPrefix(__FUNCTION__);
+		$redis = ConfigUtil::redis();
+		$redisKey = self::getPrefix(...$keys);
+		$ret = $redis->get($redisKey);
+		return $ret;
 	}
 
-	public static function keyWxTicket()
+	public static function setCache($val, ...$keys)
 	{
-		return self::getPrefix(__FUNCTION__);
-	}
-
-	public static function keyWxUserInfo($openId)
-	{
-		return self::getPrefix(__FUNCTION__) . self::GLUE . $openId;
-	}
-
-	private static function getPrefix($funcName)
-	{
-		$key = strtolower($funcName);
-		if (strpos($key, "get") === 0) {
-			$key = substr($key, 3);
+		$redis = ConfigUtil::redis();
+		$key0 = '*******';
+		if (is_array($keys) && count($keys)) {
+			$key0 = $keys[0];
 		}
-		if (strpos($key, "key") === 0) {
-			$key = substr($key, 3);
-		}
-		return self::FIXED_PREFIX . self::GLUE . $key;
+		$redisKey = self::getPrefix(...$keys);
+		$redis->set($redisKey, $val);
+		$expired = isset(self::$CacheDuration[$key0]) ? self::$CacheDuration[$key0] : 3600;
+		$redis->expire($redisKey, $expired);
+	}
+
+	public static function delCache(...$keys)
+	{
+		$redis = ConfigUtil::redis();
+		$redisKey = self::getPrefix(...$keys);
+		$redis->del($redisKey);
+	}
+
+	private static function getPrefix(...$keys)
+	{
+		array_unshift($keys, self::FIXED_PREFIX);
+		$ret = implode(self::GLUE, $keys);
+		return $ret;
 	}
 }

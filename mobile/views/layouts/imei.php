@@ -14,7 +14,7 @@
 		<meta name="description" content="微媒是北京奔跑吧货滴科技有限公司倾力打造的一个真实相亲交友平台">
 		<link type="image/png" href="/favicon.png" rel="icon">
 		<link type="image/png" href="/favicon.png" rel="shortcut icon">
-		<link rel="stylesheet" href="/assets/css/layer.min.css?v=1.1.1">
+		<link rel="stylesheet" href="/assets/css/layer.css?v=1.1.1">
 		<link rel="stylesheet" href="/css/imei.css?v=1.1.3">
 		<script src="/assets/js/jweixin-1.2.0.js"></script>
 	</head>
