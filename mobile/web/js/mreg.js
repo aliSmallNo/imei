@@ -137,6 +137,10 @@ require(["layer", "fastclick"],
 					util.toggle();
 					return false;
 				});
+				util.main.on('touchstart', function () {
+					util.toggle();
+					return false;
+				});
 			},
 			toggle: function (content) {
 				var util = this;
