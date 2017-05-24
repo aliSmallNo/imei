@@ -1637,15 +1637,23 @@ section {
           line-height: 5rem;
           color: #414141;
           border-right: 1px solid #d8d8d8;
-          border-bottom: 1px solid #d8d8d8;
           margin: 0;
           width: 33.3%;
           display: inline-block;
           background: #fff;
           font-size: 1.4rem;
+          position: relative;
           -webkit-box-sizing: border-box;
           -moz-box-sizing: border-box;
           box-sizing: border-box; }
+          .m-popup-main .m-popup-wrap .m-popup-content .options.col3 a:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #d8d8d8; }
           .m-popup-main .m-popup-wrap .m-popup-content .options.col3 a:nth-of-type(3n+2) {
             background: #F4F4F4; }
           .m-popup-main .m-popup-wrap .m-popup-content .options.col3 a:active {
