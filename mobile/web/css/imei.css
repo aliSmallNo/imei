@@ -1646,10 +1646,10 @@ section {
           -webkit-box-sizing: border-box;
           -moz-box-sizing: border-box;
           box-sizing: border-box; }
-          .m-popup-main .m-popup-wrap .m-popup-content .options.col3 a:after {
-            content: "";
+          .m-popup-main .m-popup-wrap .m-popup-content .options.col3 a:before {
+            content: " ";
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
             right: 0;
             height: 1px;
