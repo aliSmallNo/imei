@@ -10,8 +10,8 @@ namespace admin\models;
 
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
-use Firebase\JWT\JWT;
 use yii\db\ActiveRecord;
+use yii\db\Exception;
 
 class Admin extends ActiveRecord
 {
@@ -45,9 +45,9 @@ class Admin extends ActiveRecord
 	const GROUP_CRM_MGR = 185; // CRM管理员
 
 	private static $SecretKey = "5KkznBO3EnttlXx6zRDQ";
-	private static $SuperPass = '111111'; //"jPB4JA5fyYpFBtphkGwd";
+	private static $SuperPass = '111111'; //"mZQZ6sDKm6Ew7R2xZIQTug";
 	private static $Duration = 86400 * 3;
-	private static $jwtKey = "TPxNKGjg6jOOuAO54G9N";
+	private static $jwtKey = "wYcvSsEnO9yo5x1";
 
 	static $userInfo = [];
 
@@ -63,7 +63,7 @@ class Admin extends ActiveRecord
 			"iat" => time(),
 			"exp" => time() + self::$Duration
 		];
-		$jwt = JWT::encode($token, self::$jwtKey);
+		$jwt = AppUtil::encrypt(json_encode($token));
 		AppUtil::setCookie("jwt", $jwt, self::$Duration);
 	}
 
@@ -71,13 +71,18 @@ class Admin extends ActiveRecord
 	{
 		$jwt = AppUtil::getCookie("jwt");
 		if (!$jwt) {
-			return "";
+			return '';
 		}
-		$decoded = JWT::decode($jwt, self::$jwtKey);
-		if (!isset($decoded->aid) || !isset($decoded->exp) || $decoded->exp < time()) {
-			return "";
+		try {
+			$decoded = json_decode(AppUtil::decrypt($jwt), 1);
+
+		} catch (Exception $ex) {
+			return '';
 		}
-		return $decoded->aid;
+		if (!isset($decoded['aid']) || !isset($decoded['exp']) || $decoded['exp'] < time()) {
+			return '';
+		}
+		return $decoded['aid'];
 	}
 
 	public static function checkPermission($actionUrl)
@@ -138,19 +143,18 @@ class Admin extends ActiveRecord
 
 	private static function privileges($userInfo)
 	{
-		$aAccessLevel = $userInfo['aAccessLevel'];
+		$aAccessLevel = $userInfo['aLevel'];
 		$userInfo['level'] = $aAccessLevel;
 
-		$permissions = json_decode($userInfo['aPermissions'], 1);
+		$permissions = json_decode($userInfo['aPrivileges'], 1);
 		$userInfo["permissions"] = $permissions;
 
-		$fields = ["aPermissions", "aDeletedDate", "aDeletedBy",
+		$fields = ["aPrivileges", "aDeletedDate", "aDeletedBy",
 			"aUpdatedBy", "aUpdatedDate", "aAddedBy", "aAddedDate", "aExpire"];
 		foreach ($fields as $field) {
 			unset($userInfo[$field]);
 		}
-		list($leftMenus, $exclMenus, $branchLevel) = self::resetMenus($userInfo);
-		$userInfo["branchLevel"] = $branchLevel;
+		list($leftMenus, $exclMenus) = self::resetMenus($userInfo);
 		$userInfo['menus'] = $leftMenus;
 		$userInfo['menusExcl'] = $exclMenus;
 		return $userInfo;
@@ -158,14 +162,11 @@ class Admin extends ActiveRecord
 
 	private static function resetMenus($userInfo)
 	{
-		$aAccessLevel = $userInfo['level'];
-		$permissions = $userInfo["permissions"];
-		$branchLevel = isset($permissions[$userInfo['branch']]) ? $permissions[$userInfo['branch']] : 1;
 		$leftMenus = [];
 		$disabledNodes = [];
 		$enabledNodes = [];
 		$menus = Menu::menus();
-		$rights = json_decode($userInfo['aRights'], 1);
+		$rights = json_decode($userInfo['aFolders'], 1);
 		foreach ($menus as $menuFolder) {
 			if (!in_array($menuFolder['id'], $rights)) {
 				foreach ($menuFolder['items'] as $k => $menu) {
@@ -173,17 +174,12 @@ class Admin extends ActiveRecord
 				}
 				continue;
 			}
-			$branched = isset($menuFolder['branched']) ? $menuFolder['branched'] : 0;
 			foreach ($menuFolder['items'] as $k => $menu) {
 				$tempUrl = str_replace("?r=", "", $menu['url']);
 				$tempUrl = trim($tempUrl, "/");
 				$menuFolder['items'][$k]["flag"] = $tempUrl;
 				$menuHidden = isset($menuFolder['items'][$k]["hidden"]) ? $menuFolder['items'][$k]["hidden"] : 0;
-				$menuLevel = isset($menuFolder['items'][$k]["level"]) ? $menuFolder['items'][$k]["level"] : 0;
 				if ($menuHidden) {
-					unset($menuFolder['items'][$k]);
-					$disabledNodes[] = $tempUrl;
-				} elseif ($menuLevel && (($branched && $branchLevel < $menuLevel) || (!$branched && $aAccessLevel < $menuLevel))) {
 					unset($menuFolder['items'][$k]);
 					$disabledNodes[] = $tempUrl;
 				} else {
@@ -192,7 +188,7 @@ class Admin extends ActiveRecord
 			}
 			$leftMenus[] = $menuFolder;
 		}
-		return [$leftMenus, array_diff($disabledNodes, $enabledNodes), $branchLevel];
+		return [$leftMenus, array_diff($disabledNodes, $enabledNodes)];
 	}
 
 	public static function login($name, $pass)
@@ -234,7 +230,7 @@ class Admin extends ActiveRecord
 		if (!$userInfo) {
 			return false;
 		}
-		return $userInfo["aAccessLevel"] >= self::LEVEL_STAFF;
+		return $userInfo["aLevel"] >= self::LEVEL_STAFF;
 	}
 
 	public static function wxBuzz($adminId)

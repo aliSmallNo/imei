@@ -1,7 +1,7 @@
-<script src="/js/mustache/2.2.1/mustache.min.js"></script>
-<script src="/My97DatePicker/WdatePicker.js"></script>
+<script src="/assets/js/mustache.min.js"></script>
+<script src="/assets/lib/My97DatePicker/WdatePicker.js"></script>
 <script src="/js/sb-admin-2.js"></script>
-<script src="/js/lib/iscroll/5.1.3/iscroll.js"></script>
+<script src="/assets/js/iscroll.js"></script>
 
 <script type="text/html" id="cModPwdTmp">
 	<div class="form-horizontal">
@@ -43,7 +43,7 @@
 			<label class="col-sm-3 control-label">公司简称</label>
 
 			<div class="col-sm-8">
-				<input type="text" class="form-control" id="modProfile_name" placeholder="请输入公司简称" value="{{$adminBranchInfo.bName}}"/>
+				<input type="text" class="form-control" id="modProfile_name" placeholder="请输入公司简称">
 			</div>
 		</div>
 		<div class="form-group">
@@ -51,7 +51,7 @@
 
 			<div class="col-sm-8">
 				<input type="text" class="form-control" id="modProfile_fullname" placeholder="请输入公司全称"
-							 value="{{if isset($adminBranchInfo.bFullName)}}{{$adminBranchInfo.bFullName}}{{/if}}"/>
+							 value="{{if isset($adminBranchInfo.bFullName)}}{{$adminBranchInfo.bFullName}}{{/if}}">
 			</div>
 		</div>
 		<div class="form-group">
@@ -105,7 +105,7 @@
 		</a>
 	</li>
 </script>
-<script src="/js/countUp.js"></script>
+<script src="/assets/js/countUp.js"></script>
 <script src="/js/footer.min.js?v={{#gVersion#}}"></script>
 </body>
 </html>

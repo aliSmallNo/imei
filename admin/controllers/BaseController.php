@@ -56,9 +56,12 @@ class BaseController extends Controller
 		if ($guestFlag) {
 			return self::render($view, $params);
 		}
-		$adminInfo = Admin::$userInfo;
 		$adminId = Admin::getAdminId();
-		$params["branch_editable"] = $adminInfo["branchLevel"] >= Admin::LEVEL_MODIFY ? 1 : 0;
+		$adminInfo = Admin::userInfo($adminId);
+		if(!$adminInfo){
+			return self::render($view, $params);
+		}
+		$params["branch_editable"] = $adminInfo["aLevel"] >= Admin::LEVEL_MODIFY ? 1 : 0;
 		$params["adminInfo"] = $adminInfo;
 		$params["adminInfoNews"] = [];//Info::listNotRead();
 		$params["adminBranchInfo"] = [];

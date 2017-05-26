@@ -58,14 +58,15 @@ class SiteController extends BaseController
 			exit();
 		}
 		$usedMenus = [];
-		if (isset(Admin::$userInfo['menus'])) {
-			$allMenus = Admin::$userInfo['menus'];
+		$userInfo = Admin::userInfo();
+		if (isset($userInfo['menus'])) {
+			$allMenus = $userInfo['menus'];
 			$menuIcon = [];
 			foreach ($allMenus as $key => $menu) {
 				$items = $menu['items'];
 				foreach ($items as $k => $item) {
 					if (!isset($menuIcon[$item['url']])) {
-						$menuIcon[$item['url']] = $menu['icon4'];
+						$menuIcon[$item['url']] = $menu['icon'];
 					}
 				}
 			}
@@ -82,12 +83,12 @@ class SiteController extends BaseController
 
 		$items = [];
 		$hourData = [];// StatPool::hourlyData(Admin::getBranch(), date("Y-m-d"));
-		$hideChart = false;
-		if (in_array("super/orders", Admin::$userInfo["menusExcl"])) {
+		$hideChart = true;
+		/*if (in_array("super/orders", Admin::$userInfo["menusExcl"])) {
 			$hideChart = true;
-		}
+		}*/
 		//LogAction::add($adminId, LogAction::ACTION_ADMIN, '后台首页', Admin::getBranch());
-		return self::renderPage('info.tpl',
+		return self::renderPage('summary.tpl',
 			[
 				'category' => 'summary',
 				'menus' => $menus,
@@ -98,6 +99,14 @@ class SiteController extends BaseController
 			]
 		);
 	}
+
+	public function actionLogout()
+	{
+		Admin::logout();
+		header("location:/site/login");
+		exit;
+	}
+
 
 	public function actionIndex()
 	{

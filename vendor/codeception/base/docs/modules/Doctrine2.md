@@ -70,6 +70,46 @@ Flushes changes to database and performs ->findOneBy() call for current reposito
 Performs $em->flush();
 
 
+### grabEntitiesFromRepository
+ 
+Selects entities from repository.
+It builds query based on array of parameters.
+You can use entity associations to build complex queries.
+
+Example:
+
+``` php
+<?php
+$users = $I->grabEntitiesFromRepository('User', array('name' => 'davert'));
+?>
+```
+
+ * `Available since` 1.1
+ * `param` $entity
+ * `param array` $params
+ * `return` array
+
+
+### grabEntityFromRepository
+ 
+Selects a single entity from repository.
+It builds query based on array of parameters.
+You can use entity associations to build complex queries.
+
+Example:
+
+``` php
+<?php
+$user = $I->grabEntityFromRepository('User', array('id' => '1234'));
+?>
+```
+
+ * `Available since` 1.1
+ * `param` $entity
+ * `param array` $params
+ * `return` array
+
+
 ### grabFromRepository
  
 Selects field value from repository.
@@ -163,4 +203,4 @@ Fails if record for given criteria can\'t be found,
  * `param` $entity
  * `param array` $params
 
-<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.2/src/Codeception/Module/Doctrine2.php">Help us to improve documentation. Edit module reference</a></div>
+<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.3/src/Codeception/Module/Doctrine2.php">Help us to improve documentation. Edit module reference</a></div>
