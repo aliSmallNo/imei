@@ -24,6 +24,12 @@ class QueueUtil
 		'timeout' => 3000
 	];
 
+	protected static function logFile($msg, $funcName = '', $line = '')
+	{
+		$msg .= PHP_EOL . $funcName . '  ' . $line;
+		file_put_contents('/data/tmp/beanstalkd.log', PHP_EOL . date('Y-m-d H:i:s') . " message: " . $msg . PHP_EOL, FILE_APPEND);
+	}
+
 	public static function loadQueue($message, $tube = '', $delay = 0)
 	{
 		if (!$tube) {
@@ -44,11 +50,11 @@ class QueueUtil
 			if (!$put) {
 				throw new Exception('发送失败');
 			}
-			file_put_contents('/tmp/beanstalkd.log', date('Y-m-d H:i:s') . " Done: " . json_encode($message) . PHP_EOL, FILE_APPEND);
+			self::logFile(json_encode($message));
 			$beanstalk->disconnect();
 		} catch (Exception $ex) {
 			$msg = $ex->getMessage();
-			file_put_contents('/tmp/beanstalkd.log', date('Y-m-d H:i:s') . " ex: " . $msg . PHP_EOL, FILE_APPEND);
+			self::logFile($msg);
 		}
 	}
 
@@ -57,7 +63,7 @@ class QueueUtil
 		try {
 			$beanstalk = new beanstalkSocket(self::$QueueConfig);
 			if (!$beanstalk->connect()) {
-				file_put_contents('/tmp/beanstalkd.log', date('Y-m-d H:i:s') . " actionTask: beanstalk disconnect!" . PHP_EOL, FILE_APPEND);
+				self::logFile('beanstalk disconnect!', __FUNCTION__, __LINE__);
 				exit(1);
 			}
 			$tube = 'test';
@@ -87,10 +93,10 @@ class QueueUtil
 				}
 			}
 			$beanstalk->disconnect();
-			file_put_contents('/tmp/beanstalkd.log', date('Y-m-d H:i:s') . " actionTask: beanstalk Done!" . PHP_EOL, FILE_APPEND);
+			self::logFile('Job Done!', __FUNCTION__, __LINE__);
 		} catch (Exception $ex) {
 			$msg = $ex->getMessage();
-			file_put_contents('/tmp/beanstalkd.log', date('Y-m-d H:i:s') . " actionTask: " . $msg . PHP_EOL, FILE_APPEND);
+			self::logFile($msg, __FUNCTION__, __LINE__);
 		}
 		exit(1);
 	}
@@ -110,7 +116,7 @@ class QueueUtil
 		$msg = urlencode(iconv("UTF-8", "gbk//TRANSLIT", $formatMsg));
 		$url = "http://221.179.180.158:9007/QxtSms/QxtFirewall?OperID=$openId&OperPass=$openPwd&SendTime=&ValidTime=&AppendID=$appendId&DesMobile=$phone&Content=$msg&ContentType=8";
 		$res = file_get_contents($url);
-		file_put_contents("/tmp/phone.log", date(" [Y-m-d H:i:s] ") . $phone . " - " . $formatMsg . " >>>>>> " . $res . PHP_EOL, FILE_APPEND);
+		self::logFile($phone . ' - ' . $formatMsg . ' ' . $res, __FUNCTION__, __LINE__);
 	}
 
 	public static function pushSMS($parameters)
