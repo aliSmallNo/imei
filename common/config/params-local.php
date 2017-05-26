@@ -6,4 +6,3 @@ return [
 	'adminUrl' => 'http://localhost.admin:8080',
 	'scene' => 'dev'
 ];
-
