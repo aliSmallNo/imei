@@ -60,6 +60,7 @@ class QueueUtil
 
 	public static function doJob()
 	{
+		self::logFile('Do Job Begin', __FUNCTION__, __LINE__);
 		try {
 			$beanstalk = new beanstalkSocket(self::$QueueConfig);
 			if (!$beanstalk->connect()) {
