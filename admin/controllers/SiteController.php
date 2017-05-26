@@ -125,7 +125,7 @@ class SiteController extends BaseController
 		sleep(3); // 等待3秒钟
 		$ret = RedisUtil::getCache(RedisUtil::KEY_PUB_CODE, $id);
 		if (!$ret) {
-			sleep(4); // 等待4秒钟
+			sleep(3); // 等待3秒钟
 			$ret = RedisUtil::getCache(RedisUtil::KEY_PUB_CODE, $id);
 			if ($ret) {
 				echo "<pre>" . $ret . "</pre>";
