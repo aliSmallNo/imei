@@ -26,7 +26,11 @@ class QueueUtil
 
 	protected static function logFile($msg, $funcName = '', $line = '')
 	{
-		$msg .= PHP_EOL . $funcName . '  ' . $line;
+		if ($funcName) {
+			$msg = ' ' . $funcName . ' ' . $line . ': ' . $msg;
+		} else {
+			$msg = ' message: ' . $msg;
+		}
 		file_put_contents('/data/tmp/beanstalkd.log', PHP_EOL . date('Y-m-d H:i:s') . " message: " . $msg . PHP_EOL, FILE_APPEND);
 	}
 
