@@ -107,9 +107,7 @@ class SiteController extends BaseController
 
 	public function actionIndex()
 	{
-		return self::renderPage('index.tpl', [
-			"test" => "First test!!!"
-		]);
+		return self::actionLogin();
 	}
 
 }
