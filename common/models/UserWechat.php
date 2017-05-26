@@ -167,7 +167,7 @@ class UserWechat extends ActiveRecord
 		$sql = "select w.* 
 			from hd_admin as a 
 			join hd_user_wechat as w on w.wAId=a.aId
- 			WHERE a.aNote='$aNote' AND a.aDeletedFlag=0";
+ 			WHERE a.aNote='$aNote' AND a.aStatus=1";
 
 		$ret = $conn->createCommand($sql)->queryOne();
 		$id = "";
@@ -183,7 +183,7 @@ class UserWechat extends ActiveRecord
 		$sql = "select a.* 
 			from hd_admin as a 
 			join hd_user_wechat as w on w.wAId=a.aId
- 			WHERE w.wOpenId=:openid AND a.aDeletedFlag=0";
+ 			WHERE w.wOpenId=:openid AND a.aStatus=1";
 
 		//$openId = "ofAebuPmg1akRzutwlfxP3mXdWqs"; // Rain: for testing! ofAebuDdjzw5kskVDgmU0EgFl9Ok
 		$ret = $conn->createCommand($sql)->bindValues([

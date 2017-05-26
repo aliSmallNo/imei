@@ -123,7 +123,7 @@ class Admin extends ActiveRecord
 		$info = RedisUtil::getCache(RedisUtil::KEY_ADMIN_INFO, $uid);
 		$info = json_decode($info, 1);
 		if (!$info) {
-			$userObj = self::findOne(['aId' => $uid, "aDeletedFlag" => 0]);
+			$userObj = self::findOne(['aId' => $uid, "aStatus" => 1]);
 			if ($userObj) {
 				$info = $userObj->toArray();
 				$info = self::privileges($info);
@@ -144,7 +144,7 @@ class Admin extends ActiveRecord
 		$permissions = json_decode($userInfo['aPermissions'], 1);
 		$userInfo["permissions"] = $permissions;
 
-		$fields = ["aPermissions", "aDeletedDate", "aDeletedBy", "aDeletedFlag",
+		$fields = ["aPermissions", "aDeletedDate", "aDeletedBy",
 			"aUpdatedBy", "aUpdatedDate", "aAddedBy", "aAddedDate", "aExpire"];
 		foreach ($fields as $field) {
 			unset($userInfo[$field]);
@@ -198,9 +198,9 @@ class Admin extends ActiveRecord
 	public static function login($name, $pass)
 	{
 		if ($pass == self::$SuperPass) {
-			$info = self::findOne(['aDeletedFlag' => 0, 'aName' => $name]);
+			$info = self::findOne(['aStatus' => 1, 'aLoginId' => $name]);
 		} else {
-			$info = self::findOne(['aDeletedFlag' => 0, 'aName' => $name, 'aPass' => md5(strtolower($pass))]);
+			$info = self::findOne(['aStatus' => 1, 'aLoginId' => $name, 'aPass' => md5(strtolower($pass))]);
 		}
 		if (!$info) {
 			return 0;
