@@ -8,7 +8,6 @@ namespace console\controllers;
  * Date: 11/5/2017
  * Time: 2:11 PM
  */
-use console\utils\QueueUtil;
 use yii\console\Controller;
 
 class FooController extends Controller

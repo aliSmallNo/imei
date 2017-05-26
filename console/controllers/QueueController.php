@@ -9,8 +9,9 @@
 namespace console\controllers;
 
 use console\utils\QueueUtil;
+use yii\console\Controller;
 
-class QueueController
+class QueueController extends Controller
 {
 	public function actionTask()
 	{
