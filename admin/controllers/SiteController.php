@@ -13,6 +13,11 @@ class SiteController extends BaseController
 {
 	public $layout = "main";
 
+	public function actionIndex()
+	{
+		return self::actionLogin();
+	}
+
 	public function actionError()
 	{
 		$exception = Yii::$app->errorHandler->exception;
@@ -105,11 +110,6 @@ class SiteController extends BaseController
 				"hideChart" => $hideChart
 			]
 		);
-	}
-
-	public function actionIndex()
-	{
-		return self::actionLogin();
 	}
 
 	public function actionPubCodes()
