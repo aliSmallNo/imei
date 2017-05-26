@@ -75,26 +75,20 @@ class Menu
 						"level" => 825
 					],
 					[
-						"name" => "全网订单",
-						"url" => "/super/ordersall",
-						"revise" => 1,
-						"level" => 825
-					],
-					[
 						"name" => "多点统计",
-						"url" => "/bigdata/branchstatnew",
+						"url" => "/site/analyst",
 						"revise" => 1,
 						"level" => 825
 					],
 					[
 						"name" => "实时统计",
-						"url" => "/bigdata/realtime",
+						"url" => "/site/timely",
 						"revise" => 1,
 						"level" => 825
 					],
 					[
 						"name" => "整体趋势",
-						"url" => "/bigdata/trendstatnew",
+						"url" => "/site/trends",
 						"revise" => 1,
 						"level" => 825
 					]
@@ -118,33 +112,28 @@ class Menu
 					],
 					[
 						"name" => "用户行为",
-						"url" => "/bigdata/logaction",
+						"url" => "/site/behavior",
 						"level" => 820
 					],
 					[
 						"name" => "用户代金券",
-						"url" => "/super/showcoupon"
+						"url" => "/site/coupons"
 					],
 					[
 						"name" => "意见反馈",
-						"url" => "/site/feedbacknew",
+						"url" => "/site/feedback",
 						"level" => 815
 					],
 					[
 						"name" => "通知消息",
-						"url" => "/notice/list",
+						"url" => "/site/notices",
 						"level" => 815
-					],
-					[
-						"name" => "平台站内信",
-						"url" => "/info/list",
-						"hidden" => 1
 					]
 				]
 			],
 			[
-				"name" => "后台用户",
-				"id" => "admins",
+				"name" => "后台设置",
+				"id" => "admin",
 				"icon" => "fa-key",
 				"items" => [
 					[

@@ -47,6 +47,13 @@ class SiteController extends BaseController
 		], true);
 	}
 
+	public function actionLogout()
+	{
+		Admin::logout();
+		header("location:/site/login");
+		exit;
+	}
+
 	public function actionSummary($adminId = "")
 	{
 		$menus = [];
@@ -84,9 +91,7 @@ class SiteController extends BaseController
 		$items = [];
 		$hourData = [];// StatPool::hourlyData(Admin::getBranch(), date("Y-m-d"));
 		$hideChart = true;
-		/*if (in_array("super/orders", Admin::$userInfo["menusExcl"])) {
-			$hideChart = true;
-		}*/
+
 		//LogAction::add($adminId, LogAction::ACTION_ADMIN, '后台首页', Admin::getBranch());
 		return self::renderPage('summary.tpl',
 			[
@@ -99,14 +104,6 @@ class SiteController extends BaseController
 			]
 		);
 	}
-
-	public function actionLogout()
-	{
-		Admin::logout();
-		header("location:/site/login");
-		exit;
-	}
-
 
 	public function actionIndex()
 	{
