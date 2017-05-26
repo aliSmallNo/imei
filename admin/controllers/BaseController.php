@@ -1,0 +1,155 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: weirui
+ * Date: 25/5/2017
+ * Time: 4:41 PM
+ */
+
+namespace admin\controllers;
+
+
+use admin\models\Admin;
+use yii\web\Controller;
+
+class BaseController extends Controller
+{
+	const ICON_OK_HTML = '<i class="fa fa-check-circle gIcon"></i> ';
+	const ICON_ALERT_HTML = '<i class="fa fa-exclamation-circle gIcon"></i> ';
+	const PAGE_SIZE = 20;
+	protected static $MenuForkId = "summary";
+
+	public function beforeAction($action)
+	{
+		self::checkPermission();
+		$controllerId = $action->controller->id;
+		self::$MenuForkId = $controllerId;
+		switch ($controllerId) {
+			case "notice":
+				self::$MenuForkId = "users";
+				break;
+			case "mail":
+				self::$MenuForkId = "summary";
+				break;
+		}
+		return parent::beforeAction($action);
+	}
+
+	/*public function beforeAction($action)
+	{
+		self::checkPermission();
+		$controllerId = $action->controller->id;
+		self::$MenuForkId = $controllerId;
+		switch ($controllerId) {
+			case "notice":
+				self::$MenuForkId = "userlist";
+				break;
+			case "mail":
+				self::$MenuForkId = "summary";
+				break;
+		}
+		return parent::beforeAction($action);
+	}*/
+
+	public function renderPage($view, $params = [], $guestFlag = false)
+	{
+		if ($guestFlag) {
+			return self::render($view, $params);
+		}
+		$adminInfo = Admin::$userInfo;
+		$adminId = Admin::getAdminId();
+		$params["branch_editable"] = $adminInfo["branchLevel"] >= Admin::LEVEL_MODIFY ? 1 : 0;
+		$params["adminInfo"] = $adminInfo;
+		$params["adminInfoNews"] = [];//Info::listNotRead();
+		$params["adminBranchInfo"] = [];
+		if (!isset($params["debug"])) {
+			$params["debug"] = Admin::isDebugUser() ? 1 : 0;
+		}
+		$params["adminInfo"]["todo"] = [];
+		$params["adminWechatListUnread"] = 0;
+		if ($adminInfo) {
+			list($params["adminWechatList"], $params["adminWechatListUnread"]) = Admin::wxBuzz($adminId);
+		}
+
+		$params["gIconOK"] = self::ICON_OK_HTML;
+		$params["gIconAlert"] = self::ICON_ALERT_HTML;
+
+		$params["left_tree_fork_id"] = isset($params["category"]) ? $params["category"] : self::$MenuForkId;
+		$params["left_tree_node_id"] = isset($params["detailcategory"]) ? $params["detailcategory"] : self::getRequestUri();
+
+		$params["category"] = $params["left_tree_fork_id"];
+		$params["detailcategory"] = $params["left_tree_node_id"];
+		if (isset($params["adminInfo"]["menus"]) && $params["adminInfo"]["menus"]) {
+			$menus = $params["adminInfo"]["menus"];
+			foreach ($menus as $key => $menu) {
+				$menu["cls"] = ($menu["id"] == $params["category"]) ? "active cur-nav" : "";
+				$menu["cls2"] = ($menu["id"] == $params["category"]) ? "in" : "";
+				$menu["flag"] = ($menu["id"] == $params["category"]) ? 1 : 0;
+				$menus[$key] = $menu;
+				foreach ($menu["items"] as $k => $subMenu) {
+					$subMenu["cls"] = ($subMenu["flag"] == $params["detailcategory"]) ? "active" : "";
+					$subMenu["cls2"] = ($subMenu["flag"] == $params["detailcategory"]) ? "cur-sub-nav" : "";
+					$subMenu["icon"] = ($subMenu["flag"] == $params["detailcategory"]) ? ' <i class="fa fa-arrow-right"></i> ' : '';
+					$menus[$key]["items"][$k] = $subMenu;
+				}
+			}
+			$params["adminInfo"]["menus"] = $menus;
+		}
+		return self::render($view, $params);
+	}
+
+	protected function checkPermission()
+	{
+		$safePaths = ["site/login", "site/logout", "site/branch", "site/error", "site/deny"];
+		$pathInfo = self::getRequestUri();
+		if (in_array($pathInfo, $safePaths) || 1) {
+			return true;
+		}
+
+		$adminId = Admin::getAdminId();
+		if (!$adminId) {
+			header("location:/site/login");
+			exit;
+		}
+		Admin::checkPermission($pathInfo);
+		$userInfo = Admin::userInfo();
+		if (!$userInfo) {
+			header("location:/site/login");
+			exit;
+		}
+	}
+
+	protected function getParam($field, $defaultVal = "")
+	{
+		$getInfo = \Yii::$app->request->get();
+		return isset($getInfo[$field]) ? trim($getInfo[$field]) : $defaultVal;
+	}
+
+	protected function postParam($field, $defaultVal = "")
+	{
+		$postInfo = \Yii::$app->request->post();
+		return isset($postInfo[$field]) ? $postInfo[$field] : $defaultVal;
+	}
+
+	protected function getRequestUri()
+	{
+		if (isset($_GET['r'])) {
+			$requestStr = urlencode($_GET['r']);
+		} else {
+			$requestStr = \Yii::$app->request->getPathInfo();
+		}
+		$parameters = [];
+		$fields = ["bigcat", "markorder", "order", "oGoodsCategory"];
+		foreach ($fields as $field) {
+			if (isset($_GET[$field])) {
+				$parameters[] = $field . "=" . $_GET[$field];
+			}
+		}
+		if ($parameters) {
+			$requestStr .= "?" . implode("&", $parameters);
+		}
+
+		return $requestStr;
+	}
+
+}

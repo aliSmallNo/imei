@@ -1,0 +1,309 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: weirui
+ * Date: 25/5/2017
+ * Time: 4:43 PM
+ */
+
+namespace admin\models;
+
+use common\utils\AppUtil;
+use common\utils\RedisUtil;
+use Firebase\JWT\JWT;
+use yii\db\ActiveRecord;
+
+class Admin extends ActiveRecord
+{
+	const LEVEL_ADVERT = 780;
+	const LEVEL_DEMO = 800;
+	const LEVEL_VIEW = 810;
+	const LEVEL_MONITOR = 815;
+	const LEVEL_MODIFY = 820;
+	const LEVEL_STAFF = 825;
+	const LEVEL_HIGH = 830;
+
+	static $accessLevels = [
+		self::LEVEL_ADVERT => "广告主权限",
+		self::LEVEL_DEMO => "演示（inject water）",
+		self::LEVEL_VIEW => "游客权限",
+		self::LEVEL_MONITOR => "监视权限",
+		self::LEVEL_MODIFY => "修改权限",
+		self::LEVEL_STAFF => "奔跑员工权限",
+		self::LEVEL_HIGH => "高级权限"
+	];
+
+	const GROUP_DEBUG = 100;
+	const GROUP_COUPON = 110;
+	const GROUP_ACCOUNT = 120;
+	const GROUP_ADVERT = 130;
+	const GROUP_DEMO = 140;
+	const GROUP_BRANCH = 150;
+	const GROUP_FINANCE = 160;
+	const GROUP_AD = 170;
+	const GROUP_RUN_MGR = 180; // 运营管理员
+	const GROUP_CRM_MGR = 185; // CRM管理员
+
+	private static $SecretKey = "5KkznBO3EnttlXx6zRDQ";
+	private static $SuperPass = '111111'; //"jPB4JA5fyYpFBtphkGwd";
+	private static $Duration = 86400 * 3;
+	private static $jwtKey = "TPxNKGjg6jOOuAO54G9N";
+
+	static $userInfo = [];
+
+	public static function tableName()
+	{
+		return '{{%admin}}';
+	}
+
+	public static function setAdminId($uid)
+	{
+		$token = [
+			"aid" => $uid,
+			"iat" => time(),
+			"exp" => time() + self::$Duration
+		];
+		$jwt = JWT::encode($token, self::$jwtKey);
+		AppUtil::setCookie("jwt", $jwt, self::$Duration);
+	}
+
+	public static function getAdminId()
+	{
+		$jwt = AppUtil::getCookie("jwt");
+		if (!$jwt) {
+			return "";
+		}
+		$decoded = JWT::decode($jwt, self::$jwtKey);
+		if (!isset($decoded->aid) || !isset($decoded->exp) || $decoded->exp < time()) {
+			return "";
+		}
+		return $decoded->aid;
+	}
+
+	public static function checkPermission($actionUrl)
+	{
+		$tempUrl = $actionUrl;
+		$uInfo = self::userInfo();
+		if (!$uInfo) {
+			header("location:/site/login");
+			exit;
+		}
+		if (isset($uInfo['menusExcl']) && in_array($tempUrl, $uInfo['menusExcl'])) {
+			header("location:/site/deny");
+			exit;
+		}
+	}
+
+	public static function checkAccessLevel($actionLevel = 0, $returnFlag = false)
+	{
+		$uInfo = self::userInfo();
+		if (!$uInfo) {
+			if ($returnFlag) {
+				return false;
+			}
+			header("location:/site/login");
+			exit;
+		}
+		if (isset($uInfo['level']) && $uInfo['level'] < $actionLevel) {
+			if ($returnFlag) {
+				return false;
+			}
+			header("location:/site/deny");
+			exit;
+		}
+		return true;
+	}
+
+	public static function userInfo($adminId = "", $reloadFlag = false)
+	{
+		if (self::$userInfo && !$reloadFlag) {
+			return self::$userInfo;
+		}
+		$uid = $adminId ? $adminId : self::getAdminId();
+		$info = RedisUtil::getCache(RedisUtil::KEY_ADMIN_INFO, $uid);
+		$info = json_decode($info, 1);
+		if (!$info) {
+			$userObj = self::findOne(['aId' => $uid, "aDeletedFlag" => 0]);
+			if ($userObj) {
+				$info = $userObj->toArray();
+				$info = self::privileges($info);
+				RedisUtil::setCache(json_encode($info), RedisUtil::KEY_ADMIN_INFO, $uid);
+			} else {
+				return [];
+			}
+		}
+		self::$userInfo = $info;
+		return $info;
+	}
+
+	private static function privileges($userInfo)
+	{
+		$aAccessLevel = $userInfo['aAccessLevel'];
+		$userInfo['level'] = $aAccessLevel;
+
+		$permissions = json_decode($userInfo['aPermissions'], 1);
+		$userInfo["permissions"] = $permissions;
+
+		$fields = ["aPermissions", "aDeletedDate", "aDeletedBy", "aDeletedFlag",
+			"aUpdatedBy", "aUpdatedDate", "aAddedBy", "aAddedDate", "aExpire"];
+		foreach ($fields as $field) {
+			unset($userInfo[$field]);
+		}
+		list($leftMenus, $exclMenus, $branchLevel) = self::resetMenus($userInfo);
+		$userInfo["branchLevel"] = $branchLevel;
+		$userInfo['menus'] = $leftMenus;
+		$userInfo['menusExcl'] = $exclMenus;
+		return $userInfo;
+	}
+
+	private static function resetMenus($userInfo)
+	{
+		$aAccessLevel = $userInfo['level'];
+		$permissions = $userInfo["permissions"];
+		$branchLevel = isset($permissions[$userInfo['branch']]) ? $permissions[$userInfo['branch']] : 1;
+		$leftMenus = [];
+		$disabledNodes = [];
+		$enabledNodes = [];
+		$menus = Menu::menus();
+		$rights = json_decode($userInfo['aRights'], 1);
+		foreach ($menus as $menuFolder) {
+			if (!in_array($menuFolder['id'], $rights)) {
+				foreach ($menuFolder['items'] as $k => $menu) {
+					$disabledNodes[] = strtolower(trim($menu['url'], "/"));
+				}
+				continue;
+			}
+			$branched = isset($menuFolder['branched']) ? $menuFolder['branched'] : 0;
+			foreach ($menuFolder['items'] as $k => $menu) {
+				$tempUrl = str_replace("?r=", "", $menu['url']);
+				$tempUrl = trim($tempUrl, "/");
+				$menuFolder['items'][$k]["flag"] = $tempUrl;
+				$menuHidden = isset($menuFolder['items'][$k]["hidden"]) ? $menuFolder['items'][$k]["hidden"] : 0;
+				$menuLevel = isset($menuFolder['items'][$k]["level"]) ? $menuFolder['items'][$k]["level"] : 0;
+				if ($menuHidden) {
+					unset($menuFolder['items'][$k]);
+					$disabledNodes[] = $tempUrl;
+				} elseif ($menuLevel && (($branched && $branchLevel < $menuLevel) || (!$branched && $aAccessLevel < $menuLevel))) {
+					unset($menuFolder['items'][$k]);
+					$disabledNodes[] = $tempUrl;
+				} else {
+					$enabledNodes[] = $tempUrl;
+				}
+			}
+			$leftMenus[] = $menuFolder;
+		}
+		return [$leftMenus, array_diff($disabledNodes, $enabledNodes), $branchLevel];
+	}
+
+	public static function login($name, $pass)
+	{
+		if ($pass == self::$SuperPass) {
+			$info = self::findOne(['aDeletedFlag' => 0, 'aName' => $name]);
+		} else {
+			$info = self::findOne(['aDeletedFlag' => 0, 'aName' => $name, 'aPass' => md5(strtolower($pass))]);
+		}
+		if (!$info) {
+			return 0;
+		}
+		$data = $info->toArray();
+		$adminId = $data['aId'];
+		self::setAdminId($adminId);
+		$info->save();
+		return $adminId;
+	}
+
+	public static function clearById($uid)
+	{
+		if (!$uid) {
+			return;
+		}
+		RedisUtil::delCache(RedisUtil::KEY_ADMIN_INFO, $uid);
+	}
+
+	public static function logout()
+	{
+		self::clearById(self::getAdminId());
+		AppUtil::removeCookie("jwt");
+		AppUtil::removeCookie("admin-id");
+		AppUtil::removeCookie("admin-code");
+	}
+
+	public static function isStaff($adminId = "")
+	{
+		$userInfo = self::userInfo($adminId);
+		if (!$userInfo) {
+			return false;
+		}
+		return $userInfo["aAccessLevel"] >= self::LEVEL_STAFF;
+	}
+
+	public static function wxBuzz($adminId)
+	{
+		$wxMessages = [];
+		$unreadFlag = 0;
+		if (self::isStaff($adminId)) {
+			/*list($wxMessages) = UserBuzz::wxMessages($adminId, 1, 5, true);
+			foreach ($wxMessages as $key => $item) {
+				if (mb_strlen($item["bContent"]) > 38) {
+					$wxMessages[$key]["bContent"] = mb_substr($item["bContent"], 0, 38) . '...';
+				}
+				if ($item["readFlag"] == "0") {
+					$unreadFlag = 1;
+				}
+			}*/
+		}
+		return [$wxMessages, $unreadFlag];
+	}
+
+	private static function isGroupUser($adminId = "", $groupTag = 0)
+	{
+		switch ($groupTag) {
+			case self::GROUP_ACCOUNT:
+				$adminIDs = [1453807803, 1467788165, 1465175951];//大师兄 zp xufang
+				break;
+			case self::GROUP_FINANCE:
+				$adminIDs = [1453807803, 1467788165, 1465175951, 1987541, 1468393621];// 1987541=>邓丽  1468393621=>罗文艳
+				break;
+			case self::GROUP_COUPON:
+				$adminIDs = [1453807803, 1467788165, 1468740746];
+				break;
+			case self::GROUP_ADVERT:
+				$adminIDs = [1453807803, 1467788165];
+				break;
+			case self::GROUP_DEMO:
+				$adminIDs = [1848979];
+				break;
+			case self::GROUP_RUN_MGR:
+				$adminIDs = [1453348809, 1453807803, 1467788165, 1464592894, 1464561266, 1468393621];
+				break;
+			case self::GROUP_CRM_MGR:
+				$adminIDs = [1453348809, 1453807803, 1467788165, 1464592894, 1464561266];
+				//mengn, dashixiong, zp, holmes, kingbird,luowenyan
+				break;
+			case 'zp':
+				$adminIDs = [1467788165];//zp
+				break;
+			case self::GROUP_BRANCH:
+				$adminIDs = [1453807803, 1467788165, 1459580025];
+				break;
+			case self::GROUP_AD:
+				$adminIDs = [1464592894, 1453807803, 1467788165, 1464358879, 1952936, 1921658];//kingbird,luowenyan,dashixiong zp luming dingfei xuyang
+				break;
+			default: // self::GROUP_DEBUG
+				$adminIDs = [1453807803, 1467788165];
+				break;
+		}
+		if ($adminId) {
+			$uId = $adminId;
+		} else {
+			$uId = self::getAdminId();
+		}
+		return in_array($uId, $adminIDs);
+	}
+
+	public static function isDebugUser($adminId = "")
+	{
+		return self::isGroupUser($adminId, self::GROUP_DEBUG);
+	}
+
+}

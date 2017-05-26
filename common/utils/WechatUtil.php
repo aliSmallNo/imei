@@ -5,7 +5,7 @@ namespace common\utils;
 use common\models\Log;
 use Yii;
 
-require_once __DIR__ . '/../lib/WxPay.Config.php';
+require_once __DIR__ . '/../lib/WxPay/WxPay.Config.php';
 
 /**
  * Created by PhpStorm.

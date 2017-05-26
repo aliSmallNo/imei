@@ -7,7 +7,6 @@ $params = array_merge(
 	require(__DIR__ . '/params-local.php')
 );
 
-
 return [
 	'id' => 'app-admin',
 	'basePath' => dirname(__DIR__),
@@ -19,6 +18,8 @@ return [
 	'components' => [
 		'request' => [
 			'csrfParam' => '_csrf-admin',
+			'enableCookieValidation' => false,
+			'enableCsrfValidation' => false
 		],
 		'user' => [
 			'identityClass' => 'common\models\User',

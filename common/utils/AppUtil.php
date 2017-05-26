@@ -10,6 +10,7 @@ namespace common\utils;
  * Time: 5:43 PM
  */
 use common\models\UserWechat;
+use Yii;
 use yii\web\Cookie;
 
 class AppUtil
@@ -38,6 +39,55 @@ class AppUtil
 
 	const EXPRESSES = ['顺丰快递', 'EMS快递', '申通快递', '韵达快递', '中通快递',
 		"圆通快递", "京东快递", '天天快递', '百世汇通', '宅急送快运', '德邦物流'];
+
+	/**
+	 * @return \yii\db\Connection
+	 */
+	public static function db()
+	{
+		return Yii::$app->db;
+	}
+
+	/**
+	 * @return \yii\redis\Connection
+	 */
+	public static function redis()
+	{
+		return Yii::$app->redis;
+	}
+
+	/**
+	 * @return \yii\sphinx\Connection
+	 */
+	public static function sphinx()
+	{
+		return Yii::$app->sphinx;
+	}
+
+	public static function scene()
+	{
+		return Yii::$app->params['scene'];
+	}
+
+	public static function notifyUrl()
+	{
+		return Yii::$app->params['notifyUrl'];
+	}
+
+	public static function apiUrl()
+	{
+		return Yii::$app->params['apiUrl'];
+	}
+
+	public static function adminUrl()
+	{
+		return Yii::$app->params['adminUrl'];
+	}
+
+	public static function wechatUrl()
+	{
+		return Yii::$app->params['wechatUrl'];
+	}
 
 	public static function phone($mobilePhone)
 	{
@@ -395,7 +445,7 @@ class AppUtil
 		if (!$category) {
 			$category = self::UPLOAD_DEFAULT;
 		}
-		$env = ConfigUtil::scene();
+		$env = AppUtil::scene();
 		$pathEnv = [
 			'test' => '/tmp/',
 			'dev' => __DIR__ . '/../../../upload/',
@@ -568,7 +618,7 @@ EOT;
 
 	public static function getWeather($cityName, $num = 3)
 	{
-		$redis = ConfigUtil::redis();
+		$redis = AppUtil::redis();
 		$redisKey = generalId::getWeatherCityKey(md5($cityName));
 		$weatherInfo = json_decode($redis->get($redisKey), true);
 		if ($weatherInfo) {
@@ -653,7 +703,7 @@ EOT;
 			return "";
 		}
 		$redisKey = generalId::getWeatherCityKey($ip);
-		$redis = ConfigUtil::redis();
+		$redis = AppUtil::redis();
 		$ret = $redis->get($redisKey);
 		$ret = json_decode($ret, true);
 		if ($ret && isset($ret["retData"]["district"])) {
@@ -672,7 +722,7 @@ EOT;
 
 	public static function getYYWeather($cityId = "CH190707", $num = 3)
 	{
-		$redis = ConfigUtil::redis();
+		$redis = AppUtil::redis();
 		$redisKey = generalId::getWeatherCityKey(md5($cityId . date("Ymd") . "YY"));
 		$weatherInfo = json_decode($redis->get($redisKey), true);
 		if ($weatherInfo) {
@@ -726,14 +776,14 @@ EOT;
 
 	public static function getHEWeather($cityName, $num = 4)
 	{
-		$redis = ConfigUtil::redis();
+		$redis = AppUtil::redis();
 		$redisKey = generalId::getWeatherCityKey(md5($cityName . date("Ymd") . "HE"));
 		$weatherInfo = json_decode($redis->get($redisKey), true);
 		if ($weatherInfo) {
 			$weatherInfo = array_slice($weatherInfo, 0, $num);
 			return $weatherInfo;
 		}
-		$env = ConfigUtil::scene();
+		$env = AppUtil::scene();
 		if ($env == "dev") {
 			return "";
 		}
@@ -826,7 +876,7 @@ EOT;
 	 */
 	public static function writelog2db($msg)
 	{
-		$conn = ConfigUtil::db();
+		$conn = AppUtil::db();
 		$sql = "insert into `hd_log`(`logKey`, `logUser`, `logUserId`, `logBranchId`, `logBefore`, `logAfter`, `logChannel`, `logQueryDate`, `logDate`) 
 				values(:logKey, :logUser, :logUserId, :logBranchId, :logBefore, :logAfter, :logChannel, :logQueryDate, now())";
 		$cmdLog = $conn->createCommand($sql);
@@ -1010,7 +1060,7 @@ EOT;
 		if ($level < 2) {
 			return false;
 		}
-		$env = ConfigUtil::scene();
+		$env = AppUtil::scene();
 		if ($env == "dev") {
 			$file = __DIR__ . '/../../../' . date("Ym") . '.log';
 		} else {
@@ -1063,7 +1113,7 @@ EOT;
 			'dev' => __DIR__ . '/../../../upload/',
 			'prod' => '/data/prodimage/',
 		];
-		$env = ConfigUtil::scene();
+		$env = AppUtil::scene();
 		$prefix = $pathEnv[$env];
 		if (!$category) {
 			$category = "upload";
@@ -1475,48 +1525,4 @@ EOT;
 		return round($s, $decimal);
 	}
 
-	static $cacheFile = [];
-
-	private static function config($key)
-	{
-		$cacheKey = "connections";
-		if (isset(self::$cacheFile[$cacheKey][$key])) {
-			return self::$cacheFile[$cacheKey][$key];
-		}
-		// Rain: 把配置文件放在工程之外,出于安全考虑,为了不暴露各种连接账号
-		$filePath = __DIR__ . '/../../../imei_config.yaml';
-
-		self::$cacheFile[$cacheKey] = Yaml::parse(file_get_contents($filePath));
-		return self::$cacheFile[$cacheKey][$key];
-	}
-
-	public static function db()
-	{
-		return self::config("db");
-	}
-
-	public static function redis()
-	{
-		return self::config("redis");
-	}
-
-	public static function sphinx()
-	{
-		return self::config("sphinx");
-	}
-
-	public static function scene()
-	{
-		return self::config("scene");
-	}
-
-	public static function hostApi()
-	{
-		return self::config("hostApi");
-	}
-
-	public static function hostAdmin()
-	{
-		return self::config("hostAdmin");
-	}
 }

@@ -8,7 +8,7 @@
 
 namespace common\models;
 
-
+use common\utils\AppUtil;
 use yii\db\ActiveRecord;
 
 class User extends ActiveRecord
@@ -21,4 +21,54 @@ class User extends ActiveRecord
 		return '{{%user}}';
 	}
 
+	public static function edit($uid, $params, $editBy = 1)
+	{
+		$entity = self::findOne(['uId' => $uid]);
+		if (!$entity) {
+			$entity = new self();
+			$entity->uAddedBy = $editBy;
+		}
+		foreach ($params as $key => $val) {
+			$entity->$key = $val;
+		}
+		$entity->uUpdatedBy = $editBy;
+		$entity->uUpdatedOn = date('Y-m-d H:i:s');
+		$uid = $entity->save();
+		return $uid;
+	}
+
+	public static function users($criteria, $params, $page = 1, $pageSize = 20)
+	{
+		$strCriteria = '';
+		if ($criteria) {
+			$strCriteria = ' AND ' . implode(' AND ', $criteria);
+		}
+		$offset = ($page - 1) * $pageSize;
+		$conn = AppUtil::db();
+		$sql = "SELECT * FROM im_user WHERE uId>0 $strCriteria 
+					ORDER BY uAddedOn DESC Limit $offset, $pageSize";
+		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		$items = [];
+		foreach ($ret as $row) {
+			$keys = array_keys($row);
+			$item = [];
+			foreach ($keys as $key) {
+				$item[strtolower(substr($key, 1))] = $row[$key];
+			}
+			$items[] = $item;
+		}
+		$sql = "SELECT count(1) FROM im_user WHERE uId>0 $strCriteria ";
+		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
+		return [$items, $count];
+	}
+
+
+	public static function user($criteria, $params)
+	{
+		$users = self::users($criteria, $params);
+		if ($users && count($users)) {
+			return $users[0];
+		}
+		return [];
+	}
 }

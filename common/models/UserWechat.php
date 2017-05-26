@@ -9,12 +9,11 @@
 namespace common\models;
 
 use common\utils\AppUtil;
-use common\utils\ConfigUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
 
-require_once __DIR__ . '/../lib/WxPay.Api.php';
+require_once __DIR__ . '/../lib/WxPay/WxPay.Api.php';
 
 class UserWechat extends ActiveRecord
 {
@@ -84,7 +83,7 @@ class UserWechat extends ActiveRecord
 
 	public static function getUsers($criteria = [], $countFlag = false, $page = 1, $pageSize = 20)
 	{
-		$conn = ConfigUtil::db();
+		$conn = AppUtil::db();
 		$category = UserLink::CATEGORY_ONE;
 		$subCategory = UserLink::SUBCATEGORY_HOST;
 		$limit = $pageSize;
@@ -152,10 +151,10 @@ class UserWechat extends ActiveRecord
 	public static function removeOpenId($openId)
 	{
 		$redisUsersKey = RedisUtil::delCache(RedisUtil::KEY_WX_USER, $openId);
-		$redis = ConfigUtil::redis();
+		$redis = AppUtil::redis();
 		$redis->del($redisUsersKey);
 
-		$conn = ConfigUtil::db();
+		$conn = AppUtil::db();
 		$dt = date("Y-m-d H:i:s");
 		$cmd = $conn->createCommand("update hd_user_wechat set wSubscribe=0,zUpdatedDate='$dt',wExpire='$dt' WHERE wOpenId=:openid");
 		$cmd->bindValue(":openid", $openId);
@@ -164,7 +163,7 @@ class UserWechat extends ActiveRecord
 
 	public static function getOpenId($aNote)
 	{
-		$conn = ConfigUtil::db();
+		$conn = AppUtil::db();
 		$sql = "select w.* 
 			from hd_admin as a 
 			join hd_user_wechat as w on w.wAId=a.aId
@@ -180,7 +179,7 @@ class UserWechat extends ActiveRecord
 
 	public static function adminInfo($openId)
 	{
-		$conn = ConfigUtil::db();
+		$conn = AppUtil::db();
 		$sql = "select a.* 
 			from hd_admin as a 
 			join hd_user_wechat as w on w.wAId=a.aId
@@ -284,7 +283,7 @@ class UserWechat extends ActiveRecord
 
 	public static function getRedirectUrl($category = "one", $strUrl = "")
 	{
-		$url = ConfigUtil::getWechatHost();
+		$url = AppUtil::wechatUrl();
 		if ($strUrl) {
 			if (strpos($strUrl, "http") === false) {
 				$url = trim($url, "/") . "/" . trim($strUrl, "/");
@@ -353,7 +352,7 @@ class UserWechat extends ActiveRecord
 
 	public static function upgradeUno()
 	{
-		$conn = ConfigUtil::db();
+		$conn = AppUtil::db();
 		$sql = "select u.uno,u.uId,u.uname,u.uPhone,u.uWechatId,u.uWechatName, w.wNickName from hd_user as u join 
 			(select uWechatId, count(1) as co from hd_user 
  			where uWechatId!=''
@@ -390,7 +389,7 @@ class UserWechat extends ActiveRecord
   				LEFT JOIN hd_branch as b on b.bId=u.uBranchId
   				WHERE w.wOpenId=:openid ";
 		if (!$conn) {
-			$conn = ConfigUtil::db();
+			$conn = AppUtil::db();
 		}
 		$ret = $conn->createCommand($sql)->bindValues([":openid" => $openid])->queryOne();
 		if ($ret && !$ret["name"]) {
@@ -425,7 +424,7 @@ class UserWechat extends ActiveRecord
 	public static function linkin($openid, $conn = "")
 	{
 		if (!$conn) {
-			$conn = ConfigUtil::db();
+			$conn = AppUtil::db();
 		}
 		$sql = "select w.wId,w.wOpenId,w.wUNo,w.wNickName,u.uNo,u.uId,u.uName
  				from hd_user_wechat as w 
@@ -452,7 +451,7 @@ class UserWechat extends ActiveRecord
 	public static function linkinAll($conn = "")
 	{
 		if (!$conn) {
-			$conn = ConfigUtil::db();
+			$conn = AppUtil::db();
 		}
 		$sql = "select wOpenId from hd_user_wechat WHERE wUNo<1";
 		$ret = $conn->createCommand($sql)->queryAll();
@@ -469,7 +468,7 @@ class UserWechat extends ActiveRecord
 	//getwechat
 	public static function wList($name = "")
 	{
-		$conn = ConfigUtil::db();
+		$conn = AppUtil::db();
 
 		$sql = "select wOpenId,wNickName from hd_user_wechat WHERE wNickName like '%$name%' ";
 		return $conn->createCommand($sql)->queryAll();

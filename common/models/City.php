@@ -8,8 +8,7 @@
 
 namespace common\models;
 
-
-use common\utils\ConfigUtil;
+use common\utils\AppUtil;
 use common\utils\RedisUtil;
 
 class City
@@ -21,12 +20,15 @@ class City
 		if ($items) {
 			return $items;
 		}
-		$conn = ConfigUtil::db();
+		$conn = AppUtil::db();
 		$sql = 'select cName as name, cKey as `key` ,cNickname as nickname
 					from im_address_city where cPKey in (\'\',100000,120000,130000,140000) 
-				 	and cKey not in (100000,120000,130000,140000) and cKey<440000 order by cSort limit 200';
+				 	and cKey not in (100000,120000,130000,140000) and cKey<440000 ORDER BY cSort limit 200';
 		$items = $conn->createCommand($sql)->queryAll();
 		$items = array_values($items);
+		/*usort($items, function ($a, $b) {
+			return iconv('UTF-8', 'GBK//IGNORE', $a['name']) > iconv('UTF-8', 'GBK//IGNORE', $b['name']);
+		});*/
 		RedisUtil::setCache(json_encode($items, JSON_UNESCAPED_UNICODE), RedisUtil::KEY_PROVINCES);
 		return $items;
 	}
@@ -38,7 +40,7 @@ class City
 		if ($items) {
 			return $items;
 		}
-		$conn = ConfigUtil::db();
+		$conn = AppUtil::db();
 		$sql = 'select cName as name, cKey as `key`, cNickname as nickname
  					from im_address_city where cPKey in (:key) and cName not in (\'其他\',\'其它\') order by cSort';
 		$items = $conn->createCommand($sql)->bindValues([':key' => $key])->queryAll();
@@ -59,7 +61,7 @@ class City
 		if ($item) {
 			return $item;
 		}
-		$conn = ConfigUtil::db();
+		$conn = AppUtil::db();
 		$sql = 'select cName as name, cKey as `key`, cPKey as `pkey`,cNickname as nickname
  					from im_address_city where cKey in (:key)';
 		$item = $conn->createCommand($sql)->bindValues([':key' => $key])->queryOne();
