@@ -91,12 +91,13 @@ class QueueUtil
 				} else {
 					$beanstalk->bury($job['id'], 40);
 				}
-				AppUtil::closeAll();
 				if (file_exists('shutdown')) {
 					file_put_contents('shutdown', 'beanstalkd shutdown at ' . date('Y-m-d H:i:s'));
 					break;
 				}
 			}
+			self::logFile('End of while', __FUNCTION__, __LINE__);
+			AppUtil::closeAll();
 			$beanstalk->disconnect();
 		} catch (Exception $ex) {
 			$msg = $ex->getMessage();
