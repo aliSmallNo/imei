@@ -44,6 +44,7 @@ class QueueUtil
 			if (!$put) {
 				throw new Exception('发送失败');
 			}
+			file_put_contents('/tmp/beanstalkd.log', date('Y-m-d H:i:s') . " Done: " . json_encode($message) . PHP_EOL, FILE_APPEND);
 			$beanstalk->disconnect();
 		} catch (Exception $ex) {
 			$msg = $ex->getMessage();
