@@ -71,6 +71,7 @@ class QueueUtil
 				self::logFile('beanstalk disconnect!', __FUNCTION__, __LINE__);
 				exit(1);
 			}
+			self::logFile('beanstalk connected ', __FUNCTION__, __LINE__);
 			$tube = 'test';
 			if (isset($_SERVER['argv'][2])) {
 				$tube = $_SERVER['argv'][2];
@@ -78,6 +79,7 @@ class QueueUtil
 			$beanstalk->useTube($tube);
 			$beanstalk->watch($tube);
 			$beanstalk->ignore('default');
+			self::logFile('begin while ', __FUNCTION__, __LINE__);
 			while (true) {
 				$job = $beanstalk->reserve();
 				$body = json_decode($job['body'], true);
