@@ -50,11 +50,11 @@ class QueueUtil
 			if (!$put) {
 				throw new Exception('发送失败');
 			}
-			self::logFile(json_encode($message));
+			self::logFile(json_encode($message), __FUNCTION__, __LINE__);
 			$beanstalk->disconnect();
 		} catch (Exception $ex) {
 			$msg = $ex->getMessage();
-			self::logFile($msg);
+			self::logFile($msg, __FUNCTION__, __LINE__);
 		}
 	}
 
