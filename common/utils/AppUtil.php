@@ -64,6 +64,22 @@ class AppUtil
 		return Yii::$app->sphinx;
 	}
 
+	public static function closeAll()
+	{
+		$db = self::db();
+		if (is_object($db)) {
+			$db->close();
+		}
+		$sphinx = self::sphinx();
+		if (is_object($sphinx)) {
+			$sphinx->close();
+		}
+		$redis = self::redis();
+		if (is_object($redis)) {
+			$redis->close();
+		}
+	}
+
 	public static function scene()
 	{
 		return Yii::$app->params['scene'];
@@ -1524,5 +1540,6 @@ EOT;
 		}
 		return round($s, $decimal);
 	}
+
 
 }

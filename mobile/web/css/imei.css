@@ -733,9 +733,10 @@ section {
   display: block;
   padding: 0 2rem;
   line-height: 4rem;
+  height: 4rem;
   position: relative; }
   .action-row em {
-    margin-right: 0.6rem;
+    margin-right: 0.6re;
     font-size: 1.4rem;
     color: #414141;
     font-weight: 500; }
