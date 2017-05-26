@@ -86,7 +86,6 @@ class QueueUtil
 				$method = substr($body['consumer'], strpos($body['consumer'], "/") + 1);
 				$params = $body['params'];
 
-				self::logFile($method . ' ' . json_encode($params), __FUNCTION__, __LINE__);
 				$result = self::$method($params);
 
 				AppUtil::closeAll();
@@ -151,6 +150,7 @@ class QueueUtil
 		$id = $params["id"];
 		$ret = shell_exec("/data/code/pub_imei.sh 2>&1");
 		$ret = "更新代码成功! \n" . date("Y-m-d H:i:s") . "\n\n更新日志: \n" . $ret;
+		self::logFile($ret, __FUNCTION__, __LINE__);
 		RedisUtil::setCache($ret, RedisUtil::KEY_PUB_CODE, $id);
 	}
 
