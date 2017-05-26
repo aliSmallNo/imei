@@ -88,7 +88,6 @@ class QueueUtil
 
 				$result = self::$method($params);
 
-				AppUtil::closeAll();
 				if ($result) {
 					$beanstalk->delete($job['id']);
 				} else {
@@ -99,6 +98,7 @@ class QueueUtil
 					break;
 				}
 			}
+			AppUtil::closeAll();
 			$beanstalk->disconnect();
 			self::logFile('Job Done!', __FUNCTION__, __LINE__);
 		} catch (Exception $ex) {
