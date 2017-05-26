@@ -86,6 +86,7 @@ class QueueUtil
 				$method = substr($body['consumer'], strpos($body['consumer'], "/") + 1);
 				$params = $body['params'];
 
+				self::logFile($method . ' ' . json_encode($params), __FUNCTION__, __LINE__);
 				$result = self::$method($params);
 
 				AppUtil::closeAll();
