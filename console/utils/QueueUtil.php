@@ -64,7 +64,6 @@ class QueueUtil
 
 	public static function doJob()
 	{
-		self::logFile('Do Job Begin', __FUNCTION__, __LINE__);
 		try {
 			$beanstalk = new beanstalkSocket(self::$QueueConfig);
 			if (!$beanstalk->connect()) {
@@ -79,7 +78,6 @@ class QueueUtil
 			$beanstalk->useTube($tube);
 			$beanstalk->watch($tube);
 			$beanstalk->ignore('default');
-			self::logFile('begin while ', __FUNCTION__, __LINE__);
 			while (true) {
 				$job = $beanstalk->reserve();
 				$body = json_decode($job['body'], true);
@@ -93,14 +91,13 @@ class QueueUtil
 				} else {
 					$beanstalk->bury($job['id'], 40);
 				}
+				AppUtil::closeAll();
 				if (file_exists('shutdown')) {
 					file_put_contents('shutdown', 'beanstalkd shutdown at ' . date('Y-m-d H:i:s'));
 					break;
 				}
 			}
-			AppUtil::closeAll();
 			$beanstalk->disconnect();
-			self::logFile('Job Done!', __FUNCTION__, __LINE__);
 		} catch (Exception $ex) {
 			$msg = $ex->getMessage();
 			self::logFile($msg, __FUNCTION__, __LINE__);
@@ -150,7 +147,6 @@ class QueueUtil
 		$id = $params["id"];
 		$ret = shell_exec("/data/code/pub_imei.sh 2>&1");
 		$ret = "更新代码成功! \n" . date("Y-m-d H:i:s") . "\n\n更新日志: \n" . $ret;
-		self::logFile($ret, __FUNCTION__, __LINE__);
 		RedisUtil::setCache($ret, RedisUtil::KEY_PUB_CODE, $id);
 	}
 
