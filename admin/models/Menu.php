@@ -28,6 +28,7 @@ class Menu
 		$redisKey = RedisUtil::getPrefix(RedisUtil::KEY_ADMIN_OFTEN, $uId);
 		$redis = RedisUtil::redis();
 		$result = $redis->lrange($redisKey, 0, -1);
+
 		if (!is_array($result)) {
 			$result = [];
 		}
@@ -57,6 +58,24 @@ class Menu
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * 获取根菜单列表
+	 *
+	 * */
+	public static function getRootMenu()
+	{
+		$menus = self::menus();
+		$forks = [];
+		foreach ($menus as $key => $menu) {
+			$forks[$menu['id']] = [
+				"name" => $menu['name'],
+				"checked" => 0,
+				"branched" => isset($menu["branched"]) ? $menu["branched"] : 0
+			];
+		}
+		return $forks;
 	}
 
 	public static function menus()

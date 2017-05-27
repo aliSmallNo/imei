@@ -1,0 +1,176 @@
+{{include file="layouts/header.tpl"}}
+<style>
+	ul.branches,
+	ul.folders {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	ul li label {
+		font-weight: normal;
+	}
+
+	ul.folders li {
+		float: left;
+		width: 33%;
+		margin: 1px 0;
+
+	}
+
+	.branches li {
+		float: left;
+		width: 47%;
+		margin: 6px 0 6px 15px;
+		font-weight: 400;
+		border-bottom: 1px dotted #d8d8d8;
+	}
+
+	@media only screen and (max-width: 880px) {
+		.branches li {
+			width: 97%;
+			margin: 6px 0;
+		}
+	}
+
+	.branches li label {
+		padding-right: 5px;
+		font-weight: 300;
+	}
+
+	.branches li input {
+		margin-right: 3px;
+	}
+
+	.tip {
+		color: #777;
+		font-size: 13px;
+		padding-left: 10px;
+	}
+
+	.tip b {
+		color: #333;
+	}
+</style>
+<div id="page-wrapper">
+	<div class="row">
+		<h4>{{if not $userInfo}}添加后台用户{{else}}修改后台用户{{/if}}</h4>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-5 form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-4 control-label">登录ID:</label>
+
+				<div class="col-sm-8">
+					<input type="text" class="form-control" name="name" autocomplete="off" required
+								 placeholder="(必填)登录ID. 例如:liming, 13912138868"
+								 value="{{if $userInfo}}{{$userInfo.aLoginId}}{{/if}}"/>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-4 control-label">登录密码:</label>
+
+				<div class="col-sm-8">
+					<input type="text" class="form-control" name="pass" autocomplete="off" {{if $userInfo}}
+								 placeholder="(选填)不填则不修改登录密码" {{else}} required
+								 placeholder="(必填)登录密码. 最好超过6位字符" {{/if}}/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">用户名称:</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" name="note" autocomplete="off" required
+								 placeholder="(必填)用户名称. 例如:张三, 李四" value="{{if $userInfo}}{{$userInfo.aName}}{{/if}}"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">用户手机:</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" name="phone" autocomplete="off" required
+								 placeholder="(非必填)" value="{{if $userInfo}}{{$userInfo.aPhone}}{{/if}}"/>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-4 control-label">权限等级:</label>
+				<div class="col-sm-8">
+					<select name="level" required="required" class="form-control">
+						<option>请选择</option>
+						{{foreach from=$levels key=k item=level}}
+						<option value="{{$k}}" {{if $userInfo && $userInfo['aLevel']==$k}}selected{{/if}}>{{$level}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
+
+		</div>
+		<div class="col-lg-7">
+			<div class="form-group">
+				<label class="col-sm-4 control-label">可见菜单:</label>
+				<div class="col-sm-8">
+					<ul class="folders">
+						{{foreach from=$rights key=rId item=rItem}}
+						<li>
+							<label>
+								<input name="rights" class="ck-rights" type="checkbox"
+											 value="{{$rId}}" {{$rItem["checked"]}}> {{$rItem["name"]}}
+							</label>
+						</li>
+						{{/foreach}}
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div style="height:5em"></div>
+	<div class="m-bar-bottom">
+		<a href="javascript:;" class="opSave btn btn-primary" data-id="{{$id}}">确认保存</a>
+	</div>
+</div>
+<script>
+	$(".opSave").on("click", function () {
+		var id = $(this).attr("data-id");
+		var branches = [];
+		$("input[type=radio]").each(function () {
+			var self = $(this);
+			if (self.is(':checked')) {
+				branches[branches.length] = [self.attr("name"), self.val()];
+			}
+		});
+		var rights = [];
+		$.each($(".ck-rights"), function () {
+			var self = $(this);
+			if (self.is(':checked')) {
+				rights.push(self.val())
+			}
+		});
+
+		layer.load();
+		$.post("/admin/edituser", {
+			id: id,
+			tag: "edit",
+			name: $("input[name=name]").val(),
+			phone: $("input[name=phone]").val(),
+			pass: $("input[name=pass]").val(),
+			note: $("input[name=note]").val(),
+			level: $("select[name=level]").val(),
+			rights: JSON.stringify(rights)
+		}, function (resp) {
+			layer.closeAll();
+			if (resp.code == 0) {
+				layer.msg(resp.msg);
+				setTimeout(function () {
+					location.href = '/admin/users';
+				}, 600);
+			} else {
+				layer.msg(resp.msg);
+			}
+		}, "json");
+	});
+
+</script>
+{{include file="layouts/footer.tpl"}}

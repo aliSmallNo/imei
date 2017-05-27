@@ -73,6 +73,7 @@ class SiteController extends BaseController
 		}
 		$usedMenus = [];
 		$userInfo = Admin::userInfo();
+
 		if (isset($userInfo['menus'])) {
 			$allMenus = $userInfo['menus'];
 			$menuIcon = [];
@@ -85,6 +86,7 @@ class SiteController extends BaseController
 				}
 			}
 			$usedMenus = Menu::oftenMenu($adminId);
+
 			foreach ($usedMenus as $key => $menu) {
 				if (isset($menuIcon[$menu["url"]])) {
 					$usedMenus[$key]['icon'] = $menuIcon[$menu["url"]];
@@ -94,6 +96,8 @@ class SiteController extends BaseController
 			}
 			$usedMenus = array_values($usedMenus);
 		}
+
+
 
 		$items = [];
 		$hourData = [];// StatPool::hourlyData(Admin::getBranch(), date("Y-m-d"));
