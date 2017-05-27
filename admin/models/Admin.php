@@ -49,6 +49,9 @@ class Admin extends ActiveRecord
 	private static $Duration = 86400 * 3;
 	private static $jwtKey = "wYcvSsEnO9yo5x1";
 
+	const STATUS_ACTIVE = 1;
+	const STATUS_DELETE = 9;
+
 	static $userInfo = [];
 
 	public static function tableName()
@@ -65,6 +68,40 @@ class Admin extends ActiveRecord
 		];
 		$jwt = AppUtil::encrypt(json_encode($token));
 		AppUtil::setCookie("jwt", $jwt, self::$Duration);
+	}
+
+	public static function saveUser($data)
+	{
+		$userObj = static::findOne(['aId' => $data['aId']]);
+		if (!$userObj) {
+			$userObj = new self;
+			$userObj->aAddedOn = date('Y-m-d H:i:s');
+			$userObj->aAddedBy = self::getAdminId();
+		} else {
+			$userObj->aUpdatedOn = date('Y-m-d H:i:s');
+			$userObj->aUpdatedBy = self::getAdminId();
+		}
+		foreach ($data as $key => $value) {
+			$userObj->$key = $value;
+		}
+		$userObj->save();
+		return $userObj->aId;
+	}
+
+	public static function remove($id, $adminId)
+	{
+		$data = [
+			"aId" => $id,
+			"aStatus" => self::STATUS_DELETE,
+			"aDeletedOn" => date('Y-m-d H:i:s'),
+			"aDeletedBy" => $adminId
+		];
+		$result = self::saveUser($data);
+		if ($result) {
+			self::clearById($id);
+			return ["code" => 0, "msg" => "删除成功！"];
+		}
+		return ["code" => 159, "msg" => "删除失败！"];
 	}
 
 	public static function getAdminId()
@@ -300,6 +337,52 @@ class Admin extends ActiveRecord
 	public static function isDebugUser($adminId = "")
 	{
 		return self::isGroupUser($adminId, self::GROUP_DEBUG);
+	}
+
+	public static function staffOnly()
+	{
+		if (!self::isStaff()) {
+			header("location:/site/deny");
+			exit();
+		}
+	}
+
+
+	/**
+	 * 获取总数
+	 * */
+	public static function getCountByCondition($condition)
+	{
+		return static::find()->where($condition)->count();
+	}
+
+	/**
+	 * 获取管理列表
+	 * */
+	public static function getUsers($condition, $page = 1, $limit = 20)
+	{
+
+		$result = static::find()->where($condition)->limit($limit)->offset(($page - 1) * $limit)->orderBy('aUpdatedOn DESC')->asArray()->all();
+		$menus = Menu::getRootMenu();
+		foreach ($result as $key => $value) {
+
+			$arr = json_decode($value['aFolders']);
+			if (!is_array($arr)) {
+				$arr = [];
+			}
+			foreach ($menus as $k => $menu) {
+				if (in_array($k, $arr)) {
+					$result[$key]['menu_' . $k] = 1;
+				} else {
+					$result[$key]['menu_' . $k] = 0;
+				}
+			}
+
+			$result[$key]['branches'] = '';
+
+			$result[$key]['levelDesc'] = self::$accessLevels[$result[$key]['aLevel']];
+		}
+		return is_array($result) ? $result : [];
 	}
 
 }
