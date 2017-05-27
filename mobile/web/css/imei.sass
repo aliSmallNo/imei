@@ -209,6 +209,11 @@ main
 	z-index: 399
 	background: $tipColor
 
+.m-more
+	height: 4rem
+	line-height: 4rem
+	text-align: center
+
 section
 	position: relative
 	display: none
@@ -1849,3 +1854,152 @@ section
 			p
 				padding: .3rem 0
 				line-height: 2rem
+
+.my-condition
+	height: 4.2rem
+	line-height: 4.2rem
+	background: #fff
+	a
+		color: $grayFontColor
+		padding: 0 1.5rem
+		display: block
+		height: 100%
+		.btn
+			float: right
+			display: inline-block
+			color: $mainColor
+			border: $mainColorLight 1px solid
+			height: 3rem
+			line-height: 3rem
+			margin-top: .5rem
+			padding: 0 1rem
+			border-radius: 1.5rem
+
+.m-top-users
+	li
+		position: relative
+		background: #fff
+		margin-bottom: 1.5rem
+		border-top: 1px solid $borderColorLight
+		border-bottom: 1px solid $borderColorLight
+		.rcmd
+			position: relative
+			img
+				width: 32rem
+				height: 32rem
+				overflow: hidden
+				vertical-align: middle
+			.close
+				width: 4rem
+				height: 4rem
+				background: rgba(255, 255, 255, .2)
+				border-radius: 2rem
+				text-align: center
+				line-height: 4rem
+				color: #fff
+				position: absolute
+				right: 1rem
+				top: 1rem
+				font-size: 2rem
+		.head
+			position: relative
+			img
+				width: 32rem
+				height: 32rem
+				vertical-align: middle
+				&.avatar
+					width: 4rem
+					height: 4rem
+					border-radius: 2rem
+					position: absolute
+					bottom: .5rem
+					left: .8rem
+			.intro
+				position: absolute
+				left: 0
+				bottom: 0
+				right: 0
+				background: rgba(20, 20, 20, .4)
+				height: 3.2rem
+				line-height: 3.2rem
+				padding-left: 5.5rem
+				padding-right: 1rem
+				color: #fff
+				font-size: 1.2rem
+				font-weight: $weightNormal
+				@include textTail
+		.info
+			padding: 1rem 1.5rem
+			overflow: hidden
+			.name
+				float: left
+				font-size: 1.4rem
+				font-weight: $weightBold
+				color: $grayFontColorDark
+			.otherInfo
+				float: right
+				color: $grayFontColor
+				font-size: 1.2rem
+			.icon
+				float: left
+				width: 1.3rem
+				height: 1.3rem
+				display: block
+				margin-left: .6rem
+				vertical-align: middle
+				position: relative
+				top: .3rem
+				&.female
+					background: url(../images/ico_gender_female.png) no-repeat center center
+					background-size: 100% 100%
+		.sign
+			padding: 0 1.5rem 1rem 1.5rem
+			font-size: 1.2rem
+			color: $grayFontColor
+		.action
+			padding: 1rem 1.5rem
+			position: relative
+			&:before
+				content: ''
+				position: absolute
+				left: 1.5rem
+				right: 1.5rem
+				top: 0
+				height: 1px
+				background: $borderColorLight
+			.pos
+				font-size: 1.2rem
+				color: $grayFontColorLight
+				display: block
+				line-height: 3rem
+				float: left
+			.apply
+				height: 3rem
+				line-height: 3rem
+				float: right
+				background: $linkColorLight
+				color: #fff
+				border-radius: 1.5rem
+				padding: 0 1.5rem
+			.like
+				height: 3rem
+				line-height: 3rem
+				float: right
+				color: #fff
+				border-radius: 1.5rem
+				background: $mainColorLighter
+				position: relative
+				padding: 0 1.5rem 0 3.6rem
+				margin-right: 1rem
+				&:before
+					content: ''
+					display: block
+					width: 2rem
+					height: 2rem
+					position: absolute
+					background: url(../images/ico_like_w.png) no-repeat center center
+					background-size: 100% 100%
+					left: 1.2rem
+					top: .5rem
+#slook
+	padding-bottom: 6.5rem

@@ -81,6 +81,11 @@ main {
   z-index: 399;
   background: #f80; }
 
+.m-more {
+  height: 4rem;
+  line-height: 4rem;
+  text-align: center; }
+
 section {
   position: relative;
   display: none;
@@ -1858,5 +1863,156 @@ section {
     .m-sign .rules .content p {
       padding: 0.3rem 0;
       line-height: 2rem; }
+
+.my-condition {
+  height: 4.2rem;
+  line-height: 4.2rem;
+  background: #fff; }
+  .my-condition a {
+    color: #727272;
+    padding: 0 1.5rem;
+    display: block;
+    height: 100%; }
+    .my-condition a .btn {
+      float: right;
+      display: inline-block;
+      color: #f06292;
+      border: #f491b2 1px solid;
+      height: 3rem;
+      line-height: 3rem;
+      margin-top: 0.5rem;
+      padding: 0 1rem;
+      border-radius: 1.5rem; }
+
+.m-top-users li {
+  position: relative;
+  background: #fff;
+  margin-bottom: 1.5rem;
+  border-top: 1px solid #EEEFF3;
+  border-bottom: 1px solid #EEEFF3; }
+  .m-top-users li .rcmd {
+    position: relative; }
+    .m-top-users li .rcmd img {
+      width: 32rem;
+      height: 32rem;
+      overflow: hidden;
+      vertical-align: middle; }
+    .m-top-users li .rcmd .close {
+      width: 4rem;
+      height: 4rem;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2rem;
+      text-align: center;
+      line-height: 4rem;
+      color: #fff;
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      font-size: 2rem; }
+  .m-top-users li .head {
+    position: relative; }
+    .m-top-users li .head img {
+      width: 32rem;
+      height: 32rem;
+      vertical-align: middle; }
+      .m-top-users li .head img.avatar {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 2rem;
+        position: absolute;
+        bottom: 0.5rem;
+        left: 0.8rem; }
+    .m-top-users li .head .intro {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: rgba(20, 20, 20, 0.4);
+      height: 3.2rem;
+      line-height: 3.2rem;
+      padding-left: 5.5rem;
+      padding-right: 1rem;
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 300;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden; }
+  .m-top-users li .info {
+    padding: 1rem 1.5rem;
+    overflow: hidden; }
+    .m-top-users li .info .name {
+      float: left;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #414141; }
+    .m-top-users li .info .otherInfo {
+      float: right;
+      color: #727272;
+      font-size: 1.2rem; }
+    .m-top-users li .info .icon {
+      float: left;
+      width: 1.3rem;
+      height: 1.3rem;
+      display: block;
+      margin-left: 0.6rem;
+      vertical-align: middle;
+      position: relative;
+      top: 0.3rem; }
+      .m-top-users li .info .icon.female {
+        background: url(../images/ico_gender_female.png) no-repeat center center;
+        background-size: 100% 100%; }
+  .m-top-users li .sign {
+    padding: 0 1.5rem 1rem 1.5rem;
+    font-size: 1.2rem;
+    color: #727272; }
+  .m-top-users li .action {
+    padding: 1rem 1.5rem;
+    position: relative; }
+    .m-top-users li .action:before {
+      content: "";
+      position: absolute;
+      left: 1.5rem;
+      right: 1.5rem;
+      top: 0;
+      height: 1px;
+      background: #EEEFF3; }
+    .m-top-users li .action .pos {
+      font-size: 1.2rem;
+      color: #999;
+      display: block;
+      line-height: 3rem;
+      float: left; }
+    .m-top-users li .action .apply {
+      height: 3rem;
+      line-height: 3rem;
+      float: right;
+      background: #4da2ff;
+      color: #fff;
+      border-radius: 1.5rem;
+      padding: 0 1.5rem; }
+    .m-top-users li .action .like {
+      height: 3rem;
+      line-height: 3rem;
+      float: right;
+      color: #fff;
+      border-radius: 1.5rem;
+      background: #fbd6e3;
+      position: relative;
+      padding: 0 1.5rem 0 3.6rem;
+      margin-right: 1rem; }
+      .m-top-users li .action .like:before {
+        content: "";
+        display: block;
+        width: 2rem;
+        height: 2rem;
+        position: absolute;
+        background: url(../images/ico_like_w.png) no-repeat center center;
+        background-size: 100% 100%;
+        left: 1.2rem;
+        top: 0.5rem; }
+
+#slook {
+  padding-bottom: 6.5rem; }
 
 /*# sourceMappingURL=imei.css.map */
