@@ -15,6 +15,6 @@ class QueueController extends Controller
 {
 	public function actionTask()
 	{
-		QueueUtil::doJob();
+		QueueUtil::execJob();
 	}
 }

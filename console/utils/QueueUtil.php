@@ -34,10 +34,14 @@ class QueueUtil
 		file_put_contents('/data/tmp/beanstalkd.log', PHP_EOL . date('Y-m-d H:i:s') . ' ' . $msg . PHP_EOL, FILE_APPEND);
 	}
 
-	public static function loadQueue($message, $tube = '', $delay = 0)
+	public static function loadJob($methodName, $params = [], $tube = '', $delay = 0)
 	{
 		if (!$tube) {
 			$tube = self::QUEUE_TUBE;
+		}
+		if (!method_exists((new QueueUtil()), $methodName)) {
+			self::logFile($methodName . '在QueueUtil中不存在', __FUNCTION__, __LINE__);
+			return;
 		}
 		try {
 			$beanstalk = new beanstalkSocket(self::$QueueConfig);
@@ -45,6 +49,10 @@ class QueueUtil
 			//选择Tube
 			$beanstalk->useTube($tube);
 			//往tube中增加数据
+			$message = [
+				'consumer' => $methodName,
+				'params' => $params
+			];
 			$put = $beanstalk->put(
 				23, // 任务的优先级.
 				$delay,  // 不等待直接放到ready队列中.
@@ -62,7 +70,7 @@ class QueueUtil
 		}
 	}
 
-	public static function doJob()
+	public static function execJob()
 	{
 		try {
 			$beanstalk = new beanstalkSocket(self::$QueueConfig);
@@ -80,17 +88,17 @@ class QueueUtil
 			$beanstalk->ignore('default');
 			while (true) {
 				$job = $beanstalk->reserve();
-				$body = json_decode($job['body'], true);
-				$method = substr($body['consumer'], strpos($body['consumer'], "/") + 1);
-				$params = $body['params'];
-
+				$jobId = $job['id'];
+				$jobBody = json_decode($job['body'], 1);
+				$method = $jobBody['consumer'];
+				$params = $jobBody['params'];
 				$result = self::$method($params);
-
 				if ($result) {
-					$beanstalk->delete($job['id']);
+					$beanstalk->delete($jobId);
 				} else {
-					$beanstalk->bury($job['id'], 40);
+					$beanstalk->bury($jobId, 40);
 				}
+
 				if (file_exists('shutdown')) {
 					file_put_contents('shutdown', 'beanstalkd shutdown at ' . date('Y-m-d H:i:s'));
 					break;

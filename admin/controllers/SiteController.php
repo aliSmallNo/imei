@@ -116,12 +116,7 @@ class SiteController extends BaseController
 	{
 		Admin::checkAccessLevel(Admin::LEVEL_HIGH);
 		$id = RedisUtil::getIntSeq();
-		QueueUtil::loadQueue([
-			'consumer' => 'static/publish',
-			'params' => [
-				'id' => $id
-			]
-		]);
+		QueueUtil::loadJob('publish', ['id' => $id]);
 		sleep(3); // 等待3秒钟
 		$ret = RedisUtil::getCache(RedisUtil::KEY_PUB_CODE, $id);
 		if (!$ret) {
