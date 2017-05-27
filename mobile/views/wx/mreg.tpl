@@ -6,17 +6,24 @@
 			<img class="avatar" src="" alt="">
 		</a>
 	</div>
-	<div class="form">
-		<input type="text" placeholder="请输入您的真实姓名" class="input-s large line-bottom3">
-		<a href="javascript:;" class="action-row line-bottom3" data-tag="location">
-			<em>天津</em><em>河西</em>
-		</a>
-		<a href="javascript:;" class="action-row line-bottom3" data-tag="scope">
-			<em>IT互联网</em>
-		</a>
-		<textarea name="description" placeholder="公司职位或身份介绍，如百度市场经理、小米设计师、自媒体人" class="textarea"></textarea>
-		<p class="clew-msg" style="display: none">8/30</p>
-	</div>
+	<ul class="m-form">
+		<li>
+			<label>真实姓名</label>
+			<input type="text" placeholder="请输入您的真实姓名">
+		</li>
+		<li>
+			<label>地理位置</label>
+			<a href="javascript:;" class="m-form-opt" data-tag="location"></a>
+		</li>
+		<li>
+			<label>所属行业</label>
+			<a href="javascript:;" class="m-form-opt" data-tag="scope"></a>
+		</li>
+		<li>
+			<label>自我介绍</label>
+			<textarea name="description" placeholder="公司职位或身份介绍，如百度市场经理、小米设计师、自媒体人"></textarea>
+		</li>
+	</ul>
 	<a class="m-next btn-match-reg">注册成为媒婆</a>
 	<div class="tips-bar-wrap off">
 		<div class="title">上传本人照片，头像居中，五官高清，上半身最佳，例如：</div>

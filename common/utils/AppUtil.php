@@ -64,6 +64,22 @@ class AppUtil
 		return Yii::$app->sphinx;
 	}
 
+	public static function closeAll()
+	{
+		$db = self::db();
+		if (is_object($db)) {
+			$db->close();
+		}
+		$sphinx = self::sphinx();
+		if (is_object($sphinx)) {
+			$sphinx->close();
+		}
+		$redis = self::redis();
+		if (is_object($redis)) {
+			$redis->close();
+		}
+	}
+
 	public static function scene()
 	{
 		return Yii::$app->params['scene'];
@@ -1062,10 +1078,10 @@ EOT;
 		}
 		$env = AppUtil::scene();
 		if ($env == "dev") {
-			$file = __DIR__ . '/../../../' . date("Ym") . '.log';
+			$file = __DIR__ . '/../../../imei_' . date("Ym") . '.log';
 		} else {
 			$day = (date("d") % 15) + 1;
-			$file = '/data/tmp/' . date("Ym") . $day . '.log';
+			$file = '/data/tmp/imei_' . date("Ym") . $day . '.log';
 		}
 		$txt = [];
 		if ($func) {
@@ -1524,5 +1540,6 @@ EOT;
 		}
 		return round($s, $decimal);
 	}
+
 
 }

@@ -12,6 +12,7 @@ use yii\console\Controller;
 
 class FooController extends Controller
 {
+
 	public function actionRain()
 	{
 //		var_dump("hello world!!");

@@ -59,6 +59,13 @@ class WxController extends BaseController
 		]);
 	}
 
+	public function actionSign()
+	{
+		$this->layout = false;
+		return self::renderPage("sign.tpl", [
+		]);
+	}
+
 	public function actionError()
 	{
 		$msg = self::getParam("msg", "请在微信客户端打开链接");

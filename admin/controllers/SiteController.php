@@ -4,12 +4,19 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use admin\models\Menu;
+use common\utils\RedisUtil;
+use console\utils\QueueUtil;
 use Yii;
 
 
 class SiteController extends BaseController
 {
 	public $layout = "main";
+
+	public function actionIndex()
+	{
+		return self::actionLogin();
+	}
 
 	public function actionError()
 	{
@@ -109,9 +116,23 @@ class SiteController extends BaseController
 		);
 	}
 
-	public function actionIndex()
+	public function actionPubCodes()
 	{
-		return self::actionLogin();
+		Admin::checkAccessLevel(Admin::LEVEL_HIGH);
+		$id = RedisUtil::getIntSeq();
+		QueueUtil::loadJob('publish', ['id' => $id]);
+		sleep(3); // 等待3秒钟
+		$ret = RedisUtil::getCache(RedisUtil::KEY_PUB_CODE, $id);
+		if (!$ret) {
+			sleep(3); // 等待3秒钟
+			$ret = RedisUtil::getCache(RedisUtil::KEY_PUB_CODE, $id);
+			if ($ret) {
+				echo "<pre>" . $ret . "</pre>";
+			} else {
+				echo "更新失败吧！" . date("Y-m-d H:i:s");
+			}
+		} else {
+			echo "<pre>" . $ret . "</pre>";
+		}
 	}
-
 }
