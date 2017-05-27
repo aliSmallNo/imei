@@ -202,48 +202,6 @@
 	<div class="m-more">上拉加载更多</div>
 </section>
 <section id="sme">
-	<div class="u-my-wrap line-bottom">
-		<div class="u-my-bar">
-			<div class="avatar">
-				<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100" alt="">
-			</div>
-			<div class="title">
-				<h4>小盐台</h4>
-				<h5>传说中的小鲜肉</h5>
-			</div>
-			<a href="/wx/match" class="btn-outline change-role">切换成媒婆</a>
-			<a href="/wx/mreg" class="btn-outline edit-role">编辑</a>
-		</div>
-		<div class="u-my-count">
-			<a href="#sgroup">
-				单身团
-				<em>9</em>
-			</a>
-			<a href="javascript:;">
-				牵线成功
-				<em>1</em>
-			</a>
-			<a href="javascript:;">
-				粉丝
-				<em>0</em>
-			</a>
-		</div>
-	</div>
-	<div class="m-rows line-bottom">
-		<a href="#smycard">我的身份卡</a>
-	</div>
-	<div class="m-rows line-bottom">
-		<a href="#saccount">账户</a>
-		<a href="#smsg">通知</a>
-	</div>
-	<div class="m-rows line-bottom">
-		<a href="#sadvice">意见反馈</a>
-		<a href="#sguide">媒婆攻略</a>
-		<a href="#sdeclare">单身玩法说明</a>
-		<a href="#sqrcode">关注公众号</a>
-	</div>
-</section>
-<section id="sme2">
 	<div class="useruc">
 		<div class="m-hint">
 			<span>你的昵称未通过审核，请重新编辑~</span>
