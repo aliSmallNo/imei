@@ -736,7 +736,7 @@ section {
   height: 4rem;
   position: relative; }
   .action-row em {
-    margin-right: 0.6re;
+    margin-right: 0.6rem;
     font-size: 1.4rem;
     color: #414141;
     font-weight: 500; }
@@ -746,7 +746,7 @@ section {
     height: 0.8rem;
     width: 0.8rem;
     border-width: 1px 1px 0 0;
-    border-color: #d8d8d8;
+    border-color: #999;
     border-style: solid;
     -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
     transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -958,7 +958,7 @@ section {
       height: 0.8rem;
       width: 0.8rem;
       border-width: 1px 1px 0 0;
-      border-color: #d8d8d8;
+      border-color: #999;
       border-style: solid;
       -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
       transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -1635,8 +1635,8 @@ section {
         .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options a {
           float: left;
           text-align: center;
-          height: 4.6rem;
-          line-height: 4.6rem;
+          height: 4.5rem;
+          line-height: 4.5rem;
           color: #414141;
           border-right: 1px solid #d8d8d8;
           margin: 0;
@@ -1715,5 +1715,148 @@ section {
 .animate-pop-in {
   animation: framesPopIn 0.2s both;
   -webkit-animation: framesPopIn 0.2s both; }
+
+.m-form {
+  margin: 0;
+  padding: 0; }
+  .m-form li {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    margin-bottom: 1.2rem;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem; }
+    .m-form li label {
+      -webkit-box-flex: 0 0 6rem;
+      -webkit-flex: 0 0 6rem;
+      -ms-flex: 0 0 6rem;
+      flex: 0 0 6rem;
+      font-size: 1.4rem;
+      color: #999;
+      text-align: right;
+      padding-right: 1rem;
+      justify-content: center;
+      align-self: center;
+      align-items: center; }
+    .m-form li a {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      background: #fff;
+      border: 1px solid #E4E4E4;
+      border-radius: 0.5rem;
+      padding: 0 2rem 0 1rem;
+      line-height: 4rem;
+      height: 4rem;
+      position: relative; }
+      .m-form li a em {
+        padding-right: 1rem; }
+      .m-form li a:active {
+        background: #E4E4E4; }
+      .m-form li a:after {
+        content: " ";
+        display: inline-block;
+        height: 0.8rem;
+        width: 0.8rem;
+        border-width: 1px 1px 0 0;
+        border-color: #999;
+        border-style: solid;
+        -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+        transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+        position: absolute;
+        top: 50%;
+        right: 0;
+        margin-top: -0.5rem;
+        border-color: #999;
+        right: 1.2rem; }
+    .m-form li input {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      height: 4.2rem;
+      line-height: 2.4rem;
+      overflow: hidden;
+      border: 1px solid #E4E4E4;
+      border-radius: 0.7rem;
+      box-sizing: border-box;
+      padding: 1rem;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      font-size: 1.4rem;
+      color: #414141;
+      outline: 0; }
+    .m-form li textarea {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid #E4E4E4;
+      line-height: 1.5;
+      font-size: 1.4rem;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none; }
+
+.m-sign {
+  background: #fbd6e3; }
+  .m-sign .logo {
+    background: url(../images/logo_t.png) bottom;
+    background-size: 22rem 14rem;
+    width: 22rem;
+    height: 10rem;
+    margin: 0 auto; }
+  .m-sign .smp {
+    background: url(../images/mascot.png);
+    background-size: 100% 100%;
+    width: 31.7rem;
+    height: 21.2rem;
+    margin: 2rem auto 0; }
+  .m-sign .signbox {
+    width: 244px;
+    height: 78px;
+    margin: 0 auto;
+    position: relative;
+    top: -15px;
+    background: url(../images/sign_shadow.png);
+    background-size: 100% 100%; }
+  .m-sign .btn {
+    width: 23rem;
+    border-radius: 2.3rem;
+    margin: 1.5rem auto 0;
+    display: block;
+    background: #fff;
+    text-align: center;
+    height: 4.8rem;
+    line-height: 4.8rem;
+    color: #f491b2;
+    font-size: 1.5rem; }
+  .m-sign .help {
+    color: #fff;
+    text-decoration: underline;
+    display: block;
+    text-align: center;
+    line-height: 5rem; }
+  .m-sign .rules {
+    margin: 2rem 2rem 0;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 1rem;
+    color: #727272; }
+    .m-sign .rules .title {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bolder;
+      padding-bottom: 0.5rem; }
+    .m-sign .rules .content ol {
+      padding-left: 2.2rem; }
+    .m-sign .rules .content p {
+      padding: 0.3rem 0;
+      line-height: 2rem; }
 
 /*# sourceMappingURL=imei.css.map */

@@ -59,7 +59,7 @@ $actionColorDark: #630
 	height: .8rem
 	width: .8rem
 	border-width: 1px 1px 0 0
-	border-color: $borderColorDark
+	border-color: $grayFontColorLight
 	border-style: solid
 	-webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
 	transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
@@ -1648,8 +1648,8 @@ section
 				a
 					float: left
 					text-align: center
-					height: 4.6rem
-					line-height: 4.6rem
+					height: 4.5rem
+					line-height: 4.5rem
 					color: $grayFontColorDark
 					border-right: 1px solid $borderColorDark
 					margin: 0
@@ -1732,3 +1732,120 @@ section
 .animate-pop-in
 	animation: framesPopIn .2s both
 	-webkit-animation: framesPopIn .2s both
+
+.m-form
+	margin: 0
+	padding: 0
+	li
+		@include displayFlex
+		margin-bottom: 1.2rem
+		padding-right: 1.5rem
+		padding-left: 1.5rem
+		label
+			@include displayFlex-w(6rem)
+			font-size: 1.4rem
+			color: $grayFontColorLight
+			text-align: right
+			padding-right: 1rem
+			justify-content: center
+			align-self: center
+			align-items: center
+		a
+			@include displayFlex-1
+			background: #fff
+			border: 1px solid $borderColor
+			border-radius: .5rem
+			padding: 0 2rem 0 1rem
+			line-height: 4rem
+			height: 4rem
+			position: relative
+			em
+				padding-right: 1rem
+			&:active
+				background: $borderColor
+			&:after
+				@include arrowRight
+				border-color: $grayFontColorLight
+				right: 1.2rem
+		input
+			@include displayFlex-1
+			height: 4.2rem
+			line-height: 2.4rem
+			overflow: hidden
+			border: 1px solid $borderColor
+			border-radius: .7rem
+			box-sizing: border-box
+			padding: 1rem
+			-webkit-appearance: none
+			-moz-appearance: none
+			appearance: none
+			font-size: 1.4rem
+			color: $grayFontColorDark
+			outline: 0
+		textarea
+			@include displayFlex-1
+			padding: 1rem
+			border-radius: .5rem
+			border: 1px solid $borderColor
+			line-height: 1.5
+			font-size: 1.4rem
+			-webkit-appearance: none
+			-moz-appearance: none
+			appearance: none
+
+.m-sign
+	background: $mainColorLighter
+	.logo
+		background: url(../images/logo_t.png) bottom
+		background-size: 22rem 14rem
+		width: 22rem
+		height: 10rem
+		margin: 0 auto
+	.smp
+		background: url(../images/mascot.png)
+		background-size: 100% 100%
+		width: 31.7rem
+		height: 21.2rem
+		margin: 2rem auto 0
+	.signbox
+		width: 244px
+		height: 78px
+		margin: 0 auto
+		position: relative
+		top: -15px
+		background: url(../images/sign_shadow.png)
+		background-size: 100% 100%
+	.btn
+		width: 23rem
+		border-radius: 2.3rem
+		margin: 1.5rem auto 0
+		display: block
+		background: #fff
+		text-align: center
+		height: 4.8rem
+		line-height: 4.8rem
+		color: $mainColorLight
+		font-size: 1.5rem
+	.help
+		color: #fff
+		text-decoration: underline
+		display: block
+		text-align: center
+		line-height: 5rem
+	.rules
+		margin: 2rem 2rem 0
+		padding: 2rem
+		background: #fff
+		border-radius: 1rem
+		color: $grayFontColor
+		.title
+			text-align: center
+			font-size: 1.5rem
+			font-weight: bolder
+			padding-bottom: .5rem
+		.content
+			ol
+				padding-left: 2.2rem
+			p
+				padding: .3rem 0
+				line-height: 2rem

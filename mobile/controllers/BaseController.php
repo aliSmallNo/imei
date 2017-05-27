@@ -106,18 +106,18 @@ class BaseController extends Controller
 		$params["gIconOK"] = self::ICON_OK_HTML;
 		$params["gIconAlert"] = self::ICON_ALERT_HTML;
 
-		$url = Yii::$app->request->url;
-		$safeUrls = ["logout"];
-		if (self::isLocalhost() || in_array($url, $safeUrls)) {
-			$params["wxInfoString"] = json_encode([
-				"appId" => "",
-				"timestamp" => time(),
-				"noncestr" => "",
-				"signature" => "",
+		list($controller, $action) = explode('/', Yii::$app->request->pathInfo);
+		$actionIgnore = ['logout'];
+		if (self::isLocalhost() || in_array($action, $actionIgnore)) {
+			$params['wxInfoString'] = json_encode([
+				'appId' => '',
+				'timestamp' => time(),
+				'noncestr' => '',
+				'signature' => ''
 			]);
 		} else {
 			$sign = WechatUtil::getSignature();
-			$params["wxInfoString"] = json_encode($sign);
+			$params['wxInfoString'] = json_encode($sign);
 		}
 		$this->layout = $layout;
 		return self::render($view, $params);

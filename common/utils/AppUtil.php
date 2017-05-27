@@ -1078,10 +1078,10 @@ EOT;
 		}
 		$env = AppUtil::scene();
 		if ($env == "dev") {
-			$file = __DIR__ . '/../../../' . date("Ym") . '.log';
+			$file = __DIR__ . '/../../../imei_' . date("Ym") . '.log';
 		} else {
 			$day = (date("d") % 15) + 1;
-			$file = '/data/tmp/' . date("Ym") . $day . '.log';
+			$file = '/data/tmp/imei_' . date("Ym") . $day . '.log';
 		}
 		$txt = [];
 		if ($func) {

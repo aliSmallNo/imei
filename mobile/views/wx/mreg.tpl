@@ -13,11 +13,11 @@
 		</li>
 		<li>
 			<label>地理位置</label>
-			<a href="javascript:;" data-tag="location"></a>
+			<a href="javascript:;" class="m-form-opt" data-tag="location"></a>
 		</li>
 		<li>
 			<label>所属行业</label>
-			<a href="javascript:;" data-tag="scope"></a>
+			<a href="javascript:;" class="m-form-opt" data-tag="scope"></a>
 		</li>
 		<li>
 			<label>自我介绍</label>

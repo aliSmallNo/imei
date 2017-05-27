@@ -125,7 +125,7 @@ require(["layer", "fastclick"],
 				util.shade = $(".m-popup-shade");
 				util.main = $(".m-popup-main");
 				util.content = $(".m-popup-content");
-				$(".action-row").on(kClick, function () {
+				$(".m-form-opt").on(kClick, function () {
 					util.btn = $(this);
 					var tag = util.btn.attr('data-tag');
 					var html = '';
