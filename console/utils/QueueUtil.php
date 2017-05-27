@@ -31,7 +31,7 @@ class QueueUtil
 		} else {
 			$msg = 'message: ' . $msg;
 		}
-		file_put_contents('/data/tmp/beanstalkd.log', PHP_EOL . date('Y-m-d H:i:s') . ' ' . $msg . PHP_EOL, FILE_APPEND);
+		file_put_contents('/data/tmp/imei_beanstalkd.log', PHP_EOL . date('Y-m-d H:i:s') . ' ' . $msg . PHP_EOL, FILE_APPEND);
 	}
 
 	public static function loadJob($methodName, $params = [], $tube = '', $delay = 0)
