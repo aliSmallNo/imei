@@ -243,6 +243,70 @@
 		<a href="#sqrcode">关注公众号</a>
 	</div>
 </section>
+<section id="sme2">
+	<div class="useruc">
+		<div class="m-hint">
+			<span>你的昵称未通过审核，请重新编辑~</span>
+			<a href="/user/info?uid=062a1e833b434518905624dd0eac6bcc&amp;action=edit" class="">GO</a>
+		</div>
+		<div class="u-my-wrap line-bottom">
+			<div class="u-my-bar">
+				<div class="avatar single">
+					<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100" alt="">
+				</div>
+				<div class="title">
+					<h4>大师兄</h4>
+					<i>资料完成度62%</i>
+					<h5>传说中的大鲜肉</h5>
+				</div>
+				<a href="/wx/match" class="btn-outline change-role">切换成媒婆</a>
+				<a href="/wx/mreg" class="btn-outline edit-role">编辑</a>
+			</div>
+			<a href="javascript:;" class="u-my-album">
+				<div class="title">相册(0)</div>
+				<ul class="photos">
+					<li>
+						<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100" alt="">
+					</li>
+					<li>
+						<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100" alt="">
+					</li>
+					<li>
+						<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100" alt="">
+					</li>
+					<li>
+						<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100" alt="">
+					</li>
+				</ul>
+			</a>
+		</div>
+		<div class="banner line-bottom">
+			<a href="https://1meipo.com/topic/singleid/index">
+				<img src="https://img.1meipo.com/6bd865920c42912cb63de1987de8fe8d.jpg">
+			</a>
+		</div>
+		<div class="m-rows line-bottom">
+			<a href="/mycard" class=""><span class="title">我的身份卡</span></a>
+		</div>
+		<div class="m-rows line-bottom">
+			<a href="/user/apply" class="" id="pending_applications"><span class="title">加我微信的人</span> </a>
+			<a href="/user/myapply" class="" id="myapply"><span class="title">我加微信的人</span> </a>
+			<a href="/user/heart" class="" id="myapply"><span class="title">心动列表</span> </a>
+		</div>
+		<div class="m-rows line-bottom">
+			<a href="/user/my_matchmaker" class=""><span class="title">我的媒婆</span> <span class="tip">还没有媒婆</span></a>
+			<a href="/user/attentionhn" class="" id="myfollow"><span class="title">关注的媒婆</span> </a>
+		</div>
+		<div class="m-rows line-bottom">
+			<a href="/user/account" class=""><span class="title">话媒糖</span></a>
+			<a href="/message?role=1" class="" id="notifications"><span class="title">通知</span> <span class="count">2</span></a>
+			<a href="/feedback" class=""><span class="title">意见反馈</span> </a>
+			<a href="/user/weixininfo" class=""><span class="title">我的微信号</span></a>
+			<a href="/qrcode?role=1" class=""><span class="title">关注1号媒婆公众号</span></a>
+			<a href="/user/blacklist" class=""><span class="title">黑名单</span></a>
+		</div>
+	</div>
+</section>
 <div class="nav-foot on">
 	<a href="#slink" class="nav-link" data-tag="slink">
 		媒婆

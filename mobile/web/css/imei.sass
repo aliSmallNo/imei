@@ -1026,10 +1026,27 @@ section
 		line-height: 4.2rem
 		position: relative
 		padding-left: 1.5rem
-		padding-right: 1.5rem
+		padding-right: 3rem
 		background: #fff
 		font-size: 1.4rem
 
+		.tip
+			float: right
+			color: $mainColorLight
+		.count
+			color: #fff
+			background: $mainColorLight
+			height: 2rem
+			line-height: 2rem
+			min-width: 1rem
+			text-align: center
+			padding: 0 .5rem
+			border-radius: 1.5rem
+			position: absolute
+			right: 3.2rem
+			top: 50%
+			margin-top: -1rem
+			font-size: 1.2rem
 		&:active
 			background: $borderColorLight
 		&:before
@@ -1044,7 +1061,7 @@ section
 			height: 0
 		&:after
 			@include arrowRight
-			right: 1rem
+			right: 1.5rem
 
 .m-tabs
 	background: #fff
@@ -1117,6 +1134,8 @@ section
 			position: absolute
 			right: 1rem
 			bottom: 2rem
+		&.single:after
+			display: none
 	.title
 		@include displayFlex-1
 		justify-content: center
@@ -1125,10 +1144,17 @@ section
 		h5
 			color: $grayFontColor
 			font-weight: $weightNormal
+			font-size: 1.4rem
 		h4
 			line-height: 3rem
-			font-size: 1.5rem
+			font-size: 1.4rem
+			font-weight: $weightBold
 			@include textTail
+		i
+			font-size: 1.2rem
+			font-weight: $weightNormal
+			font-style: normal
+			color: $grayFontColorLight
 	&:after
 		content: ''
 		position: absolute
@@ -1137,7 +1163,34 @@ section
 		bottom: 0
 		height: 1px
 		background: $borderColorLight
+.u-my-album
+	@include displayFlex
+	line-height: 5rem
+	padding: 1rem 2.5rem 1rem 1.5rem
+	position: relative
+	&:after
+		@include arrowRight
+		border-color: $grayFontColorLight
+		right: 1.5rem
 
+	.title
+		@include displayFlex-w(5.5rem)
+		text-align: left
+	.photos
+		@include displayFlex-1
+		li
+			float: left
+			width: 4.4rem
+			height: 4.4rem
+			overflow: hidden
+			border: 1px solid $mainColorLight
+			border-radius: .3rem
+			margin-right: 1.2rem
+			&:last-child
+				margin-right: 0
+			img
+				width: 100%
+				height: 100%
 .u-my-count
 	@include displayFlex
 	padding-left: 1.5rem
@@ -2002,6 +2055,33 @@ section
 					background-size: 100% 100%
 					left: 1.2rem
 					top: .5rem
+
 #slook
 	padding-bottom: 6.5rem
 
+.useruc
+	.banner
+		img
+			width: 100%
+			height: 6rem
+
+.m-hint
+	overflow: hidden
+	padding: 0 1.5rem
+	background: $linkColorLight
+	color: #fff
+	height: 4.4rem
+	line-height: 4.4rem
+	span
+		float: left
+		font-size: 1.2rem
+	a
+		float: right
+		line-height: 2.8rem
+		height: 2.8rem
+		padding: 0 1.2rem
+		border: #fff 1px solid
+		border-radius: 1.5rem
+		text-decoration: none
+		color: #fff
+		margin-top: .7rem
