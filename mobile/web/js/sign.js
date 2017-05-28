@@ -1,6 +1,3 @@
-if (document.location.hash === "" || document.location.hash === "#") {
-	document.location.hash = "#sign";
-}
 require.config({
 	paths: {
 		"jquery": "/assets/js/jquery-3.2.1.min",
@@ -65,7 +62,6 @@ require(["layer"],
 			// FootUtil.init();
 			// SingleUtil.init();
 			// FastClick.attach($sls.footer.get(0));
-			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage'];
@@ -74,7 +70,6 @@ require(["layer"],
 				wx.hideOptionMenu();
 			});
 
-			locationHashChanged();
 			$sls.cork.hide();
 
 		});

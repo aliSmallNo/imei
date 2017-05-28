@@ -1,4 +1,4 @@
-<section id="sign" class="m-sign">
+<div class="m-sign">
 	<div class="logo"></div>
 	<div class="smp"></div>
 	<div class="signbox"><span class="btn hasSignined">今天签过啦</span></div>
@@ -14,7 +14,7 @@
 			<p>注：签到成功后直接将奖励充到账户中，不会再消息通知您了哦</p>
 		</div>
 	</div>
-</section>
+</div>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
