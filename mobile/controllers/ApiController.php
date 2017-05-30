@@ -26,6 +26,8 @@ class ApiController extends Controller
 		$signature = self::getParam("signature");
 		$timestamp = self::getParam("timestamp");
 		$nonce = self::getParam("nonce");
+		$echostr =self::getParam("echostr");
+		AppUtil::logFile($echostr, 5, __FUNCTION__, __LINE__);
 		AppUtil::logFile($signature, 5, __FUNCTION__, __LINE__);
 		AppUtil::logFile($timestamp, 5, __FUNCTION__, __LINE__);
 		AppUtil::logFile($nonce, 5, __FUNCTION__, __LINE__);
