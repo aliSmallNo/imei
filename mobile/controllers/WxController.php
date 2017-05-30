@@ -59,7 +59,6 @@ class WxController extends BaseController
 //			$avatar = ImageOpt::DEFAULT_AVATAR;
 		}
 		return self::renderPage("match.tpl", [
-			"maxYear" => 1999,
 			'nickname' => $nickname,
 			'avatar' => $avatar
 		]);
@@ -67,8 +66,18 @@ class WxController extends BaseController
 
 	public function actionSingle()
 	{
+		$avatar = $nickname = '';
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if ($wxInfo) {
+			$avatar = $wxInfo["headimgurl"];
+			$nickname = $wxInfo["nickname"];
+		} else {
+			$nickname = "本地测试";
+		}
 		return self::renderPage("single.tpl", [
-			"maxYear" => 1999
+			'nickname' => $nickname,
+			'avatar' => $avatar
 		]);
 	}
 

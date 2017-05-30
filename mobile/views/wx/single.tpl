@@ -210,10 +210,10 @@
 		<div class="u-my-wrap line-bottom">
 			<div class="u-my-bar">
 				<div class="avatar single">
-					<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100" alt="">
+					<img src="{{$avatar}}" alt="">
 				</div>
 				<div class="title">
-					<h4>大师兄</h4>
+					<h4>{{$nickname}}</h4>
 					<i>资料完成度62%</i>
 					<h5>传说中的大鲜肉</h5>
 				</div>
