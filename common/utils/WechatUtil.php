@@ -226,7 +226,7 @@ class WechatUtil
 				[
 					"type" => "view",
 					"name" => "我是单身",
-					"url" => $wxUrl . "/wx/single#sluck"
+					"url" => $wxUrl . "/wx/single#slook"
 				],
 				[
 					"type" => "view",
