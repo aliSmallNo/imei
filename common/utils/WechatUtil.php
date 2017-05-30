@@ -9,7 +9,6 @@
 
 namespace common\utils;
 
-use common\models\Log;
 use Yii;
 
 require_once __DIR__ . '/../lib/WxPay/WxPay.Config.php';
@@ -214,7 +213,7 @@ class WechatUtil
 
 	public static function createWechatMenus()
 	{
-		$token = self::accessToken(true);
+		$token = self::accessToken();
 		$url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=$token";
 		$wxUrl = AppUtil::wechatUrl();
 		$postData = [

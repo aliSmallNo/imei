@@ -16,7 +16,8 @@ class FooController extends Controller
 
 	public function actionWxmenu()
 	{
-		WechatUtil::createWechatMenus();
+		$ret = WechatUtil::createWechatMenus();
+		var_dump($ret);
 	}
 
 	public function actionRain()
