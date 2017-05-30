@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Created by PhpStorm.
+ * User: weirui
+ * Date: 10/5/2017
+ * Time: 5:45 PM
+ */
+
 namespace common\utils;
 
 use common\models\Log;
@@ -7,34 +14,39 @@ use Yii;
 
 require_once __DIR__ . '/../lib/WxPay/WxPay.Config.php';
 
-/**
- * Created by PhpStorm.
- * User: weirui
- * Date: 10/5/2017
- * Time: 5:45 PM
- */
 class WechatUtil
 {
 
 	const ACCESS_CODE = "N8JoVKwSNP5irhG2d19w";
 
-	public static function getAccessToken($refresh = false)
+	private static function httpPostData($url, $data_string)
 	{
-		$code = self::ACCESS_CODE;
-		$url = "https://wx.bpbhd.com/api/system/wxtoken?code=$code&refresh=" . ($refresh ? 1 : 0);
-		$res = AppUtil::httpGet($url);
-
-		$res = json_decode($res, true);
-		if ($res && $res["code"] == 0) {
-			return $res["msg"];
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, [
+			'Content-Type: application/json; charset=utf-8',
+			'Content-Length: ' . strlen($data_string)
+		]);
+		$content = curl_exec($ch);
+		if (curl_errno($ch)) {
+			return false;
 		}
-		return "";
+		return $content;
 	}
 
-	public static function accessToken($refresh = false)
+	/**
+	 * @param bool $reset
+	 * @return string
+	 */
+	private static function accessToken($reset = false)
 	{
 		$accessToken = RedisUtil::getCache(RedisUtil::KEY_WX_TOKEN);
-		if (!$accessToken || $refresh) {
+		if (!$accessToken || $reset) {
 			$appId = \WxPayConfig::APPID;
 			$secret = \WxPayConfig::APPSECRET;
 			$url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appId&secret=$secret";
@@ -60,11 +72,76 @@ class WechatUtil
 		return $accessToken;
 	}
 
+	public static function getAccessToken($pass, $reset = false)
+	{
+		if ($pass == self::ACCESS_CODE) {
+			return self::accessToken($reset);
+		}
+		return "";
+	}
+
+
+	public static function getInfoByOpenId($openId, $renewFlag = false)
+	{
+		$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
+		$ret = json_decode($ret, 1);
+		if ($ret && is_array($ret) && isset($ret["wid"]) && !$renewFlag) {
+			return $ret;
+		}
+		if (strlen($openId) < 24) {
+			return 0;
+		}
+
+		$ret = "";
+		$urlBase = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
+		/*
+		 * Rain: 此处有坑，微信的access token 经常在两小时内突然失效，另外我们的有时候也不小心刷新了token,而忘了更新redis中的token
+		 * 同样的受害者，也可参考此文 http://blog.csdn.net/wzx19840423/article/details/51850188
+		*/
+		for ($k = 0; $k < 3; $k++) {
+			$access_token = WechatUtil::accessToken($k > 0);
+			$url = sprintf($urlBase, $access_token, $openId);
+			$ret = AppUtil::httpGet($url);
+			$ret = json_decode($ret, true);
+			if ($ret && isset($ret["openid"])) {
+				break;
+			}
+		}
+		if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
+			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
+			return $ret;
+		}
+		return 0;
+	}
+
+	public static function getInfoByCode($code, $renewFlag = false)
+	{
+		$appId = \WxPayConfig::APPID;
+		$appSecret = \WxPayConfig::APPSECRET;
+		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=$appId&secret=$appSecret&code=$code&grant_type=authorization_code";
+		$ret = AppUtil::httpGet($url);
+		$ret = json_decode($ret, true);
+		if ($ret && isset($ret["access_token"]) && isset($ret["openid"])) {
+			$openId = $ret["openid"];
+			if ($renewFlag) {
+				return self::getInfoByOpenId($openId, $renewFlag);
+			} else {
+				$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
+				$ret = json_decode($ret, 1);
+				if ($ret && is_array($ret)) {
+					RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
+					return $ret;
+				}
+			}
+		}
+		return 0;
+	}
+
 	public static function getQrCode()
 	{
-
-		$url = 'https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=' . self::getAccessToken();
-		$qrcode = '{"expire_seconds": 1800, "action_name": "QR_SCENE", "action_info": {"scene": {"scene_id": ' . generalUniqueKey::getNumberId() . '}}}';
+		$url = 'https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=' . self::accessToken();
+		$intSeq = RedisUtil::getIntSeq();
+		$qrcode = '{"expire_seconds": 1800, "action_name": "QR_SCENE", "action_info": {"scene": {"scene_id": ' . $intSeq . '}}}';
 		$result = self::httpPostData($url, $qrcode);
 		$result = json_decode(strval($result), true);
 		if (!is_array($result) || !isset($result['ticket'])) {
@@ -74,31 +151,12 @@ class WechatUtil
 		return $url;
 	}
 
-	private static function httpPostData($url, $data_string)
-	{
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-				'Content-Type: application/json; charset=utf-8',
-				'Content-Length: ' . strlen($data_string))
-		);
-		$content = curl_exec($ch);
-		if (curl_errno($ch)) {
-			return false;
-		}
-		return $content;
-	}
 
 	public static function getJsApiTicket()
 	{
 		$jsTicket = RedisUtil::getCache(RedisUtil::KEY_WX_TICKET);
 		if (!$jsTicket) {
-			$accessToken = self::getAccessToken();
+			$accessToken = self::accessToken();
 			if ($accessToken) {
 				$url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=' . $accessToken . '&type=jsapi';
 				$res = AppUtil::httpGet($url, [], true);
@@ -136,29 +194,20 @@ class WechatUtil
 	}
 
 	/**
-	 * 签名
-	 * */
-	public static function ToUrlParams($data)
+	 * 重新生成签名
+	 * @param $params
+	 * @return string
+	 */
+	protected static function refreshSign($params)
 	{
-		$buff = "";
-		foreach ($data as $k => $v) {
-			if ($k != "sign" && $v != "" && !is_array($v)) {
-				$buff .= $k . "=" . $v . "&";
+		ksort($params);
+		$string = '';
+		foreach ($params as $key => $val) {
+			if ($key != "sign" && $val != "" && !is_array($val)) {
+				$string .= '&' . $key . '=' . $val;
 			}
 		}
-
-		$buff = trim($buff, "&");
-		return $buff;
-	}
-
-	/**
-	 * 重新生成签名
-	 *
-	 * */
-	public static function refreshSign($data)
-	{
-		ksort($data);
-		$string = self::ToUrlParams($data);
+		$string = trim($string, '&');
 		$string = sha1($string);
 		return $string;
 	}
