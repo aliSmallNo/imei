@@ -26,7 +26,7 @@ class UserBuzz extends ActiveRecord
 		"MenuId" => "bMenuId",
 	];
 
-	private static $Token = "WhNBLkNmzT5HdJQT8DMZu1kIK";
+	private static $Token = "BLkNmzT5HdJQT8DMZu1kIK";
 	private static $WelcomeMsg = "O(∩_∩)O 您好，需要帮助吗？\n\n如果我们不能及时回复您，请拨打客服热线 01056123309";
 	private static $CrmMsg = "O(∩_∩)O 你好,你还没有绑定微信账号!\n\n请输入你的名字+后台登录ID，如：'成龙chengl' ";
 	private static $CrmMsgErr = "您输入的名字或后台登录ID不存在!\n\n请重新输入你的名字+后台登录ID，如：'成龙chengl' 再次绑定";
