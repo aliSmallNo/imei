@@ -211,4 +211,33 @@ class WechatUtil
 		$string = sha1($string);
 		return $string;
 	}
+
+	public static function createWechatMenus()
+	{
+		$token = self::accessToken(true);
+		$url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=$token";
+		$wxUrl = AppUtil::wechatUrl();
+		$postData = [
+			"button" => [
+				[
+					"type" => "view",
+					"name" => "我是媒婆",
+					"url" => $wxUrl . "/wx/match#slink"
+				],
+				[
+					"type" => "view",
+					"name" => "我是单身",
+					"url" => $wxUrl . "/wx/single#sluck"
+				],
+				[
+					"type" => "view",
+					"name" => "签到领奖",
+					"url" => $wxUrl . "/wx/sign"
+				]
+			]
+		];
+		$postData = json_encode($postData, JSON_UNESCAPED_UNICODE);
+		$res = AppUtil::postJSON($url, $postData);
+		return $res;
+	}
 }
