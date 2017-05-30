@@ -68,6 +68,7 @@ class WechatUtil
 			];
 			Log::add($newLog);*/
 		}
+		AppUtil::logFile($accessToken, 5, __FUNCTION__, __LINE__);
 		return $accessToken;
 	}
 
