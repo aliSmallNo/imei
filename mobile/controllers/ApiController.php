@@ -11,6 +11,7 @@ namespace mobile\controllers;
 
 use common\models\City;
 use common\models\UserBuzz;
+use common\utils\AppUtil;
 use common\utils\WechatUtil;
 use Yii;
 use yii\web\Controller;
@@ -25,7 +26,9 @@ class ApiController extends Controller
 		$signature = self::getParam("signature");
 		$timestamp = self::getParam("timestamp");
 		$nonce = self::getParam("nonce");
-		if (!UserBuzz::checkSignature($signature, $timestamp, $nonce)) {
+		$ret = UserBuzz::checkSignature($signature, $timestamp, $nonce);
+		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
+		if (!$ret) {
 			ob_clean();
 			echo 'success';
 		}
@@ -34,7 +37,7 @@ class ApiController extends Controller
 		if (isset($postStr2)) {
 			$postStr = $postStr2;
 		}
-		$resp = "";
+		$resp = '';
 		if ($postStr) {
 			libxml_disable_entity_loader(true);
 			$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
