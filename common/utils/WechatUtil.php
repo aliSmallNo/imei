@@ -51,6 +51,7 @@ class WechatUtil
 			$url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appId&secret=$secret";
 			$res = AppUtil::httpGet($url);
 			$res = json_decode($res, true);
+			AppUtil::logFile($res, 5, __FUNCTION__, __LINE__);
 			$accessToken = isset($res['access_token']) ? $res['access_token'] : "";
 			if ($accessToken) {
 				RedisUtil::setCache($accessToken, RedisUtil::KEY_WX_TOKEN);
