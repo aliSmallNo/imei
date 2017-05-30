@@ -35,7 +35,7 @@ class ApiController extends Controller
 		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 		if (!$ret) {
 			ob_clean();
-			echo 'success';
+			echo $echostr;
 		}
 		$postStr = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : "";
 		$postStr2 = file_get_contents('php://input', 'r');
@@ -59,7 +59,7 @@ class ApiController extends Controller
 			echo $resp;
 		} else {
 //				echo $echoStr;
-			echo 'success';
+			echo $echostr;
 		}
 
 	}
