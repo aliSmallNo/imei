@@ -203,21 +203,7 @@ class UserWechat extends ActiveRecord
 			return 0;
 		}
 
-		$ret = "";
-		$urlBase = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
-		/*
-		 * Rain: 此处有坑，微信的access token 经常在两小时内突然失效，另外我们的有时候也不小心刷新了token,而忘了更新redis中的token
-		 * 同样的受害者，也可参考此文 http://blog.csdn.net/wzx19840423/article/details/51850188
-		*/
-		for ($k = 0; $k < 3; $k++) {
-			$access_token = WechatUtil::accessToken($k > 0);
-			$url = sprintf($urlBase, $access_token, $openId);
-			$ret = AppUtil::httpGet($url);
-			$ret = json_decode($ret, true);
-			if ($ret && isset($ret["openid"])) {
-				break;
-			}
-		}
+		$ret = WechatUtil::getInfoByOpenId($openId , $renewFlag);
 		if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
 			$values = [
 				"wOpenId" => $ret["openid"],

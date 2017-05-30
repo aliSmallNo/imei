@@ -61,7 +61,7 @@ class BaseController extends Controller
 				AppUtil::logFile(implode("; ", $logMsg), 5);
 
 				// Rain: 发现如果action不执行完毕，getCookie获取不到刚刚赋值的cookie值
-				$logMsg = [__FUNCTION__, __LINE__, " test cookie pit - " . Utils::getCookie(self::COOKIE_OPENID)];
+				$logMsg = [__FUNCTION__, __LINE__, " test cookie pit - " . AppUtil::getCookie(self::COOKIE_OPENID)];
 				AppUtil::logFile(implode("; ", $logMsg), 5);
 			}
 		} elseif (strlen(self::$WX_OpenId) < 20 && strlen($wxCode) < 20) {
@@ -80,7 +80,6 @@ class BaseController extends Controller
 
 	protected function isLocalhost()
 	{
-		return true;
 		$httpHost = Yii::$app->request->hostInfo;
 		if (strpos($httpHost, "localhost") === false) {
 			return false;
