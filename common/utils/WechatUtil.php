@@ -57,7 +57,7 @@ class WechatUtil
 				RedisUtil::setCache($accessToken, RedisUtil::KEY_WX_TOKEN);
 				//过期时间一般是2个小时
 			}
-			$newLog = [
+			/*$newLog = [
 				"logKey" => "wx-token",
 				"logUser" => "1",
 				"logUserId" => "2",
@@ -67,7 +67,7 @@ class WechatUtil
 				"logChannel" => "wx-token",
 				"logQueryDate" => date("Y-m-d H:i:s"),
 			];
-			Log::add($newLog);
+			Log::add($newLog);*/
 		}
 		return $accessToken;
 	}
