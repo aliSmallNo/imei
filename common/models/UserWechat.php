@@ -203,7 +203,7 @@ class UserWechat extends ActiveRecord
 			return 0;
 		}
 
-		$ret = WechatUtil::getInfoByOpenId($openId , $renewFlag);
+		$ret = WechatUtil::getInfoByOpenId($openId, $renewFlag);
 		if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
 			$values = [
 				"wOpenId" => $ret["openid"],
@@ -213,7 +213,7 @@ class UserWechat extends ActiveRecord
 				"wProvince" => $ret["province"],
 				"wCity" => $ret["city"],
 				"wCountry" => $ret["country"],
-				"wUnionId" => $ret["unionid"],
+				"wUnionId" => isset($ret["unionid"]) ? $ret["unionid"] : '',
 				"wSubscribeTime" => $ret["subscribe_time"],
 				"wSubscribe" => $ret["subscribe"],
 				"wGroupId" => $ret["groupid"],
