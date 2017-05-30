@@ -38,6 +38,7 @@ class ApiController extends Controller
 			$postStr = $postStr2;
 		}
 		$resp = '';
+		AppUtil::logFile($postStr, 5, __FUNCTION__, __LINE__);
 		if ($postStr) {
 			libxml_disable_entity_loader(true);
 			$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
