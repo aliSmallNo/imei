@@ -11,7 +11,6 @@ namespace mobile\controllers;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
-use Faker\Provider\bn_BD\Utils;
 use Yii;
 use yii\web\Controller;
 
@@ -45,7 +44,7 @@ class BaseController extends Controller
 			if (!$wxUserInfo || (isset($wxUserInfo["subscribe"]) && $wxUserInfo["subscribe"] != 1)) {
 				$logMsg = [__FUNCTION__, __LINE__, self::$WX_OpenId, json_encode($wxUserInfo)];
 				AppUtil::logFile(implode("; ", $logMsg), 5);
-				header("location:/qrbpdj.html");
+				header("location:/qr.html");
 				exit;
 			}
 			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
@@ -67,7 +66,7 @@ class BaseController extends Controller
 		} elseif (strlen(self::$WX_OpenId) < 20 && strlen($wxCode) < 20) {
 			$currentUrl = Yii::$app->request->getAbsoluteUrl();
 			AppUtil::logFile("currentUrl >>> " . $currentUrl, 5);
-			$newUrl = UserWechat::getRedirectUrl(UserWechat::CATEGORY_MALL, $currentUrl);
+			$newUrl = WechatUtil::getRedirectUrl(UserWechat::CATEGORY_MALL, $currentUrl);
 			$userPhone = AppUtil::getCookie("user_phone");
 			if (1 || in_array($userPhone, ["18600442970", "13683065697"])) {
 				$logMsg = [__FUNCTION__, __LINE__, $userPhone, $newUrl];

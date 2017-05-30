@@ -101,7 +101,7 @@ class WechatUtil
 			$access_token = WechatUtil::accessToken($k > 0);
 			$url = sprintf($urlBase, $access_token, $openId);
 			$ret = AppUtil::httpGet($url);
-			$ret = json_decode($ret, true);
+			$ret = json_decode($ret, 1);
 			if ($ret && isset($ret["openid"])) {
 				break;
 			}
@@ -134,6 +134,49 @@ class WechatUtil
 			}
 		}
 		return 0;
+	}
+
+	public static function getRedirectUrl($category = "one", $strUrl = "")
+	{
+		$url = AppUtil::wechatUrl();
+		if ($strUrl) {
+			if (strpos($strUrl, "http") === false) {
+				$url = trim($url, "/") . "/" . trim($strUrl, "/");
+			} else {
+				$url = $strUrl;
+			}
+		} else {
+			switch ($category) {
+				default:
+					$url .= "/wx/login";
+					break;
+			}
+		}
+		$wxAppId = \WxPayConfig::APPID;
+		return sprintf("https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=resign#wechat_redirect",
+			$wxAppId, urlencode($url));
+	}
+
+	public static function sendMsg($openId, $msg)
+	{
+		$ret = [
+			"errcode" => 1,
+			"errmsg" => "default"
+		];
+		if ($openId && $msg) {
+			$url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' . self::accessToken();
+			//$postJosn = '{"msgtype":"text","touser":"' . $touser . '","text":{"content":"' . $msg . '"}}';
+			$postData = [
+				"msgtype" => "text",
+				"touser" => $openId,
+				"text" => [
+					"content" => urlencode($msg)
+				]
+			];
+			$ret = AppUtil::postJSON($url, urldecode(json_encode($postData)));
+		}
+		$ret = json_decode($ret, true);
+		return $ret['errcode'];
 	}
 
 	public static function getQrCode()

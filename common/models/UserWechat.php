@@ -218,6 +218,7 @@ class UserWechat extends ActiveRecord
 				"wSubscribe" => $ret["subscribe"],
 				"wGroupId" => $ret["groupid"],
 				"wRemark" => $ret["remark"],
+				"wRawData" => json_encode($ret),
 			];
 			$wid = self::replace($ret["openid"], $values);
 			$ret["wid"] = $wid;
@@ -229,69 +230,11 @@ class UserWechat extends ActiveRecord
 
 	public static function getInfoByCode($code, $renewFlag = false)
 	{
-		$appId = \WxPayConfig::APPID;
-		$appSecret = \WxPayConfig::APPSECRET;
-		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=$appId&secret=$appSecret&code=$code&grant_type=authorization_code";
-		$ret = AppUtil::httpGet($url);
-		$ret = json_decode($ret, true);
+		$ret = WechatUtil::getInfoByCode($code, $renewFlag);
 		if ($ret && isset($ret["access_token"]) && isset($ret["openid"])) {
-			$openId = $ret["openid"];
-			if (!$renewFlag) {
-				$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
-				$ret = json_decode($ret, true);
-				if ($ret && is_array($ret)) {
-					return $ret;
-				}
-				$uInfo = UserWechat::findOne(["wOpenId" => $openId]);
-				if ($uInfo) {
-					$ret = [
-						"openid" => $uInfo["wOpenId"],
-						"nickname" => $uInfo["wNickName"],
-						"sex" => $uInfo["wGender"],
-						"province" => $uInfo["wProvince"],
-						"city" => $uInfo["wCity"],
-						"country" => $uInfo["wCountry"],
-						"headimgurl" => $uInfo["wAvatar"],
-						"unionid" => $uInfo["wUnionId"],
-						"groupid" => $uInfo["wGroupId"],
-						"remark" => $uInfo["wRemark"],
-						"subscribe" => $uInfo["wSubscribe"],
-						"wid" => $uInfo["wId"],
-					];
-					RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
-					return $ret;
-				}
-			}
-			return self::getInfoByOpenId($openId, $renewFlag);
+			return self::getInfoByOpenId($ret["openid"], $renewFlag);
 		}
 		return 0;
-	}
-
-	public static function getRedirectUrl($category = "one", $strUrl = "")
-	{
-		$url = AppUtil::wechatUrl();
-		if ($strUrl) {
-			if (strpos($strUrl, "http") === false) {
-				$url = trim($url, "/") . "/" . trim($strUrl, "/");
-			} else {
-				$url = $strUrl;
-			}
-		} else {
-			switch ($category) {
-				case self::CATEGORY_ONE:
-					$url .= "/one/home";
-					break;
-				case self::CATEGORY_TRADE:
-					$url .= "/wx/trade";
-					break;
-				default:
-					$url .= "/wx/login";
-					break;
-			}
-		}
-		$wxAppId = \WxPayConfig::APPID;
-		return sprintf("https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=resign#wechat_redirect",
-			$wxAppId, urlencode($url));
 	}
 
 	public static function getInfoByHeader($header)
@@ -312,28 +255,6 @@ class UserWechat extends ActiveRecord
 			}
 		}
 		return "";
-	}
-
-	public static function sendMsg($openId, $msg)
-	{
-		$ret = [
-			"errcode" => 1,
-			"errmsg" => "default"
-		];
-		if ($openId && $msg) {
-			$url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' . wechatAccessToken::getAccessToken();
-			//$postJosn = '{"msgtype":"text","touser":"' . $touser . '","text":{"content":"' . $msg . '"}}';
-			$postData = [
-				"msgtype" => "text",
-				"touser" => $openId,
-				"text" => [
-					"content" => urlencode($msg)
-				]
-			];
-			$ret = AppUtil::postJSON($url, urldecode(json_encode($postData)));
-		}
-		$ret = json_decode($ret, true);
-		return $ret['errcode'];
 	}
 
 	public static function upgradeUno()
