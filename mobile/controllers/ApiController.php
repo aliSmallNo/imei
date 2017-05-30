@@ -27,12 +27,7 @@ class ApiController extends Controller
 		$timestamp = self::getParam("timestamp");
 		$nonce = self::getParam("nonce");
 		$echostr =self::getParam("echostr");
-		AppUtil::logFile($echostr, 5, __FUNCTION__, __LINE__);
-		AppUtil::logFile($signature, 5, __FUNCTION__, __LINE__);
-		AppUtil::logFile($timestamp, 5, __FUNCTION__, __LINE__);
-		AppUtil::logFile($nonce, 5, __FUNCTION__, __LINE__);
 		$ret = UserBuzz::checkSignature($signature, $timestamp, $nonce);
-		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 		if (!$ret) {
 			ob_clean();
 			echo $echostr;
@@ -43,7 +38,6 @@ class ApiController extends Controller
 			$postStr = $postStr2;
 		}
 		$resp = '';
-		AppUtil::logFile($postStr, 5, __FUNCTION__, __LINE__);
 		if ($postStr) {
 			libxml_disable_entity_loader(true);
 			$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
