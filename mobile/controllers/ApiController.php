@@ -116,7 +116,7 @@ class ApiController extends Controller
 		}
 		switch ($tag) {
 			case 'sign':
-				$amt = rand(5, 25);
+				$amt = rand(5, 20);
 				$ret = UserSign::add($wxInfo['uId'], $amt);
 				if ($ret) {
 					$yuan = sprintf('%.2f', $amt / 100.0);
