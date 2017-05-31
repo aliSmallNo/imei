@@ -60,7 +60,7 @@ class UserWechat extends ActiveRecord
 				$newItem->$key = $val;
 			}
 		}
-		$newItem->zUpdatedDate = date("Y-m-d H:i:s");
+		$newItem->wUpdatedOn = date("Y-m-d H:i:s");
 		if (!isset($values["wExpire"])) {
 			$newItem->wExpire = date("Y-m-d H:i:s", time() + 86400 * 30);
 		}
@@ -150,26 +150,28 @@ class UserWechat extends ActiveRecord
 
 	public static function removeOpenId($openId)
 	{
-		$redisUsersKey = RedisUtil::delCache(RedisUtil::KEY_WX_USER, $openId);
-		$redis = AppUtil::redis();
-		$redis->del($redisUsersKey);
-
+		RedisUtil::delCache(RedisUtil::KEY_WX_USER, $openId);
 		$conn = AppUtil::db();
 		$dt = date("Y-m-d H:i:s");
-		$cmd = $conn->createCommand("update hd_user_wechat set wSubscribe=0,zUpdatedDate='$dt',wExpire='$dt' WHERE wOpenId=:openid");
-		$cmd->bindValue(":openid", $openId);
-		$cmd->execute();
+		$sql = 'update im_user_wechat set wSubscribe=0,wUpdatedOn=:dt,wExpire=:dt WHERE wOpenId=:openid';
+		$cmd = $conn->createCommand($sql);
+		$cmd->bindValues([
+			':openid' => $openId,
+			':dt' => $dt,
+		])->execute();
 	}
 
-	public static function getOpenId($aNote)
+	public static function getOpenId($name)
 	{
 		$conn = AppUtil::db();
 		$sql = "select w.* 
-			from hd_admin as a 
-			join hd_user_wechat as w on w.wAId=a.aId
- 			WHERE a.aNote='$aNote' AND a.aStatus=1";
+			from im_admin as a 
+			join im_user_wechat as w on w.wAId=a.aId
+ 			WHERE a.aName=:name AND a.aStatus=1";
 
-		$ret = $conn->createCommand($sql)->queryOne();
+		$ret = $conn->createCommand($sql)->bindValues([
+			':name' => $name
+		])->queryOne();
 		$id = "";
 		if ($ret) {
 			$id = $ret["wOpenId"];
@@ -360,7 +362,7 @@ class UserWechat extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$sql = "select wOpenId from hd_user_wechat WHERE wUNo<1";
+		$sql = "select wOpenId from im_user_wechat WHERE wUNo<1";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$count = 0;
 		foreach ($ret as $row) {
@@ -373,12 +375,14 @@ class UserWechat extends ActiveRecord
 	}
 
 	//getwechat
-	public static function wList($name = "")
+	public static function wList($name = '')
 	{
 		$conn = AppUtil::db();
 
-		$sql = "select wOpenId,wNickName from hd_user_wechat WHERE wNickName like '%$name%' ";
-		return $conn->createCommand($sql)->queryAll();
+		$sql = "select wOpenId,wNickName from im_user_wechat WHERE wNickName like :name ";
+		return $conn->createCommand($sql)->bindValues([
+			':name' => '%' . $name . '%'
+		])->queryAll();
 	}
 
 	public static function renewWechatUsers()
