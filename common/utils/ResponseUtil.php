@@ -9,7 +9,7 @@
 namespace common\utils;
 
 
-class RespUtil
+class ResponseUtil
 {
 	const VERSION = '1.0.1';
 

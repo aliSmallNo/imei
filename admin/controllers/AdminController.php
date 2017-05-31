@@ -5,7 +5,7 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use admin\models\Menu;
-use common\utils\RespUtil;
+use common\utils\ResponseUtil;
 
 
 class AdminController extends BaseController
@@ -132,7 +132,7 @@ class AdminController extends BaseController
 		}
 		\Yii::$app->response->format = 'json';
 
-		return RespUtil::renderAPI($ret["code"], $ret["msg"]);
+		return ResponseUtil::renderAPI($ret["code"], $ret["msg"]);
 	}
 
 

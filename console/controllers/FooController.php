@@ -9,6 +9,7 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\utils\WechatUtil;
+use Gregwar\Image\Image;
 use yii\console\Controller;
 
 class FooController extends Controller
@@ -22,7 +23,5 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-//		var_dump("hello world!!");
-		var_dump(is_string(null));
 	}
 }

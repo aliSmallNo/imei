@@ -12,6 +12,7 @@ namespace mobile\controllers;
 use common\models\City;
 use common\models\User;
 use common\models\UserWechat;
+use common\utils\ImageUtil;
 
 class WxController extends BaseController
 {
@@ -46,17 +47,14 @@ class WxController extends BaseController
 
 	public function actionMatch()
 	{
-		$avatar = $nickname = '';
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		if ($wxInfo) {
 			$avatar = $wxInfo["headimgurl"];
 			$nickname = $wxInfo["nickname"];
 		} else {
+			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
-		}
-		if (!$avatar) {
-//			$avatar = ImageOpt::DEFAULT_AVATAR;
 		}
 		return self::renderPage("match.tpl", [
 			'nickname' => $nickname,
@@ -66,13 +64,13 @@ class WxController extends BaseController
 
 	public function actionSingle()
 	{
-		$avatar = $nickname = '';
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		if ($wxInfo) {
 			$avatar = $wxInfo["headimgurl"];
 			$nickname = $wxInfo["nickname"];
 		} else {
+			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
 		}
 		return self::renderPage("single.tpl", [
