@@ -82,6 +82,7 @@ class UserBuzz extends ActiveRecord
 
 		$wxOpenId = $postData["FromUserName"];
 		$wxUserInfo = UserWechat::findOne(["wOpenId" => $wxOpenId]);
+		AppUtil::logFile($wxUserInfo, 5, __FUNCTION__, __LINE__);
 		$newUserFlag = false;
 		if (!$wxUserInfo) {
 			$newUserFlag = true;
