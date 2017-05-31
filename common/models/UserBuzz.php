@@ -74,7 +74,7 @@ class UserBuzz extends ActiveRecord
 	{
 		$resp = '';
 		$debug = '';
-		$postData = json_decode($postJSON, true);
+		$postData = json_decode($postJSON, 1);
 
 		if (!$postData || !isset($postData["FromUserName"])) {
 			return $resp;
