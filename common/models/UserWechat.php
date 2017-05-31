@@ -69,11 +69,11 @@ class UserWechat extends ActiveRecord
 		if (!$entity) {
 			$entity = new self();
 			$entity->wAddedOn = date('Y-m-d H:i:s');
-			$entity->wUId = $uId;
 		}
 		foreach ($fields as $key => $field) {
 			$entity->$key = isset($wxInfo[$field]) ? $wxInfo[$field] : '';
 		}
+		$entity->wUId = $uId;
 		$entity->wRawData = json_encode($wxInfo);
 		$entity->wUpdatedOn = date('Y-m-d H:i:s');
 		$entity->wExpire = date('Y-m-d H:i:s', time() + 86400 * 14);
