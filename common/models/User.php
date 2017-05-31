@@ -37,6 +37,23 @@ class User extends ActiveRecord
 		return $uid;
 	}
 
+
+	public static function addWX($wxInfo, $editBy = 1)
+	{
+		$openid = $wxInfo['openid'];
+		$entity = self::findOne(['uOpenId' => $openid]);
+		if (!$entity) {
+			$entity = new self();
+			$entity->uAddedBy = $editBy;
+			$entity->uUpdatedBy = $editBy;
+			$entity->uOpenId = $openid;
+			$entity->uName = $wxInfo['nickname'];
+			$entity->uAvatar = $wxInfo['headimgurl'];
+			$entity->save();
+		}
+		return $entity->uId;
+	}
+
 	public static function users($criteria, $params, $page = 1, $pageSize = 20)
 	{
 		$strCriteria = '';

@@ -18,6 +18,21 @@ require_once __DIR__ . '/../lib/WxPay/WxPay.Api.php';
 class UserWechat extends ActiveRecord
 {
 
+	private static $FieldDict = [
+		"wOpenId" => "openid",
+		"wNickName" => "nickname",
+		"wAvatar" => "headimgurl",
+		"wGender" => "sex",
+		"wProvince" => "province",
+		"wCity" => "city",
+		"wCountry" => "country",
+		"wUnionId" => "unionid",
+		"wSubscribeTime" => "subscribe_time",
+		"wSubscribe" => "subscribe",
+		"wGroupId" => "groupid",
+		"wRemark" => "remark",
+	];
+
 	const CATEGORY_ONE = "one";
 	const CATEGORY_TRADE = "trade";
 	const CATEGORY_MALL = "mall";
@@ -45,6 +60,26 @@ class UserWechat extends ActiveRecord
 		return $newItem->wId;
 	}
 
+	protected static function updateWXInfo($wxInfo)
+	{
+		$fields = self::$FieldDict;
+		$openid = $wxInfo[$fields['wOpenId']];
+		$entity = self::findOne(['wOpenId' => $openid]);
+		$uId = User::addWX($wxInfo);
+		if (!$entity) {
+			$entity = new self();
+			$entity->wAddedOn = date('Y-m-d H:i:s');
+			$entity->wUId = $uId;
+		}
+		foreach ($fields as $key => $field) {
+			$entity->$key = isset($wxInfo[$field]) ? $wxInfo[$field] : '';
+		}
+		$entity->wRawData = json_encode($wxInfo);
+		$entity->wUpdatedOn = date('Y-m-d H:i:s');
+		$entity->wExpire = date('Y-m-d H:i:s', time() + 86400 * 14);
+		$entity->save();
+		return $entity->wId;
+	}
 
 	public static function replace($id, $values = [])
 	{
@@ -62,7 +97,7 @@ class UserWechat extends ActiveRecord
 		}
 		$newItem->wUpdatedOn = date("Y-m-d H:i:s");
 		if (!isset($values["wExpire"])) {
-			$newItem->wExpire = date("Y-m-d H:i:s", time() + 86400 * 30);
+			$newItem->wExpire = date("Y-m-d H:i:s", time() + 86400 * 15);
 		}
 
 		$newItem->save();
@@ -201,29 +236,13 @@ class UserWechat extends ActiveRecord
 		if ($ret && is_array($ret) && isset($ret["wid"]) && !$renewFlag) {
 			return $ret;
 		}
-		if (strlen($openId) < 24) {
+		if (strlen($openId) < 20) {
 			return 0;
 		}
 
 		$ret = WechatUtil::getInfoByOpenId($openId, $renewFlag);
 		if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
-			$values = [
-				"wOpenId" => $ret["openid"],
-				"wNickName" => $ret["nickname"],
-				"wAvatar" => $ret["headimgurl"],
-				"wGender" => $ret["sex"],
-				"wProvince" => $ret["province"],
-				"wCity" => $ret["city"],
-				"wCountry" => $ret["country"],
-				"wUnionId" => isset($ret["unionid"]) ? $ret["unionid"] : '',
-				"wSubscribeTime" => $ret["subscribe_time"],
-				"wSubscribe" => $ret["subscribe"],
-				"wGroupId" => $ret["groupid"],
-				"wRemark" => $ret["remark"],
-				"wRawData" => json_encode($ret),
-			];
-			$wid = self::replace($ret["openid"], $values);
-			$ret["wid"] = $wid;
+			$ret["wid"] = self::updateWXInfo($ret);
 			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
 			return $ret;
 		}

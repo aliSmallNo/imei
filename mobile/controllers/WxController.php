@@ -81,7 +81,18 @@ class WxController extends BaseController
 
 	public function actionSign()
 	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if ($wxInfo) {
+			$avatar = $wxInfo["headimgurl"];
+			$nickname = $wxInfo["nickname"];
+		} else {
+			$avatar = ImageUtil::DEFAULT_AVATAR;
+			$nickname = "本地测试";
+		}
 		return self::renderPage("sign.tpl", [
+			'nickname' => $nickname,
+			'avatar' => $avatar
 		]);
 	}
 
