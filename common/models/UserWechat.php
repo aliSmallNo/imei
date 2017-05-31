@@ -18,6 +18,21 @@ require_once __DIR__ . '/../lib/WxPay/WxPay.Api.php';
 class UserWechat extends ActiveRecord
 {
 
+	private static $FieldDict = [
+		"wOpenId" => "openid",
+		"wNickName" => "nickname",
+		"wAvatar" => "headimgurl",
+		"wGender" => "sex",
+		"wProvince" => "province",
+		"wCity" => "city",
+		"wCountry" => "country",
+		"wUnionId" => "unionid",
+		"wSubscribeTime" => "subscribe_time",
+		"wSubscribe" => "subscribe",
+		"wGroupId" => "groupid",
+		"wRemark" => "remark",
+	];
+
 	const CATEGORY_ONE = "one";
 	const CATEGORY_TRADE = "trade";
 	const CATEGORY_MALL = "mall";
@@ -45,6 +60,26 @@ class UserWechat extends ActiveRecord
 		return $newItem->wId;
 	}
 
+	protected static function updateWXInfo($wxInfo)
+	{
+		$fields = self::$FieldDict;
+		$openid = $wxInfo[$fields['wOpenId']];
+		$entity = self::findOne(['wOpenId' => $openid]);
+		$uId = User::addWX($wxInfo);
+		if (!$entity) {
+			$entity = new self();
+			$entity->wAddedOn = date('Y-m-d H:i:s');
+		}
+		foreach ($fields as $key => $field) {
+			$entity->$key = isset($wxInfo[$field]) ? $wxInfo[$field] : '';
+		}
+		$entity->wUId = $uId;
+		$entity->wRawData = json_encode($wxInfo);
+		$entity->wUpdatedOn = date('Y-m-d H:i:s');
+		$entity->wExpire = date('Y-m-d H:i:s', time() + 86400 * 14);
+		$entity->save();
+		return $uId;
+	}
 
 	public static function replace($id, $values = [])
 	{
@@ -60,9 +95,9 @@ class UserWechat extends ActiveRecord
 				$newItem->$key = $val;
 			}
 		}
-		$newItem->zUpdatedDate = date("Y-m-d H:i:s");
+		$newItem->wUpdatedOn = date("Y-m-d H:i:s");
 		if (!isset($values["wExpire"])) {
-			$newItem->wExpire = date("Y-m-d H:i:s", time() + 86400 * 30);
+			$newItem->wExpire = date("Y-m-d H:i:s", time() + 86400 * 15);
 		}
 
 		$newItem->save();
@@ -150,26 +185,28 @@ class UserWechat extends ActiveRecord
 
 	public static function removeOpenId($openId)
 	{
-		$redisUsersKey = RedisUtil::delCache(RedisUtil::KEY_WX_USER, $openId);
-		$redis = AppUtil::redis();
-		$redis->del($redisUsersKey);
-
+		RedisUtil::delCache(RedisUtil::KEY_WX_USER, $openId);
 		$conn = AppUtil::db();
 		$dt = date("Y-m-d H:i:s");
-		$cmd = $conn->createCommand("update hd_user_wechat set wSubscribe=0,zUpdatedDate='$dt',wExpire='$dt' WHERE wOpenId=:openid");
-		$cmd->bindValue(":openid", $openId);
-		$cmd->execute();
+		$sql = 'update im_user_wechat set wSubscribe=0,wUpdatedOn=:dt,wExpire=:dt WHERE wOpenId=:openid';
+		$cmd = $conn->createCommand($sql);
+		$cmd->bindValues([
+			':openid' => $openId,
+			':dt' => $dt,
+		])->execute();
 	}
 
-	public static function getOpenId($aNote)
+	public static function getOpenId($name)
 	{
 		$conn = AppUtil::db();
 		$sql = "select w.* 
-			from hd_admin as a 
-			join hd_user_wechat as w on w.wAId=a.aId
- 			WHERE a.aNote='$aNote' AND a.aStatus=1";
+			from im_admin as a 
+			join im_user_wechat as w on w.wAId=a.aId
+ 			WHERE a.aName=:name AND a.aStatus=1";
 
-		$ret = $conn->createCommand($sql)->queryOne();
+		$ret = $conn->createCommand($sql)->bindValues([
+			':name' => $name
+		])->queryOne();
 		$id = "";
 		if ($ret) {
 			$id = $ret["wOpenId"];
@@ -196,45 +233,16 @@ class UserWechat extends ActiveRecord
 	{
 		$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
 		$ret = json_decode($ret, 1);
-		if ($ret && is_array($ret) && isset($ret["wid"]) && !$renewFlag) {
+		if (isset($ret["uId"]) && !$renewFlag) {
 			return $ret;
 		}
-		if (strlen($openId) < 24) {
+		if (strlen($openId) < 20) {
 			return 0;
 		}
 
-		$ret = "";
-		$urlBase = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
-		/*
-		 * Rain: 此处有坑，微信的access token 经常在两小时内突然失效，另外我们的有时候也不小心刷新了token,而忘了更新redis中的token
-		 * 同样的受害者，也可参考此文 http://blog.csdn.net/wzx19840423/article/details/51850188
-		*/
-		for ($k = 0; $k < 3; $k++) {
-			$access_token = WechatUtil::accessToken($k > 0);
-			$url = sprintf($urlBase, $access_token, $openId);
-			$ret = AppUtil::httpGet($url);
-			$ret = json_decode($ret, true);
-			if ($ret && isset($ret["openid"])) {
-				break;
-			}
-		}
+		$ret = WechatUtil::wxInfo($openId, $renewFlag);
 		if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
-			$values = [
-				"wOpenId" => $ret["openid"],
-				"wNickName" => $ret["nickname"],
-				"wAvatar" => $ret["headimgurl"],
-				"wGender" => $ret["sex"],
-				"wProvince" => $ret["province"],
-				"wCity" => $ret["city"],
-				"wCountry" => $ret["country"],
-				"wUnionId" => $ret["unionid"],
-				"wSubscribeTime" => $ret["subscribe_time"],
-				"wSubscribe" => $ret["subscribe"],
-				"wGroupId" => $ret["groupid"],
-				"wRemark" => $ret["remark"],
-			];
-			$wid = self::replace($ret["openid"], $values);
-			$ret["wid"] = $wid;
+			$ret["uId"] = self::updateWXInfo($ret);
 			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
 			return $ret;
 		}
@@ -243,69 +251,11 @@ class UserWechat extends ActiveRecord
 
 	public static function getInfoByCode($code, $renewFlag = false)
 	{
-		$appId = \WxPayConfig::APPID;
-		$appSecret = \WxPayConfig::APPSECRET;
-		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=$appId&secret=$appSecret&code=$code&grant_type=authorization_code";
-		$ret = AppUtil::httpGet($url);
-		$ret = json_decode($ret, true);
-		if ($ret && isset($ret["access_token"]) && isset($ret["openid"])) {
-			$openId = $ret["openid"];
-			if (!$renewFlag) {
-				$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
-				$ret = json_decode($ret, true);
-				if ($ret && is_array($ret)) {
-					return $ret;
-				}
-				$uInfo = UserWechat::findOne(["wOpenId" => $openId]);
-				if ($uInfo) {
-					$ret = [
-						"openid" => $uInfo["wOpenId"],
-						"nickname" => $uInfo["wNickName"],
-						"sex" => $uInfo["wGender"],
-						"province" => $uInfo["wProvince"],
-						"city" => $uInfo["wCity"],
-						"country" => $uInfo["wCountry"],
-						"headimgurl" => $uInfo["wAvatar"],
-						"unionid" => $uInfo["wUnionId"],
-						"groupid" => $uInfo["wGroupId"],
-						"remark" => $uInfo["wRemark"],
-						"subscribe" => $uInfo["wSubscribe"],
-						"wid" => $uInfo["wId"],
-					];
-					RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
-					return $ret;
-				}
-			}
-			return self::getInfoByOpenId($openId, $renewFlag);
+		$ret = WechatUtil::wxInfoByCode($code, $renewFlag);
+		if ($ret && isset($ret["nickname"])) {
+			return $ret;
 		}
 		return 0;
-	}
-
-	public static function getRedirectUrl($category = "one", $strUrl = "")
-	{
-		$url = AppUtil::wechatUrl();
-		if ($strUrl) {
-			if (strpos($strUrl, "http") === false) {
-				$url = trim($url, "/") . "/" . trim($strUrl, "/");
-			} else {
-				$url = $strUrl;
-			}
-		} else {
-			switch ($category) {
-				case self::CATEGORY_ONE:
-					$url .= "/one/home";
-					break;
-				case self::CATEGORY_TRADE:
-					$url .= "/wx/trade";
-					break;
-				default:
-					$url .= "/wx/login";
-					break;
-			}
-		}
-		$wxAppId = \WxPayConfig::APPID;
-		return sprintf("https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=resign#wechat_redirect",
-			$wxAppId, urlencode($url));
 	}
 
 	public static function getInfoByHeader($header)
@@ -326,28 +276,6 @@ class UserWechat extends ActiveRecord
 			}
 		}
 		return "";
-	}
-
-	public static function sendMsg($openId, $msg)
-	{
-		$ret = [
-			"errcode" => 1,
-			"errmsg" => "default"
-		];
-		if ($openId && $msg) {
-			$url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' . wechatAccessToken::getAccessToken();
-			//$postJosn = '{"msgtype":"text","touser":"' . $touser . '","text":{"content":"' . $msg . '"}}';
-			$postData = [
-				"msgtype" => "text",
-				"touser" => $openId,
-				"text" => [
-					"content" => urlencode($msg)
-				]
-			];
-			$ret = AppUtil::postJSON($url, urldecode(json_encode($postData)));
-		}
-		$ret = json_decode($ret, true);
-		return $ret['errcode'];
 	}
 
 	public static function upgradeUno()
@@ -453,7 +381,7 @@ class UserWechat extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$sql = "select wOpenId from hd_user_wechat WHERE wUNo<1";
+		$sql = "select wOpenId from im_user_wechat WHERE wUNo<1";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$count = 0;
 		foreach ($ret as $row) {
@@ -466,12 +394,14 @@ class UserWechat extends ActiveRecord
 	}
 
 	//getwechat
-	public static function wList($name = "")
+	public static function wList($name = '')
 	{
 		$conn = AppUtil::db();
 
-		$sql = "select wOpenId,wNickName from hd_user_wechat WHERE wNickName like '%$name%' ";
-		return $conn->createCommand($sql)->queryAll();
+		$sql = "select wOpenId,wNickName from im_user_wechat WHERE wNickName like :name ";
+		return $conn->createCommand($sql)->bindValues([
+			':name' => '%' . $name . '%'
+		])->queryAll();
 	}
 
 	public static function renewWechatUsers()

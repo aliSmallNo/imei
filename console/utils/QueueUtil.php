@@ -21,7 +21,7 @@ class QueueUtil
 		'persistent' => false,
 		'host' => '127.0.0.1',
 		'port' => 11302,
-		'timeout' => 3000
+		'timeout' => 3600
 	];
 
 	protected static function logFile($msg, $funcName = '', $line = '')

@@ -175,10 +175,10 @@
 	<div class="u-my-wrap line-bottom">
 		<div class="u-my-bar">
 			<div class="avatar">
-				<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100" alt="">
+				<img src="{{$avatar}}" alt="">
 			</div>
 			<div class="title">
-				<h4>大师兄</h4>
+				<h4>{{$nickname}}</h4>
 				<h5>公司里的开发老司机</h5>
 			</div>
 			<a href="/wx/sreg#step0" class="btn-outline change-role">切换成单身</a>

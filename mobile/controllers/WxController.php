@@ -11,6 +11,9 @@ namespace mobile\controllers;
 
 use common\models\City;
 use common\models\User;
+use common\models\UserSign;
+use common\models\UserWechat;
+use common\utils\ImageUtil;
 
 class WxController extends BaseController
 {
@@ -45,24 +48,62 @@ class WxController extends BaseController
 
 	public function actionMatch()
 	{
-		$this->layout = false;
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if ($wxInfo) {
+			$avatar = $wxInfo["headimgurl"];
+			$nickname = $wxInfo["nickname"];
+		} else {
+			$avatar = ImageUtil::DEFAULT_AVATAR;
+			$nickname = "本地测试";
+		}
 		return self::renderPage("match.tpl", [
-			"maxYear" => 1999
+			'nickname' => $nickname,
+			'avatar' => $avatar
 		]);
 	}
 
 	public function actionSingle()
 	{
-		$this->layout = false;
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if ($wxInfo) {
+			$avatar = $wxInfo["headimgurl"];
+			$nickname = $wxInfo["nickname"];
+		} else {
+			$avatar = ImageUtil::DEFAULT_AVATAR;
+			$nickname = "本地测试";
+		}
 		return self::renderPage("single.tpl", [
-			"maxYear" => 1999
+			'nickname' => $nickname,
+			'avatar' => $avatar
 		]);
 	}
 
 	public function actionSign()
 	{
-		$this->layout = false;
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if ($wxInfo) {
+			$avatar = $wxInfo["headimgurl"];
+			$nickname = $wxInfo["nickname"];
+			$uId = $wxInfo['uId'];
+		} else {
+			$avatar = ImageUtil::DEFAULT_AVATAR;
+			$nickname = "本地测试";
+			$uId = 0;
+		}
+		$isSign = false;
+		$title = '签到送媒桂花';
+		if (UserSign::isSign($uId)) {
+			$title = UserSign::TIP_SIGNED;
+			$isSign = true;
+		}
 		return self::renderPage("sign.tpl", [
+			'nickname' => $nickname,
+			'avatar' => $avatar,
+			'title' => $title,
+			'isSign' => $isSign
 		]);
 	}
 

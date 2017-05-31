@@ -1,5 +1,5 @@
 if (document.location.hash === "" || document.location.hash === "#") {
-	document.location.hash = "#sme";
+	document.location.hash = "#slook";
 }
 require.config({
 	paths: {

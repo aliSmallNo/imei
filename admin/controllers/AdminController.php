@@ -6,33 +6,13 @@ namespace admin\controllers;
 use admin\models\Admin;
 use admin\models\Menu;
 use common\utils\RedisUtil;
-use common\utils\RespUtil;
+use common\utils\ResponseUtil;
 
 
 class AdminController extends BaseController
 {
 
-	public function actionModifypassword()
-	{
-//		$newPassWord = strtolower(self::getParam('newPwd'));
-//		$oldPassWord = strtolower(self::getParam('curPwd'));
-//
-//		if (strlen($newPassWord) < 6 || strlen($newPassWord) > 14) {
-//			return json_encode(["code" => 200, "msg" => "更新失败，新登录密码大于6位小于14位 (@﹏@)~"]);
-//		}
-//
-//		$adminUserInfo = Admin::getUserInfo();
-//		if (md5(strtolower($oldPassWord)) != $adminUserInfo["aPass"]) {
-//			return json_encode(["code" => 200, "msg" => "更新失败，旧密码输入错误 (@﹏@)~ "]);
-//		}
-//		$insertData = [];
-//		$insertData['aId'] = $adminUserInfo['aId'];
-//		$insertData['aPass'] = md5(strtolower($newPassWord));
-//
-//		Admin::saveUser($insertData, false);
-//		Admin::logout();
-//		return json_encode(["code" => 0, "msg" => "修改成功，请重新登录 ( ^_^ )"]);
-	}
+
 
 	/**
 	 * 增加权限用户
@@ -133,7 +113,7 @@ class AdminController extends BaseController
 		}
 		\Yii::$app->response->format = 'json';
 
-		return RespUtil::renderAPI($ret["code"], $ret["msg"]);
+		return ResponseUtil::renderAPI($ret["code"], $ret["msg"]);
 	}
 
 	/**

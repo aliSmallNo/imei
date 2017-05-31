@@ -11,7 +11,6 @@ namespace mobile\controllers;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
-use Faker\Provider\bn_BD\Utils;
 use Yii;
 use yii\web\Controller;
 
@@ -43,9 +42,9 @@ class BaseController extends Controller
 			// Rain: 防止盗链, 检测是否关注了我们的公众号
 			$wxUserInfo = UserWechat::getInfoByOpenId(self::$WX_OpenId);
 			if (!$wxUserInfo || (isset($wxUserInfo["subscribe"]) && $wxUserInfo["subscribe"] != 1)) {
-				$logMsg = [__FUNCTION__, __LINE__, self::$WX_OpenId, json_encode($wxUserInfo)];
-				AppUtil::logFile(implode("; ", $logMsg), 5);
-				header("location:/qrbpdj.html");
+				$logMsg = [self::$WX_OpenId, json_encode($wxUserInfo)];
+				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
+				header("location:/qr.html");
 				exit;
 			}
 			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
@@ -54,24 +53,22 @@ class BaseController extends Controller
 			}
 		} elseif (strlen(self::$WX_OpenId) < 20 && strlen($wxCode) >= 20) {
 			$wxUserInfo = UserWechat::getInfoByCode($wxCode);
+			AppUtil::logFile($wxUserInfo, 5, __FUNCTION__, __LINE__);
 			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
 				self::$WX_OpenId = $wxUserInfo["openid"];
 				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
-				$logMsg = [__FUNCTION__, __LINE__, self::$WX_OpenId, json_encode($wxUserInfo)];
-				AppUtil::logFile(implode("; ", $logMsg), 5);
-
+				$logMsg = [self::$WX_OpenId, json_encode($wxUserInfo)];
+				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
 				// Rain: 发现如果action不执行完毕，getCookie获取不到刚刚赋值的cookie值
-				$logMsg = [__FUNCTION__, __LINE__, " test cookie pit - " . Utils::getCookie(self::COOKIE_OPENID)];
-				AppUtil::logFile(implode("; ", $logMsg), 5);
 			}
 		} elseif (strlen(self::$WX_OpenId) < 20 && strlen($wxCode) < 20) {
 			$currentUrl = Yii::$app->request->getAbsoluteUrl();
-			AppUtil::logFile("currentUrl >>> " . $currentUrl, 5);
-			$newUrl = UserWechat::getRedirectUrl(UserWechat::CATEGORY_MALL, $currentUrl);
+			AppUtil::logFile($currentUrl, 5, __FUNCTION__, __LINE__);
+			$newUrl = WechatUtil::getRedirectUrl(UserWechat::CATEGORY_MALL, $currentUrl);
 			$userPhone = AppUtil::getCookie("user_phone");
 			if (1 || in_array($userPhone, ["18600442970", "13683065697"])) {
-				$logMsg = [__FUNCTION__, __LINE__, $userPhone, $newUrl];
-				AppUtil::logFile(implode("; ", $logMsg), 5);
+				$logMsg = [$userPhone, $newUrl];
+				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
 				self::redirect($newUrl);
 			}
 		}
@@ -80,7 +77,6 @@ class BaseController extends Controller
 
 	protected function isLocalhost()
 	{
-		return true;
 		$httpHost = Yii::$app->request->hostInfo;
 		if (strpos($httpHost, "localhost") === false) {
 			return false;
