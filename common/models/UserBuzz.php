@@ -282,8 +282,12 @@ class UserBuzz extends ActiveRecord
 </Articles>
 </xml>";
 			default:
-				return self::textMsg($fromUsername, $toUsername,
-					"O(∩_∩)O 您好，欢迎来到奔跑到家！\n\n如果需要帮助，请拨打客服热线 01056123309");
+				$msg = '欢迎来到「微媒100」！\n\n';
+				$msg .= '在这里你可以同时注册两种身份— “单身”和“媒婆”。\n\n';
+				$msg .= '点击底栏“进入产品”-“我是媒婆”，帮朋友找对象！\n';
+				$msg .= '点击底栏“进入产品”-“我是单身”，为自己找对象！\n';
+				$msg .= '这里的单身，均有好友做推荐，让交友变得真实';
+				return self::textMsg($fromUsername, $toUsername, $msg);
 		}
 	}
 
