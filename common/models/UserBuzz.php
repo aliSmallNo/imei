@@ -48,7 +48,6 @@ class UserBuzz extends ActiveRecord
 				$newItem[$bKey] = is_array($val) ? json_encode($val) : $val;
 			}
 		}
-
 		$newItem->bRawData = $jsonData;
 		$newItem->save();
 		return $newItem->bId;
@@ -173,54 +172,40 @@ class UserBuzz extends ActiveRecord
 	private static function showText($fromUsername, $toUsername, $time, $contentStr)
 	{
 		$conn = AppUtil::db();
-		$sql = "SELECT * FROM im_user_buzz WHERE bType='text' AND bFrom=:fromUser ORDER BY bId DESC ";
+		$sql = 'SELECT count(1) FROM im_user_buzz WHERE bType=:type AND bFrom=:uid AND bDate>:dt ';
 		$ret = $conn->createCommand($sql)->bindValues([
-			':fromUser' => $fromUsername
-		])->queryOne();
-		$show = '';
-		if ($ret && isset($ret['bDate'])) {
-			$lastTime = strtotime($ret['bDate']);
-			if ((time() - $lastTime) > 86400 * 2) {
-				$show = "<xml>
-							<ToUserName><![CDATA[$fromUsername]]></ToUserName>
-							<FromUserName><![CDATA[$toUsername]]></FromUserName>
-							<CreateTime>$time</CreateTime>
-							<MsgType><![CDATA[text]]></MsgType>
-							<Content><![CDATA[$contentStr]]></Content>
-							</xml>";
-			}
-		} else {
-			$show = "<xml>
-							<ToUserName><![CDATA[$fromUsername]]></ToUserName>
-							<FromUserName><![CDATA[$toUsername]]></FromUserName>
-							<CreateTime>$time</CreateTime>
-							<MsgType><![CDATA[text]]></MsgType>
-							<Content><![CDATA[$contentStr]]></Content>
-							</xml>";
+			':uid' => $fromUsername,
+			':type' => 'text',
+			':dt' => date('Y-m-d H:i:s', time() - 86400 * 2)
+		])->queryScalar();
+		if ($ret) {
+			// Rain: 说明两天之内曾经聊过，不出现提示了
+			return '';
 		}
-		return $show;
+		return self::textMsg($fromUsername, $toUsername, $contentStr);
 	}
 
-	private static function welcomeMsg($fromUsername, $toUsername, $category = "", $extension = "")
+	private
+	static function welcomeMsg($fromUsername, $toUsername, $category = "", $extension = "")
 	{
-		$time = time();
 		switch ($category) {
 			case "crm":
-				return "<xml>
-<ToUserName><![CDATA[$fromUsername]]></ToUserName>
-<FromUserName><![CDATA[$toUsername]]></FromUserName>
-<CreateTime>$time</CreateTime>
-<MsgType><![CDATA[news]]></MsgType>
-<ArticleCount>1</ArticleCount>
-<Articles>
-<item>
-<Title><![CDATA[奔跑到家CRM - 我的奔跑我的CRM]]></Title> 
-<Description><![CDATA[奔跑到家奔跑CRM, 奔跑到家自己的CRM。来吧，使劲戳我吧~]]></Description>
-<PicUrl><![CDATA[http://bpbhd-10063905.file.myqcloud.com/common/crm3.jpg]]></PicUrl>
-<Url><![CDATA[https://wx.bpbhd.com/wx/crm]]></Url>
-</item>
-</Articles>
-</xml>";
+				return self::json_to_xml([
+					'ToUserName' => $fromUsername,
+					'FromUserName' => $toUsername,
+					'CreateTime' => time(),
+					'MsgType' => 'news',
+					'ArticleCount' => 1,
+					'Articles' => [
+						'item' => [
+							'Title' => '奔跑到家CRM - 我的奔跑我的CRM',
+							'Description' => '奔跑到家奔跑CRM, 奔跑到家自己的CRM。来吧，使劲戳我吧~',
+							'PicUrl' => 'http://bpbhd-10063905.file.myqcloud.com/common/crm3.jpg',
+							'Url' => 'https://wx.bpbhd.com/wx/crm'
+						]
+					]
+				]);
+
 			default:
 				return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
 		}
@@ -228,15 +213,38 @@ class UserBuzz extends ActiveRecord
 
 	private static function textMsg($fromUsername, $toUsername, $contentStr)
 	{
-		$time = time();
-		$resp = "<xml>
-				<ToUserName><![CDATA[$fromUsername]]></ToUserName>
-				<FromUserName><![CDATA[$toUsername]]></FromUserName>
-				<CreateTime>$time</CreateTime>
-				<MsgType><![CDATA[text]]></MsgType>
-				<Content><![CDATA[$contentStr]]></Content>
-				</xml>";
-		return $resp;
+		$resp = [
+			'ToUserName' => $fromUsername,
+			'FromUserName' => $toUsername,
+			'CreateTime' => time(),
+			'MsgType' => 'text',
+			'Content' => $contentStr
+		];
+		return self::json_to_xml($resp);
 	}
 
+	public static function json_to_xml($array)
+	{
+		$xml = '<xml>';
+		$xml .= self::changeJson($array);
+		$xml .= '</xml>';
+		return $xml;
+	}
+
+	protected static function changeJson($source)
+	{
+		$string = "";
+		foreach ($source as $key => $val) {
+			$string .= '<' . $key . '>';
+			if (is_array($val)) {
+				$string .= self::changeJson($val);
+			} else if (is_numeric($val)) {
+				$string .= $val;
+			} else {
+				$string .= '<![CDATA[' . $val . ']]';
+			}
+			$string .= '</' . $key . '>';
+		}
+		return $string;
+	}
 }
