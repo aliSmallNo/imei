@@ -81,15 +81,7 @@ class UserBuzz extends ActiveRecord
 		}
 
 		$wxOpenId = $postData["FromUserName"];
-		AppUtil::logFile($wxOpenId, 5, __FUNCTION__, __LINE__);
-		$wxUserInfo = UserWechat::getInfoByOpenId($wxOpenId);
-		AppUtil::logFile($wxUserInfo, 5, __FUNCTION__, __LINE__);
-		$newUserFlag = false;
-		if (!$wxUserInfo) {
-			$newUserFlag = true;
-			$wxUserInfo = UserWechat::getInfoByOpenId($wxOpenId);
-		}
-
+		UserWechat::getInfoByOpenId($wxOpenId);
 		$msgType = isset($postData["MsgType"]) ? strtolower($postData["MsgType"]) : "";
 		$event = isset($postData["Event"]) ? strtolower($postData["Event"]) : "";
 		$eventKey = isset($postData["EventKey"]) && is_string($postData["EventKey"]) ? strtolower($postData["EventKey"]) : "";
