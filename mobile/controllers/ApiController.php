@@ -34,12 +34,14 @@ class ApiController extends Controller
 		if (!$ret) {
 			ob_clean();
 			echo $echostr;
+			exit();
 		}
 		$postStr = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : "";
 		$postStr2 = file_get_contents('php://input', 'r');
 		if (isset($postStr2)) {
 			$postStr = $postStr2;
 		}
+		AppUtil::logFile($postStr, 5, __FUNCTION__, __LINE__);
 		$resp = '';
 		if ($postStr) {
 			libxml_disable_entity_loader(true);
