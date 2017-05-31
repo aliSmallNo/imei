@@ -119,6 +119,7 @@ class WechatUtil
 		$appSecret = \WxPayConfig::APPSECRET;
 		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=$appId&secret=$appSecret&code=$code&grant_type=authorization_code";
 		$ret = AppUtil::httpGet($url);
+		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 		$ret = json_decode($ret, true);
 		if ($ret && isset($ret["access_token"]) && isset($ret["openid"])) {
 			$openId = $ret["openid"];
