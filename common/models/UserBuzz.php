@@ -160,29 +160,24 @@ class UserBuzz extends ActiveRecord
 			case "text":
 				$keyword = trim($postData["Content"]);
 				if ($keyword) {
-					$resp = self::showText($fromUsername, $toUsername, self::$WelcomeMsg);
+					$conn = AppUtil::db();
+					$sql = 'SELECT count(1) FROM im_user_buzz WHERE bType=:type AND bFrom=:uid AND bDate>:dt ';
+					$ret = $conn->createCommand($sql)->bindValues([
+						':uid' => $fromUsername,
+						':type' => 'text',
+						':dt' => date('Y-m-d H:i:s', time() - 86400 * 2)
+					])->queryScalar();
+					$resp = '';
+					if (!$ret) {
+						// Rain: 说明两天之内曾经聊过，不出现提示了
+						$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
+					}
 				}
 				break;
 			default:
 				break;
 		}
 		return [$resp, $debug];
-	}
-
-	private static function showText($fromUsername, $toUsername, $contentStr)
-	{
-		$conn = AppUtil::db();
-		$sql = 'SELECT count(1) FROM im_user_buzz WHERE bType=:type AND bFrom=:uid AND bDate>:dt ';
-		$ret = $conn->createCommand($sql)->bindValues([
-			':uid' => $fromUsername,
-			':type' => 'text',
-			':dt' => date('Y-m-d H:i:s', time() - 86400 * 2)
-		])->queryScalar();
-		if ($ret) {
-			// Rain: 说明两天之内曾经聊过，不出现提示了
-			return '';
-		}
-		return self::textMsg($fromUsername, $toUsername, $contentStr);
 	}
 
 	private static function welcomeMsg($fromUsername, $toUsername, $category = "", $extension = "")
