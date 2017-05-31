@@ -55,7 +55,6 @@ class ApiController extends Controller
 		if ($resp) {
 			echo $resp;
 		} else {
-//				echo $echoStr;
 			echo $echostr;
 		}
 

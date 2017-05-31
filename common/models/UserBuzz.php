@@ -222,12 +222,15 @@ class UserBuzz extends ActiveRecord
 
 	private static function showText($fromUsername, $toUsername, $time, $contentStr)
 	{
-		$sql = "SELECT * FROM hd_user_buzz WHERE bType='text' AND bFrom='" . $fromUsername . "' ORDER BY bId DESC LIMIT 1 ";
-		$last = UserBuzz::findBySql($sql)->asArray()->all();
+		$conn = AppUtil::db();
+		$sql = "SELECT * FROM im_user_buzz WHERE bType='text' AND bFrom=:fromUser ORDER BY bId DESC ";
+		$ret = $conn->createCommand($sql)->bindValues([
+			':fromUser' => $fromUsername
+		])->queryOne();
 		$show = '';
-		if ($last && isset($last[0]) && isset($last[0]['bDate'])) {
-			$ttime = strtotime($last[0]['bDate']);
-			if ((time() - $ttime) > 86400 * 2) {
+		if ($ret && isset($ret['bDate'])) {
+			$lastTime = strtotime($ret['bDate']);
+			if ((time() - $lastTime) > 86400 * 2) {
 				$show = "<xml>
 							<ToUserName><![CDATA[$fromUsername]]></ToUserName>
 							<FromUserName><![CDATA[$toUsername]]></FromUserName>
@@ -268,67 +271,6 @@ class UserBuzz extends ActiveRecord
 </item>
 </Articles>
 </xml>";
-			case UserLink::CATEGORY_ONE:
-				return "<xml>
-<ToUserName><![CDATA[$fromUsername]]></ToUserName>
-<FromUserName><![CDATA[$toUsername]]></FromUserName>
-<CreateTime>$time</CreateTime>
-<MsgType><![CDATA[news]]></MsgType>
-<ArticleCount>1</ArticleCount>
-<Articles>
-<item>
-<Title><![CDATA[奔跑到家1元夺宝 - 一个收获惊喜的网站]]></Title> 
-<Description><![CDATA[奔跑到家1元夺宝，一个收获惊喜的网站，就是指只需1元就有机会获得一件商品，好玩有趣，不容错过。]]></Description>
-<PicUrl><![CDATA[http://bpbhd-10063905.file.myqcloud.com/common/one_share_banner.jpg]]></PicUrl>
-<Url><![CDATA[https://wx.bpbhd.com/?r=one/home]]></Url>
-</item>
-</Articles>
-</xml>";
-			case UserLink::CATEGORY_TRADE:
-				return "<xml>
-<ToUserName><![CDATA[$fromUsername]]></ToUserName>
-<FromUserName><![CDATA[$toUsername]]></FromUserName>
-<CreateTime>$time</CreateTime>
-<MsgType><![CDATA[news]]></MsgType>
-<ArticleCount>1</ArticleCount>
-<Articles>
-<item>
-<Title><![CDATA[奔跑到家奔跑团 - 我的奔跑我的团]]></Title> 
-<Description><![CDATA[奔跑到家奔跑团，劲爆团购，好货好便宜，不容错过。来吧，使劲戳我吧~]]></Description>
-<PicUrl><![CDATA[http://bpbhd-10063905.file.myqcloud.com/common/trade_share_banner.jpg]]></PicUrl>
-<Url><![CDATA[https://wx.bpbhd.com/wx/trade]]></Url>
-</item>
-</Articles>
-</xml>";
-			case UserLink::CATEGORY_TRADE_ITEM:
-				$picUrl = "http://bpbhd-10063905.file.myqcloud.com/common/trade_share_banner.jpg";
-				$desc = "奔跑到家奔跑团，劲爆团购，好货好便宜，不容错过。来吧，使劲戳我吧~";
-				$title = "奔跑到家奔跑团 - 我的奔跑我的团";
-				$sql = "select * from hd_trade_item WHERE iId=:id";
-				$ret = objInstance::getDB()->createCommand($sql)->bindValues([
-					":id" => $extension
-				])->queryOne();
-				if ($ret) {
-					$title = "奔跑到家奔跑团 - " . $ret["iTitleAbbr"];
-					$desc = $ret["iTitle"];
-					$picUrl = ImageOpt::getItemImages($ret["iCover"], $picUrl, true)[0];
-				}
-				$retXML = "<xml>
-<ToUserName><![CDATA[$fromUsername]]></ToUserName>
-<FromUserName><![CDATA[$toUsername]]></FromUserName>
-<CreateTime>$time</CreateTime>
-<MsgType><![CDATA[news]]></MsgType>
-<ArticleCount>1</ArticleCount>
-<Articles>
-<item>
-<Title><![CDATA[$title]]></Title> 
-<Description><![CDATA[$desc]]></Description>
-<PicUrl><![CDATA[$picUrl]]></PicUrl>
-<Url><![CDATA[https://wx.bpbhd.com/wx/trade#/detail?id=$extension]]></Url>
-</item>
-</Articles>
-</xml>";
-				return $retXML;
 			case "crm":
 				return "<xml>
 <ToUserName><![CDATA[$fromUsername]]></ToUserName>
