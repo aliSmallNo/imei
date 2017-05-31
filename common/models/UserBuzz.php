@@ -220,7 +220,6 @@ class UserBuzz extends ActiveRecord
 			'Content' => $contentStr
 		];
 		$ret = self::json_to_xml($resp);
-		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 		return $ret;
 	}
 
