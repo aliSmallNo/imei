@@ -103,13 +103,7 @@ class UserBuzz extends ActiveRecord
 					}
 					if ($qrInfo) {
 						$debug .= $addResult . "**";
-						if ($qrInfo["qCategory"] == UserLink::CATEGORY_MALL
-							|| $qrInfo["qCategory"] == UserLink::CATEGORY_TRADE_ITEM
-						) {
-							$resp = self::welcomeMsg($fromUsername, $toUsername, $qrInfo["qCategory"], $qrInfo["qFrom"]);
-						} else {
-							$resp = self::welcomeMsg($fromUsername, $toUsername, $qrInfo["qCategory"]);
-						}
+						$resp = self::welcomeMsg($fromUsername, $toUsername, $qrInfo["qCategory"]);
 					}
 				}
 				break;
