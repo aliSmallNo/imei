@@ -107,14 +107,13 @@ class ApiController extends Controller
 
 	public function actionUser()
 	{
-		$tag = trim(strtolower(self::getParam('tag')));
-		$id = self::getParam('id');
+		$tag = trim(strtolower(self::postParam('tag')));
+		$id = self::postParam('id');
 		$openId = AppUtil::getCookie(self::COOKIE_OPENID);
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		if (!$wxInfo) {
 			return self::renderAPI(129, '用户不存在啊~');
 		}
-		AppUtil::logFile($wxInfo, 5, __FUNCTION__, __LINE__);
 		switch ($tag) {
 			case 'sign':
 				$amt = rand(5, 25);
