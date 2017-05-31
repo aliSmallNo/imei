@@ -114,6 +114,7 @@ class ApiController extends Controller
 		if (!$wxInfo) {
 			return self::renderAPI(129, '用户不存在啊~');
 		}
+		AppUtil::logFile($wxInfo, 5, __FUNCTION__, __LINE__);
 		switch ($tag) {
 			case 'sign':
 				$amt = rand(5, 25);

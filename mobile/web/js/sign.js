@@ -35,8 +35,8 @@ require(["layer"],
 				if (resp.code == 0) {
 					self.addClass('signed');
 					layer.open({
-						title: '已签到',
-						content: resp.msg
+						content: resp.msg,
+						btn: '我知道了'
 					});
 				} else {
 					showMsg(resp.msg);
