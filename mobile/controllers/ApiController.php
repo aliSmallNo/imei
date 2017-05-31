@@ -11,6 +11,8 @@ namespace mobile\controllers;
 
 use common\models\City;
 use common\models\UserBuzz;
+use common\models\UserSign;
+use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
 use Yii;
@@ -20,13 +22,14 @@ use yii\web\Response;
 class ApiController extends Controller
 {
 	public $layout = false;
+	const COOKIE_OPENID = "wx-openid";
 
 	public function actionBuzz()
 	{
 		$signature = self::getParam("signature");
 		$timestamp = self::getParam("timestamp");
 		$nonce = self::getParam("nonce");
-		$echostr =self::getParam("echostr");
+		$echostr = self::getParam("echostr");
 		$ret = UserBuzz::checkSignature($signature, $timestamp, $nonce);
 		if (!$ret) {
 			ob_clean();
@@ -98,6 +101,29 @@ class ApiController extends Controller
 				]);
 			default:
 				break;
+		}
+		return self::renderAPI(129);
+	}
+
+	public function actionUser()
+	{
+		$tag = trim(strtolower(self::getParam('tag')));
+		$id = self::getParam('id');
+		$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			return self::renderAPI(129, '用户不存在啊~');
+		}
+		switch ($tag) {
+			case 'sign':
+				$amt = rand(5, 25);
+				$ret = UserSign::add($wxInfo['uId'], $amt);
+				if ($ret) {
+					$yuan = sprintf('%.2f', $amt / 1.0);
+					return self::renderAPI(0, '今日签到获得' . $yuan . '元红包，请明天继续~');
+				} else {
+					return self::renderAPI(129, '您今日已经签到过啦~');
+				}
 		}
 		return self::renderAPI(129);
 	}

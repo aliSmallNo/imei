@@ -23,14 +23,14 @@ class UserSign extends ActiveRecord
 		$date = date('Y-m-d');
 		$entity = self::findOne(['sUId' => $uid, 'sDate' => $date]);
 		if ($entity) {
-			return $entity->sId;
+			return false;
 		}
 		$entity = new self();
 		$entity->sUId = $uid;
 		$entity->sDate = $date;
 		$entity->sReward = $reward;
 		$entity->save();
-		return $entity->sId;
+		return true;
 	}
 
 	public static function isSign($uid)
