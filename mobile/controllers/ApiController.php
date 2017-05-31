@@ -126,7 +126,7 @@ class ApiController extends Controller
 					return self::renderAPI(129, '您今日已经签到过啦~');
 				}
 		}
-		return self::renderAPI(129);
+		return self::renderAPI(129, '操作无效~');
 	}
 
 	protected function renderAPI($code, $msg = '', $data = [])
