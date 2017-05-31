@@ -242,7 +242,7 @@ class UserBuzz extends ActiveRecord
 			} else if (is_numeric($val)) {
 				$string .= $val;
 			} else {
-				$string .= '<![CDATA[' . $val . ']]';
+				$string .= '<![CDATA[' . $val . ']]>';
 			}
 			$string .= '</' . $key . '>';
 		}
