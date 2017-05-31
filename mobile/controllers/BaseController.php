@@ -38,12 +38,13 @@ class BaseController extends Controller
 
 		self::$WX_OpenId = AppUtil::getCookie(self::COOKIE_OPENID);
 		$wxCode = self::getParam("code");
+		AppUtil::logFile($wxCode, 5, __FUNCTION__, __LINE__);
 		if (strlen(self::$WX_OpenId) > 20) {
 			// Rain: 防止盗链, 检测是否关注了我们的公众号
 			$wxUserInfo = UserWechat::getInfoByOpenId(self::$WX_OpenId);
 			if (!$wxUserInfo || (isset($wxUserInfo["subscribe"]) && $wxUserInfo["subscribe"] != 1)) {
-				$logMsg = [__FUNCTION__, __LINE__, self::$WX_OpenId, json_encode($wxUserInfo)];
-				AppUtil::logFile(implode("; ", $logMsg), 5);
+				$logMsg = [self::$WX_OpenId, json_encode($wxUserInfo)];
+				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
 				header("location:/qr.html");
 				exit;
 			}
@@ -56,12 +57,12 @@ class BaseController extends Controller
 			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
 				self::$WX_OpenId = $wxUserInfo["openid"];
 				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
-				$logMsg = [__FUNCTION__, __LINE__, self::$WX_OpenId, json_encode($wxUserInfo)];
-				AppUtil::logFile(implode("; ", $logMsg), 5);
+				$logMsg = [self::$WX_OpenId, json_encode($wxUserInfo)];
+				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
 
 				// Rain: 发现如果action不执行完毕，getCookie获取不到刚刚赋值的cookie值
-				$logMsg = [__FUNCTION__, __LINE__, " test cookie pit - " . AppUtil::getCookie(self::COOKIE_OPENID)];
-				AppUtil::logFile(implode("; ", $logMsg), 5);
+				$logMsg = [" test cookie pit - " . AppUtil::getCookie(self::COOKIE_OPENID)];
+				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
 			}
 		} elseif (strlen(self::$WX_OpenId) < 20 && strlen($wxCode) < 20) {
 			$currentUrl = Yii::$app->request->getAbsoluteUrl();
@@ -69,8 +70,8 @@ class BaseController extends Controller
 			$newUrl = WechatUtil::getRedirectUrl(UserWechat::CATEGORY_MALL, $currentUrl);
 			$userPhone = AppUtil::getCookie("user_phone");
 			if (1 || in_array($userPhone, ["18600442970", "13683065697"])) {
-				$logMsg = [__FUNCTION__, __LINE__, $userPhone, $newUrl];
-				AppUtil::logFile(implode("; ", $logMsg), 5);
+				$logMsg = [$userPhone, $newUrl];
+				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
 				self::redirect($newUrl);
 			}
 		}
