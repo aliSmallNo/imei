@@ -10,7 +10,9 @@ namespace admin\controllers;
 
 
 use admin\models\Admin;
+use yii\data\Pagination;
 use yii\web\Controller;
+use yii\widgets\LinkPager;
 
 class BaseController extends Controller
 {
@@ -58,7 +60,7 @@ class BaseController extends Controller
 		}
 		$adminId = Admin::getAdminId();
 		$adminInfo = Admin::userInfo($adminId);
-		if(!$adminInfo){
+		if (!$adminInfo) {
 			return self::render($view, $params);
 		}
 		$params["branch_editable"] = $adminInfo["aLevel"] >= Admin::LEVEL_MODIFY ? 1 : 0;
@@ -153,6 +155,20 @@ class BaseController extends Controller
 		}
 
 		return $requestStr;
+	}
+
+	protected static function pagination($pageIndex, $count, $pageSize = 0)
+	{
+		if (!$pageSize) {
+			$pageSize = self::PAGE_SIZE;
+		}
+		$pages = new Pagination(['totalCount' => $count, 'pageSize' => $pageSize]);
+		$pages->setPage($pageIndex - 1);
+		$res = LinkPager::widget(['pagination' => $pages]);
+		$pagination = str_replace('<ul class="pagination">', '<div class="dataTables_paginate paging_simple_numbers"><ul class="pagination">', $res);
+		$pagination = mb_ereg_replace('&laquo;', '<i class="fa fa-angle-double-left"></i>', $pagination);
+		$pagination = mb_ereg_replace('&raquo;', '<i class="fa fa-angle-double-right"></i>', $pagination);
+		return $pagination;
 	}
 
 }

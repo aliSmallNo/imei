@@ -34,12 +34,11 @@
 			</thead>
 			<tbody>
 			{{foreach from=$list item=prod}}
-			<tr>
+			<tr data-id="{{$prod.aId}}">
 				<td>
 					{{$prod.aName}}
 					{{if $prod.levelDesc}}
 					<div>({{$prod.levelDesc}})</div>{{/if}}
-					<div>{{$prod.aId}}</div>
 				</td>
 
 				{{foreach from=$menus key=cKey item=cItem}}
