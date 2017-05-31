@@ -160,7 +160,7 @@ class UserBuzz extends ActiveRecord
 			case "text":
 				$keyword = trim($postData["Content"]);
 				if ($keyword) {
-					$resp = self::showText($fromUsername, $toUsername, $time, self::$WelcomeMsg);
+					$resp = self::showText($fromUsername, $toUsername, self::$WelcomeMsg);
 				}
 				break;
 			default:
@@ -169,7 +169,7 @@ class UserBuzz extends ActiveRecord
 		return [$resp, $debug];
 	}
 
-	private static function showText($fromUsername, $toUsername, $time, $contentStr)
+	private static function showText($fromUsername, $toUsername, $contentStr)
 	{
 		$conn = AppUtil::db();
 		$sql = 'SELECT count(1) FROM im_user_buzz WHERE bType=:type AND bFrom=:uid AND bDate>:dt ';
@@ -185,8 +185,7 @@ class UserBuzz extends ActiveRecord
 		return self::textMsg($fromUsername, $toUsername, $contentStr);
 	}
 
-	private
-	static function welcomeMsg($fromUsername, $toUsername, $category = "", $extension = "")
+	private static function welcomeMsg($fromUsername, $toUsername, $category = "", $extension = "")
 	{
 		switch ($category) {
 			case "crm":
@@ -220,7 +219,9 @@ class UserBuzz extends ActiveRecord
 			'MsgType' => 'text',
 			'Content' => $contentStr
 		];
-		return self::json_to_xml($resp);
+		$ret = self::json_to_xml($resp);
+		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
+		return $ret;
 	}
 
 	public static function json_to_xml($array)
