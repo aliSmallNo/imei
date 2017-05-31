@@ -13,7 +13,7 @@ use yii\db\ActiveRecord;
 
 class UserBuzz extends ActiveRecord
 {
-	static $KeyMap = [
+	private static $KeyMap = [
 		"ToUserName" => "bTo",
 		"FromUserName" => "bFrom",
 		"CreateTime" => "bCreateTime",
@@ -28,8 +28,6 @@ class UserBuzz extends ActiveRecord
 
 	private static $Token = "BLkNmzT5HdJQT8DMZu1kIK";
 	private static $WelcomeMsg = '';
-	private static $CrmMsg = "O(∩_∩)O 你好,你还没有绑定微信账号!\n\n请输入你的名字+后台登录ID，如：'成龙chengl' ";
-	private static $CrmMsgErr = "您输入的名字或后台登录ID不存在!\n\n请重新输入你的名字+后台登录ID，如：'成龙chengl' 再次绑定";
 
 	public static function tableName()
 	{
@@ -98,7 +96,6 @@ class UserBuzz extends ActiveRecord
 		switch ($event) {
 			case "scan":
 				$debug .= $event . "**";
-
 				if ($eventKey && is_numeric($eventKey)) {
 					$qrInfo = UserQR::findOne(["qId" => $eventKey]);
 					$debug .= $wxOpenId . "**" . $qrInfo["qFrom"] . "**" . $qrInfo["qCategory"] . "**" . $qrInfo["qSubCategory"];
@@ -145,6 +142,8 @@ class UserBuzz extends ActiveRecord
 					UserWechat::removeOpenId($fromUsername);
 				}
 				break;
+			default:
+				break;
 		}
 		switch ($msgType) {
 			case "image":
@@ -162,61 +161,13 @@ class UserBuzz extends ActiveRecord
 			case "text":
 				$keyword = trim($postData["Content"]);
 				if ($keyword) {
-					if (strtolower($keyword) == "crm") {
-						$info = UserWechat::adminInfo($fromUsername);
-						if ($info) {
-							//推送crm入口信息
-							$resp = self::welcomeMsg($fromUsername, $toUsername, 'crm');
-						} else {
-							$resp = self::showTextCrm($fromUsername, $toUsername, $time, self::$CrmMsg);
-						}
-					} else if (preg_match("/^[\x{4e00}-\x{9fa5}]{1,10}[A-z]+$/u", $keyword)) {
-						$info = UserWechat::adminInfo($fromUsername);
-
-						if ($info) {
-							preg_match("/^[\x{4e00}-\x{9fa5}]{1,10}/u", $keyword, $aNote);
-							$openId = UserWechat::getOpenId($aNote[0]);
-							if ($openId == $fromUsername) {
-								$resp = self::welcomeMsg($fromUsername, $toUsername, "crm");
-							} else {
-								$resp = self::showTextCrm($fromUsername, $toUsername, $time, "您已经绑定微信账号！\n\n请输入您自己的名字+后台登录ID或crm!");
-							}
-						} else {
-							$conn = AppUtil::db();
-							$sql = "select * from hd_admin where concat(aNote,aName)=:name ";
-							$adminInfo = $conn->createCommand($sql)->bindValues([
-								':name' => $keyword
-							])->execute();
-
-							if ($adminInfo) {
-								$aid = $adminInfo["aId"];
-								$id = UserWechat::replace($fromUsername, ["wAId" => $aid]);
-								if ($id) {
-									$resp = self::welcomeMsg($fromUsername, $toUsername, "crm");
-								}
-							} else {
-								$resp = self::showTextCrm($fromUsername, $toUsername, $time, self::$CrmMsgErr);
-							}
-						}
-
-					} else {
-						$resp = self::showText($fromUsername, $toUsername, $time, self::$WelcomeMsg);
-					}
+					$resp = self::showText($fromUsername, $toUsername, $time, self::$WelcomeMsg);
 				}
+				break;
+			default:
 				break;
 		}
 		return [$resp, $debug];
-	}
-
-	private static function showTextCrm($fromUsername, $toUsername, $time, $contentStr)
-	{
-		return "<xml>
-				<ToUserName><![CDATA[$fromUsername]]></ToUserName>
-				<FromUserName><![CDATA[$toUsername]]></FromUserName>
-				<CreateTime>$time</CreateTime>
-				<MsgType><![CDATA[text]]></MsgType>
-				<Content><![CDATA[$contentStr]]></Content>
-				</xml>";
 	}
 
 	private static function showText($fromUsername, $toUsername, $time, $contentStr)
@@ -254,22 +205,6 @@ class UserBuzz extends ActiveRecord
 	{
 		$time = time();
 		switch ($category) {
-			case UserLink::CATEGORY_MALL:
-				return "<xml>
-<ToUserName><![CDATA[$fromUsername]]></ToUserName>
-<FromUserName><![CDATA[$toUsername]]></FromUserName>
-<CreateTime>$time</CreateTime>
-<MsgType><![CDATA[news]]></MsgType>
-<ArticleCount>1</ArticleCount>
-<Articles>
-<item>
-<Title><![CDATA[奔跑到家 - 专业乡镇网购平台]]></Title> 
-<Description><![CDATA[奔跑到家是北京奔跑吧货滴科技有限公司倾力打造的一个智能化乡镇移动电商平台。]]></Description>
-<PicUrl><![CDATA[http://bpbhd-10063905.file.myqcloud.com/common/mall_share_banner.jpg]]></PicUrl>
-<Url><![CDATA[https://wx.bpbhd.com/?r=wechat/xreg2&invitePhone=$extension]]></Url>
-</item>
-</Articles>
-</xml>";
 			case "crm":
 				return "<xml>
 <ToUserName><![CDATA[$fromUsername]]></ToUserName>
