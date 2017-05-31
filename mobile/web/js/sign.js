@@ -34,6 +34,7 @@ require(["layer"],
 			}, function (resp) {
 				if (resp.code == 0) {
 					self.addClass('signed');
+					self.html(resp.data.title);
 					layer.open({
 						content: resp.msg,
 						btn: '我知道了'

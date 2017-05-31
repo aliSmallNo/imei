@@ -96,7 +96,7 @@ class WxController extends BaseController
 		$isSign = false;
 		$title = '签到送媒桂花';
 		if (UserSign::isSign($uId)) {
-			$title = '今天签过啦';
+			$title = UserSign::TIP_SIGNED;
 			$isSign = true;
 		}
 		return self::renderPage("sign.tpl", [

@@ -13,6 +13,9 @@ use yii\db\ActiveRecord;
 
 class UserSign extends ActiveRecord
 {
+	const TIP_SIGNED='今天签过啦~';
+	const TIP_UNSIGNED='签到送媒桂花';
+
 	public static function tableName()
 	{
 		return '{{%user_sign}}';
