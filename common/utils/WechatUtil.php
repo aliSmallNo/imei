@@ -123,9 +123,7 @@ class WechatUtil
 		$ret = json_decode($ret, true);
 		if ($ret && isset($ret["access_token"]) && isset($ret["openid"])) {
 			$openId = $ret["openid"];
-			if ($renewFlag) {
-				return self::getInfoByOpenId($openId, $renewFlag);
-			} else {
+			if (!$renewFlag) {
 				$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
 				$ret = json_decode($ret, 1);
 				if ($ret && is_array($ret)) {
@@ -133,6 +131,7 @@ class WechatUtil
 					return $ret;
 				}
 			}
+			return self::getInfoByOpenId($openId, $renewFlag);
 		}
 		return 0;
 	}
