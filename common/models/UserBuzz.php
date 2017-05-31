@@ -90,7 +90,6 @@ class UserBuzz extends ActiveRecord
 
 		$fromUsername = isset($postData["FromUserName"]) ? $postData["FromUserName"] : "";
 		$toUsername = isset($postData["ToUserName"]) ? $postData["ToUserName"] : "";
-		$time = time();
 
 		switch ($event) {
 			case "scan":
