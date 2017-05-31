@@ -5,6 +5,7 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use admin\models\Menu;
+use common\utils\RedisUtil;
 use common\utils\RespUtil;
 
 
@@ -135,10 +136,8 @@ class AdminController extends BaseController
 		return RespUtil::renderAPI($ret["code"], $ret["msg"]);
 	}
 
-
 	/**
 	 * 用户列表
-	 *
 	 * */
 	public function actionUsers()
 	{

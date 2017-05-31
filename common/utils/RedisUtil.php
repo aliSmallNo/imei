@@ -82,6 +82,7 @@ class RedisUtil
 		$redis->del($redisKey);
 	}
 
+
 	public static function getPrefix(...$keys)
 	{
 		array_unshift($keys, self::FIXED_PREFIX);
