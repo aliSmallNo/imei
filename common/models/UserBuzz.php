@@ -76,8 +76,8 @@ class UserBuzz extends ActiveRecord
 		$debug = '';
 		self::$WelcomeMsg = '欢迎来到「微媒100」！' . PHP_EOL . PHP_EOL;
 		self::$WelcomeMsg .= '在这里你可以同时注册两种身份— “单身”和“媒婆”。' . PHP_EOL . PHP_EOL;
-		self::$WelcomeMsg .= '点击底栏“进入产品”-“我是媒婆”，帮朋友找对象！' . PHP_EOL;
-		self::$WelcomeMsg .= '点击底栏“进入产品”-“我是单身”，为自己找对象！' . PHP_EOL;
+		self::$WelcomeMsg .= '点击底栏“我是媒婆”，帮朋友找对象！' . PHP_EOL;
+		self::$WelcomeMsg .= '点击底栏“我是单身”，为自己找对象！' . PHP_EOL . PHP_EOL;
 		self::$WelcomeMsg .= '这里的单身，均有好友做推荐，让交友变得真实';
 		$postData = json_decode($postJSON, 1);
 
