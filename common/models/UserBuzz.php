@@ -51,7 +51,7 @@ class UserBuzz extends ActiveRecord
 			}
 		}
 
-		$newItem->bNote = $jsonData;
+		$newItem->bRawData = $jsonData;
 		$newItem->save();
 		return $newItem->bId;
 	}
