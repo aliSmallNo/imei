@@ -1900,7 +1900,7 @@ section {
     margin: 2rem auto 0; }
   .m-sign .signbox {
     width: 24.4rem;
-    height: 7.8rem;
+    height: 5.2rem;
     margin: 0 auto;
     position: relative;
     top: -1.5rem;
@@ -2115,5 +2115,25 @@ section {
     text-decoration: none;
     color: #fff;
     margin-top: 0.7rem; }
+
+.sign-user {
+  line-height: 4rem;
+  height: 4rem;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  position: relative; }
+  .sign-user img {
+    position: relative;
+    width: 3rem;
+    height: 3rem;
+    vertical-align: middle;
+    border-radius: 1.5rem; }
+  .sign-user em {
+    font-size: 1.2rem;
+    font-style: normal;
+    font-weight: 300;
+    padding-left: 0.5rem; }
 
 /*# sourceMappingURL=imei.css.map */

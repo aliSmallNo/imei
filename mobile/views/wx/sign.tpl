@@ -4,6 +4,10 @@
 	<div class="signbox">
 		<span class="btn hasSignined">今天签过啦</span>
 	</div>
+	<div class="sign-user">
+		<img src="{{$avatar}}" alt="">
+		<em>{{$nickname}}</em>
+	</div>
 	<a href="javascript:;" class="help">怕错过签到？记得置顶公众号哟</a>
 	<div class="rules"><p class="title">签到规则</p>
 		<div class="content">
