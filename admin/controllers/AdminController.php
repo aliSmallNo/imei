@@ -11,12 +11,8 @@ use common\utils\ResponseUtil;
 
 class AdminController extends BaseController
 {
-
-
-
 	/**
 	 * 增加权限用户
-	 *
 	 * */
 	public function actionUser()
 	{
