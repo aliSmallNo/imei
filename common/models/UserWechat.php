@@ -231,9 +231,8 @@ class UserWechat extends ActiveRecord
 	public static function getInfoByCode($code, $renewFlag = false)
 	{
 		$ret = WechatUtil::getInfoByCode($code, $renewFlag);
-		AppUtil::logFile(json_encode($ret), 5, __FUNCTION__, __LINE__);
-		if ($ret && isset($ret["access_token"]) && isset($ret["openid"])) {
-			return self::getInfoByOpenId($ret["openid"], $renewFlag);
+		if ($ret && isset($ret["nickname"])) {
+			return $ret;
 		}
 		return 0;
 	}
