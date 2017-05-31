@@ -80,7 +80,7 @@ class WechatUtil
 	}
 
 
-	public static function getInfoByOpenId($openId, $renewFlag = false)
+	public static function wxInfo($openId, $renewFlag = false)
 	{
 		$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
 		$ret = json_decode($ret, 1);
@@ -113,7 +113,7 @@ class WechatUtil
 		return 0;
 	}
 
-	public static function getInfoByCode($code, $renewFlag = false)
+	public static function wxInfoByCode($code, $renewFlag = false)
 	{
 		$appId = \WxPayConfig::APPID;
 		$appSecret = \WxPayConfig::APPSECRET;
@@ -130,7 +130,7 @@ class WechatUtil
 					return $ret;
 				}
 			}
-			return self::getInfoByOpenId($openId, $renewFlag);
+			return self::wxInfo($openId, $renewFlag);
 		}
 		return 0;
 	}

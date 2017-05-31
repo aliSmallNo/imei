@@ -1,8 +1,8 @@
 <div class="m-sign">
 	<div class="logo"></div>
 	<div class="smp"></div>
-	<div class="signbox">
-		<span class="btn hasSignined">今天签过啦</span>
+	<div class="sign-bar">
+		<span class="btn {{if $isSign}}signed{{/if}}">{{$title}}</span>
 	</div>
 	<div class="sign-user">
 		<img src="{{$avatar}}" alt="">

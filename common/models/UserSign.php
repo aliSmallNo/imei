@@ -15,7 +15,7 @@ class UserSign extends ActiveRecord
 {
 	public static function tableName()
 	{
-		return '{{%user_buzz}}';
+		return '{{%user_sign}}';
 	}
 
 	public static function add($uid, $reward = 10)

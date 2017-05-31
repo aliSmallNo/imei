@@ -11,6 +11,7 @@ namespace mobile\controllers;
 
 use common\models\City;
 use common\models\User;
+use common\models\UserSign;
 use common\models\UserWechat;
 use common\utils\ImageUtil;
 
@@ -86,13 +87,23 @@ class WxController extends BaseController
 		if ($wxInfo) {
 			$avatar = $wxInfo["headimgurl"];
 			$nickname = $wxInfo["nickname"];
+			$uId = $wxInfo['uId'];
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
+			$uId = 0;
+		}
+		$isSign = false;
+		$title = '签到送媒桂花';
+		if (UserSign::isSign($uId)) {
+			$title = '今天签过啦';
+			$isSign = true;
 		}
 		return self::renderPage("sign.tpl", [
 			'nickname' => $nickname,
-			'avatar' => $avatar
+			'avatar' => $avatar,
+			'title' => $title,
+			'isSign' => $isSign
 		]);
 	}
 

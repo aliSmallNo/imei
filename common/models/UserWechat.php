@@ -78,7 +78,7 @@ class UserWechat extends ActiveRecord
 		$entity->wUpdatedOn = date('Y-m-d H:i:s');
 		$entity->wExpire = date('Y-m-d H:i:s', time() + 86400 * 14);
 		$entity->save();
-		return $entity->wId;
+		return $uId;
 	}
 
 	public static function replace($id, $values = [])
@@ -233,16 +233,16 @@ class UserWechat extends ActiveRecord
 	{
 		$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
 		$ret = json_decode($ret, 1);
-		if ($ret && is_array($ret) && isset($ret["wid"]) && !$renewFlag) {
+		if (isset($ret["uId"]) && !$renewFlag) {
 			return $ret;
 		}
 		if (strlen($openId) < 20) {
 			return 0;
 		}
 
-		$ret = WechatUtil::getInfoByOpenId($openId, $renewFlag);
+		$ret = WechatUtil::wxInfo($openId, $renewFlag);
 		if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
-			$ret["wid"] = self::updateWXInfo($ret);
+			$ret["uId"] = self::updateWXInfo($ret);
 			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
 			return $ret;
 		}
@@ -251,7 +251,7 @@ class UserWechat extends ActiveRecord
 
 	public static function getInfoByCode($code, $renewFlag = false)
 	{
-		$ret = WechatUtil::getInfoByCode($code, $renewFlag);
+		$ret = WechatUtil::wxInfoByCode($code, $renewFlag);
 		if ($ret && isset($ret["nickname"])) {
 			return $ret;
 		}
