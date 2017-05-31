@@ -27,7 +27,7 @@ class UserBuzz extends ActiveRecord
 	];
 
 	private static $Token = "BLkNmzT5HdJQT8DMZu1kIK";
-	private static $WelcomeMsg = "O(∩_∩)O 您好，需要帮助吗？\n\n如果我们不能及时回复您，请拨打客服热线 01056123309";
+	private static $WelcomeMsg = '';
 	private static $CrmMsg = "O(∩_∩)O 你好,你还没有绑定微信账号!\n\n请输入你的名字+后台登录ID，如：'成龙chengl' ";
 	private static $CrmMsgErr = "您输入的名字或后台登录ID不存在!\n\n请重新输入你的名字+后台登录ID，如：'成龙chengl' 再次绑定";
 
@@ -74,6 +74,11 @@ class UserBuzz extends ActiveRecord
 	{
 		$resp = '';
 		$debug = '';
+		self::$WelcomeMsg = '欢迎来到「微媒100」！\n\n';
+		self::$WelcomeMsg .= '在这里你可以同时注册两种身份— “单身”和“媒婆”。\n\n';
+		self::$WelcomeMsg .= '点击底栏“进入产品”-“我是媒婆”，帮朋友找对象！\n';
+		self::$WelcomeMsg .= '点击底栏“进入产品”-“我是单身”，为自己找对象！\n';
+		self::$WelcomeMsg .= '这里的单身，均有好友做推荐，让交友变得真实';
 		$postData = json_decode($postJSON, 1);
 
 		if (!$postData || !isset($postData["FromUserName"])) {
@@ -282,12 +287,7 @@ class UserBuzz extends ActiveRecord
 </Articles>
 </xml>";
 			default:
-				$msg = '欢迎来到「微媒100」！\n\n';
-				$msg .= '在这里你可以同时注册两种身份— “单身”和“媒婆”。\n\n';
-				$msg .= '点击底栏“进入产品”-“我是媒婆”，帮朋友找对象！\n';
-				$msg .= '点击底栏“进入产品”-“我是单身”，为自己找对象！\n';
-				$msg .= '这里的单身，均有好友做推荐，让交友变得真实';
-				return self::textMsg($fromUsername, $toUsername, $msg);
+				return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
 		}
 	}
 
