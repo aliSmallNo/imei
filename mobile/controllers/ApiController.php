@@ -151,26 +151,4 @@ class ApiController extends Controller
 		return isset($postInfo[$field]) ? trim($postInfo[$field]) : $defaultVal;
 	}
 
-	protected function isLocalhost()
-	{
-		return true;
-		$httpHost = Yii::$app->request->hostInfo;
-		if (strpos($httpHost, "localhost") === false) {
-			return false;
-		}
-		return true;
-	}
-
-	protected function isWechat()
-	{
-		$httpHost = Yii::$app->request->hostInfo;
-		if (strpos($httpHost, "localhost") !== false) {
-			return true;
-		}
-		$userAgent = Yii::$app->request->userAgent;
-		if (strpos($userAgent, 'MicroMessenger') !== false) {
-			return true;
-		}
-		return false;
-	}
 }
