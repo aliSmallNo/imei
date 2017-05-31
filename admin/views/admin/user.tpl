@@ -150,9 +150,9 @@
 		});
 
 		layer.load();
-		$.post("/admin/edituser", {
+		$.post("/api/user", {
 			id: id,
-			tag: "edit",
+			tag: "edit-admin",
 			name: $("input[name=name]").val(),
 			phone: $("input[name=phone]").val(),
 			pass: $("input[name=pass]").val(),

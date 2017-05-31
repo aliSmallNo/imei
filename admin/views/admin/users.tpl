@@ -37,7 +37,8 @@
 			<tr>
 				<td>
 					{{$prod.aName}}
-					{{if $prod.levelDesc}}<div>({{$prod.levelDesc}})</div>{{/if}}
+					{{if $prod.levelDesc}}
+					<div>({{$prod.levelDesc}})</div>{{/if}}
 					<div>{{$prod.aId}}</div>
 				</td>
 
@@ -71,8 +72,8 @@
 	});
 
 	function delUser(aId) {
-		$.post("/admin/edituser", {
-			tag: "delete",
+		$.post("/api/user", {
+			tag: "del-admin",
 			id: aId
 		}, function (resp) {
 			if (resp.code == 0) {

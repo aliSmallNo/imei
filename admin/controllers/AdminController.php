@@ -5,7 +5,6 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use admin\models\Menu;
-use common\utils\RedisUtil;
 use common\utils\ResponseUtil;
 
 
@@ -60,56 +59,6 @@ class AdminController extends BaseController
 				"id" => $id,
 			]
 		);
-	}
-
-	public function actionEdituser()
-	{
-		$tag = self::postParam("tag");
-		$tag = strtolower($tag);
-		$id = self::postParam("id");
-		$ret = ["code" => 159, "msg" => self::ICON_ALERT_HTML . "无操作！"];
-		switch ($tag) {
-			case "edit":
-				$name = self::postParam("name");
-				$pass = self::postParam("pass");
-
-				$data = [
-					"aId" => $id ? $id : 0,
-					"aLoginId" => $name,
-					"aPass" => md5(strtolower($pass)),
-					"aFolders" => self::postParam("rights"),
-					"aLevel" => self::postParam("level"),
-					"aName" => self::postParam("note"),
-					"aPhone" => self::postParam("phone"),
-				];
-				if ($id && !$pass) {
-					unset($data['aPass']);
-				}
-				$aId = Admin::saveUser($data);
-				$msg = "";
-				if ($aId) {
-					if ($id) {
-						Admin::clearById($id);
-						$msg = self::ICON_OK_HTML . "修改用户" . $name . "成功! ";
-					} else {
-						$msg = self::ICON_OK_HTML . "添加用户" . $name . "成功! ";
-					}
-				}
-				$ret = ["code" => 0, "msg" => $msg];
-				break;
-			case "delete":
-				$result = Admin::checkAccessLevel(Admin::LEVEL_HIGH, true);
-				if ($result) {
-					$ret = Admin::remove($id, Admin::getAdminId());
-				} else {
-					$ret = ["code" => 159, "msg" => self::ICON_ALERT_HTML . "无操作权限！"];
-				}
-				break;
-
-		}
-		\Yii::$app->response->format = 'json';
-
-		return ResponseUtil::renderAPI($ret["code"], $ret["msg"]);
 	}
 
 	/**
