@@ -129,7 +129,7 @@ class ApiController extends Controller
 				break;
 			case "mreg":
 				$data = self::postParam('data');
-				$data = json_decode($data);
+				$data = json_decode($data, 1);
 				$data["openId"] = $openId;
 				$ret = User::reg($data);
 				return self::renderAPI(129, 'wwww~', $ret);
