@@ -88,4 +88,32 @@ class User extends ActiveRecord
 		}
 		return [];
 	}
+
+	public static function reg($data)
+	{
+		$fields = [
+			"name" => "uName",
+			"intro" => "uIntro",
+			"location" => "uLocation",
+			"scope" => "uScope",
+			"img" => "uAvatar",
+			"openId" => "uOpenId"
+		];
+		$img = isset($data["img"]) ? $data["img"] : "";
+		if ($img) {
+			if (strpos($img, "//") === false) {
+				$url = AppUtil::getMediaUrl($img);
+				if ($url) {
+					$data["img"] = $url;
+				}
+			}
+		}
+		$addData = [];
+		foreach ($fields as $k => $v) {
+			if (isset($data[$k])) {
+				$addData[$v] = $data[$k];
+			}
+		}
+		return $addData;
+	}
 }
