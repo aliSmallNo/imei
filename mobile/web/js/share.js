@@ -55,7 +55,7 @@ require(["layer"],
 			$sls.dl.attr('data-id', cid);
 			$sls.dl.html(self.html());
 			toggle();
-			resetShare();
+			resetMenuShare();
 		});
 
 		function toggle(content) {
@@ -82,12 +82,15 @@ require(["layer"],
 			});
 		}
 
-		function resetShare() {
-			var cid = $sls.dl.attr('data-id');
-			var cName = $sls.dl.html();
-			var name = $sls.nic.find('p').html();
-			var thumb = $sls.nic.attr('data-id');
-			var link = "http://mp.bpbhd.com/wx/share?id=" + $sls.uid + '&cid=' + cid;
+		function resetMenuShare() {
+			var dl = $('.dl');
+			var cid = dl.attr('data-id');
+			var cName = dl.html();
+			var nic = $('.nic');
+			var name = nic.find('p').html();
+			var thumb = nic.attr('data-id');
+			var uid = $('#cUID').val();
+			var link = "http://mp.bpbhd.com/wx/share?id=" + uid + '&cid=' + cid;
 			var title = name + '和' + cName + '一起做媒婆了';
 			var desc = '微媒100，想相亲交友的就戳这里，戳这里...';
 			wx.onMenuShareTimeline({
@@ -131,32 +134,7 @@ require(["layer"],
 					}
 				});
 
-				var cid = $sls.dl.attr('data-id');
-				var cName = $sls.dl.html();
-				var name = $sls.nic.find('p').html();
-				var thumb = 'http://bpbhd-10063905.file.myqcloud.com/common/ic_default_sm.png';
-				//$sls.nic.attr('data-id');
-				var link = "http://mp.bpbhd.com/wx/share?id=" + $sls.uid + '&cid=' + cid;
-				var title = name + '和' + cName + '一起做媒婆了';
-				var desc = '微媒100，想相亲交友的就戳这里，戳这里...';
-				wx.onMenuShareTimeline({
-					title: title,
-					link: link,
-					imgUrl: thumb,
-					success: function () {
-					}
-				});
-
-				wx.onMenuShareAppMessage({
-					title: title,
-					desc: desc,
-					link: link,
-					imgUrl: thumb,
-					type: '',
-					dataUrl: '',
-					success: function () {
-					}
-				});
+				resetMenuShare();
 
 				wx.hideMenuItems({
 					menuList: [
