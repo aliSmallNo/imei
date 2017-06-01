@@ -1258,8 +1258,10 @@ class AppUtil
 				return "/" . $iSeq . ".amr";
 			} else {
 				$fileName = self::getUploadFolder() . "/" . RedisUtil::getIntSeq();
+				AppUtil::logFile($fileName, 5, __FUNCTION__, __LINE__);
 				file_put_contents($fileName, $content);
 				$imageUrl = ImageUtil::upload2COS($fileName, $thumbFlag, $ext);
+				AppUtil::logFile($imageUrl, 5, __FUNCTION__, __LINE__);
 				unlink($fileName);
 				return $imageUrl;
 			}
