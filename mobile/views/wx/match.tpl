@@ -52,7 +52,7 @@
 </section>
 <section id="sgroup">
 	<div class="m-rows line-bottom">
-		<a href="#sshare">扩大我的单身团</a>
+		<a href="/wx/share">扩大我的单身团</a>
 		<a href="#snewbie">新的单身团申请</a>
 		<a href="#srept">单身团动态</a>
 	</div>
@@ -101,7 +101,7 @@
 		</a>
 	</div>
 	<div class="m-discovery-act">
-		<a href="javascript:;" class="btn white">扩大我的单身团</a>
+		<a href="/wx/share" class="btn white">扩大我的单身团</a>
 		<a href="javascript:;" class="btn white">邀请朋友当媒婆</a>
 	</div>
 	<div class="news"><p class="title"><span>平台动态</span></p>
