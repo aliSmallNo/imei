@@ -26,7 +26,9 @@ require(["layer", "fastclick"],
 			cork: $(".app-cork"),
 			wxString: $("#tpl_wx_info").html(),
 			btnMatcher: $(".action-matcher"),
-			btnSkip: $(".action-skip")
+			btnSkip: $(".action-skip"),
+			serverId: null,
+			postData: {},
 		};
 
 		var SingleUtil = {
@@ -58,6 +60,7 @@ require(["layer", "fastclick"],
 								var localId = localIds[0];
 								util.avatar.attr("localIds", localId);
 								util.avatar.attr("src", localId);
+								TipsbarUtil.toggle(false);
 							}
 						}
 					});
@@ -111,14 +114,12 @@ require(["layer", "fastclick"],
 				util.progressBar.css("width", val + "%");
 			}
 		};
+
 		var PopUtil = {
 			shade: null,
 			content: null,
 			main: null,
 			btn: null,
-			serverId: null,
-			localId: '',
-			postData: {},
 			shadeClose: false,
 			scopeTmp: '<div class="m-popup-options col3 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}">{[name]}</a>{[/items]}</div>',
 			cityTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="city">{[name]}</a>{[/items]}</div>',
@@ -205,16 +206,16 @@ require(["layer", "fastclick"],
 						return;
 					}
 
-					PopUtil.postData = {
+					$sls.postData = {
 						name: name,
 						intro: intro,
 						location: JSON.stringify(lItem),
 						scope: JSON.stringify(sItem)
 					};
-					console.log(PopUtil.postData);
-					alert("localId 2==>" + $(".avatar").attr("dataid"));
+					console.log($sls.postData);
+					alert("localId 2==>" + SingleUtil.avatar.attr("localIds"));
 
-					if (!PopUtil.localId) {
+					if (1) {
 						//if (!($(".avatar").attr("src"))) {
 						showMsg("请上传头像！");
 						return;
@@ -223,9 +224,9 @@ require(["layer", "fastclick"],
 				});
 			},
 			submit: function () {
-				PopUtil.postData["img"] = PopUtil.serverId;
+				$sls.postData["img"] = $sls.serverId;
 				$.post("/api/user", {
-					data: JSON.stringify(PopUtil.postData),
+					data: JSON.stringify($sls.postData),
 					tag: "mreg",
 				}, function (res) {
 					showMsg(res.msg);
@@ -258,19 +259,6 @@ require(["layer", "fastclick"],
 			}
 		};
 
-		$(document).on(kClick, ".btn-select-img", function () {
-			wx.chooseImage({
-				count: 1,
-				sizeType: ['compressed'],
-				sourceType: ['album', 'camera'],
-				success: function (res) {
-					var localIds = res.localIds;
-					$(".avatar").attr({src: localIds, dataid: JSON.stringify(localIds)});
-					TipsbarUtil.toggle(false);
-				}
-			});
-		});
-
 		var TipsbarUtil = {
 			menus: null,
 			menusBg: null,
@@ -295,6 +283,7 @@ require(["layer", "fastclick"],
 				});
 			},
 			toggle: function (showFlag) {
+				console.log(1)
 				var util = this;
 				if (showFlag) {
 					setTimeout(function () {
@@ -313,11 +302,11 @@ require(["layer", "fastclick"],
 				localId: PopUtil.localId.toString(),
 				isShowProgressTips: 1,
 				success: function (res) {
-					PopUtil.serverId = res.serverId;
+					$sls.serverId = res.serverId;
 					PopUtil.submit();
 				},
 				fail: function () {
-					PopUtil.serverId = "";
+					$sls.serverId = "";
 					PopUtil.submit();
 				}
 			});
