@@ -5,7 +5,6 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use admin\models\Menu;
-use common\utils\ResponseUtil;
 
 
 class AdminController extends BaseController
@@ -67,7 +66,6 @@ class AdminController extends BaseController
 	public function actionUsers()
 	{
 		Admin::staffOnly();
-		$perSize = 20;
 		$page = self::getParam("page", 1);
 		$name = self::getParam('name');
 		$note = self::getParam('note');
@@ -81,16 +79,9 @@ class AdminController extends BaseController
 		}
 
 		$count = Admin::getCountByCondition($condition);
-		$list = Admin::getUsers($condition, $page, $perSize);
+		$list = Admin::getUsers($condition, $page, self::PAGE_SIZE);
 
-		//$pagination = Utils::createPagination($page, $perSize, $count);
-		$pages = new \yii\data\Pagination(['totalCount' => $count, 'pageSize' => $perSize]);
-		$pages->setPage($page - 1);
-		$res = \yii\widgets\LinkPager::widget(['pagination' => $pages]);
-		$pagination = str_replace('<ul class="pagination">', '<div class="dataTables_paginate paging_simple_numbers"><ul class="pagination">', $res);
-		$pagination = mb_ereg_replace('&laquo;', '<i class="fa fa-angle-double-left"></i>', $pagination);
-		$pagination = mb_ereg_replace('&raquo;', '<i class="fa fa-angle-double-right"></i>', $pagination);
-
+		$pagination = self::pagination($page, $count);
 		$menus = Menu::getRootMenu();
 		return $this->renderPage('users.tpl',
 			[

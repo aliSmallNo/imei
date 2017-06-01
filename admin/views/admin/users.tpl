@@ -1,7 +1,5 @@
 {{include file="layouts/header.tpl"}}
-<style>
 
-</style>
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-12">
@@ -10,8 +8,8 @@
 	</div>
 	<div class="row">
 		<form class="form-inline" action="/admin/users" method="get">
-			<input class="form-control" name="name" placeholder="查询登录帐号" type="text" value="{{$name}}"/>
-			<input class="form-control" name="note" placeholder="查询用户名称" type="text" value="{{$note}}"/>
+			<input class="form-control" name="name" placeholder="查询登录帐号" type="text" value="{{$name}}">
+			<input class="form-control" name="note" placeholder="查询用户名称" type="text" value="{{$note}}">
 			<input type="submit" class="btn btn-primary" value="查询">
 		</form>
 	</div>
@@ -34,12 +32,11 @@
 			</thead>
 			<tbody>
 			{{foreach from=$list item=prod}}
-			<tr>
+			<tr data-id="{{$prod.aId}}">
 				<td>
 					{{$prod.aName}}
 					{{if $prod.levelDesc}}
 					<div>({{$prod.levelDesc}})</div>{{/if}}
-					<div>{{$prod.aId}}</div>
 				</td>
 
 				{{foreach from=$menus key=cKey item=cItem}}
@@ -57,7 +54,6 @@
 		</table>
 		{{$pagination}}
 	</div>
-
 </div>
 <script>
 	$("a.delU").click(function () {
