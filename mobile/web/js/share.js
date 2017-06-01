@@ -22,6 +22,8 @@ require(["layer"],
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
+			nic: $('.nic'),
+			uid: $('#cUID').val(),
 			dl: $('.dl'),
 			newIdx: 0,
 			newsTimer: 0,
@@ -53,6 +55,7 @@ require(["layer"],
 			$sls.dl.attr('data-id', cid);
 			$sls.dl.html(self.html());
 			toggle();
+			resetShare();
 		});
 
 		function toggle(content) {
@@ -79,6 +82,34 @@ require(["layer"],
 			});
 		}
 
+		function resetShare() {
+			var cid = $sls.dl.attr('data-id');
+			var cname = $sls.dl.html();
+			var name = $sls.nic.find('p').html();
+			var link = "http://mp.bpbhd.com/wx/share?id=" + $sls.uid + '&cid=' + cid;
+			var title = name + '和' + cname + '一起做媒婆了';
+			var desc = '微媒100，想相亲交友的就戳这里，戳这里...';
+
+			var cThumb = $sls.nic.attr('data-id');
+			wx.onMenuShareTimeline({
+				title: title,
+				link: link,
+				imgUrl: cThumb,
+				success: function () {
+				}
+			});
+			wx.onMenuShareAppMessage({
+				title: title,
+				desc: desc,
+				link: link,
+				imgUrl: cThumb,
+				type: '',
+				dataUrl: '',
+				success: function () {
+				}
+			});
+		}
+
 		$(function () {
 			$("body").addClass("bg-color");
 			// FootUtil.init();
@@ -89,9 +120,19 @@ require(["layer"],
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
-				wx.hideOptionMenu();
+				wx.hideMenuItems({
+					menuList: [
+						'menuItem:openWithQQBrowser',
+						'menuItem:openWithSafari',
+						'menuItem:copyUrl',
+						'menuItem:share:qq',
+						'menuItem:share:weiboApp',
+						'menuItem:share:QZone',
+						'menuItem:share:facebook',
+					]
+				});
 			});
 			$sls.cork.hide();
-
+			resetShare();
 		});
 	});

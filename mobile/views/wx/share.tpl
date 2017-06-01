@@ -1,7 +1,8 @@
 <div id="sec-share">
 	<div id="inviteInfo" class="invite-wrap">
 		<div class="title">
-			<em>{{$nickname}}</em> 和
+			<em>{{$nickname}}</em>
+			和
 			<a href="javascript:;" class="dl {{if $editable}}editable{{/if}}" data-id="{{$celebId}}" data-opt="">{{$celeb}}</a>
 			<br>一起在这里当「媒婆」
 		</div>
@@ -13,8 +14,10 @@
 			<a href="javascript:;" class="btn-s-1 s1 btn-share">邀请单身朋友</a>
 		</div>
 		<div class="user">
-			<div class="nic"><img src="{{$avatar}}">
-				<p>{{$nickname}}</p></div>
+			<div class="nic" data-id="{{$avatar}}">
+				<img src="{{$avatar}}" alt="">
+				<p>{{$nickname}}</p>
+			</div>
 		</div>
 		<div class="footer">
 			<p class="copy"><span>微媒100 | 挖掘优秀单身</span></p>
@@ -27,6 +30,7 @@
 		<div class="m-popup-content no-bg"></div>
 	</div>
 </div>
+<input type="hidden" id="cUID" value="{{$uId}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
