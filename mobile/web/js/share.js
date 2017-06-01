@@ -160,6 +160,9 @@ require(["layer"],
 					]
 				});
 			});
+			wx.error(function (res) {
+				showMsg(res);
+			});
 			$sls.cork.hide();
 		});
 	});
