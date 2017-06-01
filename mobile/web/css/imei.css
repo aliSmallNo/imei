@@ -1397,31 +1397,27 @@ section {
     color: #f06292;
     text-align: center;
     font-size: 2.2rem;
-    line-height: 1.5;
+    line-height: 4rem;
+    height: 4rem;
     font-weight: 300; }
     .invite-wrap .title em {
-      max-width: 12rem;
-      display: inline-block;
-      position: relative;
-      font-weight: 500;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden; }
+      font-weight: 500; }
     .invite-wrap .title .dl {
       display: inline-block;
       font-size: 2.2rem;
       color: #f06292;
-      text-align: center;
-      position: relative;
+      text-align: left;
+      padding-left: 1rem;
       width: 10rem;
-      font-weight: 500; }
+      font-weight: 500;
+      position: relative; }
       .invite-wrap .title .dl.editable:before {
         content: "";
         position: absolute;
         background: url(../images/bg_change.png) no-repeat center center;
         background-size: 100% 100%;
         width: 14rem;
-        height: 4.4rem;
+        height: 4.3rem;
         left: 0;
         bottom: -0.2rem; }
   .invite-wrap .video {

@@ -123,9 +123,11 @@ class WxController extends BaseController
 		if ($wxInfo) {
 			$avatar = $wxInfo["headimgurl"];
 			$nickname = $wxInfo["nickname"];
+			$uId = $wxInfo['uId'];
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "大测试";
+			$uId = 0;
 		}
 		$id = self::getParam('id');
 		$celebId = self::getParam('cid', 100);
@@ -146,6 +148,7 @@ class WxController extends BaseController
 			'celeb' => $celeb,
 			'celebId' => $celebId,
 			'id' => $id,
+			'uId'=>$uId,
 			'celebs' => $celebs
 		]);
 	}
