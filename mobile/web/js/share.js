@@ -27,7 +27,7 @@ require(["layer"],
 			dl: $('.dl'),
 			newIdx: 0,
 			newsTimer: 0,
-			loading: 0,
+			loading: 0
 		};
 
 		$('.btn-share').on(kClick, function () {
@@ -90,13 +90,11 @@ require(["layer"],
 			var link = "http://mp.bpbhd.com/wx/share?id=" + $sls.uid + '&cid=' + cid;
 			var title = name + '和' + cName + '一起做媒婆了';
 			var desc = '微媒100，想相亲交友的就戳这里，戳这里...';
-			showMsg(title + '  ' + desc + '  ' + link);
 			wx.onMenuShareTimeline({
 				title: title,
 				link: link,
 				imgUrl: thumb,
 				success: function () {
-					showMsg('Done 98');
 				}
 			});
 			wx.onMenuShareAppMessage({
@@ -107,7 +105,6 @@ require(["layer"],
 				type: '',
 				dataUrl: '',
 				success: function () {
-					showMsg('Done 109');
 				}
 			});
 		}
@@ -123,7 +120,34 @@ require(["layer"],
 			showMsg(JSON.stringify(wxInfo));
 			wx.config(wxInfo);
 			wx.ready(function () {
-				resetShare();
+				// resetShare();
+
+				var cid = $sls.dl.attr('data-id');
+				var cName = $sls.dl.html();
+				var name = $sls.nic.find('p').html();
+				var thumb = $sls.nic.attr('data-id');
+				var link = "http://mp.bpbhd.com/wx/share?id=" + $sls.uid + '&cid=' + cid;
+				var title = name + '和' + cName + '一起做媒婆了';
+				var desc = '微媒100，想相亲交友的就戳这里，戳这里...';
+				wx.onMenuShareTimeline({
+					title: title,
+					link: link,
+					imgUrl: thumb,
+					success: function () {
+					}
+				});
+
+				wx.onMenuShareAppMessage({
+					title: title,
+					desc: desc,
+					link: link,
+					imgUrl: thumb,
+					type: '',
+					dataUrl: '',
+					success: function () {
+					}
+				});
+
 				wx.hideMenuItems({
 					menuList: [
 						'menuItem:openWithQQBrowser',
