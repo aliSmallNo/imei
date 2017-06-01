@@ -13,6 +13,7 @@ use common\models\City;
 use common\models\User;
 use common\models\UserSign;
 use common\models\UserWechat;
+use common\utils\AppUtil;
 use common\utils\ImageUtil;
 
 class WxController extends BaseController
@@ -53,6 +54,11 @@ class WxController extends BaseController
 			'scopes' => json_encode($scopes, JSON_UNESCAPED_UNICODE),
 			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
 		]);
+	}
+
+	public function actionT()
+	{
+		AppUtil::getMediaUrl("7x1QfFnNe3Edqh-m-ba-OdOJ9TnvSZT6gsND9EouBl-H4RnaiVzyzy3IQmgxDVjC");
 	}
 
 	public function actionMatch()
@@ -148,7 +154,7 @@ class WxController extends BaseController
 			'celeb' => $celeb,
 			'celebId' => $celebId,
 			'id' => $id,
-			'uId'=>$uId,
+			'uId' => $uId,
 			'celebs' => $celebs
 		]);
 	}
