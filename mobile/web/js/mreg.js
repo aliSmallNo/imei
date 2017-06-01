@@ -223,6 +223,7 @@ require(["layer", "fastclick"],
 			},
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
+				console.log($sls.serverId)
 				alert(JSON.stringify($sls.postData))
 				$.post("/api/user", {
 					data: JSON.stringify($sls.postData),
