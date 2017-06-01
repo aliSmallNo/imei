@@ -20,12 +20,7 @@
 	</head>
 	<body>
 	<?php $this->beginBody() ?>
-	<main>
-		<div class="app-cork">
-			<h4>正在初始化，请稍候...</h4>
-		</div>
-		<?= $content ?>
-	</main>
+	<?= $content ?>
 	<?php $this->endBody() ?>
 	</body>
 	</html>

@@ -11,7 +11,11 @@
 			<span id="play_btn" onclick="document.querySelector('#video').play();document.querySelector('#play_btn').style.display='none';" class="play"></span>
 		</div>
 		<div class="btns">
+			{{if $editable}}
 			<a href="javascript:;" class="btn-s-1 s1 btn-share">邀请单身朋友</a>
+			{{else}}
+			<a href="javascript:;" class="btn-s-1 s0 btn-look">查看TA的单身团</a>
+			{{/if}}
 		</div>
 		<div class="user">
 			<div class="nic" data-id="{{$avatar}}">
