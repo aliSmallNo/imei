@@ -197,6 +197,17 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					util.shade.fadeOut(100);
 				}
 			},
+			getCity: function (pid) {
+				var util = this;
+				$.post('/api/config', {
+					tag: 'cities',
+					id: pid
+				}, function (resp) {
+					if (resp.code == 0) {
+						util.content.html(Mustache.render(util.cityTmp, resp.data));
+					}
+				}, 'json');
+			}
 		};
 
 		function uploadImages() {
