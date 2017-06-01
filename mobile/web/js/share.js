@@ -84,17 +84,16 @@ require(["layer"],
 
 		function resetShare() {
 			var cid = $sls.dl.attr('data-id');
-			var cname = $sls.dl.html();
+			var cName = $sls.dl.html();
 			var name = $sls.nic.find('p').html();
+			var thumb = $sls.nic.attr('data-id');
 			var link = "http://mp.bpbhd.com/wx/share?id=" + $sls.uid + '&cid=' + cid;
-			var title = name + '和' + cname + '一起做媒婆了';
+			var title = name + '和' + cName + '一起做媒婆了';
 			var desc = '微媒100，想相亲交友的就戳这里，戳这里...';
-
-			var cThumb = $sls.nic.attr('data-id');
 			wx.onMenuShareTimeline({
 				title: title,
 				link: link,
-				imgUrl: cThumb,
+				imgUrl: thumb,
 				success: function () {
 				}
 			});
@@ -102,7 +101,7 @@ require(["layer"],
 				title: title,
 				desc: desc,
 				link: link,
-				imgUrl: cThumb,
+				imgUrl: thumb,
 				type: '',
 				dataUrl: '',
 				success: function () {
@@ -117,7 +116,7 @@ require(["layer"],
 			// FastClick.attach($sls.footer.get(0));
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
-			wxInfo.jsApiList = ['hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
+			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
 				wx.hideMenuItems({
@@ -128,11 +127,11 @@ require(["layer"],
 						'menuItem:share:qq',
 						'menuItem:share:weiboApp',
 						'menuItem:share:QZone',
-						'menuItem:share:facebook',
+						'menuItem:share:facebook'
 					]
 				});
+				resetShare();
 			});
 			$sls.cork.hide();
-			resetShare();
 		});
 	});
