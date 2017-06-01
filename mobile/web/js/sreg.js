@@ -222,7 +222,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			$sls.curIndex = parseInt(hashTag.substr(4));
 
 			if ($sls.curIndex == 2) {
-				//getTencentPosition();
+				getTencentPosition();
 			}
 
 			if ($sls.curIndex == 20) {
@@ -274,7 +274,6 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			wx.config(wxInfo);
 			wx.ready(function () {
 				wx.hideOptionMenu();
-				getTencentPosition();
 			});
 
 			TipsbarUtil.init();
