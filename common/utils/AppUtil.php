@@ -12,7 +12,6 @@ namespace common\utils;
 use common\models\UserWechat;
 use Yii;
 use yii\web\Cookie;
-use common\utils\WechatUtil;
 
 class AppUtil
 {
@@ -1238,6 +1237,7 @@ class AppUtil
 		$accessToken = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 		$baseUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s ";
 		$imageUrl = sprintf($baseUrl, $accessToken, $mediaId);
+		AppUtil::logFile($imageUrl, 5, __FUNCTION__, __LINE__);
 		$ch = curl_init($imageUrl);
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		curl_setopt($ch, CURLOPT_NOBODY, 0);
@@ -1249,6 +1249,7 @@ class AppUtil
 		$contentType = $httpInfo["content_type"];
 		$contentType = strtolower($contentType);
 		$ext = self::getExtName($contentType);
+		AppUtil::logFile($ext, 5, __FUNCTION__, __LINE__);
 		if ($ext && strlen($content) > 200) {
 			if ($ext == "amr") {
 				$iSeq = RedisUtil::getIntSeq();
@@ -1258,7 +1259,7 @@ class AppUtil
 			} else {
 				$fileName = self::getUploadFolder() . "/" . RedisUtil::getIntSeq();
 				file_put_contents($fileName, $content);
-				$imageUrl = ImageUtil::upload2COS($fileName, $thumbFlag,  $ext);
+				$imageUrl = ImageUtil::upload2COS($fileName, $thumbFlag, $ext);
 				unlink($fileName);
 				return $imageUrl;
 			}
