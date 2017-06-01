@@ -1238,6 +1238,8 @@ class AppUtil
 		$accessToken = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 		$baseUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s";
 		$imageUrl = sprintf($baseUrl, $accessToken, $mediaId);
+		return $imageUrl;
+
 		$ch = curl_init($imageUrl);
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		curl_setopt($ch, CURLOPT_NOBODY, 0);
@@ -1245,7 +1247,6 @@ class AppUtil
 		$content = curl_exec($ch);
 		$httpInfo = curl_getinfo($ch);
 		curl_close($ch);
-		return $content;
 		$contentType = $httpInfo["content_type"];
 		$contentType = strtolower($contentType);
 		$ext = self::getExtName($contentType);
