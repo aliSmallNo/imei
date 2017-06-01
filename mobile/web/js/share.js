@@ -117,7 +117,7 @@ require(["layer"],
 			// SingleUtil.init();
 			// FastClick.attach($sls.footer.get(0));
 			var wxInfo = JSON.parse($sls.wxString);
-			wxInfo.debug = false;
+			wxInfo.debug = true;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
