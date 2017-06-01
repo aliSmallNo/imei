@@ -178,8 +178,7 @@ require(["layer", "fastclick"],
 						sourceType: ['album', 'camera'],
 						success: function (res) {
 							var localIds = res.localIds;
-							$(".avatar").attr({src: localIds});
-							$(".avatar").attr({dataid: localIds});
+							$(".avatar").attr({src: localIds, dataid: JSON.stringify(localIds)});
 							TipsbarUtil.toggle(false);
 						}
 					});
