@@ -291,6 +291,8 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					if (!$sls.mLat || !$sls.mLng) {
 						alert('没有获得您的当前位置！');
 					}
+					console.log(1);
+
 					regeocoder();
 				}
 			});
@@ -298,6 +300,8 @@ require(["layer", "fastclick", "iscroll", "fly"],
 
 		//[116.396574, 39.992706]; //已知点坐标
 		function regeocoder() {  //逆地理编码
+			console.log(2);
+
 			var geocoder = new AMap.Geocoder({
 				radius: 1000,
 				extensions: "all"
@@ -310,6 +314,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 		}
 
 		function geocoder_CallBack(data) {
+			console.log(3);
 			console.log(data);
 			var addrComp = data.regeocode.addressComponent;
 			$("#step2 .location").html("<em>" + addrComp.province + "</em><em>" + addrComp.city + "</em>");
