@@ -132,6 +132,13 @@ class WxController extends BaseController
 			$uId = 0;
 		}
 		$id = self::getParam('id');
+		if ($id) {
+			$matchInfo = User::findOne(['uId' => $id]);
+			if (!$matchInfo) {
+				header("location:/wx/error?msg=链接地址错误");
+				exit();
+			}
+		}
 		$defaultId = array_keys(self::$Celebs)[0];
 		$celebId = self::getParam('cid', $defaultId);
 		$celeb = self::$Celebs[$defaultId];
@@ -153,7 +160,7 @@ class WxController extends BaseController
 			'id' => $id,
 			'uId' => $uId,
 			'celebs' => $celebs,
-			'wxUrl'=> AppUtil::wechatUrl()
+			'wxUrl' => AppUtil::wechatUrl()
 		]);
 	}
 
@@ -163,6 +170,7 @@ class WxController extends BaseController
 		return self::renderPage('error.tpl',
 			[
 				"msg" => $msg
-			]);
+			],
+			'terse');
 	}
 }

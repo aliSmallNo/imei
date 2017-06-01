@@ -915,6 +915,10 @@ section {
   .btn-s-1.s1 {
     background: #4da2ff;
     color: #fff; }
+  .btn-s-1.s0 {
+    background: none;
+    border: 1px solid #4da2ff;
+    color: #007aff; }
 
 .vip {
   background: url(../images/ico_mark_vip.png) no-repeat center center;
