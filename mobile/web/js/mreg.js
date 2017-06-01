@@ -117,7 +117,7 @@ require(["layer", "fastclick"],
 			main: null,
 			btn: null,
 			serverId: null,
-			localId: 'wxlocalresource://imageid123456789987654321',
+			localId: '',
 			postData: {},
 			shadeClose: false,
 			scopeTmp: '<div class="m-popup-options col3 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}">{[name]}</a>{[/items]}</div>',
@@ -180,8 +180,8 @@ require(["layer", "fastclick"],
 							var localIds = res.localIds;
 							$(".avatar").attr({src: localIds});
 							PopUtil.localId = localIds;
-							TipsbarUtil.toggle(TipsbarUtil.menus.hasClass("off"));
-
+							console.log("localId 1==>" + PopUtil.localId);
+							TipsbarUtil.toggle(false);
 						}
 					});
 				})
@@ -227,10 +227,11 @@ require(["layer", "fastclick"],
 						scope: JSON.stringify(sItem)
 					};
 					console.log(PopUtil.postData);
-					//if (!PopUtil.localId) {
-					if (!($(".avatar").attr("src"))) {
+					alert("localId 2==>" + PopUtil.localId);
+					if (!PopUtil.localId) {
+						//if (!($(".avatar").attr("src"))) {
 						showMsg("请上传头像！");
-						//return;
+						return;
 					}
 					uploadImages();
 				});
