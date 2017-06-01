@@ -117,7 +117,7 @@ require(["layer"],
 			// FastClick.attach($sls.footer.get(0));
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
-			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage'];
+			wxInfo.jsApiList = ['hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
 				wx.hideMenuItems({
