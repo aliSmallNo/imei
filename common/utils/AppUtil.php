@@ -1236,7 +1236,7 @@ class AppUtil
 	public static function getMediaUrl($mediaId, $thumbFlag = false)
 	{
 		$accessToken = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
-		$baseUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s";
+		$baseUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s ";
 		$imageUrl = sprintf($baseUrl, $accessToken, $mediaId);
 		$ch = curl_init($imageUrl);
 		curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -1245,8 +1245,6 @@ class AppUtil
 		$content = curl_exec($ch);
 		$httpInfo = curl_getinfo($ch);
 		curl_close($ch);
-
-		return $content;
 
 		$contentType = $httpInfo["content_type"];
 		$contentType = strtolower($contentType);

@@ -56,11 +56,6 @@ class WxController extends BaseController
 		]);
 	}
 
-	public function actionT()
-	{
-		AppUtil::getMediaUrl("7x1QfFnNe3Edqh-m-ba-OdOJ9TnvSZT6gsND9EouBl-H4RnaiVzyzy3IQmgxDVjC");
-	}
-
 	public function actionMatch()
 	{
 		$openId = self::$WX_OpenId;
