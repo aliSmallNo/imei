@@ -128,6 +128,7 @@ class ApiController extends Controller
 				}
 				break;
 			case "mreg":
+			case "sreg":
 				$data = self::postParam('data');
 				$data = json_decode($data, 1);
 				$data["openId"] = $openId;

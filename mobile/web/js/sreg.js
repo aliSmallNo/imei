@@ -12,6 +12,8 @@ require.config({
 		"lazyload": "/assets/js/jquery.lazyload.min",
 		"layer": "/assets/js/layer_mobile/layer",
 		"wx": "/assets/js/jweixin-1.2.0",
+		"amap": "//webapi.amap.com/maps?v=1.3&key=adb6ca3befbed69852111c287a8db1fb&plugin=AMap.Geocoder",
+
 	}
 });
 require(["layer", "fastclick", "iscroll", "fly"],
@@ -26,7 +28,12 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			cork: $(".app-cork"),
 			wxString: $("#tpl_wx_info").html(),
 			btnMatcher: $(".action-matcher"),
-			btnSkip: $(".action-skip")
+			btnSkip: $(".action-skip"),
+			postData: {},
+			serverId: "",
+
+			mLat: 0,
+			mLng: 0,
 		};
 
 		var SingleUtil = {
@@ -44,6 +51,19 @@ require(["layer", "fastclick", "iscroll", "fly"],
 				var util = this;
 				util.avatar = util.step0.find(".avatar");
 				util.step0.find(".btn-s").on(kClick, function () {
+					// 0 ==> 1
+					var img = util.avatar.attr("localids");
+					if (!img) {
+						showMsg("头像还没有上传哦~");
+						//return;
+					}
+					var nickname = util.step0.find(".input-s").val();
+					if (!$.trim(nickname)) {
+						showMsg("昵称还没有填写哦~");
+						return;
+					}
+					$sls.postData["img"] = img;
+					$sls.postData["name"] = nickname;
 					location.href = "#step1";
 					return false;
 				});
@@ -69,6 +89,8 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					if (self.hasClass("male")) {
 						util.gender = "male";
 					}
+					// 1=>2
+					$sls.postData["gender"] = util.gender;
 					location.href = "#step2";
 					return false;
 				});
@@ -99,18 +121,56 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					self.addClass("cur");
 					var tag = cells.attr("data-tag");
 					util[tag] = self.html();
+
+					// 3 => ...
+					$sls.postData[tag] = self.html();
 					setTimeout(function () {
 						location.href = "#step" + ($sls.curIndex + 1);
 					}, 120);
 					return false;
+				});
+
+				$(".btn-done").on(kClick, function () {
+					$sls.postData["location"] = $("[data-tag=location]").length;
+					$sls.postData["intro"] = $.trim($("[data-tag=intro]").val());
+					$sls.postData["interest"] = $.trim($("[data-tag=interest]").val());
+
+					console.log($sls.postData);
 				});
 			},
 			progress: function () {
 				var util = this;
 				var val = parseFloat($sls.curIndex) * 4.8;
 				util.progressBar.css("width", val + "%");
+			},
+			submit: function () {
+				$sls.postData["img"] = $sls.serverId;
+				$.post("/api/user", {
+					tag: "sreg",
+					data: JSON.stringify($sls.postData),
+				}, function (res) {
+					showMsg(res.msg);
+					setTimeout(function () {
+						//location.href = "/wx/single";
+					}, 300);
+				}, "json");
 			}
 		};
+
+		function uploadImages() {
+			wx.uploadImage({
+				localId: $("#step0 .avatar").attr("localids").toString(),
+				isShowProgressTips: 1,
+				success: function (res) {
+					$sls.serverId = res.serverId;
+					SingleUtil.submit();
+				},
+				fail: function () {
+					$sls.serverId = "";
+					SingleUtil.submit();
+				}
+			});
+		}
 
 		var TipsbarUtil = {
 			menus: null,
@@ -160,6 +220,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			}
 			$sls.curFrag = hashTag;
 			$sls.curIndex = parseInt(hashTag.substr(4));
+
 			if ($sls.curIndex == 20) {
 				$sls.btnSkip.hide();
 				$sls.btnMatcher.hide();
@@ -188,12 +249,24 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			layer.closeAll();
 		}
 
+		function showMsg(title, sec) {
+			var duration = 2;
+			if (sec) {
+				duration = sec;
+			}
+			layer.open({
+				content: title,
+				skin: 'msg',
+				time: duration
+			});
+		}
+
 		$(function () {
 			// FastClick.attach($sls.footer.get(0));
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
-			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage'];
+			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage', "getLocation"];
 			wx.config(wxInfo);
 			wx.ready(function () {
 				wx.hideOptionMenu();
@@ -204,4 +277,5 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			locationHashChanged();
 			$sls.cork.hide();
 		});
+
 	});

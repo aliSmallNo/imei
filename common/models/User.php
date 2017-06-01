@@ -8,6 +8,7 @@
 
 namespace common\models;
 
+use admin\models\Admin;
 use common\utils\AppUtil;
 use yii\db\ActiveRecord;
 
@@ -19,6 +20,21 @@ class User extends ActiveRecord
 	public static function tableName()
 	{
 		return '{{%user}}';
+	}
+
+	public static function add($data)
+	{
+		if (!$data) {
+			return 0;
+		}
+		$entity = new self();
+		foreach ($data as $key => $val) {
+			$entity->$key = $val;
+		}
+		$entity->uAddedOn = date('Y-m-d H:i:s');
+		$entity->uAddedBy = Admin::getAdminId();
+		$uid = $entity->save();
+		return $uid;
 	}
 
 	public static function edit($uid, $params, $editBy = 1)
@@ -97,7 +113,24 @@ class User extends ActiveRecord
 			"location" => "uLocation",
 			"scope" => "uScope",
 			"img" => "uAvatar",
-			"openId" => "uOpenId"
+			"openId" => "uOpenId",
+			"belief" => "uBrief",
+			"car" => "uCar",
+			"diet" => "uDiet",
+			"drink" => "uAlcohol",
+			"edu" => "uEducation",
+			"gender" => "uGender",
+			"height" => "uHeight",
+			"house" => "uEstate",
+			"income" => "uIncome",
+			"interest" => "uHoros",
+			"job" => "uProfession",
+			"pet" => "uPet",
+			"rest" => "uRest",
+			"smoke" => "uSmoke",
+			"weight" => "uWeight",
+			"workout" => "uFitness",
+			"year" => "uBirthYear",
 		];
 		$img = isset($data["img"]) ? $data["img"] : "";
 		if ($img) {
@@ -113,5 +146,6 @@ class User extends ActiveRecord
 			}
 		}
 		return $addData;
+		$uid = self::add($addData);
 	}
 }

@@ -6,7 +6,7 @@
 	<p class="m-header">请上传真人头像<i>否则不会审核通过</i></p>
 	<div class="nick_name">
 		<a href="javascript:;" class="photo photo-file">
-			<img class="avatar" src="" alt="">
+			<img class="avatar" src="" localids="">
 		</a>
 		<input type="text" placeholder="昵称" class="input-s big">
 		<div class="place-holder-s1"></div>
@@ -69,11 +69,11 @@
 	</div>
 </section>
 <section id="step2">
-	<p class="m-header s1 loc">正在为您定位中</p>
+	<p class="m-header s1 loc">正在为您定位中...</p>
 	<a href="javascript:;" class="action-row">
 		<div class="location" data-tag="location">
-			<em>天津</em>
-			<em>河西</em>
+			<em>北京</em>
+			<em>昌平</em>
 		</div>
 	</a>
 	<div class="btn-s-wrap">
@@ -259,7 +259,7 @@
 		<span class="count" style="display: none">0/150</span>
 	</div>
 	<div class="btn-s-wrap">
-		<a href="/wx/single" class="btn-s s3 btn-done">提交</a>
+		<a href="javascript:;" class="btn-s s3 btn-done">提交</a>
 	</div>
 </section>
 <div class="m-footer-tip">
@@ -273,3 +273,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script data-main="/js/sreg.js?v=1.1.1" src="/assets/js/require.js"></script>
+<script src="//webapi.amap.com/maps?v=1.3&key=adb6ca3befbed69852111c287a8db1fb&plugin=AMap.Geocoder"></script>

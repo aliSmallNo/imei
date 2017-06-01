@@ -29,6 +29,7 @@ require(["layer", "fastclick"],
 			btnSkip: $(".action-skip"),
 			serverId: null,
 			postData: {},
+
 		};
 
 		var SingleUtil = {
@@ -223,13 +224,13 @@ require(["layer", "fastclick"],
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
 				console.log($sls.serverId)
-				alert(JSON.stringify($sls.postData))
+				//alert(JSON.stringify($sls.postData))
 				$.post("/api/user", {
 					data: JSON.stringify($sls.postData),
 					tag: "mreg",
 				}, function (res) {
 					showMsg(res.msg);
-					alert(JSON.stringify(res.data));
+					//alert(JSON.stringify(res.data));
 				}, "json");
 			},
 			toggle: function (content) {
@@ -378,4 +379,5 @@ require(["layer", "fastclick"],
 			locationHashChanged();
 			$sls.cork.hide();
 		});
+
 	});
