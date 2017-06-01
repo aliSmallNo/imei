@@ -213,7 +213,7 @@ require(["layer", "fastclick"],
 						scope: JSON.stringify(sItem)
 					};
 					console.log($sls.postData);
-
+					alert(SingleUtil.avatar.attr("localIds"))
 					if (!SingleUtil.avatar.attr("localIds")) {
 						showMsg("请上传头像！");
 						return;
