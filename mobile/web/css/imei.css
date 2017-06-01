@@ -70,7 +70,7 @@ main {
   z-index: 411;
   text-align: center;
   padding: 23rem 0;
-  background-color: rgba(0, 0, 0, 0.65); }
+  background-color: rgba(0, 0, 0, 0.7); }
 
 .w-flyer {
   display: inline-block;
@@ -628,7 +628,7 @@ section {
     color: #f491b2; }
 
 .tips-bar-bg {
-  background-color: rgba(0, 0, 0, 0.65);
+  background-color: rgba(0, 0, 0, 0.7);
   position: fixed;
   top: 0;
   left: 0;
@@ -1693,7 +1693,7 @@ section {
   width: 100%;
   height: 100%;
   display: none;
-  background-color: rgba(0, 0, 0, 0.65);
+  background-color: rgba(0, 0, 0, 0.7);
   pointer-events: auto;
   z-index: 120; }
 
@@ -1765,7 +1765,8 @@ section {
           color: #f06292;
           text-align: center;
           border: none;
-          font-size: 1.5rem; }
+          font-size: 1.5rem;
+          font-weight: 500; }
           .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options.col1 a:before {
             display: none; }
           .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options.col1 a:active {
