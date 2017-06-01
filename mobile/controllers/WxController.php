@@ -156,7 +156,8 @@ class WxController extends BaseController
 			'celebId' => $celebId,
 			'id' => $id,
 			'uId' => $uId,
-			'celebs' => $celebs
+			'celebs' => $celebs,
+			'wxUrl'=> AppUtil::wechatUrl()
 		]);
 	}
 

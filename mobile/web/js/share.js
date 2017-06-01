@@ -24,6 +24,7 @@ require(["layer"],
 			content: $(".m-popup-content"),
 			nic: $('.nic'),
 			uid: $('#cUID').val(),
+			wxUrl: $('#cWXUrl').val(),
 			dl: $('.dl'),
 			newIdx: 0,
 			newsTimer: 0,
@@ -83,14 +84,11 @@ require(["layer"],
 		}
 
 		function resetMenuShare() {
-			var dl = $('.dl');
-			var cid = dl.attr('data-id');
-			var cName = dl.html();
-			var nic = $('.nic');
-			var name = nic.find('p').html();
-			var thumb = nic.attr('data-id');
-			var uid = $('#cUID').val();
-			var link = "http://mp.bpdj365.com/wx/share?id=" + uid + '&cid=' + cid;
+			var cid = $sls.dl.attr('data-id');
+			var cName = $sls.dl.html();
+			var name = $sls.nic.find('p').html();
+			var thumb = $sls.nic.attr('data-id');
+			var link = $sls.wxUrl + '/wx/share?id=' + $sls.uid + '&cid=' + cid;
 			var title = name + '和' + cName + '一起做媒婆了';
 			var desc = '微媒100，想相亲交友的就戳这里，戳这里...';
 			wx.onMenuShareTimeline({
