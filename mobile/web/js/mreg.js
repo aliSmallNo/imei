@@ -171,19 +171,6 @@ require(["layer", "fastclick"],
 					});
 				}
 
-				$(document).on(kClick, ".btn-select-img", function () {
-					wx.chooseImage({
-						count: 1,
-						sizeType: ['compressed'],
-						sourceType: ['album', 'camera'],
-						success: function (res) {
-							var localIds = res.localIds;
-							$(".avatar").attr({src: localIds, dataid: JSON.stringify(localIds)});
-							TipsbarUtil.toggle(false);
-						}
-					});
-				})
-
 				$(document).on(kClick, ".btn-match-reg", function () {
 					var lItem = [];
 					$("[data-tag=location] em").each(function () {
@@ -270,6 +257,19 @@ require(["layer", "fastclick"],
 				}, 'json');
 			}
 		};
+
+		$(document).on(kClick, ".btn-select-img", function () {
+			wx.chooseImage({
+				count: 1,
+				sizeType: ['compressed'],
+				sourceType: ['album', 'camera'],
+				success: function (res) {
+					var localIds = res.localIds;
+					$(".avatar").attr({src: localIds, dataid: JSON.stringify(localIds)});
+					TipsbarUtil.toggle(false);
+				}
+			});
+		});
 
 		var TipsbarUtil = {
 			menus: null,
