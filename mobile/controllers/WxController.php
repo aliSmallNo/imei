@@ -36,7 +36,8 @@ class WxController extends BaseController
 	public function actionSreg()
 	{
 		return self::renderPage("sreg.tpl", [
-			"maxYear" => 1999
+			"maxYear" => 1999,
+			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
 		]);
 	}
 

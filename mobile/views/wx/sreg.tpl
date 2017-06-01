@@ -266,11 +266,20 @@
 	<a href="/wx/match" class="action-sm action-matcher">返回媒婆角色</a>
 	<a href="#step20" class="action-sm action-skip" style="display: none">跳过，以后再填</a>
 </div>
+
+<div class="m-popup-shade"></div>
+<div class="m-popup-main" style="display: none">
+	<div class="m-popup-wrap">
+		<div class="m-popup-content"></div>
+	</div>
+</div>
 <input type="hidden" id="cMaxYear" value="{{$maxYear}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
+<script>
+	var mProvinces = {{$provinces}};
+</script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script data-main="/js/sreg.js?v=1.1.1" src="/assets/js/require.js"></script>
-<script src="//webapi.amap.com/maps?v=1.3&key=adb6ca3befbed69852111c287a8db1fb&plugin=AMap.Geocoder"></script>

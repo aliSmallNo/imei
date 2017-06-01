@@ -12,7 +12,6 @@ require.config({
 		"lazyload": "/assets/js/jquery.lazyload.min",
 		"layer": "/assets/js/layer_mobile/layer",
 		"wx": "/assets/js/jweixin-1.2.0",
-		"amap": "//webapi.amap.com/maps?v=1.3&key=adb6ca3befbed69852111c287a8db1fb&plugin=AMap.Geocoder",
 
 	}
 });
@@ -47,6 +46,13 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			avatar: null,
 			gender: "",
 			progressBar: $(".progress > div"),
+
+			btn: null,
+			shade: $(".m-popup-shade"),
+			main: $(".m-popup-main"),
+			content: $(".m-popup-content"),
+			cityTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="city">{[name]}</a>{[/items]}</div>',
+			provinceTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="province">{[name]}</a>{[/items]}</div>',
 			init: function () {
 				var util = this;
 				util.avatar = util.step0.find(".avatar");
@@ -92,6 +98,29 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					// 1=>2
 					$sls.postData["gender"] = util.gender;
 					location.href = "#step2";
+					return false;
+				});
+				util.step2.on(".action-row").on(kClick, function () {
+					var html = '';
+					util.btn = $(this);
+					html = Mustache.render(util.provinceTmp, {items: mProvinces});
+					if (html) {
+						util.toggle(html);
+					}
+					return false;
+				});
+				$(document).on(kClick, '.m-popup-options > a', function () {
+					var self = $(this);
+					var text = self.html();
+					var key = self.attr('data-key');
+					var tag = self.attr('data-tag');
+					if (tag && tag == 'province') {
+						util.btn.html('<em data-key="' + key + '">' + text + '</em>');
+						util.getCity(key);
+					} else if (tag && tag == 'city') {
+						util.btn.append('<em data-key="' + key + '">' + text + '</em>');
+						util.toggle();
+					}
 					return false;
 				});
 
@@ -154,7 +183,20 @@ require(["layer", "fastclick", "iscroll", "fly"],
 						//location.href = "/wx/single";
 					}, 300);
 				}, "json");
-			}
+			},
+			toggle: function (content) {
+				var util = this;
+				if (content) {
+					util.main.show();
+					util.content.html(content).addClass("animate-pop-in");
+					util.shade.fadeIn(160);
+				} else {
+					util.content.removeClass("animate-pop-in");
+					util.main.hide();
+					util.content.html('');
+					util.shade.fadeOut(100);
+				}
+			},
 		};
 
 		function uploadImages() {
