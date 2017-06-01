@@ -115,10 +115,10 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					var key = self.attr('data-key');
 					var tag = self.attr('data-tag');
 					if (tag && tag == 'province') {
-						util.btn.html('<em data-key="' + key + '">' + text + '</em>');
+						util.btn.find(".location").html('<em data-key="' + key + '">' + text + '</em>');
 						util.getCity(key);
 					} else if (tag && tag == 'city') {
-						util.btn.append('<em data-key="' + key + '">' + text + '</em>');
+						util.btn.find(".location").append('<em data-key="' + key + '">' + text + '</em>');
 						util.toggle();
 					}
 					return false;
