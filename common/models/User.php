@@ -101,12 +101,12 @@ class User extends ActiveRecord
 		];
 		$img = isset($data["img"]) ? $data["img"] : "";
 		if ($img) {
-			if (strpos($img, "//") === false) {
-				$url = AppUtil::getMediaUrl($img);
-				if ($url) {
-					$data["img"] = $url;
-				}
-			}
+//			if (strpos($img, "//") === false) {
+//				$url = AppUtil::getMediaUrl($img);
+//				if ($url) {
+//					$data["img"] = $url;
+//				}
+//			}
 		}
 		$addData = [];
 		foreach ($fields as $k => $v) {
