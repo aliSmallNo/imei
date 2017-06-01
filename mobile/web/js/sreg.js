@@ -12,7 +12,7 @@ require.config({
 		"lazyload": "/assets/js/jquery.lazyload.min",
 		"layer": "/assets/js/layer_mobile/layer",
 		"wx": "/assets/js/jweixin-1.2.0",
-		"amap": "//webapi.amap.com/maps?v=1.3&key=adb6ca3befbed69852111c287a8db1fb&plugin=AMap.Geocoder",
+		"amap": "http://webapi.amap.com/maps?v=1.3&key=adb6ca3befbed69852111c287a8db1fb&plugin=AMap.Geocoder",
 
 	}
 });
