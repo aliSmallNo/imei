@@ -230,7 +230,7 @@ require(["layer", "fastclick"],
 					tag: "mreg",
 				}, function (res) {
 					showMsg(res.msg);
-					//alert(JSON.stringify(res.data));
+					alert(JSON.stringify(res.data));
 				}, "json");
 			},
 			toggle: function (content) {
