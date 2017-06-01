@@ -180,7 +180,6 @@ require(["layer", "fastclick"],
 							var localIds = res.localIds;
 							$(".avatar").attr({src: localIds});
 							PopUtil.localId = localIds;
-							console.log("localId 1==>" + PopUtil.localId);
 							TipsbarUtil.toggle(false);
 						}
 					});
