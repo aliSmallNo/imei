@@ -13,7 +13,7 @@ use Yii;
 
 class RedisUtil
 {
-	private static $Glue = "::";
+	private static $Glue = ":";
 	const FIXED_PREFIX = "imei";
 
 	const KEY_PROVINCES = 'provinces';
@@ -40,7 +40,7 @@ class RedisUtil
 	];
 
 
-	private static $SequenceKey = self::FIXED_PREFIX . '::sequences';
+	private static $SequenceKey = self::FIXED_PREFIX . ':seq';
 	private static $IdOrder = "order-id"; // 订单序列号
 	private static $IdUser = "user-id"; //用户序列号
 	private static $IdDefault = "default-id"; //默认序列号
