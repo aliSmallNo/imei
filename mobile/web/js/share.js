@@ -120,6 +120,7 @@ require(["layer"],
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = true;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
+			showMsg(JSON.stringify(wxInfo));
 			wx.config(wxInfo);
 			wx.ready(function () {
 				wx.hideMenuItems({

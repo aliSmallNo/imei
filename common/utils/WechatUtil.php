@@ -196,16 +196,18 @@ class WechatUtil
 	public static function getJsApiTicket()
 	{
 		$jsTicket = RedisUtil::getCache(RedisUtil::KEY_WX_TICKET);
-		if (!$jsTicket) {
-			$accessToken = self::accessToken();
-			if ($accessToken) {
-				$url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=' . $accessToken . '&type=jsapi';
-				$res = AppUtil::httpGet($url, [], true);
-				$res = json_decode($res, true);
-				$jsTicket = isset($res['ticket']) ? $res['ticket'] : '';
-				if ($jsTicket) {
-					RedisUtil::setCache($jsTicket, RedisUtil::KEY_WX_TICKET);
-				}
+		if ($jsTicket) {
+			return $jsTicket;
+		}
+		$accessToken = self::accessToken();
+		$jsTicket = '';
+		if ($accessToken) {
+			$url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=' . $accessToken . '&type=jsapi';
+			$res = AppUtil::httpGet($url, [], true);
+			$res = json_decode($res, true);
+			$jsTicket = isset($res['ticket']) ? $res['ticket'] : '';
+			if ($jsTicket) {
+				RedisUtil::setCache($jsTicket, RedisUtil::KEY_WX_TICKET);
 			}
 		}
 		return $jsTicket;
