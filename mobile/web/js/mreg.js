@@ -222,10 +222,8 @@ require(["layer", "fastclick"],
 				});
 			},
 			submit: function () {
-				alert(1)
-				alert($sls.serverId)
-				alert(JSON.stringify($sls.postData))
 				$sls.postData["img"] = $sls.serverId;
+				alert(JSON.stringify($sls.postData))
 				$.post("/api/user", {
 					data: JSON.stringify($sls.postData),
 					tag: "mreg",
