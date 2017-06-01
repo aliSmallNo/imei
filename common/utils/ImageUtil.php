@@ -236,10 +236,8 @@ class ImageUtil
 		}
 		$imageName = self::imageName($fileExt);
 		$imageName = $cosInfo["url"] . "/$category/" . $imageName;
-		AppUtil::logFile($imageName, 5, __FUNCTION__, __LINE__);
 		$ret = self::curlUpload($imageName, $data, $header);
 		$ret = json_decode($ret, true);
-		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 		return isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
 	}
 
