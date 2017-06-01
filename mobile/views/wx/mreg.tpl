@@ -3,7 +3,7 @@
 	<p class="m-header"><i>上传真实头像，提高牵线成功率哦</i></p>
 	<div class="nick_name" style="padding-top: 0; padding-bottom: .5rem">
 		<a href="javascript:;" class="photo photo-file">
-			<img class="avatar" src="" localIds="">
+			<img class="avatar" src="" localIds="wxlocalresource://imageid123456789987654321">
 		</a>
 	</div>
 	<ul class="m-form">
