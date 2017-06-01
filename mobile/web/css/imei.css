@@ -1721,6 +1721,11 @@ section {
       box-sizing: border-box;
       padding: 0;
       overflow: hidden; }
+      .m-popup-main .m-popup-wrap .m-popup-content.no-bg {
+        background: none;
+        box-shadow: none;
+        left: 8rem;
+        width: 16rem; }
       .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options {
         margin: 0;
         padding: 0; }
@@ -1743,7 +1748,7 @@ section {
           text-overflow: ellipsis;
           overflow: hidden; }
           .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options a:before {
-            content: " ";
+            content: "";
             position: absolute;
             top: 0;
             left: 0;
@@ -1753,6 +1758,30 @@ section {
           .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options a:active {
             background: #4da2ff;
             color: #fff; }
+        .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options.col1 a {
+          float: none;
+          display: block;
+          background: none;
+          color: #f06292;
+          text-align: center;
+          border: none;
+          font-size: 1.5rem; }
+          .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options.col1 a:before {
+            display: none; }
+          .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options.col1 a:active {
+            color: #ed467f; }
+          .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options.col1 a.cur:after {
+            content: " ";
+            position: absolute;
+            display: inline-block;
+            color: #f06292;
+            top: 50%;
+            right: 2.5rem;
+            margin-top: -0.9rem;
+            width: 1.8rem;
+            height: 1.8rem;
+            background: url("../images/ico_tick_g.png") no-repeat center center;
+            background-size: 100% 100%; }
         .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options.col3 a {
           width: 33.3%; }
           .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options.col3 a:nth-of-type(3n+2) {
@@ -2149,5 +2178,21 @@ section {
     font-style: normal;
     font-weight: 300;
     padding-left: 0.5rem; }
+
+.share-arrow {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.2rem;
+  background: url("../images/ico_share_arrow.png") no-repeat center top;
+  background-size: 6.35rem 5rem;
+  width: 8.5rem;
+  height: 5rem;
+  display: inline-block;
+  z-index: 10;
+  color: #fff;
+  font-size: 1.2rem;
+  padding-top: 5.5rem;
+  font-weight: 300;
+  text-align: center; }
 
 /*# sourceMappingURL=imei.css.map */
