@@ -125,7 +125,8 @@ require(["layer"],
 				var cid = $sls.dl.attr('data-id');
 				var cName = $sls.dl.html();
 				var name = $sls.nic.find('p').html();
-				var thumb = $sls.nic.attr('data-id');
+				var thumb = 'http://bpbhd-10063905.file.myqcloud.com/common/ic_default_sm.png';
+				//$sls.nic.attr('data-id');
 				var link = "http://mp.bpbhd.com/wx/share?id=" + $sls.uid + '&cid=' + cid;
 				var title = name + '和' + cName + '一起做媒婆了';
 				var desc = '微媒100，想相亲交友的就戳这里，戳这里...';
