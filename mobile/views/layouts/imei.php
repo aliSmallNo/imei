@@ -15,7 +15,7 @@
 		<link type="image/png" href="/favicon.png" rel="icon">
 		<link type="image/png" href="/favicon.png" rel="shortcut icon">
 		<link rel="stylesheet" href="/assets/css/layer.min.css?v=1.1.1">
-		<link rel="stylesheet" href="/css/imei.min.css?v=1.1.8">
+		<link rel="stylesheet" href="/css/imei.min.css?v=1.2.0">
 		<script src="/assets/js/jweixin-1.2.0.js"></script>
 	</head>
 	<body>
