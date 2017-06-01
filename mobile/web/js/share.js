@@ -123,6 +123,7 @@ require(["layer"],
 			showMsg(JSON.stringify(wxInfo));
 			wx.config(wxInfo);
 			wx.ready(function () {
+				resetShare();
 				wx.hideMenuItems({
 					menuList: [
 						'menuItem:openWithQQBrowser',
@@ -134,7 +135,6 @@ require(["layer"],
 						'menuItem:share:facebook'
 					]
 				});
-				resetShare();
 			});
 			$sls.cork.hide();
 		});
