@@ -19,12 +19,12 @@ class WxController extends BaseController
 {
 
 	static $Celebs = [
-		100 => '狗熊大',
-		105 => '狗熊二',
-		110 => '光头强',
-		115 => '小嘟嘟',
+		100 => '大湿兄',
+		105 => '二师兄',
+		110 => '沙师弟',
+		115 => '光头强',
 		120 => '李老板',
-		125 => '小蹦蹦',
+		125 => '店小二',
 	];
 
 	public function actionImei()
@@ -134,14 +134,19 @@ class WxController extends BaseController
 			$celeb = self::$Celebs[$celebId];
 		}
 		$editable = $id ? 0 : 1;
+		$celebs = [];
+		if ($editable) {
+			$celebs = self::$Celebs;
+		}
 
 		return self::renderPage("share.tpl", [
 			'nickname' => $nickname,
 			'avatar' => $avatar,
 			'editable' => $editable,
 			'celeb' => $celeb,
-			'celebId'=>$celebId,
-			'id' => $id
+			'celebId' => $celebId,
+			'id' => $id,
+			'celebs' => $celebs
 		]);
 	}
 
