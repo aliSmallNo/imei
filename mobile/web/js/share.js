@@ -95,6 +95,7 @@ require(["layer"],
 				link: link,
 				imgUrl: thumb,
 				success: function () {
+					showMsg('Done 98');
 				}
 			});
 			wx.onMenuShareAppMessage({
@@ -105,6 +106,7 @@ require(["layer"],
 				type: '',
 				dataUrl: '',
 				success: function () {
+					showMsg('Done 109');
 				}
 			});
 		}
