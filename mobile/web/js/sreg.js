@@ -304,6 +304,8 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			});
 			console.log([$sls.mLng, $sls.mLat]);
 			geocoder.getAddress([$sls.mLng, $sls.mLat], function (status, result) {
+				console.log(status)
+				console.log(result)
 				if (status === 'complete' && result.info === 'OK') {
 					geocoder_CallBack(result);
 				}
