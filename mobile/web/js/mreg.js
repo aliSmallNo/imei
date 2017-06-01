@@ -213,10 +213,8 @@ require(["layer", "fastclick"],
 						scope: JSON.stringify(sItem)
 					};
 					console.log($sls.postData);
-					alert("localId 2==>" + SingleUtil.avatar.attr("localIds"));
 
-					if (1) {
-						//if (!($(".avatar").attr("src"))) {
+					if (!SingleUtil.avatar.attr("localIds")) {
 						showMsg("请上传头像！");
 						return;
 					}
@@ -299,7 +297,7 @@ require(["layer", "fastclick"],
 
 		function uploadImages() {
 			wx.uploadImage({
-				localId: PopUtil.localId.toString(),
+				localId: SingleUtil.avatar.attr("localIds").toString(),
 				isShowProgressTips: 1,
 				success: function (res) {
 					$sls.serverId = res.serverId;
