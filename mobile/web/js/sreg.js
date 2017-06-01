@@ -291,29 +291,23 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					if (!$sls.mLat || !$sls.mLng) {
 						alert('没有获得您的当前位置！');
 					}
-					console.log(1);
-
 					regeocoder();
 				}
 			});
 		}
 
-		//[116.396574, 39.992706]; //已知点坐标  [$sls.mLng, $sls.mLat]
+		//[116.396574, 39.992706]; //已知点坐标
 		function regeocoder() {  //逆地理编码
-			console.log(2);
-
 			var geocoder = new AMap.Geocoder({
 				radius: 1000,
 				extensions: "all"
 			});
-			console.log(2.1);
-
-			geocoder.getAddress([116.396574, 39.992706], function (status, result) {
+			console.log([$sls.mLng, $sls.mLat]);
+			geocoder.getAddress([$sls.mLng, $sls.mLat], function (status, result) {
 				if (status === 'complete' && result.info === 'OK') {
 					geocoder_CallBack(result);
 				}
-				console.log(2.2);
-
+				console.log(2);
 			});
 		}
 
