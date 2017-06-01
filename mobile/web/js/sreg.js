@@ -122,7 +122,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					var tag = cells.attr("data-tag");
 					util[tag] = self.html();
 
-					// 3=>...
+					// 3 => ...
 					$sls.postData[tag] = self.html();
 					setTimeout(function () {
 						location.href = "#step" + ($sls.curIndex + 1);
@@ -306,10 +306,14 @@ require(["layer", "fastclick", "iscroll", "fly"],
 				radius: 1000,
 				extensions: "all"
 			});
+			console.log(2.1);
+
 			geocoder.getAddress([116.396574, 39.992706], function (status, result) {
 				if (status === 'complete' && result.info === 'OK') {
 					geocoder_CallBack(result);
 				}
+				console.log(2.2);
+
 			});
 		}
 
