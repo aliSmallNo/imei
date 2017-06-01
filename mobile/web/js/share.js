@@ -122,17 +122,6 @@ require(["layer"],
 			wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
-				// resetShare();
-
-				wx.checkJsApi({
-					jsApiList: [
-						'onMenuShareTimeline',
-						'onMenuShareAppMessage'
-					],
-					success: function (res) {
-						console.log(JSON.stringify(res));
-					}
-				});
 
 				resetMenuShare();
 
