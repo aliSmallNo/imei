@@ -11,8 +11,7 @@
 		<img src="/images/ico_warning.png" alt="" style="width: 48px">
 		<div style="height: 1.3em;"></div>
 		<div class="msg_content">
-			<h5>页面出错了啊~ (╯︵╰)</h5>
-			<br>
+			<h5 style="padding-bottom: 10px; font-size: 13px; color: #777">页面出错了啊~ (╯︵╰)</h5>
 			<h5>{{$msg}}</h5>
 		</div>
 	</div>
