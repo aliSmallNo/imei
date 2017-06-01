@@ -179,7 +179,7 @@ require(["layer", "fastclick"],
 						success: function (res) {
 							var localIds = res.localIds;
 							$(".avatar").attr({src: localIds});
-							PopUtil.localId = localIds;
+							util.localId = localIds;
 							TipsbarUtil.toggle(false);
 						}
 					});
@@ -226,7 +226,7 @@ require(["layer", "fastclick"],
 						scope: JSON.stringify(sItem)
 					};
 					console.log(PopUtil.postData);
-					alert("localId 2==>" + PopUtil.localId);
+					alert("localId 2==>" + $(".avatar").attr("src"));
 					if (!PopUtil.localId) {
 						//if (!($(".avatar").attr("src"))) {
 						showMsg("请上传头像！");
