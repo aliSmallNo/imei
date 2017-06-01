@@ -115,12 +115,22 @@ require(["layer"],
 			// SingleUtil.init();
 			// FastClick.attach($sls.footer.get(0));
 			var wxInfo = JSON.parse($sls.wxString);
-			wxInfo.debug = true;
+			wxInfo.debug = false;
 			wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			showMsg(JSON.stringify(wxInfo));
 			wx.config(wxInfo);
 			wx.ready(function () {
 				// resetShare();
+
+				wx.checkJsApi({
+					jsApiList: [
+						'onMenuShareTimeline',
+						'onMenuShareAppMessage'
+					],
+					success: function (res) {
+						showMsg(JSON.stringify(res));
+					}
+				});
 
 				var cid = $sls.dl.attr('data-id');
 				var cName = $sls.dl.html();
