@@ -90,7 +90,7 @@ require(["layer"],
 			var link = "http://mp.bpbhd.com/wx/share?id=" + $sls.uid + '&cid=' + cid;
 			var title = name + '和' + cName + '一起做媒婆了';
 			var desc = '微媒100，想相亲交友的就戳这里，戳这里...';
-			showMsg(title + '  ' + desc);
+			showMsg(title + '  ' + desc + '  ' + thumb);
 			wx.onMenuShareTimeline({
 				title: title,
 				link: link,
