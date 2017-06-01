@@ -135,7 +135,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					$sls.postData["intro"] = $.trim($("[data-tag=intro]").val());
 					$sls.postData["interest"] = $.trim($("[data-tag=interest]").val());
 
-					console.log($sls.postData);
+					//console.log($sls.postData);
 				});
 			},
 			progress: function () {
