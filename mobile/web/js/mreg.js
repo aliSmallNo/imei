@@ -179,7 +179,10 @@ require(["layer", "fastclick"],
 						success: function (res) {
 							var localIds = res.localIds;
 							$(".avatar").attr({src: localIds});
+							alert(JSON.stringify(localIds))
 							PopUtil.localId = localIds;
+							TipsbarUtil.toggle(TipsbarUtil.menus.hasClass("off"));
+
 						}
 					});
 				})
