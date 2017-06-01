@@ -90,11 +90,13 @@ require(["layer"],
 			var link = "http://mp.bpbhd.com/wx/share?id=" + $sls.uid + '&cid=' + cid;
 			var title = name + '和' + cName + '一起做媒婆了';
 			var desc = '微媒100，想相亲交友的就戳这里，戳这里...';
+			showMsg(title + '  ' + desc + '  ' + thumb);
 			wx.onMenuShareTimeline({
 				title: title,
 				link: link,
 				imgUrl: thumb,
 				success: function () {
+					showMsg('Done 98');
 				}
 			});
 			wx.onMenuShareAppMessage({
@@ -105,6 +107,7 @@ require(["layer"],
 				type: '',
 				dataUrl: '',
 				success: function () {
+					showMsg('Done 109');
 				}
 			});
 		}
@@ -115,7 +118,7 @@ require(["layer"],
 			// SingleUtil.init();
 			// FastClick.attach($sls.footer.get(0));
 			var wxInfo = JSON.parse($sls.wxString);
-			wxInfo.debug = false;
+			wxInfo.debug = true;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
