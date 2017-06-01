@@ -117,7 +117,6 @@ require(["layer"],
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
-			showMsg(JSON.stringify(wxInfo));
 			wx.config(wxInfo);
 			wx.ready(function () {
 				// resetShare();
@@ -128,7 +127,7 @@ require(["layer"],
 						'onMenuShareAppMessage'
 					],
 					success: function (res) {
-						showMsg(JSON.stringify(res));
+						console.log(JSON.stringify(res));
 					}
 				});
 
@@ -172,7 +171,7 @@ require(["layer"],
 				});
 			});
 			wx.error(function (res) {
-				showMsg(res);
+				console.log(JSON.stringify(res));
 			});
 			$sls.cork.hide();
 		});
