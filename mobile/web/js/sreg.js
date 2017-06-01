@@ -298,7 +298,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			});
 		}
 
-		//[116.396574, 39.992706]; //已知点坐标
+		//[116.396574, 39.992706]; //已知点坐标  [$sls.mLng, $sls.mLat]
 		function regeocoder() {  //逆地理编码
 			console.log(2);
 
@@ -306,7 +306,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 				radius: 1000,
 				extensions: "all"
 			});
-			geocoder.getAddress([$sls.mLng, $sls.mLat], function (status, result) {
+			geocoder.getAddress([116.396574, 39.992706], function (status, result) {
 				if (status === 'complete' && result.info === 'OK') {
 					geocoder_CallBack(result);
 				}
