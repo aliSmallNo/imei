@@ -1245,7 +1245,9 @@ class AppUtil
 		$content = curl_exec($ch);
 		$httpInfo = curl_getinfo($ch);
 		curl_close($ch);
-		return $content;
+		return $httpInfo;
+
+
 		$contentType = $httpInfo["content_type"];
 		$contentType = strtolower($contentType);
 		$ext = self::getExtName($contentType);
