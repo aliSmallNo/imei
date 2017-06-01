@@ -69,7 +69,7 @@
 	</div>
 </section>
 <section id="step2">
-	<p class="m-header s1 loc">正在为您定位中...</p>
+	<p class="m-header s1 loc">您的位置</p>
 	<a href="javascript:;" class="action-row">
 		<div class="location" data-tag="location">
 			<em>北京</em>
