@@ -35,7 +35,6 @@ class BaseController extends Controller
 			header("location:/wxerr.html");
 			exit;
 		}
-
 		self::$WX_OpenId = AppUtil::getCookie(self::COOKIE_OPENID);
 		$wxCode = self::getParam("code");
 		if (strlen(self::$WX_OpenId) > 20) {

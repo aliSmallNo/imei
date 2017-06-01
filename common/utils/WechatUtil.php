@@ -192,7 +192,6 @@ class WechatUtil
 		return $url;
 	}
 
-
 	public static function getJsApiTicket()
 	{
 		$jsTicket = RedisUtil::getCache(RedisUtil::KEY_WX_TICKET);

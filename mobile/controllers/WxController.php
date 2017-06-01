@@ -136,8 +136,9 @@ class WxController extends BaseController
 			$uId = 0;
 		}
 		$id = self::getParam('id');
-		$celebId = self::getParam('cid', 100);
-		$celeb = self::$Celebs[100];
+		$defaultId = array_keys(self::$Celebs)[0];
+		$celebId = self::getParam('cid', $defaultId);
+		$celeb = self::$Celebs[$defaultId];
 		if (isset(self::$Celebs[$celebId])) {
 			$celeb = self::$Celebs[$celebId];
 		}

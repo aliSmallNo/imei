@@ -90,7 +90,7 @@ require(["layer"],
 			var name = nic.find('p').html();
 			var thumb = nic.attr('data-id');
 			var uid = $('#cUID').val();
-			var link = "http://mp.bpbhd.com/wx/share?id=" + uid + '&cid=' + cid;
+			var link = "http://mp.bpdj365.com/wx/share?id=" + uid + '&cid=' + cid;
 			var title = name + '和' + cName + '一起做媒婆了';
 			var desc = '微媒100，想相亲交友的就戳这里，戳这里...';
 			wx.onMenuShareTimeline({
@@ -136,9 +136,6 @@ require(["layer"],
 						'menuItem:share:facebook'
 					]
 				});
-			});
-			wx.error(function (res) {
-				console.log(JSON.stringify(res));
 			});
 			$sls.cork.hide();
 		});
