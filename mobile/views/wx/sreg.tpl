@@ -273,4 +273,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script data-main="/js/sreg.js?v=1.1.1" src="/assets/js/require.js"></script>
-<script src="http://webapi.amap.com/maps?v=1.3&key=adb6ca3befbed69852111c287a8db1fb&plugin=AMap.Geocoder"></script>
+<script src="//webapi.amap.com/maps?v=1.3&key=adb6ca3befbed69852111c287a8db1fb&plugin=AMap.Geocoder"></script>
