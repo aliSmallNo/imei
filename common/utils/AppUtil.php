@@ -1246,7 +1246,7 @@ class AppUtil
 		$httpInfo = curl_getinfo($ch);
 		curl_close($ch);
 
-		return $httpInfo;
+		return $content;
 
 		$contentType = $httpInfo["content_type"];
 		$contentType = strtolower($contentType);
