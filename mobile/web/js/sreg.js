@@ -221,10 +221,6 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			$sls.curFrag = hashTag;
 			$sls.curIndex = parseInt(hashTag.substr(4));
 
-			if ($sls.curIndex == 2) {
-				getTencentPosition();
-			}
-
 			if ($sls.curIndex == 20) {
 				$sls.btnSkip.hide();
 				$sls.btnMatcher.hide();
@@ -281,57 +277,5 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			locationHashChanged();
 			$sls.cork.hide();
 		});
-
-		function getTencentPosition() {
-			wx.getLocation({
-				type: 'gcj02', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02' 默认:wgs84 (坐标相对不准些)
-				success: function (res) {
-					$sls.mLat = res.latitude;
-					$sls.mLng = res.longitude;
-					if (!$sls.mLat || !$sls.mLng) {
-						alert('没有获得您的当前位置！');
-					}
-					regeocoder();
-				}
-			});
-		}
-
-		//[116.396574, 39.992706]; //已知点坐标
-		function regeocoder() {  //逆地理编码
-			var geocoder = new AMap.Geocoder({
-				radius: 1000,
-				extensions: "all"
-			});
-			console.log([$sls.mLng, $sls.mLat]);
-			geocoder.getAddress([$sls.mLng, $sls.mLat], function (status, result) {
-				console.log(status)
-				console.log(result)
-				if (status === 'complete' && result.info === 'OK') {
-					geocoder_CallBack(result);
-				}
-				console.log(2);
-			});
-		}
-
-		function geocoder_CallBack(data) {
-			console.log(3);
-			console.log(data);
-			var addrComp = data.regeocode.addressComponent;
-			$("#step2 .location").html("<em>" + addrComp.province + "</em><em>" + addrComp.city + "</em>");
-			$("#step2 .loc").html("您的位置");
-
-			// $sls.detailAddress = data.regeocode.formattedAddress;//formattedAddress formatted_address
-			// $sls.mCode = addrComp.citycode;
-			// $sls.mAdCode = addrComp.adcode;
-			// $sls.province = addrComp.province;
-			// $sls.city = addrComp.city;
-			//$sls.district = addrComp.district ? addrComp.district : "";
-			//$sls.township = addrComp.township ? addrComp.township : "";
-			//var street = addrComp.street ? addrComp.street : "";
-
-			// $("#addressText").val(addrComp.province + " " + addrComp.city + " " + addrComp.district + " " + $sls.township);
-			// $("#detailAddress").val(street);
-			// layer.closeAll();
-		}
 
 	});
