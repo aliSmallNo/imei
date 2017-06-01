@@ -1404,24 +1404,33 @@ section
 		padding: 3rem 0
 		color: $mainColor
 		text-align: center
-		font-size: 2.4rem
+		font-size: 2.2rem
 		line-height: 1.5
-		.dl
+		font-weight: $weightNormal
+		em
+			max-width: 12rem
 			display: inline-block
 			position: relative
+			top: .8rem
+			font-weight: $weightBold
+			@include textTail
+		.dl
+			display: inline-block
+			font-size: 2.2rem
+			color: $mainColor
 			text-align: center
-			width: 9.4rem
-			&:after
-				display: block
+			position: relative
+			width: 10rem
+			font-weight: $weightBold
+			&.editable:before
 				content: ''
 				position: absolute
-				right: -5rem
-				top: -.7rem
 				background: url(../images/bg_change.png) no-repeat center center
 				background-size: 100% 100%
-				width: 14.4rem
-				height: 4.6rem
-
+				width: 14rem
+				height: 4.4rem
+				left: 0
+				bottom: -.2rem
 	.video
 		width: 25.6rem
 		height: 14.4rem

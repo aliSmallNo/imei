@@ -52,8 +52,11 @@
 </section>
 <section id="slook">
 	<div class="my-condition">
-		<a href="/user/info?uid=062a1e833b434518905624dd0eac6bcc&amp;action=editCondition&amp;back=%2Fuser%2Fuserlist&amp;forceBack=1"
-			 class="nocondition"><span class="desc">您还没有设置择偶条件哦~</span><span class="btn">去设置</span></a></div>
+		<a href="/user/info?uid=062a1e833b434518905624dd0eac6bcc&amp;action=editCondition&amp;back=%2Fuser%2Fuserlist&amp;forceBack=1" class="nocondition">
+			<span class="desc">您还没有设置择偶条件哦~</span>
+			<span class="btn">去设置</span>
+		</a>
+	</div>
 	<ul class="m-top-users">
 		<li id="596729a4b76a4a26af3d73d151510102">
 			<div class="head">

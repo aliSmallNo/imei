@@ -18,6 +18,15 @@ use common\utils\ImageUtil;
 class WxController extends BaseController
 {
 
+	static $Celebs = [
+		100 => '狗熊大',
+		105 => '狗熊二',
+		110 => '光头强',
+		115 => '小嘟嘟',
+		120 => '李老板',
+		125 => '小蹦蹦',
+	];
+
 	public function actionImei()
 	{
 		return self::renderPage("imei.tpl");
@@ -104,6 +113,35 @@ class WxController extends BaseController
 			'avatar' => $avatar,
 			'title' => $title,
 			'isSign' => $isSign
+		]);
+	}
+
+	public function actionShare()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if ($wxInfo) {
+			$avatar = $wxInfo["headimgurl"];
+			$nickname = $wxInfo["nickname"];
+		} else {
+			$avatar = ImageUtil::DEFAULT_AVATAR;
+			$nickname = "大测试";
+		}
+		$id = self::getParam('id');
+		$celebId = self::getParam('cid', 100);
+		$celeb = self::$Celebs[100];
+		if (isset(self::$Celebs[$celebId])) {
+			$celeb = self::$Celebs[$celebId];
+		}
+		$editable = $id ? 0 : 1;
+
+		return self::renderPage("share.tpl", [
+			'nickname' => $nickname,
+			'avatar' => $avatar,
+			'editable' => $editable,
+			'celeb' => $celeb,
+			'celebId'=>$celebId,
+			'id' => $id
 		]);
 	}
 
