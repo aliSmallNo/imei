@@ -116,6 +116,9 @@ require(["layer", "fastclick"],
 			content: null,
 			main: null,
 			btn: null,
+			serverId: null,
+			localId: null,
+			postData: {},
 			shadeClose: false,
 			scopeTmp: '<div class="m-popup-options col3 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}">{[name]}</a>{[/items]}</div>',
 			cityTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="city">{[name]}</a>{[/items]}</div>',
@@ -167,6 +170,78 @@ require(["layer", "fastclick"],
 						return false;
 					});
 				}
+
+				$(document).on(kClick, ".btn-select-img", function () {
+					wx.chooseImage({
+						count: 1,
+						sizeType: ['compressed'],
+						sourceType: ['album', 'camera'],
+						success: function (res) {
+							var localIds = res.localIds;
+							$(".avatar").attr({src: localIds});
+							PopUtil.localId = localIds;
+						}
+					});
+				})
+
+				$(document).on(kClick, ".btn-match-reg", function () {
+					var lItem = [];
+					$("[data-tag=location] em").each(function () {
+						lItem.push({
+							key: $(this).attr("data-key"),
+							text: $(this).html()
+						});
+					});
+					if (lItem.length < 2) {
+						showMsg("地理位置不能为空");
+						return;
+					}
+
+					var sObj = $("[data-tag=scope] em");
+					var sItem = {
+						key: sObj.attr("data-key"),
+						text: sObj.html()
+					};
+					if (!sItem.key) {
+						showMsg("所属行业不能为空");
+						return;
+					}
+
+					var name = $.trim($("[data-tag=name]").val());
+					var intro = $.trim($("[data-tag=intro]").val());
+					if (!name) {
+						showMsg("真实姓名不能为空");
+						return;
+					}
+					if (!intro) {
+						showMsg("个人简介不能为空");
+						return;
+					}
+
+					PopUtil.postData = {
+						name: name,
+						intro: intro,
+						location: JSON.stringify(lItem),
+						scope: JSON.stringify(sItem)
+					};
+					console.log(PopUtil.postData);
+					if (!PopUtil.localId) {
+						showMsg("请上传头像！");
+						//return;
+					}
+					//uploadImages();
+					PopUtil.submit();
+				});
+			},
+			submit: function () {
+				PopUtil.postData["img"] = PopUtil.serverId;
+				$.post("/api/user", {
+					data: JSON.stringify(PopUtil.postData),
+					tag: "mreg",
+				}, function (res) {
+					showMsg(res.msg);
+					alert(JSON.stringify(res.data));
+				}, "json");
 			},
 			toggle: function (content) {
 				var util = this;
@@ -230,6 +305,33 @@ require(["layer", "fastclick"],
 				}
 			}
 		};
+
+		function uploadImages() {
+			wx.uploadImage({
+				localId: PopUtil.localId.toString(),
+				isShowProgressTips: 1,
+				success: function (res) {
+					PopUtil.serverId = res.serverId;
+					PopUtil.submit();
+				},
+				fail: function () {
+					PopUtil.serverId = "";
+					PopUtil.submit();
+				}
+			});
+		}
+
+		function showMsg(title, sec) {
+			var duration = 2;
+			if (sec) {
+				duration = sec;
+			}
+			layer.open({
+				content: title,
+				skin: 'msg',
+				time: duration
+			});
+		}
 
 		function locationHashChanged() {
 			var hashTag = location.hash;

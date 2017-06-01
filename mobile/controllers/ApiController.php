@@ -10,6 +10,7 @@ namespace mobile\controllers;
 
 
 use common\models\City;
+use common\models\User;
 use common\models\UserBuzz;
 use common\models\UserSign;
 use common\models\UserWechat;
@@ -109,12 +110,13 @@ class ApiController extends Controller
 		$tag = trim(strtolower(self::postParam('tag')));
 		$id = self::postParam('id');
 		$openId = AppUtil::getCookie(self::COOKIE_OPENID);
-		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		if (!$wxInfo) {
-			return self::renderAPI(129, '用户不存在啊~');
-		}
+
 		switch ($tag) {
 			case 'sign':
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
 				$amt = rand(5, 20);
 				$ret = UserSign::add($wxInfo['uId'], $amt);
 				if ($ret) {
@@ -124,6 +126,13 @@ class ApiController extends Controller
 				} else {
 					return self::renderAPI(129, '您今日已经签到过啦~');
 				}
+				break;
+			case "mreg":
+				$data = self::postParam('data');
+				$data = json_decode($data);
+				$data["openId"] = $openId;
+				$ret = User::reg($data);
+				return self::renderAPI(129, 'wwww~', $ret);
 		}
 		return self::renderAPI(129, '操作无效~');
 	}
@@ -173,4 +182,5 @@ class ApiController extends Controller
 		}
 		return false;
 	}
+
 }

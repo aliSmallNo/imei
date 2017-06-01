@@ -12,6 +12,7 @@ namespace common\utils;
 use common\models\UserWechat;
 use Yii;
 use yii\web\Cookie;
+use common\utils\WechatUtil;
 
 class AppUtil
 {
@@ -1305,7 +1306,7 @@ EOT;
 
 	public static function getMediaUrl($mediaId, $thumbFlag = false)
 	{
-		$accessToken = WechatUtil::getAccessToken();
+		$accessToken = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 		$baseUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s";
 		$imageUrl = sprintf($baseUrl, $accessToken, $mediaId);
 		$ch = curl_init($imageUrl);
@@ -1321,14 +1322,14 @@ EOT;
 		$ext = self::getExtName($contentType);
 		if ($ext && strlen($content) > 200) {
 			if ($ext == "amr") {
-				$iSeq = generalId::getIntSeq();
+				$iSeq = RedisUtil::getIntSeq();
 				$fileName = self::getUploadFolder("voice") . "/" . $iSeq . ".amr";
 				file_put_contents($fileName, $content);
 				return "/" . $iSeq . ".amr";
 			} else {
-				$fileName = self::getUploadFolder() . "/" . generalId::getIntSeq();
+				$fileName = self::getUploadFolder() . "/" . RedisUtil::getIntSeq();
 				file_put_contents($fileName, $content);
-				$imageUrl = ImageOpt::upload2COS($fileName, $thumbFlag, "", $ext);
+				$imageUrl = ImageUtil::upload2COS($fileName, $thumbFlag,  $ext);
 				unlink($fileName);
 				return $imageUrl;
 			}
