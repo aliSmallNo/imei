@@ -10,6 +10,7 @@ namespace common\models;
 
 use admin\models\Admin;
 use common\utils\AppUtil;
+use common\utils\RedisUtil;
 use yii\db\ActiveRecord;
 
 class User extends ActiveRecord
@@ -18,7 +19,6 @@ class User extends ActiveRecord
 		100 => 'IT互联网', 102 => '金融', 104 => '文化传媒', 106 => '服务业', 108 => '教育培训', 110 => '通信电子', 112 => '房产建筑',
 		114 => '轻工贸易', 116 => '医疗生物', 118 => '生产制造', 120 => '能源环保', 122 => '政法公益', 124 => '农林牧渔', 126 => '其他'
 	];
-
 	static $years = [
 		1965 => 1965, 1966 => 1966, 1967 => 1967, 1968 => 1968, 1969 => 1969, 1970 => 1970, 1971 => 1971, 1972 => 1972, 1973 => 1973, 1974 => 1974,
 		1975 => 1975, 1976 => 1976, 1977 => 1977, 1978 => 1978, 1979 => 1979, 1980 => 1980, 1981 => 1981, 1982 => 1982, 1983 => 1983, 1984 => 1984,
@@ -91,6 +91,8 @@ class User extends ActiveRecord
 		309 => "狮子座(7.23~8.22)", 311 => "处女座(8.23~9.22)", 313 => "天秤座(9.23~10.23)", 315 => "天蝎座(10.24~11.22)",
 		317 => "射手座(11.23~12.21)", 319 => "摩羯座(12.22~1.20)", 321 => "水瓶座(12.21~1.19)", 323 => "双鱼座(12.20~1.20)"
 	];
+
+	protected static $SmsCodeLimitPerDay = 36;
 
 	public static function tableName()
 	{
@@ -230,5 +232,36 @@ class User extends ActiveRecord
 		//return $addData;
 		$uid = self::add($addData);
 		return $uid;
+	}
+
+	/**
+	 * @param $phone
+	 * @return array
+	 */
+	public static function sendSMSCode($phone)
+	{
+		if (!AppUtil::checkPhone($phone)) {
+			return ['code' => 159, 'msg' => '手机格式不正确'];
+		}
+		$smsLimit = RedisUtil::getCache(RedisUtil::KEY_SMS_CODE_CNT, date('ymd'), $phone);
+		if (!$smsLimit) {
+			RedisUtil::setCache(1, RedisUtil::KEY_SMS_CODE_CNT, date('ymd'), $phone);
+		} elseif ($smsLimit > self::$SmsCodeLimitPerDay) {
+			return ['code' => 159, 'msg' => '每天获取验证码的次数不能超过' . self::$SmsCodeLimitPerDay . '次'];
+		} else {
+			RedisUtil::setCache($smsLimit + 1, RedisUtil::KEY_SMS_CODE_CNT, date('ymd'), $phone);
+		}
+		$code = rand(100000, 999999);
+		$minutes = 10;
+
+		AppUtil::sendTXSMS($phone, AppUtil::SMS_NORMAL, ["params" => [strval($code), strval($minutes)]]);
+		RedisUtil::setCache($code, RedisUtil::KEY_SMS_CODE, $phone);
+		return ['code' => 0, 'msg' => '验证码已发送到手机【' . $phone . '】<br>请注意查收手机短信'];
+	}
+
+	public static function verifySMSCode($phone, $code)
+	{
+		$smsCode = RedisUtil::getCache(RedisUtil::KEY_SMS_CODE, $phone);
+		return ($smsCode && $code == $smsCode);
 	}
 }
