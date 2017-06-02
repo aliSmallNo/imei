@@ -16,9 +16,9 @@ use yii\console\Controller;
 class QueueController extends Controller
 {
 	/**
-	 * 执行job命令，执行者是backend.php
+	 * 后台监听beanstalk的worker
 	 * @param $env string 运行环境
-	 * @param $tube string tube名称
+	 * @param $tube string 监听的tube名称
 	 * @return void
 	 */
 	public function actionTask($env, $tube = '')
