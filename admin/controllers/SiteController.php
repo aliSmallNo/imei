@@ -120,10 +120,10 @@ class SiteController extends BaseController
 		Admin::checkAccessLevel(Admin::LEVEL_HIGH);
 		$id = RedisUtil::getIntSeq();
 		QueueUtil::loadJob('publish', ['id' => $id]);
-		sleep(3); // 等待3秒钟
+		sleep(2); // 等待3秒钟
 		$ret = RedisUtil::getCache(RedisUtil::KEY_PUB_CODE, $id);
 		if (!$ret) {
-			sleep(3); // 等待3秒钟
+			sleep(2); // 等待3秒钟
 			$ret = RedisUtil::getCache(RedisUtil::KEY_PUB_CODE, $id);
 			if ($ret) {
 				echo "<pre>" . $ret . "</pre>";
