@@ -56,7 +56,8 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			init: function () {
 				var util = this;
 				util.avatar = util.step0.find(".avatar");
-				util.step0.find(".btn-s").on(kClick, function () {
+				/**
+				 util.step0.find(".btn-s").on(kClick, function () {
 					// 0 ==> 1
 					var img = util.avatar.attr("localids");
 					if (!img) {
@@ -72,6 +73,56 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					$sls.postData["name"] = nickname;
 					location.href = "#step1";
 					return false;
+				});
+				 */
+				$(".btn-s").on(kClick, function () {
+					var self = $(this);
+					var tag = self.attr("tag");
+					var to = self.attr("to");
+					switch (tag) {
+						case "avatar":
+							// 0 ==> 1
+							var img = util.avatar.attr("localids");
+							if (!img) {
+								showMsg("头像还没有上传哦~");
+								return;
+							}
+							var nickname = util.step0.find(".input-s").val();
+							if (!$.trim(nickname)) {
+								showMsg("昵称还没有填写哦~");
+								return;
+							}
+							$sls.postData["name"] = nickname;
+							location.href = to;
+							break;
+						case "location":
+							var lItem = [];
+							$("[data-tag=location] em").each(function () {
+								lItem.push({
+									key: $(this).attr("data-key"),
+									text: $(this).html()
+								});
+							});
+							if (lItem.length < 2) {
+								showMsg("位置信息不全哦~");
+								return;
+							}
+							$sls.postData["location"] = JSON.stringify(lItem);
+							location.href = to;
+							break;
+						case "intro":
+							var intro = $.trim($("[data-tag=intro]").val());
+							if (!intro) {
+								showMsg("内心独白要填写哦~");
+								return;
+							}
+							$sls.postData["intro"] = intro;
+							location.href = to;
+							break;
+						case "interest":
+							break;
+					}
+
 				});
 				util.step0.find(".btn-select-img").on(kClick, function () {
 					wx.chooseImage({
@@ -124,25 +175,6 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					return false;
 				});
 
-				var years = $(".cells[data-tag=year]"), maxYear = parseInt($("#cMaxYear").val()), k;
-				for (k = 34; k >= 0; k--) {
-					years.append('<a href="javascript:;">' + (maxYear - k) + '</a>');
-				}
-
-				var heights = $(".cells[data-tag=height]");
-				heights.append('<a href="javascript:;">不到140厘米</a>');
-				for (k = 141; k <= 200; k += 5) {
-					heights.append('<a href="javascript:;">' + k + '~' + (k + 4) + '厘米</a>');
-				}
-				heights.append('<a href="javascript:;">201厘米以上</a>');
-
-				var weights = $(".cells[data-tag=weight]");
-				weights.append('<a href="javascript:;">不到45kg</a>');
-				for (k = 46; k <= 115; k += 5) {
-					weights.append('<a href="javascript:;">' + k + '~' + (k + 4) + 'kg</a>');
-				}
-				weights.append('<a href="javascript:;">115kg以上</a>');
-
 				$(".cells > a").on(kClick, function () {
 					var self = $(this);
 					var cells = self.closest(".cells");
@@ -152,27 +184,25 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					util[tag] = self.html();
 
 					// 3 => ...
-					$sls.postData[tag] = self.html();
+					$sls.postData[tag] = self.attr("data-key");
 					setTimeout(function () {
 						location.href = "#step" + ($sls.curIndex + 1);
 					}, 120);
 					return false;
 				});
 
+
 				$(".btn-done").on(kClick, function () {
-					var lItem = [];
-					$("[data-tag=location] em").each(function () {
-						lItem.push({
-							key: $(this).attr("data-key"),
-							text: $(this).html()
-						});
-					});
-					$sls.postData["location"] = JSON.stringify(lItem);
-					$sls.postData["intro"] = $.trim($("[data-tag=intro]").val());
-					$sls.postData["interest"] = $.trim($("[data-tag=interest]").val());
+					var interest = $.trim($("[data-tag=interest]").val());
+					if(!interest){
+						showMsg("兴趣爱好要填写哦~");
+						return;
+					}
+					$sls.postData["interest"] =interest;
 
 					console.log($sls.postData);
 					var localId = util.avatar.attr("localIds");
+
 					if (localId) {
 						uploadImages(localId);
 					} else {
@@ -192,7 +222,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					data: JSON.stringify($sls.postData),
 				}, function (res) {
 					showMsg(res.msg);
-					alert(JSON.stringify(res.data));
+					//alert(JSON.stringify(res.data));
 					setTimeout(function () {
 						//location.href = "/wx/single";
 					}, 300);

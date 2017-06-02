@@ -38,6 +38,23 @@ class WxController extends BaseController
 		return self::renderPage("sreg.tpl", [
 			"maxYear" => 1999,
 			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
+			"years" => User::$years,
+			"height" => User::$height,
+			"weight" => User::$weight,
+			"income" => User::$income,
+			"edu" => User::$edu,
+			"scope" => User::$ScopeDict,
+			"job" => User::$job,
+			"house" => User::$house,
+			"car" => User::$car,
+			"smoke" => User::$smoke,
+			"drink" => User::$drink,
+			"belief" => User::$belief,
+			"workout" => User::$workout,
+			"diet" => User::$diet,
+			"rest" => User::$rest,
+			"pet" => User::$pet,
+			"sign" => User::$sign,
 
 		]);
 	}

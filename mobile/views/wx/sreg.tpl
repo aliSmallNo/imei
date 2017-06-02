@@ -10,7 +10,7 @@
 		</a>
 		<input type="text" placeholder="昵称" class="input-s big">
 		<div class="place-holder-s1"></div>
-		<a href="javascript:;" class="btn-s s3">下一步</a>
+		<a href="javascript:;" class="btn-s s3" to="#step1" tag="avatar">下一步</a>
 	</div>
 	<div class="tips-bar-wrap off">
 		<div class="title">上传本人照片，头像居中，五官高清，上半身最佳，例如：</div>
@@ -77,190 +77,163 @@
 		</div>
 	</a>
 	<div class="btn-s-wrap">
-		<a href="#step3" class="btn-s s3">下一步</a>
+		<a href="javascript:;" class="btn-s s3" to="#step3" tag="location">下一步</a>
 	</div>
 </section>
 <section id="step3">
 	<p class="m-header s1 year">您是哪一年出生的？</p>
-	<div class="cells col5 clearfix" data-tag="year"></div>
+	<div class="cells col5 clearfix" data-tag="year">
+		{{foreach from=$years key=key item=y}}
+		<a href="javascript:;" data-key="{{$key}}">{{$y}}</a>
+		{{/foreach}}
+	</div>
 </section>
 <section id="step4">
-	<p class="m-header s1 height">请问您的身高是多少？</p>
-	<div class="cells col2 clearfix" data-tag="height"></div>
+	<p class="m-header s1 sign">您的星座？</p>
+	<div class="cells col2 clearfix" data-tag="sign">
+		{{foreach from=$sign key=key item=y}}
+		<a href="javascript:;" data-key="{{$key}}">{{$y}}</a>
+		{{/foreach}}
+	</div>
 </section>
 <section id="step5">
-	<p class="m-header s1 height">请问您的体重是多少？</p>
-	<div class="cells col2 clearfix" data-tag="weight"></div>
+	<p class="m-header s1 height">请问您的身高是多少？</p>
+	<div class="cells col2 clearfix" data-tag="height">
+		{{foreach from=$height key=key item=h}}
+		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
+		{{/foreach}}
+	</div>
 </section>
 <section id="step6">
-	<p class="m-header s1 income">请问您的年收入是多少？</p>
-	<div class="cells col2 clearfix" data-tag="income">
-		<a href="javascript:;">3万元以下</a>
-		<a href="javascript:;">3万~5万元</a>
-		<a href="javascript:;">6万~10万元</a>
-		<a href="javascript:;">11万~15万元</a>
-		<a href="javascript:;">16万~25万元</a>
-		<a href="javascript:;">26万~35万元</a>
-		<a href="javascript:;">36万~45万元</a>
-		<a href="javascript:;">45万~55万元</a>
-		<a href="javascript:;">56万~60万元</a>
-		<a href="javascript:;">61万~70万元</a>
-		<a href="javascript:;">71万~100万元</a>
-		<a href="javascript:;">100万以上</a>
+	<p class="m-header s1 height">请问您的体重是多少？</p>
+	<div class="cells col2 clearfix" data-tag="weight">
+		{{foreach from=$weight key=key item=w}}
+		<a href="javascript:;" data-key="{{$key}}">{{$w}}</a>
+		{{/foreach}}
 	</div>
 </section>
 <section id="step7">
-	<p class="m-header s1 edu">请问您的学历是什么？</p>
-	<div class="cells col3 clearfix" data-tag="edu">
-		<a href="javascript:;">小学</a>
-		<a href="javascript:;">初中</a>
-		<a href="javascript:;">高中</a>
-		<a href="javascript:;">中专</a>
-		<a href="javascript:;">大专</a>
-		<a href="javascript:;">本科</a>
-		<a href="javascript:;">硕士</a>
-		<a href="javascript:;">博士</a>
+	<p class="m-header s1 income">请问您的年收入是多少？</p>
+	<div class="cells col2 clearfix" data-tag="income">
+		{{foreach from=$income key=key item=i}}
+		<a href="javascript:;" data-key="{{$key}}">{{$i}}</a>
+		{{/foreach}}
 	</div>
 </section>
 <section id="step8">
+	<p class="m-header s1 edu">请问您的学历是什么？</p>
+	<div class="cells col3 clearfix" data-tag="edu">
+		{{foreach from=$edu key=key item=item}}
+		<a href="javascript:;" data-key="{{$key}}">{{$item}}</a>
+		{{/foreach}}
+	</div>
+</section>
+<section id="step9">
 	<p class="m-header s1 intro">请描述一下你的内心独白</p>
 	<div class="edit">
 		<textarea placeholder="说说自己的性格特点、对另一半的期待，或对爱情的憧憬和理解等" data-tag="intro"></textarea>
 		<span class="count" style="display: none">10/150</span>
 	</div>
 	<div class="btn-s-wrap">
-		<a href="#step9" class="btn-s s3">下一步</a>
-	</div>
-</section>
-<section id="step9">
-	<p class="m-header s1 scope">请问您的行业是什么？</p>
-	<div class="cells col3 clearfix" data-tag="scope">
-
-		<a href="javascript:;" data-key="0">IT互联网</a>
-		<a href="javascript:;" data-key="1">金融</a>
-		<a href="javascript:;" data-key="2">文化传媒</a>
-		<a href="javascript:;" data-key="3">服务业</a>
-		<a href="javascript:;" data-key="4">教育培训</a>
-		<a href="javascript:;" data-key="5">通信电子</a>
-		<a href="javascript:;" data-key="6">房产建筑</a>
-		<a href="javascript:;" data-key="7">轻工贸易</a>
-		<a href="javascript:;" data-key="8">医疗生物</a>
-		<a href="javascript:;" data-key="9">生产制造</a>
-		<a href="javascript:;" data-key="10">能源环保</a>
-		<a href="javascript:;" data-key="11">政法公益</a>
-		<a href="javascript:;" data-key="12">农林牧渔</a>
-		<a href="javascript:;" data-key="13">其他</a>
+		<a href="javascript:;" class="btn-s s3" to="#step10" tag="intro">下一步</a>
 	</div>
 </section>
 <section id="step10">
-	<p class="m-header s1 job">请问您的职业是什么？</p>
-	<div class="cells col3 clearfix" data-tag="job">
-		<a href="javascript:;">研发</a>
-		<a href="javascript:;">设计</a>
-		<a href="javascript:;">销售</a>
-		<a href="javascript:;">运营/编辑</a>
-		<a href="javascript:;">产品</a>
-		<a href="javascript:;">市场销售</a>
-		<a href="javascript:;">高管</a>
-		<a href="javascript:;">运维/安全</a>
-		<a href="javascript:;">人力HR</a>
-		<a href="javascript:;">行政后勤</a>
-		<a href="javascript:;">测试客服</a>
-		<a href="javascript:;">项目管理</a>
+	<p class="m-header s1 scope">请问您的行业是什么？</p>
+	<div class="cells col3 clearfix" data-tag="scope">
+		{{foreach from=$scope key=key item=item}}
+		<a href="javascript:;" data-key="{{$key}}">{{$item}}</a>
+		{{/foreach}}
 	</div>
 </section>
 <section id="step11">
-	<p class="m-header s1 house">请问您是否有住房？</p>
-	<div class="cells col2 clearfix" data-tag="house">
-		<a href="javascript:;">有房无贷</a>
-		<a href="javascript:;">有房有贷</a>
-		<a href="javascript:;">计划购房</a>
-		<a href="javascript:;">暂无购房计划</a>
+	<p class="m-header s1 job">请问您的职业是什么？</p>
+	<div class="cells col3 clearfix" data-tag="job">
+		{{foreach from=$job key=key item=item}}
+		<a href="javascript:;" data-key="{{$key}}">{{$item}}</a>
+		{{/foreach}}
 	</div>
 </section>
 <section id="step12">
-	<p class="m-header s1 car">请问您是否有车？</p>
-	<div class="cells col2 clearfix" data-tag="car">
-		<a href="javascript:;">有车无贷</a>
-		<a href="javascript:;">有车有贷</a>
-		<a href="javascript:;">计划购车</a>
-		<a href="javascript:;">暂无购车计划</a>
+	<p class="m-header s1 house">请问您是否有住房？</p>
+	<div class="cells col2 clearfix" data-tag="house">
+		{{foreach from=$house key=key item=item}}
+		<a href="javascript:;" data-key="{{$key}}">{{$item}}</a>
+		{{/foreach}}
 	</div>
 </section>
 <section id="step13">
-	<p class="m-header s1 smoke">请问您是否吸烟？</p>
-	<div class="cells col2 clearfix" data-tag="smoke">
-		<a href="javascript:;">不吸，反感吸烟</a>
-		<a href="javascript:;">不吸，不反感吸烟</a>
-		<a href="javascript:;">偶尔吸烟</a>
-		<a href="javascript:;">每天都吸烟</a>
+	<p class="m-header s1 car">请问您是否有车？</p>
+	<div class="cells col2 clearfix" data-tag="car">
+		{{foreach from=$car key=key item=item}}
+		<a href="javascript:;" data-key="{{$key}}">{{$item}}</a>
+		{{/foreach}}
 	</div>
 </section>
 <section id="step14">
-	<p class="m-header s1 smoke">请问您是否饮酒？</p>
-	<div class="cells col2 clearfix" data-tag="drink">
-		<a href="javascript:;">不饮酒，反感饮酒</a>
-		<a href="javascript:;">不饮酒，不反感饮酒</a>
-		<a href="javascript:;">偶尔饮酒</a>
-		<a href="javascript:;">每天都饮酒</a>
+	<p class="m-header s1 smoke">请问您是否吸烟？</p>
+	<div class="cells col2 clearfix" data-tag="smoke">
+		{{foreach from=$smoke key=key item=item}}
+		<a href="javascript:;" data-key="{{$key}}">{{$item}}</a>
+		{{/foreach}}
 	</div>
 </section>
 <section id="step15">
-	<p class="m-header s1 smoke">请问您是否有宗教信仰？</p>
-	<div class="cells col2 clearfix" data-tag="belief">
-		<a href="javascript:;">无</a>
-		<a href="javascript:;">佛教</a>
-		<a href="javascript:;">道教</a>
-		<a href="javascript:;">基督教</a>
-		<a href="javascript:;">伊斯兰教</a>
-		<a href="javascript:;">天主教</a>
-		<a href="javascript:;">其他宗教信仰</a>
+	<p class="m-header s1 smoke">请问您是否饮酒？</p>
+	<div class="cells col2 clearfix" data-tag="drink">
+		{{foreach from=$drink key=key item=item}}
+		<a href="javascript:;" data-key="{{$key}}">{{$item}}</a>
+		{{/foreach}}
 	</div>
 </section>
 <section id="step16">
-	<p class="m-header s1 smoke">请问您是否有健身的习惯？</p>
-	<div class="cells col2 clearfix" data-tag="workout">
-		<a href="javascript:;">每天健身</a>
-		<a href="javascript:;">每周两三次</a>
-		<a href="javascript:;">没时间健身</a>
-		<a href="javascript:;">不喜欢健身</a>
+	<p class="m-header s1 smoke">请问您是否有宗教信仰？</p>
+	<div class="cells col2 clearfix" data-tag="belief">
+		{{foreach from=$belief key=key item=item}}
+		<a href="javascript:;" data-key="{{$key}}">{{$item}}</a>
+		{{/foreach}}
 	</div>
 </section>
 <section id="step17">
-	<p class="m-header s1 smoke">请问您的饮食习惯？</p>
-	<div class="cells col2 clearfix" data-tag="diet">
-		<a href="javascript:;">无特殊习惯</a>
-		<a href="javascript:;">喜欢吃辣</a>
-		<a href="javascript:;">喜欢吃肉</a>
-		<a href="javascript:;">喜欢吃素</a>
+	<p class="m-header s1 smoke">请问您是否有健身的习惯？</p>
+	<div class="cells col2 clearfix" data-tag="workout">
+		{{foreach from=$workout key=key item=item}}
+		<a href="javascript:;" data-key="{{$key}}">{{$item}}</a>
+		{{/foreach}}
 	</div>
 </section>
 <section id="step18">
-	<p class="m-header s1 smoke">请问您的作息习惯？</p>
-	<div class="cells col2 clearfix" data-tag="rest">
-		<a href="javascript:;">早睡早起</a>
-		<a href="javascript:;">夜猫子</a>
-		<a href="javascript:;">偶尔懒散</a>
-		<a href="javascript:;">无规律</a>
+	<p class="m-header s1 smoke">请问您的饮食习惯？</p>
+	<div class="cells col2 clearfix" data-tag="diet">
+		{{foreach from=$diet key=key item=item}}
+		<a href="javascript:;" data-key="{{$key}}">{{$item}}</a>
+		{{/foreach}}
 	</div>
 </section>
 <section id="step19">
-	<p class="m-header s1 smoke">请问您养宠物吗？</p>
-	<div class="cells col2 clearfix" data-tag="pet">
-		<a href="javascript:;">不养，反感宠物</a>
-		<a href="javascript:;">不养，不反感宠物</a>
-		<a href="javascript:;">已养宠物</a>
-		<a href="javascript:;">无所谓</a>
+	<p class="m-header s1 smoke">请问您的作息习惯？</p>
+	<div class="cells col2 clearfix" data-tag="rest">
+		{{foreach from=$rest key=key item=item}}
+		<a href="javascript:;" data-key="{{$key}}">{{$item}}</a>
+		{{/foreach}}
 	</div>
 </section>
 <section id="step20">
+	<p class="m-header s1 smoke">请问您养宠物吗？</p>
+	<div class="cells col2 clearfix" data-tag="pet">
+		{{foreach from=$pet key=key item=item}}
+		<a href="javascript:;" data-key="{{$key}}">{{$item}}</a>
+		{{/foreach}}
+	</div>
+</section>
+<section id="step21">
 	<p class="m-header s1 intro">请介绍一下你的兴趣爱好</p>
 	<div class="edit">
 		<textarea placeholder="例如：健身、旅行、电影、音乐" data-tag="interest"></textarea>
 		<span class="count" style="display: none">0/150</span>
 	</div>
 	<div class="btn-s-wrap">
-		<a href="javascript:;" class="btn-s s3 btn-done">提交</a>
+		<a href="javascript:;" class="btn-s s3 btn-done" tag="interest">提交</a>
 	</div>
 </section>
 <div class="m-footer-tip">
