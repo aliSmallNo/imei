@@ -287,7 +287,7 @@ section {
 .tip-block {
   color: #f80;
   font-size: 1.2rem;
-  padding: 0.6rem 1rem; }
+  padding: 1rem 1.5rem; }
   .tip-block .message {
     font-size: 1.3rem;
     padding: 1rem;
@@ -2214,7 +2214,7 @@ section {
     margin-top: -0.9rem; }
 
 .account-header {
-  height: 13rem;
+  height: 12rem;
   background: #f491b2;
   position: relative; }
   .account-header a {
@@ -2235,5 +2235,57 @@ section {
       color: #fff;
       line-height: 4rem;
       height: 4rem; }
+
+.recharge {
+  background: #fff;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  border-bottom: 1px solid #EEEFF3;
+  margin-bottom: 0.5rem; }
+  .recharge li {
+    padding: 1.6rem 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    border-bottom: 1px solid #EEEFF3; }
+    .recharge li:last-child {
+      border-bottom: none; }
+    .recharge li .title {
+      text-align: left;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1; }
+    .recharge li .action {
+      text-align: right;
+      -webkit-box-flex: 0 0 9rem;
+      -webkit-flex: 0 0 9rem;
+      -ms-flex: 0 0 9rem;
+      flex: 0 0 9rem;
+      position: relative; }
+      .recharge li .action .btn {
+        height: 3rem;
+        line-height: 3rem;
+        border: #f491b2 1px solid;
+        border-radius: 1.6rem;
+        position: absolute;
+        width: 8rem;
+        text-align: center;
+        top: 50%;
+        right: 0;
+        margin-top: -1.6rem;
+        color: #f06292;
+        background: #fff; }
+        .recharge li .action .btn:active {
+          background: #f491b2;
+          color: #fff; }
+    .recharge li.th {
+      padding: 1rem 0 0;
+      font-size: 1.2rem;
+      color: #999;
+      border-bottom: none; }
+      .recharge li.th > div {
+        font-size: 1.2rem; }
 
 /*# sourceMappingURL=imei.css.map */

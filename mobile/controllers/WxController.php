@@ -104,9 +104,18 @@ class WxController extends BaseController
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
 		}
+		$prices = [
+			['num' => 20, 'price' => 2],
+			['num' => 60, 'price' => 6],
+			['num' => 80, 'price' => 8],
+			['num' => 180, 'price' => 18],
+			['num' => 680, 'price' => 68],
+			['num' => 1980, 'price' => 198],
+		];
 		return self::renderPage("single.tpl", [
 			'nickname' => $nickname,
-			'avatar' => $avatar
+			'avatar' => $avatar,
+			'prices' => $prices
 		]);
 	}
 

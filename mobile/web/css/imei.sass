@@ -397,7 +397,7 @@ section
 .tip-block
 	color: $tipColor
 	font-size: 1.2rem
-	padding: .6rem 1rem
+	padding: 1rem 1.5rem
 	.message
 		font-size: 1.3rem
 		padding: 1rem
@@ -2182,7 +2182,7 @@ section
 		margin-top: -.9rem
 
 .account-header
-	height: 13rem
+	height: 12rem
 	background: $mainColorLight
 	position: relative
 	a
@@ -2203,4 +2203,45 @@ section
 			color: #fff
 			line-height: 4rem
 			height: 4rem
-
+.recharge
+	background: #fff
+	padding-left: 1.5rem
+	padding-right: 1.5rem
+	border-bottom: 1px solid $borderColorLight
+	margin-bottom: .5rem
+	li
+		padding: 1.6rem 0
+		@include displayFlex
+		border-bottom: 1px solid $borderColorLight
+		&:last-child
+			border-bottom: none
+		.title
+			text-align: left
+			@include displayFlex-1
+		.action
+			text-align: right
+			@include displayFlex-w(9rem)
+			position: relative
+			.btn 
+				height: 3rem
+				line-height: 3rem
+				border: $mainColorLight 1px solid
+				border-radius: 1.6rem
+				position: absolute
+				width: 8rem
+				text-align: center
+				top: 50%
+				right: 0
+				margin-top: -1.6rem
+				color: $mainColor
+				background: #fff
+				&:active
+					background: $mainColorLight
+					color: #fff
+		&.th
+			padding: 1rem 0 0
+			font-size: 1.2rem
+			color: $grayFontColorLight
+			border-bottom: none
+			& > div
+				font-size: 1.2rem

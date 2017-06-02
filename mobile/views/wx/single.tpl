@@ -274,36 +274,22 @@
 		<div>
 			<span class="m-ico-rose">媒桂花</span>
 		</div>
-		<a href="#srecords">交易记录 </a>
+		<a href="#srecords">充值记录 </a>
 	</div>
-	<div class="recharge">
-		<p class="title">
-			<span>充值</span>
-			<a href="#srecords" class="">查看充值记录</a>
-		</p>
-		<ul>
-			<li>
-				<div class="title"><i class="m-ico-rose"></i><span class="wd">20 话媒糖</span></div>
-				<div class="action"><a href="javascript:;" class="btn">2元</a></div>
+	<div>
+		<ul class="recharge">
+			<li class="th">
+				<div class="title">充值项目</div>
+				<div class="action">价格</div>
 			</li>
+			{{foreach from=$prices key=k item=item}}
 			<li>
-				<i class="m-ico-rose"></i><span class="wd">60 话媒糖</span>
-				<a href="javascript:;" class="btn">6元</a>
+				<div class="title m-ico-rose">{{$item.num}} 媒桂花</div>
+				<div class="action"><a href="javascript:;" class="btn btn-recharge" data-id="{{$item.price}}">{{$item.price}}元</a></div>
 			</li>
-			<li>
-				<i class="m-ico-rose"></i><span class="wd">180 话媒糖</span>
-				<a href="javascript:;" class="btn">18元</a>
-			</li>
-			<li>
-				<i class="m-ico-rose"></i><span class="wd">680 话媒糖</span>
-				<a href="javascript:;" class="btn">68元</a>
-			</li>
-			<li>
-				<i class="m-ico-rose"></i><span class="wd">1980 话媒糖</span>
-				<a href="javascript:;" class="btn">198元</a>
-			</li>
+			{{/foreach}}
 		</ul>
-		<p class="intro">媒桂花仅用于打赏，不能提现或退款</p>
+		<p class="tip-block">媒桂花仅用于打赏，不能提现或退款</p>
 	</div>
 </section>
 <section id="sprofile">
@@ -320,6 +306,7 @@
 		我的
 	</a>
 </div>
+
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
