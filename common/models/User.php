@@ -152,7 +152,8 @@ class User extends ActiveRecord
 				$addData[$v] = $data[$k];
 			}
 		}
-		return $addData;
+		//return $addData;
 		$uid = self::add($addData);
+		return $uid;
 	}
 }

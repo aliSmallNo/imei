@@ -6,7 +6,7 @@
 	<p class="m-header">请上传真人头像<i>否则不会审核通过</i></p>
 	<div class="nick_name">
 		<a href="javascript:;" class="photo photo-file">
-			<img class="avatar" src="" localids="">
+			<img class="avatar" src="" localId="">
 		</a>
 		<input type="text" placeholder="昵称" class="input-s big">
 		<div class="place-holder-s1"></div>

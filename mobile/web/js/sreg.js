@@ -82,7 +82,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 							var localIds = res.localIds;
 							if (localIds && localIds.length) {
 								var localId = localIds[0];
-								util.avatar.attr("localIds", localId);
+								util.avatar.attr("localId", localId);
 								util.avatar.attr("src", localId);
 							}
 						}
@@ -172,6 +172,12 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					$sls.postData["interest"] = $.trim($("[data-tag=interest]").val());
 
 					console.log($sls.postData);
+					var localId = util.avatar.attr("localIds");
+					if (localId) {
+						uploadImages(localId);
+					} else {
+						util.submit();
+					}
 				});
 			},
 			progress: function () {
@@ -218,12 +224,13 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			}
 		};
 
-		function uploadImages() {
+		function uploadImages(localId) {
 			wx.uploadImage({
-				localId: $("#step0 .avatar").attr("localids").toString(),
+				localId: localId.toString(),//$("#step0 .avatar").attr("localids").toString(),
 				isShowProgressTips: 1,
 				success: function (res) {
 					$sls.serverId = res.serverId;
+
 					SingleUtil.submit();
 				},
 				fail: function () {
