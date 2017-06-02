@@ -56,10 +56,6 @@ class QueueController extends Controller
 					$beanstalk->delete($jobId);
 				}
 
-				if (file_exists('shutdown')) {
-					file_put_contents('shutdown', 'beanstalkd shutdown at ' . date('Y-m-d H:i:s'));
-					break;
-				}
 				sleep(1);
 			}
 			$beanstalk->disconnect();
