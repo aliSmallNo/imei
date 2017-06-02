@@ -82,7 +82,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					switch (tag) {
 						case "avatar":
 							// 0 ==> 1
-							var img = util.avatar.attr("localids");
+							var img = util.avatar.attr("localid");
 							if (!img) {
 								showMsg("头像还没有上传哦~");
 								return;
