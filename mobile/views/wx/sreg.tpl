@@ -72,8 +72,8 @@
 	<p class="m-header s1 loc">您的位置</p>
 	<a href="javascript:;" class="action-row">
 		<div class="location" data-tag="location">
-			<em>北京</em>
-			<em>昌平</em>
+			<em data-key="100100">北京市</em>
+			<em data-key="100112">昌平区</em>
 		</div>
 	</a>
 	<div class="btn-s-wrap">
@@ -135,20 +135,21 @@
 <section id="step9">
 	<p class="m-header s1 scope">请问您的行业是什么？</p>
 	<div class="cells col3 clearfix" data-tag="scope">
-		<a href="javascript:;">IT互联网</a>
-		<a href="javascript:;">金融</a>
-		<a href="javascript:;">文化传媒</a>
-		<a href="javascript:;">服务业</a>
-		<a href="javascript:;">教育培训</a>
-		<a href="javascript:;">通信电子</a>
-		<a href="javascript:;">房产建筑</a>
-		<a href="javascript:;">轻工贸易</a>
-		<a href="javascript:;">医疗生物</a>
-		<a href="javascript:;">生产制造</a>
-		<a href="javascript:;">能源环保</a>
-		<a href="javascript:;">政法公益</a>
-		<a href="javascript:;">农林牧渔</a>
-		<a href="javascript:;">其他</a>
+
+		<a href="javascript:;" data-key="0">IT互联网</a>
+		<a href="javascript:;" data-key="1">金融</a>
+		<a href="javascript:;" data-key="2">文化传媒</a>
+		<a href="javascript:;" data-key="3">服务业</a>
+		<a href="javascript:;" data-key="4">教育培训</a>
+		<a href="javascript:;" data-key="5">通信电子</a>
+		<a href="javascript:;" data-key="6">房产建筑</a>
+		<a href="javascript:;" data-key="7">轻工贸易</a>
+		<a href="javascript:;" data-key="8">医疗生物</a>
+		<a href="javascript:;" data-key="9">生产制造</a>
+		<a href="javascript:;" data-key="10">能源环保</a>
+		<a href="javascript:;" data-key="11">政法公益</a>
+		<a href="javascript:;" data-key="12">农林牧渔</a>
+		<a href="javascript:;" data-key="13">其他</a>
 	</div>
 </section>
 <section id="step10">

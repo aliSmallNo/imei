@@ -100,7 +100,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					location.href = "#step2";
 					return false;
 				});
-				util.step2.on(".action-row").on(kClick, function () {
+				util.step2.find(".action-row").on(kClick, function () {
 					var html = '';
 					util.btn = $(this);
 					html = Mustache.render(util.provinceTmp, {items: mProvinces});
@@ -160,7 +160,14 @@ require(["layer", "fastclick", "iscroll", "fly"],
 				});
 
 				$(".btn-done").on(kClick, function () {
-					$sls.postData["location"] = $("[data-tag=location]").length;
+					var lItem = [];
+					$("[data-tag=location] em").each(function () {
+						lItem.push({
+							key: $(this).attr("data-key"),
+							text: $(this).html()
+						});
+					});
+					$sls.postData["location"] = JSON.stringify(lItem);
 					$sls.postData["intro"] = $.trim($("[data-tag=intro]").val());
 					$sls.postData["interest"] = $.trim($("[data-tag=interest]").val());
 
