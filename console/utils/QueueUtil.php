@@ -55,50 +55,6 @@ class QueueUtil
 		}
 	}
 
-	/*public static function execJob()
-	{
-		try {
-			$beanstalk = new beanstalkSocket(self::$QueueConfig);
-			if (!$beanstalk->connect()) {
-				self::logFile('beanstalk disconnect!', __FUNCTION__, __LINE__);
-				exit(1);
-			}
-			self::logFile('beanstalk connected ', __FUNCTION__, __LINE__);
-			$tube = 'test';
-			if (isset($_SERVER['argv'][2])) {
-				$tube = $_SERVER['argv'][2];
-			}
-			$beanstalk->useTube($tube);
-			$beanstalk->watch($tube);
-			$beanstalk->ignore('default');
-			while (true) {
-				$job = $beanstalk->reserve();
-				$jobId = $job['id'];
-				$jobBody = json_decode($job['body'], 1);
-				$method = $jobBody['consumer'];
-				$params = $jobBody['params'];
-				$result = self::$method($params);
-				if ($result) {
-					$beanstalk->delete($jobId);
-				} else {
-					$beanstalk->bury($jobId, 40);
-				}
-
-				if (file_exists('shutdown')) {
-					file_put_contents('shutdown', 'beanstalkd shutdown at ' . date('Y-m-d H:i:s'));
-					break;
-				}
-				sleep(1);
-			}
-			self::logFile('End of while', __FUNCTION__, __LINE__);
-			$beanstalk->disconnect();
-		} catch (Exception $ex) {
-			$msg = $ex->getMessage();
-			self::logFile($msg, __FUNCTION__, __LINE__);
-		}
-		exit(1);
-	}*/
-
 	public static function logFile($msg, $funcName = '', $line = '')
 	{
 		if (is_array($msg)) {
@@ -112,7 +68,7 @@ class QueueUtil
 		file_put_contents('/data/tmp/imei_beanstalkd.log', PHP_EOL . date('Y-m-d H:i:s') . ' ' . $msg . PHP_EOL, FILE_APPEND);
 	}
 
-	protected static function sendSMS($phone, $msg, $appendId = '1234', $type = 'real')
+	public static function sendSMS($phone, $msg, $appendId = '1234', $type = 'real')
 	{
 		$formatMsg = $msg;
 		if (mb_strpos($msg, '【奔跑到家】') == false) {
@@ -131,7 +87,7 @@ class QueueUtil
 		return true;
 	}
 
-	protected static function pushSMS($parameters)
+	public static function pushSMS($parameters)
 	{
 		self::sendSMS($parameters['phone'], $parameters['msg'],
 			isset($parameters['appendId']) ? $parameters['appendId'] : '1234',
@@ -143,7 +99,7 @@ class QueueUtil
 	 * 发送短信信息
 	 *
 	 * */
-	protected static function message($params)
+	public static function message($params)
 	{
 		self::sendSMS($params['phone'], '验证码 ' . $params['code'] . '，如非本人操作，请忽略本短信。', '100001');
 
@@ -152,7 +108,7 @@ class QueueUtil
 		return true;
 	}
 
-	protected static function publish($params)
+	public static function publish($params)
 	{
 		$id = $params["id"];
 		$ret = shell_exec("/data/code/pub_imei.sh 2>&1");
