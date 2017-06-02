@@ -30,6 +30,16 @@ require(["layer", "fastclick"],
 			newsTimer: 0
 		};
 
+		var RechargeUtil = {
+			init: function () {
+				$(document).on(kClick, '.btn-recharge', function () {
+					var self = $(this);
+					var pri = self.attr('data-id');
+					showMsg(pri);
+				});
+			}
+		};
+
 		var FootUtil = {
 			footer: null,
 			hide: 0,
@@ -99,10 +109,19 @@ require(["layer", "fastclick"],
 			self.addClass("active");
 		});
 
+		function showMsg(title, sec) {
+			var duration = sec || 2;
+			layer.open({
+				content: title,
+				skin: 'msg',
+				time: duration
+			});
+		}
+
 		$(function () {
 			$("body").addClass("bg-color");
 			FootUtil.init();
-			// SingleUtil.init();
+			RechargeUtil.init();
 			// FastClick.attach($sls.footer.get(0));
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
