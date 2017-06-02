@@ -207,7 +207,7 @@ class User extends ActiveRecord
 			"height" => "uHeight",
 			"house" => "uEstate",
 			"income" => "uIncome",
-			"interest" => "uHoros",
+			"interest" => "uInterest",
 			"job" => "uProfession",
 			"pet" => "uPet",
 			"rest" => "uRest",

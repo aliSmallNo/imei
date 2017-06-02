@@ -201,7 +201,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					$sls.postData["interest"] =interest;
 
 					console.log($sls.postData);
-					var localId = util.avatar.attr("localIds");
+					var localId = util.avatar.attr("localId");
 
 					if (localId) {
 						uploadImages(localId);
