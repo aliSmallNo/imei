@@ -14,8 +14,23 @@ use yii\db\ActiveRecord;
 
 class User extends ActiveRecord
 {
-	static $Scopes = ['IT互联网', '金融', '文化传媒', '服务业', '教育培训', '通信电子', '房产建筑',
-		'轻工贸易', '医疗生物', '生产制造', '能源环保', '政法公益', '农林牧渔', '其他'];
+	static $ScopeDict = [
+		100 => 'IT互联网',
+		102 => '金融',
+		104 => '文化传媒',
+		106 => '服务业',
+		108 => '教育培训',
+		110 => '通信电子',
+		112 => '房产建筑',
+		114 => '轻工贸易',
+		116 => '医疗生物',
+		118 => '生产制造',
+		120 => '能源环保',
+		122 => '政法公益',
+		124 => '农林牧渔',
+		126 => '其他'
+	];
+
 
 	public static function tableName()
 	{
@@ -27,12 +42,19 @@ class User extends ActiveRecord
 		if (!$data) {
 			return 0;
 		}
-		$entity = new self();
+		$openId = isset($data["uOpenId"]) ? $data["uOpenId"] : "";
+		if ($entity = self::findOne(["uOpenId" => $openId])) {
+			$entity->uUpdatedOn = date('Y-m-d H:i:s');
+			$entity->uUpdatedBy = Admin::getAdminId() ? Admin::getAdminId() : 1;
+		} else {
+			$entity = new self();
+			$entity->uAddedOn = date('Y-m-d H:i:s');
+			$entity->uAddedBy = Admin::getAdminId() ? Admin::getAdminId() : 1;
+		}
 		foreach ($data as $key => $val) {
 			$entity->$key = $val;
 		}
-		$entity->uAddedOn = date('Y-m-d H:i:s');
-		$entity->uAddedBy = Admin::getAdminId();
+
 		$uid = $entity->save();
 		return $uid;
 	}
@@ -145,7 +167,8 @@ class User extends ActiveRecord
 				$addData[$v] = $data[$k];
 			}
 		}
-		return $addData;
+		//return $addData;
 		$uid = self::add($addData);
+		return $uid;
 	}
 }

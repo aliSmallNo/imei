@@ -182,36 +182,32 @@ require(["layer", "fastclick"],
 						});
 					});
 					if (lItem.length < 2) {
-						// showMsg("地理位置不能为空");
-						// return;
+						showMsg("地理位置不能为空");
+						return;
 					}
 
-					var sObj = $("[data-tag=scope] em");
-					var sItem = {
-						key: sObj.attr("data-key"),
-						text: sObj.html()
-					};
-					if (!sItem.key) {
-						// showMsg("所属行业不能为空");
-						// return;
+					var scope = $("[data-tag=scope] em").attr("data-key");
+					if (!scope) {
+						showMsg("所属行业不能为空");
+						return;
 					}
 
 					var name = $.trim($("[data-tag=name]").val());
 					var intro = $.trim($("[data-tag=intro]").val());
 					if (!name) {
-						// showMsg("真实姓名不能为空");
-						// return;
+						showMsg("真实姓名不能为空");
+						return;
 					}
 					if (!intro) {
-						// showMsg("个人简介不能为空");
-						// return;
+						showMsg("个人简介不能为空");
+						return;
 					}
 
 					$sls.postData = {
 						name: name,
 						intro: intro,
 						location: JSON.stringify(lItem),
-						scope: JSON.stringify(sItem)
+						scope: scope
 					};
 					console.log($sls.postData);
 					if (!SingleUtil.avatar.attr("localIds")) {
@@ -223,14 +219,13 @@ require(["layer", "fastclick"],
 			},
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
-				console.log($sls.serverId)
-				//alert(JSON.stringify($sls.postData))
 				$.post("/api/user", {
 					data: JSON.stringify($sls.postData),
 					tag: "mreg",
 				}, function (res) {
 					showMsg(res.msg);
-					alert(JSON.stringify(res.data));
+					//alert(JSON.stringify(res.data));
+					//location.href = "";
 				}, "json");
 			},
 			toggle: function (content) {

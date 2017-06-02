@@ -98,7 +98,6 @@ class SiteController extends BaseController
 		}
 
 
-
 		$items = [];
 		$hourData = [];// StatPool::hourlyData(Admin::getBranch(), date("Y-m-d"));
 		$hideChart = true;
@@ -134,5 +133,34 @@ class SiteController extends BaseController
 		} else {
 			echo "<pre>" . $ret . "</pre>";
 		}
+	}
+
+	public function actionAccounts()
+	{
+		$page = self::getParam("page", 1);
+		$name = self::getParam('name');
+		$note = self::getParam('note');
+		$status = Admin::STATUS_ACTIVE;
+		$condition = " aStatus=$status ";
+		if ($name) {
+			$condition .= " and aLoginId like '%" . $name . "%'";
+		}
+		if ($note) {
+			$condition .= " and aName like '%" . $note . "%'";
+		}
+
+		$count = Admin::getCountByCondition($condition);
+		$list = Admin::getUsers($condition, $page, self::PAGE_SIZE);
+
+		$pagination = self::pagination($page, $count);
+		$menus = Menu::getRootMenu();
+		return $this->renderPage('users.tpl',
+			[
+				"note" => $note,
+				'list' => $list,
+				'menus' => $menus,
+				"name" => $name,
+				'pagination' => $pagination,
+			]);
 	}
 }

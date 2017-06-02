@@ -82,7 +82,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 							var localIds = res.localIds;
 							if (localIds && localIds.length) {
 								var localId = localIds[0];
-								util.avatar.attr("localIds", localId);
+								util.avatar.attr("localId", localId);
 								util.avatar.attr("src", localId);
 							}
 						}
@@ -100,7 +100,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					location.href = "#step2";
 					return false;
 				});
-				util.step2.on(".action-row").on(kClick, function () {
+				util.step2.find(".action-row").on(kClick, function () {
 					var html = '';
 					util.btn = $(this);
 					html = Mustache.render(util.provinceTmp, {items: mProvinces});
@@ -160,11 +160,24 @@ require(["layer", "fastclick", "iscroll", "fly"],
 				});
 
 				$(".btn-done").on(kClick, function () {
-					$sls.postData["location"] = $("[data-tag=location]").length;
+					var lItem = [];
+					$("[data-tag=location] em").each(function () {
+						lItem.push({
+							key: $(this).attr("data-key"),
+							text: $(this).html()
+						});
+					});
+					$sls.postData["location"] = JSON.stringify(lItem);
 					$sls.postData["intro"] = $.trim($("[data-tag=intro]").val());
 					$sls.postData["interest"] = $.trim($("[data-tag=interest]").val());
 
 					console.log($sls.postData);
+					var localId = util.avatar.attr("localIds");
+					if (localId) {
+						uploadImages(localId);
+					} else {
+						util.submit();
+					}
 				});
 			},
 			progress: function () {
@@ -179,6 +192,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					data: JSON.stringify($sls.postData),
 				}, function (res) {
 					showMsg(res.msg);
+					alert(JSON.stringify(res.data));
 					setTimeout(function () {
 						//location.href = "/wx/single";
 					}, 300);
@@ -210,12 +224,13 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			}
 		};
 
-		function uploadImages() {
+		function uploadImages(localId) {
 			wx.uploadImage({
-				localId: $("#step0 .avatar").attr("localids").toString(),
+				localId: localId.toString(),//$("#step0 .avatar").attr("localids").toString(),
 				isShowProgressTips: 1,
 				success: function (res) {
 					$sls.serverId = res.serverId;
+
 					SingleUtil.submit();
 				},
 				fail: function () {
