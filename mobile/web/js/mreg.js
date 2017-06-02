@@ -186,12 +186,8 @@ require(["layer", "fastclick"],
 						return;
 					}
 
-					var sObj = $("[data-tag=scope] em");
-					var sItem = {
-						key: sObj.attr("data-key"),
-						text: sObj.html()
-					};
-					if (!sItem.key) {
+					var scope = $("[data-tag=scope] em").attr("data-key");
+					if (!scope) {
 						showMsg("所属行业不能为空");
 						return;
 					}
@@ -211,7 +207,7 @@ require(["layer", "fastclick"],
 						name: name,
 						intro: intro,
 						location: JSON.stringify(lItem),
-						scope: JSON.stringify(sItem)
+						scope: scope
 					};
 					console.log($sls.postData);
 					if (!SingleUtil.avatar.attr("localIds")) {
@@ -228,7 +224,7 @@ require(["layer", "fastclick"],
 					tag: "mreg",
 				}, function (res) {
 					showMsg(res.msg);
-					alert(JSON.stringify(res.data));
+					//alert(JSON.stringify(res.data));
 					//location.href = "";
 				}, "json");
 			},

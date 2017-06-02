@@ -38,13 +38,14 @@ class WxController extends BaseController
 		return self::renderPage("sreg.tpl", [
 			"maxYear" => 1999,
 			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
+
 		]);
 	}
 
 	public function actionMreg()
 	{
 		$scopes = [];
-		foreach (User::$Scopes as $key => $scope) {
+		foreach (User::$ScopeDict as $key => $scope) {
 			$scopes[] = [
 				'key' => $key,
 				'name' => $scope,
