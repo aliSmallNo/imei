@@ -134,6 +134,8 @@ class ApiController extends Controller
 				$data["openId"] = $openId;
 				$ret = User::reg($data);
 				return self::renderAPI(129, 'wwww~', $ret);
+				break;
+
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

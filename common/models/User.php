@@ -27,12 +27,19 @@ class User extends ActiveRecord
 		if (!$data) {
 			return 0;
 		}
-		$entity = new self();
+		$openId = isset($data["uOpenId"]) ? $data["uOpenId"] : "";
+		if ($entity = self::findOne(["uOpenId" => $openId])) {
+			$entity->uUpdatedOn = date('Y-m-d H:i:s');
+			$entity->uUpdatedBy = Admin::getAdminId() ? Admin::getAdminId() : 1;
+		} else {
+			$entity = new self();
+			$entity->uAddedOn = date('Y-m-d H:i:s');
+			$entity->uAddedBy = Admin::getAdminId() ? Admin::getAdminId() : 1;
+		}
 		foreach ($data as $key => $val) {
 			$entity->$key = $val;
 		}
-		$entity->uAddedOn = date('Y-m-d H:i:s');
-		$entity->uAddedBy = Admin::getAdminId();
+
 		$uid = $entity->save();
 		return $uid;
 	}
