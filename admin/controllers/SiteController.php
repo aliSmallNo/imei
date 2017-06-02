@@ -4,6 +4,7 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use admin\models\Menu;
+use common\models\User;
 use common\utils\RedisUtil;
 use console\utils\QueueUtil;
 use Yii;
@@ -135,30 +136,28 @@ class SiteController extends BaseController
 		}
 	}
 
+	/**
+	 * 用户列表
+	 */
 	public function actionAccounts()
 	{
 		$page = self::getParam("page", 1);
 		$name = self::getParam('name');
 		$note = self::getParam('note');
-		$status = Admin::STATUS_ACTIVE;
-		$condition = " aStatus=$status ";
-		if ($name) {
-			$condition .= " and aLoginId like '%" . $name . "%'";
-		}
+		$status = User::STATUS_DELETE;
+		$condition = " uStatus < $status ";
 		if ($note) {
 			$condition .= " and aName like '%" . $note . "%'";
 		}
 
-		$count = Admin::getCountByCondition($condition);
-		$list = Admin::getUsers($condition, $page, self::PAGE_SIZE);
-
+		$count = User::getCountByCondition($condition);
+		$list = User::getUsers($condition, $page, self::PAGE_SIZE);
 		$pagination = self::pagination($page, $count);
-		$menus = Menu::getRootMenu();
-		return $this->renderPage('users.tpl',
+
+		return $this->renderPage('accounts.tpl',
 			[
 				"note" => $note,
 				'list' => $list,
-				'menus' => $menus,
 				"name" => $name,
 				'pagination' => $pagination,
 			]);
