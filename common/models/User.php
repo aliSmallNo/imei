@@ -10,6 +10,7 @@ namespace common\models;
 
 use admin\models\Admin;
 use common\utils\AppUtil;
+use common\utils\RedisUtil;
 use yii\db\ActiveRecord;
 
 class User extends ActiveRecord
@@ -31,6 +32,7 @@ class User extends ActiveRecord
 		126 => '其他'
 	];
 
+	protected static $SmsCodeLimitPerDay = 36;
 
 	public static function tableName()
 	{
@@ -170,5 +172,37 @@ class User extends ActiveRecord
 		//return $addData;
 		$uid = self::add($addData);
 		return $uid;
+	}
+
+	/**
+	 * @param $phone
+	 * @return array
+	 */
+	public static function sendSMSCode($phone)
+	{
+		if (!AppUtil::checkPhone($phone)) {
+			return ['code' => 159, 'msg' => '手机格式不正确'];
+		}
+		$smsLimit = RedisUtil::getCache(RedisUtil::KEY_SMS_CODE_CNT, date('ymd'), $phone);
+		if (!$smsLimit) {
+			RedisUtil::setCache(1, RedisUtil::KEY_SMS_CODE_CNT, date('ymd'), $phone);
+		} elseif ($smsLimit > self::$SmsCodeLimitPerDay) {
+			return ['code' => 159, 'msg' => '每天获取验证码的次数不能超过' . self::$SmsCodeLimitPerDay . '次'];
+		} else {
+			RedisUtil::setCache($smsLimit + 1, RedisUtil::KEY_SMS_CODE_CNT, date('ymd'), $phone);
+		}
+		$code = rand(100000, 999999);
+		$minutes = 10;
+
+		AppUtil::sendTXSMS($phone, AppUtil::SMS_NORMAL, ["params" => [strval($code), strval($minutes)]]);
+//		LogAction::add($phone, LogAction::ACTION_SMS_CODE);
+
+		RedisUtil::setCache($code, RedisUtil::KEY_SMS_CODE, $phone);
+	}
+
+	public static function verifySMSCode($phone, $code)
+	{
+		$smsCode = RedisUtil::getCache(RedisUtil::KEY_SMS_CODE, $phone);
+		return ($smsCode && $code == $smsCode);
 	}
 }

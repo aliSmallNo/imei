@@ -25,7 +25,9 @@ class RedisUtil
 	const KEY_ADMIN_INFO = 'admin_info';
 	const KEY_ADMIN_OFTEN = 'admin_often';
 	const KEY_PUB_CODE = 'pub_code';
-	const KEY_COS_KEY = 'cos_key';
+	const KEY_CLOUD_COS = 'cloud_cos';
+	const KEY_SMS_CODE = 'sms_code';
+	const KEY_SMS_CODE_CNT = 'sms_code_cnt';
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
@@ -36,9 +38,10 @@ class RedisUtil
 		self::KEY_WX_USER => 3600 * 12,
 		self::KEY_ADMIN_INFO => 86400 * 7,
 		self::KEY_PUB_CODE => 600,
-		self::KEY_COS_KEY => 3600 * 10
+		self::KEY_CLOUD_COS => 3600 * 10,
+		self::KEY_SMS_CODE => 60 * 10,
+		self::KEY_SMS_CODE_CNT => 86400
 	];
-
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';
 	private static $IdOrder = "order-id"; // 订单序列号
