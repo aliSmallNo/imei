@@ -11,6 +11,7 @@ namespace mobile\controllers;
 
 use common\models\City;
 use common\models\User;
+use common\models\UserNet;
 use common\models\UserSign;
 use common\models\UserWechat;
 use common\utils\AppUtil;
@@ -138,6 +139,7 @@ class WxController extends BaseController
 				header("location:/wx/error?msg=链接地址错误");
 				exit();
 			}
+			UserNet::add($id, $uId, UserNet::REL_INVITE);
 		}
 		$defaultId = array_keys(self::$Celebs)[0];
 		$celebId = self::getParam('cid', $defaultId);
