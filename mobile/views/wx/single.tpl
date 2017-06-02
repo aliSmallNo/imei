@@ -285,7 +285,7 @@
 			{{foreach from=$prices key=k item=item}}
 			<li>
 				<div class="title m-ico-rose">{{$item.num}} 媒桂花</div>
-				<div class="action"><a href="javascript:;" class="btn btn-recharge" data-id="{{$item.price}}">{{$item.price}}元</a></div>
+				<div class="action"><a href="javascript:;" class="btn-recharge" data-id="{{$item.price}}">{{$item.price}}元</a></div>
 			</li>
 			{{/foreach}}
 		</ul>

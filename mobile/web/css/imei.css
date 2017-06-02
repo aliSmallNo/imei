@@ -2264,7 +2264,7 @@ section {
       -ms-flex: 0 0 9rem;
       flex: 0 0 9rem;
       position: relative; }
-      .recharge li .action .btn {
+      .recharge li .action a {
         height: 3rem;
         line-height: 3rem;
         border: #f491b2 1px solid;
@@ -2277,7 +2277,7 @@ section {
         margin-top: -1.6rem;
         color: #f06292;
         background: #fff; }
-        .recharge li .action .btn:active {
+        .recharge li .action a:active {
           background: #f491b2;
           color: #fff; }
     .recharge li.th {
