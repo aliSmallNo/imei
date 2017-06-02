@@ -202,7 +202,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					data: JSON.stringify($sls.postData),
 				}, function (res) {
 					showMsg(res.msg);
-					alert(JSON.stringify(res.data));
+					//alert(JSON.stringify(res.data));
 					setTimeout(function () {
 						//location.href = "/wx/single";
 					}, 300);
