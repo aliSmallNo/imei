@@ -1003,6 +1003,7 @@ section
 		background: none
 		border: 1px solid $linkColorLight
 		color: $linkColor
+
 .vip
 	background: url(../images/ico_mark_vip.png) no-repeat center center
 	background-size: 100% 100%
@@ -2147,11 +2148,12 @@ section
 		font-style: normal
 		font-weight: $weightNormal
 		padding-left: .5rem
+
 .share-arrow
 	position: absolute
 	top: .5rem
 	right: 0.2rem
-	background: url("../images/ico_share_arrow.png") no-repeat center top
+	background: url(../images/ico_share_arrow.png) no-repeat center top
 	background-size: 6.35rem 5rem
 	width: 8.5rem
 	height: 5rem
@@ -2162,3 +2164,43 @@ section
 	padding-top: 5.5rem
 	font-weight: $weightNormal
 	text-align: center
+
+.m-ico-rose
+	display: inline-block
+	position: relative
+	@include borderBox
+	padding-left: 2rem
+	&:before
+		content: ' '
+		position: absolute
+		top: 50%
+		left: 0
+		background: url(../images/ico_rose.png) no-repeat center center
+		background-size: 1.8rem 1.8rem
+		width: 1.8rem
+		height: 1.8rem
+		margin-top: -.9rem
+
+.account-header
+	height: 13rem
+	background: $mainColorLight
+	position: relative
+	a
+		color: #fff
+		position: absolute
+		top: 0
+		right: 0
+		padding: 1rem
+		font-size: 1.2rem
+	div
+		text-align: center
+		line-height: 3rem
+		height: 3rem
+		&.amt
+			padding-top: 3rem
+			font-weight: $weightBold
+			font-size: 3rem
+			color: #fff
+			line-height: 4rem
+			height: 4rem
+

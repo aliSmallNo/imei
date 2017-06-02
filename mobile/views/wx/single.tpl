@@ -247,7 +247,7 @@
 			</a>
 		</div>
 		<div class="m-rows line-bottom">
-			<a href="/mycard" class=""><span class="title">我的身份卡</span></a>
+			<a href="#sprofile" class=""><span class="title">我的身份卡</span></a>
 		</div>
 		<div class="m-rows line-bottom">
 			<a href="/user/apply" class="" id="pending_applications"><span class="title">加我微信的人</span> </a>
@@ -259,7 +259,7 @@
 			<a href="/user/attentionhn" class="" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
-			<a href="/user/account" class=""><span class="title">话媒糖</span></a>
+			<a href="#saccount" class=""><span class="title">媒桂花</span></a>
 			<a href="/message?role=1" class="" id="notifications"><span class="title">通知</span> <span class="count">2</span></a>
 			<a href="/feedback" class=""><span class="title">意见反馈</span> </a>
 			<a href="/user/weixininfo" class=""><span class="title">我的微信号</span></a>
@@ -267,6 +267,47 @@
 			<a href="/user/blacklist" class=""><span class="title">黑名单</span></a>
 		</div>
 	</div>
+</section>
+<section id="saccount">
+	<div class="account-header">
+		<div class="amt">20</div>
+		<div>
+			<span class="m-ico-rose">媒桂花</span>
+		</div>
+		<a href="#srecords">交易记录 </a>
+	</div>
+	<div class="recharge">
+		<p class="title">
+			<span>充值</span>
+			<a href="#srecords" class="">查看充值记录</a>
+		</p>
+		<ul>
+			<li>
+				<div class="title"><i class="m-ico-rose"></i><span class="wd">20 话媒糖</span></div>
+				<div class="action"><a href="javascript:;" class="btn">2元</a></div>
+			</li>
+			<li>
+				<i class="m-ico-rose"></i><span class="wd">60 话媒糖</span>
+				<a href="javascript:;" class="btn">6元</a>
+			</li>
+			<li>
+				<i class="m-ico-rose"></i><span class="wd">180 话媒糖</span>
+				<a href="javascript:;" class="btn">18元</a>
+			</li>
+			<li>
+				<i class="m-ico-rose"></i><span class="wd">680 话媒糖</span>
+				<a href="javascript:;" class="btn">68元</a>
+			</li>
+			<li>
+				<i class="m-ico-rose"></i><span class="wd">1980 话媒糖</span>
+				<a href="javascript:;" class="btn">198元</a>
+			</li>
+		</ul>
+		<p class="intro">媒桂花仅用于打赏，不能提现或退款</p>
+	</div>
+</section>
+<section id="sprofile">
+
 </section>
 <div class="nav-foot on">
 	<a href="#slink" class="nav-link" data-tag="slink">
