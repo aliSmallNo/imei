@@ -56,25 +56,6 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			init: function () {
 				var util = this;
 				util.avatar = util.step0.find(".avatar");
-				/**
-				 util.step0.find(".btn-s").on(kClick, function () {
-					// 0 ==> 1
-					var img = util.avatar.attr("localids");
-					if (!img) {
-						showMsg("头像还没有上传哦~");
-						//return;
-					}
-					var nickname = util.step0.find(".input-s").val();
-					if (!$.trim(nickname)) {
-						showMsg("昵称还没有填写哦~");
-						return;
-					}
-					$sls.postData["img"] = img;
-					$sls.postData["name"] = nickname;
-					location.href = "#step1";
-					return false;
-				});
-				 */
 				$(".btn-s").on(kClick, function () {
 					var self = $(this);
 					var tag = self.attr("tag");
@@ -135,6 +116,8 @@ require(["layer", "fastclick", "iscroll", "fly"],
 								var localId = localIds[0];
 								util.avatar.attr("localId", localId);
 								util.avatar.attr("src", localId);
+								TipsbarUtil.toggle(false);
+
 							}
 						}
 					});
@@ -174,7 +157,6 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					}
 					return false;
 				});
-
 				$(".cells > a").on(kClick, function () {
 					var self = $(this);
 					var cells = self.closest(".cells");
@@ -190,8 +172,6 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					}, 120);
 					return false;
 				});
-
-
 				$(".btn-done").on(kClick, function () {
 					var interest = $.trim($("[data-tag=interest]").val());
 					if(!interest){
