@@ -86,6 +86,10 @@ class User extends ActiveRecord
 		291 => "不养，反感宠物", 293 => "不养，不反感宠物", 295 => "已养宠物", 297 => "无所谓"
 	];
 
+	static $gender = [
+		0 => "美女", 1 => "帅哥"
+	];
+
 	static $sign = [
 		301 => "白羊座(3.21~4.20)", 303 => "金牛座(4.21~5.20)", 305 => "双子座(5.22~6.21)", 307 => "巨蟹座(6.22~6.22)",
 		309 => "狮子座(7.23~8.22)", 311 => "处女座(8.23~9.22)", 313 => "天秤座(9.23~10.23)", 315 => "天蝎座(10.24~11.22)",
@@ -229,7 +233,7 @@ class User extends ActiveRecord
 				$addData[$v] = $data[$k];
 			}
 		}
-		//return $addData;
+		return $addData;
 		$uid = self::add($addData);
 		return $uid;
 	}

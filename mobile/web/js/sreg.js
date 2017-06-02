@@ -130,7 +130,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 						util.gender = "male";
 					}
 					// 1=>2
-					$sls.postData["gender"] = util.gender;
+					$sls.postData["gender"] = (util.gender === "male") ? 1 : 0;
 					location.href = "#step2";
 					return false;
 				});
@@ -174,11 +174,11 @@ require(["layer", "fastclick", "iscroll", "fly"],
 				});
 				$(".btn-done").on(kClick, function () {
 					var interest = $.trim($("[data-tag=interest]").val());
-					if(!interest){
+					if (!interest) {
 						showMsg("兴趣爱好要填写哦~");
 						return;
 					}
-					$sls.postData["interest"] =interest;
+					$sls.postData["interest"] = interest;
 
 					console.log($sls.postData);
 					var localId = util.avatar.attr("localId");
@@ -202,7 +202,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 					data: JSON.stringify($sls.postData),
 				}, function (res) {
 					showMsg(res.msg);
-					//alert(JSON.stringify(res.data));
+					alert(JSON.stringify(res.data));
 					setTimeout(function () {
 						//location.href = "/wx/single";
 					}, 300);
