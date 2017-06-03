@@ -176,6 +176,9 @@ main
 .bg-color
 	background-color: $bgColor
 
+.bg-main
+	background-color: $mainColorLighter
+
 .clearfix
 	zoom: 1
 	&:before,
@@ -200,6 +203,13 @@ main
 	padding: 23rem 0
 	@include translucent
 
+.header-line
+	font-size: 1px
+	position: fixed
+	left: 0
+	right: 0
+	top: 0
+
 .w-flyer
 	display: inline-block
 	width: 16px
@@ -208,6 +218,9 @@ main
 	position: fixed
 	z-index: 399
 	background: $tipColor
+
+.center
+	text-align: center
 
 .m-more
 	height: 4rem
@@ -397,7 +410,7 @@ section
 .tip-block
 	color: $tipColor
 	font-size: 1.2rem
-	padding: .6rem 1rem
+	padding: 1rem 1.5rem
 	.message
 		font-size: 1.3rem
 		padding: 1rem
@@ -1003,6 +1016,7 @@ section
 		background: none
 		border: 1px solid $linkColorLight
 		color: $linkColor
+
 .vip
 	background: url(../images/ico_mark_vip.png) no-repeat center center
 	background-size: 100% 100%
@@ -2147,11 +2161,12 @@ section
 		font-style: normal
 		font-weight: $weightNormal
 		padding-left: .5rem
+
 .share-arrow
 	position: absolute
 	top: .5rem
 	right: 0.2rem
-	background: url("../images/ico_share_arrow.png") no-repeat center top
+	background: url(../images/ico_share_arrow.png) no-repeat center top
 	background-size: 6.35rem 5rem
 	width: 8.5rem
 	height: 5rem
@@ -2162,3 +2177,111 @@ section
 	padding-top: 5.5rem
 	font-weight: $weightNormal
 	text-align: center
+
+.m-ico-rose
+	display: inline-block
+	position: relative
+	@include borderBox
+	padding-left: 2rem
+	&:before
+		content: ' '
+		position: absolute
+		top: 50%
+		left: 0
+		background: url(../images/ico_rose.png) no-repeat center center
+		background-size: 1.8rem 1.8rem
+		width: 1.8rem
+		height: 1.8rem
+		margin-top: -.9rem
+
+.account-header
+	height: 12rem
+	background: $mainColorLight
+	position: relative
+	a
+		color: #fff
+		position: absolute
+		top: 0
+		right: 0
+		padding: 1rem
+		font-size: 1.2rem
+	div
+		text-align: center
+		line-height: 3rem
+		height: 3rem
+		&.amt
+			padding-top: 3rem
+			font-weight: $weightBold
+			font-size: 3rem
+			color: #fff
+			line-height: 4rem
+			height: 4rem
+
+.recharge
+	background: #fff
+	padding-left: 1.5rem
+	padding-right: 1.5rem
+	border-bottom: 1px solid $borderColorLight
+	margin-bottom: .5rem
+	li
+		padding: 1.6rem 0
+		@include displayFlex
+		border-bottom: 1px solid $borderColorLight
+		&:last-child
+			border-bottom: none
+		.title
+			text-align: left
+			@include displayFlex-1
+		.action
+			text-align: right
+			@include displayFlex-w(9rem)
+			position: relative
+			a
+				height: 3rem
+				line-height: 3rem
+				border: $mainColorLight 1px solid
+				border-radius: 1.6rem
+				position: absolute
+				width: 8rem
+				text-align: center
+				top: 50%
+				right: 0
+				margin-top: -1.6rem
+				color: $mainColor
+				background: #fff
+				&:active
+					background: $mainColorLight
+					color: #fff
+		&.th
+			padding: 1rem 0 0
+			font-size: 1.2rem
+			color: $grayFontColorLight
+			border-bottom: none
+			& > div
+				font-size: 1.2rem
+				padding-right: 1rem
+
+.mycard
+	padding: 6rem 0
+	.card-wrap
+		width: 65%
+		display: block
+		margin: 0 auto
+		position: relative
+		&:before
+			position: absolute
+			display: block
+			content: ''
+			background: url(../images/ico_card_shadow.png) no-repeat bottom
+			-webkit-background-size: 100% auto
+			background-size: 100% auto
+			width: 100%
+			height: 5rem
+			bottom: -4.5rem
+			z-index: 2
+			left: 0
+		img
+			width: 100%
+			height: auto
+			position: relative
+			z-index: 3

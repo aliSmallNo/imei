@@ -247,7 +247,7 @@
 			</a>
 		</div>
 		<div class="m-rows line-bottom">
-			<a href="/mycard" class=""><span class="title">我的身份卡</span></a>
+			<a href="/wx/card" class=""><span class="title">我的身份卡</span></a>
 		</div>
 		<div class="m-rows line-bottom">
 			<a href="/user/apply" class="" id="pending_applications"><span class="title">加我微信的人</span> </a>
@@ -259,7 +259,7 @@
 			<a href="/user/attentionhn" class="" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
-			<a href="/user/account" class=""><span class="title">话媒糖</span></a>
+			<a href="#saccount" class=""><span class="title">媒桂花</span></a>
 			<a href="/message?role=1" class="" id="notifications"><span class="title">通知</span> <span class="count">2</span></a>
 			<a href="/feedback" class=""><span class="title">意见反馈</span> </a>
 			<a href="/user/weixininfo" class=""><span class="title">我的微信号</span></a>
@@ -267,6 +267,33 @@
 			<a href="/user/blacklist" class=""><span class="title">黑名单</span></a>
 		</div>
 	</div>
+</section>
+<section id="saccount">
+	<div class="account-header">
+		<div class="amt">20</div>
+		<div>
+			<span class="m-ico-rose">媒桂花</span>
+		</div>
+		<a href="#srecords">充值记录 </a>
+	</div>
+	<div>
+		<ul class="recharge">
+			<li class="th">
+				<div class="title">充值项目</div>
+				<div class="action">价格</div>
+			</li>
+			{{foreach from=$prices key=k item=item}}
+			<li>
+				<div class="title m-ico-rose">{{$item.num}} 媒桂花</div>
+				<div class="action"><a href="javascript:;" class="btn-recharge" data-id="{{$item.price}}">{{$item.price}}元</a></div>
+			</li>
+			{{/foreach}}
+		</ul>
+		<p class="tip-block">媒桂花仅用于打赏，不能提现或退款</p>
+	</div>
+</section>
+<section id="sprofile">
+
 </section>
 <div class="nav-foot on">
 	<a href="#slink" class="nav-link" data-tag="slink">
@@ -279,9 +306,10 @@
 		我的
 	</a>
 </div>
+
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.1.1" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.1.4" src="/assets/js/require.js"></script>

@@ -20,7 +20,7 @@ class QueueUtil
 		'persistent' => false,
 		'host' => '127.0.0.1',
 		'port' => 11302,
-		'timeout' => 3600
+		'timeout' => 3000
 	];
 
 	public static function loadJob($methodName, $params = [], $tube = '', $delay = 0)
@@ -47,7 +47,7 @@ class QueueUtil
 			if (!$put) {
 				throw new Exception('发送失败');
 			}
-			self::logFile(json_encode($message), __FUNCTION__, __LINE__);
+			self::logFile($message, __FUNCTION__, __LINE__);
 			$beanstalk->disconnect();
 		} catch (Exception $ex) {
 			$msg = $ex->getMessage();
@@ -71,8 +71,8 @@ class QueueUtil
 	public static function sendSMS($phone, $msg, $appendId = '1234', $type = 'real')
 	{
 		$formatMsg = $msg;
-		if (mb_strpos($msg, '【奔跑到家】') == false) {
-			$formatMsg = '【奔跑到家】' . $msg;
+		if (mb_strpos($msg, '【微媒100】') == false) {
+			$formatMsg = '【微媒100】' . $msg;
 		}
 		$openId = "benpao";
 		$openPwd = "bpbHD2015";

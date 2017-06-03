@@ -104,9 +104,18 @@ class WxController extends BaseController
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
 		}
+		$prices = [
+			['num' => 20, 'price' => 2],
+			['num' => 60, 'price' => 6],
+			['num' => 80, 'price' => 8],
+			['num' => 180, 'price' => 18],
+			['num' => 680, 'price' => 68],
+			['num' => 1980, 'price' => 198],
+		];
 		return self::renderPage("single.tpl", [
 			'nickname' => $nickname,
-			'avatar' => $avatar
+			'avatar' => $avatar,
+			'prices' => $prices
 		]);
 	}
 
@@ -182,6 +191,42 @@ class WxController extends BaseController
 			'celebs' => $celebs,
 			'wxUrl' => AppUtil::wechatUrl()
 		]);
+	}
+
+	public function actionCard()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if ($wxInfo) {
+			$avatar = $wxInfo["headimgurl"];
+			$nickname = $wxInfo["nickname"];
+			$uId = $wxInfo['uId'];
+		} else {
+			$avatar = ImageUtil::DEFAULT_AVATAR;
+			$nickname = "大测试";
+			$uId = 0;
+		}
+		$id = self::getParam('id');
+		if ($id) {
+			$matchInfo = User::findOne(['uId' => $id]);
+			if (!$matchInfo) {
+				header("location:/wx/error?msg=链接地址错误");
+				exit();
+			}
+			UserNet::add($id, $uId, UserNet::REL_INVITE);
+		}
+
+		return self::renderPage("card.tpl",
+			[
+				'nickname' => $nickname,
+				'avatar' => $avatar,
+				'id' => $id,
+				'uId' => $uId,
+				'wxUrl' => AppUtil::wechatUrl()
+			],
+			'terse',
+			'今天我领证啦~',
+			'bg-main');
 	}
 
 	public function actionError()

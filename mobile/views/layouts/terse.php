@@ -2,7 +2,7 @@
 	<!DOCTYPE html>
 	<html lang="zh-cmn-Hans">
 	<head>
-		<title>微媒100-送人玫瑰手有余香</title>
+		<title><?= $this->params['page_head_title'] ?></title>
 		<meta charset="utf-8">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		<meta http-equiv="Cache-Control" content="no-siteapp, no-cache">
@@ -18,7 +18,7 @@
 		<link rel="stylesheet" href="/css/imei.min.css?v=1.2.1">
 		<script src="/assets/js/jweixin-1.2.0.js"></script>
 	</head>
-	<body>
+	<body class="<?= $this->params['page_body_cls'] ?>">
 	<?php $this->beginBody() ?>
 	<?= $content ?>
 	<?php $this->endBody() ?>

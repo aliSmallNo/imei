@@ -30,6 +30,48 @@ require(["layer", "fastclick"],
 			newsTimer: 0
 		};
 
+		var RechargeUtil = {
+			init: function () {
+				$(document).on(kClick, '.btn-recharge', function () {
+					var self = $(this);
+					var pri = self.attr('data-id');
+					showMsg(pri);
+				});
+			}
+		};
+
+		var FootUtil = {
+			footer: null,
+			hide: 0,
+			init: function () {
+				var util = this;
+				util.footer = $(".nav-foot");
+			},
+			toggle: function (showFlag) {
+				var util = this;
+				if (util.hide != showFlag) {
+					return;
+				}
+				if (showFlag) {
+					setTimeout(function () {
+						util.footer.removeClass("off").addClass("on");
+					}, 30);
+					util.hide = 0;
+				} else {
+					util.footer.removeClass("on").addClass("off");
+					util.hide = 1;
+				}
+			},
+			reset: function () {
+				var util = this;
+				var self = util.footer.find("[data-tag=" + $sls.curFrag + "]");
+				if (!util.hide && self.length) {
+					util.footer.find("a").removeClass("active");
+					self.addClass("active");
+				}
+			}
+		};
+
 		function locationHashChanged() {
 			var hashTag = location.hash;
 			hashTag = hashTag.replace("#!", "");
@@ -37,13 +79,12 @@ require(["layer", "fastclick"],
 			$sls.hashPage = hashTag;
 			switch (hashTag) {
 				case 'slink':
-				case 'sgroup':
+				case 'slook':
 				case 'sme':
-				case 'snews':
-					// FootUtil.toggle(1);
+					FootUtil.toggle(1);
 					break;
 				default:
-					// FootUtil.toggle(0);
+					FootUtil.toggle(0);
 					break;
 			}
 			$sls.curFrag = hashTag;
@@ -68,10 +109,19 @@ require(["layer", "fastclick"],
 			self.addClass("active");
 		});
 
+		function showMsg(title, sec) {
+			var duration = sec || 2;
+			layer.open({
+				content: title,
+				skin: 'msg',
+				time: duration
+			});
+		}
+
 		$(function () {
 			$("body").addClass("bg-color");
-			// FootUtil.init();
-			// SingleUtil.init();
+			FootUtil.init();
+			RechargeUtil.init();
 			// FastClick.attach($sls.footer.get(0));
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);

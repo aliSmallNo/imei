@@ -200,7 +200,7 @@
 		</div>
 	</div>
 	<div class="m-rows line-bottom">
-		<a href="#smycard">我的身份卡</a>
+		<a href="/wx/card">我的身份卡</a>
 	</div>
 	<div class="m-rows line-bottom">
 		<a href="#saccount">账户</a>
@@ -235,15 +235,6 @@
 		<div class="footer">
 			<p class="copy"><span>微媒100 | 挖掘优秀单身</span></p>
 		</div>
-	</div>
-</section>
-<section id="smycard">
-	<div class="mycard" style="min-height: 568px;">
-		<div class="img_idcard">
-			<img src="">
-		</div>
-		<div class="btn">长按上图保存</div>
-		<div class="tip">分享图片到朋友圈，邀请好友来加入</div>
 	</div>
 </section>
 <section id="snewbie">
