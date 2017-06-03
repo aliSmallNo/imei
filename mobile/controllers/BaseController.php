@@ -21,7 +21,9 @@ class BaseController extends Controller
 	const COOKIE_OPENID = "wx-openid";
 	static $WX_OpenId = "";
 
+
 	public static $branchId = 0;
+	public $ptitle = '';
 
 	public function beforeAction($action)
 	{
@@ -96,7 +98,11 @@ class BaseController extends Controller
 		return false;
 	}
 
-	protected function renderPage($view, $params = [], $layout = "imei")
+	protected function renderPage($view,
+	                              $params = [],
+	                              $layout = 'imei',
+	                              $title = '微媒100-送人玫瑰手有余香',
+	                              $bodyClass = '')
 	{
 		$params["gIconOK"] = self::ICON_OK_HTML;
 		$params["gIconAlert"] = self::ICON_ALERT_HTML;
@@ -115,6 +121,10 @@ class BaseController extends Controller
 			$params['wxInfoString'] = json_encode($sign);
 		}
 		$this->layout = $layout;
+		$this->ptitle = $title;
+		$appView = YII::$app->view;
+		$appView->params['page_head_title'] = $title;
+		$appView->params['page_body_cls'] = $bodyClass;
 		return self::render($view, $params);
 	}
 

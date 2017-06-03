@@ -216,13 +216,17 @@ class WxController extends BaseController
 			UserNet::add($id, $uId, UserNet::REL_INVITE);
 		}
 
-		return self::renderPage("card.tpl", [
-			'nickname' => $nickname,
-			'avatar' => $avatar,
-			'id' => $id,
-			'uId' => $uId,
-			'wxUrl' => AppUtil::wechatUrl()
-		],'terse');
+		return self::renderPage("card.tpl",
+			[
+				'nickname' => $nickname,
+				'avatar' => $avatar,
+				'id' => $id,
+				'uId' => $uId,
+				'wxUrl' => AppUtil::wechatUrl()
+			],
+			'terse',
+			'今天我领证啦~',
+			'bg-main');
 	}
 
 	public function actionError()
