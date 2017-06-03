@@ -11,7 +11,6 @@ namespace console\controllers;
 use common\models\UserBuzz;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
-use console\utils\QueueUtil;
 use yii\console\Controller;
 
 class FooController extends Controller
@@ -25,14 +24,6 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		/*
-		 * <xml>
-				<ToUserName><![CDATA[$fromUsername]]></ToUserName>
-				<FromUserName><![CDATA[$toUsername]]></FromUserName>
-				<CreateTime>$time</CreateTime>
-				<MsgType><![CDATA[text]]></MsgType>
-				<Content><![CDATA[$contentStr]]></Content>
-				</xml>";*/
 		$a = [
 			'ToUserName' => 'ToUserName',
 			'FromUserName' => 'FromUserName',
@@ -49,7 +40,6 @@ class FooController extends Controller
 		$ret = UserBuzz::json_to_xml($a);
 		var_dump($ret);
 
-		var_dump(AppUtil::db());
 	}
 
 
