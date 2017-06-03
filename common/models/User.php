@@ -81,6 +81,10 @@ class User extends ActiveRecord
 		317 => "射手座(11.23~12.21)", 319 => "摩羯座(12.22~1.20)", 321 => "水瓶座(12.21~1.19)", 323 => "双鱼座(12.20~1.20)"
 	];
 
+	static $marital = [
+		0 => "未婚", 1 => "已婚"
+	];
+
 	const STATUS_PENDING = 0;
 	const STATUS_ACTIVE = 1;
 	const STATUS_DELETE = 9;
@@ -220,6 +224,7 @@ class User extends ActiveRecord
 			"weight" => "uWeight",
 			"workout" => "uFitness",
 			"year" => "uBirthYear",
+			"sign" => "uHoros",
 		];
 		$img = isset($data["img"]) ? $data["img"] : "";
 		if ($img) {
@@ -303,5 +308,14 @@ class User extends ActiveRecord
 			$v["uStatus"] = isset(self::$statusDict[$v["uStatus"]]) ? self::$statusDict[$v["uStatus"]] : "";
 		}
 		return $result;
+	}
+
+	public static function getOne($id)
+	{
+		$ret = [];
+		if ($id) {
+			$ret = self::find()->where(["uId" => $id])->asArray()->One();
+		}
+		return $ret;
 	}
 }

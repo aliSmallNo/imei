@@ -120,14 +120,14 @@
 </div>
 <script>
 	$("a.delU").click(function () {
-//		var aId = $(this).attr("cid");
-//		layer.confirm('您确定要删除这个用户吗？', {
-//			btn: ['确定', '取消'],
-//			title: '删除后台用号'
-//		}, function () {
-//			delUser(aId);
-//		}, function () {
-//		});
+		var aId = $(this).attr("cid");
+		layer.confirm('您确定要删除这个用户吗？', {
+			btn: ['确定', '取消'],
+			title: '删除后台用号'
+		}, function () {
+			//delUser(aId);
+		}, function () {
+		});
 	});
 
 	function delUser(aId) {

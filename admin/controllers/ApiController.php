@@ -10,6 +10,7 @@ namespace admin\controllers;
 
 
 use admin\models\Admin;
+use common\models\City;
 use Yii;
 use yii\web\Controller;
 use yii\web\Response;
@@ -21,6 +22,9 @@ class ApiController extends Controller
 	const ICON_OK_HTML = '<i class="fa fa-check-circle gIcon"></i> ';
 	const ICON_ALERT_HTML = '<i class="fa fa-exclamation-circle gIcon"></i> ';
 
+	/**
+	 * 后台用户 admin
+	 */
 	public function actionUser()
 	{
 		$tag = strtolower(self::postParam("tag"));
@@ -89,5 +93,42 @@ class ApiController extends Controller
 	{
 		$postInfo = Yii::$app->request->post();
 		return isset($postInfo[$field]) ? trim($postInfo[$field]) : $defaultVal;
+	}
+
+	public function actionConfig()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$id = self::postParam('id');
+		switch ($tag) {
+			case 'provinces':
+				break;
+			case 'cities':
+				$items = City::cities($id);
+				$item = City::city($id);
+				return self::renderAPI(0, '', [
+					'items' => $items,
+					'item' => $item,
+				]);
+			default:
+				break;
+		}
+		return self::renderAPI(129);
+	}
+
+	/**
+	 * 用户 user
+	 */
+	public function actionUsers()
+	{
+		$tag = strtolower(self::postParam("tag"));
+		$id = self::postParam("id");
+		$ret = ["code" => 159, "msg" => self::ICON_ALERT_HTML . "无操作！"];
+		switch ($tag) {
+			case "del-admin":
+
+				break;
+
+		}
+		return self::renderAPI($ret["code"], $ret["msg"]);
 	}
 }

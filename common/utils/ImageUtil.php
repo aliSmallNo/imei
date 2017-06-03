@@ -117,6 +117,40 @@ class ImageUtil
 	}
 
 	/**
+	 * @param $postData
+	 * @param string $category
+	 * @param bool $thumbFlag
+	 * @return string json
+	 */
+	public static function uploadItemImages($postData, $thumbFlag = false)
+	{
+		if (isset($postData["error"]) && isset($postData["tmp_name"])) {
+			$result = [];
+			foreach ($postData['error'] as $key => $value) {
+				if ($value == UPLOAD_ERR_OK) {
+					$tmpName = $postData["tmp_name"][$key];
+					$upName = $postData["name"][$key];
+					$upSize = $postData["size"][$key];
+					$fileExt = pathinfo($upName, PATHINFO_EXTENSION);
+					$fileExt = strtolower($fileExt ? $fileExt : "");
+					if ($upSize < self::MAX_UNSLICE_FILE_SIZE) {
+						$maxWidth = $thumbFlag ? self::WIDTH_THUMB : self::WIDTH_IMAGE;
+						$url = self::upload2Cloud($tmpName, $fileExt, $maxWidth);
+					} else {
+						$url = self::uploadSlices2COS($tmpName, $fileExt, $upSize);
+					}
+					$url && $result[] = $url;
+					unlink($tmpName);
+				}
+			}
+			if ($result) {
+				return json_encode($result);
+			}
+		}
+		return "";
+	}
+
+	/**
 	 * 上传图片到云
 	 * @param string $srcPath 文件路径
 	 * @param string $category 种类
@@ -125,7 +159,8 @@ class ImageUtil
 	 * @param int $maxHeight 最大的height值
 	 * @return string
 	 */
-	public static function upload2Cloud($srcPath, $fileExt = "", $maxWidth = 0, $maxHeight = 0)
+	public
+	static function upload2Cloud($srcPath, $fileExt = "", $maxWidth = self::WIDTH_IMAGE, $maxHeight = 0)
 	{
 
 		if (!file_exists($srcPath) || filesize($srcPath) < 10) {
@@ -184,7 +219,8 @@ class ImageUtil
 		return isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
 	}
 
-	public static function upload2COS($srcPath, $thumbFlag = false, $fileExt = "")
+	public
+	static function upload2COS($srcPath, $thumbFlag = false, $fileExt = "")
 	{
 
 		if (!file_exists($srcPath) || filesize($srcPath) < 10) {
@@ -241,7 +277,8 @@ class ImageUtil
 		return isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
 	}
 
-	public static function uploadSlices2COS($srcPath, $fileExt = "", $fileSize = 0)
+	public
+	static function uploadSlices2COS($srcPath, $fileExt = "", $fileSize = 0)
 	{
 		if (!file_exists($srcPath) || filesize($srcPath) < 10) {
 			return false;
@@ -328,7 +365,8 @@ class ImageUtil
 		return isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
 	}
 
-	protected static function getSliceBody($fileContent, $offset, $session, $fileName, $boundary)
+	protected
+	static function getSliceBody($fileContent, $offset, $session, $fileName, $boundary)
 	{
 		$formData = '';
 
@@ -350,13 +388,15 @@ class ImageUtil
 		return $data;
 	}
 
-	protected static function imageName($fileExt)
+	protected
+	static function imageName($fileExt)
 	{
 		$fileExt = trim($fileExt, '.');
 		return date('ymdHis') . RedisUtil::getImageSeq() . '.' . $fileExt;
 	}
 
-	protected static function curlUpload($url, $data, $header = [], $method = "POST")
+	protected
+	static function curlUpload($url, $data, $header = [], $method = "POST")
 	{
 		$curlHandler = curl_init();
 		curl_setopt($curlHandler, CURLOPT_URL, $url);

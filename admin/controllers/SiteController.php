@@ -4,7 +4,9 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use admin\models\Menu;
+use common\models\City;
 use common\models\User;
+use common\utils\ImageUtil;
 use common\utils\RedisUtil;
 use console\utils\QueueUtil;
 use Yii;
@@ -160,6 +162,91 @@ class SiteController extends BaseController
 				'list' => $list,
 				"name" => $name,
 				'pagination' => $pagination,
+				'detailcategory' => 'site/accounts',
+				'category' => 'users',
 			]);
 	}
+
+	public function actionAccount()
+	{
+		$id = self::getParam("id");
+		$sign = self::postParam("sign");
+		$success = [];
+		$error = [];
+		if ($sign) {
+			$data = self::postParam("data");
+			$id = self::postParam("id");
+			$data = json_decode($data, 1);
+
+			if (isset($_FILES["uAvatar"]) && $_FILES["uAvatar"]['size'][0]) {
+				$newThumb = ImageUtil::uploadItemImages($_FILES["uAvatar"], 1);
+				$newThumb = json_decode($newThumb, 1);
+				if (is_array($newThumb)) {
+					$data["uAvatar"] = $newThumb[0];
+				}
+			}
+
+			$vFields = ["uName", "uInterest", "uIntro"];//验证
+			$vFieldsText = ["uName" => "呢称", "uInterest" => "兴趣爱好", "uIntro" => "内心独白"];
+			$fields = ["uName", "uPassword", "uInterest", "uIntro"];
+			foreach ($data as $k => $v) {
+				if ($id) {
+					//没填写 不用修改
+					if (in_array($k, $fields) && !$data[$k]) {
+						unset($data[$k]);
+					}
+				} else {
+					if (in_array($k, $vFields) && !$data[$k]) {
+						$error[] = $vFieldsText[$k];
+					}
+				}
+			}
+
+			if (!$error) {
+				if ($id) {
+					User::edit($id, $data, Admin::getAdminId());
+					$success = self::ICON_OK_HTML . '修改成功';
+
+				} else {
+					User::edit($id, $data, Admin::getAdminId());
+					$success = self::ICON_OK_HTML . '添加成功';
+
+				}
+			}
+
+
+		}
+		$userInfo = User::getOne($id);
+		return $this->renderPage('account.tpl',
+			[
+				"userInfo" => json_encode($userInfo, JSON_UNESCAPED_UNICODE),
+				'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
+				"role" => User::$roleDict,
+				"marital" => User::$marital,
+				"scope" => User::$ScopeDict,
+				"gender" => User::$gender,
+				"year" => User::$years,
+				"sign" => User::$sign,
+				"height" => User::$height,
+				"weight" => User::$weight,
+				"income" => User::$income,
+				"edu" => User::$edu,
+				"job" => User::$job,
+				"house" => User::$house,
+				"car" => User::$car,
+				"smoke" => User::$smoke,
+				"drink" => User::$drink,
+				"belief" => User::$belief,
+				"workout" => User::$workout,
+				"diet" => User::$diet,
+				"rest" => User::$rest,
+				"pet" => User::$pet,
+				"status" => User::$statusDict,
+				'success' => $success,
+				'error' => $error,
+				'detailcategory' => 'site/account',
+				'category' => 'users',
+			]);
+	}
+
 }
