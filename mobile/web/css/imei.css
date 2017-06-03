@@ -75,6 +75,13 @@ main {
   padding: 23rem 0;
   background-color: rgba(0, 0, 0, 0.7); }
 
+.header-line {
+  font-size: 1px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0; }
+
 .w-flyer {
   display: inline-block;
   width: 16px;
