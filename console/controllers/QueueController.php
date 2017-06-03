@@ -17,11 +17,10 @@ class QueueController extends Controller
 {
 	/**
 	 * 后台监听beanstalk的worker
-	 * @param $env string 运行环境
 	 * @param $tube string 监听的tube名称
 	 * @return void
 	 */
-	public function actionTask($env, $tube = '')
+	public function actionTask($tube = '')
 	{
 		try {
 			$beanstalk = new beanstalkSocket(QueueUtil::$QueueConfig);
