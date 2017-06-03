@@ -51,10 +51,9 @@ class QueueController extends Controller
 						$beanstalk->bury($jobId, 40);
 					}
 				} else {
-					QueueUtil::logFile(' QueueUtil 中没找到 ' . $method, __FUNCTION__, __LINE__);
+					QueueUtil::logFile(' QueueUtil 中没找到方法 ' . $method, __FUNCTION__, __LINE__);
 					$beanstalk->delete($jobId);
 				}
-
 				sleep(1);
 			}
 			$beanstalk->disconnect();
