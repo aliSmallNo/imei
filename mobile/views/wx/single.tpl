@@ -247,7 +247,7 @@
 			</a>
 		</div>
 		<div class="m-rows line-bottom">
-			<a href="#sprofile" class=""><span class="title">我的身份卡</span></a>
+			<a href="/wx/card" class=""><span class="title">我的身份卡</span></a>
 		</div>
 		<div class="m-rows line-bottom">
 			<a href="/user/apply" class="" id="pending_applications"><span class="title">加我微信的人</span> </a>

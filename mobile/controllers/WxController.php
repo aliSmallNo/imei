@@ -193,6 +193,38 @@ class WxController extends BaseController
 		]);
 	}
 
+	public function actionCard()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if ($wxInfo) {
+			$avatar = $wxInfo["headimgurl"];
+			$nickname = $wxInfo["nickname"];
+			$uId = $wxInfo['uId'];
+		} else {
+			$avatar = ImageUtil::DEFAULT_AVATAR;
+			$nickname = "大测试";
+			$uId = 0;
+		}
+		$id = self::getParam('id');
+		if ($id) {
+			$matchInfo = User::findOne(['uId' => $id]);
+			if (!$matchInfo) {
+				header("location:/wx/error?msg=链接地址错误");
+				exit();
+			}
+			UserNet::add($id, $uId, UserNet::REL_INVITE);
+		}
+
+		return self::renderPage("card.tpl", [
+			'nickname' => $nickname,
+			'avatar' => $avatar,
+			'id' => $id,
+			'uId' => $uId,
+			'wxUrl' => AppUtil::wechatUrl()
+		],'terse');
+	}
+
 	public function actionError()
 	{
 		$msg = self::getParam("msg", "请在微信客户端打开链接");

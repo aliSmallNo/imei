@@ -18,7 +18,7 @@
 		<link rel="stylesheet" href="/css/imei.min.css?v=1.2.1">
 		<script src="/assets/js/jweixin-1.2.0.js"></script>
 	</head>
-	<body>
+	<body class="bg-main">
 	<?php $this->beginBody() ?>
 	<?= $content ?>
 	<?php $this->endBody() ?>
