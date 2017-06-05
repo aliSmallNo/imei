@@ -116,7 +116,7 @@ require(["layer", "fastclick"],
 			self.find("span").addClass("active");
 			self.closest(".sgroup-list").find("ul").hide();
 			self.closest(".sgroup-list").find("[tag=" + tag + "]").show();
-		})
+		});
 
 		function showMsg(title, sec) {
 			var duration = sec || 2;
