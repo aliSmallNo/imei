@@ -42,6 +42,11 @@
 	</div>
 	<div class="row">
 		<form class="form-inline" action="/site/accounts" method="get">
+			<select name="status" class="form-control">
+				{{foreach from=$statusT key=key item=item}}
+				<option value="{{$key}}" {{if $status==$key}}selected{{/if}}>{{$item}}</option>
+				{{/foreach}}
+			</select>
 			<input class="form-control" name="name" placeholder="名字" type="text" value="{{$name}}">
 			<input type="submit" class="btn btn-primary" value="查询">
 		</form>

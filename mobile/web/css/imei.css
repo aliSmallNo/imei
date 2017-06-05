@@ -2328,4 +2328,120 @@ section {
       position: relative;
       z-index: 3; }
 
+.sgroup-top .nav {
+  background: #fbd6e3;
+  padding: 0.8rem 1rem;
+  display: flex; }
+  .sgroup-top .nav:before {
+    content: " ";
+    position: absolute;
+    left: 1.5rem;
+    top: 1.1rem;
+    width: 0.7rem;
+    height: 0.7rem;
+    z-index: 99999;
+    margin-left: -0.6rem;
+    margin-bottom: -0.7rem;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #777 #777 transparent transparent;
+    background-color: #fbd6e3;
+    transform: rotate(-135deg) translateZ(0); }
+  .sgroup-top .nav a {
+    flex: 1;
+    font-size: 1.2rem;
+    color: #777; }
+    .sgroup-top .nav a:first-child {
+      margin-left: 1.2rem; }
+    .sgroup-top .nav a:last-child {
+      text-align: right; }
+.sgroup-top .sgroup-top-des {
+  background: #f8c5d7; }
+  .sgroup-top .sgroup-top-des .img {
+    text-align: center;
+    padding: 1.5rem; }
+    .sgroup-top .sgroup-top-des .img img {
+      width: 6rem;
+      height: 6rem;
+      border-radius: 6rem;
+      overflow: hidden; }
+  .sgroup-top .sgroup-top-des .name, .sgroup-top .sgroup-top-des .title {
+    text-align: center;
+    margin-bottom: 0.5rem; }
+    .sgroup-top .sgroup-top-des .name span, .sgroup-top .sgroup-top-des .title span {
+      font-size: 1.2rem;
+      color: #fff; }
+  .sgroup-top .sgroup-top-des .focus {
+    text-align: center;
+    padding-top: 1.5rem; }
+    .sgroup-top .sgroup-top-des .focus a {
+      font-size: 1.2rem;
+      color: #fff;
+      border: 1px solid #fff;
+      padding: 0.5rem 2rem;
+      border-radius: 2rem; }
+  .sgroup-top .sgroup-top-des .list {
+    display: flex;
+    margin-top: 1rem;
+    background: #fbd6e3; }
+    .sgroup-top .sgroup-top-des .list .list-item {
+      flex: 1;
+      text-align: center;
+      color: #fff;
+      padding: 0.5rem 0 0.5rem 0;
+      position: relative; }
+      .sgroup-top .sgroup-top-des .list .list-item:after {
+        content: " ";
+        position: absolute;
+        width: 0.1rem;
+        height: 2rem;
+        background: #f8f8f8;
+        right: 0;
+        top: 1.5rem; }
+      .sgroup-top .sgroup-top-des .list .list-item:last-child:after {
+        width: 0; }
+      .sgroup-top .sgroup-top-des .list .list-item .list-des {
+        font-size: 1.2rem;
+        opacity: 0.6;
+        padding-bottom: 0.5rem; }
+.sgroup-top .sgroup-list .sgroup-list-tab {
+  display: flex;
+  text-align: center;
+  padding-top: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #ddd; }
+  .sgroup-top .sgroup-list .sgroup-list-tab a {
+    flex: 1;
+    font-size: 1.2rem;
+    color: #777;
+    padding-bottom: 1.5rem; }
+    .sgroup-top .sgroup-list .sgroup-list-tab a span {
+      padding-bottom: 1.5rem;
+      margin-bottom: 1rem; }
+    .sgroup-top .sgroup-list .sgroup-list-tab a span.active {
+      border-bottom: 2px solid #f80; }
+.sgroup-top .sgroup-list .sgroup-list-item {
+  overflow: hidden;
+  padding: 1rem; }
+  .sgroup-top .sgroup-list .sgroup-list-item li {
+    width: 46%;
+    float: left;
+    margin: 0.6rem; }
+    .sgroup-top .sgroup-list .sgroup-list-item li a {
+      width: 100%; }
+      .sgroup-top .sgroup-list .sgroup-list-item li a img {
+        width: 100%;
+        border-radius: 1rem; }
+      .sgroup-top .sgroup-list .sgroup-list-item li a:last-child p {
+        font-size: 1.2rem;
+        color: #000; }
+      .sgroup-top .sgroup-list .sgroup-list-item li a:last-child i {
+        font-size: 0.8rem;
+        color: #777; }
+.sgroup-top .sgroup-list .sgroup-list-lodingOff {
+  text-align: center;
+  font-size: 1rem;
+  padding: 3rem;
+  color: #777; }
+
 /*# sourceMappingURL=imei.css.map */
