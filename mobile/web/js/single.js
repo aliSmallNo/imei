@@ -109,14 +109,14 @@ require(["layer", "fastclick"],
 			self.addClass("active");
 		});
 
-		$(".sgroup-list-tab a").on(kClick, function () {
+		$(".sgroup-list-tab > a").on(kClick, function () {
 			var self = $(this);
 			var tag = self.attr("tag");
 			self.closest(".sgroup-list-tab").find("span").removeClass("active");
 			self.find("span").addClass("active");
 			self.closest(".sgroup-list").find("ul").hide();
 			self.closest(".sgroup-list").find("[tag=" + tag + "]").show();
-		})
+		});
 
 		function showMsg(title, sec) {
 			var duration = sec || 2;
