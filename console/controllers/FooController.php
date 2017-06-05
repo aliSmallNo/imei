@@ -39,8 +39,5 @@ class FooController extends Controller
 		];
 		$ret = UserBuzz::json_to_xml($a);
 		var_dump($ret);
-
 	}
-
-
 }
