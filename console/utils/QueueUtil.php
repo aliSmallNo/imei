@@ -65,7 +65,15 @@ class QueueUtil
 		} else {
 			$msg = 'message: ' . $msg;
 		}
-		file_put_contents('/data/tmp/imei_beanstalkd.log', PHP_EOL . date('Y-m-d H:i:s') . ' ' . $msg . PHP_EOL, FILE_APPEND);
+		$fileName = '/data/tmp/imei_beanstalkd.log';
+		$newLog = false;
+		if (!is_file($fileName)) {
+			$newLog = true;
+		}
+		@file_put_contents($fileName, PHP_EOL . date('Y-m-d H:i:s') . ' ' . $msg . PHP_EOL, FILE_APPEND);
+		if ($newLog) {
+			chmod($fileName, 0666);
+		}
 	}
 
 	public static function sendSMS($phone, $msg, $appendId = '1234', $type = 'real')
