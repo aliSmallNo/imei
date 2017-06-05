@@ -13,7 +13,7 @@
 				</a>
 			</li>
 			<li>
-				<a href="/hn/p?uid=bbf7f700c3371802" class="">
+				<a href="#sgroup" class="">
 					<div class="avatar">
 						<img src="https://image.1meipo.com/uploads/1482244401797.jpg?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100">
 					</div>
@@ -23,7 +23,7 @@
 				</a>
 			</li>
 			<li>
-				<a href="/hn/p?uid=a9af4c1599b443968619344ec4f01706" class="">
+				<a href="#sgroup" class="">
 					<div class="avatar">
 						<img src="https://img.1meipo.com/dc16e8c6913daffbbf99e8bd34664130.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100">
 					</div>
@@ -33,7 +33,7 @@
 				</a>
 			</li>
 			<li>
-				<a href="/hn/p?uid=bf333451093e4428a083f093e10e09b8" class="">
+				<a href="#sgroup" class="">
 					<div class="avatar">
 						<img src="https://img.1meipo.com/77a34dc88d3af598b88d68c5a4d1aec2.jpg?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100">
 					</div>
