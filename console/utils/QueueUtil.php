@@ -66,12 +66,9 @@ class QueueUtil
 			$msg = 'message: ' . $msg;
 		}
 		$fileName = '/data/tmp/imei_beanstalkd.log';
-		$newLog = false;
-		if (!is_file($fileName)) {
-			$newLog = true;
-		}
+		$hasLog = is_file($fileName);
 		@file_put_contents($fileName, PHP_EOL . date('Y-m-d H:i:s') . ' ' . $msg . PHP_EOL, FILE_APPEND);
-		if ($newLog) {
+		if (!$hasLog) {
 			chmod($fileName, 0666);
 		}
 	}
