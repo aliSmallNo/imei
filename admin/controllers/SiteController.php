@@ -145,11 +145,16 @@ class SiteController extends BaseController
 	{
 		$page = self::getParam("page", 1);
 		$name = self::getParam('name');
-		$note = self::getParam('note');
-		$status = User::STATUS_DELETE;
-		$condition = " uStatus < $status ";
-		if ($note) {
-			$condition .= " and aName like '%" . $note . "%'";
+		$status = self::getParam('status');
+		$stDel = User::STATUS_DELETE;
+		$condition = " uStatus < $stDel ";
+		if ($status) {
+			$condition .= " and  uStatus=$status ";
+		}
+
+		if ($name) {
+			$name = str_replace("'", "", $name);
+			$condition .= " and  uName like '$name' ";
 		}
 
 		$count = User::getCountByCondition($condition);
@@ -158,12 +163,13 @@ class SiteController extends BaseController
 
 		return $this->renderPage('accounts.tpl',
 			[
-				"note" => $note,
+				"status" => $status,
 				'list' => $list,
 				"name" => $name,
 				'pagination' => $pagination,
 				'detailcategory' => 'site/accounts',
 				'category' => 'users',
+				"statusT" => User::$statusDict,
 			]);
 	}
 
