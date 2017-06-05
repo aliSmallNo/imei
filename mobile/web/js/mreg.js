@@ -3,9 +3,6 @@ require.config({
 		"jquery": "/assets/js/jquery-3.2.1.min",
 		"zepto": "/assets/js/zepto.min",
 		"mustache": "/assets/js/mustache.min",
-		"fastclick": "/assets/js/fastclick",
-		"fly": "/assets/js/jquery.fly.min",
-		"iscroll": "/assets/js/iscroll",
 		"lazyload": "/assets/js/jquery.lazyload.min",
 		"layer": "/assets/js/layer_mobile/layer",
 		"wx": "/assets/js/jweixin-1.2.0",
@@ -317,7 +314,6 @@ require(["layer"],
 		}
 
 		$(function () {
-			// FastClick.attach($sls.footer.get(0));
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage'];
@@ -330,5 +326,4 @@ require(["layer"],
 			SingleUtil.init();
 			$sls.cork.hide();
 		});
-
 	});
