@@ -45,11 +45,7 @@ class QueueController extends Controller
 				if (method_exists(QueueUtil::class, $method)) {
 					$result = QueueUtil::$method($params);
 					QueueUtil::logFile($method . ' result: ' . $result, __FUNCTION__, __LINE__);
-					if ($result) {
-						$beanstalk->delete($jobId);
-					} else {
-						$beanstalk->bury($jobId, 40);
-					}
+					$beanstalk->delete($jobId);
 				} else {
 					QueueUtil::logFile(' QueueUtil 中没找到方法 ' . $method, __FUNCTION__, __LINE__);
 					$beanstalk->delete($jobId);
