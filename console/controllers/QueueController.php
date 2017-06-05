@@ -16,7 +16,7 @@ use yii\console\Controller;
 class QueueController extends Controller
 {
 	/**
-	 * 后台监听beanstalk的worker
+	 * 后台监听beanstalk的worker, controller 默认执行actionIndex
 	 * @param $tube string 监听的tube名称
 	 * @return void
 	 */
