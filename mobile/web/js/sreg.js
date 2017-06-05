@@ -6,17 +6,13 @@ require.config({
 		"jquery": "/assets/js/jquery-3.2.1.min",
 		"zepto": "/assets/js/zepto.min",
 		"mustache": "/assets/js/mustache.min",
-		"fastclick": "/assets/js/fastclick",
-		"fly": "/assets/js/jquery.fly.min",
-		"iscroll": "/assets/js/iscroll",
 		"lazyload": "/assets/js/jquery.lazyload.min",
 		"layer": "/assets/js/layer_mobile/layer",
 		"wx": "/assets/js/jweixin-1.2.0",
-
 	}
 });
-require(["layer", "fastclick", "iscroll", "fly"],
-	function (layer, FastClick, IScroll) {
+require(["layer"],
+	function (layer) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -250,13 +246,13 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			});
 		}
 
-		var TipsbarUtil = {
+		var DrawUtil = {
 			menus: null,
 			menusBg: null,
 			init: function () {
 				var util = this;
-				util.menus = $(".tips-bar-wrap");
-				util.menusBg = $(".tips-bar-bg");
+				util.menus = $(".m-draw-wrap");
+				util.menusBg = $(".m-popup-shade");
 				$(".photo-file").on(kClick, function () {
 					util.toggle(util.menus.hasClass("off"));
 				});
@@ -349,8 +345,7 @@ require(["layer", "fastclick", "iscroll", "fly"],
 			wx.ready(function () {
 				wx.hideOptionMenu();
 			});
-
-			TipsbarUtil.init();
+			DrawUtil.init();
 			SingleUtil.init();
 			locationHashChanged();
 			$sls.cork.hide();

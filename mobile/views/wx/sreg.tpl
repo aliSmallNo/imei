@@ -1,7 +1,7 @@
 <div class="progress">
 	<div style="width: 0%;"></div>
 </div>
-<div class="tips-bar-bg"></div>
+<div class="m-popup-shade"></div>
 <section id="step0">
 	<p class="m-header">请上传真人头像<i>否则不会审核通过</i></p>
 	<div class="nick_name">
@@ -12,7 +12,7 @@
 		<div class="place-holder-s1"></div>
 		<a href="javascript:;" class="btn-s s3" to="#step1" tag="avatar">下一步</a>
 	</div>
-	<div class="tips-bar-wrap off">
+	<div class="m-draw-wrap off">
 		<div class="title">上传本人照片，头像居中，五官高清，上半身最佳，例如：</div>
 		<ul class="images clearfix">
 			<li><img src="/faces/face_1.jpg"></li>
@@ -241,7 +241,6 @@
 	<a href="#step20" class="action-sm action-skip" style="display: none">跳过，以后再填</a>
 </div>
 
-<div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
 		<div class="m-popup-content"></div>
