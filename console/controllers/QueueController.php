@@ -20,7 +20,7 @@ class QueueController extends Controller
 	 * @param $tube string 监听的tube名称
 	 * @return void
 	 */
-	public function actionTask($tube = '')
+	public function actionIndex($tube = '')
 	{
 		try {
 			$beanstalk = new beanstalkSocket(QueueUtil::$QueueConfig);
