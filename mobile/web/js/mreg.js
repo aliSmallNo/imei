@@ -1,6 +1,3 @@
-if (document.location.hash === "" || document.location.hash === "#") {
-	document.location.hash = "#step0";
-}
 require.config({
 	paths: {
 		"jquery": "/assets/js/jquery-3.2.1.min",
@@ -14,8 +11,8 @@ require.config({
 		"wx": "/assets/js/jweixin-1.2.0",
 	}
 });
-require(["layer", "fastclick"],
-	function (layer, FastClick) {
+require(["layer"],
+	function (layer) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -148,6 +145,7 @@ require(["layer", "fastclick"],
 					return false;
 				});
 
+
 				$(document).on(kClick, '.m-popup-options > a', function () {
 					var self = $(this);
 					var text = self.html();
@@ -254,13 +252,13 @@ require(["layer", "fastclick"],
 			}
 		};
 
-		var TipsbarUtil = {
+		var DrawUtil = {
 			menus: null,
 			menusBg: null,
 			init: function () {
 				var util = this;
-				util.menus = $(".tips-bar-wrap");
-				util.menusBg = $(".tips-bar-bg");
+				util.menus = $(".m-draw-wrap");
+				util.menusBg = $(".m-popup-shade");
 				$(".photo-file").on(kClick, function () {
 					util.toggle(util.menus.hasClass("off"));
 				});
@@ -278,7 +276,6 @@ require(["layer", "fastclick"],
 				});
 			},
 			toggle: function (showFlag) {
-				console.log(1)
 				var util = this;
 				if (showFlag) {
 					setTimeout(function () {
@@ -319,48 +316,8 @@ require(["layer", "fastclick"],
 			});
 		}
 
-		function locationHashChanged() {
-			var hashTag = location.hash;
-			hashTag = hashTag.replace("#!", "");
-			hashTag = hashTag.replace("#", "");
-			switch (hashTag) {
-				default:
-					$sls.footer.show();
-					break;
-			}
-			$sls.curFrag = hashTag;
-			$sls.curIndex = parseInt(hashTag.substr(4));
-			if ($sls.curIndex == 20) {
-				$sls.btnSkip.hide();
-				$sls.btnMatcher.hide();
-			}
-			else if ($sls.curIndex > 7) {
-				$sls.btnSkip.show();
-				$sls.btnMatcher.hide();
-			}
-			else {
-				$sls.btnSkip.hide();
-				$sls.btnMatcher.show();
-			}
-
-			SingleUtil.progress();
-			var title = $("#" + hashTag).attr("data-title");
-			if (title) {
-				$(document).attr("title", title);
-				$("title").html(title);
-				var iFrame = $('<iframe src="/blank.html" style="width:0;height:0;outline:0;border:none;display:none"></iframe>');
-				iFrame.on('load', function () {
-					setTimeout(function () {
-						iFrame.off('load').remove();
-					}, 0);
-				}).appendTo($("body"));
-			}
-			layer.closeAll();
-		}
-
 		$(function () {
 			// FastClick.attach($sls.footer.get(0));
-			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage'];
@@ -369,9 +326,8 @@ require(["layer", "fastclick"],
 				wx.hideOptionMenu();
 			});
 			PopUtil.init();
-			TipsbarUtil.init();
+			DrawUtil.init();
 			SingleUtil.init();
-			locationHashChanged();
 			$sls.cork.hide();
 		});
 

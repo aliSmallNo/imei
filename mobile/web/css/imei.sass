@@ -735,17 +735,7 @@ section
 	.action-skip
 		color: $mainColorLight
 
-.tips-bar-bg
-	@include translucent
-	position: fixed
-	top: 0
-	left: 0
-	bottom: 0
-	right: 0
-	display: none
-	z-index: 118
-
-.tips-bar-wrap
+.m-draw-wrap
 	position: fixed
 	left: 0
 	bottom: 0
@@ -756,8 +746,9 @@ section
 	-webkit-backface-visibility: hidden
 	-moz-backface-visibility: hidden
 	backface-visibility: hidden
-	background-color: #fff
-	z-index: 119
+	background: #fff
+	padding: 1rem 1rem 6rem 1rem
+	z-index: 121
 	&.on
 		-webkit-transform: translateY(0) translateZ(0)
 		-moz-transform: translateY(0) translateZ(0)
@@ -766,10 +757,6 @@ section
 		-webkit-transform: translateY(100%) translateZ(0)
 		-moz-transform: translateY(100%) translateZ(0)
 		transform: translateY(100%) translateZ(0)
-
-.tips-bar-wrap
-	background: #fff
-	padding: 1rem 1rem 6rem 1rem
 	.title
 		font-size: 1rem
 		color: $grayFontColorLight
