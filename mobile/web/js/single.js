@@ -109,7 +109,7 @@ require(["layer", "fastclick"],
 			self.addClass("active");
 		});
 
-		$(".sgroup-list-tab a").on(kClick, function () {
+		$(".sgroup-list-tab > a").on(kClick, function () {
 			var self = $(this);
 			var tag = self.attr("tag");
 			self.closest(".sgroup-list-tab").find("span").removeClass("active");
