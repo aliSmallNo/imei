@@ -126,6 +126,7 @@ require(["layer", "fastclick"],
 					case "album":
 						break;
 					case "baseInfo":
+						location.href="#personalInfo";
 						break;
 					case "forbid":
 						break;
