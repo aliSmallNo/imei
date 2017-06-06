@@ -29,7 +29,8 @@ class BaseController extends Controller
 	public function beforeAction($action)
 	{
 		$actionId = $action->id;
-		if ($actionId == 'error') {
+		$safeActions = ['error', 'err'];
+		if (in_array($actionId, $safeActions)) {
 			return parent::beforeAction($action);
 		}
 		if (self::isLocalhost()) {
@@ -86,10 +87,7 @@ class BaseController extends Controller
 	{
 		$wxUserInfo = UserWechat::getInfoByOpenId($openId, AppUtil::scene() == 'dev');
 		$newActionId = '';
-		if ($actionId == 'error') {
-			header('location:/wx/' . $actionId);
-			exit();
-		} elseif (!$wxUserInfo || (isset($wxUserInfo["subscribe"]) && $wxUserInfo["subscribe"] != 1)) {
+		if (!$wxUserInfo || (isset($wxUserInfo["subscribe"]) && $wxUserInfo["subscribe"] != 1)) {
 			header("location:/qr.html");
 			exit;
 		} elseif (!$wxUserInfo['uPhone'] || !$wxUserInfo['uRole']) {
