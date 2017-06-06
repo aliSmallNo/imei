@@ -122,6 +122,9 @@ class WxController extends BaseController
 
 	public function actionSingle()
 	{
+		$ret=json_decode("");
+		var_dump($ret);
+		exit;
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$hint = '';

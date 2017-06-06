@@ -286,7 +286,12 @@ class User extends ActiveRecord
 		}
 		$Info = self::findOne(["uOpenId=>$openId"]);
 		if ($url && $Info) {
-			$album = json_decode($Info->uAlbum, 1);
+			$album = $Info->uAlbum;
+			if ($album) {
+				$album = json_decode($album, 1);
+			} else {
+				$album = [];
+			}
 			$album[] = $url;
 			$album = json_encode($album);
 			self::edit($Info->uId, ["uAlbum" => $album]);
