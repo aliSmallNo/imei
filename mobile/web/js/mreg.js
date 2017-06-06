@@ -247,5 +247,24 @@ require(["layer"],
 			PopUtil.init();
 			DrawUtil.init();
 			$sls.cork.hide();
+
+			$(".btn-select-img").on(kClick, function () {
+				wx.chooseImage({
+					count: 1,
+					sizeType: ['original', 'compressed'],
+					sourceType: ['album', 'camera'],
+					success: function (res) {
+						var localIds = res.localIds;
+						if (localIds && localIds.length) {
+							var localId = localIds[0];
+							$sls.avatar.attr("localId", localId);
+							$sls.avatar.attr("src", localId);
+							DrawUtil.toggle(false);
+
+						}
+					}
+				});
+				return false;
+			});
 		});
 	});
