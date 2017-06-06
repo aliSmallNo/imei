@@ -58,7 +58,6 @@ class ApiController extends Controller
 		} else {
 			echo $echostr;
 		}
-
 	}
 
 	public function actionConfig()
@@ -112,6 +111,27 @@ class ApiController extends Controller
 		$openId = AppUtil::getCookie(self::COOKIE_OPENID);
 
 		switch ($tag) {
+			case 'sms-code':
+				$phone = self::postParam('phone');
+				if (!AppUtil::checkPhone($phone)) {
+					return self::renderAPI(129, '手机号格式不正确~');
+				}
+				$ret = User::sendSMSCode($phone);
+				return self::renderAPI($ret['code'], $ret['msg']);
+			case 'reg-phone':
+				$phone = self::postParam('phone');
+				$code = self::postParam('code');
+				$role = self::postParam('role');
+				if (!AppUtil::checkPhone($phone)) {
+					return self::renderAPI(129, '手机号格式不正确~');
+				}
+				if (User::verifySMSCode($phone, $code)) {
+					$role = ($role == 'single') ? User::ROLE_SINGLE : User::ROLE_MATCHER;
+					User::bindPhone($openId, $phone, $role);
+					return self::renderAPI(0, '您已经注册了' . User::$roleDict[$role] . '身份');
+				} else {
+					return self::renderAPI(129, '输入的验证码不正确或者已经失效~');
+				}
 			case 'sign':
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
@@ -133,7 +153,7 @@ class ApiController extends Controller
 				$data = json_decode($data, 1);
 				$data["openId"] = $openId;
 				$ret = User::reg($data);
-				return self::renderAPI(129, '添加成功~',$ret);
+				return self::renderAPI(129, '添加成功~', $ret);
 				break;
 
 		}
@@ -161,29 +181,6 @@ class ApiController extends Controller
 	{
 		$postInfo = Yii::$app->request->post();
 		return isset($postInfo[$field]) ? trim($postInfo[$field]) : $defaultVal;
-	}
-
-	protected function isLocalhost()
-	{
-		return true;
-		$httpHost = Yii::$app->request->hostInfo;
-		if (strpos($httpHost, "localhost") === false) {
-			return false;
-		}
-		return true;
-	}
-
-	protected function isWechat()
-	{
-		$httpHost = Yii::$app->request->hostInfo;
-		if (strpos($httpHost, "localhost") !== false) {
-			return true;
-		}
-		$userAgent = Yii::$app->request->userAgent;
-		if (strpos($userAgent, 'MicroMessenger') !== false) {
-			return true;
-		}
-		return false;
 	}
 
 }

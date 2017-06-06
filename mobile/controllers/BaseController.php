@@ -27,12 +27,18 @@ class BaseController extends Controller
 
 	public function beforeAction($action)
 	{
+		$actionId = $action->id;
+
 		if (self::isLocalhost()) {
-			self::$WX_OpenId = "localhost";
-			AppUtil::setCookie(self::COOKIE_OPENID, "localhost", 3600 * 40);
+			self::$WX_OpenId = Yii::$app->params['openid'];
+			AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
+			$wxUserInfo = UserWechat::getInfoByOpenId(self::$WX_OpenId);
+			if ($actionId != 'imei' && (!isset($wxUserInfo['uPhone']) || !$wxUserInfo['uPhone'])) {
+				header("location:/wx/imei");
+				exit();
+			}
 			return parent::beforeAction($action);
 		}
-		$actionId = $action->id;
 		if (!self::isWechat()) {
 			header("location:/wxerr.html");
 			exit;
@@ -51,6 +57,10 @@ class BaseController extends Controller
 			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
 				self::$WX_OpenId = $wxUserInfo["openid"];
 				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
+				if (isset($wxUserInfo['uRole']) && !$wxUserInfo['uRole']) {
+					header("location:/wx/imei");
+					exit();
+				}
 			}
 		} elseif (strlen(self::$WX_OpenId) < 20 && strlen($wxCode) >= 20) {
 			$wxUserInfo = UserWechat::getInfoByCode($wxCode);
@@ -61,6 +71,10 @@ class BaseController extends Controller
 				$logMsg = [self::$WX_OpenId, json_encode($wxUserInfo)];
 				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
 				// Rain: 发现如果action不执行完毕，getCookie获取不到刚刚赋值的cookie值
+				if (isset($wxUserInfo['uRole']) && !$wxUserInfo['uRole']) {
+					header("location:/wx/imei");
+					exit();
+				}
 			}
 		} elseif (strlen(self::$WX_OpenId) < 20 && strlen($wxCode) < 20) {
 			$currentUrl = Yii::$app->request->getAbsoluteUrl();

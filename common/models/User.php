@@ -94,11 +94,11 @@ class User extends ActiveRecord
 		self::STATUS_DELETE => "已删除",
 	];
 
-	const ROLE_SINGLE = 0;
-	const ROLE_MEIPO = 1;
+	const ROLE_SINGLE = 10;
+	const ROLE_MATCHER = 20;
 	static $roleDict = [
 		self::ROLE_SINGLE => "单身",
-		self::ROLE_MEIPO => "媒婆",
+		self::ROLE_MATCHER => "媒婆",
 	];
 
 	protected static $SmsCodeLimitPerDay = 36;
@@ -146,6 +146,19 @@ class User extends ActiveRecord
 		return $uid;
 	}
 
+	public static function bindPhone($openId, $phone, $role = 0)
+	{
+		$entity = self::findOne(['uOpenId' => $openId]);
+		if ($entity) {
+			$entity->uPhone = $phone;
+			$entity->uRole = $role;
+			$entity->uUpdatedOn = date('Y-m-d H:i:s');
+			$entity->save();
+			RedisUtil::delCache(RedisUtil::KEY_WX_USER, $openId);
+			return true;
+		}
+		return false;
+	}
 
 	public static function addWX($wxInfo, $editBy = 1)
 	{
@@ -252,6 +265,9 @@ class User extends ActiveRecord
 	{
 		if (!AppUtil::checkPhone($phone)) {
 			return ['code' => 159, 'msg' => '手机格式不正确'];
+		}
+		if (AppUtil::scene() == 'dev') {
+			return ['code' => 159, 'msg' => '悲催啊~ 只能发布到服务器端才能测试这个功能~'];
 		}
 		$smsLimit = RedisUtil::getCache(RedisUtil::KEY_SMS_CODE_CNT, date('ymd'), $phone);
 		if (!$smsLimit) {

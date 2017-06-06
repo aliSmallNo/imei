@@ -465,6 +465,8 @@ section {
   .btn-s.s1 {
     color: #f06292;
     border: 1px solid #d8d8d8; }
+    .btn-s.s1.disabled {
+      color: #999; }
   .btn-s.s3 {
     color: #fff;
     background-color: #f06292; }
@@ -517,9 +519,21 @@ section {
   padding-left: 2rem;
   padding-right: 2rem;
   position: relative; }
-  .form.matcher, .form.single {
+  .form .btn-change {
+    display: inline-block;
+    width: 10rem;
+    height: 7rem;
+    position: absolute;
+    z-index: 11; }
+  .form .btn-change[data-tag="single"] {
+    top: 2.5rem;
+    right: 3rem; }
+  .form .btn-change[data-tag="matcher"] {
+    left: 3rem;
+    top: 6.2rem; }
+  .form.sms-form {
     padding-top: 13.5rem; }
-  .form.matcher:before, .form.single:before {
+  .form.sms-form:before {
     content: " ";
     position: absolute;
     width: 26rem;
@@ -532,6 +546,12 @@ section {
   .form.single:before {
     background: url("../images/ico_sms_single.png") no-repeat center center;
     background-size: 100% 100%; }
+  .form.matcher .btn-change[data-tag="single"] {
+    top: 6rem;
+    right: 3rem; }
+  .form.matcher .btn-change[data-tag="matcher"] {
+    left: 3rem;
+    top: 2.5rem; }
   .form .flex {
     display: -webkit-box;
     display: -webkit-flex;
