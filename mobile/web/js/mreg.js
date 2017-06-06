@@ -23,91 +23,7 @@ require(["layer"],
 			btnSkip: $(".action-skip"),
 			serverId: null,
 			postData: {},
-
-		};
-
-		var SingleUtil = {
-			step0: $("#step0"),
-			step1: $("#step1"),
-			step2: $("#step2"),
-			year: "",
-			height: "",
-			salary: "",
-			edu: "",
-			avatar: null,
-			gender: "",
-			progressBar: $(".progress > div"),
-			init: function () {
-				var util = this;
-				util.avatar = util.step0.find(".avatar");
-				util.step0.find(".btn-s").on(kClick, function () {
-					location.href = "#step1";
-					return false;
-				});
-				util.step0.find(".btn-select-img").on(kClick, function () {
-					wx.chooseImage({
-						count: 1,
-						sizeType: ['original', 'compressed'],
-						sourceType: ['album', 'camera'],
-						success: function (res) {
-							var localIds = res.localIds;
-							if (localIds && localIds.length) {
-								var localId = localIds[0];
-								util.avatar.attr("localIds", localId);
-								util.avatar.attr("src", localId);
-								TipsbarUtil.toggle(false);
-							}
-						}
-					});
-					return false;
-				});
-				util.step1.find(".gender-opt").on(kClick, function () {
-					var self = $(this);
-					util.gender = "female";
-					if (self.hasClass("male")) {
-						util.gender = "male";
-					}
-					location.href = "#step2";
-					return false;
-				});
-
-				var years = $(".cells[data-tag=year]"), maxYear = parseInt($("#cMaxYear").val()), k;
-				for (k = 34; k >= 0; k--) {
-					years.append('<a href="javascript:;">' + (maxYear - k) + '</a>');
-				}
-
-				var heights = $(".cells[data-tag=height]");
-				heights.append('<a href="javascript:;">不到140厘米</a>');
-				for (k = 141; k <= 200; k += 5) {
-					heights.append('<a href="javascript:;">' + k + '~' + (k + 4) + '厘米</a>');
-				}
-				heights.append('<a href="javascript:;">201厘米以上</a>');
-
-				var weights = $(".cells[data-tag=weight]");
-				weights.append('<a href="javascript:;">不到45kg</a>');
-				for (k = 46; k <= 115; k += 5) {
-					weights.append('<a href="javascript:;">' + k + '~' + (k + 4) + 'kg</a>');
-				}
-				weights.append('<a href="javascript:;">115kg以上</a>');
-
-				$(".cells > a").on(kClick, function () {
-					var self = $(this);
-					var cells = self.closest(".cells");
-					cells.find("a").removeClass("cur");
-					self.addClass("cur");
-					var tag = cells.attr("data-tag");
-					util[tag] = self.html();
-					setTimeout(function () {
-						location.href = "#step" + ($sls.curIndex + 1);
-					}, 120);
-					return false;
-				});
-			},
-			progress: function () {
-				var util = this;
-				var val = parseFloat($sls.curIndex) * 4.8;
-				util.progressBar.css("width", val + "%");
-			}
+			avatar: $('.avatar')
 		};
 
 		var PopUtil = {
@@ -204,8 +120,8 @@ require(["layer"],
 						location: JSON.stringify(lItem),
 						scope: scope
 					};
-					console.log($sls.postData);
-					if (!SingleUtil.avatar.attr("localIds")) {
+
+					if (!$sls.avatar.attr("localIds") && !$sls.avatar.attr('src')) {
 						showMsg("请上传头像！");
 						return;
 					}
@@ -292,8 +208,12 @@ require(["layer"],
 		};
 
 		function uploadImages() {
+			var localId = $sls.avatar.attr("localIds");
+			if (!localId) {
+				PopUtil.submit();
+			}
 			wx.uploadImage({
-				localId: SingleUtil.avatar.attr("localIds").toString(),
+				localId: localId,
 				isShowProgressTips: 1,
 				success: function (res) {
 					$sls.serverId = res.serverId;
@@ -328,7 +248,6 @@ require(["layer"],
 			});
 			PopUtil.init();
 			DrawUtil.init();
-			SingleUtil.init();
 			$sls.cork.hide();
 		});
 	});
