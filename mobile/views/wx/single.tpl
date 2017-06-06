@@ -517,7 +517,120 @@
 			<a href="#sme" style="display: none">个人中心</a>
 		</div>
 		<div class="img">
-			<img src="" alt="">
+			<div class="img-filter" style="background: url('/images/testImg.jpeg') no-repeat center center">
+			</div>
+			<div class="img-last">
+				<img src="/images/testImg.jpeg" alt="">
+			</div>
+		</div>
+	</div>
+	<div class="personalInfo-list">
+		<div class="title">基本资料</div>
+		<div class="item-des">
+			<div class="left">呢称</div>
+			<div class="right">G..</div>
+		</div>
+		<div class="item-des">
+			<div class="left">性别</div>
+			<div class="right">美女</div>
+		</div>
+		<div class="item-des">
+			<div class="left">所在城市</div>
+			<div class="right">山东济宁</div>
+		</div>
+		<div class="item-des">
+			<div class="left">出生日期</div>
+			<div class="right">1990-01</div>
+		</div>
+		<div class="item-des">
+			<div class="left">身高</div>
+			<div class="right">160cm</div>
+		</div>
+		<div class="item-des">
+			<div class="left">月收入</div>
+			<div class="right">200元-6000元</div>
+		</div>
+		<div class="item-des">
+			<div class="left">学历</div>
+			<div class="right">本科</div>
+		</div>
+		<div class="item-des">
+			<div class="left">星座</div>
+			<div class="right">摩羯座</div>
+		</div>
+
+		<div class="title">个人小档案</div>
+		<div class="item-des">
+			<div class="left">购房情况</div>
+			<div class="right">暂无购房计划</div>
+		</div>
+		<div class="item-des">
+			<div class="left">购车情况</div>
+			<div class="right">暂无购车计划</div>
+		</div>
+		<div class="item-des">
+			<div class="left">行业</div>
+			<div class="right">其他</div>
+		</div>
+		<div class="item-des">
+			<div class="left">职业</div>
+			<div class="right">社会工作者</div>
+		</div>
+		<div class="item-des">
+			<div class="left">饮酒情况</div>
+			<div class="right">不喝酒</div>
+		</div>
+		<div class="item-des">
+			<div class="left">吸烟情况</div>
+			<div class="right">不吸烟</div>
+		</div>
+		<div class="item-des">
+			<div class="left">宗教信仰</div>
+			<div class="right">无</div>
+		</div>
+		<div class="item-des">
+			<div class="left">健身习惯</div>
+			<div class="right">每天健身</div>
+		</div>
+		<div class="item-des">
+			<div class="left">饮食习惯</div>
+			<div class="right">喜欢吃辣</div>
+		</div>
+		<div class="item-des">
+			<div class="left">作息习惯</div>
+			<div class="right">早睡早起</div>
+		</div>
+		<div class="item-des">
+			<div class="left">关于宠物</div>
+			<div class="right">喜欢，但没养</div>
+		</div>
+
+		<div class="title">内心独白</div>
+		<div class="item-des">
+			<div class="des">内心独白内心独白内心独白内心独白内心独白内心独白内心独白内心独白内心独白内心独白</div>
+		</div>
+
+		<div class="title">兴趣爱好</div>
+		<div class="item-des">
+			<div class="des">兴趣爱好兴趣爱好兴趣爱好</div>
+		</div>
+
+		<div class="title">择偶条件</div>
+		<div class="item-des">
+			<div class="left">年龄</div>
+			<div class="right">26-35</div>
+		</div>
+		<div class="item-des">
+			<div class="left">身高</div>
+			<div class="right">170-182</div>
+		</div>
+		<div class="item-des">
+			<div class="left">学收入</div>
+			<div class="right">不限</div>
+		</div>
+		<div class="item-des">
+			<div class="left">学历</div>
+			<div class="right">不限</div>
 		</div>
 	</div>
 </section>
