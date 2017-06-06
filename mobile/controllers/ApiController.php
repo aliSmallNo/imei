@@ -157,7 +157,7 @@ class ApiController extends Controller
 				UserWechat::getInfoByOpenId($openId, true);
 				return self::renderAPI(0, '添加成功~', $ret);
 			case "album":
-				return self::renderAPI(0, 'err', [$id, $openId]);
+				//return self::renderAPI(0, 'err', [$id, $openId]);
 				$url = User::album($id, $openId);
 				if ($url) {
 					return self::renderAPI(0, 'ok', $url);
