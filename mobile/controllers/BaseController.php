@@ -96,9 +96,7 @@ class BaseController extends Controller
 			$newActionId = $wxUserInfo['uRole'] == User::ROLE_SINGLE ? 'sreg' : 'mreg';
 			$anchor = User::ROLE_SINGLE ? '#step0' : '';
 		}
-		AppUtil::logFile($actionId, 5, __FUNCTION__, __LINE__);
-		AppUtil::logFile($newActionId, 5, __FUNCTION__, __LINE__);
-		if ($actionId != $newActionId) {
+		if ($newActionId && $actionId != $newActionId) {
 			header('location:/wx/' . $newActionId . $anchor);
 			exit();
 		}
