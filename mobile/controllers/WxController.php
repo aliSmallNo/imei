@@ -122,17 +122,15 @@ class WxController extends BaseController
 
 	public function actionSingle()
 	{
-//		$openId = 'oYDJew5EFMuyrJdwRrXkIZLU2c58';
-//		$ret = $Info = User::find()->where(["uOpenId"=>$openId])->asArray()->one();
-//		var_dump($ret);
-//		exit;
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		//print_r($wxInfo);exit;
 		$hint = '';
 		if ($wxInfo) {
 			$avatar = $wxInfo["uAvatar"];
 			$nickname = $wxInfo["uName"];
 			$hint = $wxInfo['uHint'];
+			$intro = $wxInfo['uIntro'];
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";

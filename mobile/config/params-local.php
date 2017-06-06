@@ -1,4 +1,4 @@
 <?php
 return [
-	'openid' => 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc',
+	'openid' => 'oYDJew5EFMuyrJdwRrXkIZLU2c58',
 ];

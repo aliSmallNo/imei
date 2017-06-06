@@ -242,7 +242,7 @@ class UserWechat extends ActiveRecord
 		if (strlen($openId) < 20) {
 			return 0;
 		}
-		$fields = ['uId', 'uRole', 'uPhone', 'uName', 'uLocation', 'uAvatar', 'uHint'];
+		$fields = ['uId', 'uRole', 'uPhone', 'uName', 'uLocation', 'uAvatar', 'uHint', 'uIntro'];
 		if (AppUtil::scene() == 'dev') {
 			$ret = UserWechat::findOne(['wOpenId' => $openId]);
 			if ($ret) {
