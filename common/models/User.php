@@ -226,6 +226,12 @@ class User extends ActiveRecord
 		return [];
 	}
 
+	public static function hint($uid)
+	{
+		$ret = '';
+		return $ret;
+	}
+
 	public static function reg($data)
 	{
 		$fields = [

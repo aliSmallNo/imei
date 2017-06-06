@@ -231,10 +231,12 @@
 </section>
 <section id="sme">
 	<div class="useruc">
+		{{if $hint}}
 		<div class="m-hint">
-			<span>你的昵称未通过审核，请重新编辑~</span>
-			<a href="/user/info?uid=062a1e833b434518905624dd0eac6bcc&amp;action=edit" class="">GO</a>
+			<span>{{$hint}}</span>
+			<a href="/wx/sreg#step0">GO</a>
 		</div>
+		{{/if}}
 		<div class="u-my-wrap line-bottom">
 			<div class="u-my-bar">
 				<div class="avatar single">
