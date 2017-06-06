@@ -155,7 +155,16 @@ class ApiController extends Controller
 				$ret = User::reg($data);
 				//Rain: 刷新用户cache数据
 				UserWechat::getInfoByOpenId($openId, true);
-				return self::renderAPI(0, '保存成功啦！', $ret);
+				return self::renderAPI(0, '添加成功~', $ret);
+			case "album":
+				//return self::renderAPI(0, 'err', [$id, $openId]);
+				$url = User::album($id, $openId);
+				if ($url) {
+					return self::renderAPI(0, 'ok', $url);
+				} else {
+					return self::renderAPI(0, 'err', $url);
+				}
+				break;
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

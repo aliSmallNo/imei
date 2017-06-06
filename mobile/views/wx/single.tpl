@@ -250,24 +250,17 @@
 				<a href="/wx/match" class="btn-outline change-role">切换成媒婆</a>
 				<a href="/wx/sreg#step0" class="btn-outline edit-role">编辑</a>
 			</div>
-			<a href="javascript:;" class="u-my-album">
+			<a href="#album" class="u-my-album">
 				<div class="title">相册(0)</div>
 				<ul class="photos">
 					<li>
-						<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100"
-								 alt="">
+						<img src="/images/testImg.jpeg" alt="">
 					</li>
 					<li>
-						<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100"
-								 alt="">
+						<img src="/images/testImg.jpeg" alt="">
 					</li>
 					<li>
-						<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100"
-								 alt="">
-					</li>
-					<li>
-						<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100"
-								 alt="">
+						<img src="/images/testImg.jpeg" alt="">
 					</li>
 				</ul>
 			</a>
@@ -299,6 +292,27 @@
 			<a href="/user/blacklist" class=""><span class="title">黑名单</span></a>
 		</div>
 	</div>
+</section>
+<section id="album">
+	<div class="nav">
+		<a href="#sme">返回</a>
+		<a href="#sme" style="display: none">个人中心</a>
+	</div>
+	<ul class="photos">
+		<li>
+			<a href="javascript:;" class="choose-img"></a>
+		</li>
+		<li>
+			<img src="/images/testImg.jpeg">
+		</li>
+		<li>
+			<img src="/images/testImg.jpeg">
+		</li>
+		<li>
+			<img src="/images/testImg.jpeg">
+		</li>
+	</ul>
+
 </section>
 <section id="saccount">
 	<div class="account-header">
@@ -515,7 +529,7 @@
 <section id="personalInfo">
 	<div class="personalInfo-top">
 		<div class="nav">
-			<a href="#slook">返回</a>
+			<a href="#sprofile">返回</a>
 			<a href="#sme" style="display: none">个人中心</a>
 		</div>
 		<div class="img">

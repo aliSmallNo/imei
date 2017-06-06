@@ -2699,7 +2699,52 @@ section
 				color: #777
 				letter-spacing: .05rem
 				line-height: 2rem
-
+#album
+	.photos
+		zoom: 1
+		overflow: hidden
+		display: block
+		padding-bottom: .5rem
+		li
+			float: left
+			width: 25%
+			height: 8rem
+			text-align: center
+			position: relative
+			margin: 0
+			padding: .5rem 0
+			img
+				width: 7.5rem
+				height: 7.5rem
+				border: 1px solid #e4e4e4
+				position: relative
+			a
+				border: 1px solid #f781ab
+				height: 7.5rem
+				width: 7.5rem
+				display: inline-block
+				background-color: #fff
+			a.choose-img
+				&:before
+					content: " "
+					position: absolute
+					top: 50%
+					left: 50%
+					-webkit-transform: translate(-50%,-51%)
+					transform: translate(-50%,-51%)
+					background: #f781ab
+					width: 2px
+					height: 4rem
+				&:after
+					content: " "
+					position: absolute
+					top: 50%
+					left: 50%
+					-webkit-transform: translate(-50%,-51%)
+					transform: translate(-50%,-51%)
+					background: #f781ab
+					width: 4rem
+					height: 2px
 
 
 
