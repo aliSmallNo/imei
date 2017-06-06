@@ -313,6 +313,28 @@ class User extends ActiveRecord
 
 	}
 
+	public static function getItem($openId)
+	{
+		$Info = self::find()->where(["uOpenId" => $openId])->asArray()->one();
+		$Info["img4"] = [];
+		$Info["imgList"] = [];
+		$uAlbum = $Info["uAlbum"];
+		if ($uAlbum) {
+			$uAlbum = json_decode($uAlbum, 1);
+			$Info["imgList"] = $uAlbum;
+			if (count($uAlbum) <= 4) {
+				$Info["img4"] = $uAlbum;
+			} else {
+				for ($i = 0; $i < 4; $i++) {
+					$Info["img4"][] = array_pop($uAlbum);
+				}
+			}
+		}
+		return $Info;
+
+
+	}
+
 	/**
 	 * @param $phone
 	 * @return array

@@ -82,6 +82,7 @@ require(["layer", "fastclick"],
 				case 'slook':
 				case 'sme':
 					FootUtil.toggle(1);
+					myInfo();
 					break;
 				default:
 					FootUtil.toggle(0);
@@ -204,6 +205,18 @@ require(["layer", "fastclick"],
 			}, "json");
 		}
 
+		function myInfo() {
+			$.post("/api/user", {
+				tag: "myinfo",
+			}, function (resp) {
+				var temp = '{[#items]}<li><img src="{[.]}" alt=""></li>{[/items]}';
+				$(".u-my-album .photos").html(Mustache.render(temp, {items: resp.data.img4}));
+
+				var html = '<li><a href="javascript:;" class="choose-img"></a></li>';
+				html += Mustache.render(temp, {items: resp.data.imgList});
+				$("#album .photos").html(html);
+			}, "json");
+		}
 
 		function showMsg(title, sec) {
 			var duration = sec || 2;
@@ -213,7 +226,6 @@ require(["layer", "fastclick"],
 				time: duration
 			});
 		}
-
 
 		$(function () {
 			$("body").addClass("bg-color");

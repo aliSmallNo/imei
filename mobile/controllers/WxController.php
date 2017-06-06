@@ -129,11 +129,13 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		//print_r($wxInfo);exit;
 		$hint = '';
 		if ($wxInfo) {
 			$avatar = $wxInfo["uAvatar"];
 			$nickname = $wxInfo["uName"];
 			$hint = $wxInfo['uHint'];
+			//$intro = $wxInfo['uIntro'];
 			$role = $wxInfo["uRole"];
 			if ($role == User::ROLE_MATCHER) {
 				header("location:/wx/sreg#step0");
