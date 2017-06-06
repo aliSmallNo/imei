@@ -85,7 +85,7 @@ class BaseController extends Controller
 
 	protected function checkProfile($openId, $actionId)
 	{
-		$wxUserInfo = UserWechat::getInfoByOpenId($openId, AppUtil::scene() == 'dev');
+		$wxUserInfo = UserWechat::getInfoByOpenId($openId);
 		$newActionId = '';
 		if (!$wxUserInfo || (isset($wxUserInfo["subscribe"]) && $wxUserInfo["subscribe"] != 1)) {
 			header("location:/qr.html");

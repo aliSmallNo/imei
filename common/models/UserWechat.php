@@ -233,6 +233,9 @@ class UserWechat extends ActiveRecord
 	{
 		$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
 		$ret = json_decode($ret, 1);
+		if (AppUtil::scene() == 'dev') {
+			$renewFlag = true;
+		}
 		if (isset($ret["uId"]) && isset($ret["uPhone"]) && isset($ret["uLocation"]) && !$renewFlag) {
 			return $ret;
 		}
@@ -247,7 +250,7 @@ class UserWechat extends ActiveRecord
 			}
 			$uInfo = User::findOne(['uOpenId' => $openId]);
 
-			$fields = ['uId', 'uRole', 'uPhone', 'uName'];
+			$fields = ['uId', 'uRole', 'uPhone', 'uName', 'uLocation'];
 			foreach ($fields as $field) {
 				$ret[$field] = isset($uInfo[$field]) ? $uInfo[$field] : '';
 			}

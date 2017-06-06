@@ -8,7 +8,6 @@
 
 namespace mobile\controllers;
 
-
 use common\models\City;
 use common\models\User;
 use common\models\UserNet;
