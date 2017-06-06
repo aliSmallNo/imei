@@ -1090,7 +1090,7 @@ section {
   .u-my-bar .btn-outline {
     position: absolute;
     right: 1rem;
-    top: 1rem; }
+    top: 0.7rem; }
     .u-my-bar .btn-outline.change-role {
       right: 6.6rem; }
   .u-my-bar .avatar {
