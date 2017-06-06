@@ -57,9 +57,8 @@ require(["layer"],
 					var to = self.attr("to");
 					switch (tag) {
 						case "avatar":
-							// 0 ==> 1
 							var img = util.avatar.attr("localid");
-							if (!img) {
+							if (!img && !util.avatar.attr('src')) {
 								showMsg("头像还没有上传哦~");
 								return;
 							}
