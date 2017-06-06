@@ -90,7 +90,7 @@ class BaseController extends Controller
 		} elseif (!$wxUserInfo['uPhone'] || !$wxUserInfo['uRole']) {
 			$newActionId = 'imei';
 		} elseif (!$wxUserInfo['uLocation']) {
-			$newActionId = $wxUserInfo['uRole'] == User::ROLE_SINGLE ? 'sreg#step0' : 'mreg';
+			$newActionId = $wxUserInfo['uRole'] == User::ROLE_SINGLE ? 'sreg' : 'mreg';
 		}
 		if ($actionId != $newActionId) {
 			header('location:/wx/' . $newActionId);
