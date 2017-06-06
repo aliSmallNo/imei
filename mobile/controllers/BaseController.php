@@ -57,7 +57,7 @@ class BaseController extends Controller
 			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
 				self::$WX_OpenId = $wxUserInfo["openid"];
 				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
-				if (isset($wxUserInfo['uRole']) && !$wxUserInfo['uRole']) {
+				if ($actionId != 'imei' && (!isset($wxUserInfo['uPhone']) || !$wxUserInfo['uPhone'])) {
 					header("location:/wx/imei");
 					exit();
 				}
@@ -71,7 +71,7 @@ class BaseController extends Controller
 				$logMsg = [self::$WX_OpenId, json_encode($wxUserInfo)];
 				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
 				// Rain: 发现如果action不执行完毕，getCookie获取不到刚刚赋值的cookie值
-				if (isset($wxUserInfo['uRole']) && !$wxUserInfo['uRole']) {
+				if ($actionId != 'imei' && (!isset($wxUserInfo['uPhone']) || !$wxUserInfo['uPhone'])) {
 					header("location:/wx/imei");
 					exit();
 				}
