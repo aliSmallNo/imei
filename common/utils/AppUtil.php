@@ -1258,7 +1258,7 @@ class AppUtil
 				$fileName = self::getUploadFolder() . "/" . RedisUtil::getIntSeq();
 				file_put_contents($fileName, $content);
 				$imageUrl = ImageUtil::upload2COS($fileName, $thumbFlag, $ext);
-//				unlink($fileName);
+				unlink($fileName);
 				return $imageUrl;
 			}
 		}

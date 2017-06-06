@@ -132,7 +132,7 @@ require(["layer"],
 				$sls.postData["img"] = $sls.serverId;
 				$.post("/api/user", {
 					data: JSON.stringify($sls.postData),
-					tag: "mreg",
+					tag: "mreg"
 				}, function (res) {
 					showMsg(res.msg);
 					if (res.code == 0) {
@@ -140,8 +140,6 @@ require(["layer"],
 							location.href = "/wx/match";
 						}, 500);
 					}
-					//alert(JSON.stringify(res.data));
-					//location.href = "";
 				}, "json");
 			},
 			toggle: function (content) {

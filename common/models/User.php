@@ -245,6 +245,7 @@ class User extends ActiveRecord
 	public static function reg($data)
 	{
 		$fields = [
+			"role" => "uRole",
 			"name" => "uName",
 			"intro" => "uIntro",
 			"location" => "uLocation",
@@ -276,6 +277,8 @@ class User extends ActiveRecord
 			if ($url) {
 				$data["img"] = $url;
 			}
+		} else {
+			unset($data['img']);
 		}
 		$addData = [];
 		foreach ($fields as $k => $v) {
@@ -283,7 +286,6 @@ class User extends ActiveRecord
 				$addData[$v] = $data[$k];
 			}
 		}
-		//return $addData;
 		$uid = self::add($addData);
 		return $uid;
 	}
@@ -294,7 +296,7 @@ class User extends ActiveRecord
 		if ($id) {
 			$url = AppUtil::getMediaUrl($id);
 		}
-		$Info = self::findOne(["uOpenId"=>$openId]);
+		$Info = self::findOne(["uOpenId" => $openId]);
 		if ($url && $Info) {
 			$album = $Info->uAlbum;
 			if ($album) {

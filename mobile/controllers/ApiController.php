@@ -152,6 +152,7 @@ class ApiController extends Controller
 				$data = self::postParam('data');
 				$data = json_decode($data, 1);
 				$data["openId"] = $openId;
+				$data["role"] = ($tag == 'mreg') ? User::ROLE_MATCHER : User::ROLE_SINGLE;
 				$ret = User::reg($data);
 				//Rain: 刷新用户cache数据
 				UserWechat::getInfoByOpenId($openId, true);
