@@ -26,9 +26,8 @@ require(["layer"],
 			btnSkip: $(".action-skip"),
 			postData: {},
 			serverId: "",
-
 			mLat: 0,
-			mLng: 0,
+			mLng: 0
 		};
 
 		var SingleUtil = {
@@ -112,7 +111,7 @@ require(["layer"],
 								var localId = localIds[0];
 								util.avatar.attr("localId", localId);
 								util.avatar.attr("src", localId);
-								TipsbarUtil.toggle(false);
+								DrawUtil.toggle(false);
 
 							}
 						}
@@ -199,9 +198,11 @@ require(["layer"],
 				}, function (res) {
 					showMsg(res.msg);
 					//alert(JSON.stringify(res.data));
-					setTimeout(function () {
-						//location.href = "/wx/single";
-					}, 300);
+					if (res.code == 0) {
+						setTimeout(function () {
+							location.href = "/wx/single";
+						}, 500);
+					}
 				}, "json");
 			},
 			toggle: function (content) {
@@ -343,7 +344,7 @@ require(["layer"],
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage', "getLocation"];
 			wx.config(wxInfo);
 			wx.ready(function () {
-				wx.hideOptionMenu();
+				// wx.hideOptionMenu();
 			});
 			DrawUtil.init();
 			SingleUtil.init();

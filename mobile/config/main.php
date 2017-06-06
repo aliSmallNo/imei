@@ -19,6 +19,8 @@ return [
 	'components' => [
 		'request' => [
 			'csrfParam' => '_csrf-mobile',
+			'enableCookieValidation' => false,
+			'enableCsrfValidation' => false,
 		],
 		'user' => [
 			'identityClass' => 'common\models\User',

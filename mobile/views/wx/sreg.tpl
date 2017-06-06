@@ -6,9 +6,9 @@
 	<p class="m-header">请上传真人头像<i>否则不会审核通过</i></p>
 	<div class="nick_name">
 		<a href="javascript:;" class="photo photo-file">
-			<img class="avatar" src="" localId="">
+			<img class="avatar" src="{{$avatar}}" localId="">
 		</a>
-		<input type="text" placeholder="昵称" class="input-s big">
+		<input type="text" placeholder="昵称" class="input-s big" value="{{$nickname}}">
 		<div class="place-holder-s1"></div>
 		<a href="javascript:;" class="btn-s s3" to="#step1" tag="avatar">下一步</a>
 	</div>
@@ -255,4 +255,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/sreg.js?v=1.1.1" src="/assets/js/require.js"></script>
+<script data-main="/js/sreg.js?v=1.1.5" src="/assets/js/require.js"></script>

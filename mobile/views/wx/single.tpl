@@ -242,11 +242,11 @@
 				</div>
 				<div class="title">
 					<h4>{{$nickname}}</h4>
-					<i>资料完成度62%</i>
+					<i style="display: none">资料完成度62%</i>
 					<h5>传说中的大鲜肉</h5>
 				</div>
 				<a href="/wx/match" class="btn-outline change-role">切换成媒婆</a>
-				<a href="/wx/sreg" class="btn-outline edit-role">编辑</a>
+				<a href="/wx/sreg#step0" class="btn-outline edit-role">编辑</a>
 			</div>
 			<a href="javascript:;" class="u-my-album">
 				<div class="title">相册(0)</div>

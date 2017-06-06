@@ -15,7 +15,7 @@ use yii\db\ActiveRecord;
 
 class User extends ActiveRecord
 {
-	static $ScopeDict = [
+	static $Scope = [
 		100 => 'IT互联网', 102 => '金融', 104 => '文化传媒', 106 => '服务业', 108 => '教育培训', 110 => '通信电子', 112 => '房产建筑',
 		114 => '轻工贸易', 116 => '医疗生物', 118 => '生产制造', 120 => '能源环保', 122 => '政法公益', 124 => '农林牧渔', 126 => '其他'
 	];
@@ -75,7 +75,7 @@ class User extends ActiveRecord
 	static $gender = [
 		0 => "美女", 1 => "帅哥"
 	];
-	static $sign = [
+	static $Horos = [
 		301 => "白羊座(3.21~4.20)", 303 => "金牛座(4.21~5.20)", 305 => "双子座(5.22~6.21)", 307 => "巨蟹座(6.22~6.22)",
 		309 => "狮子座(7.23~8.22)", 311 => "处女座(8.23~9.22)", 313 => "天秤座(9.23~10.23)", 315 => "天蝎座(10.24~11.22)",
 		317 => "射手座(11.23~12.21)", 319 => "摩羯座(12.22~1.20)", 321 => "水瓶座(12.21~1.19)", 323 => "双鱼座(12.20~1.20)"
@@ -94,11 +94,11 @@ class User extends ActiveRecord
 		self::STATUS_DELETE => "已删除",
 	];
 
-	const ROLE_SINGLE = 0;
-	const ROLE_MEIPO = 1;
+	const ROLE_SINGLE = 10;
+	const ROLE_MATCHER = 20;
 	static $roleDict = [
 		self::ROLE_SINGLE => "单身",
-		self::ROLE_MEIPO => "媒婆",
+		self::ROLE_MATCHER => "媒婆",
 	];
 
 	protected static $SmsCodeLimitPerDay = 36;
@@ -146,6 +146,19 @@ class User extends ActiveRecord
 		return $uid;
 	}
 
+	public static function bindPhone($openId, $phone, $role = 0)
+	{
+		$entity = self::findOne(['uOpenId' => $openId]);
+		if ($entity) {
+			$entity->uPhone = $phone;
+			$entity->uRole = $role;
+			$entity->uUpdatedOn = date('Y-m-d H:i:s');
+			$entity->save();
+			RedisUtil::delCache(RedisUtil::KEY_WX_USER, $openId);
+			return true;
+		}
+		return false;
+	}
 
 	public static function addWX($wxInfo, $editBy = 1)
 	{
@@ -252,6 +265,9 @@ class User extends ActiveRecord
 	{
 		if (!AppUtil::checkPhone($phone)) {
 			return ['code' => 159, 'msg' => '手机格式不正确'];
+		}
+		if (AppUtil::scene() == 'dev') {
+			return ['code' => 159, 'msg' => '悲催啊~ 只能发布到服务器端才能测试这个功能~'];
 		}
 		$smsLimit = RedisUtil::getCache(RedisUtil::KEY_SMS_CODE_CNT, date('ymd'), $phone);
 		if (!$smsLimit) {

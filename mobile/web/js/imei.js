@@ -1,50 +1,31 @@
-if (document.location.hash === "" || document.location.hash === "#") {
-	document.location.hash = "#frole";
-}
+/*if (document.location.hash === "" || document.location.hash === "#") {
+ document.location.hash = "#fsms";
+ }*/
 require.config({
 	paths: {
 		"jquery": "/assets/js/jquery-3.2.1.min",
 		"zepto": "/assets/js/zepto.min",
-		"mustache": "/assets/js/mustache.min",
-		"fastclick": "/assets/js/fastclick",
-		"fly": "/assets/js/jquery.fly.min",
-		"iscroll": "/assets/js/iscroll",
 		"lazyload": "/assets/js/jquery.lazyload.min",
 		"layer": "/assets/js/layer_mobile/layer",
 		"wx": "/assets/js/jweixin-1.2.0",
 	}
 });
-require(["jquery", "wx", "layer", "mustache", "fastclick", "iscroll", "fly"],
-	function ($, wx, layer, Mustache, FastClick, IScroll) {
+require(["layer"],
+	function (layer) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
 			curFrag: "frole",
-			footer: $(".footer-bar"),
 			mobile: $("#cur_mobile").val(),
 			cork: $(".app-cork"),
-			wxString: $("#tpl_wx_info").html()
+			form: $('.form'),
+			phone: $('.phone'),
+			code: $('.code'),
+			wxString: $("#tpl_wx_info").html(),
+			btnCode: $('.btn-code'),
+			loading: 0,
+			counting: 0
 		};
-
-		function eleInScreen($ele) {
-			return $ele && $ele.length > 0 && $ele.offset().top < $(window).scrollTop() + $(window).height();
-		}
-
-		$(window).on("scroll", function () {
-			var lastRow;
-			switch ($sls.curFrag) {
-				case "flist":
-				/*lastRow = GoodsUtil.list.find('li').last();
-				 if (lastRow && eleInScreen(lastRow) && GoodsUtil.pageIndex > 0) {
-				 GoodsUtil.reload();
-				 return false;
-				 }
-				 break;*/
-
-				default:
-					break;
-			}
-		});
 
 		var SingleUtil = {
 			single0: $("#fsingle0"),
@@ -106,85 +87,104 @@ require(["jquery", "wx", "layer", "mustache", "fastclick", "iscroll", "fly"],
 			}
 		};
 
-		var TipsbarUtil = {
-			menus: null,
-			menusBg: null,
-			init: function () {
-				var util = this;
-				util.menus = $(".tips-bar-wrap");
-				util.menusBg = $(".tips-bar-bg");
-				$(".photo-file").on(kClick, function () {
-					util.toggle(util.menus.hasClass("off"));
-				});
+		function showMsg(title, sec) {
+			var duration = sec || 2;
+			layer.open({
+				content: title,
+				skin: 'msg',
+				time: duration
+			});
+		}
 
-				$(".menus > a").on(kClick, function (e) {
-					util.toggle(false);
-					e.stopPropagation();
-				});
-				util.menus.on(kClick, function (e) {
-					e.stopPropagation();
-				});
+		function isPhone(num) {
+			var partten = /^1[2-9][0-9]{9}$/;
+			return partten.test(num);
+		}
 
-				util.menusBg.on(kClick, function () {
-					util.toggle(false);
-				});
-			},
-			toggle: function (showFlag) {
-				var util = this;
-				if (showFlag) {
-					setTimeout(function () {
-						util.menus.removeClass("off").addClass("on");
-					}, 60);
-					util.menusBg.fadeIn(260);
+		function smsCounting() {
+			var second = 60;
+			$sls.btnCode.html(second + "s后重试");
+			$sls.btnCode.addClass("disabled");
+			var timer = null;
+			timer = setInterval(function () {
+				second -= 1;
+				if (second > 0) {
+					$sls.btnCode.html(second + "s后重试");
 				} else {
-					util.menus.removeClass("on").addClass("off");
-					util.menusBg.fadeOut(220);
+					clearInterval(timer);
+					$sls.btnCode.html("发送验证码");
+					$sls.btnCode.removeClass("disabled");
+					$sls.counting = 0;
 				}
-			}
-		};
+			}, 1000);
+		}
 
-		function locationHashChanged() {
-			var hashTag = location.hash;
-			hashTag = hashTag.replace("#!", "");
-			hashTag = hashTag.replace("#", "");
-			$sls.hashPage = hashTag;
+		function smsCode() {
+			if ($sls.counting) {
+				return false;
+			}
+			var phone = $.trim($sls.phone.val());
+			if (!isPhone(phone)) {
+				showMsg('请输入正确的手机号！');
+				$sls.phone.focus();
+				return false;
+			}
+			$sls.counting = 1;
+			$.post('/api/user',
+				{
+					tag: 'sms-code',
+					phone: phone
+				},
+				function (resp) {
+					if (resp.code == 0) {
+						showMsg(resp.msg);
+						smsCounting();
+					} else {
+						showMsg(resp.msg);
+						$sls.counting = 0;
+					}
+				}, 'json');
+		}
 
-			switch (hashTag) {
-				case "frole":
-					RoleUtil.init();
-					$sls.footer.hide();
-					break;
-				case "fhome":
-					$sls.footer.show();
-					break;
-				default:
-					$sls.footer.show();
-					break;
+		function regPhone() {
+			if ($sls.loading) {
+				return false;
 			}
-			$sls.curFrag = hashTag;
-			var self = $("a[data-tag=" + hashTag + "]");
-			if (self.length) {
-				var row = self.closest("ul");
-				row.find("li").removeClass("active");
-				self.closest("li").addClass("active");
+			var phone = $.trim($sls.phone.val()),
+				code = $.trim($sls.code.val()),
+				role = $sls.form.hasClass('single') ? 'single' : 'matcher';
+			if (!isPhone(phone)) {
+				showMsg('请输入正确的手机号！');
+				$sls.phone.focus();
+				return false;
 			}
-			var title = $("#" + hashTag).attr("data-title");
-			if (title) {
-				$(document).attr("title", title);
-				$("title").html(title);
-				var iFrame = $('<iframe src="/blank.html" style="width:0;height:0;outline:0;border:none;display:none"></iframe>');
-				iFrame.on('load', function () {
-					setTimeout(function () {
-						iFrame.off('load').remove();
-					}, 0);
-				}).appendTo($("body"));
+			if (!code) {
+				showMsg('请输入验证码！');
+				$sls.code.focus();
+				return false;
 			}
-			layer.closeAll();
+			$sls.loading = 1;
+			$.post('/api/user',
+				{
+					tag: 'reg-phone',
+					phone: phone,
+					code: code,
+					role: role
+				},
+				function (resp) {
+					if (resp.code == 0) {
+						showMsg(resp.msg);
+						setTimeout(function () {
+							location.href = (role === 'single') ? '/wx/sreg#step0' : '/wx/mreg';
+						}, 600);
+					} else {
+						showMsg(resp.msg);
+					}
+					$sls.loading = 0;
+				}, 'json');
 		}
 
 		$(function () {
-			// FastClick.attach($sls.footer.get(0));
-			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage'];
@@ -193,11 +193,24 @@ require(["jquery", "wx", "layer", "mustache", "fastclick", "iscroll", "fly"],
 				wx.hideOptionMenu();
 			});
 
-			locationHashChanged();
 			RoleUtil.init();
-			TipsbarUtil.init();
 			SingleUtil.init();
-
 			$sls.cork.hide();
+
+			$('.change, .btn-change').on(kClick, function () {
+				if ($sls.form.hasClass('single')) {
+					$sls.form.addClass('matcher').removeClass('single');
+				} else {
+					$sls.form.addClass('single').removeClass('matcher');
+				}
+			});
+
+			$('.m-submit').on(kClick, function () {
+				regPhone();
+			});
+
+			$('.btn-code').on(kClick, function () {
+				smsCode();
+			});
 		});
 	});

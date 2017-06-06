@@ -595,7 +595,6 @@ section
 	background: $mainColor
 	&:active
 		background: $mainColorDark
-
 .help-block
 	font-size: 1.2rem
 	height: 3.6rem
@@ -622,6 +621,8 @@ section
 	&.s1
 		color: $mainColor
 		border: 1px solid $borderColorDark
+		&.disabled
+			color: $grayFontColorLight
 	&.s3
 		color: #fff
 		background-color: $mainColor
@@ -674,11 +675,22 @@ section
 	padding-left: 2rem
 	padding-right: 2rem
 	position: relative
-	&.matcher,
-	&.single
+	.btn-change
+		display: inline-block
+		width: 10rem
+		height: 7rem
+		//background-color: rgba(0, 0, 0, .3)
+		position: absolute
+		z-index: 11
+	.btn-change[data-tag="single"]
+		top: 2.5rem
+		right: 3rem
+	.btn-change[data-tag="matcher"]
+		left: 3rem
+		top: 6.2rem
+	&.sms-form
 		padding-top: 13.5rem
-	&.matcher:before,
-	&.single:before
+	&.sms-form:before
 		content: " "
 		position: absolute
 		width: 26rem
@@ -691,6 +703,13 @@ section
 	&.single:before
 		background: url("../images/ico_sms_single.png") no-repeat center center
 		background-size: 100% 100%
+	&.matcher
+		.btn-change[data-tag="single"]
+			top: 6rem
+			right: 3rem
+		.btn-change[data-tag="matcher"]
+			left: 3rem
+			top: 2.5rem
 	.flex
 		@include displayFlex
 		input
@@ -753,6 +772,7 @@ section
 		border-radius: 4.5rem
 		margin-top: 1rem
 		margin-bottom: 1rem
+		z-index: 3
 		img
 			width: 100%
 			height: 100%
@@ -1167,7 +1187,7 @@ section
 	.btn-outline
 		position: absolute
 		right: 1rem
-		top: 1rem
+		top: .7rem
 		&.change-role
 			right: 6.6rem
 	.avatar
