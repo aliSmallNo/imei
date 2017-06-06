@@ -227,6 +227,25 @@ main
 	line-height: 4rem
 	text-align: center
 
+.icon-female
+	content: ''
+	position: absolute
+	width: 1.2rem
+	height: 1.2rem
+	left: 8rem
+	top: 1.5rem
+	background: url(../images/ico_gender_female.png) no-repeat center center
+	background-size: 100% 100%
+.icon-male
+	content: ''
+	position: absolute
+	width: 1.2rem
+	height: 1.2rem
+	left: 8rem
+	top: 1.5rem
+	background: url(../images/ico_gender_male.png) no-repeat center center
+	background-size: 100% 100%
+
 section
 	position: relative
 	display: none
@@ -542,7 +561,6 @@ section
 	background: $mainColor
 	&:active
 		background: $mainColorDark
-
 .help-block
 	font-size: 1.2rem
 	height: 3.6rem
@@ -2295,7 +2313,7 @@ section
 			z-index: 3
 
 .sgroup-top
-	.nav
+	@at-root .nav
 		background: #fbd6e3
 		padding: .8rem 1rem
 		display: flex
@@ -2415,3 +2433,136 @@ section
 			font-size: 1rem
 			padding: 3rem
 			color: #777
+#sprofile
+	.sprofile-top
+		.img
+			img
+				width: 100%
+		.sprofile-top-des
+			padding: 1rem
+			position: relative
+			background: #fff
+			margin-top: -.2rem
+			p
+				font-size: 1.5rem
+				font-weight: 900
+				margin-bottom: 1rem
+
+			i
+				font-size: 1.2rem
+				color: #777
+			span
+				font-size: 1rem
+				color: #777
+				position: absolute
+				right: 2rem
+				top: 1rem
+	.sprofile-album
+		margin-top: 1rem
+		background: #fff
+		padding: 1rem
+		.title
+			padding: 1rem 0
+			font-size: 1.2rem
+			border-bottom: 1px solid #ddd
+			display: block
+			position: relative
+			&:after
+				@include arrowRight
+		ul
+			padding: 1rem
+			display: flex
+			li
+				flex: 1
+				padding: .5rem
+				img
+					width: 100%
+	.sprofile-base
+		display: flex
+		margin-top: 1rem
+		background: #fff
+		padding: 1rem
+		position: relative
+		&:after
+			@include arrowRight
+			right: 1rem
+			border-color: #f781ab
+		.title
+			flex: 0 0 8rem
+			font-size: 1.2rem
+			color: #777
+		.content
+			flex: 1
+			span
+				color: #f781ab
+				font-size: 1rem
+				border: solid #f781ab 1px
+				padding: .3rem 1rem
+				border-radius: .5rem
+				display: inline-block
+				margin: .2rem
+	.sprofile-mp
+		display: flex
+		margin-top: 1rem
+		background: #fff
+		padding: 1rem
+		.left
+			flex: 0 0 8rem
+			text-align: center
+			.img
+				text-align: center
+				img
+					width: 4rem
+					border-radius: 4rem
+			p
+				font-size: 1.2rem
+			i
+				font-size: 1rem
+				color: #ccc
+
+		.right
+			flex: 1
+			background: #fbd6e3
+			padding: 1rem
+			font-size: 1rem
+			color: #fff
+			border-radius: 1rem
+			border-top-left-radius: 0
+	.sprofile-condtion
+		margin-top: 1rem
+		background: #fff
+		display: flex
+		padding: 1rem
+		.title
+			flex: 0 0 8rem
+			font-size: 1.2rem
+			color: #777
+		.content
+			flex: 1
+			span
+				font-size: 1rem
+				color: #f781ab
+				background: #fbd6e3
+				padding: .3rem 1rem
+				border-radius: .2rem
+				margin: .5rem
+				display: inline-block
+	.sprofile-intro
+		margin-top: 1rem
+		background: #fff
+		display: flex
+		padding: 1rem
+		.title
+			flex: 0 0 8rem
+			font-size: 1.2rem
+			color: #777
+		.content
+			flex: 1
+			font-size: 1.2rem
+
+
+
+
+
+
+

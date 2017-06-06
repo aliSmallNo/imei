@@ -99,6 +99,26 @@ main {
   line-height: 4rem;
   text-align: center; }
 
+.icon-female {
+  content: "";
+  position: absolute;
+  width: 1.2rem;
+  height: 1.2rem;
+  left: 8rem;
+  top: 1.5rem;
+  background: url(../images/ico_gender_female.png) no-repeat center center;
+  background-size: 100% 100%; }
+
+.icon-male {
+  content: "";
+  position: absolute;
+  width: 1.2rem;
+  height: 1.2rem;
+  left: 8rem;
+  top: 1.5rem;
+  background: url(../images/ico_gender_male.png) no-repeat center center;
+  background-size: 100% 100%; }
+
 section {
   position: relative;
   display: none;
@@ -2335,11 +2355,11 @@ section {
       position: relative;
       z-index: 3; }
 
-.sgroup-top .nav {
+.nav {
   background: #fbd6e3;
   padding: 0.8rem 1rem;
   display: flex; }
-  .sgroup-top .nav:before {
+  .nav:before {
     content: " ";
     position: absolute;
     left: 1.5rem;
@@ -2354,13 +2374,13 @@ section {
     border-color: #777 #777 transparent transparent;
     background-color: #fbd6e3;
     transform: rotate(-135deg) translateZ(0); }
-  .sgroup-top .nav a {
+  .nav a {
     flex: 1;
     font-size: 1.2rem;
     color: #777; }
-    .sgroup-top .nav a:first-child {
+    .nav a:first-child {
       margin-left: 1.2rem; }
-    .sgroup-top .nav a:last-child {
+    .nav a:last-child {
       text-align: right; }
 .sgroup-top .sgroup-top-des {
   background: #f8c5d7; }
@@ -2450,5 +2470,151 @@ section {
   font-size: 1rem;
   padding: 3rem;
   color: #777; }
+
+#sprofile .sprofile-top .img img {
+  width: 100%; }
+#sprofile .sprofile-top .sprofile-top-des {
+  padding: 1rem;
+  position: relative;
+  background: #fff;
+  margin-top: -0.2rem; }
+  #sprofile .sprofile-top .sprofile-top-des p {
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-bottom: 1rem; }
+  #sprofile .sprofile-top .sprofile-top-des i {
+    font-size: 1.2rem;
+    color: #777; }
+  #sprofile .sprofile-top .sprofile-top-des span {
+    font-size: 1rem;
+    color: #777;
+    position: absolute;
+    right: 2rem;
+    top: 1rem; }
+#sprofile .sprofile-album {
+  margin-top: 1rem;
+  background: #fff;
+  padding: 1rem; }
+  #sprofile .sprofile-album .title {
+    padding: 1rem 0;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #ddd;
+    display: block;
+    position: relative; }
+    #sprofile .sprofile-album .title:after {
+      content: " ";
+      display: inline-block;
+      height: 0.8rem;
+      width: 0.8rem;
+      border-width: 1px 1px 0 0;
+      border-color: #999;
+      border-style: solid;
+      -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+      transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+      position: absolute;
+      top: 50%;
+      right: 0;
+      margin-top: -0.5rem; }
+  #sprofile .sprofile-album ul {
+    padding: 1rem;
+    display: flex; }
+    #sprofile .sprofile-album ul li {
+      flex: 1;
+      padding: 0.5rem; }
+      #sprofile .sprofile-album ul li img {
+        width: 100%; }
+#sprofile .sprofile-base {
+  display: flex;
+  margin-top: 1rem;
+  background: #fff;
+  padding: 1rem;
+  position: relative; }
+  #sprofile .sprofile-base:after {
+    content: " ";
+    display: inline-block;
+    height: 0.8rem;
+    width: 0.8rem;
+    border-width: 1px 1px 0 0;
+    border-color: #999;
+    border-style: solid;
+    -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    position: absolute;
+    top: 50%;
+    right: 0;
+    margin-top: -0.5rem;
+    right: 1rem;
+    border-color: #f781ab; }
+  #sprofile .sprofile-base .title {
+    flex: 0 0 8rem;
+    font-size: 1.2rem;
+    color: #777; }
+  #sprofile .sprofile-base .content {
+    flex: 1; }
+    #sprofile .sprofile-base .content span {
+      color: #f781ab;
+      font-size: 1rem;
+      border: solid #f781ab 1px;
+      padding: 0.3rem 1rem;
+      border-radius: 0.5rem;
+      display: inline-block;
+      margin: 0.2rem; }
+#sprofile .sprofile-mp {
+  display: flex;
+  margin-top: 1rem;
+  background: #fff;
+  padding: 1rem; }
+  #sprofile .sprofile-mp .left {
+    flex: 0 0 8rem;
+    text-align: center; }
+    #sprofile .sprofile-mp .left .img {
+      text-align: center; }
+      #sprofile .sprofile-mp .left .img img {
+        width: 4rem;
+        border-radius: 4rem; }
+    #sprofile .sprofile-mp .left p {
+      font-size: 1.2rem; }
+    #sprofile .sprofile-mp .left i {
+      font-size: 1rem;
+      color: #ccc; }
+  #sprofile .sprofile-mp .right {
+    flex: 1;
+    background: #fbd6e3;
+    padding: 1rem;
+    font-size: 1rem;
+    color: #fff;
+    border-radius: 1rem;
+    border-top-left-radius: 0; }
+#sprofile .sprofile-condtion {
+  margin-top: 1rem;
+  background: #fff;
+  display: flex;
+  padding: 1rem; }
+  #sprofile .sprofile-condtion .title {
+    flex: 0 0 8rem;
+    font-size: 1.2rem;
+    color: #777; }
+  #sprofile .sprofile-condtion .content {
+    flex: 1; }
+    #sprofile .sprofile-condtion .content span {
+      font-size: 1rem;
+      color: #f781ab;
+      background: #fbd6e3;
+      padding: 0.3rem 1rem;
+      border-radius: 0.2rem;
+      margin: 0.5rem;
+      display: inline-block; }
+#sprofile .sprofile-intro {
+  margin-top: 1rem;
+  background: #fff;
+  display: flex;
+  padding: 1rem; }
+  #sprofile .sprofile-intro .title {
+    flex: 0 0 8rem;
+    font-size: 1.2rem;
+    color: #777; }
+  #sprofile .sprofile-intro .content {
+    flex: 1;
+    font-size: 1.2rem; }
 
 /*# sourceMappingURL=imei.css.map */

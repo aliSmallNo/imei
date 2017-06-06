@@ -61,7 +61,7 @@
 	<ul class="m-top-users">
 		<li id="596729a4b76a4a26af3d73d151510102">
 			<div class="head">
-				<a href="/user/p?uid=596729a4b76a4a26af3d73d151510102" class="photo sex2">
+				<a href="#sprofile" class="photo sex2">
 					<img src="https://img.1meipo.com/c17e7540996f88f43bd0f6b4a1e79938.jpg?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
 							 class="nic">
 					<div class="intro">
@@ -82,7 +82,7 @@
 		</li>
 		<li id="user-c04a752e237a47bb984146fcdc694ac4">
 			<div class="head">
-				<a href="/user/p?uid=c04a752e237a47bb984146fcdc694ac4" class="photo sex2">
+				<a href="#sprofile" class="photo sex2">
 					<img src="https://img.1meipo.com/bb31469d423e7463fb604c84cb8132f5.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
 							 class="nic">
 					<div class="intro">
@@ -101,7 +101,7 @@
 		</li>
 		<li id="user-472e131fdfe3458b89e7aa90a227b123">
 			<div class="head">
-				<a href="/user/p?uid=472e131fdfe3458b89e7aa90a227b123" class="photo sex2">
+				<a href="#sprofile" class="photo sex2">
 					<img src="https://img.1meipo.com/6d097354efdc2f9f1305158ea3cf0edc.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
 							 class="nic">
 					<div class="intro">招人喜欢的性格，良好的社交沟通能力，身材高挑丰满😄不差钱</div>
@@ -128,7 +128,7 @@
 		</li>
 		<li id="user-ff4bd1c18d57486294aad0b2a9674251">
 			<div class="head">
-				<a href="/user/p?uid=ff4bd1c18d57486294aad0b2a9674251" class="photo sex2">
+				<a href="#sprofile" class="photo sex2">
 					<img src="https://img.1meipo.com/0058615a82770db547ee118dd41d4cc5.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
 							 class="nic">
 					<div class="intro">肤白貌美，唇红齿白的大美女，认识10年的姐姐，非常靠谱善良的人，希望早日有那个对的人来呵护照顾她</div>
@@ -150,7 +150,7 @@
 		</li>
 		<li id="user-45d0726d202f4d5db15ff0ac258290e4">
 			<div class="head">
-				<a href="/user/p?uid=45d0726d202f4d5db15ff0ac258290e4" class="photo sex2">
+				<a href="#sprofile" class="photo sex2">
 					<img src="https://img.1meipo.com/e5261f3f09057c4bd7dd8493bdc65740.jpeg?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
 							 class="nic">
 					<div class="intro">张佳推荐了TA</div>
@@ -168,7 +168,7 @@
 		</li>
 		<li id="user-00965b87d03d41e5bf13402f25da16fb">
 			<div class="head">
-				<a href="/user/p?uid=00965b87d03d41e5bf13402f25da16fb" class="photo sex2">
+				<a href="#sprofile" class="photo sex2">
 					<img src="https://img.1meipo.com/4fef291f63c090dcd4b970f04180e21e.jpeg?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
 							 class="nic">
 					<div class="intro">
@@ -189,7 +189,7 @@
 		</li>
 		<li id="user-47334709fef74fcdbb23706d983f10a3">
 			<div class="head">
-				<a href="/user/p?uid=47334709fef74fcdbb23706d983f10a3" class="photo sex2">
+				<a href="#sprofile" class="photo sex2">
 					<img src="https://img.1meipo.com/94e16832be583c3d68247a031b3a5652.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
 							 class="nic">
 					<div class="intro">葉雨建推荐了TA</div>
@@ -208,7 +208,7 @@
 		</li>
 		<li id="user-b4ddda9ea4a249c4b4d5aa8850e4325c">
 			<div class="head">
-				<a href="/user/p?uid=b4ddda9ea4a249c4b4d5aa8850e4325c" class="photo sex2">
+				<a href="#sprofile" class="photo sex2">
 					<img src="https://img.1meipo.com/6c87d9c30ce5b29355a78e32abc942d1.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
 							 class="nic">
 					<div class="intro">我的同事小叶子～活泼爱笑的精灵鬼～行走的攻略，欧洲自由行导游担当～生活小达人～只有你想不到的，没有她不知道的～坐标北京</div>
@@ -320,7 +320,76 @@
 	</div>
 </section>
 <section id="sprofile">
-
+	<div class="sprofile-top">
+		<div class="nav">
+			<a href="#slook">返回</a>
+			<a href="#sme" style="display: none">个人中心</a>
+		</div>
+		<div class="img">
+			<img src="https://img.1meipo.com/6d097354efdc2f9f1305158ea3cf0edc.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
+					 alt="">
+		</div>
+		<div class="sprofile-top-des">
+			<p >Caroline<em class="icon-female"></em></p>
+			<i>30岁 . 165cm . 处女座 . 金融 </i>
+			<span>北京 大兴</span>
+		</div>
+	</div>
+	<div class="sprofile-album">
+		<a class="title">相册 (5)</a>
+		<ul>
+			<li>
+				<img src="https://img.1meipo.com/6d097354efdc2f9f1305158ea3cf0edc.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
+						 alt="">
+			</li>
+			<li>
+				<img src="https://img.1meipo.com/6d097354efdc2f9f1305158ea3cf0edc.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
+						 alt="">
+			</li>
+			<li>
+				<img src="https://img.1meipo.com/6d097354efdc2f9f1305158ea3cf0edc.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
+						 alt="">
+			</li>
+		</ul>
+	</div>
+	<div class="sprofile-base">
+		<div class="title">基本资料</div>
+		<div class="content">
+			<span>165cm</span>
+			<span>本科</span>
+			<span>2w-3w</span>
+			<span>计划购房</span>
+			<span>已购车</span>
+		</div>
+	</div>
+	<div class="sprofile-mp">
+		<div class="left">
+			<div class="img">
+				<img src="https://img.1meipo.com/6d097354efdc2f9f1305158ea3cf0edc.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
+						 alt="">
+			</div>
+			<p>思彬</p>
+			<i>渠道拓展</i>
+		</div>
+		<div class="right">
+			这个女的很棒！！
+		</div>
+	</div>
+	<div class="sprofile-condtion">
+		<div class="title">择偶条件</div>
+		<div class="content">
+			<span>25-40岁</span>
+			<span>172-198cm</span>
+			<span>收入不限</span>
+			<span>本科及以上</span>
+		</div>
+	</div>
+	<div class="sprofile-intro">
+		<div class="title">内心独白</div>
+		<div class="content">
+			梦想周游世界，希望有人陪我一起
+		</div>
+	</div>
 </section>
 <section id="sgroup">
 	<div class="sgroup-top">
@@ -366,7 +435,8 @@
 				<li>
 					<a href="javascript:;">
 						<div class="img">
-							<img src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100" alt="">
+							<img src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100"
+									 alt="">
 						</div>
 						<div>
 							<p>Summer</p>
@@ -377,7 +447,8 @@
 				<li>
 					<a href="javascript:;">
 						<div class="img">
-							<img src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100" alt="">
+							<img src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100"
+									 alt="">
 						</div>
 						<div>
 							<p>Summer</p>
@@ -390,7 +461,8 @@
 				<li>
 					<a href="javascript:;">
 						<div class="img">
-							<img src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100" alt="">
+							<img src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100"
+									 alt="">
 						</div>
 						<div>
 							<p>Winter</p>
@@ -401,7 +473,8 @@
 				<li>
 					<a href="javascript:;">
 						<div class="img">
-							<img src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100" alt="">
+							<img src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100"
+									 alt="">
 						</div>
 						<div>
 							<p>Winter</p>
@@ -412,7 +485,8 @@
 				<li>
 					<a href="javascript:;">
 						<div class="img">
-							<img src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100" alt="">
+							<img src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100"
+									 alt="">
 						</div>
 						<div>
 							<p>Winter</p>
