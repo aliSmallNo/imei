@@ -88,7 +88,7 @@ class User extends ActiveRecord
 	const STATUS_PENDING = 0;
 	const STATUS_ACTIVE = 1;
 	const STATUS_DELETE = 9;
-	static $statusDict = [
+	static $Status = [
 		self::STATUS_PENDING => "待审核",
 		self::STATUS_ACTIVE => "已通过",
 		self::STATUS_DELETE => "已删除",
@@ -96,7 +96,7 @@ class User extends ActiveRecord
 
 	const ROLE_SINGLE = 10;
 	const ROLE_MATCHER = 20;
-	static $roleDict = [
+	static $Role = [
 		self::ROLE_SINGLE => "单身",
 		self::ROLE_MATCHER => "媒婆",
 	];
@@ -196,12 +196,22 @@ class User extends ActiveRecord
 				$val = $row[$key];
 				if ($newKey == 'location') {
 					$item[$newKey] = json_decode($val, 1);
+					$item[$newKey . '_t'] = '';
+					if ($item[$newKey]) {
+						foreach ($item[$newKey] as $loc) {
+							$item[$newKey . '_t'] .= $loc['text'] . ' ';
+						}
+						$item[$newKey . '_t'] = trim($item[$newKey . '_t']);
+					}
 					continue;
+				}
+				if ($newKey == 'birthyear') {
+					$item['age'] = date('Y') - intval($val);
 				}
 				$item[$newKey] = $val;
 				$newKey = ucfirst($newKey);
-				if (isset(self::$$newKey) && is_array(self::$$newKey) && isset(self::$$newKey[$val])) {
-					$item[strtolower($newKey) . '_t'] = self::$$newKey[$val];
+				if (isset(self::$$newKey) && is_array(self::$$newKey)) {
+					$item[strtolower($newKey) . '_t'] = isset(self::$$newKey[$val]) ? self::$$newKey[$val] : '';
 				}
 			}
 
@@ -241,7 +251,7 @@ class User extends ActiveRecord
 			"scope" => "uScope",
 			"img" => "uAvatar",
 			"openId" => "uOpenId",
-			"belief" => "uBrief",
+			"belief" => "uBelief",
 			"car" => "uCar",
 			"diet" => "uDiet",
 			"drink" => "uAlcohol",
@@ -312,47 +322,4 @@ class User extends ActiveRecord
 		return ($smsCode && $code == $smsCode);
 	}
 
-	public static function getCountByCondition($condition)
-	{
-		return static::find()->where($condition)->count();
-	}
-
-	public static function getUsers($condition, $page = 1, $limit = 20)
-	{
-
-		$result = static::find()->where($condition)->limit($limit)->offset(($page - 1) * $limit)->orderBy('uUpdatedOn DESC')->asArray()->all();
-		foreach ($result as $key => &$v) {
-			$v["uLocation"] = json_decode($v["uLocation"], 1);
-			$v["age"] = intval(date("Y")) - $v["uBirthYear"];
-			$v["uHeight"] = isset(self::$Height[$v["uHeight"]]) ? self::$Height[$v["uHeight"]] : "";
-			$v["uWeight"] = isset(self::$Weight[$v["uWeight"]]) ? self::$Weight[$v["uWeight"]] : "";
-			$v["uRole"] = isset(self::$roleDict[$v["uRole"]]) ? self::$roleDict[$v["uRole"]] : "";
-			$v["uScope"] = isset(self::$Scope[$v["uScope"]]) ? self::$Scope[$v["uScope"]] : "";
-			$v["uGender"] = isset(self::$Gender[$v["uGender"]]) ? self::$Gender[$v["uGender"]] : "";
-			$v["uIncome"] = isset(self::$Income[$v["uIncome"]]) ? self::$Income[$v["uIncome"]] : "";
-			$v["uEducation"] = isset(self::$Education[$v["uEducation"]]) ? self::$Education[$v["uEducation"]] : "";
-			$v["uProfession"] = isset(self::$Profession[$v["uProfession"]]) ? self::$Profession[$v["uProfession"]] : "";
-			$v["uEstate"] = isset(self::$Estate[$v["uEstate"]]) ? self::$Estate[$v["uEstate"]] : "";
-			$v["uDiet"] = isset(self::$Diet[$v["uDiet"]]) ? self::$Diet[$v["uDiet"]] : "";
-			$v["uRest"] = isset(self::$Rest[$v["uRest"]]) ? self::$Rest[$v["uRest"]] : "";
-			$v["uPet"] = isset(self::$Pet[$v["uPet"]]) ? self::$Pet[$v["uPet"]] : "";
-			$v["uFitness"] = isset(self::$Fitness[$v["uFitness"]]) ? self::$Fitness[$v["uFitness"]] : "";
-			$v["uBrief"] = isset(self::$Belief[$v["uBrief"]]) ? self::$Belief[$v["uBrief"]] : "";
-			$v["uSmoke"] = isset(self::$Smoke[$v["uSmoke"]]) ? self::$Smoke[$v["uSmoke"]] : "";
-			$v["uAlcohol"] = isset(self::$Alcohol[$v["uAlcohol"]]) ? self::$Alcohol[$v["uAlcohol"]] : "";
-			$v["uCar"] = isset(self::$Car[$v["uCar"]]) ? self::$Car[$v["uCar"]] : "";
-
-			$v["uStatus"] = isset(self::$statusDict[$v["uStatus"]]) ? self::$statusDict[$v["uStatus"]] : "";
-		}
-		return $result;
-	}
-
-	public static function getOne($id)
-	{
-		$ret = [];
-		if ($id) {
-			$ret = self::find()->where(["uId" => $id])->asArray()->One();
-		}
-		return $ret;
-	}
 }

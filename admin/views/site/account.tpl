@@ -185,14 +185,6 @@
 						</select>
 					</div>
 				</div>
-				<!--
-				,uName,uPhone,uEmail,uPassword
-				uAvatar,uOpenId,uLocation,
-				uRole,uMarital
-				uScope,uGender,uBirthYear,uHoros,uHeight,uWeight,uIncome,uEducation,
-				uProfession,uEstate,uCar,uSmoke,uAlcohol,uBrief,uFitness,uDiet,uRest,
-				uPet,uInterest,uIntro,uNote,uStatus,uAddedOn,uAddedBy,uUpdatedOn,uUpdatedBy
-				-->
 			</div>
 			<div class="col-sm-6 form-horizontal">
 				<div class="form-group">
@@ -319,7 +311,7 @@
 				<div class="form-group">
 					<label class="col-sm-4 control-label">您的信仰:</label>
 					<div class="col-sm-8">
-						<select data-tag="uBrief" class="form-control">
+						<select data-tag="uBelief" class="form-control">
 							<option value="0">请选择</option>
 							{{foreach from=$belief key=key item=item}}
 							<option value="{{$key}}">{{$item}}</option>
@@ -403,7 +395,7 @@
 		"uRest": "作息习惯",
 		"uSmoke": "抽烟情况",
 		"uAlcohol": "饮酒习惯",
-		"uBrief": "信仰",
+		"uBelief": "信仰",
 		"uPet": "您养宠物",
 	};
 	$(".opSave").on("click", function () {
