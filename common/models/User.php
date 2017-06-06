@@ -327,7 +327,7 @@ class User extends ActiveRecord
 			$v["uHeight"] = isset(self::$Height[$v["uHeight"]]) ? self::$Height[$v["uHeight"]] : "";
 			$v["uWeight"] = isset(self::$Weight[$v["uWeight"]]) ? self::$Weight[$v["uWeight"]] : "";
 			$v["uRole"] = isset(self::$roleDict[$v["uRole"]]) ? self::$roleDict[$v["uRole"]] : "";
-			$v["uScope"] = isset(self::$ScopeDict[$v["uScope"]]) ? self::$ScopeDict[$v["uScope"]] : "";
+			$v["uScope"] = isset(self::$Scope[$v["uScope"]]) ? self::$Scope[$v["uScope"]] : "";
 			$v["uGender"] = isset(self::$Gender[$v["uGender"]]) ? self::$Gender[$v["uGender"]] : "";
 			$v["uIncome"] = isset(self::$Income[$v["uIncome"]]) ? self::$Income[$v["uIncome"]] : "";
 			$v["uEducation"] = isset(self::$Education[$v["uEducation"]]) ? self::$Education[$v["uEducation"]] : "";
