@@ -3,13 +3,13 @@
 	<p class="m-header"><i>上传真实头像，提高牵线成功率哦</i></p>
 	<div class="nick_name" style="padding-top: 0; padding-bottom: .5rem">
 		<a href="javascript:;" class="photo photo-file">
-			<img class="avatar" src="" localIds="">
+			<img class="avatar" src="{{$avatar}}" localIds="">
 		</a>
 	</div>
 	<ul class="m-form">
 		<li>
 			<label>真实姓名</label>
-			<input type="text" placeholder="请输入您的真实姓名" data-tag="name">
+			<input type="text" placeholder="请输入您的真实姓名" data-tag="name" value="{{$nickname}}">
 		</li>
 		<li>
 			<label>地理位置</label>

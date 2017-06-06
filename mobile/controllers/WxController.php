@@ -35,7 +35,16 @@ class WxController extends BaseController
 
 	public function actionSreg()
 	{
+		$openId = self::$WX_OpenId;
+		$nickname = $avatar = '';
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if ($wxInfo) {
+			$avatar = $wxInfo["uAvatar"];
+			$nickname = $wxInfo["uName"];
+		}
 		return self::renderPage("sreg.tpl", [
+			'nickname' => $nickname,
+			'avatar' => $avatar,
 			"maxYear" => 1999,
 			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
 			"years" => User::$years,
@@ -68,7 +77,16 @@ class WxController extends BaseController
 				'name' => $scope,
 			];
 		}
+		$openId = self::$WX_OpenId;
+		$nickname = $avatar = '';
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if ($wxInfo) {
+			$avatar = $wxInfo["uAvatar"];
+			$nickname = $wxInfo["uName"];
+		}
 		return self::renderPage("mreg.tpl", [
+			'nickname' => $nickname,
+			'avatar' => $avatar,
 			"maxYear" => 1999,
 			'scopes' => json_encode($scopes, JSON_UNESCAPED_UNICODE),
 			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
