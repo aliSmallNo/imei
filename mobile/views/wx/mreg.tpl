@@ -3,7 +3,7 @@
 	<p class="m-header"><i>上传真实头像，提高牵线成功率哦</i></p>
 	<div class="nick_name" style="padding-top: 0; padding-bottom: .5rem">
 		<a href="javascript:;" class="photo photo-file">
-			<img class="avatar" src="{{$avatar}}" localIds="">
+			<img class="avatar" src="{{$avatar}}">
 		</a>
 	</div>
 	<ul class="m-form">
@@ -83,8 +83,6 @@
 	</ul>
 	<a class="m-next btn-select-img">上传头像</a>
 </div>
-
-<input type="hidden" id="cMaxYear" value="{{$maxYear}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
