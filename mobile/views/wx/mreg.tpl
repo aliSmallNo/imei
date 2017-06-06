@@ -13,15 +13,25 @@
 		</li>
 		<li>
 			<label>地理位置</label>
-			<a href="javascript:;" class="m-form-opt" data-tag="location"></a>
+			<a href="javascript:;" class="m-form-opt" data-tag="location">
+				{{if isset($uInfo['location']) && $uInfo['location']}}
+				{{foreach from=$uInfo['location'] key=key item=item }}
+				<em data-key="{{$item.key}}">{{$item.text}}</em>
+				{{/foreach}}
+				{{/if}}
+			</a>
 		</li>
 		<li>
 			<label>所属行业</label>
-			<a href="javascript:;" class="m-form-opt" data-tag="scope"></a>
+			<a href="javascript:;" class="m-form-opt" data-tag="scope">
+				{{if isset($uInfo['scope_t'])}}
+				<em data-key="{{$uInfo['scope']}}">{{$uInfo['scope_t']}}</em>
+				{{/if}}
+			</a>
 		</li>
 		<li>
 			<label>自我介绍</label>
-			<textarea name="description" placeholder="公司职位或身份介绍，如百度市场经理、小米设计师、自媒体人" data-tag="intro"></textarea>
+			<textarea name="description" placeholder="公司职位或身份介绍，如百度市场经理、小米设计师、自媒体人" data-tag="intro">{{if isset($uInfo['intro'])}}{{$uInfo['intro']}}{{/if}}</textarea>
 		</li>
 	</ul>
 	<a class="m-next btn-match-reg">注册成为媒婆</a>
