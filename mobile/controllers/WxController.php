@@ -122,10 +122,10 @@ class WxController extends BaseController
 
 	public function actionSingle()
 	{
-		$openId = 'oYDJew5EFMuyrJdwRrXkIZLU2c58';
-		$ret = $Info = User::find()->where(["uOpenId"=>$openId])->asArray()->one();
-		var_dump($ret);
-		exit;
+//		$openId = 'oYDJew5EFMuyrJdwRrXkIZLU2c58';
+//		$ret = $Info = User::find()->where(["uOpenId"=>$openId])->asArray()->one();
+//		var_dump($ret);
+//		exit;
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$hint = '';
