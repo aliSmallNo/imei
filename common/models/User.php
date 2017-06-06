@@ -294,8 +294,7 @@ class User extends ActiveRecord
 		if ($id) {
 			$url = AppUtil::getMediaUrl($id);
 		}
-		$Info = self::findOne(["uOpenId=>$openId"]);
-		return [$url];
+		$Info = self::findOne(["uOpenId"=>$openId]);
 		if ($url && $Info) {
 			$album = $Info->uAlbum;
 			if ($album) {
