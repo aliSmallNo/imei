@@ -111,7 +111,7 @@ require(["layer"],
 								var localId = localIds[0];
 								util.avatar.attr("localId", localId);
 								util.avatar.attr("src", localId);
-								TipsbarUtil.toggle(false);
+								DrawUtil.toggle(false);
 
 							}
 						}
