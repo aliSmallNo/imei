@@ -32,7 +32,7 @@ class BaseController extends Controller
 		if (self::isLocalhost()) {
 			self::$WX_OpenId = Yii::$app->params['openid'];
 			AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
-			$wxUserInfo = UserWechat::getInfoByOpenId(self::$WX_OpenId);
+			$wxUserInfo = UserWechat::getInfoByOpenId(self::$WX_OpenId, 1);
 			if ($actionId != 'imei' && (!isset($wxUserInfo['uPhone']) || !$wxUserInfo['uPhone'])) {
 				header("location:/wx/imei");
 				exit();
