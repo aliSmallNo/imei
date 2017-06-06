@@ -33,6 +33,11 @@
 		border: 1px solid #ddd;
 		background: #ddd;
 	}
+
+	td h5 {
+		font-size: 12px;
+		font-weight: 400;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="row">
@@ -56,10 +61,10 @@
 		<table class="table table-striped table-bordered table-hover">
 			<thead>
 			<tr>
-				<th class="col-sm-1">
+				<th style="width: 70px">
 					头像
 				</th>
-				<th class="col-sm-6">
+				<th class="col-sm-5">
 					个人信息
 				</th>
 				<th class="col-sm-5">
@@ -107,6 +112,7 @@
 					<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改用户</a>
 					<div class="btn-divider"></div>
 					<a href="javascript:;" class="delU btn btn-outline btn-danger btn-xs" cid="{{$prod.id}}">删除用户</a>
+					<h5>更新于{{$prod.updatedon|date_format:'%Y-%m-%d %H:%M'}}</h5>
 				</td>
 			</tr>
 			{{/foreach}}
