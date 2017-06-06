@@ -52,7 +52,7 @@ class WxController extends BaseController
 			"weight" => User::$weight,
 			"income" => User::$income,
 			"edu" => User::$edu,
-			"scope" => User::$ScopeDict,
+			"scope" => User::$Scope,
 			"job" => User::$job,
 			"house" => User::$house,
 			"car" => User::$car,
@@ -63,7 +63,7 @@ class WxController extends BaseController
 			"diet" => User::$diet,
 			"rest" => User::$rest,
 			"pet" => User::$pet,
-			"sign" => User::$sign,
+			"sign" => User::$Horos,
 
 		]);
 	}
@@ -71,23 +71,29 @@ class WxController extends BaseController
 	public function actionMreg()
 	{
 		$scopes = [];
-		foreach (User::$ScopeDict as $key => $scope) {
+		foreach (User::$Scope as $key => $scope) {
 			$scopes[] = [
 				'key' => $key,
 				'name' => $scope,
 			];
 		}
 		$openId = self::$WX_OpenId;
-		$nickname = $avatar = '';
+		$nickname = $avatar = $intro = '';
+		$location = $scope = $uInfo = [];
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		if ($wxInfo) {
 			$avatar = $wxInfo["uAvatar"];
 			$nickname = $wxInfo["uName"];
+			$uInfo = User::findOne(['uId' => $wxInfo['uId']]);
+			if ($uInfo) {
+				$intro = $uInfo['uIntro'];
+			}
 		}
 		return self::renderPage("mreg.tpl", [
 			'nickname' => $nickname,
 			'avatar' => $avatar,
 			"maxYear" => 1999,
+			'uInfo' => $uInfo,
 			'scopes' => json_encode($scopes, JSON_UNESCAPED_UNICODE),
 			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
 		]);
