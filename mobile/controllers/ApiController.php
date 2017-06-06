@@ -153,9 +153,9 @@ class ApiController extends Controller
 				$data = json_decode($data, 1);
 				$data["openId"] = $openId;
 				$ret = User::reg($data);
-				return self::renderAPI(129, '添加成功~', $ret);
-				break;
-
+				//Rain: 刷新用户cache数据
+				UserWechat::getInfoByOpenId($openId, true);
+				return self::renderAPI(0, '添加成功~', $ret);
 		}
 		return self::renderAPI(129, '操作无效~');
 	}
