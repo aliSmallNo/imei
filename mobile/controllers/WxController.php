@@ -38,11 +38,14 @@ class WxController extends BaseController
 		$openId = self::$WX_OpenId;
 		$nickname = $avatar = '';
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$uInfo = [];
 		if ($wxInfo) {
 			$avatar = $wxInfo["uAvatar"];
 			$nickname = $wxInfo["uName"];
+			$uInfo = User::user(['uId' => $wxInfo['uId']]);
 		}
 		return self::renderPage("sreg.tpl", [
+			'uInfo' => $uInfo,
 			'nickname' => $nickname,
 			'avatar' => $avatar,
 			"maxYear" => 1999,
@@ -79,15 +82,12 @@ class WxController extends BaseController
 		}
 		$openId = self::$WX_OpenId;
 		$nickname = $avatar = $intro = '';
-		$location = $scope = $uInfo = [];
+		$uInfo = [];
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		if ($wxInfo) {
 			$avatar = $wxInfo["uAvatar"];
 			$nickname = $wxInfo["uName"];
-			$uInfo = User::findOne(['uId' => $wxInfo['uId']]);
-			if ($uInfo) {
-				$intro = $uInfo['uIntro'];
-			}
+			$uInfo = User::user(['uId' => $wxInfo['uId']]);
 		}
 		return self::renderPage("mreg.tpl", [
 			'nickname' => $nickname,

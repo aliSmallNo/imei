@@ -195,8 +195,19 @@ class User extends ActiveRecord
 			$keys = array_keys($row);
 			$item = [];
 			foreach ($keys as $key) {
-				$item[strtolower(substr($key, 1))] = $row[$key];
+				$newKey = strtolower(substr($key, 1));
+				$val = $row[$key];
+				if ($newKey == 'location') {
+					$item[$newKey] = json_decode($val, 1);
+					continue;
+				}
+				$item[$newKey] = $val;
+				$newKey = ucfirst($newKey);
+				if (isset(self::$$newKey) && is_array(self::$$newKey) && isset(self::$$newKey[$val])) {
+					$item[strtolower($newKey) . '_t'] = self::$$newKey[$val];
+				}
 			}
+
 			$items[] = $item;
 		}
 		$sql = "SELECT count(1) FROM im_user WHERE uId>0 $strCriteria ";
@@ -204,10 +215,14 @@ class User extends ActiveRecord
 		return [$items, $count];
 	}
 
-
-	public static function user($criteria, $params)
+	public static function user($condition)
 	{
-		$users = self::users($criteria, $params);
+		$criteria = $params = [];
+		foreach ($condition as $key => $val) {
+			$criteria[] = $key . '=:' . $key;
+			$params[':' . $key] = $val;
+		}
+		list($users) = self::users($criteria, $params);
 		if ($users && count($users)) {
 			return $users[0];
 		}
