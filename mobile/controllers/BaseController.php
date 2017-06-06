@@ -86,7 +86,7 @@ class BaseController extends Controller
 	protected function checkProfile($openId, $actionId)
 	{
 		$wxUserInfo = UserWechat::getInfoByOpenId($openId);
-		$newActionId = '';
+		$newActionId = $anchor = '';
 		if (!$wxUserInfo || (isset($wxUserInfo["subscribe"]) && $wxUserInfo["subscribe"] != 1)) {
 			header("location:/qr.html");
 			exit;
@@ -94,11 +94,12 @@ class BaseController extends Controller
 			$newActionId = 'imei';
 		} elseif (!$wxUserInfo['uLocation']) {
 			$newActionId = $wxUserInfo['uRole'] == User::ROLE_SINGLE ? 'sreg' : 'mreg';
+			$anchor = User::ROLE_SINGLE ? '#step0' : '';
 		}
 		AppUtil::logFile($actionId, 5, __FUNCTION__, __LINE__);
 		AppUtil::logFile($newActionId, 5, __FUNCTION__, __LINE__);
 		if ($actionId != $newActionId) {
-			header('location:/wx/' . $newActionId);
+			header('location:/wx/' . $newActionId . $anchor);
 			exit();
 		}
 	}

@@ -26,9 +26,8 @@ require(["layer"],
 			btnSkip: $(".action-skip"),
 			postData: {},
 			serverId: "",
-
 			mLat: 0,
-			mLng: 0,
+			mLng: 0
 		};
 
 		var SingleUtil = {
