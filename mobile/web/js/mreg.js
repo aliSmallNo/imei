@@ -121,7 +121,7 @@ require(["layer"],
 						scope: scope
 					};
 
-					if (!$sls.avatar.attr("localIds") && !$sls.avatar.attr('src')) {
+					if (!$sls.avatar.attr("localId") && !$sls.avatar.attr('src')) {
 						showMsg("请上传头像！");
 						return;
 					}
@@ -206,7 +206,7 @@ require(["layer"],
 		};
 
 		function uploadImages() {
-			var localId = $sls.avatar.attr("localIds");
+			var localId = $sls.avatar.attr("localId");
 			if (!localId) {
 				PopUtil.submit();
 			}
