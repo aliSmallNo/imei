@@ -108,6 +108,11 @@ class WxController extends BaseController
 			$avatar = $wxInfo["uAvatar"];
 			$nickname = $wxInfo["uName"];
 			$hint = '你的昵称未通过审核，请重新编辑~';
+			$role = $wxInfo["uRole"];
+			if ($role == User::ROLE_SINGLE) {
+				header("location:/wx/mreg");
+				exit();
+			}
 			//$wxInfo['uHint'];
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
@@ -130,7 +135,15 @@ class WxController extends BaseController
 			$avatar = $wxInfo["uAvatar"];
 			$nickname = $wxInfo["uName"];
 			$hint = $wxInfo['uHint'];
+<<<<<<< HEAD
 			$intro = $wxInfo['uIntro'];
+=======
+			$role = $wxInfo["uRole"];
+			if ($role == User::ROLE_MATCHER) {
+				header("location:/wx/sreg#step0");
+				exit();
+			}
+>>>>>>> 64366958e3c3e01c4ea5c9c0b1e140ddbc987115
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";

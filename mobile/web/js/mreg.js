@@ -121,7 +121,7 @@ require(["layer"],
 						scope: scope
 					};
 
-					if (!$sls.avatar.attr("localIds") && !$sls.avatar.attr('src')) {
+					if (!$sls.avatar.attr("localId") && !$sls.avatar.attr('src')) {
 						showMsg("请上传头像！");
 						return;
 					}
@@ -132,7 +132,7 @@ require(["layer"],
 				$sls.postData["img"] = $sls.serverId;
 				$.post("/api/user", {
 					data: JSON.stringify($sls.postData),
-					tag: "mreg",
+					tag: "mreg"
 				}, function (res) {
 					showMsg(res.msg);
 					if (res.code == 0) {
@@ -140,8 +140,6 @@ require(["layer"],
 							location.href = "/wx/match";
 						}, 500);
 					}
-					//alert(JSON.stringify(res.data));
-					//location.href = "";
 				}, "json");
 			},
 			toggle: function (content) {
@@ -208,7 +206,7 @@ require(["layer"],
 		};
 
 		function uploadImages() {
-			var localId = $sls.avatar.attr("localIds");
+			var localId = $sls.avatar.attr("localId");
 			if (!localId) {
 				PopUtil.submit();
 			}
@@ -249,5 +247,24 @@ require(["layer"],
 			PopUtil.init();
 			DrawUtil.init();
 			$sls.cork.hide();
+
+			$(".btn-select-img").on(kClick, function () {
+				wx.chooseImage({
+					count: 1,
+					sizeType: ['original', 'compressed'],
+					sourceType: ['album', 'camera'],
+					success: function (res) {
+						var localIds = res.localIds;
+						if (localIds && localIds.length) {
+							var localId = localIds[0];
+							$sls.avatar.attr("localId", localId);
+							$sls.avatar.attr("src", localId);
+							DrawUtil.toggle(false);
+
+						}
+					}
+				});
+				return false;
+			});
 		});
 	});
