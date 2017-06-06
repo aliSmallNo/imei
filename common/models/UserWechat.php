@@ -236,21 +236,19 @@ class UserWechat extends ActiveRecord
 		if (AppUtil::scene() == 'dev') {
 			$renewFlag = true;
 		}
-		if (isset($ret["uId"]) && isset($ret["uPhone"]) && isset($ret["uLocation"]) && !$renewFlag) {
+		if (isset($ret["uPhone"]) && isset($ret["uLocation"]) && isset($ret["uAvatar"]) && !$renewFlag) {
 			return $ret;
 		}
 		if (strlen($openId) < 20) {
 			return 0;
 		}
-
+		$fields = ['uId', 'uRole', 'uPhone', 'uName', 'uLocation', 'uAvatar'];
 		if (AppUtil::scene() == 'dev') {
 			$ret = UserWechat::findOne(['wOpenId' => $openId]);
 			if ($ret) {
 				$ret = json_decode($ret['wRawData'], 1);
 			}
 			$uInfo = User::findOne(['uOpenId' => $openId]);
-
-			$fields = ['uId', 'uRole', 'uPhone', 'uName', 'uLocation'];
 			foreach ($fields as $field) {
 				$ret[$field] = isset($uInfo[$field]) ? $uInfo[$field] : '';
 			}
@@ -261,7 +259,6 @@ class UserWechat extends ActiveRecord
 			if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
 				$uid = self::updateWXInfo($ret);
 				$uInfo = User::findOne(['uId' => $uid]);
-				$fields = ['uId', 'uRole', 'uPhone', 'uName', 'uLocation'];
 				foreach ($fields as $field) {
 					$ret[$field] = isset($uInfo[$field]) ? $uInfo[$field] : '';
 				}

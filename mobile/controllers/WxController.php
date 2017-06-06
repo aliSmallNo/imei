@@ -80,8 +80,8 @@ class WxController extends BaseController
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		if ($wxInfo) {
-			$avatar = $wxInfo["headimgurl"];
-			$nickname = $wxInfo["nickname"];
+			$avatar = $wxInfo["uAvatar"];
+			$nickname = $wxInfo["uName"];
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
@@ -97,8 +97,8 @@ class WxController extends BaseController
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		if ($wxInfo) {
-			$avatar = $wxInfo["headimgurl"];
-			$nickname = $wxInfo["nickname"];
+			$avatar = $wxInfo["uAvatar"];
+			$nickname = $wxInfo["uName"];
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
