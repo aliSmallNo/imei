@@ -103,16 +103,20 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$hint = '';
 		if ($wxInfo) {
 			$avatar = $wxInfo["uAvatar"];
 			$nickname = $wxInfo["uName"];
+			$hint = '你的昵称未通过审核，请重新编辑~';
+				//$wxInfo['uHint'];
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
 		}
 		return self::renderPage("match.tpl", [
 			'nickname' => $nickname,
-			'avatar' => $avatar
+			'avatar' => $avatar,
+			'hint' => $hint
 		]);
 	}
 
@@ -120,9 +124,11 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$hint = '';
 		if ($wxInfo) {
 			$avatar = $wxInfo["uAvatar"];
 			$nickname = $wxInfo["uName"];
+			$hint = $wxInfo['uHint'];
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
@@ -138,7 +144,8 @@ class WxController extends BaseController
 		return self::renderPage("single.tpl", [
 			'nickname' => $nickname,
 			'avatar' => $avatar,
-			'prices' => $prices
+			'prices' => $prices,
+			'hint' => $hint
 		]);
 	}
 
