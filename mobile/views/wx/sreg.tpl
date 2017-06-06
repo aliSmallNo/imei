@@ -131,7 +131,7 @@
 <section id="step9">
 	<p class="m-header s1 intro">请描述一下你的内心独白</p>
 	<div class="edit">
-		<textarea placeholder="说说自己的性格特点、对另一半的期待，或对爱情的憧憬和理解等" data-tag="intro"></textarea>
+		<textarea placeholder="说说自己的性格特点、对另一半的期待，或对爱情的憧憬和理解等" data-tag="intro">{{if isset($uInfo['intro'])}}{{$uInfo['intro']}}{{/if}}</textarea>
 		<span class="count" style="display: none">10/150</span>
 	</div>
 	<div class="btn-s-wrap">
@@ -229,7 +229,7 @@
 <section id="step21">
 	<p class="m-header s1 intro">请介绍一下你的兴趣爱好</p>
 	<div class="edit">
-		<textarea placeholder="例如：健身、旅行、电影、音乐" data-tag="interest"></textarea>
+		<textarea placeholder="例如：健身、旅行、电影、音乐" data-tag="interest">{{if isset($uInfo['interest'])}}{{$uInfo['interest']}}{{/if}}</textarea>
 		<span class="count" style="display: none">0/150</span>
 	</div>
 	<div class="btn-s-wrap">
