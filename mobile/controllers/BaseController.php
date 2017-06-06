@@ -29,7 +29,9 @@ class BaseController extends Controller
 	public function beforeAction($action)
 	{
 		$actionId = $action->id;
-
+		if ($actionId == 'error') {
+			return parent::beforeAction($action);
+		}
 		if (self::isLocalhost()) {
 			self::$WX_OpenId = Yii::$app->params['openid'];
 			AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
@@ -84,7 +86,10 @@ class BaseController extends Controller
 	{
 		$wxUserInfo = UserWechat::getInfoByOpenId($openId, AppUtil::scene() == 'dev');
 		$newActionId = '';
-		if (!$wxUserInfo || (isset($wxUserInfo["subscribe"]) && $wxUserInfo["subscribe"] != 1)) {
+		if ($actionId == 'error') {
+			header('location:/wx/' . $actionId);
+			exit();
+		} elseif (!$wxUserInfo || (isset($wxUserInfo["subscribe"]) && $wxUserInfo["subscribe"] != 1)) {
 			header("location:/qr.html");
 			exit;
 		} elseif (!$wxUserInfo['uPhone'] || !$wxUserInfo['uRole']) {
@@ -92,6 +97,8 @@ class BaseController extends Controller
 		} elseif (!$wxUserInfo['uLocation']) {
 			$newActionId = $wxUserInfo['uRole'] == User::ROLE_SINGLE ? 'sreg' : 'mreg';
 		}
+		AppUtil::logFile($actionId, 5, __FUNCTION__, __LINE__);
+		AppUtil::logFile($newActionId, 5, __FUNCTION__, __LINE__);
 		if ($actionId != $newActionId) {
 			header('location:/wx/' . $newActionId);
 			exit();
