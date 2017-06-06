@@ -108,6 +108,11 @@ class WxController extends BaseController
 			$avatar = $wxInfo["uAvatar"];
 			$nickname = $wxInfo["uName"];
 			$hint = '你的昵称未通过审核，请重新编辑~';
+			$role = $wxInfo["uRole"];
+			if ($role == User::ROLE_SINGLE) {
+				header("location:/wx/mreg");
+				exit();
+			}
 			//$wxInfo['uHint'];
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
@@ -122,10 +127,6 @@ class WxController extends BaseController
 
 	public function actionSingle()
 	{
-//		$openId = 'oYDJew5EFMuyrJdwRrXkIZLU2c58';
-//		$ret = $Info = User::find()->where(["uOpenId"=>$openId])->asArray()->one();
-//		var_dump($ret);
-//		exit;
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$hint = '';
@@ -133,6 +134,11 @@ class WxController extends BaseController
 			$avatar = $wxInfo["uAvatar"];
 			$nickname = $wxInfo["uName"];
 			$hint = $wxInfo['uHint'];
+			$role = $wxInfo["uRole"];
+			if ($role == User::ROLE_MATCHER) {
+				header("location:/wx/sreg#step0");
+				exit();
+			}
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
