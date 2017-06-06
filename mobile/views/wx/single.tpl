@@ -252,16 +252,20 @@
 				<div class="title">相册(0)</div>
 				<ul class="photos">
 					<li>
-						<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100" alt="">
+						<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100"
+								 alt="">
 					</li>
 					<li>
-						<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100" alt="">
+						<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100"
+								 alt="">
 					</li>
 					<li>
-						<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100" alt="">
+						<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100"
+								 alt="">
 					</li>
 					<li>
-						<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100" alt="">
+						<img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100"
+								 alt="">
 					</li>
 				</ul>
 			</a>
@@ -330,13 +334,13 @@
 					 alt="">
 		</div>
 		<div class="sprofile-top-des">
-			<p >Caroline<em class="icon-female"></em></p>
+			<p>Caroline<em class="icon-female"></em></p>
 			<i>30岁 . 165cm . 处女座 . 金融 </i>
 			<span>北京 大兴</span>
 		</div>
 	</div>
 	<div class="sprofile-album">
-		<a class="title">相册 (5)</a>
+		<a class="title" tag="album">相册 (5)</a>
 		<ul>
 			<li>
 				<img src="https://img.1meipo.com/6d097354efdc2f9f1305158ea3cf0edc.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
@@ -354,13 +358,13 @@
 	</div>
 	<div class="sprofile-base">
 		<div class="title">基本资料</div>
-		<div class="content">
+		<a class="content" tag="baseInfo">
 			<span>165cm</span>
 			<span>本科</span>
 			<span>2w-3w</span>
 			<span>计划购房</span>
 			<span>已购车</span>
-		</div>
+		</a>
 	</div>
 	<div class="sprofile-mp">
 		<div class="left">
@@ -389,6 +393,13 @@
 		<div class="content">
 			梦想周游世界，希望有人陪我一起
 		</div>
+	</div>
+	<div class="sprofile-forbid">
+		<a href="javascript:;" tag="forbid"><span class="icon-l icon-forbid"></span>举报拉黑</a>
+	</div>
+	<div class="sprofile-bottom">
+		<a href="javascript:;" tag="love"><span class="icon-l icon-love"></span>心动</a>
+		<a href="javascript:;" tag="wechat">加微信聊聊</a>
 	</div>
 </section>
 <section id="sgroup">
@@ -509,6 +520,22 @@
 	<a href="#sme" class="nav-me" data-tag="sme">
 		我的
 	</a>
+</div>
+
+<div class="app-cork" style="background-color: rgba(0,0,0,0.1)"></div>
+<div class="getWechat" >
+	<div class="getw-content">
+		<a class="icon-alert icon-close" tag="close"></a>
+		<div class="input">
+			<input type="text" placeholder="请输入您的微信号">
+		</div>
+		<div class="getw-about">
+			<p>1、微信号仅用于双方同意后，发送给彼此，请放心填写</p>
+			<p>2、为了确保对方可以搜到您，请确保"微信-我-隐私"中"通过微信号搜到我"选项处于打开状态</p>
+			<p>3、填写虚假微信号，会被平台封禁处理</p>
+		</div>
+	</div>
+	<a href="javascript:;" class="btn" tag="btn-confirm">确认</a>
 </div>
 
 <script type="text/template" id="tpl_wx_info">
