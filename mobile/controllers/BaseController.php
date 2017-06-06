@@ -8,6 +8,7 @@
 
 namespace mobile\controllers;
 
+use common\models\User;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
@@ -32,11 +33,7 @@ class BaseController extends Controller
 		if (self::isLocalhost()) {
 			self::$WX_OpenId = Yii::$app->params['openid'];
 			AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
-			$wxUserInfo = UserWechat::getInfoByOpenId(self::$WX_OpenId, 1);
-			if ($actionId != 'imei' && (!isset($wxUserInfo['uPhone']) || !$wxUserInfo['uPhone'])) {
-				header("location:/wx/imei");
-				exit();
-			}
+			self::checkProfile(self::$WX_OpenId, $actionId);
 			return parent::beforeAction($action);
 		}
 		if (!self::isWechat()) {
@@ -57,10 +54,7 @@ class BaseController extends Controller
 			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
 				self::$WX_OpenId = $wxUserInfo["openid"];
 				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
-				if ($actionId != 'imei' && (!isset($wxUserInfo['uPhone']) || !$wxUserInfo['uPhone'])) {
-					header("location:/wx/imei");
-					exit();
-				}
+				self::checkProfile(self::$WX_OpenId, $actionId);
 			}
 		} elseif (strlen(self::$WX_OpenId) < 20 && strlen($wxCode) >= 20) {
 			$wxUserInfo = UserWechat::getInfoByCode($wxCode);
@@ -68,13 +62,9 @@ class BaseController extends Controller
 			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
 				self::$WX_OpenId = $wxUserInfo["openid"];
 				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
-				$logMsg = [self::$WX_OpenId, json_encode($wxUserInfo)];
-				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
+				AppUtil::logFile(self::$WX_OpenId, 5, __FUNCTION__, __LINE__);
 				// Rain: 发现如果action不执行完毕，getCookie获取不到刚刚赋值的cookie值
-				if ($actionId != 'imei' && (!isset($wxUserInfo['uPhone']) || !$wxUserInfo['uPhone'])) {
-					header("location:/wx/imei");
-					exit();
-				}
+				self::checkProfile(self::$WX_OpenId, $actionId);
 			}
 		} elseif (strlen(self::$WX_OpenId) < 20 && strlen($wxCode) < 20) {
 			$currentUrl = Yii::$app->request->getAbsoluteUrl();
@@ -88,6 +78,24 @@ class BaseController extends Controller
 			}
 		}
 		return parent::beforeAction($action);
+	}
+
+	protected function checkProfile($openId, $actionId)
+	{
+		$wxUserInfo = UserWechat::getInfoByOpenId($openId, AppUtil::scene() == 'dev');
+		$newActionId = '';
+		if (!$wxUserInfo || (isset($wxUserInfo["subscribe"]) && $wxUserInfo["subscribe"] != 1)) {
+			header("location:/qr.html");
+			exit;
+		} elseif (!$wxUserInfo['uPhone'] || !$wxUserInfo['uRole']) {
+			$newActionId = 'imei';
+		} elseif (!$wxUserInfo['uLocation']) {
+			$newActionId = $wxUserInfo['uRole'] == User::ROLE_SINGLE ? 'sreg#step0' : 'mreg';
+		}
+		if ($actionId != $newActionId) {
+			header('location:/wx/' . $newActionId);
+			exit();
+		}
 	}
 
 	protected function isLocalhost()
