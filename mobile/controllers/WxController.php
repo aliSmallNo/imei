@@ -108,7 +108,7 @@ class WxController extends BaseController
 			$avatar = $wxInfo["uAvatar"];
 			$nickname = $wxInfo["uName"];
 			$hint = '你的昵称未通过审核，请重新编辑~';
-				//$wxInfo['uHint'];
+			//$wxInfo['uHint'];
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
@@ -122,9 +122,10 @@ class WxController extends BaseController
 
 	public function actionSingle()
 	{
-//		$ret=json_decode("");
-//		var_dump($ret);
-//		exit;
+		$openId = 'oYDJew5EFMuyrJdwRrXkIZLU2c58';
+		$ret = $Info = User::find()->where(["uOpenId"=>$openId])->asArray()->one();
+		var_dump($ret);
+		exit;
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$hint = '';
