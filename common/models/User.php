@@ -272,6 +272,24 @@ class User extends ActiveRecord
 		return $uid;
 	}
 
+	public static function album($id, $openId)
+	{
+		$url = "";
+		if ($id) {
+			$url = AppUtil::getMediaUrl($id);
+		}
+		$Info = self::findOne(["uOpenId=>$openId"]);
+		if ($url && $Info) {
+			$album = json_decode($Info->uAlbum, 1);
+			$album[] = $url;
+			$album = json_encode($album);
+			self::edit($Info->uId, ["uAlbum" => $album]);
+			return $url;
+		}
+		return 0;
+
+	}
+
 	/**
 	 * @param $phone
 	 * @return array

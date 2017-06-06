@@ -126,7 +126,7 @@ require(["layer", "fastclick"],
 					case "album":
 						break;
 					case "baseInfo":
-						location.href="#personalInfo";
+						location.href = "#personalInfo";
 						break;
 					case "forbid":
 						break;
@@ -164,6 +164,47 @@ require(["layer", "fastclick"],
 			}
 		});
 
+		$("#album a.choose-img").on(kClick, function () {
+			wx.chooseImage({
+				count: 1,
+				sizeType: ['original', 'compressed'],
+				sourceType: ['album', 'camera'],
+				success: function (res) {
+					var localIds = res.localIds;
+					if (localIds && localIds.length) {
+						var localId = localIds[0];
+						wxUploadImages(localId);
+					}
+				}
+			});
+		});
+
+		function wxUploadImages(localId) {
+			wx.uploadImage({
+				localId: localId.toString(),
+				isShowProgressTips: 1,
+				success: function (res) {
+					var serverId = res.serverId;
+					uploadImage(serverId);
+				},
+				fail: function () {
+					$sls.serverId = "";
+				}
+			});
+		}
+
+		function uploadImage(serverId) {
+			$.post("/api/user", {
+				tag: "album",
+				id: serverId,
+			}, function (resp) {
+				if (resp.data) {
+					$(".photos").append('<li><img src="' + resp.data + '" alt=""></li>');
+				}
+			}, "json");
+		}
+
+
 		function showMsg(title, sec) {
 			var duration = sec || 2;
 			layer.open({
@@ -172,6 +213,7 @@ require(["layer", "fastclick"],
 				time: duration
 			});
 		}
+
 
 		$(function () {
 			$("body").addClass("bg-color");
