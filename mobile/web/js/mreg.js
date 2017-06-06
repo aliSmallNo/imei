@@ -219,6 +219,11 @@ require(["layer"],
 					tag: "mreg",
 				}, function (res) {
 					showMsg(res.msg);
+					if (res.code == 0) {
+						setTimeout(function () {
+							location.href = "/wx/match";
+						}, 500);
+					}
 					//alert(JSON.stringify(res.data));
 					//location.href = "";
 				}, "json");

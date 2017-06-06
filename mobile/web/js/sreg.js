@@ -198,9 +198,11 @@ require(["layer"],
 				}, function (res) {
 					showMsg(res.msg);
 					//alert(JSON.stringify(res.data));
-					setTimeout(function () {
-						//location.href = "/wx/single";
-					}, 300);
+					if (res.code == 0) {
+						setTimeout(function () {
+							location.href = "/wx/single";
+						}, 500);
+					}
 				}, "json");
 			},
 			toggle: function (content) {
