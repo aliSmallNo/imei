@@ -118,6 +118,51 @@ require(["layer", "fastclick"],
 			self.closest(".sgroup-list").find("[tag=" + tag + "]").show();
 		});
 
+		$("#sprofile a").each(function () {
+			var self = $(this);
+			var tag = self.attr("tag");
+			self.on(kClick, function () {
+				switch (tag) {
+					case "album":
+						break;
+					case "baseInfo":
+						break;
+					case "forbid":
+						break;
+					case "love":
+						var self = $(this).find("span");
+						if (self.hasClass("icon-love")) {
+							showMsg('<span class="icon-alert icon-loved"></span><br><span class="font1rem">心动成功</span>');
+							self.removeClass("icon-love").addClass("icon-loved");
+						} else {
+							showMsg('<span class="icon-alert icon-love-break"></span><br><span class="font1rem">已取消心动</span>');
+							self.removeClass("icon-loved").addClass("icon-love");
+						}
+						break;
+					case "wechat":
+						$sls.cork.show();
+						$(".getWechat").show();
+						break;
+
+				}
+			});
+		});
+
+		$(".getWechat a").on(kClick, function () {
+			var self = $(this);
+			var tag = self.attr("tag");
+			switch (tag) {
+				case "close":
+					self.closest(".getWechat").hide();
+					$sls.cork.hide();
+					break;
+				case "btn-confirm":
+					self.closest(".getWechat").hide();
+					$sls.cork.hide();
+					break;
+			}
+		});
+
 		function showMsg(title, sec) {
 			var duration = sec || 2;
 			layer.open({
