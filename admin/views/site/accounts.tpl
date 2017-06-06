@@ -16,22 +16,27 @@
 		color: #777;
 	}
 
-	.pInfo span.pending {
+	.pInfo span.status-0 {
 		color: #fff;
 		border: 1px solid #f80;
 		background: #f80;
 	}
 
-	.pInfo span.active {
+	.pInfo span.status-1 {
 		color: #fff;
 		border: 1px solid #44b549;
 		background: #44b549;
 	}
 
-	.pInfo span.delete {
+	.pInfo span.status-9 {
 		color: #fff;
 		border: 1px solid #ddd;
 		background: #ddd;
+	}
+
+	td h5 {
+		font-size: 12px;
+		font-weight: 400;
 	}
 </style>
 <div id="page-wrapper">
@@ -56,10 +61,10 @@
 		<table class="table table-striped table-bordered table-hover">
 			<thead>
 			<tr>
-				<th class="col-sm-1">
+				<th style="width: 70px">
 					头像
 				</th>
-				<th class="col-sm-6">
+				<th class="col-sm-5">
 					个人信息
 				</th>
 				<th class="col-sm-5">
@@ -72,49 +77,42 @@
 			</thead>
 			<tbody>
 			{{foreach from=$list item=prod}}
-			<tr data-id="{{$prod.uId}}">
+			<tr data-id="{{$prod.id}}">
 				<td>
-					<img src="{{$prod.uAvatar}}" width="100%">
+					<img src="{{$prod.avatar}}" width="100%">
 				</td>
 				<td class="pInfo">
-					{{$prod.uName}} <em>({{foreach from=$prod.uLocation item=location}}{{$location.text}}{{/foreach}})</em>
-					<span class="{{if $prod.uStatus==0}}pending{{/if}}{{if $prod.uStatus==1}}active{{/if}}
-					{{if $prod.uStatus==9}}delete{{/if}}">{{$prod.uStatus}}</span>
+					{{$prod.name}} <em>({{$prod.location_t}})</em>
+					<span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
 					<br>
-
-					<span>{{$prod.uRole}}</span>
-					<span>{{$prod.uGender}}</span>
 					<span>{{$prod.age}}岁</span>
-					<span>{{$prod.uHeight}}</span>
-					<span>{{$prod.uWeight}}</span>
-					<br>
-
-					<span>{{$prod.uEducation}}</span>
-					<span>{{$prod.uProfession}}</span>
-					<span>{{$prod.uScope}}</span>
-					<span>{{$prod.uIncome}}</span>
-					<span>{{$prod.uEstate}}</span>
-					<span>{{$prod.uCar}}</span>
-					<br>
-
-					<span>{{$prod.uSmoke}}</span>
-					<span>{{$prod.uAlcohol}}</span>
-					<span>{{$prod.uDiet}}</span>
-					<span>{{$prod.uRest}}</span>
-					<span>{{$prod.uFitness}}</span>
-					<span>{{$prod.uBrief}}</span>
-					<span>{{$prod.uPet}}</span>
-
-					<br>
-					<span>{{$prod.uIntro}}</span>
-					<span>{{$prod.uInterest}}</span>
+					<span>{{$prod.role_t}}</span>
+					<span>{{$prod.gender_t}}</span>
+					<span>{{$prod.height_t}}</span>
+					<span>{{$prod.weight_t}}</span>
+					<span>{{$prod.education_t}}</span>
+					<span>{{$prod.profession_t}}</span>
+					<span>{{$prod.scope_t}}</span>
+					<span>{{$prod.income_t}}</span>
+					<span>{{$prod.estate_t}}</span>
+					<span>{{$prod.car_t}}</span>
+					<span>{{$prod.smoke_t}}</span>
+					<span>{{$prod.alcohol_t}}</span>
+					<span>{{$prod.diet_t}}</span>
+					<span>{{$prod.rest_t}}</span>
+					<span>{{$prod.fitness_t}}</span>
+					<span>{{$prod.belief_t}}</span>
+					<span>{{$prod.pet_t}}</span>
+					<span>{{$prod.intro}}</span>
+					<span>{{$prod.interest}}</span>
 				</td>
 				<td>
 				</td>
 				<td>
-					<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.uId}}">修改用户</a>
+					<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改用户</a>
 					<div class="btn-divider"></div>
-					<a href="javascript:;" class="delU btn btn-outline btn-danger btn-xs" cid="{{$prod.uId}}">删除用户</a>
+					<a href="javascript:;" class="delU btn btn-outline btn-danger btn-xs" cid="{{$prod.id}}">删除用户</a>
+					<h5>更新于{{$prod.updatedon|date_format:'%Y-%m-%d %H:%M'}}</h5>
 				</td>
 			</tr>
 			{{/foreach}}

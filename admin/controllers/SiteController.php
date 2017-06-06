@@ -147,29 +147,28 @@ class SiteController extends BaseController
 		$name = self::getParam('name');
 		$status = self::getParam('status');
 		$stDel = User::STATUS_DELETE;
-		$condition = " uStatus < $stDel ";
+		$criteria[] = " uStatus < $stDel ";
+		$params = [];
 		if ($status) {
-			$condition .= " and  uStatus=$status ";
+			$criteria[] = " uStatus=$status ";
 		}
 
 		if ($name) {
 			$name = str_replace("'", "", $name);
-			$condition .= " and  uName like '$name' ";
+			$criteria[] = "  uName like :name ";
+			$params[':name'] = "%$name%";
 		}
 
-		$count = User::getCountByCondition($condition);
-		$list = User::getUsers($condition, $page, self::PAGE_SIZE);
+		list($list, $count) = User::users($criteria, $params, $page);
 		$pagination = self::pagination($page, $count);
-
 		return $this->renderPage('accounts.tpl',
 			[
 				"status" => $status,
 				'list' => $list,
 				"name" => $name,
 				'pagination' => $pagination,
-				'detailcategory' => 'site/accounts',
 				'category' => 'users',
-				"statusT" => User::$statusDict,
+				"statusT" => User::$Status,
 			]);
 	}
 
@@ -219,15 +218,13 @@ class SiteController extends BaseController
 
 				}
 			}
-
-
 		}
-		$userInfo = User::getOne($id);
+		$userInfo = User::findOne(['uId' => $id]);
 		return $this->renderPage('account.tpl',
 			[
 				"userInfo" => json_encode($userInfo, JSON_UNESCAPED_UNICODE),
 				'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
-				"role" => User::$roleDict,
+				"role" => User::$Role,
 				"marital" => User::$Marital,
 				"scope" => User::$Scope,
 				"gender" => User::$Gender,
@@ -247,7 +244,7 @@ class SiteController extends BaseController
 				"diet" => User::$Diet,
 				"rest" => User::$Rest,
 				"pet" => User::$Pet,
-				"status" => User::$statusDict,
+				"status" => User::$Status,
 				'success' => $success,
 				'error' => $error,
 				'detailcategory' => 'site/account',

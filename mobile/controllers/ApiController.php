@@ -128,7 +128,7 @@ class ApiController extends Controller
 				if (User::verifySMSCode($phone, $code)) {
 					$role = ($role == 'single') ? User::ROLE_SINGLE : User::ROLE_MATCHER;
 					User::bindPhone($openId, $phone, $role);
-					return self::renderAPI(0, '您已经注册了' . User::$roleDict[$role] . '身份');
+					return self::renderAPI(0, '您已经注册了' . User::$Role[$role] . '身份');
 				} else {
 					return self::renderAPI(129, '输入的验证码不正确或者已经失效~');
 				}
