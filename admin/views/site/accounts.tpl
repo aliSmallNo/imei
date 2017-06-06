@@ -57,69 +57,67 @@
 		</form>
 	</div>
 	<div class="row-divider"></div>
-	<div class="row">
-		<table class="table table-striped table-bordered table-hover">
-			<thead>
-			<tr>
-				<th style="width: 70px">
-					头像
-				</th>
-				<th class="col-sm-5">
-					个人信息
-				</th>
-				<th class="col-sm-5">
-					择偶标准
-				</th>
-				<th>
-					操作
-				</th>
-			</tr>
-			</thead>
-			<tbody>
-			{{foreach from=$list item=prod}}
-			<tr data-id="{{$prod.id}}">
-				<td>
-					<img src="{{$prod.avatar}}" width="100%">
-				</td>
-				<td class="pInfo">
-					{{$prod.name}} <em>({{$prod.location_t}})</em>
-					<span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
-					<br>
-					<span>{{$prod.age}}岁</span>
-					<span>{{$prod.role_t}}</span>
-					<span>{{$prod.gender_t}}</span>
-					<span>{{$prod.height_t}}</span>
-					<span>{{$prod.weight_t}}</span>
-					<span>{{$prod.education_t}}</span>
-					<span>{{$prod.profession_t}}</span>
-					<span>{{$prod.scope_t}}</span>
-					<span>{{$prod.income_t}}</span>
-					<span>{{$prod.estate_t}}</span>
-					<span>{{$prod.car_t}}</span>
-					<span>{{$prod.smoke_t}}</span>
-					<span>{{$prod.alcohol_t}}</span>
-					<span>{{$prod.diet_t}}</span>
-					<span>{{$prod.rest_t}}</span>
-					<span>{{$prod.fitness_t}}</span>
-					<span>{{$prod.belief_t}}</span>
-					<span>{{$prod.pet_t}}</span>
-					<span>{{$prod.intro}}</span>
-					<span>{{$prod.interest}}</span>
-				</td>
-				<td>
-				</td>
-				<td>
-					<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改用户</a>
-					<div class="btn-divider"></div>
-					<a href="javascript:;" class="delU btn btn-outline btn-danger btn-xs" cid="{{$prod.id}}">删除用户</a>
-					<h5>更新于{{$prod.updatedon|date_format:'%Y-%m-%d %H:%M'}}</h5>
-				</td>
-			</tr>
-			{{/foreach}}
-			</tbody>
-		</table>
-		{{$pagination}}
-	</div>
+	<table class="table table-striped table-bordered table-hover">
+		<thead>
+		<tr>
+			<th style="width: 70px">
+				头像
+			</th>
+			<th class="col-sm-5">
+				个人信息
+			</th>
+			<th class="col-sm-5">
+				择偶标准
+			</th>
+			<th>
+				操作
+			</th>
+		</tr>
+		</thead>
+		<tbody>
+		{{foreach from=$list item=prod}}
+		<tr data-id="{{$prod.id}}">
+			<td>
+				<img src="{{$prod.avatar}}" width="100%">
+			</td>
+			<td class="pInfo">
+				{{$prod.name}} <em>({{$prod.location_t}})</em>
+				<span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
+				<br>
+				<span>{{$prod.age}}岁</span>
+				<span>{{$prod.role_t}}</span>
+				<span>{{$prod.gender_t}}</span>
+				<span>{{$prod.height_t}}</span>
+				<span>{{$prod.weight_t}}</span>
+				<span>{{$prod.education_t}}</span>
+				<span>{{$prod.profession_t}}</span>
+				<span>{{$prod.scope_t}}</span>
+				<span>{{$prod.income_t}}</span>
+				<span>{{$prod.estate_t}}</span>
+				<span>{{$prod.car_t}}</span>
+				<span>{{$prod.smoke_t}}</span>
+				<span>{{$prod.alcohol_t}}</span>
+				<span>{{$prod.diet_t}}</span>
+				<span>{{$prod.rest_t}}</span>
+				<span>{{$prod.fitness_t}}</span>
+				<span>{{$prod.belief_t}}</span>
+				<span>{{$prod.pet_t}}</span>
+				<span>{{$prod.intro}}</span>
+				<span>{{$prod.interest}}</span>
+			</td>
+			<td>
+			</td>
+			<td>
+				<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改用户</a>
+				<div class="btn-divider"></div>
+				<a href="javascript:;" class="delU btn btn-outline btn-danger btn-xs" cid="{{$prod.id}}">删除用户</a>
+				<h5>更新于{{$prod.updatedon|date_format:'%Y-%m-%d %H:%M'}}</h5>
+			</td>
+		</tr>
+		{{/foreach}}
+		</tbody>
+	</table>
+	{{$pagination}}
 </div>
 <script>
 	$("a.delU").click(function () {
