@@ -510,6 +510,17 @@
 		</div>
 	</div>
 </section>
+<section id="personalInfo">
+	<div class="personalInfo-top">
+		<div class="nav">
+			<a href="#slook">返回</a>
+			<a href="#sme" style="display: none">个人中心</a>
+		</div>
+		<div class="img">
+			<img src="" alt="">
+		</div>
+	</div>
+</section>
 <div class="nav-foot on">
 	<a href="#slink" class="nav-link" data-tag="slink">
 		媒婆
@@ -523,7 +534,7 @@
 </div>
 
 <div class="app-cork" style="background-color: rgba(0,0,0,0.1)"></div>
-<div class="getWechat" >
+<div class="getWechat">
 	<div class="getw-content">
 		<a class="icon-alert icon-close" tag="close"></a>
 		<div class="input">
