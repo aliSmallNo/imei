@@ -199,8 +199,7 @@ require(["layer", "fastclick"],
 				id: serverId,
 			}, function (resp) {
 				if (resp.data) {
-					alert(JSON.stringify(resp.data));
-					$(".photos").append('<li><img src="' + resp.data + '" alt=""></li>');
+					$("#album .photos").append('<li><img src="' + resp.data + '" alt=""></li>');
 				}
 			}, "json");
 		}
