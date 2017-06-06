@@ -343,7 +343,7 @@ require(["layer"],
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage', "getLocation"];
 			wx.config(wxInfo);
 			wx.ready(function () {
-				wx.hideOptionMenu();
+				// wx.hideOptionMenu();
 			});
 			DrawUtil.init();
 			SingleUtil.init();
