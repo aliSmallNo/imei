@@ -22,6 +22,13 @@
 		background: #f80;
 	}
 
+	.pInfo .role {
+		background: #44b549;
+		color: #fff;
+		padding: 1px 10px;
+		border: none;
+	}
+
 	.pInfo span.status-1 {
 		color: #fff;
 		border: 1px solid #44b549;
@@ -82,10 +89,11 @@
 			</td>
 			<td class="pInfo">
 				{{$prod.name}} <em>({{$prod.location_t}})</em>
+				<span class="role">{{$prod.role_t}}</span>
 				<span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
 				<br>
 				<span>{{$prod.age}}岁</span>
-				<span>{{$prod.role_t}}</span>
+
 				<span>{{$prod.gender_t}}</span>
 				<span>{{$prod.height_t}}</span>
 				<span>{{$prod.weight_t}}</span>
