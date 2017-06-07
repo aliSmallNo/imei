@@ -241,7 +241,7 @@ require(["layer"],
 					$sls.contionString = text;
 					$sls.contionVal = key;
 				} else {
-					if (key <= $sls.contionVal) {
+					if (parseInt(key) <= parseInt($sls.contionVal)) {
 						return;
 					}
 					obj.find(".end").html(text);
