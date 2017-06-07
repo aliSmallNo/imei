@@ -44,7 +44,8 @@ input, select, textarea, button {
   outline: none; }
 
 main {
-  position: relative; }
+  position: relative;
+  padding-bottom: 6rem; }
 
 .bg-color {
   background-color: #F4F4F4; }
@@ -164,8 +165,7 @@ main {
 
 section {
   position: relative;
-  display: none;
-  padding-bottom: 5.5rem; }
+  display: none; }
   section:target {
     display: block; }
   section .fixed-top {
@@ -2226,9 +2226,6 @@ section {
         background-size: 100% 100%;
         left: 1.2rem;
         top: 0.5rem; }
-
-#slook {
-  padding-bottom: 6.5rem; }
 
 .useruc .banner img {
   width: 100%;
