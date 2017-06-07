@@ -1139,7 +1139,7 @@ class AppUtil
 	{
 		$imageUrl = $mediaId;
 		if (strpos($imageUrl, 'http') !== 0) {
-			$accessToken = WechatUtil::getAccessToken();
+			$accessToken = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 			$baseUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s";
 			$imageUrl = sprintf($baseUrl, $accessToken, $mediaId);
 		}
