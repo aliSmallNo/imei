@@ -3,10 +3,11 @@ require.config({
 		"jquery": "/assets/js/jquery-3.2.1.min",
 		"zepto": "/assets/js/zepto.min",
 		"wx": "/assets/js/jweixin-1.2.0",
+		"layer": "/assets/js/layer_mobile/layer"
 	}
 });
-require([],
-	function () {
+require(['layer'],
+	function (layer) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -122,7 +123,10 @@ require([],
 						showMsg("请上传头像！");
 						return;
 					}
-					layer.load(2);
+					layer.open({
+						type: 2,
+						content: '保存中...'
+					});
 					uploadImages();
 				});
 			},
