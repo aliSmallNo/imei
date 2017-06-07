@@ -298,9 +298,9 @@
 			<a href="/wx/card" class=""><span class="title">我的身份卡</span></a>
 		</div>
 		<div class="m-rows line-bottom">
-			<a href="/user/apply" class="" id="pending_applications"><span class="title">加我微信的人</span> </a>
-			<a href="/user/myapply" class="" id="myapply"><span class="title">我加微信的人</span> </a>
-			<a href="/user/heart" class="" id="myapply"><span class="title">心动列表</span> </a>
+			<a href="#addWeChat" class="" id="pending_applications"><span class="title">加我微信的人</span> </a>
+			<a href="#weFriends" class="" id="myapply"><span class="title">我加微信的人</span> </a>
+			<a href="#heartbeat" class="" id="myapply"><span class="title">心动列表</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
 			<a href="/user/my_matchmaker" class=""><span class="title">我的媒婆</span> <span class="tip">还没有媒婆</span></a>
@@ -337,6 +337,54 @@
 		</li>
 	</ul>
 
+</section>
+<section id="addWeChat">
+	<div class="nav">
+		<a href="#sme">返回</a>
+	</div>
+	<div class="tab" tag="addWeChat">
+		<a href="javascript:;" class="active">待处理</a>
+		<a href="javascript:;">已通过</a>
+		<a href="javascript:;">已拒绝</a>
+	</div>
+	<ul class="plist">
+		<div class="plist-defalt">
+			<div class="img"><img src="/images/ico_no_msg.png" alt=""></div>
+			<p>还没申请动态哦！去 <a href="#slook" class="aaaa">"发现"</a>找你的心仪对象吧！</p>
+		</div>
+	</ul>
+</section>
+<section id="weFriends">
+	<div class="nav">
+		<a href="#sme">返回</a>
+	</div>
+	<div class="tab" tag="weFriends">
+		<a href="javascript:;" class="active">已通过</a>
+		<a href="javascript:;">等TA处理</a>
+		<a href="javascript:;">未通过</a>
+	</div>
+	<ul class="plist">
+		<div class="plist-defalt">
+			<div class="img"><img src="/images/ico_no_msg.png" alt=""></div>
+			<p>还没申请动态哦！去 <a href="#slook" class="aaaa">"发现"</a>找你的心仪对象吧！</p>
+		</div>
+	</ul>
+</section>
+<section id="heartbeat">
+	<div class="nav">
+		<a href="#sme">返回</a>
+	</div>
+	<div class="tab" tag="heartbeat">
+		<a href="javascript:;" class="active">心动我的</a>
+		<a href="javascript:;">我心动的</a>
+		<a href="javascript:;">相互心动的</a>
+	</div>
+	<ul class="plist">
+		<div class="plist-defalt">
+			<div class="img"><img src="/images/ico_no_msg.png" alt=""></div>
+			<p>还没动态哦！分享个人主页让更多人看到你吧！</p>
+		</div>
+	</ul>
 </section>
 <section id="saccount">
 	<div class="account-header">
@@ -761,8 +809,20 @@
 
 	</div>
 </script>
-
-
+<script type="text/html" id="wechats">
+	<li>
+		<a href="#sprofile">
+			<div class="plist-l">
+				<img src="/images/testImg.jpeg">
+			</div>
+			<div class="plist-r">
+				<p>sarah zhou</p>
+				<p>北京/东城</p>
+				<i>28岁 . 168cm . 水瓶座 . 文化传媒</i>
+			</div>
+		</a>
+	</li>
+</script>
 
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}

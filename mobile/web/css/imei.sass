@@ -236,6 +236,7 @@ main
 	top: 1.5rem
 	background: url(../images/ico_gender_female.png) no-repeat center center
 	background-size: 100% 100%
+
 .icon-male
 	content: ''
 	position: absolute
@@ -245,8 +246,10 @@ main
 	top: 1.5rem
 	background: url(../images/ico_gender_male.png) no-repeat center center
 	background-size: 100% 100%
+
 .font1rem
 	font-size: 1rem
+
 .icon-l
 	content: ""
 	position: absolute
@@ -254,6 +257,7 @@ main
 	top: 1.3rem
 	width: 1.2rem
 	height: 1.2rem
+
 .icon-alert
 	content: ""
 	position: absolute
@@ -261,25 +265,31 @@ main
 	top: 0.8rem
 	width: 2rem
 	height: 2rem
+
 .icon-forbid
 	background: url(../images/icon-forbid.png) no-repeat center center
 	background-size: 100% 100%
 	left: -1.5rem
 	top: .1rem
+
 .icon-love
 	background: url(../images/icon-love.png) no-repeat center center
 	background-size: 100% 100%
+
 .icon-loved
 	background: url(../images/icon-loved.png) no-repeat center center
 	background-size: 100% 100%
+
 .icon-love-break
 	background: url(../images/icon-love-break.png) no-repeat center center
 	background-size: 100% 100%
+
 .icon-close
 	background: url(../images/icon-close.png) no-repeat center center
 	background-size: 100% 100%
 	right: 1rem
 	left: initial
+
 section
 	position: relative
 	display: none
@@ -595,6 +605,7 @@ section
 	background: $mainColor
 	&:active
 		background: $mainColorDark
+
 .help-block
 	font-size: 1.2rem
 	height: 3.6rem
@@ -1865,7 +1876,7 @@ section
 					display: flex
 					padding: 1rem 1rem 0 1rem
 					background: #fbd6e3
-					.start,.end
+					.start, .end
 						flex: 4
 						padding-bottom: 1rem
 					.bb
@@ -2379,6 +2390,7 @@ section
 			border-color: #777 #777 transparent transparent
 			background-color: #fbd6e3
 			transform: rotate(-135deg) translateZ(0)
+
 		a
 			flex: 1
 			font-size: 1.2rem
@@ -2386,7 +2398,7 @@ section
 			&:first-child
 				margin-left: 1.2rem
 			&:last-child
-				text-align: right
+				//text-align: right
 	.sgroup-top-des
 		background: #f8c5d7
 		.img
@@ -2480,6 +2492,7 @@ section
 			font-size: 1rem
 			padding: 3rem
 			color: #777
+
 #sprofile
 	.sprofile-top
 		.img
@@ -2632,6 +2645,7 @@ section
 			border-radius: 2rem
 		a:last-child
 			background: #02c8b5
+
 .getWechat
 	display: none
 	position: fixed
@@ -2666,6 +2680,7 @@ section
 		font-size: 1.2rem
 		padding: .8rem 0
 		border-radius: 1rem
+
 #personalInfo
 	.personalInfo-top
 		.img
@@ -2711,6 +2726,7 @@ section
 				color: #777
 				letter-spacing: .05rem
 				line-height: 2rem
+
 #album
 	.photos
 		zoom: 1
@@ -2742,8 +2758,8 @@ section
 					position: absolute
 					top: 50%
 					left: 50%
-					-webkit-transform: translate(-50%,-51%)
-					transform: translate(-50%,-51%)
+					-webkit-transform: translate(-50%, -51%)
+					transform: translate(-50%, -51%)
 					background: #f781ab
 					width: 2px
 					height: 4rem
@@ -2752,8 +2768,8 @@ section
 					position: absolute
 					top: 50%
 					left: 50%
-					-webkit-transform: translate(-50%,-51%)
-					transform: translate(-50%,-51%)
+					-webkit-transform: translate(-50%, -51%)
+					transform: translate(-50%, -51%)
 					background: #f781ab
 					width: 4rem
 					height: 2px
@@ -2791,6 +2807,65 @@ section
 		color: #fff
 		background: #f781ab
 		text-align: center
+
+.tab
+	display: flex
+	padding: 1rem 1rem 0 1rem
+	border-bottom: 1px solid #eee
+	background: #fff
+	a
+		flex: 1
+		text-align: center
+		font-size: 1rem
+		color: #777
+		padding-bottom: 1rem
+	a.active
+		border-bottom: 1px solid #f781ab
+		color: #f781ab
+
+.plist
+	li
+		background: #fff
+		padding: 1rem 2rem
+		border-bottom: 1px solid #eee
+		a
+			display: flex
+			position: relative
+			&:after
+				@include arrowRight
+			.plist-l
+				flex: 0 0 6rem
+				text-align: center
+				img
+					width: 6rem
+					border-radius: 6rem
+			.plist-r
+				flex: 1
+				padding: .5rem 1rem
+				p
+					font-size: 1.3rem
+				i
+					font-size: 1rem
+					color: #aaa
+	.plist-defalt
+		padding: 10rem 1rem
+		.img
+			text-align: center
+			img
+				width: 7rem
+		p
+			font-size: 1rem
+			color: #aaa
+			text-align: center
+			padding-top: 2rem
+			a
+				font-size: 1.2rem
+				color: #f781ab
+				display: initial
+				&:after
+					width: 0
+					height: 0
+
 
 
 
