@@ -144,6 +144,7 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		AppUtil::logFile($wxInfo, 5, __FUNCTION__, __LINE__);
 		//print_r($wxInfo);exit;
 		$hint = '';
 		if ($wxInfo) {
