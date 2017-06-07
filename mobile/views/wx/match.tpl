@@ -360,7 +360,7 @@
 <section id="sqrcode">
 	<div class="qrcode-wrap">
 		<h4>想知道哪些好友加入了<br>你的单身团？</h4>
-		<h5>长按识别二维码<br>关注1号媒婆公众号</h5>
+		<h5>长按识别二维码<br>关注微媒100公众号</h5>
 		<div>
 			<img src="/images/ico_qrcode.jpg" class="qrcode">
 		</div>
