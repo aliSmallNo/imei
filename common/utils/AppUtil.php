@@ -893,7 +893,11 @@ class AppUtil
 			$txt[] = $line;
 		}
 		$txt[] = is_array($msg) ? json_encode($msg) : $msg;
+		$hasLog = is_file($file);
 		$ret = @file_put_contents($file, date('ymd H:i:s') . "\n" . implode(" - ", $txt) . "\n", 8);
+		if (!$hasLog) {
+			chmod($file, 0666);
+		}
 		return $ret;
 	}
 

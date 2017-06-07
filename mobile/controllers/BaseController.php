@@ -30,7 +30,6 @@ class BaseController extends Controller
 	{
 		$actionId = $action->id;
 		$safeActions = ['error', 'err'];
-		AppUtil::logFile($actionId, 5, __FUNCTION__, __LINE__);
 		if (in_array($actionId, $safeActions)) {
 			return parent::beforeAction($action);
 		}
@@ -81,7 +80,6 @@ class BaseController extends Controller
 				self::redirect($newUrl);
 			}
 		}
-		AppUtil::logFile($action, 5, __FUNCTION__, __LINE__);
 		return parent::beforeAction($action);
 	}
 
