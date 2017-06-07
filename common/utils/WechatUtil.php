@@ -264,18 +264,18 @@ class WechatUtil
 			"button" => [
 				[
 					"type" => "view",
-					"name" => "我是媒婆",
-					"url" => $wxUrl . "/wx/match#slink"
-				],
-				[
-					"type" => "view",
-					"name" => "我是单身",
-					"url" => $wxUrl . "/wx/single#slook"
+					"name" => "微媒100",
+					"url" => $wxUrl . "/wx/index"
 				],
 				[
 					"type" => "view",
 					"name" => "签到领奖",
 					"url" => $wxUrl . "/wx/sign"
+				],
+				[
+					"type" => "view",
+					"name" => "更多",
+					"url" => $wxUrl . "/wx/help"
 				]
 			]
 		];

@@ -28,6 +28,40 @@ class WxController extends BaseController
 		125 => '店小二',
 	];
 
+	public function actionIndex()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$url = '/wx/imei';
+		if ($wxInfo) {
+			if ($wxInfo["uRole"] == User::ROLE_MATCHER) {
+				$url = '/wx/match#slink';
+			} else {
+				$url = '/wx/single#slook';
+			}
+		}
+		header('location:' . $url);
+	}
+
+	public function actionHelp()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if ($wxInfo) {
+			$avatar = $wxInfo["Avatar"];
+			$nickname = $wxInfo["uName"];
+		} else {
+			$avatar = ImageUtil::DEFAULT_AVATAR;
+			$nickname = "本地测试";
+		}
+		return self::renderPage("help.tpl",
+			[
+				'avatar' => $avatar,
+				'nickname' => $nickname
+			],
+			'terse');
+	}
+
 	public function actionImei()
 	{
 		return self::renderPage("imei.tpl");
