@@ -140,9 +140,11 @@ require(['layer'],
 					if (res.code == 0) {
 						setTimeout(function () {
 							location.href = "/wx/match";
+							layer.closeAll();
 						}, 500);
+					} else {
+						layer.closeAll();
 					}
-					layer.closeAll();
 				}, "json");
 			},
 			toggle: function (content) {
