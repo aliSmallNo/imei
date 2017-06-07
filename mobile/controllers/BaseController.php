@@ -29,7 +29,7 @@ class BaseController extends Controller
 	public function beforeAction($action)
 	{
 		$actionId = $action->id;
-		$safeActions = ['error', 'err'];
+		$safeActions = ['error', 'err', 'help'];
 		if (in_array($actionId, $safeActions)) {
 			return parent::beforeAction($action);
 		}
