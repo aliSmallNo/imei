@@ -30,7 +30,7 @@ require(["layer"],
 			routeLength: mRoutes.length,
 			routeSkip: $.inArray('income', mRoutes),
 			mLat: 0,
-			mLng: 0,
+			mLng: 0
 		};
 
 		var SingleUtil = {
@@ -335,7 +335,6 @@ require(["layer"],
 		}
 
 		$(function () {
-			// FastClick.attach($sls.footer.get(0));
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
