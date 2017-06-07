@@ -279,7 +279,7 @@ class User extends ActiveRecord
 			if ($url) {
 				$data["img"] = $url;
 			}
-			$url = AppUtil::getMediaUrl($img, true);
+			$url = AppUtil::getMediaUrl($img, true, true);
 			if ($url) {
 				$data["thumb"] = $url;
 			}

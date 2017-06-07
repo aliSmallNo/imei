@@ -1232,7 +1232,7 @@ class AppUtil
 		return $heaps;
 	}
 
-	public static function getMediaUrl($mediaId, $thumbFlag = false)
+	public static function getMediaUrl($mediaId, $thumbFlag = false, $squareFlag = false)
 	{
 		$accessToken = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 		$baseUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s";
@@ -1257,7 +1257,7 @@ class AppUtil
 			} else {
 				$fileName = self::getUploadFolder() . "/" . RedisUtil::getIntSeq();
 				file_put_contents($fileName, $content);
-				$imageUrl = ImageUtil::upload2COS($fileName, $thumbFlag, $ext);
+				$imageUrl = ImageUtil::upload2COS($fileName, $thumbFlag, $squareFlag, $ext);
 				unlink($fileName);
 				return $imageUrl;
 			}

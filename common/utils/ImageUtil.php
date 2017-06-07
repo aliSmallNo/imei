@@ -219,7 +219,7 @@ class ImageUtil
 		return isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
 	}
 
-	public static function upload2COS($srcPath, $thumbFlag = false, $fileExt = "")
+	public static function upload2COS($srcPath, $thumbFlag = false, $squareFlag = false, $fileExt = "")
 	{
 		if (!file_exists($srcPath) || filesize($srcPath) < 10) {
 			return false;
@@ -237,8 +237,8 @@ class ImageUtil
 
 		// Rain: 对图片做压缩
 		if (in_array($fileExt, ["png", "jpg", "jpeg"])) {
-			$thumbSide = 240;
-			$defaultSide = 520;
+			$thumbSide = 250;
+			$defaultSide = 500;
 			$newWidth = 0;
 			$newHeight = 0;
 			list($srcWidth, $srcHeight) = getimagesize($srcPath);
@@ -250,7 +250,12 @@ class ImageUtil
 				$newHeight = $defaultSide;
 			}
 			if ($newWidth && $newHeight) {
-				$data['filecontent'] = Image::open($srcPath)->cropResize($newWidth, $newHeight)->get();
+				if ($squareFlag) {
+					$side = min($newWidth, $newHeight);
+					$data['filecontent'] = Image::open($srcPath)->zoomCrop($side, $side, 0xffffff, 'center', 'center')->get();
+				} else {
+					$data['filecontent'] = Image::open($srcPath)->cropResize($newWidth, $newHeight)->get();
+				}
 				$sha1 = hash('sha1', $data['filecontent']);
 				$data['sha'] = $sha1;
 			}
@@ -275,8 +280,7 @@ class ImageUtil
 		return isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
 	}
 
-	public
-	static function uploadSlices2COS($srcPath, $fileExt = "", $fileSize = 0)
+	public static function uploadSlices2COS($srcPath, $fileExt = "", $fileSize = 0)
 	{
 		if (!file_exists($srcPath) || filesize($srcPath) < 10) {
 			return false;
