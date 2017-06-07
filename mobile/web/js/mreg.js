@@ -2,14 +2,11 @@ require.config({
 	paths: {
 		"jquery": "/assets/js/jquery-3.2.1.min",
 		"zepto": "/assets/js/zepto.min",
-		"mustache": "/assets/js/mustache.min",
-		"lazyload": "/assets/js/jquery.lazyload.min",
-		"layer": "/assets/js/layer_mobile/layer",
 		"wx": "/assets/js/jweixin-1.2.0",
 	}
 });
-require(["layer"],
-	function (layer) {
+require([],
+	function () {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
