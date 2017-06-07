@@ -30,11 +30,10 @@ class BaseController extends Controller
 	{
 		$actionId = $action->id;
 		$safeActions = ['error', 'err'];
+		AppUtil::logFile($actionId, 5, __FUNCTION__, __LINE__);
 		if (in_array($actionId, $safeActions)) {
 			return parent::beforeAction($action);
 		}
-		AppUtil::logFile($actionId, 5, __FUNCTION__, __LINE__);
-
 		if (self::isLocalhost()) {
 			self::$WX_OpenId = Yii::$app->params['openid'];
 			AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
