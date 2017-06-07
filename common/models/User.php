@@ -8,7 +8,6 @@
 
 namespace common\models;
 
-use admin\models\Admin;
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
 use yii\db\ActiveRecord;
@@ -72,8 +71,12 @@ class User extends ActiveRecord
 	static $Pet = [
 		291 => "不养，反感宠物", 293 => "不养，不反感宠物", 295 => "已养宠物", 297 => "无所谓"
 	];
+
+	const GENDER_FEMALE = 10;
+	const GENDER_MALE = 11;
 	static $Gender = [
-		10 => "美女", 11 => "帅哥"
+		self::GENDER_FEMALE => "美女",
+		self::GENDER_MALE => "帅哥"
 	];
 	static $Horos = [
 		301 => "白羊座(3.21~4.20)", 303 => "金牛座(4.21~5.20)", 305 => "双子座(5.22~6.21)", 307 => "巨蟹座(6.22~6.22)",
@@ -108,7 +111,7 @@ class User extends ActiveRecord
 		return '{{%user}}';
 	}
 
-	public static function add($data)
+	public static function add($data, $adminId = 1)
 	{
 		if (!$data) {
 			return 0;
@@ -116,18 +119,17 @@ class User extends ActiveRecord
 		$openId = isset($data["uOpenId"]) ? $data["uOpenId"] : "";
 		if ($entity = self::findOne(["uOpenId" => $openId])) {
 			$entity->uUpdatedOn = date('Y-m-d H:i:s');
-			$entity->uUpdatedBy = Admin::getAdminId() ? Admin::getAdminId() : 1;
+			$entity->uUpdatedBy = $adminId;
 		} else {
 			$entity = new self();
 			$entity->uAddedOn = date('Y-m-d H:i:s');
-			$entity->uAddedBy = Admin::getAdminId() ? Admin::getAdminId() : 1;
+			$entity->uAddedBy = $adminId;
 		}
 		foreach ($data as $key => $val) {
 			$entity->$key = $val;
 		}
-
-		$uid = $entity->save();
-		return $uid;
+		$entity->save();
+		return $entity->uId;
 	}
 
 	public static function edit($uid, $params, $editBy = 1)

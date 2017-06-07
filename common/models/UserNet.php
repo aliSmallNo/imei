@@ -67,4 +67,48 @@ class UserNet extends ActiveRecord
 		])->execute();
 		return true;
 	}
+
+	public static function boys($uid, $page, $pageSize = 10)
+	{
+		$criteria[] = 'nUId=:uid AND nRelation=:rel AND uGender=:gender';
+		$params = [
+			':uid' => $uid,
+			':rel' => self::REL_ENDORSE,
+			':gender' => User::GENDER_MALE
+		];
+
+		return self::crew($criteria, $params, $page, $pageSize);
+	}
+
+	public static function girls($uid, $page, $pageSize = 10)
+	{
+		$criteria[] = 'nUId=:uid AND nRelation=:rel AND uGender=:gender';
+		$params = [
+			':uid' => $uid,
+			':rel' => self::REL_ENDORSE,
+			':gender' => User::GENDER_FEMALE
+		];
+
+		return self::crew($criteria, $params, $page, $pageSize);
+	}
+
+	protected static function crew($criteria, $params, $page, $pageSize = 10)
+	{
+		$strCriteria = '';
+		if ($criteria) {
+			$strCriteria = ' AND ' . implode(' AND ', $criteria);
+		}
+		$offset = ($page - 1) * $pageSize;
+
+		$conn = AppUtil::db();
+		$sql = 'select u.* from im_user as u  join im_user_net as n on n.nSubUId=u.uId ' . $strCriteria .
+			' order by n.nAddedOn DESC limit ' . $offset . ',' . ($pageSize + 1);
+		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		$nextPage = 0;
+		if ($ret && count($ret) > $pageSize) {
+			$nextPage = $page + 1;
+			array_pop($ret);
+		}
+		return [$ret, $nextPage];
+	}
 }

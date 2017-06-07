@@ -12,6 +12,7 @@ namespace mobile\controllers;
 use common\models\City;
 use common\models\User;
 use common\models\UserBuzz;
+use common\models\UserNet;
 use common\models\UserSign;
 use common\models\UserWechat;
 use common\utils\AppUtil;
@@ -109,8 +110,23 @@ class ApiController extends Controller
 		$tag = trim(strtolower(self::postParam('tag')));
 		$id = self::postParam('id');
 		$openId = AppUtil::getCookie(self::COOKIE_OPENID);
-
 		switch ($tag) {
+			case 'boys':
+			case 'girls':
+				$page = self::postParam('page', 1);
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				if ($tag == 'boy') {
+					list($items, $nextPage) = UserNet::boys($wxInfo['uId'], $page);
+				} else {
+					list($items, $nextPage) = UserNet::girls($wxInfo['uId'], $page);
+				}
+				return self::renderAPI(0, '', [
+					'items' => $items,
+					'nextPage' => $nextPage
+				]);
 			case 'sms-code':
 				$phone = self::postParam('phone');
 				if (!AppUtil::checkPhone($phone)) {
