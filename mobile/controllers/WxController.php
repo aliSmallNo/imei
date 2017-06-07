@@ -128,7 +128,6 @@ class WxController extends BaseController
 				header("location:/wx/mreg");
 				exit();
 			}
-			//$wxInfo['uHint'];
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
@@ -143,10 +142,7 @@ class WxController extends BaseController
 	public function actionSingle()
 	{
 		$openId = self::$WX_OpenId;
-		AppUtil::logFile($openId, 5, __FUNCTION__, __LINE__);
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		AppUtil::logFile($wxInfo, 5, __FUNCTION__, __LINE__);
-		//print_r($wxInfo);exit;
 		$hint = '';
 		if ($wxInfo) {
 			$avatar = $wxInfo["Avatar"];
