@@ -80,6 +80,7 @@ class BaseController extends Controller
 				self::redirect($newUrl);
 			}
 		}
+		AppUtil::logFile($action, 5, __FUNCTION__, __LINE__);
 		return parent::beforeAction($action);
 	}
 
