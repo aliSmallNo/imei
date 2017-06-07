@@ -136,7 +136,6 @@ require(['layer'],
 					data: JSON.stringify($sls.postData),
 					tag: "mreg"
 				}, function (res) {
-					showMsg(res.msg);
 					if (res.code == 0) {
 						setTimeout(function () {
 							location.href = "/wx/match";
@@ -145,6 +144,7 @@ require(['layer'],
 					} else {
 						layer.closeAll();
 					}
+					showMsg(res.msg);
 				}, "json");
 			},
 			toggle: function (content) {
