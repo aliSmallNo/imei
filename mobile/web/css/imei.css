@@ -1880,6 +1880,18 @@ section {
             .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options.col4 a:nth-of-type(4n+2):active, .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options.col4 a:nth-of-type(4n+4):active {
               background: #4da2ff;
               color: #fff; }
+        .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options .m-popup-options-top {
+          display: flex;
+          padding: 1rem 1rem 0 1rem;
+          background: #fbd6e3; }
+          .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options .m-popup-options-top .start, .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options .m-popup-options-top .end {
+            flex: 4;
+            padding-bottom: 1rem; }
+          .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options .m-popup-options-top .bb {
+            border-bottom: 2px solid #f781ab; }
+          .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options .m-popup-options-top .mid {
+            flex: 1;
+            padding-bottom: 1rem; }
 
 @keyframes framesPopIn {
   from {
@@ -2810,5 +2822,50 @@ section {
       background: #f781ab;
       width: 4rem;
       height: 2px; }
+
+#matchCondition .title {
+  font-size: 1rem;
+  color: #777;
+  background: #eee;
+  padding: 1rem;
+  border-bottom: 1px solid #ddd; }
+#matchCondition a.condtion-item {
+  display: flex;
+  background: #fff;
+  padding: 1rem 3rem 1rem 1rem;
+  border-bottom: 1px solid #ddd;
+  position: relative; }
+  #matchCondition a.condtion-item:after {
+    content: " ";
+    display: inline-block;
+    height: 0.8rem;
+    width: 0.8rem;
+    border-width: 1px 1px 0 0;
+    border-color: #999;
+    border-style: solid;
+    -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    position: absolute;
+    top: 50%;
+    right: 0;
+    margin-top: -0.5rem;
+    right: 1rem; }
+  #matchCondition a.condtion-item .left {
+    flex: 1;
+    font-size: 1.2rem; }
+  #matchCondition a.condtion-item .right {
+    flex: 1;
+    text-align: right;
+    font-size: 1.2rem; }
+#matchCondition a.btn-comfirm {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1rem;
+  font-size: 1.2rem;
+  color: #fff;
+  background: #f781ab;
+  text-align: center; }
 
 /*# sourceMappingURL=imei.css.map */

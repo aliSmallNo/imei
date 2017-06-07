@@ -1861,6 +1861,18 @@ section
 							&:active
 								background: $linkColorLight
 								color: #fff
+				.m-popup-options-top
+					display: flex
+					padding: 1rem 1rem 0 1rem
+					background: #fbd6e3
+					.start,.end
+						flex: 4
+						padding-bottom: 1rem
+					.bb
+						border-bottom: 2px solid #f781ab
+					.mid
+						flex: 1
+						padding-bottom: 1rem
 
 @keyframes framesPopIn
 	from
@@ -2746,7 +2758,39 @@ section
 					width: 4rem
 					height: 2px
 
-
+#matchCondition
+	.title
+		font-size: 1rem
+		color: #777
+		background: #eee
+		padding: 1rem
+		border-bottom: 1px solid #ddd
+	a.condtion-item
+		display: flex
+		background: #fff
+		padding: 1rem 3rem 1rem 1rem
+		border-bottom: 1px solid #ddd
+		position: relative
+		&:after
+			@include arrowRight
+			right: 1rem
+		.left
+			flex: 1
+			font-size: 1.2rem
+		.right
+			flex: 1
+			text-align: right
+			font-size: 1.2rem
+	a.btn-comfirm
+		position: fixed
+		left: 0
+		right: 0
+		bottom: 0
+		padding: 1rem
+		font-size: 1.2rem
+		color: #fff
+		background: #f781ab
+		text-align: center
 
 
 

@@ -52,7 +52,7 @@
 </section>
 <section id="slook">
 	<div class="my-condition">
-		<a href="/user/info?uid=062a1e833b434518905624dd0eac6bcc&amp;action=editCondition&amp;back=%2Fuser%2Fuserlist&amp;forceBack=1"
+		<a href="#matchCondition"
 			 class="nocondition">
 			<span class="desc">您还没有设置择偶条件哦~</span>
 			<span class="btn">去设置</span>
@@ -228,6 +228,30 @@
 		</li>
 	</ul>
 	<div class="m-more">上拉加载更多</div>
+</section>
+<section id="matchCondition">
+	<div class="nav">
+		<a href="#slook">返回</a>
+		<a href="#sme" style="display: none">个人中心</a>
+	</div>
+	<div class="title">择偶条件</div>
+	<a href="javascript:;" class="condtion-item" tag="age">
+		<div class="left">年龄</div>
+		<div class="right">请选择</div>
+	</a>
+	<a href="javascript:;" class="condtion-item" tag="height">
+		<div class="left">身高</div>
+		<div class="right">请选择</div>
+	</a>
+	<a href="javascript:;" class="condtion-item" tag="income">
+		<div class="left">年薪</div>
+		<div class="right">请选择</div>
+	</a>
+	<a href="javascript:;" class="condtion-item" tag="edu">
+		<div class="left">学历</div>
+		<div class="right">请选择</div>
+	</a>
+	<a href="javascript:;" class="btn-comfirm" tag="comfirm">保存</a>
 </section>
 <section id="sme">
 	<div class="useruc">
@@ -677,6 +701,68 @@
 	</div>
 	<a href="javascript:;" class="btn" tag="btn-confirm">确认</a>
 </div>
+
+<div class="m-popup-shade"></div>
+<div class="m-popup-main" style="display: none">
+	<div class="m-popup-wrap">
+		<div class="m-popup-content"></div>
+	</div>
+</div>
+<script type="text/html" id="height">
+	<div class="m-popup-options col3 clearfix" tag="height">
+		<div class="m-popup-options-top">
+			<div class="start"></div>
+			<div class="mid">至</div>
+			<div class="end"></div>
+		</div>
+		{{foreach from=$height key=key item=h}}
+		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
+		{{/foreach}}
+		<a href="javascript:;" data-key="0">不限</a>
+	</div>
+</script>
+<script type="text/html" id="age">
+	<div class="m-popup-options col3 clearfix" tag="age">
+		<div class="m-popup-options-top">
+			<div class="start"></div>
+			<div class="mid">至</div>
+			<div class="end"></div>
+		</div>
+		{{foreach from=$age key=key item=h}}
+		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
+		{{/foreach}}
+		<a href="javascript:;" data-key="0">不限</a>
+	</div>
+</script>
+<script type="text/html" id="income">
+	<div class="m-popup-options col3 clearfix" tag="income">
+		<div class="m-popup-options-top">
+			<div class="start"></div>
+			<div class="mid">至</div>
+			<div class="end"></div>
+		</div>
+		{{foreach from=$income key=key item=h}}
+		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
+		{{/foreach}}
+		<a href="javascript:;" data-key="0">不限</a>
+	</div>
+</script>
+<script type="text/html" id="edu">
+	<div class="m-popup-options col3 clearfix" tag="edu">
+		<div class="m-popup-options-top">
+			<div class="start"></div>
+			<div class="mid">至</div>
+			<div class="end"></div>
+		</div>
+		{{foreach from=$edu key=key item=h}}
+		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
+		{{/foreach}}
+		<a href="javascript:;" data-key="0">不限</a>
+
+	</div>
+</script>
+
+
 
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
