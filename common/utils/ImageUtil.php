@@ -237,8 +237,8 @@ class ImageUtil
 
 		// Rain: 对图片做压缩
 		if (in_array($fileExt, ["png", "jpg", "jpeg"])) {
-			$thumbSide = 250;
-			$defaultSide = 500;
+			$thumbSide = 240;
+			$defaultSide = 480;
 			$newWidth = 0;
 			$newHeight = 0;
 			list($srcWidth, $srcHeight) = getimagesize($srcPath);
