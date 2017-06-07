@@ -1262,7 +1262,7 @@ class AppUtil
 				return $imageUrl;
 			}
 		}
-		return "";
+		return '';
 	}
 
 	public static function getExtName($contentType)

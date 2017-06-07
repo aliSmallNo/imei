@@ -251,6 +251,7 @@ class User extends ActiveRecord
 			"location" => "uLocation",
 			"scope" => "uScope",
 			"img" => "uAvatar",
+			"thumb" => "uThumb",
 			"openId" => "uOpenId",
 			"belief" => "uBelief",
 			"car" => "uCar",
@@ -271,14 +272,17 @@ class User extends ActiveRecord
 			"year" => "uBirthYear",
 			"sign" => "uHoros",
 		];
-		$img = isset($data["img"]) ? $data["img"] : "";
+		$img = isset($data["img"]) ? $data["img"] : '';
+		unset($data['img']);
 		if ($img) {
 			$url = AppUtil::getMediaUrl($img);
 			if ($url) {
 				$data["img"] = $url;
 			}
-		} else {
-			unset($data['img']);
+			$url = AppUtil::getMediaUrl($img, true);
+			if ($url) {
+				$data["thumb"] = $url;
+			}
 		}
 		$addData = [];
 		foreach ($fields as $k => $v) {

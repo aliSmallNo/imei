@@ -247,6 +247,7 @@
 	</div>
 </div>
 <input type="hidden" id="cMaxYear" value="{{$maxYear}}">
+<input type="hidden" id="cGender" value="{{if $uInfo.gender}}{{$uInfo.gender}}{{/if}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
