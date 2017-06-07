@@ -125,6 +125,7 @@ require(["layer"],
 						showMsg("请上传头像！");
 						return;
 					}
+					layer.load(2);
 					uploadImages();
 				});
 			},
@@ -140,6 +141,7 @@ require(["layer"],
 							location.href = "/wx/match";
 						}, 500);
 					}
+					layer.closeAll();
 				}, "json");
 			},
 			toggle: function (content) {
@@ -212,7 +214,7 @@ require(["layer"],
 			}
 			wx.uploadImage({
 				localId: localId,
-				isShowProgressTips: 1,
+				isShowProgressTips: 0,
 				success: function (res) {
 					$sls.serverId = res.serverId;
 					PopUtil.submit();

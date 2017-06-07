@@ -34,7 +34,7 @@
 			<textarea name="description" placeholder="公司职位或身份介绍，如百度市场经理、小米设计师、自媒体人" data-tag="intro">{{if isset($uInfo['intro'])}}{{$uInfo['intro']}}{{/if}}</textarea>
 		</li>
 	</ul>
-	<a class="m-next btn-match-reg">注册成为媒婆</a>
+	<a class="m-next btn-match-reg">保存媒婆信息</a>
 </div>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
@@ -92,4 +92,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/mreg.js?v=1.1.8" src="/assets/js/require.js"></script>
+<script data-main="/js/mreg.js?v=1.2.0" src="/assets/js/require.js"></script>
