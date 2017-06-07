@@ -11,8 +11,8 @@ namespace common\utils;
 
 use Yii;
 
-require_once __DIR__ . '/../lib/WxPay/WxPay.Api.php';
 require_once __DIR__ . '/../lib/WxPay/WxPay.Config.php';
+require_once __DIR__ . '/../lib/WxPay/WxPay.Api.php';
 
 class WechatUtil
 {
