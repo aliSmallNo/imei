@@ -9,6 +9,7 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\User;
+use common\models\UserNet;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
 use yii\console\Controller;
@@ -16,7 +17,7 @@ use yii\console\Controller;
 class FooController extends Controller
 {
 
-	protected static function singles($key, $sex = 1)
+	protected static function singles($pUId, $key, $sex = 1)
 	{
 		$url = 'https://1meipo.com/api/proxy/matchmaker/singles_info?matchmaker_id=' . $key . '&sex=' . $sex . '&page_count=20&skip=0';
 		$ret = AppUtil::httpGet($url);
@@ -31,9 +32,14 @@ class FooController extends Controller
 			$cmdDel1 = $conn->createCommand($sql);
 			$sql = 'delete from im_user WHERE uOpenId=:openid';
 			$cmdDel2 = $conn->createCommand($sql);
+			$sql = 'delete from im_user_net WHERE nUId in (select uId from im_user WHERE uOpenId=:openid)';
+			$cmdDel3 = $conn->createCommand($sql);
 			$sql = 'insert into im_user_wechat(wUId,wOpenId,wNickName,wAvatar,wNote)
 					VALUES(:id,:openid,:nickname,:avatar,:note)';
 			$cmdUW = $conn->createCommand($sql);
+			$sql = 'insert into im_user_net(nUId,nSubUId,nRelation)
+					VALUES(:pUid,:subUid,:rel) ';
+			$cmdNet = $conn->createCommand($sql);
 			$count = 0;
 			foreach ($ret['data']['singles'] as $item) {
 				$row = $item['user_info'];
@@ -44,6 +50,9 @@ class FooController extends Controller
 					':openid' => $openid
 				])->execute();
 				$cmdDel2->bindValues([
+					':openid' => $openid
+				])->execute();
+				$cmdDel3->bindValues([
 					':openid' => $openid
 				])->execute();
 				if (strpos($avatar, 'default_avatar') !== false) {
@@ -77,11 +86,82 @@ class FooController extends Controller
 					':openid' => $openid,
 					':nickname' => $name,
 					':avatar' => $avatar,
-					':note' => 'false',
+					':note' => 'dummy',
+				])->execute();
+
+				$cmdNet->bindValues([
+					':pUid' => $pUId,
+					':subUid' => $uid,
+					':rel' => UserNet::REL_ENDORSE,
 				])->execute();
 				$count++;
 			}
 			var_dump($count . ' - ' . $key);
+		}
+	}
+
+	protected static function matchers($page = 1)
+	{
+		$pageSize = 20;
+		$skip = ($page - 1) * $pageSize;
+		$cookie = 'UM_distinctid=15bf175beb5522-064458687c9093-153d655c-fa000-15bf175beb68aa; gr_user_id=85db4bee-33fb-457c-9a14-758e0b671178; token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqd3RfYXV0aCI6eyJpZCI6IjA2MmExZTgzM2I0MzQ1MTg5MDU2MjRkZDBlYWM2YmNjIiwicm9sZSI6MSwicGxhdGZvcm0iOiJ3ZWIifX0._gClovQP3SUhTTYBGXGrHg5qPuXAiVPubpLuoh9lwyg; CNZZDATA1260974692=2107170710-1494400798-%7C1496814351; gr_session_id_9e5d21f29bda5923=eb02a583-04b5-4ab5-9998-5683226d9b56';
+		$url = 'https://1meipo.com/api/proxy/matchmaker/list_matchmaker?page_count=' . $pageSize . '&type=recommend&skip=' . $skip . '&order_by=singles_count';
+		$ret = AppUtil::httpGet($url, [], true, $cookie);
+		$ret = json_decode($ret, 1);
+		if ($ret && isset($ret['data']['matchmakers'])) {
+			$fmtValue = function ($arr, $val) {
+				$keys = array_keys($arr);
+				return isset($keys[$val]) ? $keys[$val] : 0;
+			};
+			$conn = AppUtil::db();
+			$sql = 'delete from im_user_wechat WHERE wOpenId=:openid';
+			$cmdDel1 = $conn->createCommand($sql);
+			$sql = 'delete from im_user WHERE uOpenId=:openid';
+			$cmdDel2 = $conn->createCommand($sql);
+			$sql = 'insert into im_user_wechat(wUId,wOpenId,wNickName,wAvatar,wNote)
+					VALUES(:id,:openid,:nickname,:avatar,:note)';
+			$cmdUW = $conn->createCommand($sql);
+			$count = 0;
+			$keys = [];
+			foreach ($ret['data']['matchmakers'] as $row) {
+				$openid = $row['_id'];
+				$name = $row['nickname'];
+				$avatar = $row['avatar'];
+				$cmdDel1->bindValues([
+					':openid' => $openid
+				])->execute();
+				$cmdDel2->bindValues([
+					':openid' => $openid
+				])->execute();
+				if (strpos($avatar, 'default_avatar') !== false) {
+					continue;
+				}
+				$newUser = [
+					'uOpenId' => $openid,
+					'uRole' => User::ROLE_MATCHER,
+					'uName' => $name,
+					'uThumb' => $avatar,
+					'uAvatar' => $avatar,
+					'uLocation' => '[{"key":"","text":"' . $row['province'] . '"},{"key":"","text":"' . $row['city'] . '"}]',
+					'uIntro' => $row['description'],
+				];
+				$uid = User::add($newUser);
+				$cmdUW->bindValues([
+					':id' => $uid,
+					':openid' => $openid,
+					':nickname' => $name,
+					':avatar' => $avatar,
+					':note' => 'dummy',
+				])->execute();
+				$keys[] = [$uid, $openid];
+				$count++;
+			}
+			var_dump($count . ' - matcher');
+			foreach ($keys as $item) {
+				list($uId, $key) = $item;
+				self::singles($uId, $key, 1);
+				self::singles($uId, $key, 2);
+			}
 		}
 	}
 
@@ -93,18 +173,8 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$keys = [
-			'3a07e04f8641414db1460ddef7864870',
-			'1c93b3babf94440a82ea0c07c3ae3ed6',
-			'01ad8ade84d3471eaedb4232be67fda3',
-			'7cdb968f6fb24343bc224d04bc621d06',
-			'76e0cdedd85149a790b452507f7b364f',
-			'1402a2fa4cc4479887d65746ecd1c2f9',
-			'1512db312e9748d481864194b35b0e67'
-		];
-		foreach ($keys as $key) {
-			self::singles($key, 1);
-			self::singles($key, 2);
-		}
+		self::matchers(1);
+		self::matchers(2);
+		self::matchers(3);
 	}
 }

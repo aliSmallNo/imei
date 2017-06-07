@@ -231,7 +231,7 @@ class AppUtil
 		return $ret;
 	}
 
-	public static function httpGet($url, $header = [], $sslFlag = false)
+	public static function httpGet($url, $header = [], $sslFlag = false, $cookie = '')
 	{
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -244,6 +244,9 @@ class AppUtil
 		if ($sslFlag) {
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+		}
+		if($cookie){
+			curl_setopt($ch, CURLOPT_COOKIE, $cookie);
 		}
 		$ret = curl_exec($ch);
 		curl_close($ch);
