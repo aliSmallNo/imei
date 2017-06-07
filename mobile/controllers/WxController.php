@@ -92,32 +92,35 @@ class WxController extends BaseController
 			unset($routes[1]);
 			$routes = array_values($routes);
 		}
-		return self::renderPage("sreg.tpl", [
-			'uInfo' => $uInfo,
-			'nickname' => $nickname,
-			'avatar' => $avatar,
-			"maxYear" => 1999,
-			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
-			"years" => User::$Birthyear,
-			"height" => User::$Height,
-			"weight" => User::$Weight,
-			"income" => User::$Income,
-			"edu" => User::$Education,
-			"scope" => User::$Scope,
-			"job" => User::$Profession,
-			"house" => User::$Estate,
-			"car" => User::$Car,
-			"smoke" => User::$Smoke,
-			"drink" => User::$Alcohol,
-			"belief" => User::$Belief,
-			"workout" => User::$Fitness,
-			"diet" => User::$Diet,
-			"rest" => User::$Rest,
-			"pet" => User::$Pet,
-			"sign" => User::$Horos,
-			'routes' => json_encode($routes),
-			'switchRole' => $switchRole
-		]);
+		return self::renderPage("sreg.tpl",
+			[
+				'uInfo' => $uInfo,
+				'nickname' => $nickname,
+				'avatar' => $avatar,
+				"maxYear" => 1999,
+				'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
+				"years" => User::$Birthyear,
+				"height" => User::$Height,
+				"weight" => User::$Weight,
+				"income" => User::$Income,
+				"edu" => User::$Education,
+				"scope" => User::$Scope,
+				"job" => User::$Profession,
+				"house" => User::$Estate,
+				"car" => User::$Car,
+				"smoke" => User::$Smoke,
+				"drink" => User::$Alcohol,
+				"belief" => User::$Belief,
+				"workout" => User::$Fitness,
+				"diet" => User::$Diet,
+				"rest" => User::$Rest,
+				"pet" => User::$Pet,
+				"sign" => User::$Horos,
+				'routes' => json_encode($routes),
+				'switchRole' => $switchRole
+			],
+			'imei',
+			'注册单身身份');
 	}
 
 	public function actionMreg()
@@ -138,14 +141,17 @@ class WxController extends BaseController
 			$nickname = $wxInfo["uName"];
 			$uInfo = User::user(['uId' => $wxInfo['uId']]);
 		}
-		return self::renderPage("mreg.tpl", [
-			'nickname' => $nickname,
-			'avatar' => $avatar,
-			"maxYear" => 1999,
-			'uInfo' => $uInfo,
-			'scopes' => json_encode($scopes, JSON_UNESCAPED_UNICODE),
-			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
-		]);
+		return self::renderPage("mreg.tpl",
+			[
+				'nickname' => $nickname,
+				'avatar' => $avatar,
+				"maxYear" => 1999,
+				'uInfo' => $uInfo,
+				'scopes' => json_encode($scopes, JSON_UNESCAPED_UNICODE),
+				'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
+			],
+			'imei',
+			'注册媒婆身份');
 	}
 
 	public function actionMatch()
