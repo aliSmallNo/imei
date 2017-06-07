@@ -143,6 +143,7 @@ class WxController extends BaseController
 	public function actionSingle()
 	{
 		$openId = self::$WX_OpenId;
+		AppUtil::logFile($openId, 5, __FUNCTION__, __LINE__);
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		AppUtil::logFile($wxInfo, 5, __FUNCTION__, __LINE__);
 		//print_r($wxInfo);exit;
