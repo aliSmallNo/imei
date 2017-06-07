@@ -39,10 +39,24 @@ class WxController extends BaseController
 		$nickname = $avatar = '';
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$uInfo = [];
+		$hasGender = false;
+		$switchRole = false;
 		if ($wxInfo) {
 			$avatar = $wxInfo["uAvatar"];
 			$nickname = $wxInfo["uName"];
+			if ($wxInfo["uRole"] == User::ROLE_MATCHER) {
+				$switchRole = true;
+			}
 			$uInfo = User::user(['uId' => $wxInfo['uId']]);
+			if ($uInfo) {
+				$hasGender = $uInfo['gender'] ? true : false;
+			}
+		}
+		$routes = ['photo', 'gender', 'location', 'year', 'horos', 'height', 'weight', 'income', 'edu', 'intro', 'scope',
+			'job', 'house', 'car', 'smoke', 'drink', 'belief', 'workout', 'diet', 'rest', 'pet', 'interest'];
+		if ($hasGender) {
+			unset($routes[1]);
+			$routes = array_values($routes);
 		}
 		return self::renderPage("sreg.tpl", [
 			'uInfo' => $uInfo,
@@ -67,7 +81,8 @@ class WxController extends BaseController
 			"rest" => User::$Rest,
 			"pet" => User::$Pet,
 			"sign" => User::$Horos,
-
+			'routes' => json_encode($routes),
+			'switchRole' => $switchRole
 		]);
 	}
 
@@ -138,7 +153,7 @@ class WxController extends BaseController
 			//$intro = $wxInfo['uIntro'];
 			$role = $wxInfo["uRole"];
 			if ($role == User::ROLE_MATCHER) {
-				header("location:/wx/sreg#step0");
+				header("location:/wx/sreg#photo");
 				exit();
 			}
 		} else {

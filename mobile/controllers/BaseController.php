@@ -94,7 +94,7 @@ class BaseController extends Controller
 			$newActionId = 'imei';
 		} elseif (!$wxUserInfo['uLocation']) {
 			$newActionId = $wxUserInfo['uRole'] == User::ROLE_SINGLE ? 'sreg' : 'mreg';
-			$anchor = User::ROLE_SINGLE ? '#step0' : '';
+			$anchor = User::ROLE_SINGLE ? '#photo' : '';
 		}
 		if ($newActionId && $actionId != $newActionId) {
 			header('location:/wx/' . $newActionId . $anchor);

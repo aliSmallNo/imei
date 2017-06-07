@@ -11,8 +11,6 @@ require(['layer'],
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
-			curFrag: "step0",
-			curIndex: 0,
 			footer: $(".footer-bar"),
 			mobile: $("#cur_mobile").val(),
 			cork: $(".app-cork"),

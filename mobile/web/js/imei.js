@@ -175,7 +175,7 @@ require(["layer"],
 					if (resp.code == 0) {
 						showMsg(resp.msg);
 						setTimeout(function () {
-							location.href = (role === 'single') ? '/wx/sreg#step0' : '/wx/mreg';
+							location.href = (role === 'single') ? '/wx/sreg#photo' : '/wx/mreg';
 						}, 600);
 					} else {
 						showMsg(resp.msg);

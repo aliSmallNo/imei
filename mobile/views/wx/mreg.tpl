@@ -1,5 +1,5 @@
 <div class="m-popup-shade"></div>
-<div id="step0">
+<div>
 	<p class="m-header"><i>上传真实头像，提高牵线成功率哦</i></p>
 	<div class="nick_name" style="padding-top: 0; padding-bottom: .5rem">
 		<a href="javascript:;" class="photo photo-file">
