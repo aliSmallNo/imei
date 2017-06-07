@@ -303,8 +303,8 @@
 			<a href="#heartbeat" class="" id="myapply"><span class="title">心动列表</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
-			<a href="/user/my_matchmaker" class=""><span class="title">我的媒婆</span> <span class="tip">还没有媒婆</span></a>
-			<a href="/user/attentionhn" class="" id="myfollow"><span class="title">关注的媒婆</span> </a>
+			<a href="#myMP" class=""><span class="title">我的媒婆</span> <span class="tip">还没有媒婆</span></a>
+			<a href="#focusMP" class="" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
 			<a href="#saccount" class=""><span class="title">媒桂花</span></a>
@@ -384,6 +384,53 @@
 			<div class="img"><img src="/images/ico_no_msg.png" alt=""></div>
 			<p>还没动态哦！分享个人主页让更多人看到你吧！</p>
 		</div>
+	</ul>
+</section>
+<section id="myMP">
+	<div class="nav">
+		<a href="#sme">返回</a>
+	</div>
+	<div class="mymp-des">
+		<div class="top">我的媒婆</div>
+		<div class="mid">
+			<div>
+				<img src="/images/testImg.jpeg" alt="">
+			</div>
+			<b>徐小平</b>
+			<p>我是微媒100媒婆</p>
+		</div>
+		<div class="bot">
+			<a href="#sgroup">查看TA的主页</a>
+			<a href="javascript:;">更换其他媒婆</a>
+		</div>
+
+	</div>
+</section>
+<section id="focusMP">
+	<div class="nav">
+		<a href="#sme">返回</a>
+	</div>
+	<ul>
+		<li>
+			<a href="#sgroup">
+				<div class="left"><img src="/images/testImg.jpeg" alt=""></div>
+				<div class="right">
+					<p>刘烨 <span class="icon-vip"></span></p>
+					<p>作业盒子CEO</p>
+					<p>在帮11单身；牵线9次</p>
+				</div>
+			</a>
+		</li>
+		<li>
+			<a href="#sgroup">
+				<div class="left"><img src="/images/testImg.jpeg" alt=""></div>
+				<div class="right">
+					<p>刘烨 <span class="icon-vip"></span></p>
+					<p>作业盒子CEO</p>
+					<p>在帮11单身；牵线9次</p>
+				</div>
+			</a>
+		</li>
 	</ul>
 </section>
 <section id="saccount">
