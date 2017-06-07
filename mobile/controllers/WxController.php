@@ -39,10 +39,24 @@ class WxController extends BaseController
 		$nickname = $avatar = '';
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$uInfo = [];
+		$hasGender = false;
+		$switchRole = false;
 		if ($wxInfo) {
-			$avatar = $wxInfo["uAvatar"];
+			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
+			if ($wxInfo["uRole"] == User::ROLE_MATCHER) {
+				$switchRole = true;
+			}
 			$uInfo = User::user(['uId' => $wxInfo['uId']]);
+			if ($uInfo) {
+				$hasGender = $uInfo['gender'] ? true : false;
+			}
+		}
+		$routes = ['photo', 'gender', 'location', 'year', 'horos', 'height', 'weight', 'income', 'edu', 'intro', 'scope',
+			'job', 'house', 'car', 'smoke', 'drink', 'belief', 'workout', 'diet', 'rest', 'pet', 'interest'];
+		if ($hasGender) {
+			unset($routes[1]);
+			$routes = array_values($routes);
 		}
 		return self::renderPage("sreg.tpl", [
 			'uInfo' => $uInfo,
@@ -67,7 +81,8 @@ class WxController extends BaseController
 			"rest" => User::$Rest,
 			"pet" => User::$Pet,
 			"sign" => User::$Horos,
-
+			'routes' => json_encode($routes),
+			'switchRole' => $switchRole
 		]);
 	}
 
@@ -85,7 +100,7 @@ class WxController extends BaseController
 		$uInfo = [];
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		if ($wxInfo) {
-			$avatar = $wxInfo["uAvatar"];
+			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
 			$uInfo = User::user(['uId' => $wxInfo['uId']]);
 		}
@@ -105,7 +120,7 @@ class WxController extends BaseController
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$hint = '';
 		if ($wxInfo) {
-			$avatar = $wxInfo["uAvatar"];
+			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
 			$hint = '你的昵称未通过审核，请重新编辑~';
 			$role = $wxInfo["uRole"];
@@ -113,7 +128,6 @@ class WxController extends BaseController
 				header("location:/wx/mreg");
 				exit();
 			}
-			//$wxInfo['uHint'];
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
@@ -129,16 +143,15 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		//print_r($wxInfo);exit;
 		$hint = '';
 		if ($wxInfo) {
-			$avatar = $wxInfo["uAvatar"];
+			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
 			$hint = $wxInfo['uHint'];
 			//$intro = $wxInfo['uIntro'];
 			$role = $wxInfo["uRole"];
 			if ($role == User::ROLE_MATCHER) {
-				header("location:/wx/sreg#step0");
+				header("location:/wx/sreg#photo");
 				exit();
 			}
 		} else {

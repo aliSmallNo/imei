@@ -1,5 +1,5 @@
 if (document.location.hash === "" || document.location.hash === "#") {
-	document.location.hash = "#step0";
+	document.location.hash = "#photo";
 }
 require.config({
 	paths: {
@@ -16,8 +16,7 @@ require(["layer"],
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
-			curFrag: "step0",
-			curIndex: 0,
+			curFrag: "photo",
 			footer: $(".footer-bar"),
 			mobile: $("#cur_mobile").val(),
 			cork: $(".app-cork"),
@@ -27,19 +26,21 @@ require(["layer"],
 			postData: {},
 			gender: $('#cGender').val(),
 			serverId: "",
+			routeIndex: 0,
+			routeLength: mRoutes.length,
+			routeSkip: $.inArray('income', mRoutes),
 			mLat: 0,
 			mLng: 0
 		};
 
 		var SingleUtil = {
-			step0: $("#step0"),
-			step1: $("#step1"),
 			step2: $("#step2"),
 			year: "",
 			height: "",
 			salary: "",
 			edu: "",
-			avatar: null,
+			avatar: $(".avatar"),
+			nickname: $(".nickname"),
 			gender: "",
 			progressBar: $(".progress > div"),
 			btn: null,
@@ -50,25 +51,23 @@ require(["layer"],
 			provinceTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="province">{[name]}</a>{[/items]}</div>',
 			init: function () {
 				var util = this;
-				util.avatar = util.step0.find(".avatar");
 				$(".btn-s").on(kClick, function () {
 					var self = $(this);
 					var tag = self.attr("tag");
-					var to = self.attr("to");
 					switch (tag) {
 						case "avatar":
-							var img = util.avatar.attr("localid");
+							var img = util.avatar.attr("localId");
 							if (!img && !util.avatar.attr('src')) {
 								showMsg("头像还没有上传哦~");
 								return;
 							}
-							var nickname = util.step0.find(".input-s").val();
-							if (!$.trim(nickname)) {
+							var nickname = $.trim(util.nickname.val());
+							if (!nickname) {
 								showMsg("昵称还没有填写哦~");
 								return;
 							}
 							$sls.postData["name"] = nickname;
-							location.href = to;
+							util.next();
 							break;
 						case "location":
 							var lItem = [];
@@ -83,7 +82,7 @@ require(["layer"],
 								return;
 							}
 							$sls.postData["location"] = JSON.stringify(lItem);
-							location.href = to;
+							util.next();
 							break;
 						case "intro":
 							var intro = $.trim($("[data-tag=intro]").val());
@@ -92,14 +91,12 @@ require(["layer"],
 								return;
 							}
 							$sls.postData["intro"] = intro;
-							location.href = to;
-							break;
-						case "interest":
+							util.next();
 							break;
 					}
-
 				});
-				util.step0.find(".btn-select-img").on(kClick, function () {
+
+				$(".btn-select-img").on(kClick, function () {
 					wx.chooseImage({
 						count: 1,
 						sizeType: ['original', 'compressed'],
@@ -117,26 +114,27 @@ require(["layer"],
 					});
 					return false;
 				});
-				util.step1.find(".gender-opt").on(kClick, function () {
+
+				$(".gender-opt").on(kClick, function () {
 					var self = $(this);
 					util.gender = "female";
 					if (self.hasClass("male")) {
 						util.gender = "male";
 					}
-					// 1=>2
 					$sls.postData["gender"] = (util.gender === "male") ? 1 : 0;
-					location.href = "#step2";
+					util.next();
 					return false;
 				});
-				util.step2.find(".action-row").on(kClick, function () {
-					var html = '';
+
+				$(".action-row").on(kClick, function () {
 					util.btn = $(this);
-					html = Mustache.render(util.provinceTmp, {items: mProvinces});
+					var html = Mustache.render(util.provinceTmp, {items: mProvinces});
 					if (html) {
 						util.toggle(html);
 					}
 					return false;
 				});
+
 				$(document).on(kClick, '.m-popup-options > a', function () {
 					var self = $(this);
 					var text = self.html();
@@ -151,6 +149,7 @@ require(["layer"],
 					}
 					return false;
 				});
+
 				$(".cells > a").on(kClick, function () {
 					var self = $(this);
 					var cells = self.closest(".cells");
@@ -159,13 +158,13 @@ require(["layer"],
 					var tag = cells.attr("data-tag");
 					util[tag] = self.html();
 
-					// 3 => ...
 					$sls.postData[tag] = self.attr("data-key");
 					setTimeout(function () {
-						location.href = "#step" + ($sls.curIndex + 1);
+						util.next();
 					}, 120);
 					return false;
 				});
+
 				$(".btn-done").on(kClick, function () {
 					var interest = $.trim($("[data-tag=interest]").val());
 					if (!interest) {
@@ -174,9 +173,7 @@ require(["layer"],
 					}
 					$sls.postData["interest"] = interest;
 
-					console.log($sls.postData);
 					var localId = util.avatar.attr("localId");
-
 					if (localId) {
 						uploadImages(localId);
 					} else {
@@ -186,8 +183,12 @@ require(["layer"],
 			},
 			progress: function () {
 				var util = this;
-				var val = parseFloat($sls.curIndex) * 4.8;
+				var val = parseFloat($sls.routeIndex) * (100.0 / $sls.routeLength);
 				util.progressBar.css("width", val + "%");
+			},
+			next: function () {
+				$sls.routeIndex++;
+				location.href = '#' + mRoutes[$sls.routeIndex];
 			},
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
@@ -232,7 +233,7 @@ require(["layer"],
 
 		function uploadImages(localId) {
 			wx.uploadImage({
-				localId: localId.toString(),//$("#step0 .avatar").attr("localids").toString(),
+				localId: localId.toString(),
 				isShowProgressTips: 1,
 				success: function (res) {
 					$sls.serverId = res.serverId;
@@ -293,17 +294,15 @@ require(["layer"],
 					break;
 			}
 			$sls.curFrag = hashTag;
-			$sls.curIndex = parseInt(hashTag.substr(4));
+			$sls.routeIndex = $.inArray(hashTag, mRoutes);
 
-			if ($sls.curIndex == 20) {
+			if ($sls.routeIndex >= $sls.routeLength - 1) {
 				$sls.btnSkip.hide();
 				$sls.btnMatcher.hide();
-			}
-			else if ($sls.curIndex > 7) {
+			} else if ($sls.routeIndex >= $sls.routeSkip) {
 				$sls.btnSkip.show();
 				$sls.btnMatcher.hide();
-			}
-			else {
+			} else {
 				$sls.btnSkip.hide();
 				$sls.btnMatcher.show();
 			}
@@ -336,7 +335,6 @@ require(["layer"],
 		}
 
 		$(function () {
-			// FastClick.attach($sls.footer.get(0));
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;

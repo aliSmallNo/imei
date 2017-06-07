@@ -23,6 +23,7 @@ require(["layer"],
 			code: $('.code'),
 			wxString: $("#tpl_wx_info").html(),
 			btnCode: $('.btn-code'),
+			change: $('.change'),
 			loading: 0,
 			counting: 0
 		};
@@ -175,7 +176,7 @@ require(["layer"],
 					if (resp.code == 0) {
 						showMsg(resp.msg);
 						setTimeout(function () {
-							location.href = (role === 'single') ? '/wx/sreg#step0' : '/wx/mreg';
+							location.href = (role === 'single') ? '/wx/sreg#photo' : '/wx/mreg';
 						}, 600);
 					} else {
 						showMsg(resp.msg);
@@ -200,8 +201,10 @@ require(["layer"],
 			$('.change, .btn-change').on(kClick, function () {
 				if ($sls.form.hasClass('single')) {
 					$sls.form.addClass('matcher').removeClass('single');
+					$sls.change.html('点击这里切换成「媒婆」身份');
 				} else {
 					$sls.form.addClass('single').removeClass('matcher');
+					$sls.change.html('点击这里切换成「单身」身份');
 				}
 			});
 

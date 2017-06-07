@@ -258,7 +258,7 @@
 		{{if $hint}}
 		<div class="m-hint">
 			<span>{{$hint}}</span>
-			<a href="/wx/sreg#step0">GO</a>
+			<a href="/wx/sreg#photo">GO</a>
 		</div>
 		{{/if}}
 		<div class="u-my-wrap line-bottom">
@@ -272,7 +272,7 @@
 					<h5>传说中的大鲜肉</h5>
 				</div>
 				<a href="/wx/match" class="btn-outline change-role">切换成媒婆</a>
-				<a href="/wx/sreg#step0" class="btn-outline edit-role">编辑</a>
+				<a href="/wx/sreg#photo" class="btn-outline edit-role">编辑</a>
 			</div>
 			<a href="#album" class="u-my-album">
 				<div class="title">相册(0)</div>

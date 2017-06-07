@@ -73,7 +73,7 @@ class User extends ActiveRecord
 		291 => "不养，反感宠物", 293 => "不养，不反感宠物", 295 => "已养宠物", 297 => "无所谓"
 	];
 	static $Gender = [
-		0 => "美女", 1 => "帅哥"
+		10 => "美女", 11 => "帅哥"
 	];
 	static $Horos = [
 		301 => "白羊座(3.21~4.20)", 303 => "金牛座(4.21~5.20)", 305 => "双子座(5.22~6.21)", 307 => "巨蟹座(6.22~6.22)",
@@ -170,7 +170,8 @@ class User extends ActiveRecord
 			$entity->uUpdatedBy = $editBy;
 			$entity->uOpenId = $openid;
 			$entity->uName = $wxInfo['nickname'];
-			$entity->uAvatar = $wxInfo['headimgurl'];
+			$entity->uThumb = AppUtil::getMediaUrl($wxInfo['headimgurl'], true, true);
+			$entity->uAvatar = AppUtil::getMediaUrl($wxInfo['headimgurl'], false);
 			$entity->save();
 		}
 		return $entity->uId;
