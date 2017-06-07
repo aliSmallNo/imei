@@ -23,7 +23,13 @@ require(["layer"],
 			wxString: $("#tpl_wx_info").html(),
 			news: $(".animate"),
 			newIdx: 0,
-			newsTimer: 0
+			newsTimer: 0,
+
+			shade: $(".m-popup-shade"),
+			main: $(".m-popup-main"),
+			content: $(".m-popup-content"),
+			contionString: "",
+			contionVal: "",
 		};
 
 		var RechargeUtil = {
@@ -174,6 +180,80 @@ require(["layer"],
 					}
 				}
 			});
+		});
+
+		$("#matchCondition a").on(kClick, function () {
+			var self = $(this);
+			var tag = self.attr("tag");
+			switch (tag) {
+				case "age":
+					showShooseContion(tag);
+					break;
+				case "height":
+					showShooseContion(tag);
+					break;
+				case "income":
+					showShooseContion(tag);
+					break;
+				case "edu":
+					showShooseContion(tag);
+					break;
+				case "comfirm":
+					var data = {};
+					self.closest("section").find(".condtion-item").each(function () {
+						var ta = $(this).attr("tag");
+						var value = $(this).find(".right").attr("data-id");
+						data[ta] = value;
+					});
+					console.log(data);
+					break;
+			}
+		});
+
+		function showShooseContion(tag) {
+			var html = $("#" + tag).html();
+			$sls.main.show();
+			$sls.content.html(html).addClass("animate-pop-in");
+			$sls.shade.fadeIn(160);
+		}
+
+		$(document).on(kClick, ".m-popup-options a", function () {
+			var self = $(this);
+			var obj = self.closest(".m-popup-options");
+			var tag = obj.attr("tag");
+			var key = self.attr("data-key");
+			var text = self.html();
+			if (key == 0) {
+				$sls.contionString = "";
+				$sls.contionVal = "";
+				$sls.contionString = text;
+				$sls.contionVal = key;
+				$("#matchCondition a[tag=" + tag + "]").find(".right").html($sls.contionString);
+				$("#matchCondition a[tag=" + tag + "]").find(".right").attr("data-id", $sls.contionVal);
+				$sls.main.hide();
+				$sls.shade.fadeOut(160);
+			} else {
+				if (!obj.find(".start").hasClass("bb")) {
+					$sls.contionString = "";
+					$sls.contionVal = "";
+					obj.find(".start").html(text);
+					obj.find(".start").addClass("bb");
+					$sls.contionString = text;
+					$sls.contionVal = key;
+				} else {
+					if (key <= $sls.contionVal) {
+						return;
+					}
+					obj.find(".end").html(text);
+					obj.addClass("bb");
+					$sls.contionString = $sls.contionString + "-" + text;
+					$sls.contionVal = $sls.contionVal + "-" + key;
+					$("#matchCondition a[tag=" + tag + "]").find(".right").html($sls.contionString);
+					$("#matchCondition a[tag=" + tag + "]").find(".right").attr("data-id", $sls.contionVal);
+					$sls.main.hide();
+					$sls.shade.fadeOut(160);
+				}
+			}
 		});
 
 		function wxUploadImages(localId) {
