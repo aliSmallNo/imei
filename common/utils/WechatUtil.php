@@ -71,8 +71,11 @@ class WechatUtil
 		return $accessToken;
 	}
 
-	public static function getAccessToken($pass, $reset = false)
+	public static function getAccessToken($pass = '', $reset = false)
 	{
+		if (!$pass) {
+			$pass = self::ACCESS_CODE;
+		}
 		if ($pass == self::ACCESS_CODE) {
 			return self::accessToken($reset);
 		}

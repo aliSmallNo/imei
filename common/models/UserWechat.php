@@ -236,13 +236,13 @@ class UserWechat extends ActiveRecord
 		if (AppUtil::scene() == 'dev') {
 			$renewFlag = true;
 		}
-		if (isset($ret["uPhone"]) && isset($ret["uLocation"]) && isset($ret["uAvatar"]) && isset($ret["uHint"]) && !$renewFlag) {
+		if (isset($ret["uPhone"]) && isset($ret["uLocation"]) && isset($ret["Avatar"]) && isset($ret["uHint"]) && !$renewFlag) {
 			return $ret;
 		}
 		if (strlen($openId) < 20) {
 			return 0;
 		}
-		$fields = ['uId', 'uRole', 'uPhone', 'uName', 'uLocation', 'uAvatar', 'uHint', 'uIntro'];
+		$fields = ['uId', 'uRole', 'uPhone', 'uName', 'uLocation', 'uThumb', 'uAvatar', 'uHint', 'uIntro'];
 		if (AppUtil::scene() == 'dev') {
 			$ret = UserWechat::findOne(['wOpenId' => $openId]);
 			if ($ret) {
@@ -252,6 +252,7 @@ class UserWechat extends ActiveRecord
 			foreach ($fields as $field) {
 				$ret[$field] = isset($uInfo[$field]) ? $uInfo[$field] : '';
 			}
+			$ret['Avatar'] = $ret['uThumb'] ? $ret['uThumb'] : $ret['uAvatar'];
 			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
 			return $ret;
 		} else {
@@ -262,6 +263,7 @@ class UserWechat extends ActiveRecord
 				foreach ($fields as $field) {
 					$ret[$field] = isset($uInfo[$field]) ? $uInfo[$field] : '';
 				}
+				$ret['Avatar'] = $ret['uThumb'] ? $ret['uThumb'] : $ret['uAvatar'];
 				RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
 				return $ret;
 			}

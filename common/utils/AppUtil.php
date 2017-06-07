@@ -1076,14 +1076,6 @@ class AppUtil
 		return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
 	}
 
-	private static function stringXor($str)
-	{
-		for ($i = 0; $i < strlen($str); ++$i) {
-			$str[$i] = chr(ord($str[$i]) ^ 0x7F);
-		}
-		return $str;
-	}
-
 	public static function ymdDate()
 	{
 		$days = [];
@@ -1117,102 +1109,6 @@ class AppUtil
 		];
 	}
 
-	public static function weatherNewInfo($cityName, $days)
-	{
-		$weatherInfo = AppUtil::getHEWeather($cityName, $days);
-		$weatherInfo2 = [];
-
-		if ($weatherInfo) {
-			foreach ($weatherInfo as $k => $v) {
-				$weatherInfo2[$k]['pic'] = $v['img'];
-				$date = '';
-				if ($k == 0) {
-					$date = '今天';
-				}
-				if ($k == 1) {
-					$date = '明天';
-				}
-				if ($k == 2) {
-					$date = '后天';
-				}
-				if ($k > 2) {
-					$date = date("m月d日", strtotime($v['date']));
-				}
-				$weatherInfo2[$k]['date'] = $date;;
-				$weatherInfo2[$k]['cond_day'] = $v['txt'];
-				$weatherInfo2[$k]['temp'] = $v['tmps'];
-				$weatherInfo2[$k]['wind'] = $v['winds'];
-			}
-		}
-
-		$bid = ($cityName == '东台') ? 320981223 : 320981223;
-
-		$redisAgentInfoKey = generalId::getAgentPublishInfoKey($bid);
-		$redis = objInstance::getRedisIns();
-		$publishInfo = $redis->get($redisAgentInfoKey);
-		$publishInfo = json_decode($publishInfo, true);
-		return [$weatherInfo2, $publishInfo];
-	}
-
-	public static function weatherNewInfo2($cityName, $days)
-	{
-		$weatherInfo = Utils::getHEWeather($cityName, $days);
-		$weatherInfo2 = [];
-
-		if ($weatherInfo) {
-			foreach ($weatherInfo as $k => $v) {
-				$weatherInfo2[$k]['pic'] = $v['img'];
-				$date = '';
-				if ($k == 0) {
-					$date = '今天';
-				}
-				if ($k == 1) {
-					$date = '明天';
-				}
-				if ($k == 2) {
-					//$date = '后天';
-				}
-				if ($k > 1) {
-					$date = date("n-j", strtotime($v['date']));
-				}
-				$weatherInfo2[$k]['date'] = $date;;
-				$weatherInfo2[$k]['cond_day'] = $v['txt'];
-				$weatherInfo2[$k]['temp'] = $v['tmps'];
-				$weatherInfo2[$k]['wind'] = $v['winds'];
-			}
-		}
-		$items = Article::items2($cityName);
-		return [$weatherInfo2, $items];
-	}
-
-	public static function wechatWeather($bId = 0)
-	{
-
-		$name = Branch::find()->where(['bId' => $bId])->asArray()->one();
-		if (!$name) {
-			return 0;
-		}
-		$name = (isset($name["bAddress"]) && $name["bAddress"]) ? $name["bAddress"] : "";
-
-		if (!$name) {
-			return 0;
-		}
-		$p1 = mb_strpos($name, '省', 0, "utf-8");
-		$pos1 = $p1 ? ($p1 + 1) : 0;
-		$p2 = mb_strpos($name, '市', 0, "utf-8");
-		$len = $p1 ? ($p2 - $p1) : ($p2 + 1);
-		$area = mb_substr($name, $pos1, $len, "utf-8");
-		$cityname = mb_substr($name, $pos1, ($len - 1), "utf-8");
-		$weatherInfo = AppUtil::getHEWeather($area, 3);
-		if (!$weatherInfo) {
-			return "";
-		}
-		foreach ($weatherInfo as $k => &$v) {
-			//date txt tmps
-			$v["dateText"] = date("n/j", strtotime($v["date"])) . ($k == 0 ? "（今天）" : "");
-		}
-		return [$weatherInfo, $cityname];
-	}
 
 	public static function grouping($amount, $count)
 	{
@@ -1232,11 +1128,21 @@ class AppUtil
 		return $heaps;
 	}
 
+	/**
+	 * 获取云存储链接
+	 * @param $mediaId 微信中的mediaId, 或者http下载链接
+	 * @param bool $thumbFlag 如果是图片，是否压缩成为缩率图
+	 * @param bool $squareFlag 如果是图片，是否存储成正方形
+	 * @return string
+	 */
 	public static function getMediaUrl($mediaId, $thumbFlag = false, $squareFlag = false)
 	{
-		$accessToken = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
-		$baseUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s";
-		$imageUrl = sprintf($baseUrl, $accessToken, $mediaId);
+		$imageUrl = $mediaId;
+		if (strpos($imageUrl, 'http') !== 0) {
+			$accessToken = WechatUtil::getAccessToken();
+			$baseUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s";
+			$imageUrl = sprintf($baseUrl, $accessToken, $mediaId);
+		}
 		$ch = curl_init($imageUrl);
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		curl_setopt($ch, CURLOPT_NOBODY, 0);
@@ -1264,6 +1170,7 @@ class AppUtil
 		}
 		return '';
 	}
+
 
 	public static function getExtName($contentType)
 	{
@@ -1294,36 +1201,6 @@ class AppUtil
 				break;
 		}
 		return $fileExt;
-	}
-
-	public static function getPageList($page, $sumpage, $pagecount)
-	{
-		$pagelist = [];
-		if ($sumpage > $pagecount) {
-			if ($page <= ceil($pagecount / 2)) {
-				for ($i = 1; $i <= $pagecount; $i++) {
-					$pagelist[] = $i;
-				}
-			} elseif ($page > ($sumpage - ceil($pagecount / 2))) {// 4 > 5-2
-				for ($i = ($sumpage - $pagecount + 1); $i <= $sumpage; $i++) {//5-3 <=5
-					$pagelist[] = $i;
-				}
-			} else {
-				$i = $page - floor($pagecount / 2) + 1;
-				if ($pagecount % 2) {
-					$i = ($page - floor($pagecount / 2));
-				}
-				for ($i; $i <= ($page + floor($pagecount / 2)); $i++) {//3-2 <=3+2
-					$pagelist[] = $i;
-				}
-			}
-		} else {
-			for ($i = 1; $i <= $sumpage; $i++) {
-				$pagelist[] = $i;
-			}
-		}
-
-		return $pagelist;
 	}
 
 	static $EARTH_RADIUS = 6378.137;

@@ -170,7 +170,8 @@ class User extends ActiveRecord
 			$entity->uUpdatedBy = $editBy;
 			$entity->uOpenId = $openid;
 			$entity->uName = $wxInfo['nickname'];
-			$entity->uAvatar = $wxInfo['headimgurl'];
+			$entity->uThumb = AppUtil::getMediaUrl($wxInfo['headimgurl'], true, true);
+			$entity->uAvatar = AppUtil::getMediaUrl($wxInfo['headimgurl'], false);
 			$entity->save();
 		}
 		return $entity->uId;

@@ -42,7 +42,7 @@ class WxController extends BaseController
 		$hasGender = false;
 		$switchRole = false;
 		if ($wxInfo) {
-			$avatar = $wxInfo["uAvatar"];
+			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
 			if ($wxInfo["uRole"] == User::ROLE_MATCHER) {
 				$switchRole = true;
@@ -100,7 +100,7 @@ class WxController extends BaseController
 		$uInfo = [];
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		if ($wxInfo) {
-			$avatar = $wxInfo["uAvatar"];
+			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
 			$uInfo = User::user(['uId' => $wxInfo['uId']]);
 		}
@@ -120,7 +120,7 @@ class WxController extends BaseController
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$hint = '';
 		if ($wxInfo) {
-			$avatar = $wxInfo["uAvatar"];
+			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
 			$hint = '你的昵称未通过审核，请重新编辑~';
 			$role = $wxInfo["uRole"];
@@ -147,7 +147,7 @@ class WxController extends BaseController
 		//print_r($wxInfo);exit;
 		$hint = '';
 		if ($wxInfo) {
-			$avatar = $wxInfo["uAvatar"];
+			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
 			$hint = $wxInfo['uHint'];
 			//$intro = $wxInfo['uIntro'];

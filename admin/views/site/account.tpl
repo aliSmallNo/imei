@@ -163,8 +163,6 @@
 
 					</div>
 				</div>
-				<!-- uAvatar,uOpenId,uLocation, -->
-
 				<div class="form-group">
 					<label class="col-sm-4 control-label">您的角色:</label>
 					<div class="col-sm-8">
