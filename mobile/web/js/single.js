@@ -256,6 +256,13 @@ require(["layer"],
 			}
 		});
 
+		$(".tab a").on(kClick, function () {
+			var tabObj = $(this).closest(".tab");
+			tabObj.find("a").removeClass();
+			$(this).addClass("active");
+			tabObj.next().html($("#wechats").html());
+		});
+
 		function wxUploadImages(localId) {
 			wx.uploadImage({
 				localId: localId.toString(),

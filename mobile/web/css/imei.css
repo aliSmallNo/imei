@@ -2433,8 +2433,6 @@ section {
     color: #777; }
     .nav a:first-child {
       margin-left: 1.2rem; }
-    .nav a:last-child {
-      text-align: right; }
 .sgroup-top .sgroup-top-des {
   background: #f8c5d7; }
   .sgroup-top .sgroup-top-des .img {
@@ -2864,5 +2862,74 @@ section {
   color: #fff;
   background: #f781ab;
   text-align: center; }
+
+.tab {
+  display: flex;
+  padding: 1rem 1rem 0 1rem;
+  border-bottom: 1px solid #eee;
+  background: #fff; }
+  .tab a {
+    flex: 1;
+    text-align: center;
+    font-size: 1rem;
+    color: #777;
+    padding-bottom: 1rem; }
+  .tab a.active {
+    border-bottom: 1px solid #f781ab;
+    color: #f781ab; }
+
+.plist li {
+  background: #fff;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #eee; }
+  .plist li a {
+    display: flex;
+    position: relative; }
+    .plist li a:after {
+      content: " ";
+      display: inline-block;
+      height: 0.8rem;
+      width: 0.8rem;
+      border-width: 1px 1px 0 0;
+      border-color: #999;
+      border-style: solid;
+      -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+      transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+      position: absolute;
+      top: 50%;
+      right: 0;
+      margin-top: -0.5rem; }
+    .plist li a .plist-l {
+      flex: 0 0 6rem;
+      text-align: center; }
+      .plist li a .plist-l img {
+        width: 6rem;
+        border-radius: 6rem; }
+    .plist li a .plist-r {
+      flex: 1;
+      padding: 0.5rem 1rem; }
+      .plist li a .plist-r p {
+        font-size: 1.3rem; }
+      .plist li a .plist-r i {
+        font-size: 1rem;
+        color: #aaa; }
+.plist .plist-defalt {
+  padding: 10rem 1rem; }
+  .plist .plist-defalt .img {
+    text-align: center; }
+    .plist .plist-defalt .img img {
+      width: 7rem; }
+  .plist .plist-defalt p {
+    font-size: 1rem;
+    color: #aaa;
+    text-align: center;
+    padding-top: 2rem; }
+    .plist .plist-defalt p a {
+      font-size: 1.2rem;
+      color: #f781ab;
+      display: initial; }
+      .plist .plist-defalt p a:after {
+        width: 0;
+        height: 0; }
 
 /*# sourceMappingURL=imei.css.map */

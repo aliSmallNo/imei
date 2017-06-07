@@ -2395,7 +2395,7 @@ section
 			&:first-child
 				margin-left: 1.2rem
 			&:last-child
-				text-align: right
+				//text-align: right
 	.sgroup-top-des
 		background: #f8c5d7
 		.img
@@ -2804,6 +2804,65 @@ section
 		color: #fff
 		background: #f781ab
 		text-align: center
+
+.tab
+	display: flex
+	padding: 1rem 1rem 0 1rem
+	border-bottom: 1px solid #eee
+	background: #fff
+	a
+		flex: 1
+		text-align: center
+		font-size: 1rem
+		color: #777
+		padding-bottom: 1rem
+	a.active
+		border-bottom: 1px solid #f781ab
+		color: #f781ab
+
+.plist
+	li
+		background: #fff
+		padding: 1rem 2rem
+		border-bottom: 1px solid #eee
+		a
+			display: flex
+			position: relative
+			&:after
+				@include arrowRight
+			.plist-l
+				flex: 0 0 6rem
+				text-align: center
+				img
+					width: 6rem
+					border-radius: 6rem
+			.plist-r
+				flex: 1
+				padding: .5rem 1rem
+				p
+					font-size: 1.3rem
+				i
+					font-size: 1rem
+					color: #aaa
+	.plist-defalt
+		padding: 10rem 1rem
+		.img
+			text-align: center
+			img
+				width: 7rem
+		p
+			font-size: 1rem
+			color: #aaa
+			text-align: center
+			padding-top: 2rem
+			a
+				font-size: 1.2rem
+				color: #f781ab
+				display: initial
+				&:after
+					width: 0
+					height: 0
+
 
 
 
