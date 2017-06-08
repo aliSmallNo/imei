@@ -44,7 +44,7 @@ require(["layer"],
 		var UserUtil = {
 			page: 1,
 			loading: 0,
-			list: $('.singles'),
+			list: $('.users2'),
 			tmp: $('#tpl_single').html(),
 			spinner: null,
 			noMore: null,

@@ -204,10 +204,10 @@ class WxController extends BaseController
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
 			if ($wxInfo['uGender'] == User::GENDER_MALE) {
-				$items = UserNet::girls($uInfo['id'], 1, 10);
+				list($items) = UserNet::girls($uInfo['id'], 1, 10);
 				$prefer = 'female';
 			} else {
-				$items = UserNet::boys($uInfo['id'], 1, 10);
+				list($items) = UserNet::boys($uInfo['id'], 1, 10);
 			}
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;

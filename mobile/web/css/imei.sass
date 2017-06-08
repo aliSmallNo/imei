@@ -2984,12 +2984,12 @@ section
 		font-size: 1.5rem
 		font-weight: $weightBold
 		text-align: center
-		line-height: 3.2rem
+		line-height: 3.5rem
 	h5
-		font-size: 1.3rem
+		font-size: 1.2rem
 		font-weight: $weightNormal
 		text-align: center
-		line-height: 2.8rem
+		line-height: 2rem
 		@include textTail
 	.countInfo
 		height: 6rem
@@ -3026,4 +3026,55 @@ section
 				display: block
 				line-height: 2.5rem
 				color: #fff
+
+.users2
+	padding: 1rem
+	background-color: #fff
+	a
+		@include borderBox
+		padding: .5rem .5rem 1.5rem
+		float: left
+		width: 50%
+		.img
+			position: relative
+			color: #fff
+			text-align: center
+			.location
+				position: absolute
+				left: .5rem
+				bottom: 1rem
+				z-index: 2
+				background: url(../images/ico_location.png) no-repeat left
+				-webkit-background-size: auto 1.4rem
+				background-size: auto 1.4rem
+				padding-left: 1.6rem
+				font-size: 1.2rem
+			img
+				width: 14rem
+				height: 14rem
+				border-radius: .4rem
+				overflow: hidden
+		.name
+			font-size: 1.4rem
+			@include textTail
+			.icon
+				width: 1.2rem
+				height: 1.2rem
+				display: inline-block
+				position: relative
+				top: .1rem
+				&.male
+					background: url(../images/ico_gender_male.png) no-repeat center center
+					background-size: 100% 100%
+				&.female
+					background: url(../images/ico_gender_female.png) no-repeat center center
+					background-size: 100% 100%
+		.intro
+			color: $grayFontColorLight
+			font-size: 1rem
+			margin-top: .3rem
+			height: 1.4rem
+			line-height: 1.4rem
+			width: 100%
+			@include textTail
 
