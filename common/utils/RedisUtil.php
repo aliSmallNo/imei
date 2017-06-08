@@ -28,6 +28,8 @@ class RedisUtil
 	const KEY_CLOUD_COS = 'cloud_cos';
 	const KEY_SMS_CODE = 'sms_code';
 	const KEY_SMS_CODE_CNT = 'sms_code_cnt';
+	const KEY_DISTANCE = 'dist';
+	const KEY_CITY_IP = 'city_ip';
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
@@ -40,7 +42,9 @@ class RedisUtil
 		self::KEY_PUB_CODE => 600,
 		self::KEY_CLOUD_COS => 3600 * 10,
 		self::KEY_SMS_CODE => 60 * 10,
-		self::KEY_SMS_CODE_CNT => 86400
+		self::KEY_SMS_CODE_CNT => 86400,
+		self::KEY_DISTANCE => 86400 * 20,
+		self::KEY_CITY_IP => 86400 * 2,
 	];
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';
@@ -138,6 +142,13 @@ class RedisUtil
 		}
 	}
 
+	/**
+	 * 获取自增长数字
+	 * @param $field
+	 * @param string $redis
+	 * @param bool $hideFactor
+	 * @return integer
+	 */
 	protected static function getSequenceKeys($field, $redis = "", $hideFactor = false)
 	{
 		if (!$field) {

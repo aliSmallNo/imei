@@ -1,14 +1,14 @@
 <?php
 
-namespace common\utils;
-
-
 /**
  * Created by PhpStorm.
  * User: weirui
  * Date: 10/5/2017
  * Time: 5:43 PM
  */
+
+namespace common\utils;
+
 use common\models\UserWechat;
 use Yii;
 use yii\web\Cookie;
@@ -39,6 +39,13 @@ class AppUtil
 
 	const EXPRESSES = ['顺丰快递', 'EMS快递', '申通快递', '韵达快递', '中通快递',
 		"圆通快递", "京东快递", '天天快递', '百世汇通', '宅急送快运', '德邦物流'];
+
+	const MODE_APP = 1;
+	const MODE_MOBILE = 2;
+	const MODE_WEIXIN = 3;
+	const MODE_PC = 4;
+	const MODE_ADMIN = 5;
+	const MODE_UNKNOWN = 9;
 
 	private static $SMS_SIGN = '微媒100';
 	private static $SMS_TMP_ID = 9179;
@@ -162,20 +169,20 @@ class AppUtil
 	{
 		$deviceInfo = [
 			"id" => "",
-			"mode" => Order::MODE_APP,
+			"mode" => self::MODE_APP,
 			"name" => "",
 		];
 		if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 			$deviceInfo['id'] = self::getCookie(self::COOKIE_OPENID, "unknown");
 			$deviceInfo['name'] = $deviceInfo['id'] != "unknown" ? UserWechat::getNickName($deviceInfo['id']) : '';
-			$deviceInfo['mode'] = Order::MODE_WEIXIN;
+			$deviceInfo['mode'] = self::MODE_WEIXIN;
 		} elseif (isset($_SERVER['HTTP_HOST']) && in_array($_SERVER['HTTP_HOST'], self::$PC_HOSTS)) {
 			$deviceInfo['id'] = self::getIP();
-			$deviceInfo['mode'] = Order::MODE_PC;
+			$deviceInfo['mode'] = self::MODE_PC;
 			$deviceInfo['name'] = $deviceInfo["id"];
 		} elseif (isset($_SERVER['HTTP_ORDERTYPE']) && $_SERVER['HTTP_ORDERTYPE'] == "backend") {
 			$deviceInfo['id'] = $_SERVER['HTTP_ORDERADMINID'];
-			$deviceInfo['mode'] = Order::MODE_ADMIN;
+			$deviceInfo['mode'] = self::MODE_ADMIN;
 			$deviceInfo['name'] = $_SERVER['HTTP_ORDERADMINNAME'];
 		}
 		return $deviceInfo;
@@ -308,26 +315,6 @@ class AppUtil
 		return $newDate;
 	}
 
-	public static function getHostAPI()
-	{
-		$url = objInstance::getApiHost();
-		if ($url && strlen($url) > 10) {
-			return $url;
-		}
-		return "http://api.bpbhd.com";
-	}
-
-	public static function createPagination($pageIndex, $pageSize, $count)
-	{
-		$pages = new \yii\data\Pagination(['totalCount' => $count, 'pageSize' => $pageSize]);
-		$pages->setPage($pageIndex - 1);
-		$res = \yii\widgets\LinkPager::widget(['pagination' => $pages]);
-		$pagination = str_replace('<ul class="pagination">', '<div class="dataTables_paginate paging_simple_numbers"><ul class="pagination">', $res);
-		$pagination = mb_ereg_replace('&laquo;', '<i class="fa fa-angle-double-left"></i>', $pagination);
-		$pagination = mb_ereg_replace('&raquo;', '<i class="fa fa-angle-double-right"></i>', $pagination);
-		return $pagination;
-	}
-
 	public static function unicode2Utf8($str)
 	{
 		$code = intval(hexdec($str));
@@ -357,22 +344,19 @@ class AppUtil
 			$points[] = $lng . "," . $lat;
 		}
 		$strPoints = implode(";", $points);
-		$redisKey = generalId::getAmapDrivings();
 		$redisField = md5("$baseLng,$baseLat;" . $strPoints);
-		$redis = objInstance::getRedisIns();
-		$ret = $redis->hget($redisKey, $redisField);
-		$ret = json_decode($ret, true);
+		$ret = RedisUtil::getCache(RedisUtil::KEY_DISTANCE, $redisField);
+		$ret = json_decode($ret, 1);
 		if ($ret && $ret["expire"] > time()) {
 			return $ret["route"]["paths"][0]["distance"];
 		}
-
 		$url = "http://restapi.amap.com/v3/direction/driving?origin=$baseLng,$baseLat&destination=$baseLng,$baseLat";
 		$url .= "&waypoints=$strPoints&extensions=all&strategy=2&output=json&key=$mapKey";
 		$ret = self::httpGet($url);
 		$ret = json_decode($ret, true);
 		if ($ret && isset($ret["route"]["paths"]) && $ret["status"] == 1) {
 			$ret["expire"] = time() + 86400 * 25;
-			$redis->hset($redisKey, $redisField, json_encode($ret));
+			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_DISTANCE, $redisField);
 			return $ret["route"]["paths"][0]["distance"];
 		}
 		return 0;
@@ -450,7 +434,7 @@ class AppUtil
 
 			if ($info['error'] == UPLOAD_ERR_OK) {
 				$tmp_name = $info["tmp_name"];
-				$key = generalId::getImageSeq();
+				$key = RedisUtil::getImageSeq();
 				$name = $key . '.xls';
 				$filePath = "$uploads_dir/$name";
 				move_uploaded_file($tmp_name, $filePath);
@@ -524,11 +508,9 @@ class AppUtil
 	{
 		$ip = $_SERVER["REMOTE_ADDR"];
 		if (!$ip) {
-			return "";
+			return '';
 		}
-		$redisKey = generalId::getWeatherCityKey($ip);
-		$redis = AppUtil::redis();
-		$ret = $redis->get($redisKey);
+		$ret = RedisUtil::getCache(RedisUtil::KEY_CITY_IP, $ip);
 		$ret = json_decode($ret, true);
 		if ($ret && isset($ret["retData"]["district"])) {
 			return $ret["retData"]["district"];
@@ -537,183 +519,10 @@ class AppUtil
 			["apikey:eaae340d496d883c14df61447fcc2e22"]);
 		$ret = json_decode($ret, true);
 		if ($ret && isset($ret["retData"]["district"])) {
-			$redis->set($redisKey, json_encode($ret));
-			$redis->expire($redisKey, 86400 * 2);
+			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_CITY_IP, $ip);
 			return $ret["retData"]["district"];
 		}
-		return "";
-	}
-
-	public static function getYYWeather($cityId = "CH190707", $num = 3)
-	{
-		$redis = AppUtil::redis();
-		$redisKey = generalId::getWeatherCityKey(md5($cityId . date("Ymd") . "YY"));
-		$weatherInfo = json_decode($redis->get($redisKey), true);
-		if ($weatherInfo) {
-			$weatherInfo = array_slice($weatherInfo, 0, $num);
-			return $weatherInfo;
-		}
-
-		$items = [];
-		$url = "http://api.yytianqi.com/forecast7d?city=$cityId&key=nfnj3jgsfsadmt28";
-		$ret = self::httpGet($url);
-		$ret = json_decode($ret, true);
-		if ($ret && isset($ret["data"]["list"])) {
-			$ret = $ret["data"]["list"];
-			foreach ($ret as $key => $item) {
-				if (count($items) >= $num) {
-					break;
-				}
-				$tq1 = $item["tq1"];
-				$texts = [$tq1];
-				if (isset($item["tq2"])) {
-					$texts[] = $item["tq2"];
-					$texts = array_unique($texts);
-				}
-				$tmps = [$item["qw1"]];
-				if (isset($item["qw2"])) {
-					$tmps[] = $item["qw2"];
-					$tmps = array_unique($tmps);
-				}
-				$fx1 = $item["fx1"];
-				if ($fx1 != "无持续风向") {
-					$winds = [$item["fx1"]];
-				}
-				if (isset($item["fl1"])) {
-					$winds[] = $item["fl1"];
-					$winds = array_unique($winds);
-				}
-				$items[] = [
-					"date" => $item["date"],
-					"img" => validate::getWeatherImg($tq1),
-					"tmps" => implode("~", $tmps) . "℃",
-					"winds" => implode("", $winds),
-					"txt" => implode("转", $texts),
-				];
-			}
-			$items = array_values($items);
-			$redis->set($redisKey, json_encode($items));
-			$redis->expire($redisKey, 60 * 20);
-		}
-		return $items;
-	}
-
-	public static function getHEWeather($cityName, $num = 4)
-	{
-		$redis = AppUtil::redis();
-		$redisKey = generalId::getWeatherCityKey(md5($cityName . date("Ymd") . "HE"));
-		$weatherInfo = json_decode($redis->get($redisKey), true);
-		if ($weatherInfo) {
-			$weatherInfo = array_slice($weatherInfo, 0, $num);
-			return $weatherInfo;
-		}
-		$env = AppUtil::scene();
-		if ($env == "dev") {
-			return "";
-		}
-		$url = "https://free-api.heweather.com/v5/forecast?city=%s&key=%s";
-		$url = sprintf($url, urlencode($cityName), "f1271677490e4a8282cae1baeb847dd8");
-		$ret = self::httpGet($url, [], true);
-		$ret = json_decode($ret, true);
-		if ($ret) {
-			$ret = array_values($ret);
-			if ($ret && isset($ret[0][0]["daily_forecast"])) {
-				$curTmp = "";
-				if (isset($ret[0][0]["now"]["tmp"])) {
-					$curTmp = $ret[0][0]["now"]["tmp"] . "℃";
-					if (isset($ret[0][0]["now"]["cond"]["txt"])) {
-						$curTmp .= $ret[0][0]["now"]["cond"]["txt"];
-					}
-				}
-				$ret = $ret[0][0]["daily_forecast"];
-
-				$items = [];
-				foreach ($ret as $item) {
-					if (count($items) >= $num) {
-						continue;
-					}
-					unset($item["astro"]);
-					$texts = [];
-					// Rain: 白天天气
-					if (isset($item["cond"]["txt_d"])) {
-						$texts[] = $item["cond"]["txt_d"];
-					}
-					// Rain: 夜晚天气
-					if (isset($item["cond"]["txt_n"]) && !in_array($item["cond"]["txt_n"], $texts)) {
-						$texts[] = $item["cond"]["txt_n"];
-					}
-					$item["txt"] = implode("转", $texts);
-					unset($item["cond"]);
-
-					$item["img"] = validate::getWeatherImg($item["txt"]);
-
-					$tmps = [$item["tmp"]["max"]];
-					if (!in_array($item["tmp"]["min"], $tmps)) {
-						$tmps[] = $item["tmp"]["min"];
-					}
-					$item["tmps"] = implode("~", $tmps) . "℃";
-					unset($item["tmp"]);
-
-					$winds = $item["wind"]["sc"];
-					if ($winds != "微风") {
-						$winds = $item["wind"]["dir"] . " " . $item["wind"]["sc"];
-					}
-					$item["winds"] = $winds;
-					unset($item["wind"]);
-
-					if (!$items) {
-						$item["curTmp"] = $curTmp;
-					}
-
-					$items[$item["date"]] = $item;
-				}
-				$items = array_values($items);
-				$redis->set($redisKey, json_encode($items));
-				$redis->expire($redisKey, 60 * 20);
-				$items = array_slice($items, 0, $num);
-				return $items;
-			}
-		}
-		return "";
-	}
-
-	/**
-	 * 日志记录文件
-	 * @author hanhh
-	 * @create 2016年09月29日ß
-	 * @param $msg
-	 */
-	public static function writelog($msg)
-	{
-		//Yii::$app->getRuntimePath()
-		$f = '/tmp/hanhh.log';
-		$txt = (is_array($msg)) ? var_export($msg, true) : $msg;
-		@file_put_contents($f, date('ymd H:i:s') . "\n" . $txt . "\n", 8);
-	}
-
-	/**
-	 * 日志插入数据库
-	 * @author hanhh
-	 * @create 2016年10月10日
-	 * @param $msg array
-	 * @return int
-	 */
-	public static function writelog2db($msg)
-	{
-		$conn = AppUtil::db();
-		$sql = "insert into `hd_log`(`logKey`, `logUser`, `logUserId`, `logBranchId`, `logBefore`, `logAfter`, `logChannel`, `logQueryDate`, `logDate`) 
-				values(:logKey, :logUser, :logUserId, :logBranchId, :logBefore, :logAfter, :logChannel, :logQueryDate, now())";
-		$cmdLog = $conn->createCommand($sql);
-		$cmdLog->bindValue(":logKey", $msg['key']);
-		$cmdLog->bindValue(":logUser", $msg['userName']);
-		$cmdLog->bindValue(":logUserId", $msg['userId']);
-		$cmdLog->bindValue(":logBranchId", $msg['branchId']);
-		$cmdLog->bindValue(":logAfter", json_encode($msg['after']));
-		$cmdLog->bindValue(":logBefore", json_encode($msg['before']));
-		$cmdLog->bindValue(":logChannel", $msg['channel']);
-		$cmdLog->bindValue(":logQueryDate", $msg['queryDate']);
-		$ret = $cmdLog->execute();
-		return $ret;
+		return '';
 	}
 
 	/**
@@ -860,7 +669,7 @@ class AppUtil
 	public static function num2Hans($num)
 	{
 		$hans = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];
-		$firstNum = floor($num / 10.0);
+		$firstNum = intval(floor($num / 10.0));
 		$prefix = "";
 		if ($firstNum == 1) {
 			$prefix = "十";
@@ -900,7 +709,7 @@ class AppUtil
 		}
 		$txt[] = is_array($msg) ? json_encode($msg) : $msg;
 		$hasLog = is_file($file);
-		$ret = @file_put_contents($file, date('ymd H:i:s') . "\n" . implode(" - ", $txt) . "\n", 8);
+		$ret = @file_put_contents($file, date('ymd H:i:s') . PHP_EOL . implode(" - ", $txt) . PHP_EOL, 8);
 		if (!$hasLog) {
 			chmod($file, 0666);
 		}
@@ -971,8 +780,6 @@ class AppUtil
 		return [$fullPath, $shortPath];
 	}
 
-	private static $SecretKey = "xjqGMDcz7QyA1jC61Ct4";
-
 	public static function decrypt($string)
 	{
 		if (!$string) {
@@ -988,46 +795,9 @@ class AppUtil
 		return self::tiriEncode($string);
 	}
 
-	private static function crypt($string, $operation, $key)
-	{
-		$key = md5($key);
-		$key_length = strlen($key);
-		$string = $operation == 'D' ? base64_decode($string) : substr(md5($string . $key), 0, 8) . $string;
-		$string_length = strlen($string);
-		$rndkey = $box = array();
-		$result = '';
-		for ($i = 0; $i <= 255; $i++) {
-			$rndkey[$i] = ord($key[$i % $key_length]);
-			$box[$i] = $i;
-		}
-		for ($j = $i = 0; $i < 256; $i++) {
-			$j = ($j + $box[$i] + $rndkey[$i]) % 256;
-			$tmp = $box[$i];
-			$box[$i] = $box[$j];
-			$box[$j] = $tmp;
-		}
-		for ($a = $j = $i = 0; $i < $string_length; $i++) {
-			$a = ($a + 1) % 256;
-			$j = ($j + $box[$a]) % 256;
-			$tmp = $box[$a];
-			$box[$a] = $box[$j];
-			$box[$j] = $tmp;
-			$result .= chr(ord($string[$i]) ^ ($box[($box[$a] + $box[$j]) % 256]));
-		}
-		if ($operation == 'D') {
-			if (substr($result, 0, 8) == substr(md5(substr($result, 8) . $key), 0, 8)) {
-				return substr($result, 8);
-			} else {
-				return '';
-			}
-		} else {
-			return str_replace('=', '', base64_encode($result));
-		}
-	}
+	protected static $CryptSalt = "9iZ09B271Fa";
 
-	private static $CryptSalt = "4iPieZ09B";
-
-	private static function tiriEncode($str, $factor = 0)
+	protected static function tiriEncode($str, $factor = 0)
 	{
 		$str = self::$CryptSalt . $str . self::$CryptSalt;
 		$len = strlen($str);
@@ -1049,7 +819,7 @@ class AppUtil
 		return self::base64URLEncode($ret);
 	}
 
-	private static function tiriDecode($str)
+	protected static function tiriDecode($str)
 	{
 		if ($str == '') {
 			return "";
@@ -1076,12 +846,12 @@ class AppUtil
 		return "";
 	}
 
-	private static function base64URLEncode($data)
+	protected static function base64URLEncode($data)
 	{
 		return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
 	}
 
-	private static function base64URLDecode($data)
+	protected static function base64URLDecode($data)
 	{
 		return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
 	}
@@ -1119,7 +889,6 @@ class AppUtil
 		];
 	}
 
-
 	public static function grouping($amount, $count)
 	{
 		$heaps = [];
@@ -1140,7 +909,7 @@ class AppUtil
 
 	/**
 	 * 获取云存储链接
-	 * @param $mediaId 微信中的mediaId, 或者http下载链接
+	 * @param $mediaId string 微信中的mediaId, 或者http下载链接
 	 * @param bool $thumbFlag 如果是图片，是否压缩成为缩率图
 	 * @param bool $squareFlag 如果是图片，是否存储成正方形
 	 * @return string
