@@ -676,8 +676,8 @@
 	</div>
 </script>
 <script type="text/html" id="wechats">
-	<li>
-		<a href="#sprofile">
+	<li id="">
+		<a href="#sprofile" class="sprofile">
 			<div class="plist-l">
 				<img src="/images/testImg.jpeg">
 			</div>
@@ -693,7 +693,7 @@
 	{[#data]}
 	<li id="{[id]}">
 		<div class="head">
-			<a href="#sprofile" class="photo sex2">
+			<a href="javascript:;" class="photo sex2 sprofile">
 				<img src="{[avatar]}"
 						 class="nic">
 				<div class="intro">
@@ -719,6 +719,202 @@
 		<span class="con-title">择偶条件: </span>
 		<span class="con-des">{[age]} {[height]} {[income]} {[edu]}</span>
 	</a>
+</script>
+<script type="text/html" id="sprofileTemp">
+	<div class="sprofile-top">
+		<div class="nav">
+			<a href="#slook">返回</a>
+		</div>
+		<div class="img">
+			<img src="{[avatar]}" alt="">
+		</div>
+		<div class="sprofile-top-des">
+			<p>{[name]}<em class="icon-{[genderclass]}"></em></p>
+			<i>{[#age]}{[age]}岁{[/age]} {[#height]}{[height]}cm{[/height]} {[#horos]}{[horos]}{[/horos]} {[#job]}{[job]}{[/job]}</i>
+			<span>{[location]}</span>
+		</div>
+	</div>
+	<div class="sprofile-album">
+		<a class="title" tag="album">相册 ({[co]})</a>
+		<ul>
+			{[#img3]}
+			<li>
+				<img src="{[.]}" alt="">
+			</li>
+			{[/img3]}
+		</ul>
+	</div>
+	<div class="sprofile-base">
+		<div class="title">基本资料</div>
+		<a class="content" tag="baseInfo" data='{[jdata]}'>
+			{[#height]}<span>{[height]}</span>{[/height]}
+			{[#edu]}<span>{[edu]}</span>{[/edu]}
+			{[#income]}<span>{[income]}</span>{[/income]}
+			{[#house]}<span>{[house]}</span>{[/house]}
+			{[#car]}<span>{[car]}</span>{[/car]}
+		</a>
+	</div>
+	<div class="sprofile-mp">
+		<div class="left">
+			<div class="img">
+				<img src="{[avatar]}" alt="">
+			</div>
+			<p>思彬</p>
+			<i>渠道拓展</i>
+		</div>
+		<div class="right">
+			这个女的很棒！！
+		</div>
+	</div>
+	<div class="sprofile-condtion">
+		<div class="title">择偶条件</div>
+		<div class="content">
+			{[#cond]}
+			<span>{[age]}</span>
+			<span>{[height]}</span>
+			<span>{[income]}</span>
+			<span>{[edu]}</span>
+			{[/cond]}
+		</div>
+	</div>
+	<div class="sprofile-intro">
+		<div class="title">内心独白</div>
+		<div class="content">
+			{[intro]}
+		</div>
+	</div>
+	<div class="sprofile-forbid">
+		<a href="javascript:;" tag="forbid"><span class="icon-l icon-forbid"></span>举报拉黑</a>
+	</div>
+	<div class="sprofile-bottom">
+		<a href="javascript:;" tag="love"><span class="icon-l icon-love"></span>心动</a>
+		<a href="javascript:;" tag="wechat">加微信聊聊</a>
+	</div>
+</script>
+<script type="text/html" id="personalInfoTemp">
+	<div class="personalInfo-top">
+		<div class="nav">
+			<a href="#sprofile">返回</a>
+		</div>
+		<div class="img">
+			<div class="img-filter" style="background: url('{[avatar]}') no-repeat center center">
+			</div>
+			<div class="img-last">
+				<img src="{[avatar]}" alt="">
+			</div>
+		</div>
+	</div>
+	<div class="personalInfo-list">
+		<div class="title">基本资料</div>
+		<div class="item-des">
+			<div class="left">呢称</div>
+			<div class="right">{[name]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">性别</div>
+			<div class="right">{[gender]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">所在城市</div>
+			<div class="right">{[location]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">出生年份</div>
+			<div class="right">{[year]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">身高</div>
+			<div class="right">{[height]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">年薪</div>
+			<div class="right">{[income]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">学历</div>
+			<div class="right">{[edu]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">星座</div>
+			<div class="right">{[horos]}</div>
+		</div>
+
+		<div class="title">个人小档案</div>
+		<div class="item-des">
+			<div class="left">购房情况</div>
+			<div class="right">{[house]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">购车情况</div>
+			<div class="right">{[car]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">行业</div>
+			<div class="right">{[scope]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">职业</div>
+			<div class="right">{[job]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">饮酒情况</div>
+			<div class="right">{[drink]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">吸烟情况</div>
+			<div class="right">{[smoke]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">宗教信仰</div>
+			<div class="right">{[belief]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">健身习惯</div>
+			<div class="right">{[fitness]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">饮食习惯</div>
+			<div class="right">{[diet]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">作息习惯</div>
+			<div class="right">{[rest]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">关于宠物</div>
+			<div class="right">{[pet]}</div>
+		</div>
+
+		<div class="title">内心独白</div>
+		<div class="item-des">
+			<div class="des">{[intro]}</div>
+		</div>
+
+		<div class="title">兴趣爱好</div>
+		<div class="item-des">
+			<div class="des">{[interest]}</div>
+		</div>
+
+		<div class="title">择偶条件</div>
+		{[#cond]}
+		<div class="item-des">
+			<div class="left">年龄</div>
+			<div class="right">{[age]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">身高</div>
+			<div class="right">{[height]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">学收入</div>
+			<div class="right">{[income]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">学历</div>
+			<div class="right">{[edu]}</div>
+		</div>
+		{[/cond]}
+	</div>
 </script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}

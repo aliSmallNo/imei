@@ -375,20 +375,74 @@ class User extends ActiveRecord
 		return $Info;
 	}
 
+	public static function sprofile($openId)
+	{
+		$Info = self::find()->where(["uOpenId" => $openId])->asArray()->one();
+		$result = [
+			"imgList" => [],
+			"img3" => [],
+			"co" => 0,
+		];
+		$uAlbum = $Info["uAlbum"];
+		if ($uAlbum) {
+			$uAlbum = json_decode($uAlbum, 1);
+			$result["imgList"] = $uAlbum;
+			$result["co"] = count($uAlbum);
+			if (count($uAlbum) <= 3) {
+				$result["img3"] = $uAlbum;
+			} else {
+				for ($i = 0; $i < 3; $i++) {
+					$result["img3"][] = array_pop($uAlbum);
+				}
+			}
+		}
+
+		//"avatar" => "uAvatar", "name" => "uName", "genderclass" => "uGender", "location" => "uLocation",
+		//"year" => "uBirthYear", "age" => "uBirthYear","intro" => "uIntro", "interest" => "uInterest",
+		$location = json_decode($Info["uLocation"], 1);
+		$result["avatar"] = $Info["uAvatar"];
+		$result["name"] = $Info["uName"];
+		$result["genderclass"] = $Info["uGender"] == 10 ? "female" : "male";
+		if (is_array($location) && count($location) == 2) {
+			$result["location"] = $location[0]["text"] . $location[1]["text"];
+		} else {
+			$result["location"] = "noLocation";
+		}
+		$result["year"] = $Info["uBirthYear"];
+		$result["age"] = date("Y") - $Info["uBirthYear"];
+		$result["intro"] = $Info["uIntro"];
+		$result["interest"] = $Info["uInterest"];
+
+		$fields = [
+			"gender" => "uGender",
+			"height" => "uHeight", "job" => "uProfession", "horos" => "uHoros", "edu" => "uEducation",
+			"income" => "uIncome", "house" => "uEstate", "car" => "uCar",
+			"scope" => "uScope", "smoke" => "uSmoke", "drink" => "uAlcohol", "belief" => "uBelief", "fitness" => "uFitness",
+			"diet" => "uDiet", "rest" => "uRest", "pet" => "uPet",
+		];
+		foreach ($fields as $k => $v) {
+			$fText = substr($v, 1);
+			$result[$k] = isset(self::$$fText[$Info[$v]]) ? self::$$fText[$Info[$v]] : "";
+		}
+
+		//$Info
+		$result["cond"] = self::matchCondition($Info["uFilter"]);
+		$result["jdata"] = json_encode($result);
+
+		return $result;
+
+
+	}
+
 	public static function matchCondition($uFilter)
 	{
 		$matchInfo = json_decode($uFilter, 1);
-
 		$matchcondition = [];
-
 		if (is_array($matchInfo) && $matchInfo) {
 			if (isset($matchInfo["age"]) && $matchInfo["age"] > 0) {
 				$ageArr = explode("-", $matchInfo["age"]);
-
 				if (count($ageArr) == 2) {
 					$matchcondition["age"] = self::$AgeFilter[$ageArr[0]] . '~' . self::$AgeFilter[$ageArr[1]];
-				} else {
-					$matchcondition["age"] = "qqqqq";
 				}
 			} else {
 				$matchcondition["age"] = self::$AgeFilter[0];
@@ -439,7 +493,7 @@ class User extends ActiveRecord
 		$condition = "uRole=$uRole and uGender=$gender and POSITION('$prov' IN uLocation) >0 and POSITION('$city' IN uLocation) >0 ";
 
 		if (!$data) {
-			$data = json_decode($uFilter,1);
+			$data = json_decode($uFilter, 1);
 		}
 		if (isset($data["age"]) && $data["age"] != 0) {
 			$age = explode("-", $data["age"]);
@@ -472,7 +526,8 @@ class User extends ActiveRecord
 		$result = [];
 		foreach ($ret as $v) {
 			$data = [];
-			$data["id"] = $v["uId"];
+			$data["id"] = $v["uOpenId"];
+			$data["ids"] = $v["uId"];
 			$data["avatar"] = $v["uAvatar"];
 			$data["name"] = $v["uName"];
 			$data["gender"] = $v["uGender"] == 10 ? "female" : "male";

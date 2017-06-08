@@ -34,6 +34,8 @@ require(["layer"],
 			firstLoadFlag: true,
 			getUserFiterFlag: false,
 			sUserPage: 1,
+
+			sprofileF: 0,
 		};
 
 		var RechargeUtil = {
@@ -133,35 +135,39 @@ require(["layer"],
 			self.closest(".sgroup-list").find("[tag=" + tag + "]").show();
 		});
 
-		$("#sprofile a").each(function () {
+		function sprofileDesc(data) {
+			$("#personalInfo").html(Mustache.render($("#personalInfoTemp").html(), data));
+			location.href = "#personalInfo";
+		}
+
+
+		$(document).on(kClick, "#sprofile a", function () {
 			var self = $(this);
 			var tag = self.attr("tag");
-			self.on(kClick, function () {
-				switch (tag) {
-					case "album":
-						break;
-					case "baseInfo":
-						location.href = "#personalInfo";
-						break;
-					case "forbid":
-						break;
-					case "love":
-						var self = $(this).find("span");
-						if (self.hasClass("icon-love")) {
-							showMsg('<span class="icon-alert icon-loved"></span><br><span class="font1rem">心动成功</span>');
-							self.removeClass("icon-love").addClass("icon-loved");
-						} else {
-							showMsg('<span class="icon-alert icon-love-break"></span><br><span class="font1rem">已取消心动</span>');
-							self.removeClass("icon-loved").addClass("icon-love");
-						}
-						break;
-					case "wechat":
-						$sls.cork.show();
-						$(".getWechat").show();
-						break;
-
-				}
-			});
+			switch (tag) {
+				case "album":
+					break;
+				case "baseInfo":
+					var data = JSON.parse(self.attr("data"));
+					sprofileDesc(data);
+					break;
+				case "forbid":
+					break;
+				case "love":
+					var obj = $(this).find("span");
+					if (obj.hasClass("icon-love")) {
+						showMsg('<span class="icon-alert icon-loved"></span><br><span class="font1rem">心动成功</span>');
+						obj.removeClass("icon-love").addClass("icon-loved");
+					} else {
+						showMsg('<span class="icon-alert icon-love-break"></span><br><span class="font1rem">已取消心动</span>');
+						obj.removeClass("icon-loved").addClass("icon-love");
+					}
+					break;
+				case "wechat":
+					$sls.cork.show();
+					$(".getWechat").show();
+					break;
+			}
 		});
 
 		$(".getWechat a").on(kClick, function () {
@@ -397,6 +403,22 @@ require(["layer"],
 				time: duration
 			});
 		}
+
+		$(document).on(kClick, "a.sprofile", function () {
+			if ($sls.sprofileF) {
+				return;
+			}
+			$sls.sprofileF = 1;
+			var id = $(this).closest("li").attr("id");
+			$.post("/api/user", {
+				tag: "sprofile",
+				id: id,
+			}, function (resp) {
+				$("#sprofile").html(Mustache.render($("#sprofileTemp").html(), resp.data.data));
+				$sls.sprofileF = 0;
+				location.href = "#sprofile";
+			}, "json");
+		});
 
 		$(function () {
 			$("body").addClass("bg-color");
