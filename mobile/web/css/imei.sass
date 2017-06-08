@@ -2062,21 +2062,34 @@ section
 	height: 4.2rem
 	line-height: 4.2rem
 	background: #fff
-	a
-		color: $grayFontColor
-		padding: 0 1.5rem
+	.nocondition
+		a
+			color: $grayFontColor
+			padding: 0 1.5rem
+			display: block
+			height: 100%
+			.btn
+				float: right
+				display: inline-block
+				color: $mainColor
+				border: $mainColorLight 1px solid
+				height: 3rem
+				line-height: 3rem
+				margin-top: .5rem
+				padding: 0 1rem
+				border-radius: 1.5rem
+	.conditions
+		position: relative
 		display: block
-		height: 100%
-		.btn
-			float: right
-			display: inline-block
-			color: $mainColor
-			border: $mainColorLight 1px solid
-			height: 3rem
-			line-height: 3rem
-			margin-top: .5rem
-			padding: 0 1rem
-			border-radius: 1.5rem
+		padding: 0 1rem
+		&:after
+			@include arrowRight
+			right: 1rem
+		.con-title, .con-des
+			font-size: 1.2rem
+			color: #000
+		.con-des
+			color: #777
 
 .m-top-users
 	li
@@ -3013,3 +3026,4 @@ section
 				display: block
 				line-height: 2.5rem
 				color: #fff
+

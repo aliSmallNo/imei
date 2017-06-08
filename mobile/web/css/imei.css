@@ -2091,12 +2091,12 @@ section {
   height: 4.2rem;
   line-height: 4.2rem;
   background: #fff; }
-  .my-condition a {
+  .my-condition .nocondition a {
     color: #727272;
     padding: 0 1.5rem;
     display: block;
     height: 100%; }
-    .my-condition a .btn {
+    .my-condition .nocondition a .btn {
       float: right;
       display: inline-block;
       color: #f06292;
@@ -2106,6 +2106,30 @@ section {
       margin-top: 0.5rem;
       padding: 0 1rem;
       border-radius: 1.5rem; }
+  .my-condition .conditions {
+    position: relative;
+    display: block;
+    padding: 0 1rem; }
+    .my-condition .conditions:after {
+      content: " ";
+      display: inline-block;
+      height: 0.8rem;
+      width: 0.8rem;
+      border-width: 1px 1px 0 0;
+      border-color: #999;
+      border-style: solid;
+      -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+      transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+      position: absolute;
+      top: 50%;
+      right: 0;
+      margin-top: -0.5rem;
+      right: 1rem; }
+    .my-condition .conditions .con-title, .my-condition .conditions .con-des {
+      font-size: 1.2rem;
+      color: #000; }
+    .my-condition .conditions .con-des {
+      color: #777; }
 
 .m-top-users li {
   position: relative;

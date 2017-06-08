@@ -52,180 +52,13 @@
 </section>
 <section id="slook">
 	<div class="my-condition">
-		<a href="#matchCondition"
-			 class="nocondition">
+		<a href="#matchCondition" class="nocondition">
 			<span class="desc">您还没有设置择偶条件哦~</span>
 			<span class="btn">去设置</span>
 		</a>
 	</div>
 	<ul class="m-top-users">
-		<li id="596729a4b76a4a26af3d73d151510102">
-			<div class="head">
-				<a href="#sprofile" class="photo sex2">
-					<img src="https://img.1meipo.com/c17e7540996f88f43bd0f6b4a1e79938.jpg?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
-							 class="nic">
-					<div class="intro">
-						这位美人儿强力推荐，天生丽质，贤良淑德，聪明伶俐，秀丽端庄，一笑倾城，再笑倾城，三笑倾你心，各位优质男青年赶紧行动吧
-					</div>
-					<img src="https://img.1meipo.com/bd8d5e5fafb98f89b5c2b38fd0c9ecc5.jpeg?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100"
-							 class="avatar">
-				</a>
-			</div>
-			<div class="info"><span class="name">张小一</span> <span class="icon female"></span> <span class="otherInfo">29岁 . 166cm . 水瓶座 . 医疗生物</span>
-			</div>
-			<div class="sign">真诚、孝顺、相互尊重附有责任心的你，我们一起会有个美好的未来。</div>
-			<div class="action clearfix">
-				<span class="pos">北京</span>
-				<a href="javascript:;" id="596729a4b76a4a26af3d73d151510102" class="apply">加微信聊聊</a>
-				<a href="javascript:;" class="like">心动</a>
-			</div>
-		</li>
-		<li id="user-c04a752e237a47bb984146fcdc694ac4">
-			<div class="head">
-				<a href="#sprofile" class="photo sex2">
-					<img src="https://img.1meipo.com/bb31469d423e7463fb604c84cb8132f5.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
-							 class="nic">
-					<div class="intro">
-						优质小美女～～性格乖巧活泼开朗大方✌️，活泼美丽外表下有一颗温柔的心。喜欢古董古玩的可以聊起来，在行～～优秀男士快啦吧优质女一枚😊
-					</div>
-					<img src="https://img.1meipo.com/7316155b6bce0d0deb1956b800c26dbd.jpeg?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100"
-							 class="avatar">
-				</a></div>
-			<div class="info"><span class="name">Eva_keer</span> <span class="icon female"></span> <span class="otherInfo">24岁 . 158cm . 双鱼座 . 其他</span>
-			</div>
-			<div class="sign">正常人</div>
-			<div class="action clearfix">
-				<span class="pos">北京</span>
-				<span name="Eva_keer" id="c04a752e237a47bb984146fcdc694ac4" class="apply">加微信聊聊</span>
-				<span class="like">心动</span></div>
-		</li>
-		<li id="user-472e131fdfe3458b89e7aa90a227b123">
-			<div class="head">
-				<a href="#sprofile" class="photo sex2">
-					<img src="https://img.1meipo.com/6d097354efdc2f9f1305158ea3cf0edc.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
-							 class="nic">
-					<div class="intro">招人喜欢的性格，良好的社交沟通能力，身材高挑丰满😄不差钱</div>
-					<img class="avatar"
-							 src="https://img.1meipo.com/c587650e228936531cce49c18dcf412a.jpeg?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100">
-				</a>
-			</div>
-			<div class="info">
-				<span class="name">👑 小仙女 ෆ⃛꧂</span>
-				<span class="icon female"></span>
-				<span class="otherInfo">23岁 . 172cm . 水瓶座 . IT互联网</span></div>
-			<div class="sign">四季变化多端，希望你是空调，知道我的冷暖……</div>
-			<div class="action clearfix">
-				<span class="pos">北京</span>
-				<span name="👑 小仙女 ෆ⃛꧂" id="472e131fdfe3458b89e7aa90a227b123" class="apply">加微信聊聊</span>
-				<span class="like">心动</span>
-			</div>
-		</li>
-		<li id="user-temp4bda6c77942c492ba0c66a562b78b188">
-			<div class="rcmd">
-				<a href="https://1meipo.com/topic/singleid/index">
-					<img src="https://img.1meipo.com/57b142e53971e115411d3a5c72ff2a12.jpg"></a> <span class="close">X</span>
-			</div>
-		</li>
-		<li id="user-ff4bd1c18d57486294aad0b2a9674251">
-			<div class="head">
-				<a href="#sprofile" class="photo sex2">
-					<img src="https://img.1meipo.com/0058615a82770db547ee118dd41d4cc5.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
-							 class="nic">
-					<div class="intro">肤白貌美，唇红齿白的大美女，认识10年的姐姐，非常靠谱善良的人，希望早日有那个对的人来呵护照顾她</div>
-					<img class="avatar"
-							 src="https://img.1meipo.com/e202eaeaf43b56bbd4805c8261cc9ae2.jpg?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100">
-				</a>
-			</div>
-			<div class="info">
-				<span class="name">Amazing 红姐</span>
-				<span class="icon female"></span>
-				<span class="otherInfo">40岁 . 166cm . 天秤座 . 服务业</span>
-			</div>
-			<div class="sign">我希望对方是一位有思想、有担当，高个子的男士</div>
-			<div class="action clearfix">
-				<span class="pos">北京</span>
-				<span name="Amazing 红姐" id="ff4bd1c18d57486294aad0b2a9674251" class="apply">加微信聊聊</span>
-				<span class="like">心动</span>
-			</div>
-		</li>
-		<li id="user-45d0726d202f4d5db15ff0ac258290e4">
-			<div class="head">
-				<a href="#sprofile" class="photo sex2">
-					<img src="https://img.1meipo.com/e5261f3f09057c4bd7dd8493bdc65740.jpeg?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
-							 class="nic">
-					<div class="intro">张佳推荐了TA</div>
-					<img class="avatar"
-							 src="https://img.1meipo.com/a0e99f0faf2e1fc780dbc1738ff1ae63.jpeg?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100">
-				</a>
-			</div>
-			<div class="info"><span class="name">媛</span> <span class="icon female"></span> <span class="otherInfo">25岁 . 158cm . 天秤座 . 房产建筑</span>
-			</div>
-			<div class="sign">吃饭，睡觉，读书</div>
-			<div class="action clearfix">
-				<span class="pos">北京</span> <span name="媛" id="45d0726d202f4d5db15ff0ac258290e4" class="apply">加微信聊聊</span>
-				<span class="like">心动</span>
-			</div>
-		</li>
-		<li id="user-00965b87d03d41e5bf13402f25da16fb">
-			<div class="head">
-				<a href="#sprofile" class="photo sex2">
-					<img src="https://img.1meipo.com/4fef291f63c090dcd4b970f04180e21e.jpeg?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
-							 class="nic">
-					<div class="intro">
-						文艺清新的且有独立思想及人格魅力的女生！喜欢艺术的世界、喜欢中国传统文化、喜欢旅游、摄影。湖北大妞儿！有事业心、三观超正！闺蜜团主推之一！多数情况下文静的...当你是个带动者，她也完全可以配合～是让人舒服的、懂得生活的女神...在我心里是个女神呢😄
-					</div>
-					<img class="avatar"
-							 src="https://img.1meipo.com/8a79f0069d6804d79418273974232853.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100">
-				</a>
-			</div>
-			<div class="info">
-				<span class="name">Fatima</span> <span class="icon female"></span>
-				<span class="otherInfo">32岁 . 165cm . 射手座 . 能源环保</span>
-			</div>
-			<div class="sign">寻找未来的“导航仪”…...</div>
-			<div class="action clearfix">
-				<span class="pos">北京</span> <span name="Fatima" id="00965b87d03d41e5bf13402f25da16fb" class="apply">加微信聊聊</span>
-				<span class="like">心动</span></div>
-		</li>
-		<li id="user-47334709fef74fcdbb23706d983f10a3">
-			<div class="head">
-				<a href="#sprofile" class="photo sex2">
-					<img src="https://img.1meipo.com/94e16832be583c3d68247a031b3a5652.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
-							 class="nic">
-					<div class="intro">葉雨建推荐了TA</div>
-					<img class="avatar"
-							 src="https://img.1meipo.com/c3e51d036208287aad0027b6b7bfd080.png?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100">
-				</a>
-			</div>
-			<div class="info">
-				<span class="name">sunny</span> <span class="icon female"></span> <span
-								class="otherInfo">36岁 . 164cm . 狮子座 . 其他</span>
-			</div>
-			<div class="sign">我积极乐观过好每一天，期待不远处的你！</div>
-			<div class="action clearfix">
-				<span class="pos">北京</span> <span name="sunny" id="47334709fef74fcdbb23706d983f10a3" class="apply">加微信聊聊</span>
-				<span class="like">心动</span></div>
-		</li>
-		<li id="user-b4ddda9ea4a249c4b4d5aa8850e4325c">
-			<div class="head">
-				<a href="#sprofile" class="photo sex2">
-					<img src="https://img.1meipo.com/6c87d9c30ce5b29355a78e32abc942d1.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
-							 class="nic">
-					<div class="intro">我的同事小叶子～活泼爱笑的精灵鬼～行走的攻略，欧洲自由行导游担当～生活小达人～只有你想不到的，没有她不知道的～坐标北京</div>
-					<img class="avatar"
-							 src="https://img.1meipo.com/5a3034e413df7a5f15bacaf90f2c05b4.jpeg?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100">
-				</a>
-			</div>
-			<div class="info">
-				<span class="name">叶天线</span> <span class="icon female"></span> <span
-								class="otherInfo">26岁 . 165cm . 射手座 . 金融</span></div>
-			<div class="sign">carpe diem</div>
-			<div class="action clearfix">
-				<span class="pos">北京</span>
-				<span name="叶天线" id="b4ddda9ea4a249c4b4d5aa8850e4325c" class="apply">加微信聊聊</span>
-				<span class="like">心动</span>
-			</div>
-		</li>
+
 	</ul>
 	<div class="m-more">上拉加载更多</div>
 </section>
@@ -813,7 +646,6 @@
 		{{foreach from=$height key=key item=h}}
 		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
-		<a href="javascript:;" data-key="0">不限</a>
 	</div>
 </script>
 <script type="text/html" id="age">
@@ -826,39 +658,26 @@
 		{{foreach from=$age key=key item=h}}
 		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
-		<a href="javascript:;" data-key="0">不限</a>
 	</div>
 </script>
 <script type="text/html" id="income">
 	<div class="m-popup-options col3 clearfix" tag="income">
-		<div class="m-popup-options-top">
-			<div class="start"></div>
-			<div class="mid">至</div>
-			<div class="end"></div>
-		</div>
 		{{foreach from=$income key=key item=h}}
 		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
-		<a href="javascript:;" data-key="0">不限</a>
+
 	</div>
 </script>
 <script type="text/html" id="edu">
 	<div class="m-popup-options col3 clearfix" tag="edu">
-		<div class="m-popup-options-top">
-			<div class="start"></div>
-			<div class="mid">至</div>
-			<div class="end"></div>
-		</div>
 		{{foreach from=$edu key=key item=h}}
 		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
-		<a href="javascript:;" data-key="0">不限</a>
-
 	</div>
 </script>
 <script type="text/html" id="wechats">
-	<li>
-		<a href="#sprofile">
+	<li id="">
+		<a href="#sprofile" class="sprofile">
 			<div class="plist-l">
 				<img src="/images/testImg.jpeg">
 			</div>
@@ -870,7 +689,233 @@
 		</a>
 	</li>
 </script>
+<script type="text/html" id="userFiter">
+	{[#data]}
+	<li id="{[id]}">
+		<div class="head">
+			<a href="javascript:;" class="photo sex2 sprofile">
+				<img src="{[avatar]}"
+						 class="nic">
+				<div class="intro">
+					这位美人儿强力推荐，天生丽质，贤良淑德，聪明伶俐，秀丽端庄，一笑倾城，再笑倾城，三笑倾你心，各位优质男青年赶紧行动吧
+				</div>
+				<img src="{[avatar]}" class="avatar">
+			</a>
+		</div>
+		<div class="info"><span class="name">{[name]}</span> <span class="icon {[gender]}"></span> <span
+							class="otherInfo">{[age]}岁 . {[height]} . {[horos]} . {[job]}</span>
+		</div>
+		<div class="sign">{[intro]}</div>
+		<div class="action clearfix">
+			<span class="pos">北京</span>
+			<a href="javascript:;" id="{[id]}" class="apply">加微信聊聊</a>
+			<a href="javascript:;" class="like">心动</a>
+		</div>
+	</li>
+	{[/data]}
+</script>
+<script type="text/html" id="conditions">
+	<a href="#matchCondition" class="conditions">
+		<span class="con-title">择偶条件: </span>
+		<span class="con-des">{[age]} {[height]} {[income]} {[edu]}</span>
+	</a>
+</script>
+<script type="text/html" id="sprofileTemp">
+	<div class="sprofile-top">
+		<div class="nav">
+			<a href="#slook">返回</a>
+		</div>
+		<div class="img">
+			<img src="{[avatar]}" alt="">
+		</div>
+		<div class="sprofile-top-des">
+			<p>{[name]}<em class="icon-{[genderclass]}"></em></p>
+			<i>{[#age]}{[age]}岁{[/age]} {[#height]}{[height]}cm{[/height]} {[#horos]}{[horos]}{[/horos]} {[#job]}{[job]}{[/job]}</i>
+			<span>{[location]}</span>
+		</div>
+	</div>
+	<div class="sprofile-album">
+		<a class="title" tag="album">相册 ({[co]})</a>
+		<ul>
+			{[#img3]}
+			<li>
+				<img src="{[.]}" alt="">
+			</li>
+			{[/img3]}
+		</ul>
+	</div>
+	<div class="sprofile-base">
+		<div class="title">基本资料</div>
+		<a class="content" tag="baseInfo" data='{[jdata]}'>
+			{[#height]}<span>{[height]}</span>{[/height]}
+			{[#edu]}<span>{[edu]}</span>{[/edu]}
+			{[#income]}<span>{[income]}</span>{[/income]}
+			{[#house]}<span>{[house]}</span>{[/house]}
+			{[#car]}<span>{[car]}</span>{[/car]}
+		</a>
+	</div>
+	<div class="sprofile-mp">
+		<div class="left">
+			<div class="img">
+				<img src="{[avatar]}" alt="">
+			</div>
+			<p>思彬</p>
+			<i>渠道拓展</i>
+		</div>
+		<div class="right">
+			这个女的很棒！！
+		</div>
+	</div>
+	<div class="sprofile-condtion">
+		<div class="title">择偶条件</div>
+		<div class="content">
+			{[#cond]}
+			<span>{[age]}</span>
+			<span>{[height]}</span>
+			<span>{[income]}</span>
+			<span>{[edu]}</span>
+			{[/cond]}
+		</div>
+	</div>
+	<div class="sprofile-intro">
+		<div class="title">内心独白</div>
+		<div class="content">
+			{[intro]}
+		</div>
+	</div>
+	<div class="sprofile-forbid">
+		<a href="javascript:;" tag="forbid"><span class="icon-l icon-forbid"></span>举报拉黑</a>
+	</div>
+	<div class="sprofile-bottom">
+		<a href="javascript:;" tag="love"><span class="icon-l icon-love"></span>心动</a>
+		<a href="javascript:;" tag="wechat">加微信聊聊</a>
+	</div>
+</script>
+<script type="text/html" id="personalInfoTemp">
+	<div class="personalInfo-top">
+		<div class="nav">
+			<a href="#sprofile">返回</a>
+		</div>
+		<div class="img">
+			<div class="img-filter" style="background: url('{[avatar]}') no-repeat center center">
+			</div>
+			<div class="img-last">
+				<img src="{[avatar]}" alt="">
+			</div>
+		</div>
+	</div>
+	<div class="personalInfo-list">
+		<div class="title">基本资料</div>
+		<div class="item-des">
+			<div class="left">呢称</div>
+			<div class="right">{[name]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">性别</div>
+			<div class="right">{[gender]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">所在城市</div>
+			<div class="right">{[location]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">出生年份</div>
+			<div class="right">{[year]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">身高</div>
+			<div class="right">{[height]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">年薪</div>
+			<div class="right">{[income]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">学历</div>
+			<div class="right">{[edu]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">星座</div>
+			<div class="right">{[horos]}</div>
+		</div>
 
+		<div class="title">个人小档案</div>
+		<div class="item-des">
+			<div class="left">购房情况</div>
+			<div class="right">{[house]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">购车情况</div>
+			<div class="right">{[car]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">行业</div>
+			<div class="right">{[scope]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">职业</div>
+			<div class="right">{[job]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">饮酒情况</div>
+			<div class="right">{[drink]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">吸烟情况</div>
+			<div class="right">{[smoke]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">宗教信仰</div>
+			<div class="right">{[belief]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">健身习惯</div>
+			<div class="right">{[fitness]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">饮食习惯</div>
+			<div class="right">{[diet]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">作息习惯</div>
+			<div class="right">{[rest]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">关于宠物</div>
+			<div class="right">{[pet]}</div>
+		</div>
+
+		<div class="title">内心独白</div>
+		<div class="item-des">
+			<div class="des">{[intro]}</div>
+		</div>
+
+		<div class="title">兴趣爱好</div>
+		<div class="item-des">
+			<div class="des">{[interest]}</div>
+		</div>
+
+		<div class="title">择偶条件</div>
+		{[#cond]}
+		<div class="item-des">
+			<div class="left">年龄</div>
+			<div class="right">{[age]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">身高</div>
+			<div class="right">{[height]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">学收入</div>
+			<div class="right">{[income]}</div>
+		</div>
+		<div class="item-des">
+			<div class="left">学历</div>
+			<div class="right">{[edu]}</div>
+		</div>
+		{[/cond]}
+	</div>
+</script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>

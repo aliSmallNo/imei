@@ -30,6 +30,12 @@ require(["layer"],
 			content: $(".m-popup-content"),
 			contionString: "",
 			contionVal: "",
+
+			firstLoadFlag: true,
+			getUserFiterFlag: false,
+			sUserPage: 1,
+
+			sprofileF: 0,
 		};
 
 		var RechargeUtil = {
@@ -81,10 +87,18 @@ require(["layer"],
 			$sls.hashPage = hashTag;
 			switch (hashTag) {
 				case 'slink':
-				case 'slook':
-				case 'sme':
 					FootUtil.toggle(1);
+					break;
+				case 'slook':
+					if ($sls.firstLoadFlag) {
+						getUserFiter("", $sls.sUserPage);
+						$sls.firstLoadFlag = 0;
+					}
+					FootUtil.toggle(1);
+					break;
+				case 'sme':
 					myInfo();
+					FootUtil.toggle(1);
 					break;
 				default:
 					FootUtil.toggle(0);
@@ -121,35 +135,39 @@ require(["layer"],
 			self.closest(".sgroup-list").find("[tag=" + tag + "]").show();
 		});
 
-		$("#sprofile a").each(function () {
+		function sprofileDesc(data) {
+			$("#personalInfo").html(Mustache.render($("#personalInfoTemp").html(), data));
+			location.href = "#personalInfo";
+		}
+
+
+		$(document).on(kClick, "#sprofile a", function () {
 			var self = $(this);
 			var tag = self.attr("tag");
-			self.on(kClick, function () {
-				switch (tag) {
-					case "album":
-						break;
-					case "baseInfo":
-						location.href = "#personalInfo";
-						break;
-					case "forbid":
-						break;
-					case "love":
-						var self = $(this).find("span");
-						if (self.hasClass("icon-love")) {
-							showMsg('<span class="icon-alert icon-loved"></span><br><span class="font1rem">心动成功</span>');
-							self.removeClass("icon-love").addClass("icon-loved");
-						} else {
-							showMsg('<span class="icon-alert icon-love-break"></span><br><span class="font1rem">已取消心动</span>');
-							self.removeClass("icon-loved").addClass("icon-love");
-						}
-						break;
-					case "wechat":
-						$sls.cork.show();
-						$(".getWechat").show();
-						break;
-
-				}
-			});
+			switch (tag) {
+				case "album":
+					break;
+				case "baseInfo":
+					var data = JSON.parse(self.attr("data"));
+					sprofileDesc(data);
+					break;
+				case "forbid":
+					break;
+				case "love":
+					var obj = $(this).find("span");
+					if (obj.hasClass("icon-love")) {
+						showMsg('<span class="icon-alert icon-loved"></span><br><span class="font1rem">心动成功</span>');
+						obj.removeClass("icon-love").addClass("icon-loved");
+					} else {
+						showMsg('<span class="icon-alert icon-love-break"></span><br><span class="font1rem">已取消心动</span>');
+						obj.removeClass("icon-loved").addClass("icon-love");
+					}
+					break;
+				case "wechat":
+					$sls.cork.show();
+					$(".getWechat").show();
+					break;
+			}
 		});
 
 		$(".getWechat a").on(kClick, function () {
@@ -206,9 +224,68 @@ require(["layer"],
 						data[ta] = value;
 					});
 					console.log(data);
+					$(".m-top-users").html("");
+					getUserFiter(data, 1);
+					location.href = "#slook";
 					break;
 			}
 		});
+
+		function getUserFiter(data, page) {
+			if ($sls.getUserFiterFlag) {
+				return;
+			}
+			$sls.getUserFiterFlag = 1;
+			$("#slook .m-more").html("拼命加载中~~~");
+			$.post("/api/user", {
+				tag: "userfilter",
+				page: page,
+				data: JSON.stringify(data),
+			}, function (resp) {
+				var html = Mustache.render($("#userFiter").html(), resp.data);
+				if (page == 1) {
+					$(".m-top-users").html(html);
+					$(".my-condition").html(Mustache.render($("#conditions").html(), resp.data.condition));
+				} else {
+					$(".m-top-users").append(html);
+				}
+
+				$sls.getUserFiterFlag = 0;
+				$sls.sUserPage = resp.data.nextpage;
+				if ($sls.sUserPage == 0) {
+					$("#slook .m-more").html("没有更多咯~");
+				} else {
+					$("#slook .m-more").html("上拉加载更多");
+				}
+			}, "json");
+		}
+
+		$(window).on("scroll", function () {
+			var lastRow;
+			console.log(1);
+			switch ($sls.curFrag) {
+				case "slook":
+					lastRow = $(".m-top-users").find('li').last();
+					if (lastRow && eleInScreen(lastRow, 640) && $sls.sUserPage > 0) {
+						getUserFiter("", $sls.sUserPage);
+						return false;
+					}
+					break;
+				case "fsearchlist":
+					lastRow = SearchClientUtil.list.find('li').last();
+					if (lastRow && eleInScreen(lastRow) && SearchClientUtil.pageIndex > 0) {
+						SearchClientUtil.reload();
+						return false;
+					}
+					break;
+				default:
+					break;
+			}
+		});
+
+		function eleInScreen($ele, $offset) {
+			return $ele && $ele.length > 0 && $ele.offset().top + $offset < $(window).scrollTop() + $(window).height();
+		}
 
 		function showShooseContion(tag) {
 			var html = $("#" + tag).html();
@@ -223,37 +300,54 @@ require(["layer"],
 			var tag = obj.attr("tag");
 			var key = self.attr("data-key");
 			var text = self.html();
-			if (key == 0) {
-				$sls.contionString = "";
-				$sls.contionVal = "";
-				$sls.contionString = text;
-				$sls.contionVal = key;
-				$("#matchCondition a[tag=" + tag + "]").find(".right").html($sls.contionString);
-				$("#matchCondition a[tag=" + tag + "]").find(".right").attr("data-id", $sls.contionVal);
-				$sls.main.hide();
-				$sls.shade.fadeOut(160);
-			} else {
-				if (!obj.find(".start").hasClass("bb")) {
+			switch (tag) {
+				case "height":
+				case "age":
+					if (key == 0) {
+						$sls.contionString = "";
+						$sls.contionVal = "";
+						$sls.contionString = text;
+						$sls.contionVal = key;
+						$("#matchCondition a[tag=" + tag + "]").find(".right").html($sls.contionString);
+						$("#matchCondition a[tag=" + tag + "]").find(".right").attr("data-id", $sls.contionVal);
+						$sls.main.hide();
+						$sls.shade.fadeOut(160);
+					} else {
+						if (!obj.find(".start").hasClass("bb")) {
+							$sls.contionString = "";
+							$sls.contionVal = "";
+							obj.find(".start").html(text);
+							obj.find(".start").addClass("bb");
+							$sls.contionString = text;
+							$sls.contionVal = key;
+						} else {
+							if (parseInt(key) <= parseInt($sls.contionVal)) {
+								return;
+							}
+							obj.find(".end").html(text);
+							obj.addClass("bb");
+							$sls.contionString = $sls.contionString + "-" + text;
+							$sls.contionVal = $sls.contionVal + "-" + key;
+							$("#matchCondition a[tag=" + tag + "]").find(".right").html($sls.contionString);
+							$("#matchCondition a[tag=" + tag + "]").find(".right").attr("data-id", $sls.contionVal);
+							$sls.main.hide();
+							$sls.shade.fadeOut(160);
+						}
+					}
+					break;
+				case "income":
+				case "edu":
 					$sls.contionString = "";
 					$sls.contionVal = "";
-					obj.find(".start").html(text);
-					obj.find(".start").addClass("bb");
 					$sls.contionString = text;
 					$sls.contionVal = key;
-				} else {
-					if (parseInt(key) <= parseInt($sls.contionVal)) {
-						return;
-					}
-					obj.find(".end").html(text);
-					obj.addClass("bb");
-					$sls.contionString = $sls.contionString + "-" + text;
-					$sls.contionVal = $sls.contionVal + "-" + key;
 					$("#matchCondition a[tag=" + tag + "]").find(".right").html($sls.contionString);
 					$("#matchCondition a[tag=" + tag + "]").find(".right").attr("data-id", $sls.contionVal);
 					$sls.main.hide();
 					$sls.shade.fadeOut(160);
-				}
+					break;
 			}
+
 		});
 
 		$(".tab a").on(kClick, function () {
@@ -309,6 +403,22 @@ require(["layer"],
 				time: duration
 			});
 		}
+
+		$(document).on(kClick, "a.sprofile", function () {
+			if ($sls.sprofileF) {
+				return;
+			}
+			$sls.sprofileF = 1;
+			var id = $(this).closest("li").attr("id");
+			$.post("/api/user", {
+				tag: "sprofile",
+				id: id,
+			}, function (resp) {
+				$("#sprofile").html(Mustache.render($("#sprofileTemp").html(), resp.data.data));
+				$sls.sprofileF = 0;
+				location.href = "#sprofile";
+			}, "json");
+		});
 
 		$(function () {
 			$("body").addClass("bg-color");

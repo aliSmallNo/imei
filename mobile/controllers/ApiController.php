@@ -197,6 +197,21 @@ class ApiController extends Controller
 			case "myinfo":
 				$info = User::getItem($openId);
 				return self::renderAPI(0, '', $info);
+			case "userfilter":
+				$data = self::postParam("data");
+				$page = self::postParam("page", 1);
+
+				if (strlen($data) > 5) {
+					User::edit($openId, ["uFilter" => $data]);
+				}
+				$data = json_decode($data, 1);
+
+				$ret = User::getFilter($openId, $data, $page);
+				return self::renderAPI(0, '', $ret);
+			case "sprofile":
+				$id = self::postParam("id");
+				$ret = User::sprofile($id);
+				return self::renderAPI(0, '', ["data" => $ret]);
 		}
 		return self::renderAPI(129, '操作无效~');
 	}
