@@ -106,6 +106,11 @@ class AppUtil
 		return Yii::$app->params['wechatUrl'];
 	}
 
+	public static function imageUrl()
+	{
+		return Yii::$app->params['imageUrl'];
+	}
+
 	public static function checkPhone($mobile)
 	{
 

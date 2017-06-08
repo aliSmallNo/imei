@@ -12,6 +12,7 @@ use common\models\User;
 use common\models\UserNet;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
+use Gregwar\Image\Image;
 use yii\console\Controller;
 
 class FooController extends Controller
@@ -58,11 +59,12 @@ class FooController extends Controller
 				if (strpos($avatar, 'default_avatar') !== false) {
 					continue;
 				}
+				list($thumb, $avatar) = self::saveImage($avatar, $openid);
 				$newUser = [
 					'uOpenId' => $openid,
 					'uRole' => User::ROLE_SINGLE,
 					'uName' => $name,
-					'uThumb' => $avatar,
+					'uThumb' => $thumb,
 					'uAvatar' => $avatar,
 					'uGender' => $sex == 1 ? User::GENDER_MALE : User::GENDER_FEMALE,
 					'uBirthYear' => substr($row['birthday'], 0, 4),
@@ -136,11 +138,12 @@ class FooController extends Controller
 				if (strpos($avatar, 'default_avatar') !== false) {
 					continue;
 				}
+				list($thumb, $avatar) = self::saveImage($avatar, $openid);
 				$newUser = [
 					'uOpenId' => $openid,
 					'uRole' => User::ROLE_MATCHER,
 					'uName' => $name,
-					'uThumb' => $avatar,
+					'uThumb' => $thumb,
 					'uAvatar' => $avatar,
 					'uLocation' => '[{"key":"","text":"' . $row['province'] . '"},{"key":"","text":"' . $row['city'] . '"}]',
 					'uIntro' => $row['description'],
@@ -165,6 +168,40 @@ class FooController extends Controller
 		}
 	}
 
+	protected static function saveImage($imageUrl, $key)
+	{
+		$ch = curl_init($imageUrl);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_NOBODY, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$content = curl_exec($ch);
+		$httpInfo = curl_getinfo($ch);
+		curl_close($ch);
+
+		$contentType = $httpInfo["content_type"];
+		$contentType = strtolower($contentType);
+		$ext = AppUtil::getExtName($contentType);
+		$env = AppUtil::scene();
+		$pathEnv = [
+			'dev' => __DIR__ . '/../../../upload/',
+			'prod' => '/data/prodimage/',
+		];
+		$path = $pathEnv[$env] . 'avatar/' . $key;
+		$ret = [];
+		if ($ext && strlen($content) > 200) {
+			$fileName = $path . '.' . $ext;
+			file_put_contents($fileName, $content);
+//			$ret[] = AppUtil::imageUrl() . '/avatar/' . $key . '.' . $ext;
+			$fileThumb = $path . '_t.' . $ext;
+			Image::open($fileName)->zoomCrop(240, 240, 0xffffff, 'center', 'center')->save($fileThumb);
+			$ret[] = AppUtil::imageUrl() . '/avatar/' . $key . '_t.' . $ext;
+			$fileNormal = $path . '_n.' . $ext;
+			Image::open($fileName)->zoomCrop(480, 480, 0xffffff, 'center', 'center')->save($fileNormal);
+			$ret[] = AppUtil::imageUrl() . '/avatar/' . $key . '_n.' . $ext;
+		}
+		return $ret;
+	}
+
 	public function actionWxmenu()
 	{
 		$ret = WechatUtil::createWechatMenus();
@@ -173,9 +210,8 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		/*self::matchers(1);
-		self::matchers(2);
-		self::matchers(3);*/
-		AppUtil::sendTXSMS('18600442970');
+		self::matchers(1);
+//		self::matchers(2);
+//		self::matchers(3);
 	}
 }
