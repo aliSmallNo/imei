@@ -94,7 +94,7 @@ class FooController extends Controller
 				$cmdNet->bindValues([
 					':pUid' => $pUId,
 					':subUid' => $uid,
-					':rel' => UserNet::REL_ENDORSE,
+					':rel' => UserNet::REL_BACKER,
 				])->execute();
 				$count++;
 			}
