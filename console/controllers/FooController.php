@@ -184,7 +184,7 @@ class FooController extends Controller
 		$env = AppUtil::scene();
 		$pathEnv = [
 			'dev' => __DIR__ . '/../../../upload/',
-			'prod' => '/data/prodimage/',
+			'prod' => '/data/prodimage/default/',
 		];
 		$path = $pathEnv[$env] . 'avatar/' . $key;
 		$ret = [];
