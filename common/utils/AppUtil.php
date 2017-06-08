@@ -19,15 +19,6 @@ class AppUtil
 	const REQUEST_ADMIN = "admin";
 	const COOKIE_OPENID = "wx-openid";
 
-	static $PC_HOSTS = ["mall.bpbhd.com", "mall.niuhd.com", "localhost.mall:8080"];
-
-	static $Hosts = [
-		self::REQUEST_API => "http://api.bpbhd.com",
-		self::REQUEST_ADMIN => "http://admin.bpbhd.com",
-	];
-
-	const ACCESS_CODE = "CBL4LSTYjhes0Lc2GUtxNn";
-
 	const UPLOAD_EXCEL = "excel";
 	const UPLOAD_IMAGE = "image";
 	const UPLOAD_VIDEO = "video";
@@ -176,14 +167,10 @@ class AppUtil
 			$deviceInfo['id'] = self::getCookie(self::COOKIE_OPENID, "unknown");
 			$deviceInfo['name'] = $deviceInfo['id'] != "unknown" ? UserWechat::getNickName($deviceInfo['id']) : '';
 			$deviceInfo['mode'] = self::MODE_WEIXIN;
-		} elseif (isset($_SERVER['HTTP_HOST']) && in_array($_SERVER['HTTP_HOST'], self::$PC_HOSTS)) {
+		} else {
 			$deviceInfo['id'] = self::getIP();
 			$deviceInfo['mode'] = self::MODE_PC;
 			$deviceInfo['name'] = $deviceInfo["id"];
-		} elseif (isset($_SERVER['HTTP_ORDERTYPE']) && $_SERVER['HTTP_ORDERTYPE'] == "backend") {
-			$deviceInfo['id'] = $_SERVER['HTTP_ORDERADMINID'];
-			$deviceInfo['mode'] = self::MODE_ADMIN;
-			$deviceInfo['name'] = $_SERVER['HTTP_ORDERADMINNAME'];
 		}
 		return $deviceInfo;
 	}
@@ -950,7 +937,6 @@ class AppUtil
 		return '';
 	}
 
-
 	public static function getExtName($contentType)
 	{
 		$fileExt = "";
@@ -998,6 +984,4 @@ class AppUtil
 		}
 		return round($s, $decimal);
 	}
-
-
 }
