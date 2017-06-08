@@ -360,7 +360,7 @@ class User extends ActiveRecord
 		$sql = 'select u.*, count(n.nId) as uCnt 
 			 from im_user as u 
 			 LEFT JOIN im_user_net as n on u.uId=n.nUId AND n.nRelation=:rel AND n.nDeletedFlag=0
-			 WHERE u.uRole=:role GROUP BY n.nUId ORDER BY uCnt 
+			 WHERE u.uRole=:role GROUP BY n.nUId ORDER BY uCnt DESC
 			 limit ' . $offset . ',' . ($pageSize + 1);
 		$ret = $conn->createCommand($sql)->bindValues([
 			':rel' => UserNet::REL_BACKER,
