@@ -312,7 +312,7 @@
 								class="count">2</span></a>
 			<a href="/feedback" class=""><span class="title">意见反馈</span> </a>
 			<a href="/user/weixininfo" class=""><span class="title">我的微信号</span></a>
-			<a href="/qrcode?role=1" class=""><span class="title">关注1号媒婆公众号</span></a>
+			<a href="/qrcode?role=1" class=""><span class="title">关注微媒100公众号</span></a>
 			<a href="/user/blacklist" class=""><span class="title">黑名单</span></a>
 		</div>
 	</div>
