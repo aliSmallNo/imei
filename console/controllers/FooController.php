@@ -201,6 +201,9 @@ class FooController extends Controller
 			Image::open($fileName)->zoomCrop(480, 480, 0xffffff, 'center', 'center')->save($fileNormal);
 			$ret[] = AppUtil::imageUrl() . '/avatar/' . $key . '_n.' . $ext;
 		}
+		if (!$ret) {
+			$ret = [$imageUrl, $imageUrl];
+		}
 		return $ret;
 	}
 
@@ -213,9 +216,9 @@ class FooController extends Controller
 	public function actionRain()
 	{
 
-
 		self::matchers(1);
-//		self::matchers(2);
-//		self::matchers(3);
+		self::matchers(2);
+		self::matchers(3);
+		self::matchers(4);
 	}
 }
