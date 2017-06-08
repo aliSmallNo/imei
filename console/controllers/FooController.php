@@ -81,6 +81,7 @@ class FooController extends Controller
 					'uAlcohol' => $fmtValue(User::$Alcohol, $row['drink']),
 					'uEducation' => $fmtValue(User::$Education, $row['education']),
 					'uRest' => $fmtValue(User::$Rest, $row['routine']),
+					'uNote' => 'dummy',
 				];
 				$uid = User::add($newUser);
 				$cmdUW->bindValues([
@@ -147,6 +148,7 @@ class FooController extends Controller
 					'uAvatar' => $avatar,
 					'uLocation' => '[{"key":"","text":"' . $row['province'] . '"},{"key":"","text":"' . $row['city'] . '"}]',
 					'uIntro' => $row['description'],
+					'uNote' => 'dummy',
 				];
 				$uid = User::add($newUser);
 				$cmdUW->bindValues([
@@ -210,8 +212,6 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-
-
 
 
 		self::matchers(1);
