@@ -30,14 +30,13 @@ require(["layer"],
 		$(window).on("scroll", function () {
 			var lastRow;
 			switch ($sls.curFrag) {
-				case "flist":
-				/*lastRow = GoodsUtil.list.find('li').last();
-				 if (lastRow && eleInScreen(lastRow) && GoodsUtil.pageIndex > 0) {
-				 GoodsUtil.reload();
-				 return false;
-				 }
-				 break;*/
-
+				case "slink":
+					lastRow = MatchUtil.list.find('li').last();
+					if (lastRow && eleInScreen(lastRow) && MatchUtil.page > 0) {
+						MatchUtil.reload();
+						return false;
+					}
+					break;
 				default:
 					break;
 			}
@@ -112,6 +111,56 @@ require(["layer"],
 			}
 		};
 
+		var MatchUtil = {
+			loading: 0,
+			page: 1,
+			list: $('.matcher'),
+			tmp: $('#tpl_match').html(),
+			spinner: null,
+			noMore: null,
+			init: function () {
+				var util = this;
+				var html = Mustache.render(util.tmp, {items: mMatcher});
+				util.list.html(html);
+				util.page = 2;
+				util.spinner = $('#slink .spinner');
+				util.noMore = $('#slink .no-more');
+			},
+			reload: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				if (util.page === 1) {
+					util.list.html('');
+				}
+				util.loading = 1;
+				util.spinner.show();
+				$.post('/api/user',
+					{
+						tag: 'matcher',
+						page: util.page
+					},
+					function (resp) {
+						if (resp.code == 0) {
+							var html = Mustache.render(util.tmp, resp.data);
+							if (resp.data.page == 1) {
+								util.list.html(html);
+							} else {
+								util.list.append(html);
+							}
+							util.page = resp.data.nextPage;
+							util.noMore.hide();
+							if (util.page < 1) {
+								util.noMore.show();
+							}
+							util.spinner.hide();
+						}
+						util.loading = 0;
+					}, 'json');
+			}
+		};
+
 		function locationHashChanged() {
 			var hashTag = location.hash;
 			hashTag = hashTag.replace("#!", "");
@@ -154,6 +203,7 @@ require(["layer"],
 			$("body").addClass("bg-color");
 			FootUtil.init();
 			SingleUtil.init();
+			MatchUtil.init();
 			// FastClick.attach($sls.footer.get(0));
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);

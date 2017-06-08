@@ -125,7 +125,20 @@ class ApiController extends Controller
 				}
 				return self::renderAPI(0, '', [
 					'items' => $items,
-					'nextPage' => $nextPage
+					'nextPage' => $nextPage,
+					'page' => $page,
+				]);
+			case 'matcher':
+				$page = self::postParam('page', 1);
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				list($items, $nextPage) = User::topMatcher($wxInfo['uId'], $page);
+				return self::renderAPI(0, '', [
+					'items' => $items,
+					'nextPage' => $nextPage,
+					'page' => $page,
 				]);
 			case 'sms-code':
 				$phone = self::postParam('phone');

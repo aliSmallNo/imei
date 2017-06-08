@@ -179,6 +179,39 @@ class User extends ActiveRecord
 		return $entity->uId;
 	}
 
+	protected static function fmtRow($row)
+	{
+		$keys = array_keys($row);
+		$item = [];
+		foreach ($keys as $key) {
+			$newKey = strtolower(substr($key, 1));
+			$val = $row[$key];
+			if ($newKey == 'location') {
+				$item[$newKey] = json_decode($val, 1);
+				$item[$newKey . '_t'] = '';
+				if ($item[$newKey]) {
+					foreach ($item[$newKey] as $loc) {
+						$item[$newKey . '_t'] .= $loc['text'] . ' ';
+					}
+					$item[$newKey . '_t'] = trim($item[$newKey . '_t']);
+				}
+				continue;
+			}
+			if ($newKey == 'birthyear') {
+				$item['age'] = date('Y') - intval($val);
+			}
+			$item[$newKey] = $val;
+			$newKey = ucfirst($newKey);
+			if (isset(self::$$newKey) && is_array(self::$$newKey)) {
+				$item[strtolower($newKey) . '_t'] = isset(self::$$newKey[$val]) ? self::$$newKey[$val] : '';
+				$item[strtolower($newKey)] = intval($item[strtolower($newKey)]);
+			}
+		}
+		$item['vip'] = intval($item['vip']);
+		unset($item['approvedby'], $item['approvedon'], $item['addedby'], $item['updatedby']);
+		return $item;
+	}
+
 	public static function users($criteria, $params, $page = 1, $pageSize = 20)
 	{
 		$strCriteria = '';
@@ -192,33 +225,7 @@ class User extends ActiveRecord
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
 		foreach ($ret as $row) {
-			$keys = array_keys($row);
-			$item = [];
-			foreach ($keys as $key) {
-				$newKey = strtolower(substr($key, 1));
-				$val = $row[$key];
-				if ($newKey == 'location') {
-					$item[$newKey] = json_decode($val, 1);
-					$item[$newKey . '_t'] = '';
-					if ($item[$newKey]) {
-						foreach ($item[$newKey] as $loc) {
-							$item[$newKey . '_t'] .= $loc['text'] . ' ';
-						}
-						$item[$newKey . '_t'] = trim($item[$newKey . '_t']);
-					}
-					continue;
-				}
-				if ($newKey == 'birthyear') {
-					$item['age'] = date('Y') - intval($val);
-				}
-				$item[$newKey] = $val;
-				$newKey = ucfirst($newKey);
-				if (isset(self::$$newKey) && is_array(self::$$newKey)) {
-					$item[strtolower($newKey) . '_t'] = isset(self::$$newKey[$val]) ? self::$$newKey[$val] : '';
-				}
-			}
-
-			$items[] = $item;
+			$items[] = self::fmtRow($row);
 		}
 		$sql = "SELECT count(1) FROM im_user WHERE uId>0 $strCriteria ";
 		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
@@ -345,10 +352,30 @@ class User extends ActiveRecord
 
 	}
 
-	public static function topMatcher($uid, $page, $pageSize)
+	public static function topMatcher($uid, $page = 1, $pageSize = 10)
 	{
-		$criteria = $params = [];
-		return self::users($criteria, $params, $page, $pageSize);
+//		$uInfo = self::user(['uId' => $uid]);
+		$conn = AppUtil::db();
+		$offset = ($page - 1) * $pageSize;
+		$sql = 'select u.*, count(n.nId) as cnt 
+			 from im_user as u 
+			 LEFT JOIN im_user_net as n on u.uId=n.nUId AND n.nRelation=:rel AND n.nDeletedFlag=0
+			 WHERE u.uRole=:role GROUP BY n.nUId ORDER BY cnt 
+			 limit ' . $offset . ',' . ($pageSize + 1);
+		$ret = $conn->createCommand($sql)->bindValues([
+			':rel' => UserNet::REL_BACKER,
+			':role' => self::ROLE_MATCHER
+		])->queryAll();
+		$nextPage = 0;
+		if ($ret && count($ret) > $pageSize) {
+			$nextPage = $page + 1;
+			array_pop($ret);
+		}
+		$items = [];
+		foreach ($ret as $row) {
+			$items[] = self::fmtRow($row);
+		}
+		return [$items, $nextPage];
 	}
 
 	/**
