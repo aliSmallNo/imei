@@ -832,7 +832,8 @@ class AppUtil
 		$randNum = rand(100000, 999999);
 
 		$wholeUrl = sprintf("https://yun.tim.qq.com/v3/tlssmssvr/%s?sdkappid=%s&random=%s", $action, $sdkAppId, $randNum);
-
+		AppUtil::logFile($postData, 5, __FUNCTION__, __LINE__);
+		AppUtil::logFile($wholeUrl, 5, __FUNCTION__, __LINE__);
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $wholeUrl);
 		curl_setopt($ch, CURLOPT_HEADER, 0);
