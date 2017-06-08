@@ -40,7 +40,7 @@ class AppUtil
 	const EXPRESSES = ['顺丰快递', 'EMS快递', '申通快递', '韵达快递', '中通快递',
 		"圆通快递", "京东快递", '天天快递', '百世汇通', '宅急送快运', '德邦物流'];
 
-	private static $SMS_SIGN = 17753;
+	private static $SMS_SIGN = '微媒100';
 	private static $SMS_TMP_ID = 9179;
 
 	/**
