@@ -160,6 +160,7 @@ class WxController extends BaseController
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$hint = '';
 		$matcher = [];
+		$prefer = 'male';
 		if ($wxInfo) {
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
@@ -168,6 +169,9 @@ class WxController extends BaseController
 			if ($role == User::ROLE_SINGLE) {
 				header("location:/wx/mreg");
 				exit();
+			}
+			if ($wxInfo['uGender'] == User::GENDER_MALE) {
+				$prefer = 'female';
 			}
 			list($matcher) = User::topMatcher($wxInfo["uId"]);
 		} else {
@@ -178,8 +182,45 @@ class WxController extends BaseController
 			'nickname' => $nickname,
 			'avatar' => $avatar,
 			'hint' => $hint,
+			'prefer' => $prefer,
 			'matcher' => json_encode($matcher)
 		]);
+	}
+
+	public function actionMh()
+	{
+		$hid = self::getParam('id');
+		$hid = AppUtil::decrypt($hid);
+		if (!$hid) {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+		$items = [];
+		$uInfo = User::user(['uId' => $hid]);
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$prefer = 'male';
+		if ($wxInfo) {
+			$avatar = $wxInfo["Avatar"];
+			$nickname = $wxInfo["uName"];
+			if ($wxInfo['uGender'] == User::GENDER_MALE) {
+				$items = UserNet::girls($uInfo['id'], 1, 10);
+				$prefer = 'female';
+			} else {
+				$items = UserNet::boys($uInfo['id'], 1, 10);
+			}
+		} else {
+			$avatar = ImageUtil::DEFAULT_AVATAR;
+			$nickname = "本地测试";
+		}
+
+		return self::renderPage("mhome.tpl", [
+			'nickname' => $nickname,
+			'avatar' => $avatar,
+			'uInfo' => $uInfo,
+			'prefer' => $prefer,
+			'items' => json_encode($items)
+		], 'terse');
 	}
 
 	public function actionSingle()

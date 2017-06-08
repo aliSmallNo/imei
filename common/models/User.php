@@ -179,7 +179,7 @@ class User extends ActiveRecord
 		return $entity->uId;
 	}
 
-	protected static function fmtRow($row)
+	public static function fmtRow($row)
 	{
 		$keys = array_keys($row);
 		$item = [];
@@ -208,6 +208,8 @@ class User extends ActiveRecord
 			}
 		}
 		$item['vip'] = intval($item['vip']);
+		$item['gender_ico'] = $item['gender'] == self::GENDER_FEMALE ? 'female' : 'male';
+		$item['encryptId'] = AppUtil::encrypt($item['id']);
 		unset($item['approvedby'], $item['approvedon'], $item['addedby'], $item['updatedby']);
 		return $item;
 	}

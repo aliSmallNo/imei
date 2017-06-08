@@ -247,6 +247,7 @@ main
 	top: 1.5rem
 	background: url(../images/ico_gender_male.png) no-repeat center center
 	background-size: 100% 100%
+
 .icon-vip
 	width: 3rem
 	height: 1.2rem
@@ -2906,6 +2907,7 @@ section
 		a:last-child
 			border: #f781ab solid 1px
 			color: #f781ab
+
 #focusMP
 	li
 		background: #fff
@@ -2933,3 +2935,81 @@ section
 					font-size: 1.4rem
 				p:last-child
 					color: #f781ab
+
+.home-header
+	background-color: $mainColorLight
+	text-align: center
+	padding-top: 2rem
+	.follow
+		width: 9rem
+		height: 4rem
+		display: inline-block
+		border: #fff 1px solid
+		border-radius: 2rem
+		line-height: 4rem
+		margin-top: 1.5rem
+		text-decoration: none
+		color: #fff
+	.nickphoto
+		margin: 0 auto
+		width: 6rem
+		height: 6rem
+		border: $mainColorLighter .3rem solid
+		border-radius: 6rem
+		position: relative
+		text-align: center
+		span
+			width: 100%
+			height: 100%
+			border-radius: 6rem
+			display: block
+			overflow: hidden
+			img
+				width: 100%
+				height: 100%
+	h4
+		font-size: 1.5rem
+		font-weight: $weightBold
+		text-align: center
+		line-height: 3.2rem
+	h5
+		font-size: 1.3rem
+		font-weight: $weightNormal
+		text-align: center
+		line-height: 2.8rem
+		@include textTail
+	.countInfo
+		height: 6rem
+		background: rgba(255, 255, 255, .3)
+		margin-top: 1.5rem
+		@include displayFlex
+		div
+			@include displayFlex-1
+			text-align: center
+			justify-content: center
+			align-self: center
+			align-items: center
+			position: relative
+			&:after
+				position: absolute
+				content: ''
+				display: block
+				width: 1px
+				height: 2.4rem
+				top: 50%
+				left: 0
+				margin-top: -1.2rem
+				background: #fff
+
+			&:first-child:after
+				display: none
+			span
+				font-size: 1.2rem
+				font-weight: $weightNormal
+				color: #fff
+			em
+				font-size: 1.4rem
+				font-weight: $weightBold
+				display: block
+				line-height: 2.5rem
+				color: #fff

@@ -14,10 +14,10 @@
 	</div>
 	<div class="m-tab-wrap">
 		<div class="m-tabs">
-			<a href="javascript:;" class="active" data-tag="male">
+			<a href="javascript:;" {{if $prefer=='male'}}class="active"{{/if}} data-tag="male">
 				<span>男生(10)</span>
 			</a>
-			<a href="javascript:;" data-tag="female">
+			<a href="javascript:;" {{if $prefer=='female'}}class="active"{{/if}} data-tag="female">
 				<span>女生(6)</span>
 			</a>
 		</div>
@@ -355,7 +355,7 @@
 <script type="text/template" id="tpl_match">
 	{[#items]}
 	<li>
-		<a href="javascript:;">
+		<a href="/wx/mh?id={[encryptId]}">
 			<div class="avatar">
 				<img src="{[thumb]}">
 			</div>

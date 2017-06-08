@@ -109,6 +109,10 @@ class UserNet extends ActiveRecord
 			$nextPage = $page + 1;
 			array_pop($ret);
 		}
-		return [$ret, $nextPage];
+		$items = [];
+		foreach ($ret as $row) {
+			$items[] = User::fmtRow($row);
+		}
+		return [$items, $nextPage];
 	}
 }
