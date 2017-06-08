@@ -831,29 +831,19 @@
 </script>
 <script type="text/html" id="income">
 	<div class="m-popup-options col3 clearfix" tag="income">
-		<div class="m-popup-options-top">
-			<div class="start"></div>
-			<div class="mid">至</div>
-			<div class="end"></div>
-		</div>
+		<a href="javascript:;" data-key="0">不限</a>
 		{{foreach from=$income key=key item=h}}
 		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
-		<a href="javascript:;" data-key="0">不限</a>
+
 	</div>
 </script>
 <script type="text/html" id="edu">
 	<div class="m-popup-options col3 clearfix" tag="edu">
-		<div class="m-popup-options-top">
-			<div class="start"></div>
-			<div class="mid">至</div>
-			<div class="end"></div>
-		</div>
+		<a href="javascript:;" data-key="0">不限</a>
 		{{foreach from=$edu key=key item=h}}
 		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
-		<a href="javascript:;" data-key="0">不限</a>
-
 	</div>
 </script>
 <script type="text/html" id="wechats">

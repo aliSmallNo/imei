@@ -206,6 +206,12 @@ require(["layer"],
 						data[ta] = value;
 					});
 					console.log(data);
+					$.post("/api/user", {
+						tag: "userFilter",
+						data: JSON.stringify(data),
+					}, function () {
+
+					}, "json");
 					break;
 			}
 		});
@@ -223,37 +229,54 @@ require(["layer"],
 			var tag = obj.attr("tag");
 			var key = self.attr("data-key");
 			var text = self.html();
-			if (key == 0) {
-				$sls.contionString = "";
-				$sls.contionVal = "";
-				$sls.contionString = text;
-				$sls.contionVal = key;
-				$("#matchCondition a[tag=" + tag + "]").find(".right").html($sls.contionString);
-				$("#matchCondition a[tag=" + tag + "]").find(".right").attr("data-id", $sls.contionVal);
-				$sls.main.hide();
-				$sls.shade.fadeOut(160);
-			} else {
-				if (!obj.find(".start").hasClass("bb")) {
+			switch (tag) {
+				case "height":
+				case "age":
+					if (key == 0) {
+						$sls.contionString = "";
+						$sls.contionVal = "";
+						$sls.contionString = text;
+						$sls.contionVal = key;
+						$("#matchCondition a[tag=" + tag + "]").find(".right").html($sls.contionString);
+						$("#matchCondition a[tag=" + tag + "]").find(".right").attr("data-id", $sls.contionVal);
+						$sls.main.hide();
+						$sls.shade.fadeOut(160);
+					} else {
+						if (!obj.find(".start").hasClass("bb")) {
+							$sls.contionString = "";
+							$sls.contionVal = "";
+							obj.find(".start").html(text);
+							obj.find(".start").addClass("bb");
+							$sls.contionString = text;
+							$sls.contionVal = key;
+						} else {
+							if (parseInt(key) <= parseInt($sls.contionVal)) {
+								return;
+							}
+							obj.find(".end").html(text);
+							obj.addClass("bb");
+							$sls.contionString = $sls.contionString + "-" + text;
+							$sls.contionVal = $sls.contionVal + "-" + key;
+							$("#matchCondition a[tag=" + tag + "]").find(".right").html($sls.contionString);
+							$("#matchCondition a[tag=" + tag + "]").find(".right").attr("data-id", $sls.contionVal);
+							$sls.main.hide();
+							$sls.shade.fadeOut(160);
+						}
+					}
+					break;
+				case "income":
+				case "edu":
 					$sls.contionString = "";
 					$sls.contionVal = "";
-					obj.find(".start").html(text);
-					obj.find(".start").addClass("bb");
 					$sls.contionString = text;
 					$sls.contionVal = key;
-				} else {
-					if (parseInt(key) <= parseInt($sls.contionVal)) {
-						return;
-					}
-					obj.find(".end").html(text);
-					obj.addClass("bb");
-					$sls.contionString = $sls.contionString + "-" + text;
-					$sls.contionVal = $sls.contionVal + "-" + key;
 					$("#matchCondition a[tag=" + tag + "]").find(".right").html($sls.contionString);
 					$("#matchCondition a[tag=" + tag + "]").find(".right").attr("data-id", $sls.contionVal);
 					$sls.main.hide();
 					$sls.shade.fadeOut(160);
-				}
+					break;
 			}
+
 		});
 
 		$(".tab a").on(kClick, function () {
