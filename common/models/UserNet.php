@@ -14,14 +14,14 @@ use yii\db\ActiveRecord;
 
 class UserNet extends ActiveRecord
 {
-	const REL_ENDORSE = 'endorse';
-	const REL_FOLLOWER = 'follower';
-	const REL_INVITE = 'invite';
+	const REL_INVITE = 110;
+	const REL_BACKER = 120;
+	const REL_FOLLOW = 130;
 
 	static $RelDict = [
-		self::REL_ENDORSE => '媒婆',
-		self::REL_FOLLOWER => '关注',
 		self::REL_INVITE => '邀请',
+		self::REL_BACKER => '媒婆',
+		self::REL_FOLLOW => '关注'
 	];
 
 	public static function tableName()
@@ -73,7 +73,7 @@ class UserNet extends ActiveRecord
 		$criteria[] = 'nUId=:uid AND nRelation=:rel AND uGender=:gender';
 		$params = [
 			':uid' => $uid,
-			':rel' => self::REL_ENDORSE,
+			':rel' => self::REL_BACKER,
 			':gender' => User::GENDER_MALE
 		];
 
@@ -85,7 +85,7 @@ class UserNet extends ActiveRecord
 		$criteria[] = 'nUId=:uid AND nRelation=:rel AND uGender=:gender';
 		$params = [
 			':uid' => $uid,
-			':rel' => self::REL_ENDORSE,
+			':rel' => self::REL_BACKER,
 			':gender' => User::GENDER_FEMALE
 		];
 

@@ -12,14 +12,16 @@ use common\models\User;
 use common\models\UserNet;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
+use Gregwar\Image\Image;
 use yii\console\Controller;
 
 class FooController extends Controller
 {
 
-	protected static function singles($pUId, $key, $sex = 1)
+	protected static function singles($pUId, $key, $sex = 1, $page = 1)
 	{
-		$url = 'https://1meipo.com/api/proxy/matchmaker/singles_info?matchmaker_id=' . $key . '&sex=' . $sex . '&page_count=20&skip=0';
+		$skip = ($page - 1) * 30;
+		$url = 'https://1meipo.com/api/proxy/matchmaker/singles_info?matchmaker_id=' . $key . '&sex=' . $sex . '&page_count=30&skip=' . $skip;
 		$ret = AppUtil::httpGet($url);
 		$ret = json_decode($ret, 1);
 		if ($ret && isset($ret['data']['singles'])) {
@@ -58,11 +60,12 @@ class FooController extends Controller
 				if (strpos($avatar, 'default_avatar') !== false) {
 					continue;
 				}
+				list($thumb, $avatar) = self::saveImage($avatar, $openid);
 				$newUser = [
 					'uOpenId' => $openid,
 					'uRole' => User::ROLE_SINGLE,
 					'uName' => $name,
-					'uThumb' => $avatar,
+					'uThumb' => $thumb,
 					'uAvatar' => $avatar,
 					'uGender' => $sex == 1 ? User::GENDER_MALE : User::GENDER_FEMALE,
 					'uBirthYear' => substr($row['birthday'], 0, 4),
@@ -79,6 +82,7 @@ class FooController extends Controller
 					'uAlcohol' => $fmtValue(User::$Alcohol, $row['drink']),
 					'uEducation' => $fmtValue(User::$Education, $row['education']),
 					'uRest' => $fmtValue(User::$Rest, $row['routine']),
+					'uNote' => 'dummy',
 				];
 				$uid = User::add($newUser);
 				$cmdUW->bindValues([
@@ -92,7 +96,7 @@ class FooController extends Controller
 				$cmdNet->bindValues([
 					':pUid' => $pUId,
 					':subUid' => $uid,
-					':rel' => UserNet::REL_ENDORSE,
+					':rel' => UserNet::REL_BACKER,
 				])->execute();
 				$count++;
 			}
@@ -136,14 +140,16 @@ class FooController extends Controller
 				if (strpos($avatar, 'default_avatar') !== false) {
 					continue;
 				}
+				list($thumb, $avatar) = self::saveImage($avatar, $openid);
 				$newUser = [
 					'uOpenId' => $openid,
 					'uRole' => User::ROLE_MATCHER,
 					'uName' => $name,
-					'uThumb' => $avatar,
+					'uThumb' => $thumb,
 					'uAvatar' => $avatar,
 					'uLocation' => '[{"key":"","text":"' . $row['province'] . '"},{"key":"","text":"' . $row['city'] . '"}]',
 					'uIntro' => $row['description'],
+					'uNote' => 'dummy',
 				];
 				$uid = User::add($newUser);
 				$cmdUW->bindValues([
@@ -165,6 +171,43 @@ class FooController extends Controller
 		}
 	}
 
+	protected static function saveImage($imageUrl, $key)
+	{
+		$ch = curl_init($imageUrl);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_NOBODY, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$content = curl_exec($ch);
+		$httpInfo = curl_getinfo($ch);
+		curl_close($ch);
+
+		$contentType = $httpInfo["content_type"];
+		$contentType = strtolower($contentType);
+		$ext = AppUtil::getExtName($contentType);
+		$env = AppUtil::scene();
+		$pathEnv = [
+			'dev' => __DIR__ . '/../../../upload/',
+			'prod' => '/data/prodimage/default/',
+		];
+		$path = $pathEnv[$env] . 'avatar/' . $key;
+		$ret = [];
+		if ($ext && strlen($content) > 200) {
+			$fileName = $path . '.' . $ext;
+			file_put_contents($fileName, $content);
+//			$ret[] = AppUtil::imageUrl() . '/avatar/' . $key . '.' . $ext;
+			$fileThumb = $path . '_t.' . $ext;
+			Image::open($fileName)->zoomCrop(240, 240, 0xffffff, 'center', 'center')->save($fileThumb);
+			$ret[] = AppUtil::imageUrl() . '/avatar/' . $key . '_t.' . $ext;
+			$fileNormal = $path . '_n.' . $ext;
+			Image::open($fileName)->zoomCrop(480, 480, 0xffffff, 'center', 'center')->save($fileNormal);
+			$ret[] = AppUtil::imageUrl() . '/avatar/' . $key . '_n.' . $ext;
+		}
+		if (!$ret) {
+			$ret = [$imageUrl, $imageUrl];
+		}
+		return $ret;
+	}
+
 	public function actionWxmenu()
 	{
 		$ret = WechatUtil::createWechatMenus();
@@ -173,9 +216,6 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-//		self::matchers(1);
-//		self::matchers(2);
-//		self::matchers(3);
-		var_dump(json_decode("''"));
+
 	}
 }

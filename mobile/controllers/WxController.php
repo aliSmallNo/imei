@@ -159,6 +159,7 @@ class WxController extends BaseController
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$hint = '';
+		$matcher = [];
 		if ($wxInfo) {
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
@@ -168,6 +169,7 @@ class WxController extends BaseController
 				header("location:/wx/mreg");
 				exit();
 			}
+			list($matcher) = User::topMatcher($wxInfo["uId"]);
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
@@ -175,7 +177,8 @@ class WxController extends BaseController
 		return self::renderPage("match.tpl", [
 			'nickname' => $nickname,
 			'avatar' => $avatar,
-			'hint' => $hint
+			'hint' => $hint,
+			'matcher' => json_encode($matcher)
 		]);
 	}
 
