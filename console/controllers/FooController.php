@@ -18,9 +18,10 @@ use yii\console\Controller;
 class FooController extends Controller
 {
 
-	protected static function singles($pUId, $key, $sex = 1)
+	protected static function singles($pUId, $key, $sex = 1, $page = 1)
 	{
-		$url = 'https://1meipo.com/api/proxy/matchmaker/singles_info?matchmaker_id=' . $key . '&sex=' . $sex . '&page_count=20&skip=0';
+		$skip = ($page - 1) * 30;
+		$url = 'https://1meipo.com/api/proxy/matchmaker/singles_info?matchmaker_id=' . $key . '&sex=' . $sex . '&page_count=30&skip=' . $skip;
 		$ret = AppUtil::httpGet($url);
 		$ret = json_decode($ret, 1);
 		if ($ret && isset($ret['data']['singles'])) {
