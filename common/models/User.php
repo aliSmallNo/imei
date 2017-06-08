@@ -357,10 +357,10 @@ class User extends ActiveRecord
 //		$uInfo = self::user(['uId' => $uid]);
 		$conn = AppUtil::db();
 		$offset = ($page - 1) * $pageSize;
-		$sql = 'select u.*, count(n.nId) as cnt 
+		$sql = 'select u.*, count(n.nId) as uCnt 
 			 from im_user as u 
 			 LEFT JOIN im_user_net as n on u.uId=n.nUId AND n.nRelation=:rel AND n.nDeletedFlag=0
-			 WHERE u.uRole=:role GROUP BY n.nUId ORDER BY cnt 
+			 WHERE u.uRole=:role GROUP BY n.nUId ORDER BY uCnt 
 			 limit ' . $offset . ',' . ($pageSize + 1);
 		$ret = $conn->createCommand($sql)->bindValues([
 			':rel' => UserNet::REL_BACKER,
