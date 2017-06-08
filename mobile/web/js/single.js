@@ -30,6 +30,10 @@ require(["layer"],
 			content: $(".m-popup-content"),
 			contionString: "",
 			contionVal: "",
+
+			firstLoadFlag: true,
+			getUserFiterFlag: false,
+			sUserPage: 1,
 		};
 
 		var RechargeUtil = {
@@ -81,10 +85,18 @@ require(["layer"],
 			$sls.hashPage = hashTag;
 			switch (hashTag) {
 				case 'slink':
-				case 'slook':
-				case 'sme':
 					FootUtil.toggle(1);
+					break;
+				case 'slook':
+					if ($sls.firstLoadFlag) {
+						getUserFiter("", $sls.sUserPage);
+						$sls.firstLoadFlag = 0;
+					}
+					FootUtil.toggle(1);
+					break;
+				case 'sme':
 					myInfo();
+					FootUtil.toggle(1);
 					break;
 				default:
 					FootUtil.toggle(0);
@@ -206,15 +218,68 @@ require(["layer"],
 						data[ta] = value;
 					});
 					console.log(data);
-					$.post("/api/user", {
-						tag: "userFilter",
-						data: JSON.stringify(data),
-					}, function () {
-
-					}, "json");
+					$(".m-top-users").html("");
+					getUserFiter(data, 1);
+					location.href = "#slook";
 					break;
 			}
 		});
+
+		function getUserFiter(data, page) {
+			if ($sls.getUserFiterFlag) {
+				return;
+			}
+			$sls.getUserFiterFlag = 1;
+			$("#slook .m-more").html("拼命加载中~~~");
+			$.post("/api/user", {
+				tag: "userfilter",
+				page: page,
+				data: JSON.stringify(data),
+			}, function (resp) {
+				var html = Mustache.render($("#userFiter").html(), resp.data);
+				if (page == 1) {
+					$(".m-top-users").html(html);
+					$(".my-condition").html(Mustache.render($("#conditions").html(), resp.data.condition));
+				} else {
+					$(".m-top-users").append(html);
+				}
+
+				$sls.getUserFiterFlag = 0;
+				$sls.sUserPage = resp.data.nextpage;
+				if ($sls.sUserPage == 0) {
+					$("#slook .m-more").html("没有更多咯~");
+				} else {
+					$("#slook .m-more").html("上拉加载更多");
+				}
+			}, "json");
+		}
+
+		$(window).on("scroll", function () {
+			var lastRow;
+			console.log(1);
+			switch ($sls.curFrag) {
+				case "slook":
+					lastRow = $(".m-top-users").find('li').last();
+					if (lastRow && eleInScreen(lastRow, 640) && $sls.sUserPage > 0) {
+						getUserFiter("", $sls.sUserPage);
+						return false;
+					}
+					break;
+				case "fsearchlist":
+					lastRow = SearchClientUtil.list.find('li').last();
+					if (lastRow && eleInScreen(lastRow) && SearchClientUtil.pageIndex > 0) {
+						SearchClientUtil.reload();
+						return false;
+					}
+					break;
+				default:
+					break;
+			}
+		});
+
+		function eleInScreen($ele, $offset) {
+			return $ele && $ele.length > 0 && $ele.offset().top + $offset < $(window).scrollTop() + $(window).height();
+		}
 
 		function showShooseContion(tag) {
 			var html = $("#" + tag).html();

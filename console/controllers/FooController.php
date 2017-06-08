@@ -176,7 +176,6 @@ class FooController extends Controller
 //		self::matchers(1);
 //		self::matchers(2);
 //		self::matchers(3);
-		$aa = [1, 2, 3, 1, 2, 3 => [1, 2, 3]];
-		print_r(explode("-", "2-3"));
+		var_dump(json_decode("''"));
 	}
 }

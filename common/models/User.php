@@ -25,6 +25,7 @@ class User extends ActiveRecord
 		1995 => 1995, 1996 => 1996, 1997 => 1997, 1998 => 1998, 1999 => 1999
 	];
 	static $AgeFilter = [
+		0 => "年龄不限",
 		16 => "16岁", 18 => "18岁", 20 => "20岁", 22 => "22岁", 24 => "24岁", 26 => "26岁", 28 => "28岁", 30 => "30岁",
 		32 => "32岁", 34 => "34岁", 36 => "36岁", 38 => "38岁", 40 => "40岁", 42 => "42岁", 44 => "44岁", 46 => "46岁",
 		48 => "48岁", 50 => "50岁", 52 => "52岁", 54 => "54岁", 56 => "56岁", 58 => "58岁", 60 => "60岁",
@@ -35,6 +36,7 @@ class User extends ActiveRecord
 		200 => '196-200厘米', 205 => '201厘米以上',
 	];
 	static $HeightFilter = [
+		0 => "身高不限",
 		140 => '不到140厘米', 145 => '145厘米', 150 => '150厘米', 155 => '155厘米', 160 => '160厘米', 165 => '165厘米',
 		170 => '170厘米', 175 => '175厘米', 180 => '180厘米', 185 => '185厘米', 190 => '190厘米', 195 => '195厘米',
 		200 => '200厘米', 205 => '201厘米以上',
@@ -48,6 +50,7 @@ class User extends ActiveRecord
 		55 => "45万~55万元", 60 => "56万~60万元", 70 => "61万~70万元", 100 => "71万~100万元", 150 => "100万以上"
 	];
 	static $IncomeFilter = [
+		0 => "收入不限",
 		3 => "3万元以下", 5 => "5万元以上", 10 => "10万元以上", 15 => "15万元以上", 25 => "25万元以上", 35 => "35万元以上",
 		45 => "45万元以上", 55 => "55万元以上", 60 => "60万元以上", 70 => "70万元以上", 100 => "100万元以上", 150 => "100万以上"
 	];
@@ -55,6 +58,7 @@ class User extends ActiveRecord
 		100 => "小学", 110 => "初中", 120 => "高中", 130 => "中专", 140 => "大专", 150 => "本科", 160 => "硕士", 170 => "博士"
 	];
 	static $EducationFilter = [
+		0 => "学历不限",
 		100 => "小学及以上", 110 => "初中及以上", 120 => "高中及以上", 130 => "中专及以上", 140 => "大专及以上", 150 => "本科及以上",
 		160 => "硕士及以上", 170 => "博士及以上"
 	];
@@ -364,20 +368,122 @@ class User extends ActiveRecord
 		return $Info;
 	}
 
+	public static function matchCondition($uFilter)
+	{
+		$matchInfo = json_decode($uFilter, 1);
+
+		$matchcondition = [];
+
+		if (is_array($matchInfo) && $matchInfo) {
+			if (isset($matchInfo["age"]) && $matchInfo["age"] > 0) {
+				$ageArr = explode("-", $matchInfo["age"]);
+
+				if (count($ageArr) == 2) {
+					$matchcondition["age"] = self::$AgeFilter[$ageArr[0]] . '~' . self::$AgeFilter[$ageArr[1]];
+				} else {
+					$matchcondition["age"] = "qqqqq";
+				}
+			} else {
+				$matchcondition["age"] = self::$AgeFilter[0];
+			}
+
+			if (isset($matchInfo["height"]) && $matchInfo["height"] > 0) {
+				$heightArr = explode("-", $matchInfo["height"]);
+				if (count($heightArr) == 2) {
+					$matchcondition["height"] = self::$HeightFilter[$heightArr[0]] . '~' . self::$HeightFilter[$heightArr[1]];
+				}
+			} else {
+				$matchcondition["height"] = self::$HeightFilter[0];
+			}
+
+			if (isset($matchInfo["edu"]) && $matchInfo["edu"] > 0) {
+				$matchcondition["edu"] = self::$EducationFilter[$matchInfo["edu"]];
+			} else {
+				$matchcondition["edu"] = self::$EducationFilter[0];
+			}
+
+			if (isset($matchInfo["income"]) && $matchInfo["income"] > 0) {
+				$matchcondition["income"] = self::$IncomeFilter[$matchInfo["income"]];
+			} else {
+				$matchcondition["income"] = self::$IncomeFilter[0];
+			}
+		}
+		return $matchcondition;
+	}
+
+
 	public static function getFilter($openId, $data, $page = 1, $pageSize = 10)
 	{
+
 		$myInfo = self::findOne(["uOpenId" => $openId]);
-		$gender = $myInfo ? $myInfo->uGender : 0;
-		if (!$gender) {
+		if (!$myInfo) {
 			return 0;
 		}
+		$uFilter = $myInfo->uFilter;
+		$matchcondition = self::matchCondition($uFilter);
+
+		$gender = $myInfo->uGender;
+		$location = json_decode($myInfo->uLocation, 1);
+		$prov = (is_array($location) && $location) ? $location[0]["text"] : "";
+		$city = (is_array($location) && $location) ? $location[1]["text"] : "";
+
+		$uRole = User::ROLE_SINGLE;
 		$gender = ($gender == 10) ? 11 : 10;
-		$condition = " and uGender=$gender";
-		$age = explode("-", $data["age"]);
-		$year = date("Y");
-		$ageStart = $year - $age[1];
-		$ageEnd = $year - $age[0];
-		$condition = " and uBirthYear $ageStart between and $ageEnd ";
+		$condition = "uRole=$uRole and uGender=$gender and POSITION('$prov' IN uLocation) >0 and POSITION('$city' IN uLocation) >0 ";
+
+		if (!$data) {
+			$data = json_decode($uFilter,1);
+		}
+		if (isset($data["age"]) && $data["age"] != 0) {
+			$age = explode("-", $data["age"]);
+			$year = date("Y");
+			$ageStart = $year - $age[1];
+			$ageEnd = $year - $age[0];
+			$condition .= " and uBirthYear  between $ageStart and $ageEnd ";
+		}
+
+		if (isset($data["height"]) && $data["height"] != 0) {
+			$height = explode("-", $data["height"]);
+			$startAge = (is_array($height) && count($height) == 2) ? $height[0] : 0;
+			$EndAge = (is_array($height) && count($height) == 2) ? $height[1] : 0;
+			$condition .= " and uHeight between $ageStart and $ageEnd ";
+		}
+
+		if (isset($data["edu"]) && $data["edu"] > 0) {
+			$edu = $data['edu'];
+			$condition .= " and uEducation > $edu ";
+		}
+
+		if (isset($data["income"]) && $data["income"] > 0) {
+			$income = $data['income'];
+			$condition .= " and uIncome > $income ";
+		}
+
+		$limit = ($page - 1) * $pageSize . "," . $pageSize;
+		$sql = " select * from im_user where $condition order by uUpdatedOn desc limit $limit";
+		$ret = \Yii::$app->db->createCommand($sql)->queryAll();
+		$result = [];
+		foreach ($ret as $v) {
+			$data = [];
+			$data["id"] = $v["uId"];
+			$data["avatar"] = $v["uAvatar"];
+			$data["name"] = $v["uName"];
+			$data["gender"] = $v["uGender"] == 10 ? "female" : "male";
+			$data["age"] = date("Y") - $v["uBirthYear"];
+			$data["height"] = isset(User::$Height[$v["uHeight"]]) ? User::$Height[$v["uHeight"]] : "无年龄";
+			$data["horos"] = isset(User::$Height[$v["uHoros"]]) ? User::$Height[$v["uHoros"]] : "无星座";
+			$data["job"] = isset(User::$Height[$v["uProfession"]]) ? User::$Height[$v["uProfession"]] : "无职业";
+			$data["intro"] = $v["uIntro"];
+			$result[] = $data;
+		}
+
+		if (count($ret) == $pageSize) {
+			$nextpage = $page + 1;
+		} else {
+			$nextpage = 0;
+		}
+
+		return ["data" => $result, "nextpage" => $nextpage, "condition" => $matchcondition];
 
 	}
 

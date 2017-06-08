@@ -184,11 +184,16 @@ class ApiController extends Controller
 			case "myinfo":
 				$info = User::getItem($openId);
 				return self::renderAPI(0, '', $info);
-			case "userFilter":
+			case "userfilter":
 				$data = self::postParam("data");
-				User::edit($openId, ["uFilter" => $data]);
+
+				if (strlen($data) > 5) {
+					User::edit($openId, ["uFilter" => $data]);
+				}
 				$data = json_decode($data, 1);
-				User::getFilter($openId, $data);
+
+				$ret = User::getFilter($openId, $data);
+				return self::renderAPI(0, '', $ret);
 		}
 		return self::renderAPI(129, '操作无效~');
 	}
