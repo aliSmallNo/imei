@@ -173,8 +173,9 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		self::matchers(1);
+		/*self::matchers(1);
 		self::matchers(2);
-		self::matchers(3);
+		self::matchers(3);*/
+		AppUtil::sendTXSMS('18600442970');
 	}
 }
