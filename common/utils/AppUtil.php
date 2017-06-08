@@ -40,6 +40,9 @@ class AppUtil
 	const EXPRESSES = ['顺丰快递', 'EMS快递', '申通快递', '韵达快递', '中通快递',
 		"圆通快递", "京东快递", '天天快递', '百世汇通', '宅急送快运', '德邦物流'];
 
+	private static $SMS_SIGN = 17753;
+	private static $SMS_TMP_ID = 9179;
+
 	/**
 	 * @return \yii\db\Connection
 	 */
@@ -820,7 +823,8 @@ class AppUtil
 			"ext" => ""
 		];
 		if (isset($params["params"])) {
-			$postData["tpl_id"] = isset($params["tpl_id"]) ? $params["tpl_id"] : 9179;
+			$postData["tpl_id"] = isset($params["tpl_id"]) ? $params["tpl_id"] : self::$SMS_TMP_ID;
+			$postData["sign"] = self::$SMS_SIGN;
 			$postData["params"] = $params["params"];
 		} elseif (isset($params["msg"])) {
 			$postData["msg"] = $params["msg"];
@@ -828,8 +832,7 @@ class AppUtil
 		$randNum = rand(100000, 999999);
 
 		$wholeUrl = sprintf("https://yun.tim.qq.com/v3/tlssmssvr/%s?sdkappid=%s&random=%s", $action, $sdkAppId, $randNum);
-		AppUtil::logFile($postData, 5, __FUNCTION__, __LINE__);
-		AppUtil::logFile($wholeUrl, 5, __FUNCTION__, __LINE__);
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $wholeUrl);
 		curl_setopt($ch, CURLOPT_HEADER, 0);
