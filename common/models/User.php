@@ -338,8 +338,17 @@ class User extends ActiveRecord
 			}
 		}
 		return $Info;
+	}
 
+	public static function topSingle($uid, $page, $pageSize)
+	{
 
+	}
+
+	public static function topMatcher($uid, $page, $pageSize)
+	{
+		$criteria = $params = [];
+		return self::users($criteria, $params, $page, $pageSize);
 	}
 
 	/**

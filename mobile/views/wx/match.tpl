@@ -396,6 +396,20 @@
 	</a>
 	{[/items]}
 </script>
+<script type="text/template" id="tpl_match">
+	{[#items]}
+	<li>
+		<a href="javascript:;">
+			<div class="avatar">
+				<img src="{[thumb]}">
+			</div>
+			<h4>{[name]}{[#vip]}<i class="vip"></i>{[/vip]}</h4>
+			<p class="note">{[intro]}</p>
+			<span class="btn-s-1 s1">TA的单身团({[cnt]})</span>
+		</a>
+	</li>
+	{[/items]}
+</script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
