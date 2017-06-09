@@ -8,7 +8,7 @@ body, html {
   font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   height: 100%; }
 
-body, html, a, p, ul, div, h4, h5, .main-wrap {
+body, html, a, p, ul, div, h4, h5, h6, .main-wrap {
   margin: 0;
   padding: 0;
   -webkit-tap-highlight-color: transparent; }
@@ -3156,7 +3156,6 @@ section {
         bottom: 1rem;
         z-index: 2;
         background: url(../images/ico_location.png) no-repeat left;
-        -webkit-background-size: auto 1.4rem;
         background-size: auto 1.4rem;
         padding-left: 1.6rem;
         font-size: 1.2rem; }
@@ -3202,5 +3201,64 @@ section {
   color: #999;
   margin: 2rem auto;
   text-align: center; }
+
+.single-page .head {
+  width: 100%;
+  height: 32rem;
+  overflow: hidden;
+  position: relative; }
+  .single-page .head img {
+    width: 100%;
+    height: 100%; }
+.single-page .baseinfo {
+  background: #fff;
+  margin-bottom: 1rem;
+  padding: 2rem 1.5rem; }
+  .single-page .baseinfo h6 {
+    font-size: 1.4rem;
+    color: #727272;
+    height: 2.6rem;
+    line-height: 2.6rem;
+    font-weight: 300; }
+  .single-page .baseinfo .title {
+    height: 2.4rem;
+    line-height: 2.4rem;
+    overflow: hidden;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+    .single-page .baseinfo .title h4 {
+      font-weight: 500;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden; }
+      .single-page .baseinfo .title h4 .icon {
+        width: 1.2rem;
+        height: 1.2rem;
+        display: inline-block;
+        position: relative;
+        top: 0.1rem; }
+        .single-page .baseinfo .title h4 .icon.male {
+          background: url(../images/ico_gender_male.png) no-repeat center center;
+          background-size: 100% 100%; }
+        .single-page .baseinfo .title h4 .icon.female {
+          background: url(../images/ico_gender_female.png) no-repeat center center;
+          background-size: 100% 100%; }
+    .single-page .baseinfo .title h5 {
+      -webkit-box-flex: 0 0 6rem;
+      -webkit-flex: 0 0 6rem;
+      -ms-flex: 0 0 6rem;
+      flex: 0 0 6rem;
+      padding-left: 1.6rem;
+      background: url(../images/ico_location_gray.png) no-repeat left center;
+      background-size: 1.4rem 1.4rem;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden; }
 
 /*# sourceMappingURL=imei.css.map */
