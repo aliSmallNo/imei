@@ -982,8 +982,8 @@ section {
         overflow: hidden;
         font-size: 1.3rem;
         color: #727272;
-        line-height: 3rem;
-        height: 3rem; }
+        padding-top: 0.2rem;
+        padding-bottom: 1rem; }
 
 .see-more {
   text-align: center; }

@@ -1,7 +1,20 @@
 <section id="slink">
 	<div class="match-wrap">
 		<h3>推荐媒婆</h3>
-		<ul class="clearfix matcher"></ul>
+		<ul class="clearfix matcher">
+			{{foreach from=$matches item=match}}
+			<li>
+				<a href="/wx/mh?id={{$match.encryptId}}">
+					<div class="avatar">
+						<img src="{{$match.thumb}}">
+					</div>
+					<h4>{{$match.name}}{{if $match.vip}} <i class="vip"></i>{{/if}}</h4>
+					<p class="note">&nbsp;{{$match.intro}}</p>
+					<span class="btn-s-1 s1">TA的单身团({{$match.cnt}})</span>
+				</a>
+			</li>
+			{{/foreach}}
+		</ul>
 	</div>
 	<div class="spinner" style="display: none"></div>
 	<div class="no-more" style="display: none;">没有更多了~</div>
@@ -288,13 +301,7 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-<script>
-	var mMatcher = {{$matcher}};
-	function clickPlay() {
-		document.querySelector('#video').play();
-		document.querySelector('#play_btn').style.display = 'none';
-	}
-</script>
+
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script data-main="/js/match.js?v=1.1.2" src="/assets/js/require.js"></script>

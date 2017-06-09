@@ -183,7 +183,7 @@ class WxController extends BaseController
 			'avatar' => $avatar,
 			'hint' => $hint,
 			'prefer' => $prefer,
-			'matcher' => json_encode($matcher)
+			'matches' => $matcher
 		]);
 	}
 
