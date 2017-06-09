@@ -215,6 +215,9 @@ class ApiController extends Controller
 				$id = self::postParam("id");
 				$ret = User::sprofile($id);
 				return self::renderAPI(0, '', ["data" => $ret]);
+			case "mp":
+				//$ret = User::topMatcher('');
+				return self::renderAPI(0, '', $ret = "");
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

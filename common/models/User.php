@@ -242,6 +242,9 @@ class User extends ActiveRecord
 		foreach ($keys as $key) {
 			$newKey = strtolower(substr($key, 1));
 			$val = $row[$key];
+			if ($newKey == "name" && mb_strlen($val) > 5) {
+				$val = mb_substr($val, 0, 5) . "...";
+			}
 			if ($newKey == 'location') {
 				$item[$newKey] = json_decode($val, 1);
 				$item[$newKey . '_t'] = '';
@@ -522,7 +525,7 @@ class User extends ActiveRecord
 
 		$uRole = User::ROLE_SINGLE;
 		$gender = ($gender == 10) ? 11 : 10;
-		$condition = "uRole=$uRole and uGender=$gender and POSITION('$prov' IN uLocation) >0 and POSITION('$city' IN uLocation) >0 ";
+		$condition = "u.uRole=$uRole and u.uGender=$gender and POSITION('$prov' IN u.uLocation) >0 and POSITION('$city' IN u.uLocation) >0 ";
 
 		if (!$data) {
 			$data = json_decode($uFilter, 1);
@@ -532,19 +535,19 @@ class User extends ActiveRecord
 			$year = date("Y");
 			$ageStart = $year - $age[1];
 			$ageEnd = $year - $age[0];
-			$condition .= " and uBirthYear  between $ageStart and $ageEnd ";
+			$condition .= " and u.uBirthYear  between $ageStart and $ageEnd ";
 		}
 
 		if (isset($data["height"]) && $data["height"] != 0) {
 			$height = explode("-", $data["height"]);
 			$startAge = (is_array($height) && count($height) == 2) ? $height[0] : 0;
 			$EndAge = (is_array($height) && count($height) == 2) ? $height[1] : 0;
-			$condition .= " and uHeight between $ageStart and $ageEnd ";
+			$condition .= " and u.uHeight between $ageStart and $ageEnd ";
 		}
 
 		if (isset($data["edu"]) && $data["edu"] > 0) {
 			$edu = $data['edu'];
-			$condition .= " and uEducation > $edu ";
+			$condition .= " and u.uEducation > $edu ";
 		}
 
 		if (isset($data["income"]) && $data["income"] > 0) {
@@ -553,7 +556,10 @@ class User extends ActiveRecord
 		}
 
 		$limit = ($page - 1) * $pageSize . "," . $pageSize;
-		$sql = " select * from im_user where $condition order by uUpdatedOn desc limit $limit";
+		$sql = " select u.*,u2.uAvatar as mpavatar from im_user as u 
+ 				left join im_user_net as n on u.uId=n.nSubUId
+ 				left join im_user as u2 on u2.uId=n.nUId
+ 				where $condition order by uUpdatedOn desc limit $limit";
 		$ret = \Yii::$app->db->createCommand($sql)->queryAll();
 		$result = [];
 		foreach ($ret as $v) {
@@ -561,6 +567,7 @@ class User extends ActiveRecord
 			$data["id"] = $v["uOpenId"];
 			$data["ids"] = $v["uId"];
 			$data["avatar"] = $v["uAvatar"];
+			$data["mavatar"] = $v["mpavatar"];
 			$data["name"] = $v["uName"];
 			$data["gender"] = $v["uGender"] == 10 ? "female" : "male";
 			$data["age"] = date("Y") - $v["uBirthYear"];
