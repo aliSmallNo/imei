@@ -52,32 +52,25 @@ require(["layer"],
 			}, 'json');
 		});
 
+		$(".m-tabs > a").on('click', function () {
+			var self = $(this);
+			var util = UserUtil;
+			util.tag = self.attr('data-tag');
+			self.closest(".m-tabs").find("a").removeClass('active');
+			self.addClass('active');
+			util.page = 1;
+			util.reload();
+		});
 
 		var UserUtil = {
-			page: 1,
+			page: 2,
 			loading: 0,
 			list: $('.users2'),
 			tmp: $('#tpl_single').html(),
 			uid: $('#cUID').val(),
-			spinner: null,
-			noMore: null,
+			spinner: $('.m-tab-wrap .spinner'),
+			noMore: $('.m-tab-wrap .no-more'),
 			tag: 'male',
-			init: function () {
-				var util = this;
-				util.page = 2;
-				var html = Mustache.render(util.tmp, {items: mItems});
-				util.list.html(html);
-				util.spinner = $('.m-tab-wrap .spinner');
-				util.noMore = $('.m-tab-wrap .no-more');
-				$(".m-tabs > a").on('click', function () {
-					var self = $(this);
-					util.tag = self.attr('data-tag');
-					self.closest(".m-tabs").find("a").removeClass('active');
-					self.addClass('active');
-					util.page = 1;
-					util.reload();
-				});
-			},
 			reload: function () {
 				var util = this;
 				if (util.loading) {
@@ -126,7 +119,6 @@ require(["layer"],
 
 		$(function () {
 			$("body").addClass("bg-color");
-			UserUtil.init();
 			// SingleUtil.init();
 			// FastClick.attach($sls.footer.get(0));
 			var wxInfo = JSON.parse($sls.wxString);

@@ -23,7 +23,20 @@
 			<span>女生(6)</span>
 		</a>
 	</div>
-	<div class="users2 clearfix"></div>
+	<div class="users2 clearfix">
+		{{foreach from=$singles item=single}}
+		<a href="/wx/sh?id={{$single.encryptId}}">
+			<div class="img">
+				<img src="{{$single.thumb}}" alt="">
+				<span class="location">{{$single.location_t}}</span>
+			</div>
+			<p class="name"><em>{{$single.name}}</em> <i class="icon {{$single.gender_ico}}"></i></p>
+			<p class="intro">
+				{{foreach from=$single.notes item=item}}<em>{{$item}}</em>{{/foreach}}
+			</p>
+		</a>
+		{{/foreach}}
+	</div>
 	<div class="spinner" style="display: none"></div>
 	<div class="no-more" style="display: none;">没有更多了~</div>
 </div>
@@ -42,14 +55,10 @@
 		</div>
 		<p class="name"><em>{[name]}</em> <i class="icon {[gender_ico]}"></i></p>
 		<p class="intro">
-			{[#notes]}<span>{[.]}</span> {[/notes]}
-			<span>26岁</span> <span>.</span> <span>168cm</span> <span>.</span> <span>1w~1.5w</span> <span>.</span> <span>处女座</span>
+			{[#notes]}<em>{[.]}</em> {[/notes]}
 		</p>
 	</a>
 	{[/items]}
-</script>
-<script>
-	var mItems = {{$items}};
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>

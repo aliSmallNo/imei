@@ -212,6 +212,70 @@ class FooController extends Controller
 		return $ret;
 	}
 
+	public static function reformInfo()
+	{
+
+		$conn = AppUtil::db();
+		$sql = 'select uId,uRawData from im_user WHERE uHeight<1 AND uRawData!=\'\' ';
+		$ret = $conn->createCommand($sql)->queryAll();
+		$sql = 'update im_user set uHeight=:v WHERE uId=:id ';
+		$cmdH = $conn->createCommand($sql);
+		$sql = 'update im_user set uWeight=:v WHERE uId=:id ';
+		$cmdW = $conn->createCommand($sql);
+		$sql = 'update im_user set uIncome=:v WHERE uId=:id ';
+		$cmdI = $conn->createCommand($sql);
+		foreach ($ret as $row) {
+			$info = json_decode($row['uRawData'], 1);
+			if (isset($info['height'])) {
+				$uh = $info['height'];
+				$height = 0;
+				foreach (User::$Height as $key => $val) {
+					if ($uh > $key) {
+						$height = $key;
+					}
+				}
+				if ($height > 0) {
+					$cmdH->bindValues([
+						':id' => $row['uId'],
+						':v' => $height,
+					])->execute();
+				}
+			}
+
+			if (isset($info['weight'])) {
+				$uw = $info['weight'];
+				$weight = 0;
+				foreach (User::$Weight as $key => $val) {
+					if ($uw > $key) {
+						$weight = $key;
+					}
+				}
+				if ($weight > 0) {
+					$cmdW->bindValues([
+						':id' => $row['uId'],
+						':v' => $weight,
+					])->execute();
+				}
+			}
+
+			if (isset($info['annual_income']['max'])) {
+				$ui = $info['annual_income']['max'];
+				$income = 0;
+				foreach (User::$Income as $key => $val) {
+					if ($ui * 12 > $key * 10000) {
+						$income = $key;
+					}
+				}
+				if ($income > 0) {
+					$cmdI->bindValues([
+						':id' => $row['uId'],
+						':v' => $income,
+					])->execute();
+				}
+			}
+		}
+	}
+
 	public function actionWxmenu()
 	{
 		$ret = WechatUtil::createWechatMenus();
@@ -220,9 +284,10 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		self::matchers(1);
+		self::reformInfo();
+		/*self::matchers(1);
 		self::matchers(2);
 		self::matchers(3);
-		self::matchers(4);
+		self::matchers(4);*/
 	}
 }

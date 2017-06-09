@@ -3088,6 +3088,11 @@ section
 			line-height: 1.4rem
 			width: 100%
 			@include textTail
+			em
+				&:after
+					content: ' . '
+				&:last-child:after
+					content: ''
 
 .report
 	display: block

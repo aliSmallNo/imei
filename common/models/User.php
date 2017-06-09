@@ -258,6 +258,7 @@ class User extends ActiveRecord
 			}
 			if ($newKey == 'birthyear') {
 				$item['age'] = date('Y') - intval($val);
+				$item['age'] .= '岁';
 			}
 			$item[$newKey] = $val;
 			$newKey = ucfirst($newKey);
@@ -269,7 +270,10 @@ class User extends ActiveRecord
 		$item['vip'] = intval($item['vip']);
 		$item['gender_ico'] = $item['gender'] == self::GENDER_FEMALE ? 'female' : 'male';
 		$item['encryptId'] = AppUtil::encrypt($item['id']);
-		unset($item['approvedby'], $item['approvedon'], $item['addedby'], $item['updatedby']);
+		$fields = ['approvedby', 'approvedon', 'addedby', 'updatedby', 'rawdata'];
+		foreach ($fields as $field) {
+			unset($item[$field]);
+		}
 		return $item;
 	}
 

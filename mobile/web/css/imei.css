@@ -3192,6 +3192,10 @@ section {
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden; }
+      .users2 a .intro em:after {
+        content: " . "; }
+      .users2 a .intro em:last-child:after {
+        content: ""; }
 
 .report {
   display: block;

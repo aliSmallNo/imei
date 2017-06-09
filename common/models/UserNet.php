@@ -117,7 +117,10 @@ class UserNet extends ActiveRecord
 
 			foreach ($fields as $field) {
 				if (isset($item[$field]) && $item[$field]) {
-					$item['notes'][] = $item[$field];
+					$val = $item[$field];
+					$val = str_replace('厘米', 'cm', $val);
+					$val = str_replace('万元', 'w', $val);
+					$item['notes'][] = $val;
 				}
 			}
 			$items[] = $item;

@@ -213,14 +213,13 @@ class WxController extends BaseController
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
 		}
-
 		return self::renderPage("mhome.tpl", [
 			'nickname' => $nickname,
 			'avatar' => $avatar,
 			'uInfo' => $uInfo,
 			'prefer' => $prefer,
 			'hid' => $hid,
-			'items' => json_encode($items)
+			'singles' => $items
 		], 'terse');
 	}
 
