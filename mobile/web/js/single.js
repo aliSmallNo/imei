@@ -128,7 +128,7 @@ require(["layer"],
 				$(".u-my-album .photos").html(Mustache.render(temp, {items: resp.data.img4}));
 
 				var html = Mustache.render(temp, {items: resp.data.imgList});
-				$("#album .photos").append(html);
+				$("#album .photos").html('<li><a href="javascript:;" class="choose-img"></a></li>'+html);
 
 				$(".u-my-album .title").html("相册（" + resp.data.co + ")");
 			}, "json");
