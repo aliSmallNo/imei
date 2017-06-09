@@ -593,7 +593,7 @@ class User extends ActiveRecord
 
 	public static function mymp($openId)
 	{
-		$sql = "select u2.uId,u2.uName,u2.uAvatar,u2.uIntro
+		$sql = "select u2.uId as id,u2.uName as name,u2.uAvatar as avatar,u2.uIntro as intro
 				from im_user as u
 				join im_user_net as n on u.uId=n.nSubUId
 				left join im_user as u2 on u2.uId=n.nUId

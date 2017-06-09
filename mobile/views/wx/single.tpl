@@ -917,10 +917,10 @@
 	<div class="top">我的媒婆</div>
 	<div class="mid">
 		<div>
-			<img src="/images/testImg.jpeg">
+			<img src="{[avatar]}">
 		</div>
-		<b>徐小平</b>
-		<p>我是微媒100媒婆</p>
+		<b>{[name]}</b>
+		<p>{[intro]}</p>
 	</div>
 	<div class="bot">
 		<a href="#sgroup">查看TA的主页</a>

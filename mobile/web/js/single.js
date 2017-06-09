@@ -465,7 +465,6 @@ require(["layer"],
 			switch (to) {
 				case "myMP":
 					mymp(to);
-					location.href = "#" + to;
 					break;
 				case "focusMP":
 					//mymp(to);
@@ -484,7 +483,9 @@ require(["layer"],
 			$.post("/api/user", {
 				tag: "mymp",
 			}, function (resp) {
-				$(".mymp-des").html(Mustache.render($("#mympTemp").html(),resp.data));
+				$(".mymp-des").html(Mustache.render($("#mympTemp").html(), resp.data));
+				mympF = 0;
+				location.href = "#" + to;
 			}, "json");
 		}
 
