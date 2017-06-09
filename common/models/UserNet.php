@@ -110,8 +110,17 @@ class UserNet extends ActiveRecord
 			array_pop($ret);
 		}
 		$items = [];
+		$fields = ['age', 'height_t', 'income_t', 'horos_t', 'education_t'];
 		foreach ($ret as $row) {
-			$items[] = User::fmtRow($row);
+			$item = User::fmtRow($row);
+			$item['notes'] = [];
+
+			foreach ($fields as $field) {
+				if (isset($item[$field]) && $item[$field]) {
+					$item['notes'][] = $item[$field];
+				}
+			}
+			$items[] = $item;
 		}
 		return [$items, $nextPage];
 	}

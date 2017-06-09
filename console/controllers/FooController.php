@@ -83,6 +83,7 @@ class FooController extends Controller
 					'uEducation' => $fmtValue(User::$Education, $row['education']),
 					'uRest' => $fmtValue(User::$Rest, $row['routine']),
 					'uNote' => 'dummy',
+					'uRawData' => json_encode($row, JSON_UNESCAPED_UNICODE)
 				];
 				$uid = User::add($newUser);
 				$cmdUW->bindValues([
@@ -150,6 +151,7 @@ class FooController extends Controller
 					'uLocation' => '[{"key":"","text":"' . $row['province'] . '"},{"key":"","text":"' . $row['city'] . '"}]',
 					'uIntro' => $row['description'],
 					'uNote' => 'dummy',
+					'uRawData' => json_encode($row, JSON_UNESCAPED_UNICODE)
 				];
 				$uid = User::add($newUser);
 				$cmdUW->bindValues([
@@ -165,8 +167,10 @@ class FooController extends Controller
 			var_dump($count . ' - matcher');
 			foreach ($keys as $item) {
 				list($uId, $key) = $item;
-				self::singles($uId, $key, 1);
-				self::singles($uId, $key, 2);
+				self::singles($uId, $key, 1, 1);
+				self::singles($uId, $key, 1, 2);
+				self::singles($uId, $key, 2, 1);
+				self::singles($uId, $key, 2, 2);
 			}
 		}
 	}
