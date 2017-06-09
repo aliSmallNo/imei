@@ -3144,3 +3144,35 @@ section
 				background: url(../images/ico_location_gray.png) no-repeat left center
 				background-size: 1.4rem 1.4rem
 				@include textTail
+
+.m-bottom-bar
+	height: 5rem
+	line-height: 5rem
+	@include borderBox
+	position: fixed
+	left: 0
+	bottom: 0
+	right: 0
+	padding: .5rem 0
+	background: #fff
+	z-index: 9
+	border-top: 1px solid $borderColor
+	@include displayFlex
+	p
+		@include displayFlex-1
+		padding: 0 1rem
+		a
+			display: block
+			text-align: center
+			text-decoration: none
+			color: #fff
+			font-size: 1.4rem
+			border-radius: 2rem
+			line-height: 4rem
+			height: 4rem
+			&.heart
+				border: none
+				background: $mainColor
+			&.weixin
+				border: none
+				background: $linkColor

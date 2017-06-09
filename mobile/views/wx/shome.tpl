@@ -53,9 +53,10 @@
 	</div>
 	<span class="report pushblack">举报拉黑</span>
 	<div style="height: 50px;"></div>
-	<nav class="hpnav">
-		<a class="heart"><span>心动</span></a>
-		<a class="weixin">加微信聊聊</a></nav>
+	<div class="m-bottom-bar">
+		<p><a class="heart">心动</a></p>
+		<p><a class="weixin">加微信聊聊</a></p>
+	</div>
 </div>
 <input type="hidden" id="cUID" value="{{$hid}}">
 <script type="text/template" id="tpl_wx_info">
