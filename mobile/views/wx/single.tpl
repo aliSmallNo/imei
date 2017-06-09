@@ -1,55 +1,7 @@
 <section id="slink">
-	<div class="match-wrap line-bottom">
-		<h3>名人媒婆 | 企业家媒婆</h3>
-		<ul class="clearfix vipMp">
-			<li>
-				<a href="#sgroup" class="" data-id="120001">
-					<div class="avatar">
-						<img src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100">
-					</div>
-					<h4>尹峰<i class="vip"></i></h4>
-					<p class="note">咖啡之翼创始人</p>
-					<span class="btn-s-1 s1">TA的单身团(12)</span>
-				</a>
-			</li>
-			<li>
-				<a href="#sgroup" class="">
-					<div class="avatar">
-						<img src="https://image.1meipo.com/uploads/1482244401797.jpg?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100">
-					</div>
-					<h4>徐小平<i class="vip"></i></h4>
-					<p class="note">真格基金创始人</p>
-					<span class="btn-s-1 s1">TA的单身团(5)</span>
-				</a>
-			</li>
-			<li>
-				<a href="#sgroup" class="">
-					<div class="avatar">
-						<img src="https://img.1meipo.com/dc16e8c6913daffbbf99e8bd34664130.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100">
-					</div>
-					<h4>王利芬<i class="vip"></i></h4>
-					<p class="note">优米网创始人/湖畔大学第一期学员</p>
-					<span class="btn-s-1 s1">TA的单身团(6)</span>
-				</a>
-			</li>
-			<li>
-				<a href="#sgroup" class="">
-					<div class="avatar">
-						<img src="https://img.1meipo.com/77a34dc88d3af598b88d68c5a4d1aec2.jpg?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100">
-					</div>
-					<h4>王思明<i class="vip"></i></h4>
-					<p class="note">SOIREE奢瑞小黑裙CEO，让美好遇见美好！</p>
-					<span class="btn-s-1 s1">TA的单身团(27)</span>
-				</a>
-			</li>
-		</ul>
-		<div class="see-more"><a href="javascript:;">查看更多</a></div>
-	</div>
 	<div class="match-wrap">
 		<h3>推荐媒婆</h3>
-		<ul class="clearfix recommendMp">
-
-		</ul>
+		<ul class="clearfix recommendMp"></ul>
 		<div class="see-more"><a href="javascript:;" tag="recomend">查看更多</a></div>
 	</div>
 </section>
@@ -60,9 +12,7 @@
 			<span class="btn">去设置</span>
 		</a>
 	</div>
-	<ul class="m-top-users">
-
-	</ul>
+	<ul class="m-top-users"></ul>
 	<div class="m-more">上拉加载更多</div>
 </section>
 <section id="matchCondition">
@@ -350,114 +300,6 @@
 	<div class="sprofile-bottom">
 		<a href="javascript:;" tag="love"><span class="icon-l icon-love"></span>心动</a>
 		<a href="javascript:;" tag="wechat">加微信聊聊</a>
-	</div>
-</section>
-<section id="sgroup">
-	<div class="sgroup-top">
-		<div class="nav">
-			<a href="#slink">返回</a>
-			<a href="#sme" style="display: none">个人中心</a>
-		</div>
-		<div class="sgroup-top-des">
-			<div class="img">
-				<img src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100"
-						 alt="">
-			</div>
-			<div class="name">
-				<span>Joleen Liang</span>
-			</div>
-			<div class="title">
-				<span>二人锅首尔星派火锅创始人</span>
-			</div>
-			<div class="focus">
-				<a href="javascript:;">关注TA</a>
-			</div>
-			<div class="list">
-				<div class="list-item">
-					<div class="list-des">单身团</div>
-					<div>5</div>
-				</div>
-				<div class="list-item">
-					<div class="list-des">牵线成功</div>
-					<div>1</div>
-				</div>
-				<div class="list-item">
-					<div class="list-des">粉丝</div>
-					<div>10</div>
-				</div>
-			</div>
-		</div>
-		<div class="sgroup-list">
-			<div class="sgroup-list-tab">
-				<a href="javascript:;" tag="male"><span class="active">男生(2)</span></a>
-				<a href="javascript:;" tag="female"><span>女生(3)</span></a>
-			</div>
-			<ul class="sgroup-list-item" tag="male">
-				<li>
-					<a href="javascript:;">
-						<div class="img">
-							<img src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100"
-									 alt="">
-						</div>
-						<div>
-							<p>Summer</p>
-							<i>28岁 . 160cm . 2w-5w . 双子座</i>
-						</div>
-					</a>
-				</li>
-				<li>
-					<a href="javascript:;">
-						<div class="img">
-							<img src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100"
-									 alt="">
-						</div>
-						<div>
-							<p>Summer</p>
-							<i>28岁 . 160cm . 2w-5w . 双子座</i>
-						</div>
-					</a>
-				</li>
-			</ul>
-			<ul class="sgroup-list-item" tag="female" style="display: none">
-				<li>
-					<a href="javascript:;">
-						<div class="img">
-							<img src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100"
-									 alt="">
-						</div>
-						<div>
-							<p>Winter</p>
-							<i>12岁 . 120cm . 1w-2w . 无座</i>
-						</div>
-					</a>
-				</li>
-				<li>
-					<a href="javascript:;">
-						<div class="img">
-							<img src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100"
-									 alt="">
-						</div>
-						<div>
-							<p>Winter</p>
-							<i>12岁 . 120cm . 1w-2w . 无座</i>
-						</div>
-					</a>
-				</li>
-				<li>
-					<a href="javascript:;">
-						<div class="img">
-							<img src="https://img.1meipo.com/eac72ff85fb53f5bc4d850d1d2ce088e.png?x-oss-process=image/resize,m_fill,w_400,h_400,limit_0/auto-orient,0/quality,q_100"
-									 alt="">
-						</div>
-						<div>
-							<p>Winter</p>
-							<i>12岁 . 120cm . 1w-2w . 无座</i>
-						</div>
-					</a>
-				</li>
-			</ul>
-			<div class="sgroup-list-lodingOff">全部加载完毕</div>
-		</div>
 	</div>
 </section>
 <section id="personalInfo">
@@ -902,7 +744,7 @@
 <script type="text/html" id="slinkTemp">
 	{[#items]}
 	<li>
-		<a href="#sgroup" class="" data-id="{[encryptId]}">
+		<a href="/wx/mh?id={[encryptId]}">
 			<div class="avatar">
 				<img src="{[avatar]}">
 			</div>
