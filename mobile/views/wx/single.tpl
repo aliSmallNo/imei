@@ -729,7 +729,7 @@
 			<img src="{[avatar]}" alt="">
 		</div>
 		<div class="sprofile-top-des">
-			<p>{[name]}<em class="icon-{[genderclass]}"></em></p>
+			<p><b>{[name]}<em class="icon-{[genderclass]}"></em></b></p>
 			<i>{[#age]}{[age]}岁{[/age]} {[#height]}{[height]}cm{[/height]} {[#horos]}{[horos]}{[/horos]} {[#job]}{[job]}{[/job]}</i>
 			<span>{[location]}</span>
 		</div>

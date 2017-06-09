@@ -362,10 +362,12 @@ class User extends ActiveRecord
 		$Info = self::find()->where(["uOpenId" => $openId])->asArray()->one();
 		$Info["img4"] = [];
 		$Info["imgList"] = [];
+		$Info["co"] = 0;
 		$uAlbum = $Info["uAlbum"];
 		if ($uAlbum) {
 			$uAlbum = json_decode($uAlbum, 1);
 			$Info["imgList"] = $uAlbum;
+			$Info["co"] = count($uAlbum);
 			if (count($uAlbum) <= 4) {
 				$Info["img4"] = $uAlbum;
 			} else {
