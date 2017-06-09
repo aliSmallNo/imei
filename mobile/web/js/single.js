@@ -460,6 +460,34 @@ require(["layer"],
 			}, "json");
 		});
 
+		$(document).on(kClick, ".mymp a", function () {
+			var to = $(this).attr("to");
+			switch (to) {
+				case "myMP":
+					mymp(to);
+					location.href = "#" + to;
+					break;
+				case "focusMP":
+					//mymp(to);
+					location.href = "#" + to;
+					break;
+			}
+		});
+
+		var mympF = 0;
+
+		function mymp(to) {
+			if (mympF) {
+				return;
+			}
+			mympF = 1;
+			$.post("/api/user", {
+				tag: "mymp",
+			}, function (resp) {
+				$(".mymp-des").html(Mustache.render($("#mympTemp").html(),resp.data));
+			}, "json");
+		}
+
 		$(function () {
 			$("body").addClass("bg-color");
 			FootUtil.init();

@@ -138,9 +138,9 @@
 			<a href="#weFriends" class="" id="myapply"><span class="title">我加微信的人</span> </a>
 			<a href="#heartbeat" class="" id="myapply"><span class="title">心动列表</span> </a>
 		</div>
-		<div class="m-rows line-bottom">
-			<a href="#myMP" class=""><span class="title">我的媒婆</span> <span class="tip">还没有媒婆</span></a>
-			<a href="#focusMP" class="" id="myfollow"><span class="title">关注的媒婆</span> </a>
+		<div class="m-rows line-bottom mymp">
+			<a href="javascript:;" class="" to="myMP"><span class="title">我的媒婆</span> <span class="tip">还没有媒婆</span></a>
+			<a href="javascript:;" class="" to="focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
 			<a href="#saccount" class=""><span class="title">媒桂花</span></a>
@@ -218,18 +218,6 @@
 		<a href="#sme">返回</a>
 	</div>
 	<div class="mymp-des">
-		<div class="top">我的媒婆</div>
-		<div class="mid">
-			<div>
-				<img src="/images/testImg.jpeg" alt="">
-			</div>
-			<b>徐小平</b>
-			<p>我是微媒100媒婆</p>
-		</div>
-		<div class="bot">
-			<a href="#sgroup">查看TA的主页</a>
-			<a href="javascript:;">更换其他媒婆</a>
-		</div>
 
 	</div>
 </section>
@@ -724,7 +712,8 @@
 		</div>
 		<div class="sprofile-top-des">
 			<p><b>{[name]}<em class="icon-{[genderclass]}"></em></b></p>
-			<i>{[#age]}{[age]}岁{[/age]} {[#height]}{[height]}cm{[/height]} {[#horos]}{[horos]}{[/horos]} {[#job]}{[job]}{[/job]}</i>
+			<i>{[#age]}{[age]}岁{[/age]} {[#height]}{[height]}
+				cm{[/height]} {[#horos]}{[horos]}{[/horos]} {[#job]}{[job]}{[/job]}</i>
 			<span>{[location]}</span>
 		</div>
 	</div>
@@ -923,6 +912,20 @@
 		</a>
 	</li>
 	{[/items]}
+</script>
+<script type="text/html" id="mympTemp">
+	<div class="top">我的媒婆</div>
+	<div class="mid">
+		<div>
+			<img src="/images/testImg.jpeg">
+		</div>
+		<b>徐小平</b>
+		<p>我是微媒100媒婆</p>
+	</div>
+	<div class="bot">
+		<a href="#sgroup">查看TA的主页</a>
+		<a href="javascript:;">更换其他媒婆</a>
+	</div>
 </script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}

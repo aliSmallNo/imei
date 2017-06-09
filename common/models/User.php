@@ -559,6 +559,19 @@ class User extends ActiveRecord
 		return ["data" => $result, "nextpage" => $nextpage, "condition" => $matchcondition];
 	}
 
+	public static function mymp($openId)
+	{
+		$sql = "select u2.uId,u2.uName,u2.uAvatar,u2.uIntro
+				from im_user as u
+				join im_user_net as n on u.uId=n.nSubUId
+				left join im_user as u2 on u2.uId=n.nUId
+				where u.uOpenId=:openId";
+		$ret = \Yii::$app->db->createCommand($sql)->bindValues([
+			":openId" => $openId,
+		])->queryOne();
+		return $ret;
+	}
+
 	public static function topSingle($uid, $page, $pageSize)
 	{
 
