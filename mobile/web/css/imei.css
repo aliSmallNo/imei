@@ -3127,7 +3127,9 @@ section {
 
 .users2 {
   padding: 1rem;
-  background-color: #fff; }
+  background-color: #fff;
+  min-height: 40rem;
+  border-bottom: 1px solid #EEEFF3; }
   .users2 a {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -3183,5 +3185,15 @@ section {
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden; }
+
+.report {
+  display: block;
+  width: 3.8rem;
+  background: url(../images/ico_rpt.png) no-repeat left;
+  background-size: 1.5rem 1.5rem;
+  padding-left: 1.6rem;
+  color: #999;
+  margin: 2rem auto;
+  text-align: center; }
 
 /*# sourceMappingURL=imei.css.map */

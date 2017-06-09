@@ -17,6 +17,18 @@ require(["layer"],
 			loading: 0
 		};
 
+		function eleInScreen($ele) {
+			return $ele && $ele.length > 0 && $ele.offset().top < $(window).scrollTop() + $(window).height();
+		}
+
+		$(window).on("scroll", function () {
+			var lastRow = UserUtil.list.find('a').last();
+			if (lastRow && eleInScreen(lastRow) && UserUtil.page > 0) {
+				UserUtil.reload();
+				return false;
+			}
+		});
+
 		$('.btn').on(kClick, function () {
 			var self = $(this);
 			if (self.hasClass('signed') || $sls.loading) {
