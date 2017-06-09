@@ -92,7 +92,7 @@
 				<span class="role">{{$prod.role_t}}</span>
 				<span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
 				<br>
-				<span>{{$prod.age}}岁</span>
+				<span>{{$prod.age}}</span>
 
 				<span>{{$prod.gender_t}}</span>
 				<span>{{$prod.height_t}}</span>

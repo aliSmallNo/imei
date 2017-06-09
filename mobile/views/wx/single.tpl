@@ -685,7 +685,7 @@
 			</a>
 		</div>
 		<div class="info"><span class="name">{[name]}</span> <span class="icon {[gender]}"></span> <span
-							class="otherInfo">{[age]}岁 . {[height]} . {[horos]} . {[job]}</span>
+							class="otherInfo">{[age]} . {[height]} . {[horos]} . {[job]}</span>
 		</div>
 		<div class="sign">{[intro]}</div>
 		<div class="action clearfix">
