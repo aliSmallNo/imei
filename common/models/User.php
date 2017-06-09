@@ -214,6 +214,9 @@ class User extends ActiveRecord
 		foreach ($keys as $key) {
 			$newKey = strtolower(substr($key, 1));
 			$val = $row[$key];
+			if ($newKey == "name" && mb_strlen($val) > 5) {
+				$val = mb_substr($val, 0, 5) . "...";
+			}
 			if ($newKey == 'location') {
 				$item[$newKey] = json_decode($val, 1);
 				$item[$newKey . '_t'] = '';

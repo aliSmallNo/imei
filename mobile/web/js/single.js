@@ -36,6 +36,9 @@ require(["layer"],
 			sUserPage: 1,
 
 			sprofileF: 0,
+			smeFlag: 0,
+			slinkFlag: 0,
+			slinkpage: 1,
 		};
 
 		var RechargeUtil = {
@@ -87,6 +90,7 @@ require(["layer"],
 			$sls.hashPage = hashTag;
 			switch (hashTag) {
 				case 'slink':
+					slink();
 					FootUtil.toggle(1);
 					break;
 				case 'slook':
@@ -97,7 +101,7 @@ require(["layer"],
 					FootUtil.toggle(1);
 					break;
 				case 'sme':
-					myInfo();
+					sme();
 					FootUtil.toggle(1);
 					break;
 				default:
@@ -120,7 +124,45 @@ require(["layer"],
 			layer.closeAll();
 		}
 
-		function myInfo() {
+		$(document).on(kClick, "a[tag=recomend]", function () {
+			if ($(this).attr("fl")) {
+				return;
+			}
+			slink();
+		});
+
+		function slink() {
+			if ($sls.slinkFlag) {
+				return;
+			}
+			$sls.slinkFlag = 1;
+			$("a[tag=recomend]").html("拼命加载中~~");
+			$.post("/api/user", {
+				tag: "matcher",
+				page: $sls.slinkpage,
+			}, function (resp) {
+				var html = Mustache.render($("#slinkTemp").html(), resp.data);
+				if ($sls.slinkpage == 1) {
+					$(".recommendMp").html(html);
+				} else {
+					$(".recommendMp").append(html);
+				}
+				$sls.slinkpage = resp.data.nextPage;
+				if ($sls.slinkpage == 0) {
+					$("a[tag=recomend]").html("没有更多了~");
+					$("a[tag=recomend]").attr("fl", 1);
+				} else {
+					$("a[tag=recomend]").html("点击加载更多~");
+				}
+				$sls.slinkFlag = 0;
+			}, "json");
+		}
+
+		function sme() {
+			if ($sls.smeFlag) {
+				return;
+			}
+			$sls.smeFlag = 1;
 			$.post("/api/user", {
 				tag: "myinfo",
 			}, function (resp) {
@@ -128,9 +170,10 @@ require(["layer"],
 				$(".u-my-album .photos").html(Mustache.render(temp, {items: resp.data.img4}));
 
 				var html = Mustache.render(temp, {items: resp.data.imgList});
-				$("#album .photos").html('<li><a href="javascript:;" class="choose-img"></a></li>'+html);
+				$("#album .photos").html('<li><a href="javascript:;" class="choose-img"></a></li>' + html);
 
 				$(".u-my-album .title").html("相册（" + resp.data.co + ")");
+				$sls.smeFlag = 0;
 			}, "json");
 		}
 
@@ -153,7 +196,6 @@ require(["layer"],
 			$("#personalInfo").html(Mustache.render($("#personalInfoTemp").html(), data));
 			location.href = "#personalInfo";
 		}
-
 
 		$(document).on(kClick, "#sprofile a", function () {
 			var self = $(this);
@@ -226,6 +268,7 @@ require(["layer"],
 				}
 			});
 		}
+
 		function uploadImage(serverId) {
 			$.post("/api/user", {
 				tag: "album",

@@ -1,7 +1,7 @@
 <section id="slink">
 	<div class="match-wrap line-bottom">
 		<h3>名人媒婆 | 企业家媒婆</h3>
-		<ul class="clearfix">
+		<ul class="clearfix vipMp">
 			<li>
 				<a href="#sgroup" class="" data-id="120001">
 					<div class="avatar">
@@ -47,7 +47,10 @@
 	</div>
 	<div class="match-wrap">
 		<h3>推荐媒婆</h3>
-		<ul class="clearfix"></ul>
+		<ul class="clearfix recommendMp">
+
+		</ul>
+		<div class="see-more"><a href="javascript:;" tag="recomend">查看更多</a></div>
 	</div>
 </section>
 <section id="slook">
@@ -906,6 +909,20 @@
 		</div>
 		{[/cond]}
 	</div>
+</script>
+<script type="text/html" id="slinkTemp">
+	{[#items]}
+	<li>
+		<a href="#sgroup" class="" data-id="{[encryptId]}">
+			<div class="avatar">
+				<img src="{[avatar]}">
+			</div>
+			<h4>{[name]}<i class="vip"></i></h4>
+			<p class="note">{[intro]}</p>
+			<span class="btn-s-1 s1">TA的单身团({[cnt]})</span>
+		</a>
+	</li>
+	{[/items]}
 </script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
