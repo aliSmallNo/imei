@@ -90,6 +90,7 @@ class UserNet extends ActiveRecord
 			 WHERE n.nDeletedFlag=0 ' . $strCriteria . ' GROUP BY n.nUId';
 		$conn = AppUtil::db();
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		$count = count($ret);
 		foreach ($ret as $row) {
 			$data = [
 				'fans' => intval($row['fans']),
@@ -117,7 +118,7 @@ class UserNet extends ActiveRecord
 			}
 			return $ret;
 		}
-		return true;
+		return $count;
 	}
 
 	public static function getStat($uid, $resetFlag = false)
