@@ -159,15 +159,6 @@
 		<li>
 			<a href="javascript:;" class="choose-img"></a>
 		</li>
-		<li>
-			<img src="/images/testImg.jpeg">
-		</li>
-		<li>
-			<img src="/images/testImg.jpeg">
-		</li>
-		<li>
-			<img src="/images/testImg.jpeg">
-		</li>
 	</ul>
 
 </section>
