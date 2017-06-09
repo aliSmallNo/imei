@@ -168,30 +168,6 @@
 		<a href="#sqrcode">关注公众号</a>
 	</div>
 </section>
-<section id="sshare">
-	<div id="inviteInfo" class="invite-wrap">
-		<div class="title">
-			<span>大狮兄</span>
-			<em>和</em>
-			<span class="dl">姚劲波</span>
-			<br> <em>一起在这里当</em>
-			<span>「媒婆」</span></div>
-		<div class="video">
-			<video id="video" src="//zlpic.1meipo.com/h5/video/640%2A360.mp4" poster="/images/poster.jpg" controls="controls"></video>
-			<span id="play_btn" onclick="document.querySelector('#video').play();document.querySelector('#play_btn').style.display='none';" class="play"></span>
-		</div>
-		<div class="btns">
-			<a href="javascript:;" class="btn-s-1 s1">邀请单身朋友</a>
-		</div>
-		<div class="user">
-			<div class="nic"><img src="https://img.1meipo.com/30e31b4378be793ab4e4961cb122fcb0.png">
-				<p>大狮兄</p></div>
-		</div>
-		<div class="footer">
-			<p class="copy"><span>微媒100 | 挖掘优秀单身</span></p>
-		</div>
-	</div>
-</section>
 <section id="snewbie">
 	<div class="newbie">
 		<div class="empty middle">
@@ -300,11 +276,24 @@
 	</li>
 	{[/items]}
 </script>
+<script type="text/template" id="tpl_news">
+	{[#items]}
+	<li>
+		<img src="{[thumb]}" class="avatar">
+		<div><b>{[name]}</b>收到1次牵线成功打赏收到1次牵线成功打赏</div>
+		{[#thumb2]}<img src="{[.]}" class="target_avatar">{[/thumb2]}
+	</li>
+	{[/items]}
+</script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script>
 	var mMatcher = {{$matcher}};
+	function clickPlay() {
+		document.querySelector('#video').play();
+		document.querySelector('#play_btn').style.display = 'none';
+	}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>

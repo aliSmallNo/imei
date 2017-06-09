@@ -68,7 +68,7 @@ class UserNet extends ActiveRecord
 		return true;
 	}
 
-	public static function boys($uid, $page, $pageSize = 10)
+	public static function male($uid, $page, $pageSize = 10)
 	{
 		$criteria[] = 'nUId=:uid AND nRelation=:rel AND uGender=:gender';
 		$params = [
@@ -80,7 +80,7 @@ class UserNet extends ActiveRecord
 		return self::crew($criteria, $params, $page, $pageSize);
 	}
 
-	public static function girls($uid, $page, $pageSize = 10)
+	public static function female($uid, $page, $pageSize = 10)
 	{
 		$criteria[] = 'nUId=:uid AND nRelation=:rel AND uGender=:gender';
 		$params = [
