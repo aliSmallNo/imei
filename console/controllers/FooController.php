@@ -220,6 +220,9 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-
+		self::matchers(1);
+		self::matchers(2);
+		self::matchers(3);
+		self::matchers(4);
 	}
 }
