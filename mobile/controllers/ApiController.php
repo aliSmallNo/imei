@@ -113,15 +113,18 @@ class ApiController extends Controller
 		switch ($tag) {
 			case 'boys':
 			case 'girls':
+			case 'female':
+			case 'male':
 				$page = self::postParam('page', 1);
+				$uid = self::postParam('uid', 0);
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				if ($tag == 'boy') {
-					list($items, $nextPage) = UserNet::boys($wxInfo['uId'], $page);
+				if ($tag == 'boys' || $tag == 'male') {
+					list($items, $nextPage) = UserNet::male($uid, $page);
 				} else {
-					list($items, $nextPage) = UserNet::girls($wxInfo['uId'], $page);
+					list($items, $nextPage) = UserNet::female($uid, $page);
 				}
 				return self::renderAPI(0, '', [
 					'items' => $items,

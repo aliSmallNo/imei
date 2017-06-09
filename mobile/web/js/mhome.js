@@ -46,8 +46,10 @@ require(["layer"],
 			loading: 0,
 			list: $('.users2'),
 			tmp: $('#tpl_single').html(),
+			uid: $('#cUID').val(),
 			spinner: null,
 			noMore: null,
+			tag: 'male',
 			init: function () {
 				var util = this;
 				util.page = 2;
@@ -55,6 +57,14 @@ require(["layer"],
 				util.list.html(html);
 				util.spinner = $('.m-tab-wrap .spinner');
 				util.noMore = $('.m-tab-wrap .no-more');
+				$(".m-tabs > a").on('click', function () {
+					var self = $(this);
+					util.tag = self.attr('data-tag');
+					self.closest(".m-tabs").find("a").removeClass('active');
+					self.addClass('active');
+					util.page = 1;
+					util.reload();
+				});
 			},
 			reload: function () {
 				var util = this;
@@ -68,8 +78,9 @@ require(["layer"],
 				util.spinner.show();
 				$.post('/api/user',
 					{
-						tag: 'matcher',
-						page: util.page
+						tag: util.tag,
+						page: util.page,
+						uid: util.uid
 					},
 					function (resp) {
 						if (resp.code == 0) {
@@ -108,7 +119,7 @@ require(["layer"],
 			// FastClick.attach($sls.footer.get(0));
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
-			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage'];
+			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems'];
 			wx.config(wxInfo);
 			wx.ready(function () {
 				wx.hideOptionMenu();

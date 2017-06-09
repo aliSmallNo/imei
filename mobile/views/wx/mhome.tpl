@@ -31,6 +31,7 @@
 <a href="/report?uid=350c88afa7d64c52b444735fafc7373c&amp;name=%E5%B0%B9%E5%B3%B0" class="report">举报</a>
 
 <a class="rcmd gradient-h"><span>推荐TA的单身团</span></a>
+<input type="hidden" id="cUID" value="{{$hid}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>

@@ -3134,7 +3134,9 @@ section {
     box-sizing: border-box;
     padding: 0.5rem 0.5rem 1.5rem;
     float: left;
-    width: 50%; }
+    width: 15rem; }
+    .users2 a:nth-of-type(2n+1) {
+      clear: left; }
     .users2 a .img {
       position: relative;
       color: #fff;
