@@ -27,10 +27,8 @@
 	<div class="spinner" style="display: none"></div>
 	<div class="no-more" style="display: none;">没有更多了~</div>
 </div>
-
-<a href="/report?uid=350c88afa7d64c52b444735fafc7373c&amp;name=%E5%B0%B9%E5%B3%B0" class="report">举报</a>
-
-<a class="rcmd gradient-h"><span>推荐TA的单身团</span></a>
+<a href="/wx/rpt?id={{$hid}}" class="report">举报</a>
+<a style="display: none" class="rcmd gradient-h"><span>推荐TA的单身团</span></a>
 <input type="hidden" id="cUID" value="{{$hid}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}

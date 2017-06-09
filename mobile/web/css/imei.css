@@ -8,7 +8,7 @@ body, html {
   font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   height: 100%; }
 
-body, html, a, p, ul, div, h4, h5, .main-wrap {
+body, html, a, p, ul, div, h4, h5, h6, .main-wrap {
   margin: 0;
   padding: 0;
   -webkit-tap-highlight-color: transparent; }
@@ -3135,7 +3135,9 @@ section {
 
 .users2 {
   padding: 1rem;
-  background-color: #fff; }
+  background-color: #fff;
+  min-height: 40rem;
+  border-bottom: 1px solid #EEEFF3; }
   .users2 a {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -3155,7 +3157,6 @@ section {
         bottom: 1rem;
         z-index: 2;
         background: url(../images/ico_location.png) no-repeat left;
-        -webkit-background-size: auto 1.4rem;
         background-size: auto 1.4rem;
         padding-left: 1.6rem;
         font-size: 1.2rem; }
@@ -3191,5 +3192,114 @@ section {
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden; }
+
+.report {
+  display: block;
+  width: 3.8rem;
+  background: url(../images/ico_rpt.png) no-repeat left;
+  background-size: 1.5rem 1.5rem;
+  padding-left: 1.6rem;
+  color: #999;
+  margin: 2rem auto;
+  text-align: center; }
+
+.single-page .head {
+  width: 100%;
+  height: 32rem;
+  overflow: hidden;
+  position: relative; }
+  .single-page .head img {
+    width: 100%;
+    height: 100%; }
+.single-page .baseinfo {
+  background: #fff;
+  margin-bottom: 1rem;
+  padding: 2rem 1.5rem; }
+  .single-page .baseinfo h6 {
+    font-size: 1.4rem;
+    color: #727272;
+    height: 2.6rem;
+    line-height: 2.6rem;
+    font-weight: 300; }
+  .single-page .baseinfo .title {
+    height: 2.4rem;
+    line-height: 2.4rem;
+    overflow: hidden;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+    .single-page .baseinfo .title h4 {
+      font-weight: 500;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden; }
+      .single-page .baseinfo .title h4 .icon {
+        width: 1.2rem;
+        height: 1.2rem;
+        display: inline-block;
+        position: relative;
+        top: 0.1rem; }
+        .single-page .baseinfo .title h4 .icon.male {
+          background: url(../images/ico_gender_male.png) no-repeat center center;
+          background-size: 100% 100%; }
+        .single-page .baseinfo .title h4 .icon.female {
+          background: url(../images/ico_gender_female.png) no-repeat center center;
+          background-size: 100% 100%; }
+    .single-page .baseinfo .title h5 {
+      -webkit-box-flex: 0 0 6rem;
+      -webkit-flex: 0 0 6rem;
+      -ms-flex: 0 0 6rem;
+      flex: 0 0 6rem;
+      padding-left: 1.6rem;
+      background: url(../images/ico_location_gray.png) no-repeat left center;
+      background-size: 1.4rem 1.4rem;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden; }
+
+.m-bottom-bar {
+  height: 5rem;
+  line-height: 5rem;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  padding: 0.5rem 0;
+  background: #fff;
+  z-index: 9;
+  border-top: 1px solid #E4E4E4;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+  .m-bottom-bar p {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    padding: 0 1rem; }
+    .m-bottom-bar p a {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.4rem;
+      border-radius: 2rem;
+      line-height: 4rem;
+      height: 4rem; }
+      .m-bottom-bar p a.heart {
+        border: none;
+        background: #f06292; }
+      .m-bottom-bar p a.weixin {
+        border: none;
+        background: #007aff; }
 
 /*# sourceMappingURL=imei.css.map */

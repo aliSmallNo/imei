@@ -134,7 +134,7 @@ body, html
 	font-family: 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif
 	height: 100%
 
-body, html, a, p, ul, div, h4, h5, .main-wrap
+body, html, a, p, ul, div, h4, h5, h6, .main-wrap
 	margin: 0
 	padding: 0
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0)
@@ -2956,6 +2956,7 @@ section
 					font-size: 1.4rem
 				p:last-child
 					color: #f781ab
+
 .home-header
 	background-color: $mainColorLight
 	text-align: center
@@ -3037,6 +3038,8 @@ section
 .users2
 	padding: 1rem
 	background-color: #fff
+	min-height: 40rem
+	border-bottom: 1px solid $borderColorLight
 	a
 		@include borderBox
 		padding: .5rem .5rem 1.5rem
@@ -3054,7 +3057,6 @@ section
 				bottom: 1rem
 				z-index: 2
 				background: url(../images/ico_location.png) no-repeat left
-				-webkit-background-size: auto 1.4rem
 				background-size: auto 1.4rem
 				padding-left: 1.6rem
 				font-size: 1.2rem
@@ -3087,3 +3089,91 @@ section
 			width: 100%
 			@include textTail
 
+.report
+	display: block
+	width: 3.8rem
+	background: url(../images/ico_rpt.png) no-repeat left
+	background-size: 1.5rem 1.5rem
+	padding-left: 1.6rem
+	color: $grayFontColorLight
+	margin: 2rem auto
+	text-align: center
+
+.single-page
+	.head
+		width: 100%
+		height: 32rem
+		overflow: hidden
+		position: relative
+		img
+			width: 100%
+			height: 100%
+	.baseinfo
+		background: #fff
+		margin-bottom: 1rem
+		padding: 2rem 1.5rem
+		h6
+			font-size: 1.4rem
+			color: $grayFontColor
+			height: 2.6rem
+			line-height: 2.6rem
+			font-weight: $weightNormal
+		.title
+			height: 2.4rem
+			line-height: 2.4rem
+			overflow: hidden
+			@include displayFlex
+			h4
+				font-weight: $weightBold
+				@include displayFlex-1
+				@include textTail
+				.icon
+					width: 1.2rem
+					height: 1.2rem
+					display: inline-block
+					position: relative
+					top: .1rem
+					&.male
+						background: url(../images/ico_gender_male.png) no-repeat center center
+						background-size: 100% 100%
+					&.female
+						background: url(../images/ico_gender_female.png) no-repeat center center
+						background-size: 100% 100%
+			h5
+				@include displayFlex-w(6rem)
+				padding-left: 1.6rem
+				background: url(../images/ico_location_gray.png) no-repeat left center
+				background-size: 1.4rem 1.4rem
+				@include textTail
+
+.m-bottom-bar
+	height: 5rem
+	line-height: 5rem
+	@include borderBox
+	position: fixed
+	left: 0
+	bottom: 0
+	right: 0
+	padding: .5rem 0
+	background: #fff
+	z-index: 9
+	border-top: 1px solid $borderColor
+	@include displayFlex
+	p
+		@include displayFlex-1
+		padding: 0 1rem
+		a
+			display: block
+			text-align: center
+			text-decoration: none
+			color: #fff
+			font-size: 1.4rem
+			border-radius: 2rem
+			line-height: 4rem
+			height: 4rem
+			&.heart
+				border: none
+				background: $mainColor
+			&.weixin
+				border: none
+				background: $linkColor

@@ -224,6 +224,38 @@ class WxController extends BaseController
 		], 'terse');
 	}
 
+	public function actionSh()
+	{
+		$hid = self::getParam('id');
+		$hid = AppUtil::decrypt($hid);
+		if (!$hid) {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+		$items = [];
+		$uInfo = User::user(['uId' => $hid]);
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$prefer = 'male';
+		if ($wxInfo) {
+			$avatar = $wxInfo["Avatar"];
+			$nickname = $wxInfo["uName"];
+
+		} else {
+			$avatar = ImageUtil::DEFAULT_AVATAR;
+			$nickname = "本地测试";
+		}
+
+		return self::renderPage("shome.tpl", [
+			'nickname' => $nickname,
+			'avatar' => $avatar,
+			'uInfo' => $uInfo,
+			'prefer' => $prefer,
+			'hid' => $hid,
+			'items' => json_encode($items)
+		], 'terse');
+	}
+
 	public function actionSingle()
 	{
 		$openId = self::$WX_OpenId;
