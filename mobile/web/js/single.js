@@ -120,6 +120,20 @@ require(["layer"],
 			layer.closeAll();
 		}
 
+		function myInfo() {
+			$.post("/api/user", {
+				tag: "myinfo",
+			}, function (resp) {
+				var temp = '{[#items]}<li><img src="{[.]}"></li>{[/items]}';
+				$(".u-my-album .photos").html(Mustache.render(temp, {items: resp.data.img4}));
+
+				var html = Mustache.render(temp, {items: resp.data.imgList});
+				$("#album .photos").html('<li><a href="javascript:;" class="choose-img"></a></li>'+html);
+
+				$(".u-my-album .title").html("相册（" + resp.data.co + ")");
+			}, "json");
+		}
+
 		$(".nav-foot > a").on(kClick, function () {
 			var self = $(this);
 			self.closest(".nav-foot").find("a").removeClass("active");
@@ -185,7 +199,7 @@ require(["layer"],
 			}
 		});
 
-		$("#album a.choose-img").on(kClick, function () {
+		$(document).on(kClick, "a.choose-img", function () {
 			wx.chooseImage({
 				count: 1,
 				sizeType: ['original', 'compressed'],
@@ -199,6 +213,29 @@ require(["layer"],
 				}
 			});
 		});
+		function wxUploadImages(localId) {
+			wx.uploadImage({
+				localId: localId.toString(),
+				isShowProgressTips: 1,
+				success: function (res) {
+					var serverId = res.serverId;
+					uploadImage(serverId);
+				},
+				fail: function () {
+					$sls.serverId = "";
+				}
+			});
+		}
+		function uploadImage(serverId) {
+			$.post("/api/user", {
+				tag: "album",
+				id: serverId,
+			}, function (resp) {
+				if (resp.data) {
+					$("#album .photos").append('<li><img src="' + resp.data + '" alt=""></li>');
+				}
+			}, "json");
+		}
 
 		$("#matchCondition a").on(kClick, function () {
 			var self = $(this);
@@ -262,7 +299,6 @@ require(["layer"],
 
 		$(window).on("scroll", function () {
 			var lastRow;
-			console.log(1);
 			switch ($sls.curFrag) {
 				case "slook":
 					lastRow = $(".m-top-users").find('li').last();
@@ -282,7 +318,6 @@ require(["layer"],
 					break;
 			}
 		});
-
 		function eleInScreen($ele, $offset) {
 			return $ele && $ele.length > 0 && $ele.offset().top + $offset < $(window).scrollTop() + $(window).height();
 		}
@@ -356,44 +391,6 @@ require(["layer"],
 			$(this).addClass("active");
 			tabObj.next().html($("#wechats").html());
 		});
-
-		function wxUploadImages(localId) {
-			wx.uploadImage({
-				localId: localId.toString(),
-				isShowProgressTips: 1,
-				success: function (res) {
-					var serverId = res.serverId;
-					uploadImage(serverId);
-				},
-				fail: function () {
-					$sls.serverId = "";
-				}
-			});
-		}
-
-		function uploadImage(serverId) {
-			$.post("/api/user", {
-				tag: "album",
-				id: serverId,
-			}, function (resp) {
-				if (resp.data) {
-					$("#album .photos").append('<li><img src="' + resp.data + '" alt=""></li>');
-				}
-			}, "json");
-		}
-
-		function myInfo() {
-			$.post("/api/user", {
-				tag: "myinfo",
-			}, function (resp) {
-				var temp = '{[#items]}<li><img src="{[.]}" alt=""></li>{[/items]}';
-				$(".u-my-album .photos").html(Mustache.render(temp, {items: resp.data.img4}));
-
-				var html = '<li><a href="javascript:;" class="choose-img"></a></li>';
-				html += Mustache.render(temp, {items: resp.data.imgList});
-				$("#album .photos").html(html);
-			}, "json");
-		}
 
 		function showMsg(title, sec) {
 			var duration = sec || 2;

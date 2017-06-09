@@ -159,15 +159,6 @@
 		<li>
 			<a href="javascript:;" class="choose-img"></a>
 		</li>
-		<li>
-			<img src="/images/testImg.jpeg">
-		</li>
-		<li>
-			<img src="/images/testImg.jpeg">
-		</li>
-		<li>
-			<img src="/images/testImg.jpeg">
-		</li>
 	</ul>
 
 </section>
@@ -729,7 +720,7 @@
 			<img src="{[avatar]}" alt="">
 		</div>
 		<div class="sprofile-top-des">
-			<p>{[name]}<em class="icon-{[genderclass]}"></em></p>
+			<p><b>{[name]}<em class="icon-{[genderclass]}"></em></b></p>
 			<i>{[#age]}{[age]}岁{[/age]} {[#height]}{[height]}cm{[/height]} {[#horos]}{[horos]}{[/horos]} {[#job]}{[job]}{[/job]}</i>
 			<span>{[location]}</span>
 		</div>
@@ -921,4 +912,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.1.5" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.1.3" src="/assets/js/require.js"></script>
