@@ -219,7 +219,8 @@ class WxController extends BaseController
 			'uInfo' => $uInfo,
 			'prefer' => $prefer,
 			'hid' => $hid,
-			'singles' => $items
+			'singles' => $items,
+			'stat' => UserNet::stat($uInfo['id'], true)
 		], 'terse');
 	}
 

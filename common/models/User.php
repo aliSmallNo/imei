@@ -630,7 +630,9 @@ class User extends ActiveRecord
 		}
 		$items = [];
 		foreach ($ret as $row) {
-			$items[] = self::fmtRow($row);
+			$item = self::fmtRow($row);
+			$item['stat'] = UserNet::getStat($item['id']);
+			$items[] = $item;
 		}
 		return [$items, $nextPage];
 	}

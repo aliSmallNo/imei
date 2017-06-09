@@ -10,6 +10,7 @@ namespace common\models;
 
 
 use common\utils\AppUtil;
+use common\utils\RedisUtil;
 use yii\db\ActiveRecord;
 
 class UserNet extends ActiveRecord
@@ -17,11 +18,13 @@ class UserNet extends ActiveRecord
 	const REL_INVITE = 110;
 	const REL_BACKER = 120;
 	const REL_FOLLOW = 130;
+	const REL_LINK = 140;
 
 	static $RelDict = [
 		self::REL_INVITE => '邀请',
 		self::REL_BACKER => '媒婆',
-		self::REL_FOLLOW => '关注'
+		self::REL_FOLLOW => '关注',
+		self::REL_LINK => '牵线'
 	];
 
 	public static function tableName()
@@ -66,6 +69,65 @@ class UserNet extends ActiveRecord
 			':rel' => $relation
 		])->execute();
 		return true;
+	}
+
+	public static function stat($uid = 0)
+	{
+		$strCriteria = '';
+		$params = [];
+		if ($uid) {
+			$strCriteria = ' AND nUId=:id ';
+			$params[':id'] = $uid;
+		}
+		$sql = 'select n.nUId, 
+			 count(CASE WHEN n.nRelation=130 THEN 1 END) as fans,
+			 count(CASE WHEN n.nRelation=140 THEN 1 END) as link,
+			 count(CASE WHEN n.nRelation=120 THEN 1 END) as single,
+			 count(CASE WHEN n.nRelation=120 AND u.uGender=10 THEN 1 END) as female,
+			 count(CASE WHEN n.nRelation=120 AND u.uGender=11 THEN 1 END) as male
+			 from im_user_net as n 
+			 join im_user as u on u.uId=n.nSubUId
+			 WHERE n.nDeletedFlag=0 ' . $strCriteria . ' GROUP BY n.nUId';
+		$conn = AppUtil::db();
+		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		foreach ($ret as $row) {
+			$data = [
+				'fans' => intval($row['fans']),
+				'link' => intval($row['link']),
+				'single' => intval($row['single']),
+				'female' => intval($row['female']),
+				'male' => intval($row['male']),
+				'expire' => time() + 86400 * 7
+			];
+			RedisUtil::setCache(json_encode($data), RedisUtil::KEY_USER_STAT, $row['nUId']);
+		}
+		if ($uid) {
+			$ret = RedisUtil::getCache(RedisUtil::KEY_USER_STAT, $uid);
+			$ret = json_decode($ret, 1);
+			if (!isset($ret['expire'])) {
+				$ret = [
+					'fans' => 0,
+					'link' => 0,
+					'single' => 0,
+					'female' => 0,
+					'male' => 0,
+					'expire' => time() + 3600 * 8
+				];
+				RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_USER_STAT, $uid);
+			}
+			return $ret;
+		}
+		return true;
+	}
+
+	public static function getStat($uid, $resetFlag = false)
+	{
+		$ret = RedisUtil::getCache(RedisUtil::KEY_USER_STAT, $uid);
+		$ret = json_decode($ret, 1);
+		if (!$resetFlag && $ret && $ret['expire'] > time()) {
+			return $ret;
+		}
+		return self::stat($uid);
 	}
 
 	public static function male($uid, $page, $pageSize = 10)

@@ -30,6 +30,7 @@ class RedisUtil
 	const KEY_SMS_CODE_CNT = 'sms_code_cnt';
 	const KEY_DISTANCE = 'dist';
 	const KEY_CITY_IP = 'city_ip';
+	const KEY_USER_STAT = 'user_stat';
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
@@ -66,22 +67,41 @@ class RedisUtil
 	public static function getCache(...$keys)
 	{
 		$redis = AppUtil::redis();
-		$redisKey = self::getPrefix(...$keys);
-		$ret = $redis->get($redisKey);
-		return $ret;
+		$mainKey = '*******';
+		if (is_array($keys) && count($keys)) {
+			$mainKey = $keys[0];
+		}
+		switch ($mainKey) {
+			case self::KEY_USER_STAT:
+				array_shift($keys);
+				$redisKey = implode(self::$Glue, $keys);
+				return $redis->hget(self::FIXED_PREFIX . self::$Glue . $mainKey, $redisKey);
+			default:
+				$redisKey = self::getPrefix(...$keys);
+				return $redis->get($redisKey);
+		}
 	}
 
 	public static function setCache($val, ...$keys)
 	{
 		$redis = AppUtil::redis();
-		$key0 = '*******';
+		$mainKey = '*******';
 		if (is_array($keys) && count($keys)) {
-			$key0 = $keys[0];
+			$mainKey = $keys[0];
 		}
-		$redisKey = self::getPrefix(...$keys);
-		$redis->set($redisKey, $val);
-		$expired = isset(self::$CacheDuration[$key0]) ? self::$CacheDuration[$key0] : 3600;
-		$redis->expire($redisKey, $expired);
+		switch ($mainKey) {
+			case self::KEY_USER_STAT:
+				array_shift($keys);
+				$redisKey = implode(self::$Glue, $keys);
+				$redis->hset(self::FIXED_PREFIX . self::$Glue . $mainKey, $redisKey, $val);
+				break;
+			default:
+				$redisKey = self::getPrefix(...$keys);
+				$redis->set($redisKey, $val);
+				$expired = isset(self::$CacheDuration[$mainKey]) ? self::$CacheDuration[$mainKey] : 3600;
+				$redis->expire($redisKey, $expired);
+				break;
+		}
 	}
 
 	public static function delCache(...$keys)
