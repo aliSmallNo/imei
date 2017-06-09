@@ -693,7 +693,7 @@
 				<div class="intro">
 					这位美人儿强力推荐，天生丽质，贤良淑德，聪明伶俐，秀丽端庄，一笑倾城，再笑倾城，三笑倾你心，各位优质男青年赶紧行动吧
 				</div>
-				<img src="{[avatar]}" class="avatar">
+				<img src="{[mavatar]}" class="avatar">
 			</a>
 		</div>
 		<div class="info"><span class="name">{[name]}</span> <span class="icon {[gender]}"></span> <span
