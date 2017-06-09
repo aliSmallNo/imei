@@ -199,7 +199,7 @@ require(["layer"],
 			}
 		});
 
-		$(document).on(kClick, "#album a.choose-img", function () {
+		$(document).on(kClick, "a.choose-img", function () {
 			wx.chooseImage({
 				count: 1,
 				sizeType: ['original', 'compressed'],
@@ -213,7 +213,6 @@ require(["layer"],
 				}
 			});
 		});
-
 		function wxUploadImages(localId) {
 			wx.uploadImage({
 				localId: localId.toString(),
@@ -226,6 +225,16 @@ require(["layer"],
 					$sls.serverId = "";
 				}
 			});
+		}
+		function uploadImage(serverId) {
+			$.post("/api/user", {
+				tag: "album",
+				id: serverId,
+			}, function (resp) {
+				if (resp.data) {
+					$("#album .photos").append('<li><img src="' + resp.data + '" alt=""></li>');
+				}
+			}, "json");
 		}
 
 		$("#matchCondition a").on(kClick, function () {
@@ -382,17 +391,6 @@ require(["layer"],
 			$(this).addClass("active");
 			tabObj.next().html($("#wechats").html());
 		});
-
-		function uploadImage(serverId) {
-			$.post("/api/user", {
-				tag: "album",
-				id: serverId,
-			}, function (resp) {
-				if (resp.data) {
-					$("#album .photos").append('<li><img src="' + resp.data + '" alt=""></li>');
-				}
-			}, "json");
-		}
 
 		function showMsg(title, sec) {
 			var duration = sec || 2;
