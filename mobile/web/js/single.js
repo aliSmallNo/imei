@@ -253,6 +253,27 @@ require(["layer"],
 			}, "json");
 		}
 
+		$(document).on(kClick, ".m-top-users .uf-btn a", function () {
+			var self = $(this);
+			var cls = self.attr("class");
+			console.log(cls);
+			switch (cls) {
+				case "like":
+					var obj = self.find("span");
+					var id = self.attr("id");
+					if (obj.hasClass("icon-love")) {
+						hint(id, "yes", obj);
+					} else {
+						hint(id, "no", obj);
+					}
+					break;
+				case "apply":
+					$sls.cork.show();
+					$(".getWechat").show();
+					break;
+			}
+		});
+
 		$(".getWechat a").on(kClick, function () {
 			var self = $(this);
 			var tag = self.attr("tag");
@@ -374,13 +395,6 @@ require(["layer"],
 					lastRow = $(".m-top-users").find('li').last();
 					if (lastRow && eleInScreen(lastRow, 640) && $sls.sUserPage > 0) {
 						getUserFiter("", $sls.sUserPage);
-						return false;
-					}
-					break;
-				case "fsearchlist":
-					lastRow = SearchClientUtil.list.find('li').last();
-					if (lastRow && eleInScreen(lastRow) && SearchClientUtil.pageIndex > 0) {
-						SearchClientUtil.reload();
 						return false;
 					}
 					break;
