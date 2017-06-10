@@ -27,27 +27,31 @@
 	</div>
 	<div class="m-tab-wrap">
 		<div class="m-tabs">
-			<a href="javascript:;" {{if $prefer=='male'}}class="active"{{/if}} data-tag="male">
-				<span>男生(10)</span>
+			<a href="javascript:;" class="active" data-tag="male">
+				<span>男生({{$stat.male}})</span>
 			</a>
-			<a href="javascript:;" {{if $prefer=='female'}}class="active"{{/if}} data-tag="female">
-				<span>女生(6)</span>
+			<a href="javascript:;" data-tag="female">
+				<span>女生({{$stat.female}})</span>
 			</a>
 		</div>
 		<div class="singles">
-			<a href="javascript:;" class="single">
+			{{foreach from=$singles item=single}}
+			<a href="/wx/sh?id={{$single.encryptId}}" class="single">
 				<div class="avatar">
-					<img src="https://img.1meipo.com/fe73d16746dd78d39f4ec54d15203e1a.jpeg?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100">
+					<img src="{{$single.thumb}}">
 				</div>
 				<div class="title">
-					<h4>小盐台<i class="ico-gender male"></i></h4>
-					<h5>北京</h5>
-					<p class="note">36岁.170cm.金牛座.IT互联网</p>
+					<h4>{{$single.name}}<i class="ico-gender {{$single.gender_ico}}"></i></h4>
+					<h5>{{$single.location_t}}</h5>
+					<p class="note">{{foreach from=$single.notes item=note}}<em>{{$note}}</em>{{/foreach}}</p>
 					<p class="cnt">0个心动</p>
 				</div>
 				<button class="edit">写媒婆说</button>
 			</a>
+			{{/foreach}}
 		</div>
+		<div class="spinner" style="display: none"></div>
+		<div class="no-more" style="display: none;">没有更多了~</div>
 	</div>
 </section>
 <section id="snews">
@@ -56,13 +60,10 @@
 	</div>
 	<div class="m-discovery-cnt">
 		<a href="javascript:;">
-			<b>1</b>单身团
+			<b>{{$stat.single}}</b>单身团
 		</a>
 		<a href="javascript:;">
-			<b>0</b>好友媒婆
-		</a>
-		<a href="javascript:;">
-			<b>0</b>牵线成功
+			<b>{{$stat.link}}</b>牵线成功
 		</a>
 		<a href="javascript:;">
 			<b>0</b>收益(元)
@@ -72,69 +73,19 @@
 		<a href="/wx/share" class="btn white">扩大我的单身团</a>
 		<a href="javascript:;" class="btn white">邀请朋友当媒婆</a>
 	</div>
-	<div class="news"><p class="title"><span>平台动态</span></p>
-		<div class="news-list">
+	<div class="news-wrap">
+		<p class="title"><span>平台动态</span></p>
+		<div class="news">
 			<ul class="animate">
-				<li><img src="https://img.1meipo.com/ff6508d36cf752f4a1cef290ebd738a9.jpg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>舒阳</b>收到1次牵线成功打赏收到1次牵线成功打赏</span> <!----></li>
-				<li><img src="https://img.1meipo.com/b8b1b2be1c95ea2307fc601c1a74d818.jpg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>陶亚婷</b>收到1次牵线成功打赏收到1次牵线成功打赏</span> <!----></li>
-				<li><img src="https://image.1meipo.com/uploads/1482114995597.jpeg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>恶作剧</b>收到1次牵线成功打赏</span> <!----></li>
-				<li><img src="https://img.1meipo.com/fe6f3459bbbe2f3870e912b1f93f4ef7.jpeg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>罗安琴</b>的单身团增加了1位新单身收到1次牵线成功打赏</span>
-					<img src="https://img.1meipo.com/f2fb2f2f32fd45aff7a236e2e3ff9291.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
-							 class="target_avatar"></li>
-				<li><img src="https://img.1meipo.com/90944059eecfc242f3bfdf3c30457779.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>聂凡鼎</b>的单身团增加了1位新单身收到1次牵线成功打赏</span>
-					<img src="https://img.1meipo.com/2537ea62f1919aaf9acf47f4771c632a.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
-							 class="target_avatar"></li>
-				<li><img src="https://img.1meipo.com/0cec62892ec3521c3dbec879b20aded6.jpeg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>Alic...</b>收到1次牵线成功打赏</span> <!----></li>
-				<li><img src="https://img.1meipo.com/152eaf1964d7ad94942631a6d5ce4691.jpg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>Ryan</b>的单身团增加了1位新单身</span> <img
-									src="https://img.1meipo.com/0daedc80e4c80ad4d22beecf7655eb71.jpeg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
-									class="target_avatar"></li>
-				<li><img src="https://img.1meipo.com/9f15486561369b962a09d695be9cbac2.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>逸滨</b>邀请了1位好友做媒婆</span> <!----></li>
-				<li><img src="https://img.1meipo.com/8967b815db10e363f48ae009eb6661e6.jpeg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>judy...</b>收到1次牵线成功打赏</span> <!----></li>
-				<li><img src="https://img.1meipo.com/206f21304d9d7d72173c450c688f589b.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>黄振新</b>的单身团增加了1位新单身</span> <img
-									src="https://img.1meipo.com/798009f4c15aa79c185a399add1253a6.jpeg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
-									class="target_avatar"></li>
-				<li><img src="https://img.1meipo.com/0d29186c9edd38aff44cdfc44c54a686.jpg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>丁冉冉</b>的单身团增加了1位新单身</span> <img
-									src="https://img.1meipo.com/9abe966058d3122888e0ff7dcc1806c6.jpeg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
-									class="target_avatar"></li>
-				<li><img src="https://img.1meipo.com/5ca184b0a1b8d81e04f27d85fd23f630.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>朱雅文</b>收到1次牵线成功打赏</span> <!----></li>
-				<li><img src="https://img.1meipo.com/1498fd66d09fa61f3e812476e6b4a955.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>王登赢</b>邀请了1位好友做媒婆</span> <img
-									src="https://img.1meipo.com/bb2d54cd7a42d8ae928c60ea620c5779.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
-									class="target_avatar"></li>
-				<li><img src="https://img.1meipo.com/69c1208246f86a15c8ad4d3f9c9ff454.jpeg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>缘小v</b>的单身团增加了1位新单身</span>
-					<img src="https://img.1meipo.com/022dbbd41b55604334a675a80320bb8b.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
-							 class="target_avatar">
-				</li>
-				<li><img src="https://img.1meipo.com/e61e03154600d1650071eceb7c24ee6c.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>潘杨杨</b>的单身团增加了1位新单身</span>
-					<img src="https://img.1meipo.com/ac23f743a511e4a67c83e424c0ff49c8.jpeg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
-							 class="target_avatar">
-				</li>
+				{{foreach from=$news item=item}}
 				<li>
-					<img src="https://img.1meipo.com/e866bec755ab6f685345f1ead6990f69.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>马云</b>的单身团增加了1位新单身</span>
-					<img src="https://img.1meipo.com/a82c8b2f47d1b92c9ecd3d7f99b900f7.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
-							 class="target_avatar">
+					<img src="{{$item.thumb}}" class="avatar">
+					<span><b>{{$item.name}}</b>{{$item.note}}</span>
+					{{if $item.displaySub}}
+					<img src="{{$item.subThumb}}" class="target_avatar">
+					{{/if}}
 				</li>
-				<li>
-					<img src="https://img.1meipo.com/2100bd342be71dbc91d67bcf2b866493.jpeg?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90" class="avatar">
-					<span><b>李圆峰</b>的单身团增加了1位新单身</span>
-					<img src="https://img.1meipo.com/4f54e63d632ddc9ff163a779b770f0ed.png?x-oss-process=image/resize,m_fill,w_100,h_100,limit_0/auto-orient,0/quality,q_90"
-							 class="target_avatar">
-				</li>
+				{{/foreach}}
 			</ul>
 		</div>
 	</div>
@@ -155,15 +106,15 @@
 		<div class="u-my-count">
 			<a href="#sgroup">
 				单身团
-				<em>9</em>
+				<em>{{$stat.single}}</em>
 			</a>
 			<a href="javascript:;">
 				牵线成功
-				<em>1</em>
+				<em>{{$stat.link}}</em>
 			</a>
 			<a href="javascript:;">
 				粉丝
-				<em>0</em>
+				<em>{{$stat.fans}}</em>
 			</a>
 		</div>
 	</div>
@@ -261,14 +212,14 @@
 </div>
 <script type="text/template" id="tpl_single">
 	{[#items]}
-	<a href="javascript:;" class="single">
+	<a href="/wx/sh?id={[encryptId]}" class="single">
 		<div class="avatar">
-			<img src="{[avatar]}">
+			<img src="{[thumb]}">
 		</div>
 		<div class="title">
-			<h4>{[name]}<i class="ico-gender {[gender]}"></i></h4>
-			<h5>{[location]}</h5>
-			<p class="note">{[note]}</p>
+			<h4>{[name]}<i class="ico-gender {[gender_ico]}"></i></h4>
+			<h5>{[location_t]}</h5>
+			<p class="note">{[#notes]}<em>{[.]}</em>{[/notes]}</p>
 			<p class="cnt">{[cnt]}个心动</p>
 		</div>
 		<button class="edit">写媒婆说</button>
@@ -293,8 +244,8 @@
 	{[#items]}
 	<li>
 		<img src="{[thumb]}" class="avatar">
-		<div><b>{[name]}</b>收到1次牵线成功打赏收到1次牵线成功打赏</div>
-		{[#thumb2]}<img src="{[.]}" class="target_avatar">{[/thumb2]}
+		<div><b>{[name]}</b>{[note]}</div>
+		{[#displaySub]}<img src="{[subThumb]}" class="target_avatar">{[/displaySub]}
 	</li>
 	{[/items]}
 </script>
@@ -304,4 +255,4 @@
 
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/match.js?v=1.1.2" src="/assets/js/require.js"></script>
+<script data-main="/js/match.js?v=1.1.4" src="/assets/js/require.js"></script>

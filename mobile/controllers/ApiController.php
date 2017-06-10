@@ -121,6 +121,9 @@ class ApiController extends Controller
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
+				if (!$uid) {
+					$uid = $wxInfo['uId'];
+				}
 				if ($tag == 'boys' || $tag == 'male') {
 					list($items, $nextPage) = UserNet::male($uid, $page);
 				} else {

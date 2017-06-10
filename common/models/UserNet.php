@@ -164,7 +164,8 @@ class UserNet extends ActiveRecord
 		$offset = ($page - 1) * $pageSize;
 
 		$conn = AppUtil::db();
-		$sql = 'select u.* from im_user as u  join im_user_net as n on n.nSubUId=u.uId ' . $strCriteria .
+		$sql = 'select u.* from im_user as u  
+			join im_user_net as n on n.nSubUId=u.uId ' . $strCriteria .
 			' order by n.nAddedOn DESC limit ' . $offset . ',' . ($pageSize + 1);
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$nextPage = 0;
@@ -189,5 +190,54 @@ class UserNet extends ActiveRecord
 			$items[] = $item;
 		}
 		return [$items, $nextPage];
+	}
+
+	public static function news($lastId = 0, $limit = 20)
+	{
+		if ($lastId) {
+			$limit = 10;
+		}
+		$conn = AppUtil::db();
+		$sql = 'SELECT n.nId,n.nUId,n.nSubUId,n.nRelation,n.nAddedOn,
+				u.uName as name,u.uThumb as thumb, s.uName as subName,s.uThumb as subThumb
+			 FROM im_user_net as n 
+			 JOIN im_user as u on n.nUId = u.uId
+			 JOIN im_user as s on n.nSubUId = s.uId
+			 WHERE n.nId > ' . $lastId . ' ORDER BY n.nId desc LIMIT ' . $limit;
+		$ret = $conn->createCommand($sql)->queryAll();
+		$items = [];
+		foreach ($ret as $row) {
+			$note = '';
+			$displaySub = 1;
+			switch ($row['nRelation']) {
+				case self::REL_BACKER:
+					$note = '的单身团增加了1位单身';
+					break;
+				case self::REL_FOLLOW:
+					$note = '有了新的关注者';
+					$displaySub = 0;
+					break;
+				case self::REL_INVITE:
+					$note = '邀请了1位好友';
+					$displaySub = 1;
+					break;
+				case self::REL_LINK:
+					$note = '收到1次加微信请求';
+					$displaySub = 0;
+					break;
+			}
+			if (!$note) {
+				continue;
+			}
+			$items[] = [
+				'name' => $row['name'],
+				'thumb' => $row['thumb'],
+				'subName' => $row['subName'],
+				'subThumb' => $row['subThumb'],
+				'note' => $note,
+				'displaySub' => $displaySub
+			];
+		}
+		return $items;
 	}
 }
