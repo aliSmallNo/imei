@@ -293,10 +293,11 @@ require(["layer"],
 						wname: wname,
 					}, function (resp) {
 						if (resp.data) {
+							showMsg("已发送给对方，请等待TA的同意");
 							setTimeout(function () {
 								self.closest(".getWechat").hide();
 								$sls.cork.hide();
-							}, 1000)
+							}, 1000);
 						}
 					}, "json");
 
