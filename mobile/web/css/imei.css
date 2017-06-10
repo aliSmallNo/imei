@@ -47,6 +47,13 @@ main {
   position: relative;
   padding-bottom: 6rem; }
 
+.g-blank {
+  width: 0;
+  height: 0;
+  outline: 0;
+  border: none;
+  display: none; }
+
 .bg-color {
   background-color: #F4F4F4; }
 
