@@ -283,8 +283,23 @@ require(["layer"],
 					$sls.cork.hide();
 					break;
 				case "btn-confirm":
-					self.closest(".getWechat").hide();
-					$sls.cork.hide();
+					var wname = $.trim(self.closest(".getWechat").find("input").val());
+					if (!wname) {
+						showMsg("请填写正确的微信号哦~");
+						return;
+					}
+					$.post("/api/user", {
+						tag: "wxname",
+						wname: wname,
+					}, function (resp) {
+						if (resp.data) {
+							setTimeout(function () {
+								self.closest(".getWechat").hide();
+								$sls.cork.hide();
+							}, 1000)
+						}
+					}, "json");
+
 					break;
 			}
 		});
@@ -489,7 +504,7 @@ require(["layer"],
 			}
 		});
 
-		function heartbeat(subtag){
+		function heartbeat(subtag) {
 
 		}
 
