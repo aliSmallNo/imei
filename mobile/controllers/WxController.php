@@ -183,7 +183,7 @@ class WxController extends BaseController
 			'avatar' => $avatar,
 			'hint' => $hint,
 			'prefer' => $prefer,
-			'matcher' => json_encode($matcher)
+			'matches' => $matcher
 		]);
 	}
 
@@ -219,7 +219,8 @@ class WxController extends BaseController
 			'uInfo' => $uInfo,
 			'prefer' => $prefer,
 			'hid' => $hid,
-			'singles' => $items
+			'singles' => $items,
+			'stat' => UserNet::stat($uInfo['id'], true)
 		], 'terse');
 	}
 

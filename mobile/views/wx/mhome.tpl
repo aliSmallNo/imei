@@ -17,10 +17,10 @@
 <div class="m-tab-wrap">
 	<div class="m-tabs">
 		<a href="javascript:;" {{if $prefer=="male"}}class="active"{{/if}} data-tag="male">
-			<span>男生(10)</span>
+			<span>男生({{$stat.male}})</span>
 		</a>
 		<a href="javascript:;" {{if $prefer=="female"}}class="active"{{/if}} data-tag="female">
-			<span>女生(6)</span>
+			<span>女生({{$stat.female}})</span>
 		</a>
 	</div>
 	<div class="users2 clearfix">

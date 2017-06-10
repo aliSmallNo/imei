@@ -113,19 +113,12 @@ require(["layer"],
 
 		var MatchUtil = {
 			loading: 0,
-			page: 1,
+			page: 2,
 			list: $('.matcher'),
 			tmp: $('#tpl_match').html(),
-			spinner: null,
-			noMore: null,
-			init: function () {
-				var util = this;
-				var html = Mustache.render(util.tmp, {items: mMatcher});
-				util.list.html(html);
-				util.page = 2;
-				util.spinner = $('#slink .spinner');
-				util.noMore = $('#slink .no-more');
-			},
+			spinner: $('#slink .spinner'),
+			noMore: $('#slink .no-more'),
+
 			reload: function () {
 				var util = this;
 				if (util.loading) {
@@ -203,8 +196,6 @@ require(["layer"],
 			$("body").addClass("bg-color");
 			FootUtil.init();
 			SingleUtil.init();
-			MatchUtil.init();
-			// FastClick.attach($sls.footer.get(0));
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
