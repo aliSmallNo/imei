@@ -601,7 +601,11 @@ class User extends ActiveRecord
 		$ret = \Yii::$app->db->createCommand($sql)->bindValues([
 			":openId" => $openId,
 		])->queryOne();
-		return $ret;
+
+		if ($ret) {
+			return $ret;
+		}
+		return "";
 	}
 
 	public static function topSingle($uid, $page, $pageSize)

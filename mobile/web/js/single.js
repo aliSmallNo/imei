@@ -483,11 +483,38 @@ require(["layer"],
 			$.post("/api/user", {
 				tag: "mymp",
 			}, function (resp) {
-				$(".mymp-des").html(Mustache.render($("#mympTemp").html(), resp.data));
-				mympF = 0;
-				location.href = "#" + to;
+				if (resp.data) {
+					$(".mymp-des").html(Mustache.render($("#mympTemp").html(), resp.data));
+					mympF = 0;
+					location.href = "#" + to;
+				} else {
+					location.href = "#noMP";
+				}
 			}, "json");
 		}
+
+		$(document).on(kClick, ".mymp-des a", function () {
+			var to = $(this).attr("to");
+			switch (to) {
+				case "sgroup":
+					location.href = "#" + to;
+					break;
+				case "othermp":
+					location.href = "#" + to;
+					break;
+			}
+		});
+
+		$(document).on(kClick, ".findmp", function () {
+			var shade = $(".m-popup-shade");
+			var img = $("#noMP .img");
+			shade.fadeIn(200);
+			img.show();
+			setTimeout(function () {
+				shade.hide();
+				img.hide();
+			}, 2000);
+		});
 
 		$(function () {
 			$("body").addClass("bg-color");

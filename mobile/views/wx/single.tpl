@@ -171,6 +171,39 @@
 
 	</div>
 </section>
+<section id="othermp">
+	<div class="nav">
+		<a href="#sme">返回</a>
+	</div>
+	<div class="othermp-title">
+		有以下朋友已成为媒婆，你可以选择一位加入Ta的单身团
+	</div>
+	<ul>
+
+	</ul>
+</section>
+<section id="noMP">
+	<div class="nav">
+		<a href="#sme">返回</a>
+	</div>
+	<div class="nomp-des">
+		<div class="nomp-up">
+			<div>找个好友做媒婆</div>
+			<div>帮我写推荐</div>
+			<div>
+				<img src="/images/ico-question.png">
+			</div>
+			<p>"微媒100" 上每一个单身都有一位身边的小伙伴做"媒婆"，为TA的真实身份背书，并写上几句推荐语吧！</p>
+		</div>
+
+		<div class="nomp-down">
+			<a href="javascript:;" class="findmp">找个媒婆给我写推荐</a>
+		</div>
+	</div>
+	<div class="img">
+		<img src="/images/share-arrow.png">
+	</div>
+</section>
 <section id="focusMP">
 	<div class="nav">
 		<a href="#sme">返回</a>
@@ -489,7 +522,6 @@
 		{{foreach from=$income key=key item=h}}
 		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
-
 	</div>
 </script>
 <script type="text/html" id="edu">
@@ -765,8 +797,8 @@
 		<p>{[intro]}</p>
 	</div>
 	<div class="bot">
-		<a href="#sgroup">查看TA的主页</a>
-		<a href="javascript:;">更换其他媒婆</a>
+		<a href="javascript:;" to="sgroup">查看TA的主页</a>
+		<a href="javascript:;" to="othermp">更换其他媒婆</a>
 	</div>
 </script>
 <script type="text/template" id="tpl_wx_info">
