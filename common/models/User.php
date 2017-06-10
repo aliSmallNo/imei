@@ -311,10 +311,38 @@ class User extends ActiveRecord
 		return [];
 	}
 
-	public static function hint($uid)
+	public static function hint($openId, $uid, $f)
 	{
-		$ret = '';
-		return $ret;
+		$uid = AppUtil::decrypt($uid);
+		if (!$uid || !$f) {
+			return 0;
+		}
+
+		$info = self::findOne(["uOpenId" => $openId]);
+		$hint = $info->uHint;
+		if ($hint) {
+			$hint = explode(",", $hint);
+		} else {
+			$hint = [];
+		}
+		switch ($f) {
+			case "yes":
+				if (!in_array($uid, $hint)) {
+					$hint[] = $uid;
+				} else {
+					return $uid;
+				}
+				break;
+			case "no":
+				$key = array_search($uid, $hint);
+				if ($key !== false)
+					array_splice($hint, $key, 1);
+				break;
+		}
+		$hint = implode(",", $hint);
+		$info->uHint = $hint;
+		$id = $info->save();
+		return $id;
 	}
 
 	public static function reg($data)
@@ -416,7 +444,15 @@ class User extends ActiveRecord
 
 	public static function sprofile($openId)
 	{
-		$Info = self::find()->where(["uOpenId" => $openId])->asArray()->one();
+		$sql = "select u.*,u2.uAvatar as mavatar,u2.uName as mname,u2.uIntro as mintro
+			from im_user as u
+			left join im_user_net as n on n.nSubUId=u.uId
+			left join im_user as u2 on u2.uId=n.nUId
+			where u.uOpenId=:openId";
+		$Info = AppUtil::db()->createCommand($sql)->bindValues([
+			":openId" => $openId,
+		])->queryOne();
+
 		$result = [
 			"imgList" => [],
 			"img3" => [],
@@ -436,8 +472,16 @@ class User extends ActiveRecord
 			}
 		}
 
+
+		$result["mavatar"] = $Info["mavatar"];
+		$result["mname"] = $Info["mname"];
+		$result["mintro"] = $Info["mintro"];
+		$result["scretId"] = AppUtil::encrypt($Info["uId"]);
+		$result["id"] = $Info["uId"];
+
 		//"avatar" => "uAvatar", "name" => "uName", "genderclass" => "uGender", "location" => "uLocation",
 		//"year" => "uBirthYear", "age" => "uBirthYear","intro" => "uIntro", "interest" => "uInterest",
+
 		$location = json_decode($Info["uLocation"], 1);
 		$result["avatar"] = $Info["uAvatar"];
 		$result["name"] = $Info["uName"];
@@ -464,7 +508,6 @@ class User extends ActiveRecord
 			$result[$k] = isset(self::$$fText[$Info[$v]]) ? self::$$fText[$Info[$v]] : "";
 		}
 
-		//$Info
 		$result["cond"] = self::matchCondition($Info["uFilter"]);
 		$result["jdata"] = json_encode($result);
 
@@ -603,6 +646,7 @@ class User extends ActiveRecord
 		])->queryOne();
 
 		if ($ret) {
+			$ret["secretId"] = AppUtil::encrypt($ret["id"]);
 			return $ret;
 		}
 		return "";

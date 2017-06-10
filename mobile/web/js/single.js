@@ -211,12 +211,11 @@ require(["layer"],
 					break;
 				case "love":
 					var obj = $(this).find("span");
+					var id = $(this).attr("id");
 					if (obj.hasClass("icon-love")) {
-						showMsg('<span class="icon-alert icon-loved"></span><br><span class="font1rem">心动成功</span>');
-						obj.removeClass("icon-love").addClass("icon-loved");
+						hint(id, "yes", obj);
 					} else {
-						showMsg('<span class="icon-alert icon-love-break"></span><br><span class="font1rem">已取消心动</span>');
-						obj.removeClass("icon-loved").addClass("icon-love");
+						hint(id, "no", obj);
 					}
 					break;
 				case "wechat":
@@ -225,6 +224,34 @@ require(["layer"],
 					break;
 			}
 		});
+
+		var hintFlag = 0;
+
+		function hint(id, f, obj) {
+			if (hintFlag) {
+				return;
+			}
+			hintFlag = 1;
+			$.post("/api/user", {
+				tag: "hint",
+				id: id,
+				f: f,
+			}, function (resp) {
+				if (resp.data) {
+					if (f == "yes") {
+						showMsg('<span class="icon-alert icon-loved"></span><br><span class="font1rem">心动成功</span>');
+						obj.removeClass("icon-love").addClass("icon-loved");
+					}
+					if (f == "no") {
+						console.log(hintFlag);
+						showMsg('<span class="icon-alert icon-love-break"></span><br><span class="font1rem">已取消心动</span>');
+						obj.removeClass("icon-loved").addClass("icon-love");
+					}
+				}
+				hintFlag = 0;
+
+			}, "json");
+		}
 
 		$(".getWechat a").on(kClick, function () {
 			var self = $(this);
@@ -497,7 +524,8 @@ require(["layer"],
 			var to = $(this).attr("to");
 			switch (to) {
 				case "sgroup":
-					location.href = "#" + to;
+					var id = $(this).attr("id");
+					location.href = "/wx/mh?id=" + id;
 					break;
 				case "othermp":
 					location.href = "#" + to;

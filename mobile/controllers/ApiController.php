@@ -214,9 +214,17 @@ class ApiController extends Controller
 			case "sprofile":
 				$id = self::postParam("id");
 				$ret = User::sprofile($id);
+				//心动
+				$hint = User::findOne(["uOpenId" => $openId])->uHint;
+				$ret["hintclass"] = (strpos($hint, $ret["id"]) !== false) ? "icon-loved" : "icon-love";
 				return self::renderAPI(0, '', ["data" => $ret]);
 			case "mymp":
 				$ret = User::mymp($openId);
+				return self::renderAPI(0, '', $ret);
+			case "hint":
+				$id = self::postParam("id");
+				$f = self::postParam("f");
+				$ret = User::hint($openId, $id, $f);
 				return self::renderAPI(0, '', $ret);
 		}
 		return self::renderAPI(129, '操作无效~');
