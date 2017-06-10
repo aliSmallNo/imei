@@ -178,6 +178,32 @@ require(["layer"],
 			}
 		};
 
+		var NewsUtil = {
+			timer: 0,
+			interval: 8000,
+			news: $(".animate"),
+			idx: 0,
+			max: 10,
+			init: function () {
+				var util = this;
+				util.max = util.news.find('li').length - 6;
+				util.go();
+			},
+			go: function () {
+				var util = this;
+				util.timer = setInterval(function () {
+					if (util.idx < util.max) {
+						util.idx++;
+						var hi = 0 - util.idx * 4.6;
+						util.news.css("top", hi + "rem");
+					} else {
+						util.news.css("top", "0");
+						util.idx = 0;
+					}
+				}, util.interval);
+			}
+		};
+
 		function locationHashChanged() {
 			var hashTag = location.hash;
 			hashTag = hashTag.replace("#!", "");
@@ -228,19 +254,8 @@ require(["layer"],
 			wx.ready(function () {
 				wx.hideOptionMenu();
 			});
-
 			locationHashChanged();
 			$sls.cork.hide();
-
-			$sls.newsTimer = setInterval(function () {
-				if ($sls.newIdx < 10) {
-					$sls.newIdx++;
-					var hi = 0 - $sls.newIdx * 4.6;
-					$sls.news.css("top", hi + "rem");
-				} else {
-					$sls.news.css("top", "0");
-					$sls.newIdx = 0;
-				}
-			}, 6000);
+			NewsUtil.init();
 		});
 	});
