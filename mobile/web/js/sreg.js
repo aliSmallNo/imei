@@ -312,7 +312,7 @@ require(["layer"],
 			if (title) {
 				$(document).attr("title", title);
 				$("title").html(title);
-				var iFrame = $('<iframe src="/blank.html" style="width:0;height:0;outline:0;border:none;display:none"></iframe>');
+				var iFrame = $('<iframe src="/blank.html" class="g-blank"></iframe>');
 				iFrame.on('load', function () {
 					setTimeout(function () {
 						iFrame.off('load').remove();
