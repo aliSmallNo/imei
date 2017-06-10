@@ -1396,7 +1396,7 @@ section
 			background: $mainColorLighter
 			text-align: center
 	.news
-		height: 36.5rem
+		height: 27.5rem
 		overflow: hidden
 		position: relative
 	ul.animate
@@ -1416,15 +1416,14 @@ section
 			.avatar
 				width: 3rem
 				height: 3rem
-				border-radius: 2.2rem
-				padding: .2rem
+				border-radius: 2rem
 				background: #fff
-				border: $mainColorLight 1px solid
+				border: $mainColorLight 2px solid
 				float: left
 				margin-right: .5rem
 				@include displayFlex-w(3rem)
 			span
-				font-size: 1rem
+				font-size: 1.2rem
 				line-height: 1.4rem
 				@include displayFlex-1
 				align-self: center
@@ -1456,7 +1455,7 @@ section
 			border: 0
 			position: absolute
 			color: #fff
-			top: 3rem
+			top: 1rem
 			right: 1.5rem
 			font-size: 1.2rem
 			background: $linkColorLight
@@ -1488,6 +1487,11 @@ section
 				color: $grayFontColorLight
 			.note
 				font-weight: $weightBold
+				em
+					&:after
+						content: ' . '
+					&:last-child:after
+						content: ''
 
 .ico-gender
 	width: 1.5rem

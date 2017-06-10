@@ -1369,7 +1369,7 @@ section {
       background: #fbd6e3;
       text-align: center; }
   .news-wrap .news {
-    height: 36.5rem;
+    height: 27.5rem;
     overflow: hidden;
     position: relative; }
   .news-wrap ul.animate {
@@ -1392,10 +1392,9 @@ section {
       .news-wrap ul.animate li .avatar {
         width: 3rem;
         height: 3rem;
-        border-radius: 2.2rem;
-        padding: 0.2rem;
+        border-radius: 2rem;
         background: #fff;
-        border: #f491b2 1px solid;
+        border: #f491b2 2px solid;
         float: left;
         margin-right: 0.5rem;
         -webkit-box-flex: 0 0 3rem;
@@ -1403,7 +1402,7 @@ section {
         -ms-flex: 0 0 3rem;
         flex: 0 0 3rem; }
       .news-wrap ul.animate li span {
-        font-size: 1rem;
+        font-size: 1.2rem;
         line-height: 1.4rem;
         -webkit-box-flex: 1;
         -webkit-flex: 1;
@@ -1444,7 +1443,7 @@ section {
       border: 0;
       position: absolute;
       color: #fff;
-      top: 3rem;
+      top: 1rem;
       right: 1.5rem;
       font-size: 1.2rem;
       background: #4da2ff;
@@ -1478,6 +1477,10 @@ section {
       color: #999; }
     .singles .single .title .note {
       font-weight: 500; }
+      .singles .single .title .note em:after {
+        content: " . "; }
+      .singles .single .title .note em:last-child:after {
+        content: ""; }
 
 .ico-gender {
   width: 1.5rem;

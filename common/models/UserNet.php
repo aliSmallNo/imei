@@ -164,7 +164,8 @@ class UserNet extends ActiveRecord
 		$offset = ($page - 1) * $pageSize;
 
 		$conn = AppUtil::db();
-		$sql = 'select u.* from im_user as u  join im_user_net as n on n.nSubUId=u.uId ' . $strCriteria .
+		$sql = 'select u.* from im_user as u  
+			join im_user_net as n on n.nSubUId=u.uId ' . $strCriteria .
 			' order by n.nAddedOn DESC limit ' . $offset . ',' . ($pageSize + 1);
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$nextPage = 0;

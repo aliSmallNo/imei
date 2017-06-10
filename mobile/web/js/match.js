@@ -37,6 +37,13 @@ require(["layer"],
 						return false;
 					}
 					break;
+				case "sgroup":
+					lastRow = SingleUtil.list.find('a').last();
+					if (lastRow && eleInScreen(lastRow) && SingleUtil.page > 0) {
+						SingleUtil.reload();
+						return false;
+					}
+					break;
 				default:
 					break;
 			}
@@ -75,14 +82,15 @@ require(["layer"],
 		};
 
 		var SingleUtil = {
-			list: null,
+			list: $(".singles"),
 			tag: 'male',
 			loading: 0,
-			page: 1,
+			page: 2,
 			tmp: $('#tpl_single').html(),
+			spinner: $('.m-tab-wrap .spinner'),
+			noMore: $('.m-tab-wrap .no-more'),
 			init: function () {
 				var util = this;
-				util.list = $(".singles");
 				$(".m-tabs > a").on('click', function () {
 					var self = $(this);
 					util.tag = self.attr('data-tag');
@@ -100,13 +108,29 @@ require(["layer"],
 				if (util.page === 1) {
 					util.list.html('');
 				}
-				$.post('/api/singles',
+				util.loading = 1;
+				util.spinner.show();
+				$.post('/api/user',
 					{
 						tag: util.tag,
 						page: util.page
 					},
 					function (resp) {
-
+						if (resp.code == 0) {
+							var html = Mustache.render(util.tmp, resp.data);
+							if (resp.data.page == 1) {
+								util.list.html(html);
+							} else {
+								util.list.append(html);
+							}
+							util.page = resp.data.nextPage;
+							util.noMore.hide();
+							if (util.page < 1) {
+								util.noMore.show();
+							}
+							util.spinner.hide();
+						}
+						util.loading = 0;
 					}, 'json');
 			}
 		};

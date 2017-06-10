@@ -27,27 +27,31 @@
 	</div>
 	<div class="m-tab-wrap">
 		<div class="m-tabs">
-			<a href="javascript:;" {{if $prefer=='male'}}class="active"{{/if}} data-tag="male">
-				<span>男生(10)</span>
+			<a href="javascript:;" class="active" data-tag="male">
+				<span>男生({{$stat.male}})</span>
 			</a>
-			<a href="javascript:;" {{if $prefer=='female'}}class="active"{{/if}} data-tag="female">
-				<span>女生(6)</span>
+			<a href="javascript:;" data-tag="female">
+				<span>女生({{$stat.female}})</span>
 			</a>
 		</div>
 		<div class="singles">
-			<a href="javascript:;" class="single">
+			{{foreach from=$singles item=single}}
+			<a href="/wx/sh?id={{$single.encryptId}}" class="single">
 				<div class="avatar">
-					<img src="https://img.1meipo.com/fe73d16746dd78d39f4ec54d15203e1a.jpeg?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100">
+					<img src="{{$single.thumb}}">
 				</div>
 				<div class="title">
-					<h4>小盐台<i class="ico-gender male"></i></h4>
-					<h5>北京</h5>
-					<p class="note">36岁.170cm.金牛座.IT互联网</p>
+					<h4>{{$single.name}}<i class="ico-gender {{$single.gender_ico}}"></i></h4>
+					<h5>{{$single.location_t}}</h5>
+					<p class="note">{{foreach from=$single.notes item=note}}<em>{{$note}}</em>{{/foreach}}</p>
 					<p class="cnt">0个心动</p>
 				</div>
 				<button class="edit">写媒婆说</button>
 			</a>
+			{{/foreach}}
 		</div>
+		<div class="spinner" style="display: none"></div>
+		<div class="no-more" style="display: none;">没有更多了~</div>
 	</div>
 </section>
 <section id="snews">
@@ -56,13 +60,10 @@
 	</div>
 	<div class="m-discovery-cnt">
 		<a href="javascript:;">
-			<b>1</b>单身团
+			<b>{{$stat.single}}</b>单身团
 		</a>
 		<a href="javascript:;">
-			<b>0</b>好友媒婆
-		</a>
-		<a href="javascript:;">
-			<b>0</b>牵线成功
+			<b>{{$stat.link}}</b>牵线成功
 		</a>
 		<a href="javascript:;">
 			<b>0</b>收益(元)
@@ -105,15 +106,15 @@
 		<div class="u-my-count">
 			<a href="#sgroup">
 				单身团
-				<em>9</em>
+				<em>{{$stat.single}}</em>
 			</a>
 			<a href="javascript:;">
 				牵线成功
-				<em>1</em>
+				<em>{{$stat.link}}</em>
 			</a>
 			<a href="javascript:;">
 				粉丝
-				<em>0</em>
+				<em>{{$stat.fans}}</em>
 			</a>
 		</div>
 	</div>
@@ -211,14 +212,14 @@
 </div>
 <script type="text/template" id="tpl_single">
 	{[#items]}
-	<a href="javascript:;" class="single">
+	<a href="/wx/sh?id={[encryptId]}" class="single">
 		<div class="avatar">
-			<img src="{[avatar]}">
+			<img src="{[thumb]}">
 		</div>
 		<div class="title">
-			<h4>{[name]}<i class="ico-gender {[gender]}"></i></h4>
-			<h5>{[location]}</h5>
-			<p class="note">{[note]}</p>
+			<h4>{[name]}<i class="ico-gender {[gender_ico]}"></i></h4>
+			<h5>{[location_t]}</h5>
+			<p class="note">{[#notes]}<em>{[.]}</em>{[/notes]}</p>
 			<p class="cnt">{[cnt]}个心动</p>
 		</div>
 		<button class="edit">写媒婆说</button>
@@ -254,4 +255,4 @@
 
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/match.js?v=1.1.2" src="/assets/js/require.js"></script>
+<script data-main="/js/match.js?v=1.1.4" src="/assets/js/require.js"></script>
