@@ -1329,50 +1329,57 @@ section {
     color: #fff;
     margin-bottom: 1.5rem; }
 
-.news {
+.news-wrap {
   background: #fbd6e3;
   margin: 2rem;
   border: #f491b2 1px solid;
   padding: 2rem 1rem;
   border-radius: 1rem;
   position: relative; }
-  .news:after {
+  .news-wrap:after {
     position: absolute;
     display: block;
     content: "";
-    left: -0.5rem;
+    left: -0.7rem;
     top: 1.8rem;
     background: url(../images/ico_mark_speaker.png) no-repeat center center;
     background-size: 3.5rem 2.4rem;
     width: 3.5rem;
     height: 2.4rem; }
-  .news .title {
-    height: 1rem;
-    border-bottom: #f491b2 1px solid;
-    position: relative;
-    margin: 0 2.5rem 1rem; }
-    .news .title span {
+  .news-wrap .title {
+    height: 2.5rem;
+    line-height: 2.5rem;
+    position: relative; }
+    .news-wrap .title:before {
+      content: "";
+      height: 1px;
+      position: absolute;
+      left: 3rem;
+      right: 3rem;
+      top: 1.25rem;
+      background-color: #f491b2; }
+    .news-wrap .title span {
       position: absolute;
       left: 50%;
       top: 0;
-      line-height: 2rem;
+      line-height: 2.5rem;
       color: #f491b2;
       width: 8rem;
       margin-left: -4rem;
       background: #fbd6e3;
       text-align: center; }
-  .news .news-list {
-    height: 46rem;
+  .news-wrap .news {
+    height: 36.5rem;
     overflow: hidden;
     position: relative; }
-  .news ul.animate {
+  .news-wrap ul.animate {
     -webkit-transition: 0.4s linear top;
     transition: 0.4s linear top;
     position: absolute;
     top: 0;
     left: 0;
     right: 0; }
-    .news ul.animate li {
+    .news-wrap ul.animate li {
       line-height: 3.6rem;
       height: 3.6rem;
       color: #727272;
@@ -1382,7 +1389,7 @@ section {
       display: -webkit-flex;
       display: -ms-flexbox;
       display: flex; }
-      .news ul.animate li .avatar {
+      .news-wrap ul.animate li .avatar {
         width: 3rem;
         height: 3rem;
         border-radius: 2.2rem;
@@ -1395,7 +1402,7 @@ section {
         -webkit-flex: 0 0 3rem;
         -ms-flex: 0 0 3rem;
         flex: 0 0 3rem; }
-      .news ul.animate li span {
+      .news-wrap ul.animate li span {
         font-size: 1rem;
         line-height: 1.4rem;
         -webkit-box-flex: 1;
@@ -1406,7 +1413,7 @@ section {
         align-items: center;
         justify-content: center;
         overflow: hidden; }
-      .news ul.animate li .target_avatar {
+      .news-wrap ul.animate li .target_avatar {
         width: 2.2rem;
         height: 2.2rem;
         border: 1px solid #f491b2;

@@ -178,12 +178,14 @@ class WxController extends BaseController
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
 		}
+		$news = UserNet::news();
 		return self::renderPage("match.tpl", [
 			'nickname' => $nickname,
 			'avatar' => $avatar,
 			'hint' => $hint,
 			'prefer' => $prefer,
-			'matches' => $matcher
+			'matches' => $matcher,
+			'news' => $news
 		]);
 	}
 

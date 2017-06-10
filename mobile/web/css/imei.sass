@@ -1355,7 +1355,7 @@ section
 		color: #fff
 		margin-bottom: 1.5rem
 
-.news
+.news-wrap
 	background: $mainColorLighter
 	//#ffe4de
 	margin: 2rem
@@ -1367,29 +1367,36 @@ section
 		position: absolute
 		display: block
 		content: ''
-		left: -.5rem
+		left: -.7rem
 		top: 1.8rem
 		background: url(../images/ico_mark_speaker.png) no-repeat center center
 		background-size: 3.5rem 2.4rem
 		width: 3.5rem
 		height: 2.4rem
 	.title
-		height: 1rem
-		border-bottom: $mainColorLight 1px solid
+		height: 2.5rem
+		line-height: 2.5rem
 		position: relative
-		margin: 0 2.5rem 1rem
+		&:before
+			content: ''
+			height: 1px
+			position: absolute
+			left: 3rem
+			right: 3rem
+			top: 1.25rem
+			background-color: $mainColorLight
 		span
 			position: absolute
 			left: 50%
 			top: 0
-			line-height: 2rem
+			line-height: 2.5rem
 			color: $mainColorLight
 			width: 8rem
 			margin-left: -4rem
 			background: $mainColorLighter
 			text-align: center
-	.news-list
-		height: 46rem
+	.news
+		height: 36.5rem
 		overflow: hidden
 		position: relative
 	ul.animate
