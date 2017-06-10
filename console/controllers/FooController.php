@@ -10,6 +10,7 @@ namespace console\controllers;
  */
 use common\models\User;
 use common\models\UserNet;
+use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
@@ -291,6 +292,7 @@ class FooController extends Controller
 		self::matchers(2);
 		self::matchers(3);
 		self::matchers(4);*/
-
+		$wxInfo = UserWechat::getInfoByOpenId('oYDJew5EFMuyrJdwRrXkIZLU2c58');
+		print_r($wxInfo);
 	}
 }

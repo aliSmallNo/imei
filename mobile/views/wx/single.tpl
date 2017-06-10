@@ -12,7 +12,9 @@
 			<span class="btn">去设置</span>
 		</a>
 	</div>
-	<ul class="m-top-users"></ul>
+	<ul class="m-top-users">
+
+	</ul>
 	<div class="m-more">上拉加载更多</div>
 </section>
 <section id="matchCondition">
@@ -42,7 +44,7 @@
 <section id="sme">
 	<div class="useruc">
 		{{if $hint}}
-		<div class="m-hint">
+		<div class="m-hint" style="display: none">
 			<span>{{$hint}}</span>
 			<a href="/wx/sreg#photo">GO</a>
 		</div>
@@ -547,7 +549,7 @@
 </script>
 <script type="text/html" id="userFiter">
 	{[#data]}
-	<li id="{[id]}">
+	<li id="{[secretId]}">
 		<div class="head">
 			<a href="javascript:;" class="photo sex2 sprofile">
 				<img src="{[avatar]}"
@@ -558,14 +560,18 @@
 				<img src="{[mavatar]}" class="avatar">
 			</a>
 		</div>
-		<div class="info"><span class="name">{[name]}</span> <span class="icon {[gender]}"></span> <span
-							class="otherInfo">{[age]} . {[height]} . {[horos]} . {[job]}</span>
+		<div class="info">
+			<span class="name">{[name]}</span>
+			<span class="icon {[gender]}"></span>
+			<span class="otherInfo">{[age]}岁 . {[height]} . {[horos]} . {[job]}</span>
 		</div>
 		<div class="sign">{[intro]}</div>
-		<div class="action clearfix">
-			<span class="pos">北京</span>
-			<a href="javascript:;" id="{[id]}" class="apply">加微信聊聊</a>
-			<a href="javascript:;" class="like">心动</a>
+		<div class="action clearfix uf-btn">
+			<span class="pos">{[location]}</span>
+			<a href="javascript:;" id="{[secretId]}" class="apply">加微信聊聊</a>
+			<a href="javascript:;" class="like" id="{[secretId]}">
+				<span class="icon-m {[hintclass]}"></span>心动
+			</a>
 		</div>
 	</li>
 	{[/data]}

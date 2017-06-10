@@ -206,7 +206,6 @@ class ApiController extends Controller
 			case "userfilter":
 				$data = self::postParam("data");
 				$page = self::postParam("page", 1);
-
 				if (strlen($data) > 5) {
 					User::edit($openId, ["uFilter" => $data]);
 				}

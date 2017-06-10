@@ -443,15 +443,16 @@ class User extends ActiveRecord
 		return $Info;
 	}
 
-	public static function sprofile($openId)
+	public static function sprofile($id)
 	{
+		$id = AppUtil::decrypt($id);
 		$sql = "select u.*,u2.uAvatar as mavatar,u2.uName as mname,u2.uIntro as mintro
 			from im_user as u
 			left join im_user_net as n on n.nSubUId=u.uId
 			left join im_user as u2 on u2.uId=n.nUId
-			where u.uOpenId=:openId";
+			where u.uId=:uid";
 		$Info = AppUtil::db()->createCommand($sql)->bindValues([
-			":openId" => $openId,
+			":uid" => $id,
 		])->queryOne();
 
 		$result = [
@@ -563,6 +564,7 @@ class User extends ActiveRecord
 		if (!$myInfo) {
 			return 0;
 		}
+		$hint = $myInfo->uHint;
 		$uFilter = $myInfo->uFilter;
 		$matchcondition = self::matchCondition($uFilter);
 
@@ -612,8 +614,9 @@ class User extends ActiveRecord
 		$result = [];
 		foreach ($ret as $v) {
 			$data = [];
-			$data["id"] = $v["uOpenId"];
-			$data["ids"] = $v["uId"];
+			//$data["id"] = $v["uOpenId"];
+			//$data["ids"] = $v["uId"];
+			$data["secretId"] = AppUtil::encrypt($v["uId"]);
 			$data["avatar"] = $v["uAvatar"];
 			$data["mavatar"] = $v["mpavatar"];
 			$data["name"] = $v["uName"];
@@ -623,7 +626,17 @@ class User extends ActiveRecord
 			$data["horos"] = isset(User::$Height[$v["uHoros"]]) ? User::$Height[$v["uHoros"]] : "无星座";
 			$data["job"] = isset(User::$Height[$v["uProfession"]]) ? User::$Height[$v["uProfession"]] : "无职业";
 			$data["intro"] = $v["uIntro"];
+			$location = json_decode($v["uLocation"], 1);
+
+			if ($location && count($location)) {
+				$location = $location[0]["text"] . $location[1]["text"];
+			} else {
+				$location = "";
+			}
+			$data["location"] = $location;
+			$data["hintclass"] = (strpos($hint, $v["uId"]) !== false) ? "icon-loved" : "icon-love";
 			$result[] = $data;
+
 		}
 
 		if (count($ret) == $pageSize) {
