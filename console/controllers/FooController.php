@@ -285,11 +285,12 @@ class FooController extends Controller
 	public function actionRain()
 	{
 
-		$ret = UserNet::stat();
-		var_dump($ret);
+//		$ret = UserNet::stat();
+//		var_dump($ret);
 		/*self::matchers(1);
 		self::matchers(2);
 		self::matchers(3);
 		self::matchers(4);*/
+
 	}
 }

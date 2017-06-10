@@ -2672,6 +2672,7 @@ section {
       text-align: center; }
       #sprofile .sprofile-mp .left .img img {
         width: 4rem;
+        height: 4rem;
         border-radius: 4rem; }
     #sprofile .sprofile-mp .left p {
       font-size: 1.2rem; }
@@ -2954,6 +2955,7 @@ section {
       text-align: center; }
       .plist li a .plist-l img {
         width: 6rem;
+        height: 6rem;
         border-radius: 6rem; }
     .plist li a .plist-r {
       flex: 1;
@@ -2968,7 +2970,8 @@ section {
   .plist .plist-defalt .img {
     text-align: center; }
     .plist .plist-defalt .img img {
-      width: 7rem; }
+      width: 7rem;
+      height: 7rem; }
   .plist .plist-defalt p {
     font-size: 1rem;
     color: #aaa;
@@ -2997,6 +3000,7 @@ section {
       text-align: center; }
       #myMP .mid div img {
         width: 8rem;
+        height: 8rem;
         border-radius: 8rem; }
     #myMP .mid b, #myMP .mid p {
       text-align: center;
@@ -3018,6 +3022,46 @@ section {
     #myMP .bot a:last-child {
       border: #f781ab solid 1px;
       color: #f781ab; }
+
+#noMP .nomp-des {
+  background: #f9e0e8;
+  padding: 3rem 2rem 8rem 2rem; }
+  #noMP .nomp-des .nomp-up {
+    background: #fff;
+    padding: 5rem 6rem;
+    text-align: center; }
+    #noMP .nomp-des .nomp-up div {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      text-align: center; }
+      #noMP .nomp-des .nomp-up div img {
+        width: 6rem;
+        height: 6rem;
+        border-radius: 6rem;
+        margin: 2rem; }
+    #noMP .nomp-des .nomp-up p {
+      font-size: 1rem;
+      color: #777; }
+  #noMP .nomp-des .nomp-down {
+    text-align: center;
+    padding: 2rem; }
+    #noMP .nomp-des .nomp-down a {
+      display: block;
+      background: #2cc3a3;
+      color: #fff;
+      text-align: center;
+      padding: 0.8rem 3rem;
+      border-radius: 1.5rem;
+      margin-top: 3rem; }
+#noMP .img {
+  display: none; }
+  #noMP .img img {
+    position: absolute;
+    right: 0;
+    top: 1rem;
+    z-index: 999;
+    width: 8rem;
+    height: 8rem; }
 
 #focusMP li {
   background: #fff;
@@ -3046,6 +3090,8 @@ section {
       text-align: center; }
       #focusMP li a div.left img {
         width: 6rem;
+        height: 6rem;
+        height: 6rem;
         border-radius: 6rem; }
     #focusMP li a div.right {
       padding: 0.5rem 1rem;
