@@ -138,9 +138,9 @@
 		<a href="#sme">返回</a>
 	</div>
 	<div class="tab" tag="weFriends">
-		<a href="javascript:;" class="active">已通过</a>
-		<a href="javascript:;">等TA处理</a>
-		<a href="javascript:;">未通过</a>
+		<a href="javascript:;" class="active" subtag="pass">已通过</a>
+		<a href="javascript:;" subtag="wait">等TA处理</a>
+		<a href="javascript:;" subtag="fail">未通过</a>
 	</div>
 	<ul class="plist">
 		<div class="plist-defalt">

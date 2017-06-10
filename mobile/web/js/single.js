@@ -471,10 +471,27 @@ require(["layer"],
 
 		$(".tab a").on(kClick, function () {
 			var tabObj = $(this).closest(".tab");
+			var tag = tabObj.attr("tag");
+			var subtag = self.attr("subtag");
 			tabObj.find("a").removeClass();
 			$(this).addClass("active");
-			tabObj.next().html($("#wechats").html());
+			switch (tag) {
+				case "addWeChat":
+					tabObj.next().html($("#wechats").html());
+					break;
+				case "weFriends":
+					tabObj.next().html($("#wechats").html());
+					break;
+				case "heartbeat":
+					heartbeat(subtag);
+					tabObj.next().html($("#wechats").html());
+					break;
+			}
 		});
+
+		function heartbeat(subtag){
+
+		}
 
 		function showMsg(title, sec) {
 			var duration = sec || 2;

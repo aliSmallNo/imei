@@ -619,7 +619,7 @@ class User extends ActiveRecord
 			$data["secretId"] = AppUtil::encrypt($v["uId"]);
 			$data["avatar"] = $v["uAvatar"];
 			$data["mavatar"] = $v["mpavatar"];
-			$data["name"] = $v["uName"];
+			$data["name"] = mb_strlen($v["uName"]) > 4 ? mb_substr($v["uName"], 0, 4) . "..." : $v["uName"];
 			$data["gender"] = $v["uGender"] == 10 ? "female" : "male";
 			$data["age"] = date("Y") - $v["uBirthYear"];
 			$data["height"] = isset(User::$Height[$v["uHeight"]]) ? User::$Height[$v["uHeight"]] : "无年龄";
