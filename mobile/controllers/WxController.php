@@ -381,8 +381,8 @@ class WxController extends BaseController
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		if ($wxInfo) {
-			$avatar = $wxInfo["headimgurl"];
-			$nickname = $wxInfo["nickname"];
+			$avatar = $wxInfo["Avatar"];
+			$nickname = $wxInfo["uName"];
 			$uId = $wxInfo['uId'];
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
