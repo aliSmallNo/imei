@@ -29,7 +29,6 @@ class QueueUtil
 			$tube = self::QUEUE_TUBE;
 		}
 		try {
-			shell_exec("/data/code/queue_imei.sh");
 
 			$beanstalk = new beanstalkSocket(self::$QueueConfig);
 			$beanstalk->connect();
