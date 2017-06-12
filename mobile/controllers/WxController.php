@@ -271,15 +271,52 @@ class WxController extends BaseController
 			'terse');
 	}
 
+	public function actionSw()
+	{
+		$hid = self::getParam('id');
+		$hid = AppUtil::decrypt($hid);
+		if (!$hid) {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+		$openId = self::$WX_OpenId;
+		$avatar = $nickname = '';
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if ($wxInfo) {
+			$avatar = $wxInfo["Avatar"];
+			$nickname = $wxInfo["uName"];
+		} else {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+		$prices = [
+			['num' => 20, 'price' => 2],
+			['num' => 60, 'price' => 6],
+			['num' => 80, 'price' => 8],
+			['num' => 180, 'price' => 18],
+			['num' => 680, 'price' => 68],
+			['num' => 1980, 'price' => 198],
+		];
+		return self::renderPage("swallet.tpl",
+			[
+				'avatar' => $avatar,
+				'nickname' => $nickname,
+				'prices' => $prices
+			],
+			'imei',
+			'媒桂花账户');
+	}
+
 	public function actionSingle()
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		$hint = '';
+		$hint = $encryptId = '';
 		if ($wxInfo) {
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
 			$hint = $wxInfo['uHint'];
+			$encryptId = AppUtil::encrypt($wxInfo["uId"]);
 			//$intro = $wxInfo['uIntro'];
 			$role = $wxInfo["uRole"];
 			if ($role == User::ROLE_MATCHER) {
@@ -303,6 +340,7 @@ class WxController extends BaseController
 			'nickname' => $nickname,
 			'avatar' => $avatar,
 			'prices' => $prices,
+			'encryptId' => $encryptId,
 			'hint' => $hint,
 			'height' => User::$HeightFilter,
 			'age' => User::$AgeFilter,
