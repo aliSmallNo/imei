@@ -422,19 +422,21 @@ class WxController extends BaseController
 		if ($uId) {
 			$encryptId = AppUtil::encrypt($uId);
 		}
-		return self::renderPage("share.tpl", [
-			'nickname' => $nickname,
-			'avatar' => $avatar,
-			'editable' => $editable,
-			'celeb' => $celeb,
-			'celebId' => $celebId,
-			'id' => $senderUId,
-			'uId' => $uId,
-			'celebs' => $celebs,
-			'hasReg' => $hasReg,
-			'encryptId' => $encryptId,
-			'wxUrl' => AppUtil::wechatUrl()
-		]);
+		return self::renderPage("share.tpl",
+			[
+				'nickname' => $nickname,
+				'avatar' => $avatar,
+				'editable' => $editable,
+				'celeb' => $celeb,
+				'celebId' => $celebId,
+				'id' => $senderUId,
+				'uId' => $uId,
+				'celebs' => $celebs,
+				'hasReg' => $hasReg,
+				'encryptId' => $encryptId,
+				'wxUrl' => AppUtil::wechatUrl()
+			],
+			'terse');
 	}
 
 	public function actionCard()

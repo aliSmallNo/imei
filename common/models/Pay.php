@@ -18,6 +18,10 @@ class Pay extends ActiveRecord
 	const MODE_WXPAY = 100;
 	const MODE_ALIPAY = 102;
 
+	const STATUS_DEFAULT = 0;
+	const STATUS_PAID = 100;
+	const STATUS_FAIL = 110;
+
 	private static $CategoryDict = [
 		self::CAT_RECHARGE => '充值'
 	];
@@ -27,6 +31,14 @@ class Pay extends ActiveRecord
 		return '{{%pay}}';
 	}
 
+	/**
+	 * @param $uid
+	 * @param $num
+	 * @param $amt integer 单位人民币分
+	 * @param string $cat
+	 * @param int $mode 支付方式
+	 * @return integer
+	 */
 	public static function prepay($uid, $num, $amt, $cat = '', $mode = 0)
 	{
 		if (!$cat) {
@@ -42,7 +54,21 @@ class Pay extends ActiveRecord
 		$entity->pUId = $uid;
 		$entity->pRId = $num;
 		$entity->pMode = $mode;
+		if ($cat == self::CAT_RECHARGE) {
+			$entity->pNote = '充值' . $num . '媒桂花';
+		}
 		$entity->save();
 		return $entity->pId;
+	}
+
+	public static function edit($pid, $params)
+	{
+		$entity = self::findOne(['pId' => $pid]);
+		foreach ($params as $key => $val) {
+			$entity->$key = $val;
+		}
+		$entity->pUpdatedOn = date('Y-m-d H:i:s');
+		$entity->pTransDate = date('Y-m-d H:i:s');
+		$entity->save();
 	}
 }

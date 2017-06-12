@@ -10,6 +10,7 @@ namespace mobile\controllers;
 
 
 use common\models\City;
+use common\models\Log;
 use common\models\Pay;
 use common\models\User;
 use common\models\UserAccount;
@@ -18,6 +19,7 @@ use common\models\UserNet;
 use common\models\UserSign;
 use common\models\UserWechat;
 use common\utils\AppUtil;
+use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use Yii;
 use yii\web\Controller;
@@ -78,9 +80,9 @@ class ApiController extends Controller
 			case 'recharge':
 				$amt = self::postParam('amt'); // 单位人民币元
 				$num = intval($amt * 10.0);
-				$payId = Pay::prepay($wxInfo['uId'], $num, $amt);
 				$title = '微媒100-充值';
 				$subTitle = '充值' . $num . '媒桂花';
+				$payId = Pay::prepay($wxInfo['uId'], $num, $amt * 100);
 				if (AppUtil::scene() == 'dev') {
 					return self::renderAPI(129, '请在服务器测试该功能~');
 				}
@@ -291,6 +293,80 @@ class ApiController extends Controller
 				return self::renderAPI(0, '', $roseAmt);
 		}
 		return self::renderAPI(129, '操作无效~');
+	}
+
+	public function actionPaid()
+	{
+		//测试
+		/*$GLOBALS['HTTP_RAW_POST_DATA'] = '<xml><appid><![CDATA[wxffcef12f0d7812f2]]></appid>
+<attach><![CDATA[商超订单]]></attach>
+<bank_type><![CDATA[CFT]]></bank_type>
+<cash_fee><![CDATA[1]]></cash_fee>
+<fee_type><![CDATA[CNY]]></fee_type>
+<is_subscribe><![CDATA[N]]></is_subscribe>
+<mch_id><![CDATA[1262404601]]></mch_id>
+<nonce_str><![CDATA[unkm46cfywpj4pdhz4zi31sg64uxldmj]]></nonce_str>
+<openid><![CDATA[oofYSwpw32rE37Ygxpp-eUIMB8-U]]></openid>
+<out_trade_no><![CDATA[18CLQZCGoUY]]></out_trade_no>
+<result_code><![CDATA[SUCCESS]]></result_code>
+<return_code><![CDATA[SUCCESS]]></return_code>
+<sign><![CDATA[A550BD6DB489B0001468EF4009D8A8FA]]></sign>
+<time_end><![CDATA[20150811175503]]></time_end>
+<total_fee>1</total_fee>
+<trade_type><![CDATA[APP]]></trade_type>
+<transaction_id><![CDATA[1007800798201508110599381314]]></transaction_id>
+</xml>';
+	*/
+		$xml = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : "";
+		// Rain: WTF, 升级php71之后，竟然需要file_get_contents来获取值，WTF！！！
+		$xml2 = file_get_contents('php://input', 'r');
+		if (isset($xml2)) {
+			$xml = $xml2;
+		}
+		if ($xml) {
+			AppUtil::logFile($xml, 5, __FUNCTION__, __LINE__);
+		} else {
+			AppUtil::logFile($GLOBALS, 5, __FUNCTION__, __LINE__);
+			AppUtil::logFile($_POST, 5, __FUNCTION__, __LINE__);
+			return self::renderAPI(129, '接收失败~');
+		}
+		//文件列表设备
+		$data = [
+			"return_code" => "SUCCESS",
+			"return_msg" => "OK"
+		];
+		Yii::$app->response->format = Response::FORMAT_HTML;
+		if (!$xml) {
+			return AppUtil::data_to_xml($data);
+		}
+
+		//解析数据列表
+		$rData = AppUtil::xml_to_data($xml);
+		if (!$rData || !isset($rData['return_code']) || $rData['return_code'] != 'SUCCESS') {
+			return AppUtil::data_to_xml($data);
+		}
+
+		$newLog = [
+			"logKey" => "wx-callback",
+			"logUser" => "1",
+			"logUserId" => '',
+			"logBranchId" => 1000,
+			"logBefore" => '',
+			"logAfter" => json_encode($rData),
+			"logChannel" => "wx-callback",
+			"logQueryDate" => date("Y-m-d H:i:s"),
+		];
+		Log::add($newLog);
+
+		$outTradeNo = $rData['out_trade_no'];
+		$ret = RedisUtil::getCache(RedisUtil::KEY_WX_PAY, $outTradeNo);
+		//避免重复请求
+		if ($ret > 1) {
+			return AppUtil::data_to_xml($data);
+		}
+		//支付成功
+		WechatUtil::afterPaid($rData, ($rData['result_code'] == 'SUCCESS'));
+		return AppUtil::data_to_xml($data);
 	}
 
 	protected function renderAPI($code, $msg = '', $data = [])

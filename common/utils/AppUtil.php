@@ -142,6 +142,19 @@ class AppUtil
 		return $xml;
 	}
 
+	public static function xml_to_data($xml)
+	{
+
+		if (!$xml) {
+			return false;
+		}
+		//将XML转为array
+		//禁止引用外部xml实体
+		libxml_disable_entity_loader(true);
+		$data = json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+		return $data;
+	}
+
 	public static function getIP()
 	{
 		if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]) && $_SERVER["HTTP_X_FORWARDED_FOR"])
@@ -699,7 +712,7 @@ class AppUtil
 		if ($line) {
 			$txt[] = $line;
 		}
-		$txt[] = is_array($msg) ? json_encode($msg) : $msg;
+		$txt[] = is_array($msg) ? json_encode($msg, JSON_UNESCAPED_UNICODE) : $msg;
 		$hasLog = is_file($file);
 		$ret = @file_put_contents($file, date('ymd H:i:s') . PHP_EOL . implode(" - ", $txt) . PHP_EOL, 8);
 		if (!$hasLog) {

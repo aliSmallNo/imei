@@ -22,6 +22,7 @@ class RedisUtil
 	const KEY_WX_TOKEN = 'wx_token';
 	const KEY_WX_TICKET = 'wx_ticket';
 	const KEY_WX_USER = 'wx_user';
+	const KEY_WX_PAY = 'wx_pay';
 	const KEY_ADMIN_INFO = 'admin_info';
 	const KEY_ADMIN_OFTEN = 'admin_often';
 	const KEY_PUB_CODE = 'pub_code';
@@ -39,6 +40,7 @@ class RedisUtil
 		self::KEY_WX_TOKEN => 4800,
 		self::KEY_WX_TICKET => 4800,
 		self::KEY_WX_USER => 3600 * 12,
+		self::KEY_WX_PAY => 3600,
 		self::KEY_ADMIN_INFO => 86400 * 7,
 		self::KEY_PUB_CODE => 600,
 		self::KEY_CLOUD_COS => 3600 * 10,
@@ -72,6 +74,12 @@ class RedisUtil
 			$mainKey = $keys[0];
 		}
 		switch ($mainKey) {
+			case self::KEY_WX_PAY:
+				$redisKey = self::getPrefix(...$keys);
+				$ret = $redis->incr($redisKey);
+				$expired = isset(self::$CacheDuration[$redisKey]) ? self::$CacheDuration[$redisKey] : 3600;
+				$redis->expire($redisKey, $expired);
+				return $ret;
 			case self::KEY_USER_STAT:
 				array_shift($keys);
 				$redisKey = implode(self::$Glue, $keys);

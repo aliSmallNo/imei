@@ -9,6 +9,8 @@
 
 namespace common\utils;
 
+use common\models\Pay;
+use common\models\UserTrans;
 use Yii;
 
 require_once __DIR__ . '/../lib/WxPay/WxPay.Config.php';
@@ -313,14 +315,41 @@ class WechatUtil
 		if (!isset($order['appid']) || !isset($order['prepay_id']) || !$order['prepay_id']) {
 			return 0;
 		}
-		$jsapi = new \WxPayJsApiPay();
-		$jsapi->SetAppid($order["appid"]);
-		$jsapi->SetTimeStamp(time());
-		$jsapi->SetNonceStr(\WxPayApi::getNonceStr());
-		$jsapi->SetPackage("prepay_id=" . $order['prepay_id']);
-		$jsapi->SetSignType("MD5");
-		$jsapi->SetPaySign($jsapi->MakeSign());
-		return $jsapi->GetValues();
+		$jsAPI = new \WxPayJsApiPay();
+		$jsAPI->SetAppid($order["appid"]);
+		$jsAPI->SetTimeStamp(time());
+		$jsAPI->SetNonceStr(\WxPayApi::getNonceStr());
+		$jsAPI->SetPackage("prepay_id=" . $order['prepay_id']);
+		$jsAPI->SetSignType("MD5");
+		$jsAPI->SetPaySign($jsAPI->MakeSign());
+		return $jsAPI->GetValues();
 	}
 
+	public static function afterPaid($data, $status = true)
+	{
+		$pid = isset($data['out_trade_no']) ? $data['out_trade_no'] : 0;
+		if (!$pid) {
+			return false;
+		}
+		$payInfo = Pay::findOne(['pId' => $pid]);
+		if (!$payInfo) {
+			return false;
+		}
+		if ($status) {
+			$data = [
+				'pTransRaw' => json_encode($data, JSON_UNESCAPED_UNICODE),
+				'pStatus' => Pay::STATUS_PAID,
+				'pTransId' => $data['transaction_id'],
+				'pTransAmt' => $data['cash_fee']
+			];
+			Pay::edit($pid, $data);
+			UserTrans::addByPID($pid);
+		} else {
+			$data = [
+				'pTransRaw' => json_encode($data, JSON_UNESCAPED_UNICODE),
+				'pStatus' => Pay::STATUS_FAIL
+			];
+			Pay::edit($pid, $data);
+		}
+	}
 }
