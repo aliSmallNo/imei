@@ -172,7 +172,7 @@ class ApiController extends Controller
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				$amt = rand(1, 6) * 10;
+				$amt = rand(1, 5) * 10;
 				$ret = UserSign::add($wxInfo['uId'], $amt);
 				if ($ret) {
 					$yuan = sprintf('%.1f', $amt / 100.0);
