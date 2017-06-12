@@ -91,7 +91,7 @@ class ApiController extends Controller
 						'amt' => $amt
 					]);
 				}
-				return self::renderAPI(129, '请在服务器测试该功能~');
+				return self::renderAPI(129, '操作失败~');
 		}
 		return self::renderAPI(129);
 	}
