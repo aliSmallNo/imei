@@ -73,7 +73,28 @@ require(["layer"],
 			uid: $('#cUID').val(),
 			spinner: $('.m-tab-wrap .spinner'),
 			noMore: $('.m-tab-wrap .no-more'),
+			btnFollow: $('.follow'),
 			tag: 'male',
+			follow: function () {
+				var util = this;
+				$.post('/api/user',
+					{
+						tag: 'follow',
+						uid: util.uid
+					},
+					function (resp) {
+						if (resp.code == 0) {
+							showMsg(resp.msg);
+							util.btnFollow.html(resp.data.title);
+							if (resp.data.follow === 1) {
+								util.btnFollow.addClass('followed');
+							} else {
+								util.btnFollow.removeClass('followed');
+							}
+						}
+						util.loading = 0;
+					}, 'json');
+			},
 			reload: function () {
 				var util = this;
 				if (util.loading) {
@@ -144,5 +165,9 @@ require(["layer"],
 				$sls.tabsTop = $sls.tabs.offset().top;
 			}
 			resetTabs();
+
+			UserUtil.btnFollow.on(kClick, function () {
+				UserUtil.follow();
+			});
 		});
 	});

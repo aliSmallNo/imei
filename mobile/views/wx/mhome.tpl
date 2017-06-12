@@ -7,7 +7,7 @@
 	<h4><em>{{$uInfo.name}}</em> {{if $uInfo.vip}}<span class="vip big"></span>{{/if}}</h4>
 	<h5>{{$uInfo.intro}}</h5>
 	<p class="desc"></p>
-	<a href="javascript:;" class="follow">关注TA</a>
+	<a href="javascript:;" class="follow">{{$followed}}</a>
 	<div class="countInfo">
 		<div><span>单身团</span><em>12</em></div>
 		<div><span>牵线成功</span><em>61</em></div>

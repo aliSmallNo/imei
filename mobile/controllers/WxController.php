@@ -206,6 +206,7 @@ class WxController extends BaseController
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$prefer = 'male';
+		$followed = '关注TA';
 		if ($wxInfo) {
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
@@ -216,6 +217,8 @@ class WxController extends BaseController
 				list($items) = UserNet::male($uInfo['id'], 1, 10);
 			}
 			$stat = UserNet::getStat($uInfo['id'], 1);
+			$followed = UserNet::hasFollowed($hid, $wxInfo['uId']) ? '取消关注' : '关注TA';
+
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
@@ -228,7 +231,8 @@ class WxController extends BaseController
 				'prefer' => $prefer,
 				'hid' => $hid,
 				'singles' => $items,
-				'stat' => $stat
+				'stat' => $stat,
+				'followed' => $followed
 			],
 			'terse');
 	}
