@@ -301,7 +301,8 @@ class WxController extends BaseController
 			[
 				'avatar' => $avatar,
 				'nickname' => $nickname,
-				'prices' => $prices
+				'prices' => $prices,
+				'hid' => $hid
 			],
 			'imei',
 			'媒桂花账户');

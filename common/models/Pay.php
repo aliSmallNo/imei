@@ -9,7 +9,9 @@
 namespace common\models;
 
 
-class Pay
+use yii\db\ActiveRecord;
+
+class Pay extends ActiveRecord
 {
 	const CAT_RECHARGE = 100;
 
@@ -22,7 +24,7 @@ class Pay
 
 	public static function tableName()
 	{
-		return '{{%user_net}}';
+		return '{{%pay}}';
 	}
 
 	public static function prepay($uid, $num, $amt, $cat = '', $mode = 0)

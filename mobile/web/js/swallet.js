@@ -77,7 +77,7 @@ require(["layer"],
 				var amt = util.payBtn.attr('data-id');
 				$.post('/api/wallet',
 					{
-						tag: 'prepay',
+						tag: 'recharge',
 						amt: amt
 					},
 					function (resp) {
