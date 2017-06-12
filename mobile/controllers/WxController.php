@@ -356,10 +356,10 @@ class WxController extends BaseController
 				header("location:/wx/error?msg=链接地址错误");
 				exit();
 			}
-			UserNet::add($senderUId, $uId, UserNet::REL_INVITE);
 		}
 		if ($senderUId && $uId) {
 			UserNet::add($senderUId, $uId, UserNet::REL_INVITE);
+			UserNet::add($senderUId, $uId, UserNet::REL_FOLLOW);
 		}
 		$defaultId = array_keys(self::$Celebs)[0];
 		$celebId = self::getParam('cid', $defaultId);
