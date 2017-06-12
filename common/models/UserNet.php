@@ -34,7 +34,7 @@ class UserNet extends ActiveRecord
 
 	public static function add($uid, $subUid, $relation)
 	{
-		if ($uid == $subUid) {
+		if (!$uid || !$subUid || $uid == $subUid) {
 			return false;
 		}
 		if ($relation == self::REL_INVITE) {

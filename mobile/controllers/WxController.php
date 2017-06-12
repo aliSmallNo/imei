@@ -358,6 +358,9 @@ class WxController extends BaseController
 			}
 			UserNet::add($senderUId, $uId, UserNet::REL_INVITE);
 		}
+		if ($senderUId && $uId) {
+			UserNet::add($senderUId, $uId, UserNet::REL_INVITE);
+		}
 		$defaultId = array_keys(self::$Celebs)[0];
 		$celebId = self::getParam('cid', $defaultId);
 		$celeb = self::$Celebs[$defaultId];
