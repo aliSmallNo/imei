@@ -225,7 +225,72 @@ require(["layer"],
 					break;
 				case "wechat":
 					$sls.cork.show();
-					$(".getWechat").show();
+					//$(".getWechat").show();
+					$(".pay-mp").show();
+					break;
+			}
+		});
+
+		var payroseF = 0;
+		$(document).on(kClick, ".pay-mp a", function () {
+			var self = $(this);
+			var tag = self.attr("tag");
+			switch (tag) {
+				case "close":
+					self.closest(".pay-mp").hide();
+					$sls.cork.hide();
+					break;
+				case "choose":
+					self.closest(".options").find("a").removeClass();
+					self.addClass("active");
+					self.closest(".options").next().find("a").removeClass().addClass("active");
+					break;
+				case "pay":
+					var num = self.closest(".pay-mp").find(".options a.active").attr("num");
+					if (!num) {
+						showMsg("请先选择打赏的媒瑰花");
+						return;
+					}
+					if (payroseF) {
+						return;
+					}
+					payroseF = 1;
+					$.post("/api/user", {
+						tag: "payrose",
+						num: num,
+					}, function (resp) {
+						if (resp.data >= num) {
+							$(".getWechat").show();
+							$(".pay-mp").hide();
+						} else {
+							$(".m-popup-shade").show();
+							$(".rose-num").html(resp.data);
+							$(".not-enough-rose").show();
+						}
+						payroseF = 0;
+					}, "json");
+					break;
+				case "des":
+					if ($(this).next().css("display") == "none") {
+						$(this).next().show();
+					} else {
+						$(this).next().hide();
+					}
+					break;
+			}
+		});
+		$(document).on(kClick, ".not-enough-rose a", function () {
+			var tag = $(this).attr("tag");
+			$(".m-popup-shade").hide();
+			switch (tag) {
+				case "cancel":
+					$(this).closest(".not-enough-rose").hide();
+					break;
+				case "recharge":
+					$(".pay-mp").hide();
+					$sls.cork.hide();
+					$(".not-enough-rose").hide();
+					location.href = "#saccount";
 					break;
 			}
 		});
@@ -274,7 +339,8 @@ require(["layer"],
 					break;
 				case "apply":
 					$sls.cork.show();
-					$(".getWechat").show();
+					//$(".getWechat").show();
+					$(".pay-mp").show();
 					break;
 			}
 		});
@@ -595,6 +661,7 @@ require(["layer"],
 				img.hide();
 			}, 2000);
 		});
+
 
 		$(function () {
 			$("body").addClass("bg-color");

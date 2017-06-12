@@ -180,6 +180,7 @@ main
 	outline: 0
 	border: none
 	display: none
+
 .bg-color
 	background-color: $bgColor
 
@@ -1806,7 +1807,7 @@ section
 	display: none
 	@include translucent
 	pointer-events: auto
-	z-index: 120
+	z-index: 1000
 
 .m-popup-main
 	display: table
@@ -2234,15 +2235,15 @@ section
 				padding: 0 1.5rem 0 3.6rem
 				margin-right: 1rem
 				&:before
-					//content: ''
-					//display: block
-					//width: 2rem
-					//height: 2rem
-					//position: absolute
-					//background: url(../images/ico_like_w.png) no-repeat center center
-					//background-size: 100% 100%
-					//left: 1.2rem
-					//top: .5rem
+//content: ''
+//display: block
+//width: 2rem
+//height: 2rem
+//position: absolute
+//background: url(../images/ico_like_w.png) no-repeat center center
+//background-size: 100% 100%
+//left: 1.2rem
+//top: .5rem
 
 .useruc
 	.banner
@@ -2732,6 +2733,143 @@ section
 		font-size: 1.2rem
 		padding: .8rem 0
 		border-radius: 1rem
+
+.pay-mp
+	display: none
+	position: fixed
+	left: 3rem
+	right: 3rem
+	top: 15rem
+	z-index: 999
+	background: #dd3c33
+	padding: 1.5rem 2rem
+	border-radius: 1rem
+	color: #f9cd9a
+	text-align: center
+	.close
+		position: absolute
+		background: url('../images/icon-close-2.png') no-repeat center center
+		background-size: 100% 100%
+		width: 2rem
+		height: 2rem
+		top: 1rem
+		right: 1rem
+	.pmp-title
+		font-size: 1.4rem
+	.pmp-title-des
+		font-size: 1rem
+		padding: .5rem
+	ul.options
+		overflow: hidden
+		margin-top: 1rem
+		li
+			width: 50%
+			float: left
+			a
+				display: flex
+				padding: .5rem
+				border: 1px solid #f9cd9a
+				border-radius: .5rem
+				margin: .5rem
+				.img
+					flex: 1
+					img
+						width: 2rem
+						height: 2rem
+						position: relative
+						top: .6rem
+				.des
+					flex: 2
+					text-align: left
+					.t
+						font-size: 1.3rem
+						color: #f9cd9a
+						span
+							font-size: 1rem
+					.b
+						font-size: 1rem
+						color: #f9cd9a
+			a.active
+				background: #f9cd9a
+				position: relative
+				&:after
+					position: absolute
+					content: ''
+					background: url('../images/ico_tick_m_2.png') no-repeat center center
+					background-size: 100% 100%
+					width: 1rem
+					height: 1rem
+					top: .2rem
+					right: .2rem
+				.des
+					.t, .b
+						color: #dd3c33
+	.pmp-pay
+		margin: 1rem
+		a
+			background: #f9cd9a
+			border: 1px solid #f9cd9a
+			padding: 1rem
+			border-radius: 3.5rem
+			display: inline-block
+			width: 3.5rem
+			height: 3.5rem
+			font-size: 1.2rem
+			opacity: .5
+		a.active
+			opacity: 1
+	.pmp-bot
+		font-size: .8rem
+		a
+			font-size: .8rem
+			text-align: center
+			position: relative
+			color: #f9cd9a
+			&:after
+				position: absolute
+				content: ''
+				background: url('../images/ico-question_2.png') no-repeat center center
+				background-size: 100% 100%
+				width: 1rem
+				height: 1rem
+				top: .2rem
+				right: -1.5rem
+		ol
+			display: none
+			li
+				text-align: left
+				opacity: .8
+
+.not-enough-rose
+	z-index: 1099
+	display: none
+	position: fixed
+	left: 3rem
+	right: 3rem
+	top: 15rem
+	background: #fff
+	padding: 4rem 1rem 2rem 1rem
+	border-radius: 1rem
+	text-align: center
+	p
+		font-size: 1rem
+		color: #444
+	.btns
+		display: flex
+		margin-top: 3rem
+		a
+			flex: 1
+			margin: .5rem
+			padding: .8rem 2rem
+			border: 1px solid #f781ab
+			border-radius: 1rem
+		a:first-child
+			color: #f781ab
+			background: #fff
+		a:last-child
+			color: #fff
+			background: #f781ab
+
 
 #personalInfo
 	.personalInfo-top
