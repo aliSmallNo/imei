@@ -228,6 +228,10 @@ class ApiController extends Controller
 				$f = self::postParam("f");
 				$ret = User::hint($openId, $id, $f);
 				return self::renderAPI(0, '', $ret);
+			case "wxname":
+				$wname = self::postParam("wname");
+				$ret = UserWechat::replace($openId, ["wWechatId" => $wname]);
+				return self::renderAPI(0, '', $ret);
 		}
 		return self::renderAPI(129, '操作无效~');
 	}
