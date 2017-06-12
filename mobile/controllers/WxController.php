@@ -201,7 +201,7 @@ class WxController extends BaseController
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
 		}
-		$items = [];
+		$items = $stat = [];
 		$uInfo = User::user(['uId' => $hid]);
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
@@ -215,19 +215,22 @@ class WxController extends BaseController
 			} else {
 				list($items) = UserNet::male($uInfo['id'], 1, 10);
 			}
+			$stat = UserNet::getStat($uInfo['id'], 1);
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
 		}
-		return self::renderPage("mhome.tpl", [
-			'nickname' => $nickname,
-			'avatar' => $avatar,
-			'uInfo' => $uInfo,
-			'prefer' => $prefer,
-			'hid' => $hid,
-			'singles' => $items,
-			'stat' => UserNet::getStat($uInfo['id'], true)
-		], 'terse');
+		return self::renderPage("mhome.tpl",
+			[
+				'nickname' => $nickname,
+				'avatar' => $avatar,
+				'uInfo' => $uInfo,
+				'prefer' => $prefer,
+				'hid' => $hid,
+				'singles' => $items,
+				'stat' => $stat
+			],
+			'terse');
 	}
 
 	public function actionSh()
@@ -252,14 +255,16 @@ class WxController extends BaseController
 			$nickname = "本地测试";
 		}
 
-		return self::renderPage("shome.tpl", [
-			'nickname' => $nickname,
-			'avatar' => $avatar,
-			'uInfo' => $uInfo,
-			'prefer' => $prefer,
-			'hid' => $hid,
-			'items' => json_encode($items)
-		], 'terse');
+		return self::renderPage("shome.tpl",
+			[
+				'nickname' => $nickname,
+				'avatar' => $avatar,
+				'uInfo' => $uInfo,
+				'prefer' => $prefer,
+				'hid' => $hid,
+				'items' => json_encode($items)
+			],
+			'terse');
 	}
 
 	public function actionSingle()
