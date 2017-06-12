@@ -244,17 +244,24 @@ class ApiController extends Controller
 				$ret = User::mymp($openId);
 				return self::renderAPI(0, '', $ret);
 			case "hint":
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
 				$id = self::postParam("id");
 				$f = self::postParam("f");
-				$ret = User::hint($openId, $id, $f);
+				$ret = UserNet::hint($wxInfo["uId"], $id, $f);
 				return self::renderAPI(0, '', $ret);
 			case "wxname":
 				$wname = self::postParam("wname");
 				$ret = UserWechat::replace($openId, ["wWechatId" => $wname]);
 				return self::renderAPI(0, '', $ret);
 			case "payrose":
-				$roseAmt = UserAccount::roseAmt($openId);
-				return self::renderAPI(0, '', $roseAmt);
+				$num = self::postParam("num");
+				$roseAmt = UserAccount::roseAmt($openId, $num);
+				//return self::renderAPI(0, '', $roseAmt);
+				return self::renderAPI(0, '', 150);
+
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

@@ -490,7 +490,7 @@
 </div>
 <div class="pay-mp">
 	<p class="pmp-title">申请加微信</p>
-	<p class="pmp-title-des">若对方退回，媒瑰花退回</p>
+	<p class="pmp-title-des">若对方拒绝，媒瑰花退回</p>
 	<a class="close" tag="close"></a>
 	<ul class="options">
 		<li>
@@ -534,7 +534,7 @@
 		<a href="javascript:;" tag="pay">打赏媒婆</a>
 	</div>
 	<div class="pmp-bot">
-		<a tag="des">感谢对方媒婆推荐了了这么好的人</a>
+		<a tag="des">感谢对方媒婆推荐了这么好的人</a>
 		<ol>
 			<li>对方拒绝了给微信号，媒瑰花全部返还</li>
 			<li>对方同意了给微信号，媒瑰花将打给对方媒婆</li>
@@ -544,7 +544,7 @@
 </div>
 <div class="not-enough-rose">
 	<p>您的媒瑰花余额：<span class="rose-num">30</span>朵</p>
-	<p>不够打赏？马上去充值</p>
+	<p>不够打赏？马上去充值!</p>
 	<div class="btns">
 		<a href="javascript:;" tag="cancel">取消</a>
 		<a href="javascript:;" tag="recharge">去充值</a>
@@ -660,7 +660,7 @@
 		</div>
 	</div>
 	<div class="sprofile-album">
-		<a class="title" tag="album" imglistjson='{[imglistJson]}'>相册 ({[co]})</a>
+		<a class="title" tag="album" imglistjson='{[imglistJson]}'>相册({[co]})</a>
 		<ul>
 			{[#img3]}
 			<li>

@@ -32,7 +32,7 @@ class UserAccount extends ActiveRecord
 		return true;
 	}
 
-	public static function roseAmt($openId)
+	public static function roseAmt($openId, $num)
 	{
 		$userInfo = User::findOne(["uOpenId" => $openId]);
 		if (!$userInfo) {
@@ -42,7 +42,13 @@ class UserAccount extends ActiveRecord
 		if (!$entity) {
 			return 0;
 		}
-		return $entity->aAmt;
+		$amt = $entity->aAmt;
+		if ($amt < $num) {
+			return $amt;
+		}
+		$entity->aAmt = $amt - abs($num);
+		$entity->save();
+		return $amt;
 	}
 
 }

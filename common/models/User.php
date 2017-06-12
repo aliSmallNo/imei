@@ -312,39 +312,6 @@ class User extends ActiveRecord
 		return [];
 	}
 
-	public static function hint($openId, $uid, $f)
-	{
-		$uid = AppUtil::decrypt($uid);
-		if (!$uid || !$f) {
-			return 0;
-		}
-
-		$info = self::findOne(["uOpenId" => $openId]);
-		$hint = $info->uHint;
-		if ($hint) {
-			$hint = explode(",", $hint);
-		} else {
-			$hint = [];
-		}
-		switch ($f) {
-			case "yes":
-				if (!in_array($uid, $hint)) {
-					$hint[] = $uid;
-				} else {
-					return $uid;
-				}
-				break;
-			case "no":
-				$key = array_search($uid, $hint);
-				if ($key !== false)
-					array_splice($hint, $key, 1);
-				break;
-		}
-		$hint = implode(",", $hint);
-		$info->uHint = $hint;
-		$id = $info->save();
-		return $id;
-	}
 
 	public static function reg($data)
 	{
@@ -561,11 +528,11 @@ class User extends ActiveRecord
 
 	public static function getFilter($openId, $data, $page = 1, $pageSize = 10)
 	{
-
 		$myInfo = self::findOne(["uOpenId" => $openId]);
 		if (!$myInfo) {
 			return 0;
 		}
+		$mId = $myInfo->uId;
 		$hint = $myInfo->uHint;
 		$uFilter = $myInfo->uFilter;
 		$matchcondition = self::matchCondition($uFilter);
@@ -577,7 +544,7 @@ class User extends ActiveRecord
 
 		$uRole = User::ROLE_SINGLE;
 		$gender = ($gender == 10) ? 11 : 10;
-		$condition = "u.uRole=$uRole and u.uGender=$gender and POSITION('$prov' IN u.uLocation) >0 and POSITION('$city' IN u.uLocation) >0 ";
+		$condition = " u.uRole=$uRole and u.uGender=$gender and POSITION('$prov' IN u.uLocation) >0 and POSITION('$city' IN u.uLocation) >0 ";
 
 		if (!$data) {
 			$data = json_decode($uFilter, 1);
@@ -608,10 +575,16 @@ class User extends ActiveRecord
 		}
 
 		$limit = ($page - 1) * $pageSize . "," . $pageSize;
-		$sql = " select u.*,u2.uAvatar as mpavatar from im_user as u 
- 				left join im_user_net as n on u.uId=n.nSubUId
- 				left join im_user as u2 on u2.uId=n.nUId
- 				where $condition order by uUpdatedOn desc limit $limit";
+
+		$relation_mp = UserNet::REL_BACKER;
+		$relation_hint = UserNet::REL_HINT;
+		$delflag = UserNet::DELETE_FLAG_NO;
+
+		$sql = "select nh.nUId as hid,u2.uId as mId,u2.uAvatar as mpavatar,u2.uName as mpname,u.* from im_user as u 
+				left join im_user_net as n on u.uId=n.nSubUId and n.nRelation=$relation_mp and n.nDeletedFlag=$delflag
+				left join im_user as u2 on u2.uId=n.nUId 
+				left join im_user_net as nh on u.uId=nh.nSubUId and nh.nRelation=$relation_hint and nh.nDeletedFlag=$delflag and nh.nUId=$mId
+				where $condition order by uUpdatedOn desc limit $limit";
 		$ret = \Yii::$app->db->createCommand($sql)->queryAll();
 		$result = [];
 		foreach ($ret as $v) {
@@ -636,7 +609,7 @@ class User extends ActiveRecord
 				$location = "";
 			}
 			$data["location"] = $location;
-			$data["hintclass"] = (strpos($hint, $v["uId"]) !== false) ? "icon-loved" : "icon-love";
+			$data["hintclass"] = $v["hid"] ? "icon-loved" : "icon-love";
 			$result[] = $data;
 
 		}
