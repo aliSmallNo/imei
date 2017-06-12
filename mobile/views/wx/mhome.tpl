@@ -9,9 +9,9 @@
 	<p class="desc"></p>
 	<a href="javascript:;" class="follow">{{$followed}}</a>
 	<div class="countInfo">
-		<div><span>单身团</span><em>12</em></div>
-		<div><span>牵线成功</span><em>61</em></div>
-		<div><span>粉丝</span><em>405</em></div>
+		<div><span>单身团</span><em>{{$stat.single}}</em></div>
+		<div><span>牵线成功</span><em>{{$stat.link}}</em></div>
+		<div><span>粉丝</span><em>{{$stat.fans}}</em></div>
 	</div>
 </div>
 <div class="m-tab-wrap">
