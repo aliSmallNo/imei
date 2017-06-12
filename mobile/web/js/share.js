@@ -114,20 +114,17 @@ require(["layer"],
 			$("body").addClass("bg-color");
 			// FootUtil.init();
 			// SingleUtil.init();
-			// FastClick.attach($sls.footer.get(0));
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
-
 				resetMenuShare();
-
 				wx.hideMenuItems({
 					menuList: [
+						'menuItem:copyUrl',
 						'menuItem:openWithQQBrowser',
 						'menuItem:openWithSafari',
-						'menuItem:copyUrl',
 						'menuItem:share:qq',
 						'menuItem:share:weiboApp',
 						'menuItem:share:QZone',

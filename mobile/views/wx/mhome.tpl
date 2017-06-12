@@ -7,11 +7,11 @@
 	<h4><em>{{$uInfo.name}}</em> {{if $uInfo.vip}}<span class="vip big"></span>{{/if}}</h4>
 	<h5>{{$uInfo.intro}}</h5>
 	<p class="desc"></p>
-	<a href="javascript:;" class="follow">关注TA</a>
+	<a href="javascript:;" class="follow">{{$followed}}</a>
 	<div class="countInfo">
-		<div><span>单身团</span><em>12</em></div>
-		<div><span>牵线成功</span><em>61</em></div>
-		<div><span>粉丝</span><em>405</em></div>
+		<div><span>单身团</span><em>{{$stat.single}}</em></div>
+		<div><span>牵线成功</span><em>{{$stat.link}}</em></div>
+		<div><span>粉丝</span><em>{{$stat.fans}}</em></div>
 	</div>
 </div>
 <div class="m-tab-wrap">
@@ -62,4 +62,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/mhome.js?v=1.1.1" src="/assets/js/require.js"></script>
+<script data-main="/js/mhome.js?v=1.1.2" src="/assets/js/require.js"></script>

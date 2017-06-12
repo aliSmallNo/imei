@@ -8,13 +8,15 @@
 		</div>
 		<div class="video">
 			<video id="video" src="//zlpic.1meipo.com/h5/video/640%2A360.mp4" poster="/images/poster.jpg" controls="controls"></video>
-			<span id="play_btn" onclick="document.querySelector('#video').play();document.querySelector('#play_btn').style.display='none';" class="play"></span>
+			<span id="play_btn" onclick="clickPlay()" class="play"></span>
 		</div>
 		<div class="btns">
 			{{if $editable}}
 			<a href="javascript:;" class="btn-s-1 s1 btn-share">邀请单身朋友</a>
+			{{elseif !$hasReg}}
+			<a href="/wx/imei" class="btn-s-1 s0 btn-look">马上去注册微媒100</a>
 			{{else}}
-			<a href="javascript:;" class="btn-s-1 s0 btn-look">查看TA的单身团</a>
+			<a href="/wx/mh?id={{$encryptId}}" class="btn-s-1 s0 btn-look">查看TA的单身团</a>
 			{{/if}}
 		</div>
 		<div class="user">
@@ -46,5 +48,11 @@
 		{{/foreach}}
 	</div>
 </script>
+<script>
+	function clickPlay() {
+		document.querySelector('#video').play();
+		document.querySelector('#play_btn').style.display = 'none';
+	}
+</script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/share.js?v=1.2.8" src="/assets/js/require.js"></script>
+<script data-main="/js/share.js?v=1.2.9" src="/assets/js/require.js"></script>

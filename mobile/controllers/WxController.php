@@ -201,11 +201,12 @@ class WxController extends BaseController
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
 		}
-		$items = [];
+		$items = $stat = [];
 		$uInfo = User::user(['uId' => $hid]);
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$prefer = 'male';
+		$followed = '关注TA';
 		if ($wxInfo) {
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
@@ -215,19 +216,25 @@ class WxController extends BaseController
 			} else {
 				list($items) = UserNet::male($uInfo['id'], 1, 10);
 			}
+			$stat = UserNet::getStat($uInfo['id'], 1);
+			$followed = UserNet::hasFollowed($hid, $wxInfo['uId']) ? '取消关注' : '关注TA';
+
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
 		}
-		return self::renderPage("mhome.tpl", [
-			'nickname' => $nickname,
-			'avatar' => $avatar,
-			'uInfo' => $uInfo,
-			'prefer' => $prefer,
-			'hid' => $hid,
-			'singles' => $items,
-			'stat' => UserNet::getStat($uInfo['id'], true)
-		], 'terse');
+		return self::renderPage("mhome.tpl",
+			[
+				'nickname' => $nickname,
+				'avatar' => $avatar,
+				'uInfo' => $uInfo,
+				'prefer' => $prefer,
+				'hid' => $hid,
+				'singles' => $items,
+				'stat' => $stat,
+				'followed' => $followed
+			],
+			'terse');
 	}
 
 	public function actionSh()
@@ -252,14 +259,16 @@ class WxController extends BaseController
 			$nickname = "本地测试";
 		}
 
-		return self::renderPage("shome.tpl", [
-			'nickname' => $nickname,
-			'avatar' => $avatar,
-			'uInfo' => $uInfo,
-			'prefer' => $prefer,
-			'hid' => $hid,
-			'items' => json_encode($items)
-		], 'terse');
+		return self::renderPage("shome.tpl",
+			[
+				'nickname' => $nickname,
+				'avatar' => $avatar,
+				'uInfo' => $uInfo,
+				'prefer' => $prefer,
+				'hid' => $hid,
+				'items' => json_encode($items)
+			],
+			'terse');
 	}
 
 	public function actionSingle()
@@ -333,23 +342,28 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$hasReg = false;
 		if ($wxInfo) {
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
 			$uId = $wxInfo['uId'];
+			$hasReg = $wxInfo['uPhone'] ? true : false;
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "大测试";
 			$uId = 0;
 		}
-		$id = self::getParam('id');
-		if ($id) {
-			$matchInfo = User::findOne(['uId' => $id]);
+		$senderUId = self::getParam('id');
+		if ($senderUId) {
+			$matchInfo = User::findOne(['uId' => $senderUId]);
 			if (!$matchInfo) {
 				header("location:/wx/error?msg=链接地址错误");
 				exit();
 			}
-			UserNet::add($id, $uId, UserNet::REL_INVITE);
+		}
+		if ($senderUId && $uId) {
+			UserNet::add($senderUId, $uId, UserNet::REL_INVITE);
+			UserNet::add($senderUId, $uId, UserNet::REL_FOLLOW);
 		}
 		$defaultId = array_keys(self::$Celebs)[0];
 		$celebId = self::getParam('cid', $defaultId);
@@ -357,21 +371,29 @@ class WxController extends BaseController
 		if (isset(self::$Celebs[$celebId])) {
 			$celeb = self::$Celebs[$celebId];
 		}
-		$editable = $id ? 0 : 1;
+		$editable = $senderUId ? 0 : 1;
+		if ($uId == $senderUId) {
+			$editable = true;
+		}
 		$celebs = [];
 		if ($editable) {
 			$celebs = self::$Celebs;
 		}
-
+		$encryptId = '';
+		if ($uId) {
+			$encryptId = AppUtil::encrypt($uId);
+		}
 		return self::renderPage("share.tpl", [
 			'nickname' => $nickname,
 			'avatar' => $avatar,
 			'editable' => $editable,
 			'celeb' => $celeb,
 			'celebId' => $celebId,
-			'id' => $id,
+			'id' => $senderUId,
 			'uId' => $uId,
 			'celebs' => $celebs,
+			'hasReg' => $hasReg,
+			'encryptId' => $encryptId,
 			'wxUrl' => AppUtil::wechatUrl()
 		]);
 	}
@@ -381,8 +403,8 @@ class WxController extends BaseController
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		if ($wxInfo) {
-			$avatar = $wxInfo["headimgurl"];
-			$nickname = $wxInfo["nickname"];
+			$avatar = $wxInfo["Avatar"];
+			$nickname = $wxInfo["uName"];
 			$uId = $wxInfo['uId'];
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;

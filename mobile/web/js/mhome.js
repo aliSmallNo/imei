@@ -14,7 +14,9 @@ require(["layer"],
 			wxString: $("#tpl_wx_info").html(),
 			newIdx: 0,
 			newsTimer: 0,
-			loading: 0
+			loading: 0,
+			tabs: $('.m-tabs'),
+			tabsTop: 0
 		};
 
 		function eleInScreen($ele) {
@@ -27,6 +29,7 @@ require(["layer"],
 				UserUtil.reload();
 				return false;
 			}
+			resetTabs();
 		});
 
 		$('.btn').on(kClick, function () {
@@ -70,7 +73,28 @@ require(["layer"],
 			uid: $('#cUID').val(),
 			spinner: $('.m-tab-wrap .spinner'),
 			noMore: $('.m-tab-wrap .no-more'),
+			btnFollow: $('.follow'),
 			tag: 'male',
+			follow: function () {
+				var util = this;
+				$.post('/api/user',
+					{
+						tag: 'follow',
+						uid: util.uid
+					},
+					function (resp) {
+						if (resp.code == 0) {
+							showMsg(resp.msg);
+							util.btnFollow.html(resp.data.title);
+							if (resp.data.follow === 1) {
+								util.btnFollow.addClass('followed');
+							} else {
+								util.btnFollow.removeClass('followed');
+							}
+						}
+						util.loading = 0;
+					}, 'json');
+			},
 			reload: function () {
 				var util = this;
 				if (util.loading) {
@@ -117,6 +141,15 @@ require(["layer"],
 			});
 		}
 
+		function resetTabs() {
+			var sTop = $(window).scrollTop();
+			if (sTop >= $sls.tabsTop) {
+				$sls.tabs.addClass('fixed-on-top');
+			} else {
+				$sls.tabs.removeClass('fixed-on-top');
+			}
+		}
+
 		$(function () {
 			$("body").addClass("bg-color");
 			// SingleUtil.init();
@@ -128,6 +161,13 @@ require(["layer"],
 			wx.ready(function () {
 				wx.hideOptionMenu();
 			});
+			if ($sls.tabsTop < 1) {
+				$sls.tabsTop = $sls.tabs.offset().top;
+			}
+			resetTabs();
 
+			UserUtil.btnFollow.on(kClick, function () {
+				UserUtil.follow();
+			});
 		});
 	});

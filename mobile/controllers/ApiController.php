@@ -172,7 +172,7 @@ class ApiController extends Controller
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				$amt = rand(1, 6) * 10;
+				$amt = rand(1, 5) * 10;
 				$ret = UserSign::add($wxInfo['uId'], $amt);
 				if ($ret) {
 					$yuan = sprintf('%.1f', $amt / 100.0);
@@ -182,6 +182,25 @@ class ApiController extends Controller
 					return self::renderAPI(129, '您今日已经签到过啦~');
 				}
 				break;
+			case 'follow':
+				$uid = self::postParam('uid', 0);
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				if (UserNet::hasFollowed($uid, $wxInfo['uId'])) {
+					UserNet::del($uid, $wxInfo['uId'], UserNet::REL_FOLLOW);
+					return self::renderAPI(0, '您已经取消关注TA~', [
+						'title' => '关注TA',
+						'follow' => 0
+					]);
+				} else {
+					UserNet::add($uid, $wxInfo['uId'], UserNet::REL_FOLLOW);
+					return self::renderAPI(0, '您已经成功关注了TA~', [
+						'title' => '取消关注',
+						'follow' => 1
+					]);
+				}
 			case "mreg":
 			case "sreg":
 				$data = self::postParam('data');

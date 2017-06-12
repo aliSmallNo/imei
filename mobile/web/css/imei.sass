@@ -1180,6 +1180,13 @@ section
 	@include displayFlex
 	border-top: 1px solid $borderColorLight
 	border-bottom: 1px solid $borderColorLight
+	z-index: 9
+	&.fixed-on-top
+		position: fixed
+		top: 0
+		left: 0
+		right: 0
+
 	a
 		@include displayFlex-1
 		text-align: center
@@ -1193,7 +1200,7 @@ section
 			width: 1px
 			background: $borderColorLight
 		&:first-child:before
-			width: 0
+			display: none
 		span
 			display: inline-block
 			line-height: 4.2rem

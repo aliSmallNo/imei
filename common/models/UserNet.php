@@ -34,7 +34,7 @@ class UserNet extends ActiveRecord
 
 	public static function add($uid, $subUid, $relation)
 	{
-		if ($uid == $subUid) {
+		if (!$uid || !$subUid || $uid == $subUid) {
 			return false;
 		}
 		if ($relation == self::REL_INVITE) {
@@ -239,5 +239,11 @@ class UserNet extends ActiveRecord
 			];
 		}
 		return $items;
+	}
+
+	public static function hasFollowed($uid, $subUid)
+	{
+		$ret = self::findOne(['nUId' => $uid, 'nSubUId' => $subUid, 'nRelation' => self::REL_FOLLOW, 'nDeletedFlag' => 0]);
+		return $ret ? true : false;
 	}
 }
