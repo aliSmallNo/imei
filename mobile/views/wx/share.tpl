@@ -14,7 +14,7 @@
 			{{if $editable}}
 			<a href="javascript:;" class="btn-s-1 s1 btn-share">邀请单身朋友</a>
 			{{else}}
-			<a href="javascript:;" class="btn-s-1 s0 btn-look">查看TA的单身团</a>
+			<a href="/wx/mh?id=" class="btn-s-1 s0 btn-look">查看TA的单身团</a>
 			{{/if}}
 		</div>
 		<div class="user">
@@ -47,4 +47,4 @@
 	</div>
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/share.js?v=1.2.8" src="/assets/js/require.js"></script>
+<script data-main="/js/share.js?v=1.2.9" src="/assets/js/require.js"></script>
