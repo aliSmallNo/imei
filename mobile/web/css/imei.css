@@ -1109,7 +1109,13 @@ section {
   display: -ms-flexbox;
   display: flex;
   border-top: 1px solid #EEEFF3;
-  border-bottom: 1px solid #EEEFF3; }
+  border-bottom: 1px solid #EEEFF3;
+  z-index: 9; }
+  .m-tabs.fixed-on-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0; }
   .m-tabs a {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
@@ -1126,7 +1132,7 @@ section {
       width: 1px;
       background: #EEEFF3; }
     .m-tabs a:first-child:before {
-      width: 0; }
+      display: none; }
     .m-tabs a span {
       display: inline-block;
       line-height: 4.2rem;
