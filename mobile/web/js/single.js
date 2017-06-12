@@ -172,7 +172,7 @@ require(["layer"],
 				var html = Mustache.render(temp, {items: resp.data.imgList});
 				$("#album .photos").html('<li><a href="javascript:;" class="choose-img"></a></li>' + html);
 
-				$(".u-my-album .title").html("相册（" + resp.data.co + ")");
+				$(".u-my-album .title").html("相册(" + resp.data.co + ")");
 				$sls.smeFlag = 0;
 			}, "json");
 		}

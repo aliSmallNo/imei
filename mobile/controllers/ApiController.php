@@ -10,6 +10,7 @@ namespace mobile\controllers;
 
 
 use common\models\City;
+use common\models\Pay;
 use common\models\User;
 use common\models\UserAccount;
 use common\models\UserBuzz;
@@ -60,6 +61,39 @@ class ApiController extends Controller
 		} else {
 			echo $echostr;
 		}
+	}
+
+	public function actionWallet()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$id = self::postParam('id');
+		$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			return self::renderAPI(129, '用户不存在啊~');
+		}
+		switch ($tag) {
+			case 'records':
+				break;
+			case 'recharge':
+				$amt = self::postParam('amt'); // 单位人民币元
+				$num = intval($amt * 10.0);
+				$payId = Pay::prepay($wxInfo['uId'], $num, $amt);
+				$title = '微媒100-充值';
+				$subTitle = '充值' . $num . '媒桂花';
+				if (AppUtil::scene() == 'dev') {
+					return self::renderAPI(129, '请在服务器测试该功能~');
+				}
+				$ret = WechatUtil::jsPrepay($payId, $openId, intval($amt * 100), $title, $subTitle);
+				if ($ret) {
+					return self::renderAPI(0, '', [
+						'prepay' => $ret,
+						'amt' => $amt
+					]);
+				}
+				return self::renderAPI(129, '操作失败~');
+		}
+		return self::renderAPI(129);
 	}
 
 	public function actionConfig()

@@ -64,17 +64,7 @@
 			</div>
 			<a href="#album" class="u-my-album">
 				<div class="title">相册(0)</div>
-				<ul class="photos">
-					<li>
-						<img src="/images/testImg.jpeg" alt="">
-					</li>
-					<li>
-						<img src="/images/testImg.jpeg" alt="">
-					</li>
-					<li>
-						<img src="/images/testImg.jpeg" alt="">
-					</li>
-				</ul>
+				<ul class="photos"></ul>
 			</a>
 		</div>
 		<div class="banner line-bottom">
@@ -95,7 +85,7 @@
 			<a href="javascript:;" class="" to="focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
-			<a href="#saccount" class=""><span class="title">媒桂花</span></a>
+			<a href="/wx/sw?id={{$encryptId}}" class=""><span class="title">媒桂花</span></a>
 			<a href="/message?role=1" class="" id="notifications"><span class="title">通知</span> <span
 								class="count">2</span></a>
 			<a href="/feedback" class=""><span class="title">意见反馈</span> </a>

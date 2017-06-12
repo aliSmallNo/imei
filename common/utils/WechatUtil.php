@@ -283,4 +283,44 @@ class WechatUtil
 		$res = AppUtil::postJSON($url, $postData);
 		return $res;
 	}
+
+	public static function jsPrepay($payId, $openId, $amt, $title = '微媒100', $subTitle = '支付详情(略)')
+	{
+		$input = new \WxPayUnifiedOrder();
+		$input->SetBody($title);
+		$input->SetAttach($title);
+		$input->SetOut_trade_no($payId);
+		// Rain: 货币单位是分
+		$input->SetTotal_fee($amt);
+		$input->SetDetail($subTitle);
+		$input->SetGoods_tag('imei');
+		$input->SetNotify_url(AppUtil::notifyUrl());
+		$input->SetTime_start(date("YmdHis"));
+		$input->SetTime_expire(date("YmdHis", time() + 60 * 10));
+		$input->SetTrade_type('JSAPI');
+		$input->SetOpenid($openId);
+		$order = \WxPayApi::unifiedOrder($input);
+		$jsApiParameters = self::jsApiParameters($order);
+		if ($jsApiParameters) {
+			$jsApiParameters['timeStamp'] = strval($jsApiParameters['timeStamp']);
+			return $jsApiParameters;
+		}
+		return [];
+	}
+
+	private static function jsApiParameters($order)
+	{
+		if (!isset($order['appid']) || !isset($order['prepay_id']) || !$order['prepay_id']) {
+			return 0;
+		}
+		$jsapi = new \WxPayJsApiPay();
+		$jsapi->SetAppid($order["appid"]);
+		$jsapi->SetTimeStamp(time());
+		$jsapi->SetNonceStr(\WxPayApi::getNonceStr());
+		$jsapi->SetPackage("prepay_id=" . $order['prepay_id']);
+		$jsapi->SetSignType("MD5");
+		$jsapi->SetPaySign($jsapi->MakeSign());
+		return $jsapi->GetValues();
+	}
+
 }
