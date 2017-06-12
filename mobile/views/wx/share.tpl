@@ -14,7 +14,7 @@
 			{{if $editable}}
 			<a href="javascript:;" class="btn-s-1 s1 btn-share">邀请单身朋友</a>
 			{{else}}
-			<a href="/wx/mh?id=" class="btn-s-1 s0 btn-look">查看TA的单身团</a>
+			<a href="/wx/mh?id={{$encryptId}}" class="btn-s-1 s0 btn-look">查看TA的单身团</a>
 			{{/if}}
 		</div>
 		<div class="user">

@@ -119,11 +119,10 @@ require(["layer"],
 			wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
-
 				resetMenuShare();
-				//'menuItem:copyUrl',
 				wx.hideMenuItems({
 					menuList: [
+						'menuItem:copyUrl',
 						'menuItem:openWithQQBrowser',
 						'menuItem:openWithSafari',
 						'menuItem:share:qq',

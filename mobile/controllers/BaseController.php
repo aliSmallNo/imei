@@ -87,6 +87,10 @@ class BaseController extends Controller
 	{
 		$wxUserInfo = UserWechat::getInfoByOpenId($openId);
 		$newActionId = $anchor = '';
+		$safeActions = ['share'];
+		if (in_array($actionId, $safeActions)) {
+			return;
+		}
 		if (!$wxUserInfo || (isset($wxUserInfo["subscribe"]) && $wxUserInfo["subscribe"] != 1)) {
 			header("location:/qr.html");
 			exit;
