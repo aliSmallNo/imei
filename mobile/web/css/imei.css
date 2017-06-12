@@ -2891,7 +2891,9 @@ section {
         top: 0.2rem;
         right: -1.5rem; }
     .pay-mp .pmp-bot ol {
-      display: none; }
+      display: none;
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1); }
       .pay-mp .pmp-bot ol li {
         text-align: left;
         opacity: 0.8; }

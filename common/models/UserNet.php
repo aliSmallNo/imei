@@ -19,13 +19,18 @@ class UserNet extends ActiveRecord
 	const REL_BACKER = 120;
 	const REL_FOLLOW = 130;
 	const REL_LINK = 140;
+	const REL_HINT = 150;
 
 	static $RelDict = [
 		self::REL_INVITE => '邀请',
 		self::REL_BACKER => '媒婆',
 		self::REL_FOLLOW => '关注',
-		self::REL_LINK => '牵线'
+		self::REL_LINK => '牵线',
+		self::REL_HINT => '心动',
 	];
+
+	const DELETE_FLAG_YES = 1;
+	const DELETE_FLAG_NO = 0;
 
 	public static function tableName()
 	{
@@ -54,6 +59,24 @@ class UserNet extends ActiveRecord
 
 		return true;
 	}
+
+	public static function edit($uid, $subUid, $relation)
+	{
+		if (!$uid || !$subUid || $uid == $subUid) {
+			return false;
+		}
+		$entity = self::findOne(['nUId' => $uid, 'nSubUId' => $subUid, 'nRelation' => $relation, 'nDeletedFlag' => 0]);
+		if (!$entity) {
+			$entity = new self();
+		}
+		$entity->nUId = $uid;
+		$entity->nSubUId = $subUid;
+		$entity->nRelation = $relation;
+		$entity->save();
+
+		return true;
+	}
+
 
 	public static function del($uid, $subUid, $relation)
 	{
@@ -245,5 +268,36 @@ class UserNet extends ActiveRecord
 	{
 		$ret = self::findOne(['nUId' => $uid, 'nSubUId' => $subUid, 'nRelation' => self::REL_FOLLOW, 'nDeletedFlag' => 0]);
 		return $ret ? true : false;
+	}
+
+	// 心动/取消心动 $f=yes心动 $f=no取消心动
+	public static function hint($mId, $uid, $f)
+	{
+		$uid = AppUtil::decrypt($uid);
+		if (!$uid || !$f) {
+			return 0;
+		}
+
+		$info = self::findOne(["nUId" => $mId, "nSubUId" => $uid]);
+		if (!$info) {
+			$info = new self();
+		}
+		$date = date("Y-m-d H:i:s");
+		$info->nUId = $mId;
+		$info->nSubUId = $uid;
+		$info->nRelation = self::REL_HINT;
+		switch ($f) {
+			case "yes":
+				$info->nDeletedFlag = self::DELETE_FLAG_NO;
+				$info->nAddedOn = $date;
+				break;
+			case "no":
+				$info->nDeletedFlag = self::DELETE_FLAG_YES;
+				$info->nDeletedOn = $date;
+				break;
+		}
+
+		$id = $info->save();
+		return $id;
 	}
 }
