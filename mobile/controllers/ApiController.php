@@ -11,6 +11,7 @@ namespace mobile\controllers;
 
 use common\models\City;
 use common\models\User;
+use common\models\UserAccount;
 use common\models\UserBuzz;
 use common\models\UserNet;
 use common\models\UserSign;
@@ -252,8 +253,8 @@ class ApiController extends Controller
 				$ret = UserWechat::replace($openId, ["wWechatId" => $wname]);
 				return self::renderAPI(0, '', $ret);
 			case "payrose":
-				$num = self::postParam("num");
-				return self::renderAPI(0, '', 49);
+				$roseAmt = UserAccount::roseAmt($openId);
+				return self::renderAPI(0, '', $roseAmt);
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

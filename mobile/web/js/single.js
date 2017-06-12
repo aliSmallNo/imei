@@ -257,7 +257,6 @@ require(["layer"],
 					payroseF = 1;
 					$.post("/api/user", {
 						tag: "payrose",
-						num: num,
 					}, function (resp) {
 						if (resp.data >= num) {
 							$(".getWechat").show();
