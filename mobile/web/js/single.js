@@ -202,6 +202,11 @@ require(["layer"],
 			var tag = self.attr("tag");
 			switch (tag) {
 				case "album":
+					var imgList = JSON.parse(self.attr("imglistjson"));
+					wx.previewImage({
+						current: '', // 当前显示图片的http链接
+						urls: imgList // 需要预览的图片http链接列表
+					});
 					break;
 				case "baseInfo":
 					var data = JSON.parse(self.attr("data"));

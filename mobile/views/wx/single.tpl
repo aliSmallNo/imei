@@ -598,7 +598,7 @@
 		</div>
 	</div>
 	<div class="sprofile-album">
-		<a class="title" tag="album">相册 ({[co]})</a>
+		<a class="title" tag="album" imglistjson='{[imglistJson]}'>相册 ({[co]})</a>
 		<ul>
 			{[#img3]}
 			<li>

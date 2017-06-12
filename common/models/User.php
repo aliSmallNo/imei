@@ -457,6 +457,7 @@ class User extends ActiveRecord
 
 		$result = [
 			"imgList" => [],
+			"imglistJson" => "",
 			"img3" => [],
 			"co" => 0,
 		];
@@ -464,6 +465,7 @@ class User extends ActiveRecord
 		if ($uAlbum) {
 			$uAlbum = json_decode($uAlbum, 1);
 			$result["imgList"] = $uAlbum;
+			$result["imglistJson"] = json_encode($uAlbum);
 			$result["co"] = count($uAlbum);
 			if (count($uAlbum) <= 3) {
 				$result["img3"] = $uAlbum;
