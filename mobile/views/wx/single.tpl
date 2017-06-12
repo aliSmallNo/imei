@@ -475,10 +475,72 @@
 			<p>2、为了确保对方可以搜到您，请确保"微信-我-隐私"中"通过微信号搜到我"选项处于打开状态</p>
 			<p>3、填写虚假微信号，会被平台封禁处理</p>
 		</div>
+		<a href="javascript:;" class="btn" tag="btn-confirm">确认</a>
 	</div>
-	<a href="javascript:;" class="btn" tag="btn-confirm">确认</a>
 </div>
-
+<div class="pay-mp">
+	<p class="pmp-title">申请加微信</p>
+	<p class="pmp-title-des">若对方退回，媒瑰花退回</p>
+	<a class="close" tag="close"></a>
+	<ul class="options">
+		<li>
+			<a href="javascript:;" num="50" tag="choose">
+				<div class="img"><img src="/images/ico_rose.png"></div>
+				<div class="des">
+					<div class="t">x 50<span>朵</span></div>
+					<div class="b">有一点心动</div>
+				</div>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:;" num="100" tag="choose">
+				<div class="img"><img src="/images/ico_rose.png"></div>
+				<div class="des">
+					<div class="t">x 100<span>朵</span></div>
+					<div class="b">来电了</div>
+				</div>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:;" num="500" tag="choose">
+				<div class="img"><img src="/images/ico_rose.png"></div>
+				<div class="des">
+					<div class="t">x 500<span>朵</span></div>
+					<div class="b">喜欢你</div>
+				</div>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:;" num="1000" tag="choose">
+				<div class="img"><img src="/images/ico_rose.png"></div>
+				<div class="des">
+					<div class="t">x 1000<span>朵</span></div>
+					<div class="b">诚意满满</div>
+				</div>
+			</a>
+		</li>
+	</ul>
+	<div class="pmp-pay">
+		<a href="javascript:;" tag="pay">打赏媒婆</a>
+	</div>
+	<div class="pmp-bot">
+		<a tag="des">感谢对方媒婆推荐了了这么好的人</a>
+		<ol>
+			<li>对方拒绝了给微信号，媒瑰花全部返还</li>
+			<li>对方同意了给微信号，媒瑰花将打给对方媒婆</li>
+			<li>对方若无回应，7天后媒瑰花如数返还</li>
+		</ol>
+	</div>
+</div>
+<div class="not-enough-rose">
+	<p>您的媒瑰花余额：<span class="rose-num">30</span>朵</p>
+	<p>不够打赏？马上去充值</p>
+	<div class="btns">
+		<a href="javascript:;" tag="cancel">取消</a>
+		<a href="javascript:;" tag="recharge">去充值</a>
+	</div>
+	<p></p>
+</div>
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
@@ -583,7 +645,7 @@
 		<div class="sprofile-top-des">
 			<p><b>{[name]}<em class="icon-{[genderclass]}"></em></b></p>
 			<i>{[#age]}{[age]}岁{[/age]} {[#height]}{[height]}
-				cm{[/height]} {[#horos]}{[horos]}{[/horos]} {[#job]}{[job]}{[/job]}</i>
+				{[/height]} {[#horos]}{[horos]}{[/horos]} {[#job]}{[job]}{[/job]}</i>
 			<span>{[location]}</span>
 		</div>
 	</div>
