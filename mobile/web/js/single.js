@@ -39,6 +39,8 @@ require(["layer"],
 			smeFlag: 0,
 			slinkFlag: 0,
 			slinkpage: 1,
+
+			secretId: "",
 		};
 
 		var RechargeUtil = {
@@ -224,6 +226,7 @@ require(["layer"],
 					}
 					break;
 				case "wechat":
+					$sls.secretId = self.attr("id");
 					$sls.cork.show();
 					//$(".getWechat").show();
 					$(".pay-mp").show();
@@ -258,6 +261,7 @@ require(["layer"],
 					$.post("/api/user", {
 						tag: "payrose",
 						num: num,
+						id: $sls.secretId,
 					}, function (resp) {
 						if (resp.data >= num) {
 							$(".getWechat").show();
@@ -279,6 +283,7 @@ require(["layer"],
 					break;
 			}
 		});
+
 		$(document).on(kClick, ".not-enough-rose a", function () {
 			var tag = $(this).attr("tag");
 			$(".m-popup-shade").hide();
@@ -338,6 +343,7 @@ require(["layer"],
 					}
 					break;
 				case "apply":
+					$sls.secretId = self.attr("id");
 					$sls.cork.show();
 					//$(".getWechat").show();
 					$(".pay-mp").show();

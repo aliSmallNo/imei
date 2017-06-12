@@ -703,7 +703,7 @@
 	</div>
 	<div class="sprofile-bottom">
 		<a href="javascript:;" tag="love" id="{[scretId]}"><span class="icon-l {[hintclass]}"></span>心动</a>
-		<a href="javascript:;" tag="wechat">加微信聊聊</a>
+		<a href="javascript:;" tag="wechat" id="{[scretId]}">加微信聊聊</a>
 	</div>
 </script>
 <script type="text/html" id="personalInfoTemp">

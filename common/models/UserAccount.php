@@ -9,6 +9,7 @@
 namespace common\models;
 
 
+use common\utils\AppUtil;
 use yii\db\ActiveRecord;
 
 class UserAccount extends ActiveRecord
@@ -32,12 +33,15 @@ class UserAccount extends ActiveRecord
 		return true;
 	}
 
-	public static function roseAmt($openId, $num)
+
+	public static function roseAmt($openId, $id, $num)
 	{
+		$id = AppUtil::decrypt($id);
 		$userInfo = User::findOne(["uOpenId" => $openId]);
 		if (!$userInfo) {
 			return 0;
 		}
+		$myId = $userInfo->uId;
 		$entity = self::findOne(['aUId' => $userInfo->uId]);
 		if (!$entity) {
 			return 0;
@@ -48,6 +52,8 @@ class UserAccount extends ActiveRecord
 		}
 		$entity->aAmt = $amt - abs($num);
 		$entity->save();
+
+		UserNet::edit($myId, $id, UserNet::REL_LINK);
 		return $amt;
 	}
 

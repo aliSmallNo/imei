@@ -292,7 +292,8 @@ class ApiController extends Controller
 				return self::renderAPI(0, '', $ret);
 			case "payrose":
 				$num = self::postParam("num");
-				$roseAmt = UserAccount::roseAmt($openId, $num);
+				$id = self::postParam("id");
+				$roseAmt = UserAccount::roseAmt($openId, $id, $num);
 				//return self::renderAPI(0, '', $roseAmt);
 				return self::renderAPI(0, '', 150);
 

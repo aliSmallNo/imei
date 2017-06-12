@@ -60,6 +60,24 @@ class UserNet extends ActiveRecord
 		return true;
 	}
 
+	public static function edit($uid, $subUid, $relation)
+	{
+		if (!$uid || !$subUid || $uid == $subUid) {
+			return false;
+		}
+		$entity = self::findOne(['nUId' => $uid, 'nSubUId' => $subUid, 'nRelation' => $relation, 'nDeletedFlag' => 0]);
+		if (!$entity) {
+			$entity = new self();
+		}
+		$entity->nUId = $uid;
+		$entity->nSubUId = $subUid;
+		$entity->nRelation = $relation;
+		$entity->save();
+
+		return true;
+	}
+
+
 	public static function del($uid, $subUid, $relation)
 	{
 		if ($uid == $subUid) {
