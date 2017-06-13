@@ -16,8 +16,8 @@ use yii\db\ActiveRecord;
 class UserTrans extends ActiveRecord
 {
 
-	const CAT_RECHARGE = 100;
-	const CAT_SIGN = 105;
+	const CAT_RECHARGE = 100;//充值
+	const CAT_SIGN = 105;   //签到
 	const CAT_LINK = 110;
 
 	const UNIT_FEN = 'fen';
@@ -29,12 +29,6 @@ class UserTrans extends ActiveRecord
 		self::UNIT_GIFT => '媒桂花',
 	];
 
-<<<<<<< HEAD
-	const CAT_CHARGE = 100; //充值
-	const CAT_SIGN = 105;   //签到
-
-=======
->>>>>>> 86fc60a9068aefec1bb7193f99da40e69ff3cb8b
 	public static function tableName()
 	{
 		return '{{%user_trans}}';
