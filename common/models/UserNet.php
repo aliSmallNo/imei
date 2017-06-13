@@ -283,8 +283,8 @@ class UserNet extends ActiveRecord
 			$info = new self();
 		}
 		$date = date("Y-m-d H:i:s");
-		$info->nUId = $mId;
-		$info->nSubUId = $uid;
+		$info->nUId = $uid;
+		$info->nSubUId = $mId;
 		$info->nRelation = self::REL_HINT;
 		switch ($f) {
 			case "yes":

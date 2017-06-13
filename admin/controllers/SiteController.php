@@ -263,6 +263,7 @@ class SiteController extends BaseController
 		$criteria[] = " u.uStatus=:status";
 		$params [":status"] = $st;
 
+
 		if ($name) {
 			$name = str_replace("'", "", $name);
 			$criteria[] = " u.uName like :name ";
