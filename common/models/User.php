@@ -539,8 +539,8 @@ class User extends ActiveRecord
 
 		$gender = $myInfo->uGender;
 		$location = json_decode($myInfo->uLocation, 1);
-		$prov = (is_array($location) && $location) ? $location[0]["text"] : "";
-		$city = (is_array($location) && $location) ? $location[1]["text"] : "";
+		$prov = (is_array($location) && $location) ? mb_substr($location[0]["text"], 0, 2) : "";
+		$city = (is_array($location) && $location) ? mb_substr($location[1]["text"], 0, 2) : "";
 
 		$uRole = User::ROLE_SINGLE;
 		$gender = ($gender == 10) ? 11 : 10;

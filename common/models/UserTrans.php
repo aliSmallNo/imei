@@ -151,7 +151,8 @@ class UserTrans extends ActiveRecord
 		$order = $orders["default"];
 
 		$conn = AppUtil::db();
-		$sql = "select u.uId as uid,u.uName as uname,u.uAvatar as avatar,p.pAmt as amt ,t.tAmt as flower,tAddedOn as date,t.tTitle as cat
+		$sql = "select u.uId as uid,u.uName as uname,u.uAvatar as avatar,p.pAmt as amt ,
+				t.tAmt as flower,tAddedOn as date,t.tTitle as tcat,tUnit as unit,t.tCategory as cat
 				from im_user_trans as t 
 				join im_user as u on u.uId=t.tUId 
 				left join im_pay as p on p.pId=t.tPId
@@ -176,8 +177,10 @@ class UserTrans extends ActiveRecord
 		foreach ($result as &$v) {
 			foreach ($balances as $val) {
 				if ($val["uid"] == $v["uid"]) {
-					$v["amts"] = $val["amts"];          //个人总充值数
-					$v["remain"] = $val["remain"];    //余额
+					$v["recharge"] = $val["recharge"];          //个人总充值数
+					$v["remain"] = $val["remain"];              //余额
+					$v["gift"] = $val["gift"];                  //签到得花
+					$v["fen"] = $val["fen"];                    //签到得钱
 				}
 			}
 		}
@@ -195,11 +198,18 @@ class UserTrans extends ActiveRecord
 		$uid = implode(",", $uid);
 		$conn = AppUtil::db();
 
-		$cat_charge = self::CAT_RECHARGE;
-		$cat_sign = self::CAT_SIGN;
+		$cat_charge = self::CAT_RECHARGE;   //充值
+		$cat_sign = self::CAT_SIGN;         //签到
+		$unitFen = self::UNIT_FEN;
+		$unitGift = self::UNIT_GIFT;
 
-		$sql = "SELECT SUM(case when tCategory=$cat_charge OR tCategory=$cat_sign THEN tAmt ELSE -tAmt END ) as remain,
-					  SUM(case when tCategory=$cat_charge OR tCategory=$cat_sign THEN tAmt ELSE 0 END ) as amts,
+		$sql = "SELECT SUM(case WHEN tCategory=$cat_charge THEN tAmt 
+								WHEN tCategory=$cat_sign AND  tUnit='$unitGift' THEN tAmt  
+								WHEN tCategory=$cat_sign AND  tUnit='$unitFen' THEN 0  
+								ELSE -tAmt END ) as remain,
+					  SUM(case when tCategory=$cat_charge THEN tAmt ELSE 0 END ) as recharge,
+					  SUM(case when tCategory=$cat_sign and tUnit='$unitFen' THEN tAmt ELSE 0 END ) as fen,
+					  SUM(case when tCategory=$cat_sign and tUnit='$unitGift' THEN tAmt ELSE 0 END ) as gift,
 					  tUId as uid
 				from im_user_trans WHERE tUId>0 and tUId in ($uid) GROUP BY tUId";
 		$ret = $conn->createCommand($sql)->queryAll();
