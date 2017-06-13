@@ -583,7 +583,7 @@ class User extends ActiveRecord
 		$sql = "select nh.nUId as hid,u2.uId as mId,u2.uAvatar as mpavatar,u2.uName as mpname,u.* from im_user as u 
 				left join im_user_net as n on u.uId=n.nSubUId and n.nRelation=$relation_mp and n.nDeletedFlag=$delflag
 				left join im_user as u2 on u2.uId=n.nUId 
-				left join im_user_net as nh on u.uId=nh.nSubUId and nh.nRelation=$relation_hint and nh.nDeletedFlag=$delflag and nh.nUId=$mId
+				left join im_user_net as nh on u.uId=nh.nUId and nh.nRelation=$relation_hint and nh.nDeletedFlag=$delflag and nh.nSubUId=$mId
 				where $condition order by uUpdatedOn desc limit $limit";
 		$ret = \Yii::$app->db->createCommand($sql)->queryAll();
 		$result = [];
