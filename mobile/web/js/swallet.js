@@ -12,7 +12,7 @@ require(["layer"],
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
-			curFrag: "slink",
+			curFrag: "swallet",
 			cork: $(".app-cork"),
 			wxString: $("#tpl_wx_info").html(),
 			newIdx: 0,
@@ -145,8 +145,8 @@ require(["layer"],
 							var html = Mustache.render(util.tmp, resp.data);
 							util.list.html(html);
 							util.noMore.show();
-							util.spinner.hide();
 						}
+						util.spinner.hide();
 						util.loading = 0;
 					}, 'json');
 			}
@@ -166,13 +166,15 @@ require(["layer"],
 			var hashTag = location.hash;
 			hashTag = hashTag.replace("#!", "");
 			hashTag = hashTag.replace("#", "");
-			$sls.hashPage = hashTag;
 			switch (hashTag) {
 				case 'srecords':
 					WalletUtil.reload();
 					break;
 				default:
 					break;
+			}
+			if (!hashTag) {
+				hashTag = 'swallet';
 			}
 			$sls.curFrag = hashTag;
 			// FootUtil.reset();

@@ -159,28 +159,28 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
 		$hint = '';
 		$matcher = $stat = $singles = [];
 		$prefer = 'male';
-		if ($wxInfo) {
-			$avatar = $wxInfo["Avatar"];
-			$nickname = $wxInfo["uName"];
-			$hint = '你的昵称未通过审核，请重新编辑~';
-			$role = $wxInfo["uRole"];
-			if ($role == User::ROLE_SINGLE) {
-				header("location:/wx/mreg");
-				exit();
-			}
-			if ($wxInfo['uGender'] == User::GENDER_MALE) {
-				$prefer = 'female';
-			}
-			list($matcher) = User::topMatcher($wxInfo["uId"]);
-			$stat = UserNet::getStat($wxInfo['uId'], true);
-			list($singles) = UserNet::male($wxInfo['uId'], 1, 10);
-		} else {
-			$avatar = ImageUtil::DEFAULT_AVATAR;
-			$nickname = "本地测试";
+		$avatar = $wxInfo["Avatar"];
+		$nickname = $wxInfo["uName"];
+		$hint = '你的昵称未通过审核，请重新编辑~';
+		$role = $wxInfo["uRole"];
+		if ($role == User::ROLE_SINGLE) {
+			header("location:/wx/mreg");
+			exit();
 		}
+		if ($wxInfo['uGender'] == User::GENDER_MALE) {
+			$prefer = 'female';
+		}
+		list($matcher) = User::topMatcher($wxInfo["uId"]);
+		$stat = UserNet::getStat($wxInfo['uId'], true);
+		list($singles) = UserNet::male($wxInfo['uId'], 1, 10);
+
 		$news = UserNet::news();
 		return self::renderPage("match.tpl", [
 			'nickname' => $nickname,
@@ -190,7 +190,8 @@ class WxController extends BaseController
 			'matches' => $matcher,
 			'news' => $news,
 			'stat' => $stat,
-			'singles' => $singles
+			'singles' => $singles,
+			'wallet' => UserTrans::getStat($wxInfo['uId'], 1)
 		]);
 	}
 
@@ -356,27 +357,23 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		if ($wxInfo) {
-			$avatar = $wxInfo["Avatar"];
-			$nickname = $wxInfo["uName"];
-			$uId = $wxInfo['uId'];
-		} else {
-			$avatar = ImageUtil::DEFAULT_AVATAR;
-			$nickname = "本地测试";
-			$uId = 0;
-		}
+		$avatar = $wxInfo["Avatar"];
+		$nickname = $wxInfo["uName"];
+		$uId = $wxInfo['uId'];
 		$isSign = false;
-		$title = '签到送媒桂花';
+		$title = $wxInfo['uRole'] == User::ROLE_MATCHER ? '签到有奖励' : '签到送媒桂花';
 		if (UserSign::isSign($uId)) {
 			$title = UserSign::TIP_SIGNED;
 			$isSign = true;
 		}
-		return self::renderPage("sign.tpl", [
-			'nickname' => $nickname,
-			'avatar' => $avatar,
-			'title' => $title,
-			'isSign' => $isSign
-		], 'terse');
+		return self::renderPage("sign.tpl",
+			[
+				'nickname' => $nickname,
+				'avatar' => $avatar,
+				'title' => $title,
+				'isSign' => $isSign
+			],
+			'terse');
 	}
 
 	public function actionShare()

@@ -1695,10 +1695,10 @@ section
 			a
 				background: #fff
 				color: $mainColorLight
-				height: 4.4rem
-				line-height: 4.4rem
+				height: 4rem
+				line-height: 4rem
 				padding: 0 2.5rem
-				border-radius: 4.4rem
+				border-radius: 2rem
 				display: block
 				font-size: 1.4rem
 		.op-record
@@ -3402,3 +3402,36 @@ section
 				border: none
 				background: $linkColor
 
+.charges
+	padding: 1rem
+	li
+		@include displayFlex
+		padding: 1rem .5rem
+		border-bottom: 1px solid $borderColor
+		.title
+			@include displayFlex-w(18rem)
+			h5
+				color: $grayFontColor
+				font-size: 1.2rem
+				font-weight: $weightNormal
+		.content
+			@include displayFlex-1
+			text-align: right
+			em
+				position: relative
+				display: inline-block
+				line-height: 3rem
+				font-weight: $weightBold
+				font-size: 1.4rem
+				&.flower
+					padding-right: 2rem
+					&:after
+						position: absolute
+						content: ''
+						background: url(../images/ico_rose.png) no-repeat center center
+						background-size: 100% 100%
+						width: 1.6rem
+						height: 1.6rem
+						top: 50%
+						right: .2rem
+						margin-top: -.8rem

@@ -8,13 +8,9 @@ namespace console\controllers;
  * Date: 11/5/2017
  * Time: 2:11 PM
  */
-use common\models\Log;
 use common\models\User;
 use common\models\UserNet;
-use common\models\UserTrans;
-use common\models\UserWechat;
 use common\utils\AppUtil;
-use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
 use yii\console\Controller;
@@ -289,23 +285,6 @@ class FooController extends Controller
 	public function actionRain()
 	{
 
-//		$ret = UserNet::stat();
-//		var_dump($ret);
-		/*self::matchers(1);
-		self::matchers(2);
-		self::matchers(3);
-		self::matchers(4);*/
-		/*$wxInfo = UserWechat::getInfoByOpenId('oYDJew5EFMuyrJdwRrXkIZLU2c58');
-		print_r($wxInfo);*/
-		/*$newLog = [
-			"oCategory" => "wx-callback",
-			"oKey" => 'actionPaid',
-			"oAfter" => '',
-		];
-		Log::add($newLog);*/
 
-		$uIds = [1, 2, 3, 4, 5];
-		$uIds = [];
-		var_dump(implode(",", $uIds));
 	}
 }

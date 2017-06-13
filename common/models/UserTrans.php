@@ -16,7 +16,13 @@ use yii\db\ActiveRecord;
 class UserTrans extends ActiveRecord
 {
 	const UNIT_FEN = 'fen';
+	const UNIT_YUAN = 'yuan';
 	const UNIT_GIFT = 'flower';
+	private static $UnitDict = [
+		self::UNIT_FEN => '分',
+		self::UNIT_YUAN => '元',
+		self::UNIT_GIFT => '媒桂花',
+	];
 
 	const CAT_CHARGE = 100;
 	const CAT_SIGN = 105;
@@ -24,6 +30,19 @@ class UserTrans extends ActiveRecord
 	public static function tableName()
 	{
 		return '{{%user_trans}}';
+	}
+
+	public static function add($uid, $pid, $title, $amt, $unit)
+	{
+		$entity = new self();
+		$entity->tPId = $pid;
+		$entity->tUId = $uid;
+		$entity->tPId = $pid;
+		$entity->tTitle = $title;
+		$entity->tAmt = $amt;
+		$entity->tUnit = $unit;
+		$entity->save();
+		return $entity->tId;
 	}
 
 	public static function addByPID($pid)
@@ -64,7 +83,7 @@ class UserTrans extends ActiveRecord
 		}
 		$conn = AppUtil::db();
 		$sql = 'SELECT SUM(tAmt) as amt,tUnit as unit, tUId as uid
- 			from im_user_trans WHERE tUId>0 ' . $strCriteria . ' GROUP BY tUId';
+ 			from im_user_trans WHERE tUId>0 ' . $strCriteria . ' GROUP BY tUId,tUnit';
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
 		foreach ($ret as $row) {
@@ -72,11 +91,19 @@ class UserTrans extends ActiveRecord
 			if (!isset($items[$userId])) {
 				$items[$userId] = [
 					self::UNIT_FEN => 0,
+					self::UNIT_YUAN => 0,
 					self::UNIT_GIFT => 0,
 					'expire' => time() + 3600 * 8
 				];
 			}
-			$items[$userId][$row['unit']] = $row['amt'];
+			$unit = $row['unit'];
+			$amt = $row['amt'];
+			if ($unit == self::UNIT_FEN) {
+				$items[$userId][$unit] = $amt;
+				$items[$userId][self::UNIT_YUAN] = round($amt / 100.0, 2);
+			} else {
+				$items[$userId][$unit] = $amt;
+			}
 		}
 		foreach ($items as $key => $item) {
 			RedisUtil::setCache(json_encode($item), RedisUtil::KEY_USER_WALLET, $key);
@@ -88,6 +115,7 @@ class UserTrans extends ActiveRecord
 			if (!isset($ret['expire'])) {
 				$ret = [
 					self::UNIT_FEN => 0,
+					self::UNIT_YUAN => 0,
 					self::UNIT_GIFT => 0,
 					'expire' => time() + 3600 * 8
 				];
@@ -172,5 +200,34 @@ class UserTrans extends ActiveRecord
 		$ret = $conn->createCommand($sql)->queryAll();
 
 		return $ret;
+	}
+
+	public static function records($uid)
+	{
+		$conn = AppUtil::db();
+		$sql = 'SELECT * FROM im_user_trans WHERE tUId=:id ORDER BY tAddedOn DESC';
+		$ret = $conn->createCommand($sql)->bindValues([
+			':id' => $uid
+		])->queryAll();
+		$items = [];
+		foreach ($ret as $row) {
+			$unit = $row['tUnit'];
+			$item = [
+				'id' => $row['tId'],
+				'title' => $row['tTitle'],
+				'date' => $row['tAddedOn'],
+				'amt' => $row['tAmt'],
+				'unit' => $unit,
+				'unit_name' => isset(self::$UnitDict[$unit]) ? self::$UnitDict[$unit] : '',
+			];
+			if ($unit == self::UNIT_FEN) {
+				$item['amt'] = round($item['amt'] / 100.00, 2);
+				$unit = self::UNIT_YUAN;
+				$item['unit'] = $unit;
+				$item['unit_name'] = isset(self::$UnitDict[$unit]) ? self::$UnitDict[$unit] : '';
+			}
+			$items[] = $item;
+		}
+		return $items;
 	}
 }

@@ -173,7 +173,7 @@
 	<div class="account">
 		<div class="head">
 			<div class="title">
-				<span>余额</span><b>1100.00</b>
+				<span>余额</span><b>{{$wallet['yuan']}}</b>
 			</div>
 			<div class="action">
 				<a href="/hn/account/cashing">提现</a>

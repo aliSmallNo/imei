@@ -4,7 +4,7 @@
 		<div>
 			<span class="m-ico-rose">媒桂花</span>
 		</div>
-		<a href="#srecords">消费记录 ></a>
+		<a href="#srecords">账户记录 ></a>
 	</div>
 	<div>
 		<ul class="recharge">
@@ -33,14 +33,16 @@
 	{{$wxInfoString}}
 </script>
 <script type="text/template" id="tpl_record">
+	{[#items]}
 	<li>
 		<div class="title">
-			<em>新人奖励</em>
-			2017-06-01 12:33:06
+			<h4>{[title]}</h4>
+			<h5>{[date]}</h5>
 		</div>
-		<div class="m-ico-rose">20</div>
+		<div class="content"><em class="{[unit]}">{[amt]}</em></div>
 	</li>
+	{[/items]}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/swallet.js?v=1.1.3" src="/assets/js/require.js"></script>
+<script data-main="/js/swallet.js?v=1.1.4" src="/assets/js/require.js"></script>
