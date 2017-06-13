@@ -15,6 +15,12 @@ use yii\db\ActiveRecord;
 
 class UserTrans extends ActiveRecord
 {
+
+	const CAT_RECHARGE = 100;
+	const CAT_SIGN = 105;
+	const CAT_LINK = 110;
+
+
 	const UNIT_FEN = 'fen';
 	const UNIT_YUAN = 'yuan';
 	const UNIT_GIFT = 'flower';
@@ -29,12 +35,13 @@ class UserTrans extends ActiveRecord
 		return '{{%user_trans}}';
 	}
 
-	public static function add($uid, $pid, $title, $amt, $unit)
+	public static function add($uid, $pid, $cat, $title, $amt, $unit)
 	{
 		$entity = new self();
 		$entity->tPId = $pid;
 		$entity->tUId = $uid;
 		$entity->tPId = $pid;
+		$entity->tCategory = $cat;
 		$entity->tTitle = $title;
 		$entity->tAmt = $amt;
 		$entity->tUnit = $unit;
@@ -56,6 +63,7 @@ class UserTrans extends ActiveRecord
 		$entity->tPId = $pid;
 		$entity->tUId = $payInfo['pUId'];
 		$entity->tTitle = $payInfo['pTitle'];
+		$entity->tCategory = self::CAT_RECHARGE;
 		switch ($payInfo['pCategory']) {
 			case Pay::CAT_RECHARGE:
 				$entity->tAmt = $payInfo['pRId'];
@@ -133,7 +141,7 @@ class UserTrans extends ActiveRecord
 		return self::stat($uid);
 	}
 
-	public static function records($uid)
+	public static function records($uid, $role)
 	{
 		$conn = AppUtil::db();
 		$sql = 'SELECT * FROM im_user_trans WHERE tUId=:id ORDER BY tAddedOn DESC';
@@ -157,7 +165,11 @@ class UserTrans extends ActiveRecord
 				$item['unit'] = $unit;
 				$item['unit_name'] = isset(self::$UnitDict[$unit]) ? self::$UnitDict[$unit] : '';
 			}
-			$items[] = $item;
+			if ($role == User::ROLE_MATCHER && $item['unit'] == self::UNIT_YUAN) {
+				$items[] = $item;
+			} elseif ($role == User::ROLE_SINGLE && $item['unit'] == self::UNIT_GIFT) {
+				$items[] = $item;
+			}
 		}
 		return $items;
 	}
