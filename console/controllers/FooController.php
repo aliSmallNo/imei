@@ -10,7 +10,6 @@ namespace console\controllers;
  */
 use common\models\User;
 use common\models\UserNet;
-use common\models\UserTrans;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
@@ -286,22 +285,6 @@ class FooController extends Controller
 	public function actionRain()
 	{
 
-//		$ret = UserNet::stat();
-//		var_dump($ret);
-		/*self::matchers(1);
-		self::matchers(2);
-		self::matchers(3);
-		self::matchers(4);*/
-		/*$wxInfo = UserWechat::getInfoByOpenId('oYDJew5EFMuyrJdwRrXkIZLU2c58');
-		print_r($wxInfo);*/
-		/*$newLog = [
-			"oCategory" => "wx-callback",
-			"oKey" => 'actionPaid',
-			"oAfter" => '',
-		];
-		Log::add($newLog);*/
 
-		$ret = UserTrans::getStat(120001, 1);
-		var_dump($ret);
 	}
 }

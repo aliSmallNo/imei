@@ -30,6 +30,9 @@ class UserTrans extends ActiveRecord
 		self::UNIT_GIFT => '媒桂花',
 	];
 
+	const CAT_CHARGE = 100;
+	const CAT_SIGN = 105;
+
 	public static function tableName()
 	{
 		return '{{%user_trans}}';
@@ -139,6 +142,73 @@ class UserTrans extends ActiveRecord
 			return $ret;
 		}
 		return self::stat($uid);
+	}
+
+
+	public static function recharges($criteria, $params, $page, $pageSize = 20)
+	{
+		$limit = ($page - 1) * $pageSize . "," . $pageSize;
+		$criteria = implode("and", $criteria);
+		$orders = [
+			"default" => " tAddedOn desc ",
+		];
+		$order = $orders["default"];
+
+		$conn = AppUtil::db();
+		$sql = "select u.uId as uid,u.uName as uname,u.uAvatar as avatar,p.pAmt as amt ,t.tAmt as flower,tAddedOn as date,t.tTitle as cat
+				from im_user_trans as t 
+				join im_user as u on u.uId=t.tUId 
+				left join im_pay as p on p.pId=t.tPId
+				where $criteria 
+				order by $order 
+				limit $limit";
+		$result = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		$uIds = [];
+		foreach ($result as $v) {
+			$uIds[] = $v["uid"];
+		}
+		$uIds = array_values(array_unique($uIds));
+
+		$sql = "select count(1) as co
+				from im_user_trans as t 
+				join im_user as u on u.uId=t.tUId 
+				left join im_pay as p on p.pId=t.tPId where $criteria ";
+		$count = $conn->createCommand($sql)->bindValues($params)->queryOne();
+		$count = $count ? $count["co"] : 0;
+
+		$balances = self::getBalances($uIds);
+		foreach ($result as &$v) {
+			foreach ($balances as $val) {
+				if ($val["uid"] == $v["uid"]) {
+					$v["amts"] = $val["amts"];      //总充值数
+					$v["remain"] = $val["remain"];    //余额
+				}
+			}
+		}
+
+		return [$result, $count];
+
+	}
+
+	public static function getBalances($uid)
+	{
+		if (!$uid) {
+			return [];
+		}
+		$uid = implode(",", $uid);
+		$conn = AppUtil::db();
+
+		$cat_charge = self::CAT_CHARGE;
+		$cat_sign = self::CAT_SIGN;
+
+		//tAmt
+		$sql = "SELECT SUM(case when tCategory=$cat_charge OR tCategory=$cat_sign THEN tAmt ELSE -tAmt END ) as remain,
+					  SUM(case when tCategory=$cat_charge OR tCategory=$cat_sign THEN tAmt ELSE 0 END ) as amts,
+					  tUId as uid
+				from im_user_trans WHERE tUId>0 and tUId in ($uid) GROUP BY tUId";
+		$ret = $conn->createCommand($sql)->queryAll();
+
+		return $ret;
 	}
 
 	public static function records($uid, $role)
