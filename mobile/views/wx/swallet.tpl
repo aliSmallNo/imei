@@ -4,7 +4,7 @@
 		<div>
 			<span class="m-ico-rose">媒桂花</span>
 		</div>
-		<a href="#srecords">消费记录 ></a>
+		<a href="#srecords">账户记录 ></a>
 	</div>
 	<div>
 		<ul class="recharge">
