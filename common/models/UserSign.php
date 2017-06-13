@@ -60,7 +60,7 @@ class UserSign extends ActiveRecord
 				$entity->save();
 				$ret[] = round($amt / 100.0, 2);
 				$ret[] = '元';
-				UserTrans::add($uid, 0, '签到奖励', $amt, UserTrans::UNIT_FEN);
+				UserTrans::add($uid, $entity->sId, UserTrans::CAT_SIGN, '签到奖励', $amt, UserTrans::UNIT_FEN);
 				break;
 			default:
 				$amt = rand(5, 35);
@@ -72,7 +72,7 @@ class UserSign extends ActiveRecord
 				$entity->save();
 				$ret[] = $amt;
 				$ret[] = '媒桂花';
-				UserTrans::add($uid, 0, '签到奖励', $amt, UserTrans::UNIT_GIFT);
+				UserTrans::add($uid, $entity->sId, UserTrans::CAT_SIGN, '签到奖励', $amt, UserTrans::UNIT_GIFT);
 				break;
 		}
 		return $ret;

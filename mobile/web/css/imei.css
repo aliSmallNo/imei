@@ -381,7 +381,7 @@ section {
   color: #f80; }
 
 .money-color {
-  color: #f50; }
+  color: #f60; }
 
 .tip-block {
   color: #f80;
@@ -390,7 +390,7 @@ section {
   .tip-block .message {
     font-size: 1.3rem;
     padding: 1rem;
-    color: #f50; }
+    color: #f60; }
 
 .spinner {
   height: 5rem;
@@ -463,7 +463,7 @@ section {
 .layui-m-layercont {
   padding: 1.5rem 1.2rem; }
   .layui-m-layercont b {
-    color: #f50;
+    color: #f60;
     font-size: 1.5rem;
     font-weight: 400; }
 
@@ -1649,7 +1649,7 @@ section {
     color: #999; }
 
 .account .head {
-  background: #fbd6e3;
+  background: #f491b2;
   padding: 5rem 1.5rem 1.5rem;
   overflow: hidden;
   color: #fff;
@@ -1670,13 +1670,14 @@ section {
       height: 4.4rem;
       line-height: 4.4rem;
       display: inline-block;
-      color: #f06292; }
+      color: #fdd835; }
       .account .head .title b:before {
         content: "￥";
         font-size: 1rem;
-        color: #f50;
-        color: #f06292;
-        font-size: 1.4rem; }
+        color: #f60;
+        color: #fdd835;
+        font-size: 1.5rem;
+        font-weight: 300; }
     .account .head .title span {
       font-size: 1.4rem;
       font-weight: 300;
@@ -1702,12 +1703,12 @@ section {
     position: absolute;
     display: inline-block;
     width: 8rem;
-    line-height: 3rem;
+    line-height: 3.5rem;
     font-size: 1.2rem;
-    top: 0.5rem;
-    right: 1rem;
+    top: 0;
+    right: 0;
     text-align: center;
-    color: #f491b2; }
+    color: #fff; }
 
 .newbie .empty {
   background: url(../images/ico_no_user.png) no-repeat top center;
@@ -1721,7 +1722,7 @@ section {
   background: url(../images/ico_no_msg.png) no-repeat top center;
   background-size: 8rem 8rem; }
 
-.incomes .empty {
+.incomes-wrap .empty {
   background: url(../images/ico_no_cash.png) no-repeat top center;
   background-size: 8rem 8rem; }
 

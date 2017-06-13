@@ -76,11 +76,17 @@ class ApiController extends Controller
 		}
 		switch ($tag) {
 			case 'records':
-				$ret = UserTrans::records($wxInfo['uId']);
+				$ret = UserTrans::records($wxInfo['uId'], $wxInfo['uRole']);
 				return self::renderAPI(0, '', [
 					'items' => $ret,
 					'wallet' => UserTrans::getStat($wxInfo['uId'], 1)
 				]);
+			case 'withdraw':
+				$wallet = UserTrans::getStat($wxInfo['uId'], 1);
+				if ($wallet['yuan'] < 50) {
+					return self::renderAPI(129, '余额不足50元，暂时不能提现~');
+				}
+				return self::renderAPI(0, '暂时不能提现~');
 			case 'recharge':
 				$amt = self::postParam('amt'); // 单位人民币元
 				$num = intval($amt * 10.0);

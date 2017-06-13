@@ -169,22 +169,26 @@
 		</div>
 	</div>
 </section>
-<section id="saccount">
+<section id="saccount" data-title="我的账户">
 	<div class="account">
 		<div class="head">
 			<div class="title">
-				<span>余额</span><b>{{$wallet['yuan']}}</b>
+				<span>余额</span><b class="wallet-amt">{{$wallet['yuan']}}</b>
 			</div>
 			<div class="action">
-				<a href="/hn/account/cashing">提现</a>
+				<a href="javascript:;" class="btn-withdraw">提现</a>
 			</div>
-			<a href="/hn/account/cashed" class="op-record">提现记录></a>
+			<a href="#srecords" class="op-record" style="display: none">账户记录 ></a>
 		</div>
 	</div>
-	<div class="incomes">
-		<div class="empty middle">
+	<div class="incomes-wrap">
+		<ul class="charges"></ul>
+		<div class="spinner" style="display: none"></div>
+		<div class="no-more" style="display: none;">没有更多了~</div>
+		<div class="empty middle" style="display: none">
 			<p class="title">暂无收益</p>
-			<p class="tip">您还木有收到过单身的打赏呦，<br>快去分享个人页招募更多的单身团成员吧 :)</p></div>
+			<p class="tip">您还木有收到过单身的打赏呦，<br>快去分享个人页招募更多的单身团成员吧~</p>
+		</div>
 	</div>
 </section>
 <section id="sqrcode">
@@ -249,10 +253,20 @@
 	</li>
 	{[/items]}
 </script>
+<script type="text/template" id="tpl_record">
+	{[#items]}
+	<li>
+		<div class="title">
+			<h4>{[title]}</h4>
+			<h5>{[date]}</h5>
+		</div>
+		<div class="content"><em class="{[unit]}">{[amt]}</em></div>
+	</li>
+	{[/items]}
+</script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script data-main="/js/match.js?v=1.1.5" src="/assets/js/require.js"></script>

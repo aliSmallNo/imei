@@ -14,7 +14,7 @@ $weightBold: 500
 $weightNormal: 300
 $yellowColor: #fdd835
 $tipColor: #f80
-$moneyColor: #f50
+$moneyColor: #f60
 $moneyColorLight: lighten($moneyColor, 5%)
 $moneyColorDark: darken($moneyColor, 10%)
 $redColor: #E53935
@@ -1662,7 +1662,7 @@ section
 
 .account
 	.head
-		background: $mainColorLighter
+		background: $mainColorLight
 		padding: 5rem 1.5rem 1.5rem
 		overflow: hidden
 		color: #fff
@@ -1678,11 +1678,12 @@ section
 				height: 4.4rem
 				line-height: 4.4rem
 				display: inline-block
-				color: $mainColor
+				color: $yellowColor
 				&:before
 					@include prefixYuan
-					color: $mainColor
-					font-size: 1.4rem
+					color: $yellowColor
+					font-size: 1.5rem
+					font-weight: $weightNormal
 			span
 				font-size: 1.4rem
 				font-weight: $weightNormal
@@ -1705,13 +1706,12 @@ section
 			position: absolute
 			display: inline-block
 			width: 8rem
-			line-height: 3rem
+			line-height: 3.5rem
 			font-size: 1.2rem
-			top: .5rem
-			right: 1rem
+			top: 0
+			right: 0
 			text-align: center
-			color: $mainColorLight
-
+			color: #fff
 .newbie
 	.empty
 		background: url(../images/ico_no_user.png) no-repeat top center
@@ -1727,7 +1727,7 @@ section
 		background: url(../images/ico_no_msg.png) no-repeat top center
 		background-size: 8rem 8rem
 
-.incomes
+.incomes-wrap
 	.empty
 		background: url(../images/ico_no_cash.png) no-repeat top center
 		background-size: 8rem 8rem

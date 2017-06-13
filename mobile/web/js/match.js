@@ -204,6 +204,73 @@ require(["layer"],
 			}
 		};
 
+
+		var WalletUtil = {
+			loading: 0,
+			list: $('.charges'),
+			tmp: $('#tpl_record').html(),
+			spinner: $('.incomes-wrap .spinner'),
+			noMore: $('.incomes-wrap .no-more'),
+			empty: $('.incomes-wrap .empty'),
+			amt: $('.wallet-amt'),
+			drawing: 0,
+			init: function () {
+				$('.btn-withdraw').on(kClick, function () {
+					var util = this;
+					if (util.drawing) {
+						return false;
+					}
+					util.drawing = 1;
+					$.post('/api/wallet',
+						{
+							tag: 'withdraw'
+						},
+						function (resp) {
+							if (resp.code == 0) {
+
+							}
+							layer.open({
+								content: resp.msg,
+								btn: '我知道了'
+							});
+							util.drawing = 0;
+						}, 'json');
+				});
+			},
+			reload: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				if (util.page === 1) {
+					util.list.html('');
+				}
+				util.loading = 1;
+				util.spinner.show();
+				util.empty.hide();
+				util.noMore.hide();
+				$.post('/api/wallet',
+					{
+						tag: 'records',
+						page: util.page
+					},
+					function (resp) {
+						if (resp.code == 0) {
+							var html = Mustache.render(util.tmp, resp.data);
+							util.list.html(html);
+							util.noMore.show();
+							util.amt.html(resp.data.wallet.yuan);
+						}
+						if (util.list.find('li').length < 1) {
+							util.noMore.hide();
+							util.empty.show();
+						}
+						util.spinner.hide();
+						util.loading = 0;
+					}, 'json');
+			}
+		};
+
 		function locationHashChanged() {
 			var hashTag = location.hash;
 			hashTag = hashTag.replace("#!", "");
@@ -215,6 +282,10 @@ require(["layer"],
 				case 'sme':
 				case 'snews':
 					FootUtil.toggle(1);
+					break;
+				case 'saccount':
+					WalletUtil.reload();
+					FootUtil.toggle(0);
 					break;
 				default:
 					FootUtil.toggle(0);
@@ -246,6 +317,7 @@ require(["layer"],
 			$("body").addClass("bg-color");
 			FootUtil.init();
 			SingleUtil.init();
+			WalletUtil.init();
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;

@@ -84,7 +84,7 @@ class WxController extends BaseController
 			}
 			$uInfo = User::user(['uId' => $wxInfo['uId']]);
 			if ($uInfo) {
-				$hasGender = $uInfo['gender'] ? true : false;
+				$hasGender = $uInfo['gender'] > 9 ? true : false;
 			}
 		}
 		$routes = ['photo', 'gender', 'location', 'year', 'horos', 'height', 'weight', 'income', 'edu', 'intro', 'scope',
