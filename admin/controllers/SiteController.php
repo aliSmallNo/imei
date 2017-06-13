@@ -6,6 +6,7 @@ use admin\models\Admin;
 use admin\models\Menu;
 use common\models\City;
 use common\models\User;
+use common\models\UserTrans;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
 use console\utils\QueueUtil;
@@ -250,6 +251,41 @@ class SiteController extends BaseController
 				'detailcategory' => 'site/account',
 				'category' => 'users',
 			]);
+	}
+
+	public function actionRecharges()
+	{
+		$getInfo = Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$name = self::getParam("name");
+		$orders = self::getParam("orders");
+		$st = User::STATUS_ACTIVE;
+		$criteria[] = " u.uStatus=:status";
+		$params [":status"] = $st;
+
+		if ($name) {
+			$name = str_replace("'", "", $name);
+			$criteria[] = " uName like :name ";
+			$params[":name"] = $name;
+		}
+
+		if ($orders) {
+
+		}
+
+		list($items, $count) = UserTrans::recharges($criteria, $params, $page);
+
+		//print_r($items);exit;
+
+		$pagination = $pagination = self::pagination($page, $count);
+		return $this->renderPage("recharge.tpl",
+			[
+				'getInfo' => $getInfo,
+				'items' => $items,
+				'pagination' => $pagination,
+				"paid" => 0,//充值合计
+			]
+		);
 	}
 
 }

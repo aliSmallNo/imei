@@ -11,8 +11,10 @@ namespace console\controllers;
 use common\models\Log;
 use common\models\User;
 use common\models\UserNet;
+use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
+use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
 use yii\console\Controller;
@@ -301,5 +303,9 @@ class FooController extends Controller
 			"oAfter" => '',
 		];
 		Log::add($newLog);*/
+
+		$uIds = [1, 2, 3, 4, 5];
+		$uIds = [];
+		var_dump(implode(",", $uIds));
 	}
 }
