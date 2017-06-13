@@ -51,7 +51,7 @@
 			{{/foreach}}
 		</div>
 		<div class="spinner" style="display: none"></div>
-		<div class="no-more" style="display: none;">没有更多了~</div>
+		<div class="no-more" {{if count($singles)>0}}style="display: none;"{{/if}}>没有更多了~</div>
 	</div>
 </section>
 <section id="snews">
