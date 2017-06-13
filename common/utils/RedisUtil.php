@@ -33,6 +33,7 @@ class RedisUtil
 	const KEY_CITY_IP = 'city_ip';
 	const KEY_USER_STAT = 'user_stat';
 	const KEY_USER_WALLET = 'user_wallet';
+	const KEY_USER_RECORDS = 'user_records';
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
@@ -49,6 +50,9 @@ class RedisUtil
 		self::KEY_SMS_CODE_CNT => 86400,
 		self::KEY_DISTANCE => 86400 * 20,
 		self::KEY_CITY_IP => 86400 * 2,
+		self::KEY_USER_STAT => 86400,
+		self::KEY_USER_WALLET => 3600 * 8,
+		self::KEY_USER_RECORDS => 3600 * 8,
 	];
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';
@@ -83,6 +87,7 @@ class RedisUtil
 				return $ret;
 			case self::KEY_USER_STAT:
 			case self::KEY_USER_WALLET:
+			case self::KEY_USER_RECORDS:
 				array_shift($keys);
 				$redisKey = implode(self::$Glue, $keys);
 				return $redis->hget(self::FIXED_PREFIX . self::$Glue . $mainKey, $redisKey);
@@ -102,6 +107,7 @@ class RedisUtil
 		switch ($mainKey) {
 			case self::KEY_USER_STAT:
 			case self::KEY_USER_WALLET:
+			case self::KEY_USER_RECORDS:
 				array_shift($keys);
 				$redisKey = implode(self::$Glue, $keys);
 				$redis->hset(self::FIXED_PREFIX . self::$Glue . $mainKey, $redisKey, $val);
@@ -121,7 +127,6 @@ class RedisUtil
 		$redisKey = self::getPrefix(...$keys);
 		$redis->del($redisKey);
 	}
-
 
 	public static function getPrefix(...$keys)
 	{

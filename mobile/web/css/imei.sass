@@ -3402,3 +3402,33 @@ section
 				border: none
 				background: $linkColor
 
+.charges
+	padding: 1rem
+	li
+		@include displayFlex
+		padding: 1rem .5rem
+		border-bottom: 1px solid $borderColor
+		.title
+			@include displayFlex-w(18rem)
+			h5
+				color: $grayFontColorLight
+				font-size: 1rem
+		.content
+			@include displayFlex-1
+			text-align: right
+			em
+				position: relative
+				display: inline-block
+				line-height: 3rem
+				&.flower
+					padding-right: 2rem
+					&:after
+						position: absolute
+						content: ''
+						background: url(../images/ico_rose.png) no-repeat center center
+						background-size: 100% 100%
+						width: 1.6rem
+						height: 1.6rem
+						top: 50%
+						right: .2rem
+						margin-top: -.8rem

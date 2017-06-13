@@ -17,6 +17,7 @@ use common\models\UserAccount;
 use common\models\UserBuzz;
 use common\models\UserNet;
 use common\models\UserSign;
+use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
@@ -76,7 +77,11 @@ class ApiController extends Controller
 		}
 		switch ($tag) {
 			case 'records':
-				break;
+				$ret = UserTrans::records($wxInfo['uId']);
+				return self::renderAPI(0, '', [
+					'items' => $ret,
+					'wallet' => UserTrans::getStat($wxInfo['uId'], 1)
+				]);
 			case 'recharge':
 				$amt = self::postParam('amt'); // 单位人民币元
 				$num = intval($amt * 10.0);

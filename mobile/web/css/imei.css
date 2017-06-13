@@ -3511,4 +3511,44 @@ section {
         border: none;
         background: #007aff; }
 
+.charges {
+  padding: 1rem; }
+  .charges li {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid #E4E4E4; }
+    .charges li .title {
+      -webkit-box-flex: 0 0 18rem;
+      -webkit-flex: 0 0 18rem;
+      -ms-flex: 0 0 18rem;
+      flex: 0 0 18rem; }
+      .charges li .title h5 {
+        color: #999;
+        font-size: 1rem; }
+    .charges li .content {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      text-align: right; }
+      .charges li .content em {
+        position: relative;
+        display: inline-block;
+        line-height: 3rem; }
+        .charges li .content em.flower {
+          padding-right: 2rem; }
+          .charges li .content em.flower:after {
+            position: absolute;
+            content: "";
+            background: url(../images/ico_rose.png) no-repeat center center;
+            background-size: 100% 100%;
+            width: 1.6rem;
+            height: 1.6rem;
+            top: 50%;
+            right: 0.2rem;
+            margin-top: -0.8rem; }
+
 /*# sourceMappingURL=imei.css.map */

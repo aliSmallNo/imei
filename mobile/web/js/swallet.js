@@ -145,8 +145,8 @@ require(["layer"],
 							var html = Mustache.render(util.tmp, resp.data);
 							util.list.html(html);
 							util.noMore.show();
-							util.spinner.hide();
 						}
+						util.spinner.hide();
 						util.loading = 0;
 					}, 'json');
 			}

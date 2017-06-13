@@ -16,7 +16,13 @@ use yii\db\ActiveRecord;
 class UserTrans extends ActiveRecord
 {
 	const UNIT_FEN = 'fen';
+	const UNIT_YUAN = 'yuan';
 	const UNIT_GIFT = 'flower';
+	private static $UnitDict = [
+		self::UNIT_FEN => '分',
+		self::UNIT_YUAN => '元',
+		self::UNIT_GIFT => '媒桂花',
+	];
 
 	public static function tableName()
 	{
@@ -103,5 +109,34 @@ class UserTrans extends ActiveRecord
 			return $ret;
 		}
 		return self::stat($uid);
+	}
+
+	public static function records($uid)
+	{
+		$conn = AppUtil::db();
+		$sql = 'SELECT * FROM im_user_trans WHERE tUId=:id ORDER BY tAddedOn DESC';
+		$ret = $conn->createCommand($sql)->bindValues([
+			':id' => $uid
+		])->queryAll();
+		$items = [];
+		foreach ($ret as $row) {
+			$unit = $row['tUnit'];
+			$item = [
+				'id' => $row['tId'],
+				'title' => $row['tTitle'],
+				'date' => $row['tAddedOn'],
+				'amt' => $row['tAmt'],
+				'unit' => $unit,
+				'unit_name' => isset(self::$UnitDict[$unit]) ? self::$UnitDict[$unit] : '',
+			];
+			if ($unit == self::UNIT_FEN) {
+				$item['amt'] = round($item['amt'] / 100.00, 2);
+				$unit = self::UNIT_YUAN;
+				$item['unit'] = $unit;
+				$item['unit_name'] = isset(self::$UnitDict[$unit]) ? self::$UnitDict[$unit] : '';
+			}
+			$items[] = $item;
+		}
+		return $items;
 	}
 }
