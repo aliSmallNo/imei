@@ -203,13 +203,13 @@ class UserTrans extends ActiveRecord
 		$unitFen = self::UNIT_FEN;
 		$unitGift = self::UNIT_GIFT;
 
-		$sql = "SELECT SUM(case WHEN tCategory=$cat_charge THEN tAmt 
+		$sql = "SELECT SUM(CASE WHEN tCategory=$cat_charge THEN tAmt 
 								WHEN tCategory=$cat_sign AND  tUnit='$unitGift' THEN tAmt  
 								WHEN tCategory=$cat_sign AND  tUnit='$unitFen' THEN 0  
 								ELSE -tAmt END ) as remain,
-					  SUM(case when tCategory=$cat_charge THEN tAmt ELSE 0 END ) as recharge,
-					  SUM(case when tCategory=$cat_sign and tUnit='$unitFen' THEN tAmt ELSE 0 END ) as fen,
-					  SUM(case when tCategory=$cat_sign and tUnit='$unitGift' THEN tAmt ELSE 0 END ) as gift,
+					  SUM(CASE WHEN tCategory=$cat_charge THEN tAmt ELSE 0 END ) as recharge,
+					  SUM(CASE WHEN tCategory=$cat_sign and tUnit='$unitFen' THEN tAmt ELSE 0 END ) as fen,
+					  SUM(CASE WHEN tCategory=$cat_sign and tUnit='$unitGift' THEN tAmt ELSE 0 END ) as gift,
 					  tUId as uid
 				from im_user_trans WHERE tUId>0 and tUId in ($uid) GROUP BY tUId";
 		$ret = $conn->createCommand($sql)->queryAll();
