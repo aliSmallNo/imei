@@ -278,13 +278,14 @@ class UserNet extends ActiveRecord
 			return 0;
 		}
 
-		$info = self::findOne(["nUId" => $mId, "nSubUId" => $uid]);
+		$info = self::findOne(["nUId" => $uid, "nSubUId" => $mId]);
 		if (!$info) {
 			$info = new self();
 		}
 		$date = date("Y-m-d H:i:s");
-		$info->nUId = $mId;
-		$info->nSubUId = $uid;
+		$info->nUId = $uid;
+		$info->nSubUId = $mId;
+
 		$info->nRelation = self::REL_FAVOR;
 		switch ($f) {
 			case "yes":

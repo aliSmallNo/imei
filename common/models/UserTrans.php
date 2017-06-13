@@ -156,7 +156,7 @@ class UserTrans extends ActiveRecord
 				from im_user_trans as t 
 				join im_user as u on u.uId=t.tUId 
 				left join im_pay as p on p.pId=t.tPId
-				where $criteria 
+				where t.tCategory in (100,105) and $criteria 
 				order by $order 
 				limit $limit";
 		$result = $conn->createCommand($sql)->bindValues($params)->queryAll();
