@@ -294,8 +294,7 @@ class WxController extends BaseController
 			['num' => 60, 'price' => 6],
 			['num' => 80, 'price' => 8],
 			['num' => 180, 'price' => 18],
-			['num' => 680, 'price' => 68],
-			['num' => 1980, 'price' => 198],
+			['num' => 680, 'price' => 68]
 		];
 		return self::renderPage("swallet.tpl",
 			[
@@ -305,7 +304,7 @@ class WxController extends BaseController
 				'hid' => $hid
 			],
 			'imei',
-			'媒桂花账户');
+			'我的媒桂花');
 	}
 
 	public function actionSingle()
@@ -333,8 +332,7 @@ class WxController extends BaseController
 			['num' => 60, 'price' => 6],
 			['num' => 80, 'price' => 8],
 			['num' => 180, 'price' => 18],
-			['num' => 680, 'price' => 68],
-			['num' => 1980, 'price' => 198],
+			['num' => 680, 'price' => 68]
 		];
 
 		return self::renderPage("single.tpl", [
