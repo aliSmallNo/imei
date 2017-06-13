@@ -3527,7 +3527,8 @@ section {
       flex: 0 0 18rem; }
       .charges li .title h5 {
         color: #999;
-        font-size: 1rem; }
+        font-size: 1rem;
+        font-weight: 300; }
     .charges li .content {
       -webkit-box-flex: 1;
       -webkit-flex: 1;
@@ -3537,7 +3538,9 @@ section {
       .charges li .content em {
         position: relative;
         display: inline-block;
-        line-height: 3rem; }
+        line-height: 3rem;
+        font-weight: 500;
+        font-size: 1.4rem; }
         .charges li .content em.flower {
           padding-right: 2rem; }
           .charges li .content em.flower:after {
