@@ -1712,6 +1712,7 @@ section
 			right: 0
 			text-align: center
 			color: #fff
+
 .newbie
 	.empty
 		background: url(../images/ico_no_user.png) no-repeat top center
@@ -3435,3 +3436,67 @@ section
 						top: 50%
 						right: .2rem
 						margin-top: -.8rem
+
+.incomes
+	min-height: 60rem
+	margin-left: 2.5rem
+	border-left: 1px solid $mainColorLight
+	padding: 1.5rem 1.5rem 1.5rem 7rem
+	li
+		line-height: 2rem
+		background: #fff
+		border-radius: .5rem
+		padding: 1.5rem
+		position: relative
+		margin: 1rem 0
+		font-size: 1.4rem
+		box-shadow: 0 1px 4px #ddd, 0 0 1px #ddd, 0 0 1px #ddd
+		&:before
+			position: absolute
+			width: 1rem
+			height: 1rem
+			display: block
+			content: ''
+			border-radius: .5rem
+			background: $mainColorLight
+			left: -7.6rem
+			top: 2rem
+		&.total
+			margin-left: -5.5rem
+			padding: 0
+			background: none
+			box-shadow: none
+			border: none
+			&:before
+				width: 1.6rem
+				height: 1.6rem
+				border-radius: 1rem
+				left: -2.4rem
+				top: .2rem
+		&.more
+			border: none
+			box-shadow: none
+			background: none
+		.money
+			color: $moneyColor
+		.time
+			position: absolute
+			left: -5.8rem
+			top: .8rem
+			font-size: 1rem
+			b
+				font-size: 1.2rem
+				font-weight: $weightBold
+				padding-right: .5rem
+			span
+				display: block
+				color: $grayFontColor
+				font-weight: $weightNormal
+				font-size: 1rem
+				position: relative
+				top: -.5rem
+		.tip-block
+			color: $grayFontColorLight
+			padding: 0
+			line-height: 3.2rem
+

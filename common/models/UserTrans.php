@@ -246,6 +246,8 @@ class UserTrans extends ActiveRecord
 				$item['unit_name'] = isset(self::$UnitDict[$unit]) ? self::$UnitDict[$unit] : '';
 			}
 			if ($role == User::ROLE_MATCHER && $item['unit'] == self::UNIT_YUAN) {
+				$item['date_part'] = date('n月j日', strtotime($row['tAddedOn']));
+				$item['time'] = date('H:i:s', strtotime($row['tAddedOn']));
 				$items[] = $item;
 			} elseif ($role == User::ROLE_SINGLE && $item['unit'] == self::UNIT_GIFT) {
 				$items[] = $item;

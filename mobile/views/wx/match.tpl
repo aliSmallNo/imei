@@ -182,9 +182,8 @@
 		</div>
 	</div>
 	<div class="incomes-wrap">
-		<ul class="charges"></ul>
+		<ul class="incomes"></ul>
 		<div class="spinner" style="display: none"></div>
-		<div class="no-more" style="display: none;">没有更多了~</div>
 		<div class="empty middle" style="display: none">
 			<p class="title">暂无收益</p>
 			<p class="tip">您还木有收到过单身的打赏呦，<br>快去分享个人页招募更多的单身团成员吧~</p>
@@ -254,15 +253,23 @@
 	{[/items]}
 </script>
 <script type="text/template" id="tpl_record">
+	<li class="total">
+		共获得 <span class="money">{[wallet.yuan]}</span> 元
+	</li>
 	{[#items]}
 	<li>
-		<div class="title">
-			<h4>{[title]}</h4>
-			<h5>{[date]}</h5>
+		<div class="time">
+			<b>{[date_part]}</b>
+			<span>{[time]}</span>
 		</div>
-		<div class="content"><em class="{[unit]}">{[amt]}</em></div>
+		{[title]} <span class="money">{[amt]}</span> 元
 	</li>
 	{[/items]}
+	<li class="more">
+		<div class="time">
+			<div class="tip-block">全部加载完毕</div>
+		</div>
+	</li>
 </script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
