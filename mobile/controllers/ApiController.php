@@ -86,7 +86,10 @@ class ApiController extends Controller
 				if (AppUtil::scene() == 'dev') {
 					return self::renderAPI(129, '请在服务器测试该功能~');
 				}
-				$ret = WechatUtil::jsPrepay($payId, $openId, intval($amt * 100), $title, $subTitle);
+				// Rain: 测试阶段，payFee x元实际支付x分
+				$payFee = $amt;
+				// $payFee = intval($amt * 100);
+				$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);
 				if ($ret) {
 					return self::renderAPI(0, '', [
 						'prepay' => $ret,
