@@ -88,11 +88,19 @@ class UserTrans extends ActiveRecord
 			if (!isset($items[$userId])) {
 				$items[$userId] = [
 					self::UNIT_FEN => 0,
+					self::UNIT_YUAN => 0,
 					self::UNIT_GIFT => 0,
 					'expire' => time() + 3600 * 8
 				];
 			}
-			$items[$userId][$row['unit']] = $row['amt'];
+			$unit = $row['unit'];
+			$amt = $row['amt'];
+			if ($unit == self::UNIT_FEN) {
+				$items[$userId][$unit] = $amt;
+				$items[$userId][self::UNIT_YUAN] = round($amt / 100.0, 2);
+			} else {
+				$items[$userId][$unit] = $amt;
+			}
 		}
 		foreach ($items as $key => $item) {
 			RedisUtil::setCache(json_encode($item), RedisUtil::KEY_USER_WALLET, $key);
@@ -104,6 +112,7 @@ class UserTrans extends ActiveRecord
 			if (!isset($ret['expire'])) {
 				$ret = [
 					self::UNIT_FEN => 0,
+					self::UNIT_YUAN => 0,
 					self::UNIT_GIFT => 0,
 					'expire' => time() + 3600 * 8
 				];
