@@ -80,7 +80,7 @@ class UserTrans extends ActiveRecord
 		}
 		$conn = AppUtil::db();
 		$sql = 'SELECT SUM(tAmt) as amt,tUnit as unit, tUId as uid
- 			from im_user_trans WHERE tUId>0 ' . $strCriteria . ' GROUP BY tUId';
+ 			from im_user_trans WHERE tUId>0 ' . $strCriteria . ' GROUP BY tUId,tUnit';
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
 		foreach ($ret as $row) {

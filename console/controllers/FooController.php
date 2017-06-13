@@ -8,10 +8,9 @@ namespace console\controllers;
  * Date: 11/5/2017
  * Time: 2:11 PM
  */
-use common\models\Log;
 use common\models\User;
 use common\models\UserNet;
-use common\models\UserWechat;
+use common\models\UserTrans;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
@@ -301,5 +300,8 @@ class FooController extends Controller
 			"oAfter" => '',
 		];
 		Log::add($newLog);*/
+
+		$ret = UserTrans::getStat(120001, 1);
+		var_dump($ret);
 	}
 }
