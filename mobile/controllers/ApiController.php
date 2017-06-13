@@ -358,14 +358,9 @@ class ApiController extends Controller
 		}
 
 		$newLog = [
-			"logKey" => "wx-callback",
-			"logUser" => "1",
-			"logUserId" => '',
-			"logBranchId" => 1000,
-			"logBefore" => '',
-			"logAfter" => json_encode($rData),
-			"logChannel" => "wx-callback",
-			"logQueryDate" => date("Y-m-d H:i:s"),
+			"oCategory" => "wx-callback",
+			"oKey" => 'actionPaid',
+			"oAfter" => json_encode($rData),
 		];
 		Log::add($newLog);
 
