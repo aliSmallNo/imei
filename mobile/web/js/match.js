@@ -206,13 +206,13 @@ require(["layer"],
 
 
 		var WalletUtil = {
+			page: 1,
 			loading: 0,
-			list: $('.charges'),
+			list: $('.incomes'),
 			tmp: $('#tpl_record').html(),
-			spinner: $('.incomes-wrap .spinner'),
-			noMore: $('.incomes-wrap .no-more'),
 			empty: $('.incomes-wrap .empty'),
 			amt: $('.wallet-amt'),
+			spinner: $('.incomes-wrap .spinner'),
 			drawing: 0,
 			init: function () {
 				$('.btn-withdraw').on(kClick, function () {
@@ -246,9 +246,8 @@ require(["layer"],
 					util.list.html('');
 				}
 				util.loading = 1;
-				util.spinner.show();
 				util.empty.hide();
-				util.noMore.hide();
+				util.spinner.show();
 				$.post('/api/wallet',
 					{
 						tag: 'records',
@@ -258,11 +257,9 @@ require(["layer"],
 						if (resp.code == 0) {
 							var html = Mustache.render(util.tmp, resp.data);
 							util.list.html(html);
-							util.noMore.show();
 							util.amt.html(resp.data.wallet.yuan);
 						}
 						if (util.list.find('li').length < 1) {
-							util.noMore.hide();
 							util.empty.show();
 						}
 						util.spinner.hide();
