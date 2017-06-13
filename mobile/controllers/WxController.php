@@ -12,6 +12,7 @@ use common\models\City;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserSign;
+use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
@@ -282,9 +283,11 @@ class WxController extends BaseController
 		$openId = self::$WX_OpenId;
 		$avatar = $nickname = '';
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$stat = [];
 		if ($wxInfo) {
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
+			$stat = UserTrans::getStat($wxInfo['uId'], true);
 		} else {
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
@@ -301,7 +304,8 @@ class WxController extends BaseController
 				'avatar' => $avatar,
 				'nickname' => $nickname,
 				'prices' => $prices,
-				'hid' => $hid
+				'hid' => $hid,
+				'stat' => $stat
 			],
 			'imei',
 			'我的媒桂花');

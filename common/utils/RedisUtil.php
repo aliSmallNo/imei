@@ -32,6 +32,7 @@ class RedisUtil
 	const KEY_DISTANCE = 'dist';
 	const KEY_CITY_IP = 'city_ip';
 	const KEY_USER_STAT = 'user_stat';
+	const KEY_USER_WALLET = 'user_wallet';
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
@@ -81,6 +82,7 @@ class RedisUtil
 				$redis->expire($redisKey, $expired);
 				return $ret;
 			case self::KEY_USER_STAT:
+			case self::KEY_USER_WALLET:
 				array_shift($keys);
 				$redisKey = implode(self::$Glue, $keys);
 				return $redis->hget(self::FIXED_PREFIX . self::$Glue . $mainKey, $redisKey);
@@ -99,6 +101,7 @@ class RedisUtil
 		}
 		switch ($mainKey) {
 			case self::KEY_USER_STAT:
+			case self::KEY_USER_WALLET:
 				array_shift($keys);
 				$redisKey = implode(self::$Glue, $keys);
 				$redis->hset(self::FIXED_PREFIX . self::$Glue . $mainKey, $redisKey, $val);

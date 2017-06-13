@@ -1,6 +1,6 @@
 <section id="swallet">
 	<div class="account-header">
-		<div class="amt">20</div>
+		<div class="amt">{{$stat['flower']}}</div>
 		<div>
 			<span class="m-ico-rose">媒桂花</span>
 		</div>
