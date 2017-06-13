@@ -8,7 +8,6 @@
 
 namespace mobile\controllers;
 
-
 use common\models\City;
 use common\models\Log;
 use common\models\Pay;
@@ -217,11 +216,9 @@ class ApiController extends Controller
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				$amt = rand(1, 5) * 10;
-				$ret = UserSign::add($wxInfo['uId'], $amt);
-				if ($ret) {
-					$yuan = sprintf('%.1f', $amt / 100.0);
-					return self::renderAPI(0, '今日签到获得' . $yuan . '元红包，请明天继续~',
+				list($amt, $unit) = UserSign::sign($wxInfo['uId']);
+				if ($amt) {
+					return self::renderAPI(0, '今日签到获得' . $amt . $unit . '奖励，请明天继续~',
 						['title' => UserSign::TIP_SIGNED]);
 				} else {
 					return self::renderAPI(129, '您今日已经签到过啦~');

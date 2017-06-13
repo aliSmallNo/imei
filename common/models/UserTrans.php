@@ -29,6 +29,19 @@ class UserTrans extends ActiveRecord
 		return '{{%user_trans}}';
 	}
 
+	public static function add($uid, $pid, $title, $amt, $unit)
+	{
+		$entity = new self();
+		$entity->tPId = $pid;
+		$entity->tUId = $uid;
+		$entity->tPId = $pid;
+		$entity->tTitle = $title;
+		$entity->tAmt = $amt;
+		$entity->tUnit = $unit;
+		$entity->save();
+		return $entity->tId;
+	}
+
 	public static function addByPID($pid)
 	{
 		$payInfo = Pay::findOne(['pId' => $pid]);
