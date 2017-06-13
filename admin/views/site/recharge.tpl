@@ -48,7 +48,7 @@
 					充值金额
 				</th>
 				<th>
-					媒瑰花
+					媒瑰花/金额（元）
 				</th>
 				<th>
 					充值类型
@@ -65,17 +65,22 @@
 					<img src="{{$item.avatar}}" style="width: 65px;height: 65px;">
 				</td>
 				<td>{{$item.uname}}<br>
-					累计充值: {{$item.amts|string_format:"%.2f"}}<br>
-					当前余额: {{$item.remain|string_format:"%.2f"}}
+					累计充值金额: ￥{{$item.recharge/10|string_format:"%.2f"}}<br>
+					累计充值媒瑰花: {{$item.recharge}}<br>
+					累计签到媒瑰花: {{$item.gift}}<br>
+					累计签到金额: ￥{{$item.fen/100|string_format:"%.2f"}}<br>
+					剩余媒瑰花数: {{$item.remain}}
 				</td>
-				<td align="right">
-					{{$item.amt/100|string_format:"%.2f"}}
+				<td >
+					{{if $item.amt}}￥{{$item.amt/100|string_format:"%.2f"}}{{/if}}
 				</td>
-				<td align="right">
-					{{$item.flower}}
+				<td >
+					{{if $item.cat==100}}{{$item.flower}}朵{{/if}}
+					{{if $item.cat==105 && $item.unit=='fen'}}￥{{$item.flower/100}}{{/if}}
+					{{if $item.cat==105 && $item.unit=='flower'}}{{$item.flower}}朵{{/if}}
 				</td>
 				<td>
-					{{$item.cat}}
+					{{$item.tcat}}
 				</td>
 				<td>
 					{{$item.date}}
