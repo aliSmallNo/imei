@@ -8,6 +8,7 @@ namespace console\controllers;
  * Date: 11/5/2017
  * Time: 2:11 PM
  */
+use common\models\Log;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserWechat;
@@ -292,7 +293,13 @@ class FooController extends Controller
 		self::matchers(2);
 		self::matchers(3);
 		self::matchers(4);*/
-		$wxInfo = UserWechat::getInfoByOpenId('oYDJew5EFMuyrJdwRrXkIZLU2c58');
-		print_r($wxInfo);
+		/*$wxInfo = UserWechat::getInfoByOpenId('oYDJew5EFMuyrJdwRrXkIZLU2c58');
+		print_r($wxInfo);*/
+		/*$newLog = [
+			"oCategory" => "wx-callback",
+			"oKey" => 'actionPaid',
+			"oAfter" => '',
+		];
+		Log::add($newLog);*/
 	}
 }

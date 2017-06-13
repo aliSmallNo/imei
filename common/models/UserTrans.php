@@ -14,7 +14,7 @@ use yii\db\ActiveRecord;
 class UserTrans extends ActiveRecord
 {
 	const UNIT_FEN = 'fen';
-	const UNIT_FLOWER = 'flower';
+	const UNIT_GIFT = 'flower';
 
 	public static function tableName()
 	{
@@ -34,17 +34,17 @@ class UserTrans extends ActiveRecord
 		$entity = new self();
 		$entity->tPId = $pid;
 		$entity->tUId = $payInfo['pUId'];
-		$title = '';
-		if ($payInfo['pCategory'] == Pay::CAT_RECHARGE) {
-			$title = '充值';
+		$entity->tTitle = $payInfo['pTitle'];
+		switch ($payInfo['pCategory']) {
+			case Pay::CAT_RECHARGE:
+				$entity->tAmt = $payInfo['pRId'];
+				$entity->tUnit = self::UNIT_GIFT;
+				break;
+			default:
+				$entity->tAmt = $payInfo['pAmt'];
+				$entity->tUnit = self::UNIT_FEN;
+				break;
 		}
-		$entity->tTitle = $title;
-		$entity->tAmt = $payInfo['pAmt'];
-		$unit = self::UNIT_FEN;
-		if ($payInfo['pCategory'] == Pay::CAT_RECHARGE) {
-			$unit = self::UNIT_FLOWER;
-		}
-		$entity->tUnit = $unit;
 		$entity->save();
 		return $entity->tId;
 	}

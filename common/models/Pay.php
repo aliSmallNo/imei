@@ -50,9 +50,9 @@ class Pay extends ActiveRecord
 		$entity = new self();
 		$entity->pCategory = $cat;
 		$entity->pTitle = isset(self::$CategoryDict[$cat]) ? self::$CategoryDict[$cat] : '';
-		$entity->pAmt = $amt;
 		$entity->pUId = $uid;
 		$entity->pRId = $num;
+		$entity->pAmt = $amt;
 		$entity->pMode = $mode;
 		if ($cat == self::CAT_RECHARGE) {
 			$entity->pNote = '充值' . $num . '媒桂花';
