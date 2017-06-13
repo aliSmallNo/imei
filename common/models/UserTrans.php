@@ -24,8 +24,8 @@ class UserTrans extends ActiveRecord
 		self::UNIT_GIFT => '媒桂花',
 	];
 
-	const CAT_CHARGE = 100;
-	const CAT_SIGN = 105;
+	const CAT_CHARGE = 100; //充值
+	const CAT_SIGN = 105;   //签到
 
 	public static function tableName()
 	{
@@ -139,7 +139,7 @@ class UserTrans extends ActiveRecord
 	public static function recharges($criteria, $params, $page, $pageSize = 20)
 	{
 		$limit = ($page - 1) * $pageSize . "," . $pageSize;
-		$criteria = implode("and", $criteria);
+		$criteria = implode(" and ", $criteria);
 		$orders = [
 			"default" => " tAddedOn desc ",
 		];
@@ -167,17 +167,18 @@ class UserTrans extends ActiveRecord
 		$count = $conn->createCommand($sql)->bindValues($params)->queryOne();
 		$count = $count ? $count["co"] : 0;
 
-		$balances = self::getBalances($uIds);
+		list($balances, $allcharge) = self::getBalances($uIds);
 		foreach ($result as &$v) {
 			foreach ($balances as $val) {
 				if ($val["uid"] == $v["uid"]) {
-					$v["amts"] = $val["amts"];      //总充值数
+					$v["amts"] = $val["amts"];          //个人总充值数
 					$v["remain"] = $val["remain"];    //余额
 				}
 			}
 		}
 
-		return [$result, $count];
+
+		return [$result, $count, $allcharge];
 
 	}
 
@@ -192,14 +193,17 @@ class UserTrans extends ActiveRecord
 		$cat_charge = self::CAT_CHARGE;
 		$cat_sign = self::CAT_SIGN;
 
-		//tAmt
 		$sql = "SELECT SUM(case when tCategory=$cat_charge OR tCategory=$cat_sign THEN tAmt ELSE -tAmt END ) as remain,
 					  SUM(case when tCategory=$cat_charge OR tCategory=$cat_sign THEN tAmt ELSE 0 END ) as amts,
 					  tUId as uid
 				from im_user_trans WHERE tUId>0 and tUId in ($uid) GROUP BY tUId";
 		$ret = $conn->createCommand($sql)->queryAll();
 
-		return $ret;
+		$sql = "SELECT sum(p.pAmt) as allcharge from im_user_trans as t
+			join im_pay as p on p.pId=t.tPId";
+
+		$allcharge = $conn->createCommand($sql)->queryOne();
+		return [$ret, $allcharge["allcharge"]];
 	}
 
 	public static function records($uid)

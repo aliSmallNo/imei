@@ -21,7 +21,7 @@
 							 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
 			</div>
 			<div class="form-group">
-				<select name="orders" id="" class="form-control">
+				<select class="form-control" style="display: none">
 					<option value="1">按时间(默认)</option>
 					<option value="2">按充值总数</option>
 					<option value="3">按当前余额</option>
@@ -29,7 +29,7 @@
 			</div>
 			<button class="btn btn-primary">查询</button>
 			<span class="space"></span>
-			<label>充值合计 <span class="text-danger">￥{{$paid|string_format:"%.2f"}}</span></label>
+			<label>充值合计 <span class="text-danger">￥{{$paid/100|string_format:"%.2f"}}</span></label>
 		</form>
 	</div>
 

@@ -265,7 +265,7 @@ class SiteController extends BaseController
 
 		if ($name) {
 			$name = str_replace("'", "", $name);
-			$criteria[] = " uName like :name ";
+			$criteria[] = " u.uName like :name ";
 			$params[":name"] = $name;
 		}
 
@@ -273,9 +273,7 @@ class SiteController extends BaseController
 
 		}
 
-		list($items, $count) = UserTrans::recharges($criteria, $params, $page);
-
-		//print_r($items);exit;
+		list($items, $count, $allcharge) = UserTrans::recharges($criteria, $params, $page);
 
 		$pagination = $pagination = self::pagination($page, $count);
 		return $this->renderPage("recharge.tpl",
@@ -283,7 +281,8 @@ class SiteController extends BaseController
 				'getInfo' => $getInfo,
 				'items' => $items,
 				'pagination' => $pagination,
-				"paid" => 0,//充值合计
+				"paid" => $allcharge,//充值合计
+				'category' => 'users',
 			]
 		);
 	}

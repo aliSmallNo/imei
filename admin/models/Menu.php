@@ -130,8 +130,8 @@ class Menu
 						"url" => "/site/accounts"
 					],
 					[
-						"name" => "用户行为",
-						"url" => "/site/behavior",
+						"name" => "充值列表",
+						"url" => "/site/recharges",
 						"level" => 820
 					],
 					[
