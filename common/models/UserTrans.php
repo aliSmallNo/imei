@@ -20,7 +20,6 @@ class UserTrans extends ActiveRecord
 	const CAT_SIGN = 105;
 	const CAT_LINK = 110;
 
-
 	const UNIT_FEN = 'fen';
 	const UNIT_YUAN = 'yuan';
 	const UNIT_GIFT = 'flower';
@@ -29,9 +28,6 @@ class UserTrans extends ActiveRecord
 		self::UNIT_YUAN => '元',
 		self::UNIT_GIFT => '媒桂花',
 	];
-
-	const CAT_CHARGE = 100;
-	const CAT_SIGN = 105;
 
 	public static function tableName()
 	{
@@ -198,7 +194,7 @@ class UserTrans extends ActiveRecord
 		$uid = implode(",", $uid);
 		$conn = AppUtil::db();
 
-		$cat_charge = self::CAT_CHARGE;
+		$cat_charge = self::CAT_RECHARGE;
 		$cat_sign = self::CAT_SIGN;
 
 		//tAmt
