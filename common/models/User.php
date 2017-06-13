@@ -577,7 +577,7 @@ class User extends ActiveRecord
 		$limit = ($page - 1) * $pageSize . "," . $pageSize;
 
 		$relation_mp = UserNet::REL_BACKER;
-		$relation_hint = UserNet::REL_HINT;
+		$relation_hint = UserNet::REL_FAVOR;
 		$delflag = UserNet::DELETE_FLAG_NO;
 
 		$sql = "select nh.nUId as hid,u2.uId as mId,u2.uAvatar as mpavatar,u2.uName as mpname,u.* from im_user as u 

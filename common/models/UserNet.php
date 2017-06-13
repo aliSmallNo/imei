@@ -19,14 +19,14 @@ class UserNet extends ActiveRecord
 	const REL_BACKER = 120;
 	const REL_FOLLOW = 130;
 	const REL_LINK = 140;
-	const REL_HINT = 150;
+	const REL_FAVOR = 150;
 
 	static $RelDict = [
 		self::REL_INVITE => '邀请',
 		self::REL_BACKER => '媒婆',
 		self::REL_FOLLOW => '关注',
 		self::REL_LINK => '牵线',
-		self::REL_HINT => '心动',
+		self::REL_FAVOR => '心动',
 	];
 
 	const DELETE_FLAG_YES = 1;
@@ -285,7 +285,7 @@ class UserNet extends ActiveRecord
 		$date = date("Y-m-d H:i:s");
 		$info->nUId = $mId;
 		$info->nSubUId = $uid;
-		$info->nRelation = self::REL_HINT;
+		$info->nRelation = self::REL_FAVOR;
 		switch ($f) {
 			case "yes":
 				$info->nDeletedFlag = self::DELETE_FLAG_NO;
