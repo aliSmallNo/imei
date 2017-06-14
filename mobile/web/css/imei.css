@@ -577,7 +577,7 @@ section {
       background: #f06292;
       color: #fff; }
       .roles .btn.on:after {
-        background: url("../images/ico_tick_w.png");
+        background: url(../images/ico_tick_w.png);
         background-size: 100% 100%;
         width: 2.4rem;
         height: 2.4rem;
@@ -627,10 +627,10 @@ section {
     left: 3rem;
     top: 2rem; }
   .form.matcher:before {
-    background: url("../images/ico_sms_matcher.png") no-repeat center center;
+    background: url(../images/ico_sms_matcher.png) no-repeat center center;
     background-size: 100% 100%; }
   .form.single:before {
-    background: url("../images/ico_sms_single.png") no-repeat center center;
+    background: url(../images/ico_sms_single.png) no-repeat center center;
     background-size: 100% 100%; }
   .form.matcher .btn-change[data-tag="single"] {
     top: 6rem;
@@ -692,10 +692,10 @@ section {
       width: 2.4rem;
       height: 2.4rem; }
     .m-header.s1.loc:before {
-      background: url("../images/ico_loc.png") no-repeat center center;
+      background: url(../images/ico_loc.png) no-repeat center center;
       background-size: 100% 100%; }
     .m-header.s1.cal:before {
-      background: url("../images/ico_cal.png") no-repeat center center;
+      background: url(../images/ico_cal.png) no-repeat center center;
       background-size: 100% 100%; }
 
 .nick_name {
@@ -729,7 +729,7 @@ section {
       left: 0;
       bottom: 0;
       height: 3.2rem;
-      background: rgba(0, 0, 0, 0.3) url("../images/ico_camera_w.png") no-repeat center center;
+      background: rgba(0, 0, 0, 0.3) url(../images/ico_camera_w.png) no-repeat center center;
       background-size: 2.4rem 2rem;
       z-index: 2; }
 
@@ -834,10 +834,10 @@ section {
   .gender-opt.male {
     background: #4da2ff; }
   .gender-opt.female:before {
-    background: url("../images/ico_gender_female_w.png") no-repeat center center;
+    background: url(../images/ico_gender_female_w.png) no-repeat center center;
     background-size: 100% 100%; }
   .gender-opt.male:before {
-    background: url("../images/ico_gender_male_w.png") no-repeat center center;
+    background: url(../images/ico_gender_male_w.png) no-repeat center center;
     background-size: 100% 100%; }
 
 .action-row {
@@ -1905,7 +1905,7 @@ section {
             margin-top: -0.9rem;
             width: 1.8rem;
             height: 1.8rem;
-            background: url("../images/ico_tick_g.png") no-repeat center center;
+            background: url(../images/ico_tick_g.png) no-repeat center center;
             background-size: 100% 100%; }
         .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options.col3 a {
           width: 33.3%; }
@@ -1929,7 +1929,7 @@ section {
             flex: 4;
             padding-bottom: 1rem; }
           .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options .m-popup-options-top .bb {
-            border-bottom: 2px solid #f781ab; }
+            border-bottom: 2px solid #f491b2; }
           .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options .m-popup-options-top .mid {
             flex: 1;
             padding-bottom: 1rem; }
@@ -2277,7 +2277,7 @@ section {
       float: right;
       color: #fff;
       border-radius: 1.5rem;
-      background: #fbd6e3;
+      background: #f491b2;
       position: relative;
       padding: 0 1.5rem 0 3.6rem;
       margin-right: 1rem; }
@@ -2341,7 +2341,6 @@ section {
   font-size: 1.2rem;
   padding-top: 5.5rem;
   font-weight: 300;
-  text-align: center;
   text-align: center; }
 
 .m-ico-rose {
@@ -2489,7 +2488,7 @@ section {
     .nav a:first-child {
       margin-left: 1.2rem; }
 .sgroup-top .sgroup-top-des {
-  background: #f8c5d7; }
+  background: #fbd6e3; }
   .sgroup-top .sgroup-top-des .img {
     text-align: center;
     padding: 1.5rem; }
@@ -2528,7 +2527,7 @@ section {
         position: absolute;
         width: 0.1rem;
         height: 2rem;
-        background: #f8f8f8;
+        background: #F4F4F4;
         right: 0;
         top: 1.5rem; }
       .sgroup-top .sgroup-top-des .list .list-item:last-child:after {
@@ -2657,7 +2656,7 @@ section {
     right: 0;
     margin-top: -0.5rem;
     right: 1rem;
-    border-color: #f781ab; }
+    border-color: #f491b2; }
   #sprofile .sprofile-base .title {
     flex: 0 0 8rem;
     font-size: 1.2rem;
@@ -2665,9 +2664,9 @@ section {
   #sprofile .sprofile-base .content {
     flex: 1; }
     #sprofile .sprofile-base .content span {
-      color: #f781ab;
+      color: #f491b2;
       font-size: 1rem;
-      border: solid #f781ab 1px;
+      border: solid #f491b2 1px;
       padding: 0.3rem 1rem;
       border-radius: 0.5rem;
       display: inline-block;
@@ -2712,7 +2711,7 @@ section {
     flex: 1; }
     #sprofile .sprofile-condtion .content span {
       font-size: 1rem;
-      color: #f781ab;
+      color: #f491b2;
       background: #fbd6e3;
       padding: 0.3rem 1rem;
       border-radius: 0.2rem;
@@ -2773,7 +2772,7 @@ section {
     .getWechat .input input {
       font-size: 1.2rem;
       padding: 0.8rem 1rem;
-      border: 1px solid #f781ab;
+      border: 1px solid #f491b2;
       border-radius: 0.8rem;
       text-align: center; }
   .getWechat .getw-about {
@@ -2784,7 +2783,7 @@ section {
       letter-spacing: 0.05rem;
       margin-bottom: 0.3rem; }
   .getWechat a.btn {
-    background: #f781ab;
+    background: #f491b2;
     display: block;
     text-align: center;
     color: #fff;
@@ -2799,7 +2798,7 @@ section {
   right: 3rem;
   top: 15rem;
   z-index: 999;
-  background: #dd3c33;
+  background: #E53935;
   padding: 1.5rem 2rem;
   border-radius: 1rem;
   color: #f9cd9a;
@@ -2860,7 +2859,7 @@ section {
           top: 0.2rem;
           right: 0.2rem; }
         .pay-mp ul.options li a.active .des .t, .pay-mp ul.options li a.active .des .b {
-          color: #dd3c33; }
+          color: #E53935; }
   .pay-mp .pmp-pay {
     margin: 1rem; }
     .pay-mp .pmp-pay a {
@@ -2920,14 +2919,14 @@ section {
       flex: 1;
       margin: 0.5rem;
       padding: 0.8rem 2rem;
-      border: 1px solid #f781ab;
+      border: 1px solid #f491b2;
       border-radius: 1rem; }
     .not-enough-rose .btns a:first-child {
-      color: #f781ab;
+      color: #f491b2;
       background: #fff; }
     .not-enough-rose .btns a:last-child {
       color: #fff;
-      background: #f781ab; }
+      background: #f491b2; }
 
 #personalInfo .personalInfo-top .img {
   position: relative; }
@@ -2992,7 +2991,7 @@ section {
       border: 1px solid #e4e4e4;
       position: relative; }
     #album .photos li a {
-      border: 1px solid #f781ab;
+      border: 1px solid #f491b2;
       height: 7.5rem;
       width: 7.5rem;
       display: inline-block;
@@ -3014,7 +3013,7 @@ section {
       left: 50%;
       -webkit-transform: translate(-50%, -51%);
       transform: translate(-50%, -51%);
-      background: #f781ab;
+      background: #f491b2;
       width: 4rem;
       height: 2px; }
 
@@ -3060,7 +3059,7 @@ section {
   padding: 1rem;
   font-size: 1.2rem;
   color: #fff;
-  background: #f781ab;
+  background: #f491b2;
   text-align: center; }
 
 .tab {
@@ -3075,8 +3074,8 @@ section {
     color: #777;
     padding-bottom: 1rem; }
   .tab a.active {
-    border-bottom: 1px solid #f781ab;
-    color: #f781ab; }
+    border-bottom: 1px solid #f491b2;
+    color: #f06292; }
 
 .plist li {
   background: #fff;
@@ -3166,11 +3165,11 @@ section {
       text-align: center;
       font-size: 1.2rem; }
     #myMP .bot a:first-child {
-      background: #f781ab;
+      background: #f491b2;
       color: #fff; }
     #myMP .bot a:last-child {
-      border: #f781ab solid 1px;
-      color: #f781ab; }
+      border: #f491b2 solid 1px;
+      color: #f491b2; }
 
 #noMP .nomp-des {
   background: #f9e0e8;
@@ -3240,7 +3239,6 @@ section {
       #focusMP li a div.left img {
         width: 6rem;
         height: 6rem;
-        height: 6rem;
         border-radius: 6rem; }
     #focusMP li a div.right {
       padding: 0.5rem 1rem;
@@ -3251,7 +3249,7 @@ section {
       #focusMP li a div.right p:first-child {
         font-size: 1.4rem; }
       #focusMP li a div.right p:last-child {
-        color: #f781ab; }
+        color: #fbd6e3; }
 
 .home-header {
   background-color: #f491b2;
