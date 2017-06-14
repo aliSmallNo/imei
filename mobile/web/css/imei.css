@@ -403,7 +403,7 @@ section {
   text-align: center;
   font-weight: normal;
   font-size: 1.4rem;
-  color: #727272;
+  color: #737373;
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
   line-height: 2rem; }
@@ -481,7 +481,7 @@ section {
     flex: 1;
     font-size: 1.4rem; }
     .layui-m-layerbtn span[no] {
-      color: #727272; }
+      color: #737373; }
     .layui-m-layerbtn span[yes] {
       color: #007aff; }
 
@@ -560,7 +560,7 @@ section {
 .roles {
   margin-top: 3rem; }
   .roles .title {
-    color: #727272;
+    color: #737373;
     padding-left: 2rem;
     padding-right: 2rem; }
   .roles .btn {
@@ -598,7 +598,7 @@ section {
   margin-bottom: 1rem;
   -webkit-appearance: none;
   font-size: 1.4rem;
-  color: #414141;
+  color: #525252;
   outline: 0; }
 
 .form {
@@ -676,13 +676,13 @@ section {
   .m-header i {
     display: block;
     line-height: 2rem;
-    color: #727272;
+    color: #737373;
     font-size: 1.2rem; }
   .m-header.s1 {
     text-align: left;
     font-size: 1.4rem;
     position: relative;
-    color: #727272;
+    color: #737373;
     padding: 1.5rem; }
     .m-header.s1:before {
       content: " ";
@@ -788,7 +788,7 @@ section {
       .m-draw-wrap .images li p {
         text-align: center;
         font-size: 1rem;
-        color: #727272; }
+        color: #737373; }
   .m-draw-wrap .m-next {
     position: absolute; }
 
@@ -820,7 +820,7 @@ section {
   border-radius: 4rem; }
   .gender-opt span {
     font-size: 1.2rem;
-    color: #414141; }
+    color: #525252; }
   .gender-opt:before {
     content: " ";
     width: 6rem;
@@ -850,7 +850,7 @@ section {
   .action-row em {
     margin-right: 0.6rem;
     font-size: 1.4rem;
-    color: #414141;
+    color: #525252;
     font-weight: 500; }
   .action-row:after {
     content: " ";
@@ -866,7 +866,7 @@ section {
     top: 50%;
     right: 0;
     margin-top: -0.5rem;
-    border-color: #727272;
+    border-color: #737373;
     right: 1.5rem; }
   .action-row:active {
     background: #f491b2; }
@@ -891,7 +891,7 @@ section {
     font-size: 1.2rem;
     display: inline-block;
     background: #fff;
-    color: #414141; }
+    color: #525252; }
     .cells a:active, .cells a.cur {
       background: #f491b2; }
     .cells a:before {
@@ -938,7 +938,7 @@ section {
     line-height: 1.3;
     height: 9rem;
     font-size: 1.4rem;
-    color: #727272;
+    color: #737373;
     -webkit-appearance: none; }
 
 .match-wrap {
@@ -948,7 +948,7 @@ section {
   .match-wrap h3 {
     text-align: center;
     font-size: 1.4rem;
-    color: #727272;
+    color: #737373;
     font-weight: 500;
     line-height: 5rem;
     margin: 0;
@@ -996,7 +996,7 @@ section {
         text-overflow: ellipsis;
         overflow: hidden;
         font-size: 1.3rem;
-        color: #727272;
+        color: #737373;
         padding-top: 0.2rem;
         padding-bottom: 1rem; }
 
@@ -1200,7 +1200,7 @@ section {
     align-items: center;
     align-self: center; }
     .u-my-bar .title h5 {
-      color: #727272;
+      color: #737373;
       font-weight: 300;
       font-size: 1.4rem; }
     .u-my-bar .title h4 {
@@ -1286,7 +1286,7 @@ section {
     -ms-flex: 1;
     flex: 1;
     text-align: center;
-    color: #727272;
+    color: #737373;
     padding: 1rem;
     font-size: 1.2rem;
     background: #fff; }
@@ -1326,7 +1326,7 @@ section {
     -ms-flex: 1;
     flex: 1;
     text-align: center;
-    color: #727272;
+    color: #737373;
     font-size: 1.2rem;
     border-bottom: 2px solid #d8d8d8;
     padding-bottom: 1rem; }
@@ -1403,7 +1403,7 @@ section {
     .news-wrap ul.animate li {
       line-height: 3.6rem;
       height: 3.6rem;
-      color: #727272;
+      color: #737373;
       padding: 0.5rem 1rem;
       position: relative;
       display: -webkit-box;
@@ -1491,7 +1491,7 @@ section {
     .singles .single .title h5 {
       font-weight: 300;
       font-size: 1.4rem;
-      color: #727272;
+      color: #737373;
       line-height: 3rem; }
     .singles .single .title .note, .singles .single .title .cnt {
       font-size: 1rem;
@@ -1858,7 +1858,7 @@ section {
           text-align: center;
           height: 4.5rem;
           line-height: 4.5rem;
-          color: #414141;
+          color: #525252;
           border-right: 1px solid #d8d8d8;
           margin: 0;
           display: inline-block;
@@ -2045,7 +2045,7 @@ section {
       -moz-appearance: none;
       appearance: none;
       font-size: 1.4rem;
-      color: #414141;
+      color: #525252;
       outline: 0; }
     .m-form li textarea {
       -webkit-box-flex: 1;
@@ -2108,7 +2108,7 @@ section {
     padding: 2rem;
     background: #fff;
     border-radius: 1rem;
-    color: #727272; }
+    color: #737373; }
     .m-sign .rules .title {
       text-align: center;
       font-size: 1.5rem;
@@ -2125,7 +2125,7 @@ section {
   line-height: 4.2rem;
   background: #fff; }
   .my-condition .nocondition a {
-    color: #727272;
+    color: #737373;
     padding: 0 1.5rem;
     display: block;
     height: 100%; }
@@ -2257,10 +2257,10 @@ section {
       float: left;
       font-size: 1.4rem;
       font-weight: 500;
-      color: #414141; }
+      color: #525252; }
     .m-top-users li .info .otherInfo {
       float: right;
-      color: #727272;
+      color: #737373;
       font-size: 1.2rem; }
     .m-top-users li .info .icon {
       float: left;
@@ -2277,7 +2277,7 @@ section {
   .m-top-users li .sign {
     padding: 0 1.5rem 1rem 1.5rem;
     font-size: 1.2rem;
-    color: #727272; }
+    color: #737373; }
   .m-top-users li .action {
     padding: 1rem 1.5rem;
     position: relative; }
@@ -2374,7 +2374,7 @@ section {
         display: inline-block;
         padding-top: 0.6rem; }
     .m-top-users li .mp-info .des {
-      color: #727272;
+      color: #737373;
       padding-top: 1rem; }
       .m-top-users li .mp-info .des b {
         font-size: 1.6rem; }
@@ -3521,7 +3521,7 @@ section {
   padding: 2rem 1.5rem; }
   .single-page .baseinfo h6 {
     font-size: 1.4rem;
-    color: #727272;
+    color: #737373;
     height: 2.6rem;
     line-height: 2.6rem;
     font-weight: 300; }
@@ -3622,7 +3622,7 @@ section {
       -ms-flex: 0 0 18rem;
       flex: 0 0 18rem; }
       .charges li .title h5 {
-        color: #727272;
+        color: #737373;
         font-size: 1.2rem;
         font-weight: 300; }
     .charges li .content {
@@ -3703,7 +3703,7 @@ section {
         padding-right: 0.5rem; }
       .incomes li .time span {
         display: block;
-        color: #727272;
+        color: #737373;
         font-weight: 300;
         font-size: 1rem;
         position: relative;
