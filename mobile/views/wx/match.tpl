@@ -118,7 +118,7 @@
 			</a>
 		</div>
 	</div>
-	<div class="m-rows line-bottom">
+	<div class="m-rows line-bottom" style="display: none">
 		<a href="/wx/card">我的身份卡</a>
 	</div>
 	<div class="m-rows line-bottom">

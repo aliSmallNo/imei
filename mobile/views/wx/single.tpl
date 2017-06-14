@@ -72,7 +72,7 @@
 				<img src="https://img.1meipo.com/6bd865920c42912cb63de1987de8fe8d.jpg">
 			</a>
 		</div>
-		<div class="m-rows line-bottom">
+		<div class="m-rows line-bottom" style="display: none">
 			<a href="/wx/card" class=""><span class="title">我的身份卡</span></a>
 		</div>
 		<div class="m-rows line-bottom">

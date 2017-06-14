@@ -12,7 +12,7 @@
 </style>
 <div id="page-wrapper">
 	<div class="row">
-		<h4>充值记录列表</h4>
+		<h4>账户记录列表</h4>
 	</div>
 	<div class="row">
 		<form action="/site/recharges" method="get" class="form-inline">
@@ -45,16 +45,16 @@
 					用户
 				</th>
 				<th>
-					充值金额
+					类型
 				</th>
 				<th>
-					媒瑰花/金额（元）
+					数量/金额
 				</th>
 				<th>
-					充值类型
+					媒瑰花/金额
 				</th>
 				<th>
-					充值时间
+					时间
 				</th>
 			</tr>
 			</thead>
@@ -71,6 +71,9 @@
 					累计签到金额: ￥{{$item.fen/100|string_format:"%.2f"}}<br>
 					剩余媒瑰花数: {{$item.remain}}
 				</td>
+				<td>
+					{{$item.tcat}}
+				</td>
 				<td >
 					{{if $item.amt}}￥{{$item.amt/100|string_format:"%.2f"}}{{/if}}
 				</td>
@@ -78,9 +81,6 @@
 					{{if $item.cat==100}}{{$item.flower}}朵{{/if}}
 					{{if $item.cat==105 && $item.unit=='fen'}}￥{{$item.flower/100}}{{/if}}
 					{{if $item.cat==105 && $item.unit=='flower'}}{{$item.flower}}朵{{/if}}
-				</td>
-				<td>
-					{{$item.tcat}}
 				</td>
 				<td>
 					{{$item.date}}

@@ -221,13 +221,19 @@ class UserTrans extends ActiveRecord
 		return [$ret, $allcharge["allcharge"]];
 	}
 
-	public static function records($uid, $role)
+	public static function records($uid = 0, $role = '', $page = 1, $pageSize = 20)
 	{
+		$strCriteria = '';
+		$params = [];
+		if ($uid) {
+			$strCriteria = ' AND tUId=:id ';
+			$params[':id'] = $uid;
+		}
+		$offset = ($page - 1) * $pageSize;
 		$conn = AppUtil::db();
-		$sql = 'SELECT * FROM im_user_trans WHERE tUId=:id ORDER BY tAddedOn DESC';
-		$ret = $conn->createCommand($sql)->bindValues([
-			':id' => $uid
-		])->queryAll();
+		$sql = 'SELECT * FROM im_user_trans WHERE tUId>0 ' . $strCriteria
+			. ' ORDER BY tAddedOn DESC LIMIT ' . $offset . ',' . $pageSize;
+		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
 		foreach ($ret as $row) {
 			$unit = $row['tUnit'];
@@ -250,6 +256,8 @@ class UserTrans extends ActiveRecord
 				$item['time'] = date('H:i:s', strtotime($row['tAddedOn']));
 				$items[] = $item;
 			} elseif ($role == User::ROLE_SINGLE && $item['unit'] == self::UNIT_GIFT) {
+				$items[] = $item;
+			}else{
 				$items[] = $item;
 			}
 		}
