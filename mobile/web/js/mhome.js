@@ -210,10 +210,10 @@ require(["layer"],
 			wx.ready(function () {
 				wx.hideOptionMenu();
 			});
+			locationHashChanged();
 			if ($sls.tabsTop < 1) {
 				$sls.tabsTop = $sls.tabs.offset().top;
 			}
-			locationHashChanged();
 			resetTabs();
 			UserUtil.btnFollow.on(kClick, function () {
 				UserUtil.follow();

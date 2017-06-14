@@ -7,47 +7,46 @@
 			<h4><em>{{$uInfo.name}}</em> <i class="icon female"></i></h4>
 			<h5>{{$uInfo.location_t}}</h5>
 		</div>
-		<h6>34岁 . 162cm . 水瓶座 . 其他</h6>
+		<h6>{{$brief}}</h6>
 	</div>
+	{{if $uInfo.album}}
 	<a href="javascript:;" class="album-row line-bottom2">
 		<ul class="photos">
 			<li class="title">
-				相册(222)
+				相册({{$uInfo.album_cnt}})
 			</li>
+			{{foreach from=$uInfo.album item=item name=foo}}
 			<li>
-				<img src="https://img.1meipo.com/731c5fb440f7f7bce155cf038b9a4e35.jpeg?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100">
+				<img src="{{$item}}">
 			</li>
-			<li>
-				<img src="https://img.1meipo.com/b6954ef743549241b603e7a8a4337ea3.jpeg?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100">
-			</li>
-			<li>
-				<img src="https://img.1meipo.com/b6954ef743549241b603e7a8a4337ea3.jpeg?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100">
-			</li>
+			{{/foreach}}
 		</ul>
 	</a>
+	{{/if}}
 	<div class="single-info">
 		<a>
 			<span class="title">基本资料</span>
 			<ul class="clearfix">
-				<li>{{$uInfo.name}}</li>
-				<li>{{$uInfo.education_t}}</li>
-				<li>{{$uInfo.income_t}}</li>
-				<li>{{$uInfo.car_t}}</li>
+
+				{{foreach from=$baseInfo item=item}}
+				<li>{{$item}}</li>
+				{{/foreach}}
 			</ul>
 		</a>
 	</div>
 	<div class="hnwords">
 		<div class="hninfo">
 			<a href="/hn/p?uid={{$uInfo.encryptId}}" class="">
+			<a href="/wx/mh?id={{$uInfo.mp_encrypt_id}}#shome" class="">
 				<div class="img">
-					<img src="https://img.1meipo.com/78a38e5c680e577b7aa826a6615f4442.jpg?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100">
+					<img src="{{$uInfo.mp_thumb}}">
 				</div>
 			</a>
-			<p class="name">贺宝茹</p>
-			<p class="desc">珠宝</p>
+			<p class="name">{{$uInfo.mp_name}}</p>
+			<p class="desc">{{$uInfo.mp_scope}}</p>
 		</div>
 		<div class="wcontent">
-			<p class="words">外表温柔内在坚强爱珠宝的(财女)才女</p>
+			<p class="words">{{$uInfo.comment}}</p>
 		</div>
 	</div>
 	<div class="mywords">
@@ -55,7 +54,7 @@
 		<span class="words">{{$uInfo.intro}}</span>
 	</div>
 	<span class="report pushblack">举报拉黑</span>
-	<div style="height: 50px;"></div>
+	<div style="height: 6rem;"></div>
 	<div class="m-bottom-bar">
 		<p><a class="heart btn-like" data-id="{{$uInfo.encryptId}}">心动</a></p>
 		<p><a class="weixin btn-apply">加微信聊聊</a></p>
@@ -85,4 +84,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/mhome.js?v=1.1.1" src="/assets/js/require.js"></script>
+<script data-main="/js/shome.js?v=1.1.1" src="/assets/js/require.js"></script>

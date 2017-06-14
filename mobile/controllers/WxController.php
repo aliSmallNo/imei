@@ -249,7 +249,31 @@ class WxController extends BaseController
 		}
 		$items = [];
 		$uInfo = User::user(['uId' => $hid]);
-		//print_r($uInfo);exit;
+
+		$baseInfo = [];
+		if ($uInfo) {
+			$fields = ['height_t', 'income_t', 'education_t', 'estate_t', 'car_t'];
+			foreach ($fields as $field) {
+				if ($uInfo[$field]) {
+					$baseInfo[] = $uInfo[$field];
+				}
+				if (count($baseInfo) >= 6) {
+					break;
+				}
+			}
+		}
+		$brief = [];
+		if ($uInfo) {
+			$fields = ['age', 'height_t', 'income_t', 'education_t'];
+			foreach ($fields as $field) {
+				if ($uInfo[$field]) {
+					$brief[] = $uInfo[$field];
+				}
+				if (count($brief) >= 4) {
+					break;
+				}
+			}
+		}
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$prefer = 'male';
@@ -269,6 +293,8 @@ class WxController extends BaseController
 				'uInfo' => $uInfo,
 				'prefer' => $prefer,
 				'hid' => $hid,
+				'baseInfo' => $baseInfo,
+				'brief' => implode(' . ', $brief),
 				'items' => json_encode($items)
 			],
 			'terse');
