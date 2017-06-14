@@ -249,6 +249,7 @@ class WxController extends BaseController
 		}
 		$items = [];
 		$uInfo = User::user(['uId' => $hid]);
+		//print_r($uInfo);exit;
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$prefer = 'male';
@@ -277,13 +278,10 @@ class WxController extends BaseController
 	{
 		$hid = self::getParam('id');
 		$hid = AppUtil::decrypt($hid);
-		if (!$hid) {
-			header('location:/wx/error?msg=用户不存在啊~');
-			exit();
-		}
+
 		$openId = self::$WX_OpenId;
-		$avatar = $nickname = '';
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$avatar = $nickname = '';
 		$stat = [];
 		if ($wxInfo) {
 			$avatar = $wxInfo["Avatar"];
@@ -293,6 +291,15 @@ class WxController extends BaseController
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
 		}
+
+		if (!$hid) {
+			$hid = $wxInfo["uId"];
+			if (!$hid) {
+				header('location:/wx/error?msg=用户不存在啊~');
+				exit();
+			}
+		}
+
 		$prices = [
 			['num' => 20, 'price' => 2],
 			['num' => 60, 'price' => 6],

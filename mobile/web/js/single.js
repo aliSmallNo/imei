@@ -92,7 +92,7 @@ require(["layer"],
 			$sls.hashPage = hashTag;
 			switch (hashTag) {
 				case 'slink':
-					slink();
+					slinkUlit.slink();
 					FootUtil.toggle(1);
 					break;
 				case 'slook':
@@ -103,7 +103,7 @@ require(["layer"],
 					FootUtil.toggle(1);
 					break;
 				case 'sme':
-					sme();
+					smeUlit.sme();
 					FootUtil.toggle(1);
 					break;
 				default:
@@ -126,61 +126,48 @@ require(["layer"],
 			layer.closeAll();
 		}
 
-		$(document).on(kClick, "a[tag=recomend]", function () {
-			if ($(this).attr("fl")) {
-				return;
-			}
-			slink();
-		});
-
-		function slink() {
-			if ($sls.slinkFlag) {
-				return;
-			}
-			$sls.slinkFlag = 1;
-			$("a[tag=recomend]").html("拼命加载中~~");
-			$.post("/api/user", {
-				tag: "matcher",
-				page: $sls.slinkpage,
-			}, function (resp) {
-				var html = Mustache.render($("#slinkTemp").html(), resp.data);
-				if ($sls.slinkpage == 1) {
-					$(".recommendMp").html(html);
-				} else {
-					$(".recommendMp").append(html);
+		var slinkUlit = {
+			slinkpage: 1,
+			slinkFlag: false,
+			nomore: $("a[tag=recomend]"),
+			recommendMp: $(".recommendMp"),
+			slinkTemp: $("#slinkTemp").html(),
+			init: function () {
+				$(document).on(kClick, "a[tag=recomend]", function () {
+					if ($(this).attr("fl")) {
+						return;
+					}
+					slinkUlit.slink();
+				});
+			},
+			slink: function () {
+				if (slinkUlit.slinkFlag) {
+					return;
 				}
-				$sls.slinkpage = resp.data.nextPage;
-				if ($sls.slinkpage == 0) {
-					$("a[tag=recomend]").html("没有更多了~");
-					$("a[tag=recomend]").attr("fl", 1);
-				} else {
-					$("a[tag=recomend]").html("点击加载更多~");
-				}
-				$sls.slinkFlag = 0;
-			}, "json");
-		}
-
-		function sme() {
-			if ($sls.smeFlag) {
-				return;
-			}
-			$sls.smeFlag = 1;
-			$.post("/api/user", {
-				tag: "myinfo",
-			}, function (resp) {
-				var temp = '{[#items]}<li><img src="{[.]}"></li>{[/items]}';
-				$(".u-my-album .photos").html(Mustache.render(temp, {items: resp.data.img4}));
-
-				var html = Mustache.render(temp, {items: resp.data.imgList});
-				$("#album .photos").html('<li><a href="javascript:;" class="choose-img"></a></li>' + html);
-
-				$(".u-my-album .title").html("相册(" + resp.data.co + ")");
-
-				var tipHtml = resp.data.hasMp ? "" : "还没有媒婆";
-				$("[to=myMP]").find(".tip").html(tipHtml);
-				$sls.smeFlag = 0;
-			}, "json");
-		}
+				slinkUlit.slinkFlag = 1;
+				slinkUlit.nomore.html("拼命加载中~~");
+				$.post("/api/user", {
+					tag: "matcher",
+					page: slinkUlit.slinkpage,
+				}, function (resp) {
+					var html = Mustache.render(slinkUlit.slinkTemp, resp.data);
+					if (slinkUlit.slinkpage == 1) {
+						slinkUlit.recommendMp.html(html);
+					} else {
+						slinkUlit.recommendMp.append(html);
+					}
+					slinkUlit.slinkpage = resp.data.nextPage;
+					if (slinkUlit.slinkpage == 0) {
+						slinkUlit.nomore.html("没有更多了~");
+						slinkUlit.nomore.attr("fl", 1);
+					} else {
+						slinkUlit.nomore.html("点击加载更多~");
+					}
+					slinkUlit.slinkFlag = 0;
+				}, "json");
+			},
+		};
+		slinkUlit.init();
 
 		$(".nav-foot > a").on(kClick, function () {
 			var self = $(this);
@@ -223,9 +210,9 @@ require(["layer"],
 					var obj = $(this).find("span");
 					var id = $(this).attr("id");
 					if (obj.hasClass("icon-love")) {
-						hint(id, "yes", obj);
+						alertUlit.hint(id, "yes", obj);
 					} else {
-						hint(id, "no", obj);
+						alertUlit.hint(id, "no", obj);
 					}
 					break;
 				case "wechat":
@@ -237,183 +224,213 @@ require(["layer"],
 			}
 		});
 
-		var payroseF = 0;
-		$(document).on(kClick, ".pay-mp a", function () {
-			var self = $(this);
-			var tag = self.attr("tag");
-			switch (tag) {
-				case "close":
-					self.closest(".pay-mp").hide();
-					$sls.cork.hide();
-					break;
-				case "choose":
-					self.closest(".options").find("a").removeClass();
-					self.addClass("active");
-					self.closest(".options").next().find("a").removeClass().addClass("active");
-					break;
-				case "pay":
-					var num = self.closest(".pay-mp").find(".options a.active").attr("num");
-					if (!num) {
-						showMsg("请先选择打赏的媒瑰花");
-						return;
+		var alertUlit = {
+			payroseF: false,
+			hintFlag: false,
+			init: function () {
+				$(document).on(kClick, ".pay-mp a", function () {
+					var self = $(this);
+					var tag = self.attr("tag");
+					switch (tag) {
+						case "close":
+							self.closest(".pay-mp").hide();
+							$sls.cork.hide();
+							break;
+						case "choose":
+							self.closest(".options").find("a").removeClass();
+							self.addClass("active");
+							self.closest(".options").next().find("a").removeClass().addClass("active");
+							break;
+						case "pay":
+							var num = self.closest(".pay-mp").find(".options a.active").attr("num");
+							if (!num) {
+								showMsg("请先选择打赏的媒瑰花");
+								return;
+							}
+							if (alertUlit.payroseF) {
+								return;
+							}
+							alertUlit.payroseF = 1;
+							$.post("/api/user", {
+								tag: "payrose",
+								num: num,
+								id: $sls.secretId,
+							}, function (resp) {
+								if (resp.data >= num) {
+									$(".getWechat").show();
+									$(".pay-mp").hide();
+								} else {
+									$(".m-popup-shade").show();
+									$(".rose-num").html(resp.data);
+									$(".not-enough-rose").show();
+								}
+								alertUlit.payroseF = 0;
+							}, "json");
+							break;
+						case "des":
+							if ($(this).next().css("display") == "none") {
+								$(this).next().show();
+							} else {
+								$(this).next().hide();
+							}
+							break;
 					}
-					if (payroseF) {
-						return;
-					}
-					payroseF = 1;
-					$.post("/api/user", {
-						tag: "payrose",
-						num: num,
-						id: $sls.secretId,
-					}, function (resp) {
-						if (resp.data >= num) {
-							$(".getWechat").show();
+				});
+				$(document).on(kClick, ".not-enough-rose a", function () {
+					var tag = $(this).attr("tag");
+					$(".m-popup-shade").hide();
+					switch (tag) {
+						case "cancel":
+							$(this).closest(".not-enough-rose").hide();
+							break;
+						case "recharge":
 							$(".pay-mp").hide();
+							$sls.cork.hide();
+							$(".not-enough-rose").hide();
+							location.href = "/wx/sw";
+							break;
+					}
+				});
+				$(document).on(kClick, ".m-top-users .btn", function () {
+					var self = $(this);
+					if (self.hasClass('btn-like')) {
+						var id = self.attr("data-id");
+						if (!self.hasClass("favor")) {
+							alertUlit.hint(id, "yes", self);
 						} else {
-							$(".m-popup-shade").show();
-							$(".rose-num").html(resp.data);
-							$(".not-enough-rose").show();
+							alertUlit.hint(id, "no", self);
 						}
-						payroseF = 0;
-					}, "json");
-					break;
-				case "des":
-					if ($(this).next().css("display") == "none") {
-						$(this).next().show();
-					} else {
-						$(this).next().hide();
+					} else if (self.hasClass('btn-apply')) {
+						$sls.secretId = self.attr("data-id");
+						$sls.cork.show();
+						//$(".getWechat").show();
+						$(".pay-mp").show();
 					}
-					break;
-			}
-		});
+				});
 
-		$(document).on(kClick, ".not-enough-rose a", function () {
-			var tag = $(this).attr("tag");
-			$(".m-popup-shade").hide();
-			switch (tag) {
-				case "cancel":
-					$(this).closest(".not-enough-rose").hide();
-					break;
-				case "recharge":
-					$(".pay-mp").hide();
-					$sls.cork.hide();
-					$(".not-enough-rose").hide();
-					location.href = "#saccount";
-					break;
-			}
-		});
-
-		var hintFlag = 0;
-
-		function hint(id, f, obj) {
-			if (hintFlag) {
-				return;
-			}
-			hintFlag = 1;
-			$.post("/api/user", {
-				tag: "hint",
-				id: id,
-				f: f
-			}, function (resp) {
-				if (resp.data) {
-					if (f == "yes") {
-						showMsg('心动成功~');
-						obj.addClass("favor");
-					} else {
-						showMsg('已取消心动');
-						obj.removeClass("favor");
+				$(".getWechat a").on(kClick, function () {
+					var self = $(this);
+					var tag = self.attr("tag");
+					switch (tag) {
+						case "close":
+							self.closest(".getWechat").hide();
+							$sls.cork.hide();
+							break;
+						case "btn-confirm":
+							var wname = $.trim(self.closest(".getWechat").find("input").val());
+							if (!wname) {
+								showMsg("请填写正确的微信号哦~");
+								return;
+							}
+							$.post("/api/user", {
+								tag: "wxname",
+								wname: wname,
+							}, function (resp) {
+								if (resp.data) {
+									showMsg("已发送给对方，请等待TA的同意");
+									setTimeout(function () {
+										self.closest(".getWechat").hide();
+										$sls.cork.hide();
+									}, 1000);
+								}
+							}, "json");
+							break;
 					}
+				});
+			},
+			hint: function (id, f, obj) {
+				if (alertUlit.hintFlag) {
+					return;
 				}
-				hintFlag = 0;
-
-			}, "json");
-		}
-
-		$(document).on(kClick, ".m-top-users .btn", function () {
-			var self = $(this);
-			if (self.hasClass('btn-like')) {
-				var id = self.attr("data-id");
-				if (!self.hasClass("favor")) {
-					hint(id, "yes", self);
-				} else {
-					hint(id, "no", self);
-				}
-			} else if (self.hasClass('btn-apply')) {
-				$sls.secretId = self.attr("data-id");
-				$sls.cork.show();
-				//$(".getWechat").show();
-				$(".pay-mp").show();
-			}
-		});
-
-		$(".getWechat a").on(kClick, function () {
-			var self = $(this);
-			var tag = self.attr("tag");
-			switch (tag) {
-				case "close":
-					self.closest(".getWechat").hide();
-					$sls.cork.hide();
-					break;
-				case "btn-confirm":
-					var wname = $.trim(self.closest(".getWechat").find("input").val());
-					if (!wname) {
-						showMsg("请填写正确的微信号哦~");
-						return;
-					}
-					$.post("/api/user", {
-						tag: "wxname",
-						wname: wname,
-					}, function (resp) {
-						if (resp.data) {
-							showMsg("已发送给对方，请等待TA的同意");
-							setTimeout(function () {
-								self.closest(".getWechat").hide();
-								$sls.cork.hide();
-							}, 1000);
+				alertUlit.hintFlag = 1;
+				$.post("/api/user", {
+					tag: "hint",
+					id: id,
+					f: f
+				}, function (resp) {
+					if (resp.data) {
+						if (f == "yes") {
+							showMsg('心动成功~');
+							obj.addClass("favor");
+						} else {
+							showMsg('已取消心动');
+							obj.removeClass("favor");
 						}
-					}, "json");
-					break;
-			}
-		});
-
-		$(document).on(kClick, "a.choose-img", function () {
-			wx.chooseImage({
-				count: 1,
-				sizeType: ['original', 'compressed'],
-				sourceType: ['album', 'camera'],
-				success: function (res) {
-					var localIds = res.localIds;
-					if (localIds && localIds.length) {
-						var localId = localIds[0];
-						wxUploadImages(localId);
 					}
-				}
-			});
-		});
-		function wxUploadImages(localId) {
-			wx.uploadImage({
-				localId: localId.toString(),
-				isShowProgressTips: 1,
-				success: function (res) {
-					var serverId = res.serverId;
-					uploadImage(serverId);
-				},
-				fail: function () {
-					$sls.serverId = "";
-				}
-			});
-		}
+					alertUlit.hintFlag = 0;
+				}, "json");
+			},
 
-		function uploadImage(serverId) {
-			$.post("/api/user", {
-				tag: "album",
-				id: serverId,
-			}, function (resp) {
-				if (resp.data) {
-					$("#album .photos").append('<li><img src="' + resp.data + '" alt=""></li>');
+		};
+		alertUlit.init();
+
+
+		var smeUlit = {
+			localId: "",
+			serverId: "",
+			smeFlag: false,
+			init: function () {
+				$(document).on(kClick, "a.choose-img", function () {
+					wx.chooseImage({
+						count: 1,
+						sizeType: ['original', 'compressed'],
+						sourceType: ['album', 'camera'],
+						success: function (res) {
+							var localIds = res.localIds;
+							if (localIds && localIds.length) {
+								smeUlit.localId = localIds[0];
+								wxUploadImages();
+							}
+						}
+					});
+				});
+			},
+			sme: function () {
+				if (smeUlit.smeFlag) {
+					return;
 				}
-			}, "json");
-		}
+				smeUlit.smeFlag = 1;
+				$.post("/api/user", {
+					tag: "myinfo",
+				}, function (resp) {
+					var temp = '{[#items]}<li><img src="{[.]}"></li>{[/items]}';
+					$(".u-my-album .photos").html(Mustache.render(temp, {items: resp.data.img4}));
+
+					var html = Mustache.render(temp, {items: resp.data.imgList});
+					$("#album .photos").html('<li><a href="javascript:;" class="choose-img"></a></li>' + html);
+
+					$(".u-my-album .title").html("相册(" + resp.data.co + ")");
+
+					var tipHtml = resp.data.hasMp ? "" : "还没有媒婆";
+					$("[to=myMP]").find(".tip").html(tipHtml);
+					smeUlit.smeFlag = 0;
+				}, "json");
+			},
+			wxUploadImages: function () {
+				wx.uploadImage({
+					localId: smeUlit.localId.toString(),
+					isShowProgressTips: 1,
+					success: function (res) {
+						smeUlit.serverId = res.serverId;
+						smeUlit.uploadImage(serverId);
+					},
+					fail: function () {
+						smeUlit.serverId = "";
+					}
+				});
+			},
+			uploadImage: function () {
+				$.post("/api/user", {
+					tag: "album",
+					id: smeUlit.serverId,
+				}, function (resp) {
+					if (resp.data) {
+						$("#album .photos").append('<li><img src="' + resp.data + '" alt=""></li>');
+					}
+				}, "json");
+			},
+		};
+		smeUlit.init();
 
 		$("#matchCondition a").on(kClick, function () {
 			var self = $(this);
@@ -587,7 +604,28 @@ require(["layer"],
 							break;
 					}
 				});
+				$(document).on(kClick, ".wx-hint a", function () {
+					var to = $(this).attr("to");
 
+					TabUilt.tabObj = $(".tab[tag=" + to + "]");
+					TabUilt.tag = TabUilt.tabObj.attr("tag");
+					TabUilt.subtag = TabUilt.tabObj.find(":first-child").attr("subtag");
+
+					TabUilt.page = 1;
+					TabUilt.tabObj.next().html("");
+					switch (to) {
+						case "addMeWx":
+							TabUilt.getData();
+							break;
+						case "IaddWx":
+							TabUilt.getData();
+							break;
+						case "heartbeat":
+							TabUilt.getData();
+							break;
+					}
+					location.href = "#" + to;
+				});
 			},
 			getData: function () {
 				if (TabUilt.tabFlag) {
@@ -610,38 +648,6 @@ require(["layer"],
 			},
 		};
 		TabUilt.init();
-
-		$(document).on(kClick, ".wx-hint a", function () {
-			var to = $(this).attr("to");
-
-			TabUilt.tabObj = $(".tab[tag=" + to + "]");
-			TabUilt.tag = TabUilt.tabObj.attr("tag");
-			TabUilt.subtag = TabUilt.tabObj.find(":first-child").attr("subtag");
-
-			TabUilt.page = 1;
-			TabUilt.tabObj.next().html("");
-			switch (to) {
-				case "addMeWx":
-					TabUilt.getData();
-					break;
-				case "IaddWx":
-					TabUilt.getData();
-					break;
-				case "heartbeat":
-					TabUilt.getData();
-					break;
-			}
-			location.href = "#" + to;
-		});
-
-		function showMsg(title, sec) {
-			var duration = sec || 2;
-			layer.open({
-				content: title,
-				skin: 'msg',
-				time: duration
-			});
-		}
 
 		$(document).on(kClick, "a.btn-profile", function () {
 			if ($sls.sprofileF) {
@@ -674,6 +680,29 @@ require(["layer"],
 							break;
 						case "focusMP":
 							mpUlit.focusMP();
+							break;
+					}
+				});
+				$(document).on(kClick, ".findmp", function () {
+					var shade = $(".m-popup-shade");
+					var img = $("#noMP .img");
+					shade.fadeIn(200);
+					img.show();
+					setTimeout(function () {
+						shade.hide();
+						img.hide();
+					}, 2000);
+				});
+
+				$(document).on(kClick, ".mymp-des a", function () {
+					var to = $(this).attr("to");
+					switch (to) {
+						case "sgroup":
+							var id = $(this).attr("id");
+							location.href = "/wx/mh?id=" + id + '#shome';
+							break;
+						case "othermp":
+							location.href = "#" + to;
 							break;
 					}
 				});
@@ -720,29 +749,14 @@ require(["layer"],
 		};
 		mpUlit.init();
 
-		$(document).on(kClick, ".mymp-des a", function () {
-			var to = $(this).attr("to");
-			switch (to) {
-				case "sgroup":
-					var id = $(this).attr("id");
-					location.href = "/wx/mh?id=" + id + '#shome';
-					break;
-				case "othermp":
-					location.href = "#" + to;
-					break;
-			}
-		});
-
-		$(document).on(kClick, ".findmp", function () {
-			var shade = $(".m-popup-shade");
-			var img = $("#noMP .img");
-			shade.fadeIn(200);
-			img.show();
-			setTimeout(function () {
-				shade.hide();
-				img.hide();
-			}, 2000);
-		});
+		function showMsg(title, sec) {
+			var duration = sec || 2;
+			layer.open({
+				content: title,
+				skin: 'msg',
+				time: duration
+			});
+		}
 
 		$(function () {
 			$("body").addClass("bg-color");

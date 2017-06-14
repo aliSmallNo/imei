@@ -29,16 +29,16 @@
 		<a>
 			<span class="title">基本资料</span>
 			<ul class="clearfix">
-				<li>162cm</li>
-				<li>本科</li>
-				<li>2k以下</li>
-				<li>已购车</li>
+				<li>{{$uInfo.name}}</li>
+				<li>{{$uInfo.education_t}}</li>
+				<li>{{$uInfo.income_t}}</li>
+				<li>{{$uInfo.car_t}}</li>
 			</ul>
 		</a>
 	</div>
 	<div class="hnwords">
 		<div class="hninfo">
-			<a href="/hn/p?uid=3226a9a8fdbe475e9e0f22d7d5e65de1" class="">
+			<a href="/hn/p?uid={{$uInfo.encryptId}}" class="">
 				<div class="img">
 					<img src="https://img.1meipo.com/78a38e5c680e577b7aa826a6615f4442.jpg?x-oss-process=image/resize,m_fill,w_200,h_200,limit_0/auto-orient,0/quality,q_100">
 				</div>
@@ -52,13 +52,13 @@
 	</div>
 	<div class="mywords">
 		<span class="title">内心独白</span>
-		<span class="words">臭味相投</span>
+		<span class="words">{{$uInfo.intro}}</span>
 	</div>
 	<span class="report pushblack">举报拉黑</span>
 	<div style="height: 50px;"></div>
 	<div class="m-bottom-bar">
-		<p><a class="heart">心动</a></p>
-		<p><a class="weixin">加微信聊聊</a></p>
+		<p><a class="heart btn-like" data-id="{{$uInfo.encryptId}}">心动</a></p>
+		<p><a class="weixin btn-apply">加微信聊聊</a></p>
 	</div>
 </div>
 <input type="hidden" id="cUID" value="{{$hid}}">

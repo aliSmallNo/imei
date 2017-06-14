@@ -86,12 +86,12 @@
 		</div>
 		<div class="m-rows line-bottom">
 			<a href="/wx/sw?id={{$encryptId}}#swallet" class=""><span class="title">媒桂花</span></a>
-			<a href="/message?role=1" class="" id="notifications"><span class="title">通知</span> <span
+			<a href="javascript:;" class="" id="notifications"><span class="title">通知</span> <span
 								class="count">0</span></a>
-			<a href="/feedback" class=""><span class="title">意见反馈</span> </a>
-			<a href="/user/weixininfo" class=""><span class="title">我的微信号</span></a>
-			<a href="/qrcode?role=1" class=""><span class="title">关注微媒100公众号</span></a>
-			<a href="/user/blacklist" class=""><span class="title">黑名单</span></a>
+			<a href="javascript:;" class=""><span class="title">意见反馈</span> </a>
+			<a href="javascript:;" class=""><span class="title">我的微信号</span></a>
+			<a href="javascript:;" class=""><span class="title">关注微媒100公众号</span></a>
+			<a href="javascript:;" class=""><span class="title">黑名单</span></a>
 		</div>
 	</div>
 </section>
