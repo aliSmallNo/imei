@@ -673,7 +673,7 @@ require(["layer"],
 			switch (to) {
 				case "sgroup":
 					var id = $(this).attr("id");
-					location.href = "/wx/mh?id=" + id;
+					location.href = "/wx/mh?id=" + id + '#shome';
 					break;
 				case "othermp":
 					location.href = "#" + to;
@@ -691,7 +691,6 @@ require(["layer"],
 				img.hide();
 			}, 2000);
 		});
-
 
 		$(function () {
 			$("body").addClass("bg-color");

@@ -818,7 +818,7 @@
 <script type="text/html" id="slinkTemp">
 	{[#items]}
 	<li>
-		<a href="/wx/mh?id={[encryptId]}">
+		<a href="/wx/mh?id={[encryptId]}#shome">
 			<div class="avatar">
 				<img src="{[avatar]}">
 			</div>

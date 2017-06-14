@@ -4,7 +4,7 @@
 		<ul class="clearfix matcher">
 			{{foreach from=$matches item=match}}
 			<li>
-				<a href="/wx/mh?id={{$match.encryptId}}">
+				<a href="/wx/mh?id={{$match.encryptId}}#shome">
 					<div class="avatar">
 						<img src="{{$match.thumb}}">
 					</div>
@@ -232,7 +232,7 @@
 <script type="text/template" id="tpl_match">
 	{[#items]}
 	<li>
-		<a href="/wx/mh?id={[encryptId]}">
+		<a href="/wx/mh?id={[encryptId]}#shome">
 			<div class="avatar">
 				<img src="{[thumb]}">
 			</div>

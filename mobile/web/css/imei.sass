@@ -3399,7 +3399,7 @@ section
 
 .report
 	display: block
-	width: 3.8rem
+	width: 6.5rem
 	background: url(../images/ico_rpt.png) no-repeat left
 	background-size: 1.5rem 1.5rem
 	padding-left: 1.6rem
@@ -3584,3 +3584,114 @@ section
 			padding: 0
 			line-height: 3.2rem
 
+.album-row
+	background: #fff
+	display: block
+	position: relative
+	&:after
+		@include arrowRight
+		right: 1.5rem
+	.title
+		display: block
+	.photos
+		padding: 1rem .5rem
+		overflow: hidden
+		li
+			@include borderBox
+			text-align: center
+			padding: .5rem
+			float: left
+			width: 7rem
+			height: 7rem
+			overflow: hidden
+			&.title
+				text-align: left
+				color: $grayFontColor
+				padding-left: 1rem
+				padding-right: 0
+				font-size: 1.2rem
+			img
+				width: 100%
+				height: 100%
+.single-info
+	background: #fff
+	margin-bottom: 1rem
+	padding: 1rem 1.5rem
+	position: relative
+	min-height: 4rem
+	&:after
+		@include arrowRight
+		right: 1.5rem
+	a
+		padding-left: 6.5rem
+		position: relative
+		padding-right: 1rem
+		display: block
+		.title
+			position: absolute
+			left: 0
+			top: .5rem
+			color: $grayFontColor
+			font-size: 1.2rem
+		ul
+			overflow: hidden
+			li 
+				display: inline-block
+				float: left
+				line-height: 2rem
+				padding: 0 .6rem
+				color: $mainColor
+				border: $mainColorLight 1px solid
+				border-radius: .3rem
+				margin-right: .5rem
+				margin-bottom: .5rem
+				font-size: 1.2rem
+.hnwords 
+	background: #fff
+	margin-bottom: 1rem
+	padding: 1.5rem 1.5rem 1.5rem 1rem
+	@include displayFlex
+	.hninfo
+		@include displayFlex-w(7rem)
+		text-align: center
+		position: relative
+		a
+			text-align: center
+			img
+				margin: 0 auto
+				width: 4rem
+				height: 4rem
+				border: 2px solid $mainColorLight
+				border-radius: 2.2rem
+				overflow: hidden
+		.name
+			font-size: 1.2rem
+			@include textTail
+			text-align: center
+		.desc
+			font-size: 1rem
+			line-height: 1.6rem
+			color: $grayFontColor
+			@include textTail
+	.wcontent
+		@include displayFlex-1
+		.words 
+			background: $mainColorLight
+			color: #fff
+			padding: .8rem
+			font-size: 1.2rem
+			line-height: 1.8rem
+			min-height: 7rem
+			border-radius: 0 .8rem .8rem
+.mywords
+	padding: 1rem 1.5rem 1.5rem 7rem
+	position: relative
+	display: block
+	background: #fff
+	margin-bottom: 1rem
+	.title
+		position: absolute
+		left: 1.5rem
+		top: 1rem
+		color: $grayFontColor
+		font-size: 1.2rem

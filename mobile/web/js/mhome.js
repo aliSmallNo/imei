@@ -1,3 +1,6 @@
+if (document.location.hash === "" || document.location.hash === "#") {
+	document.location.hash = "#shome";
+}
 require.config({
 	paths: {
 		"jquery": "/assets/js/jquery-3.2.1.min",
@@ -150,10 +153,33 @@ require(["layer"],
 			}
 		}
 
+		function locationHashChanged() {
+			var hashTag = location.hash;
+			hashTag = hashTag.replace("#!", "");
+			hashTag = hashTag.replace("#", "");
+			switch (hashTag) {
+				default:
+					break;
+			}
+			$sls.curFrag = hashTag;
+			// FootUtil.reset();
+			var title = $("#" + hashTag).attr("data-title");
+			if (title) {
+				$(document).attr("title", title);
+				$("title").html(title);
+				var iFrame = $('<iframe src="/blank.html" class="g-blank"></iframe>');
+				iFrame.on('load', function () {
+					setTimeout(function () {
+						iFrame.off('load').remove();
+					}, 0);
+				}).appendTo($("body"));
+			}
+			layer.closeAll();
+		}
+
 		$(function () {
 			$("body").addClass("bg-color");
-			// SingleUtil.init();
-			// FastClick.attach($sls.footer.get(0));
+			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems'];
@@ -164,8 +190,8 @@ require(["layer"],
 			if ($sls.tabsTop < 1) {
 				$sls.tabsTop = $sls.tabs.offset().top;
 			}
+			locationHashChanged();
 			resetTabs();
-
 			UserUtil.btnFollow.on(kClick, function () {
 				UserUtil.follow();
 			});
