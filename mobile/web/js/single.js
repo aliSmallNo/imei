@@ -643,12 +643,12 @@ require(["layer"],
 			});
 		}
 
-		$(document).on(kClick, "a.sprofile", function () {
+		$(document).on(kClick, "a.btn-profile", function () {
 			if ($sls.sprofileF) {
 				return;
 			}
 			$sls.sprofileF = 1;
-			var id = $(this).closest("li").attr("id");
+			var id = $(this).attr("data-id");
 			$.post("/api/user", {
 				tag: "sprofile",
 				id: id,

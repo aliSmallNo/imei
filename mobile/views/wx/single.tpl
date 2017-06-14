@@ -588,8 +588,8 @@
 </script>
 <script type="text/html" id="userFiter">
 	{[#data]}
-	<li id="{[secretId]}">
-		<a href="javascript:;" class="head">
+	<li>
+		<a href="javascript:;" class="head btn-profile" data-id="{[secretId]}">
 			<img src="{[avatar]}" class="nic">
 			<div class="u-info">
 				<em>{[name]}</em>
@@ -848,4 +848,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.1.7" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.1.8" src="/assets/js/require.js"></script>
