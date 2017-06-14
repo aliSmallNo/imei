@@ -3524,7 +3524,7 @@ section {
   margin-bottom: 1rem;
   padding: 2rem 1.5rem; }
   .single-page .baseinfo h6 {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     color: #737373;
     height: 2.6rem;
     line-height: 2.6rem;
@@ -3798,14 +3798,14 @@ section {
       .single-info a ul li {
         display: inline-block;
         float: left;
-        line-height: 2rem;
+        line-height: 1.8rem;
         padding: 0 0.6rem;
         color: #f06292;
         border: #f491b2 1px solid;
         border-radius: 0.3rem;
         margin-right: 0.5rem;
         margin-bottom: 0.5rem;
-        font-size: 1.2rem; }
+        font-size: 1rem; }
 
 .hnwords {
   background: #fff;
@@ -3856,7 +3856,7 @@ section {
       font-size: 1.2rem;
       line-height: 1.8rem;
       min-height: 7rem;
-      border-radius: 0 0.8rem 0.8rem; }
+      border-radius: 0 1rem 1rem; }
 
 .mywords {
   padding: 1rem 1.5rem 1.5rem 7rem;

@@ -269,6 +269,11 @@ class User extends ActiveRecord
 			}
 		}
 		$item['vip'] = intval($item['vip']);
+		$item['album'] = json_decode($item['album'], 1);
+		$item['album_cnt'] = 0;
+		if ($item['album'] && is_array($item['album'])) {
+			$item['album_cnt'] = count($item['album']);
+		}
 		$item['gender_ico'] = $item['gender'] == self::GENDER_FEMALE ? 'female' : 'male';
 		$item['encryptId'] = AppUtil::encrypt($item['id']);
 		$fields = ['approvedby', 'approvedon', 'addedby', 'updatedby', 'rawdata'];
@@ -286,8 +291,9 @@ class User extends ActiveRecord
 		}
 		$offset = ($page - 1) * $pageSize;
 		$conn = AppUtil::db();
-		$sql = "SELECT * FROM im_user WHERE uId>0 $strCriteria 
-					ORDER BY uUpdatedOn DESC Limit $offset, $pageSize";
+		$sql = "SELECT * FROM im_user 
+				  WHERE uId>0 $strCriteria 
+				  ORDER BY uUpdatedOn DESC Limit $offset, $pageSize";
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
 		foreach ($ret as $row) {
@@ -307,7 +313,34 @@ class User extends ActiveRecord
 		}
 		list($users) = self::users($criteria, $params);
 		if ($users && count($users)) {
-			return $users[0];
+			$user = $users[0];
+
+			$sql = 'SELECT u.*,n.nNote as comment
+ 					FROM im_user_net as n 
+					JOIN im_user as u ON n.nUId=u.uId
+					WHERE n.nRelation=:rel AND n.nDeletedFlag=0 AND n.nSubUId=:id ';
+			$ret = AppUtil::db()->createCommand($sql)->bindValues([
+				':rel' => UserNet::REL_BACKER,
+				':id' => $user['id']
+			])->queryOne();
+			if ($ret) {
+				$row = self::fmtRow($ret);
+				$user['mp_name'] = $row['name'];
+				$user['mp_thumb'] = $row['thumb'];
+				$user['mp_scope'] = $row['scope_t'];
+				$user['mp_encrypt_id'] = $row['encryptId'];
+				$user['comment'] = $ret['comment'];
+			} else {
+				$user['mp_name'] = '';
+				$user['mp_thumb'] = '';
+				$user['mp_scope'] = '';
+				$user['mp_encrypt_id'] = '';
+				$user['comment'] = '';
+			}
+			if (!$user['comment']) {
+				$user['comment'] = '(无)';
+			}
+			return $user;
 		}
 		return [];
 	}
