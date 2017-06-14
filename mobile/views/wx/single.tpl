@@ -201,26 +201,7 @@
 		<a href="#sme">返回</a>
 	</div>
 	<ul>
-		<li>
-			<a href="#sgroup">
-				<div class="left"><img src="/images/testImg.jpeg" alt=""></div>
-				<div class="right">
-					<p>刘烨 <span class="icon-vip"></span></p>
-					<p>作业盒子CEO</p>
-					<p>在帮11单身；牵线9次</p>
-				</div>
-			</a>
-		</li>
-		<li>
-			<a href="#sgroup">
-				<div class="left"><img src="/images/testImg.jpeg" alt=""></div>
-				<div class="right">
-					<p>刘烨 <span class="icon-vip"></span></p>
-					<p>作业盒子CEO</p>
-					<p>在帮11单身；牵线9次</p>
-				</div>
-			</a>
-		</li>
+
 	</ul>
 </section>
 <section id="saccount">
@@ -581,6 +562,20 @@
 				<p>{[name]}</p>
 				<p>{[location_t]}</p>
 				<i>{[age]} {[height]}cm {[horos_t]} {[scope_t]}</i>
+			</div>
+		</a>
+	</li>
+	{[/data]}
+</script>
+<script type="text/html" id="focusMPTemp">
+	{[#data]}
+	<li>
+		<a href="/wx/mh?id={[encryptId]}">
+			<div class="left"><img src="{[avatar]}" alt=""></div>
+			<div class="right">
+				<p>{[name]}<span class="icon-vip"></span></p>
+				<p>{[intro]}</p>
+				<p>在帮{[single]}单身；牵线{[link]}次</p>
 			</div>
 		</a>
 	</li>

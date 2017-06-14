@@ -290,6 +290,15 @@ class ApiController extends Controller
 			case "mymp":
 				$ret = User::mymp($openId);
 				return self::renderAPI(0, '', $ret);
+			case "focusmp":
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				$page = self::postParam("page");
+				$ret = UserNet::focusMp($wxInfo["uId"], $page);
+				return self::renderAPI(0, '', ["data" => $ret]);
+				break;
 			case "hint":
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {

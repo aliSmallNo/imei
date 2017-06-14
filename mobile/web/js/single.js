@@ -661,8 +661,10 @@ require(["layer"],
 
 		var mpUlit = {
 			to: "",
+			page: 1,
 			mympF: false,
 			mympTemp: $("#mympTemp").html(),
+			focusMpTemp: $("#focusMPTemp").html(),
 			init: function () {
 				$(document).on(kClick, ".mymp a", function () {
 					mpUlit.to = $(this).attr("to");
@@ -671,7 +673,7 @@ require(["layer"],
 							mpUlit.mymp();
 							break;
 						case "focusMP":
-							location.href = "#" + mpUlit.to;
+							mpUlit.focusMP();
 							break;
 					}
 				});
@@ -692,7 +694,29 @@ require(["layer"],
 						location.href = "#noMP";
 					}
 				}, "json");
-			}
+			},
+			focusMP: function () {
+				if (mpUlit.mympF) {
+					return;
+				}
+				mpUlit.mympF = 1;
+				$.post("/api/user", {
+					tag: "focusmp",
+					page: mpUlit.page,
+				}, function (resp) {
+					if (resp.data) {
+						if (mpUlit.page == 1) {
+							console.log(Mustache.render(mpUlit.focusMpTemp, resp.data))
+							$("#focusMP ul").html(Mustache.render(mpUlit.focusMpTemp, resp.data));
+						} else {
+							$("#focusMP ul").append(Mustache.render(mpUlit.focusMpTemp, resp.data));
+						}
+					}
+
+					mpUlit.mympF = 0;
+					location.href = "#" + mpUlit.to;
+				}, "json");
+			},
 		};
 		mpUlit.init();
 

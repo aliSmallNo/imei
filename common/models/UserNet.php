@@ -389,5 +389,26 @@ class UserNet extends ActiveRecord
 		return $amt;
 	}
 
+	public static function focusMp($myUId, $page = 1, $pageSize = 20)
+	{
+		$offset = ($page - 1) * $pageSize;
+
+		$follow = self::REL_FOLLOW;
+		$sql = "select u.* from im_user as u 
+				join im_user_net as n on u.uId=n.nUId and n.nRelation=$follow and n.nDeletedFlag=0
+				where n.nSubUId=$myUId order by n.nAddedOn desc limit $offset,$pageSize";
+		$res = AppUtil::db()->createCommand($sql)->queryAll();
+
+		$items = [];
+		foreach ($res as $row) {
+			$item = User::fmtRow($row);
+			$mpInfo = UserNet::getStat($row["uId"]);
+			$item["single"] = $mpInfo["single"];
+			$item["link"] = $mpInfo["link"];
+			$items[] = $item;
+		}
+
+		return $items;
+	}
 
 }
