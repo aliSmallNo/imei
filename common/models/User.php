@@ -577,31 +577,33 @@ class User extends ActiveRecord
 		$limit = ($page - 1) * $pageSize . "," . $pageSize;
 
 		$relation_mp = UserNet::REL_BACKER;
-		$relation_hint = UserNet::REL_FAVOR;
+		$relation_favor = UserNet::REL_FAVOR;
 		$delflag = UserNet::DELETE_FLAG_NO;
 
-		$sql = "select nh.nUId as hid,u2.uId as mId,u2.uAvatar as mpavatar,u2.uName as mpname,u.* from im_user as u 
-				left join im_user_net as n on u.uId=n.nSubUId and n.nRelation=$relation_mp and n.nDeletedFlag=$delflag
-				left join im_user as u2 on u2.uId=n.nUId 
-				left join im_user_net as nh on u.uId=nh.nUId and nh.nRelation=$relation_hint and nh.nDeletedFlag=$delflag and nh.nSubUId=$mId
+		$sql = "select nh.nUId as hid,u2.uId as mId,u2.uthumb as mpavatar,u2.uName as mpname, n.nNote as comment,u.* 
+				from im_user as u 
+				join im_user_net as n on u.uId=n.nSubUId and n.nRelation=$relation_mp and n.nDeletedFlag=$delflag
+				join im_user as u2 on u2.uId=n.nUId 
+				left join im_user_net as nh on u.uId=nh.nUId and nh.nRelation=$relation_favor and nh.nDeletedFlag=$delflag and nh.nSubUId=$mId
 				where $condition order by uUpdatedOn desc limit $limit";
-		$ret = \Yii::$app->db->createCommand($sql)->queryAll();
+		$ret = AppUtil::db()->createCommand($sql)->queryAll();
 		$result = [];
-		foreach ($ret as $v) {
+		foreach ($ret as $row) {
 			$data = [];
 			//$data["id"] = $v["uOpenId"];
 			//$data["ids"] = $v["uId"];
-			$data["secretId"] = AppUtil::encrypt($v["uId"]);
-			$data["avatar"] = $v["uAvatar"];
-			$data["mavatar"] = $v["mpavatar"];
-			$data["name"] = mb_strlen($v["uName"]) > 4 ? mb_substr($v["uName"], 0, 4) . "..." : $v["uName"];
-			$data["gender"] = $v["uGender"] == 10 ? "female" : "male";
-			$data["age"] = date("Y") - $v["uBirthYear"];
-			$data["height"] = isset(User::$Height[$v["uHeight"]]) ? User::$Height[$v["uHeight"]] : "无年龄";
-			$data["horos"] = isset(User::$Height[$v["uHoros"]]) ? User::$Height[$v["uHoros"]] : "无星座";
-			$data["job"] = isset(User::$Height[$v["uProfession"]]) ? User::$Height[$v["uProfession"]] : "无职业";
-			$data["intro"] = $v["uIntro"];
-			$location = json_decode($v["uLocation"], 1);
+			$data["secretId"] = AppUtil::encrypt($row["uId"]);
+			$data["avatar"] = $row["uAvatar"];
+			$data["mavatar"] = $row["mpavatar"];
+			$data["mpname"] = $row["mpname"];
+			$data["name"] = mb_strlen($row["uName"]) > 4 ? mb_substr($row["uName"], 0, 4) . "..." : $row["uName"];
+			$data["gender"] = $row["uGender"] == 10 ? "female" : "male";
+			$data["age"] = date("Y") - $row["uBirthYear"];
+			$data["height"] = isset(User::$Height[$row["uHeight"]]) ? User::$Height[$row["uHeight"]] : "无年龄";
+			$data["horos"] = isset(User::$Height[$row["uHoros"]]) ? User::$Height[$row["uHoros"]] : "无星座";
+			$data["job"] = isset(User::$Height[$row["uProfession"]]) ? User::$Height[$row["uProfession"]] : "无职业";
+			$data["intro"] = $row["uIntro"];
+			$location = json_decode($row["uLocation"], 1);
 
 			if ($location && count($location)) {
 				$location = $location[0]["text"] . $location[1]["text"];
@@ -609,9 +611,9 @@ class User extends ActiveRecord
 				$location = "";
 			}
 			$data["location"] = $location;
-			$data["hintclass"] = $v["hid"] ? "icon-loved" : "icon-love";
+			$data["hintclass"] = $row["hid"] ? "icon-loved" : "icon-love";
+			$data["favor"] = $row["hid"] ? 'favor' : '';
 			$result[] = $data;
-
 		}
 
 		if (count($ret) == $pageSize) {
@@ -630,7 +632,7 @@ class User extends ActiveRecord
 				join im_user_net as n on u.uId=n.nSubUId
 				left join im_user as u2 on u2.uId=n.nUId
 				where u.uOpenId=:openId";
-		$ret = \Yii::$app->db->createCommand($sql)->bindValues([
+		$ret = AppUtil::db()->createCommand($sql)->bindValues([
 			":openId" => $openId,
 		])->queryOne();
 

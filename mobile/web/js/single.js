@@ -310,17 +310,16 @@ require(["layer"],
 			$.post("/api/user", {
 				tag: "hint",
 				id: id,
-				f: f,
+				f: f
 			}, function (resp) {
 				if (resp.data) {
 					if (f == "yes") {
-						showMsg('<span class="icon-alert icon-loved"></span><br><span class="font1rem">心动成功</span>');
-						obj.removeClass("icon-love").addClass("icon-loved");
-					}
-					if (f == "no") {
+						showMsg('心动成功~');
+						obj.addClass("favor");
+					} else {
 						console.log(hintFlag);
-						showMsg('<span class="icon-alert icon-love-break"></span><br><span class="font1rem">已取消心动</span>');
-						obj.removeClass("icon-loved").addClass("icon-love");
+						showMsg('已取消心动');
+						obj.removeClass("favor");
 					}
 				}
 				hintFlag = 0;
@@ -328,26 +327,20 @@ require(["layer"],
 			}, "json");
 		}
 
-		$(document).on(kClick, ".m-top-users .uf-btn a", function () {
+		$(document).on(kClick, ".m-top-users .btn", function () {
 			var self = $(this);
-			var cls = self.attr("class");
-			console.log(cls);
-			switch (cls) {
-				case "like":
-					var obj = self.find("span");
-					var id = self.attr("id");
-					if (obj.hasClass("icon-love")) {
-						hint(id, "yes", obj);
-					} else {
-						hint(id, "no", obj);
-					}
-					break;
-				case "apply":
-					$sls.secretId = self.attr("id");
-					$sls.cork.show();
-					//$(".getWechat").show();
-					$(".pay-mp").show();
-					break;
+			if (self.hasClass('btn-like')) {
+				var id = self.attr("data-id");
+				if (!self.hasClass("favor")) {
+					hint(id, "yes", self);
+				} else {
+					hint(id, "no", self);
+				}
+			} else if (self.hasClass('btn-apply')) {
+				$sls.secretId = self.attr("data-id");
+				$sls.cork.show();
+				//$(".getWechat").show();
+				$(".pay-mp").show();
 			}
 		});
 

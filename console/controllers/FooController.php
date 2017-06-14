@@ -172,6 +172,11 @@ class FooController extends Controller
 				self::singles($uId, $key, 2, 1);
 				self::singles($uId, $key, 2, 2);
 			}
+
+			$rel = UserNet::REL_BACKER;
+			$sql = 'update im_user as u join im_user_net as n on u.uId = n.nSubUId and nRelation=' . $rel . ' and n.nDeletedFlag=0
+			  set u.uMPUId = n.nUId';
+			$conn->createCommand($sql)->execute();
 		}
 	}
 
@@ -200,7 +205,7 @@ class FooController extends Controller
 			file_put_contents($fileName, $content);
 //			$ret[] = AppUtil::imageUrl() . '/avatar/' . $key . '.' . $ext;
 			$fileThumb = $path . '_t.' . $ext;
-			Image::open($fileName)->zoomCrop(240, 240, 0xffffff, 'center', 'center')->save($fileThumb);
+			Image::open($fileName)->zoomCrop(120, 120, 0xffffff, 'center', 'center')->save($fileThumb);
 			$ret[] = AppUtil::imageUrl() . '/avatar/' . $key . '_t.' . $ext;
 			$fileNormal = $path . '_n.' . $ext;
 			Image::open($fileName)->zoomCrop(480, 480, 0xffffff, 'center', 'center')->save($fileNormal);

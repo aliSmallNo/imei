@@ -2165,11 +2165,31 @@ section {
       color: #777; }
 
 .m-top-users li {
-  position: relative;
   background: #fff;
   margin-bottom: 1.5rem;
-  border-top: 1px solid #EEEFF3;
-  border-bottom: 1px solid #EEEFF3; }
+  border-top: 1px solid #E4E4E4;
+  border-bottom: 1px solid #EEEFF3;
+  position: relative; }
+  .m-top-users li .btn {
+    position: absolute;
+    top: 30rem;
+    display: inline-block;
+    width: 4.4rem;
+    height: 4.4rem;
+    border-radius: 2.2rem;
+    overflow: hidden;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1); }
+    .m-top-users li .btn.btn-like {
+      background: #fff url(../images/ico_like_pink.png) no-repeat center center;
+      background-size: 2.8rem 2.8rem;
+      right: 7.2rem; }
+      .m-top-users li .btn.btn-like.favor {
+        background: #fff url(../images/ico_like_pink_hl.png) no-repeat center center;
+        background-size: 2.8rem 2.8rem; }
+    .m-top-users li .btn.btn-apply {
+      background: #fff url(../images/ico_wechat.png) no-repeat center center;
+      background-size: 2.8rem 2.8rem;
+      right: 1.5rem; }
   .m-top-users li .rcmd {
     position: relative; }
     .m-top-users li .rcmd img {
@@ -2190,7 +2210,8 @@ section {
       top: 1rem;
       font-size: 2rem; }
   .m-top-users li .head {
-    position: relative; }
+    position: relative;
+    display: block; }
     .m-top-users li .head img {
       width: 32rem;
       height: 32rem;
@@ -2281,6 +2302,67 @@ section {
       position: relative;
       padding: 0 1.5rem 0 3.6rem;
       margin-right: 1rem; }
+  .m-top-users li .u-info {
+    position: absolute;
+    box-sizing: border-box;
+    padding: 1.5rem 1.5rem 1rem;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: url(../images/bg_info.png) repeat-x bottom;
+    background-size: auto 100%;
+    color: #fff; }
+    .m-top-users li .u-info em {
+      font-weight: 500;
+      font-size: 1.8rem; }
+    .m-top-users li .u-info p {
+      font-size: 1.2rem;
+      font-weight: 300;
+      line-height: 2.2rem; }
+    .m-top-users li .u-info .pos {
+      padding-left: 1.4rem;
+      font-size: 1.2rem;
+      position: relative; }
+      .m-top-users li .u-info .pos:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.2rem;
+        width: 1.2rem;
+        height: 1.2rem;
+        background: url(../images/ico_location.png) no-repeat center center;
+        background-size: 100% 100%; }
+    .m-top-users li .u-info .icon {
+      width: 1.3rem;
+      height: 1.3rem;
+      display: inline-block;
+      margin-left: 0.2rem; }
+      .m-top-users li .u-info .icon.male {
+        background: url(../images/ico_gender_male.png) no-repeat center center;
+        background-size: 100% 100%; }
+      .m-top-users li .u-info .icon.female {
+        background: url(../images/ico_gender_female.png) no-repeat center center;
+        background-size: 100% 100%; }
+  .m-top-users li .mp-info {
+    padding: 2rem 1.5rem;
+    position: relative; }
+    .m-top-users li .mp-info .mp {
+      position: relative;
+      padding-left: 4rem; }
+      .m-top-users li .mp-info .mp img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 2.8rem;
+        height: 2.8rem;
+        border: #E4E4E4 1px solid;
+        border-radius: 1.5rem; }
+      .m-top-users li .mp-info .mp span {
+        display: inline-block;
+        padding-top: 0.6rem; }
+      .m-top-users li .mp-info .mp .des {
+        color: #999;
+        padding-top: 2rem; }
 
 .useruc .banner img {
   width: 100%;
