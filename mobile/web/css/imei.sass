@@ -2175,6 +2175,17 @@ section
 		.head
 			position: relative
 			display: block
+			&:after
+				content: ''
+				width: 0
+				height: 0
+				position: absolute
+				left: 2rem
+				bottom: -.3rem
+				border-left: 1rem solid transparent
+				border-right: 1rem solid transparent
+				border-bottom: 1rem solid #fff
+				z-index: 11
 			img
 				width: 32rem
 				height: 32rem

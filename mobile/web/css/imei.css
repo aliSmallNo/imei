@@ -2212,6 +2212,17 @@ section {
   .m-top-users li .head {
     position: relative;
     display: block; }
+    .m-top-users li .head:after {
+      content: "";
+      width: 0;
+      height: 0;
+      position: absolute;
+      left: 2rem;
+      bottom: -0.3rem;
+      border-left: 1rem solid transparent;
+      border-right: 1rem solid transparent;
+      border-bottom: 1rem solid #fff;
+      z-index: 11; }
     .m-top-users li .head img {
       width: 32rem;
       height: 32rem;
