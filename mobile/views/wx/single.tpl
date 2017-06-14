@@ -112,9 +112,9 @@
 		<a href="#sme">返回</a>
 	</div>
 	<div class="tab" tag="addMeWx">
-		<a href="javascript:;" class="active">待处理</a>
-		<a href="javascript:;">已通过</a>
-		<a href="javascript:;">已拒绝</a>
+		<a href="javascript:;" class="active" subtag="wait">待处理</a>
+		<a href="javascript:;" subtag="pass">已通过</a>
+		<a href="javascript:;" subtag="fail">已拒绝</a>
 	</div>
 	<ul class="plist">
 		<div class="plist-defalt">

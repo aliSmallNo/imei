@@ -32,6 +32,10 @@ class UserNet extends ActiveRecord
 	const DELETE_FLAG_YES = 1;
 	const DELETE_FLAG_NO = 0;
 
+	const STATUS_FAIL = 0;
+	const STATUS_WAIT = 1;
+	const STATUS_PASS = 2;
+
 	public static function tableName()
 	{
 		return '{{%user_net}}';
@@ -309,10 +313,11 @@ class UserNet extends ActiveRecord
 		$orderBy = " order by n.nAddedOn desc ";
 		$conn = AppUtil::db();
 		$ret = [];
+		$sql = "";
 		switch ($tag) {
 			case "heartbeat":
 				$nRelation = self::REL_FAVOR;
-				$sql = "";
+
 				if ($subtag == "fav-me") {
 					$sql = "select u.* from 
 							im_user as u 
@@ -329,9 +334,37 @@ class UserNet extends ActiveRecord
 							join im_user_net as n2 on n2.nSubUId=u.uId and n2.nRelation=$nRelation and n.nDeletedFlag=$deleteflag
 							where n.nSubUId=$MyUid $orderBy $limit ";
 				}
-				$ret = $conn->createCommand($sql)->queryAll();
+				break;
+			case "iaddwx":
+				$nRelation = self::REL_LINK;
+				$status = self::STATUS_FAIL;
+				if ($subtag == "wait") {
+					$status = self::STATUS_WAIT;
+				} elseif ($subtag == "pass") {
+					$status = self::STATUS_PASS;
+				} elseif ($subtag == "fail") {
+
+				}
+				$sql = "select u.* from im_user as u 
+						join im_user_net as n on n.nUId=u.uId and n.nRelation=$nRelation and n.nStatus=$status and n.nDeletedFlag=$deleteflag
+						where n.nSubUId=$MyUid  $orderBy $limit ";
+				break;
+			case "addmewx":
+				$nRelation = self::REL_LINK;
+				$status = self::STATUS_FAIL;
+				if ($subtag == "wait") {
+					$status = self::STATUS_WAIT;
+				} elseif ($subtag == "pass") {
+					$status = self::STATUS_PASS;
+				} elseif ($subtag == "fail") {
+
+				}
+				$sql = "select u.* from im_user as u 
+						join im_user_net as n on n.nSubUId=u.uId and n.nRelation=$nRelation and n.nStatus=$status and n.nDeletedFlag=$deleteflag
+						where n.nUId=$MyUid  $orderBy $limit ";
 				break;
 		}
+		$ret = $conn->createCommand($sql)->queryAll();
 		$items = [];
 		foreach ($ret as $row) {
 			$item = User::fmtRow($row);
@@ -339,6 +372,21 @@ class UserNet extends ActiveRecord
 		}
 		return $items;
 
+	}
+
+	public static function roseAmt($myId, $id, $num)
+	{
+		$id = AppUtil::decrypt($id);
+
+		$amt = UserTrans::getStat($myId)["flower"];
+		if ($amt < $num) {
+			return $amt;
+		}
+
+		UserTrans::add($myId, 0, UserTrans::CAT_COST, UserTrans::TITLE_COST, $num, UserTrans::UNIT_GIFT);
+		UserNet::edit($id, $myId, UserNet::REL_LINK);
+
+		return $amt;
 	}
 
 

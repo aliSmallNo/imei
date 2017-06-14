@@ -10,6 +10,7 @@ namespace console\controllers;
  */
 use common\models\User;
 use common\models\UserNet;
+use common\models\UserTrans;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
@@ -289,7 +290,7 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-
+		$res = UserTrans::getStat(120003);var_dump($res);
 
 	}
 }

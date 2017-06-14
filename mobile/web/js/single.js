@@ -320,7 +320,6 @@ require(["layer"],
 						showMsg('心动成功~');
 						obj.addClass("favor");
 					} else {
-						console.log(hintFlag);
 						showMsg('已取消心动');
 						obj.removeClass("favor");
 					}
@@ -578,19 +577,19 @@ require(["layer"],
 
 					switch (TabUilt.tag) {
 						case "addMeWx":
-							TabUilt.tabObj.next().html($("#wechats").html());
+							TabUilt.getData();
 							break;
 						case "IaddWx":
-							TabUilt.tabObj.next().html($("#wechats").html());
+							TabUilt.getData();
 							break;
 						case "heartbeat":
-							TabUilt.heartbeat();
+							TabUilt.getData();
 							break;
 					}
 				});
 
 			},
-			heartbeat: function () {
+			getData: function () {
 				if (TabUilt.tabFlag) {
 					return;
 				}
@@ -598,11 +597,13 @@ require(["layer"],
 				$.post("/api/user", {
 					tag: TabUilt.tag,
 					subtag: TabUilt.subtag,
+					page: TabUilt.page,
+
 				}, function (resp) {
 					if (TabUilt.page == 1) {
-						TabUilt.tabObj.next().html(Mustache.render(TabUilt.Tmp, resp));
+						TabUilt.tabObj.next().html(Mustache.render(TabUilt.Tmp, resp.data));
 					} else {
-						TabUilt.tabObj.next().append(Mustache.render(TabUilt.Tmp, resp));
+						TabUilt.tabObj.next().append(Mustache.render(TabUilt.Tmp, resp.data));
 					}
 					TabUilt.tabFlag = 0;
 				}, "json");
@@ -621,16 +622,15 @@ require(["layer"],
 			TabUilt.tabObj.next().html("");
 			switch (to) {
 				case "addMeWx":
-
+					TabUilt.getData();
 					break;
 				case "IaddWx":
-
+					TabUilt.getData();
 					break;
 				case "heartbeat":
-
+					TabUilt.getData();
 					break;
 			}
-			TabUilt.heartbeat();
 			location.href = "#" + to;
 		});
 
