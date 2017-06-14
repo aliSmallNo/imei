@@ -604,7 +604,7 @@
 				<span><b>媒婆 {[mpname]}</b> 推荐了TA</span>
 			</div>
 			{[#comment]}
-			<div class="des"><b>“</b> {[.]} <b>”</b></div>{[/comment]}
+			<div class="des"><b>“</b>{[.]}<b>”</b></div>{[/comment]}
 		</div>
 
 		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-like {[favor]}"></a>
@@ -848,4 +848,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.1.5" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.1.7" src="/assets/js/require.js"></script>

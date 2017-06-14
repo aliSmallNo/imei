@@ -603,6 +603,7 @@ class User extends ActiveRecord
 			$data["avatar"] = $row["uAvatar"];
 			$data["mavatar"] = $row["mpavatar"];
 			$data["mpname"] = $row["mpname"];
+			$data["comment"] = $row["comment"];
 			$data["name"] = mb_strlen($row["uName"]) > 4 ? mb_substr($row["uName"], 0, 4) . "..." : $row["uName"];
 			$data["gender"] = $row["uGender"] == 10 ? "female" : "male";
 			$data["age"] = date("Y") - $row["uBirthYear"];
