@@ -2128,11 +2128,31 @@ section
 
 .m-top-users
 	li
-		position: relative
 		background: #fff
 		margin-bottom: 1.5rem
-		border-top: 1px solid $borderColorLight
-		border-bottom: 1px solid $borderColorLight
+		border-top: 1px solid $borderColor
+		border-bottom: 1px solid $borderColor
+		position: relative
+		.btn
+			position: absolute
+			top: 30rem
+			display: inline-block
+			width: 4.4rem
+			height: 4.4rem
+			border-radius: 2.2rem
+			overflow: hidden
+			box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .1)
+			&.btn-like
+				background: #fff url(../images/ico_like_pink.png) no-repeat center center
+				background-size: 2.8rem 2.8rem
+				right: 7.2rem
+				&.favor
+					background: #fff url(../images/ico_like_pink_hl.png) no-repeat center center
+					background-size: 2.8rem 2.8rem
+			&.btn-apply
+				background: #fff url(../images/ico_wechat.png) no-repeat center center
+				background-size: 2.8rem 2.8rem
+				right: 1.5rem
 		.rcmd
 			position: relative
 			img
@@ -2154,6 +2174,7 @@ section
 				font-size: 2rem
 		.head
 			position: relative
+			display: block
 			img
 				width: 32rem
 				height: 32rem
@@ -2242,6 +2263,70 @@ section
 				position: relative
 				padding: 0 1.5rem 0 3.6rem
 				margin-right: 1rem
+		.u-info
+			position: absolute
+			box-sizing: border-box
+			padding: 1.5rem 1.5rem 1rem
+			left: 0
+			bottom: 0
+			right: 0
+			background: url(../images/bg_info.png) repeat-x bottom
+			background-size: auto 100%
+			color: #fff
+			em
+				font-weight: $weightBold
+				font-size: 1.8rem
+			p
+				font-size: 1.2rem
+				font-weight: $weightNormal
+				line-height: 2.2rem
+			.pos
+				padding-left: 1.4rem
+				font-size: 1.2rem
+				position: relative
+				&:before
+					content: ''
+					position: absolute
+					left: 0
+					top: .2rem
+					width: 1.2rem
+					height: 1.2rem
+					background: url(../images/ico_location.png) no-repeat center center
+					background-size: 100% 100%
+			.icon
+				width: 1.3rem
+				height: 1.3rem
+				display: inline-block
+				margin-left: .2rem
+				&.male
+					background: url(../images/ico_gender_male.png) no-repeat center center
+					background-size: 100% 100%
+				&.female
+					background: url(../images/ico_gender_female.png) no-repeat center center
+					background-size: 100% 100%
+		.mp-info
+			padding: 2rem 1.5rem
+			position: relative
+			.mp
+				position: relative
+				padding-left: 4rem
+				b
+					font-weight: $weightBold
+				img
+					position: absolute
+					top: 0
+					left: 0
+					width: 2.8rem
+					height: 2.8rem
+					border: $borderColor 1px solid
+					border-radius: 1.5rem
+				span
+					display: inline-block
+					padding-top: .6rem
+				.des
+					color: $grayFontColorLight
+					padding-top: 2rem
+
 .useruc
 	.banner
 		img
@@ -2302,6 +2387,7 @@ section
 	padding-top: 5.5rem
 	font-weight: $weightNormal
 	text-align: center
+
 .m-ico-rose
 	display: inline-block
 	position: relative
@@ -2430,6 +2516,7 @@ section
 			border-color: #777 #777 transparent transparent
 			background-color: $mainColorLighter
 			transform: rotate(-135deg) translateZ(0)
+
 		a
 			flex: 1
 			font-size: 1.2rem

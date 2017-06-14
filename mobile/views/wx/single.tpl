@@ -255,8 +255,7 @@
 			<a href="#sme" style="display: none">个人中心</a>
 		</div>
 		<div class="img">
-			<img src="https://img.1meipo.com/6d097354efdc2f9f1305158ea3cf0edc.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
-					 alt="">
+			<img src="" alt="">
 		</div>
 		<div class="sprofile-top-des">
 			<p>Caroline<em class="icon-female"></em></p>
@@ -266,20 +265,7 @@
 	</div>
 	<div class="sprofile-album">
 		<a class="title" tag="album">相册 (5)</a>
-		<ul>
-			<li>
-				<img src="https://img.1meipo.com/6d097354efdc2f9f1305158ea3cf0edc.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
-						 alt="">
-			</li>
-			<li>
-				<img src="https://img.1meipo.com/6d097354efdc2f9f1305158ea3cf0edc.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
-						 alt="">
-			</li>
-			<li>
-				<img src="https://img.1meipo.com/6d097354efdc2f9f1305158ea3cf0edc.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
-						 alt="">
-			</li>
-		</ul>
+		<ul></ul>
 	</div>
 	<div class="sprofile-base">
 		<div class="title">基本资料</div>
@@ -294,8 +280,7 @@
 	<div class="sprofile-mp">
 		<div class="left">
 			<div class="img">
-				<img src="https://img.1meipo.com/6d097354efdc2f9f1305158ea3cf0edc.png?x-oss-process=image/resize,m_fill,w_600,h_600,limit_0/auto-orient,0/quality,q_100"
-						 alt="">
+				<img src="" alt="">
 			</div>
 			<p>思彬</p>
 			<i>渠道拓展</i>
@@ -604,29 +589,26 @@
 <script type="text/html" id="userFiter">
 	{[#data]}
 	<li id="{[secretId]}">
-		<div class="head">
-			<a href="javascript:;" class="photo sex2 sprofile">
-				<img src="{[avatar]}"
-						 class="nic">
-				<div class="intro">
-					这位美人儿强力推荐，天生丽质，贤良淑德，聪明伶俐，秀丽端庄，一笑倾城，再笑倾城，三笑倾你心，各位优质男青年赶紧行动吧
-				</div>
-				<img src="{[mavatar]}" class="avatar">
-			</a>
+		<a href="javascript:;" class="head">
+			<img src="{[avatar]}" class="nic">
+			<div class="u-info">
+				<em>{[name]}</em>
+				<i class="icon {[gender]}"></i>
+				<span class="pos">{[location]}</span>
+				<p>{[age]}岁 . {[height]} . {[horos]} . {[job]}</p>
+			</div>
+		</a>
+		<div class="mp-info">
+			<div class="mp">
+				<img src="{[mavatar]}" alt="">
+				<span><b>媒婆 {[mpname]}</b> 推荐了TA</span>
+			</div>
+			{[#comment]}
+			<div class="des"><b>“</b> {[.]} <b>”</b></div>{[/comment]}
 		</div>
-		<div class="info">
-			<span class="name">{[name]}</span>
-			<span class="icon {[gender]}"></span>
-			<span class="otherInfo">{[age]}岁 . {[height]} . {[horos]} . {[job]}</span>
-		</div>
-		<div class="sign">{[intro]}</div>
-		<div class="action clearfix uf-btn">
-			<span class="pos">{[location]}</span>
-			<a href="javascript:;" id="{[secretId]}" class="apply">加微信聊聊</a>
-			<a href="javascript:;" class="like" id="{[secretId]}">
-				<span class="icon-m {[hintclass]}"></span>心动
-			</a>
-		</div>
+
+		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-like {[favor]}"></a>
+		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-apply"></a>
 	</li>
 	{[/data]}
 </script>
@@ -866,4 +848,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.1.3" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.1.5" src="/assets/js/require.js"></script>
