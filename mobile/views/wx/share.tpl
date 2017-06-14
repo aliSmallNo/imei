@@ -16,7 +16,7 @@
 			{{elseif !$hasReg}}
 			<a href="/wx/imei" class="btn-s-1 s0 btn-look">马上去注册微媒100</a>
 			{{else}}
-			<a href="/wx/mh?id={{$encryptId}}" class="btn-s-1 s0 btn-look">查看TA的单身团</a>
+			<a href="/wx/mh?id={{$encryptId}}#shome" class="btn-s-1 s0 btn-look">查看TA的单身团</a>
 			{{/if}}
 		</div>
 		<div class="user">
