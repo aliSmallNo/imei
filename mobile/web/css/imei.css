@@ -3537,6 +3537,9 @@ section {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex; }
+    .single-page .baseinfo .title em {
+      font-weight: 500;
+      font-size: 1.5rem; }
     .single-page .baseinfo .title h4 {
       font-weight: 500;
       -webkit-box-flex: 1;

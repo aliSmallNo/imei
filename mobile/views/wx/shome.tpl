@@ -52,10 +52,10 @@
 		<span class="words">{{$uInfo.intro}}</span>
 	</div>
 	<span class="report pushblack">举报拉黑</span>
-	<div style="height: 50px;"></div>
+	<div style="height: 6rem;"></div>
 	<div class="m-bottom-bar">
-		<p><a class="heart">心动</a></p>
-		<p><a class="weixin">加微信聊聊</a></p>
+		<p><a class="heart btn-like">心动</a></p>
+		<p><a class="weixin btn-apply">加微信聊聊</a></p>
 	</div>
 </div>
 <input type="hidden" id="cUID" value="{{$hid}}">
