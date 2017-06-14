@@ -390,7 +390,13 @@ class User extends ActiveRecord
 
 	public static function getItem($openId)
 	{
-		$Info = self::find()->where(["uOpenId" => $openId])->asArray()->one();
+		$sql = "select n.nUId as mpId,u.* from 
+				im_user as u 
+				left join im_user_net as n on n.nSubUId=u.uId and  nRelation=120
+				where u.uOpenId=:openId";
+		$Info = AppUtil::db()->createCommand($sql)->bindValues([
+			":openId" => $openId
+		])->queryOne();
 		$Info["img4"] = [];
 		$Info["imgList"] = [];
 		$Info["co"] = 0;
@@ -407,6 +413,7 @@ class User extends ActiveRecord
 				}
 			}
 		}
+		$Info["hasMp"] = $Info["mpId"];
 		return $Info;
 	}
 

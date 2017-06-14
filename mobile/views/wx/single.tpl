@@ -77,8 +77,8 @@
 		</div>
 		<div class="m-rows line-bottom">
 			<a href="#addWeChat" class="" id="pending_applications"><span class="title">加我微信的人</span> </a>
-			<a href="#weFriends" class="" id="myapply"><span class="title">我加微信的人</span> </a>
-			<a href="#heartbeat" class="" id="myapply"><span class="title">心动列表</span> </a>
+			<a href="#weFriends" class=""><span class="title">我加微信的人</span> </a>
+			<a href="#heartbeat" class=""><span class="title">心动列表</span> </a>
 		</div>
 		<div class="m-rows line-bottom mymp">
 			<a href="javascript:;" class="" to="myMP"><span class="title">我的媒婆</span> <span class="tip">还没有媒婆</span></a>
@@ -87,7 +87,7 @@
 		<div class="m-rows line-bottom">
 			<a href="/wx/sw?id={{$encryptId}}#swallet" class=""><span class="title">媒桂花</span></a>
 			<a href="/message?role=1" class="" id="notifications"><span class="title">通知</span> <span
-								class="count">2</span></a>
+								class="count">0</span></a>
 			<a href="/feedback" class=""><span class="title">意见反馈</span> </a>
 			<a href="/user/weixininfo" class=""><span class="title">我的微信号</span></a>
 			<a href="/qrcode?role=1" class=""><span class="title">关注微媒100公众号</span></a>
@@ -111,7 +111,7 @@
 	<div class="nav">
 		<a href="#sme">返回</a>
 	</div>
-	<div class="tab" tag="addWeChat">
+	<div class="tab" tag="addMeWx">
 		<a href="javascript:;" class="active">待处理</a>
 		<a href="javascript:;">已通过</a>
 		<a href="javascript:;">已拒绝</a>
@@ -127,7 +127,7 @@
 	<div class="nav">
 		<a href="#sme">返回</a>
 	</div>
-	<div class="tab" tag="weFriends">
+	<div class="tab" tag="IaddWx">
 		<a href="javascript:;" class="active" subtag="pass">已通过</a>
 		<a href="javascript:;" subtag="wait">等TA处理</a>
 		<a href="javascript:;" subtag="fail">未通过</a>
@@ -144,9 +144,9 @@
 		<a href="#sme">返回</a>
 	</div>
 	<div class="tab" tag="heartbeat">
-		<a href="javascript:;" class="active">心动我的</a>
-		<a href="javascript:;">我心动的</a>
-		<a href="javascript:;">相互心动的</a>
+		<a href="javascript:;" class="active" subtag="fav-me">心动我的</a>
+		<a href="javascript:;" subtag="I-fav">我心动的</a>
+		<a href="javascript:;" subtag="fav-together">相互心动的</a>
 	</div>
 	<ul class="plist">
 		<div class="plist-defalt">
@@ -571,18 +571,20 @@
 	</div>
 </script>
 <script type="text/html" id="wechats">
-	<li id="">
-		<a href="#sprofile" class="sprofile">
+	{[#data]}
+	<li id="{[encryptId]}">
+		<a href="/wx/sh?id={[encryptId]}" class="sprofile">
 			<div class="plist-l">
-				<img src="/images/testImg.jpeg">
+				<img src="{[avatar]}">
 			</div>
 			<div class="plist-r">
-				<p>sarah zhou</p>
-				<p>北京/东城</p>
-				<i>28岁 . 168cm . 水瓶座 . 文化传媒</i>
+				<p>{[name]}</p>
+				<p>{[location_t]}</p>
+				<i>{[age]} {[height]}cm {[horos_t]} {[scope_t]}</i>
 			</div>
 		</a>
 	</li>
+	{[/data]}
 </script>
 <script type="text/html" id="userFiter">
 	{[#data]}

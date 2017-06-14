@@ -301,4 +301,45 @@ class UserNet extends ActiveRecord
 		$id = $info->save();
 		return $id;
 	}
+
+	public static function items($MyUid, $tag, $subtag, $page, $pageSize = 20)
+	{
+		$deleteflag = self::DELETE_FLAG_NO;
+		$limit = "limit " . ($page - 1) * $pageSize . " , " . $pageSize;
+		$orderBy = " order by n.nAddedOn desc ";
+		$conn = AppUtil::db();
+		$ret = [];
+		switch ($tag) {
+			case "heartbeat":
+				$nRelation = self::REL_FAVOR;
+				$sql = "";
+				if ($subtag == "fav-me") {
+					$sql = "select u.* from 
+							im_user as u 
+							join im_user_net  as n on n.nSubUId=u.uId and nRelation=$nRelation and n.nDeletedFlag=$deleteflag
+							where n.nUId=$MyUid $orderBy $limit ";
+				} elseif ($subtag == "I-fav") {
+					$sql = "select u.* from 
+							im_user as u 
+							join im_user_net  as n on n.nUId=u.uId and  nRelation=$nRelation and n.nDeletedFlag=$deleteflag
+							where n.nSubUId=$MyUid $orderBy $limit";
+				} elseif ($subtag == "fav-together") {
+					$sql = "select u.* from im_user as u 
+							join im_user_net  as n on n.nUId=u.uId and n.nRelation=$nRelation and n.nDeletedFlag=$deleteflag
+							join im_user_net as n2 on n2.nSubUId=u.uId and n2.nRelation=$nRelation and n.nDeletedFlag=$deleteflag
+							where n.nSubUId=$MyUid $orderBy $limit ";
+				}
+				$ret = $conn->createCommand($sql)->queryAll();
+				break;
+		}
+		$items = [];
+		foreach ($ret as $row) {
+			$item = User::fmtRow($row);
+			$items[] = $item;
+		}
+		return $items;
+
+	}
+
+
 }
