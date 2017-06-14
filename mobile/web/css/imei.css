@@ -2168,7 +2168,7 @@ section {
   background: #fff;
   margin-bottom: 1.5rem;
   border-top: 1px solid #E4E4E4;
-  border-bottom: 1px solid #EEEFF3;
+  border-bottom: 1px solid #E4E4E4;
   position: relative; }
   .m-top-users li .btn {
     position: absolute;
@@ -2349,6 +2349,8 @@ section {
     .m-top-users li .mp-info .mp {
       position: relative;
       padding-left: 4rem; }
+      .m-top-users li .mp-info .mp b {
+        font-weight: 500; }
       .m-top-users li .mp-info .mp img {
         position: absolute;
         top: 0;
