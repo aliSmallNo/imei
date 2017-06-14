@@ -635,9 +635,10 @@ class User extends ActiveRecord
 
 	public static function mymp($openId)
 	{
+		$relation = UserNet::REL_BACKER;
 		$sql = "select u2.uId as id,u2.uName as name,u2.uAvatar as avatar,u2.uIntro as intro
 				from im_user as u
-				join im_user_net as n on u.uId=n.nSubUId
+				join im_user_net as n on u.uId=n.nSubUId and n.nRelation=$relation
 				left join im_user as u2 on u2.uId=n.nUId
 				where u.uOpenId=:openId";
 		$ret = AppUtil::db()->createCommand($sql)->bindValues([

@@ -34,27 +34,4 @@ class UserAccount extends ActiveRecord
 	}
 
 
-	public static function roseAmt($openId, $id, $num)
-	{
-		$id = AppUtil::decrypt($id);
-		$userInfo = User::findOne(["uOpenId" => $openId]);
-		if (!$userInfo) {
-			return 0;
-		}
-		$myId = $userInfo->uId;
-		$entity = self::findOne(['aUId' => $userInfo->uId]);
-		if (!$entity) {
-			return 0;
-		}
-		$amt = $entity->aAmt;
-		if ($amt < $num) {
-			return $amt;
-		}
-		$entity->aAmt = $amt - abs($num);
-		$entity->save();
-
-		UserNet::edit($myId, $id, UserNet::REL_LINK);
-		return $amt;
-	}
-
 }

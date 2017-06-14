@@ -320,7 +320,6 @@ require(["layer"],
 						showMsg('心动成功~');
 						obj.addClass("favor");
 					} else {
-						console.log(hintFlag);
 						showMsg('已取消心动');
 						obj.removeClass("favor");
 					}
@@ -567,7 +566,6 @@ require(["layer"],
 			Tmp: $("#wechats").html(),
 			init: function () {
 				$(".tab a").on(kClick, function () {
-
 					TabUilt.tabObj = $(this).closest(".tab");
 					TabUilt.tag = TabUilt.tabObj.attr("tag");
 					TabUilt.subtag = $(this).attr("subtag");
@@ -579,18 +577,19 @@ require(["layer"],
 
 					switch (TabUilt.tag) {
 						case "addMeWx":
-							TabUilt.tabObj.next().html($("#wechats").html());
+							TabUilt.getData();
 							break;
 						case "IaddWx":
-							TabUilt.tabObj.next().html($("#wechats").html());
+							TabUilt.getData();
 							break;
 						case "heartbeat":
-							TabUilt.heartbeat();
+							TabUilt.getData();
 							break;
 					}
 				});
+
 			},
-			heartbeat: function () {
+			getData: function () {
 				if (TabUilt.tabFlag) {
 					return;
 				}
@@ -598,17 +597,42 @@ require(["layer"],
 				$.post("/api/user", {
 					tag: TabUilt.tag,
 					subtag: TabUilt.subtag,
+					page: TabUilt.page,
+
 				}, function (resp) {
 					if (TabUilt.page == 1) {
-						TabUilt.tabObj.next().html(Mustache.render(TabUilt.Tmp, resp));
+						TabUilt.tabObj.next().html(Mustache.render(TabUilt.Tmp, resp.data));
 					} else {
-						TabUilt.tabObj.next().append(Mustache.render(TabUilt.Tmp, resp));
+						TabUilt.tabObj.next().append(Mustache.render(TabUilt.Tmp, resp.data));
 					}
 					TabUilt.tabFlag = 0;
 				}, "json");
 			},
 		};
 		TabUilt.init();
+
+		$(document).on(kClick, ".wx-hint a", function () {
+			var to = $(this).attr("to");
+
+			TabUilt.tabObj = $(".tab[tag=" + to + "]");
+			TabUilt.tag = TabUilt.tabObj.attr("tag");
+			TabUilt.subtag = TabUilt.tabObj.find(":first-child").attr("subtag");
+
+			TabUilt.page = 1;
+			TabUilt.tabObj.next().html("");
+			switch (to) {
+				case "addMeWx":
+					TabUilt.getData();
+					break;
+				case "IaddWx":
+					TabUilt.getData();
+					break;
+				case "heartbeat":
+					TabUilt.getData();
+					break;
+			}
+			location.href = "#" + to;
+		});
 
 		function showMsg(title, sec) {
 			var duration = sec || 2;
@@ -635,38 +659,42 @@ require(["layer"],
 			}, "json");
 		});
 
-		$(document).on(kClick, ".mymp a", function () {
-			var to = $(this).attr("to");
-			switch (to) {
-				case "myMP":
-					mymp(to);
-					break;
-				case "focusMP":
-					//mymp(to);
-					location.href = "#" + to;
-					break;
-			}
-		});
-
-		var mympF = 0;
-
-		function mymp(to) {
-			if (mympF) {
-				return;
-			}
-			mympF = 1;
-			$.post("/api/user", {
-				tag: "mymp",
-			}, function (resp) {
-				if (resp.data) {
-					$(".mymp-des").html(Mustache.render($("#mympTemp").html(), resp.data));
-					mympF = 0;
-					location.href = "#" + to;
-				} else {
-					location.href = "#noMP";
+		var mpUlit = {
+			to: "",
+			mympF: false,
+			mympTemp: $("#mympTemp").html(),
+			init: function () {
+				$(document).on(kClick, ".mymp a", function () {
+					mpUlit.to = $(this).attr("to");
+					switch (mpUlit.to) {
+						case "myMP":
+							mpUlit.mymp();
+							break;
+						case "focusMP":
+							location.href = "#" + mpUlit.to;
+							break;
+					}
+				});
+			},
+			mymp: function () {
+				if (mpUlit.mympF) {
+					return;
 				}
-			}, "json");
-		}
+				mpUlit.mympF = 1;
+				$.post("/api/user", {
+					tag: "mymp",
+				}, function (resp) {
+					if (resp.data) {
+						$(".mymp-des").html(Mustache.render(mpUlit.mympTemp, resp.data));
+						mpUlit.mympF = 0;
+						location.href = "#" + mpUlit.to;
+					} else {
+						location.href = "#noMP";
+					}
+				}, "json");
+			}
+		};
+		mpUlit.init();
 
 		$(document).on(kClick, ".mymp-des a", function () {
 			var to = $(this).attr("to");

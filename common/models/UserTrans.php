@@ -19,6 +19,7 @@ class UserTrans extends ActiveRecord
 	const CAT_RECHARGE = 100;//充值
 	const CAT_SIGN = 105;   //签到
 	const CAT_LINK = 110;
+	const CAT_COST = 120;  //打赏
 
 	const UNIT_FEN = 'fen';
 	const UNIT_YUAN = 'yuan';
@@ -28,6 +29,10 @@ class UserTrans extends ActiveRecord
 		self::UNIT_YUAN => '元',
 		self::UNIT_GIFT => '媒桂花',
 	];
+
+	const TITLE_RECHARGE = "充值";
+	const TITLE_SIGN = "签到奖励";
+	const TITLE_COST = "打赏";
 
 	public static function tableName()
 	{
@@ -257,7 +262,7 @@ class UserTrans extends ActiveRecord
 				$items[] = $item;
 			} elseif ($role == User::ROLE_SINGLE && $item['unit'] == self::UNIT_GIFT) {
 				$items[] = $item;
-			}else{
+			} else {
 				$items[] = $item;
 			}
 		}

@@ -304,14 +304,18 @@ class ApiController extends Controller
 				$ret = UserWechat::replace($openId, ["wWechatId" => $wname]);
 				return self::renderAPI(0, '', $ret);
 			case "payrose":
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
 				$num = self::postParam("num");
 				$id = self::postParam("id");
-				$roseAmt = UserAccount::roseAmt($openId, $id, $num);
-				//return self::renderAPI(0, '', $roseAmt);
-				return self::renderAPI(0, '', 150);
-			case "addmewx"://添加我微信
-			case "iaddxx"://我添加微信
-			case "heartbeat"://心动列表
+				$roseAmt = UserNet::roseAmt($wxInfo["uId"], $id, $num);
+				return self::renderAPI(0, '', $roseAmt);
+			//return self::renderAPI(0, '', 150);
+			case "addmewx":     //添加我微信
+			case "iaddwx":      //我添加微信
+			case "heartbeat":   //心动列表
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
@@ -319,12 +323,13 @@ class ApiController extends Controller
 				$subtag = self::postParam("subtag");
 				$page = self::postParam("page", 1);
 				$ret = UserNet::items($wxInfo["uId"], $tag, $subtag, $page);
-				return self::renderAPI(0, '', $ret);
+				return self::renderAPI(0, '', ["data" => $ret, "nextpage" => $page]);
 		}
 		return self::renderAPI(129, '操作无效~');
 	}
 
-	public function actionPaid()
+	public
+	function actionPaid()
 	{
 		//测试
 		/*$GLOBALS['HTTP_RAW_POST_DATA'] = '<xml><appid><![CDATA[wxffcef12f0d7812f2]]></appid>
@@ -393,7 +398,8 @@ class ApiController extends Controller
 		return AppUtil::data_to_xml($data);
 	}
 
-	protected function renderAPI($code, $msg = '', $data = [])
+	protected
+	function renderAPI($code, $msg = '', $data = [])
 	{
 		Yii::$app->response->format = Response::FORMAT_JSON;
 		return [
@@ -404,13 +410,15 @@ class ApiController extends Controller
 		];
 	}
 
-	protected function getParam($field, $defaultVal = "")
+	protected
+	function getParam($field, $defaultVal = "")
 	{
 		$getInfo = Yii::$app->request->get();
 		return isset($getInfo[$field]) ? trim($getInfo[$field]) : $defaultVal;
 	}
 
-	protected function postParam($field, $defaultVal = "")
+	protected
+	function postParam($field, $defaultVal = "")
 	{
 		$postInfo = Yii::$app->request->post();
 		return isset($postInfo[$field]) ? trim($postInfo[$field]) : $defaultVal;
