@@ -75,10 +75,10 @@
 		<div class="m-rows line-bottom" style="display: none">
 			<a href="/wx/card" class=""><span class="title">我的身份卡</span></a>
 		</div>
-		<div class="m-rows line-bottom">
-			<a href="#addWeChat" class="" id="pending_applications"><span class="title">加我微信的人</span> </a>
-			<a href="#weFriends" class=""><span class="title">我加微信的人</span> </a>
-			<a href="#heartbeat" class=""><span class="title">心动列表</span> </a>
+		<div class="m-rows line-bottom wx-hint">
+			<a href="javascript:;" to="addMeWx" id="pending_applications"><span class="title">加我微信的人</span> </a>
+			<a href="javascript:;" to="IaddWx"><span class="title">我加微信的人</span> </a>
+			<a href="javascript:;" to="heartbeat"><span class="title">心动列表</span> </a>
 		</div>
 		<div class="m-rows line-bottom mymp">
 			<a href="javascript:;" class="" to="myMP"><span class="title">我的媒婆</span> <span class="tip">还没有媒婆</span></a>
@@ -107,7 +107,7 @@
 	</ul>
 
 </section>
-<section id="addWeChat">
+<section id="addMeWx">
 	<div class="nav">
 		<a href="#sme">返回</a>
 	</div>
@@ -123,7 +123,7 @@
 		</div>
 	</ul>
 </section>
-<section id="weFriends">
+<section id="IaddWx">
 	<div class="nav">
 		<a href="#sme">返回</a>
 	</div>

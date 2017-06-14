@@ -574,7 +574,6 @@ require(["layer"],
 			Tmp: $("#wechats").html(),
 			init: function () {
 				$(".tab a").on(kClick, function () {
-
 					TabUilt.tabObj = $(this).closest(".tab");
 					TabUilt.tag = TabUilt.tabObj.attr("tag");
 					TabUilt.subtag = $(this).attr("subtag");
@@ -596,6 +595,7 @@ require(["layer"],
 							break;
 					}
 				});
+
 			},
 			heartbeat: function () {
 				if (TabUilt.tabFlag) {
@@ -616,6 +616,30 @@ require(["layer"],
 			},
 		};
 		TabUilt.init();
+
+		$(document).on(kClick, ".wx-hint a", function () {
+			var to = $(this).attr("to");
+
+			TabUilt.tabObj = $(".tab[tag=" + to + "]");
+			TabUilt.tag = TabUilt.tabObj.attr("tag");
+			TabUilt.subtag = TabUilt.tabObj.find(":first-child").attr("subtag");
+
+			TabUilt.page = 1;
+			TabUilt.tabObj.next().html("");
+			switch (to) {
+				case "addMeWx":
+
+					break;
+				case "IaddWx":
+
+					break;
+				case "heartbeat":
+
+					break;
+			}
+			TabUilt.heartbeat();
+			location.href = "#" + to;
+		});
 
 		function showMsg(title, sec) {
 			var duration = sec || 2;
