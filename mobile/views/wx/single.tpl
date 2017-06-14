@@ -661,9 +661,7 @@
 			<p>{[mname]}</p>
 			<i>{[mintrol]}</i>
 		</div>
-		<div class="right">
-			这个女的很棒！！
-		</div>
+		<div class="right">{[comment]}</div>
 	</div>
 	<div class="sprofile-condtion">
 		<div class="title">择偶条件</div>

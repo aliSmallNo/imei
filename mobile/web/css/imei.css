@@ -2789,12 +2789,11 @@ section {
       color: #ccc; }
   #sprofile .sprofile-mp .right {
     flex: 1;
-    background: #fbd6e3;
+    background: #f491b2;
     padding: 1rem;
     font-size: 1rem;
     color: #fff;
-    border-radius: 1rem;
-    border-top-left-radius: 0; }
+    border-radius: 0 1rem 1rem 1rem; }
 #sprofile .sprofile-condtion {
   margin-top: 1rem;
   background: #fff;
@@ -2843,15 +2842,20 @@ section {
   bottom: 0; }
   #sprofile .sprofile-bottom a {
     flex: 1;
-    background: #fbd6e3;
+    background: #f491b2;
     margin: 0 0.5rem;
-    padding: 0.8rem 2rem;
-    font-size: 1rem;
+    padding: 0 2rem;
+    line-height: 3.6rem;
+    font-size: 1.4rem;
     text-align: center;
     color: #fff;
-    border-radius: 2rem; }
+    border-radius: 1.8rem; }
+    #sprofile .sprofile-bottom a .icon-l {
+      width: 1.6rem;
+      height: 1.6rem;
+      margin-left: -0.7rem; }
   #sprofile .sprofile-bottom a:last-child {
-    background: #02c8b5; }
+    background: #4da2ff; }
 
 .getWechat {
   display: none;

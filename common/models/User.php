@@ -420,7 +420,7 @@ class User extends ActiveRecord
 	public static function sprofile($id)
 	{
 		$id = AppUtil::decrypt($id);
-		$sql = "select u.*,u2.uAvatar as mavatar,u2.uName as mname,u2.uIntro as mintro
+		$sql = "select u.*,u2.uAvatar as mavatar,u2.uName as mname,u2.uIntro as mintro,n.nNote as comment
 			from im_user as u
 			left join im_user_net as n on n.nSubUId=u.uId
 			left join im_user as u2 on u2.uId=n.nUId
@@ -453,6 +453,7 @@ class User extends ActiveRecord
 
 		$result["mavatar"] = $Info["mavatar"];
 		$result["mname"] = $Info["mname"];
+		$result["comment"] = $Info["comment"];
 		$result["mintro"] = $Info["mintro"];
 		$result["scretId"] = AppUtil::encrypt($Info["uId"]);
 		$result["id"] = $Info["uId"];
