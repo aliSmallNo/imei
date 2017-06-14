@@ -502,7 +502,8 @@ class User extends ActiveRecord
 			if (isset($matchInfo["age"]) && $matchInfo["age"] > 0) {
 				$ageArr = explode("-", $matchInfo["age"]);
 				if (count($ageArr) == 2) {
-					$matchcondition["age"] = self::$AgeFilter[$ageArr[0]] . '~' . self::$AgeFilter[$ageArr[1]];
+					//$matchcondition["age"] = self::$AgeFilter[$ageArr[0]] . '~' . self::$AgeFilter[$ageArr[1]];
+					$matchcondition["age"] = $ageArr[0] . '~' . $ageArr[1] . '岁';
 				}
 			} else {
 				$matchcondition["age"] = self::$AgeFilter[0];
@@ -511,7 +512,8 @@ class User extends ActiveRecord
 			if (isset($matchInfo["height"]) && $matchInfo["height"] > 0) {
 				$heightArr = explode("-", $matchInfo["height"]);
 				if (count($heightArr) == 2) {
-					$matchcondition["height"] = self::$HeightFilter[$heightArr[0]] . '~' . self::$HeightFilter[$heightArr[1]];
+					//$matchcondition["height"] = self::$HeightFilter[$heightArr[0]] . '~' . self::$HeightFilter[$heightArr[1]];
+					$matchcondition["height"] = $heightArr[0] . '~' . $heightArr[1] . 'cm';
 				}
 			} else {
 				$matchcondition["height"] = self::$HeightFilter[0];
@@ -524,7 +526,16 @@ class User extends ActiveRecord
 			}
 
 			if (isset($matchInfo["income"]) && $matchInfo["income"] > 0) {
-				$matchcondition["income"] = self::$IncomeFilter[$matchInfo["income"]];
+				//$matchcondition["income"] = self::$IncomeFilter[$matchInfo["income"]];
+				if ($matchInfo["income"] == 0) {
+					$incomeT = "收入不限";
+				} elseif ($matchInfo["income"] == 3) {
+					$incomeT = $matchInfo["income"] . "W以下";
+				} else {
+					$incomeT = $matchInfo["income"] . "W以上";
+				}
+				$matchcondition["income"] = $incomeT;
+
 			} else {
 				$matchcondition["income"] = self::$IncomeFilter[0];
 			}
@@ -566,9 +577,9 @@ class User extends ActiveRecord
 
 		if (isset($data["height"]) && $data["height"] != 0) {
 			$height = explode("-", $data["height"]);
-			$startAge = (is_array($height) && count($height) == 2) ? $height[0] : 0;
-			$EndAge = (is_array($height) && count($height) == 2) ? $height[1] : 0;
-			$condition .= " and u.uHeight between $ageStart and $ageEnd ";
+			$startheight = (is_array($height) && count($height) == 2) ? $height[0] : 0;
+			$Endheight = (is_array($height) && count($height) == 2) ? $height[1] : 0;
+			$condition .= " and u.uHeight between $startheight and $Endheight ";
 		}
 
 		if (isset($data["edu"]) && $data["edu"] > 0) {
@@ -578,7 +589,7 @@ class User extends ActiveRecord
 
 		if (isset($data["income"]) && $data["income"] > 0) {
 			$income = $data['income'];
-			$condition .= " and uIncome > $income ";
+			$condition .= " and u.uIncome > $income ";
 		}
 
 		$limit = ($page - 1) * $pageSize . "," . $pageSize;
