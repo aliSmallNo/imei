@@ -175,6 +175,9 @@ require(["layer"],
 				$("#album .photos").html('<li><a href="javascript:;" class="choose-img"></a></li>' + html);
 
 				$(".u-my-album .title").html("相册(" + resp.data.co + ")");
+
+				var tipHtml = resp.data.hasMp ? "" : "还没有媒婆";
+				$("[to=myMP]").find(".tip").html(tipHtml);
 				$sls.smeFlag = 0;
 			}, "json");
 		}
@@ -561,29 +564,58 @@ require(["layer"],
 
 		});
 
-		$(".tab a").on(kClick, function () {
-			var tabObj = $(this).closest(".tab");
-			var tag = tabObj.attr("tag");
-			var subtag = self.attr("subtag");
-			tabObj.find("a").removeClass();
-			$(this).addClass("active");
-			switch (tag) {
-				case "addWeChat":
-					tabObj.next().html($("#wechats").html());
-					break;
-				case "weFriends":
-					tabObj.next().html($("#wechats").html());
-					break;
-				case "heartbeat":
-					heartbeat(subtag);
-					tabObj.next().html($("#wechats").html());
-					break;
-			}
-		});
 
-		function heartbeat(subtag) {
+		var TabUilt = {
+			tag: "",
+			subtag: "",
+			tabObj: null,
+			tabFlag: false,
+			page: 1,
+			Tmp: $("#wechats").html(),
+			init: function () {
+				$(".tab a").on(kClick, function () {
 
-		}
+					TabUilt.tabObj = $(this).closest(".tab");
+					TabUilt.tag = TabUilt.tabObj.attr("tag");
+					TabUilt.subtag = $(this).attr("subtag");
+					TabUilt.tabObj.find("a").removeClass();
+					$(this).addClass("active");
+
+					TabUilt.page = 1;
+					TabUilt.tabObj.next().html("");
+
+					switch (TabUilt.tag) {
+						case "addMeWx":
+							TabUilt.tabObj.next().html($("#wechats").html());
+							break;
+						case "IaddWx":
+							TabUilt.tabObj.next().html($("#wechats").html());
+							break;
+						case "heartbeat":
+							TabUilt.heartbeat();
+							break;
+					}
+				});
+			},
+			heartbeat: function () {
+				if (TabUilt.tabFlag) {
+					return;
+				}
+				TabUilt.tabFlag = 1;
+				$.post("/api/user", {
+					tag: TabUilt.tag,
+					subtag: TabUilt.subtag,
+				}, function (resp) {
+					if (TabUilt.page == 1) {
+						TabUilt.tabObj.next().html(Mustache.render(TabUilt.Tmp, resp));
+					} else {
+						TabUilt.tabObj.next().append(Mustache.render(TabUilt.Tmp, resp));
+					}
+					TabUilt.tabFlag = 0;
+				}, "json");
+			},
+		};
+		TabUilt.init();
 
 		function showMsg(title, sec) {
 			var duration = sec || 2;

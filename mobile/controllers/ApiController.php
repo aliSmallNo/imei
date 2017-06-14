@@ -309,7 +309,17 @@ class ApiController extends Controller
 				$roseAmt = UserAccount::roseAmt($openId, $id, $num);
 				//return self::renderAPI(0, '', $roseAmt);
 				return self::renderAPI(0, '', 150);
-
+			case "addmewx"://添加我微信
+			case "iaddxx"://我添加微信
+			case "heartbeat"://心动列表
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				$subtag = self::postParam("subtag");
+				$page = self::postParam("page", 1);
+				$ret = UserNet::items($wxInfo["uId"], $tag, $subtag, $page);
+				return self::renderAPI(0, '', $ret);
 		}
 		return self::renderAPI(129, '操作无效~');
 	}
