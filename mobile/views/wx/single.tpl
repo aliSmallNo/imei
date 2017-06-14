@@ -840,7 +840,7 @@
 	</div>
 	<div class="bot">
 		<a href="javascript:;" to="sgroup" id="{[secretId]}">查看TA的主页</a>
-		<a href="javascript:;" to="othermp">更换其他媒婆</a>
+		<a href="javascript:;" to="othermp" style="display: none">更换其他媒婆</a>
 	</div>
 </script>
 <script type="text/template" id="tpl_wx_info">

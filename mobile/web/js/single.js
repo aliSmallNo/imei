@@ -659,38 +659,42 @@ require(["layer"],
 			}, "json");
 		});
 
-		$(document).on(kClick, ".mymp a", function () {
-			var to = $(this).attr("to");
-			switch (to) {
-				case "myMP":
-					mymp(to);
-					break;
-				case "focusMP":
-					//mymp(to);
-					location.href = "#" + to;
-					break;
-			}
-		});
-
-		var mympF = 0;
-
-		function mymp(to) {
-			if (mympF) {
-				return;
-			}
-			mympF = 1;
-			$.post("/api/user", {
-				tag: "mymp",
-			}, function (resp) {
-				if (resp.data) {
-					$(".mymp-des").html(Mustache.render($("#mympTemp").html(), resp.data));
-					mympF = 0;
-					location.href = "#" + to;
-				} else {
-					location.href = "#noMP";
+		var mpUlit = {
+			to: "",
+			mympF: false,
+			mympTemp: $("#mympTemp").html(),
+			init: function () {
+				$(document).on(kClick, ".mymp a", function () {
+					mpUlit.to = $(this).attr("to");
+					switch (mpUlit.to) {
+						case "myMP":
+							mpUlit.mymp();
+							break;
+						case "focusMP":
+							location.href = "#" + mpUlit.to;
+							break;
+					}
+				});
+			},
+			mymp: function () {
+				if (mpUlit.mympF) {
+					return;
 				}
-			}, "json");
-		}
+				mpUlit.mympF = 1;
+				$.post("/api/user", {
+					tag: "mymp",
+				}, function (resp) {
+					if (resp.data) {
+						$(".mymp-des").html(Mustache.render(mpUlit.mympTemp, resp.data));
+						mpUlit.mympF = 0;
+						location.href = "#" + mpUlit.to;
+					} else {
+						location.href = "#noMP";
+					}
+				}, "json");
+			}
+		};
+		mpUlit.init();
 
 		$(document).on(kClick, ".mymp-des a", function () {
 			var to = $(this).attr("to");
