@@ -604,7 +604,7 @@
 				<span><b>媒婆 {[mpname]}</b> 推荐了TA</span>
 			</div>
 			{[#comment]}
-			<div class="des"><b>“</b> {[.]} <b>”</b></div>{[/comment]}
+			<div class="des"><b>“</b>{[.]}<b>”</b></div>{[/comment]}
 		</div>
 
 		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-like {[favor]}"></a>
