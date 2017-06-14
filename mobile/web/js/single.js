@@ -664,7 +664,7 @@ require(["layer"],
 			page: 1,
 			mympF: false,
 			mympTemp: $("#mympTemp").html(),
-			focusMpTemp: $("#wechats").html(),
+			focusMpTemp: $("#focusMPTemp").html(),
 			init: function () {
 				$(document).on(kClick, ".mymp a", function () {
 					mpUlit.to = $(this).attr("to");
@@ -706,6 +706,7 @@ require(["layer"],
 				}, function (resp) {
 					if (resp.data) {
 						if (mpUlit.page == 1) {
+							console.log(Mustache.render(mpUlit.focusMpTemp, resp.data))
 							$("#focusMP ul").html(Mustache.render(mpUlit.focusMpTemp, resp.data));
 						} else {
 							$("#focusMP ul").append(Mustache.render(mpUlit.focusMpTemp, resp.data));

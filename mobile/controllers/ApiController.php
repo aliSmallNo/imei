@@ -297,7 +297,7 @@ class ApiController extends Controller
 				}
 				$page = self::postParam("page");
 				$ret = UserNet::focusMp($wxInfo["uId"], $page);
-				return self::renderAPI(0, '', ["items" => $ret]);
+				return self::renderAPI(0, '', ["data" => $ret]);
 				break;
 			case "hint":
 				$wxInfo = UserWechat::getInfoByOpenId($openId);

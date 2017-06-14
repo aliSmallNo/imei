@@ -402,6 +402,9 @@ class UserNet extends ActiveRecord
 		$items = [];
 		foreach ($res as $row) {
 			$item = User::fmtRow($row);
+			$mpInfo = UserNet::getStat($row["uId"]);
+			$item["single"] = $mpInfo["single"];
+			$item["link"] = $mpInfo["link"];
 			$items[] = $item;
 		}
 
