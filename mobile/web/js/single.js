@@ -723,11 +723,11 @@ require(["layer"],
 				}, function (resp) {
 					if (resp.data) {
 						$(".mymp-des").html(Mustache.render(mpUlit.mympTemp, resp.data));
-						mpUlit.mympF = 0;
 						location.href = "#" + mpUlit.to;
 					} else {
 						location.href = "#noMP";
 					}
+					mpUlit.mympF = 0;
 				}, "json");
 			},
 			focusMP: function () {
@@ -753,6 +753,7 @@ require(["layer"],
 				}, "json");
 			},
 		};
+		mpUlit.init();
 
 		var FeedbackUtil = {
 			text: $('.feedback-text'),
@@ -819,7 +820,6 @@ require(["layer"],
 			locationHashChanged();
 			$sls.cork.hide();
 			FeedbackUtil.init();
-			mpUlit.init();
 
 			$sls.newsTimer = setInterval(function () {
 				if ($sls.newIdx < 10) {

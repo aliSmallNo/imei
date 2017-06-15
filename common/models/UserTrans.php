@@ -91,7 +91,7 @@ class UserTrans extends ActiveRecord
 			$params[':id'] = $uid;
 		}
 		$conn = AppUtil::db();
-		$sql = 'SELECT SUM(tAmt) as amt,tUnit as unit, tUId as uid
+		$sql = 'SELECT SUM(case when tCategory=100 or tCategory=105 then tAmt when tCategory=120 then -tAmt end) as amt,tUnit as unit, tUId as uid
  			from im_user_trans WHERE tUId>0 ' . $strCriteria . ' GROUP BY tUId,tUnit';
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
