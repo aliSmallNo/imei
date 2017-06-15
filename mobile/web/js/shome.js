@@ -47,6 +47,7 @@ require(["layer"],
 			rptUId: $('#cUID').val(),
 			sel_text: $('.select-text'),
 			loading: 0,
+			tip: '请选择举报原因',
 			init: function () {
 				var util = this;
 				$('.btn-report').on(kClick, function () {
@@ -57,7 +58,7 @@ require(["layer"],
 					var text = self.val();
 					console.log(text);
 					if (!text) {
-						text = '请选择举报原因';
+						text = util.tip;
 					}
 					util.sel_text.html(text);
 				});
@@ -66,7 +67,7 @@ require(["layer"],
 				var util = this;
 				var tReason = $.trim(util.reason.val());
 				if (!tReason) {
-					showMsg('请选择举报原因~');
+					showMsg(util.tip);
 					util.reason.focus();
 					return false;
 				}
@@ -86,6 +87,8 @@ require(["layer"],
 						if (resp.code == 0) {
 							util.text.val('');
 							util.text.blur();
+							util.reason.val('');
+							util.sel_text.html(util.tip);
 							showMsg(resp.msg, 3);
 						} else {
 							showMsg(resp.msg);
