@@ -127,6 +127,15 @@ require(["layer"],
 						alertUlit.secretId = self.attr("data-id");
 						alertUlit.cork.show();
 						alertUlit.payMP.show();
+					} else if (self.hasClass("btn-recommend")) {
+						var shade = $(".m-popup-shade");
+						var img = $(".recommendImg");
+						shade.fadeIn(200);
+						img.show();
+						setTimeout(function () {
+							shade.hide();
+							img.hide();
+						}, 200);
 					}
 				});
 				$(document).on(kClick, ".pay-mp a", function () {
@@ -300,10 +309,10 @@ require(["layer"],
 			// SingleUtil.init();
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
-			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems'];
+			//wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems'];
 			wx.config(wxInfo);
 			wx.ready(function () {
-				//wx.hideOptionMenu();
+				wx.hideOptionMenu();
 			});
 			window.onhashchange = locationHashChanged;
 			locationHashChanged();

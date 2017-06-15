@@ -206,7 +206,7 @@
 		</div>
 	</div>
 	<div class="img">
-		<img src="/images/share-arrow.png">
+		<img src="/images/share-arrow-2.png">
 	</div>
 </section>
 <section id="focusMP">
