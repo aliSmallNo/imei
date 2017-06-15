@@ -59,7 +59,7 @@
 	<div style="height: 6rem;"></div>
 	<div class="m-bottom-bar">
 		<p><a class="heart btn-like {{if $uInfo.favorFlag}}favor{{/if}}" data-id="{{$uInfo.encryptId}}">{{if $uInfo.favorFlag}}已心动{{else}}心动{{/if}}</a></p>
-		<p><a class="weixin btn-apply">加微信聊聊</a></p>
+		<p><a class="weixin btn-apply" data-id="{{$uInfo.encryptId}}">加微信聊聊</a></p>
 	</div>
 </div>
 
