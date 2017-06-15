@@ -1,4 +1,4 @@
-<section id="slink">
+<section id="slink" data-title="推荐媒婆">
 	<div class="match-wrap">
 		<h3>推荐媒婆</h3>
 		<ul class="clearfix recommendMp"></ul>
@@ -12,12 +12,10 @@
 			<span class="btn">去设置</span>
 		</a>
 	</div>
-	<ul class="m-top-users">
-
-	</ul>
+	<ul class="m-top-users"></ul>
 	<div class="m-more">上拉加载更多</div>
 </section>
-<section id="matchCondition">
+<section id="matchCondition" data-title="推荐单身">
 	<div class="nav">
 		<a href="#slook">返回</a>
 		<a href="#sme" style="display: none">个人中心</a>
@@ -41,7 +39,7 @@
 	</a>
 	<a href="javascript:;" class="btn-comfirm" tag="comfirm">保存</a>
 </section>
-<section id="sme">
+<section id="sme" data-title="个人中心">
 	<div class="useruc">
 		{{if $hint}}
 		<div class="m-hint" style="display: none">
@@ -67,11 +65,6 @@
 				<ul class="photos"></ul>
 			</a>
 		</div>
-		<div class="banner line-bottom">
-			<a href="https://1meipo.com/topic/singleid/index">
-				<img src="https://img.1meipo.com/6bd865920c42912cb63de1987de8fe8d.jpg">
-			</a>
-		</div>
 		<div class="m-rows line-bottom" style="display: none">
 			<a href="/wx/card" class=""><span class="title">我的身份卡</span></a>
 		</div>
@@ -81,21 +74,21 @@
 			<a href="javascript:;" to="heartbeat"><span class="title">心动列表</span> </a>
 		</div>
 		<div class="m-rows line-bottom mymp">
-			<a href="javascript:;" class="" to="myMP"><span class="title">我的媒婆</span> <span class="tip">还没有媒婆</span></a>
-			<a href="javascript:;" class="" to="focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
+			<a href="javascript:;" to="myMP"><span class="title">我的媒婆</span> <span class="tip">还没有媒婆</span></a>
+			<a href="javascript:;" to="focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
 			<a href="/wx/sw?id={{$encryptId}}#swallet" class=""><span class="title">媒桂花</span></a>
 			<a href="javascript:;" class="" id="notifications"><span class="title">通知</span> <span
 								class="count">0</span></a>
-			<a href="javascript:;" class=""><span class="title">意见反馈</span> </a>
-			<a href="javascript:;" class=""><span class="title">我的微信号</span></a>
-			<a href="javascript:;" class=""><span class="title">关注微媒100公众号</span></a>
-			<a href="javascript:;" class=""><span class="title">黑名单</span></a>
+			<a href="#sfeedback"><span class="title">意见反馈</span> </a>
+			<a href="javascript:;"><span class="title">我的微信号</span></a>
+			<a href="#sqrcode"><span class="title">关注公众号</span></a>
+			<a href="javascript:;"><span class="title">黑名单</span></a>
 		</div>
 	</div>
 </section>
-<section id="album">
+<section id="album" data-title="我的相册">
 	<div class="nav">
 		<a href="#sme">返回</a>
 		<a href="#sme" style="display: none">个人中心</a>
@@ -105,7 +98,16 @@
 			<a href="javascript:;" class="choose-img"></a>
 		</li>
 	</ul>
-
+</section>
+<section id="sfeedback" data-title="意见反馈">
+	<div class="report_wrap">
+		<p class="title">
+			尽可能详细的描述您遇到的问题和操作步骤，以便我们更好的定位问题并解答您的疑惑。
+			<br><br>想联系在线客服，可以直接跟我们的公众号聊天
+		</p>
+		<textarea placeholder="详细情况（必填）" class="feedback-text"></textarea>
+		<a class="m-next btn-feedback">提交</a>
+	</div>
 </section>
 <section id="addMeWx">
 	<div class="nav">
@@ -138,6 +140,15 @@
 			<p>还没申请动态哦！去 <a href="#slook" class="aaaa">"发现"</a>找你的心仪对象吧！</p>
 		</div>
 	</ul>
+</section>
+<section id="sqrcode">
+	<div class="qrcode-wrap">
+		<h4>想让更多的好友加入<br>微媒100</h4>
+		<h5>长按识别二维码<br>关注微媒100公众号</h5>
+		<div>
+			<img src="/images/ico_qrcode.jpg" class="qrcode">
+		</div>
+	</div>
 </section>
 <section id="heartbeat">
 	<div class="nav">
@@ -841,4 +852,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.1.8" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.2.1" src="/assets/js/require.js"></script>

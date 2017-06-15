@@ -9,10 +9,10 @@
 namespace mobile\controllers;
 
 use common\models\City;
+use common\models\Feedback;
 use common\models\Log;
 use common\models\Pay;
 use common\models\User;
-use common\models\UserAccount;
 use common\models\UserBuzz;
 use common\models\UserNet;
 use common\models\UserSign;
@@ -333,6 +333,14 @@ class ApiController extends Controller
 				$page = self::postParam("page", 1);
 				$ret = UserNet::items($wxInfo["uId"], $tag, $subtag, $page);
 				return self::renderAPI(0, '', ["data" => $ret, "nextpage" => $page]);
+			case 'feedback':
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				$text = self::postParam("text");
+				Feedback::addFeedback($wxInfo['uId'], $text);
+				return self::renderAPI(0, '提交成功！感谢您的反馈，感谢您对我们的关注和支持~');
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

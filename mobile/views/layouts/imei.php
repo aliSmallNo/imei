@@ -2,7 +2,7 @@
 	<!DOCTYPE html>
 	<html lang="zh-cmn-Hans">
 	<head>
-		<title>微媒100-送人玫瑰手有余香</title>
+		<title>微媒100-媒桂花香</title>
 		<meta charset="utf-8">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		<meta http-equiv="Cache-Control" content="no-siteapp, no-cache">
@@ -15,7 +15,7 @@
 		<link type="image/png" href="/favicon.png" rel="icon">
 		<link type="image/png" href="/favicon.png" rel="shortcut icon">
 		<link rel="stylesheet" href="/assets/css/layer.min.css?v=1.1.1">
-		<link rel="stylesheet" href="/css/imei.min.css?v=1.3.1">
+		<link rel="stylesheet" href="/css/imei.min.css?v=1.3.2">
 		<script src="/assets/js/jweixin-1.2.0.js"></script>
 	</head>
 	<body>

@@ -113,16 +113,17 @@ require(["layer"],
 			$sls.curFrag = hashTag;
 			// FootUtil.reset();
 			var title = $("#" + hashTag).attr("data-title");
-			if (title) {
-				$(document).attr("title", title);
-				$("title").html(title);
-				var iFrame = $('<iframe src="/blank.html" class="g-blank"></iframe>');
-				iFrame.on('load', function () {
-					setTimeout(function () {
-						iFrame.off('load').remove();
-					}, 0);
-				}).appendTo($("body"));
+			if (!title) {
+				title = '微媒100-媒桂花香';
 			}
+			$(document).attr("title", title);
+			$("title").html(title);
+			var iFrame = $('<iframe src="/blank.html" class="g-blank"></iframe>');
+			iFrame.on('load', function () {
+				setTimeout(function () {
+					iFrame.off('load').remove();
+				}, 0);
+			}).appendTo($("body"));
 			layer.closeAll();
 		}
 
@@ -747,7 +748,45 @@ require(["layer"],
 				}, "json");
 			},
 		};
-		mpUlit.init();
+
+		var FeedbackUtil = {
+			text: $('.feedback-text'),
+			loading: 0,
+			init: function () {
+				$('.btn-feedback').on(kClick, function () {
+					FeedbackUtil.submit();
+				});
+			},
+			submit: function () {
+				var util = this;
+				var txt = $.trim(util.text.val());
+				if (!txt) {
+					showMsg('详细情况不能为空啊~');
+					util.text.focus();
+					return false;
+				}
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post('/api/user',
+					{
+						tag: 'feedback',
+						text: txt
+					},
+					function (resp) {
+						layer.closeAll();
+						if (resp.code == 0) {
+							util.text.val('');
+							util.text.blur();
+							showMsg(resp.msg, 3);
+						} else {
+							showMsg(resp.msg);
+						}
+						util.loading = 0;
+					}, 'json');
+			}
+		};
 
 		function showMsg(title, sec) {
 			var duration = sec || 2;
@@ -774,6 +813,8 @@ require(["layer"],
 
 			locationHashChanged();
 			$sls.cork.hide();
+			FeedbackUtil.init();
+			mpUlit.init();
 
 			$sls.newsTimer = setInterval(function () {
 				if ($sls.newIdx < 10) {
