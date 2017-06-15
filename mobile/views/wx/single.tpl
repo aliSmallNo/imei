@@ -564,7 +564,7 @@
 </script>
 <script type="text/html" id="wechats">
 	{[#data]}
-	<li id="{[encryptId]}">
+	<li>
 		<a href="/wx/sh?id={[encryptId]}" class="sprofile">
 			<div class="plist-l">
 				<img src="{[avatar]}">
@@ -595,7 +595,7 @@
 <script type="text/html" id="userFiter">
 	{[#data]}
 	<li>
-		<a href="javascript:;" class="head btn-profile" data-id="{[secretId]}">
+		<a href="/wx/sh?id={[secretId]}" class="head">
 			<img src="{[avatar]}" class="nic">
 			<div class="u-info">
 				<em>{[name]}</em>

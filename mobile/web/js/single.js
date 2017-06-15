@@ -32,9 +32,6 @@ require(["layer"],
 			contionVal: "",
 
 			firstLoadFlag: true,
-			getUserFiterFlag: false,
-			sUserPage: 1,
-
 			sprofileF: 0,
 			smeFlag: 0,
 			slinkFlag: 0,
@@ -97,7 +94,7 @@ require(["layer"],
 					break;
 				case 'slook':
 					if ($sls.firstLoadFlag) {
-						getUserFiter("", $sls.sUserPage);
+						filterUlit.getUserFiter("", filterUlit.sUserPage);
 						$sls.firstLoadFlag = 0;
 					}
 					FootUtil.toggle(1);
@@ -186,43 +183,43 @@ require(["layer"],
 		});
 
 		function sprofileDesc(data) {
-			$("#personalInfo").html(Mustache.render($("#personalInfoTemp").html(), data));
-			location.href = "#personalInfo";
+			//$("#personalInfo").html(Mustache.render($("#personalInfoTemp").html(), data));
+			//location.href = "#personalInfo";
 		}
 
 		$(document).on(kClick, "#sprofile a", function () {
-			var self = $(this);
-			var tag = self.attr("tag");
-			switch (tag) {
-				case "album":
-					var imgList = JSON.parse(self.attr("imglistjson"));
-					wx.previewImage({
-						current: '', // 当前显示图片的http链接
-						urls: imgList // 需要预览的图片http链接列表
-					});
-					break;
-				case "baseInfo":
-					var data = JSON.parse(self.attr("data"));
-					sprofileDesc(data);
-					break;
-				case "forbid":
-					break;
-				case "love":
-					var obj = $(this).find("span");
-					var id = $(this).attr("id");
-					if (obj.hasClass("icon-love")) {
-						alertUlit.hint(id, "yes", obj);
-					} else {
-						alertUlit.hint(id, "no", obj);
-					}
-					break;
-				case "wechat":
-					$sls.secretId = self.attr("id");
-					$sls.cork.show();
-					//$(".getWechat").show();
-					$(".pay-mp").show();
-					break;
-			}
+			// var self = $(this);
+			// var tag = self.attr("tag");
+			// switch (tag) {
+			// 	case "album":
+			// 		var imgList = JSON.parse(self.attr("imglistjson"));
+			// 		wx.previewImage({
+			// 			current: '', // 当前显示图片的http链接
+			// 			urls: imgList // 需要预览的图片http链接列表
+			// 		});
+			// 		break;
+			// 	case "baseInfo":
+			// 		var data = JSON.parse(self.attr("data"));
+			// 		sprofileDesc(data);
+			// 		break;
+			// 	case "forbid":
+			// 		break;
+			// 	case "love":
+			// 		var obj = $(this).find("span");
+			// 		var id = $(this).attr("id");
+			// 		if (obj.hasClass("icon-love")) {
+			// 			alertUlit.hint(id, "yes", obj);
+			// 		} else {
+			// 			alertUlit.hint(id, "no", obj);
+			// 		}
+			// 		break;
+			// 	case "wechat":
+			// 		$sls.secretId = self.attr("id");
+			// 		$sls.cork.show();
+			// 		//$(".getWechat").show();
+			// 		$(".pay-mp").show();
+			// 		break;
+			// }
 		});
 
 		var alertUlit = {
@@ -433,73 +430,87 @@ require(["layer"],
 		};
 		smeUlit.init();
 
-		$("#matchCondition a").on(kClick, function () {
-			var self = $(this);
-			var tag = self.attr("tag");
-			switch (tag) {
-				case "age":
-					showShooseContion(tag);
-					break;
-				case "height":
-					showShooseContion(tag);
-					break;
-				case "income":
-					showShooseContion(tag);
-					break;
-				case "edu":
-					showShooseContion(tag);
-					break;
-				case "comfirm":
-					var data = {};
-					self.closest("section").find(".condtion-item").each(function () {
-						var ta = $(this).attr("tag");
-						var value = $(this).find(".right").attr("data-id");
-						data[ta] = value;
-					});
-					console.log(data);
-					$(".m-top-users").html("");
-					getUserFiter(data, 1);
-					location.href = "#slook";
-					break;
-			}
-		});
-
-		function getUserFiter(data, page) {
-			if ($sls.getUserFiterFlag) {
-				return;
-			}
-			$sls.getUserFiterFlag = 1;
-			$("#slook .m-more").html("拼命加载中~~~");
-			$.post("/api/user", {
-				tag: "userfilter",
-				page: page,
-				data: JSON.stringify(data),
-			}, function (resp) {
-				var html = Mustache.render($("#userFiter").html(), resp.data);
-				if (page == 1) {
-					$(".m-top-users").html(html);
-					$(".my-condition").html(Mustache.render($("#conditions").html(), resp.data.condition));
-				} else {
-					$(".m-top-users").append(html);
+		// filterUlit.noMore
+		var filterUlit = {
+			tag: "",
+			getUserFiterFlag: false,
+			sUserPage: 1,
+			noMore: $("#slook .m-more"),
+			init: function () {
+				$("#matchCondition a").on(kClick, function () {
+					var self = $(this);
+					filterUlit.tag = self.attr("tag");
+					switch (filterUlit.tag) {
+						case "age":
+							filterUlit.showShooseContion();
+							break;
+						case "height":
+							filterUlit.showShooseContion();
+							break;
+						case "income":
+							filterUlit.showShooseContion();
+							break;
+						case "edu":
+							filterUlit.showShooseContion();
+							break;
+						case "comfirm":
+							var data = {};
+							self.closest("section").find(".condtion-item").each(function () {
+								var ta = $(this).attr("tag");
+								var value = $(this).find(".right").attr("data-id");
+								data[ta] = value;
+							});
+							console.log(data);
+							$(".m-top-users").html("");
+							filterUlit.getUserFiter(data, 1);
+							location.href = "#slook";
+							break;
+					}
+				});
+			},
+			showShooseContion: function () {
+				var html = $("#" + filterUlit.tag).html();
+				$sls.main.show();
+				$sls.content.html(html).addClass("animate-pop-in");
+				$sls.shade.fadeIn(160);
+			},
+			getUserFiter: function (data, page) {
+				if (filterUlit.getUserFiterFlag) {
+					return;
 				}
+				filterUlit.getUserFiterFlag = 1;
+				filterUlit.noMore.html("拼命加载中~~~");
+				$.post("/api/user", {
+					tag: "userfilter",
+					page: page,
+					data: JSON.stringify(data),
+				}, function (resp) {
+					var html = Mustache.render($("#userFiter").html(), resp.data);
+					if (page == 1) {
+						$(".m-top-users").html(html);
+						$(".my-condition").html(Mustache.render($("#conditions").html(), resp.data.condition));
+					} else {
+						$(".m-top-users").append(html);
+					}
 
-				$sls.getUserFiterFlag = 0;
-				$sls.sUserPage = resp.data.nextpage;
-				if ($sls.sUserPage == 0) {
-					$("#slook .m-more").html("没有更多咯~");
-				} else {
-					$("#slook .m-more").html("上拉加载更多");
-				}
-			}, "json");
-		}
+					filterUlit.getUserFiterFlag = 0;
+					filterUlit.sUserPage = resp.data.nextpage;
+					if (filterUlit.sUserPage == 0) {
+						filterUlit.noMore.html("没有更多了~");
+					} else {
+						filterUlit.noMore.html("上拉加载更多");
+					}
+				}, "json");
+			},
+		};
 
 		$(window).on("scroll", function () {
 			var lastRow;
 			switch ($sls.curFrag) {
 				case "slook":
 					lastRow = $(".m-top-users").find('li').last();
-					if (lastRow && eleInScreen(lastRow, 640) && $sls.sUserPage > 0) {
-						getUserFiter("", $sls.sUserPage);
+					if (lastRow && eleInScreen(lastRow, 560) && filterUlit.sUserPage > 0) {
+						filterUlit.getUserFiter("", filterUlit.sUserPage);
 						return false;
 					}
 					break;
@@ -507,15 +518,9 @@ require(["layer"],
 					break;
 			}
 		});
+
 		function eleInScreen($ele, $offset) {
 			return $ele && $ele.length > 0 && $ele.offset().top + $offset < $(window).scrollTop() + $(window).height();
-		}
-
-		function showShooseContion(tag) {
-			var html = $("#" + tag).html();
-			$sls.main.show();
-			$sls.content.html(html).addClass("animate-pop-in");
-			$sls.shade.fadeIn(160);
 		}
 
 		$(document).on(kClick, ".m-popup-options a", function () {
@@ -651,19 +656,19 @@ require(["layer"],
 		TabUilt.init();
 
 		$(document).on(kClick, "a.btn-profile", function () {
-			if ($sls.sprofileF) {
-				return;
-			}
-			$sls.sprofileF = 1;
-			var id = $(this).attr("data-id");
-			$.post("/api/user", {
-				tag: "sprofile",
-				id: id,
-			}, function (resp) {
-				$("#sprofile").html(Mustache.render($("#sprofileTemp").html(), resp.data.data));
-				$sls.sprofileF = 0;
-				location.href = "#sprofile";
-			}, "json");
+			// if ($sls.sprofileF) {
+			// 	return;
+			// }
+			// $sls.sprofileF = 1;
+			// var id = $(this).attr("data-id");
+			// $.post("/api/user", {
+			// 	tag: "sprofile",
+			// 	id: id,
+			// }, function (resp) {
+			// 	$("#sprofile").html(Mustache.render($("#sprofileTemp").html(), resp.data.data));
+			// 	$sls.sprofileF = 0;
+			// 	location.href = "#sprofile";
+			// }, "json");
 		});
 
 		var mpUlit = {
