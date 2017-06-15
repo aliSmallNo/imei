@@ -1,4 +1,4 @@
-<section id="slink">
+<section id="slink" data-title="推荐媒婆">
 	<div class="match-wrap">
 		<h3>推荐媒婆</h3>
 		<ul class="clearfix recommendMp"></ul>
@@ -15,7 +15,7 @@
 	<ul class="m-top-users"></ul>
 	<div class="m-more">上拉加载更多</div>
 </section>
-<section id="matchCondition">
+<section id="matchCondition" data-title="推荐单身">
 	<div class="nav">
 		<a href="#slook">返回</a>
 		<a href="#sme" style="display: none">个人中心</a>
@@ -39,7 +39,7 @@
 	</a>
 	<a href="javascript:;" class="btn-comfirm" tag="comfirm">保存</a>
 </section>
-<section id="sme">
+<section id="sme" data-title="个人中心">
 	<div class="useruc">
 		{{if $hint}}
 		<div class="m-hint" style="display: none">
@@ -88,7 +88,7 @@
 		</div>
 	</div>
 </section>
-<section id="album">
+<section id="album" data-title="我的相册">
 	<div class="nav">
 		<a href="#sme">返回</a>
 		<a href="#sme" style="display: none">个人中心</a>
