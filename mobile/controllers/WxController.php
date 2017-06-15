@@ -247,8 +247,26 @@ class WxController extends BaseController
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
 		}
+
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$prefer = 'male';
+		if ($wxInfo) {
+			$avatar = $wxInfo["Avatar"];
+			$nickname = $wxInfo["uName"];
+
+		} else {
+			$avatar = ImageUtil::DEFAULT_AVATAR;
+			$nickname = "本地测试";
+		}
+
 		$items = [];
 		$uInfo = User::user(['uId' => $hid]);
+
+		$uInfo["albumJson"] = json_encode($uInfo["album"]);
+
+		$favorInfo = UserNet::findOne(["nRelation" => UserNet::REL_FAVOR, "nDeletedFlag" => UserNet::DELETE_FLAG_NO, "nUId" => $uInfo["id"], "nSubUId" => $wxInfo["uId"]]);
+		$uInfo["favorFlag"] = $favorInfo ? 1 : 0;
 
 		$baseInfo = [];
 		if ($uInfo) {
@@ -274,17 +292,6 @@ class WxController extends BaseController
 				}
 			}
 		}
-		$openId = self::$WX_OpenId;
-		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		$prefer = 'male';
-		if ($wxInfo) {
-			$avatar = $wxInfo["Avatar"];
-			$nickname = $wxInfo["uName"];
-
-		} else {
-			$avatar = ImageUtil::DEFAULT_AVATAR;
-			$nickname = "本地测试";
-		}
 
 		return self::renderPage("shome.tpl",
 			[
@@ -300,7 +307,37 @@ class WxController extends BaseController
 			'terse');
 	}
 
-	public function actionSw()
+	public function actionSd()
+	{
+		$hid = self::getParam('id');
+		$hid = AppUtil::decrypt($hid);
+		if (!$hid) {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+		$condition = ['uId' => $hid];
+		$criteria = $params = [];
+		foreach ($condition as $key => $val) {
+			$criteria[] = $key . '=:' . $key;
+			$params[':' . $key] = $val;
+		}
+		list($users) = User::users($criteria, $params);
+		if ($users && count($users))
+			$user = $users[0];
+		else
+			$user = [];
+
+		//print_r($user);exit;
+
+		return self::renderPage("sdesInfo.tpl",
+			[
+				'user' => $user,
+			],
+			'terse');
+	}
+
+	public
+	function actionSw()
 	{
 		$hid = self::getParam('id');
 		$hid = AppUtil::decrypt($hid);
@@ -345,7 +382,8 @@ class WxController extends BaseController
 			'我的媒桂花');
 	}
 
-	public function actionSingle()
+	public
+	function actionSingle()
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
@@ -386,7 +424,8 @@ class WxController extends BaseController
 		]);
 	}
 
-	public function actionSign()
+	public
+	function actionSign()
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
@@ -409,7 +448,8 @@ class WxController extends BaseController
 			'terse');
 	}
 
-	public function actionShare()
+	public
+	function actionShare()
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
@@ -471,7 +511,8 @@ class WxController extends BaseController
 			'terse');
 	}
 
-	public function actionCard()
+	public
+	function actionCard()
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
@@ -507,7 +548,8 @@ class WxController extends BaseController
 			'bg-main');
 	}
 
-	public function actionError()
+	public
+	function actionError()
 	{
 		$msg = self::getParam("msg", "请在微信客户端打开链接");
 		return self::renderPage('error.tpl',

@@ -290,7 +290,6 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$res = UserTrans::getStat(120003);var_dump($res);
-
+		echo AppUtil::decrypt("B0BwYTdASTk_OU5pOTpAPTw6QnJjOUNMPEE7UGs");
 	}
 }
