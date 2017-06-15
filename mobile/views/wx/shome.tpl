@@ -70,6 +70,7 @@
 		<div class="select">
 			<span>请选择举报原因</span>
 			<select class="report-reason">
+				<option value="">请选择举报原因</option>
 				{{foreach from=$reasons item=reason}}
 				<option value="{{$reason}}">{{$reason}}</option>
 				{{/foreach}}
@@ -190,4 +191,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/shome.js?v=1.1.5" src="/assets/js/require.js"></script>
+<script data-main="/js/shome.js?v=1.1.6" src="/assets/js/require.js"></script>

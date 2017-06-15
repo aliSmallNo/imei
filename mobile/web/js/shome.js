@@ -55,7 +55,11 @@ require(["layer"],
 				});
 				util.reason.on('change', function () {
 					var self = $(this);
-					util.sel_text.html(self.val());
+					var text = self.val();
+					if (!text) {
+						text = '请选择举报原因';
+					}
+					util.sel_text.html(text);
 				});
 			},
 			submit: function () {
