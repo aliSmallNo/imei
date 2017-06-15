@@ -135,7 +135,7 @@ require(["layer"],
 						setTimeout(function () {
 							shade.hide();
 							img.hide();
-						}, 200);
+						}, 2000);
 					}
 				});
 				$(document).on(kClick, ".pay-mp a", function () {
