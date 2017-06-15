@@ -62,6 +62,7 @@
 		<p><a class="weixin btn-apply">加微信聊聊</a></p>
 	</div>
 </div>
+
 <section id="sreport">
 	<div class="report_wrap">
 		<h3>举报用户</h3>
