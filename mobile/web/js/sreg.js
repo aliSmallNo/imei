@@ -200,19 +200,6 @@ require(["layer"],
 				$sls.routeIndex++;
 				var tag = mRoutes[$sls.routeIndex];
 				location.href = '#' + tag;
-				if (tag == 'location') {
-					wx.getLocation({
-						type: 'wgs84',
-						success: function (res) {
-							var bundle = {
-								lat: res.latitude,
-								lng: res.longitude
-							};
-							console.log(bundle);
-							$sls.coord.val(JSON.stringify(bundle));
-						}
-					});
-				}
 			},
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
@@ -367,11 +354,24 @@ require(["layer"],
 			wx.config(wxInfo);
 			wx.ready(function () {
 				wx.hideOptionMenu();
+
+				wx.getLocation({
+					type: 'wgs84',
+					success: function (res) {
+						var bundle = {
+							lat: res.latitude,
+							lng: res.longitude
+						};
+						console.log(bundle);
+						$sls.coord.val(JSON.stringify(bundle));
+					}
+				});
 			});
 			DrawUtil.init();
 			SingleUtil.init();
 			locationHashChanged();
 			$sls.cork.hide();
+
 		});
 
 	});
