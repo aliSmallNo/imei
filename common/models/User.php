@@ -447,6 +447,7 @@ class User extends ActiveRecord
 			"workout" => "uFitness",
 			"year" => "uBirthYear",
 			"sign" => "uHoros",
+			"coord" => "uCoord",
 		];
 		$img = isset($data["img"]) ? $data["img"] : '';
 		unset($data['img']);

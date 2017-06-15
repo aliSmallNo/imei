@@ -57,7 +57,7 @@
 				<div class="title">
 					<h4>{{$nickname}}</h4>
 					<i style="display: none">资料完成度62%</i>
-					<h5>传说中的大鲜肉</h5>
+					<h5>{{$uInfo.intro}}</h5>
 				</div>
 				<a href="/wx/match" class="btn-outline change-role">切换成媒婆</a>
 				<a href="/wx/sreg#photo" class="btn-outline edit-role">编辑</a>

@@ -85,6 +85,10 @@ class WxController extends BaseController
 		$uInfo = [];
 		$hasGender = false;
 		$switchRole = false;
+		$locInfo = [
+			['key' => 100100, 'text' => '北京市'],
+			['key' => 100105, 'text' => '朝阳区']
+		];
 		if ($wxInfo) {
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
@@ -95,6 +99,7 @@ class WxController extends BaseController
 			if ($uInfo) {
 				$hasGender = $uInfo['gender'] > 9 ? true : false;
 			}
+			$locInfo = $uInfo['location'];
 		}
 		$routes = ['photo', 'gender', 'location', 'year', 'horos', 'height', 'weight', 'income', 'edu', 'intro', 'scope',
 			'job', 'house', 'car', 'smoke', 'drink', 'belief', 'workout', 'diet', 'rest', 'pet', 'interest'];
@@ -127,7 +132,8 @@ class WxController extends BaseController
 				"sign" => User::$Horos,
 				'routes' => json_encode($routes),
 				'switchRole' => $switchRole,
-				'professions' => json_encode(User::$ProfessionDict)
+				'professions' => json_encode(User::$ProfessionDict),
+				'locInfo' => $locInfo
 			],
 			'imei',
 			'注册单身身份');
@@ -176,6 +182,7 @@ class WxController extends BaseController
 		$hint = '';
 		$matcher = $stat = $singles = [];
 		$prefer = 'male';
+		$uInfo = User::user(['uId' => $wxInfo['uId']]);
 		$avatar = $wxInfo["Avatar"];
 		$nickname = $wxInfo["uName"];
 		$hint = '你的昵称未通过审核，请重新编辑~';
@@ -195,6 +202,7 @@ class WxController extends BaseController
 		return self::renderPage("match.tpl", [
 			'nickname' => $nickname,
 			'avatar' => $avatar,
+			'uInfo' => $uInfo,
 			'hint' => $hint,
 			'prefer' => $prefer,
 			'matches' => $matcher,
@@ -348,8 +356,7 @@ class WxController extends BaseController
 			'terse');
 	}
 
-	public
-	function actionSw()
+	public function actionSw()
 	{
 		$hid = self::getParam('id');
 		$hid = AppUtil::decrypt($hid);
@@ -394,27 +401,26 @@ class WxController extends BaseController
 			'我的媒桂花');
 	}
 
-	public
-	function actionSingle()
+	public function actionSingle()
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		$hint = $encryptId = '';
-		if ($wxInfo) {
-			$avatar = $wxInfo["Avatar"];
-			$nickname = $wxInfo["uName"];
-			$hint = $wxInfo['uHint'];
-			$encryptId = AppUtil::encrypt($wxInfo["uId"]);
-			//$intro = $wxInfo['uIntro'];
-			$role = $wxInfo["uRole"];
-			if ($role == User::ROLE_MATCHER) {
-				header("location:/wx/sreg#photo");
-				exit();
-			}
-		} else {
-			$avatar = ImageUtil::DEFAULT_AVATAR;
-			$nickname = "本地测试";
+		if (!$wxInfo) {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
 		}
+		$uInfo = User::user(['uId' => $wxInfo['uId']]);
+		$avatar = $wxInfo["Avatar"];
+		$nickname = $wxInfo["uName"];
+		$hint = $wxInfo['uHint'];
+		$encryptId = AppUtil::encrypt($wxInfo["uId"]);
+		//$intro = $wxInfo['uIntro'];
+		$role = $wxInfo["uRole"];
+		if ($role == User::ROLE_MATCHER) {
+			header("location:/wx/sreg#photo");
+			exit();
+		}
+
 		$prices = [
 			['num' => 20, 'price' => 2],
 			['num' => 60, 'price' => 6],
@@ -426,6 +432,7 @@ class WxController extends BaseController
 		return self::renderPage("single.tpl", [
 			'nickname' => $nickname,
 			'avatar' => $avatar,
+			'uInfo' => $uInfo,
 			'prices' => $prices,
 			'encryptId' => $encryptId,
 			'hint' => $hint,
@@ -460,8 +467,7 @@ class WxController extends BaseController
 			'terse');
 	}
 
-	public
-	function actionShare()
+	public function actionShare()
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);

@@ -1202,9 +1202,10 @@ section {
     .u-my-bar .title h5 {
       color: #737373;
       font-weight: 300;
-      font-size: 1.4rem; }
+      font-size: 1.2rem; }
     .u-my-bar .title h4 {
-      line-height: 2.5rem;
+      padding-top: 0.5rem;
+      line-height: 2.4rem;
       font-size: 1.4rem;
       font-weight: 500;
       white-space: nowrap;
