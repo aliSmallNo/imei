@@ -440,6 +440,7 @@ require(["layer"],
 				$("#matchCondition a").on(kClick, function () {
 					var self = $(this);
 					filterUlit.tag = self.attr("tag");
+					console.log(filterUlit.tag);
 					switch (filterUlit.tag) {
 						case "age":
 							filterUlit.showShooseContion();
@@ -503,6 +504,7 @@ require(["layer"],
 				}, "json");
 			},
 		};
+		filterUlit.init();
 
 		$(window).on("scroll", function () {
 			var lastRow;
