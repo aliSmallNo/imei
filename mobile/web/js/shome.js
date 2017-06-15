@@ -312,7 +312,7 @@ require(["layer"],
 			//wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems'];
 			wx.config(wxInfo);
 			wx.ready(function () {
-				wx.hideOptionMenu();
+				//wx.hideOptionMenu();
 			});
 			window.onhashchange = locationHashChanged;
 			locationHashChanged();
