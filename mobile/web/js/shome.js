@@ -14,20 +14,9 @@ require(["layer"],
 			wxString: $("#tpl_wx_info").html(),
 			newIdx: 0,
 			newsTimer: 0,
-			loading: 0
+			loading: 0,
+			mainPage: $('.main-page')
 		};
-
-		function eleInScreen($ele) {
-			return $ele && $ele.length > 0 && $ele.offset().top < $(window).scrollTop() + $(window).height();
-		}
-
-		$(window).on("scroll", function () {
-			var lastRow = UserUtil.list.find('a').last();
-			if (lastRow && eleInScreen(lastRow) && UserUtil.page > 0) {
-				UserUtil.reload();
-				return false;
-			}
-		});
 
 		$('.btn').on(kClick, function () {
 			var self = $(this);
@@ -52,62 +41,49 @@ require(["layer"],
 			}, 'json');
 		});
 
-
-		var UserUtil = {
-			page: 1,
+		var ReportUtil = {
+			text: $('.report-text'),
+			reason: $('.report-reason'),
+			rptUId: $('#cUID').val(),
+			sel_text: $('.select-text'),
 			loading: 0,
-			list: $('.users2'),
-			tmp: $('#tpl_single').html(),
-			uid: $('#cUID').val(),
-			spinner: null,
-			noMore: null,
-			tag: 'male',
 			init: function () {
 				var util = this;
-				util.page = 2;
-				var html = Mustache.render(util.tmp, {items: mItems});
-				util.list.html(html);
-				util.spinner = $('.m-tab-wrap .spinner');
-				util.noMore = $('.m-tab-wrap .no-more');
-				$(".m-tabs > a").on('click', function () {
+				$('.btn-report').on(kClick, function () {
+					util.submit();
+				});
+				util.reason.on('change', function () {
 					var self = $(this);
-					util.tag = self.attr('data-tag');
-					self.closest(".m-tabs").find("a").removeClass('active');
-					self.addClass('active');
-					util.page = 1;
-					util.reload();
+					util.sel_text.html(self.val());
 				});
 			},
-			reload: function () {
+			submit: function () {
 				var util = this;
+				var tReason = $.trim(util.reason.val());
+				if (!tReason) {
+					showMsg('请选择举报原因~');
+					util.reason.focus();
+					return false;
+				}
 				if (util.loading) {
 					return;
 				}
-				if (util.page === 1) {
-					util.list.html('');
-				}
 				util.loading = 1;
-				util.spinner.show();
 				$.post('/api/user',
 					{
-						tag: util.tag,
-						page: util.page,
-						uid: util.uid
+						tag: 'report',
+						uid: util.rptUId,
+						reason: tReason,
+						text: $.trim(util.text.val())
 					},
 					function (resp) {
+						layer.closeAll();
 						if (resp.code == 0) {
-							var html = Mustache.render(util.tmp, resp.data);
-							if (resp.data.page == 1) {
-								util.list.html(html);
-							} else {
-								util.list.append(html);
-							}
-							util.page = resp.data.nextPage;
-							util.noMore.hide();
-							if (util.page < 1) {
-								util.noMore.show();
-							}
-							util.spinner.hide();
+							util.text.val('');
+							util.text.blur();
+							showMsg(resp.msg, 3);
+						} else {
+							showMsg(resp.msg);
 						}
 						util.loading = 0;
 					}, 'json');
@@ -124,11 +100,41 @@ require(["layer"],
 			});
 		}
 
+		function locationHashChanged() {
+			var hashTag = location.hash;
+			hashTag = hashTag.replace("#!", "");
+			hashTag = hashTag.replace("#", "");
+			switch (hashTag) {
+				case 'sreport':
+					$sls.mainPage.hide();
+					break;
+				default:
+					$sls.mainPage.show();
+					break;
+			}
+			if (!hashTag) {
+				hashTag = 'main-page';
+			}
+			$sls.curFrag = hashTag;
+			// FootUtil.reset();
+			var title = $("#" + hashTag).attr("data-title");
+			if (!title) {
+				title = '微媒100-媒桂花香';
+			}
+			$(document).attr("title", title);
+			$("title").html(title);
+			var iFrame = $('<iframe src="/blank.html" class="g-blank"></iframe>');
+			iFrame.on('load', function () {
+				setTimeout(function () {
+					iFrame.off('load').remove();
+				}, 0);
+			}).appendTo($("body"));
+			layer.closeAll();
+		}
+
 		$(function () {
 			$("body").addClass("bg-color");
-			UserUtil.init();
 			// SingleUtil.init();
-			// FastClick.attach($sls.footer.get(0));
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems'];
@@ -136,6 +142,8 @@ require(["layer"],
 			wx.ready(function () {
 				wx.hideOptionMenu();
 			});
-
+			window.onhashchange = locationHashChanged;
+			locationHashChanged();
+			ReportUtil.init();
 		});
 	});

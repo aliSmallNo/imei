@@ -30,4 +30,16 @@ class Feedback extends ActiveRecord
 		$entity->save();
 		return $entity->fId;
 	}
+
+	public static function addReport($uid, $rptUId, $reason, $text)
+	{
+		$entity = new self();
+		$entity->fUId = $uid;
+		$entity->fReason = $reason;
+		$entity->fReportUId = $rptUId;
+		$entity->fNote = $text;
+		$entity->fCategory = self::CAT_REPORT;
+		$entity->save();
+		return $entity->fId;
+	}
 }

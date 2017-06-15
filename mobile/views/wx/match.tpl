@@ -201,10 +201,10 @@
 </section>
 <section id="sreport">
 	<div class="report_wrap">
-		<div class="title">举报用户</div>
+		<h3>举报用户</h3>
 		<p class="label">用户昵称：小饭碗</p>
 		<div class="select">
-			<span>请选择举报原因</span>
+			<span class="select-text">请选择举报原因</span>
 			<select>
 				{{foreach from=$reasons item=reason}}
 				<option value="{{$reason}}">{{$reason}}</option>

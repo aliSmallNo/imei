@@ -341,12 +341,21 @@ class ApiController extends Controller
 				$text = self::postParam("text");
 				Feedback::addFeedback($wxInfo['uId'], $text);
 				return self::renderAPI(0, '提交成功！感谢您的反馈，感谢您对我们的关注和支持~');
+			case 'report':
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				$text = self::postParam("text");
+				$rptUId = self::postParam("uid");
+				$reason = self::postParam("reason");
+				Feedback::addReport($wxInfo['uId'], $rptUId, $reason, $text);
+				return self::renderAPI(0, '提交成功！感谢您的反馈，我们会尽快处理您反映的问题~');
 		}
 		return self::renderAPI(129, '操作无效~');
 	}
 
-	public
-	function actionPaid()
+	public function actionPaid()
 	{
 		//测试
 		/*$GLOBALS['HTTP_RAW_POST_DATA'] = '<xml><appid><![CDATA[wxffcef12f0d7812f2]]></appid>
@@ -415,8 +424,7 @@ class ApiController extends Controller
 		return AppUtil::data_to_xml($data);
 	}
 
-	protected
-	function renderAPI($code, $msg = '', $data = [])
+	protected function renderAPI($code, $msg = '', $data = [])
 	{
 		Yii::$app->response->format = Response::FORMAT_JSON;
 		return [
@@ -427,15 +435,13 @@ class ApiController extends Controller
 		];
 	}
 
-	protected
-	function getParam($field, $defaultVal = "")
+	protected function getParam($field, $defaultVal = "")
 	{
 		$getInfo = Yii::$app->request->get();
 		return isset($getInfo[$field]) ? trim($getInfo[$field]) : $defaultVal;
 	}
 
-	protected
-	function postParam($field, $defaultVal = "")
+	protected function postParam($field, $defaultVal = "")
 	{
 		$postInfo = Yii::$app->request->post();
 		return isset($postInfo[$field]) ? trim($postInfo[$field]) : $defaultVal;

@@ -1,4 +1,4 @@
-<div class="single-page">
+<div class="single-page main-page">
 	<div class="head">
 		<img src="{{$uInfo.avatar}}" alt="">
 	</div>
@@ -37,13 +37,13 @@
 	<div class="hnwords">
 		<div class="hninfo">
 			<a href="/hn/p?uid={{$uInfo.encryptId}}" class="">
-			<a href="/wx/mh?id={{$uInfo.mp_encrypt_id}}#shome" class="">
-				<div class="img">
-					<img src="{{$uInfo.mp_thumb}}">
-				</div>
-			</a>
-			<p class="name">{{$uInfo.mp_name}}</p>
-			<p class="desc">{{$uInfo.mp_scope}}</p>
+				<a href="/wx/mh?id={{$uInfo.mp_encrypt_id}}#shome" class="">
+					<div class="img">
+						<img src="{{$uInfo.mp_thumb}}">
+					</div>
+				</a>
+				<p class="name">{{$uInfo.mp_name}}</p>
+				<p class="desc">{{$uInfo.mp_scope}}</p>
 		</div>
 		<div class="wcontent">
 			<p class="words">{{$uInfo.comment}}</p>
@@ -53,13 +53,30 @@
 		<span class="title">内心独白</span>
 		<span class="words">{{$uInfo.intro}}</span>
 	</div>
-	<span class="report pushblack">举报拉黑</span>
+	<a href="#sreport" class="report pushblack">举报拉黑</a>
 	<div style="height: 6rem;"></div>
 	<div class="m-bottom-bar">
 		<p><a class="heart btn-like" data-id="{{$uInfo.encryptId}}">心动</a></p>
 		<p><a class="weixin btn-apply">加微信聊聊</a></p>
 	</div>
 </div>
+<section id="sreport">
+	<div class="report_wrap">
+		<h3>举报用户</h3>
+		<label>用户昵称: <b>{{$uInfo.name}}</b></label>
+		<div class="select">
+			<span>请选择举报原因</span>
+			<select class="report-reason">
+				{{foreach from=$reasons item=reason}}
+				<option value="{{$reason}}">{{$reason}}</option>
+				{{/foreach}}
+			</select>
+		</div>
+		<label>详细情况补充（选填）</label>
+		<textarea placeholder="详细信息" class="report-text"></textarea>
+		<a class="m-next btn-report">提交</a>
+	</div>
+</section>
 <input type="hidden" id="cUID" value="{{$hid}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}

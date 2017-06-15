@@ -305,7 +305,8 @@ class WxController extends BaseController
 				'hid' => $hid,
 				'baseInfo' => $baseInfo,
 				'brief' => implode(' . ', $brief),
-				'items' => json_encode($items)
+				'items' => json_encode($items),
+				'reasons' => self::$ReportReasons
 			],
 			'terse');
 	}

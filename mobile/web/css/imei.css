@@ -3879,6 +3879,20 @@ section {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
+  .report_wrap h3 {
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 0;
+    line-height: 4rem; }
+  .report_wrap label {
+    color: #737373;
+    font-size: 1.2rem;
+    line-height: 2.5rem;
+    display: block;
+    padding-top: 1rem;
+    font-weight: 300; }
+    .report_wrap label b {
+      font-weight: 500; }
   .report_wrap .title {
     color: #999;
     font-size: 1.3rem;
@@ -3893,5 +3907,42 @@ section {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box; }
+  .report_wrap .select {
+    position: relative;
+    width: 100%;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+    border: 1px solid #E4E4E4;
+    border-radius: 0.4rem;
+    background: #fff; }
+    .report_wrap .select:after {
+      content: " ";
+      display: inline-block;
+      height: 0.8rem;
+      width: 0.8rem;
+      border-width: 1px 1px 0 0;
+      border-color: #999;
+      border-style: solid;
+      -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+      transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+      position: absolute;
+      top: 50%;
+      right: 0;
+      margin-top: -0.5rem;
+      right: 1.5rem; }
+    .report_wrap .select span {
+      display: block;
+      height: 4.2rem;
+      line-height: 4.2rem; }
+    .report_wrap .select select {
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      outline: 0;
+      border: 0;
+      opacity: 0; }
 
 /*# sourceMappingURL=imei.css.map */
