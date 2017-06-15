@@ -58,8 +58,15 @@
 	<a href="#sreport" class="report pushblack">举报拉黑</a>
 	<div style="height: 6rem;"></div>
 	<div class="m-bottom-bar">
-		<p><a class="heart btn-like {{if $uInfo.favorFlag}}favor{{/if}}" data-id="{{$uInfo.encryptId}}">{{if $uInfo.favorFlag}}已心动{{else}}心动{{/if}}</a></p>
+		{{if $role==10}}
+		<p><a class="heart btn-like {{if $uInfo.favorFlag}}favor{{/if}}"
+					data-id="{{$uInfo.encryptId}}">{{if $uInfo.favorFlag}}已心动{{else}}心动{{/if}}</a></p>
 		<p><a class="weixin btn-apply" data-id="{{$uInfo.encryptId}}">加微信聊聊</a></p>
+		{{else}}
+		<div>
+			<a class="btn-recommend">向朋友推荐TA</a>
+		</div>
+		{{/if}}
 	</div>
 </div>
 
@@ -166,6 +173,9 @@
 		<div class="m-popup-content"></div>
 	</div>
 </div>
+<div class="recommendImg">
+	<img src="/images/share-arrow.png">
+</div>
 
 <input type="hidden" id="cUID" value="{{$hid}}">
 <script type="text/template" id="tpl_wx_info">
@@ -181,7 +191,8 @@
 		<p class="name"><em>{[name]}</em> <i class="icon {[gender_ico]}"></i></p>
 		<p class="intro">
 			{[#notes]}<span>{[.]}</span> {[/notes]}
-			<span>26岁</span> <span>.</span> <span>168cm</span> <span>.</span> <span>1w~1.5w</span> <span>.</span> <span>处女座</span>
+			<span>26岁</span> <span>.</span> <span>168cm</span> <span>.</span> <span>1w~1.5w</span> <span>.</span>
+			<span>处女座</span>
 		</p>
 	</a>
 	{[/items]}

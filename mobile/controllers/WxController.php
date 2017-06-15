@@ -303,6 +303,7 @@ class WxController extends BaseController
 				}
 			}
 		}
+		//print_r($wxInfo);exit;
 
 		return self::renderPage("shome.tpl",
 			[
@@ -314,7 +315,8 @@ class WxController extends BaseController
 				'baseInfo' => $baseInfo,
 				'brief' => implode(' . ', $brief),
 				'items' => json_encode($items),
-				'reasons' => self::$ReportReasons
+				'reasons' => self::$ReportReasons,
+				'role' => $wxInfo["uRole"],
 			],
 			'terse');
 	}
@@ -338,8 +340,6 @@ class WxController extends BaseController
 			$user = $users[0];
 		else
 			$user = [];
-
-		//print_r($user);exit;
 
 		return self::renderPage("sdesInfo.tpl",
 			[

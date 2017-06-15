@@ -127,6 +127,15 @@ require(["layer"],
 						alertUlit.secretId = self.attr("data-id");
 						alertUlit.cork.show();
 						alertUlit.payMP.show();
+					} else if (self.hasClass("btn-recommend")) {
+						var shade = $(".m-popup-shade");
+						var img = $(".recommendImg");
+						shade.fadeIn(200);
+						img.show();
+						setTimeout(function () {
+							shade.hide();
+							img.hide();
+						}, 2000);
 					}
 				});
 				$(document).on(kClick, ".pay-mp a", function () {
