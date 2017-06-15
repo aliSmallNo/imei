@@ -131,7 +131,7 @@ class BaseController extends Controller
 	protected function renderPage($view,
 	                              $params = [],
 	                              $layout = 'imei',
-	                              $title = '微媒100-送人玫瑰手有余香',
+	                              $title = '微媒100-媒桂花香',
 	                              $bodyClass = '')
 	{
 		$params["gIconOK"] = self::ICON_OK_HTML;
