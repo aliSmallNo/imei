@@ -111,7 +111,7 @@ require(["layer"],
 			// FootUtil.reset();
 			var title = $("#" + hashTag).attr("data-title");
 			if (!title) {
-				title = '微媒100-媒桂花香';
+				title = '微媒100-媒桂花飘香';
 			}
 			$(document).attr("title", title);
 			$("title").html(title);
