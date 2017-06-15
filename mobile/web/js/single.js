@@ -430,7 +430,6 @@ require(["layer"],
 		};
 		smeUlit.init();
 
-		// filterUlit.noMore
 		var filterUlit = {
 			tag: "",
 			getUserFiterFlag: false,
@@ -440,7 +439,6 @@ require(["layer"],
 				$("#matchCondition a").on(kClick, function () {
 					var self = $(this);
 					filterUlit.tag = self.attr("tag");
-					console.log(filterUlit.tag);
 					switch (filterUlit.tag) {
 						case "age":
 							filterUlit.showShooseContion();
@@ -490,6 +488,9 @@ require(["layer"],
 					if (page == 1) {
 						$(".m-top-users").html(html);
 						$(".my-condition").html(Mustache.render($("#conditions").html(), resp.data.condition));
+						if (resp.data.condition.toString().length < 5) {
+							$(".con-des").html("您还没有设置择偶条件哦!");
+						}
 					} else {
 						$(".m-top-users").append(html);
 					}
