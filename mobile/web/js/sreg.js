@@ -346,6 +346,26 @@ require(["layer"],
 			});
 		}
 
+		function openLocation() {
+			/*wx.openLocation({
+			 latitude: $sls.mLat,
+			 longitude: $sls.mLng,
+			 name: '',
+			 address: '',
+			 scale: 20,
+			 infoUrl: ''
+			 });*/
+			var geocoder = new AMap.Geocoder({
+				radius: 1000
+			});
+			geocoder.getAddress([$sls.mLng, $sls.mLat], function (status, result) {
+				if (status === 'complete' && result.info === 'OK') {
+					console.log(result.regeocode.addressComponent);
+					showMsg(JSON.stringify(result.regeocode.addressComponent));
+				}
+			});
+		}
+
 		$(function () {
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
@@ -362,8 +382,10 @@ require(["layer"],
 							lat: res.latitude,
 							lng: res.longitude
 						};
-						console.log(bundle);
+						$sls.mLat = res.latitude;
+						$sls.mLng = res.longitude;
 						$sls.coord.val(JSON.stringify(bundle));
+						openLocation();
 					}
 				});
 			});
@@ -371,7 +393,5 @@ require(["layer"],
 			SingleUtil.init();
 			locationHashChanged();
 			$sls.cork.hide();
-
 		});
-
 	});
