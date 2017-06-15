@@ -63,7 +63,7 @@
 	</div>
 </div>
 
-<div class="app-cork" style="background-color: rgba(0,0,0,0.1);display: none"></div>
+<div class="app-cork" style="background-color: rgba(0,0,0,0.7);display: none"></div>
 <div class="getWechat">
 	<div class="getw-content">
 		<a class="icon-alert icon-close" tag="close"></a>
