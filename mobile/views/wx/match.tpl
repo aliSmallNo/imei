@@ -126,7 +126,7 @@
 		<a href="#smsg">通知</a>
 	</div>
 	<div class="m-rows line-bottom">
-		<a href="#sadvice">意见反馈</a>
+		<a href="#sfeedback">意见反馈</a>
 		<a href="#sguide">媒婆攻略</a>
 		<a href="#sdeclare">单身玩法说明</a>
 		<a href="#sqrcode">关注公众号</a>
@@ -197,6 +197,34 @@
 		<div>
 			<img src="/images/ico_qrcode.jpg" class="qrcode">
 		</div>
+	</div>
+</section>
+<section id="sreport">
+	<div class="report_wrap">
+		<div class="title">举报用户</div>
+		<p class="label">用户昵称：小饭碗</p>
+		<div class="select">
+			<span>请选择举报原因</span>
+			<select>
+				{{foreach from=$reasons item=reason}}
+				<option value="{{$reason}}">{{$reason}}</option>
+				{{/foreach}}
+			</select>
+		</div>
+		<p class="label">详细情况补充（选填）</p>
+		<textarea placeholder="详细信息"></textarea>
+		<input type="hidden" id="cReportTo">
+		<a class="m-next btn-report">提交</a>
+	</div>
+</section>
+<section id="sfeedback" data-title="意见反馈">
+	<div class="report_wrap">
+		<p class="title">
+			尽可能详细的描述您遇到的问题和操作步骤，以便我们更好的定位问题并解答您的疑惑。
+			<br><br>想联系在线客服，可以直接跟我们的公众号聊天
+		</p>
+		<textarea placeholder="详细情况（必填）" class="feedback-text"></textarea>
+		<a class="m-next btn-feedback">提交</a>
 	</div>
 </section>
 <div class="nav-foot on">

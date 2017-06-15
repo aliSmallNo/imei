@@ -29,6 +29,15 @@ class WxController extends BaseController
 		125 => '店小二',
 	];
 
+	static $ReportReasons = [
+		'提供虚假资料',
+		'存在不礼貌的行为，如骂人、骚扰等',
+		'打广告，有营销行为',
+		'查看微信号后拒绝加微信',
+		'添加微信号后不讲话、拉黑等',
+		'其他'
+	];
+
 	public function actionIndex()
 	{
 		$openId = self::$WX_OpenId;
@@ -191,6 +200,7 @@ class WxController extends BaseController
 			'news' => $news,
 			'stat' => $stat,
 			'singles' => $singles,
+			'reasons' => self::$ReportReasons,
 			'wallet' => UserTrans::getStat($wxInfo['uId'], 1)
 		]);
 	}

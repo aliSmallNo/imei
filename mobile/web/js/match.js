@@ -204,6 +204,43 @@ require(["layer"],
 			}
 		};
 
+		var FeedbackUtil = {
+			text: $('.feedback-text'),
+			loading: 0,
+			init: function () {
+				$('.btn-feedback').on(kClick, function () {
+					FeedbackUtil.submit();
+				});
+			},
+			submit: function () {
+				var util = this;
+				var txt = $.trim(util.text.val());
+				if (!txt) {
+					showMsg('详细情况不能为空啊~');
+					util.text.focus();
+					return false;
+				}
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post('/api/user',
+					{
+						tag: 'feedback',
+						text: txt
+					},
+					function (resp) {
+						layer.closeAll();
+						if (resp.code == 0) {
+							util.text.val('');
+							showMsg(resp.msg, 3);
+						} else {
+							showMsg(resp.msg);
+						}
+						util.loading = 0;
+					}, 'json');
+			}
+		};
 
 		var WalletUtil = {
 			page: 1,
@@ -268,6 +305,18 @@ require(["layer"],
 			}
 		};
 
+		function showMsg(title, sec) {
+			var duration = 2;
+			if (sec) {
+				duration = sec;
+			}
+			layer.open({
+				content: title,
+				skin: 'msg',
+				time: duration
+			});
+		}
+
 		function locationHashChanged() {
 			var hashTag = location.hash;
 			hashTag = hashTag.replace("#!", "");
@@ -326,5 +375,6 @@ require(["layer"],
 			locationHashChanged();
 			$sls.cork.hide();
 			NewsUtil.init();
+			FeedbackUtil.init();
 		});
 	});
