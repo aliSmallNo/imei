@@ -1,7 +1,9 @@
 <section id="slink" data-title="推荐媒婆">
 	<div class="match-wrap">
 		<h3>推荐媒婆</h3>
-		<ul class="clearfix recommendMp"></ul>
+		<ul class="clearfix recommendMp">
+
+		</ul>
 		<div class="see-more"><a href="javascript:;" tag="recomend">查看更多</a></div>
 	</div>
 </section>
@@ -78,11 +80,11 @@
 			<a href="javascript:;" to="focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
-			<a href="/wx/sw?id={{$encryptId}}#swallet" class=""><span class="title">媒桂花</span></a>
+			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">媒桂花</span></a>
 			<a href="javascript:;" class="" id="notifications"><span class="title">通知</span> <span
 								class="count">0</span></a>
 			<a href="#sfeedback"><span class="title">意见反馈</span> </a>
-			<a href="javascript:;"><span class="title">我的微信号</span></a>
+			<a href="#myWechatNo"><span class="title">我的微信号</span></a>
 			<a href="#sqrcode"><span class="title">关注公众号</span></a>
 			<a href="javascript:;"><span class="title">黑名单</span></a>
 		</div>
@@ -426,6 +428,18 @@
 			<div class="left">学历</div>
 			<div class="right">不限</div>
 		</div>
+	</div>
+</section>
+<section id="myWechatNo">
+	<div class="nav">
+		<a href="#sme">返回</a>
+	</div>
+	<div class="wx-no">
+		<p>微信号</p>
+		<input type="text" placeholder="填写您的真实的微信号">
+	</div>
+	<div class="wx-no-btn">
+		<a>保存</a>
 	</div>
 </section>
 <div class="nav-foot on">
