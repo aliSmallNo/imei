@@ -263,9 +263,9 @@ class ApiController extends Controller
 			case "album":
 				$url = User::album($id, $openId);
 				if ($url) {
-					return self::renderAPI(0, 'ok', $url);
+					return self::renderAPI(0, '添加成功', $url);
 				} else {
-					return self::renderAPI(0, 'err', $url);
+					return self::renderAPI(129, '添加失败', $url);
 				}
 			case "myinfo":
 				$info = User::getItem($openId);
