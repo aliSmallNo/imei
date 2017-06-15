@@ -68,7 +68,7 @@
 		<h3>举报用户</h3>
 		<label>用户昵称: <b>{{$uInfo.name}}</b></label>
 		<div class="select">
-			<span>请选择举报原因</span>
+			<span class="select-text">请选择举报原因</span>
 			<select class="report-reason">
 				<option value="">请选择举报原因</option>
 				{{foreach from=$reasons item=reason}}

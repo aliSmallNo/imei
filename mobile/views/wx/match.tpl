@@ -202,7 +202,7 @@
 <section id="sreport">
 	<div class="report_wrap">
 		<h3>举报用户</h3>
-		<p class="label">用户昵称：小饭碗</p>
+		<label>用户昵称: <b>{{$uInfo.name}}</b></label>
 		<div class="select">
 			<span class="select-text">请选择举报原因</span>
 			<select>
@@ -211,9 +211,8 @@
 				{{/foreach}}
 			</select>
 		</div>
-		<p class="label">详细情况补充（选填）</p>
-		<textarea placeholder="详细信息"></textarea>
-		<input type="hidden" id="cReportTo">
+		<label>详细情况补充（选填）</label>
+		<textarea placeholder="详细信息" class="report-text"></textarea>
 		<a class="m-next btn-report">提交</a>
 	</div>
 </section>

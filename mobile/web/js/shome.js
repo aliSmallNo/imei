@@ -46,7 +46,6 @@ require(["layer"],
 			reason: $('.report-reason'),
 			rptUId: $('#cUID').val(),
 			sel_text: $('.select-text'),
-
 			loading: 0,
 			init: function () {
 				var util = this;
@@ -56,6 +55,7 @@ require(["layer"],
 				util.reason.on('change', function () {
 					var self = $(this);
 					var text = self.val();
+					console.log(text);
 					if (!text) {
 						text = '请选择举报原因';
 					}
