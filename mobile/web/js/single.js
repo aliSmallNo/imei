@@ -419,10 +419,12 @@ require(["layer"],
 					isShowProgressTips: 1,
 					success: function (res) {
 						smeUlit.serverId = res.serverId;
-						smeUlit.uploadImage(serverId);
+						smeUlit.uploadImage();
 					},
 					fail: function () {
 						smeUlit.serverId = "";
+						showMsg("上传失败！");
+						smeUlit.uploadImgFlag = 0;
 					}
 				});
 			},
