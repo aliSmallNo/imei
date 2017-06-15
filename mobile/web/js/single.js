@@ -113,16 +113,17 @@ require(["layer"],
 			$sls.curFrag = hashTag;
 			// FootUtil.reset();
 			var title = $("#" + hashTag).attr("data-title");
-			if (title) {
-				$(document).attr("title", title);
-				$("title").html(title);
-				var iFrame = $('<iframe src="/blank.html" class="g-blank"></iframe>');
-				iFrame.on('load', function () {
-					setTimeout(function () {
-						iFrame.off('load').remove();
-					}, 0);
-				}).appendTo($("body"));
+			if (!title) {
+				title = '微媒100-媒桂花香';
 			}
+			$(document).attr("title", title);
+			$("title").html(title);
+			var iFrame = $('<iframe src="/blank.html" class="g-blank"></iframe>');
+			iFrame.on('load', function () {
+				setTimeout(function () {
+					iFrame.off('load').remove();
+				}, 0);
+			}).appendTo($("body"));
 			layer.closeAll();
 		}
 
