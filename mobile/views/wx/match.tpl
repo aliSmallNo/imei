@@ -71,7 +71,7 @@
 	</div>
 	<div class="m-discovery-act">
 		<a href="/wx/share" class="btn white">扩大我的单身团</a>
-		<a href="javascript:;" class="btn white">邀请朋友当媒婆</a>
+		<a href="/wx/share" class="btn white">邀请朋友当媒婆</a>
 	</div>
 	<div class="news-wrap">
 		<p class="title"><span>平台动态</span></p>
