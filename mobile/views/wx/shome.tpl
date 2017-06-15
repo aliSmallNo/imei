@@ -62,7 +62,7 @@
 		<p><a class="weixin btn-apply">加微信聊聊</a></p>
 	</div>
 </div>
-<<<<<<< HEAD
+
 <section id="sreport">
 	<div class="report_wrap">
 		<h3>举报用户</h3>
@@ -80,7 +80,6 @@
 		<a class="m-next btn-report">提交</a>
 	</div>
 </section>
-=======
 
 <div class="app-cork" style="background-color: rgba(0,0,0,0.7);display: none"></div>
 <div class="getWechat">
@@ -167,7 +166,6 @@
 	</div>
 </div>
 
->>>>>>> e2fb52650249de12696105db2e8500b751f82432
 <input type="hidden" id="cUID" value="{{$hid}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
