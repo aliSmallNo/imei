@@ -361,7 +361,7 @@ require(["layer"],
 			geocoder.getAddress([$sls.mLng, $sls.mLat], function (status, result) {
 				if (status === 'complete' && result.info === 'OK') {
 					console.log(result.regeocode.addressComponent);
-					showMsg(JSON.stringify(result.regeocode.addressComponent));
+					$('[data-tag=intro]').val(JSON.stringify(result.regeocode.addressComponent));
 				}
 			});
 		}
