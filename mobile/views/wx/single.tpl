@@ -5,7 +5,7 @@
 		<div class="see-more"><a href="javascript:;" tag="recomend">查看更多</a></div>
 	</div>
 </section>
-<section id="slook">
+<section id="slook" data-title="发现单身">
 	<div class="my-condition">
 		<a href="#matchCondition" class="nocondition">
 			<span class="desc">您还没有设置择偶条件哦~</span>
@@ -15,7 +15,7 @@
 	<ul class="m-top-users"></ul>
 	<div class="m-more">上拉加载更多</div>
 </section>
-<section id="matchCondition" data-title="推荐单身">
+<section id="matchCondition" data-title="筛选条件">
 	<div class="nav">
 		<a href="#slook">返回</a>
 		<a href="#sme" style="display: none">个人中心</a>

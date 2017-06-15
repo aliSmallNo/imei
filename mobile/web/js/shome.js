@@ -18,7 +18,6 @@ require(["layer"],
 			mainPage: $('.main-page')
 		};
 
-<<<<<<< HEAD
 		$('.btn').on(kClick, function () {
 			var self = $(this);
 			if (self.hasClass('signed') || $sls.loading) {
@@ -47,23 +46,8 @@ require(["layer"],
 			reason: $('.report-reason'),
 			rptUId: $('#cUID').val(),
 			sel_text: $('.select-text'),
-=======
-		function eleInScreen($ele) {
-			return $ele && $ele.length > 0 && $ele.offset().top < $(window).scrollTop() + $(window).height();
-		}
-
-		$(window).on("scroll", function () {
-			var lastRow = UserUtil.list.find('a').last();
-			if (lastRow && eleInScreen(lastRow) && UserUtil.page > 0) {
-				UserUtil.reload();
-				return false;
-			}
-		});
-
-		var UserUtil = {
-			page: 1,
->>>>>>> e2fb52650249de12696105db2e8500b751f82432
 			loading: 0,
+			tip: '请选择举报原因',
 			init: function () {
 				var util = this;
 				$('.btn-report').on(kClick, function () {
@@ -71,14 +55,19 @@ require(["layer"],
 				});
 				util.reason.on('change', function () {
 					var self = $(this);
-					util.sel_text.html(self.val());
+					var text = self.val();
+					console.log(text);
+					if (!text) {
+						text = util.tip;
+					}
+					util.sel_text.html(text);
 				});
 			},
 			submit: function () {
 				var util = this;
 				var tReason = $.trim(util.reason.val());
 				if (!tReason) {
-					showMsg('请选择举报原因~');
+					showMsg(util.tip);
 					util.reason.focus();
 					return false;
 				}
@@ -98,6 +87,8 @@ require(["layer"],
 						if (resp.code == 0) {
 							util.text.val('');
 							util.text.blur();
+							util.reason.val('');
+							util.sel_text.html(util.tip);
 							showMsg(resp.msg, 3);
 						} else {
 							showMsg(resp.msg);
@@ -287,7 +278,7 @@ require(["layer"],
 			// FootUtil.reset();
 			var title = $("#" + hashTag).attr("data-title");
 			if (!title) {
-				title = '微媒100-媒桂花香';
+				title = '微媒100-媒桂花飘香';
 			}
 			$(document).attr("title", title);
 			$("title").html(title);

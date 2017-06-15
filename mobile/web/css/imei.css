@@ -3892,7 +3892,8 @@ section {
     padding-top: 1rem;
     font-weight: 300; }
     .report_wrap label b {
-      font-weight: 500; }
+      font-weight: 500;
+      color: #525252; }
   .report_wrap .title {
     color: #999;
     font-size: 1.3rem;
