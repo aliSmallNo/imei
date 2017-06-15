@@ -348,14 +348,6 @@ require(["layer"],
 		}
 
 		function openLocation() {
-			/*wx.openLocation({
-			 latitude: $sls.mLat,
-			 longitude: $sls.mLng,
-			 name: '',
-			 address: '',
-			 scale: 20,
-			 infoUrl: ''
-			 });*/
 			var geocoder = new AMap.Geocoder({
 				radius: 1000
 			});
