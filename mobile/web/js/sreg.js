@@ -121,7 +121,7 @@ require(["layer"],
 					if (self.hasClass("male")) {
 						util.gender = "male";
 					}
-					$sls.postData["gender"] = (util.gender === "male") ? 1 : 0;
+					$sls.postData["gender"] = (util.gender === "male") ? 11 : 10;
 					util.next();
 					return false;
 				});
