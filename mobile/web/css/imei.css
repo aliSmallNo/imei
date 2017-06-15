@@ -3307,7 +3307,7 @@ section {
   #noMP .img img {
     position: absolute;
     right: 0;
-    top: 1rem;
+    top: 0;
     z-index: 1001;
     width: 8rem;
     height: 8rem; }
@@ -3984,7 +3984,7 @@ section {
   .recommendImg img {
     position: absolute;
     right: 0;
-    top: 1rem;
+    top: 0;
     z-index: 1001;
     width: 8rem;
     height: 8rem; }

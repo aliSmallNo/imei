@@ -135,7 +135,7 @@ require(["layer"],
 						setTimeout(function () {
 							shade.hide();
 							img.hide();
-						}, 2000);
+						}, 200);
 					}
 				});
 				$(document).on(kClick, ".pay-mp a", function () {
@@ -309,7 +309,7 @@ require(["layer"],
 			// SingleUtil.init();
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
-			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems'];
+			//wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems'];
 			wx.config(wxInfo);
 			wx.ready(function () {
 				wx.hideOptionMenu();

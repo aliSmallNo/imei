@@ -174,7 +174,7 @@
 	</div>
 </div>
 <div class="recommendImg">
-	<img src="/images/share-arrow.png">
+	<img src="/images/share-arrow-2.png">
 </div>
 
 <input type="hidden" id="cUID" value="{{$hid}}">
