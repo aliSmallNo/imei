@@ -12,9 +12,7 @@
 			<span class="btn">去设置</span>
 		</a>
 	</div>
-	<ul class="m-top-users">
-
-	</ul>
+	<ul class="m-top-users"></ul>
 	<div class="m-more">上拉加载更多</div>
 </section>
 <section id="matchCondition">
@@ -76,14 +74,14 @@
 			<a href="javascript:;" to="heartbeat"><span class="title">心动列表</span> </a>
 		</div>
 		<div class="m-rows line-bottom mymp">
-			<a href="javascript:;" class="" to="myMP"><span class="title">我的媒婆</span> <span class="tip">还没有媒婆</span></a>
-			<a href="javascript:;" class="" to="focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
+			<a href="javascript:;" to="myMP"><span class="title">我的媒婆</span> <span class="tip">还没有媒婆</span></a>
+			<a href="javascript:;" to="focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
 			<a href="/wx/sw?id={{$encryptId}}#swallet" class=""><span class="title">媒桂花</span></a>
 			<a href="javascript:;" class="" id="notifications"><span class="title">通知</span> <span
 								class="count">0</span></a>
-			<a href="javascript:;"><span class="title">意见反馈</span> </a>
+			<a href="#sfeedback"><span class="title">意见反馈</span> </a>
 			<a href="javascript:;"><span class="title">我的微信号</span></a>
 			<a href="#sqrcode"><span class="title">关注公众号</span></a>
 			<a href="javascript:;"><span class="title">黑名单</span></a>
@@ -100,7 +98,16 @@
 			<a href="javascript:;" class="choose-img"></a>
 		</li>
 	</ul>
-
+</section>
+<section id="sfeedback" data-title="意见反馈">
+	<div class="report_wrap">
+		<p class="title">
+			尽可能详细的描述您遇到的问题和操作步骤，以便我们更好的定位问题并解答您的疑惑。
+			<br><br>想联系在线客服，可以直接跟我们的公众号聊天
+		</p>
+		<textarea placeholder="详细情况（必填）" class="feedback-text"></textarea>
+		<a class="m-next btn-feedback">提交</a>
+	</div>
 </section>
 <section id="addMeWx">
 	<div class="nav">
@@ -845,4 +852,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.1.8" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.2.0" src="/assets/js/require.js"></script>
