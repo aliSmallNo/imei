@@ -157,13 +157,17 @@ require(["layer"],
 								num: num,
 								id: alertUlit.secretId,
 							}, function (resp) {
-								if (resp.data >= num) {
-									$(".getWechat").show();
-									alertUlit.payMP.hide();
-								} else {
-									$(".m-popup-shade").show();
-									$(".rose-num").html(resp.data);
-									$(".not-enough-rose").show();
+								if (resp.code == 0) {
+									if (resp.data >= num) {
+										$(".getWechat").show();
+										alertUlit.payMP.hide();
+									} else {
+										$(".m-popup-shade").show();
+										$(".rose-num").html(resp.data);
+										$(".not-enough-rose").show();
+									}
+								} else if (resp.code == 129) {
+									showMsg(resp.msg);
 								}
 								alertUlit.payroseF = 0;
 							}, "json");
@@ -299,7 +303,7 @@ require(["layer"],
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems'];
 			wx.config(wxInfo);
 			wx.ready(function () {
-				wx.hideOptionMenu();
+				//wx.hideOptionMenu();
 			});
 			window.onhashchange = locationHashChanged;
 			locationHashChanged();

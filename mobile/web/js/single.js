@@ -254,14 +254,19 @@ require(["layer"],
 								num: num,
 								id: $sls.secretId,
 							}, function (resp) {
-								if (resp.data >= num) {
-									$(".getWechat").show();
-									$(".pay-mp").hide();
-								} else {
-									$(".m-popup-shade").show();
-									$(".rose-num").html(resp.data);
-									$(".not-enough-rose").show();
+								if (resp.code == 0) {
+									if (resp.data >= num) {
+										$(".getWechat").show();
+										$(".pay-mp").hide();
+									} else {
+										$(".m-popup-shade").show();
+										$(".rose-num").html(resp.data);
+										$(".not-enough-rose").show();
+									}
+								} else if (resp.code == 129) {
+									showMsg(resp.msg);
 								}
+
 								alertUlit.payroseF = 0;
 							}, "json");
 							break;

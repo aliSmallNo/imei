@@ -317,8 +317,13 @@ class ApiController extends Controller
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
+
 				$num = self::postParam("num");
 				$id = self::postParam("id");
+				$id = AppUtil::decrypt($id);
+				if (UserNet::findOne(["nRelation" => UserNet::REL_LINK, "nSubUId" => $wxInfo["uId"], "nUId" => $id, "nStatus" => UserNet::STATUS_WAIT])) {
+					return self::renderAPI(129, '您已经申请过微信号了哦~');
+				}
 				$roseAmt = UserNet::roseAmt($wxInfo["uId"], $id, $num);
 				return self::renderAPI(0, '', $roseAmt);
 			//return self::renderAPI(0, '', 150);

@@ -376,7 +376,6 @@ class UserNet extends ActiveRecord
 
 	public static function roseAmt($myId, $id, $num)
 	{
-		$id = AppUtil::decrypt($id);
 
 		$amt = UserTrans::getStat($myId,1)["flower"];
 		if ($amt < $num) {
