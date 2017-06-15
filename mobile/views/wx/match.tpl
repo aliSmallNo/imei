@@ -98,7 +98,7 @@
 			</div>
 			<div class="title">
 				<h4>{{$nickname}}</h4>
-				<h5>公司里的开发老司机</h5>
+				<h5>{{$uInfo.intro}}</h5>
 			</div>
 			<a href="/wx/sreg#photo" class="btn-outline change-role">切换成单身</a>
 			<a href="/wx/mreg" class="btn-outline edit-role">编辑</a>

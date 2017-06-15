@@ -72,8 +72,9 @@
 	<p class="m-header s1">您的位置</p>
 	<a href="javascript:;" class="action-row">
 		<div class="location" data-tag="location">
-			<em data-key="100100">北京市</em>
-			<em data-key="100112">昌平区</em>
+			{{foreach from=$locInfo item=item}}
+			<em data-key="{{$item.key}}">{{$item.text}}</em>
+			{{/foreach}}
 		</div>
 	</a>
 	<div class="btn-s-wrap">
@@ -245,6 +246,7 @@
 		<div class="m-popup-content"></div>
 	</div>
 </div>
+<input type="hidden" id="cCoord">
 <input type="hidden" id="cMaxYear" value="{{$maxYear}}">
 <input type="hidden" id="cGender" value="{{if $uInfo.gender}}{{$uInfo.gender}}{{/if}}">
 <script type="text/template" id="tpl_wx_info">
@@ -253,7 +255,7 @@
 <script>
 	var mProvinces = {{$provinces}},
 		mRoutes = {{$routes}},
-		mProfessions= {{$professions}};
+		mProfessions = {{$professions}};
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>

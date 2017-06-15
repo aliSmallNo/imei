@@ -23,6 +23,7 @@ require(["layer"],
 			gender: $('#cGender').val(),
 			serverId: "",
 			routeIndex: 0,
+			coord: $('#cCoord'),
 			routeLength: mRoutes.length,
 			routeSkip: $.inArray('income', mRoutes),
 			mLat: 0,
@@ -197,10 +198,25 @@ require(["layer"],
 			},
 			next: function () {
 				$sls.routeIndex++;
-				location.href = '#' + mRoutes[$sls.routeIndex];
+				var tag = mRoutes[$sls.routeIndex];
+				location.href = '#' + tag;
+				if (tag == 'location') {
+					wx.getLocation({
+						type: 'wgs84',
+						success: function (res) {
+							var bundle = {
+								lat: res.latitude,
+								lng: res.longitude
+							};
+							console.log(bundle);
+							$sls.coord.val(JSON.stringify(bundle));
+						}
+					});
+				}
 			},
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
+				$sls.postData["coord"] = $sls.coord.val();
 				$.post("/api/user", {
 					tag: "sreg",
 					data: JSON.stringify($sls.postData),
@@ -347,10 +363,10 @@ require(["layer"],
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
-			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage', "getLocation"];
+			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage', 'getLocation', 'openLocation'];
 			wx.config(wxInfo);
 			wx.ready(function () {
-				// wx.hideOptionMenu();
+				wx.hideOptionMenu();
 			});
 			DrawUtil.init();
 			SingleUtil.init();
