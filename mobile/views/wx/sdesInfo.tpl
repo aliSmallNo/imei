@@ -30,7 +30,7 @@
 			<div class="right">{{$user.height}}cm</div>
 		</div>
 		<div class="item-des">
-			<div class="left">月收入</div>
+			<div class="left">年薪</div>
 			<div class="right">{{$user.income_t}}</div>
 		</div>
 		<div class="item-des">

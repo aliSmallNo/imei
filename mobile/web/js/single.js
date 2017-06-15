@@ -441,14 +441,8 @@ require(["layer"],
 					filterUlit.tag = self.attr("tag");
 					switch (filterUlit.tag) {
 						case "age":
-							filterUlit.showShooseContion();
-							break;
 						case "height":
-							filterUlit.showShooseContion();
-							break;
 						case "income":
-							filterUlit.showShooseContion();
-							break;
 						case "edu":
 							filterUlit.showShooseContion();
 							break;
