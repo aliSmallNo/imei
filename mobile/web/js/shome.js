@@ -18,6 +18,7 @@ require(["layer"],
 			mainPage: $('.main-page')
 		};
 
+<<<<<<< HEAD
 		$('.btn').on(kClick, function () {
 			var self = $(this);
 			if (self.hasClass('signed') || $sls.loading) {
@@ -46,6 +47,22 @@ require(["layer"],
 			reason: $('.report-reason'),
 			rptUId: $('#cUID').val(),
 			sel_text: $('.select-text'),
+=======
+		function eleInScreen($ele) {
+			return $ele && $ele.length > 0 && $ele.offset().top < $(window).scrollTop() + $(window).height();
+		}
+
+		$(window).on("scroll", function () {
+			var lastRow = UserUtil.list.find('a').last();
+			if (lastRow && eleInScreen(lastRow) && UserUtil.page > 0) {
+				UserUtil.reload();
+				return false;
+			}
+		});
+
+		var UserUtil = {
+			page: 1,
+>>>>>>> e2fb52650249de12696105db2e8500b751f82432
 			loading: 0,
 			init: function () {
 				var util = this;
@@ -89,6 +106,157 @@ require(["layer"],
 					}, 'json');
 			}
 		};
+
+		$(document).on(kClick, "a[album-string]", function () {
+			var self = $(this);
+			var imgList = JSON.parse(self.attr("album-string"));
+			wx.previewImage({
+				current: '', // 当前显示图片的http链接
+				urls: imgList // 需要预览的图片http链接列表
+			});
+		});
+
+		var alertUlit = {
+			hintFlag: false,
+			payroseF: false,
+			secretId: "",
+			cork: $(".app-cork"),
+			payMP: $(".pay-mp"),
+			init: function () {
+				$(document).on(kClick, ".m-bottom-bar a", function () {
+					var self = $(this);
+					if (self.hasClass('btn-like')) {
+						var id = self.attr("data-id");
+						if (!self.hasClass("favor")) {
+							alertUlit.hint(id, "yes", self);
+						} else {
+							alertUlit.hint(id, "no", self);
+						}
+					} else if (self.hasClass('btn-apply')) {
+						alertUlit.secretId = self.attr("data-id");
+						alertUlit.cork.show();
+						alertUlit.payMP.show();
+					}
+				});
+				$(document).on(kClick, ".pay-mp a", function () {
+					var self = $(this);
+					var tag = self.attr("tag");
+					switch (tag) {
+						case "close":
+							self.closest(".pay-mp").hide();
+							alertUlit.cork.hide();
+							break;
+						case "choose":
+							self.closest(".options").find("a").removeClass();
+							self.addClass("active");
+							self.closest(".options").next().find("a").removeClass().addClass("active");
+							break;
+						case "pay":
+							var num = self.closest(".pay-mp").find(".options a.active").attr("num");
+							if (!num) {
+								showMsg("请先选择打赏的媒瑰花");
+								return;
+							}
+							if (alertUlit.payroseF) {
+								return;
+							}
+							alertUlit.payroseF = 1;
+							$.post("/api/user", {
+								tag: "payrose",
+								num: num,
+								id: alertUlit.secretId,
+							}, function (resp) {
+								if (resp.data >= num) {
+									$(".getWechat").show();
+									alertUlit.payMP.hide();
+								} else {
+									$(".m-popup-shade").show();
+									$(".rose-num").html(resp.data);
+									$(".not-enough-rose").show();
+								}
+								alertUlit.payroseF = 0;
+							}, "json");
+							break;
+						case "des":
+							if ($(this).next().css("display") == "none") {
+								$(this).next().show();
+							} else {
+								$(this).next().hide();
+							}
+							break;
+					}
+				});
+				$(document).on(kClick, ".not-enough-rose a", function () {
+					var tag = $(this).attr("tag");
+					$(".m-popup-shade").hide();
+					switch (tag) {
+						case "cancel":
+							$(this).closest(".not-enough-rose").hide();
+							break;
+						case "recharge":
+							alertUlit.payMP.hide();
+							alertUlit.cork.hide();
+							$(".not-enough-rose").hide();
+							location.href = "/wx/sw";
+							break;
+					}
+				});
+				$(".getWechat a").on(kClick, function () {
+					var self = $(this);
+					var tag = self.attr("tag");
+					switch (tag) {
+						case "close":
+							self.closest(".getWechat").hide();
+							alertUlit.cork.hide();
+							break;
+						case "btn-confirm":
+							var wname = $.trim(self.closest(".getWechat").find("input").val());
+							if (!wname) {
+								showMsg("请填写正确的微信号哦~");
+								return;
+							}
+							$.post("/api/user", {
+								tag: "wxname",
+								wname: wname,
+							}, function (resp) {
+								if (resp.data) {
+									showMsg("已发送给对方，请等待TA的同意");
+									setTimeout(function () {
+										self.closest(".getWechat").hide();
+										alertUlit.cork.hide();
+									}, 1000);
+								}
+							}, "json");
+							break;
+					}
+				});
+			},
+			hint: function (id, f, obj) {
+				if (alertUlit.hintFlag) {
+					return;
+				}
+				alertUlit.hintFlag = 1;
+				$.post("/api/user", {
+					tag: "hint",
+					id: id,
+					f: f
+				}, function (resp) {
+					if (resp.data) {
+						if (f == "yes") {
+							showMsg('心动成功~');
+							obj.addClass("favor");
+							obj.html("已心动");
+						} else {
+							showMsg('已取消心动');
+							obj.removeClass("favor");
+							obj.html("心动");
+						}
+					}
+					alertUlit.hintFlag = 0;
+				}, "json");
+			},
+		};
+		alertUlit.init();
 
 		function showMsg(title, sec) {
 			var delay = sec || 3;
