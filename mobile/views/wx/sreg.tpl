@@ -148,10 +148,7 @@
 </section>
 <section id="job">
 	<p class="m-header s1">请问您的职业是什么？</p>
-	<div class="cells col3 clearfix" data-tag="job">
-		{{foreach from=$job key=key item=item}}
-		<a href="javascript:;" data-key="{{$key}}">{{$item}}</a>
-		{{/foreach}}
+	<div class="cells col3 clearfix professions" data-tag="job">
 	</div>
 </section>
 <section id="house">
@@ -255,7 +252,8 @@
 </script>
 <script>
 	var mProvinces = {{$provinces}},
-		mRoutes = {{$routes}};
+		mRoutes = {{$routes}},
+		mProfessions= {{$professions}};
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>

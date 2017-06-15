@@ -10,7 +10,6 @@ namespace console\controllers;
  */
 use common\models\User;
 use common\models\UserNet;
-use common\models\UserTrans;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
@@ -290,6 +289,18 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		echo AppUtil::decrypt("B0BwYTdASTk_OU5pOTpAPTw6QnJjOUNMPEE7UGs");
+		$ret = '自由职业 社会工作者 学生';
+		$ret = str_replace("\n", ' ', $ret);
+		$ret = str_replace("\r", ' ', $ret);
+		$arr = explode(' ', $ret);
+		foreach ($arr as $key => $item) {
+			if (!trim($item)) {
+				unset($arr[$key]);
+				continue;
+			}
+			$arr[$key] = str_replace('／', '/', $item);
+		}
+
+		AppUtil::logFile(json_encode(array_values($arr), JSON_UNESCAPED_UNICODE), 5);
 	}
 }

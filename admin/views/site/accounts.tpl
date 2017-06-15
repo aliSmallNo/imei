@@ -105,8 +105,8 @@
 				<span>{{$prod.height_t}}</span>
 				<span>{{$prod.weight_t}}</span>
 				<span>{{$prod.education_t}}</span>
-				<span>{{$prod.profession_t}}</span>
 				<span>{{$prod.scope_t}}</span>
+				<span>{{$prod.profession_t}}</span>
 				<span>{{$prod.income_t}}</span>
 				<span>{{$prod.estate_t}}</span>
 				<span>{{$prod.car_t}}</span>

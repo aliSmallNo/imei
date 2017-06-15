@@ -115,7 +115,6 @@ class WxController extends BaseController
 				"income" => User::$Income,
 				"edu" => User::$Education,
 				"scope" => User::$Scope,
-				"job" => User::$Profession,
 				"house" => User::$Estate,
 				"car" => User::$Car,
 				"smoke" => User::$Smoke,
@@ -127,7 +126,8 @@ class WxController extends BaseController
 				"pet" => User::$Pet,
 				"sign" => User::$Horos,
 				'routes' => json_encode($routes),
-				'switchRole' => $switchRole
+				'switchRole' => $switchRole,
+				'professions' => json_encode(User::$ProfessionDict)
 			],
 			'imei',
 			'注册单身身份');
@@ -159,6 +159,7 @@ class WxController extends BaseController
 				'uInfo' => $uInfo,
 				'scopes' => json_encode($scopes, JSON_UNESCAPED_UNICODE),
 				'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
+				'professions' => json_encode(User::$ProfessionDict)
 			],
 			'imei',
 			'注册媒婆身份');

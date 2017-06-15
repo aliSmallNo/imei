@@ -87,8 +87,8 @@
 	{{$wxInfoString}}
 </script>
 <script>
-	var mScopes = {{$scopes}};
-	var mProvinces = {{$provinces}};
+	var mScopes = {{$scopes}},
+		mProvinces = {{$provinces}};
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
