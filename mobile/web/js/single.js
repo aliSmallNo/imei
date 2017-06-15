@@ -825,7 +825,7 @@ require(["layer"],
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
-				wx.hideOptionMenu();
+				//wx.hideOptionMenu();
 			});
 
 			locationHashChanged();
