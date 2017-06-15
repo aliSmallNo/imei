@@ -259,7 +259,7 @@ class SiteController extends BaseController
 		$name = self::getParam("name");
 		$orders = self::getParam("orders");
 		$st = User::STATUS_ACTIVE;
-		$criteria[] = " u.uStatus=:status";
+		$criteria[] = " u.uStatus=:status and t.tCategory in (100,105) ";
 		$params [":status"] = $st;
 
 

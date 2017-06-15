@@ -430,7 +430,6 @@ require(["layer"],
 		};
 		smeUlit.init();
 
-		// filterUlit.noMore
 		var filterUlit = {
 			tag: "",
 			getUserFiterFlag: false,
@@ -442,14 +441,8 @@ require(["layer"],
 					filterUlit.tag = self.attr("tag");
 					switch (filterUlit.tag) {
 						case "age":
-							filterUlit.showShooseContion();
-							break;
 						case "height":
-							filterUlit.showShooseContion();
-							break;
 						case "income":
-							filterUlit.showShooseContion();
-							break;
 						case "edu":
 							filterUlit.showShooseContion();
 							break;
@@ -489,6 +482,9 @@ require(["layer"],
 					if (page == 1) {
 						$(".m-top-users").html(html);
 						$(".my-condition").html(Mustache.render($("#conditions").html(), resp.data.condition));
+						if (resp.data.condition.toString().length < 5) {
+							$(".con-des").html("您还没有设置择偶条件哦!");
+						}
 					} else {
 						$(".m-top-users").append(html);
 					}
@@ -503,6 +499,7 @@ require(["layer"],
 				}, "json");
 			},
 		};
+		filterUlit.init();
 
 		$(window).on("scroll", function () {
 			var lastRow;
