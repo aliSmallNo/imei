@@ -18,7 +18,6 @@ require(["layer"],
 			mainPage: $('.main-page')
 		};
 
-<<<<<<< HEAD
 		$('.btn').on(kClick, function () {
 			var self = $(this);
 			if (self.hasClass('signed') || $sls.loading) {
@@ -47,22 +46,7 @@ require(["layer"],
 			reason: $('.report-reason'),
 			rptUId: $('#cUID').val(),
 			sel_text: $('.select-text'),
-=======
-		function eleInScreen($ele) {
-			return $ele && $ele.length > 0 && $ele.offset().top < $(window).scrollTop() + $(window).height();
-		}
 
-		$(window).on("scroll", function () {
-			var lastRow = UserUtil.list.find('a').last();
-			if (lastRow && eleInScreen(lastRow) && UserUtil.page > 0) {
-				UserUtil.reload();
-				return false;
-			}
-		});
-
-		var UserUtil = {
-			page: 1,
->>>>>>> e2fb52650249de12696105db2e8500b751f82432
 			loading: 0,
 			init: function () {
 				var util = this;
