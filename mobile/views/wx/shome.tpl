@@ -27,6 +27,7 @@
 		<a>
 			<span class="title">基本资料</span>
 			<ul class="clearfix">
+
 				{{foreach from=$baseInfo item=item}}
 				<li>{{$item}}</li>
 				{{/foreach}}
@@ -35,6 +36,7 @@
 	</div>
 	<div class="hnwords">
 		<div class="hninfo">
+			<a href="/hn/p?uid={{$uInfo.encryptId}}" class="">
 			<a href="/wx/mh?id={{$uInfo.mp_encrypt_id}}#shome" class="">
 				<div class="img">
 					<img src="{{$uInfo.mp_thumb}}">
@@ -54,7 +56,7 @@
 	<span class="report pushblack">举报拉黑</span>
 	<div style="height: 6rem;"></div>
 	<div class="m-bottom-bar">
-		<p><a class="heart btn-like">心动</a></p>
+		<p><a class="heart btn-like" data-id="{{$uInfo.encryptId}}">心动</a></p>
 		<p><a class="weixin btn-apply">加微信聊聊</a></p>
 	</div>
 </div>
