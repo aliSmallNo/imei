@@ -62,7 +62,6 @@
 		<p><a class="weixin btn-apply">加微信聊聊</a></p>
 	</div>
 </div>
-<<<<<<< HEAD
 <section id="sreport">
 	<div class="report_wrap">
 		<h3>举报用户</h3>
@@ -80,7 +79,6 @@
 		<a class="m-next btn-report">提交</a>
 	</div>
 </section>
-=======
 
 <div class="app-cork" style="background-color: rgba(0,0,0,0.7);display: none"></div>
 <div class="getWechat">
@@ -192,4 +190,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/shome.js?v=1.1.1" src="/assets/js/require.js"></script>
+<script data-main="/js/shome.js?v=1.1.2" src="/assets/js/require.js"></script>
