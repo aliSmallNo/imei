@@ -626,9 +626,10 @@
 			{[#comment]}
 			<div class="des"><b>“</b>{[.]}<b>”</b></div>{[/comment]}
 		</div>
-
+		{[#singleF]}
 		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-like {[favor]}"></a>
 		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-apply"></a>
+		{[/singleF]}
 	</li>
 	{[/data]}
 </script>

@@ -584,6 +584,7 @@ class User extends ActiveRecord
 		if (!$myInfo) {
 			return 0;
 		}
+		$isSingle = ($myInfo->uRole == 10) ? 1 : 0;
 		$mId = $myInfo->uId;
 		$hint = $myInfo->uHint;
 		$uFilter = $myInfo->uFilter;
@@ -676,6 +677,7 @@ class User extends ActiveRecord
 			$data["location"] = $location;
 			$data["hintclass"] = $row["hid"] ? "icon-loved" : "icon-love";
 			$data["favor"] = $row["hid"] ? 'favor' : '';
+			$data["singleF"] = $isSingle;
 			$result[] = $data;
 		}
 
