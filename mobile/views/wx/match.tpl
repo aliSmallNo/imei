@@ -1,4 +1,4 @@
-<section id="slink">
+<section id="slink" data-title="媒婆列表">
 	<div class="match-wrap">
 		<h3>推荐媒婆</h3>
 		<ul class="clearfix matcher">
@@ -19,7 +19,7 @@
 	<div class="spinner" style="display: none"></div>
 	<div class="no-more" style="display: none;">没有更多了~</div>
 </section>
-<section id="sgroup">
+<section id="sgroup" data-title="我的单身团">
 	<div class="m-rows line-bottom">
 		<a href="/wx/share">扩大我的单身团</a>
 		<a href="#snewbie">新的单身团申请</a>
@@ -54,7 +54,7 @@
 		<div class="no-more" {{if count($singles)>0}}style="display: none;"{{/if}}>没有更多了~</div>
 	</div>
 </section>
-<section id="snews">
+<section id="snews" data-title="微媒100新动态">
 	<div class="m-discovery-head">
 		<img src="{{$avatar}}" alt="">
 	</div>
@@ -90,7 +90,7 @@
 		</div>
 	</div>
 </section>
-<section id="sme">
+<section id="sme" data-title="个人中心">
 	<div class="u-my-wrap line-bottom">
 		<div class="u-my-bar">
 			<div class="avatar">
