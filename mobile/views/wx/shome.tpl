@@ -165,7 +165,6 @@
 	</div>
 </div>
 
->>>>>>> e2fb52650249de12696105db2e8500b751f82432
 <input type="hidden" id="cUID" value="{{$hid}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
@@ -190,4 +189,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/shome.js?v=1.1.2" src="/assets/js/require.js"></script>
+<script data-main="/js/shome.js?v=1.1.3" src="/assets/js/require.js"></script>
