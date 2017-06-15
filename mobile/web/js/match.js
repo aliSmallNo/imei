@@ -233,6 +233,7 @@ require(["layer"],
 						layer.closeAll();
 						if (resp.code == 0) {
 							util.text.val('');
+							util.text.blur();
 							showMsg(resp.msg, 3);
 						} else {
 							showMsg(resp.msg);

@@ -340,7 +340,7 @@ class ApiController extends Controller
 				}
 				$text = self::postParam("text");
 				Feedback::addFeedback($wxInfo['uId'], $text);
-				return self::renderAPI(0, '感谢您的反馈，谢谢您对我们的支持~');
+				return self::renderAPI(0, '提交成功！感谢您的反馈，感谢您对我们的关注和支持~');
 		}
 		return self::renderAPI(129, '操作无效~');
 	}
