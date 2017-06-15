@@ -367,13 +367,17 @@ require(["layer"],
 		};
 		alertUlit.init();
 
-
 		var smeUlit = {
 			localId: "",
 			serverId: "",
 			smeFlag: false,
+			uploadImgFlag: false,
 			init: function () {
 				$(document).on(kClick, "a.choose-img", function () {
+					if (smeUlit.uploadImgFlag) {
+						return;
+					}
+					smeUlit.uploadImgFlag = 1;
 					wx.chooseImage({
 						count: 1,
 						sizeType: ['original', 'compressed'],
@@ -382,7 +386,7 @@ require(["layer"],
 							var localIds = res.localIds;
 							if (localIds && localIds.length) {
 								smeUlit.localId = localIds[0];
-								wxUploadImages();
+								smeUlit.wxUploadImages();
 							}
 						}
 					});
@@ -423,13 +427,16 @@ require(["layer"],
 				});
 			},
 			uploadImage: function () {
+				showMsg("上传中...");
 				$.post("/api/user", {
 					tag: "album",
 					id: smeUlit.serverId,
 				}, function (resp) {
+					showMsg(resp.msg);
 					if (resp.data) {
 						$("#album .photos").append('<li><img src="' + resp.data + '" alt=""></li>');
 					}
+					smeUlit.uploadImgFlag = 0;
 				}, "json");
 			},
 		};
