@@ -199,23 +199,6 @@
 		</div>
 	</div>
 </section>
-<section id="sreport">
-	<div class="report_wrap">
-		<h3>举报用户</h3>
-		<label>用户昵称: <b>{{$uInfo.name}}</b></label>
-		<div class="select">
-			<span class="select-text">请选择举报原因</span>
-			<select>
-				{{foreach from=$reasons item=reason}}
-				<option value="{{$reason}}">{{$reason}}</option>
-				{{/foreach}}
-			</select>
-		</div>
-		<label>详细情况补充（选填）</label>
-		<textarea placeholder="详细信息" class="report-text"></textarea>
-		<a class="m-next btn-report">提交</a>
-	</div>
-</section>
 <section id="sfeedback" data-title="意见反馈">
 	<div class="report_wrap">
 		<p class="title">
