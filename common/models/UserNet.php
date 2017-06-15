@@ -378,7 +378,7 @@ class UserNet extends ActiveRecord
 	{
 		$id = AppUtil::decrypt($id);
 
-		$amt = UserTrans::getStat($myId)["flower"];
+		$amt = UserTrans::getStat($myId,1)["flower"];
 		if ($amt < $num) {
 			return $amt;
 		}
