@@ -596,7 +596,15 @@ class User extends ActiveRecord
 
 		$uRole = User::ROLE_SINGLE;
 		$gender = ($gender == 10) ? 11 : 10;
-		$condition = " u.uRole=$uRole and u.uGender=$gender and POSITION('$prov' IN u.uLocation) >0 and POSITION('$city' IN u.uLocation) >0 ";
+
+		$condition = " u.uRole=$uRole and u.uGender=$gender ";
+		if (!$prov) {
+			$prov1 = "山东";
+			$prov2 = "江苏";
+			$condition .= "  and (POSITION('$prov1' IN u.uLocation) >0 or POSITION('$prov2' IN u.uLocation) >0) ";
+		} else {
+			$condition .= "  and POSITION('$prov' IN u.uLocation) >0 and POSITION('$city' IN u.uLocation) >0 ";
+		}
 
 		if (!$data) {
 			$data = json_decode($uFilter, 1);
