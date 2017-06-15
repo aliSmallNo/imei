@@ -4,11 +4,7 @@ if (document.location.hash === "" || document.location.hash === "#") {
 require.config({
 	paths: {
 		"jquery": "/assets/js/jquery-3.2.1.min",
-		"zepto": "/assets/js/zepto.min",
-		"mustache": "/assets/js/mustache.min",
-		"lazyload": "/assets/js/jquery.lazyload.min",
 		"layer": "/assets/js/layer_mobile/layer",
-		"wx": "/assets/js/jweixin-1.2.0",
 	}
 });
 require(["layer"],
@@ -43,10 +39,12 @@ require(["layer"],
 			nickname: $(".nickname"),
 			gender: "",
 			progressBar: $(".progress > div"),
+			professions: $('.professions'),
 			btn: null,
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
+			itemTmp: '{[#items]}<a href="javascript:;" data-key="{[key]}">{[name]}</a>{[/items]}',
 			cityTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="city">{[name]}</a>{[/items]}</div>',
 			provinceTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="province">{[name]}</a>{[/items]}</div>',
 			init: function () {
@@ -150,18 +148,29 @@ require(["layer"],
 					return false;
 				});
 
-				$(".cells > a").on(kClick, function () {
+				$(document).on(kClick, ".cells > a", function () {
 					var self = $(this);
 					var cells = self.closest(".cells");
 					cells.find("a").removeClass("cur");
 					self.addClass("cur");
 					var tag = cells.attr("data-tag");
 					util[tag] = self.html();
-
+					if (tag == 'scope') {
+						util.professions.html('');
+						var names = mProfessions[self.attr("data-key")];
+						var items = [];
+						for (var k = 0; k < names.length; k++) {
+							items[items.length] = {
+								key: k,
+								name: names[k]
+							};
+						}
+						util.professions.html(Mustache.render(util.itemTmp, {items: items}));
+					}
 					$sls.postData[tag] = self.attr("data-key");
 					setTimeout(function () {
 						util.next();
-					}, 120);
+					}, 100);
 					return false;
 				});
 

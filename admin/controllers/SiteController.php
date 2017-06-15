@@ -235,7 +235,6 @@ class SiteController extends BaseController
 				"weight" => User::$Weight,
 				"income" => User::$Income,
 				"edu" => User::$Education,
-				"job" => User::$Profession,
 				"house" => User::$Estate,
 				"car" => User::$Car,
 				"smoke" => User::$Smoke,
