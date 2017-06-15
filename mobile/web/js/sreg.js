@@ -26,6 +26,7 @@ require(["layer"],
 			coord: $('#cCoord'),
 			routeLength: mRoutes.length,
 			routeSkip: $.inArray('income', mRoutes),
+			locationRow: $('.location-row'),
 			mLat: 0,
 			mLng: 0
 		};
@@ -140,10 +141,10 @@ require(["layer"],
 					var key = self.attr('data-key');
 					var tag = self.attr('data-tag');
 					if (tag && tag == 'province') {
-						util.btn.find(".location").html('<em data-key="' + key + '">' + text + '</em>');
+						$sls.locationRow.html('<em data-key="' + key + '">' + text + '</em>');
 						util.getCity(key);
 					} else if (tag && tag == 'city') {
-						util.btn.find(".location").append('<em data-key="' + key + '">' + text + '</em>');
+						$sls.locationRow.append('<em data-key="' + key + '">' + text + '</em>');
 						util.toggle();
 					}
 					return false;
@@ -360,8 +361,10 @@ require(["layer"],
 			});
 			geocoder.getAddress([$sls.mLng, $sls.mLat], function (status, result) {
 				if (status === 'complete' && result.info === 'OK') {
-					console.log(result.regeocode.addressComponent);
-					$('[data-tag=intro]').val(JSON.stringify(result.regeocode.addressComponent));
+					var compt = result.regeocode.addressComponent;
+					if (!$sls.locationRow.find('em').length) {
+						$sls.locationRow.html('<em data-key="">' + compt.province + '</em><em data-key="">' + compt.district + '</em>');
+					}
 				}
 			});
 		}
