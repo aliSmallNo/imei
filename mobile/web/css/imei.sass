@@ -173,6 +173,8 @@ input, select, textarea, button
 main
 	position: relative
 	padding-bottom: 6rem
+	&.bg-lighter
+		background: $mainColorLighter
 
 .g-blank
 	width: 0
@@ -3198,34 +3200,45 @@ section
 
 #noMP
 	.nomp-des
-		background: #f9e0e8
-		padding: 3rem 2rem 8rem 2rem
+		background: $mainColorLighter
+		padding: 4rem 2.5rem 10rem
 		.nomp-up
 			background: #fff
-			padding: 5rem 6rem
+			padding: 4.5rem 2.7rem
 			text-align: center
-			div
-				font-size: 1.8rem
-				margin-bottom: 1rem
+			border-radius: 1rem
+			box-shadow: rgba(166, 0, 6, .2) 0 1rem 2rem
+			h4
+				font-weight: $weightBold
+				font-size: 2.3rem
+				margin-bottom: .5rem
+			strong
+				display: inline-block
+				width: 8rem
+				height: 8rem
+				border-radius: 4rem
+				margin: 3rem
+				font-weight: 800
+				font-size: 5rem
 				text-align: center
-				img
-					width: 6rem
-					height: 6rem
-					border-radius: 6rem
-					margin: 2rem
+				background: $mainColorLighter
+				color: #fff
+				line-height: 8rem
 			p
-				font-size: 1rem
+				font-size: 1.4rem
+				line-height: 2.2rem
 				color: #777
 		.nomp-down
 			text-align: center
 			padding: 2rem
 			a
 				display: block
-				background: #2cc3a3
+				background: $linkColorLight
 				color: #fff
 				text-align: center
-				padding: .8rem 3rem
-				border-radius: 1.5rem
+				padding: 0 3rem
+				line-height: 3.6rem
+				border-radius: 1.8rem
 				margin-top: 3rem
 	.img
 		display: none
@@ -3824,6 +3837,7 @@ section
 		text-align: center
 		font-size: 1.4rem
 		display: block
+
 .help
 	padding: 1.5rem 1rem
 	h4

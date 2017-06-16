@@ -46,6 +46,8 @@ input, select, textarea, button {
 main {
   position: relative;
   padding-bottom: 6rem; }
+  main.bg-lighter {
+    background: #fbd6e3; }
 
 .g-blank {
   width: 0;
@@ -3274,34 +3276,45 @@ section {
       color: #f491b2; }
 
 #noMP .nomp-des {
-  background: #f9e0e8;
-  padding: 3rem 2rem 8rem 2rem; }
+  background: #fbd6e3;
+  padding: 4rem 2.5rem 10rem; }
   #noMP .nomp-des .nomp-up {
     background: #fff;
-    padding: 5rem 6rem;
-    text-align: center; }
-    #noMP .nomp-des .nomp-up div {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-      text-align: center; }
-      #noMP .nomp-des .nomp-up div img {
-        width: 6rem;
-        height: 6rem;
-        border-radius: 6rem;
-        margin: 2rem; }
+    padding: 4.5rem 2.7rem;
+    text-align: center;
+    border-radius: 1rem;
+    box-shadow: rgba(166, 0, 6, 0.2) 0 1rem 2rem; }
+    #noMP .nomp-des .nomp-up h4 {
+      font-weight: 500;
+      font-size: 2.3rem;
+      margin-bottom: 0.5rem; }
+    #noMP .nomp-des .nomp-up strong {
+      display: inline-block;
+      width: 8rem;
+      height: 8rem;
+      border-radius: 4rem;
+      margin: 3rem;
+      font-weight: 800;
+      font-size: 5rem;
+      text-align: center;
+      background: #fbd6e3;
+      color: #fff;
+      line-height: 8rem; }
     #noMP .nomp-des .nomp-up p {
-      font-size: 1rem;
+      font-size: 1.4rem;
+      line-height: 2.2rem;
       color: #777; }
   #noMP .nomp-des .nomp-down {
     text-align: center;
     padding: 2rem; }
     #noMP .nomp-des .nomp-down a {
       display: block;
-      background: #2cc3a3;
+      background: #4da2ff;
       color: #fff;
       text-align: center;
-      padding: 0.8rem 3rem;
-      border-radius: 1.5rem;
+      padding: 0 3rem;
+      line-height: 3.6rem;
+      border-radius: 1.8rem;
       margin-top: 3rem; }
 #noMP .img {
   display: none; }

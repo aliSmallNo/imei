@@ -188,19 +188,12 @@
 	</ul>
 </section>
 <section id="noMP">
-	<div class="nav">
-		<a href="#sme">返回</a>
-	</div>
 	<div class="nomp-des">
 		<div class="nomp-up">
-			<div>找个好友做媒婆</div>
-			<div>帮我写推荐</div>
-			<div>
-				<img src="/images/ico-question.png">
-			</div>
-			<p>"微媒100" 上每一个单身都有一位身边的小伙伴做"媒婆"，为TA的真实身份背书，并写上几句推荐语吧！</p>
+			<h4>找个好友做媒婆<br>帮我写推荐</h4>
+			<strong>?</strong>
+			<p>"微媒100" 上每一个单身都有一位身边的小伙伴做"媒婆"，为Ta的真实身份背书，并写上几句推荐语</p>
 		</div>
-
 		<div class="nomp-down">
 			<a href="javascript:;" class="findmp">找个媒婆给我写推荐</a>
 		</div>
@@ -403,7 +396,7 @@
 
 		<div class="title">内心独白</div>
 		<div class="item-des">
-			<div class="des">内心独白内心独白内心独白内心独白内心独白内心独白内心独白内心独白内心独白内心独白</div>
+			<div class="des">内心独白</div>
 		</div>
 
 		<div class="title">兴趣爱好</div>
@@ -880,4 +873,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.2.2" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.2.4" src="/assets/js/require.js"></script>

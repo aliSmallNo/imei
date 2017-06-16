@@ -16,6 +16,7 @@ require(["layer"],
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
+			mainPage: $('main'),
 			curFrag: "slink",
 			footer: $(".mav-foot"),
 			mobile: $("#cur_mobile").val(),
@@ -36,7 +37,6 @@ require(["layer"],
 			smeFlag: 0,
 			slinkFlag: 0,
 			slinkpage: 1,
-
 			secretId: "",
 		};
 
@@ -87,6 +87,7 @@ require(["layer"],
 			hashTag = hashTag.replace("#!", "");
 			hashTag = hashTag.replace("#", "");
 			$sls.hashPage = hashTag;
+			$sls.mainPage.removeClass('bg-lighter');
 			switch (hashTag) {
 				case 'slink':
 					slinkUlit.slink();
@@ -102,6 +103,10 @@ require(["layer"],
 				case 'sme':
 					smeUlit.sme();
 					FootUtil.toggle(1);
+					break;
+				case 'noMP':
+					$sls.mainPage.addClass('bg-lighter');
+					FootUtil.toggle(0);
 					break;
 				default:
 					FootUtil.toggle(0);
