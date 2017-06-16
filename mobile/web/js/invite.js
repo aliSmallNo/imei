@@ -4,7 +4,6 @@ require.config({
 		"layer": "/assets/js/layer_mobile/layer",
 	}
 });
-
 require(["layer"],
 	function (layer) {
 		"use strict";
@@ -18,8 +17,11 @@ require(["layer"],
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
 			nic: $('.nic'),
-			uid: $('#cUID').val(),
+			uid: $('#cEncryptId').val(),
 			wxUrl: $('#cWXUrl').val(),
+			sender: $('#cSenderName').val(),
+			thumb: $('#cSenderThumb').val(),
+			friend: $('#cFriend').val(),
 			dl: $('.dl'),
 			newIdx: 0,
 			newsTimer: 0,
@@ -79,12 +81,9 @@ require(["layer"],
 		}
 
 		function resetMenuShare() {
-			var cid = $sls.dl.attr('data-id');
-			var cName = $sls.dl.html();
-			var name = $sls.nic.find('p').html();
-			var thumb = $sls.nic.attr('data-id');
-			var link = $sls.wxUrl + '/wx/share?id=' + $sls.uid + '&cid=' + cid;
-			var title = name + '和' + cName + '一起做媒婆了';
+			var thumb = $sls.thumb;
+			var link = $sls.wxUrl + '/wx/invite?id=' + $sls.uid;
+			var title = '我是' + $sls.sender + '，我在『微媒100』上找' + $sls.friend + '，快来帮忙~';
 			var desc = '微媒100，想相亲交友的就戳这里，戳这里...';
 			wx.onMenuShareTimeline({
 				title: title,
@@ -106,7 +105,7 @@ require(["layer"],
 		}
 
 		$(function () {
-			$("body").addClass("bg-color");
+			$("body").addClass("bg-main");
 			// FootUtil.init();
 			// SingleUtil.init();
 			var wxInfo = JSON.parse($sls.wxString);

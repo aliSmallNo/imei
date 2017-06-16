@@ -71,7 +71,7 @@
 <section id="location">
 	<p class="m-header s1">您的位置</p>
 	<a href="javascript:;" class="action-row">
-		<div class="location" data-tag="location">
+		<div class="location location-row" data-tag="location">
 			{{foreach from=$locInfo item=item}}
 			<em data-key="{{$item.key}}">{{$item.text}}</em>
 			{{/foreach}}
@@ -259,4 +259,5 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/sreg.js?v=1.2.1" src="/assets/js/require.js"></script>
+<script src="//webapi.amap.com/maps?v=1.3&key=8dcdd1499361b46052bb94a1dfafbe49&plugin=AMap.Geocoder"></script>
+<script data-main="/js/sreg.js?v=1.2.6" src="/assets/js/require.js"></script>

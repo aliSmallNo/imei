@@ -59,7 +59,7 @@
 					<i style="display: none">资料完成度62%</i>
 					<h5>{{$uInfo.intro}}</h5>
 				</div>
-				<a href="/wx/match" class="btn-outline change-role">切换成媒婆</a>
+				<a href="/wx/switch" class="btn-outline change-role">切换成媒婆</a>
 				<a href="/wx/sreg#photo" class="btn-outline edit-role">编辑</a>
 			</div>
 			<a href="#album" class="u-my-album">
@@ -76,7 +76,7 @@
 			<a href="javascript:;" to="heartbeat"><span class="title">心动列表</span> </a>
 		</div>
 		<div class="m-rows line-bottom mymp">
-			<a href="javascript:;" to="myMP"><span class="title">我的媒婆</span> <span class="tip">还没有媒婆</span></a>
+			<a href="/wx/invite"><span class="title">我的媒婆</span> <span class="tip">还没有媒婆</span></a>
 			<a href="javascript:;" to="focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
@@ -188,25 +188,15 @@
 	</ul>
 </section>
 <section id="noMP">
-	<div class="nav">
-		<a href="#sme">返回</a>
-	</div>
-	<div class="nomp-des">
+	<div class="nomp-wrap">
 		<div class="nomp-up">
-			<div>找个好友做媒婆</div>
-			<div>帮我写推荐</div>
-			<div>
-				<img src="/images/ico-question.png">
-			</div>
-			<p>"微媒100" 上每一个单身都有一位身边的小伙伴做"媒婆"，为TA的真实身份背书，并写上几句推荐语吧！</p>
+			<h4>找个好友做媒婆<br>帮我写推荐</h4>
+			<strong>?</strong>
+			<p>"微媒100" 上每一个单身都有一位身边的小伙伴做"媒婆"，为Ta的真实身份背书，并写上几句推荐语</p>
 		</div>
-
 		<div class="nomp-down">
-			<a href="javascript:;" class="findmp">找个媒婆给我写推荐</a>
+			<a href="javascript:;" class="btn-share">找个媒婆给我写推荐</a>
 		</div>
-	</div>
-	<div class="img">
-		<img src="/images/share-arrow-2.png">
 	</div>
 </section>
 <section id="focusMP">
@@ -403,7 +393,7 @@
 
 		<div class="title">内心独白</div>
 		<div class="item-des">
-			<div class="des">内心独白内心独白内心独白内心独白内心独白内心独白内心独白内心独白内心独白内心独白</div>
+			<div class="des">内心独白</div>
 		</div>
 
 		<div class="title">兴趣爱好</div>
@@ -430,16 +420,29 @@
 		</div>
 	</div>
 </section>
-<section id="myWechatNo">
-	<div class="nav">
-		<a href="#sme">返回</a>
+<section id="myWechatNo" data-title="我的微信号">
+	<div class="wxno_wrap">
+		<label>
+			<em>微信号</em>
+			<input type="text" placeholder="请填写真实的微信号" class="input-s large">
+		</label>
+		<a href="#swxnohelp" class="help-link">找不到微信号？</a>
 	</div>
-	<div class="wx-no">
-		<p>微信号</p>
-		<input type="text" placeholder="填写您的真实的微信号">
-	</div>
-	<div class="wx-no-btn">
-		<a>保存</a>
+	<a class="m-next btn-save-wxno">保存</a>
+</section>
+<section id="swxnohelp" data-title="如何找微信号">
+	<div class="help">
+		<h4>如何找到自己的『微信号』？</h4>
+		<ol>
+			<li>
+				<div>进入【微信】-【个人信息】页</div>
+				<img src="/images/wxno_001.jpg" alt="">
+			</li>
+			<li>
+				<div>为确保与你联系的异性能够成功添加你的微信号，请在【微信】-【设置】-【隐私】-【添加我的方式】里，打开【可搜索到我】按钮。</div>
+				<img src="/images/wxno_002.jpg" alt="">
+			</li>
+		</ol>
 	</div>
 </section>
 <div class="nav-foot on">
@@ -868,4 +871,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.2.1" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.2.5" src="/assets/js/require.js"></script>

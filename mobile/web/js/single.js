@@ -4,10 +4,7 @@ if (document.location.hash === "" || document.location.hash === "#") {
 require.config({
 	paths: {
 		"jquery": "/assets/js/jquery-3.2.1.min",
-		"zepto": "/assets/js/zepto.min",
-		"mustache": "/assets/js/mustache.min",
 		"layer": "/assets/js/layer_mobile/layer",
-		"wx": "/assets/js/jweixin-1.2.0",
 	}
 });
 
@@ -16,6 +13,7 @@ require(["layer"],
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
+			mainPage: $('main'),
 			curFrag: "slink",
 			footer: $(".mav-foot"),
 			mobile: $("#cur_mobile").val(),
@@ -36,7 +34,6 @@ require(["layer"],
 			smeFlag: 0,
 			slinkFlag: 0,
 			slinkpage: 1,
-
 			secretId: "",
 		};
 
@@ -87,6 +84,7 @@ require(["layer"],
 			hashTag = hashTag.replace("#!", "");
 			hashTag = hashTag.replace("#", "");
 			$sls.hashPage = hashTag;
+			$sls.mainPage.removeClass('bg-lighter');
 			switch (hashTag) {
 				case 'slink':
 					slinkUlit.slink();
@@ -102,6 +100,10 @@ require(["layer"],
 				case 'sme':
 					smeUlit.sme();
 					FootUtil.toggle(1);
+					break;
+				case 'noMP':
+					$sls.mainPage.addClass('bg-lighter');
+					FootUtil.toggle(0);
 					break;
 				default:
 					FootUtil.toggle(0);
@@ -180,6 +182,18 @@ require(["layer"],
 			self.find("span").addClass("active");
 			self.closest(".sgroup-list").find("ul").hide();
 			self.closest(".sgroup-list").find("[tag=" + tag + "]").show();
+		});
+
+		$('.btn-share').on(kClick, function () {
+			var html = '<i class="share-arrow">点击菜单分享</i>';
+			$sls.main.show();
+			$sls.main.append(html);
+			$sls.shade.fadeIn(160);
+			setTimeout(function () {
+				$sls.main.hide();
+				$sls.main.find('.share-arrow').remove();
+				$sls.shade.fadeOut(100);
+			}, 2500);
 		});
 
 		function sprofileDesc(data) {
@@ -805,6 +819,57 @@ require(["layer"],
 			}
 		};
 
+		var WxNoUtil = {
+			text: $('.wxno_wrap input'),
+			loading: 0,
+			init: function () {
+				var util = this;
+				$('.btn-save-wxno').on(kClick, function () {
+					util.submit();
+				});
+			},
+			submit: function () {
+				var util = this;
+				var wxno = $.trim(util.text.val());
+				if (!wxno) {
+					showMsg('请填写真实的微信号');
+					util.text.blur();
+					return false;
+				}
+				var reg = /.*[\u4e00-\u9fa5]+.*$/;
+				if (reg.test(wxno)) {
+					showMsg('微信号不能含有中文哦~', 3);
+					util.text.blur();
+					return false;
+				}
+				var arr = wxno.split(' ');
+				if (arr.length > 1) {
+					showMsg('微信号不能含有空格哦~', 3);
+					util.text.blur();
+					return false;
+				}
+				if (util.loading) {
+					return false;
+				}
+				util.loading = 1;
+				$.post('/api/user',
+					{
+						tag: 'wxno',
+						text: wxno
+					},
+					function (resp) {
+						layer.closeAll();
+						if (resp.code == 0) {
+							util.text.blur();
+							showMsg(resp.msg, 3);
+						} else {
+							showMsg(resp.msg);
+						}
+						util.loading = 0;
+					}, 'json');
+			}
+		};
+
 		function showMsg(title, sec) {
 			var duration = sec || 2;
 			layer.open({
@@ -818,19 +883,18 @@ require(["layer"],
 			$("body").addClass("bg-color");
 			FootUtil.init();
 			RechargeUtil.init();
-			// FastClick.attach($sls.footer.get(0));
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
-				//wx.hideOptionMenu();
+				wx.hideOptionMenu();
 			});
-
 			locationHashChanged();
 			$sls.cork.hide();
 			FeedbackUtil.init();
+			WxNoUtil.init();
 
 			$sls.newsTimer = setInterval(function () {
 				if ($sls.newIdx < 10) {

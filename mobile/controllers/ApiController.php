@@ -93,7 +93,7 @@ class ApiController extends Controller
 				$title = '微媒100-充值';
 				$subTitle = '充值' . $num . '媒桂花';
 				$payId = Pay::prepay($wxInfo['uId'], $num, $amt * 100);
-				if (AppUtil::scene() == 'dev') {
+				if (AppUtil::isDev()) {
 					return self::renderAPI(129, '请在服务器测试该功能~');
 				}
 				// Rain: 测试阶段，payFee x元实际支付x分
@@ -258,7 +258,7 @@ class ApiController extends Controller
 				AppUtil::logFile($data, 5, __FUNCTION__, __LINE__);
 				$ret = User::reg($data);
 				//Rain: 刷新用户cache数据
-				UserWechat::getInfoByOpenId($openId, true);
+				UserWechat::getInfoByOpenId($openId, 1);
 				return self::renderAPI(0, '保存成功啦~', $ret);
 			case "album":
 				$url = User::album($id, $openId);
@@ -356,6 +356,14 @@ class ApiController extends Controller
 				$reason = self::postParam("reason");
 				Feedback::addReport($wxInfo['uId'], $rptUId, $reason, $text);
 				return self::renderAPI(0, '提交成功！感谢您的反馈，我们会尽快处理您反映的问题~');
+			case 'wxno':
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				$text = self::postParam("text");
+				UserWechat::edit($openId, ['wWechatId' => $text]);
+				return self::renderAPI(0, '保存成功啦~');
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

@@ -86,6 +86,11 @@ class AppUtil
 		return Yii::$app->params['scene'];
 	}
 
+	public static function isDev()
+	{
+		return (Yii::$app->params['scene'] == 'dev');
+	}
+
 	public static function notifyUrl()
 	{
 		return Yii::$app->params['notifyUrl'];
@@ -698,8 +703,7 @@ class AppUtil
 		if ($level < 2) {
 			return false;
 		}
-		$env = AppUtil::scene();
-		if ($env == "dev") {
+		if (self::isDev()) {
 			$file = __DIR__ . '/../../../imei_' . date("Ym") . '.log';
 		} else {
 			$day = (date("d") % 15) + 1;

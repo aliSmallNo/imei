@@ -180,9 +180,9 @@ class RedisUtil
 
 	/**
 	 * 获取自增长数字
-	 * @param $field
-	 * @param string $redis
-	 * @param bool $hideFactor
+	 * @param $field string
+	 * @param $redis string
+	 * @param $hideFactor bool
 	 * @return integer
 	 */
 	protected static function getSequenceKeys($field, $redis = "", $hideFactor = false)
@@ -194,7 +194,7 @@ class RedisUtil
 			$redis = self::redis();
 		}
 		$prefix = "";
-		$isDev = (AppUtil::scene() == "dev");
+		$isDev = AppUtil::isDev();
 		switch ($field) {
 			case self::$IdOrder:
 				$padding = 100000001;

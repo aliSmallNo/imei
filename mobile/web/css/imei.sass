@@ -173,6 +173,8 @@ input, select, textarea, button
 main
 	position: relative
 	padding-bottom: 6rem
+	&.bg-lighter
+		background: $mainColorLighter
 
 .g-blank
 	width: 0
@@ -597,8 +599,8 @@ section
 	margin: 0
 
 .m-next
-	height: 5rem
-	line-height: 5rem
+	height: 4.5rem
+	line-height: 4.5rem
 	text-align: center
 	background: $mainColor
 	color: #fff
@@ -2392,16 +2394,15 @@ section
 	right: 0.2rem
 	background: url(../images/ico_share_arrow.png) no-repeat center top
 	background-size: 6.35rem 5rem
-	width: 8.5rem
+	width: 8.6rem
 	height: 5rem
 	display: inline-block
-	z-index: 10
+	z-index: 11
 	color: #fff
 	font-size: 1.2rem
 	padding-top: 5.5rem
-	font-weight: $weightNormal
+	font-weight: $weightBold
 	text-align: center
-
 .m-ico-rose
 	display: inline-block
 	position: relative
@@ -3196,46 +3197,46 @@ section
 			border: $mainColorLight solid 1px
 			color: $mainColorLight
 
-#noMP
-	.nomp-des
-		background: #f9e0e8
-		padding: 3rem 2rem 8rem 2rem
-		.nomp-up
-			background: #fff
-			padding: 5rem 6rem
+.nomp-wrap
+	background: $mainColorLighter
+	padding: 4rem 2.5rem 7rem
+	.nomp-up
+		background: #fff
+		padding: 4rem 2.7rem
+		text-align: center
+		border-radius: 1rem
+		box-shadow: rgba(170, 0, 8, .2) 0 1rem 2rem
+		h4
+			font-weight: $weightBold
+			font-size: 2.2rem
+		strong
+			display: inline-block
+			width: 7rem
+			height: 7rem
+			border-radius: 3.5rem
+			margin: 3rem
+			font-weight: 800
+			font-size: 5rem
 			text-align: center
-			div
-				font-size: 1.8rem
-				margin-bottom: 1rem
-				text-align: center
-				img
-					width: 6rem
-					height: 6rem
-					border-radius: 6rem
-					margin: 2rem
-			p
-				font-size: 1rem
-				color: #777
-		.nomp-down
+			background: $mainColorLighter
+			color: #fff
+			line-height: 7rem
+		p
+			font-size: 1.4rem
+			line-height: 2.2rem
+			color: $grayFontColor
+	.nomp-down
+		text-align: center
+		padding: 2rem 1rem
+		a
+			display: block
+			background: $linkColorLight
+			color: #fff
 			text-align: center
-			padding: 2rem
-			a
-				display: block
-				background: #2cc3a3
-				color: #fff
-				text-align: center
-				padding: .8rem 3rem
-				border-radius: 1.5rem
-				margin-top: 3rem
-	.img
-		display: none
-		img
-			position: absolute
-			right: 0
-			top: 0
-			z-index: 1001
-			width: 8rem
-			height: 8rem
+			padding: 0 3rem
+			line-height: 4.4rem
+			border-radius: 2.2rem
+			margin-top: 2.5rem
 
 #focusMP
 	li
@@ -3894,3 +3895,34 @@ section
 		text-align: center
 		padding: 1rem
 		color: #fff
+.wxno_wrap
+	padding: 1.5rem
+	label
+		color: $grayFontColor
+		em
+			display: block
+			line-height: 2.5rem
+			font-size: 1.2rem
+	.help-link
+		line-height: 3.2rem
+		padding-top: 3rem
+		color: $linkColor
+		text-align: center
+		font-size: 1.4rem
+		display: block
+
+.help
+	padding: 1.5rem 1rem
+	h4
+		text-align: center
+		font-size: 1.8rem
+		font-weight: $weightBold
+		margin-bottom: 1.5rem
+	ol
+		margin: 0
+		padding-left: 1.8rem
+		padding-right: 1.4rem
+		img
+			margin-top: 1rem
+			margin-bottom: 1.5rem
+			width: 100%

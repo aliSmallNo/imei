@@ -244,6 +244,8 @@ class SiteController extends BaseController
 				"diet" => User::$Diet,
 				"rest" => User::$Rest,
 				"pet" => User::$Pet,
+				'job'=>User::$Profession,
+				'professions' => User::$ProfessionDict,
 				"status" => User::$Status,
 				'success' => $success,
 				'error' => $error,

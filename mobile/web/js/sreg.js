@@ -26,6 +26,7 @@ require(["layer"],
 			coord: $('#cCoord'),
 			routeLength: mRoutes.length,
 			routeSkip: $.inArray('income', mRoutes),
+			locationRow: $('.location-row'),
 			mLat: 0,
 			mLng: 0
 		};
@@ -120,7 +121,7 @@ require(["layer"],
 					if (self.hasClass("male")) {
 						util.gender = "male";
 					}
-					$sls.postData["gender"] = (util.gender === "male") ? 1 : 0;
+					$sls.postData["gender"] = (util.gender === "male") ? 11 : 10;
 					util.next();
 					return false;
 				});
@@ -140,10 +141,10 @@ require(["layer"],
 					var key = self.attr('data-key');
 					var tag = self.attr('data-tag');
 					if (tag && tag == 'province') {
-						util.btn.find(".location").html('<em data-key="' + key + '">' + text + '</em>');
+						$sls.locationRow.html('<em data-key="' + key + '">' + text + '</em>');
 						util.getCity(key);
 					} else if (tag && tag == 'city') {
-						util.btn.find(".location").append('<em data-key="' + key + '">' + text + '</em>');
+						$sls.locationRow.append('<em data-key="' + key + '">' + text + '</em>');
 						util.toggle();
 					}
 					return false;
@@ -346,6 +347,20 @@ require(["layer"],
 			});
 		}
 
+		function openLocation() {
+			var geocoder = new AMap.Geocoder({
+				radius: 1000
+			});
+			geocoder.getAddress([$sls.mLng, $sls.mLat], function (status, result) {
+				if (status === 'complete' && result.info === 'OK') {
+					var compt = result.regeocode.addressComponent;
+					if (!$sls.locationRow.find('em').length) {
+						$sls.locationRow.html('<em data-key="">' + compt.province + '</em><em data-key="">' + compt.district + '</em>');
+					}
+				}
+			});
+		}
+
 		$(function () {
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
@@ -362,8 +377,10 @@ require(["layer"],
 							lat: res.latitude,
 							lng: res.longitude
 						};
-						console.log(bundle);
+						$sls.mLat = res.latitude;
+						$sls.mLng = res.longitude;
 						$sls.coord.val(JSON.stringify(bundle));
+						openLocation();
 					}
 				});
 			});
@@ -371,7 +388,5 @@ require(["layer"],
 			SingleUtil.init();
 			locationHashChanged();
 			$sls.cork.hide();
-
 		});
-
 	});

@@ -90,14 +90,15 @@ class WxController extends BaseController
 			['key' => 100105, 'text' => '朝阳区']
 		];
 		if ($wxInfo) {
+			$uInfo = User::user(['uId' => $wxInfo['uId']]);
+			if ($uInfo) {
+				$hasGender = in_array($uInfo['gender'], array_values(User::$Gender));
+			}
+
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
 			if ($wxInfo["uRole"] == User::ROLE_MATCHER) {
 				$switchRole = true;
-			}
-			$uInfo = User::user(['uId' => $wxInfo['uId']]);
-			if ($uInfo) {
-				$hasGender = $uInfo['gender'] > 9 ? true : false;
 			}
 			$locInfo = $uInfo['location'];
 		}
@@ -281,6 +282,47 @@ class WxController extends BaseController
 			'reasons' => self::$ReportReasons,
 			'wallet' => UserTrans::getStat($wxInfo['uId'], 1)
 		]);
+	}
+
+	public function actionSwitch()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+		$uInfo = User::user(['uId' => $wxInfo['uId']]);
+		if (!$uInfo) {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+		switch ($uInfo['role']) {
+			case User::ROLE_SINGLE:
+				//Rain: 曾经写过单身资料
+				if ($uInfo['diet'] && $uInfo['rest']) {
+					User::edit($uInfo['id'], ['uRole' => User::ROLE_MATCHER]);
+					UserWechat::getInfoByOpenId($openId, true);
+					header('location:/wx/match#slink');
+					exit();
+				} else {
+					header('location:/wx/mreg');
+					exit();
+				}
+				break;
+			case User::ROLE_MATCHER:
+				//Rain: 曾经写过单身资料
+				if ($uInfo['location'] && $uInfo['scope']) {
+					User::edit($uInfo['id'], ['uRole' => User::ROLE_SINGLE]);
+					UserWechat::getInfoByOpenId($openId, true);
+					header('location:/wx/single#slook');
+					exit();
+				} else {
+					header('location:/wx/sreg#photo');
+					exit();
+				}
+				break;
+		}
 	}
 
 	public function actionMh()
@@ -512,8 +554,7 @@ class WxController extends BaseController
 		]);
 	}
 
-	public
-	function actionSign()
+	public function actionSign()
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
@@ -532,6 +573,42 @@ class WxController extends BaseController
 				'avatar' => $avatar,
 				'title' => $title,
 				'isSign' => $isSign
+			],
+			'terse');
+	}
+
+	public function actionInvite()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId, true);
+		if (!$wxInfo) {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+		$senderName = $wxInfo["uName"];
+		$senderThumb = $wxInfo["Avatar"];
+		$encryptId = AppUtil::encrypt($wxInfo['uId']);
+		$friend = $wxInfo["uGender"] == User::GENDER_MALE ? '女朋友' : '男朋友';
+		$senderId = self::getParam('id');
+		$senderId = AppUtil::decrypt($senderId);
+		if ($senderId) {
+			$uInfo = User::user(['uId' => $senderId]);
+			if ($uInfo) {
+				$senderName = $uInfo['name'];
+				$senderThumb = $uInfo["thumb"];
+				$encryptId = AppUtil::encrypt($uInfo['id']);
+				$friend = $uInfo['gender'] == User::GENDER_MALE ? '女朋友' : '男朋友';
+			}
+		}
+
+		return self::renderPage("invite.tpl",
+			[
+				'senderId' => $senderId,
+				'senderName' => $senderName,
+				'senderThumb' => $senderThumb,
+				'friend' => $friend,
+				'encryptId' => $encryptId,
+				'wxUrl' => AppUtil::wechatUrl()
 			],
 			'terse');
 	}
@@ -598,8 +675,7 @@ class WxController extends BaseController
 			'terse');
 	}
 
-	public
-	function actionCard()
+	public function actionCard()
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
@@ -635,8 +711,7 @@ class WxController extends BaseController
 			'bg-main');
 	}
 
-	public
-	function actionError()
+	public function actionError()
 	{
 		$msg = self::getParam("msg", "请在微信客户端打开链接");
 		return self::renderPage('error.tpl',
