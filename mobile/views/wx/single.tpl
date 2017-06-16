@@ -541,6 +541,7 @@
 		<div class="m-popup-content"></div>
 	</div>
 </div>
+
 <script type="text/html" id="height">
 	<div class="m-popup-options col3 clearfix" tag="height">
 		<div class="m-popup-options-top">

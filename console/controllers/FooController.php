@@ -289,8 +289,5 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-
-		$ret = AppUtil::encrypt('131261');
-		var_dump($ret);
 	}
 }
