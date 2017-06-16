@@ -2436,7 +2436,7 @@ section {
   width: 8.5rem;
   height: 5rem;
   display: inline-block;
-  z-index: 10;
+  z-index: 11;
   color: #fff;
   font-size: 1.2rem;
   padding-top: 5.5rem;
@@ -3305,16 +3305,16 @@ section {
       color: #737373; }
   #noMP .nomp-des .nomp-down {
     text-align: center;
-    padding: 2rem; }
+    padding: 2rem 1rem; }
     #noMP .nomp-des .nomp-down a {
       display: block;
       background: #4da2ff;
       color: #fff;
       text-align: center;
       padding: 0 3rem;
-      line-height: 4rem;
-      border-radius: 2rem;
-      margin-top: 2.6rem; }
+      line-height: 4.4rem;
+      border-radius: 2.2rem;
+      margin-top: 2.5rem; }
 #noMP .img {
   display: none; }
   #noMP .img img {
@@ -3322,7 +3322,7 @@ section {
     right: 0;
     top: 0;
     z-index: 1001;
-    width: 8rem;
+    width: 9rem;
     height: 8rem; }
 
 #focusMP li {

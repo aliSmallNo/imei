@@ -195,11 +195,8 @@
 			<p>"微媒100" 上每一个单身都有一位身边的小伙伴做"媒婆"，为Ta的真实身份背书，并写上几句推荐语</p>
 		</div>
 		<div class="nomp-down">
-			<a href="javascript:;" class="findmp">找个媒婆给我写推荐</a>
+			<a href="javascript:;" class="btn-share">找个媒婆给我写推荐</a>
 		</div>
-	</div>
-	<div class="img">
-		<img src="/images/share-arrow-2.png">
 	</div>
 </section>
 <section id="focusMP">

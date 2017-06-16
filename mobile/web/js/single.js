@@ -187,6 +187,18 @@ require(["layer"],
 			self.closest(".sgroup-list").find("[tag=" + tag + "]").show();
 		});
 
+		$('.btn-share').on(kClick, function () {
+			var html = '<i class="share-arrow">点击菜单分享</i>';
+			$sls.main.show();
+			$sls.main.append(html);
+			$sls.shade.fadeIn(160);
+			setTimeout(function () {
+				$sls.main.hide();
+				$sls.main.find('.share-arrow').remove();
+				$sls.shade.fadeOut(100);
+			}, 2500);
+		});
+
 		function sprofileDesc(data) {
 			//$("#personalInfo").html(Mustache.render($("#personalInfoTemp").html(), data));
 			//location.href = "#personalInfo";
