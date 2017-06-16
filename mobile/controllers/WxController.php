@@ -160,7 +160,6 @@ class WxController extends BaseController
 		}
 		$filter = User::Filter($uInfo["filter"]);
 
-
 		$routes = ['photo', 'gender', 'location', 'year', 'horos', 'height', 'weight', 'income', 'edu', 'intro', 'scope',
 			'job', 'house', 'car', 'smoke', 'drink', 'belief', 'workout', 'diet', 'rest', 'pet', 'interest'];
 
@@ -169,7 +168,6 @@ class WxController extends BaseController
 		} else {
 			$job = User::$ProfessionDict[100];
 		}
-		//print_r($uInfo);exit;
 
 		return self::renderPage("sedit.tpl",
 			[
@@ -207,6 +205,36 @@ class WxController extends BaseController
 			],
 			'imei',
 			'单身身份修改');
+	}
+
+	public function actionMedit()
+	{
+		$openId = self::$WX_OpenId;
+		$nickname = $avatar = '';
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+
+		$uInfo = [];
+		if ($wxInfo) {
+			$avatar = $wxInfo["Avatar"];
+			$nickname = $wxInfo["uName"];
+			if ($wxInfo["uRole"] == User::ROLE_MATCHER) {
+			}
+			$uInfo = User::user(['uId' => $wxInfo['uId']]);
+		}
+
+		$routes = ['photo', 'gender', 'location', 'year', 'horos', 'height', 'weight', 'income', 'edu', 'intro', 'scope',
+			'job', 'house', 'car', 'smoke', 'drink', 'belief', 'workout', 'diet', 'rest', 'pet', 'interest'];
+
+		return self::renderPage("medit.tpl",
+			[
+				'uInfo' => $uInfo,
+				'nickname' => $nickname,
+				'avatar' => $avatar,
+				'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
+				"scope" => User::$Scope,
+			],
+			'imei',
+			'媒婆身份修改');
 	}
 
 	public function actionMreg()

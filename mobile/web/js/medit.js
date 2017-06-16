@@ -26,8 +26,8 @@ require(["layer"],
 			serverId: "",
 			routeIndex: 0,
 			coord: $('#cCoord'),
-			routeLength: mRoutes.length,
-			routeSkip: $.inArray('income', mRoutes),
+			//routeLength: mRoutes.length,
+			//routeSkip: $.inArray('income', mRoutes),
 			mLat: 0,
 			mLng: 0
 		};
@@ -77,37 +77,6 @@ require(["layer"],
 							util.btn.find(".location").append('<em data-key="' + key + '">' + text + '</em>');
 							util.toggle();
 							break;
-						case "age":
-						case "height":
-							if (key == 0) {
-								util.btn.find(".action-val").html('<em data-key="' + key + '">' + text + '</em>');
-								util.toggle();
-								break;
-							}
-							var mOptionObj = self.closest(".m-popup-options");
-							if (!mOptionObj.hasClass("fl")) {
-								util.condVal = key;
-								mOptionObj.find(".start").html(text);
-								util.btn.find(".action-val").html('<em data-key="' + key + '">' + text + '</em>');
-								mOptionObj.removeClass("fl").addClass("fl");
-								mOptionObj.find("a").removeClass("cur");
-								self.addClass("cur");
-							} else {
-								if (parseInt(util.condVal) >= parseInt(key)) {
-									return;
-								}
-								self.addClass("cur");
-								util.condVal = 0;
-								mOptionObj.find(".end").html(text);
-								util.btn.find(".action-val").append('~<em data-key="' + key + '">' + text + '</em>');
-								util.toggle();
-							}
-							break;
-						case "edu":
-						case "income":
-							util.btn.find(".action-val").html('<em data-key="' + key + '">' + text + '</em>');
-							util.toggle();
-							break;
 					}
 					return false;
 				});
@@ -129,22 +98,10 @@ require(["layer"],
 					var tag = self.closest(".cells").attr("data-tag");
 					util.btn.find(".action-val").html(self.html());
 					util.toggle();
-					if (tag == "scope") {
-						var scopeVal = parseInt(self.find("em").attr("data-key"));
-						util.jobVal = mProfessions[scopeVal];
-						util.jobData();
-						var html = Mustache.render(util.jobTemp, util.jobVal);
-						util.toggle(html);
-						util.btn = $(".action-com[data-field=job]");
-					}
+
 					return false;
 				});
-				$(document).on(kClick, ".action-cond", function () {
-					util.btn = $(this);
-					var field = $(this).attr("data-field");
-					var html = $("#" + field + "CondTemp").html();
-					util.toggle(html);
-				});
+
 				$(".btn-select-img").on(kClick, function () {
 					wx.chooseImage({
 						count: 1,
@@ -162,10 +119,11 @@ require(["layer"],
 					});
 					return false;
 				});
-				$(".sedit-btn-comfirm").on(kClick, function () {
 
-					var inputFileds = ["nickname", "interest", "intro"];
-					var inputFiledsT = ["呢称", "兴趣爱好", "自我介绍"];
+				$(".medit-btn-comfirm").on(kClick, function () {
+
+					var inputFileds = ["nickname", "intro"];
+					var inputFiledsT = ["呢称", "自我介绍"];
 					for (var i = 0; i < inputFileds.length; i++) {
 						var inputVal = $.trim($("[name=" + inputFileds[i] + "]").val());
 						if (!inputVal) {
@@ -192,33 +150,6 @@ require(["layer"],
 						$sls.postData[field] = Val;
 					});
 
-					var cItem = {};
-					var chVal = "";
-					$("[data-field=cheight]").find("em").each(function () {
-						chVal = chVal + "-" + $(this).attr("data-key");
-					});
-					var caVal = "";
-					$("[data-field=cage]").find("em").each(function () {
-						caVal = caVal + "-" + $(this).attr("data-key");
-					});
-					$(".action-cond").each(function () {
-						var self = $(this);
-						var field = self.attr("data-field");
-						var truefield = field.substr(1);
-						switch (field) {
-							case "cage":
-								cItem[truefield] = caVal.substr(1);
-								break;
-							case "cheight":
-								cItem[truefield] = chVal.substr(1);
-								break;
-							case "cedu":
-							case "cincome":
-								cItem[truefield] = self.find("em").attr("data-key");
-								break;
-						}
-					});
-					$sls.postData["filter"] = JSON.stringify(cItem);
 					console.log($sls.postData);
 
 					var localId = util.avatar.attr("localId");
@@ -230,16 +161,7 @@ require(["layer"],
 
 				});
 			},
-			jobData: function () {
-				var items = [];
-				for (var k = 0; k < SingleUtil.jobVal.length; k++) {
-					items[items.length] = {
-						key: k,
-						name: SingleUtil.jobVal[k]
-					};
-				}
-				SingleUtil.jobVal = {items: items};
-			},
+
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
 				$sls.postData["coord"] = $sls.coord.val();
@@ -248,10 +170,9 @@ require(["layer"],
 					data: JSON.stringify($sls.postData),
 				}, function (res) {
 					showMsg(res.msg);
-					//alert(JSON.stringify(res.data));
 					if (res.code == 0) {
 						setTimeout(function () {
-							location.href = "/wx/single#sme";
+							location.href = "/wx/switch#sme";
 						}, 500);
 					}
 				}, "json");
@@ -289,7 +210,6 @@ require(["layer"],
 				isShowProgressTips: 1,
 				success: function (res) {
 					$sls.serverId = res.serverId;
-
 					SingleUtil.submit();
 				},
 				fail: function () {
@@ -366,8 +286,6 @@ require(["layer"],
 					}
 				});
 			});
-			SingleUtil.jobVal = mjob;
-			SingleUtil.jobData();
 			$sls.cork.hide();
 
 		});
