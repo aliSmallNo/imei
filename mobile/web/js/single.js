@@ -805,6 +805,57 @@ require(["layer"],
 			}
 		};
 
+		var WxNoUtil = {
+			text: $('.wxno_wrap input'),
+			loading: 0,
+			init: function () {
+				var util = this;
+				$('.btn-save-wxno').on(kClick, function () {
+					util.submit();
+				});
+			},
+			submit: function () {
+				var util = this;
+				var wxno = $.trim(util.text.val());
+				if (!wxno) {
+					showMsg('请填写真实的微信号');
+					util.text.focus();
+					return false;
+				}
+				var reg = /.*[\u4e00-\u9fa5]+.*$/;
+				if (reg.test(wxno)) {
+					showMsg('微信号不能含有中文哦~', 3);
+					util.text.focus();
+					return false;
+				}
+				var arr = wxno.split(' ');
+				if (arr.length > 1) {
+					showMsg('微信号不能含有空格哦~', 3);
+					util.text.focus();
+					return false;
+				}
+				if (util.loading) {
+					return false;
+				}
+				util.loading = 1;
+				$.post('/api/user',
+					{
+						tag: 'wxno',
+						text: wxno
+					},
+					function (resp) {
+						layer.closeAll();
+						if (resp.code == 0) {
+							util.text.blur();
+							showMsg(resp.msg, 3);
+						} else {
+							showMsg(resp.msg);
+						}
+						util.loading = 0;
+					}, 'json');
+			}
+		};
+
 		function showMsg(title, sec) {
 			var duration = sec || 2;
 			layer.open({
@@ -818,7 +869,6 @@ require(["layer"],
 			$("body").addClass("bg-color");
 			FootUtil.init();
 			RechargeUtil.init();
-			// FastClick.attach($sls.footer.get(0));
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
@@ -831,6 +881,7 @@ require(["layer"],
 			locationHashChanged();
 			$sls.cork.hide();
 			FeedbackUtil.init();
+			WxNoUtil.init();
 
 			$sls.newsTimer = setInterval(function () {
 				if ($sls.newIdx < 10) {

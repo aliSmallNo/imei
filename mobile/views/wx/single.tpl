@@ -430,16 +430,29 @@
 		</div>
 	</div>
 </section>
-<section id="myWechatNo">
-	<div class="nav">
-		<a href="#sme">返回</a>
+<section id="myWechatNo" data-title="我的微信号">
+	<div class="wxno_wrap">
+		<label>
+			<em>微信号</em>
+			<input type="text" placeholder="请填写真实的微信号" class="input-s large">
+		</label>
+		<a href="#swxnohelp" class="help-link">找不到微信号？</a>
 	</div>
-	<div class="wx-no">
-		<p>微信号</p>
-		<input type="text" placeholder="填写您的真实的微信号">
-	</div>
-	<div class="wx-no-btn">
-		<a>保存</a>
+	<a class="m-next btn-save-wxno">保存</a>
+</section>
+<section id="swxnohelp" data-title="如何找微信号">
+	<div class="help">
+		<h4>如何找到自己的『微信号』？</h4>
+		<ol>
+			<li>
+				<div>进入【微信】-【个人信息】页</div>
+				<img src="/images/wxno_001.jpg" alt="">
+			</li>
+			<li>
+				<div>为确保与你联系的异性能够成功添加你的微信号，请在【微信】-【设置】-【隐私】-【添加我的方式】里，打开【可搜索到我】按钮。</div>
+				<img src="/images/wxno_002.jpg" alt="">
+			</li>
+		</ol>
 	</div>
 </section>
 <div class="nav-foot on">
@@ -867,4 +880,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.2.1" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.2.2" src="/assets/js/require.js"></script>

@@ -493,8 +493,8 @@ section {
   margin: 0; }
 
 .m-next {
-  height: 5rem;
-  line-height: 5rem;
+  height: 4.5rem;
+  line-height: 4.5rem;
   text-align: center;
   background: #f06292;
   color: #fff;
@@ -3989,5 +3989,37 @@ section {
     z-index: 1001;
     width: 8rem;
     height: 8rem; }
+
+.wxno_wrap {
+  padding: 1.5rem; }
+  .wxno_wrap label {
+    color: #737373; }
+    .wxno_wrap label em {
+      display: block;
+      line-height: 2.5rem;
+      font-size: 1.2rem; }
+  .wxno_wrap .help-link {
+    line-height: 3.2rem;
+    padding-top: 3rem;
+    color: #007aff;
+    text-align: center;
+    font-size: 1.4rem;
+    display: block; }
+
+.help {
+  padding: 1.5rem 1rem; }
+  .help h4 {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem; }
+  .help ol {
+    margin: 0;
+    padding-left: 1.8rem;
+    padding-right: 1.4rem; }
+    .help ol img {
+      margin-top: 1rem;
+      margin-bottom: 1.5rem;
+      width: 100%; }
 
 /*# sourceMappingURL=imei.css.map */

@@ -356,6 +356,14 @@ class ApiController extends Controller
 				$reason = self::postParam("reason");
 				Feedback::addReport($wxInfo['uId'], $rptUId, $reason, $text);
 				return self::renderAPI(0, '提交成功！感谢您的反馈，我们会尽快处理您反映的问题~');
+			case 'wxno':
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				$text = self::postParam("text");
+				UserWechat::edit($openId, ['wWechatId' => $text]);
+				return self::renderAPI(0, '保存成功啦~');
 		}
 		return self::renderAPI(129, '操作无效~');
 	}
