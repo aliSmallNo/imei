@@ -6,7 +6,7 @@
 <div class="m-popup-shade"></div>
 
 <div class="nav">
-	<a href="/wx/single#sme">返回</a>
+	<a href="/wx/match#sme">返回</a>
 </div>
 <div class="sedit-avart">
 	<a class="photo">
