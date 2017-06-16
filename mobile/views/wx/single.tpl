@@ -60,7 +60,10 @@
 					<h5>{{$uInfo.intro}}</h5>
 				</div>
 				<a href="/wx/switch" class="btn-outline change-role">切换成媒婆</a>
+				<!--
 				<a href="/wx/sreg#photo" class="btn-outline edit-role">编辑</a>
+				-->
+				<a href="/wx/sedit" class="btn-outline edit-role">编辑</a>
 			</div>
 			<a href="#album" class="u-my-album">
 				<div class="title">相册(0)</div>

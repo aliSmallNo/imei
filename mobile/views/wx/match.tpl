@@ -101,7 +101,10 @@
 				<h5>{{$uInfo.intro}}</h5>
 			</div>
 			<a href="/wx/switch" class="btn-outline change-role">切换成单身</a>
+			<!--
 			<a href="/wx/mreg" class="btn-outline edit-role">编辑</a>
+			-->
+			<a href="/wx/medit" class="btn-outline edit-role">编辑</a>
 		</div>
 		<div class="u-my-count">
 			<a href="#sgroup">
