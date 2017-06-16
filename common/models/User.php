@@ -848,8 +848,7 @@ class User extends ActiveRecord
 		$filterArr = json_decode($filter, 1);
 		$ret = [];
 
-		$ageArr = explode("-", $filterArr["age"]);
-		if ($ageArr) {
+		if ( isset($filterArr["age"]) && $ageArr = explode("-", $filterArr["age"])) {
 			foreach ($ageArr as $k => $v) {
 				$val = isset(User::$AgeFilter[$v]) ? User::$AgeFilter[$v] : "";
 				$ret["age"][] = ["key" => $v, "name" => $val];
@@ -857,8 +856,8 @@ class User extends ActiveRecord
 		} else {
 			$ret["age"][] = ["key" => 0, "name" => "年龄不限"];
 		}
-		$heightArr = explode("-", $filterArr["height"]);
-		if ($heightArr) {
+
+		if (isset($filterArr["height"]) &&  $heightArr = explode("-", $filterArr["height"])) {
 			foreach ($heightArr as $k => $v) {
 				$val = isset(User::$HeightFilter[$v]) ? User::$HeightFilter[$v] : "";
 				$ret["height"][] = ["key" => $v, "name" => $val];
