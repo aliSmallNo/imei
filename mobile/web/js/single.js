@@ -819,19 +819,19 @@ require(["layer"],
 				var wxno = $.trim(util.text.val());
 				if (!wxno) {
 					showMsg('请填写真实的微信号');
-					util.text.focus();
+					util.text.blur();
 					return false;
 				}
 				var reg = /.*[\u4e00-\u9fa5]+.*$/;
 				if (reg.test(wxno)) {
 					showMsg('微信号不能含有中文哦~', 3);
-					util.text.focus();
+					util.text.blur();
 					return false;
 				}
 				var arr = wxno.split(' ');
 				if (arr.length > 1) {
 					showMsg('微信号不能含有空格哦~', 3);
-					util.text.focus();
+					util.text.blur();
 					return false;
 				}
 				if (util.loading) {
