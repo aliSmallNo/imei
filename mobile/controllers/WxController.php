@@ -517,6 +517,7 @@ class WxController extends BaseController
 			exit();
 		}
 		$senderName = $wxInfo["uName"];
+		$senderThumb = $wxInfo["Avatar"];
 		$encryptId = AppUtil::encrypt($wxInfo['uId']);
 		$friend = $wxInfo["uGender"] == User::GENDER_MALE ? '女朋友' : '男朋友';
 		$senderId = self::getParam('id');
@@ -525,6 +526,7 @@ class WxController extends BaseController
 			$uInfo = User::user(['uId' => $senderId]);
 			if ($uInfo) {
 				$senderName = $uInfo['name'];
+				$senderThumb = $uInfo["thumb"];
 				$encryptId = AppUtil::encrypt($uInfo['id']);
 				$friend = $uInfo['gender'] == User::GENDER_MALE ? '女朋友' : '男朋友';
 			}
@@ -534,6 +536,7 @@ class WxController extends BaseController
 			[
 				'senderId' => $senderId,
 				'senderName' => $senderName,
+				'senderThumb' => $senderThumb,
 				'friend' => $friend,
 				'encryptId' => $encryptId,
 				'wxUrl' => AppUtil::wechatUrl()

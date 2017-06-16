@@ -16,10 +16,11 @@
 </div>
 <input type="hidden" id="cWXUrl" value="{{$wxUrl}}">
 <input type="hidden" id="cEncryptId" value="{{$encryptId}}">
+<input type="hidden" id="cSenderThumb" value="{{$senderThumb}}">
 <input type="hidden" id="cSenderName" value="{{$senderName}}">
 <input type="hidden" id="cFriend" value="{{$friend}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/invite.js?v=1.1.1" src="/assets/js/require.js"></script>
+<script data-main="/js/invite.js?v=1.1.2" src="/assets/js/require.js"></script>
