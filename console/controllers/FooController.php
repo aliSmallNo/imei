@@ -289,18 +289,22 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = '自由职业 社会工作者 学生';
-		$ret = str_replace("\n", ' ', $ret);
-		$ret = str_replace("\r", ' ', $ret);
-		$arr = explode(' ', $ret);
-		foreach ($arr as $key => $item) {
-			if (!trim($item)) {
-				unset($arr[$key]);
-				continue;
-			}
-			$arr[$key] = str_replace('／', '/', $item);
-		}
+//		$ret = '自由职业 社会工作者 学生';
+//		$ret = str_replace("\n", ' ', $ret);
+//		$ret = str_replace("\r", ' ', $ret);
+//		$arr = explode(' ', $ret);
+//		foreach ($arr as $key => $item) {
+//			if (!trim($item)) {
+//				unset($arr[$key]);
+//				continue;
+//			}
+//			$arr[$key] = str_replace('／', '/', $item);
+//		}
+//
+//		AppUtil::logFile(json_encode(array_values($arr), JSON_UNESCAPED_UNICODE), 5);
+//
+//
 
-		AppUtil::logFile(json_encode(array_values($arr), JSON_UNESCAPED_UNICODE), 5);
+
 	}
 }

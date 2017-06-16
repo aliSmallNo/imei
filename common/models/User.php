@@ -308,6 +308,7 @@ class User extends ActiveRecord
 			if ($newKey == "name" && mb_strlen($val) > 5) {
 				$val = mb_substr($val, 0, 5) . "...";
 			}
+
 			if ($newKey == 'location') {
 				$item[$newKey] = json_decode($val, 1);
 				$item[$newKey . '_t'] = '';
@@ -448,6 +449,7 @@ class User extends ActiveRecord
 			"year" => "uBirthYear",
 			"sign" => "uHoros",
 			"coord" => "uCoord",
+			"filter" => "uFilter",
 		];
 		$img = isset($data["img"]) ? $data["img"] : '';
 		unset($data['img']);
@@ -850,6 +852,40 @@ class User extends ActiveRecord
 		}
 		$smsCode = RedisUtil::getCache(RedisUtil::KEY_SMS_CODE, $phone);
 		return ($smsCode && $code == $smsCode);
+	}
+
+	public static function Filter($filter)
+	{
+		if (!$filter) {
+			return [
+				"age" => [
+					["key" => 0, "name" => "年龄不限"]
+				],
+				"height" => [
+					["key" => 0, "name" => "身高不限"]
+				],
+				"income" => ["key" => 0, "name" => "收入不限"],
+				"edu" => ["key" => 0, "name" => "学历不限"],
+			];
+		}
+		$filterArr = json_decode($filter, 1);
+		$ret = [];
+
+		$ageArr = explode("-", $filterArr["age"]);
+		$heightArr = explode("-", $filterArr["height"]);
+
+		foreach ($ageArr as $k => $v) {
+			$val = isset(User::$AgeFilter[$v]) ? User::$AgeFilter[$v] : "";
+			$ret["age"][] = ["key" => $v, "name" => $val];
+		}
+		foreach ($heightArr as $k => $v) {
+			$val = isset(User::$HeightFilter[$v]) ? User::$HeightFilter[$v] : "";
+			$ret["height"][] = ["key" => $v, "name" => $val];
+		}
+
+		$ret["income"] = ["key" => $filterArr["income"], "name" => User::$IncomeFilter[$filterArr["income"]]];
+		$ret["edu"] = ["key" => $filterArr["edu"], "name" => User::$EducationFilter[$filterArr["edu"]]];
+		return $ret;
 	}
 
 }
