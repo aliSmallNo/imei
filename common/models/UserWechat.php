@@ -165,7 +165,7 @@ class UserWechat extends ActiveRecord
 	{
 		$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
 		$ret = json_decode($ret, 1);
-		if (AppUtil::scene() == 'dev') {
+		if (AppUtil::isDev()) {
 			$resetFlag = true;
 		}
 		if (!$resetFlag && isset($ret["uPhone"]) && isset($ret["uGender"]) && isset($ret["Avatar"]) && isset($ret["uHint"])) {
@@ -176,7 +176,7 @@ class UserWechat extends ActiveRecord
 		}
 
 		$fields = ['uId', 'uRole', 'uPhone', 'uName', 'uLocation', 'uThumb', 'uAvatar', 'uHint', 'uIntro', 'uGender'];
-		if (AppUtil::scene() == 'dev') {
+		if (AppUtil::isDev()) {
 			$ret = UserWechat::findOne(['wOpenId' => $openId]);
 			if ($ret) {
 				$ret = json_decode($ret['wRawData'], 1);

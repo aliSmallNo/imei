@@ -93,7 +93,7 @@ class ApiController extends Controller
 				$title = '微媒100-充值';
 				$subTitle = '充值' . $num . '媒桂花';
 				$payId = Pay::prepay($wxInfo['uId'], $num, $amt * 100);
-				if (AppUtil::scene() == 'dev') {
+				if (AppUtil::isDev()) {
 					return self::renderAPI(129, '请在服务器测试该功能~');
 				}
 				// Rain: 测试阶段，payFee x元实际支付x分

@@ -790,7 +790,7 @@ class User extends ActiveRecord
 		if (!AppUtil::checkPhone($phone)) {
 			return ['code' => 159, 'msg' => '手机格式不正确'];
 		}
-		if (AppUtil::scene() == 'dev') {
+		if (AppUtil::isDev()) {
 			return ['code' => 159, 'msg' => '悲催啊~ 只能发布到服务器端才能测试这个功能~'];
 		}
 		$smsLimit = RedisUtil::getCache(RedisUtil::KEY_SMS_CODE_CNT, date('ymd'), $phone);

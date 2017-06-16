@@ -194,7 +194,7 @@ class RedisUtil
 			$redis = self::redis();
 		}
 		$prefix = "";
-		$isDev = (AppUtil::scene() == "dev");
+		$isDev = AppUtil::isDev();
 		switch ($field) {
 			case self::$IdOrder:
 				$padding = 100000001;
