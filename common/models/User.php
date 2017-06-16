@@ -849,19 +849,33 @@ class User extends ActiveRecord
 		$ret = [];
 
 		$ageArr = explode("-", $filterArr["age"]);
+		if ($ageArr) {
+			foreach ($ageArr as $k => $v) {
+				$val = isset(User::$AgeFilter[$v]) ? User::$AgeFilter[$v] : "";
+				$ret["age"][] = ["key" => $v, "name" => $val];
+			}
+		} else {
+			$ret["age"][] = ["key" => 0, "name" => "年龄不限"];
+		}
 		$heightArr = explode("-", $filterArr["height"]);
-
-		foreach ($ageArr as $k => $v) {
-			$val = isset(User::$AgeFilter[$v]) ? User::$AgeFilter[$v] : "";
-			$ret["age"][] = ["key" => $v, "name" => $val];
+		if ($heightArr) {
+			foreach ($heightArr as $k => $v) {
+				$val = isset(User::$HeightFilter[$v]) ? User::$HeightFilter[$v] : "";
+				$ret["height"][] = ["key" => $v, "name" => $val];
+			}
+		} else {
+			$ret["height"][] = ["key" => 0, "name" => "身高不限"];
 		}
-		foreach ($heightArr as $k => $v) {
-			$val = isset(User::$HeightFilter[$v]) ? User::$HeightFilter[$v] : "";
-			$ret["height"][] = ["key" => $v, "name" => $val];
+		if (isset($filterArr["income"]) && isset(User::$IncomeFilter[$filterArr["income"]])) {
+			$ret["income"] = ["key" => $filterArr["income"], "name" => User::$IncomeFilter[$filterArr["income"]]];
+		} else {
+			$ret["income"] = ["key" => 0, "name" => "收入不限"];
 		}
-
-		$ret["income"] = ["key" => $filterArr["income"], "name" => User::$IncomeFilter[$filterArr["income"]]];
-		$ret["edu"] = ["key" => $filterArr["edu"], "name" => User::$EducationFilter[$filterArr["edu"]]];
+		if (isset($filterArr["edu"]) && isset(User::$EducationFilter[$filterArr["edu"]])) {
+			$ret["edu"] = ["key" => $filterArr["edu"], "name" => User::$EducationFilter[$filterArr["edu"]]];
+		} else {
+			$ret["edu"] = ["key" => 0, "name" => "学历不限"];
+		}
 		return $ret;
 	}
 
