@@ -264,6 +264,21 @@ class User extends ActiveRecord
 		return $entity->uId;
 	}
 
+	public static function notes($uInfo)
+	{
+		$notes = [];
+		$fields = ['age', 'height_t', 'income_t', 'horos_t', 'education_t'];
+		foreach ($fields as $field) {
+			if (isset($uInfo[$field]) && $uInfo[$field]) {
+				$val = $uInfo[$field];
+				$val = str_replace('厘米', 'cm', $val);
+				$val = str_replace('万元', 'w', $val);
+				$notes[] = $val;
+			}
+		}
+		return $notes;
+	}
+
 	public static function fmtRow($row)
 	{
 		$keys = array_keys($row);
@@ -271,10 +286,6 @@ class User extends ActiveRecord
 		foreach ($keys as $key) {
 			$newKey = strtolower(substr($key, 1));
 			$val = $row[$key];
-			if ($newKey == "name" && mb_strlen($val) > 5) {
-				$val = mb_substr($val, 0, 5) . "...";
-			}
-
 			if ($newKey == 'location') {
 				$item[$newKey] = json_decode($val, 1);
 				$item[$newKey . '_t'] = '';
