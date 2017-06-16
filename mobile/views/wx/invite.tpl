@@ -1,3 +1,4 @@
+{{if !$noteString}}
 <div class="nomp-wrap">
 	<div class="nomp-up">
 		<h4>找个好友做媒婆<br>帮我写推荐</h4>
@@ -8,6 +9,21 @@
 		<a href="javascript:;" class="btn-share">找个媒婆给我写推荐</a>
 	</div>
 </div>
+{{else}}
+<div class="received-wrap">
+	<h4>我在「微媒100」找对象<br>你来为我写个推荐语吧</h4>
+	<div>
+		<div class="profile">
+			<img src="{{$senderThumb}}">
+			<div class="info">
+				<p class="name">{{$senderName}}</p>
+				<p>{{$noteString}}</p>
+			</div>
+		</div>
+	</div>
+</div>
+<a href="/wx/index" class="m-next btn-enter">进入微媒100</a>
+{{/if}}
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
