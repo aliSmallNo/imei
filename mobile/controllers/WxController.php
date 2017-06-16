@@ -485,8 +485,7 @@ class WxController extends BaseController
 		]);
 	}
 
-	public
-	function actionSign()
+	public function actionSign()
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
@@ -505,6 +504,38 @@ class WxController extends BaseController
 				'avatar' => $avatar,
 				'title' => $title,
 				'isSign' => $isSign
+			],
+			'terse');
+	}
+
+	public function actionInvite()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+		$senderName = $wxInfo["uName"];
+		$encryptId = AppUtil::encrypt($wxInfo['uId']);
+		$friend = $wxInfo["uGender"] == User::GENDER_MALE ? '女朋友' : '男朋友';
+		$senderId = self::getParam('id');
+		$senderId = AppUtil::decrypt($senderId);
+		if ($senderId) {
+			$uInfo = User::user(['uId' => $senderId]);
+			if ($uInfo) {
+				$senderName = $uInfo['name'];
+				$encryptId = AppUtil::encrypt($uInfo['id']);
+				$friend = $uInfo['gender'] == User::GENDER_MALE ? '女朋友' : '男朋友';
+			}
+		}
+
+		return self::renderPage("invite.tpl",
+			[
+				'senderId' => $senderId,
+				'senderName' => $senderName,
+				'friend' => $friend,
+				'encryptId' => $encryptId
 			],
 			'terse');
 	}
@@ -571,8 +602,7 @@ class WxController extends BaseController
 			'terse');
 	}
 
-	public
-	function actionCard()
+	public function actionCard()
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
@@ -608,8 +638,7 @@ class WxController extends BaseController
 			'bg-main');
 	}
 
-	public
-	function actionError()
+	public function actionError()
 	{
 		$msg = self::getParam("msg", "请在微信客户端打开链接");
 		return self::renderPage('error.tpl',

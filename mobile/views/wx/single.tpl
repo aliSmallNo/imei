@@ -76,7 +76,7 @@
 			<a href="javascript:;" to="heartbeat"><span class="title">心动列表</span> </a>
 		</div>
 		<div class="m-rows line-bottom mymp">
-			<a href="javascript:;" to="myMP"><span class="title">我的媒婆</span> <span class="tip">还没有媒婆</span></a>
+			<a href="/wx/invite"><span class="title">我的媒婆</span> <span class="tip">还没有媒婆</span></a>
 			<a href="javascript:;" to="focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
@@ -188,7 +188,7 @@
 	</ul>
 </section>
 <section id="noMP">
-	<div class="nomp-des">
+	<div class="nomp-wrap">
 		<div class="nomp-up">
 			<h4>找个好友做媒婆<br>帮我写推荐</h4>
 			<strong>?</strong>

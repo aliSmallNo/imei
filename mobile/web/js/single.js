@@ -4,10 +4,7 @@ if (document.location.hash === "" || document.location.hash === "#") {
 require.config({
 	paths: {
 		"jquery": "/assets/js/jquery-3.2.1.min",
-		"zepto": "/assets/js/zepto.min",
-		"mustache": "/assets/js/mustache.min",
 		"layer": "/assets/js/layer_mobile/layer",
-		"wx": "/assets/js/jweixin-1.2.0",
 	}
 });
 
@@ -892,9 +889,8 @@ require(["layer"],
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
-				//wx.hideOptionMenu();
+				wx.hideOptionMenu();
 			});
-
 			locationHashChanged();
 			$sls.cork.hide();
 			FeedbackUtil.init();
