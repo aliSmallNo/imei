@@ -14,6 +14,7 @@
 		<div class="m-popup-content no-bg"></div>
 	</div>
 </div>
+<input type="hidden" id="cWXUrl" value="{{$wxUrl}}">
 <input type="hidden" id="cEncryptId" value="{{$encryptId}}">
 <input type="hidden" id="cSenderName" value="{{$senderName}}">
 <input type="hidden" id="cFriend" value="{{$friend}}">

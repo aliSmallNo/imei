@@ -535,7 +535,8 @@ class WxController extends BaseController
 				'senderId' => $senderId,
 				'senderName' => $senderName,
 				'friend' => $friend,
-				'encryptId' => $encryptId
+				'encryptId' => $encryptId,
+				'wxUrl' => AppUtil::wechatUrl()
 			],
 			'terse');
 	}
