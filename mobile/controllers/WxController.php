@@ -90,14 +90,15 @@ class WxController extends BaseController
 			['key' => 100105, 'text' => '朝阳区']
 		];
 		if ($wxInfo) {
+			$uInfo = User::user(['uId' => $wxInfo['uId']]);
+			if ($uInfo) {
+				$hasGender = in_array($uInfo['gender'], array_values(User::$Gender));
+			}
+
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
 			if ($wxInfo["uRole"] == User::ROLE_MATCHER) {
 				$switchRole = true;
-			}
-			$uInfo = User::user(['uId' => $wxInfo['uId']]);
-			if ($uInfo) {
-				$hasGender = $uInfo['gender'] > 9 ? true : false;
 			}
 			$locInfo = $uInfo['location'];
 		}
@@ -212,6 +213,47 @@ class WxController extends BaseController
 			'reasons' => self::$ReportReasons,
 			'wallet' => UserTrans::getStat($wxInfo['uId'], 1)
 		]);
+	}
+
+	public function actionSwitch()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+		$uInfo = User::user(['uId' => $wxInfo['uId']]);
+		if (!$uInfo) {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+		switch ($uInfo['role']) {
+			case User::ROLE_SINGLE:
+				//Rain: 曾经写过单身资料
+				if ($uInfo['diet'] && $uInfo['rest']) {
+					User::edit($uInfo['id'], ['uRole' => User::ROLE_MATCHER]);
+					UserWechat::getInfoByOpenId($openId, true);
+					header('location:/wx/match#slink');
+					exit();
+				} else {
+					header('location:/wx/mreg');
+					exit();
+				}
+				break;
+			case User::ROLE_MATCHER:
+				//Rain: 曾经写过单身资料
+				if ($uInfo['location'] && $uInfo['scope']) {
+					User::edit($uInfo['id'], ['uRole' => User::ROLE_SINGLE]);
+					UserWechat::getInfoByOpenId($openId, true);
+					header('location:/wx/single#slook');
+					exit();
+				} else {
+					header('location:/wx/sreg#photo');
+					exit();
+				}
+				break;
+		}
 	}
 
 	public function actionMh()

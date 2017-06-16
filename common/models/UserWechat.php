@@ -229,14 +229,14 @@ class UserWechat extends ActiveRecord
 		return $ret;
 	}
 
-	public static function getInfoByOpenId($openId, $renewFlag = false)
+	public static function getInfoByOpenId($openId, $resetFlag = false)
 	{
 		$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
 		$ret = json_decode($ret, 1);
 		if (AppUtil::scene() == 'dev') {
-			$renewFlag = true;
+			$resetFlag = true;
 		}
-		if (isset($ret["uPhone"]) && isset($ret["uGender"]) && isset($ret["Avatar"]) && isset($ret["uHint"]) && !$renewFlag) {
+		if (isset($ret["uPhone"]) && isset($ret["uGender"]) && isset($ret["Avatar"]) && isset($ret["uHint"]) && !$resetFlag) {
 			return $ret;
 		}
 		if (strlen($openId) < 20) {
@@ -257,7 +257,7 @@ class UserWechat extends ActiveRecord
 			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
 			return $ret;
 		} else {
-			$ret = WechatUtil::wxInfo($openId, $renewFlag);
+			$ret = WechatUtil::wxInfo($openId, $resetFlag);
 			if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
 				$uid = self::updateWXInfo($ret);
 				$uInfo = User::findOne(['uId' => $uid]);
