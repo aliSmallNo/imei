@@ -387,6 +387,7 @@ require(["layer"],
 			serverId: "",
 			smeFlag: false,
 			uploadImgFlag: false,
+			delImgFlag: false,
 			init: function () {
 				$(document).on(kClick, "a.choose-img", function () {
 					if (smeUlit.uploadImgFlag) {
@@ -407,6 +408,9 @@ require(["layer"],
 					});
 				});
 				$(document).on(kClick, ".album-photos a.has-pic", function () {
+					if (smeUlit.delImgFlag) {
+						return;
+					}
 					var self = $(this);
 					var vw = $(window).width();
 					var vh = $(window).height();
@@ -417,7 +421,17 @@ require(["layer"],
 						btn: ['删除', '关闭'],
 						content: '<img src="' + src + '">',
 						yes: function () {
-							alert(11);
+							smeUlit.delImgFlag = 1;
+							$.post("/api/user", {
+								id: src,
+								tag: "album",
+								f: "del",
+							}, function (resp) {
+								smeUlit.delImgFlag = 0;
+								self.closest("li").remove();
+								layer.closeAll();
+								showMsg(resp.msg);
+							}, "json");
 						},
 						close: function () {
 
