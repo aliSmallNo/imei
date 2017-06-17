@@ -12,18 +12,15 @@ require(["layer"],
 			curFrag: "slink",
 			cork: $(".app-cork"),
 			wxString: $("#tpl_wx_info").html(),
-			celebs: $('#tpl_celebs').html(),
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
-			nic: $('.nic'),
 			uid: $('#cEncryptId').val(),
 			wxUrl: $('#cWXUrl').val(),
 			sender: $('#cSenderName').val(),
 			thumb: $('#cSenderThumb').val(),
 			senderId: $('#cSenderId').val(),
 			friend: $('#cFriend').val(),
-			dl: $('.dl'),
 			tmp: $('#tpl_mp').html(),
 			mpInfo: $('.mp-info'),
 			newIdx: 0,
@@ -35,6 +32,7 @@ require(["layer"],
 			if ($sls.loading) {
 				return false;
 			}
+
 			$sls.loading = 1;
 			$.post('/api/user',
 				{
@@ -43,42 +41,69 @@ require(["layer"],
 				}, function (resp) {
 					if (resp.code == 0) {
 						$('.btn-wrap').hide();
-						$('.profile-wrap').append(Mustache.render($sls.tmp, reps.data.sender));
+						$('.profile-wrap').append(Mustache.render($sls.tmp, resp.data.sender));
 					}
 					showMsg(resp.msg);
 					$sls.loading = 0;
 				}, 'json');
 		});
 
-		$('.editable').on(kClick, function () {
-			var self = $(this);
-			var cid = self.attr('data-id');
-			toggle($sls.celebs);
-			$sls.content.find('[data-id=' + cid + ']').addClass('cur');
-		});
 
-		$(document).on(kClick, '.m-popup-options > a', function () {
-			var self = $(this);
-			var cid = self.attr('data-id');
-			$sls.dl.attr('data-id', cid);
-			$sls.dl.html(self.html());
-			toggle();
-			resetMenuShare();
-		});
-
-		function toggle(content) {
-			var util = $sls;
-			if (content) {
-				util.main.show();
-				util.content.html(content).addClass("animate-pop-in");
-				util.shade.fadeIn(160);
-			} else {
-				util.content.removeClass("animate-pop-in");
-				util.main.hide();
-				util.content.html('');
-				util.shade.fadeOut(100);
+		var CommentUtil = {
+			tmp: $('#tpl_comment').html(),
+			posting: 0,
+			init: function () {
+				var util = this;
+				$(document).on(kClick, '.btn-comment', function () {
+					util.toggle(1);
+				});
+				$(document).on(kClick, '.btn-cancel', function () {
+					util.toggle(0);
+				});
+				$(document).on(kClick, '.btn-ok', function () {
+					util.submit();
+				});
+			},
+			toggle: function (showFlag) {
+				var util = this;
+				if (showFlag) {
+					$sls.main.show();
+					$sls.content.html(util.tmp);
+					$sls.shade.fadeIn(160);
+				} else {
+					$sls.main.hide();
+					$sls.content.html('');
+					$sls.shade.fadeOut(100);
+				}
+			},
+			submit: function () {
+				var util = this;
+				if (util.posting) {
+					return false;
+				}
+				var text = $('.prompt-wrap textarea');
+				var comment = $.trim(text.val());
+				if (!comment) {
+					showMsg('推荐的话不能为空哦~');
+					text.focus();
+					return false;
+				}
+				util.posting = 1;
+				$.post('/api/user',
+					{
+						tag: 'link-comment',
+						id: $sls.senderId,
+						text: comment
+					}, function (resp) {
+						if (resp.code == 0) {
+							$sls.mpInfo.find('.content').html(comment);
+						}
+						util.posting = 0;
+						showMsg(resp.msg);
+						util.toggle(0);
+					}, 'json');
 			}
-		}
+		};
 
 		function showMsg(title, sec) {
 			var delay = sec || 3;
@@ -115,11 +140,10 @@ require(["layer"],
 		}
 
 		$(function () {
-			// FootUtil.init();
-			// SingleUtil.init();
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
-			wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
+			wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems',
+				'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
 				resetMenuShare();
@@ -136,5 +160,6 @@ require(["layer"],
 				});
 			});
 			$sls.cork.hide();
+			CommentUtil.init();
 		});
 	});

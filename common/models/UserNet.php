@@ -76,7 +76,7 @@ class UserNet extends ActiveRecord
 		return 1;
 	}
 
-	public static function edit($uid, $subUid, $relation)
+	public static function edit($uid, $subUid, $relation, $note = false)
 	{
 		if (!$uid || !$subUid || $uid == $subUid) {
 			return false;
@@ -88,11 +88,13 @@ class UserNet extends ActiveRecord
 		$entity->nUId = $uid;
 		$entity->nSubUId = $subUid;
 		$entity->nRelation = $relation;
+		if ($note !== false) {
+			$entity->nNote = $note;
+		}
 		$entity->save();
 
 		return true;
 	}
-
 
 	public static function del($uid, $subUid, $relation)
 	{

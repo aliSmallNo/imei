@@ -388,7 +388,7 @@ class User extends ActiveRecord
 				$user['comment'] = '';
 			}
 			if (!$user['comment']) {
-				$user['comment'] = '(无)';
+				//$user['comment'] = '(无)';
 			}
 			return $user;
 		}

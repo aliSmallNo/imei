@@ -26,22 +26,29 @@
 				<img src="{{$mpThumb}}">
 				<p>我的媒婆</p>
 			</div>
-			<div class="content">{{$mpComment}}</div>
+			<div class="content">
+				{{if $mpComment}}
+				{{$mpComment}}
+				{{else}}
+				<div class="btn-wrap">
+					<a href="javascript:;" class="btn btn-blue btn-comment">给Ta写推荐</a>
+				</div>
+				{{/if}}
+			</div>
+		</div>
+		{{else}}
+		<div class="btn-wrap">
+			<a href="javascript:;" class="btn btn-main btn-link">做Ta的媒婆，写推荐</a>
 		</div>
 		{{/if}}
 	</div>
-	{{if !$hasMP}}
-	<div class="btn-wrap">
-		<a href="javascript:;" class="btn btn-normal btn-link">做Ta的媒婆，写推荐</a>
-	</div>
-	{{/if}}
 </div>
 <a href="/wx/index" class="m-next btn-enter">进入微媒100</a>
 {{/if}}
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
-		<div class="m-popup-content no-bg"></div>
+		<div class="m-popup-content"></div>
 	</div>
 </div>
 
@@ -51,15 +58,31 @@
 <input type="hidden" id="cSenderName" value="{{$senderName}}">
 <input type="hidden" id="cSenderId" value="{{$senderId}}">
 <input type="hidden" id="cFriend" value="{{$friend}}">
+<script type="text/template" id="tpl_comment">
+	<div class="prompt-wrap">
+		<label>给Ta写推荐</label>
+		<textarea placeholder="请写些推荐的话给Ta吧~"></textarea>
+		<div class="btn-row">
+			<a href="javascript:;" class="btn-cancel">取消</a>
+			<a href="javascript:;" class="btn-ok">保存</a>
+		</div>
+	</div>
+</script>
 <script type="text/template" id="tpl_mp">
 	<div class="mp-info">
-		<div class="img"><img src="{[thumb]}"></div>
-		<p>我的媒婆</p>
-		<div class="word">{[comment]}</div>
+		<div class="title">
+			<img src="{[thumb]}">
+			<p>我的媒婆</p>
+		</div>
+		<div class="content">
+			{[#comment]}{[.]}{[/comment]}
+			{[^comment]}<a href="javascript:;" class="btn btn-blue btn-comment">给Ta写推荐</a>{[/comment]}
+		</div>
 	</div>
 </script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/invite.js?v=1.1.4" src="/assets/js/require.js"></script>
+<script src="/assets/js/mustache.min.js"></script>
+<script data-main="/js/invite.js?v=1.1.5" src="/assets/js/require.js"></script>
