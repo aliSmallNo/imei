@@ -228,8 +228,8 @@
 		</div>
 	</div>
 	<div class="mpsay-ex">
-		<b>实例:</b>
-		<p>典型的程序员，严谨，认真，耿直BOY,赚的不少，花的少，毛病不多，优点多。</p>
+		<b>实例：</b>
+		<p>典型的程序员，严谨，认真，耿直BOY，赚的不少，花的少，毛病不多，优点多。</p>
 	</div>
 </section>
 <div class="nav-foot on">
