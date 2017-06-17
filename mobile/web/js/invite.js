@@ -22,7 +22,6 @@ require(["layer"],
 			senderId: $('#cSenderId').val(),
 			friend: $('#cFriend').val(),
 			tmp: $('#tpl_mp').html(),
-			mpInfo: $('.mp-info'),
 			newIdx: 0,
 			newsTimer: 0,
 			loading: 0
@@ -108,7 +107,7 @@ require(["layer"],
 						text: comment
 					}, function (resp) {
 						if (resp.code == 0) {
-							$sls.mpInfo.find('.content').html(comment);
+							$('.mp-info .content').html(comment);
 						}
 						util.posting = 0;
 						showMsg(resp.msg);
