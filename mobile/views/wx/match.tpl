@@ -36,7 +36,7 @@
 		</div>
 		<div class="singles">
 			{{foreach from=$singles item=single}}
-			<a href="/wx/sh?id={{$single.encryptId}}" class="single">
+			<a href="javascript:;" data-id="{{$single.encryptId}}" class="single">
 				<div class="avatar">
 					<img src="{{$single.thumb}}">
 				</div>
@@ -244,7 +244,7 @@
 </div>
 <script type="text/template" id="tpl_single">
 	{[#items]}
-	<a href="/wx/sh?id={[encryptId]}" class="single">
+	<a href="javascript:;" data-id="{[encryptId]}" class="single">
 		<div class="avatar">
 			<img src="{[thumb]}">
 		</div>

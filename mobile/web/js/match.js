@@ -102,6 +102,11 @@ require(["layer"],
 					util.reload();
 				});
 
+				$(document).on(kClick, ".single", function () {
+					var id = $(this).attr("data-id");
+					location.href = "/wx/sh?id=" + id;
+				});
+
 				$(document).on(kClick, ".singles .edit", function (e) {
 					e.stopPropagation();
 					SingleUtil.sId = $(this).attr("data-id");
