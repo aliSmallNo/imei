@@ -4253,4 +4253,20 @@ section {
       background: #f487ac;
       color: #fff; }
 
+.mpsay-ex {
+  display: none;
+  margin: 0 1rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background: rgba(1, 204, 170, 0.61);
+  position: relative; }
+  .mpsay-ex b {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: #fff; }
+  .mpsay-ex p {
+    font-size: 1.2rem;
+    color: #fff;
+    margin: 0.6rem 0; }
+
 /*# sourceMappingURL=imei.css.map */

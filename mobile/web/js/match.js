@@ -149,6 +149,9 @@ require(["layer"],
 						SingleUtil.mpsayf = 0;
 					}, "json");
 				});
+				$(document).on(kClick, ".mpsay-bot-l a", function () {
+					$(".mpsay-ex").show();
+				});
 			},
 			reload: function () {
 				var util = this;
