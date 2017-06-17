@@ -3365,7 +3365,7 @@ section {
       z-index: 11;
       left: 50%;
       top: -0.9rem;
-      margin-left: -0.7rem;
+      margin-left: -0.9rem;
       content: ""; }
     .received-wrap .mp-info .title {
       -webkit-box-flex: 0 0 7rem;
@@ -3384,7 +3384,7 @@ section {
       -webkit-flex: 1;
       -ms-flex: 1;
       flex: 1;
-      color: #737373;
+      color: #999;
       text-align: left;
       padding-left: 0.5rem; }
   .received-wrap .profile {
