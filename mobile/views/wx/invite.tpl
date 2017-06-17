@@ -12,7 +12,7 @@
 {{else}}
 <div class="received-wrap">
 	<h4>我在「微媒100」找对象<br>你来为我写个推荐语吧</h4>
-	<div>
+	<div class="profile-wrap">
 		<div class="profile">
 			<img src="{{$senderThumb}}">
 			<div class="info">
@@ -20,15 +20,15 @@
 				<p>{{$noteString}}</p>
 			</div>
 		</div>
+		{{if $hasMP}}
 		<div class="mp-info">
-			{{if $hasMP}}
 			<div class="title">
 				<img src="{{$mpThumb}}">
 				<p>我的媒婆</p>
 			</div>
 			<div class="content">{{$mpComment}}</div>
-			{{/if}}
 		</div>
+		{{/if}}
 	</div>
 	{{if !$hasMP}}
 	<div class="btn-wrap">
@@ -52,9 +52,11 @@
 <input type="hidden" id="cSenderId" value="{{$senderId}}">
 <input type="hidden" id="cFriend" value="{{$friend}}">
 <script type="text/template" id="tpl_mp">
-	<div class="img"><img src="{[thumb]}"></div>
-	<p>我的媒婆</p>
-	<div class="word">{[comment]}</div>
+	<div class="mp-info">
+		<div class="img"><img src="{[thumb]}"></div>
+		<p>我的媒婆</p>
+		<div class="word">{[comment]}</div>
+	</div>
 </script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}

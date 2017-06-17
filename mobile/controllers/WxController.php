@@ -637,9 +637,11 @@ class WxController extends BaseController
 				$hasMP = $uInfo['mp_name'] ? true : false;
 				$mpThumb = $uInfo['mp_thumb'];
 				$mpComment = $uInfo['comment'];
+				if ($mpComment == '(无)') {
+					$mpComment = '';
+				}
 			}
 		}
-//var_dump($uInfo);
 		return self::renderPage("invite.tpl",
 			[
 				'senderId' => $senderId,
