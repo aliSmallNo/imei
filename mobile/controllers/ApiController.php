@@ -404,6 +404,30 @@ class ApiController extends Controller
 				}
 				return self::renderAPI(0, '下手晚一步啊，' . $senderInfo['name'] . '已经有媒婆了',
 					['sender' => $senderInfo]);
+			case "mpsay":
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				$content = self::postParam("content");
+				$f = self::postParam("f");
+				$subUid = AppUtil::decrypt($id);
+				if ($f == "get") {
+					$entity = UserNet::findOne(['nUId' => $wxInfo["uId"], 'nSubUId' => $subUid, 'nRelation' => UserNet::REL_BACKER, 'nDeletedFlag' => 0]);
+					if ($entity) {
+						return self::renderAPI(0, '', $entity->nNote);
+					} else {
+						return self::renderAPI(129, '');
+					}
+				} else {
+					$ret = UserNet::replace($wxInfo["uId"], $subUid, UserNet::REL_BACKER, ["nNote" => $content]);
+					if ($ret) {
+						return self::renderAPI(0, '媒婆说编辑成功~');
+					} else {
+						return self::renderAPI(129, '媒婆说编辑失败~');
+					}
+				}
+
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

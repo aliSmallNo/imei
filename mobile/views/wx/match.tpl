@@ -36,7 +36,7 @@
 		</div>
 		<div class="singles">
 			{{foreach from=$singles item=single}}
-			<a href="/wx/sh?id={{$single.encryptId}}" class="single">
+			<a href="javascript:;" data-id="{{$single.encryptId}}" class="single">
 				<div class="avatar">
 					<img src="{{$single.thumb}}">
 				</div>
@@ -46,7 +46,8 @@
 					<p class="note">{{foreach from=$single.notes item=note}}<em>{{$note}}</em>{{/foreach}}</p>
 					<p class="cnt">0个心动</p>
 				</div>
-				<button class="edit">写媒婆说</button>
+				<button class="edit" data-id="{{$single.encryptId}}" >写媒婆说</button>
+
 			</a>
 			{{/foreach}}
 		</div>
@@ -212,6 +213,21 @@
 		<a class="m-next btn-feedback">提交</a>
 	</div>
 </section>
+<section id="mpSay">
+	<p class="sedit-title">媒婆说:</p>
+	<div class="sedit-input">
+		<textarea rows="6" placeholder="填写您的媒婆说哦~" class="mpsay-content"></textarea>
+	</div>
+	<div class="mpsay-bot">
+		<div class="mpsay-bot-l">
+			<a>看看别人怎么写</a>
+		</div>
+		<div class="mpsay-bot-r">
+			<a class="mpsay-btn mpsay-btn-comfirm">提交</a>
+			<a href="#sgroup" class="mpsay-btn">取消</a>
+		</div>
+	</div>
+</section>
 <div class="nav-foot on">
 	<a href="#slink" class="nav-link active" data-tag="slink">
 		媒婆
@@ -228,7 +244,7 @@
 </div>
 <script type="text/template" id="tpl_single">
 	{[#items]}
-	<a href="/wx/sh?id={[encryptId]}" class="single">
+	<a href="javascript:;" data-id="{[encryptId]}" class="single">
 		<div class="avatar">
 			<img src="{[thumb]}">
 		</div>
@@ -238,7 +254,7 @@
 			<p class="note">{[#notes]}<em>{[.]}</em>{[/notes]}</p>
 			<p class="cnt">{[cnt]}个心动</p>
 		</div>
-		<button class="edit">写媒婆说</button>
+		<button class="edit" data-id="{[encryptId]}">写媒婆说</button>
 	</a>
 	{[/items]}
 </script>
@@ -289,4 +305,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/match.js?v=1.1.6" src="/assets/js/require.js"></script>
+<script data-main="/js/match.js?v=1.1.5" src="/assets/js/require.js"></script>
