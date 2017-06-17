@@ -450,13 +450,17 @@ class User extends ActiveRecord
 		return $uid;
 	}
 
-	public static function album($id, $openId)
+	public static function album($id, $openId, $f = "add")
 	{
 		$url = "";
-		if ($id) {
+		if ($id && $f == "add") {
 			$url = AppUtil::getMediaUrl($id);
+		} else {
+			$url = $id;
 		}
+
 		$Info = self::findOne(["uOpenId" => $openId]);
+
 		if ($url && $Info) {
 			$album = $Info->uAlbum;
 			if ($album) {
@@ -464,8 +468,21 @@ class User extends ActiveRecord
 			} else {
 				$album = [];
 			}
-			$album[] = $url;
-			$album = json_encode($album);
+			switch ($f) {
+				case "add":
+					$album[] = $url;
+					break;
+				case "del":
+					if ($album) {
+						foreach ($album as $k => $v) {
+							if ($v == $url) {
+								unset($album[$k]);
+							}
+						}
+					}
+					break;
+			}
+			$album = json_encode(array_values($album));
 			self::edit($Info->uId, ["uAlbum" => $album]);
 			return $url;
 		}
@@ -848,7 +865,7 @@ class User extends ActiveRecord
 		$filterArr = json_decode($filter, 1);
 		$ret = [];
 
-		if ( isset($filterArr["age"]) && $ageArr = explode("-", $filterArr["age"])) {
+		if (isset($filterArr["age"]) && $ageArr = explode("-", $filterArr["age"])) {
 			foreach ($ageArr as $k => $v) {
 				$val = isset(User::$AgeFilter[$v]) ? User::$AgeFilter[$v] : "";
 				$ret["age"][] = ["key" => $v, "name" => $val];
@@ -857,7 +874,7 @@ class User extends ActiveRecord
 			$ret["age"][] = ["key" => 0, "name" => "年龄不限"];
 		}
 
-		if (isset($filterArr["height"]) &&  $heightArr = explode("-", $filterArr["height"])) {
+		if (isset($filterArr["height"]) && $heightArr = explode("-", $filterArr["height"])) {
 			foreach ($heightArr as $k => $v) {
 				$val = isset(User::$HeightFilter[$v]) ? User::$HeightFilter[$v] : "";
 				$ret["height"][] = ["key" => $v, "name" => $val];

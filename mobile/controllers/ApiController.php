@@ -261,11 +261,17 @@ class ApiController extends Controller
 				UserWechat::getInfoByOpenId($openId, 1);
 				return self::renderAPI(0, '保存成功啦~', $ret);
 			case "album":
-				$url = User::album($id, $openId);
+				$f = self::postParam("f");
+				$text = "添加";
+				if ($f == "del") {
+					$text = "删除";
+				}
+				$url = User::album($id, $openId, $f);
+
 				if ($url) {
-					return self::renderAPI(0, '添加成功', $url);
+					return self::renderAPI(0, $text . '成功', $url);
 				} else {
-					return self::renderAPI(129, '添加失败', $url);
+					return self::renderAPI(129, $text . '失败', $url);
 				}
 			case "myinfo":
 				$info = User::getItem($openId);
@@ -326,7 +332,6 @@ class ApiController extends Controller
 				}
 				$roseAmt = UserNet::roseAmt($wxInfo["uId"], $id, $num);
 				return self::renderAPI(0, '', $roseAmt);
-			//return self::renderAPI(0, '', 150);
 			case "addmewx":     //添加我微信
 			case "iaddwx":      //我添加微信
 			case "heartbeat":   //心动列表
