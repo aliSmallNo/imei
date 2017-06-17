@@ -60,4 +60,4 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/invite.js?v=1.1.2" src="/assets/js/require.js"></script>
+<script data-main="/js/invite.js?v=1.1.4" src="/assets/js/require.js"></script>
