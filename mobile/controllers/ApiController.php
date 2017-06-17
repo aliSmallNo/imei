@@ -364,6 +364,26 @@ class ApiController extends Controller
 				$text = self::postParam("text");
 				UserWechat::edit($openId, ['wWechatId' => $text]);
 				return self::renderAPI(0, '保存成功啦~');
+			case 'link-backer':
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				if ($wxInfo['uId'] == $id) {
+					return self::renderAPI(129, '不能当自己的媒婆啊~');
+				}
+				$senderInfo = User::user(['uId' => $id]);
+				if (!$senderInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				$ret = UserNet::add($wxInfo['uId'], $id, UserNet::REL_BACKER);
+				$senderInfo = User::user(['uId' => $id]);
+				if ($ret) {
+					return self::renderAPI(0, '您已经成为' . $senderInfo['name'] . '的媒婆啦~',
+						['sender' => $senderInfo]);
+				}
+				return self::renderAPI(0, '下手晚一步啊，' . $senderInfo['name'] . '已经有媒婆了',
+					['sender' => $senderInfo]);
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

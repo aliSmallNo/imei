@@ -623,7 +623,8 @@ class WxController extends BaseController
 		if ($senderId == $wxInfo['uId']) {
 			$senderId = '';
 		}
-		$noteString = '';
+		$noteString = $mpThumb = $mpComment = '';
+		$hasMP = false;
 		if ($senderId) {
 			$uInfo = User::user(['uId' => $senderId]);
 			if ($uInfo) {
@@ -633,9 +634,12 @@ class WxController extends BaseController
 				$friend = $uInfo['gender'] == User::GENDER_MALE ? '女朋友' : '男朋友';
 				$notes = User::notes($uInfo);
 				$noteString = implode(' ', $notes);
+				$hasMP = $uInfo['mp_name'] ? true : false;
+				$mpThumb = $uInfo['mp_thumb'];
+				$mpComment = $uInfo['comment'];
 			}
 		}
-
+//var_dump($uInfo);
 		return self::renderPage("invite.tpl",
 			[
 				'senderId' => $senderId,
@@ -644,6 +648,9 @@ class WxController extends BaseController
 				'friend' => $friend,
 				'encryptId' => $encryptId,
 				'noteString' => $noteString,
+				'hasMP' => $hasMP,
+				'mpThumb' => $mpThumb,
+				'mpComment' => $mpComment,
 				'wxUrl' => AppUtil::wechatUrl()
 			],
 			'terse',

@@ -51,9 +51,8 @@ class UserNet extends ActiveRecord
 		} else {
 			$entity = self::findOne(['nUId' => $uid, 'nSubUId' => $subUid, 'nRelation' => $relation, 'nDeletedFlag' => 0]);
 		}
-
 		if ($entity) {
-			return true;
+			return false;
 		}
 		$entity = new self();
 		$entity->nUId = $uid;
