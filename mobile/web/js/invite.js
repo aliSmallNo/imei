@@ -105,7 +105,6 @@ require(["layer"],
 		}
 
 		$(function () {
-			$("body").addClass("bg-main");
 			// FootUtil.init();
 			// SingleUtil.init();
 			var wxInfo = JSON.parse($sls.wxString);

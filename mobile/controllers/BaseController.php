@@ -151,6 +151,9 @@ class BaseController extends Controller
 			$params['wxInfoString'] = json_encode($sign);
 		}
 		$this->layout = $layout;
+		if (!$title) {
+			$title = '微媒100-媒桂花飘香';
+		}
 		$this->ptitle = $title;
 		$appView = YII::$app->view;
 		$appView->params['page_head_title'] = $title;
