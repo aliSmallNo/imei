@@ -646,7 +646,9 @@ class WxController extends BaseController
 				'noteString' => $noteString,
 				'wxUrl' => AppUtil::wechatUrl()
 			],
-			'terse');
+			'terse',
+			'',
+			'bg-main');
 	}
 
 	public function actionShare()

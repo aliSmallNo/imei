@@ -21,6 +21,9 @@
 			</div>
 		</div>
 	</div>
+	<div class="btn-wrap">
+		<a href="javascript:;" class="btn btn-share">找个媒婆给我写推荐</a>
+	</div>
 </div>
 <a href="/wx/index" class="m-next btn-enter">进入微媒100</a>
 {{/if}}
