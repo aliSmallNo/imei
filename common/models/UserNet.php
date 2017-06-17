@@ -63,6 +63,19 @@ class UserNet extends ActiveRecord
 		return true;
 	}
 
+	public static function replace($uid, $subUid, $relation, $data)
+	{
+		$entity = self::findOne(['nUId' => $uid, 'nSubUId' => $subUid, 'nRelation' => $relation, 'nDeletedFlag' => 0]);
+		if (!$entity) {
+			return false;
+		}
+		foreach ($data as $key => $val) {
+			$entity->$key = $val;
+		}
+		$entity->save();
+		return 1;
+	}
+
 	public static function edit($uid, $subUid, $relation)
 	{
 		if (!$uid || !$subUid || $uid == $subUid) {

@@ -86,9 +86,11 @@ require(["layer"],
 			tag: 'male',
 			loading: 0,
 			page: 2,
+			sId: "",
 			tmp: $('#tpl_single').html(),
 			spinner: $('.m-tab-wrap .spinner'),
 			noMore: $('.m-tab-wrap .no-more'),
+			mpsayf: false,
 			init: function () {
 				var util = this;
 				$(".m-tabs > a").on('click', function () {
@@ -98,6 +100,47 @@ require(["layer"],
 					self.addClass('active');
 					util.page = 1;
 					util.reload();
+				});
+
+				$(document).on(kClick, ".singles .edit", function (e) {
+					e.stopPropagation();
+					SingleUtil.sId = $(this).attr("data-id");
+					$.post("/api/user", {
+						tag: "mpsay",
+						f: "get",
+						id: SingleUtil.sId,
+					}, function (resp) {
+						if (resp.code == 0) {
+							$(".mpsay-content").val(resp.data);
+							location.href = "#mpSay";
+						}
+					}, "json");
+
+				});
+
+				$(document).on(kClick, ".mpsay-btn-comfirm", function () {
+					var mpsay = $(".mpsay-content").val();
+					if (!$.trim(mpsay)) {
+						showMsg("媒婆说不能为空！");
+						return;
+					}
+					if (SingleUtil.mpsayf) {
+						return;
+					}
+					SingleUtil.mpsayf = 1
+					$.post("/api/user", {
+						tag: "mpsay",
+						content: mpsay,
+						id: SingleUtil.sId
+					}, function (resp) {
+						if (resp.code == 0) {
+							showMsg(resp.msg);
+							location.href = "/wx/sh?id=" + SingleUtil.sId;
+						} else {
+							showMsg(resp.msg);
+						}
+						SingleUtil.mpsayf = 0;
+					}, "json");
 				});
 			},
 			reload: function () {
