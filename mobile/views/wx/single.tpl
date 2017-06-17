@@ -98,11 +98,19 @@
 		<a href="#sme">返回</a>
 		<a href="#sme" style="display: none">个人中心</a>
 	</div>
-	<ul class="photos">
+	<ul class="photos album-photos">
 		<li>
 			<a href="javascript:;" class="choose-img"></a>
 		</li>
 	</ul>
+	<a style="position: fixed;
+    z-index: 1000;
+    right: 2rem;
+    bottom: 2rem;
+    border: #000 1px solid;
+    padding: 1.5rem 1rem;
+    display: none;
+    border-radius: 3rem" class="album-delete">删除</a>
 </section>
 <section id="sfeedback" data-title="意见反馈">
 	<div class="report_wrap">
@@ -874,4 +882,5 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
+<script src="/assets/js/iscroll.js"></script>
 <script data-main="/js/single.js?v=1.2.5" src="/assets/js/require.js"></script>
