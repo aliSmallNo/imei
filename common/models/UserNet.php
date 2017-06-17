@@ -336,7 +336,7 @@ class UserNet extends ActiveRecord
 					$sql = "select u.* from im_user as u 
 							join im_user_net  as n on n.nUId=u.uId and n.nRelation=$nRelation and n.nDeletedFlag=$deleteflag
 							join im_user_net as n2 on n2.nSubUId=u.uId and n2.nRelation=$nRelation and n.nDeletedFlag=$deleteflag
-							where n.nSubUId=$MyUid $orderBy $limit ";
+							where n.nSubUId=$MyUid group by u.uId $orderBy $limit ";
 				}
 				break;
 			case "iaddwx":
