@@ -76,7 +76,9 @@
 		</div>
 		<div class="content">
 			{[#comment]}{[.]}{[/comment]}
-			{[^comment]}<a href="javascript:;" class="btn btn-blue btn-comment">给Ta写推荐</a>{[/comment]}
+			{[^comment]}
+			<div class="btn-wrap"><a href="javascript:;" class="btn btn-blue btn-comment">给Ta写推荐</a></div>
+			{[/comment]}
 		</div>
 	</div>
 </script>
