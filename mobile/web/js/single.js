@@ -5,6 +5,7 @@ require.config({
 	paths: {
 		"jquery": "/assets/js/jquery-3.2.1.min",
 		"layer": "/assets/js/layer_mobile/layer",
+		"iscroll": "/assets/js/iscroll",
 	}
 });
 
@@ -405,6 +406,25 @@ require(["layer"],
 						}
 					});
 				});
+				$(document).on(kClick, ".album-photos a.has-pic", function () {
+					var self = $(this);
+					var vw = $(window).width();
+					var vh = $(window).height();
+					var src = self.find("img").attr("src");
+					layer.open({
+						title: '',
+						area: [vw, vh],
+						btn: ['删除', '关闭'],
+						content: '<img src="' + src + '">',
+						yes: function () {
+							alert(11);
+						},
+						close: function () {
+
+						},
+					});
+
+				});
 			},
 			sme: function () {
 				if (smeUlit.smeFlag) {
@@ -414,7 +434,7 @@ require(["layer"],
 				$.post("/api/user", {
 					tag: "myinfo",
 				}, function (resp) {
-					var temp = '{[#items]}<li><img src="{[.]}"></li>{[/items]}';
+					var temp = '{[#items]}<li><a class="has-pic"><img src="{[.]}"></a></li>{[/items]}';
 					$(".u-my-album .photos").html(Mustache.render(temp, {items: resp.data.img4}));
 
 					var html = Mustache.render(temp, {items: resp.data.imgList});
@@ -450,10 +470,27 @@ require(["layer"],
 				}, function (resp) {
 					showMsg(resp.msg);
 					if (resp.data) {
-						$("#album .photos").append('<li><img src="' + resp.data + '" alt=""></li>');
+						$("#album .photos").append('<li><a><img src="' + resp.data + '"></a></li>');
 					}
 					smeUlit.uploadImgFlag = 0;
 				}, "json");
+			},
+			initCarousel: function () {
+				var len = $(".carousel").find("li").length || 1;
+				var vw = $(window).width();
+				$(".carousel-wrapper").css("width", vw * len + len);
+				var myScroll = new IScroll('.carousel-container',
+					{
+						scrollX: true,
+						scrollY: false,
+						snap: 'li',
+						momentum: false,
+						click: true,
+						tap: true
+					});
+				myScroll.on('scrollEnd', function () {
+					$('.carousel-indicator > li').removeClass("active").eq(this.currentPage.pageX).addClass("active");
+				});
 			},
 		};
 		smeUlit.init();
