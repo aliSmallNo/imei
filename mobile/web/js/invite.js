@@ -21,23 +21,33 @@ require(["layer"],
 			wxUrl: $('#cWXUrl').val(),
 			sender: $('#cSenderName').val(),
 			thumb: $('#cSenderThumb').val(),
+			senderId: $('#cSenderId').val(),
 			friend: $('#cFriend').val(),
 			dl: $('.dl'),
+			tmp: $('#tpl_mp').html(),
+			mpInfo: $('.mp-info'),
 			newIdx: 0,
 			newsTimer: 0,
 			loading: 0
 		};
 
-		$('.btn-share').on(kClick, function () {
-			var html = '<i class="share-arrow">点击菜单分享</i>';
-			$sls.main.show();
-			$sls.main.append(html);
-			$sls.shade.fadeIn(160);
-			setTimeout(function () {
-				$sls.main.hide();
-				$sls.main.find('.share-arrow').remove();
-				$sls.shade.fadeOut(100);
-			}, 2500);
+		$('.btn-link').on(kClick, function () {
+			if ($sls.loading) {
+				return false;
+			}
+			$sls.loading = 1;
+			$.post('/api/user',
+				{
+					tag: 'link-backer',
+					id: $sls.senderId
+				}, function (resp) {
+					if (resp.code == 0) {
+						$('.btn-wrap').hide();
+						$sls.mpInfo.html(Mustache.render($sls.tmp, reps.data.sender));
+					}
+					showMsg(resp.msg);
+					$sls.loading = 0;
+				}, 'json');
 		});
 
 		$('.editable').on(kClick, function () {

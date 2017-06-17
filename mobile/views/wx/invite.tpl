@@ -20,10 +20,21 @@
 				<p>{{$noteString}}</p>
 			</div>
 		</div>
+		<div class="mp-info">
+			{{if $hasMP}}
+			<div class="title">
+				<img src="{{$mpThumb}}">
+				<p>我的媒婆</p>
+			</div>
+			<div class="content">{{$mpComment}}</div>
+			{{/if}}
+		</div>
 	</div>
+	{{if !$hasMP}}
 	<div class="btn-wrap">
-		<a href="javascript:;" class="btn btn-share">找个媒婆给我写推荐</a>
+		<a href="javascript:;" class="btn btn-normal btn-link">做Ta的媒婆，写推荐</a>
 	</div>
+	{{/if}}
 </div>
 <a href="/wx/index" class="m-next btn-enter">进入微媒100</a>
 {{/if}}
@@ -33,13 +44,20 @@
 		<div class="m-popup-content no-bg"></div>
 	</div>
 </div>
+
 <input type="hidden" id="cWXUrl" value="{{$wxUrl}}">
 <input type="hidden" id="cEncryptId" value="{{$encryptId}}">
 <input type="hidden" id="cSenderThumb" value="{{$senderThumb}}">
 <input type="hidden" id="cSenderName" value="{{$senderName}}">
+<input type="hidden" id="cSenderId" value="{{$senderId}}">
 <input type="hidden" id="cFriend" value="{{$friend}}">
+<script type="text/template" id="tpl_mp">
+	<div class="img"><img src="{[thumb]}"></div>
+	<p>我的媒婆</p>
+	<div class="word">{[comment]}</div>
+</script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/invite.js?v=1.1.2" src="/assets/js/require.js"></script>
+<script data-main="/js/invite.js?v=1.1.4" src="/assets/js/require.js"></script>

@@ -1,7 +1,7 @@
 $mainColor: #f06292
 //#feb7ac
-$mainColorLight: lighten($mainColor, 10%)
-$mainColorLighter: lighten($mainColor, 25%)
+$mainColorLight: lighten($mainColor, 8%)
+$mainColorLighter: lighten($mainColor, 24%)
 $mainColorDark: darken($mainColor, 6%)
 $white: #fff
 $fontColor: #333
@@ -533,6 +533,19 @@ section
 	&:active
 		background: $linkColor
 		color: #fff
+
+.btn-wrap
+	padding: 2rem
+	.btn
+		display: block
+		background: $linkColorLight
+		color: #fff
+		text-align: center
+		padding: 0 3rem
+		line-height: 4.4rem
+		border-radius: 2.2rem
+		&.btn-normal
+			background: $mainColor
 
 .progress
 	height: .3rem
@@ -3239,6 +3252,7 @@ section
 			line-height: 4.4rem
 			border-radius: 2.2rem
 			margin-top: 2rem
+
 .received-wrap
 	padding: 3.5rem 2rem 8rem
 	text-align: center
@@ -3247,11 +3261,51 @@ section
 		color: #fff
 		font-weight: $weightBold
 		text-shadow: $mainColorLight 2px 2px 2px
+	.btn-wrap
+		margin-top: 0
+		padding-top: 1rem
+	.mp-info
+		background: #fff
+		margin-left: auto
+		margin-right: auto
+		position: relative
+		border-radius: .7rem
+		padding: 1rem
+		@include displayFlex
+		@include borderBox
+		&:before
+			display: block
+			position: absolute
+			width: 0
+			height: 0
+			border-left: 1rem solid transparent
+			border-right: 1rem solid transparent
+			border-bottom: 1rem solid #fff
+			z-index: 11
+			left: 50%
+			top: -.9rem
+			margin-left: -.7rem
+			content: ''
+
+		.title
+			@include displayFlex-w(7rem)
+			text-align: center
+			img
+				width: 4rem
+				height: 4rem
+				border-radius: 2rem
+			p
+				font-size: 1.2rem
+		.content
+			@include displayFlex-1
+			color: $grayFontColor
+			text-align: left
+			padding-left: .5rem
 	.profile
 		display: inline-block
 		width: 17rem
 		height: 17rem
-		margin: 3rem auto
+		margin: 3rem auto 1rem
 		position: relative
 		border: 1px solid $mainColorLighter
 		border-radius: 1rem
@@ -3900,7 +3954,7 @@ section
 		flex: 0 0 6rem
 		font-size: 1.2rem
 		color: #777
-	input,textarea
+	input, textarea
 		flex: 1
 		border: none
 		font-size: 1.2rem
@@ -3923,6 +3977,7 @@ section
 		@include arrowRight
 		margin-top: -0.35rem
 		right: 1rem
+
 .sedit-btn
 	position: fixed
 	left: 0
@@ -3935,6 +3990,7 @@ section
 		text-align: center
 		padding: 1rem
 		color: #fff
+
 .wxno_wrap
 	padding: 1.5rem
 	label
@@ -3966,13 +4022,3 @@ section
 			margin-top: 1rem
 			margin-bottom: 1.5rem
 			width: 100%
-.btn-wrap
-	padding: 2rem
-	.btn
-		display: block
-		background: $linkColorLight
-		color: #fff
-		text-align: center
-		padding: 0 3rem
-		line-height: 4.4rem
-		border-radius: 2.2rem
