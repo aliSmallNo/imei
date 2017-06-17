@@ -132,7 +132,7 @@ require(["layer"],
 					if (SingleUtil.mpsayf) {
 						return;
 					}
-					SingleUtil.mpsayf = 1
+					SingleUtil.mpsayf = 1;
 					$.post("/api/user", {
 						tag: "mpsay",
 						content: mpsay,
@@ -140,7 +140,9 @@ require(["layer"],
 					}, function (resp) {
 						if (resp.code == 0) {
 							showMsg(resp.msg);
-							location.href = "/wx/sh?id=" + SingleUtil.sId;
+							setTimeout(function () {
+								location.href = "/wx/sh?id=" + SingleUtil.sId;
+							}, 500);
 						} else {
 							showMsg(resp.msg);
 						}
