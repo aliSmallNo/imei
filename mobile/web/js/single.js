@@ -411,7 +411,6 @@ require(["layer"],
 					if (smeUlit.delImgFlag) {
 						return;
 					}
-					smeUlit.delImgFlag = 1;
 					var self = $(this);
 					var vw = $(window).width();
 					var vh = $(window).height();
@@ -422,6 +421,7 @@ require(["layer"],
 						btn: ['删除', '关闭'],
 						content: '<img src="' + src + '">',
 						yes: function () {
+							smeUlit.delImgFlag = 1;
 							$.post("/api/user", {
 								id: src,
 								tag: "album",
