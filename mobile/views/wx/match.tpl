@@ -46,7 +46,8 @@
 					<p class="note">{{foreach from=$single.notes item=note}}<em>{{$note}}</em>{{/foreach}}</p>
 					<p class="cnt">0个心动</p>
 				</div>
-				<button class="edit" data-id="{{$single.encryptId}}" onclick="return false;">写媒婆说</button>
+				<button class="edit" data-id="{{$single.encryptId}}" >写媒婆说</button>
+
 			</a>
 			{{/foreach}}
 		</div>
