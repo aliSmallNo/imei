@@ -289,7 +289,7 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = AppUtil::encrypt(131261);
+		$ret = UserNet::items(131267, "heartbeat", "fav-together", 1, $pageSize = 20);
 		var_dump($ret);
 	}
 }
