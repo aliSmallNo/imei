@@ -426,10 +426,11 @@ require(["layer"],
 								id: src,
 								tag: "album",
 								f: "del",
-							}, function () {
+							}, function (resp) {
 								smeUlit.delImgFlag = 0;
 								self.closest("li").remove();
 								layer.closeAll();
+								showMsg(resp.msg);
 							}, "json");
 						},
 						close: function () {
