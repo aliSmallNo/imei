@@ -269,7 +269,7 @@ require(["layer"],
 								id: $sls.secretId,
 							}, function (resp) {
 								if (resp.code == 0) {
-									if (resp.data >= num) {
+									if (parseInt(resp.data) >= parseInt(num)) {
 										$(".getWechat").show();
 										$(".pay-mp").hide();
 									} else {
