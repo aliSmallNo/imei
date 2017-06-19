@@ -85,7 +85,7 @@ require(["layer"],
 			var thumb = $sls.nic.attr('data-id');
 			var link = $sls.wxUrl + '/wx/share?id=' + $sls.uid + '&cid=' + cid;
 			var title = name + '和' + cName + '一起做媒婆了';
-			var desc = '微媒100，想相亲交友的就戳这里，戳这里...';
+			var desc = '一起来微媒100做媒婆吧，帮助身边的单身青年脱单';
 			wx.onMenuShareTimeline({
 				title: title,
 				link: link,

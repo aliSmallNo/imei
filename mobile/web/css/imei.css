@@ -984,6 +984,8 @@ section {
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box; }
+      .match-wrap ul li:nth-of-type(2n+1) {
+        clear: left; }
       .match-wrap ul li h4 {
         margin: 0;
         padding: 0;
@@ -1539,12 +1541,11 @@ section {
   background: url(../images/bg_share.jpg) top;
   background-size: 100% auto; }
   .invite-wrap .title {
-    padding: 3rem 0;
+    padding: 3rem 0 0;
     color: #f06292;
     text-align: center;
     font-size: 2.2rem;
     line-height: 4rem;
-    height: 4rem;
     font-weight: 300; }
     .invite-wrap .title em {
       font-weight: 500; }
@@ -1617,7 +1618,7 @@ section {
         text-align: center;
         color: #f487ac; }
   .invite-wrap .footer {
-    padding: 9rem 0 1rem;
+    padding: 9rem 0 3rem;
     margin-top: -9rem;
     background: url(//zlpic.1meipo.com/spa/hn/invite2/flayer.png) no-repeat;
     background-size: 100% auto; }
