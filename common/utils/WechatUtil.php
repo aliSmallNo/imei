@@ -53,7 +53,9 @@ class WechatUtil
 			$secret = \WxPayConfig::APPSECRET;
 			$url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appId&secret=$secret";
 			$res = AppUtil::httpGet($url);
-			$res = json_decode($res, true);
+			$res = json_decode($res, 1);
+			AppUtil::logFile($url, 5, __FUNCTION__, __LINE__);
+			AppUtil::logFile($res, 5, __FUNCTION__, __LINE__);
 			$accessToken = isset($res['access_token']) ? $res['access_token'] : "";
 			if ($accessToken) {
 				RedisUtil::setCache($accessToken, RedisUtil::KEY_WX_TOKEN);
@@ -95,7 +97,7 @@ class WechatUtil
 		}
 
 		$ret = "";
-		$urlBase='https://api.weixin.qq.com/sns/auth?access_token=%s&openid=%s';
+		$urlBase = 'https://api.weixin.qq.com/sns/auth?access_token=%s&openid=%s';
 		$access_token = WechatUtil::accessToken(1);
 		$url = sprintf($urlBase, $access_token, $openId);
 		$ret = AppUtil::httpGet($url);
@@ -104,7 +106,7 @@ class WechatUtil
 		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 
 		//$urlBase = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
-		$urlBase ='https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN';
+		$urlBase = 'https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN';
 		/*
 		 * Rain: 此处有坑，微信的access token 经常在两小时内突然失效，另外我们的有时候也不小心刷新了token,而忘了更新redis中的token
 		 * 同样的受害者，也可参考此文 http://blog.csdn.net/wzx19840423/article/details/51850188
