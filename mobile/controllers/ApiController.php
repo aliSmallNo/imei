@@ -97,8 +97,8 @@ class ApiController extends Controller
 					return self::renderAPI(129, '请在服务器测试该功能~');
 				}
 				// Rain: 测试阶段，payFee x元实际支付x分
-				$payFee = $amt;
-				// $payFee = intval($payFee * 100);
+//				$payFee = $amt;
+				$payFee = intval($amt * 100);
 				$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);
 				if ($ret) {
 					return self::renderAPI(0, '', [
