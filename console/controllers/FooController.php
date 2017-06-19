@@ -10,6 +10,7 @@ namespace console\controllers;
  */
 use common\models\User;
 use common\models\UserNet;
+use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
@@ -289,7 +290,12 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = WechatUtil::wxInfo('oYDJew2dMEl0gnDVxIFy74ORWUcs', 1);
+//		$ret = WechatUtil::wxInfo('oYDJew2dMEl0gnDVxIFy74ORWUcs', 1);
+//		var_dump($ret);
+		$wxInfo = '{"subscribe":1,"openid":"oYDJew2dMEl0gnDVxIFy74ORWUcs","nickname":"\u5954\u8dd1\u5427","sex":1,"language":"zh_CN","city":"","province":"","country":"\u4e2d\u56fd","headimgurl":"http:\/\/wx.qlogo.cn\/mmopen\/U6uZvXzx8GScPNIiboEB2yoWJ03KTZqJyhEZhMEXibLevEEtj9fYwZflYn1RQwkF0js6qTpcAwE4ubVCNzHB8jYiaHcjU6gLgiat\/0","subscribe_time":1497866261,"remark":"","groupid":0,"tagid_list":[]}';
+		$wxInfo = json_decode($wxInfo, 1);
+		var_dump($wxInfo);
+		$ret = UserWechat::upgrade($wxInfo);
 		var_dump($ret);
 	}
 }

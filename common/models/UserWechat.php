@@ -76,9 +76,34 @@ class UserWechat extends ActiveRecord
 
 	public static function upgrade($wxInfo)
 	{
+		$uId = User::addWX($wxInfo);
+		/*$keys = array_merge(array_keys($fields), ['wUId', 'wRawData', 'wUpdatedOn', 'wExpire']);
+		$sql = 'INSERT INTO im_user_wechat(' . implode(',', $keys) . ') VALUES(';
+		foreach ($keys as $key) {
+			$sql .= ':' . $key . ',';
+		}
+		$sql = trim($sql, ',');
+		$sql .= ') ON DUPLICATE KEY UPDATE SET ';
+		foreach ($keys as $key) {
+			if ($key != 'wOpenId') {
+				$sql .= $key . '=:' . $key . ',';
+			}
+		}
+		$sql = trim($sql, ',');
+		var_dump($sql);
+
+		$params = [];
+		foreach ($fields as $key => $field) {
+			$params[':' . $key] = isset($wxInfo[$field]) ? $wxInfo[$field] : '';
+		}
+		$params[':wUId'] = $uId;
+		$params[':wRawData'] = json_encode($wxInfo);
+		$params[':wUpdatedOn'] = date('Y-m-d H:i:s');
+		$params[':wExpire'] = date('Y-m-d H:i:s', time() + 86400 * 15);
+		AppUtil::db()->createCommand($sql)->bindValues($params)->execute();*/
+
 		$fields = self::$FieldDict;
 		$openid = $wxInfo[$fields['wOpenId']];
-		$uId = User::addWX($wxInfo);
 		$entity = self::findOne(['wOpenId' => $openid]);
 		if (!$entity) {
 			$entity = new self();
