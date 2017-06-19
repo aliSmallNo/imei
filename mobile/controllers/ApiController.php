@@ -343,6 +343,16 @@ class ApiController extends Controller
 				$page = self::postParam("page", 1);
 				$ret = UserNet::items($wxInfo["uId"], $tag, $subtag, $page);
 				return self::renderAPI(0, '', ["data" => $ret, "nextpage" => $page]);
+			case "wx-process":
+				$pf = self::postParam("pf");
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				$text = ($pf == "pass") ? "通过" : "拒绝";
+				$ret = UserNet::processWx($wxInfo["uId"], $pf, $id);
+				return self::renderAPI(0, "已" . $text, $ret);
+
 			case 'feedback':
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {

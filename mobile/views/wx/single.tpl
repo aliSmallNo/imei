@@ -594,15 +594,22 @@
 <script type="text/html" id="wechats">
 	{[#data]}
 	<li>
-		<a href="/wx/sh?id={[encryptId]}" class="sprofile">
-			<div class="plist-l">
-				<img src="{[avatar]}">
-			</div>
-			<div class="plist-r">
-				<p>{[name]}</p>
-				<p>{[location_t]}</p>
-				<i>{[age]} {[height]}cm {[horos_t]} {[scope_t]}</i>
-			</div>
+		<a href="javascript:;" data-id={[encryptId]}" class=" sprofile">
+		<div class="plist-l">
+			<img src="{[avatar]}">
+		</div>
+		<div class="plist-r">
+			<p>{[name]}</p>
+			<p>{[location_t]}</p>
+			<i>{[age]} {[height]}cm {[horos_t]} {[scope_t]}</i>
+		</div>
+		{[#pendingWxFlag]}
+		<div class="wx-process">
+			<button class="pass">同意</button>
+			<button class="refuse">拒绝</button>
+		</div>
+		{[/pendingWxFlag]}
+
 		</a>
 	</li>
 	{[/data]}
@@ -883,4 +890,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/iscroll.js"></script>
-<script data-main="/js/single.js?v=1.2.6" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.2.5" src="/assets/js/require.js"></script>

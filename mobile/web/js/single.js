@@ -686,6 +686,31 @@ require(["layer"],
 							break;
 					}
 				});
+
+				$(document).on(kClick, "a.sprofile", function () {
+					var id = $(this).attr("data-id");
+					location.href = "/wx/sh?id=" + id;
+				});
+
+				$(document).on(kClick, ".wx-process button", function (e) {
+					e.stopPropagation();
+					var self = $(this);
+					var pf = self.attr("class");
+					var id = self.closest("a").attr("data-id");
+					$.post("/api/user", {
+						tag: "wx-process",
+						pf: pf,
+						id: id
+					}, function (resp) {
+						if (resp.data) {
+							showMsg(resp.msg);
+							setTimeout(function () {
+								self.closest("li").remove();
+							}, 500);
+						}
+					}, "json");
+				});
+
 				$(document).on(kClick, ".wx-hint a", function () {
 					var to = $(this).attr("to");
 
@@ -720,6 +745,9 @@ require(["layer"],
 					page: TabUilt.page,
 
 				}, function (resp) {
+					// if (TabUilt.tag == "addMeWx" && TabUilt.subtag == "wait") {
+					// 	TabUilt.Tmp =;
+					// }
 					if (TabUilt.page == 1) {
 						TabUilt.tabObj.next().html(Mustache.render(TabUilt.Tmp, resp.data));
 					} else {
