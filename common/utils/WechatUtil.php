@@ -95,7 +95,7 @@ class WechatUtil
 	{
 		$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
 		$ret = json_decode($ret, 1);
-		if ($ret && is_array($ret) && isset($ret["wid"]) && !$renewFlag) {
+		if ($ret && is_array($ret) && !$renewFlag) {
 			return $ret;
 		}
 		if (strlen($openId) < 24) {
@@ -103,16 +103,7 @@ class WechatUtil
 		}
 
 		$ret = "";
-		$urlBase = 'https://api.weixin.qq.com/sns/auth?access_token=%s&openid=%s';
-		$access_token = WechatUtil::accessToken(1);
-		$url = sprintf($urlBase, $access_token, $openId);
-		$ret = AppUtil::httpGet($url);
-		$ret = json_decode($ret, 1);
-		AppUtil::logFile($url, 5, __FUNCTION__, __LINE__);
-		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
-
-		//$urlBase = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
-		$urlBase = 'https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN';
+		$urlBase = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
 		/*
 		 * Rain: 此处有坑，微信的access token 经常在两小时内突然失效，另外我们的有时候也不小心刷新了token,而忘了更新redis中的token
 		 * 同样的受害者，也可参考此文 http://blog.csdn.net/wzx19840423/article/details/51850188
@@ -147,7 +138,17 @@ class WechatUtil
 		if ($ret && isset($ret["access_token"]) && isset($ret["openid"])) {
 			$openId = $ret["openid"];
 			$accessToken = $ret["access_token"];
-			RedisUtil::setCache($accessToken, RedisUtil::KEY_WX_TOKEN);
+			$baseUrl = 'https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN';
+			$url = sprintf($baseUrl, $accessToken, $openId);
+			$ret = AppUtil::httpGet($url);
+			$ret = json_decode($ret, 1);
+			AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
+			if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
+				AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
+				RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
+				return $ret;
+			}
+//			RedisUtil::setCache($accessToken, RedisUtil::KEY_WX_TOKEN);
 			if (!$renewFlag) {
 				$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
 				$ret = json_decode($ret, 1);

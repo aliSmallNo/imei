@@ -45,21 +45,8 @@ class BaseController extends Controller
 		}
 		self::$WX_OpenId = AppUtil::getCookie(self::COOKIE_OPENID);
 		$wxCode = self::getParam("code");
-		if (strlen(self::$WX_OpenId) > 20) {
-			// Rain: 防止盗链, 检测是否关注了我们的公众号
-			$wxUserInfo = UserWechat::getInfoByOpenId(self::$WX_OpenId);
-			if (!$wxUserInfo || (isset($wxUserInfo["subscribe"]) && $wxUserInfo["subscribe"] != 1)) {
-				$logMsg = [self::$WX_OpenId, json_encode($wxUserInfo)];
-				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
-				header("location:/qr.html");
-				exit;
-			}
-			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
-				self::$WX_OpenId = $wxUserInfo["openid"];
-				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
-				self::checkProfile(self::$WX_OpenId, $actionId);
-			}
-		} elseif (strlen(self::$WX_OpenId) < 20 && strlen($wxCode) >= 20) {
+		AppUtil::logFile([self::$WX_OpenId, $wxCode], 5, __FUNCTION__, __LINE__);
+		if (strlen($wxCode) >= 20) {
 			$wxUserInfo = UserWechat::getInfoByCode($wxCode);
 			AppUtil::logFile($wxUserInfo, 5, __FUNCTION__, __LINE__);
 			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
@@ -67,6 +54,24 @@ class BaseController extends Controller
 				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
 				AppUtil::logFile(self::$WX_OpenId, 5, __FUNCTION__, __LINE__);
 				// Rain: 发现如果action不执行完毕，getCookie获取不到刚刚赋值的cookie值
+				self::checkProfile(self::$WX_OpenId, $actionId);
+			}
+		} elseif (strlen(self::$WX_OpenId) > 20) {
+			// Rain: 防止盗链, 检测是否关注了我们的公众号
+			$wxUserInfo = UserWechat::getInfoByOpenId(self::$WX_OpenId);
+			AppUtil::logFile($wxUserInfo, 5, __FUNCTION__, __LINE__);
+			if (!$wxUserInfo) {
+				$logMsg = [self::$WX_OpenId, json_encode($wxUserInfo)];
+				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
+//				header("location:/qr.html");
+				$currentUrl = Yii::$app->request->getAbsoluteUrl();
+				$newUrl = WechatUtil::getRedirectUrl(UserWechat::CATEGORY_MALL, $currentUrl);
+				header("location:" . $newUrl);
+				exit;
+			}
+			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
+				self::$WX_OpenId = $wxUserInfo["openid"];
+				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
 				self::checkProfile(self::$WX_OpenId, $actionId);
 			}
 		} elseif (strlen(self::$WX_OpenId) < 20 && strlen($wxCode) < 20) {
@@ -86,14 +91,15 @@ class BaseController extends Controller
 	{
 		$wxUserInfo = UserWechat::getInfoByOpenId($openId);
 		$newActionId = $anchor = '';
-		$safeActions = ['share'];
+		$safeActions = ['share', 'invite'];
 		if (in_array($actionId, $safeActions)) {
 			return;
 		}
-		if (!$wxUserInfo || (isset($wxUserInfo["subscribe"]) && $wxUserInfo["subscribe"] != 1)) {
-			header("location:/qr.html");
-			exit;
-		} elseif (!$wxUserInfo['uPhone'] || !$wxUserInfo['uRole']) {
+//		if (!$wxUserInfo || (isset($wxUserInfo["subscribe"]) && $wxUserInfo["subscribe"] != 1)) {
+//			header("location:/qr.html");
+//			exit;
+//		} else
+		if (!$wxUserInfo || !$wxUserInfo['uPhone'] || !$wxUserInfo['uRole']) {
 			$newActionId = 'imei';
 		} elseif (!$wxUserInfo['uLocation']) {
 			$newActionId = $wxUserInfo['uRole'] == User::ROLE_SINGLE ? 'sreg' : 'mreg';
