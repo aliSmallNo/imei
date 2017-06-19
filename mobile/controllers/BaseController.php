@@ -76,11 +76,11 @@ class BaseController extends Controller
 			AppUtil::logFile($currentUrl, 5, __FUNCTION__, __LINE__);
 			$newUrl = WechatUtil::getRedirectUrl(UserWechat::CATEGORY_MALL, $currentUrl);
 			$userPhone = AppUtil::getCookie("user_phone");
-			if (1 || in_array($userPhone, ["18600442970", "13683065697"])) {
-				$logMsg = [$userPhone, $newUrl];
-				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
-				self::redirect($newUrl);
-			}
+			$logMsg = [$userPhone, $newUrl];
+			AppUtil::logFile($logMsg, 5, __FUNCTION__, __LINE__);
+			//self::redirect($newUrl);
+			header("location:" . $newUrl);
+			exit;
 		}
 		return parent::beforeAction($action);
 	}
