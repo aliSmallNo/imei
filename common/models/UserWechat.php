@@ -199,6 +199,8 @@ class UserWechat extends ActiveRecord
 				$ret['Avatar'] = $ret['uThumb'] ? $ret['uThumb'] : $ret['uAvatar'];
 				RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
 				return $ret;
+			} elseif ($ret && isset($ret["openid"])) {
+				return $ret;
 			}
 		}
 		return 0;
@@ -207,7 +209,6 @@ class UserWechat extends ActiveRecord
 	public static function getInfoByCode($code, $renewFlag = false)
 	{
 		$ret = WechatUtil::wxInfoByCode($code, $renewFlag);
-		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 		if ($ret && isset($ret["openid"])) {
 			$ret = self::getInfoByOpenId($ret["openid"]);
 			return $ret;

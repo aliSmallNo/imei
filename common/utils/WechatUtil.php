@@ -43,17 +43,24 @@ class WechatUtil
 
 	/**
 	 * @param bool $reset
+	 * @param string $code
 	 * @return string
 	 */
-	private static function accessToken($reset = false)
+	private static function accessToken($reset = false, $code = '')
 	{
 		$accessToken = RedisUtil::getCache(RedisUtil::KEY_WX_TOKEN);
 		if (!$accessToken || $reset) {
 			$appId = \WxPayConfig::APPID;
 			$secret = \WxPayConfig::APPSECRET;
 			$url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appId&secret=$secret";
+			if ($code) {
+				$baseUrl = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code';
+				$url = sprintf($baseUrl, $appId, $secret, $code);
+			}
 			$res = AppUtil::httpGet($url);
-			$res = json_decode($res, true);
+			$res = json_decode($res, 1);
+			AppUtil::logFile($url, 5, __FUNCTION__, __LINE__);
+			AppUtil::logFile($res, 5, __FUNCTION__, __LINE__);
 			$accessToken = isset($res['access_token']) ? $res['access_token'] : "";
 			if ($accessToken) {
 				RedisUtil::setCache($accessToken, RedisUtil::KEY_WX_TOKEN);
@@ -73,6 +80,7 @@ class WechatUtil
 		}
 		return $accessToken;
 	}
+
 
 	public static function getAccessToken($pass, $reset = false)
 	{
@@ -95,7 +103,16 @@ class WechatUtil
 		}
 
 		$ret = "";
-		$urlBase = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
+		$urlBase = 'https://api.weixin.qq.com/sns/auth?access_token=%s&openid=%s';
+		$access_token = WechatUtil::accessToken(1);
+		$url = sprintf($urlBase, $access_token, $openId);
+		$ret = AppUtil::httpGet($url);
+		$ret = json_decode($ret, 1);
+		AppUtil::logFile($url, 5, __FUNCTION__, __LINE__);
+		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
+
+		//$urlBase = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
+		$urlBase = 'https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN';
 		/*
 		 * Rain: 此处有坑，微信的access token 经常在两小时内突然失效，另外我们的有时候也不小心刷新了token,而忘了更新redis中的token
 		 * 同样的受害者，也可参考此文 http://blog.csdn.net/wzx19840423/article/details/51850188
@@ -110,12 +127,11 @@ class WechatUtil
 				break;
 			}
 		}
+		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 		if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
 			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
-			AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 			return $ret;
 		} elseif ($ret && isset($ret["openid"])) {
-			AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 			return $ret;
 		}
 		return 0;
@@ -126,12 +142,12 @@ class WechatUtil
 		$appId = \WxPayConfig::APPID;
 		$appSecret = \WxPayConfig::APPSECRET;
 		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=$appId&secret=$appSecret&code=$code&grant_type=authorization_code";
-		AppUtil::logFile($url, 5, __FUNCTION__, __LINE__);
 		$ret = AppUtil::httpGet($url);
 		$ret = json_decode($ret, true);
-		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 		if ($ret && isset($ret["access_token"]) && isset($ret["openid"])) {
 			$openId = $ret["openid"];
+			$accessToken = $ret["access_token"];
+			RedisUtil::setCache($accessToken, RedisUtil::KEY_WX_TOKEN);
 			if (!$renewFlag) {
 				$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
 				$ret = json_decode($ret, 1);
@@ -140,7 +156,6 @@ class WechatUtil
 					return $ret;
 				}
 			}
-			AppUtil::logFile($openId, 5, __FUNCTION__, __LINE__);
 			return self::wxInfo($openId, $renewFlag);
 		}
 		return 0;
