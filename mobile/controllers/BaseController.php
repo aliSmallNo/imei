@@ -90,7 +90,7 @@ class BaseController extends Controller
 	{
 		$wxUserInfo = UserWechat::getInfoByOpenId($openId);
 		$newActionId = $anchor = '';
-		$safeActions = ['share'];
+		$safeActions = ['share','invite'];
 		if (in_array($actionId, $safeActions)) {
 			return;
 		}
