@@ -59,9 +59,14 @@ class BaseController extends Controller
 			return self::render($view, $params);
 		}
 		$adminId = Admin::getAdminId();
+		if (!$adminId) {
+			header("location:/site/login");
+			exit;
+		}
 		$adminInfo = Admin::userInfo($adminId);
 		if (!$adminInfo) {
-			return self::render($view, $params);
+			header("location:/site/login");
+			exit;
 		}
 		$params["branch_editable"] = $adminInfo["aLevel"] >= Admin::LEVEL_MODIFY ? 1 : 0;
 		$params["adminInfo"] = $adminInfo;
