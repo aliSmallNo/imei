@@ -52,7 +52,10 @@ class BaseController extends Controller
 			if (!$wxUserInfo || (isset($wxUserInfo["subscribe"]) && $wxUserInfo["subscribe"] != 1)) {
 				$logMsg = [self::$WX_OpenId, json_encode($wxUserInfo)];
 				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
-				header("location:/qr.html");
+//				header("location:/qr.html");
+				$currentUrl = Yii::$app->request->getAbsoluteUrl();
+				$newUrl = WechatUtil::getRedirectUrl(UserWechat::CATEGORY_MALL, $currentUrl);
+				header("location:" . $newUrl);
 				exit;
 			}
 			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
