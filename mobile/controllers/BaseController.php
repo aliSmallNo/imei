@@ -45,6 +45,7 @@ class BaseController extends Controller
 		}
 		self::$WX_OpenId = AppUtil::getCookie(self::COOKIE_OPENID);
 		$wxCode = self::getParam("code");
+		AppUtil::logFile([self::$WX_OpenId, $wxCode], 5, __FUNCTION__, __LINE__);
 		if (strlen(self::$WX_OpenId) > 20) {
 			// Rain: 防止盗链, 检测是否关注了我们的公众号
 			$wxUserInfo = UserWechat::getInfoByOpenId(self::$WX_OpenId);
@@ -71,14 +72,13 @@ class BaseController extends Controller
 			}
 		} elseif (strlen(self::$WX_OpenId) < 20 && strlen($wxCode) < 20) {
 			$currentUrl = Yii::$app->request->getAbsoluteUrl();
-			AppUtil::logFile($currentUrl, 5, __FUNCTION__, __LINE__);
 			$newUrl = WechatUtil::getRedirectUrl(UserWechat::CATEGORY_MALL, $currentUrl);
 			$userPhone = AppUtil::getCookie("user_phone");
-			if (1 || in_array($userPhone, ["18600442970", "13683065697"])) {
-				$logMsg = [$userPhone, $newUrl];
-				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
-				self::redirect($newUrl);
-			}
+			$logMsg = [$currentUrl, $userPhone, $newUrl];
+			AppUtil::logFile($logMsg, 5, __FUNCTION__, __LINE__);
+			//self::redirect($newUrl);
+			header("location:" . $newUrl);
+			exit;
 		}
 		return parent::beforeAction($action);
 	}

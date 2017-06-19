@@ -608,7 +608,9 @@ class WxController extends BaseController
 	public function actionInvite()
 	{
 		$openId = self::$WX_OpenId;
+		AppUtil::logFile($openId, 5, __FUNCTION__, __LINE__);
 		$wxInfo = UserWechat::getInfoByOpenId($openId, true);
+		AppUtil::logFile($wxInfo, 5, __FUNCTION__, __LINE__);
 		if (!$wxInfo) {
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
