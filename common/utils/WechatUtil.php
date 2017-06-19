@@ -105,10 +105,12 @@ class WechatUtil
 			$url = sprintf($urlBase, $access_token, $openId);
 			$ret = AppUtil::httpGet($url);
 			$ret = json_decode($ret, 1);
+			AppUtil::logFile($url, 5, __FUNCTION__, __LINE__);
 			if ($ret && isset($ret["openid"])) {
 				break;
 			}
 		}
+		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 		if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
 			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
 			return $ret;
