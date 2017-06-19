@@ -258,7 +258,8 @@ class ApiController extends Controller
 				AppUtil::logFile($data, 5, __FUNCTION__, __LINE__);
 				$ret = User::reg($data);
 				//Rain: 刷新用户cache数据
-				UserWechat::getInfoByOpenId($openId, 1);
+				$cache = UserWechat::getInfoByOpenId($openId, 1);
+				AppUtil::logFile($cache, 5, __FUNCTION__, __LINE__);
 				return self::renderAPI(0, '保存成功啦~', $ret);
 			case "album":
 				$f = self::postParam("f");
@@ -341,7 +342,7 @@ class ApiController extends Controller
 				}
 				$subtag = self::postParam("subtag");
 				$page = self::postParam("page", 1);
-				list($ret,$nextpage) = UserNet::items($wxInfo["uId"], $tag, $subtag, $page);
+				list($ret, $nextpage) = UserNet::items($wxInfo["uId"], $tag, $subtag, $page);
 				return self::renderAPI(0, '', ["data" => $ret, "nextpage" => $nextpage]);
 			case "wx-process":
 				$pf = self::postParam("pf");
