@@ -59,6 +59,7 @@ class BaseController extends Controller
 		} elseif (strlen(self::$WX_OpenId) > 20) {
 			// Rain: 防止盗链, 检测是否关注了我们的公众号
 			$wxUserInfo = UserWechat::getInfoByOpenId(self::$WX_OpenId);
+			AppUtil::logFile($wxUserInfo, 5, __FUNCTION__, __LINE__);
 			if (!$wxUserInfo) {
 				$logMsg = [self::$WX_OpenId, json_encode($wxUserInfo)];
 				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
