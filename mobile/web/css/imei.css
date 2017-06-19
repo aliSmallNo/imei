@@ -3267,6 +3267,12 @@ section {
         width: 0;
         height: 0; }
 
+.plist-more {
+  font-size: 1rem;
+  color: #777;
+  padding: 2rem 1rem;
+  text-align: center; }
+
 #myMP {
   padding-bottom: 0; }
   #myMP .mymp-des {

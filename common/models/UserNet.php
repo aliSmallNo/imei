@@ -310,10 +310,10 @@ class UserNet extends ActiveRecord
 		return $id;
 	}
 
-	public static function items($MyUid, $tag, $subtag, $page, $pageSize = 20)
+	public static function items($MyUid, $tag, $subtag, $page, $pageSize = 10)
 	{
 		$deleteflag = self::DELETE_FLAG_NO;
-		$limit = "limit " . ($page - 1) * $pageSize . " , " . $pageSize;
+		$limit = "limit " . ($page - 1) * $pageSize . " , " . ($pageSize + 1);
 		$orderBy = " order by n.nAddedOn desc ";
 		$conn = AppUtil::db();
 		$ret = [];
@@ -380,7 +380,13 @@ class UserNet extends ActiveRecord
 			}
 			$items[] = $item;
 		}
-		return $items;
+		if (count($items) > $pageSize) {
+			$nextpage = $page + 1;
+			array_pop($items);
+		} else {
+			$nextpage = 0;
+		}
+		return [$items, $nextpage];
 
 	}
 
