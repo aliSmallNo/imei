@@ -4118,6 +4118,17 @@ section
 	border-radius: .5rem
 	background: rgba(1, 204, 170, 0.61)
 	position: relative
+	&:after
+		content: ""
+		width: 0
+		height: 0
+		position: absolute
+		left: 2rem
+		top: -1rem
+		border-left: 1rem solid transparent
+		border-right: 1rem solid transparent
+		border-bottom: 1rem solid rgba(1, 204, 170, 0.61)
+		z-index: 11
 	b
 		font-size: 1.4rem
 		font-weight: 900
