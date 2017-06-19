@@ -110,11 +110,12 @@ class WechatUtil
 				break;
 			}
 		}
-		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 		if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
 			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
+			AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 			return $ret;
 		} elseif ($ret && isset($ret["openid"])) {
+			AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 			return $ret;
 		}
 		return 0;
