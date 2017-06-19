@@ -44,6 +44,7 @@ class BaseController extends Controller
 			exit;
 		}
 		self::$WX_OpenId = AppUtil::getCookie(self::COOKIE_OPENID);
+		AppUtil::logFile(self::$WX_OpenId, 5, __FUNCTION__, __LINE__);
 		$wxCode = self::getParam("code");
 		if (strlen(self::$WX_OpenId) > 20) {
 			// Rain: 防止盗链, 检测是否关注了我们的公众号
