@@ -101,6 +101,7 @@ class WechatUtil
 		$ret = AppUtil::httpGet($url);
 		$ret = json_decode($ret, 1);
 		AppUtil::logFile($url, 5, __FUNCTION__, __LINE__);
+		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 
 		//$urlBase = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
 		$urlBase ='https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN';
