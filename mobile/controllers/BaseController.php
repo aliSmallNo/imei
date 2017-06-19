@@ -94,10 +94,11 @@ class BaseController extends Controller
 		if (in_array($actionId, $safeActions)) {
 			return;
 		}
-		if (!$wxUserInfo || (isset($wxUserInfo["subscribe"]) && $wxUserInfo["subscribe"] != 1)) {
-			header("location:/qr.html");
-			exit;
-		} elseif (!$wxUserInfo['uPhone'] || !$wxUserInfo['uRole']) {
+//		if (!$wxUserInfo || (isset($wxUserInfo["subscribe"]) && $wxUserInfo["subscribe"] != 1)) {
+//			header("location:/qr.html");
+//			exit;
+//		} else
+		if (!$wxUserInfo['uPhone'] || !$wxUserInfo['uRole']) {
 			$newActionId = 'imei';
 		} elseif (!$wxUserInfo['uLocation']) {
 			$newActionId = $wxUserInfo['uRole'] == User::ROLE_SINGLE ? 'sreg' : 'mreg';
