@@ -11,6 +11,7 @@ namespace common\utils;
 
 use common\models\Pay;
 use common\models\UserTrans;
+use common\models\UserWechat;
 use Yii;
 
 require_once __DIR__ . '/../lib/WxPay/WxPay.Config.php';
@@ -123,6 +124,10 @@ class WechatUtil
 			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
 			return $ret;
 		} elseif ($ret && isset($ret["openid"])) {
+			$info = UserWechat::findOne(['wOpenId' => $ret["openid"]]);
+			if ($info && isset($info['wRawData']) && $info['wRawData']) {
+				return json_decode($info['wRawData'], 1);
+			}
 			return $ret;
 		}
 		return 0;
