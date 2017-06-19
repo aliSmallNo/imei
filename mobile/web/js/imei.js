@@ -201,10 +201,10 @@ require(["layer"],
 			$('.change, .btn-change').on(kClick, function () {
 				if ($sls.form.hasClass('single')) {
 					$sls.form.addClass('matcher').removeClass('single');
-					$sls.change.html('点击这里切换成「媒婆」身份');
+					$sls.change.html('点击这里切换成「单身」身份');
 				} else {
 					$sls.form.addClass('single').removeClass('matcher');
-					$sls.change.html('点击这里切换成「单身」身份');
+					$sls.change.html('点击这里切换成「媒婆」身份');
 				}
 			});
 
