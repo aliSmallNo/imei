@@ -43,17 +43,20 @@ class WechatUtil
 
 	/**
 	 * @param bool $reset
+	 * @param string $code
 	 * @return string
 	 */
-	private static function accessToken($reset = false)
+	private static function accessToken($reset = false, $code = '')
 	{
 		$accessToken = RedisUtil::getCache(RedisUtil::KEY_WX_TOKEN);
 		if (!$accessToken || $reset) {
 			$appId = \WxPayConfig::APPID;
 			$secret = \WxPayConfig::APPSECRET;
 			$url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appId&secret=$secret";
-			$baseUrl = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=CODE&grant_type=authorization_code';
-			$url = sprintf($baseUrl, $appId, $secret);
+			if ($code) {
+				$baseUrl = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code';
+				$url = sprintf($baseUrl, $appId, $secret, $code);
+			}
 			$res = AppUtil::httpGet($url);
 			$res = json_decode($res, 1);
 			AppUtil::logFile($url, 5, __FUNCTION__, __LINE__);
@@ -77,6 +80,7 @@ class WechatUtil
 		}
 		return $accessToken;
 	}
+
 
 	public static function getAccessToken($pass, $reset = false)
 	{
@@ -142,6 +146,8 @@ class WechatUtil
 		$ret = json_decode($ret, true);
 		if ($ret && isset($ret["access_token"]) && isset($ret["openid"])) {
 			$openId = $ret["openid"];
+			$accessToken = $ret["access_token"];
+			RedisUtil::setCache($accessToken, RedisUtil::KEY_WX_TOKEN);
 			if (!$renewFlag) {
 				$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
 				$ret = json_decode($ret, 1);
