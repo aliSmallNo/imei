@@ -121,8 +121,10 @@ class WechatUtil
 		$appId = \WxPayConfig::APPID;
 		$appSecret = \WxPayConfig::APPSECRET;
 		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=$appId&secret=$appSecret&code=$code&grant_type=authorization_code";
+		AppUtil::logFile($url, 5, __FUNCTION__, __LINE__);
 		$ret = AppUtil::httpGet($url);
 		$ret = json_decode($ret, true);
+		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 		if ($ret && isset($ret["access_token"]) && isset($ret["openid"])) {
 			$openId = $ret["openid"];
 			if (!$renewFlag) {
@@ -133,6 +135,7 @@ class WechatUtil
 					return $ret;
 				}
 			}
+			AppUtil::logFile($openId, 5, __FUNCTION__, __LINE__);
 			return self::wxInfo($openId, $renewFlag);
 		}
 		return 0;
