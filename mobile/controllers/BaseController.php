@@ -45,6 +45,7 @@ class BaseController extends Controller
 		}
 		self::$WX_OpenId = AppUtil::getCookie(self::COOKIE_OPENID);
 		$wxCode = self::getParam("code");
+		AppUtil::logFile([self::$WX_OpenId, $wxCode], 5, __FUNCTION__, __LINE__);
 		if (strlen(self::$WX_OpenId) > 20) {
 			// Rain: 防止盗链, 检测是否关注了我们的公众号
 			$wxUserInfo = UserWechat::getInfoByOpenId(self::$WX_OpenId);
