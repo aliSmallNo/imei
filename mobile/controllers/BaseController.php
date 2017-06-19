@@ -45,10 +45,8 @@ class BaseController extends Controller
 		}
 		self::$WX_OpenId = AppUtil::getCookie(self::COOKIE_OPENID);
 		$wxCode = self::getParam("code");
-		AppUtil::logFile([self::$WX_OpenId, $wxCode], 5, __FUNCTION__, __LINE__);
 		if (strlen($wxCode) >= 20) {
 			$wxUserInfo = UserWechat::getInfoByCode($wxCode);
-			AppUtil::logFile($wxUserInfo, 5, __FUNCTION__, __LINE__);
 			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
 				self::$WX_OpenId = $wxUserInfo["openid"];
 				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
@@ -59,7 +57,6 @@ class BaseController extends Controller
 		} elseif (strlen(self::$WX_OpenId) > 20) {
 			// Rain: 防止盗链, 检测是否关注了我们的公众号
 			$wxUserInfo = UserWechat::getInfoByOpenId(self::$WX_OpenId);
-			AppUtil::logFile($wxUserInfo, 5, __FUNCTION__, __LINE__);
 			if (!$wxUserInfo) {
 				$logMsg = [self::$WX_OpenId, json_encode($wxUserInfo)];
 				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
