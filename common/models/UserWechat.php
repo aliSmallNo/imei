@@ -168,7 +168,7 @@ class UserWechat extends ActiveRecord
 		if (AppUtil::isDev()) {
 			$resetFlag = true;
 		}
-		if (!$resetFlag && isset($ret["uPhone"]) && isset($ret["uGender"]) && isset($ret["Avatar"]) && isset($ret["uHint"])) {
+		if (!$resetFlag && isset($ret["uPhone"]) && isset($ret["uGender"]) && isset($ret["Avatar"]) && isset($ret["uLocation"])) {
 			return $ret;
 		}
 		if (strlen($openId) < 20) {
