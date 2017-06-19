@@ -341,8 +341,8 @@ class ApiController extends Controller
 				}
 				$subtag = self::postParam("subtag");
 				$page = self::postParam("page", 1);
-				$ret = UserNet::items($wxInfo["uId"], $tag, $subtag, $page);
-				return self::renderAPI(0, '', ["data" => $ret, "nextpage" => $page]);
+				list($ret,$nextpage) = UserNet::items($wxInfo["uId"], $tag, $subtag, $page);
+				return self::renderAPI(0, '', ["data" => $ret, "nextpage" => $nextpage]);
 			case "wx-process":
 				$pf = self::postParam("pf");
 				$wxInfo = UserWechat::getInfoByOpenId($openId);

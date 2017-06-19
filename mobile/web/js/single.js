@@ -590,6 +590,13 @@ require(["layer"],
 						return false;
 					}
 					break;
+				case "heartbeat":
+					lastRow = $("#" + $sls.curFrag).find('.plist li').last();
+					if (lastRow && eleInScreen(lastRow, 180) && TabUilt.page > 0) {
+						TabUilt.getData();
+						return false;
+					}
+					break;
 				default:
 					break;
 			}
@@ -662,6 +669,7 @@ require(["layer"],
 			tabObj: null,
 			tabFlag: false,
 			page: 1,
+			listMore: $(".plist-more"),
 			Tmp: $("#wechats").html(),
 			init: function () {
 				$(".tab a").on(kClick, function () {
@@ -676,11 +684,7 @@ require(["layer"],
 
 					switch (TabUilt.tag) {
 						case "addMeWx":
-							TabUilt.getData();
-							break;
 						case "IaddWx":
-							TabUilt.getData();
-							break;
 						case "heartbeat":
 							TabUilt.getData();
 							break;
@@ -722,13 +726,9 @@ require(["layer"],
 					TabUilt.tabObj.next().html("");
 					switch (to) {
 						case "addMeWx":
-							TabUilt.getData();
-							break;
 						case "IaddWx":
-							TabUilt.getData();
-							break;
 						case "heartbeat":
-							TabUilt.getData();
+							$("[tag=" + TabUilt.tag + "]").find("[subtag=" + TabUilt.subtag + "]").trigger("click");
 							break;
 					}
 					location.href = "#" + to;
@@ -739,21 +739,27 @@ require(["layer"],
 					return;
 				}
 				TabUilt.tabFlag = 1;
+				TabUilt.listMore.html("加载中...");
 				$.post("/api/user", {
 					tag: TabUilt.tag,
 					subtag: TabUilt.subtag,
 					page: TabUilt.page,
 
 				}, function (resp) {
-					// if (TabUilt.tag == "addMeWx" && TabUilt.subtag == "wait") {
-					// 	TabUilt.Tmp =;
-					// }
 					if (TabUilt.page == 1) {
 						TabUilt.tabObj.next().html(Mustache.render(TabUilt.Tmp, resp.data));
 					} else {
 						TabUilt.tabObj.next().append(Mustache.render(TabUilt.Tmp, resp.data));
 					}
+
 					TabUilt.tabFlag = 0;
+					TabUilt.page = resp.data.nextpage;
+					if (TabUilt.page == 0) {
+						TabUilt.listMore.html("没有更多了~");
+					} else {
+						TabUilt.listMore.html("上滑加载更多");
+					}
+
 				}, "json");
 			},
 		};

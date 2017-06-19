@@ -84,8 +84,10 @@
 		</div>
 		<div class="m-rows line-bottom">
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">媒桂花</span></a>
-			<a href="javascript:;" class="" id="notifications"><span class="title">通知</span> <span
-								class="count">0</span></a>
+			<a href="javascript:;" class="" id="notifications">
+				<span class="title">通知</span>
+				<span class="count">0</span>
+			</a>
 			<a href="#sfeedback"><span class="title">意见反馈</span> </a>
 			<a href="#myWechatNo"><span class="title">我的微信号</span></a>
 			<a href="#sqrcode"><span class="title">关注公众号</span></a>
@@ -137,6 +139,7 @@
 			<p>还没申请动态哦！去 <a href="#slook" class="aaaa">"发现"</a>找你的心仪对象吧！</p>
 		</div>
 	</ul>
+	<div class="plist-more">没有更多了~</div>
 </section>
 <section id="IaddWx">
 	<div class="nav">
@@ -153,15 +156,7 @@
 			<p>还没申请动态哦！去 <a href="#slook" class="aaaa">"发现"</a>找你的心仪对象吧！</p>
 		</div>
 	</ul>
-</section>
-<section id="sqrcode">
-	<div class="qrcode-wrap">
-		<h4>想让更多的好友加入<br>微媒100</h4>
-		<h5>长按识别二维码<br>关注微媒100公众号</h5>
-		<div>
-			<img src="/images/ico_qrcode.jpg" class="qrcode">
-		</div>
-	</div>
+	<div class="plist-more">没有更多了~</div>
 </section>
 <section id="heartbeat">
 	<div class="nav">
@@ -178,6 +173,16 @@
 			<p>还没动态哦！分享个人主页让更多人看到你吧！</p>
 		</div>
 	</ul>
+	<div class="plist-more">没有更多了~</div>
+</section>
+<section id="sqrcode">
+	<div class="qrcode-wrap">
+		<h4>想让更多的好友加入<br>微媒100</h4>
+		<h5>长按识别二维码<br>关注微媒100公众号</h5>
+		<div>
+			<img src="/images/ico_qrcode.jpg" class="qrcode">
+		</div>
+	</div>
 </section>
 <section id="myMP">
 	<div class="nav">
