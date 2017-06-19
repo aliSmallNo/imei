@@ -558,38 +558,38 @@
 	</div>
 </div>
 
-<script type="text/html" id="height">
+<script type="text/html" id="heightTmp">
 	<div class="m-popup-options col3 clearfix" tag="height">
 		<div class="m-popup-options-top">
-			<div class="start"></div>
+			<div class="start">{[start]}</div>
 			<div class="mid">至</div>
-			<div class="end"></div>
+			<div class="end">{[end]}</div>
 		</div>
 		{{foreach from=$height key=key item=h}}
 		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
 	</div>
 </script>
-<script type="text/html" id="age">
+<script type="text/html" id="ageTmp">
 	<div class="m-popup-options col3 clearfix" tag="age">
 		<div class="m-popup-options-top">
-			<div class="start"></div>
+			<div class="start">{[start]}</div>
 			<div class="mid">至</div>
-			<div class="end"></div>
+			<div class="end">{[end]}</div>
 		</div>
 		{{foreach from=$age key=key item=h}}
 		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
 	</div>
 </script>
-<script type="text/html" id="income">
+<script type="text/html" id="incomeTmp">
 	<div class="m-popup-options col3 clearfix" tag="income">
 		{{foreach from=$income key=key item=h}}
 		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
 	</div>
 </script>
-<script type="text/html" id="edu">
+<script type="text/html" id="eduTmp">
 	<div class="m-popup-options col3 clearfix" tag="edu">
 		{{foreach from=$edu key=key item=h}}
 		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
@@ -661,7 +661,7 @@
 	{[/data]}
 </script>
 <script type="text/html" id="conditions">
-	<a href="#matchCondition" class="conditions">
+	<a href="javascript:;" class="conditions">
 		<span class="con-title">择偶条件: </span>
 		<span class="con-des">{[age]} {[height]} {[income]} {[edu]}</span>
 	</a>

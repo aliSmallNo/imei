@@ -511,6 +511,7 @@ require(["layer"],
 
 		var filterUlit = {
 			tag: "",
+			cond: {},
 			getUserFiterFlag: false,
 			sUserPage: 1,
 			noMore: $("#slook .m-more"),
@@ -539,11 +540,36 @@ require(["layer"],
 							break;
 					}
 				});
+				$(document).on(kClick, ".conditions", function () {
+					$.each(filterUlit.cond, function (k, v) {
+						var obj = $(".condtion-item[tag=" + k + "]").find(".right");
+						if (obj) {
+							obj.html(v);
+							obj.attr("data-id", filterUlit.cond[k + 'Val']);
+						}
+					});
+					location.href = "#matchCondition";
+				});
 			},
 			showShooseContion: function () {
-				var html = $("#" + filterUlit.tag).html();
+				var tmp = $("#" + filterUlit.tag + "Tmp").html();
+				var Val = filterUlit.cond[filterUlit.tag + "Val"];
+				var h = (filterUlit.tag == "age") ? "年龄" : "身高";
+				var mData = {start: h + "不限", end: h + "不限"};
+				if (parseInt(Val) != 0) {
+					var vT = filterUlit.cond[filterUlit.tag];
+					var vTArr = vT.split('~');
+					var st = "";
+					if (filterUlit.tag == "age") {
+						st = vTArr[0] + "岁";
+					}
+					if (filterUlit.tag == "height") {
+						st = vTArr[0] + "cm";
+					}
+					mData = {start: st, end: vTArr[1]};
+				}
 				$sls.main.show();
-				$sls.content.html(html).addClass("animate-pop-in");
+				$sls.content.html(Mustache.render(tmp, mData)).addClass("animate-pop-in");
 				$sls.shade.fadeIn(160);
 			},
 			getUserFiter: function (data, page) {
@@ -560,6 +586,7 @@ require(["layer"],
 					var html = Mustache.render($("#userFiter").html(), resp.data);
 					if (page == 1) {
 						$(".m-top-users").html(html);
+						filterUlit.cond = resp.data.condition;
 						$(".my-condition").html(Mustache.render($("#conditions").html(), resp.data.condition));
 						if (resp.data.condition.toString().length < 5) {
 							$(".con-des").html("您还没有设置择偶条件哦!");
