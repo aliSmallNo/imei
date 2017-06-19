@@ -364,13 +364,15 @@
 <script>
 	var mProvinces = {{$provinces}};
 	var userInfo = {{$userInfo}};
+	var mprofessions = {{$professions}};
 </script>
 <script>
 	var $sls = {
 		mProvincesObj: $("[data-location=uLocation-p]"),
 		mcityObj: $("[data-location=uLocation-c]"),
 		mcityVal: null,
-	}
+		job: "",
+	};
 
 	var fieldsText = {
 		"uName": "呢称",
@@ -439,6 +441,28 @@
 		$("#postData").val(JSON.stringify(postData));
 		$("form").submit();
 	});
+
+	$("[data-tag=uScope]").on("change", function () {
+		var val = $(this).val();
+		changeScope(val);
+	});
+
+	function changeScope(val) {
+		var items = [];
+		for (var i = 0; i < mprofessions[val].length; i++) {
+			var item = {
+				key: i, name: mprofessions[val][i]
+			};
+			items.push(item);
+		}
+		var profObj = $("[data-tag=uProfession]");
+		profObj.html('<option value="">请选择</option>');
+		profObj.append(Mustache.render('{[#items]}<option value="{[key]}">{[name]}</option>{[/items]}',{items:items}));
+		if ($sls.job != "" || $sls.job) {
+			profObj.val($sls.job);
+		}
+	}
+
 	$(function () {
 		if ($('.alert-success').length > 0) {
 			setTimeout(function () {
@@ -465,15 +489,23 @@
 			}, 'json');
 		});
 
+		console.log(userInfo);
 		// 赋默认值
 		$.each(userInfo, function (k, v) {
-			if (k == "uLocation") {
+			console.log(k);
+			if (k == "uLocation" && v) {
 				var location = JSON.parse(v);
 				$sls.mProvincesObj.val(parseInt(location[0].key));
 				$sls.mProvincesObj.trigger("change");
 				$sls.mcityVal = parseInt(location[1].key)
 			} else if (k == "uAvatar") {
 				$(".o-images").html('<li><img src="' + v + '"></li>');
+			} else if (k == "uScope") {
+				$("[data-tag=" + k + "]").val(v);
+				changeScope(v);
+			} else if (k == "uProfession") {
+				$sls.job = v;
+				$("[data-tag=uProfession]").val(v);
 			} else {
 				$("[data-tag=" + k + "]").val(v);
 			}

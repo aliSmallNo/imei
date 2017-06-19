@@ -220,7 +220,7 @@ class SiteController extends BaseController
 				}
 			}
 		}
-		$userInfo = User::findOne(['uId' => $id]);
+		$userInfo = User::find()->where(['uId' => $id])->asArray()->one();
 		return $this->renderPage('account.tpl',
 			[
 				"userInfo" => json_encode($userInfo, JSON_UNESCAPED_UNICODE),
@@ -244,8 +244,8 @@ class SiteController extends BaseController
 				"diet" => User::$Diet,
 				"rest" => User::$Rest,
 				"pet" => User::$Pet,
-				'job'=>User::$Profession,
-				'professions' => User::$ProfessionDict,
+				'job' => User::$Profession,
+				'professions' => json_encode(User::$ProfessionDict, JSON_UNESCAPED_UNICODE),
 				"status" => User::$Status,
 				'success' => $success,
 				'error' => $error,
