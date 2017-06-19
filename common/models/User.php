@@ -75,11 +75,11 @@ class User extends ActiveRecord
 	];
 	static $HeightFilter = [
 		0 => "身高不限",
-		140 => '不到140厘米', 145 => '145厘米', 150 => '150厘米',
-		155 => '155厘米', 160 => '160厘米', 165 => '165厘米',
-		170 => '170厘米', 175 => '175厘米', 180 => '180厘米',
-		185 => '185厘米', 190 => '190厘米', 195 => '195厘米',
-		200 => '200厘米', 205 => '201厘米以上',
+		140 => '不到140cm', 145 => '145cm', 150 => '150cm',
+		155 => '155cm', 160 => '160cm', 165 => '165cm',
+		170 => '170cm', 175 => '175cm', 180 => '180cm',
+		185 => '185cm', 190 => '190cm', 195 => '195cm',
+		200 => '200cm', 205 => '201cm以上',
 	];
 	static $Weight = [
 		45 => '不到45kg', 50 => '46~50kg', 55 => '51~55kg',
@@ -607,9 +607,11 @@ class User extends ActiveRecord
 				if (count($ageArr) == 2) {
 					//$matchcondition["age"] = self::$AgeFilter[$ageArr[0]] . '~' . self::$AgeFilter[$ageArr[1]];
 					$matchcondition["age"] = $ageArr[0] . '~' . $ageArr[1] . '岁';
+					$matchcondition["ageVal"] = $ageArr[0] . '-' . $ageArr[1];
 				}
 			} else {
 				$matchcondition["age"] = self::$AgeFilter[0];
+				$matchcondition["ageVal"] = 0;
 			}
 
 			if (isset($matchInfo["height"]) && $matchInfo["height"] > 0) {
@@ -617,15 +619,19 @@ class User extends ActiveRecord
 				if (count($heightArr) == 2) {
 					//$matchcondition["height"] = self::$HeightFilter[$heightArr[0]] . '~' . self::$HeightFilter[$heightArr[1]];
 					$matchcondition["height"] = $heightArr[0] . '~' . $heightArr[1] . 'cm';
+					$matchcondition["heightVal"] = $heightArr[0] . '-' . $heightArr[1];
 				}
 			} else {
 				$matchcondition["height"] = self::$HeightFilter[0];
+				$matchcondition["heightVal"] = 0;
 			}
 
 			if (isset($matchInfo["edu"]) && $matchInfo["edu"] > 0) {
 				$matchcondition["edu"] = self::$EducationFilter[$matchInfo["edu"]];
+				$matchcondition["eduVal"] = $matchInfo["edu"];
 			} else {
 				$matchcondition["edu"] = self::$EducationFilter[0];
+				$matchcondition["eduVal"] = 0;
 			}
 
 			if (isset($matchInfo["income"]) && $matchInfo["income"] > 0) {
@@ -638,9 +644,11 @@ class User extends ActiveRecord
 					$incomeT = $matchInfo["income"] . "W以上";
 				}
 				$matchcondition["income"] = $incomeT;
+				$matchcondition["incomeVal"] = $matchInfo["income"];
 
 			} else {
 				$matchcondition["income"] = self::$IncomeFilter[0];
+				$matchcondition["incomeVal"] = 0;
 			}
 		}
 		return $matchcondition;

@@ -285,7 +285,6 @@ class ApiController extends Controller
 					User::edit($openId, ["uFilter" => $data]);
 				}
 				$data = json_decode($data, 1);
-
 				$ret = User::getFilter($openId, $data, $page);
 				return self::renderAPI(0, '', $ret);
 			case "sprofile":
