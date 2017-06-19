@@ -78,8 +78,8 @@ class UserWechat extends ActiveRecord
 	{
 		$fields = self::$FieldDict;
 		$openid = $wxInfo[$fields['wOpenId']];
-		$entity = self::findOne(['wOpenId' => $openid]);
 		$uId = User::addWX($wxInfo);
+		$entity = self::findOne(['wOpenId' => $openid]);
 		if (!$entity) {
 			$entity = new self();
 			$entity->wAddedOn = date('Y-m-d H:i:s');
