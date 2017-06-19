@@ -163,7 +163,7 @@ class WechatUtil
 			}
 		}
 		$wxAppId = \WxPayConfig::APPID;
-		return sprintf("https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=resign#wechat_redirect",
+		return sprintf("https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=resign#wechat_redirect",
 			$wxAppId, urlencode($url));
 	}
 
