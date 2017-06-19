@@ -1541,12 +1541,11 @@ section {
   background: url(../images/bg_share.jpg) top;
   background-size: 100% auto; }
   .invite-wrap .title {
-    padding: 3rem 0;
+    padding: 3rem 0 0;
     color: #f06292;
     text-align: center;
     font-size: 2.2rem;
     line-height: 4rem;
-    height: 4rem;
     font-weight: 300; }
     .invite-wrap .title em {
       font-weight: 500; }

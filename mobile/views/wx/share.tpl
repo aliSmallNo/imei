@@ -1,6 +1,6 @@
 <div id="sec-share">
 	<div id="inviteInfo" class="invite-wrap">
-		<div class="title">
+		<div class="title clearfix">
 			<em>{{$nickname}}</em>
 			和
 			<a href="javascript:;" class="dl {{if $editable}}editable{{/if}}" data-id="{{$celebId}}" data-opt="">{{$celeb}}</a>
