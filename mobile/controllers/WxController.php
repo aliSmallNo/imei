@@ -609,7 +609,6 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		AppUtil::logFile([$openId, $wxInfo], 5, __FUNCTION__, __LINE__);
 		if (!$wxInfo) {
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
