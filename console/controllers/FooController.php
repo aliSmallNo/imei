@@ -289,7 +289,7 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = UserNet::items(131267, "heartbeat", "fav-together", 1, $pageSize = 20);
+		$ret = WechatUtil::wxInfo('oYDJew2dMEl0gnDVxIFy74ORWUcs', 1);
 		var_dump($ret);
 	}
 }

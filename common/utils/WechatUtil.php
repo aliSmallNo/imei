@@ -119,13 +119,16 @@ class WechatUtil
 			}
 		}
 		if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
+			$ret['uId'] = UserWechat::upgrade($ret);
 			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
 			return $ret;
 		} elseif ($ret && isset($ret["openid"])) {
 			$info = UserWechat::findOne(['wOpenId' => $ret["openid"]]);
 			if ($info && isset($info['wRawData']) && $info['wRawData']) {
-				RedisUtil::setCache($info['wRawData'], RedisUtil::KEY_WX_USER, $openId);
-				return json_decode($info['wRawData'], 1);
+				$wxInfo = json_decode($info['wRawData'], 1);
+				$wxInfo['uId'] = $info['wUId'];
+				RedisUtil::setCache(json_encode($wxInfo), RedisUtil::KEY_WX_USER, $openId);
+				return $wxInfo;
 			}
 			return $ret;
 		}

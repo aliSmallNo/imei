@@ -74,7 +74,7 @@ class UserWechat extends ActiveRecord
 		return $entity->wId;
 	}
 
-	protected static function updateWXInfo($wxInfo)
+	public static function upgrade($wxInfo)
 	{
 		$fields = self::$FieldDict;
 		$openid = $wxInfo[$fields['wOpenId']];
@@ -190,9 +190,8 @@ class UserWechat extends ActiveRecord
 			return $ret;
 		} else {
 			$ret = WechatUtil::wxInfo($openId, $resetFlag);
-			if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
-				$uid = self::updateWXInfo($ret);
-				$uInfo = User::findOne(['uId' => $uid]);
+			if ($ret && isset($ret["openid"]) && isset($ret["nickname"]) && isset($ret["uId"])) {
+				$uInfo = User::findOne(['uId' => $ret['uId']]);
 				foreach ($fields as $field) {
 					$ret[$field] = isset($uInfo[$field]) ? $uInfo[$field] : '';
 				}
