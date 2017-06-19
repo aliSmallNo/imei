@@ -46,7 +46,17 @@ class BaseController extends Controller
 		self::$WX_OpenId = AppUtil::getCookie(self::COOKIE_OPENID);
 		$wxCode = self::getParam("code");
 		AppUtil::logFile([self::$WX_OpenId, $wxCode], 5, __FUNCTION__, __LINE__);
-		if (strlen(self::$WX_OpenId) > 20) {
+		if (strlen($wxCode) >= 20) {
+			$wxUserInfo = UserWechat::getInfoByCode($wxCode);
+			AppUtil::logFile($wxUserInfo, 5, __FUNCTION__, __LINE__);
+			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
+				self::$WX_OpenId = $wxUserInfo["openid"];
+				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
+				AppUtil::logFile(self::$WX_OpenId, 5, __FUNCTION__, __LINE__);
+				// Rain: 发现如果action不执行完毕，getCookie获取不到刚刚赋值的cookie值
+				self::checkProfile(self::$WX_OpenId, $actionId);
+			}
+		} elseif (strlen(self::$WX_OpenId) > 20) {
 			// Rain: 防止盗链, 检测是否关注了我们的公众号
 			$wxUserInfo = UserWechat::getInfoByOpenId(self::$WX_OpenId);
 			if (!$wxUserInfo || (isset($wxUserInfo["subscribe"]) && $wxUserInfo["subscribe"] != 1)) {
@@ -61,16 +71,6 @@ class BaseController extends Controller
 			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
 				self::$WX_OpenId = $wxUserInfo["openid"];
 				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
-				self::checkProfile(self::$WX_OpenId, $actionId);
-			}
-		} elseif (strlen(self::$WX_OpenId) < 20 && strlen($wxCode) >= 20) {
-			$wxUserInfo = UserWechat::getInfoByCode($wxCode);
-			AppUtil::logFile($wxUserInfo, 5, __FUNCTION__, __LINE__);
-			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
-				self::$WX_OpenId = $wxUserInfo["openid"];
-				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
-				AppUtil::logFile(self::$WX_OpenId, 5, __FUNCTION__, __LINE__);
-				// Rain: 发现如果action不执行完毕，getCookie获取不到刚刚赋值的cookie值
 				self::checkProfile(self::$WX_OpenId, $actionId);
 			}
 		} elseif (strlen(self::$WX_OpenId) < 20 && strlen($wxCode) < 20) {

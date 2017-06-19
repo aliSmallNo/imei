@@ -147,7 +147,16 @@ class WechatUtil
 		if ($ret && isset($ret["access_token"]) && isset($ret["openid"])) {
 			$openId = $ret["openid"];
 			$accessToken = $ret["access_token"];
-			RedisUtil::setCache($accessToken, RedisUtil::KEY_WX_TOKEN);
+			$baseUrl = 'https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN';
+			$url = sprintf($baseUrl, $accessToken, $openId);
+			$ret = AppUtil::httpGet($url);
+			$ret = json_decode($ret, 1);
+			AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
+			if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
+				RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
+				return $ret;
+			}
+//			RedisUtil::setCache($accessToken, RedisUtil::KEY_WX_TOKEN);
 			if (!$renewFlag) {
 				$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
 				$ret = json_decode($ret, 1);
