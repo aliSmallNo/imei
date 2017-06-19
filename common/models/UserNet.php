@@ -372,10 +372,35 @@ class UserNet extends ActiveRecord
 		$items = [];
 		foreach ($ret as $row) {
 			$item = User::fmtRow($row);
+
+			if ($tag == "addmewx" && $subtag == "wait") {
+				$item["pendingWxFlag"] = 1;
+			} else {
+				$item["pendingWxFlag"] = 0;
+			}
 			$items[] = $item;
 		}
 		return $items;
 
+	}
+
+	public static function processWx($myUid, $pf, $id)
+	{
+		$id = AppUtil::decrypt($id);
+		$data = [];
+		if (!$myUid || !$pf || !$id) {
+			return 0;
+		}
+		switch ($pf) {
+			case "pass":
+				$data = ["nStatus" => self::STATUS_PASS];
+				break;
+			case "refuse":
+				$data = ["nStatus" => self::STATUS_FAIL];
+				break;
+		}
+
+		return self::replace($myUid, $id, self::REL_LINK, $data);
 	}
 
 	public static function roseAmt($myId, $id, $num)
