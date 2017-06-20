@@ -356,7 +356,7 @@ class SiteController extends BaseController
 			}
 
 		}
-		$this->redirect('/info/wxreply?id=' . $openId);
+		$this->redirect('/site/wxreply?id=' . $openId);
 	}
 
 }
