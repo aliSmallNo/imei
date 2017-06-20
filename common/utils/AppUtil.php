@@ -475,7 +475,7 @@ class AppUtil
 			'person' => $prefix . 'person',
 			'excel' => $prefix . 'excel',
 			'upload' => $prefix . 'upload',
-			'voice' => $prefix . 'voice',
+			'voice' => $prefix . 'default/voice',
 		];
 		foreach ($paths as $path) {
 			if (is_dir($path)) {
@@ -947,7 +947,7 @@ class AppUtil
 				$iSeq = RedisUtil::getIntSeq();
 				$fileName = self::getUploadFolder("voice") . "/" . $iSeq . ".amr";
 				file_put_contents($fileName, $content);
-				return "/" . $iSeq . ".amr";
+				return "/voice/" . $iSeq . ".amr";
 			} else {
 				$fileName = self::getUploadFolder() . "/" . RedisUtil::getIntSeq();
 				file_put_contents($fileName, $content);
