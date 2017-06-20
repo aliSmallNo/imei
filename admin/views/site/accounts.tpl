@@ -100,7 +100,7 @@
 				{{$prod.name}} <em>({{$prod.location_t}})</em>
 				<br>
 				<span>{{$prod.age}}</span>
-
+				<span>{{$prod.horos_t}}</span>
 				<span>{{$prod.gender_t}}</span>
 				<span>{{$prod.height_t}}</span>
 				<span>{{$prod.weight_t}}</span>

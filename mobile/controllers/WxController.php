@@ -440,7 +440,7 @@ class WxController extends BaseController
 		}
 		$brief = [];
 		if ($uInfo) {
-			$fields = ['age', 'height_t', 'income_t', 'education_t'];
+			$fields = ['age', 'height_t', 'horos_t', 'scope_t'];
 			foreach ($fields as $field) {
 				if ($uInfo[$field]) {
 					$brief[] = $uInfo[$field];
@@ -450,7 +450,6 @@ class WxController extends BaseController
 				}
 			}
 		}
-		//print_r($wxInfo);exit;
 
 		return self::renderPage("shome.tpl",
 			[
@@ -609,7 +608,6 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		AppUtil::logFile([$openId, $wxInfo], 5, __FUNCTION__, __LINE__);
 		if (!$wxInfo) {
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
@@ -665,6 +663,8 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$senderUId = self::getParam('id');
+		AppUtil::logFile([$senderUId, $wxInfo], 5, __FUNCTION__, __LINE__);
 		$hasReg = false;
 		if ($wxInfo) {
 			$avatar = $wxInfo["Avatar"];
@@ -676,13 +676,15 @@ class WxController extends BaseController
 			$nickname = "大测试";
 			$uId = 0;
 		}
-		$senderUId = self::getParam('id');
 		if ($senderUId) {
 			$matchInfo = User::findOne(['uId' => $senderUId]);
 			if (!$matchInfo) {
 				header("location:/wx/error?msg=链接地址错误");
 				exit();
+			}else{
+				$nickname = $matchInfo["uName"];
 			}
+
 		}
 		if ($senderUId && $uId) {
 			UserNet::add($senderUId, $uId, UserNet::REL_INVITE);

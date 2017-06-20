@@ -74,12 +74,37 @@ class UserWechat extends ActiveRecord
 		return $entity->wId;
 	}
 
-	protected static function updateWXInfo($wxInfo)
+	public static function upgrade($wxInfo)
 	{
+		$uId = User::addWX($wxInfo);
+		/*$keys = array_merge(array_keys($fields), ['wUId', 'wRawData', 'wUpdatedOn', 'wExpire']);
+		$sql = 'INSERT INTO im_user_wechat(' . implode(',', $keys) . ') VALUES(';
+		foreach ($keys as $key) {
+			$sql .= ':' . $key . ',';
+		}
+		$sql = trim($sql, ',');
+		$sql .= ') ON DUPLICATE KEY UPDATE SET ';
+		foreach ($keys as $key) {
+			if ($key != 'wOpenId') {
+				$sql .= $key . '=:' . $key . ',';
+			}
+		}
+		$sql = trim($sql, ',');
+		var_dump($sql);
+
+		$params = [];
+		foreach ($fields as $key => $field) {
+			$params[':' . $key] = isset($wxInfo[$field]) ? $wxInfo[$field] : '';
+		}
+		$params[':wUId'] = $uId;
+		$params[':wRawData'] = json_encode($wxInfo);
+		$params[':wUpdatedOn'] = date('Y-m-d H:i:s');
+		$params[':wExpire'] = date('Y-m-d H:i:s', time() + 86400 * 15);
+		AppUtil::db()->createCommand($sql)->bindValues($params)->execute();*/
+
 		$fields = self::$FieldDict;
 		$openid = $wxInfo[$fields['wOpenId']];
 		$entity = self::findOne(['wOpenId' => $openid]);
-		$uId = User::addWX($wxInfo);
 		if (!$entity) {
 			$entity = new self();
 			$entity->wAddedOn = date('Y-m-d H:i:s');
@@ -190,9 +215,8 @@ class UserWechat extends ActiveRecord
 			return $ret;
 		} else {
 			$ret = WechatUtil::wxInfo($openId, $resetFlag);
-			if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
-				$uid = self::updateWXInfo($ret);
-				$uInfo = User::findOne(['uId' => $uid]);
+			if ($ret && isset($ret["openid"]) && isset($ret["nickname"]) && isset($ret["uId"])) {
+				$uInfo = User::findOne(['uId' => $ret['uId']]);
 				foreach ($fields as $field) {
 					$ret[$field] = isset($uInfo[$field]) ? $uInfo[$field] : '';
 				}

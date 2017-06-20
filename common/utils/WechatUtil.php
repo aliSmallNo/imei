@@ -11,6 +11,7 @@ namespace common\utils;
 
 use common\models\Pay;
 use common\models\UserTrans;
+use common\models\UserWechat;
 use Yii;
 
 require_once __DIR__ . '/../lib/WxPay/WxPay.Config.php';
@@ -95,7 +96,11 @@ class WechatUtil
 	{
 		$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
 		$ret = json_decode($ret, 1);
-		if ($ret && is_array($ret) && !$renewFlag) {
+		if ($ret && is_array($ret) && isset($ret['uId']) && !$renewFlag) {
+			return $ret;
+		} elseif ($ret && is_array($ret) && !isset($ret['uId']) && isset($ret["nickname"]) && !$renewFlag) {
+			$ret['uId'] = UserWechat::upgrade($ret);
+			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
 			return $ret;
 		}
 		if (strlen($openId) < 24) {
@@ -113,16 +118,22 @@ class WechatUtil
 			$url = sprintf($urlBase, $access_token, $openId);
 			$ret = AppUtil::httpGet($url);
 			$ret = json_decode($ret, 1);
-			AppUtil::logFile($url, 5, __FUNCTION__, __LINE__);
 			if ($ret && isset($ret["openid"])) {
 				break;
 			}
 		}
-		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 		if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
+			$ret['uId'] = UserWechat::upgrade($ret);
 			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
 			return $ret;
 		} elseif ($ret && isset($ret["openid"])) {
+			$info = UserWechat::findOne(['wOpenId' => $ret["openid"]]);
+			if ($info && isset($info['wRawData']) && $info['wRawData']) {
+				$wxInfo = json_decode($info['wRawData'], 1);
+				$wxInfo['uId'] = $info['wUId'];
+				RedisUtil::setCache(json_encode($wxInfo), RedisUtil::KEY_WX_USER, $openId);
+				return $wxInfo;
+			}
 			return $ret;
 		}
 		return 0;
