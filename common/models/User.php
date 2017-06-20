@@ -447,12 +447,16 @@ class User extends ActiveRecord
 			}
 		}
 		$uid = self::add($addData);
+
+		$net = UserNet::findOne(['nSubUId' => $uid, 'nRelation' => UserNet::REL_INVITE, 'nDeletedFlag' => 0]);
+		if ($net && isset($net['nUId']) && $net['nUId']) {
+			UserNet::add($net['nUId'], $uid, UserNet::REL_BACKER);
+		}
 		return $uid;
 	}
 
 	public static function album($id, $openId, $f = "add")
 	{
-		$url = "";
 		if ($id && $f == "add") {
 			$url = AppUtil::getMediaUrl($id);
 		} else {

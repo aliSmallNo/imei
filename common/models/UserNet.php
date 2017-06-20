@@ -46,7 +46,7 @@ class UserNet extends ActiveRecord
 		if (!$uid || !$subUid || $uid == $subUid) {
 			return false;
 		}
-		if ($relation == self::REL_INVITE) {
+		if ($relation == self::REL_INVITE || $relation == self::REL_BACKER) {
 			$entity = self::findOne(['nSubUId' => $subUid, 'nRelation' => $relation, 'nDeletedFlag' => 0]);
 		} else {
 			$entity = self::findOne(['nUId' => $uid, 'nSubUId' => $subUid, 'nRelation' => $relation, 'nDeletedFlag' => 0]);
