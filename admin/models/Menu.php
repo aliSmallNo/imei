@@ -135,8 +135,8 @@ class Menu
 						"level" => 820
 					],
 					[
-						"name" => "用户代金券",
-						"url" => "/site/coupons"
+						"name" => "公众号消息",
+						"url" => "/site/wxmsg"
 					],
 					[
 						"name" => "意见反馈",
