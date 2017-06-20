@@ -664,6 +664,8 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$senderUId = self::getParam('id');
+		AppUtil::logFile([$senderUId, $wxInfo], 5, __FUNCTION__, __LINE__);
 		$hasReg = false;
 		if ($wxInfo) {
 			$avatar = $wxInfo["Avatar"];
@@ -675,7 +677,6 @@ class WxController extends BaseController
 			$nickname = "大测试";
 			$uId = 0;
 		}
-		$senderUId = self::getParam('id');
 		if ($senderUId) {
 			$matchInfo = User::findOne(['uId' => $senderUId]);
 			if (!$matchInfo) {
