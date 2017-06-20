@@ -903,4 +903,5 @@ class User extends ActiveRecord
 		return $ret;
 	}
 
+
 }

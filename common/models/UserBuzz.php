@@ -235,4 +235,64 @@ class UserBuzz extends ActiveRecord
 		}
 		return $string;
 	}
+
+	public static function wxMessages($adminId, $page, $pageSize = 20, $renewFlag = false)
+	{
+		$conn = \Yii::$app->db;
+		$count = 0;
+		$sql = "select count(DISTINCT bFrom) as cnt from im_user_buzz where bType in ('text','image','voice') ";
+		$res = $conn->createCommand($sql)->queryOne();
+		if ($res) {
+			$count = $res["cnt"];
+		}
+
+		$offset = ($page - 1) * $pageSize;
+		$cat = Mark::CATEGORY_WECHAT;
+
+		$sql = "SELECT b.bId,b.bFrom, b.bTo,
+				(case when b.bType='image' THEN '[图片]' when b.bType='voice' THEN '[声音]' else b.bContent end) as bContent, 
+				b.bCreateTime, b.bDate , w.wNickName, w.wAvatar, (case WHEN m.mUId is null THEN 0 ELSE 1 END) as readFlag
+				FROM im_user_buzz as b 
+				join (select max(bId) as bId,bFrom from im_user_buzz where bType in ('text','image','voice') group by bFrom ORDER BY bid DESC limit $offset, $pageSize) as t on t.bId = b.bId
+				left join im_user_wechat as w on w.wOpenId = t.bFrom
+				LEFT JOIN im_mark as m on m.mUId=b.bId AND m.mPId=$adminId AND m.mCategory=$cat
+				order by b.bId desc";
+
+
+		$res = $conn->createCommand($sql)->queryAll();
+		foreach ($res as $key => $row) {
+			if (!isset($row["wAvatar"]) || !$row["wAvatar"]) {
+				$res[$key]["avatar"] = "/images/avatar_none.jpeg";
+			} else {
+				$res[$key]["avatar"] = $row["wAvatar"];
+			}
+			$res[$key]["dt"] = AppUtil::prettyDateTime($res[$key]["bDate"]);
+			$res[$key]['tdiff'] = self::diffTime($row['bDate']);
+			$res[$key]['iType'] = "微信消息";
+		}
+
+		return [$res, $count];
+
+	}
+
+	public static function diffTime($starttime)
+	{
+		$str = '';
+		$endtime = time();
+		$timediff = 172800 - ($endtime - strtotime($starttime));
+		if ($timediff > 0) {
+			$remain = $timediff;
+			$hours = round($remain / 3600);
+			$remain = $remain % 3600;
+			$minutes = round($remain / 60);
+
+			if ($hours > 0) {
+				return $hours . "小时";
+			} elseif ($hours == 0 && $minutes > 0) {
+				return $minutes . "分钟";
+			}
+		}
+		return $str;
+	}
+
 }

@@ -5,8 +5,12 @@ namespace admin\controllers;
 use admin\models\Admin;
 use admin\models\Menu;
 use common\models\City;
+use common\models\Mark;
 use common\models\User;
+use common\models\UserBuzz;
+use common\models\UserMsg;
 use common\models\UserTrans;
+use common\models\UserWechat;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
 use console\utils\QueueUtil;
@@ -283,10 +287,76 @@ class SiteController extends BaseController
 				'getInfo' => $getInfo,
 				'items' => $items,
 				'pagination' => $pagination,
-				"paid" => $allcharge,//充值合计
+				"paid" => $allcharge,   //充值合计
 				'category' => 'users',
 			]
 		);
+	}
+
+	public function actionWxmsg()
+	{
+		$getInfo = Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+
+		list($list, $count) = UserBuzz::wxMessages(Admin::getAdminId(), $page);
+		//print_r($list);exit;
+
+		$pagination = $pagination = self::pagination($page, $count);
+		return $this->renderPage("wxmsg.tpl",
+			[
+				'getInfo' => $getInfo,
+				'pagination' => $pagination,
+				'category' => 'users',
+				//'detailcategory' => commonData::getRequestUri(),
+				'list' => $list,
+			]
+		);
+	}
+
+	public function actionWxreply()
+	{
+		Admin::staffOnly();
+		$openId = self::getParam("id", "xxx");
+		list($list, $nickname, $lastId) = UserMsg::wechatDetail($openId);
+		if ($lastId) {
+			Mark::markRead($lastId, Admin::getAdminId(), Mark::CATEGORY_WECHAT);
+		}
+		$regInfo = User::fmtRow(User::find()->where(["uOpenId" => $openId])->asArray()->one());
+		//echo $nickname;print_r($list);exit;
+		return $this->renderPage('wx-reply.tpl',
+			[
+				'category' => 'user',
+				//'detailcategory' => 'info/listwx',
+				'list' => $list,
+				"pid" => $lastId,
+				"nickName" => $nickname,
+				"openId" => $openId,
+				"regInfo" => $regInfo
+			]);
+	}
+
+	/* 添加回复消息 */
+	public function actionReply2wx()
+	{
+		$openId = self::postParam("openId");
+
+		$uId = User::findOne(["uOpenId" => $openId])->uId;
+		$pid = self::postParam("pid");
+		$content = self::postParam("content");
+		if ($openId && $content) {
+			$result = UserWechat::sendMsg($openId, $content);
+			if ($result == 0) {
+				UserMsg::edit('', [
+					"mAddedBy" => Admin::getAdminId(),
+					"mAddedOn" => date("Y-m-d H:i:s"),
+					"mUId" => $uId,
+					"mCategory" => UserMsg::CATEGORY_WX_MSG,
+					"mText" => $content,
+				]);
+			}
+
+		}
+		$this->redirect('/info/wxreply?id=' . $openId);
 	}
 
 }
