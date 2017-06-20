@@ -239,14 +239,7 @@ class UserBuzz extends ActiveRecord
 
 	public static function wxMessages($adminId, $page, $pageSize = 20, $renewFlag = false)
 	{
-		// 如果是低于10个的，应该是导航栏用的，最好用缓存
-		if ($pageSize < 10 && !$renewFlag) {
-			$ret = RedisUtil::getCache(...$adminId);
-			$ret = json_decode($ret, true);
-			if ($ret) {
-				return $ret;
-			}
-		}
+
 
 		$conn = \Yii::$app->db;
 		$count = 0;
@@ -282,11 +275,7 @@ class UserBuzz extends ActiveRecord
 			$res[$key]['rname'] = $name ? $name : $row["wNickName"];
 		}
 
-		if ($pageSize < 10) {
-			RedisUtil::setCache(json_encode([$res, $count]), ...$adminId);
-		} else {
-			RedisUtil::delCache(...$adminId);
-		}
+
 
 		return [$res, $count];
 	}
