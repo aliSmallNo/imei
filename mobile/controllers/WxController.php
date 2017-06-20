@@ -682,7 +682,10 @@ class WxController extends BaseController
 			if (!$matchInfo) {
 				header("location:/wx/error?msg=链接地址错误");
 				exit();
+			}else{
+				$nickname = $matchInfo["uName"];
 			}
+
 		}
 		if ($senderUId && $uId) {
 			UserNet::add($senderUId, $uId, UserNet::REL_INVITE);
