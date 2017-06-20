@@ -440,7 +440,7 @@ class WxController extends BaseController
 		}
 		$brief = [];
 		if ($uInfo) {
-			$fields = ['age', 'height_t', 'income_t', 'education_t'];
+			$fields = ['age', 'height_t', 'horos_t', 'scope_t'];
 			foreach ($fields as $field) {
 				if ($uInfo[$field]) {
 					$brief[] = $uInfo[$field];
