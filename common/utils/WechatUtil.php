@@ -96,7 +96,7 @@ class WechatUtil
 	{
 		$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
 		$ret = json_decode($ret, 1);
-		if ($ret && is_array($ret) && !$renewFlag) {
+		if ($ret && is_array($ret) && isset($ret['uId']) && !$renewFlag) {
 			return $ret;
 		}
 		if (strlen($openId) < 24) {
