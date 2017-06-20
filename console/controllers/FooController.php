@@ -10,7 +10,6 @@ namespace console\controllers;
  */
 use common\models\User;
 use common\models\UserNet;
-use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
@@ -222,7 +221,7 @@ class FooController extends Controller
 	{
 
 		$conn = AppUtil::db();
-		$sql = 'select uId,uRawData from im_user WHERE uHeight<1 AND uRawData!=\'\' ';
+		$sql = 'select uId,uRawData from im_user WHERE uHoros<1 AND uRawData!=\'\' ';
 		$ret = $conn->createCommand($sql)->queryAll();
 		$sql = 'update im_user set uHeight=:v WHERE uId=:id ';
 		$cmdH = $conn->createCommand($sql);
@@ -230,6 +229,13 @@ class FooController extends Controller
 		$cmdW = $conn->createCommand($sql);
 		$sql = 'update im_user set uIncome=:v WHERE uId=:id ';
 		$cmdI = $conn->createCommand($sql);
+		$sql = 'update im_user set uHoros=:v WHERE uId=:id ';
+		$cmdHoros = $conn->createCommand($sql);
+		$sql = 'update im_user set uScope=:v WHERE uId=:id ';
+		$cmdScope = $conn->createCommand($sql);
+		$sql = 'update im_user set uProfession=:v WHERE uId=:id ';
+		$cmdPro = $conn->createCommand($sql);
+		$scope = 0;
 		foreach ($ret as $row) {
 			$info = json_decode($row['uRawData'], 1);
 			if (isset($info['height'])) {
@@ -264,6 +270,62 @@ class FooController extends Controller
 				}
 			}
 
+			if (isset($info['constellation']) && $info['constellation']) {
+				$input = $info['constellation'];
+				if ($input == '魔羯座') {
+					$input = '摩羯座';
+				}
+				$output = 0;
+				foreach (User::$Horos as $key => $title) {
+					if (strpos($title, $input) !== false) {
+						$output = $key;
+						break;
+					}
+				}
+				if ($output > 0) {
+					$cmdHoros->bindValues([
+						':id' => $row['uId'],
+						':v' => $output,
+					])->execute();
+				}
+			}
+
+			if (isset($info['industry']) && $info['industry']) {
+				$input = $info['industry'];
+				$output = 0;
+				foreach (User::$Scope as $key => $title) {
+					if (strpos($title, $input) !== false) {
+						$output = $key;
+						break;
+					}
+				}
+				if ($output > 0) {
+					$cmdScope->bindValues([
+						':id' => $row['uId'],
+						':v' => $output,
+					])->execute();
+					$scope = $output;
+				}
+			}
+			if ($scope && isset($info['profession']) && $info['profession'] && isset(User::$ProfessionDict[$scope])) {
+				$input = $info['profession'];
+				$output = 0;
+
+				foreach (User::$ProfessionDict[$scope] as $key => $title) {
+					if ($title == $input) {
+						$output = $key;
+						break;
+					}
+				}
+				if ($output > 0) {
+					$cmdPro->bindValues([
+						':id' => $row['uId'],
+						':v' => $output,
+					])->execute();
+					$scope = 0;
+				}
+			}
+
 			if (isset($info['annual_income']['max'])) {
 				$ui = $info['annual_income']['max'];
 				$income = 0;
@@ -280,6 +342,7 @@ class FooController extends Controller
 				}
 			}
 		}
+		return date('Y-m-d H:i:s');
 	}
 
 	public function actionWxmenu()
@@ -292,10 +355,7 @@ class FooController extends Controller
 	{
 //		$ret = WechatUtil::wxInfo('oYDJew2dMEl0gnDVxIFy74ORWUcs', 1);
 //		var_dump($ret);
-		$wxInfo = '{"subscribe":1,"openid":"oYDJew2dMEl0gnDVxIFy74ORWUcs","nickname":"\u5954\u8dd1\u5427","sex":1,"language":"zh_CN","city":"","province":"","country":"\u4e2d\u56fd","headimgurl":"http:\/\/wx.qlogo.cn\/mmopen\/U6uZvXzx8GScPNIiboEB2yoWJ03KTZqJyhEZhMEXibLevEEtj9fYwZflYn1RQwkF0js6qTpcAwE4ubVCNzHB8jYiaHcjU6gLgiat\/0","subscribe_time":1497866261,"remark":"","groupid":0,"tagid_list":[]}';
-		$wxInfo = json_decode($wxInfo, 1);
-		var_dump($wxInfo);
-		$ret = UserWechat::upgrade($wxInfo);
+		$ret = self::reformInfo();
 		var_dump($ret);
 	}
 }

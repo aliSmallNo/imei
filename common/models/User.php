@@ -744,9 +744,9 @@ class User extends ActiveRecord
 			$data["name"] = mb_strlen($row["uName"]) > 4 ? mb_substr($row["uName"], 0, 4) . "..." : $row["uName"];
 			$data["gender"] = $row["uGender"] == 10 ? "female" : "male";
 			$data["age"] = date("Y") - $row["uBirthYear"];
-			$data["height"] = isset(User::$Height[$row["uHeight"]]) ? User::$Height[$row["uHeight"]] : "无年龄";
-			$data["horos"] = isset(User::$Height[$row["uHoros"]]) ? User::$Height[$row["uHoros"]] : "无星座";
-			$data["job"] = isset(User::$Height[$row["uProfession"]]) ? User::$Height[$row["uProfession"]] : "无职业";
+			$data["height"] = isset(User::$Height[$row["uHeight"]]) ? User::$Height[$row["uHeight"]] : "无身高";
+			$data["horos"] = isset(User::$Horos[$row["uHoros"]]) ? User::$Horos[$row["uHoros"]] : "无星座";
+			$data["job"] = isset(User::$Scope[$row["uScope"]]) ? User::$Scope[$row["uScope"]] : "无行业";
 			$data["intro"] = $row["uIntro"];
 			$location = json_decode($row["uLocation"], 1);
 
