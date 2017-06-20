@@ -297,9 +297,7 @@ class SiteController extends BaseController
 	{
 		$getInfo = Yii::$app->request->get();
 		$page = self::getParam("page", 1);
-
 		list($list, $count) = UserBuzz::wxMessages(Admin::getAdminId(), $page);
-
 		$pagination = $pagination = self::pagination($page, $count);
 		return $this->renderPage("wxmsg.tpl",
 			[
@@ -321,11 +319,10 @@ class SiteController extends BaseController
 			Mark::markRead($lastId, Admin::getAdminId(), Mark::CATEGORY_WECHAT);
 		}
 		$regInfo = User::fmtRow(User::find()->where(["uOpenId" => $openId])->asArray()->one());
-		//echo $nickname;print_r($list);exit;
 		return $this->renderPage('wx-reply.tpl',
 			[
-				'category' => 'user',
-				//'detailcategory' => 'info/listwx',
+				'category' => 'users',
+				'detailcategory' => 'site/wxmsg',
 				'list' => $list,
 				"pid" => $lastId,
 				"nickName" => $nickname,

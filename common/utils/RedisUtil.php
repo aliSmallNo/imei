@@ -34,6 +34,7 @@ class RedisUtil
 	const KEY_USER_STAT = 'user_stat';
 	const KEY_USER_WALLET = 'user_wallet';
 	const KEY_USER_RECORDS = 'user_records';
+	const KEY_WX_MESSAGE = 'wx_message';
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,

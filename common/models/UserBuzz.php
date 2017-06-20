@@ -9,6 +9,7 @@
 namespace common\models;
 
 use common\utils\AppUtil;
+use common\utils\RedisUtil;
 use yii\db\ActiveRecord;
 
 class UserBuzz extends ActiveRecord
@@ -238,6 +239,15 @@ class UserBuzz extends ActiveRecord
 
 	public static function wxMessages($adminId, $page, $pageSize = 20, $renewFlag = false)
 	{
+		// 如果是低于10个的，应该是导航栏用的，最好用缓存
+		if ($pageSize < 10 && !$renewFlag) {
+			$ret = RedisUtil::getCache(...$adminId);
+			$ret = json_decode($ret, true);
+			if ($ret) {
+				return $ret;
+			}
+		}
+
 		$conn = \Yii::$app->db;
 		$count = 0;
 		$sql = "select count(DISTINCT bFrom) as cnt from im_user_buzz where bType in ('text','image','voice') ";
@@ -271,6 +281,13 @@ class UserBuzz extends ActiveRecord
 			$name = self::lastReply($row['bDate'], $row["bFrom"]);
 			$res[$key]['rname'] = $name ? $name : $row["wNickName"];
 		}
+
+		if ($pageSize < 10) {
+			RedisUtil::setCache(json_encode([$res, $count]), ...$adminId);
+		} else {
+			RedisUtil::delCache(...$adminId);
+		}
+
 		return [$res, $count];
 	}
 
@@ -285,7 +302,7 @@ class UserBuzz extends ActiveRecord
 			":openId" => $openid,
 		])->queryOne();
 		if ($uInfo) {
-			return '微媒100'.' - '.$uInfo["aName"];
+			return '微媒100' . ' - ' . $uInfo["aName"];
 		}
 		return "";
 	}
