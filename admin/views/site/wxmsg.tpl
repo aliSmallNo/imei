@@ -31,7 +31,7 @@
 				<th>
 					最后回复
 				<th>
-					作者
+					最后回复者
 				</th>
 				<th>
 					状态
@@ -66,7 +66,7 @@
 					{{/if}}
 				</td>
 				<td>
-					{{if isset($info.tlastTa)}}{{$info.tlastTa}}{{/if}}
+					{{if isset($info.rname)}}{{$info.rname}}{{/if}}
 				</td>
 				<td>
 					{{if $info.readFlag}}已读{{else}}<span class="text-danger">未读</span>{{/if}}

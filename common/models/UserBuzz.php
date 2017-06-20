@@ -258,21 +258,36 @@ class UserBuzz extends ActiveRecord
 				LEFT JOIN im_mark as m on m.mUId=b.bId AND m.mPId=$adminId AND m.mCategory=$cat
 				order by b.bId desc";
 
-
 		$res = $conn->createCommand($sql)->queryAll();
 		foreach ($res as $key => $row) {
 			if (!isset($row["wAvatar"]) || !$row["wAvatar"]) {
-				$res[$key]["avatar"] = "/images/avatar_none.jpeg";
+				$res[$key]["avatar"] = "/images/im_default.png";
 			} else {
 				$res[$key]["avatar"] = $row["wAvatar"];
 			}
 			$res[$key]["dt"] = AppUtil::prettyDateTime($res[$key]["bDate"]);
 			$res[$key]['tdiff'] = self::diffTime($row['bDate']);
 			$res[$key]['iType'] = "微信消息";
+			$name = self::lastReply($row['bDate'], $row["bFrom"]);
+			$res[$key]['rname'] = $name ? $name : $row["wNickName"];
 		}
-
 		return [$res, $count];
+	}
 
+	public static function lastReply($bDate, $openid)
+	{
+		$sql = "select a.aName  from im_user as u 
+				join im_user_msg as m on u.uId=m.mUId 
+				join im_admin as a on m.mAddedBy=a.aId
+				where u.uOpenId=:openId and m.mAddedOn>:dt order by mId desc limit 1 ";
+		$uInfo = AppUtil::db()->createCommand($sql)->bindValues([
+			":dt" => $bDate,
+			":openId" => $openid,
+		])->queryOne();
+		if ($uInfo) {
+			return '微媒100'.' - '.$uInfo["aName"];
+		}
+		return "";
 	}
 
 	public static function diffTime($starttime)

@@ -299,7 +299,6 @@ class SiteController extends BaseController
 		$page = self::getParam("page", 1);
 
 		list($list, $count) = UserBuzz::wxMessages(Admin::getAdminId(), $page);
-		//print_r($list);exit;
 
 		$pagination = $pagination = self::pagination($page, $count);
 		return $this->renderPage("wxmsg.tpl",
