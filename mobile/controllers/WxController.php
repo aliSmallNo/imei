@@ -450,7 +450,6 @@ class WxController extends BaseController
 				}
 			}
 		}
-		//print_r($wxInfo);exit;
 
 		return self::renderPage("shome.tpl",
 			[
