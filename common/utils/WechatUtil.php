@@ -98,6 +98,10 @@ class WechatUtil
 		$ret = json_decode($ret, 1);
 		if ($ret && is_array($ret) && isset($ret['uId']) && !$renewFlag) {
 			return $ret;
+		} elseif ($ret && is_array($ret) && !isset($ret['uId']) && isset($ret["nickname"]) && !$renewFlag) {
+			$ret['uId'] = UserWechat::upgrade($ret);
+			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
+			return $ret;
 		}
 		if (strlen($openId) < 24) {
 			return 0;
