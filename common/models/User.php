@@ -746,6 +746,10 @@ class User extends ActiveRecord
 			$data["age"] = date("Y") - $row["uBirthYear"];
 			$data["height"] = isset(User::$Height[$row["uHeight"]]) ? User::$Height[$row["uHeight"]] : "无身高";
 			$data["horos"] = isset(User::$Horos[$row["uHoros"]]) ? User::$Horos[$row["uHoros"]] : "无星座";
+			if ($data["horos"] && mb_strlen($data["horos"]) > 3) {
+				$data["horos"] = mb_substr($data["horos"], 0, 3);
+
+			}
 			$data["job"] = isset(User::$Scope[$row["uScope"]]) ? User::$Scope[$row["uScope"]] : "无行业";
 			$data["intro"] = $row["uIntro"];
 			$location = json_decode($row["uLocation"], 1);
