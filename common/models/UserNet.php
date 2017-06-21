@@ -410,6 +410,8 @@ class UserNet extends ActiveRecord
 				$data = ["nStatus" => self::STATUS_FAIL];
 				WechatUtil::toNotice($id, $myUid, "wx-replay", 0);
 				// 退回媒瑰花...
+				//$payInfo = UserTrans::find()->where(["tPId" => $id, "tUId" => $myUid, "tCategory" => UserTrans::CAT_COST]);
+				//UserTrans::add($myUid, 1111, UserTrans::CAT_RETURN, UserTrans::TITLE_RETURN, 50, UserTrans::UNIT_GIFT);
 
 				break;
 		}
@@ -425,7 +427,8 @@ class UserNet extends ActiveRecord
 			return $amt;
 		}
 
-		UserTrans::add($myId, 0, UserTrans::CAT_COST, UserTrans::TITLE_COST, $num, UserTrans::UNIT_GIFT);
+		// 打赏给 $id
+		UserTrans::add($myId, $id, UserTrans::CAT_COST, UserTrans::TITLE_COST, $num, UserTrans::UNIT_GIFT);
 		UserNet::edit($id, $myId, UserNet::REL_LINK);
 		WechatUtil::toNotice($id, $myId, "wxNo");
 

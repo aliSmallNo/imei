@@ -20,6 +20,7 @@ class UserTrans extends ActiveRecord
 	const CAT_SIGN = 105;   //签到
 	const CAT_LINK = 110;
 	const CAT_COST = 120;  //打赏
+	const CAT_RETURN = 130;  //拒绝退回
 
 	const UNIT_FEN = 'fen';
 	const UNIT_YUAN = 'yuan';
@@ -33,6 +34,7 @@ class UserTrans extends ActiveRecord
 	const TITLE_RECHARGE = "充值";
 	const TITLE_SIGN = "签到奖励";
 	const TITLE_COST = "打赏";
+	const TITLE_RETURN = "拒绝退回";
 
 	public static function tableName()
 	{
@@ -42,7 +44,6 @@ class UserTrans extends ActiveRecord
 	public static function add($uid, $pid, $cat, $title, $amt, $unit)
 	{
 		$entity = new self();
-		$entity->tPId = $pid;
 		$entity->tUId = $uid;
 		$entity->tPId = $pid;
 		$entity->tCategory = $cat;
@@ -160,9 +161,9 @@ class UserTrans extends ActiveRecord
 		$sql = "select u.uId as uid,u.uName as uname,u.uAvatar as avatar,p.pAmt as amt ,
 				t.tAmt as flower,tAddedOn as date,t.tTitle as tcat,tUnit as unit,t.tCategory as cat
 				from im_user_trans as t 
-				join im_user as u on u.uId=t.tUId 
+				left join im_user as u on u.uId=t.tUId 
 				left join im_pay as p on p.pId=t.tPId
-				where t.tCategory in (100,105) and $criteria 
+				where  $criteria 
 				order by $order 
 				limit $limit";
 		$result = $conn->createCommand($sql)->bindValues($params)->queryAll();
@@ -174,7 +175,7 @@ class UserTrans extends ActiveRecord
 
 		$sql = "select count(1) as co
 				from im_user_trans as t 
-				join im_user as u on u.uId=t.tUId 
+				left join im_user as u on u.uId=t.tUId 
 				left join im_pay as p on p.pId=t.tPId where $criteria ";
 		$count = $conn->createCommand($sql)->bindValues($params)->queryOne();
 		$count = $count ? $count["co"] : 0;
