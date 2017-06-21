@@ -276,8 +276,7 @@ class UserNet extends ActiveRecord
 	public static function hasFollowed($uid, $subUid)
 	{
 		$ret = self::findOne(['nUId' => $uid, 'nSubUId' => $subUid, 'nRelation' => self::REL_FOLLOW, 'nDeletedFlag' => 0]);
-		//WechatUtil::toNotice($uid, $subUid, "focus", $ret);
-		WechatUtil::toNotice(120003, $subUid, "focus", $ret);
+		WechatUtil::toNotice($uid, $subUid, "focus", $ret);
 		return $ret ? true : false;
 	}
 
@@ -302,7 +301,8 @@ class UserNet extends ActiveRecord
 			case "yes":
 				$info->nDeletedFlag = self::DELETE_FLAG_NO;
 				$info->nAddedOn = $date;
-				WechatUtil::toNotice($uid, $mId, "favor", 1);
+				//WechatUtil::toNotice($uid, $mId, "favor", 1);
+				WechatUtil::toNotice(120003, $mId, "favor", 1);
 				break;
 			case "no":
 				$info->nDeletedFlag = self::DELETE_FLAG_YES;
