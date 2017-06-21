@@ -151,12 +151,16 @@ class SiteController extends BaseController
 	{
 		$page = self::getParam("page", 1);
 		$name = self::getParam('name');
+		$phone = self::getParam('phone');
 		$status = self::getParam('status');
 		$stDel = User::STATUS_DELETE;
 		$criteria[] = " uStatus < $stDel ";
 		$params = [];
-		if ($status) {
+		if ($status != "" && ($status == 0 || $status)) {
 			$criteria[] = " uStatus=$status ";
+		}
+		if ($phone) {
+			$criteria[] = " uPhone=$phone ";
 		}
 
 		if ($name) {
@@ -172,6 +176,7 @@ class SiteController extends BaseController
 				"status" => $status,
 				'list' => $list,
 				"name" => $name,
+				"phone" => $phone,
 				'pagination' => $pagination,
 				'category' => 'users',
 				"statusT" => User::$Status,

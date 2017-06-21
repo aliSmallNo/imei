@@ -22,7 +22,7 @@
 		background: #f80;
 	}
 
-	.pInfo .role20  {
+	.pInfo .role20 {
 		color: #44b549;
 		padding: 1px 10px;
 		border: 1px solid #4CAF50;
@@ -33,7 +33,6 @@
 		padding: 1px 10px;
 		border: 1px solid #aaa;
 	}
-
 
 	.pInfo span.status-1 {
 		color: #fff;
@@ -61,11 +60,13 @@
 	<div class="row">
 		<form class="form-inline" action="/site/accounts" method="get">
 			<select name="status" class="form-control">
+				<option value="">用户状态</option>
 				{{foreach from=$statusT key=key item=item}}
-				<option value="{{$key}}" {{if $status==$key}}selected{{/if}}>{{$item}}</option>
+				<option value="{{$key}}" {{if $status!="" && $status==$key}}selected{{/if}}>{{$item}}</option>
 				{{/foreach}}
 			</select>
 			<input class="form-control" name="name" placeholder="名字" type="text" value="{{$name}}">
+			<input class="form-control" name="phone" placeholder="手机号" type="text" value="{{$phone}}">
 			<input type="submit" class="btn btn-primary" value="查询">
 		</form>
 	</div>
@@ -98,7 +99,7 @@
 				<span class="role{{$prod.role}}">{{$prod.role_t}}</span>
 				<span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
 				{{$prod.name}} <em>({{$prod.location_t}})</em>
-				 <em>{{$prod.note_t}}</em>
+				<em>{{$prod.note_t}}</em>
 				<br>
 				<span>{{$prod.age}}</span>
 				<span>{{$prod.horos_t}}</span>
@@ -123,10 +124,10 @@
 			</td>
 			<td class="pInfo">
 				<span>{{foreach from=$prod.filter_t.age key=key item=item}}
-				{{$item.name}}{{if $key<1}}~{{/if}}{{/foreach}}</span>
+					{{$item.name}}{{if $key<1}}~{{/if}}{{/foreach}}</span>
 
 				<span>{{foreach from=$prod.filter_t.height item=item}}
-				{{$item.name}}~{{/foreach}}</span>
+					{{$item.name}}~{{/foreach}}</span>
 
 				<span>{{$prod.filter_t.income.name}}</span>
 				<span>{{$prod.filter_t.edu.name}}</span>
