@@ -300,10 +300,14 @@ class UserNet extends ActiveRecord
 			case "yes":
 				$info->nDeletedFlag = self::DELETE_FLAG_NO;
 				$info->nAddedOn = $date;
+				//WechatUtil::toNotice($uid, $mId, "favor", 1);
+				WechatUtil::toNotice(120003, $mId, "favor", 1);
 				break;
 			case "no":
 				$info->nDeletedFlag = self::DELETE_FLAG_YES;
 				$info->nDeletedOn = $date;
+				//WechatUtil::toNotice($uid, $mId, "favor", 0);
+				WechatUtil::toNotice(120003, $mId, "favor", 0);
 				break;
 		}
 
@@ -420,8 +424,8 @@ class UserNet extends ActiveRecord
 
 		UserTrans::add($myId, 0, UserTrans::CAT_COST, UserTrans::TITLE_COST, $num, UserTrans::UNIT_GIFT);
 		UserNet::edit($id, $myId, UserNet::REL_LINK);
-		//WechatUtil::toNotice($id,$myId,"wxNo");
-		WechatUtil::toNotice(120003, $myId, "wxNo");
+		WechatUtil::toNotice($id, $myId, "wxNo");
+
 		return $amt;
 	}
 
