@@ -487,7 +487,7 @@ class WechatUtil
 			case "favor":
 				$url = "http://mp.bpdj365.com/wx/single#sme";
 				$keyword1Val = "心动";
-				$ft = $f ? "取消" : "";
+				$ft = $f ? "" : "取消";
 				$keyword2Val = "有人" . $ft . "心动你了，快去看看吧！";
 				break;
 			case "focus":
