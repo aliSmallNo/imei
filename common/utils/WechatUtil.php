@@ -467,4 +467,75 @@ class WechatUtil
 		]);
 		return $result;
 	}
+
+	public static function toNotice($uId, $myId, $tag, $f = false)
+	{
+		if (AppUtil::scene() == "dev") {
+			return 0;
+		}
+		$userInfo = User::findOne(["uId" => $uId]);
+		if (!$userInfo) {
+			return 0;
+		}
+		$openId = isset($userInfo["uOpenId"]) ? $userInfo["uOpenId"] : "";
+		if (!$openId || strlen($openId) < 12) {
+			return 0;
+		}
+		$name = $userInfo["uName"];
+
+		switch ($tag) {
+			case "favor":
+				$url = "http://mp.bpdj365.com/wx/single#sme";
+				$keyword1Val = "心动";
+				$ft = $f ? "取消" : "";
+				$keyword2Val = "有人" . $ft . "心动你了，快去看看吧！";
+				break;
+			case "focus":
+				$url = "http://mp.bpdj365.com/wx/single#sme";
+				$keyword1Val = "关注";
+				$ft = $f ? "取消" : "";
+				$keyword2Val = "有人" . $ft . "关注你了，快去看看吧！";
+				break;
+			case "wxNo":
+				$url = "http://mp.bpdj365.com/wx/single#sme";
+				$keyword1Val = "微信好友请求";
+				$keyword2Val = "有人请求加你微信好友了，快去看看吧！";
+				break;
+			case "wx-replay":
+				$url = "http://mp.bpdj365.com/wx/single#sme";
+				$keyword1Val = "微信好友请求";
+				$ft = $f ? "同意" : "拒绝";
+				$keyword2Val = "有人" . $ft . "你的微信好友请求，快去看看吧！";
+				break;
+			default:
+				$url = "http://mp.bpdj365.com/wx/sreg";
+				$keyword1Val = "微媒100";
+				$keyword2Val = "欢迎来到微媒100，这是一个真实的相亲交友软件！";
+		}
+
+		$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+		$bodyInfo = [
+			"touser" => $openId,
+			"template_id" => "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI",
+			"url" => $url,
+			"data" => [
+				"first" => ["color" => "#555555", "value" => "你好，$name!\n"],
+				"keyword1" => ["color" => "#555555", "value" => $keyword1Val],
+				"keyword2" => ["color" => "#555555", "value" => $keyword2Val],
+				"keyword3" => ["color" => "#555555", "value" => date("Y年n月j日 H:i")],
+				"remark" => ["color" => "#555555", "value" => "\n 点击下方详情查看吧~~"],
+			]
+		];
+
+
+		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
+		$result = AppUtil::postJSON($url, json_encode($bodyInfo));
+		UserMsg::edit("", [
+			"mUId" => $uId,
+			"mCategory" => UserMsg::CATEGORY_WX_PUSH,
+			"mText" => $keyword1Val,
+			"mAddedBy" => $myId,
+		]);
+		return $result;
+	}
 }
