@@ -217,13 +217,17 @@ class SiteController extends BaseController
 				if ($id) {
 					$preStatus = User::findOne(["uId" => $id])->uStatus;
 					$curStatus = $data["uStatus"];
+					$res = "";
 					if ($preStatus == User::STATUS_PENDING && $curStatus != User::STATUS_ACTIVE) {
 						$res = WechatUtil::approveNotice($id);
 					}
 					if ($preStatus == User::STATUS_ACTIVE && $curStatus != User::STATUS_PENDING) {
 						$res = WechatUtil::denyNotice($id);
 					}
-					var_dump($res);exit;
+					var_dump($preStatus);
+					var_dump($curStatus);
+					var_dump($res);
+					exit;
 					User::edit($id, $data, Admin::getAdminId());
 					$success = self::ICON_OK_HTML . '修改成功';
 
