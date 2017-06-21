@@ -13,6 +13,7 @@ use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
+use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Yii;
 
@@ -214,6 +215,14 @@ class SiteController extends BaseController
 
 			if (!$error) {
 				if ($id) {
+					$preStatus = User::findOne(["uId" => $id])->uStatus;
+					$curStatus = $data["uStatus"];
+					if ($preStatus == User::STATUS_PENDING && $curStatus != User::STATUS_ACTIVE) {
+						WechatUtil::approveNotice($id);
+					}
+					if ($preStatus == User::STATUS_ACTIVE && $curStatus != User::STATUS_PENDING) {
+						WechatUtil::denyNotice($id);
+					}
 					User::edit($id, $data, Admin::getAdminId());
 					$success = self::ICON_OK_HTML . '修改成功';
 
@@ -267,7 +276,6 @@ class SiteController extends BaseController
 		$st = User::STATUS_ACTIVE;
 		$criteria[] = " u.uStatus=:status and t.tCategory in (100,105) ";
 		$params [":status"] = $st;
-
 
 		if ($name) {
 			$name = str_replace("'", "", $name);

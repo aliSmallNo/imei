@@ -143,6 +143,7 @@ class UserTrans extends ActiveRecord
 			return $ret;
 		}
 		return self::stat($uid);
+
 	}
 
 
