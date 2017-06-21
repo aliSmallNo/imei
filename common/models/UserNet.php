@@ -404,13 +404,13 @@ class UserNet extends ActiveRecord
 		switch ($pf) {
 			case "pass":
 				$data = ["nStatus" => self::STATUS_PASS];
-				//WechatUtil::toNotice($id, $myUid, "wx-replay", 1);
-				WechatUtil::toNotice(120003, $myUid, "wx-replay", 1);
+				WechatUtil::toNotice($id, $myUid, "wx-replay", 1);
 				break;
 			case "refuse":
 				$data = ["nStatus" => self::STATUS_FAIL];
-				//WechatUtil::toNotice($id, $myUid, "wx-replay", 0);
-				WechatUtil::toNotice(120003, $myUid, "wx-replay", 0);
+				WechatUtil::toNotice($id, $myUid, "wx-replay", 0);
+				// 退回媒瑰花...
+
 				break;
 		}
 
