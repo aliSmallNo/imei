@@ -218,10 +218,10 @@ class SiteController extends BaseController
 					$preStatus = User::findOne(["uId" => $id])->uStatus;
 					$curStatus = $data["uStatus"];
 					$res = "";
-					if ($preStatus == User::STATUS_PENDING && $curStatus != User::STATUS_ACTIVE) {
+					if ($preStatus == User::STATUS_PENDING && $curStatus == User::STATUS_ACTIVE) {
 						$res = WechatUtil::approveNotice($id);
 					}
-					if ($preStatus == User::STATUS_ACTIVE && $curStatus != User::STATUS_PENDING) {
+					if ($preStatus == User::STATUS_ACTIVE && $curStatus == User::STATUS_PENDING) {
 						$res = WechatUtil::denyNotice($id);
 					}
 					var_dump($preStatus);
