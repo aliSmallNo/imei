@@ -421,6 +421,14 @@ class WechatUtil
 				$text = $keyword2Val;
 				$remark = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309！";
 				break;
+			default :
+				$url = "http://mp.bpdj365.com/wx/single";
+				$first = "";
+				$keyword1Val = '';
+				$keyword2Val = "";
+				$text = $keyword2Val;
+				$remark = "";
+
 		}
 		$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 		$bodyInfo = [
