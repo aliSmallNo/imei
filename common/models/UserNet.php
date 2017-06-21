@@ -413,9 +413,8 @@ class UserNet extends ActiveRecord
 				$payInfo = UserTrans::find()->where(["tPId" => $id, "tUId" => $myUid, "tCategory" => UserTrans::CAT_COST])
 					->orderBy(" tId desc ")->limit(1)->asArray()->one();
 				if ($payInfo) {
-
-					//UserTrans::add($myUid, $payInfo["tPId"], UserTrans::CAT_RETURN, UserTrans::TITLE_RETURN, $payInfo["tAmt"], UserTrans::UNIT_GIFT);
-					//WechatUtil::toNotice($id, $myUid, "return-rose" );
+					UserTrans::add($myUid, $payInfo["tPId"], UserTrans::CAT_RETURN, UserTrans::TITLE_RETURN, $payInfo["tAmt"], UserTrans::UNIT_GIFT);
+					WechatUtil::toNotice($id, $myUid, "return-rose" );
 				}
 
 				break;

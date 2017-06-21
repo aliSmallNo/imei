@@ -10,6 +10,7 @@ namespace console\controllers;
  */
 use common\models\User;
 use common\models\UserNet;
+use common\models\UserTrans;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
@@ -353,9 +354,6 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-//		$ret = WechatUtil::wxInfo('oYDJew2dMEl0gnDVxIFy74ORWUcs', 1);
-//		var_dump($ret);
-		$ret = self::reformInfo();
-		var_dump($ret);
+
 	}
 }

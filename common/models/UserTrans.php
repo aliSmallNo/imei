@@ -92,7 +92,7 @@ class UserTrans extends ActiveRecord
 			$params[':id'] = $uid;
 		}
 		$conn = AppUtil::db();
-		$sql = 'SELECT SUM(case when tCategory=100 or tCategory=105 then tAmt when tCategory=120 then -tAmt end) as amt,tUnit as unit, tUId as uid
+		$sql = 'SELECT SUM(case when tCategory=100 or tCategory=105 or tCategory=130  then tAmt when tCategory=120 then -tAmt end) as amt,tUnit as unit, tUId as uid
  			from im_user_trans WHERE tUId>0 ' . $strCriteria . ' GROUP BY tUId,tUnit';
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
@@ -205,21 +205,23 @@ class UserTrans extends ActiveRecord
 			return [];
 		}
 		$uid = implode(",", $uid);
-		$uid = trim($uid,",");
+		$uid = trim($uid, ",");
 		$conn = AppUtil::db();
 
-		$cat_charge = self::CAT_RECHARGE;   //充值
-		$cat_sign = self::CAT_SIGN;         //签到
+		$catCharge = self::CAT_RECHARGE;   //充值
+		$catSign = self::CAT_SIGN;         //签到
+		$catCost = self::CAT_COST;         //打赏
+		$catReturn = self::CAT_RETURN;         //退回
 		$unitFen = self::UNIT_FEN;
 		$unitGift = self::UNIT_GIFT;
 
-		$sql = "SELECT SUM(CASE WHEN tCategory=$cat_charge THEN tAmt 
-								WHEN tCategory=$cat_sign AND  tUnit='$unitGift' THEN tAmt  
-								WHEN tCategory=$cat_sign AND  tUnit='$unitFen' THEN 0  
-								ELSE -tAmt END ) as remain,
-					  SUM(CASE WHEN tCategory=$cat_charge THEN tAmt ELSE 0 END ) as recharge,
-					  SUM(CASE WHEN tCategory=$cat_sign and tUnit='$unitFen' THEN tAmt ELSE 0 END ) as fen,
-					  SUM(CASE WHEN tCategory=$cat_sign and tUnit='$unitGift' THEN tAmt ELSE 0 END ) as gift,
+		$sql = "SELECT SUM(CASE WHEN tCategory=$catCharge or tCategory=$catReturn  THEN tAmt 
+								WHEN tCategory=$catSign AND  tUnit='$unitGift' THEN tAmt  
+								WHEN tCategory=$catSign AND  tUnit='$unitFen' THEN 0  
+								WHEN tCategory=$catCost then -tAmt END ) as remain,
+					  SUM(CASE WHEN tCategory=$catCharge THEN tAmt ELSE 0 END ) as recharge,
+					  SUM(CASE WHEN tCategory=$catSign and tUnit='$unitFen' THEN tAmt ELSE 0 END ) as fen,
+					  SUM(CASE WHEN tCategory=$catSign and tUnit='$unitGift' THEN tAmt ELSE 0 END ) as gift,
 					  tUId as uid
 				from im_user_trans WHERE tUId>0 and tUId in ($uid) GROUP BY tUId";
 		$ret = $conn->createCommand($sql)->queryAll();
