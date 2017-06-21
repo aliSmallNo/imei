@@ -425,17 +425,17 @@ class WechatUtil
 			default :
 		}
 		$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+
 		$bodyInfo = [
 			"touser" => $openId,
 			"template_id" => "x7IJx0xG8yn67akF4T-gy9XULI6MPASOGJyvltkbNbQ",
 			"url" => $url,
 			"data" => [
-				"first" => ["color" => "#555555", "value" => $first,
-					"keyword1" => ["color" => "#555555", "value" => $keyword1Val],
-					"keyword2" => ["color" => "#f30404", "value" => $keyword2Val],
-					"keyword3" => ["color" => "#555555", "value" => date("Y年n月j日 H:i")],
-					"remark" => ["color" => "#555555", "value" => $remark],
-				]
+				"first" => ["color" => "#555555", "value" => $first],
+				"keyword1" => ["color" => "#555555", "value" => $keyword1Val],
+				"keyword2" => ["color" => "#555555", "value" => $keyword2Val],
+				"keyword3" => ["color" => "#555555", "value" => date("Y年n月j日 H:i")],
+				"remark" => ["color" => "#555555", "value" => $remark],
 			]
 		];
 
