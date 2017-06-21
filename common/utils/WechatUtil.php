@@ -433,7 +433,7 @@ class WechatUtil
 			"data" => [
 				"first" => ["color" => "#555555", "value" => $first],
 				"keyword1" => ["color" => "#555555", "value" => $keyword1Val],
-				"keyword2" => ["color" => "#555555", "value" => $keyword2Val],
+				"keyword2" => ["color" => "#f491b2", "value" => $keyword2Val],
 				"keyword3" => ["color" => "#555555", "value" => date("Y年n月j日 H:i")],
 				"remark" => ["color" => "#555555", "value" => $remark],
 			]
