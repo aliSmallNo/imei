@@ -301,8 +301,7 @@ class UserNet extends ActiveRecord
 			case "yes":
 				$info->nDeletedFlag = self::DELETE_FLAG_NO;
 				$info->nAddedOn = $date;
-				//WechatUtil::toNotice($uid, $mId, "favor", 1);
-				WechatUtil::toNotice(120003, $mId, "favor", 1);
+				WechatUtil::toNotice($uid, $mId, "favor", 1);
 				break;
 			case "no":
 				$info->nDeletedFlag = self::DELETE_FLAG_YES;
@@ -405,9 +404,13 @@ class UserNet extends ActiveRecord
 		switch ($pf) {
 			case "pass":
 				$data = ["nStatus" => self::STATUS_PASS];
+				//WechatUtil::toNotice($id, $myUid, "wx-replay", 1);
+				WechatUtil::toNotice(120003, $myUid, "wx-replay", 1);
 				break;
 			case "refuse":
 				$data = ["nStatus" => self::STATUS_FAIL];
+				//WechatUtil::toNotice($id, $myUid, "wx-replay", 0);
+				WechatUtil::toNotice(120003, $myUid, "wx-replay", 0);
 				break;
 		}
 
