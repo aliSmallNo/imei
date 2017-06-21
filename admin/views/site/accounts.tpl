@@ -76,10 +76,10 @@
 			<th style="width: 70px">
 				头像
 			</th>
-			<th class="col-sm-5">
+			<th class="col-sm-6">
 				个人信息
 			</th>
-			<th class="col-sm-5">
+			<th class="col-sm-4">
 				择偶标准
 			</th>
 			<th>
@@ -98,6 +98,7 @@
 				<span class="role{{$prod.role}}">{{$prod.role_t}}</span>
 				<span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
 				{{$prod.name}} <em>({{$prod.location_t}})</em>
+				 <em>{{$prod.note_t}}</em>
 				<br>
 				<span>{{$prod.age}}</span>
 				<span>{{$prod.horos_t}}</span>
@@ -120,7 +121,16 @@
 				<span>{{$prod.intro}}</span>
 				<span>{{$prod.interest}}</span>
 			</td>
-			<td>
+			<td class="pInfo">
+				<span>{{foreach from=$prod.filter_t.age key=key item=item}}
+				{{$item.name}}{{if $key<1}}~{{/if}}{{/foreach}}</span>
+
+				<span>{{foreach from=$prod.filter_t.height item=item}}
+				{{$item.name}}~{{/foreach}}</span>
+
+				<span>{{$prod.filter_t.income.name}}</span>
+				<span>{{$prod.filter_t.edu.name}}</span>
+
 			</td>
 			<td>
 				<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改用户</a>

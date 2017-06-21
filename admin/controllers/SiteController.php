@@ -230,7 +230,6 @@ class SiteController extends BaseController
 				} else {
 					User::edit($id, $data, Admin::getAdminId());
 					$success = self::ICON_OK_HTML . '添加成功';
-
 				}
 			}
 		}

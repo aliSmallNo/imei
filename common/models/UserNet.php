@@ -430,12 +430,10 @@ class UserNet extends ActiveRecord
 		if ($amt < $num) {
 			return $amt;
 		}
-
 		// 打赏给 $id
 		UserTrans::add($myId, $id, UserTrans::CAT_COST, UserTrans::TITLE_COST, $num, UserTrans::UNIT_GIFT);
 		UserNet::add($id, $myId, UserNet::REL_LINK);
 		WechatUtil::toNotice($id, $myId, "wxNo");
-
 		return $amt;
 	}
 

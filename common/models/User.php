@@ -286,6 +286,7 @@ class User extends ActiveRecord
 		foreach ($keys as $key) {
 			$newKey = strtolower(substr($key, 1));
 			$val = $row[$key];
+
 			if ($newKey == 'location') {
 				$item[$newKey] = json_decode($val, 1);
 				$item[$newKey . '_t'] = '';
@@ -305,6 +306,17 @@ class User extends ActiveRecord
 					$item[$newKey . '_t'] = isset($professions[$val]) ? $professions[$val] : '';
 				}
 				continue;
+			}
+			if ($newKey == "note") {
+				if ($row["uNote"] == "dummy") {
+					$item["note_t"] = "测试数据";
+				} else {
+					$item["note_t"] = "";
+				}
+			}
+
+			if ($newKey == "filter") {
+				$item["filter_t"] = User::Filter($row["uFilter"]);
 			}
 
 			if ($newKey == 'birthyear') {
@@ -351,6 +363,7 @@ class User extends ActiveRecord
 		$items = [];
 		foreach ($ret as $row) {
 			$items[] = self::fmtRow($row);
+
 		}
 		$sql = "SELECT count(1) FROM im_user WHERE uId>0 $strCriteria ";
 		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
