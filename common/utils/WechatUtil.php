@@ -410,11 +410,11 @@ class WechatUtil
 			"template_id" => "x7IJx0xG8yn67akF4T-gy9XULI6MPASOGJyvltkbNbQ",
 			"url" => "http://mp.bpdj365.com/wx/single",
 			"data" => [
-				"first" => ["color" => "#555555", "value" => "你好，您的注册资质已经审核通过，欢迎使用微媒100。"],
+				"first" => ["color" => "#555555", "value" => "你好，您的注册资质已经审核通过，欢迎使用微媒100。\n"],
 				"keyword1" => ["color" => "#555555", "value" => '微媒100用户 ' . $userInfo["uName"] . ' 注册信息'],
-				"keyword2" => ["color" => "#f80f80", "value" => "审核通过"],
+				"keyword2" => ["color" => "#f30404", "value" => "审核通过"],
 				"keyword3" => ["color" => "#555555", "value" => date("Y年n月j日 H:i")],
-				"remark" => ["color" => "#555555", "value" => "感谢您的使用！\n若有什么疑问请拨打客服热线 01056123309"],
+				"remark" => ["color" => "#555555", "value" => "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309"],
 			]
 		];
 
@@ -449,11 +449,11 @@ class WechatUtil
 			"template_id" => "x7IJx0xG8yn67akF4T-gy9XULI6MPASOGJyvltkbNbQ",
 			"url" => "http://mp.bpdj365.com/wx/sreg",
 			"data" => [
-				"first" => ["color" => "#555555", "value" => "你好，很遗憾！您注册的微媒100资质已被取消！您将无法使用微媒100!"],
+				"first" => ["color" => "#555555", "value" => "你好，很遗憾！您注册的微媒100资质已被取消！您将无法使用微媒100!\n"],
 				"keyword1" => ["color" => "#555555", "value" => '微媒100用户 ' . $userInfo["uName"] . ' 注册信息'],
-				"keyword2" => ["color" => "#f80f80", "value" => "审核通过"],
+				"keyword2" => ["color" => "#f30404", "value" => "审核不通过"],
 				"keyword3" => ["color" => "#555555", "value" => date("Y年n月j日 H:i")],
-				"remark" => ["color" => "#555555", "value" => "感谢您的使用！\n若有什么疑问请拨打客服热线 01056123309！"],
+				"remark" => ["color" => "#555555", "value" => "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309！"],
 			]
 		];
 
