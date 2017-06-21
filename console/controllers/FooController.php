@@ -354,6 +354,6 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-
+		WechatUtil::regNotice(120003,"refuse");
 	}
 }

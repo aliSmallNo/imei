@@ -217,12 +217,11 @@ class SiteController extends BaseController
 				if ($id) {
 					$preStatus = User::findOne(["uId" => $id])->uStatus;
 					$curStatus = $data["uStatus"];
-					$res = "";
 					if ($preStatus == User::STATUS_PENDING && $curStatus == User::STATUS_ACTIVE) {
-						$res = WechatUtil::regNotice($id, "pass");
+						WechatUtil::regNotice($id, "pass");
 					}
 					if ($preStatus == User::STATUS_ACTIVE && $curStatus == User::STATUS_PENDING) {
-						$res = WechatUtil::regNotice($id, "refuse");
+						WechatUtil::regNotice($id, "refuse");
 					}
 
 					User::edit($id, $data, Admin::getAdminId());
