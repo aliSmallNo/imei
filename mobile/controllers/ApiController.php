@@ -423,16 +423,17 @@ class ApiController extends Controller
 				$content = self::postParam("content");
 				$f = self::postParam("f");
 				$subUid = AppUtil::decrypt($id);
-				if ($f == "get") {
+				if ($f == "get") { // 获取媒婆说
 					$entity = UserNet::findOne(['nUId' => $wxInfo["uId"], 'nSubUId' => $subUid, 'nRelation' => UserNet::REL_BACKER, 'nDeletedFlag' => 0]);
 					if ($entity) {
 						return self::renderAPI(0, '', $entity->nNote);
 					} else {
 						return self::renderAPI(129, '');
 					}
-				} else {
+				} else { // 修改媒婆说
 					$ret = UserNet::replace($wxInfo["uId"], $subUid, UserNet::REL_BACKER, ["nNote" => $content]);
 					if ($ret) {
+						WechatUtil::toNotice($subUid, $wxInfo["uId"], "mysay");
 						return self::renderAPI(0, '媒婆说编辑成功~');
 					} else {
 						return self::renderAPI(129, '媒婆说编辑失败~');

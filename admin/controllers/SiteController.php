@@ -219,10 +219,10 @@ class SiteController extends BaseController
 					$curStatus = $data["uStatus"];
 					$res = "";
 					if ($preStatus == User::STATUS_PENDING && $curStatus == User::STATUS_ACTIVE) {
-						$res = WechatUtil::approveNotice($id);
+						$res = WechatUtil::regNotice($id, "pass");
 					}
 					if ($preStatus == User::STATUS_ACTIVE && $curStatus == User::STATUS_PENDING) {
-						$res = WechatUtil::denyNotice($id);
+						$res = WechatUtil::regNotice($id, "refuse");
 					}
 
 					User::edit($id, $data, Admin::getAdminId());
