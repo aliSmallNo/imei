@@ -276,20 +276,15 @@ class SiteController extends BaseController
 		$name = self::getParam("name");
 		$orders = self::getParam("orders");
 		$st = User::STATUS_ACTIVE;
-		$criteria[] = " u.uStatus=:status and t.tCategory in (100,105) ";
-		$params [":status"] = $st;
+		//$criteria[] = " u.uStatus=$st ";
+		$criteria = [];
 
 		if ($name) {
 			$name = str_replace("'", "", $name);
-			$criteria[] = " u.uName like :name ";
-			$params[":name"] = $name;
+			$criteria[] = " u.uName like '%$name%' ";
 		}
 
-		if ($orders) {
-
-		}
-
-		list($items, $count, $allcharge) = UserTrans::recharges($criteria, $params, $page);
+		list($items, $count, $allcharge) = UserTrans::recharges($criteria, $page);
 
 		$pagination = $pagination = self::pagination($page, $count);
 		return $this->renderPage("recharge.tpl",

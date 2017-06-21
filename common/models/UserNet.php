@@ -409,9 +409,13 @@ class UserNet extends ActiveRecord
 			case "refuse":
 				$data = ["nStatus" => self::STATUS_FAIL];
 				WechatUtil::toNotice($id, $myUid, "wx-replay", 0);
-				// 退回媒瑰花...
-				//$payInfo = UserTrans::find()->where(["tPId" => $id, "tUId" => $myUid, "tCategory" => UserTrans::CAT_COST]);
-				//UserTrans::add($myUid, 1111, UserTrans::CAT_RETURN, UserTrans::TITLE_RETURN, 50, UserTrans::UNIT_GIFT);
+				// 退回媒瑰花
+				$payInfo = UserTrans::find()->where(["tPId" => $id, "tUId" => $myUid, "tCategory" => UserTrans::CAT_COST])
+					->orderBy(" tId desc ")->limit(1)->asArray()->one();
+				if ($payInfo) {
+					//UserTrans::add($myUid, $payInfo["tPId"], UserTrans::CAT_RETURN, UserTrans::TITLE_RETURN, $payInfo["tAmt"], UserTrans::UNIT_GIFT);
+					//WechatUtil::toNotice($id, $myUid, "return-rose" );
+				}
 
 				break;
 		}

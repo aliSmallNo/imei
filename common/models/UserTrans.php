@@ -148,12 +148,16 @@ class UserTrans extends ActiveRecord
 	}
 
 
-	public static function recharges($criteria, $params, $page, $pageSize = 20)
+	public static function recharges($criteria, $page, $pageSize = 20)
 	{
 		$limit = ($page - 1) * $pageSize . "," . $pageSize;
 		$criteria = implode(" and ", $criteria);
+		$where = " where t.tCategory in (100,105) ";
+		if ($criteria) {
+			$where .= " and " . $criteria;
+		}
 		$orders = [
-			"default" => " tAddedOn desc ",
+			"default" => " t.tAddedOn desc ",
 		];
 		$order = $orders["default"];
 
@@ -161,12 +165,12 @@ class UserTrans extends ActiveRecord
 		$sql = "select u.uId as uid,u.uName as uname,u.uAvatar as avatar,p.pAmt as amt ,
 				t.tAmt as flower,tAddedOn as date,t.tTitle as tcat,tUnit as unit,t.tCategory as cat
 				from im_user_trans as t 
-				left join im_user as u on u.uId=t.tUId 
+				 join im_user as u on u.uId=t.tUId 
 				left join im_pay as p on p.pId=t.tPId
-				where  $criteria 
+				  $where   
 				order by $order 
 				limit $limit";
-		$result = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		$result = $conn->createCommand($sql)->queryAll();
 		$uIds = [];
 		foreach ($result as $v) {
 			$uIds[] = $v["uid"];
@@ -175,11 +179,10 @@ class UserTrans extends ActiveRecord
 
 		$sql = "select count(1) as co
 				from im_user_trans as t 
-				left join im_user as u on u.uId=t.tUId 
-				left join im_pay as p on p.pId=t.tPId where $criteria ";
-		$count = $conn->createCommand($sql)->bindValues($params)->queryOne();
+				join im_user as u on u.uId=t.tUId 
+				left join im_pay as p on p.pId=t.tPId   $where ";
+		$count = $conn->createCommand($sql)->queryOne();
 		$count = $count ? $count["co"] : 0;
-
 		list($balances, $allcharge) = self::getBalances($uIds);
 		foreach ($result as &$v) {
 			foreach ($balances as $val) {
@@ -192,7 +195,6 @@ class UserTrans extends ActiveRecord
 			}
 		}
 
-
 		return [$result, $count, $allcharge];
 
 	}
@@ -203,6 +205,7 @@ class UserTrans extends ActiveRecord
 			return [];
 		}
 		$uid = implode(",", $uid);
+		$uid = trim($uid,",");
 		$conn = AppUtil::db();
 
 		$cat_charge = self::CAT_RECHARGE;   //充值

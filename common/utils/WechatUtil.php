@@ -485,31 +485,37 @@ class WechatUtil
 
 		switch ($tag) {
 			case "favor":
-				$url = "http://mp.bpdj365.com/wx/single#sme";
+				$url = "http://mp.bpdj365.com/wx/single";
 				$keyword1Val = "心动";
 				$ft = $f ? "" : "取消";
 				$text = $ft . $keyword1Val;
 				$keyword2Val = "有人" . $ft . "心动你了，快去看看吧！";
 				break;
 			case "focus":
-				$url = "http://mp.bpdj365.com/wx/single#sme";
+				$url = "http://mp.bpdj365.com/wx/single";
 				$keyword1Val = "关注";
 				$ft = $f ? "取消" : "";
 				$text = $ft . $keyword1Val;
 				$keyword2Val = "有人" . $ft . "关注你了，快去看看吧！";
 				break;
 			case "wxNo":
-				$url = "http://mp.bpdj365.com/wx/single#sme";
+				$url = "http://mp.bpdj365.com/wx/single";
 				$keyword1Val = "微信好友请求";
 				$text = $keyword1Val;
 				$keyword2Val = "有人请求加你微信好友了，快去看看吧！";
 				break;
 			case "wx-replay":
-				$url = "http://mp.bpdj365.com/wx/single#sme";
+				$url = "http://mp.bpdj365.com/wx/single";
 				$keyword1Val = "微信好友请求";
 				$ft = $f ? "同意" : "拒绝";
 				$text = $ft . $keyword1Val;
 				$keyword2Val = "有人" . $ft . "你的微信好友请求，快去看看吧！";
+				break;
+			case "return-rose":
+				$url = "http://mp.bpdj365.com/wx/sw";
+				$keyword1Val = "退回媒瑰花";
+				$text =  $keyword1Val;
+				$keyword2Val = "有人媒瑰花退回，快去看看吧！";
 				break;
 			default:
 				$url = "http://mp.bpdj365.com/wx/sreg";
