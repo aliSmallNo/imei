@@ -224,10 +224,7 @@ class SiteController extends BaseController
 					if ($preStatus == User::STATUS_ACTIVE && $curStatus == User::STATUS_PENDING) {
 						$res = WechatUtil::denyNotice($id);
 					}
-					var_dump($preStatus);
-					var_dump($curStatus);
-					var_dump($res);
-					exit;
+
 					User::edit($id, $data, Admin::getAdminId());
 					$success = self::ICON_OK_HTML . '修改成功';
 
