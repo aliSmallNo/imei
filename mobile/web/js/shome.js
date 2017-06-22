@@ -19,26 +19,26 @@ require(["layer"],
 		};
 
 		$('.btn').on(kClick, function () {
-			var self = $(this);
-			if (self.hasClass('signed') || $sls.loading) {
-				return false;
-			}
-			$sls.loading = 1;
-			$.post('/api/user', {
-				tag: 'sign'
-			}, function (resp) {
-				if (resp.code == 0) {
-					self.addClass('signed');
-					self.html(resp.data.title);
-					layer.open({
-						content: resp.msg,
-						btn: '我知道了'
-					});
-				} else {
-					showMsg(resp.msg);
-				}
-				$sls.loading = 0;
-			}, 'json');
+			// var self = $(this);
+			// if (self.hasClass('signed') || $sls.loading) {
+			// 	return false;
+			// }
+			// $sls.loading = 1;
+			// $.post('/api/user', {
+			// 	tag: 'sign'
+			// }, function (resp) {
+			// 	if (resp.code == 0) {
+			// 		self.addClass('signed');
+			// 		self.html(resp.data.title);
+			// 		layer.open({
+			// 			content: resp.msg,
+			// 			btn: '我知道了'
+			// 		});
+			// 	} else {
+			// 		showMsg(resp.msg);
+			// 	}
+			// 	$sls.loading = 0;
+			// }, 'json');
 		});
 
 		var ReportUtil = {
