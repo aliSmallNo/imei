@@ -353,8 +353,9 @@ class UserNet extends ActiveRecord
 				} elseif ($subtag == "fail") {
 
 				}
-				$sql = "select u.* from im_user as u 
+				$sql = "select u.*,w.wWechatId from im_user as u 
 						join im_user_net as n on n.nUId=u.uId and n.nRelation=$nRelation and n.nStatus=$status and n.nDeletedFlag=$deleteflag
+						join im_user_wechat as w on w.wOpenId=u.uOpenId
 						where n.nSubUId=$MyUid  $orderBy $limit ";
 				break;
 			case "addmewx":
@@ -382,6 +383,15 @@ class UserNet extends ActiveRecord
 			} else {
 				$item["pendingWxFlag"] = 0;
 			}
+
+			if ($tag == "iaddwx" && $subtag == "pass") {
+				$item["showWxFlag"] = 1;
+
+			} else {
+				$item["showWxFlag"] = 0;
+				$item["wxNo"] = "";
+			}
+
 			$items[] = $item;
 		}
 		if (count($items) > $pageSize) {
@@ -420,6 +430,7 @@ class UserNet extends ActiveRecord
 				$mpInfo = self::findOne(["nSubUId" => $myUid, "nRelation" => self::REL_BACKER]);
 				if ($mpInfo && $payInfo) {
 					$mpId = $mpInfo->nUId;
+
 					UserTrans::add($mpId, $payInfo["nId"], UserTrans::CAT_LINK, UserTrans::$catDict[UserTrans::CAT_LINK], $payInfo["tAmt"] * .6 / 10, UserTrans::UNIT_YUAN);
 				}
 				break;

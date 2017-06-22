@@ -343,13 +343,17 @@ class ApiController extends Controller
 				$page = self::postParam("page", 1);
 				list($ret, $nextpage) = UserNet::items($wxInfo["uId"], $tag, $subtag, $page);
 				return self::renderAPI(0, '', ["data" => $ret, "nextpage" => $nextpage]);
-			case "wx-process":  // 同意/拒绝 添加我微信
+			case "wx-process":
+				// 同意/拒绝 添加我微信
 				$pf = self::postParam("pf");
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				$text = ($pf == "pass") ? "通过" : "拒绝";
+				if ($pf == "pass" && !UserWechat::findOne(["wOpenId" => $openId])->wWechatId) {
+					return self::renderAPI(130, '您还没有填写您的微信号~');
+				}
 				$ret = UserNet::processWx($wxInfo["uId"], $pf, $id);
 				return self::renderAPI(0, "已" . $text, $ret);
 

@@ -733,11 +733,17 @@ require(["layer"],
 						pf: pf,
 						id: id
 					}, function (resp) {
+						showMsg(resp.msg);
 						if (resp.data) {
-							showMsg(resp.msg);
 							setTimeout(function () {
 								self.closest("li").remove();
 							}, 500);
+						}
+						if (resp.code == 130) {
+							setTimeout(function () {
+								location.href = "#myWechatNo";
+							}, 1000);
+
 						}
 					}, "json");
 				});
