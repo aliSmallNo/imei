@@ -410,10 +410,18 @@ class UserNet extends ActiveRecord
 				$data = ["nStatus" => self::STATUS_FAIL];
 				WechatUtil::toNotice($id, $myUid, "wx-replay", 0);
 				// 退回媒瑰花
-				$payInfo = UserTrans::find()->where(["tPId" => $id, "tUId" => $myUid, "tCategory" => UserTrans::CAT_COST])
-					->orderBy(" tId desc ")->limit(1)->asArray()->one();
+				$sql = "select * from im_user_trans as t 
+						join im_user_net as n on t.tPId=n.nId 
+						where nRelation=:relation and nStatus=:status and nSubUId=:Subuid and nUId=:uid and tCategory=:cat";
+				$payInfo = AppUtil::db()->createCommand($sql)->bindValues([
+					":relation" => UserNet::REL_LINK,
+					":status" => UserNet::STATUS_WAIT,
+					":uid" => $myUid,
+					":Subuid" => $id,
+					":cat" => UserTrans::CAT_COST,
+				])->queryOne();
 				if ($payInfo) {
-					UserTrans::add($myUid, $payInfo["tPId"], UserTrans::CAT_RETURN, UserTrans::$catDict[UserTrans::CAT_RETURN], $payInfo["tAmt"], UserTrans::UNIT_GIFT);
+					UserTrans::add($id, $payInfo["tPId"], UserTrans::CAT_RETURN, UserTrans::$catDict[UserTrans::CAT_RETURN], $payInfo["tAmt"], UserTrans::UNIT_GIFT);
 					WechatUtil::toNotice($id, $myUid, "return-rose");
 				}
 
