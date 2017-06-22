@@ -604,7 +604,7 @@
 			<img src="{[avatar]}">
 		</div>
 		<div class="plist-r">
-			<p>{[name]} <span style="font-size: 1rem;color: #f981aa;margin-left: 1rem">微信号: {[#showWxFlag]}{[wechatid]}{[/showWxFlag]}</span></p>
+			<p>{[name]} {[#showWxFlag]}<span style="font-size: 1rem;color: #f981aa;margin-left: 1rem">微信号: {[wechatid]}</span>{[/showWxFlag]}</p>
 			<p>{[location_t]}</p>
 			<i>{[age]} {[height]}cm {[horos_t]} {[scope_t]}</i>
 		</div>
