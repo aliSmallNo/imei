@@ -61,7 +61,7 @@ class UserNet extends ActiveRecord
 		$entity->nRelation = $relation;
 		$entity->save();
 
-		return true;
+		return $entity->nId;
 	}
 
 	public static function replace($uid, $subUid, $relation, $data)
@@ -431,8 +431,8 @@ class UserNet extends ActiveRecord
 			return $amt;
 		}
 		// 打赏给 $id
-		UserTrans::add($myId, $id, UserTrans::CAT_COST, UserTrans::$catDict[UserTrans::CAT_COST], $num, UserTrans::UNIT_GIFT);
-		UserNet::add($id, $myId, UserNet::REL_LINK);
+		$nid = UserNet::add($id, $myId, UserNet::REL_LINK);
+		UserTrans::add($myId, $nid, UserTrans::CAT_COST, UserTrans::$catDict[UserTrans::CAT_COST], $num, UserTrans::UNIT_GIFT);
 		WechatUtil::toNotice($id, $myId, "wxNo");
 		return $amt;
 	}
