@@ -160,11 +160,11 @@ class SiteController extends BaseController
 			$criteria[] = " uStatus=$status ";
 		}
 		if ($phone) {
-			$criteria[] = " uPhone=$phone ";
+			$criteria[] = " uPhone like :phone ";
+			$params[':phone'] = "$phone%";
 		}
 
 		if ($name) {
-			$name = str_replace("'", "", $name);
 			$criteria[] = "  uName like :name ";
 			$params[':name'] = "%$name%";
 		}
