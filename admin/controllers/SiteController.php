@@ -9,6 +9,7 @@ use common\models\Mark;
 use common\models\User;
 use common\models\UserBuzz;
 use common\models\UserMsg;
+use common\models\UserNet;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\ImageUtil;
@@ -363,4 +364,46 @@ class SiteController extends BaseController
 		$this->redirect('/site/wxreply?id=' . $openId);
 	}
 
+
+	public function actionNet()
+	{
+		$getInfo = Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$relation = self::getParam("relation");
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+		$sname = self::getParam("sname");
+		$sphone = self::getParam("sphone");
+		$condition = "";
+		$st = User::STATUS_ACTIVE;
+		//$condition .= " and u.uStatus=$st and u1.uStatus=$st ";
+		if ($relation) {
+			$condition .= " and n.nRelation=$relation ";
+		}
+		if ($name) {
+			$name = str_replace("'", "", $name);
+			$condition .= " and  u.uName like '%$name%' ";
+		}
+		if ($phone) {
+			$condition .= " and u.uPhone=$phone ";
+		}
+		if ($sname) {
+			$sname = str_replace("'", "", $sname);
+			$condition .= " and  u1.uName like '%$sname%' ";
+		}
+		if ($sphone) {
+			$condition .= " and u1.uPhone=$sphone ";
+		}
+		list($list, $count) = UserNet::relations($condition, $page);
+		$pagination = $pagination = self::pagination($page, $count);
+		return $this->renderPage("relations.tpl",
+			[
+				'getInfo' => $getInfo,
+				'pagination' => $pagination,
+				'category' => 'users',
+				'list' => $list,
+				'relations' => UserNet::$RelDict,
+			]
+		);
+	}
 }

@@ -414,7 +414,7 @@ class UserNet extends ActiveRecord
 					->orderBy(" tId desc ")->limit(1)->asArray()->one();
 				if ($payInfo) {
 					UserTrans::add($myUid, $payInfo["tPId"], UserTrans::CAT_RETURN, UserTrans::TITLE_RETURN, $payInfo["tAmt"], UserTrans::UNIT_GIFT);
-					WechatUtil::toNotice($id, $myUid, "return-rose" );
+					WechatUtil::toNotice($id, $myUid, "return-rose");
 				}
 
 				break;
@@ -457,6 +457,38 @@ class UserNet extends ActiveRecord
 		}
 
 		return $items;
+	}
+
+	public static function relations($condition, $page, $pageSize = 20)
+	{
+		$offset = ($page - 1) * $pageSize;
+
+		$sql = "select u.uAvatar as avatar,u.uName as uname,u.uPhone as phone,
+				u1.uAvatar as savatar,u1.uName as sname,u1.uPhone as sphone,n.nRelation,
+				(case when n.nRelation=110 then CONCAT(u.uName,' 邀请 ',u1.uName)  
+				when n.nRelation=120 then CONCAT(u.uName,' 成为 ',u1.uName,'的 媒婆 ')
+				when n.nRelation=130 then CONCAT(u1.uName,' 关注 ',u.uName)    
+				when n.nRelation=140 then CONCAT(u.uName,' 牵线 ',u1.uName)
+				when n.nRelation=150 then CONCAT(u1.uName,' 心动 ',u.uName)  END) as text,
+				n.nAddedOn as dt
+				from im_user_net as n 
+				join im_user as u on u.uId=n.nUId 
+				join im_user as u1 on u1.uId=n.nSubUId 
+				where n.nDeletedFlag= 0  $condition
+				order by n.nId desc  limit $offset,$pageSize";
+		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		foreach ($res as &$v) {
+			$v["rText"] = self::$RelDict[$v["nRelation"]];
+		}
+		$sql = "select count(1) as co
+				from im_user_net as n 
+				join im_user as u on u.uId=n.nUId 
+				join im_user as u1 on u1.uId=n.nSubUId 
+				where n.nDeletedFlag= 0 $condition ";
+		$count = AppUtil::db()->createCommand($sql)->queryOne();
+		$count = $count ? $count["co"] : 0;
+
+		return [$res, $count];
 	}
 
 }

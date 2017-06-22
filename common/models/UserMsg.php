@@ -34,6 +34,7 @@ class UserMsg extends ActiveRecord
 	public static function wechatDetail($openId)
 	{
 		$conn = \Yii::$app->db;
+		$cat = UserMsg::CATEGORY_WX_MSG;
 		$sql = "select * from (SELECT bType as type, b.bId as id,'wechat-user' as cat, b.bDate as dt,
 				 ifnull(w.wAvatar,'') as avatar,
 				(CASE WHEN bType='text' THEN b.bContent ELSE b.bResult END) as txt,ifnull(w.wNickName,'') as nickname
@@ -46,9 +47,9 @@ class UserMsg extends ActiveRecord
 				from im_user_msg as m 
 				left join im_admin as a on a.aId=m.mAddedBy 
 				left join im_user as u on m.mUId=u.uId 
-				where u.uOpenId =:openid) as t order by t.dt desc";
+				where u.uOpenId =:openid AND m.mCategory=:cat) as t order by t.dt desc";
 
-		$res = $conn->createCommand($sql)->bindValues([":openid" => $openId])->queryAll();
+		$res = $conn->createCommand($sql)->bindValues([":openid" => $openId, ":cat" => $cat])->queryAll();
 		$nickName = "";
 		$maxId = 0;
 		foreach ($res as $key => $row) {
