@@ -18,7 +18,8 @@
 				<select class="form-control" name="relation">
 					<option value="">用户操作</option>
 					{{foreach from=$relations key=key item=item}}
-					<option value="{{$key}}" {{if isset($getInfo["relation"]) && $getInfo["relation"]==$key}}selected{{/if}}>{{$item}}</option>
+					<option value="{{$key}}"
+									{{if isset($getInfo["relation"]) && $getInfo["relation"]==$key}}selected{{/if}}>{{$item}}</option>
 					{{/foreach}}
 				</select>
 			</div>
@@ -78,7 +79,8 @@
 				</td>
 				<td>
 					<span class="co">
-					{{$item.rText}}
+					{{$item.rText}}<br>
+						{{if $item.nRelation==140}}{{$item.sText}}{{/if}}
 					</span>
 				</td>
 				<td>

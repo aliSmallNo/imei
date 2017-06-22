@@ -36,6 +36,11 @@ class UserNet extends ActiveRecord
 	const STATUS_FAIL = 0;
 	const STATUS_WAIT = 1;
 	const STATUS_PASS = 2;
+	static $stDict = [
+		self::STATUS_FAIL => "被拒绝",
+		self::STATUS_WAIT => "等待中",
+		self::STATUS_PASS => "已通过",
+	];
 
 	public static function tableName()
 	{
@@ -368,8 +373,9 @@ class UserNet extends ActiveRecord
 				} elseif ($subtag == "fail") {
 
 				}
-				$sql = "select u.* from im_user as u 
+				$sql = "select u.*,w.wWechatId from im_user as u 
 						join im_user_net as n on n.nSubUId=u.uId and n.nRelation=$nRelation and n.nStatus=$status and n.nDeletedFlag=$deleteflag
+						join im_user_wechat as w on w.wOpenId=u.uOpenId
 						where n.nUId=$MyUid  $orderBy $limit ";
 				break;
 		}
@@ -383,8 +389,9 @@ class UserNet extends ActiveRecord
 			} else {
 				$item["pendingWxFlag"] = 0;
 			}
+			//addMeWx
 
-			if ($tag == "iaddwx" && $subtag == "pass") {
+			if (($tag == "iaddwx" || $tag == "addmewx") && $subtag == "pass") {
 				$item["showWxFlag"] = 1;
 
 			} else {
@@ -489,7 +496,7 @@ class UserNet extends ActiveRecord
 		$offset = ($page - 1) * $pageSize;
 
 		$sql = "select u.uAvatar as avatar,u.uName as uname,u.uPhone as phone,
-				u1.uAvatar as savatar,u1.uName as sname,u1.uPhone as sphone,n.nRelation,
+				u1.uAvatar as savatar,u1.uName as sname,u1.uPhone as sphone,n.nRelation,n.nStatus,
 				(case when n.nRelation=110 then CONCAT(u.uName,' 邀请 ',u1.uName)  
 				when n.nRelation=120 then CONCAT(u.uName,' 成为 ',u1.uName,'的 媒婆 ')
 				when n.nRelation=130 then CONCAT(u1.uName,' 关注 ',u.uName)    
@@ -504,6 +511,7 @@ class UserNet extends ActiveRecord
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as &$v) {
 			$v["rText"] = self::$RelDict[$v["nRelation"]];
+			$v["sText"] = self::$stDict[$v["nStatus"]];
 		}
 		$sql = "select count(1) as co
 				from im_user_net as n 
