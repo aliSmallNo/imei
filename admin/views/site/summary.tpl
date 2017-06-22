@@ -39,7 +39,7 @@
 					<p class="group-txt">扫描二维码加入微媒100公众号啊~</p>
 
 					<div class="group-img">
-						<div><img src="/images/qrcode344.jpg" alt="微信公众号" style="width: 160px"></div>
+						<div><img src="/images/qrcode344.jpg" alt="微信公众号" style="width: 180px"></div>
 					</div>
 				</div>
 			</div>
