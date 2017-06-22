@@ -233,6 +233,26 @@ class User extends ActiveRecord
 		return $uid;
 	}
 
+	public static function remove($id)
+	{
+		$entity = self::findOne(['uId' => $id]);
+		if (!$entity) {
+			return false;
+		}
+		$openid = $entity['uOpenId'];
+		$conn = AppUtil::db();
+		$sql = 'delete from im_user WHERE uId=:id ';
+		$conn->createCommand($sql)->bindValues([
+			':id' => $id
+		])->execute();
+		$sql = 'delete from im_user_wechat WHERE wOpenId=:id ';
+		$conn->createCommand($sql)->bindValues([
+			':openid' => $openid
+		])->execute();
+		RedisUtil::delCache(RedisUtil::KEY_WX_USER, $openid);
+		return true;
+	}
+
 	public static function bindPhone($openId, $phone, $role = 0)
 	{
 		$entity = self::findOne(['uOpenId' => $openId]);

@@ -148,26 +148,26 @@
 </div>
 <script>
 	$("a.delU").click(function () {
-		var aId = $(this).attr("cid");
+		var id = $(this).attr("cid");
 		layer.confirm('您确定要删除这个用户吗？', {
 			btn: ['确定', '取消'],
-			title: '删除后台用号'
+			title: '删除用户'
 		}, function () {
-			//delUser(aId);
+			delUser(id);
 		}, function () {
 		});
 	});
 
-	function delUser(aId) {
-//		$.post("/api/user", {
-//			tag: "del-admin",
-//			id: aId
-//		}, function (resp) {
-//			if (resp.code == 0) {
-//				layer.msg(resp.msg);
-//				location.reload();
-//			}
-//		}, "json");
+	function delUser(id) {
+		$.post("/api/user", {
+			tag: "del-user",
+			id: id
+		}, function (resp) {
+			if (resp.code == 0) {
+				location.reload();
+			}
+			layer.msg(resp.msg);
+		}, "json");
 	}
 
 	$("a.modU").click(function () {

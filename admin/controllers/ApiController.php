@@ -11,6 +11,7 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use common\models\City;
+use common\models\User;
 use Yii;
 use yii\web\Controller;
 use yii\web\Response;
@@ -67,7 +68,15 @@ class ApiController extends Controller
 					$ret = ["code" => 159, "msg" => "无操作权限！"];
 				}
 				break;
-
+			case "del-user":
+				$result = Admin::checkAccessLevel(Admin::LEVEL_HIGH, true);
+				if ($result) {
+					User::remove($id);
+					$ret = ["code" => 0, "msg" => "删除成功！"];
+				} else {
+					$ret = ["code" => 159, "msg" => "无操作权限！"];
+				}
+				break;
 		}
 		return self::renderAPI($ret["code"], $ret["msg"]);
 	}
