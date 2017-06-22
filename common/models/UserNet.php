@@ -401,30 +401,37 @@ class UserNet extends ActiveRecord
 		if (!$myUid || !$pf || !$id) {
 			return 0;
 		}
+		// 跟我要微信号者 的交易记录
+		$sql = "select * from im_user_trans as t 
+						join im_user_net as n on t.tPId=n.nId 
+						where nRelation=:relation and nStatus=:status and nSubUId=:Subuid and nUId=:uid and tCategory=:cat";
+		$payInfo = AppUtil::db()->createCommand($sql)->bindValues([
+			":relation" => UserNet::REL_LINK,
+			":status" => UserNet::STATUS_WAIT,
+			":uid" => $myUid,
+			":Subuid" => $id,
+			":cat" => UserTrans::CAT_COST,
+		])->queryOne();
 		switch ($pf) {
+
 			case "pass":
 				$data = ["nStatus" => self::STATUS_PASS];
 				WechatUtil::toNotice($id, $myUid, "wx-replay", 1);
+				// 奖励媒婆 mpId
+				$mpInfo = self::findOne(["nSubUId" => $myUid, "nRelation" => self::REL_BACKER]);
+				if ($mpInfo && $payInfo) {
+					$mpId = $mpInfo->nUId;
+					UserTrans::add($mpId, $payInfo["nId"], UserTrans::CAT_LINK, UserTrans::$catDict[UserTrans::CAT_LINK], $payInfo["tAmt"] * .6 / 10, UserTrans::UNIT_YUAN);
+				}
 				break;
 			case "refuse":
 				$data = ["nStatus" => self::STATUS_FAIL];
 				WechatUtil::toNotice($id, $myUid, "wx-replay", 0);
 				// 退回媒瑰花
-				$sql = "select * from im_user_trans as t 
-						join im_user_net as n on t.tPId=n.nId 
-						where nRelation=:relation and nStatus=:status and nSubUId=:Subuid and nUId=:uid and tCategory=:cat";
-				$payInfo = AppUtil::db()->createCommand($sql)->bindValues([
-					":relation" => UserNet::REL_LINK,
-					":status" => UserNet::STATUS_WAIT,
-					":uid" => $myUid,
-					":Subuid" => $id,
-					":cat" => UserTrans::CAT_COST,
-				])->queryOne();
 				if ($payInfo) {
 					UserTrans::add($id, $payInfo["tPId"], UserTrans::CAT_RETURN, UserTrans::$catDict[UserTrans::CAT_RETURN], $payInfo["tAmt"], UserTrans::UNIT_GIFT);
 					WechatUtil::toNotice($id, $myUid, "return-rose");
 				}
-
 				break;
 		}
 
