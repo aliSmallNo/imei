@@ -429,6 +429,7 @@ class UserNet extends ActiveRecord
 			":Subuid" => $id,
 			":cat" => UserTrans::CAT_COST,
 		])->queryOne();
+
 		switch ($pf) {
 			case "pass":
 				$data = ["nStatus" => self::STATUS_PASS];
@@ -437,7 +438,6 @@ class UserNet extends ActiveRecord
 				$mpInfo = self::findOne(["nSubUId" => $myUid, "nRelation" => self::REL_BACKER]);
 				if ($mpInfo && $payInfo) {
 					$mpId = $mpInfo->nUId;
-
 					UserTrans::add($mpId, $payInfo["nId"], UserTrans::CAT_LINK, UserTrans::$catDict[UserTrans::CAT_LINK], $payInfo["tAmt"] * .6 / 10, UserTrans::UNIT_YUAN);
 				}
 				break;

@@ -356,6 +356,6 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-
+		//UserNet::processWx(131021, "refuse", 120003);
 	}
 }
