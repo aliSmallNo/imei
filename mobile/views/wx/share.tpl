@@ -1,16 +1,22 @@
 <div id="sec-share">
 	<div id="inviteInfo" class="invite-wrap">
-		<div class="title clearfix">
+
+		<div class="sender-wrap">
+			<p class="logo">
+				<img src="/favicon-192.png" alt="">
+			</p>
+			<div class="title">
+				<h4>只要媒婆足够多</h4>
+				<h5>爱情就没有到不了的角落</h5>
+			</div>
+		</div>
+		<p class="img-wrap">
+			<img src="{{$avatar}}" alt="">
 			<em>{{$nickname}}</em>
-			和
-			<a href="javascript:;" class="dl {{if $editable}}editable{{/if}}" data-id="{{$celebId}}" data-opt="">{{$celeb}}</a>
-			<br>一起在这里当「媒婆」
-		</div>
-		<div class="video">
-			<video id="video" src="//zlpic.1meipo.com/h5/video/640%2A360.mp4" poster="/images/poster.jpg" controls="controls"></video>
-			<span id="play_btn" onclick="clickPlay()" class="play"></span>
-		</div>
+		</p>
 		<div class="btns">
+			<h4>一起来注册「微媒100」</h4>
+			<h5>随手帮助身边的单身青年，功德无量哦~</h5>
 			{{if $editable}}
 			<a href="javascript:;" class="btn-s-1 s1 btn-share">邀请单身朋友</a>
 			{{elseif !$hasReg}}
@@ -18,12 +24,6 @@
 			{{else}}
 			<a href="/wx/mh?id={{$encryptId}}#shome" class="btn-s-1 s0 btn-look">查看TA的单身团</a>
 			{{/if}}
-		</div>
-		<div class="user">
-			<div class="nic" data-id="{{$avatar}}">
-				<img src="{{$avatar}}" alt="">
-				<p>{{$nickname}}</p>
-			</div>
 		</div>
 		<div class="footer">
 			<p class="copy"><span>微媒100 | 挖掘优秀单身</span></p>
@@ -47,12 +47,6 @@
 		<a href="javascript:;" data-id="{{$key}}">{{$item}}</a>
 		{{/foreach}}
 	</div>
-</script>
-<script>
-	function clickPlay() {
-		document.querySelector('#video').play();
-		document.querySelector('#play_btn').style.display = 'none';
-	}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script data-main="/js/share.js?v=1.2.9" src="/assets/js/require.js"></script>
