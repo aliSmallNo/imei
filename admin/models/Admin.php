@@ -24,7 +24,7 @@ class Admin extends ActiveRecord
 	const LEVEL_HIGH = 830;
 
 	static $accessLevels = [
-		self::LEVEL_ADVERT => "广告主权限",
+		//self::LEVEL_ADVERT => "广告主权限",
 		self::LEVEL_DEMO => "演示（inject water）",
 		self::LEVEL_VIEW => "游客权限",
 		self::LEVEL_MONITOR => "监视权限",
