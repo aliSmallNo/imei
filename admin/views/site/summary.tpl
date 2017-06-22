@@ -1,10 +1,6 @@
 {{include file="layouts/header.tpl"}}
 <link rel="stylesheet" href="/css/summary.css?v={{#gVersion#}}">
 <div id="page-wrapper">
-	<div class="row" style="display: none">
-		<h4>账户概览
-		</h4>
-	</div>
 	<div class="row data-box">
 		<div class="col-lg-9">
 			<div class="data-hd">
@@ -37,7 +33,6 @@
 			<div class="data-bd">
 				<div class="micro-group">
 					<p class="group-txt">扫描二维码加入「微媒100」公众号啊~</p>
-
 					<div class="group-img">
 						<div><img src="/images/qrcode344.jpg" alt="微信公众号" style="width: 180px"></div>
 					</div>
