@@ -136,12 +136,13 @@ class Menu
 					],
 					[
 						"name" => "公众号消息",
-						"url" => "/site/wxmsg"
+						"url" => "/site/wxmsg",
+						"level" => 820
 					],
 					[
-						"name" => "意见反馈",
-						"url" => "/site/feedback",
-						"level" => 815
+						"name" => "用户关系",
+						"url" => "/site/net",
+						"level" => 820
 					],
 					[
 						"name" => "通知消息",

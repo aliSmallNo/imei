@@ -240,7 +240,6 @@ class UserBuzz extends ActiveRecord
 	public static function wxMessages($adminId, $page, $pageSize = 20, $renewFlag = false)
 	{
 
-
 		$conn = \Yii::$app->db;
 		$count = 0;
 		$sql = "select count(DISTINCT bFrom) as cnt from im_user_buzz where bType in ('text','image','voice') ";
@@ -274,8 +273,6 @@ class UserBuzz extends ActiveRecord
 			$name = self::lastReply($row['bDate'], $row["bFrom"]);
 			$res[$key]['rname'] = $name ? $name : $row["wNickName"];
 		}
-
-
 
 		return [$res, $count];
 	}
