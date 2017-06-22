@@ -245,7 +245,7 @@ class User extends ActiveRecord
 		$conn->createCommand($sql)->bindValues([
 			':id' => $id
 		])->execute();
-		$sql = 'delete from im_user_wechat WHERE wOpenId=:id ';
+		$sql = 'delete from im_user_wechat WHERE wOpenId=:openid ';
 		$conn->createCommand($sql)->bindValues([
 			':openid' => $openid
 		])->execute();
