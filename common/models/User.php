@@ -196,15 +196,20 @@ class User extends ActiveRecord
 		if (!$data) {
 			return 0;
 		}
-		$openId = isset($data["uOpenId"]) ? $data["uOpenId"] : "";
-		if ($entity = self::findOne(["uOpenId" => $openId])) {
-			$entity->uUpdatedOn = date('Y-m-d H:i:s');
-			$entity->uUpdatedBy = $adminId;
-		} else {
-			$entity = new self();
-			$entity->uAddedOn = date('Y-m-d H:i:s');
-			$entity->uAddedBy = $adminId;
+		$openId = isset($data["uOpenId"]) ? $data["uOpenId"] : '';
+		if ($openId) {
+			$conn = AppUtil::db();
+			$sql = 'INSERT INTO im_user(uOpenId,uAddedBy) 
+				SELECT :id,:aid FROM dual 
+				WHERE NOT EXISTS(SELECT 1 FROM im_user WHERE uOpenId=:id)';
+			$conn->createCommand($sql)->bindValues([
+				':id' => $openId,
+				':aid' => $adminId
+			])->execute();
 		}
+		$entity = self::findOne(["uOpenId" => $openId]);
+		$entity->uUpdatedOn = date('Y-m-d H:i:s');
+		$entity->uUpdatedBy = $adminId;
 		foreach ($data as $key => $val) {
 			$entity->$key = $val;
 		}

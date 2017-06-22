@@ -354,6 +354,23 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		WechatUtil::regNotice(120003,"refuse");
+//		WechatUtil::regNotice(120003,"refuse");
+
+		$conn = AppUtil::db();
+		$sql ='insert into im_log(oCategory,oKey) VALUES(:cat,:key)';
+		$ret =  $conn->createCommand($sql)->bindValues([
+			':cat'=>300,
+			':key'=>500,
+		])->execute();
+		var_dump($ret);
+
+		$sql ='insert into im_log(oCategory,oKey) select :cat,:key
+           FROM dual WHERE NOT exists(select 1 from im_log WHERE oCategory=:cat AND oKey=:key)';
+		$ret =  $conn->createCommand($sql)->bindValues([
+			':cat'=>300,
+			':key'=>500,
+		])->execute();
+		var_dump($ret);
+
 	}
 }
