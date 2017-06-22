@@ -286,7 +286,8 @@ class WxController extends BaseController
 		$hint = '你的昵称未通过审核，请重新编辑~';
 		$role = $wxInfo["uRole"];
 		if ($role == User::ROLE_SINGLE) {
-			header("location:/wx/mreg");
+			//header("location:/wx/mreg");
+			header("location:/wx/single");
 			exit();
 		}
 		if ($wxInfo['uGender'] == User::GENDER_MALE) {
@@ -555,7 +556,8 @@ class WxController extends BaseController
 		//$intro = $wxInfo['uIntro'];
 		$role = $wxInfo["uRole"];
 		if ($role == User::ROLE_MATCHER) {
-			header("location:/wx/sreg#photo");
+			//header("location:/wx/sreg#photo");
+			header("location:/wx/match");
 			exit();
 		}
 
