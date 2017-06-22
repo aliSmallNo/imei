@@ -29,7 +29,7 @@ class Admin extends ActiveRecord
 		self::LEVEL_VIEW => "游客权限",
 		self::LEVEL_MONITOR => "监视权限",
 		self::LEVEL_MODIFY => "修改权限",
-		self::LEVEL_STAFF => "奔跑员工权限",
+		self::LEVEL_STAFF => "微媒员工权限",
 		self::LEVEL_HIGH => "高级权限"
 	];
 
