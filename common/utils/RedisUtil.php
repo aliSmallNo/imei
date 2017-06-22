@@ -34,7 +34,7 @@ class RedisUtil
 	const KEY_USER_STAT = 'user_stat';
 	const KEY_USER_WALLET = 'user_wallet';
 	const KEY_USER_RECORDS = 'user_records';
-	const KEY_WX_MESSAGE = 'wx_message';
+	const KEY_WX_MESSAGE = 'wx_message'; //后台微信消息
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
@@ -54,6 +54,7 @@ class RedisUtil
 		self::KEY_USER_STAT => 86400,
 		self::KEY_USER_WALLET => 3600 * 8,
 		self::KEY_USER_RECORDS => 3600 * 8,
+		self::KEY_WX_MESSAGE => 60 * 10,
 	];
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';

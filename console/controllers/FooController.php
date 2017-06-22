@@ -8,10 +8,12 @@ namespace console\controllers;
  * Date: 11/5/2017
  * Time: 2:11 PM
  */
+use admin\models\Admin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserTrans;
 use common\utils\AppUtil;
+use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
 use yii\console\Controller;
@@ -354,23 +356,6 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-//		WechatUtil::regNotice(120003,"refuse");
-
-		$conn = AppUtil::db();
-		$sql ='insert into im_log(oCategory,oKey) VALUES(:cat,:key)';
-		$ret =  $conn->createCommand($sql)->bindValues([
-			':cat'=>300,
-			':key'=>500,
-		])->execute();
-		var_dump($ret);
-
-		$sql ='insert into im_log(oCategory,oKey) select :cat,:key
-           FROM dual WHERE NOT exists(select 1 from im_log WHERE oCategory=:cat AND oKey=:key)';
-		$ret =  $conn->createCommand($sql)->bindValues([
-			':cat'=>300,
-			':key'=>500,
-		])->execute();
-		var_dump($ret);
 
 	}
 }
