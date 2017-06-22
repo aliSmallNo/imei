@@ -240,6 +240,13 @@ class UserBuzz extends ActiveRecord
 
 	public static function wxMessages($adminId, $page, $pageSize = 20, $renewFlag = false)
 	{
+		if ($pageSize < 10 && $renewFlag) {
+			$ret = RedisUtil::getCache(RedisUtil::KEY_WX_MESSAGE, $adminId);
+			$ret = json_decode($ret, true);
+			if ($ret) {
+				return $ret;
+			}
+		}
 
 		$conn = \Yii::$app->db;
 		$count = 0;
@@ -273,6 +280,12 @@ class UserBuzz extends ActiveRecord
 			$res[$key]['iType'] = "微信消息";
 			$name = self::lastReply($row['bDate'], $row["bFrom"]);
 			$res[$key]['rname'] = $name ? $name : $row["wNickName"];
+		}
+
+		if ($pageSize < 10) {
+			RedisUtil::setCache(json_encode([$res, $count]), RedisUtil::KEY_WX_MESSAGE, $adminId);
+		} else {
+			RedisUtil::delCache(RedisUtil::KEY_WX_MESSAGE, $adminId);
 		}
 
 		return [$res, $count];
