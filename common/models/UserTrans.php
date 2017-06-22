@@ -194,7 +194,7 @@ class UserTrans extends ActiveRecord
 					$v["gift"] = $val["gift"];                  //签到得花
 					$v["fen"] = $val["fen"];                    //签到得钱
 					$v["cost"] = $val["cost"];                  //打赏
-					$v["link"] = $val["link"];                  //牵线奖励
+					$v["link"] = $val["link"];                  //牵线奖励(元)
 				}
 			}
 		}
@@ -224,9 +224,10 @@ class UserTrans extends ActiveRecord
 		$catCharge = self::CAT_RECHARGE;   //充值
 		$catSign = self::CAT_SIGN;         //签到
 		$catCost = self::CAT_COST;         //打赏
-		$catReturn = self::CAT_RETURN;         //退回
+		$catReturn = self::CAT_RETURN;       //退回
 		$unitFen = self::UNIT_FEN;
 		$unitGift = self::UNIT_GIFT;
+		$unitYuan = self::UNIT_YUAN;
 
 		$sql = "SELECT SUM(CASE WHEN tCategory=$catCharge or tCategory=$catReturn  THEN tAmt 
 								WHEN tCategory=$catSign AND  tUnit='$unitGift' THEN tAmt  
@@ -236,7 +237,7 @@ class UserTrans extends ActiveRecord
 					  SUM(CASE WHEN tCategory=$catSign and tUnit='$unitFen' THEN tAmt ELSE 0 END ) as fen,
 					  SUM(CASE WHEN tCategory=$catSign and tUnit='$unitGift' THEN tAmt ELSE 0 END ) as gift,
 					  SUM(CASE WHEN tCategory=$catCost THEN tAmt ELSE 0 END ) as cost,
-					  SUM(CASE WHEN tCategory=110 THEN tAmt ELSE 0 END ) as link,
+					  SUM(CASE WHEN tCategory=110 and tUnit='$unitYuan' THEN tAmt ELSE 0 END ) as link,
 					  tUId as uid
 				from im_user_trans WHERE tUId>0 and tUId in ($uid) GROUP BY tUId";
 		$ret = $conn->createCommand($sql)->queryAll();

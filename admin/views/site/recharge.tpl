@@ -71,7 +71,7 @@
 					累计充值媒瑰花: {{$item.recharge}}<br>
 					累计签到媒瑰花: {{$item.gift}}<br>
 					累计签到金额: ￥{{$item.fen/100|string_format:"%.2f"}}<br>
-					累计牵线奖励: {{$item.link}}<br>
+					累计牵线奖励: ￥{{$item.link}}<br>
 					累计打赏: {{$item.cost}}<br>
 					剩余媒瑰花数: {{$item.remain}}
 				</td>

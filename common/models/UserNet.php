@@ -413,7 +413,6 @@ class UserNet extends ActiveRecord
 			":cat" => UserTrans::CAT_COST,
 		])->queryOne();
 		switch ($pf) {
-
 			case "pass":
 				$data = ["nStatus" => self::STATUS_PASS];
 				WechatUtil::toNotice($id, $myUid, "wx-replay", 1);
