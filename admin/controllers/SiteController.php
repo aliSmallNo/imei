@@ -13,6 +13,7 @@ use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
+use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Yii;
 
@@ -150,12 +151,16 @@ class SiteController extends BaseController
 	{
 		$page = self::getParam("page", 1);
 		$name = self::getParam('name');
+		$phone = self::getParam('phone');
 		$status = self::getParam('status');
 		$stDel = User::STATUS_DELETE;
 		$criteria[] = " uStatus < $stDel ";
 		$params = [];
-		if ($status) {
+		if ($status != "" && ($status == 0 || $status)) {
 			$criteria[] = " uStatus=$status ";
+		}
+		if ($phone) {
+			$criteria[] = " uPhone=$phone ";
 		}
 
 		if ($name) {
@@ -171,6 +176,7 @@ class SiteController extends BaseController
 				"status" => $status,
 				'list' => $list,
 				"name" => $name,
+				"phone" => $phone,
 				'pagination' => $pagination,
 				'category' => 'users',
 				"statusT" => User::$Status,
@@ -214,13 +220,21 @@ class SiteController extends BaseController
 
 			if (!$error) {
 				if ($id) {
+					$preStatus = User::findOne(["uId" => $id])->uStatus;
+					$curStatus = $data["uStatus"];
+					if ($preStatus == User::STATUS_PENDING && $curStatus == User::STATUS_ACTIVE) {
+						WechatUtil::regNotice($id, "pass");
+					}
+					if ($preStatus == User::STATUS_ACTIVE && $curStatus == User::STATUS_PENDING) {
+						WechatUtil::regNotice($id, "refuse");
+					}
+
 					User::edit($id, $data, Admin::getAdminId());
 					$success = self::ICON_OK_HTML . '修改成功';
 
 				} else {
 					User::edit($id, $data, Admin::getAdminId());
 					$success = self::ICON_OK_HTML . '添加成功';
-
 				}
 			}
 		}
@@ -265,21 +279,15 @@ class SiteController extends BaseController
 		$name = self::getParam("name");
 		$orders = self::getParam("orders");
 		$st = User::STATUS_ACTIVE;
-		$criteria[] = " u.uStatus=:status and t.tCategory in (100,105) ";
-		$params [":status"] = $st;
-
+		//$criteria[] = " u.uStatus=$st ";
+		$criteria = [];
 
 		if ($name) {
 			$name = str_replace("'", "", $name);
-			$criteria[] = " u.uName like :name ";
-			$params[":name"] = $name;
+			$criteria[] = " u.uName like '%$name%' ";
 		}
 
-		if ($orders) {
-
-		}
-
-		list($items, $count, $allcharge) = UserTrans::recharges($criteria, $params, $page);
+		list($items, $count, $allcharge) = UserTrans::recharges($criteria, $page);
 
 		$pagination = $pagination = self::pagination($page, $count);
 		return $this->renderPage("recharge.tpl",

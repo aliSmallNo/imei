@@ -10,7 +10,8 @@ use yii\db\ActiveRecord;
 
 class UserMsg extends ActiveRecord
 {
-	const CATEGORY_WX_MSG = 5;
+	const CATEGORY_WX_MSG = 5; //后台公众号消息
+	const CATEGORY_WX_PUSH = 10;//推送消息
 
 	public static function tableName()
 	{

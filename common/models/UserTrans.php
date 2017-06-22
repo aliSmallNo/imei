@@ -20,6 +20,7 @@ class UserTrans extends ActiveRecord
 	const CAT_SIGN = 105;   //签到
 	const CAT_LINK = 110;
 	const CAT_COST = 120;  //打赏
+	const CAT_RETURN = 130;  //拒绝退回
 
 	const UNIT_FEN = 'fen';
 	const UNIT_YUAN = 'yuan';
@@ -33,6 +34,7 @@ class UserTrans extends ActiveRecord
 	const TITLE_RECHARGE = "充值";
 	const TITLE_SIGN = "签到奖励";
 	const TITLE_COST = "打赏";
+	const TITLE_RETURN = "拒绝退回";
 
 	public static function tableName()
 	{
@@ -42,7 +44,6 @@ class UserTrans extends ActiveRecord
 	public static function add($uid, $pid, $cat, $title, $amt, $unit)
 	{
 		$entity = new self();
-		$entity->tPId = $pid;
 		$entity->tUId = $uid;
 		$entity->tPId = $pid;
 		$entity->tCategory = $cat;
@@ -91,7 +92,7 @@ class UserTrans extends ActiveRecord
 			$params[':id'] = $uid;
 		}
 		$conn = AppUtil::db();
-		$sql = 'SELECT SUM(case when tCategory=100 or tCategory=105 then tAmt when tCategory=120 then -tAmt end) as amt,tUnit as unit, tUId as uid
+		$sql = 'SELECT SUM(case when tCategory=100 or tCategory=105 or tCategory=130  then tAmt when tCategory=120 then -tAmt end) as amt,tUnit as unit, tUId as uid
  			from im_user_trans WHERE tUId>0 ' . $strCriteria . ' GROUP BY tUId,tUnit';
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
@@ -143,15 +144,20 @@ class UserTrans extends ActiveRecord
 			return $ret;
 		}
 		return self::stat($uid);
+
 	}
 
 
-	public static function recharges($criteria, $params, $page, $pageSize = 20)
+	public static function recharges($criteria, $page, $pageSize = 20)
 	{
 		$limit = ($page - 1) * $pageSize . "," . $pageSize;
 		$criteria = implode(" and ", $criteria);
+		$where = " where t.tCategory in (100,105) ";
+		if ($criteria) {
+			$where .= " and " . $criteria;
+		}
 		$orders = [
-			"default" => " tAddedOn desc ",
+			"default" => " t.tAddedOn desc ",
 		];
 		$order = $orders["default"];
 
@@ -159,12 +165,12 @@ class UserTrans extends ActiveRecord
 		$sql = "select u.uId as uid,u.uName as uname,u.uAvatar as avatar,p.pAmt as amt ,
 				t.tAmt as flower,tAddedOn as date,t.tTitle as tcat,tUnit as unit,t.tCategory as cat
 				from im_user_trans as t 
-				join im_user as u on u.uId=t.tUId 
+				 join im_user as u on u.uId=t.tUId 
 				left join im_pay as p on p.pId=t.tPId
-				where t.tCategory in (100,105) and $criteria 
+				  $where   
 				order by $order 
 				limit $limit";
-		$result = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		$result = $conn->createCommand($sql)->queryAll();
 		$uIds = [];
 		foreach ($result as $v) {
 			$uIds[] = $v["uid"];
@@ -174,10 +180,9 @@ class UserTrans extends ActiveRecord
 		$sql = "select count(1) as co
 				from im_user_trans as t 
 				join im_user as u on u.uId=t.tUId 
-				left join im_pay as p on p.pId=t.tPId where $criteria ";
-		$count = $conn->createCommand($sql)->bindValues($params)->queryOne();
+				left join im_pay as p on p.pId=t.tPId   $where ";
+		$count = $conn->createCommand($sql)->queryOne();
 		$count = $count ? $count["co"] : 0;
-
 		list($balances, $allcharge) = self::getBalances($uIds);
 		foreach ($result as &$v) {
 			foreach ($balances as $val) {
@@ -190,7 +195,6 @@ class UserTrans extends ActiveRecord
 			}
 		}
 
-
 		return [$result, $count, $allcharge];
 
 	}
@@ -201,20 +205,23 @@ class UserTrans extends ActiveRecord
 			return [];
 		}
 		$uid = implode(",", $uid);
+		$uid = trim($uid, ",");
 		$conn = AppUtil::db();
 
-		$cat_charge = self::CAT_RECHARGE;   //充值
-		$cat_sign = self::CAT_SIGN;         //签到
+		$catCharge = self::CAT_RECHARGE;   //充值
+		$catSign = self::CAT_SIGN;         //签到
+		$catCost = self::CAT_COST;         //打赏
+		$catReturn = self::CAT_RETURN;         //退回
 		$unitFen = self::UNIT_FEN;
 		$unitGift = self::UNIT_GIFT;
 
-		$sql = "SELECT SUM(CASE WHEN tCategory=$cat_charge THEN tAmt 
-								WHEN tCategory=$cat_sign AND  tUnit='$unitGift' THEN tAmt  
-								WHEN tCategory=$cat_sign AND  tUnit='$unitFen' THEN 0  
-								ELSE -tAmt END ) as remain,
-					  SUM(CASE WHEN tCategory=$cat_charge THEN tAmt ELSE 0 END ) as recharge,
-					  SUM(CASE WHEN tCategory=$cat_sign and tUnit='$unitFen' THEN tAmt ELSE 0 END ) as fen,
-					  SUM(CASE WHEN tCategory=$cat_sign and tUnit='$unitGift' THEN tAmt ELSE 0 END ) as gift,
+		$sql = "SELECT SUM(CASE WHEN tCategory=$catCharge or tCategory=$catReturn  THEN tAmt 
+								WHEN tCategory=$catSign AND  tUnit='$unitGift' THEN tAmt  
+								WHEN tCategory=$catSign AND  tUnit='$unitFen' THEN 0  
+								WHEN tCategory=$catCost then -tAmt END ) as remain,
+					  SUM(CASE WHEN tCategory=$catCharge THEN tAmt ELSE 0 END ) as recharge,
+					  SUM(CASE WHEN tCategory=$catSign and tUnit='$unitFen' THEN tAmt ELSE 0 END ) as fen,
+					  SUM(CASE WHEN tCategory=$catSign and tUnit='$unitGift' THEN tAmt ELSE 0 END ) as gift,
 					  tUId as uid
 				from im_user_trans WHERE tUId>0 and tUId in ($uid) GROUP BY tUId";
 		$ret = $conn->createCommand($sql)->queryAll();

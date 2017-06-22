@@ -11,6 +11,7 @@ namespace common\models;
 
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
+use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
 
 class UserNet extends ActiveRecord
@@ -275,6 +276,7 @@ class UserNet extends ActiveRecord
 	public static function hasFollowed($uid, $subUid)
 	{
 		$ret = self::findOne(['nUId' => $uid, 'nSubUId' => $subUid, 'nRelation' => self::REL_FOLLOW, 'nDeletedFlag' => 0]);
+		WechatUtil::toNotice($uid, $subUid, "focus", $ret);
 		return $ret ? true : false;
 	}
 
@@ -299,10 +301,12 @@ class UserNet extends ActiveRecord
 			case "yes":
 				$info->nDeletedFlag = self::DELETE_FLAG_NO;
 				$info->nAddedOn = $date;
+				WechatUtil::toNotice($uid, $mId, "favor", 1);
 				break;
 			case "no":
 				$info->nDeletedFlag = self::DELETE_FLAG_YES;
 				$info->nDeletedOn = $date;
+				WechatUtil::toNotice($uid, $mId, "favor", 0);
 				break;
 		}
 
@@ -400,9 +404,19 @@ class UserNet extends ActiveRecord
 		switch ($pf) {
 			case "pass":
 				$data = ["nStatus" => self::STATUS_PASS];
+				WechatUtil::toNotice($id, $myUid, "wx-replay", 1);
 				break;
 			case "refuse":
 				$data = ["nStatus" => self::STATUS_FAIL];
+				WechatUtil::toNotice($id, $myUid, "wx-replay", 0);
+				// 退回媒瑰花
+				$payInfo = UserTrans::find()->where(["tPId" => $id, "tUId" => $myUid, "tCategory" => UserTrans::CAT_COST])
+					->orderBy(" tId desc ")->limit(1)->asArray()->one();
+				if ($payInfo) {
+					UserTrans::add($myUid, $payInfo["tPId"], UserTrans::CAT_RETURN, UserTrans::TITLE_RETURN, $payInfo["tAmt"], UserTrans::UNIT_GIFT);
+					WechatUtil::toNotice($id, $myUid, "return-rose" );
+				}
+
 				break;
 		}
 
@@ -416,10 +430,10 @@ class UserNet extends ActiveRecord
 		if ($amt < $num) {
 			return $amt;
 		}
-
-		UserTrans::add($myId, 0, UserTrans::CAT_COST, UserTrans::TITLE_COST, $num, UserTrans::UNIT_GIFT);
-		UserNet::edit($id, $myId, UserNet::REL_LINK);
-
+		// 打赏给 $id
+		UserTrans::add($myId, $id, UserTrans::CAT_COST, UserTrans::TITLE_COST, $num, UserTrans::UNIT_GIFT);
+		UserNet::add($id, $myId, UserNet::REL_LINK);
+		WechatUtil::toNotice($id, $myId, "wxNo");
 		return $amt;
 	}
 

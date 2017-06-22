@@ -9,7 +9,10 @@
 
 namespace common\utils;
 
+use admin\models\Admin;
 use common\models\Pay;
+use common\models\User;
+use common\models\UserMsg;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use Yii;
@@ -386,5 +389,151 @@ class WechatUtil
 			];
 			Pay::edit($pid, $data);
 		}
+	}
+
+	public static function regNotice($uId, $tag)
+	{
+
+		if (AppUtil::scene() == "dev") {
+			return 0;
+		}
+		$userInfo = User::findOne(["uId" => $uId]);
+		if (!$userInfo) {
+			return 0;
+		}
+		$openId = isset($userInfo["uOpenId"]) ? $userInfo["uOpenId"] : "";
+		if (!$openId || strlen($openId) < 12) {
+			return 0;
+		}
+		switch ($tag) {
+			case "pass":
+				$url = "http://mp.bpdj365.com/wx/single";
+				$first = "你好，您的注册资质已经审核通过，欢迎使用微媒100。\n";
+				$keyword1Val = '微媒100用户 ' . $userInfo["uName"] . ' 注册信息';
+				$keyword2Val = "审核通过";
+				$text = $keyword2Val;
+				$remark = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309";
+				break;
+			case "refuse":
+				$url = "http://mp.bpdj365.com/wx/single";
+				$first = "你好，很遗憾！您注册的微媒100资质已被取消！您将无法使用微媒100!\n";
+				$keyword1Val = '微媒100用户 ' . $userInfo["uName"] . ' 注册信息';
+				$keyword2Val = "审核不通过";
+				$text = $keyword2Val;
+				$remark = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309！";
+				break;
+			default :
+		}
+		$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+
+		$bodyInfo = [
+			"touser" => $openId,
+			"template_id" => "x7IJx0xG8yn67akF4T-gy9XULI6MPASOGJyvltkbNbQ",
+			"url" => $url,
+			"data" => [
+				"first" => ["color" => "#555555", "value" => $first],
+				"keyword1" => ["color" => "#555555", "value" => $keyword1Val],
+				"keyword2" => ["color" => "#f491b2", "value" => $keyword2Val],
+				"keyword3" => ["color" => "#555555", "value" => date("Y年n月j日 H:i")],
+				"remark" => ["color" => "#555555", "value" => $remark],
+			]
+		];
+
+		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
+		$result = AppUtil::postJSON($url, json_encode($bodyInfo));
+		UserMsg::edit("", [
+			"mUId" => $uId,
+			"mCategory" => UserMsg::CATEGORY_WX_PUSH,
+			"mText" => $text,
+			"mAddedBy" => Admin::getAdminId(),
+		]);
+		return $result;
+	}
+
+	public static function toNotice($uId, $myId, $tag, $f = false)
+	{
+		if (AppUtil::scene() == "dev") {
+			return 0;
+		}
+		$userInfo = User::findOne(["uId" => $uId]);
+		if (!$userInfo) {
+			return 0;
+		}
+		$openId = isset($userInfo["uOpenId"]) ? $userInfo["uOpenId"] : "";
+		if (!$openId || strlen($openId) < 12) {
+			return 0;
+		}
+		$name = $userInfo["uName"];
+
+		switch ($tag) {
+			case "favor":
+				$url = "http://mp.bpdj365.com/wx/single";
+				$keyword1Val = "心动";
+				$ft = $f ? "" : "取消";
+				$text = $ft . $keyword1Val;
+				$keyword2Val = "有人" . $ft . "心动你了，快去看看吧！";
+				break;
+			case "focus":
+				$url = "http://mp.bpdj365.com/wx/single";
+				$keyword1Val = "关注";
+				$ft = $f ? "取消" : "";
+				$text = $ft . $keyword1Val;
+				$keyword2Val = "有人" . $ft . "关注你了，快去看看吧！";
+				break;
+			case "wxNo":
+				$url = "http://mp.bpdj365.com/wx/single";
+				$keyword1Val = "微信好友请求";
+				$text = $keyword1Val;
+				$keyword2Val = "有人请求加你微信好友了，快去看看吧！";
+				break;
+			case "wx-replay":
+				$url = "http://mp.bpdj365.com/wx/single";
+				$keyword1Val = "微信好友请求";
+				$ft = $f ? "同意" : "拒绝";
+				$text = $ft . $keyword1Val;
+				$keyword2Val = "有人" . $ft . "你的微信好友请求，快去看看吧！";
+				break;
+			case "return-rose":
+				$url = "http://mp.bpdj365.com/wx/sw";
+				$keyword1Val = "退回媒瑰花";
+				$text = $keyword1Val;
+				$keyword2Val = "有人媒瑰花退回，快去看看吧！";
+				break;
+			case "mysay":
+				$url = "http://mp.bpdj365.com/wx/sh";
+				$keyword1Val = "媒婆说";
+				$text = "修改" . $keyword1Val;
+				$keyword2Val = "你的媒婆修改了你的媒婆说，快去看看吧！";
+				break;
+			default:
+				$url = "http://mp.bpdj365.com/wx/sreg";
+				$keyword1Val = "微媒100";
+				$text = $keyword1Val;
+				$keyword2Val = "欢迎来到微媒100，这是一个真实的相亲交友软件！";
+		}
+
+		$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+		$bodyInfo = [
+			"touser" => $openId,
+			"template_id" => "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI",
+			"url" => $url,
+			"data" => [
+				"first" => ["color" => "#555555", "value" => "你好，$name!\n"],
+				"keyword1" => ["color" => "#555555", "value" => $keyword1Val],
+				"keyword2" => ["color" => "#555555", "value" => $keyword2Val],
+				"keyword3" => ["color" => "#555555", "value" => date("Y年n月j日 H:i")],
+				"remark" => ["color" => "#555555", "value" => "\n 点击下方详情查看吧~~"],
+			]
+		];
+
+		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
+		$result = AppUtil::postJSON($url, json_encode($bodyInfo));
+		UserMsg::edit("", [
+			"mUId" => $uId,
+			"mCategory" => UserMsg::CATEGORY_WX_PUSH,
+			"mText" => $text,
+			"mAddedBy" => $myId,
+		]);
+		return $result;
 	}
 }
