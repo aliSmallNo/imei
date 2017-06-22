@@ -87,7 +87,7 @@
 					{{if $item.cat==105 && $item.unit=='flower'}}{{$item.flower}}朵{{/if}}
 					{{if $item.cat==120 && $item.unit=='flower'}}{{$item.flower}}朵{{/if}}
 					{{if $item.cat==130 && $item.unit=='flower'}}{{$item.flower}}朵{{/if}}
-					{{if $item.cat==110 && $item.unit=='flower'}}{{$item.flower}}朵{{/if}}
+					{{if $item.cat==110 && $item.unit=='yuan'}}￥{{$item.flower}}{{/if}}
 				</td>
 				<td>
 					{{$item.date}}
