@@ -1550,35 +1550,64 @@ section
 		background-size: 100% 100%
 
 .invite-wrap
-	background: url(../images/bg_share.jpg) top
-	background-size: 100% auto
-	.title
-		padding: 3rem 0 0
-		color: $mainColor
+	//background: url(../images/bg_share.jpg) top
+	//background-size: 100% auto
+	.sender-wrap
+		background: #afdb64
 		text-align: center
-		font-size: 2.2rem
-		line-height: 4rem
-		font-weight: $weightNormal
-		em
-			font-weight: $weightBold
-		.dl
-			display: inline-block
-			font-size: 2.2rem
-			color: $mainColor
-			text-align: left
+		@include displayFlex
+		padding: 1.5rem
+		.name
+			@include displayFlex-1
+			font-size: 1.5rem
+			line-height: 3rem
 			padding-left: 1rem
-			width: 10rem
+			color: #fff
 			font-weight: $weightBold
-			position: relative
-			&.editable:before
-				content: ''
-				position: absolute
-				background: url(../images/bg_change.png) no-repeat center center
-				background-size: 100% 100%
-				width: 14rem
-				height: 4.3rem
-				left: 0
-				bottom: -.2rem
+			justify-content: center
+			align-items: center
+			align-self: center
+		.title
+			@include displayFlex-1
+			color: #fff
+			justify-content: center
+			align-items: center
+			align-self: center
+			h4
+				font-size: 2.6rem
+				font-weight: $weightBold
+				line-height: 3.6rem
+			h5
+				font-size: 1.6rem
+				font-weight: $weightBold
+		.logo
+			@include displayFlex-w(7rem)
+			text-align: center
+			img
+				width: 6rem
+				height: 6rem
+				vertical-align: middle
+	.img-wrap
+		display: block
+		text-align: center
+		background: #afdb64
+		padding: 1.5rem
+		em
+			font-style: normal
+			font-weight: $weightBold
+			font-size: 1.3rem
+			display: block
+			text-align: center
+			line-height: 2.4rem
+			color: $grayFontColor
+			@include textTail
+
+		img
+			width: 8rem
+			height: 8rem
+			border: 3px solid $mainColorLight
+			border-radius: 4.2rem
+			overflow: hidden
 	.video
 		width: 25.6rem
 		height: 14.4rem
@@ -1601,16 +1630,34 @@ section
 			left: 0
 			top: 0
 	.btns
-		padding: 1.5rem 2rem
+		padding: 3rem 2rem
+		background: $mainColor
+		h4
+			text-align: center
+			color: $mainColorLighter
+			font-size: 2rem
+			font-weight: $weightBold
+		h5
+			text-align: center
+			color: $mainColorLighter
+			font-size: 1.4rem
+			font-weight: $weightNormal
+			line-height: 2.4rem
+			margin-bottom: 2rem
 		.btn-s-1
 			display: block
 			height: 4.2rem
 			line-height: 4.2rem
 			border-radius: 2.1rem
-			font-size: 1.5rem
+			font-size: 1.6rem
+			background: $mainColorLighter
+			color: $mainColor
+			margin-left: 2rem
+			margin-right: 2rem
+			box-shadow: 1px 1px 4px rgba(0, 0, 0, .2)
 	.user
-		background: url(../images/bg_dl.png)
-		background-size: 100% 100%
+		//background: url(../images/bg_dl.png)
+		//background-size: 100% 100%
 		width: 29rem
 		height: 40rem
 		margin: 3rem auto
@@ -1631,9 +1678,8 @@ section
 				color: $mainColorLight
 	.footer
 		padding: 9rem 0 3rem
-		margin-top: -9rem
-		background: url(//zlpic.1meipo.com/spa/hn/invite2/flayer.png) no-repeat
-		background-size: 100% auto
+		//background: url(//zlpic.1meipo.com/spa/hn/invite2/flayer.png) no-repeat
+		//background-size: 100% auto
 		.copy
 			padding: 3rem 0 1.5rem
 			text-align: center
@@ -3172,7 +3218,6 @@ section
 			button.refuse
 				background: #f80
 
-
 	.plist-defalt
 		padding: 10rem 1rem
 		.img
@@ -3192,6 +3237,7 @@ section
 				&:after
 					width: 0
 					height: 0
+
 .plist-more
 	font-size: 1rem
 	color: #777
@@ -4049,6 +4095,7 @@ section
 			margin-top: 1rem
 			margin-bottom: 1.5rem
 			width: 100%
+
 .prompt-wrap
 	padding: 2rem 1.5rem 0
 	label
@@ -4087,6 +4134,7 @@ section
 					background: $borderColorDark
 			&.btn-cancel
 				color: $grayFontColor
+
 .mpsay-bot
 	display: flex
 	padding: 1rem

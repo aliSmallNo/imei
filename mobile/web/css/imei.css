@@ -1537,102 +1537,154 @@ section {
     background: url(../images/ico_gender_female.png) no-repeat center center;
     background-size: 100% 100%; }
 
-.invite-wrap {
-  background: url(../images/bg_share.jpg) top;
-  background-size: 100% auto; }
-  .invite-wrap .title {
-    padding: 3rem 0 0;
-    color: #f06292;
-    text-align: center;
-    font-size: 2.2rem;
-    line-height: 4rem;
-    font-weight: 300; }
-    .invite-wrap .title em {
-      font-weight: 500; }
-    .invite-wrap .title .dl {
-      display: inline-block;
-      font-size: 2.2rem;
-      color: #f06292;
-      text-align: left;
-      padding-left: 1rem;
-      width: 10rem;
+.invite-wrap .sender-wrap {
+  background: #afdb64;
+  text-align: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 1.5rem; }
+  .invite-wrap .sender-wrap .name {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    font-size: 1.5rem;
+    line-height: 3rem;
+    padding-left: 1rem;
+    color: #fff;
+    font-weight: 500;
+    justify-content: center;
+    align-items: center;
+    align-self: center; }
+  .invite-wrap .sender-wrap .title {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+    align-self: center; }
+    .invite-wrap .sender-wrap .title h4 {
+      font-size: 2.6rem;
       font-weight: 500;
-      position: relative; }
-      .invite-wrap .title .dl.editable:before {
-        content: "";
-        position: absolute;
-        background: url(../images/bg_change.png) no-repeat center center;
-        background-size: 100% 100%;
-        width: 14rem;
-        height: 4.3rem;
-        left: 0;
-        bottom: -0.2rem; }
-  .invite-wrap .video {
-    width: 25.6rem;
-    height: 14.4rem;
-    overflow: hidden;
-    margin: 3rem auto;
-    position: relative; }
-    .invite-wrap .video video {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0; }
-    .invite-wrap .video .play {
-      display: block;
-      width: 100%;
-      height: 100%;
-      background: url(../images/poster.jpg) rgba(255, 255, 255, 0.2) no-repeat center;
-      -webkit-background-size: 100% 100%;
-      background-size: 100% 100%;
-      position: absolute;
-      left: 0;
-      top: 0; }
-  .invite-wrap .btns {
-    padding: 1.5rem 2rem; }
-    .invite-wrap .btns .btn-s-1 {
-      display: block;
-      height: 4.2rem;
-      line-height: 4.2rem;
-      border-radius: 2.1rem;
-      font-size: 1.5rem; }
-  .invite-wrap .user {
-    background: url(../images/bg_dl.png);
+      line-height: 3.6rem; }
+    .invite-wrap .sender-wrap .title h5 {
+      font-size: 1.6rem;
+      font-weight: 500; }
+  .invite-wrap .sender-wrap .logo {
+    -webkit-box-flex: 0 0 7rem;
+    -webkit-flex: 0 0 7rem;
+    -ms-flex: 0 0 7rem;
+    flex: 0 0 7rem;
+    text-align: center; }
+    .invite-wrap .sender-wrap .logo img {
+      width: 6rem;
+      height: 6rem;
+      vertical-align: middle; }
+.invite-wrap .img-wrap {
+  display: block;
+  text-align: center;
+  background: #afdb64;
+  padding: 1.5rem; }
+  .invite-wrap .img-wrap em {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.3rem;
+    display: block;
+    text-align: center;
+    line-height: 2.4rem;
+    color: #737373;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden; }
+  .invite-wrap .img-wrap img {
+    width: 8rem;
+    height: 8rem;
+    border: 3px solid #f487ac;
+    border-radius: 4.2rem;
+    overflow: hidden; }
+.invite-wrap .video {
+  width: 25.6rem;
+  height: 14.4rem;
+  overflow: hidden;
+  margin: 3rem auto;
+  position: relative; }
+  .invite-wrap .video video {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0; }
+  .invite-wrap .video .play {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: url(../images/poster.jpg) rgba(255, 255, 255, 0.2) no-repeat center;
+    -webkit-background-size: 100% 100%;
     background-size: 100% 100%;
-    width: 29rem;
-    height: 40rem;
-    margin: 3rem auto;
-    position: relative; }
-    .invite-wrap .user .nic {
-      position: absolute;
-      left: 5.5rem;
-      top: 3rem; }
-      .invite-wrap .user .nic img {
-        width: 6.5rem;
-        height: 6.5rem;
-        background: #333;
-        padding: 3px;
-        border: #f487ac 1px solid;
-        border-radius: 3.6rem; }
-      .invite-wrap .user .nic p {
-        text-align: center;
-        color: #f487ac; }
-  .invite-wrap .footer {
-    padding: 9rem 0 3rem;
-    margin-top: -9rem;
-    background: url(//zlpic.1meipo.com/spa/hn/invite2/flayer.png) no-repeat;
-    background-size: 100% auto; }
-    .invite-wrap .footer .copy {
-      padding: 3rem 0 1.5rem;
+    position: absolute;
+    left: 0;
+    top: 0; }
+.invite-wrap .btns {
+  padding: 3rem 2rem;
+  background: #f06292; }
+  .invite-wrap .btns h4 {
+    text-align: center;
+    color: #fbd2e0;
+    font-size: 2rem;
+    font-weight: 500; }
+  .invite-wrap .btns h5 {
+    text-align: center;
+    color: #fbd2e0;
+    font-size: 1.4rem;
+    font-weight: 300;
+    line-height: 2.4rem;
+    margin-bottom: 2rem; }
+  .invite-wrap .btns .btn-s-1 {
+    display: block;
+    height: 4.2rem;
+    line-height: 4.2rem;
+    border-radius: 2.1rem;
+    font-size: 1.6rem;
+    background: #fbd2e0;
+    color: #f06292;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2); }
+.invite-wrap .user {
+  width: 29rem;
+  height: 40rem;
+  margin: 3rem auto;
+  position: relative; }
+  .invite-wrap .user .nic {
+    position: absolute;
+    left: 5.5rem;
+    top: 3rem; }
+    .invite-wrap .user .nic img {
+      width: 6.5rem;
+      height: 6.5rem;
+      background: #333;
+      padding: 3px;
+      border: #f487ac 1px solid;
+      border-radius: 3.6rem; }
+    .invite-wrap .user .nic p {
       text-align: center;
       color: #f487ac; }
-      .invite-wrap .footer .copy span {
-        display: inline-block;
-        background: url(../images/logo62.png) no-repeat left;
-        background-size: 2rem 2rem;
-        padding-left: 2.4rem;
-        line-height: 2.4rem;
-        height: 2.4rem; }
+.invite-wrap .footer {
+  padding: 9rem 0 3rem; }
+  .invite-wrap .footer .copy {
+    padding: 3rem 0 1.5rem;
+    text-align: center;
+    color: #f487ac; }
+    .invite-wrap .footer .copy span {
+      display: inline-block;
+      background: url(../images/logo62.png) no-repeat left;
+      background-size: 2rem 2rem;
+      padding-left: 2.4rem;
+      line-height: 2.4rem;
+      height: 2.4rem; }
 
 .mycard {
   background: #fbd2e0;
