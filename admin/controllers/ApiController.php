@@ -77,6 +77,27 @@ class ApiController extends Controller
 					$ret = ["code" => 159, "msg" => "无操作权限！"];
 				}
 				break;
+			case "pwd":
+				$newPassWord = strtolower(self::postParam('newPwd'));
+				$oldPassWord = strtolower(self::postParam('curPwd'));
+
+				if (strlen($newPassWord) < 6 || strlen($newPassWord) > 16) {
+					return ["code" => 159, "msg" => self::ICON_ALERT_HTML . "更新失败！新登录密码大于6位小于16位"];
+				}
+
+				$adminUserInfo = Admin::userInfo();
+				if (md5($oldPassWord) != $adminUserInfo["aPass"]) {
+					return ["code" => 159, "msg" => self::ICON_ALERT_HTML . "更新失败！旧密码输入错误"];
+				}
+				$insertData = [];
+				$insertData['aId'] = $adminUserInfo['aId'];
+				$insertData['aPass'] = md5($newPassWord);
+
+				Admin::saveUser($insertData);
+				Admin::logout();
+				$ret = ["code" => 0, "msg" => self::ICON_OK_HTML . "修改成功！请重新登录"];
+				break;
+				break;
 		}
 		return self::renderAPI($ret["code"], $ret["msg"]);
 	}
