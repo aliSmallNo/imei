@@ -8,6 +8,7 @@
 
 namespace common\models;
 
+use admin\models\Admin;
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
 use yii\db\ActiveRecord;

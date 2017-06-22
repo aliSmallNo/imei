@@ -8,6 +8,7 @@
 
 namespace admin\models;
 
+use common\models\UserBuzz;
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
 use yii\db\ActiveRecord;
@@ -275,7 +276,7 @@ class Admin extends ActiveRecord
 		$wxMessages = [];
 		$unreadFlag = 0;
 		if (self::isStaff($adminId)) {
-			/*list($wxMessages) = UserBuzz::wxMessages($adminId, 1, 5, true);
+			list($wxMessages) = UserBuzz::wxMessages($adminId, 1, 5, true);
 			foreach ($wxMessages as $key => $item) {
 				if (mb_strlen($item["bContent"]) > 38) {
 					$wxMessages[$key]["bContent"] = mb_substr($item["bContent"], 0, 38) . '...';
@@ -283,7 +284,7 @@ class Admin extends ActiveRecord
 				if ($item["readFlag"] == "0") {
 					$unreadFlag = 1;
 				}
-			}*/
+			}
 		}
 		return [$wxMessages, $unreadFlag];
 	}

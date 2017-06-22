@@ -1,14 +1,6 @@
 {{include file="layouts/header.tpl"}}
 <style>
-	.o-no-wrapper {
-		max-height: 5.4em;
-		height: 5.4em;
-		overflow-x: hidden;
-		overflow-y: auto;
-		border: 1px solid #C8C8C8;
-		border-radius: 5px;
-		padding: 2px 5px;
-	}
+
 </style>
 <div id="page-wrapper">
 	<div class="row">

@@ -15,12 +15,14 @@
 		{{if isset($adminWechatList) && $adminWechatList}}
 		<li class="dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				<i class="fa fa-weixin fa-fw"></i> <span class="admin_wxmsg_unread {{if $adminWechatListUnread}}unread{{/if}}">公众号</span> <i class="fa fa-caret-down"></i>
+				<i class="fa fa-weixin fa-fw"></i>
+				<span class="admin_wxmsg_unread {{if $adminWechatListUnread}}unread{{/if}}">公众号</span>
+				<i class="fa fa-caret-down"></i>
 			</a>
 			<ul class="dropdown-menu dropdown-messages admin_wxmsg">
 				{{foreach from=$adminWechatList item=cItem}}
 				<li>
-					<a href="/info/wxreply?id={{$cItem.bFrom}}">
+					<a href="/site/wxreply?id={{$cItem.bFrom}}">
 						<div>
 							<strong>{{$cItem.wNickName}}</strong>
 							<span class="pull-right text-muted">
@@ -33,7 +35,7 @@
 				<li class="divider"></li>
 				{{/foreach}}
 				<li>
-					<a class="text-center" href="/info/listwx">
+					<a class="text-center" href="/site/wxmsg">
 						<strong>更多微信公众号消息</strong>
 						<i class="fa fa-angle-right"></i>
 					</a>
