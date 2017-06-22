@@ -21,10 +21,12 @@
 							 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
 			</div>
 			<div class="form-group">
-				<select class="form-control" style="display: none">
-					<option value="1">按时间(默认)</option>
-					<option value="2">按充值总数</option>
-					<option value="3">按当前余额</option>
+				<select class="form-control" name="cat">
+					<option value="">记录类型</option>
+					{{foreach from=$catDict key=key item=item}}
+					<option value="{{$key}}" {{if isset($getInfo['cat']) && $getInfo['cat']==$key}}selected{{/if}}>
+						{{$item}}</option>
+					{{/foreach}}
 				</select>
 			</div>
 			<button class="btn btn-primary">查询</button>
@@ -69,18 +71,23 @@
 					累计充值媒瑰花: {{$item.recharge}}<br>
 					累计签到媒瑰花: {{$item.gift}}<br>
 					累计签到金额: ￥{{$item.fen/100|string_format:"%.2f"}}<br>
+					累计牵线奖励: {{$item.link}}<br>
+					累计打赏: {{$item.cost}}<br>
 					剩余媒瑰花数: {{$item.remain}}
 				</td>
 				<td>
 					{{$item.tcat}}
 				</td>
-				<td >
+				<td>
 					{{if $item.amt}}￥{{$item.amt/100|string_format:"%.2f"}}{{/if}}
 				</td>
-				<td >
+				<td>
 					{{if $item.cat==100}}{{$item.flower}}朵{{/if}}
 					{{if $item.cat==105 && $item.unit=='fen'}}￥{{$item.flower/100}}{{/if}}
 					{{if $item.cat==105 && $item.unit=='flower'}}{{$item.flower}}朵{{/if}}
+					{{if $item.cat==120 && $item.unit=='flower'}}{{$item.flower}}朵{{/if}}
+					{{if $item.cat==130 && $item.unit=='flower'}}{{$item.flower}}朵{{/if}}
+					{{if $item.cat==110 && $item.unit=='flower'}}{{$item.flower}}朵{{/if}}
 				</td>
 				<td>
 					{{$item.date}}
