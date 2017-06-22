@@ -6,32 +6,31 @@
 		</h4>
 	</div>
 	<div class="row data-box">
-		<div class="data-hd">
-			<h3>基本信息</h3>
-		</div>
-		<div class="data-bd">
-			<div class="form mini-space">
-				<div class="form-group">
-					<div class="form-item">
-						<label class="label">登录ID</label>
+		<div class="col-lg-9">
+			<div class="data-hd">
+				<h3>基本信息</h3>
+			</div>
+			<div class="data-bd">
+				<div class="form mini-space">
+					<div class="form-group">
+						<div class="form-item">
+							<label class="label">登录ID</label>
 
-						<div class="element">
-							<span class="txt-box">{{$adminInfo.aLoginId}}</span>
+							<div class="element">
+								<span class="txt-box">{{$adminInfo.aLoginId}}</span>
+							</div>
 						</div>
-					</div>
-					<div class="form-item">
-						<label class="label">用户名</label>
+						<div class="form-item">
+							<label class="label">用户名</label>
 
-						<div class="element">
-							<span class="txt-box">{{$adminInfo.aName}}</span>
+							<div class="element">
+								<span class="txt-box">{{$adminInfo.aName}}</span>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-	<div class="row data-box">
-		<div class="col-lg-9">
+			<div class="row-divider"></div>
 			<div class="data-hd">
 				<h3>微信公众号</h3>
 			</div>
