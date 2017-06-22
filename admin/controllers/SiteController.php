@@ -278,7 +278,7 @@ class SiteController extends BaseController
 		$getInfo = Yii::$app->request->get();
 		$page = self::getParam("page", 1);
 		$name = self::getParam("name");
-		$orders = self::getParam("orders");
+		$cat = self::getParam("cat");
 		$st = User::STATUS_ACTIVE;
 		//$criteria[] = " u.uStatus=$st ";
 		$criteria = [];
@@ -286,6 +286,9 @@ class SiteController extends BaseController
 		if ($name) {
 			$name = str_replace("'", "", $name);
 			$criteria[] = " u.uName like '%$name%' ";
+		}
+		if ($cat) {
+			$criteria[] = " t.tCategory =$cat ";
 		}
 
 		list($items, $count, $allcharge) = UserTrans::recharges($criteria, $page);
@@ -298,6 +301,7 @@ class SiteController extends BaseController
 				'pagination' => $pagination,
 				"paid" => $allcharge,   //充值合计
 				'category' => 'users',
+				'catDict' => UserTrans::$catDict,
 			]
 		);
 	}

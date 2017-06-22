@@ -18,9 +18,16 @@ class UserTrans extends ActiveRecord
 
 	const CAT_RECHARGE = 100;//充值
 	const CAT_SIGN = 105;   //签到
-	const CAT_LINK = 110;
-	const CAT_COST = 120;  //打赏
+	const CAT_LINK = 110;   //牵线奖励
+	const CAT_COST = 120;   //打赏
 	const CAT_RETURN = 130;  //拒绝退回
+	static $catDict = [
+		self::CAT_RECHARGE => "充值",
+		self::CAT_SIGN => "签到奖励",
+		self::CAT_LINK => "牵线奖励",
+		self::CAT_COST => "打赏",
+		self::CAT_RETURN => "拒绝退回",
+	];
 
 	const UNIT_FEN = 'fen';
 	const UNIT_YUAN = 'yuan';
@@ -30,11 +37,6 @@ class UserTrans extends ActiveRecord
 		self::UNIT_YUAN => '元',
 		self::UNIT_GIFT => '媒桂花',
 	];
-
-	const TITLE_RECHARGE = "充值";
-	const TITLE_SIGN = "签到奖励";
-	const TITLE_COST = "打赏";
-	const TITLE_RETURN = "拒绝退回";
 
 	public static function tableName()
 	{
@@ -152,7 +154,7 @@ class UserTrans extends ActiveRecord
 	{
 		$limit = ($page - 1) * $pageSize . "," . $pageSize;
 		$criteria = implode(" and ", $criteria);
-		$where = " where t.tCategory in (100,105) ";
+		$where = " where t.tCategory in (100,105,110,120,130) ";
 		if ($criteria) {
 			$where .= " and " . $criteria;
 		}
@@ -191,6 +193,8 @@ class UserTrans extends ActiveRecord
 					$v["remain"] = $val["remain"];              //余额
 					$v["gift"] = $val["gift"];                  //签到得花
 					$v["fen"] = $val["fen"];                    //签到得钱
+					$v["cost"] = $val["cost"];                  //打赏
+					$v["link"] = $val["link"];                  //牵线奖励
 				}
 			}
 		}
@@ -202,7 +206,16 @@ class UserTrans extends ActiveRecord
 	public static function getBalances($uid)
 	{
 		if (!$uid) {
-			return [];
+			return [
+				[
+					"recharge" => 0,
+					"fen" => 0,
+					"gift" => 0,
+					"remain" => 0,
+					"cost" => 0,
+					"link" => 0],
+				0
+			];
 		}
 		$uid = implode(",", $uid);
 		$uid = trim($uid, ",");
@@ -222,6 +235,8 @@ class UserTrans extends ActiveRecord
 					  SUM(CASE WHEN tCategory=$catCharge THEN tAmt ELSE 0 END ) as recharge,
 					  SUM(CASE WHEN tCategory=$catSign and tUnit='$unitFen' THEN tAmt ELSE 0 END ) as fen,
 					  SUM(CASE WHEN tCategory=$catSign and tUnit='$unitGift' THEN tAmt ELSE 0 END ) as gift,
+					  SUM(CASE WHEN tCategory=$catCost THEN tAmt ELSE 0 END ) as cost,
+					  SUM(CASE WHEN tCategory=110 THEN tAmt ELSE 0 END ) as link,
 					  tUId as uid
 				from im_user_trans WHERE tUId>0 and tUId in ($uid) GROUP BY tUId";
 		$ret = $conn->createCommand($sql)->queryAll();
