@@ -98,6 +98,7 @@
 				<span class="role{{$prod.role}}">{{$prod.role_t}}</span>
 				<span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
 				{{$prod.name}} <em>({{$prod.location_t}})</em>
+				<span>{{$prod.phone}}</span>
 				<br>
 				<span>{{$prod.age}}</span>
 				<span>{{$prod.horos_t}}</span>
