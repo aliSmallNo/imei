@@ -12,7 +12,7 @@
 </style>
 <div id="page-wrapper">
 	<div class="row">
-		<h4>账户记录列表</h4>
+		<h4>用户关系列表</h4>
 	</div>
 	<div class="row">
 		<form action="/site/net" method="get" class="form-inline">
