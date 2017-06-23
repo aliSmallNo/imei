@@ -330,7 +330,7 @@ require(["layer"],
 			wx.config(wxInfo);
 			wx.ready(function () {
 				//wx.hideOptionMenu();
-
+				wx.onMenuShareAppMessage();
 			});
 			window.onhashchange = locationHashChanged;
 			locationHashChanged();
