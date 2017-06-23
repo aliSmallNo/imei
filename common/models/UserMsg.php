@@ -12,7 +12,7 @@ class UserMsg extends ActiveRecord
 {
 	const CATEGORY_WX_MSG = 5; //后台公众号消息
 	
-	const CATEGORY_WX_DEFAULT = 10;
+	const CATEGORY_DEFAULT = 10;
 
 	//推送消息
 	const CATEGORY_ADMIN_PASS = 50;
@@ -27,7 +27,7 @@ class UserMsg extends ActiveRecord
 	const CATEGORY_RETURN_ROSE = 140;
 	const CATEGORY_MP_SAY = 150;
 
-	static $stDict = [
+	static $catDict = [
 		self::CATEGORY_ADMIN_PASS => "审核通过",
 		self::CATEGORY_ADMIN_REFUSE => "审核不通过",
 		self::CATEGORY_FAVRO => "心动",
@@ -38,7 +38,7 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_ADDWX_PASS => "同意你的微信好友请求",
 		self::CATEGORY_ADDWX_REFUSE => "拒绝你的微信好友请求",
 		self::CATEGORY_RETURN_ROSE => "退回媒瑰花",
-		self::CATEGORY_MP_SAY => "修改媒婆说",
+		self::CATEGORY_MP_SAY => "修改了媒婆说",
 	];
 
 	public static function tableName()

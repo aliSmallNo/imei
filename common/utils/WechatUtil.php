@@ -445,7 +445,7 @@ class WechatUtil
 		$result = AppUtil::postJSON($url, json_encode($bodyInfo));
 		UserMsg::edit("", [
 			"mUId" => $uId,
-			"mCategory" =>$cat,
+			"mCategory" => $cat,
 			"mText" => $text,
 			"mAddedBy" => Admin::getAdminId(),
 		]);
@@ -467,57 +467,44 @@ class WechatUtil
 		}
 		$name = $userInfo["uName"];
 
+		$url = "http://mp.bpdj365.com/wx/single";
 		switch ($tag) {
 			case "favor":
-				$url = "http://mp.bpdj365.com/wx/single";
-				$keyword1Val = "心动";
-				$ft = $f ? "" : "取消";
-				$text = $ft . $keyword1Val;
-				$keyword2Val = "有人" . $ft . "心动你了，快去看看吧！";
 				$cat = $f ? UserMsg::CATEGORY_FAVRO : UserMsg::CATEGORY_FAVRO_CANCEL;
+				$keyword1Val = UserMsg::$catDict[$cat];
+				$keyword2Val = "有人" . $keyword1Val . "你了，快去看看吧！";
 				break;
 			case "focus":
-				$url = "http://mp.bpdj365.com/wx/single";
-				$keyword1Val = "关注";
-				$ft = $f ? "取消" : "";
-				$text = $ft . $keyword1Val;
-				$cat = $f ? UserMsg::CATEGORY_FOCUS : UserMsg::CATEGORY_FOCUS_CANCEL;
-				$keyword2Val = "有人" . $ft . "关注你了，快去看看吧！";
+				$cat = $f ? UserMsg::CATEGORY_FOCUS_CANCEL : UserMsg::CATEGORY_FOCUS;
+				$keyword1Val = UserMsg::$catDict[$cat];
+				$keyword2Val = "有人" . $keyword1Val . "你了，快去看看吧！";
 				break;
 			case "wxNo":
-				$url = "http://mp.bpdj365.com/wx/single";
-				$keyword1Val = "微信好友请求";
-				$text = $keyword1Val;
-				$keyword2Val = "有人请求加你微信好友了，快去看看吧！";
 				$cat = UserMsg::CATEGORY_REQ_WX;
+				$keyword1Val = UserMsg::$catDict[$cat];
+				$keyword2Val = "有人" . $keyword1Val . "了，快去看看吧！";
 				break;
 			case "wx-replay":
-				$url = "http://mp.bpdj365.com/wx/single";
-				$keyword1Val = "微信好友请求";
-				$ft = $f ? "同意" : "拒绝";
-				$text = $ft . $keyword1Val;
 				$cat = $f ? UserMsg::CATEGORY_ADDWX_PASS : UserMsg::CATEGORY_ADDWX_REFUSE;
-				$keyword2Val = "有人" . $ft . "你的微信好友请求，快去看看吧！";
+				$keyword1Val = UserMsg::$catDict[$cat];
+				$keyword2Val = "有人" . $keyword1Val . "，快去看看吧！";
 				break;
 			case "return-rose":
 				$url = "http://mp.bpdj365.com/wx/sw";
-				$keyword1Val = "退回媒瑰花";
-				$text = $keyword1Val;
-				$keyword2Val = "有媒瑰花退回，快去看看吧！";
 				$cat = UserMsg::CATEGORY_RETURN_ROSE;
+				$keyword1Val = UserMsg::$catDict[$cat];
+				$keyword2Val = "有媒瑰花退回，快去看看吧！";
 				break;
 			case "mysay":
 				$url = "http://mp.bpdj365.com/wx/sh";
-				$keyword1Val = "媒婆说";
-				$text = "修改" . $keyword1Val;
-				$keyword2Val = "你的媒婆修改了你的媒婆说，快去看看吧！";
 				$cat = UserMsg::CATEGORY_MP_SAY;
+				$keyword1Val = UserMsg::$catDict[$cat];
+				$keyword2Val = "你的媒婆修改了你的媒婆说，快去看看吧！";
 				break;
 			default:
 				$url = "http://mp.bpdj365.com/wx/sreg";
 				$keyword1Val = "微媒100";
-				$text = $keyword1Val;
-				$cat = 10;
+				$cat = UserMsg::CATEGORY_DEFAULT;
 				$keyword2Val = "欢迎来到微媒100，这是一个真实的相亲交友软件！";
 		}
 
@@ -540,7 +527,7 @@ class WechatUtil
 		UserMsg::edit("", [
 			"mUId" => $uId,
 			"mCategory" => $cat,
-			"mText" => $text,
+			"mText" => $keyword1Val,
 			"mAddedBy" => $myId,
 		]);
 		return $result;
