@@ -401,6 +401,7 @@ class WxController extends BaseController
 	public function actionSh()
 	{
 		$hid = self::getParam('id');
+		$secretId = $hid;
 		$hid = AppUtil::decrypt($hid);
 		if (!$hid) {
 			header('location:/wx/error?msg=用户不存在啊~');
@@ -459,6 +460,7 @@ class WxController extends BaseController
 				'uInfo' => $uInfo,
 				'prefer' => $prefer,
 				'hid' => $hid,
+				'secretId' => $secretId,
 				'baseInfo' => $baseInfo,
 				'brief' => implode(' . ', $brief),
 				'items' => json_encode($items),
@@ -683,7 +685,7 @@ class WxController extends BaseController
 			if (!$matchInfo) {
 				header("location:/wx/error?msg=链接地址错误");
 				exit();
-			}else{
+			} else {
 				$nickname = $matchInfo["uName"];
 			}
 
