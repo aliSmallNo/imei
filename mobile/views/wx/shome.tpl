@@ -179,7 +179,7 @@
 
 <input type="hidden" id="cUID" value="{{$hid}}">
 <input type="hidden" id="secretId" value="{{$secretId}}">
-<input type="hidden" id="avatarID" value="{{$avatar}}">
+<input type="hidden" id="avatarID" value="{{$uInfo.avatar}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
