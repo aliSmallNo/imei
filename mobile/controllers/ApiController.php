@@ -275,13 +275,12 @@ class ApiController extends Controller
 				AppUtil::logFile($cache, 5, __FUNCTION__, __LINE__);
 				return self::renderAPI(0, '保存成功啦~', $ret);
 			case "album":
-				$f = self::postParam("f");
+				$f = self::postParam("f", 'add');
 				$text = "添加";
 				if ($f == "del") {
 					$text = "删除";
 				}
 				$url = User::album($id, $openId, $f);
-
 				if ($url) {
 					return self::renderAPI(0, $text . '成功', $url);
 				} else {

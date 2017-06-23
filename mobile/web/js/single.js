@@ -484,7 +484,7 @@ require(["layer"],
 				}, function (resp) {
 					showMsg(resp.msg);
 					if (resp.data) {
-						alert(resp.data);
+						//alert(resp.data);
 						$("#album .photos").append('<li><a><img src="' + resp.data + '"></a></li>');
 					}
 					smeUlit.uploadImgFlag = 0;
