@@ -728,7 +728,6 @@ class User extends ActiveRecord
 			$prov1 = "山东";
 			$prov2 = "江苏";
 			$condition .= "  and (POSITION('$prov1' IN u.uLocation) >0 or POSITION('$prov2' IN u.uLocation) >0) ";
-
 		}
 
 		if (!$data) {
@@ -767,8 +766,8 @@ class User extends ActiveRecord
 
 		$sql = "select nh.nUId as hid,u2.uId as mId,u2.uthumb as mpavatar,u2.uName as mpname, n.nNote as comment,u.* 
 				from im_user as u 
-				join im_user_net as n on u.uId=n.nSubUId and n.nRelation=$relation_mp and n.nDeletedFlag=$delflag
-				join im_user as u2 on u2.uId=n.nUId 
+				left join im_user_net as n on u.uId=n.nSubUId and n.nRelation=$relation_mp and n.nDeletedFlag=$delflag
+				left join im_user as u2 on u2.uId=n.nUId 
 				left join im_user_net as nh on u.uId=nh.nUId and nh.nRelation=$relation_favor and nh.nDeletedFlag=$delflag and nh.nSubUId=$mId
 				where $condition order by uUpdatedOn desc limit $limit";
 		$ret = AppUtil::db()->createCommand($sql)->queryAll();

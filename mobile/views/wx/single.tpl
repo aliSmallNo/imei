@@ -647,8 +647,14 @@
 		</a>
 		<div class="mp-info">
 			<div class="mp">
+				{[#mpname]}
 				<img src="{[mavatar]}" alt="">
 				<span><b>媒婆 {[mpname]}</b> 推荐了TA</span>
+				{[/mpname]}
+				{[^mpname]}
+				<img src="/images/logo62.png" alt="">
+				<span>TA还没<b>媒婆</b></span>
+				{[/mpname]}
 			</div>
 			{[#comment]}
 			<div class="des"><b>“</b>{[.]}<b>”</b></div>{[/comment]}
