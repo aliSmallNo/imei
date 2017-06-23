@@ -500,6 +500,7 @@ class User extends ActiveRecord
 	{
 		if ($id && $f == "add") {
 			$url = AppUtil::getMediaUrl($id);
+			return $url;
 		} else {
 			$url = $id;
 		}
