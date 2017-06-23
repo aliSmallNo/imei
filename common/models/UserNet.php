@@ -500,7 +500,7 @@ class UserNet extends ActiveRecord
 				(case when n.nRelation=110 then CONCAT(u.uName,' 邀请 ',u1.uName)  
 				when n.nRelation=120 then CONCAT(u.uName,' 成为 ',u1.uName,'的 媒婆 ')
 				when n.nRelation=130 then CONCAT(u1.uName,' 关注 ',u.uName)    
-				when n.nRelation=140 then CONCAT(u.uName,' 牵线 ',u1.uName)
+				when n.nRelation=140 then CONCAT(u1.uName,' 向 ',u.uName,' 索取微信号')
 				when n.nRelation=150 then CONCAT(u1.uName,' 心动 ',u.uName)  END) as text,
 				n.nAddedOn as dt
 				from im_user_net as n 
