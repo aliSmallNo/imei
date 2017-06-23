@@ -25,34 +25,34 @@ require(["layer"],
 		}
 
 		$(window).on("scroll", function () {
-			var lastRow = UserUtil.list.find('a').last();
-			if (lastRow && eleInScreen(lastRow) && UserUtil.page > 0) {
-				UserUtil.reload();
+			var lastRow = WalletUtil.list.find('li').last();
+			if (lastRow && eleInScreen(lastRow) && WalletUtil.page > 0) {
+				//WalletUtil.reload();
 				return false;
 			}
 		});
 
 		$('.btn').on(kClick, function () {
-			var self = $(this);
-			if (self.hasClass('signed') || $sls.loading) {
-				return false;
-			}
-			$sls.loading = 1;
-			$.post('/api/user', {
-				tag: 'sign'
-			}, function (resp) {
-				if (resp.code == 0) {
-					self.addClass('signed');
-					self.html(resp.data.title);
-					layer.open({
-						content: resp.msg,
-						btn: '我知道了'
-					});
-				} else {
-					showMsg(resp.msg);
-				}
-				$sls.loading = 0;
-			}, 'json');
+			// var self = $(this);
+			// if (self.hasClass('signed') || $sls.loading) {
+			// 	return false;
+			// }
+			// $sls.loading = 1;
+			// $.post('/api/user', {
+			// 	tag: 'sign'
+			// }, function (resp) {
+			// 	if (resp.code == 0) {
+			// 		self.addClass('signed');
+			// 		self.html(resp.data.title);
+			// 		layer.open({
+			// 			content: resp.msg,
+			// 			btn: '我知道了'
+			// 		});
+			// 	} else {
+			// 		showMsg(resp.msg);
+			// 	}
+			// 	$sls.loading = 0;
+			// }, 'json');
 		});
 
 

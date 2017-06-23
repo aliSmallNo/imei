@@ -186,7 +186,9 @@
 		</div>
 	</div>
 	<div class="incomes-wrap">
-		<ul class="incomes"></ul>
+		<ul class="incomes">
+
+		</ul>
 		<div class="spinner" style="display: none"></div>
 		<div class="empty middle" style="display: none">
 			<p class="title">暂无收益</p>

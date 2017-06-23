@@ -81,6 +81,18 @@ class ApiController extends Controller
 					'items' => $ret,
 					'wallet' => UserTrans::getStat($wxInfo['uId'], 1)
 				]);
+			case "mrecords":
+				$ret = UserTrans::records($wxInfo['uId'], $wxInfo['uRole']);
+				foreach ($ret as $k => $v) {
+					if ($v["unit"] != "yuan") {
+						unset($ret[$k]);
+					}
+				}
+				$ret = array_values($ret);
+				return self::renderAPI(0, '', [
+					'items' => $ret,
+					'wallet' => UserTrans::getStat($wxInfo['uId'], 1)
+				]);
 			case 'withdraw':
 				$wallet = UserTrans::getStat($wxInfo['uId'], 1);
 				if ($wallet['yuan'] < 50) {

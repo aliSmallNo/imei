@@ -341,7 +341,7 @@ require(["layer"],
 				util.spinner.show();
 				$.post('/api/wallet',
 					{
-						tag: 'records',
+						tag: 'mrecords',
 						page: util.page
 					},
 					function (resp) {
