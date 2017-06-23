@@ -310,7 +310,7 @@ require(["layer"],
 			// SingleUtil.init();
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
-			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareAppMessage'];
+			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareAppMessage','onMenuShareTimeline'];
 			wx.config(wxInfo);
 			wx.ready(function () {
 				//wx.hideOptionMenu();
