@@ -390,10 +390,6 @@ require(["layer"],
 			delImgFlag: false,
 			init: function () {
 				$(document).on(kClick, "a.choose-img", function () {
-					if (smeUlit.uploadImgFlag) {
-						return;
-					}
-					smeUlit.uploadImgFlag = 1;
 					wx.chooseImage({
 						count: 1,
 						sizeType: ['original', 'compressed'],
@@ -462,6 +458,10 @@ require(["layer"],
 				}, "json");
 			},
 			wxUploadImages: function () {
+				if (smeUlit.uploadImgFlag) {
+					return;
+				}
+				smeUlit.uploadImgFlag = 1;
 				wx.uploadImage({
 					localId: smeUlit.localId.toString(),
 					isShowProgressTips: 1,
