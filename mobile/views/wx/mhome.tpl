@@ -105,6 +105,10 @@
 <a href="/wx/rpt?id={{$hid}}" class="report">举报</a>
 <a style="display: none" class="rcmd gradient-h"><span>推荐TA的单身团</span></a>
 <input type="hidden" id="cUID" value="{{$hid}}">
+<input type="hidden" id="avatarID" value="{{$uInfo.thumb}}">
+<input type="hidden" id="secretId" value="{{$secretId}}">
+<input type="hidden" id="nameId" value="{{$uInfo.name}}">
+
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>

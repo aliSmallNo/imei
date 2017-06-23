@@ -357,6 +357,7 @@ class WxController extends BaseController
 	public function actionMh()
 	{
 		$hid = self::getParam('id');
+		$secretId = $hid;
 		$hid = AppUtil::decrypt($hid);
 		if (!$hid) {
 			header('location:/wx/error?msg=用户不存在啊~');
@@ -391,6 +392,7 @@ class WxController extends BaseController
 				'uInfo' => $uInfo,
 				'prefer' => $prefer,
 				'hid' => $hid,
+				'secretId' => $secretId,
 				'singles' => $items,
 				'stat' => $stat,
 				'followed' => $followed
