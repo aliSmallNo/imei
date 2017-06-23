@@ -11,31 +11,34 @@ use yii\db\ActiveRecord;
 class UserMsg extends ActiveRecord
 {
 	const CATEGORY_WX_MSG = 5; //后台公众号消息
-	const CATEGORY_WX_PUSH = 10;//推送消息
+	
+	const CATEGORY_WX_DEFAULT = 10;
 
-	const STATUS_ADMIN_PASS = 50;
-	const STATUS_ADMIN_REFUSE = 60;
-	const STATUS_FAVRO = 70;
-	const STATUS_FAVRO_CANCEL = 80;
-	const STATUS_FOCUS = 90;
-	const STATUS_FOCUS_CANCEL = 100;
-	const STATUS_REQ_WX = 110;
-	const STATUS_ADDWX_PASS = 120;
-	const STATUS_ADDWX_REFUSE = 130;
-	const STATUS_RETURN_ROSE = 140;
-	const STATUS_MP_SAY = 150;
+	//推送消息
+	const CATEGORY_ADMIN_PASS = 50;
+	const CATEGORY_ADMIN_REFUSE = 60;
+	const CATEGORY_FAVRO = 70;
+	const CATEGORY_FAVRO_CANCEL = 80;
+	const CATEGORY_FOCUS = 90;
+	const CATEGORY_FOCUS_CANCEL = 100;
+	const CATEGORY_REQ_WX = 110;
+	const CATEGORY_ADDWX_PASS = 120;
+	const CATEGORY_ADDWX_REFUSE = 130;
+	const CATEGORY_RETURN_ROSE = 140;
+	const CATEGORY_MP_SAY = 150;
+
 	static $stDict = [
-		self::STATUS_ADMIN_PASS => "审核通过",
-		self::STATUS_ADMIN_REFUSE => "审核不通过",
-		self::STATUS_FAVRO => "心动",
-		self::STATUS_FAVRO_CANCEL => "取消心动",
-		self::STATUS_FOCUS => "关注",
-		self::STATUS_FOCUS_CANCEL => "取消关注",
-		self::STATUS_REQ_WX => "申请加你微信",
-		self::STATUS_ADDWX_PASS => "同意你的微信好友请求",
-		self::STATUS_ADDWX_REFUSE => "拒绝你的微信好友请求",
-		self::STATUS_RETURN_ROSE => "退回媒瑰花",
-		self::STATUS_MP_SAY => "修改媒婆说",
+		self::CATEGORY_ADMIN_PASS => "审核通过",
+		self::CATEGORY_ADMIN_REFUSE => "审核不通过",
+		self::CATEGORY_FAVRO => "心动",
+		self::CATEGORY_FAVRO_CANCEL => "取消心动",
+		self::CATEGORY_FOCUS => "关注",
+		self::CATEGORY_FOCUS_CANCEL => "取消关注",
+		self::CATEGORY_REQ_WX => "申请加你微信",
+		self::CATEGORY_ADDWX_PASS => "同意你的微信好友请求",
+		self::CATEGORY_ADDWX_REFUSE => "拒绝你的微信好友请求",
+		self::CATEGORY_RETURN_ROSE => "退回媒瑰花",
+		self::CATEGORY_MP_SAY => "修改媒婆说",
 	];
 
 	public static function tableName()
