@@ -304,22 +304,7 @@ require(["layer"],
 			layer.closeAll();
 		}
 
-		wx.onMenuShareAppMessage({
-			title: '推荐一位优秀的单身给你', // 分享标题
-			desc: '微媒100，发现身边优秀单身！', // 分享描述
-			link: "http://mp.bpdj365.com/wx/sh?id=" + $("#secretId").val(), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-			imgUrl: $("#avatarID").val(), // 分享图标
-			type: '', // 分享类型,music、video或link，不填默认为link
-			dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-			success: function () {
-				showMsg("发送成功！");
-				// 用户确认分享后执行的回调函数
-			},
-			cancel: function () {
-				showMsg("取消发送！");
-				// 用户取消分享后执行的回调函数
-			}
-		});
+
 
 		$(function () {
 			$("body").addClass("bg-color");
@@ -330,7 +315,22 @@ require(["layer"],
 			wx.config(wxInfo);
 			wx.ready(function () {
 				//wx.hideOptionMenu();
-				wx.onMenuShareAppMessage();
+				wx.onMenuShareAppMessage({
+					title: '推荐一位优秀的单身给你', // 分享标题
+					desc: '微媒100，发现身边优秀单身！', // 分享描述
+					link: "http://mp.bpdj365.com/wx/sh?id=" + $("#secretId").val(), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+					imgUrl: $("#avatarID").val(), // 分享图标
+					type: '', // 分享类型,music、video或link，不填默认为link
+					dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+					success: function () {
+						showMsg("发送成功！");
+						// 用户确认分享后执行的回调函数
+					},
+					cancel: function () {
+						showMsg("取消发送！");
+						// 用户取消分享后执行的回调函数
+					}
+				});
 			});
 			window.onhashchange = locationHashChanged;
 			locationHashChanged();
