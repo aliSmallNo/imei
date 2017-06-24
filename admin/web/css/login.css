@@ -50,10 +50,10 @@ input[type=text], input[type=password] {
 
 .g-title img {
 	position: absolute;
-	width: 36px;
-	height: 36px;
-	left: 0;
-	top: 7px;
+	width: auto;
+	height: 48px;
+	left: 1px;
+	top: 1px;
 }
 
 .btn {

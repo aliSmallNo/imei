@@ -4,7 +4,7 @@
 			<br>
 		</div>
 		<form action="/site/login" method="post">
-			<h4 class="g-title"><img src="/favicon-62.png" alt="">微媒100</h4>
+			<h4 class="g-title"><img src="/images/i_brand.png" alt="">&nbsp;</h4>
 			<div class="row">
 				<div class="input-field col s12">
 					<input name="name" id="name" type="text" placeholder="请输入用户账号" autofocus>

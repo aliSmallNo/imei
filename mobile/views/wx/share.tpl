@@ -14,7 +14,7 @@
 			<img src="{{$avatar}}" alt="">
 			<em>{{$nickname}}</em>
 		</p>
-		<div class="btns">
+		<div class="btns bg-repeat">
 			<h4>一起来注册「微媒100」</h4>
 			<h5>随手帮助身边的单身青年，功德无量哦~</h5>
 			{{if $editable}}
