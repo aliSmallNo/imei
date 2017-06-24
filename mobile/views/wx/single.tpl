@@ -463,13 +463,13 @@
 </section>
 <div class="nav-foot on">
 	<a href="#slink" class="nav-link" data-tag="slink">
-		媒婆
+		看媒婆
 	</a>
 	<a href="#slook" class="nav-invite active" data-tag="slook">
-		发现
+		单身推荐
 	</a>
 	<a href="#sme" class="nav-me" data-tag="sme">
-		我的
+		个人中心
 	</a>
 </div>
 

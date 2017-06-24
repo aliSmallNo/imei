@@ -299,12 +299,12 @@ class ApiController extends Controller
 				$ret = User::getFilter($openId, $data, $page);
 				return self::renderAPI(0, '', $ret);
 			case "sprofile":
-				$id = self::postParam("id");
-				$ret = User::sprofile($id);
-				//心动
-				$hint = User::findOne(["uOpenId" => $openId])->uHint;
-				$ret["hintclass"] = (strpos($hint, $ret["id"]) !== false) ? "icon-loved" : "icon-love";
-				return self::renderAPI(0, '', ["data" => $ret]);
+//				$id = self::postParam("id");
+//				$ret = User::sprofile($id);
+//				//心动
+//				$hint = User::findOne(["uOpenId" => $openId])->uHint;
+//				$ret["hintclass"] = (strpos($hint, $ret["id"]) !== false) ? "icon-loved" : "icon-love";
+//				return self::renderAPI(0, '', ["data" => $ret]);
 			case "mymp":
 				$ret = User::mymp($openId);
 				return self::renderAPI(0, '', $ret);
@@ -317,7 +317,7 @@ class ApiController extends Controller
 				$ret = UserNet::focusMp($wxInfo["uId"], $page);
 				return self::renderAPI(0, '', ["data" => $ret]);
 				break;
-			case "hint":
+			case "hint": // 心动
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
@@ -345,7 +345,7 @@ class ApiController extends Controller
 				return self::renderAPI(0, '', $roseAmt);
 			case "addmewx":     //添加我微信
 			case "iaddwx":      //我添加微信
-			case "heartbeat":   //心动列表
+			case "heartbeat":   // 心动列表
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');

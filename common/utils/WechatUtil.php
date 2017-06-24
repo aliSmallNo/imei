@@ -426,7 +426,9 @@ class WechatUtil
 				break;
 			default :
 		}
-		$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+
+		//$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+		$access_token = self::accessToken();
 
 		$bodyInfo = [
 			"touser" => $openId,
@@ -508,7 +510,9 @@ class WechatUtil
 				$keyword2Val = "欢迎来到微媒100，这是一个真实的相亲交友软件！";
 		}
 
-		$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+		//$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+		$access_token = self::accessToken();
+
 		$bodyInfo = [
 			"touser" => $openId,
 			"template_id" => "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI",

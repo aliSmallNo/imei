@@ -507,7 +507,7 @@ class UserNet extends ActiveRecord
 				join im_user as u on u.uId=n.nUId 
 				join im_user as u1 on u1.uId=n.nSubUId 
 				where n.nDeletedFlag= 0  $condition
-				order by n.nId desc  limit $offset,$pageSize";
+				order by n.nAddedOn desc  limit $offset,$pageSize";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as &$v) {
 			$v["rText"] = self::$RelDict[$v["nRelation"]];

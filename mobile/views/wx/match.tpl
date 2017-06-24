@@ -236,13 +236,13 @@
 </section>
 <div class="nav-foot on">
 	<a href="#slink" class="nav-link active" data-tag="slink">
-		媒婆
+		其他媒婆
 	</a>
 	<a href="#sgroup" class="nav-group" data-tag="sgroup">
-		单身团
+		单身团推荐
 	</a>
 	<a href="#snews" class="nav-invite" data-tag="snews">
-		邀请
+		动态
 	</a>
 	<a href="#sme" class="nav-me" data-tag="sme">
 		我的
