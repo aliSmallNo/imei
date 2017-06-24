@@ -94,7 +94,6 @@ class WxController extends BaseController
 			if ($uInfo) {
 				$hasGender = in_array($uInfo['gender'], array_values(User::$Gender));
 			}
-
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
 			if ($wxInfo["uRole"] == User::ROLE_MATCHER) {

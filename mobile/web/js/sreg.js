@@ -25,7 +25,7 @@ require(["layer"],
 			routeIndex: 0,
 			coord: $('#cCoord'),
 			routeLength: mRoutes.length,
-			routeSkip: $.inArray('income', mRoutes),
+			routeSkip: $.inArray('scope', mRoutes),
 			locationRow: $('.location-row'),
 			mLat: 0,
 			mLng: 0
@@ -199,6 +199,7 @@ require(["layer"],
 			},
 			next: function () {
 				$sls.routeIndex++;
+				console.log(mRoutes);
 				var tag = mRoutes[$sls.routeIndex];
 				location.href = '#' + tag;
 			},
