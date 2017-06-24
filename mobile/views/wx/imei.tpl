@@ -6,10 +6,15 @@
 		<input type="number" placeholder="请输入验证码" class="input-s code">
 		<a href="javascript:;" class="btn-s s1 btn-code">发送验证码</a>
 	</div>
-	<p class="help-block">
-		<a href="javascript:;" class="change">点击这里切换成「媒婆」身份</a>
+	<p class="m-help-block">
+		<a class="change"><span>我单身，给自己找对象</span></a>
+		<a class="change"><span>当媒婆，我推荐单身</span></a>
+		<em href="javascript:;">选择一种身份</em>
 	</p>
-	<a href="javascript:;" class="m-submit">登录</a>
+	<div class="flex">
+
+	</div>
+	<a href="javascript:;" class="m-submit-m">登录</a>
 </div>
 <section id="frole">
 	<h1><img src="/images/logo62.png" alt="" class="logo">欢迎加入「微媒100」</h1>

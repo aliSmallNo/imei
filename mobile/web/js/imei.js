@@ -198,18 +198,23 @@ require(["layer"],
 			SingleUtil.init();
 			$sls.cork.hide();
 
-			$('.change, .btn-change').on(kClick, function () {
-				if ($sls.form.hasClass('single')) {
-					$sls.form.addClass('matcher').removeClass('single');
-					$sls.change.html('点击这里切换成「单身」身份');
-				} else {
+			$('.change').on(kClick, function () {
+				$(this).closest(".m-help-block").find("a").removeClass("active");
+				$(this).addClass("active");
+				if ($(this).closest(".m-help-block").find(":first-child").hasClass("active")) {
 					$sls.form.addClass('single').removeClass('matcher');
-					$sls.change.html('点击这里切换成「媒婆」身份');
+				} else {
+					$sls.form.addClass('matcher').removeClass('single');
 				}
+				$(".m-submit-m").removeClass("m-submit-m-active").addClass("m-submit-m-active");
 			});
 
-			$('.m-submit').on(kClick, function () {
-				regPhone();
+			$('.m-submit-m').on(kClick, function () {
+				if ($(this).hasClass("m-submit-m-active")) {
+					regPhone();
+				} else {
+					showMsg("请先选择一种身份！");
+				}
 			});
 
 			$('.btn-code').on(kClick, function () {
