@@ -1537,6 +1537,9 @@ section {
     background: url(../images/ico_gender_female.png) no-repeat center center;
     background-size: 100% 100%; }
 
+.invite-wrap .bg-repeat {
+  background: #F9586F url(../images/bg_piece.png) repeat center;
+  background-size: 40px 35px; }
 .invite-wrap .sender-wrap {
   background: #afdb64;
   text-align: center;
@@ -1581,8 +1584,8 @@ section {
     flex: 0 0 7rem;
     text-align: center; }
     .invite-wrap .sender-wrap .logo img {
-      width: 6rem;
-      height: 6rem;
+      width: 6.5rem;
+      height: 6.5rem;
       vertical-align: middle; }
 .invite-wrap .img-wrap {
   display: block;
@@ -1628,8 +1631,7 @@ section {
     left: 0;
     top: 0; }
 .invite-wrap .btns {
-  padding: 3rem 2rem;
-  background: #f06292; }
+  padding: 3rem 2rem; }
   .invite-wrap .btns h4 {
     text-align: center;
     color: #fbd2e0;
