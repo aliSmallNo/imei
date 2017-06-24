@@ -201,10 +201,10 @@ require(["layer"],
 			$('.change').on(kClick, function () {
 				$(this).closest(".m-help-block").find("a").removeClass("active");
 				$(this).addClass("active");
-				if ($(this).closest(".m-help-block").find(":first-child").hasClass("active")) {
-					$sls.form.addClass('single').removeClass('matcher');
-				} else {
+				if ($(this).closest(".m-help-block").find(":last-child").hasClass("active")) {
 					$sls.form.addClass('matcher').removeClass('single');
+				} else {
+					$sls.form.addClass('single').removeClass('matcher');
 				}
 				$(".m-submit-m").removeClass("m-submit-m-active").addClass("m-submit-m-active");
 			});

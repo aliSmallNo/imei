@@ -674,37 +674,36 @@ section
 		color: $linkColorLight
 		font-size: 1.2rem
 .m-help-block
-	font-size: 1.2rem
-	height: 3.6rem
-	line-height: 3.6rem
-	padding: 2rem 3rem
+	display: flex
 	em
 		font-size: 1rem
 		color: #777
-		margin-left: 5rem
 	a
-		font-size: 1.2rem
+		font-size: 1rem
 		display: block
 		color: #f06292
-		border-radius: 3rem
-		margin-bottom: 1rem
+		border-radius: 1rem
 		border: #f06292 solid 1px
 		position: relative
+		flex: 1
+		padding: 1.2rem 0
+		margin: 0 .5rem
+		text-align: center
 		&.active
 			background: #f06292
 			color: #fff
 			&:after
 				content: ''
-				width: 2rem
-				height: 2rem
+				width: 1rem
+				height: 1rem
 				background: url('/images/ico_reg_c.png') no-repeat center center
 				background-size: 100% 100%
 				display: inline-block
 				position: absolute
-				top: 0.8rem
-				right: 2rem
+				top: 0.2rem
+				right: .2rem
 		span
-			margin-left: 3rem
+			//margin-left: 3rem
 .line-space
 	height: 1rem
 

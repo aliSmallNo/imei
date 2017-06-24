@@ -7,9 +7,11 @@
 		<a href="javascript:;" class="btn-s s1 btn-code">发送验证码</a>
 	</div>
 	<p class="m-help-block">
+		<em href="javascript:;" style="display: none">选择一种身份</em>
+	</p>
+	<p class="m-help-block">
 		<a class="change"><span>我单身，给自己找对象</span></a>
 		<a class="change"><span>当媒婆，我推荐单身</span></a>
-		<em href="javascript:;">选择一种身份</em>
 	</p>
 	<div class="flex">
 
