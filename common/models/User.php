@@ -355,6 +355,9 @@ class User extends ActiveRecord
 				$item[strtolower($newKey)] = intval($item[strtolower($newKey)]);
 			}
 		}
+		if(!$item['thumb']){
+			$item['thumb'] = $item['avatar'];
+		}
 		if ($item['horos_t'] && mb_strlen($item['horos_t']) > 3) {
 			$item['horos_t'] = mb_substr($item['horos_t'], 0, 3);
 		}

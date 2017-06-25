@@ -49,6 +49,7 @@
 	td h5 {
 		font-size: 12px;
 		font-weight: 400;
+		margin: 3px 0;
 	}
 </style>
 <div id="page-wrapper">
@@ -80,7 +81,7 @@
 			<th class="col-sm-6">
 				个人信息
 			</th>
-			<th class="col-sm-4">
+			<th class="col-sm-3">
 				择偶标准
 			</th>
 			<th>
@@ -92,7 +93,7 @@
 		{{foreach from=$list item=prod}}
 		<tr data-id="{{$prod.id}}">
 			<td>
-				<img src="{{$prod.avatar}}" width="100%">
+				<img src="{{$prod.thumb}}" width="100%">
 			</td>
 			<td class="pInfo">
 
@@ -138,7 +139,8 @@
 				<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改用户</a>
 				<div class="btn-divider"></div>
 				<a href="javascript:;" class="delU btn btn-outline btn-danger btn-xs" cid="{{$prod.id}}">删除用户</a>
-				<h5>更新于{{$prod.updatedon|date_format:'%Y-%m-%d %H:%M'}}</h5>
+				<h5>创建于{{$prod.addedon|date_format:'%y-%m-%d %H:%M'}}</h5>
+				<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 			</td>
 		</tr>
 		{{/foreach}}
