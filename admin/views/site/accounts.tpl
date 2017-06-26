@@ -123,10 +123,10 @@
 			</td>
 			<td class="pInfo">
 				<span>{{foreach from=$prod.filter_t.age key=key item=item}}
-					{{$item.name}}{{if $key<1}}~{{/if}}{{/foreach}}</span>
+					{{if $key==1}}~{{/if}}{{$item.name}}{{/foreach}}</span>
 
-				<span>{{foreach from=$prod.filter_t.height item=item}}
-					{{$item.name}}~{{/foreach}}</span>
+				<span>{{foreach from=$prod.filter_t.height key=key item=item}}
+					{{if $key==1}}~{{/if}}{{$item.name}}{{/foreach}}</span>
 
 				<span>{{$prod.filter_t.income.name}}</span>
 				<span>{{$prod.filter_t.edu.name}}</span>
