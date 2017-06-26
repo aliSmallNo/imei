@@ -96,11 +96,9 @@
 				<img src="{{$prod.thumb}}" width="100%">
 			</td>
 			<td class="pInfo">
-
-				<span class="role{{$prod.role}}">{{$prod.role_t}}</span>
-				<span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
 				{{$prod.name}} {{$prod.phone}} <em>({{$prod.location_t}})</em>
-				<em>{{$prod.note_t}}</em>
+				<em>{{$prod.note_t}}</em><span class="role{{$prod.role}}">{{$prod.role_t}}</span>
+				<span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
 				<br>
 				{{if $prod.age}}<span>{{$prod.age}}</span>{{/if}}
 				{{if $prod.horos_t}}<span>{{$prod.horos_t}}</span>{{/if}}
