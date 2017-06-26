@@ -96,40 +96,37 @@
 				<img src="{{$prod.thumb}}" width="100%">
 			</td>
 			<td class="pInfo">
-
-				<span class="role{{$prod.role}}">{{$prod.role_t}}</span>
+				{{$prod.name}} {{$prod.phone}} <em>({{$prod.location_t}})</em>
+				<em>{{$prod.note_t}}</em><span class="role{{$prod.role}}">{{$prod.role_t}}</span>
 				<span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
-				{{$prod.name}} <em>({{$prod.location_t}})</em>
-				<span>{{$prod.phone}}</span>
-				<em>{{$prod.note_t}}</em>
 				<br>
-				<span>{{$prod.age}}</span>
-				<span>{{$prod.horos_t}}</span>
-				<span>{{$prod.gender_t}}</span>
-				<span>{{$prod.height_t}}</span>
-				<span>{{$prod.weight_t}}</span>
-				<span>{{$prod.education_t}}</span>
-				<span>{{$prod.scope_t}}</span>
-				<span>{{$prod.profession_t}}</span>
-				<span>{{$prod.income_t}}</span>
-				<span>{{$prod.estate_t}}</span>
-				<span>{{$prod.car_t}}</span>
-				<span>{{$prod.smoke_t}}</span>
-				<span>{{$prod.alcohol_t}}</span>
-				<span>{{$prod.diet_t}}</span>
-				<span>{{$prod.rest_t}}</span>
-				<span>{{$prod.fitness_t}}</span>
-				<span>{{$prod.belief_t}}</span>
-				<span>{{$prod.pet_t}}</span>
-				<span>{{$prod.intro}}</span>
-				<span>{{$prod.interest}}</span>
+				{{if $prod.age}}<span>{{$prod.age}}</span>{{/if}}
+				{{if $prod.horos_t}}<span>{{$prod.horos_t}}</span>{{/if}}
+				{{if $prod.gender_t}}<span>{{$prod.gender_t}}</span>{{/if}}
+				{{if $prod.height_t}}<span>{{$prod.height_t}}</span>{{/if}}
+				{{if $prod.weight_t}}<span>{{$prod.weight_t}}</span>{{/if}}
+				{{if $prod.education_t}}<span>{{$prod.education_t}}</span>{{/if}}
+				{{if $prod.scope_t}}<span>{{$prod.scope_t}}</span>{{/if}}
+				{{if $prod.profession_t}}<span>{{$prod.profession_t}}</span>{{/if}}
+				{{if $prod.income_t}}<span>{{$prod.income_t}}</span>{{/if}}
+				{{if $prod.estate_t}}<span>{{$prod.estate_t}}</span>{{/if}}
+				{{if $prod.car_t}}<span>{{$prod.car_t}}</span>{{/if}}
+				{{if $prod.smoke_t}}<span>{{$prod.smoke_t}}</span>{{/if}}
+				{{if $prod.alcohol_t}}<span>{{$prod.alcohol_t}}</span>{{/if}}
+				{{if $prod.diet_t}}<span>{{$prod.diet_t}}</span>{{/if}}
+				{{if $prod.rest_t}}<span>{{$prod.rest_t}}</span>{{/if}}
+				{{if $prod.fitness_t}}<span>{{$prod.fitness_t}}</span>{{/if}}
+				{{if $prod.belief_t}}<span>{{$prod.belief_t}}</span>{{/if}}
+				{{if $prod.pet_t}}<span>{{$prod.pet_t}}</span>{{/if}}
+				{{if $prod.intro}}<span>{{$prod.intro}}</span>{{/if}}
+				{{if $prod.interest}}<span>{{$prod.interest}}</span>{{/if}}
 			</td>
 			<td class="pInfo">
 				<span>{{foreach from=$prod.filter_t.age key=key item=item}}
-					{{$item.name}}{{if $key<1}}~{{/if}}{{/foreach}}</span>
+					{{if $key==1}}~{{/if}}{{$item.name}}{{/foreach}}</span>
 
-				<span>{{foreach from=$prod.filter_t.height item=item}}
-					{{$item.name}}~{{/foreach}}</span>
+				<span>{{foreach from=$prod.filter_t.height key=key item=item}}
+					{{if $key==1}}~{{/if}}{{$item.name}}{{/foreach}}</span>
 
 				<span>{{$prod.filter_t.income.name}}</span>
 				<span>{{$prod.filter_t.edu.name}}</span>

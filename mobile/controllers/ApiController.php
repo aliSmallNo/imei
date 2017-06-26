@@ -461,23 +461,25 @@ class ApiController extends Controller
 	public function actionPaid()
 	{
 		//测试
-		/*$GLOBALS['HTTP_RAW_POST_DATA'] = '<xml><appid><![CDATA[wxffcef12f0d7812f2]]></appid>
-<attach><![CDATA[商超订单]]></attach>
-<bank_type><![CDATA[CFT]]></bank_type>
-<cash_fee><![CDATA[1]]></cash_fee>
-<fee_type><![CDATA[CNY]]></fee_type>
-<is_subscribe><![CDATA[N]]></is_subscribe>
-<mch_id><![CDATA[1262404601]]></mch_id>
-<nonce_str><![CDATA[unkm46cfywpj4pdhz4zi31sg64uxldmj]]></nonce_str>
-<openid><![CDATA[oofYSwpw32rE37Ygxpp-eUIMB8-U]]></openid>
-<out_trade_no><![CDATA[18CLQZCGoUY]]></out_trade_no>
-<result_code><![CDATA[SUCCESS]]></result_code>
-<return_code><![CDATA[SUCCESS]]></return_code>
-<sign><![CDATA[A550BD6DB489B0001468EF4009D8A8FA]]></sign>
-<time_end><![CDATA[20150811175503]]></time_end>
-<total_fee>1</total_fee>
-<trade_type><![CDATA[APP]]></trade_type>
-<transaction_id><![CDATA[1007800798201508110599381314]]></transaction_id>
+		/*$GLOBALS['HTTP_RAW_POST_DATA'] =
+'<xml>
+	<appid><![CDATA[wxffcef12f0d7812f2]]></appid>
+	<attach><![CDATA[商超订单]]></attach>
+	<bank_type><![CDATA[CFT]]></bank_type>
+	<cash_fee><![CDATA[1]]></cash_fee>
+	<fee_type><![CDATA[CNY]]></fee_type>
+	<is_subscribe><![CDATA[N]]></is_subscribe>
+	<mch_id><![CDATA[1262404601]]></mch_id>
+	<nonce_str><![CDATA[unkm46cfywpj4pdhz4zi31sg64uxldmj]]></nonce_str>
+	<openid><![CDATA[oofYSwpw32rE37Ygxpp-eUIMB8-U]]></openid>
+	<out_trade_no><![CDATA[18CLQZCGoUY]]></out_trade_no>
+	<result_code><![CDATA[SUCCESS]]></result_code>
+	<return_code><![CDATA[SUCCESS]]></return_code>
+	<sign><![CDATA[A550BD6DB489B0001468EF4009D8A8FA]]></sign>
+	<time_end><![CDATA[20150811175503]]></time_end>
+	<total_fee>1</total_fee>
+	<trade_type><![CDATA[APP]]></trade_type>
+	<transaction_id><![CDATA[1007800798201508110599381314]]></transaction_id>
 </xml>';
 	*/
 		$xml = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : "";

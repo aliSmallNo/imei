@@ -17,7 +17,7 @@ require(["layer"],
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
-			nic: $('.nic'),
+			nic: $('.img-wrap'),
 			uid: $('#cUID').val(),
 			wxUrl: $('#cWXUrl').val(),
 			dl: $('.dl'),
@@ -81,10 +81,11 @@ require(["layer"],
 		function resetMenuShare() {
 			var cid = $sls.dl.attr('data-id');
 			var cName = $sls.dl.html();
-			var name = $sls.nic.find('p').html();
-			var thumb = $sls.nic.attr('data-id');
+			var name = $sls.nic.find('em').html();
+			var thumb = $sls.nic.find("img").attr('src');
 			var link = $sls.wxUrl + '/wx/share?id=' + $sls.uid + '&cid=' + cid;
-			var title = name + '和' + cName + '一起做媒婆了';
+			//var title = name + '和' + cName + '一起做媒婆了';
+			var title = '我是' + name + '，我在微媒100做媒婆了';
 			var desc = '一起来微媒100做媒婆吧，帮助身边的单身青年脱单';
 			wx.onMenuShareTimeline({
 				title: title,
@@ -126,6 +127,7 @@ require(["layer"],
 						'menuItem:share:facebook'
 					]
 				});
+
 			});
 			$sls.cork.hide();
 		});
