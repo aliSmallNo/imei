@@ -71,7 +71,7 @@ class UserMsg extends ActiveRecord
 				where bType in ('text','image','voice') AND bFrom=:openid
 				UNION 
 				select 'text' as type, m.mId as id ,'im-user' as cat, m.mAddedOn as dt,
-				'/images/im_default.png' as avatar, m.mText as txt, CONCAT('奔跑到家 - ', ifnull(a.aName,'')) as nickname
+				'/images/im_default_g.png' as avatar, m.mText as txt, CONCAT('奔跑到家 - ', ifnull(a.aName,'')) as nickname
 				from im_user_msg as m 
 				left join im_admin as a on a.aId=m.mAddedBy 
 				left join im_user as u on m.mUId=u.uId 

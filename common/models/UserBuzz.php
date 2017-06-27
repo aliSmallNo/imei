@@ -271,7 +271,7 @@ class UserBuzz extends ActiveRecord
 		$res = $conn->createCommand($sql)->queryAll();
 		foreach ($res as $key => $row) {
 			if (!isset($row["wAvatar"]) || !$row["wAvatar"]) {
-				$res[$key]["avatar"] = "/images/im_default.png";
+				$res[$key]["avatar"] = "/images/im_default_g.png";
 			} else {
 				$res[$key]["avatar"] = $row["wAvatar"];
 			}

@@ -12,7 +12,7 @@
 </style>
 <div id="page-wrapper">
 	<div class="row">
-		<h4>账户记录列表</h4>
+		<h4>充值账户记录列表</h4>
 	</div>
 	<div class="row">
 		<form action="/site/recharges" method="get" class="form-inline">

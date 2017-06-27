@@ -130,7 +130,7 @@ class Menu
 						"url" => "/site/accounts"
 					],
 					[
-						"name" => "充值列表",
+						"name" => "充值账户",
 						"url" => "/site/recharges",
 						"level" => 820
 					],
