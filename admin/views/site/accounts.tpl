@@ -8,13 +8,10 @@
 		border-radius: 3px;
 		color: #f491b2;
 		display: inline-block;
-		margin: 3px 2px;
+		margin: 3px 1px;
 	}
 
 	.pInfo span:empty {
-		border: none;
-		padding: 0;
-		margin: 0;
 		display: none;
 	}
 
