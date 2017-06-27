@@ -44,39 +44,39 @@
 			</div>
 		</div>
 		<div class="share-mps">
-			<h3>他们也是媒婆哦</h3>
+			<h4>他们也是媒婆哦</h4>
 			<div class="share-mps-items">
 				<div class="share-mps-item">
 					<div class="img">
-						<img src="/images/mascot.png">
+						<img src="http://mpimg.bpdj365.com/avatar/d3e6c74bad734f95b0a32de2552250cf_t.jpg">
 					</div>
 					<div class="intro">
-						<h5>姓名：王二丫</h5>
-						<em>简单介绍：介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍</em>
+						<h5>姓名：澳洲花道Nancy</h5>
+						<p>简单介绍：I believe we can be better together</p>
 					</div>
 				</div>
 				<div class="share-mps-item">
 					<div class="img">
-						<img src="/images/mascot.png">
+						<img src="http://mpimg.bpdj365.com/avatar/679719a2ba1247fc8c7e1870ff1bbdff_t.jpg">
 					</div>
 					<div class="intro">
-						<h5>姓名：王二丫</h5>
-						<em>简单介绍：介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍</em>
+						<h5>姓名：杜杜┏ (^ω^)=☞</h5>
+						<p>简单介绍：简简单单，从从容容，做更好的自己。</p>
 					</div>
 				</div>
 				<div class="share-mps-item">
 					<div class="img">
-						<img src="/images/mascot.png">
+						<img src="http://mpimg.bpdj365.com/avatar/1876b3b8ef604d08b9245fce9d1a3d75_t.jpg">
 					</div>
 					<div class="intro">
-						<h5>姓名：王二丫</h5>
-						<em>简单介绍：介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍</em>
+						<h5>姓名：DU妙婧</h5>
+						<p>简单介绍：性格开朗外向爱笑，喜欢出游，希望对方阳光外向，人品好。</p>
 					</div>
 				</div>
 			</div>
 			<div class="share-mps-bot">
 				<div class="img">
-					<img src="/images/mascot.png">
+					<img src="/images/logo33.png">
 				</div>
 				<div class="intro">
 					<h3>人人都来当媒婆</h3>

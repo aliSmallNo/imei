@@ -1773,12 +1773,35 @@ section {
         letter-spacing: 0.1rem; }
 .invite-wrap .share-mps {
   background: #F9586F;
-  padding: 1rem;
+  padding: 2rem;
   text-align: center;
   color: #FFCCF5; }
+  .invite-wrap .share-mps h4 {
+    font-size: 2rem;
+    position: relative;
+    padding: 1rem; }
+    .invite-wrap .share-mps h4:before {
+      content: "";
+      position: absolute;
+      left: 1rem;
+      top: 0.5rem;
+      background: url("../images/logo74.png") no-repeat center center;
+      background-size: 100% 100%;
+      width: 5rem;
+      height: 4rem; }
+    .invite-wrap .share-mps h4:after {
+      content: "";
+      position: absolute;
+      right: 1rem;
+      top: 0.5rem;
+      background: url("../images/logo74.png") no-repeat center center;
+      background-size: 100% 100%;
+      width: 5rem;
+      height: 4rem; }
   .invite-wrap .share-mps .share-mps-items {
     padding: 1rem;
-    overflow: hidden; }
+    overflow: hidden;
+    color: #fff; }
     .invite-wrap .share-mps .share-mps-items .share-mps-item {
       float: left;
       display: flex;
@@ -1789,21 +1812,34 @@ section {
       .invite-wrap .share-mps .share-mps-items .share-mps-item .img {
         flex: 1; }
         .invite-wrap .share-mps .share-mps-items .share-mps-item .img img {
-          width: 100%; }
+          width: 6rem;
+          height: 6rem;
+          border-radius: 6rem;
+          border: 0.3rem solid #AFDB64; }
       .invite-wrap .share-mps .share-mps-items .share-mps-item .intro {
-        flex: 2; }
+        flex: 2;
+        padding: 1rem 0; }
         .invite-wrap .share-mps .share-mps-items .share-mps-item .intro h5 {
           font-size: 1.2rem; }
-        .invite-wrap .share-mps .share-mps-items .share-mps-item .intro em {
-          font-size: 1rem; }
+        .invite-wrap .share-mps .share-mps-items .share-mps-item .intro p {
+          font-size: 0.8rem;
+          letter-spacing: 0.1rem; }
   .invite-wrap .share-mps .share-mps-bot {
-    display: flex; }
+    display: flex;
+    text-align: left; }
     .invite-wrap .share-mps .share-mps-bot .img {
       flex: 1; }
       .invite-wrap .share-mps .share-mps-bot .img img {
         width: 100%; }
     .invite-wrap .share-mps .share-mps-bot .intro {
-      flex: 2; }
+      flex: 2;
+      padding: 1.2rem 0; }
+      .invite-wrap .share-mps .share-mps-bot .intro h3 {
+        margin: 0;
+        font-size: 2rem; }
+      .invite-wrap .share-mps .share-mps-bot .intro p {
+        font-size: 1rem;
+        padding: 0.5rem 0; }
 
 .mycard {
   background: #fbd2e0;

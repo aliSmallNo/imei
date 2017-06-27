@@ -1780,15 +1780,38 @@ section
 					letter-spacing: .1rem
 	.share-mps
 		background: #F9586F
-		padding: 1rem
+		padding: 2rem
 		text-align: center
 		color: #FFCCF5
+		h4
+			font-size: 2rem
+			position: relative
+			padding: 1rem
+			&:before
+				content: ''
+				position: absolute
+				left: 1rem
+				top: 0.5rem
+				background: url('../images/logo74.png') no-repeat center center
+				background-size: 100% 100%
+				width: 5rem
+				height: 4rem
+			&:after
+				content: ''
+				position: absolute
+				right: 1rem
+				top: 0.5rem
+				background: url('../images/logo74.png') no-repeat center center
+				background-size: 100% 100%
+				width: 5rem
+				height: 4rem
+
 		.share-mps-items
 			padding: 1rem
 			overflow: hidden
+			color: #fff
 			.share-mps-item
 				float: left
-				//width: 100%
 				display: flex
 				text-align: left
 				background: #E7455C
@@ -1797,21 +1820,34 @@ section
 				.img
 					flex: 1
 					img
-						width: 100%
+						width: 6rem
+						height: 6rem
+						border-radius: 6rem
+						border: .3rem solid #AFDB64
 				.intro
 					flex: 2
+					padding: 1rem 0
 					h5
 						font-size: 1.2rem
-					em
-						font-size: 1rem
+					p
+						font-size: .8rem
+						letter-spacing: .1rem
 		.share-mps-bot
 			display: flex
+			text-align: left
 			.img
 				flex: 1
 				img
 					width: 100%
 			.intro
 				flex: 2
+				padding: 1.2rem 0
+				h3
+					margin: 0
+					font-size: 2rem
+				p
+					font-size: 1rem
+					padding: .5rem 0
 
 
 .mycard
