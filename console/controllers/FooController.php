@@ -8,12 +8,9 @@ namespace console\controllers;
  * Date: 11/5/2017
  * Time: 2:11 PM
  */
-use admin\models\Admin;
 use common\models\User;
 use common\models\UserNet;
-use common\models\UserTrans;
 use common\utils\AppUtil;
-use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
 use yii\console\Controller;
@@ -357,5 +354,8 @@ class FooController extends Controller
 	public function actionRain()
 	{
 		//UserNet::processWx(131021, "refuse", 120003);
+
+		$ret = array_search('0', array_keys(User::$HeightFilter));
+		var_dump($ret);
 	}
 }

@@ -126,15 +126,9 @@
 				<span>{{$prod.interest}}</span>
 			</td>
 			<td class="pInfo">
-				<span>{{foreach from=$prod.filter_t.age key=key item=item}}
-					{{if $key==1}}~{{/if}}{{$item.name}}{{/foreach}}</span>
-
-				<span>{{foreach from=$prod.filter_t.height key=key item=item}}
-					{{if $key==1}}~{{/if}}{{$item.name}}{{/foreach}}</span>
-
-				<span>{{$prod.filter_t.income.name}}</span>
-				<span>{{$prod.filter_t.edu.name}}</span>
-
+				{{foreach from=$prod.filter_t item=item}}
+				<span>{{$item}}</span>
+				{{/foreach}}
 			</td>
 			<td>
 				<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改用户</a>
