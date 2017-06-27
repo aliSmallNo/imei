@@ -25,16 +25,62 @@
 			<a href="/wx/mh?id={{$encryptId}}#shome" class="btn-s-1 s0 btn-look">查看TA的单身团</a>
 			{{/if}}
 		</div>
-		<div>
-			<p>微媒100我觉得是个靠谱的平台，单身的都是朋友介绍来的、一起来当媒婆帮身身边朋友找对象吧！</p>
-			<div>
-				<div>
+		<div class="share-cont">
+			<p class="share-title">微媒100我觉得是个靠谱的平台，单身的都是朋友介绍来的、一起来当媒婆帮身身边朋友找对象吧！</p>
+			<div class="share-items">
+				<div class="share-item">
 					<span>关于微媒100</span>
 					<p>微媒100是一个通过好友推荐实现单身信息共享和互动的全新婚恋平台。平台的单身用户均由朋友推荐。解决了以往网络上婚恋平台交友不靠谱这一大难题。</p>
 				</div>
-				<div>
-					<span>关于微媒100</span>
-					<p>微媒100是一个通过好友推荐实现单身信息共享和互动的全新婚恋平台。平台的单身用户均由朋友推荐。解决了以往网络上婚恋平台交友不靠谱这一大难题。</p>
+				<div class="share-item">
+					<span>当媒婆可以干嘛</span>
+					<p>1，媒婆可以一键把认识的单身朋友推荐
+						到平台上<br>
+						2，可以为单身好友写几句推荐语，让他
+						们脱单更快<br>
+						3，单身自由互动中，媒婆可以坐收红包<br>
+						4，朋友脱单后，还会收到朋友的感谢哦</p>
+				</div>
+			</div>
+		</div>
+		<div class="share-mps">
+			<h3>他们也是媒婆哦</h3>
+			<div class="share-mps-items">
+				<div class="share-mps-item">
+					<div class="img">
+						<img src="/images/mascot.png">
+					</div>
+					<div class="intro">
+						<h5>姓名：王二丫</h5>
+						<em>简单介绍：介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍</em>
+					</div>
+				</div>
+				<div class="share-mps-item">
+					<div class="img">
+						<img src="/images/mascot.png">
+					</div>
+					<div class="intro">
+						<h5>姓名：王二丫</h5>
+						<em>简单介绍：介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍</em>
+					</div>
+				</div>
+				<div class="share-mps-item">
+					<div class="img">
+						<img src="/images/mascot.png">
+					</div>
+					<div class="intro">
+						<h5>姓名：王二丫</h5>
+						<em>简单介绍：介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍</em>
+					</div>
+				</div>
+			</div>
+			<div class="share-mps-bot">
+				<div class="img">
+					<img src="/images/mascot.png">
+				</div>
+				<div class="intro">
+					<h3>人人都来当媒婆</h3>
+					<p>让彼此的单身朋友相遇，功德无量哦</p>
 				</div>
 			</div>
 		</div>

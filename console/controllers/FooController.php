@@ -353,6 +353,6 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		User::fmtRow(User::find()->where(["uId" => 120003])->asArray()->one());
+
 	}
 }
