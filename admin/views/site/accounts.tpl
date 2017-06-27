@@ -27,15 +27,21 @@
 	}
 
 	.pInfo .role20 {
-		color: #44b549;
-		padding: 1px 10px;
-		border: 1px solid #4CAF50;
+		font-size: 12px;
+		line-height: 16px;
+		color: #fff;
+		background: #f491b2;
+		padding: 0 5px;
+		border: none;
 	}
 
 	.pInfo .role10 {
-		color: #666;
-		padding: 1px 10px;
-		border: 1px solid #aaa;
+		font-size: 12px;
+		line-height: 16px;
+		color: #fff;
+		background: #939393;
+		padding: 0 5px;
+		border: none;
 	}
 
 	.pInfo span.status-1 {
@@ -100,9 +106,8 @@
 				<img src="{{$prod.thumb}}" width="100%">
 			</td>
 			<td class="pInfo">
-				{{$prod.name}} {{$prod.phone}} <em>{{$prod.location_t}}</em>
-				<em>{{$prod.note_t}}</em><span class="role{{$prod.role}}">{{$prod.role_t}}</span>
-				<span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
+				<span class="role{{$prod.role}}">{{$prod.role_t}}</span> {{$prod.name}} {{$prod.phone}} <em>{{$prod.location_t}}</em>
+				<em>{{$prod.note_t}}</em><span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
 				<br>
 				<span>{{$prod.age}}</span>
 				<span>{{$prod.horos_t}}</span>
