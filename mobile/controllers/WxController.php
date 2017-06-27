@@ -202,8 +202,9 @@ class WxController extends BaseController
 				"job" => json_encode($job),
 				"filter" => $filter,
 			],
-			'imei',
-			'单身身份修改');
+			'terse',
+			'单身身份修改',
+			'bg-color');
 	}
 
 	public function actionMedit()
