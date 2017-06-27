@@ -183,7 +183,7 @@
 <a class="sedit-alert action-com" data-field="smoke">
 	<label>抽烟情况</label>
 	<div class="sedit-alert-val action-val">
-		<em data-key="{{$uInfo.smoke_t}}">{{$uInfo.smoke_t}}</em>
+		<em data-key="{{$uInfo.smoke}}">{{$uInfo.smoke_t}}</em>
 	</div>
 </a>
 <a class="sedit-alert action-com" data-field="belief">
