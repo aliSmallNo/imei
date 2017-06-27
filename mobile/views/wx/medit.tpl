@@ -2,16 +2,23 @@
 	.m-popup-options a.cur {
 		background: #fbd6e3 !important;
 	}
+	.sedit-avart-p {
+		background: rgba(0, 0, 0, .5);
+		text-align: center;
+		padding: 2rem 0;
+	}
 </style>
 <div class="m-popup-shade"></div>
 
 <div class="nav">
 	<a href="/wx/match#sme">返回</a>
 </div>
-<div class="sedit-avart">
-	<a class="photo">
-		<img src="{{$avatar}}" class="avatar" >
-	</a>
+<div class="sedit-avart" style="background: url('{{$avatar}}') no-repeat center center;background-size: 100% 100%;padding: 0;">
+	<p class="sedit-avart-p">
+		<a class="photo">
+			<img src="{{$avatar}}" class="avatar">
+		</a>
+	</p>
 	<div class="m-draw-wrap off">
 		<div class="title">上传本人照片，头像居中，五官高清，上半身最佳，例如：</div>
 		<ul class="images clearfix">
