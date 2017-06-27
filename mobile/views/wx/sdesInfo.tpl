@@ -22,7 +22,7 @@
 			<div class="right">{{$user.location_t}}</div>
 		</div>
 		<div class="item-des">
-			<div class="left">出生日期</div>
+			<div class="left">出生年</div>
 			<div class="right">{{$user.birthyear_t}}</div>
 		</div>
 		<div class="item-des">

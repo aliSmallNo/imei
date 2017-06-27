@@ -114,7 +114,7 @@
 </a>
 
 <a class="sedit-alert action-com" data-field="year">
-	<label>出生日期</label>
+	<label>出生年</label>
 	<div class="sedit-alert-val action-val">
 		<em data-key="{{$uInfo.birthyear}}">{{$uInfo.birthyear_t}}</em>
 	</div>

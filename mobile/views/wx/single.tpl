@@ -343,7 +343,7 @@
 			<div class="right">山东济宁</div>
 		</div>
 		<div class="item-des">
-			<div class="left">出生日期</div>
+			<div class="left">出生年</div>
 			<div class="right">1990-01</div>
 		</div>
 		<div class="item-des">
