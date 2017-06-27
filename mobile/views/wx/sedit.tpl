@@ -23,17 +23,17 @@
 
 	.sedit-avart-p .sedit-avart-material-perc {
 		display: block;
-		height: 5px;
+		height: 6px;
 		text-align: center;
 		margin: 1rem 7rem;
 		border: 1px solid #fff;
-		border-radius: 3px;
+		border-radius: 4px;
 		z-index: 99;
 	}
 
 	.sedit-avart-p .sedit-avart-material-perc span {
 		background: #fff;
-		height: 5px;
+		height: 6px;
 		display: block;
 		border-radius: 3px;
 	}
