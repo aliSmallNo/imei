@@ -343,8 +343,8 @@ class User extends ActiveRecord
 			if ($newKey == "filter") {
 				$item["filter_t"] = User::Filter($row["uFilter"]);
 			}
-
-			if ($newKey == 'birthyear') {
+			$item['age'] = '';
+			if ($newKey == 'birthyear' && intval($val) > 0) {
 				$item['age'] = date('Y') - intval($val);
 				$item['age'] .= '岁';
 			}
@@ -355,7 +355,7 @@ class User extends ActiveRecord
 				$item[strtolower($newKey)] = intval($item[strtolower($newKey)]);
 			}
 		}
-		if(!$item['thumb']){
+		if (!$item['thumb']) {
 			$item['thumb'] = $item['avatar'];
 		}
 		if ($item['horos_t'] && mb_strlen($item['horos_t']) > 3) {
