@@ -28,7 +28,7 @@ class UserBuzz extends ActiveRecord
 		"MenuId" => "bMenuId",
 	];
 
-	private static $Token = "BLkNmzT5HdJQT8DMZu1kIK";
+	static $Token = "BLkNmzT5HdJQT8DMZu1kIK";
 	private static $WelcomeMsg = '';
 
 	public static function tableName()

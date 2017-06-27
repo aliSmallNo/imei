@@ -341,12 +341,10 @@ class User extends ActiveRecord
 			}
 
 			if ($newKey == "filter") {
-				$item["filter_t"] = User::Filter($row["uFilter"]);
+				list($dump, $item["filter_t"]) = User::Filter($row["uFilter"]);
 			}
-
 			if ($newKey == 'birthyear') {
-				$item['age'] = date('Y') - intval($val);
-				$item['age'] .= '岁';
+				$item['age'] = intval($val) ? (date('Y') - intval($val)) . '岁' : '';
 			}
 			$item[$newKey] = $val;
 			$newKey = ucfirst($newKey);
@@ -355,7 +353,7 @@ class User extends ActiveRecord
 				$item[strtolower($newKey)] = intval($item[strtolower($newKey)]);
 			}
 		}
-		if(!$item['thumb']){
+		if (!$item['thumb']) {
 			$item['thumb'] = $item['avatar'];
 		}
 		if ($item['horos_t'] && mb_strlen($item['horos_t']) > 3) {
@@ -911,47 +909,70 @@ class User extends ActiveRecord
 	{
 		if (!$filter) {
 			return [
-				"age" => [
-					["key" => 0, "name" => "年龄不限"]
+				[
+					"age" =>
+						[
+							["key" => 0, "name" => "年龄不限"]
+						],
+					"height" =>
+						[
+							["key" => 0, "name" => "身高不限"]
+						],
+					"income" =>
+						["key" => 0, "name" => "收入不限"],
+					"edu" =>
+						["key" => 0, "name" => "学历不限"],
 				],
-				"height" => [
-					["key" => 0, "name" => "身高不限"]
-				],
-				"income" => ["key" => 0, "name" => "收入不限"],
-				"edu" => ["key" => 0, "name" => "学历不限"],
+				[]
 			];
 		}
 		$filterArr = json_decode($filter, 1);
 		$ret = [];
-
+		$titles = [];
 		if (isset($filterArr["age"]) && $ageArr = explode("-", $filterArr["age"])) {
+			$arr = [];
 			foreach ($ageArr as $k => $v) {
 				$val = isset(User::$AgeFilter[$v]) ? User::$AgeFilter[$v] : "";
 				$ret["age"][] = ["key" => $v, "name" => $val];
+				if ($v) {
+					$arr[] = $val;
+				}
 			}
+			$titles[] = implode('-', $arr);
 		} else {
 			$ret["age"][] = ["key" => 0, "name" => "年龄不限"];
 		}
 
 		if (isset($filterArr["height"]) && $heightArr = explode("-", $filterArr["height"])) {
+			$arr = [];
 			foreach ($heightArr as $k => $v) {
 				$val = isset(User::$HeightFilter[$v]) ? User::$HeightFilter[$v] : "";
 				$ret["height"][] = ["key" => $v, "name" => $val];
+				if ($v) {
+					$arr[] = $val;
+				}
 			}
+			$titles[] = implode('-', $arr);
 		} else {
 			$ret["height"][] = ["key" => 0, "name" => "身高不限"];
 		}
 		if (isset($filterArr["income"]) && isset(User::$IncomeFilter[$filterArr["income"]])) {
 			$ret["income"] = ["key" => $filterArr["income"], "name" => User::$IncomeFilter[$filterArr["income"]]];
+			if ($filterArr["income"]) {
+				$titles[] = $ret["income"]['name'];
+			}
 		} else {
 			$ret["income"] = ["key" => 0, "name" => "收入不限"];
 		}
 		if (isset($filterArr["edu"]) && isset(User::$EducationFilter[$filterArr["edu"]])) {
 			$ret["edu"] = ["key" => $filterArr["edu"], "name" => User::$EducationFilter[$filterArr["edu"]]];
+			if ($filterArr["edu"]) {
+				$titles[] = $ret["edu"]['name'];
+			}
 		} else {
 			$ret["edu"] = ["key" => 0, "name" => "学历不限"];
 		}
-		return $ret;
+		return [$ret, $titles];
 	}
 
 

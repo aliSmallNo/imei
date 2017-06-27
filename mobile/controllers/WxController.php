@@ -157,7 +157,7 @@ class WxController extends BaseController
 			}
 			$uInfo = User::user(['uId' => $wxInfo['uId']]);
 		}
-		$filter = User::Filter($uInfo["filter"]);
+		list($filter) = User::Filter($uInfo["filter"]);
 
 		$routes = ['photo', 'gender', 'location', 'year', 'horos', 'height', 'weight', 'income', 'edu', 'intro', 'scope',
 			'job', 'house', 'car', 'smoke', 'drink', 'belief', 'workout', 'diet', 'rest', 'pet', 'interest'];

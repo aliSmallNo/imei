@@ -35,11 +35,11 @@ class ApiController extends Controller
 		$signature = self::getParam("signature");
 		$timestamp = self::getParam("timestamp");
 		$nonce = self::getParam("nonce");
-		$echostr = self::getParam("echostr");
+		$retStr = self::getParam("echostr", UserBuzz::$Token);
 		$ret = UserBuzz::checkSignature($signature, $timestamp, $nonce);
 		if (!$ret) {
 			ob_clean();
-			echo $echostr;
+			echo $retStr;
 			exit();
 		}
 		$postStr = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : "";
@@ -61,7 +61,7 @@ class ApiController extends Controller
 		if ($resp) {
 			echo $resp;
 		} else {
-			echo $echostr;
+			echo $retStr;
 		}
 	}
 
