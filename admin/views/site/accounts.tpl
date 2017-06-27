@@ -18,6 +18,7 @@
 	.pInfo em {
 		font-size: 12px;
 		color: #777;
+		font-style: normal;
 	}
 
 	.pInfo span.status-0 {
@@ -61,17 +62,20 @@
 		font-weight: 400;
 		margin: 3px 0;
 	}
-	.perc-bar-title{
+
+	.perc-bar-title {
 		font-size: 12px;
 		color: #f491b2;
 		margin: 0;
 	}
+
 	.perc-bar {
 		border: 1px solid #f491b2;
 		width: 60%;
 		height: 7px;
 		border-radius: 5px
 	}
+
 	.perc-bar em {
 		background: #f491b2;
 		display: block;
@@ -124,7 +128,7 @@
 				<img src="{{$prod.thumb}}" width="100%">
 			</td>
 			<td class="pInfo">
-				<span class="role{{$prod.role}}">{{$prod.role_t}}</span> {{$prod.name}} {{$prod.phone}} <em>{{$prod.location_t}}</em>
+				<span class="role{{$prod.role}}">{{$prod.role_t}}</span> {{$prod.name}} <em>{{$prod.phone}} {{$prod.location_t}}</em>
 				<em>{{$prod.note_t}}</em><span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
 				<br>
 				<p class="perc-bar-title">资料完整度{{$prod.percent}}%</p>
