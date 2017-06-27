@@ -495,8 +495,8 @@ class UserNet extends ActiveRecord
 	{
 		$offset = ($page - 1) * $pageSize;
 
-		$sql = "select u.uAvatar as avatar,u.uName as uname,u.uPhone as phone,
-				u1.uAvatar as savatar,u1.uName as sname,u1.uPhone as sphone,n.nRelation,n.nStatus,
+		$sql = "select u.uAvatar as avatar,u.uName as uname,u.uPhone as phone, u.uThumb as thumb,
+				u1.uAvatar as savatar,u1.uThumb as sthumb,u1.uName as sname,u1.uPhone as sphone,n.nRelation,n.nStatus,
 				(case when n.nRelation=110 then CONCAT(u.uName,' 邀请 ',u1.uName)  
 				when n.nRelation=120 then CONCAT(u.uName,' 成为 ',u1.uName,'的 媒婆 ')
 				when n.nRelation=130 then CONCAT(u1.uName,' 关注 ',u.uName)    
@@ -512,6 +512,8 @@ class UserNet extends ActiveRecord
 		foreach ($res as &$v) {
 			$v["rText"] = self::$RelDict[$v["nRelation"]];
 			$v["sText"] = self::$stDict[$v["nStatus"]];
+			$v['av'] = $v['thumb'] ? $v['thumb'] : $v['avatar'];
+			$v['sav'] = $v['sthumb'] ? $v['sthumb'] : $v['savatar'];
 		}
 		$sql = "select count(1) as co
 				from im_user_net as n 
