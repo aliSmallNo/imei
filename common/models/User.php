@@ -376,10 +376,13 @@ class User extends ActiveRecord
 		$percent = 0;
 		$fields = ["role", "name", "phone", "avatar", "location", "scope", "gender", "birthyear", "horos", "height", "weight",
 			"income", "education", "profession", "estate", "car", "smoke", "alcohol", "belief", "fitness", "diet", "rest", "pet",
-			"interest", "intro", "album", "filter"];
-		foreach ($fields as $v) {
-			if (isset($item[$v]) && $item[$v])
+			"interest", "intro", "filter"];
+		$fill = [];
+		foreach ($fields as $field) {
+			if (isset($item[$field]) && $item[$field]) {
 				$percent++;
+				$fill[] = $field;
+			}
 		}
 		$item["percent"] = ceil($percent * 100.00 / count($fields));
 
