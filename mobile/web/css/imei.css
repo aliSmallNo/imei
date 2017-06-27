@@ -4230,9 +4230,23 @@ section {
     height: 8rem; }
 
 .sedit-avart {
-  padding: 2rem;
+  padding: 0;
   text-align: center;
-  border-bottom: 1px solid #eee; }
+  border-bottom: 1px solid #eee;
+  position: relative;
+  overflow: hidden; }
+  .sedit-avart .bg-blur {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 36rem;
+    height: 36rem;
+    margin-left: -2rem;
+    margin-top: -6rem;
+    -webkit-filter: blur(6px);
+    -ms-filter: blur(6px);
+    filter: blur(6px);
+    z-index: 0; }
   .sedit-avart .photo {
     position: relative;
     width: 9rem;
@@ -4240,7 +4254,7 @@ section {
     display: inline-block;
     overflow: hidden;
     border: 2px solid #f06292;
-    border-radius: 4.5rem;
+    border-radius: 4.6rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
     z-index: 3; }
@@ -4264,10 +4278,9 @@ section {
       outline: 0; }
 
 .sedit-title {
-  background: #eee;
   padding: 1rem;
   font-size: 1.2rem;
-  color: #777; }
+  color: #999; }
 
 .sedit-input, .sedit-alert {
   background: #fff;

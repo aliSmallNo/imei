@@ -7,30 +7,35 @@
 	}
 
 	.sedit-avart-p {
-		background: rgba(0, 0, 0, .5);
 		text-align: center;
 		padding: 2rem 0;
+		position: relative;
+		background: rgba(0, 0, 0, .1)
 	}
 
 	.sedit-avart-p .sedit-avart-material {
 		display: block;
 		color: #fff;
-		font-size: 1rem;
+		font-size: 1.2rem;
+		font-weight: 300;
+		z-index: 99;
 	}
 
 	.sedit-avart-p .sedit-avart-material-perc {
 		display: block;
-		height: 4px;
+		height: 5px;
 		text-align: center;
-		margin: 1rem 8rem;
+		margin: 1rem 7rem;
 		border: 1px solid #fff;
-		border-radius: 4px
+		border-radius: 3px;
+		z-index: 99;
 	}
 
 	.sedit-avart-p .sedit-avart-material-perc span {
 		background: #fff;
-		height: 4px;
+		height: 5px;
 		display: block;
+		border-radius: 3px;
 	}
 </style>
 <div class="m-popup-shade"></div>
@@ -38,9 +43,9 @@
 <div class="nav">
 	<a href="/wx/single#sme">返回</a>
 </div>
-<div class="sedit-avart"
-		 style="background: url('{{$avatar}}') no-repeat center center;background-size: 100% 100%;padding: 0;">
-	<p class="sedit-avart-p">
+<div class="sedit-avart">
+	<img src="{{$avatar}}" class="bg-blur">
+	<div class="sedit-avart-p">
 		<a class="photo">
 			<img src="{{$avatar}}" class="avatar">
 		</a>
@@ -48,7 +53,7 @@
 		<span class="sedit-avart-material-perc">
 			<span style="width: {{$uInfo.percent}}%;"></span>
 		</span>
-	</p>
+	</div>
 
 	<div class="m-draw-wrap off">
 		<div class="title">上传本人照片，头像居中，五官高清，上半身最佳，例如：</div>
@@ -254,10 +259,8 @@
 		<em data-key="{{$filter.edu.key}}">{{$filter.edu.name}}</em>
 	</div>
 </a>
-
-<div class="sedit-btn">
-	<a class="sedit-btn-comfirm">保存</a>
-</div>
+<div style="height: 8rem"></div>
+<a class="m-next sedit-btn-comfirm">保存</a>
 
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
