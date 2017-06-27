@@ -665,6 +665,7 @@ class WxController extends BaseController
 			'bg-main');
 	}
 
+	// share to mp
 	public function actionShare()
 	{
 		$openId = self::$WX_OpenId;
@@ -726,6 +727,23 @@ class WxController extends BaseController
 				'celebs' => $celebs,
 				'hasReg' => $hasReg,
 				'encryptId' => $encryptId,
+				'wxUrl' => AppUtil::wechatUrl()
+			],
+			'terse');
+	}
+
+	// share to single
+	public function actionSts()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header("location:/wx/error?msg=链接地址错误");
+			exit();
+		}
+
+		return self::renderPage("shareToSingle.tpl",
+			[
 				'wxUrl' => AppUtil::wechatUrl()
 			],
 			'terse');

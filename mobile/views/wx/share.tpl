@@ -84,7 +84,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="footer">
+		<div class="footer" style="display: none">
 			<p class="copy"><span>微媒100 | 挖掘优秀单身</span></p>
 		</div>
 	</div>

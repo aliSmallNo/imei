@@ -1740,7 +1740,7 @@ section {
       height: 2.4rem; }
 .invite-wrap .share-cont {
   background: #AFDC64;
-  padding: 5rem 0.5rem; }
+  padding: 3rem 0.5rem; }
   .invite-wrap .share-cont .share-title {
     background: #fff;
     padding: 1.5rem;
@@ -1753,12 +1753,11 @@ section {
     .invite-wrap .share-cont .share-title:after {
       content: "";
       position: absolute;
-      border-left: 4rem solid transparent;
       border-top: 4rem solid #fff;
       border-right: 4rem solid transparent;
       z-index: 2;
-      bottom: -1.5rem;
-      left: 3rem; }
+      bottom: -2rem;
+      left: 6rem; }
   .invite-wrap .share-cont .share-items {
     display: flex; }
     .invite-wrap .share-cont .share-items .share-item {
@@ -1808,6 +1807,11 @@ section {
       background-size: 100% 100%;
       width: 5rem;
       height: 4rem; }
+  .invite-wrap .share-mps h4.sts-mps {
+    color: #fff; }
+    .invite-wrap .share-mps h4.sts-mps:after, .invite-wrap .share-mps h4.sts-mps:before {
+      background: url("../images/logo33.png") no-repeat center center;
+      background-size: 100% 100%; }
   .invite-wrap .share-mps .share-mps-items {
     padding: 1rem;
     overflow: hidden;
@@ -1834,6 +1838,8 @@ section {
         .invite-wrap .share-mps .share-mps-items .share-mps-item .intro p {
           font-size: 0.8rem;
           letter-spacing: 0.1rem; }
+    .invite-wrap .share-mps .share-mps-items .share-mps-item.sts-item {
+      background: #96C348; }
   .invite-wrap .share-mps .share-mps-bot {
     display: flex;
     text-align: left; }

@@ -1747,7 +1747,7 @@ section
 				height: 2.4rem
 	.share-cont
 		background: #AFDC64
-		padding: 5rem .5rem
+		padding: 3rem .5rem
 		.share-title
 			background: #fff
 			padding: 1.5rem
@@ -1760,12 +1760,12 @@ section
 			&:after
 				content: ''
 				position: absolute
-				border-left: 4rem solid transparent
+				//border-left: 4rem solid transparent
 				border-top: 4rem solid #fff
 				border-right: 4rem solid transparent
 				z-index: 2
-				bottom: -1.5rem
-				left: 3rem
+				bottom: -2rem
+				left: 6rem
 
 		.share-items
 			display: flex
@@ -1816,7 +1816,11 @@ section
 				background-size: 100% 100%
 				width: 5rem
 				height: 4rem
-
+		h4.sts-mps
+			color: #fff
+			&:after,&:before
+				background: url('../images/logo33.png') no-repeat center center
+				background-size: 100% 100%
 		.share-mps-items
 			padding: 1rem
 			overflow: hidden
@@ -1843,6 +1847,8 @@ section
 					p
 						font-size: .8rem
 						letter-spacing: .1rem
+			.share-mps-item.sts-item
+				background: #96C348
 		.share-mps-bot
 			display: flex
 			text-align: left
