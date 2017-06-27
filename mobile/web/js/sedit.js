@@ -191,7 +191,6 @@ require(["layer"],
 						var Val = self.find("em").attr("data-key");
 						$sls.postData[field] = Val;
 					});
-					console.log($sls.postData);return;
 
 					var cItem = {};
 					var chVal = "";
