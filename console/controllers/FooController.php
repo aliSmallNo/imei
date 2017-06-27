@@ -353,9 +353,6 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		//UserNet::processWx(131021, "refuse", 120003);
-
-		$ret = array_search('0', array_keys(User::$HeightFilter));
-		var_dump($ret);
+		User::fmtRow(User::find()->where(["uId" => 120003])->asArray()->one());
 	}
 }
