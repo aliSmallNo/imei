@@ -460,7 +460,7 @@ class ApiController extends Controller
 
 	public function actionPaid()
 	{
-		//测试
+		// 测试
 		/*$GLOBALS['HTTP_RAW_POST_DATA'] =
 '<xml>
 	<appid><![CDATA[wxffcef12f0d7812f2]]></appid>
