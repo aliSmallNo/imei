@@ -39,7 +39,7 @@
 		font-size: 12px;
 		line-height: 16px;
 		color: #fff;
-		background: #939393;
+		background: #a5a5a5;
 		padding: 0 5px;
 		border: none;
 	}
@@ -70,12 +70,13 @@
 		border: 1px solid #f491b2;
 		width: 60%;
 		height: 7px;
-		border-radius: 4px
+		border-radius: 5px
 	}
 	.perc-bar em {
 		background: #f491b2;
 		display: block;
 		height: 5px;
+		border-radius: 4px
 	}
 
 </style>

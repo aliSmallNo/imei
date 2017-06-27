@@ -4351,12 +4351,12 @@ section {
     z-index: 0; }
   .sedit-avart .photo {
     position: relative;
-    width: 9rem;
-    height: 9rem;
+    width: 8rem;
+    height: 8rem;
     display: inline-block;
     overflow: hidden;
-    border: 2px solid #f06292;
-    border-radius: 4.6rem;
+    border: 2px solid #fff;
+    border-radius: 4.2rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
     z-index: 3; }
