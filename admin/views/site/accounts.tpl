@@ -63,23 +63,19 @@
 	}
 	.perc-bar-title{
 		font-size: 12px;
-		color: #999;
+		color: #f491b2;
 		margin: 0;
 	}
 	.perc-bar {
-		border: 1px solid #208850;
+		border: 1px solid #f491b2;
 		width: 60%;
-		height: 5px;
-		border-radius: 5px
+		height: 6px;
+		border-radius: 3px
 	}
 	.perc-bar em {
-		background: #208850;
-		background: -webkit-gradient(linear, left top, right top, from(#8c5), to(#208850));
-		background: -moz-linear-gradient(left, #8c5, #208850);
-		background: -o-linear-gradient(left, #8c5, #208850);
-		background: -ms-linear-gradient(left, #8c5, #208850);
+		background: #f491b2;
 		display: block;
-		height: 3px;
+		height: 4px;
 	}
 
 </style>
