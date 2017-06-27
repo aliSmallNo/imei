@@ -1740,7 +1740,7 @@ section {
       height: 2.4rem; }
 .invite-wrap .share-cont {
   background: #AFDC64;
-  padding: 3rem 0.5rem; }
+  padding: 5rem 0.5rem; }
   .invite-wrap .share-cont .share-title {
     background: #fff;
     padding: 1.5rem;
@@ -1748,7 +1748,17 @@ section {
     font-size: 1.2rem;
     border-radius: 1rem;
     letter-spacing: 0.12rem;
-    margin-bottom: 3rem; }
+    margin-bottom: 5rem;
+    position: relative; }
+    .invite-wrap .share-cont .share-title:after {
+      content: "";
+      position: absolute;
+      border-left: 4rem solid transparent;
+      border-top: 4rem solid #fff;
+      border-right: 4rem solid transparent;
+      z-index: 2;
+      bottom: -1.5rem;
+      left: 3rem; }
   .invite-wrap .share-cont .share-items {
     display: flex; }
     .invite-wrap .share-cont .share-items .share-item {
@@ -4356,7 +4366,7 @@ section {
     display: inline-block;
     overflow: hidden;
     border: 2px solid #fff;
-    border-radius: 4.2rem;
+    border-radius: 4.1rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
     z-index: 3; }

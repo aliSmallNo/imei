@@ -1747,7 +1747,7 @@ section
 				height: 2.4rem
 	.share-cont
 		background: #AFDC64
-		padding: 3rem .5rem
+		padding: 5rem .5rem
 		.share-title
 			background: #fff
 			padding: 1.5rem
@@ -1755,7 +1755,18 @@ section
 			font-size: 1.2rem
 			border-radius: 1rem
 			letter-spacing: .12rem
-			margin-bottom: 3rem
+			margin-bottom: 5rem
+			position: relative
+			&:after
+				content: ''
+				position: absolute
+				border-left: 4rem solid transparent
+				border-top: 4rem solid #fff
+				border-right: 4rem solid transparent
+				z-index: 2
+				bottom: -1.5rem
+				left: 3rem
+
 		.share-items
 			display: flex
 			.share-item
