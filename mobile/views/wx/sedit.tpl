@@ -17,23 +17,23 @@
 		display: block;
 		color: #fff;
 		font-size: 1.2rem;
-		font-weight: 300;
+		font-weight: 500;
 		z-index: 99;
 	}
 
 	.sedit-avart-p .sedit-avart-material-perc {
 		display: block;
-		height: 6px;
+		height: 4px;
 		text-align: center;
-		margin: 1rem 7rem;
+		margin: 1rem 8rem;
 		border: 1px solid #fff;
-		border-radius: 4px;
+		border-radius: 3px;
 		z-index: 99;
 	}
 
 	.sedit-avart-p .sedit-avart-material-perc span {
 		background: #fff;
-		height: 6px;
+		height: 4px;
 		display: block;
 		border-radius: 3px;
 	}
