@@ -48,7 +48,7 @@
 			<div class="share-mps-items">
 				<div class="share-mps-item">
 					<div class="img">
-						<img src="http://mpimg.bpdj365.com/avatar/d3e6c74bad734f95b0a32de2552250cf_t.jpg">
+						<img src="http://mpimg.bpdj365.com/avatar/1e8f1de5a2e1419c8131d808408b8a67_t.jpg">
 					</div>
 					<div class="intro">
 						<h5>姓名：澳洲花道Nancy</h5>
@@ -57,7 +57,7 @@
 				</div>
 				<div class="share-mps-item">
 					<div class="img">
-						<img src="http://mpimg.bpdj365.com/avatar/679719a2ba1247fc8c7e1870ff1bbdff_t.jpg">
+						<img src="http://mpimg.bpdj365.com/avatar/b5ebbd5d7abc4c6aab134e50571ad898_t.jpg">
 					</div>
 					<div class="intro">
 						<h5>姓名：杜杜┏ (^ω^)=☞</h5>
