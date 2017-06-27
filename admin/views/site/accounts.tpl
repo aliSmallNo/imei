@@ -70,12 +70,13 @@
 		border: 1px solid #f491b2;
 		width: 60%;
 		height: 7px;
-		border-radius: 4px
+		border-radius: 5px
 	}
 	.perc-bar em {
 		background: #f491b2;
 		display: block;
 		height: 5px;
+		border-radius: 4px
 	}
 
 </style>
