@@ -69,13 +69,13 @@
 	.perc-bar {
 		border: 1px solid #f491b2;
 		width: 60%;
-		height: 6px;
-		border-radius: 3px
+		height: 7px;
+		border-radius: 4px
 	}
 	.perc-bar em {
 		background: #f491b2;
 		display: block;
-		height: 4px;
+		height: 5px;
 	}
 
 </style>
