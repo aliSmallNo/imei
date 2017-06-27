@@ -343,10 +343,8 @@ class User extends ActiveRecord
 			if ($newKey == "filter") {
 				$item["filter_t"] = User::Filter($row["uFilter"]);
 			}
-			$item['age'] = '';
-			if ($newKey == 'birthyear' && intval($val) > 0) {
-				$item['age'] = date('Y') - intval($val);
-				$item['age'] .= '岁';
+			if ($newKey == 'birthyear') {
+				$item['age'] = intval($val) ? (date('Y') - intval($val)) . '岁' : '';
 			}
 			$item[$newKey] = $val;
 			$newKey = ucfirst($newKey);
