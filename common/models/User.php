@@ -381,7 +381,7 @@ class User extends ActiveRecord
 			if (isset($item[$v]) && $item[$v])
 				$percent++;
 		}
-		$item["percent"] = ceil($percent * 100 / count($fields));
+		$item["percent"] = ceil($percent * 100.00 / count($fields));
 
 		return $item;
 	}
