@@ -15,6 +15,7 @@
 		border: none;
 		padding: 0;
 		margin: 0;
+		display: none;
 	}
 
 	.pInfo em {
