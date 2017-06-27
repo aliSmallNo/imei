@@ -371,6 +371,18 @@ class User extends ActiveRecord
 		foreach ($fields as $field) {
 			unset($item[$field]);
 		}
+
+		// 资料完整度
+		$percent = 0;
+		$fields = ["role", "name", "phone", "mpuid", "avatar", "location", "scope", "gender", "birthyear", "horos", "height", "weight",
+			"income", "education", "profession", "estate", "car", "smoke", "alcohol", "belief", "fitness", "diet", "rest", "pet",
+			"interest", "intro", "album", "filter"];
+		foreach ($fields as $v) {
+			if (isset($item[$v]) && $item[$v])
+				$percent++;
+		}
+		$item["percent"] = ceil($percent * 100 / count($fields));
+
 		return $item;
 	}
 
@@ -545,24 +557,26 @@ class User extends ActiveRecord
 		$Info = AppUtil::db()->createCommand($sql)->bindValues([
 			":openId" => $openId
 		])->queryOne();
-		$Info["img4"] = [];
-		$Info["imgList"] = [];
-		$Info["co"] = 0;
+		$items = self::fmtRow($Info);
+		$items["img4"] = [];
+		$items["imgList"] = [];
+		$items["co"] = 0;
 		$uAlbum = $Info["uAlbum"];
 		if ($uAlbum) {
 			$uAlbum = json_decode($uAlbum, 1);
-			$Info["imgList"] = $uAlbum;
-			$Info["co"] = count($uAlbum);
+			$items["imgList"] = $uAlbum;
+			$items["co"] = count($uAlbum);
 			if (count($uAlbum) <= 4) {
-				$Info["img4"] = $uAlbum;
+				$items["img4"] = $uAlbum;
 			} else {
 				for ($i = 0; $i < 4; $i++) {
-					$Info["img4"][] = array_pop($uAlbum);
+					$items["img4"][] = array_pop($uAlbum);
 				}
 			}
 		}
-		$Info["hasMp"] = $Info["mpId"];
-		return $Info;
+		$items["hasMp"] = $Info["mpId"];
+
+		return $items;
 	}
 
 	public static function sprofile($id)

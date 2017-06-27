@@ -56,8 +56,8 @@
 				</div>
 				<div class="title">
 					<h4>{{$nickname}}</h4>
-					<i style="display: none">资料完成度62%</i>
-					<h5>{{$uInfo.intro}}</h5>
+					<i>资料完成度<span>30</span>%</i>
+					<h5 style="margin-top:.5rem">{{$uInfo.intro}}</h5>
 				</div>
 				<a href="/wx/switch" class="btn-outline change-role">切换成媒婆</a>
 				<!--
@@ -67,7 +67,9 @@
 			</div>
 			<a href="#album" class="u-my-album">
 				<div class="title">相册(0)</div>
-				<ul class="photos"></ul>
+				<ul class="photos">
+
+				</ul>
 			</a>
 		</div>
 		<div class="m-rows line-bottom" style="display: none">
@@ -604,7 +606,8 @@
 			<img src="{[avatar]}">
 		</div>
 		<div class="plist-r">
-			<p>{[name]} {[#showWxFlag]}<span style="font-size: 1rem;color: #f981aa;margin-left: 1rem">微信号: {[wechatid]}</span>{[/showWxFlag]}</p>
+			<p>{[name]} {[#showWxFlag]}<span
+								style="font-size: 1rem;color: #f981aa;margin-left: 1rem">微信号: {[wechatid]}</span>{[/showWxFlag]}</p>
 			<p>{[location_t]}</p>
 			<i>{[age]} {[height]}cm {[horos_t]} {[scope_t]}</i>
 		</div>

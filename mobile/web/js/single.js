@@ -453,6 +453,7 @@ require(["layer"],
 					$(".u-my-album .title").html("相册(" + resp.data.co + ")");
 
 					var tipHtml = resp.data.hasMp ? "" : "还没有媒婆";
+					$(".u-my-bar i span").html(resp.data.percent);
 					$("[to=myMP]").find(".tip").html(tipHtml);
 					smeUlit.smeFlag = 0;
 				}, "json");

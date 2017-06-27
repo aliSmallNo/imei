@@ -168,20 +168,9 @@ class WxController extends BaseController
 			$job = User::$ProfessionDict[100];
 		}
 
-		$percent = 0;
-		$fields = ["role", "name", "phone", "mpuid", "avatar", "location", "scope", "gender", "birthyear", "horos", "height", "weight",
-			"income", "education", "profession", "estate", "car", "smoke", "alcohol", "belief", "fitness", "diet", "rest", "pet",
-			"interest", "intro", "album", "filter"];
-		foreach ($fields as $v) {
-			if (isset($uInfo[$v]) && $uInfo[$v])
-				$percent++;
-		}
-
-
 		return self::renderPage("sedit.tpl",
 			[
 				'uInfo' => $uInfo,
-				'percent' => ceil($percent * 100 / count($fields)),
 				'nickname' => $nickname,
 				'avatar' => $avatar,
 				"maxYear" => 1999,

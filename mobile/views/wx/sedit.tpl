@@ -44,9 +44,9 @@
 		<a class="photo">
 			<img src="{{$avatar}}" class="avatar">
 		</a>
-		<span class="sedit-avart-material">资料完整度 <span>{{$percent}}</span>%</span>
+		<span class="sedit-avart-material">资料完整度 <span>{{$uInfo.percent}}</span>%</span>
 		<span class="sedit-avart-material-perc">
-			<span style="width: {{$percent}}%;"></span>
+			<span style="width: {{$uInfo.percent}}%;"></span>
 		</span>
 	</p>
 
