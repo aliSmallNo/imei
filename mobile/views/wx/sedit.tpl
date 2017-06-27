@@ -2,16 +2,54 @@
 	.m-popup-options a.cur {
 		background: #fbd6e3 !important;
 	}
+
+	.sedit-avart {
+	}
+
+	.sedit-avart-p {
+		background: rgba(0, 0, 0, .5);
+		text-align: center;
+		padding: 2rem 0;
+	}
+
+	.sedit-avart-p .sedit-avart-material {
+		display: block;
+		color: #fff;
+		font-size: 1rem;
+	}
+
+	.sedit-avart-p .sedit-avart-material-perc {
+		display: block;
+		height: 4px;
+		text-align: center;
+		margin: 1rem 8rem;
+		border: 1px solid #fff;
+		border-radius: 4px
+	}
+
+	.sedit-avart-p .sedit-avart-material-perc span {
+		background: #fff;
+		height: 4px;
+		display: block;
+	}
 </style>
 <div class="m-popup-shade"></div>
 
 <div class="nav">
 	<a href="/wx/single#sme">返回</a>
 </div>
-<div class="sedit-avart">
-	<a class="photo">
-		<img src="{{$avatar}}" class="avatar" >
-	</a>
+<div class="sedit-avart"
+		 style="background: url('{{$avatar}}') no-repeat center center;background-size: 100% 100%;padding: 0;">
+	<p class="sedit-avart-p">
+		<a class="photo">
+			<img src="{{$avatar}}" class="avatar">
+		</a>
+		<span class="sedit-avart-material">资料完整度 <span>{{$uInfo.percent}}</span>%</span>
+		<span class="sedit-avart-material-perc">
+			<span style="width: {{$uInfo.percent}}%;"></span>
+		</span>
+	</p>
+
 	<div class="m-draw-wrap off">
 		<div class="title">上传本人照片，头像居中，五官高清，上半身最佳，例如：</div>
 		<ul class="images clearfix">
@@ -67,9 +105,11 @@
 <a class="sedit-alert action-location">
 	<label>所在城市</label>
 	<div class="sedit-alert-val location">
+		{{if $uInfo.location}}
 		{{foreach from=$uInfo.location item=item}}
-		<em data-key="{{$item.key}}">{{$item.text}}</em>
+		<em data-key="{{if isset($item.key)}}{{$item.key}}{{/if}}">{{if isset($item.text)}}{{$item.text}}{{/if}}</em>
 		{{/foreach}}
+		{{/if}}
 	</div>
 </a>
 
@@ -189,16 +229,16 @@
 <a class="sedit-alert action-cond" data-field="cage">
 	<label>年龄</label>
 	<div class="sedit-alert-val action-val">
-		{{foreach from=$filter.age item=item}}
-		<em data-key="{{$item.key}}">{{$item.name}}</em>~
+		{{foreach from=$filter.age key=key item=item}}
+		{{if key==1}}~{{/if}}<em data-key="{{$item.key}}">{{$item.name}}</em>
 		{{/foreach}}
 	</div>
 </a>
 <a class="sedit-alert action-cond" data-field="cheight">
 	<label>身高</label>
 	<div class="sedit-alert-val action-val">
-		{{foreach from=$filter.height item=item}}
-		<em data-key="{{$item.key}}">{{$item.name}}</em>~
+		{{foreach from=$filter.height key=key item=item}}
+		{{if key==1}}~{{/if}}<em data-key="{{$item.key}}">{{$item.name}}</em>
 		{{/foreach}}
 	</div>
 </a>
@@ -385,7 +425,7 @@
 	var mProvinces = {{$provinces}},
 		mRoutes = {{$routes}},
 		mProfessions = {{$professions}},
-   mjob = {{$job}};
+		mjob = {{$job}};
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>

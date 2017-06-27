@@ -61,6 +61,27 @@
 		font-weight: 400;
 		margin: 3px 0;
 	}
+	.perc-bar-title{
+		font-size: 12px;
+		color: #999;
+		margin: 0;
+	}
+	.perc-bar {
+		border: 1px solid #208850;
+		width: 60%;
+		height: 5px;
+		border-radius: 5px
+	}
+	.perc-bar em {
+		background: #208850;
+		background: -webkit-gradient(linear, left top, right top, from(#8c5), to(#208850));
+		background: -moz-linear-gradient(left, #8c5, #208850);
+		background: -o-linear-gradient(left, #8c5, #208850);
+		background: -ms-linear-gradient(left, #8c5, #208850);
+		display: block;
+		height: 3px;
+	}
+
 </style>
 <div id="page-wrapper">
 	<div class="row">
@@ -109,6 +130,10 @@
 				<span class="role{{$prod.role}}">{{$prod.role_t}}</span> {{$prod.name}} {{$prod.phone}} <em>{{$prod.location_t}}</em>
 				<em>{{$prod.note_t}}</em><span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
 				<br>
+				<p class="perc-bar-title">资料完整度{{$prod.percent}}%</p>
+				<p class="perc-bar">
+					<em style="width: {{$prod.percent}}%"></em>
+				</p>
 				<span>{{$prod.age}}</span>
 				<span>{{$prod.horos_t}}</span>
 				<span>{{$prod.gender_t}}</span>
