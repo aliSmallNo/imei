@@ -71,9 +71,11 @@
 <a class="sedit-alert action-location">
 	<label>所在城市</label>
 	<div class="sedit-alert-val location">
+		{{if $uInfo.location}}
 		{{foreach from=$uInfo.location item=item}}
-		<em data-key="{{$item.key}}">{{$item.text}}</em>
+		<em data-key="{{if isset($item.key)}}">{{$item.text}}</em>
 		{{/foreach}}
+		{{/if}}
 	</div>
 </a>
 
