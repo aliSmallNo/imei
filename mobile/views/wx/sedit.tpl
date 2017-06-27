@@ -105,9 +105,11 @@
 <a class="sedit-alert action-location">
 	<label>所在城市</label>
 	<div class="sedit-alert-val location">
+		{{if $uInfo.location}}
 		{{foreach from=$uInfo.location item=item}}
 		<em data-key="{{$item.key}}">{{$item.text}}</em>
 		{{/foreach}}
+		{{/if}}
 	</div>
 </a>
 
@@ -227,16 +229,16 @@
 <a class="sedit-alert action-cond" data-field="cage">
 	<label>年龄</label>
 	<div class="sedit-alert-val action-val">
-		{{foreach from=$filter.age item=item}}
-		<em data-key="{{$item.key}}">{{$item.name}}</em>~
+		{{foreach from=$filter.age key=key item=item}}
+		{{if key==1}}~{{/if}}<em data-key="{{$item.key}}">{{$item.name}}</em>
 		{{/foreach}}
 	</div>
 </a>
 <a class="sedit-alert action-cond" data-field="cheight">
 	<label>身高</label>
 	<div class="sedit-alert-val action-val">
-		{{foreach from=$filter.height item=item}}
-		<em data-key="{{$item.key}}">{{$item.name}}</em>~
+		{{foreach from=$filter.height key=key item=item}}
+		{{if key==1}}~{{/if}}<em data-key="{{$item.key}}">{{$item.name}}</em>
 		{{/foreach}}
 	</div>
 </a>
