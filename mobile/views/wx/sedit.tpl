@@ -107,7 +107,7 @@
 	<div class="sedit-alert-val location">
 		{{if $uInfo.location}}
 		{{foreach from=$uInfo.location item=item}}
-		<em data-key="{{$item.key}}">{{$item.text}}</em>
+		<em data-key="{{if isset($item.key)}}{{$item.key}}{{/if}}">{{if isset($item.text)}}{{$item.text}}{{/if}}</em>
 		{{/foreach}}
 		{{/if}}
 	</div>
