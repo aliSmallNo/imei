@@ -39,7 +39,7 @@
 		font-size: 12px;
 		line-height: 16px;
 		color: #fff;
-		background: #939393;
+		background: #a5a5a5;
 		padding: 0 5px;
 		border: none;
 	}
