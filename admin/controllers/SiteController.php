@@ -31,10 +31,10 @@ class SiteController extends BaseController
 	public function actionError()
 	{
 		$exception = Yii::$app->errorHandler->exception;
-		if ($exception) {
-			var_dump($exception);
+		if ($exception && $exception->statusCode && $exception->statusCode == 404) {
+			echo '<p>非常抱歉！页面不存在~~~ 飞火星去了吧 (┬＿┬)</p>' . date("Y-m-d H:i:s");
 		} else {
-			echo "<p>非常抱歉！页面不存在~~~ 飞火星去了吧 (┬＿┬)</p>" . date("Y-m-d H:i:s");
+			var_dump($exception);
 		}
 	}
 
