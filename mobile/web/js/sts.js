@@ -85,8 +85,8 @@ require(["layer"],
 			var thumb = $("#avatarId").val();
 			var link = $sls.wxUrl + '/wx/sts?id=' + $sls.uid;
 			//var title = name + '和' + cName + '一起做媒婆了';
-			var title = '我是' + name + '，我在微媒100做媒婆了';
-			var desc = '一起来微媒100做媒婆吧，帮助身边的单身青年脱单';
+			var title = '我是' + name + '，我身边的单身都在这了，快进来互相认识下吧';
+			var desc = '微媒100，帮助身边的单身青年脱单';
 			wx.onMenuShareTimeline({
 				title: title,
 				link: link,
