@@ -109,8 +109,8 @@
 </div>
 <input type="hidden" id="nicknameId" value="{{$nickname}}">
 <input type="hidden" id="avatarId" value="{{$avatar}}">
-<input type="hidden" id="cUID" value="{{$wxUrl}}">
-<input type="hidden" id="cWXUrl" value="{{$uId}}">
+<input type="hidden" id="cUID" value="{{$uId}}">
+<input type="hidden" id="cWXUrl" value="{{$wxUrl}}">
 
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
@@ -119,4 +119,4 @@
 
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/sts.js?v=1.2.3" src="/assets/js/require.js"></script>
+<script data-main="/js/sts.js?v=1.2.4" src="/assets/js/require.js"></script>
