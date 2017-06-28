@@ -10,7 +10,7 @@
 		<form action="/site/feedback" method="get" class="form-inline">
 			<div class="form-group">
 				<select class="form-control" name="cat">
-					<option value="">类型</option>
+					<option value="">行为类型</option>
 					{{foreach from=$cats key=key item=item}}
 					<option value="{{$key}}"
 									{{if isset($getInfo["cat"]) && $getInfo["cat"]==$key}}selected{{/if}}>{{$item}}</option>
