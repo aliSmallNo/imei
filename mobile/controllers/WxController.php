@@ -691,7 +691,6 @@ class WxController extends BaseController
 			} else {
 				$nickname = $matchInfo["uName"];
 			}
-
 		}
 		if ($senderUId && $uId) {
 			UserNet::add($senderUId, $uId, UserNet::REL_INVITE);
@@ -703,6 +702,7 @@ class WxController extends BaseController
 		if (isset(self::$Celebs[$celebId])) {
 			$celeb = self::$Celebs[$celebId];
 		}
+
 		$editable = $senderUId ? 0 : 1;
 		if ($uId == $senderUId) {
 			$editable = true;
@@ -727,7 +727,7 @@ class WxController extends BaseController
 				'celebs' => $celebs,
 				'hasReg' => $hasReg,
 				'encryptId' => $encryptId,
-				'wxUrl' => AppUtil::wechatUrl()
+				'wxUrl' => AppUtil::wechatUrl(),
 			],
 			'terse');
 	}
@@ -737,14 +737,43 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		if (!$wxInfo) {
-			header("location:/wx/error?msg=链接地址错误");
-			exit();
+		$senderUId = self::getParam('id');
+		$hasReg = false;
+		if ($wxInfo) {
+			$avatar = $wxInfo["Avatar"];
+			$nickname = $wxInfo["uName"];
+			$uId = $wxInfo['uId'];
+			$hasReg = $wxInfo['uPhone'] ? true : false;
+		} else {
+			$avatar = ImageUtil::DEFAULT_AVATAR;
+			$nickname = "大师兄";
+			$uId = 0;
+		}
+		if ($senderUId) {
+			$matchInfo = User::findOne(['uId' => $senderUId]);
+			if (!$matchInfo) {
+				header("location:/wx/error?msg=链接地址错误");
+				exit();
+			} else {
+				$nickname = $matchInfo["uName"];
+			}
+		}
+		if ($senderUId && $uId) {
+			UserNet::add($senderUId, $uId, UserNet::REL_INVITE);
+			UserNet::add($senderUId, $uId, UserNet::REL_FOLLOW);
+		}
+
+		$encryptId = '';
+		if ($uId) {
+			$encryptId = AppUtil::encrypt($uId);
 		}
 
 		return self::renderPage("shareToSingle.tpl",
 			[
-				'wxUrl' => AppUtil::wechatUrl()
+				'uId' => $uId,
+				'avatar' => $avatar,
+				'nickname' => $nickname,
+				'wxUrl' => AppUtil::wechatUrl(),
 			],
 			'terse');
 	}

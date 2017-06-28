@@ -1,46 +1,5 @@
-<style>
-	.bg-repeat h6 {
-		color: #FFCCF5;
-		letter-spacing: .1rem;
-		margin: .5rem 0;
-		padding-left: 4rem
-	}
-	.sts-img {
-		display: block;
-		text-align: center;
-		background: #afdb64;
-		padding: 1.5rem
-	}
-	.sts-img img{
-		width: 15rem;
-	}
-	.sts-btns{
-		display: flex;
-		margin-top: 2rem;
-	}
-	.sts-btns a{
-		flex: 1;
-		background: #FFCCF5;
-		padding: 0.5rem 1rem;
-		margin: 0 .5rem;
-		text-align: center;
-		border-radius: .5rem;
-		box-shadow: .1rem .1rem 1rem #000;
-	}
-	.sts-btns a em,.sts-btns a i{
-		display: block;
-		color: #F9586F;
-	}
-	.sts-btns a em{
-		font-size: 1.5rem;
-	}
-	.sts-btns a i{
-		font-size: .8rem;
-	}
-</style>
 <div id="sec-share">
 	<div id="inviteInfo" class="invite-wrap">
-
 		<div class="sender-wrap">
 			<div class="title">
 				<h4>我在微媒100当媒婆</h4>
@@ -56,11 +15,11 @@
 			<h6>2.对方要联系方式需要你同意，不会被骚扰</h6>
 			<h6>3.优质单身特别多、还能看到朋友的评价</h6>
 			<div class="sts-btns">
-				<a>
+				<a class="sts-single">
 					<em>我是单身</em>
 					<i>我要脱单、认识单身朋友</i>
 				</a>
-				<a>
+				<a class="sts-mp">
 					<em>我单身朋友多</em>
 					<i>我要当媒婆帮助他们</i>
 				</a>
@@ -148,6 +107,11 @@
 		<div class="m-popup-content no-bg"></div>
 	</div>
 </div>
+<input type="hidden" id="nicknameId" value="{{$nickname}}">
+<input type="hidden" id="avatarId" value="{{$avatar}}">
+<input type="hidden" id="cUID" value="{{$wxUrl}}">
+<input type="hidden" id="cWXUrl" value="{{$uId}}">
+
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
@@ -155,3 +119,4 @@
 
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
+<script data-main="/js/sts.js?v=1.2.3" src="/assets/js/require.js"></script>
