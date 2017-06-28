@@ -64,14 +64,14 @@
 			{{foreach from=$list item=item}}
 			<tr>
 				<td align="center">
-					<img src="{{$item.avatar}}" style="width: 65px;height: 65px;">
+					<img src="{{$item.av}}" style="width: 65px;height: 65px;">
 				</td>
 				<td>
 					{{$item.uname}}<br>
 					{{$item.phone}}
 				</td>
 				<td>
-					<img src="{{$item.savatar}}" style="width: 65px;height: 65px;">
+					<img src="{{$item.sav}}" style="width: 65px;height: 65px;">
 				</td>
 				<td>
 					{{$item.sname}}<br>

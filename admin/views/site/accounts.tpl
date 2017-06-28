@@ -18,6 +18,7 @@
 	.pInfo em {
 		font-size: 12px;
 		color: #777;
+		font-style: normal;
 	}
 
 	.pInfo span.status-0 {
@@ -61,22 +62,44 @@
 		font-weight: 400;
 		margin: 3px 0;
 	}
-	.perc-bar-title{
+
+	.perc-wrap {
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: -ms-flexbox;
+		display: flex;
+	}
+
+	.perc-bar-title {
 		font-size: 12px;
 		color: #f491b2;
 		margin: 0;
+		-webkit-box-flex: 0 0 108px;
+		-webkit-flex: 0 0 108px;
+		-ms-flex: 0 0 108px;
+		flex: 0 0 108px;
 	}
+
+	.perc-bar-wrap {
+		-webkit-box-flex: 1;
+		-webkit-flex: 1;
+		-ms-flex: 1;
+		flex: 1;
+		padding-top: 6px;
+	}
+
 	.perc-bar {
 		border: 1px solid #f491b2;
-		width: 60%;
-		height: 7px;
-		border-radius: 5px
+		width: 65%;
+		height: 4px;
+		border-radius: 3px
 	}
+
 	.perc-bar em {
 		background: #f491b2;
 		display: block;
-		height: 5px;
-		border-radius: 4px
+		height: 2px;
+		border-radius: 3px
 	}
 
 </style>
@@ -124,13 +147,13 @@
 				<img src="{{$prod.thumb}}" width="100%">
 			</td>
 			<td class="pInfo">
-				<span class="role{{$prod.role}}">{{$prod.role_t}}</span> {{$prod.name}} {{$prod.phone}} <em>{{$prod.location_t}}</em>
+				<span class="role{{$prod.role}}">{{$prod.role_t}}</span> {{$prod.name}} <em>{{$prod.phone}} {{$prod.location_t}}</em>
 				<em>{{$prod.note_t}}</em><span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
 				<br>
-				<p class="perc-bar-title">资料完整度{{$prod.percent}}%</p>
-				<p class="perc-bar">
-					<em style="width: {{$prod.percent}}%"></em>
-				</p>
+				<div class="perc-wrap">
+					<div class="perc-bar-title">资料完整度 <b>{{$prod.percent}}%</b></div>
+					<div class="perc-bar-wrap"><p class="perc-bar"><em style="width: {{$prod.percent}}%"></em></p></div>
+				</div>
 				<span>{{$prod.age}}</span>
 				<span>{{$prod.horos_t}}</span>
 				<span>{{$prod.gender_t}}</span>
