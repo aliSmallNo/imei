@@ -400,7 +400,7 @@ class SiteController extends BaseController
 			$condition .= " and u1.uPhone=$sphone ";
 		}
 		list($list, $count) = UserNet::relations($condition, $page);
-		$pagination = $pagination = self::pagination($page, $count);
+		$pagination = self::pagination($page, $count);
 		return $this->renderPage("relations.tpl",
 			[
 				'getInfo' => $getInfo,
@@ -441,8 +441,8 @@ class SiteController extends BaseController
 		if ($sphone) {
 			$condition .= " and u.uPhone=$sphone ";
 		}
-		list($list, $count) = Feedback::items($condition, $page);
-		$pagination = $pagination = self::pagination($page, $count);
+		list($list, $count) = Feedback::items($condition, $page, $pageSize = 20);
+		$pagination = self::pagination($page, $count, $pageSize);
 		return $this->renderPage("feedback.tpl",
 			[
 				'getInfo' => $getInfo,

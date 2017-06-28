@@ -762,12 +762,6 @@ class WxController extends BaseController
 			UserNet::add($senderUId, $uId, UserNet::REL_INVITE);
 			UserNet::add($senderUId, $uId, UserNet::REL_FOLLOW);
 		}
-
-		$encryptId = '';
-		if ($uId) {
-			$encryptId = AppUtil::encrypt($uId);
-		}
-
 		return self::renderPage("sts.tpl",
 			[
 				'uId' => $uId,
