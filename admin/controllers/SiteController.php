@@ -5,6 +5,7 @@ namespace admin\controllers;
 use admin\models\Admin;
 use admin\models\Menu;
 use common\models\City;
+use common\models\Feedback;
 use common\models\Mark;
 use common\models\User;
 use common\models\UserBuzz;
@@ -407,6 +408,48 @@ class SiteController extends BaseController
 				'category' => 'users',
 				'list' => $list,
 				'relations' => UserNet::$RelDict,
+			]
+		);
+	}
+
+	public function actionFeedback()
+	{
+		$getInfo = Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$cat = self::getParam("cat");
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+		$sname = self::getParam("sname");
+		$sphone = self::getParam("sphone");
+		$condition = "";
+		$st = User::STATUS_ACTIVE;
+		//$condition .= " and u.uStatus=$st and u1.uStatus=$st ";
+		if ($cat) {
+			$condition .= " and f.fCategory=$cat ";
+		}
+		if ($name) {
+			$name = str_replace("'", "", $name);
+			$condition .= " and  i.uName like '%$name%' ";
+		}
+		if ($phone) {
+			$condition .= " and i.uPhone=$phone ";
+		}
+		if ($sname) {
+			$sname = str_replace("'", "", $sname);
+			$condition .= " and  u.uName like '%$sname%' ";
+		}
+		if ($sphone) {
+			$condition .= " and u.uPhone=$sphone ";
+		}
+		list($list, $count) = Feedback::items($condition, $page);
+		$pagination = $pagination = self::pagination($page, $count);
+		return $this->renderPage("feedback.tpl",
+			[
+				'getInfo' => $getInfo,
+				'pagination' => $pagination,
+				'category' => 'users',
+				'list' => $list,
+				'cats' => Feedback::$stDict,
 			]
 		);
 	}

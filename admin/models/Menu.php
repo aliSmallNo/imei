@@ -145,9 +145,9 @@ class Menu
 						"level" => 820
 					],
 					[
-						"name" => "通知消息",
-						"url" => "/site/notices",
-						"level" => 815
+						"name" => "反馈消息",
+						"url" => "/site/feedback",
+						"level" => 820
 					]
 				]
 			],
