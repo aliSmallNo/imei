@@ -768,7 +768,7 @@ class WxController extends BaseController
 			$encryptId = AppUtil::encrypt($uId);
 		}
 
-		return self::renderPage("shareToSingle.tpl",
+		return self::renderPage("sts.tpl",
 			[
 				'uId' => $uId,
 				'avatar' => $avatar,
