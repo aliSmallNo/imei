@@ -12,6 +12,8 @@ namespace admin\controllers;
 use admin\models\Admin;
 use common\models\City;
 use common\models\User;
+use common\utils\AppUtil;
+use dosamigos\qrcode\QrCode;
 use Yii;
 use yii\web\Controller;
 use yii\web\Response;
@@ -100,6 +102,35 @@ class ApiController extends Controller
 				break;
 		}
 		return self::renderAPI($ret["code"], $ret["msg"]);
+	}
+
+	public function actionQr()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$id = self::getParam('id', '5dff94c2-c793-4519-bcf0-17b8c889dd5f');
+		$url = 'http://view.mplink.cn/Pay/Home.aspx?deviceid=%s';
+		$url = sprintf($url, $id);
+		$folder = '/data/tmp/';
+		if (AppUtil::isDev()) {
+			$folder = '/Users/weirui/Documents/';
+		}
+		$fileName = $folder . time() . '.png';
+//		QrCode::png($url, $fileName.'_0.png', 0, 12, 1);
+//		QrCode::png($url, $fileName.'_1.png', 1, 12, 1);
+//		QrCode::png($url, $fileName.'_2.png', 2, 12, 1);
+		QrCode::png($url, $fileName, 3, 12, 1);
+		$im = imagecreatetruecolor(200, 200);
+		$black = imagecolorallocate($im, 0, 0, 0);
+		$white = imagecolorallocate($im, 255, 255, 255);
+
+// Load the PostScript Font
+		$fontPath = __DIR__ . '/../../common/assets/Arial.ttf';
+
+		$font = imagepsloadfont($fontPath);
+		imagepstext($im, '30009393', $font, 12, $black, $white, 50, 50);
+		$fileName = $folder . time() . '_t.png';
+		imagepng($im, $fileName);
+		return self::renderAPI(0, $fileName);
 	}
 
 	protected function renderAPI($code, $msg = '', $data = [])
