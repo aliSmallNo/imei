@@ -22,6 +22,7 @@ use common\utils\AppUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use dosamigos\qrcode\QrCode;
+use Gregwar\Image\Image;
 use Yii;
 use yii\web\Controller;
 use yii\web\Response;
@@ -469,23 +470,22 @@ class ApiController extends Controller
 		if (AppUtil::isDev()) {
 			$folder = '/Users/weirui/Documents/';
 		}
-		$fileName = $folder . time() . '.png';
-//		QrCode::png($url, $fileName.'_0.png', 0, 12, 1);
-//		QrCode::png($url, $fileName.'_1.png', 1, 12, 1);
-//		QrCode::png($url, $fileName.'_2.png', 2, 12, 1);
-		QrCode::png($url, $fileName, 3, 12, 1);
-		$im = imagecreatetruecolor(200, 200);
-		$black = imagecolorallocate($im, 0, 0, 0);
-		$white = imagecolorallocate($im, 255, 255, 255);
-
-// Load the PostScript Font
+		$time = time();
+		$fileName = $folder . $time . '.jpg';
+		QrCode::jpg($url, $fileName, 3, 13, 1);
+		list($width, $height, $type) = getimagesize($fileName);
 		$fontPath = __DIR__ . '/../../common/assets/Arial.ttf';
-
-		$font = imagepsloadfont($fontPath);
-		imagepstext($im, '30009393', $font, 12, $black, $white, 50, 50);
-		$fileName = $folder . time() . '_t.png';
-		imagepng($im, $fileName);
-		return self::renderAPI(0, $fileName);
+		$saveName = $folder . $time . '_t.jpg';
+		$mergeImage = __DIR__ . '/../../common/assets/logo.jpg';
+		$mergeSize = 120;
+		$mergeImage = Image::open($mergeImage)->zoomCrop($mergeSize, $mergeSize, 0xffffff, 'left', 'top');
+		$content = Image::open($fileName)
+			->resize($width, $height + 60)
+			->zoomCrop($width, $height + 30, 0xffffff, 'center', 'bottom')
+			->write($fontPath, '30009393', $width / 2, $height + 20, 24, 0, 0x000000, 'center')
+			->merge($mergeImage, ($width - $mergeSize) / 2, ($height - $mergeSize + 20) / 2, $mergeSize, $mergeSize)
+			->save($saveName);
+		return self::renderAPI(0, $saveName, [$content]);
 	}
 
 	public static function createShareUrl($info, $category = "")

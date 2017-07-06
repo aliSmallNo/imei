@@ -14,6 +14,7 @@ use common\models\City;
 use common\models\User;
 use common\utils\AppUtil;
 use dosamigos\qrcode\QrCode;
+use Gregwar\Image\Image;
 use Yii;
 use yii\web\Controller;
 use yii\web\Response;
@@ -119,18 +120,12 @@ class ApiController extends Controller
 //		QrCode::png($url, $fileName.'_1.png', 1, 12, 1);
 //		QrCode::png($url, $fileName.'_2.png', 2, 12, 1);
 		QrCode::png($url, $fileName, 3, 12, 1);
-		$im = imagecreatetruecolor(200, 200);
-		$black = imagecolorallocate($im, 0, 0, 0);
-		$white = imagecolorallocate($im, 255, 255, 255);
-
-// Load the PostScript Font
 		$fontPath = __DIR__ . '/../../common/assets/Arial.ttf';
+		$saveName = $folder . time() . '_t.png';
 
-		$font = imagepsloadfont($fontPath);
-		imagepstext($im, '30009393', $font, 12, $black, $white, 50, 50);
-		$fileName = $folder . time() . '_t.png';
-		imagepng($im, $fileName);
-		return self::renderAPI(0, $fileName);
+		Image::open($fileName)->write($fontPath,'30009393',0,200,0,0xffffff,'center')->save($saveName);
+
+		return self::renderAPI(0, $saveName);
 	}
 
 	protected function renderAPI($code, $msg = '', $data = [])
