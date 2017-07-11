@@ -462,7 +462,8 @@ class ApiController extends Controller
 		$postData = json_decode($postData, 1);
 		$tag = trim(strtolower(isset($postData["tag"]) ? $postData["tag"] : ""));
 
-		$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		//$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		$openId = isset($postData["openid"]) ? $postData["openid"] : "";
 		switch ($tag) {
 			case "userfilter":
 				$page = isset($postData["page"]) ? $postData["page"] : 1;
@@ -474,7 +475,7 @@ class ApiController extends Controller
 				$ret = User::getFilter($openId, $data, $page);
 				return self::renderAPI(0, '', $ret);
 		}
-		return self::renderAPI(129, '操作无效~', $tag);
+		return self::renderAPI(129, '操作无效~');
 	}
 
 	public function actionQr()
