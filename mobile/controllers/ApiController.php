@@ -173,7 +173,10 @@ class ApiController extends Controller
 	{
 		$tag = trim(strtolower(self::postParam('tag')));
 		$id = self::postParam('id');
-		$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		$openId = self::postParam('openid');
+		if (!$openId) {
+			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		}
 		switch ($tag) {
 			case 'boys':
 			case 'girls':
@@ -458,16 +461,14 @@ class ApiController extends Controller
 	 */
 	public function actionXuser()
 	{
-		$postData = file_get_contents('php://input', 'r');
-		$postData = json_decode($postData, 1);
-		$tag = trim(strtolower(isset($postData["tag"]) ? $postData["tag"] : ""));
+		$tag = strtolower(self::xcxParam('tag'));
 
 		//$openId = AppUtil::getCookie(self::COOKIE_OPENID);
-		$openId = isset($postData["openid"]) ? $postData["openid"] : "";
+		$openId = self::xcxParam('openid');
 		switch ($tag) {
 			case "userfilter":
 				$page = isset($postData["page"]) ? $postData["page"] : 1;
-				$data = trim(strtolower(isset($postData["data"]) ? $postData["data"] : ""));
+				$data = trim(self::xcxParam('data'));
 				if (strlen($data) > 5) {
 					User::edit($openId, ["uFilter" => $data]);
 				}
@@ -658,8 +659,20 @@ class ApiController extends Controller
 		return isset($getInfo[$field]) ? trim($getInfo[$field]) : $defaultVal;
 	}
 
+	protected function xcxParam($field, $defaultVal = "")
+	{
+		$postData = file_get_contents('php://input', 'r');
+		$postData = json_decode($postData, 1);
+		return isset($postData[$field]) ? trim($postData[$field]) : $defaultVal;
+	}
+
 	protected function postParam($field, $defaultVal = "")
 	{
+		$postData = file_get_contents('php://input', 'r');
+		$postData = json_decode($postData, 1);
+		if ($postData) {
+			return isset($postData[$field]) ? trim($postData[$field]) : $defaultVal;
+		}
 		$postInfo = Yii::$app->request->post();
 		return isset($postInfo[$field]) ? trim($postInfo[$field]) : $defaultVal;
 	}
