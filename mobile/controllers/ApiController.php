@@ -49,13 +49,11 @@ class ApiController extends Controller
 		if (isset($postStr2)) {
 			$postStr = $postStr2;
 		}
-		AppUtil::logFile($postStr, 5, __FUNCTION__, __LINE__);
 		$resp = '';
 		if ($postStr) {
 			libxml_disable_entity_loader(true);
 			$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
 			$postJSON = json_encode($postObj);
-			AppUtil::logFile($postStr, 5, __FUNCTION__, __LINE__);
 			if ($postJSON) {
 				list($resp, $debug) = UserBuzz::handleEvent($postJSON);
 				UserBuzz::add($postJSON, $debug);

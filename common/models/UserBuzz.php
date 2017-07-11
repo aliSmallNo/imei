@@ -166,6 +166,7 @@ class UserBuzz extends ActiveRecord
 						':dt' => date('Y-m-d H:i:s', time() - 86400 * 2)
 					])->queryScalar();
 					$resp = '';
+					AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 					if (!$ret) {
 						// Rain: 说明两天之内曾经聊过，不出现提示了
 						$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
