@@ -458,6 +458,8 @@ class ApiController extends Controller
 	 */
 	public function actionXuser()
 	{
+		$postData = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : "";
+		//$postData = file_get_contents('php://input', 'r');
 		$tag = trim(strtolower(self::postParam('tag')));
 		$id = self::postParam('id');
 		$openId = AppUtil::getCookie(self::COOKIE_OPENID);
@@ -472,7 +474,7 @@ class ApiController extends Controller
 				$ret = User::getFilter($openId, $data, $page);
 				return self::renderAPI(0, '', $ret);
 		}
-		return self::renderAPI(129, '操作无效~', $tag);
+		return self::renderAPI(129, '操作无效~', $postData);
 	}
 
 	public function actionQr()
