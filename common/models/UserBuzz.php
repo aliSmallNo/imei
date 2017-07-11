@@ -166,10 +166,8 @@ class UserBuzz extends ActiveRecord
 						':dt' => date('Y-m-d H:i:s', time() - 86400 * 2)
 					])->queryScalar();
 					$resp = '';
-					AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 					if (!$ret) {
 						// Rain: 说明两天之内曾经聊过，不出现提示了
-						AppUtil::logFile([$fromUsername, $toUsername, self::$WelcomeMsg], 5, __FUNCTION__, __LINE__);
 						$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
 					}
 				}
@@ -253,7 +251,7 @@ class UserBuzz extends ActiveRecord
 			}
 		}
 
-		$conn = \Yii::$app->db;
+		$conn = AppUtil::db();
 		$count = 0;
 		$sql = "select count(DISTINCT bFrom) as cnt from im_user_buzz where bType in ('text','image','voice') ";
 		$res = $conn->createCommand($sql)->queryOne();
@@ -268,10 +266,10 @@ class UserBuzz extends ActiveRecord
 				(case when b.bType='image' THEN '[图片]' when b.bType='voice' THEN '[声音]' else b.bContent end) as bContent, 
 				b.bCreateTime, b.bDate , w.wNickName, w.wAvatar, (case WHEN m.mUId is null THEN 0 ELSE 1 END) as readFlag
 				FROM im_user_buzz as b 
-				join (select max(bId) as bId,bFrom from im_user_buzz where bType in ('text','image','voice') group by bFrom ORDER BY bid DESC limit $offset, $pageSize) as t on t.bId = b.bId
-				left join im_user_wechat as w on w.wOpenId = t.bFrom
+				JOIN (select max(bId) as bId,bFrom from im_user_buzz where bType in ('text','image','voice') group by bFrom ORDER BY bid DESC limit $offset, $pageSize) as t on t.bId = b.bId
+				LEFT JOIN im_user_wechat as w on w.wOpenId = t.bFrom
 				LEFT JOIN im_mark as m on m.mUId=b.bId AND m.mPId=$adminId AND m.mCategory=$cat
-				order by b.bId desc";
+				ORDER BY b.bId DESC";
 
 		$res = $conn->createCommand($sql)->queryAll();
 		foreach ($res as $key => $row) {
