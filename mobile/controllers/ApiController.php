@@ -60,6 +60,7 @@ class ApiController extends Controller
 			}
 		}
 		ob_clean();
+		AppUtil::logFile($resp, 5, __FUNCTION__, __LINE__);
 		if ($resp) {
 			echo $resp;
 		} else {
