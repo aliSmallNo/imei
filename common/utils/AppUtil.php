@@ -698,7 +698,7 @@ class AppUtil
 
 	}
 
-	public static function logFile($msg, $level = 1, $func = "", $line = 0)
+	public static function logFile($msg, $level = 1, $func = '', $line = 0)
 	{
 		if ($level < 2) {
 			return false;

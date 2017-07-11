@@ -8,7 +8,6 @@
 
 namespace common\models;
 
-use admin\models\Admin;
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
 use yii\db\ActiveRecord;
@@ -73,11 +72,15 @@ class UserBuzz extends ActiveRecord
 	{
 		$resp = '';
 		$debug = '';
-		self::$WelcomeMsg = '欢迎来到「微媒100」' . PHP_EOL . PHP_EOL;
+		/*self::$WelcomeMsg = '欢迎来到「微媒100」' . PHP_EOL . PHP_EOL;
 		self::$WelcomeMsg .= '在这里你可以同时注册两种身份— “单身”和“媒婆”。' . PHP_EOL . PHP_EOL;
 		self::$WelcomeMsg .= '点击底栏“我是媒婆”，帮朋友找对象！' . PHP_EOL;
 		self::$WelcomeMsg .= '点击底栏“我是单身”，为自己找对象！' . PHP_EOL . PHP_EOL;
-		self::$WelcomeMsg .= '这里的单身，均有好友做推荐，让交友变得真实';
+		self::$WelcomeMsg .= '这里的单身，均有好友做推荐，让交友变得真实';*/
+
+		self::$WelcomeMsg = "『微媒100』是一个专注公园相亲角的公益公众号，您编辑好相亲者的信息和要求，发送到后台我们会将符合条件的信息发送给您。
+包含如下信息：性别、出生年、户籍地、学历、婚姻状况、联系方式、个人介绍。要求：性别+年龄段+户籍+自定义内容+联系方式。";
+
 		$postData = json_decode($postJSON, 1);
 
 		if (!$postData || !isset($postData["FromUserName"])) {
@@ -90,8 +93,8 @@ class UserBuzz extends ActiveRecord
 		$event = isset($postData["Event"]) ? strtolower($postData["Event"]) : "";
 		$eventKey = isset($postData["EventKey"]) && is_string($postData["EventKey"]) ? strtolower($postData["EventKey"]) : "";
 
-		$fromUsername = isset($postData["FromUserName"]) ? $postData["FromUserName"] : "";
-		$toUsername = isset($postData["ToUserName"]) ? $postData["ToUserName"] : "";
+		$fromUsername = isset($postData["FromUserName"]) ? $postData["FromUserName"] : '';
+		$toUsername = isset($postData["ToUserName"]) ? $postData["ToUserName"] : '';
 
 		switch ($event) {
 			case "scan":
@@ -101,7 +104,7 @@ class UserBuzz extends ActiveRecord
 					$debug .= $wxOpenId . "**" . $qrInfo["qFrom"] . "**" . $qrInfo["qCategory"] . "**" . $qrInfo["qSubCategory"];
 					$addResult = "";
 					if (strlen($wxOpenId) > 6) {
-						$addResult = UserLink::add($qrInfo["qFrom"], $wxOpenId, $qrInfo["qCategory"], $qrInfo["qSubCategory"]);
+						//$addResult = UserLink::add($qrInfo["qFrom"], $wxOpenId, $qrInfo["qCategory"], $qrInfo["qSubCategory"]);
 					}
 					if ($qrInfo) {
 						$debug .= $addResult . "**";
@@ -114,7 +117,7 @@ class UserBuzz extends ActiveRecord
 					$qId = substr($eventKey, strlen("qrscene_"));
 					if (is_numeric($qId)) {
 						$qrInfo = UserQR::findOne(["qId" => $qId]);
-						UserLink::add($qrInfo["qFrom"], $wxOpenId, $qrInfo["qCategory"], $qrInfo["qSubCategory"]);
+						//UserLink::add($qrInfo["qFrom"], $wxOpenId, $qrInfo["qCategory"], $qrInfo["qSubCategory"]);
 						if ($qrInfo) {
 							$resp = self::welcomeMsg($fromUsername, $toUsername, $qrInfo["qCategory"]);
 							// Rain: 添加或者更新微信用户信息
@@ -248,7 +251,7 @@ class UserBuzz extends ActiveRecord
 			}
 		}
 
-		$conn = \Yii::$app->db;
+		$conn = AppUtil::db();
 		$count = 0;
 		$sql = "select count(DISTINCT bFrom) as cnt from im_user_buzz where bType in ('text','image','voice') ";
 		$res = $conn->createCommand($sql)->queryOne();
@@ -263,10 +266,10 @@ class UserBuzz extends ActiveRecord
 				(case when b.bType='image' THEN '[图片]' when b.bType='voice' THEN '[声音]' else b.bContent end) as bContent, 
 				b.bCreateTime, b.bDate , w.wNickName, w.wAvatar, (case WHEN m.mUId is null THEN 0 ELSE 1 END) as readFlag
 				FROM im_user_buzz as b 
-				join (select max(bId) as bId,bFrom from im_user_buzz where bType in ('text','image','voice') group by bFrom ORDER BY bid DESC limit $offset, $pageSize) as t on t.bId = b.bId
-				left join im_user_wechat as w on w.wOpenId = t.bFrom
+				JOIN (select max(bId) as bId,bFrom from im_user_buzz where bType in ('text','image','voice') group by bFrom ORDER BY bid DESC limit $offset, $pageSize) as t on t.bId = b.bId
+				LEFT JOIN im_user_wechat as w on w.wOpenId = t.bFrom
 				LEFT JOIN im_mark as m on m.mUId=b.bId AND m.mPId=$adminId AND m.mCategory=$cat
-				order by b.bId desc";
+				ORDER BY b.bId DESC";
 
 		$res = $conn->createCommand($sql)->queryAll();
 		foreach ($res as $key => $row) {

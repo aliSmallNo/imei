@@ -21,6 +21,8 @@ use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
+use dosamigos\qrcode\QrCode;
+use Gregwar\Image\Image;
 use Yii;
 use yii\web\Controller;
 use yii\web\Response;
@@ -450,6 +452,98 @@ class ApiController extends Controller
 		}
 		return self::renderAPI(129, '操作无效~');
 	}
+
+	public function actionQr()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$id = self::getParam('id', '5dff94c2-c793-4519-bcf0-17b8c889dd5f');
+		$url = 'http://view.mplink.cn/Pay/Home.aspx?deviceid=%s';
+		$url = sprintf($url, $id);
+		$folder = '/data/tmp/';
+		if (AppUtil::isDev()) {
+			$folder = '/Users/weirui/Documents/';
+		}
+		$time = time();
+		$fileName = $folder . $time . '.jpg';
+		QrCode::jpg($url, $fileName, 3, 13, 1);
+		list($width, $height, $type) = getimagesize($fileName);
+		$fontPath = __DIR__ . '/../../common/assets/Arial.ttf';
+		$saveName = $folder . $time . '_t.jpg';
+		$mergeImage = __DIR__ . '/../../common/assets/logo.jpg';
+		$mergeSize = 120;
+		$mergeImage = Image::open($mergeImage)->zoomCrop($mergeSize, $mergeSize, 0xffffff, 'left', 'top');
+		$content = Image::open($fileName)
+			->resize($width, $height + 60)
+			->zoomCrop($width, $height + 30, 0xffffff, 'center', 'bottom')
+			->write($fontPath, '30009393', $width / 2, $height + 20, 24, 0, 0x000000, 'center')
+			->merge($mergeImage, ($width - $mergeSize) / 2, ($height - $mergeSize + 20) / 2, $mergeSize, $mergeSize)
+			->save($saveName);
+		return self::renderAPI(0, $saveName, [$content]);
+	}
+
+	public static function createShareUrl($info, $category = "")
+	{
+		list($urlBackground, $urlAvatar, $text) = $info;
+		$bg_width = imagesx($urlBackground);
+
+		// Rain: 载入背景图
+		$bg_path = toolConfig::getSavedPath($fileName . "_bg", toolConfig::PREFIX_QR);
+		self::downloadFileWithCurl($urlBackground, $bg_path);
+		$background = imagecreatefromjpeg($bg_path);
+		$max_width = imagesx($background);
+		$max_height = imagesy($background);
+		unlink($bg_path);
+
+		// Rain: 载入二维码
+		$qrSize = 390;
+		$qr_path = toolConfig::getSavedPath($fileName . "_qr", toolConfig::PREFIX_QR);
+		self::downloadFileWithCurl($urlQRcode, $qr_path);
+		$qrImage = imagecreatefromjpeg($qr_path);
+
+		$qr_width = imagesx($qrImage);
+		$qr_height = imagesy($qrImage);
+		imagecopyresampled($background, $qrImage,
+			($max_width - $qrSize) / 2 + 4, ($max_height - $qrSize) / 2 - 60,
+			0, 0,
+			$qrSize, $qrSize,
+			$qr_width, $qr_height);
+		imagedestroy($qrImage);
+		unlink($qr_path);
+
+
+		// Rain: 载入微信头像
+		if ($urlAvatar) {
+			$avSize = 178;
+			$av_path = toolConfig::getSavedPath($fileName . "_av", toolConfig::PREFIX_QR);
+			self::downloadFileWithCurl($urlAvatar, $av_path);
+			$avImage = imagecreatefromjpeg($av_path);
+			$av_width = imagesx($avImage);
+			$av_height = imagesy($avImage);
+			imagecopyresampled($background, $avImage,
+				$max_width - $avSize - 68, $max_height - $avSize - 176,
+				0, 0,
+				$avSize, $avSize,
+				$av_width, $av_height);
+			imagedestroy($avImage);
+			unlink($av_path);
+		}
+
+		// Rain: 生成最终图片
+		$sharePath = toolConfig::getSavedPath($fileName, toolConfig::PREFIX_QR);
+		imagejpeg($background, $sharePath);
+//		$shareUrl = toolConfig::getImageUriPrefix() . $sharePath;
+
+		if (!$category) {
+			$category = ImageOpt::CATEGORY_SHARE_QR;
+		}
+
+		$shareUrl = ImageOpt::upload2COS($sharePath, false, $category);
+//		imagejpeg($background, $sharePath);
+		imagedestroy($background);
+		unlink($sharePath);
+		return $shareUrl;
+	}
+
 
 	public function actionPaid()
 	{
