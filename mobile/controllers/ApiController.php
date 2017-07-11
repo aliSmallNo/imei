@@ -459,7 +459,7 @@ class ApiController extends Controller
 	public function actionXuser()
 	{
 		$postData = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : "";
-		//$postData = file_get_contents('php://input', 'r');
+		$postData = file_get_contents('php://input', 'r');
 		$tag = trim(strtolower(self::postParam('tag')));
 		$id = self::postParam('id');
 		$openId = AppUtil::getCookie(self::COOKIE_OPENID);
