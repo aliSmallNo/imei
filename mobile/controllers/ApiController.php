@@ -453,6 +453,28 @@ class ApiController extends Controller
 		return self::renderAPI(129, '操作无效~');
 	}
 
+	/**
+	 * for 小程序
+	 */
+	public function actionXuser()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$id = self::postParam('id');
+		$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		switch ($tag) {
+			case "userfilter":
+				$data = self::postParam("data", '');
+				$page = self::postParam("page", 1);
+				if (strlen($data) > 5) {
+					User::edit($openId, ["uFilter" => $data]);
+				}
+				$data = json_decode($data, 1);
+				$ret = User::getFilter($openId, $data, $page);
+				return self::renderAPI(0, '', $ret);
+		}
+		return self::renderAPI(129, '操作无效~', $tag);
+	}
+
 	public function actionQr()
 	{
 		$tag = trim(strtolower(self::postParam('tag')));
