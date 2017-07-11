@@ -93,8 +93,8 @@ class UserBuzz extends ActiveRecord
 		$event = isset($postData["Event"]) ? strtolower($postData["Event"]) : "";
 		$eventKey = isset($postData["EventKey"]) && is_string($postData["EventKey"]) ? strtolower($postData["EventKey"]) : "";
 
-		$fromUsername = isset($postData["FromUserName"]) ? $postData["FromUserName"] : "";
-		$toUsername = isset($postData["ToUserName"]) ? $postData["ToUserName"] : "";
+		$fromUsername = isset($postData["FromUserName"]) ? $postData["FromUserName"] : '';
+		$toUsername = isset($postData["ToUserName"]) ? $postData["ToUserName"] : '';
 
 		switch ($event) {
 			case "scan":
@@ -168,8 +168,8 @@ class UserBuzz extends ActiveRecord
 					$resp = '';
 					if (!$ret) {
 						// Rain: 说明两天之内曾经聊过，不出现提示了
+						AppUtil::logFile([$fromUsername, $toUsername, self::$WelcomeMsg], 5, __FUNCTION__, __LINE__);
 						$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
-						AppUtil::logFile($resp, 5, __FUNCTION__, __LINE__);
 					}
 				}
 				break;
