@@ -104,7 +104,7 @@ class UserBuzz extends ActiveRecord
 					$debug .= $wxOpenId . "**" . $qrInfo["qFrom"] . "**" . $qrInfo["qCategory"] . "**" . $qrInfo["qSubCategory"];
 					$addResult = "";
 					if (strlen($wxOpenId) > 6) {
-						$addResult = UserLink::add($qrInfo["qFrom"], $wxOpenId, $qrInfo["qCategory"], $qrInfo["qSubCategory"]);
+						//$addResult = UserLink::add($qrInfo["qFrom"], $wxOpenId, $qrInfo["qCategory"], $qrInfo["qSubCategory"]);
 					}
 					if ($qrInfo) {
 						$debug .= $addResult . "**";
@@ -117,7 +117,7 @@ class UserBuzz extends ActiveRecord
 					$qId = substr($eventKey, strlen("qrscene_"));
 					if (is_numeric($qId)) {
 						$qrInfo = UserQR::findOne(["qId" => $qId]);
-						UserLink::add($qrInfo["qFrom"], $wxOpenId, $qrInfo["qCategory"], $qrInfo["qSubCategory"]);
+						//UserLink::add($qrInfo["qFrom"], $wxOpenId, $qrInfo["qCategory"], $qrInfo["qSubCategory"]);
 						if ($qrInfo) {
 							$resp = self::welcomeMsg($fromUsername, $toUsername, $qrInfo["qCategory"]);
 							// Rain: 添加或者更新微信用户信息
