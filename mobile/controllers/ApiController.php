@@ -38,6 +38,7 @@ class ApiController extends Controller
 		$timestamp = self::getParam("timestamp");
 		$nonce = self::getParam("nonce");
 		$retStr = self::getParam("echostr", UserBuzz::$Token);
+		AppUtil::logFile($retStr, 5, __FUNCTION__, __LINE__);
 		$ret = UserBuzz::checkSignature($signature, $timestamp, $nonce);
 		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 		if (!$ret) {
