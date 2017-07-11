@@ -97,7 +97,6 @@ class ApiController extends Controller
 				Admin::logout();
 				$ret = ["code" => 0, "msg" => self::ICON_OK_HTML . "修改成功！请重新登录"];
 				break;
-				break;
 		}
 		return self::renderAPI($ret["code"], $ret["msg"]);
 	}

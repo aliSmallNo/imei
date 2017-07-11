@@ -290,7 +290,7 @@ class ApiController extends Controller
 				$info = User::getItem($openId);
 				return self::renderAPI(0, '', $info);
 			case "userfilter":
-				$data = self::postParam("data");
+				$data = self::postParam("data", '');
 				$page = self::postParam("page", 1);
 				if (strlen($data) > 5) {
 					User::edit($openId, ["uFilter" => $data]);
@@ -298,13 +298,6 @@ class ApiController extends Controller
 				$data = json_decode($data, 1);
 				$ret = User::getFilter($openId, $data, $page);
 				return self::renderAPI(0, '', $ret);
-			case "sprofile":
-//				$id = self::postParam("id");
-//				$ret = User::sprofile($id);
-//				//心动
-//				$hint = User::findOne(["uOpenId" => $openId])->uHint;
-//				$ret["hintclass"] = (strpos($hint, $ret["id"]) !== false) ? "icon-loved" : "icon-love";
-//				return self::renderAPI(0, '', ["data" => $ret]);
 			case "mymp":
 				$ret = User::mymp($openId);
 				return self::renderAPI(0, '', $ret);
