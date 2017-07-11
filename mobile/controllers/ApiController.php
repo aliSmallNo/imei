@@ -458,15 +458,15 @@ class ApiController extends Controller
 	 */
 	public function actionXuser()
 	{
-		$postData = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : "";
 		$postData = file_get_contents('php://input', 'r');
-		$tag = trim(strtolower(self::postParam('tag')));
-		$id = self::postParam('id');
+		$postData = json_decode($postData, 1);
+		$tag = trim(strtolower(isset($postData["tag"]) ? $postData["tag"] : ""));
+
 		$openId = AppUtil::getCookie(self::COOKIE_OPENID);
 		switch ($tag) {
 			case "userfilter":
-				$data = self::postParam("data", '');
-				$page = self::postParam("page", 1);
+				$page = isset($postData["page"]) ? $postData["page"] : 1;
+				$data = trim(strtolower(isset($postData["data"]) ? $postData["data"] : ""));
 				if (strlen($data) > 5) {
 					User::edit($openId, ["uFilter" => $data]);
 				}
@@ -474,7 +474,7 @@ class ApiController extends Controller
 				$ret = User::getFilter($openId, $data, $page);
 				return self::renderAPI(0, '', $ret);
 		}
-		return self::renderAPI(129, '操作无效~', $postData);
+		return self::renderAPI(129, '操作无效~', $tag);
 	}
 
 	public function actionQr()
