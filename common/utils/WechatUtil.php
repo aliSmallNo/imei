@@ -15,15 +15,48 @@ use common\models\User;
 use common\models\UserMsg;
 use common\models\UserTrans;
 use common\models\UserWechat;
+//use WXBizDataCrypt;
 use Yii;
 
 require_once __DIR__ . '/../lib/WxPay/WxPay.Config.php';
 require_once __DIR__ . '/../lib/WxPay/WxPay.Api.php';
 
+//include_once __DIR__ . "/../lib/decryptData/wxBizDataCrypt.php";
+
 class WechatUtil
 {
 
 	const ACCESS_CODE = "N8JoVKwSNP5irhG2d19w";
+	//const XCX_APP_ID = "wx1aa5e80d0066c1d7";
+	//const XCX_APP_SECRET = "981d82a2eddf8e31ddd45e70020848f9";
+
+//	public static function decrytyUserInfo($sessionKey, $encryptedData, $iv)
+//	{
+//		$appid = self::XCX_APP_ID;
+//		$pc = new WXBizDataCrypt($appid, $sessionKey);
+//		$errCode = $pc->decryptData($encryptedData, $iv, $data);
+//
+//		if ($errCode == 0) {
+//			return $data;
+//		} else {
+//			return $errCode;
+//		}
+//	}
+
+	/**
+	 * @param $code
+	 * @return mixed
+	 * 小程序方法
+	 * 根据 wx.login() 返回的code 获取session_key、openId
+	 */
+//	public static function getXcxSessionKey($code)
+//	{
+//		$appid = self::XCX_APP_ID;
+//		$app_session = self::XCX_APP_SECRET;
+//		$url = "https://api.weixin.qq.com/sns/jscode2session?appid=$appid&secret=$app_session&js_code=$code&grant_type=authorization_code";
+//		return AppUtil::httpGet($url);
+//	}
+
 
 	private static function httpPostData($url, $data_string)
 	{

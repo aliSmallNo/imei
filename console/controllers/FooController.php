@@ -353,6 +353,13 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-
+		$code = "001PNKo22zrryZ0GFxo22eLTo22PNKoT";
+		$res = WechatUtil::getXcxSessionKey($code);
+		var_dump(\GuzzleHttp\json_decode($res,1));
+		exit;
+//		$sessionKey = '';
+//		$encryptedData = '';
+//		$iv = '';
+		//WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
 	}
 }

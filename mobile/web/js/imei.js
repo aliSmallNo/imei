@@ -78,12 +78,10 @@ require(["layer"],
 						RoleUtil.next.html("进入单身注册");
 					}
 				});
-
 				util.next.on(kClick, function () {
 					location.href = "#fsms";
 					return false;
 				});
-
 				util.loaded = 1;
 			}
 		};

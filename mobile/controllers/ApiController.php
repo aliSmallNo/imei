@@ -459,24 +459,20 @@ class ApiController extends Controller
 	/**
 	 * for 小程序
 	 */
-	public function actionXuser()
+	public function actionDict()
 	{
-		$tag = strtolower(self::xcxParam('tag'));
-
-		//$openId = AppUtil::getCookie(self::COOKIE_OPENID);
-		$openId = self::xcxParam('openid');
+		$tag = self::postParam('tag');
+		$data = [];
 		switch ($tag) {
-			case "userfilter":
-				$page = isset($postData["page"]) ? $postData["page"] : 1;
-				$data = trim(self::xcxParam('data'));
-				if (strlen($data) > 5) {
-					User::edit($openId, ["uFilter" => $data]);
-				}
-				$data = json_decode($data, 1);
-				$ret = User::getFilter($openId, $data, $page);
-				return self::renderAPI(0, '', $ret);
+			case 'prov':
+				$data = City::provinces();
+				break;
+			case 'scope':
+				$data = User::$Scope;
+				break;
+
 		}
-		return self::renderAPI(129, '操作无效~');
+		return self::renderAPI(0, '', $data);
 	}
 
 	public function actionQr()
