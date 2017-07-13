@@ -476,7 +476,7 @@ class ApiController extends Controller
 				$data["house"] = User::$Estate;
 				$data["car"] = User::$Car;
 				$data["scope"] = User::$Scope;
-				$data["job"] = User::$Profession;
+				$data["job"] = User::$ProfessionDict;
 				$data["drink"] = User::$Alcohol;
 				$data["smoke"] = User::$Smoke;
 				$data["belief"] = User::$Belief;
