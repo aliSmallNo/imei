@@ -464,11 +464,11 @@ class ApiController extends Controller
 		$tag = self::postParam('tag');
 		$data = [];
 		switch ($tag) {
-			case 'prov':
-				$data = City::provinces();
-				break;
-			case 'scope':
-				$data = User::$Scope;
+			case 'init':
+				$data["prov"] = City::provinces();
+				$data["city"] = City::cities(100100);
+				$data["sex"] = User::$Gender;
+				$data["height"] = User::$Height;
 				break;
 
 		}

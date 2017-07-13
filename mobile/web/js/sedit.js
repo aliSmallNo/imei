@@ -163,7 +163,6 @@ require(["layer"],
 					return false;
 				});
 				$(".sedit-btn-comfirm").on(kClick, function () {
-
 					var inputFileds = ["nickname", "interest", "intro"];
 					var inputFiledsT = ["呢称", "兴趣爱好", "自我介绍"];
 					for (var i = 0; i < inputFileds.length; i++) {
@@ -174,7 +173,6 @@ require(["layer"],
 						}
 						$sls.postData[inputFileds[i]] = inputVal;
 					}
-
 					var lItem = [];
 					$(".action-location .location em").each(function () {
 						var item = {
@@ -184,7 +182,6 @@ require(["layer"],
 						lItem.push(item);
 					});
 					$sls.postData["location"] = JSON.stringify(lItem);
-
 					$(".action-com").each(function () {
 						var self = $(this);
 						var field = self.attr("data-field");
