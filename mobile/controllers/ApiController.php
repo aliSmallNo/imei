@@ -475,7 +475,7 @@ class ApiController extends Controller
 				//alcohol  educationcation estate profession gender horos
 				$data["height"] = User::$Height;
 				$data["income"] = User::$Income;
-				$data["educationcation"] = User::$Education;
+				$data["education"] = User::$Education;
 				$data["horos"] = User::$Horos;
 				$data["weight"] = User::$Weight;
 				$data["estate"] = User::$Estate;
