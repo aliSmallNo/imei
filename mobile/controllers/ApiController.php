@@ -462,9 +462,13 @@ class ApiController extends Controller
 	public function actionDict()
 	{
 		$tag = self::postParam('tag');
+		$openid = self::postParam('openid');
 		$data = [];
 		switch ($tag) {
 			case 'init':
+				if ($openid) {
+					$data["info"] = User::fmtRow(User::findOne(["uOpenId" => $openid])->toArray());
+				}
 				$data["prov"] = City::provinces();
 				$data["city"] = City::cities(100100);
 				$data["sex"] = User::$Gender;
