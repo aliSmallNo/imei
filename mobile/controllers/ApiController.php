@@ -471,17 +471,18 @@ class ApiController extends Controller
 				}
 				$data["prov"] = City::provinces();
 				$data["city"] = City::cities(100100);
-				$data["sex"] = User::$Gender;
+				$data["gender"] = User::$Gender;
+				//alcohol  educationcation estate profession gender horos
 				$data["height"] = User::$Height;
 				$data["income"] = User::$Income;
-				$data["edu"] = User::$Education;
-				$data["sign"] = User::$Horos;
+				$data["educationcation"] = User::$Education;
+				$data["horos"] = User::$Horos;
 				$data["weight"] = User::$Weight;
-				$data["house"] = User::$Estate;
+				$data["estate"] = User::$Estate;
 				$data["car"] = User::$Car;
 				$data["scope"] = User::$Scope;
-				$data["job"] = User::$ProfessionDict;
-				$data["drink"] = User::$Alcohol;
+				$data["profession"] = User::$ProfessionDict;
+				$data["alcohol"] = User::$Alcohol;
 				$data["smoke"] = User::$Smoke;
 				$data["belief"] = User::$Belief;
 				$data["fitness"] = User::$Fitness;
