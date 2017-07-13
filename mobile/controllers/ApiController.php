@@ -490,6 +490,13 @@ class ApiController extends Controller
 				$data["rest"] = User::$Rest;
 				$data["pet"] = User::$Pet;
 				break;
+			case "shome":
+				$hid = self::postParam("id");
+				$hid = AppUtil::decrypt($hid);
+				$uInfo = User::user(['uId' => $hid]);
+				$uInfo["albumJson"] = json_encode($uInfo["album"]);
+				$data = $uInfo;
+				break;
 
 		}
 		return self::renderAPI(0, '', $data);
