@@ -469,6 +469,21 @@ class ApiController extends Controller
 				$data["city"] = City::cities(100100);
 				$data["sex"] = User::$Gender;
 				$data["height"] = User::$Height;
+				$data["income"] = User::$Income;
+				$data["edu"] = User::$Education;
+				$data["hor"] = User::$Horos;
+				$data["weight"] = User::$Weight;
+				$data["house"] = User::$Estate;
+				$data["car"] = User::$Car;
+				$data["scope"] = User::$Scope;
+				$data["job"] = User::$Profession;
+				$data["drink"] = User::$Alcohol;
+				$data["smoke"] = User::$Smoke;
+				$data["belief"] = User::$Belief;
+				$data["fitness"] = User::$Fitness;
+				$data["diet"] = User::$Diet;
+				$data["rest"] = User::$Rest;
+				$data["pet"] = User::$Pet;
 				break;
 
 		}
