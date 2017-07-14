@@ -500,6 +500,14 @@ class ApiController extends Controller
 			case "code":
 				$code = self::postParam("code");
 				$data = WechatUtil::getXcxSessionKey($code);
+				$data = json_decode($data, 1);
+				break;
+			case "unionid":
+				$sessionKey = self::postParam("sid");
+				$encryptedData = self::postParam("data");
+				$iv = self::postParam("iv");
+				$data = WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
+				$data = json_decode($data, 1);
 				break;
 
 		}
