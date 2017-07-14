@@ -10,7 +10,6 @@ namespace console\controllers;
  */
 use common\models\User;
 use common\models\UserNet;
-use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
@@ -354,16 +353,15 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$code = "0614XFIV1anRBS08sSIV1EbJIV14XFIh";
+		/*$code = "0614XFIV1anRBS08sSIV1EbJIV14XFIh";
 		$res = WechatUtil::getXcxSessionKey($code);
 		print_r(\GuzzleHttp\json_decode($res,1));
-		exit;
+		exit;*/
 
-
-//		$sessionKey = '';
-//		$encryptedData = '';
-//		$iv = '';
-//		$res=WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
-//		print_r($res);
+		$sessionKey = '';
+		$encryptedData = '';
+		$iv = '';
+		$res = WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
+		var_dump($res);
 	}
 }
