@@ -32,10 +32,9 @@ class WechatUtil
 
 	public static function decrytyUserInfo($sessionKey, $encryptedData, $iv)
 	{
-		$sessionKey = "dzwrkrMzko64Tw8pqomccg==";
-		$encryptedData = "fgYb6c8JaGS73RYUp2BVbqwVkQRsbd9+zUMhQ2pS1QlY0lKU2zl+HJdPE6N3qD5PuDHi7kJAjRkrTQXbebpRrLZFWQZNAnlk7nDr5ohL/5zOUdnhT0K+3Uo9P+VTjdEjxLkhnIS4CrpXpXTtGgLubRmhIcy044nad8NlA2Z1HfFfGObHWduqtUZoYjZjeVDTQy+gOL1Ws36kJGhB2MNSlguExEUY75FQ8Yy6CAgAomIK8oS/mZNwTM4cloLTokslGcfMS6d8cR+ZnHL6KWVRjEpwqSzkOiH0effa/Nsgb8b3HdHJRCK1KBsLlMMkprrZWKlNCdlVF6RoysfK2Hs8MJOa9bXovFtUaH53NMXlQDiJnTayUMRRSiISfQHOLlTKHTrBqhzi93e5Zz/cmSvI9BfmCd6vnUJfyxxHErE+XOyRBjUj59GH0cuNR6XZWHqE0EkJdlwSOfRbxzE7f34lDiKOUWCMk6WBlVAbpaJnXPM=";
-		$iv = "RmFUu1s3xRWwntY8Dw5TDQ==";
-
+//		$sessionKey = "dzwrkrMzko64Tw8pqomccg==";
+//		$encryptedData = "fgYb6c8JaGS73RYUp2BVbqwVkQRsbd9+zUMhQ2pS1QlY0lKU2zl+HJdPE6N3qD5PuDHi7kJAjRkrTQXbebpRrLZFWQZNAnlk7nDr5ohL/5zOUdnhT0K+3Uo9P+VTjdEjxLkhnIS4CrpXpXTtGgLubRmhIcy044nad8NlA2Z1HfFfGObHWduqtUZoYjZjeVDTQy+gOL1Ws36kJGhB2MNSlguExEUY75FQ8Yy6CAgAomIK8oS/mZNwTM4cloLTokslGcfMS6d8cR+ZnHL6KWVRjEpwqSzkOiH0effa/Nsgb8b3HdHJRCK1KBsLlMMkprrZWKlNCdlVF6RoysfK2Hs8MJOa9bXovFtUaH53NMXlQDiJnTayUMRRSiISfQHOLlTKHTrBqhzi93e5Zz/cmSvI9BfmCd6vnUJfyxxHErE+XOyRBjUj59GH0cuNR6XZWHqE0EkJdlwSOfRbxzE7f34lDiKOUWCMk6WBlVAbpaJnXPM=";
+//		$iv = "RmFUu1s3xRWwntY8Dw5TDQ==";
 		$appid = self::XCX_APP_ID;
 		$pc = new WXBizDataCrypt($appid, $sessionKey);
 		$errCode = $pc->decryptData($encryptedData, $iv, $data);
