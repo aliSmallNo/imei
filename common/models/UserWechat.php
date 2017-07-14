@@ -281,4 +281,67 @@ class UserWechat extends ActiveRecord
 		return $ret['errcode'];
 	}
 
+	public static function refreshWXInfo()
+	{
+		$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+		$conn = AppUtil::db();
+		$sql = "select wOpenId from im_user_wechat WHERE  wNote!='dummy' ";
+		$openIds = $conn->createCommand($sql)->queryAll();
+		$openIds = array_values($openIds);
+
+		if ($openIds) {
+			$postData = [
+				"user_list" => []
+			];
+			$index = $updateCount = 0;
+			$sql = 'update im_user_wechat set 
+						wUnionId=:unid,wNickname=:nickname,wAvatar=:avatar,wRawData=:raw,wUpdatedOn=now()
+						WHERE wOpenId=:openid';
+			$cmdUpdate = $conn->createCommand($sql);
+			foreach ($openIds as $row) {
+				$postData["user_list"][] = ["openid" => $row["wOpenId"], "lang" => "zh_CN"];
+				if ($index > 95) {
+					$url = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=$token";
+					$res = AppUtil::postJSON($url, json_encode($postData));
+					$res = json_decode(substr($res, strpos($res, '{')), true);
+//					$fields = ["nickname", "headimgurl", "country", "province", "city", "sex", "groupid", "unionid", "remark", "subscribe_time", "subscribe", "openid"];
+					if ($res && isset($res["user_info_list"])) {
+						foreach ($res["user_info_list"] as $user) {
+							$updateCount += $cmdUpdate->bindValues([
+								':unid' => $user['unionid'],
+								':nickname' => $user['nickname'],
+								':avatar' => $user['avatar'],
+								':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
+								':openid' => $user['openid']
+							])->execute();
+						}
+					}
+					$postData = [
+						"user_list" => []
+					];
+					$index = 0;
+					echo "updateCount:" . $updateCount . date(" Y-m-d H:i:s") . "\n";
+				}
+				$index++;
+			}
+			if ($postData["user_list"] && count($postData["user_list"])) {
+				$url = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=$token";
+				$res = AppUtil::postJSON($url, json_encode($postData));
+				$res = json_decode(substr($res, strpos($res, '{')), true);
+				if ($res && isset($res["user_info_list"])) {
+					foreach ($res["user_info_list"] as $user) {
+						$updateCount += $cmdUpdate->bindValues([
+							':unid' => $user['unionid'],
+							':nickname' => $user['nickname'],
+							':avatar' => $user['avatar'],
+							':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
+							':openid' => $user['openid']
+						])->execute();
+					}
+				}
+			}
+			echo "updateCount:" . $updateCount . date(" Y-m-d H:i:s") . "\n";
+		}
+		return true;
+	}
 }
