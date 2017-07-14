@@ -10,7 +10,6 @@ namespace console\controllers;
  */
 use common\models\User;
 use common\models\UserNet;
-use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
@@ -363,7 +362,7 @@ class FooController extends Controller
 		$sessionKey = '';
 		$encryptedData = '';
 		$iv = '';
-		$res=WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
+		$res = WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
 		print_r($res);
 	}
 }
