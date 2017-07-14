@@ -43,6 +43,7 @@ class WechatUtil
 			return $data;
 		} else {
 			return $errCode;
+
 		}
 	}
 
