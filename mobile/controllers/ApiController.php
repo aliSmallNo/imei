@@ -517,10 +517,10 @@ class ApiController extends Controller
 				$sessionKey = self::postParam("sid");
 				$encryptedData = self::postParam("data");
 				$iv = self::postParam("iv");
-				$dat = WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
-				$dat = json_decode($dat, 1);
+				$data = WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
+				$data = json_decode($dat, 1);
 				/*
-				$dat = [
+				$data = [
 					"avatarUrl" => "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83erYj33xpRelu6CprCu7QYhUiawoZOe77iaCa7g8w53v0EM0TdMCz6ib5vDsKCljQQKY9fqb8GUppq2Tw/0",
 					"city" => "Changping",
 					"country" => "China",
@@ -537,12 +537,13 @@ class ApiController extends Controller
 						]
 				];
 				*/
-				$unionId = (isset($dat["unionId"]) && $dat["unionId"]) ? $dat["unionId"] : '';
-				if ($unionId && $info = UserWechat::findOne(["wUnionId" => $unionId])) {
-					$data = $info->wOpenId;
-				} else {
-					$data = '';
-				}
+
+//				$unionId = (isset($data["unionId"]) && $data["unionId"]) ? $data["unionId"] : '';
+//				if ($unionId && $info = UserWechat::findOne(["wUnionId" => $unionId])) {
+//					$data = $info->wOpenId;
+//				} else {
+//					$data = '';
+//				}
 				break;
 
 		}
