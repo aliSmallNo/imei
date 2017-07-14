@@ -310,7 +310,7 @@ class UserWechat extends ActiveRecord
 							$updateCount += $cmdUpdate->bindValues([
 								':unid' => isset($user['unionid']) ? $user['unionid'] : '',
 								':nickname' => $user['nickname'],
-								':avatar' => $user['avatar'],
+								':avatar' => $user['headimgurl'],
 								':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
 								':openid' => $user['openid']
 							])->execute();
@@ -333,7 +333,7 @@ class UserWechat extends ActiveRecord
 						$updateCount += $cmdUpdate->bindValues([
 							':unid' => isset($user['unionid']) ? $user['unionid'] : '',
 							':nickname' => $user['nickname'],
-							':avatar' => $user['avatar'],
+							':avatar' => $user['headimgurl'],
 							':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
 							':openid' => $user['openid']
 						])->execute();
