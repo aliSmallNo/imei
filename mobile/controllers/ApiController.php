@@ -512,9 +512,19 @@ class ApiController extends Controller
                     "errmsg"=> "invalid code"
 				];
 				*/
+				if (isset($data["session_key"])) {
+					RedisUtil::setCache($data["session_key"], RedisUtil::KEY_XCX_SESSION_ID, $data["openid"]);
+					$data = [
+						"errcode" => 0,
+						"errmsg" => "success",
+						"openid" => $data["openid"]
+					];
+				}
 				break;
 			case "unionid":
-				$sessionKey = self::postParam("sid");
+				//$sessionKey = self::postParam("sid");
+				$XcxOpneid = self::postParam("openid");
+				$sessionKey = RedisUtil::getCache(RedisUtil::KEY_XCX_SESSION_ID, $XcxOpneid);
 				$encryptedData = self::postParam("data");
 				$iv = self::postParam("iv");
 				$data = WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
