@@ -518,7 +518,7 @@ class ApiController extends Controller
 				$encryptedData = self::postParam("data");
 				$iv = self::postParam("iv");
 				$data = WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
-				$data = json_decode($dat, 1);
+				$data = json_decode($data, 1);
 				/*
 				$data = [
 					"avatarUrl" => "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83erYj33xpRelu6CprCu7QYhUiawoZOe77iaCa7g8w53v0EM0TdMCz6ib5vDsKCljQQKY9fqb8GUppq2Tw/0",
