@@ -308,7 +308,7 @@ class UserWechat extends ActiveRecord
 					if ($res && isset($res["user_info_list"])) {
 						foreach ($res["user_info_list"] as $user) {
 							$updateCount += $cmdUpdate->bindValues([
-								':unid' => $user['unionid'],
+								':unid' => isset($user['unionid']) ? $user['unionid'] : '',
 								':nickname' => $user['nickname'],
 								':avatar' => $user['avatar'],
 								':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
@@ -331,7 +331,7 @@ class UserWechat extends ActiveRecord
 				if ($res && isset($res["user_info_list"])) {
 					foreach ($res["user_info_list"] as $user) {
 						$updateCount += $cmdUpdate->bindValues([
-							':unid' => $user['unionid'],
+							':unid' => isset($user['unionid']) ? $user['unionid'] : '',
 							':nickname' => $user['nickname'],
 							':avatar' => $user['avatar'],
 							':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
