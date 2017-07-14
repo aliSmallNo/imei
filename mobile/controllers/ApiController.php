@@ -501,13 +501,48 @@ class ApiController extends Controller
 				$code = self::postParam("code");
 				$data = WechatUtil::getXcxSessionKey($code);
 				$data = json_decode($data, 1);
+				/*
+				$data = [
+					"session_key" => "dzwrkrMzko64Tw8pqomccg==",
+					"expires_in" => 7200,
+					"openid" => "ouvPv0Cz6rb-QB_i9oYwHZWjGtv8"
+				];
+				$data = [
+					"errcode"=> 40029,
+                    "errmsg"=> "invalid code"
+				];
+				*/
 				break;
 			case "unionid":
 				$sessionKey = self::postParam("sid");
 				$encryptedData = self::postParam("data");
 				$iv = self::postParam("iv");
-				$data = WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
-				$data = json_decode($data, 1);
+				$dat = WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
+				$dat = json_decode($dat, 1);
+				/*
+				$dat = [
+					"avatarUrl" => "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83erYj33xpRelu6CprCu7QYhUiawoZOe77iaCa7g8w53v0EM0TdMCz6ib5vDsKCljQQKY9fqb8GUppq2Tw/0",
+					"city" => "Changping",
+					"country" => "China",
+					"gender" => 1,
+					"language" => "zh_CN",
+					"nickName" => "周攀",
+					"openId" => "ouvPv0Cz6rb-QB_i9oYwHZWjGtv8",
+					"province" => "Beijing",
+					"unionId" => "oWYqJwY-TP-JEiDuew4onndg1n_0",
+					"watermark" =>
+						[
+							"timestamp" => 1500011102,
+							"appid" => "wx1aa5e80d0066c1d7"
+						]
+				];
+				*/
+				$unionId = (isset($dat["unionId"]) && $dat["unionId"]) ? $dat["unionId"] : '';
+				if ($unionId && $info = UserWechat::findOne(["wUnionId" => $unionId])) {
+					$data = $info->wOpenId;
+				} else {
+					$data = '';
+				}
 				break;
 
 		}
