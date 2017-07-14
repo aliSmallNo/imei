@@ -507,6 +507,7 @@ class ApiController extends Controller
 				$encryptedData = self::postParam("data");
 				$iv = self::postParam("iv");
 				$data = WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
+				$data = json_decode($data, 1);
 				break;
 
 		}
