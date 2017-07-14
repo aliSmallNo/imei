@@ -358,12 +358,10 @@ class FooController extends Controller
 		print_r(\GuzzleHttp\json_decode($res,1));
 		exit;*/
 
-
 		$sessionKey = '';
 		$encryptedData = '';
 		$iv = '';
 		$res = WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
-		print_r($res);
-
+		var_dump($res);
 	}
 }
