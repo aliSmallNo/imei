@@ -285,7 +285,7 @@ class UserWechat extends ActiveRecord
 	{
 		$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 		$conn = AppUtil::db();
-		$sql = "select wOpenId from im_user_wechat WHERE  wNote!='dummy' limit 5 ";
+		$sql = "select wOpenId from im_user_wechat WHERE  wNote!='dummy' ";
 		$openIds = $conn->createCommand($sql)->queryAll();
 		$openIds = array_values($openIds);
 
@@ -307,6 +307,7 @@ class UserWechat extends ActiveRecord
 //					$fields = ["nickname", "headimgurl", "country", "province", "city", "sex", "groupid", "unionid", "remark", "subscribe_time", "subscribe", "openid"];
 					if ($res && isset($res["user_info_list"])) {
 						foreach ($res["user_info_list"] as $user) {
+							if (!isset($user['nickname'])) continue;
 							$updateCount += $cmdUpdate->bindValues([
 								':unid' => isset($user['unionid']) ? $user['unionid'] : '',
 								':nickname' => isset($user['nickname']) ? $user['nickname'] : '',
@@ -330,6 +331,7 @@ class UserWechat extends ActiveRecord
 				$res = json_decode(substr($res, strpos($res, '{')), true);
 				if ($res && isset($res["user_info_list"])) {
 					foreach ($res["user_info_list"] as $user) {
+						if (!isset($user['nickname'])) continue;
 						$updateCount += $cmdUpdate->bindValues([
 							':unid' => isset($user['unionid']) ? $user['unionid'] : '',
 							':nickname' => isset($user['nickname']) ? $user['nickname'] : '',
