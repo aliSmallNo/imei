@@ -19,6 +19,7 @@ use common\models\UserSign;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
+use common\utils\ImageUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use dosamigos\qrcode\QrCode;
@@ -496,6 +497,43 @@ class ApiController extends Controller
 				$uInfo = User::user(['uId' => $hid]);
 				$uInfo["albumJson"] = json_encode($uInfo["album"]);
 				$data = $uInfo;
+				break;
+			case "mhome":
+				$hid = self::postParam("id");
+				$hid = AppUtil::decrypt($hid);
+				$openId = self::postParam("openid");
+				$uInfo = User::user(['uId' => $hid]);
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				$prefer = 'male';
+				$followed = '关注TA';
+				$items = $stat = [];
+				if ($wxInfo) {
+					$avatar = $wxInfo["Avatar"];
+					$nickname = $wxInfo["uName"];
+					if ($wxInfo['uGender'] == User::GENDER_MALE) {
+						list($items) = UserNet::female($uInfo['id'], 1, 10);
+						$prefer = 'female';
+					} else {
+						list($items) = UserNet::male($uInfo['id'], 1, 10);
+					}
+					$stat = UserNet::getStat($uInfo['id'], 1);
+					$followed = UserNet::hasFollowed($hid, $wxInfo['uId']) ? '取消关注' : '关注TA';
+
+				}else {
+					$avatar = ImageUtil::DEFAULT_AVATAR;
+					$nickname = "本地测试";
+				}
+				$data = [
+					'nickname' => $nickname,
+					'avatar' => $avatar,
+					'uInfo' => $uInfo,
+					'prefer' => $prefer,
+					'hid' => $hid,
+					'secretId' => $hid,
+					'singles' => $items,
+					'stat' => $stat,
+					'followed' => $followed
+				];
 				break;
 			case "code":
 				$code = self::postParam("code");
