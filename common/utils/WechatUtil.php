@@ -15,33 +15,36 @@ use common\models\User;
 use common\models\UserMsg;
 use common\models\UserTrans;
 use common\models\UserWechat;
-//use WXBizDataCrypt;
+use WXBizDataCrypt;
 use Yii;
 
 require_once __DIR__ . '/../lib/WxPay/WxPay.Config.php';
 require_once __DIR__ . '/../lib/WxPay/WxPay.Api.php';
 
-//include_once __DIR__ . "/../lib/decryptData/wxBizDataCrypt.php";
+require_once __DIR__ . "/../lib/XcxDecrypt/wxBizDataCrypt.php";
 
 class WechatUtil
 {
 
 	const ACCESS_CODE = "N8JoVKwSNP5irhG2d19w";
-	//const XCX_APP_ID = "wx1aa5e80d0066c1d7";
-	//const XCX_APP_SECRET = "981d82a2eddf8e31ddd45e70020848f9";
+	const XCX_APP_ID = "wx1aa5e80d0066c1d7";
+	const XCX_APP_SECRET = "981d82a2eddf8e31ddd45e70020848f9";
 
-//	public static function decrytyUserInfo($sessionKey, $encryptedData, $iv)
-//	{
-//		$appid = self::XCX_APP_ID;
-//		$pc = new WXBizDataCrypt($appid, $sessionKey);
-//		$errCode = $pc->decryptData($encryptedData, $iv, $data);
-//
-//		if ($errCode == 0) {
-//			return $data;
-//		} else {
-//			return $errCode;
-//		}
-//	}
+	public static function decrytyUserInfo($sessionKey, $encryptedData, $iv)
+	{
+		$sessionKey = "dzwrkrMzko64Tw8pqomccg==";
+		$encryptedData="fgYb6c8JaGS73RYUp2BVbqwVkQRsbd9+zUMhQ2pS1QlY0lKU2zl+HJdPE6N3qD5PuDHi7kJAjRkrTQXbebpRrLZFWQZNAnlk7nDr5ohL/5zOUdnhT0K+3Uo9P+VTjdEjxLkhnIS4CrpXpXTtGgLubRmhIcy044nad8NlA2Z1HfFfGObHWduqtUZoYjZjeVDTQy+gOL1Ws36kJGhB2MNSlguExEUY75FQ8Yy6CAgAomIK8oS/mZNwTM4cloLTokslGcfMS6d8cR+ZnHL6KWVRjEpwqSzkOiH0effa/Nsgb8b3HdHJRCK1KBsLlMMkprrZWKlNCdlVF6RoysfK2Hs8MJOa9bXovFtUaH53NMXlQDiJnTayUMRRSiISfQHOLlTKHTrBqhzi93e5Zz/cmSvI9BfmCd6vnUJfyxxHErE+XOyRBjUj59GH0cuNR6XZWHqE0EkJdlwSOfRbxzE7f34lDiKOUWCMk6WBlVAbpaJnXPM=";
+		$iv="RmFUu1s3xRWwntY8Dw5TDQ==";
+		$appid = self::XCX_APP_ID;
+		$pc = new WXBizDataCrypt($appid, $sessionKey);
+		$errCode = $pc->decryptData($encryptedData, $iv, $data);
+
+		if ($errCode == 0) {
+			return $data;
+		} else {
+			return $errCode;
+		}
+	}
 
 	/**
 	 * @param $code
@@ -49,13 +52,13 @@ class WechatUtil
 	 * 小程序方法
 	 * 根据 wx.login() 返回的code 获取session_key、openId
 	 */
-//	public static function getXcxSessionKey($code)
-//	{
-//		$appid = self::XCX_APP_ID;
-//		$app_session = self::XCX_APP_SECRET;
-//		$url = "https://api.weixin.qq.com/sns/jscode2session?appid=$appid&secret=$app_session&js_code=$code&grant_type=authorization_code";
-//		return AppUtil::httpGet($url);
-//	}
+	public static function getXcxSessionKey($code)
+	{
+		$appid = self::XCX_APP_ID;
+		$app_session = self::XCX_APP_SECRET;
+		$url = "https://api.weixin.qq.com/sns/jscode2session?appid=$appid&secret=$app_session&js_code=$code&grant_type=authorization_code";
+		return AppUtil::httpGet($url);
+	}
 
 
 	private static function httpPostData($url, $data_string)

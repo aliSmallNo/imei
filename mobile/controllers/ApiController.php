@@ -497,6 +497,10 @@ class ApiController extends Controller
 				$uInfo["albumJson"] = json_encode($uInfo["album"]);
 				$data = $uInfo;
 				break;
+			case "code":
+				$code = self::postParam("code");
+				$data = WechatUtil::getXcxSessionKey($code);
+				break;
 
 		}
 		return self::renderAPI(0, '', $data);
