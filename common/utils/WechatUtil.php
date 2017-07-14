@@ -30,6 +30,13 @@ class WechatUtil
 	const XCX_APP_ID = "wx1aa5e80d0066c1d7";
 	const XCX_APP_SECRET = "981d82a2eddf8e31ddd45e70020848f9";
 
+	/**
+	 * @param $sessionKey
+	 * @param $encryptedData
+	 * @param $iv
+	 * @return array
+	 * 小程序方法
+	 */
 	public static function decrytyUserInfo($sessionKey, $encryptedData, $iv)
 	{
 //		$sessionKey = "dzwrkrMzko64Tw8pqomccg==";
