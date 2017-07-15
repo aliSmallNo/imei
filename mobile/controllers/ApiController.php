@@ -19,6 +19,7 @@ use common\models\UserSign;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
+use common\utils\ImageUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use dosamigos\qrcode\QrCode;
@@ -497,17 +498,100 @@ class ApiController extends Controller
 				$uInfo["albumJson"] = json_encode($uInfo["album"]);
 				$data = $uInfo;
 				break;
+			case "mhome":
+				$hid = self::postParam("id");
+				$hid = AppUtil::decrypt($hid);
+				$openId = self::postParam("openid");
+				$uInfo = User::user(['uId' => $hid]);
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				$prefer = 'male';
+				$followed = '关注TA';
+				$items = $stat = [];
+				if ($wxInfo) {
+					$avatar = $wxInfo["Avatar"];
+					$nickname = $wxInfo["uName"];
+					if ($wxInfo['uGender'] == User::GENDER_MALE) {
+						list($items) = UserNet::female($uInfo['id'], 1, 10);
+						$prefer = 'female';
+					} else {
+						list($items) = UserNet::male($uInfo['id'], 1, 10);
+					}
+					$stat = UserNet::getStat($uInfo['id'], 1);
+					$followed = UserNet::hasFollowed($hid, $wxInfo['uId']) ? '取消关注' : '关注TA';
+
+				}else {
+					$avatar = ImageUtil::DEFAULT_AVATAR;
+					$nickname = "本地测试";
+				}
+				$data = [
+					'nickname' => $nickname,
+					'avatar' => $avatar,
+					'uInfo' => $uInfo,
+					'prefer' => $prefer,
+					'hid' => $hid,
+					'secretId' => $hid,
+					'singles' => $items,
+					'stat' => $stat,
+					'followed' => $followed
+				];
+				break;
 			case "code":
 				$code = self::postParam("code");
 				$data = WechatUtil::getXcxSessionKey($code);
 				$data = json_decode($data, 1);
+				/*
+				$data = [
+					"session_key" => "dzwrkrMzko64Tw8pqomccg==",
+					"expires_in" => 7200,
+					"openid" => "ouvPv0Cz6rb-QB_i9oYwHZWjGtv8"
+				];
+				$data = [
+					"errcode"=> 40029,
+                    "errmsg"=> "invalid code"
+				];
+				*/
+				if (isset($data["session_key"])) {
+					RedisUtil::setCache($data["session_key"], RedisUtil::KEY_XCX_SESSION_ID, $data["openid"]);
+					$data = [
+						"errcode" => 0,
+						"errmsg" => "success",
+						"openid" => $data["openid"]
+					];
+				}
 				break;
 			case "unionid":
-				$sessionKey = self::postParam("sid");
+				//$sessionKey = self::postParam("sid");
+				$XcxOpneid = self::postParam("openid");
+				$sessionKey = RedisUtil::getCache(RedisUtil::KEY_XCX_SESSION_ID, $XcxOpneid);
 				$encryptedData = self::postParam("data");
 				$iv = self::postParam("iv");
 				$data = WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
 				$data = json_decode($data, 1);
+				/*
+				$data = [
+					"avatarUrl" => "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83erYj33xpRelu6CprCu7QYhUiawoZOe77iaCa7g8w53v0EM0TdMCz6ib5vDsKCljQQKY9fqb8GUppq2Tw/0",
+					"city" => "Changping",
+					"country" => "China",
+					"gender" => 1,
+					"language" => "zh_CN",
+					"nickName" => "周攀",
+					"openId" => "ouvPv0Cz6rb-QB_i9oYwHZWjGtv8",
+					"province" => "Beijing",
+					"unionId" => "oWYqJwY-TP-JEiDuew4onndg1n_0",
+					"watermark" =>
+						[
+							"timestamp" => 1500011102,
+							"appid" => "wx1aa5e80d0066c1d7"
+						]
+				];
+				*/
+
+				$unionId = (isset($data["unionId"]) && $data["unionId"]) ? $data["unionId"] : '';
+				if ($unionId && $info = UserWechat::findOne(["wUnionId" => $unionId])) {
+					$data = $info->wOpenId;
+				} else {
+					$data = '';
+				}
 				break;
 
 		}
