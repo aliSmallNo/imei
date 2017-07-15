@@ -493,8 +493,10 @@ class ApiController extends Controller
 				break;
 			case "shome":
 				$hid = self::postParam("id");
+				$openId = self::postParam("openid");
 				$hid = AppUtil::decrypt($hid);
 				$uInfo = User::user(['uId' => $hid]);
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				$favorInfo = UserNet::findOne(["nRelation" => UserNet::REL_FAVOR, "nDeletedFlag" => UserNet::DELETE_FLAG_NO, "nUId" => $uInfo["id"], "nSubUId" => $wxInfo["uId"]]);
 				$uInfo["favorFlag"] = $favorInfo ? 1 : 0;
 				$uInfo["albumJson"] = json_encode($uInfo["album"]);
