@@ -15,6 +15,7 @@ use yii\web\Cookie;
 
 class AppUtil
 {
+	const PROJECT_NAME = 'imei';
 	const REQUEST_API = "api";
 	const REQUEST_ADMIN = "admin";
 	const COOKIE_OPENID = "wx-openid";
@@ -465,17 +466,16 @@ class AppUtil
 		$pathEnv = [
 			'test' => '/tmp/',
 			'dev' => __DIR__ . '/../../../upload/',
-			'prod' => '/data/prodimage/',
+			'prod' => '/data/prodimage/' . self::PROJECT_NAME . '/',
 		];
 
 		$prefix = $pathEnv[$env];
-
 		$paths = [
 			'default' => $prefix . 'default',
 			'person' => $prefix . 'person',
 			'excel' => $prefix . 'excel',
 			'upload' => $prefix . 'upload',
-			'voice' => $prefix . 'default/voice',
+			'voice' => $prefix . 'voice',
 		];
 		foreach ($paths as $path) {
 			if (is_dir($path)) {

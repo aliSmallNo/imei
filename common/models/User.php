@@ -654,10 +654,7 @@ class User extends ActiveRecord
 
 		$result["cond"] = self::matchCondition($Info["uFilter"]);
 		$result["jdata"] = json_encode($result);
-
 		return $result;
-
-
 	}
 
 	public static function matchCondition($uFilter)
@@ -991,6 +988,4 @@ class User extends ActiveRecord
 		}
 		return [$ret, $titles];
 	}
-
-
 }
