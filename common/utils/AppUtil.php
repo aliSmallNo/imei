@@ -15,7 +15,7 @@ use yii\web\Cookie;
 
 class AppUtil
 {
-	const PROJECT_NAME = 'dsx';
+	const PROJECT_NAME = 'imei';
 	const REQUEST_API = "api";
 	const REQUEST_ADMIN = "admin";
 	const COOKIE_OPENID = "wx-openid";
