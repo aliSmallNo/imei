@@ -321,10 +321,10 @@
 			<a href="#sme" style="display: none">个人中心</a>
 		</div>
 		<div class="img">
-			<div class="img-filter" style="background: url('/images/testImg.jpeg') no-repeat center center">
+			<div class="img-filter" >
 			</div>
 			<div class="img-last">
-				<img src="/images/testImg.jpeg" alt="">
+
 			</div>
 		</div>
 	</div>

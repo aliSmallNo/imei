@@ -311,11 +311,13 @@ require(["layer"],
 				});
 				$(document).on(kClick, ".m-top-users .btn", function () {
 					var self = $(this);
+					console.log(222);
 					if (self.hasClass('btn-like')) {
 						var id = self.attr("data-id");
 						if (!self.hasClass("favor")) {
 							alertUlit.hint(id, "yes", self);
 						} else {
+							console.log(333);
 							alertUlit.hint(id, "no", self);
 						}
 					} else if (self.hasClass('btn-apply')) {

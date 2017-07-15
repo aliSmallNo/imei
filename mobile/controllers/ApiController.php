@@ -495,6 +495,8 @@ class ApiController extends Controller
 				$hid = self::postParam("id");
 				$hid = AppUtil::decrypt($hid);
 				$uInfo = User::user(['uId' => $hid]);
+				$favorInfo = UserNet::findOne(["nRelation" => UserNet::REL_FAVOR, "nDeletedFlag" => UserNet::DELETE_FLAG_NO, "nUId" => $uInfo["id"], "nSubUId" => $wxInfo["uId"]]);
+				$uInfo["favorFlag"] = $favorInfo ? 1 : 0;
 				$uInfo["albumJson"] = json_encode($uInfo["album"]);
 				$data = $uInfo;
 				break;
