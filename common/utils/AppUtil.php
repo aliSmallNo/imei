@@ -470,7 +470,6 @@ class AppUtil
 		];
 
 		$prefix = $pathEnv[$env];
-
 		$paths = [
 			'default' => $prefix . 'default',
 			'person' => $prefix . 'person',
