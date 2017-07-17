@@ -497,6 +497,11 @@ class ApiController extends Controller
 				$data["income"] = User::$IncomeFilter;
 				$data["edu"] = User::$EducationFilter;
 				break;
+			case "savecondition":
+				$cond = self::postParam("data");
+				User::edit($openid, ["uFilter" => $cond]);
+				$data = User::edit($openid, ["uFilter" => $cond]) ?: 0;
+				break;
 			case "shome":
 				$hid = self::postParam("id");
 				$openId = self::postParam("openid");
