@@ -491,6 +491,12 @@ class ApiController extends Controller
 				$data["rest"] = User::$Rest;
 				$data["pet"] = User::$Pet;
 				break;
+			case "condition":
+				$data["age"] = User::$AgeFilter;
+				$data["height"] = User::$HeightFilter;
+				$data["income"] = User::$IncomeFilter;
+				$data["edu"] = User::$EducationFilter;
+				break;
 			case "shome":
 				$hid = self::postParam("id");
 				$openId = self::postParam("openid");
@@ -523,7 +529,7 @@ class ApiController extends Controller
 					$stat = UserNet::getStat($uInfo['id'], 1);
 					$followed = UserNet::hasFollowed($hid, $wxInfo['uId']) ? '取消关注' : '关注TA';
 
-				}else {
+				} else {
 					$avatar = ImageUtil::DEFAULT_AVATAR;
 					$nickname = "本地测试";
 				}
