@@ -629,15 +629,42 @@ class ApiController extends Controller
 				}
 				break;
 			case "uploadpic":
-				$data = $_FILES["album"];
-//				$openid = self::postParam("openid");
-//				$album = User::findOne(["uOpenId" => $openid])->uAlbum;
-//				$album = $album ? json_decode($album, 1) : [];
-//				$newThumb = ImageUtil::uploadItemImages($_FILES["album"], 1);
-//				$newThumb = $newThumb ? json_decode($newThumb, 1) : [];
-//				$thumb = array_merge($album, $newThumb);
-//				User::edit($openid, ["uAlbum" => json_encode($thumb)]);
-//				$data = $newThumb ? $newThumb[0] : "";
+				/*
+				{
+				"name":"tmp_1408909127o6zAJs7qWNihg_c18S2NUN0sDT4Mbe27678a87c672b471c11487dcede129.png",
+				"type":"image/png",
+				"tmp_name":"/tmp/phpLbW6vU",
+				"error":0,
+				"size":7104},
+				"time":1500373487
+				}
+				*/
+				$infoTemp = $_FILES["album"];
+				$info = [
+					"name"=>[
+						$infoTemp["name"]
+					],
+					"tmp_name" => [
+						$infoTemp["tmp_name"]
+					],
+					"type"=>[
+						$infoTemp["type"]
+					],
+					"error"=>[
+						$infoTemp["error"]
+					],
+					"size"=>[
+						$infoTemp["size"]
+					]
+				];
+				$openid = self::postParam("openid");
+				$album = User::findOne(["uOpenId" => $openid])->uAlbum;
+				$album = $album ? json_decode($album, 1) : [];
+				$newThumb = ImageUtil::uploadItemImages($info, 1);
+				$newThumb = $newThumb ? json_decode($newThumb, 1) : [];
+				$thumb = array_merge($album, $newThumb);
+				User::edit($openid, ["uAlbum" => json_encode($thumb)]);
+				$data = $newThumb ? $newThumb[0] : "";
 				break;
 		}
 		return self::renderAPI(0, '', $data);
