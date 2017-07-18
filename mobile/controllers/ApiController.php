@@ -628,7 +628,11 @@ class ApiController extends Controller
 					$data = UserTrans::getStat($wxInfo['uId'], true);
 				}
 				break;
-
+			case "uploadpic":
+				$data["openid"] = self::postParam("openid");
+				$data["tag"] = $tag;
+				$data["file"] = $_FILES;
+				break;
 		}
 		return self::renderAPI(0, '', $data);
 	}
