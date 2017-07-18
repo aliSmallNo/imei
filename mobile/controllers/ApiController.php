@@ -629,9 +629,14 @@ class ApiController extends Controller
 				}
 				break;
 			case "uploadpic":
-				$data["openid"] = self::postParam("openid");
-				$data["tag"] = $tag;
-				$data["file"] = $_FILES;
+				$openid = self::postParam("openid");
+				$album = User::findOne(["uOpenId" => $openid])->uAlbum;
+				$album = $album ? json_decode($album, 1) : [];
+				$newThumb = ImageUtil::uploadItemImages($_FILES["file"], 1);
+				$newThumb = $newThumb ? json_decode($newThumb, 1) : [];
+				$thumb = array_merge($album, $newThumb);
+				User::edit($openid, ["uAlbum" => json_encode($thumb)]);
+				$data = $newThumb ? $newThumb[0] : "";
 				break;
 		}
 		return self::renderAPI(0, '', $data);
