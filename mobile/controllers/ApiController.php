@@ -614,6 +614,13 @@ class ApiController extends Controller
 				} else {
 					$data = '';
 				}
+			case "saccount":
+				$openId = self::postParam("openid");
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				$data["flower"] = 0;
+				if ($wxInfo) {
+					$data = UserTrans::getStat($wxInfo['uId'], true);
+				}
 				break;
 
 		}
