@@ -196,7 +196,6 @@ class SiteController extends BaseController
 			$id = self::postParam("id");
 			$data = json_decode($data, 1);
 
-			print_r($_FILES["uAvatar"]);exit;
 			if (isset($_FILES["uAvatar"]) && $_FILES["uAvatar"]['size'][0]) {
 				$newThumb = ImageUtil::uploadItemImages($_FILES["uAvatar"], 1);
 				$newThumb = json_decode($newThumb, 1);
