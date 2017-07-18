@@ -73,6 +73,9 @@ class ApiController extends Controller
 		$tag = trim(strtolower(self::postParam('tag')));
 		$id = self::postParam('id');
 		$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		if (!$openId) {
+			$openId = self::postParam("openid");
+		}
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		if (!$wxInfo) {
 			return self::renderAPI(129, '用户不存在啊~');
@@ -114,6 +117,9 @@ class ApiController extends Controller
 				// Rain: 测试阶段，payFee x元实际支付x分
 //				$payFee = $amt;
 				$payFee = intval($amt * 100);
+				if ($openId == "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
+					$payFee = $amt;
+				}
 				$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);
 				if ($ret) {
 					return self::renderAPI(0, '', [
