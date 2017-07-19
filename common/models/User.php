@@ -503,6 +503,8 @@ class User extends ActiveRecord
 				$addData[$v] = $data[$k];
 			}
 		}
+		return $addData;
+
 		$uid = self::add($addData);
 
 		$net = UserNet::findOne(['nSubUId' => $uid, 'nRelation' => UserNet::REL_INVITE, 'nDeletedFlag' => 0]);
