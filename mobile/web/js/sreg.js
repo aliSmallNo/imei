@@ -211,7 +211,7 @@ require(["layer"],
 					data: JSON.stringify($sls.postData),
 				}, function (res) {
 					showMsg(res.msg);
-					alert(JSON.stringify(res));
+					//alert(JSON.stringify(res));
 					if (res.code == 0) {
 						setTimeout(function () {
 							location.href = "/wx/single";
