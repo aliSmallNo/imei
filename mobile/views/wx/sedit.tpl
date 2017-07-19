@@ -101,7 +101,7 @@
 <div class="sedit-title">基本资料</div>
 <div class="sedit-input">
 	<label>呢称</label>
-	<input type="text" name="nickname" placeholder="填写您的呢称" value="{{$uInfo.name}}">
+	<input type="text" name="name" placeholder="填写您的呢称" value="{{$uInfo.name}}">
 </div>
 <div class="sedit-input">
 	<label>性别</label>
@@ -432,4 +432,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/sedit.js?v=1.2.1" src="/assets/js/require.js"></script>
+<script data-main="/js/sedit.js?v=1.2.3" src="/assets/js/require.js"></script>

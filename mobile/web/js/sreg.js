@@ -251,7 +251,6 @@ require(["layer"],
 				isShowProgressTips: 1,
 				success: function (res) {
 					$sls.serverId = res.serverId;
-
 					SingleUtil.submit();
 				},
 				fail: function () {

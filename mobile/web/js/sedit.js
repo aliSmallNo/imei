@@ -163,7 +163,7 @@ require(["layer"],
 					return false;
 				});
 				$(".sedit-btn-comfirm").on(kClick, function () {
-					var inputFileds = ["nickname", "interest", "intro"];
+					var inputFileds = ["name", "interest", "intro"];
 					var inputFiledsT = ["呢称", "兴趣爱好", "自我介绍"];
 					for (var i = 0; i < inputFileds.length; i++) {
 						var inputVal = $.trim($("[name=" + inputFileds[i] + "]").val());

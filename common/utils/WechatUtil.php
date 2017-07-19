@@ -451,7 +451,7 @@ class WechatUtil
 		}
 		switch ($tag) {
 			case "pass":
-				$url = "http://mp.bpdj365.com/wx/single";
+				$url = "https://wx.meipo100.com/wx/single";
 				$first = "你好，您的注册资质已经审核通过，欢迎使用微媒100。\n";
 				$keyword1Val = '微媒100用户 ' . $userInfo["uName"] . ' 注册信息';
 				$keyword2Val = "审核通过";
@@ -460,7 +460,7 @@ class WechatUtil
 				$cat = UserMsg::CATEGORY_ADMIN_PASS;
 				break;
 			case "refuse":
-				$url = "http://mp.bpdj365.com/wx/single";
+				$url = "https://wx.meipo100.com/wx/single";
 				$first = "你好，很遗憾！您注册的微媒100资质已被取消！您将无法使用微媒100!\n";
 				$keyword1Val = '微媒100用户 ' . $userInfo["uName"] . ' 注册信息';
 				$keyword2Val = "审核不通过";
@@ -513,7 +513,7 @@ class WechatUtil
 		}
 		$name = $userInfo["uName"];
 
-		$url = "http://mp.bpdj365.com/wx/single";
+		$url = "https://wx.meipo100.com/wx/single";
 		switch ($tag) {
 			case "favor":
 				$cat = $f ? UserMsg::CATEGORY_FAVRO : UserMsg::CATEGORY_FAVRO_CANCEL;
@@ -536,19 +536,19 @@ class WechatUtil
 				$keyword2Val = "有人" . $keyword1Val . "，快去看看吧！";
 				break;
 			case "return-rose":
-				$url = "http://mp.bpdj365.com/wx/sw";
+				$url = "https://wx.meipo100.com/wx/sw";
 				$cat = UserMsg::CATEGORY_RETURN_ROSE;
 				$keyword1Val = UserMsg::$catDict[$cat];
 				$keyword2Val = "有媒瑰花退回，快去看看吧！";
 				break;
 			case "mysay":
-				$url = "http://mp.bpdj365.com/wx/sh";
+				$url = "https://wx.meipo100.com/wx/sh";
 				$cat = UserMsg::CATEGORY_MP_SAY;
 				$keyword1Val = UserMsg::$catDict[$cat];
 				$keyword2Val = "你的媒婆修改了你的媒婆说，快去看看吧！";
 				break;
 			default:
-				$url = "http://mp.bpdj365.com/wx/sreg";
+				$url = "https://wx.meipo100.com/wx/sreg";
 				$keyword1Val = "微媒100";
 				$cat = UserMsg::CATEGORY_DEFAULT;
 				$keyword2Val = "欢迎来到微媒100，这是一个真实的相亲交友软件！";
