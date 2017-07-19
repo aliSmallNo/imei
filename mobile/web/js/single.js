@@ -311,13 +311,13 @@ require(["layer"],
 				});
 				$(document).on(kClick, ".m-top-users .btn", function () {
 					var self = $(this);
-					console.log(222);
+					console.log(111222);
 					if (self.hasClass('btn-like')) {
 						var id = self.attr("data-id");
 						if (!self.hasClass("favor")) {
 							alertUlit.hint(id, "yes", self);
 						} else {
-							console.log(333);
+							console.log(333444);
 							alertUlit.hint(id, "no", self);
 						}
 					} else if (self.hasClass('btn-apply')) {
@@ -368,7 +368,16 @@ require(["layer"],
 					id: id,
 					f: f
 				}, function (resp) {
-					if (resp.data) {
+					console.log(999);
+					console.log(resp);
+					if (f == "yes") {
+						showMsg('心动成功~');
+						obj.addClass("favor");
+					} else {
+						showMsg('已取消心动');
+						obj.removeClass("favor");
+					}
+					if (resp.code == 0) {
 						if (f == "yes") {
 							showMsg('心动成功~');
 							obj.addClass("favor");

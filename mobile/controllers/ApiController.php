@@ -331,7 +331,7 @@ class ApiController extends Controller
 				$id = self::postParam("id");
 				$f = self::postParam("f");
 				$ret = UserNet::hint($wxInfo["uId"], $id, $f);
-				return self::renderAPI(0, '', $ret);
+				return self::renderAPI(0, '', ["hint" => 1]);
 			case "wxname":
 				$wname = self::postParam("wname");
 				$ret = UserWechat::replace($openId, ["wWechatId" => $wname]);
