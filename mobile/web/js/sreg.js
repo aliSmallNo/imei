@@ -214,7 +214,7 @@ require(["layer"],
 					//alert(JSON.stringify(res));
 					if (res.code == 0) {
 						setTimeout(function () {
-							//location.href = "/wx/single";
+							location.href = "/wx/single";
 						}, 500);
 					}
 				}, "json");
