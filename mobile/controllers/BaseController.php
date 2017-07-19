@@ -132,7 +132,7 @@ class BaseController extends Controller
 
 	protected function renderPage($view,
 	                              $params = [],
-	                              $layout = 'imei',
+	                              $layout = 'imei.php',
 	                              $title = '微媒100-媒桂花飘香',
 	                              $bodyClass = '')
 	{
