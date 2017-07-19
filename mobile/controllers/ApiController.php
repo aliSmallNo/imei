@@ -668,6 +668,17 @@ class ApiController extends Controller
 				User::edit($openid, ["uAlbum" => json_encode($thumb)]);
 				$data = $newThumb ? $newThumb[0] : "";
 				break;
+			case "sgroupinit":
+				$openId = self::postParam("openid");
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					$data = "用户不存在";
+					break;
+				} else {
+					$data["stat"] = UserNet::getStat($wxInfo['uId'], true);
+					list($data["singles"]) = UserNet::male($wxInfo['uId'], 1, 10);
+				}
+				break;
 		}
 		return self::renderAPI(0, '', $data);
 	}

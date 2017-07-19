@@ -47,7 +47,6 @@
 					<p class="cnt">0个心动</p>
 				</div>
 				<button class="edit" data-id="{{$single.encryptId}}" >写媒婆说</button>
-
 			</a>
 			{{/foreach}}
 		</div>
