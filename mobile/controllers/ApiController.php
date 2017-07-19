@@ -107,6 +107,7 @@ class ApiController extends Controller
 				return self::renderAPI(0, '暂时不能提现~');
 			case 'recharge':
 				$amt = self::postParam('amt'); // 单位人民币元
+				$IsXcx = self::postParam('xflag', 0); // 是否为小程序支付订单
 				$num = intval($amt * 10.0);
 				$title = '微媒100-充值';
 				$subTitle = '充值' . $num . '媒桂花';
@@ -620,6 +621,7 @@ class ApiController extends Controller
 				} else {
 					$data = '';
 				}
+				break;
 			case "saccount":
 				$openId = self::postParam("openid");
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
@@ -630,7 +632,7 @@ class ApiController extends Controller
 				break;
 			case "uploadpic":
 				/*
-				{
+				$_FILES["album"]= {
 				"name":"tmp_1408909127o6zAJs7qWNihg_c18S2NUN0sDT4Mbe27678a87c672b471c11487dcede129.png",
 				"type":"image/png",
 				"tmp_name":"/tmp/phpLbW6vU",
@@ -641,19 +643,19 @@ class ApiController extends Controller
 				*/
 				$infoTemp = $_FILES["album"];
 				$info = [
-					"name"=>[
+					"name" => [
 						$infoTemp["name"]
 					],
 					"tmp_name" => [
 						$infoTemp["tmp_name"]
 					],
-					"type"=>[
+					"type" => [
 						$infoTemp["type"]
 					],
-					"error"=>[
+					"error" => [
 						$infoTemp["error"]
 					],
-					"size"=>[
+					"size" => [
 						$infoTemp["size"]
 					]
 				];
