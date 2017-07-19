@@ -19,14 +19,12 @@
 		<script src="/assets/js/jweixin-1.2.0.js"></script>
 	</head>
 	<body>
-	<?php $this->beginBody() ?>
 	<main>
 		<div class="app-cork">
 			<h4>正在初始化，请稍候...</h4>
 		</div>
 		<?= $content ?>
 	</main>
-	<?php $this->endBody() ?>
 	</body>
 	</html>
 <?php $this->endPage() ?>
