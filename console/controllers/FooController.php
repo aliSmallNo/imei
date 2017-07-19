@@ -109,7 +109,7 @@ class FooController extends Controller
 	{
 		$pageSize = 20;
 		$skip = ($page - 1) * $pageSize;
-		$cookie = 'UM_distinctid=15bf175beb5522-064458687c9093-153d655c-fa000-15bf175beb68aa; gr_user_id=85db4bee-33fb-457c-9a14-758e0b671178; token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqd3RfYXV0aCI6eyJpZCI6IjA2MmExZTgzM2I0MzQ1MTg5MDU2MjRkZDBlYWM2YmNjIiwicm9sZSI6MSwicGxhdGZvcm0iOiJ3ZWIifX0._gClovQP3SUhTTYBGXGrHg5qPuXAiVPubpLuoh9lwyg; CNZZDATA1260974692=2107170710-1494400798-%7C1496814351; gr_session_id_9e5d21f29bda5923=eb02a583-04b5-4ab5-9998-5683226d9b56';
+		$cookie = 'UM_distinctid=15bf175beb5522-064458687c9093-153d655c-fa000-15bf175beb68aa; gr_user_id=85db4bee-33fb-457c-9a14-758e0b671178; token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqd3RfYXV0aCI6eyJpZCI6IjA4NzkwZTBlNzBkNTRiNDQ5MDJhNTVjNzU3NjU3ZWQzIiwicm9sZSI6MiwicGxhdGZvcm0iOiJ3ZWIifX0.cbQ-Y1RPVxxddJIW9Ge8tWNRvlOrh3byPDUCEMb38S0; CNZZDATA1260974692=2107170710-1494400798-%7C1500461001; gr_session_id_9e5d21f29bda5923=caa260d0-a0d5-4500-a6dd-896e03ac233c';
 		$url = 'https://1meipo.com/api/proxy/matchmaker/list_matchmaker?page_count=' . $pageSize . '&type=recommend&skip=' . $skip . '&order_by=singles_count';
 		$ret = AppUtil::httpGet($url, [], true, $cookie);
 		$ret = json_decode($ret, 1);
@@ -358,10 +358,13 @@ class FooController extends Controller
 		print_r(\GuzzleHttp\json_decode($res,1));
 		exit;*/
 
-		$sessionKey = '';
+		/*$sessionKey = '';
 		$encryptedData = '';
 		$iv = '';
 		$res = WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
-		var_dump($res);
+		var_dump($res);*/
+		self::matchers(1);
+		self::matchers(2);
+		self::matchers(3);
 	}
 }
