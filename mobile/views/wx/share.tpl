@@ -14,6 +14,7 @@
 			<em>{{$nickname}}</em>
 		</p>
 		<div class="btns bg-repeat">
+			<div class="qrcode" style="text-align: center;padding-bottom: 1rem"><img src="/images/qrmeipo100.jpg" alt="" style="width: 18rem"></div>
 			<h4>一起来注册「微媒100」</h4>
 			<h5>随手帮助身边的单身青年，功德无量哦~</h5>
 			{{if $editable}}
