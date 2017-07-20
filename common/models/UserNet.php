@@ -68,6 +68,7 @@ class UserNet extends ActiveRecord
 		$entity->nUId = $uid;
 		$entity->nSubUId = $subUid;
 		$entity->nRelation = $relation;
+		$entity->nUpdatedOn = date('Y-m-d H:i:s');
 		$entity->nNote = $note;
 		$entity->save();
 
