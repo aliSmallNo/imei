@@ -34,92 +34,95 @@ require(["layer"],
 					}
 				}
 			});
+		})
 
-			function wxUploadImages() {
-				if ($sls.uploadImgFlag) {
-					return;
-				}
-				$sls.uploadImgFlag = 1;
-				wx.uploadImage({
-					localId: $sls.localId.toString(),
-					isShowProgressTips: 1,
-					success: function (res) {
-						$sls.serverId = res.serverId;
-						$sls.uploadImage();
-					},
-					fail: function () {
-						$sls.serverId = "";
-						showMsg("上传失败！");
-						$sls.uploadImgFlag = 0;
-					}
-				});
+		function wxUploadImages() {
+			if ($sls.uploadImgFlag) {
+				return;
 			}
-
-			function uploadImage() {
-				showMsg("上传中...");
-				$.post("/api/user", {
-					tag: "cert",
-					id: $sls.serverId
-				}, function (resp) {
-					showMsg(resp.msg);
-					if (resp.data) {
-						alert(resp.data);
-					}
+			$sls.uploadImgFlag = 1;
+			wx.uploadImage({
+				localId: $sls.localId.toString(),
+				isShowProgressTips: 1,
+				success: function (res) {
+					$sls.serverId = res.serverId;
+					uploadImage();
+				},
+				fail: function () {
+					$sls.serverId = "";
+					showMsg("上传失败！");
 					$sls.uploadImgFlag = 0;
-				}, "json");
-			}
-
-			function showMsg(title, sec) {
-				var delay = sec || 3;
-				layer.open({
-					type: 99,
-					content: title,
-					skin: 'msg',
-					time: delay
-				});
-			}
-
-			function locationHashChanged() {
-				var hashTag = location.hash;
-				hashTag = hashTag.replace("#!", "");
-				hashTag = hashTag.replace("#", "");
-				switch (hashTag) {
-					case 'cert':
-
-						break;
-					default:
-						break;
 				}
-				if (!hashTag) {
-					hashTag = 'cert';
-				}
-				$sls.curFrag = hashTag;
-				var title = $("#" + hashTag).attr("data-title");
-				if (title) {
-					$(document).attr("title", title);
-					$("title").html(title);
-					var iFrame = $('<iframe src="/blank.html" class="g-blank"></iframe>');
-					iFrame.on('load', function () {
-						setTimeout(function () {
-							iFrame.off('load').remove();
-						}, 0);
-					}).appendTo($("body"));
-				}
-				layer.closeAll();
-			}
-
-			$(function () {
-				$("body").addClass("bg-color");
-				window.onhashchange = locationHashChanged;
-				var wxInfo = JSON.parse($sls.wxString);
-				wxInfo.debug = false;
-				wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems','chooseImage', 'previewImage', 'uploadImage'];
-				wx.config(wxInfo);
-				wx.ready(function () {
-					wx.hideOptionMenu();
-				});
-				locationHashChanged();
-				$sls.cork.hide();
-
 			});
+		}
+
+		function uploadImage() {
+			showMsg("上传中...");
+			$.post("/api/user", {
+				tag: "cert",
+				id: $sls.serverId
+			}, function (resp) {
+				showMsg(resp.msg);
+				if (resp.code) {
+
+				}else{
+
+				}
+				$sls.uploadImgFlag = 0;
+			}, "json");
+		}
+
+		function showMsg(title, sec) {
+			var delay = sec || 3;
+			layer.open({
+				type: 99,
+				content: title,
+				skin: 'msg',
+				time: delay
+			});
+		}
+
+		function locationHashChanged() {
+			var hashTag = location.hash;
+			hashTag = hashTag.replace("#!", "");
+			hashTag = hashTag.replace("#", "");
+			switch (hashTag) {
+				case 'cert':
+
+					break;
+				default:
+					break;
+			}
+			if (!hashTag) {
+				hashTag = 'cert';
+			}
+			$sls.curFrag = hashTag;
+			var title = $("#" + hashTag).attr("data-title");
+			if (title) {
+				$(document).attr("title", title);
+				$("title").html(title);
+				var iFrame = $('<iframe src="/blank.html" class="g-blank"></iframe>');
+				iFrame.on('load', function () {
+					setTimeout(function () {
+						iFrame.off('load').remove();
+					}, 0);
+				}).appendTo($("body"));
+			}
+			layer.closeAll();
+		}
+
+		$(function () {
+			$("body").addClass("bg-color");
+			window.onhashchange = locationHashChanged;
+			var wxInfo = JSON.parse($sls.wxString);
+			wxInfo.debug = false;
+			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage'];
+			wx.config(wxInfo);
+			wx.ready(function () {
+				wx.hideOptionMenu();
+			});
+			locationHashChanged();
+			$sls.cork.hide();
+
 		});
+	});
