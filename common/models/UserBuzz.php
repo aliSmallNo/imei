@@ -99,8 +99,8 @@ class UserBuzz extends ActiveRecord
 		switch ($event) {
 			case "scan":
 				$debug .= $event . "**";
-				AppUtil::logFile($eventKey, 5, __FUNCTION__, __LINE__);
 				if ($eventKey && is_numeric($eventKey)) {
+					AppUtil::logFile($eventKey, 5, __FUNCTION__, __LINE__);
 					$qrInfo = UserQR::findOne(["qId" => $eventKey]);
 					AppUtil::logFile($qrInfo, 5, __FUNCTION__, __LINE__);
 					$debug .= $wxOpenId . "**" . $qrInfo["qOpenId"] . "**" . $qrInfo["qCategory"] . "**" . $qrInfo["qCode"];
