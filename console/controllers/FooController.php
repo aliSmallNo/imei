@@ -360,7 +360,6 @@ class FooController extends Controller
 		print_r(\GuzzleHttp\json_decode($res,1));
 		exit;*/
 
-
 		$sales = [
 			['id' => 131266, 'name' => '丁飞'],
 			['id' => 131276, 'name' => '许阳'],
@@ -373,9 +372,11 @@ class FooController extends Controller
 		foreach ($sales as $sale) {
 			$code = Pinyin::pinyin($sale['name'], true, true);
 			for ($k = 101; $k < 106; $k++) {
-				UserQR::createQR($sale['id'], UserQR::CATEGORY_SALES, $code . substr($k, 1));
+				//UserQR::createQR($sale['id'], UserQR::CATEGORY_SALES, $code . substr($k, 1));
 			}
 		}
+
+		UserQR::createQR(131379, UserQR::CATEGORY_SALES, 'meipo100');
 
 		/*self::matchers(1);
 		self::matchers(2);

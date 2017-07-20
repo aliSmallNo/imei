@@ -1,6 +1,5 @@
 <div id="sec-share">
 	<div id="inviteInfo" class="invite-wrap">
-
 		<div class="sender-wrap">
 			<p class="logo">
 				<img src="/favicon-192.png" alt="">
