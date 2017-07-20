@@ -57,6 +57,8 @@ class UserNet extends ActiveRecord
 			$entity = self::findOne(['nSubUId' => $subUid, 'nRelation' => $relation, 'nDeletedFlag' => 0]);
 		} else {
 			$entity = self::findOne(['nUId' => $uid, 'nSubUId' => $subUid, 'nRelation' => $relation, 'nDeletedFlag' => 0]);
+			$entity->nUpdatedOn = date('Y-m-d H:i:s');
+			$entity->save();
 		}
 		if ($entity) {
 			return false;
