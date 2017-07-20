@@ -35,7 +35,7 @@ class UserBuzz extends ActiveRecord
 		return '{{%user_buzz}}';
 	}
 
-	public static function add($jsonData = "", $resp = "")
+	public static function add($jsonData = "", $resp = "", $content = '')
 	{
 		if (!$jsonData) {
 			return false;
@@ -43,6 +43,9 @@ class UserBuzz extends ActiveRecord
 		$values = json_decode($jsonData, true);
 		$newItem = new self();
 		$newItem->bResult = $resp;
+		if ($content) {
+			$newItem->bContent = $content;
+		}
 		foreach ($values as $key => $val) {
 			if (isset(self::$KeyMap[$key])) {
 				$bKey = self::$KeyMap[$key];
@@ -70,8 +73,7 @@ class UserBuzz extends ActiveRecord
 
 	public static function handleEvent($postJSON = "")
 	{
-		$resp = '';
-		$debug = '';
+		$resp = $debug = $content = '';
 		/*self::$WelcomeMsg = '欢迎来到「微媒100」' . PHP_EOL . PHP_EOL;
 		self::$WelcomeMsg .= '在这里你可以同时注册两种身份— “单身”和“媒婆”。' . PHP_EOL . PHP_EOL;
 		self::$WelcomeMsg .= '点击底栏“我是媒婆”，帮朋友找对象！' . PHP_EOL;
@@ -107,6 +109,7 @@ class UserBuzz extends ActiveRecord
 						$addResult = self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SCAN, $eventKey);
 					}
 					if ($qrInfo) {
+						$content = $qrInfo["qCode"];
 						$debug .= $addResult . "**";
 						$resp = self::welcomeMsg($fromUsername, $toUsername, $qrInfo["qCategory"]);
 					}
@@ -119,16 +122,13 @@ class UserBuzz extends ActiveRecord
 						$qrInfo = UserQR::findOne(["qId" => $qId])->toArray();
 						//UserLink::add($qrInfo["qFrom"], $wxOpenId, $qrInfo["qCategory"], $qrInfo["qSubCategory"]);
 						if ($qrInfo) {
+							$content = $qrInfo["qCode"];
 							self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SUBSCRIBE, $qId);
 							$resp = self::welcomeMsg($fromUsername, $toUsername, $qrInfo["qCategory"]);
 							// Rain: 添加或者更新微信用户信息
 							UserWechat::getInfoByOpenId($fromUsername, true);
 						}
 					}
-				} elseif ($eventKey && strpos($eventKey, "last_trade_no_") === 0) {
-					$resp = self::welcomeMsg($fromUsername, $toUsername);
-					// Rain: 添加或者更新微信用户信息
-					UserWechat::getInfoByOpenId($fromUsername, true);
 				} else {
 					$resp = self::welcomeMsg($fromUsername, $toUsername);
 					UserWechat::getInfoByOpenId($fromUsername, true);
@@ -176,7 +176,7 @@ class UserBuzz extends ActiveRecord
 			default:
 				break;
 		}
-		return [$resp, $debug];
+		return [$resp, $debug, $content];
 	}
 
 	private static function welcomeMsg($fromUsername, $toUsername, $category = "", $extension = "")
