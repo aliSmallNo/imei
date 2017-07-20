@@ -311,13 +311,11 @@ require(["layer"],
 				});
 				$(document).on(kClick, ".m-top-users .btn", function () {
 					var self = $(this);
-					console.log(111222);
 					if (self.hasClass('btn-like')) {
 						var id = self.attr("data-id");
 						if (!self.hasClass("favor")) {
 							alertUlit.hint(id, "yes", self);
 						} else {
-							console.log(333444);
 							alertUlit.hint(id, "no", self);
 						}
 					} else if (self.hasClass('btn-apply')) {
@@ -368,8 +366,7 @@ require(["layer"],
 					id: id,
 					f: f
 				}, function (resp) {
-					console.log(999);
-					console.log(resp);
+					//console.log(resp);
 					if (f == "yes") {
 						showMsg('心动成功~');
 						obj.addClass("favor");
