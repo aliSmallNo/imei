@@ -78,7 +78,7 @@ class UserBuzz extends ActiveRecord
 		self::$WelcomeMsg .= '点击底栏“我是单身”，为自己找对象！' . PHP_EOL . PHP_EOL;
 		self::$WelcomeMsg .= '这里的单身，均有好友做推荐，让交友变得真实';*/
 
-		self::$WelcomeMsg = "『微媒100』是一个专注公园相亲角的公益公众号，您编辑好相亲者的信息和要求，发送到后台我们会将符合条件的信息发送给您。
+		self::$WelcomeMsg = "『微媒100』是一个专注相亲的公益公众号，您编辑好相亲者的信息和要求，发送到后台我们会将符合条件的信息发送给您。
 包含如下信息：性别、出生年、户籍地、学历、婚姻状况、联系方式、个人介绍。要求：性别+年龄段+户籍+自定义内容+联系方式。";
 
 		$postData = json_decode($postJSON, 1);

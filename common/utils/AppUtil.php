@@ -92,6 +92,27 @@ class AppUtil
 		return (Yii::$app->params['scene'] == 'dev');
 	}
 
+	public static function imgDir($rootOnly = false)
+	{
+		$folder = '/data/prodimage/' . self::PROJECT_NAME . '/default/';
+		if (self::isDev()) {
+			$folder = __DIR__ . '/../../../img/' . self::PROJECT_NAME . '/';
+		}
+		if ($rootOnly) {
+			return $folder;
+		}
+		$folder .= date('Ym');
+		if (!is_dir($folder)) {
+			mkdir($folder);
+		}
+		return $folder . '/';
+	}
+
+	public static function rootDir()
+	{
+		return __DIR__ . '/../../';
+	}
+
 	public static function notifyUrl()
 	{
 		return Yii::$app->params['notifyUrl'];
@@ -698,16 +719,16 @@ class AppUtil
 
 	}
 
-	public static function logFile($msg, $level = 1, $func = '', $line = 0)
+	public static function logFile($msg, $level = 1, $func = "", $line = 0)
 	{
 		if ($level < 2) {
 			return false;
 		}
 		if (self::isDev()) {
-			$file = __DIR__ . '/../../../imei_' . date("Ym") . '.log';
+			$file = __DIR__ . '/../../../' . self::PROJECT_NAME . '_' . date("Ym") . '.log';
 		} else {
 			$day = (date("d") % 15) + 1;
-			$file = '/data/tmp/imei_' . date("Ym") . $day . '.log';
+			$file = '/data/tmp/' . self::PROJECT_NAME . '_' . date("Ym") . $day . '.log';
 		}
 		$txt = [];
 		if ($func) {
