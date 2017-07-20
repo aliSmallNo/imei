@@ -541,6 +541,43 @@ class WxController extends BaseController
 			'我的媒桂花');
 	}
 
+	public function actionCert()
+	{
+		$hid = self::getParam('id');
+		$hid = AppUtil::decrypt($hid);
+
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$avatar = $nickname = '';
+		$stat = [];
+		if ($wxInfo) {
+			$avatar = $wxInfo["Avatar"];
+			$nickname = $wxInfo["uName"];
+			//$stat = UserTrans::getStat($wxInfo['uId'], true);
+		} else {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+
+		if (!$hid) {
+			$hid = $wxInfo["uId"];
+			if (!$hid) {
+				header('location:/wx/error?msg=用户不存在啊~');
+				exit();
+			}
+		}
+
+		return self::renderPage("cert.tpl",
+			[
+				'avatar' => $avatar,
+				'nickname' => $nickname,
+				'hid' => $hid,
+				'stat' => $stat
+			],
+			'imei',
+			'实名认证');
+	}
+
 	public function actionSingle()
 	{
 		$openId = self::$WX_OpenId;

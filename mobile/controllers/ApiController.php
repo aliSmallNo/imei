@@ -296,6 +296,13 @@ class ApiController extends Controller
 				} else {
 					return self::renderAPI(129, $text . '失败', $url);
 				}
+			case "cert":
+				$uId = User::cert($id, $openId);
+				if ($uId) {
+					return self::renderAPI(0, '上传成功', $uId);
+				} else {
+					return self::renderAPI(129, '上传失败', $uId);
+				}
 			case "myinfo":
 				$info = User::getItem($openId);
 				return self::renderAPI(0, '', $info);

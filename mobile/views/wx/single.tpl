@@ -85,6 +85,7 @@
 			<a href="javascript:;" to="focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
+			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span></a>
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">媒桂花</span></a>
 			<a href="javascript:;" class="" id="notifications">
 				<span class="title">通知</span>
