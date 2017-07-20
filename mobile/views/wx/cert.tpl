@@ -58,7 +58,7 @@
 </style>
 <section id="cert">
 	<div class="nav">
-		<a href="#sme">返回</a>
+		<a href="/wx/single">返回</a>
 	</div>
 	<div class="cert-content">
 		<div class="cert-header">
