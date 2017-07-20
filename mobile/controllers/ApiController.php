@@ -681,6 +681,8 @@ class ApiController extends Controller
 				if (!$wxInfo) {
 					return self::renderAPI(0, '用户不存在');
 				} else {
+					$data["avatar"] = $wxInfo["Avatar"];
+					$data["stat"] = UserNet::getStat($wxInfo['uId'], true);
 					$data["news"] = UserNet::news();
 				}
 				break;
