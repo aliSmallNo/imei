@@ -29,6 +29,8 @@ class UserNet extends ActiveRecord
 		self::REL_FOLLOW => '关注',
 		self::REL_LINK => '牵线',
 		self::REL_FAVOR => '心动',
+		self::REL_QR_SCAN => '扫推广二维码',
+		self::REL_QR_SUBSCRIBE => '扫二维码且关注',
 	];
 
 	const DELETE_FLAG_YES = 1;
