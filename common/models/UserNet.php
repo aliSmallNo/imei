@@ -8,7 +8,6 @@
 
 namespace common\models;
 
-
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
@@ -21,6 +20,8 @@ class UserNet extends ActiveRecord
 	const REL_FOLLOW = 130;
 	const REL_LINK = 140;
 	const REL_FAVOR = 150;
+	const REL_QR_SCAN = 210;
+	const REL_QR_SUBSCRIBE = 212;
 
 	static $RelDict = [
 		self::REL_INVITE => '邀请',
@@ -47,7 +48,7 @@ class UserNet extends ActiveRecord
 		return '{{%user_net}}';
 	}
 
-	public static function add($uid, $subUid, $relation)
+	public static function add($uid, $subUid, $relation, $note = '')
 	{
 		if (!$uid || !$subUid || $uid == $subUid) {
 			return false;
@@ -64,6 +65,7 @@ class UserNet extends ActiveRecord
 		$entity->nUId = $uid;
 		$entity->nSubUId = $subUid;
 		$entity->nRelation = $relation;
+		$entity->nNote = $note;
 		$entity->save();
 
 		return $entity->nId;

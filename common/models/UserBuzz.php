@@ -101,10 +101,10 @@ class UserBuzz extends ActiveRecord
 				$debug .= $event . "**";
 				if ($eventKey && is_numeric($eventKey)) {
 					$qrInfo = UserQR::findOne(["qId" => $eventKey]);
-					$debug .= $wxOpenId . "**" . $qrInfo["qFrom"] . "**" . $qrInfo["qCategory"] . "**" . $qrInfo["qSubCategory"];
+					$debug .= $wxOpenId . "**" . $qrInfo["qOpenId"] . "**" . $qrInfo["qCategory"] . "**" . $qrInfo["qCode"];
 					$addResult = "";
 					if (strlen($wxOpenId) > 6) {
-						//$addResult = UserLink::add($qrInfo["qFrom"], $wxOpenId, $qrInfo["qCategory"], $qrInfo["qSubCategory"]);
+						$addResult = self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SCAN, $eventKey);
 					}
 					if ($qrInfo) {
 						$debug .= $addResult . "**";
@@ -119,6 +119,7 @@ class UserBuzz extends ActiveRecord
 						$qrInfo = UserQR::findOne(["qId" => $qId]);
 						//UserLink::add($qrInfo["qFrom"], $wxOpenId, $qrInfo["qCategory"], $qrInfo["qSubCategory"]);
 						if ($qrInfo) {
+							self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SUBSCRIBE, $qId);
 							$resp = self::welcomeMsg($fromUsername, $toUsername, $qrInfo["qCategory"]);
 							// Rain: 添加或者更新微信用户信息
 							UserWechat::getInfoByOpenId($fromUsername, true);
@@ -328,6 +329,13 @@ class UserBuzz extends ActiveRecord
 			}
 		}
 		return $str;
+	}
+
+	protected static function addRel($qrOpenid, $scanOpenid, $relCategory, $qId)
+	{
+		$qrUser = User::findOne(['uOpenId' => $qrOpenid]);
+		$scanUser = User::findOne(['uOpenId' => $scanOpenid]);
+		return UserNet::add($qrUser['uId'], $scanUser['uId'], $relCategory, $qId);
 	}
 
 }
