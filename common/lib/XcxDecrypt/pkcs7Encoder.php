@@ -1,4 +1,4 @@
-<?php
+hp
 
 include_once "errorCode.php";
 

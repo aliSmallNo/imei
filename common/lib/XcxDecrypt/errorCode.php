@@ -1,4 +1,4 @@
-<?php
+hp
 
 /**
  * error code 说明.
