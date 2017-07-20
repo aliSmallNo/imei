@@ -1,11 +1,4 @@
-hp
-
-/**
- * 对微信小程序用户加密数据的解密示例代码.
- *
- * @copyright Copyright (c) 1998-2014 Tencent Inc.
- */
-
+<?php
 
 include_once "pkcs7Encoder.php";
 include_once "errorCode.php";

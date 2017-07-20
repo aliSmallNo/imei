@@ -1,11 +1,10 @@
-hp
+<?php
 
 include_once "errorCode.php";
 
 /**
  * PKCS7Encoder class
  *
- * 提供基于PKCS7算法的加解密接口.
  */
 class PKCS7Encoder
 {
