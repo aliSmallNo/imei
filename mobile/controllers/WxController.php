@@ -144,7 +144,6 @@ class WxController extends BaseController
 		$openId = self::$WX_OpenId;
 		$nickname = $avatar = '';
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-
 		$uInfo = [];
 		$locInfo = [
 			['key' => 100100, 'text' => '北京市'],
@@ -167,7 +166,6 @@ class WxController extends BaseController
 		} else {
 			$job = User::$ProfessionDict[100];
 		}
-
 		return self::renderPage("sedit.tpl",
 			[
 				'uInfo' => $uInfo,
@@ -194,7 +192,6 @@ class WxController extends BaseController
 				'routes' => json_encode($routes),
 				'professions' => json_encode(User::$ProfessionDict),
 				'locInfo' => $locInfo,
-
 				'heightF' => User::$HeightFilter,
 				'ageF' => User::$AgeFilter,
 				'incomeF' => User::$IncomeFilter,
@@ -203,7 +200,7 @@ class WxController extends BaseController
 				"filter" => $filter,
 			],
 			'terse',
-			'单身身份修改',
+			'个人资料修改',
 			'bg-color');
 	}
 
