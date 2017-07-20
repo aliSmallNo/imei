@@ -669,11 +669,32 @@ class ApiController extends Controller
 				$openId = self::postParam("openid");
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
-					$data = "用户不存在";
-					break;
+					return self::renderAPI(0, '用户不存在');
 				} else {
 					$data["stat"] = UserNet::getStat($wxInfo['uId'], true);
 					list($data["singles"]) = UserNet::male($wxInfo['uId'], 1, 10);
+				}
+				break;
+			case "initsnews":
+				$openId = self::postParam("openid");
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(0, '用户不存在');
+				} else {
+					$data["avatar"] = $wxInfo["Avatar"];
+					$data["stat"] = UserNet::getStat($wxInfo['uId'], true);
+					$data["news"] = UserNet::news();
+				}
+				break;
+			case "initmme":
+				$openId = self::postParam("openid");
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(0, '用户不存在');
+				} else {
+					$data["stat"] = UserNet::getStat($wxInfo['uId'], true);
+					$data["uInfo"] = User::user(['uId' => $wxInfo['uId']]);
+					$data["avatar"] = $wxInfo["Avatar"];;
 				}
 				break;
 		}
