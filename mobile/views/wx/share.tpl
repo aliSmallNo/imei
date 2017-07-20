@@ -9,12 +9,12 @@
 				<h5>爱情就没有到不了的角落</h5>
 			</div>
 		</div>
-		<p class="img-wrap">
-			<img src="{{$avatar}}" alt="">
-			<em>{{$nickname}}</em>
-		</p>
+		<div class="qrcode"><img src="/images/qrmeipo100.jpg" alt=""></div>
 		<div class="btns bg-repeat">
-			<div class="qrcode" style="text-align: center;padding-bottom: 1rem"><img src="/images/qrmeipo100.jpg" alt="" style="width: 18rem"></div>
+			<p class="img-wrap">
+				<img src="{{$avatar}}" alt="">
+				<em>{{$nickname}}</em>
+			</p>
 			<h4>一起来注册「微媒100」</h4>
 			<h5>随手帮助身边的单身青年，功德无量哦~</h5>
 			{{if $editable}}
