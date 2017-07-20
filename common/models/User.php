@@ -183,6 +183,11 @@ class User extends ActiveRecord
 		self::ROLE_MATCHER => "媒婆",
 	];
 
+	const CERT_STATUS_PENDING = 1;
+	static $certStatDict = [
+		self::CERT_STATUS_PENDING => "待审核"
+	];
+
 	protected static $SmsCodeLimitPerDay = 36;
 	private static $SMS_SUPER_PASS = 15062716;
 
@@ -551,6 +556,20 @@ class User extends ActiveRecord
 		}
 		return 0;
 
+	}
+
+	public static function cert($id, $openId)
+	{
+		$url = AppUtil::getMediaUrl($id);
+		$Info = self::findOne(["uOpenId" => $openId]);
+		if ($url && $Info) {
+			return self::edit($Info->uId, [
+				"uCertImage" => $url,
+				"uCertStatus" => User::CERT_STATUS_PENDING,
+				"uCertDate" => date("Y-m-d H:i:s")
+			]);
+		}
+		return 0;
 	}
 
 	public static function getItem($openId)
