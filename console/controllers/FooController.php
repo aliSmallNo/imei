@@ -375,7 +375,6 @@ class FooController extends Controller
 			for ($k = 101; $k < 106; $k++) {
 				UserQR::createQR($sale['id'], UserQR::CATEGORY_SALES, $code . substr($k, 1));
 			}
-			break;
 		}
 
 		/*self::matchers(1);
