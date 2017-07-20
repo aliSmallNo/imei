@@ -53,7 +53,7 @@ class UserNet extends ActiveRecord
 		if (!$uid || !$subUid || $uid == $subUid) {
 			return false;
 		}
-		if ($relation == self::REL_INVITE || $relation == self::REL_BACKER) {
+		if (in_array($relation, [self::REL_INVITE, self::REL_BACKER])) {
 			$entity = self::findOne(['nSubUId' => $subUid, 'nRelation' => $relation, 'nDeletedFlag' => 0]);
 		} else {
 			$entity = self::findOne(['nUId' => $uid, 'nSubUId' => $subUid, 'nRelation' => $relation, 'nDeletedFlag' => 0]);
@@ -64,6 +64,7 @@ class UserNet extends ActiveRecord
 		if ($entity) {
 			return false;
 		}
+		AppUtil::logFile([$uid,$subUid,$relation,$note],5,__FUNCTION__,__LINE__);
 		$entity = new self();
 		$entity->nUId = $uid;
 		$entity->nSubUId = $subUid;
