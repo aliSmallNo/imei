@@ -1,6 +1,16 @@
 {{include file="layouts/header.tpl"}}
 <style>
+	.note {
+		font-size: 14px;
+		font-weight: 300;
+	}
 
+	.note b {
+		padding-left: 2px;
+		padding-right: 2px;
+		font-size: 15px;
+		font-weight: 400;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="row">
@@ -84,7 +94,7 @@
 					</span>
 				</td>
 				<td>
-					{{$item.text}}
+					<div class="note">{{$item.text}}</div>
 				</td>
 				<td>
 					{{$item.dt}}

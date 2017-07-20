@@ -504,24 +504,51 @@ class UserNet extends ActiveRecord
 		$offset = ($page - 1) * $pageSize;
 
 		$sql = "select u.uAvatar as avatar,u.uName as uname,u.uPhone as phone, u.uThumb as thumb,
-				u1.uAvatar as savatar,u1.uThumb as sthumb,u1.uName as sname,u1.uPhone as sphone,n.nRelation,n.nStatus,
-				(case when n.nRelation=110 then CONCAT(u.uName,' 邀请 ',u1.uName)  
-				when n.nRelation=120 then CONCAT(u.uName,' 成为 ',u1.uName,'的 媒婆 ')
-				when n.nRelation=130 then CONCAT(u1.uName,' 关注 ',u.uName)    
-				when n.nRelation=140 then CONCAT(u1.uName,' 向 ',u.uName,' 索取微信号')
-				when n.nRelation=150 then CONCAT(u1.uName,' 心动 ',u.uName)  END) as text,
-				n.nAddedOn as dt
+				u1.uAvatar as savatar,u1.uThumb as sthumb,u1.uName as sname,u1.uPhone as sphone,
+				n.nRelation,n.nStatus,n.nAddedOn as dt
 				from im_user_net as n 
 				join im_user as u on u.uId=n.nUId 
 				join im_user as u1 on u1.uId=n.nSubUId 
 				where n.nDeletedFlag= 0  $condition
-				order by n.nAddedOn desc  limit $offset,$pageSize";
+				order by n.nAddedOn desc limit $offset,$pageSize";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as &$v) {
 			$v["rText"] = self::$RelDict[$v["nRelation"]];
 			$v["sText"] = self::$stDict[$v["nStatus"]];
 			$v['av'] = $v['thumb'] ? $v['thumb'] : $v['avatar'];
 			$v['sav'] = $v['sthumb'] ? $v['sthumb'] : $v['savatar'];
+			$text = [];
+			switch ($v["nRelation"]) {
+				case self::REL_INVITE:
+					$text = [$v["uname"], '邀请', $v["sname"], ''];
+					break;
+				case self::REL_BACKER:
+					$text = [$v["uname"], '成为', $v["sname"], '的媒婆'];
+					break;
+				case self::REL_FOLLOW:
+					$text = [$v["sname"], '关注了', $v["uname"], ''];
+					break;
+				case self::REL_LINK:
+					$text = [$v["sname"], '向', $v["uname"], '索取微信号'];
+					break;
+				case self::REL_FAVOR:
+					$text = [$v["sname"], '对', $v["uname"], '心动了'];
+					break;
+				case self::REL_QR_SCAN:
+					$text = [$v["sname"], '扫描了', $v["uname"], '的二维码'];
+					break;
+				case self::REL_QR_SUBSCRIBE:
+					$text = [$v["sname"], '扫描了', $v["uname"], '的二维码且关注公众号'];
+					break;
+				default:
+					break;
+			}
+			$v['text'] = '';
+			if ($text) {
+				array_unshift($text, '<b>%s</b>%s<b>%s</b>%s');
+				$v['text'] = call_user_func_array('sprintf', $text);
+			}
+
 		}
 		$sql = "select count(1) as co
 				from im_user_net as n 
