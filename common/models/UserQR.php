@@ -85,7 +85,7 @@ class UserQR extends ActiveRecord
 				$ret = json_decode($ret, 1);
 				if ($ret && isset($ret["ticket"])) {
 					$qUrl = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" . urlencode($ret["ticket"]);
-					$saveAs = AppUtil::imgDir() . 'qr' . $code;
+					$saveAs = AppUtil::imgDir() . 'default/qr' . $code;
 					$saveAs = self::downloadFile($qUrl, $saveAs);
 					list($width, $height, $type) = getimagesize($saveAs);
 					$rootFolder = AppUtil::rootDir();

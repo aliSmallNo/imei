@@ -94,7 +94,7 @@ class AppUtil
 
 	public static function imgDir($rootOnly = false)
 	{
-		$folder = '/data/prodimage/' . self::PROJECT_NAME . '/default/';
+		$folder = '/data/prodimage/' . self::PROJECT_NAME . '/';
 		if (self::isDev()) {
 			$folder = __DIR__ . '/../../../img/' . self::PROJECT_NAME . '/';
 		}
