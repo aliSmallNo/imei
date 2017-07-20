@@ -336,8 +336,10 @@ class UserBuzz extends ActiveRecord
 
 	protected static function addRel($qrOpenid, $scanOpenid, $relCategory, $qId)
 	{
-		$qrUser = User::findOne(['uOpenId' => $qrOpenid])->toArray();;
+		$qrUser = User::findOne(['uOpenId' => $qrOpenid])->toArray();
+		AppUtil::logFile($qrUser, 5, __FUNCTION__, __LINE__);
 		$scanUser = User::findOne(['uOpenId' => $scanOpenid])->toArray();
+		AppUtil::logFile($scanUser, 5, __FUNCTION__, __LINE__);
 		return UserNet::add($qrUser['uId'], $scanUser['uId'], $relCategory, $qId);
 	}
 
