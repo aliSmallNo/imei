@@ -1588,6 +1588,12 @@ section {
     background: url(../images/ico_gender_female.png) no-repeat center center;
     background-size: 100% 100%; }
 
+.invite-wrap .qrcode {
+  background: #afdb64;
+  text-align: center;
+  padding-bottom: 1.5rem; }
+  .invite-wrap .qrcode img {
+    width: 15rem; }
 .invite-wrap .sts-img {
   display: block;
   text-align: center;
@@ -1671,16 +1677,15 @@ section {
 .invite-wrap .img-wrap {
   display: block;
   text-align: center;
-  background: #afdb64;
-  padding: 1.5rem; }
+  padding: 0 1rem 1rem; }
   .invite-wrap .img-wrap em {
     font-style: normal;
     font-weight: 500;
     font-size: 1.3rem;
     display: block;
     text-align: center;
-    line-height: 2.4rem;
-    color: #737373;
+    line-height: 2.2rem;
+    color: #fdd835;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden; }
@@ -1712,19 +1717,19 @@ section {
     left: 0;
     top: 0; }
 .invite-wrap .btns {
-  padding: 3rem 2rem; }
+  padding: 2rem; }
   .invite-wrap .btns h4 {
     text-align: center;
     color: #fbd2e0;
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 500; }
   .invite-wrap .btns h5 {
     text-align: center;
     color: #fbd2e0;
     font-size: 1.4rem;
     font-weight: 300;
-    line-height: 2.4rem;
-    margin-bottom: 2rem; }
+    line-height: 2.2rem;
+    margin-bottom: 1.5rem; }
   .invite-wrap .btns .btn-s-1 {
     display: block;
     height: 4.2rem;
@@ -1769,7 +1774,7 @@ section {
       line-height: 2.4rem;
       height: 2.4rem; }
 .invite-wrap .share-cont {
-  background: #AFDC64;
+  background: #afdb64;
   padding: 3rem 0.5rem; }
   .invite-wrap .share-cont .share-title {
     background: #fff;
@@ -1860,7 +1865,7 @@ section {
           width: 6rem;
           height: 6rem;
           border-radius: 6rem;
-          border: 0.3rem solid #AFDB64; }
+          border: 0.3rem solid #afdb64; }
       .invite-wrap .share-mps .share-mps-items .share-mps-item .intro {
         flex: 2;
         padding: 1rem 0; }
