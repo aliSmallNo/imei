@@ -489,7 +489,7 @@ class User extends ActiveRecord
 		unset($data['img']);
 		//return $data;
 		if ($img) {
-			$url = AppUtil::getMediaUrl($img);
+			$url = AppUtil::getMediaUrl($img, false, true);
 			if ($url) {
 				$data["img"] = $url;
 			}

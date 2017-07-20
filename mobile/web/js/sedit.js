@@ -13,11 +13,9 @@ require(["layer"],
 		var kClick = 'click';
 		var $sls = {
 			cork: $(".app-cork"),
-
 			curFrag: "photo",
 			footer: $(".footer-bar"),
 			mobile: $("#cur_mobile").val(),
-
 			wxString: $("#tpl_wx_info").html(),
 			btnMatcher: $(".action-matcher"),
 			btnSkip: $(".action-skip"),

@@ -18,5 +18,3 @@ class ErrorCode
 	public static $IllegalBuffer = -41003;
 	public static $DecodeBase64Error = -41004;
 }
-
-?>
