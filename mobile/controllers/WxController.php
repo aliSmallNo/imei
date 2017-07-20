@@ -718,12 +718,13 @@ class WxController extends BaseController
 			$uId = 0;
 		}
 		if ($senderUId) {
-			$matchInfo = User::findOne(['uId' => $senderUId]);
+			$matchInfo = User::user(['uId' => $senderUId]);
 			if (!$matchInfo) {
 				header("location:/wx/error?msg=链接地址错误");
 				exit();
 			} else {
-				$nickname = $matchInfo["uName"];
+				$avatar = $matchInfo["thumb"];
+				$nickname = $matchInfo["name"];
 			}
 		}
 		if ($senderUId && $uId) {

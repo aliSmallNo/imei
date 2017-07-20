@@ -1,6 +1,5 @@
 <div id="sec-share">
 	<div id="inviteInfo" class="invite-wrap">
-
 		<div class="sender-wrap">
 			<p class="logo">
 				<img src="/favicon-192.png" alt="">
@@ -48,7 +47,7 @@
 			<div class="share-mps-items">
 				<div class="share-mps-item">
 					<div class="img">
-						<img src="http://mpimg.bpdj365.com/avatar/1e8f1de5a2e1419c8131d808408b8a67_t.jpg">
+						<img src="http://img.meipo100.com/avatar/1e8f1de5a2e1419c8131d808408b8a67_t.jpg">
 					</div>
 					<div class="intro">
 						<h5>姓名：澳洲花道Nancy</h5>
@@ -57,7 +56,7 @@
 				</div>
 				<div class="share-mps-item">
 					<div class="img">
-						<img src="http://mpimg.bpdj365.com/avatar/b5ebbd5d7abc4c6aab134e50571ad898_t.jpg">
+						<img src="http://img.meipo100.com/avatar/b5ebbd5d7abc4c6aab134e50571ad898_t.jpg">
 					</div>
 					<div class="intro">
 						<h5>姓名：杜杜┏ (^ω^)=☞</h5>
@@ -66,7 +65,7 @@
 				</div>
 				<div class="share-mps-item">
 					<div class="img">
-						<img src="http://mpimg.bpdj365.com/avatar/1876b3b8ef604d08b9245fce9d1a3d75_t.jpg">
+						<img src="http://img.meipo100.com/avatar/1876b3b8ef604d08b9245fce9d1a3d75_t.jpg">
 					</div>
 					<div class="intro">
 						<h5>姓名：DU妙婧</h5>
