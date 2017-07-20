@@ -46,7 +46,7 @@ require(["layer"],
 				isShowProgressTips: 1,
 				success: function (res) {
 					$sls.serverId = res.serverId;
-					$sls.uploadImage();
+					uploadImage();
 				},
 				fail: function () {
 					$sls.serverId = "";
@@ -63,8 +63,10 @@ require(["layer"],
 				id: $sls.serverId
 			}, function (resp) {
 				showMsg(resp.msg);
-				if (resp.data) {
-					alert(resp.data);
+				if (resp.code) {
+
+				}else{
+
 				}
 				$sls.uploadImgFlag = 0;
 			}, "json");
