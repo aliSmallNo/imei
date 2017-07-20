@@ -132,10 +132,11 @@ class BaseController extends Controller
 
 	protected function renderPage($view,
 	                              $params = [],
-	                              $layout = 'imei',
+	                              $layout = 'imei.php',
 	                              $title = '微媒100-媒桂花飘香',
 	                              $bodyClass = '')
 	{
+		$this->layout = $layout;
 		$params["gIconOK"] = self::ICON_OK_HTML;
 		$params["gIconAlert"] = self::ICON_ALERT_HTML;
 
@@ -152,7 +153,6 @@ class BaseController extends Controller
 			$sign = WechatUtil::getSignature();
 			$params['wxInfoString'] = json_encode($sign);
 		}
-		$this->layout = $layout;
 		if (!$title) {
 			$title = '微媒100-媒桂花飘香';
 		}
