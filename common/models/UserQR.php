@@ -69,7 +69,7 @@ class UserQR extends ActiveRecord
 		}
 		switch ($category) {
 			case self::CATEGORY_SALES:
-				if (strpos($code, 'meipo100-') === false) {
+				if (strpos($code, 'meipo100') === false) {
 					$code = 'meipo100-' . $code;
 				}
 				$code = strtolower($code);
