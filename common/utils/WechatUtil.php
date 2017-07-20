@@ -107,8 +107,6 @@ class WechatUtil
 			}
 			$res = AppUtil::httpGet($url);
 			$res = json_decode($res, 1);
-			AppUtil::logFile($url, 5, __FUNCTION__, __LINE__);
-			AppUtil::logFile($res, 5, __FUNCTION__, __LINE__);
 			$accessToken = isset($res['access_token']) ? $res['access_token'] : "";
 			if ($accessToken) {
 				RedisUtil::setCache($accessToken, RedisUtil::KEY_WX_TOKEN);
