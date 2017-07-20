@@ -11,6 +11,11 @@
 		font-size: 15px;
 		font-weight: 400;
 	}
+
+	td img {
+		width: 64px;
+		height: 64px;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="row">
@@ -48,25 +53,25 @@
 			<thead>
 			<tr>
 				<th class="col-sm-1">
-					头像(主)
+					头像
 				</th>
 				<th>
-					用户(主)
+					用户
+				</th>
+				<th class="col-sm-3">
+					文字描述
 				</th>
 				<th class="col-sm-1">
-					头像(从)
+					头像
 				</th>
 				<th>
-					用户(从)
+					用户
 				</th>
 				<th>
 					操作
 				</th>
-				<th class="col-sm-3">
-					描述
-				</th>
 				<th>
-					时间
+					日期
 				</th>
 			</tr>
 			</thead>
@@ -74,18 +79,21 @@
 			{{foreach from=$list item=item}}
 			<tr>
 				<td align="center">
-					<img src="{{$item.av}}" style="width: 65px;height: 65px;">
+					<img src="{{$item.left.avatar}}">
 				</td>
 				<td>
-					{{$item.uname}}<br>
-					{{$item.phone}}
+					{{$item.left.name}}<br>
+					{{$item.left.phone}}
 				</td>
 				<td>
-					<img src="{{$item.sav}}" style="width: 65px;height: 65px;">
+					<div class="note">{{$item.text}}</div>
 				</td>
 				<td>
-					{{$item.sname}}<br>
-					{{$item.sphone}}
+					<img src="{{$item.right.avatar}}">
+				</td>
+				<td>
+					{{$item.right.name}}<br>
+					{{$item.right.phone}}
 				</td>
 				<td>
 					<span class="co">
@@ -93,9 +101,7 @@
 						{{if $item.nRelation==140}}{{$item.sText}}{{/if}}
 					</span>
 				</td>
-				<td>
-					<div class="note">{{$item.text}}</div>
-				</td>
+
 				<td>
 					{{$item.dt}}
 				</td>

@@ -517,38 +517,55 @@ class UserNet extends ActiveRecord
 			$v["sText"] = self::$stDict[$v["nStatus"]];
 			$v['av'] = $v['thumb'] ? $v['thumb'] : $v['avatar'];
 			$v['sav'] = $v['sthumb'] ? $v['sthumb'] : $v['savatar'];
-			$text = [];
+			$text = $left = $right = [];
+			$uInfo = ['avatar' => $v['avatar'], 'name' => $v['uname'], 'phone' => $v['phone']];
+			$sInfo = ['avatar' => $v['savatar'], 'name' => $v['sname'], 'phone' => $v['sphone']];
 			switch ($v["nRelation"]) {
 				case self::REL_INVITE:
-					$text = [$v["uname"], '邀请', $v["sname"], ''];
+					$text = ['邀请'];
+					$left = $uInfo;
+					$right = $sInfo;
 					break;
 				case self::REL_BACKER:
-					$text = [$v["uname"], '成为', $v["sname"], '的媒婆'];
+					$text = ['成为', '的媒婆'];
+					$left = $uInfo;
+					$right = $sInfo;
 					break;
 				case self::REL_FOLLOW:
-					$text = [$v["sname"], '关注了', $v["uname"], ''];
+					$text = ['关注了'];
+					$left = $sInfo;
+					$right = $uInfo;
 					break;
 				case self::REL_LINK:
-					$text = [$v["sname"], '向', $v["uname"], '索取微信号'];
+					$text = ['向', '索取微信号'];
+					$left = $sInfo;
+					$right = $uInfo;
 					break;
 				case self::REL_FAVOR:
-					$text = [$v["sname"], '对', $v["uname"], '心动了'];
+					$text = ['对', '心动了'];
+					$left = $sInfo;
+					$right = $uInfo;
 					break;
 				case self::REL_QR_SCAN:
-					$text = [$v["sname"], '扫描了', $v["uname"], '的二维码'];
+					$text = ['扫描了', '的二维码'];
+					$left = $sInfo;
+					$right = $uInfo;
 					break;
 				case self::REL_QR_SUBSCRIBE:
-					$text = [$v["sname"], '扫描了', $v["uname"], '的二维码且关注公众号'];
+					$text = ['扫描了', '的二维码且关注'];
+					$left = $sInfo;
+					$right = $uInfo;
 					break;
 				default:
 					break;
 			}
+			$v['left'] = $left;
+			$v['right'] = $right;
 			$v['text'] = '';
-			if ($text) {
-				array_unshift($text, '<b>%s</b>%s<b>%s</b>%s');
-				$v['text'] = call_user_func_array('sprintf', $text);
+			if ($text && $left && $right) {
+				$memo = ['<b>%s</b>%s<b>%s</b>%s', $left['name'], $text[0], $right['name'], isset($text[1]) ? $text[1] : ''];
+				$v['text'] = call_user_func_array('sprintf', $memo);
 			}
-
 		}
 		$sql = "select count(1) as co
 				from im_user_net as n 
