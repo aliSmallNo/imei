@@ -29,13 +29,31 @@
 		padding: 0;
 		margin: 0;
 		position: absolute;
-		font-size: 5rem;
 		color: #fff;
 		bottom: 5rem;
 		right: 12rem;
 		border: 1px dashed #fff;
 		border-radius: 5rem;
-		padding: 0 1.8rem .5rem 1.5rem;
+		width: 6rem;
+		height: 6rem;
+	}
+	.cert-img a:before{
+		content: ' ';
+		position: absolute;
+		width: 3rem;
+		height: 1px;
+		background: #fff;
+		left: 1.5rem;
+		top: 3rem;
+	}
+	.cert-img a:after{
+		content: ' ';
+		position: absolute;
+		width: 1px;
+		background: #fff;
+		height: 3rem;
+		left: 3rem;
+		top: 1.5rem;
 	}
 </style>
 <section id="cert">
@@ -50,7 +68,7 @@
 			<div class="cert-bg" style="background: url('/images/cert_sample.jpg') no-repeat center center;background-size: 100% 100%;">
 				<div></div>
 			</div>
-			<a href="javascript:;" class="choose-img">+</a>
+			<a href="javascript:;" class="choose-img"></a>
 		</div>
 	</div>
 
