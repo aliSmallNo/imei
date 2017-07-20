@@ -697,6 +697,39 @@ class ApiController extends Controller
 					$data["avatar"] = $wxInfo["Avatar"];;
 				}
 				break;
+			case "changerole":
+				$openId = self::postParam("openid");
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(0, '用户不存在');
+				}
+				$uInfo = User::user(['uId' => $wxInfo['uId']]);
+				if (!$uInfo) {
+					return self::renderAPI(0, '用户不存在');
+				}
+				switch ($uInfo['role']) {
+					case User::ROLE_SINGLE:
+						if ($uInfo['diet'] && $uInfo['rest']) {
+							User::edit($uInfo['id'], ['uRole' => User::ROLE_MATCHER]);
+							UserWechat::getInfoByOpenId($openId, true);
+							$data = ["page" => "matcher"];
+						} else {
+							header('location:/wx/mreg');
+							$data = ["page" => "medit"];
+						}
+						break;
+					case User::ROLE_MATCHER:
+						//Rain: 曾经写过单身资料
+						if ($uInfo['location'] && $uInfo['scope']) {
+							User::edit($uInfo['id'], ['uRole' => User::ROLE_SINGLE]);
+							UserWechat::getInfoByOpenId($openId, true);
+							$data = ["page" => "singles"];
+						} else {
+							$data = ["page" => "sedit"];
+						}
+						break;
+				}
+				break;
 		}
 		return self::renderAPI(0, '', $data);
 	}
