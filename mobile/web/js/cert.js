@@ -63,9 +63,9 @@ require(["layer"],
 				id: $sls.serverId
 			}, function (resp) {
 				showMsg(resp.msg);
-				if (resp.code) {
-
-				}else{
+				if (resp.code == 0) {
+					location.href = "/wx/single";
+				} else {
 
 				}
 				$sls.uploadImgFlag = 0;

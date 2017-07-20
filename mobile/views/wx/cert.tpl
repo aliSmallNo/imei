@@ -5,12 +5,11 @@
 	}
 
 	.cert-header {
-		padding: 2rem;
+		padding: 1rem 3rem;
 		font-size: 1.2rem;
 	}
 
 	.cert-bg {
-		background-size: 26rem 16rem;
 		width: 26rem;
 		height: 16rem;
 		margin: 2rem auto;
@@ -27,6 +26,8 @@
 	}
 
 	.cert-img a {
+		padding: 0;
+		margin: 0;
 		position: absolute;
 		font-size: 5rem;
 		color: #fff;
@@ -38,12 +39,15 @@
 	}
 </style>
 <section id="cert">
+	<div class="nav">
+		<a href="#sme">返回</a>
+	</div>
 	<div class="cert-content">
 		<div class="cert-header">
 			按要求上传您手持身份证的照片，后台会审核您上传的照片，不通过会通知您，并且需要重新上传！
 		</div>
 		<div class="cert-img">
-			<div class="cert-bg" style="background: url('/images/cert_sample.jpg') no-repeat center center ">
+			<div class="cert-bg" style="background: url('/images/cert_sample.jpg') no-repeat center center;background-size: 100% 100%;">
 				<div></div>
 			</div>
 			<a href="javascript:;" class="choose-img">+</a>
