@@ -8,7 +8,6 @@
 
 namespace common\models;
 
-
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
@@ -21,6 +20,8 @@ class UserNet extends ActiveRecord
 	const REL_FOLLOW = 130;
 	const REL_LINK = 140;
 	const REL_FAVOR = 150;
+	const REL_QR_SCAN = 210;
+	const REL_QR_SUBSCRIBE = 212;
 
 	static $RelDict = [
 		self::REL_INVITE => '邀请',
@@ -47,23 +48,28 @@ class UserNet extends ActiveRecord
 		return '{{%user_net}}';
 	}
 
-	public static function add($uid, $subUid, $relation)
+	public static function add($uid, $subUid, $relation, $note = '')
 	{
 		if (!$uid || !$subUid || $uid == $subUid) {
 			return false;
 		}
-		if ($relation == self::REL_INVITE || $relation == self::REL_BACKER) {
+		if (in_array($relation, [self::REL_INVITE, self::REL_BACKER])) {
 			$entity = self::findOne(['nSubUId' => $subUid, 'nRelation' => $relation, 'nDeletedFlag' => 0]);
 		} else {
 			$entity = self::findOne(['nUId' => $uid, 'nSubUId' => $subUid, 'nRelation' => $relation, 'nDeletedFlag' => 0]);
 		}
 		if ($entity) {
+			$entity->nUpdatedOn = date('Y-m-d H:i:s');
+			$entity->nNote = $note;
+			$entity->save();
 			return false;
 		}
 		$entity = new self();
 		$entity->nUId = $uid;
 		$entity->nSubUId = $subUid;
 		$entity->nRelation = $relation;
+		$entity->nUpdatedOn = date('Y-m-d H:i:s');
+		$entity->nNote = $note;
 		$entity->save();
 
 		return $entity->nId;

@@ -10,7 +10,9 @@ namespace console\controllers;
  */
 use common\models\User;
 use common\models\UserNet;
+use common\models\UserQR;
 use common\utils\AppUtil;
+use common\utils\Pinyin;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
 use yii\console\Controller;
@@ -358,14 +360,26 @@ class FooController extends Controller
 		print_r(\GuzzleHttp\json_decode($res,1));
 		exit;*/
 
-		/*$sessionKey = '';
-		$encryptedData = '';
-		$iv = '';
-		$res = WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
-		var_dump($res);*/
-		self::matchers(1);
+
+		$sales = [
+			['id' => 131266, 'name' => '丁飞'],
+			['id' => 131276, 'name' => '许阳'],
+			['id' => 131277, 'name' => '卢明'],
+			['id' => 131430, 'name' => '范烁'],
+			['id' => 131372, 'name' => '刘明星'],
+			['id' => 120003, 'name' => '周攀'],
+			['id' => 131379, 'name' => '韦锐'],
+		];
+		foreach ($sales as $sale) {
+			$code = Pinyin::pinyin($sale['name'], true, true);
+			for ($k = 101; $k < 106; $k++) {
+				UserQR::createQR($sale['id'], UserQR::CATEGORY_SALES, $code . substr($k, 1));
+			}
+		}
+
+		/*self::matchers(1);
 		self::matchers(2);
 		self::matchers(3);
-		self::reformInfo();
+		self::reformInfo();*/
 	}
 }

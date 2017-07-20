@@ -27,6 +27,13 @@ class ImageUtil
 
 	private static $CategoryImei = "imei";
 
+	public static function getUrl($fileName)
+	{
+		$root = AppUtil::imgDir(true);
+		$fileName = str_replace($root, '', $fileName);
+		return trim(AppUtil::imageUrl(), '/') . '/' . trim($fileName, '/');
+	}
+
 	/**
 	 * 生成腾讯云对象存储服务签名 Cloud Object Storage
 	 * @param bool $oneTimeFlag 是否是一次性的

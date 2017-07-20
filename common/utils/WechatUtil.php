@@ -107,8 +107,6 @@ class WechatUtil
 			}
 			$res = AppUtil::httpGet($url);
 			$res = json_decode($res, 1);
-			AppUtil::logFile($url, 5, __FUNCTION__, __LINE__);
-			AppUtil::logFile($res, 5, __FUNCTION__, __LINE__);
 			$accessToken = isset($res['access_token']) ? $res['access_token'] : "";
 			if ($accessToken) {
 				RedisUtil::setCache($accessToken, RedisUtil::KEY_WX_TOKEN);
@@ -129,15 +127,28 @@ class WechatUtil
 		return $accessToken;
 	}
 
+	public static function getRemoteToken($pass, $reset = false)
+	{
+		$url = 'https://wx.meipo100.com/api/genie?tag=wx-token&key=%s&reset=%s';
+		$url = sprintf($url, $pass, $reset);
+		$ret = AppUtil::httpGet($url, [], true);
+		$ret = json_decode($ret, 1);
+		if ($ret && isset($ret['data']['token'])) {
+			return $ret['data']['token'];
+		}
+		return '';
+	}
 
 	public static function getAccessToken($pass, $reset = false)
 	{
 		if ($pass == self::ACCESS_CODE) {
+			if (AppUtil::isDev()) {
+				return self::getRemoteToken($pass, $reset);
+			}
 			return self::accessToken($reset);
 		}
-		return "";
+		return '';
 	}
-
 
 	public static function wxInfo($openId, $renewFlag = false)
 	{

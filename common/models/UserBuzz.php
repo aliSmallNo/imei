@@ -35,7 +35,7 @@ class UserBuzz extends ActiveRecord
 		return '{{%user_buzz}}';
 	}
 
-	public static function add($jsonData = "", $resp = "")
+	public static function add($jsonData = "", $resp = "", $content = '')
 	{
 		if (!$jsonData) {
 			return false;
@@ -43,6 +43,9 @@ class UserBuzz extends ActiveRecord
 		$values = json_decode($jsonData, true);
 		$newItem = new self();
 		$newItem->bResult = $resp;
+		if ($content) {
+			$newItem->bContent = $content;
+		}
 		foreach ($values as $key => $val) {
 			if (isset(self::$KeyMap[$key])) {
 				$bKey = self::$KeyMap[$key];
@@ -70,15 +73,14 @@ class UserBuzz extends ActiveRecord
 
 	public static function handleEvent($postJSON = "")
 	{
-		$resp = '';
-		$debug = '';
+		$resp = $debug = $content = '';
 		/*self::$WelcomeMsg = '欢迎来到「微媒100」' . PHP_EOL . PHP_EOL;
 		self::$WelcomeMsg .= '在这里你可以同时注册两种身份— “单身”和“媒婆”。' . PHP_EOL . PHP_EOL;
 		self::$WelcomeMsg .= '点击底栏“我是媒婆”，帮朋友找对象！' . PHP_EOL;
 		self::$WelcomeMsg .= '点击底栏“我是单身”，为自己找对象！' . PHP_EOL . PHP_EOL;
 		self::$WelcomeMsg .= '这里的单身，均有好友做推荐，让交友变得真实';*/
 
-		self::$WelcomeMsg = "『微媒100』是一个专注公园相亲角的公益公众号，您编辑好相亲者的信息和要求，发送到后台我们会将符合条件的信息发送给您。
+		self::$WelcomeMsg = "『微媒100』是一个专注相亲的公益公众号，您编辑好相亲者的信息和要求，发送到后台我们会将符合条件的信息发送给您。
 包含如下信息：性别、出生年、户籍地、学历、婚姻状况、联系方式、个人介绍。要求：性别+年龄段+户籍+自定义内容+联系方式。";
 
 		$postData = json_decode($postJSON, 1);
@@ -100,13 +102,14 @@ class UserBuzz extends ActiveRecord
 			case "scan":
 				$debug .= $event . "**";
 				if ($eventKey && is_numeric($eventKey)) {
-					$qrInfo = UserQR::findOne(["qId" => $eventKey]);
-					$debug .= $wxOpenId . "**" . $qrInfo["qFrom"] . "**" . $qrInfo["qCategory"] . "**" . $qrInfo["qSubCategory"];
+					$qrInfo = UserQR::findOne(["qId" => $eventKey])->toArray();
+					$debug .= $wxOpenId . "**" . $qrInfo["qOpenId"] . "**" . $qrInfo["qCategory"] . "**" . $qrInfo["qCode"];
 					$addResult = "";
 					if (strlen($wxOpenId) > 6) {
-						//$addResult = UserLink::add($qrInfo["qFrom"], $wxOpenId, $qrInfo["qCategory"], $qrInfo["qSubCategory"]);
+						$addResult = self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SCAN, $eventKey);
 					}
 					if ($qrInfo) {
+						$content = $qrInfo["qCode"];
 						$debug .= $addResult . "**";
 						$resp = self::welcomeMsg($fromUsername, $toUsername, $qrInfo["qCategory"]);
 					}
@@ -116,18 +119,16 @@ class UserBuzz extends ActiveRecord
 				if ($eventKey && strpos($eventKey, "qrscene_") === 0) {
 					$qId = substr($eventKey, strlen("qrscene_"));
 					if (is_numeric($qId)) {
-						$qrInfo = UserQR::findOne(["qId" => $qId]);
+						$qrInfo = UserQR::findOne(["qId" => $qId])->toArray();
 						//UserLink::add($qrInfo["qFrom"], $wxOpenId, $qrInfo["qCategory"], $qrInfo["qSubCategory"]);
 						if ($qrInfo) {
+							$content = $qrInfo["qCode"];
+							self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SUBSCRIBE, $qId);
 							$resp = self::welcomeMsg($fromUsername, $toUsername, $qrInfo["qCategory"]);
 							// Rain: 添加或者更新微信用户信息
 							UserWechat::getInfoByOpenId($fromUsername, true);
 						}
 					}
-				} elseif ($eventKey && strpos($eventKey, "last_trade_no_") === 0) {
-					$resp = self::welcomeMsg($fromUsername, $toUsername);
-					// Rain: 添加或者更新微信用户信息
-					UserWechat::getInfoByOpenId($fromUsername, true);
 				} else {
 					$resp = self::welcomeMsg($fromUsername, $toUsername);
 					UserWechat::getInfoByOpenId($fromUsername, true);
@@ -175,7 +176,7 @@ class UserBuzz extends ActiveRecord
 			default:
 				break;
 		}
-		return [$resp, $debug];
+		return [$resp, $debug, $content];
 	}
 
 	private static function welcomeMsg($fromUsername, $toUsername, $category = "", $extension = "")
@@ -328,6 +329,13 @@ class UserBuzz extends ActiveRecord
 			}
 		}
 		return $str;
+	}
+
+	protected static function addRel($qrOpenid, $scanOpenid, $relCategory, $qId)
+	{
+		$qrUser = User::findOne(['uOpenId' => $qrOpenid])->toArray();
+		$scanUser = User::findOne(['uOpenId' => $scanOpenid])->toArray();
+		return UserNet::add($qrUser['uId'], $scanUser['uId'], $relCategory, $qId);
 	}
 
 }
