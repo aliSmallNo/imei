@@ -100,9 +100,7 @@ class UserBuzz extends ActiveRecord
 			case "scan":
 				$debug .= $event . "**";
 				if ($eventKey && is_numeric($eventKey)) {
-					AppUtil::logFile($eventKey, 5, __FUNCTION__, __LINE__);
-					$qrInfo = UserQR::findOne(["qId" => $eventKey]);
-					AppUtil::logFile($qrInfo, 5, __FUNCTION__, __LINE__);
+					$qrInfo = UserQR::findOne(["qId" => $eventKey])->toArray();
 					$debug .= $wxOpenId . "**" . $qrInfo["qOpenId"] . "**" . $qrInfo["qCategory"] . "**" . $qrInfo["qCode"];
 					$addResult = "";
 					if (strlen($wxOpenId) > 6) {
@@ -118,7 +116,7 @@ class UserBuzz extends ActiveRecord
 				if ($eventKey && strpos($eventKey, "qrscene_") === 0) {
 					$qId = substr($eventKey, strlen("qrscene_"));
 					if (is_numeric($qId)) {
-						$qrInfo = UserQR::findOne(["qId" => $qId]);
+						$qrInfo = UserQR::findOne(["qId" => $qId])->toArray();
 						//UserLink::add($qrInfo["qFrom"], $wxOpenId, $qrInfo["qCategory"], $qrInfo["qSubCategory"]);
 						if ($qrInfo) {
 							self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SUBSCRIBE, $qId);
@@ -335,10 +333,8 @@ class UserBuzz extends ActiveRecord
 
 	protected static function addRel($qrOpenid, $scanOpenid, $relCategory, $qId)
 	{
-		$qrUser = User::findOne(['uOpenId' => $qrOpenid]);
-		AppUtil::logFile($qrUser, 5, __FUNCTION__, __LINE__);
-		$scanUser = User::findOne(['uOpenId' => $scanOpenid]);
-		AppUtil::logFile($scanUser, 5, __FUNCTION__, __LINE__);
+		$qrUser = User::findOne(['uOpenId' => $qrOpenid])->toArray();;
+		$scanUser = User::findOne(['uOpenId' => $scanOpenid])->toArray();
 		return UserNet::add($qrUser['uId'], $scanUser['uId'], $relCategory, $qId);
 	}
 

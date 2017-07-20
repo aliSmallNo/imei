@@ -360,6 +360,7 @@ class FooController extends Controller
 		print_r(\GuzzleHttp\json_decode($res,1));
 		exit;*/
 
+
 		$sales = [
 			['id' => 131266, 'name' => '丁飞'],
 			['id' => 131276, 'name' => '许阳'],
