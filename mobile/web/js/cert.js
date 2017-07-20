@@ -120,7 +120,7 @@ require(["layer"],
 				wx.hideOptionMenu();
 			});
 			locationHashChanged();
-			//$sls.cork.hide();
+			$sls.cork.hide();
 
 		});
 	});
