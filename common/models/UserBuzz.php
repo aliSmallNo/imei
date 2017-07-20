@@ -107,6 +107,7 @@ class UserBuzz extends ActiveRecord
 					AppUtil::logFile($debug, 5, __FUNCTION__, __LINE__);
 					if (strlen($wxOpenId) > 6) {
 						$addResult = self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SCAN, $eventKey);
+						AppUtil::logFile($addResult, 5, __FUNCTION__, __LINE__);
 					}
 					if ($qrInfo) {
 						$debug .= $addResult . "**";
