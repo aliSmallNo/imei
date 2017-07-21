@@ -183,9 +183,14 @@ class User extends ActiveRecord
 		self::ROLE_MATCHER => "媒婆",
 	];
 
+	const CERT_STATUS_DEFAULT = 0;
 	const CERT_STATUS_PENDING = 1;
-	static $certStatDict = [
-		self::CERT_STATUS_PENDING => "待审核"
+	const CERT_STATUS_PASS = 2;
+	const CERT_STATUS_FAIL = 9;
+	static $Certstatus = [
+		self::CERT_STATUS_PENDING => "待实名",
+		self::CERT_STATUS_PASS => "已实名",
+		self::CERT_STATUS_FAIL => "未通过",
 	];
 
 	protected static $SmsCodeLimitPerDay = 36;
@@ -566,6 +571,18 @@ class User extends ActiveRecord
 			return self::edit($Info->uId, [
 				"uCertImage" => $url,
 				"uCertStatus" => User::CERT_STATUS_PENDING,
+				"uCertDate" => date("Y-m-d H:i:s")
+			]);
+		}
+		return 0;
+	}
+
+	public static function toCertVerify($id, $flag)
+	{
+		$Info = self::findOne(["uId" => $id]);
+		if ($flag && $Info) {
+			return self::edit($id, [
+				"uCertStatus" => ($flag == "pass") ? User::CERT_STATUS_PASS : User::CERT_STATUS_FAIL,
 				"uCertDate" => date("Y-m-d H:i:s")
 			]);
 		}

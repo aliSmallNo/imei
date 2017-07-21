@@ -80,6 +80,15 @@ class ApiController extends Controller
 					$ret = ["code" => 159, "msg" => "无操作权限！"];
 				}
 				break;
+			case "cert":
+				$flag = self::postParam("f");
+				$result = User::toCertVerify($id, $flag);
+				if ($result) {
+					$ret = ["code" => 0, "msg" => "操作成功！"];
+				} else {
+					$ret = ["code" => 0, "msg" => "操作失败！"];
+				}
+				break;
 			case "pwd":
 				$newPassWord = strtolower(self::postParam('newPwd'));
 				$oldPassWord = strtolower(self::postParam('curPwd'));
@@ -122,7 +131,7 @@ class ApiController extends Controller
 		$fontPath = __DIR__ . '/../../common/assets/Arial.ttf';
 		$saveName = $folder . time() . '_t.png';
 
-		Image::open($fileName)->write($fontPath,'30009393',0,200,0,0xffffff,'center')->save($saveName);
+		Image::open($fileName)->write($fontPath, '30009393', 0, 200, 0, 0xffffff, 'center')->save($saveName);
 
 		return self::renderAPI(0, $saveName);
 	}

@@ -71,11 +71,8 @@
 			<a href="javascript:;" class="choose-img"></a>
 		</div>
 	</div>
-
-
 </section>
 
-<input type="hidden" id="cUID" value="{{$hid}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>

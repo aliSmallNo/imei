@@ -274,6 +274,44 @@ class SiteController extends BaseController
 			]);
 	}
 
+	public function actionCert()
+	{
+		$page = self::getParam("page", 1);
+		$name = self::getParam('name');
+		$phone = self::getParam('phone');
+		$status = self::getParam('status');
+		$stDel = User::STATUS_DELETE;
+		$stCert = User::CERT_STATUS_DEFAULT;
+		$criteria[] = " uStatus < $stDel ";
+		$criteria[] = " uCertStatus > $stCert ";
+		$params = [];
+		if ($status ) {
+			$criteria[] = " uCertStatus=$status ";
+		}
+		if ($phone) {
+			$criteria[] = " uPhone like :phone ";
+			$params[':phone'] = "$phone%";
+		}
+
+		if ($name) {
+			$criteria[] = "  uName like :name ";
+			$params[':name'] = "%$name%";
+		}
+
+		list($list, $count) = User::users($criteria, $params, $page);
+		$pagination = self::pagination($page, $count);
+		return $this->renderPage('cert.tpl',
+			[
+				"status" => $status,
+				'list' => $list,
+				"name" => $name,
+				"phone" => $phone,
+				'pagination' => $pagination,
+				'category' => 'users',
+				"statusT" => User::$Certstatus,
+			]);
+	}
+
 	public function actionRecharges()
 	{
 		$getInfo = Yii::$app->request->get();
@@ -453,4 +491,5 @@ class SiteController extends BaseController
 			]
 		);
 	}
+
 }

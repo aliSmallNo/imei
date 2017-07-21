@@ -148,6 +148,11 @@ class Menu
 						"name" => "反馈消息",
 						"url" => "/site/feedback",
 						"level" => 820
+					],
+					[
+						"name" => "实名认证",
+						"url" => "/site/cert",
+						"level" => 820
 					]
 				]
 			],
