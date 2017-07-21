@@ -529,7 +529,8 @@ class ApiController extends Controller
 				$favorInfo = UserNet::findOne(["nRelation" => UserNet::REL_FAVOR, "nDeletedFlag" => UserNet::DELETE_FLAG_NO, "nUId" => $uInfo["id"], "nSubUId" => $wxInfo["uId"]]);
 				$uInfo["favorFlag"] = $favorInfo ? 1 : 0;
 				$uInfo["albumJson"] = json_encode($uInfo["album"]);
-				$data = $uInfo;
+				$data["uInfo"] = $uInfo;
+				$data["role"] = $wxInfo["uRole"];
 				break;
 			case "mhome":
 				$hid = self::postParam("id");
