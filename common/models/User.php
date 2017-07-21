@@ -898,7 +898,7 @@ class User extends ActiveRecord
 
 	}
 
-	public static function topMatcher($uid, $page = 1, $pageSize = 10)
+	public static function topMatcher($uid, $page = 1, $pageSize = 20)
 	{
 //		$uInfo = self::user(['uId' => $uid]);
 		$conn = AppUtil::db();
@@ -906,7 +906,7 @@ class User extends ActiveRecord
 		$sql = 'select u.*, count(n.nId) as uCnt 
 			 from im_user as u 
 			 LEFT JOIN im_user_net as n on u.uId=n.nUId AND n.nRelation=:rel AND n.nDeletedFlag=0
-			 WHERE u.uRole=:role GROUP BY n.nUId ORDER BY uCnt DESC
+			 WHERE u.uRole=:role GROUP BY n.nUId ORDER BY uUpdatedOn DESC, uCnt DESC
 			 limit ' . $offset . ',' . ($pageSize + 1);
 		$ret = $conn->createCommand($sql)->bindValues([
 			':rel' => UserNet::REL_BACKER,
@@ -914,8 +914,8 @@ class User extends ActiveRecord
 		])->queryAll();
 		$nextPage = 0;
 		if ($ret && count($ret) > $pageSize) {
-			$nextPage = $page + 1;
 			array_pop($ret);
+			$nextPage = $page + 1;
 		}
 		$items = [];
 		foreach ($ret as $row) {
