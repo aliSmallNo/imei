@@ -355,32 +355,6 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		/*$code = "0614XFIV1anRBS08sSIV1EbJIV14XFIh";
-		$res = WechatUtil::getXcxSessionKey($code);
-		print_r(\GuzzleHttp\json_decode($res,1));
-		exit;*/
 
-		$sales = [
-			['id' => 131266, 'name' => '丁飞'],
-			['id' => 131276, 'name' => '许阳'],
-			['id' => 131277, 'name' => '卢明'],
-			['id' => 131430, 'name' => '范烁'],
-			['id' => 131372, 'name' => '刘明星'],
-			['id' => 120003, 'name' => '周攀'],
-			['id' => 131379, 'name' => '韦锐'],
-		];
-		foreach ($sales as $sale) {
-			$code = Pinyin::pinyin($sale['name'], true, true);
-			for ($k = 101; $k < 106; $k++) {
-				//UserQR::createQR($sale['id'], UserQR::CATEGORY_SALES, $code . substr($k, 1));
-			}
-		}
-
-		UserQR::createQR(131379, UserQR::CATEGORY_SALES, 'meipo100');
-
-		/*self::matchers(1);
-		self::matchers(2);
-		self::matchers(3);
-		self::reformInfo();*/
 	}
 }

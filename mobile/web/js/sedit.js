@@ -238,6 +238,7 @@ require(["layer"],
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
 				$sls.postData["coord"] = $sls.coord.val();
+				//console.log($sls.postData);return;
 				$.post("/api/user", {
 					tag: "sreg",
 					data: JSON.stringify($sls.postData),

@@ -673,6 +673,46 @@ class ApiController extends Controller
 				User::edit($openid, ["uAlbum" => json_encode($thumb)]);
 				$data = $newThumb ? $newThumb[0] : "";
 				break;
+			case "save":
+				/*
+					coord: '',
+					edu: "170",
+					house: "201",
+					img: "",
+					job: "3",
+					name: "周攀",
+					sign: "315",
+					workout: "265",
+
+					education: "170",
+					estate: "201",
+					fitness: "265",
+					gender: "10", ???????
+					horos: "315",
+					profession: "3",
+				  */
+				$fieldMap = [
+					"alcohol" => "drink",
+					"education" => "edu",
+					"estate" => "house",
+					"fitness" => "workout",
+					"horos" => "sign",
+					"profession" => "job",
+				];
+				$openId = self::postParam("openid");
+				$data = json_decode(self::postParam("data"), 1);
+				unset($data["gender"]);
+				foreach ($fieldMap as $k => $v) {
+					if (isset($data[$k])) {
+						$data[$v] = $data[$k];
+						unset($data[$k]);
+					}
+				}
+				$data["openId"] = $openId;
+				$ret = User::reg($data);
+				$cache = UserWechat::getInfoByOpenId($openId, 1);// 刷新用户cache数据
+				return self::renderAPI(0, '保存成功啦~', $ret);
+				break;
 			case "sgroupinit":
 				$openId = self::postParam("openid");
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
