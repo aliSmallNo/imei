@@ -529,6 +529,8 @@ class WechatUtil
 
 	public static function toNotice($uId, $myId, $tag, $f = false)
 	{
+		$secretId = AppUtil::encrypt($uId);
+
 		if (AppUtil::scene() == "dev") {
 			return 0;
 		}
@@ -542,7 +544,7 @@ class WechatUtil
 		}
 		$name = $userInfo["uName"];
 
-		$url = "https://wx.meipo100.com/wx/single";
+		$url = "https://wx.meipo100.com/wx/sh?id=$secretId";
 		switch ($tag) {
 			case "favor":
 				$cat = $f ? UserMsg::CATEGORY_FAVRO : UserMsg::CATEGORY_FAVRO_CANCEL;
