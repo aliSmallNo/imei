@@ -553,7 +553,6 @@ class WxController extends BaseController
 		if ($wxInfo) {
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
-			//$stat = UserTrans::getStat($wxInfo['uId'], true);
 		} else {
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
@@ -566,13 +565,16 @@ class WxController extends BaseController
 				exit();
 			}
 		}
+		$userInfo = User::findOne(["uId" => $hid]);
 
 		return self::renderPage("cert.tpl",
 			[
 				'avatar' => $avatar,
 				'nickname' => $nickname,
 				'hid' => $hid,
-				'stat' => $stat
+				'stat' => $stat,
+				'bgImage' => ($userInfo && $userInfo->uCertImage) ? $userInfo->uCertImage : "/images/cert_sample.jpg",
+				'certFlag' => $userInfo ? (($userInfo->uCertStatus == User::CERT_STATUS_PASS) ? 1 : 0) : 0
 			],
 			'imei',
 			'实名认证');

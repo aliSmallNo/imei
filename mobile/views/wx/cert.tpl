@@ -37,7 +37,8 @@
 		width: 6rem;
 		height: 6rem;
 	}
-	.cert-img a:before{
+
+	.cert-img a:before {
 		content: ' ';
 		position: absolute;
 		width: 3rem;
@@ -46,7 +47,8 @@
 		left: 1.5rem;
 		top: 3rem;
 	}
-	.cert-img a:after{
+
+	.cert-img a:after {
 		content: ' ';
 		position: absolute;
 		width: 1px;
@@ -65,14 +67,15 @@
 			按要求上传您手持身份证的照片，后台会审核您上传的照片，不通过会通知您，并且需要重新上传！
 		</div>
 		<div class="cert-img">
-			<div class="cert-bg" style="background: url('/images/cert_sample.jpg') no-repeat center center;background-size: 100% 100%;">
+			<div class="cert-bg"
+					 style="background: url('{{$bgImage}}') no-repeat center center;background-size: 100% 100%;">
 				<div></div>
 			</div>
 			<a href="javascript:;" class="choose-img"></a>
 		</div>
 	</div>
 </section>
-
+<input type="hidden" id="certFlag" value="{{$certFlag}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>

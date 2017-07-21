@@ -15,6 +15,7 @@ require(["layer"],
 			curFrag: "cert",
 			cork: $(".app-cork"),
 			wxString: $("#tpl_wx_info").html(),
+			certFlag: $("#certFlag").val(),
 			localId: '',
 			serverId: '',
 			uploadImgFlag: 0,
@@ -22,6 +23,10 @@ require(["layer"],
 		};
 
 		$(document).on(kClick, "a.choose-img", function () {
+			if ($sls.certFlag) {
+				showMsg("您已通过实名认证~");
+				return;
+			}
 			wx.chooseImage({
 				count: 1,
 				sizeType: ['original', 'compressed'],

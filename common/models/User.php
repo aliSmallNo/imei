@@ -585,7 +585,6 @@ class User extends ActiveRecord
 
 		if ($flag && $Info) {
 			WechatUtil::regNotice($id, "cert" . $flag);
-
 			return self::edit($id, [
 				"uCertStatus" => ($flag == "pass") ? User::CERT_STATUS_PASS : User::CERT_STATUS_FAIL,
 				"uCertDate" => date("Y-m-d H:i:s"),
