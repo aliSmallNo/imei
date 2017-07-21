@@ -146,44 +146,6 @@ class SiteController extends BaseController
 		}
 	}
 
-	/**
-	 * 用户列表
-	 */
-	public function actionAccounts()
-	{
-		$page = self::getParam("page", 1);
-		$name = self::getParam('name');
-		$phone = self::getParam('phone');
-		$status = self::getParam('status');
-		$stDel = User::STATUS_DELETE;
-		$criteria[] = " uStatus < $stDel ";
-		$params = [];
-		if ($status != "" && ($status == 0 || $status)) {
-			$criteria[] = " uStatus=$status ";
-		}
-		if ($phone) {
-			$criteria[] = " uPhone like :phone ";
-			$params[':phone'] = "$phone%";
-		}
-
-		if ($name) {
-			$criteria[] = "  uName like :name ";
-			$params[':name'] = "%$name%";
-		}
-
-		list($list, $count) = User::users($criteria, $params, $page);
-		$pagination = self::pagination($page, $count);
-		return $this->renderPage('accounts.tpl',
-			[
-				"status" => $status,
-				'list' => $list,
-				"name" => $name,
-				"phone" => $phone,
-				'pagination' => $pagination,
-				'category' => 'users',
-				"statusT" => User::$Status,
-			]);
-	}
 
 	public function actionAccount()
 	{
@@ -271,6 +233,45 @@ class SiteController extends BaseController
 				'error' => $error,
 				'detailcategory' => 'site/account',
 				'category' => 'users',
+			]);
+	}
+
+	/**
+	 * 用户列表
+	 */
+	public function actionAccounts()
+	{
+		$page = self::getParam("page", 1);
+		$name = self::getParam('name');
+		$phone = self::getParam('phone');
+		$status = self::getParam('status');
+		$stDel = User::STATUS_DELETE;
+		$criteria[] = " uStatus < $stDel ";
+		$params = [];
+		if ($status != "" && ($status == 0 || $status)) {
+			$criteria[] = " uStatus=$status ";
+		}
+		if ($phone) {
+			$criteria[] = " uPhone like :phone ";
+			$params[':phone'] = "$phone%";
+		}
+
+		if ($name) {
+			$criteria[] = "  uName like :name ";
+			$params[':name'] = "%$name%";
+		}
+
+		list($list, $count) = User::users($criteria, $params, $page);
+		$pagination = self::pagination($page, $count);
+		return $this->renderPage('accounts.tpl',
+			[
+				"status" => $status,
+				'list' => $list,
+				"name" => $name,
+				"phone" => $phone,
+				'pagination' => $pagination,
+				'category' => 'users',
+				"statusT" => User::$Status,
 			]);
 	}
 
