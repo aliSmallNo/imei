@@ -153,7 +153,7 @@
 	$(".pInfo img").click(function () {
 		var src = $(this).attr("src");
 		layer.open({
-			title: '待审核人',
+			title: '待实名审核用户',
 			content: "<img src='" + src + "' style='width:500rpx;height:300px'>",
 			area: ['500px', '500px']
 		});
