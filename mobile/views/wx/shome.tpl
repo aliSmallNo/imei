@@ -1,6 +1,9 @@
 <div class="single-page main-page">
 	<div class="head">
-		<img src="{{$uInfo.avatar}}" alt="">
+		<img src="{{$uInfo.avatar}}" class="avatar">
+		<a href="/wx/single#slook">
+			<img src="/images/ico_home.png">
+		</a>
 	</div>
 	<div class="baseinfo">
 		<div class="title">
