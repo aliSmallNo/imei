@@ -413,10 +413,12 @@ class WxController extends BaseController
 		if ($wxInfo) {
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
+			$role = $wxInfo["uRole"];
 
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
+			$role = 10;
 		}
 
 		$items = [];
@@ -457,6 +459,7 @@ class WxController extends BaseController
 				'nickname' => $nickname,
 				'avatar' => $avatar,
 				'uInfo' => $uInfo,
+				'homeUrl' => ($role == 10) ? "/wx/single#slook" : "/wx/match#slink",
 				'prefer' => $prefer,
 				'hid' => $hid,
 				'secretId' => $secretId,
