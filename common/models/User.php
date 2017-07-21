@@ -907,7 +907,7 @@ class User extends ActiveRecord
 			 from im_user as u 
 			 LEFT JOIN im_user_net as n on u.uId=n.nUId AND n.nRelation=:rel AND n.nDeletedFlag=0
 			 WHERE u.uRole=:role GROUP BY n.nUId ORDER BY uUpdatedOn DESC, uCnt DESC
-			 limit ' . $offset . ',' . ($pageSize + 1);
+			 LIMIT ' . $offset . ',' . ($pageSize + 1);
 		$ret = $conn->createCommand($sql)->bindValues([
 			':rel' => UserNet::REL_BACKER,
 			':role' => self::ROLE_MATCHER
@@ -968,18 +968,10 @@ class User extends ActiveRecord
 		if (!$filter) {
 			return [
 				[
-					"age" =>
-						[
-							["key" => 0, "name" => "年龄不限"]
-						],
-					"height" =>
-						[
-							["key" => 0, "name" => "身高不限"]
-						],
-					"income" =>
-						["key" => 0, "name" => "收入不限"],
-					"edu" =>
-						["key" => 0, "name" => "学历不限"],
+					"age" => [["key" => 0, "name" => "年龄不限"]],
+					"height" => [["key" => 0, "name" => "身高不限"]],
+					"income" => ["key" => 0, "name" => "收入不限"],
+					"edu" => ["key" => 0, "name" => "学历不限"],
 				],
 				[]
 			];
