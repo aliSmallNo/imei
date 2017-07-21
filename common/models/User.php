@@ -8,6 +8,7 @@
 
 namespace common\models;
 
+use admin\models\Admin;
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
 use yii\db\ActiveRecord;
@@ -583,7 +584,9 @@ class User extends ActiveRecord
 		if ($flag && $Info) {
 			return self::edit($id, [
 				"uCertStatus" => ($flag == "pass") ? User::CERT_STATUS_PASS : User::CERT_STATUS_FAIL,
-				"uCertDate" => date("Y-m-d H:i:s")
+				"uCertDate" => date("Y-m-d H:i:s"),
+				"uUpdatedOn" => date("Y-m-d H:i:s"),
+				"uUpdatedBy" => Admin::getAdminId()
 			]);
 		}
 		return 0;
