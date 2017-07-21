@@ -529,7 +529,7 @@ class WechatUtil
 
 	public static function toNotice($uId, $myId, $tag, $f = false)
 	{
-		$secretId = AppUtil::encrypt($uId);
+		$secretId = AppUtil::encrypt($myId);
 
 		if (AppUtil::scene() == "dev") {
 			return 0;
