@@ -443,7 +443,7 @@ class UserNet extends ActiveRecord
 				$data = ["nStatus" => self::STATUS_PASS];
 				WechatUtil::toNotice($id, $myUid, "wx-replay", 1);
 				// 奖励媒婆 mpId
-				$mpInfo = self::findOne(["nSubUId" => $myUid, "nRelation" => self::REL_BACKER]);
+				$mpInfo = self::findOne(["nSubUId" => $myUid, 'nDeletedFlag' => 0, "nRelation" => self::REL_BACKER]);
 				if ($mpInfo && $payInfo) {
 					$mpId = $mpInfo->nUId;
 					UserTrans::add($mpId, $payInfo["nId"], UserTrans::CAT_LINK, UserTrans::$catDict[UserTrans::CAT_LINK], $payInfo["tAmt"] * .6 / 10, UserTrans::UNIT_YUAN);
