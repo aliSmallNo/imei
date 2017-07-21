@@ -446,7 +446,8 @@ class UserNet extends ActiveRecord
 				$mpInfo = self::findOne(["nSubUId" => $myUid, 'nDeletedFlag' => 0, "nRelation" => self::REL_BACKER]);
 				if ($mpInfo && $payInfo) {
 					$mpId = $mpInfo->nUId;
-					UserTrans::add($mpId, $payInfo["nId"], UserTrans::CAT_LINK, UserTrans::$catDict[UserTrans::CAT_LINK], $payInfo["tAmt"] * .6 / 10, UserTrans::UNIT_YUAN);
+					$reward = round($payInfo["tAmt"] * .60 / 10.0, 2);
+					UserTrans::add($mpId, $payInfo["nId"], UserTrans::CAT_LINK, UserTrans::$catDict[UserTrans::CAT_LINK], $reward, UserTrans::UNIT_YUAN);
 				}
 				break;
 			case "refuse":
