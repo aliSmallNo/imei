@@ -531,7 +531,7 @@ class WechatUtil
 	{
 		$secretId = AppUtil::encrypt($myId);
 
-		if (AppUtil::scene() == "dev") {
+		if (AppUtil::isDev()) {
 			return 0;
 		}
 		$userInfo = User::findOne(["uId" => $uId]);
