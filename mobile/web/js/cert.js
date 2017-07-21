@@ -23,7 +23,7 @@ require(["layer"],
 		};
 
 		$(document).on(kClick, "a.choose-img", function () {
-			if ($sls.certFlag) {
+			if ($sls.certFlag==1) {
 				showMsg("您已通过实名认证~");
 				return;
 			}
