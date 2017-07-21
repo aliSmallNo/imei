@@ -316,9 +316,7 @@ class ApiController extends Controller
 							unset($filter[$k]);
 						}
 					}
-					if ($filter) {
-						User::edit($openId, ["uFilter" => json_encode($filter, JSON_UNESCAPED_UNICODE)]);
-					}
+					User::edit($openId, ["uFilter" => json_encode($filter, JSON_UNESCAPED_UNICODE)]);
 				}
 				$ret = User::getFilter($openId, $filter, $page);
 				return self::renderAPI(0, '', $ret);
