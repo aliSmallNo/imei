@@ -11,6 +11,7 @@ namespace common\models;
 use admin\models\Admin;
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
+use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
 
 class User extends ActiveRecord
@@ -581,7 +582,10 @@ class User extends ActiveRecord
 	public static function toCertVerify($id, $flag)
 	{
 		$Info = self::findOne(["uId" => $id]);
+
 		if ($flag && $Info) {
+			WechatUtil::regNotice($id, "cert" . $flag);
+
 			return self::edit($id, [
 				"uCertStatus" => ($flag == "pass") ? User::CERT_STATUS_PASS : User::CERT_STATUS_FAIL,
 				"uCertDate" => date("Y-m-d H:i:s"),

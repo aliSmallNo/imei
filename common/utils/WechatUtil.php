@@ -479,6 +479,24 @@ class WechatUtil
 				$remark = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309！";
 				$cat = UserMsg::CATEGORY_ADMIN_REFUSE;
 				break;
+			case "certpass":
+				$url = "https://wx.meipo100.com/wx/single";
+				$first = "你好，您的实名认证已经审核通过，欢迎使用微媒100。\n";
+				$keyword1Val = '微媒100用户 ' . $userInfo["uName"] . ' 实名信息';
+				$keyword2Val = "审核通过";
+				$text = $keyword2Val;
+				$remark = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309";
+				$cat = UserMsg::CATEGORY_ADMIN_PASS;
+				break;
+			case "certfail":
+				$url = "https://wx.meipo100.com/wx/single";
+				$first = "你好，您的实名认证审核不通过，请重新上传符合要求的实名图片，欢迎使用微媒100。\n";
+				$keyword1Val = '微媒100用户 ' . $userInfo["uName"] . ' 实名信息';
+				$keyword2Val = "审核不通过";
+				$text = $keyword2Val;
+				$remark = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309";
+				$cat = UserMsg::CATEGORY_ADMIN_REFUSE;
+				break;
 			default :
 		}
 
