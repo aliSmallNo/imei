@@ -563,10 +563,11 @@ require(["layer"],
 			},
 			showShooseContion: function () {
 				var tmp = $("#" + filterUlit.tag + "Tmp").html();
-				var Val = filterUlit.cond[filterUlit.tag + "Val"];
+				console.log(filterUlit);
 				var h = (filterUlit.tag == "age") ? "年龄" : "身高";
 				var mData = {start: h + "不限", end: h + "不限"};
-				if (parseInt(Val) != 0) {
+				var Val = filterUlit.cond[filterUlit.tag + "Val"];
+				if (Val && parseInt(Val) != 0) {
 					var vT = filterUlit.cond[filterUlit.tag];
 					var vTArr = vT.split('~');
 					var st = "";
