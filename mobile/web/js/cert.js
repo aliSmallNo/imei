@@ -19,7 +19,6 @@ require(["layer"],
 			localId: '',
 			serverId: '',
 			uploadImgFlag: 0,
-
 		};
 
 		$(document).on(kClick, "a.choose-img", function () {

@@ -4259,7 +4259,8 @@ section {
       text-overflow: ellipsis;
       overflow: hidden;
       text-align: center;
-      padding-right: 0.5rem; }
+      padding-right: 0.5rem;
+      max-width: 7rem; }
     .hnwords .hninfo .desc {
       font-size: 1rem;
       line-height: 1.6rem;
@@ -4267,7 +4268,8 @@ section {
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
-      padding-right: 0.5rem; }
+      padding-right: 0.5rem;
+      max-width: 7rem; }
   .hnwords .wcontent {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
