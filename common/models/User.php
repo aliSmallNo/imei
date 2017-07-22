@@ -759,7 +759,7 @@ class User extends ActiveRecord
 	}
 
 
-	public static function getFilter($openId, $data, $page = 1, $pageSize = 10)
+	public static function getFilter($openId, $data, $page = 1, $pageSize = 20)
 	{
 		$myInfo = self::findOne(["uOpenId" => $openId]);
 		if (!$myInfo) {
