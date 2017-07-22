@@ -612,6 +612,7 @@ class WxController extends BaseController
 			['num' => 680, 'price' => 68]
 		];
 
+		$mpName = $uInfo['mp_name'] ? $uInfo['mp_name'] : '还没有媒婆';
 		return self::renderPage("single.tpl", [
 			'nickname' => $nickname,
 			'avatar' => $avatar,
@@ -623,6 +624,7 @@ class WxController extends BaseController
 			'age' => User::$AgeFilter,
 			'income' => User::$IncomeFilter,
 			'edu' => User::$EducationFilter,
+			'mpName'=>$mpName
 		]);
 	}
 
