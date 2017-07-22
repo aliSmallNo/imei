@@ -131,7 +131,7 @@ class UserBuzz extends ActiveRecord
 						}
 					}
 				} else {
-					$resp = self::welcomeMsg($fromUsername, $toUsername);
+					$resp = self::welcomeMsg($fromUsername, $toUsername, $event);
 					UserWechat::getInfoByOpenId($fromUsername, true);
 				}
 				break;
@@ -180,7 +180,7 @@ class UserBuzz extends ActiveRecord
 		return [$resp, $debug, $content];
 	}
 
-	private static function welcomeMsg($fromUsername, $toUsername, $category = "", $extension = "")
+	private static function welcomeMsg($fromUsername, $toUsername, $category = '', $extension = "")
 	{
 		switch ($category) {
 			case "crm":
@@ -199,7 +199,22 @@ class UserBuzz extends ActiveRecord
 						]
 					]
 				]);
-
+			case "subscribe":
+				return self::json_to_xml([
+					'ToUserName' => $fromUsername,
+					'FromUserName' => $toUsername,
+					'CreateTime' => time(),
+					'MsgType' => 'news',
+					'ArticleCount' => 1,
+					'Articles' => [
+						'item' => [
+							'Title' => '微媒100 - 媒桂花飘香',
+							'Description' => '微媒100是一个真实相亲交友平台。来吧，使劲戳我吧~',
+							'PicUrl' => 'https://wx.meipo100.com/images/mp_hello720.jpg',
+							'Url' => 'https://wx.meipo100.com/wx/index'
+						]
+					]
+				]);
 			default:
 				return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
 		}
