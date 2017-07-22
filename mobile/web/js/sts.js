@@ -38,6 +38,12 @@ require(["layer"],
 			}, 2500);
 		}
 
+		$sls.main.on(kClick, function () {
+			$sls.main.hide();
+			$sls.main.find('.share-arrow').remove();
+			$sls.shade.fadeOut(100);
+		});
+
 		$('.sts-single,.sts-mp').on(kClick, function () {
 			showTip();
 		});
@@ -137,6 +143,6 @@ require(["layer"],
 
 			setTimeout(function () {
 				showTip();
-			}, 1200);
+			}, 1000);
 		});
 	});
