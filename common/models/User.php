@@ -456,9 +456,9 @@ class User extends ActiveRecord
 				$user['mp_encrypt_id'] = '';
 				$user['comment'] = '';
 			}
-			if (!$user['comment']) {
-				//$user['comment'] = '(无)';
-			}
+			/*if (!$user['comment']) {
+				$user['comment'] = '(无)';
+			}*/
 			return $user;
 		}
 		return [];

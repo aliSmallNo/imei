@@ -27,13 +27,7 @@
 				<p>我的媒婆</p>
 			</div>
 			<div class="content">
-				{{if $mpComment}}
 				{{$mpComment}}
-				{{else}}
-				<div class="btn-wrap">
-					<a href="javascript:;" class="btn btn-blue btn-comment">给Ta写推荐</a>
-				</div>
-				{{/if}}
 			</div>
 		</div>
 		{{else}}
