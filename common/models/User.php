@@ -837,7 +837,7 @@ class User extends ActiveRecord
 
 		$sql = "select u.* $rankField
 				from im_user as u 
-				where $condition order by rank desc, uUpdatedOn desc limit 0,10;";
+				where $condition order by rank desc, uUpdatedOn desc limit $limit";
 
 		AppUtil::logFile($sql, 5, __FUNCTION__, __LINE__);
 		$conn = AppUtil::db();
