@@ -717,10 +717,6 @@ class ApiController extends Controller
 					]
 				];
 				$newAvatar = ImageUtil::uploadItemImages($info, 1);
-				return self::renderAPI(0, '保存成功啦~', [
-					"info"=>$infoTemp,
-					"avarat"=>$newAvatar,
-				]);
 				$fieldMap = [
 					"alcohol" => "drink",
 					"education" => "edu",
@@ -742,7 +738,10 @@ class ApiController extends Controller
 				$data["img"] = $newAvatar;
 				$ret = User::reg($data);
 				$cache = UserWechat::getInfoByOpenId($openId, 1);// 刷新用户cache数据
-				return self::renderAPI(0, '保存成功啦~', $ret);
+				return self::renderAPI(0, '保存成功啦~', [
+					"info" => $infoTemp,
+					"avarat" => $newAvatar,
+				]);
 				break;
 			case "sgroupinit":
 				$openId = self::postParam("openid");
