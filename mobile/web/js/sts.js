@@ -26,7 +26,7 @@ require(["layer"],
 			loading: 0
 		};
 
-		$('.sts-single,.sts-mp').on(kClick, function () {
+		function showTip() {
 			var html = '<i class="share-arrow">点击菜单分享</i>';
 			$sls.main.show();
 			$sls.main.append(html);
@@ -36,6 +36,10 @@ require(["layer"],
 				$sls.main.find('.share-arrow').remove();
 				$sls.shade.fadeOut(100);
 			}, 2500);
+		}
+
+		$('.sts-single,.sts-mp').on(kClick, function () {
+			showTip();
 		});
 
 		$('.editable').on(kClick, function () {
@@ -130,5 +134,9 @@ require(["layer"],
 
 			});
 			$sls.cork.hide();
+
+			setTimeout(function () {
+				showTip();
+			}, 1200);
 		});
 	});
