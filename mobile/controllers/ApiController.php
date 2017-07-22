@@ -698,6 +698,25 @@ class ApiController extends Controller
 					horos: "315",
 					profession: "3",
 				  */
+				$infoTemp = $_FILES["avatar"];
+				$info = [
+					"name" => [
+						$infoTemp["name"]
+					],
+					"tmp_name" => [
+						$infoTemp["tmp_name"]
+					],
+					"type" => [
+						$infoTemp["type"]
+					],
+					"error" => [
+						$infoTemp["error"]
+					],
+					"size" => [
+						$infoTemp["size"]
+					]
+				];
+				$newAvatar = ImageUtil::uploadItemImages($info, 1);
 				$fieldMap = [
 					"alcohol" => "drink",
 					"education" => "edu",
@@ -716,6 +735,7 @@ class ApiController extends Controller
 					}
 				}
 				$data["openId"] = $openId;
+				$data["img"] = $newAvatar;
 				$ret = User::reg($data);
 				$cache = UserWechat::getInfoByOpenId($openId, 1);// 刷新用户cache数据
 				return self::renderAPI(0, '保存成功啦~', $ret);
