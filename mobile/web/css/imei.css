@@ -4003,7 +4003,10 @@ section {
     -webkit-flex: 1;
     -ms-flex: 1;
     flex: 1;
-    padding: 0 1rem; }
+    padding: 0 1rem;
+    justify-content: center;
+    align-self: center;
+    align-items: center; }
     .m-bottom-bar p a {
       display: block;
       text-align: center;
@@ -4254,19 +4257,22 @@ section {
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
-      text-align: center; }
+      text-align: center;
+      padding-right: 0.5rem; }
     .hnwords .hninfo .desc {
       font-size: 1rem;
       line-height: 1.6rem;
       color: #737373;
       white-space: nowrap;
       text-overflow: ellipsis;
-      overflow: hidden; }
+      overflow: hidden;
+      padding-right: 0.5rem; }
   .hnwords .wcontent {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
     -ms-flex: 1;
-    flex: 1; }
+    flex: 1;
+    position: relative; }
     .hnwords .wcontent .words {
       background: #f487ac;
       color: #fff;
@@ -4275,6 +4281,14 @@ section {
       line-height: 1.8rem;
       min-height: 7rem;
       border-radius: 0 1rem 1rem; }
+    .hnwords .wcontent:before {
+      content: "";
+      position: absolute;
+      border-left: 1rem solid transparent;
+      border-right: 1rem solid transparent;
+      border-top: 1rem solid #f487ac;
+      top: 0;
+      left: -0.7rem; }
 
 .mywords {
   padding: 1rem 1.5rem 1.5rem 7rem;

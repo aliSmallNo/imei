@@ -3872,6 +3872,9 @@ section
 	p
 		@include displayFlex-1
 		padding: 0 1rem
+		justify-content: center
+		align-self: center
+		align-items: center
 		a
 			display: block
 			text-align: center
@@ -4080,13 +4083,16 @@ section
 			font-size: 1.2rem
 			@include textTail
 			text-align: center
+			padding-right: .5rem
 		.desc
 			font-size: 1rem
 			line-height: 1.6rem
 			color: $grayFontColor
 			@include textTail
+			padding-right: .5rem
 	.wcontent
 		@include displayFlex-1
+		position: relative
 		.words
 			background: $mainColorLight
 			color: #fff
@@ -4095,7 +4101,14 @@ section
 			line-height: 1.8rem
 			min-height: 7rem
 			border-radius: 0 1rem 1rem
-
+		&:before
+			content: ""
+			position: absolute
+			border-left: 1rem solid transparent
+			border-right: 1rem solid transparent
+			border-top: 1rem solid $mainColorLight
+			top: 0
+			left: -.7rem
 .mywords
 	padding: 1rem 1.5rem 1.5rem 7rem
 	position: relative
