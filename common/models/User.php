@@ -829,7 +829,6 @@ class User extends ActiveRecord
 				left join im_user as u2 on u2.uId=n.nUId 
 				left join im_user_net as nh on u.uId=nh.nUId and nh.nRelation=$relation_favor and nh.nDeletedFlag=$delflag and nh.nSubUId=$mId
 				where $condition order by uUpdatedOn desc limit $limit";
-		AppUtil::logFile($sql, 5, __FUNCTION__, __LINE__);
 		$ret = AppUtil::db()->createCommand($sql)->queryAll();
 		$result = [];
 		foreach ($ret as $row) {
