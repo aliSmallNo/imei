@@ -10,11 +10,12 @@
 			<img src="/images/logo100.png" alt="">
 		</p>
 		<div class="btns bg-repeat">
-			<h4>微媒100相当靠谱</h4>
+			<h4>微媒100 相当靠谱</h4>
 			<h6>1.所有单身都有朋友背书绝对靠谱，没有托</h6>
 			<h6>2.对方要联系方式需要你同意，不会被骚扰</h6>
 			<h6>3.优质单身特别多、还能看到朋友的评价</h6>
-			<div class="sts-btns">
+			<div class="qr-wrap"><img src="/images/qrmeipo100.jpg" alt=""></div>
+			<div class="sts-btns" style="display: none">
 				<a class="sts-single">
 					<em>我是单身</em>
 					<i>我要脱单、认识单身朋友</i>
@@ -30,7 +31,7 @@
 			<div class="share-mps-items">
 				<div class="share-mps-item sts-item">
 					<div class="img">
-						<img src="http://mpimg.bpdj365.com/avatar/47cda537e9eb44adbc340c20a0a6caa3_t.jpg">
+						<img src="https://img.meipo100.com/avatar/47cda537e9eb44adbc340c20a0a6caa3_t.jpg">
 					</div>
 					<div class="intro">
 						<h5>姓名：小鹿</h5>
@@ -39,7 +40,7 @@
 				</div>
 				<div class="share-mps-item sts-item">
 					<div class="img">
-						<img src="http://mpimg.bpdj365.com/avatar/6ae2902cb5c34095ae8ca35151be439d_t.jpg">
+						<img src="https://img.meipo100.com/avatar/6ae2902cb5c34095ae8ca35151be439d_t.jpg">
 					</div>
 					<div class="intro">
 						<h5>姓名：Soda Li </h5>
@@ -48,7 +49,7 @@
 				</div>
 				<div class="share-mps-item sts-item">
 					<div class="img">
-						<img src="http://mpimg.bpdj365.com/avatar/bfffa40eea8945418ab33919a781f38e_t.jpg">
+						<img src="https://img.meipo100.com/avatar/bfffa40eea8945418ab33919a781f38e_t.jpg">
 					</div>
 					<div class="intro">
 						<h5>姓名：京京</h5>
@@ -62,7 +63,7 @@
 			<div class="share-mps-items">
 				<div class="share-mps-item">
 					<div class="img">
-						<img src="http://mpimg.bpdj365.com/avatar/1e8f1de5a2e1419c8131d808408b8a67_t.jpg">
+						<img src="https://img.meipo100.com/avatar/1e8f1de5a2e1419c8131d808408b8a67_t.jpg">
 					</div>
 					<div class="intro">
 						<h5>姓名：澳洲花道Nancy</h5>
@@ -71,7 +72,7 @@
 				</div>
 				<div class="share-mps-item">
 					<div class="img">
-						<img src="http://mpimg.bpdj365.com/avatar/b5ebbd5d7abc4c6aab134e50571ad898_t.jpg">
+						<img src="https://img.meipo100.com/avatar/b5ebbd5d7abc4c6aab134e50571ad898_t.jpg">
 					</div>
 					<div class="intro">
 						<h5>姓名：杜杜┏ (^ω^)=☞</h5>
@@ -80,7 +81,7 @@
 				</div>
 				<div class="share-mps-item">
 					<div class="img">
-						<img src="http://mpimg.bpdj365.com/avatar/1876b3b8ef604d08b9245fce9d1a3d75_t.jpg">
+						<img src="https://img.meipo100.com/avatar/1876b3b8ef604d08b9245fce9d1a3d75_t.jpg">
 					</div>
 					<div class="intro">
 						<h5>姓名：DU妙婧</h5>
