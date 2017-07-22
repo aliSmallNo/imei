@@ -722,7 +722,6 @@ class ApiController extends Controller
 					]
 				];
 				$newAvatar = ImageUtil::uploadItemImages($info, 1);
-
 				$newAvatar = $newAvatar ? json_decode($newAvatar, 1)[0] : '';
 				$fieldMap = [
 					"alcohol" => "drink",
