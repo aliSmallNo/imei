@@ -703,26 +703,29 @@ class ApiController extends Controller
 					horos: "315",
 					profession: "3",
 				  */
-				$infoTemp = $_FILES["avatar"];
-				$info = [
-					"name" => [
-						$infoTemp["name"]
-					],
-					"tmp_name" => [
-						$infoTemp["tmp_name"]
-					],
-					"type" => [
-						$infoTemp["type"]
-					],
-					"error" => [
-						$infoTemp["error"]
-					],
-					"size" => [
-						$infoTemp["size"]
-					]
-				];
-				$newAvatar = ImageUtil::uploadItemImages($info, 1);
-				$newAvatar = $newAvatar ? json_decode($newAvatar, 1)[0] : '';
+				$infoTemp = isset($_FILES["avatar"]) && $_FILES["avatar"] ? $_FILES["avatar"] : [];
+				$newAvatar = "";
+				if ($infoTemp) {
+					$info = [
+						"name" => [
+							$infoTemp["name"]
+						],
+						"tmp_name" => [
+							$infoTemp["tmp_name"]
+						],
+						"type" => [
+							$infoTemp["type"]
+						],
+						"error" => [
+							$infoTemp["error"]
+						],
+						"size" => [
+							$infoTemp["size"]
+						]
+					];
+					$newAvatar = ImageUtil::uploadItemImages($info, 1);
+					$newAvatar = $newAvatar ? json_decode($newAvatar, 1)[0] : '';
+				}
 				$fieldMap = [
 					"alcohol" => "drink",
 					"education" => "edu",
@@ -746,7 +749,7 @@ class ApiController extends Controller
 				$cache = UserWechat::getInfoByOpenId($openId, 1);// 刷新用户cache数据
 				return self::renderAPI(0, '保存成功啦~', [
 					"info" => $infoTemp,
-					"avarat" => $newAvatar,
+					"avatar" => $newAvatar,
 					"ret" => $ret,
 				]);
 				break;
