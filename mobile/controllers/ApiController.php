@@ -494,7 +494,9 @@ class ApiController extends Controller
 					$data["info"] = User::fmtRow(User::findOne(["uOpenId" => $openid])->toArray());
 				}
 				$data["prov"] = City::provinces();
-				$data["city"] = City::cities(100100);
+				$location = $data["info"]["location"];
+				$key = ($location && isset($location[0]["key"]) && $location[0]["key"]) ? $location[0]["key"] : 100100;
+				$data["city"] = City::cities($key);
 				$data["gender"] = User::$Gender;
 				//alcohol  educationcation estate profession gender horos
 				$data["height"] = User::$Height;
