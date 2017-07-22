@@ -826,16 +826,62 @@ class User extends ActiveRecord
 		$relation_favor = UserNet::REL_FAVOR;
 		$delflag = UserNet::DELETE_FLAG_NO;
 
-		$sql = "select nh.nUId as hid,u2.uId as mId,u2.uthumb as mpavatar,u2.uName as mpname, n.nNote as comment, u.* $rankField 
+		$sql = "select nh.nUId as hid,
+				u2.uId as mId, u2.uthumb as mpavatar, u2.uName as mpname, n.nNote as comment,
+				u.* $rankField 
 				from im_user as u 
 				left join im_user_net as n on u.uId=n.nSubUId and n.nRelation=$relation_mp and n.nDeletedFlag=$delflag
 				left join im_user as u2 on u2.uId=n.nUId 
 				left join im_user_net as nh on u.uId=nh.nUId and nh.nRelation=$relation_favor and nh.nDeletedFlag=$delflag and nh.nSubUId=$mId
 				where $condition order by rank DESC, uUpdatedOn desc limit $limit";
+
+		$sql = "select u.* $rankField
+				from im_user as u 
+				where $condition order by rank desc, uUpdatedOn desc limit 0,10;";
+
 		AppUtil::logFile($sql, 5, __FUNCTION__, __LINE__);
-		$ret = AppUtil::db()->createCommand($sql)->queryAll();
-		$result = [];
+		$conn = AppUtil::db();
+		$ret = $conn->createCommand($sql)->queryAll();
+		$rows = $IDs = [];
 		foreach ($ret as $row) {
+			$uid= $row['uId'];
+			$rows[$uid] = $row;
+			$rows[$uid]['mId'] = '';
+			$rows[$uid]['mpavatar'] = '';
+			$rows[$uid]['mpname'] = '';
+			$rows[$uid]['comment'] = '';
+			$rows[$uid]['hid'] = '';
+			$IDs[] = $uid;
+		}
+
+		$sql = "SELECT u.*,n.nSubUId, n.nNote  FROM im_user as u 
+				JOIN im_user_net as n on u.uId=n.nUId and n.nRelation=$relation_mp and n.nDeletedFlag=0 
+				WHERE n.nSubUId in (" . implode(',', $IDs) . ")";
+		$mpList = $conn->createCommand($sql)->queryAll();
+		foreach ($mpList as $mp) {
+			$subUid = $mp['nSubUId'];
+			if (isset($rows[$subUid])) {
+				$rows[$subUid]['mId'] = $mp['uId'];
+				$rows[$subUid]['mpavatar'] = $mp['uThumb'];
+				$rows[$subUid]['mpname'] = $mp['uName'];
+				$rows[$subUid]['comment'] = $mp['nNote'];
+			}
+		}
+
+		$sql = "SELECT n.nUId
+				FROM im_user_net as n  
+				WHERE n.nRelation=$relation_favor AND n.nDeletedFlag=0 AND n.nSubUId=$mId
+				AND n.nUId in (" . implode(',', $IDs) . ")";
+		$favorList = $conn->createCommand($sql)->queryAll();
+		foreach ($favorList as $favor) {
+			$uid = $favor['nUId'];
+			if (isset($rows[$uid])) {
+				$rows[$uid]['hid'] = $uid;
+			}
+		}
+
+		$result = [];
+		foreach ($rows as $row) {
 			$data = [];
 			//$data["id"] = $v["uOpenId"];
 			//$data["ids"] = $v["uId"];
