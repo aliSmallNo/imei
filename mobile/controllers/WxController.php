@@ -452,6 +452,9 @@ class WxController extends BaseController
 					break;
 				}
 			}
+			if (!$uInfo['comment']) {
+				$uInfo['comment'] = '（媒婆很懒，什么也没说）';
+			}
 		}
 
 		return self::renderPage("shome.tpl",
@@ -624,7 +627,7 @@ class WxController extends BaseController
 			'age' => User::$AgeFilter,
 			'income' => User::$IncomeFilter,
 			'edu' => User::$EducationFilter,
-			'mpName'=>$mpName
+			'mpName' => $mpName
 		]);
 	}
 
