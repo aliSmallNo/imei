@@ -93,7 +93,7 @@ require(["layer"],
 					break;
 				case 'slook':
 					if ($sls.firstLoadFlag) {
-						filterUlit.getUserFiter("", filterUlit.sUserPage);
+						filterUlit.loadFilter("", filterUlit.sUserPage);
 						$sls.firstLoadFlag = 0;
 					}
 					FootUtil.toggle(1);
@@ -525,6 +525,9 @@ require(["layer"],
 			getUserFiterFlag: false,
 			sUserPage: 1,
 			noMore: $("#slook .m-more"),
+			list: $(".m-top-users"),
+			criteriaTmp: $("#conditions").html(),
+			userTmp: $("#userFiter").html(),
 			init: function () {
 				$("#matchCondition a").on(kClick, function () {
 					var self = $(this);
@@ -544,8 +547,8 @@ require(["layer"],
 								data[ta] = value;
 							});
 							console.log(data);
-							$(".m-top-users").html("");
-							filterUlit.getUserFiter(data, 1);
+							filterUlit.list.html('');
+							filterUlit.loadFilter(data, 1);
 							location.href = "#slook";
 							break;
 					}
@@ -583,32 +586,33 @@ require(["layer"],
 				$sls.content.html(Mustache.render(tmp, mData)).addClass("animate-pop-in");
 				$sls.shade.fadeIn(160);
 			},
-			getUserFiter: function (data, page) {
+			loadFilter: function (data, page) {
+				console.log('loadFilter 588');
 				if (filterUlit.getUserFiterFlag) {
 					return;
 				}
 				filterUlit.getUserFiterFlag = 1;
-				filterUlit.noMore.html("拼命加载中~~~");
+				filterUlit.noMore.html("拼命加载中...");
 				$.post("/api/user", {
 					tag: "userfilter",
 					page: page,
 					data: JSON.stringify(data),
 				}, function (resp) {
-					var html = Mustache.render($("#userFiter").html(), resp.data);
-					if (page == 1) {
-						$(".m-top-users").html(html);
+					var html = Mustache.render(filterUlit.userTmp, resp.data);
+					if (page < 2) {
+						filterUlit.list.html(html);
 						filterUlit.cond = resp.data.condition;
-						$(".my-condition").html(Mustache.render($("#conditions").html(), resp.data.condition));
+						$(".my-condition").html(Mustache.render(filterUlit.criteriaTmp, resp.data.condition));
 						if (resp.data.condition.toString().length < 5) {
 							$(".con-des").html("您还没有设置择偶条件哦!");
 						}
 					} else {
-						$(".m-top-users").append(html);
+						filterUlit.list.append(html);
 					}
 
 					filterUlit.getUserFiterFlag = 0;
 					filterUlit.sUserPage = resp.data.nextpage;
-					if (filterUlit.sUserPage == 0) {
+					if (filterUlit.sUserPage < 1) {
 						filterUlit.noMore.html("没有更多了~");
 					} else {
 						filterUlit.noMore.html("上拉加载更多");
@@ -622,9 +626,9 @@ require(["layer"],
 			var lastRow;
 			switch ($sls.curFrag) {
 				case "slook":
-					lastRow = $(".m-top-users").find('li').last();
-					if (lastRow && eleInScreen(lastRow, 560) && filterUlit.sUserPage > 0) {
-						filterUlit.getUserFiter("", filterUlit.sUserPage);
+					lastRow = filterUlit.list.find('li:last');
+					if (lastRow && eleInScreen(lastRow, 150) && filterUlit.sUserPage > 0) {
+						filterUlit.loadFilter("", filterUlit.sUserPage);
 						return false;
 					}
 					break;

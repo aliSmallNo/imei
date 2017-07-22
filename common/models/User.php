@@ -824,27 +824,16 @@ class User extends ActiveRecord
 
 		$relation_mp = UserNet::REL_BACKER;
 		$relation_favor = UserNet::REL_FAVOR;
-		$delflag = UserNet::DELETE_FLAG_NO;
-
-		$sql = "select nh.nUId as hid,
-				u2.uId as mId, u2.uthumb as mpavatar, u2.uName as mpname, n.nNote as comment,
-				u.* $rankField 
-				from im_user as u 
-				left join im_user_net as n on u.uId=n.nSubUId and n.nRelation=$relation_mp and n.nDeletedFlag=$delflag
-				left join im_user as u2 on u2.uId=n.nUId 
-				left join im_user_net as nh on u.uId=nh.nUId and nh.nRelation=$relation_favor and nh.nDeletedFlag=$delflag and nh.nSubUId=$mId
-				where $condition order by rank DESC, uUpdatedOn desc limit $limit";
 
 		$sql = "select u.* $rankField
 				from im_user as u 
 				where $condition order by rank desc, uUpdatedOn desc limit $limit";
 
-		AppUtil::logFile($sql, 5, __FUNCTION__, __LINE__);
 		$conn = AppUtil::db();
 		$ret = $conn->createCommand($sql)->queryAll();
 		$rows = $IDs = [];
 		foreach ($ret as $row) {
-			$uid= $row['uId'];
+			$uid = $row['uId'];
 			$rows[$uid] = $row;
 			$rows[$uid]['mId'] = '';
 			$rows[$uid]['mpavatar'] = '';
@@ -897,7 +886,6 @@ class User extends ActiveRecord
 			$data["horos"] = isset(User::$Horos[$row["uHoros"]]) ? User::$Horos[$row["uHoros"]] : "无星座";
 			if ($data["horos"] && mb_strlen($data["horos"]) > 3) {
 				$data["horos"] = mb_substr($data["horos"], 0, 3);
-
 			}
 			$data["job"] = isset(User::$Scope[$row["uScope"]]) ? User::$Scope[$row["uScope"]] : "无行业";
 			$data["intro"] = $row["uIntro"];
@@ -920,7 +908,10 @@ class User extends ActiveRecord
 		} else {
 			$nextpage = 0;
 		}
-
+		//Rain: 不想展示太多页了
+		if ($nextpage > 5) {
+			$nextpage = 0;
+		}
 		return ["data" => $result, "nextpage" => $nextpage, "condition" => $matchcondition];
 	}
 
