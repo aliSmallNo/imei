@@ -355,6 +355,8 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-
+		$img = "http://bpbhd-10063905.file.myqcloud.com/imei/170722105946110840.jpg";
+		$res = AppUtil::getMediaUrl($img, false, true);
+		var_dump($res);
 	}
 }
