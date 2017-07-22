@@ -717,6 +717,7 @@ class ApiController extends Controller
 					]
 				];
 				$newAvatar = ImageUtil::uploadItemImages($info, 1);
+				$newAvatar = $newAvatar ? json_decode($newAvatar, 1)[0] : '';
 				$fieldMap = [
 					"alcohol" => "drink",
 					"education" => "edu",
@@ -741,6 +742,7 @@ class ApiController extends Controller
 				return self::renderAPI(0, '保存成功啦~', [
 					"info" => $infoTemp,
 					"avarat" => $newAvatar,
+					"ret" => $ret,
 				]);
 				break;
 			case "sgroupinit":
