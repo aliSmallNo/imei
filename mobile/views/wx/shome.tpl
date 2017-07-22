@@ -1,9 +1,7 @@
 <div class="single-page main-page">
 	<div class="head">
 		<img src="{{$uInfo.avatar}}" class="avatar">
-		<a href="{{$homeUrl}}">
-			<img src="/images/ico_home.png">
-		</a>
+		<a class="a-home" href="{{$homeUrl}}"></a>
 	</div>
 	<div class="baseinfo">
 		<div class="title">

@@ -81,7 +81,7 @@
 			<a href="javascript:;" to="heartbeat"><span class="title">心动列表</span> </a>
 		</div>
 		<div class="m-rows line-bottom mymp">
-			<a href="/wx/invite"><span class="title">我的媒婆</span> <span class="tip">还没有媒婆</span></a>
+			<a href="/wx/invite"><span class="title">我的媒婆</span> <span class="tip">{{$mpName}}</span></a>
 			<a href="javascript:;" to="focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
