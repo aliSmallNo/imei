@@ -411,7 +411,7 @@ class User extends ActiveRecord
 		$conn = AppUtil::db();
 		$sql = "SELECT * FROM im_user 
 				  WHERE uId>0 $strCriteria 
-				  ORDER BY uUpdatedOn DESC Limit $offset, $pageSize";
+				  ORDER BY uAddedOn DESC Limit $offset, $pageSize";
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
 		foreach ($ret as $row) {
