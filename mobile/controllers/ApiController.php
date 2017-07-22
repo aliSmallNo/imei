@@ -722,10 +722,8 @@ class ApiController extends Controller
 					]
 				];
 				$newAvatar = ImageUtil::uploadItemImages($info, 1);
-				self::renderAPI(0, '保存成功啦~', [
-					"info" => $infoTemp,
-					"avarat" => $newAvatar,
-				]);
+
+				$newAvatar = $newAvatar ? json_decode($newAvatar, 1)[0] : '';
 				$fieldMap = [
 					"alcohol" => "drink",
 					"education" => "edu",
@@ -747,7 +745,11 @@ class ApiController extends Controller
 				$data["img"] = $newAvatar;
 				$ret = User::reg($data);
 				$cache = UserWechat::getInfoByOpenId($openId, 1);// 刷新用户cache数据
-				return self::renderAPI(0, '保存成功啦~', $ret);
+				return self::renderAPI(0, '保存成功啦~', [
+					"info" => $infoTemp,
+					"avarat" => $newAvatar,
+					"ret" => $ret,
+				]);
 				break;
 			case "sgroupinit":
 				$openId = self::postParam("openid");
@@ -844,69 +846,6 @@ class ApiController extends Controller
 			->merge($mergeImage, ($width - $mergeSize) / 2, ($height - $mergeSize + 20) / 2, $mergeSize, $mergeSize)
 			->save($saveName);
 		return self::renderAPI(0, $saveName, [$content]);
-	}
-
-	public static function createShareUrl($info, $category = "")
-	{
-		list($urlBackground, $urlAvatar, $text) = $info;
-		$bg_width = imagesx($urlBackground);
-
-		// Rain: 载入背景图
-		$bg_path = toolConfig::getSavedPath($fileName . "_bg", toolConfig::PREFIX_QR);
-		self::downloadFileWithCurl($urlBackground, $bg_path);
-		$background = imagecreatefromjpeg($bg_path);
-		$max_width = imagesx($background);
-		$max_height = imagesy($background);
-		unlink($bg_path);
-
-		// Rain: 载入二维码
-		$qrSize = 390;
-		$qr_path = toolConfig::getSavedPath($fileName . "_qr", toolConfig::PREFIX_QR);
-		self::downloadFileWithCurl($urlQRcode, $qr_path);
-		$qrImage = imagecreatefromjpeg($qr_path);
-
-		$qr_width = imagesx($qrImage);
-		$qr_height = imagesy($qrImage);
-		imagecopyresampled($background, $qrImage,
-			($max_width - $qrSize) / 2 + 4, ($max_height - $qrSize) / 2 - 60,
-			0, 0,
-			$qrSize, $qrSize,
-			$qr_width, $qr_height);
-		imagedestroy($qrImage);
-		unlink($qr_path);
-
-
-		// Rain: 载入微信头像
-		if ($urlAvatar) {
-			$avSize = 178;
-			$av_path = toolConfig::getSavedPath($fileName . "_av", toolConfig::PREFIX_QR);
-			self::downloadFileWithCurl($urlAvatar, $av_path);
-			$avImage = imagecreatefromjpeg($av_path);
-			$av_width = imagesx($avImage);
-			$av_height = imagesy($avImage);
-			imagecopyresampled($background, $avImage,
-				$max_width - $avSize - 68, $max_height - $avSize - 176,
-				0, 0,
-				$avSize, $avSize,
-				$av_width, $av_height);
-			imagedestroy($avImage);
-			unlink($av_path);
-		}
-
-		// Rain: 生成最终图片
-		$sharePath = toolConfig::getSavedPath($fileName, toolConfig::PREFIX_QR);
-		imagejpeg($background, $sharePath);
-//		$shareUrl = toolConfig::getImageUriPrefix() . $sharePath;
-
-		if (!$category) {
-			$category = ImageOpt::CATEGORY_SHARE_QR;
-		}
-
-		$shareUrl = ImageOpt::upload2COS($sharePath, false, $category);
-//		imagejpeg($background, $sharePath);
-		imagedestroy($background);
-		unlink($sharePath);
-		return $shareUrl;
 	}
 
 
