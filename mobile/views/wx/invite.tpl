@@ -66,7 +66,7 @@
 	<div class="mp-info">
 		<div class="title">
 			<img src="{[thumb]}">
-			<p>我的媒婆</p>
+			<p>{[name]}</p>
 		</div>
 		<div class="content">
 			{[#comment]}{[.]}{[/comment]}

@@ -446,8 +446,13 @@ class ApiController extends Controller
 				$ret = UserNet::add($wxInfo['uId'], $id, UserNet::REL_BACKER);
 				$senderInfo = User::user(['uId' => $id]);
 				if ($ret) {
+					$mpInfo = User::user(['uId' => $wxInfo['uId']]);
+					$mpInfo['comment'] = '';
 					return self::renderAPI(0, '您已经成为' . $senderInfo['name'] . '的媒婆啦~',
-						['sender' => $senderInfo]);
+						[
+							'sender' => $senderInfo,
+							'mp' => $mpInfo
+						]);
 				}
 				return self::renderAPI(0, '下手晚一步啊，' . $senderInfo['name'] . '已经有媒婆了',
 					['sender' => $senderInfo]);
@@ -718,8 +723,8 @@ class ApiController extends Controller
 				];
 				$newAvatar = ImageUtil::uploadItemImages($info, 1);
 				self::renderAPI(0, '保存成功啦~', [
-					"info"=>$infoTemp,
-					"avarat"=>$newAvatar,
+					"info" => $infoTemp,
+					"avarat" => $newAvatar,
 				]);
 				$fieldMap = [
 					"alcohol" => "drink",

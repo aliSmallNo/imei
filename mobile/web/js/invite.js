@@ -52,7 +52,7 @@ require(["layer"],
 				}, function (resp) {
 					if (resp.code == 0) {
 						$('.btn-wrap').hide();
-						$('.profile-wrap').append(Mustache.render($sls.tmp, resp.data.sender));
+						$('.profile-wrap').append(Mustache.render($sls.tmp, resp.data.mp));
 					}
 					showMsg(resp.msg);
 					$sls.loading = 0;
