@@ -717,7 +717,7 @@ class ApiController extends Controller
 					]
 				];
 				$newAvatar = ImageUtil::uploadItemImages($info, 1);
-				self::renderAPI(0, '保存成功啦~', [
+				return self::renderAPI(0, '保存成功啦~', [
 					"info"=>$infoTemp,
 					"avarat"=>$newAvatar,
 				]);
