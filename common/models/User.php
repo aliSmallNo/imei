@@ -782,11 +782,14 @@ class User extends ActiveRecord
 		$condition = " u.uRole=$uRole and u.uGender=$gender ";
 		//$filterArr = json_decode($uFilter, 1);
 		if ($uFilter) {
-			$condition .= "  and POSITION('$prov' IN u.uLocation) >0 and POSITION('$city' IN u.uLocation) >0 ";
+			$rankField = ",(case WHEN u.uLocation like '%$prov%' and u.uLocation like '%$city%' then 10
+					WHEN u.uLocation like '%$prov%' then 8 else 0 end) as rank";
+			//$condition .= "  and POSITION('$prov' IN u.uLocation) >0 and POSITION('$city' IN u.uLocation) >0 ";
 		} else {
 			$prov1 = "山东";
 			$prov2 = "江苏";
-			$condition .= "  and (POSITION('$prov1' IN u.uLocation) >0 or POSITION('$prov2' IN u.uLocation) >0) ";
+			$rankField = ",(case WHEN u.uLocation like '%$prov1%' or u.uLocation like '%$prov2%' then 10 else 0 end) as rank";
+			//$condition .= "  and (POSITION('$prov1' IN u.uLocation) >0 or POSITION('$prov2' IN u.uLocation) >0) ";
 		}
 
 		if (!$data) {
@@ -823,12 +826,13 @@ class User extends ActiveRecord
 		$relation_favor = UserNet::REL_FAVOR;
 		$delflag = UserNet::DELETE_FLAG_NO;
 
-		$sql = "select nh.nUId as hid,u2.uId as mId,u2.uthumb as mpavatar,u2.uName as mpname, n.nNote as comment,u.* 
+		$sql = "select nh.nUId as hid,u2.uId as mId,u2.uthumb as mpavatar,u2.uName as mpname, n.nNote as comment, u.* $rankField 
 				from im_user as u 
 				left join im_user_net as n on u.uId=n.nSubUId and n.nRelation=$relation_mp and n.nDeletedFlag=$delflag
 				left join im_user as u2 on u2.uId=n.nUId 
 				left join im_user_net as nh on u.uId=nh.nUId and nh.nRelation=$relation_favor and nh.nDeletedFlag=$delflag and nh.nSubUId=$mId
-				where $condition order by uUpdatedOn desc limit $limit";
+				where $condition order by rank DESC, uUpdatedOn desc limit $limit";
+		AppUtil::logFile($sql, 5, __FUNCTION__, __LINE__);
 		$ret = AppUtil::db()->createCommand($sql)->queryAll();
 		$result = [];
 		foreach ($ret as $row) {
