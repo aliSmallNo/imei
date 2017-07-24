@@ -14,7 +14,7 @@
 			<h6>1.所有单身都有朋友背书绝对靠谱，没有托</h6>
 			<h6>2.对方要联系方式需要你同意，不会被骚扰</h6>
 			<h6>3.优质单身特别多、还能看到朋友的评价</h6>
-			<div class="qr-wrap"><img src="/images/qrmeipo100.jpg" alt=""></div>
+			<div class="qr-wrap"><img src="{{$qrcode}}" alt=""></div>
 			<div class="sts-btns" style="display: none">
 				<a class="sts-single">
 					<em>我是单身</em>
