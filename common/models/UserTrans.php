@@ -36,7 +36,6 @@ class UserTrans extends ActiveRecord
 	const UNIT_GIFT = 'flower';
 	private static $UnitDict = [
 		self::UNIT_FEN => '分',
-		self::UNIT_YUAN => '元',
 		self::UNIT_GIFT => '媒桂花',
 	];
 
@@ -96,8 +95,9 @@ class UserTrans extends ActiveRecord
 			$params[':id'] = $uid;
 		}
 		$conn = AppUtil::db();
-		$sql = 'SELECT SUM(case when tCategory=100 or tCategory=105 or tCategory=130  then tAmt when tCategory=120 then -tAmt end) as amt,tUnit as unit, tUId as uid
- 			from im_user_trans WHERE tUId>0 ' . $strCriteria . ' GROUP BY tUId,tUnit';
+		$sql = 'SELECT SUM(case when tCategory in (100,105,110,130) then tAmt when tCategory=120 then -tAmt end) as amt,
+				tUnit as unit, tUId as uid
+ 				from im_user_trans WHERE tUId>0 ' . $strCriteria . ' GROUP BY tUId,tUnit';
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
 		foreach ($ret as $row) {
@@ -148,9 +148,7 @@ class UserTrans extends ActiveRecord
 			return $ret;
 		}
 		return self::stat($uid);
-
 	}
-
 
 	public static function recharges($criteria, $page, $pageSize = 20)
 	{
@@ -229,7 +227,6 @@ class UserTrans extends ActiveRecord
 		$catReturn = self::CAT_RETURN;       //退回
 		$unitFen = self::UNIT_FEN;
 		$unitGift = self::UNIT_GIFT;
-		$unitYuan = self::UNIT_YUAN;
 
 		$sql = "SELECT SUM(CASE WHEN tCategory=$catCharge or tCategory=$catReturn  THEN tAmt 
 								WHEN tCategory=$catSign AND  tUnit='$unitGift' THEN tAmt  
@@ -239,7 +236,7 @@ class UserTrans extends ActiveRecord
 					  SUM(CASE WHEN tCategory=$catSign and tUnit='$unitFen' THEN tAmt ELSE 0 END ) as fen,
 					  SUM(CASE WHEN tCategory=$catSign and tUnit='$unitGift' THEN tAmt ELSE 0 END ) as gift,
 					  SUM(CASE WHEN tCategory=$catCost THEN tAmt ELSE 0 END ) as cost,
-					  SUM(CASE WHEN tCategory=110 and tUnit='$unitYuan' THEN tAmt ELSE 0 END ) as link,
+					  SUM(CASE WHEN tCategory=110 and tUnit='$unitFen' THEN tAmt ELSE 0 END ) as link,
 					  tUId as uid
 				from im_user_trans WHERE tUId>0 and tUId in ($uid) GROUP BY tUId";
 		$ret = $conn->createCommand($sql)->queryAll();
@@ -277,9 +274,8 @@ class UserTrans extends ActiveRecord
 			];
 			if ($unit == self::UNIT_FEN) {
 				$item['amt'] = round($item['amt'] / 100.00, 2);
-				$unit = self::UNIT_YUAN;
-				$item['unit'] = $unit;
-				$item['unit_name'] = isset(self::$UnitDict[$unit]) ? self::$UnitDict[$unit] : '';
+				$item['unit'] = 'yuan';
+				$item['unit_name'] = '元';
 			}
 			if ($role == User::ROLE_MATCHER && $item['unit'] == self::UNIT_YUAN) {
 				$item['date_part'] = date('n月j日', strtotime($row['tAddedOn']));
