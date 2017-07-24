@@ -372,6 +372,7 @@
 		mcityObj: $("[data-location=uLocation-c]"),
 		mcityVal: null,
 		job: "",
+		role: userInfo && userInfo.uRole ? userInfo.uRole : 10
 	};
 
 	var fieldsText = {
@@ -399,6 +400,7 @@
 		"uPet": "您养宠物",
 	};
 	$(".opSave").on("click", function () {
+		$sls.role = $("[data-tag=uRole]").val();
 		var err = [];
 		var postData = {};
 		$("[data-tag]").each(function () {
@@ -406,7 +408,7 @@
 			var field = self.attr("data-tag");
 			var val = self.val();
 			var req = self.attr("required");
-			if (req && !val) {
+			if (req && !val && $sls.role == 10) {
 				self.focus();
 				err.push(field);
 				layer.msg(fieldsText[field] + "还没填写哦~");
@@ -431,7 +433,7 @@
 			var item = {key:key,text:text};
 			location.push(item)
 		})
-		if ($sls.mcityObj.find("option:selected").text() == "请选择") {
+		if ($sls.mcityObj.find("option:selected").text() == "请选择" && $sls.role == 10) {
 			layer.msg(fieldsText["uLocation"] + "还没填写哦");
 			return;
 		}
