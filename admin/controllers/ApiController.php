@@ -12,6 +12,7 @@ namespace admin\controllers;
 use admin\models\Admin;
 use common\models\City;
 use common\models\User;
+use common\models\UserNet;
 use common\utils\AppUtil;
 use dosamigos\qrcode\QrCode;
 use Gregwar\Image\Image;
@@ -108,6 +109,18 @@ class ApiController extends Controller
 				Admin::saveUser($insertData);
 				Admin::logout();
 				$ret = ["code" => 0, "msg" => self::ICON_OK_HTML . "修改成功！请重新登录"];
+				break;
+			case "searchnet":
+				$kw = self::postParam('keyword');
+				$res = User::searchNet($kw);
+				return self::renderAPI(0, '', $res);
+				break;
+			case "savemp":
+				$uid = self::postParam('uid');
+				$subUid = self::postParam('subuid');
+				$relation = self::postParam('relation');
+				$nid = UserNet::add($uid, $subUid, $relation);
+				$ret = ["code" => 0, "msg" => "修改成功"];
 				break;
 		}
 		return self::renderAPI($ret["code"], $ret["msg"]);

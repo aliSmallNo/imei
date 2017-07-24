@@ -513,8 +513,8 @@ class UserNet extends ActiveRecord
 	{
 		$offset = ($page - 1) * $pageSize;
 
-		$sql = "select u.uAvatar as avatar,u.uName as uname,u.uPhone as phone, u.uThumb as thumb,
-				u1.uAvatar as savatar,u1.uThumb as sthumb,u1.uName as sname,u1.uPhone as sphone,
+		$sql = "select u.uId as uId,u.uAvatar as avatar,u.uName as uname,u.uPhone as phone, u.uThumb as thumb,
+				u1.uId as sId,u1.uAvatar as savatar,u1.uThumb as sthumb,u1.uName as sname,u1.uPhone as sphone,
 				n.nRelation,n.nStatus,n.nAddedOn as dt
 				from im_user_net as n 
 				join im_user as u on u.uId=n.nUId 
@@ -528,8 +528,8 @@ class UserNet extends ActiveRecord
 			$v['av'] = $v['thumb'] ? $v['thumb'] : $v['avatar'];
 			$v['sav'] = $v['sthumb'] ? $v['sthumb'] : $v['savatar'];
 			$text = $left = $right = [];
-			$uInfo = ['avatar' => $v['avatar'], 'name' => $v['uname'], 'phone' => $v['phone']];
-			$sInfo = ['avatar' => $v['savatar'], 'name' => $v['sname'], 'phone' => $v['sphone']];
+			$uInfo = ['id' => $v['uId'],'avatar' => $v['avatar'], 'name' => $v['uname'], 'phone' => $v['phone']];
+			$sInfo = ['id' => $v['sId'],'avatar' => $v['savatar'], 'name' => $v['sname'], 'phone' => $v['sphone']];
 			switch ($v["nRelation"]) {
 				case self::REL_INVITE:
 					$text = ['邀请'];

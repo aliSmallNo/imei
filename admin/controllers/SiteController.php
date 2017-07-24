@@ -286,7 +286,7 @@ class SiteController extends BaseController
 		$criteria[] = " uStatus < $stDel ";
 		$criteria[] = " uCertStatus > $stCert ";
 		$params = [];
-		if ($status ) {
+		if ($status) {
 			$criteria[] = " uCertStatus=$status ";
 		}
 		if ($phone) {
@@ -446,6 +446,22 @@ class SiteController extends BaseController
 				'pagination' => $pagination,
 				'category' => 'users',
 				'list' => $list,
+				'relations' => UserNet::$RelDict,
+			]
+		);
+	}
+
+	public function actionSearchnet()
+	{
+		$id = self::getParam("id");
+		$info = User::find()->where(["uId" => $id])->asArray()->one();
+
+
+		return $this->renderPage("searchnet.tpl",
+			[
+				'info' => $info,
+				'category' => 'users',
+				'detailcategory' => 'site/net',
 				'relations' => UserNet::$RelDict,
 			]
 		);
