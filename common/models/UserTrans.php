@@ -273,19 +273,13 @@ class UserTrans extends ActiveRecord
 				'unit_name' => isset(self::$UnitDict[$unit]) ? self::$UnitDict[$unit] : '',
 			];
 			if ($unit == self::UNIT_FEN) {
-				$item['amt'] = round($item['amt'] / 100.00, 2);
+				$item['amt'] = sprintf('%.2f', $item['amt'] / 100.00);
 				$item['unit'] = 'yuan';
 				$item['unit_name'] = '元';
-			}
-			if ($role == User::ROLE_MATCHER && $item['unit'] == self::UNIT_YUAN) {
 				$item['date_part'] = date('n月j日', strtotime($row['tAddedOn']));
 				$item['time'] = date('H:i:s', strtotime($row['tAddedOn']));
-				$items[] = $item;
-			} elseif ($role == User::ROLE_SINGLE && $item['unit'] == self::UNIT_GIFT) {
-				$items[] = $item;
-			} else {
-				$items[] = $item;
 			}
+			$items[] = $item;
 		}
 		return $items;
 	}
