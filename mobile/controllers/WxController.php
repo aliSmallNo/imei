@@ -763,7 +763,7 @@ class WxController extends BaseController
 		}
 		$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH);
 		AppUtil::logFile($qrcode, 5, __FUNCTION__, __LINE__);
-		$qrcode = '/images/qrmeipo100.jpg';
+//		$qrcode = '/images/qrmeipo100.jpg';
 		return self::renderPage("share.tpl",
 			[
 				'nickname' => $nickname,
