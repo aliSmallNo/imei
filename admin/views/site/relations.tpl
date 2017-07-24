@@ -78,7 +78,7 @@
 			<tbody>
 			{{foreach from=$list item=item}}
 			<tr>
-				<td align="center">
+				<td align="center" data-id="{{$item.left.id}}">
 					<img src="{{$item.left.avatar}}">
 				</td>
 				<td>
@@ -88,7 +88,7 @@
 				<td>
 					<div class="note">{{$item.text}}</div>
 				</td>
-				<td>
+				<td class="modMp" data-id="{{$item.right.id}}" data-name="{{$item.right.name}}">
 					<img src="{{$item.right.avatar}}">
 				</td>
 				<td>
@@ -112,4 +112,21 @@
 		{{$pagination}}
 	</div>
 </div>
+
+<script>
+	$sls = {
+		id: '',
+		name: '',
+		src: ''
+	};
+	$(document).on('click', '.modMp', function () {
+		var self = $(this);
+		$sls.id = self.attr("data-id");
+		$sls.name = self.attr("data-name");
+		$sls.src = self.find("img").attr("src");
+		location.href = "/site/searchnet?id=" + $sls.id;
+		//$('#modModal').modal('show');
+	});
+</script>
+
 {{include file="layouts/footer.tpl"}}

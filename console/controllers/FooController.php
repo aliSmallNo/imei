@@ -353,24 +353,6 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		/*$img = "http://bpbhd-10063905.file.myqcloud.com/imei/170722105946110840.jpg";
-		$res = AppUtil::getMediaUrl($img, false, true);
-		var_dump($res);*/
-		$sql = 'select * from im_user WHERE uLocation!=\'\' AND uProvince=\'\'';
-		$conn = AppUtil::db();
-		$ret = $conn->createCommand($sql)->queryAll();
 
-		$sql = 'update im_user set uProvince=:prov,uCity=:city WHERE uId=:id';
-		$cmd = $conn->createCommand($sql);
-		foreach ($ret as $row) {
-			$loc = json_decode($row['uLocation'], 1);
-			if ($loc && count($loc) > 1) {
-				$cmd->bindValues([
-					':id' => $row['uId'],
-					':prov' => $loc[0]['text'],
-					':city' => $loc[1]['text'],
-				])->execute();
-			}
-		}
 	}
 }

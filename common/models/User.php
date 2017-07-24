@@ -1065,4 +1065,15 @@ class User extends ActiveRecord
 		}
 		return [$ret, $titles];
 	}
+
+	public static function searchNet($kw)
+	{
+		if (!$kw) {
+			return [];
+		}
+		$sql = "select uId as id,uAvatar as avatar,uName as uname,uPhone as phone 
+			FROM im_user where uName like '%$kw%' ";
+		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		return $res;
+	}
 }
