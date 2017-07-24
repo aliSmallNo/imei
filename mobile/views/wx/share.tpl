@@ -9,7 +9,7 @@
 				<h5>爱情就没有到不了的角落</h5>
 			</div>
 		</div>
-		<div class="qrcode"><img src="/images/qrmeipo100.jpg" alt=""></div>
+		<div class="qrcode"><img src="{{$qrcode}}" alt=""></div>
 		<div class="btns bg-repeat">
 			<p class="img-wrap">
 				<img src="{{$avatar}}" alt="">

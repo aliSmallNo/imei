@@ -11,6 +11,7 @@ namespace mobile\controllers;
 use common\models\City;
 use common\models\User;
 use common\models\UserNet;
+use common\models\UserQR;
 use common\models\UserSign;
 use common\models\UserTrans;
 use common\models\UserWechat;
@@ -760,6 +761,11 @@ class WxController extends BaseController
 		if ($uId) {
 			$encryptId = AppUtil::encrypt($uId);
 		}
+		if (AppUtil::isDev()) {
+			$qrcode = '/images/qrmeipo100.jpg';
+		} else {
+			$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH);
+		}
 		return self::renderPage("share.tpl",
 			[
 				'nickname' => $nickname,
@@ -773,6 +779,7 @@ class WxController extends BaseController
 				'hasReg' => $hasReg,
 				'encryptId' => $encryptId,
 				'wxUrl' => AppUtil::wechatUrl(),
+				'qrcode' => $qrcode
 			],
 			'terse');
 	}
@@ -807,12 +814,18 @@ class WxController extends BaseController
 			UserNet::add($senderUId, $uId, UserNet::REL_INVITE);
 			UserNet::add($senderUId, $uId, UserNet::REL_FOLLOW);
 		}
+		if (AppUtil::isDev()) {
+			$qrcode = '/images/qrmeipo100.jpg';
+		} else {
+			$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_SINGLE);
+		}
 		return self::renderPage("sts.tpl",
 			[
 				'uId' => $uId,
 				'avatar' => $avatar,
 				'nickname' => $nickname,
 				'wxUrl' => AppUtil::wechatUrl(),
+				'qrcode' => $qrcode
 			],
 			'terse');
 	}

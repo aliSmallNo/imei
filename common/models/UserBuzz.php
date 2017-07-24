@@ -112,7 +112,7 @@ class UserBuzz extends ActiveRecord
 					if ($qrInfo) {
 						$content = $qrInfo["qCode"];
 						$debug .= $addResult . "**";
-						$resp = self::welcomeMsg($fromUsername, $toUsername, $qrInfo["qCategory"]);
+						$resp = self::welcomeMsg($fromUsername, $toUsername, $event);
 					}
 				}
 				break;
@@ -125,9 +125,9 @@ class UserBuzz extends ActiveRecord
 						if ($qrInfo) {
 							$content = $qrInfo["qCode"];
 							self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SUBSCRIBE, $qId);
-							$resp = self::welcomeMsg($fromUsername, $toUsername, $qrInfo["qCategory"]);
 							// Rain: 添加或者更新微信用户信息
 							UserWechat::getInfoByOpenId($fromUsername, true);
+							$resp = self::welcomeMsg($fromUsername, $toUsername, $event);
 						}
 					}
 				} else {
@@ -183,23 +183,8 @@ class UserBuzz extends ActiveRecord
 	private static function welcomeMsg($fromUsername, $toUsername, $category = '', $extension = "")
 	{
 		switch ($category) {
-			case "crm":
-				return self::json_to_xml([
-					'ToUserName' => $fromUsername,
-					'FromUserName' => $toUsername,
-					'CreateTime' => time(),
-					'MsgType' => 'news',
-					'ArticleCount' => 1,
-					'Articles' => [
-						'item' => [
-							'Title' => '奔跑到家CRM - 我的奔跑我的CRM',
-							'Description' => '奔跑到家奔跑CRM, 奔跑到家自己的CRM。来吧，使劲戳我吧~',
-							'PicUrl' => 'http://bpbhd-10063905.file.myqcloud.com/common/crm3.jpg',
-							'Url' => 'https://wx.bpbhd.com/wx/crm'
-						]
-					]
-				]);
 			case "subscribe":
+			case "scan":
 				return self::json_to_xml([
 					'ToUserName' => $fromUsername,
 					'FromUserName' => $toUsername,
@@ -208,9 +193,9 @@ class UserBuzz extends ActiveRecord
 					'ArticleCount' => 1,
 					'Articles' => [
 						'item' => [
-							'Title' => '微媒100 - 媒桂花飘香',
-							'Description' => '微媒100是一个真实相亲交友平台。来吧，使劲戳我吧~',
-							'PicUrl' => 'https://wx.meipo100.com/images/mp_hello720.jpg',
+							'Title' => '微媒100 - 本地真实交友平台',
+							'Description' => '注册就可以签到领媒桂花。来吧，使劲戳我吧~让我们立刻开始这段感情吧！',
+							'PicUrl' => 'https://wx.meipo100.com/images/welcome_720.jpg',
 							'Url' => 'https://wx.meipo100.com/wx/index'
 						]
 					]
