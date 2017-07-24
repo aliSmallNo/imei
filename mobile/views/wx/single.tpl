@@ -57,7 +57,7 @@
 				<div class="title">
 					<h4>{{$nickname}}</h4>
 					<i>资料完成度<span>30</span>%</i>
-					<h5 style="margin-top:.5rem">{{$uInfo.intro}}</h5>
+					<h5>{{$uInfo.intro}}</h5>
 				</div>
 				<a href="/wx/switch" class="btn-outline change-role">切换成媒婆</a>
 				<!--
@@ -67,9 +67,7 @@
 			</div>
 			<a href="#album" class="u-my-album">
 				<div class="title">相册(0)</div>
-				<ul class="photos">
-
-				</ul>
+				<ul class="photos"></ul>
 			</a>
 		</div>
 		<div class="m-rows line-bottom" style="display: none">
@@ -322,7 +320,7 @@
 			<a href="#sme" style="display: none">个人中心</a>
 		</div>
 		<div class="img">
-			<div class="img-filter" >
+			<div class="img-filter">
 			</div>
 			<div class="img-last">
 
