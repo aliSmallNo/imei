@@ -11,6 +11,7 @@ namespace mobile\controllers;
 use common\models\City;
 use common\models\User;
 use common\models\UserNet;
+use common\models\UserQR;
 use common\models\UserSign;
 use common\models\UserTrans;
 use common\models\UserWechat;
@@ -760,6 +761,7 @@ class WxController extends BaseController
 		if ($uId) {
 			$encryptId = AppUtil::encrypt($uId);
 		}
+		$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH);
 		return self::renderPage("share.tpl",
 			[
 				'nickname' => $nickname,
@@ -773,6 +775,7 @@ class WxController extends BaseController
 				'hasReg' => $hasReg,
 				'encryptId' => $encryptId,
 				'wxUrl' => AppUtil::wechatUrl(),
+				'qrcode' => $qrcode
 			],
 			'terse');
 	}

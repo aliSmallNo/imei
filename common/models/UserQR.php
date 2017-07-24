@@ -60,7 +60,16 @@ class UserQR extends ActiveRecord
 		return 0;
 	}
 
-	public static function createQR($uid, $category, $code='', $bottomTitle = '微信扫一扫 关注微媒100')
+	public static function getQRCode($uid, $category)
+	{
+		$qrInfo = self::findOne(['qUId' => $uid, 'qCategory' => $category]);
+		if ($qrInfo && isset($qrInfo['qUrl']) && $qrInfo['qUrl']) {
+			return $qrInfo['qUrl'];
+		}
+		return self::createQR($uid, $category, '');
+	}
+
+	public static function createQR($uid, $category, $code = '', $bottomTitle = '微信扫一扫 关注微媒100')
 	{
 		$accessUrl = '';
 		$info = User::findOne(['uId' => $uid]);
