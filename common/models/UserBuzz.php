@@ -112,7 +112,7 @@ class UserBuzz extends ActiveRecord
 					if ($qrInfo) {
 						$content = $qrInfo["qCode"];
 						$debug .= $addResult . "**";
-						$resp = self::welcomeMsg($fromUsername, $toUsername, $qrInfo["qCategory"]);
+						$resp = self::welcomeMsg($fromUsername, $toUsername, $event);
 					}
 				}
 				break;
@@ -200,6 +200,7 @@ class UserBuzz extends ActiveRecord
 					]
 				]);
 			case "subscribe":
+			case "scan":
 				return self::json_to_xml([
 					'ToUserName' => $fromUsername,
 					'FromUserName' => $toUsername,
