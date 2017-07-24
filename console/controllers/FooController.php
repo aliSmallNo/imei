@@ -10,6 +10,7 @@ namespace console\controllers;
  */
 use common\models\User;
 use common\models\UserNet;
+use common\models\UserQR;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
@@ -353,10 +354,17 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		/*$img = "http://bpbhd-10063905.file.myqcloud.com/imei/170722105946110840.jpg";
-		$res = AppUtil::getMediaUrl($img, false, true);
+		$ret = UserQR::createQR(131372,10,'');
+		var_dump($ret);
+		$ret = UserQR::createQR(131372,20,'');
+		var_dump($ret);
+		$ret = UserQR::createQR(131372,30,'');
+		var_dump($ret);
+
+		/*$img = "http://bpbhd-10063905.file.myqcloud.com/imei/170722193152110931.png";
+		$res = AppUtil::getMediaUrl($img, true, true);
 		var_dump($res);*/
-		$sql = 'select * from im_user WHERE uLocation!=\'\' AND uProvince=\'\'';
+		/*$sql = 'select * from im_user WHERE uLocation!=\'\' AND uProvince=\'\'';
 		$conn = AppUtil::db();
 		$ret = $conn->createCommand($sql)->queryAll();
 
@@ -371,6 +379,6 @@ class FooController extends Controller
 					':city' => $loc[1]['text'],
 				])->execute();
 			}
-		}
+		}*/
 	}
 }

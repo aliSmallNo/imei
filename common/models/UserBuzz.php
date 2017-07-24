@@ -125,9 +125,9 @@ class UserBuzz extends ActiveRecord
 						if ($qrInfo) {
 							$content = $qrInfo["qCode"];
 							self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SUBSCRIBE, $qId);
-							$resp = self::welcomeMsg($fromUsername, $toUsername, $qrInfo["qCategory"]);
 							// Rain: 添加或者更新微信用户信息
 							UserWechat::getInfoByOpenId($fromUsername, true);
+							$resp = self::welcomeMsg($fromUsername, $toUsername, $event);
 						}
 					}
 				} else {
@@ -208,8 +208,8 @@ class UserBuzz extends ActiveRecord
 					'ArticleCount' => 1,
 					'Articles' => [
 						'item' => [
-							'Title' => '微媒100 - 媒桂花飘香',
-							'Description' => '微媒100是一个真实相亲交友平台。来吧，使劲戳我吧~',
+							'Title' => '微媒100 - 本地真实交友平台',
+							'Description' => '注册就可以签到领媒桂花。来吧，使劲戳我吧~让我们立刻开始这段感情吧！',
 							'PicUrl' => 'https://wx.meipo100.com/images/mp_hello720.jpg',
 							'Url' => 'https://wx.meipo100.com/wx/index'
 						]
