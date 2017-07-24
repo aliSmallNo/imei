@@ -354,11 +354,11 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = UserQR::createQR(131372,10,'');
+		$ret = UserQR::getQRCode(131379, 10);
 		var_dump($ret);
-		$ret = UserQR::createQR(131372,20,'');
+		$ret = UserQR::getQRCode(131379, 20);
 		var_dump($ret);
-		$ret = UserQR::createQR(131372,30,'');
+		$ret = UserQR::getQRCode(131379, 30);
 		var_dump($ret);
 
 		/*$img = "http://bpbhd-10063905.file.myqcloud.com/imei/170722193152110931.png";
