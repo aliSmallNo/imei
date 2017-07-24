@@ -444,7 +444,7 @@ class UserNet extends ActiveRecord
 			":status" => UserNet::STATUS_WAIT,
 			":uid" => $myUid,
 			":Subuid" => $id,
-			":cat" => UserTrans::CAT_COST,
+			":cat" => UserTrans::CAT_REWARD,
 		])->queryOne();
 
 		switch ($pf) {
@@ -482,7 +482,7 @@ class UserNet extends ActiveRecord
 		}
 		// 打赏给 $id
 		$nid = UserNet::add($id, $myId, UserNet::REL_LINK);
-		UserTrans::add($myId, $nid, UserTrans::CAT_COST, UserTrans::$catDict[UserTrans::CAT_COST], $num, UserTrans::UNIT_GIFT);
+		UserTrans::add($myId, $nid, UserTrans::CAT_REWARD, UserTrans::$catDict[UserTrans::CAT_REWARD], $num, UserTrans::UNIT_GIFT);
 		WechatUtil::toNotice($id, $myId, "wxNo");
 		return $amt;
 	}

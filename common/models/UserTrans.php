@@ -18,14 +18,16 @@ class UserTrans extends ActiveRecord
 
 	const CAT_RECHARGE = 100;//充值
 	const CAT_SIGN = 105;   //签到
+	const CAT_NEW = 108;
 	const CAT_LINK = 110;   //牵线奖励
-	const CAT_COST = 120;   //打赏
+	const CAT_REWARD = 120;   //打赏
 	const CAT_RETURN = 130;  //拒绝退回
 	static $catDict = [
 		self::CAT_RECHARGE => "充值",
 		self::CAT_SIGN => "签到奖励",
+		self::CAT_NEW => "新人奖励",
 		self::CAT_LINK => "牵线奖励",
-		self::CAT_COST => "打赏",
+		self::CAT_REWARD => "打赏",
 		self::CAT_RETURN => "拒绝退回",
 	];
 
@@ -223,7 +225,7 @@ class UserTrans extends ActiveRecord
 
 		$catCharge = self::CAT_RECHARGE;   //充值
 		$catSign = self::CAT_SIGN;         //签到
-		$catCost = self::CAT_COST;         //打赏
+		$catCost = self::CAT_REWARD;         //打赏
 		$catReturn = self::CAT_RETURN;       //退回
 		$unitFen = self::UNIT_FEN;
 		$unitGift = self::UNIT_GIFT;
