@@ -761,7 +761,7 @@ class WxController extends BaseController
 		if ($uId) {
 			$encryptId = AppUtil::encrypt($uId);
 		}
-		$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH);
+		//$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH);
 		$qrcode = '/images/qrmeipo100.jpg';
 		return self::renderPage("share.tpl",
 			[
