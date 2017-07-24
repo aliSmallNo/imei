@@ -67,9 +67,7 @@
 			</div>
 			<a href="#album" class="u-my-album">
 				<div class="title">相册(0)</div>
-				<ul class="photos">
-
-				</ul>
+				<ul class="photos"></ul>
 			</a>
 		</div>
 		<div class="m-rows line-bottom" style="display: none">
