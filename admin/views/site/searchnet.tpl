@@ -51,25 +51,31 @@
 </div>
 
 <script>
+	var searchFlag = 0;
 	$(document).on('input', '#searchName', function () {
 		var self = $(this);
 		var keyWord = self.val();
-		var reg = /^[\u4e00-\u9fa5]+$/i;
-		if (reg.test(keyWord)) {
-			layer.load();
-			$.post("/api/user",
-				{
-					tag: "searchnet",
-					keyword: keyWord
-				},
-				function (resp) {
-					layer.closeAll();
-					if (resp.code === 0) {
-						$(".seek-wrapper").html(Mustache.render($("#tpl_goods").html(), resp));
-					}
-				}, "json");
+//		var reg = /^[\u4e00-\u9fa5]+$/i;
+//		if (reg.test(keyWord)) {
+		if (searchFlag) {
+			return;
 		}
-	});
+		searchFlag = 1;
+		layer.load();
+		$.post("/api/user",
+			{
+				tag: "searchnet",
+				keyword: keyWord
+			},
+			function (resp) {
+				layer.closeAll();
+				searchFlag = 0;
+				if (resp.code === 0) {
+					$(".seek-wrapper").html(Mustache.render($("#tpl_goods").html(), resp));
+				}
+			}, "json");
+//		}
+	})
 
 	$(document).on('click', 'li[tag]', function () {
 		var self = $(this);
@@ -82,8 +88,8 @@
 		var uid = $("#mpId").val();
 		var subuid = $("#myId").val();
 		if (!uid || !subuid) {
-				layer.msg("请选择一个媒婆");
-				return;
+			layer.msg("请选择一个媒婆");
+			return;
 		}
 		$.post("/api/user", {
 			tag: "savemp",
