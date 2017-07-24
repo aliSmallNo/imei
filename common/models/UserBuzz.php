@@ -183,22 +183,6 @@ class UserBuzz extends ActiveRecord
 	private static function welcomeMsg($fromUsername, $toUsername, $category = '', $extension = "")
 	{
 		switch ($category) {
-			case "crm":
-				return self::json_to_xml([
-					'ToUserName' => $fromUsername,
-					'FromUserName' => $toUsername,
-					'CreateTime' => time(),
-					'MsgType' => 'news',
-					'ArticleCount' => 1,
-					'Articles' => [
-						'item' => [
-							'Title' => '奔跑到家CRM - 我的奔跑我的CRM',
-							'Description' => '奔跑到家奔跑CRM, 奔跑到家自己的CRM。来吧，使劲戳我吧~',
-							'PicUrl' => 'http://bpbhd-10063905.file.myqcloud.com/common/crm3.jpg',
-							'Url' => 'https://wx.bpbhd.com/wx/crm'
-						]
-					]
-				]);
 			case "subscribe":
 			case "scan":
 				return self::json_to_xml([
