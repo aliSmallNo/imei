@@ -3539,9 +3539,9 @@ section {
 .m-wxid {
   color: #f06292;
   font-size: 1rem;
-  line-height: 2rem;
   padding-left: 7rem; }
   .m-wxid em {
+    margin: 0.5rem;
     font-weight: 500;
     -webkit-touch-callout: default;
     -webkit-user-select: text;
