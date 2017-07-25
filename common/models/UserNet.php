@@ -22,6 +22,7 @@ class UserNet extends ActiveRecord
 	const REL_FAVOR = 150;
 	const REL_QR_SCAN = 210;
 	const REL_QR_SUBSCRIBE = 212;
+	const REL_UNSUBSCRIBE = 250;
 
 	static $RelDict = [
 		self::REL_INVITE => '邀请',
@@ -31,6 +32,7 @@ class UserNet extends ActiveRecord
 		self::REL_FAVOR => '心动',
 		self::REL_QR_SCAN => '扫推广二维码',
 		self::REL_QR_SUBSCRIBE => '扫二维码且关注',
+		self::REL_UNSUBSCRIBE => '取消关注',
 	];
 
 	const DELETE_FLAG_YES = 1;
@@ -565,6 +567,11 @@ class UserNet extends ActiveRecord
 					$text = ['扫描了', '的二维码且关注'];
 					$left = $sInfo;
 					$right = $uInfo;
+					break;
+				case self::REL_UNSUBSCRIBE:
+					$text = ['取消关注', ''];
+					$left = $uInfo;
+					$right = $sInfo;
 					break;
 				default:
 					break;

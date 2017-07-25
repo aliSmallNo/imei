@@ -123,6 +123,7 @@ class Menu
 						"name" => "添加用户",
 						"url" => "/site/account",
 						"revise" => 1,
+						"hidden" => 1,
 						"level" => 820
 					],
 					[
@@ -140,7 +141,7 @@ class Menu
 						"level" => 820
 					],
 					[
-						"name" => "用户关系",
+						"name" => "用户操作",
 						"url" => "/site/net",
 						"level" => 820
 					],
