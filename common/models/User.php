@@ -958,14 +958,17 @@ class User extends ActiveRecord
 //		$uInfo = self::user(['uId' => $uid]);
 		$conn = AppUtil::db();
 		$offset = ($page - 1) * $pageSize;
-		$sql = 'select u.*, count(n.nId) as uCnt 
+		$sql = 'select u.*, count(t.nId) as uCnt 
 			 from im_user as u 
-			 LEFT JOIN im_user_net as n on u.uId=n.nUId AND n.nRelation=:rel AND n.nDeletedFlag=0
-			 WHERE u.uRole=:role GROUP BY n.nUId ORDER BY uUpdatedOn DESC, uCnt DESC
+			 LEFT JOIN (SELECT n.nId,n.nUId FROM im_user_net as n 
+			 JOIN im_user as u1 on u1.uId=n.nSubUId AND u1.uRole=:single AND u1.uGender>9
+			 WHERE n.nRelation=:rel AND n.nDeletedFlag=0) as t on t.nUId=u.uId
+			 WHERE u.uRole=:role GROUP BY u.uId ORDER BY uUpdatedOn DESC, uCnt DESC
 			 LIMIT ' . $offset . ',' . ($pageSize + 1);
 		$ret = $conn->createCommand($sql)->bindValues([
 			':rel' => UserNet::REL_BACKER,
-			':role' => self::ROLE_MATCHER
+			':role' => self::ROLE_MATCHER,
+			':single' => self::ROLE_SINGLE
 		])->queryAll();
 		$nextPage = 0;
 		if ($ret && count($ret) > $pageSize) {
