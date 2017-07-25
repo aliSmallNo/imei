@@ -2849,13 +2849,14 @@ section {
 
 .nav {
   background: #fbd2e0;
-  padding: 0.8rem 1rem;
-  display: flex; }
+  padding: 1rem;
+  display: flex;
+  line-height: 2rem; }
   .nav:before {
     content: " ";
     position: absolute;
     left: 1.5rem;
-    top: 1.1rem;
+    top: 1.5rem;
     width: 0.7rem;
     height: 0.7rem;
     z-index: 99;
@@ -2869,7 +2870,8 @@ section {
   .nav a {
     flex: 1;
     font-size: 1.2rem;
-    color: #777; }
+    color: #777;
+    line-height: 2rem; }
     .nav a:first-child {
       margin-left: 1.2rem; }
 .sgroup-top .sgroup-top-des {
@@ -3454,17 +3456,25 @@ section {
 .tab {
   display: flex;
   padding: 1rem 1rem 0 1rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #d8d8d8;
   background: #fff; }
   .tab a {
     flex: 1;
     text-align: center;
-    font-size: 1rem;
-    color: #777;
-    padding-bottom: 1rem; }
+    font-size: 1.2rem;
+    color: #737373;
+    padding-bottom: 1rem;
+    position: relative; }
   .tab a.active {
-    border-bottom: 1px solid #f487ac;
     color: #f06292; }
+    .tab a.active:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0.2rem;
+      right: 0.2rem;
+      height: 2px;
+      background: #f487ac; }
 
 .plist li {
   background: #fff;
