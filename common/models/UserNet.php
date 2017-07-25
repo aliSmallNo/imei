@@ -85,8 +85,16 @@ class UserNet extends ActiveRecord
 	{
 		$uInfo = User::findOne(['uOpenId' => $uOpenId]);
 		if ($uInfo) {
-			self::add($uInfo['uId'], $subUid, $relation, $note);
+			$entity = new self();
+			$entity->nUId = $uInfo['uId'];
+			$entity->nSubUId = $subUid;
+			$entity->nRelation = $relation;
+			$entity->nUpdatedOn = date('Y-m-d H:i:s');
+			$entity->nNote = $note;
+			$entity->save();
+			return $entity->nId;
 		}
+		return 0;
 	}
 
 	public static function replace($uid, $subUid, $relation, $data)
