@@ -331,7 +331,7 @@ class SiteController extends BaseController
 			$criteria[] = " t.tCategory =$cat ";
 		}
 
-		list($items, $count, $allcharge) = UserTrans::recharges($criteria, $params, $page);
+		list($items, $count) = UserTrans::recharges($criteria, $params, $page);
 		$balance = UserTrans::balance($criteria, $params);
 		$pagination = $pagination = self::pagination($page, $count);
 		return $this->renderPage("recharge.tpl",
@@ -340,7 +340,6 @@ class SiteController extends BaseController
 				'getInfo' => $getInfo,
 				'items' => $items,
 				'pagination' => $pagination,
-				"paid" => $allcharge,   //充值合计
 				'category' => 'users',
 				'catDict' => UserTrans::$catDict,
 			]
