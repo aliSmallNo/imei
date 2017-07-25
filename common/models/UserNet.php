@@ -166,9 +166,9 @@ class UserNet extends ActiveRecord
 		$sql = 'select n.nUId, 
 			 count(CASE WHEN n.nRelation=130 THEN 1 END) as fans,
 			 count(CASE WHEN n.nRelation=140 THEN 1 END) as link,
-			 count(CASE WHEN n.nRelation=120 THEN 1 END) as single,
-			 count(CASE WHEN n.nRelation=120 AND u.uGender=10 THEN 1 END) as female,
-			 count(CASE WHEN n.nRelation=120 AND u.uGender=11 THEN 1 END) as male
+			 count(CASE WHEN n.nRelation=120 AND u.uRole=' . User::ROLE_SINGLE . ' AND u.uGender>9 THEN 1 END) as single,
+			 count(CASE WHEN n.nRelation=120 AND u.uRole=' . User::ROLE_SINGLE . ' AND u.uGender=' . User::GENDER_FEMALE . ' THEN 1 END) as female,
+			 count(CASE WHEN n.nRelation=120 AND u.uRole=' . User::ROLE_SINGLE . ' AND u.uGender=' . User::GENDER_MALE . ' THEN 1 END) as male
 			 from im_user_net as n 
 			 join im_user as u on u.uId=n.nSubUId
 			 WHERE n.nDeletedFlag=0 ' . $strCriteria . ' GROUP BY n.nUId';
@@ -217,11 +217,12 @@ class UserNet extends ActiveRecord
 
 	public static function male($uid, $page, $pageSize = 10)
 	{
-		$criteria[] = 'nUId=:uid AND nRelation=:rel AND uGender=:gender';
+		$criteria[] = 'nUId=:uid AND nRelation=:rel AND uRole=:role AND uGender=:gender';
 		$params = [
 			':uid' => $uid,
 			':rel' => self::REL_BACKER,
-			':gender' => User::GENDER_MALE
+			':gender' => User::GENDER_MALE,
+			':role' => User::ROLE_SINGLE
 		];
 
 		return self::crew($criteria, $params, $page, $pageSize);
@@ -229,11 +230,12 @@ class UserNet extends ActiveRecord
 
 	public static function female($uid, $page, $pageSize = 10)
 	{
-		$criteria[] = 'nUId=:uid AND nRelation=:rel AND uGender=:gender';
+		$criteria[] = 'nUId=:uid AND nRelation=:rel AND uRole=:role AND uGender=:gender';
 		$params = [
 			':uid' => $uid,
 			':rel' => self::REL_BACKER,
-			':gender' => User::GENDER_FEMALE
+			':gender' => User::GENDER_FEMALE,
+			':role' => User::ROLE_SINGLE
 		];
 
 		return self::crew($criteria, $params, $page, $pageSize);
