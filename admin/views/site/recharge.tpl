@@ -57,7 +57,7 @@
 			</tbody>
 			<tfoot>
 			<tr>
-				<td align="center" colspan="{{$balance|@count}}"><b class="f-tip">10朵媒桂花 = 1元</b></td>
+				<td colspan="{{$balance|@count}}"><b class="f-tip">10朵媒桂花 = 1元</b></td>
 			</tr>
 			</tfoot>
 		</table>
