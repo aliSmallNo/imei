@@ -131,6 +131,7 @@ class UserBuzz extends ActiveRecord
 						}
 					}
 				} else {
+//					self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SUBSCRIBE, $qId);
 					$resp = self::welcomeMsg($fromUsername, $toUsername, $event);
 					UserWechat::getInfoByOpenId($fromUsername, true);
 				}

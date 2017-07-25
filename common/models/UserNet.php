@@ -23,6 +23,7 @@ class UserNet extends ActiveRecord
 	const REL_QR_SCAN = 210;
 	const REL_QR_SUBSCRIBE = 212;
 	const REL_UNSUBSCRIBE = 250;
+	const REL_SUBSCRIBE = 255;
 
 	static $RelDict = [
 		self::REL_INVITE => '邀请',
@@ -33,6 +34,7 @@ class UserNet extends ActiveRecord
 		self::REL_QR_SCAN => '扫推广二维码',
 		self::REL_QR_SUBSCRIBE => '扫二维码且关注',
 		self::REL_UNSUBSCRIBE => '取消关注',
+		self::REL_SUBSCRIBE => '关注公众号',
 	];
 
 	const DELETE_FLAG_YES = 1;
@@ -530,8 +532,8 @@ class UserNet extends ActiveRecord
 			$v['av'] = $v['thumb'] ? $v['thumb'] : $v['avatar'];
 			$v['sav'] = $v['sthumb'] ? $v['sthumb'] : $v['savatar'];
 			$text = $left = $right = [];
-			$uInfo = ['id' => $v['uId'],'avatar' => $v['avatar'], 'name' => $v['uname'], 'phone' => $v['phone']];
-			$sInfo = ['id' => $v['sId'],'avatar' => $v['savatar'], 'name' => $v['sname'], 'phone' => $v['sphone']];
+			$uInfo = ['id' => $v['uId'], 'avatar' => $v['avatar'], 'name' => $v['uname'], 'phone' => $v['phone']];
+			$sInfo = ['id' => $v['sId'], 'avatar' => $v['savatar'], 'name' => $v['sname'], 'phone' => $v['sphone']];
 			switch ($v["nRelation"]) {
 				case self::REL_INVITE:
 					$text = ['邀请'];
@@ -570,6 +572,11 @@ class UserNet extends ActiveRecord
 					break;
 				case self::REL_UNSUBSCRIBE:
 					$text = ['取消关注', ''];
+					$left = $uInfo;
+					$right = $sInfo;
+					break;
+				case self::REL_SUBSCRIBE:
+					$text = ['关注', ''];
 					$left = $uInfo;
 					$right = $sInfo;
 					break;
