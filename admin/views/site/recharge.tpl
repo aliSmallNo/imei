@@ -94,13 +94,13 @@
 					<img src="{{$item.avatar}}" style="width: 65px;height: 65px;">
 				</td>
 				<td>{{$item.uname}}<br>
-					累计充值金额: ￥{{$item.recharge/10|string_format: "%.2f"}}<br>
-					累计充值媒桂花: {{$item.recharge}}<br>
-					累计签到媒桂花: {{$item.gift}}<br>
-					累计签到金额: ￥{{$item.fen/100|string_format: "%.2f"}}<br>
-					累计牵线奖励: ￥{{$item.link/100|string_format: "%.2f"}}<br>
-					累计打赏: {{$item.cost}}<br>
-					剩余媒桂花: {{$item.remain}}
+					{{foreach from=$item.details key=key item=detail}}
+					{{if $key=='bal'}}
+					{{$detail.title}}: {{$detail.amt}}{{$detail.unit_name}}{{if $detail.amt2}}+{{$detail.amt2}}{{$detail.unit_name2}}{{/if}}<br>
+					{{else}}
+					{{$detail.title}}: {{$detail.amt}}{{$detail.unit_name}}<br>
+					{{/if}}
+					{{/foreach}}
 				</td>
 				<td>
 					{{$item.tcat}}

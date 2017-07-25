@@ -537,6 +537,7 @@ class User extends ActiveRecord
 		if ($net && isset($net['nUId']) && $net['nUId']) {
 			UserNet::add($net['nUId'], $uid, UserNet::REL_BACKER);
 		}
+		UserTrans::addReward($uid, UserTrans::CAT_NEW);
 		return $uid;
 	}
 

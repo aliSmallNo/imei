@@ -22,6 +22,7 @@ class UserTrans extends ActiveRecord
 	const CAT_LINK = 110;   //牵线奖励
 	const CAT_REWARD = 120;   //打赏
 	const CAT_RETURN = 130;  //拒绝退回
+
 	static $catDict = [
 		self::CAT_RECHARGE => "充值",
 		self::CAT_SIGN => "签到奖励",
@@ -30,6 +31,8 @@ class UserTrans extends ActiveRecord
 		self::CAT_REWARD => "打赏",
 		self::CAT_RETURN => "拒绝退回",
 	];
+
+	static $CatMinus = [self::CAT_REWARD];
 
 	const UNIT_FEN = 'fen';
 	const UNIT_YUAN = 'yuan';
@@ -178,7 +181,8 @@ class UserTrans extends ActiveRecord
 	{
 		$limit = ($page - 1) * $pageSize . "," . $pageSize;
 		$criteria = implode(" and ", $criteria);
-		$where = " where t.tCategory in (100,105,110,120,130) ";
+		//$where = " where t.tCategory in (100,105,110,120,130) ";
+		$where = " where t.tCategory > 0 ";
 		if ($criteria) {
 			$where .= " and " . $criteria;
 		}
@@ -194,37 +198,74 @@ class UserTrans extends ActiveRecord
 				join im_user as u on u.uId=t.tUId 
 				left join im_pay as p on p.pId=t.tPId $where order by $order limit $limit";
 		$result = $conn->createCommand($sql)->bindValues($params)->queryAll();
-		$uIds = [];
+		$uIds = $items = [];
 		foreach ($result as $k => $row) {
-			$uIds[] = $row["uid"];
+			$uid = $row["uid"];
+			$uIds[] = $uid;
+			$items[$uid] = $row;
 			$unit = $row['unit'];
-			$result[$k]['amt_title'] = $row['flower'] . self::$UnitDict[$unit];
+			$items[$uid]['amt_title'] = $row['flower'] . self::$UnitDict[$unit];
 			if ($unit == self::UNIT_FEN) {
-				$result[$k]['amt_title'] = round($row['flower'] / 100.0, 2) . '元';
+				$items[$uid]['amt_title'] = round($row['flower'] / 100.0, 2) . '元';
 			}
+
 		}
 		$uIds = array_values(array_unique($uIds));
+
 
 		$sql = "select count(1) as co
 				from im_user_trans as t 
 				join im_user as u on u.uId=t.tUId 
 				left join im_pay as p on p.pId=t.tPId $where ";
-		$count = $conn->createCommand($sql)->bindValues($params)->queryOne();
-		$count = $count ? $count["co"] : 0;
-		list($balances, $amt) = self::getBalances($uIds);
-		foreach ($result as &$v) {
-			foreach ($balances as $val) {
-				if ($val["uid"] == $v["uid"]) {
-					$v["recharge"] = $val["recharge"];          //个人总充值数
-					$v["remain"] = $val["remain"];              //余额
-					$v["gift"] = $val["gift"];                  //签到得花
-					$v["fen"] = $val["fen"];                    //签到得钱
-					$v["cost"] = $val["cost"];                  //打赏
-					$v["link"] = $val["link"];                  //牵线奖励(元)
+		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
+		$count = $count ? $count : 0;
+
+		$sql2 = '';
+		if ($uIds) {
+			$sql2 = ' WHERE tUId in (' . implode(',', $uIds) . ')';
+		}
+		$sql = 'SELECT sum(tAmt) as amt,tCategory as cat,tTitle as title,tUnit as unit,t.tUId as uid
+ 				FROM im_user_trans as t ' . $sql2 . ' group by tCategory,tTitle,tUnit,t.tUId';
+		$balances = $conn->createCommand($sql)->queryAll();
+		foreach ($balances as $balance) {
+			$uid = $balance["uid"];
+			$cat = $balance["cat"];
+			if (!isset($items[$uid]['details'])) {
+				$bal = [
+					'bal' => [
+						'title' => '剩余',
+						'unit_name' => '媒桂花',
+						'amt' => 0,
+						'unit_name2' => '元',
+						'amt2' => 0,
+					]
+				];
+				$items[$uid]['details'] = $bal;
+			}
+			$unit = $balance['unit'];
+			if ($unit == self::UNIT_FEN) {
+				$balance['amt'] = sprintf('%.2f', $balance['amt'] / 100.0);
+				$unit = self::UNIT_YUAN;
+				if ($cat == self::CAT_REWARD) {
+					$items[$uid]['details']['bal']['amt2'] -= $balance['amt'];
+				} else {
+					$items[$uid]['details']['bal']['amt2'] += $balance['amt'];
+				}
+			} else {
+				if ($cat == self::CAT_REWARD) {
+					$items[$uid]['details']['bal']['amt'] -= $balance['amt'];
+				} else {
+					$items[$uid]['details']['bal']['amt'] += $balance['amt'];
 				}
 			}
+			$balance['unit_name'] = self::$UnitDict[$unit];
+			$balance['unit'] = $unit;
+			$items[$uid]['details'][$cat . '-' . $unit] = $balance;
 		}
-		return [$result, $count, $amt];
+		foreach ($items as $k => $item) {
+
+		}
+		return [$items, $count];
 	}
 
 	public static function getBalances($uid)
@@ -306,5 +347,28 @@ class UserTrans extends ActiveRecord
 			$items[] = $item;
 		}
 		return $items;
+	}
+
+	public static function addReward($uid, $category)
+	{
+		$ret = 0;
+		$conn = AppUtil::db();
+		switch ($category) {
+			case self::CAT_NEW:
+				$amt = 66;
+				$unit = self::UNIT_GIFT;
+				$sql = 'INSERT INTO im_user_trans(tCategory,tPId,tUId,tTitle,tAmt,tUnit)
+						SELECT :cat,0,:uid,:title,:amt,:unit FROM dual 
+						WHERE NOT EXISTS(SELECT 1 FROM im_user_trans WHERE tUId=:uid AND tCategory=:cat) ';
+				$ret = $conn->createCommand($sql)->bindValues([
+					':cat' => $category,
+					':uid' => $uid,
+					':title' => isset(self::$catDict[$category]) ? self::$catDict[$category] : '',
+					':amt' => $amt,
+					':unit' => $unit,
+				])->execute();
+				break;
+		}
+		return $ret;
 	}
 }
