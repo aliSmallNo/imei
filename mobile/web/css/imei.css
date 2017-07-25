@@ -3536,6 +3536,20 @@ section {
         width: 0;
         height: 0; }
 
+.m-wxid {
+  color: #f06292;
+  font-size: 1rem;
+  line-height: 2rem;
+  padding-left: 7rem; }
+  .m-wxid em {
+    font-weight: 500;
+    -webkit-touch-callout: default;
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text; }
+
 .plist-more {
   font-size: 1rem;
   color: #777;

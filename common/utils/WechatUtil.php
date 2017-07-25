@@ -544,7 +544,8 @@ class WechatUtil
 		}
 		$name = $userInfo["uName"];
 
-		$url = "https://wx.meipo100.com/wx/sh?id=$secretId";
+		$urlPrefix = AppUtil::wechatUrl();
+		$url = $urlPrefix . "/wx/sh?id=" . $secretId;
 		switch ($tag) {
 			case "favor":
 				$cat = $f ? UserMsg::CATEGORY_FAVRO : UserMsg::CATEGORY_FAVRO_CANCEL;
@@ -561,25 +562,26 @@ class WechatUtil
 				$keyword1Val = UserMsg::$catDict[$cat];
 				$keyword2Val = "有人" . $keyword1Val . "了，快去看看吧！";
 				break;
-			case "wx-replay":
+			case "wx-reply":
+				$url = $urlPrefix . "/wx/single#IaddWx";
 				$cat = $f ? UserMsg::CATEGORY_ADDWX_PASS : UserMsg::CATEGORY_ADDWX_REFUSE;
 				$keyword1Val = UserMsg::$catDict[$cat];
 				$keyword2Val = "有人" . $keyword1Val . "，快去看看吧！";
 				break;
 			case "return-rose":
-				$url = "https://wx.meipo100.com/wx/sw";
+				$url = $urlPrefix . "/wx/sw";
 				$cat = UserMsg::CATEGORY_RETURN_ROSE;
 				$keyword1Val = UserMsg::$catDict[$cat];
 				$keyword2Val = "有媒瑰花退回，快去看看吧！";
 				break;
 			case "mysay":
-				$url = "https://wx.meipo100.com/wx/sh";
+				$url = $urlPrefix . "/wx/sh";
 				$cat = UserMsg::CATEGORY_MP_SAY;
 				$keyword1Val = UserMsg::$catDict[$cat];
 				$keyword2Val = "你的媒婆修改了你的媒婆说，快去看看吧！";
 				break;
 			default:
-				$url = "https://wx.meipo100.com/wx/sreg";
+				$url = $urlPrefix . "/wx/sreg";
 				$keyword1Val = "微媒100";
 				$cat = UserMsg::CATEGORY_DEFAULT;
 				$keyword2Val = "欢迎来到微媒100，这是一个真实的相亲交友软件！";

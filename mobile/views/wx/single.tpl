@@ -1,9 +1,7 @@
 <section id="slink" data-title="推荐媒婆">
 	<div class="match-wrap">
 		<h3>推荐媒婆</h3>
-		<ul class="clearfix recommendMp">
-
-		</ul>
+		<ul class="clearfix recommendMp"></ul>
 		<div class="see-more"><a href="javascript:;" tag="recomend">查看更多</a></div>
 	</div>
 </section>
@@ -605,19 +603,19 @@
 			<img src="{[avatar]}">
 		</div>
 		<div class="plist-r">
-			<p>{[name]} {[#showWxFlag]}<span
-								style="font-size: 1rem;color: #f981aa;margin-left: 1rem">微信号: {[wechatid]}</span>{[/showWxFlag]}</p>
+			<p>{[name]}</p>
 			<p>{[location_t]}</p>
 			<i>{[age]} {[height]}cm {[horos_t]} {[scope_t]}</i>
 		</div>
 		{[#pendingWxFlag]}
 		<div class="wx-process">
 			<button class="pass">同意</button>
+			<div style="height: .5rem"></div>
 			<button class="refuse">拒绝</button>
 		</div>
 		{[/pendingWxFlag]}
-
 		</a>
+		{[#showWxFlag]}<div class="m-wxid">微信号: <em>{[wechatid]}</em></div>{[/showWxFlag]}
 	</li>
 	{[/data]}
 </script>

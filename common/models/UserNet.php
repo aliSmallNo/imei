@@ -470,7 +470,7 @@ class UserNet extends ActiveRecord
 		switch ($pf) {
 			case "pass":
 				$data = ["nStatus" => self::STATUS_PASS];
-				WechatUtil::toNotice($id, $myUid, "wx-replay", 1);
+				WechatUtil::toNotice($id, $myUid, "wx-reply", 1);
 				// 奖励媒婆 mpId
 				$mpInfo = self::findOne(["nSubUId" => $myUid, 'nDeletedFlag' => 0, "nRelation" => self::REL_BACKER]);
 				if ($mpInfo && $payInfo) {
@@ -481,7 +481,7 @@ class UserNet extends ActiveRecord
 				break;
 			case "refuse":
 				$data = ["nStatus" => self::STATUS_FAIL];
-				WechatUtil::toNotice($id, $myUid, "wx-replay", 0);
+				WechatUtil::toNotice($id, $myUid, "wx-reply", 0);
 				// 退回媒瑰花
 				if ($payInfo) {
 					UserTrans::add($id, $payInfo["tPId"], UserTrans::CAT_RETURN, UserTrans::$catDict[UserTrans::CAT_RETURN], $payInfo["tAmt"], UserTrans::UNIT_GIFT);
