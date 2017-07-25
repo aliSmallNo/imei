@@ -159,10 +159,12 @@ class SiteController extends BaseController
 			$data = json_decode($data, 1);
 
 			if (isset($_FILES["uAvatar"]) && $_FILES["uAvatar"]['size'][0]) {
-				$newThumb = ImageUtil::uploadItemImages($_FILES["uAvatar"], 1);
+				$newThumb = ImageUtil::uploadItemImages($_FILES["uAvatar"], 1, 1);
 				$newThumb = json_decode($newThumb, 1);
-				if (is_array($newThumb)) {
-					$data["uAvatar"] = $newThumb[0];
+				if (is_array($newThumb) && count($newThumb) > 1) {
+					list($thumb, $figure) = $newThumb;
+					$data["uThumb"] = $thumb;
+					$data["uAvatar"] = $figure;
 				}
 			}
 

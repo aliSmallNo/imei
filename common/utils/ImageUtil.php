@@ -124,12 +124,12 @@ class ImageUtil
 	}
 
 	/**
-	 * @param $postData
-	 * @param string $category
+	 * @param array $postData
 	 * @param bool $thumbFlag
+	 * @param bool $squareFlag
 	 * @return string json
 	 */
-	public static function uploadItemImages($postData, $thumbFlag = false)
+	public static function uploadItemImages($postData, $thumbFlag = false, $squareFlag = false)
 	{
 		if (isset($postData["error"]) && isset($postData["tmp_name"])) {
 			$result = [];
@@ -140,12 +140,11 @@ class ImageUtil
 					$upSize = $postData["size"][$key];
 					$fileExt = pathinfo($upName, PATHINFO_EXTENSION);
 					$fileExt = strtolower($fileExt ? $fileExt : "");
-					if ($upSize < self::MAX_UNSLICE_FILE_SIZE) {
-						$maxWidth = $thumbFlag ? self::WIDTH_THUMB : self::WIDTH_IMAGE;
-						$url = self::upload2Cloud($tmpName, $fileExt, $maxWidth);
-					} else {
-						$url = self::uploadSlices2COS($tmpName, $fileExt, $upSize);
+					if ($thumbFlag) {
+						$url = self::upload2COS($tmpName, true, $squareFlag, $fileExt);
+						$url && $result[] = $url;
 					}
+					$url = self::upload2COS($tmpName, false, $squareFlag, $fileExt);
 					$url && $result[] = $url;
 					unlink($tmpName);
 				}
@@ -154,20 +153,18 @@ class ImageUtil
 				return json_encode($result);
 			}
 		}
-		return "";
+		return '';
 	}
 
 	/**
 	 * 上传图片到云
 	 * @param string $srcPath 文件路径
-	 * @param string $category 种类
 	 * @param string $fileExt 文件扩展名
 	 * @param int $maxWidth 最大的width值
 	 * @param int $maxHeight 最大的height值
 	 * @return string
 	 */
-	public
-	static function upload2Cloud($srcPath, $fileExt = "", $maxWidth = self::WIDTH_IMAGE, $maxHeight = 0)
+	public static function upload2Cloud($srcPath, $fileExt = "", $maxWidth = self::WIDTH_IMAGE, $maxHeight = 0)
 	{
 
 		if (!file_exists($srcPath) || filesize($srcPath) < 10) {

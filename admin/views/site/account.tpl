@@ -332,13 +332,13 @@
 				<div class="form-group">
 					<label class="col-sm-4 control-label">你的兴趣爱好:</label>
 					<div class="col-sm-8">
-						<textarea data-tag="uInterest" required="required" class="form-control" placeholder="(必填)"></textarea>
+						<textarea data-tag="uInterest" required class="form-control" placeholder="(必填)"></textarea>
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-sm-4 control-label">您的内心独白:</label>
 					<div class="col-sm-8">
-						<textarea data-tag="uIntro" required="required" class="form-control" placeholder="(必填)"></textarea>
+						<textarea data-tag="uIntro" required class="form-control" placeholder="(必填)"></textarea>
 					</div>
 				</div>
 				<div class="form-group">
@@ -430,9 +430,12 @@
 			var self = $(this).find("option:selected");
 			var key = self.val();
 			var text = self.text();
-			var item = {key:key,text:text};
+			var item = {
+				key: key,
+				text: text
+			};
 			location.push(item)
-		})
+		});
 		if ($sls.mcityObj.find("option:selected").text() == "请选择" && $sls.role == 10) {
 			layer.msg(fieldsText["uLocation"] + "还没填写哦");
 			return;
