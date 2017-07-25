@@ -423,6 +423,19 @@ class User extends ActiveRecord
 		return [$items, $count];
 	}
 
+	public static function stat()
+	{
+		$conn = AppUtil::db();
+		$sql = "select 
+				COUNT(1) as amt,
+				SUM(CASE WHEN uGender=11 THEN  1 END ) as male,
+				SUM(CASE WHEN uGender=10 THEN  1 END ) as female,
+				SUM(CASE WHEN uPhone THEN  1 END ) as reg
+				from im_user where uNote ='' ";
+		$result = $conn->createCommand($sql)->queryOne();
+		return $result;
+	}
+
 	public static function user($condition)
 	{
 		$criteria = $params = [];

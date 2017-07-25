@@ -102,6 +102,9 @@
 		border-radius: 3px
 	}
 
+	.stat-item {
+		margin-left: 30px;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="row">
@@ -120,7 +123,14 @@
 			<input class="form-control" name="name" placeholder="名字" type="text" value="{{$name}}">
 			<input class="form-control" name="phone" placeholder="手机号" type="text" value="{{$phone}}">
 			<input type="submit" class="btn btn-primary" value="查询">
+			<span class="stat-item">
+				<span>总计:{{$stat.amt}}</span>
+				<span>注册:{{$stat.reg}}</span>
+				<span>帅哥:{{$stat.male}}</span>
+				<span>美女:{{$stat.female}}</span>
+			</span>
 		</form>
+
 	</div>
 	<div class="row-divider"></div>
 	<table class="table table-striped table-bordered table-hover">
@@ -147,7 +157,8 @@
 				<img src="{{$prod.thumb}}" width="100%">
 			</td>
 			<td class="pInfo">
-				<span class="role{{$prod.role}}">{{$prod.role_t}}</span> {{$prod.name}} <em>{{$prod.phone}} {{$prod.location_t}}</em>
+				<span class="role{{$prod.role}}">{{$prod.role_t}}</span> {{$prod.name}}
+				<em>{{$prod.phone}} {{$prod.location_t}}</em>
 				<em>{{$prod.note_t}}</em>
 				<span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
 				<span class="status-1">{{if $prod.certstatus==2}}{{$prod.certstatus_t}}{{/if}}</span>

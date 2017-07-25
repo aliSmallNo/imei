@@ -262,11 +262,13 @@ class SiteController extends BaseController
 		}
 
 		list($list, $count) = User::users($criteria, $params, $page);
+		$stat = User::stat();
 		$pagination = self::pagination($page, $count);
 		return $this->renderPage('accounts.tpl',
 			[
 				"status" => $status,
 				'list' => $list,
+				'stat' => $stat,
 				"name" => $name,
 				"phone" => $phone,
 				'pagination' => $pagination,
@@ -455,7 +457,6 @@ class SiteController extends BaseController
 	{
 		$id = self::getParam("id");
 		$info = User::find()->where(["uId" => $id])->asArray()->one();
-
 
 		return $this->renderPage("searchnet.tpl",
 			[

@@ -75,7 +75,7 @@
 				}
 			}, "json");
 //		}
-	})
+	});
 
 	$(document).on('click', 'li[tag]', function () {
 		var self = $(this);
