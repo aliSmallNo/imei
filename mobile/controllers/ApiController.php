@@ -860,12 +860,13 @@ class ApiController extends Controller
 					$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH);
 				}
 				$data = [
-					"qrcode"=>$qrcode,
-					"avatar"=>$avatar,
-					"nickname"=>$nickname,
-					"editable"=>$editable,
-					"hasReg"=>$hasReg,
-					"encryptId"=>$encryptId,
+					"qrcode" => $qrcode,
+					"avatar" => $avatar,
+					"nickname" => $nickname,
+					"editable" => $editable,
+					"hasReg" => $hasReg,
+					"encryptId" => $encryptId,
+					"uId" => $uId,
 				];
 				break;
 		}
