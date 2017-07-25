@@ -321,21 +321,22 @@ class SiteController extends BaseController
 		$cat = self::getParam("cat");
 		$st = User::STATUS_ACTIVE;
 		//$criteria[] = " u.uStatus=$st ";
-		$criteria = [];
+		$criteria = $params = [];
 
 		if ($name) {
-			$name = str_replace("'", "", $name);
-			$criteria[] = " u.uName like '%$name%' ";
+			$criteria[] = " u.uName like :name ";
+			$params[':name'] = '%' . trim($name) . '%';
 		}
 		if ($cat) {
 			$criteria[] = " t.tCategory =$cat ";
 		}
 
-		list($items, $count, $allcharge) = UserTrans::recharges($criteria, $page);
-
+		list($items, $count, $allcharge) = UserTrans::recharges($criteria, $params, $page);
+		$balance = UserTrans::balance($criteria, $params);
 		$pagination = $pagination = self::pagination($page, $count);
 		return $this->renderPage("recharge.tpl",
 			[
+				'balance' => $balance,
 				'getInfo' => $getInfo,
 				'items' => $items,
 				'pagination' => $pagination,

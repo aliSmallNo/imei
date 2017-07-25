@@ -36,6 +36,7 @@ class UserTrans extends ActiveRecord
 	const UNIT_GIFT = 'flower';
 	private static $UnitDict = [
 		self::UNIT_FEN => '分',
+		self::UNIT_YUAN => '元',
 		self::UNIT_GIFT => '媒桂花',
 	];
 
@@ -150,7 +151,30 @@ class UserTrans extends ActiveRecord
 		return self::stat($uid);
 	}
 
-	public static function recharges($criteria, $page, $pageSize = 20)
+	public static function balance($criteria, $params, $conn = '')
+	{
+		$criteria = implode(" AND ", $criteria);
+		if ($criteria) {
+			$criteria = ' WHERE ' . $criteria;
+		}
+		$sql = 'SELECT sum(tAmt) as amt,tCategory as cat,tTitle as title,tUnit as unit
+ 				FROM im_user_trans as t 
+ 				JOIN im_user as u on t.tUId = u.uId ' . $criteria . ' group by tCategory,tTitle,tUnit';
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		foreach ($ret as $k => $row) {
+			if ($row['unit'] == self::UNIT_FEN) {
+				$ret[$k]['amt'] = sprintf('%.2f', $row['amt'] / 100.0);
+				$ret[$k]['unit'] = self::UNIT_YUAN;
+			}
+			$ret[$k]['unit_name'] = self::$UnitDict[$ret[$k]['unit']];
+		}
+		return $ret;
+	}
+
+	public static function recharges($criteria, $params, $page, $pageSize = 20)
 	{
 		$limit = ($page - 1) * $pageSize . "," . $pageSize;
 		$criteria = implode(" and ", $criteria);
@@ -167,12 +191,9 @@ class UserTrans extends ActiveRecord
 		$sql = "select u.uId as uid,u.uName as uname,u.uAvatar as avatar,p.pAmt as amt ,
 				t.tAmt as flower,tAddedOn as date,t.tTitle as tcat,tUnit as unit,t.tCategory as cat
 				from im_user_trans as t 
-				 join im_user as u on u.uId=t.tUId 
-				left join im_pay as p on p.pId=t.tPId
-				  $where   
-				order by $order 
-				limit $limit";
-		$result = $conn->createCommand($sql)->queryAll();
+				join im_user as u on u.uId=t.tUId 
+				left join im_pay as p on p.pId=t.tPId $where order by $order limit $limit";
+		$result = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$uIds = [];
 		foreach ($result as $v) {
 			$uIds[] = $v["uid"];
@@ -182,10 +203,10 @@ class UserTrans extends ActiveRecord
 		$sql = "select count(1) as co
 				from im_user_trans as t 
 				join im_user as u on u.uId=t.tUId 
-				left join im_pay as p on p.pId=t.tPId   $where ";
-		$count = $conn->createCommand($sql)->queryOne();
+				left join im_pay as p on p.pId=t.tPId $where ";
+		$count = $conn->createCommand($sql)->bindValues($params)->queryOne();
 		$count = $count ? $count["co"] : 0;
-		list($balances, $allcharge) = self::getBalances($uIds);
+		list($balances, $amt) = self::getBalances($uIds);
 		foreach ($result as &$v) {
 			foreach ($balances as $val) {
 				if ($val["uid"] == $v["uid"]) {
@@ -198,9 +219,7 @@ class UserTrans extends ActiveRecord
 				}
 			}
 		}
-
-		return [$result, $count, $allcharge];
-
+		return [$result, $count, $amt];
 	}
 
 	public static function getBalances($uid)
@@ -241,11 +260,11 @@ class UserTrans extends ActiveRecord
 				from im_user_trans WHERE tUId>0 and tUId in ($uid) GROUP BY tUId";
 		$ret = $conn->createCommand($sql)->queryAll();
 
-		$sql = "SELECT sum(p.pAmt) as allcharge from im_user_trans as t
+		$sql = "SELECT sum(p.pAmt) as allcharge 
+			from im_user_trans as t
 			join im_pay as p on p.pId=t.tPId";
-
-		$allcharge = $conn->createCommand($sql)->queryOne();
-		return [$ret, $allcharge["allcharge"]];
+		$amt = $conn->createCommand($sql)->queryScalar();
+		return [$ret, $amt];
 	}
 
 	public static function records($uid = 0, $role = '', $page = 1, $pageSize = 20)
