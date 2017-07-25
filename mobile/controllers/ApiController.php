@@ -15,6 +15,7 @@ use common\models\Pay;
 use common\models\User;
 use common\models\UserBuzz;
 use common\models\UserNet;
+use common\models\UserQR;
 use common\models\UserSign;
 use common\models\UserTrans;
 use common\models\UserWechat;
@@ -818,6 +819,54 @@ class ApiController extends Controller
 						}
 						break;
 				}
+				break;
+			case 'initstm':
+				$openId = self::postParam("openid");
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				$senderUId = self::postParam('id');
+				$hasReg = false;
+				if ($wxInfo) {
+					$avatar = $wxInfo["Avatar"];
+					$nickname = $wxInfo["uName"];
+					$uId = $wxInfo['uId'];
+					$hasReg = $wxInfo['uPhone'] ? true : false;
+				} else {
+					$avatar = ImageUtil::DEFAULT_AVATAR;
+					$nickname = "测试";
+					$uId = 0;
+				}
+				if ($senderUId) {
+					$matchInfo = User::user(['uId' => $senderUId]);
+					if ($matchInfo) {
+						$avatar = $matchInfo["thumb"];
+						$nickname = $matchInfo["name"];
+					}
+				}
+				if ($senderUId && $uId) {
+					UserNet::add($senderUId, $uId, UserNet::REL_INVITE);
+					UserNet::add($senderUId, $uId, UserNet::REL_FOLLOW);
+				}
+				$editable = $senderUId ? 0 : 1;
+				if ($uId == $senderUId) {
+					$editable = true;
+				}
+				$encryptId = '';
+				if ($uId) {
+					$encryptId = AppUtil::encrypt($uId);
+				}
+				if (AppUtil::isDev()) {
+					$qrcode = '../../images/qrmeipo100.jpg';
+				} else {
+					$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH);
+				}
+				$data = [
+					"qrcode"=>$qrcode,
+					"avatar"=>$avatar,
+					"nickname"=>$nickname,
+					"editable"=>$editable,
+					"hasReg"=>$hasReg,
+					"encryptId"=>$encryptId,
+				];
 				break;
 		}
 		return self::renderAPI(0, '', $data);
