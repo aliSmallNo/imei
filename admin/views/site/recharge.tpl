@@ -95,12 +95,12 @@
 				</td>
 				<td>{{$item.uname}}<br>
 					累计充值金额: ￥{{$item.recharge/10|string_format: "%.2f"}}<br>
-					累计充值媒瑰花: {{$item.recharge}}<br>
-					累计签到媒瑰花: {{$item.gift}}<br>
+					累计充值媒桂花: {{$item.recharge}}<br>
+					累计签到媒桂花: {{$item.gift}}<br>
 					累计签到金额: ￥{{$item.fen/100|string_format: "%.2f"}}<br>
 					累计牵线奖励: ￥{{$item.link/100|string_format: "%.2f"}}<br>
 					累计打赏: {{$item.cost}}<br>
-					剩余媒瑰花数: {{$item.remain}}
+					剩余媒桂花: {{$item.remain}}
 				</td>
 				<td>
 					{{$item.tcat}}
