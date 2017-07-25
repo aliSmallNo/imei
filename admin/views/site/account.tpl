@@ -95,7 +95,7 @@
 					<label class="col-sm-4 control-label">头像:</label>
 					<div class="col-sm-8 imglist">
 						<input type="file" class="form-control-static inputFile" name="uAvatar[]" accept=".jpg,.jpeg,.png">
-						<p class="help-block">（最好上传<b>宽640px高320px</b>的jpg图片）</p>
+						<p class="help-block">（最好上传<b>宽480px高480px</b>的jpg图片）</p>
 						<ul class="o-images desc">
 							<li>
 								<img src="">
