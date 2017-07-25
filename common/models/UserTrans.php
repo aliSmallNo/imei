@@ -195,8 +195,13 @@ class UserTrans extends ActiveRecord
 				left join im_pay as p on p.pId=t.tPId $where order by $order limit $limit";
 		$result = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$uIds = [];
-		foreach ($result as $v) {
-			$uIds[] = $v["uid"];
+		foreach ($result as $k => $row) {
+			$uIds[] = $row["uid"];
+			$unit = $row['unit'];
+			$result[$k]['amt_title'] = $row['flower'] . self::$UnitDict[$unit];
+			if ($unit == self::UNIT_FEN) {
+				$result[$k]['amt_title'] = round($row['flower'] / 100.0, 2) . '元';
+			}
 		}
 		$uIds = array_values(array_unique($uIds));
 

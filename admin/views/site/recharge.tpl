@@ -109,12 +109,7 @@
 					{{if $item.amt}}￥{{$item.amt/100|string_format:"%.2f"}}{{/if}}
 				</td>
 				<td>
-					{{if $item.cat==100}}{{$item.flower}}朵{{/if}}
-					{{if $item.cat==105 && $item.unit=='fen'}}￥{{$item.flower/100}}{{/if}}
-					{{if $item.cat==105 && $item.unit=='flower'}}{{$item.flower}}朵{{/if}}
-					{{if $item.cat==120 && $item.unit=='flower'}}{{$item.flower}}朵{{/if}}
-					{{if $item.cat==130 && $item.unit=='flower'}}{{$item.flower}}朵{{/if}}
-					{{if $item.cat==110 && $item.unit=='yuan'}}￥{{$item.flower}}{{/if}}
+					{{$item.amt_title}}
 				</td>
 				<td>
 					{{$item.date}}
