@@ -3539,7 +3539,8 @@ section {
 .m-wxid {
   color: #f06292;
   font-size: 1rem;
-  padding-left: 7rem; }
+  padding-left: 7rem;
+  margin-top: 0.5rem; }
   .m-wxid em {
     margin: 0.5rem;
     font-weight: 500;
