@@ -19,33 +19,21 @@
 </style>
 <div id="page-wrapper">
 	<div class="row">
-		<h4>用户关系列表</h4>
+		<h4>用户操作列表</h4>
 	</div>
-	<div class="row">
-		<form action="/site/net" method="get" class="form-inline">
-			<div class="form-group">
-				<input class="form-control" placeholder="用户(主)名称" type="text" name="name"
-							 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
-				<input class="form-control" placeholder="用户(主)手机" type="text" name="phone"
-							 value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
-			</div>
-			<div class="form-group">
-				<select class="form-control" name="relation">
-					<option value="">用户操作</option>
-					{{foreach from=$relations key=key item=item}}
-					<option value="{{$key}}"
-									{{if isset($getInfo["relation"]) && $getInfo["relation"]==$key}}selected{{/if}}>{{$item}}</option>
-					{{/foreach}}
-				</select>
-			</div>
-			<input class="form-control" placeholder="用户(从)名称" type="text" name="sname"
-						 value="{{if isset($getInfo['sname'])}}{{$getInfo['sname']}}{{/if}}"/>
-			<input class="form-control" placeholder="用户(从)手机" type="text" name="sphone"
-						 value="{{if isset($getInfo['sphone'])}}{{$getInfo['sphone']}}{{/if}}"/>
-			<button class="btn btn-primary">查询</button>
-			<span class="space"></span>
-		</form>
-	</div>
+	<form action="/site/net" class="form-inline">
+		<input class="form-control" placeholder="用户名称" name="name"
+					 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
+		<input class="form-control" placeholder="用户手机" name="phone"
+					 value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
+		<select class="form-control" name="relation">
+			<option value="">-=请选择用户操作=-</option>
+			{{foreach from=$relations key=key item=item}}
+			<option value="{{$key}}" {{if isset($getInfo["relation"]) && $getInfo["relation"]==$key}}selected{{/if}}>{{$item}}</option>
+			{{/foreach}}
+		</select>
+		<button class="btn btn-primary">查询</button>
+	</form>
 
 	<div class="row-divider"></div>
 	<div class="row">

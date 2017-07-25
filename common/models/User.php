@@ -226,6 +226,7 @@ class User extends ActiveRecord
 			$entity->$key = $val;
 		}
 		$entity->save();
+
 		return $entity->uId;
 	}
 
@@ -524,9 +525,9 @@ class User extends ActiveRecord
 			}
 		}
 		$addData = [];
-		foreach ($fields as $k => $v) {
+		foreach ($fields as $k => $field) {
 			if (isset($data[$k])) {
-				$addData[$v] = $data[$k];
+				$addData[$field] = $data[$k];
 			}
 		}
 

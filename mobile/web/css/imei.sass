@@ -677,18 +677,17 @@ section
 		font-size: 1.2rem
 
 .m-help-block
-	display: flex
+	@include displayFlex
 	em
 		font-size: 1rem
 		color: #777
 	a
 		font-size: 1rem
-		display: block
 		color: #f06292
 		border-radius: 1rem
 		border: #f06292 solid 1px
 		position: relative
-		flex: 1
+		@include displayFlex-1
 		padding: 1.2rem 0
 		margin: 0 .5rem
 		text-align: center
@@ -697,9 +696,9 @@ section
 			color: #fff
 			&:after
 				content: ''
-				width: 1rem
-				height: 1rem
-				background: url('/images/ico_reg_c.png') no-repeat center center
+				width: 1.2rem
+				height: 1.2rem
+				background: url(../images/ico_tick_w2.png) no-repeat center center
 				background-size: 100% 100%
 				display: inline-block
 				position: absolute
@@ -4112,6 +4111,7 @@ section
 			border-top: 1rem solid $mainColorLight
 			top: 0
 			left: -.7rem
+
 .mywords
 	padding: 1rem 1.5rem 1.5rem 7rem
 	position: relative

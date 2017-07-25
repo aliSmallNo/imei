@@ -29,6 +29,7 @@ class UserBuzz extends ActiveRecord
 
 	static $Token = "BLkNmzT5HdJQT8DMZu1kIK";
 	private static $WelcomeMsg = '';
+	private static $IMEI_UID = 133042;
 
 	public static function tableName()
 	{
@@ -91,7 +92,7 @@ class UserBuzz extends ActiveRecord
 		}
 
 		$wxOpenId = $postData["FromUserName"];
-		UserWechat::getInfoByOpenId($wxOpenId);
+		$wxInfo = UserWechat::getInfoByOpenId($wxOpenId);
 		$msgType = isset($postData["MsgType"]) ? strtolower($postData["MsgType"]) : "";
 		$event = isset($postData["Event"]) ? strtolower($postData["Event"]) : "";
 		$eventKey = isset($postData["EventKey"]) && is_string($postData["EventKey"]) ? strtolower($postData["EventKey"]) : "";
@@ -131,12 +132,14 @@ class UserBuzz extends ActiveRecord
 						}
 					}
 				} else {
+					UserNet::addByOpenId($fromUsername, self::$IMEI_UID, UserNet::REL_SUBSCRIBE);
 					$resp = self::welcomeMsg($fromUsername, $toUsername, $event);
 					UserWechat::getInfoByOpenId($fromUsername, true);
 				}
 				break;
 			case "unsubscribe":
 				if ($fromUsername && strlen($fromUsername) > 20) {
+					UserNet::addByOpenId($fromUsername, self::$IMEI_UID, UserNet::REL_UNSUBSCRIBE);
 					$debug .= $event . "**";
 					UserWechat::removeOpenId($fromUsername);
 				}

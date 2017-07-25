@@ -323,25 +323,25 @@ class SiteController extends BaseController
 		$cat = self::getParam("cat");
 		$st = User::STATUS_ACTIVE;
 		//$criteria[] = " u.uStatus=$st ";
-		$criteria = [];
+		$criteria = $params = [];
 
 		if ($name) {
-			$name = str_replace("'", "", $name);
-			$criteria[] = " u.uName like '%$name%' ";
+			$criteria[] = " u.uName like :name ";
+			$params[':name'] = '%' . trim($name) . '%';
 		}
 		if ($cat) {
 			$criteria[] = " t.tCategory =$cat ";
 		}
 
-		list($items, $count, $allcharge) = UserTrans::recharges($criteria, $page);
-
+		list($items, $count) = UserTrans::recharges($criteria, $params, $page);
+		$balance = UserTrans::balance($criteria, $params);
 		$pagination = $pagination = self::pagination($page, $count);
 		return $this->renderPage("recharge.tpl",
 			[
+				'balance' => $balance,
 				'getInfo' => $getInfo,
 				'items' => $items,
 				'pagination' => $pagination,
-				"paid" => $allcharge,   //充值合计
 				'category' => 'users',
 				'catDict' => UserTrans::$catDict,
 			]
@@ -418,27 +418,18 @@ class SiteController extends BaseController
 		$relation = self::getParam("relation");
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
-		$sname = self::getParam("sname");
-		$sphone = self::getParam("sphone");
 		$condition = "";
 		$st = User::STATUS_ACTIVE;
-		//$condition .= " and u.uStatus=$st and u1.uStatus=$st ";
 		if ($relation) {
 			$condition .= " and n.nRelation=$relation ";
 		}
 		if ($name) {
 			$name = str_replace("'", "", $name);
-			$condition .= " and  u.uName like '%$name%' ";
+			$condition .= " and (u.uName like '%$name%' or u1.uName like '%$name%')";
 		}
 		if ($phone) {
-			$condition .= " and u.uPhone=$phone ";
-		}
-		if ($sname) {
-			$sname = str_replace("'", "", $sname);
-			$condition .= " and  u1.uName like '%$sname%' ";
-		}
-		if ($sphone) {
-			$condition .= " and u1.uPhone=$sphone ";
+			$phone = str_replace("'", "", $phone);
+			$condition .= " and (u.uPhone like '$phone%' or u1.uPhone like '$phone%')";
 		}
 		list($list, $count) = UserNet::relations($condition, $page);
 		$pagination = self::pagination($page, $count);

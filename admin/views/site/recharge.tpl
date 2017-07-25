@@ -9,6 +9,12 @@
 		border-radius: 5px;
 		padding: 2px 5px;
 	}
+
+	.f-tip {
+		font-size: 12px;
+		color: #666;
+		font-weight: 300;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="row">
@@ -30,11 +36,32 @@
 				</select>
 			</div>
 			<button class="btn btn-primary">查询</button>
-			<span class="space"></span>
-			<label>充值合计 <span class="text-danger">￥{{$paid/100|string_format:"%.2f"}}</span></label>
 		</form>
 	</div>
-
+	<div class="row-divider"></div>
+	<div class="row">
+		<table class="table table-striped table-bordered">
+			<thead>
+			<tr>
+				{{foreach from=$balance item=item}}
+				<th>{{$item.title}}</th>
+				{{/foreach}}
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				{{foreach from=$balance item=item}}
+				<td>{{$item.amt}} {{$item.unit_name}}</td>
+				{{/foreach}}
+			</tr>
+			</tbody>
+			<tfoot>
+			<tr>
+				<td colspan="{{$balance|@count}}"><b class="f-tip">10朵媒桂花 = 1元</b></td>
+			</tr>
+			</tfoot>
+		</table>
+	</div>
 	<div class="row-divider"></div>
 	<div class="row">
 		<table class="table table-striped table-bordered">
@@ -67,13 +94,13 @@
 					<img src="{{$item.avatar}}" style="width: 65px;height: 65px;">
 				</td>
 				<td>{{$item.uname}}<br>
-					累计充值金额: ￥{{$item.recharge/10|string_format:"%.2f"}}<br>
-					累计充值媒瑰花: {{$item.recharge}}<br>
-					累计签到媒瑰花: {{$item.gift}}<br>
-					累计签到金额: ￥{{$item.fen/100|string_format:"%.2f"}}<br>
-					累计牵线奖励: ￥{{$item.link}}<br>
+					累计充值金额: ￥{{$item.recharge/10|string_format: "%.2f"}}<br>
+					累计充值媒桂花: {{$item.recharge}}<br>
+					累计签到媒桂花: {{$item.gift}}<br>
+					累计签到金额: ￥{{$item.fen/100|string_format: "%.2f"}}<br>
+					累计牵线奖励: ￥{{$item.link/100|string_format: "%.2f"}}<br>
 					累计打赏: {{$item.cost}}<br>
-					剩余媒瑰花数: {{$item.remain}}
+					剩余媒桂花: {{$item.remain}}
 				</td>
 				<td>
 					{{$item.tcat}}
@@ -82,12 +109,7 @@
 					{{if $item.amt}}￥{{$item.amt/100|string_format:"%.2f"}}{{/if}}
 				</td>
 				<td>
-					{{if $item.cat==100}}{{$item.flower}}朵{{/if}}
-					{{if $item.cat==105 && $item.unit=='fen'}}￥{{$item.flower/100}}{{/if}}
-					{{if $item.cat==105 && $item.unit=='flower'}}{{$item.flower}}朵{{/if}}
-					{{if $item.cat==120 && $item.unit=='flower'}}{{$item.flower}}朵{{/if}}
-					{{if $item.cat==130 && $item.unit=='flower'}}{{$item.flower}}朵{{/if}}
-					{{if $item.cat==110 && $item.unit=='yuan'}}￥{{$item.flower}}{{/if}}
+					{{$item.amt_title}}
 				</td>
 				<td>
 					{{$item.date}}

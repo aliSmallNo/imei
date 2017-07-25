@@ -18,14 +18,16 @@ class UserTrans extends ActiveRecord
 
 	const CAT_RECHARGE = 100;//充值
 	const CAT_SIGN = 105;   //签到
+	const CAT_NEW = 108;
 	const CAT_LINK = 110;   //牵线奖励
-	const CAT_COST = 120;   //打赏
+	const CAT_REWARD = 120;   //打赏
 	const CAT_RETURN = 130;  //拒绝退回
 	static $catDict = [
 		self::CAT_RECHARGE => "充值",
 		self::CAT_SIGN => "签到奖励",
+		self::CAT_NEW => "新人奖励",
 		self::CAT_LINK => "牵线奖励",
-		self::CAT_COST => "打赏",
+		self::CAT_REWARD => "打赏",
 		self::CAT_RETURN => "拒绝退回",
 	];
 
@@ -94,8 +96,9 @@ class UserTrans extends ActiveRecord
 			$params[':id'] = $uid;
 		}
 		$conn = AppUtil::db();
-		$sql = 'SELECT SUM(case when tCategory=100 or tCategory=105 or tCategory=130  then tAmt when tCategory=120 then -tAmt end) as amt,tUnit as unit, tUId as uid
- 			from im_user_trans WHERE tUId>0 ' . $strCriteria . ' GROUP BY tUId,tUnit';
+		$sql = 'SELECT SUM(case when tCategory in (100,105,110,130) then tAmt when tCategory=120 then -tAmt end) as amt,
+				tUnit as unit, tUId as uid
+ 				from im_user_trans WHERE tUId>0 ' . $strCriteria . ' GROUP BY tUId,tUnit';
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
 		foreach ($ret as $row) {
@@ -146,11 +149,32 @@ class UserTrans extends ActiveRecord
 			return $ret;
 		}
 		return self::stat($uid);
-
 	}
 
+	public static function balance($criteria, $params, $conn = '')
+	{
+		$criteria = implode(" AND ", $criteria);
+		if ($criteria) {
+			$criteria = ' WHERE ' . $criteria;
+		}
+		$sql = 'SELECT sum(tAmt) as amt,tCategory as cat,tTitle as title,tUnit as unit
+ 				FROM im_user_trans as t 
+ 				JOIN im_user as u on t.tUId = u.uId ' . $criteria . ' group by tCategory,tTitle,tUnit';
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		foreach ($ret as $k => $row) {
+			if ($row['unit'] == self::UNIT_FEN) {
+				$ret[$k]['amt'] = sprintf('%.2f', $row['amt'] / 100.0);
+				$ret[$k]['unit'] = self::UNIT_YUAN;
+			}
+			$ret[$k]['unit_name'] = self::$UnitDict[$ret[$k]['unit']];
+		}
+		return $ret;
+	}
 
-	public static function recharges($criteria, $page, $pageSize = 20)
+	public static function recharges($criteria, $params, $page, $pageSize = 20)
 	{
 		$limit = ($page - 1) * $pageSize . "," . $pageSize;
 		$criteria = implode(" and ", $criteria);
@@ -167,25 +191,27 @@ class UserTrans extends ActiveRecord
 		$sql = "select u.uId as uid,u.uName as uname,u.uAvatar as avatar,p.pAmt as amt ,
 				t.tAmt as flower,tAddedOn as date,t.tTitle as tcat,tUnit as unit,t.tCategory as cat
 				from im_user_trans as t 
-				 join im_user as u on u.uId=t.tUId 
-				left join im_pay as p on p.pId=t.tPId
-				  $where   
-				order by $order 
-				limit $limit";
-		$result = $conn->createCommand($sql)->queryAll();
+				join im_user as u on u.uId=t.tUId 
+				left join im_pay as p on p.pId=t.tPId $where order by $order limit $limit";
+		$result = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$uIds = [];
-		foreach ($result as $v) {
-			$uIds[] = $v["uid"];
+		foreach ($result as $k => $row) {
+			$uIds[] = $row["uid"];
+			$unit = $row['unit'];
+			$result[$k]['amt_title'] = $row['flower'] . self::$UnitDict[$unit];
+			if ($unit == self::UNIT_FEN) {
+				$result[$k]['amt_title'] = round($row['flower'] / 100.0, 2) . '元';
+			}
 		}
 		$uIds = array_values(array_unique($uIds));
 
 		$sql = "select count(1) as co
 				from im_user_trans as t 
 				join im_user as u on u.uId=t.tUId 
-				left join im_pay as p on p.pId=t.tPId   $where ";
-		$count = $conn->createCommand($sql)->queryOne();
+				left join im_pay as p on p.pId=t.tPId $where ";
+		$count = $conn->createCommand($sql)->bindValues($params)->queryOne();
 		$count = $count ? $count["co"] : 0;
-		list($balances, $allcharge) = self::getBalances($uIds);
+		list($balances, $amt) = self::getBalances($uIds);
 		foreach ($result as &$v) {
 			foreach ($balances as $val) {
 				if ($val["uid"] == $v["uid"]) {
@@ -198,9 +224,7 @@ class UserTrans extends ActiveRecord
 				}
 			}
 		}
-
-		return [$result, $count, $allcharge];
-
+		return [$result, $count, $amt];
 	}
 
 	public static function getBalances($uid)
@@ -223,11 +247,10 @@ class UserTrans extends ActiveRecord
 
 		$catCharge = self::CAT_RECHARGE;   //充值
 		$catSign = self::CAT_SIGN;         //签到
-		$catCost = self::CAT_COST;         //打赏
+		$catCost = self::CAT_REWARD;         //打赏
 		$catReturn = self::CAT_RETURN;       //退回
 		$unitFen = self::UNIT_FEN;
 		$unitGift = self::UNIT_GIFT;
-		$unitYuan = self::UNIT_YUAN;
 
 		$sql = "SELECT SUM(CASE WHEN tCategory=$catCharge or tCategory=$catReturn  THEN tAmt 
 								WHEN tCategory=$catSign AND  tUnit='$unitGift' THEN tAmt  
@@ -237,16 +260,16 @@ class UserTrans extends ActiveRecord
 					  SUM(CASE WHEN tCategory=$catSign and tUnit='$unitFen' THEN tAmt ELSE 0 END ) as fen,
 					  SUM(CASE WHEN tCategory=$catSign and tUnit='$unitGift' THEN tAmt ELSE 0 END ) as gift,
 					  SUM(CASE WHEN tCategory=$catCost THEN tAmt ELSE 0 END ) as cost,
-					  SUM(CASE WHEN tCategory=110 and tUnit='$unitYuan' THEN tAmt ELSE 0 END ) as link,
+					  SUM(CASE WHEN tCategory=110 and tUnit='$unitFen' THEN tAmt ELSE 0 END ) as link,
 					  tUId as uid
 				from im_user_trans WHERE tUId>0 and tUId in ($uid) GROUP BY tUId";
 		$ret = $conn->createCommand($sql)->queryAll();
 
-		$sql = "SELECT sum(p.pAmt) as allcharge from im_user_trans as t
+		$sql = "SELECT sum(p.pAmt) as allcharge 
+			from im_user_trans as t
 			join im_pay as p on p.pId=t.tPId";
-
-		$allcharge = $conn->createCommand($sql)->queryOne();
-		return [$ret, $allcharge["allcharge"]];
+		$amt = $conn->createCommand($sql)->queryScalar();
+		return [$ret, $amt];
 	}
 
 	public static function records($uid = 0, $role = '', $page = 1, $pageSize = 20)
@@ -274,20 +297,13 @@ class UserTrans extends ActiveRecord
 				'unit_name' => isset(self::$UnitDict[$unit]) ? self::$UnitDict[$unit] : '',
 			];
 			if ($unit == self::UNIT_FEN) {
-				$item['amt'] = round($item['amt'] / 100.00, 2);
-				$unit = self::UNIT_YUAN;
-				$item['unit'] = $unit;
-				$item['unit_name'] = isset(self::$UnitDict[$unit]) ? self::$UnitDict[$unit] : '';
-			}
-			if ($role == User::ROLE_MATCHER && $item['unit'] == self::UNIT_YUAN) {
+				$item['amt'] = sprintf('%.2f', $item['amt'] / 100.00);
+				$item['unit'] = 'yuan';
+				$item['unit_name'] = '元';
 				$item['date_part'] = date('n月j日', strtotime($row['tAddedOn']));
 				$item['time'] = date('H:i:s', strtotime($row['tAddedOn']));
-				$items[] = $item;
-			} elseif ($role == User::ROLE_SINGLE && $item['unit'] == self::UNIT_GIFT) {
-				$items[] = $item;
-			} else {
-				$items[] = $item;
 			}
+			$items[] = $item;
 		}
 		return $items;
 	}

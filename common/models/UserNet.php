@@ -22,6 +22,8 @@ class UserNet extends ActiveRecord
 	const REL_FAVOR = 150;
 	const REL_QR_SCAN = 210;
 	const REL_QR_SUBSCRIBE = 212;
+	const REL_UNSUBSCRIBE = 250;
+	const REL_SUBSCRIBE = 255;
 
 	static $RelDict = [
 		self::REL_INVITE => '邀请',
@@ -31,6 +33,8 @@ class UserNet extends ActiveRecord
 		self::REL_FAVOR => '心动',
 		self::REL_QR_SCAN => '扫推广二维码',
 		self::REL_QR_SUBSCRIBE => '扫二维码且关注',
+		self::REL_UNSUBSCRIBE => '取消关注',
+		self::REL_SUBSCRIBE => '关注公众号',
 	];
 
 	const DELETE_FLAG_YES = 1;
@@ -75,6 +79,22 @@ class UserNet extends ActiveRecord
 		$entity->save();
 
 		return $entity->nId;
+	}
+
+	public static function addByOpenId($uOpenId, $subUid, $relation, $note = '')
+	{
+		$uInfo = User::findOne(['uOpenId' => $uOpenId]);
+		if ($uInfo) {
+			$entity = new self();
+			$entity->nUId = $uInfo['uId'];
+			$entity->nSubUId = $subUid;
+			$entity->nRelation = $relation;
+			$entity->nUpdatedOn = date('Y-m-d H:i:s');
+			$entity->nNote = $note;
+			$entity->save();
+			return $entity->nId;
+		}
+		return 0;
 	}
 
 	public static function replace($uid, $subUid, $relation, $data)
@@ -444,7 +464,7 @@ class UserNet extends ActiveRecord
 			":status" => UserNet::STATUS_WAIT,
 			":uid" => $myUid,
 			":Subuid" => $id,
-			":cat" => UserTrans::CAT_COST,
+			":cat" => UserTrans::CAT_REWARD,
 		])->queryOne();
 
 		switch ($pf) {
@@ -455,8 +475,8 @@ class UserNet extends ActiveRecord
 				$mpInfo = self::findOne(["nSubUId" => $myUid, 'nDeletedFlag' => 0, "nRelation" => self::REL_BACKER]);
 				if ($mpInfo && $payInfo) {
 					$mpId = $mpInfo->nUId;
-					$reward = round($payInfo["tAmt"] * .60 / 10.0, 2);
-					UserTrans::add($mpId, $payInfo["nId"], UserTrans::CAT_LINK, UserTrans::$catDict[UserTrans::CAT_LINK], $reward, UserTrans::UNIT_YUAN);
+					$reward = round($payInfo["tAmt"] * 6, 2);
+					UserTrans::add($mpId, $payInfo["nId"], UserTrans::CAT_LINK, UserTrans::$catDict[UserTrans::CAT_LINK], $reward, UserTrans::UNIT_FEN);
 				}
 				break;
 			case "refuse":
@@ -482,7 +502,7 @@ class UserNet extends ActiveRecord
 		}
 		// 打赏给 $id
 		$nid = UserNet::add($id, $myId, UserNet::REL_LINK);
-		UserTrans::add($myId, $nid, UserTrans::CAT_COST, UserTrans::$catDict[UserTrans::CAT_COST], $num, UserTrans::UNIT_GIFT);
+		UserTrans::add($myId, $nid, UserTrans::CAT_REWARD, UserTrans::$catDict[UserTrans::CAT_REWARD], $num, UserTrans::UNIT_GIFT);
 		WechatUtil::toNotice($id, $myId, "wxNo");
 		return $amt;
 	}
@@ -528,8 +548,8 @@ class UserNet extends ActiveRecord
 			$v['av'] = $v['thumb'] ? $v['thumb'] : $v['avatar'];
 			$v['sav'] = $v['sthumb'] ? $v['sthumb'] : $v['savatar'];
 			$text = $left = $right = [];
-			$uInfo = ['id' => $v['uId'],'avatar' => $v['avatar'], 'name' => $v['uname'], 'phone' => $v['phone']];
-			$sInfo = ['id' => $v['sId'],'avatar' => $v['savatar'], 'name' => $v['sname'], 'phone' => $v['sphone']];
+			$uInfo = ['id' => $v['uId'], 'avatar' => $v['avatar'], 'name' => $v['uname'], 'phone' => $v['phone']];
+			$sInfo = ['id' => $v['sId'], 'avatar' => $v['savatar'], 'name' => $v['sname'], 'phone' => $v['sphone']];
 			switch ($v["nRelation"]) {
 				case self::REL_INVITE:
 					$text = ['邀请'];
@@ -565,6 +585,16 @@ class UserNet extends ActiveRecord
 					$text = ['扫描了', '的二维码且关注'];
 					$left = $sInfo;
 					$right = $uInfo;
+					break;
+				case self::REL_UNSUBSCRIBE:
+					$text = ['取消关注', ''];
+					$left = $uInfo;
+					$right = $sInfo;
+					break;
+				case self::REL_SUBSCRIBE:
+					$text = ['关注', ''];
+					$left = $uInfo;
+					$right = $sInfo;
 					break;
 				default:
 					break;
