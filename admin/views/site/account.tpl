@@ -48,25 +48,25 @@
 				<div class="form-group">
 					<label class="col-sm-4 control-label">昵称:</label>
 					<div class="col-sm-8">
-						<input type="text" data-tag="uName" required="required" class="form-control" placeholder="(必填)">
+						<input data-tag="uName" required class="form-control" placeholder="(必填)">
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-sm-4 control-label">手机:</label>
 					<div class="col-sm-8">
-						<input type="text" data-tag="uPhone" class="form-control" placeholder="(非必填)">
+						<input data-tag="uPhone" class="form-control" placeholder="(非必填)">
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-sm-4 control-label">密码:</label>
 					<div class="col-sm-8">
-						<input type="text" data-tag="uPassword" class="form-control" placeholder="(非必填)">
+						<input data-tag="uPassword" class="form-control" placeholder="(非必填)">
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-sm-4 control-label">邮件:</label>
 					<div class="col-sm-8">
-						<input type="text" data-tag="uEmail" class="form-control" placeholder="(非必填)">
+						<input data-tag="uEmail" class="form-control" placeholder="(非必填)">
 					</div>
 				</div>
 				<div class="form-group">
