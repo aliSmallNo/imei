@@ -132,16 +132,15 @@ class UserBuzz extends ActiveRecord
 						}
 					}
 				} else {
-					UserNet::add($wxInfo['uId'], self::$IMEI_UID, UserNet::REL_SUBSCRIBE);
-//					self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SUBSCRIBE, $qId);
+					UserNet::addByOpenId($fromUsername, self::$IMEI_UID, UserNet::REL_SUBSCRIBE);
 					$resp = self::welcomeMsg($fromUsername, $toUsername, $event);
 					UserWechat::getInfoByOpenId($fromUsername, true);
 				}
 				break;
 			case "unsubscribe":
 				if ($fromUsername && strlen($fromUsername) > 20) {
+					UserNet::addByOpenId($fromUsername, self::$IMEI_UID, UserNet::REL_UNSUBSCRIBE);
 					$debug .= $event . "**";
-					UserNet::add($wxInfo['uId'], self::$IMEI_UID, UserNet::REL_UNSUBSCRIBE);
 					UserWechat::removeOpenId($fromUsername);
 				}
 				break;

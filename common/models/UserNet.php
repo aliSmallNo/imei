@@ -81,6 +81,14 @@ class UserNet extends ActiveRecord
 		return $entity->nId;
 	}
 
+	public static function addByOpenId($uOpenId, $subUid, $relation, $note = '')
+	{
+		$uInfo = User::findOne(['uOpenId' => $uOpenId]);
+		if ($uInfo) {
+			self::add($uInfo['uId'], $subUid, $relation, $note);
+		}
+	}
+
 	public static function replace($uid, $subUid, $relation, $data)
 	{
 		$entity = self::findOne(['nUId' => $uid, 'nSubUId' => $subUid, 'nRelation' => $relation, 'nDeletedFlag' => 0]);
