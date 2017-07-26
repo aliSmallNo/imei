@@ -48,10 +48,8 @@ class WxController extends BaseController
 		if ($wxInfo) {
 			LogAction::add($wxInfo["uId"], $openId, LogAction::ACTION_LOGIN);
 			if ($wxInfo["uRole"] == User::ROLE_MATCHER) {
-				LogAction::add($wxInfo["uId"], $openId, LogAction::ACTION_MATCH);
 				$url = '/wx/match#slink';
 			} else {
-				LogAction::add($wxInfo["uId"], $openId, LogAction::ACTION_SINGLE);
 				$url = '/wx/single#slook';
 			}
 		}
@@ -283,6 +281,8 @@ class WxController extends BaseController
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
 		}
+		LogAction::add($wxInfo["uId"], $openId, LogAction::ACTION_MATCH);
+
 		$hint = '';
 		$matcher = $stat = $singles = [];
 		$prefer = 'male';
@@ -603,6 +603,8 @@ class WxController extends BaseController
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
 		}
+		LogAction::add($wxInfo["uId"], $openId, LogAction::ACTION_SINGLE);
+
 		$uInfo = User::user(['uId' => $wxInfo['uId']]);
 		$avatar = $wxInfo["Avatar"];
 		$nickname = $wxInfo["uName"];
