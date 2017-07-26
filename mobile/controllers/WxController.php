@@ -9,6 +9,7 @@
 namespace mobile\controllers;
 
 use common\models\City;
+use common\models\LogAction;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
@@ -45,9 +46,12 @@ class WxController extends BaseController
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$url = '/wx/imei';
 		if ($wxInfo) {
+			LogAction::add($wxInfo["uId"], $openId, LogAction::ACTION_LOGIN);
 			if ($wxInfo["uRole"] == User::ROLE_MATCHER) {
+				LogAction::add($wxInfo["uId"], $openId, LogAction::ACTION_MATCH);
 				$url = '/wx/match#slink';
 			} else {
+				LogAction::add($wxInfo["uId"], $openId, LogAction::ACTION_SINGLE);
 				$url = '/wx/single#slook';
 			}
 		}

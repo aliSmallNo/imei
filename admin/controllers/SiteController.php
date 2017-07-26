@@ -505,4 +505,25 @@ class SiteController extends BaseController
 		);
 	}
 
+
+	public function actionReusestat()
+	{
+		$newFlag = 0;
+		$strReuse = "";
+		$cat = "week";
+
+		return $this->renderPage("reusestat.tpl",
+			[
+				'detailcategory' => 'bigdata/reusestat' . ($newFlag ? '?new=1' : ''),
+				'category' => "bigdata",
+				'reuseData' => json_decode($strReuse, true),
+				'cat' => $cat,
+				'newFlag' => $newFlag,
+				'bigCat' => $newFlag ? 'mart' : '',
+				'list' => [],
+				'debug' => Admin::isDebugUser() ? 1 : 0,
+			]
+		);
+	}
+
 }
