@@ -462,12 +462,12 @@ class WechatUtil
 			'keyword1' => '',
 			'keyword2' => '',
 			'keyword3' => date("Y年n月j日 H:i"),
-			'remark' => ''
+			'remark' => "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309"
 		];
-		$templateId = 'ZJVqVttar_9v9azyjydZzFiR8hF7pq-BpY_XBbugJDM';
 		$wxUrl = AppUtil::wechatUrl();
 		switch ($noticeTag) {
 			case self::NOTICE_REWARD_NEW:
+				$templateId = 'ZJVqVttar_9v9azyjydZzFiR8hF7pq-BpY_XBbugJDM';
 				$url = $wxUrl . "/wx/sw?id=" . $encryptId;
 				$keywords['first'] = "新人注册福利到啦，媒桂花奖励到啦。\n";
 				$keywords['keyword1'] = $title;
@@ -475,10 +475,13 @@ class WechatUtil
 				$keywords['remark'] = date("\nY年n月j日 H:i");
 				break;
 			default:
-				$url = '';
+				$url = $templateId = '';
 				break;
 		}
 
+		if (!$templateId || !$url) {
+			return 0;
+		}
 		$bodyInfo = [
 			"touser" => $openId,
 			"template_id" => $templateId,
