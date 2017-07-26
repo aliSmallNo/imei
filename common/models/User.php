@@ -410,7 +410,8 @@ class User extends ActiveRecord
 		}
 		$offset = ($page - 1) * $pageSize;
 		$conn = AppUtil::db();
-		$sql = "SELECT u.*, w.wSubscribe FROM im_user as u 
+		$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe
+ 				  FROM im_user as u 
 				  JOIN im_user_wechat as w on w.wUId=u.uId
 				  WHERE uId>0 $strCriteria 
 				  ORDER BY uAddedOn DESC Limit $offset, $pageSize";
