@@ -11,7 +11,7 @@ use yii\db\ActiveRecord;
 class UserMsg extends ActiveRecord
 {
 	const CATEGORY_WX_MSG = 5; //后台公众号消息
-	
+
 	const CATEGORY_DEFAULT = 10;
 
 	//推送消息
@@ -26,6 +26,7 @@ class UserMsg extends ActiveRecord
 	const CATEGORY_ADDWX_REFUSE = 130;
 	const CATEGORY_RETURN_ROSE = 140;
 	const CATEGORY_MP_SAY = 150;
+	const CATEGORY_REWARD_NEW = 160;
 
 	static $catDict = [
 		self::CATEGORY_ADMIN_PASS => "审核通过",
@@ -39,6 +40,7 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_ADDWX_REFUSE => "拒绝你的微信好友请求",
 		self::CATEGORY_RETURN_ROSE => "退回媒瑰花",
 		self::CATEGORY_MP_SAY => "修改了媒婆说",
+		self::CATEGORY_REWARD_NEW => "新人奖励",
 	];
 
 	public static function tableName()
@@ -61,7 +63,7 @@ class UserMsg extends ActiveRecord
 
 	public static function wechatDetail($openId)
 	{
-		$conn = \Yii::$app->db;
+		$conn = AppUtil::db();
 		$cat = UserMsg::CATEGORY_WX_MSG;
 		$sql = "select * from (SELECT bType as type, b.bId as id,'wechat-user' as cat, b.bDate as dt,
 				 ifnull(w.wAvatar,'') as avatar,

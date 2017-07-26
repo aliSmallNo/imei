@@ -5,6 +5,8 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use admin\models\Menu;
+use common\models\UserTrans;
+use common\utils\AppUtil;
 
 
 class AdminController extends BaseController
@@ -65,6 +67,7 @@ class AdminController extends BaseController
 	 * */
 	public function actionUsers()
 	{
+
 		Admin::staffOnly();
 		$page = self::getParam("page", 1);
 		$name = self::getParam('name');

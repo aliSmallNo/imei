@@ -9,8 +9,10 @@
 namespace common\models;
 
 
+use admin\models\Admin;
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
+use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
 
 class UserTrans extends ActiveRecord
@@ -262,9 +264,6 @@ class UserTrans extends ActiveRecord
 			$balance['unit'] = $unit;
 			$items[$uid]['details'][$cat . '-' . $unit] = $balance;
 		}
-		foreach ($items as $k => $item) {
-
-		}
 		return [$items, $count];
 	}
 
@@ -349,10 +348,12 @@ class UserTrans extends ActiveRecord
 		return $items;
 	}
 
-	public static function addReward($uid, $category)
+	public static function addReward($uid, $category, $conn = '')
 	{
 		$ret = 0;
-		$conn = AppUtil::db();
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
 		switch ($category) {
 			case self::CAT_NEW:
 				$amt = 66;
@@ -367,6 +368,10 @@ class UserTrans extends ActiveRecord
 					':amt' => $amt,
 					':unit' => $unit,
 				])->execute();
+				if ($ret) {
+					WechatUtil::templateMsg(WechatUtil::NOTICE_REWARD_NEW,
+						$uid, '新人奖励媒桂花', $amt . '媒桂花', Admin::getAdminId());
+				}
 				break;
 		}
 		return $ret;

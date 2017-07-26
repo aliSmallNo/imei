@@ -10,7 +10,6 @@ namespace console\controllers;
  */
 use common\models\User;
 use common\models\UserNet;
-use common\models\UserQR;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
@@ -344,6 +343,32 @@ class FooController extends Controller
 			}
 		}
 		return date('Y-m-d H:i:s');
+	}
+
+	public function actionWeek()
+	{
+		$startTime = strtotime("2015-05-18");
+		$conn = AppUtil::db();
+		$sql = "insert into `im_week` (`wTitle`,`wMonday`,`wSunday`,`wDay`,wDayIndex) values(:title,:monday,:sunday,:dy,:di)";
+		$cmd = $conn->createCommand($sql);
+		$conn->createCommand("delete from im_week")->execute();
+		for ($k = 0; $k < 300; $k++) {
+			$title = date("n月j日", $startTime) . "~" . date("n月j日", $startTime + 86400 * 6);
+			$monday = date("Y-m-d", $startTime);
+			$sunday = date("Y-m-d", $startTime + 86400 * 6);
+			$index = 1;
+			for ($m = $startTime; $m <= $startTime + 86400 * 6; $m += 86400) {
+				$cmd->bindValues([
+					":title" => $title,
+					":monday" => $monday,
+					":sunday" => $sunday,
+					":dy" => date("Y-m-d", $m),
+					":di" => $index
+				])->execute();
+				$index++;
+			}
+			$startTime += 86400 * 7;
+		}
 	}
 
 	public function actionWxmenu()
