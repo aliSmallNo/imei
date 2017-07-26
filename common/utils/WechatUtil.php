@@ -491,7 +491,7 @@ class WechatUtil
 			"data" => [
 				"first" => ["color" => "#333333", "value" => $keywords['first']],
 				"keyword1" => ["color" => "#0D47A1", "value" => $keywords['keyword1']],
-				"keyword2" => ["color" => "#f491b2", "value" => $keywords['keyword2']],
+				"keyword2" => ["color" => "#f06292", "value" => $keywords['keyword2']],
 				"keyword3" => ["color" => "#333333", "value" => $keywords['keyword3']],
 				"remark" => ["color" => "#555555", "value" => $keywords['remark']],
 			]
@@ -578,7 +578,7 @@ class WechatUtil
 			"data" => [
 				"first" => ["color" => "#333333", "value" => $keywords['first']],
 				"keyword1" => ["color" => "#0D47A1", "value" => $keywords['keyword1']],
-				"keyword2" => ["color" => "#f491b2", "value" => $keywords['keyword2']],
+				"keyword2" => ["color" => "#f06292", "value" => $keywords['keyword2']],
 				"keyword3" => ["color" => "#333333", "value" => $keywords['keyword3']],
 				"remark" => ["color" => "#555555", "value" => $keywords['remark']],
 			]
@@ -664,9 +664,9 @@ class WechatUtil
 			"url" => $url,
 			"data" => [
 				"first" => ["color" => "#555555", "value" => "你好，$name!\n"],
-				"keyword1" => ["color" => "#555555", "value" => $keyword1Val],
-				"keyword2" => ["color" => "#555555", "value" => $keyword2Val],
-				"keyword3" => ["color" => "#555555", "value" => date("Y年n月j日 H:i")],
+				"keyword1" => ["color" => "#0D47A1", "value" => $keyword1Val],
+				"keyword2" => ["color" => "#f06292", "value" => $keyword2Val],
+				"keyword3" => ["color" => "#333333", "value" => date("Y年n月j日 H:i")],
 				"remark" => ["color" => "#555555", "value" => "\n 点击下方详情查看吧~~"],
 			]
 		];
