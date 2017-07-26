@@ -473,9 +473,11 @@ class WechatUtil
 				$keywords['keyword1'] = $title;
 				$keywords['keyword2'] = $subTitle;
 				$keywords['remark'] = date("\nY年n月j日 H:i");
+				$msgCat = UserMsg::CATEGORY_REWARD_NEW;
 				break;
 			default:
 				$url = $templateId = '';
+				$msgCat = 0;
 				break;
 		}
 
@@ -499,7 +501,7 @@ class WechatUtil
 		AppUtil::postJSON($url, json_encode($bodyInfo));
 		$result = UserMsg::edit("", [
 			"mUId" => $uId,
-			"mCategory" => $noticeTag,
+			"mCategory" => $msgCat,
 			"mText" => json_encode($bodyInfo, JSON_UNESCAPED_UNICODE),
 			"mAddedBy" => Admin::getAdminId(),
 		]);
