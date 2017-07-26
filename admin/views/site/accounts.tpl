@@ -173,9 +173,9 @@
 				<span class="role{{$prod.role}}">{{$prod.role_t}}</span> {{$prod.name}}
 				<em>{{$prod.phone}} {{$prod.location_t}}</em>
 				<em>{{$prod.note_t}}</em>
+				<span class="sub{{$prod.subscribe}}">{{if $prod.subscribe}}已关注{{else}}取消关注{{/if}}</span>
 				<span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
 				<span class="status-1">{{if $prod.certstatus==2}}{{$prod.certstatus_t}}{{/if}}</span>
-				<span class="sub{{$prod.subscribe}}">{{if $prod.subscribe}}已关注{{else}}取消关注{{/if}}</span>
 				<br>
 				<div class="perc-wrap">
 					<div class="perc-bar-title">资料完整度 <b>{{$prod.percent}}%</b></div>
