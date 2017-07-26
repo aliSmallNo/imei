@@ -127,6 +127,7 @@ class UserBuzz extends ActiveRecord
 							$content = $qrInfo["qCode"];
 							self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SUBSCRIBE, $qId);
 							// Rain: 添加或者更新微信用户信息
+							UserWechat::refreshWXInfo($fromUsername);
 							UserWechat::getInfoByOpenId($fromUsername, true);
 							$resp = self::welcomeMsg($fromUsername, $toUsername, $event);
 						}
@@ -134,6 +135,7 @@ class UserBuzz extends ActiveRecord
 				} else {
 					UserNet::addByOpenId($fromUsername, self::$IMEI_UID, UserNet::REL_SUBSCRIBE);
 					$resp = self::welcomeMsg($fromUsername, $toUsername, $event);
+					UserWechat::refreshWXInfo($fromUsername);
 					UserWechat::getInfoByOpenId($fromUsername, true);
 				}
 				break;
