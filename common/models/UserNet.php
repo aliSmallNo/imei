@@ -320,7 +320,7 @@ class UserNet extends ActiveRecord
 	public static function hasFollowed($uid, $subUid)
 	{
 		$ret = self::findOne(['nUId' => $uid, 'nSubUId' => $subUid, 'nRelation' => self::REL_FOLLOW, 'nDeletedFlag' => 0]);
-		WechatUtil::toNotice($uid, $subUid, "focus", $ret);
+
 		return $ret ? true : false;
 	}
 
