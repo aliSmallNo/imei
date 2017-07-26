@@ -10,7 +10,6 @@ namespace console\controllers;
  */
 use common\models\User;
 use common\models\UserNet;
-use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
@@ -380,8 +379,10 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = UserWechat::refreshWXInfo('oYDJew2IjPst3upRPXc1k6wWHMkE', 1);
-		var_dump($ret);
+//		$ret = UserWechat::refreshWXInfo('oYDJew2IjPst3upRPXc1k6wWHMkE', 1);
+//		var_dump($ret);
 
+		$ret = UserNet::addLink(131379, 131446);
+		var_dump($ret);
 	}
 }

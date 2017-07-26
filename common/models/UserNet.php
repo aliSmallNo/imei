@@ -81,6 +81,27 @@ class UserNet extends ActiveRecord
 		return $entity->nId;
 	}
 
+	public static function addLink($uid, $subUid, $note = '')
+	{
+		$conn = AppUtil::db();
+		$sql = 'insert into im_user_net(nUId,nSubUId,nRelation,nNote)
+			SELECT :uid,:suid,:rel,:note FROM dual
+			WHERE NOT EXISTS(SELECT 1 FROM im_user_net WHERE nUId=:uid AND nSubUId=:suid AND nRelation=:rel AND nStatus=1 AND nDeletedFlag=0)';
+		$conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':suid' => $subUid,
+			':rel' => self::REL_LINK,
+			':note' => $note,
+		])->execute();
+		$sql = 'SELECT nId FROM im_user_net WHERE nUId=:uid AND nSubUId=:suid AND nRelation=:rel AND nStatus=1 AND nDeletedFlag=0';
+		$ret = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':suid' => $subUid,
+			':rel' => self::REL_LINK,
+		])->queryScalar();
+		return $ret;
+	}
+
 	public static function addByOpenId($uOpenId, $subUid, $relation, $note = '')
 	{
 		$uInfo = User::findOne(['uOpenId' => $uOpenId]);
@@ -251,7 +272,7 @@ class UserNet extends ActiveRecord
 
 		$conn = AppUtil::db();
 		$sql = 'select u.* from im_user as u  
-			join im_user_net as n on n.nSubUId=u.uId ' . $strCriteria .
+				join im_user_net as n on n.nSubUId=u.uId ' . $strCriteria .
 			' order by n.nAddedOn DESC limit ' . $offset . ',' . ($pageSize + 1);
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$nextPage = 0;
@@ -502,7 +523,7 @@ class UserNet extends ActiveRecord
 			return $amt;
 		}
 		// 打赏给 $id
-		$nid = UserNet::add($id, $myId, UserNet::REL_LINK);
+		$nid = UserNet::addLink($id, $myId);
 		UserTrans::add($myId, $nid, UserTrans::CAT_REWARD, UserTrans::$catDict[UserTrans::CAT_REWARD], $num, UserTrans::UNIT_GIFT);
 		WechatUtil::toNotice($id, $myId, "wxNo");
 		return $amt;
