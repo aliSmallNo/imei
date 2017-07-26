@@ -18,10 +18,6 @@ return [
 		],
 	],
 	'components' => [
-		'request' => [
-			'enableCookieValidation' => false,
-			'enableCsrfValidation' => false,
-		],
 		'log' => [
 			'targets' => [
 				[
