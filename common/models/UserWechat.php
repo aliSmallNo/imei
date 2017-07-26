@@ -320,15 +320,20 @@ class UserWechat extends ActiveRecord
 			"user_list" => []
 		];
 		$index = $updateCount = 0;
-		$sql = 'UPDATE im_user_wechat SET wRawData=:raw,wSubscribeDate=:wSubscribeDate ' . $sql2 . ' WHERE wOpenId=:openid ';
+
+		$sql = 'UPDATE im_user_wechat SET wUpdatedOn=now(),wRawData=:raw,wSubscribeDate=:wSubscribeDate ' . $sql2 . ' WHERE wOpenId=:openid ';
 		$cmdUpdate = $conn->createCommand($sql);
+		$sql = 'UPDATE im_user_wechat SET wUpdatedOn=now(),wSubscribe=0 WHERE wOpenId=:openid ';
+		$cmdUpdate2 = $conn->createCommand($sql);
 		foreach ($openIds as $id) {
 			$postData["user_list"][] = ["openid" => $id, "lang" => "zh_CN"];
+			$res = $cmdUpdate2->bindValues([
+				':openid' => $id
+			])->execute();
 			if ($index > 95) {
 				$url = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=$token";
 				$res = AppUtil::postJSON($url, json_encode($postData));
 				$res = json_decode(substr($res, strpos($res, '{')), true);
-//					$fields = ["nickname", "headimgurl", "country", "province", "city", "sex", "groupid", "unionid", "remark", "subscribe_time", "subscribe", "openid"];
 				if ($res && isset($res["user_info_list"])) {
 					foreach ($res["user_info_list"] as $user) {
 						if (!isset($user['nickname'])) continue;
@@ -338,6 +343,9 @@ class UserWechat extends ActiveRecord
 						];
 						foreach ($fields as $k => $field) {
 							$val = isset($user[$k]) ? $user[$k] : '';
+							if ($field == 'subscribe' && !$val) {
+								$val = 0;
+							}
 							$params[':' . $field] = $val;
 							if ($field == 'wSubscribeTime' && $val && is_numeric($val)) {
 								$params[':wSubscribeDate'] = date('Y-m-d H:i:s', $val);
@@ -369,6 +377,9 @@ class UserWechat extends ActiveRecord
 					];
 					foreach ($fields as $key => $field) {
 						$val = isset($user[$key]) ? $user[$key] : '';
+						if ($field == 'subscribe' && !$val) {
+							$val = 0;
+						}
 						$params[':' . $field] = $val;
 						if ($field == 'wSubscribeTime' && $val && is_numeric($val)) {
 							$params[':wSubscribeDate'] = date('Y-m-d H:i:s', $val);
