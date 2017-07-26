@@ -348,10 +348,12 @@ class UserTrans extends ActiveRecord
 		return $items;
 	}
 
-	public static function addReward($uid, $category)
+	public static function addReward($uid, $category, $conn = '')
 	{
 		$ret = 0;
-		$conn = AppUtil::db();
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
 		switch ($category) {
 			case self::CAT_NEW:
 				$amt = 66;

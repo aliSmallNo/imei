@@ -354,10 +354,20 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = UserTrans::addReward(131372, UserTrans::CAT_NEW);
+		/*$ret = UserTrans::addReward(131372, UserTrans::CAT_NEW);
 		var_dump($ret);
 		$ret = WechatUtil::templateMsg(WechatUtil::NOTICE_REWARD_NEW,
 			131379, '新人奖励媒桂花',   '66媒桂花');
-		var_dump($ret);
+		var_dump($ret);*/
+		$conn = AppUtil::db();
+		$sql = 'select * from im_user where uRole=10 AND uGender>9 AND uNote=\'\' ';
+		$ret = $conn->createCommand($sql)->queryAll();
+		$count = 0;
+		foreach ($ret as $row) {
+			$res = UserTrans::addReward($row['uId'], UserTrans::CAT_NEW, $conn);
+			var_dump([$res, $row['uId']]);
+			$count++;
+		}
+		var_dump($count);
 	}
 }
