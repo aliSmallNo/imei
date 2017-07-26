@@ -281,67 +281,115 @@ class UserWechat extends ActiveRecord
 		return $ret['errcode'];
 	}
 
-	public static function refreshWXInfo()
+	public static function refreshWXInfo($openId = '', $debug = false, $conn = '')
 	{
-		$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
-		$conn = AppUtil::db();
-		$sql = "select wOpenId from im_user_wechat WHERE  wNote!='dummy' ";
-		$openIds = $conn->createCommand($sql)->queryAll();
-		$openIds = array_values($openIds);
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$sql = "SELECT wOpenId FROM im_user_wechat WHERE wNote!='dummy' ";
+		$params = [];
+		if ($openId) {
+			$sql .= ' AND wOpenId=:openid ';
+			$params[':openid'] = $openId;
+		}
+		$openIds = $conn->createCommand($sql)->bindValues($params)->queryColumn();
+		if (!$openIds) {
+			return false;
+		}
 
-		if ($openIds) {
-			$postData = [
-				"user_list" => []
-			];
-			$index = $updateCount = 0;
-			$sql = 'update im_user_wechat set 
-						wUnionId=:unid,wNickname=:nickname,wAvatar=:avatar,wRawData=:raw,wUpdatedOn=now()
-						WHERE wOpenId=:openid';
-			$cmdUpdate = $conn->createCommand($sql);
-			foreach ($openIds as $row) {
-				$postData["user_list"][] = ["openid" => $row["wOpenId"], "lang" => "zh_CN"];
-				if ($index > 95) {
-					$url = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=$token";
-					$res = AppUtil::postJSON($url, json_encode($postData));
-					$res = json_decode(substr($res, strpos($res, '{')), true);
-//					$fields = ["nickname", "headimgurl", "country", "province", "city", "sex", "groupid", "unionid", "remark", "subscribe_time", "subscribe", "openid"];
-					if ($res && isset($res["user_info_list"])) {
-						foreach ($res["user_info_list"] as $user) {
-							if (!isset($user['nickname'])) continue;
-							$updateCount += $cmdUpdate->bindValues([
-								':unid' => isset($user['unionid']) ? $user['unionid'] : '',
-								':nickname' => isset($user['nickname']) ? $user['nickname'] : '',
-								':avatar' => isset($user['headimgurl']) ? $user['headimgurl'] : '',
-								':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
-								':openid' => $user['openid']
-							])->execute();
-						}
-					}
-					$postData = [
-						"user_list" => []
-					];
-					$index = 0;
-					echo "updateCount:" . $updateCount . date(" Y-m-d H:i:s") . "\n";
-				}
-				$index++;
-			}
-			if ($postData["user_list"] && count($postData["user_list"])) {
+		$fields = [
+			'unionid' => 'wUnionId',
+			'nickname' => 'wNickname',
+			'headimgurl' => 'wAvatar',
+			'subscribe' => 'wSubscribe',
+			'subscribe_time' => 'wSubscribeTime',
+			'sex' => 'wGender',
+			'city' => 'wCity',
+			'province' => 'wProvince',
+			'remark' => 'wRemark',
+			'country' => 'wCountry'
+		];
+		$sql2 = '';
+		foreach ($fields as $field) {
+			$sql2 .= ',' . $field . '=:' . $field;
+		}
+
+		$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+
+		$postData = [
+			"user_list" => []
+		];
+		$index = $updateCount = 0;
+
+		$sql = 'UPDATE im_user_wechat SET wUpdatedOn=now(),wRawData=:raw,wSubscribeDate=:wSubscribeDate ' . $sql2 . ' WHERE wOpenId=:openid ';
+		$cmdUpdate = $conn->createCommand($sql);
+		$sql = 'UPDATE im_user_wechat SET wUpdatedOn=now(),wSubscribe=0 WHERE wOpenId=:openid ';
+		$cmdUpdate2 = $conn->createCommand($sql);
+		foreach ($openIds as $id) {
+			$postData["user_list"][] = ["openid" => $id, "lang" => "zh_CN"];
+			$res = $cmdUpdate2->bindValues([
+				':openid' => $id
+			])->execute();
+			if ($index > 95) {
 				$url = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=$token";
 				$res = AppUtil::postJSON($url, json_encode($postData));
 				$res = json_decode(substr($res, strpos($res, '{')), true);
 				if ($res && isset($res["user_info_list"])) {
 					foreach ($res["user_info_list"] as $user) {
 						if (!isset($user['nickname'])) continue;
-						$updateCount += $cmdUpdate->bindValues([
-							':unid' => isset($user['unionid']) ? $user['unionid'] : '',
-							':nickname' => isset($user['nickname']) ? $user['nickname'] : '',
-							':avatar' => isset($user['headimgurl']) ? $user['headimgurl'] : '',
+						$params = [
 							':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
 							':openid' => $user['openid']
-						])->execute();
+						];
+						foreach ($fields as $k => $field) {
+							$val = isset($user[$k]) ? $user[$k] : '';
+							if ($field == 'subscribe' && !$val) {
+								$val = 0;
+							}
+							$params[':' . $field] = $val;
+							if ($field == 'wSubscribeTime' && $val && is_numeric($val)) {
+								$params[':wSubscribeDate'] = date('Y-m-d H:i:s', $val);
+							}
+						}
+						$updateCount += $cmdUpdate->bindValues($params)->execute();
 					}
 				}
+				$postData = [
+					"user_list" => []
+				];
+				$index = 0;
+				if ($debug) {
+					echo "updateCount:" . $updateCount . date(" Y-m-d H:i:s") . "\n";
+				}
 			}
+			$index++;
+		}
+		if ($postData["user_list"] && count($postData["user_list"])) {
+			$url = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=$token";
+			$res = AppUtil::postJSON($url, json_encode($postData));
+			$res = json_decode(substr($res, strpos($res, '{')), true);
+			if ($res && isset($res["user_info_list"])) {
+				foreach ($res["user_info_list"] as $user) {
+					if (!isset($user['nickname'])) continue;
+					$params = [
+						':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
+						':openid' => $user['openid']
+					];
+					foreach ($fields as $key => $field) {
+						$val = isset($user[$key]) ? $user[$key] : '';
+						if ($field == 'subscribe' && !$val) {
+							$val = 0;
+						}
+						$params[':' . $field] = $val;
+						if ($field == 'wSubscribeTime' && $val && is_numeric($val)) {
+							$params[':wSubscribeDate'] = date('Y-m-d H:i:s', $val);
+						}
+					}
+					$updateCount += $cmdUpdate->bindValues($params)->execute();
+				}
+			}
+		}
+		if ($debug) {
 			echo "updateCount:" . $updateCount . date(" Y-m-d H:i:s") . "\n";
 		}
 		return true;
