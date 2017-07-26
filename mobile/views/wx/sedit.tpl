@@ -23,19 +23,19 @@
 
 	.sedit-avart-p .sedit-avart-material-perc {
 		display: block;
-		height: 4px;
+		height: 3px;
 		text-align: center;
 		margin: 1rem 8rem;
 		border: 1px solid #fff;
-		border-radius: 3px;
+		border-radius: 2px;
 		z-index: 99;
 	}
 
 	.sedit-avart-p .sedit-avart-material-perc span {
 		background: #fff;
-		height: 4px;
+		height: 3px;
 		display: block;
-		border-radius: 3px;
+		border-radius: 2px;
 	}
 </style>
 <div class="m-popup-shade"></div>
@@ -432,4 +432,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/sedit.js?v=1.2.4" src="/assets/js/require.js"></script>
+<script data-main="/js/sedit.js?v=1.2.5" src="/assets/js/require.js"></script>

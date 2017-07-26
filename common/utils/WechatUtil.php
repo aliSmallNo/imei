@@ -616,7 +616,7 @@ class WechatUtil
 		$url = $urlPrefix . "/wx/sh?id=" . $secretId;
 		switch ($tag) {
 			case "favor":
-				$cat = $f ? UserMsg::CATEGORY_FAVRO : UserMsg::CATEGORY_FAVRO_CANCEL;
+				$cat = $f ? UserMsg::CATEGORY_FAVOR : UserMsg::CATEGORY_FAVOR_CANCEL;
 				$keyword1Val = UserMsg::$catDict[$cat];
 				$keyword2Val = "有人" . $keyword1Val . "你了，快去看看吧！";
 				break;

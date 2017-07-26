@@ -263,12 +263,14 @@ class ApiController extends Controller
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				if (UserNet::hasFollowed($uid, $wxInfo['uId'])) {
+					WechatUtil::toNotice($uid, $wxInfo['uId'], "focus", false);
 					UserNet::del($uid, $wxInfo['uId'], UserNet::REL_FOLLOW);
 					return self::renderAPI(0, '您已经取消关注TA~', [
 						'title' => '关注TA',
 						'follow' => 0
 					]);
 				} else {
+					WechatUtil::toNotice($uid, $wxInfo['uId'], "focus", true);
 					UserNet::add($uid, $wxInfo['uId'], UserNet::REL_FOLLOW);
 					return self::renderAPI(0, '您已经成功关注了TA~', [
 						'title' => '取消关注',

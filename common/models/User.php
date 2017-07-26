@@ -535,11 +535,34 @@ class User extends ActiveRecord
 
 		$uid = self::add($addData);
 
-		$net = UserNet::findOne(['nSubUId' => $uid, 'nRelation' => UserNet::REL_INVITE, 'nDeletedFlag' => 0]);
+		/*$net = UserNet::findOne(['nSubUId' => $uid, 'nRelation' => UserNet::REL_INVITE, 'nDeletedFlag' => 0]);
 		if ($net && isset($net['nUId']) && $net['nUId']) {
 			UserNet::add($net['nUId'], $uid, UserNet::REL_BACKER);
-		}
-		UserTrans::addReward($uid, UserTrans::CAT_NEW);
+		}*/
+
+		//Rain: 添加媒婆关系
+		$conn = AppUtil::db();
+
+		$sql = 'INSERT INTO im_user_net(nUId,nSubUId,nRelation,nAddedOn,nUpdatedOn)
+			 SELECT n.nUId,u.uId,:backer,u.uUpdatedOn ,u.uUpdatedOn 
+			 from im_user_net as n 
+			 join im_user as u on u.uId=n.nSubUId and u.uRole=:single 
+			 WHERE nRelation=:rel and n.nDeletedFlag=0 AND u.uId=:uid
+			 and not exists(select 1 from im_user_net as t where t.nSubUId=u.uId and t.nRelation=:backer and t.nDeletedFlag=0)';
+		$cmd = $conn->createCommand($sql);
+		$cmd->bindValues([
+			':backer' => UserNet::REL_BACKER,
+			':rel' => UserNet::REL_INVITE,
+			':uid' => $uid,
+			':single' => self::ROLE_SINGLE
+		])->execute();
+		$cmd->bindValues([
+			':backer' => UserNet::REL_BACKER,
+			':rel' => UserNet::REL_QR_SUBSCRIBE,
+			':uid' => $uid,
+			':single' => self::ROLE_SINGLE
+		])->execute();
+		UserTrans::addReward($uid, UserTrans::CAT_NEW, $conn);
 		return $uid;
 	}
 

@@ -50,11 +50,7 @@ class UserWechat extends ActiveRecord
 		}
 		$newItem = new self();
 		foreach ($values as $key => $val) {
-			if ($key == "wNickName") {
-				$newItem->$key = self::filterEmoji($val);
-			} else {
-				$newItem->$key = $val;
-			}
+			$newItem->$key = $val;
 		}
 		$newItem->save();
 		return $newItem->wId;
@@ -110,10 +106,14 @@ class UserWechat extends ActiveRecord
 			$entity->wAddedOn = date('Y-m-d H:i:s');
 		}
 		foreach ($fields as $key => $field) {
-			$entity->$key = isset($wxInfo[$field]) ? $wxInfo[$field] : '';
+			$val = isset($wxInfo[$field]) ? $wxInfo[$field] : '';
+			$entity->$key = $val;
+			if ($key == 'wSubscribeTime' && $val && is_numeric($val)) {
+				$entity->wSubscribeDate = date('Y-m-d H:i:s', $val);
+			}
 		}
 		$entity->wUId = $uId;
-		$entity->wRawData = json_encode($wxInfo);
+		$entity->wRawData = json_encode($wxInfo, JSON_UNESCAPED_UNICODE);
 		$entity->wUpdatedOn = date('Y-m-d H:i:s');
 		$entity->wExpire = date('Y-m-d H:i:s', time() + 86400 * 14);
 		$entity->save();
@@ -128,11 +128,7 @@ class UserWechat extends ActiveRecord
 			return self::add($values);
 		}
 		foreach ($values as $key => $val) {
-			if ($key == "wNickName") {
-				$newItem->$key = self::filterEmoji($val);
-			} else {
-				$newItem->$key = $val;
-			}
+			$newItem->$key = $val;
 		}
 		$newItem->wUpdatedOn = date("Y-m-d H:i:s");
 		if (!isset($values["wExpire"])) {
@@ -141,18 +137,6 @@ class UserWechat extends ActiveRecord
 
 		$newItem->save();
 		return $newItem->wId;
-	}
-
-	public static function filterEmoji($str)
-	{
-		$str = preg_replace_callback(
-			'/./u',
-			function (array $match) {
-				return strlen($match[0]) >= 4 ? '' : $match[0];
-			},
-			$str);
-
-		return $str;
 	}
 
 	public static function removeOpenId($openId)

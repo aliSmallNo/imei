@@ -239,6 +239,10 @@ require(["layer"],
 				$sls.postData["img"] = $sls.serverId;
 				$sls.postData["coord"] = $sls.coord.val();
 				//console.log($sls.postData);return;
+				layer.open({
+					type: 2,
+					content: '保存中...'
+				});
 				$.post("/api/user", {
 					tag: "sreg",
 					data: JSON.stringify($sls.postData),
@@ -248,6 +252,7 @@ require(["layer"],
 					if (res.code == 0) {
 						setTimeout(function () {
 							location.href = "/wx/single#sme";
+							layer.closeAll();
 						}, 500);
 					}
 				}, "json");
