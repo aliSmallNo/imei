@@ -10,6 +10,7 @@ namespace console\controllers;
  */
 use common\models\User;
 use common\models\UserNet;
+use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
@@ -374,6 +375,12 @@ class FooController extends Controller
 	public function actionWxmenu()
 	{
 		$ret = WechatUtil::createWechatMenus();
+		var_dump($ret);
+	}
+
+	public function actionRefresh()
+	{
+		$ret = UserWechat::refreshWXInfo('', 1);
 		var_dump($ret);
 	}
 
