@@ -384,6 +384,16 @@ class FooController extends Controller
 		var_dump($ret);
 	}
 
+	public function actionImg()
+	{
+		$url = 'http://wx.qlogo.cn/mmopen/deq1XeuYTTeEicn2ygrKrGvMkh7qyLFrUD7rITMAHP6p8S9RSZmlPIv1wveemOrdU1Kqn0hia1dXKqV0RIYyZ0tA0ia4aHalg4V/0';
+		$ret = AppUtil::getMediaUrl($url, false, true);
+		var_dump($ret);
+
+		$ret = AppUtil::getMediaUrl($url, true, true);
+		var_dump($ret);
+	}
+
 	public function actionRain()
 	{
 //		$ret = UserWechat::refreshWXInfo('oYDJew2IjPst3upRPXc1k6wWHMkE', 1);

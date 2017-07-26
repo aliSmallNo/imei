@@ -68,7 +68,9 @@ class UserNet extends ActiveRecord
 			$entity->nUpdatedOn = date('Y-m-d H:i:s');
 			$entity->nNote = $note;
 			$entity->save();
-			return false;
+			if ($relation != self::REL_QR_SUBSCRIBE) {
+				return false;
+			}
 		}
 		$entity = new self();
 		$entity->nUId = $uid;
