@@ -354,7 +354,7 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = UserTrans::addReward(131379, UserTrans::CAT_NEW);
+		$ret = UserTrans::addReward(131372, UserTrans::CAT_NEW);
 		var_dump($ret);
 	}
 }
