@@ -359,15 +359,6 @@ class FooController extends Controller
 		$ret = WechatUtil::templateMsg(WechatUtil::NOTICE_REWARD_NEW,
 			131379, '新人奖励媒桂花',   '66媒桂花');
 		var_dump($ret);*/
-		$conn = AppUtil::db();
-		$sql = 'select * from im_user where uRole=10 AND uGender>9 AND uNote=\'\' ';
-		$ret = $conn->createCommand($sql)->queryAll();
-		$count = 0;
-		foreach ($ret as $row) {
-			$res = UserTrans::addReward($row['uId'], UserTrans::CAT_NEW, $conn);
-			var_dump([$res, $row['uId']]);
-			$count++;
-		}
-		var_dump($count);
+
 	}
 }
