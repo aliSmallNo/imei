@@ -379,12 +379,6 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		/*$ret = UserTrans::addReward(131372, UserTrans::CAT_NEW);
-		var_dump($ret);
-		$ret = WechatUtil::templateMsg(WechatUtil::NOTICE_REWARD_NEW,
-			131379, '新人奖励媒桂花',   '66媒桂花');
-		var_dump($ret);*/
-
 
 	}
 }
