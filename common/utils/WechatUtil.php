@@ -493,6 +493,8 @@ class WechatUtil
 		];
 		$access_token = self::accessToken();
 		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
+		AppUtil::logFile($url, 5, __FUNCTION__, __LINE__);
+		AppUtil::logFile($bodyInfo, 5, __FUNCTION__, __LINE__);
 		$result = AppUtil::postJSON($url, json_encode($bodyInfo));
 		UserMsg::edit("", [
 			"mUId" => $uId,
