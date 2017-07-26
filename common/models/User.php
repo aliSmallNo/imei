@@ -541,7 +541,7 @@ class User extends ActiveRecord
 		}*/
 
 		//Rain: 添加媒婆关系
-		$sql = 'INSERT INTO im_user_net(nUId,nSubUId,nRelation,nAddedOn,nUpdatedOn)
+		/*$sql = 'INSERT INTO im_user_net(nUId,nSubUId,nRelation,nAddedOn,nUpdatedOn)
 			 SELECT n.nUId,u.uId,:backer,u.uUpdatedOn ,u.uUpdatedOn 
 			 from im_user_net as n 
 			 join im_user as u on u.uId=n.nSubUId and u.uRole=:single 
@@ -558,7 +558,7 @@ class User extends ActiveRecord
 			':backer' => UserNet::REL_BACKER,
 			':rel' => UserNet::REL_QR_SUBSCRIBE,
 			':uid' => $uid,
-		])->execute();
+		])->execute();*/
 
 		UserTrans::addReward($uid, UserTrans::CAT_NEW, $conn);
 		return $uid;
