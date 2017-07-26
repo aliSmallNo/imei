@@ -19,7 +19,6 @@ return [
 	],
 	'components' => [
 		'request' => [
-			'csrfParam' => '_csrf-console',
 			'enableCookieValidation' => false,
 			'enableCsrfValidation' => false,
 		],

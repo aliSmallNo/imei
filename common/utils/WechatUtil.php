@@ -472,7 +472,7 @@ class WechatUtil
 				$keywords['first'] = "新人注册福利到啦，媒桂花奖励到啦。\n";
 				$keywords['keyword1'] = $title;
 				$keywords['keyword2'] = $subTitle;
-				$keywords['remark'] = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309";
+				$keywords['remark'] = date("Y年n月j日 H:i");
 				break;
 			default:
 				$url = '';
