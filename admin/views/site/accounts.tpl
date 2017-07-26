@@ -23,8 +23,8 @@
 
 	.pInfo span.status-0 {
 		color: #fff;
-		border: 1px solid #f80;
-		background: #f80;
+		border: 1px solid #f90;
+		background: #f90;
 	}
 
 	.pInfo .role20 {
@@ -46,6 +46,19 @@
 	}
 
 	.pInfo span.status-1 {
+		color: #fff;
+		border: 1px solid #44b549;
+		background: #44b549;
+	}
+
+	.pInfo span.sub0 {
+		color: #fff;
+		background: #f40;
+		border: 1px solid #f40;
+	}
+
+	.pInfo span.sub1 {
+		display: none;
 		color: #fff;
 		border: 1px solid #44b549;
 		background: #44b549;
@@ -162,6 +175,7 @@
 				<em>{{$prod.note_t}}</em>
 				<span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
 				<span class="status-1">{{if $prod.certstatus==2}}{{$prod.certstatus_t}}{{/if}}</span>
+				<span class="sub{{$prod.subscribe}}">{{if $prod.subscribe}}已关注{{else}}取消关注{{/if}}</span>
 				<br>
 				<div class="perc-wrap">
 					<div class="perc-bar-title">资料完整度 <b>{{$prod.percent}}%</b></div>
