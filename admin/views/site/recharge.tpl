@@ -1,15 +1,5 @@
 {{include file="layouts/header.tpl"}}
 <style>
-	.o-no-wrapper {
-		max-height: 5.4em;
-		height: 5.4em;
-		overflow-x: hidden;
-		overflow-y: auto;
-		border: 1px solid #C8C8C8;
-		border-radius: 5px;
-		padding: 2px 5px;
-	}
-
 	.f-tip {
 		font-size: 12px;
 		color: #666;
@@ -23,7 +13,7 @@
 	<div class="row">
 		<form action="/site/recharges" method="get" class="form-inline">
 			<div class="form-group">
-				<input class="form-control" placeholder="用户名称" type="text" name="name"
+				<input class="form-control" placeholder="用户名称" name="name"
 							 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
 			</div>
 			<div class="form-group">

@@ -153,6 +153,10 @@ class WxController extends BaseController
 		if ($wxInfo) {
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
+			if ($wxInfo["uGender"] < 10) {
+				header('location:/wx/sreg');
+				exit();
+			}
 			if ($wxInfo["uRole"] == User::ROLE_MATCHER) {
 			}
 			$uInfo = User::user(['uId' => $wxInfo['uId']]);
