@@ -446,7 +446,7 @@ class WechatUtil
 		}
 	}
 
-	public static function templateMsg($noticeTag, $uId, $title = '', $subTitle = '')
+	public static function templateMsg($noticeTag, $uId, $title = '', $subTitle = '', $adminId = 1)
 	{
 		if (AppUtil::scene() == "dev") {
 			return 0;
@@ -503,7 +503,7 @@ class WechatUtil
 			"mUId" => $uId,
 			"mCategory" => $msgCat,
 			"mText" => json_encode($bodyInfo, JSON_UNESCAPED_UNICODE),
-			"mAddedBy" => Admin::getAdminId(),
+			"mAddedBy" => $adminId
 		]);
 		return $result;
 	}

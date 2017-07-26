@@ -9,6 +9,7 @@
 namespace common\models;
 
 
+use admin\models\Admin;
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
@@ -367,7 +368,7 @@ class UserTrans extends ActiveRecord
 				])->execute();
 				if ($ret) {
 					WechatUtil::templateMsg(WechatUtil::NOTICE_REWARD_NEW,
-						$uid, '新人奖励媒桂花', $amt . '媒桂花');
+						$uid, '新人奖励媒桂花', $amt . '媒桂花', Admin::getAdminId());
 				}
 				break;
 		}
