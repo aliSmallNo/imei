@@ -88,10 +88,10 @@ class Menu
 				"staff" => 1,
 				"items" => [
 					[
-						"name" => "全网用户",
-						"url" => "/site/mass",
+						"name" => "留存率",
+						"url" => "/site/reusestat",
 						"revise" => 1,
-						"level" => 825
+						"level" => 820
 					],
 					[
 						"name" => "多点统计",
