@@ -20,8 +20,8 @@ class LogAction extends ActiveRecord
 
 	static $actionDict = [
 		self::ACTION_LOGIN => "登录",
-		self::ACTION_SINGLE => "进入单身页",
-		self::ACTION_MATCH => "进入媒婆",
+		self::ACTION_SINGLE => "To单身页",
+		self::ACTION_MATCH => "To媒婆页",
 
 	];
 
