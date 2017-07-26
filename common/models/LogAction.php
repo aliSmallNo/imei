@@ -42,4 +42,24 @@ class LogAction extends ActiveRecord
 		$item->save();
 		return true;
 	}
+
+	public static function loginStat($sTime, $eTime)
+	{
+		if (strtotime($sTime) > time()) {
+			return [];
+		}
+		$sql = "";
+
+		return [];
+	}
+
+	public static function weeklist($start = "2017-06-01", $limit)
+	{
+
+		$sql = "select  wMonday as sTime,wSunday as eTime from im_week WHERE wDay BETWEEN '$start' and '$end' GROUP BY wMonday ORDER BY wId desc limit 5;";
+		$conn = AppUtil::db();
+		$dateLeft = $conn->createCommand($sql)->queryAll();
+	}
+
+
 }

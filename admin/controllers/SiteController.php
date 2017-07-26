@@ -6,6 +6,7 @@ use admin\models\Admin;
 use admin\models\Menu;
 use common\models\City;
 use common\models\Feedback;
+use common\models\LogAction;
 use common\models\Mark;
 use common\models\User;
 use common\models\UserBuzz;
@@ -13,6 +14,7 @@ use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserTrans;
 use common\models\UserWechat;
+use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
@@ -511,7 +513,19 @@ class SiteController extends BaseController
 		$newFlag = 0;
 		$strReuse = "";
 		$cat = "week";
-
+		// 开始记录日期 2017-06-01
+		$sql = "select  wMonday as sTime,wSunday as eTime from im_week WHERE wDay BETWEEN '2017-06-01' and now() GROUP BY wMonday ORDER BY wId desc limit 5;";
+		$conn = AppUtil::db();
+		$dateLeft = $conn->createCommand($sql)->queryAll();
+		$data = [];
+		foreach ($dateLeft as $v) {
+			$info = LogAction::loginStat($v["sTime"], $v["eTime"]);
+			$item = [
+				"stime" => $v["sTime"],
+				"etime" => $v["eTime"],
+				"info" => $info ? $info : []
+			];
+		}
 		return $this->renderPage("reusestat.tpl",
 			[
 				'detailcategory' => 'bigdata/reusestat' . ($newFlag ? '?new=1' : ''),

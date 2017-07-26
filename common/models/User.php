@@ -819,7 +819,8 @@ class User extends ActiveRecord
 		$uRole = User::ROLE_SINGLE;
 		$gender = ($gender == 10) ? 11 : 10;
 
-		$condition = " u.uRole=$uRole and u.uGender=$gender ";
+		$status = self::STATUS_DELETE;
+		$condition = " u.uRole=$uRole and u.uGender=$gender and u.uStatus<$status ";
 		//$filterArr = json_decode($uFilter, 1);
 		if ($uFilter) {
 			$rankField = ",(case WHEN u.uLocation like '%$prov%' and u.uLocation like '%$city%' then 10
@@ -982,15 +983,16 @@ class User extends ActiveRecord
 	public static function topMatcher($uid, $page = 1, $pageSize = 20)
 	{
 //		$uInfo = self::user(['uId' => $uid]);
+		$status = User::STATUS_DELETE;
 		$conn = AppUtil::db();
 		$offset = ($page - 1) * $pageSize;
-		$sql = 'select u.*, count(t.nId) as uCnt 
+		$sql = "select u.*, count(t.nId) as uCnt 
 			 from im_user as u 
 			 LEFT JOIN (SELECT n.nId,n.nUId FROM im_user_net as n 
-			 JOIN im_user as u1 on u1.uId=n.nSubUId AND u1.uRole=:single AND u1.uGender>9
+			 JOIN im_user as u1 on u1.uId=n.nSubUId AND u1.uRole=:single AND u1.uGender>9 AND u1.uStatus < $status
 			 WHERE n.nRelation=:rel AND n.nDeletedFlag=0) as t on t.nUId=u.uId
 			 WHERE u.uRole=:role GROUP BY u.uId ORDER BY uUpdatedOn DESC, uCnt DESC
-			 LIMIT ' . $offset . ',' . ($pageSize + 1);
+			 LIMIT $offset," . ($pageSize + 1);
 		$ret = $conn->createCommand($sql)->bindValues([
 			':rel' => UserNet::REL_BACKER,
 			':role' => self::ROLE_MATCHER,
