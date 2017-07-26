@@ -68,18 +68,6 @@ class AdminController extends BaseController
 	public function actionUsers()
 	{
 
-		$conn = AppUtil::db();
-		$sql = 'select * from im_user where uRole=10 AND uGender>9 AND uNote=\'\' ';
-		$ret = $conn->createCommand($sql)->queryAll();
-		$count = 0;
-		foreach ($ret as $row) {
-			$res = UserTrans::addReward($row['uId'], UserTrans::CAT_NEW, $conn);
-			var_dump([$res, $row['uId']]);
-			$count++;
-		}
-		var_dump($count);
-
-
 		Admin::staffOnly();
 		$page = self::getParam("page", 1);
 		$name = self::getParam('name');
