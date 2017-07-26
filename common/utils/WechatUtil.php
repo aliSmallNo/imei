@@ -626,6 +626,7 @@ class WechatUtil
 				$keyword2Val = "有人" . $keyword1Val . "你了，快去看看吧！";
 				break;
 			case "wxNo":
+				$url = $urlPrefix . "/wx/single#addMeWx";
 				$cat = UserMsg::CATEGORY_REQ_WX;
 				$keyword1Val = UserMsg::$catDict[$cat];
 				$keyword2Val = "有人" . $keyword1Val . "了，快去看看吧！";
