@@ -11,7 +11,7 @@ use yii\db\ActiveRecord;
 class UserMsg extends ActiveRecord
 {
 	const CATEGORY_WX_MSG = 5; //后台公众号消息
-	
+
 	const CATEGORY_DEFAULT = 10;
 
 	//推送消息
@@ -61,7 +61,7 @@ class UserMsg extends ActiveRecord
 
 	public static function wechatDetail($openId)
 	{
-		$conn = \Yii::$app->db;
+		$conn = AppUtil::db();
 		$cat = UserMsg::CATEGORY_WX_MSG;
 		$sql = "select * from (SELECT bType as type, b.bId as id,'wechat-user' as cat, b.bDate as dt,
 				 ifnull(w.wAvatar,'') as avatar,

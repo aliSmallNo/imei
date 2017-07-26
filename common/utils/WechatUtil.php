@@ -30,11 +30,13 @@ class WechatUtil
 	const XCX_APP_ID = "wx1aa5e80d0066c1d7";
 	const XCX_APP_SECRET = "981d82a2eddf8e31ddd45e70020848f9";
 
+	const NOTICE_REWARD_NEW = 'notice_reward_new';
+
 	/**
 	 * @param $sessionKey
 	 * @param $encryptedData
 	 * @param $iv
-	 * @return array
+	 * @return array | int
 	 * 小程序方法
 	 */
 	public static function decrytyUserInfo($sessionKey, $encryptedData, $iv)
@@ -48,10 +50,8 @@ class WechatUtil
 
 		if ($errCode == 0) {
 			return $data;
-		} else {
-			return $errCode;
-
 		}
+		return $errCode;
 	}
 
 	/**
@@ -446,9 +446,65 @@ class WechatUtil
 		}
 	}
 
+	public static function templateMsg($noticeTag, $uId, $title = '', $subTitle = '')
+	{
+		if (AppUtil::scene() == "dev") {
+			return 0;
+		}
+		$userInfo = User::findOne(["uId" => $uId]);
+		if (!$userInfo) {
+			return 0;
+		}
+		$openId = $userInfo['uOpenId'];
+		$encryptId = AppUtil::encrypt($userInfo["uId"]);
+		$keywords = [
+			'first' => '',
+			'keyword1' => '',
+			'keyword2' => '',
+			'keyword3' => date("Y年n月j日 H:i"),
+			'remark' => ''
+		];
+		$templateId = 'ZJVqVttar_9v9azyjydZzFiR8hF7pq-BpY_XBbugJDM';
+		$wxUrl = AppUtil::wechatUrl();
+		switch ($noticeTag) {
+			case self::NOTICE_REWARD_NEW:
+				$url = $wxUrl . "/wx/sw?id=" . $encryptId;
+				$keywords['first'] = "新人注册福利到啦，媒桂花奖励到啦。\n";
+				$keywords['keyword1'] = $title;
+				$keywords['keyword2'] = $subTitle;
+				$keywords['remark'] = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309";
+				break;
+			default:
+				$url = '';
+				break;
+		}
+
+		$bodyInfo = [
+			"touser" => $openId,
+			"template_id" => $templateId,
+			"url" => $url,
+			"data" => [
+				"first" => ["color" => "#333333", "value" => $keywords['first']],
+				"keyword1" => ["color" => "#0D47A1", "value" => $keywords['keyword1']],
+				"keyword2" => ["color" => "#f491b2", "value" => $keywords['keyword2']],
+				"keyword3" => ["color" => "#333333", "value" => $keywords['keyword3']],
+				"remark" => ["color" => "#555555", "value" => $keywords['remark']],
+			]
+		];
+		$access_token = self::accessToken();
+		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
+		$result = AppUtil::postJSON($url, json_encode($bodyInfo));
+		UserMsg::edit("", [
+			"mUId" => $uId,
+			"mCategory" => $noticeTag,
+			"mText" => json_encode($bodyInfo, JSON_UNESCAPED_UNICODE),
+			"mAddedBy" => Admin::getAdminId(),
+		]);
+		return $result;
+	}
+
 	public static function regNotice($uId, $tag)
 	{
-
 		if (AppUtil::scene() == "dev") {
 			return 0;
 		}
@@ -460,62 +516,69 @@ class WechatUtil
 		if (!$openId || strlen($openId) < 12) {
 			return 0;
 		}
+		$keywords = [
+			'first' => '',
+			'keyword1' => '',
+			'keyword2' => '',
+			'keyword3' => date("Y年n月j日 H:i"),
+			'remark' => ''
+		];
+		$templateId = 'x7IJx0xG8yn67akF4T-gy9XULI6MPASOGJyvltkbNbQ';
 		switch ($tag) {
 			case "pass":
 				$url = "https://wx.meipo100.com/wx/single";
-				$first = "你好，您的注册资质已经审核通过，欢迎使用微媒100。\n";
-				$keyword1Val = '微媒100用户 ' . $userInfo["uName"] . ' 注册信息';
-				$keyword2Val = "审核通过";
-				$text = $keyword2Val;
-				$remark = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309";
+				$keywords['first'] = "你好，您的注册资质已经审核通过，欢迎使用微媒100。\n";
+				$keywords['keyword1'] = '微媒100用户 ' . $userInfo["uName"] . ' 注册信息';
+				$keywords['keyword2'] = "审核通过";
+				$keywords['remark'] = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309";
+				$text = $keywords['keyword2'];
 				$cat = UserMsg::CATEGORY_ADMIN_PASS;
 				break;
 			case "refuse":
 				$url = "https://wx.meipo100.com/wx/single";
-				$first = "你好，很遗憾！您注册的微媒100资质已被取消！您将无法使用微媒100!\n";
-				$keyword1Val = '微媒100用户 ' . $userInfo["uName"] . ' 注册信息';
-				$keyword2Val = "审核不通过";
-				$text = $keyword2Val;
-				$remark = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309！";
+				$keywords['first'] = "你好，很遗憾！您注册的微媒100资质已被取消！您将无法使用微媒100!\n";
+				$keywords['keyword1'] = '微媒100用户 ' . $userInfo["uName"] . ' 注册信息';
+				$keywords['keyword2'] = "审核不通过";
+				$keywords['remark'] = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309！";
+				$text = $keywords['keyword2'];
 				$cat = UserMsg::CATEGORY_ADMIN_REFUSE;
 				break;
 			case "certpass":
 				$url = "https://wx.meipo100.com/wx/single";
-				$first = "你好，您的实名认证已经审核通过，欢迎使用微媒100。\n";
-				$keyword1Val = '微媒100用户 ' . $userInfo["uName"] . ' 实名信息';
-				$keyword2Val = "审核通过";
-				$text = $keyword2Val;
-				$remark = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309";
+				$keywords['first'] = "你好，您的实名认证已经审核通过，欢迎使用微媒100。\n";
+				$keywords['keyword1'] = '微媒100用户 ' . $userInfo["uName"] . ' 实名信息';
+				$keywords['keyword2'] = "审核通过";
+				$keywords['remark'] = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309";
+				$text = $keywords['keyword2'];
 				$cat = UserMsg::CATEGORY_ADMIN_PASS;
 				break;
 			case "certfail":
 				$url = "https://wx.meipo100.com/wx/single";
-				$first = "你好，您的实名认证审核不通过，请重新上传符合要求的实名图片，欢迎使用微媒100。\n";
-				$keyword1Val = '微媒100用户 ' . $userInfo["uName"] . ' 实名信息';
-				$keyword2Val = "审核不通过";
-				$text = $keyword2Val;
-				$remark = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309";
+				$keywords['first'] = "你好，您的实名认证审核不通过，请重新上传符合要求的实名图片，欢迎使用微媒100。\n";
+				$keywords['keyword1'] = '微媒100用户 ' . $userInfo["uName"] . ' 实名信息';
+				$keywords['keyword2'] = "审核不通过";
+				$keywords['remark'] = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309";
+				$text = $keywords['keyword2'];
 				$cat = UserMsg::CATEGORY_ADMIN_REFUSE;
 				break;
 			default :
+				$title = $cat = $url = $text = '';
+				break;
 		}
-
-		//$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
-		$access_token = self::accessToken();
 
 		$bodyInfo = [
 			"touser" => $openId,
-			"template_id" => "x7IJx0xG8yn67akF4T-gy9XULI6MPASOGJyvltkbNbQ",
+			"template_id" => $templateId,
 			"url" => $url,
 			"data" => [
-				"first" => ["color" => "#555555", "value" => $first],
-				"keyword1" => ["color" => "#555555", "value" => $keyword1Val],
-				"keyword2" => ["color" => "#f491b2", "value" => $keyword2Val],
-				"keyword3" => ["color" => "#555555", "value" => date("Y年n月j日 H:i")],
-				"remark" => ["color" => "#555555", "value" => $remark],
+				"first" => ["color" => "#333333", "value" => $keywords['first']],
+				"keyword1" => ["color" => "#0D47A1", "value" => $keywords['keyword1']],
+				"keyword2" => ["color" => "#f491b2", "value" => $keywords['keyword2']],
+				"keyword3" => ["color" => "#333333", "value" => $keywords['keyword3']],
+				"remark" => ["color" => "#555555", "value" => $keywords['remark']],
 			]
 		];
-
+		$access_token = self::accessToken();
 		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
 		$result = AppUtil::postJSON($url, json_encode($bodyInfo));
 		UserMsg::edit("", [
