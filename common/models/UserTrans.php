@@ -11,6 +11,7 @@ namespace common\models;
 
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
+use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
 
 class UserTrans extends ActiveRecord
@@ -262,9 +263,6 @@ class UserTrans extends ActiveRecord
 			$balance['unit'] = $unit;
 			$items[$uid]['details'][$cat . '-' . $unit] = $balance;
 		}
-		foreach ($items as $k => $item) {
-
-		}
 		return [$items, $count];
 	}
 
@@ -367,6 +365,10 @@ class UserTrans extends ActiveRecord
 					':amt' => $amt,
 					':unit' => $unit,
 				])->execute();
+				if ($ret) {
+					WechatUtil::templateMsg(WechatUtil::NOTICE_REWARD_NEW,
+						$uid, '新人奖励媒桂花', $amt . '媒桂花');
+				}
 				break;
 		}
 		return $ret;

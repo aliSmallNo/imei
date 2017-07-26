@@ -10,6 +10,7 @@ namespace console\controllers;
  */
 use common\models\User;
 use common\models\UserNet;
+use common\models\UserTrans;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
@@ -353,7 +354,7 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = WechatUtil::templateMsg(WechatUtil::NOTICE_REWARD_NEW, 131379, '新人奖励媒桂花', '66媒桂花');
+		$ret = UserTrans::addReward(131379, UserTrans::CAT_NEW);
 		var_dump($ret);
 	}
 }
