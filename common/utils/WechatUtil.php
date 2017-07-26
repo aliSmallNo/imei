@@ -479,7 +479,7 @@ class WechatUtil
 				break;
 		}
 
-		if (!$templateId || !$url) {
+		if (!$openId || !$templateId || !$url) {
 			return 0;
 		}
 		$bodyInfo = [
