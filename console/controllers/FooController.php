@@ -358,13 +358,13 @@ class FooController extends Controller
 			$sunday = date("Y-m-d", $startTime + 86400 * 6);
 			$index = 1;
 			for ($m = $startTime; $m <= $startTime + 86400 * 6; $m += 86400) {
-				$day = date("Y-m-d", $m);
-				$cmd->bindValue(":title", $title);
-				$cmd->bindValue(":monday", $monday);
-				$cmd->bindValue(":sunday", $sunday);
-				$cmd->bindValue(":dy", $day);
-				$cmd->bindValue(":di", $index);
-				$cmd->execute();
+				$cmd->bindValues([
+					":title" => $title,
+					":monday" => $monday,
+					":sunday" => $sunday,
+					":dy" => date("Y-m-d", $m),
+					":di" => $index
+				])->execute();
 				$index++;
 			}
 			$startTime += 86400 * 7;
