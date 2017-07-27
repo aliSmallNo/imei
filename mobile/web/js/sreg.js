@@ -229,7 +229,8 @@ require(["layer"],
 						}
 					});
 					if ($sls.photos.length) {
-						uploadImages(localId);
+						var pid = $sls.photos.shift();
+						uploadImages(pid);
 					} else {
 						util.submit();
 					}
@@ -293,7 +294,12 @@ require(["layer"],
 				isShowProgressTips: 1,
 				success: function (res) {
 					$sls.serverId.push(res.serverId);
-					SingleUtil.submit();
+					if ($sls.photos.length) {
+						var pid = $sls.photos.shift();
+						uploadImages(pid);
+					} else {
+						SingleUtil.submit();
+					}
 				},
 				fail: function () {
 					SingleUtil.submit();
