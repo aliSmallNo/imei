@@ -94,8 +94,13 @@ class WxController extends BaseController
 		];
 		if ($wxInfo) {
 			$uInfo = User::user(['uId' => $wxInfo['uId']]);
+			for ($k = 0; $k < 2; $k++) {
+				if (isset($uInfo['album'][$k])) continue;
+				$uInfo['album'][$k] = '';
+			}
+			$uInfo['album'] = array_slice($uInfo['album'], 0, 2);
 			if ($uInfo) {
-				$hasGender = in_array($uInfo['gender'], array_values(User::$Gender));
+				$hasGender = in_array($uInfo['gender'], array_keys(User::$Gender));
 			}
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
@@ -104,12 +109,13 @@ class WxController extends BaseController
 			}
 			$locInfo = $uInfo['location'];
 		}
-		$routes = ['photo', 'gender', 'location', 'year', 'horos', 'height', 'weight', 'income', 'edu', 'intro', 'scope',
-			'job', 'house', 'car', 'smoke', 'drink', 'belief', 'workout', 'diet', 'rest', 'pet', 'interest'];
+		$routes = ['photo', 'gender', 'location', 'year', 'horos', 'height', 'weight', 'income', 'edu', 'album', 'intro',
+			'scope', 'job', 'house', 'car', 'smoke', 'drink', 'belief', 'workout', 'diet', 'rest', 'pet', 'interest'];
 		if ($hasGender) {
 			unset($routes[1]);
 			$routes = array_values($routes);
 		}
+		$certImage = '../images/cert_sample.jpg';
 		return self::renderPage("sreg.tpl",
 			[
 				'uInfo' => $uInfo,
@@ -135,6 +141,7 @@ class WxController extends BaseController
 				"sign" => User::$Horos,
 				'routes' => json_encode($routes),
 				'switchRole' => $switchRole,
+				'certImage' => $certImage,
 				'professions' => json_encode(User::$ProfessionDict),
 				'locInfo' => $locInfo
 			],

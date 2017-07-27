@@ -374,6 +374,9 @@ class User extends ActiveRecord
 		}
 		$item['vip'] = intval($item['vip']);
 		$item['album'] = json_decode($item['album'], 1);
+		if(!$item['album']){
+			$item['album'] = [];
+		}
 		$item['album_cnt'] = 0;
 		if ($item['album'] && is_array($item['album'])) {
 			$item['album_cnt'] = count($item['album']);

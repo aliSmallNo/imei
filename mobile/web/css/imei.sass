@@ -575,10 +575,12 @@ section
 	z-index: 3
 
 .place-holder-s1
-	height: 1rem
+	padding-top: 1rem
+	text-align: center
 
 .place-holder-s2
-	height: 2rem
+	padding-top: 2rem
+	text-align: center
 
 .place-holder
 	height: 4.8rem
@@ -717,7 +719,7 @@ section
 .btn-s
 	display: inline-block
 	height: 4.2rem
-	padding: 0 1.5rem
+	padding: 0 2rem
 	line-height: 4.2rem
 	border-radius: .7rem
 	text-align: center
@@ -771,8 +773,22 @@ section
 	margin-bottom: 1rem
 	-webkit-appearance: none
 	font-size: 1.4rem
-	color: $grayFontColorDark
 	outline: 0
+
+.f-inline
+	display: block
+	@include displayFlex
+	em
+		@include displayFlex-1
+		text-align: right
+		justify-content: center
+		align-items: center
+		align-self: center
+		color: $grayFontColor
+	.input-s
+		@include displayFlex-w(23rem)
+		width: auto
+		margin: 0
 
 .form
 	padding-left: 2rem
@@ -3402,6 +3418,7 @@ section
 			right: .2rem
 			height: 2px
 			background: $mainColorLight
+
 .plist
 	li
 		background: #fff
@@ -3478,6 +3495,7 @@ section
 		-moz-user-select: text
 		-ms-user-select: text
 		user-select: text
+
 .plist-more
 	font-size: 1rem
 	color: #777
@@ -4464,3 +4482,105 @@ section
 		font-size: 1.2rem
 		color: #fff
 		margin: .6rem 0
+
+.cert-content
+	background: #fff
+	padding-bottom: 30rem
+
+.cert-header
+	padding: 1rem 3rem
+	font-size: 1.2rem
+
+.cert-bg
+	width: 26rem
+	height: 18rem
+	margin: 2rem auto
+	div
+		width: 26rem
+		height: 18rem
+		@include translucent
+
+.cert-img
+	position: relative
+	a
+		padding: 0
+		position: absolute
+		color: #fff
+		top: 50%
+		left: 50%
+		border: 1px dotted #fff
+		border-radius: 3.6rem
+		width: 7rem
+		height: 7rem
+		margin-top: -3.5rem
+		margin-left: -3.5rem
+		&:before
+			content: ' '
+			position: absolute
+			width: 4rem
+			height: 1px
+			background: #fff
+			left: 1.5rem
+			top: 3.5rem
+		&:after
+			content: ' '
+			position: absolute
+			width: 1px
+			background: #fff
+			height: 4rem
+			left: 3.5rem
+			top: 1.5rem
+.j-album
+	padding-left: 1.5rem
+	padding-right: 1.5rem
+	li
+		float: left
+		width: 50%
+		padding-bottom: 1.5rem
+		text-align: center
+		a
+			display: inline-block
+			width: 12rem
+			height: 12rem
+			border: 1px solid $borderColorDark
+			border-radius: .4rem
+			position: relative
+			&:before
+				content: ' '
+				position: absolute
+				width: 5rem
+				height: 1px
+				background: $borderColorDark
+				left: 3.5rem
+				top: 6rem
+				z-index: 12
+			&:after
+				content: ' '
+				position: absolute
+				width: 1px
+				background: $borderColorDark
+				height: 5rem
+				left: 6rem
+				top: 3.5rem
+				z-index: 12
+			div
+				display: none
+				position: absolute
+				left: 0
+				right: 0
+				top: 0
+				bottom: 0
+				background-color: rgba(0, 0, 0, .4)
+			img
+				display: none
+				width: 100%
+				height: 100%
+				position: relative
+				&:before
+					content: ' '
+					position: absolute
+			&.active
+				div
+					display: inline-block
+				img
+					display: inline-block

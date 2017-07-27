@@ -8,9 +8,10 @@
 		<a href="javascript:;" class="photo photo-file">
 			<img class="avatar" src="{{$avatar}}" localId="">
 		</a>
-		<input type="text" placeholder="昵称" class="input-s big nickname" value="{{$nickname}}">
-		<div class="place-holder-s1"></div>
-		<a href="javascript:;" class="btn-s s3" tag="avatar">下一步</a>
+		<label class="f-inline"><em>昵称：</em><input type="text" placeholder="昵称" class="input-s big nickname" value="{{$nickname}}"></label>
+		<div class="place-holder-s2">
+			<a href="javascript:;" class="btn-s s3" tag="avatar">下一步</a>
+		</div>
 	</div>
 	<div class="m-draw-wrap off">
 		<div class="title">上传本人照片，头像居中，五官高清，上半身最佳，例如：</div>
@@ -129,6 +130,22 @@
 		{{/foreach}}
 	</div>
 </section>
+<section id="album">
+	<p class="m-header s1">请上传2张生活照片吧</p>
+	<ul class="j-album clearfix">
+		{{foreach from=$uInfo.album item=item}}
+		<li>
+			<a href="javascript:;" class="{{if $item}}active{{/if}}">
+				<img src="{{if $item}}{{$item}}{{/if}}" alt="">
+				<div class="j-img-shade"></div>
+			</a>
+		</li>
+		{{/foreach}}
+	</ul>
+	<div class="place-holder-s2">
+		<a href="javascript:;" class="btn-s s3" tag="album">下一步</a>
+	</div>
+</section>
 <section id="intro">
 	<p class="m-header s1">请描述一下你的内心独白</p>
 	<div class="edit">
@@ -224,6 +241,20 @@
 		{{/foreach}}
 	</div>
 </section>
+<section id="cert">
+	<p class="m-header s1">请做实名认证吧</p>
+	<div class="cert-content">
+		<div class="cert-header">
+			上传您手持身份证的照片，审核通过后，会给你加V哦，大大提高您的信誉和牵手成功率哦~
+		</div>
+		<div class="cert-img">
+			<div class="cert-bg" style="background: url('{{$certImage}}') no-repeat center center;background-size: 100% 100%;">
+				<div></div>
+			</div>
+			<a href="javascript:;" class="choose-img"></a>
+		</div>
+	</div>
+</section>
 <section id="interest">
 	<p class="m-header s1 intro">请介绍一下你的兴趣爱好</p>
 	<div class="edit">
@@ -260,4 +291,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="//webapi.amap.com/maps?v=1.3&key=8dcdd1499361b46052bb94a1dfafbe49&plugin=AMap.Geocoder"></script>
-<script data-main="/js/sreg.js?v=1.2.4" src="/assets/js/require.js"></script>
+<script data-main="/js/sreg.js?v=1.2.5" src="/assets/js/require.js"></script>

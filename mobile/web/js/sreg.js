@@ -3,7 +3,6 @@ if (document.location.hash === "" || document.location.hash === "#") {
 }
 require.config({
 	paths: {
-		"jquery": "/assets/js/jquery-3.2.1.min",
 		"layer": "/assets/js/layer_mobile/layer",
 	}
 });
@@ -21,7 +20,8 @@ require(["layer"],
 			btnSkip: $(".action-skip"),
 			postData: {},
 			gender: $('#cGender').val(),
-			serverId: "",
+			serverId: [],
+			photos: [],
 			routeIndex: 0,
 			coord: $('#cCoord'),
 			routeLength: mRoutes.length,
@@ -38,6 +38,7 @@ require(["layer"],
 			salary: "",
 			edu: "",
 			avatar: $(".avatar"),
+			album: $(".j-album"),
 			nickname: $(".nickname"),
 			gender: "",
 			progressBar: $(".progress > div"),
@@ -55,6 +56,20 @@ require(["layer"],
 					var self = $(this);
 					var tag = self.attr("tag");
 					switch (tag) {
+						case 'album':
+							var albumImages = [];
+							$.each(util.album.find('a'), function () {
+								var img = $(this).attr('localId');
+								if (img) {
+									albumImages[albumImages.length] = img;
+								}
+							});
+							if (albumImages.length < 2) {
+								showMsg("请先选择上传2张生活照片吧~");
+								return false;
+							}
+							util.next();
+							break;
 						case "avatar":
 							var img = util.avatar.attr("localId");
 							if (!img && !util.avatar.attr('src')) {
@@ -109,6 +124,25 @@ require(["layer"],
 								util.avatar.attr("src", localId);
 								DrawUtil.toggle(false);
 
+							}
+						}
+					});
+					return false;
+				});
+
+				$(".j-album a").on(kClick, function () {
+					var link = $(this);
+					wx.chooseImage({
+						count: 1,
+						sizeType: ['original', 'compressed'],
+						sourceType: ['album', 'camera'],
+						success: function (res) {
+							var localIds = res.localIds;
+							if (localIds && localIds.length) {
+								var localId = localIds[0];
+								link.addClass("active");
+								link.attr("localId", localId);
+								link.find('img').attr("src", localId);
 							}
 						}
 					});
@@ -183,9 +217,18 @@ require(["layer"],
 						return;
 					}
 					$sls.postData["interest"] = interest;
-
+					$sls.photos = [];
 					var localId = util.avatar.attr("localId");
 					if (localId) {
+						$sls.photos.push(localId);
+					}
+					$.each($('.j-album a'), function () {
+						var img = $(this).attr('localId');
+						if (img) {
+							$sls.photos.push(img);
+						}
+					});
+					if ($sls.photos.length) {
 						uploadImages(localId);
 					} else {
 						util.submit();
@@ -199,12 +242,12 @@ require(["layer"],
 			},
 			next: function () {
 				$sls.routeIndex++;
-				//console.log(mRoutes);
 				var tag = mRoutes[$sls.routeIndex];
 				location.href = '#' + tag;
 			},
 			submit: function () {
-				$sls.postData["img"] = $sls.serverId;
+				$sls.postData["img"] = ($sls.serverId.length > 2) ? $sls.serverId[0] : '';
+				$sls.postData["album"] = ($sls.serverId.length > 2) ? $sls.serverId.slice(1) : $sls.serverId;
 				$sls.postData["coord"] = $sls.coord.val();
 				$.post("/api/user", {
 					tag: "sreg",
@@ -249,11 +292,10 @@ require(["layer"],
 				localId: localId.toString(),
 				isShowProgressTips: 1,
 				success: function (res) {
-					$sls.serverId = res.serverId;
+					$sls.serverId.push(res.serverId);
 					SingleUtil.submit();
 				},
 				fail: function () {
-					$sls.serverId = "";
 					SingleUtil.submit();
 				}
 			});
