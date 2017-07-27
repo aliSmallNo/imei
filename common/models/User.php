@@ -10,6 +10,7 @@ namespace common\models;
 
 use admin\models\Admin;
 use common\utils\AppUtil;
+use common\utils\ImageUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
@@ -223,7 +224,17 @@ class User extends ActiveRecord
 		$entity->uUpdatedOn = date('Y-m-d H:i:s');
 		$entity->uUpdatedBy = $adminId;
 		foreach ($data as $key => $val) {
-			$entity->$key = $val;
+			if ($key == 'uAlbum') {
+				$album = json_decode($entity->uAlbum, 1);
+				if ($album) {
+					$val = array_merge($album, $val);
+				}
+			}
+			if ($val && is_array($val)) {
+				$entity->$key = json_encode($val, JSON_UNESCAPED_UNICODE);
+			} else {
+				$entity->$key = $val;
+			}
 		}
 		$entity->save();
 
@@ -374,7 +385,7 @@ class User extends ActiveRecord
 		}
 		$item['vip'] = intval($item['vip']);
 		$item['album'] = json_decode($item['album'], 1);
-		if(!$item['album']){
+		if (!$item['album']) {
 			$item['album'] = [];
 		}
 		$item['album_cnt'] = 0;
@@ -527,6 +538,17 @@ class User extends ActiveRecord
 			$url = AppUtil::getMediaUrl($img, true, true);
 			if ($url) {
 				$data["thumb"] = $url;
+			}
+		}
+		$album = isset($data["album"]) ? $data["album"] : [];
+		unset($data['album']);
+		$data['uAlbum'] = [];
+		if ($album && is_array($album) && count($album)) {
+			foreach ($album as $item) {
+				list($thumb, $figure) = ImageUtil::save2Server($item);
+				if ($figure) {
+					$data['uAlbum'][] = $figure;
+				}
 			}
 		}
 		$addData = [];

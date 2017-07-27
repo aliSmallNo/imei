@@ -371,8 +371,7 @@ class ImageUtil
 		return isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
 	}
 
-	protected
-	static function getSliceBody($fileContent, $offset, $session, $fileName, $boundary)
+	protected static function getSliceBody($fileContent, $offset, $session, $fileName, $boundary)
 	{
 		$formData = '';
 
@@ -394,15 +393,13 @@ class ImageUtil
 		return $data;
 	}
 
-	protected
-	static function imageName($fileExt)
+	protected static function imageName($fileExt)
 	{
 		$fileExt = trim($fileExt, '.');
 		return date('ymdHis') . RedisUtil::getImageSeq() . '.' . $fileExt;
 	}
 
-	protected
-	static function curlUpload($url, $data, $header = [], $method = "POST")
+	protected static function curlUpload($url, $data, $header = [], $method = "POST")
 	{
 		$curlHandler = curl_init();
 		curl_setopt($curlHandler, CURLOPT_URL, $url);
@@ -428,5 +425,43 @@ class ImageUtil
 		$ret = curl_exec($curlHandler);
 		curl_close($curlHandler);
 		return $ret;
+	}
+
+	public static function save2Server($imageUrl, $key = '')
+	{
+		if (!$key) {
+			$key = RedisUtil::getImageSeq();
+		}
+		if (strpos($imageUrl, 'http') !== 0) {
+			// Rain: Media ID, wechat server ID
+			$accessToken = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+			$baseUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s";
+			$imageUrl = sprintf($baseUrl, $accessToken, $imageUrl);
+		}
+
+		$ch = curl_init($imageUrl);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_NOBODY, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$content = curl_exec($ch);
+		$httpInfo = curl_getinfo($ch);
+		curl_close($ch);
+
+		$contentType = $httpInfo["content_type"];
+		$contentType = strtolower($contentType);
+		$ext = AppUtil::getExtName($contentType);
+		$path = AppUtil::imgDir() . $key;
+		if ($ext && strlen($content) > 200) {
+			$fileName = $path . '.' . $ext;
+			file_put_contents($fileName, $content);
+			$fileThumb = $path . '_t.' . $ext;
+			Image::open($fileName)->zoomCrop(120, 120, 0xffffff, 'center', 'center')->save($fileThumb);
+			$ret[] = self::getUrl($fileThumb);
+			$fileNormal = $path . '_n.' . $ext;
+			Image::open($fileName)->zoomCrop(480, 480, 0xffffff, 'center', 'center')->save($fileNormal);
+			$ret[] = self::getUrl($fileNormal);
+			return $ret;
+		}
+		return ['', ''];
 	}
 }
