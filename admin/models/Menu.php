@@ -95,9 +95,9 @@ class Menu
 					],
 					[
 						"name" => "多点统计",
-						"url" => "/site/analyst",
+						"url" => "/site/trend",
 						"revise" => 1,
-						"level" => 825
+						"level" => 820
 					],
 					[
 						"name" => "实时统计",

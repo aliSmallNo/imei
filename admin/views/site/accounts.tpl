@@ -118,6 +118,11 @@
 	.stat-item {
 		margin-left: 30px;
 	}
+
+	.album-items img {
+		width: 40px;
+		height: 40px;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="row">
@@ -155,7 +160,10 @@
 			<th class="col-sm-6">
 				个人信息
 			</th>
-			<th class="col-sm-3">
+			<th class="col-sm-2">
+				相册
+			</th>
+			<th class="col-sm-1">
 				择偶标准
 			</th>
 			<th>
@@ -201,6 +209,13 @@
 				<span>{{$prod.pet_t}}</span>
 				<span>{{$prod.intro}}</span>
 				<span>{{$prod.interest}}</span>
+			</td>
+			<td class="album-items">
+				{{if $prod.album}}
+				{{foreach from=$prod.album item=img}}
+				<img src="{{$img}}">
+				{{/foreach}}
+				{{/if}}
 			</td>
 			<td class="pInfo">
 				{{foreach from=$prod.filter_t item=item}}

@@ -386,9 +386,12 @@ class FooController extends Controller
 
 	public function actionImg()
 	{
+<<<<<<< HEAD
+=======
 		$url = 'http://wx.qlogo.cn/mmopen/deq1XeuYTTeEicn2ygrKrGvMkh7qyLFrUD7rITMAHP6p8S9RSZmlPIv1wveemOrdU1Kqn0hia1dXKqV0RIYyZ0tA0ia4aHalg4V/0';
 		$ret = AppUtil::getMediaUrl($url, false, true);
 		var_dump($ret);
+>>>>>>> 74bf60fcbe49915e2d74faca5ea5c96553e4e6c4
 
 		$ret = AppUtil::getMediaUrl($url, true, true);
 		var_dump($ret);

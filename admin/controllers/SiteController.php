@@ -26,6 +26,10 @@ class SiteController extends BaseController
 {
 	public $layout = "main";
 
+	const TREND_DATA_DAY = 81;
+	const TREND_DATA_WEEK = 83;
+	const TREND_DATA_MONTH = 85;
+
 	public function actionIndex()
 	{
 		return self::actionLogin();
@@ -507,35 +511,82 @@ class SiteController extends BaseController
 		);
 	}
 
-
-	public function actionReusestat()
+	public function actionTrend()
 	{
-		$newFlag = 0;
+//		$redisTrendsKey = generalId::getTrendStatKey($bBigData);
+//		$redis = objInstance::getRedisIns();
+//		$trends = $redis->get($redisTrendsKey);
+//		$trends = json_decode($trends, true);
+		$trends = '';
+		if (!$trends || 1) {
+			$categories = [self::TREND_DATA_DAY, self::TREND_DATA_WEEK];
+			$records = 10;
+			$trends = [];
+			foreach ($categories as $category) {
+				$subtrends = [];
+				if ($category == self::TREND_DATA_DAY) {
+					for ($k = 0; $k <= $records; $k++) {
+						$date = AppUtil::getEndStartTime(time() - $k * 86400, 'today', true);
+						$subtrends = User::trendstat($k, $date, $subtrends);
+					}
+
+				} else if ($category == self::TREND_DATA_WEEK) {
+					for ($k = 0; $k <= $records; $k++) {
+						$date = AppUtil::getEndStartTime(time() - $k * 86400 * 7, 'curweek', true);
+						$subtrends = User::trendstat($k, $date, $subtrends);
+					}
+				}
+				foreach ($subtrends as &$v) {
+					$v = array_reverse($v);
+				}
+				$trends[] = $subtrends;
+
+			}
+		}
+
+//			$redis->set($redisTrendsKey, json_encode($trends));
+//			$redis->expire($redisTrendsKey, 60 * 30);
+
+		return $this->renderPage('trendstatnew.tpl',
+			[
+				'category' => "data",
+				'today' => date('Y年n月j日', time()),
+				'trends' => json_encode($trends),
+			]
+		);
+	}
+
+
+// 留存率 统计
+	public
+	function actionReusestat()
+	{
 		$strReuse = "";
 		$cat = "week";
 		// 开始记录日期 2017-06-01
-		$sql = "select  wMonday as sTime,wSunday as eTime from im_week WHERE wDay BETWEEN '2017-06-01' and now() GROUP BY wMonday ORDER BY wId desc limit 5;";
-		$conn = AppUtil::db();
-		$dateLeft = $conn->createCommand($sql)->queryAll();
-		$data = [];
-		foreach ($dateLeft as $v) {
-			$info = LogAction::loginStat($v["sTime"], $v["eTime"]);
-			$item = [
-				"stime" => $v["sTime"],
-				"etime" => $v["eTime"],
-				"info" => $info ? $info : []
-			];
+		$sCategory = ($cat == 'week' ? LogAction::REUSE_DATA_WEEK : LogAction::REUSE_DATA_MONTH);
+		$lastTime = strtotime("2017-06-01");
+		$dayDiff = ceil((time() - 86400 - $lastTime) / 86400);
+		if ($dayDiff > 1) {
+			if ($sCategory == LogAction::REUSE_DATA_WEEK) {
+				for ($k = 1; $k <= ceil($dayDiff / 7); $k++) {
+					LogAction::getReuseData(time() - $k * 86400 * 7, $sCategory);
+				}
+			} else {
+				for ($k = 1; $k <= ceil($dayDiff / 28); $k++) {
+					LogAction::getReuseData(time() - $k * 86400 * 28, $sCategory);
+				}
+			}
 		}
+		exit;
+
 		return $this->renderPage("reusestat.tpl",
 			[
-				'detailcategory' => 'bigdata/reusestat' . ($newFlag ? '?new=1' : ''),
+				'detailcategory' => 'bigdata/reusestat',
 				'category' => "bigdata",
 				'reuseData' => json_decode($strReuse, true),
 				'cat' => $cat,
-				'newFlag' => $newFlag,
-				'bigCat' => $newFlag ? 'mart' : '',
 				'list' => [],
-				'debug' => Admin::isDebugUser() ? 1 : 0,
 			]
 		);
 	}

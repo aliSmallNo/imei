@@ -9,6 +9,7 @@
 namespace common\models;
 
 
+use common\utils\AppUtil;
 use yii\db\ActiveRecord;
 
 class LogAction extends ActiveRecord
@@ -24,6 +25,9 @@ class LogAction extends ActiveRecord
 		self::ACTION_MATCH => "To媒婆页",
 
 	];
+
+	const REUSE_DATA_WEEK = 73;
+	const REUSE_DATA_MONTH = 74;
 
 	public static function tableName()
 	{
@@ -43,22 +47,42 @@ class LogAction extends ActiveRecord
 		return true;
 	}
 
-	public static function loginStat($sTime, $eTime)
+	public static function getReuseData($cTime = 0, $category = 73)
 	{
-		if (strtotime($sTime) > time()) {
-			return [];
+		$curTime = $cTime;
+		if ($cTime < 1) {
+			$curTime = time();
 		}
-		$sql = "";
+		$times = [];
+		switch ($category) {
+			case self::REUSE_DATA_WEEK:
+				for ($k = 0; $k < 30; $k++) {
+					$subTimes = AppUtil::getEndStartTime($curTime + 86400 * 7 * $k, 'curweek', true);
+					if ($subTimes && count($subTimes) > 1 && strtotime($subTimes[0]) > time()) {
+						break;
+					}
+					if (count($times) >= 32) {
+						break;
+					}
+					$times = array_merge($times, $subTimes);
+				}
+				break;
+			case self::REUSE_DATA_MONTH:
+				break;
+		}
+		if (count($times) > 2) {
+			print_r($times);
+//			$sql = "select GROUP_CONCAT(uId) as uIds,count(*) as amt from im_user
+//				where uAddedOn BETWEEN '$sTime 00:00:00' and '$eTime 23:59:58'
+//				and uNote='' and uRole in (10,20)";
+//			$conn = AppUtil::db();
+//			$result = $conn->createCommand($sql)->queryOne();
 
-		return [];
-	}
 
-	public static function weeklist($start = "2017-06-01", $limit)
-	{
 
-		$sql = "select  wMonday as sTime,wSunday as eTime from im_week WHERE wDay BETWEEN '$start' and '$end' GROUP BY wMonday ORDER BY wId desc limit 5;";
-		$conn = AppUtil::db();
-		$dateLeft = $conn->createCommand($sql)->queryAll();
+		}
+
+
 	}
 
 
