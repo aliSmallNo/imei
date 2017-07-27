@@ -1121,4 +1121,90 @@ class User extends ActiveRecord
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		return $res;
 	}
+
+
+	public static function trendstat($k, $date, $trends)
+	{
+		$conn = AppUtil::db();
+		$trends['titles'][$k] = date('n.j', strtotime($date[1]));
+		$trends['dates'][$k] = date('Y-m-d', strtotime($date[1]));
+		$trends["focus"][$k] = 0;
+		$trends["reg"][$k] = 0;
+		$trends["focusRate"][$k] = 0;
+		$trends["todayblur"][$k] = 0;
+		$trends["male"][$k] = 0;
+		$trends["female"][$k] = 0;
+		$trends["mps"][$k] = 0;
+		$trends["amt"][$k] = 0;
+		$trends["active"][$k] = 0;
+		$trends["activeRate"][$k] = 0;
+		$trends["favor"][$k] = 0;
+		$trends["getwxno"][$k] = 0;
+		$trends["pass"][$k] = 0;
+		$trends["trans"][$k] = 0;
+
+		$sql = "SELECT 
+							count(*) as reg,
+							SUM(CASE WHEN  w.wSubscribe THEN  1 END ) as focus,
+							SUM(CASE WHEN (w.wAddedOn BETWEEN '$date[0]' and '$date[1]') AND wSubscribeTime is null THEN  1 END ) as todayblur,
+							SUM(CASE WHEN  u.uGender=11 THEN  1 END ) as male,
+							SUM(CASE WHEN  u.uGender=10 THEN  1 END ) as female,
+							SUM(CASE WHEN  u.uRole=20 THEN  1 END ) as mps
+							FROM im_user as u 
+							JOIN im_user_wechat as w on w.wUId=u.uId
+							where u.uNote='' and u.uStatus<9 and u.uAddedOn BETWEEN '$date[0]' and '$date[1]' ";
+		$res = $conn->createCommand($sql)->queryOne();
+		if ($res) {
+			$trends['focus'][$k] = intval($res["focus"]); // 新增关注
+			$trends['reg'][$k] = intval($res["reg"]);     // 新增注册
+			$trends['focusRate'][$k] = ($res["reg"] > 0) ? intval(round($res["focus"] / $res["reg"], 2) * 100) : 0;   // 转化率
+			$trends['todayblur'][$k] = intval($res["todayblur"]);   //  新增取消关注
+			$trends['male'][$k] = intval($res["male"]);   //  新增男
+			$trends['female'][$k] = intval($res["female"]);// 新增女
+			$trends['mps'][$k] = intval($res["mps"]);     //  新增媒婆
+		}
+
+		$sql = "select 
+							COUNT(1) as amt
+							from im_user where uNote='' and uStatus<9 and uAddedOn <'$date[1]' ";
+		$res2 = $conn->createCommand($sql)->queryOne();
+		if ($res2) {
+			$trends['amt'][$k] = intval($res2["amt"]); //累计用户
+		}
+
+		$sql = "select 
+							COUNT(DISTINCT a.aUId) as active
+							from im_user as u 
+							join im_log_action as a on u.uId=a.aUId
+							where uNote='' and uStatus<9 and a.aDate BETWEEN '$date[0]' and '$date[1]' and a.aCategory in (1000,1002,1004) ";
+		$res3 = $conn->createCommand($sql)->queryOne();
+		if ($res3) {
+			$trends['active'][$k] = intval($res3["active"]); // 活跃人数
+			$trends['activeRate'][$k] = ($res2["amt"] > 0) ? intval(round($res3["active"] / $res2["amt"], 2) * 100) : 0; // 活跃度
+		}
+
+		$sql = "select 
+							SUM(CASE WHEN  nRelation=150 THEN  1 END ) as favor,
+							SUM(CASE WHEN  nRelation=140 THEN  1 END ) as getwxno,
+							SUM(CASE WHEN  nRelation=140 and nStatus=2 THEN  1 END ) as pass
+							from im_user_net
+							where nAddedOn BETWEEN '$date[0]' and '$date[1]' ";
+		$res4 = $conn->createCommand($sql)->queryOne();
+		if ($res4) {
+			$trends['favor'][$k] = intval($res4["favor"]); // 新增心动
+			$trends['getwxno'][$k] = intval($res4["getwxno"]); // 新增牵线
+			$trends['pass'][$k] = intval($res4["pass"]); // 新增牵线成功
+		}
+
+		$sql = "SELECT 
+						SUM(pTransAmt/100) as trans
+						FROM im_pay 
+						where pStatus=100 and pTransDate BETWEEN '$date[0]' and '$date[1]' ";
+		$res5 = $conn->createCommand($sql)->queryOne();
+		if ($res5) {
+			$trends['trans'][$k] = intval($res5["trans"]); // 新增充值
+		}
+
+		return $trends;
+	}
 }

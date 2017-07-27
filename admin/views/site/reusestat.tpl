@@ -27,8 +27,8 @@
 		</div>
 		<div class="col-lg-3">
 			<div class="btn-group " role="group">
-				<button type="button" class="btn btn-default {{if $cat == 'week'}}active{{/if}}" tag="week" newFlag="{{$newFlag}}">周</button>
-				<button type="button" class="btn btn-default {{if $cat == 'month'}}active{{/if}}" tag="month" newFlag="{{$newFlag}}">月</button>
+				<button type="button" class="btn btn-default {{if $cat == 'week'}}active{{/if}}" tag="week">周</button>
+				<button type="button" class="btn btn-default {{if $cat == 'month'}}active{{/if}}" tag="month">月</button>
 			</div>
 		</div>
 	</div>
@@ -95,12 +95,12 @@
 			<tr>
 				<td class="dt">{{$prod.sStart}}<br>{{$prod.sEnd}}</td>
 				<td class="percent">
-					<a href="/site/activeusers?timelimit={{$prod.sTime}}-{{$prod.eTime}}{{if !$newFlag}}&bigcat=mart{{/if}}" target="_blank">{{$prod.sCount}}</a>
+					<a href="/site/activeusers?timelimit={{$prod.sTime}}-{{$prod.eTime}}" target="_blank">{{$prod.sCount}}</a>
 				</td>
 				{{foreach from=$prod.percents key=subK item=percent}}
 				<td class="percent">
 					{{if $percent>=0}}
-					<a href="/site/activeusers?timelimit={{$prod.sTime}}-{{$prod.eTime}}-{{$prod.colStart[$subK]}}-{{$prod.colEnd[$subK]}}{{if !$newFlag}}&bigcat=mart{{/if}}"
+					<a href="/site/activeusers?timelimit={{$prod.sTime}}-{{$prod.eTime}}-{{$prod.colStart[$subK]}}-{{$prod.colEnd[$subK]}}"
 						 target="_blank">
 						{{$percent|string_format:'%.1f'}}%</a>
 					{{else}}&nbsp;
@@ -114,7 +114,7 @@
 	</div>
 </div>
 <script>
-	$('button[newFlag]').on('click', function () {
+	$('button').on('click', function () {
 		var self = $(this);
 		location.href = "/bigdata/reusestat?cat=" + self.attr('tag') + "&new=" + self.attr('newFlag');
 	});

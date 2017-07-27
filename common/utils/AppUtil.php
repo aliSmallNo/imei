@@ -1027,4 +1027,65 @@ class AppUtil
 		}
 		return round($s, $decimal);
 	}
+
+	/**
+	 * 获取开始时间和结束时间
+	 *
+	 * */
+	public static function getEndStartTime($time, $category = 'now', $dateFlag = false)
+	{
+		$lowerCategory = strtolower($category);
+		$times = [];
+		switch ($lowerCategory) {
+			case 'now':
+			case 'today':
+				$times[] = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
+				$times[] = mktime(0, 0, 0, date('m', $time), date('d', $time) + 1, date('Y', $time)) - 10;
+				break;
+			case 'yes':
+			case 'yesterday':
+				//php获取昨日起始时间戳和结束时间戳
+				$times[] = mktime(0, 0, 0, date('m', $time), date('d', $time) - 1, date('Y', $time));
+				$times[] = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time)) - 10;
+				break;
+			case 'tom':
+			case 'tomorrow':
+				//php获取明日起始时间戳和结束时间戳
+				$times[] = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
+				$times[] = mktime(0, 0, 0, date('m', $time), date('d', $time) + 1, date('Y', $time)) - 10;
+				break;
+			case 'week':
+			case 'lastweek':
+				//php获取上周起始时间戳和结束时间戳
+				$times[] = mktime(0, 0, 0, date('m', $time), date('d', $time) - date('w', $time) + 1 - 7, date('Y', $time));
+				$times[] = mktime(23, 59, 59, date('m', $time), date('d', $time) - date('w', $time) + 7 - 7, date('Y', $time));
+				break;
+			case 'curweek':
+				$times[] = mktime(0, 0, 0, date('m', $time), date('d', $time) - date('w', $time) + 1, date('Y', $time));
+				$times[] = mktime(23, 59, 59, date('m', $time), date('d', $time) - date('w', $time) + 7, date('Y', $time));
+				break;
+			case 'tomweek':
+				$times[] = mktime(0, 0, 0, date('m', $time), date('d', $time) - date('w', $time) + 1 + 7, date('Y', $time));
+				$times[] = mktime(23, 59, 59, date('m', $time), date('d', $time) - date('w', $time) + 7 + 7, date('Y', $time));
+				break;
+			case 'curmonth':
+				$times[] = mktime(0, 0, 0, date('m', $time), 1, date('Y', $time));
+				$times[] = mktime(0, 0, 0, date('m', $time) + 1, 1, date('Y', $time)) - 10;
+				break;
+			case 'tommonth':
+				$times[] = mktime(0, 0, 0, date('m', $time) + 1, 1, date('Y', $time));
+				$times[] = mktime(0, 0, 0, date('m', $time) + 2, 1, date('Y', $time)) - 10;
+				break;
+			default:
+				//php获取上月起始时间戳和结束时间戳
+				$times[] = mktime(0, 0, 0, date('m', $time) - 1, 1, date('Y', $time));
+				$times[] = mktime(0, 0, 0, date('m', $time), 1, date('Y', $time)) - 10;
+				break;
+		}
+		if ($dateFlag && $times) {
+			$times[0] = date('Y-m-d H:i:s', $times[0]);
+			$times[1] = date('Y-m-d H:i:s', $times[1]);
+		}
+		return $times;
+	}
 }

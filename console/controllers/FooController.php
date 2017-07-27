@@ -380,8 +380,6 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = UserWechat::refreshWXInfo('oYDJew2IjPst3upRPXc1k6wWHMkE', 1);
-		var_dump($ret);
 
 	}
 }
