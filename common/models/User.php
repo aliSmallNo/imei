@@ -526,10 +526,10 @@ class User extends ActiveRecord
 			"sign" => "uHoros",
 			"coord" => "uCoord",
 			"filter" => "uFilter",
+			"album" => "uAlbum",
 		];
 		$img = isset($data["img"]) ? $data["img"] : '';
 		unset($data['img']);
-		//return $data;
 		if ($img) {
 			$url = AppUtil::getMediaUrl($img, false, true);
 			if ($url) {
@@ -541,24 +541,23 @@ class User extends ActiveRecord
 			}
 		}
 		$album = isset($data["album"]) ? $data["album"] : [];
-		unset($data['album']);
-		$data['uAlbum'] = [];
+		$data['album'] = [];
 		if ($album && is_array($album) && count($album)) {
 			foreach ($album as $item) {
 				list($thumb, $figure) = ImageUtil::save2Server($item);
 				if ($figure) {
-					$data['uAlbum'][] = $figure;
+					$data['album'][] = $figure;
 				}
 			}
 		}
-		$addData = [];
+		$userData = [];
 		foreach ($fields as $k => $field) {
 			if (isset($data[$k])) {
-				$addData[$field] = $data[$k];
+				$userData[$field] = $data[$k];
 			}
 		}
 
-		$uid = self::add($addData);
+		$uid = self::add($userData);
 
 		/*$net = UserNet::findOne(['nSubUId' => $uid, 'nRelation' => UserNet::REL_INVITE, 'nDeletedFlag' => 0]);
 		if ($net && isset($net['nUId']) && $net['nUId']) {

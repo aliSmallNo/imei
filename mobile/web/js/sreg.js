@@ -228,6 +228,11 @@ require(["layer"],
 							$sls.photos.push(img);
 						}
 					});
+
+					layer.open({
+						type: 2,
+						content: '正在保存中...'
+					});
 					if ($sls.photos.length) {
 						var pid = $sls.photos.shift();
 						uploadImages(pid);
@@ -254,6 +259,7 @@ require(["layer"],
 					tag: "sreg",
 					data: JSON.stringify($sls.postData),
 				}, function (res) {
+					layer.closeAll();
 					showMsg(res.msg);
 					if (res.code == 0) {
 						setTimeout(function () {
@@ -291,7 +297,7 @@ require(["layer"],
 		function uploadImages(localId) {
 			wx.uploadImage({
 				localId: localId.toString(),
-				isShowProgressTips: 1,
+				isShowProgressTips: 0,
 				success: function (res) {
 					$sls.serverId.push(res.serverId);
 					if ($sls.photos.length) {
