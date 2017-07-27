@@ -68,7 +68,9 @@ class UserNet extends ActiveRecord
 			$entity->nUpdatedOn = date('Y-m-d H:i:s');
 			$entity->nNote = $note;
 			$entity->save();
-			return false;
+			if ($relation != self::REL_QR_SUBSCRIBE) {
+				return false;
+			}
 		}
 		$entity = new self();
 		$entity->nUId = $uid;
@@ -79,6 +81,27 @@ class UserNet extends ActiveRecord
 		$entity->save();
 
 		return $entity->nId;
+	}
+
+	public static function addLink($uid, $subUid, $note = '')
+	{
+		$conn = AppUtil::db();
+		$sql = 'insert into im_user_net(nUId,nSubUId,nRelation,nNote)
+			SELECT :uid,:suid,:rel,:note FROM dual
+			WHERE NOT EXISTS(SELECT 1 FROM im_user_net WHERE nUId=:uid AND nSubUId=:suid AND nRelation=:rel AND nStatus=1 AND nDeletedFlag=0)';
+		$conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':suid' => $subUid,
+			':rel' => self::REL_LINK,
+			':note' => $note,
+		])->execute();
+		$sql = 'SELECT nId FROM im_user_net WHERE nUId=:uid AND nSubUId=:suid AND nRelation=:rel AND nStatus=1 AND nDeletedFlag=0';
+		$ret = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':suid' => $subUid,
+			':rel' => self::REL_LINK,
+		])->queryScalar();
+		return $ret;
 	}
 
 	public static function addByOpenId($uOpenId, $subUid, $relation, $note = '')
@@ -251,7 +274,7 @@ class UserNet extends ActiveRecord
 
 		$conn = AppUtil::db();
 		$sql = 'select u.* from im_user as u  
-			join im_user_net as n on n.nSubUId=u.uId ' . $strCriteria .
+				join im_user_net as n on n.nSubUId=u.uId ' . $strCriteria .
 			' order by n.nAddedOn DESC limit ' . $offset . ',' . ($pageSize + 1);
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$nextPage = 0;
@@ -381,9 +404,9 @@ class UserNet extends ActiveRecord
 							where n.nSubUId=$MyUid $orderBy $limit";
 				} elseif ($subtag == "fav-together") {
 					$sql = "select u.* from im_user as u 
-							join im_user_net  as n on n.nUId=u.uId and n.nRelation=$nRelation and n.nDeletedFlag=$deleteflag
-							join im_user_net as n2 on n2.nSubUId=u.uId and n2.nRelation=$nRelation and n.nDeletedFlag=$deleteflag
-							where n.nSubUId=$MyUid group by u.uId $orderBy $limit ";
+							join im_user_net  as n on n.nUId=u.uId and n.nRelation=$nRelation and n.nDeletedFlag=$deleteflag and n.nSubUId=$MyUid
+							join im_user_net as n2 on n2.nSubUId=u.uId and n2.nRelation=$nRelation and n2.nDeletedFlag=$deleteflag and n2.nUId=$MyUid
+							group by u.uId $orderBy $limit ";
 				}
 				break;
 			case "iaddwx":
@@ -418,6 +441,11 @@ class UserNet extends ActiveRecord
 				break;
 		}
 		$ret = $conn->createCommand($sql)->queryAll();
+		$nextpage = 0;
+		if (count($ret) > $pageSize) {
+			array_pop($ret);
+			$nextpage = $page + 1;
+		}
 		$items = [];
 		foreach ($ret as $row) {
 			$item = User::fmtRow($row);
@@ -436,15 +464,9 @@ class UserNet extends ActiveRecord
 				$item["showWxFlag"] = 0;
 				$item["wxNo"] = "";
 			}
-
 			$items[] = $item;
 		}
-		if (count($items) > $pageSize) {
-			$nextpage = $page + 1;
-			array_pop($items);
-		} else {
-			$nextpage = 0;
-		}
+
 		return [$items, $nextpage];
 
 	}
@@ -496,16 +518,15 @@ class UserNet extends ActiveRecord
 
 	public static function roseAmt($myId, $id, $num)
 	{
-
 		$amt = UserTrans::getStat($myId, 1)["flower"];
 		if ($amt < $num) {
-			return $amt;
+			return [0, $amt];
 		}
 		// 打赏给 $id
-		$nid = UserNet::add($id, $myId, UserNet::REL_LINK);
+		$nid = UserNet::addLink($id, $myId);
 		UserTrans::add($myId, $nid, UserTrans::CAT_REWARD, UserTrans::$catDict[UserTrans::CAT_REWARD], $num, UserTrans::UNIT_GIFT);
 		WechatUtil::toNotice($id, $myId, "wxNo");
-		return $amt;
+		return [1, $amt];
 	}
 
 	public static function focusMp($myUId, $page = 1, $pageSize = 20)

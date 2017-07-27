@@ -167,15 +167,16 @@ require(["layer"],
 								id: alertUlit.secretId,
 							}, function (resp) {
 								if (resp.code == 0) {
-									if (resp.data >= num) {
+									if (resp.data.result) {
+										$('.m-wxid-input').val(resp.data.wechatID);
 										$(".getWechat").show();
-										alertUlit.payMP.hide();
+										$(".pay-mp").hide();
 									} else {
 										$(".m-popup-shade").show();
 										$(".rose-num").html(resp.data);
 										$(".not-enough-rose").show();
 									}
-								} else if (resp.code == 129) {
+								} else {
 									showMsg(resp.msg);
 								}
 								alertUlit.payroseF = 0;
@@ -214,7 +215,7 @@ require(["layer"],
 							alertUlit.cork.hide();
 							break;
 						case "btn-confirm":
-							var wname = $.trim(self.closest(".getWechat").find("input").val());
+							var wname = $.trim($(".m-wxid-input").val());
 							if (!wname) {
 								showMsg("请填写正确的微信号哦~");
 								return;
@@ -310,7 +311,7 @@ require(["layer"],
 			// SingleUtil.init();
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
-			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareAppMessage','onMenuShareTimeline'];
+			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareAppMessage', 'onMenuShareTimeline'];
 			wx.config(wxInfo);
 			wx.ready(function () {
 				//wx.hideOptionMenu();

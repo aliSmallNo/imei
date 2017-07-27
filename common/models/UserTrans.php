@@ -101,7 +101,10 @@ class UserTrans extends ActiveRecord
 			$params[':id'] = $uid;
 		}
 		$conn = AppUtil::db();
-		$sql = 'SELECT SUM(case when tCategory in (100,105,110,130) then tAmt when tCategory=120 then -tAmt end) as amt,
+		$cats = array_keys(self::$catDict);
+		$strPlus = implode(',', array_diff($cats, self::$CatMinus));
+		$strMinus = implode(',', self::$CatMinus);
+		$sql = 'SELECT SUM(case when tCategory in (' . $strPlus . ') then tAmt when tCategory in (' . $strMinus . ') then -tAmt end) as amt,
 				tUnit as unit, tUId as uid
  				from im_user_trans WHERE tUId>0 ' . $strCriteria . ' GROUP BY tUId,tUnit';
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
@@ -343,7 +346,11 @@ class UserTrans extends ActiveRecord
 				$item['date_part'] = date('n月j日', strtotime($row['tAddedOn']));
 				$item['time'] = date('H:i:s', strtotime($row['tAddedOn']));
 			}
-			$items[] = $item;
+			if ($role == User::ROLE_SINGLE && $unit == self::UNIT_GIFT) {
+				$items[] = $item;
+			} elseif ($role == User::ROLE_MATCHER && $unit == self::UNIT_FEN) {
+				$items[] = $item;
+			}
 		}
 		return $items;
 	}

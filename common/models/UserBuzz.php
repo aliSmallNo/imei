@@ -126,18 +126,16 @@ class UserBuzz extends ActiveRecord
 						if ($qrInfo) {
 							$content = $qrInfo["qCode"];
 							self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SUBSCRIBE, $qId);
-							// Rain: 添加或者更新微信用户信息
-							UserWechat::refreshWXInfo($fromUsername);
-							UserWechat::getInfoByOpenId($fromUsername, true);
 							$resp = self::welcomeMsg($fromUsername, $toUsername, $event);
 						}
 					}
 				} else {
 					UserNet::addByOpenId($fromUsername, self::$IMEI_UID, UserNet::REL_SUBSCRIBE);
 					$resp = self::welcomeMsg($fromUsername, $toUsername, $event);
-					UserWechat::refreshWXInfo($fromUsername);
-					UserWechat::getInfoByOpenId($fromUsername, true);
 				}
+				// Rain: 添加或者更新微信用户信息
+				UserWechat::refreshWXInfo($fromUsername);
+				UserWechat::getInfoByOpenId($fromUsername, true);
 				break;
 			case "unsubscribe":
 				if ($fromUsername && strlen($fromUsername) > 20) {

@@ -359,8 +359,19 @@ class ApiController extends Controller
 				if (UserNet::findOne(["nRelation" => UserNet::REL_LINK, "nSubUId" => $wxInfo["uId"], "nUId" => $id, "nStatus" => UserNet::STATUS_WAIT])) {
 					return self::renderAPI(129, '您已经申请过微信号了哦~');
 				}
-				$roseAmt = UserNet::roseAmt($wxInfo["uId"], $id, $num);
-				return self::renderAPI(0, '', $roseAmt);
+				list($result, $roseAmt) = UserNet::roseAmt($wxInfo["uId"], $id, $num);
+				$wechatID = '';
+				if ($result) {
+					$wechatInfo = UserWechat::findOne(['wOpenId' => $openId]);
+					if ($wechatInfo) {
+						$wechatID = $wechatInfo['wWechatId'];
+					}
+				}
+				return self::renderAPI(0, '', [
+					'amt' => $roseAmt,
+					'result' => $result,
+					'wechatID' => $wechatID
+				]);
 			case "addmewx":     //添加我微信
 			case "iaddwx":      //我添加微信
 			case "heartbeat":   // 心动列表
