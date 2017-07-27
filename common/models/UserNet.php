@@ -404,9 +404,9 @@ class UserNet extends ActiveRecord
 							where n.nSubUId=$MyUid $orderBy $limit";
 				} elseif ($subtag == "fav-together") {
 					$sql = "select u.* from im_user as u 
-							join im_user_net  as n on n.nUId=u.uId and n.nRelation=$nRelation and n.nDeletedFlag=$deleteflag
-							join im_user_net as n2 on n2.nSubUId=u.uId and n2.nRelation=$nRelation and n.nDeletedFlag=$deleteflag
-							where n.nSubUId=$MyUid group by u.uId $orderBy $limit ";
+							join im_user_net  as n on n.nUId=u.uId and n.nRelation=$nRelation and n.nDeletedFlag=$deleteflag and n.nSubUId=$MyUid
+							join im_user_net as n2 on n2.nSubUId=u.uId and n2.nRelation=$nRelation and n2.nDeletedFlag=$deleteflag and n2.nUId=$MyUid
+							group by u.uId $orderBy $limit ";
 				}
 				break;
 			case "iaddwx":
@@ -441,6 +441,11 @@ class UserNet extends ActiveRecord
 				break;
 		}
 		$ret = $conn->createCommand($sql)->queryAll();
+		$nextpage = 0;
+		if (count($ret) > $pageSize) {
+			array_pop($ret);
+			$nextpage = $page + 1;
+		}
 		$items = [];
 		foreach ($ret as $row) {
 			$item = User::fmtRow($row);
@@ -459,15 +464,9 @@ class UserNet extends ActiveRecord
 				$item["showWxFlag"] = 0;
 				$item["wxNo"] = "";
 			}
-
 			$items[] = $item;
 		}
-		if (count($items) > $pageSize) {
-			$nextpage = $page + 1;
-			array_pop($items);
-		} else {
-			$nextpage = 0;
-		}
+
 		return [$items, $nextpage];
 
 	}

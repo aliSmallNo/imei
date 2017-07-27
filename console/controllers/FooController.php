@@ -399,7 +399,32 @@ class FooController extends Controller
 //		$ret = UserWechat::refreshWXInfo('oYDJew2IjPst3upRPXc1k6wWHMkE', 1);
 //		var_dump($ret);
 
-		$ret = UserNet::addLink(131379, 131446);
-		var_dump($ret);
+		$conn = AppUtil::db();
+
+		$sql = "insert into im_user_net(nUId,nSubUId,nRelation,nNote,nAddedOn,nUpdatedOn)
+				select qUId,(SELECT wUId from im_user_wechat WHERE wOpenId=:openid limit 1) as suid,:rel,:qid,:dt,:dt
+ 				from im_user_qr where qId=:qid";
+		$cmd = $conn->createCommand($sql);
+
+		$sql = 'select * from im_user_buzz WHERE bEvent=\'subscribe\' and bEventKey like \'qrscene_%\' and bDate>\'2017-07-26\';';
+		$ret = $conn->createCommand($sql)->queryAll();
+		$count = 0;
+		foreach ($ret as $row) {
+			$qId = $row['bEventKey'];
+			$qId = substr($qId, 8);
+			$dt = $row['bDate'];
+			$openid = $row['bFrom'];
+			$count += $cmd->bindValues([
+				':qid' => $qId,
+				':openid' => $openid,
+				':dt' => $dt,
+				':rel' => UserNet::REL_QR_SUBSCRIBE,
+			])->execute();
+		}
+		var_dump($count);
+
+		// 三张头像 + 实名认证（身份证照片）
+		/*$ret = UserNet::addLink(131379, 131446);
+		var_dump($ret);*/
 	}
 }
