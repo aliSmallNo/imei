@@ -477,7 +477,7 @@
 	<div class="getw-content">
 		<a class="icon-alert icon-close" tag="close"></a>
 		<div class="input">
-			<input type="text" placeholder="请输入您的微信号">
+			<input placeholder="请输入您的微信号" class="m-wxid-input">
 		</div>
 		<div class="getw-about">
 			<p>1、微信号仅用于双方同意后，发送给彼此，请放心填写</p>
@@ -615,7 +615,8 @@
 		</div>
 		{[/pendingWxFlag]}
 		</a>
-		{[#showWxFlag]}<div class="m-wxid">微信号: <em>{[wechatid]}</em></div>{[/showWxFlag]}
+		{[#showWxFlag]}
+		<div class="m-wxid">微信号: <em>{[wechatid]}</em></div>{[/showWxFlag]}
 	</li>
 	{[/data]}
 </script>
@@ -901,4 +902,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/iscroll.js"></script>
-<script data-main="/js/single.js?v=1.2.8" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.2.9" src="/assets/js/require.js"></script>

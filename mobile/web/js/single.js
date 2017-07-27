@@ -270,7 +270,8 @@ require(["layer"],
 								id: $sls.secretId,
 							}, function (resp) {
 								if (resp.code == 0) {
-									if (parseInt(resp.data) >= parseInt(num)) {
+									if (resp.data.result) {
+										$('.m-wxid-input').val(resp.data.wechatID);
 										$(".getWechat").show();
 										$(".pay-mp").hide();
 									} else {
@@ -278,10 +279,9 @@ require(["layer"],
 										$(".rose-num").html(resp.data);
 										$(".not-enough-rose").show();
 									}
-								} else if (resp.code == 129) {
+								} else {
 									showMsg(resp.msg);
 								}
-
 								alertUlit.payroseF = 0;
 							}, "json");
 							break;
@@ -335,7 +335,7 @@ require(["layer"],
 							$sls.cork.hide();
 							break;
 						case "btn-confirm":
-							var wname = $.trim(self.closest(".getWechat").find("input").val());
+							var wname = $.trim($(".m-wxid-input").val());
 							if (!wname) {
 								showMsg("请填写正确的微信号哦~");
 								return;

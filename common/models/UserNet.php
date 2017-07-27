@@ -518,16 +518,15 @@ class UserNet extends ActiveRecord
 
 	public static function roseAmt($myId, $id, $num)
 	{
-
 		$amt = UserTrans::getStat($myId, 1)["flower"];
 		if ($amt < $num) {
-			return $amt;
+			return [0, $amt];
 		}
 		// 打赏给 $id
 		$nid = UserNet::addLink($id, $myId);
 		UserTrans::add($myId, $nid, UserTrans::CAT_REWARD, UserTrans::$catDict[UserTrans::CAT_REWARD], $num, UserTrans::UNIT_GIFT);
 		WechatUtil::toNotice($id, $myId, "wxNo");
-		return $amt;
+		return [1, $amt];
 	}
 
 	public static function focusMp($myUId, $page = 1, $pageSize = 20)

@@ -95,7 +95,7 @@
 	<div class="getw-content">
 		<a class="icon-alert icon-close" tag="close"></a>
 		<div class="input">
-			<input type="text" placeholder="请输入您的微信号">
+			<input placeholder="请输入您的微信号" class="m-wxid-input">
 		</div>
 		<div class="getw-about">
 			<p>1、微信号仅用于双方同意后，发送给彼此，请放心填写</p>
@@ -205,4 +205,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/shome.js?v=1.1.6" src="/assets/js/require.js"></script>
+<script data-main="/js/shome.js?v=1.2.0" src="/assets/js/require.js"></script>
