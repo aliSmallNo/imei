@@ -427,7 +427,7 @@ class ImageUtil
 		return $ret;
 	}
 
-	public static function save2Server($imageUrl, $key = '')
+	public static function save2Server($imageUrl, $squareFlag = false, $key = '')
 	{
 		if (!$key) {
 			$key = RedisUtil::getImageSeq();
@@ -452,13 +452,27 @@ class ImageUtil
 		$ext = AppUtil::getExtName($contentType);
 		$path = AppUtil::imgDir() . $key;
 		if ($ext && strlen($content) > 200) {
+			$thumbSize = 140;
+			$figureSize = 540;
 			$fileName = $path . '.' . $ext;
 			file_put_contents($fileName, $content);
+			if ($squareFlag) {
+				$figureWidth = $figureHeight = $figureSize;
+			} else {
+				list($srcWidth, $srcHeight) = getimagesize($fileName);
+				if ($srcWidth > $srcHeight) {
+					$figureHeight = $figureSize;
+					$figureWidth = $srcWidth * $figureSize / $srcHeight;
+				} else {
+					$figureWidth = $figureSize;
+					$figureHeight = $srcHeight * $figureSize / $srcWidth;
+				}
+			}
 			$fileThumb = $path . '_t.' . $ext;
-			Image::open($fileName)->zoomCrop(120, 120, 0xffffff, 'center', 'center')->save($fileThumb);
+			Image::open($fileName)->zoomCrop($thumbSize, $thumbSize, 0xffffff, 'center', 'center')->save($fileThumb);
 			$ret[] = self::getUrl($fileThumb);
 			$fileNormal = $path . '_n.' . $ext;
-			Image::open($fileName)->zoomCrop(480, 480, 0xffffff, 'center', 'center')->save($fileNormal);
+			Image::open($fileName)->zoomCrop($figureWidth, $figureHeight, 0xffffff, 'center', 'center')->save($fileNormal);
 			$ret[] = self::getUrl($fileNormal);
 			return $ret;
 		}

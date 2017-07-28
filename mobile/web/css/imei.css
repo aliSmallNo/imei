@@ -3462,38 +3462,45 @@ section {
     position: relative;
     margin: 0;
     padding: 0.5rem 0; }
-    #album .photos li img {
-      width: 9rem;
-      height: 9rem;
-      border: 1px solid #e4e4e4;
-      position: relative;
-      vertical-align: middle; }
+    #album .photos li:nth-of-type(3n+1) {
+      clear: left; }
     #album .photos li a {
       border: 1px solid #f487ac;
-      height: 9rem;
-      width: 9rem;
+      border-radius: 2px;
+      background-color: #fff;
+      padding: 0;
       display: inline-block;
-      background-color: #fff; }
-    #album .photos li a.choose-img:before {
-      content: " ";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      -webkit-transform: translate(-50%, -51%);
-      transform: translate(-50%, -51%);
-      background: #f781ab;
-      width: 2px;
-      height: 4rem; }
-    #album .photos li a.choose-img:after {
-      content: " ";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      -webkit-transform: translate(-50%, -51%);
-      transform: translate(-50%, -51%);
-      background: #f487ac;
-      width: 4rem;
-      height: 2px; }
+      width: 9rem;
+      height: 9rem;
+      overflow: hidden; }
+      #album .photos li a img {
+        width: 100%;
+        height: auto;
+        vertical-align: middle;
+        top: 50%;
+        position: relative;
+        -webkit-transform: translate(0, -50%);
+        transform: translate(0, -50%); }
+      #album .photos li a.choose-img:before {
+        content: " ";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -51%);
+        transform: translate(-50%, -51%);
+        background: #f781ab;
+        width: 2px;
+        height: 4rem; }
+      #album .photos li a.choose-img:after {
+        content: " ";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -51%);
+        transform: translate(-50%, -51%);
+        background: #f487ac;
+        width: 4rem;
+        height: 2px; }
 
 #matchCondition .title {
   font-size: 1rem;
