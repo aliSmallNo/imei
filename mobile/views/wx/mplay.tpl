@@ -12,6 +12,22 @@
 		font-size: 1.5rem;
 		text-align: left;
 		padding: 2rem 2rem 1rem 0;
+		display: flex;
+	}
+
+	.mplay-step-text span {
+		color: #fff;
+		display: block;
+		flex: 0 0 1rem;
+		border-radius: 2rem;
+		text-align: center;
+		padding: 0 .5rem;
+		background: #f6aec6
+	}
+
+	.mplay-step-text div{
+		flex: 1;
+		margin-left: 2rem;
 	}
 
 	.mplay-step-img {
@@ -27,7 +43,10 @@
 <div class="mplay">
 	<div class="mplay-title">媒婆使用流程</div>
 
-	<div class="mplay-step-text">第一步注册</div>
+	<div class="mplay-step-text">
+		<span>1</span>
+		<div>注册</div>
+	</div>
 	<div class="mplay-step-img">
 		<img src="/images/m_play_1.jpg">
 	</div>
