@@ -22,7 +22,7 @@
 <section id="sgroup" data-title="我的单身团">
 	<div class="m-rows line-bottom">
 		<a href="/wx/share">扩大我的单身团</a>
-		<a href="#snewbie">新的单身团申请</a>
+		<a href="#snewbie" style="display: none">新的单身团申请</a>
 		<a href="#srept">单身团动态</a>
 	</div>
 	<div class="m-tab-wrap">
@@ -235,10 +235,10 @@
 </section>
 <div class="nav-foot on">
 	<a href="#slink" class="nav-link active" data-tag="slink">
-		其他媒婆
+		发现
 	</a>
 	<a href="#sgroup" class="nav-group" data-tag="sgroup">
-		单身团推荐
+		单身团
 	</a>
 	<a href="#snews" class="nav-invite" data-tag="snews">
 		动态
