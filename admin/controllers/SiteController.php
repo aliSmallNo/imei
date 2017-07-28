@@ -270,6 +270,23 @@ class SiteController extends BaseController
 		}
 
 		list($list, $count) = User::users($criteria, $params, $page);
+		foreach ($list as &$v) {
+			$dataImg = [];
+			foreach ($v["album"] as $v1) {
+				$dataImg[] = [
+					"alt" => "相册",
+					"pid" => 666, //图片id
+					"src" => $v1, //原图地址
+					"thumb" => $v1 //缩略图地址
+				];
+			}
+			$v["showImages"] = json_encode([
+				"title" => "show",
+				"id" => "10001",
+				"start" => 0,
+				"data" => $dataImg,
+			]);
+		}
 		$stat = User::stat();
 		$pagination = self::pagination($page, $count);
 		return $this->renderPage('accounts.tpl',
