@@ -3378,39 +3378,46 @@ section
 			position: relative
 			margin: 0
 			padding: .5rem 0
-			img
-				width: 9rem
-				height: 9rem
-				border: 1px solid #e4e4e4
-				position: relative
-				vertical-align: middle
+			&:nth-of-type(3n+1)
+				clear: left
 			a
 				border: 1px solid $mainColorLight
-				height: 9rem
-				width: 9rem
-				display: inline-block
+				border-radius: 2px
 				background-color: #fff
-			a.choose-img
-				&:before
-					content: " "
-					position: absolute
+				padding: 0
+				display: inline-block
+				width: 9rem
+				height: 9rem
+				overflow: hidden
+				img
+					width: 100%
+					height: auto
+					vertical-align: middle
 					top: 50%
-					left: 50%
-					-webkit-transform: translate(-50%, -51%)
-					transform: translate(-50%, -51%)
-					background: #f781ab
-					width: 2px
-					height: 4rem
-				&:after
-					content: " "
-					position: absolute
-					top: 50%
-					left: 50%
-					-webkit-transform: translate(-50%, -51%)
-					transform: translate(-50%, -51%)
-					background: $mainColorLight
-					width: 4rem
-					height: 2px
+					position: relative
+					-webkit-transform: translate(0, -50%)
+					transform: translate(0, -50%)
+				&.choose-img
+					&:before
+						content: " "
+						position: absolute
+						top: 50%
+						left: 50%
+						-webkit-transform: translate(-50%, -51%)
+						transform: translate(-50%, -51%)
+						background: #f781ab
+						width: 2px
+						height: 4rem
+					&:after
+						content: " "
+						position: absolute
+						top: 50%
+						left: 50%
+						-webkit-transform: translate(-50%, -51%)
+						transform: translate(-50%, -51%)
+						background: $mainColorLight
+						width: 4rem
+						height: 2px
 
 #matchCondition
 	.title

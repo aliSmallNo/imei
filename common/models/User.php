@@ -593,13 +593,12 @@ class User extends ActiveRecord
 	public static function album($id, $openId, $f = "add")
 	{
 		if ($id && $f == "add") {
-			$url = AppUtil::getMediaUrl($id);
+			list($thumb, $url) = ImageUtil::save2Server($id); //AppUtil::save($id);
 		} else {
 			$url = $id;
 		}
 
 		$Info = self::findOne(["uOpenId" => $openId]);
-
 		if ($url && $Info) {
 			$album = $Info->uAlbum;
 			if ($album) {
@@ -621,8 +620,9 @@ class User extends ActiveRecord
 					}
 					break;
 			}
-			$album = json_encode(array_values($album));
-			self::edit($Info->uId, ["uAlbum" => $album]);
+			$Info->uAlbum = json_encode(array_values($album), JSON_UNESCAPED_UNICODE);
+			$Info->uUpdatedOn = date('Y-m-d H:i:s');
+			$Info->save();
 			return $url;
 		}
 		return 0;
