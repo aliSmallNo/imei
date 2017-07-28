@@ -22,7 +22,9 @@
 		border-radius: 2rem;
 		text-align: center;
 		padding: 0 .5rem;
-		background: #f6aec6
+		background: #f6aec6;
+		max-height: 2rem;
+		max-width: 2rem;
 	}
 
 	.mplay-step-text div{
