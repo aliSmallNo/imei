@@ -263,7 +263,7 @@ require(["layer"],
 					showMsg(res.msg);
 					if (res.code == 0) {
 						setTimeout(function () {
-							location.href = "/wx/single";
+							location.href = "/wx/single#slook";
 						}, 500);
 					}
 				}, "json");

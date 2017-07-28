@@ -1944,19 +1944,50 @@ section {
 
 .mycard {
   background: #fbd2e0;
-  padding: 20px 0; }
+  text-align: center;
+  padding: 4rem 0; }
+  .mycard .card-wrap {
+    width: 70%;
+    display: block;
+    margin: 0 auto;
+    position: relative; }
+    .mycard .card-wrap:before {
+      position: absolute;
+      display: block;
+      content: "";
+      background: url(../images/ico_card_shadow.png) no-repeat bottom;
+      -webkit-background-size: 100% auto;
+      background-size: 100% auto;
+      width: 100%;
+      height: 5rem;
+      bottom: -4rem;
+      z-index: 2;
+      left: 0; }
+    .mycard .card-wrap img {
+      width: 100%;
+      height: auto;
+      position: relative;
+      z-index: 3;
+      border: 1px solid #E4E4E4; }
   .mycard .btn {
     width: 24rem;
     height: 4.5rem;
-    text-align: center;
     line-height: 4.5rem;
     margin: 2.5rem auto 0;
     display: block;
-    color: #fff; }
-  .mycard .tip {
-    text-align: center;
     color: #fff;
-    font-size: 1.2rem; }
+    text-align: center; }
+  .mycard h4 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 500;
+    padding-bottom: 1.5rem;
+    color: #333; }
+  .mycard .tip {
+    color: #f06292;
+    font-size: 1.5rem;
+    text-align: center;
+    padding-bottom: 1.5rem; }
 
 .empty {
   text-align: center;
@@ -2912,31 +2943,6 @@ section {
       .recharge li.th > div {
         font-size: 1.2rem;
         padding-right: 1rem; }
-
-.mycard {
-  padding: 6rem 0; }
-  .mycard .card-wrap {
-    width: 65%;
-    display: block;
-    margin: 0 auto;
-    position: relative; }
-    .mycard .card-wrap:before {
-      position: absolute;
-      display: block;
-      content: "";
-      background: url(../images/ico_card_shadow.png) no-repeat bottom;
-      -webkit-background-size: 100% auto;
-      background-size: 100% auto;
-      width: 100%;
-      height: 5rem;
-      bottom: -4.5rem;
-      z-index: 2;
-      left: 0; }
-    .mycard .card-wrap img {
-      width: 100%;
-      height: auto;
-      position: relative;
-      z-index: 3; }
 
 .nav {
   background: #fbd2e0;
