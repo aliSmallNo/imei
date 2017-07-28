@@ -5,19 +5,16 @@
 
 	.splay-title {
 		font-size: 2rem;
-		text-align: center;
-		color: #f6aec6;
+		font-weight: 800;
 	}
 
 	.splay-lite-title {
 		font-size: 1rem;
 		color: #999;
-		padding: 0 1rem;
-		text-align: center;
 	}
 
 	.splay-step-text {
-		font-size: 1.2rem;
+		font-size: 1.5rem;
 		text-align: left;
 		padding: 2rem 2rem 1rem 0;
 	}
@@ -32,9 +29,9 @@
 	}
 
 	.splay-cert {
-		font-size: 1.3rem;
+		font-size: 1.5rem;
+		font-weight: 500;
 		padding: 2rem 2rem 1rem 0;
-		color: #f6aec6;
 	}
 </style>
 <div class="splay">
