@@ -903,6 +903,11 @@ class WxController extends BaseController
 			header('location:/wx/index');
 			exit();
 		}
+
+		// Rain: 添加或者更新微信用户信息
+		UserWechat::refreshWXInfo($openId);
+		UserWechat::getInfoByOpenId($openId, true);
+
 		$jump = self::getParam('jump', '/wx/index');
 		return self::renderPage('qrcode.tpl',
 			[
