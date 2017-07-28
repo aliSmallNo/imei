@@ -569,15 +569,15 @@ class SiteController extends BaseController
 	}
 
 
-// 留存率 统计
-	public
-	function actionReusestat()
+	// 留存率 统 计
+	public function actionReusestat()
 	{
 		$cat = self::getParam("cat", "week");
+		$sign = self::getParam("sign", "");
 
 		$reuseData = RedisUtil::getCache(RedisUtil::KEY_REUSE_STAT, $cat);
 
-		if (!$reuseData) {
+		if (!$reuseData || $sign == "reset") {
 			// 开始记录日期 2017-06-01
 			$sCategory = ($cat == 'week' ? LogAction::REUSE_DATA_WEEK : LogAction::REUSE_DATA_MONTH);
 			$lastTime = strtotime("2017-06-01");
@@ -604,7 +604,7 @@ class SiteController extends BaseController
 				'category' => "data",
 				'reuseData' => json_decode($reuseData, true),
 				'cat' => $cat,
-				'list' => [],
+				'debug' => in_array(Admin::getAdminId(), [1001, 1002]),
 			]
 		);
 	}

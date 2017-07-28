@@ -193,7 +193,7 @@ class ApiController extends Controller
 	}
 
 	/**
-	 * 用户 user
+	 * 用户 im_user
 	 */
 	public function actionUsers()
 	{
@@ -201,9 +201,14 @@ class ApiController extends Controller
 		$id = self::postParam("id");
 		$ret = ["code" => 159, "msg" => self::ICON_ALERT_HTML . "无操作！"];
 		switch ($tag) {
-			case "del-admin":
-
-				break;
+			case "users":
+				$ids = self::postParam("ids", 0);
+				$res = [];
+				if ($ids) {
+					$sql = "select uName as name,uPhone as phone from im_user where uId in ($ids)";
+					$res = AppUtil::db()->createCommand($sql)->queryAll();
+				}
+				return self::renderAPI(0, '', $res);
 
 		}
 		return self::renderAPI($ret["code"], $ret["msg"]);

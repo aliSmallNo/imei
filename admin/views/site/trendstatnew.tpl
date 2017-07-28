@@ -7,7 +7,7 @@
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-9">
-			<p class="help-block">{{$today}}汇总数据</p>
+			<p class="help-block">{{$today}}汇总数据(延迟10分钟左右)</p>
 		</div>
 		<div class="col-lg-3">
 			<div class="btn-group" role="group">
