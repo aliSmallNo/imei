@@ -99,7 +99,7 @@ require(["layer"],
 					FootUtil.toggle(1);
 					break;
 				case 'sme':
-					smeUlit.sme();
+					SmeUtil.sme();
 					FootUtil.toggle(1);
 					break;
 				case 'noMP':
@@ -390,12 +390,13 @@ require(["layer"],
 		};
 		alertUlit.init();
 
-		var smeUlit = {
+		var SmeUtil = {
 			localId: "",
 			serverId: "",
 			smeFlag: false,
 			uploadImgFlag: false,
 			delImgFlag: false,
+			albums: [],
 			init: function () {
 				$(document).on(kClick, "a.choose-img", function () {
 					wx.chooseImage({
@@ -405,33 +406,38 @@ require(["layer"],
 						success: function (res) {
 							var localIds = res.localIds;
 							if (localIds && localIds.length) {
-								smeUlit.localId = localIds[0];
-								smeUlit.wxUploadImages();
+								SmeUtil.localId = localIds[0];
+								SmeUtil.wxUploadImages();
 							}
 						}
 					});
 				});
 				$(document).on(kClick, ".album-photos a.has-pic", function () {
-					if (smeUlit.delImgFlag) {
+					if (SmeUtil.delImgFlag || !SmeUtil.albums) {
 						return;
 					}
 					var self = $(this);
+					var src = self.find("img").attr("src");
+					wx.previewImage({
+						current: src,
+						urls: SmeUtil.albums
+					});
+					/*
 					var vw = $(window).width();
 					var vh = $(window).height();
-					var src = self.find("img").attr("src");
 					layer.open({
 						title: '',
 						area: [vw, vh],
 						btn: ['删除', '关闭'],
 						content: '<img src="' + src + '">',
 						yes: function () {
-							smeUlit.delImgFlag = 1;
+							SmeUtil.delImgFlag = 1;
 							$.post("/api/user", {
 								id: src,
 								tag: "album",
 								f: "del",
 							}, function (resp) {
-								smeUlit.delImgFlag = 0;
+								SmeUtil.delImgFlag = 0;
 								self.closest("li").remove();
 								layer.closeAll();
 								showMsg(resp.msg);
@@ -440,21 +446,22 @@ require(["layer"],
 						close: function () {
 
 						},
-					});
+					});*/
 
 				});
 			},
 			sme: function () {
-				if (smeUlit.smeFlag) {
+				if (SmeUtil.smeFlag) {
 					return;
 				}
-				smeUlit.smeFlag = 1;
+				SmeUtil.smeFlag = 1;
 				$.post("/api/user", {
 					tag: "myinfo",
 				}, function (resp) {
 					var temp = '{[#items]}<li><a class="has-pic"><img src="{[.]}"></a></li>{[/items]}';
 					$(".u-my-album .photos").html(Mustache.render(temp, {items: resp.data.img4}));
 
+					SmeUtil.albums = resp.data.imgList;
 					var html = Mustache.render(temp, {items: resp.data.imgList});
 					$("#album .photos").html('<li><a href="javascript:;" class="choose-img"></a></li>' + html);
 
@@ -463,25 +470,25 @@ require(["layer"],
 					var tipHtml = resp.data.hasMp ? "" : "还没有媒婆";
 					$(".u-my-bar i span").html(resp.data.percent);
 					$("[to=myMP]").find(".tip").html(tipHtml);
-					smeUlit.smeFlag = 0;
+					SmeUtil.smeFlag = 0;
 				}, "json");
 			},
 			wxUploadImages: function () {
-				if (smeUlit.uploadImgFlag) {
+				if (SmeUtil.uploadImgFlag) {
 					return;
 				}
-				smeUlit.uploadImgFlag = 1;
+				SmeUtil.uploadImgFlag = 1;
 				wx.uploadImage({
-					localId: smeUlit.localId.toString(),
+					localId: SmeUtil.localId.toString(),
 					isShowProgressTips: 1,
 					success: function (res) {
-						smeUlit.serverId = res.serverId;
-						smeUlit.uploadImage();
+						SmeUtil.serverId = res.serverId;
+						SmeUtil.uploadImage();
 					},
 					fail: function () {
-						smeUlit.serverId = "";
+						SmeUtil.serverId = "";
 						showMsg("上传失败！");
-						smeUlit.uploadImgFlag = 0;
+						SmeUtil.uploadImgFlag = 0;
 					}
 				});
 			},
@@ -489,35 +496,18 @@ require(["layer"],
 				showMsg("上传中...");
 				$.post("/api/user", {
 					tag: "album",
-					id: smeUlit.serverId,
+					id: SmeUtil.serverId,
 				}, function (resp) {
 					showMsg(resp.msg);
 					if (resp.data) {
 						//alert(resp.data);
 						$("#album .photos").append('<li><a><img src="' + resp.data + '"></a></li>');
 					}
-					smeUlit.uploadImgFlag = 0;
+					SmeUtil.uploadImgFlag = 0;
 				}, "json");
-			},
-			initCarousel: function () {
-				var len = $(".carousel").find("li").length || 1;
-				var vw = $(window).width();
-				$(".carousel-wrapper").css("width", vw * len + len);
-				var myScroll = new IScroll('.carousel-container',
-					{
-						scrollX: true,
-						scrollY: false,
-						snap: 'li',
-						momentum: false,
-						click: true,
-						tap: true
-					});
-				myScroll.on('scrollEnd', function () {
-					$('.carousel-indicator > li').removeClass("active").eq(this.currentPage.pageX).addClass("active");
-				});
-			},
+			}
 		};
-		smeUlit.init();
+		SmeUtil.init();
 
 		var filterUlit = {
 			tag: "",
