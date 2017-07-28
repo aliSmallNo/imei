@@ -15,7 +15,7 @@
 		display: flex;
 	}
 
-	.mplay-step-text span {
+	.splay-step-text span {
 		color: #fff;
 		display: block;
 		flex: 0 0 1rem;
@@ -25,7 +25,7 @@
 		background: #f6aec6
 	}
 
-	.mplay-step-text div{
+	.splay-step-text div{
 		flex: 1;
 		margin-left: 1rem;
 	}
