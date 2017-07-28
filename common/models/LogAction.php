@@ -102,7 +102,7 @@ class LogAction extends ActiveRecord
 			];
 			$sql = "select GROUP_CONCAT(uId) as uIds,count(*) as amt from im_user
 					where uAddedOn BETWEEN '$times[0]' and '$times[1]'
-					and uNote='' and uRole in (10,20) ";
+					and uNote='' and uStatus<9 and uRole in (10,20) ";
 			$conn = AppUtil::db();
 			$result = $conn->createCommand($sql)->queryOne();
 			$uIds = '';

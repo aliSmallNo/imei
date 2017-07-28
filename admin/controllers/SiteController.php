@@ -569,9 +569,8 @@ class SiteController extends BaseController
 	}
 
 
-// 留存率 统计
-	public
-	function actionReusestat()
+	// 留存率 统 计
+	public function actionReusestat()
 	{
 		$cat = self::getParam("cat", "week");
 		$sign = self::getParam("sign", "");
