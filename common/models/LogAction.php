@@ -110,12 +110,16 @@ class LogAction extends ActiveRecord
 				$lineData["sCount"] = $result["amt"];
 				$lineData["uIds"] = $uIds = $result["uIds"] ? $result["uIds"] : 0;
 			}
-			for ($i = 2; $i < count($times); $i = $i + 2) {
-				$sql = "select COUNT(DISTINCT aUId) as co,GROUP_CONCAT(DISTINCT aUId) as uids
+
+			$sql = "select COUNT(DISTINCT aUId) as co,GROUP_CONCAT(DISTINCT aUId) as uids
  						from im_log_action
 						where aUId in ($uIds)
-						 and aDate BETWEEN '$times[$i]' AND '" . $times[$i + 1] . "' AND aCategory in (1000,1002,1004) ";
-				$res = $conn->createCommand($sql)->queryOne();
+						 and aDate BETWEEN :stime AND :etime AND aCategory in (1000,1002,1004) ";
+			for ($i = 2; $i < count($times); $i = $i + 2) {
+				$res = $conn->createCommand($sql)->bindValues([
+					"stime" => $times[$i],
+					"etime" => $times[$i + 1],
+				])->queryOne();
 				if ($res) {
 					$lineData["ids"][] = $res["uids"];
 					$lineData["numbers"][] = $res["co"];
