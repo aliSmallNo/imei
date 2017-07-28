@@ -130,8 +130,8 @@
 	</div>
 	<div class="m-rows line-bottom">
 		<a href="#sfeedback">意见反馈</a>
-		<a href="#sguide">媒婆攻略</a>
-		<a href="/wx/mplay">媒婆攻略</a>
+		<a href="#sguide" style="display: none">媒婆攻略</a>
+		<a href="/wx/mplay">媒婆玩法</a>
 		<a href="#sqrcode">关注公众号</a>
 	</div>
 </section>
