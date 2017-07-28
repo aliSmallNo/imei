@@ -12,6 +12,12 @@
 		font-size: 1.5rem;
 		text-align: left;
 		padding: 2rem 2rem 1rem 0;
+	}
+
+	.splay-step-text {
+		font-size: 1.5rem;
+		text-align: left;
+		padding: 2rem 2rem 1rem 0;
 		display: flex;
 	}
 
@@ -30,12 +36,6 @@
 	.splay-step-text div{
 		flex: 1;
 		margin-left: 1rem;
-	}
-
-	.splay-step-text {
-		font-size: 1.5rem;
-		text-align: left;
-		padding: 2rem 2rem 1rem 0;
 	}
 
 	.splay-step-img {
