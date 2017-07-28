@@ -530,12 +530,10 @@ class SiteController extends BaseController
 
 	public function actionTrend()
 	{
-//		$redisTrendsKey = generalId::getTrendStatKey($bBigData);
-//		$redis = objInstance::getRedisIns();
-//		$trends = $redis->get($redisTrendsKey);
-//		$trends = json_decode($trends, true);
-		$trends = '';
-		if (!$trends || 1) {
+		$trends = RedisUtil::getCache(RedisUtil::KEY_TRENDSTAT);
+		$trends = json_decode($trends, 1);
+
+		if (!$trends || in_array(Admin::getAdminId(), [1001, 1002])) {
 			$categories = [self::TREND_DATA_DAY, self::TREND_DATA_WEEK];
 			$records = 10;
 			$trends = [];
@@ -557,12 +555,9 @@ class SiteController extends BaseController
 					$v = array_reverse($v);
 				}
 				$trends[] = $subtrends;
-
 			}
+			RedisUtil::setCache(json_encode($trends), RedisUtil::KEY_TRENDSTAT);
 		}
-
-//			$redis->set($redisTrendsKey, json_encode($trends));
-//			$redis->expire($redisTrendsKey, 60 * 30);
 
 		return $this->renderPage('trendstatnew.tpl',
 			[
