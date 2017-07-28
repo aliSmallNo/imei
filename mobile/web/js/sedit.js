@@ -247,13 +247,13 @@ require(["layer"],
 					tag: "sreg",
 					data: JSON.stringify($sls.postData),
 				}, function (res) {
-					showMsg(res.msg);
-					//alert(JSON.stringify(res.data));
 					if (res.code == 0) {
 						setTimeout(function () {
 							location.href = "/wx/single#sme";
 							layer.closeAll();
 						}, 500);
+					} else {
+						showMsg(res.msg);
 					}
 				}, "json");
 			},
