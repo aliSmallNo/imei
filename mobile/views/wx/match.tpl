@@ -46,7 +46,7 @@
 					<p class="note">{{foreach from=$single.notes item=note}}<em>{{$note}}</em>{{/foreach}}</p>
 					<p class="cnt">0个心动</p>
 				</div>
-				<button class="edit" data-id="{{$single.encryptId}}" >写媒婆说</button>
+				<button class="edit" data-id="{{$single.encryptId}}">写媒婆说</button>
 			</a>
 			{{/foreach}}
 		</div>
@@ -143,7 +143,14 @@
 	</div>
 </section>
 <section id="srept">
-	<div class="reports">
+	<div class="nav top-fixed">
+		<a href="#sgroup">返回</a>
+	</div>
+	<div class="top-fixed-pl"></div>
+	<div class="reports-wrap">
+		<ul class="reports"></ul>
+		<div class="spinner" style="display: none"></div>
+		<div class="no-more" style="display: none;">没有更多了~</div>
 		<div class="empty middle">
 			<p class="title">单身团暂无动态~</p>
 		</div>
@@ -286,6 +293,15 @@
 	</li>
 	{[/items]}
 </script>
+<script type="text/template" id="tpl_report">
+	{[#items]}
+	<li>
+		<div class="avatar"><img src="{[thumb]}"></div>
+		<div class="title"><b>{[name]}</b> {[title]}</div>
+		<div class="dt">{[dt]}</div>
+	</li>
+	{[/items]}
+</script>
 <script type="text/template" id="tpl_record">
 	<li class="total">
 		共获得 <span class="money">{[wallet.yuan]}</span> 元
@@ -310,4 +326,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/match.js?v=1.1.5" src="/assets/js/require.js"></script>
+<script data-main="/js/match.js?v=1.2.0" src="/assets/js/require.js"></script>

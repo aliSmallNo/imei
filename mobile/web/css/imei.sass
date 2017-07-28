@@ -214,6 +214,16 @@ main
 	padding: 23rem 0
 	@include translucent
 
+.top-fixed
+	position: fixed
+	top: 0
+	left: 0
+	right: 0
+	z-index: 110
+
+.top-fixed-pl
+	height: 4rem
+
 .header-line
 	font-size: 1px
 	position: fixed
@@ -2014,10 +2024,51 @@ section
 		background: url(../images/ico_no_user.png) no-repeat top center
 		background-size: 8rem 8rem
 
-.reports
+.reports-wrap
 	.empty
 		background: url(../images/ico_no_report.png) no-repeat top center
 		background-size: 8rem 8rem
+
+.reports
+	li
+		background: #fff
+		@include displayFlex
+		padding: .5rem 1rem
+		position: relative
+		&:after
+			content: ''
+			position: absolute
+			left: 1rem
+			right: 1rem
+			bottom: 0
+			background: $borderColor
+			height: 1px
+		&:last-child:after
+			left: 0
+			right: 0
+			bottom: 0
+		.avatar
+			@include displayFlex-w(3.6rem)
+			text-align: center
+			img
+				width: 2.8rem
+				height: 2.8rem
+				overflow: hidden
+				border-radius: 1.4rem
+		.title
+			@include displayFlex-1
+			justify-content: center
+			align-self: center
+			font-size: 1.2rem
+			b
+				font-weight: $weightBold
+		.dt
+			@include displayFlex-w(7rem)
+			color: $grayFontColor
+			font-size: 1.2rem
+			font-weight: $weightNormal
+			justify-content: center
+			align-self: center
 
 .messages
 	.empty
@@ -2821,9 +2872,9 @@ section
 			z-index: 99
 			margin-left: -0.6rem
 			margin-bottom: -0.7rem
-			border-width: 2px
+			border-width: 1px
 			border-style: solid
-			border-color: #777 #777 transparent transparent
+			border-color: #888 #888 transparent transparent
 			background-color: $mainColorLighter
 			transform: rotate(-135deg) translateZ(0)
 

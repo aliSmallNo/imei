@@ -9,6 +9,7 @@
 namespace common\models;
 
 use common\utils\AppUtil;
+use common\utils\ImageUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
@@ -338,6 +339,47 @@ class UserNet extends ActiveRecord
 			];
 		}
 		return $items;
+	}
+
+	public static function reports($uid, $page = 1, $pageSize = 20)
+	{
+		$offset = ($page - 1) * $pageSize;
+		$conn = AppUtil::db();
+		$sql = "SELECT u.uId as uid, u.uName as name,u.uThumb as thumb, u.uAvatar as avatar,
+ 					n2.nRelation as rel,n2.nNote as note,n2.nStatus as st,n2.nAddedOn as dt
+				 FROM im_user_net as n 
+				 JOIN im_user_net as n2 on n.nSubUId=n2.nUId AND n2.nDeletedFlag=0 AND n2.nRelation in (250,140,150)
+				 JOIN im_user as u on u.uId=n2.nUId 
+				 WHERE n.nUId=:uid AND n.nRelation=:rel AND n.nDeletedFlag=0 
+				 ORDER BY n2.nAddedOn DESC LIMIT $offset, " . ($pageSize + 1);
+		$ret = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':rel' => self::REL_BACKER,
+		])->queryAll();
+		$nextPage = 0;
+		if ($ret && count($ret) > $pageSize) {
+			array_pop($ret);
+			$nextPage = $page + 1;
+		}
+		foreach ($ret as $k => $row) {
+			$ret[$k]['thumb'] = ImageUtil::getItemImages($row['thumb']);
+			$ret[$k]['dt'] = date('m-d H:i', strtotime($row['dt']));
+			switch ($row['rel']) {
+				case self::REL_LINK:
+					$ret[$k]['title'] = '有人要TA微信号';
+					break;
+				case self::REL_FAVOR:
+					$ret[$k]['title'] = '收到一个心动';
+					break;
+				case self::REL_UNSUBSCRIBE:
+					$ret[$k]['title'] = '取消关注公众号';
+					break;
+				default:
+					$ret[$k]['title'] = '';
+					break;
+			}
+		}
+		return [$ret, $nextPage];
 	}
 
 	public static function hasFollowed($uid, $subUid)
