@@ -397,6 +397,7 @@ require(["layer"],
 			uploadImgFlag: false,
 			delImgFlag: false,
 			albums: [],
+			albumTmp: $('#tpl_album').html(),
 			init: function () {
 				$(document).on(kClick, "a.choose-img", function () {
 					wx.chooseImage({
@@ -462,8 +463,7 @@ require(["layer"],
 					$(".u-my-album .photos").html(Mustache.render(temp, {items: resp.data.img4}));
 
 					SmeUtil.albums = resp.data.imgList;
-					var html = Mustache.render(temp, {items: resp.data.imgList});
-					$("#album .photos").html('<li><a href="javascript:;" class="choose-img"></a></li>' + html);
+					$("#album .photos").html(Mustache.render(SmeUtil.albumTmp, SmeUtil));
 
 					$(".u-my-album .title").html("相册(" + resp.data.co + ")");
 
