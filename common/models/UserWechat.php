@@ -139,19 +139,6 @@ class UserWechat extends ActiveRecord
 		return $newItem->wId;
 	}
 
-	public static function removeOpenId($openId)
-	{
-		RedisUtil::delCache(RedisUtil::KEY_WX_USER, $openId);
-		$conn = AppUtil::db();
-		$dt = date("Y-m-d H:i:s");
-		$sql = 'update im_user_wechat set wSubscribe=0,wUpdatedOn=:dt,wExpire=:dt WHERE wOpenId=:openid';
-		$cmd = $conn->createCommand($sql);
-		$cmd->bindValues([
-			':openid' => $openId,
-			':dt' => $dt,
-		])->execute();
-	}
-
 	public static function getOpenId($name)
 	{
 		$conn = AppUtil::db();
