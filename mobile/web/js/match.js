@@ -44,6 +44,13 @@ require(["layer"],
 						return false;
 					}
 					break;
+				case "srept":
+					lastRow = NewsUtil.list.find('li').last();
+					if (lastRow && eleInScreen(lastRow) && NewsUtil.page > 0) {
+						NewsUtil.reload();
+						return false;
+					}
+					break;
 				default:
 					break;
 			}
@@ -237,6 +244,13 @@ require(["layer"],
 			news: $(".animate"),
 			idx: 0,
 			max: 10,
+			loading: 0,
+			page: 1,
+			list: $('.reports'),
+			empty: $('.reports-wrap .empty'),
+			spinner: $('.reports-wrap .spinner'),
+			noMore: $('.reports-wrap .no-more'),
+			tmp: $('#tpl_report').html(),
 			init: function () {
 				var util = this;
 				util.max = util.news.find('li').length - 6;
@@ -254,6 +268,46 @@ require(["layer"],
 						util.idx = 0;
 					}
 				}, util.interval);
+			},
+			reload: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				if (util.page === 1) {
+					util.list.html('');
+				}
+				util.loading = 1;
+				util.empty.hide();
+				util.noMore.hide();
+				util.spinner.show();
+				$.post('/api/news',
+					{
+						tag: 'reports',
+						page: util.page
+					},
+					function (resp) {
+						if (resp.code == 0) {
+							var html = Mustache.render(util.tmp, resp.data);
+							if (resp.data.page == 1) {
+								util.list.html(html);
+							} else {
+								util.list.append(html);
+							}
+						} else {
+							showMsg(resp.msg);
+						}
+						if (util.list.find('li').length < 1) {
+							util.empty.show();
+						}
+						util.page = resp.data.nextPage;
+						util.noMore.hide();
+						if (util.page < 1) {
+							util.noMore.show();
+						}
+						util.spinner.hide();
+						util.loading = 0;
+					}, 'json');
 			}
 		};
 
@@ -385,6 +439,10 @@ require(["layer"],
 					break;
 				case 'saccount':
 					WalletUtil.reload();
+					FootUtil.toggle(0);
+					break;
+				case 'srept':
+					NewsUtil.reload();
 					FootUtil.toggle(0);
 					break;
 				default:

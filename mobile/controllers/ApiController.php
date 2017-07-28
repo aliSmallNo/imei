@@ -886,6 +886,31 @@ class ApiController extends Controller
 		return self::renderAPI(0, '', $data);
 	}
 
+	public function actionNews()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$openId = self::postParam('openid');
+		if (!$openId) {
+			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		}
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			return self::renderAPI(129, '用户不存在啊~');
+		}
+		switch ($tag) {
+			case 'reports':
+				$page = self::postParam('page', 1);
+				list($items, $nextPage) = UserNet::reports($wxInfo['uId'], $page);
+				return self::renderAPI(0, '', [
+					'items' => $items,
+					'nextPage' => $nextPage,
+					'page' => $page
+				]);
+				break;
+		}
+		return self::renderAPI(129, '操作无效~');
+	}
+
 	public function actionQr()
 	{
 		$tag = trim(strtolower(self::postParam('tag')));

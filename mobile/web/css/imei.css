@@ -85,6 +85,16 @@ main {
   padding: 23rem 0;
   background-color: rgba(0, 0, 0, 0.7); }
 
+.top-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 110; }
+
+.top-fixed-pl {
+  height: 4rem; }
+
 .header-line {
   font-size: 1px;
   position: fixed;
@@ -2027,9 +2037,61 @@ section {
   background: url(../images/ico_no_user.png) no-repeat top center;
   background-size: 8rem 8rem; }
 
-.reports .empty {
+.reports-wrap .empty {
   background: url(../images/ico_no_report.png) no-repeat top center;
   background-size: 8rem 8rem; }
+
+.reports li {
+  background: #fff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0.5rem 1rem;
+  position: relative; }
+  .reports li:after {
+    content: "";
+    position: absolute;
+    left: 1rem;
+    right: 1rem;
+    bottom: 0;
+    background: #E4E4E4;
+    height: 1px; }
+  .reports li:last-child:after {
+    left: 0;
+    right: 0;
+    bottom: 0; }
+  .reports li .avatar {
+    -webkit-box-flex: 0 0 3.6rem;
+    -webkit-flex: 0 0 3.6rem;
+    -ms-flex: 0 0 3.6rem;
+    flex: 0 0 3.6rem;
+    text-align: center; }
+    .reports li .avatar img {
+      width: 2.8rem;
+      height: 2.8rem;
+      overflow: hidden;
+      border-radius: 1.4rem; }
+  .reports li .title {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    justify-content: center;
+    align-self: center;
+    font-size: 1.2rem; }
+    .reports li .title b {
+      font-weight: 500; }
+  .reports li .dt {
+    -webkit-box-flex: 0 0 7rem;
+    -webkit-flex: 0 0 7rem;
+    -ms-flex: 0 0 7rem;
+    flex: 0 0 7rem;
+    color: #737373;
+    font-size: 1.2rem;
+    font-weight: 300;
+    justify-content: center;
+    align-self: center; }
 
 .messages .empty {
   background: url(../images/ico_no_msg.png) no-repeat top center;
@@ -2887,9 +2949,9 @@ section {
     z-index: 99;
     margin-left: -0.6rem;
     margin-bottom: -0.7rem;
-    border-width: 2px;
+    border-width: 1px;
     border-style: solid;
-    border-color: #777 #777 transparent transparent;
+    border-color: #888 #888 transparent transparent;
     background-color: #fbd2e0;
     transform: rotate(-135deg) translateZ(0); }
   .nav a {
