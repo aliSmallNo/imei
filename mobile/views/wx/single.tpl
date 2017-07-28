@@ -90,6 +90,7 @@
 			<a href="#sfeedback"><span class="title">意见反馈</span> </a>
 			<a href="#myWechatNo"><span class="title">我的微信号</span></a>
 			<a href="#sqrcode"><span class="title">关注公众号</span></a>
+			<a href="/wx/splay"><span class="title">单身玩法</span></a>
 			<a href="javascript:;"><span class="title">黑名单</span></a>
 		</div>
 	</div>

@@ -18,6 +18,7 @@
 
 	.splay-step-text {
 		font-size: 1.2rem;
+		text-align: center;
 		padding: 2rem 2rem 1rem 2rem;
 	}
 
@@ -31,12 +32,12 @@
 
 	.splay-cert {
 		font-size: 1.3rem;
-		margin: 2rem 0 1rem;
+		padding: 2rem 2rem 1rem;
 		color: #f6aec6;
 	}
 </style>
 <div class="splay">
-	<div class="splay-title">微媒100 单身使用指南</div>
+	<div class="splay-title">单身玩法</div>
 	<div class="splay-lite-title">(按照指南一步一步操作，脱单就是这么简单)</div>
 
 	<div class="splay-step-text">第一步：必须是注册啊 不然小伙伴看中了你怎么找你呢</div>
@@ -79,9 +80,9 @@
 	<div class="splay-step-img">
 		<img src="/images/s_play_10.jpg">
 	</div>
-	<div class="splay-step-text">第十一步：加对方微信号美好的姻缘在这一刻开始啦。
-		<br/><b>PS:1.如何修改个人资料，点击个人中心，点击编辑即可修改资料</b>
-	</div>
+	<div class="splay-step-text">第十一步：加对方微信号美好的姻缘在这一刻开始啦~~~</div>
+
+	<div class="splay-cert">如何修改个人资料，点击个人中心，点击编辑即可修改资料</div>
 	<div class="splay-step-img">
 		<img src="/images/s_play_11.jpg">
 	</div>

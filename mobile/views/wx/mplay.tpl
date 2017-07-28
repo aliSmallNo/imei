@@ -25,7 +25,7 @@
 
 </style>
 <div class="mplay">
-	<div class="mplay-title">微媒100 媒婆使用流程</div>
+	<div class="mplay-title">媒婆使用流程</div>
 
 	<div class="mplay-step-text">第一步注册</div>
 	<div class="mplay-step-img">
