@@ -307,7 +307,8 @@ class UserWechat extends ActiveRecord
 
 		$sql = 'UPDATE im_user_wechat SET wUpdatedOn=now(),wRawData=:raw,wSubscribeDate=:wSubscribeDate ' . $sql2 . ' WHERE wOpenId=:openid ';
 		$cmdUpdate = $conn->createCommand($sql);
-		$sql = 'UPDATE im_user_wechat SET wUpdatedOn=now(),wSubscribe=0 WHERE wOpenId=:openid ';
+		$sql = 'UPDATE im_user_wechat SET wUpdatedOn=now(),wSubscribe=0,wRawData = REPLACE(wRawData, \'"subscribe":1,\', \'"subscribe":0,\')
+ 				WHERE wOpenId=:openid ';
 		$cmdUpdate2 = $conn->createCommand($sql);
 		foreach ($openIds as $id) {
 			$postData["user_list"][] = ["openid" => $id, "lang" => "zh_CN"];
