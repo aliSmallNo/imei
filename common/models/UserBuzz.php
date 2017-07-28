@@ -141,7 +141,9 @@ class UserBuzz extends ActiveRecord
 				if ($fromUsername && strlen($fromUsername) > 20) {
 					UserNet::addByOpenId($fromUsername, self::$IMEI_UID, UserNet::REL_UNSUBSCRIBE);
 					$debug .= $event . "**";
-					UserWechat::removeOpenId($fromUsername);
+					// Rain: 添加或者更新微信用户信息
+					UserWechat::refreshWXInfo($fromUsername);
+					UserWechat::getInfoByOpenId($fromUsername, true);
 				}
 				break;
 			default:
