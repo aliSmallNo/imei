@@ -99,7 +99,7 @@
 		<a href="#sme">返回</a>
 		<a href="#sme" style="display: none">个人中心</a>
 	</div>
-	<ul class="photos album-photos">
+	<ul class="photos album-photos clearfix">
 		<li>
 			<a href="javascript:;" class="choose-img"></a>
 		</li>

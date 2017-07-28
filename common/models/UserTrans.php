@@ -198,7 +198,7 @@ class UserTrans extends ActiveRecord
 
 		$conn = AppUtil::db();
 		$sql = "select u.uId as uid,u.uName as uname,u.uAvatar as avatar,p.pAmt as amt ,
-				t.tAmt as flower,tAddedOn as date,t.tTitle as tcat,tUnit as unit,t.tCategory as cat
+				t.tId, t.tAmt as flower,tAddedOn as date,t.tTitle as tcat,tUnit as unit,t.tCategory as cat
 				from im_user_trans as t 
 				join im_user as u on u.uId=t.tUId 
 				left join im_pay as p on p.pId=t.tPId $where order by $order limit $limit";
@@ -206,12 +206,13 @@ class UserTrans extends ActiveRecord
 		$uIds = $items = [];
 		foreach ($result as $k => $row) {
 			$uid = $row["uid"];
+			$tid = $row["tId"];
 			$uIds[] = $uid;
-			$items[$uid] = $row;
+			$items[$tid] = $row;
 			$unit = $row['unit'];
-			$items[$uid]['amt_title'] = $row['flower'] . self::$UnitDict[$unit];
+			$items[$tid]['amt_title'] = $row['flower'] . self::$UnitDict[$unit];
 			if ($unit == self::UNIT_FEN) {
-				$items[$uid]['amt_title'] = round($row['flower'] / 100.0, 2) . '元';
+				$items[$tid]['amt_title'] = round($row['flower'] / 100.0, 2) . '元';
 			}
 
 		}
@@ -232,10 +233,11 @@ class UserTrans extends ActiveRecord
 		$sql = 'SELECT sum(tAmt) as amt,tCategory as cat,tTitle as title,tUnit as unit,t.tUId as uid
  				FROM im_user_trans as t ' . $sql2 . ' group by tCategory,tTitle,tUnit,t.tUId';
 		$balances = $conn->createCommand($sql)->queryAll();
+		$details = [];
 		foreach ($balances as $balance) {
 			$uid = $balance["uid"];
 			$cat = $balance["cat"];
-			if (!isset($items[$uid]['details'])) {
+			if (!isset($details[$uid])) {
 				$bal = [
 					'bal' => [
 						'title' => '剩余',
@@ -245,27 +247,35 @@ class UserTrans extends ActiveRecord
 						'amt2' => 0,
 					]
 				];
-				$items[$uid]['details'] = $bal;
+				$details[$uid] = $bal;
 			}
 			$unit = $balance['unit'];
 			if ($unit == self::UNIT_FEN) {
 				$balance['amt'] = sprintf('%.2f', $balance['amt'] / 100.0);
 				$unit = self::UNIT_YUAN;
 				if ($cat == self::CAT_REWARD) {
-					$items[$uid]['details']['bal']['amt2'] -= $balance['amt'];
+					$details[$uid]['bal']['amt2'] -= $balance['amt'];
 				} else {
-					$items[$uid]['details']['bal']['amt2'] += $balance['amt'];
+					$details[$uid]['bal']['amt2'] += $balance['amt'];
 				}
 			} else {
 				if ($cat == self::CAT_REWARD) {
-					$items[$uid]['details']['bal']['amt'] -= $balance['amt'];
+					$details[$uid]['bal']['amt'] -= $balance['amt'];
 				} else {
-					$items[$uid]['details']['bal']['amt'] += $balance['amt'];
+					$details[$uid]['bal']['amt'] += $balance['amt'];
 				}
 			}
 			$balance['unit_name'] = self::$UnitDict[$unit];
 			$balance['unit'] = $unit;
-			$items[$uid]['details'][$cat . '-' . $unit] = $balance;
+			$details[$uid][$cat . '-' . $unit] = $balance;
+		}
+		foreach ($items as $k => $item) {
+			$uid = $item['uid'];
+			if (isset($details[$uid])) {
+				$items[$k]['details'] = $details[$uid];
+			} else {
+				$items[$k]['details'] = [];
+			}
 		}
 		return [$items, $count];
 	}
