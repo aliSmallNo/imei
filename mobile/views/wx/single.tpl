@@ -97,7 +97,7 @@
 <section id="album" data-title="我的相册">
 	<div class="nav">
 		<a href="#sme">返回</a>
-		<a href="#sme" style="display: none">个人中心</a>
+		<a href="javascript:;" class="j-right e-album">编辑</a>
 	</div>
 	<ul class="photos album-photos clearfix">
 		<li>
@@ -899,7 +899,12 @@
 <script type="text/template" id="tpl_album">
 	<li><a href="javascript:;" class="choose-img"></a></li>
 	{[#albums]}
-	<li><a class="has-pic"><img src="{[thumb]}" bsrc="{[figure]}"></a></li>
+	<li>
+		<a class="has-pic">
+			<img src="{[thumb]}" bsrc="{[figure]}">
+		</a>
+		<a href="javascript:;" class="del"></a>
+	</li>
 	{[/albums]}
 </script>
 <script type="text/template" id="tpl_wx_info">
@@ -908,4 +913,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/iscroll.js"></script>
-<script data-main="/js/single.js?v=1.3.4" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.3.5" src="/assets/js/require.js"></script>

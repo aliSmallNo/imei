@@ -396,12 +396,20 @@ require(["layer"],
 			smeFlag: false,
 			uploadImgFlag: false,
 			delImgFlag: false,
+			editable: false,
 			albums: [],
 			albumTmp: $('#tpl_album').html(),
 			thumbTmp: '{[#items]}<li><a class="has-pic"><img src="{[.]}"></a></li>{[/items]}',
-			albumSingleTmp: '<li><a class="has-pic"><img src="{[thumb]}" bsrc="{[figure]}"></a></li>',
+			albumSingleTmp: '<li><a class="has-pic"><img src="{[thumb]}" bsrc="{[figure]}"></a><a href="javascript:;" class="del"></a></li>',
 			init: function () {
+				$(document).on(kClick, "a.e-album", function () {
+					SmeUtil.editToggle(!SmeUtil.editable);
+				});
+
 				$(document).on(kClick, "a.choose-img", function () {
+					if (SmeUtil.delImgFlag || SmeUtil.editable) {
+						return false;
+					}
 					wx.chooseImage({
 						count: 1,
 						sizeType: ['original', 'compressed'],
@@ -415,9 +423,10 @@ require(["layer"],
 						}
 					});
 				});
+
 				$(document).on(kClick, ".album-photos a.has-pic", function () {
-					if (SmeUtil.delImgFlag || !SmeUtil.albums) {
-						return;
+					if (SmeUtil.delImgFlag || SmeUtil.editable || !SmeUtil.albums) {
+						return false;
 					}
 					var self = $(this);
 					var src = self.find("img").attr("bsrc");
@@ -430,6 +439,40 @@ require(["layer"],
 						urls: URLs
 					});
 				});
+
+				$(document).on(kClick, ".album-photos a.del", function () {
+					var row = $(this).closest('li');
+					var src = row.find('img').attr('bsrc');
+					layer.open({
+						title: false,
+						btn: ['删除', '取消'],
+						content: '<p class="msg-content">是否确定要删除这张图片？</p>',
+						yes: function () {
+							SmeUtil.delImgFlag = 1;
+							$.post("/api/user", {
+								id: src,
+								tag: "album",
+								f: "del"
+							}, function (resp) {
+								SmeUtil.delImgFlag = 0;
+								row.remove();
+								layer.closeAll();
+								showMsg(resp.msg);
+							}, "json");
+						}
+					});
+				});
+			},
+			editToggle: function (canEdit) {
+				SmeUtil.editable = canEdit;
+				var btn = $("a.e-album");
+				if (SmeUtil.editable) {
+					btn.html('完成');
+					$('.album-photos a.del').show();
+				} else {
+					btn.html('编辑');
+					$('.album-photos a.del').hide();
+				}
 			},
 			sme: function () {
 				if (SmeUtil.smeFlag) {
@@ -450,6 +493,7 @@ require(["layer"],
 					$(".u-my-bar i span").html(resp.data.percent);
 					$("[to=myMP]").find(".tip").html(tipHtml);
 					SmeUtil.smeFlag = 0;
+					SmeUtil.editToggle(false);
 				}, "json");
 			},
 			wxUploadImages: function () {

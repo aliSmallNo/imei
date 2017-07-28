@@ -95,6 +95,10 @@ main {
 .top-fixed-pl {
   height: 4rem; }
 
+.msg-content {
+  line-height: 2.4rem;
+  padding: 1rem 0; }
+
 .header-line {
   font-size: 1px;
   position: fixed;
@@ -2937,6 +2941,9 @@ section {
 .nav {
   background: #fbd2e0;
   padding: 1rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
   line-height: 2rem; }
   .nav:before {
@@ -2955,12 +2962,21 @@ section {
     background-color: #fbd2e0;
     transform: rotate(-135deg) translateZ(0); }
   .nav a {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
     flex: 1;
     font-size: 1.2rem;
     color: #777;
     line-height: 2rem; }
     .nav a:first-child {
       margin-left: 1.2rem; }
+    .nav a.j-right {
+      -webkit-box-flex: 0 0 5rem;
+      -webkit-flex: 0 0 5rem;
+      -ms-flex: 0 0 5rem;
+      flex: 0 0 5rem;
+      text-align: center; }
 .sgroup-top .sgroup-top-des {
   background: #fbd2e0; }
   .sgroup-top .sgroup-top-des .img {
@@ -3501,6 +3517,18 @@ section {
         background: #f487ac;
         width: 4rem;
         height: 2px; }
+      #album .photos li a.del {
+        position: absolute;
+        background: url(../images/ico_del_r.png) no-repeat center center;
+        background-size: 100% 100%;
+        width: 2.4rem;
+        height: 2.4rem;
+        top: -0.1rem;
+        right: -0.1rem;
+        border: none;
+        display: none; }
+      #album .photos li a.active {
+        display: inline-block; }
 
 #matchCondition .title {
   font-size: 1rem;

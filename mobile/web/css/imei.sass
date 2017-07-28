@@ -224,6 +224,10 @@ main
 .top-fixed-pl
 	height: 4rem
 
+.msg-content
+	line-height: 2.4rem
+	padding: 1rem 0
+
 .header-line
 	font-size: 1px
 	position: fixed
@@ -2860,7 +2864,7 @@ section
 	@at-root .nav
 		background: $mainColorLighter
 		padding: 1rem
-		display: flex
+		@include displayFlex
 		line-height: 2rem
 		&:before
 			content: " "
@@ -2879,13 +2883,16 @@ section
 			transform: rotate(-135deg) translateZ(0)
 
 		a
-			flex: 1
+			@include displayFlex-1
 			font-size: 1.2rem
 			color: #777
 			line-height: 2rem
 			&:first-child
 				margin-left: 1.2rem
-			&:last-child
+			&.j-right
+				@include displayFlex-w(5rem)
+				text-align: center
+	//&:last-child
 	//text-align: right
 	.sgroup-top-des
 		background: $mainColorLighter
@@ -3418,6 +3425,19 @@ section
 						background: $mainColorLight
 						width: 4rem
 						height: 2px
+
+				&.del
+					position: absolute
+					background: url(../images/ico_del_r.png) no-repeat center center
+					background-size: 100% 100%
+					width: 2.4rem
+					height: 2.4rem
+					top: -.1rem
+					right: -.1rem
+					border: none
+					display: none
+				&.active
+					display: inline-block
 
 #matchCondition
 	.title
