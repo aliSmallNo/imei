@@ -36,8 +36,8 @@ class RedisUtil
 	const KEY_USER_RECORDS = 'user_records';
 	const KEY_WX_MESSAGE = 'wx_message'; //后台微信消息
 	const KEY_XCX_SESSION_ID = 'xcx_session_id'; //小程序 sessionId
-	const KEY_TRENDSTAT = "trend_stat"; //统计数据
-	const KEY_REUSE_STAT = "reuse_stat"; //统计数据
+	const KEY_TRENDSTAT = "trend_stat"; // 统计数据
+	const KEY_REUSE_STAT = "reuse_stat"; // 留存率
 
 
 	static $CacheDuration = [
