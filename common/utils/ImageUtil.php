@@ -474,6 +474,7 @@ class ImageUtil
 			$fileNormal = $path . '_n.' . $ext;
 			Image::open($fileName)->zoomCrop($figureWidth, $figureHeight, 0xffffff, 'center', 'center')->save($fileNormal);
 			$ret[] = self::getUrl($fileNormal);
+			unlink($fileName);
 			return $ret;
 		}
 		return ['', ''];
