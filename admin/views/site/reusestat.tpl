@@ -19,7 +19,7 @@
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-9">
-			<h4>留存率(延迟10分钟左右)
+			<h4>留存率
 				{{if $debug==1}}
 				<a href="/site/reusestat?sign=reset" class="opReset btn btn-outline btn-danger btn-xs">重置刷新</a>
 				{{/if}}
