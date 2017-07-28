@@ -1,6 +1,6 @@
 <style>
 	.splay {
-		padding: 1rem;
+		padding: 3rem;
 	}
 
 	.splay-title {
@@ -18,12 +18,12 @@
 
 	.splay-step-text {
 		font-size: 1.2rem;
-		text-align: center;
-		padding: 2rem 2rem 1rem 2rem;
+		text-align: left;
+		padding: 2rem 2rem 1rem 0;
 	}
 
 	.splay-step-img {
-		text-align: center;
+		text-align: left
 	}
 
 	.splay-step-img img {
@@ -33,7 +33,7 @@
 
 	.splay-cert {
 		font-size: 1.3rem;
-		padding: 2rem 2rem 1rem;
+		padding: 2rem 2rem 1rem 0;
 		color: #f6aec6;
 	}
 </style>
@@ -96,7 +96,7 @@
 		<img src="/images/s_play_13.jpg">
 	</div>
 
-	<div class="splay-step-text" style="text-align: center">实名认证图片要求</div>
+	<div class="splay-step-text">实名认证图片要求</div>
 	<div class="splay-step-img">
 		<img src="/images/s_play_14.jpg">
 	</div>
