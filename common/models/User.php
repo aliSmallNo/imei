@@ -623,7 +623,7 @@ class User extends ActiveRecord
 
 	public static function cert($id, $openId)
 	{
-		$url = AppUtil::getMediaUrl($id);
+		list($thumb, $url) = ImageUtil::save2Server($id, false);
 		$Info = self::findOne(["uOpenId" => $openId]);
 		if ($url && $Info) {
 			return self::edit($Info->uId, [
