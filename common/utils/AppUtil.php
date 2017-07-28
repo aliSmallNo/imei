@@ -101,7 +101,7 @@ class AppUtil
 		if ($rootOnly) {
 			return $folder;
 		}
-		$folder .= date('Ym');
+		$folder .= date('Ymw');
 		if (!is_dir($folder)) {
 			mkdir($folder);
 		}
