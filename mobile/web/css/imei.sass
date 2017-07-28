@@ -224,6 +224,10 @@ main
 .top-fixed-pl
 	height: 4rem
 
+.msg-content
+	line-height: 2.4rem
+	padding: 1rem 0
+
 .header-line
 	font-size: 1px
 	position: fixed
@@ -1935,20 +1939,51 @@ section
 
 .mycard
 	background: $mainColorLighter
-	padding: 20px 0
+	text-align: center
+	padding: 4rem 0
+	.card-wrap
+		width: 70%
+		display: block
+		margin: 0 auto
+		position: relative
+		&:before
+			position: absolute
+			display: block
+			content: ''
+			background: url(../images/ico_card_shadow.png) no-repeat bottom
+			-webkit-background-size: 100% auto
+			background-size: 100% auto
+			width: 100%
+			height: 5rem
+			bottom: -4rem
+			z-index: 2
+			left: 0
+		img
+			width: 100%
+			height: auto
+			position: relative
+			z-index: 3
+			border: 1px solid $borderColor
+
 	.btn
 		width: 24rem
 		height: 4.5rem
-		text-align: center
 		line-height: 4.5rem
 		margin: 2.5rem auto 0
 		display: block
 		color: #fff
-	.tip
 		text-align: center
-		color: #fff
-		font-size: 1.2rem
-
+	h4
+		text-align: center
+		font-size: 2rem
+		font-weight: $weightBold
+		padding-bottom: 1.5rem
+		color: $fontColor
+	.tip
+		color: $mainColor
+		font-size: 1.5rem
+		text-align: center
+		padding-bottom: 1.5rem
 .empty
 	text-align: center
 	padding-top: 8.5rem
@@ -2831,36 +2866,11 @@ section
 				font-size: 1.2rem
 				padding-right: 1rem
 
-.mycard
-	padding: 6rem 0
-	.card-wrap
-		width: 65%
-		display: block
-		margin: 0 auto
-		position: relative
-		&:before
-			position: absolute
-			display: block
-			content: ''
-			background: url(../images/ico_card_shadow.png) no-repeat bottom
-			-webkit-background-size: 100% auto
-			background-size: 100% auto
-			width: 100%
-			height: 5rem
-			bottom: -4.5rem
-			z-index: 2
-			left: 0
-		img
-			width: 100%
-			height: auto
-			position: relative
-			z-index: 3
-
 .sgroup-top
 	@at-root .nav
 		background: $mainColorLighter
 		padding: 1rem
-		display: flex
+		@include displayFlex
 		line-height: 2rem
 		&:before
 			content: " "
@@ -2879,13 +2889,16 @@ section
 			transform: rotate(-135deg) translateZ(0)
 
 		a
-			flex: 1
+			@include displayFlex-1
 			font-size: 1.2rem
 			color: #777
 			line-height: 2rem
 			&:first-child
 				margin-left: 1.2rem
-			&:last-child
+			&.j-right
+				@include displayFlex-w(5rem)
+				text-align: center
+	//&:last-child
 	//text-align: right
 	.sgroup-top-des
 		background: $mainColorLighter
@@ -3418,6 +3431,19 @@ section
 						background: $mainColorLight
 						width: 4rem
 						height: 2px
+
+				&.del
+					position: absolute
+					background: url(../images/ico_del_r.png) no-repeat center center
+					background-size: 100% 100%
+					width: 2.4rem
+					height: 2.4rem
+					top: -.1rem
+					right: -.1rem
+					border: none
+					display: none
+				&.active
+					display: inline-block
 
 #matchCondition
 	.title

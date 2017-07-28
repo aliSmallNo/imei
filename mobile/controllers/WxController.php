@@ -284,10 +284,16 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		if (!$wxInfo) {
+		if ($wxInfo) {
+			if (!isset($wxInfo['subscribe']) || $wxInfo['subscribe'] != 1) {
+				header('location:/wx/qrcode');
+				exit();
+			}
+		} else {
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
 		}
+
 		LogAction::add($wxInfo["uId"], $openId, LogAction::ACTION_MATCH);
 
 		$hint = '';
@@ -606,10 +612,16 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		if (!$wxInfo) {
+		if ($wxInfo) {
+			if (!isset($wxInfo['subscribe']) || $wxInfo['subscribe'] != 1) {
+				header('location:/wx/qrcode');
+				exit();
+			}
+		} else {
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
 		}
+
 		LogAction::add($wxInfo["uId"], $openId, LogAction::ACTION_SINGLE);
 
 		$uInfo = User::user(['uId' => $wxInfo['uId']]);
@@ -881,6 +893,22 @@ class WxController extends BaseController
 			'terse',
 			'今天我领证啦~',
 			'bg-main');
+	}
+
+	public function actionQrcode()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/index');
+			exit();
+		}
+		$jump = self::getParam('jump', '/wx/index');
+		return self::renderPage('qrcode.tpl',
+			[
+				'jump' => $jump
+			],
+			'terse', '');
 	}
 
 	public function actionError()

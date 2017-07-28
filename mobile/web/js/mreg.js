@@ -136,7 +136,7 @@ require(['layer'],
 				}, function (res) {
 					if (res.code == 0) {
 						setTimeout(function () {
-							location.href = "/wx/match";
+							location.href = "/wx/match#slink";
 							layer.closeAll();
 						}, 500);
 					} else {
