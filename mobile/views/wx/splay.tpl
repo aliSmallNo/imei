@@ -65,7 +65,7 @@
 		<img src="/images/s_play_1.jpg">
 	</div>
 	<div class="splay-step-text">
-		<span>1</span>
+		<span>2</span>
 		<div>作为一个看脸的社会 你懂的</div>
 	</div>
 	<div class="splay-step-img">
