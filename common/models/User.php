@@ -592,6 +592,7 @@ class User extends ActiveRecord
 
 	public static function album($id, $openId, $f = "add")
 	{
+		$thumb = '';
 		if ($id && $f == "add") {
 			list($thumb, $url) = ImageUtil::save2Server($id); //AppUtil::save($id);
 		} else {
@@ -623,7 +624,7 @@ class User extends ActiveRecord
 			$Info->uAlbum = json_encode(array_values($album), JSON_UNESCAPED_UNICODE);
 			$Info->uUpdatedOn = date('Y-m-d H:i:s');
 			$Info->save();
-			return $url;
+			return $thumb ? $thumb : $url;
 		}
 		return 0;
 
