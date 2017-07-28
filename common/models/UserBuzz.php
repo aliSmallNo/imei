@@ -9,6 +9,7 @@
 namespace common\models;
 
 use common\utils\AppUtil;
+use common\utils\ImageUtil;
 use common\utils\RedisUtil;
 use yii\db\ActiveRecord;
 
@@ -153,7 +154,7 @@ class UserBuzz extends ActiveRecord
 			case "image":
 				$mediaId = isset($postData["MediaId"]) ? $postData["MediaId"] : "";
 				if ($mediaId) {
-					$debug = AppUtil::getMediaUrl($mediaId);
+					list($thumb, $debug) = ImageUtil::save2Server($mediaId, false);
 				}
 				break;
 			case "voice":

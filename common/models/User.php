@@ -306,8 +306,9 @@ class User extends ActiveRecord
 			$entity->uUpdatedBy = $editBy;
 			$entity->uOpenId = $openid;
 			$entity->uName = $wxInfo['nickname'];
-			$entity->uThumb = AppUtil::getMediaUrl($wxInfo['headimgurl'], true, true);
-			$entity->uAvatar = AppUtil::getMediaUrl($wxInfo['headimgurl'], false);
+			list($thumb, $figure) = ImageUtil::save2Server($wxInfo['headimgurl'], false);
+			$entity->uThumb = $thumb;
+			$entity->uAvatar = $figure;
 			$entity->save();
 		}
 		return $entity->uId;
