@@ -40,6 +40,10 @@ class WxController extends BaseController
 		'其他'
 	];
 
+	const URL_MATCH = '/wx/match#slink';
+	const URL_SINGLE = '/wx/single#slook';
+	const URL_SINGLE_REG = '/wx/sreg#photo';
+
 	public function actionIndex()
 	{
 		$openId = self::$WX_OpenId;
@@ -48,9 +52,9 @@ class WxController extends BaseController
 		if ($wxInfo) {
 			LogAction::add($wxInfo["uId"], $openId, LogAction::ACTION_LOGIN);
 			if ($wxInfo["uRole"] == User::ROLE_MATCHER) {
-				$url = '/wx/match#slink';
+				$url = self::URL_MATCH;
 			} else {
-				$url = '/wx/single#slook';
+				$url = self::URL_SINGLE;
 			}
 		}
 		header('location:' . $url);
@@ -163,7 +167,7 @@ class WxController extends BaseController
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
 			if ($wxInfo["uGender"] < 10) {
-				header('location:/wx/sreg');
+				header('location:' . self::URL_SINGLE_REG);
 				exit();
 			}
 			if ($wxInfo["uRole"] == User::ROLE_MATCHER) {
@@ -305,8 +309,7 @@ class WxController extends BaseController
 		$hint = '你的昵称未通过审核，请重新编辑~';
 		$role = $wxInfo["uRole"];
 		if ($role == User::ROLE_SINGLE) {
-			//header("location:/wx/mreg");
-			header("location:/wx/single");
+			header("location:" . self::URL_SINGLE);
 			exit();
 		}
 		if ($wxInfo['uGender'] == User::GENDER_MALE) {
@@ -351,7 +354,7 @@ class WxController extends BaseController
 				if ($uInfo['diet'] && $uInfo['rest']) {
 					User::edit($uInfo['id'], ['uRole' => User::ROLE_MATCHER]);
 					UserWechat::getInfoByOpenId($openId, true);
-					header('location:/wx/match#slink');
+					header('location:' . self::URL_MATCH);
 					exit();
 				} else {
 					header('location:/wx/mreg');
@@ -363,10 +366,10 @@ class WxController extends BaseController
 				if ($uInfo['location'] && $uInfo['scope']) {
 					User::edit($uInfo['id'], ['uRole' => User::ROLE_SINGLE]);
 					UserWechat::getInfoByOpenId($openId, true);
-					header('location:/wx/single#slook');
+					header('location:' . self::URL_SINGLE);
 					exit();
 				} else {
-					header('location:/wx/sreg#photo');
+					header('location:' . self::URL_SINGLE_REG);
 					exit();
 				}
 				break;
@@ -484,7 +487,7 @@ class WxController extends BaseController
 				'nickname' => $nickname,
 				'avatar' => $avatar,
 				'uInfo' => $uInfo,
-				'homeUrl' => ($role == 10) ? "/wx/single#slook" : "/wx/match#slink",
+				'homeUrl' => ($role == User::ROLE_SINGLE) ? self::URL_SINGLE : self::URL_MATCH,
 				'prefer' => $prefer,
 				'hid' => $hid,
 				'secretId' => $secretId,
@@ -632,8 +635,7 @@ class WxController extends BaseController
 		//$intro = $wxInfo['uIntro'];
 		$role = $wxInfo["uRole"];
 		if ($role == User::ROLE_MATCHER) {
-			//header("location:/wx/sreg#photo");
-			header("location:/wx/match");
+			header("location:" . self::URL_MATCH);
 			exit();
 		}
 
