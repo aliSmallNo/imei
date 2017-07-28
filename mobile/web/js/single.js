@@ -399,6 +399,7 @@ require(["layer"],
 			albums: [],
 			albumTmp: $('#tpl_album').html(),
 			thumbTmp: '{[#items]}<li><a class="has-pic"><img src="{[.]}"></a></li>{[/items]}',
+			albumSingleTmp: '<li><a class="has-pic"><img src="{[thumb]}" bsrc="{[figure]}"></a></li>',
 			init: function () {
 				$(document).on(kClick, "a.choose-img", function () {
 					wx.chooseImage({
@@ -478,8 +479,7 @@ require(["layer"],
 				}, function (resp) {
 					showMsg(resp.msg);
 					if (resp.code == 0) {
-						//alert(resp.data);
-						$("#album .photos").append('<li><a><img src="' + resp.data.thumb + '" bsrc="' + resp.data.figure + '"></a></li>');
+						$("#album .photos").append(Mustache.render(SmeUtil.albumSingleTmp, resp.data));
 					} else {
 						showMsg(resp.msg);
 					}
