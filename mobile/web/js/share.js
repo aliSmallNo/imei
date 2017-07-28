@@ -85,7 +85,7 @@ require(["layer"],
 			var thumb = $sls.nic.find("img").attr('src');
 			var link = $sls.wxUrl + '/wx/share?id=' + $sls.uid + '&cid=' + cid;
 			//var title = name + '和' + cName + '一起做媒婆了';
-			var title = '我是' + name + '，我在微媒100做媒婆了';
+			var title = '我在东台做媒婆，帮助周边好友脱单，还能赚点零花钱';
 			var desc = '一起来微媒100做媒婆吧，帮助身边的单身青年脱单';
 			wx.onMenuShareTimeline({
 				title: title,
