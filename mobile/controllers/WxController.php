@@ -920,4 +920,12 @@ class WxController extends BaseController
 			],
 			'terse');
 	}
+
+	public function actionSplay()
+	{
+		return self::renderPage('splay.tpl',
+			[
+			],
+			'terse');
+	}
 }

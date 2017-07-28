@@ -152,7 +152,6 @@ class SiteController extends BaseController
 		}
 	}
 
-
 	public function actionAccount()
 	{
 		$id = self::getParam("id");
@@ -437,7 +436,6 @@ class SiteController extends BaseController
 		$this->redirect('/site/wxreply?id=' . $openId);
 	}
 
-
 	public function actionNet()
 	{
 		$getInfo = Yii::$app->request->get();
@@ -599,11 +597,8 @@ class SiteController extends BaseController
 							$v["ids"][$i] = 0;
 						}
 					}
-
 				}
-				//print_r($reuseData);exit;
 				$reuseData = json_encode(array_reverse($reuseData));
-
 				RedisUtil::setCache($reuseData, RedisUtil::KEY_REUSE_STAT, $cat);
 			}
 		}
