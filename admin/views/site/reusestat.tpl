@@ -21,7 +21,7 @@
 		<div class="col-lg-9">
 			<h4>留存率
 				{{if $debug==1}}
-				<a href="javascript:;" class="opReset btn btn-outline btn-danger btn-xs">重置刷新</a>
+				<a href="/site/reusestat?sign=reset" class="opReset btn btn-outline btn-danger btn-xs">重置刷新</a>
 				{{/if}}
 			</h4>
 		</div>
@@ -95,12 +95,12 @@
 			<tr>
 				<td class="dt">{{$prod.sStart}}<br>{{$prod.sEnd}}</td>
 				<td class="percent">
-					<a href="/site/activeusers?timelimit={{$prod.sTime}}-{{$prod.eTime}}" target="_blank">{{$prod.sCount}}</a>
+					<a href="javascript:;" target="_blank" data-ids="{{$prod.uIds}}">{{$prod.sCount}}</a>
 				</td>
 				{{foreach from=$prod.percents key=subK item=percent}}
 				<td class="percent">
 					{{if $percent>=0}}
-					<a href="/site/activeusers" target="_blank" data-ids="">
+					<a href="javascript:;" target="_blank" data-ids="{{$prod.ids[$subK]}}">
 						{{$percent|string_format:'%.1f'}}%</a>
 					{{else}}&nbsp;
 					{{/if}}
@@ -118,15 +118,25 @@
 		location.href = "/site/reusestat?cat=" + self.attr('tag');
 	});
 
-	$('.opReset').on('click', function () {
-		$.post('/bigdata/reusestat', {
-			reset: 99
+
+	$(".percent a").on("click", function () {
+		var self = $(this);
+		var ids = self.attr("data-ids");
+		if (!ids || ids == 0) {
+			return;
+		}
+		$.post("/api/users", {
+			tag: "users",
+			ids: ids
 		}, function (resp) {
-			layer.msg(resp.msg);
-			setTimeout(function () {
-				location.reload();
-			}, 600);
-		}, 'json');
-	});
+			console.log(resp);
+			var temp = "{[#data]}<div>{[name]} {[phone]}</div>{[/data]}";
+			layer.open({
+				content: Mustache.render(temp, resp),
+				area: ['500px', '600px'],
+				title: "用户"
+			});
+		}, "json");
+	})
 </script>
 {{include file="layouts/footer.tpl"}}
