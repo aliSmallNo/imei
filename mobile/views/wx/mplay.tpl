@@ -21,6 +21,7 @@
 
 	.mplay-step-img img {
 		width: 15rem;
+		border: 1px solid #f6aec6;
 	}
 
 </style>
