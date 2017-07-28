@@ -30,7 +30,7 @@
 	}
 
 	.splay-cert {
-		font-size: 1.5rem;
+		font-size: 1.3rem;
 		margin: 2rem 0 1rem;
 		color: #f6aec6;
 	}
@@ -94,7 +94,7 @@
 		<img src="/images/s_play_13.jpg">
 	</div>
 
-	<div class="splay-step-text">实名认证图片要求</div>
+	<div class="splay-step-text" style="text-align: center">实名认证图片要求</div>
 	<div class="splay-step-img">
 		<img src="/images/s_play_14.jpg">
 	</div>
