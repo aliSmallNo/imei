@@ -41,7 +41,7 @@
 					日期
 				</th>
 				<th>
-					新下单<br>人数
+					注册<br>人数
 				</th>
 				<th class="percent">
 					2
@@ -100,8 +100,7 @@
 				{{foreach from=$prod.percents key=subK item=percent}}
 				<td class="percent">
 					{{if $percent>=0}}
-					<a href="/site/activeusers?timelimit={{$prod.sTime}}-{{$prod.eTime}}-{{$prod.colStart[$subK]}}-{{$prod.colEnd[$subK]}}"
-						 target="_blank">
+					<a href="/site/activeusers" target="_blank" data-ids="">
 						{{$percent|string_format:'%.1f'}}%</a>
 					{{else}}&nbsp;
 					{{/if}}
@@ -116,7 +115,7 @@
 <script>
 	$('button').on('click', function () {
 		var self = $(this);
-		location.href = "/bigdata/reusestat?cat=" + self.attr('tag') + "&new=" + self.attr('newFlag');
+		location.href = "/site/reusestat?cat=" + self.attr('tag');
 	});
 
 	$('.opReset').on('click', function () {

@@ -573,30 +573,36 @@ class SiteController extends BaseController
 	public
 	function actionReusestat()
 	{
-		$strReuse = "";
-		$cat = "week";
-		// 开始记录日期 2017-06-01
-		$sCategory = ($cat == 'week' ? LogAction::REUSE_DATA_WEEK : LogAction::REUSE_DATA_MONTH);
-		$lastTime = strtotime("2017-06-01");
-		$dayDiff = ceil((time() - 86400 - $lastTime) / 86400);
-		if ($dayDiff > 1) {
-			if ($sCategory == LogAction::REUSE_DATA_WEEK) {
-				for ($k = 1; $k <= ceil($dayDiff / 7); $k++) {
-					LogAction::getReuseData(time() - $k * 86400 * 7, $sCategory);
+		$cat = self::getParam("cat", "week");
+
+		$reuseData = RedisUtil::getCache(RedisUtil::KEY_REUSE_STAT, $cat);
+
+		if (!$reuseData) {
+			// 开始记录日期 2017-06-01
+			$sCategory = ($cat == 'week' ? LogAction::REUSE_DATA_WEEK : LogAction::REUSE_DATA_MONTH);
+			$lastTime = strtotime("2017-06-01");
+			$dayDiff = ceil((time() - 86400 - $lastTime) / 86400);
+			$reuseData = [];
+			if ($dayDiff > 1) {
+				if ($sCategory == LogAction::REUSE_DATA_WEEK) {
+					for ($k = 1; $k <= ceil($dayDiff / 7); $k++) {
+						$reuseData[] = LogAction::getReuseData(time() - $k * 86400 * 7, $sCategory);
+					}
+				} else {
+					for ($k = 1; $k <= ceil($dayDiff / 30); $k++) {
+						$reuseData[] = LogAction::getReuseData(time() - $k * 86400 * 30, $sCategory);
+					}
 				}
-			} else {
-				for ($k = 1; $k <= ceil($dayDiff / 28); $k++) {
-					LogAction::getReuseData(time() - $k * 86400 * 28, $sCategory);
-				}
+				$reuseData = json_encode(array_reverse($reuseData));
+
+				RedisUtil::setCache($reuseData, RedisUtil::KEY_REUSE_STAT, $cat);
 			}
 		}
-		exit;
 
 		return $this->renderPage("reusestat.tpl",
 			[
-				'detailcategory' => 'bigdata/reusestat',
-				'category' => "bigdata",
-				'reuseData' => json_decode($strReuse, true),
+				'category' => "data",
+				'reuseData' => json_decode($reuseData, true),
 				'cat' => $cat,
 				'list' => [],
 			]
