@@ -210,7 +210,7 @@
 				<span>{{$prod.intro}}</span>
 				<span>{{$prod.interest}}</span>
 			</td>
-			<td class="album-items">
+			<td class="album-items"  data-images='{{$prod.showImages}}'>
 				{{if $prod.album}}
 				{{foreach from=$prod.album item=img}}
 				<img src="{{$img}}">
@@ -263,6 +263,24 @@
 		var cid = $(this).attr("cid");
 		location.href = "/site/account?id=" + cid;
 	});
+
+  $(document).on("click", ".album-items img", function () {
+	  var self = $(this);
+	  var images = self.closest("td").attr("data-images");
+	  showImages(JSON.parse(images))
+
+  });
+
+  function showImages(imagesJson) {
+	  layer.photos({
+		  photos: imagesJson, //格式见API文档手册页
+		  shift: 5,
+//			isOutAnim: false,
+//			shade: 1,
+//			shadeClose: true,
+		  //area: ['400px', '400px'],
+	  });
+  }
 </script>
 
 {{include file="layouts/footer.tpl"}}
