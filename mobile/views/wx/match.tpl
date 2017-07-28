@@ -142,7 +142,7 @@
 		</div>
 	</div>
 </section>
-<section id="srept">
+<section id="srept" data-title="单身团动态">
 	<div class="nav top-fixed">
 		<a href="#sgroup">返回</a>
 	</div>
