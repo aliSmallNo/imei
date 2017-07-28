@@ -568,8 +568,7 @@ class SiteController extends BaseController
 		);
 	}
 
-
-	// 留存率 统 计
+	// 留存率 统计
 	public function actionReusestat()
 	{
 		$cat = self::getParam("cat", "week");
@@ -593,6 +592,16 @@ class SiteController extends BaseController
 						$reuseData[] = LogAction::getReuseData(time() - $k * 86400 * 30, $sCategory);
 					}
 				}
+				foreach ($reuseData as &$v) {
+					for ($i = 0; $i < 15; $i++) {
+						if (!isset($v["percents"][$i])) {
+							$v["percents"][$i] = -1;
+							$v["ids"][$i] = 0;
+						}
+					}
+
+				}
+				//print_r($reuseData);exit;
 				$reuseData = json_encode(array_reverse($reuseData));
 
 				RedisUtil::setCache($reuseData, RedisUtil::KEY_REUSE_STAT, $cat);
