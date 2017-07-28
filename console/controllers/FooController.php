@@ -386,13 +386,8 @@ class FooController extends Controller
 
 	public function actionImg()
 	{
-<<<<<<< HEAD
-=======
-		$url = 'http://wx.qlogo.cn/mmopen/deq1XeuYTTeEicn2ygrKrGvMkh7qyLFrUD7rITMAHP6p8S9RSZmlPIv1wveemOrdU1Kqn0hia1dXKqV0RIYyZ0tA0ia4aHalg4V/0';
-		$ret = AppUtil::getMediaUrl($url, false, true);
-		var_dump($ret);
->>>>>>> 74bf60fcbe49915e2d74faca5ea5c96553e4e6c4
 
+		$url = '';
 		$ret = AppUtil::getMediaUrl($url, true, true);
 		var_dump($ret);
 	}
@@ -402,7 +397,7 @@ class FooController extends Controller
 //		$ret = UserWechat::refreshWXInfo('oYDJew2IjPst3upRPXc1k6wWHMkE', 1);
 //		var_dump($ret);
 
-		$conn = AppUtil::db();
+		/*$conn = AppUtil::db();
 
 		$sql = "insert into im_user_net(nUId,nSubUId,nRelation,nNote,nAddedOn,nUpdatedOn)
 				select qUId,(SELECT wUId from im_user_wechat WHERE wOpenId=:openid limit 1) as suid,:rel,:qid,:dt,:dt
@@ -424,10 +419,14 @@ class FooController extends Controller
 				':rel' => UserNet::REL_QR_SUBSCRIBE,
 			])->execute();
 		}
-		var_dump($count);
+		var_dump($count);*/
 
 		// 三张头像 + 实名认证（身份证照片）
 		/*$ret = UserNet::addLink(131379, 131446);
 		var_dump($ret);*/
+
+		$url = "https:\/\/img.meipo100.com\/201707\/112349_n.jpg";
+		$ret = pathinfo($url, PATHINFO_FILENAME);
+		var_dump($ret);
 	}
 }

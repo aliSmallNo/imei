@@ -398,6 +398,7 @@ require(["layer"],
 			delImgFlag: false,
 			albums: [],
 			albumTmp: $('#tpl_album').html(),
+			thumbTmp: '{[#items]}<li><a class="has-pic"><img src="{[.]}"></a></li>{[/items]}',
 			init: function () {
 				$(document).on(kClick, "a.choose-img", function () {
 					wx.chooseImage({
@@ -418,37 +419,15 @@ require(["layer"],
 						return;
 					}
 					var self = $(this);
-					var src = self.find("img").attr("src");
+					var src = self.find("img").attr("bsrc");
+					var URLs = [];
+					$.each($('.album-photos img'), function () {
+						URLs[URLs.length] = $(this).attr('bsrc');
+					});
 					wx.previewImage({
 						current: src,
-						urls: SmeUtil.albums
+						urls: URLs
 					});
-					/*
-					var vw = $(window).width();
-					var vh = $(window).height();
-					layer.open({
-						title: '',
-						area: [vw, vh],
-						btn: ['删除', '关闭'],
-						content: '<img src="' + src + '">',
-						yes: function () {
-							SmeUtil.delImgFlag = 1;
-							$.post("/api/user", {
-								id: src,
-								tag: "album",
-								f: "del",
-							}, function (resp) {
-								SmeUtil.delImgFlag = 0;
-								self.closest("li").remove();
-								layer.closeAll();
-								showMsg(resp.msg);
-							}, "json");
-						},
-						close: function () {
-
-						},
-					});*/
-
 				});
 			},
 			sme: function () {
@@ -459,10 +438,9 @@ require(["layer"],
 				$.post("/api/user", {
 					tag: "myinfo",
 				}, function (resp) {
-					var temp = '{[#items]}<li><a class="has-pic"><img src="{[.]}"></a></li>{[/items]}';
-					$(".u-my-album .photos").html(Mustache.render(temp, {items: resp.data.img4}));
+					$(".u-my-album .photos").html(Mustache.render(SmeUtil.thumbTmp, {items: resp.data.img4}));
 
-					SmeUtil.albums = resp.data.imgList;
+					SmeUtil.albums = resp.data.gallery;
 					$("#album .photos").html(Mustache.render(SmeUtil.albumTmp, SmeUtil));
 
 					$(".u-my-album .title").html("相册(" + resp.data.co + ")");
@@ -499,9 +477,11 @@ require(["layer"],
 					id: SmeUtil.serverId,
 				}, function (resp) {
 					showMsg(resp.msg);
-					if (resp.data) {
+					if (resp.code == 0) {
 						//alert(resp.data);
-						$("#album .photos").append('<li><a><img src="' + resp.data + '"></a></li>');
+						$("#album .photos").append('<li><a><img src="' + resp.data.thumb + '" bsrc="' + resp.data.figure + '"></a></li>');
+					} else {
+						showMsg(resp.msg);
 					}
 					SmeUtil.uploadImgFlag = 0;
 				}, "json");

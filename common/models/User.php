@@ -624,7 +624,7 @@ class User extends ActiveRecord
 			$Info->uAlbum = json_encode(array_values($album), JSON_UNESCAPED_UNICODE);
 			$Info->uUpdatedOn = date('Y-m-d H:i:s');
 			$Info->save();
-			return $thumb ? $thumb : $url;
+			return [$thumb ? $thumb : $url, $url];
 		}
 		return 0;
 
@@ -677,18 +677,40 @@ class User extends ActiveRecord
 		if ($uAlbum) {
 			$uAlbum = json_decode($uAlbum, 1);
 			$items["imgList"] = $uAlbum;
-			$items["co"] = count($uAlbum);
-			if (count($uAlbum) <= 4) {
-				$items["img4"] = $uAlbum;
-			} else {
-				for ($i = 0; $i < 4; $i++) {
-					$items["img4"][] = array_pop($uAlbum);
-				}
+			$gallery = self::gallery($uAlbum);
+			$items["gallery"] = $gallery;
+			$items["img4"] = [];
+			foreach ($gallery as $k => $val) {
+				if ($k >= 4) break;
+				$items["img4"][] = $val['thumb'];
 			}
+			$items["co"] = count($uAlbum);
 		}
 		$items["hasMp"] = $Info["mpId"];
-
 		return $items;
+	}
+
+	protected static function gallery($album)
+	{
+		if (!$album || !is_array($album)) {
+			return [];
+		}
+		$ret = [];
+		foreach ($album as $val) {
+			$name = pathinfo($val, PATHINFO_FILENAME);
+			if (strpos($name, '_n') !== false) {
+				$ret[] = [
+					'thumb' => str_replace('_n.', '_t.', $val),
+					'figure' => $val
+				];
+			} else {
+				$ret[] = [
+					'thumb' => $val,
+					'figure' => $val
+				];
+			}
+		}
+		return $ret;
 	}
 
 	public static function sprofile($id)

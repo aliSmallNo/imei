@@ -293,11 +293,14 @@ class ApiController extends Controller
 				if ($f == "del") {
 					$text = "删除";
 				}
-				$url = User::album($id, $openId, $f);
+				list($thumb, $url) = User::album($id, $openId, $f);
 				if ($url) {
-					return self::renderAPI(0, $text . '成功', $url);
+					return self::renderAPI(0, $text . '成功', [
+						'thumb' => $thumb,
+						'figure' => $url,
+					]);
 				} else {
-					return self::renderAPI(129, $text . '失败', $url);
+					return self::renderAPI(129, $text . '失败');
 				}
 			case "cert":
 				$uId = User::cert($id, $openId);

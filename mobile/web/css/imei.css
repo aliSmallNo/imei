@@ -1375,7 +1375,7 @@ section {
       width: 4.4rem;
       height: 4.4rem;
       overflow: hidden;
-      border: 1px solid #f487ac;
+      border: 1px solid #fbd2e0;
       border-radius: 0.3rem;
       margin-right: 1.2rem; }
       .u-my-album .photos li:last-child {
@@ -3465,7 +3465,7 @@ section {
     #album .photos li:nth-of-type(3n+1) {
       clear: left; }
     #album .photos li a {
-      border: 1px solid #f487ac;
+      border: 1px solid #fbd2e0;
       border-radius: 2px;
       background-color: #fff;
       padding: 0;
@@ -3488,7 +3488,7 @@ section {
         left: 50%;
         -webkit-transform: translate(-50%, -51%);
         transform: translate(-50%, -51%);
-        background: #f781ab;
+        background: #f487ac;
         width: 2px;
         height: 4rem; }
       #album .photos li a.choose-img:after {
