@@ -306,8 +306,9 @@ class User extends ActiveRecord
 			$entity->uUpdatedBy = $editBy;
 			$entity->uOpenId = $openid;
 			$entity->uName = $wxInfo['nickname'];
-			$entity->uThumb = AppUtil::getMediaUrl($wxInfo['headimgurl'], true, true);
-			$entity->uAvatar = AppUtil::getMediaUrl($wxInfo['headimgurl'], false);
+			list($thumb, $figure) = ImageUtil::save2Server($wxInfo['headimgurl'], false);
+			$entity->uThumb = $thumb;
+			$entity->uAvatar = $figure;
 			$entity->save();
 		}
 		return $entity->uId;
@@ -528,17 +529,12 @@ class User extends ActiveRecord
 			"filter" => "uFilter",
 			"album" => "uAlbum",
 		];
-		$img = isset($data["img"]) ? $data["img"] : '';
+		$avatar = isset($data["img"]) ? $data["img"] : '';
 		unset($data['img']);
-		if ($img) {
-			$url = AppUtil::getMediaUrl($img, false, true);
-			if ($url) {
-				$data["img"] = $url;
-			}
-			$url = AppUtil::getMediaUrl($img, true, true);
-			if ($url) {
-				$data["thumb"] = $url;
-			}
+		if ($avatar) {
+			list($thumb, $figure) = ImageUtil::save2Server($avatar, true);
+			$data["thumb"] = $thumb;
+			$data["img"] = $figure;
 		}
 		$album = isset($data["album"]) ? $data["album"] : [];
 		$data['album'] = [];
@@ -558,11 +554,6 @@ class User extends ActiveRecord
 		}
 
 		$uid = self::add($userData);
-
-		/*$net = UserNet::findOne(['nSubUId' => $uid, 'nRelation' => UserNet::REL_INVITE, 'nDeletedFlag' => 0]);
-		if ($net && isset($net['nUId']) && $net['nUId']) {
-			UserNet::add($net['nUId'], $uid, UserNet::REL_BACKER);
-		}*/
 
 		//Rain: 添加媒婆关系
 		$conn = AppUtil::db();
@@ -632,7 +623,7 @@ class User extends ActiveRecord
 
 	public static function cert($id, $openId)
 	{
-		$url = AppUtil::getMediaUrl($id);
+		list($thumb, $url) = ImageUtil::save2Server($id, false);
 		$Info = self::findOne(["uOpenId" => $openId]);
 		if ($url && $Info) {
 			return self::edit($Info->uId, [
