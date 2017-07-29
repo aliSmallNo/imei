@@ -160,7 +160,7 @@ class UserBuzz extends ActiveRecord
 			case "voice":
 				$mediaId = isset($postData["MediaId"]) ? $postData["MediaId"] : "";
 				if ($mediaId) {
-					$debug = AppUtil::getMediaUrl($mediaId);
+					list($debug) = ImageUtil::save2Server($mediaId);
 				}
 				break;
 			case "text":

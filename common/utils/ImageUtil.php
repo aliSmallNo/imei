@@ -433,7 +433,7 @@ class ImageUtil
 			$key = RedisUtil::getImageSeq();
 		}
 		if (strpos($imageUrl, 'http') !== 0) {
-			// Rain: Media ID, wechat server ID
+			// Rain: Media ID (Wechat Server ID)
 			$accessToken = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 			$baseUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s";
 			$imageUrl = sprintf($baseUrl, $accessToken, $imageUrl);
@@ -452,30 +452,35 @@ class ImageUtil
 		$ext = AppUtil::getExtName($contentType);
 		$path = AppUtil::imgDir() . $key;
 		if ($ext && strlen($content) > 200) {
-			$thumbSize = 140;
-			$figureSize = 540;
 			$fileName = $path . '.' . $ext;
 			file_put_contents($fileName, $content);
-			if ($squareFlag) {
-				$figureWidth = $figureHeight = $figureSize;
+			if ($ext == "amr") {
+				$ret = self::getUrl($fileName);
+				return [$ret, $ret];
 			} else {
-				list($srcWidth, $srcHeight) = getimagesize($fileName);
-				if ($srcWidth > $srcHeight) {
-					$figureHeight = $figureSize;
-					$figureWidth = $srcWidth * $figureSize / $srcHeight;
+				$thumbSize = 140;
+				$figureSize = 540;
+				if ($squareFlag) {
+					$figureWidth = $figureHeight = $figureSize;
 				} else {
-					$figureWidth = $figureSize;
-					$figureHeight = $srcHeight * $figureSize / $srcWidth;
+					list($srcWidth, $srcHeight) = getimagesize($fileName);
+					if ($srcWidth > $srcHeight) {
+						$figureHeight = $figureSize;
+						$figureWidth = $srcWidth * $figureSize / $srcHeight;
+					} else {
+						$figureWidth = $figureSize;
+						$figureHeight = $srcHeight * $figureSize / $srcWidth;
+					}
 				}
+				$fileThumb = $path . '_t.' . $ext;
+				Image::open($fileName)->zoomCrop($thumbSize, $thumbSize, 0xffffff, 'center', 'center')->save($fileThumb);
+				$thumb = self::getUrl($fileThumb);
+				$fileNormal = $path . '_n.' . $ext;
+				Image::open($fileName)->zoomCrop($figureWidth, $figureHeight, 0xffffff, 'center', 'center')->save($fileNormal);
+				$figure = self::getUrl($fileNormal);
+				unlink($fileName);
+				return [$thumb, $figure];
 			}
-			$fileThumb = $path . '_t.' . $ext;
-			Image::open($fileName)->zoomCrop($thumbSize, $thumbSize, 0xffffff, 'center', 'center')->save($fileThumb);
-			$ret[] = self::getUrl($fileThumb);
-			$fileNormal = $path . '_n.' . $ext;
-			Image::open($fileName)->zoomCrop($figureWidth, $figureHeight, 0xffffff, 'center', 'center')->save($fileNormal);
-			$ret[] = self::getUrl($fileNormal);
-			unlink($fileName);
-			return $ret;
 		}
 		return ['', ''];
 	}
