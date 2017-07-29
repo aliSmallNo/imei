@@ -1209,7 +1209,10 @@ class User extends ActiveRecord
 
 		$sql = "select 
 				COUNT(1) as amt,
-				SUM(IFNULL(w.wSubscribe,0)) as follows
+				SUM(IFNULL(w.wSubscribe,0)) as follows,
+				SUM(CASE WHEN u.uRole=20 THEN 1 END) as meipos,
+				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 THEN 1 END) as girls,
+				SUM(CASE WHEN u.uRole=10 AND u.uGender=11 THEN 1 END) as boys
 				from im_user as u
 				JOIN im_user_wechat as w on w.wUId=u.uId
 				where uNote='' and uStatus<9 and uAddedOn < :endDT ";
@@ -1219,6 +1222,9 @@ class User extends ActiveRecord
 		if ($res2) {
 			$trends['amt'][$k] = intval($res2["amt"]); //累计用户
 			$trends['follows'][$k] = intval($res2["follows"]); //累计关注用户
+			$trends['meipos'][$k] = intval($res2["meipos"]);
+			$trends['girls'][$k] = intval($res2["girls"]);
+			$trends['boys'][$k] = intval($res2["boys"]);
 		}
 
 		$sql = "select 
