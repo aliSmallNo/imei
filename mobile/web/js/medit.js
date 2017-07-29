@@ -150,8 +150,10 @@ require(["layer"],
 						$sls.postData[field] = Val;
 					});
 
-					console.log($sls.postData);
-
+					layer.open({
+						type: 2,
+						content: '保存中...'
+					});
 					var localId = util.avatar.attr("localId");
 					if (localId) {
 						uploadImages(localId);
@@ -166,13 +168,13 @@ require(["layer"],
 				$sls.postData["img"] = $sls.serverId;
 				$sls.postData["coord"] = $sls.coord.val();
 				$.post("/api/user", {
-					tag: "sreg",
+					tag: "mreg",
 					data: JSON.stringify($sls.postData),
 				}, function (res) {
 					showMsg(res.msg);
 					if (res.code == 0) {
 						setTimeout(function () {
-							location.href = "/wx/switch#sme";
+							location.href = "/wx/match#sme";
 						}, 500);
 					}
 				}, "json");
@@ -207,7 +209,7 @@ require(["layer"],
 		function uploadImages(localId) {
 			wx.uploadImage({
 				localId: localId.toString(),
-				isShowProgressTips: 1,
+				isShowProgressTips: 0,
 				success: function (res) {
 					$sls.serverId = res.serverId;
 					SingleUtil.submit();

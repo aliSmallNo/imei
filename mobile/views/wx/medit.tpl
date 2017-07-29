@@ -115,4 +115,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/medit.js?v=1.2.1" src="/assets/js/require.js"></script>
+<script data-main="/js/medit.js?v=1.2.2" src="/assets/js/require.js"></script>
