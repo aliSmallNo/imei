@@ -36,8 +36,8 @@ class RedisUtil
 	const KEY_USER_RECORDS = 'user_records';
 	const KEY_WX_MESSAGE = 'wx_message'; //后台微信消息
 	const KEY_XCX_SESSION_ID = 'xcx_session_id'; //小程序 sessionId
-	const KEY_TRENDSTAT = "trend_stat"; // 统计数据
-	const KEY_REUSE_STAT = "reuse_stat"; // 留存率
+	const KEY_STAT_TREND = "trend_stat"; // 统计数据
+	const KEY_STAT_REUSE = "reuse_stat"; // 留存率
 
 
 	static $CacheDuration = [
@@ -60,8 +60,8 @@ class RedisUtil
 		self::KEY_USER_RECORDS => 3600 * 8,
 		self::KEY_WX_MESSAGE => 60 * 10,
 		self::KEY_XCX_SESSION_ID => 3600 * 2,
-		self::KEY_TRENDSTAT => 60 * 10,
-		self::KEY_REUSE_STAT => 60 * 10,
+		self::KEY_STAT_TREND => 60 * 6,
+		self::KEY_STAT_REUSE => 60 * 6,
 	];
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';

@@ -528,12 +528,12 @@ class SiteController extends BaseController
 
 	public function actionTrend()
 	{
-		$trends = RedisUtil::getCache(RedisUtil::KEY_TRENDSTAT);
+		$trends = RedisUtil::getCache(RedisUtil::KEY_STAT_TREND);
 		$trends = json_decode($trends, 1);
 
-		if (!$trends || in_array(Admin::getAdminId(), [1001, 1002])) {
+		if (!$trends || Admin::isDebugUser()) {
 			$categories = [self::TREND_DATA_DAY, self::TREND_DATA_WEEK];
-			$records = 10;
+			$records = 14;
 			$trends = [];
 			foreach ($categories as $category) {
 				$subtrends = [];
@@ -554,7 +554,7 @@ class SiteController extends BaseController
 				}
 				$trends[] = $subtrends;
 			}
-			RedisUtil::setCache(json_encode($trends), RedisUtil::KEY_TRENDSTAT);
+			RedisUtil::setCache(json_encode($trends), RedisUtil::KEY_STAT_TREND);
 		}
 
 		return $this->renderPage('trendstatnew.tpl',
@@ -572,7 +572,7 @@ class SiteController extends BaseController
 		$cat = self::getParam("cat", "week");
 		$sign = self::getParam("sign", "");
 
-		$reuseData = RedisUtil::getCache(RedisUtil::KEY_REUSE_STAT, $cat);
+		$reuseData = RedisUtil::getCache(RedisUtil::KEY_STAT_REUSE, $cat);
 
 		if (!$reuseData || $sign == "reset") {
 			// 开始记录日期 2017-06-01
@@ -599,7 +599,7 @@ class SiteController extends BaseController
 					}
 				}
 				$reuseData = json_encode(array_reverse($reuseData));
-				RedisUtil::setCache($reuseData, RedisUtil::KEY_REUSE_STAT, $cat);
+				RedisUtil::setCache($reuseData, RedisUtil::KEY_STAT_REUSE, $cat);
 			}
 		}
 
