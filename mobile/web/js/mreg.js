@@ -140,7 +140,9 @@ require(['layer'],
 						data: JSON.stringify($sls.postData)
 					},
 					success: function (res) {
-						if (res.code == 0) {
+						showMsg(JSON.stringify(res));
+
+						/*if (res.code == 0) {
 							setTimeout(function () {
 								location.href = "/wx/match#slink";
 							}, 500);
@@ -149,7 +151,7 @@ require(['layer'],
 						}
 						if (res.msg) {
 							showMsg(res.msg);
-						}
+						}*/
 					}
 				});
 				/*$.post("/api/user", {
