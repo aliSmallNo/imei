@@ -121,17 +121,17 @@ require(['layer'],
 						showMsg("请上传头像！");
 						return;
 					}
-					/*layer.open({
+					layer.open({
 						type: 2,
 						content: '保存中...'
-					});*/
+					});
 					uploadImages();
 				});
 			},
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
 				//showMsg(JSON.stringify($sls.postData));
-				$.ajax({
+				/*$.ajax({
 					type: 'post',
 					url: '/api/user',
 					dataType: 'json',
@@ -142,7 +142,7 @@ require(['layer'],
 					success: function (res) {
 						showMsg(JSON.stringify(res));
 
-						/*if (res.code == 0) {
+						/!*if (res.code == 0) {
 							setTimeout(function () {
 								location.href = "/wx/match#slink";
 							}, 500);
@@ -151,10 +151,10 @@ require(['layer'],
 						}
 						if (res.msg) {
 							showMsg(res.msg);
-						}*/
+						}*!/
 					}
-				});
-				/*$.post("/api/user", {
+				});*/
+				$.post("/api/user", {
 					tag: "mreg",
 					data: JSON.stringify($sls.postData)
 				}, function (res) {
@@ -168,7 +168,7 @@ require(['layer'],
 					if (res.msg) {
 						showMsg(res.msg);
 					}
-				}, "json");*/
+				}, "json");
 			},
 			toggle: function (content) {
 				var util = this;
