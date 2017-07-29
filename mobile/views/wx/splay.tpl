@@ -1,6 +1,6 @@
 <style>
 	.splay {
-		padding: 3rem;
+		padding: 2rem 1rem ;
 	}
 
 	.splay-title {
@@ -9,15 +9,14 @@
 	}
 
 	.splay-lite-title {
-		font-size: 1.5rem;
+		font-size: 1.2rem;
 		text-align: left;
-		padding: 2rem 2rem 1rem 0;
 	}
 
 	.splay-step-text {
 		font-size: 1.5rem;
 		text-align: left;
-		padding: 2rem 2rem 1rem 0;
+		padding: 2rem 0 1rem 0;
 		display: flex;
 	}
 
@@ -43,7 +42,8 @@
 	}
 
 	.splay-step-img img {
-		width: 15rem;
+		width: 20rem;
+		margin-left: 3rem;
 		border: 1px solid #f6aec6;
 	}
 

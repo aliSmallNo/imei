@@ -1,6 +1,6 @@
 <style>
 	.mplay {
-		padding: 3rem;
+		padding: 2rem 1rem;
 	}
 
 	.mplay-title {
@@ -11,7 +11,7 @@
 	.mplay-step-text {
 		font-size: 1.5rem;
 		text-align: left;
-		padding: 2rem 2rem 1rem 0;
+		padding: 2rem 0 1rem 0;
 		display: flex;
 	}
 
@@ -37,7 +37,8 @@
 	}
 
 	.mplay-step-img img {
-		width: 15rem;
+		width: 20rem;
+		margin-left: 3rem;
 		border: 1px solid #f6aec6;
 	}
 
@@ -54,7 +55,7 @@
 	</div>
 	<div class="mplay-step-text">
 		<span>2</span>
-		<div>第二部按照提示填写资料：所有信息包括头像都是必填的，请使用真实头像</div>
+		<div>按照提示填写资料：所有信息包括头像都是必填的，请使用真实头像</div>
 	</div>
 	<div class="mplay-step-img">
 		<img src="/images/m_play_2.jpg">
@@ -87,7 +88,10 @@
 	<div class="mplay-step-img">
 		<img src="/images/m_play_6.jpg">
 	</div>
-	<div class="mplay-step-text">第七步：修改资料查看账户等，点击右下角的“我的”上方为切换单身和资料修改按钮，修改资料请点编辑。账户通知等可以查看相应条目。</div>
+	<div class="mplay-step-text">
+		<span>7</span>
+		<div>修改资料查看账户等，点击右下角的“我的”上方为切换单身和资料修改按钮，修改资料请点编辑。账户通知等可以查看相应条目。</div>
+	</div>
 	<div class="mplay-step-img">
 		<img src="/images/m_play_7.jpg">
 	</div>
