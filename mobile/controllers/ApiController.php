@@ -284,7 +284,7 @@ class ApiController extends Controller
 				$data = json_decode($data, 1);
 				$data["openId"] = $openId;
 				$data["role"] = ($tag == 'mreg') ? User::ROLE_MATCHER : User::ROLE_SINGLE;
-				if (isset($data['location']) && $data['location'] && is_string($data['location'])) {
+				if (isset($data['location']) && $data['location'] && is_string($data['location']) && strpos($data['location'], '[') === false) {
 					$locations = explode(',', $data['location']);
 					$data['location'] = [];
 					for ($k = 0; $k < count($locations); $k += 2) {
