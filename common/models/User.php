@@ -547,6 +547,7 @@ class User extends ActiveRecord
 				}
 			}
 		}
+		AppUtil::logFile($data, 5, __FUNCTION__, __LINE__);
 		$userData = [];
 		foreach ($fields as $k => $field) {
 			if (isset($data[$k])) {
