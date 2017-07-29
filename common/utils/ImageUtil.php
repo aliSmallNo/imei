@@ -450,14 +450,16 @@ class ImageUtil
 		$contentType = $httpInfo["content_type"];
 		$contentType = strtolower($contentType);
 		$ext = AppUtil::getExtName($contentType);
-		$path = AppUtil::imgDir() . $key;
 		if ($ext && strlen($content) > 200) {
-			$fileName = $path . '.' . $ext;
-			file_put_contents($fileName, $content);
 			if ($ext == "amr") {
-				$ret = self::getUrl($fileName);
+				$fileName = AppUtil::imgDir(true) . 'voice/' . $key . '.' . $ext;
+				file_put_contents($fileName, $content);
+				$ret = '/voice/' . $key . '.' . $ext;
 				return [$ret, $ret];
 			} else {
+				$path = AppUtil::imgDir() . $key;
+				$fileName = $path . '.' . $ext;
+				file_put_contents($fileName, $content);
 				$thumbSize = 140;
 				$figureSize = 540;
 				if ($squareFlag) {
