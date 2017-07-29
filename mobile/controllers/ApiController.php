@@ -31,6 +31,7 @@ use yii\web\Response;
 
 class ApiController extends Controller
 {
+	public $enableCsrfValidation = false;
 	public $layout = false;
 	const COOKIE_OPENID = "wx-openid";
 
