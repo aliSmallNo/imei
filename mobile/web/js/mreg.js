@@ -121,10 +121,10 @@ require(['layer'],
 						showMsg("请上传头像！");
 						return;
 					}
-					layer.open({
+					/*layer.open({
 						type: 2,
 						content: '保存中...'
-					});
+					});*/
 					uploadImages();
 				});
 			},
@@ -141,7 +141,9 @@ require(['layer'],
 					} else {
 						layer.closeAll();
 					}
-					showMsg(res.msg);
+					if (res.msg) {
+						showMsg(res.msg);
+					}
 				}, "json");
 			},
 			toggle: function (content) {
