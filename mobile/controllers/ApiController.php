@@ -296,6 +296,7 @@ class ApiController extends Controller
 				}
 				AppUtil::logFile($data, 5, __FUNCTION__, __LINE__);
 				$ret = User::reg($data);
+				AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 				//Rain: 刷新用户cache数据
 				$cache = UserWechat::getInfoByOpenId($openId, 1);
 				return self::renderAPI(0, '保存成功啦~', $ret);
