@@ -72,7 +72,7 @@ require(["layer"],
 							util.getCity(key);
 							break;
 						case "city":
-							util.btn.find(".location").append('<em data-key="' + key + '">' + text + '</em>');
+							util.btn.find(".location").append(' <em data-key="' + key + '">' + text + '</em>');
 							util.toggle();
 							break;
 						case "age":

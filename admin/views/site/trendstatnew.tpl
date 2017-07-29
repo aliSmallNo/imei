@@ -3,6 +3,10 @@
 	div.large {
 		font-size: 22px;
 	}
+
+	.panel-heading small {
+		color: #888;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="row">
@@ -18,36 +22,29 @@
 		</div>
 	</div>
 	<div class="row-divider"></div>
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-bar-chart-o fa-fw"></i> 新增用户
-				</div>
-				<div class="panel-body">
-					<div id="new-chart" class="chart-wrapper"></div>
-				</div>
-			</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<i class="fa fa-bar-chart-o fa-fw"></i> 用户数据
+			<small>转化率 = 关注 / 注册</small>
 		</div>
-		<div class="col-lg-6">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-bar-chart-o fa-fw"></i> 用户关系
-				</div>
-				<div class="panel-body">
-					<div id="net-chart" class="chart-wrapper"></div>
-				</div>
-			</div>
+		<div class="panel-body">
+			<div id="new-chart" class="chart-wrapper"></div>
 		</div>
-		<div class="col-lg-6">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-bar-chart-o fa-fw"></i> 累计注册
-				</div>
-				<div class="panel-body">
-					<div id="amt-chart" class="chart-wrapper"></div>
-				</div>
-			</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<i class="fa fa-bar-chart-o fa-fw"></i> 用户关系
+		</div>
+		<div class="panel-body">
+			<div id="net-chart" class="chart-wrapper"></div>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<i class="fa fa-bar-chart-o fa-fw"></i> 累计注册
+		</div>
+		<div class="panel-body">
+			<div id="amt-chart" class="chart-wrapper"></div>
 		</div>
 	</div>
 </div>
@@ -96,8 +93,8 @@
 		var titles = mTrend["dates"];
 		var items = [];
 		if (cat == "new") {
-			var names = ["注册", "关注", "媒婆", "取消关注", "帅哥", "美女", "转化率(关注/注册)(%)", "充值"];
-			var fields = ["reg", "focus", "mps", "todayblur", "male", "female", "focusRate", "trans"];
+			var names = ["注册", "关注", "取消关注", "转化率", "充值", "媒婆", "帅哥", "美女"];
+			var fields = ["reg", "focus", "todayblur", "focusRate", "trans", "mps", "male", "female"];
 			for (var i = 0; i < fields.length; i++) {
 				items.push({
 					name: names[i],
@@ -117,8 +114,8 @@
 		}
 
 		if (cat == "amt") {
-			var names = ["累计注册", "活跃数", "活跃度(%)"];
-			var fields = ["amt", "active", "activeRate"];
+			var names = ["累计注册", '累计关注', '累计媒婆', '累计单身男', '累计单身女', "活跃用户", "活跃度(%)"];
+			var fields = ["amt", 'follows', 'meipos', 'boys', 'girls', "active", "activeRate"];
 			for (var i = 0; i < fields.length; i++) {
 				items.push({
 					name: names[i],

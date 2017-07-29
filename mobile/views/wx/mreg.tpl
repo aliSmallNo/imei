@@ -3,7 +3,7 @@
 	<p class="m-header"><i>上传真实头像，提高牵线成功率哦</i></p>
 	<div class="nick_name" style="padding-top: 0; padding-bottom: .5rem">
 		<a href="javascript:;" class="photo photo-file">
-			<img class="avatar" src="{{$avatar}}">
+			<img class="avatar" src="{{$avatar}}" localId="">
 		</a>
 	</div>
 	<ul class="m-form">
@@ -92,4 +92,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/mreg.js?v=1.3.0" src="/assets/js/require.js"></script>
+<script data-main="/js/mreg.js?v=1.4.0" src="/assets/js/require.js"></script>

@@ -103,12 +103,14 @@ class Menu
 						"name" => "实时统计",
 						"url" => "/site/timely",
 						"revise" => 1,
+						"hidden" => 1,
 						"level" => 825
 					],
 					[
 						"name" => "整体趋势",
 						"url" => "/site/trends",
 						"revise" => 1,
+						"hidden" => 1,
 						"level" => 825
 					]
 				]

@@ -17,7 +17,7 @@ require(['layer'],
 			wxString: $("#tpl_wx_info").html(),
 			btnMatcher: $(".action-matcher"),
 			btnSkip: $(".action-skip"),
-			serverId: null,
+			serverId: '',
 			postData: {},
 			avatar: $('.avatar')
 		};
@@ -81,14 +81,15 @@ require(['layer'],
 				}
 
 				$(document).on(kClick, ".btn-match-reg", function () {
-					var lItem = [];
+					var locations = [];
 					$("[data-tag=location] em").each(function () {
-						lItem.push({
-							key: $(this).attr("data-key"),
-							text: $(this).html()
+						var self = $(this);
+						locations.push({
+							key: self.attr("data-key"),
+							text: self.html()
 						});
 					});
-					if (lItem.length < 2) {
+					if (locations.length < 2) {
 						showMsg("地理位置不能为空");
 						return;
 					}
@@ -113,7 +114,7 @@ require(['layer'],
 					$sls.postData = {
 						name: name,
 						intro: intro,
-						location: JSON.stringify(lItem),
+						location: JSON.stringify(locations),
 						scope: scope
 					};
 
@@ -131,18 +132,19 @@ require(['layer'],
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
 				$.post("/api/user", {
-					data: JSON.stringify($sls.postData),
-					tag: "mreg"
+					tag: "mreg",
+					data: JSON.stringify($sls.postData)
 				}, function (res) {
 					if (res.code == 0) {
 						setTimeout(function () {
 							location.href = "/wx/match#slink";
-							layer.closeAll();
 						}, 500);
 					} else {
 						layer.closeAll();
 					}
-					showMsg(res.msg);
+					if (res.msg) {
+						showMsg(res.msg);
+					}
 				}, "json");
 			},
 			toggle: function (content) {

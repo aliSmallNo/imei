@@ -2,6 +2,7 @@
 	.m-popup-options a.cur {
 		background: #fbd6e3 !important;
 	}
+
 	.sedit-avart-p {
 		background: rgba(0, 0, 0, .5);
 		text-align: center;
@@ -78,25 +79,20 @@
 		{{/if}}
 	</div>
 </a>
-
-
-<div class="sedit-title">所属行业</div>
+<div class="sedit-title" style="display: none">所属行业</div>
 <a class="sedit-alert action-com" data-field="scope">
-	<label>行业</label>
+	<label>所属行业</label>
 	<div class="sedit-alert-val action-val">
 		<em data-key="{{$uInfo.scope}}">{{$uInfo.scope_t}}</em>
 	</div>
 </a>
-
 <div class="sedit-title">自我介绍</div>
 <div class="sedit-input">
 	<textarea rows="4" name="intro">{{$uInfo.intro}}</textarea>
 </div>
-
 <div class="sedit-btn">
 	<a class="medit-btn-comfirm">保存</a>
 </div>
-
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
 		<div class="m-popup-content"></div>
@@ -113,11 +109,11 @@
 </script>
 
 <script type="text/template" id="tpl_wx_info">
-{{$wxInfoString}}
+	{{$wxInfoString}}
 </script>
 <script>
 	var mProvinces = {{$provinces}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/medit.js?v=1.2.1" src="/assets/js/require.js"></script>
+<script data-main="/js/medit.js?v=1.2.6" src="/assets/js/require.js"></script>

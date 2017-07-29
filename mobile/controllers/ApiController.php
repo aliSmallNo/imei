@@ -32,6 +32,7 @@ use yii\web\Response;
 
 class ApiController extends Controller
 {
+	public $enableCsrfValidation = false;
 	public $layout = false;
 	const COOKIE_OPENID = "wx-openid";
 
@@ -286,7 +287,7 @@ class ApiController extends Controller
 				$data["role"] = ($tag == 'mreg') ? User::ROLE_MATCHER : User::ROLE_SINGLE;
 				$ret = User::reg($data);
 				//Rain: 刷新用户cache数据
-				$cache = UserWechat::getInfoByOpenId($openId, 1);
+				UserWechat::getInfoByOpenId($openId, 1);
 				return self::renderAPI(0, '保存成功啦~', $ret);
 			case "album":
 				$f = self::postParam("f", 'add');

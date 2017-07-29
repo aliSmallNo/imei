@@ -324,7 +324,7 @@ class Admin extends ActiveRecord
 				$adminIDs = [1464592894, 1453807803, 1467788165, 1464358879, 1952936, 1921658];//kingbird,luowenyan,dashixiong zp luming dingfei xuyang
 				break;
 			default: // self::GROUP_DEBUG
-				$adminIDs = [1453807803, 1467788165];
+				$adminIDs = [1001, 1002];
 				break;
 		}
 		if ($adminId) {

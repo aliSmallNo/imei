@@ -760,6 +760,7 @@ class WxController extends BaseController
 			$nickname = "大测试";
 			$uId = 0;
 		}
+		$matchInfo = '';
 		if ($senderUId) {
 			$matchInfo = User::user(['uId' => $senderUId]);
 			if (!$matchInfo) {
@@ -796,7 +797,11 @@ class WxController extends BaseController
 		if (AppUtil::isDev()) {
 			$qrcode = '/images/qrmeipo100.jpg';
 		} else {
-			$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH);
+			if($senderUId && $matchInfo){
+				$qrcode = UserQR::getQRCode($senderUId, UserQR::CATEGORY_MATCH);
+			}else{
+				$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH);
+			}
 		}
 		return self::renderPage("share.tpl",
 			[

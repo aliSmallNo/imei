@@ -25,7 +25,7 @@ require(["layer"],
 			gender: $('#cGender').val(),
 			serverId: "",
 			routeIndex: 0,
-			coord: $('#cCoord'),
+			coord: '',
 			//routeLength: mRoutes.length,
 			//routeSkip: $.inArray('income', mRoutes),
 			mLat: 0,
@@ -74,7 +74,7 @@ require(["layer"],
 							util.getCity(key);
 							break;
 						case "city":
-							util.btn.find(".location").append('<em data-key="' + key + '">' + text + '</em>');
+							util.btn.find(".location").append(' <em data-key="' + key + '">' + text + '</em>');
 							util.toggle();
 							break;
 					}
@@ -133,46 +133,44 @@ require(["layer"],
 						$sls.postData[inputFileds[i]] = inputVal;
 					}
 
-					var lItem = [];
+					var locations = [];
 					$(".action-location .location em").each(function () {
-						var item = {
-							key: $(this).attr("data-key"),
-							text: $(this).html(),
+						var self = $(this);
+						locations[locations.length] = {
+							key: self.attr("data-key"),
+							text: self.html()
 						};
-						lItem.push(item);
 					});
-					$sls.postData["location"] = JSON.stringify(lItem);
-
+					$sls.postData["location"] = JSON.stringify(locations);
 					$(".action-com").each(function () {
 						var self = $(this);
 						var field = self.attr("data-field");
-						var Val = self.find("em").attr("data-key");
-						$sls.postData[field] = Val;
+						$sls.postData[field] = self.find("em").attr("data-key");
 					});
 
-					console.log($sls.postData);
-
+					layer.open({
+						type: 2,
+						content: '保存中...'
+					});
 					var localId = util.avatar.attr("localId");
 					if (localId) {
 						uploadImages(localId);
 					} else {
 						util.submit();
 					}
-
 				});
 			},
 
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
-				$sls.postData["coord"] = $sls.coord.val();
 				$.post("/api/user", {
-					tag: "sreg",
-					data: JSON.stringify($sls.postData),
+					tag: "mreg",
+					data: JSON.stringify($sls.postData)
 				}, function (res) {
 					showMsg(res.msg);
 					if (res.code == 0) {
 						setTimeout(function () {
-							location.href = "/wx/switch#sme";
+							location.href = "/wx/match#sme";
 						}, 500);
 					}
 				}, "json");
@@ -207,7 +205,7 @@ require(["layer"],
 		function uploadImages(localId) {
 			wx.uploadImage({
 				localId: localId.toString(),
-				isShowProgressTips: 1,
+				isShowProgressTips: 0,
 				success: function (res) {
 					$sls.serverId = res.serverId;
 					SingleUtil.submit();
@@ -274,7 +272,7 @@ require(["layer"],
 			wx.ready(function () {
 				wx.hideOptionMenu();
 
-				wx.getLocation({
+				/*wx.getLocation({
 					type: 'wgs84',
 					success: function (res) {
 						var bundle = {
@@ -282,9 +280,9 @@ require(["layer"],
 							lng: res.longitude
 						};
 						console.log(bundle);
-						$sls.coord.val(JSON.stringify(bundle));
+						$sls.coord = JSON.stringify(bundle);
 					}
-				});
+				});*/
 			});
 			$sls.cork.hide();
 
