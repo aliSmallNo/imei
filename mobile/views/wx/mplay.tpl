@@ -37,7 +37,7 @@
 	}
 
 	.mplay-step-img img {
-		width: 15rem;
+		width: 20rem;
 		margin-left: 3rem;
 		border: 1px solid #f6aec6;
 	}
