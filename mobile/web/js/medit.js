@@ -25,7 +25,7 @@ require(["layer"],
 			gender: $('#cGender').val(),
 			serverId: "",
 			routeIndex: 0,
-			coord: $('#cCoord'),
+			coord: '',
 			//routeLength: mRoutes.length,
 			//routeSkip: $.inArray('income', mRoutes),
 			mLat: 0,
@@ -74,7 +74,7 @@ require(["layer"],
 							util.getCity(key);
 							break;
 						case "city":
-							util.btn.find(".location").append('<em data-key="' + key + '">' + text + '</em>');
+							util.btn.find(".location").append(' <em data-key="' + key + '">' + text + '</em>');
 							util.toggle();
 							break;
 					}
@@ -133,21 +133,17 @@ require(["layer"],
 						$sls.postData[inputFileds[i]] = inputVal;
 					}
 
-					var lItem = [];
+					var locations = [];
 					$(".action-location .location em").each(function () {
-						var item = {
-							key: $(this).attr("data-key"),
-							text: $(this).html(),
-						};
-						lItem.push(item);
+						var self = $(this);
+						locations[locations.length] = self.attr("data-key");
+						locations[locations.length] = self.html();
 					});
-					$sls.postData["location"] = JSON.stringify(lItem);
-
+					$sls.postData["location"] = locations.join(',');
 					$(".action-com").each(function () {
 						var self = $(this);
 						var field = self.attr("data-field");
-						var Val = self.find("em").attr("data-key");
-						$sls.postData[field] = Val;
+						$sls.postData[field] = self.find("em").attr("data-key");
 					});
 
 					layer.open({
@@ -160,16 +156,15 @@ require(["layer"],
 					} else {
 						util.submit();
 					}
-
 				});
 			},
 
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
-				$sls.postData["coord"] = $sls.coord.val();
+				console.log(JSON.stringify($sls.postData));
 				$.post("/api/user", {
 					tag: "mreg",
-					data: JSON.stringify($sls.postData),
+					data: JSON.stringify($sls.postData)
 				}, function (res) {
 					showMsg(res.msg);
 					if (res.code == 0) {
@@ -276,7 +271,7 @@ require(["layer"],
 			wx.ready(function () {
 				wx.hideOptionMenu();
 
-				wx.getLocation({
+				/*wx.getLocation({
 					type: 'wgs84',
 					success: function (res) {
 						var bundle = {
@@ -284,9 +279,9 @@ require(["layer"],
 							lng: res.longitude
 						};
 						console.log(bundle);
-						$sls.coord.val(JSON.stringify(bundle));
+						$sls.coord = JSON.stringify(bundle);
 					}
-				});
+				});*/
 			});
 			$sls.cork.hide();
 
