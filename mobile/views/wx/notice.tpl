@@ -67,7 +67,7 @@
 <script type="text/template" id="tpl_notice">
 	{[#items]}
 	<li>
-		<a href="/wx/{[$item.url]}?id={[$item.secretId]}" class="notice-item">
+		<a href="/wx/{[url]}?id={[secretId]}" class="notice-item">
 			<div class="title">{[text]}</div>
 			<div class="dt">{[dt]}</div>
 		</a>
