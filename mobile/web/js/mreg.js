@@ -168,13 +168,7 @@ require(['layer'],
 					if (res.msg) {
 						showMsg(res.msg);
 					}
-				}, "json").success(function () {
-					showMsg("second success");
-				}).error(function (ex) {
-					showMsg(JSON.stringify(ex));
-				}).complete(function (ex) {
-					showMsg(JSON.stringify(ex));
-				});
+				}, "json");
 			},
 			toggle: function (content) {
 				var util = this;
