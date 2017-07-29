@@ -81,14 +81,15 @@ require(['layer'],
 				}
 
 				$(document).on(kClick, ".btn-match-reg", function () {
-					var lItem = [];
+					var locations = [];
 					$("[data-tag=location] em").each(function () {
-						lItem.push({
-							key: $(this).attr("data-key"),
-							text: $(this).html()
+						var self = $(this);
+						locations.push({
+							key: self.attr("data-key"),
+							text: self.html()
 						});
 					});
-					if (lItem.length < 2) {
+					if (locations.length < 2) {
 						showMsg("地理位置不能为空");
 						return;
 					}
@@ -113,7 +114,7 @@ require(['layer'],
 					$sls.postData = {
 						name: name,
 						intro: intro,
-						location: JSON.stringify(lItem),
+						location: JSON.stringify(locations),
 						scope: scope
 					};
 
@@ -130,30 +131,6 @@ require(['layer'],
 			},
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
-				//showMsg(JSON.stringify($sls.postData));
-				/*$.ajax({
-					type: 'post',
-					url: '/api/user',
-					dataType: 'json',
-					data: {
-						tag: "mreg",
-						data: JSON.stringify($sls.postData)
-					},
-					success: function (res) {
-						showMsg(JSON.stringify(res));
-
-						/!*if (res.code == 0) {
-							setTimeout(function () {
-								location.href = "/wx/match#slink";
-							}, 500);
-						} else {
-							layer.closeAll();
-						}
-						if (res.msg) {
-							showMsg(res.msg);
-						}*!/
-					}
-				});*/
 				$.post("/api/user", {
 					tag: "mreg",
 					data: JSON.stringify($sls.postData)
