@@ -130,8 +130,29 @@ require(['layer'],
 			},
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
-				showMsg(JSON.stringify($sls.postData));
-				$.post("/api/user", {
+				//showMsg(JSON.stringify($sls.postData));
+				$.ajax({
+					type: 'post',
+					url: '/api/user',
+					dataType: 'json',
+					data: {
+						tag: "mreg",
+						data: JSON.stringify($sls.postData)
+					},
+					success: function (res) {
+						if (res.code == 0) {
+							setTimeout(function () {
+								location.href = "/wx/match#slink";
+							}, 500);
+						} else {
+							layer.closeAll();
+						}
+						if (res.msg) {
+							showMsg(res.msg);
+						}
+					}
+				});
+				/*$.post("/api/user", {
 					tag: "mreg",
 					data: JSON.stringify($sls.postData)
 				}, function (res) {
@@ -145,7 +166,7 @@ require(['layer'],
 					if (res.msg) {
 						showMsg(res.msg);
 					}
-				}, "json");
+				}, "json");*/
 			},
 			toggle: function (content) {
 				var util = this;
