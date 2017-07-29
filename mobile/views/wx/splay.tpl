@@ -32,13 +32,13 @@
 		max-width: 2rem;
 	}
 
-	.splay-step-text div{
+	.splay-step-text div {
 		flex: 1;
 		margin-left: 1rem;
 	}
 
 	.splay-step-img {
-		text-align: left
+		text-align: left;
 	}
 
 	.splay-step-img img {

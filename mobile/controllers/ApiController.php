@@ -14,6 +14,7 @@ use common\models\Log;
 use common\models\Pay;
 use common\models\User;
 use common\models\UserBuzz;
+use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserSign;
@@ -910,6 +911,14 @@ class ApiController extends Controller
 					'page' => $page
 				]);
 				break;
+			case "notice":
+				$page = self::postParam("page", 1);
+				list($items, $nextPage) = UserMsg::notice($wxInfo["uId"], $page);
+				return self::renderAPI(0, '', [
+					'items' => $items,
+					'nextpage' => $nextPage,
+					'page' => $page
+				]);
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

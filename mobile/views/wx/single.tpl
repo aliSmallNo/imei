@@ -83,9 +83,8 @@
 		<div class="m-rows line-bottom">
 			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span></a>
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">媒桂花账户</span></a>
-			<a href="javascript:;" class="" id="notifications">
+			<a href="/wx/notice" class="" id="notifications">
 				<span class="title">通知</span>
-				<span class="count">0</span>
 			</a>
 			<a href="#sfeedback"><span class="title">意见反馈</span> </a>
 			<a href="#myWechatNo"><span class="title">我的微信号</span></a>

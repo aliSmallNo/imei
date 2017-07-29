@@ -11,6 +11,7 @@ namespace mobile\controllers;
 use common\models\City;
 use common\models\LogAction;
 use common\models\User;
+use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserSign;
@@ -895,6 +896,24 @@ class WxController extends BaseController
 			'terse',
 			'今天我领证啦~',
 			'bg-main');
+	}
+
+	public function actionNotice()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+
+		list($items) = UserMsg::notice($wxInfo["uId"]);
+
+		return self::renderPage('notice.tpl',
+			[
+				"items" => $items
+			],
+			'terse');
 	}
 
 	public function actionQrcode()
