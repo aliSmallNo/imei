@@ -17,7 +17,7 @@ require(['layer'],
 			wxString: $("#tpl_wx_info").html(),
 			btnMatcher: $(".action-matcher"),
 			btnSkip: $(".action-skip"),
-			serverId: null,
+			serverId: '',
 			postData: {},
 			avatar: $('.avatar')
 		};
@@ -137,7 +137,6 @@ require(['layer'],
 					if (res.code == 0) {
 						setTimeout(function () {
 							location.href = "/wx/match#slink";
-							layer.closeAll();
 						}, 500);
 					} else {
 						layer.closeAll();
