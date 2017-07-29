@@ -553,8 +553,9 @@ class User extends ActiveRecord
 				$userData[$field] = $data[$k];
 			}
 		}
-
+		AppUtil::logFile($userData, 5, __FUNCTION__, __LINE__);
 		$uid = self::add($userData);
+		AppUtil::logFile($uid, 5, __FUNCTION__, __LINE__);
 
 		//Rain: 添加媒婆关系
 		$conn = AppUtil::db();
@@ -578,7 +579,8 @@ class User extends ActiveRecord
 			':uid' => $uid,
 			':single' => self::ROLE_SINGLE
 		])->execute();
-		UserTrans::addReward($uid, UserTrans::CAT_NEW, $conn);
+		$ret = UserTrans::addReward($uid, UserTrans::CAT_NEW, $conn);
+		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 		return $uid;
 	}
 
