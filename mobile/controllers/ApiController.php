@@ -284,21 +284,9 @@ class ApiController extends Controller
 				$data = json_decode($data, 1);
 				$data["openId"] = $openId;
 				$data["role"] = ($tag == 'mreg') ? User::ROLE_MATCHER : User::ROLE_SINGLE;
-				if (isset($data['location']) && $data['location'] && is_string($data['location']) && strpos($data['location'], '[') === false) {
-					$locations = explode(',', $data['location']);
-					$data['location'] = [];
-					for ($k = 0; $k < count($locations); $k += 2) {
-						$data['location'][] = [
-							'key' => $locations[$k],
-							'text' => $locations[$k + 1],
-						];
-					}
-				}
-				AppUtil::logFile($data, 5, __FUNCTION__, __LINE__);
 				$ret = User::reg($data);
 				//Rain: 刷新用户cache数据
 				UserWechat::getInfoByOpenId($openId, 1);
-				AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 				return self::renderAPI(0, '保存成功啦~', $ret);
 			case "album":
 				$f = self::postParam("f", 'add');

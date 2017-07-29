@@ -136,10 +136,12 @@ require(["layer"],
 					var locations = [];
 					$(".action-location .location em").each(function () {
 						var self = $(this);
-						locations[locations.length] = self.attr("data-key");
-						locations[locations.length] = self.html();
+						locations[locations.length] = {
+							key: self.attr("data-key"),
+							text: self.html()
+						};
 					});
-					$sls.postData["location"] = locations.join(',');
+					$sls.postData["location"] = JSON.stringify(locations);
 					$(".action-com").each(function () {
 						var self = $(this);
 						var field = self.attr("data-field");
@@ -161,7 +163,6 @@ require(["layer"],
 
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
-				console.log(JSON.stringify($sls.postData));
 				$.post("/api/user", {
 					tag: "mreg",
 					data: JSON.stringify($sls.postData)
