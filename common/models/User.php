@@ -224,7 +224,7 @@ class User extends ActiveRecord
 		$entity->uUpdatedOn = date('Y-m-d H:i:s');
 		$entity->uUpdatedBy = $adminId;
 		foreach ($data as $key => $val) {
-			if ($val && $key == 'uAlbum') {
+			if ( is_array($val) && $val && $key == 'uAlbum') {
 				$album = json_decode($entity->uAlbum, 1);
 				if ($album) {
 					$val = array_merge($album, $val);
