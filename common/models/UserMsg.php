@@ -39,7 +39,7 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_ADDWX_PASS => "同意你的微信好友请求",
 		self::CATEGORY_ADDWX_REFUSE => "拒绝你的微信好友请求",
 		self::CATEGORY_RETURN_ROSE => "退回媒瑰花",
-		self::CATEGORY_MP_SAY => "修改了媒婆说",
+		self::CATEGORY_MP_SAY => "修改了你的媒婆说",
 		self::CATEGORY_REWARD_NEW => "新人奖励",
 	];
 
@@ -98,6 +98,51 @@ class UserMsg extends ActiveRecord
 			}
 		}
 		return [$res, $nickName, $maxId];
+	}
+
+	public static function notice($hid, $page = 1, $pageSize = 15)
+	{
+		$limit = " limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
+		$sql = "select m.*,u.uName,u.uId from im_user_msg as m
+			join im_user as u on m.mUId=u.uId
+			where mAddedBy=$hid 
+			ORDER BY mId desc $limit ";
+		$conn = AppUtil::db();
+		$ret = $conn->createCommand($sql)->queryAll();
+		$nextPage = 0;
+		if ($ret && count($ret) > $pageSize) {
+			array_pop($ret);
+			$nextPage = $page + 1;
+		}
+		foreach ($ret as &$v) {
+			switch ($v["mCategory"]) {
+				case self::CATEGORY_FAVOR:
+				case self::CATEGORY_FAVOR_CANCEL:
+				case self::CATEGORY_FOCUS:
+				case self::CATEGORY_FOCUS_CANCEL:
+					$v["text"] = "你对" . $v["uName"] . self::$catDict[$v["mCategory"]];
+					$v["url"] = "sh";
+					break;
+				case self::CATEGORY_REQ_WX:
+				case self::CATEGORY_ADDWX_PASS:
+				case self::CATEGORY_ADDWX_REFUSE:
+					$v["url"] = "sh";
+					$v["text"] = $v["uName"] . self::$catDict[$v["mCategory"]];
+					break;
+				case self::CATEGORY_RETURN_ROSE:
+				case self::CATEGORY_REWARD_NEW:
+					$v["url"] = "sh";
+					$v["text"] = "你有" . self::$catDict[$v["mCategory"]];
+					break;
+				case self::CATEGORY_MP_SAY:
+					$v["url"] = "mh";
+					$v["text"] = "你的媒婆" . self::$catDict[$v["mCategory"]];
+					break;
+			}
+			$v["secretId"] = AppUtil::encrypt($v["uId"]);
+			$v["dt"] = date("m-d H:i", strtotime($v["mAddedOn"]));
+		}
+		return [$ret, $nextPage];
 	}
 
 }
