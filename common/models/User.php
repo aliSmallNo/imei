@@ -501,6 +501,7 @@ class User extends ActiveRecord
 		$fields = [
 			"role" => "uRole",
 			"name" => "uName",
+			"nickname" => "uName",
 			"intro" => "uIntro",
 			"location" => "uLocation",
 			"scope" => "uScope",

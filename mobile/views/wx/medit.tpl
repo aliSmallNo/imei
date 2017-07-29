@@ -78,8 +78,6 @@
 		{{/if}}
 	</div>
 </a>
-
-
 <div class="sedit-title">所属行业</div>
 <a class="sedit-alert action-com" data-field="scope">
 	<label>行业</label>
@@ -87,16 +85,13 @@
 		<em data-key="{{$uInfo.scope}}">{{$uInfo.scope_t}}</em>
 	</div>
 </a>
-
 <div class="sedit-title">自我介绍</div>
 <div class="sedit-input">
 	<textarea rows="4" name="intro">{{$uInfo.intro}}</textarea>
 </div>
-
 <div class="sedit-btn">
 	<a class="medit-btn-comfirm">保存</a>
 </div>
-
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
 		<div class="m-popup-content"></div>
