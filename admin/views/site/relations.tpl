@@ -86,6 +86,7 @@
 				<td>
 					<span class="co">
 					{{$item.rText}}<br>
+						{{if $item.qcode}}{{$item.qcode}}{{/if}}
 						{{if $item.nRelation==140}}{{$item.sText}}{{/if}}
 					</span>
 				</td>

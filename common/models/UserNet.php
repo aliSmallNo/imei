@@ -599,8 +599,9 @@ class UserNet extends ActiveRecord
 
 		$sql = "select u.uId as uId,u.uAvatar as avatar,u.uName as uname,u.uPhone as phone, u.uThumb as thumb,
 				u1.uId as sId,u1.uAvatar as savatar,u1.uThumb as sthumb,u1.uName as sname,u1.uPhone as sphone,
-				n.nRelation,n.nStatus,n.nAddedOn as dt
+				n.nRelation,n.nStatus,n.nAddedOn as dt, IFNULL(q.qCode,'') as qcode
 				from im_user_net as n 
+				left join im_user_qr as q on n.nNote=q.qId
 				join im_user as u on u.uId=n.nUId 
 				join im_user as u1 on u1.uId=n.nSubUId 
 				where n.nDeletedFlag= 0  $condition
