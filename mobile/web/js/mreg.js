@@ -130,9 +130,10 @@ require(['layer'],
 			},
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
+				showMsg(JSON.stringify($sls.postData));
 				$.post("/api/user", {
-					data: JSON.stringify($sls.postData),
-					tag: "mreg"
+					tag: "mreg",
+					data: JSON.stringify($sls.postData)
 				}, function (res) {
 					if (res.code == 0) {
 						setTimeout(function () {
