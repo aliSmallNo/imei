@@ -533,7 +533,7 @@ class UserNet extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$sql = "SELECT t.*,n.* 
+		$sql = "SELECT t.*, n.* 
 				FROM im_user_trans as t 
 				JOIN im_user_net as n on t.tPId=n.nId 
 				WHERE n.nId=:id AND nStatus=:st AND tCategory=:cat";
@@ -613,7 +613,7 @@ class UserNet extends ActiveRecord
 	public static function recycleReward()
 	{
 		$conn = AppUtil::db();
-		$sql = "SELECT t.*,n.* 
+		$sql = "SELECT t.tId, n.nId 
 				FROM im_user_trans as t 
 				JOIN im_user_net as n on t.tPId=n.nId 
 				WHERE nStatus=:st AND tCategory=:cat";
