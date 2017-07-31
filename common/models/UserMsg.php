@@ -10,6 +10,9 @@ use yii\db\ActiveRecord;
 
 class UserMsg extends ActiveRecord
 {
+	const HAS_READ = 1; // 已读
+	const UN_READ = 0; // 未读
+
 	const CATEGORY_WX_MSG = 5; //后台公众号消息
 
 	const CATEGORY_DEFAULT = 10;
@@ -142,6 +145,7 @@ class UserMsg extends ActiveRecord
 			$v["secretId"] = AppUtil::encrypt($v["uId"]);
 			//$v["dt"] = date("m-d H:i", strtotime($v["mAddedOn"]));
 			$v["dt"] = AppUtil::prettyDate($v["mAddedOn"]);
+			$v["readflag"] = intval($v["mReadFlag"]);
 		}
 		return [$ret, $nextPage];
 	}
