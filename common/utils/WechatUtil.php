@@ -519,10 +519,12 @@ class WechatUtil
 		$access_token = self::getAccessToken(self::ACCESS_CODE);
 		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
 		AppUtil::postJSON($url, json_encode($bodyInfo));
+		$text = isset(UserMsg::$catDict[$msgCat]) ? UserMsg::$catDict[$msgCat] : '';
 		$result = UserMsg::edit("", [
 			"mUId" => $uId,
 			"mCategory" => $msgCat,
-			"mText" => json_encode($bodyInfo, JSON_UNESCAPED_UNICODE),
+			"mText" => $text,
+			"mRaw" => json_encode($bodyInfo, JSON_UNESCAPED_UNICODE),
 			"mAddedBy" => $adminId
 		]);
 		return $result;
