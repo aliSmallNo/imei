@@ -484,6 +484,7 @@ class WechatUtil
 				$url = ($noticeTag == self::NOTICE_RETURN ? $wxUrl . "/wx/sw?id=" . $encryptId : $wxUrl . "/wx/single#IaddWx");
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['remark'] = '点击下方详情查看吧~';
+				$msgCat = $noticeTag;
 				break;
 			default:
 				$url = $templateId = '';
