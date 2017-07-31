@@ -140,7 +140,8 @@ class UserMsg extends ActiveRecord
 					break;
 			}
 			$v["secretId"] = AppUtil::encrypt($v["uId"]);
-			$v["dt"] = date("m-d H:i", strtotime($v["mAddedOn"]));
+			//$v["dt"] = date("m-d H:i", strtotime($v["mAddedOn"]));
+			$v["dt"] = AppUtil::prettyDate($v["mAddedOn"]);
 		}
 		return [$ret, $nextPage];
 	}
