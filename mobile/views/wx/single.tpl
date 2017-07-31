@@ -83,7 +83,7 @@
 		<div class="m-rows line-bottom">
 			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span></a>
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">媒桂花账户</span></a>
-			<a href="/wx/notice" class="" id="notifications">
+			<a href="/wx/notice" >
 				<span class="title">通知</span>
 			</a>
 			<a href="#sfeedback"><span class="title">意见反馈</span> </a>

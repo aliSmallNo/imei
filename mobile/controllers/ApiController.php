@@ -920,6 +920,13 @@ class ApiController extends Controller
 					'nextpage' => $nextPage,
 					'page' => $page
 				]);
+			case "read":
+				$mId = self::postParam("id");
+				if ($mId && $mInfo = UserMsg::findOne(["mId" => $mId])) {
+					$mInfo->mReadFlag = UserMsg::HAS_READ;
+					$mInfo->save();
+					return self::renderAPI(0, '');
+				}
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

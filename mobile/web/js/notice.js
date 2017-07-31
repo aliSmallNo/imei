@@ -30,14 +30,14 @@ require(["layer"],
 		$(window).on("scroll", function () {
 			console.log(1);
 			var lastRow = $(".notice").find('li:last');
-			if (lastRow && eleInScreen(lastRow,40) && $sls.page > 0) {
+			if (lastRow && eleInScreen(lastRow, 40) && $sls.page > 0) {
 				loadNotice();
 				return false;
 			}
 		});
 
 		function eleInScreen($ele, $offset) {
-			console.log($ele.offset().top + "===" + ($(window).height()+$(window).scrollTop()));
+			console.log($ele.offset().top + "===" + ($(window).height() + $(window).scrollTop()));
 			return $ele && $ele.length > 0 && $ele.offset().top + $offset < $(window).scrollTop() + $(window).height();
 		}
 
@@ -62,6 +62,34 @@ require(["layer"],
 				$sls.loadFlag = 0;
 			}, "json");
 		}
+
+		$(document).on(kClick, ".notice-read", function () {
+			var self = $(this);
+			var url = self.attr("data-url");
+			var id = self.attr("data-id");
+			var readflag = self.attr("data-readflag");
+			if (readflag == 0) {
+				if ($sls.loadFlag) {
+					return;
+				}
+				$sls.loadFlag = 1;
+				$.post("/api/news", {
+					tag: "read",
+					id: id
+				}, function (resp) {
+					$sls.loading.hide();
+					if (resp.code == 0) {
+						self.find("span").remove();
+						location.href = url;
+					} else {
+						showMsg(resp.msg);
+					}
+					$sls.loadFlag = 0;
+				}, "json");
+			} else {
+				location.href = url;
+			}
+		});
 
 
 		$(function () {
