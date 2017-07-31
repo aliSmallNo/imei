@@ -320,7 +320,6 @@ class AppUtil
 		if (!$date) {
 			return "";
 		}
-		$newDate = $date;
 		$replaceDates = [
 			date("Y-m-d", time() - 2 * 86400) => "前天",
 			date("Y-m-d", time() - 86400) => "昨天",
@@ -328,11 +327,11 @@ class AppUtil
 			date("Y-m-d", time() + 86400) => "明天",
 			date("Y-m-d", time() + 86400 * 2) => "后天",
 		];
+		$newDate = date("Y-m-d H:i", strtotime($date));
 		foreach ($replaceDates as $key => $val) {
 			if (date("Y-m-d", strtotime($date)) == $key) {
 				$newDate = $val . " " . date("H:i", strtotime($date));
 			}
-			//$newDate = str_replace($key, $val, $newDate);
 		}
 		return $newDate;
 	}
