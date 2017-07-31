@@ -631,10 +631,10 @@ class ApiController extends Controller
 				$sessionKey = RedisUtil::getCache(RedisUtil::KEY_XCX_SESSION_ID, $XcxOpneid);
 				$encryptedData = self::postParam("data");
 				$iv = self::postParam("iv");
-				$data = WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
-				$data = json_decode($data, 1);
+				$rawData = WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
+				$rawData = json_decode($data, 1);
 				/*
-				$data = [
+				$rawData = [
 					"avatarUrl" => "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83erYj33xpRelu6CprCu7QYhUiawoZOe77iaCa7g8w53v0EM0TdMCz6ib5vDsKCljQQKY9fqb8GUppq2Tw/0",
 					"city" => "Changping",
 					"country" => "China",
@@ -652,9 +652,9 @@ class ApiController extends Controller
 				];
 				*/
 
-				$unionId = (isset($data["unionId"]) && $data["unionId"]) ? $data["unionId"] : '';
+				$unionId = (isset($rawData["unionId"]) && $rawData["unionId"]) ? $rawData["unionId"] : '';
 				if ($unionId && $info = UserWechat::findOne(["wUnionId" => $unionId])) {
-					$xcxOpenid = isset($data["openId"]) ? $data["openId"] : "";
+					$xcxOpenid = isset($rawData["openId"]) ? $rawData["openId"] : "";
 					$data["openid"] = $info->wOpenId;
 					$data["xcxopenid"] = $xcxOpenid;
 					$info->wXcxId = $xcxOpenid;
