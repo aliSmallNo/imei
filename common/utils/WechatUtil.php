@@ -469,6 +469,7 @@ class WechatUtil
 			'remark' => "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309"
 		];
 		$wxUrl = AppUtil::wechatUrl();
+		$msgCat = 0;
 		switch ($noticeTag) {
 			case self::NOTICE_REWARD_NEW:
 				$templateId = 'ZJVqVttar_9v9azyjydZzFiR8hF7pq-BpY_XBbugJDM';
@@ -478,13 +479,21 @@ class WechatUtil
 				$msgCat = UserMsg::CATEGORY_REWARD_NEW;
 				break;
 			case self::NOTICE_APPROVE:
+				if (!$msgCat) {
+					$msgCat = UserMsg::CATEGORY_ADDWX_PASS;
+				}
 			case self::NOTICE_DECLINE:
+				if (!$msgCat) {
+					$msgCat = UserMsg::CATEGORY_ADDWX_REFUSE;
+				}
 			case self::NOTICE_RETURN:
+				if (!$msgCat) {
+					$msgCat = UserMsg::CATEGORY_RETURN_ROSE;
+				}
 				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = ($noticeTag == self::NOTICE_RETURN ? $wxUrl . "/wx/sw?id=" . $encryptId : $wxUrl . "/wx/single#IaddWx");
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['remark'] = '点击下方详情查看吧~';
-				$msgCat = $noticeTag;
 				break;
 			default:
 				$url = $templateId = '';
