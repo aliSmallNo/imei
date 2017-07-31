@@ -655,6 +655,8 @@ class ApiController extends Controller
 				$unionId = (isset($data["unionId"]) && $data["unionId"]) ? $data["unionId"] : '';
 				if ($unionId && $info = UserWechat::findOne(["wUnionId" => $unionId])) {
 					$data = $info->wOpenId;
+					$info->wXcxId = isset($data["openId"]) ? $data["openId"] : "";
+					$info->save();
 				} else {
 					$data = '';
 				}
