@@ -393,7 +393,7 @@ class FooController extends Controller
 		var_dump($ret);
 	}
 
-	public function actionRain($param1, $param2)
+	public function actionRain($param1 = '', $param2 = '')
 	{
 //		$ret = UserWechat::refreshWXInfo('oYDJew2IjPst3upRPXc1k6wWHMkE', 1);
 //		var_dump($ret);
