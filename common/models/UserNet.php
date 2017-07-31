@@ -546,30 +546,35 @@ class UserNet extends ActiveRecord
 		$myUid = $payInfo['nSubUId'];
 		$payAmt = $payInfo['tAmt'];
 		$payId = $payInfo['tId'];
-		$note = $updateStatus = '';
+		$note = '';
+		$updateStatus = -1;
 		switch ($pf) {
 			case "pass":
 				$updateStatus = self::STATUS_PASS;
 				WechatUtil::templateMsg(WechatUtil::NOTICE_APPROVE,
 					$myUid,
 					'TA同意给你微信号啦~',
-					'这是一个很棒的开始哦，加油，努力~');
+					'这是一个很棒的开始哦，加油，努力~',
+					$targetId);
 				// 奖励媒婆 mpId
 				$mpInfo = self::findOne(["nSubUId" => $myUid, 'nDeletedFlag' => 0, "nRelation" => self::REL_BACKER]);
 				if ($mpInfo && $payInfo) {
 					$mpId = $mpInfo->nUId;
 					$reward = round($payAmt * 6, 2);
-					UserTrans::add($mpId, $nid, UserTrans::CAT_LINK, UserTrans::$catDict[UserTrans::CAT_LINK], $reward, UserTrans::UNIT_FEN);
+					UserTrans::add($mpId, $nid, UserTrans::CAT_LINK,
+						UserTrans::$catDict[UserTrans::CAT_LINK], $reward, UserTrans::UNIT_FEN);
 				}
 				break;
 			case "refuse":
 				$updateStatus = self::STATUS_FAIL;
 				if ($payInfo) {
-					UserTrans::add($myUid, $nid, UserTrans::CAT_RETURN, UserTrans::$catDict[UserTrans::CAT_RETURN], $payAmt, UserTrans::UNIT_GIFT);
+					UserTrans::add($myUid, $nid, UserTrans::CAT_RETURN,
+						UserTrans::$catDict[UserTrans::CAT_RETURN], $payAmt, UserTrans::UNIT_GIFT);
 					WechatUtil::templateMsg(WechatUtil::NOTICE_DECLINE,
 						$myUid,
 						'TA拒绝给你微信号',
-						'你送出的媒桂花也退回了');
+						'你送出的媒桂花也退回了',
+						$targetId);
 				}
 				break;
 			case "recycle":
@@ -581,15 +586,17 @@ class UserNet extends ActiveRecord
 				$updateStatus = self::STATUS_FAIL;
 				$note = '长时间无回应，系统自动退回';
 				if ($payInfo) {
-					UserTrans::add($myUid, $nid, UserTrans::CAT_RETURN, UserTrans::$catDict[UserTrans::CAT_RETURN], $payAmt, UserTrans::UNIT_GIFT);
+					UserTrans::add($myUid, $nid, UserTrans::CAT_RETURN,
+						UserTrans::$catDict[UserTrans::CAT_RETURN], $payAmt, UserTrans::UNIT_GIFT);
 					WechatUtil::templateMsg(WechatUtil::NOTICE_RETURN,
 						$myUid,
 						'你向TA要微信号，可是TA已经长时间不回应，系统默认为不同意了',
-						'你送出的媒桂花也退回了');
+						'你送出的媒桂花也退回了',
+						1);
 				}
 				break;
 		}
-		if ($updateStatus !== '') {
+		if ($updateStatus > -1) {
 			$entity = self::findOne(['nId' => $nid]);
 			$entity->nStatus = $updateStatus;
 			$entity->nNote = $note;
