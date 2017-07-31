@@ -198,9 +198,7 @@
 	<div class="othermp-title">
 		有以下朋友已成为媒婆，你可以选择一位加入Ta的单身团
 	</div>
-	<ul>
-
-	</ul>
+	<ul></ul>
 </section>
 <section id="noMP">
 	<div class="nomp-wrap">
@@ -608,7 +606,7 @@
 			<i>{[age]} {[height]}cm {[horos_t]} {[scope_t]}</i>
 		</div>
 		{[#pendingWxFlag]}
-		<div class="wx-process">
+		<div class="wx-process" data-nid="{[nid]}">
 			<button class="pass">同意</button>
 			<div style="height: .5rem"></div>
 			<button class="refuse">拒绝</button>
@@ -913,4 +911,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/iscroll.js"></script>
-<script data-main="/js/single.js?v=1.3.5" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.3.6" src="/assets/js/require.js"></script>
