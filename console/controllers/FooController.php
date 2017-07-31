@@ -385,6 +385,11 @@ class FooController extends Controller
 		var_dump($ret);
 	}
 
+	public function actionRecycle()
+	{
+		UserNet::recycleReward();
+	}
+
 	public function actionImg()
 	{
 

@@ -525,18 +525,22 @@ class UserNet extends ActiveRecord
 
 	}
 
-	public static function processWx($nid, $operation)
+	public static function processWx($nid, $operation, $conn = '')
 	{
 		if (!$operation || !$nid) {
 			return 0;
 		}
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
 		$sql = "SELECT t.*,n.* 
 				FROM im_user_trans as t 
 				JOIN im_user_net as n on t.tPId=n.nId 
-				WHERE n.nId=:id AND nStatus=:st ";
-		$payInfo = AppUtil::db()->createCommand($sql)->bindValues([
+				WHERE n.nId=:id AND nStatus=:st AND tCategory=:cat";
+		$payInfo = $conn->createCommand($sql)->bindValues([
 			":id" => $nid,
-			":st" => self::STATUS_WAIT
+			":st" => self::STATUS_WAIT,
+			':cat' => UserTrans::CAT_REWARD
 		])->queryOne();
 		if (!$payInfo) {
 			return 0;
@@ -579,7 +583,7 @@ class UserNet extends ActiveRecord
 			case "recycle":
 				$addedTime = strtotime($payInfo['nAddedOn']);
 				$diffHr = ceil((time() - $addedTime) / 3600);
-				if ($diffHr < 48) {
+				if ($diffHr < 72) {
 					return 0;
 				}
 				$updateStatus = self::STATUS_FAIL;
@@ -604,6 +608,22 @@ class UserNet extends ActiveRecord
 			return 1;
 		}
 		return 0;
+	}
+
+	public static function recycleReward()
+	{
+		$conn = AppUtil::db();
+		$sql = "SELECT t.*,n.* 
+				FROM im_user_trans as t 
+				JOIN im_user_net as n on t.tPId=n.nId 
+				WHERE nStatus=:st AND tCategory=:cat";
+		$ret = $conn->createCommand($sql)->bindValues([
+			":st" => self::STATUS_WAIT,
+			':cat' => UserTrans::CAT_REWARD
+		])->queryAll();
+		foreach ($ret as $row) {
+			self::processWx($row['nId'], 'recycle', $conn);
+		}
 	}
 
 	public static function roseAmt($myId, $id, $num)
