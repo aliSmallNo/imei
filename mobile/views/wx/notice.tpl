@@ -36,7 +36,7 @@
 
 	.notice-item .notice-right{
 		flex: 1;
-		margin: 0 3rem 0 2rem;
+		margin: 0 3rem 0 1rem;
 	}
 
 	.notice-item .notice-right .title {
