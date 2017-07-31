@@ -85,6 +85,9 @@
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">媒桂花账户</span></a>
 			<a href="/wx/notice" >
 				<span class="title">通知</span>
+				{{if $noReadFlag}}
+				<span class="noReadFlag"></span>
+				{{/if}}
 			</a>
 			<a href="#sfeedback"><span class="title">意见反馈</span> </a>
 			<a href="#myWechatNo"><span class="title">我的微信号</span></a>

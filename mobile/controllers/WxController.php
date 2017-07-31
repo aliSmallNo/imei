@@ -649,7 +649,13 @@ class WxController extends BaseController
 		];
 
 		$mpName = $uInfo['mp_name'] ? $uInfo['mp_name'] : '还没有媒婆';
+
+		// 通知有未读
+		$noReadRecode = UserMsg::find()->where(["mReadFlag" => UserMsg::UN_READ, "mAddedBy" => $wxInfo["uId"]])->all();
+		$noReadFlag = (count($noReadRecode) > 0) ? 1 : 0;
+
 		return self::renderPage("single.tpl", [
+			'noReadFlag' => $noReadFlag,
 			'nickname' => $nickname,
 			'avatar' => $avatar,
 			'uInfo' => $uInfo,
