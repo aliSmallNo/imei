@@ -550,7 +550,10 @@ class UserNet extends ActiveRecord
 		switch ($pf) {
 			case "pass":
 				$updateStatus = self::STATUS_PASS;
-				WechatUtil::toNotice($targetId, $myUid, "wx-reply", 1);
+				WechatUtil::templateMsg(WechatUtil::NOTICE_APPROVE,
+					$myUid,
+					'TA同意给你微信号啦~',
+					'这是一个很棒的开始哦，加油，努力~');
 				// 奖励媒婆 mpId
 				$mpInfo = self::findOne(["nSubUId" => $myUid, 'nDeletedFlag' => 0, "nRelation" => self::REL_BACKER]);
 				if ($mpInfo && $payInfo) {
@@ -561,11 +564,12 @@ class UserNet extends ActiveRecord
 				break;
 			case "refuse":
 				$updateStatus = self::STATUS_FAIL;
-				WechatUtil::toNotice($targetId, $myUid, "wx-reply", 0);
-				// 退回媒瑰花
 				if ($payInfo) {
-					UserTrans::add($targetId, $nid, UserTrans::CAT_RETURN, UserTrans::$catDict[UserTrans::CAT_RETURN], $payAmt, UserTrans::UNIT_GIFT);
-					WechatUtil::toNotice($targetId, $myUid, "return-rose");
+					UserTrans::add($myUid, $nid, UserTrans::CAT_RETURN, UserTrans::$catDict[UserTrans::CAT_RETURN], $payAmt, UserTrans::UNIT_GIFT);
+					WechatUtil::templateMsg(WechatUtil::NOTICE_DECLINE,
+						$myUid,
+						'TA拒绝给你微信号',
+						'你送出的媒桂花也退回了');
 				}
 				break;
 			case "recycle":
@@ -577,7 +581,7 @@ class UserNet extends ActiveRecord
 				$updateStatus = self::STATUS_FAIL;
 				$note = '长时间无回应，系统自动退回';
 				if ($payInfo) {
-					UserTrans::add($targetId, $nid, UserTrans::CAT_RETURN, UserTrans::$catDict[UserTrans::CAT_RETURN], $payAmt, UserTrans::UNIT_GIFT);
+					UserTrans::add($myUid, $nid, UserTrans::CAT_RETURN, UserTrans::$catDict[UserTrans::CAT_RETURN], $payAmt, UserTrans::UNIT_GIFT);
 					WechatUtil::templateMsg(WechatUtil::NOTICE_RETURN,
 						$myUid,
 						'你向TA要微信号，可是TA已经长时间不回应，系统默认为不同意了',
