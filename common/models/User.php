@@ -444,12 +444,13 @@ class User extends ActiveRecord
 	public static function stat()
 	{
 		$conn = AppUtil::db();
+		$st = self::STATUS_DELETE;
 		$sql = "select 
 				COUNT(1) as amt,
 				SUM(CASE WHEN uGender=11 THEN  1 END ) as male,
 				SUM(CASE WHEN uGender=10 THEN  1 END ) as female,
 				SUM(CASE WHEN uPhone THEN  1 END ) as reg
-				from im_user where uNote ='' ";
+				from im_user where uNote ='' AND uStatus<$st ";
 		$result = $conn->createCommand($sql)->queryOne();
 		return $result;
 	}
