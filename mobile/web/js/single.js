@@ -763,10 +763,11 @@ require(["layer"],
 					var self = $(this);
 					var pf = self.attr("class");
 					var id = self.closest("a").attr("data-id");
+					var nid = self.closest("a").attr("data-nid");
 					$.post("/api/user", {
 						tag: "wx-process",
 						pf: pf,
-						id: id
+						nid: nid
 					}, function (resp) {
 						showMsg(resp.msg);
 						if (resp.data) {
