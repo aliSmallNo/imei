@@ -1171,6 +1171,14 @@ section {
     padding-right: 3rem;
     background: #fff;
     font-size: 1.4rem; }
+    .m-rows a .noReadFlag {
+      position: absolute;
+      width: 0.5rem;
+      height: 0.5rem;
+      background: red;
+      border-radius: 0.5rem;
+      top: 1rem;
+      left: 5rem; }
     .m-rows a .tip {
       float: right;
       color: #f487ac; }
