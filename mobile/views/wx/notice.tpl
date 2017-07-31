@@ -28,7 +28,7 @@
 
 	.notice-item .title {
 		flex: 2;
-		font-weight: 300;
+		font-weight: 500;
 		font-size: 1.2rem;
 	}
 
