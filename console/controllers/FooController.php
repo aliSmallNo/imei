@@ -393,7 +393,7 @@ class FooController extends Controller
 		var_dump($ret);
 	}
 
-	public function actionRain()
+	public function actionRain($param1, $param2)
 	{
 //		$ret = UserWechat::refreshWXInfo('oYDJew2IjPst3upRPXc1k6wWHMkE', 1);
 //		var_dump($ret);
@@ -426,7 +426,7 @@ class FooController extends Controller
 		/*$ret = UserNet::addLink(131379, 131446);
 		var_dump($ret);*/
 
-		$ret = UserNet::processWx(114669,'refuse');
+		$ret = UserNet::processWx(114669, 'refuse');
 		var_dump($ret);
 	}
 }
