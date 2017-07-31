@@ -435,17 +435,18 @@ class UserNet extends ActiveRecord
 				$nRelation = self::REL_FAVOR;
 
 				if ($subtag == "fav-me") {
-					$sql = "select u.* from 
-							im_user as u 
+					$sql = "select u.*,n.nId as uNid 
+							from im_user as u 
 							join im_user_net  as n on n.nSubUId=u.uId and nRelation=$nRelation and n.nDeletedFlag=$deleteflag
 							where n.nUId=$MyUid $orderBy $limit ";
 				} elseif ($subtag == "I-fav") {
-					$sql = "select u.* from 
-							im_user as u 
+					$sql = "select u.*,n.nId as uNid
+							from im_user as u 
 							join im_user_net  as n on n.nUId=u.uId and  nRelation=$nRelation and n.nDeletedFlag=$deleteflag
 							where n.nSubUId=$MyUid $orderBy $limit";
 				} elseif ($subtag == "fav-together") {
-					$sql = "select u.* from im_user as u 
+					$sql = "select u.*,n.nId as uNid
+							from im_user as u 
 							join im_user_net  as n on n.nUId=u.uId and n.nRelation=$nRelation and n.nDeletedFlag=$deleteflag and n.nSubUId=$MyUid
 							join im_user_net as n2 on n2.nSubUId=u.uId and n2.nRelation=$nRelation and n2.nDeletedFlag=$deleteflag and n2.nUId=$MyUid
 							group by u.uId $orderBy $limit ";
@@ -461,9 +462,10 @@ class UserNet extends ActiveRecord
 				} elseif ($subtag == "fail") {
 
 				}
-				$sql = "select u.*,w.wWechatId from im_user as u 
+				$sql = "select u.*,w.wWechatId,n.nId as uNid
+						from im_user as u 
 						join im_user_net as n on n.nUId=u.uId and n.nRelation=$nRelation and n.nStatus=$status and n.nDeletedFlag=$deleteflag
-						join im_user_wechat as w on w.wOpenId=u.uOpenId
+						join im_user_wechat as w on w.wUId=u.uId
 						where n.nSubUId=$MyUid  $orderBy $limit ";
 				break;
 			case "addmewx":
@@ -476,9 +478,10 @@ class UserNet extends ActiveRecord
 				} elseif ($subtag == "fail") {
 
 				}
-				$sql = "select u.*,w.wWechatId from im_user as u 
+				$sql = "select u.*,w.wWechatId,n.nId as uNid
+						from im_user as u 
 						join im_user_net as n on n.nSubUId=u.uId and n.nRelation=$nRelation and n.nStatus=$status and n.nDeletedFlag=$deleteflag
-						join im_user_wechat as w on w.wOpenId=u.uOpenId
+						join im_user_wechat as w on w.wUId=u.uId
 						where n.nUId=$MyUid  $orderBy $limit ";
 				break;
 		}
@@ -488,6 +491,12 @@ class UserNet extends ActiveRecord
 			array_pop($ret);
 			$nextpage = $page + 1;
 		}
+		$fields = ['album', 'album_cnt', 'alcohol', 'alcohol_t', 'belief', 'belief_t', 'coord', 'city', 'province',
+			'education', 'education_t', 'fitness', 'fitness_t', 'income', 'income_t', 'smoke', 'smoke_t', 'status', 'status_t',
+			'updatedon', 'weight', 'weight_t', 'password', 'scope', 'scope_t', 'profession', 'profession_t', 'rest', 'rest_t',
+			'pet', 'pet_t', 'height', 'height_t', 'horos', 'horos_t', 'estate', 'estate_t', 'diet', 'diet_t', 'car', 'car_t',
+			'birthyear', 'birthyear_t', 'marital', 'marital_t', 'location', 'cert', 'certdate', 'certimage', 'certnote',
+			'certstatus', 'certstatus_t', 'filter', 'filter_t'];
 		$items = [];
 		foreach ($ret as $row) {
 			$item = User::fmtRow($row);
@@ -505,6 +514,9 @@ class UserNet extends ActiveRecord
 			} else {
 				$item["showWxFlag"] = 0;
 				$item["wxNo"] = "";
+			}
+			foreach ($fields as $field) {
+				unset($item[$field]);
 			}
 			$items[] = $item;
 		}

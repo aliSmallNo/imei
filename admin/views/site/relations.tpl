@@ -34,7 +34,6 @@
 		</select>
 		<button class="btn btn-primary">查询</button>
 	</form>
-
 	<div class="row-divider"></div>
 	<div class="row">
 		<table class="table table-striped table-bordered">
@@ -90,7 +89,6 @@
 						{{if $item.nRelation==140}}{{$item.sText}}{{/if}}
 					</span>
 				</td>
-
 				<td>
 					{{$item.dt}}
 				</td>
@@ -117,5 +115,4 @@
 		//$('#modModal').modal('show');
 	});
 </script>
-
 {{include file="layouts/footer.tpl"}}

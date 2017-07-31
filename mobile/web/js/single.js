@@ -106,6 +106,12 @@ require(["layer"],
 					$sls.mainPage.addClass('bg-lighter');
 					FootUtil.toggle(0);
 					break;
+				case 'addMeWx':
+				case 'IaddWx':
+				case 'heartbeat':
+					$('#' + hashTag).find(".tab a:first").trigger(kClick);
+					FootUtil.toggle(0);
+					break;
 				default:
 					FootUtil.toggle(0);
 					break;
@@ -648,8 +654,8 @@ require(["layer"],
 					break;
 				case "heartbeat":
 					lastRow = $("#" + $sls.curFrag).find('.plist li').last();
-					if (lastRow && eleInScreen(lastRow, 180) && TabUilt.page > 0) {
-						TabUilt.getData();
+					if (lastRow && eleInScreen(lastRow, 180) && TabUtil.page > 0) {
+						TabUtil.getData();
 						return false;
 					}
 					break;
@@ -719,7 +725,7 @@ require(["layer"],
 		});
 
 
-		var TabUilt = {
+		var TabUtil = {
 			tag: "",
 			subtag: "",
 			tabObj: null,
@@ -729,20 +735,20 @@ require(["layer"],
 			Tmp: $("#wechats").html(),
 			init: function () {
 				$(".tab a").on(kClick, function () {
-					TabUilt.tabObj = $(this).closest(".tab");
-					TabUilt.tag = TabUilt.tabObj.attr("tag");
-					TabUilt.subtag = $(this).attr("subtag");
-					TabUilt.tabObj.find("a").removeClass();
+					TabUtil.tabObj = $(this).closest(".tab");
+					TabUtil.tag = TabUtil.tabObj.attr("tag");
+					TabUtil.subtag = $(this).attr("subtag");
+					TabUtil.tabObj.find("a").removeClass();
 					$(this).addClass("active");
 
-					TabUilt.page = 1;
-					TabUilt.tabObj.next().html("");
+					TabUtil.page = 1;
+					TabUtil.tabObj.next().html("");
 
-					switch (TabUilt.tag) {
+					switch (TabUtil.tag) {
 						case "addMeWx":
 						case "IaddWx":
 						case "heartbeat":
-							TabUilt.getData();
+							TabUtil.getData();
 							break;
 					}
 				});
@@ -780,52 +786,52 @@ require(["layer"],
 				$(document).on(kClick, ".wx-hint a", function () {
 					var to = $(this).attr("to");
 
-					TabUilt.tabObj = $(".tab[tag=" + to + "]");
-					TabUilt.tag = TabUilt.tabObj.attr("tag");
-					TabUilt.subtag = TabUilt.tabObj.find(":first-child").attr("subtag");
+					TabUtil.tabObj = $(".tab[tag=" + to + "]");
+					TabUtil.tag = TabUtil.tabObj.attr("tag");
+					TabUtil.subtag = TabUtil.tabObj.find(":first-child").attr("subtag");
 
-					TabUilt.page = 1;
-					TabUilt.tabObj.next().html("");
+					TabUtil.page = 1;
+					TabUtil.tabObj.next().html("");
 					switch (to) {
 						case "addMeWx":
 						case "IaddWx":
 						case "heartbeat":
-							$("[tag=" + TabUilt.tag + "]").find("[subtag=" + TabUilt.subtag + "]").trigger("click");
+							$("[tag=" + TabUtil.tag + "]").find("[subtag=" + TabUtil.subtag + "]").trigger("click");
 							break;
 					}
 					location.href = "#" + to;
 				});
 			},
 			getData: function () {
-				if (TabUilt.tabFlag) {
+				if (TabUtil.tabFlag) {
 					return;
 				}
-				TabUilt.tabFlag = 1;
-				TabUilt.listMore.html("加载中...");
+				TabUtil.tabFlag = 1;
+				TabUtil.listMore.html("加载中...");
 				$.post("/api/user", {
-					tag: TabUilt.tag,
-					subtag: TabUilt.subtag,
-					page: TabUilt.page,
+					tag: TabUtil.tag,
+					subtag: TabUtil.subtag,
+					page: TabUtil.page,
 
 				}, function (resp) {
-					if (TabUilt.page == 1) {
-						TabUilt.tabObj.next().html(Mustache.render(TabUilt.Tmp, resp.data));
+					if (TabUtil.page == 1) {
+						TabUtil.tabObj.next().html(Mustache.render(TabUtil.Tmp, resp.data));
 					} else {
-						TabUilt.tabObj.next().append(Mustache.render(TabUilt.Tmp, resp.data));
+						TabUtil.tabObj.next().append(Mustache.render(TabUtil.Tmp, resp.data));
 					}
 
-					TabUilt.tabFlag = 0;
-					TabUilt.page = resp.data.nextpage;
-					if (TabUilt.page == 0) {
-						TabUilt.listMore.html("没有更多了~");
+					TabUtil.tabFlag = 0;
+					TabUtil.page = resp.data.nextpage;
+					if (TabUtil.page == 0) {
+						TabUtil.listMore.html("没有更多了~");
 					} else {
-						TabUilt.listMore.html("上滑加载更多");
+						TabUtil.listMore.html("上滑加载更多");
 					}
 
 				}, "json");
 			},
 		};
-		TabUilt.init();
+		TabUtil.init();
 
 		$(document).on(kClick, "a.btn-profile", function () {
 			// if ($sls.sprofileF) {
