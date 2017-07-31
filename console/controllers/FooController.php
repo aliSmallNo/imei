@@ -426,7 +426,7 @@ class FooController extends Controller
 		/*$ret = UserNet::addLink(131379, 131446);
 		var_dump($ret);*/
 
-		$ret = UserNet::processWx(114354,'recycle');
+		$ret = UserNet::processWx(114581,'recycle');
 		var_dump($ret);
 	}
 }
