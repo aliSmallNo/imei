@@ -27,6 +27,7 @@ require(["layer"],
 		};
 
 		function showTip() {
+
 			var html = '<i class="share-arrow">点击菜单分享</i>';
 			$sls.main.show();
 			$sls.main.append(html);
@@ -138,12 +139,15 @@ require(["layer"],
 						'menuItem:share:facebook'
 					]
 				});
-
+				var suid = $('#cSenderUId').val();
+				if (!suid) {
+					showTip();
+				}
 			});
 			$sls.cork.hide();
 
-			setTimeout(function () {
+			/*setTimeout(function () {
 				showTip();
-			}, 1000);
+			}, 1000);*/
 		});
 	});
