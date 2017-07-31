@@ -583,7 +583,7 @@ class UserNet extends ActiveRecord
 				}
 				break;
 		}
-		if ($updateStatus) {
+		if ($updateStatus !== '') {
 			$entity = self::findOne(['nId' => $nid]);
 			$entity->nStatus = $updateStatus;
 			$entity->nNote = $note;
