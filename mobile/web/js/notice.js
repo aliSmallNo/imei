@@ -79,6 +79,7 @@ require(["layer"],
 				}, function (resp) {
 					$sls.loading.hide();
 					if (resp.code == 0) {
+						self.find("span").remove();
 						location.href = url;
 					} else {
 						showMsg(resp.msg);
