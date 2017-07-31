@@ -32,6 +32,7 @@
 		width: 3rem;
 		height: 3rem;
 		border-radius: 3rem;
+		border: 1px solid #fbd2e0;
 	}
 
 	.notice-item .notice-right{
