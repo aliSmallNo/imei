@@ -664,7 +664,7 @@ class WechatUtil
 			"template_id" => "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI",
 			"url" => $url,
 			"data" => [
-				"first" => ["color" => "#555555", "value" => "你好，$name!\n"],
+				"first" => ["color" => "#555555", "value" => "你好，$name\n"],
 				"keyword1" => ["color" => "#0D47A1", "value" => $keyword1Val],
 				"keyword2" => ["color" => "#f06292", "value" => $keyword2Val],
 				"keyword3" => ["color" => "#333333", "value" => date("Y年n月j日 H:i")],
