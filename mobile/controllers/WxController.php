@@ -797,9 +797,9 @@ class WxController extends BaseController
 		if (AppUtil::isDev()) {
 			$qrcode = '/images/qrmeipo100.jpg';
 		} else {
-			if($senderUId && $matchInfo){
+			if ($senderUId && $matchInfo) {
 				$qrcode = UserQR::getQRCode($senderUId, UserQR::CATEGORY_MATCH);
-			}else{
+			} else {
 				$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH);
 			}
 		}
@@ -932,7 +932,11 @@ class WxController extends BaseController
 
 		// Rain: 添加或者更新微信用户信息
 		UserWechat::refreshWXInfo($openId);
-		UserWechat::getInfoByOpenId($openId, true);
+		$wxInfo = UserWechat::getInfoByOpenId($openId, true);
+		if ($wxInfo && isset($wxInfo['subscribe']) && $wxInfo['subscribe']) {
+			header('location:/wx/index');
+			exit();
+		}
 
 		$jump = self::getParam('jump', '/wx/index');
 		return self::renderPage('qrcode.tpl',
