@@ -72,7 +72,7 @@
 <ul class="notice">
 	{{foreach from=$items item=item}}
 	<li>
-		<a data-url="/wx/{{$item.url}}?id={{$item.secretId}}" data-id="{{$item.mId}}" class="notice-item notice-read">
+		<a data-url="/wx/{{$item.url}}?id={{$item.secretId}}" data-id="{{$item.mId}}" data-readflag="{{$item.readflag}}" class="notice-item notice-read">
 			<div class="notice-avatar"><img src="{{$item.avatar}}"></div>
 			<div class="notice-right">
 				<div class="title">{{$item.text}}</div>
@@ -98,7 +98,7 @@
 <script type="text/template" id="tpl_notice">
 	{[#items]}
 	<li>
-		<a data-url="/wx/{[url]}?id={[secretId]}" data-id="{[mId]}" class="notice-item notice-read">
+		<a data-url="/wx/{[url]}?id={[secretId]}" data-id="{[mId]}" data-readflag="{[readflag]}" class="notice-item notice-read">
 			<div class="notice-avatar"><img src="{[avatar]}"></div>
 			<div class="notice-right">
 				<div class="title">{[text]}</div>

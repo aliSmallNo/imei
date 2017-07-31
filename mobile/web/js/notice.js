@@ -67,22 +67,27 @@ require(["layer"],
 			var self = $(this);
 			var url = self.attr("data-url");
 			var id = self.attr("data-id");
-			if ($sls.loadFlag) {
-				return;
-			}
-			$sls.loadFlag = 1;
-			$.post("/api/news", {
-				tag: "read",
-				id: id
-			}, function (resp) {
-				$sls.loading.hide();
-				if (resp.code == 0) {
-					location.href = url;
-				} else {
-					showMsg(resp.msg);
+			var readflag = self.attr("data-readflag");
+			if (readflag == 0) {
+				if ($sls.loadFlag) {
+					return;
 				}
-				$sls.loadFlag = 0;
-			}, "json");
+				$sls.loadFlag = 1;
+				$.post("/api/news", {
+					tag: "read",
+					id: id
+				}, function (resp) {
+					$sls.loading.hide();
+					if (resp.code == 0) {
+						location.href = url;
+					} else {
+						showMsg(resp.msg);
+					}
+					$sls.loadFlag = 0;
+				}, "json");
+			} else {
+				location.href = url;
+			}
 		});
 
 
