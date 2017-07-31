@@ -507,7 +507,7 @@ class WechatUtil
 				"remark" => ["color" => "#555555", "value" => $keywords['remark']],
 			]
 		];
-		$access_token = self::accessToken();
+		$access_token = self::getAccessToken(self::ACCESS_CODE);
 		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
 		AppUtil::postJSON($url, json_encode($bodyInfo));
 		$result = UserMsg::edit("", [

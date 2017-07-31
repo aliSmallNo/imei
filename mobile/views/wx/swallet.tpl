@@ -24,9 +24,7 @@
 	</div>
 </section>
 <section id="srecords">
-	<ul class="charges">
-
-	</ul>
+	<ul class="charges"></ul>
 	<div class="spinner" style="display: none"></div>
 	<div class="no-more" style="display: none;">没有更多了~</div>
 </section>
