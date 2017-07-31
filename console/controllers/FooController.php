@@ -426,8 +426,7 @@ class FooController extends Controller
 		/*$ret = UserNet::addLink(131379, 131446);
 		var_dump($ret);*/
 
-		$url = "https:\/\/img.meipo100.com\/201707\/112349_n.jpg";
-		$ret = pathinfo($url, PATHINFO_FILENAME);
+		$ret = UserNet::processWx(114354,'recycle');
 		var_dump($ret);
 	}
 }
