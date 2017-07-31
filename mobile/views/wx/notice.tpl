@@ -5,7 +5,7 @@
 
 	.notice-item {
 		display: flex;
-		padding: 1rem 0;
+		padding: .5rem 0;
 		position: relative;
 		border-bottom: 1px solid #eee;
 	}
@@ -25,20 +25,32 @@
 		border-color: #999;
 		right: 1rem;
 	}
+	.notice-item .notice-avatar{
+		flex: 0 0 3rem;
+	}
+	.notice-item .notice-avatar img{
+		width: 3rem;
+		height: 3rem;
+		border-radius: 3rem;
+	}
 
-	.notice-item .title {
-		flex: 2;
-		font-weight: 500;
+	.notice-item .notice-right{
+		flex: 1;
+		margin: 0 3rem 0 2rem;
+	}
+
+	.notice-item .notice-right .title {
+		font-weight: 400;
 		font-size: 1.2rem;
 	}
 
 	.notice-item .dt {
-		flex: 1;
 		font-size: 1rem;
 		font-weight: 200;
-		text-align: right;
-		margin-right: 3rem;
+		text-align: left;
 	}
+
+
 </style>
 <div class="nav">
 	<a href="single#sme">返回</a>
@@ -48,8 +60,11 @@
 	{{foreach from=$items item=item}}
 	<li>
 		<a href="/wx/{{$item.url}}?id={{$item.secretId}}" class="notice-item">
-			<div class="title">{{$item.text}}</div>
-			<div class="dt">{{$item.dt}}</div>
+			<div class="notice-avatar"><img src="{{$item.avatar}}"></div>
+			<div class="notice-right">
+				<div class="title">{{$item.text}}</div>
+				<div class="dt">{{$item.dt}}</div>
+			</div>
 		</a>
 	</li>
 	{{/foreach}}
@@ -68,8 +83,11 @@
 	{[#items]}
 	<li>
 		<a href="/wx/{[url]}?id={[secretId]}" class="notice-item">
-			<div class="title">{[text]}</div>
-			<div class="dt">{[dt]}</div>
+			<div class="notice-avatar"><img src="{[avatar]}"></div>
+			<div class="notice-right">
+				<div class="title">{[text]}</div>
+				<div class="dt">{[dt]}</div>
+			</div>
 		</a>
 	</li>
 	{[/items]}
