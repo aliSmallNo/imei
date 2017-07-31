@@ -827,12 +827,10 @@ class WxController extends BaseController
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$senderUId = self::getParam('id');
-		$hasReg = false;
 		if ($wxInfo) {
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
 			$uId = $wxInfo['uId'];
-			$hasReg = $wxInfo['uPhone'] ? true : false;
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "大师兄";
@@ -862,7 +860,8 @@ class WxController extends BaseController
 				'avatar' => $avatar,
 				'nickname' => $nickname,
 				'wxUrl' => AppUtil::wechatUrl(),
-				'qrcode' => $qrcode
+				'qrcode' => $qrcode,
+				'senderUId' => $senderUId
 			],
 			'terse');
 	}
