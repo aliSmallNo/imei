@@ -525,12 +525,11 @@ class UserNet extends ActiveRecord
 
 	}
 
-	public static function processWx($nid, $pf)
+	public static function processWx($nid, $operation)
 	{
-		if (!$pf || !$nid) {
+		if (!$operation || !$nid) {
 			return 0;
 		}
-		// 跟我要微信号者 的交易记录
 		$sql = "SELECT t.*,n.* 
 				FROM im_user_trans as t 
 				JOIN im_user_net as n on t.tPId=n.nId 
@@ -548,7 +547,7 @@ class UserNet extends ActiveRecord
 		$payId = $payInfo['tId'];
 		$note = '';
 		$updateStatus = -1;
-		switch ($pf) {
+		switch ($operation) {
 			case "pass":
 				$updateStatus = self::STATUS_PASS;
 				WechatUtil::templateMsg(WechatUtil::NOTICE_APPROVE,
@@ -615,7 +614,8 @@ class UserNet extends ActiveRecord
 		}
 		// 打赏给 $id
 		$nid = UserNet::addLink($id, $myId);
-		UserTrans::add($myId, $nid, UserTrans::CAT_REWARD, UserTrans::$catDict[UserTrans::CAT_REWARD], $num, UserTrans::UNIT_GIFT);
+		UserTrans::add($myId, $nid, UserTrans::CAT_REWARD,
+			UserTrans::$catDict[UserTrans::CAT_REWARD], $num, UserTrans::UNIT_GIFT);
 		WechatUtil::toNotice($id, $myId, "wxNo");
 		return [1, $amt];
 	}
