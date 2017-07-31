@@ -545,6 +545,7 @@ class UserNet extends ActiveRecord
 		$targetId = $payInfo['nUId'];
 		$myUid = $payInfo['nSubUId'];
 		$payAmt = $payInfo['tAmt'];
+		$payId = $payInfo['tId'];
 		$note = $updateStatus = '';
 		switch ($pf) {
 			case "pass":
@@ -563,7 +564,7 @@ class UserNet extends ActiveRecord
 				WechatUtil::toNotice($targetId, $myUid, "wx-reply", 0);
 				// 退回媒瑰花
 				if ($payInfo) {
-					UserTrans::add($targetId, $myUid, UserTrans::CAT_RETURN, UserTrans::$catDict[UserTrans::CAT_RETURN], $payAmt, UserTrans::UNIT_GIFT);
+					UserTrans::add($targetId, $nid, UserTrans::CAT_RETURN, UserTrans::$catDict[UserTrans::CAT_RETURN], $payAmt, UserTrans::UNIT_GIFT);
 					WechatUtil::toNotice($targetId, $myUid, "return-rose");
 				}
 				break;
@@ -574,12 +575,13 @@ class UserNet extends ActiveRecord
 					return 0;
 				}
 				$updateStatus = self::STATUS_FAIL;
-				$note = '长时间无响应，系统自动退回';
-				WechatUtil::toNotice($targetId, $myUid, "wx-reply", 0);
-				// 退回媒瑰花
+				$note = '长时间无回应，系统自动退回';
 				if ($payInfo) {
-					UserTrans::add($targetId, $myUid, UserTrans::CAT_RETURN, UserTrans::$catDict[UserTrans::CAT_RETURN], $payAmt, UserTrans::UNIT_GIFT);
-					WechatUtil::toNotice($targetId, $myUid, "return-rose");
+					UserTrans::add($targetId, $nid, UserTrans::CAT_RETURN, UserTrans::$catDict[UserTrans::CAT_RETURN], $payAmt, UserTrans::UNIT_GIFT);
+					WechatUtil::templateMsg(WechatUtil::NOTICE_RETURN,
+						$myUid,
+						'你向TA要微信号，可是TA已经长时间不回应，系统默认为不同意了',
+						'你送出的媒桂花也退回了');
 				}
 				break;
 		}

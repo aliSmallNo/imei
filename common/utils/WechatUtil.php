@@ -31,6 +31,9 @@ class WechatUtil
 	const XCX_APP_SECRET = "981d82a2eddf8e31ddd45e70020848f9";
 
 	const NOTICE_REWARD_NEW = 'notice_reward_new';
+	const NOTICE_DECLINE = 'notice_decline';
+	const NOTICE_APPROVE = 'notice_approve';
+	const NOTICE_RETURN = 'notice_return';
 
 	/**
 	 * @param $sessionKey
@@ -456,11 +459,12 @@ class WechatUtil
 			return 0;
 		}
 		$openId = $userInfo['uOpenId'];
-		$encryptId = AppUtil::encrypt($userInfo["uId"]);
+		$nickname = $userInfo['uName'];
+		$encryptId = AppUtil::encrypt($uId);
 		$keywords = [
 			'first' => '',
-			'keyword1' => '',
-			'keyword2' => '',
+			'keyword1' => $title,
+			'keyword2' => $subTitle,
 			'keyword3' => date("Y年n月j日 H:i"),
 			'remark' => "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309"
 		];
@@ -470,10 +474,16 @@ class WechatUtil
 				$templateId = 'ZJVqVttar_9v9azyjydZzFiR8hF7pq-BpY_XBbugJDM';
 				$url = $wxUrl . "/wx/sw?id=" . $encryptId;
 				$keywords['first'] = "新人注册福利到啦，媒桂花奖励到啦。\n";
-				$keywords['keyword1'] = $title;
-				$keywords['keyword2'] = $subTitle;
 				$keywords['remark'] = date("\nY年n月j日 H:i");
 				$msgCat = UserMsg::CATEGORY_REWARD_NEW;
+				break;
+			case self::NOTICE_APPROVE:
+			case self::NOTICE_DECLINE:
+			case self::NOTICE_RETURN:
+				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$url = ($noticeTag == self::NOTICE_RETURN ? $wxUrl . "/wx/sw?id=" . $encryptId : $wxUrl . "/wx/single#IaddWx");
+				$keywords['first'] = "hi，$nickname\n";
+				$keywords['remark'] = '点击下方详情查看吧~';
 				break;
 			default:
 				$url = $templateId = '';
