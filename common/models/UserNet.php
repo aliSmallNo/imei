@@ -621,9 +621,11 @@ class UserNet extends ActiveRecord
 			":st" => self::STATUS_WAIT,
 			':cat' => UserTrans::CAT_REWARD
 		])->queryAll();
+		$count = 0;
 		foreach ($ret as $row) {
-			self::processWx($row['nId'], 'recycle', $conn);
+			$count += self::processWx($row['nId'], 'recycle', $conn);
 		}
+		return $count;
 	}
 
 	public static function roseAmt($myId, $id, $num)

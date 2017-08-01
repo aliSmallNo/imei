@@ -387,7 +387,8 @@ class FooController extends Controller
 
 	public function actionRecycle()
 	{
-		UserNet::recycleReward();
+		$ret = UserNet::recycleReward();
+		var_dump($ret);
 	}
 
 	public function actionImg()
