@@ -385,6 +385,12 @@ class FooController extends Controller
 		var_dump($ret);
 	}
 
+	public function actionRecycle()
+	{
+		$ret = UserNet::recycleReward();
+		var_dump($ret);
+	}
+
 	public function actionImg()
 	{
 
@@ -393,7 +399,7 @@ class FooController extends Controller
 		var_dump($ret);
 	}
 
-	public function actionRain()
+	public function actionRain($param1 = '', $param2 = '')
 	{
 //		$ret = UserWechat::refreshWXInfo('oYDJew2IjPst3upRPXc1k6wWHMkE', 1);
 //		var_dump($ret);
@@ -426,7 +432,7 @@ class FooController extends Controller
 		/*$ret = UserNet::addLink(131379, 131446);
 		var_dump($ret);*/
 
-		$ret = UserNet::processWx(114354,'recycle');
+		$ret = UserNet::processWx(114681, 'pass');
 		var_dump($ret);
 	}
 }

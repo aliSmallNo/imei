@@ -10,7 +10,6 @@ namespace common\models;
 
 
 use common\utils\AppUtil;
-use PHPUnit\Exception;
 use yii\db\ActiveRecord;
 
 class LogAction extends ActiveRecord
@@ -18,13 +17,15 @@ class LogAction extends ActiveRecord
 	const ACTION_LOGIN = 1000;
 	const ACTION_SINGLE = 1002;
 	const ACTION_MATCH = 1004;
-
+	const ACTION_ALBUM_DEL = 1020;
+	const ACTION_ALBUM_ADD = 1025;
 
 	static $actionDict = [
 		self::ACTION_LOGIN => "登录",
 		self::ACTION_SINGLE => "To单身页",
 		self::ACTION_MATCH => "To媒婆页",
-
+		self::ACTION_ALBUM_DEL => "删除照片",
+		self::ACTION_ALBUM_ADD => "添加照片",
 	];
 
 	const REUSE_DATA_WEEK = 73;
@@ -35,15 +36,18 @@ class LogAction extends ActiveRecord
 		return '{{%log_action}}';
 	}
 
-	public static function add($uid, $openId = "", $type)
+	public static function add($uid, $openId = "", $category = 0, $note = '')
 	{
-		if (!$uid || !$openId || !$type) {
+		if (!$uid || !$openId || !$category) {
 			return false;
 		}
 		$item = new self();
 		$item->aUId = $uid;
-		$item->aCategory = $type;
+		$item->aCategory = $category;
 		$item->aOpenId = $openId;
+		if ($note) {
+			$item->aNote = $note;
+		}
 		$item->save();
 		return true;
 	}

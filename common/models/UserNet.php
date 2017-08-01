@@ -493,8 +493,8 @@ class UserNet extends ActiveRecord
 		}
 		$fields = ['album', 'album_cnt', 'alcohol', 'alcohol_t', 'belief', 'belief_t', 'coord', 'city', 'province',
 			'education', 'education_t', 'fitness', 'fitness_t', 'income', 'income_t', 'smoke', 'smoke_t', 'status', 'status_t',
-			'updatedon', 'weight', 'weight_t', 'password', 'scope', 'scope_t', 'profession', 'profession_t', 'rest', 'rest_t',
-			'pet', 'pet_t', 'height', 'height_t', 'horos', 'horos_t', 'estate', 'estate_t', 'diet', 'diet_t', 'car', 'car_t',
+			'updatedon', 'weight', 'weight_t', 'password', 'profession', 'profession_t', 'rest', 'rest_t',
+			'pet', 'pet_t', 'estate', 'estate_t', 'diet', 'diet_t', 'car', 'car_t',
 			'birthyear', 'birthyear_t', 'marital', 'marital_t', 'location', 'cert', 'certdate', 'certimage', 'certnote',
 			'certstatus', 'certstatus_t', 'filter', 'filter_t'];
 		$items = [];
@@ -525,19 +525,22 @@ class UserNet extends ActiveRecord
 
 	}
 
-	public static function processWx($nid, $pf)
+	public static function processWx($nid, $operation, $conn = '')
 	{
-		if (!$pf || !$nid) {
+		if (!$operation || !$nid) {
 			return 0;
 		}
-		// 跟我要微信号者 的交易记录
-		$sql = "SELECT t.*,n.* 
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$sql = "SELECT t.*, n.* 
 				FROM im_user_trans as t 
 				JOIN im_user_net as n on t.tPId=n.nId 
-				WHERE n.nId=:id AND nStatus=:st ";
-		$payInfo = AppUtil::db()->createCommand($sql)->bindValues([
+				WHERE n.nId=:id AND nStatus=:st AND tCategory=:cat";
+		$payInfo = $conn->createCommand($sql)->bindValues([
 			":id" => $nid,
-			":st" => self::STATUS_WAIT
+			":st" => self::STATUS_WAIT,
+			':cat' => UserTrans::CAT_REWARD
 		])->queryOne();
 		if (!$payInfo) {
 			return 0;
@@ -545,45 +548,58 @@ class UserNet extends ActiveRecord
 		$targetId = $payInfo['nUId'];
 		$myUid = $payInfo['nSubUId'];
 		$payAmt = $payInfo['tAmt'];
-		$note = $updateStatus = '';
-		switch ($pf) {
+		$payId = $payInfo['tId'];
+		$note = '';
+		$updateStatus = -1;
+		switch ($operation) {
 			case "pass":
 				$updateStatus = self::STATUS_PASS;
-				WechatUtil::toNotice($targetId, $myUid, "wx-reply", 1);
+				WechatUtil::templateMsg(WechatUtil::NOTICE_APPROVE,
+					$myUid,
+					'TA同意给你微信号啦~',
+					'这是一个很棒的开始哦，加油，努力~',
+					$targetId);
 				// 奖励媒婆 mpId
 				$mpInfo = self::findOne(["nSubUId" => $myUid, 'nDeletedFlag' => 0, "nRelation" => self::REL_BACKER]);
 				if ($mpInfo && $payInfo) {
 					$mpId = $mpInfo->nUId;
 					$reward = round($payAmt * 6, 2);
-					UserTrans::add($mpId, $nid, UserTrans::CAT_LINK, UserTrans::$catDict[UserTrans::CAT_LINK], $reward, UserTrans::UNIT_FEN);
+					UserTrans::add($mpId, $nid, UserTrans::CAT_LINK,
+						UserTrans::$catDict[UserTrans::CAT_LINK], $reward, UserTrans::UNIT_FEN);
 				}
 				break;
 			case "refuse":
 				$updateStatus = self::STATUS_FAIL;
-				WechatUtil::toNotice($targetId, $myUid, "wx-reply", 0);
-				// 退回媒瑰花
 				if ($payInfo) {
-					UserTrans::add($targetId, $myUid, UserTrans::CAT_RETURN, UserTrans::$catDict[UserTrans::CAT_RETURN], $payAmt, UserTrans::UNIT_GIFT);
-					WechatUtil::toNotice($targetId, $myUid, "return-rose");
+					UserTrans::add($myUid, $nid, UserTrans::CAT_RETURN,
+						UserTrans::$catDict[UserTrans::CAT_RETURN], $payAmt, UserTrans::UNIT_GIFT);
+					WechatUtil::templateMsg(WechatUtil::NOTICE_DECLINE,
+						$myUid,
+						'TA拒绝给你微信号，你送出的媒桂花也退回了',
+						'不用烦恼，不用气馁，还有更好的在未来等你',
+						$targetId);
 				}
 				break;
 			case "recycle":
 				$addedTime = strtotime($payInfo['nAddedOn']);
 				$diffHr = ceil((time() - $addedTime) / 3600);
-				if ($diffHr < 48) {
+				if ($diffHr < 72) {
 					return 0;
 				}
 				$updateStatus = self::STATUS_FAIL;
-				$note = '长时间无响应，系统自动退回';
-				WechatUtil::toNotice($targetId, $myUid, "wx-reply", 0);
-				// 退回媒瑰花
+				$note = '长时间无回应，系统自动退回';
 				if ($payInfo) {
-					UserTrans::add($targetId, $myUid, UserTrans::CAT_RETURN, UserTrans::$catDict[UserTrans::CAT_RETURN], $payAmt, UserTrans::UNIT_GIFT);
-					WechatUtil::toNotice($targetId, $myUid, "return-rose");
+					UserTrans::add($myUid, $nid, UserTrans::CAT_RETURN,
+						UserTrans::$catDict[UserTrans::CAT_RETURN], $payAmt, UserTrans::UNIT_GIFT);
+					WechatUtil::templateMsg(WechatUtil::NOTICE_RETURN,
+						$myUid,
+						'你向TA要微信号，可是TA已经长时间不回应，系统默认为不同意了，你送出的媒桂花也退回了',
+						'不用烦恼，不用气馁，还有更好的在未来等你',
+						1);
 				}
 				break;
 		}
-		if ($updateStatus) {
+		if ($updateStatus > -1) {
 			$entity = self::findOne(['nId' => $nid]);
 			$entity->nStatus = $updateStatus;
 			$entity->nNote = $note;
@@ -594,6 +610,24 @@ class UserNet extends ActiveRecord
 		return 0;
 	}
 
+	public static function recycleReward()
+	{
+		$conn = AppUtil::db();
+		$sql = "SELECT t.tId, n.nId 
+				FROM im_user_trans as t 
+				JOIN im_user_net as n on t.tPId=n.nId 
+				WHERE nStatus=:st AND tCategory=:cat";
+		$ret = $conn->createCommand($sql)->bindValues([
+			":st" => self::STATUS_WAIT,
+			':cat' => UserTrans::CAT_REWARD
+		])->queryAll();
+		$count = 0;
+		foreach ($ret as $row) {
+			$count += self::processWx($row['nId'], 'recycle', $conn);
+		}
+		return $count;
+	}
+
 	public static function roseAmt($myId, $id, $num)
 	{
 		$amt = UserTrans::getStat($myId, 1)["flower"];
@@ -602,7 +636,8 @@ class UserNet extends ActiveRecord
 		}
 		// 打赏给 $id
 		$nid = UserNet::addLink($id, $myId);
-		UserTrans::add($myId, $nid, UserTrans::CAT_REWARD, UserTrans::$catDict[UserTrans::CAT_REWARD], $num, UserTrans::UNIT_GIFT);
+		UserTrans::add($myId, $nid, UserTrans::CAT_REWARD,
+			UserTrans::$catDict[UserTrans::CAT_REWARD], $num, UserTrans::UNIT_GIFT);
 		WechatUtil::toNotice($id, $myId, "wxNo");
 		return [1, $amt];
 	}

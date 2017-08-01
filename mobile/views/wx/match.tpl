@@ -21,7 +21,7 @@
 </section>
 <section id="sgroup" data-title="我的单身团">
 	<div class="m-rows line-bottom">
-		<a href="/wx/share">扩大我的单身团</a>
+		<a href="/wx/sts">扩大我的单身团</a>
 		<a href="#snewbie" style="display: none">新的单身团申请</a>
 		<a href="#srept">单身团动态</a>
 	</div>
