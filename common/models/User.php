@@ -1179,6 +1179,8 @@ class User extends ActiveRecord
 		$trends['titles'][$k] = date('n.j', strtotime($date[1]));
 		$trends['dates'][$k] = date('Y-m-d', strtotime($date[1]));
 		$trends["focus"][$k] = 0;
+		$trends["newvisitor"][$k] = 0;
+		$trends["newmember"][$k] = 0;
 		$trends["reg"][$k] = 0;
 		$trends["focusRate"][$k] = 0;
 		$trends["todayblur"][$k] = 0;
@@ -1198,6 +1200,8 @@ class User extends ActiveRecord
 		$sql = "SELECT 
 				count(*) as reg,
 				SUM(IFNULL(w.wSubscribe,0)) as focus,
+				SUM(CASE WHEN u.uRole not in (10,20) AND  w.wSubscribe not in (1) THEN 1 END) as newvisitor,
+				SUM(CASE WHEN uStatus<9 AND uPhone THEN 1 END) as newmember,
 				SUM(CASE WHEN (w.wAddedOn BETWEEN :beginDT and :endDT) AND IFNULL(wSubscribe,0)=0 THEN  1 END ) as todayblur,
 				SUM(CASE WHEN u.uRole=10 AND u.uGender=11 THEN  1 END ) as male,
 				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 THEN  1 END ) as female,
@@ -1211,6 +1215,8 @@ class User extends ActiveRecord
 		])->queryOne();
 		if ($res) {
 			$trends['focus'][$k] = intval($res["focus"]); // 新增关注
+			$trends['newvisitor'][$k] = intval($res["newvisitor"]); // 新增游客
+			$trends['newmember'][$k] = intval($res["newmember"]); // 新增会员
 			$trends['reg'][$k] = intval($res["reg"]);     // 新增注册
 			$trends['focusRate'][$k] = ($res["reg"] > 0) ? intval(round($res["focus"] / $res["reg"], 2) * 100) : 0;   // 转化率
 			$trends['todayblur'][$k] = intval($res["todayblur"]);   //  新增取消关注

@@ -89,8 +89,8 @@
 		var titles = mTrend["dates"];
 		var items = [];
 		if (cat == "new") {
-			var names = ["注册", "关注", "取消关注", "转化率", "充值", "媒婆", "帅哥", "美女"];
-			var fields = ["reg", "focus", "todayblur", "focusRate", "trans", "mps", "male", "female"];
+			var names = ["注册", "游客", "会员", "关注", "取消关注", "转化率", "充值", "媒婆", "帅哥", "美女"];
+			var fields = ["reg", "newvisitor","newmember","focus", "todayblur", "focusRate", "trans", "mps", "male", "female"];
 			for (var i = 0; i < fields.length; i++) {
 				items.push({
 					name: names[i],
@@ -110,7 +110,7 @@
 		}
 
 		if (cat == "amt") {
-			var names = ["累计注册", "会员", "游客", '累计关注', '累计媒婆', '累计单身男', '累计单身女', "活跃用户", "活跃度(%)"];
+			var names = ["累计注册", "累计会员", "累计游客", '累计关注', '累计媒婆', '累计单身男', '累计单身女', "活跃用户", "活跃度(%)"];
 			var fields = ["amt", "member", "visitor", 'follows', 'meipos', 'boys', 'girls', "active", "activeRate"];
 			for (var i = 0; i < fields.length; i++) {
 				items.push({
