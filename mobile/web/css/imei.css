@@ -4957,6 +4957,9 @@ section {
       .j-album li a.active img {
         display: inline-block; }
 
+#schat {
+  min-height: 100vh; }
+
 .chats li {
   display: -webkit-box;
   display: -webkit-flex;
