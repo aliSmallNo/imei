@@ -424,6 +424,7 @@ require(["layer"],
 				util.loading = 1;
 				if (util.page == 1) {
 					util.list.html('');
+					util.input.val('');
 				}
 				$.post("/api/chat", {
 					tag: "list",
