@@ -123,7 +123,7 @@
 		</p>
 		<ul class="chats"></ul>
 	</div>
-	<div class="m-bottom-bar">
+	<div class="m-bottom-bar" style="position: absolute">
 		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~"></div>
 		<div class="action"><a class="btn-chat-send">发送</a></div>
 	</div>
