@@ -379,6 +379,7 @@ require(["layer"],
 			list: $('.chats'),
 			tmp: $('#tpl_chat').html(),
 			input: $('.chat-input'),
+			bot: $('#schat .m-bottom-pl'),
 			init: function () {
 				var util = this;
 				$('.btn-chat-send').on(kClick, function () {
@@ -402,6 +403,9 @@ require(["layer"],
 						var html = Mustache.render(util.tmp, resp.data);
 						util.list.append(html);
 						util.input.val('');
+						setTimeout(function () {
+							util.bot.get(0).scrollIntoView(true);
+						}, 200);
 					} else {
 						showMsg(resp.msg);
 					}
@@ -429,6 +433,9 @@ require(["layer"],
 							util.list.append(html);
 						}
 						util.page = resp.data.nextPage;
+						setTimeout(function () {
+							util.bot.get(0).scrollIntoView(true);
+						}, 200);
 					} else {
 						showMsg(resp.msg);
 					}
