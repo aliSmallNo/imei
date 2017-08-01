@@ -385,11 +385,11 @@ require(["layer"],
 					util.sent();
 				});
 
-				$(".chat-input").on(kClick, function () {
+				$(document).on(kClick, ".chat-input", function () {
 					var target = this;
 					setTimeout(function () {
 						target.scrollIntoView(true);
-					}, 100);
+					}, 200);
 				});
 			},
 			sent: function () {
