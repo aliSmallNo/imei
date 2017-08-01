@@ -56,7 +56,7 @@ class ChatMsg extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$sql = 'select count(1) from im_chat_msg WHERE cSenderId=:suid and cReceiverId=:uid';
+		$sql = 'select count(1) from im_chat_msg WHERE cSenderId=:uid and cReceiverId=:suid';
 		$ret = $conn->createCommand($sql)->bindValues([
 			':uid' => $uId,
 			':suid' => $subUId,
