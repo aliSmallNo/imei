@@ -405,7 +405,7 @@ require(["layer"],
 						util.input.val('');
 						setTimeout(function () {
 							util.bot.get(0).scrollIntoView(true);
-						}, 200);
+						}, 300);
 					} else {
 						showMsg(resp.msg);
 					}
@@ -435,7 +435,7 @@ require(["layer"],
 						util.page = resp.data.nextPage;
 						setTimeout(function () {
 							util.bot.get(0).scrollIntoView(true);
-						}, 200);
+						}, 300);
 					} else {
 						showMsg(resp.msg);
 					}
