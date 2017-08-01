@@ -583,7 +583,8 @@ class UserNet extends ActiveRecord
 			case "recycle":
 				$addedTime = strtotime($payInfo['nAddedOn']);
 				$diffHr = ceil((time() - $addedTime) / 3600);
-				if ($diffHr < 72) {
+				// Rain: 5天后自动退回媒桂花
+				if ($diffHr < 24 * 5) {
 					return 0;
 				}
 				$updateStatus = self::STATUS_FAIL;

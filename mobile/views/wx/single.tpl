@@ -116,6 +116,18 @@
     display: none;
     border-radius: 3rem" class="album-delete">删除</a>
 </section>
+<section id="schat" data-title="意见反馈">
+	<div class="report_wrap">
+		<p class="title">
+			最多聊10句哦，要抓紧机会哦~
+		</p>
+		<ul class="chats"></ul>
+	</div>
+	<div class="m-bottom-bar">
+		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~"></div>
+		<div class="action"><a class="btn-chat-send">发送</a></div>
+	</div>
+</section>
 <section id="sfeedback" data-title="意见反馈">
 	<div class="report_wrap">
 		<p class="title">
@@ -536,9 +548,9 @@
 	<div class="pmp-bot">
 		<a tag="des">感谢对方媒婆推荐了这么好的人</a>
 		<ol>
-			<li>对方拒绝了给微信号，媒瑰花全部返还</li>
-			<li>对方同意了给微信号，媒瑰花将打给对方媒婆</li>
-			<li>对方若无回应，7天后媒瑰花如数返还</li>
+			<li>对方拒绝给微信号，媒瑰花全部返还</li>
+			<li>对方同意给微信号，媒瑰花将打给对方媒婆</li>
+			<li>对方若无回应，5天后媒瑰花如数返还</li>
 		</ol>
 	</div>
 </div>
@@ -663,6 +675,7 @@
 		</div>
 		{[#singleF]}
 		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-like {[favor]}"></a>
+		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-chat"></a>
 		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-apply"></a>
 		{[/singleF]}
 	</li>
@@ -908,10 +921,18 @@
 	</li>
 	{[/albums]}
 </script>
+<script type="text/template" id="tpl_chat">
+	{[#items]}
+	<li class="{[dir]}">
+		<div class="avatar"><img src="{[avatar]}"></div>
+		<div class="content"><span>{[content]}</span></div>
+	</li>
+	{[/items]}
+</script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/iscroll.js"></script>
-<script data-main="/js/single.js?v=1.3.7" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.4.0" src="/assets/js/require.js"></script>

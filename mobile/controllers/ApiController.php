@@ -8,6 +8,7 @@
 
 namespace mobile\controllers;
 
+use common\models\ChatMsg;
 use common\models\City;
 use common\models\Feedback;
 use common\models\Log;
@@ -934,6 +935,50 @@ class ApiController extends Controller
 					$mInfo->save();
 					return self::renderAPI(0, '');
 				}
+		}
+		return self::renderAPI(129, '操作无效~');
+	}
+
+	public function actionChat()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$openId = self::postParam('openid');
+		if (!$openId) {
+			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		}
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			return self::renderAPI(129, '用户不存在啊~');
+		}
+		$uid = $wxInfo['uId'];
+		switch ($tag) {
+			case 'sent':
+				$receiverId = self::postParam('id');
+				$receiverId = AppUtil::decrypt($receiverId);
+				if (!$receiverId) {
+					return self::renderAPI(129, '对话用户不存在啊~');
+				}
+				$text = trim(self::postParam('text'));
+				if (!$text) {
+					return self::renderAPI(129, '消息不能为空啊~');
+				}
+				$ret = ChatMsg::add($uid, $receiverId, $text);
+				return self::renderAPI(0, '', ['items' => $ret]);
+				break;
+			case 'list':
+				$page = self::postParam('page', 1);
+				$receiverId = self::postParam('id');
+				$receiverId = AppUtil::decrypt($receiverId);
+				if (!$receiverId) {
+					return self::renderAPI(129, '对话用户不存在啊~');
+				}
+				list($items, $nextPage) = ChatMsg::chat($uid, $receiverId, $page);
+				return self::renderAPI(0, '', [
+					'items' => $items,
+					'page' => $page,
+					'nextPage' => $nextPage
+				]);
+				break;
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

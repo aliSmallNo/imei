@@ -25,6 +25,7 @@ $borderColorLight: #EEEFF3
 //#E8E8E8
 $borderColorDark: #d4d4d4
 $borderColorFooter: #d4d4d4
+$chatColor: #1296db
 $linkColor: #007aff
 $linkColorLight: lighten($linkColor, 15%)
 $linkColorDark: darken($linkColor, 6%)
@@ -1991,6 +1992,7 @@ section
 		font-size: 1.5rem
 		text-align: center
 		padding-bottom: 1.5rem
+
 .empty
 	text-align: center
 	padding-top: 8.5rem
@@ -2524,24 +2526,29 @@ section
 		position: relative
 		.btn
 			position: absolute
-			top: 30rem
+			top: 30.3rem
 			display: inline-block
-			width: 4.4rem
-			height: 4.4rem
-			border-radius: 2.2rem
+			width: 44px
+			height: 44px
+			border-radius: 22px
 			overflow: hidden
 			box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .1)
 			&.btn-like
 				background: #fff url(../images/ico_like_pink.png) no-repeat center center
-				background-size: 2.8rem 2.8rem
-				right: 7.2rem
+				background-size: 28px 28px
+				right: 120px
 				&.favor
 					background: #fff url(../images/ico_like_pink_hl.png) no-repeat center center
-					background-size: 2.8rem 2.8rem
+					background-size: 28px 28px
+			&.btn-chat
+				background: #fff url(../images/ico_chat.png) no-repeat center center
+				background-size: 28px 28px
+				right: 68px
 			&.btn-apply
 				background: #fff url(../images/ico_wechat.png) no-repeat center center
-				background-size: 2.8rem 2.8rem
-				right: 1.5rem
+				background-size: 28px 28px
+				right: 15px
+
 		.rcmd
 			position: relative
 			img
@@ -3286,9 +3293,9 @@ section
 		a.active
 			opacity: 1
 	.pmp-bot
-		font-size: .8rem
+		font-size: 1rem
 		a
-			font-size: .8rem
+			font-size: 1rem
 			text-align: center
 			position: relative
 			color: #f9cd9a
@@ -3297,13 +3304,14 @@ section
 				content: ''
 				background: url('../images/ico-question_2.png') no-repeat center center
 				background-size: 100% 100%
-				width: 1rem
-				height: 1rem
-				top: .2rem
-				right: -1.5rem
+				width: 1.2rem
+				height: 1.2rem
+				top: 0
+				right: -1.6rem
 		ol
 			display: none
 			padding-top: 0.5rem
+			padding-left: 1.5rem
 			border-top: 1px solid rgba(255, 255, 255, .1)
 			li
 				text-align: left
@@ -4025,12 +4033,34 @@ section
 			&.weixin
 				border: none
 				background: $linkColor
+
 	div
 		text-align: center
 		width: 100%
 		a
 			display: block
 			background: #00BCD4
+			text-align: center
+			color: #fff
+	.input
+		@include displayFlex-1
+		padding: 0
+		justify-content: center
+		align-self: center
+		align-items: center
+		input
+			@include borderBox
+			font-size: 1.4rem
+			border: none
+			width: 99%
+			line-height: 4.6rem
+			margin: 0
+			padding: 0 1rem
+	.action
+		@include displayFlex-w(7rem)
+		a
+			display: block
+			background: $chatColor
 			text-align: center
 			color: #fff
 
@@ -4676,3 +4706,63 @@ section
 					display: inline-block
 				img
 					display: inline-block
+
+.chats
+	li
+		@include displayFlex
+		padding-bottom: 1rem
+		.avatar
+			@include displayFlex-w(4rem)
+			text-align: left
+			img
+				width: 2.8rem
+				height: 2.8rem
+				border-radius: 1.5rem
+				border: 1px solid $mainColorLighter
+		.content
+			@include displayFlex-1
+			position: relative
+			padding-left: 0
+			padding-right: 4rem
+			&:after
+				content: " "
+				display: inline-block
+				height: .8rem
+				width: .8rem
+				position: absolute
+				background: #fff
+				border-width: 0 0 1px 1px
+				border-color: $borderColorDark
+				border-style: solid
+				-webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
+				transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
+				top: 1rem
+				left: -.4rem
+			span
+				background: #fff
+				border: 1px solid $borderColorDark
+				border-radius: .4rem
+				padding: .8rem
+				display: inline-block
+		&.left
+		&.right
+			direction: rtl
+			.avatar
+				text-align: right
+			.content
+				text-align: right
+				padding-left: 4rem
+				padding-right: 0
+				&:after
+					content: " "
+					border-width: 1px 1px 0 0
+					border-color: $borderColorDark
+					border-style: solid
+					-webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
+					transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
+					top: 1rem
+					right: -.4rem
+				span
+					text-align: left
+					direction: ltr
+					position: relative
