@@ -586,7 +586,7 @@ class User extends ActiveRecord
 		return $uid;
 	}
 
-	public static function album($id, $openId, $f = "add")
+	public static function album($id, $openId, $f = 'add')
 	{
 		$thumb = '';
 		if ($id && $f == "add") {
@@ -597,6 +597,12 @@ class User extends ActiveRecord
 
 		$Info = self::findOne(["uOpenId" => $openId]);
 		if ($url && $Info) {
+
+			LogAction::add($Info->uId,
+				$openId,
+				($f == 'add' ? LogAction::ACTION_ALBUM_ADD : LogAction::ACTION_ALBUM_DEL),
+				$url);
+
 			$album = $Info->uAlbum;
 			if ($album) {
 				$album = json_decode($album, 1);
