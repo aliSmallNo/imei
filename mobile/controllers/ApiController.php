@@ -12,6 +12,7 @@ use common\models\ChatMsg;
 use common\models\City;
 use common\models\Feedback;
 use common\models\Log;
+use common\models\LogAction;
 use common\models\Pay;
 use common\models\User;
 use common\models\UserBuzz;
@@ -978,6 +979,7 @@ class ApiController extends Controller
 				if (!$receiverId) {
 					return self::renderAPI(129, '对话用户不存在啊~');
 				}
+				LogAction::add($uid, $openId, LogAction::ACTION_CHAT, $receiverId);
 				list($items, $nextPage) = ChatMsg::chat($uid, $receiverId, $page);
 				return self::renderAPI(0, '', [
 					'items' => $items,
