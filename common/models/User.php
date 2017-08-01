@@ -1180,6 +1180,8 @@ class User extends ActiveRecord
 		$trends["female"][$k] = 0;
 		$trends["mps"][$k] = 0;
 		$trends["amt"][$k] = 0;
+		$trends["visitor"][$k] = 0;
+		$trends["member"][$k] = 0;
 		$trends["active"][$k] = 0;
 		$trends["activeRate"][$k] = 0;
 		$trends["favor"][$k] = 0;
@@ -1213,18 +1215,22 @@ class User extends ActiveRecord
 
 		$sql = "select 
 				COUNT(1) as amt,
+				SUM(CASE WHEN u.uRole not in (10,20) AND  w.wSubscribe not in (1) THEN 1 END) as visitor,
+				SUM(CASE WHEN uStatus<9 AND uPhone THEN 1 END) as member,
 				SUM(IFNULL(w.wSubscribe,0)) as follows,
-				SUM(CASE WHEN u.uRole=20 THEN 1 END) as meipos,
-				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 THEN 1 END) as girls,
-				SUM(CASE WHEN u.uRole=10 AND u.uGender=11 THEN 1 END) as boys
+				SUM(CASE WHEN u.uRole=20 AND uStatus<9 THEN 1 END) as meipos,
+				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 and uStatus<9 THEN 1 END) as girls,
+				SUM(CASE WHEN u.uRole=10 AND u.uGender=11 and uStatus<9 THEN 1 END) as boys
 				from im_user as u
 				JOIN im_user_wechat as w on w.wUId=u.uId
-				where uNote='' and uStatus<9 and uAddedOn < :endDT ";
+				where uNote='' and uAddedOn < :endDT ";
 		$res2 = $conn->createCommand($sql)->bindValues([
 			':endDT' => $endDate,
 		])->queryOne();
 		if ($res2) {
 			$trends['amt'][$k] = intval($res2["amt"]); //累计用户
+			$trends['visitor'][$k] = intval($res2["visitor"]); //累计游客
+			$trends['member'][$k] = intval($res2["member"]); //累计会员
 			$trends['follows'][$k] = intval($res2["follows"]); //累计关注用户
 			$trends['meipos'][$k] = intval($res2["meipos"]);
 			$trends['girls'][$k] = intval($res2["girls"]);

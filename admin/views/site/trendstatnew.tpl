@@ -114,8 +114,8 @@
 		}
 
 		if (cat == "amt") {
-			var names = ["累计注册", '累计关注', '累计媒婆', '累计单身男', '累计单身女', "活跃用户", "活跃度(%)"];
-			var fields = ["amt", 'follows', 'meipos', 'boys', 'girls', "active", "activeRate"];
+			var names = ["累计注册", "会员", "游客", '累计关注', '累计媒婆', '累计单身男', '累计单身女', "活跃用户", "活跃度(%)"];
+			var fields = ["amt", "member", "visitor", 'follows', 'meipos', 'boys', 'girls', "active", "activeRate"];
 			for (var i = 0; i < fields.length; i++) {
 				items.push({
 					name: names[i],
