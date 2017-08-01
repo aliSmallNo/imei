@@ -15,6 +15,8 @@ use yii\db\ActiveRecord;
 
 class ChatMsg extends ActiveRecord
 {
+	const LIMIT_NUM = 10;
+
 	public static function tableName()
 	{
 		return '{{%chat_msg}}';
@@ -22,6 +24,10 @@ class ChatMsg extends ActiveRecord
 
 	public static function add($uId, $subUId, $content)
 	{
+		$cnt = self::chatCount($uId, $subUId);
+		if ($cnt >= self::LIMIT_NUM) {
+			return self::LIMIT_NUM;
+		}
 		$entity = new self();
 		$entity->cSenderId = $uId;
 		$entity->cReceiverId = $subUId;
@@ -42,8 +48,20 @@ class ChatMsg extends ActiveRecord
 				'dir' => 'right',
 			];
 		}
+		return false;
+	}
 
-		return [];
+	public static function chatCount($uId, $subUId, $conn = '')
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$sql = 'select count(1) from im_chat_msg WHERE cSenderId=:suid and cReceiverId=:uid';
+		$ret = $conn->createCommand($sql)->bindValues([
+			':uid' => $uId,
+			':suid' => $subUId,
+		])->queryScalar();
+		return $ret;
 	}
 
 	public static function chat($uId, $subUId, $page = 1, $pageSize = 20)

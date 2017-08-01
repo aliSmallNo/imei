@@ -963,7 +963,13 @@ class ApiController extends Controller
 					return self::renderAPI(129, '消息不能为空啊~');
 				}
 				$ret = ChatMsg::add($uid, $receiverId, $text);
-				return self::renderAPI(0, '', ['items' => $ret]);
+				if ($ret === false) {
+					return self::renderAPI(129, '发送失败~');
+				} elseif ($ret && is_numeric($ret)) {
+					return self::renderAPI(129, '不好意思哦，最多只能聊' . $ret . '句');
+				} else {
+					return self::renderAPI(0, '', ['items' => $ret]);
+				}
 				break;
 			case 'list':
 				$page = self::postParam('page', 1);
@@ -975,8 +981,8 @@ class ApiController extends Controller
 				list($items, $nextPage) = ChatMsg::chat($uid, $receiverId, $page);
 				return self::renderAPI(0, '', [
 					'items' => $items,
-					'page' => $page,
-					'nextPage' => $nextPage
+					'page' => intval($page),
+					'nextPage' => intval($nextPage)
 				]);
 				break;
 		}

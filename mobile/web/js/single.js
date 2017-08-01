@@ -394,10 +394,15 @@ require(["layer"],
 			},
 			sent: function () {
 				var util = this;
+				var content = $.trim(util.input.val());
+				if (!content) {
+					showMsg('聊天内容不能为空！');
+					return false;
+				}
 				$.post("/api/chat", {
 					tag: "sent",
 					id: util.sid,
-					text: util.input.val()
+					text: content
 				}, function (resp) {
 					if (resp.code == 0) {
 						var html = Mustache.render(util.tmp, resp.data);
