@@ -389,7 +389,7 @@ require(["layer"],
 					var target = this;
 					setTimeout(function () {
 						target.scrollIntoView(true);
-					}, 200);
+					}, 250);
 				});
 			},
 			sent: function () {
