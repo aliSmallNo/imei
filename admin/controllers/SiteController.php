@@ -542,7 +542,6 @@ class SiteController extends BaseController
 						$date = AppUtil::getEndStartTime(time() - $k * 86400, 'today', true);
 						$subtrends = User::trendstat($k, $date, $subtrends);
 					}
-
 				} else if ($category == self::TREND_DATA_WEEK) {
 					for ($k = 0; $k <= $records; $k++) {
 						$date = AppUtil::getEndStartTime(time() - $k * 86400 * 7, 'curweek', true);
