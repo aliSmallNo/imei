@@ -116,7 +116,7 @@
     display: none;
     border-radius: 3rem" class="album-delete">删除</a>
 </section>
-<section id="schat" data-title="意见反馈">
+<section id="schat" data-title="密聊中...">
 	<div class="report_wrap">
 		<p class="title">
 			最多聊10句哦，要抓紧机会哦~
