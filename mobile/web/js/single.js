@@ -386,10 +386,11 @@ require(["layer"],
 				});
 
 				$(document).on(kClick, ".chat-input", function () {
-					var target = this;
+					// var target = this;
 					setTimeout(function () {
-						target.scrollIntoView(true);
-					}, 250);
+						// target.scrollIntoView(true);
+						document.body.scrollTop = document.body.scrollHeight;
+					}, 300);
 				});
 			},
 			sent: function () {
