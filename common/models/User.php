@@ -1228,14 +1228,14 @@ class User extends ActiveRecord
 		$sql = "select 
 				COUNT(1) as amt,
 				SUM(CASE WHEN u.uRole not in (10,20) AND  w.wSubscribe not in (1) THEN 1 END) as visitor,
-				SUM(CASE WHEN uStatus<9 AND uPhone THEN 1 END) as member,
+				SUM(CASE WHEN  uPhone THEN 1 END) as member,
 				SUM(IFNULL(w.wSubscribe,0)) as follows,
-				SUM(CASE WHEN u.uRole=20 AND uStatus<9 THEN 1 END) as meipos,
-				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 and uStatus<9 THEN 1 END) as girls,
-				SUM(CASE WHEN u.uRole=10 AND u.uGender=11 and uStatus<9 THEN 1 END) as boys
+				SUM(CASE WHEN u.uRole=20 THEN 1 END) as meipos,
+				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 THEN 1 END) as girls,
+				SUM(CASE WHEN u.uRole=10 AND u.uGender=11  THEN 1 END) as boys
 				from im_user as u
 				JOIN im_user_wechat as w on w.wUId=u.uId
-				where uNote='' and uAddedOn < :endDT ";
+				where uNote='' AND uStatus<9 AND uAddedOn < :endDT ";
 		$res2 = $conn->createCommand($sql)->bindValues([
 			':endDT' => $endDate,
 		])->queryOne();
