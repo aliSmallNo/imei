@@ -123,7 +123,7 @@
 		</p>
 		<ul class="chats"></ul>
 	</div>
-	<div class="m-bottom-bar" style="position: absolute">
+	<div class="m-bottom-bar">
 		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~"></div>
 		<div class="action"><a class="btn-chat-send">发送</a></div>
 	</div>
@@ -935,4 +935,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/iscroll.js"></script>
-<script data-main="/js/single.js?v=1.4.0" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.4.1" src="/assets/js/require.js"></script>

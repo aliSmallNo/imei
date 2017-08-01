@@ -384,6 +384,13 @@ require(["layer"],
 				$('.btn-chat-send').on(kClick, function () {
 					util.sent();
 				});
+
+				$(".chat-input").on(kClick, function () {
+					var target = this;
+					setTimeout(function () {
+						target.scrollIntoView(true);
+					}, 100);
+				});
 			},
 			sent: function () {
 				var util = this;
