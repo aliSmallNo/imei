@@ -132,7 +132,7 @@
 <section id="scontacts" data-title="我的密聊记录">
 	<div class="m-top-pl"></div>
 	<div class="contacts-wrap">
-		<ul class="contacts"></ul>
+		<div class="contacts"></div>
 	</div>
 </section>
 <section id="sfeedback" data-title="意见反馈">
@@ -940,13 +940,13 @@
 </script>
 <script type="text/template" id="tpl_contact">
 	{[#items]}
-	<li data-id="{[encryptId]}">
+	<a href="javascript:;" data-id="{[encryptId]}">
 		<div class="avatar"><img src="{[avatar]}"></div>
 		<div class="content">
 			<div class="top-t"><em>{[name]}</em><i>{[dt]}</i></div>
 			<div class="bot-t">{[content]}</div>
 		</div>
-	</li>
+	</a>
 	{[/items]}
 </script>
 <script type="text/template" id="tpl_wx_info">
@@ -955,4 +955,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/iscroll.js"></script>
-<script data-main="/js/single.js?v=1.5.1" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.5.2" src="/assets/js/require.js"></script>

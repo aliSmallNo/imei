@@ -4975,39 +4975,39 @@ section {
   padding: 0.5rem 1rem;
   border-bottom: 1px solid #E4E4E4; }
 
-.contacts li {
+.contacts a {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   padding: 0.5rem 0;
   border-bottom: 1px solid #E4E4E4; }
-  .contacts li:last-child {
+  .contacts a:last-child {
     border-bottom: none; }
-  .contacts li .avatar {
+  .contacts a .avatar {
     -webkit-box-flex: 0 0 4rem;
     -webkit-flex: 0 0 4rem;
     -ms-flex: 0 0 4rem;
     flex: 0 0 4rem;
     text-align: left; }
-    .contacts li .avatar img {
+    .contacts a .avatar img {
       width: 3rem;
       height: 3rem;
       border-radius: 0.3rem;
       border: 1px solid #fbd2e0; }
-  .contacts li .content {
+  .contacts a .content {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
     -ms-flex: 1;
     flex: 1;
     position: relative;
     padding-left: 0; }
-    .contacts li .content .top-t {
+    .contacts a .content .top-t {
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
       display: flex; }
-      .contacts li .content .top-t em {
+      .contacts a .content .top-t em {
         -webkit-box-flex: 1;
         -webkit-flex: 1;
         -ms-flex: 1;
@@ -5017,7 +5017,7 @@ section {
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden; }
-      .contacts li .content .top-t i {
+      .contacts a .content .top-t i {
         -webkit-box-flex: 0 0 8rem;
         -webkit-flex: 0 0 8rem;
         -ms-flex: 0 0 8rem;
@@ -5027,7 +5027,7 @@ section {
         color: #737373;
         justify-content: center;
         align-self: center; }
-    .contacts li .content .bot-t {
+    .contacts a .content .bot-t {
       color: #737373;
       font-size: 1.2rem;
       font-weight: 300; }

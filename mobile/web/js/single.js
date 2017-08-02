@@ -398,7 +398,7 @@ require(["layer"],
 						document.body.scrollTop = document.body.scrollHeight;
 					}, 250);
 				});
-				$(document).on(kClick, ".contacts li", function () {
+				$(document).on(kClick, ".contacts a", function () {
 					util.sid = $(this).attr('data-id');
 					util.page = 1;
 					location.href = '#schat';
