@@ -649,8 +649,7 @@ class SiteController extends BaseController
 			$this->redirect("/site/error");
 		}
 
-		$list = ChatMsg::chat($sid, $rid)[0];
-		//print_r($list);exit;
+		list($list) = ChatMsg::chat($sid, $rid)[0];
 		return $this->renderPage("chatdes.tpl",
 			[
 				'category' => 'users',
