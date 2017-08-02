@@ -493,6 +493,9 @@ section
 		&.nav-me:after
 			background: url(../images/ico_foot_me.png) no-repeat center center
 			background-size: 100% 100%
+		&.nav-chat:after
+			background: url(../images/ico_foot_chat.png) no-repeat center center
+			background-size: 100% 100%
 		&.nav-link.active:after
 			background: url(../images/ico_foot_link_hl.png) no-repeat center center
 			background-size: 100% 100%
@@ -504,6 +507,9 @@ section
 			background-size: 100% 100%
 		&.nav-me.active:after
 			background: url(../images/ico_foot_me_hl.png) no-repeat center center
+			background-size: 100% 100%
+		&.nav-chat.active:after
+			background: url(../images/ico_foot_chat_hl.png) no-repeat center center
 			background-size: 100% 100%
 
 .tip-color
@@ -4715,6 +4721,49 @@ section
 				img
 					display: inline-block
 
+.contacts-wrap
+	background: #fff
+	padding: .5rem 1rem
+	border-bottom: 1px solid $borderColor
+
+.contacts
+	li
+		@include displayFlex
+		padding: .5rem 0
+		border-bottom: 1px solid $borderColor
+		&:last-child
+			border-bottom: none
+		.avatar
+			@include displayFlex-w(4rem)
+			text-align: left
+			img
+				width: 3rem
+				height: 3rem
+				border-radius: .3rem
+				border: 1px solid $mainColorLighter
+		.content
+			@include displayFlex-1
+			position: relative
+			padding-left: 0
+			.top-t
+				@include displayFlex
+				em
+					@include displayFlex-1
+					font-size: 1.4rem
+					font-weight: $weightBold
+					@include textTail
+				i
+					@include displayFlex-w(8rem)
+					text-align: right
+					font-size: 1rem
+					color: $grayFontColor
+					justify-content: center
+					align-self: center
+			.bot-t
+				color: $grayFontColor
+				font-size: 1.2rem
+				font-weight: $weightNormal
+
 #schat
 
 .chats
@@ -4777,6 +4826,6 @@ section
 					direction: ltr
 					position: relative
 
-.m-bot-pl
+.m-bot-pl, .m-top-pl
 	height: 1px
 	overflow: hidden

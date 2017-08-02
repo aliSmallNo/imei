@@ -987,6 +987,15 @@ class ApiController extends Controller
 					'nextPage' => intval($nextPage)
 				]);
 				break;
+			case 'contacts':
+				$page = self::postParam('page', 1);
+				list($items, $nextPage) = ChatMsg::contacts($uid, $page);
+				return self::renderAPI(0, '', [
+					'items' => $items,
+					'page' => intval($page),
+					'nextPage' => intval($nextPage)
+				]);
+				break;
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

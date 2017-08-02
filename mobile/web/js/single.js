@@ -102,6 +102,10 @@ require(["layer"],
 					SmeUtil.sme();
 					FootUtil.toggle(1);
 					break;
+				case 'scontacts':
+					ChatUtil.contacts();
+					FootUtil.toggle(1);
+					break;
 				case 'noMP':
 					$sls.mainPage.addClass('bg-lighter');
 					FootUtil.toggle(0);
@@ -122,7 +126,7 @@ require(["layer"],
 					break;
 			}
 			$sls.curFrag = hashTag;
-			// FootUtil.reset();
+			FootUtil.reset();
 			var title = $("#" + hashTag).attr("data-title");
 			if (!title) {
 				title = '微媒100-媒桂花飘香';
@@ -376,10 +380,13 @@ require(["layer"],
 			sid: '',
 			page: 1,
 			loading: 0,
+			book: $('.contacts'),
+			bookTmp: $('#tpl_contact').html(),
 			list: $('.chats'),
 			tmp: $('#tpl_chat').html(),
 			input: $('.chat-input'),
 			bot: $('#schat .m-bottom-pl'),
+			topPL: $('#scontacts .m-top-pl'),
 			init: function () {
 				var util = this;
 				$('.btn-chat-send').on(kClick, function () {
@@ -390,6 +397,11 @@ require(["layer"],
 					setTimeout(function () {
 						document.body.scrollTop = document.body.scrollHeight;
 					}, 250);
+				});
+				$(document).on(kClick, ".contacts li", function () {
+					util.sid = $(this).attr('data-id');
+					util.page = 1;
+					location.href = '#schat';
 				});
 			},
 			sent: function () {
@@ -441,6 +453,27 @@ require(["layer"],
 						util.page = resp.data.nextPage;
 						setTimeout(function () {
 							util.bot.get(0).scrollIntoView(true);
+						}, 300);
+					} else {
+						showMsg(resp.msg);
+					}
+					util.loading = 0;
+				}, "json");
+			},
+			contacts: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post("/api/chat", {
+					tag: "contacts"
+				}, function (resp) {
+					if (resp.code == 0) {
+						var html = Mustache.render(util.bookTmp, resp.data);
+						util.book.html(html);
+						setTimeout(function () {
+							util.topPL.get(0).scrollIntoView(true);
 						}, 300);
 					} else {
 						showMsg(resp.msg);

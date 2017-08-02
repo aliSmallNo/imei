@@ -111,4 +111,59 @@ class ChatMsg extends ActiveRecord
 		}
 		return [$chats, $nextPage];
 	}
+
+	public static function contacts($uId, $page = 1, $pageSize = 20)
+	{
+		$conn = AppUtil::db();
+		$limit = ' LIMIT ' . ($page - 1) * $pageSize . ',' . ($pageSize + 1);
+		$sql = 'select    
+				 (case when m.cSenderId=:uid then m.cReceiverId when m.cReceiverId=:uid then m.cSenderId end) as contactId, 
+				 max(m.cId) as msgId
+				 from im_chat_msg as m  
+				 WHERE (m.cReceiverId=:uid or m.cSenderId=:uid)
+				 group by contactId 
+				 order by msgId desc ' . $limit;
+		$contacts = $conn->createCommand($sql)->bindValues([
+			':uid' => $uId
+		])->queryAll();
+		$nextPage = 0;
+		if ($contacts && count($contacts) > $pageSize) {
+			array_pop($contacts);
+			$nextPage = $page + 1;
+		}
+		$userIDs = array_column($contacts, 'contactId');
+		$msgIDs = array_column($contacts, 'msgId');
+		$sql = 'select * from im_user WHERE uId in (' . implode(',', $userIDs) . ')';
+		$ret = $conn->createCommand($sql)->queryAll();
+		$users = [];
+		foreach ($ret as $row) {
+			$users[$row['uId']] = [
+				'uid' => $row['uId'],
+				'encryptId' => AppUtil::encrypt($row['uId']),
+				'name' => $row['uName'],
+				'avatar' => ImageUtil::getItemImages($row['uThumb'])[0],
+			];
+		}
+		$sql = 'select * from im_chat_msg WHERE cId in (' . implode(',', $msgIDs) . ')';
+		$ret = $conn->createCommand($sql)->queryAll();
+		$contents = [];
+		foreach ($ret as $row) {
+			$contents[$row['cId']] = [
+				'cid' => $row['cId'],
+				'content' => $row['cContent'],
+				'dt' => AppUtil::prettyDate($row['cAddedOn']),
+			];
+		}
+		foreach ($contacts as $k => $contact) {
+			$contactId = $contact['contactId'];
+			$msgId = $contact['msgId'];
+			if (isset($users[$contactId])) {
+				$contacts[$k] = array_merge($contacts[$k], $users[$contactId]);
+			}
+			if (isset($contents[$msgId])) {
+				$contacts[$k] = array_merge($contacts[$k], $contents[$msgId]);
+			}
+		}
+		return [$contacts, $nextPage];
+	}
 }

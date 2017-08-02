@@ -129,6 +129,12 @@
 		<div class="action"><a class="btn-chat-send">发送</a></div>
 	</div>
 </section>
+<section id="scontacts" data-title="我的密聊记录">
+	<div class="m-top-pl"></div>
+	<div class="contacts-wrap">
+		<ul class="contacts"></ul>
+	</div>
+</section>
 <section id="sfeedback" data-title="意见反馈">
 	<div class="report_wrap">
 		<p class="title">
@@ -478,14 +484,16 @@
 	<a href="#slink" class="nav-link" data-tag="slink">
 		看媒婆
 	</a>
-	<a href="#slook" class="nav-invite active" data-tag="slook">
+	<a href="#slook" class="nav-invite" data-tag="slook">
 		单身推荐
+	</a>
+	<a href="#scontacts" class="nav-chat" data-tag="scontacts">
+		密聊记录
 	</a>
 	<a href="#sme" class="nav-me" data-tag="sme">
 		个人中心
 	</a>
 </div>
-
 <div class="app-cork" style="background-color: rgba(0,0,0,0.1)"></div>
 <div class="getWechat">
 	<div class="getw-content">
@@ -930,10 +938,21 @@
 	</li>
 	{[/items]}
 </script>
+<script type="text/template" id="tpl_contact">
+	{[#items]}
+	<li data-id="{[encryptId]}">
+		<div class="avatar"><img src="{[avatar]}"></div>
+		<div class="content">
+			<div class="top-t"><em>{[name]}</em><i>{[dt]}</i></div>
+			<div class="bot-t">{[content]}</div>
+		</div>
+	</li>
+	{[/items]}
+</script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/iscroll.js"></script>
-<script data-main="/js/single.js?v=1.5.0" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.5.1" src="/assets/js/require.js"></script>

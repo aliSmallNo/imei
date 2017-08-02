@@ -380,6 +380,9 @@ section {
     .nav-foot a.nav-me:after {
       background: url(../images/ico_foot_me.png) no-repeat center center;
       background-size: 100% 100%; }
+    .nav-foot a.nav-chat:after {
+      background: url(../images/ico_foot_chat.png) no-repeat center center;
+      background-size: 100% 100%; }
     .nav-foot a.nav-link.active:after {
       background: url(../images/ico_foot_link_hl.png) no-repeat center center;
       background-size: 100% 100%; }
@@ -391,6 +394,9 @@ section {
       background-size: 100% 100%; }
     .nav-foot a.nav-me.active:after {
       background: url(../images/ico_foot_me_hl.png) no-repeat center center;
+      background-size: 100% 100%; }
+    .nav-foot a.nav-chat.active:after {
+      background: url(../images/ico_foot_chat_hl.png) no-repeat center center;
       background-size: 100% 100%; }
 
 .tip-color {
@@ -4964,6 +4970,68 @@ section {
       .j-album li a.active img {
         display: inline-block; }
 
+.contacts-wrap {
+  background: #fff;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #E4E4E4; }
+
+.contacts li {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #E4E4E4; }
+  .contacts li:last-child {
+    border-bottom: none; }
+  .contacts li .avatar {
+    -webkit-box-flex: 0 0 4rem;
+    -webkit-flex: 0 0 4rem;
+    -ms-flex: 0 0 4rem;
+    flex: 0 0 4rem;
+    text-align: left; }
+    .contacts li .avatar img {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 0.3rem;
+      border: 1px solid #fbd2e0; }
+  .contacts li .content {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    position: relative;
+    padding-left: 0; }
+    .contacts li .content .top-t {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex; }
+      .contacts li .content .top-t em {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        font-size: 1.4rem;
+        font-weight: 500;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden; }
+      .contacts li .content .top-t i {
+        -webkit-box-flex: 0 0 8rem;
+        -webkit-flex: 0 0 8rem;
+        -ms-flex: 0 0 8rem;
+        flex: 0 0 8rem;
+        text-align: right;
+        font-size: 1rem;
+        color: #737373;
+        justify-content: center;
+        align-self: center; }
+    .contacts li .content .bot-t {
+      color: #737373;
+      font-size: 1.2rem;
+      font-weight: 300; }
+
 .chats li {
   display: -webkit-box;
   display: -webkit-flex;
@@ -5031,7 +5099,7 @@ section {
         direction: ltr;
         position: relative; }
 
-.m-bot-pl {
+.m-bot-pl, .m-top-pl {
   height: 1px;
   overflow: hidden; }
 
