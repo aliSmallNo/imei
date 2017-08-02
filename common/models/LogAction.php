@@ -19,6 +19,7 @@ class LogAction extends ActiveRecord
 	const ACTION_MATCH = 1004;
 	const ACTION_ALBUM_DEL = 1020;
 	const ACTION_ALBUM_ADD = 1025;
+	const ACTION_CHAT = 1040;
 
 	static $actionDict = [
 		self::ACTION_LOGIN => "登录",
@@ -26,6 +27,7 @@ class LogAction extends ActiveRecord
 		self::ACTION_MATCH => "To媒婆页",
 		self::ACTION_ALBUM_DEL => "删除照片",
 		self::ACTION_ALBUM_ADD => "添加照片",
+		self::ACTION_CHAT => "进入聊天"
 	];
 
 	const REUSE_DATA_WEEK = 73;

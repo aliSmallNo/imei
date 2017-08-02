@@ -8,9 +8,11 @@
 
 namespace mobile\controllers;
 
+use common\models\ChatMsg;
 use common\models\City;
 use common\models\Feedback;
 use common\models\Log;
+use common\models\LogAction;
 use common\models\Pay;
 use common\models\User;
 use common\models\UserBuzz;
@@ -934,6 +936,66 @@ class ApiController extends Controller
 					$mInfo->save();
 					return self::renderAPI(0, '');
 				}
+		}
+		return self::renderAPI(129, '操作无效~');
+	}
+
+	public function actionChat()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$openId = self::postParam('openid');
+		if (!$openId) {
+			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		}
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			return self::renderAPI(129, '用户不存在啊~');
+		}
+		$uid = $wxInfo['uId'];
+		switch ($tag) {
+			case 'sent':
+				$receiverId = self::postParam('id');
+				$receiverId = AppUtil::decrypt($receiverId);
+				if (!$receiverId) {
+					return self::renderAPI(129, '对话用户不存在啊~');
+				}
+				$text = trim(self::postParam('text'));
+				if (!$text) {
+					return self::renderAPI(129, '消息不能为空啊~');
+				}
+				$ret = ChatMsg::add($uid, $receiverId, $text);
+				if ($ret === false) {
+					return self::renderAPI(129, '发送失败~');
+				} elseif ($ret && is_numeric($ret)) {
+					return self::renderAPI(129, '不好意思哦，最多只能聊' . $ret . '句');
+				} else {
+					return self::renderAPI(0, '', ['items' => $ret]);
+				}
+				break;
+			case 'list':
+				$page = self::postParam('page', 1);
+				$receiverId = self::postParam('id');
+				$receiverId = AppUtil::decrypt($receiverId);
+				if (!$receiverId) {
+					return self::renderAPI(129, '对话用户不存在啊~');
+				}
+				LogAction::add($uid, $openId, LogAction::ACTION_CHAT, $receiverId);
+				list($items, $nextPage) = ChatMsg::chat($uid, $receiverId, $page);
+				return self::renderAPI(0, '', [
+					'items' => $items,
+					'page' => intval($page),
+					'nextPage' => intval($nextPage)
+				]);
+				break;
+			case 'contacts':
+				$page = self::postParam('page', 1);
+				list($items, $nextPage) = ChatMsg::contacts($uid, $page);
+				return self::renderAPI(0, '', [
+					'items' => $items,
+					'page' => intval($page),
+					'nextPage' => intval($nextPage)
+				]);
+				break;
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

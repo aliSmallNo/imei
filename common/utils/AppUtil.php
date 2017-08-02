@@ -315,9 +315,9 @@ class AppUtil
 		return $ret;
 	}
 
-	public static function prettyDate($date)
+	public static function prettyDate($strDate)
 	{
-		if (!$date) {
+		if (!$strDate) {
 			return "";
 		}
 		$replaceDates = [
@@ -327,10 +327,10 @@ class AppUtil
 			date("Y-m-d", time() + 86400) => "明天",
 			date("Y-m-d", time() + 86400 * 2) => "后天",
 		];
-		$newDate = date("Y-m-d H:i", strtotime($date));
+		$newDate = date("Y-m-d H:i", strtotime($strDate));
 		foreach ($replaceDates as $key => $val) {
-			if (date("Y-m-d", strtotime($date)) == $key) {
-				$newDate = $val . " " . date("H:i", strtotime($date));
+			if (date("Y-m-d", strtotime($strDate)) == $key) {
+				$newDate = $val . " " . date("H:i", strtotime($strDate));
 			}
 		}
 		return $newDate;

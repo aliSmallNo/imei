@@ -102,8 +102,17 @@ require(["layer"],
 					SmeUtil.sme();
 					FootUtil.toggle(1);
 					break;
+				case 'scontacts':
+					ChatUtil.contacts();
+					FootUtil.toggle(1);
+					break;
 				case 'noMP':
 					$sls.mainPage.addClass('bg-lighter');
+					FootUtil.toggle(0);
+					break;
+				case 'schat':
+					ChatUtil.page = 1;
+					ChatUtil.reload();
 					FootUtil.toggle(0);
 					break;
 				case 'addMeWx':
@@ -117,7 +126,7 @@ require(["layer"],
 					break;
 			}
 			$sls.curFrag = hashTag;
-			// FootUtil.reset();
+			FootUtil.reset();
 			var title = $("#" + hashTag).attr("data-title");
 			if (!title) {
 				title = '微媒100-媒桂花飘香';
@@ -209,38 +218,6 @@ require(["layer"],
 		}
 
 		$(document).on(kClick, "#sprofile a", function () {
-			// var self = $(this);
-			// var tag = self.attr("tag");
-			// switch (tag) {
-			// 	case "album":
-			// 		var imgList = JSON.parse(self.attr("imglistjson"));
-			// 		wx.previewImage({
-			// 			current: '', // 当前显示图片的http链接
-			// 			urls: imgList // 需要预览的图片http链接列表
-			// 		});
-			// 		break;
-			// 	case "baseInfo":
-			// 		var data = JSON.parse(self.attr("data"));
-			// 		sprofileDesc(data);
-			// 		break;
-			// 	case "forbid":
-			// 		break;
-			// 	case "love":
-			// 		var obj = $(this).find("span");
-			// 		var id = $(this).attr("id");
-			// 		if (obj.hasClass("icon-love")) {
-			// 			alertUlit.hint(id, "yes", obj);
-			// 		} else {
-			// 			alertUlit.hint(id, "no", obj);
-			// 		}
-			// 		break;
-			// 	case "wechat":
-			// 		$sls.secretId = self.attr("id");
-			// 		$sls.cork.show();
-			// 		//$(".getWechat").show();
-			// 		$(".pay-mp").show();
-			// 		break;
-			// }
 		});
 
 		var alertUlit = {
@@ -327,8 +304,11 @@ require(["layer"],
 					} else if (self.hasClass('btn-apply')) {
 						$sls.secretId = self.attr("data-id");
 						$sls.cork.show();
-						//$(".getWechat").show();
 						$(".pay-mp").show();
+					} else if (self.hasClass('btn-chat')) {
+						ChatUtil.sid = self.attr("data-id");
+						ChatUtil.page = 1;
+						location.href = '#schat';
 					}
 				});
 
@@ -395,6 +375,113 @@ require(["layer"],
 
 		};
 		alertUlit.init();
+
+		var ChatUtil = {
+			sid: '',
+			page: 1,
+			loading: 0,
+			book: $('.contacts'),
+			bookTmp: $('#tpl_contact').html(),
+			list: $('.chats'),
+			tmp: $('#tpl_chat').html(),
+			input: $('.chat-input'),
+			bot: $('#schat .m-bottom-pl'),
+			topPL: $('#scontacts .m-top-pl'),
+			init: function () {
+				var util = this;
+				$('.btn-chat-send').on(kClick, function () {
+					util.sent();
+				});
+
+				$(document).on(kClick, ".chat-input", function () {
+					setTimeout(function () {
+						document.body.scrollTop = document.body.scrollHeight;
+					}, 250);
+				});
+				$(document).on(kClick, ".contacts a", function () {
+					util.sid = $(this).attr('data-id');
+					util.page = 1;
+					location.href = '#schat';
+				});
+			},
+			sent: function () {
+				var util = this;
+				var content = $.trim(util.input.val());
+				if (!content) {
+					showMsg('聊天内容不能为空！');
+					return false;
+				}
+				$.post("/api/chat", {
+					tag: "sent",
+					id: util.sid,
+					text: content
+				}, function (resp) {
+					if (resp.code == 0) {
+						var html = Mustache.render(util.tmp, resp.data);
+						util.list.append(html);
+						util.input.val('');
+						setTimeout(function () {
+							util.bot.get(0).scrollIntoView(true);
+						}, 300);
+					} else {
+						showMsg(resp.msg);
+					}
+				}, "json");
+			},
+			reload: function () {
+				var util = this;
+				if (util.loading || util.page < 1) {
+					return;
+				}
+				util.loading = 1;
+				if (util.page == 1) {
+					util.list.html('');
+					util.input.val('');
+				}
+				$.post("/api/chat", {
+					tag: "list",
+					id: util.sid,
+					page: util.page
+				}, function (resp) {
+					if (resp.code == 0) {
+						var html = Mustache.render(util.tmp, resp.data);
+						if (resp.data.page == 1) {
+							util.list.html(html);
+						} else {
+							util.list.append(html);
+						}
+						util.page = resp.data.nextPage;
+						setTimeout(function () {
+							util.bot.get(0).scrollIntoView(true);
+						}, 300);
+					} else {
+						showMsg(resp.msg);
+					}
+					util.loading = 0;
+				}, "json");
+			},
+			contacts: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post("/api/chat", {
+					tag: "contacts"
+				}, function (resp) {
+					if (resp.code == 0) {
+						var html = Mustache.render(util.bookTmp, resp.data);
+						util.book.html(html);
+						setTimeout(function () {
+							util.topPL.get(0).scrollIntoView(true);
+						}, 300);
+					} else {
+						showMsg(resp.msg);
+					}
+					util.loading = 0;
+				}, "json");
+			}
+		};
 
 		var SmeUtil = {
 			localId: "",
@@ -1049,6 +1136,7 @@ require(["layer"],
 			$sls.cork.hide();
 			FeedbackUtil.init();
 			WxNoUtil.init();
+			ChatUtil.init();
 
 			$sls.newsTimer = setInterval(function () {
 				if ($sls.newIdx < 10) {

@@ -116,6 +116,25 @@
     display: none;
     border-radius: 3rem" class="album-delete">删除</a>
 </section>
+<section id="schat" data-title="密聊中...">
+	<div class="report_wrap">
+		<p class="title">
+			最多聊10句哦，要抓紧机会哦~
+		</p>
+		<ul class="chats"></ul>
+	</div>
+	<div class="m-bottom-pl"></div>
+	<div class="m-bottom-bar">
+		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~"></div>
+		<div class="action"><a class="btn-chat-send">发送</a></div>
+	</div>
+</section>
+<section id="scontacts" data-title="我的密聊记录">
+	<div class="m-top-pl"></div>
+	<div class="contacts-wrap">
+		<div class="contacts"></div>
+	</div>
+</section>
 <section id="sfeedback" data-title="意见反馈">
 	<div class="report_wrap">
 		<p class="title">
@@ -465,14 +484,16 @@
 	<a href="#slink" class="nav-link" data-tag="slink">
 		看媒婆
 	</a>
-	<a href="#slook" class="nav-invite active" data-tag="slook">
+	<a href="#slook" class="nav-invite" data-tag="slook">
 		单身推荐
+	</a>
+	<a href="#scontacts" class="nav-chat" data-tag="scontacts">
+		密聊记录
 	</a>
 	<a href="#sme" class="nav-me" data-tag="sme">
 		个人中心
 	</a>
 </div>
-
 <div class="app-cork" style="background-color: rgba(0,0,0,0.1)"></div>
 <div class="getWechat">
 	<div class="getw-content">
@@ -536,9 +557,9 @@
 	<div class="pmp-bot">
 		<a tag="des">感谢对方媒婆推荐了这么好的人</a>
 		<ol>
-			<li>对方拒绝了给微信号，媒瑰花全部返还</li>
-			<li>对方同意了给微信号，媒瑰花将打给对方媒婆</li>
-			<li>对方若无回应，7天后媒瑰花如数返还</li>
+			<li>对方拒绝给微信号，媒瑰花全部返还</li>
+			<li>对方同意给微信号，媒瑰花将打给对方媒婆</li>
+			<li>对方若无回应，5天后媒瑰花如数返还</li>
 		</ol>
 	</div>
 </div>
@@ -663,6 +684,7 @@
 		</div>
 		{[#singleF]}
 		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-like {[favor]}"></a>
+		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-chat"></a>
 		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-apply"></a>
 		{[/singleF]}
 	</li>
@@ -908,10 +930,29 @@
 	</li>
 	{[/albums]}
 </script>
+<script type="text/template" id="tpl_chat">
+	{[#items]}
+	<li class="{[dir]}">
+		<div class="avatar"><img src="{[avatar]}"></div>
+		<div class="content"><span>{[content]}</span></div>
+	</li>
+	{[/items]}
+</script>
+<script type="text/template" id="tpl_contact">
+	{[#items]}
+	<a href="javascript:;" data-id="{[encryptId]}">
+		<div class="avatar"><img src="{[avatar]}"></div>
+		<div class="content">
+			<div class="top-t"><em>{[name]}</em><i>{[dt]}</i></div>
+			<div class="bot-t">{[content]}</div>
+		</div>
+	</a>
+	{[/items]}
+</script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/iscroll.js"></script>
-<script data-main="/js/single.js?v=1.3.7" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.5.2" src="/assets/js/require.js"></script>

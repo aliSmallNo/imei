@@ -60,9 +60,16 @@
 	<div style="height: 6rem;"></div>
 	<div class="m-bottom-bar">
 		{{if $role==10}}
-		<p><a class="heart btn-like {{if $uInfo.favorFlag}}favor{{/if}}"
-					data-id="{{$uInfo.encryptId}}">{{if $uInfo.favorFlag}}已心动{{else}}心动{{/if}}</a></p>
-		<p><a class="weixin btn-apply" data-id="{{$uInfo.encryptId}}">加微信聊聊</a></p>
+		<p>
+			<a class="heart btn-like {{if $uInfo.favorFlag}}favor{{/if}}"
+				 data-id="{{$uInfo.encryptId}}">{{if $uInfo.favorFlag}}已心动{{else}}心动{{/if}}</a>
+		</p>
+		<p>
+			<a class="chat btn-chat" data-id="{{$uInfo.encryptId}}">私信TA</a>
+		</p>
+		<p>
+			<a class="weixin btn-apply" data-id="{{$uInfo.encryptId}}">加微信聊聊</a>
+		</p>
 		{{else}}
 		<div>
 			<a class="btn-recommend">向朋友推荐TA</a>
@@ -70,7 +77,19 @@
 		{{/if}}
 	</div>
 </div>
-
+<section id="schat" data-title="密聊中...">
+	<div class="report_wrap">
+		<p class="title">
+			最多聊10句哦，要抓紧机会哦~
+		</p>
+		<ul class="chats"></ul>
+	</div>
+	<div class="m-bottom-pl"></div>
+	<div class="m-bottom-bar">
+		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~"></div>
+		<div class="action"><a class="btn-chat-send">发送</a></div>
+	</div>
+</section>
 <section id="sreport">
 	<div class="report_wrap">
 		<h3>举报用户</h3>
@@ -200,9 +219,17 @@
 	</a>
 	{[/items]}
 </script>
+<script type="text/template" id="tpl_chat">
+	{[#items]}
+	<li class="{[dir]}">
+		<div class="avatar"><img src="{[avatar]}"></div>
+		<div class="content"><span>{[content]}</span></div>
+	</li>
+	{[/items]}
+</script>
 <script>
 	var mItems = {{$items}};
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/shome.js?v=1.2.0" src="/assets/js/require.js"></script>
+<script data-main="/js/shome.js?v=1.2.2" src="/assets/js/require.js"></script>

@@ -18,29 +18,6 @@ require(["layer"],
 			mainPage: $('.main-page')
 		};
 
-		$('.btn').on(kClick, function () {
-			// var self = $(this);
-			// if (self.hasClass('signed') || $sls.loading) {
-			// 	return false;
-			// }
-			// $sls.loading = 1;
-			// $.post('/api/user', {
-			// 	tag: 'sign'
-			// }, function (resp) {
-			// 	if (resp.code == 0) {
-			// 		self.addClass('signed');
-			// 		self.html(resp.data.title);
-			// 		layer.open({
-			// 			content: resp.msg,
-			// 			btn: '我知道了'
-			// 		});
-			// 	} else {
-			// 		showMsg(resp.msg);
-			// 	}
-			// 	$sls.loading = 0;
-			// }, 'json');
-		});
-
 		var ReportUtil = {
 			text: $('.report-text'),
 			reason: $('.report-reason'),
@@ -136,6 +113,10 @@ require(["layer"],
 							shade.hide();
 							img.hide();
 						}, 2000);
+					}else if (self.hasClass("btn-chat")) {
+						ChatUtil.sid = self.attr("data-id");
+						ChatUtil.page = 1;
+						location.href = '#schat';
 					}
 				});
 				$(document).on(kClick, ".pay-mp a", function () {
@@ -263,6 +244,84 @@ require(["layer"],
 		};
 		alertUlit.init();
 
+		var ChatUtil = {
+			sid: '',
+			page: 1,
+			loading: 0,
+			list: $('.chats'),
+			tmp: $('#tpl_chat').html(),
+			input: $('.chat-input'),
+			bot: $('#schat .m-bottom-pl'),
+			init: function () {
+				var util = this;
+				$('.btn-chat-send').on(kClick, function () {
+					util.sent();
+				});
+
+				$(document).on(kClick, ".chat-input", function () {
+					setTimeout(function () {
+						document.body.scrollTop = document.body.scrollHeight;
+					}, 250);
+				});
+			},
+			sent: function () {
+				var util = this;
+				var content = $.trim(util.input.val());
+				if (!content) {
+					showMsg('聊天内容不能为空！');
+					return false;
+				}
+				$.post("/api/chat", {
+					tag: "sent",
+					id: util.sid,
+					text: content
+				}, function (resp) {
+					if (resp.code == 0) {
+						var html = Mustache.render(util.tmp, resp.data);
+						util.list.append(html);
+						util.input.val('');
+						setTimeout(function () {
+							util.bot.get(0).scrollIntoView(true);
+						}, 300);
+					} else {
+						showMsg(resp.msg);
+					}
+				}, "json");
+			},
+			reload: function () {
+				var util = this;
+				if (util.loading || util.page < 1) {
+					return;
+				}
+				util.loading = 1;
+				if (util.page == 1) {
+					util.list.html('');
+					util.input.val('');
+				}
+				$.post("/api/chat", {
+					tag: "list",
+					id: util.sid,
+					page: util.page
+				}, function (resp) {
+					if (resp.code == 0) {
+						var html = Mustache.render(util.tmp, resp.data);
+						if (resp.data.page == 1) {
+							util.list.html(html);
+						} else {
+							util.list.append(html);
+						}
+						util.page = resp.data.nextPage;
+						setTimeout(function () {
+							util.bot.get(0).scrollIntoView(true);
+						}, 300);
+					} else {
+						showMsg(resp.msg);
+					}
+					util.loading = 0;
+				}, "json");
+			}
+		};
+
 		function showMsg(title, sec) {
 			var delay = sec || 3;
 			layer.open({
@@ -279,6 +338,11 @@ require(["layer"],
 			hashTag = hashTag.replace("#", "");
 			switch (hashTag) {
 				case 'sreport':
+					$sls.mainPage.hide();
+					break;
+				case 'schat':
+					ChatUtil.page = 1;
+					ChatUtil.reload();
 					$sls.mainPage.hide();
 					break;
 				default:
@@ -341,5 +405,6 @@ require(["layer"],
 			window.onhashchange = locationHashChanged;
 			locationHashChanged();
 			ReportUtil.init();
+			ChatUtil.init();
 		});
 	});
