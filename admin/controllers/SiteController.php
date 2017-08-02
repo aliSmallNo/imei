@@ -8,6 +8,7 @@ use common\models\City;
 use common\models\Feedback;
 use common\models\LogAction;
 use common\models\Mark;
+use common\models\ChatMsg;
 use common\models\User;
 use common\models\UserBuzz;
 use common\models\UserMsg;
@@ -610,6 +611,37 @@ class SiteController extends BaseController
 				'debug' => in_array(Admin::getAdminId(), [1001, 1002]),
 			]
 		);
+	}
+
+
+	public function actionChat($view, $params = [])
+	{
+		$getInfo = Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+		$condition = " where cId >0";
+		if ($name) {
+			$name = str_replace("'", "", $name);
+			$condition .= " and (u.uName like '%$name%' or u1.uName like '%$name%')";
+		}
+		if ($phone) {
+			$phone = str_replace("'", "", $phone);
+			$condition .= " and (u.uPhone like '$phone%' or u1.uPhone like '$phone%')";
+		}
+		list($list, $count) = ChatMsg::items($condition, $page);
+		$pagination = self::pagination($page, $count);
+		return $this->renderPage("relations.tpl",
+			[
+				'getInfo' => $getInfo,
+				'pagination' => $pagination,
+				'category' => 'users',
+				'list' => $list,
+				'relations' => UserNet::$RelDict,
+			]
+		);
+
+
 	}
 
 }

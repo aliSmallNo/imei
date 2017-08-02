@@ -496,7 +496,6 @@ class User extends ActiveRecord
 		return [];
 	}
 
-
 	public static function reg($data)
 	{
 		$fields = [
@@ -846,7 +845,6 @@ class User extends ActiveRecord
 		}
 		return $matchcondition;
 	}
-
 
 	public static function getFilter($openId, $data, $page = 1, $pageSize = 20)
 	{
