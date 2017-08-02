@@ -1038,7 +1038,7 @@ class User extends ActiveRecord
 			 LEFT JOIN (SELECT n.nId,n.nUId FROM im_user_net as n 
 			 JOIN im_user as u1 on u1.uId=n.nSubUId AND u1.uRole=:single AND u1.uGender>9 AND u1.uStatus < $status
 			 WHERE n.nRelation=:rel AND n.nDeletedFlag=0) as t on t.nUId=u.uId
-			 WHERE u.uRole=:role GROUP BY u.uId HAVING uCnt>0 ORDER BY uUpdatedOn DESC, uCnt DESC
+			 WHERE u.uRole=:role AND u.uStatus<9 GROUP BY u.uId HAVING uCnt>0 ORDER BY uUpdatedOn DESC, uCnt DESC
 			 LIMIT $offset," . ($pageSize + 1);
 		$ret = $conn->createCommand($sql)->bindValues([
 			':rel' => UserNet::REL_BACKER,
