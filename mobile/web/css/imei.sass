@@ -12,6 +12,7 @@ $disabledFontColor: #aaa
 $bgColor: #F4F4F4
 $weightBold: 500
 $weightNormal: 300
+$greenColor: #51c332
 $greenLight: #afdb64
 $yellowColor: #fdd835
 $tipColor: #f80
@@ -3949,8 +3950,8 @@ section
 			height: 100%
 		a.a-home
 			position: absolute
-			right: 2rem
-			top: 2rem
+			right: 1.5rem
+			top: 1.5rem
 			width: 40px
 			height: 40px
 			background: rgba(0, 0, 0, .5) url(../images/ico_home_w2.png) no-repeat center center
@@ -4013,10 +4014,14 @@ section
 	@include displayFlex
 	p
 		@include displayFlex-1
-		padding: 0 1rem
+		padding: 0 .5rem
 		justify-content: center
 		align-self: center
 		align-items: center
+		&:first-child
+			padding-left: 1.5rem
+		&:last-child
+			padding-right: 1.5rem
 		a
 			display: block
 			text-align: center
@@ -4032,7 +4037,10 @@ section
 				background: $mainColor
 			&.weixin
 				border: none
-				background: $linkColor
+				background: $greenColor
+			&.chat
+				border: none
+				background: $chatColor
 
 	div
 		text-align: center
@@ -4706,6 +4714,7 @@ section
 					display: inline-block
 				img
 					display: inline-block
+
 #schat
 
 .chats
@@ -4767,6 +4776,7 @@ section
 					text-align: left
 					direction: ltr
 					position: relative
+
 .m-bot-pl
 	height: 1px
 	overflow: hidden
