@@ -654,6 +654,7 @@ class SiteController extends BaseController
 		return $this->renderPage("chatdes.tpl",
 			[
 				'category' => 'users',
+				'detailcategory' => 'site/chat',
 				'list' => $list,
 			]
 		);

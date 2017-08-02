@@ -80,7 +80,7 @@
 					{{$item.cAddedOn}}
 				</td>
 				<td>
-					<button class="chatDesc" data-sid="{{$item.cSenderId}}" data-rid="{{$item.cReceiverId}}">详情</button>
+					<button class="chatDesc btn btn-outline btn-primary btn-xs" data-sid="{{$item.cSenderId}}" data-rid="{{$item.cReceiverId}}">详情</button>
 				</td>
 			</tr>
 			{{/foreach}}
