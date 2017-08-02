@@ -91,7 +91,6 @@
 </div>
 
 <script>
-
 	$(document).on('click', '.chatDesc', function () {
 		var self = $(this);
 		var sid = self.attr("data-sid");
