@@ -167,4 +167,55 @@ class ChatMsg extends ActiveRecord
 		return [$contacts, $nextPage];
 	}
 
+
+	public static function items($condStr, $page, $pageSize = 20)
+	{
+		$limit = "limit " . ($page - 1) * $pageSize . "," . $pageSize;
+
+		$sql = "select msgId,c.*,
+				s.uAvatar as savatar,s.uName as sname,s.uPhone as sphone ,
+				r.uAvatar as ravatar,r.uName as rname,r.uPhone as rphone 
+				from 
+				(
+				select
+				(case 
+				when m.cSenderId>m.cReceiverId then CONCAT(m.cSenderId,m.cReceiverId) 
+				when m.cReceiverId>m.cSenderId then CONCAT(m.cReceiverId,m.cSenderId) 
+				end) as concatId, 
+				max(m.cId) as msgId 
+				from im_chat_msg as m  
+				group by concatId 
+				order by msgId desc
+				) as t
+				left join im_chat_msg as c on c.cId=t.msgId
+				left join im_user as s on c.cSenderId=s.uId 
+				left join im_user as r on c.cReceiverId=r.uId
+				$condStr
+				$limit ";
+		$conn = AppUtil::db();
+		$res = $conn->createCommand($sql)->queryAll();
+
+		$sql = "select count(1) as co
+				from 
+				(
+				select
+				(case 
+				when m.cSenderId>m.cReceiverId then CONCAT(m.cSenderId,m.cReceiverId) 
+				when m.cReceiverId>m.cSenderId then CONCAT(m.cReceiverId,m.cSenderId) 
+				end) as concatId, 
+				max(m.cId) as msgId 
+				from im_chat_msg as m  
+				group by concatId 
+				order by msgId desc
+				) as t
+				left join im_chat_msg as c on c.cId=t.msgId
+				left join im_user as s on c.cSenderId=s.uId 
+				left join im_user as r on c.cReceiverId=r.uId
+				$condStr ";
+		$count = $conn->createCommand($sql)->queryOne();
+		$co = $count ? $count["co"] : 0;
+		return [$res, $co];
+
+	}
+
 }

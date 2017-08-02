@@ -614,34 +614,49 @@ class SiteController extends BaseController
 	}
 
 
-	public function actionChat($view, $params = [])
+	public function actionChat()
 	{
 		$getInfo = Yii::$app->request->get();
 		$page = self::getParam("page", 1);
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
-		$condition = " where cId >0";
+		$condition = " where 1 ";
 		if ($name) {
 			$name = str_replace("'", "", $name);
-			$condition .= " and (u.uName like '%$name%' or u1.uName like '%$name%')";
+			$condition .= " and (s.uName like '%$name%' or r.uName like '%$name%')";
 		}
 		if ($phone) {
 			$phone = str_replace("'", "", $phone);
-			$condition .= " and (u.uPhone like '$phone%' or u1.uPhone like '$phone%')";
+			$condition .= " and (s.uPhone like '$phone%' or r.uPhone like '$phone%')";
 		}
 		list($list, $count) = ChatMsg::items($condition, $page);
 		$pagination = self::pagination($page, $count);
-		return $this->renderPage("relations.tpl",
+		return $this->renderPage("chat.tpl",
 			[
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
 				'category' => 'users',
 				'list' => $list,
-				'relations' => UserNet::$RelDict,
 			]
 		);
+	}
 
+	public function actionChatdes()
+	{
+		$sid = self::getParam("sid");
+		$rid = self::getParam("rid");
+		if (!$rid || !$sid) {
+			$this->redirect("/site/error");
+		}
 
+		$list = ChatMsg::chat($sid, $rid)[0];
+		//print_r($list);exit;
+		return $this->renderPage("chatdes.tpl",
+			[
+				'category' => 'users',
+				'list' => $list,
+			]
+		);
 	}
 
 }

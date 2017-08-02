@@ -156,6 +156,11 @@ class Menu
 						"name" => "实名认证",
 						"url" => "/site/cert",
 						"level" => 820
+					],
+					[
+						"name" => "聊天列表",
+						"url" => "/site/chat",
+						"level" => 820
 					]
 				]
 			],
