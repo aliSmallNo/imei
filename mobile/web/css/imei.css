@@ -5020,7 +5020,7 @@ section {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding: 0.5rem 0;
+  padding: 0.6rem 0;
   position: relative;
   border-bottom: 1px solid #E4E4E4; }
   .contacts a:last-child {
