@@ -4,7 +4,7 @@ body, html {
   font-size: -moz-calc(100vw / 32);
   font-size: -webkit-calc(100vw / 32);
   font-size: calc(100vw / 32);
-  color: #333;
+  color: #363438;
   font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   height: 100%; }
 
@@ -26,7 +26,7 @@ body, a, div, p {
   font-size: 1.4rem; }
 
 a {
-  color: #333;
+  color: #363438;
   cursor: pointer;
   text-decoration: none; }
   a.disabled, a.disabled:active {
@@ -425,18 +425,18 @@ section {
   text-align: center;
   font-weight: normal;
   font-size: 1.4rem;
-  color: #737373;
+  color: #6a6572;
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
   line-height: 2rem; }
 
 .btn-outline {
-  height: 2.4rem;
-  line-height: 2.4rem;
-  padding: 0 1rem;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  padding: 0 0.8rem;
   display: block;
-  font-size: 1.3rem;
-  border-radius: 1.3rem;
+  font-size: 1.2rem;
+  border-radius: 1.15rem;
   border: 1px solid #4da2ff;
   color: #007aff;
   background: #fff; }
@@ -520,7 +520,7 @@ section {
     flex: 1;
     font-size: 1.4rem; }
     .layui-m-layerbtn span[no] {
-      color: #737373; }
+      color: #6a6572; }
     .layui-m-layerbtn span[yes] {
       color: #007aff; }
 
@@ -655,7 +655,7 @@ section {
 .roles {
   margin-top: 3rem; }
   .roles .title {
-    color: #737373;
+    color: #6a6572;
     padding-left: 2rem;
     padding-right: 2rem; }
   .roles .btn {
@@ -710,7 +710,7 @@ section {
     justify-content: center;
     align-items: center;
     align-self: center;
-    color: #737373; }
+    color: #6a6572; }
   .f-inline .input-s {
     -webkit-box-flex: 0 0 23rem;
     -webkit-flex: 0 0 23rem;
@@ -794,13 +794,13 @@ section {
   .m-header i {
     display: block;
     line-height: 2rem;
-    color: #737373;
+    color: #6a6572;
     font-size: 1.2rem; }
   .m-header.s1 {
     text-align: left;
     font-size: 1.4rem;
     position: relative;
-    color: #737373;
+    color: #6a6572;
     padding: 1.5rem; }
     .m-header.s1:before {
       content: " ";
@@ -906,7 +906,7 @@ section {
       .m-draw-wrap .images li p {
         text-align: center;
         font-size: 1rem;
-        color: #737373; }
+        color: #6a6572; }
   .m-draw-wrap .m-next {
     position: absolute; }
 
@@ -984,7 +984,7 @@ section {
     top: 50%;
     right: 0;
     margin-top: -0.5rem;
-    border-color: #737373;
+    border-color: #6a6572;
     right: 1.5rem; }
   .action-row:active {
     background: #f487ac; }
@@ -1056,7 +1056,7 @@ section {
     line-height: 1.3;
     height: 9rem;
     font-size: 1.4rem;
-    color: #737373;
+    color: #6a6572;
     -webkit-appearance: none; }
 
 .match-wrap {
@@ -1066,7 +1066,7 @@ section {
   .match-wrap h3 {
     text-align: center;
     font-size: 1.4rem;
-    color: #737373;
+    color: #6a6572;
     font-weight: 500;
     line-height: 5rem;
     margin: 0;
@@ -1090,7 +1090,7 @@ section {
       .match-wrap ul li h4 {
         margin: 0;
         padding: 0;
-        color: #333;
+        color: #363438;
         font-weight: 500;
         text-align: center;
         font-size: 1.4rem;
@@ -1116,7 +1116,7 @@ section {
         text-overflow: ellipsis;
         overflow: hidden;
         font-size: 1.3rem;
-        color: #737373;
+        color: #6a6572;
         padding-top: 0.2rem;
         padding-bottom: 1rem; }
 
@@ -1179,10 +1179,10 @@ section {
     font-size: 1.4rem; }
     .m-rows a .noReadFlag {
       position: absolute;
-      width: 0.5rem;
-      height: 0.5rem;
-      background: red;
-      border-radius: 0.5rem;
+      width: 0.6rem;
+      height: 0.6rem;
+      background: #f24;
+      border-radius: 0.3rem;
       top: 1rem;
       left: 5rem; }
     .m-rows a .tip {
@@ -1290,10 +1290,10 @@ section {
   position: relative; }
   .u-my-bar .btn-outline {
     position: absolute;
-    right: 1rem;
+    right: 1.5rem;
     top: 0.7rem; }
     .u-my-bar .btn-outline.change-role {
-      right: 6.6rem; }
+      right: 7rem; }
   .u-my-bar .avatar {
     -webkit-box-flex: 0 0 10rem;
     -webkit-flex: 0 0 10rem;
@@ -1328,7 +1328,7 @@ section {
     align-items: center;
     align-self: center; }
     .u-my-bar .title h5 {
-      color: #737373;
+      color: #6a6572;
       font-weight: 300;
       font-size: 1.2rem; }
     .u-my-bar .title h4 {
@@ -1415,7 +1415,7 @@ section {
     -ms-flex: 1;
     flex: 1;
     text-align: center;
-    color: #737373;
+    color: #6a6572;
     padding: 1rem;
     font-size: 1.2rem;
     background: #fff; }
@@ -1424,7 +1424,7 @@ section {
     .u-my-count a em {
       font-size: 1.7rem;
       font-weight: 500;
-      color: #333;
+      color: #363438;
       display: block;
       line-height: 2.4rem;
       font-family: Verdana, Arial; }
@@ -1455,7 +1455,7 @@ section {
     -ms-flex: 1;
     flex: 1;
     text-align: center;
-    color: #737373;
+    color: #6a6572;
     font-size: 1.2rem;
     border-bottom: 2px solid #d4d4d4;
     padding-bottom: 1rem; }
@@ -1464,7 +1464,7 @@ section {
       font-size: 1.7rem;
       font-weight: 500;
       font-family: Verdana, Arial;
-      color: #333; }
+      color: #363438; }
 
 .m-discovery-act {
   padding: 0 4rem; }
@@ -1532,7 +1532,7 @@ section {
     .news-wrap ul.animate li {
       line-height: 3.6rem;
       height: 3.6rem;
-      color: #737373;
+      color: #6a6572;
       padding: 0.5rem 1rem;
       position: relative;
       display: -webkit-box;
@@ -1620,7 +1620,7 @@ section {
     .singles .single .title h5 {
       font-weight: 300;
       font-size: 1.4rem;
-      color: #737373;
+      color: #6a6572;
       line-height: 3rem; }
     .singles .single .title .note, .singles .single .title .cnt {
       font-size: 1rem;
@@ -1816,7 +1816,7 @@ section {
     .invite-wrap .user .nic img {
       width: 6.5rem;
       height: 6.5rem;
-      background: #333;
+      background: #363438;
       padding: 3px;
       border: #f487ac 1px solid;
       border-radius: 3.6rem; }
@@ -1996,7 +1996,7 @@ section {
     font-size: 2rem;
     font-weight: 500;
     padding-bottom: 1.5rem;
-    color: #333; }
+    color: #363438; }
   .mycard .tip {
     color: #f06292;
     font-size: 1.5rem;
@@ -2136,7 +2136,7 @@ section {
     -webkit-flex: 0 0 7rem;
     -ms-flex: 0 0 7rem;
     flex: 0 0 7rem;
-    color: #737373;
+    color: #6a6572;
     font-size: 1.2rem;
     font-weight: 300;
     justify-content: center;
@@ -2226,7 +2226,7 @@ section {
     font-weight: 500;
     font-size: 2rem; }
   .qrcode-wrap h5 {
-    color: #333;
+    color: #363438;
     padding-top: 2rem;
     font-size: 1.6rem;
     font-weight: 300; }
@@ -2532,7 +2532,7 @@ section {
     padding: 2rem;
     background: #fff;
     border-radius: 1rem;
-    color: #737373; }
+    color: #6a6572; }
     .m-sign .rules .title {
       text-align: center;
       font-size: 1.5rem;
@@ -2549,7 +2549,7 @@ section {
   line-height: 4.2rem;
   background: #fff; }
   .my-condition .nocondition a {
-    color: #737373;
+    color: #6a6572;
     padding: 0 1.5rem;
     display: block;
     height: 100%; }
@@ -2688,7 +2688,7 @@ section {
       color: #525252; }
     .m-top-users li .info .otherInfo {
       float: right;
-      color: #737373;
+      color: #6a6572;
       font-size: 1.2rem; }
     .m-top-users li .info .icon {
       float: left;
@@ -2705,7 +2705,7 @@ section {
   .m-top-users li .sign {
     padding: 0 1.5rem 1rem 1.5rem;
     font-size: 1.2rem;
-    color: #737373; }
+    color: #6a6572; }
   .m-top-users li .action {
     padding: 1rem 1.5rem;
     position: relative; }
@@ -2802,7 +2802,7 @@ section {
         display: inline-block;
         padding-top: 0.6rem; }
     .m-top-users li .mp-info .des {
-      color: #737373;
+      color: #6a6572;
       padding-top: 1rem; }
       .m-top-users li .mp-info .des b {
         font-size: 1.6rem; }
@@ -3609,7 +3609,7 @@ section {
     flex: 1;
     text-align: center;
     font-size: 1.2rem;
-    color: #737373;
+    color: #6a6572;
     padding-bottom: 1rem;
     position: relative; }
   .tab a.active {
@@ -3779,7 +3779,7 @@ section {
     .nomp-wrap .nomp-up p {
       font-size: 1.4rem;
       line-height: 2.2rem;
-      color: #737373; }
+      color: #6a6572; }
   .nomp-wrap .nomp-down {
     text-align: center;
     padding: 2rem 1rem; }
@@ -4111,7 +4111,7 @@ section {
   padding: 2rem 1.5rem; }
   .single-page .baseinfo h6 {
     font-size: 1.2rem;
-    color: #737373;
+    color: #6a6572;
     height: 2.6rem;
     line-height: 2.6rem;
     font-weight: 300; }
@@ -4261,7 +4261,7 @@ section {
       -ms-flex: 0 0 18rem;
       flex: 0 0 18rem; }
       .charges li .title h5 {
-        color: #737373;
+        color: #6a6572;
         font-size: 1.2rem;
         font-weight: 300; }
     .charges li .content {
@@ -4342,7 +4342,7 @@ section {
         padding-right: 0.5rem; }
       .incomes li .time span {
         display: block;
-        color: #737373;
+        color: #6a6572;
         font-weight: 300;
         font-size: 1rem;
         position: relative;
@@ -4388,7 +4388,7 @@ section {
       overflow: hidden; }
       .album-row .photos li.title {
         text-align: left;
-        color: #737373;
+        color: #6a6572;
         padding-left: 1rem;
         padding-right: 0;
         font-size: 1.2rem; }
@@ -4426,7 +4426,7 @@ section {
       position: absolute;
       left: 0;
       top: 0.5rem;
-      color: #737373;
+      color: #6a6572;
       font-size: 1.2rem; }
     .single-info a ul {
       overflow: hidden; }
@@ -4477,7 +4477,7 @@ section {
     .hnwords .hninfo .desc {
       font-size: 1rem;
       line-height: 1.6rem;
-      color: #737373;
+      color: #6a6572;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
@@ -4516,7 +4516,7 @@ section {
     position: absolute;
     left: 1.5rem;
     top: 1rem;
-    color: #737373;
+    color: #6a6572;
     font-size: 1.2rem; }
 
 .report_wrap {
@@ -4530,7 +4530,7 @@ section {
     margin: 0;
     line-height: 4rem; }
   .report_wrap label {
-    color: #737373;
+    color: #6a6572;
     font-size: 1.2rem;
     line-height: 2.5rem;
     display: block;
@@ -4741,7 +4741,7 @@ section {
 .wxno_wrap {
   padding: 1.5rem; }
   .wxno_wrap label {
-    color: #737373; }
+    color: #6a6572; }
     .wxno_wrap label em {
       display: block;
       line-height: 2.5rem;
@@ -4774,7 +4774,7 @@ section {
   padding: 2rem 1.5rem 0; }
   .prompt-wrap label {
     font-size: 1.2rem;
-    color: #737373;
+    color: #6a6572;
     display: block;
     text-align: left;
     line-height: 2.4rem; }
@@ -4815,7 +4815,7 @@ section {
           width: 1px;
           background: #d4d4d4; }
       .prompt-wrap .btn-row a.btn-cancel {
-        color: #737373; }
+        color: #6a6572; }
 
 .mpsay-bot {
   display: flex;
@@ -5025,11 +5025,11 @@ section {
         flex: 0 0 8rem;
         text-align: right;
         font-size: 1rem;
-        color: #737373;
+        color: #6a6572;
         justify-content: center;
         align-self: center; }
     .contacts a .content .bot-t {
-      color: #737373;
+      color: #6a6572;
       font-size: 1.2rem;
       font-weight: 300; }
   .contacts a .readflag {

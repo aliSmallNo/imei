@@ -4,9 +4,9 @@ $mainColorLight: lighten($mainColor, 8%)
 $mainColorLighter: lighten($mainColor, 24%)
 $mainColorDark: darken($mainColor, 6%)
 $white: #fff
-$fontColor: #333
+$fontColor: #363438
 $grayFontColorLight: #999
-$grayFontColor: #737373
+$grayFontColor: #6a6572
 $grayFontColorDark: #525252
 $disabledFontColor: #aaa
 $bgColor: #F4F4F4
@@ -20,10 +20,10 @@ $moneyColor: #f60
 $moneyColorLight: lighten($moneyColor, 5%)
 $moneyColorDark: darken($moneyColor, 10%)
 $redColor: #E53935
+$redColorLight: #f24
 $moneyColorDark: darken($moneyColor, 5%)
 $borderColor: #E4E4E4
 $borderColorLight: #EEEFF3
-//#E8E8E8
 $borderColorDark: #d4d4d4
 $borderColorFooter: #d4d4d4
 $chatColor: #1296db
@@ -544,12 +544,12 @@ section
 	line-height: 2rem
 
 .btn-outline
-	height: 2.4rem
-	line-height: 2.4rem
-	padding: 0 1rem
+	height: 2.2rem
+	line-height: 2.2rem
+	padding: 0 .8rem
 	display: block
-	font-size: 1.3rem
-	border-radius: 1.3rem
+	font-size: 1.2rem
+	border-radius: 1.15rem
 	border: 1px solid $linkColorLight
 	color: $linkColor
 	background: #fff
@@ -1252,10 +1252,10 @@ section
 		font-size: 1.4rem
 		.noReadFlag
 			position: absolute
-			width: .5rem
-			height: .5rem
-			background: red
-			border-radius: .5rem
+			width: .6rem
+			height: .6rem
+			background: $redColorLight
+			border-radius: .3rem
 			top: 1rem
 			left: 5rem
 		.tip
@@ -1344,10 +1344,10 @@ section
 	position: relative
 	.btn-outline
 		position: absolute
-		right: 1rem
+		right: 1.5rem
 		top: .7rem
 		&.change-role
-			right: 6.6rem
+			right: 7rem
 	.avatar
 		@include displayFlex-w(10rem)
 		text-align: center
@@ -4725,6 +4725,7 @@ section
 	background: #fff
 	padding: .5rem 1rem
 	border-bottom: 1px solid $borderColor
+
 .contacts
 	a
 		@include displayFlex
