@@ -940,12 +940,15 @@
 </script>
 <script type="text/template" id="tpl_contact">
 	{[#items]}
-	<a href="javascript:;" data-id="{[encryptId]}">
+	<a href="javascript:;" data-id="{[encryptId]}" data-cid="{[cid]}" data-read="{[readflag]}">
 		<div class="avatar"><img src="{[avatar]}"></div>
 		<div class="content">
 			<div class="top-t"><em>{[name]}</em><i>{[dt]}</i></div>
 			<div class="bot-t">{[content]}</div>
 		</div>
+		{[^readflag]}
+		<span class="readflag"></span>
+		{[/readflag]}
 	</a>
 	{[/items]}
 </script>
@@ -955,4 +958,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/iscroll.js"></script>
-<script data-main="/js/single.js?v=1.5.2" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.5.3" src="/assets/js/require.js"></script>

@@ -4981,6 +4981,7 @@ section {
   display: -ms-flexbox;
   display: flex;
   padding: 0.5rem 0;
+  position: relative;
   border-bottom: 1px solid #E4E4E4; }
   .contacts a:last-child {
     border-bottom: none; }
@@ -5031,6 +5032,14 @@ section {
       color: #737373;
       font-size: 1.2rem;
       font-weight: 300; }
+  .contacts a .readflag {
+    position: absolute;
+    background: red;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 0.5rem;
+    left: -0.5rem;
+    top: 0.1rem; }
 
 .chats li {
   display: -webkit-box;

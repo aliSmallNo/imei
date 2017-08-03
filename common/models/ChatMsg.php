@@ -17,6 +17,10 @@ class ChatMsg extends ActiveRecord
 {
 	const LIMIT_NUM = 10;
 
+	const NO_READ = 0; // 未读
+	const HAS_READ = 1; // 已读
+
+
 	public static function tableName()
 	{
 		return '{{%chat_msg}}';
@@ -151,6 +155,7 @@ class ChatMsg extends ActiveRecord
 			$contents[$row['cId']] = [
 				'cid' => $row['cId'],
 				'content' => $row['cContent'],
+				'readflag' => intval($row['cReadFlag']),
 				'dt' => AppUtil::prettyDate($row['cAddedOn']),
 			];
 		}
