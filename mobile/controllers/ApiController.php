@@ -974,6 +974,7 @@ class ApiController extends Controller
 				} elseif ($ret && is_numeric($ret)) {
 					return self::renderAPI(129, '不好意思哦，最多只能聊' . $ret . '句');
 				} else {
+					WechatUtil::chatNotice($receiverId,$uid);
 					return self::renderAPI(0, '', ['items' => $ret]);
 				}
 				break;
