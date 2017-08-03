@@ -78,7 +78,7 @@ class QueueUtil
 	public static function sendSMS($params)
 	{
 		self::smsMessage($params['phone'], $params['msg'],
-			isset($params['appendId']) ? $params['appendId'] : '1234',
+			isset($params['rnd']) ? $params['rnd'] : rand(101, 109),
 			isset($params['type']) ? $params['type'] : 'real');
 		return true;
 	}
