@@ -411,7 +411,7 @@ require(["layer"],
 						util.loading = 1;
 						$.post("/api/chat", {
 							tag: "read",
-							cid: cid
+							sid: util.sid,
 						}, function (resp) {
 							if (resp.code == 0) {
 								self.find("span").remove();
