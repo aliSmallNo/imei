@@ -4729,6 +4729,7 @@ section
 	a
 		@include displayFlex
 		padding: .5rem 0
+		position: relative
 		border-bottom: 1px solid $borderColor
 		&:last-child
 			border-bottom: none
@@ -4762,6 +4763,14 @@ section
 				color: $grayFontColor
 				font-size: 1.2rem
 				font-weight: $weightNormal
+		.readflag
+			position: absolute
+			background: red
+			width: .5rem
+			height: .5rem
+			border-radius: .5rem
+			left: -0.5rem
+			top: 0.1rem
 
 #schat
 

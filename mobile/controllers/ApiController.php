@@ -996,6 +996,16 @@ class ApiController extends Controller
 					'nextPage' => intval($nextPage)
 				]);
 				break;
+			case 'read':
+				$cid = self::postParam('cid', 1);
+				if ($cid > 0 && $chatInfo = ChatMsg::findOne(["cId" => $cid])) {
+					$chatInfo->cReadFlag = ChatMsg::HAS_READ;
+					$chatInfo->save();
+					return self::renderAPI(0, '');
+				} else {
+					return self::renderAPI(129, '参数错误');
+				}
+				break;
 		}
 		return self::renderAPI(129, '操作无效~');
 	}
