@@ -528,7 +528,7 @@ class WechatUtil
 		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
 		AppUtil::postJSON($url, json_encode($bodyInfo));
 		$text = isset(UserMsg::$catDict[$msgCat]) ? UserMsg::$catDict[$msgCat] : '';
-		$result = UserMsg::edit("", [
+		$result = UserMsg::edit(0, [
 			"mUId" => $uId,
 			"mCategory" => $msgCat,
 			"mText" => $text,

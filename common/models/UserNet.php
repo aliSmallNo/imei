@@ -596,8 +596,7 @@ class UserNet extends ActiveRecord
 					WechatUtil::templateMsg(WechatUtil::NOTICE_RETURN,
 						$myUid,
 						'你向TA要微信号，可是TA已经长时间不回应，系统默认为不同意了，你送出的媒桂花也退回了',
-						'不用烦恼，不用气馁，还有更好的在未来等你',
-						1);
+						'不用烦恼，不用气馁，还有更好的在未来等你');
 				}
 				break;
 		}

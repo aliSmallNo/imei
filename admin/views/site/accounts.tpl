@@ -229,9 +229,9 @@
 				{{/foreach}}
 			</td>
 			<td>
-				<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改用户</a>
+				<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改信息</a>
 				<div class="btn-divider"></div>
-				<a href="javascript:;" class="delU btn btn-outline btn-danger btn-xs" cid="{{$prod.id}}">删除用户</a>
+				<a href="javascript:;" class="check btn btn-outline btn-danger btn-xs" cid="{{$prod.id}}">审核用户</a>
 				<h5>创建于{{$prod.addedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 				<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 			</td>
@@ -242,15 +242,16 @@
 	{{$pagination}}
 </div>
 <script>
-	$("a.delU").click(function () {
+	$("a.check").click(function () {
 		var id = $(this).attr("cid");
-		layer.confirm('您确定要删除这个用户吗？', {
+
+		/*layer.confirm('您确定要删除这个用户吗？', {
 			btn: ['确定', '取消'],
 			title: '删除用户'
 		}, function () {
 			delUser(id);
 		}, function () {
-		});
+		});*/
 	});
 
 	function delUser(id) {
