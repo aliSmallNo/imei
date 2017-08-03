@@ -727,7 +727,7 @@ class WechatUtil
 			"template_id" => "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI",
 			"url" => $url,
 			"data" => [
-				"first" => ["color" => "#555555", "value" => "你好，" . $userInfo['uNme'] . "\n"],
+				"first" => ["color" => "#555555", "value" => "你好，" . $userInfo['uName'] . "\n"],
 				"keyword1" => ["color" => "#0D47A1", "value" => "密聊记录"],
 				"keyword2" => ["color" => "#f06292", "value" => $SendInfo["uName"] . " 跟你发了一条密聊信息，快去看看吧！"],
 				"keyword3" => ["color" => "#333333", "value" => date("Y年n月j日 H:i")],
