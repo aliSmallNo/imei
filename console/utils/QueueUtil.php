@@ -79,7 +79,7 @@ class QueueUtil
 	{
 		self::smsMessage($params['phone'], $params['msg'],
 			isset($params['rnd']) ? $params['rnd'] : rand(101, 109),
-			isset($params['type']) ? $params['type'] : 'real');
+			isset($params['type']) ? $params['type'] : 'sale');
 		return true;
 	}
 
