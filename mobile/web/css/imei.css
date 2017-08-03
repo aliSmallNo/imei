@@ -5170,4 +5170,44 @@ section {
     font-weight: 300;
     text-align: left; }
 
+.splay, .mplay {
+  padding: 2rem 1rem; }
+  .splay .splay-title, .splay .mplay-title, .mplay .splay-title, .mplay .mplay-title {
+    font-size: 2rem;
+    font-weight: 800; }
+  .splay .splay-lite-title, .mplay .splay-lite-title {
+    font-size: 1.2rem;
+    text-align: left; }
+  .splay .splay-step-text, .splay .mplay-step-text, .mplay .splay-step-text, .mplay .mplay-step-text {
+    font-size: 1.5rem;
+    text-align: left;
+    padding: 2rem 0 1rem 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+    .splay .splay-step-text span, .splay .mplay-step-text span, .mplay .splay-step-text span, .mplay .mplay-step-text span {
+      color: #fff;
+      display: block;
+      flex: 0 0 1rem;
+      border-radius: 2rem;
+      text-align: center;
+      padding: 0 0.5rem;
+      background: #f6aec6;
+      max-height: 2rem;
+      max-width: 2rem; }
+    .splay .splay-step-text div, .splay .mplay-step-text div, .mplay .splay-step-text div, .mplay .mplay-step-text div {
+      flex: 1;
+      margin-left: 1rem; }
+  .splay .splay-step-img, .splay .mplay-step-img, .mplay .splay-step-img, .mplay .mplay-step-img {
+    text-align: left; }
+    .splay .splay-step-img img, .splay .mplay-step-img img, .mplay .splay-step-img img, .mplay .mplay-step-img img {
+      width: 20rem;
+      margin-left: 3rem;
+      border: 1px solid #f6aec6; }
+  .splay .splay-cert, .mplay .splay-cert {
+    font-size: 1.5rem;
+    font-weight: 500;
+    padding: 2rem 2rem 1rem 0; }
+
 /*# sourceMappingURL=imei.css.map */

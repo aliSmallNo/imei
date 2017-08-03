@@ -636,7 +636,7 @@ class SiteController extends BaseController
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
 				'category' => 'users',
-				'list' => $list,
+				'list' => $list
 			]
 		);
 	}
