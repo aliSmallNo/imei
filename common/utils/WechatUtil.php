@@ -494,14 +494,14 @@ class WechatUtil
 				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = ($noticeTag == self::NOTICE_RETURN ? $wxUrl . "/wx/sw?id=" . $encryptId : $wxUrl . "/wx/single#IaddWx");
 				$keywords['first'] = "hi，$nickname\n";
-				$keywords['remark'] = '\n点击下方详情查看吧~';
+				$keywords['remark'] =  "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_CHAT:
 				$msgCat = UserMsg::CATEGORY_CHAT;
 				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = $wxUrl . "/wx/single#scontacts";
 				$keywords['first'] = "hi，$nickname\n";
-				$keywords['remark'] = '\n点击下方详情查看吧~';
+				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			default:
 				$url = $templateId = '';
