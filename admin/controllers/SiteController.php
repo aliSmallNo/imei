@@ -270,6 +270,7 @@ class SiteController extends BaseController
 		}
 
 		list($list, $count) = User::users($criteria, $params, $page);
+
 		foreach ($list as &$v) {
 			$dataImg = [];
 			foreach ($v["album"] as $v1) {
