@@ -70,6 +70,12 @@
 		background: #ddd;
 	}
 
+	.pInfo span.status-10 {
+		color: #fff;
+		border: 1px solid #4d4d4d;
+		background: #4d4d4d;
+	}
+
 	td h5 {
 		font-size: 12px;
 		font-weight: 400;
@@ -180,9 +186,9 @@
 			<td class="pInfo">
 				<span class="role{{$prod.role}}">{{$prod.role_t}}</span> {{$prod.name}}
 				<em>{{$prod.phone}} {{$prod.location_t}}</em>
-				<em>{{$prod.note_t}}</em>
+				<em style="display: none">{{$prod.note_t}}</em>
 				<span class="sub{{$prod.subscribe}}">{{if $prod.subscribe}}已关注{{else}}未关注{{/if}}</span>
-				<span class="status-{{$prod.status}}">{{$prod.status_t}}</span>
+				<span class="status-{{if $prod.note_t}}10{{else}}{{$prod.status}}{{/if}}">{{if $prod.note_t}}{{$prod.note_t}}{{else}}{{$prod.status_t}}{{/if}}</span>
 				<span class="status-1">{{if $prod.certstatus==2}}{{$prod.certstatus_t}}{{/if}}</span>
 				<br>
 				<div class="perc-wrap">
