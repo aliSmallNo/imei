@@ -72,7 +72,7 @@
 <ul class="notice">
 	{{foreach from=$items item=item}}
 	<li>
-		<a data-url="/wx/{{$item.url}}?id={{$item.secretId}}" data-id="{{$item.mId}}" data-readflag="{{$item.readflag}}" class="notice-item notice-read">
+		<a data-url="/wx/{{$item.url}}" data-id="{{$item.mId}}" data-readflag="{{$item.readflag}}" class="notice-item notice-read">
 			<div class="notice-avatar"><img src="{{$item.avatar}}"></div>
 			<div class="notice-right">
 				<div class="title">{{$item.text}}</div>

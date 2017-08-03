@@ -974,7 +974,7 @@ class ApiController extends Controller
 				} elseif ($ret && is_numeric($ret)) {
 					return self::renderAPI(129, '不好意思哦，最多只能聊' . $ret . '句');
 				} else {
-					WechatUtil::chatNotice($receiverId,$uid);
+					WechatUtil::chatNotice($receiverId, $uid);
 					return self::renderAPI(0, '', ['items' => $ret]);
 				}
 				break;
@@ -1003,10 +1003,15 @@ class ApiController extends Controller
 				]);
 				break;
 			case 'read':
-				$cid = self::postParam('cid', 1);
-				if ($cid > 0 && $chatInfo = ChatMsg::findOne(["cId" => $cid])) {
-					$chatInfo->cReadFlag = ChatMsg::HAS_READ;
-					$chatInfo->save();
+				$sid = self::postParam('sid', 1);
+				$sid = AppUtil::decrypt($sid); // 聊天对象的 uId
+				if ($sid > 0 ) {
+					$hasRead = ChatMsg::HAS_READ;
+					$sql = "update im_chat_msg set cReadFlag=$hasRead where (cSenderId=:sid  and cReceiverId=:uid) or (cReceiverId=:sid and cSenderId=:uid)";
+					AppUtil::db()->createCommand($sql)->bindValues([
+						"sid" => $sid,
+						"uid" => $uid,
+					])->execute();
 					return self::renderAPI(0, '');
 				} else {
 					return self::renderAPI(129, '参数错误');
