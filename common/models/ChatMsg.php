@@ -152,10 +152,14 @@ class ChatMsg extends ActiveRecord
 		$ret = $conn->createCommand($sql)->queryAll();
 		$contents = [];
 		foreach ($ret as $row) {
+			$readFlag = intval($row['cReadFlag']);
+			if ($uId == $row['cSenderId']) {
+				$readFlag = 1;
+			}
 			$contents[$row['cId']] = [
 				'cid' => $row['cId'],
 				'content' => $row['cContent'],
-				'readflag' => intval($row['cReadFlag']),
+				'readflag' => $readFlag,
 				'dt' => AppUtil::prettyDate($row['cAddedOn']),
 			];
 		}
