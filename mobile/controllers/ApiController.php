@@ -974,7 +974,8 @@ class ApiController extends Controller
 				} elseif ($ret && is_numeric($ret)) {
 					return self::renderAPI(129, '不好意思哦，最多只能聊' . $ret . '句');
 				} else {
-					WechatUtil::chatNotice($receiverId, $uid);
+					WechatUtil::templateMsg(WechatUtil::NOTICE_CHAT, $uid,
+						'有人密聊你啦', 'TA给你发了一条密聊消息，快去看看吧~');
 					return self::renderAPI(0, '', ['items' => $ret]);
 				}
 				break;
@@ -1005,7 +1006,7 @@ class ApiController extends Controller
 			case 'read':
 				$sid = self::postParam('sid', 1);
 				$sid = AppUtil::decrypt($sid); // 聊天对象的 uId
-				if ($sid > 0 ) {
+				if ($sid > 0) {
 					$hasRead = ChatMsg::HAS_READ;
 					$sql = "update im_chat_msg set cReadFlag=$hasRead where (cSenderId=:sid  and cReceiverId=:uid) or (cReceiverId=:sid and cSenderId=:uid)";
 					AppUtil::db()->createCommand($sql)->bindValues([
