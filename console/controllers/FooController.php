@@ -14,6 +14,7 @@ use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\WechatUtil;
+use console\utils\QueueUtil;
 use Gregwar\Image\Image;
 use yii\console\Controller;
 
@@ -397,6 +398,14 @@ class FooController extends Controller
 		$url = 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEK7yJviaSKaecbDokEibInMrKbVB0ib4FBXR0KL8dyxOSUYcoTBDLdHA8OVicZoyrC1libAY8nw8JYagibg/0';
 		$ret = ImageUtil::save2Server($url, false);
 		var_dump($ret);
+	}
+
+	public function actionSms()
+	{
+		QueueUtil::loadJob('sendSMS', [
+			'phone' => 18600442970,
+			'msg' => '有人在「微媒100」上对你心动了。如果你找不到回「微媒100」的路，请在微信中搜索公众号「微媒100」关注了就行'
+		]);
 	}
 
 	public function actionRain($param1 = '', $param2 = '')

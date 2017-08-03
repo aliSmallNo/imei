@@ -59,7 +59,7 @@ class QueueUtil
 	public static function logFile($msg, $funcName = '', $line = '')
 	{
 		if (is_array($msg)) {
-			$msg = json_encode($msg);
+			$msg = json_encode($msg, JSON_UNESCAPED_UNICODE);
 		}
 		if ($funcName) {
 			$msg = $funcName . ' ' . $line . ': ' . $msg;
@@ -74,43 +74,23 @@ class QueueUtil
 		}
 	}
 
-	public static function sendSMS($phone, $msg, $appendId = '1234', $type = 'real')
-	{
-		$formatMsg = $msg;
-		if (mb_strpos($msg, '【微媒100】') == false) {
-			$formatMsg = '【微媒100】' . $msg;
-		}
-		$openId = "benpao";
-		$openPwd = "bpbHD2015";
-		if ($type != 'real') {
-			$openId = "benpaoyx";
-			$openPwd = "Cv3F_ClN";
-		}
-		$msg = urlencode(iconv("UTF-8", "gbk//TRANSLIT", $formatMsg));
-		$url = "http://221.179.180.158:9007/QxtSms/QxtFirewall?OperID=$openId&OperPass=$openPwd&SendTime=&ValidTime=&AppendID=$appendId&DesMobile=$phone&Content=$msg&ContentType=8";
-		$res = file_get_contents($url);
-		self::logFile($phone . ' - ' . $formatMsg . ' ' . $res, __FUNCTION__, __LINE__);
-		return true;
-	}
 
-	public static function pushSMS($parameters)
+	public static function sendSMS($params)
 	{
-		self::sendSMS($parameters['phone'], $parameters['msg'],
-			isset($parameters['appendId']) ? $parameters['appendId'] : '1234',
-			isset($parameters['type']) ? $parameters['type'] : 'real');
+		self::smsMessage($params['phone'], $params['msg'],
+			isset($params['appendId']) ? $params['appendId'] : '1234',
+			isset($params['type']) ? $params['type'] : 'real');
 		return true;
 	}
 
 	/**
 	 * 发送短信信息
-	 *
+	 * @param array $params
+	 * @return boolean
 	 * */
 	public static function message($params)
 	{
-		self::sendSMS($params['phone'], '验证码 ' . $params['code'] . '，如非本人操作，请忽略本短信。', '100001');
-
-		/*$res = file_get_contents('http://221.179.180.158:9007/QxtSms/QxtFirewall?OperID=benpao&OperPass=bpbHD2015&SendTime=&ValidTime=&AppendID=1234&DesMobile=' . $timeInfo['phone'] . '&Content=' . urlencode(iconv("UTF-8", "gbk//TRANSLIT", '【奔跑到家】验证码：' . $timeInfo['code'] . '，如非本人操作，请忽略本短信。')) . '&ContentType=8');
-		file_put_contents("/tmp/phone.log", $res . PHP_EOL, FILE_APPEND);*/
+		self::smsMessage($params['phone'], '验证码 ' . $params['code'] . '，如非本人操作，请忽略本短信。', '100001');
 		return true;
 	}
 
@@ -124,4 +104,23 @@ class QueueUtil
 		return $ret;
 	}
 
+	protected static function smsMessage($phone, $msg, $appendId = '1234', $type = 'sale')
+	{
+		$formatMsg = $msg;
+		if (mb_strpos($msg, '【微媒100】') == false) {
+			$formatMsg = '【微媒100】' . $msg;
+		}
+		$openId = "benpao";
+		$openPwd = "bpbHD2015";
+		if ($type == 'sale') {
+			$openId = "benpaoyx";
+			$openPwd = "Cv3F_ClN";
+		}
+		$msg = urlencode(iconv("UTF-8", "gbk//TRANSLIT", $formatMsg));
+		$url = 'http://221.179.180.158:9007/QxtSms/QxtFirewall?OperID=%s&OperPass=%s&SendTime=&ValidTime=&AppendID=%s&DesMobile=%s&Content=%s&ContentType=8';
+		$url = sprintf($url, $openId, $openPwd, $appendId, $phone, $msg);
+		$res = file_get_contents($url);
+		self::logFile([$phone, $formatMsg, $res], __FUNCTION__, __LINE__);
+		return true;
+	}
 }
