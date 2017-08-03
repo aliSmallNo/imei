@@ -209,6 +209,15 @@ class ApiController extends Controller
 					$res = AppUtil::db()->createCommand($sql)->queryAll();
 				}
 				return self::renderAPI(0, '', $res);
+			case "del-user":
+				if ($uInfo = User::findOne(["uId" => $id])) {
+					$uInfo->uStatus = User::STATUS_DELETE;
+					$uInfo->save();
+					return self::renderAPI(0, '删除成功');
+				} else {
+					return self::renderAPI(129, '删除失败');
+				}
+				break;
 
 		}
 		return self::renderAPI($ret["code"], $ret["msg"]);

@@ -185,7 +185,7 @@
 			</td>
 			<td class="pInfo">
 				<span class="role{{$prod.role}}">{{$prod.role_t}}</span> {{$prod.name}}
-				<em>{{$prod.phone}} {{$prod.location_t}}</em>
+				<em>{{$prod.phone}} {{$prod.wechatid}} {{$prod.location_t}}</em>
 				<em style="display: none">{{$prod.note_t}}</em>
 				<span class="sub{{$prod.subscribe}}">{{if $prod.subscribe}}已关注{{else}}未关注{{/if}}</span>
 				<span class="status-{{if $prod.note_t}}10{{else}}{{$prod.status}}{{/if}}">{{if $prod.note_t}}{{$prod.note_t}}{{else}}{{$prod.status_t}}{{/if}}</span>
@@ -254,7 +254,7 @@
 	});
 
 	function delUser(id) {
-		$.post("/api/user", {
+		$.post("/api/users", {
 			tag: "del-user",
 			id: id
 		}, function (resp) {

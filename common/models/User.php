@@ -428,7 +428,7 @@ class User extends ActiveRecord
 		}
 		$offset = ($page - 1) * $pageSize;
 		$conn = AppUtil::db();
-		$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe
+		$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe,w.wWechatId
  				  FROM im_user as u 
 				  JOIN im_user_wechat as w on w.wUId=u.uId
 				  WHERE uId>0 $strCriteria 
