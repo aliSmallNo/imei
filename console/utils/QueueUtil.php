@@ -74,12 +74,11 @@ class QueueUtil
 		}
 	}
 
-
 	public static function sendSMS($params)
 	{
 		self::smsMessage($params['phone'], $params['msg'],
-			isset($params['appendId']) ? $params['appendId'] : '1234',
-			isset($params['type']) ? $params['type'] : 'real');
+			isset($params['rnd']) ? $params['rnd'] : rand(101, 109),
+			isset($params['type']) ? $params['type'] : 'sale');
 		return true;
 	}
 
@@ -100,7 +99,6 @@ class QueueUtil
 		$ret = shell_exec("/data/code/pub_imei.sh 2>&1");
 		$ret = self::QUEUE_TUBE . " 更新代码成功! \n" . date("Y-m-d H:i:s") . "\n\n更新日志: \n" . $ret;
 		RedisUtil::setCache($ret, RedisUtil::KEY_PUB_CODE, $id);
-
 		return $ret;
 	}
 

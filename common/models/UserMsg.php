@@ -6,6 +6,7 @@
 namespace common\models;
 
 use common\utils\AppUtil;
+use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
 
 class UserMsg extends ActiveRecord
@@ -31,6 +32,7 @@ class UserMsg extends ActiveRecord
 	const CATEGORY_MP_SAY = 150;
 	const CATEGORY_REWARD_NEW = 160;
 	const CATEGORY_CHAT = 170;
+	const CATEGORY_SMS_RECALL = 200;
 
 	static $catDict = [
 		self::CATEGORY_ADMIN_PASS => "审核通过",
@@ -46,6 +48,7 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_MP_SAY => "修改了你的媒婆说",
 		self::CATEGORY_REWARD_NEW => "新人奖励",
 		self::CATEGORY_CHAT => "密聊信息",
+		self::CATEGORY_SMS_RECALL => "短信召回老用户",
 	];
 
 	public static function tableName()
@@ -157,4 +160,53 @@ class UserMsg extends ActiveRecord
 		return [$ret, $nextPage];
 	}
 
+	/**
+	 * 召回已离开的老用户
+	 * @param int $uid
+	 * @return int
+	 */
+	public static function recall($uid = 0)
+	{
+		$conn = AppUtil::db();
+		$strCriteria = '';
+		if ($uid && is_numeric($uid)) {
+			$strCriteria = ' AND u.uId=' . $uid;
+		}
+		$sql = 'select u.uId, u.uName,u.uPhone, max(n.nRelation) as rel
+				 from im_user as u 
+				 join im_user_wechat as w on w.wUId=u.uId
+				 join im_user_net as n on n.nUId=u.uId and n.nRelation in (150,140)
+				 where IFNULL(w.wSubscribe,0)=0 and u.uStatus<9 and uPhone !=\'\' ' . $strCriteria . '
+				 group by u.uId,u.uName,u.uPhone';
+		$ret = $conn->createCommand($sql)->queryAll();
+		$count = 0;
+		foreach ($ret as $row) {
+			$uId = $row['uId'];
+			$msg = '有人%s。如果你找不到回「微媒100」的路，请在微信中搜索公众号「微媒100」关注了就行';
+			switch ($row['rel']) {
+				case UserNet::REL_LINK:
+					$msg = sprintf($msg, '跟你要微信号了');
+					break;
+				default:
+					$msg = sprintf($msg, '对你心动了');
+					break;
+			}
+			$params = [
+				'phone' => $row['uPhone'],
+				'rnd' => $row['rel'],
+				'msg' => $msg
+			];
+			QueueUtil::loadJob('sendSMS', $params);
+			self::edit(0, [
+				"mAddedBy" => 1,
+				"mAddedOn" => date("Y-m-d H:i:s"),
+				"mUId" => $uId,
+				"mCategory" => self::CATEGORY_SMS_RECALL,
+				"mText" => self::$catDict[self::CATEGORY_SMS_RECALL],
+				'mRaw' => json_encode($params, JSON_UNESCAPED_UNICODE)
+			]);
+			$count++;
+		}
+		return $count;
+	}
 }

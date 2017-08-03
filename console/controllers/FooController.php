@@ -400,12 +400,16 @@ class FooController extends Controller
 		var_dump($ret);
 	}
 
+
 	public function actionSms($phone = 18600442970)
 	{
 		QueueUtil::loadJob('sendSMS', [
 			'phone' => $phone,
-			'msg' => '有人在「微媒100」上对你心动了。如果你找不到回「微媒100」的路，请在微信中搜索公众号「微媒100」关注了就行'
+			'msg' => '有人对你心动了。如果你找不到回「微媒100」的路，请在微信中搜索公众号「微媒100」关注了就行',
+			'rnd' => 108
 		]);
+		/*$ret = UserMsg::recall();
+		var_dump($ret);*/
 	}
 
 	public function actionRain($param1 = '', $param2 = '')
