@@ -4,11 +4,11 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use admin\models\Menu;
+use common\models\ChatMsg;
 use common\models\City;
 use common\models\Feedback;
 use common\models\LogAction;
 use common\models\Mark;
-use common\models\ChatMsg;
 use common\models\User;
 use common\models\UserBuzz;
 use common\models\UserMsg;
@@ -191,26 +191,21 @@ class SiteController extends BaseController
 			}
 
 			if (!$error) {
-				if ($id) {
-					$preStatus = User::findOne(["uId" => $id])->uStatus;
-					$curStatus = $data["uStatus"];
-					if ($preStatus == User::STATUS_PENDING && $curStatus == User::STATUS_ACTIVE) {
-						WechatUtil::regNotice($id, "pass");
-					}
-					if ($preStatus == User::STATUS_ACTIVE && $curStatus == User::STATUS_PENDING) {
-						WechatUtil::regNotice($id, "refuse");
-					}
-
-					User::edit($id, $data, Admin::getAdminId());
-					$success = self::ICON_OK_HTML . '修改成功';
-
-				} else {
-					User::edit($id, $data, Admin::getAdminId());
-					$success = self::ICON_OK_HTML . '添加成功';
+				$userInfo = User::findOne(["uId" => $id])->toArray();
+				$preStatus = $userInfo['uStatus'];
+				$curStatus = $data["uStatus"];
+				if ($preStatus == User::STATUS_PENDING && $curStatus == User::STATUS_ACTIVE) {
+					WechatUtil::regNotice($id, "pass");
 				}
+				if ($preStatus == User::STATUS_ACTIVE && $curStatus == User::STATUS_PENDING) {
+					WechatUtil::regNotice($id, "refuse");
+				}
+				User::edit($id, $data, Admin::getAdminId());
+				$success = self::ICON_OK_HTML . '修改成功';
+				RedisUtil::delCache(RedisUtil::KEY_WX_USER, $userInfo['uOpenId']);
 			}
 		}
-		$userInfo = User::find()->where(['uId' => $id])->asArray()->one();
+		$userInfo = User::findOne(["uId" => $id])->toArray();
 		return $this->renderPage('account.tpl',
 			[
 				"userInfo" => json_encode($userInfo, JSON_UNESCAPED_UNICODE),

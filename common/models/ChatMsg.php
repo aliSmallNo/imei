@@ -201,6 +201,7 @@ class ChatMsg extends ActiveRecord
 				left join im_user as r on c.cReceiverId=r.uId
 				$condStr
 				$limit ";
+
 		$conn = AppUtil::db();
 		$res = $conn->createCommand($sql)->queryAll();
 

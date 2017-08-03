@@ -5,7 +5,7 @@
 	</div>
 	<div class="baseinfo">
 		<div class="title">
-			<h4><em>{{$uInfo.name}}</em> <i class="icon female"></i></h4>
+			<h4><em>{{$uInfo.name}}</em> <i class="icon female"></i> {{if $uInfo.cert}}<i class="t-warning">实名认证</i>{{/if}}</h4>
 			<h5>{{$uInfo.location_t}}</h5>
 		</div>
 		<h6>{{$brief}}</h6>

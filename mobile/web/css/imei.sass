@@ -42,6 +42,11 @@ $actionColorDark: #630
 	border-radius: .3rem
 	background: $redColorLight
 
+@mixin markerCert
+	display: inline-block
+	background: url(../images/ico_cert.png) no-repeat center center
+	background-size: 100% 100%
+
 @mixin translucent
 	background-color: rgba(0, 0, 0, .7)
 
@@ -208,6 +213,15 @@ main
 		content: ""
 	&:after
 		clear: both
+
+.t-warning
+	font-size: 1.1rem
+	color: #fff
+	background: $moneyColor
+	border-radius: 3px
+	padding-left: 3px
+	padding-right: 3px
+	line-height: 2rem
 
 .app-cork
 	position: fixed
@@ -1347,10 +1361,10 @@ section
 	position: relative
 	.btn-outline
 		position: absolute
-		right: 1.5rem
-		top: .7rem
+		right: 2rem
+		top: .6rem
 		&.change-role
-			right: 7rem
+			right: 7.5rem
 	.avatar
 		@include displayFlex-w(10rem)
 		text-align: center
@@ -1375,10 +1389,8 @@ section
 			display: none
 		&.single
 			.i-cert
+				@include markerCert
 				position: absolute
-				display: inline-block
-				background: url(../images/ico_cert.png) no-repeat center center
-				background-size: 100% 100%
 				width: 1.8rem
 				height: 1.8rem
 				right: 1rem
@@ -1439,7 +1451,12 @@ section
 				margin-right: 0
 			img
 				width: 100%
-				height: 100%
+				height: auto
+				vertical-align: middle
+				top: 50%
+				position: relative
+				-webkit-transform: translate(0, -50%)
+				transform: translate(0, -50%)
 
 .u-my-count
 	@include displayFlex
@@ -2612,6 +2629,18 @@ section
 					position: absolute
 					bottom: .5rem
 					left: .8rem
+			.i-cert
+				display: inline-block
+				background: url(../images/ico_cert.png) no-repeat center top
+				background-size: 2rem 2rem
+				position: absolute
+				right: 1rem
+				top: 1rem
+				width: 3.2rem
+				padding-top: 2rem
+				text-align: center
+				color: $moneyColor
+				font-size: 1rem
 			.intro
 				position: absolute
 				left: 0
@@ -2730,6 +2759,7 @@ section
 				&.female
 					background: url(../images/ico_gender_female.png) no-repeat center center
 					background-size: 100% 100%
+
 		.mp-info
 			padding: 2rem 1.5rem
 			position: relative
@@ -4202,10 +4232,10 @@ section
 		li
 			@include borderBox
 			text-align: center
-			padding: .5rem
+			margin: .5rem
 			float: left
-			width: 7rem
-			height: 7rem
+			width: 6rem
+			height: 6rem
 			overflow: hidden
 			&.title
 				text-align: left
@@ -4215,7 +4245,12 @@ section
 				font-size: 1.2rem
 			img
 				width: 100%
-				height: 100%
+				height: auto
+				vertical-align: middle
+				top: 50%
+				position: relative
+				-webkit-transform: translate(0, -50%)
+				transform: translate(0, -50%)
 
 .single-info
 	background: #fff
@@ -4735,13 +4770,12 @@ section
 
 .contacts-wrap
 	background: #fff
-	padding: .5rem 1rem
+	padding: 0 1rem
 	border-bottom: 1px solid $borderColor
-
 .contacts
 	a
 		@include displayFlex
-		padding: .5rem 0
+		padding: .6rem 0
 		position: relative
 		border-bottom: 1px solid $borderColor
 		&:last-child
@@ -4878,6 +4912,7 @@ section
 		font-size: 1rem
 		font-weight: $weightNormal
 		text-align: left
+
 .splay, .mplay
 	padding: 2rem 1rem
 	.splay-title, .mplay-title

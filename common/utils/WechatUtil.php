@@ -34,6 +34,7 @@ class WechatUtil
 	const NOTICE_DECLINE = 'notice_decline';
 	const NOTICE_APPROVE = 'notice_approve';
 	const NOTICE_RETURN = 'notice_return';
+	const NOTICE_CHAT = 'notice_chat';
 
 	/**
 	 * @param $sessionKey
@@ -451,7 +452,7 @@ class WechatUtil
 
 	public static function templateMsg($noticeTag, $uId, $title = '', $subTitle = '', $adminId = 1)
 	{
-		if (AppUtil::scene() == "dev") {
+		if (AppUtil::isDev()) {
 			return 0;
 		}
 		$userInfo = User::findOne(["uId" => $uId]);
@@ -493,7 +494,14 @@ class WechatUtil
 				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = ($noticeTag == self::NOTICE_RETURN ? $wxUrl . "/wx/sw?id=" . $encryptId : $wxUrl . "/wx/single#IaddWx");
 				$keywords['first'] = "hi，$nickname\n";
-				$keywords['remark'] = '点击下方详情查看吧~';
+				$keywords['remark'] =  "\n点击下方详情查看吧~";
+				break;
+			case self::NOTICE_CHAT:
+				$msgCat = UserMsg::CATEGORY_CHAT;
+				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$url = $wxUrl . "/wx/single#scontacts";
+				$keywords['first'] = "hi，$nickname\n";
+				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			default:
 				$url = $templateId = '';
@@ -532,7 +540,7 @@ class WechatUtil
 
 	public static function regNotice($uId, $tag)
 	{
-		if (AppUtil::scene() == "dev") {
+		if (AppUtil::isDev()) {
 			return 0;
 		}
 		$userInfo = User::findOne(["uId" => $uId]);
@@ -701,47 +709,6 @@ class WechatUtil
 			"mCategory" => $cat,
 			"mText" => $keyword1Val,
 			"mAddedBy" => $myId,
-		]);
-		return $result;
-	}
-
-	public static function chatNotice($rId, $sId)
-	{
-		if (AppUtil::scene() == "dev") {
-			return 0;
-		}
-		$userInfo = User::findOne(["uId" => $rId]);
-		$SendInfo = User::findOne(["uId" => $sId]);
-		if (!$userInfo || !$SendInfo) {
-			return 0;
-		}
-		$openId = isset($userInfo["uOpenId"]) ? $userInfo["uOpenId"] : "";
-		if (!$openId || strlen($openId) < 12) {
-			return 0;
-		}
-		$access_token = self::accessToken();
-		$urlPrefix = AppUtil::wechatUrl();
-		$url = $urlPrefix . "/wx/single#scontacts";
-		$bodyInfo = [
-			"touser" => $openId,
-			"template_id" => "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI",
-			"url" => $url,
-			"data" => [
-				"first" => ["color" => "#555555", "value" => "你好，" . $userInfo['uName'] . "\n"],
-				"keyword1" => ["color" => "#0D47A1", "value" => "有人密聊你啦~"],
-				"keyword2" => ["color" => "#f06292", "value" => $SendInfo["uName"] . " 跟你发了一条密聊信息，快去看看吧！"],
-				"keyword3" => ["color" => "#333333", "value" => date("Y年n月j日 H:i")],
-				"remark" => ["color" => "#555555", "value" => "\n 点击下方详情查看吧~~"],
-			]
-		];
-
-		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
-		$result = AppUtil::postJSON($url, json_encode($bodyInfo));
-		UserMsg::edit("", [
-			"mUId" => $sId,
-			"mCategory" => UserMsg::CATEGORY_CHAT,
-			"mText" => UserMsg::$catDict[UserMsg::CATEGORY_CHAT],
-			"mAddedBy" => $rId,
 		]);
 		return $result;
 	}
