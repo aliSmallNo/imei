@@ -728,7 +728,7 @@ class WechatUtil
 			"url" => $url,
 			"data" => [
 				"first" => ["color" => "#555555", "value" => "你好，" . $userInfo['uName'] . "\n"],
-				"keyword1" => ["color" => "#0D47A1", "value" => "密聊记录"],
+				"keyword1" => ["color" => "#0D47A1", "value" => "有人密聊你啦~"],
 				"keyword2" => ["color" => "#f06292", "value" => $SendInfo["uName"] . " 跟你发了一条密聊信息，快去看看吧！"],
 				"keyword3" => ["color" => "#333333", "value" => date("Y年n月j日 H:i")],
 				"remark" => ["color" => "#555555", "value" => "\n 点击下方详情查看吧~~"],
