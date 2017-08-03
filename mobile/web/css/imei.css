@@ -1181,8 +1181,8 @@ section {
       position: absolute;
       width: 0.6rem;
       height: 0.6rem;
-      background: #f24;
       border-radius: 0.3rem;
+      background: #f24;
       top: 1rem;
       left: 5rem; }
     .m-rows a .tip {
@@ -5034,12 +5034,12 @@ section {
       font-weight: 300; }
   .contacts a .readflag {
     position: absolute;
-    background: red;
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 0.5rem;
-    left: -0.5rem;
-    top: 0.1rem; }
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 0.3rem;
+    background: #f24;
+    left: 3.2rem;
+    top: 0.2rem; }
 
 .chats li {
   display: -webkit-box;
@@ -5111,5 +5111,63 @@ section {
 .m-bot-pl, .m-top-pl {
   height: 1px;
   overflow: hidden; }
+
+.notice {
+  padding: 0.5rem 1rem; }
+
+.notice-item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0.5rem 0;
+  position: relative;
+  border-bottom: 1px solid #eee; }
+  .notice-item .notice-read-flag {
+    position: absolute;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 0.3rem;
+    background: #f24;
+    left: 3.1rem;
+    top: 0.4rem; }
+  .notice-item:after {
+    content: " ";
+    display: inline-block;
+    height: 0.8rem;
+    width: 0.8rem;
+    border-width: 1px 1px 0 0;
+    border-color: #999;
+    border-style: solid;
+    -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    position: absolute;
+    top: 50%;
+    right: 0;
+    margin-top: -0.5rem;
+    right: 1rem; }
+  .notice-item .notice-avatar {
+    -webkit-box-flex: 0 0 3rem;
+    -webkit-flex: 0 0 3rem;
+    -ms-flex: 0 0 3rem;
+    flex: 0 0 3rem; }
+    .notice-item .notice-avatar img {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 3rem;
+      border: 1px solid #fbd2e0; }
+  .notice-item .notice-right {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    margin: 0 3rem 0 1rem; }
+    .notice-item .notice-right .title {
+      font-weight: 400;
+      font-size: 1.2rem; }
+  .notice-item .dt {
+    font-size: 1rem;
+    font-weight: 300;
+    text-align: left; }
 
 /*# sourceMappingURL=imei.css.map */

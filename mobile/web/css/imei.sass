@@ -35,6 +35,13 @@ $actionColorLight: lighten($actionColor, 12%)
 //#c93
 $actionColorDark: #630
 
+@mixin unreadFlag
+	position: absolute
+	width: .6rem
+	height: .6rem
+	border-radius: .3rem
+	background: $redColorLight
+
 @mixin translucent
 	background-color: rgba(0, 0, 0, .7)
 
@@ -1251,11 +1258,7 @@ section
 		background: #fff
 		font-size: 1.4rem
 		.noReadFlag
-			position: absolute
-			width: .6rem
-			height: .6rem
-			background: $redColorLight
-			border-radius: .3rem
+			@include unreadFlag
 			top: 1rem
 			left: 5rem
 		.tip
@@ -4765,15 +4768,9 @@ section
 				font-size: 1.2rem
 				font-weight: $weightNormal
 		.readflag
-			position: absolute
-			background: red
-			width: .5rem
-			height: .5rem
-			border-radius: .5rem
-			left: -0.5rem
-			top: 0.1rem
-
-#schat
+			@include unreadFlag
+			left: 3.2rem
+			top: 0.2rem
 
 .chats
 	li
@@ -4838,3 +4835,37 @@ section
 .m-bot-pl, .m-top-pl
 	height: 1px
 	overflow: hidden
+
+.notice
+	padding: .5rem 1rem
+
+.notice-item
+	@include displayFlex
+	padding: .5rem 0
+	position: relative
+	border-bottom: 1px solid #eee
+	.notice-read-flag
+		@include unreadFlag
+		left: 3.1rem
+		top: .4rem
+	&:after
+		@include arrowRight
+		right: 1rem
+	.notice-avatar
+		@include displayFlex-w(3rem)
+		img
+			width: 3rem
+			height: 3rem
+			border-radius: 3rem
+			border: 1px solid $mainColorLighter
+
+	.notice-right
+		@include displayFlex-1
+		margin: 0 3rem 0 1rem
+		.title
+			font-weight: 400
+			font-size: 1.2rem
+	.dt
+		font-size: 1rem
+		font-weight: $weightNormal
+		text-align: left
