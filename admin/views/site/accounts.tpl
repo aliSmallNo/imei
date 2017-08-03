@@ -254,7 +254,7 @@
 	});
 
 	function delUser(id) {
-		$.post("/api/user", {
+		$.post("/api/users", {
 			tag: "del-user",
 			id: id
 		}, function (resp) {
