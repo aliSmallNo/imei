@@ -487,16 +487,19 @@ class WechatUtil
 				if (!$msgCat) {
 					$msgCat = UserMsg::CATEGORY_ADDWX_REFUSE;
 				}
-			case self::NOTICE_CHAT:
-				if (!$msgCat) {
-					$msgCat = UserMsg::CATEGORY_CHAT;
-				}
 			case self::NOTICE_RETURN:
 				if (!$msgCat) {
 					$msgCat = UserMsg::CATEGORY_RETURN_ROSE;
 				}
 				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = ($noticeTag == self::NOTICE_RETURN ? $wxUrl . "/wx/sw?id=" . $encryptId : $wxUrl . "/wx/single#IaddWx");
+				$keywords['first'] = "hi，$nickname\n";
+				$keywords['remark'] = '\n点击下方详情查看吧~';
+				break;
+			case self::NOTICE_CHAT:
+				$msgCat = UserMsg::CATEGORY_CHAT;
+				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$url = $wxUrl . "/wx/single#scontacts";
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['remark'] = '\n点击下方详情查看吧~';
 				break;
