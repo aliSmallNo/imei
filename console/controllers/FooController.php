@@ -9,12 +9,12 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\User;
-use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\WechatUtil;
+use console\utils\QueueUtil;
 use Gregwar\Image\Image;
 use yii\console\Controller;
 
@@ -403,12 +403,12 @@ class FooController extends Controller
 
 	public function actionSms($phone = 18600442970)
 	{
-		/*QueueUtil::loadJob('sendSMS', [
+		QueueUtil::loadJob('sendSMS', [
 			'phone' => $phone,
 			'msg' => '有人对你心动了。如果你找不到回「微媒100」的路，请在微信中搜索公众号「微媒100」关注了就行'
-		]);*/
-		$ret = UserMsg::recall();
-		var_dump($ret);
+		]);
+		/*$ret = UserMsg::recall();
+		var_dump($ret);*/
 	}
 
 	public function actionRain($param1 = '', $param2 = '')
