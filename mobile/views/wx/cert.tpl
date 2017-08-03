@@ -1,6 +1,6 @@
 <section id="cert">
 	<div class="nav">
-		<a href="/wx/single">返回</a>
+		<a href="/wx/single#sme">返回</a>
 	</div>
 	<div class="cert-content">
 		<div class="cert-header">

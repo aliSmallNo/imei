@@ -395,6 +395,7 @@ class User extends ActiveRecord
 		if ($item['album'] && is_array($item['album'])) {
 			$item['album_cnt'] = count($item['album']);
 		}
+		$item['cert'] = (isset($item['certstatus']) && $item['certstatus'] == self::CERT_STATUS_PASS ? 1 : 0);
 		$item['gender_ico'] = $item['gender'] == self::GENDER_FEMALE ? 'female' : 'male';
 		$item['encryptId'] = AppUtil::encrypt($item['id']);
 		$fields = ['approvedby', 'approvedon', 'addedby', 'updatedby', 'rawdata'];

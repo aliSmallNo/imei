@@ -1356,12 +1356,11 @@ section
 		text-align: center
 		padding: 1.5rem 0
 		position: relative
-
 		img
 			width: 7rem
 			height: 7rem
 			border-radius: 3.6rem
-			border: 3px solid $mainColorLight
+			border: 2px solid $mainColorLighter
 		&:after
 			content: ''
 			background: url(../images/ico_mark_match.png) no-repeat center center
@@ -1374,6 +1373,16 @@ section
 			bottom: 2rem
 		&.single:after
 			display: none
+		&.single
+			.i-cert
+				position: absolute
+				display: inline-block
+				background: url(../images/ico_cert.png) no-repeat center center
+				background-size: 100% 100%
+				width: 1.8rem
+				height: 1.8rem
+				right: 1rem
+				top: 1.9rem
 	.title
 		@include displayFlex-1
 		justify-content: center

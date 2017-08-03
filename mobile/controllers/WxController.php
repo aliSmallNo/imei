@@ -788,7 +788,7 @@ class WxController extends BaseController
 			$celeb = self::$Celebs[$celebId];
 		}
 
-		$editable = $senderUId ? 0 : 1 ;
+		$editable = $senderUId ? 0 : 1;
 		if ($uId == $senderUId) {
 			$editable = true;
 		}

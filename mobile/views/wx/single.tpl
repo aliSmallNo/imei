@@ -51,6 +51,7 @@
 			<div class="u-my-bar">
 				<div class="avatar single">
 					<img src="{{$avatar}}" alt="">
+					{{if $uInfo.cert}}<i class="i-cert"></i>{{/if}}
 				</div>
 				<div class="title">
 					<h4>{{$nickname}}</h4>
@@ -81,7 +82,7 @@
 			<a href="javascript:;" to="focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
-			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span></a>
+			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span class="tip">已认证</span>{{/if}}</a>
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">媒桂花账户</span></a>
 			<a href="/wx/notice">
 				<span class="title">通知</span>
