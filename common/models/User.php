@@ -172,10 +172,12 @@ class User extends ActiveRecord
 
 	const STATUS_PENDING = 0;
 	const STATUS_ACTIVE = 1;
+	const STATUS_DUMMY = 8;
 	const STATUS_DELETE = 9;
 	static $Status = [
 		self::STATUS_PENDING => "待审核",
 		self::STATUS_ACTIVE => "已通过",
+		self::STATUS_DUMMY => "稻草人",
 		self::STATUS_DELETE => "已删除",
 	];
 

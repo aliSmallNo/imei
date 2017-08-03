@@ -154,7 +154,7 @@ class UserMsg extends ActiveRecord
 	}
 
 	/**
-	 * 召回已离开的老用户
+	 * 召回已取消关注公众号的老用户
 	 * @param int $uid
 	 * @return int
 	 */

@@ -363,12 +363,17 @@ class ApiController extends Controller
 				$num = self::postParam("num");
 				$id = self::postParam("id");
 				$id = AppUtil::decrypt($id);
-				if (UserNet::findOne(["nRelation" => UserNet::REL_LINK, "nSubUId" => $wxInfo["uId"], "nUId" => $id, "nStatus" => UserNet::STATUS_WAIT])) {
+				if (UserNet::findOne(["nRelation" => UserNet::REL_LINK,
+					"nSubUId" => $wxInfo["uId"],
+					"nUId" => $id,
+					"nStatus" => UserNet::STATUS_WAIT
+				])) {
 					return self::renderAPI(129, '您已经申请过微信号了哦~');
 				}
 				list($result, $roseAmt) = UserNet::roseAmt($wxInfo["uId"], $id, $num);
 				$wechatID = '';
 				if ($result) {
+					UserMsg::recall($id);
 					$wechatInfo = UserWechat::findOne(['wOpenId' => $openId]);
 					if ($wechatInfo) {
 						$wechatID = $wechatInfo['wWechatId'];
