@@ -738,10 +738,10 @@ class WechatUtil
 		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
 		$result = AppUtil::postJSON($url, json_encode($bodyInfo));
 		UserMsg::edit("", [
-			"mUId" => $rId,
+			"mUId" => $sId,
 			"mCategory" => UserMsg::CATEGORY_CHAT,
 			"mText" => UserMsg::$catDict[UserMsg::CATEGORY_CHAT],
-			"mAddedBy" => $sId,
+			"mAddedBy" => $rId,
 		]);
 		return $result;
 	}
