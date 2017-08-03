@@ -248,19 +248,22 @@ class SiteController extends BaseController
 		$name = self::getParam('name');
 		$phone = self::getParam('phone');
 		$status = self::getParam('status');
-		$stDel = User::STATUS_DELETE;
-		$criteria[] = " uStatus < $stDel ";
-		$params = [];
+		//$st = $status ? $status : User::STATUS_PENDING;
+		//$criteria[] = " uStatus = $st ";
+
+		$params = $criteria = $partCriteria = [];
 		if ($status != "" && ($status == 0 || $status)) {
 			$criteria[] = " uStatus=$status ";
 		}
 		if ($phone) {
 			$criteria[] = " uPhone like :phone ";
+			$partCriteria[] = " uPhone like :phone ";
 			$params[':phone'] = "$phone%";
 		}
 
 		if ($name) {
 			$criteria[] = "  uName like :name ";
+			$partCriteria[] = "  uName like :name ";
 			$params[':name'] = "%$name%";
 		}
 
@@ -271,9 +274,9 @@ class SiteController extends BaseController
 			foreach ($v["album"] as $v1) {
 				$dataImg[] = [
 					"alt" => "相册",
-					"pid" => 666, //图片id
-					"src" => $v1, //原图地址
-					"thumb" => $v1 //缩略图地址
+					"pid" => 666, // 图片id
+					"src" => $v1, // 原图地址
+					"thumb" => $v1 // 缩略图地址
 				];
 			}
 			$v["showImages"] = json_encode([
@@ -283,8 +286,11 @@ class SiteController extends BaseController
 				"data" => $dataImg,
 			]);
 		}
+		//print_r($list);exit;
 		$stat = User::stat();
+		$partCount = User::partCount($partCriteria, $params);
 		$pagination = self::pagination($page, $count);
+
 		return $this->renderPage('accounts.tpl',
 			[
 				"status" => $status,
@@ -295,6 +301,8 @@ class SiteController extends BaseController
 				'pagination' => $pagination,
 				'category' => 'users',
 				"statusT" => User::$Status,
+				"partCount" => $partCount,
+				"partHeader" => User::$Status,
 			]);
 	}
 

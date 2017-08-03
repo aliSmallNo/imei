@@ -172,11 +172,13 @@ class User extends ActiveRecord
 
 	const STATUS_PENDING = 0;
 	const STATUS_ACTIVE = 1;
+	const STATUS_PRISON = 7;
 	const STATUS_DUMMY = 8;
 	const STATUS_DELETE = 9;
 	static $Status = [
 		self::STATUS_PENDING => "待审核",
 		self::STATUS_ACTIVE => "已通过",
+		self::STATUS_PRISON => "小黑屋",
 		self::STATUS_DUMMY => "稻草人",
 		self::STATUS_DELETE => "已删除",
 	];
@@ -437,11 +439,39 @@ class User extends ActiveRecord
 		$items = [];
 		foreach ($ret as $row) {
 			$items[] = self::fmtRow($row);
-
 		}
 		$sql = "SELECT count(1) FROM im_user WHERE uId>0 $strCriteria ";
 		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
 		return [$items, $count];
+	}
+
+	public static function partCount($criteria,$params)
+	{
+		$part = [
+			User::STATUS_PENDING => "pending",
+			User::STATUS_ACTIVE => "active",
+			User::STATUS_PRISON => "prison",
+			User::STATUS_DUMMY => "dummy",
+			User::STATUS_DELETE => "del",
+		];
+		$strCriteria = '';
+		if ($criteria) {
+			$strCriteria = ' AND ' . implode(' AND ', $criteria);
+		}
+		$sql = "select 
+				SUM(CASE WHEN uStatus=0  THEN 1 END) as pending,
+				SUM(CASE WHEN uStatus=1  THEN 1 END) as active,
+				SUM(CASE WHEN uStatus=7  THEN 1 END) as prison,
+				SUM(CASE WHEN uStatus=8  THEN 1 END) as dummy,
+				SUM(CASE WHEN uStatus=9  THEN 1 END) as del
+				from im_user
+				WHERE uId>0 $strCriteria ";
+		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryOne();
+		$partCount = [];
+		foreach ($part as $k => $v) {
+			$partCount[$k] = $res[$v] ? $res[$v] : 0;
+		}
+		return $partCount;
 	}
 
 	public static function stat()
@@ -1296,4 +1326,5 @@ class User extends ActiveRecord
 
 		return $trends;
 	}
+
 }

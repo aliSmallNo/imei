@@ -512,9 +512,7 @@ class ApiController extends Controller
 		return self::renderAPI(129, '操作无效~');
 	}
 
-	/**
-	 * for 小程序
-	 */
+	/*** for 小程序 */
 	public function actionDict()
 	{
 		$tag = self::postParam('tag');
@@ -1049,7 +1047,6 @@ class ApiController extends Controller
 			->save($saveName);
 		return self::renderAPI(0, $saveName, [$content]);
 	}
-
 
 	public function actionPaid()
 	{

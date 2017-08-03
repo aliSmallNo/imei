@@ -137,13 +137,8 @@
 		</div>
 	</div>
 	<div class="row">
-		<form class="form-inline" action="/site/accounts" method="get">
-			<select name="status" class="form-control">
-				<option value="">用户状态</option>
-				{{foreach from=$statusT key=key item=item}}
-				<option value="{{$key}}" {{if $status!="" && $status==$key}}selected{{/if}}>{{$item}}</option>
-				{{/foreach}}
-			</select>
+		<form class="form-inline" action="/site/accounts?status={{$status}}" method="get">
+
 			<input class="form-control" name="name" placeholder="名字" type="text" value="{{$name}}">
 			<input class="form-control" name="phone" placeholder="手机号" type="text" value="{{$phone}}">
 			<input type="submit" class="btn btn-primary" value="查询">
@@ -157,6 +152,21 @@
 
 	</div>
 	<div class="row-divider"></div>
+
+	<div class="row">
+		<ul class="nav nav-tabs">
+			{{foreach from=$partHeader key=key item=prod}}
+			<li class="ng-scope {{if $status== $key}} active{{/if}}">
+				<a href="/site/accounts?status={{$key}}&name={{$name}}&phone={{$phone}}" class="ng-binding">
+					{{$prod}}
+					<span class="badge">{{$partCount[$key]}}</span>
+				</a>
+			</li>
+			{{/foreach}}
+		</ul>
+	</div>
+	<div class="row-divider"></div>
+
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 		<tr>
@@ -216,7 +226,7 @@
 				<span>{{$prod.intro}}</span>
 				<span>{{$prod.interest}}</span>
 			</td>
-			<td class="album-items"  data-images='{{$prod.showImages}}'>
+			<td class="album-items" data-images='{{$prod.showImages}}'>
 				{{if $prod.album}}
 				{{foreach from=$prod.album item=img}}
 				<img src="{{$img}}">
@@ -252,6 +262,7 @@
 			delUser(id);
 		}, function () {
 		});*/
+
 	});
 
 	function delUser(id) {
@@ -271,23 +282,29 @@
 		location.href = "/site/account?id=" + cid;
 	});
 
-  $(document).on("click", ".album-items img", function () {
-	  var self = $(this);
-	  var images = self.closest("td").attr("data-images");
-	  showImages(JSON.parse(images))
+	$(document).on("click", ".album-items img", function () {
+		var self = $(this);
+		var images = self.closest("td").attr("data-images");
+		showImages(JSON.parse(images))
 
-  });
+	});
 
-  function showImages(imagesJson) {
-	  layer.photos({
-		  photos: imagesJson, //格式见API文档手册页
-		  shift: 5,
+	function showImages(imagesJson) {
+		layer.photos({
+			photos: imagesJson, //格式见API文档手册页
+			shift: 5,
 //			isOutAnim: false,
 //			shade: 1,
 //			shadeClose: true,
-		  //area: ['400px', '400px'],
-	  });
-  }
+			//area: ['400px', '400px'],
+		});
+	}
+
+	//	$(".ng-scope").on("click", function () {
+	//		var self = $(this);
+	//		self.closest("tab").find("li").removeClass("active");
+	//		self.addClass("active");
+	//	})
 </script>
 
 {{include file="layouts/footer.tpl"}}
