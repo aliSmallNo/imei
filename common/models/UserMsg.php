@@ -30,6 +30,7 @@ class UserMsg extends ActiveRecord
 	const CATEGORY_RETURN_ROSE = 140;
 	const CATEGORY_MP_SAY = 150;
 	const CATEGORY_REWARD_NEW = 160;
+	const CATEGORY_CHAT = 170;
 
 	static $catDict = [
 		self::CATEGORY_ADMIN_PASS => "审核通过",
@@ -44,6 +45,7 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_RETURN_ROSE => "退回媒瑰花",
 		self::CATEGORY_MP_SAY => "修改了你的媒婆说",
 		self::CATEGORY_REWARD_NEW => "新人奖励",
+		self::CATEGORY_CHAT => "密聊信息",
 	];
 
 	public static function tableName()
@@ -106,7 +108,8 @@ class UserMsg extends ActiveRecord
 	public static function notice($hid, $page = 1, $pageSize = 15)
 	{
 		$limit = " limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
-		$sql = "select m.*,u.uName,u.uId,u.uAvatar as avatar from im_user_msg as m
+		$sql = "select m.*,u.uName,u.uId,u.uAvatar as avatar 
+			from im_user_msg as m
 			join im_user as u on m.mUId=u.uId
 			where mAddedBy=$hid 
 			ORDER BY mId desc $limit ";
@@ -118,32 +121,36 @@ class UserMsg extends ActiveRecord
 			$nextPage = $page + 1;
 		}
 		foreach ($ret as &$v) {
+			$v["secretId"] = AppUtil::encrypt($v["uId"]);
 			switch ($v["mCategory"]) {
 				case self::CATEGORY_FAVOR:
 				case self::CATEGORY_FAVOR_CANCEL:
 				case self::CATEGORY_FOCUS:
 				case self::CATEGORY_FOCUS_CANCEL:
 					$v["text"] = "你对" . $v["uName"] . self::$catDict[$v["mCategory"]];
-					$v["url"] = "sh";
+					$v["url"] = "sh?id=" . $v["secretId"];
 					break;
 				case self::CATEGORY_REQ_WX:
 				case self::CATEGORY_ADDWX_PASS:
 				case self::CATEGORY_ADDWX_REFUSE:
-					$v["url"] = "sh";
+					$v["url"] = "sh?id=" . $v["secretId"];
 					$v["text"] = $v["uName"] . self::$catDict[$v["mCategory"]];
 					break;
 				case self::CATEGORY_RETURN_ROSE:
 				case self::CATEGORY_REWARD_NEW:
-					$v["url"] = "sh";
+					$v["url"] = "sh?id=" . $v["secretId"];
 					$v["text"] = "你有" . self::$catDict[$v["mCategory"]];
 					break;
 				case self::CATEGORY_MP_SAY:
-					$v["url"] = "mh";
+					$v["url"] = "mh?id=" . $v["secretId"];
 					$v["text"] = "你的媒婆" . self::$catDict[$v["mCategory"]];
 					break;
+				case self::CATEGORY_CHAT:
+					$v["url"] = "single#scontacts";
+					$v["text"] = "你有一条" . self::$catDict[$v["mCategory"]];
+					break;
 			}
-			$v["secretId"] = AppUtil::encrypt($v["uId"]);
-			//$v["dt"] = date("m-d H:i", strtotime($v["mAddedOn"]));
+
 			$v["dt"] = AppUtil::prettyDate($v["mAddedOn"]);
 			$v["readflag"] = intval($v["mReadFlag"]);
 		}

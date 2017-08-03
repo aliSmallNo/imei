@@ -98,7 +98,7 @@
 <script type="text/template" id="tpl_notice">
 	{[#items]}
 	<li>
-		<a data-url="/wx/{[url]}?id={[secretId]}" data-id="{[mId]}" data-readflag="{[readflag]}" class="notice-item notice-read">
+		<a data-url="/wx/{[url]}" data-id="{[mId]}" data-readflag="{[readflag]}" class="notice-item notice-read">
 			<div class="notice-avatar"><img src="{[avatar]}"></div>
 			<div class="notice-right">
 				<div class="title">{[text]}</div>

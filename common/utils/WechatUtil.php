@@ -704,4 +704,45 @@ class WechatUtil
 		]);
 		return $result;
 	}
+
+	public static function chatNotice($rId, $sId)
+	{
+		if (AppUtil::scene() == "dev") {
+			return 0;
+		}
+		$userInfo = User::findOne(["uId" => $rId]);
+		$SendInfo = User::findOne(["uId" => $sId]);
+		if (!$userInfo || !$SendInfo) {
+			return 0;
+		}
+		$openId = isset($userInfo["uOpenId"]) ? $userInfo["uOpenId"] : "";
+		if (!$openId || strlen($openId) < 12) {
+			return 0;
+		}
+		$access_token = self::accessToken();
+		$urlPrefix = AppUtil::wechatUrl();
+		$url = $urlPrefix . "/wx/single#scontacts";
+		$bodyInfo = [
+			"touser" => $openId,
+			"template_id" => "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI",
+			"url" => $url,
+			"data" => [
+				"first" => ["color" => "#555555", "value" => "你好，" . $userInfo['uNme'] . "\n"],
+				"keyword1" => ["color" => "#0D47A1", "value" => "密聊记录"],
+				"keyword2" => ["color" => "#f06292", "value" => $SendInfo["uName"] . " 跟你发了一条密聊信息，快去看看吧！"],
+				"keyword3" => ["color" => "#333333", "value" => date("Y年n月j日 H:i")],
+				"remark" => ["color" => "#555555", "value" => "\n 点击下方详情查看吧~~"],
+			]
+		];
+
+		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
+		$result = AppUtil::postJSON($url, json_encode($bodyInfo));
+		UserMsg::edit("", [
+			"mUId" => $rId,
+			"mCategory" => UserMsg::CATEGORY_CHAT,
+			"mText" => UserMsg::$catDict[UserMsg::CATEGORY_CHAT],
+			"mAddedBy" => $sId,
+		]);
+		return $result;
+	}
 }
