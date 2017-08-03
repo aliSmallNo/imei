@@ -668,6 +668,7 @@
 				<span class="pos">{[location]}</span>
 				<p>{[age]}岁 . {[height]} . {[horos]} . {[job]}</p>
 			</div>
+			{[#cert]}<i class="i-cert">已认证</i>{[/cert]}
 		</a>
 		<div class="mp-info">
 			<div class="mp">

@@ -71,6 +71,15 @@ main {
   .clearfix:after {
     clear: both; }
 
+.t-warning {
+  font-size: 1.1rem;
+  color: #fff;
+  background: #f60;
+  border-radius: 3px;
+  padding-left: 3px;
+  padding-right: 3px;
+  line-height: 2rem; }
+
 .app-cork {
   position: fixed;
   left: 0;
@@ -1290,10 +1299,10 @@ section {
   position: relative; }
   .u-my-bar .btn-outline {
     position: absolute;
-    right: 1.5rem;
-    top: 0.7rem; }
+    right: 2rem;
+    top: 0.6rem; }
     .u-my-bar .btn-outline.change-role {
-      right: 7rem; }
+      right: 7.5rem; }
   .u-my-bar .avatar {
     -webkit-box-flex: 0 0 10rem;
     -webkit-flex: 0 0 10rem;
@@ -1320,10 +1329,10 @@ section {
     .u-my-bar .avatar.single:after {
       display: none; }
     .u-my-bar .avatar.single .i-cert {
-      position: absolute;
       display: inline-block;
       background: url(../images/ico_cert.png) no-repeat center center;
       background-size: 100% 100%;
+      position: absolute;
       width: 1.8rem;
       height: 1.8rem;
       right: 1rem;
@@ -1409,7 +1418,12 @@ section {
         margin-right: 0; }
       .u-my-album .photos li img {
         width: 100%;
-        height: 100%; }
+        height: auto;
+        vertical-align: middle;
+        top: 50%;
+        position: relative;
+        -webkit-transform: translate(0, -50%);
+        transform: translate(0, -50%); }
 
 .u-my-count {
   display: -webkit-box;
@@ -2671,6 +2685,18 @@ section {
         position: absolute;
         bottom: 0.5rem;
         left: 0.8rem; }
+    .m-top-users li .head .i-cert {
+      display: inline-block;
+      background: url(../images/ico_cert.png) no-repeat center top;
+      background-size: 2rem 2rem;
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      width: 3.2rem;
+      padding-top: 2rem;
+      text-align: center;
+      color: #f60;
+      font-size: 1rem; }
     .m-top-users li .head .intro {
       position: absolute;
       left: 0;
@@ -4390,10 +4416,10 @@ section {
       -moz-box-sizing: border-box;
       box-sizing: border-box;
       text-align: center;
-      padding: 0.5rem;
+      margin: 0.5rem;
       float: left;
-      width: 7rem;
-      height: 7rem;
+      width: 6rem;
+      height: 6rem;
       overflow: hidden; }
       .album-row .photos li.title {
         text-align: left;
@@ -4403,7 +4429,12 @@ section {
         font-size: 1.2rem; }
       .album-row .photos li img {
         width: 100%;
-        height: 100%; }
+        height: auto;
+        vertical-align: middle;
+        top: 50%;
+        position: relative;
+        -webkit-transform: translate(0, -50%);
+        transform: translate(0, -50%); }
 
 .single-info {
   background: #fff;
