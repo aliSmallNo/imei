@@ -12,6 +12,7 @@ namespace admin\controllers;
 use admin\models\Admin;
 use common\models\City;
 use common\models\User;
+use common\models\UserAudit;
 use common\models\UserNet;
 use common\utils\AppUtil;
 use dosamigos\qrcode\QrCode;
@@ -216,6 +217,35 @@ class ApiController extends Controller
 					return self::renderAPI(0, '删除成功');
 				} else {
 					return self::renderAPI(129, '删除失败');
+				}
+				break;
+			case "reason":
+				$st = self::postParam("st", 0);
+				$reason = self::postParam("reason");
+				if ($st) {
+					$f = $st == User::STATUS_ACTIVE;
+					$data = [
+						"aUId" => $id,
+						"aUStatus" => $st,
+					];
+
+					if ($uInfo = User::findOne(["uId" => $id])) {
+						User::edit($id, ["uStatus" => $st]);
+					} else {
+						return self::renderAPI(129, '用户不存在');
+					}
+
+					if ($f) {
+						$aid = UserAudit::replace($data);
+					} else {
+						$data["aReasons"] = $reason;
+						$data["aAddedBy"] = Admin::getAdminId();
+						$aid = UserAudit::add($data);
+					}
+
+					return self::renderAPI(0, '审核成功', $aid);
+				} else {
+					return self::renderAPI(129, '参数错误');
 				}
 				break;
 
