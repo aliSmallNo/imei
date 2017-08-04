@@ -401,6 +401,47 @@ class FooController extends Controller
 	}
 
 
+	public function actionChat()
+	{
+		$conn = AppUtil::db();
+		/*$sql = 'INSERT INTO im_chat_group(gKey,gMax)
+			SELECT :key,10 FROM dual
+			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gKey=:key)';
+		$cmdAdd = $conn->createCommand($sql);
+		$sql = 'update im_chat_msg set cNote=:key WHERE cId=:id ';
+		$cmdUpdate = $conn->createCommand($sql);
+		$sql = 'select * from im_chat_msg';
+		$ret = $conn->createCommand($sql)->queryAll();
+		foreach ($ret as $row) {
+			$id = $row['cId'];
+			$key = [$row['cSenderId'], $row['cReceiverId']];
+			sort($key);
+			$key = implode('.', $key);
+			$cmdAdd->bindValues([
+				':key' => $key
+			])->execute();
+			$cmdUpdate->bindValues([
+				':key' => $key,
+				':id' => $id
+			])->execute();
+		}*/
+
+		$sql = 'update im_chat_group set gUId1=:id1,gUId2=:id2 WHERE gId=:id ';
+		$cmdUpdate = $conn->createCommand($sql);
+		$sql = 'select * from im_chat_group';
+		$ret = $conn->createCommand($sql)->queryAll();
+		foreach ($ret as $row) {
+			$id = $row['gId'];
+			$key = $row['gKey'];
+			list($id1, $id2) = explode('.', $key);
+			$cmdUpdate->bindValues([
+				':id' => $id,
+				':id1' => $id1,
+				':id2' => $id2,
+			])->execute();
+		}
+	}
+
 	public function actionSms($phone = 18600442970)
 	{
 		QueueUtil::loadJob('sendSMS', [

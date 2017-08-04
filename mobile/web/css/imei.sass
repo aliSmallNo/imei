@@ -15,6 +15,8 @@ $weightNormal: 300
 $greenColor: #51c332
 $greenLight: #afdb64
 $yellowColor: #fdd835
+$rewardColor: #f9cd9a
+$rewardColorLight: lighten($rewardColor, 6%)
 $tipColor: #f80
 $moneyColor: #f60
 $moneyColorLight: lighten($moneyColor, 5%)
@@ -240,6 +242,7 @@ main
 .space
 	display: inline-block
 	width: 1rem
+
 .space2
 	display: inline-block
 	width: 2rem
@@ -2575,6 +2578,7 @@ section
 			position: absolute
 			right: 2.5rem
 			top: .6rem
+
 .m-top-users
 	li
 		background: #fff
@@ -3284,12 +3288,12 @@ section
 	position: fixed
 	left: 3rem
 	right: 3rem
-	top: 15rem
+	top: 10rem
 	z-index: 999
 	background: $redColor
 	padding: 1.5rem 2rem
 	border-radius: 1rem
-	color: #f9cd9a
+	color: $rewardColor
 	text-align: center
 	.close
 		position: absolute
@@ -3300,9 +3304,9 @@ section
 		top: 1rem
 		right: 1rem
 	.pmp-title
-		font-size: 1.4rem
+		font-size: 1.6rem
 	.pmp-title-des
-		font-size: 1rem
+		font-size: 1.2rem
 		padding: .5rem
 	ul.options
 		overflow: hidden
@@ -3313,7 +3317,7 @@ section
 			a
 				display: flex
 				padding: .5rem
-				border: 1px solid #f9cd9a
+				border: 1px solid $rewardColor
 				border-radius: .5rem
 				margin: .5rem
 				.img
@@ -3328,14 +3332,14 @@ section
 					text-align: left
 					.t
 						font-size: 1.3rem
-						color: #f9cd9a
+						color: $rewardColor
 						span
 							font-size: 1rem
 					.b
 						font-size: 1rem
-						color: #f9cd9a
+						color: $rewardColor
 			a.active
-				background: #f9cd9a
+				background: $rewardColor
 				position: relative
 				&:after
 					position: absolute
@@ -3352,15 +3356,15 @@ section
 	.pmp-pay
 		margin: 1rem
 		a
-			background: #f9cd9a
-			border: 1px solid #f9cd9a
+			background: $rewardColor
+			border: 2px solid $rewardColorLight
 			padding: 1rem
-			border-radius: 3.5rem
+			border-radius: 3rem
 			display: inline-block
-			width: 3.5rem
-			height: 3.5rem
+			width: 3.6rem
+			height: 3.6rem
 			font-size: 1.2rem
-			opacity: .5
+			color: #6d4c41
 		a.active
 			opacity: 1
 	.pmp-bot
@@ -3369,7 +3373,7 @@ section
 			font-size: 1rem
 			text-align: center
 			position: relative
-			color: #f9cd9a
+			color: $rewardColor
 			&:after
 				position: absolute
 				content: ''
@@ -3380,7 +3384,7 @@ section
 				top: 0
 				right: -1.6rem
 		ol
-			display: none
+			//display: none
 			padding-top: 0.5rem
 			padding-left: 1.5rem
 			border-top: 1px solid rgba(255, 255, 255, .1)

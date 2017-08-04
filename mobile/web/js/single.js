@@ -216,24 +216,16 @@ require(["layer"],
 			}, 2500);
 		});
 
-		function sprofileDesc(data) {
-			//$("#personalInfo").html(Mustache.render($("#personalInfoTemp").html(), data));
-			//location.href = "#personalInfo";
-		}
-
-		$(document).on(kClick, "#sprofile a", function () {
-		});
-
 		var alertUlit = {
 			payroseF: false,
 			hintFlag: false,
 			init: function () {
-				$(document).on(kClick, ".pay-mp a", function () {
+				$(document).on(kClick, ".reward-wx-wrap a", function () {
 					var self = $(this);
 					var tag = self.attr("tag");
 					switch (tag) {
 						case "close":
-							self.closest(".pay-mp").hide();
+							self.closest(".reward-wx-wrap").hide();
 							$sls.cork.hide();
 							break;
 						case "choose":
@@ -242,7 +234,7 @@ require(["layer"],
 							self.closest(".options").next().find("a").removeClass().addClass("active");
 							break;
 						case "pay":
-							var num = self.closest(".pay-mp").find(".options a.active").attr("num");
+							var num = self.closest(".reward-wx-wrap").find(".options a.active").attr("num");
 							if (!num) {
 								showMsg("请先选择打赏的媒瑰花");
 								return;
@@ -260,7 +252,7 @@ require(["layer"],
 									if (resp.data.result) {
 										$('.m-wxid-input').val(resp.data.wechatID);
 										$(".getWechat").show();
-										$(".pay-mp").hide();
+										$(".reward-wx-wrap").hide();
 									} else {
 										$(".m-popup-shade").show();
 										$(".rose-num").html(resp.data);
@@ -308,7 +300,7 @@ require(["layer"],
 					} else if (self.hasClass('btn-apply')) {
 						$sls.secretId = self.attr("data-id");
 						$sls.cork.show();
-						$(".pay-mp").show();
+						$(".reward-wx-wrap").show();
 					} else if (self.hasClass('btn-chat')) {
 						ChatUtil.sid = self.attr("data-id");
 						ChatUtil.page = 1;

@@ -22,6 +22,7 @@ class UserTrans extends ActiveRecord
 	const CAT_NEW = 108;
 	const CAT_LINK = 110;   //牵线奖励
 	const CAT_REWARD = 120;   //打赏
+	const CAT_CHAT = 125;   //聊天付费
 	const CAT_RETURN = 130;  //拒绝退回
 
 	static $catDict = [
@@ -30,6 +31,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_NEW => "新人奖励",
 		self::CAT_LINK => "牵线奖励",
 		self::CAT_REWARD => "打赏",
+		self::CAT_CHAT => "聊天付费",
 		self::CAT_RETURN => "拒绝退回",
 	];
 

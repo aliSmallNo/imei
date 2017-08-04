@@ -126,7 +126,7 @@
 </div>
 <div class="pay-mp">
 	<p class="pmp-title">申请加微信</p>
-	<p class="pmp-title-des">若对方拒绝，媒瑰花退回</p>
+	<p class="pmp-title-des">若对方拒绝，媒桂花退回</p>
 	<a class="close" tag="close"></a>
 	<ul class="options">
 		<li>
@@ -172,14 +172,14 @@
 	<div class="pmp-bot">
 		<a tag="des">感谢对方媒婆推荐了这么好的人</a>
 		<ol>
-			<li>对方拒绝了给微信号，媒瑰花全部返还</li>
-			<li>对方同意了给微信号，媒瑰花将打给对方媒婆</li>
-			<li>对方若无回应，7天后媒瑰花如数返还</li>
+			<li>对方拒绝了给微信号，媒桂花全部返还</li>
+			<li>对方同意了给微信号，媒桂花将打给对方媒婆</li>
+			<li>对方若无回应，7天后媒桂花如数返还</li>
 		</ol>
 	</div>
 </div>
 <div class="not-enough-rose">
-	<p>您的媒瑰花余额：<span class="rose-num">30</span>朵</p>
+	<p>你的媒桂花余额：<span class="rose-num">30</span>朵</p>
 	<p>不够打赏？马上去充值!</p>
 	<div class="btns">
 		<a href="javascript:;" tag="cancel">取消</a>
