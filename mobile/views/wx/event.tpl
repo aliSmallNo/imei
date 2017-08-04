@@ -2,7 +2,7 @@
 	.event-wrap {
 		padding: 14rem 5rem;
 		text-align: center;
-
+		position: relative;
 	}
 
 	.event-wrap h4 {
@@ -24,6 +24,8 @@
 </style>
 
 <div class="event-wrap">
+	<i class="logo240"></i>
+	<br>
 	<h4>更多活动，敬请期待...</h4>
 </div>
 

@@ -5,16 +5,6 @@
 		position: relative;
 	}
 
-	.logo240 {
-		position: absolute;
-		left: 1rem;
-		top: 1rem;
-		background: url(/images/logo240.png) no-repeat center center;
-		background-size: 100% 100%;
-		width: 8rem;
-		height: 3.2rem;
-	}
-
 	.swap-wrap h4 {
 		margin: 0;
 		text-align: center;
@@ -41,7 +31,7 @@
 	}
 
 	.swap-wrap a.back {
-		color: #888;
+		color: #747474;
 		display: inline-block;
 		font-size: 1.6rem;
 		line-height: 4rem;

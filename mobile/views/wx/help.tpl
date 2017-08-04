@@ -1,6 +1,7 @@
 <style>
 	.help-wrap {
 		padding: 14rem 5rem;
+		position: relative;
 	}
 
 	.help-wrap a {
@@ -17,6 +18,7 @@
 </style>
 
 <div class="help-wrap">
+	<i class="logo240"></i>
 	<a href="/wx/mplay">查看媒婆玩法</a>
 	<br><br>
 	<a href="/wx/splay">查看单身玩法</a>
