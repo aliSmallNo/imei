@@ -1027,7 +1027,7 @@ class User extends ActiveRecord
 			$nextpage = 0;
 		}
 		//Rain: 不想展示太多页了
-		if ($nextpage > 4) {
+		if ($nextpage > 5) {
 			$nextpage = 0;
 		}
 		return ["data" => $result, "nextpage" => $nextpage, "condition" => $matchcondition];
