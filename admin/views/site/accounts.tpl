@@ -129,6 +129,18 @@
 		width: 40px;
 		height: 40px;
 	}
+
+	.form-inline b {
+		display: inline-block;
+		width: 12rem;
+		font-weight: 400;
+		text-align: right;
+		padding-right: 10px;
+	}
+	.form-inline input{
+		border-radius: 3px;
+		border: 1px solid #ccc;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="row">
@@ -149,7 +161,6 @@
 				<span>美女:{{$stat.female}}</span>
 			</span>
 		</form>
-
 	</div>
 	<div class="row-divider"></div>
 
@@ -166,7 +177,6 @@
 		</ul>
 	</div>
 	<div class="row-divider"></div>
-
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 		<tr>
@@ -273,10 +283,10 @@
 						<div class="form-group reasons-wrap">
 							<label class="col-sm-4 control-label">不通过原因:</label>
 							<div class="col-sm-7">
-								<label class="checkbox-inline"><input type="checkbox" name="reasons" value="avatar">头像不合规</label><br>
-								<label class="checkbox-inline"><input type="checkbox" name="reasons" value="name">昵称不合规</label><br>
-								<label class="checkbox-inline"><input type="checkbox" name="reasons" value="intro">个人简介不合规</label><br>
-								<label class="checkbox-inline"><input type="checkbox" name="reasons" value="interest">个人兴趣不合规</label>
+								<label class="form-inline"><b>头像不合规</b><input name="reasons" value=""></label><br>
+								<label class="form-inline"><b>昵称不合规</b><input name="reasons" value=""></label><br>
+								<label class="form-inline"><b>个人简介不合规</b><input name="reasons" value=""></label><br>
+								<label class="form-inline"><b>个人兴趣不合规</b><input name="reasons" value=""></label>
 							</div>
 						</div>
 					</div>
