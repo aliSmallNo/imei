@@ -691,7 +691,7 @@ class WxController extends BaseController
 			$audits = UserAudit::find()
 				->where(["aUId" => $wxInfo["uId"], "aUStatus" => User::STATUS_INVALID, "aValid" => UserAudit::VALID_FAIL])
 				->all()) {
-			$audit = 1;
+			$audit = 1 ;
 		}
 
 		return self::renderPage("single.tpl", [

@@ -35,6 +35,7 @@ class WechatUtil
 	const NOTICE_APPROVE = 'notice_approve';
 	const NOTICE_RETURN = 'notice_return';
 	const NOTICE_CHAT = 'notice_chat';
+	const NOTICE_AUDIT_PASS = 'notice_audit_pass';
 	const NOTICE_AUDIT = 'notice_audit';
 
 	/**
@@ -559,14 +560,23 @@ class WechatUtil
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
-			case self::NOTICE_AUDIT:
+			case self::NOTICE_AUDIT_PASS:
 				$msgCat = UserMsg::CATEGORY_AUDIT;
 				$templateId = "_J4oGSruJmxopotrtLCGzixGrAOSvGu_mo7i698nL7s";
-				$url = $wxUrl . "/wx/sh?id=".AppUtil::encrypt($uId);
+				$url = $wxUrl . "/wx/sh?id=" . AppUtil::encrypt($uId);
 				$keywords['first'] = "hi，$nickname\n";
-				$keywords['keyword1'] = substr($userInfo["uPhone"],0,3).'xxxx'.substr($userInfo["uPhone"],7,4);
+				$keywords['keyword1'] = substr($userInfo["uPhone"], 0, 3) . 'xxxx' . substr($userInfo["uPhone"], 7, 4);
 				$keywords['keyword2'] = date("Y年n月j日 H:i");
 				$keywords['keyword3'] = $subTitle;
+				$keywords['remark'] = "\n点击下方详情查看吧~";
+				break;
+			case self::NOTICE_AUDIT:
+				$msgCat = UserMsg::CATEGORY_AUDIT;
+				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$url = $wxUrl . "/wx/sedit";
+				$keywords['first'] = "hi，$nickname\n";
+				$keywords['keyword1'] = "审核不合规通知";
+				$keywords['keyword2'] = $subTitle;
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			default:
@@ -594,13 +604,18 @@ class WechatUtil
 		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
 		AppUtil::postJSON($url, json_encode($bodyInfo));
 		$text = isset(UserMsg::$catDict[$msgCat]) ? UserMsg::$catDict[$msgCat] : '';
-		$result = UserMsg::edit(0, [
-			"mUId" => $uId,
-			"mCategory" => $msgCat,
-			"mText" => $text,
-			"mRaw" => json_encode($bodyInfo, JSON_UNESCAPED_UNICODE),
-			"mAddedBy" => $adminId
-		]);
+		if ($noticeTag == self::NOTICE_AUDIT) {
+			$result = 1;
+		} else {
+			$result = UserMsg::edit(0, [
+				"mUId" => $uId,
+				"mCategory" => $msgCat,
+				"mText" => $text,
+				"mRaw" => json_encode($bodyInfo, JSON_UNESCAPED_UNICODE),
+				"mAddedBy" => $adminId
+			]);
+		}
+
 		return $result;
 	}
 

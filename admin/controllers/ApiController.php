@@ -239,7 +239,7 @@ class ApiController extends Controller
 
 					if ($f) {
 						$aid = UserAudit::replace($data);
-						WechatUtil::templateMsg("notice_audit", $id,
+						WechatUtil::templateMsg("notice_audit_pass", $id,
 							$title = '审核通知',
 							$subTitle = '审核通过',
 							$adminId = Admin::getAdminId());
@@ -268,6 +268,10 @@ class ApiController extends Controller
 								"mText" => $str,
 								"mAddedBy" => $id
 							]);
+							WechatUtil::templateMsg("notice_audit", $id,
+								$title = '审核通知',
+								$subTitle = $str,
+								$adminId = Admin::getAdminId());
 						}
 					}
 
