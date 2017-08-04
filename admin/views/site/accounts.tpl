@@ -306,28 +306,6 @@
 	</div>
 </div>
 <script>
-<<<<<<< HEAD
-=======
-	var mStatusOpt = $('.status-opt');
-	var mReasonsWrap = $('.reasons-wrap');
-	$("a.check").click(function () {
-		var self = $(this);
-		var uid = self.attr("data-id");
-		var st = self.attr("data-st");
-
-//		var html = '';
-//	  $('div.modal-body').html(html);
-		$('#modModal').modal('show');
-		/*layer.confirm('您确定要删除这个用户吗？', {
-			btn: ['确定', '取消'],
-			title: '删除用户'
-		}, function () {
-			delUser(id);
-		}, function () {
-		});*/
-
-	});
->>>>>>> a87794ebb348206f6dedac4032f1eaf2f98bfd1f
 
 	function delUser(id) {
 		$.post("/api/users", {
@@ -381,7 +359,7 @@
 		} else {
 			reasonsWrap.hide();
 		}
-	})
+	});
 
 	btnCoupon.on("click", function () {
 		var statusOPtVal = statusOPt.val();
@@ -420,7 +398,6 @@
 			}
 			layer.msg(resp.msg);
 		}, "json")
-
 	})
 
 
