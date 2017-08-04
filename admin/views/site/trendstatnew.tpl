@@ -47,6 +47,14 @@
 			<div id="amt-chart" class="chart-wrapper"></div>
 		</div>
 	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<i class="fa fa-bar-chart-o fa-fw"></i> 活跃用户
+		</div>
+		<div class="panel-body">
+			<div id="active-chart" class="chart-wrapper"></div>
+		</div>
+	</div>
 </div>
 <script type="text/html" id="cTrendsTmp">
 	{{$trends}}
@@ -63,6 +71,7 @@
 		initChart('amt-chart', "amt");
 		initChart('net-chart', "net");
 		initChart('new-chart', "new");
+		initChart('active-chart', "active");
 	}
 
 	$(document).on('click', 'button[tag]', function () {
@@ -110,8 +119,19 @@
 		}
 
 		if (cat == "amt") {
-			var names = ["累计注册", "累计会员", "累计游客", '累计关注', '累计媒婆', '累计单身男', '累计单身女', "活跃用户", "活跃度(%)", "活跃男", "活跃女", "活跃媒婆"];
-			var fields = ["amt", "member", "visitor", 'follows', 'meipos', 'boys', 'girls', "active", "activeRate", "activemale", "activefemale", "activemp"];
+			var names = ["累计注册", "累计会员", "累计游客", '累计关注', '累计媒婆', '累计单身男', '累计单身女'];
+			var fields = ["amt", "member", "visitor", 'follows', 'meipos', 'boys', 'girls'];
+			for (var i = 0; i < fields.length; i++) {
+				items.push({
+					name: names[i],
+					data: mTrend[fields[i]]
+				})
+			}
+		}
+
+		if (cat == "active") {
+			var names = ["活跃用户", "活跃度(%)", "活跃男", "活跃女", "活跃媒婆"];
+			var fields = ["active", "activeRate", "activemale", "activefemale", "activemp"];
 			for (var i = 0; i < fields.length; i++) {
 				items.push({
 					name: names[i],

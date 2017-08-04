@@ -15,6 +15,7 @@ use common\models\User;
 use common\models\UserAudit;
 use common\models\UserNet;
 use common\utils\AppUtil;
+use common\utils\WechatUtil;
 use dosamigos\qrcode\QrCode;
 use Gregwar\Image\Image;
 use Yii;
@@ -234,6 +235,8 @@ class ApiController extends Controller
 					} else {
 						return self::renderAPI(129, '用户不存在');
 					}
+
+					// WechatUtil::toNotice();
 
 					if ($f) {
 						$aid = UserAudit::replace($data);

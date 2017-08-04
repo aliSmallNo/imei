@@ -284,7 +284,6 @@ class SiteController extends BaseController
 				"data" => $dataImg,
 			]);
 		}
-		//print_r($list);exit;
 		$stat = User::stat();
 		$partCount = User::partCount($partCriteria, $params);
 		$pagination = self::pagination($page, $count);
