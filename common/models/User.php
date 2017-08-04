@@ -452,6 +452,7 @@ class User extends ActiveRecord
 		$part = [
 			User::STATUS_PENDING => "pending",
 			User::STATUS_ACTIVE => "active",
+			User::STATUS_INVALID => "invalid",
 			User::STATUS_PRISON => "prison",
 			User::STATUS_DUMMY => "dummy",
 			User::STATUS_DELETE => "del",
@@ -463,6 +464,7 @@ class User extends ActiveRecord
 		$sql = "select 
 				SUM(CASE WHEN uStatus=0  THEN 1 END) as pending,
 				SUM(CASE WHEN uStatus=1  THEN 1 END) as active,
+				SUM(CASE WHEN uStatus=2  THEN 1 END) as invalid,
 				SUM(CASE WHEN uStatus=7  THEN 1 END) as prison,
 				SUM(CASE WHEN uStatus=8  THEN 1 END) as dummy,
 				SUM(CASE WHEN uStatus=9  THEN 1 END) as del
