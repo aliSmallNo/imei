@@ -44,6 +44,8 @@ class WxController extends BaseController
 	const URL_MATCH = '/wx/match#slink';
 	const URL_SINGLE = '/wx/single#slook';
 	const URL_SINGLE_REG = '/wx/sreg#photo';
+	const URL_SWAP = '/wx/swap';
+
 
 	public function actionIndex()
 	{
@@ -74,6 +76,36 @@ class WxController extends BaseController
 	{
 		return self::renderPage("event.tpl",
 			[],
+			'terse',
+			'',
+			'bg-color');
+	}
+
+	public function actionSwap()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$tip = $back = '';
+		$forward = '/wx/switch';
+		if ($wxInfo) {
+			$role = $wxInfo['uRole'];
+			if ($role == User::ROLE_SINGLE) {
+				$tip = '你现在是<b>单身</b><br>是否要切换到<b>媒婆</b>？';
+				$back = self::URL_SINGLE;
+			} else {
+				$tip = '你现在是<b>媒婆</b><br>是否要切换到<b>单身</b>？';
+				$back = self::URL_MATCH;
+			}
+		} else {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+		return self::renderPage("swap.tpl",
+			[
+				'back' => $back,
+				'tip' => $tip,
+				'forward' => $forward
+			],
 			'terse',
 			'',
 			'bg-color');
@@ -309,7 +341,7 @@ class WxController extends BaseController
 		$hint = '你的昵称未通过审核，请重新编辑~';
 		$role = $wxInfo["uRole"];
 		if ($role == User::ROLE_SINGLE) {
-			header("location:" . self::URL_SINGLE);
+			header("location:" . self::URL_SWAP);
 			exit();
 		}
 		if ($wxInfo['uGender'] == User::GENDER_MALE) {
@@ -635,7 +667,7 @@ class WxController extends BaseController
 		//$intro = $wxInfo['uIntro'];
 		$role = $wxInfo["uRole"];
 		if ($role == User::ROLE_MATCHER) {
-			header("location:" . self::URL_MATCH);
+			header("location:" . self::URL_SWAP);
 			exit();
 		}
 
@@ -691,6 +723,7 @@ class WxController extends BaseController
 			],
 			'terse');
 	}
+
 
 	public function actionInvite()
 	{

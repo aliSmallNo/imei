@@ -119,14 +119,12 @@
 </section>
 <section id="schat" data-title="密聊中...">
 	<div class="report_wrap">
-		<p class="title">
-			最多聊10句哦，要抓紧机会哦~
-		</p>
+		<p class="title">最多聊10句哦，要抓住机会哦~</p>
 		<ul class="chats"></ul>
 	</div>
 	<div class="m-bottom-pl"></div>
 	<div class="m-bottom-bar">
-		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~"></div>
+		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120"></div>
 		<div class="action"><a class="btn-chat-send">发送</a></div>
 	</div>
 </section>
