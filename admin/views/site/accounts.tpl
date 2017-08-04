@@ -345,11 +345,6 @@
 		});
 	}
 
-	//	$(".ng-scope").on("click", function () {
-	//		var self = $(this);
-	//		self.closest("tab").find("li").removeClass("active");
-	//		self.addClass("active");
-	//	})
 </script>
 
 {{include file="layouts/footer.tpl"}}
