@@ -258,7 +258,7 @@ class ApiController extends Controller
 							$str = "";
 							foreach ($reason as $v) {
 								if ($v["text"]) {
-									$str .= $catArr[$v["tag"]] . "不合规: " . $v["text"] . "  ";
+									$str .= "您的" . $catArr[$v["tag"]] . "不合规: " . $v["text"] . "<br>";
 								}
 							}
 							UserMsg::edit(0, [
