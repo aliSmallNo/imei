@@ -688,7 +688,9 @@ class WxController extends BaseController
 
 		$audit = 0;
 		if ($wxInfo["uStatus"] != User::STATUS_ACTIVE &&
-			$audits = UserAudit::find()->where(["aUId" => $wxInfo["uId"], "aValid" => UserAudit::VALID_FAIL])->all()) {
+			$audits = UserAudit::find()
+				->where(["aUId" => $wxInfo["uId"], "aUStatus" => User::STATUS_INVALID, "aValid" => UserAudit::VALID_FAIL])
+				->all()) {
 			$audit = 1;
 		}
 
