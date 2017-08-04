@@ -251,7 +251,7 @@
 			<td>
 				<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改信息</a>
 				<div class="btn-divider"></div>
-				<a href="javascript:;" class="check btn btn-outline btn-danger btn-xs" cid="{{$prod.id}}"
+				<a href="javascript:;" class="check btn btn-outline btn-danger btn-xs" data-id="{{$prod.id}}"
 					 data-st="{{$prod.status}}" data-reasons="">审核用户</a>
 				<h5>创建于{{$prod.addedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 				<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
@@ -304,7 +304,7 @@
 	var mReasonsWrap = $('.reasons-wrap');
 	$("a.check").click(function () {
 		var self = $(this);
-		var uid = self.attr("cid");
+		var uid = self.attr("data-id");
 		var st = self.attr("data-st");
 
 //		var html = '';

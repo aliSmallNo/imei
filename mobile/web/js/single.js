@@ -664,7 +664,7 @@ require(["layer"],
 						case "height":
 						case "income":
 						case "edu":
-							filterUlit.showShooseContion();
+							filterUlit.showCriteria();
 							break;
 						case "comfirm":
 							var data = {};
@@ -691,7 +691,7 @@ require(["layer"],
 					location.href = "#matchCondition";
 				});
 			},
-			showShooseContion: function () {
+			showCriteria: function () {
 				var tmp = $("#" + filterUlit.tag + "Tmp").html();
 				console.log(filterUlit);
 				var h = (filterUlit.tag == "age") ? "年龄" : "身高";
