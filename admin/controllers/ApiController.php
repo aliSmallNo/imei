@@ -270,7 +270,7 @@ class ApiController extends Controller
 							]);
 							WechatUtil::templateMsg("notice_audit", $id,
 								$title = '审核通知',
-								$subTitle = $str,
+								$subTitle = str_replace("<br>", " ", $str),
 								$adminId = Admin::getAdminId());
 						}
 					}
