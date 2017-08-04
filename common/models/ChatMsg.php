@@ -62,6 +62,23 @@ class ChatMsg extends ActiveRecord
 		return false;
 	}
 
+	public static function groupRound($uId, $subUId, $conn = '')
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		list($uid1, $uid2) = self::arrUId($uId, $subUId);
+		$sql = 'SELECT * FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2';
+		$ret = $conn->createCommand($sql)->bindValues([
+			':id1' => $uid1,
+			':id2' => $uid2,
+		])->queryOne();
+		if ($ret) {
+			return [$ret['gId'], $ret['gRound']];
+		}
+		return [0, 0];
+	}
+
 	public static function groupEdit($uId, $subUId, $giftCount = 0, $conn = '')
 	{
 		if (!$conn) {
