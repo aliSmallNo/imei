@@ -349,14 +349,9 @@ require(["layer"],
 					f: f
 				}, function (resp) {
 					//console.log(resp);
-					if (f == "yes") {
-						showMsg('心动成功~');
-						obj.addClass("favor");
-					} else {
-						showMsg('已取消心动');
-						obj.removeClass("favor");
-					}
+
 					if (resp.code == 0) {
+
 						if (f == "yes") {
 							showMsg('心动成功~');
 							obj.addClass("favor");
@@ -364,6 +359,8 @@ require(["layer"],
 							showMsg('已取消心动');
 							obj.removeClass("favor");
 						}
+					} else {
+						showMsg(resp.msg)
 					}
 					alertUlit.hintFlag = 0;
 				}, "json");

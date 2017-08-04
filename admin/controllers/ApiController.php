@@ -239,7 +239,7 @@ class ApiController extends Controller
 
 					if ($f) {
 						$aid = UserAudit::replace($data);
-						WechatUtil::templateMsg("notice_audit", $id,
+						WechatUtil::templateMsg("notice_audit_pass", $id,
 							$title = '审核通知',
 							$subTitle = '审核通过',
 							$adminId = Admin::getAdminId());
@@ -248,6 +248,7 @@ class ApiController extends Controller
 						$data["aAddedBy"] = Admin::getAdminId();
 						$aid = UserAudit::add($data);
 						if ($st == User::STATUS_INVALID) {
+
 							$reason = json_decode($reason, 1);
 							$catArr = [
 								"avatar" => "头像",
@@ -258,7 +259,7 @@ class ApiController extends Controller
 							$str = "";
 							foreach ($reason as $v) {
 								if ($v["text"]) {
-									$str .= $catArr[$v["tag"]] . "不合规: " . $v["text"] . "  ";
+									$str .= "您的" . $catArr[$v["tag"]] . "不合规: " . $v["text"] . "<br>";
 								}
 							}
 							UserMsg::edit(0, [
@@ -267,10 +268,14 @@ class ApiController extends Controller
 								"mText" => $str,
 								"mAddedBy" => $id
 							]);
+							WechatUtil::templateMsg("notice_audit", $id,
+								$title = '审核通知',
+								$subTitle = str_replace("<br>", " ", $str),
+								$adminId = Admin::getAdminId());
 						}
 					}
 
-					return self::renderAPI(0, '审核成功', $aid);
+					return self::renderAPI(0, '操作成功', $aid);
 				} else {
 					return self::renderAPI(129, '参数错误');
 				}

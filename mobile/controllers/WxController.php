@@ -11,6 +11,7 @@ namespace mobile\controllers;
 use common\models\City;
 use common\models\LogAction;
 use common\models\User;
+use common\models\UserAudit;
 use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
@@ -685,6 +686,14 @@ class WxController extends BaseController
 		$noReadRecode = UserMsg::find()->where(["mReadFlag" => UserMsg::UN_READ, "mAddedBy" => $wxInfo["uId"]])->all();
 		$noReadFlag = (count($noReadRecode) > 0) ? 1 : 0;
 
+		$audit = 0;
+		if ($wxInfo["uStatus"] != User::STATUS_ACTIVE &&
+			$audits = UserAudit::find()
+				->where(["aUId" => $wxInfo["uId"], "aUStatus" => User::STATUS_INVALID, "aValid" => UserAudit::VALID_FAIL])
+				->all()) {
+			$audit = 1 ;
+		}
+
 		return self::renderPage("single.tpl", [
 			'noReadFlag' => $noReadFlag,
 			'nickname' => $nickname,
@@ -693,6 +702,7 @@ class WxController extends BaseController
 			'prices' => $prices,
 			'encryptId' => $encryptId,
 			'hint' => $hint,
+			'audit' => $audit,
 			'height' => User::$HeightFilter,
 			'age' => User::$AgeFilter,
 			'income' => User::$IncomeFilter,
