@@ -236,10 +236,12 @@ class ApiController extends Controller
 						return self::renderAPI(129, '用户不存在');
 					}
 
-					// WechatUtil::toNotice();
-
 					if ($f) {
 						$aid = UserAudit::replace($data);
+						WechatUtil::templateMsg("notice_audit", $id,
+							$title = '个人信息审核通知',
+							$subTitle = '审核通过',
+							$adminId = Admin::getAdminId());
 					} else {
 						$data["aReasons"] = $reason;
 						$data["aAddedBy"] = Admin::getAdminId();

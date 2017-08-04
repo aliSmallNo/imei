@@ -35,6 +35,7 @@ class WechatUtil
 	const NOTICE_APPROVE = 'notice_approve';
 	const NOTICE_RETURN = 'notice_return';
 	const NOTICE_CHAT = 'notice_chat';
+	const NOTICE_AUDIT = 'notice_audit';
 
 	/**
 	 * @param $sessionKey
@@ -555,6 +556,13 @@ class WechatUtil
 				$msgCat = UserMsg::CATEGORY_CHAT;
 				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = $wxUrl . "/wx/single#scontacts";
+				$keywords['first'] = "hi，$nickname\n";
+				$keywords['remark'] = "\n点击下方详情查看吧~";
+				break;
+			case self::NOTICE_AUDIT:
+				$msgCat = UserMsg::CATEGORY_AUDIT;
+				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$url = $wxUrl . "/wx/sh";
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
