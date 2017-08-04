@@ -821,42 +821,39 @@ class User extends ActiveRecord
 	public static function matchCondition($uFilter)
 	{
 		$matchInfo = json_decode($uFilter, 1);
-		$matchcondition = [];
+		$myFilter = [];
 		if (is_array($matchInfo) && $matchInfo) {
 			if (isset($matchInfo["age"]) && $matchInfo["age"] > 0) {
 				$ageArr = explode("-", $matchInfo["age"]);
 				if (count($ageArr) == 2) {
-					//$matchcondition["age"] = self::$AgeFilter[$ageArr[0]] . '~' . self::$AgeFilter[$ageArr[1]];
-					$matchcondition["age"] = $ageArr[0] . '~' . $ageArr[1] . '岁';
-					$matchcondition["ageVal"] = $ageArr[0] . '-' . $ageArr[1];
+					$myFilter["age"] = $ageArr[0] . '~' . $ageArr[1] . '岁';
+					$myFilter["ageVal"] = $ageArr[0] . '-' . $ageArr[1];
 				}
 			} else {
-				$matchcondition["age"] = self::$AgeFilter[0];
-				$matchcondition["ageVal"] = 0;
+				$myFilter["age"] = self::$AgeFilter[0];
+				$myFilter["ageVal"] = 0;
 			}
 
 			if (isset($matchInfo["height"]) && $matchInfo["height"] > 0) {
 				$heightArr = explode("-", $matchInfo["height"]);
 				if (count($heightArr) == 2) {
-					//$matchcondition["height"] = self::$HeightFilter[$heightArr[0]] . '~' . self::$HeightFilter[$heightArr[1]];
-					$matchcondition["height"] = $heightArr[0] . '~' . $heightArr[1] . 'cm';
-					$matchcondition["heightVal"] = $heightArr[0] . '-' . $heightArr[1];
+					$myFilter["height"] = $heightArr[0] . '~' . $heightArr[1] . 'cm';
+					$myFilter["heightVal"] = $heightArr[0] . '-' . $heightArr[1];
 				}
 			} else {
-				$matchcondition["height"] = self::$HeightFilter[0];
-				$matchcondition["heightVal"] = 0;
+				$myFilter["height"] = self::$HeightFilter[0];
+				$myFilter["heightVal"] = 0;
 			}
 
 			if (isset($matchInfo["edu"]) && $matchInfo["edu"] > 0) {
-				$matchcondition["edu"] = self::$EducationFilter[$matchInfo["edu"]];
-				$matchcondition["eduVal"] = $matchInfo["edu"];
+				$myFilter["edu"] = self::$EducationFilter[$matchInfo["edu"]];
+				$myFilter["eduVal"] = $matchInfo["edu"];
 			} else {
-				$matchcondition["edu"] = self::$EducationFilter[0];
-				$matchcondition["eduVal"] = 0;
+				$myFilter["edu"] = self::$EducationFilter[0];
+				$myFilter["eduVal"] = 0;
 			}
 
 			if (isset($matchInfo["income"]) && $matchInfo["income"] > 0) {
-				//$matchcondition["income"] = self::$IncomeFilter[$matchInfo["income"]];
 				if ($matchInfo["income"] == 0) {
 					$incomeT = "收入不限";
 				} elseif ($matchInfo["income"] == 3) {
@@ -864,15 +861,24 @@ class User extends ActiveRecord
 				} else {
 					$incomeT = $matchInfo["income"] . "W以上";
 				}
-				$matchcondition["income"] = $incomeT;
-				$matchcondition["incomeVal"] = $matchInfo["income"];
+				$myFilter["income"] = $incomeT;
+				$myFilter["incomeVal"] = $matchInfo["income"];
 
 			} else {
-				$matchcondition["income"] = self::$IncomeFilter[0];
-				$matchcondition["incomeVal"] = 0;
+				$myFilter["income"] = self::$IncomeFilter[0];
+				$myFilter["incomeVal"] = 0;
 			}
 		}
-		return $matchcondition;
+		$text = '';
+		$fields = ['age', 'height', 'edu', 'income'];
+		foreach ($fields as $field) {
+			if (isset($myFilter[$field]) && $myFilter[$field]
+				&& isset($myFilter[$field . 'Val']) && $myFilter[$field . 'Val']) {
+				$text .= $myFilter[$field] . ' ';
+			}
+		}
+		$myFilter['text'] = trim($text);
+		return $myFilter;
 	}
 
 	public static function getFilter($openId, $data, $page = 1, $pageSize = 20)
@@ -885,7 +891,7 @@ class User extends ActiveRecord
 		$mId = $myInfo->uId;
 		$hint = $myInfo->uHint;
 		$uFilter = $myInfo->uFilter;
-		$matchcondition = self::matchCondition($uFilter);
+		$myFilter = self::matchCondition($uFilter);
 
 		$gender = $myInfo->uGender;
 		$location = json_decode($myInfo->uLocation, 1);
@@ -948,7 +954,8 @@ class User extends ActiveRecord
 
 		$conn = AppUtil::db();
 		$ret = $conn->createCommand($sql)->queryAll();
-		$rows = $IDs = [];
+		$rows = [];
+		$IDs = [0];
 		foreach ($ret as $row) {
 			$uid = $row['uId'];
 			$rows[$uid] = $row;
@@ -1030,7 +1037,7 @@ class User extends ActiveRecord
 		if ($nextpage > 5) {
 			$nextpage = 0;
 		}
-		return ["data" => $result, "nextpage" => $nextpage, "condition" => $matchcondition];
+		return ["data" => $result, "nextpage" => $nextpage, "condition" => $myFilter];
 	}
 
 	public static function mymp($openId)
