@@ -562,9 +562,9 @@ class WechatUtil
 			case self::NOTICE_AUDIT:
 				$msgCat = UserMsg::CATEGORY_AUDIT;
 				$templateId = "_J4oGSruJmxopotrtLCGzixGrAOSvGu_mo7i698nL7s";
-				$url = $wxUrl . "/wx/sm?id=".AppUtil::decrypt($uId);
+				$url = $wxUrl . "/wx/sm?id=".AppUtil::encrypt($uId);
 				$keywords['first'] = "hi，$nickname\n";
-				$keywords['keyword1'] = $userInfo["uPhone"];
+				$keywords['keyword1'] = substr($userInfo["uPhone"],0,3).'xxxx'.substr($userInfo["uPhone"],7,4);
 				$keywords['keyword2'] = date("Y年n月j日 H:i");
 				$keywords['keyword3'] = $subTitle;
 				$keywords['remark'] = "\n点击下方详情查看吧~";
