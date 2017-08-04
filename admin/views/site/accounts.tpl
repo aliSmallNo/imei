@@ -241,7 +241,8 @@
 			<td>
 				<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改信息</a>
 				<div class="btn-divider"></div>
-				<a href="javascript:;" class="check btn btn-outline btn-danger btn-xs" cid="{{$prod.id}}">审核用户</a>
+				<a href="javascript:;" class="check btn btn-outline btn-danger btn-xs" cid="{{$prod.id}}"
+					 data-st="{{$prod.status}}" data-reasons="">审核用户</a>
 				<h5>创建于{{$prod.addedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 				<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 			</td>
@@ -250,11 +251,55 @@
 		</tbody>
 	</table>
 	{{$pagination}}
+	<div class="modal fade" id="modModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">审核用户</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">用户状态:</label>
+							<div class="col-sm-7">
+								<select class="form-control status-opt">
+									{{foreach from=$partHeader key=key item=item}}
+									<option value="{{$key}}">{{$item}}</option>
+									{{/foreach}}
+								</select>
+							</div>
+						</div>
+						<div class="form-group reasons-wrap">
+							<label class="col-sm-4 control-label">不通过原因:</label>
+							<div class="col-sm-7">
+								<label class="checkbox-inline"><input type="checkbox" name="reasons" value="avatar">头像不合规</label><br>
+								<label class="checkbox-inline"><input type="checkbox" name="reasons" value="name">昵称不合规</label><br>
+								<label class="checkbox-inline"><input type="checkbox" name="reasons" value="intro">个人简介不合规</label><br>
+								<label class="checkbox-inline"><input type="checkbox" name="reasons" value="interest">个人兴趣不合规</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" data-tag="" id="btnCoupon">确定保存</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <script>
+	var mStatusOpt = $('.status-opt');
+	var mReasonsWrap = $('.reasons-wrap');
 	$("a.check").click(function () {
-		var id = $(this).attr("cid");
+		var self = $(this);
+		var uid = self.attr("cid");
+		var st = self.attr("data-st");
 
+//		var html = '';
+//	  $('div.modal-body').html(html);
+		$('#modModal').modal('show');
 		/*layer.confirm('您确定要删除这个用户吗？', {
 			btn: ['确定', '取消'],
 			title: '删除用户'

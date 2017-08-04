@@ -167,6 +167,10 @@ class UserMsg extends ActiveRecord
 	 */
 	public static function recall($uid = 0)
 	{
+		//Rain: 太骚扰了，先停了
+		return 0;
+
+
 		$conn = AppUtil::db();
 		$strCriteria = '';
 		if ($uid && is_numeric($uid)) {
