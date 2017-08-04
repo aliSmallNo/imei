@@ -362,19 +362,74 @@ class WechatUtil
 		$postData = [
 			"button" => [
 				[
-					"type" => "view",
-					"name" => "微媒100",
-					"url" => $wxUrl . "/wx/index"
+					"name" => "我是单身",
+					"sub_button" => [
+						[
+							"type" => "view",
+							"name" => "发掘优秀单身",
+							"url" => $wxUrl . "/wx/single#slook"
+						],
+						[
+							"type" => "view",
+							"name" => "密聊记录",
+							"url" => $wxUrl . "/wx/single#scontacts"
+						],
+						[
+							"type" => "view",
+							"name" => "待处理请求",
+							"url" => $wxUrl . "/wx/single#addMeWx"
+						],
+						[
+							"type" => "view",
+							"name" => "个人中心",
+							"url" => $wxUrl . "/wx/single#sme"
+						]
+					]
 				],
 				[
-					"type" => "view",
-					"name" => "签到领奖",
-					"url" => $wxUrl . "/wx/sign"
+					"name" => "我是媒婆",
+					"sub_button" => [
+						[
+							"type" => "view",
+							"name" => "邀请单身好友",
+							"url" => $wxUrl . "/wx/sts"
+						],
+						[
+							"type" => "view",
+							"name" => "我的账户",
+							"url" => $wxUrl . "/wx/match#saccount"
+						],
+						[
+							"type" => "view",
+							"name" => "我的单身团",
+							"url" => $wxUrl . "/wx/match#sgroup"
+						],
+						[
+							"type" => "view",
+							"name" => "单身团动态",
+							"url" => $wxUrl . "/wx/match#srept"
+						]
+					]
 				],
 				[
-					"type" => "view",
 					"name" => "更多",
-					"url" => $wxUrl . "/wx/help"
+					"sub_button" => [
+						[
+							"type" => "view",
+							"name" => "签到领奖",
+							"url" => $wxUrl . "/wx/sign"
+						],
+						[
+							"type" => "view",
+							"name" => "官方活动",
+							"url" => $wxUrl . "/wx/event"
+						],
+						[
+							"type" => "view",
+							"name" => "帮助中心",
+							"url" => $wxUrl . "/wx/help"
+						]
+					]
 				]
 			]
 		];
@@ -494,7 +549,7 @@ class WechatUtil
 				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = ($noticeTag == self::NOTICE_RETURN ? $wxUrl . "/wx/sw?id=" . $encryptId : $wxUrl . "/wx/single#IaddWx");
 				$keywords['first'] = "hi，$nickname\n";
-				$keywords['remark'] =  "\n点击下方详情查看吧~";
+				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_CHAT:
 				$msgCat = UserMsg::CATEGORY_CHAT;
