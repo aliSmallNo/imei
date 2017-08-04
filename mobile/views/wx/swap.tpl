@@ -7,13 +7,15 @@
 	.swap-wrap h4 {
 		margin: 0;
 		text-align: center;
-		font-size: 2rem;
+		font-size: 1.8rem;
 		font-weight: 500;
 		line-height: 3.2rem;
 	}
 
 	.swap-wrap h4 b{
 		color: #f06292;
+		font-weight: 500;
+		font-size: 2rem;
 	}
 
 	.swap-wrap a {
