@@ -119,9 +119,7 @@
 </section>
 <section id="schat" data-title="密聊中...">
 	<div class="report_wrap">
-		<p class="title">
-			最多聊10句哦，要抓紧机会哦~
-		</p>
+		<p class="title">最多聊10句哦，要抓住机会哦~</p>
 		<ul class="chats"></ul>
 	</div>
 	<div class="m-bottom-pl"></div>
