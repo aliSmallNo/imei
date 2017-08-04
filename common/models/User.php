@@ -1312,7 +1312,7 @@ class User extends ActiveRecord
 			$trends['activemale'][$k] = intval($res3["activemale"]); // 活跃男
 			$trends['activefemale'][$k] = intval($res3["activefemale"]); // 活跃女
 			$trends['activemp'][$k] = intval($res3["activemp"]); // 活跃媒婆
-			$trends['activeRate'][$k] = ($res2["amt"] > 0) ? intval(round($res3["active"] / $res2["amt"], 2) * 100) : 0; // 活跃度
+			$trends['activeRate'][$k] = ($res2["amt"] > 0) ? intval(round($res3["active"] / $res2["member"], 2) * 100) : 0; // 活跃度
 		}
 
 		$sql = "select 
