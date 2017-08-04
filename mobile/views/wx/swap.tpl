@@ -2,6 +2,17 @@
 	.swap-wrap {
 		padding: 12rem 2rem;
 		text-align: center;
+		position: relative;
+	}
+
+	.logo240 {
+		position: absolute;
+		left: 1rem;
+		top: 1rem;
+		background: url(/images/logo240.png) no-repeat center center;
+		background-size: 100% 100%;
+		width: 8rem;
+		height: 3.2rem;
 	}
 
 	.swap-wrap h4 {
@@ -12,7 +23,7 @@
 		line-height: 3.2rem;
 	}
 
-	.swap-wrap h4 b{
+	.swap-wrap h4 b {
 		color: #f06292;
 		font-weight: 500;
 		font-size: 2rem;
@@ -43,6 +54,7 @@
 </style>
 
 <div class="swap-wrap">
+	<i class="logo240"></i>
 	<h4>{{$tip}}</h4>
 	<br><br>
 	<div>
