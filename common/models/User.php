@@ -948,10 +948,14 @@ class User extends ActiveRecord
 		$relation_mp = UserNet::REL_BACKER;
 		$relation_favor = UserNet::REL_FAVOR;
 
-		$sql = "select u.* $rankField
+		$sql = "select u.*,
+				(CASE WHEN u.uCertStatus=1 or u.uStatus=1 or IFNULL(w.wSubscribe,0)=1 THEN 1 
+					WHEN u.uStatus=0 THEN 2 ELSE 9 END) as rank2
+				$rankField
 				from im_user as u 
-				where $condition order by rank desc, uUpdatedOn desc limit $limit";
-
+				JOIN im_user_wechat as w on u.uId=w.wUId
+				where $condition order by rank desc, rank2, uUpdatedOn desc limit $limit";
+		AppUtil::logFile($sql, 5, __FUNCTION__, __LINE__);
 		$conn = AppUtil::db();
 		$ret = $conn->createCommand($sql)->queryAll();
 		$rows = [];
