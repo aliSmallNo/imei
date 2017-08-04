@@ -50,6 +50,7 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<i class="fa fa-bar-chart-o fa-fw"></i> 活跃用户
+			<small>活跃度 = 活跃人数 / 累计会员数</small>
 		</div>
 		<div class="panel-body">
 			<div id="active-chart" class="chart-wrapper"></div>
