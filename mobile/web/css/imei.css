@@ -94,6 +94,14 @@ main {
   padding: 23rem 0;
   background-color: rgba(0, 0, 0, 0.7); }
 
+.space {
+  display: inline-block;
+  width: 1rem; }
+
+.space2 {
+  display: inline-block;
+  width: 2rem; }
+
 .logo240 {
   position: absolute;
   left: 1rem;
@@ -452,7 +460,7 @@ section {
   height: 2.2rem;
   line-height: 2.2rem;
   padding: 0 0.8rem;
-  display: block;
+  display: inline-block;
   font-size: 1.2rem;
   border-radius: 1.15rem;
   border: 1px solid #4da2ff;
@@ -2577,8 +2585,8 @@ section {
       line-height: 2rem; }
 
 .my-condition {
-  height: 4.2rem;
-  line-height: 4.2rem;
+  height: 3.6rem;
+  line-height: 3.6rem;
   background: #fff; }
   .my-condition .nocondition a {
     color: #6a6572;
@@ -2598,7 +2606,8 @@ section {
   .my-condition .conditions {
     position: relative;
     display: block;
-    padding: 0 1rem; }
+    padding: 0 1rem;
+    border-bottom: 1px solid #d4d4d4; }
     .my-condition .conditions:after {
       content: " ";
       display: inline-block;
@@ -2616,9 +2625,15 @@ section {
       right: 1rem; }
     .my-condition .conditions .con-title, .my-condition .conditions .con-des {
       font-size: 1.2rem;
-      color: #000; }
+      color: #363438;
+      position: relative; }
     .my-condition .conditions .con-des {
-      color: #777; }
+      color: #007aff;
+      font-weight: 500; }
+    .my-condition .conditions .btn-outline {
+      position: absolute;
+      right: 2.5rem;
+      top: 0.6rem; }
 
 .m-top-users li {
   background: #fff;

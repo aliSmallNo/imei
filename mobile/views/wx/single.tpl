@@ -7,9 +7,8 @@
 </section>
 <section id="slook" data-title="发现单身">
 	<div class="my-condition">
-		<a href="#matchCondition" class="nocondition">
-			<span class="desc">您还没有设置择偶条件哦~</span>
-			<span class="btn">去设置</span>
+		<a href="javascript:;" class="conditions">
+			<span class="con-title">择偶条件: </span>
 		</a>
 	</div>
 	<ul class="m-top-users"></ul>
@@ -65,9 +64,6 @@
 					<h5>{{$uInfo.intro}}</h5>
 				</div>
 				<a href="/wx/switch" class="btn-outline change-role">切换成媒婆</a>
-				<!--
-				<a href="/wx/sreg#photo" class="btn-outline edit-role">编辑</a>
-				-->
 				<a href="/wx/sedit" class="btn-outline edit-role">编辑</a>
 			</div>
 			<a href="#album" class="u-my-album">
@@ -699,7 +695,8 @@
 <script type="text/html" id="conditions">
 	<a href="javascript:;" class="conditions">
 		<span class="con-title">择偶条件: </span>
-		<span class="con-des">{[age]} {[height]} {[income]} {[edu]}</span>
+		{[#text]}<span class="con-des">{[.]}</span>{[/text]}
+		{[^text]}<span class="btn-outline">去设置</span>{[/text]}
 	</a>
 </script>
 <script type="text/html" id="sprofileTemp">
