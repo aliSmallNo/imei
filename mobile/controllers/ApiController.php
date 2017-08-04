@@ -190,6 +190,7 @@ class ApiController extends Controller
 		if (!$openId) {
 			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
 		}
+
 		switch ($tag) {
 			case 'boys':
 			case 'girls':
@@ -252,6 +253,10 @@ class ApiController extends Controller
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
+				if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])) {
+					return self::renderAPI(129, '你有未审核通过的个人资料,快去修改个人资料吧！');
+				}
+
 				list($amt, $unit) = UserSign::sign($wxInfo['uId']);
 				if ($amt) {
 					return self::renderAPI(0, '今日签到获得' . $amt . $unit . '奖励，请明天继续~',
@@ -266,6 +271,11 @@ class ApiController extends Controller
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
+
+				if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])) {
+					return self::renderAPI(129, '你有未审核通过的个人资料,快去修改个人资料吧！');
+				}
+
 				if (UserNet::hasFollowed($uid, $wxInfo['uId'])) {
 					WechatUtil::toNotice($uid, $wxInfo['uId'], "focus", false);
 					UserNet::del($uid, $wxInfo['uId'], UserNet::REL_FOLLOW);
@@ -347,6 +357,10 @@ class ApiController extends Controller
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
+				if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])) {
+					return self::renderAPI(129, '你有未审核通过的个人资料,快去修改个人资料吧！');
+				}
+
 				$id = self::postParam("id");
 				$f = self::postParam("f");
 				$ret = UserNet::hint($wxInfo["uId"], $id, $f);
@@ -359,6 +373,9 @@ class ApiController extends Controller
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
+				}
+				if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])) {
+					return self::renderAPI(129, '你有未审核通过的个人资料,快去修改个人资料吧！');
 				}
 				$num = self::postParam("num");
 				$id = self::postParam("id");
@@ -403,6 +420,10 @@ class ApiController extends Controller
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
+				if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])) {
+					return self::renderAPI(129, '你有未审核通过的个人资料,快去修改个人资料吧！');
+				}
+
 				$text = ($pf == "pass") ? "通过" : "拒绝";
 				if ($pf == "pass" && !UserWechat::findOne(["wOpenId" => $openId])->wWechatId) {
 					return self::renderAPI(130, '您还没有填写您的微信号~');
@@ -955,6 +976,11 @@ class ApiController extends Controller
 			return self::renderAPI(129, '用户不存在啊~');
 		}
 		$uid = $wxInfo['uId'];
+		if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])
+			&& in_array($tag, ["sent", "list", "read"])) {
+			return self::renderAPI(129, '你有未审核通过的个人资料,快去修改个人资料吧！');
+		}
+
 		switch ($tag) {
 			case 'sent':
 				$receiverId = self::postParam('id');

@@ -248,6 +248,7 @@ class ApiController extends Controller
 						$data["aAddedBy"] = Admin::getAdminId();
 						$aid = UserAudit::add($data);
 						if ($st == User::STATUS_INVALID) {
+
 							$reason = json_decode($reason, 1);
 							$catArr = [
 								"avatar" => "头像",
