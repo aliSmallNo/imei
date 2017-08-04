@@ -247,12 +247,10 @@ class SiteController extends BaseController
 		$page = self::getParam("page", 1);
 		$name = self::getParam('name');
 		$phone = self::getParam('phone');
-		$status = self::getParam('status');
-		//$st = $status ? $status : User::STATUS_PENDING;
-		//$criteria[] = " uStatus = $st ";
+		$status = self::getParam('status', 0);
 
 		$params = $criteria = $partCriteria = [];
-		if ($status != "" && ($status == 0 || $status)) {
+		if ($status == 0 || $status) {
 			$criteria[] = " uStatus=$status ";
 		}
 		if ($phone) {
