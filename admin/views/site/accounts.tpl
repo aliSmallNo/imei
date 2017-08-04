@@ -137,9 +137,14 @@
 		text-align: right;
 		padding-right: 10px;
 	}
-	.form-inline input{
+
+	.form-inline input {
 		border-radius: 3px;
 		border: 1px solid #ccc;
+	}
+
+	.reasons-wrap {
+		display: none;
 	}
 </style>
 <div id="page-wrapper">
@@ -265,7 +270,8 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+										aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title">审核用户</h4>
 				</div>
 				<div class="modal-body">
@@ -283,10 +289,10 @@
 						<div class="form-group reasons-wrap">
 							<label class="col-sm-4 control-label">不通过原因:</label>
 							<div class="col-sm-7">
-								<label class="form-inline"><b>头像不合规</b><input name="reasons" value=""></label><br>
-								<label class="form-inline"><b>昵称不合规</b><input name="reasons" value=""></label><br>
-								<label class="form-inline"><b>个人简介不合规</b><input name="reasons" value=""></label><br>
-								<label class="form-inline"><b>个人兴趣不合规</b><input name="reasons" value=""></label>
+								<label class="form-inline"><b>头像不合规</b><input name="reasons" value="" data-tag="avatar"></label><br>
+								<label class="form-inline"><b>昵称不合规</b><input name="reasons" value="" data-tag="nickname"></label><br>
+								<label class="form-inline"><b>个人简介不合规</b><input name="reasons" value="" data-tag="intro"></label><br>
+								<label class="form-inline"><b>个人兴趣不合规</b><input name="reasons" value="" data-tag="interest"></label>
 							</div>
 						</div>
 					</div>
@@ -300,25 +306,6 @@
 	</div>
 </div>
 <script>
-	var mStatusOpt = $('.status-opt');
-	var mReasonsWrap = $('.reasons-wrap');
-	$("a.check").click(function () {
-		var self = $(this);
-		var uid = self.attr("data-id");
-		var st = self.attr("data-st");
-
-//		var html = '';
-//	  $('div.modal-body').html(html);
-		$('#modModal').modal('show');
-		/*layer.confirm('您确定要删除这个用户吗？', {
-			btn: ['确定', '取消'],
-			title: '删除用户'
-		}, function () {
-			delUser(id);
-		}, function () {
-		});*/
-
-	});
 
 	function delUser(id) {
 		$.post("/api/users", {
@@ -341,19 +328,78 @@
 		var self = $(this);
 		var images = self.closest("td").attr("data-images");
 		showImages(JSON.parse(images))
-
 	});
 
 	function showImages(imagesJson) {
 		layer.photos({
 			photos: imagesJson, //格式见API文档手册页
 			shift: 5,
-//			isOutAnim: false,
-//			shade: 1,
-//			shadeClose: true,
-			//area: ['400px', '400px'],
 		});
 	}
+
+	var statusOPt = $(".status-opt"),
+		reasonsWrap = $(".reasons-wrap"),
+		btnCoupon = $("#btnCoupon"),
+		hasReson = 1,
+		resonLoad = 0,
+		uid
+	;
+
+	$("a.check").click(function () {
+		var self = $(this);
+		uid = self.attr("cid");
+		var st = self.attr("data-st");
+		$('#modModal').modal('show');
+	});
+
+	statusOPt.on("change", function () {
+		var self = $(this);
+		if (self.val() == 2) {
+			reasonsWrap.show()
+		} else {
+			reasonsWrap.hide();
+		}
+	});
+
+	btnCoupon.on("click", function () {
+		var statusOPtVal = statusOPt.val();
+		var reason = [];
+		if (statusOPtVal == 2) {
+			hasReson = 1;
+			$("input[name=reasons]").each(function () {
+				var self = $(this);
+				if (self.val()) {
+					var item = {
+						tag: self.attr("data-tag"),
+						text: self.val()
+					};
+					reason.push(item);
+					hasReson = 0
+				}
+			});
+			if (hasReson) {
+				layer.msg("还没有填写不合规原因哦~");
+				return;
+			}
+		}
+		if (resonLoad) {
+			return;
+		}
+		resonLoad = 1;
+		$.post("/api/users", {
+			tag: "reason",
+			reason: JSON.stringify(reason),
+			st: statusOPtVal,
+			id: uid
+		}, function (resp) {
+			resonLoad = 0;
+			if (resp.code == 0) {
+				location.reload();
+			}
+			layer.msg(resp.msg);
+		}, "json")
+	})
+
 
 </script>
 
