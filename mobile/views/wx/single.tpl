@@ -47,6 +47,12 @@
 			<a href="/wx/sreg#photo">GO</a>
 		</div>
 		{{/if}}
+		{{if $audit}}
+		<div class="m-hint">
+			<span>您有个人信息审核未通过</span>
+			<a href="/wx/notice">去看看</a>
+		</div>
+		{{/if}}
 		<div class="u-my-wrap line-bottom">
 			<div class="u-my-bar">
 				<div class="avatar single">

@@ -270,7 +270,7 @@ class ApiController extends Controller
 						}
 					}
 
-					return self::renderAPI(0, '审核成功', $aid);
+					return self::renderAPI(0, '操作成功', $aid);
 				} else {
 					return self::renderAPI(129, '参数错误');
 				}
