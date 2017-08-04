@@ -13,6 +13,7 @@ use admin\models\Admin;
 use common\models\City;
 use common\models\User;
 use common\models\UserAudit;
+use common\models\UserMsg;
 use common\models\UserNet;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
@@ -239,13 +240,34 @@ class ApiController extends Controller
 					if ($f) {
 						$aid = UserAudit::replace($data);
 						WechatUtil::templateMsg("notice_audit", $id,
-							$title = '个人信息审核通知',
+							$title = '审核通知',
 							$subTitle = '审核通过',
 							$adminId = Admin::getAdminId());
 					} else {
 						$data["aReasons"] = $reason;
 						$data["aAddedBy"] = Admin::getAdminId();
 						$aid = UserAudit::add($data);
+						if ($st == User::STATUS_INVALID) {
+							$reason = json_decode($reason, 1);
+							$catArr = [
+								"avatar" => "头像",
+								"nickname" => "呢称",
+								"intro" => "个人简介",
+								"interest" => "兴趣爱好",
+							];
+							$str = "";
+							foreach ($reason as $v) {
+								if ($v["text"]) {
+									$str .= $catArr[$v["tag"]] . "不合规: " . $v["text"] . "  ";
+								}
+							}
+							UserMsg::edit(0, [
+								"mUId" => $id,
+								"mCategory" => UserMsg::CATEGORY_AUDIT,
+								"mText" => $str,
+								"mAddedBy" => $id
+							]);
+						}
 					}
 
 					return self::renderAPI(0, '审核成功', $aid);
