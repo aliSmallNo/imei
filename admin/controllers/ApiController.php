@@ -262,7 +262,7 @@ class ApiController extends Controller
 								}
 							}
 							UserMsg::edit(0, [
-								"mUId" => Admin::getAdminId(),
+								"mUId" => $id,
 								"mCategory" => UserMsg::CATEGORY_AUDIT,
 								"mText" => $str,
 								"mAddedBy" => $id
