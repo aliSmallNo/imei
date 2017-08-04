@@ -111,6 +111,10 @@ require(["layer"],
 					FootUtil.toggle(0);
 					break;
 				case 'schat':
+					if (!ChatUtil.sid) {
+						location.href = '#scontacts';
+						return;
+					}
 					ChatUtil.page = 1;
 					ChatUtil.reload();
 					FootUtil.toggle(0);

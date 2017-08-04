@@ -105,6 +105,10 @@ class ChatMsg extends ActiveRecord
 
 		foreach ($chats as $k => $row) {
 			$id = $row['cSenderId'];
+			$chats[$k]['url'] = 'javascript:;';
+			if ($row['cDir'] == 'left') {
+				$chats[$k]['url'] = '/wx/sh?id=' . AppUtil::encrypt($subUId);
+			}
 			foreach ($row as $col => $val) {
 				$chats[$k][strtolower(substr($col, 1))] = $val;
 				unset($chats[$k][$col]);

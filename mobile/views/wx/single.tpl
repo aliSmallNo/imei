@@ -933,7 +933,7 @@
 <script type="text/template" id="tpl_chat">
 	{[#items]}
 	<li class="{[dir]}">
-		<div class="avatar"><img src="{[avatar]}"></div>
+		<a href="{[url]}" class="avatar"><img src="{[avatar]}"></a>
 		<div class="content"><span>{[content]}</span></div>
 	</li>
 	{[/items]}
@@ -958,4 +958,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/iscroll.js"></script>
-<script data-main="/js/single.js?v=1.5.3" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.5.4" src="/assets/js/require.js"></script>
