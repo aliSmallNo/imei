@@ -90,10 +90,10 @@ class WxController extends BaseController
 		if ($wxInfo) {
 			$role = $wxInfo['uRole'];
 			if ($role == User::ROLE_SINGLE) {
-				$tip = '你现在是<b>单身</b><br>是否确定要切换到<b>媒婆</b>？';
+				$tip = '你现在是<b>单身</b><br>是否要切换到<b>媒婆</b>？';
 				$back = self::URL_SINGLE;
 			} else {
-				$tip = '你现在是<b>媒婆</b><br>是否确定要切换到<b>单身</b>？';
+				$tip = '你现在是<b>媒婆</b><br>是否要切换到<b>单身</b>？';
 				$back = self::URL_MATCH;
 			}
 		} else {
