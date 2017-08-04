@@ -11,6 +11,7 @@ namespace mobile\controllers;
 use common\models\City;
 use common\models\LogAction;
 use common\models\User;
+use common\models\UserAudit;
 use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
@@ -687,7 +688,7 @@ class WxController extends BaseController
 
 		$audit = 0;
 		if ($wxInfo["uStatus"] != User::STATUS_ACTIVE &&
-			$audits = UserMsg::find()->where(["mCategory" => UserMsg::CATEGORY_AUDIT])->all()) {
+			$audits = UserAudit::find()->where(["aUId" => $wxInfo["uId"], "aValid" => UserAudit::VALID_FAIL])->all()) {
 			$audit = 1;
 		}
 
