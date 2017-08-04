@@ -167,7 +167,7 @@
 	<div class="row">
 		<ul class="nav nav-tabs">
 			{{foreach from=$partHeader key=key item=prod}}
-			<li class="ng-scope {{if $status== $key}} active{{/if}}">
+			<li class="ng-scope {{if $status == $key}}active{{/if}}">
 				<a href="/site/accounts?status={{$key}}&name={{$name}}&phone={{$phone}}" class="ng-binding">
 					{{$prod}}
 					<span class="badge">{{$partCount[$key]}}</span>
@@ -239,7 +239,7 @@
 			<td class="album-items" data-images='{{$prod.showImages}}'>
 				{{if $prod.album}}
 				{{foreach from=$prod.album item=img}}
-				<img src="{{$img}}">
+				<img src="{{$img}}" alt="">
 				{{/foreach}}
 				{{/if}}
 			</td>

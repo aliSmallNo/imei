@@ -298,7 +298,6 @@ class SiteController extends BaseController
 				"phone" => $phone,
 				'pagination' => $pagination,
 				'category' => 'users',
-				"statusT" => User::$Status,
 				"partCount" => $partCount,
 				"partHeader" => User::$Status,
 			]);
