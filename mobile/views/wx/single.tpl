@@ -961,4 +961,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/iscroll.js"></script>
-<script data-main="/js/single.js?v=1.5.4" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.5.5" src="/assets/js/require.js"></script>
