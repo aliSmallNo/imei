@@ -347,7 +347,7 @@
 
 	$("a.check").click(function () {
 		var self = $(this);
-		uid = self.attr("cid");
+		uid = self.attr("data-id");
 		var st = self.attr("data-st");
 		$('#modModal').modal('show');
 	});
@@ -362,6 +362,7 @@
 	});
 
 	btnCoupon.on("click", function () {
+		// console.log(uid);return;
 		var statusOPtVal = statusOPt.val();
 		var reason = [];
 		if (statusOPtVal == 2) {
