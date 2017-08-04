@@ -49,7 +49,7 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_MP_SAY => "修改了你的媒婆说",
 		self::CATEGORY_REWARD_NEW => "新人奖励",
 		self::CATEGORY_CHAT => "密聊信息",
-		self::CATEGORY_AUDIT => "审核信息",
+		self::CATEGORY_AUDIT => "审核通过",
 		self::CATEGORY_SMS_RECALL => "短信召回老用户",
 	];
 
@@ -133,26 +133,30 @@ class UserMsg extends ActiveRecord
 				case self::CATEGORY_FOCUS:
 				case self::CATEGORY_FOCUS_CANCEL:
 					$v["text"] = "你对" . $v["uName"] . self::$catDict[$v["mCategory"]];
-					$v["url"] = "sh?id=" . $v["secretId"];
+					$v["url"] = "/wx/sh?id=" . $v["secretId"];
 					break;
 				case self::CATEGORY_REQ_WX:
 				case self::CATEGORY_ADDWX_PASS:
 				case self::CATEGORY_ADDWX_REFUSE:
-					$v["url"] = "sh?id=" . $v["secretId"];
+					$v["url"] = "/wx/sh?id=" . $v["secretId"];
 					$v["text"] = $v["uName"] . self::$catDict[$v["mCategory"]];
 					break;
 				case self::CATEGORY_RETURN_ROSE:
 				case self::CATEGORY_REWARD_NEW:
-					$v["url"] = "sh?id=" . $v["secretId"];
+					$v["url"] = "/wx/sh?id=" . $v["secretId"];
 					$v["text"] = "你有" . self::$catDict[$v["mCategory"]];
 					break;
 				case self::CATEGORY_MP_SAY:
-					$v["url"] = "mh?id=" . $v["secretId"];
+					$v["url"] = "/wx/mh?id=" . $v["secretId"];
 					$v["text"] = "你的媒婆" . self::$catDict[$v["mCategory"]];
 					break;
 				case self::CATEGORY_CHAT:
-					$v["url"] = "single#scontacts";
+					$v["url"] = "/wx/single#scontacts";
 					$v["text"] = "你有一条" . self::$catDict[$v["mCategory"]];
+					break;
+				case self::CATEGORY_AUDIT:
+					$v["url"] = "javascript:;";
+					$v["text"] = $v["mText"];
 					break;
 			}
 
