@@ -449,33 +449,25 @@ class User extends ActiveRecord
 
 	public static function partCount($criteria, $params)
 	{
-		$part = [
-			User::STATUS_PENDING => "pending",
-			User::STATUS_ACTIVE => "active",
-			User::STATUS_INVALID => "invalid",
-			User::STATUS_PRISON => "prison",
-			User::STATUS_DUMMY => "dummy",
-			User::STATUS_DELETE => "del",
-		];
 		$strCriteria = '';
 		if ($criteria) {
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
-		$sql = "select 
-				SUM(CASE WHEN uStatus=0  THEN 1 END) as pending,
-				SUM(CASE WHEN uStatus=1  THEN 1 END) as active,
-				SUM(CASE WHEN uStatus=2  THEN 1 END) as invalid,
-				SUM(CASE WHEN uStatus=7  THEN 1 END) as prison,
-				SUM(CASE WHEN uStatus=8  THEN 1 END) as dummy,
-				SUM(CASE WHEN uStatus=9  THEN 1 END) as del
+		$sqlPart = '';
+		foreach (self::$Status as $k => $st) {
+			$sqlPart .= 'SUM(CASE WHEN uStatus=' . $k . '  THEN 1 END) as c' . $k . ',';
+		}
+		$sqlPart = trim($sqlPart, ',');
+		$sql = "select $sqlPart
 				from im_user
 				WHERE uId>0 $strCriteria ";
-		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryOne();
-		$partCount = [];
-		foreach ($part as $k => $v) {
-			$partCount[$k] = $res[$v] ? $res[$v] : 0;
+		$conn = AppUtil::db();
+		$res = $conn->createCommand($sql)->bindValues($params)->queryOne();
+		$counts = [];
+		foreach ($res as $k => $v) {
+			$counts[substr($k, 1)] = isset($v) ? $v : 0;
 		}
-		return $partCount;
+		return $counts;
 	}
 
 	public static function stat()
@@ -1298,7 +1290,7 @@ class User extends ActiveRecord
 //				where  uStatus<8 AND a.aDate BETWEEN :beginDT and :endDT
 //				AND a.aCategory in (1000,1002,1004) ";
 
-		$sql="select 
+		$sql = "select 
 				COUNT(1) as active, 
 				SUM(case when uGender=11 then 1 end ) as activemale, 
 				SUM(case when uGender=10 then 1 end ) as activefemale, 
