@@ -78,7 +78,7 @@
 			<a href="javascript:;" to="addMeWx" id="pending_applications"><span class="title">加我微信的人</span> </a>
 			<a href="javascript:;" to="IaddWx"><span class="title">我加微信的人</span> </a>
 			<a href="javascript:;" to="heartbeat"><span class="title">心动列表</span> </a>
-			<a href="/wx/favor"><span>心动周排行榜</span> </a>
+
 		</div>
 		<div class="m-rows line-bottom mymp">
 			<a href="/wx/invite"><span class="title">我的媒婆</span> <span class="tip">{{$mpName}}</span></a>
@@ -93,6 +93,7 @@
 				<span class="noReadFlag"></span>
 				{{/if}}
 			</a>
+			<a href="/wx/favor"><span>心动周排行榜</span></a>
 			<a href="#sfeedback"><span class="title">意见反馈</span> </a>
 			<a href="#myWechatNo"><span class="title">我的微信号</span></a>
 			<a href="#sqrcode"><span class="title">关注公众号</span></a>
