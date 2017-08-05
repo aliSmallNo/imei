@@ -1238,6 +1238,7 @@ class User extends ActiveRecord
 		$trends["favor"][$k] = 0;
 		$trends["getwxno"][$k] = 0;
 		$trends["pass"][$k] = 0;
+		$trends["chat"][$k] = 0;
 		$trends["trans"][$k] = 0;
 
 		$sql = "SELECT 
@@ -1353,6 +1354,25 @@ class User extends ActiveRecord
 		])->queryOne();
 		if ($res5) {
 			$trends['trans'][$k] = intval($res5["trans"]); // 新增充值
+		}
+
+		$sql = "SELECT count(concatId) as chat FROM 
+				(
+				select
+				(case 
+				when cSenderId>cReceiverId then CONCAT(cSenderId,cReceiverId) 
+				when cReceiverId>cSenderId then CONCAT(cReceiverId,cSenderId) 
+				end) as concatId
+				FROM im_chat_msg 
+				WHERE cAddedOn BETWEEN :beginDT AND :endDT  
+				group by concatId 
+				) as temp";
+		$res6 = $conn->createCommand($sql)->bindValues([
+			':beginDT' => $beginDate,
+			':endDT' => $endDate,
+		])->queryOne();
+		if ($res6) {
+			$trends['chat'][$k] = intval($res6["chat"]); // 新增聊天数
 		}
 
 		return $trends;

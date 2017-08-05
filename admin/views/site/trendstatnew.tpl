@@ -109,8 +109,8 @@
 			}
 		}
 		if (cat == "net") {
-			var names = ["心动", "牵线", "牵线成功"];
-			var fields = ["favor", "getwxno", "pass"];
+			var names = ["心动", "牵线", "牵线成功","聊天数"];
+			var fields = ["favor", "getwxno", "pass","chat"];
 			for (var i = 0; i < fields.length; i++) {
 				items.push({
 					name: names[i],
