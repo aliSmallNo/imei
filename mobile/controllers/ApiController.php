@@ -15,6 +15,7 @@ use common\models\Log;
 use common\models\LogAction;
 use common\models\Pay;
 use common\models\User;
+use common\models\UserAudit;
 use common\models\UserBuzz;
 use common\models\UserMsg;
 use common\models\UserNet;
@@ -254,7 +255,8 @@ class ApiController extends Controller
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])) {
-					return self::renderAPI(129, '你有未审核通过的个人资料,快去修改个人资料吧！');
+					$msg = UserAudit::reasonMsg($wxInfo["uId"]);
+					return self::renderAPI(129, $msg);
 				}
 
 				list($amt, $unit) = UserSign::sign($wxInfo['uId']);
@@ -273,7 +275,8 @@ class ApiController extends Controller
 				}
 
 				if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])) {
-					return self::renderAPI(129, '你有未审核通过的个人资料,快去修改个人资料吧！');
+					$msg = UserAudit::reasonMsg($wxInfo["uId"]);
+					return self::renderAPI(129, $msg);
 				}
 
 				if (UserNet::hasFollowed($uid, $wxInfo['uId'])) {
@@ -299,12 +302,12 @@ class ApiController extends Controller
 				$uInfo = User::findOne(["uOpenId" => $openId]);
 				if ($uInfo && $uInfo->uStatus == User::STATUS_INVALID &&
 					((isset($data["img"]) && $data["img"]) ||
-					(isset($data["intro"]) && $data["intro"]) ||
-					(isset($data["interest"]) && $data["interest"]) ||
-					(isset($data["name"]) && $data["name"]))
+						(isset($data["intro"]) && $data["intro"]) ||
+						(isset($data["interest"]) && $data["interest"]) ||
+						(isset($data["name"]) && $data["name"]))
 				) {
 					// uAvatar,uName,uInterest,uIntro
-						$data["status"] = User::STATUS_PENDING;
+					$data["status"] = User::STATUS_PENDING;
 				}
 
 				$data["role"] = ($tag == 'mreg') ? User::ROLE_MATCHER : User::ROLE_SINGLE;
@@ -369,7 +372,8 @@ class ApiController extends Controller
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])) {
-					return self::renderAPI(129, '你有未审核通过的个人资料,快去修改个人资料吧！');
+					$msg = UserAudit::reasonMsg($wxInfo["uId"]);
+					return self::renderAPI(129, $msg);
 				}
 
 				$id = self::postParam("id");
@@ -386,7 +390,8 @@ class ApiController extends Controller
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])) {
-					return self::renderAPI(129, '你有未审核通过的个人资料,快去修改个人资料吧！');
+					$msg = UserAudit::reasonMsg($wxInfo["uId"]);
+					return self::renderAPI(129, $msg);
 				}
 				$num = self::postParam("num");
 				$id = self::postParam("id");
@@ -432,7 +437,8 @@ class ApiController extends Controller
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])) {
-					return self::renderAPI(129, '你有未审核通过的个人资料,快去修改个人资料吧！');
+					$msg = UserAudit::reasonMsg($wxInfo["uId"]);
+					return self::renderAPI(129, $msg);
 				}
 
 				$text = ($pf == "pass") ? "通过" : "拒绝";
@@ -989,7 +995,8 @@ class ApiController extends Controller
 		$uid = $wxInfo['uId'];
 		if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])
 			&& in_array($tag, ["sent", "list", "read"])) {
-			return self::renderAPI(129, '你有未审核通过的个人资料,快去修改个人资料吧！');
+			$msg = UserAudit::reasonMsg($wxInfo["uId"]);
+			return self::renderAPI(129, $msg);
 		}
 
 		switch ($tag) {

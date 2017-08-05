@@ -250,12 +250,7 @@ class ApiController extends Controller
 						if ($st == User::STATUS_INVALID) {
 
 							$reason = json_decode($reason, 1);
-							$catArr = [
-								"avatar" => "头像",
-								"nickname" => "呢称",
-								"intro" => "个人简介",
-								"interest" => "兴趣爱好",
-							];
+							$catArr = UserAudit::$reasonDict;
 							$str = "";
 							foreach ($reason as $v) {
 								if ($v["text"]) {
