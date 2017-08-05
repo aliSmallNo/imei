@@ -3373,7 +3373,7 @@ section {
   position: fixed;
   left: 3rem;
   right: 3rem;
-  top: 15rem;
+  top: 10rem;
   z-index: 999;
   background: #E53935;
   padding: 1.5rem 2rem;
@@ -3389,9 +3389,9 @@ section {
     top: 1rem;
     right: 1rem; }
   .pay-mp .pmp-title {
-    font-size: 1.4rem; }
+    font-size: 1.6rem; }
   .pay-mp .pmp-title-des {
-    font-size: 1rem;
+    font-size: 1.2rem;
     padding: 0.5rem; }
   .pay-mp ul.options {
     overflow: hidden;
@@ -3441,14 +3441,14 @@ section {
     margin: 1rem; }
     .pay-mp .pmp-pay a {
       background: #f9cd9a;
-      border: 1px solid #f9cd9a;
+      border: 2px solid #fbdbb7;
       padding: 1rem;
-      border-radius: 3.5rem;
+      border-radius: 3rem;
       display: inline-block;
-      width: 3.5rem;
-      height: 3.5rem;
+      width: 3.6rem;
+      height: 3.6rem;
       font-size: 1.2rem;
-      opacity: 0.5; }
+      color: #6d4c41; }
     .pay-mp .pmp-pay a.active {
       opacity: 1; }
   .pay-mp .pmp-bot {
@@ -3468,7 +3468,6 @@ section {
         top: 0;
         right: -1.6rem; }
     .pay-mp .pmp-bot ol {
-      display: none;
       padding-top: 0.5rem;
       padding-left: 1.5rem;
       border-top: 1px solid rgba(255, 255, 255, 0.1); }
@@ -5083,10 +5082,10 @@ section {
         text-overflow: ellipsis;
         overflow: hidden; }
       .contacts a .content .top-t i {
-        -webkit-box-flex: 0 0 8rem;
-        -webkit-flex: 0 0 8rem;
-        -ms-flex: 0 0 8rem;
-        flex: 0 0 8rem;
+        -webkit-box-flex: 0 0 6.5rem;
+        -webkit-flex: 0 0 6.5rem;
+        -ms-flex: 0 0 6.5rem;
+        flex: 0 0 6.5rem;
         text-align: right;
         font-size: 1rem;
         color: #6a6572;

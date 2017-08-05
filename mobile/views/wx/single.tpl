@@ -510,9 +510,40 @@
 		<a href="javascript:;" class="btn" tag="btn-confirm">确认</a>
 	</div>
 </div>
-<div class="pay-mp">
+<div class="pay-mp reward-chat-wrap">
+	<p class="pmp-title">我要跟TA密聊</p>
+	<p class="pmp-title-des">先捐助我们些媒桂花吧~</p>
+	<a class="close" tag="close"></a>
+	<ul class="options">
+		<li>
+			<a href="javascript:;" num="50" tag="choose">
+				<div class="img"><img src="/images/ico_rose.png"></div>
+				<div class="des">
+					<div class="t">x 20<span>朵</span></div>
+					<div class="b">就聊10句</div>
+				</div>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:;" num="100" tag="choose">
+				<div class="img"><img src="/images/ico_rose.png"></div>
+				<div class="des">
+					<div class="t">x 40<span>朵</span></div>
+					<div class="b">聊20句</div>
+				</div>
+			</a>
+		</li>
+	</ul>
+	<div class="pmp-pay">
+		<a href="javascript:;" tag="pay">捐媒<br>桂花</a>
+	</div>
+	<div class="pmp-bot">
+		<a href="javascript:;">感谢对我们的支持和厚爱</a>
+	</div>
+</div>
+<div class="pay-mp reward-wx-wrap">
 	<p class="pmp-title">申请加微信</p>
-	<p class="pmp-title-des">若对方拒绝，媒瑰花退回</p>
+	<p class="pmp-title-des">若对方拒绝，媒桂花全部退回</p>
 	<a class="close" tag="close"></a>
 	<ul class="options">
 		<li>
@@ -553,19 +584,19 @@
 		</li>
 	</ul>
 	<div class="pmp-pay">
-		<a href="javascript:;" tag="pay">打赏媒婆</a>
+		<a href="javascript:;" tag="pay">打赏<br>媒婆</a>
 	</div>
 	<div class="pmp-bot">
 		<a tag="des">感谢对方媒婆推荐了这么好的人</a>
 		<ol>
-			<li>对方拒绝给微信号，媒瑰花全部返还</li>
-			<li>对方同意给微信号，媒瑰花将打给对方媒婆</li>
-			<li>对方若无回应，5天后媒瑰花如数返还</li>
+			<li>对方拒绝给微信号，媒桂花全部返还</li>
+			<li>对方同意给微信号，媒桂花将打给对方媒婆</li>
+			<li>对方若无回应，5天后媒桂花如数返还</li>
 		</ol>
 	</div>
 </div>
 <div class="not-enough-rose">
-	<p>您的媒瑰花余额：<span class="rose-num">30</span>朵</p>
+	<p>你的媒桂花余额：<span class="rose-num">30</span>朵</p>
 	<p>不够打赏？马上去充值!</p>
 	<div class="btns">
 		<a href="javascript:;" tag="cancel">取消</a>
@@ -961,4 +992,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/iscroll.js"></script>
-<script data-main="/js/single.js?v=1.5.5" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.5.6" src="/assets/js/require.js"></script>

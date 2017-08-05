@@ -26,6 +26,13 @@ class ChatMsg extends ActiveRecord
 		return '{{%chat_msg}}';
 	}
 
+	protected static function arrUId($uId, $subUId)
+	{
+		$arr = [$uId, $subUId];
+		sort($arr);
+		return $arr;
+	}
+
 	public static function add($uId, $subUId, $content)
 	{
 		$cnt = self::chatCount($uId, $subUId);
@@ -53,6 +60,54 @@ class ChatMsg extends ActiveRecord
 			];
 		}
 		return false;
+	}
+
+	public static function groupRound($uId, $subUId, $conn = '')
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		list($uid1, $uid2) = self::arrUId($uId, $subUId);
+		$sql = 'SELECT * FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2';
+		$ret = $conn->createCommand($sql)->bindValues([
+			':id1' => $uid1,
+			':id2' => $uid2,
+		])->queryOne();
+		if ($ret) {
+			return [$ret['gId'], $ret['gRound']];
+		}
+		return [0, 0];
+	}
+
+	public static function groupEdit($uId, $subUId, $giftCount = 0, $conn = '')
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$ratio = 1.0 / 2.0;
+		list($uid1, $uid2) = self::arrUId($uId, $subUId);
+		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gAddedBy)
+			SELECT :id1,:id2,:uid FROM dual
+			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2)';
+		$ret = $conn->createCommand($sql)->bindValues([
+			':id1' => $uid1,
+			':id2' => $uid2,
+			':uid' => $uId,
+		])->execute();
+		if ($giftCount) {
+			$amt = intval($giftCount * $ratio);
+			$sql = 'UPDATE im_chat_group set gRound=IFNULL(gRound,0)+' . $amt . ' WHERE g.gUId1=:id1 AND g.gUId2=:id2';
+			$conn->createCommand($sql)->bindValues([
+				':id1' => $uid1,
+				':id2' => $uid2,
+			])->execute();
+		}
+		$sql = 'SELECT gId FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2';
+		$gid = $conn->createCommand($sql)->bindValues([
+			':id1' => $uid1,
+			':id2' => $uid2,
+		])->queryScalar();
+		return $gid;
 	}
 
 	public static function chatCount($uId, $subUId, $conn = '')
