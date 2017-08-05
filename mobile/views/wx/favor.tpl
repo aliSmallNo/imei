@@ -1,68 +1,31 @@
-<style>
-	.notice-key {
-		flex: 0 0 2rem;
-		font-size: 1.5rem;
-		position: relative;
-		top: .5rem;
-	}
-
-	.notice-right {
-		flex: 2 !important;
-	}
-
-	.notice-right .title {
-		position: relative;
-		top: .5rem;
-	}
-
-	.notice-wAmt {
-		flex: 1;
-		font-size: 2rem;
-		color: #f7a4c0;
-	}
-
-	.notice-wAmt span {
-		font-size: 1.2rem;
-		color: #fa6799;
-	}
-
-	.favor-top {
-		padding: 1rem;
-		border-bottom: .2rem solid #eee;
-	}
-
-	.favor-top:after {
-		border: none;
-	}
-</style>
 <div class="nav">
 	<a href="single#sme">返回</a>
 	<a href="#sme" style="display: none">个人中心</a>
 </div>
-<div class="notice-item favor-top">
-	<div class="notice-key"></div>
-	<div class="notice-avatar"><img src="{{$mInfo.avatar}}"></div>
-	<div class="notice-right">
+<div class="favor-item favor-top">
+	<div class="favor-key"></div>
+	<div class="favor-avatar"><img src="{{$mInfo.avatar}}"></div>
+	<div class="favor-right">
 		<div class="title" style="top: 0">{{$mInfo.uname}}</div>
 		<div class="dt" style="color: #999">{{if $mInfo.no}}第{{$mInfo.no}}名{{else}}还没有排名{{/if}}</div>
 	</div>
-	<div class="notice-wAmt">
+	<div class="favor-wAmt">
 		{{if $mInfo.co}}{{$mInfo.co}}</span>
 		{{else}}
 
 		{{/if}}
 	</div>
 </div>
-<ul class="notice">
+<ul class="favor">
 	{{foreach from=$items item=item}}
 	<li>
-		<a href="/wx/sh?id={{$item.secretId}}" class="notice-item notice-read">
-			<div class="notice-key">{{$item.key}}</div>
-			<div class="notice-avatar"><img src="{{$item.avatar}}"></div>
-			<div class="notice-right">
+		<a href="/wx/sh?id={{$item.secretId}}" class="favor-item favor-read">
+			<div class="favor-key">{{$item.key}}</div>
+			<div class="favor-avatar"><img src="{{$item.avatar}}"></div>
+			<div class="favor-right">
 				<div class="title">{{$item.uname}}</div>
 			</div>
-			<div class="notice-wAmt">{{$item.co}} <span>+{{$item.todayFavor}}</span></div>
+			<div class="favor-wAmt">{{$item.co}} <span>+{{$item.todayFavor}}</span></div>
 		</a>
 	</li>
 	{{/foreach}}
@@ -78,13 +41,13 @@
 <script type="text/template" id="tpl_favor">
 	{[#items]}
 	<li>
-		<a href="/wx/sh?id={[$item.secretId]}" class="notice-item notice-read">
-			<div class="notice-key">{[key]}</div>
-			<div class="notice-avatar"><img src="{[avatar]}"></div>
-			<div class="notice-right">
+		<a href="/wx/sh?id={[$item.secretId]}" class="favor-item favor-read">
+			<div class="favor-key">{[key]}</div>
+			<div class="favor-avatar"><img src="{[avatar]}"></div>
+			<div class="favor-right">
 				<div class="title">{[uname]}</div>
 			</div>
-			<div class="notice-wAmt">{[co]} <span>+{[todayFavor]}</span></div>
+			<div class="favor-wAmt">{[co]} <span>+{[todayFavor]}</span></div>
 		</a>
 	</li>
 	{[/items]}

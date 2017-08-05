@@ -968,6 +968,7 @@ class WxController extends BaseController
 			'terse');
 	}
 
+	// 心动排行榜
 	public function actionFavor()
 	{
 		$openId = self::$WX_OpenId;

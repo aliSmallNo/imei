@@ -5175,10 +5175,10 @@ section {
   height: 1px;
   overflow: hidden; }
 
-.notice {
+.notice, .favor {
   padding: 0.5rem 1rem; }
 
-.notice-item {
+.notice-item, .favor-item {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -5186,7 +5186,12 @@ section {
   padding: 0.5rem 0;
   position: relative;
   border-bottom: 1px solid #eee; }
-  .notice-item .notice-read-flag {
+  .notice-item .favor-key, .favor-item .favor-key {
+    flex: 0 0 2rem;
+    font-size: 1.5rem;
+    position: relative;
+    top: 0.5rem; }
+  .notice-item .notice-read-flag, .favor-item .notice-read-flag {
     position: absolute;
     width: 0.6rem;
     height: 0.6rem;
@@ -5194,7 +5199,7 @@ section {
     background: #f24;
     left: 3.1rem;
     top: 0.4rem; }
-  .notice-item:after {
+  .notice-item:after, .favor-item:after {
     content: " ";
     display: inline-block;
     height: 0.8rem;
@@ -5209,29 +5214,47 @@ section {
     right: 0;
     margin-top: -0.5rem;
     right: 1rem; }
-  .notice-item .notice-avatar {
+  .notice-item .notice-avatar, .notice-item .favor-avatar, .favor-item .notice-avatar, .favor-item .favor-avatar {
     -webkit-box-flex: 0 0 3rem;
     -webkit-flex: 0 0 3rem;
     -ms-flex: 0 0 3rem;
     flex: 0 0 3rem; }
-    .notice-item .notice-avatar img {
+    .notice-item .notice-avatar img, .notice-item .favor-avatar img, .favor-item .notice-avatar img, .favor-item .favor-avatar img {
       width: 3rem;
       height: 3rem;
       border-radius: 3rem;
       border: 1px solid #fbd2e0; }
-  .notice-item .notice-right {
+  .notice-item .notice-right, .notice-item .favor-right, .favor-item .notice-right, .favor-item .favor-right {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
     -ms-flex: 1;
     flex: 1;
     margin: 0 3rem 0 1rem; }
-    .notice-item .notice-right .title {
+    .notice-item .notice-right .title, .notice-item .favor-right .title, .favor-item .notice-right .title, .favor-item .favor-right .title {
       font-weight: 400;
       font-size: 1.2rem; }
-  .notice-item .dt {
+  .notice-item .favor-right, .favor-item .favor-right {
+    flex: 2; }
+    .notice-item .favor-right .title, .favor-item .favor-right .title {
+      position: relative;
+      top: 0.5rem; }
+  .notice-item .dt, .favor-item .dt {
     font-size: 1rem;
     font-weight: 300;
     text-align: left; }
+  .notice-item .favor-wAmt, .favor-item .favor-wAmt {
+    flex: 1;
+    font-size: 2rem;
+    color: #f7a4c0; }
+    .notice-item .favor-wAmt span, .favor-item .favor-wAmt span {
+      font-size: 1.2rem;
+      color: #fa6799; }
+
+.favor-top {
+  padding: 1rem;
+  border-bottom: 0.2rem solid #eee; }
+  .favor-top:after {
+    border: none; }
 
 .splay, .mplay {
   padding: 2rem 1rem; }

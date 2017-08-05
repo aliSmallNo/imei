@@ -28,7 +28,7 @@ require(["layer"],
 		}
 
 		$(window).on("scroll", function () {
-			var lastRow = $(".notice").find('li:last');
+			var lastRow = $(".favor").find('li:last');
 			if (lastRow && eleInScreen(lastRow, 40) && $sls.page > 0) {
 				loadFavor();
 				return false;
@@ -52,7 +52,7 @@ require(["layer"],
 			}, function (resp) {
 				$sls.loading.hide();
 				if (resp.code == 0) {
-					$(".notice").append(Mustache.render($sls.tmp, resp.data));
+					$(".favor").append(Mustache.render($sls.tmp, resp.data));
 				}
 				$sls.page = resp.data.nextpage;
 				if ($sls.page == 0) {

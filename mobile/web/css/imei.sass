@@ -4906,14 +4906,19 @@ section
 	height: 1px
 	overflow: hidden
 
-.notice
+.notice, .favor
 	padding: .5rem 1rem
 
-.notice-item
+.notice-item, .favor-item
 	@include displayFlex
 	padding: .5rem 0
 	position: relative
 	border-bottom: 1px solid #eee
+	.favor-key
+		flex: 0 0 2rem
+		font-size: 1.5rem
+		position: relative
+		top: .5rem
 	.notice-read-flag
 		@include unreadFlag
 		left: 3.1rem
@@ -4921,7 +4926,7 @@ section
 	&:after
 		@include arrowRight
 		right: 1rem
-	.notice-avatar
+	.notice-avatar, .favor-avatar
 		@include displayFlex-w(3rem)
 		img
 			width: 3rem
@@ -4929,16 +4934,34 @@ section
 			border-radius: 3rem
 			border: 1px solid $mainColorLighter
 
-	.notice-right
+	.notice-right, .favor-right
 		@include displayFlex-1
 		margin: 0 3rem 0 1rem
 		.title
 			font-weight: 400
 			font-size: 1.2rem
+	.favor-right
+		flex: 2
+		.title
+			position: relative
+			top: .5rem
 	.dt
 		font-size: 1rem
 		font-weight: $weightNormal
 		text-align: left
+	.favor-wAmt
+		flex: 1
+		font-size: 2rem
+		color: #f7a4c0
+		span
+			font-size: 1.2rem
+			color: #fa6799
+
+.favor-top
+	padding: 1rem
+	border-bottom: .2rem solid #eee
+	&:after
+		border: none
 
 .splay, .mplay
 	padding: 2rem 1rem
