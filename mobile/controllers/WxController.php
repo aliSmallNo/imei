@@ -691,7 +691,7 @@ class WxController extends BaseController
 			$audits = UserAudit::find()
 				->where(["aUId" => $wxInfo["uId"], "aUStatus" => User::STATUS_INVALID, "aValid" => UserAudit::VALID_FAIL])
 				->all()) {
-			$audit = 1 ;
+			$audit = 1;
 		}
 
 		return self::renderPage("single.tpl", [
@@ -964,6 +964,26 @@ class WxController extends BaseController
 		return self::renderPage('notice.tpl',
 			[
 				"items" => $items
+			],
+			'terse');
+	}
+
+	public function actionFavor()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+
+		list($items) = UserNet::favorlist();
+		$mInfo = UserNet::myfavor($wxInfo["uId"]);
+
+		return self::renderPage('favor.tpl',
+			[
+				"items" => $items,
+				"mInfo" => $mInfo,
 			],
 			'terse');
 	}

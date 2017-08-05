@@ -74,7 +74,6 @@ class UserAudit extends ActiveRecord
 				foreach (self::$reasonDict as $k => $r) {
 					if ($v["tag"] == $k) {
 						$str .= $adminFlag ? ($r . "不合规:" . $v["text"] . "<br>") : ($r . "不合规  ");
-
 					}
 				}
 			}
