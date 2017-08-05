@@ -687,7 +687,7 @@ class WxController extends BaseController
 		$noReadFlag = (count($noReadRecode) > 0) ? 1 : 0;
 
 		$audit = 0;
-		if ($wxInfo["uStatus"] != User::STATUS_ACTIVE &&
+		if ($wxInfo["uStatus"] == User::STATUS_INVALID &&
 			$audits = UserAudit::find()
 				->where(["aUId" => $wxInfo["uId"], "aUStatus" => User::STATUS_INVALID, "aValid" => UserAudit::VALID_FAIL])
 				->all()) {

@@ -558,6 +558,7 @@ class User extends ActiveRecord
 			"coord" => "uCoord",
 			"filter" => "uFilter",
 			"album" => "uAlbum",
+			"status" => "uStatus",
 		];
 		$avatar = isset($data["img"]) ? $data["img"] : '';
 		unset($data['img']);

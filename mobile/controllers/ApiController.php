@@ -296,6 +296,17 @@ class ApiController extends Controller
 				$data = self::postParam('data');
 				$data = json_decode($data, 1);
 				$data["openId"] = $openId;
+				$uInfo = User::findOne(["uOpenId" => $openId]);
+				if ($uInfo && $uInfo->uStatus == User::STATUS_INVALID &&
+					((isset($data["img"]) && $data["img"]) ||
+					(isset($data["intro"]) && $data["intro"]) ||
+					(isset($data["interest"]) && $data["interest"]) ||
+					(isset($data["name"]) && $data["name"]))
+				) {
+					// uAvatar,uName,uInterest,uIntro
+						$data["status"] = User::STATUS_PENDING;
+				}
+
 				$data["role"] = ($tag == 'mreg') ? User::ROLE_MATCHER : User::ROLE_SINGLE;
 				$ret = User::reg($data);
 				//Rain: 刷新用户cache数据
