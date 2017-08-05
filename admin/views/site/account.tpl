@@ -497,7 +497,7 @@
 		console.log(userInfo);
 		// 赋默认值
 		$.each(userInfo, function (k, v) {
-			console.log(k);
+			// console.log(k);
 			if (k == "uLocation" && v) {
 				var location = JSON.parse(v);
 				$sls.mProvincesObj.val(parseInt(location[0].key));
@@ -507,7 +507,12 @@
 				$(".o-images").html('<li><img src="' + v + '"></li>');
 			} else if (k == "uScope") {
 				$("[data-tag=" + k + "]").val(v);
-				changeScope(v);
+				console.log(k);
+				console.log(v);
+				if (v) {
+					changeScope(v);
+				}
+
 			} else if (k == "uProfession") {
 				$sls.job = v;
 				$("[data-tag=uProfession]").val(v);
