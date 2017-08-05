@@ -10,6 +10,7 @@ use common\models\Feedback;
 use common\models\LogAction;
 use common\models\Mark;
 use common\models\User;
+use common\models\UserAudit;
 use common\models\UserBuzz;
 use common\models\UserMsg;
 use common\models\UserNet;
@@ -269,6 +270,7 @@ class SiteController extends BaseController
 
 		foreach ($list as &$v) {
 			$dataImg = [];
+			$v["reason"] = UserAudit::reasonMsg($v["id"]);
 			foreach ($v["album"] as $v1) {
 				$dataImg[] = [
 					"alt" => "相册",

@@ -240,6 +240,10 @@
 				<span>{{$prod.pet_t}}</span>
 				<span>{{$prod.intro}}</span>
 				<span>{{$prod.interest}}</span>
+				<br>
+				{{if $prod.status==2}}
+				<em>{{$prod.reason}}</em>
+				{{/if}}
 			</td>
 			<td class="album-items" data-images='{{$prod.showImages}}'>
 				{{if $prod.album}}

@@ -68,7 +68,7 @@ class UserAudit extends ActiveRecord
 			":status" => User::STATUS_INVALID,
 			":valid" => self::VALID_FAIL,
 		])->queryOne();
-		$str = "你的个人信息：";
+		$str = "";
 		if ($res && $reason = json_decode($res["aReasons"], 1)) {
 			foreach ($reason as $v) {
 				foreach (self::$reasonDict as $k => $r) {
@@ -77,10 +77,8 @@ class UserAudit extends ActiveRecord
 					}
 				}
 			}
-			return $str;
-
 		}
-		return "参数错误";
+		return $str;
 	}
 
 }
