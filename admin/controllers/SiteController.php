@@ -270,7 +270,7 @@ class SiteController extends BaseController
 
 		foreach ($list as &$v) {
 			$dataImg = [];
-			$v["reason"] = UserAudit::reasonMsg($v["id"]);
+			$v["reason"] = UserAudit::reasonMsg($v["id"], 1);
 			foreach ($v["album"] as $v1) {
 				$dataImg[] = [
 					"alt" => "相册",

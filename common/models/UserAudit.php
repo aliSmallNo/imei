@@ -60,7 +60,7 @@ class UserAudit extends ActiveRecord
 		return $res;
 	}
 
-	public static function reasonMsg($uid)
+	public static function reasonMsg($uid, $adminFlag = 0)
 	{
 		$sql = "select * from im_user_audit where aUId=:uid and aUStatus=:status and aValid=:valid order by aId desc limit 1";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
@@ -68,12 +68,13 @@ class UserAudit extends ActiveRecord
 			":status" => User::STATUS_INVALID,
 			":valid" => self::VALID_FAIL,
 		])->queryOne();
-		$str = "";
+		$str = $adminFlag ? "" : "您的个人信息: ";
 		if ($res && $reason = json_decode($res["aReasons"], 1)) {
 			foreach ($reason as $v) {
 				foreach (self::$reasonDict as $k => $r) {
 					if ($v["tag"] == $k) {
-						$str .= $r . "不合规  ";
+						$str .= $adminFlag ? ($r . "不合规:" . $v["text"] . "<br>") : ($r . "不合规  ");
+
 					}
 				}
 			}
