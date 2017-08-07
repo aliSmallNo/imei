@@ -116,35 +116,6 @@ class ChatMsg extends ActiveRecord
 		return false;
 	}
 
-	public static function add($uId, $subUId, $content)
-	{
-		$cnt = self::chatCount($uId, $subUId);
-		if ($cnt >= self::LIMIT_NUM) {
-			return self::LIMIT_NUM;
-		}
-		$entity = new self();
-		$entity->cSenderId = $uId;
-		$entity->cReceiverId = $subUId;
-		$entity->cContent = $content;
-		$entity->save();
-		$cId = $entity->cId;
-		$uInfo = User::findOne(['uId' => $uId]);
-		if ($uInfo) {
-			$uInfo = $uInfo->toArray();
-			return [
-				'id' => $cId,
-				'senderid' => $uId,
-				'receiverid' => $subUId,
-				'content' => $content,
-				'addedon' => date('Y-m-d H:i:s'),
-				'name' => $uInfo['uName'],
-				'avatar' => ImageUtil::getItemImages($uInfo['uThumb'])[0],
-				'dir' => 'right',
-			];
-		}
-		return false;
-	}
-
 	public static function groupRound($uId, $subUId, $conn = '')
 	{
 		if (!$conn) {
@@ -191,19 +162,6 @@ class ChatMsg extends ActiveRecord
 			':id2' => $uid2,
 		])->queryScalar();
 		return $gid;
-	}
-
-	public static function chatCount($uId, $subUId, $conn = '')
-	{
-		if (!$conn) {
-			$conn = AppUtil::db();
-		}
-		$sql = 'select count(1) from im_chat_msg WHERE cSenderId=:uid and cReceiverId=:suid';
-		$ret = $conn->createCommand($sql)->bindValues([
-			':uid' => $uId,
-			':suid' => $subUId,
-		])->queryScalar();
-		return $ret;
 	}
 
 	public static function chat($uId, $subUId, $page = 1, $pageSize = 40)
@@ -361,12 +319,12 @@ class ChatMsg extends ActiveRecord
 
 		$sql = 'UPDATE im_chat_group as g 
 			 	JOIN im_chat_msg as m on g.gFirstCId = m.cId 
-			 	SET g.gAddedBy=m.cSenderId, gAddedOn=m.cAddedOn';
+			 	SET g.gAddedBy=m.cSenderId, gAddedOn=m.cAddedOn WHERE g.gAddedBy<2';
 		$conn->createCommand($sql)->execute();
 
 		$sql = 'UPDATE im_chat_group as g 
 			 	JOIN im_chat_msg as m on g.gLastCId = m.cId 
-			 	SET gUpdatedBy=m.cSenderId,gUpdatedOn=m.cAddedOn';
+			 	SET gUpdatedBy=m.cSenderId,gUpdatedOn=m.cAddedOn WHERE g.gUpdatedBy<2';
 		$conn->createCommand($sql)->execute();
 
 		$sql = 'UPDATE im_chat_msg set cAddedBy=cSenderId WHERE cAddedBy<2 ';
