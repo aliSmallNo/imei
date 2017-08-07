@@ -1367,7 +1367,7 @@ class User extends ActiveRecord
 		return $trends;
 	}
 
-	public static function rankCalculate()
+	public static function UpdateRank()
 	{
 		$conn = AppUtil::db();
 		$role = self::ROLE_SINGLE;
@@ -1386,7 +1386,7 @@ class User extends ActiveRecord
 		$AmFlag = strtotime(date("Y-m-d 12:00:00")) > time();
 		$date = $AmFlag ? [date("Y-m-d 00:00:00"), date("Y-m-d 12:00:00")] : [date("Y-m-d 12:00:01"), date("Y-m-d 23:59:50")];
 
-		// 主动行为系数（B) B=B1*10+B2+B3+B4 牵手成功B1=次数*10 发出心动B2=次数*1 索要微信B3=次数*1 待定B4=次数*1
+		// 主动行为系数（B) B=B1*10+B2+B3+B4 牵手成功B1:次数*10 发出心动B2:次数*1 索要微信B3:次数*1 待定B4:次数*1
 		$sql = "SELECT 
 				SUM(CASE WHEN nRelation=140 and nStatus=2 THEN 1 ELSE 0 END ) as b1,
 				SUM(CASE WHEN nRelation=150  THEN 1 ELSE 0 END ) as b2,
@@ -1487,10 +1487,9 @@ class User extends ActiveRecord
 			":uid" => $row["id"],
 			":ranktmp" => $ranktemp
 		])->execute();
-		// echo $ranktemp;exit;
 
-		echo "uid:" . $row["id"] . ' rank: ' . $ranktemp;
-		AppUtil::logFile("uid:" . $row["id"] . ' rank: ' . $ranktemp, 5);
+		// echo "uid:" . $row["id"] . ' rank: ' . $ranktemp;
+		// AppUtil::logFile("uid:" . $row["id"] . ' rank: ' . $ranktemp, 5);
 	}
 
 
