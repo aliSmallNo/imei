@@ -474,6 +474,6 @@ class FooController extends Controller
 
 		$data = User::find()->where(["uId" => 133185])->asArray()->One();
 		$row = User::fmtRow($data);
-		User::ranfCal($row, $data["uAddedOn"],1);
+		User::rankCal($row, $data["uAddedOn"],1);
 	}
 }

@@ -1376,11 +1376,11 @@ class User extends ActiveRecord
 
 		foreach ($allUsers as $v) {
 			$row = self::fmtRow($v);
-			self::ranfCal($row, $v["uAddedOn"]);
+			self::rankCal($row, $v["uAddedOn"]);
 		}
 	}
 
-	public static function ranfCal($row, $addedOn, $updRankFlag = false)
+	public static function rankCal($row, $addedOn, $updRankFlag = false)
 	{
 		$conn = AppUtil::db();
 		$AmFlag = strtotime(date("Y-m-d 12:00:00")) > time();
@@ -1477,7 +1477,7 @@ class User extends ActiveRecord
 		// "区分系数（Distinguish) D=-D1/10+D2*10+D3"	 D1:注册年龄 D2:资料完整度指标(资料完成度大于90%取值。小于90%视为缺省) D3:待定
 		$D = -intval($row["age"]) / 10 + ($row["percent"] > 90 ? $row["percent"] / 100 : 0) * 10;
 
-		// (B+V+A)*Q*I+D
+		//计分公式: (B+V+A)*Q*I+D
 		$ranktemp = round(($A + $V + $B) * $Q * $I + $D);
 		$ranktemp = $ranktemp > 0 ? $ranktemp : 0;
 		$updRank = $updRankFlag ? ",uRank=:ranktmp" : "";
