@@ -79,10 +79,8 @@
 </div>
 <section id="schat" data-title="密聊中...">
 	<div class="report_wrap">
-		<p class="title">
-			最多聊10句哦，要抓紧机会哦~
-		</p>
 		<ul class="chats"></ul>
+		<p class="title chat-tip"></p>
 	</div>
 	<div class="m-bottom-pl"></div>
 	<div class="m-bottom-bar">
@@ -227,9 +225,33 @@
 	</li>
 	{[/items]}
 </script>
+<script type="text/template" id="tpl_chat_topup">
+	<div class="topup-wrap">
+		<h4>我要跟TA密聊</h4>
+		<h5>先捐助我们些媒桂花吧~</h5>
+		<a href="javascript:;" class="btn-topup-close"></a>
+		<div class="topup-opt clearfix">
+			{[#items]}
+			<a href="javascript:;" data-amt="{[amt]}">
+				<div class="img"><img src="/images/ico_rose.png"></div>
+				<div class="des">
+					<em>x {[amt]}朵</em>
+					<i>聊{[num]}句</i>
+				</div>
+			</a>
+			{[/items]}
+		</div>
+		<div class="topup-action">
+			<a href="javascript:;" class="btn-topup">捐媒<br>桂花</a>
+		</div>
+		<div class="topup-bot">
+			<a href="javascript:;">感谢对我们的支持和厚爱</a>
+		</div>
+	</div>
+</script>
 <script>
 	var mItems = {{$items}};
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/shome.js?v=1.2.2" src="/assets/js/require.js"></script>
+<script data-main="/js/shome.js?v=1.3.0" src="/assets/js/require.js"></script>

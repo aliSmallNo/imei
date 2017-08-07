@@ -40,6 +40,11 @@ class ChatMsg extends ActiveRecord
 		}
 		$ratio = 1.0 / 2.0;
 		list($uid1, $uid2) = self::sortUId($senderId, $receiverId);
+		$left = self::chatLeft($senderId, $receiverId, $conn);
+		if ($left < 1) {
+			return 0;
+		}
+
 		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound,gAddedBy)
 			SELECT :id1,:id2,10,:uid FROM dual
 			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2)';
@@ -100,6 +105,7 @@ class ChatMsg extends ActiveRecord
 			':uid' => $senderId
 		])->queryOne();
 		if ($uInfo) {
+			$left = self::chatLeft($senderId, $receiverId, $conn);
 			return [
 				'id' => $cId,
 				'senderid' => $senderId,
@@ -109,26 +115,31 @@ class ChatMsg extends ActiveRecord
 				'name' => $uInfo['uName'],
 				'avatar' => ImageUtil::getItemImages($uInfo['uThumb'])[0],
 				'dir' => 'right',
+				'left' => $left,
+				'gid' => $ret['gId']
 			];
 		}
 		return false;
 	}
 
-	public static function groupRound($uId, $subUId, $conn = '')
+	public static function chatLeft($uId, $subUId, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
-		$sql = 'SELECT * FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2';
+		$sql = 'SELECT gId,gRound,count(m.cId) as cnt 
+				  FROM im_chat_group as g
+ 				  LEFT JOIN im_chat_msg as m on g.gId=m.cGId AND m.cAddedBy=:uid
+				  WHERE g.gUId1=:id1 AND g.gUId2=:id2
+				  GROUP BY gId,gRound';
 		$ret = $conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,
+			':uid' => $uId,
 		])->queryOne();
-		if ($ret) {
-			return [$ret['gId'], $ret['gRound']];
-		}
-		return [0, 0];
+		$left = intval($ret['gRound'] - $ret['cnt']);
+		return $left < 0 ? 0 : $left;
 	}
 
 	public static function groupEdit($uId, $subUId, $giftCount = 0, $conn = '')
@@ -137,37 +148,38 @@ class ChatMsg extends ActiveRecord
 			$conn = AppUtil::db();
 		}
 		$ratio = 1.0 / 2.0;
+		$amt = intval($giftCount * $ratio);
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
-		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gAddedBy)
-			SELECT :id1,:id2,:uid FROM dual
+		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound,gAddedBy)
+			SELECT :id1,:id2,0,:uid FROM dual
 			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2)';
 		$ret = $conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,
 			':uid' => $uId,
 		])->execute();
-		if ($giftCount) {
-			$amt = intval($giftCount * $ratio);
-			$sql = 'UPDATE im_chat_group set gRound=IFNULL(gRound,0)+' . $amt . ' WHERE g.gUId1=:id1 AND g.gUId2=:id2';
+		if ($amt) {
+			$sql = 'UPDATE im_chat_group set gRound=IFNULL(gRound,0)+' . $amt . ' WHERE gUId1=:id1 AND gUId2=:id2';
 			$conn->createCommand($sql)->bindValues([
 				':id1' => $uid1,
 				':id2' => $uid2,
 			])->execute();
 		}
-		$sql = 'SELECT gId FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2';
+		$sql = 'select gId from im_chat_group WHERE gUId1=:id1 AND gUId2=:id2';
 		$gid = $conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,
 		])->queryScalar();
-		return $gid;
+		$left = self::chatLeft($uId, $subUId, $conn);
+		return [$gid, $left];
 	}
 
-	public static function details($uId, $subUId, $page = 1, $pageSize = 40)
+	public static function details($uId, $subUId, $page = 1, $pageSize = 50)
 	{
 		$limit = ' Limit ' . ($page - 1) * $pageSize . ',' . ($pageSize + 1);
 		$conn = AppUtil::db();
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
-		$sql = 'select u.uName as `name`, u.uThumb as avatar,g.gId as gid,
+		$sql = 'select u.uName as `name`, u.uThumb as avatar,g.gId as gid, g.gRound as round,
 			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy
 			 from im_chat_group as g 
 			 join im_chat_msg as m on g.gId=cGId
@@ -188,7 +200,7 @@ class ChatMsg extends ActiveRecord
 			$chats[$k]['dt'] = AppUtil::prettyDate($chat['addedon']);
 			$chats[$k]['dir'] = ($uId == $chat['cAddedBy'] ? 'right' : 'left');
 			$chats[$k]['url'] = ($uId == $chat['cAddedBy'] ? 'javascript:;' : '/wx/sh?id=' . AppUtil::encrypt($subUId));
-			unset($chats[$k]['cAddedBy']);
+			unset($chats[$k]['cAddedBy'], $chats[$k]['round']);
 		}
 		return [$chats, $nextPage];
 	}

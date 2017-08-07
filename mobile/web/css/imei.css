@@ -4608,6 +4608,17 @@ section {
     color: #999;
     font-size: 1.3rem;
     margin-bottom: 1.5rem; }
+    .report_wrap .title.chat-tip {
+      text-align: center;
+      color: #999;
+      font-size: 1.2rem; }
+      .report_wrap .title.chat-tip b {
+        color: #6a6572; }
+      .report_wrap .title.chat-tip a {
+        color: #007aff;
+        padding-left: 0.15rem;
+        padding-right: 0.15rem;
+        font-size: 1.4rem; }
   .report_wrap textarea {
     width: 100%;
     border: 1px solid #E4E4E4;
@@ -4655,6 +4666,13 @@ section {
       outline: 0;
       border: 0;
       opacity: 0; }
+
+.chat-tip {
+  text-align: center;
+  color: #999;
+  font-size: 1.2rem; }
+  .chat-tip b {
+    color: #6a6572; }
 
 .wx-no {
   display: flex;
@@ -5297,5 +5315,100 @@ section {
     font-size: 1.5rem;
     font-weight: 500;
     padding: 2rem 2rem 1rem 0; }
+
+.topup-wrap {
+  background: #E53935;
+  padding: 1.5rem 2rem;
+  border-radius: 0.5rem;
+  color: #f9cd9a;
+  text-align: center;
+  position: relative; }
+  .topup-wrap h5 {
+    font-weight: 300; }
+  .topup-wrap .btn-topup-close {
+    position: absolute;
+    right: 0.2rem;
+    top: 0.2rem;
+    width: 3.2rem;
+    height: 3.2rem;
+    background: url(../images/ico_close_gray.png) no-repeat center center;
+    background-size: 1.8rem 1.8rem; }
+  .topup-wrap .topup-opt {
+    padding: 1rem 0 0; }
+    .topup-wrap .topup-opt a {
+      float: left;
+      width: 9.2rem;
+      border: 1px solid #f9cd9a;
+      border-radius: 0.5rem;
+      margin: 0.5rem 1rem;
+      padding: 0.5rem;
+      position: relative;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex; }
+      .topup-wrap .topup-opt a .img {
+        -webkit-box-flex: 0 0 3rem;
+        -webkit-flex: 0 0 3rem;
+        -ms-flex: 0 0 3rem;
+        flex: 0 0 3rem;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        align-self: center; }
+        .topup-wrap .topup-opt a .img img {
+          justify-content: center;
+          align-items: center;
+          align-self: center;
+          width: 2rem;
+          height: 2rem;
+          vertical-align: middle; }
+      .topup-wrap .topup-opt a .des {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        text-align: left;
+        color: #f9cd9a; }
+        .topup-wrap .topup-opt a .des em {
+          display: block;
+          font-size: 1.4rem;
+          font-weight: 500; }
+        .topup-wrap .topup-opt a .des i {
+          display: block;
+          font-size: 1.2rem;
+          font-weight: 300; }
+      .topup-wrap .topup-opt a.active {
+        background: #f9cd9a; }
+        .topup-wrap .topup-opt a.active:after {
+          content: "";
+          width: 1.6rem;
+          height: 1.6rem;
+          background: url(../images/ico_tick_red.png) no-repeat center center;
+          background-size: 100% 100%;
+          position: absolute;
+          right: 0.2rem;
+          top: 50%;
+          margin-top: -0.8rem; }
+        .topup-wrap .topup-opt a.active .des {
+          color: #E53935; }
+  .topup-wrap .topup-action {
+    margin: 1rem; }
+    .topup-wrap .topup-action .btn-topup {
+      background: #f9cd9a;
+      border: 2px solid #fbdbb7;
+      padding: 1rem;
+      border-radius: 3rem;
+      display: inline-block;
+      width: 3.6rem;
+      height: 3.6rem;
+      font-size: 1.2rem;
+      color: #6d4c41; }
+  .topup-wrap .topup-bot {
+    color: #f9cd9a;
+    font-size: 1.2rem; }
+    .topup-wrap .topup-bot a {
+      color: #f9cd9a;
+      font-size: 1.2rem; }
 
 /*# sourceMappingURL=imei.css.map */

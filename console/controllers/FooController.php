@@ -11,6 +11,7 @@ namespace console\controllers;
 use common\models\ChatMsg;
 use common\models\User;
 use common\models\UserNet;
+use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
@@ -434,5 +435,7 @@ class FooController extends Controller
 
 	public function actionRain($param1 = '', $param2 = '')
 	{
+		$stat = UserTrans::getStat(131379, 1);
+		var_dump($stat);
 	}
 }
