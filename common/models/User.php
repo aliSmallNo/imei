@@ -958,7 +958,7 @@ class User extends ActiveRecord
 				$rankField
 				from im_user as u 
 				JOIN im_user_wechat as w on u.uId=w.wUId
-				where $condition order by rank desc, rank2, uUpdatedOn desc limit $limit";
+				where $condition order by u.uRank desc,rank desc, rank2, uUpdatedOn desc limit $limit";
 //		AppUtil::logFile($sql, 5, __FUNCTION__, __LINE__);
 		$conn = AppUtil::db();
 		$ret = $conn->createCommand($sql)->queryAll();
@@ -1366,5 +1366,131 @@ class User extends ActiveRecord
 		$trends['chat'][$k] = intval($res6);
 		return $trends;
 	}
+
+	public static function UpdateRank()
+	{
+		$conn = AppUtil::db();
+		$role = self::ROLE_SINGLE;
+		$sql = "select * from im_user where uStatus in (0,1,2,8) and uRole=$role ";
+		$allUsers = $conn->createCommand($sql)->queryAll();
+
+		foreach ($allUsers as $v) {
+			$row = self::fmtRow($v);
+			self::rankCal($row, $v["uAddedOn"]);
+		}
+	}
+
+	public static function rankCal($row, $addedOn, $updRankFlag = false)
+	{
+		$conn = AppUtil::db();
+		$AmFlag = strtotime(date("Y-m-d 12:00:00")) > time();
+		$date = $AmFlag ? [date("Y-m-d 00:00:00"), date("Y-m-d 12:00:00")] : [date("Y-m-d 12:00:01"), date("Y-m-d 23:59:50")];
+
+		// 主动行为系数（B) B=B1*10+B2+B3+B4 牵手成功B1:次数*10 发出心动B2:次数*1 索要微信B3:次数*1 待定B4:次数*1
+		$sql = "SELECT 
+				SUM(CASE WHEN nRelation=140 and nStatus=2 THEN 1 ELSE 0 END ) as b1,
+				SUM(CASE WHEN nRelation=150  THEN 1 ELSE 0 END ) as b2,
+				SUM(CASE WHEN nRelation=140  THEN 1 ELSE 0 END ) as b3
+				from im_user_net where nSubUId=:uid and nAddedOn  BETWEEN :sTime  AND :eTime";
+		$bResult = $conn->createCommand($sql)->bindValues([
+			":uid" => $row["id"],
+			":sTime" => $date[0],
+			":eTime" => $date[1],
+		])->queryOne();
+		$B = $bResult["b1"] * 10 + $bResult["b2"] + $bResult["b3"];
+
+		// "购买系数(V）V=V1*100+V2+V3/5+V4"	充值行为V1:金额*100 每日签到V2:次数*1 账户余额V3:媒瑰花数/5 待定V4
+		$sql = "select
+					SUM(CASE WHEN tCategory=100 and tAddedOn  BETWEEN :sTime  AND :eTime THEN 1 ELSE 0 END ) as v1,
+					SUM(CASE WHEN tCategory=105 and tAddedOn  BETWEEN :sTime  AND :eTime THEN 1 ELSE 0 END ) as v2,
+					SUM(CASE WHEN tCategory=100 or tCategory=130  THEN tAmt 
+									 WHEN tCategory=105 AND  tUnit='flower' THEN tAmt  
+									 WHEN tCategory=120 or tCategory=125 then -tAmt END ) as v3
+					from im_user_trans 
+					where tUId=:uid ";
+		$vResult = $conn->createCommand($sql)->bindValues([
+			":uid" => $row["id"],
+			":sTime" => $date[0],
+			":eTime" => $date[1],
+		])->queryOne();
+		$V = $vResult["v1"] * 100 + $vResult["v2"] + $vResult["v3"] / 5;
+
+		// "新鲜度（Activity）A=A1*0.003+365+A2*365+A3*36.5"	注册时间差A1:天数*.003 昨日是否访问A2 过去7天是否访问A3
+		$a1 = ceil((time() - strtotime($addedOn)) / 86400);
+		$sCat = LogAction::ACTION_SINGLE;
+		$yDate = AppUtil::getEndStartTime(time(), 'yesterday', true);
+		$wDate = AppUtil::getEndStartTime(time(), 'curweek', true);
+		$sql = "SELECT 
+					SUM(case when aUId=:uid and aCategory=:cat and aDate BETWEEN :sTime  AND :eTime then 1 end ) as a2,
+					SUM(case when aUId=:uid and aCategory=:cat and aDate BETWEEN :wSTime  AND :wETime then 1 end ) as a3
+					from im_log_action ";
+		$aResult = $conn->createCommand($sql)->bindValues([
+			":uid" => $row["id"],
+			":cat" => $sCat,
+			":sTime" => $yDate[0],
+			":eTime" => $yDate[1],
+			":wSTime" => $wDate[0],
+			":wETime" => $wDate[1],
+		])->queryOne();
+		$A = $a1 * 0.003 + ($aResult["a2"] > 0 ? 1 : 0) * 365 + ($aResult["a3"] > 0 ? 1 : 0) * 36.5;
+
+		// "认证系数（Qualification）Q=1+Q1+Q2+Q3+Q4"	照片为人像Q1 身份证认证Q2 回访确认单身Q3 回访确认Q4 资料完整度Q5
+		// 人工审核
+		$Q = 1;
+
+
+		// "身份表述（Identity）I=1-I1-I2-I3-I4"
+		// 取消关注I1 (关注时值为0，未关注为缺省值0.6)
+		// 有无媒婆I2 (有媒婆时值为0，无媒婆0.1)
+		// 待定I3
+		// 测试用户I4 (为测试人员值为0.9) 按以下规则(By zhoup)
+		// 工作人员I5 (为工作人员值为0.9) 按以下规则 (By zhoup)
+		$I5 = 0;
+		switch ($row["status"]) {
+			case self::STATUS_PRISON:
+				$I4 = 0.5;
+				break;
+			case self::STATUS_DUMMY:
+				$I4 = 0.7;
+				break;
+			case self::STATUS_PENDING:
+				$I4 = 0.8;
+				break;
+			case self::STATUS_ACTIVE:
+				$I4 = 0.9;
+				break;
+			default:
+				$I4 = 0;
+		}
+		$relBacker = UserNet::REL_BACKER;
+		$sql = "select u.uName,w.wSubscribe,n.* from 
+					im_user as u 
+					left JOIN im_user_wechat as w on u.uOpenId=w.wOpenId
+					LEFT join im_user_net as n on u.uId=n.nSubUId and n.nRelation=:mp
+					where uId=:uid ";
+		$iResult = $conn->createCommand($sql)->bindValues([
+			":uid" => $row["id"],
+			":mp" => $relBacker,
+		])->queryOne();
+		$I = ($iResult["wSubscribe"] > 0 ? 0 : 0.6) + ($iResult["nUId"] > 0 ? 0 : 0.1) + $I4 + $I5;
+
+		// "区分系数（Distinguish) D=-D1/10+D2*10+D3"	 D1:注册年龄 D2:资料完整度指标(资料完成度大于90%取值。小于90%视为缺省) D3:待定
+		$D = -intval($row["age"]) / 10 + ($row["percent"] > 90 ? $row["percent"] / 100 : 0) * 10;
+
+		//计分公式: (B+V+A)*Q*I+D
+		$ranktemp = round(($A + $V + $B) * $Q * $I + $D);
+		$ranktemp = $ranktemp > 0 ? $ranktemp : 0;
+		$updRank = $updRankFlag ? ",uRank=:ranktmp" : "";
+		$sql = "update im_user set uRankTmp=:ranktmp" . $updRank . " where uId=:uid";
+		$upd = $conn->createCommand($sql);
+		$upd->bindValues([
+			":uid" => $row["id"],
+			":ranktmp" => $ranktemp
+		])->execute();
+
+		// echo "uid:" . $row["id"] . ' rank: ' . $ranktemp;
+		// AppUtil::logFile("uid:" . $row["id"] . ' rank: ' . $ranktemp, 5);
+	}
+
 
 }

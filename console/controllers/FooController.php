@@ -405,6 +405,42 @@ class FooController extends Controller
 
 	public function actionChat()
 	{
+		$conn = AppUtil::db();
+		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound)
+			SELECT :uid1,:uid2,10 FROM dual
+			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:uid1 AND g.gUId2=:uid2)';
+		$cmdAdd = $conn->createCommand($sql);
+		$sql = 'update im_chat_msg set cGId=(select gId FROM im_chat_group WHERE gUId1=:uid1 AND gUId2=:uid2)
+ 				WHERE cSenderId=:sid AND cReceiverId=:rid ';
+		$cmdUpdate = $conn->createCommand($sql);
+		$sql = 'select * from im_chat_msg WHERE cGId=0';
+		$ret = $conn->createCommand($sql)->queryAll();
+		foreach ($ret as $row) {
+			$senderId = $row['cSenderId'];
+			$receiverId = $row['cReceiverId'];
+			list($uid1, $uid2) = ChatMsg::sortUId($senderId, $receiverId);
+			$cmdAdd->bindValues([
+				':uid1' => $uid1,
+				':uid2' => $uid2
+			])->execute();
+			$cmdUpdate->bindValues([
+				':uid1' => $uid1,
+				':uid2' => $uid2,
+				':sid' => $senderId,
+				':rid' => $receiverId
+			])->execute();
+		}
+		$sql = 'update im_chat_group as g
+			 join (select min(cId) as minId,max(cId) as maxId,cGId from im_chat_msg WHERE cGId>0 GROUP BY cGId) as t 
+			 on t.cGId=g.gId
+			 set gFirstCId=minId,gLastCId=maxId';
+		$conn->createCommand($sql)->execute();
+
+		$sql = 'UPDATE im_chat_group as g 
+			 join im_chat_msg as m on g.gFirstCId = m.cId 
+			 set g.gAddedBy=m.cSenderId, gAddedOn=m.cAddedOn';
+		$conn->createCommand($sql)->execute();
+
 		ChatMsg::reset();
 		/*$sql = 'update im_chat_group set gUId1=:id1,gUId2=:id2 WHERE gId=:id ';
 		$cmdUpdate = $conn->createCommand($sql);
@@ -429,13 +465,17 @@ class FooController extends Controller
 			'msg' => '有人对你心动了。如果你找不到回「微媒100」的路，请在微信中搜索公众号「微媒100」关注了就行',
 			'rnd' => 108
 		]);
-		/*$ret = UserMsg::recall();
-		var_dump($ret);*/
+		/* $ret = UserMsg::recall();
+		var_dump($ret); */
 	}
 
-	public function actionRain($param1 = '', $param2 = '')
+	public function actionRain()
 	{
-		$stat = UserTrans::getStat(131379, 1);
-		var_dump($stat);
+
+		// User::UpdateRank();
+
+		$data = User::find()->where(["uId" => 133185])->asArray()->One();
+		$row = User::fmtRow($data);
+		User::rankCal($row, $data["uAddedOn"],1);
 	}
 }
