@@ -903,7 +903,7 @@ class User extends ActiveRecord
 		$gender = ($gender == 10) ? 11 : 10;
 
 		$status = self::STATUS_DELETE;
-		$condition = " u.uRole=$uRole and u.uGender=$gender and u.uStatus<$status ";
+		$condition = " u.uRole=$uRole and u.uGender=$gender and u.uStatus in (0,1,2,8) ";
 		//$filterArr = json_decode($uFilter, 1);
 		if ($uFilter) {
 			$rankField = ",(case WHEN u.uLocation like '%$prov%' and u.uLocation like '%$city%' then 10

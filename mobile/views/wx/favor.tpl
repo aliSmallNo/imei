@@ -10,9 +10,8 @@
 		<div class="dt" style="color: #999">{{if $mInfo.no}}第{{$mInfo.no}}名{{else}}还没有排名{{/if}}</div>
 	</div>
 	<div class="favor-wAmt">
-		{{if $mInfo.co}}{{$mInfo.co}}</span>
-		{{else}}
-
+		{{if $mInfo.co}}
+		<span>{{$mInfo.co}}</span>
 		{{/if}}
 	</div>
 </div>
