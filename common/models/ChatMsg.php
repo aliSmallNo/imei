@@ -169,7 +169,7 @@ class ChatMsg extends ActiveRecord
 		$limit = ' Limit ' . ($page - 1) * $pageSize . ',' . ($pageSize + 1);
 		$conn = AppUtil::db();
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
-		$sql = 'select u.uName as `name`, u.uThumb as avatar,
+		$sql = 'select u.uName as `name`, u.uThumb as avatar,g.gId as gid,
 			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy
 			 from im_chat_group as g 
 			 join im_chat_msg as m on g.gId=cGId
@@ -193,6 +193,22 @@ class ChatMsg extends ActiveRecord
 			unset($chats[$k]['cAddedBy']);
 		}
 		return [$chats, $nextPage];
+	}
+
+	public static function read($uId, $subUId, $conn = '')
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		list($uid1, $uid2) = self::sortUId($uId, $subUId);
+		$sql = 'update im_chat_msg as m 
+				join im_chat_group as g on g.gId=m.cGId and g.gUId1=:id1 and g.gUId2=:id2
+				set cReadFlag=1 WHERE cReadFlag=0 AND cAddedBy=:uid';
+		$conn->createCommand($sql)->bindValues([
+			':id1' => $uid1,
+			':id2' => $uid2,
+			':uid' => $subUId
+		])->execute();
 	}
 
 	public static function contacts($uId, $page = 1, $pageSize = 20)

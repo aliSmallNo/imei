@@ -394,27 +394,7 @@ require(["layer"],
 				$(document).on(kClick, ".contacts a", function () {
 					util.sid = $(this).attr('data-id');
 					util.page = 1;
-					var self = $(this);
-					var cid = self.attr("data-cid");
-					var readflag = self.attr("data-read");
-					if (readflag == 0) {
-						if (util.loading) {
-							return;
-						}
-						util.loading = 1;
-						$.post("/api/chat", {
-							tag: "read",
-							sid: util.sid,
-						}, function (resp) {
-							if (resp.code == 0) {
-								self.find("span").remove();
-								location.href = '#schat';
-							}
-							util.loading = 0;
-						}, "json");
-					} else {
-						location.href = '#schat';
-					}
+					location.href = '#schat';
 				});
 			},
 			sent: function () {
