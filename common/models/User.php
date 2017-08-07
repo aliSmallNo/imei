@@ -567,13 +567,16 @@ class User extends ActiveRecord
 			$data["thumb"] = $thumb;
 			$data["img"] = $figure;
 		}
-		$album = isset($data["album"]) ? $data["album"] : [];
-		$data['album'] = [];
-		if ($album && is_array($album) && count($album)) {
-			foreach ($album as $item) {
-				list($thumb, $figure) = ImageUtil::save2Server($item);
-				if ($figure) {
-					$data['album'][] = $figure;
+		//Rain: 如果是在注册页面，则会上传两张相册图片，在编辑页面，则不涉及相册更改
+		if (isset($data["album"])) {
+			$album = $data["album"];
+			$data['album'] = [];
+			if ($album && is_array($album) && count($album)) {
+				foreach ($album as $item) {
+					list($thumb, $figure) = ImageUtil::save2Server($item);
+					if ($figure) {
+						$data['album'][] = $figure;
+					}
 				}
 			}
 		}

@@ -26,7 +26,7 @@ class ChatMsg extends ActiveRecord
 		return '{{%chat_msg}}';
 	}
 
-	protected static function arrUId($uId, $subUId)
+	public static function sortUId($uId, $subUId)
 	{
 		$arr = [$uId, $subUId];
 		sort($arr);
@@ -67,7 +67,7 @@ class ChatMsg extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		list($uid1, $uid2) = self::arrUId($uId, $subUId);
+		list($uid1, $uid2) = self::sortUId($uId, $subUId);
 		$sql = 'SELECT * FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2';
 		$ret = $conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
@@ -85,7 +85,7 @@ class ChatMsg extends ActiveRecord
 			$conn = AppUtil::db();
 		}
 		$ratio = 1.0 / 2.0;
-		list($uid1, $uid2) = self::arrUId($uId, $subUId);
+		list($uid1, $uid2) = self::sortUId($uId, $subUId);
 		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gAddedBy)
 			SELECT :id1,:id2,:uid FROM dual
 			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2)';
