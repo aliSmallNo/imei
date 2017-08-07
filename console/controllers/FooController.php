@@ -429,13 +429,13 @@ class FooController extends Controller
 				':rid' => $receiverId
 			])->execute();
 		}
-		$sql='update im_chat_group as g
+		$sql = 'update im_chat_group as g
 			 join (select min(cId) as minId,max(cId) as maxId,cGId from im_chat_msg WHERE cGId>0 GROUP BY cGId) as t 
 			 on t.cGId=g.gId
 			 set gFirstCId=minId,gLastCId=maxId';
 		$conn->createCommand($sql)->execute();
 
-		$sql='UPDATE im_chat_group as g 
+		$sql = 'UPDATE im_chat_group as g 
 			 join im_chat_msg as m on g.gFirstCId = m.cId 
 			 set g.gAddedBy=m.cSenderId, gAddedOn=m.cAddedOn';
 		$conn->createCommand($sql)->execute();
@@ -463,11 +463,16 @@ class FooController extends Controller
 			'msg' => '有人对你心动了。如果你找不到回「微媒100」的路，请在微信中搜索公众号「微媒100」关注了就行',
 			'rnd' => 108
 		]);
-		/*$ret = UserMsg::recall();
-		var_dump($ret);*/
+		/* $ret = UserMsg::recall();
+		var_dump($ret); */
 	}
 
-	public function actionRain($param1 = '', $param2 = '')
+	public function actionRain()
 	{
+		// User::rankCalculate();
+
+		$data = User::find()->where(["uId" => 133185])->asArray()->One();
+		$row = User::fmtRow($data);
+		User::ranfCal($row, $data["uAddedOn"],1);
 	}
 }
