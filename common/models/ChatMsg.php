@@ -76,8 +76,6 @@ class ChatMsg extends ActiveRecord
 
 		$entity = new self();
 		$entity->cGId = $gid;
-		$entity->cSenderId = $senderId;
-		$entity->cReceiverId = $receiverId;
 		$entity->cContent = $content;
 		$entity->cAddedBy = $senderId;
 		$entity->save();
@@ -306,9 +304,9 @@ class ChatMsg extends ActiveRecord
 			SELECT :uid1,:uid2,10 FROM dual
 			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:uid1 AND g.gUId2=:uid2)';
 		$cmdAdd = $conn->createCommand($sql);
-		$sql = 'update im_chat_msg set cGId=(select gId FROM im_chat_group WHERE gUId1=:uid1 AND gUId2=:uid2)
+		/*$sql = 'update im_chat_msg set cGId=(select gId FROM im_chat_group WHERE gUId1=:uid1 AND gUId2=:uid2)
  				WHERE cSenderId=:sid AND cReceiverId=:rid ';
-		$cmdUpdate = $conn->createCommand($sql);
+		$cmdUpdate = $conn->createCommand($sql);*/
 		$sql = 'select * from im_chat_msg WHERE cGId=0';
 		$ret = $conn->createCommand($sql)->queryAll();
 		foreach ($ret as $row) {
@@ -319,12 +317,12 @@ class ChatMsg extends ActiveRecord
 				':uid1' => $uid1,
 				':uid2' => $uid2
 			])->execute();
-			$cmdUpdate->bindValues([
+			/*$cmdUpdate->bindValues([
 				':uid1' => $uid1,
 				':uid2' => $uid2,
 				':sid' => $senderId,
 				':rid' => $receiverId
-			])->execute();
+			])->execute();*/
 		}
 		$sql = 'UPDATE im_chat_group as g
 			 join (select min(cId) as minId,max(cId) as maxId,cGId from im_chat_msg WHERE cGId>0 GROUP BY cGId) as t 
@@ -332,8 +330,8 @@ class ChatMsg extends ActiveRecord
 			 set gFirstCId=minId,gLastCId=maxId';
 		$conn->createCommand($sql)->execute();
 
-		$sql = 'UPDATE im_chat_group as g 
-			 	JOIN im_chat_msg as m on g.gFirstCId = m.cId 
+		/*$sql = 'UPDATE im_chat_group as g
+			 	JOIN im_chat_msg as m on g.gFirstCId = m.cId
 			 	SET g.gAddedBy=m.cSenderId, gAddedOn=m.cAddedOn WHERE g.gAddedBy<2';
 		$conn->createCommand($sql)->execute();
 
@@ -343,7 +341,7 @@ class ChatMsg extends ActiveRecord
 		$conn->createCommand($sql)->execute();
 
 		$sql = 'UPDATE im_chat_msg set cAddedBy=cSenderId WHERE cAddedBy<2 ';
-		$conn->createCommand($sql)->execute();
+		$conn->createCommand($sql)->execute();*/
 
 	}
 }
