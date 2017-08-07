@@ -1359,17 +1359,9 @@ class User extends ActiveRecord
 			$trends['trans'][$k] = intval($res5["trans"]); // 新增充值
 		}
 
-		$sql = "SELECT count(concatId) as chat FROM 
-				(
-				select
-				(case 
-				when cSenderId>cReceiverId then CONCAT(cSenderId,cReceiverId) 
-				when cReceiverId>cSenderId then CONCAT(cReceiverId,cSenderId) 
-				end) as concatId
-				FROM im_chat_msg 
-				WHERE cAddedOn BETWEEN :beginDT AND :endDT  
-				group by concatId 
-				) as temp";
+		$sql = "SELECT count(1) as chat  
+				FROM im_chat_group
+				WHERE gAddedOn BETWEEN :beginDT AND :endDT ";
 		$res6 = $conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
