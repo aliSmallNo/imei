@@ -656,7 +656,7 @@ class SiteController extends BaseController
 		if (!$rid || !$sid) {
 			$this->redirect("/site/error");
 		}
-		list($list) = ChatMsg::chat($sid, $rid);
+		list($list) = ChatMsg::details($sid, $rid);
 		usort($list, function ($a, $b) {
 			return $a['addedon'] < $b['addedon'];
 		});

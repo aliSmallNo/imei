@@ -164,7 +164,7 @@ class ChatMsg extends ActiveRecord
 		return $gid;
 	}
 
-	public static function chat($uId, $subUId, $page = 1, $pageSize = 40)
+	public static function details($uId, $subUId, $page = 1, $pageSize = 40)
 	{
 		$limit = ' Limit ' . ($page - 1) * $pageSize . ',' . ($pageSize + 1);
 		$conn = AppUtil::db();
@@ -285,7 +285,6 @@ class ChatMsg extends ActiveRecord
 
 	public static function reset()
 	{
-
 		$conn = AppUtil::db();
 		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound)
 			SELECT :uid1,:uid2,10 FROM dual

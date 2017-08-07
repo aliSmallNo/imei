@@ -1046,7 +1046,7 @@ class ApiController extends Controller
 					return self::renderAPI(129, '对话用户不存在啊~');
 				}
 				LogAction::add($uid, $openId, LogAction::ACTION_CHAT, $receiverId);
-				list($items, $nextPage) = ChatMsg::chat($uid, $receiverId, $page);
+				list($items, $nextPage) = ChatMsg::details($uid, $receiverId, $page);
 				return self::renderAPI(0, '', [
 					'items' => $items,
 					'page' => intval($page),
