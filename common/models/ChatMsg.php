@@ -284,57 +284,46 @@ class ChatMsg extends ActiveRecord
 		return [$contacts, $nextPage];
 	}
 
-	public static function items($condStr, $page, $pageSize = 20)
+	public static function items($criteria, $params = [], $page = 1, $pageSize = 20)
 	{
 		$limit = "limit " . ($page - 1) * $pageSize . "," . $pageSize;
-
-		$sql = "select msgId,c.*,
-				s.uAvatar as savatar,s.uName as sname,s.uPhone as sphone ,
-				r.uAvatar as ravatar,r.uName as rname,r.uPhone as rphone 
-				from 
-				(
-				select
-				(case 
-				when m.cSenderId>m.cReceiverId then CONCAT(m.cSenderId,m.cReceiverId) 
-				when m.cReceiverId>m.cSenderId then CONCAT(m.cReceiverId,m.cSenderId) 
-				end) as concatId, 
-				max(m.cId) as msgId 
-				from im_chat_msg as m  
-				group by concatId 
-				order by msgId desc
-				) as t
-				left join im_chat_msg as c on c.cId=t.msgId
-				left join im_user as s on c.cSenderId=s.uId 
-				left join im_user as r on c.cReceiverId=r.uId
-				$condStr
-				$limit ";
-
+		$strCriteria = '';
+		if ($criteria) {
+			$strCriteria = ' AND ' . implode(' AND ', $criteria);
+		}
 		$conn = AppUtil::db();
-		$res = $conn->createCommand($sql)->queryAll();
+		$sql = 'select g.gId,g.gUId1,g.gUId2,g.gAddedBy,m.cContent as content,m.cAddedOn,
+			 u1.uName as name1,u1.uPhone as phone1,u1.uThumb as avatar1,
+			 u2.uName as name2,u2.uPhone as phone2,u2.uThumb as avatar2
+			 from im_chat_group as g
+			 JOIN im_chat_msg as m on g.gId=m.cGId and g.gLastCId=m.cId
+			 JOIN im_user as u1 on u1.uId=g.gUId1
+			 JOIN im_user as u2 on u2.uId=g.gUId2
+			 WHERE g.gId>0 ' . $strCriteria . '
+			 order by g.gUpdatedOn desc ' . $limit;
+		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		foreach ($res as $k => $row) {
+			$res[$k]['avatar1'] = ImageUtil::getItemImages($row['avatar1'])[0];
+			$res[$k]['avatar2'] = ImageUtil::getItemImages($row['avatar2'])[0];
+			$res[$k]['dt'] = AppUtil::prettyDate($row['cAddedOn']);
+			if ($row['gAddedBy'] == $row['gUId2']) {
+				list($name, $phone, $avatar) = [$row['name1'], $row['phone1'], $row['avatar1']];
+				$res[$k]['name1'] = $row['name2'];
+				$res[$k]['phone1'] = $row['phone2'];
+				$res[$k]['avatar1'] = $row['avatar2'];
+				$res[$k]['name2'] = $name;
+				$res[$k]['phone2'] = $phone;
+				$res[$k]['avatar2'] = $avatar;
+			}
+		}
 
-		$sql = "select count(1) as co
-				from 
-				(
-				select
-				(case 
-				when m.cSenderId>m.cReceiverId then CONCAT(m.cSenderId,m.cReceiverId) 
-				when m.cReceiverId>m.cSenderId then CONCAT(m.cReceiverId,m.cSenderId) 
-				end) as concatId, 
-				max(m.cId) as msgId 
-				from im_chat_msg as m  
-				group by concatId 
-				order by msgId desc
-				) as t
-				left join im_chat_msg as c on c.cId=t.msgId
-				left join im_user as s on c.cSenderId=s.uId 
-				left join im_user as r on c.cReceiverId=r.uId
-				$condStr ";
-		$count = $conn->createCommand($sql)->queryOne();
-		$co = $count ? $count["co"] : 0;
-		return [$res, $co];
-
+		$sql = "select count(1) from im_chat_group as g
+			 JOIN im_user as u1 on u1.uId=g.gUId1
+			 JOIN im_user as u2 on u2.uId=g.gUId2
+			 WHERE g.gId>0 " . $strCriteria;
+		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
+		return [$res, $count];
 	}
-
 
 	public static function reset()
 	{

@@ -2,6 +2,11 @@
 <style>
 	.note {
 		font-size: 14px;
+		font-weight: 400;
+	}
+
+	.dt {
+		font-size: 14px;
 		font-weight: 300;
 	}
 
@@ -49,9 +54,6 @@
 					用户
 				</th>
 				<th>
-					最后聊天日期
-				</th>
-				<th>
 					详情
 				</th>
 			</tr>
@@ -60,27 +62,25 @@
 			{{foreach from=$list item=item}}
 			<tr>
 				<td align="center">
-					<img src="{{$item.savatar}}">
+					<img src="{{$item.avatar1}}">
 				</td>
 				<td>
-					{{$item.sname}}<br>
-					{{$item.sphone}}
+					{{$item.name1}}<br>
+					{{$item.phone1}}
 				</td>
 				<td>
-					<div class="note">{{$item.cContent}}</div>
+					<div class="dt">{{$item.dt}}</div>
+					<div class="note">{{$item.content}}</div>
 				</td>
 				<td class="modMp">
-					<img src="{{$item.ravatar}}">
+					<img src="{{$item.avatar2}}">
 				</td>
 				<td>
-					{{$item.rname}}<br>
-					{{$item.rphone}}
+					{{$item.name2}}<br>
+					{{$item.phone2}}
 				</td>
 				<td>
-					{{$item.cAddedOn}}
-				</td>
-				<td>
-					<button class="chatDesc btn btn-outline btn-primary btn-xs" data-sid="{{$item.cSenderId}}" data-rid="{{$item.cReceiverId}}">详情</button>
+					<button class="chatDesc btn btn-outline btn-primary btn-xs" data-sid="{{$item.gUId1}}" data-rid="{{$item.gUId2}}">详情</button>
 				</td>
 			</tr>
 			{{/foreach}}
