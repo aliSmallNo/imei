@@ -440,6 +440,7 @@ class FooController extends Controller
 			 set g.gAddedBy=m.cSenderId, gAddedOn=m.cAddedOn';
 		$conn->createCommand($sql)->execute();
 
+		ChatMsg::reset();
 		/*$sql = 'update im_chat_group set gUId1=:id1,gUId2=:id2 WHERE gId=:id ';
 		$cmdUpdate = $conn->createCommand($sql);
 		$sql = 'select * from im_chat_group';

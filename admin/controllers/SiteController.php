@@ -628,16 +628,16 @@ class SiteController extends BaseController
 		$page = self::getParam("page", 1);
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
-		$condition = " where 1 ";
+		$condition = $params = [];
 		if ($name) {
-			$name = str_replace("'", "", $name);
-			$condition .= " and (s.uName like '%$name%' or r.uName like '%$name%')";
+			$condition[] = '(u1.uName like :name or u2.uName like :name)';
+			$params[':name'] = '%' . $name . '%';
 		}
 		if ($phone) {
-			$phone = str_replace("'", "", $phone);
-			$condition .= " and (s.uPhone like '$phone%' or r.uPhone like '$phone%')";
+			$condition[] = '(u1.uPhone like :phone or u2.uPhone like :phone)';
+			$params[':phone'] = $phone . '%';
 		}
-		list($list, $count) = ChatMsg::items($condition, $page);
+		list($list, $count) = ChatMsg::items($condition, $params, $page);
 		$pagination = self::pagination($page, $count);
 		return $this->renderPage("chat.tpl",
 			[
@@ -656,7 +656,10 @@ class SiteController extends BaseController
 		if (!$rid || !$sid) {
 			$this->redirect("/site/error");
 		}
-		list($list) = ChatMsg::chat($sid, $rid);
+		list($list) = ChatMsg::details($sid, $rid);
+		usort($list, function ($a, $b) {
+			return $a['addedon'] < $b['addedon'];
+		});
 		// print_r($list);exit;
 		return $this->renderPage("chatdes.tpl",
 			[

@@ -1026,10 +1026,11 @@ class ApiController extends Controller
 				if (!$text) {
 					return self::renderAPI(129, '消息不能为空啊~');
 				}
-				$ret = ChatMsg::add($uid, $receiverId, $text);
+				$ret = ChatMsg::addChat($uid, $receiverId, $text);
+				//ChatMsg::add($uid, $receiverId, $text);
 				if ($ret === false) {
 					return self::renderAPI(129, '发送失败~');
-				} elseif ($ret && is_numeric($ret)) {
+				} elseif (is_numeric($ret)) {
 					return self::renderAPI(129, '不好意思哦，最多只能聊' . $ret . '句');
 				} else {
 					WechatUtil::templateMsg(WechatUtil::NOTICE_CHAT, $receiverId,
@@ -1039,13 +1040,14 @@ class ApiController extends Controller
 				break;
 			case 'list':
 				$page = self::postParam('page', 1);
-				$receiverId = self::postParam('id');
-				$receiverId = AppUtil::decrypt($receiverId);
-				if (!$receiverId) {
+				$subUId = self::postParam('id');
+				$subUId = AppUtil::decrypt($subUId);
+				if (!$subUId) {
 					return self::renderAPI(129, '对话用户不存在啊~');
 				}
-				LogAction::add($uid, $openId, LogAction::ACTION_CHAT, $receiverId);
-				list($items, $nextPage) = ChatMsg::chat($uid, $receiverId, $page);
+				LogAction::add($uid, $openId, LogAction::ACTION_CHAT, $subUId);
+				ChatMsg::read($uid, $subUId);
+				list($items, $nextPage) = ChatMsg::details($uid, $subUId, $page);
 				return self::renderAPI(0, '', [
 					'items' => $items,
 					'page' => intval($page),
@@ -1060,21 +1062,6 @@ class ApiController extends Controller
 					'page' => intval($page),
 					'nextPage' => intval($nextPage)
 				]);
-				break;
-			case 'read':
-				$sid = self::postParam('sid', 1);
-				$sid = AppUtil::decrypt($sid); // 聊天对象的 uId
-				if ($sid > 0) {
-					$hasRead = ChatMsg::HAS_READ;
-					$sql = "update im_chat_msg set cReadFlag=$hasRead where (cSenderId=:sid  and cReceiverId=:uid) or (cReceiverId=:sid and cSenderId=:uid)";
-					AppUtil::db()->createCommand($sql)->bindValues([
-						"sid" => $sid,
-						"uid" => $uid,
-					])->execute();
-					return self::renderAPI(0, '');
-				} else {
-					return self::renderAPI(129, '参数错误');
-				}
 				break;
 		}
 		return self::renderAPI(129, '操作无效~');
