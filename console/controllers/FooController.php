@@ -429,15 +429,23 @@ class FooController extends Controller
 				':rid' => $receiverId
 			])->execute();
 		}
-		$sql='update im_chat_group as g
+		$sql='UPDATE im_chat_group as g
 			 join (select min(cId) as minId,max(cId) as maxId,cGId from im_chat_msg WHERE cGId>0 GROUP BY cGId) as t 
 			 on t.cGId=g.gId
 			 set gFirstCId=minId,gLastCId=maxId';
 		$conn->createCommand($sql)->execute();
 
 		$sql='UPDATE im_chat_group as g 
-			 join im_chat_msg as m on g.gFirstCId = m.cId 
-			 set g.gAddedBy=m.cSenderId, gAddedOn=m.cAddedOn';
+			 	JOIN im_chat_msg as m on g.gFirstCId = m.cId 
+			 	SET g.gAddedBy=m.cSenderId, gAddedOn=m.cAddedOn';
+		$conn->createCommand($sql)->execute();
+
+		$sql='UPDATE im_chat_group as g 
+			 	JOIN im_chat_msg as m on g.gLastCId = m.cId 
+			 	SET gUpdatedBy=m.cSenderId,gUpdatedOn=m.cAddedOn';
+		$conn->createCommand($sql)->execute();
+
+		$sql='UPDATE im_chat_msg set cAddedBy=cSenderId WHERE cAddedBy<2 ';
 		$conn->createCommand($sql)->execute();
 
 		/*$sql = 'update im_chat_group set gUId1=:id1,gUId2=:id2 WHERE gId=:id ';

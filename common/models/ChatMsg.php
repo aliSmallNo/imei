@@ -33,6 +33,88 @@ class ChatMsg extends ActiveRecord
 		return $arr;
 	}
 
+	public static function addChat($senderId, $receiverId, $content, $giftCount = 0, $conn = '')
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$ratio = 1.0 / 2.0;
+		list($uid1, $uid2) = self::sortUId($senderId, $receiverId);
+		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound,gAddedBy)
+			SELECT :id1,:id2,10,:uid FROM dual
+			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2)';
+		$conn->createCommand($sql)->bindValues([
+			':id1' => $uid1,
+			':id2' => $uid2,
+			':uid' => $senderId,
+		])->execute();
+		if ($giftCount) {
+			$amt = intval($giftCount * $ratio);
+			$sql = 'UPDATE im_chat_group set gRound=IFNULL(gRound,0)+' . $amt . ' WHERE g.gUId1=:id1 AND g.gUId2=:id2';
+			$conn->createCommand($sql)->bindValues([
+				':id1' => $uid1,
+				':id2' => $uid2,
+			])->execute();
+		}
+		$sql = 'SELECT gId,gRound FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2';
+		$ret = $conn->createCommand($sql)->bindValues([
+			':id1' => $uid1,
+			':id2' => $uid2,
+		])->queryOne();
+		$gid = $ret['gId'];
+		$gRound = intval($ret['gRound']);
+
+		$sql = 'select count(1) from im_chat_msg WHERE cGId=:gid and cAddedBy=:uid';
+		$cnt = $conn->createCommand($sql)->bindValues([
+			':uid' => $senderId,
+			':gid' => $gid,
+		])->queryScalar();
+		$cnt = intval($cnt);
+		if ($cnt >= $gRound) {
+			return $gRound;
+		}
+
+		$entity = new self();
+		$entity->cGId = $gid;
+		$entity->cSenderId = $senderId;
+		$entity->cReceiverId = $receiverId;
+		$entity->cContent = $content;
+		$entity->cAddedBy = $senderId;
+		$entity->save();
+		$cId = $entity->cId;
+
+		$sql = 'update im_chat_group set gFirstCId=:cid WHERE gId=:gid AND gFirstCId < 1';
+		$conn->createCommand($sql)->bindValues([
+			':cid' => $cId,
+			':gid' => $gid
+		])->execute();
+
+		$sql = 'update im_chat_group set gLastCId=:cid,gUpdatedOn=now(),gUpdatedBy=:uid WHERE gId=:gid';
+		$conn->createCommand($sql)->bindValues([
+			':cid' => $cId,
+			':gid' => $gid,
+			':uid' => $senderId
+		])->execute();
+
+		$sql = 'select uName,uThumb,uId from im_user WHERE uId=:uid';
+		$uInfo = $conn->createCommand($sql)->bindValues([
+			':uid' => $senderId
+		])->queryOne();
+		if ($uInfo) {
+			return [
+				'id' => $cId,
+				'senderid' => $senderId,
+				'receiverid' => $receiverId,
+				'content' => $content,
+				'addedon' => date('Y-m-d H:i:s'),
+				'name' => $uInfo['uName'],
+				'avatar' => ImageUtil::getItemImages($uInfo['uThumb'])[0],
+				'dir' => 'right',
+			];
+		}
+		return false;
+	}
+
 	public static function add($uId, $subUId, $content)
 	{
 		$cnt = self::chatCount($uId, $subUId);

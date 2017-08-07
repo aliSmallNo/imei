@@ -1026,10 +1026,11 @@ class ApiController extends Controller
 				if (!$text) {
 					return self::renderAPI(129, '消息不能为空啊~');
 				}
-				$ret = ChatMsg::add($uid, $receiverId, $text);
+				$ret = ChatMsg::addChat($uid, $receiverId, $text);
+				//ChatMsg::add($uid, $receiverId, $text);
 				if ($ret === false) {
 					return self::renderAPI(129, '发送失败~');
-				} elseif ($ret && is_numeric($ret)) {
+				} elseif (is_numeric($ret)) {
 					return self::renderAPI(129, '不好意思哦，最多只能聊' . $ret . '句');
 				} else {
 					WechatUtil::templateMsg(WechatUtil::NOTICE_CHAT, $receiverId,
