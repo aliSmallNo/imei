@@ -1347,17 +1347,14 @@ class User extends ActiveRecord
 			$trends['pass'][$k] = intval($res4["pass"]); // 新增牵线成功
 		}
 
-		$sql = "SELECT 
-				SUM(pTransAmt/100) as trans
+		$sql = "SELECT SUM(pTransAmt/100) as trans
 				FROM im_pay 
 				where pStatus=100 and pTransDate BETWEEN :beginDT AND :endDT  ";
 		$res5 = $conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
-		])->queryOne();
-		if ($res5) {
-			$trends['trans'][$k] = intval($res5["trans"]); // 新增充值
-		}
+		])->queryScalar();
+		$trends['trans'][$k] = intval($res5);
 
 		$sql = "SELECT count(1) as chat  
 				FROM im_chat_group
@@ -1365,11 +1362,8 @@ class User extends ActiveRecord
 		$res6 = $conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
-		])->queryOne();
-		if ($res6) {
-			$trends['chat'][$k] = intval($res6["chat"]); // 新增聊天数
-		}
-
+		])->queryScalar();
+		$trends['chat'][$k] = intval($res6);
 		return $trends;
 	}
 
