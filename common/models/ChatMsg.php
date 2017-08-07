@@ -212,7 +212,7 @@ class ChatMsg extends ActiveRecord
 		$conn = AppUtil::db();
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
 		$sql = 'select u.uName as `name`, u.uThumb as avatar,
-			 m.cId as cid, m.cContent as content,m.cAddedOn,m.cAddedBy
+			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy
 			 from im_chat_group as g 
 			 join im_chat_msg as m on g.gId=cGId
 			 join im_user as u on u.uId=m.cAddedBy
@@ -229,9 +229,10 @@ class ChatMsg extends ActiveRecord
 		}
 		foreach ($chats as $k => $chat) {
 			$chats[$k]['avatar'] = ImageUtil::getItemImages($chat['avatar'])[0];
+			$chats[$k]['dt'] = AppUtil::prettyDate($chat['addedon']);
 			$chats[$k]['dir'] = ($uId == $chat['cAddedBy'] ? 'right' : 'left');
 			$chats[$k]['url'] = ($uId == $chat['cAddedBy'] ? 'javascript:;' : '/wx/sh?id=' . AppUtil::encrypt($subUId));
-			unset($chats[$k]['cAddedOn'], $chats[$k]['cAddedBy']);
+			unset($chats[$k]['cAddedBy']);
 		}
 		return [$chats, $nextPage];
 	}

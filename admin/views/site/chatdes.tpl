@@ -44,7 +44,7 @@
 			<li class="message_item ">
 				<div class="message_info">
 					<div class="message_status"><em class="tips">已回复</em></div>
-					<div class="message_time">{{$item.addedon}}</div>
+					<div class="message_time">{{$item.dt}}</div>
 					<div class="user_info">
 						<span class="remark_name">{{$item.name}}</span>
 						<span class="nickname"></span>
