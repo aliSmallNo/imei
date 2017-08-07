@@ -8,6 +8,7 @@ namespace console\controllers;
  * Date: 11/5/2017
  * Time: 2:11 PM
  */
+use common\models\ChatMsg;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserWechat;
@@ -404,29 +405,42 @@ class FooController extends Controller
 	public function actionChat()
 	{
 		$conn = AppUtil::db();
-		/*$sql = 'INSERT INTO im_chat_group(gKey,gMax)
-			SELECT :key,10 FROM dual
-			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gKey=:key)';
+		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound)
+			SELECT :uid1,:uid2,10 FROM dual
+			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:uid1 AND g.gUId2=:uid2)';
 		$cmdAdd = $conn->createCommand($sql);
-		$sql = 'update im_chat_msg set cNote=:key WHERE cId=:id ';
+		$sql = 'update im_chat_msg set cGId=(select gId FROM im_chat_group WHERE gUId1=:uid1 AND gUId2=:uid2)
+ 				WHERE cSenderId=:sid AND cReceiverId=:rid ';
 		$cmdUpdate = $conn->createCommand($sql);
-		$sql = 'select * from im_chat_msg';
+		$sql = 'select * from im_chat_msg WHERE cGId=0';
 		$ret = $conn->createCommand($sql)->queryAll();
 		foreach ($ret as $row) {
-			$id = $row['cId'];
-			$key = [$row['cSenderId'], $row['cReceiverId']];
-			sort($key);
-			$key = implode('.', $key);
+			$senderId = $row['cSenderId'];
+			$receiverId = $row['cReceiverId'];
+			list($uid1, $uid2) = ChatMsg::sortUId($senderId, $receiverId);
 			$cmdAdd->bindValues([
-				':key' => $key
+				':uid1' => $uid1,
+				':uid2' => $uid2
 			])->execute();
 			$cmdUpdate->bindValues([
-				':key' => $key,
-				':id' => $id
+				':uid1' => $uid1,
+				':uid2' => $uid2,
+				':sid' => $senderId,
+				':rid' => $receiverId
 			])->execute();
-		}*/
+		}
+		$sql='update im_chat_group as g
+			 join (select min(cId) as minId,max(cId) as maxId,cGId from im_chat_msg WHERE cGId>0 GROUP BY cGId) as t 
+			 on t.cGId=g.gId
+			 set gFirstCId=minId,gLastCId=maxId';
+		$conn->createCommand($sql)->execute();
 
-		$sql = 'update im_chat_group set gUId1=:id1,gUId2=:id2 WHERE gId=:id ';
+		$sql='UPDATE im_chat_group as g 
+			 join im_chat_msg as m on g.gFirstCId = m.cId 
+			 set g.gAddedBy=m.cSenderId, gAddedOn=m.cAddedOn';
+		$conn->createCommand($sql)->execute();
+
+		/*$sql = 'update im_chat_group set gUId1=:id1,gUId2=:id2 WHERE gId=:id ';
 		$cmdUpdate = $conn->createCommand($sql);
 		$sql = 'select * from im_chat_group';
 		$ret = $conn->createCommand($sql)->queryAll();
@@ -439,7 +453,7 @@ class FooController extends Controller
 				':id1' => $id1,
 				':id2' => $id2,
 			])->execute();
-		}
+		}*/
 	}
 
 	public function actionSms($phone = 18600442970)
