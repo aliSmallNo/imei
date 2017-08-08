@@ -24,6 +24,7 @@ class UserTrans extends ActiveRecord
 	const CAT_GET = 127;
 	const CAT_GIVE = 128;
 	const CAT_RETURN = 130;
+	const CAT_MOMENT = 150;
 
 	static $catDict = [
 		self::CAT_RECHARGE => "充值",
@@ -35,6 +36,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_GET => "收玫瑰花",
 		self::CAT_GIVE => "送玫瑰花",
 		self::CAT_RETURN => "拒绝退回",
+		self::CAT_MOMENT => "分享到朋友圈奖励",
 	];
 
 	static $CatMinus = [
@@ -71,6 +73,30 @@ class UserTrans extends ActiveRecord
 		$entity->tUnit = $unit;
 		$entity->save();
 		return $entity->tId;
+	}
+
+	public static function shareReward($uid, $pid, $cat, $amt, $unit, $title = '')
+	{
+		$dt = date('Y-m-d');
+		$sql = 'INSERT INTO im_user_trans(tUId,tPId,tCategory,tTitle,tAmt,tUnit)
+				SELECT :uid,:pid,:cat,:title,:amt,:unit FROM dual
+				WHERE NOT EXISTS (SELECT 1 FROM im_user_trans 
+						WHERE tUId=:uid AND tCategory=:cat AND tAddedOn BETWEEN :begin AND :end)';
+		$conn = AppUtil::db();
+		if (!$title) {
+			$title = isset(self::$catDict[$cat]) ? self::$catDict[$cat] : '';
+		}
+		$ret = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':pid' => $pid,
+			':cat' => $cat,
+			':amt' => $amt,
+			':unit' => $unit,
+			':title' => $title,
+			':begin' => $dt . ' 00:00',
+			':end' => $dt . ' 23:59:00'
+		])->execute();
+		return $ret;
 	}
 
 	public static function addByPID($pid)
@@ -264,7 +290,7 @@ class UserTrans extends ActiveRecord
 			if ($unit == self::UNIT_FEN) {
 				$balance['amt'] = sprintf('%.2f', $balance['amt'] / 100.0);
 				$unit = self::UNIT_YUAN;
-				if ($cat == self::CAT_REWARD ) {
+				if ($cat == self::CAT_REWARD) {
 					$details[$uid]['bal']['amt2'] -= $balance['amt'];
 				} else {
 					$details[$uid]['bal']['amt2'] += $balance['amt'];
