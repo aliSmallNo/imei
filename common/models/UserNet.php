@@ -97,6 +97,7 @@ class UserNet extends ActiveRecord
 		$entity->nUpdatedOn = date('Y-m-d H:i:s');
 		$entity->nNote = $note;
 		$entity->save();
+		return $entity->nId;
 	}
 
 	public static function addLink($uid, $subUid, $note = '')

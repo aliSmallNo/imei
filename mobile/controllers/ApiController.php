@@ -1134,12 +1134,12 @@ class ApiController extends Controller
 		switch ($tag) {
 			case 'share':
 				$note = self::postParam('note');
-				UserNet::addShare($uid, $subUId, UserNet::REL_QR_SHARE, $note);
+				$nId = UserNet::addShare($uid, $subUId, UserNet::REL_QR_SHARE, $note);
 				break;
 			case 'moment':
 				$note = self::postParam('note');
-
-				UserNet::addShare($uid, $subUId, UserNet::REL_QR_MOMENT, $note);
+				$nId = UserNet::addShare($uid, $subUId, UserNet::REL_QR_MOMENT, $note);
+				UserTrans::shareReward($uid, $nId, UserTrans::CAT_MOMENT, 50, UserTrans::UNIT_GIFT);
 				break;
 		}
 		return self::renderAPI(129, '操作无效~');
