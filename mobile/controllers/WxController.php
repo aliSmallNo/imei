@@ -1039,4 +1039,12 @@ class WxController extends BaseController
 			],
 			'terse');
 	}
+
+	public function actionAgree()
+	{
+		return self::renderPage('agree.tpl',
+			[
+			],
+			'terse');
+	}
 }
