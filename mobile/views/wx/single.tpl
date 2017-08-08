@@ -99,6 +99,7 @@
 			<a href="#sqrcode"><span class="title">关注公众号</span></a>
 			<a href="/wx/splay"><span class="title">单身玩法</span></a>
 			<a href="javascript:;"><span class="title">黑名单</span></a>
+			<a href="/wx/agree"><span class="title">用户协议</span></a>
 		</div>
 	</div>
 </section>

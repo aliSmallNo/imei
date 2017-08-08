@@ -27,6 +27,7 @@ require(["layer"],
 			routeLength: mRoutes.length,
 			routeSkip: $.inArray('scope', mRoutes),
 			locationRow: $('.location-row'),
+			homelandRow: $('.homeland-row'),
 			mLat: 0,
 			mLng: 0
 		};
@@ -97,6 +98,22 @@ require(["layer"],
 								return;
 							}
 							$sls.postData["location"] = JSON.stringify(lItem);
+							util.next();
+							break;
+						case "homeland":
+							var hItem = [];
+							$("[data-tag=homeland] em").each(function () {
+								hItem.push({
+									key: $(this).attr("data-key"),
+									text: $(this).html()
+								});
+							});
+							if (hItem.length < 2) {
+								showMsg("籍贯信息不全哦~");
+								return;
+							}
+							$sls.postData["homeland"] = JSON.stringify(hItem);
+							console.log($sls.postData);
 							util.next();
 							break;
 						case "intro":
@@ -175,10 +192,18 @@ require(["layer"],
 					var key = self.attr('data-key');
 					var tag = self.attr('data-tag');
 					if (tag && tag == 'province') {
-						$sls.locationRow.html('<em data-key="' + key + '">' + text + '</em>');
+						if ($sls.curFrag == "location") {
+							$sls.locationRow.html('<em data-key="' + key + '">' + text + '</em>');
+						} else if ($sls.curFrag == "homeland") {
+							$sls.homelandRow.html('<em data-key="' + key + '">' + text + '</em>');
+						}
 						util.getCity(key);
 					} else if (tag && tag == 'city') {
-						$sls.locationRow.append('<em data-key="' + key + '">' + text + '</em>');
+						if ($sls.curFrag == "location") {
+							$sls.locationRow.append('<em data-key="' + key + '">' + text + '</em>');
+						} else if ($sls.curFrag == "homeland") {
+							$sls.homelandRow.append('<em data-key="' + key + '">' + text + '</em>');
+						}
 						util.toggle();
 					}
 					return false;

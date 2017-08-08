@@ -533,6 +533,7 @@ class User extends ActiveRecord
 			"nickname" => "uName",
 			"intro" => "uIntro",
 			"location" => "uLocation",
+			"homeland" => "uHomeland",
 			"scope" => "uScope",
 			"img" => "uAvatar",
 			"thumb" => "uThumb",
