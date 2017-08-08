@@ -1025,8 +1025,10 @@
 		<div class="topup-action">
 			<a href="javascript:;" class="btn-topup">捐媒<br>桂花</a>
 		</div>
+		<div class="split"><span>或者</span></div>
 		<div class="topup-bot">
-			<a href="javascript:;">感谢对我们的支持和厚爱</a>
+			<p>没有媒桂花了，分享到朋友圈，收获奖励<br>但是一天内只奖励一次哦~</p>
+			<a href="/wx/sqr" class="btn">分享到朋友圈</a>
 		</div>
 	</div>
 </script>

@@ -1136,6 +1136,7 @@ class ApiController extends Controller
 				break;
 			case 'moment':
 				$note = self::postParam('note');
+
 				UserNet::addShare($uid, $subUId, UserNet::REL_QR_MOMENT, $note);
 				break;
 		}
