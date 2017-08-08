@@ -28,8 +28,10 @@
 	</div>
 </div>
 <input type="hidden" id="cUID" value="{{$uId}}">
+<input type="hidden" id="cWXUrl" value="{{$wxUrl}}">
+<input type="hidden" id="cAVATAR" value="{{$avatar}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/sqr.js?v=1.1.1" src="/assets/js/require.js"></script>
+<script data-main="/js/sqr.js?v=1.1.2" src="/assets/js/require.js"></script>

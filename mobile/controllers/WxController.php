@@ -883,6 +883,10 @@ class WxController extends BaseController
 		if (AppUtil::isDev()) {
 			$qrcode = '/images/qrmeipo100.jpg';
 		} else {
+			$qrUserInfo = User::findOne(['uId' => $qrUserId]);
+			if ($qrUserInfo) {
+				$avatar = ImageUtil::getItemImages($qrUserInfo["uThumb"])[0];
+			}
 			$qrcode = UserQR::getQRCode($qrUserId, UserQR::CATEGORY_SINGLE);
 		}
 		return self::renderPage("sqr.tpl",
