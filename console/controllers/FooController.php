@@ -457,6 +457,11 @@ class FooController extends Controller
 		}*/
 	}
 
+	public function actionRank()
+	{
+		User::updateRank([], true);
+	}
+
 	public function actionSms($phone = 18600442970)
 	{
 		QueueUtil::loadJob('sendSMS', [
