@@ -146,7 +146,7 @@ class WxController extends BaseController
 			}
 			$locInfo = $uInfo['location'];
 		}
-		$routes = ['photo', 'gender', 'homeland','location', 'year', 'horos', 'height', 'weight', 'income', 'edu', 'album', 'intro',
+		$routes = ['photo', 'gender', 'homeland', 'location', 'year', 'horos', 'height', 'weight', 'income', 'edu', 'album', 'intro',
 			'scope', 'job', 'house', 'car', 'smoke', 'drink', 'belief', 'workout', 'diet', 'rest', 'pet', 'interest'];
 		if ($hasGender) {
 			unset($routes[1]);
@@ -867,6 +867,40 @@ class WxController extends BaseController
 				'qrcode' => $qrcode
 			],
 			'terse');
+	}
+
+	public function actionSqr()
+	{
+		$openId = self::$WX_OpenId;
+		$senderUId = self::getParam('id');
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$avatar = $nickname = '';
+		if ($wxInfo) {
+			$avatar = $wxInfo["Avatar"];
+			$nickname = $wxInfo["uName"];
+		}
+		$qrUserId = $senderUId ? $senderUId : $wxInfo['uId'];
+		if (AppUtil::isDev()) {
+			$qrcode = '/images/qrmeipo100.jpg';
+		} else {
+			$qrUserInfo = User::findOne(['uId' => $qrUserId]);
+			if ($qrUserInfo) {
+				$avatar = ImageUtil::getItemImages($qrUserInfo["uThumb"])[0];
+			}
+			$qrcode = UserQR::getQRCode($qrUserId, UserQR::CATEGORY_SINGLE);
+		}
+		return self::renderPage("sqr.tpl",
+			[
+				'uId' => $qrUserId,
+				'avatar' => $avatar,
+				'nickname' => $nickname,
+				'wxUrl' => AppUtil::wechatUrl(),
+				'qrcode' => $qrcode,
+				'senderUId' => $senderUId
+			],
+			'terse',
+			'',
+			'bg-qrcode');
 	}
 
 	// share to single

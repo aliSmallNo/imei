@@ -23,6 +23,8 @@ class UserNet extends ActiveRecord
 	const REL_FAVOR = 150;
 	const REL_QR_SCAN = 210;
 	const REL_QR_SUBSCRIBE = 212;
+	const REL_QR_SHARE = 215;
+	const REL_QR_MOMENT = 216;
 	const REL_UNSUBSCRIBE = 250;
 	const REL_SUBSCRIBE = 255;
 
@@ -34,6 +36,8 @@ class UserNet extends ActiveRecord
 		self::REL_FAVOR => '心动',
 		self::REL_QR_SCAN => '扫推广二维码',
 		self::REL_QR_SUBSCRIBE => '扫二维码且关注',
+		self::REL_QR_SHARE => '发送给朋友',
+		self::REL_QR_MOMENT => '分享到朋友圈',
 		self::REL_UNSUBSCRIBE => '取消关注',
 		self::REL_SUBSCRIBE => '关注公众号',
 	];
@@ -82,6 +86,17 @@ class UserNet extends ActiveRecord
 		$entity->save();
 
 		return $entity->nId;
+	}
+
+	public static function addShare($uid, $subUid, $relation, $note = '')
+	{
+		$entity = new self();
+		$entity->nUId = $uid;
+		$entity->nSubUId = $subUid;
+		$entity->nRelation = $relation;
+		$entity->nUpdatedOn = date('Y-m-d H:i:s');
+		$entity->nNote = $note;
+		$entity->save();
 	}
 
 	public static function addLink($uid, $subUid, $note = '')
@@ -671,7 +686,7 @@ class UserNet extends ActiveRecord
 
 		$sql = "select u.uId as uId,u.uAvatar as avatar,u.uName as uname,u.uPhone as phone, u.uThumb as thumb,
 				u1.uId as sId,u1.uAvatar as savatar,u1.uThumb as sthumb,u1.uName as sname,u1.uPhone as sphone,
-				n.nRelation,n.nStatus,n.nAddedOn as dt, IFNULL(q.qCode,'') as qcode
+				n.nRelation,n.nStatus,n.nNote,n.nAddedOn as dt, IFNULL(q.qCode,'') as qcode
 				from im_user_net as n 
 				left join im_user_qr as q on n.nNote=q.qId
 				join im_user as u on u.uId=n.nUId 
@@ -684,6 +699,7 @@ class UserNet extends ActiveRecord
 			$v["sText"] = self::$stDict[$v["nStatus"]];
 			$v['av'] = $v['thumb'] ? $v['thumb'] : $v['avatar'];
 			$v['sav'] = $v['sthumb'] ? $v['sthumb'] : $v['savatar'];
+			$note = $v['nNote'];
 			$text = $left = $right = [];
 			$uInfo = ['id' => $v['uId'], 'avatar' => $v['avatar'], 'name' => $v['uname'], 'phone' => $v['phone']];
 			$sInfo = ['id' => $v['sId'], 'avatar' => $v['savatar'], 'name' => $v['sname'], 'phone' => $v['sphone']];
@@ -722,6 +738,24 @@ class UserNet extends ActiveRecord
 					$text = ['扫描了', '的二维码且关注'];
 					$left = $sInfo;
 					$right = $uInfo;
+					break;
+				case self::REL_QR_SHARE:
+					$text2 = '的推广链接给朋友';
+					if (strpos($note, '/sh') !== false) {
+						$text2 = '的个人主页给朋友';
+					}
+					$text = ['发送', $text2];
+					$left = $uInfo;
+					$right = $sInfo;
+					break;
+				case self::REL_QR_MOMENT:
+					$text2 = '的推广链接到朋友圈';
+					if (strpos($note, '/sh') !== false) {
+						$text2 = '的个人主页到朋友圈';
+					}
+					$text = ['分享', $text2];
+					$left = $uInfo;
+					$right = $sInfo;
 					break;
 				case self::REL_UNSUBSCRIBE:
 					$text = ['取消关注', ''];

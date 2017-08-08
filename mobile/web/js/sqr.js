@@ -6,21 +6,19 @@ require.config({
 });
 
 require(["layer"],
-	function (layer) {
+	function () {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
 			curFrag: "slink",
 			cork: $(".app-cork"),
 			wxString: $("#tpl_wx_info").html(),
-			celebs: $('#tpl_celebs').html(),
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
-			nic: $('.img-wrap'),
+			avatar: $('#cAVATAR').val(),
 			uid: $('#cUID').val(),
 			wxUrl: $('#cWXUrl').val(),
-			dl: $('.dl'),
 			newIdx: 0,
 			newsTimer: 0,
 			loading: 0
@@ -38,22 +36,6 @@ require(["layer"],
 			}, 2500);
 		});
 
-		$('.editable').on(kClick, function () {
-			var self = $(this);
-			var cid = self.attr('data-id');
-			toggle($sls.celebs);
-			$sls.content.find('[data-id=' + cid + ']').addClass('cur');
-		});
-
-		$(document).on(kClick, '.m-popup-options > a', function () {
-			var self = $(this);
-			var cid = self.attr('data-id');
-			$sls.dl.attr('data-id', cid);
-			$sls.dl.html(self.html());
-			toggle();
-			resetMenuShare();
-		});
-
 		function toggle(content) {
 			var util = $sls;
 			if (content) {
@@ -68,16 +50,6 @@ require(["layer"],
 			}
 		}
 
-		function showMsg(title, sec) {
-			var delay = sec || 3;
-			layer.open({
-				type: 99,
-				content: title,
-				skin: 'msg',
-				time: delay
-			});
-		}
-
 		function shareLog(tag, note) {
 			$.post("/api/share", {
 				tag: tag,
@@ -89,19 +61,16 @@ require(["layer"],
 		}
 
 		function resetMenuShare() {
-			var cid = $sls.dl.attr('data-id');
-			var cName = $sls.dl.html();
-			var name = $sls.nic.find('em').html();
-			var thumb = $sls.nic.find("img").attr('src');
-			var link = $sls.wxUrl + '/wx/share?id=' + $sls.uid + '&cid=' + cid;
-			var title = '我在东台做媒婆，帮助周边好友脱单，还能赚点零花钱';
-			var desc = '一起来微媒100做媒婆吧，帮助身边的单身青年脱单';
+			var thumb = $sls.avatar;
+			var link = $sls.wxUrl + '/wx/sqr?id=' + $sls.uid;
+			var title = '我在微媒100找朋友，快来支持我啊';
+			var desc = '微媒100，帮助身边的青年脱单';
 			wx.onMenuShareTimeline({
 				title: title,
 				link: link,
 				imgUrl: thumb,
 				success: function () {
-					shareLog('moment', '/wx/share');
+					shareLog('moment', '/wx/sqr');
 				}
 			});
 			wx.onMenuShareAppMessage({
@@ -112,15 +81,13 @@ require(["layer"],
 				type: '',
 				dataUrl: '',
 				success: function () {
-					shareLog('share', '/wx/share');
+					shareLog('share', '/wx/sqr');
 				}
 			});
 		}
 
 		$(function () {
 			$("body").addClass("bg-color");
-			// FootUtil.init();
-			// SingleUtil.init();
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];

@@ -108,4 +108,4 @@
 	</div>
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/share.js?v=1.2.9" src="/assets/js/require.js"></script>
+<script data-main="/js/share.js?v=1.3.0" src="/assets/js/require.js"></script>

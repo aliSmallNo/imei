@@ -447,8 +447,8 @@ require(["layer"],
 					$sls.main.show();
 					var html = Mustache.render(ChatUtil.topupTmp, {
 						items: [
-							{num: 10, amt: 20},
-							{num: 20, amt: 40}
+							{num: 20, amt: 20},
+							{num: 40, amt: 40}
 						]
 					});
 					$sls.content.html(html).addClass("animate-pop-in");

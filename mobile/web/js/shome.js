@@ -16,7 +16,7 @@ require(["layer"],
 			newsTimer: 0,
 			loading: 0,
 			mainPage: $('.main-page'),
-
+			shID: $('#cUID').val(),
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
@@ -25,7 +25,7 @@ require(["layer"],
 		var ReportUtil = {
 			text: $('.report-text'),
 			reason: $('.report-reason'),
-			rptUId: $('#cUID').val(),
+			rptUId: $sls.shID,
 			sel_text: $('.select-text'),
 			loading: 0,
 			tip: '请选择举报原因',
@@ -274,8 +274,8 @@ require(["layer"],
 					$sls.main.show();
 					var html = Mustache.render(ChatUtil.topupTmp, {
 						items: [
-							{num: 10, amt: 20},
-							{num: 20, amt: 40}
+							{num: 20, amt: 20},
+							{num: 40, amt: 40}
 						]
 					});
 					$sls.content.html(html).addClass("animate-pop-in");
@@ -440,6 +440,15 @@ require(["layer"],
 			layer.closeAll();
 		}
 
+		function shareLog(tag, note) {
+			$.post("/api/share", {
+				tag: tag,
+				id: $sls.shID,
+				note: note
+			}, function (resp) {
+
+			}, "json");
+		}
 
 		$(function () {
 			$("body").addClass("bg-color");
@@ -451,25 +460,22 @@ require(["layer"],
 			wx.ready(function () {
 				//wx.hideOptionMenu();
 				wx.onMenuShareAppMessage({
-					title: '推荐一位优秀的单身给你', // 分享标题
-					desc: '微媒100，挖掘身边优秀单身！', // 分享描述
-					link: "https://wx.meipo100.com/wx/sh?id=" + $("#secretId").val(), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-					imgUrl: $("#avatarID").val(), // 分享图标
-					type: '', // 分享类型,music、video或link，不填默认为link
-					dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-					success: function () {// 用户确认分享后执行的回调函数
-					},
-					cancel: function () {// 用户取消分享后执行的回调函数
+					title: '推荐一位优秀的单身给你',
+					desc: '微媒100，挖掘身边优秀单身！',
+					link: "https://wx.meipo100.com/wx/sh?id=" + $("#secretId").val(),
+					imgUrl: $("#avatarID").val(),
+					type: '',
+					dataUrl: '',
+					success: function () {
+						shareLog('share', '/wx/sh');
 					}
 				});
-				// 分享到朋友圈
 				wx.onMenuShareTimeline({
-					title: '推荐一位优秀的单身给你', // 分享标题
-					link: "https://wx.meipo100.com/wx/sh?id=" + $("#secretId").val(), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-					imgUrl: $("#avatarID").val(), // 分享图标
-					success: function () {// 用户确认分享后执行的回调函数
-					},
-					cancel: function () {// 用户取消分享后执行的回调函数
+					title: '推荐一位优秀的单身给你',
+					link: "https://wx.meipo100.com/wx/sh?id=" + $("#secretId").val(),
+					imgUrl: $("#avatarID").val(),
+					success: function () {
+						shareLog('moment', '/wx/sh');
 					}
 				});
 			});

@@ -85,8 +85,9 @@
 			<a href="javascript:;" to="focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
-			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span class="tip">已认证</span>{{/if}}</a>
+			<a href="/wx/sqr"><span class="title">分享给朋友</span></a>
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">媒桂花账户</span></a>
+			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span class="tip">已认证</span>{{/if}}</a>
 			<a href="/wx/notice">
 				<span class="title">通知</span>
 				{{if $noReadFlag}}
@@ -96,9 +97,8 @@
 			<a href="/wx/favor"><span>心动周排行榜</span></a>
 			<a href="#sfeedback"><span class="title">意见反馈</span> </a>
 			<a href="#myWechatNo"><span class="title">我的微信号</span></a>
-			<a href="#sqrcode"><span class="title">关注公众号</span></a>
 			<a href="/wx/splay"><span class="title">单身玩法</span></a>
-			<a href="javascript:;"><span class="title">黑名单</span></a>
+			<a href="javascript:;" style="display: none"><span class="title">黑名单</span></a>
 			<a href="/wx/agree"><span class="title">用户协议</span></a>
 		</div>
 	</div>
@@ -1059,4 +1059,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/iscroll.js"></script>
-<script data-main="/js/single.js?v=1.6.1" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.6.2" src="/assets/js/require.js"></script>

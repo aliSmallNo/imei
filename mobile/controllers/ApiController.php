@@ -1113,6 +1113,35 @@ class ApiController extends Controller
 		return self::renderAPI(129, '操作无效~');
 	}
 
+	public function actionShare()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$openId = self::postParam('openid');
+		if (!$openId) {
+			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		}
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			return self::renderAPI(129, '用户不存在啊~');
+		}
+		$uid = $wxInfo['uId'];
+		$subUId = self::postParam('id');
+		if ($subUId && !is_numeric($subUId)) {
+			$subUId = AppUtil::decrypt($subUId);
+		}
+		switch ($tag) {
+			case 'share':
+				$note = self::postParam('note');
+				UserNet::addShare($uid, $subUId, UserNet::REL_QR_SHARE, $note);
+				break;
+			case 'moment':
+				$note = self::postParam('note');
+				UserNet::addShare($uid, $subUId, UserNet::REL_QR_MOMENT, $note);
+				break;
+		}
+		return self::renderAPI(129, '操作无效~');
+	}
+
 	public function actionQr()
 	{
 		$tag = trim(strtolower(self::postParam('tag')));
