@@ -1403,10 +1403,9 @@ class User extends ActiveRecord
 			var_dump(date('Y-m-d H:i:s - ') . $count);
 		}
 		if ($goliveFlag) {
-			$sql = 'Update im_user set uRank=uRankTmp';
+			$sql = 'Update im_user set uRankDate=now(),uRank=uRankTmp';
 			$conn->createCommand($sql)->execute();
 		}
-		AppUtil::logFile($count, 5, __FUNCTION__, __LINE__);
 	}
 
 	public static function rankCal($row, $addedOn, $updRankFlag = false)
