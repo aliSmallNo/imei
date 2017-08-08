@@ -686,7 +686,7 @@ class UserNet extends ActiveRecord
 
 		$sql = "select u.uId as uId,u.uAvatar as avatar,u.uName as uname,u.uPhone as phone, u.uThumb as thumb,
 				u1.uId as sId,u1.uAvatar as savatar,u1.uThumb as sthumb,u1.uName as sname,u1.uPhone as sphone,
-				n.nRelation,n.nStatus,n.nAddedOn as dt, IFNULL(q.qCode,'') as qcode
+				n.nRelation,n.nStatus,n.nNote,n.nAddedOn as dt, IFNULL(q.qCode,'') as qcode
 				from im_user_net as n 
 				left join im_user_qr as q on n.nNote=q.qId
 				join im_user as u on u.uId=n.nUId 
@@ -699,6 +699,7 @@ class UserNet extends ActiveRecord
 			$v["sText"] = self::$stDict[$v["nStatus"]];
 			$v['av'] = $v['thumb'] ? $v['thumb'] : $v['avatar'];
 			$v['sav'] = $v['sthumb'] ? $v['sthumb'] : $v['savatar'];
+			$note = $v['nNote'];
 			$text = $left = $right = [];
 			$uInfo = ['id' => $v['uId'], 'avatar' => $v['avatar'], 'name' => $v['uname'], 'phone' => $v['phone']];
 			$sInfo = ['id' => $v['sId'], 'avatar' => $v['savatar'], 'name' => $v['sname'], 'phone' => $v['sphone']];
@@ -739,12 +740,20 @@ class UserNet extends ActiveRecord
 					$right = $uInfo;
 					break;
 				case self::REL_QR_SHARE:
-					$text = ['发送', '的推广链接给朋友'];
+					$text2 = '的推广链接给朋友';
+					if (strpos($note, '/sh') !== false) {
+						$text2 = '的个人主页给朋友';
+					}
+					$text = ['发送', $text2];
 					$left = $uInfo;
 					$right = $sInfo;
 					break;
 				case self::REL_QR_MOMENT:
-					$text = ['发送', '的推广链接到朋友圈'];
+					$text2 = '的推广链接到朋友圈';
+					if (strpos($note, '/sh') !== false) {
+						$text2 = '的个人主页到朋友圈';
+					}
+					$text = ['分享', $text2];
 					$left = $uInfo;
 					$right = $sInfo;
 					break;
