@@ -11,6 +11,7 @@ namespace console\controllers;
 use common\models\ChatMsg;
 use common\models\User;
 use common\models\UserNet;
+use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
@@ -470,6 +471,7 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
+
 		// User::UpdateRank();
 
 //		$data = User::find()->where(["uId" => 133185])->asArray()->One();

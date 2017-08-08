@@ -377,6 +377,8 @@ require(["layer"],
 			bookTmp: $('#tpl_contact').html(),
 			list: $('.chats'),
 			tmp: $('#tpl_chat').html(),
+			topupTmp: $('#tpl_chat_topup').html(),
+			topTip: $('#schat .chat-tip'),
 			input: $('.chat-input'),
 			bot: $('#schat .m-bottom-pl'),
 			topPL: $('#scontacts .m-top-pl'),
@@ -396,6 +398,68 @@ require(["layer"],
 					util.page = 1;
 					location.href = '#schat';
 				});
+
+				$(document).on(kClick, ".btn-chat-topup", function () {
+					$sls.main.show();
+					var html = Mustache.render(ChatUtil.topupTmp, {
+						items: [
+							{num: 10, amt: 20},
+							{num: 20, amt: 40}
+						]
+					});
+					$sls.content.html(html).addClass("animate-pop-in");
+					$sls.shade.fadeIn(160);
+				});
+
+				$(document).on(kClick, ".btn-topup-close", function () {
+					$sls.main.hide();
+					$sls.shade.fadeOut(160);
+				});
+
+				$(document).on(kClick, ".btn-topup", function () {
+					util.topup();
+					return false;
+				});
+
+				$(document).on(kClick, ".topup-opt a", function () {
+					var self = $(this);
+					self.closest('div').find('a').removeClass('active');
+					self.addClass('active');
+				});
+			},
+			showTip: function (gid, left) {
+				var util = this;
+				if (left) {
+					util.topTip.html('还可以密聊<b>' + left + '</b>句哦，要抓住机会哦~');
+				} else {
+					util.topTip.html('想要更多密聊机会，请先<a href="javascript:;" data-id="' + gid + '" class="btn-chat-topup">捐媒桂花</a>吧~');
+				}
+			},
+			topup: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				var amt = $('.topup-opt a.active').attr('data-amt');
+				if (amt) {
+					$.post("/api/chat", {
+						tag: "topup",
+						id: util.sid,
+						amt: amt
+					}, function (resp) {
+						util.loading = 0;
+						if (resp.code == 0) {
+							$sls.main.hide();
+							$sls.shade.fadeOut(160);
+							util.showTip(resp.data.gid, resp.data.left);
+						} else {
+							showMsg(resp.msg);
+						}
+					}, "json");
+				} else {
+					showMsg('请先选择媒桂花数量哦~');
+				}
 			},
 			sent: function () {
 				var util = this;
@@ -413,6 +477,7 @@ require(["layer"],
 						var html = Mustache.render(util.tmp, resp.data);
 						util.list.append(html);
 						util.input.val('');
+						util.showTip(resp.data.gid, resp.data.left);
 						setTimeout(function () {
 							util.bot.get(0).scrollIntoView(true);
 						}, 300);
@@ -443,6 +508,7 @@ require(["layer"],
 						} else {
 							util.list.append(html);
 						}
+						util.showTip(resp.data.gid, resp.data.left);
 						util.page = resp.data.nextPage;
 						setTimeout(function () {
 							util.bot.get(0).scrollIntoView(true);
@@ -687,7 +753,6 @@ require(["layer"],
 				$sls.shade.fadeIn(160);
 			},
 			loadFilter: function (data, page) {
-				console.log('loadFilter 588');
 				if (filterUlit.getUserFiterFlag) {
 					return;
 				}

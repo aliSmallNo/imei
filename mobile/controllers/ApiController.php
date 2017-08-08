@@ -1030,12 +1030,18 @@ class ApiController extends Controller
 				//ChatMsg::add($uid, $receiverId, $text);
 				if ($ret === false) {
 					return self::renderAPI(129, '发送失败~');
+				} elseif ($ret === 0) {
+					return self::renderAPI(129, '想要更多密聊机会，请先捐媒桂花吧~');
 				} elseif (is_numeric($ret)) {
 					return self::renderAPI(129, '不好意思哦，最多只能聊' . $ret . '句');
 				} else {
 					WechatUtil::templateMsg(WechatUtil::NOTICE_CHAT, $receiverId,
 						'有人密聊你啦', 'TA给你发了一条密聊消息，快去看看吧~');
-					return self::renderAPI(0, '', ['items' => $ret]);
+					return self::renderAPI(0, '', [
+						'items' => $ret,
+						'gid' => $ret['gid'],
+						'left' => $ret['left']
+					]);
 				}
 				break;
 			case 'list':
@@ -1046,12 +1052,15 @@ class ApiController extends Controller
 					return self::renderAPI(129, '对话用户不存在啊~');
 				}
 				LogAction::add($uid, $openId, LogAction::ACTION_CHAT, $subUId);
+				list($gId, $left) = ChatMsg::groupEdit($uid, $subUId);
 				ChatMsg::read($uid, $subUId);
 				list($items, $nextPage) = ChatMsg::details($uid, $subUId, $page);
 				return self::renderAPI(0, '', [
 					'items' => $items,
 					'page' => intval($page),
-					'nextPage' => intval($nextPage)
+					'nextPage' => intval($nextPage),
+					'left' => $left,
+					'gid' => $gId
 				]);
 				break;
 			case 'contacts':
@@ -1061,6 +1070,24 @@ class ApiController extends Controller
 					'items' => $items,
 					'page' => intval($page),
 					'nextPage' => intval($nextPage)
+				]);
+				break;
+			case 'topup':
+				$subUId = self::postParam('id');
+				if (!is_numeric($subUId)) {
+					$subUId = AppUtil::decrypt($subUId);
+				}
+				$amt = self::postParam('amt');
+				$stat = UserTrans::getStat($uid);
+				$flower = isset($stat['flower']) ? $stat['flower'] : 0;
+				if ($flower < $amt) {
+					return self::renderAPI(129, '你的媒桂花只剩' . $flower . '朵了，不足' . $amt . '朵，该充值了哦~');
+				}
+				list($gId, $left) = ChatMsg::groupEdit($uid, $subUId, $amt);
+				UserTrans::add($uid, $gId, UserTrans::CAT_CHAT, '', $amt, UserTrans::UNIT_GIFT);
+				return self::renderAPI(0, '', [
+					'left' => $left,
+					'gid' => $gId
 				]);
 				break;
 		}

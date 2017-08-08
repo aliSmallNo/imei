@@ -8,7 +8,6 @@
 
 namespace common\models;
 
-
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
@@ -16,14 +15,13 @@ use yii\db\ActiveRecord;
 
 class UserTrans extends ActiveRecord
 {
-
-	const CAT_RECHARGE = 100;//充值
-	const CAT_SIGN = 105;   //签到
+	const CAT_RECHARGE = 100;
+	const CAT_SIGN = 105;
 	const CAT_NEW = 108;
-	const CAT_LINK = 110;   //牵线奖励
-	const CAT_REWARD = 120;   //打赏
-	const CAT_CHAT = 125;   //聊天付费
-	const CAT_RETURN = 130;  //拒绝退回
+	const CAT_LINK = 110;
+	const CAT_REWARD = 120;
+	const CAT_CHAT = 125;
+	const CAT_RETURN = 130;
 
 	static $catDict = [
 		self::CAT_RECHARGE => "充值",
@@ -31,11 +29,14 @@ class UserTrans extends ActiveRecord
 		self::CAT_NEW => "新人奖励",
 		self::CAT_LINK => "牵线奖励",
 		self::CAT_REWARD => "打赏",
-		self::CAT_CHAT => "聊天付费",
+		self::CAT_CHAT => "密聊付费",
 		self::CAT_RETURN => "拒绝退回",
 	];
 
-	static $CatMinus = [self::CAT_REWARD];
+	static $CatMinus = [
+		self::CAT_REWARD,
+		self::CAT_CHAT
+	];
 
 	const UNIT_FEN = 'fen';
 	const UNIT_YUAN = 'yuan';
@@ -57,6 +58,9 @@ class UserTrans extends ActiveRecord
 		$entity->tUId = $uid;
 		$entity->tPId = $pid;
 		$entity->tCategory = $cat;
+		if (!$title) {
+			$title = isset(self::$catDict[$cat]) ? self::$catDict[$cat] : '';
+		}
 		$entity->tTitle = $title;
 		$entity->tAmt = $amt;
 		$entity->tUnit = $unit;
