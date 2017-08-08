@@ -20,6 +20,7 @@ class ChatMsg extends ActiveRecord
 	const NO_READ = 0; // 未读
 	const HAS_READ = 1; // 已读
 
+	const RATIO = 1; //1.0 / 2.0;
 
 	public static function tableName()
 	{
@@ -38,7 +39,7 @@ class ChatMsg extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$ratio = 1.0 / 2.0;
+		$ratio = self::RATIO;
 		list($uid1, $uid2) = self::sortUId($senderId, $receiverId);
 		$left = self::chatLeft($senderId, $receiverId, $conn);
 		if ($left < 1) {
@@ -147,7 +148,7 @@ class ChatMsg extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$ratio = 1.0 / 2.0;
+		$ratio = self::RATIO;
 		$amt = intval($giftCount * $ratio);
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
 		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound,gAddedBy)
