@@ -16,7 +16,7 @@ require(["layer"],
 			newsTimer: 0,
 			loading: 0,
 			mainPage: $('.main-page'),
-
+			shID: $('#cUID').val(),
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
@@ -25,7 +25,7 @@ require(["layer"],
 		var ReportUtil = {
 			text: $('.report-text'),
 			reason: $('.report-reason'),
-			rptUId: $('#cUID').val(),
+			rptUId: $sls.shID,
 			sel_text: $('.select-text'),
 			loading: 0,
 			tip: '请选择举报原因',
@@ -443,7 +443,7 @@ require(["layer"],
 		function shareLog(tag, note) {
 			$.post("/api/share", {
 				tag: tag,
-				id: $sls.uid,
+				id: $sls.shID,
 				note: note
 			}, function (resp) {
 
