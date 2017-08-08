@@ -50,6 +50,16 @@ require(["layer"],
 			}
 		}
 
+		function shareLog(tag, senderId, note) {
+			$.post("/api/share", {
+				tag: tag,
+				id: senderId,
+				note: note
+			}, function (resp) {
+
+			}, "json");
+		}
+
 		function resetMenuShare() {
 			var thumb = $sls.avatar;
 			var link = $sls.wxUrl + '/wx/sqr?id=' + $sls.uid;
@@ -60,6 +70,7 @@ require(["layer"],
 				link: link,
 				imgUrl: thumb,
 				success: function () {
+					shareLog('share', $sls.uid, '/wx/sqr');
 				}
 			});
 			wx.onMenuShareAppMessage({
@@ -70,6 +81,7 @@ require(["layer"],
 				type: '',
 				dataUrl: '',
 				success: function () {
+					shareLog('moment', $sls.uid, '/wx/sqr');
 				}
 			});
 		}

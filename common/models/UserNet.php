@@ -23,6 +23,8 @@ class UserNet extends ActiveRecord
 	const REL_FAVOR = 150;
 	const REL_QR_SCAN = 210;
 	const REL_QR_SUBSCRIBE = 212;
+	const REL_QR_SHARE = 215;
+	const REL_QR_MOMENT = 216;
 	const REL_UNSUBSCRIBE = 250;
 	const REL_SUBSCRIBE = 255;
 
@@ -34,6 +36,8 @@ class UserNet extends ActiveRecord
 		self::REL_FAVOR => '心动',
 		self::REL_QR_SCAN => '扫推广二维码',
 		self::REL_QR_SUBSCRIBE => '扫二维码且关注',
+		self::REL_QR_SHARE => '发送给朋友',
+		self::REL_QR_MOMENT => '分享到朋友圈',
 		self::REL_UNSUBSCRIBE => '取消关注',
 		self::REL_SUBSCRIBE => '关注公众号',
 	];
