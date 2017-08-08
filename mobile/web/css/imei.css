@@ -2265,13 +2265,13 @@ section {
 
 .qrcode-wrap {
   position: absolute;
-  top: 3rem;
+  top: 2rem;
   left: 3rem;
   width: 26rem;
-  height: 50rem;
+  height: 48rem;
   text-align: center;
   background: #fbd2e0;
-  padding: 2rem 2rem;
+  padding: 1.5rem;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
