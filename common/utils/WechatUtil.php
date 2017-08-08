@@ -37,6 +37,7 @@ class WechatUtil
 	const NOTICE_CHAT = 'notice_chat';
 	const NOTICE_AUDIT_PASS = 'notice_audit_pass';
 	const NOTICE_AUDIT = 'notice_audit';
+	const NOTICE_GIVE_ROSE = 'notice_give_rose';
 
 	/**
 	 * @param $sessionKey
@@ -576,6 +577,15 @@ class WechatUtil
 				$url = $wxUrl . "/wx/sedit";
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['keyword1'] = "个人资料审核不合规通知";
+				$keywords['keyword2'] = $subTitle;
+				$keywords['remark'] = "\n点击下方详情查看吧~";
+				break;
+			case self::NOTICE_GIVE_ROSE:
+				$msgCat = UserMsg::CATEGORY_GIVE_ROSE;
+				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$url = $wxUrl . "/wx/notice";
+				$keywords['first'] = "hi，$nickname\n";
+				$keywords['keyword1'] = $title;
 				$keywords['keyword2'] = $subTitle;
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;

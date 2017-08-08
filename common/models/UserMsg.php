@@ -34,6 +34,7 @@ class UserMsg extends ActiveRecord
 	const CATEGORY_CHAT = 170;
 	const CATEGORY_AUDIT = 180;
 	const CATEGORY_SMS_RECALL = 200;
+	const CATEGORY_GIVE_ROSE = 210;
 
 	static $catDict = [
 		self::CATEGORY_ADMIN_PASS => "审核通过",
@@ -51,6 +52,7 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_CHAT => "密聊信息",
 		self::CATEGORY_AUDIT => "审核通过",
 		self::CATEGORY_SMS_RECALL => "短信召回老用户",
+		self::CATEGORY_GIVE_ROSE => "送玫瑰花",
 	];
 
 	public static function tableName()
@@ -157,6 +159,10 @@ class UserMsg extends ActiveRecord
 				case self::CATEGORY_AUDIT:
 					$v["url"] = "javascript:;";
 					$v["text"] = $v["mText"];
+					break;
+				case self::CATEGORY_GIVE_ROSE:
+					$v["url"] = "/wx/sw#srecords";
+					$v["text"] = $v["uName"] . "给你" . $v["mText"];
 					break;
 			}
 
