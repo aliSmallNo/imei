@@ -1359,7 +1359,7 @@ class User extends ActiveRecord
 
 		$sql = "SELECT count(1) as chat  
 				FROM im_chat_group
-				WHERE gAddedOn BETWEEN :beginDT AND :endDT ";
+				WHERE gFirstCId>0 AND gAddedOn BETWEEN :beginDT AND :endDT ";
 		$res6 = $conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,

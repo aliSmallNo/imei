@@ -1094,6 +1094,10 @@ class ApiController extends Controller
 		return self::renderAPI(129, '操作无效~');
 	}
 
+	public function actionShare(){
+
+	}
+
 	public function actionQr()
 	{
 		$tag = trim(strtolower(self::postParam('tag')));
