@@ -737,6 +737,16 @@ class UserNet extends ActiveRecord
 					$left = $sInfo;
 					$right = $uInfo;
 					break;
+				case self::REL_QR_SHARE:
+					$text = ['发送TA的链接', '给朋友'];
+					$left = $uInfo;
+					$right = $sInfo;
+					break;
+				case self::REL_QR_MOMENT:
+					$text = ['发送TA的链接', '到朋友圈'];
+					$left = $uInfo;
+					$right = $sInfo;
+					break;
 				case self::REL_UNSUBSCRIBE:
 					$text = ['取消关注', ''];
 					$left = $uInfo;

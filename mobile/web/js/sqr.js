@@ -70,7 +70,7 @@ require(["layer"],
 				link: link,
 				imgUrl: thumb,
 				success: function () {
-					shareLog('share', '/wx/sqr');
+					shareLog('moment', '/wx/sqr');
 				}
 			});
 			wx.onMenuShareAppMessage({
@@ -81,7 +81,7 @@ require(["layer"],
 				type: '',
 				dataUrl: '',
 				success: function () {
-					shareLog('moment', '/wx/sqr');
+					shareLog('share', '/wx/sqr');
 				}
 			});
 		}
