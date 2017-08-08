@@ -21,6 +21,7 @@ class UserTrans extends ActiveRecord
 	const CAT_LINK = 110;
 	const CAT_REWARD = 120;
 	const CAT_CHAT = 125;
+	const CAT_GET = 127;
 	const CAT_GIVE = 128;
 	const CAT_RETURN = 130;
 
@@ -31,6 +32,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_LINK => "牵线奖励",
 		self::CAT_REWARD => "打赏",
 		self::CAT_CHAT => "密聊付费",
+		self::CAT_GET => "收玫瑰花",
 		self::CAT_GIVE => "送玫瑰花",
 		self::CAT_RETURN => "拒绝退回",
 	];
