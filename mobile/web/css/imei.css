@@ -5366,7 +5366,7 @@ section {
 
 .topup-wrap {
   background: #E53935;
-  padding: 1.5rem 2rem;
+  padding: 2rem;
   border-radius: 0.5rem;
   color: #f9cd9a;
   text-align: center;
@@ -5458,5 +5458,43 @@ section {
     .topup-wrap .topup-bot a {
       color: #f9cd9a;
       font-size: 1.2rem; }
+    .topup-wrap .topup-bot p {
+      font-size: 1.2rem;
+      line-height: 1.6rem;
+      padding: 0.8rem 0; }
+    .topup-wrap .topup-bot .btn {
+      background: #f9cd9a;
+      border: 1px solid #fbdbb7;
+      line-height: 3.6rem;
+      border-radius: 0.5rem;
+      padding-left: 3rem;
+      padding-right: 3rem;
+      color: #6d4c41;
+      display: inline-block; }
+  .topup-wrap .split {
+    position: relative; }
+    .topup-wrap .split:before {
+      content: "";
+      position: absolute;
+      height: 1px;
+      width: 10.3rem;
+      background-color: #f9cd9a;
+      top: 50%;
+      left: 0.5rem; }
+    .topup-wrap .split:after {
+      content: "";
+      position: absolute;
+      height: 1px;
+      width: 10.3rem;
+      background-color: #f9cd9a;
+      top: 50%;
+      right: 0.5rem; }
+    .topup-wrap .split span {
+      color: #f9cd9a;
+      background-color: #E53935;
+      width: 4rem;
+      line-height: 2.4rem;
+      font-size: 1rem;
+      display: inline-block; }
 
 /*# sourceMappingURL=imei.css.map */

@@ -36,6 +36,7 @@ $actionColor: #877575
 $actionColorLight: lighten($actionColor, 12%)
 //#c93
 $actionColorDark: #630
+$brownColor: #6d4c41
 
 @mixin unreadFlag
 	position: absolute
@@ -3409,7 +3410,7 @@ section
 			width: 3.6rem
 			height: 3.6rem
 			font-size: 1.2rem
-			color: #6d4c41
+			color: $brownColor
 		a.active
 			opacity: 1
 	.pmp-bot
@@ -5067,7 +5068,7 @@ section
 
 .topup-wrap
 	background: $redColor
-	padding: 1.5rem 2rem
+	padding: 2rem
 	border-radius: .5rem
 	color: $rewardColor
 	text-align: center
@@ -5144,11 +5145,49 @@ section
 			width: 3.6rem
 			height: 3.6rem
 			font-size: 1.2rem
-			color: #6d4c41
+			color: $brownColor
 	.topup-bot
 		color: $rewardColor
 		font-size: 1.2rem
 		a
 			color: $rewardColor
 			font-size: 1.2rem
+		p
+			font-size: 1.2rem
+			line-height: 1.6rem
+			padding: .8rem 0
+		.btn
+			background: $rewardColor
+			border: 1px solid $rewardColorLight
+			line-height: 3.6rem
+			border-radius: .5rem
+			padding-left: 3rem
+			padding-right: 3rem
+			color: $brownColor
+			display: inline-block
+	.split
+		position: relative
+		&:before
+			content: ''
+			position: absolute
+			height: 1px
+			width: 10.3rem
+			background-color: $rewardColor
+			top: 50%
+			left: .5rem
+		&:after
+			content: ''
+			position: absolute
+			height: 1px
+			width: 10.3rem
+			background-color: $rewardColor
+			top: 50%
+			right: .5rem
+		span
+			color: $rewardColor
+			background-color: $redColor
+			width: 4rem
+			line-height: 2.4rem
+			font-size: 1rem
+			display: inline-block
 
