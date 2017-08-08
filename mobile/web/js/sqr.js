@@ -6,7 +6,7 @@ require.config({
 });
 
 require(["layer"],
-	function () {
+	function (layer) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -48,6 +48,16 @@ require(["layer"],
 				util.content.html('');
 				util.shade.fadeOut(100);
 			}
+		}
+
+		function showMsg(title, sec) {
+			var delay = sec || 3;
+			layer.open({
+				type: 99,
+				content: title,
+				skin: 'msg',
+				time: delay
+			});
 		}
 
 		function shareLog(tag, note) {
