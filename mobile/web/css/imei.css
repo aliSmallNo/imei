@@ -2268,10 +2268,9 @@ section {
   top: 2rem;
   left: 3rem;
   width: 26rem;
-  height: 48rem;
   text-align: center;
   background: #fbd2e0;
-  padding: 1.5rem;
+  padding: 1.5rem 2rem;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
@@ -2306,7 +2305,7 @@ section {
     font-size: 1.4rem;
     font-weight: 300;
     color: #fff;
-    line-height: 2.2rem; }
+    line-height: 2rem; }
     .qrcode-wrap h5 b {
       color: #E53935; }
   .qrcode-wrap .qrcode {
