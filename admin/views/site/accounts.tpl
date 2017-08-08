@@ -156,8 +156,14 @@
 	<div class="row">
 		<form class="form-inline" action="/site/accounts?status={{$status}}" method="get">
 
-			<input class="form-control" name="name" placeholder="名字" type="text" value="{{$name}}">
-			<input class="form-control" name="phone" placeholder="手机号" type="text" value="{{$phone}}">
+			<input class="form-control" name="name" placeholder="名字" value="{{$name}}">
+			<input class="form-control" name="phone" placeholder="手机号" value="{{$phone}}">
+			<select class="form-control" name="sub_status">
+				<option value="">-=请选择=-</option>
+				{{foreach from=$subStatus key=k item=item}}
+				<option value="{{$k}}" {{if $k==$sub_status}}selected{{/if}}>{{$item}}</option>
+				{{/foreach}}
+			</select>
 			<input type="submit" class="btn btn-primary" value="查询">
 			<span class="stat-item">
 				<span>总计:{{$stat.amt}}</span>
@@ -173,9 +179,8 @@
 		<ul class="nav nav-tabs">
 			{{foreach from=$partHeader key=key item=prod}}
 			<li class="ng-scope {{if $status == $key}}active{{/if}}">
-				<a href="/site/accounts?status={{$key}}&name={{$name}}&phone={{$phone}}" class="ng-binding">
-					{{$prod}}
-					<span class="badge">{{$partCount[$key]}}</span>
+				<a href="/site/accounts?status={{$key}}&name={{$name}}&phone={{$phone}}&sub_status={{$sub_status}}" class="ng-binding">
+					{{$prod}} {{if $partCount[$key]}}<span class="badge">{{$partCount[$key]}}</span>{{/if}}
 				</a>
 			</li>
 			{{/foreach}}
@@ -213,6 +218,7 @@
 				<em>{{$prod.phone}} {{$prod.wechatid}} {{$prod.location_t}}</em>
 				<em style="display: none">{{$prod.note_t}}</em>
 				<span class="sub{{$prod.subscribe}}">{{if $prod.subscribe}}已关注{{else}}未关注{{/if}}</span>
+				{{if $prod.substatus>1}}<span>{{$prod.substatus_t}}</span>{{/if}}
 				<span class="status-{{if $prod.note_t}}10{{else}}{{$prod.status}}{{/if}}">{{if $prod.note_t}}{{$prod.note_t}}{{else}}{{$prod.status_t}}{{/if}}</span>
 				<span class="status-1">{{if $prod.certstatus==2}}{{$prod.certstatus_t}}{{/if}}</span>
 				<br>
@@ -261,7 +267,7 @@
 				<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改信息</a>
 				<div class="btn-divider"></div>
 				<a href="javascript:;" class="check btn btn-outline btn-danger btn-xs" data-id="{{$prod.id}}"
-					 data-st="{{$prod.status}}" data-reasons="">审核用户</a>
+					 data-st="{{$prod.status}}" data-sst="{{$prod.substatus}}" data-reasons="">审核用户</a>
 				<h5>创建于{{$prod.addedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 				<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 			</td>
@@ -280,6 +286,16 @@
 				</div>
 				<div class="modal-body">
 					<div class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">特殊身份:</label>
+							<div class="col-sm-7">
+								<select class="form-control sub-status-opt">
+									{{foreach from=$subStatus key=k item=item}}
+									<option value="{{$k}}">{{$item}}</option>
+									{{/foreach}}
+								</select>
+							</div>
+						</div>
 						<div class="form-group">
 							<label class="col-sm-4 control-label">用户状态:</label>
 							<div class="col-sm-7">
@@ -336,12 +352,13 @@
 
 	function showImages(imagesJson) {
 		layer.photos({
-			photos: imagesJson, //格式见API文档手册页
-			shift: 5,
+			photos: imagesJson,
+			shift: 5
 		});
 	}
 
 	var statusOPt = $(".status-opt"),
+		subStatusOpt = $(".sub-status-opt"),
 		reasonsWrap = $(".reasons-wrap"),
 		btnCoupon = $("#btnCoupon"),
 		hasReson = 1,
@@ -353,6 +370,9 @@
 		var self = $(this);
 		uid = self.attr("data-id");
 		var st = self.attr("data-st");
+		statusOPt.val(st);
+		var subSt = self.attr("data-sst");
+		subStatusOpt.val(subSt);
 		$('#modModal').modal('show');
 	});
 
@@ -395,6 +415,7 @@
 			tag: "reason",
 			reason: JSON.stringify(reason),
 			st: statusOPtVal,
+			sst: subStatusOpt.val(),
 			id: uid
 		}, function (resp) {
 			resonLoad = 0;

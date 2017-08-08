@@ -188,7 +188,7 @@ class User extends ActiveRecord
 	const SUB_ST_NORMAL = 1;
 	const SUB_ST_STAFF = 2;
 	const SUB_ST_FISH = 3;
-	static $SubStatus = [
+	static $Substatus = [
 		self::SUB_ST_NORMAL => "普通用户",
 		self::SUB_ST_STAFF => "员工用户",
 		self::SUB_ST_FISH => "鲶鱼(托)",
@@ -1377,16 +1377,34 @@ class User extends ActiveRecord
 		return $trends;
 	}
 
-	public static function UpdateRank()
+	public static function updateRank($ids = [], $goliveFlag = false, $debug = false)
 	{
 		$conn = AppUtil::db();
 		$role = self::ROLE_SINGLE;
-		$sql = "select * from im_user where uStatus in (0,1,2,8) and uRole=$role ";
+		$strCriteria = ' AND uRole=' . $role;
+		if ($ids) {
+			$strCriteria = ' AND uId in (' . implode(',', $ids) . ')';
+		}
+		$sql = "select * from im_user where uStatus<9 " . $strCriteria;
 		$allUsers = $conn->createCommand($sql)->queryAll();
-
+		$count = 0;
+		if ($debug) {
+			var_dump(date('Y-m-d H:i:s - ') . $count);
+		}
 		foreach ($allUsers as $v) {
 			$row = self::fmtRow($v);
 			self::rankCal($row, $v["uAddedOn"]);
+			$count++;
+			if ($debug && $count % 50 == 0) {
+				var_dump(date('Y-m-d H:i:s - ') . $count);
+			}
+		}
+		if ($debug) {
+			var_dump(date('Y-m-d H:i:s - ') . $count);
+		}
+		if ($goliveFlag) {
+			$sql = 'Update im_user set uRank=uRankTmp';
+			$conn->createCommand($sql)->execute();
 		}
 	}
 
@@ -1471,6 +1489,16 @@ class User extends ActiveRecord
 				break;
 			default:
 				$I4 = 0;
+		}
+		switch ($row["substatus"]) {
+			case self::SUB_ST_STAFF:
+				$I4 *= 0.1;
+				break;
+			case self::SUB_ST_FISH:
+				$I4 *= 1.5;
+				break;
+			default:
+				break;
 		}
 		$relBacker = UserNet::REL_BACKER;
 		$sql = "select u.uName,w.wSubscribe,n.* from 

@@ -11,7 +11,6 @@ namespace console\controllers;
 use common\models\ChatMsg;
 use common\models\User;
 use common\models\UserNet;
-use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
@@ -472,11 +471,11 @@ class FooController extends Controller
 	public function actionRain()
 	{
 
-		// User::UpdateRank();
+		User::updateRank([], true, true);
 
 //		$data = User::find()->where(["uId" => 133185])->asArray()->One();
 //		$row = User::fmtRow($data);
 //		User::rankCal($row, $data["uAddedOn"],1);
-		print_r(  UserTrans::getStat(120003, 1));
+//		print_r(UserTrans::getStat(120003, 1));
 	}
 }

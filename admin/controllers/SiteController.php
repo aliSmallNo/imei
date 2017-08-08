@@ -251,17 +251,21 @@ class SiteController extends BaseController
 		$name = self::getParam('name');
 		$phone = self::getParam('phone');
 		$status = self::getParam('status', 0);
+		$subStatus = self::getParam('sub_status', 0);
 
 		$params = $criteria = $partCriteria = [];
 		if ($status == 0 || $status) {
 			$criteria[] = " uStatus=$status ";
+		}
+		if ($subStatus) {
+			$criteria[] = " uSubStatus=" . $subStatus;
+			$partCriteria[] = " uSubStatus=" . $subStatus;
 		}
 		if ($phone) {
 			$criteria[] = " uPhone like :phone ";
 			$partCriteria[] = " uPhone like :phone ";
 			$params[':phone'] = "$phone%";
 		}
-
 		if ($name) {
 			$criteria[] = "  uName like :name ";
 			$partCriteria[] = "  uName like :name ";
@@ -299,6 +303,7 @@ class SiteController extends BaseController
 		return $this->renderPage('accounts.tpl',
 			[
 				"status" => $status,
+				'sub_status' => $subStatus,
 				'list' => $list,
 				'stat' => $stat,
 				"name" => $name,
@@ -307,6 +312,7 @@ class SiteController extends BaseController
 				'category' => 'users',
 				"partCount" => $partCount,
 				"partHeader" => User::$Status,
+				"subStatus" => User::$Substatus,
 			]);
 	}
 

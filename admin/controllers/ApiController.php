@@ -223,8 +223,9 @@ class ApiController extends Controller
 				break;
 			case "reason":
 				$st = self::postParam("st", 0);
+				$subSt = self::postParam("sst", 1);
 				$reason = self::postParam("reason");
-				if ($st) {
+				if ($subSt) {
 					$f = $st == User::STATUS_ACTIVE;
 					$data = [
 						"aUId" => $id,
@@ -232,7 +233,10 @@ class ApiController extends Controller
 					];
 
 					if ($uInfo = User::findOne(["uId" => $id])) {
-						User::edit($id, ["uStatus" => $st]);
+						User::edit($id, [
+							'uStatus' => $st,
+							'uSubStatus' => $subSt
+						]);
 					} else {
 						return self::renderAPI(129, '用户不存在');
 					}
