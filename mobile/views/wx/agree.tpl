@@ -4,15 +4,16 @@
 	}
 
 	.agree .agree-title {
-		font-size: 1.5rem;
+		font-size: 1rem;
 		margin-bottom: 1rem;
-		letter-spacing: .1rem;
+		letter-spacing: .05rem;
+		font-weight: 800;
 	}
 
 	.agree p {
-		font-size: 1.2rem;
-		letter-spacing: .1rem;
-		line-height: 2rem;
+		font-size: .8rem;
+		letter-spacing: .05rem;
+		line-height: 1.5rem;
 		margin-bottom: 1rem;
 	}
 </style>
