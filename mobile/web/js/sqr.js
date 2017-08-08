@@ -53,8 +53,8 @@ require(["layer"],
 		function resetMenuShare() {
 			var thumb = $sls.avatar;
 			var link = $sls.wxUrl + '/wx/sqr?id=' + $sls.uid;
-			var title = '我在东台做媒婆，帮助周边好友脱单，还能赚点零花钱';
-			var desc = '一起来微媒100做媒婆吧，帮助身边的单身青年脱单';
+			var title = '我在微媒100找朋友，快来支持我啊';
+			var desc = '微媒100，帮助身边的青年脱单';
 			wx.onMenuShareTimeline({
 				title: title,
 				link: link,
