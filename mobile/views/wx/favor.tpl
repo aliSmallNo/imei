@@ -15,7 +15,7 @@
 		{{/if}}
 	</div>
 </div>
-<ul class="favor">
+<ul class="favor-rank">
 	{{foreach from=$items item=item}}
 	<li>
 		<a href="/wx/sh?id={{$item.secretId}}" class="favor-item favor-read">

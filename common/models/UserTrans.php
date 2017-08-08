@@ -21,6 +21,7 @@ class UserTrans extends ActiveRecord
 	const CAT_LINK = 110;
 	const CAT_REWARD = 120;
 	const CAT_CHAT = 125;
+	const CAT_GIVE = 128;
 	const CAT_RETURN = 130;
 
 	static $catDict = [
@@ -30,12 +31,14 @@ class UserTrans extends ActiveRecord
 		self::CAT_LINK => "牵线奖励",
 		self::CAT_REWARD => "打赏",
 		self::CAT_CHAT => "密聊付费",
+		self::CAT_GIVE => "送玫瑰花",
 		self::CAT_RETURN => "拒绝退回",
 	];
 
 	static $CatMinus = [
 		self::CAT_REWARD,
-		self::CAT_CHAT
+		self::CAT_CHAT,
+		self::CAT_GIVE,
 	];
 
 	const UNIT_FEN = 'fen';
@@ -110,7 +113,7 @@ class UserTrans extends ActiveRecord
 		$strPlus = implode(',', array_diff($cats, self::$CatMinus));
 		$strMinus = implode(',', self::$CatMinus);
 		$sql = 'SELECT SUM(case when tCategory in (' . $strPlus . ') then tAmt when tCategory in (' . $strMinus . ') then -tAmt end) as amt,
-				tUnit as unit, tUId as uid
+				tUnit as unit, tUId as uid 
  				from im_user_trans WHERE tUId>0 ' . $strCriteria . ' GROUP BY tUId,tUnit';
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
@@ -239,6 +242,7 @@ class UserTrans extends ActiveRecord
  				FROM im_user_trans as t ' . $sql2 . ' group by tCategory,tTitle,tUnit,t.tUId';
 		$balances = $conn->createCommand($sql)->queryAll();
 		$details = [];
+		// print_r($balances);exit;
 		foreach ($balances as $balance) {
 			$uid = $balance["uid"];
 			$cat = $balance["cat"];
@@ -258,13 +262,13 @@ class UserTrans extends ActiveRecord
 			if ($unit == self::UNIT_FEN) {
 				$balance['amt'] = sprintf('%.2f', $balance['amt'] / 100.0);
 				$unit = self::UNIT_YUAN;
-				if ($cat == self::CAT_REWARD) {
+				if ($cat == self::CAT_REWARD ) {
 					$details[$uid]['bal']['amt2'] -= $balance['amt'];
 				} else {
 					$details[$uid]['bal']['amt2'] += $balance['amt'];
 				}
 			} else {
-				if ($cat == self::CAT_REWARD) {
+				if ($cat == self::CAT_REWARD || $cat == self::CAT_CHAT || $cat == self::CAT_GIVE) {
 					$details[$uid]['bal']['amt'] -= $balance['amt'];
 				} else {
 					$details[$uid]['bal']['amt'] += $balance['amt'];
@@ -274,6 +278,7 @@ class UserTrans extends ActiveRecord
 			$balance['unit'] = $unit;
 			$details[$uid][$cat . '-' . $unit] = $balance;
 		}
+
 		foreach ($items as $k => $item) {
 			$uid = $item['uid'];
 			if (isset($details[$uid])) {
