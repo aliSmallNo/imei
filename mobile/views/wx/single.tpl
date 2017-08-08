@@ -735,6 +735,7 @@
 			<div class="des"><b>“</b>{[.]}<b>”</b></div>{[/comment]}
 		</div>
 		{[#singleF]}
+		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-give"></a>
 		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-like {[favor]}"></a>
 		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-chat"></a>
 		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-apply"></a>
@@ -1026,6 +1027,29 @@
 		</div>
 		<div class="topup-bot">
 			<a href="javascript:;">感谢对我们的支持和厚爱</a>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="tpl_give">
+	<div class="topup-wrap">
+		<h4>送花给TA</h4>
+		<h5>&nbsp;</h5>
+		<a href="javascript:;" class="btn-topup-close"></a>
+		<div class="topup-opt clearfix">
+			{[#items]}
+			<a href="javascript:;" data-amt="{[amt]}">
+				<div class="img"><img src="/images/ico_rose.png"></div>
+				<div class="des">
+					<em>x {[amt]}朵</em>
+				</div>
+			</a>
+			{[/items]}
+		</div>
+		<div class="topup-action">
+			<a href="javascript:;" class="btn-togive">送媒<br>桂花</a>
+		</div>
+		<div class="topup-bot">
+			<a href="javascript:;">送花给TA，你会有意外惊喜哦~</a>
 		</div>
 	</div>
 </script>

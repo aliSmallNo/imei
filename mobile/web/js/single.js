@@ -222,6 +222,7 @@ require(["layer"],
 		});
 
 		var alertUlit = {
+			giveFlag: false,
 			payroseF: false,
 			hintFlag: false,
 			init: function () {
@@ -310,7 +311,45 @@ require(["layer"],
 						ChatUtil.sid = self.attr("data-id");
 						ChatUtil.page = 1;
 						location.href = '#schat';
+					} else if (self.hasClass('btn-give')) {
+						$sls.secretId = self.attr("data-id");
+
+						$sls.main.show();
+						var html = Mustache.render($("#tpl_give").html(), {
+							items: [
+								{amt: 10}, {amt: 20},
+								{amt: 30}, {amt: 40}
+							]
+						});
+						$sls.content.html(html).addClass("animate-pop-in");
+						$sls.shade.fadeIn(160);
 					}
+				});
+
+				$(document).on(kClick, ".btn-togive", function () {
+					if (alertUlit.giveFlag) {
+						return;
+					}
+					alertUlit.giveFlag = 1;
+					var amt = $('.topup-opt a.active').attr('data-amt');
+					if (amt) {
+						$.post("/api/user", {
+							tag: "togive",
+							id: $sls.secretId,
+							amt: amt
+						}, function (resp) {
+							alertUlit.giveFlag = 0;
+							if (resp.code == 0) {
+								$sls.main.hide();
+								$sls.shade.fadeOut(160);
+							}
+							showMsg(resp.msg);
+						}, "json");
+					} else {
+						showMsg('请先选择媒桂花数量哦~');
+					}
+
+					return false;
 				});
 
 				$(".getWechat a").on(kClick, function () {

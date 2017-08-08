@@ -2632,13 +2632,17 @@ section
 		position: relative
 		.btn
 			position: absolute
-			top: 30.3rem
+			top: 30.8rem
 			display: inline-block
 			width: 44px
 			height: 44px
 			border-radius: 22px
 			overflow: hidden
 			box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .1)
+			&.btn-give
+				background: #fff url(../images/ico_rose.png) no-repeat center center
+				background-size: 20px 20px
+				right: 170px
 			&.btn-like
 				background: #fff url(../images/ico_like_pink.png) no-repeat center center
 				background-size: 28px 28px
@@ -4970,7 +4974,7 @@ section
 	height: 1px
 	overflow: hidden
 
-.notice, .favor
+.notice, .favor-rank
 	padding: .5rem 1rem
 
 .notice-item, .favor-item
@@ -5134,7 +5138,7 @@ section
 
 	.topup-action
 		margin: 1rem
-		.btn-topup
+		.btn-topup,.btn-togive
 			background: $rewardColor
 			border: 2px solid $rewardColorLight
 			padding: 1rem

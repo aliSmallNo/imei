@@ -561,6 +561,25 @@ class ApiController extends Controller
 					return self::renderAPI(129, '参数错误~');
 				}
 
+			case "togive": // 送玫瑰花
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				$id = self::postParam("id");
+				$id = AppUtil::decrypt($id);
+				$amt = self::postParam("amt");
+				if (!$amt || !$himInfo = User::findOne(["uId" => $id])) {
+					return self::renderAPI(129, '参数错误~');
+				}
+				$remainRose = UserTrans::getStat($wxInfo["uId"], 1);
+				$flower = isset($remainRose['flower']) ? $remainRose['flower'] : 0;
+				if ($flower < $amt) {
+					return self::renderAPI(129, '你的媒桂花只剩' . $flower . '朵了，不足' . $amt . '朵，该充值了哦~');
+				}
+
+				UserTrans::add($wxInfo["uId"], $id, UserTrans::CAT_GIVE, UserTrans::$catDict[UserTrans::CAT_GIVE], $amt, UserTrans::UNIT_GIFT);
+				return self::renderAPI(0, '送花成功~');
 
 		}
 		return self::renderAPI(129, '操作无效~');
