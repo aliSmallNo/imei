@@ -874,20 +874,20 @@ class WxController extends BaseController
 		$openId = self::$WX_OpenId;
 		$senderUId = self::getParam('id');
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$avatar = $nickname = '';
 		if ($wxInfo) {
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
-			$uId = $wxInfo['uId'];
 		}
+		$qrUserId = $senderUId ? $senderUId : $wxInfo['uId'];
 		if (AppUtil::isDev()) {
 			$qrcode = '/images/qrmeipo100.jpg';
 		} else {
-			$qrUserId = $senderUId ? $senderUId : $wxInfo['uId'];
 			$qrcode = UserQR::getQRCode($qrUserId, UserQR::CATEGORY_SINGLE);
 		}
 		return self::renderPage("sqr.tpl",
 			[
-				'uId' => $uId,
+				'uId' => $qrUserId,
 				'avatar' => $avatar,
 				'nickname' => $nickname,
 				'wxUrl' => AppUtil::wechatUrl(),
