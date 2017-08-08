@@ -89,6 +89,16 @@ require(["layer"],
 			});
 		}
 
+		function shareLog(tag, note) {
+			$.post("/api/share", {
+				tag: tag,
+				id: $sls.uid,
+				note: note
+			}, function (resp) {
+
+			}, "json");
+		}
+
 		function resetMenuShare() {
 			//var cid = $sls.dl.attr('data-id');
 			//var cName = $sls.dl.html();
@@ -104,6 +114,7 @@ require(["layer"],
 				link: link,
 				imgUrl: thumb,
 				success: function () {
+					shareLog('moment', '/wx/sts');
 				}
 			});
 			wx.onMenuShareAppMessage({
@@ -114,6 +125,7 @@ require(["layer"],
 				type: '',
 				dataUrl: '',
 				success: function () {
+					shareLog('share', '/wx/sts');
 				}
 			});
 		}
