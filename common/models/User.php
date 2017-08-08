@@ -1404,8 +1404,8 @@ class User extends ActiveRecord
 					SUM(CASE WHEN tCategory=100 and tAddedOn  BETWEEN :sTime  AND :eTime THEN 1 ELSE 0 END ) as v1,
 					SUM(CASE WHEN tCategory=105 and tAddedOn  BETWEEN :sTime  AND :eTime THEN 1 ELSE 0 END ) as v2,
 					SUM(CASE WHEN tCategory=100 or tCategory=130  THEN tAmt 
-									 WHEN tCategory=105 AND  tUnit='flower' THEN tAmt  
-									 WHEN tCategory=120 or tCategory=125 then -tAmt END ) as v3
+							 WHEN tCategory=105 AND  tUnit='flower' THEN tAmt  
+							 WHEN tCategory=120 or tCategory=125 then -tAmt END ) as v3
 					from im_user_trans 
 					where tUId=:uid ";
 		$vResult = $conn->createCommand($sql)->bindValues([

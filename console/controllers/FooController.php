@@ -472,8 +472,9 @@ class FooController extends Controller
 	{
 		// User::UpdateRank();
 
-		$data = User::find()->where(["uId" => 133185])->asArray()->One();
-		$row = User::fmtRow($data);
-		User::rankCal($row, $data["uAddedOn"],1);
+//		$data = User::find()->where(["uId" => 133185])->asArray()->One();
+//		$row = User::fmtRow($data);
+//		User::rankCal($row, $data["uAddedOn"],1);
+
 	}
 }
