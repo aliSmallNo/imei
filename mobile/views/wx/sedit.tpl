@@ -107,7 +107,18 @@
 	<label>性别</label>
 	<input type="text" placeholder="帅哥" value="{{$uInfo.gender_t}}" readonly>
 </div>
-<a class="sedit-alert action-location">
+<a class="sedit-alert action-homeland" data-pos="homeland">
+	<label>您的籍贯</label>
+	<div class="sedit-alert-val homeland">
+		{{if $uInfo.homeland}}
+		{{foreach from=$uInfo.homeland item=item}}
+		<em data-key="{{if isset($item.key)}}{{$item.key}}{{/if}}">{{if isset($item.text)}}{{$item.text}}{{/if}}</em>
+		{{/foreach}}
+		{{/if}}
+	</div>
+</a>
+
+<a class="sedit-alert action-location" data-pos="location">
 	<label>所在城市</label>
 	<div class="sedit-alert-val location">
 		{{if $uInfo.location}}
@@ -432,4 +443,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/sedit.js?v=1.2.7" src="/assets/js/require.js"></script>
+<script data-main="/js/sedit.js?v=1.2.8" src="/assets/js/require.js"></script>

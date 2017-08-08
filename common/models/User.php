@@ -343,7 +343,7 @@ class User extends ActiveRecord
 			$newKey = strtolower(substr($key, 1));
 			$val = $row[$key];
 
-			if ($newKey == 'location') {
+			if ($newKey == 'location' || $newKey == 'homeland') {
 				$item[$newKey] = json_decode($val, 1);
 				$item[$newKey . '_t'] = '';
 				if ($item[$newKey]) {
