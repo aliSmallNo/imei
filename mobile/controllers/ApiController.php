@@ -579,6 +579,7 @@ class ApiController extends Controller
 				}
 
 				UserTrans::add($wxInfo["uId"], $id, UserTrans::CAT_GIVE, UserTrans::$catDict[UserTrans::CAT_GIVE], $amt, UserTrans::UNIT_GIFT);
+				UserTrans::add($id, $wxInfo["uId"], UserTrans::CAT_GET, UserTrans::$catDict[UserTrans::CAT_GET], $amt, UserTrans::UNIT_GIFT);
 				return self::renderAPI(0, '送花成功~');
 
 		}
