@@ -69,6 +69,19 @@
 		<span>帅哥</span>
 	</div>
 </section>
+<section id="homeland">
+	<p class="m-header s1">您的籍贯</p>
+	<a href="javascript:;" class="action-row">
+		<div class="homeland homeland-row" data-tag="homeland">
+			{{foreach from=$locInfo item=item}}
+			<em data-key="{{$item.key}}">{{$item.text}}</em>
+			{{/foreach}}
+		</div>
+	</a>
+	<div class="btn-s-wrap">
+		<a href="javascript:;" class="btn-s s3" tag="homeland">下一步</a>
+	</div>
+</section>
 <section id="location">
 	<p class="m-header s1">您的位置</p>
 	<a href="javascript:;" class="action-row">
@@ -291,4 +304,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="//webapi.amap.com/maps?v=1.3&key=8dcdd1499361b46052bb94a1dfafbe49&plugin=AMap.Geocoder"></script>
-<script data-main="/js/sreg.js?v=1.3.0" src="/assets/js/require.js"></script>
+<script data-main="/js/sreg.js?v=1.3.1" src="/assets/js/require.js"></script>
