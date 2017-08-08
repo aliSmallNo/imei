@@ -53,7 +53,7 @@ require(["layer"],
 			condVal: "",
 			init: function () {
 				var util = this;
-				$(".action-location").on(kClick, function () {
+				$(".action-location,.action-homeland").on(kClick, function () {
 					util.btn = $(this);
 					var html = Mustache.render(util.provinceTmp, {items: mProvinces});
 					if (html) {
@@ -66,13 +66,16 @@ require(["layer"],
 					var text = self.html();
 					var key = self.attr('data-key');
 					var tag = self.attr('data-tag');
+					var pos = '';
 					switch (tag) {
 						case "province":
-							util.btn.find(".location").html('<em data-key="' + key + '">' + text + '</em>');
+							pos = util.btn.attr("data-pos");
+							util.btn.find("." + pos).html('<em data-key="' + key + '">' + text + '</em>');
 							util.getCity(key);
 							break;
 						case "city":
-							util.btn.find(".location").append(' <em data-key="' + key + '">' + text + '</em>');
+							pos = util.btn.attr("data-pos");
+							util.btn.find("." + pos).append(' <em data-key="' + key + '">' + text + '</em>');
 							util.toggle();
 							break;
 						case "age":
@@ -180,6 +183,18 @@ require(["layer"],
 						lItem.push(item);
 					});
 					$sls.postData["location"] = JSON.stringify(lItem);
+
+					var hItem = [];
+					$(".action-homeland .homeland em").each(function () {
+						var item = {
+							key: $(this).attr("data-key"),
+							text: $(this).html(),
+						};
+						hItem.push(item);
+					});
+					$sls.postData["homeland"] = JSON.stringify(hItem);
+
+
 					$(".action-com").each(function () {
 						var self = $(this);
 						var field = self.attr("data-field");
