@@ -433,4 +433,89 @@ class UserTrans extends ActiveRecord
 		}
 		return $ret;
 	}
+
+	public static function getRoselist($page = 1, $pageSize = 20)
+	{
+
+		$week = AppUtil::getEndStartTime(time(), 'curweek', true);
+
+		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
+
+		$sql = "select 
+				sum(tAmt) as co,tUId as id,
+				uName as uname, 
+				uAvatar as avatar
+				from im_user_trans as t
+				left join im_user as u on u.uId=t.tUId 
+				where tCategory=127 and tAddedOn BETWEEN :sDate  AND :eDate
+				GROUP BY tUId ORDER BY co desc,tUId asc $limit ";
+		$res = AppUtil::db()->createCommand($sql)->bindValues([
+			":sDate" => $week[0],
+			":eDate" => $week[1],
+		])->queryAll();
+		$nextPage = 0;
+		if (count($res) > $pageSize) {
+			$nextPage = $page + 1;
+			array_pop($res);
+		}
+		$data = [];
+		foreach ($res as $k => &$v) {
+			$v["secretId"] = AppUtil::encrypt($v["id"]);
+			$v["todayFavor"] = self::dayRose($v["id"]);
+			$v["key"] = ($page - 1) * $pageSize + $k + 1;
+			$data[] = $v;
+		}
+
+		return [$data, $nextPage];
+	}
+
+	public static function dayRose($uid)
+	{
+		$today = AppUtil::getEndStartTime(time(), 'today', true);
+		$sql = "select sum(tAmt) as co
+				from im_user_trans as t 
+				where tCategory=127 and tAddedOn BETWEEN :sDate and :eDate
+				and tUId=:uid";
+		$res = AppUtil::db()->createCommand($sql)->bindValues([
+			":uid" => $uid,
+			":sDate" => $today[0],
+			":eDate" => $today[1],
+		])->queryOne();
+		return $res ? $res["co"] : 0;
+	}
+
+	public static function myGetRose($uid)
+	{
+		$week = AppUtil::getEndStartTime(time(), 'curweek', true);
+		$sql = "select 
+				sum(tAmt) as co,tUId as id,
+				uName as uname, 
+				uAvatar as avatar
+				from im_user_trans as t
+				left join im_user as u on u.uId=t.tUId 
+				where tCategory=127 and tAddedOn BETWEEN :sDate  AND :eDate
+				GROUP BY tUId ORDER BY co desc,tUId asc";
+		$res = AppUtil::db()->createCommand($sql)->bindValues([
+			":sDate" => $week[0],
+			":eDate" => $week[1],
+		])->queryAll();
+		$myInfo = [];
+		foreach ($res as $k => $v) {
+			if ($v["id"] == $uid) {
+				$myInfo = $v;
+				$myInfo["no"] = $k + 1;
+			}
+		}
+		if (!$myInfo) {
+			$uInfo = User::findOne(["uId" => $uid]);
+			$myInfo = [
+				"no" => 0,
+				"avatar" => $uInfo->uAvatar,
+				"uname" => $uInfo->uName,
+				"co" => 0,
+				"todayFavor" => 0,
+			];
+		}
+		return $myInfo;
+	}
 }
