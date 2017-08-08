@@ -9,7 +9,7 @@
 		padding-left: 2px;
 		padding-right: 2px;
 		font-size: 15px;
-		font-weight: 400;
+		font-weight: 500;
 	}
 
 	td img {
