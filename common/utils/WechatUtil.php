@@ -581,6 +581,13 @@ class WechatUtil
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_GIVE_ROSE:
+				$userInfo = User::findOne(["uId" => $adminId]);
+				if (!$userInfo) {
+					return 0;
+				}
+				$openId = $userInfo['uOpenId'];
+				$nickname = $userInfo['uName'];
+
 				$msgCat = UserMsg::CATEGORY_GIVE_ROSE;
 				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = $wxUrl . "/wx/notice";
