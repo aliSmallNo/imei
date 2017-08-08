@@ -95,7 +95,9 @@ require(["layer"],
 				id: $sls.uid,
 				note: note
 			}, function (resp) {
-
+				if (resp.code == 0 && resp.msg) {
+					showMsg(resp.msg);
+				}
 			}, "json");
 		}
 

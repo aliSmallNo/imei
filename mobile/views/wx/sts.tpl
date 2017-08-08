@@ -116,4 +116,4 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/sts.js?v=1.3.1" src="/assets/js/require.js"></script>
+<script data-main="/js/sts.js?v=1.3.2" src="/assets/js/require.js"></script>

@@ -1139,7 +1139,12 @@ class ApiController extends Controller
 			case 'moment':
 				$note = self::postParam('note');
 				$nId = UserNet::addShare($uid, $subUId, UserNet::REL_QR_MOMENT, $note);
-				UserTrans::shareReward($uid, $nId, UserTrans::CAT_MOMENT, 50, UserTrans::UNIT_GIFT);
+				$ret = UserTrans::shareReward($uid, $nId, UserTrans::CAT_MOMENT, 50, UserTrans::UNIT_GIFT);
+				if ($ret) {
+					return self::renderAPI(0, '分享到朋友圈奖励50朵媒桂花，谢谢你哦~');
+				} else {
+					return self::renderAPI(0, '分享到朋友圈已经奖励过了，一天只奖励一次哦~');
+				}
 				break;
 		}
 		return self::renderAPI(129, '操作无效~');

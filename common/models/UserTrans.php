@@ -48,10 +48,12 @@ class UserTrans extends ActiveRecord
 	const UNIT_FEN = 'fen';
 	const UNIT_YUAN = 'yuan';
 	const UNIT_GIFT = 'flower';
+	const UNIT_FANS = 'fans';
 	private static $UnitDict = [
 		self::UNIT_FEN => '分',
 		self::UNIT_YUAN => '元',
 		self::UNIT_GIFT => '媒桂花',
+		self::UNIT_FANS => '花粉值',
 	];
 
 	public static function tableName()

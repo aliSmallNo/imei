@@ -185,6 +185,15 @@ class User extends ActiveRecord
 		self::STATUS_DELETE => "已删除",
 	];
 
+	const SUB_ST_NORMAL = 1;
+	const SUB_ST_STAFF = 2;
+	const SUB_ST_FISH = 3;
+	static $SubStatus = [
+		self::SUB_ST_NORMAL => "普通用户",
+		self::SUB_ST_STAFF => "员工用户",
+		self::SUB_ST_FISH => "鲶鱼(托)",
+	];
+
 	const ROLE_SINGLE = 10;
 	const ROLE_MATCHER = 20;
 	static $Role = [
