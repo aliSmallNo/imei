@@ -50,10 +50,10 @@ require(["layer"],
 			}
 		}
 
-		function shareLog(tag, senderId, note) {
+		function shareLog(tag, note) {
 			$.post("/api/share", {
 				tag: tag,
-				id: senderId,
+				id: $sls.uid,
 				note: note
 			}, function (resp) {
 
@@ -70,7 +70,7 @@ require(["layer"],
 				link: link,
 				imgUrl: thumb,
 				success: function () {
-					shareLog('share', $sls.uid, '/wx/sqr');
+					shareLog('share', '/wx/sqr');
 				}
 			});
 			wx.onMenuShareAppMessage({
@@ -81,7 +81,7 @@ require(["layer"],
 				type: '',
 				dataUrl: '',
 				success: function () {
-					shareLog('moment', $sls.uid, '/wx/sqr');
+					shareLog('moment', '/wx/sqr');
 				}
 			});
 		}
