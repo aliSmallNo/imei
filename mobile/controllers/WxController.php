@@ -1023,6 +1023,27 @@ class WxController extends BaseController
 			'terse');
 	}
 
+	// 花魁排行榜
+	public function actionGetrose()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+
+		list($items) = UserTrans::getRoselist();
+		$mInfo = UserTrans::myGetRose($wxInfo["uId"]);
+
+		return self::renderPage('favor.tpl',
+			[
+				"items" => $items,
+				"mInfo" => $mInfo,
+			],
+			'terse');
+	}
+
 
 	public function actionQrcode()
 	{
