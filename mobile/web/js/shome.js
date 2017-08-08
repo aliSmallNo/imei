@@ -467,7 +467,7 @@ require(["layer"],
 					type: '',
 					dataUrl: '',
 					success: function () {
-						shareLog('share',  $("#secretId").val());
+						shareLog('share', '/wx/sh');
 					}
 				});
 				wx.onMenuShareTimeline({
@@ -475,7 +475,7 @@ require(["layer"],
 					link: "https://wx.meipo100.com/wx/sh?id=" + $("#secretId").val(),
 					imgUrl: $("#avatarID").val(),
 					success: function () {
-						shareLog('moment',  $("#secretId").val());
+						shareLog('moment', '/wx/sh');
 					}
 				});
 			});
