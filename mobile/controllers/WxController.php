@@ -146,7 +146,7 @@ class WxController extends BaseController
 			}
 			$locInfo = $uInfo['location'];
 		}
-		$routes = ['photo', 'gender', 'homeland','location', 'year', 'horos', 'height', 'weight', 'income', 'edu', 'album', 'intro',
+		$routes = ['photo', 'gender', 'homeland', 'location', 'year', 'horos', 'height', 'weight', 'income', 'edu', 'album', 'intro',
 			'scope', 'job', 'house', 'car', 'smoke', 'drink', 'belief', 'workout', 'diet', 'rest', 'pet', 'interest'];
 		if ($hasGender) {
 			unset($routes[1]);
@@ -867,6 +867,36 @@ class WxController extends BaseController
 				'qrcode' => $qrcode
 			],
 			'terse');
+	}
+
+	public function actionSqr()
+	{
+		$openId = self::$WX_OpenId;
+		$senderUId = self::getParam('id');
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if ($wxInfo) {
+			$avatar = $wxInfo["Avatar"];
+			$nickname = $wxInfo["uName"];
+			$uId = $wxInfo['uId'];
+		}
+		if (AppUtil::isDev()) {
+			$qrcode = '/images/qrmeipo100.jpg';
+		} else {
+			$qrUserId = $senderUId ? $senderUId : $wxInfo['uId'];
+			$qrcode = UserQR::getQRCode($qrUserId, UserQR::CATEGORY_SINGLE);
+		}
+		return self::renderPage("sqr.tpl",
+			[
+				'uId' => $uId,
+				'avatar' => $avatar,
+				'nickname' => $nickname,
+				'wxUrl' => AppUtil::wechatUrl(),
+				'qrcode' => $qrcode,
+				'senderUId' => $senderUId
+			],
+			'terse',
+			'',
+			'bg-qrcode');
 	}
 
 	// share to single
