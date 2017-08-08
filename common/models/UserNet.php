@@ -88,7 +88,8 @@ class UserNet extends ActiveRecord
 		return $entity->nId;
 	}
 
-	public static function addShare($uid, $subUid, $relation, $note = ''){
+	public static function addShare($uid, $subUid, $relation, $note = '')
+	{
 		$entity = new self();
 		$entity->nUId = $uid;
 		$entity->nSubUId = $subUid;
@@ -738,12 +739,12 @@ class UserNet extends ActiveRecord
 					$right = $uInfo;
 					break;
 				case self::REL_QR_SHARE:
-					$text = ['发送TA的链接', '给朋友'];
+					$text = ['发送', '的推广链接给朋友'];
 					$left = $uInfo;
 					$right = $sInfo;
 					break;
 				case self::REL_QR_MOMENT:
-					$text = ['发送TA的链接', '到朋友圈'];
+					$text = ['发送', '的推广链接到朋友圈'];
 					$left = $uInfo;
 					$right = $sInfo;
 					break;

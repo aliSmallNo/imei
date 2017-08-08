@@ -1106,14 +1106,16 @@ class ApiController extends Controller
 			return self::renderAPI(129, '用户不存在啊~');
 		}
 		$uid = $wxInfo['uId'];
+		$subUId = self::postParam('id');
+		if ($subUId && !is_numeric($subUId)) {
+			$subUId = AppUtil::decrypt($subUId);
+		}
 		switch ($tag) {
 			case 'share':
-				$subUId = self::postParam('id');
 				$note = self::postParam('note');
 				UserNet::addShare($uid, $subUId, UserNet::REL_QR_SHARE, $note);
 				break;
 			case 'moment':
-				$subUId = self::postParam('id');
 				$note = self::postParam('note');
 				UserNet::addShare($uid, $subUId, UserNet::REL_QR_MOMENT, $note);
 				break;
