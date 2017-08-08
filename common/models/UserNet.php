@@ -88,6 +88,16 @@ class UserNet extends ActiveRecord
 		return $entity->nId;
 	}
 
+	public static function addShare($uid, $subUid, $relation, $note = ''){
+		$entity = new self();
+		$entity->nUId = $uid;
+		$entity->nSubUId = $subUid;
+		$entity->nRelation = $relation;
+		$entity->nUpdatedOn = date('Y-m-d H:i:s');
+		$entity->nNote = $note;
+		$entity->save();
+	}
+
 	public static function addLink($uid, $subUid, $note = '')
 	{
 		$conn = AppUtil::db();
