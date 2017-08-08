@@ -133,13 +133,13 @@ class Menu
 						"url" => "/site/accounts"
 					],
 					[
-						"name" => "充值账户",
-						"url" => "/site/recharges",
+						"name" => "公众号消息",
+						"url" => "/site/wxmsg",
 						"level" => 820
 					],
 					[
-						"name" => "公众号消息",
-						"url" => "/site/wxmsg",
+						"name" => "账户操作",
+						"url" => "/site/recharges",
 						"level" => 820
 					],
 					[

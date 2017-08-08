@@ -86,6 +86,7 @@ require(["layer"],
 			hashTag = hashTag.replace("#", "");
 			$sls.hashPage = hashTag;
 			$sls.mainPage.removeClass('bg-lighter');
+			$('body').removeClass('bg-qrcode');
 			switch (hashTag) {
 				case 'slink':
 					slinkUlit.slink();
@@ -123,6 +124,10 @@ require(["layer"],
 				case 'IaddWx':
 				case 'heartbeat':
 					$('#' + hashTag).find(".tab a:first").trigger(kClick);
+					FootUtil.toggle(0);
+					break;
+				case 'sqrcode':
+					$('body').addClass('bg-qrcode');
 					FootUtil.toggle(0);
 					break;
 				default:
