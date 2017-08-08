@@ -174,7 +174,7 @@ class ChatMsg extends ActiveRecord
 		return [$gid, $left];
 	}
 
-	public static function details($uId, $subUId, $page = 1, $pageSize = 50)
+	public static function details($uId, $subUId, $page = 1, $pageSize = 60)
 	{
 		$limit = ' Limit ' . ($page - 1) * $pageSize . ',' . ($pageSize + 1);
 		$conn = AppUtil::db();
@@ -191,7 +191,7 @@ class ChatMsg extends ActiveRecord
 			':id2' => $uid2,
 		])->queryAll();
 		$nextPage = 0;
-		if ($chats && count($subUId) > $pageSize) {
+		if ($chats && count($chats) > $pageSize) {
 			array_pop($chats);
 			$nextPage = $page + 1;
 		}
@@ -203,6 +203,29 @@ class ChatMsg extends ActiveRecord
 			unset($chats[$k]['cAddedBy'], $chats[$k]['round']);
 		}
 		return [$chats, $nextPage];
+	}
+
+	public static function messages($gid, $page = 1, $pageSize = 60)
+	{
+		$limit = ' Limit ' . ($page - 1) * $pageSize . ',' . $pageSize;
+		$conn = AppUtil::db();
+		$sql = 'select u.uName as `name`, u.uThumb as avatar,g.gId as gid, g.gRound as round,
+			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy
+			 from im_chat_group as g 
+			 join im_chat_msg as m on g.gId=cGId
+			 join im_user as u on u.uId=m.cAddedBy
+			 WHERE g.gId=:id 
+			 order by m.cAddedOn ' . $limit;
+		$messages = $conn->createCommand($sql)->bindValues([
+			':id' => $gid,
+		])->queryAll();
+
+		foreach ($messages as $k => $chat) {
+			$messages[$k]['avatar'] = ImageUtil::getItemImages($chat['avatar'])[0];
+			$messages[$k]['dt'] = AppUtil::prettyDate($chat['addedon']);
+			unset($messages[$k]['cAddedBy'], $messages[$k]['round']);
+		}
+		return $messages;
 	}
 
 	public static function read($uId, $subUId, $conn = '')

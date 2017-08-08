@@ -651,16 +651,14 @@ class SiteController extends BaseController
 
 	public function actionChatdes()
 	{
-		$sid = self::getParam("sid");
-		$rid = self::getParam("rid");
-		if (!$rid || !$sid) {
+		$gid = self::getParam("gid");
+		if (!$gid) {
 			$this->redirect("/site/error");
 		}
-		list($list) = ChatMsg::details($sid, $rid);
+		$list = ChatMsg::messages($gid);
 		usort($list, function ($a, $b) {
 			return $a['addedon'] < $b['addedon'];
 		});
-		// print_r($list);exit;
 		return $this->renderPage("chatdes.tpl",
 			[
 				'category' => 'users',

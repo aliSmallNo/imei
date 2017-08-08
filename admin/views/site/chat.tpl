@@ -80,7 +80,7 @@
 					{{$item.phone2}}
 				</td>
 				<td>
-					<button class="chatDesc btn btn-outline btn-primary btn-xs" data-sid="{{$item.gUId1}}" data-rid="{{$item.gUId2}}">详情</button>
+					<a href="/site/chatdes?gid={{$item.gId}}" class="btn btn-outline btn-primary btn-xs">详情</a>
 				</td>
 			</tr>
 			{{/foreach}}
@@ -89,13 +89,5 @@
 		{{$pagination}}
 	</div>
 </div>
-
-<script>
-	$(document).on('click', '.chatDesc', function () {
-		var self = $(this);
-		var sid = self.attr("data-sid");
-		var rid = self.attr("data-rid");
-		location.href = "/site/chatdes?sid=" + sid + "&rid=" + rid;
-	});
-</script>
+ 
 {{include file="layouts/footer.tpl"}}
