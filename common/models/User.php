@@ -1406,6 +1406,7 @@ class User extends ActiveRecord
 			$sql = 'Update im_user set uRank=uRankTmp';
 			$conn->createCommand($sql)->execute();
 		}
+		AppUtil::logFile($count, 5, __FUNCTION__, __LINE__);
 	}
 
 	public static function rankCal($row, $addedOn, $updRankFlag = false)
