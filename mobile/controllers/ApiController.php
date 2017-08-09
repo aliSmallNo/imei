@@ -384,7 +384,7 @@ class ApiController extends Controller
 				$id = self::postParam("id");
 				$f = self::postParam("f");
 
-				if (UserNet::hasBlack($wxInfo["uId"], $id)) {
+				if (UserNet::hasBlack($wxInfo["uId"], AppUtil::decrypt($id))) {
 					return self::renderAPI(129, self::MSG_BLACK);
 				}
 
