@@ -484,7 +484,7 @@ class UserTrans extends ActiveRecord
 			":sDate" => $today[0],
 			":eDate" => $today[1],
 		])->queryOne();
-		return $res ? $res["co"] : 0;
+		return $res && $res["co"] ? $res["co"] : 0;
 	}
 
 	public static function myGetRose($uid)
