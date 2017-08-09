@@ -284,6 +284,8 @@ class UserTrans extends ActiveRecord
 						'amt' => 0,
 						'unit_name2' => '元',
 						'amt2' => 0,
+						'unit_name3' => '花粉值',
+						'amt3' => 0,
 					]
 				];
 				$details[$uid] = $bal;
@@ -297,8 +299,8 @@ class UserTrans extends ActiveRecord
 				} else {
 					$details[$uid]['bal']['amt2'] += $balance['amt'];
 				}
-			} else {
-				if ($cat == self::CAT_REWARD || $cat == self::CAT_CHAT || $cat == self::CAT_GIVE) {
+			} else if ($unit == self::UNIT_GIFT) {
+				if ($cat == self::CAT_REWARD || $cat == self::CAT_CHAT) {
 					$details[$uid]['bal']['amt'] -= $balance['amt'];
 				} else {
 					$details[$uid]['bal']['amt'] += $balance['amt'];
@@ -309,6 +311,7 @@ class UserTrans extends ActiveRecord
 			$details[$uid][$cat . '-' . $unit] = $balance;
 		}
 
+		// print_r($details);exit;
 		foreach ($items as $k => $item) {
 			$uid = $item['uid'];
 			if (isset($details[$uid])) {
