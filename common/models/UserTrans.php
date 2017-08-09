@@ -272,7 +272,7 @@ class UserTrans extends ActiveRecord
  				FROM im_user_trans as t ' . $sql2 . ' group by tCategory,tTitle,tUnit,t.tUId';
 		$balances = $conn->createCommand($sql)->queryAll();
 		$details = [];
-		// print_r($balances);exit;
+
 		foreach ($balances as $balance) {
 			$uid = $balance["uid"];
 			$cat = $balance["cat"];
@@ -311,7 +311,7 @@ class UserTrans extends ActiveRecord
 			$details[$uid][$cat . '-' . $unit] = $balance;
 		}
 
-		// print_r($details);exit;
+
 		foreach ($items as $k => $item) {
 			$uid = $item['uid'];
 			if (isset($details[$uid])) {
