@@ -162,7 +162,7 @@ class UserMsg extends ActiveRecord
 					break;
 				case self::CATEGORY_GIVE_ROSE:
 					$v["url"] = "/wx/sw#srecords";
-					$v["text"] = $v["uName"] . "给你" . $v["mText"];
+					$v["text"] = $v["uName"] . "给你" . $v["mText"]."，您的花粉值增加了";
 					break;
 			}
 
