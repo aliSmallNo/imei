@@ -1601,13 +1601,13 @@ class User extends ActiveRecord
 		])->queryAll();
 		$ageData = [
 			[
-				"name" => "小于20岁",
+				"name" => "20岁及以下",
 				"range" => [0, 19],
 				"y" => 0
 			],
 			[
-				"name" => "20岁-25岁",
-				"range" => [20, 25],
+				"name" => "21岁-25岁",
+				"range" => [21, 25],
 				"y" => 0
 			],
 			[
@@ -1631,30 +1631,25 @@ class User extends ActiveRecord
 				"y" => 0
 			],
 			[
-				"name" => "46岁-50岁",
-				"range" => [46, 50],
+				"name" => "46岁-55岁",
+				"range" => [46, 55],
 				"y" => 0
 			],
 			[
-				"name" => "51岁-70岁",
-				"range" => [51, 70],
+				"name" => "56岁及以上",
+				"range" => [56, 200],
 				"y" => 0
-			],
-			[
-				"name" => "大于70岁",
-				"range" => [71, 100],
-				"y" => 0
-			],
+			]
 		];
 		foreach ($age as $v) {
 			$a = date("Y") - $v["uBirthYear"];
 			foreach ($ageData as $key => $val) {
-				$r = $val["range"];
+				list($floor, $ceil) = $val["range"];
 				if ($a > 70) {
 					$ageData[8]["y"]++;
 					continue;
 				}
-				if ($a >= $r[0] && $a <= $r[1]) {
+				if ($a >= $floor && $a <= $ceil) {
 					$ageData[$key]["y"]++;
 				}
 			}
