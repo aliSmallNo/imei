@@ -1258,7 +1258,7 @@ class User extends ActiveRecord
 				count(*) as reg,
 				SUM(IFNULL(w.wSubscribe,0)) as focus,
 				SUM(CASE WHEN u.uRole not in (10,20) AND  w.wSubscribe not in (1) THEN 1 END) as newvisitor,
-				SUM(CASE WHEN uPhone THEN 1 END) as newmember,
+				SUM(CASE WHEN uPhone!='' AND uRole>9 THEN 1 END) as newmember,
 				SUM(CASE WHEN (w.wAddedOn BETWEEN :beginDT and :endDT) AND IFNULL(wSubscribe,0)=0 THEN  1 END ) as todayblur,
 				SUM(CASE WHEN u.uRole=10 AND u.uGender=11 THEN  1 END ) as male,
 				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 THEN  1 END ) as female,
@@ -1282,17 +1282,17 @@ class User extends ActiveRecord
 			$trends['mps'][$k] = intval($res["mps"]);     //  新增媒婆
 		}
 
-		$sql = "select 
+		$sql = "SELECT 
 				COUNT(1) as amt,
 				SUM(CASE WHEN u.uRole not in (10,20) AND  w.wSubscribe not in (1) THEN 1 END) as visitor,
-				SUM(CASE WHEN  uPhone THEN 1 END) as member,
+				SUM(CASE WHEN uPhone!='' AND uRole>9 THEN 1 END) as member,
 				SUM(IFNULL(w.wSubscribe,0)) as follows,
 				SUM(CASE WHEN u.uRole=20 THEN 1 END) as meipos,
 				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 THEN 1 END) as girls,
 				SUM(CASE WHEN u.uRole=10 AND u.uGender=11  THEN 1 END) as boys
-				from im_user as u
+				FROM im_user as u
 				JOIN im_user_wechat as w on w.wUId=u.uId
-				where  uStatus<8 AND uAddedOn < :endDT ";
+				WHERE uStatus<8 AND uAddedOn < :endDT ";
 		$res2 = $conn->createCommand($sql)->bindValues([
 			':endDT' => $endDate,
 		])->queryOne();
@@ -1318,33 +1318,31 @@ class User extends ActiveRecord
 
 		$sql = "select 
 				COUNT(1) as active, 
-				SUM(case when uGender=11 then 1 end ) as activemale, 
-				SUM(case when uGender=10 then 1 end ) as activefemale, 
+				SUM(case when uRole=10 AND uGender=11 then 1 end ) as activemale, 
+				SUM(case when uRole=10 AND uGender=10 then 1 end ) as activefemale, 
 				SUM(case when uRole=20 then 1 end ) as activemp
-				from (
-				select 
-				aCategory,uId,uName,uGender,uRole
-				from im_user as u 
-				join im_log_action as a on u.uId=a.aUId 
-				where uStatus<8 AND a.aDate  BETWEEN :beginDT AND :endDT  AND a.aCategory in (1000,1002,1004)
-				GROUP BY aUId
-				) as temp";
+				FROM (SELECT DISTINCT uId,uName,uGender,uRole
+					FROM im_user as u 
+					JOIN im_log_action as a on u.uId=a.aUId 
+					WHERE uStatus<8 AND a.aCategory in (1000,1002,1004)
+						AND a.aDate BETWEEN :beginDT AND :endDT 
+					GROUP BY aUId) as temp";
 		$res3 = $conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
 		])->queryOne();
 		if ($res3) {
-			$trends['active'][$k] = intval($res3["active"]); // 活跃人数
-			$trends['activemale'][$k] = intval($res3["activemale"]); // 活跃男
-			$trends['activefemale'][$k] = intval($res3["activefemale"]); // 活跃女
-			$trends['activemp'][$k] = intval($res3["activemp"]); // 活跃媒婆
-			$trends['activeRate'][$k] = ($res2["amt"] > 0) ? intval(round($res3["active"] / $res2["member"], 2) * 100) : 0; // 活跃度
+			$trends['active'][$k] = intval($res3["active"]); //活跃人数
+			$trends['activemale'][$k] = intval($res3["activemale"]); //活跃男
+			$trends['activefemale'][$k] = intval($res3["activefemale"]); //活跃女
+			$trends['activemp'][$k] = intval($res3["activemp"]); //活跃媒婆
+			$trends['activeRate'][$k] = ($res2["member"] > 0) ? intval(round($res3["active"] / $res2["member"], 2) * 100) : 0; // 活跃度
 		}
 
 		$sql = "select 
 				SUM(CASE WHEN  nRelation=150 THEN  1 END ) as favor,
 				SUM(CASE WHEN  nRelation=140 THEN  1 END ) as getwxno,
-				SUM(CASE WHEN  nRelation=140 and nStatus=2 THEN  1 END ) as pass
+				SUM(CASE WHEN  nRelation=140 and nStatus=2 THEN  1 END) as pass
 				FROM im_user_net
 				WHERE nAddedOn BETWEEN :beginDT and :endDT AND nDeletedFlag=0 ";
 		$res4 = $conn->createCommand($sql)->bindValues([
