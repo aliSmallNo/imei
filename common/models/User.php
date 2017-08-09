@@ -1492,7 +1492,7 @@ class User extends ActiveRecord
 		}
 		switch ($row["substatus"]) {
 			case self::SUB_ST_STAFF:
-				$I4 *= 0.05;
+				$I4 *= 0.1;
 				break;
 			case self::SUB_ST_FISH:
 				$I4 *= 1.5;
