@@ -123,38 +123,34 @@
 		times: 0,
 		cycle: 60,
 		prize: -1,
-		rolling: false,
-		gifts: $('.lottery-gifts'),
+		running: false,
+		table: $('.lottery-gifts'),
 		init: function () {
 			var util = this;
-			util.gifts.find(".unit-" + util.index).addClass("active");
-			util.gifts.find('a').click(function () {
+			util.table.find(".unit-" + util.index).addClass("active");
+			util.table.find('a').click(function () {
 				util.run();
 				return false;
 			});
 		},
 		move: function () {
 			var util = this;
-			util.gifts.find(".unit").removeClass("active");
+			util.table.find(".unit").removeClass("active");
 			util.index++;
 			if (util.index >= util.count) {
 				util.index = 0;
 			}
-			util.gifts.find(".unit-" + util.index).addClass("active");
-			return false;
-		},
-		stop: function (index) {
-			var util = this;
-			util.prize = index;
+			util.table.find(".unit-" + util.index).addClass("active");
 			return false;
 		},
 		run: function () {
 			var util = this;
-			if (util.rolling) {
+			if (util.running) {
 				return false;
 			}
-			util.rolling = true;
+			util.running = true;
 			util.speed = 100;
+			util.prize = 4;
 			util.spin();
 		},
 		spin: function () {
@@ -163,24 +159,25 @@
 			util.move();
 			if (util.times > util.cycle + 10 && util.prize == util.index) {
 				clearTimeout(util.timer);
-				util.prize = -1;
+				//util.prize = -1;
 				util.times = 0;
-				util.rolling = false;
+				util.running = false;
 			} else {
 				if (util.times < util.cycle) {
 					util.speed -= 10;
-				} else if (util.times == util.cycle) {
-					util.prize = Math.random() * (util.count) | 0;
+					//} else if (util.times == util.cycle) {
+					//util.prize = Math.random() * (util.count) | 0;
 				} else {
 					if (util.times > util.cycle + 10 && ((util.prize == 0 && util.index == 7) || util.prize == util.index + 1)) {
 						util.speed += 110;
 					} else {
-						util.speed += 20;
+						util.speed += 30;
 					}
 				}
-				if (util.speed < 40) {
-					util.speed = 40;
+				if (util.speed < 60) {
+					util.speed = 60;
 				}
+				//console.log(util.prize + ' ' + util.index + ' ' + util.times + ' ' + util.speed);
 				util.timer = setTimeout(function () {
 					util.spin();
 				}, util.speed);
