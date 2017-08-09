@@ -676,14 +676,17 @@ class SiteController extends BaseController
 	public function actionUserstat()
 	{
 		$StatusColors = [
-			0 => "#a8a8a8",
-			1 => "#BBDEFB",
-			2 => "#64B5F6",
+			0 => "#0D47A1",
+			1 => "#1565C0",
+			2 => "#1E88E5",
 			3 => "#2196F3",
-			4 => "#1976D2",
-			5 => "#0D47A1",
-			6 => "#fb8c00",
-			7 => "#e65100",
+			4 => "#42A5F5",
+			5 => "#64B5F6",
+			6 => "#90CAF9",
+			7 => "#BBDEFB",
+			8 => '#E3F2FD',
+			9 => '#9e9e9e',
+			10 => '#e0e0e0',
 		];
 		return $this->renderPage('userstat.tpl',
 			[
