@@ -292,7 +292,6 @@ class ApiController extends Controller
 		$endDate = self::postParam("endDate", date("Y-m-d"));
 		switch ($tag) {
 			case "stat":
-				$conn = AppUtil::db();
 				list($age, $income, $height, $gender) = User::propStat($beginDate, $endDate);
 				$ret = [
 					"age" => $age,

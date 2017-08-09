@@ -1553,7 +1553,8 @@ class User extends ActiveRecord
 
 		$sql = "select COUNT(1) as co ,uGender as gender 
 				from im_user 
-				where uStatus in (0,1,2,8) and uRole=:role and uAddedOn between :sDate and :eDate 
+				where uStatus < 8 and uRole=:role AND uGender>9
+					and uAddedOn between :sDate and :eDate 
 				GROUP by uGender";
 		$gender = AppUtil::db()->createCommand($sql)->bindValues([
 			":role" => $role,
@@ -1572,7 +1573,7 @@ class User extends ActiveRecord
 
 		$sql = "select COUNT(1) as co ,uHeight as height 
 				from im_user 
-				where uStatus in (0,1,2,8) and uRole=:role and uAddedOn between :sDate and :eDate 
+				where uStatus < 8 and uRole=:role and uAddedOn between :sDate and :eDate 
 				GROUP by uHeight";
 		$height = AppUtil::db()->createCommand($sql)->bindValues([
 			":role" => $role,
@@ -1590,7 +1591,8 @@ class User extends ActiveRecord
 
 		$sql = "select uBirthYear 
 				from im_user 
-				where uStatus in (0,1,2,8) and uRole=:role and uAddedOn between :sDate and :eDate 
+				where uStatus < 8 and uRole=:role AND uBirthYear!=''
+					and uAddedOn between :sDate and :eDate 
 				";
 		$age = AppUtil::db()->createCommand($sql)->bindValues([
 			":role" => $role,
