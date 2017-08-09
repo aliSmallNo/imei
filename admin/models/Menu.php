@@ -100,11 +100,10 @@ class Menu
 						"level" => 820
 					],
 					[
-						"name" => "实时统计",
-						"url" => "/site/timely",
+						"name" => "用户分析",
+						"url" => "/site/userstat",
 						"revise" => 1,
-						"hidden" => 1,
-						"level" => 825
+						"level" => 820
 					],
 					[
 						"name" => "整体趋势",

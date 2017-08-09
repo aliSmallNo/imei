@@ -1530,5 +1530,139 @@ class User extends ActiveRecord
 		// AppUtil::logFile("uid:" . $row["id"] . ' rank: ' . $ranktemp, 5);
 	}
 
+	public static function propStat($beginDate, $endDate)
+	{
+		$role = self::ROLE_SINGLE;
+		$sql = "select COUNT(1) as co ,uIncome as income 
+				from im_user 
+				where uStatus in (0,1,2,8) and uRole=:role and uAddedOn between :sDate and :eDate 
+				GROUP by uIncome";
+		$income = AppUtil::db()->createCommand($sql)->bindValues([
+			":role" => $role,
+			":sDate" => $beginDate . ' 00:00:00',
+			":eDate" => $endDate . ' 23:59:00',
+		])->queryAll();
+
+		$incomeData = [];
+		foreach ($income as $v) {
+			$item = [
+				"name" => isset(self::$Income[$v["income"]]) ? self::$Income[$v["income"]] : '无数据',
+				"y" => intval($v["co"]),
+			];
+			$incomeData[] = $item;
+		}
+
+
+		$sql = "select COUNT(1) as co ,uGender as gender 
+				from im_user 
+				where uStatus in (0,1,2,8) and uRole=:role and uAddedOn between :sDate and :eDate 
+				GROUP by uGender";
+		$gender = AppUtil::db()->createCommand($sql)->bindValues([
+			":role" => $role,
+			":sDate" => $beginDate . ' 00:00:00',
+			":eDate" => $endDate . ' 23:59:00',
+		])->queryAll();
+		$genderData = [];
+		foreach ($gender as $v) {
+			$item = [
+				"name" => isset(self::$Gender[$v["gender"]]) ? self::$Gender[$v["gender"]] : '无数据',
+				"y" => intval($v["co"]),
+			];
+			$genderData[] = $item;
+		}
+
+
+		$sql = "select COUNT(1) as co ,uHeight as height 
+				from im_user 
+				where uStatus in (0,1,2,8) and uRole=:role and uAddedOn between :sDate and :eDate 
+				GROUP by uHeight";
+		$height = AppUtil::db()->createCommand($sql)->bindValues([
+			":role" => $role,
+			":sDate" => $beginDate . ' 00:00:00',
+			":eDate" => $endDate . ' 23:59:00',
+		])->queryAll();
+		$heightData = [];
+		foreach ($height as $v) {
+			$item = [
+				"name" => isset(self::$Height[$v["height"]]) ? self::$Height[$v["height"]] : '无数据',
+				"y" => intval($v["co"]),
+			];
+			$heightData[] = $item;
+		}
+
+		$sql = "select uBirthYear 
+				from im_user 
+				where uStatus in (0,1,2,8) and uRole=:role and uAddedOn between :sDate and :eDate 
+				";
+		$age = AppUtil::db()->createCommand($sql)->bindValues([
+			":role" => $role,
+			":sDate" => $beginDate . ' 00:00:00',
+			":eDate" => $endDate . ' 23:59:00',
+		])->queryAll();
+		$ageData = [
+			[
+				"name" => "小于20岁",
+				"range" => [0, 19],
+				"y" => 0
+			],
+			[
+				"name" => "20岁-25岁",
+				"range" => [20, 25],
+				"y" => 0
+			],
+			[
+				"name" => "26岁-30岁",
+				"range" => [26, 30],
+				"y" => 0
+			],
+			[
+				"name" => "31岁-35岁",
+				"range" => [31, 35],
+				"y" => 0
+			],
+			[
+				"name" => "36岁-40岁",
+				"range" => [36, 40],
+				"y" => 0
+			],
+			[
+				"name" => "41岁-45岁",
+				"range" => [41, 45],
+				"y" => 0
+			],
+			[
+				"name" => "46岁-50岁",
+				"range" => [46, 50],
+				"y" => 0
+			],
+			[
+				"name" => "51岁-70岁",
+				"range" => [51, 70],
+				"y" => 0
+			],
+			[
+				"name" => "大于70岁",
+				"range" => [71, 100],
+				"y" => 0
+			],
+		];
+		foreach ($age as $v) {
+			$a = date("Y") - $v["uBirthYear"];
+			foreach ($ageData as $key => $val) {
+				$r = $val["range"];
+				if ($a > 70) {
+					$ageData[8]["y"]++;
+					continue;
+				}
+				if ($a >= $r[0] && $a <= $r[1]) {
+					$ageData[$key]["y"]++;
+				}
+			}
+		}
+
+		return [$ageData, $incomeData, $heightData, $genderData];
+
+
+	}
 
 }

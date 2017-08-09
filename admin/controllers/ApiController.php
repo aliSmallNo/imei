@@ -283,4 +283,26 @@ class ApiController extends Controller
 		}
 		return self::renderAPI($ret["code"], $ret["msg"]);
 	}
+
+	public function actionUserchart()
+	{
+		$tag = self::postParam("tag");
+		$tag = strtolower($tag);
+		$beginDate = self::postParam("beginDate", date("Y-m-01"));
+		$endDate = self::postParam("endDate", date("Y-m-d"));
+		switch ($tag) {
+			case "stat":
+				$conn = AppUtil::db();
+				list($age, $income, $height, $gender) = User::propStat($beginDate, $endDate);
+				$ret = [
+					"age" => $age,
+					"income" => $income,
+					"height" => $height,
+					"gender" => $gender,
+				];
+
+				return self::renderAPI(0, "", $ret);
+		}
+		return self::renderAPI(129, "什么操作也没做啊！");
+	}
 }
