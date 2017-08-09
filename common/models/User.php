@@ -1659,6 +1659,7 @@ class User extends ActiveRecord
 				unset($ageData[$k]);
 			}
 		}
+		$ageData = array_values($ageData);
 		/*usort($ageData, function ($a, $b) {
 			return $a['y'] > $b['y'];
 		});*/
