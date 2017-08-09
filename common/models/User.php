@@ -1659,6 +1659,11 @@ class User extends ActiveRecord
 				}
 			}
 		}
+		foreach ($ageData as $k => $item) {
+			if ($item['y'] == 0) {
+				unset($ageData[$k]);
+			}
+		}
 
 		return [$ageData, $incomeData, $heightData, $genderData];
 
