@@ -170,7 +170,7 @@ require(["layer"],
 					return;
 				}
 				slinkUlit.slinkFlag = 1;
-				slinkUlit.nomore.html("拼命加载中~~");
+				slinkUlit.nomore.html("拼命加载中...");
 				$.post("/api/user", {
 					tag: "matcher",
 					page: slinkUlit.slinkpage,
@@ -186,7 +186,7 @@ require(["layer"],
 						slinkUlit.nomore.html("没有更多了~");
 						slinkUlit.nomore.attr("fl", 1);
 					} else {
-						slinkUlit.nomore.html("点击加载更多~");
+						slinkUlit.nomore.html("点击加载更多");
 					}
 					slinkUlit.slinkFlag = 0;
 				}, "json");
