@@ -465,13 +465,13 @@ class FooController extends Controller
 	public function actionSms($phone = 18600442970)
 	{
 		$conn = AppUtil::db();
-		$sql='select u.uId, u.uName,u.uPhone 
+		$sql = 'select u.uId, u.uName,u.uPhone 
 			 from im_user as u 
 			 join im_user_wechat as w on w.wUId=u.uId
 			 where IFNULL(w.wSubscribe,0)=1 and u.uStatus<9 and uPhone !=\'\' 
 			 group by u.uId,u.uName,u.uPhone';
 		$ret = $conn->createCommand($sql)->queryAll();
-		foreach ($ret as $row){
+		foreach ($ret as $row) {
 			$phone = $row['uPhone'];
 			QueueUtil::loadJob('sendSMS', [
 				'phone' => $phone,
@@ -484,11 +484,6 @@ class FooController extends Controller
 	public function actionRain()
 	{
 
-		User::updateRank([], true, true);
-
-//		$data = User::find()->where(["uId" => 133185])->asArray()->One();
-//		$row = User::fmtRow($data);
-//		User::rankCal($row, $data["uAddedOn"],1);
-//		print_r(UserTrans::getStat(120003, 1));
+		echo UserNet::hasBlack();
 	}
 }
