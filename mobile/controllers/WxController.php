@@ -985,6 +985,7 @@ class WxController extends BaseController
 			'bg-main');
 	}
 
+	// 黑名单列表
 	public function actionBlacklist()
 	{
 		$openId = self::$WX_OpenId;
