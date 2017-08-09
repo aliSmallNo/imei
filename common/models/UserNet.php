@@ -770,6 +770,11 @@ class UserNet extends ActiveRecord
 					$left = $uInfo;
 					$right = $sInfo;
 					break;
+				case self::REL_BLOCK:
+					$text = ['拉黑', ''];
+					$right = $uInfo;
+					$left = $sInfo;
+					break;
 				default:
 					break;
 			}
