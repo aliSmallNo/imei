@@ -468,7 +468,7 @@ class FooController extends Controller
 		$sql = 'select u.uId, u.uName,u.uPhone 
 			 from im_user as u 
 			 join im_user_wechat as w on w.wUId=u.uId
-			 where IFNULL(w.wSubscribe,0)=1 and u.uStatus<9 and uPhone !=\'\' 
+			 where IFNULL(w.wSubscribe,0)=0 and u.uStatus<9 and uPhone !=\'\' 
 			 group by u.uId,u.uName,u.uPhone';
 		$ret = $conn->createCommand($sql)->queryAll();
 		foreach ($ret as $row) {
@@ -479,6 +479,7 @@ class FooController extends Controller
 				'rnd' => 110
 			]);
 		}
+		var_dump(count($ret));
 	}
 
 	public function actionRain()
