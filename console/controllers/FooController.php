@@ -464,13 +464,22 @@ class FooController extends Controller
 
 	public function actionSms($phone = 18600442970)
 	{
-		QueueUtil::loadJob('sendSMS', [
-			'phone' => $phone,
-			'msg' => '有人对你心动了。如果你找不到回「微媒100」的路，请在微信中搜索公众号「微媒100」关注了就行',
-			'rnd' => 108
-		]);
-		/* $ret = UserMsg::recall();
-		var_dump($ret); */
+		$conn = AppUtil::db();
+		$sql='select u.uId, u.uName,u.uPhone 
+			 from im_user as u 
+			 join im_user_wechat as w on w.wUId=u.uId
+			 where IFNULL(w.wSubscribe,0)=1 and u.uStatus<9 and uPhone !=\'\' 
+			 group by u.uId,u.uName,u.uPhone';
+		$ret = $conn->createCommand($sql)->queryAll();
+		foreach ($ret as $row){
+			$phone = $row['uPhone'];
+			QueueUtil::loadJob('sendSMS', [
+				'phone' => $phone,
+				'msg' => '各位微媒100用户，你好！现隆重邀请您参加微媒100用户东台见面会，现征集报名，只有8个名额哦。见面会主要的目的是听取你的想法、建议，进行互动、访谈。现场会有丰厚奖励等您来拿，赶快在微信里回复公众号，参加报名吧！',
+				'rnd' => 108
+			]);
+		}
+
 	}
 
 	public function actionRain()
