@@ -1173,7 +1173,7 @@ class ApiController extends Controller
 					$subUId = AppUtil::decrypt($subUId);
 				}
 				$amt = self::postParam('amt');
-				$stat = UserTrans::getStat($uid);
+				$stat = UserTrans::getStat($uid, 1);
 				$flower = isset($stat['flower']) ? $stat['flower'] : 0;
 				if ($flower < $amt) {
 					return self::renderAPI(129, '你的媒桂花只剩' . $flower . '朵了，不足' . $amt . '朵，该充值了哦~');

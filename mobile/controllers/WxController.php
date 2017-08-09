@@ -650,7 +650,7 @@ class WxController extends BaseController
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		if ($wxInfo) {
-			if (!isset($wxInfo['subscribe']) || $wxInfo['subscribe'] != 1) {
+			if (!AppUtil::isDev() && (!isset($wxInfo['subscribe']) || $wxInfo['subscribe'] != 1)) {
 				header('location:/wx/qrcode');
 				exit();
 			}
@@ -694,7 +694,6 @@ class WxController extends BaseController
 				->all()) {
 			$audit = 1;
 		}
-
 		return self::renderPage("single.tpl", [
 			'noReadFlag' => $noReadFlag,
 			'nickname' => $nickname,
