@@ -38,7 +38,8 @@ class WxController extends BaseController
 		'存在不礼貌的行为，如骂人、骚扰等',
 		'打广告，有营销行为',
 		'查看微信号后拒绝加微信',
-		'添加微信号后不讲话、拉黑等',
+		'添加微信号后不讲话等',
+		'加入黑名单',
 		'其他'
 	];
 
@@ -1023,7 +1024,7 @@ class WxController extends BaseController
 			'terse');
 	}
 
-	// 花魁排行榜
+	// 花粉 排行榜
 	public function actionFansrank()
 	{
 		$openId = self::$WX_OpenId;

@@ -465,6 +465,9 @@ class ApiController extends Controller
 				$rptUId = self::postParam("uid");
 				$reason = self::postParam("reason");
 				Feedback::addReport($wxInfo['uId'], $rptUId, $reason, $text);
+				if ($reason == "加入黑名单") {
+					UserNet::add($rptUId, $wxInfo['uId'], UserNet::REL_BLOCK, $note = '');
+				}
 				return self::renderAPI(0, '提交成功！感谢您的反馈，我们会尽快处理您反映的问题~');
 			case 'wxno':
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
