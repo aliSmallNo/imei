@@ -33,7 +33,7 @@
 <div class="no-more" style="display: none;">没有更多了~</div>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/favor.js?v=1.1.6" src="/assets/js/require.js"></script>
+<script data-main="/js/fans-rank.js?v=1.1.6" src="/assets/js/require.js"></script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>

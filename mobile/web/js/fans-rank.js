@@ -48,7 +48,7 @@ require(["layer"],
 			$sls.loadFlag = 1;
 			$sls.loading.show();
 			$.post("/api/user", {
-				tag: "favorlist",
+				tag: "fanslist",
 				page: $sls.page
 			}, function (resp) {
 				$sls.loading.hide();

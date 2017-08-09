@@ -1024,7 +1024,7 @@ class WxController extends BaseController
 	}
 
 	// 花魁排行榜
-	public function actionGetrose()
+	public function actionFansrank()
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
@@ -1036,7 +1036,7 @@ class WxController extends BaseController
 		list($items) = UserTrans::getRoselist();
 		$mInfo = UserTrans::myGetRose($wxInfo["uId"]);
 
-		return self::renderPage('favor.tpl',
+		return self::renderPage('fans-rank.tpl',
 			[
 				"items" => $items,
 				"mInfo" => $mInfo,

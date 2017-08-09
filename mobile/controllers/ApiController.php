@@ -560,6 +560,21 @@ class ApiController extends Controller
 				} else {
 					return self::renderAPI(129, '参数错误~');
 				}
+			case "fanslist": // 花粉值排行榜
+				$page = self::postParam("page");
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				if ($page > 1) {
+					list($flist, $nextpage) = UserTrans::getRoselist($page);;
+					return self::renderAPI(0, '', [
+						"items" => $flist,
+						"nextpage" => $nextpage,
+					]);
+				} else {
+					return self::renderAPI(129, '参数错误~');
+				}
 
 			case "togive": // 送玫瑰花
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
