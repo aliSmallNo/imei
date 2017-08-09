@@ -16,6 +16,8 @@ $greenColor: #51c332
 $greenLight: #afdb64
 $yellowColor: #fdd835
 $rewardColor: #f9cd9a
+$hintColor: #fff59d
+
 $rewardColorLight: lighten($rewardColor, 6%)
 $tipColor: #f80
 $moneyColor: #f60
@@ -2870,10 +2872,11 @@ section
 .m-hint
 	overflow: hidden
 	padding: 0 1.5rem
-	background: $linkColorLight
-	color: #fff
+	background: $hintColor
+	color: $grayFontColor
 	height: 4.4rem
 	line-height: 4.4rem
+	border-bottom: 1px solid $borderColorLight
 	span
 		float: left
 		font-size: 1.2rem
@@ -2882,12 +2885,12 @@ section
 		line-height: 2.8rem
 		height: 2.8rem
 		padding: 0 1.2rem
-		border: #fff 1px solid
+		border: 1px solid $grayFontColor
 		border-radius: 1.5rem
 		text-decoration: none
-		color: #fff
+		color: $grayFontColor
 		margin-top: .7rem
-
+		font-size: 1.2rem
 .sign-user
 	line-height: 4rem
 	height: 4rem
@@ -5140,7 +5143,7 @@ section
 
 	.topup-action
 		margin: 1rem
-		.btn-topup,.btn-togive
+		.btn-topup, .btn-togive
 			background: $rewardColor
 			border: 2px solid $rewardColorLight
 			padding: 1rem

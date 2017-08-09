@@ -160,7 +160,7 @@ class BaseController extends Controller
 		$appView = YII::$app->view;
 		$appView->params['page_head_title'] = $title;
 		$appView->params['page_body_cls'] = $bodyClass;
-		$appView->params['ver'] = '1.10.5';
+		$appView->params['ver'] = '1.10.6';
 		return self::render($view, $params);
 	}
 
