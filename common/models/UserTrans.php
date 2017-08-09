@@ -272,7 +272,7 @@ class UserTrans extends ActiveRecord
  				FROM im_user_trans as t ' . $sql2 . ' group by tCategory,tTitle,tUnit,t.tUId';
 		$balances = $conn->createCommand($sql)->queryAll();
 		$details = [];
-		// print_r($balances);exit;
+
 		foreach ($balances as $balance) {
 			$uid = $balance["uid"];
 			$cat = $balance["cat"];
@@ -284,6 +284,8 @@ class UserTrans extends ActiveRecord
 						'amt' => 0,
 						'unit_name2' => '元',
 						'amt2' => 0,
+						'unit_name3' => '花粉值',
+						'amt3' => 0,
 					]
 				];
 				$details[$uid] = $bal;
@@ -297,8 +299,8 @@ class UserTrans extends ActiveRecord
 				} else {
 					$details[$uid]['bal']['amt2'] += $balance['amt'];
 				}
-			} else {
-				if ($cat == self::CAT_REWARD || $cat == self::CAT_CHAT || $cat == self::CAT_GIVE) {
+			} else if ($unit == self::UNIT_GIFT) {
+				if ($cat == self::CAT_REWARD || $cat == self::CAT_CHAT) {
 					$details[$uid]['bal']['amt'] -= $balance['amt'];
 				} else {
 					$details[$uid]['bal']['amt'] += $balance['amt'];
@@ -308,6 +310,7 @@ class UserTrans extends ActiveRecord
 			$balance['unit'] = $unit;
 			$details[$uid][$cat . '-' . $unit] = $balance;
 		}
+
 
 		foreach ($items as $k => $item) {
 			$uid = $item['uid'];
@@ -440,6 +443,7 @@ class UserTrans extends ActiveRecord
 		$week = AppUtil::getEndStartTime(time(), 'curweek', true);
 
 		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
+		$cat = UserTrans::CAT_GET;
 
 		$sql = "select 
 				sum(tAmt) as co,tUId as id,
@@ -447,11 +451,12 @@ class UserTrans extends ActiveRecord
 				uAvatar as avatar
 				from im_user_trans as t
 				left join im_user as u on u.uId=t.tUId 
-				where tCategory=127 and tAddedOn BETWEEN :sDate  AND :eDate
+				where tCategory=:cat and tAddedOn BETWEEN :sDate  AND :eDate
 				GROUP BY tUId ORDER BY co desc,tUId asc $limit ";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":sDate" => $week[0],
 			":eDate" => $week[1],
+			":cat" => $cat,
 		])->queryAll();
 		$nextPage = 0;
 		if (count($res) > $pageSize) {
@@ -471,21 +476,24 @@ class UserTrans extends ActiveRecord
 
 	public static function dayRose($uid)
 	{
+		$cat = UserTrans::CAT_GET;
 		$today = AppUtil::getEndStartTime(time(), 'today', true);
 		$sql = "select sum(tAmt) as co
 				from im_user_trans as t 
-				where tCategory=127 and tAddedOn BETWEEN :sDate and :eDate
+				where tCategory=:cat and tAddedOn BETWEEN :sDate and :eDate
 				and tUId=:uid";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":uid" => $uid,
 			":sDate" => $today[0],
 			":eDate" => $today[1],
+			":cat" => $cat,
 		])->queryOne();
-		return $res ? $res["co"] : 0;
+		return $res && $res["co"] ? $res["co"] : 0;
 	}
 
 	public static function myGetRose($uid)
 	{
+		$cat = UserTrans::CAT_GET;
 		$week = AppUtil::getEndStartTime(time(), 'curweek', true);
 		$sql = "select 
 				sum(tAmt) as co,tUId as id,
@@ -493,11 +501,12 @@ class UserTrans extends ActiveRecord
 				uAvatar as avatar
 				from im_user_trans as t
 				left join im_user as u on u.uId=t.tUId 
-				where tCategory=127 and tAddedOn BETWEEN :sDate  AND :eDate
+				where tCategory=:cat and tAddedOn BETWEEN :sDate  AND :eDate
 				GROUP BY tUId ORDER BY co desc,tUId asc";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":sDate" => $week[0],
 			":eDate" => $week[1],
+			":cat" => $cat,
 		])->queryAll();
 		$myInfo = [];
 		foreach ($res as $k => $v) {

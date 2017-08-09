@@ -373,8 +373,7 @@ class SiteController extends BaseController
 		}
 
 		list($items, $count) = UserTrans::recharges($criteria, $params, $page);
-//		var_dump($items);
-//		exit();
+
 		$balance = UserTrans::balance($criteria, $params);
 		$pagination = $pagination = self::pagination($page, $count);
 		return $this->renderPage("recharge.tpl",
