@@ -879,6 +879,17 @@ class UserNet extends ActiveRecord
 		return $myInfo;
 	}
 
+	public static function hasBlack($uid, $id)
+	{
+		$info = self::findOne([
+			"nRelation" => self::REL_BLOCK,
+			"nStatus" => self::STATUS_WAIT,
+			"nUID" => $uid,
+			"nSubUID" => $id,
+		]);
+		return $info ? 1 : 0;
+	}
+
 	public static function blacklist($uid, $page = 1, $pageSize = 20)
 	{
 		if (!$uid) {
@@ -908,7 +919,6 @@ class UserNet extends ActiveRecord
 		foreach ($res as &$v) {
 			$v["secretId"] = AppUtil::encrypt($v["id"]);
 		}
-
 		return [$res, $nextPage];
 	}
 

@@ -39,6 +39,8 @@ class ApiController extends Controller
 	public $layout = false;
 	const COOKIE_OPENID = "wx-openid";
 
+	const MSG_BLACK = "对方禁止了你的操作";
+
 	public function actionBuzz()
 	{
 		$signature = self::getParam("signature");
@@ -279,6 +281,10 @@ class ApiController extends Controller
 					return self::renderAPI(129, $msg);
 				}
 
+				if (UserNet::hasBlack($wxInfo["uId"], $uid)) {
+					return self::renderAPI(129, self::MSG_BLACK);
+				}
+
 				if (UserNet::hasFollowed($uid, $wxInfo['uId'])) {
 					WechatUtil::toNotice($uid, $wxInfo['uId'], "focus", false);
 					UserNet::del($uid, $wxInfo['uId'], UserNet::REL_FOLLOW);
@@ -375,9 +381,13 @@ class ApiController extends Controller
 					$msg = UserAudit::reasonMsg($wxInfo["uId"]);
 					return self::renderAPI(129, $msg);
 				}
-
 				$id = self::postParam("id");
 				$f = self::postParam("f");
+
+				if (UserNet::hasBlack($wxInfo["uId"], $id)) {
+					return self::renderAPI(129, self::MSG_BLACK);
+				}
+
 				$ret = UserNet::hint($wxInfo["uId"], $id, $f);
 				return self::renderAPI(0, '', ["hint" => 1]);
 			case "wxname":
@@ -393,9 +403,13 @@ class ApiController extends Controller
 					$msg = UserAudit::reasonMsg($wxInfo["uId"]);
 					return self::renderAPI(129, $msg);
 				}
+
 				$num = self::postParam("num");
 				$id = self::postParam("id");
 				$id = AppUtil::decrypt($id);
+				if (UserNet::hasBlack($wxInfo["uId"], $id)) {
+					return self::renderAPI(129, self::MSG_BLACK);
+				}
 				if (UserNet::findOne(["nRelation" => UserNet::REL_LINK,
 					"nSubUId" => $wxInfo["uId"],
 					"nUId" => $id,
@@ -1103,6 +1117,9 @@ class ApiController extends Controller
 				$text = trim(self::postParam('text'));
 				if (!$text) {
 					return self::renderAPI(129, '消息不能为空啊~');
+				}
+				if (UserNet::hasBlack($wxInfo["uId"], $receiverId)) {
+					return self::renderAPI(129, self::MSG_BLACK);
 				}
 				$ret = ChatMsg::addChat($uid, $receiverId, $text);
 				//ChatMsg::add($uid, $receiverId, $text);
