@@ -985,6 +985,25 @@ class WxController extends BaseController
 			'bg-main');
 	}
 
+	public function actionBlacklist()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+
+		list($items, $nextpage) = UserNet::blacklist($wxInfo["uId"]);
+
+		return self::renderPage('black-list.tpl',
+			[
+				"items" => $items,
+				"nextpage" => $nextpage
+			],
+			'terse');
+	}
+
 	public function actionNotice()
 	{
 		$openId = self::$WX_OpenId;
