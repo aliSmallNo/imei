@@ -484,6 +484,5 @@ class FooController extends Controller
 	public function actionRain()
 	{
 
-		echo UserNet::hasBlack();
 	}
 }
