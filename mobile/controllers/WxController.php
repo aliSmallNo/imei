@@ -1104,4 +1104,10 @@ class WxController extends BaseController
 			],
 			'terse');
 	}
+
+	public function actionLottery()
+	{
+		return self::renderPage('lottery.tpl', [],
+			'terse');
+	}
 }
