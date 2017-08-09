@@ -484,7 +484,7 @@ class FooController extends Controller
 	public function actionRain()
 	{
 
-		User::updateRank([], true, true);
+
 
 //		$data = User::find()->where(["uId" => 133185])->asArray()->One();
 //		$row = User::fmtRow($data);
