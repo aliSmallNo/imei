@@ -21,6 +21,7 @@ class UserNet extends ActiveRecord
 	const REL_FOLLOW = 130;
 	const REL_LINK = 140;
 	const REL_FAVOR = 150;
+	const REL_BLOCK = 160;
 	const REL_QR_SCAN = 210;
 	const REL_QR_SUBSCRIBE = 212;
 	const REL_QR_SHARE = 215;
@@ -34,6 +35,7 @@ class UserNet extends ActiveRecord
 		self::REL_FOLLOW => '关注',
 		self::REL_LINK => '牵线',
 		self::REL_FAVOR => '心动',
+		self::REL_BLOCK => '拉黑',
 		self::REL_QR_SCAN => '扫推广二维码',
 		self::REL_QR_SUBSCRIBE => '扫二维码且关注',
 		self::REL_QR_SHARE => '发送给朋友',
