@@ -673,4 +673,25 @@ class SiteController extends BaseController
 		);
 	}
 
+	public function actionUserstat()
+	{
+		$StatusColors = [
+			0 => "#a8a8a8",
+			1 => "#BBDEFB",
+			2 => "#64B5F6",
+			3 => "#2196F3",
+			4 => "#1976D2",
+			5 => "#0D47A1",
+			6 => "#fb8c00",
+			7 => "#e65100",
+		];
+		return $this->renderPage('userstat.tpl',
+			[
+				'category' => "data",
+				"beginDate" => date("Y-m-d", time() - 15 * 86400),
+				"endDate" => date("Y-m-d"),
+				"colors" => json_encode(array_values($StatusColors))
+			]
+		);
+	}
 }
