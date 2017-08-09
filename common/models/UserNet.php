@@ -879,5 +879,38 @@ class UserNet extends ActiveRecord
 		return $myInfo;
 	}
 
+	public static function blacklist($uid, $page = 1, $pageSize = 20)
+	{
+		if (!$uid) {
+			return 0;
+		}
+		$limit = "limit " . ($page - 1) * $pageSize . ',' . ($pageSize + 1);
+		$sql = "select 
+				nId as nid,
+				u.uId as id,
+				uName as uname,
+				uAvatar as avatar
+				FROM 
+				im_user_net as n
+				left join im_user as u on u.uId=n.nUId
+				where nRelation=:realtion and nStatus=:status and nSubUId=:uid 
+				order by nId desc $limit";
+		$res = AppUtil::db()->createCommand($sql)->bindValues([
+			":uid" => $uid,
+			":realtion" => self::REL_BLOCK,
+			":status" => self::STATUS_WAIT,
+		])->queryAll();
+		$nextPage = 0;
+		if (count($res) > $pageSize) {
+			$nextPage = $page + 1;
+			array_pop($res);
+		}
+		foreach ($res as &$v) {
+			$v["secretId"] = AppUtil::encrypt($v["id"]);
+		}
+
+		return [$res, $nextPage];
+	}
+
 
 }

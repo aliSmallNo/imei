@@ -465,10 +465,47 @@ class ApiController extends Controller
 				$rptUId = self::postParam("uid");
 				$reason = self::postParam("reason");
 				Feedback::addReport($wxInfo['uId'], $rptUId, $reason, $text);
-				if ($reason == "加入黑名单") {
+				$black = UserNet::findOne([
+					"nUId" => $rptUId,
+					"nSubUId" => $wxInfo['uId'],
+					"nRelation" => UserNet::REL_BLOCK,
+					"nStatus" => UserNet::STATUS_WAIT,
+				]);
+				if ($reason == "加入黑名单" && !$black) {
 					UserNet::add($rptUId, $wxInfo['uId'], UserNet::REL_BLOCK, $note = '');
 				}
 				return self::renderAPI(0, '提交成功！感谢您的反馈，我们会尽快处理您反映的问题~');
+			case "blacklist": // 黑名单列表
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				$page = self::postParam("page");
+				if ($page > 1) {
+					list($flist, $nextpage) = UserNet::blacklist($wxInfo["uId"], $page);
+					return self::renderAPI(0, '', [
+						"items" => $flist,
+						"nextpage" => $nextpage,
+					]);
+				} else {
+					return self::renderAPI(129, '参数错误~');
+				}
+			case "remove_black": // 移出黑名单
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				$nid = self::postParam("nid");
+				$nInfo = UserNet::findOne(["nId" => $nid]);
+				if ($nInfo) {
+					$nInfo->nUpdatedOn = date("Y-m-d H:i:s");
+					$nInfo->nStatus = UserNet::STATUS_PASS;
+					$nInfo->save();
+					return self::renderAPI(0, '');
+				} else {
+					return self::renderAPI(129, '参数错误~');
+				}
+
 			case 'wxno':
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
