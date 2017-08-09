@@ -443,6 +443,7 @@ class UserTrans extends ActiveRecord
 		$week = AppUtil::getEndStartTime(time(), 'curweek', true);
 
 		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
+		$cat = UserTrans::CAT_GET;
 
 		$sql = "select 
 				sum(tAmt) as co,tUId as id,
@@ -450,11 +451,12 @@ class UserTrans extends ActiveRecord
 				uAvatar as avatar
 				from im_user_trans as t
 				left join im_user as u on u.uId=t.tUId 
-				where tCategory=127 and tAddedOn BETWEEN :sDate  AND :eDate
+				where tCategory=:cat and tAddedOn BETWEEN :sDate  AND :eDate
 				GROUP BY tUId ORDER BY co desc,tUId asc $limit ";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":sDate" => $week[0],
 			":eDate" => $week[1],
+			":cat" => $cat,
 		])->queryAll();
 		$nextPage = 0;
 		if (count($res) > $pageSize) {
@@ -474,21 +476,24 @@ class UserTrans extends ActiveRecord
 
 	public static function dayRose($uid)
 	{
+		$cat = UserTrans::CAT_GET;
 		$today = AppUtil::getEndStartTime(time(), 'today', true);
 		$sql = "select sum(tAmt) as co
 				from im_user_trans as t 
-				where tCategory=127 and tAddedOn BETWEEN :sDate and :eDate
+				where tCategory=:cat and tAddedOn BETWEEN :sDate and :eDate
 				and tUId=:uid";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":uid" => $uid,
 			":sDate" => $today[0],
 			":eDate" => $today[1],
+			":cat" => $cat,
 		])->queryOne();
 		return $res && $res["co"] ? $res["co"] : 0;
 	}
 
 	public static function myGetRose($uid)
 	{
+		$cat = UserTrans::CAT_GET;
 		$week = AppUtil::getEndStartTime(time(), 'curweek', true);
 		$sql = "select 
 				sum(tAmt) as co,tUId as id,
@@ -496,11 +501,12 @@ class UserTrans extends ActiveRecord
 				uAvatar as avatar
 				from im_user_trans as t
 				left join im_user as u on u.uId=t.tUId 
-				where tCategory=127 and tAddedOn BETWEEN :sDate  AND :eDate
+				where tCategory=:cat and tAddedOn BETWEEN :sDate  AND :eDate
 				GROUP BY tUId ORDER BY co desc,tUId asc";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":sDate" => $week[0],
 			":eDate" => $week[1],
+			":cat" => $cat,
 		])->queryAll();
 		$myInfo = [];
 		foreach ($res as $k => $v) {
