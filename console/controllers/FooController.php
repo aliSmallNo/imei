@@ -476,10 +476,9 @@ class FooController extends Controller
 			QueueUtil::loadJob('sendSMS', [
 				'phone' => $phone,
 				'msg' => '各位微媒100用户，你好！现隆重邀请您参加微媒100用户东台见面会，现征集报名，只有8个名额哦。见面会主要的目的是听取你的想法、建议，进行互动、访谈。现场会有丰厚奖励等您来拿，赶快在微信里回复公众号，参加报名吧！',
-				'rnd' => 108
+				'rnd' => 110
 			]);
 		}
-
 	}
 
 	public function actionRain()
