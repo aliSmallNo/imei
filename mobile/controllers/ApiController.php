@@ -1049,7 +1049,7 @@ class ApiController extends Controller
 		$uid = $wxInfo['uId'];
 		if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])
 			&& in_array($tag, ["sent", "list", "read"])) {
-			$msg = UserAudit::reasonMsg($wxInfo["uId"]);
+			$msg = ($wxInfo["uStatus"] == User::STATUS_INVALID) ? UserAudit::reasonMsg($wxInfo["uId"]) : "无权限操作！";
 			return self::renderAPI(129, $msg);
 		}
 
