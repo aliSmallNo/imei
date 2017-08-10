@@ -1645,8 +1645,7 @@ class User extends ActiveRecord
 			$a = date("Y") - $v["uBirthYear"];
 			foreach ($ageData as $key => $val) {
 				list($floor, $ceil) = $val["range"];
-				if ($a > 70) {
-					$ageData[8]["y"]++;
+				if ($a > 200) {
 					continue;
 				}
 				if ($a >= $floor && $a <= $ceil) {
