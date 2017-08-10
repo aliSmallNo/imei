@@ -1528,6 +1528,28 @@ class User extends ActiveRecord
 
 	public static function propStat($beginDate, $endDate)
 	{
+		$fmtData = function ($items) {
+			if ($items && count($items) > 6) {
+				$amt = array_sum(array_column($items, 'y'));
+				$limit = round($amt * 0.011);
+				$others = 0;
+				foreach ($items as $k => $item) {
+					if ($item['y'] <= $limit) {
+						$others += $item['y'];
+						unset($items[$k]);
+					}
+				}
+				if ($others) {
+					$items = array_values($items);
+					$items[] = [
+						'name' => '其他',
+						'y' => $others,
+					];
+				}
+			}
+			return array_values($items);
+		};
+
 		$role = self::ROLE_SINGLE;
 		$sql = "select COUNT(1) as co ,uIncome as income 
 				from im_user 
@@ -1547,6 +1569,7 @@ class User extends ActiveRecord
 			];
 			$incomeData[] = $item;
 		}
+		$incomeData = $fmtData($incomeData);
 
 
 		$sql = "select COUNT(1) as co ,uGender as gender 
@@ -1579,13 +1602,16 @@ class User extends ActiveRecord
 			":eDate" => $endDate . ' 23:59:00',
 		])->queryAll();
 		$heightData = [];
+
 		foreach ($height as $v) {
+			$val = intval($v["co"]);
 			$item = [
 				"name" => isset(self::$Height[$v["height"]]) ? self::$Height[$v["height"]] : '无数据',
-				"y" => intval($v["co"]),
+				"y" => $val,
 			];
 			$heightData[] = $item;
 		}
+		$heightData = $fmtData($heightData);
 
 		$sql = "select uBirthYear 
 				from im_user 
@@ -1651,17 +1677,7 @@ class User extends ActiveRecord
 				}
 			}
 		}
-		foreach ($ageData as $k => $item) {
-			if ($item['y'] == 0) {
-				unset($ageData[$k]);
-			}
-		}
-		$ageData = array_values($ageData);
-		/*usort($ageData, function ($a, $b) {
-			return $a['y'] > $b['y'];
-		});*/
-
-
+		$ageData = $fmtData($ageData);
 		return [$ageData, $incomeData, $heightData, $genderData];
 
 
