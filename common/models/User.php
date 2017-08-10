@@ -1497,16 +1497,16 @@ class User extends ActiveRecord
 				break;
 		}
 		$relBacker = UserNet::REL_BACKER;
-		$sql = "select u.uName,w.wSubscribe,n.* from 
-					im_user as u 
-					left JOIN im_user_wechat as w on u.uOpenId=w.wOpenId
-					LEFT join im_user_net as n on u.uId=n.nSubUId and n.nRelation=:mp
-					where uId=:uid ";
+		$sql = "SELECT u.uName, IFNULL(w.wSubscribe,0) as wSubscribe,n.* 
+					FROM im_user as u 
+					JOIN im_user_wechat as w on u.uId=w.wUId
+					LEFT JOIN im_user_net as n on u.uId=n.nSubUId and n.nRelation=:mp
+					WHERE uId=:uid ";
 		$iResult = $conn->createCommand($sql)->bindValues([
 			":uid" => $row["id"],
 			":mp" => $relBacker,
 		])->queryOne();
-		$I = ($iResult["wSubscribe"] > 0 ? 0 : 0.6) + ($iResult["nUId"] > 0 ? 0 : 0.1) + $I4 + $I5;
+		$I = ($iResult["wSubscribe"] > 0 ? 0.6 : 0) + ($iResult["nUId"] > 0 ? 0 : 0.1) + $I4 + $I5;
 
 		// "区分系数（Distinguish) D=-D1/10+D2*10+D3"	 D1:注册年龄 D2:资料完整度指标(资料完成度大于90%取值。小于90%视为缺省) D3:待定
 		$D = -intval($row["age"]) / 10 + ($row["percent"] > 90 ? $row["percent"] / 100 : 0) * 10;
