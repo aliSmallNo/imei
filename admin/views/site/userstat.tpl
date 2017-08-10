@@ -1,7 +1,7 @@
 {{include file="layouts/header.tpl"}}
 <style>
 	.chart-wrapper {
-		height: 280px;
+		height: 260px;
 	}
 
 	.col-sm-4, .col-sm-8 {
@@ -262,18 +262,18 @@
 						radius: 1,
 						symbol: 'circle'
 					},
-					lineWidth: 3
+					lineWidth: 2
 				}
 			},
 			legend: {
 				enabled: true,
-				align: 'center',
+				align: 'center'
 				//verticalAlign:'middle'
 			},
 			series: [
 				{
 					name: '女生',
-					data: yesterdayData,
+					data: yesterdayData
 				},
 				{
 					name: '男生',
