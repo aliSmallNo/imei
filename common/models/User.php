@@ -1053,7 +1053,7 @@ class User extends ActiveRecord
 		if ($nextpage > 5) {
 			$nextpage = 0;
 		}
-		return ["data" => $result, "nextpage" => $nextpage, "condition" => $myFilter];
+		return ["data" => $result, "nextpage" => $nextpage, "condition" => $myFilter, 'page' => $page];
 	}
 
 	public static function mymp($openId)

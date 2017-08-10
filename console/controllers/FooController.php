@@ -484,6 +484,9 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-
+		$a1 = array("Dog", "Cat", "Horse", "Bird");
+		$a2 = [['name' => "Tiger"], ['name' => "Lion"]];
+		array_splice($a1, 3, 0, $a2);
+		var_dump($a1);
 	}
 }

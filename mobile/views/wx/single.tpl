@@ -710,6 +710,14 @@
 </script>
 <script type="text/html" id="userFiter">
 	{[#data]}
+	{[^secretId]}
+	<li>
+		<a href="{[url]}" class="event-link">
+			<img src="{[img]}">
+		</a>
+	</li>
+	{[/secretId]}
+	{[#secretId]}
 	<li>
 		<a href="/wx/sh?id={[secretId]}" class="head">
 			<img src="{[avatar]}" class="nic">
@@ -744,6 +752,7 @@
 		</div>
 		{[/singleF]}
 	</li>
+	{[/secretId]}
 	{[/data]}
 </script>
 <script type="text/html" id="conditions">

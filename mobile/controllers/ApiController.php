@@ -366,6 +366,14 @@ class ApiController extends Controller
 				}
 				LogAction::add($wxInfo['uId'], $openId, LogAction::ACTION_SINGLE_LIST);
 				$ret = User::getFilter($openId, $filter, $page);
+				if (isset($ret['data']) && count($ret['data']) > 3 && $page == 1) {
+					array_splice($ret['data'], 3, 0, [
+						[
+							'url' => '/wx/fansrank',
+							'img' => '/images/event_fans.jpg'
+						]
+					]);
+				}
 				return self::renderAPI(0, '', $ret);
 			case "mymp":
 				$ret = User::mymp($openId);
