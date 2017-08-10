@@ -40,7 +40,7 @@
 <script type="text/template" id="tpl_favor">
 	{[#items]}
 	<li>
-		<a href="/wx/sh?id={[$item.secretId]}" class="favor-item favor-read">
+		<a href="/wx/sh?id={[secretId]}" class="favor-item favor-read">
 			<div class="favor-key">{[key]}</div>
 			<div class="favor-avatar"><img src="{[avatar]}"></div>
 			<div class="favor-right">
