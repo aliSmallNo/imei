@@ -5197,3 +5197,43 @@ section
 			line-height: 2.4rem
 			font-size: 1rem
 			display: inline-block
+
+.lottery
+	padding-top: 5rem
+.lottery-gifts 
+	margin: 0 auto
+	width: 27rem
+	border: 2px solid #ba1809
+	li
+		width: 9rem
+		height: 9rem
+		float: left
+		text-align: center
+		position: relative
+		img
+			display: block
+			width: 100%
+			height: 100%
+		a
+			width: 100%
+			height: 100%
+			display: block
+			text-decoration: none
+			background: url(../images/lottery/lottery2.jpg) no-repeat top center
+			background-size: 100% 100%
+			&:active
+				background-image: url(../images/lottery/lottery1.jpg)
+				background-size: 100% 100%
+		&.unit::after
+			content: ''
+			display: none
+			width: 100%
+			height: 100%
+			position: absolute
+			left: 0
+			top: 0
+			background: url(../images/lottery/mask.png) no-repeat
+			background-size: 100% 100%
+		&.unit.active::after
+			display: block
+

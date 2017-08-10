@@ -1224,6 +1224,26 @@ class ApiController extends Controller
 		return self::renderAPI(129, '操作无效~');
 	}
 
+	public function actionLottery()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$openId = self::postParam('openid');
+		if (!$openId) {
+			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		}
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			return self::renderAPI(129, '用户不存在啊~', ['prize' => 4]);
+		}
+		$uid = $wxInfo['uId'];
+		switch ($tag) {
+			case 'draw':
+				return self::renderAPI(0, '幸运总是迟到，但绝不会缺席~ 加油啊，努力！', ['prize' => 4]);
+				break;
+		}
+		return self::renderAPI(129, '操作无效~', ['prize' => 4]);
+	}
+
 	public function actionQr()
 	{
 		$tag = trim(strtolower(self::postParam('tag')));

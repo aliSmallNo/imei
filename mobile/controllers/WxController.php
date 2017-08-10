@@ -1126,7 +1126,22 @@ class WxController extends BaseController
 
 	public function actionLottery()
 	{
-		return self::renderPage('lottery.tpl', [],
-			'terse');
+		$gifts = [
+			'/images/lottery/gift0.jpg',
+			'/images/lottery/gift1.jpg',
+			'/images/lottery/gift2.jpg',
+			'/images/lottery/gift3.jpg',
+			'/images/lottery/gift4.jpg',
+			'/images/lottery/gift5.jpg',
+			'/images/lottery/gift6.jpg',
+			'/images/lottery/gift7.jpg',
+		];
+		return self::renderPage('lottery.tpl',
+			[
+				'gifts'=>$gifts
+			],
+			'terse',
+			'微媒100-幸运抽奖',
+			'bg-color');
 	}
 }
