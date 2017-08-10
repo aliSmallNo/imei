@@ -1132,16 +1132,15 @@ class WxController extends BaseController
 		}
 		$gifts = [];
 		$title = '微媒100-幸运抽奖';
-		$lotteryInfo = Lottery::findOne(['oId' => $oid]);
+		$lotteryInfo = Lottery::getItem($oid);
 		if ($lotteryInfo) {
-			$lotteryInfo = $lotteryInfo->toArray();
 			$title = $lotteryInfo['oTitle'];
-			$gifts = json_decode($lotteryInfo['oItems'], 1);
+			$gifts = $lotteryInfo['gifts'];
 		}
-
 		return self::renderPage('lottery.tpl',
 			[
-				'gifts' => $gifts
+				'gifts' => $gifts,
+				'encryptId' => AppUtil::encrypt($oid)
 			],
 			'terse',
 			$title,

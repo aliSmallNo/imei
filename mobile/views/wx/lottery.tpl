@@ -29,5 +29,6 @@
 		</li>
 	</ul>
 </div>
+<input type="hidden" id="cOID" value="{{$encryptId}}">
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/lottery.js?v=1.1.0" src="/assets/js/require.js"></script>
+<script data-main="/js/lottery.js?v=1.1.2" src="/assets/js/require.js"></script>

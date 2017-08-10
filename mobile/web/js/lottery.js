@@ -29,6 +29,7 @@ require(["layer"],
 			prize: -1,
 			msg: '',
 			running: false,
+			oid: $('#cOID').val(),
 			table: $('.lottery-gifts'),
 			init: function () {
 				var util = this;
@@ -60,7 +61,8 @@ require(["layer"],
 				util.table.find('.unit').removeClass('prize');
 				$.post('/api/lottery',
 					{
-						tag: 'draw'
+						tag: 'draw',
+						id: util.oid
 					}, function (resp) {
 						util.prize = resp.data.prize;
 						if (resp.code == 0) {
@@ -91,7 +93,7 @@ require(["layer"],
 						//util.prize = Math.random() * (util.count) | 0;
 					} else {
 						if (util.times > util.cycle + 10 && ((util.prize == 0 && util.index == 7) || util.prize == util.index + 1)) {
-							util.speed += 96;
+							util.speed += 90;
 						} else {
 							util.speed += 30;
 						}

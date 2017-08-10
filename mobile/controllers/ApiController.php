@@ -13,6 +13,7 @@ use common\models\City;
 use common\models\Feedback;
 use common\models\Log;
 use common\models\LogAction;
+use common\models\Lottery;
 use common\models\Pay;
 use common\models\User;
 use common\models\UserAudit;
@@ -1238,7 +1239,14 @@ class ApiController extends Controller
 		$uid = $wxInfo['uId'];
 		switch ($tag) {
 			case 'draw':
-				return self::renderAPI(0, '幸运总是迟到，但绝不会缺席~ 加油啊，努力！', ['prize' => 4]);
+				$oid = self::postParam('id');
+				$oid = AppUtil::decrypt($oid);
+				$prize = 0;
+				$lotteryInfo = Lottery::getItem($oid);
+				if ($lotteryInfo) {
+					$prize = $lotteryInfo['floor'];
+				}
+				return self::renderAPI(0, '幸运总是迟到，但绝不会缺席~ 加油啊，努力！', ['prize' => $prize]);
 				break;
 		}
 		return self::renderAPI(129, '操作无效~', ['prize' => 4]);

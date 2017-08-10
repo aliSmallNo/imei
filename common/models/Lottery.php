@@ -18,4 +18,16 @@ class Lottery extends ActiveRecord
 		return '{{%lottery}}';
 	}
 
+	public static function getItem($oid)
+	{
+
+		$info = self::findOne(['oId' => $oid]);
+		if ($info) {
+			$info = $info->toArray();
+			$info['gifts'] = json_decode($info['oItems'], 1);
+			$info['floor'] = intval($info['oFloorId']);
+			return $info;
+		}
+		return [];
+	}
 }
