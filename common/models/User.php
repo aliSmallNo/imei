@@ -1472,16 +1472,16 @@ class User extends ActiveRecord
 		$I5 = 0;
 		switch ($row["status"]) {
 			case self::STATUS_PRISON:
-				$I4 = 0.5;
+				$I4 = 0.4;
 				break;
 			case self::STATUS_DUMMY:
-				$I4 = 0.7;
+				$I4 = 0.6;
 				break;
 			case self::STATUS_PENDING:
 				$I4 = 0.8;
 				break;
 			case self::STATUS_ACTIVE:
-				$I4 = 0.9;
+				$I4 = 1;
 				break;
 			default:
 				$I4 = 0;
