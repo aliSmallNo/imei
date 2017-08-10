@@ -57,6 +57,7 @@ require(["layer"],
 				util.speed = 100;
 				util.msg = '';
 				util.prize = -1;
+				util.table.find('.unit').removeClass('prize');
 				$.post('/api/lottery',
 					{
 						tag: 'draw'
@@ -79,6 +80,7 @@ require(["layer"],
 					//util.prize = -1;
 					util.times = 0;
 					util.running = false;
+					util.table.find('.active').addClass('prize');
 					if (util.msg) {
 						showMsg(util.msg);
 					}

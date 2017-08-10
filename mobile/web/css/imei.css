@@ -5530,7 +5530,7 @@ section {
       .lottery-gifts li a:active {
         background-image: url(../images/lottery/lottery1.jpg);
         background-size: 100% 100%; }
-    .lottery-gifts li.unit::after {
+    .lottery-gifts li.unit:after {
       content: "";
       display: none;
       width: 100%;
@@ -5540,7 +5540,10 @@ section {
       top: 0;
       background: url(../images/lottery/mask.png) no-repeat;
       background-size: 100% 100%; }
-    .lottery-gifts li.unit.active::after {
+    .lottery-gifts li.unit.active:after {
       display: block; }
+    .lottery-gifts li.unit.prize:after {
+      background: url(../images/lottery/mask_hl.png) no-repeat;
+      background-size: 100% 100%; }
 
 /*# sourceMappingURL=imei.css.map */

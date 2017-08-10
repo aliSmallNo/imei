@@ -10,6 +10,7 @@ namespace mobile\controllers;
 
 use common\models\City;
 use common\models\LogAction;
+use common\models\Lottery;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserMsg;
@@ -1124,22 +1125,26 @@ class WxController extends BaseController
 
 	public function actionLottery()
 	{
-		$gifts = [
-			'/images/lottery/gift0.jpg',
-			'/images/lottery/gift1.jpg',
-			'/images/lottery/gift2.jpg',
-			'/images/lottery/gift3.jpg',
-			'/images/lottery/gift4.jpg',
-			'/images/lottery/gift5.jpg',
-			'/images/lottery/gift6.jpg',
-			'/images/lottery/gift7.jpg',
-		];
+		$oid = self::getParam('id');
+		$oid = AppUtil::decrypt($oid);
+		if (!$oid) {
+			$oid = 101;
+		}
+		$gifts = [];
+		$title = '微媒100-幸运抽奖';
+		$lotteryInfo = Lottery::findOne(['oId' => $oid]);
+		if ($lotteryInfo) {
+			$lotteryInfo = $lotteryInfo->toArray();
+			$title = $lotteryInfo['oTitle'];
+			$gifts = json_decode($lotteryInfo['oItems'], 1);
+		}
+
 		return self::renderPage('lottery.tpl',
 			[
 				'gifts' => $gifts
 			],
 			'terse',
-			'微媒100-幸运抽奖',
+			$title,
 			'bg-color');
 	}
 }

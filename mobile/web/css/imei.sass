@@ -2891,6 +2891,7 @@ section
 		color: $grayFontColor
 		margin-top: .7rem
 		font-size: 1.2rem
+
 .sign-user
 	line-height: 4rem
 	height: 4rem
@@ -5200,7 +5201,8 @@ section
 
 .lottery
 	padding-top: 5rem
-.lottery-gifts 
+
+.lottery-gifts
 	margin: 0 auto
 	width: 27rem
 	border: 2px solid #ba1809
@@ -5224,16 +5226,20 @@ section
 			&:active
 				background-image: url(../images/lottery/lottery1.jpg)
 				background-size: 100% 100%
-		&.unit::after
-			content: ''
-			display: none
-			width: 100%
-			height: 100%
-			position: absolute
-			left: 0
-			top: 0
-			background: url(../images/lottery/mask.png) no-repeat
-			background-size: 100% 100%
-		&.unit.active::after
-			display: block
+		&.unit
+			&:after
+				content: ''
+				display: none
+				width: 100%
+				height: 100%
+				position: absolute
+				left: 0
+				top: 0
+				background: url(../images/lottery/mask.png) no-repeat
+				background-size: 100% 100%
+			&.active:after
+				display: block
+			&.prize:after
+				background: url(../images/lottery/mask_hl.png) no-repeat
+				background-size: 100% 100%
 
