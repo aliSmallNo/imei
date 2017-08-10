@@ -1,7 +1,7 @@
 {{include file="layouts/header.tpl"}}
 <style>
 	.chart-wrapper {
-		height: 260px;
+		height: 250px;
 	}
 
 	.col-sm-4, .col-sm-8 {
