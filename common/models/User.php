@@ -1526,56 +1526,141 @@ class User extends ActiveRecord
 		// AppUtil::logFile("uid:" . $row["id"] . ' rank: ' . $ranktemp, 5);
 	}
 
-	public static function propStat($beginDate, $endDate)
+
+	protected static function fmtStat($items)
 	{
-		$fmtData = function ($items) {
-			if ($items && count($items) > 6) {
-				$amt = array_sum(array_column($items, 'y'));
-				$limit = round($amt * 0.011);
-				$others = 0;
-				foreach ($items as $k => $item) {
-					if ($item['y'] <= $limit) {
-						$others += $item['y'];
-						unset($items[$k]);
-					}
-				}
-				if ($others) {
-					$items = array_values($items);
-					$items[] = [
-						'name' => '其他',
-						'y' => $others,
-					];
+		if ($items && count($items) > 6) {
+			$amt = array_sum(array_column($items, 'y'));
+			$limit = round($amt * 0.011);
+			$others = 0;
+			foreach ($items as $k => $item) {
+				if ($item['y'] <= $limit) {
+					$others += $item['y'];
+					unset($items[$k]);
 				}
 			}
-			return array_values($items);
+			if ($others) {
+				$items = array_values($items);
+				$items[] = [
+					'name' => '其他',
+					'y' => $others,
+				];
+			}
+		}
+		foreach ($items as $k => $item) {
+			$name = $items[$k]['name'];
+			$items[$k]['name'] = str_replace('万元', '', $name);
+			$name = $items[$k]['name'];
+			$items[$k]['name'] = str_replace('万', '', $name);
+			$name = $items[$k]['name'];
+			$items[$k]['name'] = str_replace('岁~', '~', $name);
+			$name = $items[$k]['name'];
+			$items[$k]['name'] = str_replace('厘米', '', $name);
+		}
+		$items = array_values($items);
+		/*usort($items, function ($a, $b) {
+			return $a['name'] < $b['name'];
+		});*/
+		return $items;
+	}
+
+	static $AgeScope = [
+		[
+			"name" => "20岁及以下",
+			"range" => [0, 20],
+			"y" => 0
+		],
+		[
+			"name" => "21岁~25岁",
+			"range" => [21, 25],
+			"y" => 0
+		],
+		[
+			"name" => "26岁~30岁",
+			"range" => [26, 30],
+			"y" => 0
+		],
+		[
+			"name" => "31岁~35岁",
+			"range" => [31, 35],
+			"y" => 0
+		],
+		[
+			"name" => "36岁~40岁",
+			"range" => [36, 40],
+			"y" => 0
+		],
+		[
+			"name" => "41岁~45岁",
+			"range" => [41, 45],
+			"y" => 0
+		],
+		[
+			"name" => "46岁~55岁",
+			"range" => [46, 55],
+			"y" => 0
+		],
+		[
+			"name" => "56岁及以上",
+			"range" => [56, 200],
+			"y" => 0
+		]
+	];
+
+	public static function propStat($beginDate, $endDate, $gender = '')
+	{
+
+		$fmtRet = function ($ret, $dict) {
+			$itemAll = $itemFemale = $itemMale = [];
+			foreach ($ret as $row) {
+				$val = $row['val'];
+				$cnt = intval($row['co']);
+				$gid = intval($row['gender']);
+				$name = isset($dict[$val]) ? $dict[$val] : '无数据';
+				$item = [
+					"name" => $name,
+					"y" => $cnt
+				];
+				if (isset($itemAll[$val])) {
+					$itemAll[$val]['y'] += $cnt;
+				} else {
+					$itemAll[$val] = $item;
+				}
+				if ($gid == User::GENDER_MALE) {
+					$itemMale[] = $item;
+				} else {
+					$itemFemale[] = $item;
+				}
+			}
+			return [
+				'all' => self::fmtStat($itemAll),
+				'female' => self::fmtStat($itemFemale),
+				'male' => self::fmtStat($itemMale)
+			];
 		};
 
+		$strCriteria = '';
+		if ($gender) {
+			$strCriteria = ' AND uGender=' . $gender;
+		}
 		$role = self::ROLE_SINGLE;
-		$sql = "select COUNT(1) as co ,uIncome as income 
+		$sql = "select COUNT(1) as co ,uIncome as val, uGender as gender
 				from im_user 
-				where uStatus in (0,1,2,8) and uRole=:role and uAddedOn between :sDate and :eDate 
-				GROUP by uIncome";
-		$income = AppUtil::db()->createCommand($sql)->bindValues([
+				where uStatus <8 and uRole=:role AND uGender>9 
+					and uAddedOn between :sDate and :eDate $strCriteria
+				GROUP by uIncome,uGender ";
+		$ret = AppUtil::db()->createCommand($sql)->bindValues([
 			":role" => $role,
 			":sDate" => $beginDate . ' 00:00:00',
 			":eDate" => $endDate . ' 23:59:00',
 		])->queryAll();
 
-		$incomeData = [];
-		foreach ($income as $v) {
-			$item = [
-				"name" => isset(self::$Income[$v["income"]]) ? self::$Income[$v["income"]] : '无数据',
-				"y" => intval($v["co"]),
-			];
-			$incomeData[] = $item;
-		}
-		$incomeData = $fmtData($incomeData);
-
+		$incomeData = $fmtRet($ret, self::$Income);
 
 		$sql = "select COUNT(1) as co ,uGender as gender 
 				from im_user 
 				where uStatus < 8 and uRole=:role AND uGender>9
-					and uAddedOn between :sDate and :eDate 
+					and uAddedOn between :sDate and :eDate $strCriteria
 				GROUP by uGender";
 		$gender = AppUtil::db()->createCommand($sql)->bindValues([
 			":role" => $role,
@@ -1592,95 +1677,45 @@ class User extends ActiveRecord
 		}
 
 
-		$sql = "select COUNT(1) as co ,uHeight as height 
+		$sql = "select COUNT(1) as co ,uHeight as val, uGender as gender
 				from im_user 
-				where uStatus < 8 and uRole=:role and uAddedOn between :sDate and :eDate 
-				GROUP by uHeight";
-		$height = AppUtil::db()->createCommand($sql)->bindValues([
+				where uStatus < 8 and uRole=:role AND uGender>9 
+					and uAddedOn between :sDate and :eDate $strCriteria
+				GROUP by uHeight,uGender";
+		$ret = AppUtil::db()->createCommand($sql)->bindValues([
 			":role" => $role,
 			":sDate" => $beginDate . ' 00:00:00',
 			":eDate" => $endDate . ' 23:59:00',
 		])->queryAll();
-		$heightData = [];
+		$heightData = $fmtRet($ret, self::$Height);
 
-		foreach ($height as $v) {
-			$val = intval($v["co"]);
-			$item = [
-				"name" => isset(self::$Height[$v["height"]]) ? self::$Height[$v["height"]] : '无数据',
-				"y" => $val,
-			];
-			$heightData[] = $item;
-		}
-		$heightData = $fmtData($heightData);
-
-		$sql = "select uBirthYear 
-				from im_user 
-				where uStatus < 8 and uRole=:role AND uBirthYear!=''
-					and uAddedOn between :sDate and :eDate 
-				";
-		$age = AppUtil::db()->createCommand($sql)->bindValues([
+		$sql = 'select count(1) as co,
+				(case when age<=20 THEN 0
+				 when age BETWEEN 21 AND 25 THEN 1
+				 when age BETWEEN 26 AND 30 THEN 2
+				 when age BETWEEN 31 AND 35 THEN 3
+				 when age BETWEEN 36 AND 40 THEN 4
+				 when age BETWEEN 41 AND 45 THEN 6
+				 when age BETWEEN 46 AND 55 THEN 7
+				 else 8 end) as val,
+				 uGender as gender 
+				FROM (select (year(now())- uBirthYear) as age, uGender,uId from im_user 
+						WHERE uStatus < 8 and uRole=:role AND uGender>9 AND uBirthYear>0
+							and uAddedOn between :sDate and :eDate) as t
+				 group by val,gender';
+		$ret = AppUtil::db()->createCommand($sql)->bindValues([
 			":role" => $role,
 			":sDate" => $beginDate . ' 00:00:00',
 			":eDate" => $endDate . ' 23:59:00',
 		])->queryAll();
-		$ageData = [
-			[
-				"name" => "20岁及以下",
-				"range" => [0, 19],
-				"y" => 0
-			],
-			[
-				"name" => "21岁~25岁",
-				"range" => [21, 25],
-				"y" => 0
-			],
-			[
-				"name" => "26岁~30岁",
-				"range" => [26, 30],
-				"y" => 0
-			],
-			[
-				"name" => "31岁~35岁",
-				"range" => [31, 35],
-				"y" => 0
-			],
-			[
-				"name" => "36岁~40岁",
-				"range" => [36, 40],
-				"y" => 0
-			],
-			[
-				"name" => "41岁~45岁",
-				"range" => [41, 45],
-				"y" => 0
-			],
-			[
-				"name" => "46岁~55岁",
-				"range" => [46, 55],
-				"y" => 0
-			],
-			[
-				"name" => "56岁及以上",
-				"range" => [56, 200],
-				"y" => 0
-			]
+		$ageNames = ['20及以下', '21~25', '26~30', '31~35', '36~40', '41~45', '46~55', '56及以上'];
+		$ageData = $fmtRet($ret, $ageNames);
+		return [
+			'age' => $ageData,
+			'income' => $incomeData,
+			'height' => $heightData,
+			'gender' => $genderData
 		];
-		foreach ($age as $v) {
-			$a = date("Y") - $v["uBirthYear"];
-			foreach ($ageData as $key => $val) {
-				list($floor, $ceil) = $val["range"];
-				if ($a > 200) {
-					continue;
-				}
-				if ($a >= $floor && $a <= $ceil) {
-					$ageData[$key]["y"]++;
-				}
-			}
-		}
-		$ageData = $fmtData($ageData);
-		return [$ageData, $incomeData, $heightData, $genderData];
-
-
 	}
 
 }

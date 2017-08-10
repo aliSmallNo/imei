@@ -290,17 +290,11 @@ class ApiController extends Controller
 		$tag = strtolower($tag);
 		$beginDate = self::postParam("beginDate", date("Y-m-01"));
 		$endDate = self::postParam("endDate", date("Y-m-d"));
+		$gender = self::postParam("gender");
 		switch ($tag) {
 			case "stat":
-				list($age, $income, $height, $gender) = User::propStat($beginDate, $endDate);
-				$ret = [
-					"age" => $age,
-					"income" => $income,
-					"height" => $height,
-					"gender" => $gender,
-				];
-
-				return self::renderAPI(0, "", $ret);
+				$ret  = User::propStat($beginDate, $endDate);
+				return self::renderAPI(0, '', $ret);
 		}
 		return self::renderAPI(129, "什么操作也没做啊！");
 	}

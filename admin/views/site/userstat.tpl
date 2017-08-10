@@ -1,7 +1,16 @@
 {{include file="layouts/header.tpl"}}
 <style>
 	.chart-wrapper {
-		height: 360px;
+		height: 280px;
+	}
+
+	.col-sm-4 {
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+
+	.panel-body {
+		padding: 10px;
 	}
 
 	.form-inline .form-control {
@@ -21,64 +30,68 @@
 		</div>
 		<div class="col-lg-10">
 			<div class="row form-inline">
-				<input type="text" class="my-date-input form-control beginDate" name="beginDate" value="{{$beginDate}}"
-							 placeholder="开始时间">
-				<label class="control-label  ">至</label>
-				<input type="text" class="my-date-input form-control endDate" name="endDate" value="{{$endDate}}"
-							 placeholder="结束时间">
+				<input class="my-date-input form-control beginDate" name="beginDate" value="{{$beginDate}}" placeholder="开始时间">
+				<label class="control-label">至</label>
+				<input class="my-date-input form-control endDate" name="endDate" value="{{$endDate}}" placeholder="结束时间">
+				<select class="form-control gender" style="display: none">
+					<option value="">-=全部=-</option>
+					<option value="10">只看女生</option>
+					<option value="11">只看男生</option>
+				</select>
 				<button class="btn btn-primary btnQuery">查询</button>
 			</div>
 		</div>
 	</div>
 	<div class="row-divider"></div>
 	<div class="row">
-		<div class="col-lg-6">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-bar-chart-o fa-fw"></i> 年龄统计
-
-				</div>
-				<div class="panel-body">
-					<div id="age-chart" class="chart-wrapper"></div>
-				</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-bar-chart-o fa-fw"></i> 性别统计
 			</div>
-
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-bar-chart-o fa-fw"></i> 性别统计
-
-				</div>
-				<div class="panel-body">
-					<div id="gender-chart" class="chart-wrapper"></div>
-				</div>
+			<div class="panel-body">
+				<div id="chart_gender" class="chart-wrapper"></div>
 			</div>
 		</div>
-
-		<div class="col-lg-6">
-
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-bar-chart-o fa-fw"></i> 身高统计
-
-				</div>
-				<div class="panel-body">
-					<div id="height-chart" class="chart-wrapper"></div>
-				</div>
-			</div>
-
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-bar-chart-o fa-fw"></i> 收入统计
-				</div>
-				<div class="panel-body">
-					<div id="income-chart" class="chart-wrapper"></div>
-				</div>
-			</div>
-
-		</div>
-
 	</div>
-	<div class="row-divider2"></div>
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-bar-chart-o fa-fw"></i> 全员统计
+				</div>
+				<div class="panel-body">
+					<div id="chart_age" class="chart-wrapper"></div>
+					<div id="chart_income" class="chart-wrapper"></div>
+					<div id="chart_height" class="chart-wrapper"></div>
+				</div>
+			</div>
+
+		</div>
+		<div class="col-sm-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-bar-chart-o fa-fw"></i> 男生统计
+				</div>
+				<div class="panel-body">
+					<div id="chart_age_m" class="chart-wrapper"></div>
+					<div id="chart_income_m" class="chart-wrapper"></div>
+					<div id="chart_height_m" class="chart-wrapper"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-bar-chart-o fa-fw"></i> 女生统计
+				</div>
+				<div class="panel-body">
+					<div id="chart_age_f" class="chart-wrapper"></div>
+					<div id="chart_income_f" class="chart-wrapper"></div>
+					<div id="chart_height_f" class="chart-wrapper"></div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <script src="/js/highcharts/highcharts.js"></script>
 <script src="/js/highcharts/funnel.js"></script>
@@ -86,30 +99,29 @@
 	var mBtnQuery = $('.btnQuery');
 	var mBeginDate = $('.beginDate');
 	var mEndDate = $('.endDate');
-
-	var mAgeAmt = $('#age-chart');
-	var mHeightAmt = $('#height-chart');
-	var mIncomeAmt = $('#income-chart');
-	var mGenderAmt = $('#gender-chart');
+	var mGender = $('.gender');
 
 	function reloadData() {
-		mAgeAmt.html("");
-		mHeightAmt.html("");
-		mGenderAmt.html("");
-		mIncomeAmt.html("");
+		$('.chart-wrapper').html('');
 		layer.load();
 		$.post("/api/userchart", {
 			tag: "stat",
 			beginDate: mBeginDate.val(),
-			endDate: mEndDate.val(),
+			endDate: mEndDate.val()
 		}, function (resp) {
 			layer.closeAll();
 			if (resp.code == 0) {
 				console.log(resp.data);
-				initPie(resp.data.height, "height-chart");
-				initPie(resp.data.income, "income-chart");
-				initPie(resp.data.age, "age-chart");
-				initPie(resp.data.gender, "gender-chart");
+				initPie(resp.data.height.all, "chart_height", '全员身高');
+				initPie(resp.data.height.male, "chart_height_m", '男生身高');
+				initPie(resp.data.height.female, "chart_height_f", '女生身高');
+				initPie(resp.data.income.all, "chart_income", '全员收入');
+				initPie(resp.data.income.male, "chart_income_m", '男生收入');
+				initPie(resp.data.income.female, "chart_income_f", '女生收入');
+				initPie(resp.data.age.all, "chart_age", '全员年龄');
+				initPie(resp.data.age.male, "chart_age_m", '男生年龄');
+				initPie(resp.data.age.female, "chart_age_f", '女生年龄');
+				initPie(resp.data.gender, "chart_gender", '');
 
 			} else {
 				layer.msg(resp.msg);
@@ -124,12 +136,12 @@
 		Highcharts.setOptions(Highcharts.theme);
 	}
 
-	function initPie(cData, pid) {
+	function initPie(cData, pid, title) {
 		setTheme();
-		if (cData && pid != "age-chart") {
+		/*if (cData && pid != "age-chart") {
 			cData[0]["sliced"] = true;
 			cData[0]["selected"] = true;
-		}
+		}*/
 		Highcharts.chart(pid, {
 			chart: {
 				plotBackgroundColor: null,
@@ -138,7 +150,7 @@
 				type: 'pie'
 			},
 			title: {
-				text: null
+				text: title
 			},
 			/*tooltip: {
 			 pointFormat: '{series.name}: {point.percentage:.1f}%'
