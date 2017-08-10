@@ -174,6 +174,7 @@
 						enabled: true,
 						format: '{point.name}: {point.percentage:.1f} %',
 						style: {
+							fontWeight: 300,
 							color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
 						}
 					}
