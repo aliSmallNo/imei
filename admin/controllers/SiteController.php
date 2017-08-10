@@ -754,7 +754,7 @@ class SiteController extends BaseController
 				}
 				if (
 					// !in_array($v["answer"], array_slice(["A", "B", "C", "D", "E", "F", "G"], 0, count($v["options"])))
-					!$v["answer"]
+				!$v["answer"]
 				) {
 					$error[] = "答案格式不对";
 				}
@@ -779,7 +779,7 @@ class SiteController extends BaseController
 
 			if (!$error) {
 				foreach ($insertData as $val) {
-					 QuestionSea::edit(0, $val);
+					QuestionSea::edit(0, $val);
 				}
 				$success = self::ICON_OK_HTML . '修改成功';
 			}
@@ -793,6 +793,18 @@ class SiteController extends BaseController
 				'error' => $error,
 				'detailcategory' => 'site/questions',
 				'category' => 'data',
+			]);
+	}
+
+	// 添加题组
+	public function actionGroup()
+	{
+
+
+		return $this->renderPage('group.tpl',
+			[
+				'category' => 'data',
+				'detailcategory' => 'site/questions',
 			]);
 	}
 }
