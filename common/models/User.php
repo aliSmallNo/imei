@@ -1493,7 +1493,7 @@ class User extends ActiveRecord
 				$I4 *= 0.1;
 				break;
 			case self::SUB_ST_FISH:
-				$I4 *= 1.5;
+				$I4 *= 1.3;
 				break;
 			default:
 				break;

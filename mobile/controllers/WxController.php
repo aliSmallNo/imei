@@ -1118,9 +1118,7 @@ class WxController extends BaseController
 
 	public function actionAgree()
 	{
-		return self::renderPage('agree.tpl',
-			[
-			],
+		return self::renderPage('agree.tpl', [],
 			'terse');
 	}
 
@@ -1138,7 +1136,7 @@ class WxController extends BaseController
 		];
 		return self::renderPage('lottery.tpl',
 			[
-				'gifts'=>$gifts
+				'gifts' => $gifts
 			],
 			'terse',
 			'微媒100-幸运抽奖',
