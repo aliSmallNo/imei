@@ -150,10 +150,7 @@
 
 	function initPie(cData, pid, title) {
 		setTheme();
-		/*if (cData && pid != "age-chart") {
-			cData[0]["sliced"] = true;
-			cData[0]["selected"] = true;
-		}*/
+
 		Highcharts.chart(pid, {
 			chart: {
 				plotBackgroundColor: null,
