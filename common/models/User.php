@@ -1710,11 +1710,38 @@ class User extends ActiveRecord
 		])->queryAll();
 		$ageNames = ['20及以下', '21~25', '26~30', '31~35', '36~40', '41~45', '46~55', '56及以上'];
 		$ageData = $fmtRet($ret, $ageNames);
+
+		$sql = 'select count(DISTINCT aUId) as cnt, DATE_FORMAT(aDate,\'%H\') as hr, uGender as gender
+			 from im_log_action as a  
+			 JOIN im_user as u on u.uId=a.aUId
+			 WHERE u.uGender>9 AND uRole=:role AND aDate BETWEEN :sDate AND :eDate
+			 GROUP BY hr,gender';
+		$ret = AppUtil::db()->createCommand($sql)->bindValues([
+			":role" => $role,
+			":sDate" => $beginDate . ' 00:00:00',
+			":eDate" => $endDate . ' 23:59:00',
+		])->queryAll();
+		$times = [];
+		for ($k = 0; $k < 24; $k++) {
+			$times[$k] = [
+				'date' => $k . '点',
+				'男生' => 0,
+				'女生' => 0,
+			];
+		}
+		foreach ($ret as $row) {
+			$hr = intval($row['hr']);
+			$gid = $row['gender'] == self::GENDER_MALE ? '男生' : '女生';
+			$times[$hr][$gid] = intval($row['cnt']);
+		}
+		$times = array_values($times);
+
 		return [
 			'age' => $ageData,
 			'income' => $incomeData,
 			'height' => $heightData,
-			'gender' => $genderData
+			'gender' => $genderData,
+			'times' => $times
 		];
 	}
 

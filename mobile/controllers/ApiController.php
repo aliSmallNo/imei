@@ -225,6 +225,7 @@ class ApiController extends Controller
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
+				LogAction::add($wxInfo['uId'], $openId, LogAction::ACTION_MATCH_LIST);
 				list($items, $nextPage) = User::topMatcher($wxInfo['uId'], $page);
 				return self::renderAPI(0, '', [
 					'items' => $items,
@@ -261,7 +262,7 @@ class ApiController extends Controller
 					$msg = UserAudit::reasonMsg($wxInfo["uId"]);
 					return self::renderAPI(129, $msg);
 				}
-
+				LogAction::add($wxInfo['uId'], $openId, LogAction::ACTION_SIGN);
 				list($amt, $unit) = UserSign::sign($wxInfo['uId']);
 				if ($amt) {
 					return self::renderAPI(0, '今日签到获得' . $amt . $unit . '奖励，请明天继续~',
@@ -359,6 +360,11 @@ class ApiController extends Controller
 					}
 					User::edit($openId, ["uFilter" => json_encode($filter, JSON_UNESCAPED_UNICODE)]);
 				}
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				LogAction::add($wxInfo['uId'], $openId, LogAction::ACTION_SINGLE_LIST);
 				$ret = User::getFilter($openId, $filter, $page);
 				return self::renderAPI(0, '', $ret);
 			case "mymp":
@@ -388,8 +394,9 @@ class ApiController extends Controller
 				if (UserNet::hasBlack($wxInfo["uId"], AppUtil::decrypt($id))) {
 					return self::renderAPI(129, self::MSG_BLACK);
 				}
-
-				$ret = UserNet::hint($wxInfo["uId"], $id, $f);
+				LogAction::add($wxInfo['uId'], $openId,
+					$f == 'yes' ? LogAction::ACTION_FAVOR : LogAction::ACTION_UNFAVOR);
+				UserNet::hint($wxInfo["uId"], $id, $f);
 				return self::renderAPI(0, '', ["hint" => 1]);
 			case "wxname":
 				$wname = self::postParam("wname");

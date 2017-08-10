@@ -8,7 +8,6 @@
 
 namespace common\models;
 
-
 use common\utils\AppUtil;
 use yii\db\ActiveRecord;
 
@@ -17,6 +16,11 @@ class LogAction extends ActiveRecord
 	const ACTION_LOGIN = 1000;
 	const ACTION_SINGLE = 1002;
 	const ACTION_MATCH = 1004;
+	const ACTION_SINGLE_LIST = 1010;
+	const ACTION_MATCH_LIST = 1012;
+	const ACTION_SIGN = 1014;
+	const ACTION_FAVOR = 1016;
+	const ACTION_UNFAVOR = 1018;
 	const ACTION_ALBUM_DEL = 1020;
 	const ACTION_ALBUM_ADD = 1025;
 	const ACTION_CHAT = 1040;
@@ -25,6 +29,11 @@ class LogAction extends ActiveRecord
 		self::ACTION_LOGIN => "登录",
 		self::ACTION_SINGLE => "To单身页",
 		self::ACTION_MATCH => "To媒婆页",
+		self::ACTION_SIGN => "签到",
+		self::ACTION_FAVOR => "心动",
+		self::ACTION_UNFAVOR => "取消心动",
+		self::ACTION_SINGLE_LIST => "刷新单身列表",
+		self::ACTION_MATCH_LIST => "刷新媒婆列表",
 		self::ACTION_ALBUM_DEL => "删除照片",
 		self::ACTION_ALBUM_ADD => "添加照片",
 		self::ACTION_CHAT => "进入聊天"
@@ -119,8 +128,7 @@ class LogAction extends ActiveRecord
 
 			$sql = "select COUNT(DISTINCT aUId) as co,GROUP_CONCAT(DISTINCT aUId) as uids
  						from im_log_action
-						where aUId in ($uIds)
-						 and aDate BETWEEN :stime AND :etime AND aCategory in (1000,1002,1004) ";
+						where aUId in ($uIds) and aDate BETWEEN :stime AND :etime AND aCategory > 1000 ";
 			for ($i = 2; $i < count($times); $i = $i + 2) {
 				$res = $conn->createCommand($sql)->bindValues([
 					"stime" => $times[$i],

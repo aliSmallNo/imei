@@ -4,7 +4,7 @@
 		height: 280px;
 	}
 
-	.col-sm-4 {
+	.col-sm-4, .col-sm-8 {
 		padding-left: 5px;
 		padding-right: 5px;
 	}
@@ -44,12 +44,24 @@
 	</div>
 	<div class="row-divider"></div>
 	<div class="row">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<i class="fa fa-bar-chart-o fa-fw"></i> 性别统计
+		<div class="col-sm-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-bar-chart-o fa-fw"></i> 性别统计
+				</div>
+				<div class="panel-body">
+					<div id="chart_gender" class="chart-wrapper"></div>
+				</div>
 			</div>
-			<div class="panel-body">
-				<div id="chart_gender" class="chart-wrapper"></div>
+		</div>
+		<div class="col-sm-8">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-bar-chart-o fa-fw"></i> 每个时段操作人数统计
+				</div>
+				<div class="panel-body">
+					<div id="chart_times" class="chart-wrapper"></div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -122,7 +134,7 @@
 				initPie(resp.data.age.male, "chart_age_m", '男生年龄');
 				initPie(resp.data.age.female, "chart_age_f", '女生年龄');
 				initPie(resp.data.gender, "chart_gender", '');
-
+				initChart(resp.data.times, "chart_times", '');
 			} else {
 				layer.msg(resp.msg);
 			}
@@ -176,6 +188,105 @@
 				colorByPoint: true,
 				data: cData
 			}]
+		});
+	}
+
+	function initChart(data, pid, title) {
+		dates = [];
+		todayData = [];
+		yesterdayData = [];
+		for (var i = 0; i < data.length; i++) {
+			dates[i] = data[i]['date'];
+			todayData.push([
+				data[i]['date'],
+				data[i]['男生']
+			]);
+			yesterdayData.push([
+				data[i]['date'],
+				data[i]['女生']
+			]);
+		}
+
+		$('#' + pid).highcharts({
+			chart: {
+				type: 'spline',
+				marginTop: 25
+			},
+			title: {
+				text: null
+			},
+			colors: ['#f06292', '#1976D2'],
+			tooltip: {
+				shared: true,
+				crosshairs: {
+					width: 1,
+					color: '#b8b8b8',
+					dashStyle: 'Solid'
+				}
+			},
+			xAxis: {
+				type: 'category',
+				tickInterval: 1,
+				tickWidth: 0,
+				labels: {
+					rotation: -45,
+					style: {
+						fontSize: '10px'
+					}
+				},
+				gridLineColor: '#e8e8e8',
+				gridLineWidth: 1,
+				gridLineDashStyle: 'ShortDash'
+			},
+			yAxis: {
+				min: 0,
+				title: {
+					text: null
+				},
+				gridLineDashStyle: 'ShortDash'
+			},
+			plotOptions: {
+				series: {
+					marker: {
+						states: {
+							hover: {
+								enabled: true,
+								lineWidthPlus: 1,
+								radiusPlus: 4,
+								//radius: 4,
+								fillColor: '#fff',
+								lineColor: '#b8b8b8',
+								lineWidth: 1
+							}
+						},
+						radius: 1,
+						symbol: 'circle'
+					},
+					lineWidth: 3
+				}
+			},
+			legend: {
+				enabled: true,
+				align: 'center',
+				//verticalAlign:'middle'
+			},
+			series: [
+				{
+					name: '女生',
+					data: yesterdayData,
+				},
+				{
+					name: '男生',
+					data: todayData,
+					marker: {
+						states: {
+							hover: {
+								lineColor: '#44b549'
+							}
+						}
+					}
+				}
+			]
 		});
 	}
 
