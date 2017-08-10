@@ -106,10 +106,9 @@ class Menu
 						"level" => 820
 					],
 					[
-						"name" => "整体趋势",
-						"url" => "/site/trends",
+						"name" => "用户答题",
+						"url" => "/site/questions",
 						"revise" => 1,
-						"hidden" => 1,
 						"level" => 825
 					]
 				]

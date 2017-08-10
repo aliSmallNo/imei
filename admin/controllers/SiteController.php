@@ -9,6 +9,7 @@ use common\models\City;
 use common\models\Feedback;
 use common\models\LogAction;
 use common\models\Mark;
+use common\models\QuestionSea;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserBuzz;
@@ -626,7 +627,6 @@ class SiteController extends BaseController
 		);
 	}
 
-
 	public function actionChat()
 	{
 		$getInfo = Yii::$app->request->get();
@@ -673,6 +673,7 @@ class SiteController extends BaseController
 		);
 	}
 
+	// 用户分析
 	public function actionUserstat()
 	{
 		$StatusColors = [
@@ -696,5 +697,102 @@ class SiteController extends BaseController
 				"colors" => json_encode(array_values($StatusColors))
 			]
 		);
+	}
+
+	// 用户题库
+	public function actionQuestions()
+	{
+		$page = self::getParam("page", 1);
+		$name = self::getParam('name');
+
+		$params = $criteria = [];
+		if ($name) {
+			$criteria[] = "  uName like :name ";
+			$params[':name'] = "%$name%";
+		}
+
+		list($list, $count) = QuestionSea::items($criteria, $params, $page);
+
+		$pagination = self::pagination($page, $count);
+
+		return $this->renderPage('questions.tpl',
+			[
+				'list' => $list,
+				"name" => $name,
+				'pagination' => $pagination,
+				'category' => 'data',
+			]);
+	}
+
+	public function actionQuestion()
+	{
+		$id = self::getParam("id");
+		$sign = self::postParam("sign");
+		$success = [];
+		$error = [];
+		$data = [
+			[
+				"answer" => "",
+				"title" => "",
+				"options" => [
+					[
+						"opt" => "A",
+						"text" => "",
+					]
+				],
+			]
+		];
+		if ($sign) {
+			$data = self::postParam("data");
+			$id = self::postParam("id");
+			$data = json_decode($data, 1);
+			$insertData = [];
+			foreach ($data as $k => $v) {
+				$insertItem = [];
+				if (!$v["title"]) {
+					$error[] = "题干没填写";
+				}
+				if (
+					// !in_array($v["answer"], array_slice(["A", "B", "C", "D", "E", "F", "G"], 0, count($v["options"])))
+					!$v["answer"]
+				) {
+					$error[] = "答案格式不对";
+				}
+				if (count($v["options"]) <= 1) {
+					$error[] = "选项太少";
+				}
+				foreach ($v["options"] as $op) {
+					if (!$op["text"]) {
+						$error[] = "选项内容不全";
+					}
+				}
+
+				$insertItem["qAddedBy"] = Admin::getAdminId();
+				$insertItem["qTitle"] = $v["title"];
+				$insertItem["qRaw"] = json_encode([
+					"title" => $v["title"],
+					"options" => $v["options"],
+					"anwser" => $v["answer"]
+				]);
+				$insertData[] = $insertItem;
+			}
+
+			if (!$error) {
+				foreach ($insertData as $val) {
+					 QuestionSea::edit(0, $val);
+				}
+				$success = self::ICON_OK_HTML . '修改成功';
+			}
+		}
+
+		return $this->renderPage('question.tpl',
+			[
+				"userInfo" => [],
+				"data" => $data,
+				'success' => $success,
+				'error' => $error,
+				'detailcategory' => 'site/questions',
+				'category' => 'data',
+			]);
 	}
 }
