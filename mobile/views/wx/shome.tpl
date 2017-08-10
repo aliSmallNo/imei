@@ -67,7 +67,7 @@
 		<p>
 			<a class="chat btn-chat" data-id="{{$uInfo.encryptId}}">私信TA</a>
 		</p>
-		<p>
+		<p style="display: none">
 			<a class="weixin btn-apply" data-id="{{$uInfo.encryptId}}">加微信聊聊</a>
 		</p>
 		{{else}}

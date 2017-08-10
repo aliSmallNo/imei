@@ -736,10 +736,12 @@
 			<div class="des"><b>“</b>{[.]}<b>”</b></div>{[/comment]}
 		</div>
 		{[#singleF]}
-		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-give"></a>
-		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-like {[favor]}"></a>
-		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-chat"></a>
-		<a href="javascript:;" data-id="{[secretId]}" class="btn btn-apply"></a>
+		<div class="single-bar">
+			<a href="javascript:;" data-id="{[secretId]}" class="btn btn-give"></a>
+			<a href="javascript:;" data-id="{[secretId]}" class="btn btn-like {[favor]}"></a>
+			<a href="javascript:;" data-id="{[secretId]}" class="btn btn-chat"></a>
+			<a href="javascript:;" data-id="{[secretId]}" class="btn btn-apply" style="display: none"></a>
+		</div>
 		{[/singleF]}
 	</li>
 	{[/data]}

@@ -2688,35 +2688,45 @@ section {
   border-top: 1px solid #E4E4E4;
   border-bottom: 1px solid #E4E4E4;
   position: relative; }
-  .m-top-users li .btn {
+  .m-top-users li .single-bar {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
     position: absolute;
-    top: 30.8rem;
-    display: inline-block;
-    width: 44px;
-    height: 44px;
-    border-radius: 22px;
-    overflow: hidden;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1); }
-    .m-top-users li .btn.btn-give {
-      background: #fff url(../images/ico_rose.png) no-repeat center center;
-      background-size: 20px 20px;
-      right: 170px; }
-    .m-top-users li .btn.btn-like {
-      background: #fff url(../images/ico_like_pink.png) no-repeat center center;
-      background-size: 28px 28px;
-      right: 120px; }
-      .m-top-users li .btn.btn-like.favor {
-        background: #fff url(../images/ico_like_pink_hl.png) no-repeat center center;
+    top: 27.5rem;
+    left: 0;
+    right: 0;
+    text-align: right;
+    padding: 0 0.6rem;
+    display: block; }
+    .m-top-users li .single-bar a {
+      display: inline-block;
+      width: 44px;
+      height: 44px;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
+      margin-right: 0.6rem; }
+      .m-top-users li .single-bar a.btn-give {
+        background: #fff url(../images/ico_rose.png) no-repeat center center;
+        background-size: 20px 20px;
+        right: 170px; }
+      .m-top-users li .single-bar a.btn-like {
+        background: #fff url(../images/ico_like_pink.png) no-repeat center center;
         background-size: 28px 28px;
-        padding: 0; }
-    .m-top-users li .btn.btn-chat {
-      background: #fff url(../images/ico_chat.png) no-repeat center center;
-      background-size: 28px 28px;
-      right: 68px; }
-    .m-top-users li .btn.btn-apply {
-      background: #fff url(../images/ico_wechat.png) no-repeat center center;
-      background-size: 28px 28px;
-      right: 15px; }
+        right: 120px; }
+        .m-top-users li .single-bar a.btn-like.favor {
+          background: #fff url(../images/ico_like_pink_hl.png) no-repeat center center;
+          background-size: 28px 28px;
+          padding: 0; }
+      .m-top-users li .single-bar a.btn-chat {
+        background: #fff url(../images/ico_chat.png) no-repeat center center;
+        background-size: 28px 28px;
+        right: 68px; }
+      .m-top-users li .single-bar a.btn-apply {
+        background: #fff url(../images/ico_wechat.png) no-repeat center center;
+        background-size: 28px 28px;
+        right: 15px; }
   .m-top-users li .rcmd {
     position: relative; }
     .m-top-users li .rcmd img {
@@ -2738,7 +2748,9 @@ section {
       font-size: 2rem; }
   .m-top-users li .head {
     position: relative;
-    display: block; }
+    display: block;
+    overflow: hidden;
+    height: 29rem; }
     .m-top-users li .head:after {
       content: "";
       width: 0;
