@@ -56,7 +56,7 @@ class QuestionSea extends ActiveRecord
 
 		foreach ($res as &$v) {
 			$options = json_decode($v["qRaw"], 1);
-			$v["anwser"] = $options["anwser"];
+			$v["answer"] = $options["answer"];
 			$v["options"] = $options["options"];
 		}
 
