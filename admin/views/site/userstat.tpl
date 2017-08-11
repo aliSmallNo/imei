@@ -1,7 +1,7 @@
 {{include file="layouts/header.tpl"}}
 <style>
 	.chart-wrapper {
-		height: 280px;
+		height: 250px;
 	}
 
 	.col-sm-4, .col-sm-8 {
@@ -123,7 +123,6 @@
 		}, function (resp) {
 			layer.closeAll();
 			if (resp.code == 0) {
-				console.log(resp.data);
 				initPie(resp.data.height.all, "chart_height", '全员身高');
 				initPie(resp.data.height.male, "chart_height_m", '男生身高');
 				initPie(resp.data.height.female, "chart_height_f", '女生身高');
@@ -150,10 +149,7 @@
 
 	function initPie(cData, pid, title) {
 		setTheme();
-		/*if (cData && pid != "age-chart") {
-			cData[0]["sliced"] = true;
-			cData[0]["selected"] = true;
-		}*/
+
 		Highcharts.chart(pid, {
 			chart: {
 				plotBackgroundColor: null,
@@ -177,6 +173,7 @@
 						enabled: true,
 						format: '{point.name}: {point.percentage:.1f} %',
 						style: {
+							fontWeight: 300,
 							color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
 						}
 					}
@@ -192,18 +189,16 @@
 	}
 
 	function initChart(data, pid, title) {
-		dates = [];
-		todayData = [];
-		yesterdayData = [];
-		for (var i = 0; i < data.length; i++) {
-			dates[i] = data[i]['date'];
-			todayData.push([
-				data[i]['date'],
-				data[i]['男生']
+		var dates = [], mainData = [], subData = [];
+		for (var k = 0; k < data.length; k++) {
+			dates[k] = data[k]['date'];
+			mainData.push([
+				data[k]['date'],
+				data[k]['男生']
 			]);
-			yesterdayData.push([
-				data[i]['date'],
-				data[i]['女生']
+			subData.push([
+				data[k]['date'],
+				data[k]['女生']
 			]);
 		}
 
@@ -262,29 +257,22 @@
 						radius: 1,
 						symbol: 'circle'
 					},
-					lineWidth: 3
+					lineWidth: 2
 				}
 			},
 			legend: {
 				enabled: true,
-				align: 'center',
+				align: 'center'
 				//verticalAlign:'middle'
 			},
 			series: [
 				{
 					name: '女生',
-					data: yesterdayData,
+					data: subData
 				},
 				{
 					name: '男生',
-					data: todayData,
-					marker: {
-						states: {
-							hover: {
-								lineColor: '#44b549'
-							}
-						}
-					}
+					data: mainData,
 				}
 			]
 		});
