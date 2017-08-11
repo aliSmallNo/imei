@@ -2,6 +2,7 @@ $mainColor: #f06292
 //#feb7ac
 $mainColorLight: lighten($mainColor, 8%)
 $mainColorLighter: lighten($mainColor, 24%)
+
 $mainColorDark: darken($mainColor, 6%)
 $white: #fff
 $fontColor: #363438
@@ -17,7 +18,7 @@ $greenLight: #afdb64
 $yellowColor: #fdd835
 $rewardColor: #f9cd9a
 $hintColor: #fff59d
-
+$greetingBg: #fce4ec
 $rewardColorLight: lighten($rewardColor, 6%)
 $tipColor: #f80
 $moneyColor: #f60
@@ -1288,6 +1289,22 @@ section
 	display: inline-block
 	vertical-align: middle
 
+.i-mark-rose
+	background: url(../images/ico_rose.png) no-repeat center center
+	background-size: 100% 100%
+	width: 1.5rem
+	height: 1.5rem
+	display: inline-block
+	vertical-align: middle
+
+.i-mark-favor
+	background: url(../images/ico_mark_heart.png) no-repeat center center
+	background-size: 100% 100%
+	width: 1.5rem
+	height: 1.5rem
+	display: inline-block
+	vertical-align: middle
+
 .line-bottom
 	margin-bottom: .5rem
 
@@ -2345,6 +2362,14 @@ section
 			@include borderBox
 			padding: 0
 			overflow: hidden
+			.m-popup-close
+				position: absolute
+				right: .3rem
+				top: .3rem
+				width: 3.4rem
+				height: 3.4rem
+				background: url(../images/ico_close_gray.png) no-repeat center center
+				background-size: 1.8rem 1.8rem
 			&.no-bg
 				background: none
 				box-shadow: none
@@ -5276,4 +5301,36 @@ section
 			&.prize:after
 				background: url(../images/lottery/mask_hl.png) no-repeat
 				background-size: 100% 100%
+
+.greeting
+	text-align: left
+	background: $greetingBg
+	margin: 0
+	padding: 1.5rem
+	border-radius: .5rem
+	position: relative
+	&:before
+		content: ''
+		position: absolute
+		display: inline-block
+		background: url(../images/logo_wsm.png) no-repeat center center
+		background-size: 100% 100%
+		width: 6rem
+		height: 2.4rem
+		left: 1rem
+		top: 1rem
+	h4
+		text-align: center
+		font-size: 2rem
+		font-weight: $weightBold
+		line-height: 4rem
+		color: $mainColor
+	ol
+		margin: 0
+		padding: .5rem .5rem 1rem 1.5rem
+		li
+			font-size: 1.4rem
+			font-weight: $weightNormal
+			padding-bottom: .5rem
+
 

@@ -77,8 +77,8 @@
 		<div class="m-rows line-bottom wx-hint">
 			<!--a href="javascript:;" to="addMeWx" id="pending_applications" ><span class="title">加我微信的人</span> </a>
 			<a href="javascript:;" to="IaddWx"><span class="title">我加微信的人</span> </a-->
-			<a href="javascript:;" to="heartbeat"><span class="title">心动列表</span> </a>
-			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">媒桂花账户</span></a>
+			<a href="javascript:;" to="heartbeat"><span class="title">心动列表</span> <i class="i-mark-favor"></i></a>
+			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">媒桂花账户</span> <i class="i-mark-rose"></i></a>
 			<a href="/wx/sqr"><span class="title">分享给朋友</span></a>
 			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span class="tip">已认证</span>{{/if}}</a>
 		</div>
@@ -1023,7 +1023,6 @@
 	<div class="topup-wrap">
 		<h4>我要跟TA密聊</h4>
 		<h5>先捐助我们些媒桂花吧~</h5>
-		<a href="javascript:;" class="btn-topup-close"></a>
 		<div class="topup-opt clearfix">
 			{[#items]}
 			<a href="javascript:;" data-amt="{[amt]}">
@@ -1043,13 +1042,13 @@
 			<p>没有媒桂花了，分享到朋友圈，收获奖励<br>但是一天内只奖励一次哦~</p>
 			<a href="/wx/sqr" class="btn">分享到朋友圈</a>
 		</div>
+		<a href="javascript:;" class="m-popup-close"></a>
 	</div>
 </script>
 <script type="text/template" id="tpl_give">
 	<div class="topup-wrap">
 		<h4>送TA媒桂花</h4>
 		<h5>助力我的神上排行榜</h5>
-		<a href="javascript:;" class="btn-topup-close"></a>
 		<div class="topup-opt clearfix">
 			{[#items]}
 			<a href="javascript:;" data-amt="{[amt]}">
@@ -1066,10 +1065,24 @@
 		<div class="topup-bot">
 			<a href="javascript:;">送花给TA，你会有意外惊喜哦~</a>
 		</div>
+		<a href="javascript:;" class="m-popup-close"></a>
 	</div>
 </script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
+</script>
+<script type="text/template" id="tpl_greeting">
+	{{if $greeting}}
+	<div class="greeting">
+		<h4>{{$greeting.title}}</h4>
+		<ol>
+			{{foreach from=$greeting.items item=item}}
+			<li>{{$item}}</li>
+			{{/foreach}}
+		</ol>
+		<a href="javascript:;" class="m-popup-close"></a>
+	</div>
+	{{/if}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>

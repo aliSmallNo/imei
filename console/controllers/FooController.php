@@ -468,14 +468,14 @@ class FooController extends Controller
 		$sql = 'select u.uId, u.uName,u.uPhone 
 			 from im_user as u 
 			 join im_user_wechat as w on w.wUId=u.uId
-			 where IFNULL(w.wSubscribe,0)=0 and u.uStatus<9 and uPhone !=\'\' 
+			 where IFNULL(w.wSubscribe,0)=1 and u.uStatus<9 and uPhone !=\'\' 
 			 group by u.uId,u.uName,u.uPhone';
 		$ret = $conn->createCommand($sql)->queryAll();
 		foreach ($ret as $row) {
 			$phone = $row['uPhone'];
 			QueueUtil::loadJob('sendSMS', [
 				'phone' => $phone,
-				'msg' => '各位微媒100用户，你好！现隆重邀请您参加微媒100用户东台见面会，现征集报名，只有8个名额哦。见面会主要的目的是听取你的想法、建议，进行互动、访谈。现场会有丰厚奖励等您来拿，赶快在微信里回复公众号，参加报名吧！',
+				'msg' => '诚邀你本周日下午2点参加微媒100东台用户见面会，跟我们面对面对话和互动。现场会有丰厚奖品等您来拿，名额有限，先报先得。确认参加请于本周日前在微媒100公众号里回复我报名',
 				'rnd' => 110
 			]);
 		}
@@ -484,9 +484,15 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$a1 = array("Dog", "Cat", "Horse", "Bird");
-		$a2 = [['name' => "Tiger"], ['name' => "Lion"]];
-		array_splice($a1, 3, 0, $a2);
-		var_dump($a1);
+		$a = ['除去索要微信号功能',
+			'发起聊天需要消耗至少10朵媒桂花，如果对方无回复，5天后原数退回',
+			'新增分享到朋友圈送媒桂花活动。每天只奖励一次',
+			'七夕选出你心中的男神女神活动上线，可进入花粉排行榜查看排名',
+			'新上线送花功能可以对喜欢的人送花，助力TA上花粉排行榜',
+			'新增黑名单功能。进入TA的主页，点击举报拉黑，举报原因选择加入黑名单即可。黑名单的TA无法再和你聊天了'
+		];
+//		echo  json_encode($a, JSON_UNESCAPED_UNICODE);
+		AppUtil::logFile(json_encode($a, JSON_UNESCAPED_UNICODE), 5, __FUNCTION__);
+
 	}
 }

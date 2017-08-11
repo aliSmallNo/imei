@@ -81,4 +81,23 @@ class UserAudit extends ActiveRecord
 		return $str;
 	}
 
+	public static function invalid($uid, $conn = '')
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$sql = 'select count(1)
+			 from im_user_audit as a
+			 join im_user as u on u.uId=a.aUId
+			 where aUId=:uid and aUStatus=:st and aValid=:valid and u.uStatus=:st';
+		$ret = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':st' => User::STATUS_INVALID,
+			':valid' => self::VALID_FAIL,
+		])->queryScalar();
+		if ($ret) {
+			return true;
+		}
+		return false;
+	}
 }
