@@ -273,13 +273,6 @@
 				{
 					name: '男生',
 					data: mainData,
-					marker: {
-						states: {
-							hover: {
-								lineColor: '#44b549'
-							}
-						}
-					}
 				}
 			]
 		});
