@@ -37,33 +37,6 @@ class QuestionGroup extends ActiveRecord
 		return true;
 	}
 
-	public static function items($criteria, $params, $page = 1, $pageSize = 20)
-	{
-		$conn = AppUtil::db();
-		$strCriteria = '';
-		if ($criteria) {
-			$strCriteria = ' AND ' . implode(' AND ', $criteria);
-		}
-		$limit = "limit " . ($page - 1) * $pageSize . "," . $pageSize;
-		$sql = "select * from im_question_sea 
-				WHERE qId>0 $strCriteria
-				order by qUpdatedOn desc $limit";
-		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
-
-		$sql = "select count(*) as co from im_question_sea 
-				WHERE qId>0 $strCriteria ";
-		$count = $conn->createCommand($sql)->bindValues($params)->queryOne();
-		$count = $count ? $count["co"] : 0;
-
-		foreach ($res as &$v) {
-			$options = json_decode($v["qRaw"], 1);
-			$v["answer"] = $options["anwser"];
-			$v["options"] = $options["options"];
-		}
-
-		return [$res, $count];
-	}
-
 	public static function findByKeyWord($word)
 	{
 		if (!$word) {
@@ -75,11 +48,26 @@ class QuestionGroup extends ActiveRecord
 			return [];
 		}
 		foreach ($res as &$v) {
-			$options = \GuzzleHttp\json_decode($v["qRaw"], 1);
-			$v["options"] = $options["options"];
-			$v["answer"] = $options["answer"];
+			$v = QuestionSea::fmt($v);
 		}
 		return $res;
+	}
+
+
+	public static function findRecent()
+	{
+		$conn = AppUtil::db();
+		$sql = "SELECT gItems from im_question_group ORDER BY gId desc limit 1";
+		$ids = $conn->createCommand($sql)->queryOne();
+		$ids = $ids ? $ids["gItems"] : 0;
+
+		$sql = "SELECT * from im_question_sea where qId in ($ids) ORDER  BY qUpdatedOn asc ";
+		$res = $conn->createCommand($sql)->queryAll();
+		foreach ($res as &$v) {
+			$v = QuestionSea::fmt($v);
+		}
+		return $res;
+
 	}
 
 }

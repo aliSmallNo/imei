@@ -55,12 +55,19 @@ class QuestionSea extends ActiveRecord
 		$count = $count ? $count["co"] : 0;
 
 		foreach ($res as &$v) {
-			$options = json_decode($v["qRaw"], 1);
-			$v["answer"] = $options["answer"];
-			$v["options"] = $options["options"];
+			$v = self::fmt($v);
 		}
 
 		return [$res, $count];
+	}
+
+	public static function fmt($data)
+	{
+		$options = json_decode($data["qRaw"], 1);
+		$data["answer"] = $options["answer"];
+		$data["options"] = $options["options"];
+		$data["mult"] = strlen($options["answer"]) > 1 ? 1 : 0;
+		return $data;
 	}
 
 	public static function findByKeyWord($word)
@@ -74,9 +81,7 @@ class QuestionSea extends ActiveRecord
 			return 0;
 		}
 		foreach ($res as &$v) {
-			$options = \GuzzleHttp\json_decode($v["qRaw"], 1);
-			$v["options"] = $options["options"];
-			$v["answer"] = $options["answer"];
+			$v = QuestionSea::fmt($v);
 		}
 		return $res;
 	}
