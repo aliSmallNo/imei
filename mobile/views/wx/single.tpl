@@ -965,7 +965,7 @@
 			<div class="avatar">
 				<img src="{[avatar]}">
 			</div>
-			<h4>{[name]}<i class="vip"></i></h4>
+			<h4>{[name]}<!--i class="vip"></i--></h4>
 			<p class="note">{[intro]}</p>
 			<span class="btn-s-1 s1">TA的单身团({[cnt]})</span>
 		</a>
