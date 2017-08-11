@@ -75,31 +75,32 @@
 			<a href="/wx/card" class=""><span class="title">我的身份卡</span></a>
 		</div>
 		<div class="m-rows line-bottom wx-hint">
-			<a href="javascript:;" to="addMeWx" id="pending_applications"><span class="title">加我微信的人</span> </a>
-			<a href="javascript:;" to="IaddWx"><span class="title">我加微信的人</span> </a>
+			<!--a href="javascript:;" to="addMeWx" id="pending_applications" ><span class="title">加我微信的人</span> </a>
+			<a href="javascript:;" to="IaddWx"><span class="title">我加微信的人</span> </a-->
 			<a href="javascript:;" to="heartbeat"><span class="title">心动列表</span> </a>
-
+			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">媒桂花账户</span></a>
+			<a href="/wx/sqr"><span class="title">分享给朋友</span></a>
+			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span class="tip">已认证</span>{{/if}}</a>
 		</div>
-		<div class="m-rows line-bottom mymp">
+		<div class="m-rows line-bottom mymp" style="display: none">
 			<a href="/wx/invite"><span class="title">我的媒婆</span> <span class="tip">{{$mpName}}</span></a>
 			<a href="javascript:;" to="focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
-			<a href="/wx/sqr"><span class="title">分享给朋友</span></a>
-			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">媒桂花账户</span></a>
-			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span class="tip">已认证</span>{{/if}}</a>
+			<a href="/wx/fansrank"><span>花粉排行榜</span></a>
+			<a href="/wx/favor"><span>心动排行榜</span></a>
+		</div>
+		<div class="m-rows line-bottom">
 			<a href="/wx/notice">
 				<span class="title">通知</span>
 				{{if $noReadFlag}}
 				<span class="noReadFlag"></span>
 				{{/if}}
 			</a>
-			<a href="/wx/favor"><span>心动周排行榜</span></a>
-			<a href="/wx/fansrank"><span>花粉周排行榜</span></a>
-			<a href="#sfeedback"><span class="title">意见反馈</span> </a>
-			<a href="#myWechatNo"><span class="title">我的微信号</span></a>
-			<a href="/wx/splay"><span class="title">单身玩法</span></a>
+			<!--a href="#myWechatNo"><span class="title">我的微信号</span></a-->
 			<a href="/wx/blacklist"><span class="title">黑名单</span></a>
+			<a href="#sfeedback"><span class="title">意见反馈</span> </a>
+			<a href="/wx/splay"><span class="title">单身玩法</span></a>
 			<a href="/wx/agree"><span class="title">用户协议</span></a>
 		</div>
 	</div>
@@ -674,7 +675,7 @@
 	<li>
 		<a href="javascript:;" data-id={[encryptId]}" data-nid="{[nid]}" class="sprofile">
 		<div class="plist-l">
-			<img src="{[avatar]}">
+			<img src="{[thumb]}">
 		</div>
 		<div class="plist-r">
 			<p>{[name]}</p>
@@ -964,7 +965,7 @@
 			<div class="avatar">
 				<img src="{[avatar]}">
 			</div>
-			<h4>{[name]}<i class="vip"></i></h4>
+			<h4>{[name]}<!--i class="vip"></i--></h4>
 			<p class="note">{[intro]}</p>
 			<span class="btn-s-1 s1">TA的单身团({[cnt]})</span>
 		</a>
@@ -1046,8 +1047,8 @@
 </script>
 <script type="text/template" id="tpl_give">
 	<div class="topup-wrap">
-		<h4>送花给TA</h4>
-		<h5>&nbsp;</h5>
+		<h4>送TA媒桂花</h4>
+		<h5>助力我的神上排行榜</h5>
 		<a href="javascript:;" class="btn-topup-close"></a>
 		<div class="topup-opt clearfix">
 			{[#items]}
@@ -1073,4 +1074,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/iscroll.js"></script>
-<script data-main="/js/single.js?v=1.6.3" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.6.4" src="/assets/js/require.js"></script>

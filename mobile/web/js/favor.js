@@ -15,7 +15,7 @@ require(["layer"],
 			loadFlag: 0,
 			loading: $(".spinner"),
 			nomore: $(".no-more"),
-			page: 2,
+			page: 1,
 		};
 
 		function showMsg(title, sec) {
@@ -32,12 +32,13 @@ require(["layer"],
 			var lastRow = $sls.list.find('li:last');
 			if (lastRow && eleInScreen(lastRow, 40) && $sls.page > 0) {
 				loadFavor();
+				$sls.page = 0;
+				$sls.loading.hide();
 				return false;
 			}
 		});
 
 		function eleInScreen($ele, $offset) {
-			console.log($ele.offset().top + "===" + ($(window).height() + "=" + $(window).scrollTop()));
 			return $ele && $ele.length > 0 && $ele.offset().top + $offset < $(window).scrollTop() + $(window).height();
 		}
 
@@ -55,9 +56,9 @@ require(["layer"],
 				if (resp.code == 0) {
 					$sls.list.append(Mustache.render($sls.tmp, resp.data));
 				}
-				$sls.page = resp.data.nextpage;
+				$sls.page = 0;// resp.data.nextpage;
 				if ($sls.page == 0) {
-					$sls.nomore.show();
+					//$sls.nomore.show();
 				}
 				$sls.loadFlag = 0;
 			}, "json");

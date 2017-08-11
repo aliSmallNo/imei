@@ -483,7 +483,7 @@ class WxController extends BaseController
 
 		$items = [];
 		$uInfo = User::user(['uId' => $hid]);
-
+		$genderName = $uInfo['gender'] == User::GENDER_MALE ? '男' : '女';
 		$uInfo["albumJson"] = json_encode($uInfo["album"]);
 
 		$favorInfo = UserNet::findOne(["nRelation" => UserNet::REL_FAVOR, "nDeletedFlag" => UserNet::DELETE_FLAG_NO, "nUId" => $uInfo["id"], "nSubUId" => $wxInfo["uId"]]);
@@ -531,6 +531,7 @@ class WxController extends BaseController
 				'items' => json_encode($items),
 				'reasons' => self::$ReportReasons,
 				'role' => $wxInfo["uRole"],
+				'genderName' => $genderName
 			],
 			'terse');
 	}

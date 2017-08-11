@@ -139,6 +139,11 @@ $brownColor: #6d4c41
 	-ms-flex: 0 0 $width
 	flex: 0 0 $width
 
+@mixin displayFlexVAlign
+	justify-content: center
+	align-items: center
+	align-self: center
+
 @mixin ellipsis
 	overflow: hidden
 	white-space: nowrap
@@ -4185,7 +4190,9 @@ section
 			&.chat
 				border: none
 				background: $chatColor
-
+			&.send
+				border: none
+				background: $greenColor
 	div
 		text-align: center
 		width: 100%
@@ -4999,14 +5006,14 @@ section
 
 .notice-item, .favor-item
 	@include displayFlex
-	padding: .5rem 0
+	padding: .3rem 0
 	position: relative
-	border-bottom: 1px solid #eee
+	border-bottom: 1px solid $borderColorLight
 	.favor-key
-		flex: 0 0 2rem
-		font-size: 1.5rem
-		position: relative
-		top: .5rem
+		@include displayFlex-w(2rem)
+		@include displayFlexVAlign
+		font-size: 1.2rem
+		color: $grayFontColor
 	.notice-read-flag
 		@include unreadFlag
 		left: 3.1rem
@@ -5022,34 +5029,39 @@ section
 			border-radius: 3rem
 			border: 1px solid $mainColorLighter
 
-	.notice-right, .favor-right
+	.notice-right
 		@include displayFlex-1
 		margin: 0 3rem 0 1rem
 		.title
-			font-weight: 400
+			font-weight: $weightBold
 			font-size: 1.2rem
 	.favor-right
-		flex: 2
-		.title
-			position: relative
-			top: .5rem
+		@include displayFlex-1
+		@include displayFlexVAlign
+		padding-left: 1rem
+		padding-right: 1rem
+		@include textTail
 	.dt
 		font-size: 1rem
 		font-weight: $weightNormal
 		text-align: left
+		color: $grayFontColorLight
 	.favor-wAmt
-		flex: 1
-		font-size: 2rem
-		color: #f7a4c0
+		@include displayFlex-w(8rem)
+		@include displayFlexVAlign
+		font-size: 1.8rem
+		color: $mainColor
+		padding-right: 1.5rem
+		@include borderBox
 		span
-			font-size: 1.2rem
-			color: #fa6799
+			font-size: 1rem
+			color: $mainColorLight
 
 .favor-top
 	padding: 1rem
-	border-bottom: .2rem solid #eee
+	border-bottom: 1px solid $borderColor
 	&:after
-		border: none
+		display: none
 
 .splay, .mplay
 	padding: 2rem 1rem

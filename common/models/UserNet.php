@@ -433,7 +433,8 @@ class UserNet extends ActiveRecord
 			case "no":
 				$info->nDeletedFlag = self::DELETE_FLAG_YES;
 				$info->nDeletedOn = $date;
-				WechatUtil::toNotice($uid, $mId, "favor", 0);
+				// Rain: 取消心动，不再提醒了
+				//WechatUtil::toNotice($uid, $mId, "favor", 0);
 				break;
 		}
 
@@ -806,7 +807,7 @@ class UserNet extends ActiveRecord
 
 		$sql = "select count(*) as co,nUId as id,
 			uName as uname, 
-			uAvatar as avatar
+			uThumb as avatar
 			from im_user_net as n 
 			left join im_user as u on u.uId=n.nUId 
 			where nRelation=150 and nDeletedFlag=0 and nAddedOn BETWEEN :sDate and :eDate
@@ -900,7 +901,7 @@ class UserNet extends ActiveRecord
 				nId as nid,
 				u.uId as id,
 				uName as uname,
-				uAvatar as avatar
+				uThumb as avatar
 				FROM 
 				im_user_net as n
 				left join im_user as u on u.uId=n.nUId
