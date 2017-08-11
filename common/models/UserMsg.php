@@ -115,7 +115,7 @@ class UserMsg extends ActiveRecord
 	public static function notice($hid, $page = 1, $pageSize = 15)
 	{
 		$limit = " limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
-		$sql = "select m.*,u.uName,u.uId,u.uAvatar as avatar 
+		$sql = "select m.*,u.uName,u.uId,u.uThumb as avatar 
 			from im_user_msg as m
 			join im_user as u on m.mUId=u.uId
 			where mAddedBy=$hid 
