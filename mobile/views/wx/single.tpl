@@ -78,7 +78,7 @@
 			<!--a href="javascript:;" to="addMeWx" id="pending_applications" ><span class="title">加我微信的人</span> </a>
 			<a href="javascript:;" to="IaddWx"><span class="title">我加微信的人</span> </a-->
 			<a href="javascript:;" to="heartbeat"><span class="title">心动列表</span> </a>
-			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">媒桂花账户</span></a>
+			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">媒桂花账户</span> <i class="i-mark-rose"></i></a>
 			<a href="/wx/sqr"><span class="title">分享给朋友</span></a>
 			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span class="tip">已认证</span>{{/if}}</a>
 		</div>
