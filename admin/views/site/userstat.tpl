@@ -180,7 +180,7 @@
 				}
 			},
 			series: [{
-				name: '客户线索',
+				name: '用户数',
 				size: '32%',
 				colorByPoint: true,
 				data: cData
