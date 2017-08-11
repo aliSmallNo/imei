@@ -33,7 +33,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_LINK => "牵线奖励",
 		self::CAT_REWARD => "打赏",
 		self::CAT_CHAT => "密聊付费",
-		self::CAT_RECEIVE => "收取媒桂花",
+		self::CAT_RECEIVE => "收取花粉值",
 		self::CAT_PRESENT => "赠送媒桂花",
 		self::CAT_RETURN => "拒绝退回",
 		self::CAT_MOMENT => "分享到朋友圈奖励",
@@ -439,22 +439,23 @@ class UserTrans extends ActiveRecord
 
 	public static function getRoselist($page = 1, $pageSize = 20)
 	{
-
-		$week = AppUtil::getEndStartTime(time(), 'curweek', true);
+		list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
+		list($beginDT, $endDT) = AppUtil::getEndStartTime(time(), 'today', true);
 
 		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
 		$cat = UserTrans::CAT_RECEIVE;
 
-		$sql = "select sum(tAmt) as co,tUId as id, uName as uname, uThumb as avatar
-				FROM im_user_trans as t
-				left join im_user as u on u.uId=t.tUId 
-				where tCategory=:cat and tAddedOn BETWEEN :sDate  AND :eDate
-				GROUP BY tUId ORDER BY co desc,tUId asc $limit ";
+		$sql = "SELECT sum(tAmt) as co,
+				sum(case when tAddedOn BETWEEN '$beginDT' AND '$endDT' then t.tAmt else 0 end) as todayFavor,
+				 tUId as id, uName as uname, uThumb as avatar
+				 FROM im_user_trans as t
+				 JOIN im_user as u on u.uId=t.tUId 
+				 WHERE tCategory=:cat and tAddedOn BETWEEN '$monday'  AND '$sunday'
+				 GROUP BY tUId ORDER BY co desc, tUId asc " . $limit;
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
-			":sDate" => $week[0],
-			":eDate" => $week[1],
 			":cat" => $cat,
 		])->queryAll();
+
 		$nextPage = 0;
 		if (count($res) > $pageSize) {
 			$nextPage = $page + 1;
@@ -463,29 +464,11 @@ class UserTrans extends ActiveRecord
 		$data = [];
 		foreach ($res as $k => &$v) {
 			$v["secretId"] = AppUtil::encrypt($v["id"]);
-			$v["todayFavor"] = self::dayRose($v["id"]);
 			$v["key"] = ($page - 1) * $pageSize + $k + 1;
 			$data[] = $v;
 		}
 
 		return [$data, $nextPage];
-	}
-
-	public static function dayRose($uid)
-	{
-		$cat = UserTrans::CAT_RECEIVE;
-		$today = AppUtil::getEndStartTime(time(), 'today', true);
-		$sql = "select sum(tAmt) as co
-				from im_user_trans as t 
-				where tCategory=:cat and tAddedOn BETWEEN :sDate and :eDate
-				and tUId=:uid";
-		$res = AppUtil::db()->createCommand($sql)->bindValues([
-			":uid" => $uid,
-			":sDate" => $today[0],
-			":eDate" => $today[1],
-			":cat" => $cat,
-		])->queryOne();
-		return $res && $res["co"] ? $res["co"] : 0;
 	}
 
 	public static function myGetRose($uid)
