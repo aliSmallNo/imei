@@ -189,16 +189,14 @@
 	}
 
 	function initChart(data, pid, title) {
-		dates = [];
-		todayData = [];
-		yesterdayData = [];
+		var dates = [], mainData = [], subData = [];
 		for (var i = 0; i < data.length; i++) {
 			dates[i] = data[i]['date'];
-			todayData.push([
+			mainData.push([
 				data[i]['date'],
 				data[i]['男生']
 			]);
-			yesterdayData.push([
+			subData.push([
 				data[i]['date'],
 				data[i]['女生']
 			]);
@@ -270,11 +268,11 @@
 			series: [
 				{
 					name: '女生',
-					data: yesterdayData
+					data: subData
 				},
 				{
 					name: '男生',
-					data: todayData,
+					data: mainData,
 					marker: {
 						states: {
 							hover: {
