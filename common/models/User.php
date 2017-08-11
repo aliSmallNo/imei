@@ -493,8 +493,11 @@ class User extends ActiveRecord
 		return $result;
 	}
 
-	public static function user($condition)
+	public static function user($condition, $conn = '')
 	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
 		$criteria = $params = [];
 		foreach ($condition as $key => $val) {
 			$criteria[] = $key . '=:' . $key;
@@ -508,7 +511,7 @@ class User extends ActiveRecord
  					FROM im_user_net as n 
 					JOIN im_user as u ON n.nUId=u.uId
 					WHERE n.nRelation=:rel AND n.nDeletedFlag=0 AND n.nSubUId=:id ';
-			$ret = AppUtil::db()->createCommand($sql)->bindValues([
+			$ret = $conn->createCommand($sql)->bindValues([
 				':rel' => UserNet::REL_BACKER,
 				':id' => $user['id']
 			])->queryOne();

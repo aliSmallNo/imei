@@ -24,6 +24,7 @@ class LogAction extends ActiveRecord
 	const ACTION_ALBUM_DEL = 1020;
 	const ACTION_ALBUM_ADD = 1025;
 	const ACTION_CHAT = 1040;
+	const ACTION_GREETING = 1044;
 
 	static $actionDict = [
 		self::ACTION_LOGIN => "登录",
@@ -36,7 +37,8 @@ class LogAction extends ActiveRecord
 		self::ACTION_MATCH_LIST => "刷新媒婆列表",
 		self::ACTION_ALBUM_DEL => "删除照片",
 		self::ACTION_ALBUM_ADD => "添加照片",
-		self::ACTION_CHAT => "进入聊天"
+		self::ACTION_CHAT => "进入聊天",
+		self::ACTION_GREETING => "浏览公告栏/更新提醒"
 	];
 
 	const REUSE_DATA_WEEK = 73;
@@ -47,15 +49,16 @@ class LogAction extends ActiveRecord
 		return '{{%log_action}}';
 	}
 
-	public static function add($uid, $openId = "", $category = 0, $note = '')
+	public static function add($uid, $openId = "", $category = 0, $note = '', $key = '')
 	{
-		if (!$uid || !$openId || !$category) {
+		if (!$uid || !$category) {
 			return false;
 		}
 		$item = new self();
 		$item->aUId = $uid;
 		$item->aCategory = $category;
 		$item->aOpenId = $openId;
+		$item->aKey = $key;
 		if ($note) {
 			$item->aNote = $note;
 		}

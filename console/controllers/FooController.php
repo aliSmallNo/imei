@@ -484,9 +484,15 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$a1 = array("Dog", "Cat", "Horse", "Bird");
-		$a2 = [['name' => "Tiger"], ['name' => "Lion"]];
-		array_splice($a1, 3, 0, $a2);
-		var_dump($a1);
+		$a = ['除去索要微信号功能',
+			'发起聊天需要消耗至少10朵媒桂花，如果对方无回复，5天后原数退回',
+			'新增分享到朋友圈送媒桂花活动。每天只奖励一次',
+			'七夕选出你心中的男神女神活动上线，可进入花粉排行榜查看排名',
+			'新上线送花功能可以对喜欢的人送花，助力TA上花粉排行榜',
+			'新增黑名单功能。进入TA的主页，点击举报拉黑，举报原因选择加入黑名单即可。黑名单的TA无法再和你聊天了'
+		];
+//		echo  json_encode($a, JSON_UNESCAPED_UNICODE);
+		AppUtil::logFile(json_encode($a, JSON_UNESCAPED_UNICODE), 5, __FUNCTION__);
+
 	}
 }

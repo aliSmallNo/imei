@@ -20,10 +20,6 @@ require(["layer"],
 			mobile: $("#cur_mobile").val(),
 			cork: $(".app-cork"),
 			wxString: $("#tpl_wx_info").html(),
-			news: $(".animate"),
-			newIdx: 0,
-			newsTimer: 0,
-
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
@@ -35,7 +31,7 @@ require(["layer"],
 			smeFlag: 0,
 			slinkFlag: 0,
 			slinkpage: 1,
-			secretId: "",
+			secretId: ""
 		};
 
 		var RechargeUtil = {
@@ -455,7 +451,7 @@ require(["layer"],
 					$sls.shade.fadeIn(160);
 				});
 
-				$(document).on(kClick, ".btn-topup-close", function () {
+				$(document).on(kClick, ".m-popup-close", function () {
 					$sls.main.hide();
 					$sls.shade.fadeOut(160);
 				});
@@ -1213,6 +1209,22 @@ require(["layer"],
 			}
 		};
 
+		var GreetingUtil = {
+			content: $.trim($('#tpl_greeting').html()),
+			init: function () {
+
+			},
+			show: function () {
+				var util = this;
+				if (util.content.length < 10) {
+					return false;
+				}
+				$sls.main.show();
+				$sls.content.html(util.content).addClass("animate-pop-in");
+				$sls.shade.fadeIn(160);
+			}
+		};
+
 		function showMsg(title, sec) {
 			var duration = sec || 2;
 			layer.open({
@@ -1239,16 +1251,10 @@ require(["layer"],
 			FeedbackUtil.init();
 			WxNoUtil.init();
 			ChatUtil.init();
+			GreetingUtil.init();
 
-			$sls.newsTimer = setInterval(function () {
-				if ($sls.newIdx < 10) {
-					$sls.newIdx++;
-					var hi = 0 - $sls.newIdx * 4.6;
-					$sls.news.css("top", hi + "rem");
-				} else {
-					$sls.news.css("top", "0");
-					$sls.newIdx = 0;
-				}
-			}, 6000);
+			setTimeout(function () {
+				GreetingUtil.show();
+			}, 500);
 		});
 	});

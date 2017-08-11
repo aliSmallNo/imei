@@ -33,6 +33,7 @@ class UserMsg extends ActiveRecord
 	const CATEGORY_REWARD_NEW = 160;
 	const CATEGORY_CHAT = 170;
 	const CATEGORY_AUDIT = 180;
+	const CATEGORY_BULLETIN = 186;
 	const CATEGORY_UPGRADE = 188;
 	const CATEGORY_SMS_RECALL = 200;
 	const CATEGORY_GIVE_ROSE = 210;
@@ -52,7 +53,8 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_REWARD_NEW => "新人奖励",
 		self::CATEGORY_CHAT => "密聊信息",
 		self::CATEGORY_AUDIT => "审核通过",
-		self::CATEGORY_UPGRADE => "版本更新",
+		self::CATEGORY_BULLETIN => "最新公告",
+		self::CATEGORY_UPGRADE => "最近更新",
 		self::CATEGORY_SMS_RECALL => "短信召回老用户",
 		self::CATEGORY_GIVE_ROSE => "送玫瑰花",
 	];
@@ -226,8 +228,45 @@ class UserMsg extends ActiveRecord
 		return $count;
 	}
 
-	public static function upgradeMsg()
+	public static function hasUnread($uid, $conn = '')
 	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$sql = 'select count(1) from im_user_msg WHERE mUId=:uid and mReadFlag=:unread and mStatus=1';
+		$ret = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':unread' => self::UN_READ,
+		])->queryScalar();
+		if ($ret) {
+			return true;
+		}
+		return false;
+	}
 
+	public static function greeting($uid, $openId, $conn = '')
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$strCats = implode(',', [self::CATEGORY_BULLETIN, self::CATEGORY_UPGRADE]);
+		$sql = 'SELECT count(a.aId) as cnt, m.mId,m.mUId,m.mText,m.mCategory,m.mAddedOn
+				 FROM im_user_msg as m
+				 LEFT JOIN im_log_action as a on m.mUId=a.aKey and a.aUId=:uid
+				 WHERE mStatus=1 and m.mCategory in (' . $strCats . ')
+				 GROUP BY m.mId HAVING cnt<2 ORDER BY m.mAddedOn desc';
+		$ret = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid
+		])->queryAll();
+		if ($ret) {
+			$row = $ret[0];
+			LogAction::add($uid, $openId, LogAction::ACTION_GREETING, '', $row['mUId']);
+			return [
+				'title' => self::$catDict[$row['mCategory']],
+				'items' => json_decode($row['mText'], 1)
+			];
+		}
+
+		return [];
 	}
 }

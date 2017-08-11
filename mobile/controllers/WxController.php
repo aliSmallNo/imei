@@ -661,13 +661,14 @@ class WxController extends BaseController
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
 		}
-		LogAction::add($wxInfo["uId"], $openId, LogAction::ACTION_SINGLE);
-
-		$uInfo = User::user(['uId' => $wxInfo['uId']]);
+		$uId = $wxInfo["uId"];
+		LogAction::add($uId, $openId, LogAction::ACTION_SINGLE);
+		$conn = AppUtil::db();
+		$uInfo = User::user(['uId' => $uId], $conn);
 		$avatar = $wxInfo["Avatar"];
 		$nickname = $wxInfo["uName"];
 		$hint = $wxInfo['uHint'];
-		$encryptId = AppUtil::encrypt($wxInfo["uId"]);
+		$encryptId = AppUtil::encrypt($uId);
 		//$intro = $wxInfo['uIntro'];
 		$role = $wxInfo["uRole"];
 		if ($role == User::ROLE_MATCHER) {
@@ -686,17 +687,9 @@ class WxController extends BaseController
 		$mpName = $uInfo['mp_name'] ? $uInfo['mp_name'] : '还没有媒婆';
 
 		// 通知有未读
-		$noReadRecode = UserMsg::find()->where(["mReadFlag" => UserMsg::UN_READ, "mAddedBy" => $wxInfo["uId"]])->all();
-		$noReadFlag = (count($noReadRecode) > 0) ? 1 : 0;
-
-		$audit = 0;
-		if ($wxInfo["uStatus"] == User::STATUS_INVALID &&
-			$audits = UserAudit::find()
-				->where(["aUId" => $wxInfo["uId"], "aUStatus" => User::STATUS_INVALID, "aValid" => UserAudit::VALID_FAIL])
-				->all()) {
-			$audit = 1;
-		}
-		$greeting = [];
+		$noReadFlag = UserMsg::hasUnread($uId, $conn) ? 1 : 0;
+		$audit = UserAudit::invalid($uId, $conn) ? 1 : 0;
+		$greeting = UserMsg::greeting($uId, $openId, $conn);
 		return self::renderPage("single.tpl", [
 			'noReadFlag' => $noReadFlag,
 			'nickname' => $nickname,

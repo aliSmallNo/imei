@@ -2380,6 +2380,14 @@ section {
       box-sizing: border-box;
       padding: 0;
       overflow: hidden; }
+      .m-popup-main .m-popup-wrap .m-popup-content .m-popup-close {
+        position: absolute;
+        right: 0.3rem;
+        top: 0.3rem;
+        width: 3.4rem;
+        height: 3.4rem;
+        background: url(../images/ico_close_gray.png) no-repeat center center;
+        background-size: 1.8rem 1.8rem; }
       .m-popup-main .m-popup-wrap .m-popup-content.no-bg {
         background: none;
         box-shadow: none;
@@ -5611,5 +5619,36 @@ section {
     .lottery-gifts li.unit.prize:after {
       background: url(../images/lottery/mask_hl.png) no-repeat;
       background-size: 100% 100%; }
+
+.greeting {
+  text-align: left;
+  background: #fce4ec;
+  margin: 0;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  position: relative; }
+  .greeting:before {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    background: url(../images/logo_wsm.png) no-repeat center center;
+    background-size: 100% 100%;
+    width: 6rem;
+    height: 2.4rem;
+    left: 1rem;
+    top: 1rem; }
+  .greeting h4 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 4rem;
+    color: #f06292; }
+  .greeting ol {
+    margin: 0;
+    padding: 0.5rem 0.5rem 1rem 1.5rem; }
+    .greeting ol li {
+      font-size: 1.4rem;
+      font-weight: 300;
+      padding-bottom: 0.5rem; }
 
 /*# sourceMappingURL=imei.css.map */
