@@ -492,10 +492,7 @@ class UserTrans extends ActiveRecord
 	{
 		$cat = UserTrans::CAT_GET;
 		$week = AppUtil::getEndStartTime(time(), 'curweek', true);
-		$sql = "select 
-				sum(tAmt) as co,tUId as id,
-				uName as uname, 
-				uAvatar as avatar
+		$sql = "select sum(tAmt) as co, tUId as id, uName as uname, uThumb as avatar
 				from im_user_trans as t
 				left join im_user as u on u.uId=t.tUId 
 				where tCategory=:cat and tAddedOn BETWEEN :sDate  AND :eDate

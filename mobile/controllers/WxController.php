@@ -1066,7 +1066,6 @@ class WxController extends BaseController
 			'terse');
 	}
 
-
 	public function actionQrcode()
 	{
 		$openId = self::$WX_OpenId;
