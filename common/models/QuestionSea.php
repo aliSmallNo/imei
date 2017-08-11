@@ -63,4 +63,22 @@ class QuestionSea extends ActiveRecord
 		return [$res, $count];
 	}
 
+	public static function findByKeyWord($word)
+	{
+		if (!$word) {
+			return [];
+		}
+		$sql = "select * from im_question_sea where qTitle like '%$word%' ";
+		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		if (!$res) {
+			return [];
+		}
+		foreach ($res as &$v) {
+			$options = \GuzzleHttp\json_decode($v["qRaw"], 1);
+			$v["options"] = $options["options"];
+			$v["answer"] = $options["answer"];
+		}
+		return $res;
+	}
+
 }
