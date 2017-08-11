@@ -807,7 +807,7 @@ class UserNet extends ActiveRecord
 
 		$sql = "select count(*) as co,nUId as id,
 			uName as uname, 
-			uAvatar as avatar
+			uThumb as avatar
 			from im_user_net as n 
 			left join im_user as u on u.uId=n.nUId 
 			where nRelation=150 and nDeletedFlag=0 and nAddedOn BETWEEN :sDate and :eDate

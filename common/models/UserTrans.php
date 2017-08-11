@@ -448,7 +448,7 @@ class UserTrans extends ActiveRecord
 		$sql = "select 
 				sum(tAmt) as co,tUId as id,
 				uName as uname, 
-				uAvatar as avatar
+				uThumb as avatar
 				from im_user_trans as t
 				left join im_user as u on u.uId=t.tUId 
 				where tCategory=:cat and tAddedOn BETWEEN :sDate  AND :eDate

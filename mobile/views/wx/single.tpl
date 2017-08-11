@@ -675,7 +675,7 @@
 	<li>
 		<a href="javascript:;" data-id={[encryptId]}" data-nid="{[nid]}" class="sprofile">
 		<div class="plist-l">
-			<img src="{[avatar]}">
+			<img src="{[thumb]}">
 		</div>
 		<div class="plist-r">
 			<p>{[name]}</p>
