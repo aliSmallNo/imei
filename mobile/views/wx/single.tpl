@@ -90,13 +90,13 @@
 			<a href="/wx/favor"><span>心动排行榜</span></a>
 		</div>
 		<div class="m-rows line-bottom">
-			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span class="tip">已认证</span>{{/if}}</a>
 			<a href="/wx/notice">
 				<span class="title">通知</span>
 				{{if $noReadFlag}}
 				<span class="noReadFlag"></span>
 				{{/if}}
 			</a>
+			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span class="tip">已认证</span>{{/if}}</a>
 			<a href="#myWechatNo"><span class="title">我的微信号</span></a>
 			<a href="/wx/blacklist"><span class="title">黑名单</span></a>
 		</div>
