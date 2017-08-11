@@ -22,6 +22,7 @@ class UserNet extends ActiveRecord
 	const REL_LINK = 140;
 	const REL_FAVOR = 150;
 	const REL_BLOCK = 160;
+	const REL_PRESENT = 180;
 	const REL_QR_SCAN = 210;
 	const REL_QR_SUBSCRIBE = 212;
 	const REL_QR_SHARE = 215;
@@ -36,6 +37,7 @@ class UserNet extends ActiveRecord
 		self::REL_LINK => '牵线',
 		self::REL_FAVOR => '心动',
 		self::REL_BLOCK => '拉黑',
+		self::REL_PRESENT => '赠送',
 		self::REL_QR_SCAN => '扫推广二维码',
 		self::REL_QR_SUBSCRIBE => '扫二维码且关注',
 		self::REL_QR_SHARE => '发送给朋友',
@@ -88,6 +90,28 @@ class UserNet extends ActiveRecord
 		$entity->save();
 
 		return $entity->nId;
+	}
+
+	public static function addPresent($uid, $subUid, $amt, $unit)
+	{
+		if (!$uid || !$subUid || $uid == $subUid) {
+			return false;
+		}
+		$entity = new self();
+		$entity->nUId = $uid;
+		$entity->nSubUId = $subUid;
+		$entity->nRelation = self::REL_PRESENT;
+		$entity->nUpdatedOn = date('Y-m-d H:i:s');
+		$entity->nNote = $amt . UserTrans::$UnitDict[$unit];
+		$entity->save();
+		$nId = $entity->nId;
+		// 送花
+		UserTrans::add($uid, $nId, UserTrans::CAT_PRESENT,
+			UserTrans::$catDict[UserTrans::CAT_PRESENT], $amt, $unit);
+		// 收花粉值
+		UserTrans::add($subUid, $nId, UserTrans::CAT_RECEIVE,
+			UserTrans::$catDict[UserTrans::CAT_RECEIVE], $amt, UserTrans::UNIT_FANS);
+		return $nId;
 	}
 
 	public static function addShare($uid, $subUid, $relation, $note = '')
@@ -775,6 +799,11 @@ class UserNet extends ActiveRecord
 					$text = ['拉黑', ''];
 					$right = $uInfo;
 					$left = $sInfo;
+					break;
+				case self::REL_PRESENT:
+					$text = ['赠送', $note];
+					$left = $uInfo;
+					$right = $sInfo;
 					break;
 				default:
 					break;

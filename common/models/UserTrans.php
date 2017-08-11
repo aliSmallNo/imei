@@ -21,8 +21,8 @@ class UserTrans extends ActiveRecord
 	const CAT_LINK = 110;
 	const CAT_REWARD = 120;
 	const CAT_CHAT = 125;
-	const CAT_GET = 127;
-	const CAT_GIVE = 128;
+	const CAT_RECEIVE = 127;
+	const CAT_PRESENT = 128;
 	const CAT_RETURN = 130;
 	const CAT_MOMENT = 150;
 
@@ -33,8 +33,8 @@ class UserTrans extends ActiveRecord
 		self::CAT_LINK => "牵线奖励",
 		self::CAT_REWARD => "打赏",
 		self::CAT_CHAT => "密聊付费",
-		self::CAT_GET => "收玫瑰花",
-		self::CAT_GIVE => "送玫瑰花",
+		self::CAT_RECEIVE => "收取媒桂花",
+		self::CAT_PRESENT => "赠送媒桂花",
 		self::CAT_RETURN => "拒绝退回",
 		self::CAT_MOMENT => "分享到朋友圈奖励",
 	];
@@ -42,14 +42,14 @@ class UserTrans extends ActiveRecord
 	static $CatMinus = [
 		self::CAT_REWARD,
 		self::CAT_CHAT,
-		self::CAT_GIVE,
+		self::CAT_PRESENT,
 	];
 
 	const UNIT_FEN = 'fen';
 	const UNIT_YUAN = 'yuan';
 	const UNIT_GIFT = 'flower';
 	const UNIT_FANS = 'fans';
-	private static $UnitDict = [
+	static $UnitDict = [
 		self::UNIT_FEN => '分',
 		self::UNIT_YUAN => '元',
 		self::UNIT_GIFT => '媒桂花',
@@ -443,7 +443,7 @@ class UserTrans extends ActiveRecord
 		$week = AppUtil::getEndStartTime(time(), 'curweek', true);
 
 		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
-		$cat = UserTrans::CAT_GET;
+		$cat = UserTrans::CAT_RECEIVE;
 
 		$sql = "select sum(tAmt) as co,tUId as id, uName as uname, uThumb as avatar
 				FROM im_user_trans as t
@@ -473,7 +473,7 @@ class UserTrans extends ActiveRecord
 
 	public static function dayRose($uid)
 	{
-		$cat = UserTrans::CAT_GET;
+		$cat = UserTrans::CAT_RECEIVE;
 		$today = AppUtil::getEndStartTime(time(), 'today', true);
 		$sql = "select sum(tAmt) as co
 				from im_user_trans as t 
@@ -490,7 +490,7 @@ class UserTrans extends ActiveRecord
 
 	public static function myGetRose($uid)
 	{
-		$cat = UserTrans::CAT_GET;
+		$cat = UserTrans::CAT_RECEIVE;
 		$week = AppUtil::getEndStartTime(time(), 'curweek', true);
 		$sql = "select sum(tAmt) as co, tUId as id, uName as uname, uThumb as avatar
 				from im_user_trans as t

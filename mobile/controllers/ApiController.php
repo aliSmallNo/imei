@@ -664,9 +664,15 @@ class ApiController extends Controller
 					return self::renderAPI(129, '你的媒桂花只剩' . $flower . '朵了，不足' . $amt . '朵，该充值了哦~');
 				}
 				// 送花
-				UserTrans::add($wxInfo["uId"], $id, UserTrans::CAT_GIVE, UserTrans::$catDict[UserTrans::CAT_GIVE], $amt, UserTrans::UNIT_GIFT);
+				/*UserTrans::add($wxInfo["uId"], $id, UserTrans::CAT_PRESENT,
+					UserTrans::$catDict[UserTrans::CAT_PRESENT], $amt, UserTrans::UNIT_GIFT);
 				// 收花粉值
-				UserTrans::add($id, $wxInfo["uId"], UserTrans::CAT_GET, UserTrans::$catDict[UserTrans::CAT_GET], $amt, UserTrans::UNIT_FANS);
+				UserTrans::add($id, $wxInfo["uId"], UserTrans::CAT_RECEIVE,
+					UserTrans::$catDict[UserTrans::CAT_RECEIVE], $amt, UserTrans::UNIT_FANS);*/
+				$ret = UserNet::addPresent($wxInfo["uId"], $id, $amt, UserTrans::UNIT_GIFT);
+				if (!$ret) {
+					return self::renderAPI(129, '送花失败~');
+				}
 				// 推送
 				WechatUtil::templateMsg(WechatUtil::NOTICE_GIVE_ROSE, $wxInfo["uId"], $title = '有人给你送花了', $subTitle = 'TA给你送玫瑰花了，快去看看吧~', $id);
 				return self::renderAPI(0, '送花成功~');
