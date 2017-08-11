@@ -901,7 +901,7 @@ class UserNet extends ActiveRecord
 				nId as nid,
 				u.uId as id,
 				uName as uname,
-				uAvatar as avatar
+				uThumb as avatar
 				FROM 
 				im_user_net as n
 				left join im_user as u on u.uId=n.nUId
