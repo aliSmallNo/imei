@@ -7,6 +7,7 @@
 
 	.questionlist {
 		padding-left: 0;
+		padding-right: 50px;
 	}
 
 	.seek-question li, .questionlist li {
@@ -32,7 +33,7 @@
 	</div>
 	<div class="row">
 		<div class="col-sm-12">
-			<div class="col-sm-4">
+			<div class="col-sm-6">
 				<input type="hidden" name="sign" value="sign">
 				<input type="hidden" id="mpId" value="">
 				<div class="form-group">
@@ -90,7 +91,7 @@
 						layer.closeAll();
 						searchFlag = 0;
 						if (resp.code === 0) {
-							$(".seek-wrapper").html(Mustache.render($("#tpl_question").html(), resp));
+							$(".seek-question").html(Mustache.render($("#tpl_question").html(), resp));
 						}
 					}, "json");
 			}
@@ -107,25 +108,36 @@
 		var title = self.find(".title").html();
 		var options = self.find(".options").html();
 		var answer = self.find(".answer").html();
-		var Vhtml = Mustache.render($("#tpl_qItem").html(),{title:title,options:options,answer:answer});
+		var tag = self.attr("tag");
+		var Vhtml = Mustache.render($("#tpl_qItem").html(),{title:title,options:options,answer:answer,tag:tag});
 		$("#questionlist").append(Vhtml);
 		self.attr("data-use", "used");
 	});
+	$(document).on("click", ".delQue", function () {
+		var li = $(this).closest("li")
+		var tag = li.attr("tag");
+		$(".seek-question").find("li[tag=" + tag + "]").attr("data-use", "");
+		li.remove();
+	});
 
 	$(".opSave").click(function () {
-		var uid = $("#mpId").val();
-		var subuid = $("#myId").val();
-		if (!uid || !subuid) {
-			layer.msg("请选择一个媒婆");
+		var ids = [];
+		$(".questionlist").find("li").each(function () {
+			var id = $(this).attr("tag");
+			ids.push(id);
+		});
+		if (ids.length == 0) {
+			layer.msg("至少要选择一题哦~");
 			return;
 		}
-		$.post("/api/user", {
+		$.post("/api/question", {
 			tag: "savegroup",
-			uid: uid,
-			subuid: subuid
+			ids: JSON.stringify(ids),
 		}, function (resp) {
 			if (resp.code == 0) {
-				location.href = "/site/net"
+				// location.href = "/site/net"
+			} else {
+				layer.msg(resp.msg);
 			}
 		}, "json")
 	})
@@ -138,10 +150,12 @@
 	<li tag="{[qId]}">
 		<div class="title">{[qTitle]}</div>
 		<div class="options">
-
+			{[#options]}
+			{[opt]}:{[text]}
+			{[/options]}
 		</div>
-		<div class="question">
-			{[answer]}
+		<div class="answer">
+			答案:{[answer]}
 		</div>
 	</li>
 	{[/data]}
@@ -151,13 +165,13 @@
 
 </script>
 <script id="tpl_qItem" type="text/html">
-	<li>
+	<li tag="{[tag]}">
 		<div class="title">{[title]}</div>
 		<div class="options">
 			{[options]}
 		</div>
 		<div>{[answer]}</div>
-		<a>移除</a>
+		<a class="delQue">移除</a>
 	</li>
 </script>
 {{include file="layouts/footer.tpl"}}

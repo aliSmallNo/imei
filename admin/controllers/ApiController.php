@@ -11,6 +11,7 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use common\models\City;
+use common\models\QuestionGroup;
 use common\models\QuestionSea;
 use common\models\User;
 use common\models\UserAudit;
@@ -294,6 +295,15 @@ class ApiController extends Controller
 				$word = self::postParam("keyword");
 				$res = QuestionSea::findByKeyWord($word);
 				return self::renderAPI(0, '', $res);
+			case "savegroup":
+				$ids = self::postParam("ids");
+				$ids = implode(",", json_decode($ids, 1));
+				QuestionGroup::add([
+					"gCategory" => QuestionGroup::CAT_AUG,
+					"gTitle" => QuestionGroup::TITLE_LOTT,
+					"gItems" => $ids,
+				]);
+				return self::renderAPI(0, '');
 		}
 		return self::renderAPI(129, "什么操作也没做啊！");
 	}
