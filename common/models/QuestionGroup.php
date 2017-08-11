@@ -9,29 +9,30 @@
 namespace common\models;
 
 
+use admin\models\Admin;
 use common\utils\AppUtil;
 use yii\db\ActiveRecord;
 
-class QuestionSea extends ActiveRecord
+class QuestionGroup extends ActiveRecord
 {
+
+	const CAT_AUG = 100;
+
+	const TITLE_LOTT = "答题抽奖活动";
 
 	public static function tableName()
 	{
-		return '{{%question_sea}}';
+		return '{{%question_group}}';
 	}
 
-	public static function edit($qid, $data)
+	public static function add($data)
 	{
-		$entity = self::findOne(['qId' => $qid]);
-		if (!$entity) {
-			$entity = new self();
-		} else {
-
-		}
+		$entity = new self();
 
 		foreach ($data as $k => $v) {
 			$entity->$k = $v;
 		}
+		$entity->gAddedBy = Admin::getAdminId();
 		$entity->save();
 		return true;
 	}
@@ -56,7 +57,7 @@ class QuestionSea extends ActiveRecord
 
 		foreach ($res as &$v) {
 			$options = json_decode($v["qRaw"], 1);
-			$v["answer"] = $options["answer"];
+			$v["answer"] = $options["anwser"];
 			$v["options"] = $options["options"];
 		}
 
@@ -66,12 +67,12 @@ class QuestionSea extends ActiveRecord
 	public static function findByKeyWord($word)
 	{
 		if (!$word) {
-			return 0;
+			return [];
 		}
-		$sql = "select * from im_question_sea where qTitle like '%$word%' order by qUpdatedOn desc";
+		$sql = "select * from im_question_sea where qTitle like '%$word%' ";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		if (!$res) {
-			return 0;
+			return [];
 		}
 		foreach ($res as &$v) {
 			$options = \GuzzleHttp\json_decode($v["qRaw"], 1);
