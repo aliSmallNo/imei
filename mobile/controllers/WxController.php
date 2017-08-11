@@ -661,7 +661,6 @@ class WxController extends BaseController
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
 		}
-
 		LogAction::add($wxInfo["uId"], $openId, LogAction::ACTION_SINGLE);
 
 		$uInfo = User::user(['uId' => $wxInfo['uId']]);
@@ -697,6 +696,7 @@ class WxController extends BaseController
 				->all()) {
 			$audit = 1;
 		}
+		$greeting = [];
 		return self::renderPage("single.tpl", [
 			'noReadFlag' => $noReadFlag,
 			'nickname' => $nickname,
@@ -710,7 +710,8 @@ class WxController extends BaseController
 			'age' => User::$AgeFilter,
 			'income' => User::$IncomeFilter,
 			'edu' => User::$EducationFilter,
-			'mpName' => $mpName
+			'mpName' => $mpName,
+			'greeting' => $greeting
 		]);
 	}
 

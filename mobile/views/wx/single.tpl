@@ -1071,6 +1071,16 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
+<script type="text/template" id="tpl_greeting">
+	{{if $greeting}}
+	<h4>{{$greeting.title}}</h4>
+	<ol>
+		{{foreach from=$greeting.items item=item}}
+		<li>{{$item}}</li>
+		{{/foreach}}
+	</ol>
+	{{/if}}
+</script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/iscroll.js"></script>

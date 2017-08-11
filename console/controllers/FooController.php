@@ -468,14 +468,14 @@ class FooController extends Controller
 		$sql = 'select u.uId, u.uName,u.uPhone 
 			 from im_user as u 
 			 join im_user_wechat as w on w.wUId=u.uId
-			 where IFNULL(w.wSubscribe,0)=0 and u.uStatus<9 and uPhone !=\'\' 
+			 where IFNULL(w.wSubscribe,0)=1 and u.uStatus<9 and uPhone !=\'\' 
 			 group by u.uId,u.uName,u.uPhone';
 		$ret = $conn->createCommand($sql)->queryAll();
 		foreach ($ret as $row) {
 			$phone = $row['uPhone'];
 			QueueUtil::loadJob('sendSMS', [
 				'phone' => $phone,
-				'msg' => '各位微媒100用户，你好！现隆重邀请您参加微媒100用户东台见面会，现征集报名，只有8个名额哦。见面会主要的目的是听取你的想法、建议，进行互动、访谈。现场会有丰厚奖励等您来拿，赶快在微信里回复公众号，参加报名吧！',
+				'msg' => '诚邀你本周日下午2点参加微媒100东台用户见面会，跟我们面对面对话和互动。现场会有丰厚奖品等您来拿，名额有限，先报先得。确认参加请于本周日前在微媒100公众号里回复我报名',
 				'rnd' => 110
 			]);
 		}
