@@ -107,10 +107,10 @@ class UserNet extends ActiveRecord
 		$nId = $entity->nId;
 		// 送花
 		UserTrans::add($uid, $nId, UserTrans::CAT_PRESENT,
-			UserTrans::$catDict[UserTrans::CAT_PRESENT], $amt, $unit);
+			'赠送' . $amt . '媒桂花', $amt, $unit);
 		// 收花粉值
 		UserTrans::add($subUid, $nId, UserTrans::CAT_RECEIVE,
-			UserTrans::$catDict[UserTrans::CAT_RECEIVE], $amt, UserTrans::UNIT_FANS);
+			'收到' . $amt . '花粉值', $amt, UserTrans::UNIT_FANS);
 		return $nId;
 	}
 
