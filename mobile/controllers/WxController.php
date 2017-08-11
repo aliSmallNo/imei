@@ -1150,11 +1150,21 @@ class WxController extends BaseController
 
 	public function actionQuestions()
 	{
-
-		$questions = QuestionGroup::findRecent();
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/index');
+			exit();
+		}
+		list($questions, $gId) = QuestionGroup::findRecent();
+		if (!$questions) {
+			header('location:/wx/error');
+		}
 
 		return self::renderPage('questions.tpl', [
 			"questions" => $questions,
+			"count" => count($questions),
+			"gId" => $gId,
 		],
 			'terse');
 	}

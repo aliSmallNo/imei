@@ -461,6 +461,7 @@ require(["layer"],
 						openLocation();
 					}
 				});
+
 			});
 			DrawUtil.init();
 			SingleUtil.init();

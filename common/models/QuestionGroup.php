@@ -57,16 +57,19 @@ class QuestionGroup extends ActiveRecord
 	public static function findRecent()
 	{
 		$conn = AppUtil::db();
-		$sql = "SELECT gItems from im_question_group ORDER BY gId desc limit 1";
-		$ids = $conn->createCommand($sql)->queryOne();
-		$ids = $ids ? $ids["gItems"] : 0;
-
+		$sql = "SELECT gItems,gId from im_question_group ORDER BY gId desc limit 1";
+		$ret = $conn->createCommand($sql)->queryOne();
+		$ids = $ret ? $ret["gItems"] : 0;
+		$gId = $ret ? $ret["gId"] : 0;
+		if (!$ids) {
+			return 0;
+		}
 		$sql = "SELECT * from im_question_sea where qId in ($ids) ORDER  BY qUpdatedOn asc ";
 		$res = $conn->createCommand($sql)->queryAll();
 		foreach ($res as &$v) {
 			$v = QuestionSea::fmt($v);
 		}
-		return $res;
+		return [$res, $gId];
 
 	}
 

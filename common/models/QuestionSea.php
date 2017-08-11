@@ -86,4 +86,21 @@ class QuestionSea extends ActiveRecord
 		return $res;
 	}
 
+	public static function verify($answer)
+	{
+		$answer = json_decode($answer, 1);
+		$count = 0;
+		if (count($answer) == 0) {
+			return 0;
+		}
+		foreach ($answer as $v) {
+			$qInfo = self::findOne(["qId" => $v["id"]]);
+			$raw = json_decode($qInfo->qRaw, 1);
+			if ($raw["answer"] == $v["ans"]) {
+				$count++;
+			}
+		}
+		return $count > 2;
+	}
+
 }

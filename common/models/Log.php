@@ -13,6 +13,8 @@ use yii\db\ActiveRecord;
 
 class Log extends ActiveRecord
 {
+	const CAT_QUESTION = 1000;
+
 	public static function tableName()
 	{
 		return '{{%log}}';

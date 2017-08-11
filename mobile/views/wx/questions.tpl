@@ -1,7 +1,20 @@
 <style>
+	.que-count {
+		text-align: center;
+		padding: 2rem;
+		font-size: 1.2rem;
+		color: #777;
+	}
+
 	.qItem {
-		padding: 3rem 2rem;
-		border-bottom: 5px solid #eee;
+		margin: 0 2rem;
+		padding: 2rem;
+		background: #fff;
+	}
+
+	.qItem .title {
+		font-weight: 800;
+		line-height: 3rem;
 	}
 
 	.options {
@@ -10,7 +23,7 @@
 
 	.options a {
 		display: block;
-		padding: 1rem;
+		padding: 1.5rem 1rem;
 		position: relative;
 		border-bottom: 1px solid #eee;
 	}
@@ -30,11 +43,6 @@
 		right: 1rem;
 	}
 
-	.qItem-height {
-		height: 4rem;
-		width: 100%;
-	}
-
 	.queSubmit {
 		position: fixed;
 		display: block;
@@ -48,19 +56,76 @@
 		background: #f06292;
 		color: #fff;
 	}
+
+	.next-que {
+		padding: 1.5rem;
+	}
+
+	.next-que a {
+		background: #f8b3ca;
+		padding: .8rem 3rem;
+		color: #fff;
+		font-size: 1.4rem;
+	}
+
+	.next-que a.active {
+		background: #f06292;
+	}
+
+	.que-des {
+		background: #fff;
+		padding: 3rem 2rem 4rem 2rem;
+		margin: 3rem;
+	}
+
+	.que-des p {
+		font-size: 1.3rem;
+		letter-spacing: .1rem;
+		line-height: 2.5rem;
+		margin-bottom: 3rem;
+	}
+
+	.que-des a {
+		background: #f06292;
+		padding: 1rem 3rem;
+		color: #fff;
+	}
+
+
 </style>
-{{foreach from=$questions key=key item=item}}
-<div class="qItem">
-	<div class="title">{{$key+1}}:{{$item.qTitle}}</div>
-	<div class="options">
-		{{foreach from=$item.options key=key item=opt}}
-		<a class="option" mult="{{$item.mult}}" data-id="{{$item.qId}}">{{$opt.opt}} {{$opt.text}}</a>
-		{{/foreach}}
+<section id="Q0">
+	<div class="que-des">
+		<p>
+			微媒100是一家东台本地真实婚恋交友平台，依托微信公众号的功能为广大单身男女提供找对象的服务。会员经过严格审核真实可靠，且会员都为东台本地籍贯，更有利于后续的交流。我的独特之处在于引入了媒婆机制，每个单身男女都会有一个媒婆为其进行信用背书写推荐语。从另一方面保证信息的真实性。目前微媒100有两个线上活动正在进行：寻找你最心动的女生活动和答题抽红包活动。欢迎您转发邀请好友一同参加。
+		</p>
+		<a href="#Q1" class="toAnswer">开始答题</a>
 	</div>
-</div>
+
+</section>
+
+{{foreach from=$questions key=key item=item}}
+<section id="Q{{$key+1}}">
+	<div class="que-count">{{$key+1}}/{{$count}}</div>
+	<div class="qItem">
+		<div class="title">{{$key+1}}  {{$item.qTitle}}</div>
+		<div class="options" mult="{{$item.mult}}" data-id="{{$item.qId}}">
+			{{foreach from=$item.options key=key item=opt}}
+			<a class="option" mult="{{$item.mult}}" data-an="{{$opt.opt}}">{{$opt.opt}} {{$opt.text}}</a>
+			{{/foreach}}
+		</div>
+		<div class="next-que">
+			<a data-to="{{$key+2}}">提交答案</a>
+		</div>
+
+	</div>
+</section>
 {{/foreach}}
-<div class="qItem-height"></div>
-<a class="queSubmit">提交答案</a>
+
+<a style="display: none" class="queSubmit">提交答案</a>
+
+<input type="hidden" id="gId" value="{{$gId}}">
+<input type="hidden" id="count" value="{{$count}}">
+
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script data-main="/js/questions.js?v=1.1.5" src="/assets/js/require.js"></script>

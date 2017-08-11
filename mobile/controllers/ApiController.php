@@ -15,6 +15,7 @@ use common\models\Log;
 use common\models\LogAction;
 use common\models\Lottery;
 use common\models\Pay;
+use common\models\QuestionSea;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserBuzz;
@@ -1265,6 +1266,42 @@ class ApiController extends Controller
 				break;
 		}
 		return self::renderAPI(129, '操作无效~', ['prize' => 4]);
+	}
+
+	public function actionQuestions()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$openId = self::postParam('openid');
+		if (!$openId) {
+			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		}
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			return self::renderAPI(129, '用户不存在啊~', ['prize' => 4]);
+		}
+		$uid = $wxInfo['uId'];
+		switch ($tag) {
+			case 'answer':
+				$answer = self::postParam('data');
+				$gId = self::postParam('gid');
+				if (Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gId, "oUId" => $uid])) {
+					return self::renderAPI(129, '您已经答过题了哦~');
+				}
+				if (QuestionSea::verify($answer)) {
+					Log::add([
+						"oCategory" => Log::CAT_QUESTION,
+						"oKey" => $gId,
+						"oUId" => $uid,
+						"oOpenId" => $openId,
+						"oAfter" => $answer,
+					]);
+					return self::renderAPI(0, '', "pass");
+				} else {
+					return self::renderAPI(0, '答错了题', "fail");
+				}
+				break;
+		}
+		return self::renderAPI(129, '操作无效~');
 	}
 
 	public function actionQr()
