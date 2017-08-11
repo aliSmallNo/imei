@@ -445,11 +445,8 @@ class UserTrans extends ActiveRecord
 		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
 		$cat = UserTrans::CAT_GET;
 
-		$sql = "select 
-				sum(tAmt) as co,tUId as id,
-				uName as uname, 
-				uThumb as avatar
-				from im_user_trans as t
+		$sql = "select sum(tAmt) as co,tUId as id, uName as uname, uThumb as avatar
+				FROM im_user_trans as t
 				left join im_user as u on u.uId=t.tUId 
 				where tCategory=:cat and tAddedOn BETWEEN :sDate  AND :eDate
 				GROUP BY tUId ORDER BY co desc,tUId asc $limit ";
@@ -495,10 +492,7 @@ class UserTrans extends ActiveRecord
 	{
 		$cat = UserTrans::CAT_GET;
 		$week = AppUtil::getEndStartTime(time(), 'curweek', true);
-		$sql = "select 
-				sum(tAmt) as co,tUId as id,
-				uName as uname, 
-				uAvatar as avatar
+		$sql = "select sum(tAmt) as co, tUId as id, uName as uname, uThumb as avatar
 				from im_user_trans as t
 				left join im_user as u on u.uId=t.tUId 
 				where tCategory=:cat and tAddedOn BETWEEN :sDate  AND :eDate

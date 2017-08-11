@@ -33,6 +33,7 @@ class UserMsg extends ActiveRecord
 	const CATEGORY_REWARD_NEW = 160;
 	const CATEGORY_CHAT = 170;
 	const CATEGORY_AUDIT = 180;
+	const CATEGORY_UPGRADE = 188;
 	const CATEGORY_SMS_RECALL = 200;
 	const CATEGORY_GIVE_ROSE = 210;
 
@@ -51,6 +52,7 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_REWARD_NEW => "新人奖励",
 		self::CATEGORY_CHAT => "密聊信息",
 		self::CATEGORY_AUDIT => "审核通过",
+		self::CATEGORY_UPGRADE => "版本更新",
 		self::CATEGORY_SMS_RECALL => "短信召回老用户",
 		self::CATEGORY_GIVE_ROSE => "送玫瑰花",
 	];
@@ -161,8 +163,8 @@ class UserMsg extends ActiveRecord
 					$v["text"] = $v["mText"];
 					break;
 				case self::CATEGORY_GIVE_ROSE:
-					$v["url"] = "/wx/sh?id=". $v["secretId"];
-					$v["text"] = $v["uName"] . "给你" . $v["mText"]."，您的花粉值增加了";
+					$v["url"] = "/wx/sh?id=" . $v["secretId"];
+					$v["text"] = $v["uName"] . "给你" . $v["mText"] . "，您的花粉值增加了";
 					break;
 			}
 
@@ -181,8 +183,6 @@ class UserMsg extends ActiveRecord
 	{
 		//Rain: 太骚扰了，先停了
 		return 0;
-
-
 		$conn = AppUtil::db();
 		$strCriteria = '';
 		if ($uid && is_numeric($uid)) {
@@ -224,5 +224,10 @@ class UserMsg extends ActiveRecord
 			$count++;
 		}
 		return $count;
+	}
+
+	public static function upgradeMsg()
+	{
+
 	}
 }
