@@ -480,7 +480,7 @@ class ImageUtil
 				$fileNormal = $path . '_n.' . $ext;
 				Image::open($fileName)->zoomCrop($figureWidth, $figureHeight, 0xffffff, 'center', 'center')->save($fileNormal);
 				$figure = self::getUrl($fileNormal);
-				unlink($fileName);
+				//unlink($fileName);
 				return [$thumb, $figure];
 			}
 		}
