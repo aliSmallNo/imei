@@ -11,6 +11,7 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use common\models\City;
+use common\models\QuestionSea;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserMsg;
@@ -284,6 +285,19 @@ class ApiController extends Controller
 		return self::renderAPI($ret["code"], $ret["msg"]);
 	}
 
+	public function actionQuestion()
+	{
+		$tag = self::postParam("tag");
+		$tag = strtolower($tag);
+		switch ($tag) {
+			case "searchquestion":
+				$word = self::postParam("keyword");
+				$res = QuestionSea::findByKeyWord($word);
+				return self::renderAPI(0, '', $res);
+		}
+		return self::renderAPI(129, "什么操作也没做啊！");
+	}
+
 	public function actionUserchart()
 	{
 		$tag = self::postParam("tag");
@@ -293,7 +307,7 @@ class ApiController extends Controller
 		$gender = self::postParam("gender");
 		switch ($tag) {
 			case "stat":
-				$ret  = User::propStat($beginDate, $endDate);
+				$ret = User::propStat($beginDate, $endDate);
 				return self::renderAPI(0, '', $ret);
 		}
 		return self::renderAPI(129, "什么操作也没做啊！");

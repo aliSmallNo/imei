@@ -772,7 +772,7 @@ class SiteController extends BaseController
 				$insertItem["qRaw"] = json_encode([
 					"title" => $v["title"],
 					"options" => $v["options"],
-					"anwser" => $v["answer"]
+					"answer" => $v["answer"]
 				]);
 				$insertData[] = $insertItem;
 			}
@@ -799,7 +799,6 @@ class SiteController extends BaseController
 	// 添加题组
 	public function actionGroup()
 	{
-
 
 		return $this->renderPage('group.tpl',
 			[
