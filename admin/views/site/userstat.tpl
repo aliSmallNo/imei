@@ -190,15 +190,15 @@
 
 	function initChart(data, pid, title) {
 		var dates = [], mainData = [], subData = [];
-		for (var i = 0; i < data.length; i++) {
-			dates[i] = data[i]['date'];
+		for (var k = 0; k < data.length; k++) {
+			dates[k] = data[k]['date'];
 			mainData.push([
-				data[i]['date'],
-				data[i]['男生']
+				data[k]['date'],
+				data[k]['男生']
 			]);
 			subData.push([
-				data[i]['date'],
-				data[i]['女生']
+				data[k]['date'],
+				data[k]['女生']
 			]);
 		}
 
