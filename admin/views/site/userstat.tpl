@@ -123,7 +123,6 @@
 		}, function (resp) {
 			layer.closeAll();
 			if (resp.code == 0) {
-				console.log(resp.data);
 				initPie(resp.data.height.all, "chart_height", '全员身高');
 				initPie(resp.data.height.male, "chart_height_m", '男生身高');
 				initPie(resp.data.height.female, "chart_height_f", '女生身高');
