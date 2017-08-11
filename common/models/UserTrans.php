@@ -33,7 +33,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_LINK => "牵线奖励",
 		self::CAT_REWARD => "打赏",
 		self::CAT_CHAT => "密聊付费",
-		self::CAT_RECEIVE => "收取花粉值",
+		self::CAT_RECEIVE => "收到花粉值",
 		self::CAT_PRESENT => "赠送媒桂花",
 		self::CAT_RETURN => "拒绝退回",
 		self::CAT_MOMENT => "分享到朋友圈奖励",
