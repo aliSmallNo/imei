@@ -87,7 +87,7 @@
 			<a href="javascript:;" to="focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
-			<a href="/wx/fansrank"><span>花粉排行榜</span></a>
+			<a href="/wx/fansrank"><span>花粉排行榜</span> <i class="i-mark-hot"></i></a>
 			<a href="/wx/favor"><span>心动排行榜</span></a>
 		</div>
 		<div class="m-rows line-bottom">
