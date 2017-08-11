@@ -11,6 +11,7 @@ namespace mobile\controllers;
 use common\models\City;
 use common\models\LogAction;
 use common\models\Lottery;
+use common\models\QuestionGroup;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserMsg;
@@ -1145,5 +1146,16 @@ class WxController extends BaseController
 			'terse',
 			$title,
 			'bg-color');
+	}
+
+	public function actionQuestions()
+	{
+
+		$questions = QuestionGroup::findRecent();
+
+		return self::renderPage('questions.tpl', [
+			"questions" => $questions,
+		],
+			'terse');
 	}
 }
