@@ -78,28 +78,31 @@
 			<!--a href="javascript:;" to="addMeWx" id="pending_applications" ><span class="title">加我微信的人</span> </a>
 			<a href="javascript:;" to="IaddWx"><span class="title">我加微信的人</span> </a-->
 			<a href="javascript:;" to="heartbeat"><span class="title">心动列表</span> </a>
-
+			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">媒桂花账户</span></a>
+			<a href="/wx/sqr"><span class="title">分享给朋友</span></a>
 		</div>
 		<div class="m-rows line-bottom mymp" style="display: none">
 			<a href="/wx/invite"><span class="title">我的媒婆</span> <span class="tip">{{$mpName}}</span></a>
 			<a href="javascript:;" to="focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
-			<a href="/wx/sqr"><span class="title">分享给朋友</span></a>
-			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">媒桂花账户</span></a>
-			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span class="tip">已认证</span>{{/if}}</a>
 			<a href="/wx/fansrank"><span>花粉排行榜</span></a>
 			<a href="/wx/favor"><span>心动排行榜</span></a>
+		</div>
+		<div class="m-rows line-bottom">
+			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span class="tip">已认证</span>{{/if}}</a>
 			<a href="/wx/notice">
 				<span class="title">通知</span>
 				{{if $noReadFlag}}
 				<span class="noReadFlag"></span>
 				{{/if}}
 			</a>
-			<a href="#sfeedback"><span class="title">意见反馈</span> </a>
 			<a href="#myWechatNo"><span class="title">我的微信号</span></a>
-			<a href="/wx/splay"><span class="title">单身玩法</span></a>
 			<a href="/wx/blacklist"><span class="title">黑名单</span></a>
+		</div>
+		<div class="m-rows line-bottom">
+			<a href="#sfeedback"><span class="title">意见反馈</span> </a>
+			<a href="/wx/splay"><span class="title">单身玩法</span></a>
 			<a href="/wx/agree"><span class="title">用户协议</span></a>
 		</div>
 	</div>
