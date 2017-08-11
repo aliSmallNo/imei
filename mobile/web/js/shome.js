@@ -94,7 +94,10 @@ require(["layer"],
 			secretId: "",
 			cork: $(".app-cork"),
 			payMP: $(".pay-mp"),
+			sendTmp: $("#tpl_give").html(),
+			sending: false,
 			init: function () {
+				var util = this;
 				$(document).on(kClick, ".m-bottom-bar a", function () {
 					var self = $(this);
 					if (self.hasClass('btn-like')) {
@@ -121,8 +124,46 @@ require(["layer"],
 						ChatUtil.sid = self.attr("data-id");
 						ChatUtil.page = 1;
 						location.href = '#schat';
+					} else if (self.hasClass('btn-give')) {
+						$sls.secretId = self.attr("data-id");
+						$sls.main.show();
+						var html = Mustache.render(util.sendTmp, {
+							items: [
+								{amt: 10}, {amt: 18},
+								{amt: 52}, {amt: 66}
+							]
+						});
+						$sls.content.html(html).addClass("animate-pop-in");
+						$sls.shade.fadeIn(160);
 					}
+
 				});
+
+				$(document).on(kClick, ".btn-togive", function () {
+					if (alertUlit.sending) {
+						return;
+					}
+					alertUlit.sending = 1;
+					var amt = $('.topup-opt a.active').attr('data-amt');
+					if (amt) {
+						$.post("/api/user", {
+							tag: "togive",
+							id: $sls.secretId,
+							amt: amt
+						}, function (resp) {
+							alertUlit.sending = 0;
+							if (resp.code == 0) {
+								$sls.main.hide();
+								$sls.shade.fadeOut(160);
+							}
+							showMsg(resp.msg);
+						}, "json");
+					} else {
+						showMsg('请先点选媒桂花数量吧~');
+					}
+					return false;
+				});
+
 				$(document).on(kClick, ".pay-mp a", function () {
 					var self = $(this);
 					var tag = self.attr("tag");

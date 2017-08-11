@@ -317,8 +317,8 @@ require(["layer"],
 						$sls.main.show();
 						var html = Mustache.render($("#tpl_give").html(), {
 							items: [
-								{amt: 10}, {amt: 20},
-								{amt: 30}, {amt: 40}
+								{amt: 10}, {amt: 18},
+								{amt: 52}, {amt: 66}
 							]
 						});
 						$sls.content.html(html).addClass("animate-pop-in");

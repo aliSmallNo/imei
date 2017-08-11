@@ -61,15 +61,18 @@
 	<div class="m-bottom-bar">
 		{{if $role==10}}
 		<p>
+			<a class="send btn-give" data-id="{{$uInfo.encryptId}}">送TA花</a>
+		</p>
+		<p>
 			<a class="heart btn-like {{if $uInfo.favorFlag}}favor{{/if}}"
 				 data-id="{{$uInfo.encryptId}}">{{if $uInfo.favorFlag}}已心动{{else}}心动{{/if}}</a>
 		</p>
 		<p>
 			<a class="chat btn-chat" data-id="{{$uInfo.encryptId}}">私信TA</a>
 		</p>
-		<p style="display: none">
+		<!--p >
 			<a class="weixin btn-apply" data-id="{{$uInfo.encryptId}}">加微信聊聊</a>
-		</p>
+		</p-->
 		{{else}}
 		<div>
 			<a class="btn-recommend">向朋友推荐TA</a>
@@ -251,9 +254,32 @@
 		</div>
 	</div>
 </script>
+<script type="text/template" id="tpl_give">
+	<div class="topup-wrap">
+		<h4>送TA媒桂花</h4>
+		<h5>助力我的{{$genderName}}神上花粉排行榜</h5>
+		<a href="javascript:;" class="btn-topup-close"></a>
+		<div class="topup-opt clearfix">
+			{[#items]}
+			<a href="javascript:;" data-amt="{[amt]}">
+				<div class="img"><img src="/images/ico_rose.png"></div>
+				<div class="des">
+					<em>x {[amt]}朵</em>
+				</div>
+			</a>
+			{[/items]}
+		</div>
+		<div class="topup-action">
+			<a href="javascript:;" class="btn-togive">送媒<br>桂花</a>
+		</div>
+		<div class="topup-bot">
+			<a href="javascript:;">送花给TA，你会有意外惊喜哦~</a>
+		</div>
+	</div>
+</script>
 <script>
 	var mItems = {{$items}};
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/shome.js?v=1.3.6" src="/assets/js/require.js"></script>
+<script data-main="/js/shome.js?v=1.3.7" src="/assets/js/require.js"></script>
