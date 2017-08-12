@@ -38,10 +38,10 @@ class QuestionGroup extends ActiveRecord
 	}
 
 
-	public static function findRecent()
+	public static function findGroup($gid)
 	{
 		$conn = AppUtil::db();
-		$sql = "SELECT gItems,gId from im_question_group ORDER BY gId desc limit 1";
+		$sql = "SELECT gItems,gId from im_question_group where gId=$gid";
 		$ret = $conn->createCommand($sql)->queryOne();
 		$ids = $ret ? $ret["gItems"] : 0;
 		$gId = $ret ? $ret["gId"] : 0;

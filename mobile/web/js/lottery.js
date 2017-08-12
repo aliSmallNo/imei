@@ -89,8 +89,6 @@ require(["layer"],
 				} else {
 					if (util.times < util.cycle) {
 						util.speed -= 10;
-						//} else if (util.times == util.cycle) {
-						//util.prize = Math.random() * (util.count) | 0;
 					} else {
 						if (util.times > util.cycle + 10 && ((util.prize == 0 && util.index == 7) || util.prize == util.index + 1)) {
 							util.speed += 90;
@@ -101,7 +99,7 @@ require(["layer"],
 					if (util.speed < 60) {
 						util.speed = 60;
 					}
-					//console.log(util.prize + ' ' + util.index + ' ' + util.times + ' ' + util.speed);
+					// console.log(util.prize + ' ' + util.index + ' ' + util.times + ' ' + util.speed);
 					util.timer = setTimeout(function () {
 						util.spin();
 					}, util.speed);
