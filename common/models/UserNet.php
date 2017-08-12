@@ -830,20 +830,23 @@ class UserNet extends ActiveRecord
 	public static function favorlist($page = 1, $pageSize = 20)
 	{
 
-		$week = AppUtil::getEndStartTime(time(), 'curweek', true);
-
+		list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
+		list($today0, $today1) = AppUtil::getEndStartTime(time(), 'today', true);
 		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
 
-		$sql = "select count(*) as co,nUId as id,
-			uName as uname, 
-			uThumb as avatar
+		$sql = 'select count(1) as co,
+			count(case when nAddedOn BETWEEN :today0 and :today1 then 1 end) as todayFavor,
+			nUId as id, uName as uname, uThumb as avatar
 			from im_user_net as n 
-			left join im_user as u on u.uId=n.nUId 
+			join im_user as u on u.uId=n.nUId 
 			where nRelation=150 and nDeletedFlag=0 and nAddedOn BETWEEN :sDate and :eDate
-			GROUP BY nUId ORDER BY co desc,nUId asc $limit ";
+			GROUP BY nUId ORDER BY co desc,nUId asc ' . $limit;
+
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
-			":sDate" => $week[0],
-			":eDate" => $week[1],
+			":sDate" => $monday,
+			":eDate" => $sunday,
+			":today0" => $today0,
+			":today1" => $today1,
 		])->queryAll();
 		$nextPage = 0;
 		if (count($res) > $pageSize) {
@@ -853,26 +856,10 @@ class UserNet extends ActiveRecord
 		$data = [];
 		foreach ($res as $k => &$v) {
 			$v["secretId"] = AppUtil::encrypt($v["id"]);
-			$v["todayFavor"] = self::dayFavor($v["id"]);
 			$v["key"] = ($page - 1) * $pageSize + $k + 1;
 			$data[] = $v;
 		}
-
 		return [$data, $nextPage];
-	}
-
-	public static function dayFavor($uid)
-	{
-		$today = AppUtil::getEndStartTime(time(), 'today', true);
-		$sql = "select count(*) as co
-				from im_user_net as n 
-				where nRelation=150 and nDeletedFlag=0 and nAddedOn BETWEEN :sDate and :eDate
-				and nUId=$uid";
-		$res = AppUtil::db()->createCommand($sql)->bindValues([
-			":sDate" => $today[0],
-			":eDate" => $today[1],
-		])->queryOne();
-		return $res ? $res["co"] : 0;
 	}
 
 	public static function myfavor($uid)
