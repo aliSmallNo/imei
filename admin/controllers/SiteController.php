@@ -717,7 +717,7 @@ class SiteController extends BaseController
 
 		$params = $criteria = [];
 		if ($name) {
-			$criteria[] = "  uName like :name ";
+			$criteria[] = "  qTitle like :name ";
 			$params[':name'] = "%$name%";
 		}
 
