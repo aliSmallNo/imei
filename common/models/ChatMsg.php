@@ -40,14 +40,22 @@ class ChatMsg extends ActiveRecord
 			$conn = AppUtil::db();
 		}
 		$ratio = self::RATIO;
+		$costAmt = 10;
 		list($uid1, $uid2) = self::sortUId($senderId, $receiverId);
 		$left = self::chatLeft($senderId, $receiverId, $conn);
 		if ($left < 1) {
-			return 0;
+			$stat = UserTrans::getStat($senderId, 1);
+			$flower = isset($stat['flower']) ? intval($stat['flower']) : 0;
+			AppUtil::logFile($stat, 5, __FUNCTION__);
+			if ($flower < $costAmt) {
+				return 0;
+			}
+		} else {
+			$costAmt = 0;
 		}
 
 		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound,gAddedBy)
-			SELECT :id1,:id2,10,:uid FROM dual
+			SELECT :id1,:id2,9999,:uid FROM dual
 			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2)';
 		$conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
@@ -69,6 +77,14 @@ class ChatMsg extends ActiveRecord
 		])->queryOne();
 		$gid = $ret['gId'];
 		$gRound = intval($ret['gRound']);
+		if ($costAmt) {
+			UserTrans::add($senderId, $gid, UserTrans::CAT_CHAT, '', $costAmt, UserTrans::UNIT_GIFT);
+			$sql = 'update im_chat_group set gRound=9999 WHERE gId=:id';
+			$conn->createCommand($sql)->bindValues([
+				':id' => $gid,
+			])->execute();
+			$gRound = 9999;
+		}
 
 		$sql = 'select count(1) from im_chat_msg WHERE cGId=:gid and cAddedBy=:uid';
 		$cnt = $conn->createCommand($sql)->bindValues([

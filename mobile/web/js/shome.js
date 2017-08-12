@@ -341,11 +341,12 @@ require(["layer"],
 			},
 			showTip: function (gid, left) {
 				var util = this;
-				if (left) {
+				util.topTip.html('发起密聊将会被扣除10朵媒桂花<br>如果对方一直无回复，5天后退回媒桂花');
+				/*if (left) {
 					util.topTip.html('还可以密聊<b>' + left + '</b>句哦，要抓住机会哦~');
 				} else {
 					util.topTip.html('想要更多密聊机会，请先<a href="javascript:;" data-id="' + gid + '" class="btn-chat-topup">捐媒桂花</a>吧~');
-				}
+				}*/
 			},
 			topup: function () {
 				var util = this;

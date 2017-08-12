@@ -256,7 +256,6 @@ class UserTrans extends ActiveRecord
 		}
 		$uIds = array_values(array_unique($uIds));
 
-
 		$sql = "select count(1) as co
 				from im_user_trans as t 
 				join im_user as u on u.uId=t.tUId 
@@ -294,13 +293,13 @@ class UserTrans extends ActiveRecord
 			if ($unit == self::UNIT_FEN) {
 				$balance['amt'] = sprintf('%.2f', $balance['amt'] / 100.0);
 				$unit = self::UNIT_YUAN;
-				if ($cat == self::CAT_REWARD) {
+				if (in_array($cat, self::$CatMinus)) {
 					$details[$uid]['bal']['amt2'] -= $balance['amt'];
 				} else {
 					$details[$uid]['bal']['amt2'] += $balance['amt'];
 				}
 			} else if ($unit == self::UNIT_GIFT) {
-				if ($cat == self::CAT_REWARD || $cat == self::CAT_CHAT) {
+				if (in_array($cat, self::$CatMinus)) {
 					$details[$uid]['bal']['amt'] -= $balance['amt'];
 				} else {
 					$details[$uid]['bal']['amt'] += $balance['amt'];

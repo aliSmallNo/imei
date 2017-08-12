@@ -126,8 +126,8 @@
 </section>
 <section id="schat" data-title="密聊中...">
 	<div class="report_wrap">
-		<ul class="chats"></ul>
 		<p class="title chat-tip"></p>
+		<ul class="chats"></ul>
 	</div>
 	<div class="m-bottom-pl"></div>
 	<div class="m-bottom-bar">
@@ -1087,5 +1087,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/iscroll.js"></script>
-<script data-main="/js/single.js?v=1.6.7
-" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.6.8" src="/assets/js/require.js"></script>

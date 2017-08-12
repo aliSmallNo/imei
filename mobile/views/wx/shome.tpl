@@ -68,7 +68,7 @@
 				 data-id="{{$uInfo.encryptId}}">{{if $uInfo.favorFlag}}已心动{{else}}心动{{/if}}</a>
 		</p>
 		<p>
-			<a class="chat btn-chat" data-id="{{$uInfo.encryptId}}">私信TA</a>
+			<a class="chat btn-chat" data-id="{{$uInfo.encryptId}}">密聊TA</a>
 		</p>
 		<!--p >
 			<a class="weixin btn-apply" data-id="{{$uInfo.encryptId}}">加微信聊聊</a>
@@ -82,8 +82,8 @@
 </div>
 <section id="schat" data-title="密聊中...">
 	<div class="report_wrap">
-		<ul class="chats"></ul>
 		<p class="title chat-tip"></p>
+		<ul class="chats"></ul>
 	</div>
 	<div class="m-bottom-pl"></div>
 	<div class="m-bottom-bar">
@@ -282,4 +282,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/shome.js?v=1.3.7" src="/assets/js/require.js"></script>
+<script data-main="/js/shome.js?v=1.3.8" src="/assets/js/require.js"></script>
