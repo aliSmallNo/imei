@@ -6,7 +6,7 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<h4>选题列表
-				<a class="btn btn-primary btn-xs" href="/site/question">添加活动题组</a>
+				<a class="btn btn-primary btn-xs" href="/site/question">添加选题</a>
 			</h4>
 		</div>
 	</div>
