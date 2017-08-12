@@ -491,15 +491,25 @@ class ApiController extends Controller
 				$text = self::postParam("text");
 				$rptUId = self::postParam("uid");
 				$reason = self::postParam("reason");
-				Feedback::addReport($wxInfo['uId'], $rptUId, $reason, $text);
 				$black = UserNet::findOne([
 					"nUId" => $rptUId,
 					"nSubUId" => $wxInfo['uId'],
 					"nRelation" => UserNet::REL_BLOCK,
 					"nStatus" => UserNet::STATUS_WAIT,
 				]);
-				if ($reason == "加入黑名单" && !$black) {
-					UserNet::add($rptUId, $wxInfo['uId'], UserNet::REL_BLOCK, $note = '');
+				if ($reason == "加入黑名单") {
+					if ($black) {
+						return self::renderAPI(129, '你已经拉黑TA了哦~');
+					} else {
+						UserNet::add($rptUId, $wxInfo['uId'], UserNet::REL_BLOCK, $note = '');
+						Feedback::addReport($wxInfo['uId'], $rptUId, $reason, $text);
+						return self::renderAPI(129, '你已经成功拉黑TA了哦~');
+					}
+				} else {
+					if (Feedback::findOne(["fUId" => $wxInfo['uId'], "fReportUId" => $rptUId])) {
+						return self::renderAPI(129, '你已经举报过TA了哦~');
+					}
+					Feedback::addReport($wxInfo['uId'], $rptUId, $reason, $text);
 				}
 				return self::renderAPI(0, '提交成功！感谢您的反馈，我们会尽快处理您反映的问题~');
 			case "blacklist": // 黑名单列表
