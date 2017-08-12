@@ -1413,17 +1413,18 @@ class User extends ActiveRecord
 		$date = $AmFlag ? [date("Y-m-d 00:00:00"), date("Y-m-d 12:00:00")] : [date("Y-m-d 12:00:01"), date("Y-m-d 23:59:50")];
 
 		// 主动行为系数（B) B=B1*10+B2+B3+B4 牵手成功B1:次数*10 发出心动B2:次数*1 索要微信B3:次数*1 待定B4:次数*1
-		// Rain: 主动行为系数（B) B=B1*10+B2+B3+B4 密聊B1:次数*10 发出心动B2:次数*1 赠送媒桂花B3:次数*1 待定B4:次数*1
+		// Rain: 主动行为系数（B) B=B1*10+B2+B3+B4 密聊B1:次数*10 发出心动B2:次数*1 赠送媒桂花B3:次数*2 待定B4:次数*1
 		$sql = "SELECT 
 				SUM(CASE WHEN nRelation=140 and nStatus=2 THEN 1 ELSE 0 END ) as b1,
-				COUNT(CASE WHEN nRelation in (150,180)  THEN 1 END) as b2
+				COUNT(CASE WHEN nRelation in (150)  THEN 1 END) as b2,
+				COUNT(CASE WHEN nRelation in (180)  THEN 1 END) as b3
 				from im_user_net where nSubUId=:uid and nAddedOn  BETWEEN :sTime  AND :eTime";
 		$bResult = $conn->createCommand($sql)->bindValues([
 			":uid" => $row["id"],
 			":sTime" => $date[0],
 			":eTime" => $date[1],
 		])->queryOne();
-		$B = $bResult["b2"];
+		$B = $bResult["b2"] + $bResult["b3"] * 2.0;
 		$sql = "select count(1) as cnt
  				from im_chat_msg WHERE cAddedBy=:uid and cAddedOn  BETWEEN :sTime  AND :eTime ";
 		$cnt = $conn->createCommand($sql)->bindValues([
@@ -1431,7 +1432,7 @@ class User extends ActiveRecord
 			":sTime" => $date[0],
 			":eTime" => $date[1],
 		])->queryScalar();
-		$B += intval($cnt * 1.8);
+		$B += intval($cnt * 2.0);
 
 		// "购买系数(V）V=V1*100+V2+V3/5+V4"	充值行为V1:金额*100 每日签到V2:次数*1 账户余额V3:媒瑰花数/5 待定V4
 		$sql = "select
