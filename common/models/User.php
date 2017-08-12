@@ -1414,15 +1414,14 @@ class User extends ActiveRecord
 		// Rain: 主动行为系数（B) B=B1*10+B2+B3+B4 密聊B1:次数*10 发出心动B2:次数*1 赠送媒桂花B3:次数*2 待定B4:次数*1
 		$sql = "SELECT 
 				SUM(CASE WHEN nRelation=140 and nStatus=2 THEN 1 ELSE 0 END ) as b1,
-				COUNT(CASE WHEN nRelation in (150)  THEN 1 END) as b2,
-				COUNT(CASE WHEN nRelation in (180)  THEN 1 END) as b3
+				COUNT(CASE WHEN nRelation in (150)  THEN 1 END) as b2 
 				from im_user_net where nSubUId=:uid and nAddedOn  BETWEEN :sTime  AND :eTime";
 		$bResult = $conn->createCommand($sql)->bindValues([
 			":uid" => $row["id"],
 			":sTime" => $date[0],
 			":eTime" => $date[1],
 		])->queryOne();
-		$B = $bResult["b2"] + $bResult["b3"] * 3.0;
+		$B = $bResult["b2"];
 		$sql = "select count(1) as cnt
  				from im_chat_msg WHERE cAddedBy=:uid and cAddedOn  BETWEEN :sTime  AND :eTime ";
 		$cnt = $conn->createCommand($sql)->bindValues([
@@ -1432,10 +1431,12 @@ class User extends ActiveRecord
 		])->queryScalar();
 		$B += intval($cnt * 2.0);
 
-		// "购买系数(V）V=V1*100+V2+V3/5+V4"	充值行为V1:金额*100 每日签到V2:次数*1 账户余额V3:媒瑰花数/5 待定V4
+
+		// "购买系数(V）V=V1*100+V2+V3/5+V4"	充值行为V1:金额*100 每日签到V2:次数*1 账户余额V3:媒瑰花数/5 待定V4,赠送媒桂花B3:次数*2
 		$sql = "select
-					SUM(CASE WHEN tCategory=100 and tAddedOn  BETWEEN :sTime  AND :eTime THEN 1 ELSE 0 END ) as v1,
-					SUM(CASE WHEN tCategory=105 and tAddedOn  BETWEEN :sTime  AND :eTime THEN 1 ELSE 0 END ) as v2,
+					SUM(CASE WHEN tCategory in (127,128) and tAddedOn  BETWEEN :sTime  AND :eTime THEN 2 END ) as present,
+					SUM(CASE WHEN tCategory=100 and tAddedOn  BETWEEN :sTime  AND :eTime THEN 100 END ) as recharge,
+					SUM(CASE WHEN tCategory=105 and tAddedOn  BETWEEN :sTime  AND :eTime THEN 1 END ) as sign,
 					SUM(CASE WHEN tCategory=100 or tCategory=130  THEN tAmt 
 							 WHEN tCategory=105 AND  tUnit='flower' THEN tAmt  
 							 WHEN tCategory=120 or tCategory=125 then -tAmt END ) as v3
@@ -1446,7 +1447,7 @@ class User extends ActiveRecord
 			":sTime" => $date[0],
 			":eTime" => $date[1],
 		])->queryOne();
-		$V = $vResult["v1"] * 100 + $vResult["v2"] + $vResult["v3"] / 5;
+		$V = $vResult["present"] + $vResult["recharge"] * 100 + $vResult["sign"] + $vResult["v3"] / 5;
 
 		// "新鲜度（Activity）A=A1*0.003+365+A2*365+A3*36.5"	注册时间差A1:天数*.003 昨日是否访问A2 过去7天是否访问A3
 		$a1 = ceil((time() - strtotime($addedOn)) / 86400);
