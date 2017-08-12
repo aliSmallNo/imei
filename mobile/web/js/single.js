@@ -583,8 +583,8 @@ require(["layer"],
 		};
 
 		var SmeUtil = {
-			localId: "",
-			serverId: "",
+			localIds: [],
+			serverIds: [],
 			smeFlag: false,
 			uploadImgFlag: false,
 			delImgFlag: false,
@@ -592,7 +592,7 @@ require(["layer"],
 			albums: [],
 			albumTmp: $('#tpl_album').html(),
 			thumbTmp: '{[#items]}<li><a class="has-pic"><img src="{[.]}"></a></li>{[/items]}',
-			albumSingleTmp: '<li><a class="has-pic"><img src="{[thumb]}" bsrc="{[figure]}"></a><a href="javascript:;" class="del"></a></li>',
+			albumSingleTmp: '{[#items]}<li><a class="has-pic"><img src="{[thumb]}" bsrc="{[figure]}"></a><a href="javascript:;" class="del"></a></li>{[/items]}',
 			init: function () {
 				$(document).on(kClick, "a.e-album", function () {
 					SmeUtil.editToggle(!SmeUtil.editable);
@@ -603,13 +603,14 @@ require(["layer"],
 						return false;
 					}
 					wx.chooseImage({
-						count: 1,
+						count: 3,
 						sizeType: ['original', 'compressed'],
 						sourceType: ['album', 'camera'],
 						success: function (res) {
-							var localIds = res.localIds;
-							if (localIds && localIds.length) {
-								SmeUtil.localId = localIds[0];
+							SmeUtil.localIds = res.localIds;
+							if (SmeUtil.localIds && SmeUtil.localIds.length) {
+								SmeUtil.uploadImgFlag = 1;
+								SmeUtil.serverIds = [];
 								SmeUtil.wxUploadImages();
 							}
 						}
@@ -689,29 +690,34 @@ require(["layer"],
 				}, "json");
 			},
 			wxUploadImages: function () {
-				if (SmeUtil.uploadImgFlag) {
+				if (SmeUtil.localIds.length < 1 && SmeUtil.serverIds.length) {
+					SmeUtil.uploadImages();
 					return;
 				}
-				SmeUtil.uploadImgFlag = 1;
+				var localId = SmeUtil.localIds.pop();
 				wx.uploadImage({
-					localId: SmeUtil.localId.toString(),
-					isShowProgressTips: 1,
+					localId: localId,
+					isShowProgressTips: 0,
 					success: function (res) {
-						SmeUtil.serverId = res.serverId;
-						SmeUtil.uploadImage();
+						SmeUtil.serverIds.push(res.serverId);
+						if (SmeUtil.localIds.length < 1) {
+							SmeUtil.uploadImages();
+						} else {
+							SmeUtil.wxUploadImages();
+						}
 					},
 					fail: function () {
-						SmeUtil.serverId = "";
+						/*SmeUtil.serverIds = [];
 						showMsg("上传失败！");
-						SmeUtil.uploadImgFlag = 0;
+						SmeUtil.uploadImgFlag = 0;*/
 					}
 				});
 			},
-			uploadImage: function () {
+			uploadImages: function () {
 				showMsg("上传中...");
 				$.post("/api/user", {
 					tag: "album",
-					id: SmeUtil.serverId,
+					id: JSON.stringify(SmeUtil.serverIds)
 				}, function (resp) {
 					showMsg(resp.msg);
 					if (resp.code == 0) {
