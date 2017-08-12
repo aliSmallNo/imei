@@ -475,6 +475,7 @@ class User extends ActiveRecord
 				from im_user
 				WHERE uId>0 $strCriteria ";
 		$conn = AppUtil::db();
+		unset($params[':status']);
 		$res = $conn->createCommand($sql)->bindValues($params)->queryOne();
 		$counts = [];
 		foreach ($res as $k => $v) {
