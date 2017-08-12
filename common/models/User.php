@@ -1409,10 +1409,7 @@ class User extends ActiveRecord
 	public static function rankCal($row, $addedOn, $updRankFlag = false)
 	{
 		$conn = AppUtil::db();
-		//$AmFlag = strtotime(date("Y-m-d 12:00:00")) > time();
-		//$date = $AmFlag ? [date("Y-m-d 00:00:00"), date("Y-m-d 12:00:00")] : [date("Y-m-d 12:00:01"), date("Y-m-d 23:59:50")];
 		$date = [date('Y-m-d', time() - 86400), date('Y-m-d 23:59')];
-
 		// 主动行为系数（B) B=B1*10+B2+B3+B4 牵手成功B1:次数*10 发出心动B2:次数*1 索要微信B3:次数*1 待定B4:次数*1
 		// Rain: 主动行为系数（B) B=B1*10+B2+B3+B4 密聊B1:次数*10 发出心动B2:次数*1 赠送媒桂花B3:次数*2 待定B4:次数*1
 		$sql = "SELECT 
@@ -1425,7 +1422,7 @@ class User extends ActiveRecord
 			":sTime" => $date[0],
 			":eTime" => $date[1],
 		])->queryOne();
-		$B = $bResult["b2"] + $bResult["b3"] * 2.0;
+		$B = $bResult["b2"] + $bResult["b3"] * 3.0;
 		$sql = "select count(1) as cnt
  				from im_chat_msg WHERE cAddedBy=:uid and cAddedOn  BETWEEN :sTime  AND :eTime ";
 		$cnt = $conn->createCommand($sql)->bindValues([
