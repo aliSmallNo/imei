@@ -611,6 +611,10 @@ require(["layer"],
 							if (SmeUtil.localIds && SmeUtil.localIds.length) {
 								SmeUtil.uploadImgFlag = 1;
 								SmeUtil.serverIds = [];
+								layer.open({
+									type: 2,
+									content: '正在上传中...'
+								});
 								SmeUtil.wxUploadImages();
 							}
 						}
@@ -714,7 +718,6 @@ require(["layer"],
 				});
 			},
 			uploadImages: function () {
-				showMsg("上传中...");
 				$.post("/api/user", {
 					tag: "album",
 					id: JSON.stringify(SmeUtil.serverIds)
@@ -722,6 +725,7 @@ require(["layer"],
 					showMsg(resp.msg);
 					if (resp.code == 0) {
 						$("#album .photos").append(Mustache.render(SmeUtil.albumSingleTmp, resp.data));
+						layer.closeAll();
 					} else {
 						showMsg(resp.msg);
 					}
