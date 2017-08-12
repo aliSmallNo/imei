@@ -21,6 +21,12 @@
 		outline: none;
 		border: 1px solid #999;
 	}
+
+	.j-scope {
+		font-size: 13px;
+		text-decoration: none;
+		margin: 0 2px;
+	}
 </style>
 
 <div id="page-wrapper">
@@ -39,6 +45,11 @@
 					<option value="11">只看男生</option>
 				</select>
 				<button class="btn btn-primary btnQuery">查询</button>
+				<span class="space"></span>
+				<a href="javascript:;" class="j-scope" data-from="{{$today}}" data-to="{{$today}}">今天</a>
+				<a href="javascript:;" class="j-scope" data-from="{{$yesterday}}" data-to="{{$yesterday}}">昨天</a>
+				<a href="javascript:;" class="j-scope" data-from="{{$monday}}" data-to="{{$sunday}}">本周</a>
+				<a href="javascript:;" class="j-scope" data-from="{{$firstDay}}" data-to="{{$endDay}}">本月</a>
 			</div>
 		</div>
 	</div>
@@ -284,6 +295,13 @@
 
 	mBtnQuery.on('click', function () {
 		reloadData();
+	});
+	$('.j-scope').click(function () {
+		var self = $(this);
+	  mBeginDate.val(self.attr('data-from'));
+	  mEndDate.val(self.attr('data-to'));
+	  reloadData();
+	  self.blur();
 	});
 </script>
 

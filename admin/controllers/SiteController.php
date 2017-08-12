@@ -689,9 +689,18 @@ class SiteController extends BaseController
 			9 => '#9e9e9e',
 			10 => '#e0e0e0',
 		];
+		list($wd, $monday, $sunday) = AppUtil::getWeekInfo();
+		list($md, $firstDay, $endDay) = AppUtil::getMonthInfo();
 		return $this->renderPage('userstat.tpl',
 			[
 				'category' => "data",
+				'today' => date('Y-m-d'),
+				'yesterday' => date('Y-m-d', time() - 86400),
+				'monday' => $monday,
+				'sunday' => $sunday,
+				'firstDay' => $firstDay,
+				'endDay' => $endDay,
+				'weekDT' => AppUtil::getWeekInfo(),
 				"beginDate" => date("Y-m-d", time() - 15 * 86400),
 				"endDate" => date("Y-m-d"),
 				"colors" => json_encode(array_values($StatusColors))
