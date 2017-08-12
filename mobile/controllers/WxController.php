@@ -1150,7 +1150,8 @@ class WxController extends BaseController
 			header('location:/wx/index');
 			exit();
 		}
-		list($questions, $gId) = QuestionGroup::findRecent();
+		$gid = 2001;
+		list($questions, $gId) = QuestionGroup::findGroup($gid);
 		if (!$questions) {
 			header('location:/wx/error');
 		}

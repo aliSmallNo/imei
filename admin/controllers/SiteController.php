@@ -721,7 +721,6 @@ class SiteController extends BaseController
 		}
 
 		list($list, $count) = QuestionSea::items($criteria, $params, $page);
-
 		$pagination = self::pagination($page, $count);
 
 		return $this->renderPage('questions.tpl',
