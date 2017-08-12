@@ -106,7 +106,7 @@ class Menu
 						"level" => 820
 					],
 					[
-						"name" => "题目列表",
+						"name" => "选题列表",
 						"url" => "/site/questions",
 						"revise" => 1,
 						"level" => 820
