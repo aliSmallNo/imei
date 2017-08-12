@@ -37,22 +37,6 @@ class QuestionGroup extends ActiveRecord
 		return true;
 	}
 
-	public static function findByKeyWord($word)
-	{
-		if (!$word) {
-			return [];
-		}
-		$sql = "select * from im_question_sea where qTitle like '%$word%' ";
-		$res = AppUtil::db()->createCommand($sql)->queryAll();
-		if (!$res) {
-			return [];
-		}
-		foreach ($res as &$v) {
-			$v = QuestionSea::fmt($v);
-		}
-		return $res;
-	}
-
 
 	public static function findRecent()
 	{
