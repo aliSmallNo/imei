@@ -427,6 +427,57 @@ class ImageUtil
 		return $ret;
 	}
 
+
+	public static function upload2Server($postData, $squareFlag = false, $savedKey = '')
+	{
+		$result = [];
+		if (!isset($postData["error"]) || !isset($postData["tmp_name"])) {
+			return $result;
+		}
+		if (!$savedKey) {
+			$savedKey = RedisUtil::getImageSeq();
+		}
+
+		foreach ($postData['error'] as $key => $value) {
+			if ($value != UPLOAD_ERR_OK) {
+				continue;
+			}
+			$tmpName = $postData["tmp_name"][$key];
+			$upName = $postData["name"][$key];
+			$fileExt = pathinfo($upName, PATHINFO_EXTENSION);
+			$fileExt = strtolower($fileExt ? $fileExt : "");
+
+			$content = file_get_contents($tmpName);
+			$path = AppUtil::imgDir() . $savedKey;
+			$fileName = $path . '.' . $fileExt;
+			$fileThumb = $path . '_t.' . $fileExt;
+			$fileNormal = $path . '_n.' . $fileExt;
+
+			file_put_contents($fileName, $content);
+			$thumbSize = 160;
+			$figureSize = 560;
+			if ($squareFlag) {
+				$figureWidth = $figureHeight = $figureSize;
+			} else {
+				list($srcWidth, $srcHeight) = getimagesize($fileName);
+				if ($srcWidth > $srcHeight) {
+					$figureHeight = $figureSize;
+					$figureWidth = $srcWidth * $figureSize / $srcHeight;
+				} else {
+					$figureWidth = $figureSize;
+					$figureHeight = $srcHeight * $figureSize / $srcWidth;
+				}
+			}
+			Image::open($fileName)->zoomCrop($thumbSize, $thumbSize, 0xffffff, 'center', 'center')->save($fileThumb);
+			$thumb = self::getUrl($fileThumb);
+			Image::open($fileName)->zoomCrop($figureWidth, $figureHeight, 0xffffff, 'center', 'center')->save($fileNormal);
+			$figure = self::getUrl($fileNormal);
+			unlink($tmpName);
+			$result[] = [$thumb, $figure];
+		}
+		return $result;
+	}
+
 	public static function save2Server($imageUrl, $squareFlag = false, $key = '')
 	{
 		if (!$key) {

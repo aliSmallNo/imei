@@ -58,10 +58,10 @@ class LogAction extends ActiveRecord
 		$item->aUId = $uid;
 		$item->aCategory = $category;
 		$item->aOpenId = $openId;
-		$item->aKey = $key;
 		if ($note) {
-			$item->aNote = $note;
+			$item->aNote = is_array($note) ? json_encode($note, JSON_UNESCAPED_UNICODE) : $note;
 		}
+		$item->aKey = $key;
 		$item->save();
 		return true;
 	}

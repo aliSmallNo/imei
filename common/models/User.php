@@ -631,49 +631,48 @@ class User extends ActiveRecord
 		return $uid;
 	}
 
-	public static function album($id, $openId, $f = 'add')
+	public static function album($mediaIds, $openId, $f = 'add')
 	{
-		$thumb = '';
-		if ($id && $f == "add") {
-			list($thumb, $url) = ImageUtil::save2Server($id); //AppUtil::save($id);
-		} else {
-			$url = $id;
-		}
-
 		$Info = self::findOne(["uOpenId" => $openId]);
-		if ($url && $Info) {
-
-			LogAction::add($Info->uId,
-				$openId,
-				($f == 'add' ? LogAction::ACTION_ALBUM_ADD : LogAction::ACTION_ALBUM_DEL),
-				$url);
-
-			$album = $Info->uAlbum;
-			if ($album) {
-				$album = json_decode($album, 1);
-			} else {
-				$album = [];
-			}
-			switch ($f) {
-				case "add":
-					$album[] = $url;
-					break;
-				case "del":
-					if ($album) {
-						foreach ($album as $k => $v) {
-							if ($v == $url) {
-								unset($album[$k]);
-							}
-						}
-					}
-					break;
-			}
-			$Info->uAlbum = json_encode(array_values($album), JSON_UNESCAPED_UNICODE);
-			$Info->uUpdatedOn = date('Y-m-d H:i:s');
-			$Info->save();
-			return [$thumb ? $thumb : $url, $url];
+		if (!$Info || !$mediaIds) {
+			return [];
 		}
-		return 0;
+		$uId = $Info->uId;
+		$album = $Info->uAlbum;
+		if ($album) {
+			$album = json_decode($album, 1);
+		} else {
+			$album = [];
+		}
+		$imageItems = [];
+		if ($f == 'add') {
+			$mediaIds = json_decode($mediaIds, 1);
+			$mediaIds = array_reverse($mediaIds);
+			foreach ($mediaIds as $mediaId) {
+				list($thumb, $url) = ImageUtil::save2Server($mediaId);
+				$imageItems[] = [
+					'thumb' => $thumb,
+					'figure' => $url
+				];
+			}
+			LogAction::add($uId, $openId, LogAction::ACTION_ALBUM_ADD, json_encode($imageItems, JSON_UNESCAPED_UNICODE));
+			$album = array_merge($album, array_column($imageItems, 'figure'));
+		} else {
+			LogAction::add($uId, $openId, LogAction::ACTION_ALBUM_DEL, $mediaIds);
+			foreach ($album as $k => $url) {
+				if ($url == $mediaIds) {
+					unset($album[$k]);
+				}
+			}
+			$album = array_values($album);
+		}
+		$Info->uAlbum = json_encode(array_values($album), JSON_UNESCAPED_UNICODE);
+		$Info->uUpdatedOn = date('Y-m-d H:i:s');
+		$Info->save();
+		if ($f == 'add') {
+			return $imageItems;
+		}
+		return $album;
 
 	}
 

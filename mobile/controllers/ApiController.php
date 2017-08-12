@@ -325,16 +325,12 @@ class ApiController extends Controller
 				UserWechat::getInfoByOpenId($openId, 1);
 				return self::renderAPI(0, '保存成功啦~', $ret);
 			case "album":
-				$f = self::postParam("f", 'add');
-				$text = "添加";
-				if ($f == "del") {
-					$text = "删除";
-				}
-				list($thumb, $url) = User::album($id, $openId, $f);
-				if ($url) {
+				$f = self::postParam('f', 'add');
+				$text = ($f == "add" ? "添加" : '删除');
+				$items = User::album($id, $openId, $f);
+				if ($items) {
 					return self::renderAPI(0, $text . '成功', [
-						'thumb' => $thumb,
-						'figure' => $url,
+						'items' => $items,
 					]);
 				} else {
 					return self::renderAPI(129, $text . '失败');
