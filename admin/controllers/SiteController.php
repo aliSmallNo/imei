@@ -254,10 +254,10 @@ class SiteController extends BaseController
 		$status = self::getParam('status', 0);
 		$subStatus = self::getParam('sub_status', 0);
 
-		$params = $criteria = $partCriteria = [];
-		if ($status == 0 || $status) {
-			$criteria[] = " uStatus=$status ";
-		}
+		$partCriteria = [];
+		$criteria[] = " uStatus=:status ";
+		$params[':status'] = $status;
+
 		if ($subStatus) {
 			$criteria[] = " uSubStatus=" . $subStatus;
 			$partCriteria[] = " uSubStatus=" . $subStatus;

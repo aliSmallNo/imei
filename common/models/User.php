@@ -440,12 +440,16 @@ class User extends ActiveRecord
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
 		$offset = ($page - 1) * $pageSize;
+		$orderBy = ' order by uAddedOn desc ';
+		if($params[':status']==0){
+			$orderBy = ' order by uUpdatedOn desc,uAddedOn desc ';
+		}
 		$conn = AppUtil::db();
 		$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe,w.wWechatId
  				  FROM im_user as u 
 				  JOIN im_user_wechat as w on w.wUId=u.uId
 				  WHERE uId>0 $strCriteria 
-				  ORDER BY uAddedOn DESC Limit $offset, $pageSize";
+				  $orderBy Limit $offset, $pageSize";
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
 		foreach ($ret as $row) {
