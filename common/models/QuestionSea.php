@@ -9,6 +9,7 @@
 namespace common\models;
 
 
+use admin\models\Admin;
 use common\utils\AppUtil;
 use yii\db\ActiveRecord;
 
@@ -26,7 +27,8 @@ class QuestionSea extends ActiveRecord
 		if (!$entity) {
 			$entity = new self();
 		} else {
-
+			$entity->qUpdatedOn = date("Y-m-d H:i:s");
+			$entity->qUpdatedBy = Admin::getAdminId();
 		}
 
 		foreach ($data as $k => $v) {
@@ -86,7 +88,7 @@ class QuestionSea extends ActiveRecord
 		return $res;
 	}
 
-	public static function verify($answer)
+	public static function verifyAnswer($answer)
 	{
 		$answer = json_decode($answer, 1);
 		$count = 0;

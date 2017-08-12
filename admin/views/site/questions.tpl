@@ -41,7 +41,7 @@
 		<tbody>
 		{{if $list}}
 		{{foreach from=$list item=prod}}
-		<tr >
+		<tr>
 			<td>
 				{{$prod.qTitle}}
 			</td>
@@ -50,15 +50,16 @@
 				<div>{{$opt.opt}} {{$opt.text}}</div>
 				{{/foreach}}
 			</td>
-			<td >
+			<td>
 				{{$prod.answer}}
 			</td>
-			<td >
+			<td>
 				<div>创建于{{$prod.qAddedOn|date_format:'%y-%m-%d %H:%M'}}</div>
 				<div>更新于{{$prod.qUpdatedOn|date_format:'%y-%m-%d %H:%M'}}</div>
 			</td>
 			<td>
-				<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" data-id="{{$prod.qId}}">修改信息</a>
+				<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" data-id="{{$prod.qId}}"
+					 data-raw='{{$prod.qRaw}}'>修改信息</a>
 			</td>
 		</tr>
 		{{/foreach}}
@@ -72,27 +73,109 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
 										aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">审核用户</h4>
+					<h4 class="modal-title">修改选题</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body" style="overflow:hidden">
 
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-tag="" id="btnCoupon">确定保存</button>
+					<button type="button" class="btn btn-primary" data-tag="" id="btnSave">确定保存</button>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 <script>
+	var id = 0, loadflag = 0, postData ={};
 	$("a.modU").click(function () {
-		var cid = $(this).attr("data-id");
-
+		var self = $(this);
+		id = self.attr("data-id");
+		var raw = JSON.parse(self.attr("data-raw"));
+		console.log(raw);
+		var vHtml = Mustache.render($("#tpl_mod").html(), raw);
+		$(".modal-body").html(vHtml);
+		$("#modModal").modal("show")
 	});
 
+	$(document).on("click", "#btnSave", function () {
+		var options = [], err = 0;
+		var fields = ["title", "answer"];
+		var fieldsAlert = ["题干", "答案"];
+		for (var i = 0; i < fields.length; i++) {
+			var obj = $("[data-tag=" + fields[i] + "]");
+			var val = $.trim(obj.val());
+			if (!val) {
+				layer.msg(fieldsAlert[i] + "不能为空哦~");
+				obj.focus();
+				return;
+			}
+			postData[fields[i]] = val;
+		}
 
+		$("[data-option]").each(function () {
+			var opt = $(this).attr("data-option");
+			var text = $.trim($(this).val());
+			if (!text) {
+				layer.msg("必填项不能为空！");
+				err = 1;
+				$(this).focus();
+				return false;
+			}
+			var option ={opt:opt,text:text};
+			options.push(option);
+		});
+		if (err) {
+			return false;
+		}
+		postData["options"] = options;
+		console.log(postData);
 
+		if (loadflag) {
+			return;
+		}
+		loadflag = 1;
+		$.post("/api/question", {
+			tag: "mod",
+			id: id,
+			data: JSON.stringify(postData)
+		}, function (resp) {
+			loadflag = 0;
+			if (resp.code == 0) {
+				 location.reload();
+			} else {
+				layer.msg(resp.msg);
+			}
+		}, "json")
+	})
+
+</script>
+<script type="text/html" id="tpl_mod">
+	<div class="col-sm-12 form-horizontal">
+		<div class="form-group">
+			<label class="col-sm-2 control-label">题干:</label>
+			<div class="col-sm-9">
+				<input data-tag="title" required class="form-control" value="{[title]}" placeholder="(必填)">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">选项:</label>
+			<div class="col-sm-9 opt-list">
+				{[#options]}
+				<div class="input-group">
+					<div class="input-group-addon">{[opt]}</div>
+					<input data-option="{[opt]}" required class="form-control" value="{[text]}" placeholder="(必填)">
+				</div>
+				{[/options]}
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">答案:</label>
+			<div class="col-sm-9">
+				<input data-tag="answer" required value="{[answer]}" class="form-control" placeholder="(必填)">
+			</div>
+		</div>
+	</div>
 </script>
 
 {{include file="layouts/footer.tpl"}}

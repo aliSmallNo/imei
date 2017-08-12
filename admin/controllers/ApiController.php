@@ -291,6 +291,17 @@ class ApiController extends Controller
 		$tag = self::postParam("tag");
 		$tag = strtolower($tag);
 		switch ($tag) {
+			case "mod":
+				$id = self::postParam("id");
+				$data = self::postParam("data");
+				if (!QuestionSea::findOne(["qId" => $id])) {
+					return self::renderAPI(129, '无此题~');
+				}
+				$editData["qRaw"] = $data;
+				$data = json_decode($data, 1);
+				$editData["qTitle"] = $data["title"];
+				QuestionSea::edit($id, $editData);
+				return self::renderAPI(0, '');
 			case "searchquestion":
 				$word = self::postParam("keyword");
 				$res = QuestionSea::findByKeyWord($word);
