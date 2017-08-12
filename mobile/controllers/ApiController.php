@@ -1289,7 +1289,7 @@ class ApiController extends Controller
 				if (Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gId, "oUId" => $uid])) {
 					return self::renderAPI(129, '您已经答过题了哦~');
 				}
-				if (QuestionSea::verify($answer)) {
+				if (QuestionSea::verifyAnswer($answer)) {
 					Log::add([
 						"oCategory" => Log::CAT_QUESTION,
 						"oKey" => $gId,
