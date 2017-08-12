@@ -5651,4 +5651,61 @@ section {
       font-weight: 300;
       padding-bottom: 0.5rem; }
 
+.que-des {
+  background: #fff;
+  padding: 3rem 2rem 4rem 2rem;
+  margin: 3rem; }
+  .que-des p {
+    font-size: 1.3rem;
+    letter-spacing: 0.1rem;
+    line-height: 2.5rem;
+    margin-bottom: 3rem; }
+    .que-des p span {
+      color: #f06292; }
+  .que-des a {
+    background: #f06292;
+    padding: 1rem 3rem;
+    color: #fff; }
+
+.que-count {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #777; }
+
+.qItem {
+  margin: 0 2rem;
+  padding: 2rem;
+  background: #fff; }
+  .qItem .title {
+    font-weight: 800;
+    line-height: 3rem; }
+  .qItem .options {
+    padding: 1rem; }
+    .qItem .options a {
+      display: block;
+      padding: 1.5rem 1rem;
+      position: relative;
+      border-bottom: 1px solid #eee; }
+      .qItem .options a.active {
+        color: #f06292; }
+      .qItem .options a.active:after {
+        content: "";
+        position: absolute;
+        background: url("../images/ico-q-yes.png") center center;
+        background-size: 100% 100%;
+        width: 2rem;
+        height: 2rem;
+        top: 1rem;
+        right: 1rem; }
+  .qItem .next-que {
+    padding: 1.5rem; }
+    .qItem .next-que a {
+      background: #f8b3ca;
+      padding: 0.8rem 3rem;
+      color: #fff;
+      font-size: 1.4rem; }
+      .qItem .next-que a.active {
+        background: #f06292; }
+
 /*# sourceMappingURL=imei.css.map */
