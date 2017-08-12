@@ -7,6 +7,7 @@ use admin\models\Menu;
 use common\models\ChatMsg;
 use common\models\City;
 use common\models\Feedback;
+use common\models\Log;
 use common\models\LogAction;
 use common\models\Mark;
 use common\models\QuestionSea;
@@ -812,6 +813,32 @@ class SiteController extends BaseController
 			[
 				'category' => 'data',
 				'detailcategory' => 'site/questions',
+			]);
+	}
+
+	//用户回答列表
+	public function actionAnswers()
+	{
+		$page = self::getParam("page", 1);
+		$name = self::getParam('name');
+
+		$params = $criteria = [];
+		if ($name) {
+			$criteria[] = "  uName like :name ";
+			$params[':name'] = "%$name%";
+		}
+
+		list($list, $count) = Log::answerItems($criteria, $params, $page);
+
+		$pagination = self::pagination($page, $count);
+
+
+		return $this->renderPage('answers.tpl',
+			[
+				'category' => 'data',
+				"name" => $name,
+				'pagination' => $pagination,
+				'list' => $list,
 			]);
 	}
 }

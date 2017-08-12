@@ -69,7 +69,7 @@ require(["layer"],
 			$.post("/api/questions", {
 				tag: "answer",
 				data: JSON.stringify(ans),
-				gid: $("gId").val(),
+				gid: $("#gId").val(),
 			}, function (resp) {
 				if (resp.code == 0) {
 					if (resp.data == "pass") {
