@@ -1409,8 +1409,9 @@ class User extends ActiveRecord
 	public static function rankCal($row, $addedOn, $updRankFlag = false)
 	{
 		$conn = AppUtil::db();
-		$AmFlag = strtotime(date("Y-m-d 12:00:00")) > time();
-		$date = $AmFlag ? [date("Y-m-d 00:00:00"), date("Y-m-d 12:00:00")] : [date("Y-m-d 12:00:01"), date("Y-m-d 23:59:50")];
+		//$AmFlag = strtotime(date("Y-m-d 12:00:00")) > time();
+		//$date = $AmFlag ? [date("Y-m-d 00:00:00"), date("Y-m-d 12:00:00")] : [date("Y-m-d 12:00:01"), date("Y-m-d 23:59:50")];
+		$date = [date('Y-m-d 12:00', time() - 86400), date('Y-m-d 23:59')];
 
 		// 主动行为系数（B) B=B1*10+B2+B3+B4 牵手成功B1:次数*10 发出心动B2:次数*1 索要微信B3:次数*1 待定B4:次数*1
 		// Rain: 主动行为系数（B) B=B1*10+B2+B3+B4 密聊B1:次数*10 发出心动B2:次数*1 赠送媒桂花B3:次数*2 待定B4:次数*1
@@ -1472,7 +1473,6 @@ class User extends ActiveRecord
 		// "认证系数（Qualification）Q=1+Q1+Q2+Q3+Q4"	照片为人像Q1 身份证认证Q2 回访确认单身Q3 回访确认Q4 资料完整度Q5
 		// 人工审核
 		$Q = 1;
-
 
 		// "身份表述（Identity）I=1-I1-I2-I3-I4"
 		// 取消关注I1 (关注时值为0，未关注为缺省值0.6)
