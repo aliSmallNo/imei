@@ -817,6 +817,7 @@ class SiteController extends BaseController
 			]);
 	}
 
+	//用户回答列表
 	public function actionAnswers()
 	{
 		$page = self::getParam("page", 1);
