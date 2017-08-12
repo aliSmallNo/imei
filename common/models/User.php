@@ -1434,7 +1434,7 @@ class User extends ActiveRecord
 
 		// "购买系数(V）V=V1*100+V2+V3/5+V4"	充值行为V1:金额*100 每日签到V2:次数*1 账户余额V3:媒瑰花数/5 待定V4,赠送媒桂花B3:次数*2
 		$sql = "select
-					SUM(CASE WHEN tCategory in (127,128) and tAddedOn  BETWEEN :sTime  AND :eTime THEN 2 END ) as present,
+					SUM(CASE WHEN tCategory in (127,128) and tAddedOn  BETWEEN :sTime  AND :eTime THEN 5 END ) as present,
 					SUM(CASE WHEN tCategory=100 and tAddedOn  BETWEEN :sTime  AND :eTime THEN 100 END ) as recharge,
 					SUM(CASE WHEN tCategory=105 and tAddedOn  BETWEEN :sTime  AND :eTime THEN 1 END ) as sign,
 					SUM(CASE WHEN tCategory=100 or tCategory=130  THEN tAmt 
