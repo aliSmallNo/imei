@@ -646,6 +646,7 @@ class User extends ActiveRecord
 		}
 		$imageItems = [];
 		if ($f == 'add') {
+			$mediaIds = json_decode($mediaIds, 1);
 			foreach ($mediaIds as $mediaId) {
 				list($thumb, $url) = ImageUtil::save2Server($mediaId);
 				$imageItems[] = [

@@ -326,8 +326,6 @@ class ApiController extends Controller
 				return self::renderAPI(0, '保存成功啦~', $ret);
 			case "album":
 				$f = self::postParam('f', 'add');
-				$id = self::postParam('id');
-				$id = json_decode($id, 1);
 				$text = ($f == "add" ? "添加" : '删除');
 				$items = User::album($id, $openId, $f);
 				if ($items) {
