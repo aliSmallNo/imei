@@ -454,8 +454,8 @@ class ImageUtil
 			$fileNormal = $path . '_n.' . $fileExt;
 
 			file_put_contents($fileName, $content);
-			$thumbSize = 140;
-			$figureSize = 540;
+			$thumbSize = 160;
+			$figureSize = 560;
 			if ($squareFlag) {
 				$figureWidth = $figureHeight = $figureSize;
 			} else {
