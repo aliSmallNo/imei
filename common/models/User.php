@@ -1396,7 +1396,7 @@ class User extends ActiveRecord
 		}
 		foreach ($allUsers as $v) {
 			$row = self::fmtRow($v);
-			self::rankCal($row, $v["uAddedOn"]);
+			self::rankCal($row, $v["uAddedOn"], false, $conn);
 			$count++;
 			if ($debug && $count % 50 == 0) {
 				var_dump(date('Y-m-d H:i:s - ') . $count);
@@ -1411,9 +1411,11 @@ class User extends ActiveRecord
 		}
 	}
 
-	public static function rankCal($row, $addedOn, $updRankFlag = false)
+	public static function rankCal($row, $addedOn, $updRankFlag = false, $conn = '')
 	{
-		$conn = AppUtil::db();
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
 		$date = [date('Y-m-d', time() - 86400), date('Y-m-d 23:59')];
 		// 主动行为系数（B) B=B1*10+B2+B3+B4 牵手成功B1:次数*10 发出心动B2:次数*1 索要微信B3:次数*1 待定B4:次数*1
 		// Rain: 主动行为系数（B) B=B1*10+B2+B3+B4 密聊B1:次数*10 发出心动B2:次数*1 赠送媒桂花B3:次数*2 待定B4:次数*1
@@ -1767,7 +1769,7 @@ class User extends ActiveRecord
 			'income' => $incomeData,
 			'height' => $heightData,
 			'gender' => $genderData,
-			'edu'=>$eduData,
+			'edu' => $eduData,
 			'times' => $times
 		];
 	}
