@@ -982,6 +982,9 @@ require(["layer"],
 
 				$(document).on(kClick, ".wx-hint a", function () {
 					var to = $(this).attr("to");
+					if (!to) {
+						return;
+					}
 
 					TabUtil.tabObj = $(".tab[tag=" + to + "]");
 					TabUtil.tag = TabUtil.tabObj.attr("tag");

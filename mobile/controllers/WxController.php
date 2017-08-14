@@ -644,7 +644,7 @@ class WxController extends BaseController
 				'bgImage' => ($userInfo && $userInfo->uCertImage) ? $userInfo->uCertImage : "/images/cert_sample.jpg",
 				'certFlag' => $userInfo ? (($userInfo->uCertStatus == User::CERT_STATUS_PASS) ? 1 : 0) : 0
 			],
-			'imei',
+			'terse',
 			'实名认证');
 	}
 
