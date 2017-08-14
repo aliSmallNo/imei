@@ -5,7 +5,7 @@
 		font-weight: 400;
 	}
 
-	.dt {
+	.sm {
 		font-size: 14px;
 		font-weight: 300;
 	}
@@ -15,6 +15,12 @@
 		padding-right: 2px;
 		font-size: 15px;
 		font-weight: 400;
+	}
+
+	.note i {
+		font-size: 13px;
+		font-weight: 300;
+		font-style: normal;
 	}
 
 	td img {
@@ -41,7 +47,7 @@
 				<th class="col-sm-1">
 					头像
 				</th>
-				<th>
+				<th class="col-sm-3">
 					用户
 				</th>
 				<th class="col-sm-3">
@@ -50,7 +56,7 @@
 				<th class="col-sm-1">
 					头像
 				</th>
-				<th>
+				<th class="col-sm-3">
 					用户
 				</th>
 				<th>
@@ -69,8 +75,8 @@
 					{{$item.phone1}}
 				</td>
 				<td>
-					<div class="dt">{{$item.dt}}</div>
-					<div class="note">{{$item.content}}</div>
+					<div class="sm">&larr;{{$item.cnt2}}句 | {{$item.cnt1}}句&rarr;</div>
+					<div class="note"><i>{{$item.dt}}</i><span class="space"></span>{{$item.content}}</div>
 				</td>
 				<td class="modMp">
 					<img src="{{$item.avatar2}}">
@@ -89,5 +95,5 @@
 		{{$pagination}}
 	</div>
 </div>
- 
+
 {{include file="layouts/footer.tpl"}}

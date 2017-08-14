@@ -564,9 +564,9 @@ class WechatUtil
 			case self::NOTICE_AUDIT_PASS:
 				$msgCat = UserMsg::CATEGORY_AUDIT;
 				$templateId = "_J4oGSruJmxopotrtLCGzixGrAOSvGu_mo7i698nL7s";
-				$url = $wxUrl . "/wx/sh?id=" . AppUtil::encrypt($uId);
+				$url = $wxUrl . "/wx/single#sme";
 				$keywords['first'] = "hi，$nickname\n";
-				$keywords['keyword1'] = substr($userInfo["uPhone"], 0, 3) . 'xxxx' . substr($userInfo["uPhone"], 7, 4);
+				$keywords['keyword1'] = substr($userInfo["uPhone"], 0, 3) . '****' . substr($userInfo["uPhone"], 7, 4);
 				$keywords['keyword2'] = date("Y年n月j日 H:i");
 				$keywords['keyword3'] = $subTitle;
 				$keywords['remark'] = "\n点击下方详情查看吧~";
