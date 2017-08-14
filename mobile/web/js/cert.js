@@ -19,7 +19,7 @@ require(["layer"],
 		};
 
 		$(document).on(kClick, "a.choose-img", function () {
-			if ($sls.certFlag==1) {
+			if ($sls.certFlag == 1) {
 				showMsg("您已通过实名认证~");
 				return;
 			}
@@ -35,16 +35,20 @@ require(["layer"],
 					}
 				}
 			});
-		})
+		});
 
 		function wxUploadImages() {
 			if ($sls.uploadImgFlag) {
 				return;
 			}
+			layer.open({
+				type: 2,
+				content: '正在上传中...'
+			});
 			$sls.uploadImgFlag = 1;
 			wx.uploadImage({
 				localId: $sls.localId.toString(),
-				isShowProgressTips: 1,
+				isShowProgressTips: 0,
 				success: function (res) {
 					$sls.serverId = res.serverId;
 					uploadImage();
@@ -58,16 +62,15 @@ require(["layer"],
 		}
 
 		function uploadImage() {
-			showMsg("上传中...");
 			$.post("/api/user", {
 				tag: "cert",
 				id: $sls.serverId
 			}, function (resp) {
 				showMsg(resp.msg);
 				if (resp.code == 0) {
-					location.href = "/wx/single";
+					location.href = "/wx/single#sme";
 				} else {
-
+					showMsg(resp.msg);
 				}
 				$sls.uploadImgFlag = 0;
 			}, "json");
@@ -83,38 +86,8 @@ require(["layer"],
 			});
 		}
 
-		function locationHashChanged() {
-			var hashTag = location.hash;
-			hashTag = hashTag.replace("#!", "");
-			hashTag = hashTag.replace("#", "");
-			switch (hashTag) {
-				case 'cert':
-
-					break;
-				default:
-					break;
-			}
-			if (!hashTag) {
-				hashTag = 'cert';
-			}
-			$sls.curFrag = hashTag;
-			var title = $("#" + hashTag).attr("data-title");
-			if (title) {
-				$(document).attr("title", title);
-				$("title").html(title);
-				var iFrame = $('<iframe src="/blank.html" class="g-blank"></iframe>');
-				iFrame.on('load', function () {
-					setTimeout(function () {
-						iFrame.off('load').remove();
-					}, 0);
-				}).appendTo($("body"));
-			}
-			layer.closeAll();
-		}
-
 		$(function () {
 			$("body").addClass("bg-color");
-			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage'];
@@ -122,7 +95,6 @@ require(["layer"],
 			wx.ready(function () {
 				wx.hideOptionMenu();
 			});
-			locationHashChanged();
 			$sls.cork.hide();
 
 		});
