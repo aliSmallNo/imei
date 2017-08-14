@@ -440,6 +440,7 @@ class UserTrans extends ActiveRecord
 	{
 		list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
 		// list($monday, $sunday) = AppUtil::getEndStartTime(strtotime("2017-08-13 14:00:00"), 'curweek', true);
+		 $monday = "2017-08-01 00:00:00";$sunday = "2017-09-01 00:00:00";
 
 		list($beginDT, $endDT) = AppUtil::getEndStartTime(time(), 'today', true);
 
