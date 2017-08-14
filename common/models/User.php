@@ -1437,7 +1437,7 @@ class User extends ActiveRecord
 		$B += intval($cnt * 2.0);
 
 
-		// "购买系数(V）V=V1*100+V2+V3/5+V4"	充值行为V1:金额*10 每日签到V2:次数*1 账户余额V3:媒瑰花数/5 待定V4,赠送媒桂花B3:次数*2
+		// "购买系数(V）V=V1*100+V2+V3/5+V4"	充值行为V1:金额*5 每日签到V2:次数*1 账户余额V3:媒瑰花数/5 待定V4,赠送媒桂花B3:次数*2
 		$sql = "select
 					SUM(CASE WHEN tCategory in (127,128) and tAddedOn  BETWEEN :sTime  AND :eTime THEN 5 END ) as present,
 					SUM(CASE WHEN tCategory=100 and tAddedOn  BETWEEN :sTime  AND :eTime THEN 100 END ) as recharge,
@@ -1452,7 +1452,7 @@ class User extends ActiveRecord
 			":sTime" => $date[0],
 			":eTime" => $date[1],
 		])->queryOne();
-		$V = $vResult["present"] + $vResult["recharge"] * 10 + $vResult["sign"] + $vResult["v3"] / 5;
+		$V = $vResult["present"] + $vResult["recharge"] * 5 + $vResult["sign"] + $vResult["v3"] / 5;
 
 		// "新鲜度（Activity）A=A1*0.003+365+A2*365+A3*36.5"	注册时间差A1:天数*.003 昨日是否访问A2 过去7天是否访问A3
 		$a1 = ceil((time() - strtotime($addedOn)) / 86400);
