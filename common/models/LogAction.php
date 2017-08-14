@@ -91,6 +91,9 @@ class LogAction extends ActiveRecord
 			case "female":
 				$condStr = " and uGender =10 ";
 				break;
+			default:
+				$condStr = " and uGender in (10,11) ";
+
 		}
 //		switch ($category) {
 //			case self::REUSE_DATA_WEEK:
