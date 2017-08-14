@@ -38,7 +38,7 @@
 	</div>
 
 	<div class="message_area">
-		<h5>最近20条聊天记录</h5>
+		<h5>最近100条聊天记录</h5>
 		<ul class="message_list" id="listContainer">
 			{{foreach from=$list item=item}}
 			<li class="message_item ">
