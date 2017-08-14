@@ -75,16 +75,16 @@
 			<a href="/wx/card" class=""><span class="title">我的身份卡</span></a>
 		</div>
 		<div class="m-rows line-bottom wx-hint">
-			<!--a href="javascript:;" to="addMeWx" id="pending_applications" ><span class="title">加我微信的人</span> </a>
-			<a href="javascript:;" to="IaddWx"><span class="title">我加微信的人</span> </a-->
-			<a href="javascript:;" to="heartbeat"><span class="title">心动列表</span> <i class="i-mark-favor"></i></a>
+			<!--a href="#addMeWx" id="pending_applications" ><span class="title">加我微信的人</span> </a>
+			<a href="#IaddWx"><span class="title">我加微信的人</span> </a-->
+			<a href="#heartbeat"><span class="title">心动列表</span> <i class="i-mark-favor"></i></a>
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">媒桂花账户</span> <i class="i-mark-rose"></i></a>
 			<a href="/wx/sqr"><span class="title">分享给朋友</span></a>
 			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span class="tip">已认证</span>{{/if}}</a>
 		</div>
 		<div class="m-rows line-bottom mymp" style="display: none">
 			<a href="/wx/invite"><span class="title">我的媒婆</span> <span class="tip">{{$mpName}}</span></a>
-			<a href="javascript:;" to="focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
+			<a href="#focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
 			<a href="/wx/fansrank"><span>花粉排行榜</span> <i class="i-mark-hot"></i></a>
@@ -1087,4 +1087,5 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/iscroll.js"></script>
-<script data-main="/js/single.js?v=1.7.0" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.7.1
+" src="/assets/js/require.js"></script>

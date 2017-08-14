@@ -958,7 +958,6 @@ require(["layer"],
 					e.stopPropagation();
 					var self = $(this);
 					var pf = self.attr("class");
-					var id = self.closest("a").attr("data-id");
 					var nid = self.closest("a").attr("data-nid");
 					$.post("/api/user", {
 						tag: "wx-process",
@@ -978,28 +977,6 @@ require(["layer"],
 
 						}
 					}, "json");
-				});
-
-				$(document).on(kClick, ".wx-hint a", function () {
-					var to = $(this).attr("to");
-					if (!to) {
-						return;
-					}
-
-					TabUtil.tabObj = $(".tab[tag=" + to + "]");
-					TabUtil.tag = TabUtil.tabObj.attr("tag");
-					TabUtil.subtag = TabUtil.tabObj.find(":first-child").attr("subtag");
-
-					TabUtil.page = 1;
-					TabUtil.tabObj.next().html("");
-					switch (to) {
-						case "addMeWx":
-						case "IaddWx":
-						case "heartbeat":
-							$("[tag=" + TabUtil.tag + "]").find("[subtag=" + TabUtil.subtag + "]").trigger("click");
-							break;
-					}
-					location.href = "#" + to;
 				});
 			},
 			getData: function () {
