@@ -1064,16 +1064,24 @@ class AppUtil
 			case 'week':
 			case 'lastweek':
 				//php获取上周起始时间戳和结束时间戳
-				$times[] = mktime(0, 0, 0, date('m', $time), date('d', $time) - date('w', $time) + 1 - 7, date('Y', $time));
-				$times[] = mktime(23, 59, 59, date('m', $time), date('d', $time) - date('w', $time) + 7 - 7, date('Y', $time));
+				// echo "m:" . date('m', $time) . " d:" . date('d', $time) . " w:" . date('w', $time) . "\n";
+				$offset1 = date('w', $time) > 0 ? date('w', $time) - 1 + 7 : 6 + 7;
+				$offset2 = date('w', $time) > 0 ? date('w', $time) - 7 + 7 : 0;
+				$times[] = mktime(0, 0, 0, date('m', $time), date('d', $time) - $offset1, date('Y', $time));
+				$times[] = mktime(23, 59, 59, date('m', $time), date('d', $time) - $offset2, date('Y', $time));
 				break;
 			case 'curweek':
-				$times[] = mktime(0, 0, 0, date('m', $time), date('d', $time) - date('w', $time) + 1, date('Y', $time));
-				$times[] = mktime(23, 59, 59, date('m', $time), date('d', $time) - date('w', $time) + 7, date('Y', $time));
+				// echo "m:" . date('m', $time) . " d:" . date('d', $time) . " w:" . date('w', $time) . "\n";
+				$offset1 = date('w', $time) > 0 ? date('w', $time) - 1 : 6;
+				$offset2 = date('w', $time) > 0 ? date('w', $time) - 7 : 0;
+				$times[] = mktime(0, 0, 0, date('m', $time), date('d', $time) - $offset1, date('Y', $time));
+				$times[] = mktime(23, 59, 59, date('m', $time), date('d', $time) - $offset2, date('Y', $time));
 				break;
 			case 'tomweek':
-				$times[] = mktime(0, 0, 0, date('m', $time), date('d', $time) - date('w', $time) + 1 + 7, date('Y', $time));
-				$times[] = mktime(23, 59, 59, date('m', $time), date('d', $time) - date('w', $time) + 7 + 7, date('Y', $time));
+				$offset1 = date('w', $time) > 0 ? date('w', $time) - 1 - 7 : 6 - 7;
+				$offset2 = date('w', $time) > 0 ? date('w', $time) - 7 - 7 : 0 - 7;
+				$times[] = mktime(0, 0, 0, date('m', $time), date('d', $time) - $offset1, date('Y', $time));
+				$times[] = mktime(23, 59, 59, date('m', $time), date('d', $time) - $offset2, date('Y', $time));
 				break;
 			case 'curmonth':
 				$times[] = mktime(0, 0, 0, date('m', $time), 1, date('Y', $time));

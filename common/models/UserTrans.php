@@ -438,7 +438,9 @@ class UserTrans extends ActiveRecord
 
 	public static function getRoselist($page = 1, $pageSize = 20)
 	{
-		list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
+		//list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
+		list($monday, $sunday) = AppUtil::getEndStartTime(strtotime("2017-08-13 14:00:00"), 'curweek', true);
+
 		list($beginDT, $endDT) = AppUtil::getEndStartTime(time(), 'today', true);
 
 		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);

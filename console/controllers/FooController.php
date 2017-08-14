@@ -495,4 +495,9 @@ class FooController extends Controller
 		AppUtil::logFile(json_encode($a, JSON_UNESCAPED_UNICODE), 5, __FUNCTION__);
 
 	}
+
+	public function actionZp()
+	{
+		AppUtil::getEndStartTime(strtotime("2017-08-13 14:00:00"), 'tomweek', true);
+	}
 }
