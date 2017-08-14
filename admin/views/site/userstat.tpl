@@ -83,6 +83,7 @@
 				<div class="panel-body">
 					<div id="chart_age" class="chart-wrapper"></div>
 					<div id="chart_income" class="chart-wrapper"></div>
+					<div id="chart_edu" class="chart-wrapper"></div>
 					<div id="chart_height" class="chart-wrapper"></div>
 				</div>
 			</div>
@@ -96,6 +97,7 @@
 				<div class="panel-body">
 					<div id="chart_age_m" class="chart-wrapper"></div>
 					<div id="chart_income_m" class="chart-wrapper"></div>
+					<div id="chart_edu_m" class="chart-wrapper"></div>
 					<div id="chart_height_m" class="chart-wrapper"></div>
 				</div>
 			</div>
@@ -108,6 +110,7 @@
 				<div class="panel-body">
 					<div id="chart_age_f" class="chart-wrapper"></div>
 					<div id="chart_income_f" class="chart-wrapper"></div>
+					<div id="chart_edu_f" class="chart-wrapper"></div>
 					<div id="chart_height_f" class="chart-wrapper"></div>
 				</div>
 			</div>
@@ -141,6 +144,9 @@
 				initPie(resp.data.age.all, "chart_age", '全员年龄');
 				initPie(resp.data.age.male, "chart_age_m", '男生年龄');
 				initPie(resp.data.age.female, "chart_age_f", '女生年龄');
+				initPie(resp.data.edu.all, "chart_edu", '全员学历');
+				initPie(resp.data.edu.male, "chart_edu_m", '男生学历');
+				initPie(resp.data.edu.female, "chart_edu_f", '女生学历');
 				initPie(resp.data.gender, "chart_gender", '');
 				initChart(resp.data.times, "chart_times", '');
 			} else {

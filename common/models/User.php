@@ -1543,7 +1543,7 @@ class User extends ActiveRecord
 
 	protected static function fmtStat($items)
 	{
-		if ($items && count($items) > 6) {
+		if ($items && count($items) > 7) {
 			$amt = array_sum(array_column($items, 'y'));
 			$limit = round($amt * 0.011);
 			$others = 0;
@@ -1668,8 +1668,20 @@ class User extends ActiveRecord
 			":sDate" => $beginDate . ' 00:00:00',
 			":eDate" => $endDate . ' 23:59:00',
 		])->queryAll();
-
 		$incomeData = $fmtRet($ret, self::$Income);
+
+		$sql = "select COUNT(1) as co ,uEducation as val, uGender as gender
+				from im_user 
+				where uStatus <8 and uRole=:role AND uGender>9 
+					and uAddedOn between :sDate and :eDate $strCriteria
+				GROUP by uEducation,uGender ";
+		$ret = AppUtil::db()->createCommand($sql)->bindValues([
+			":role" => $role,
+			":sDate" => $beginDate . ' 00:00:00',
+			":eDate" => $endDate . ' 23:59:00',
+		])->queryAll();
+		$eduData = $fmtRet($ret, self::$Education);
+
 
 		$sql = "select COUNT(1) as co ,uGender as gender 
 				from im_user 
@@ -1755,6 +1767,7 @@ class User extends ActiveRecord
 			'income' => $incomeData,
 			'height' => $heightData,
 			'gender' => $genderData,
+			'edu'=>$eduData,
 			'times' => $times
 		];
 	}
