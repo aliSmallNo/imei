@@ -583,25 +583,26 @@ class SiteController extends BaseController
 	// 留存率 统计
 	public function actionReusestat()
 	{
-		$cat = self::getParam("cat", "week");
+		$cat = self::getParam("cat", "all");
 		$sign = self::getParam("sign", "");
 
 		$reuseData = RedisUtil::getCache(RedisUtil::KEY_STAT_REUSE, $cat);
 
 		if (!$reuseData || $sign == "reset") {
 			// 开始记录日期 2017-06-01
-			$sCategory = ($cat == 'week' ? LogAction::REUSE_DATA_WEEK : LogAction::REUSE_DATA_MONTH);
+			//$sCategory = ($cat == 'week' ? LogAction::REUSE_DATA_WEEK : LogAction::REUSE_DATA_MONTH);
+			$sCategory = LogAction::REUSE_DATA_WEEK;
 			$lastTime = strtotime("2017-06-01");
 			$dayDiff = ceil((time() - 86400 - $lastTime) / 86400);
 			$reuseData = [];
 			if ($dayDiff > 1) {
 				if ($sCategory == LogAction::REUSE_DATA_WEEK) {
 					for ($k = 1; $k <= ceil($dayDiff / 7); $k++) {
-						$reuseData[] = LogAction::getReuseData(time() - $k * 86400 * 7, $sCategory);
+						$reuseData[] = LogAction::getReuseData($cat, time() - $k * 86400 * 7, $sCategory);
 					}
 				} else {
 					for ($k = 1; $k <= ceil($dayDiff / 30); $k++) {
-						$reuseData[] = LogAction::getReuseData(time() - $k * 86400 * 30, $sCategory);
+						$reuseData[] = LogAction::getReuseData($cat, time() - $k * 86400 * 30, $sCategory);
 					}
 				}
 				foreach ($reuseData as &$v) {

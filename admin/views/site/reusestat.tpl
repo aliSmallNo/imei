@@ -27,8 +27,9 @@
 		</div>
 		<div class="col-lg-3">
 			<div class="btn-group " role="group">
-				<button type="button" class="btn btn-default {{if $cat == 'week'}}active{{/if}}" tag="week">周</button>
-				<button type="button" class="btn btn-default {{if $cat == 'month'}}active{{/if}}" tag="month">月</button>
+				<button type="button" class="btn btn-default {{if $cat == 'all'}}active{{/if}}" tag="all">全部</button>
+				<button type="button" class="btn btn-default {{if $cat == 'male'}}active{{/if}}" tag="male">男</button>
+				<button type="button" class="btn btn-default {{if $cat == 'female'}}active{{/if}}" tag="female">女</button>
 			</div>
 		</div>
 	</div>
