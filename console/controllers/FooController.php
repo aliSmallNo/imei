@@ -498,6 +498,6 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		AppUtil::getEndStartTime(strtotime("2017-08-13 14:00:00"), 'tomweek', true);
+		echo strtotime("2017-08-13 14:00:00");
 	}
 }
