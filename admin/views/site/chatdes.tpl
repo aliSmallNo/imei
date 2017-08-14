@@ -20,14 +20,12 @@
 </style>
 <div id="page-wrapper">
 	<div class="row">
-		<h4> 聊天记录
-
-		</h4>
+		<h4>聊天记录</h4>
 	</div>
 	<div class="row" style="display: none">
 		<form class="form-horizontal form" action="/site/chatreply" method="post">
-			<input type="hidden" name="openId" value="">
-			<input type="hidden" name="pid" value="">
+			<input type="hidden" name="openId">
+			<input type="hidden" name="pid">
 			<div class="form-group">
 				<label class="control-label">我来回答这个问题</label>
 				<textarea class="form-control" name="content" placeholder="写下给微信用户的话，请注意礼貌用语。"></textarea>
@@ -36,7 +34,6 @@
 			</div>
 		</form>
 	</div>
-
 	<div class="message_area">
 		<h5>最近100条聊天记录</h5>
 		<ul class="message_list" id="listContainer">
@@ -62,11 +59,4 @@
 	</div>
 	<div class="row-divider">&nbsp;</div>
 </div>
-<script>
-	$(document).on("click", ".play", function () {
-		var self = $(this);
-
-	});
-
-</script>
 {{include file="layouts/footer.tpl"}}

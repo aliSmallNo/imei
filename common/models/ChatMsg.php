@@ -318,12 +318,16 @@ class ChatMsg extends ActiveRecord
 		$conn = AppUtil::db();
 		$sql = 'select g.gId,g.gUId1,g.gUId2,g.gAddedBy,m.cContent as content,m.cAddedOn,
 			 u1.uName as name1,u1.uPhone as phone1,u1.uThumb as avatar1,
-			 u2.uName as name2,u2.uPhone as phone2,u2.uThumb as avatar2
+			 u2.uName as name2,u2.uPhone as phone2,u2.uThumb as avatar2,
+			 COUNT(case when m2.cAddedBy=g.gUId1 then 1 end) as cnt1,
+ 			 COUNT(case when m2.cAddedBy=g.gUId2 then 1 end) as cnt2
 			 from im_chat_group as g
 			 JOIN im_chat_msg as m on g.gId=m.cGId and g.gLastCId=m.cId
+			 JOIN im_chat_msg as m2 on g.gId=m2.cGId
 			 JOIN im_user as u1 on u1.uId=g.gUId1
 			 JOIN im_user as u2 on u2.uId=g.gUId2
 			 WHERE g.gId>0 ' . $strCriteria . '
+			 GROUP BY g.gId
 			 order by g.gUpdatedOn desc ' . $limit;
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as $k => $row) {
