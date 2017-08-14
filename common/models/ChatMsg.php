@@ -222,7 +222,7 @@ class ChatMsg extends ActiveRecord
 		return [$chats, $nextPage];
 	}
 
-	public static function messages($gid, $page = 1, $pageSize = 60)
+	public static function messages($gid, $page = 1, $pageSize = 100)
 	{
 		$limit = ' Limit ' . ($page - 1) * $pageSize . ',' . $pageSize;
 		$conn = AppUtil::db();
