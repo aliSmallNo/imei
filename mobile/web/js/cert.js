@@ -1,6 +1,3 @@
-if (document.location.hash === "" || document.location.hash === "#") {
-	document.location.hash = "#cert";
-}
 require.config({
 	paths: {
 		"jquery": "/assets/js/jquery-3.2.1.min",
