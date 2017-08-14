@@ -67,11 +67,12 @@ require(["layer"],
 						util.prize = resp.data.prize;
 						if (resp.code == 0) {
 							util.msg = resp.msg;
+							util.spin();
 						} else {
 							showMsg(resp.msg);
 						}
 					}, 'json');
-				util.spin();
+				//util.spin();
 			},
 			spin: function () {
 				var util = this;

@@ -66,42 +66,64 @@ class LogAction extends ActiveRecord
 		return true;
 	}
 
-	public static function getReuseData($cTime = 0, $category = 73)
+	public static function getReuseData($cat, $cTime = 0, $category = 73)
 	{
 		$curTime = $cTime;
 		if ($cTime < 1) {
 			$curTime = time();
 		}
 		$times = [];
-		switch ($category) {
-			case self::REUSE_DATA_WEEK:
-				for ($k = 0; $k < 30; $k++) {
-					$subTimes = AppUtil::getEndStartTime($curTime + 86400 * 7 * $k, 'curweek', true);
-					if ($subTimes && count($subTimes) > 1 && strtotime($subTimes[0]) > time()) {
-						break;
-					}
-					if (count($times) >= 32) {
-						break;
-					}
-					$times = array_merge($times, $subTimes);
-				}
+		for ($k = 0; $k < 30; $k++) {
+			$subTimes = AppUtil::getEndStartTime($curTime + 86400 * 7 * $k, 'curweek', true);
+			if ($subTimes && count($subTimes) > 1 && strtotime($subTimes[0]) > time()) {
 				break;
-			case self::REUSE_DATA_MONTH:
-				for ($k = 0; $k < 30; $k++) {
-					$subTimes = AppUtil::getEndStartTime($curTime + 86400 * 30 * $k, 'curmonth', true);
-					if ($subTimes && count($subTimes) > 1 && strtotime($subTimes[0]) > time()) {
-						break;
-					}
-					if ($subTimes && count($subTimes) > 1 && in_array($subTimes[0], $times)) {
-						continue;
-					}
-					if (count($times) >= 32) {
-						break;
-					}
-					$times = array_merge($times, $subTimes);
-				}
+			}
+			if (count($times) >= 32) {
 				break;
+			}
+			$times = array_merge($times, $subTimes);
 		}
+		$condStr = "";
+		switch ($cat) {
+			case "male":
+				$condStr = " and uGender =11 ";
+				break;
+			case "female":
+				$condStr = " and uGender =10 ";
+				break;
+			default:
+				$condStr = " and uGender in (10,11) ";
+
+		}
+//		switch ($category) {
+//			case self::REUSE_DATA_WEEK:
+//				for ($k = 0; $k < 30; $k++) {
+//					$subTimes = AppUtil::getEndStartTime($curTime + 86400 * 7 * $k, 'curweek', true);
+//					if ($subTimes && count($subTimes) > 1 && strtotime($subTimes[0]) > time()) {
+//						break;
+//					}
+//					if (count($times) >= 32) {
+//						break;
+//					}
+//					$times = array_merge($times, $subTimes);
+//				}
+//				break;
+//			case self::REUSE_DATA_MONTH:
+//				for ($k = 0; $k < 30; $k++) {
+//					$subTimes = AppUtil::getEndStartTime($curTime + 86400 * 30 * $k, 'curmonth', true);
+//					if ($subTimes && count($subTimes) > 1 && strtotime($subTimes[0]) > time()) {
+//						break;
+//					}
+//					if ($subTimes && count($subTimes) > 1 && in_array($subTimes[0], $times)) {
+//						continue;
+//					}
+//					if (count($times) >= 32) {
+//						break;
+//					}
+//					$times = array_merge($times, $subTimes);
+//				}
+//				break;
+//		}
 		if (count($times) > 2) {
 			$lineData = [
 				"sCategory" => $category,
@@ -120,7 +142,7 @@ class LogAction extends ActiveRecord
 			];
 			$sql = "select GROUP_CONCAT(uId) as uIds,count(*) as amt from im_user
 					where uAddedOn BETWEEN '$times[0]' and '$times[1]'
-					and uNote='' and uStatus<9 and uRole in (10,20) ";
+					and uNote='' and uStatus<9 and uRole in (10,20) $condStr";
 			$conn = AppUtil::db();
 			$result = $conn->createCommand($sql)->queryOne();
 			$uIds = '';
