@@ -1396,7 +1396,7 @@ class User extends ActiveRecord
 		}
 		foreach ($allUsers as $v) {
 			$row = self::fmtRow($v);
-			self::rankCal($row, $v["uAddedOn"]);
+			self::rankCal($row, $v["uAddedOn"], false, $conn);
 			$count++;
 			if ($debug && $count % 50 == 0) {
 				var_dump(date('Y-m-d H:i:s - ') . $count);
@@ -1411,9 +1411,11 @@ class User extends ActiveRecord
 		}
 	}
 
-	public static function rankCal($row, $addedOn, $updRankFlag = false)
+	public static function rankCal($row, $addedOn, $updRankFlag = false, $conn = '')
 	{
-		$conn = AppUtil::db();
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
 		$date = [date('Y-m-d', time() - 86400), date('Y-m-d 23:59')];
 		// 主动行为系数（B) B=B1*10+B2+B3+B4 牵手成功B1:次数*10 发出心动B2:次数*1 索要微信B3:次数*1 待定B4:次数*1
 		// Rain: 主动行为系数（B) B=B1*10+B2+B3+B4 密聊B1:次数*10 发出心动B2:次数*1 赠送媒桂花B3:次数*2 待定B4:次数*1
@@ -1437,7 +1439,7 @@ class User extends ActiveRecord
 		$B += intval($cnt * 2.0);
 
 
-		// "购买系数(V）V=V1*100+V2+V3/5+V4"	充值行为V1:金额*100 每日签到V2:次数*1 账户余额V3:媒瑰花数/5 待定V4,赠送媒桂花B3:次数*2
+		// "购买系数(V）V=V1*100+V2+V3/5+V4"	充值行为V1:金额*5 每日签到V2:次数*1 账户余额V3:媒瑰花数/5 待定V4,赠送媒桂花B3:次数*2
 		$sql = "select
 					SUM(CASE WHEN tCategory in (127,128) and tAddedOn  BETWEEN :sTime  AND :eTime THEN 5 END ) as present,
 					SUM(CASE WHEN tCategory=100 and tAddedOn  BETWEEN :sTime  AND :eTime THEN 100 END ) as recharge,
@@ -1452,7 +1454,7 @@ class User extends ActiveRecord
 			":sTime" => $date[0],
 			":eTime" => $date[1],
 		])->queryOne();
-		$V = $vResult["present"] + $vResult["recharge"] * 100 + $vResult["sign"] + $vResult["v3"] / 5;
+		$V = $vResult["present"] + $vResult["recharge"] * 5 + $vResult["sign"] + $vResult["v3"] / 5;
 
 		// "新鲜度（Activity）A=A1*0.003+365+A2*365+A3*36.5"	注册时间差A1:天数*.003 昨日是否访问A2 过去7天是否访问A3
 		$a1 = ceil((time() - strtotime($addedOn)) / 86400);
@@ -1486,19 +1488,19 @@ class User extends ActiveRecord
 		$I5 = 0;
 		switch ($row["status"]) {
 			case self::STATUS_PRISON:
-				$I4 = 0.4;
-				break;
-			case self::STATUS_DUMMY:
-				$I4 = 0.6;
-				break;
-			case self::STATUS_PENDING:
-				$I4 = 0.8;
-				break;
-			case self::STATUS_ACTIVE:
 				$I4 = 1;
 				break;
+			case self::STATUS_DUMMY:
+				$I4 = .5;
+				break;
+			case self::STATUS_PENDING:
+				$I4 = 2;
+				break;
+			case self::STATUS_ACTIVE:
+				$I4 = 4;
+				break;
 			default:
-				$I4 = 0;
+				$I4 = 1;
 		}
 		switch ($row["substatus"]) {
 			case self::SUB_ST_STAFF:
@@ -1767,7 +1769,7 @@ class User extends ActiveRecord
 			'income' => $incomeData,
 			'height' => $heightData,
 			'gender' => $genderData,
-			'edu'=>$eduData,
+			'edu' => $eduData,
 			'times' => $times
 		];
 	}
