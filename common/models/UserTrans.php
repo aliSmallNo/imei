@@ -438,9 +438,9 @@ class UserTrans extends ActiveRecord
 
 	public static function getRoselist($page = 1, $pageSize = 20)
 	{
-		list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
+		// list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
+		 list($monday, $sunday) = AppUtil::getWeekInfo();
 		// list($monday, $sunday) = AppUtil::getEndStartTime(strtotime("2017-08-13 14:00:00"), 'curweek', true);
-		 // $monday = "2017-08-01 00:00:00";$sunday = "2017-09-01 00:00:00";
 
 		list($beginDT, $endDT) = AppUtil::getEndStartTime(time(), 'today', true);
 
@@ -452,7 +452,7 @@ class UserTrans extends ActiveRecord
 				 tUId as id, uName as uname, uThumb as avatar
 				 FROM im_user_trans as t
 				 JOIN im_user as u on u.uId=t.tUId 
-				 WHERE tCategory=:cat and tAddedOn BETWEEN '$monday'  AND '$sunday'
+				 WHERE tCategory=:cat
 				 GROUP BY tUId ORDER BY co desc, tUId asc " . $limit;
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":cat" => $cat,
