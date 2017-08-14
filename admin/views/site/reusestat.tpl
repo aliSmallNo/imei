@@ -103,7 +103,7 @@
 					{{if $percent>=0}}
 					<a href="javascript:;" target="_blank" data-ids="{{$prod.ids[$subK]}}">
 						{{$percent|string_format:'%.1f'}}%</a>
-					{{else}}&nbsp;
+					{{else}}
 					{{/if}}
 				</td>
 				{{/foreach}}
@@ -118,7 +118,6 @@
 		var self = $(this);
 		location.href = "/site/reusestat?cat=" + self.attr('tag');
 	});
-
 
 	$(".percent a").on("click", function () {
 		var self = $(this);
