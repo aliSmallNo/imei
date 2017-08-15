@@ -493,10 +493,13 @@ class User extends ActiveRecord
 		$st = self::STATUS_DELETE;
 		$sql = "select 
 				COUNT(1) as amt,
-				SUM(CASE WHEN uGender=11 THEN  1 END ) as male,
-				SUM(CASE WHEN uGender=10 THEN  1 END ) as female,
-				SUM(CASE WHEN uPhone THEN  1 END ) as reg
-				from im_user where uNote ='' AND uStatus<$st ";
+				COUNT(CASE WHEN uGender=11 THEN  1 END ) as male,
+				COUNT(CASE WHEN uGender=10 THEN  1 END ) as female,
+				COUNT(CASE WHEN uPhone!='' AND uScope>0 THEN  1 END ) as reg,
+				COUNT(CASE WHEN wSubscribe=1 THEN  1 END ) as follow
+				FROM im_user as u
+				JOIN im_user_wechat as w on w.wUId=u.uId
+				WHERE uStatus<8";
 		$result = $conn->createCommand($sql)->queryOne();
 		return $result;
 	}

@@ -121,10 +121,6 @@
 		border-radius: 3px
 	}
 
-	.stat-item {
-		margin-left: 30px;
-	}
-
 	.album-items img {
 		width: 40px;
 		height: 40px;
@@ -146,6 +142,21 @@
 	.reasons-wrap {
 		display: none;
 	}
+
+	.stat-item {
+		margin-left: 30px;
+		font-size: 14px;
+		font-weight: 500;
+	}
+
+	.stat-item b {
+		font-size: 12px;
+		margin: 0;
+		display: inline-block;
+		width: auto;
+		padding: 0 2px 0 5px;
+		font-weight: 300;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="row">
@@ -166,10 +177,11 @@
 			</select>
 			<input type="submit" class="btn btn-primary" value="查询">
 			<span class="stat-item">
-				<span>总计:{{$stat.amt}}</span>
-				<span>注册:{{$stat.reg}}</span>
-				<span>帅哥:{{$stat.male}}</span>
-				<span>美女:{{$stat.female}}</span>
+				<span><b>到访</b>{{$stat.amt}}</span>
+				<span><b>已注册</b>{{$stat.reg}}</span>
+				<span><b>关注公众号</b>{{$stat.follow}}</span>
+				<span><b>帅哥</b>{{$stat.male}}</span>
+				<span><b>美女</b>{{$stat.female}}</span>
 			</span>
 		</form>
 	</div>
