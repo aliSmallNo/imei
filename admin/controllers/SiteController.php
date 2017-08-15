@@ -587,12 +587,12 @@ class SiteController extends BaseController
 		$sign = self::getParam("sign", "");
 
 		$reuseData = RedisUtil::getCache(RedisUtil::KEY_STAT_REUSE, $cat);
-
+//		var_dump($reuseData);
 		if (!$reuseData || $sign == "reset") {
 			// 开始记录日期 2017-06-01
 			//$sCategory = ($cat == 'week' ? LogAction::REUSE_DATA_WEEK : LogAction::REUSE_DATA_MONTH);
 			$sCategory = LogAction::REUSE_DATA_WEEK;
-			$lastTime = strtotime("2017-06-01");
+			$lastTime = strtotime("2017-07-11");
 			$dayDiff = ceil((time() - 86400 - $lastTime) / 86400);
 			$reuseData = [];
 			if ($dayDiff > 1) {
@@ -614,6 +614,7 @@ class SiteController extends BaseController
 					}
 				}
 				$reuseData = json_encode(array_reverse($reuseData));
+
 				RedisUtil::setCache($reuseData, RedisUtil::KEY_STAT_REUSE, $cat);
 			}
 		}

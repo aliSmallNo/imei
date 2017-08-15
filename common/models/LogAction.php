@@ -83,47 +83,16 @@ class LogAction extends ActiveRecord
 			}
 			$times = array_merge($times, $subTimes);
 		}
-		$condStr = "";
 		switch ($cat) {
 			case "male":
-				$condStr = " and uGender =11 ";
+				$condStr = " and uGender in (11) and uRole in (10)";
 				break;
 			case "female":
-				$condStr = " and uGender =10 ";
+				$condStr = " and uGender in (10) and uRole in (10)";
 				break;
 			default:
-				$condStr = " and uGender in (10,11) ";
-
+				$condStr = " and uPhone!='' and uRole in (10,20)";
 		}
-//		switch ($category) {
-//			case self::REUSE_DATA_WEEK:
-//				for ($k = 0; $k < 30; $k++) {
-//					$subTimes = AppUtil::getEndStartTime($curTime + 86400 * 7 * $k, 'curweek', true);
-//					if ($subTimes && count($subTimes) > 1 && strtotime($subTimes[0]) > time()) {
-//						break;
-//					}
-//					if (count($times) >= 32) {
-//						break;
-//					}
-//					$times = array_merge($times, $subTimes);
-//				}
-//				break;
-//			case self::REUSE_DATA_MONTH:
-//				for ($k = 0; $k < 30; $k++) {
-//					$subTimes = AppUtil::getEndStartTime($curTime + 86400 * 30 * $k, 'curmonth', true);
-//					if ($subTimes && count($subTimes) > 1 && strtotime($subTimes[0]) > time()) {
-//						break;
-//					}
-//					if ($subTimes && count($subTimes) > 1 && in_array($subTimes[0], $times)) {
-//						continue;
-//					}
-//					if (count($times) >= 32) {
-//						break;
-//					}
-//					$times = array_merge($times, $subTimes);
-//				}
-//				break;
-//		}
 		if (count($times) > 2) {
 			$lineData = [
 				"sCategory" => $category,
@@ -140,10 +109,10 @@ class LogAction extends ActiveRecord
 				"colStart" => [],
 				"colEnd" => [],
 			];
-			$sql = "select GROUP_CONCAT(uId) as uIds,count(*) as amt from im_user
-					where uAddedOn BETWEEN '$times[0]' and '$times[1]'
-					and uNote='' and uStatus<9 and uRole in (10,20) $condStr";
 			$conn = AppUtil::db();
+			$sql = "select GROUP_CONCAT(uId) as uIds,count(1) as amt from im_user
+					where uAddedOn BETWEEN '$times[0]' and '$times[1]'
+					and uNote='' and uStatus<9 $condStr";
 			$result = $conn->createCommand($sql)->queryOne();
 			$uIds = '';
 			if ($result) {
@@ -151,9 +120,9 @@ class LogAction extends ActiveRecord
 				$lineData["uIds"] = $uIds = $result["uIds"] ? $result["uIds"] : 0;
 			}
 
-			$sql = "select COUNT(DISTINCT aUId) as co,GROUP_CONCAT(DISTINCT aUId) as uids
- 						from im_log_action
-						where aUId in ($uIds) and aDate BETWEEN :stime AND :etime AND aCategory > 1000 ";
+			$sql = "SELECT COUNT(DISTINCT aUId) as co,GROUP_CONCAT(DISTINCT aUId) as uids
+ 					FROM im_log_action
+					WHERE aUId in ($uIds) and aDate BETWEEN :stime AND :etime AND aCategory > 1000 ";
 			for ($i = 2; $i < count($times); $i = $i + 2) {
 				$res = $conn->createCommand($sql)->bindValues([
 					"stime" => $times[$i],

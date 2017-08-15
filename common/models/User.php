@@ -421,6 +421,9 @@ class User extends ActiveRecord
 		$fields = ["role", "name", "phone", "avatar", "location", "scope", "gender", "birthyear", "horos", "height", "weight",
 			"income", "education", "profession", "estate", "car", "smoke", "alcohol", "belief", "fitness", "diet", "rest", "pet",
 			"interest", "intro", "filter"];
+		if ($item['role'] == self::ROLE_MATCHER) {
+			$fields = ["role", "name", "phone", "avatar", "location", "scope", "intro"];
+		}
 		$fill = [];
 		foreach ($fields as $field) {
 			if (isset($item[$field]) && $item[$field]) {

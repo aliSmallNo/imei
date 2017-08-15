@@ -61,7 +61,7 @@ class RedisUtil
 		self::KEY_WX_MESSAGE => 60 * 10,
 		self::KEY_XCX_SESSION_ID => 3600 * 2,
 		self::KEY_STAT_TREND => 60 * 6,
-		self::KEY_STAT_REUSE => 60 * 6,
+		self::KEY_STAT_REUSE => 3600 * 3,
 	];
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';
