@@ -41,7 +41,7 @@
 		transition: all 0.1s ease-in;
 		height: 2.4rem;
 		border-radius: 3rem;
-		box-shadow: 0 3px 1px rgba(0, 0, 0, 0.05), 0 0px 1px rgba(0, 0, 0, 0.3);
+		box-shadow: 0 3px 1px rgba(0, 0, 0, 0.05), 0 0px 1px rgba(0, 0, 0, 0.8);
 	}
 
 	.set-item a:after {
@@ -54,7 +54,7 @@
 		width: 100%;
 		height: 100%;
 		border-radius: 3.1rem;
-		box-shadow: inset 0 0 0 0 #eee, 0 0 1px rgba(0, 0, 0, 0.4);
+		box-shadow: inset 0 0 0 0 #eee, 0 0 1px rgba(0, 0, 0, 0.8);
 	}
 
 	.set-item a.active:before {
@@ -78,7 +78,7 @@
 <div class="set-item">
 	<div>心动提醒</div>
 	<div class="set-item-btn">
-		<a class="active"></a>
+		<a class="{{if $favor}}active{{/if}}" data-set="favor"></a>
 	</div>
 </div>
 <div class="set-item-notice">
@@ -88,7 +88,7 @@
 <div class="set-item">
 	<div>送花提醒</div>
 	<div class="set-item-btn">
-		<a class="active"></a>
+		<a class="{{if $fans}}active{{/if}}" data-set="fans"></a>
 	</div>
 </div>
 <div class="set-item-notice">
@@ -98,7 +98,7 @@
 <div class="set-item">
 	<div>密聊提醒</div>
 	<div class="set-item-btn">
-		<a class="active"></a>
+		<a class="{{if $chat}}active{{/if}}" data-set="chat"></a>
 	</div>
 </div>
 <div class="set-item-notice">

@@ -1166,8 +1166,25 @@ class WxController extends BaseController
 
 	public function actionSetting()
 	{
-
-		return self::renderPage('setting.tpl', [],
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/index');
+			exit();
+		}
+		$uset = User::findOne(["uId" => $wxInfo["uId"]])->uSetting;
+		$favor = $fans = $chat = 1;
+		if ($uset) {
+			$uset = json_decode($uset, 1);
+			$favor = isset($uset["favor"]) ? intval($uset["favor"]) : 1;
+			$fans = isset($uset["fans"]) ? intval($uset["fans"]) : 1;
+			$chat = isset($uset["chat"]) ? intval($uset["chat"]) : 1;
+		}
+		return self::renderPage('setting.tpl', [
+			"favor" => $favor,
+			"fans" => $fans,
+			"chat" => $chat,
+		],
 			'terse');
 	}
 }
