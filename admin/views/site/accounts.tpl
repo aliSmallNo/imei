@@ -178,8 +178,8 @@
 			<input type="submit" class="btn btn-primary" value="查询">
 			<span class="stat-item">
 				<span><b>到访</b>{{$stat.amt}}</span>
-				<span><b>已注册</b>{{$stat.reg}}</span>
 				<span><b>关注公众号</b>{{$stat.follow}}</span>
+				<span><b>已注册</b>{{$stat.reg}}</span>
 				<span><b>帅哥</b>{{$stat.male}}</span>
 				<span><b>美女</b>{{$stat.female}}</span>
 			</span>
