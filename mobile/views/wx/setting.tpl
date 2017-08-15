@@ -15,7 +15,7 @@
 		flex: 0 0 3rem;
 	}
 
-	.set-item label {
+	.set-item a {
 		flex: 1;
 		top: .2rem;
 		background-color: #fafbfa;
@@ -29,7 +29,7 @@
 		height: 1.2rem;
 	}
 
-	.set-item label:before {
+	.set-item a:before {
 		content: ' ';
 		position: absolute;
 		background: white;
@@ -44,7 +44,7 @@
 		box-shadow: 0 3px 1px rgba(0, 0, 0, 0.05), 0 0px 1px rgba(0, 0, 0, 0.3);
 	}
 
-	.set-item label:after {
+	.set-item a:after {
 		content: ' ';
 		position: absolute;
 		top: 0;
@@ -57,11 +57,11 @@
 		box-shadow: inset 0 0 0 0 #eee, 0 0 1px rgba(0, 0, 0, 0.4);
 	}
 
-	.set-item label.active:before {
+	.set-item a.active:before {
 		left: 2rem;
 	}
 
-	.set-item label.active:after {
+	.set-item a.active:after {
 		background: #f06292;
 	}
 	.set-item-notice{
@@ -78,7 +78,7 @@
 <div class="set-item">
 	<div>心动提醒</div>
 	<div class="set-item-btn">
-		<label class="active"></label>
+		<a class="active"></a>
 	</div>
 </div>
 <div class="set-item-notice">
@@ -88,7 +88,7 @@
 <div class="set-item">
 	<div>送花提醒</div>
 	<div class="set-item-btn">
-		<label class="active"></label>
+		<a class="active"></a>
 	</div>
 </div>
 <div class="set-item-notice">
@@ -98,7 +98,7 @@
 <div class="set-item">
 	<div>密聊提醒</div>
 	<div class="set-item-btn">
-		<label class="active"></label>
+		<a class="active"></a>
 	</div>
 </div>
 <div class="set-item-notice">
@@ -111,4 +111,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/setting.js?v=1.1.8" src="/assets/js/require.js"></script>
+<script data-main="/js/setting.js?v=1.1.9" src="/assets/js/require.js"></script>

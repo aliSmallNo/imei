@@ -48,7 +48,7 @@ require(["layer"],
 			}, "json");
 		}
 
-		$(document).on("click", ".set-item label", function () {
+		$(document).on("click", ".set-item a", function () {
 			var self = $(this);
 			if (self.hasClass("active")) {
 				self.removeClass("active");
