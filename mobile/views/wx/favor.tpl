@@ -31,7 +31,7 @@
 </style>
 
 <div class="nav">
-	<a href="#sme">返回</a>
+	<a href="/wx/single#sme">返回</a>
 </div>
 <div class="rank-tab">
 	<a href="javascript:;" class="active" rank-tag="favor-all">总排行榜</a>
