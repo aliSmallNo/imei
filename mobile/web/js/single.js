@@ -474,7 +474,7 @@ require(["layer"],
 				if ($flag) {
 					util.timer = setInterval(function () {
 						util.reload();
-					}, 3600);
+					}, 6000);
 				} else {
 					clearInterval(util.timer);
 					util.timer = 0;
@@ -528,8 +528,15 @@ require(["layer"],
 					text: content
 				}, function (resp) {
 					if (resp.code == 0) {
-						/*var html = Mustache.render(util.tmp, resp.data);
-						util.list.append(html);*/
+						/*if (!util.loading && resp.data.items.id > util.lastId) {
+							util.lastId = resp.data.items.id;
+							var html = Mustache.render(util.tmp, resp.data);
+							util.list.append(html);
+						}*/
+						if (!util.loading) {
+							util.toggleTimer(0);
+							util.reload();
+						}
 						util.input.val('');
 						util.showTip(resp.data.gid, resp.data.left);
 						setTimeout(function () {
