@@ -422,6 +422,7 @@ require(["layer"],
 			input: $('.chat-input'),
 			bot: $('#schat .m-bottom-pl'),
 			topPL: $('#scontacts .m-top-pl'),
+			timer: 0,
 			init: function () {
 				var util = this;
 				$('.btn-chat-send').on(kClick, function () {
@@ -466,6 +467,17 @@ require(["layer"],
 					self.closest('div').find('a').removeClass('active');
 					self.addClass('active');
 				});
+			},
+			toggleTimer: function ($flag) {
+				var util = this;
+				if ($flag) {
+					util.timer = setInterval(function () {
+						util.reload();
+					}, 4500);
+				} else {
+					clearInterval(util.timer);
+					util.timer = 0;
+				}
 			},
 			showTip: function (gid, left) {
 				var util = this;

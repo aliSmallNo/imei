@@ -335,13 +335,15 @@ class ChatMsg extends ActiveRecord
 			$res[$k]['avatar2'] = ImageUtil::getItemImages($row['avatar2'])[0];
 			$res[$k]['dt'] = AppUtil::prettyDate($row['cAddedOn']);
 			if ($row['gAddedBy'] == $row['gUId2']) {
-				list($name, $phone, $avatar) = [$row['name1'], $row['phone1'], $row['avatar1']];
+				list($name, $phone, $avatar, $cnt) = [$row['name1'], $row['phone1'], $row['avatar1'], $row['cnt1']];
 				$res[$k]['name1'] = $row['name2'];
 				$res[$k]['phone1'] = $row['phone2'];
 				$res[$k]['avatar1'] = $row['avatar2'];
+				$res[$k]['cnt1'] = $row['cnt2'];
 				$res[$k]['name2'] = $name;
 				$res[$k]['phone2'] = $phone;
 				$res[$k]['avatar2'] = $avatar;
+				$res[$k]['cnt2'] = $cnt;
 			}
 		}
 
