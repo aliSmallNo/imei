@@ -592,7 +592,7 @@ class SiteController extends BaseController
 			// 开始记录日期 2017-06-01
 			//$sCategory = ($cat == 'week' ? LogAction::REUSE_DATA_WEEK : LogAction::REUSE_DATA_MONTH);
 			$sCategory = LogAction::REUSE_DATA_WEEK;
-			$lastTime = strtotime("2017-06-01");
+			$lastTime = strtotime("2017-07-11");
 			$dayDiff = ceil((time() - 86400 - $lastTime) / 86400);
 			$reuseData = [];
 			if ($dayDiff > 1) {
