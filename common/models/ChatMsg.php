@@ -326,8 +326,7 @@ class ChatMsg extends ActiveRecord
 			 JOIN im_chat_msg as m2 on g.gId=m2.cGId
 			 JOIN im_user as u1 on u1.uId=g.gUId1
 			 JOIN im_user as u2 on u2.uId=g.gUId2
-			 WHERE g.gId>0 ' . $strCriteria . '
-			 GROUP BY g.gId
+			 WHERE g.gId>0 ' . $strCriteria . ' GROUP BY g.gId
 			 order by g.gUpdatedOn desc ' . $limit;
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as $k => $row) {
