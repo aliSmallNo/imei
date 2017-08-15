@@ -11,7 +11,8 @@
 	</div>
 	<div class="favor-wAmt">
 		{{if $mInfo.co}}
-		<span>{{$mInfo.co}}</span>
+		{{$mInfo.co}}
+		{{if $mInfo.todayFavor}} <span>+{{$mInfo.todayFavor}}</span>{{/if}}
 		{{/if}}
 	</div>
 </div>

@@ -831,22 +831,22 @@ class UserNet extends ActiveRecord
 	{
 
 		list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
-		list($today0, $today1) = AppUtil::getEndStartTime(time(), 'today', true);
+		// list($today0, $today1) = AppUtil::getEndStartTime(time(), 'today', true);
 		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
 
 		$sql = 'select count(1) as co,
-			count(case when nAddedOn BETWEEN :today0 and :today1 then 1 end) as todayFavor,
+			count(case when nAddedOn BETWEEN :sDate and :eDate then 1 end) as todayFavor,
 			nUId as id, uName as uname, uThumb as avatar
 			from im_user_net as n 
 			join im_user as u on u.uId=n.nUId 
-			where nRelation=150 and nDeletedFlag=0 and nAddedOn BETWEEN :sDate and :eDate
-			GROUP BY nUId ORDER BY co desc,nUId asc ' . $limit;
+			where nRelation=150 and nDeletedFlag=0 
+			GROUP BY nUId ORDER BY co desc,nUId asc ' . $limit;// and nAddedOn BETWEEN :sDate and :eDate
 
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":sDate" => $monday,
 			":eDate" => $sunday,
-			":today0" => $today0,
-			":today1" => $today1,
+			//":today0" => $today0,
+			//":today1" => $today1,
 		])->queryAll();
 		$nextPage = 0;
 		if (count($res) > $pageSize) {
@@ -865,12 +865,14 @@ class UserNet extends ActiveRecord
 	public static function myfavor($uid)
 	{
 		$week = AppUtil::getEndStartTime(time(), 'curweek', true);
-		$sql = "select count(*) as co,nUId as id,
+		$sql = "select count(*) as co,
+			count(case when nAddedOn BETWEEN :sDate and :eDate then 1 end) as todayFavor,
+			nUId as id,
 			uName as uname, 
 			uAvatar as avatar
 			from im_user_net as n 
 			left join im_user as u on u.uId=n.nUId 
-			where nRelation=150 and nDeletedFlag=0 and nAddedOn BETWEEN :sDate and :eDate
+			where nRelation=150 and nDeletedFlag=0 
 			GROUP BY nUId ORDER BY co desc,nUId asc";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":sDate" => $week[0],
