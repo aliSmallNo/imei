@@ -344,7 +344,7 @@ require(["layer"],
 				if ($flag) {
 					util.timer = setInterval(function () {
 						util.reload();
-					}, 5000);
+					}, 3600);
 				} else {
 					clearInterval(util.timer);
 					util.timer = 0;
