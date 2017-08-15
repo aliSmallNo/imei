@@ -191,9 +191,9 @@ class ChatMsg extends ActiveRecord
 		return [$gid, $left];
 	}
 
-	public static function details($uId, $subUId, $page = 1, $pageSize = 60)
+	public static function details($uId, $subUId, $lastId = 0)
 	{
-		$limit = ' Limit ' . ($page - 1) * $pageSize . ',' . ($pageSize + 1);
+		$criteria = ' AND cId> ' . $lastId;
 		$conn = AppUtil::db();
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
 		$sql = 'select u.uName as `name`, u.uThumb as avatar,g.gId as gid, g.gRound as round,
@@ -201,25 +201,23 @@ class ChatMsg extends ActiveRecord
 			 from im_chat_group as g 
 			 join im_chat_msg as m on g.gId=cGId
 			 join im_user as u on u.uId=m.cAddedBy
-			 WHERE g.gUId1=:id1 AND g.gUId2=:id2
-			 order by m.cAddedOn ' . $limit;
+			 WHERE g.gUId1=:id1 AND g.gUId2=:id2 ' . $criteria . ' order by m.cAddedOn ';
 		$chats = $conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,
 		])->queryAll();
-		$nextPage = 0;
-		if ($chats && count($chats) > $pageSize) {
-			array_pop($chats);
-			$nextPage = $page + 1;
-		}
 		foreach ($chats as $k => $chat) {
 			$chats[$k]['avatar'] = ImageUtil::getItemImages($chat['avatar'])[0];
 			$chats[$k]['dt'] = AppUtil::prettyDate($chat['addedon']);
 			$chats[$k]['dir'] = ($uId == $chat['cAddedBy'] ? 'right' : 'left');
 			$chats[$k]['url'] = ($uId == $chat['cAddedBy'] ? 'javascript:;' : '/wx/sh?id=' . AppUtil::encrypt($subUId));
 			unset($chats[$k]['cAddedBy'], $chats[$k]['round']);
+			if ($chat['cid'] > $lastId) {
+				$lastId = $chat['cid'];
+			}
 		}
-		return [$chats, $nextPage];
+		ChatMsg::read($uId, $subUId, $conn);
+		return [$chats, $lastId];
 	}
 
 	public static function messages($gid, $page = 1, $pageSize = 100)
