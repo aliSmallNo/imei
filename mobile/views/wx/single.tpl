@@ -151,6 +151,24 @@
 		<a class="m-next btn-feedback">提交</a>
 	</div>
 </section>
+<section id="shome" data-title="个人主页">
+	<div class="single-page main-page">
+
+		<a href="#sreport" class="report pushblack">举报拉黑</a>
+		<div style="height: 6rem;"></div>
+		<div class="m-bottom-bar" data-id="CTpqWzE6QzM4MkhjMzUzNTk7O2xdMzxFNTo0SWU">
+			<p>
+				<a class="send btn-give">送TA花</a>
+			</p>
+			<p>
+				<a class="heart btn-like ">心动</a>
+			</p>
+			<p>
+				<a class="chat btn-chat">密聊TA</a>
+			</p>
+		</div>
+	</div>
+</section>
 <section id="addMeWx">
 	<div class="nav">
 		<a href="#sme">返回</a>
@@ -763,201 +781,6 @@
 		{[^text]}<span class="btn-outline">去设置</span>{[/text]}
 	</a>
 </script>
-<script type="text/html" id="sprofileTemp">
-	<div class="sprofile-top">
-		<div class="nav">
-			<a href="#slook">返回</a>
-		</div>
-		<div class="img">
-			<img src="{[avatar]}" alt="">
-		</div>
-		<div class="sprofile-top-des">
-			<p><b>{[name]}<em class="icon-{[genderclass]}"></em></b></p>
-			<i>{[#age]}{[age]}岁{[/age]} {[#height]}{[height]}
-				{[/height]} {[#horos]}{[horos]}{[/horos]} {[#job]}{[job]}{[/job]}</i>
-			<span>{[location]}</span>
-		</div>
-	</div>
-	<div class="sprofile-album">
-		<a class="title" tag="album" imglistjson='{[imglistJson]}'>相册({[co]})</a>
-		<ul>
-			{[#img3]}
-			<li>
-				<img src="{[.]}" alt="">
-			</li>
-			{[/img3]}
-		</ul>
-	</div>
-	<div class="sprofile-base">
-		<div class="title">基本资料</div>
-		<a class="content" tag="baseInfo" data='{[jdata]}'>
-			{[#height]}<span>{[height]}</span>{[/height]}
-			{[#edu]}<span>{[edu]}</span>{[/edu]}
-			{[#income]}<span>{[income]}</span>{[/income]}
-			{[#house]}<span>{[house]}</span>{[/house]}
-			{[#car]}<span>{[car]}</span>{[/car]}
-		</a>
-	</div>
-	<div class="sprofile-mp">
-		<div class="left">
-			<div class="img">
-				<img src="{[mavatar]}" alt="">
-			</div>
-			<p>{[mname]}</p>
-			<i>{[mintrol]}</i>
-		</div>
-		<div class="right">{[comment]}</div>
-	</div>
-	<div class="sprofile-condtion">
-		<div class="title">择偶条件</div>
-		<div class="content">
-			{[#cond]}
-			<span>{[age]}</span>
-			<span>{[height]}</span>
-			<span>{[income]}</span>
-			<span>{[edu]}</span>
-			{[/cond]}
-		</div>
-	</div>
-	<div class="sprofile-intro">
-		<div class="title">内心独白</div>
-		<div class="content">
-			{[intro]}
-		</div>
-	</div>
-	<div class="sprofile-forbid">
-		<a href="javascript:;" tag="forbid"><span class="icon-l icon-forbid"></span>举报拉黑</a>
-	</div>
-	<div class="sprofile-bottom">
-		<a href="javascript:;" tag="love" id="{[scretId]}"><span class="icon-l {[hintclass]}"></span>心动</a>
-		<a href="javascript:;" tag="wechat" id="{[scretId]}">加微信聊聊</a>
-	</div>
-</script>
-<script type="text/html" id="personalInfoTemp">
-	<div class="personalInfo-top">
-		<div class="nav">
-			<a href="#sprofile">返回</a>
-		</div>
-		<div class="img">
-			<div class="img-filter" style="background: url('{[avatar]}') no-repeat center center">
-			</div>
-			<div class="img-last">
-				<img src="{[avatar]}" alt="">
-			</div>
-		</div>
-	</div>
-	<div class="personalInfo-list">
-		<div class="title">基本资料</div>
-		<div class="item-des">
-			<div class="left">呢称</div>
-			<div class="right">{[name]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">性别</div>
-			<div class="right">{[gender]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">所在城市</div>
-			<div class="right">{[location]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">出生年份</div>
-			<div class="right">{[year]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">身高</div>
-			<div class="right">{[height]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">年薪</div>
-			<div class="right">{[income]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">学历</div>
-			<div class="right">{[edu]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">星座</div>
-			<div class="right">{[horos]}</div>
-		</div>
-
-		<div class="title">个人小档案</div>
-		<div class="item-des">
-			<div class="left">购房情况</div>
-			<div class="right">{[house]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">购车情况</div>
-			<div class="right">{[car]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">行业</div>
-			<div class="right">{[scope]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">职业</div>
-			<div class="right">{[job]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">饮酒情况</div>
-			<div class="right">{[drink]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">吸烟情况</div>
-			<div class="right">{[smoke]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">宗教信仰</div>
-			<div class="right">{[belief]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">健身习惯</div>
-			<div class="right">{[fitness]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">饮食习惯</div>
-			<div class="right">{[diet]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">作息习惯</div>
-			<div class="right">{[rest]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">关于宠物</div>
-			<div class="right">{[pet]}</div>
-		</div>
-
-		<div class="title">内心独白</div>
-		<div class="item-des">
-			<div class="des">{[intro]}</div>
-		</div>
-
-		<div class="title">兴趣爱好</div>
-		<div class="item-des">
-			<div class="des">{[interest]}</div>
-		</div>
-
-		<div class="title">择偶条件</div>
-		{[#cond]}
-		<div class="item-des">
-			<div class="left">年龄</div>
-			<div class="right">{[age]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">身高</div>
-			<div class="right">{[height]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">学收入</div>
-			<div class="right">{[income]}</div>
-		</div>
-		<div class="item-des">
-			<div class="left">学历</div>
-			<div class="right">{[edu]}</div>
-		</div>
-		{[/cond]}
-	</div>
-</script>
 <script type="text/html" id="slinkTemp">
 	{[#items]}
 	<li>
@@ -1084,7 +907,81 @@
 	</div>
 	{{/if}}
 </script>
+<script type="text/template" id="tpl_shome">
+	<div class="single-page main-page">
+		<div class="head">
+			<img src="" class="avatar">
+		</div>
+		<div class="baseinfo">
+			<div class="title">
+				<h4><em>大师兄了没</em> <i class="icon female"></i></h4>
+				<h5>江苏 盐城</h5>
+			</div>
+			<h6>33岁 . 156~160厘米 . 巨蟹座 . 服务业</h6>
+		</div>
+		<a href="javascript:;" class="album-row line-bottom2"
+			 album-string="[&quot;https:\/\/img.meipo100.com\/2017\/81\/113730_n.jpg&quot;,&quot;https:\/\/img.meipo100.com\/2017\/81\/113738_n.jpg&quot;,&quot;https:\/\/img.meipo100.com\/2017\/82\/115099_n.jpg&quot;,&quot;https:\/\/img.meipo100.com\/2017\/82\/115100_n.jpg&quot;]">
+			<ul class="photos">
+				<li class="title">
+					相册(4)
+				</li>
+				<li>
+					<img src="https://img.meipo100.com/2017/81/113730_n.jpg">
+				</li>
+				<li>
+					<img src="https://img.meipo100.com/2017/81/113738_n.jpg">
+				</li>
+				<li>
+					<img src="https://img.meipo100.com/2017/82/115099_n.jpg">
+				</li>
+			</ul>
+		</a>
+		<div class="single-info">
+			<a href="#sinfo">
+				<span class="title">基本资料</span>
+				<ul class="clearfix">
+					<li>156~160厘米</li>
+					<li>16万~25万元</li>
+					<li>本科</li>
+					<li>计划购房</li>
+					<li>有车无贷</li>
+				</ul>
+			</a>
+		</div>
+		<div class="hnwords">
+			<div class="hninfo">
+				<a href="/hn/p?uid=CTpqWzE6QzM4MkhjMzUzNTk7O2xdMzxFNTo0SWU" class=""></a>
+				<a href="/wx/mh?id=CjtrXDI7RDQ5M0hkNDY0NTw7PGxdND1GNjs1SmU#shome" class="">
+					<div class="img">
+						<img src="http://bpbhd-10063905.file.myqcloud.com/imei/170620113941110165.jpg">
+					</div>
+				</a>
+				<p class="name">奔跑吧</p>
+				<p class="desc">服务业</p>
+			</div>
+			<div class="wcontent">
+				<p class="words">（媒婆很懒，什么也没说）</p>
+			</div>
+		</div>
+		<div class="mywords">
+			<span class="title">内心独白</span>
+			<span class="words">大师兄说得都对啊，师傅也说得对啊！</span>
+		</div>
+		<a href="#sreport" class="report pushblack">举报拉黑</a>
+		<div style="height: 6rem;"></div>
+		<div class="m-bottom-bar" data-id="CTpqWzE6QzM4MkhjMzUzNTk7O2xdMzxFNTo0SWU">
+			<p>
+				<a class="send btn-give">送TA花</a>
+			</p>
+			<p>
+				<a class="heart btn-like ">心动</a>
+			</p>
+			<p>
+				<a class="chat btn-chat">密聊TA</a>
+			</p>
+		</div>
+	</div>
+</script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script src="/assets/js/iscroll.js"></script>
 <script data-main="/js/single.js?v=1.7.6" src="/assets/js/require.js"></script>
