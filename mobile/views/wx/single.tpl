@@ -787,7 +787,7 @@
 	<li>
 		<a href="/wx/mh?id={[encryptId]}#shome">
 			<div class="avatar">
-				<img src="{[avatar]}">
+				<img src="{[thumb]}">
 			</div>
 			<h4>{[name]}<!--i class="vip"></i--></h4>
 			<p class="note">{[intro]}</p>

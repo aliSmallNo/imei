@@ -1117,9 +1117,14 @@ class User extends ActiveRecord
 			$nextPage = $page + 1;
 		}
 		$items = [];
+		$fields = ['password', 'phone', 'openid', 'addedon', 'updatedon', 'album', 'album_cnt', 'homeland', 'homeland_t', 'setting',
+			'cert', 'certdate', 'certimage', 'certnote', 'certstatus', 'certstatus_t', 'location', 'rankdate', 'ranktmp'];
 		foreach ($ret as $row) {
 			$item = self::fmtRow($row);
 			$item['stat'] = UserNet::getStat($item['id']);
+			foreach ($fields as $field) {
+				unset($item[$field]);
+			}
 			$items[] = $item;
 		}
 		return [$items, $nextPage];
