@@ -75,7 +75,7 @@
 					{{$item.phone1}}
 				</td>
 				<td>
-					<div class="sm">&larr;{{$item.cnt2}}句 | {{$item.cnt1}}句&rarr;</div>
+					<div class="sm">&larr;{{$item.cnt1}}句 | {{$item.cnt2}}句&rarr;</div>
 					<div class="note"><i>{{$item.dt}}</i><span class="space"></span>{{$item.content}}</div>
 				</td>
 				<td class="modMp">

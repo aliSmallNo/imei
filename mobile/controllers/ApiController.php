@@ -1188,7 +1188,7 @@ class ApiController extends Controller
 				}
 				break;
 			case 'list':
-				$page = self::postParam('page', 1);
+				$lastId = self::postParam('last', 0);
 				$subUId = self::postParam('id');
 				$subUId = AppUtil::decrypt($subUId);
 				if (!$subUId) {
@@ -1196,12 +1196,10 @@ class ApiController extends Controller
 				}
 				LogAction::add($uid, $openId, LogAction::ACTION_CHAT, $subUId);
 				list($gId, $left) = ChatMsg::groupEdit($uid, $subUId);
-				ChatMsg::read($uid, $subUId);
-				list($items, $nextPage) = ChatMsg::details($uid, $subUId, $page);
+				list($items, $lastId) = ChatMsg::details($uid, $subUId, $lastId);
 				return self::renderAPI(0, '', [
 					'items' => $items,
-					'page' => intval($page),
-					'nextPage' => intval($nextPage),
+					'lastId' => intval($lastId),
 					'left' => $left,
 					'gid' => $gId
 				]);

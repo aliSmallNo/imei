@@ -122,7 +122,7 @@ require(["layer"],
 						}, 2000);
 					} else if (self.hasClass("btn-chat")) {
 						ChatUtil.sid = self.attr("data-id");
-						ChatUtil.page = 1;
+						ChatUtil.lastId = 0;
 						location.href = '#schat';
 					} else if (self.hasClass('btn-give')) {
 						$sls.secretId = self.attr("data-id");
@@ -291,7 +291,7 @@ require(["layer"],
 
 		var ChatUtil = {
 			sid: '',
-			page: 1,
+			lastId: 0,
 			loading: 0,
 			list: $('.chats'),
 			tmp: $('#tpl_chat').html(),
@@ -338,6 +338,17 @@ require(["layer"],
 					self.closest('div').find('a').removeClass('active');
 					self.addClass('active');
 				});
+			},
+			toggleTimer: function ($flag) {
+				var util = this;
+				if ($flag) {
+					util.timer = setInterval(function () {
+						util.reload();
+					}, 3600);
+				} else {
+					clearInterval(util.timer);
+					util.timer = 0;
+				}
 			},
 			showTip: function (gid, left) {
 				var util = this;
@@ -388,8 +399,8 @@ require(["layer"],
 					text: content
 				}, function (resp) {
 					if (resp.code == 0) {
-						var html = Mustache.render(util.tmp, resp.data);
-						util.list.append(html);
+						/*var html = Mustache.render(util.tmp, resp.data);
+						util.list.append(html);*/
 						util.input.val('');
 						util.showTip(resp.data.gid, resp.data.left);
 						setTimeout(function () {
@@ -402,37 +413,40 @@ require(["layer"],
 			},
 			reload: function () {
 				var util = this;
-				if (util.loading || util.page < 1) {
+				if (util.loading) {
 					return;
 				}
 				util.loading = 1;
-				if (util.page == 1) {
+				if (util.lastId < 1) {
 					util.list.html('');
 					util.input.val('');
 				}
 				$.post("/api/chat", {
 					tag: "list",
 					id: util.sid,
-					page: util.page
+					last: util.lastId
 				}, function (resp) {
 					if (resp.code == 0) {
 						var html = Mustache.render(util.tmp, resp.data);
-						if (resp.data.page == 1) {
+						if (resp.data.lastId < 1) {
 							util.list.html(html);
 						} else {
 							util.list.append(html);
 						}
 						util.showTip(resp.data.gid, resp.data.left);
-						util.page = resp.data.nextPage;
+						util.lastId = resp.data.lastId;
 						setTimeout(function () {
 							util.bot.get(0).scrollIntoView(true);
 						}, 300);
+						if (util.timer == 0) {
+							util.toggleTimer(1);
+						}
 					} else {
 						showMsg(resp.msg);
 					}
 					util.loading = 0;
 				}, "json");
-			}
+			},
 		};
 
 		function showMsg(title, sec) {
@@ -449,12 +463,13 @@ require(["layer"],
 			var hashTag = location.hash;
 			hashTag = hashTag.replace("#!", "");
 			hashTag = hashTag.replace("#", "");
+			ChatUtil.toggleTimer(0);
 			switch (hashTag) {
 				case 'sreport':
 					$sls.mainPage.hide();
 					break;
 				case 'schat':
-					ChatUtil.page = 1;
+					ChatUtil.lastId = 0;
 					ChatUtil.reload();
 					$sls.mainPage.hide();
 					break;
