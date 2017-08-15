@@ -827,27 +827,30 @@ class UserNet extends ActiveRecord
 		return [$res, $count];
 	}
 
-	public static function favorlist($page = 1, $pageSize = 20)
+	public static function favorlist($page = 1, $ranktag = "favor-all", $pageSize = 20)
 	{
 
 		list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
-		// list($today0, $today1) = AppUtil::getEndStartTime(time(), 'today', true);
+		list($today0, $today1) = AppUtil::getEndStartTime(time(), 'today', true);
 		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
 
-		$sql = 'select count(1) as co,
-			count(case when nAddedOn BETWEEN :sDate and :eDate then 1 end) as todayFavor,
+		$params = [":today0" => $today0, ":today1" => $today1];
+		$conStr = '';
+		if ($ranktag == "favor-week") {
+			$conStr = " and nAddedOn BETWEEN :sDate and :eDate ";
+			$params[":sDate"] = $monday;
+			$params[":eDate"] = $sunday;
+		}
+		$sql = "select count(1) as co,
+			count(case when nAddedOn BETWEEN :today0 and :today1 then 1 end) as todayFavor,
 			nUId as id, uName as uname, uThumb as avatar
 			from im_user_net as n 
 			join im_user as u on u.uId=n.nUId 
-			where nRelation=150 and nDeletedFlag=0 
-			GROUP BY nUId ORDER BY co desc,nUId asc ' . $limit;// and nAddedOn BETWEEN :sDate and :eDate
+			where nRelation=150 and nDeletedFlag=0  $conStr
+			GROUP BY nUId ORDER BY co desc,nUId asc $limit ";
 
-		$res = AppUtil::db()->createCommand($sql)->bindValues([
-			":sDate" => $monday,
-			":eDate" => $sunday,
-			//":today0" => $today0,
-			//":today1" => $today1,
-		])->queryAll();
+
+		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
 		$nextPage = 0;
 		if (count($res) > $pageSize) {
 			$nextPage = $page + 1;
@@ -857,30 +860,39 @@ class UserNet extends ActiveRecord
 		foreach ($res as $k => &$v) {
 			$v["secretId"] = AppUtil::encrypt($v["id"]);
 			$v["key"] = ($page - 1) * $pageSize + $k + 1;
+			$v["todayFavor"] = intval($v["todayFavor"]);
+			$v["co"] = intval($v["co"]);
 			$data[] = $v;
 		}
 		return [$data, $nextPage];
 	}
 
-	public static function myfavor($uid)
+	public static function myfavor($uid, $ranktag = "favor-all")
 	{
-		$week = AppUtil::getEndStartTime(time(), 'curweek', true);
+		list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
+		list($today0, $today1) = AppUtil::getEndStartTime(time(), 'today', true);
+		$params = [":today0" => $today0, ":today1" => $today1];
+		$conStr = "";
+		if ($ranktag == "favor-week") {
+			$conStr = " and nAddedOn BETWEEN :sDate and :eDate ";
+			$params[":sDate"] = $monday;
+			$params[":eDate"] = $sunday;
+		}
 		$sql = "select count(*) as co,
-			count(case when nAddedOn BETWEEN :sDate and :eDate then 1 end) as todayFavor,
+			count(case when nAddedOn BETWEEN :today0 and :today1 then 1 end) as todayFavor,
 			nUId as id,
 			uName as uname, 
 			uAvatar as avatar
 			from im_user_net as n 
 			left join im_user as u on u.uId=n.nUId 
-			where nRelation=150 and nDeletedFlag=0 
+			where nRelation=150 and nDeletedFlag=0  $conStr
 			GROUP BY nUId ORDER BY co desc,nUId asc";
-		$res = AppUtil::db()->createCommand($sql)->bindValues([
-			":sDate" => $week[0],
-			":eDate" => $week[1],
-		])->queryAll();
+		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
 		$myInfo = [];
 		foreach ($res as $k => $v) {
 			if ($v["id"] == $uid) {
+				$v["todayFavor"] = intval($v["todayFavor"]);
+				$v["co"] = intval($v["co"]);
 				$myInfo = $v;
 				$myInfo["no"] = $k + 1;
 			}

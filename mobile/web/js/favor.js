@@ -12,10 +12,13 @@ require(["layer"],
 			wxString: $("#tpl_wx_info").html(),
 			tmp: $("#tpl_favor").html(),
 			list: $(".favor-rank"),
+			favortop: $(".favor-top"),
+			toptmp: $("#tpl_favor_top").html(),
 			loadFlag: 0,
 			loading: $(".spinner"),
 			nomore: $(".no-more"),
 			page: 1,
+			ranktag: "favor-all"
 		};
 
 		function showMsg(title, sec) {
@@ -43,18 +46,20 @@ require(["layer"],
 		}
 
 		function loadFavor() {
-			if ($sls.loadFlag || $sls.page < 1) {
+			if ($sls.loadFlag || $sls.page >= 2) {
 				return;
 			}
 			$sls.loadFlag = 1;
 			$sls.loading.show();
 			$.post("/api/user", {
 				tag: "favorlist",
-				page: $sls.page
+				page: $sls.page,
+				ranktag: $sls.ranktag
 			}, function (resp) {
 				$sls.loading.hide();
 				if (resp.code == 0) {
 					$sls.list.append(Mustache.render($sls.tmp, resp.data));
+					$sls.favortop.html(Mustache.render($sls.toptmp, resp.data));
 				}
 				$sls.page = 0;// resp.data.nextpage;
 				if ($sls.page == 0) {
@@ -63,6 +68,17 @@ require(["layer"],
 				$sls.loadFlag = 0;
 			}, "json");
 		}
+
+		$(document).on("click", ".rank-tab a", function () {
+			var self = $(this);
+			self.closest(".rank-tab").find("a").removeClass("active");
+			self.addClass("active");
+			$sls.list.html("");
+			$sls.page = 1;
+			$sls.ranktag = self.attr("rank-tag");
+			loadFavor();
+
+		});
 
 
 		$(function () {

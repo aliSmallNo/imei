@@ -436,25 +436,29 @@ class UserTrans extends ActiveRecord
 		return $ret;
 	}
 
-	public static function getRoselist($page = 1, $pageSize = 20)
+	public static function getRoselist($page = 1, $ranktag = "fans-all", $pageSize = 20)
 	{
 
-		//list($beginDT, $endDT) = AppUtil::getEndStartTime(time(), 'today', true);
-		list($beginDT, $endDT) = AppUtil::getEndStartTime(time(), 'curweek', true);
+		list($beginDT, $endDT) = AppUtil::getEndStartTime(time(), 'today', true);
+		list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
 
 		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
 		$cat = UserTrans::CAT_RECEIVE;
-
+		$constr = "";
+		$params = [];
+		$params = [":cat" => $cat];
+		if ($ranktag == "fans-week") {
+			$constr = " and tAddedOn between :monday and :sunday ";
+			$params = [":cat" => $cat, ":monday" => $monday, ":sunday" => $sunday];
+		}
 		$sql = "SELECT sum(tAmt) as co,
 				sum(case when tAddedOn BETWEEN '$beginDT' AND '$endDT' then t.tAmt else 0 end) as todayFavor,
 				 tUId as id, uName as uname, uThumb as avatar
 				 FROM im_user_trans as t
 				 JOIN im_user as u on u.uId=t.tUId 
-				 WHERE tCategory=:cat
+				 WHERE tCategory=:cat $constr
 				 GROUP BY tUId ORDER BY co desc, tUId asc " . $limit;
-		$res = AppUtil::db()->createCommand($sql)->bindValues([
-			":cat" => $cat,
-		])->queryAll();
+		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
 
 		$nextPage = 0;
 		if (count($res) > $pageSize) {
@@ -465,31 +469,41 @@ class UserTrans extends ActiveRecord
 		foreach ($res as $k => &$v) {
 			$v["secretId"] = AppUtil::encrypt($v["id"]);
 			$v["key"] = ($page - 1) * $pageSize + $k + 1;
+			$v["todayFavor"] = intval($v["todayFavor"]);
+			$v["co"] = intval($v["co"]);
 			$data[] = $v;
 		}
 
 		return [$data, $nextPage];
 	}
 
-	public static function myGetRose($uid)
+	public static function myGetRose($uid, $ranktag = "fans-all")
 	{
 		$cat = UserTrans::CAT_RECEIVE;
-		$week = AppUtil::getEndStartTime(time(), 'curweek', true);
+		list($sday, $eday) = AppUtil::getEndStartTime(time(), 'curweek', true);
+
+		$params = [":sDate" => $sday, ":eDate" => $eday, ":cat" => $cat];
+		$conStr = "";
+		if ($ranktag == "fans-week") {
+			$conStr = " and tAddedOn between :monday and :sunday ";
+			list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
+			$params[":monday"] = $monday;
+			$params[":sunday"] = $sunday;
+		}
+
 		$sql = "select sum(tAmt) as co,
 				sum(case when tAddedOn BETWEEN :sDate AND :eDate then t.tAmt else 0 end) as todayFavor, 
 				tUId as id, uName as uname, uThumb as avatar
 				from im_user_trans as t
 				left join im_user as u on u.uId=t.tUId 
-				where tCategory=:cat
-				GROUP BY tUId ORDER BY co desc,tUId asc";
-		$res = AppUtil::db()->createCommand($sql)->bindValues([
-			":sDate" => $week[0],
-			":eDate" => $week[1],
-			":cat" => $cat,
-		])->queryAll();
+				where tCategory=:cat $conStr
+				GROUP BY tUId ORDER BY co desc,tUId asc ";
+		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
 		$myInfo = [];
 		foreach ($res as $k => $v) {
 			if ($v["id"] == $uid) {
+				$v["todayFavor"] = intval($v["todayFavor"]);
+				$v["co"] = intval($v["co"]);
 				$myInfo = $v;
 				$myInfo["no"] = $k + 1;
 			}

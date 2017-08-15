@@ -624,14 +624,16 @@ class ApiController extends Controller
 				}
 			case "favorlist": // 心动排行榜
 				$page = self::postParam("page");
+				$ranktag = self::postParam("ranktag");
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				if ($page > 1) {
-					list($flist, $nextpage) = UserNet::favorlist($page);
+				if ($page >= 1) {
+					list($flist, $nextpage) = UserNet::favorlist($page, $ranktag);
 					return self::renderAPI(0, '', [
 						"items" => $flist,
+						"mInfo" => UserNet::myfavor($wxInfo["uId"], $ranktag),
 						"nextpage" => $nextpage,
 					]);
 				} else {
@@ -639,14 +641,16 @@ class ApiController extends Controller
 				}
 			case "fanslist": // 花粉值排行榜
 				$page = self::postParam("page");
+				$ranktag = self::postParam("ranktag");
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				if ($page > 1) {
-					list($flist, $nextpage) = UserTrans::getRoselist($page);;
+				if ($page >= 1) {
+					list($flist, $nextpage) = UserTrans::getRoselist($page, $ranktag);
 					return self::renderAPI(0, '', [
 						"items" => $flist,
+						"mInfo" => UserTrans::myGetRose($wxInfo["uId"], $ranktag),
 						"nextpage" => $nextpage,
 					]);
 				} else {
