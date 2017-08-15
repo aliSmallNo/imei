@@ -555,6 +555,9 @@ class WechatUtil
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_CHAT:
+				if (!User::getSet($userInfo->uSetting, "chat")) {
+					return 0;
+				}
 				$msgCat = UserMsg::CATEGORY_CHAT;
 				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = $wxUrl . "/wx/single#scontacts";
@@ -587,7 +590,9 @@ class WechatUtil
 				}
 				$openId = $userInfo['uOpenId'];
 				$nickname = $userInfo['uName'];
-
+				if (!User::getSet($userInfo->uSetting, "fans")) {
+					return 0;
+				}
 				$msgCat = UserMsg::CATEGORY_GIVE_ROSE;
 				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = $wxUrl . "/wx/notice";
@@ -728,7 +733,7 @@ class WechatUtil
 		$secretId = AppUtil::encrypt($myId);
 
 		if (AppUtil::isDev()) {
-			return 0;
+			// return 0;
 		}
 		$userInfo = User::findOne(["uId" => $uId]);
 		if (!$userInfo) {
@@ -744,6 +749,9 @@ class WechatUtil
 		$url = $urlPrefix . "/wx/sh?id=" . $secretId;
 		switch ($tag) {
 			case "favor":
+				if (!User::getSet($userInfo->uSetting, "fans")) {
+					 return 0;
+				}
 				$cat = $f ? UserMsg::CATEGORY_FAVOR : UserMsg::CATEGORY_FAVOR_CANCEL;
 				$keyword1Val = UserMsg::$catDict[$cat];
 				$keyword2Val = "有人" . $keyword1Val . "你了，快去看看吧！";

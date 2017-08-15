@@ -686,7 +686,22 @@ class ApiController extends Controller
 				// 推送
 				WechatUtil::templateMsg(WechatUtil::NOTICE_GIVE_ROSE, $wxInfo["uId"], $title = '有人给你送花了', $subTitle = 'TA给你送玫瑰花了，快去看看吧~', $id);
 				return self::renderAPI(0, '送花成功~');
-
+			case "setting":
+				$flag = self::postParam("flag", 0);
+				$setfield = self::postParam("set", 0);
+				if (!$flag || !$setfield) {
+					return self::renderAPI(129, '参数错误~');
+				}
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				$res = User::setting($wxInfo["uId"], $flag, $setfield);
+				if ($res) {
+					return self::renderAPI(0, '');
+				} else {
+					return self::renderAPI(129, '操作失败');
+				}
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

@@ -1780,4 +1780,36 @@ class User extends ActiveRecord
 		];
 	}
 
+	public static function setting($uid, $flag, $setfield)
+	{
+		// $fields = ["favor" => 1, "fans" => 1, "chat" => 1];
+		$uInfo = self::findOne(["uId" => $uid]);
+		if (!$uInfo || !$setfield) {
+			return 0;
+		}
+		$set = $uInfo->uSetting;
+		if ($set) {
+			$set = json_decode($set, 1);
+		} else {
+			$set = [];
+		}
+		$set[$setfield] = $flag == "true" ? 1 : 0;
+		$uInfo->uSetting = json_encode($set);
+		$uInfo->save();
+		return true;
+	}
+
+	public static function getSet($uSetting, $field)
+	{
+		if (!$uSetting) {
+			return 1;
+		}
+		$set = json_decode($uSetting, 1);
+		if (isset($set[$field]) && $set[$field] == 0) {
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+
 }
