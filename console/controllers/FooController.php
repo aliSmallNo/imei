@@ -482,8 +482,7 @@ class FooController extends Controller
 		var_dump(count($ret));
 	}
 
-	public function actionMsg($openId = 'oYDJew5EFMuyrJdwRrXkIZLU2c58
-	')
+	public function actionMsg($openId = 'oYDJew5EFMuyrJdwRrXkIZLU2c58')
 	{
 		$ret = UserWechat::sendMsg($openId, '测试测试啊');
 		var_dump($ret);
