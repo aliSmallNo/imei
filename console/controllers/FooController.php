@@ -484,20 +484,24 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$a = ['除去索要微信号功能',
+		/*$a = ['除去索要微信号功能',
 			'发起聊天需要消耗至少10朵媒桂花，如果对方无回复，5天后原数退回',
 			'新增分享到朋友圈送媒桂花活动。每天只奖励一次',
 			'七夕选出你心中的男神女神活动上线，可进入花粉排行榜查看排名',
 			'新上线送花功能可以对喜欢的人送花，助力TA上花粉排行榜',
 			'新增黑名单功能。进入TA的主页，点击举报拉黑，举报原因选择加入黑名单即可。黑名单的TA无法再和你聊天了'
-		];
+		];*/
 //		echo  json_encode($a, JSON_UNESCAPED_UNICODE);
-		AppUtil::logFile(json_encode($a, JSON_UNESCAPED_UNICODE), 5, __FUNCTION__);
+//		AppUtil::logFile(json_encode($a, JSON_UNESCAPED_UNICODE), 5, __FUNCTION__);
+
+		var_dump(date('Y-m-d', strtotime("2017-08-15 +1 month")));
+		var_dump(date('Y-m-d', strtotime("2017-08-15 +9 month")));
+		var_dump(date('Y-m-d', strtotime("2017-07-10 +0 week")));
 
 	}
 
 	public function actionZp()
 	{
-		echo strtotime("2017-08-13 14:00:00");
+//		echo strtotime("2017-08-13 14:00:00");
 	}
 }

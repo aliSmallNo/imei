@@ -7,7 +7,8 @@
 	}
 
 	th.percent {
-		width: 5.6%;
+		width: 5.5%;
+		text-align: center;
 	}
 
 	td.dt {
@@ -42,7 +43,7 @@
 					日期
 				</th>
 				<th>
-					注册<br>人数
+					人数
 				</th>
 				<th class="percent">
 					2
@@ -92,18 +93,18 @@
 			</tr>
 			</thead>
 			<tbody>
-			{{foreach from=$reuseData key=part_id item=prod}}
-			<tr>
-				<td class="dt">{{$prod.sStart}}<br>{{$prod.sEnd}}</td>
+			{{foreach from=$reuseData item=item}}
+			<tr data-begin="{{$item.begin}}" data-end="{{$item.end}}">
+				<td class="dt">{{$item.begin}}<br>{{$item.end}}</td>
 				<td class="percent">
-					<a href="javascript:;" target="_blank" data-ids="{{$prod.uIds}}">{{$prod.sCount}}</a>
+					<a href="javascript:;" class="j-link" data-from="" data-to="">{{$item[$cat].cnt}}</a>
 				</td>
-				{{foreach from=$prod.percents key=subK item=percent}}
+				{{foreach from=$item[$cat].items key=k item=subItem}}
 				<td class="percent">
-					{{if $percent>=0}}
-					<a href="javascript:;" target="_blank" data-ids="{{$prod.ids[$subK]}}">
-						{{$percent|string_format:'%.1f'}}%</a>
-					{{else}}
+					{{if $k<12}}
+					<a href="javascript:;" class="j-link" data-from="{{$subItem.from}}" data-to="{{$subItem.to}}">
+						{{$subItem.per|string_format:"%.1f"}}%
+					</a>
 					{{/if}}
 				</td>
 				{{/foreach}}
@@ -112,6 +113,7 @@
 			</tbody>
 		</table>
 	</div>
+	<input type="hidden" id="cCAT" value="{{$cat}}">
 </div>
 <script>
 	$('button').on('click', function () {
@@ -119,22 +121,24 @@
 		location.href = "/site/reusestat?cat=" + self.attr('tag');
 	});
 
+	var mCat = $('#cCAT').val();
 	$(".percent a").on("click", function () {
 		var self = $(this);
-		var ids = self.attr("data-ids");
-		if (!ids || ids == 0) {
-			return;
-		}
-		$.post("/api/users", {
-			tag: "users",
-			ids: ids
+		var row = self.closest('tr');
+		$.post("/api/userchart", {
+			tag: "reuse_detail",
+			begin: row.attr('data-begin'),
+			end: row.attr('data-end'),
+			from: self.attr('data-from'),
+			to: self.attr('data-to'),
+			cat: mCat
 		}, function (resp) {
 			console.log(resp);
-			var temp = "{[#data]}<div>{[name]} {[phone]}</div>{[/data]}";
+			var temp = "<ol>{[#items]}<li>{[phone]} {[name]}</li>{[/items]}</ol>";
 			layer.open({
-				content: Mustache.render(temp, resp),
-				area: ['500px', '600px'],
-				title: "用户"
+				content: Mustache.render(temp, resp.data),
+				area: ['400px', '500px'],
+				title: "用户列表"
 			});
 		}, "json");
 	})

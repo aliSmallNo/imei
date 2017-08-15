@@ -11,6 +11,7 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use common\models\City;
+use common\models\LogAction;
 use common\models\QuestionGroup;
 use common\models\QuestionSea;
 use common\models\User;
@@ -330,6 +331,15 @@ class ApiController extends Controller
 			case "stat":
 				$ret = User::propStat($beginDate, $endDate);
 				return self::renderAPI(0, '', $ret);
+			case 'reuse_detail':
+				$begin = self::postParam("begin");
+				$end = self::postParam("end");
+				$from = self::postParam("from");
+				$to = self::postParam("to");
+				$cat = self::postParam("cat");
+				$ret = LogAction::reuseDetail($cat,$begin, $end, $from, $to);
+				return self::renderAPI(0, '', ['items' => $ret]);
+				break;
 		}
 		return self::renderAPI(129, "什么操作也没做啊！");
 	}
