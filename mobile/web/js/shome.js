@@ -344,7 +344,7 @@ require(["layer"],
 				if ($flag) {
 					util.timer = setInterval(function () {
 						util.reload();
-					}, 6000);
+					}, 5000);
 				} else {
 					clearInterval(util.timer);
 					util.timer = 0;
@@ -399,8 +399,8 @@ require(["layer"],
 					text: content
 				}, function (resp) {
 					if (resp.code == 0) {
-						var html = Mustache.render(util.tmp, resp.data);
-						util.list.append(html);
+						/*var html = Mustache.render(util.tmp, resp.data);
+						util.list.append(html);*/
 						util.input.val('');
 						util.showTip(resp.data.gid, resp.data.left);
 						setTimeout(function () {
