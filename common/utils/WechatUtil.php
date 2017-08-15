@@ -749,7 +749,7 @@ class WechatUtil
 		$url = $urlPrefix . "/wx/sh?id=" . $secretId;
 		switch ($tag) {
 			case "favor":
-				if (!User::getSet($userInfo->uSetting, "fans")) {
+				if (!User::getSet($userInfo->uSetting, "favor")) {
 					 return 0;
 				}
 				$cat = $f ? UserMsg::CATEGORY_FAVOR : UserMsg::CATEGORY_FAVOR_CANCEL;
