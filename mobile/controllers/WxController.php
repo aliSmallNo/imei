@@ -1163,4 +1163,11 @@ class WxController extends BaseController
 		],
 			'terse');
 	}
+
+	public function actionSetting()
+	{
+
+		return self::renderPage('setting.tpl', [],
+			'terse');
+	}
 }
