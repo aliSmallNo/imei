@@ -85,13 +85,13 @@ class LogAction extends ActiveRecord
 		}
 		switch ($cat) {
 			case "male":
-				$condStr = " and uGender in (11) ";
+				$condStr = " and uGender in (11) and uRole in (10)";
 				break;
 			case "female":
-				$condStr = " and uGender in (10) ";
+				$condStr = " and uGender in (10) and uRole in (10)";
 				break;
 			default:
-				$condStr = " and uGender in (10,11) ";
+				$condStr = " and uPhone!='' and uRole in (10,20)";
 		}
 		if (count($times) > 2) {
 			$lineData = [
@@ -112,7 +112,7 @@ class LogAction extends ActiveRecord
 			$conn = AppUtil::db();
 			$sql = "select GROUP_CONCAT(uId) as uIds,count(1) as amt from im_user
 					where uAddedOn BETWEEN '$times[0]' and '$times[1]'
-					and uNote='' and uStatus<9 and uRole in (10,20) $condStr";
+					and uNote='' and uStatus<9 $condStr";
 			$result = $conn->createCommand($sql)->queryOne();
 			$uIds = '';
 			if ($result) {
