@@ -334,7 +334,7 @@ class UserNet extends ActiveRecord
 		return [$items, $nextPage];
 	}
 
-	public static function news($lastId = 0, $limit = 20)
+	public static function news($lastId = 0, $limit = 40)
 	{
 		if ($lastId) {
 			$limit = 10;
@@ -351,6 +351,7 @@ class UserNet extends ActiveRecord
 		foreach ($ret as $row) {
 			$note = '';
 			$displaySub = 1;
+			$swap = 0;
 			switch ($row['nRelation']) {
 				case self::REL_BACKER:
 					$note = '的单身团增加了1位单身';
@@ -363,22 +364,39 @@ class UserNet extends ActiveRecord
 					$note = '邀请了1位好友';
 					$displaySub = 1;
 					break;
-				case self::REL_LINK:
-					$note = '收到1次加微信请求';
-					$displaySub = 0;
+				case self::REL_FAVOR:
+					$note = '心动了';
+					$displaySub = 1;
+					$swap = 1;
+					break;
+				case self::REL_PRESENT:
+					$note = '收到媒桂花';
+					$displaySub = 1;
+					$swap = 1;
 					break;
 			}
 			if (!$note) {
 				continue;
 			}
-			$items[] = [
-				'name' => $row['name'],
-				'thumb' => $row['thumb'],
-				'subName' => $row['subName'],
-				'subThumb' => $row['subThumb'],
-				'note' => $note,
-				'displaySub' => $displaySub
-			];
+			if ($swap) {
+				$items[] = [
+					'name' => $row['subName'],
+					'thumb' => $row['subThumb'],
+					'subName' => $row['name'],
+					'subThumb' => $row['thumb'],
+					'note' => $note,
+					'displaySub' => $displaySub
+				];
+			} else {
+				$items[] = [
+					'name' => $row['name'],
+					'thumb' => $row['thumb'],
+					'subName' => $row['subName'],
+					'subThumb' => $row['subThumb'],
+					'note' => $note,
+					'displaySub' => $displaySub
+				];
+			}
 		}
 		return $items;
 	}
