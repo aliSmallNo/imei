@@ -482,6 +482,13 @@ class FooController extends Controller
 		var_dump(count($ret));
 	}
 
+	public function actionMsg($openId = 'oYDJew5EFMuyrJdwRrXkIZLU2c58
+	')
+	{
+		$ret = UserWechat::sendMsg($openId, '测试测试啊');
+		var_dump($ret);
+	}
+
 	public function actionRain()
 	{
 		/*$a = ['除去索要微信号功能',
@@ -502,6 +509,6 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		var_dump(\GuzzleHttp\json_decode("",1));
+		var_dump(\GuzzleHttp\json_decode("", 1));
 	}
 }
