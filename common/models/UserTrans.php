@@ -439,7 +439,8 @@ class UserTrans extends ActiveRecord
 	public static function getRoselist($page = 1, $pageSize = 20)
 	{
 
-		list($beginDT, $endDT) = AppUtil::getEndStartTime(time(), 'today', true);
+		//list($beginDT, $endDT) = AppUtil::getEndStartTime(time(), 'today', true);
+		list($beginDT, $endDT) = AppUtil::getEndStartTime(time(), 'curweek', true);
 
 		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
 		$cat = UserTrans::CAT_RECEIVE;
@@ -474,10 +475,12 @@ class UserTrans extends ActiveRecord
 	{
 		$cat = UserTrans::CAT_RECEIVE;
 		$week = AppUtil::getEndStartTime(time(), 'curweek', true);
-		$sql = "select sum(tAmt) as co, tUId as id, uName as uname, uThumb as avatar
+		$sql = "select sum(tAmt) as co,
+				sum(case when tAddedOn BETWEEN :sDate AND :eDate then t.tAmt else 0 end) as todayFavor, 
+				tUId as id, uName as uname, uThumb as avatar
 				from im_user_trans as t
 				left join im_user as u on u.uId=t.tUId 
-				where tCategory=:cat and tAddedOn BETWEEN :sDate  AND :eDate
+				where tCategory=:cat
 				GROUP BY tUId ORDER BY co desc,tUId asc";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":sDate" => $week[0],
