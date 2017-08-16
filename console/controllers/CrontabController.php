@@ -9,6 +9,7 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\User;
+use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserWechat;
 use yii\console\Controller;
@@ -31,5 +32,10 @@ class CrontabController extends Controller
 	public function actionRank()
 	{
 		User::updateRank([], true);
+	}
+
+	public function actionAlert()
+	{
+		UserMsg::routineAlert([131379]);
 	}
 }

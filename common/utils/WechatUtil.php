@@ -615,6 +615,19 @@ class WechatUtil
 				$keywords['keyword2'] = '微媒100祝你今天好运又开心啊';
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
+			case self::NOTICE_ROUTINE:
+				if (User::muteAlert($uId, User::ALERT_FAVOR)
+					&& User::muteAlert($uId, User::ALERT_PRESENT)
+					&& User::muteAlert($uId, User::ALERT_CHAT)) {
+					return 0;
+				}
+				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$url = $wxUrl . "/wx/notice";
+				$keywords['first'] = "hi，$nickname\n";
+				$keywords['keyword1'] = $title;
+				$keywords['keyword2'] = $subTitle;
+				$keywords['remark'] = "\n点击下方详情查看吧~";
+				break;
 			default:
 				$url = $templateId = '';
 				$msgCat = 0;
@@ -636,11 +649,14 @@ class WechatUtil
 				"remark" => ["color" => "#555555", "value" => $keywords['remark']],
 			]
 		];
-		$access_token = self::getAccessToken(self::ACCESS_CODE);
-		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
-		AppUtil::postJSON($url, json_encode($bodyInfo));
+		$routineNotices = [self::NOTICE_FAVOR, self::NOTICE_CHAT, self::NOTICE_PRESENT];
+		if (!in_array($noticeTag, $routineNotices)) {
+			$access_token = self::getAccessToken(self::ACCESS_CODE);
+			$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
+			AppUtil::postJSON($url, json_encode($bodyInfo));
+		}
 		$text = isset(UserMsg::$catDict[$msgCat]) ? UserMsg::$catDict[$msgCat] : '';
-		if ($noticeTag == self::NOTICE_AUDIT) {
+		if (in_array($noticeTag, [self::NOTICE_AUDIT, self::NOTICE_ROUTINE])) {
 			$result = 1;
 		} else {
 			$result = UserMsg::edit(0, [

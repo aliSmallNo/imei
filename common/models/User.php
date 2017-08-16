@@ -1828,4 +1828,6 @@ class User extends ActiveRecord
 		return false;
 		/*{"fans":1,"chat":1,"favor":1}*/
 	}
+
+
 }
