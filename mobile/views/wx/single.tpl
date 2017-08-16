@@ -80,7 +80,8 @@
 			<a href="#heartbeat"><span class="title">心动列表</span> <i class="i-mark-favor"></i></a>
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">媒桂花账户</span> <i class="i-mark-rose"></i></a>
 			<a href="/wx/sqr"><span class="title">分享给朋友</span></a>
-			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span class="tip">已认证</span>{{/if}}</a>
+			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span
+								class="tip">已认证</span>{{/if}}</a>
 		</div>
 		<div class="m-rows line-bottom mymp" style="display: none">
 			<a href="/wx/invite"><span class="title">我的媒婆</span> <span class="tip">{{$mpName}}</span></a>
@@ -125,6 +126,20 @@
     display: none;
     border-radius: 3rem" class="album-delete">删除</a>
 </section>
+<style>
+	.m-schat-shade {
+		position: fixed;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		display: none;
+		background-color: rgba(0, 0, 0, 0.3);
+		pointer-events: auto;
+		z-index: 8;
+	}
+</style>
+<a class="m-schat-shade"></a>
 <section id="schat" data-title="密聊中...">
 	<div class="report_wrap">
 		<p class="title chat-tip"></p>
@@ -132,8 +147,13 @@
 	</div>
 	<div class="m-bottom-pl"></div>
 	<div class="m-bottom-bar">
+		<div class="icons"><a class="schat-options"></a></div>
 		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120"></div>
 		<div class="action"><a class="btn-chat-send">发送</a></div>
+		<div class="m-chat-wrap off">
+			<a class="schat-option" data-tag="toblock">拉黑对方</a>
+			<a class="schat-option">取消</a>
+		</div>
 	</div>
 </section>
 <section id="scontacts" data-title="我的密聊记录">
