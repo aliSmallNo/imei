@@ -275,6 +275,10 @@ class UserMsg extends ActiveRecord
 
 	public static function routineAlert($uIds = [])
 	{
+		$hr = date('Hi');
+		if (!in_array($hr, ['0930','1130','1530','2130'])) {
+			return false;
+		}
 		$conn = AppUtil::db();
 		$cats = implode(',',
 			[self::CATEGORY_PRESENT, self::CATEGORY_FAVOR, self::CATEGORY_CHAT]);
@@ -330,6 +334,6 @@ class UserMsg extends ActiveRecord
 			WechatUtil::templateMsg(WechatUtil::NOTICE_ROUTINE,
 				$uid, '微媒100每日简报', implode('；', $titles));
 		}
-
+		return true;
 	}
 }
