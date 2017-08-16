@@ -1185,6 +1185,8 @@ class WxController extends BaseController
 			"fans" => $fans,
 			"chat" => $chat,
 		],
-			'terse');
+			'terse',
+			'提醒设置',
+			'bg-color');
 	}
 }
