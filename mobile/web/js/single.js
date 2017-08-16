@@ -422,6 +422,8 @@ require(["layer"],
 			input: $('.chat-input'),
 			bot: $('#schat .m-bottom-pl'),
 			topPL: $('#scontacts .m-top-pl'),
+			menus: $(".m-chat-wrap"),
+			menusBg: $(".m-schat-shade"),// m-schat-shade m-popup-shade
 			timer: 0,
 			init: function () {
 				var util = this;
@@ -467,6 +469,62 @@ require(["layer"],
 					self.closest('div').find('a').removeClass('active');
 					self.addClass('active');
 				});
+
+				$(document).on(kClick, ".schat-options", function () {
+					util.toggle(util.menus.hasClass("off"));
+				});
+				util.menusBg.on(kClick, function () {
+					util.toggle(util.menus.hasClass("off"));
+				});
+				$(document).on(kClick, ".m-chat-wrap a:last-child", function () {
+
+				});
+				$(document).on(kClick, ".schat-option", function () {
+					util.toggle(util.menus.hasClass("off"));
+					var self = $(this);
+					var tag = self.attr("data-tag");
+					switch (tag){
+						case "toblock":
+							layer.open({
+								content: '您确定要拉黑TA吗？'
+								,btn: ['确定', '取消']
+								,yes: function(index){
+									util.toBlock();
+								}
+							});
+							break;
+					}
+				});
+			},
+			toggle: function (showFlag) {
+				var util = this;
+				if (showFlag) {
+					setTimeout(function () {
+						util.menus.removeClass("off").addClass("on");
+					}, 60);
+					util.menusBg.fadeIn(260);
+				} else {
+					util.menus.removeClass("on").addClass("off");
+					util.menusBg.fadeOut(220);
+				}
+			},
+			toBlock: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post("/api/chat", {
+					tag: "toblock",
+					sid: util.sid
+				}, function (resp) {
+					util.loading = 0;
+					if (resp.code == 0) {
+						showMsg(resp.msg);
+					} else {
+						showMsg(resp.msg);
+					}
+				}, "json");
 			},
 			toggleTimer: function ($flag) {
 				var util = this;

@@ -1231,6 +1231,22 @@ class ApiController extends Controller
 					'gid' => $gId
 				]);
 				break;
+			case "toblock":
+				$rptUId = self::postParam("sid");
+				$rptUId = AppUtil::decrypt($rptUId);
+				$black = UserNet::findOne([
+					"nUId" => $rptUId,
+					"nSubUId" => $uid,
+					"nRelation" => UserNet::REL_BLOCK,
+					"nStatus" => UserNet::STATUS_WAIT,
+				]);
+
+				if ($black) {
+					return self::renderAPI(129, '你已经拉黑TA了哦~');
+				} else {
+					UserNet::add($rptUId, $wxInfo['uId'], UserNet::REL_BLOCK, $note = '');
+					return self::renderAPI(129, '你已经成功拉黑TA了哦~');
+				}
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

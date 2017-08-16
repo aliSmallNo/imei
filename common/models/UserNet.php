@@ -70,6 +70,8 @@ class UserNet extends ActiveRecord
 		}
 		if (in_array($relation, [self::REL_INVITE, self::REL_BACKER])) {
 			$entity = self::findOne(['nSubUId' => $subUid, 'nRelation' => $relation, 'nDeletedFlag' => 0]);
+		} else if ($relation == self::REL_BLOCK) {
+			$entity = self::findOne(['nUId' => $uid,'nSubUId' => $subUid, 'nRelation' => $relation, 'nStatus' => self::STATUS_WAIT]);
 		} else {
 			$entity = self::findOne(['nUId' => $uid, 'nSubUId' => $subUid, 'nRelation' => $relation, 'nDeletedFlag' => 0]);
 		}

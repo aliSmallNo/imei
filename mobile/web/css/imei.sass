@@ -4255,7 +4255,43 @@ section
 			background: $chatColor
 			text-align: center
 			color: #fff
-
+	.icons
+		flex: 0 0 5rem
+		a.schat-options
+			width: 5rem
+			height: 5rem
+			background: rgba(0,0,0,0.2) url(../images/icon_options.png?v=1.1.1) no-repeat center center
+			background-size: 1.6rem 1.6rem
+			border: 0
+	.m-chat-wrap
+		position: fixed
+		left: 0
+		bottom: 0
+		right: 0
+		-webkit-transition: .2s all ease
+		-moz-transition: .2s all ease
+		transition: .2s all ease
+		-webkit-backface-visibility: hidden
+		-moz-backface-visibility: hidden
+		backface-visibility: hidden
+		background: #fff
+		z-index: 2001
+		width: initial
+		&.off
+			-webkit-transform: translateY(100%) translateZ(0)
+			-moz-transform: translateY(100%) translateZ(0)
+			transform: translateY(100%) translateZ(0)
+		&.on
+			-webkit-transform: translateY(0) translateZ(0)
+			-moz-transform: translateY(0) translateZ(0)
+			transform: translateY(0) translateZ(0)
+		a
+			background: #fff !important
+			color: #000 !important
+			border-bottom: 1px solid #eee
+		a:last-child
+			border-top: 5px solid #eee
+			border-bottom: none
 .charges
 	padding: 1rem
 	li
