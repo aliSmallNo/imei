@@ -4447,6 +4447,17 @@ section {
       border-top: 5px solid #eee;
       border-bottom: none; }
 
+.m-schat-shade {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
+  z-index: 8; }
+
 .charges {
   padding: 1rem; }
   .charges li {

@@ -20,6 +20,10 @@
 		<a href="#sme" style="display: none">个人中心</a>
 	</div>
 	<div class="title">择偶条件</div>
+	<a href="javascript:;" class="condtion-item" tag="location">
+		<div class="left">地区</div>
+		<div class="right">请选择</div>
+	</a>
 	<a href="javascript:;" class="condtion-item" tag="age">
 		<div class="left">年龄</div>
 		<div class="right">请选择</div>
@@ -126,19 +130,6 @@
     display: none;
     border-radius: 3rem" class="album-delete">删除</a>
 </section>
-<style>
-	.m-schat-shade {
-		position: fixed;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		display: none;
-		background-color: rgba(0, 0, 0, 0.3);
-		pointer-events: auto;
-		z-index: 8;
-	}
-</style>
 <a class="m-schat-shade"></a>
 <section id="schat" data-title="密聊中...">
 	<div class="report_wrap">
@@ -671,6 +662,9 @@
 	</div>
 </div>
 
+<script>
+	var mProvinces = {{$provinces}};
+</script>
 <script type="text/html" id="heightTmp">
 	<div class="m-popup-options col3 clearfix" tag="height">
 		<div class="m-popup-options-top">

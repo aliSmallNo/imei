@@ -483,12 +483,12 @@ require(["layer"],
 					util.toggle(util.menus.hasClass("off"));
 					var self = $(this);
 					var tag = self.attr("data-tag");
-					switch (tag){
+					switch (tag) {
 						case "toblock":
 							layer.open({
 								content: '您确定要拉黑TA吗？'
-								,btn: ['确定', '取消']
-								,yes: function(index){
+								, btn: ['确定', '取消']
+								, yes: function (index) {
 									util.toBlock();
 								}
 							});
@@ -825,11 +825,19 @@ require(["layer"],
 			list: $(".m-top-users"),
 			criteriaTmp: $("#conditions").html(),
 			userTmp: $("#userFiter").html(),
+			cityTmp: '<div class="m-popup-options col4 clearfix" tag="city">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="city">{[name]}</a>{[/items]}</div>',
+			provinceTmp: '<div class="m-popup-options col4 clearfix" tag="province">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="province">{[name]}</a>{[/items]}</div>',
 			init: function () {
 				$("#matchCondition a").on(kClick, function () {
 					var self = $(this);
 					filterUlit.tag = self.attr("tag");
 					switch (filterUlit.tag) {
+						case "location":
+							var html = Mustache.render(filterUlit.provinceTmp, {items: mProvinces});
+							$sls.main.show();
+							$sls.content.html(html).addClass("animate-pop-in");
+							$sls.shade.fadeIn(160);
+							break;
 						case "age":
 						case "height":
 						case "income":
@@ -860,6 +868,17 @@ require(["layer"],
 					});
 					location.href = "#matchCondition";
 				});
+			},
+			getCity: function (pid) {
+				var util = this;
+				$.post('/api/config', {
+					tag: 'cities',
+					id: pid
+				}, function (resp) {
+					if (resp.code == 0) {
+						$sls.content.html(Mustache.render(filterUlit.cityTmp, resp.data));
+					}
+				}, 'json');
 			},
 			showCriteria: function () {
 				var tmp = $("#" + filterUlit.tag + "Tmp").html();
@@ -918,31 +937,6 @@ require(["layer"],
 		};
 		filterUlit.init();
 
-		$(window).on("scroll", function () {
-			var lastRow;
-			switch ($sls.curFrag) {
-				case "slook":
-					lastRow = filterUlit.list.find('li:last');
-					if (lastRow && eleInScreen(lastRow, 150) && filterUlit.sUserPage > 0) {
-						filterUlit.loadFilter("", filterUlit.sUserPage);
-						return false;
-					}
-					break;
-				case "heartbeat":
-					lastRow = $("#" + $sls.curFrag).find('.plist li').last();
-					if (lastRow && eleInScreen(lastRow, 180) && TabUtil.page > 0) {
-						TabUtil.getData();
-						return false;
-					}
-					break;
-				default:
-					break;
-			}
-		});
-
-		function eleInScreen($ele, $offset) {
-			return $ele && $ele.length > 0 && $ele.offset().top + $offset < $(window).scrollTop() + $(window).height();
-		}
 
 		$(document).on(kClick, ".m-popup-options a", function () {
 			var self = $(this);
@@ -996,10 +990,47 @@ require(["layer"],
 					$sls.main.hide();
 					$sls.shade.fadeOut(160);
 					break;
+				case "province":
+					$sls.contionString = $sls.contionVal = "";
+					$sls.contionString = $sls.contionVal = text;
+					filterUlit.getCity(key);
+					break;
+				case "city":
+					$sls.contionString = $sls.contionVal = $sls.contionVal + "-" + text;
+					$("#matchCondition a[tag=location]").find(".right").html($sls.contionString);
+					$("#matchCondition a[tag=location]").find(".right").attr("data-id", $sls.contionVal);
+					$sls.main.hide();
+					$sls.shade.fadeOut(160);
+					break;
 			}
 
 		});
 
+		$(window).on("scroll", function () {
+			var lastRow;
+			switch ($sls.curFrag) {
+				case "slook":
+					lastRow = filterUlit.list.find('li:last');
+					if (lastRow && eleInScreen(lastRow, 150) && filterUlit.sUserPage > 0) {
+						filterUlit.loadFilter("", filterUlit.sUserPage);
+						return false;
+					}
+					break;
+				case "heartbeat":
+					lastRow = $("#" + $sls.curFrag).find('.plist li').last();
+					if (lastRow && eleInScreen(lastRow, 180) && TabUtil.page > 0) {
+						TabUtil.getData();
+						return false;
+					}
+					break;
+				default:
+					break;
+			}
+		});
+
+		function eleInScreen($ele, $offset) {
+			return $ele && $ele.length > 0 && $ele.offset().top + $offset < $(window).scrollTop() + $(window).height();
+		}
 
 		var TabUtil = {
 			tag: "",
