@@ -941,21 +941,10 @@ class User extends ActiveRecord
 		$city = (is_array($location) && $location) ? mb_substr($location[1]["text"], 0, 2) : "";
 
 		$uRole = User::ROLE_SINGLE;
-		$gender = ($gender == 10) ? 11 : 10;
+		$gender = ($gender == 10) ? 11 : 10 ;
 
 		$status = self::STATUS_DELETE;
 		$condition = " u.uRole=$uRole and u.uGender=$gender and u.uStatus in (0,1,8) ";
-		//$filterArr = json_decode($uFilter, 1);
-		if ($uFilter) {
-			$rankField = ",(case WHEN u.uLocation like '%$prov%' and u.uLocation like '%$city%' then 10
-					WHEN u.uLocation like '%$prov%' then 8 else 0 end) as rank";
-			//$condition .= "  and POSITION('$prov' IN u.uLocation) >0 and POSITION('$city' IN u.uLocation) >0 ";
-		} else {
-			$prov1 = "山东";
-			$prov2 = "江苏";
-			$rankField = ",(case WHEN u.uLocation like '%$prov1%' or u.uLocation like '%$prov2%' then 10 else 0 end) as rank";
-			//$condition .= "  and (POSITION('$prov1' IN u.uLocation) >0 or POSITION('$prov2' IN u.uLocation) >0) ";
-		}
 
 		if (!$data) {
 			$data = json_decode($uFilter, 1);
@@ -975,12 +964,24 @@ class User extends ActiveRecord
 			$condition .= " and u.uHeight between $startheight and $Endheight ";
 		}
 
+		if ($uFilter) {
+			$rankField = ",(case WHEN u.uLocation like '%$prov%' and u.uLocation like '%$city%' then 10
+					WHEN u.uLocation like '%$prov%' then 8 else 0 end) as rank";
+			//$condition .= " and POSITION('$prov' IN u.uLocation) >0 and POSITION('$city' IN u.uLocation) >0 ";
+		} else {
+			$prov1 = "山东";
+			$prov2 = "江苏";
+			$rankField = ",(case WHEN u.uLocation like '%$prov1%' or u.uLocation like '%$prov2%' then 10 else 0 end) as rank";
+			// $condition .= "  and (POSITION('$prov1' IN u.uLocation) >0 or POSITION('$prov2' IN u.uLocation) >0) ";
+		}
 
 		if (isset($data["location"]) && $data["location"] != "") {
 			$location = explode("-", $data["location"]);
 			$fprovince = (is_array($location) && count($location) == 2) ? $location[0] : 0;
 			$fcity = (is_array($location) && count($location) == 2) ? $location[1] : 0;
 			$condition .= " and u.uLocation like '%$fprovince%' and u.uLocation like '%$fcity%' ";
+			$rankField = ",(case WHEN u.uLocation like '%$prov%' and u.uLocation like '%$fcity%' then 10
+					WHEN u.uLocation like '%$fprovince%' then 8 else 0 end) as rank";
 		} else {
 			if ($prov && $city) {
 				$condition .= " and u.uLocation like '%$prov%' and u.uLocation like '%$city%' ";
