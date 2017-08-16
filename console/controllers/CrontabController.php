@@ -36,6 +36,6 @@ class CrontabController extends Controller
 
 	public function actionAlert()
 	{
-		UserMsg::routineAlert([131379]);
+		UserMsg::routineAlert();
 	}
 }
