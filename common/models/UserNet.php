@@ -469,7 +469,7 @@ class UserNet extends ActiveRecord
 			case "yes":
 				$info->nDeletedFlag = self::DELETE_FLAG_NO;
 				$info->nAddedOn = $date;
-				WechatUtil::toNotice($uid, $mId, "favor", 1);
+				WechatUtil::templateMsg(WechatUtil::NOTICE_FAVOR, $uid);
 				UserMsg::recall($uid);
 				break;
 			case "no":

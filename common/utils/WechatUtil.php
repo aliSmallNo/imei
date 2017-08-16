@@ -38,6 +38,7 @@ class WechatUtil
 	const NOTICE_AUDIT_PASS = 'notice_audit_pass';
 	const NOTICE_AUDIT = 'notice_audit';
 	const NOTICE_GIVE_ROSE = 'notice_give_rose';
+	const NOTICE_FAVOR = 'notice_favor';
 
 	/**
 	 * @param $sessionKey
@@ -555,7 +556,7 @@ class WechatUtil
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_CHAT:
-				if (!User::getSet($userInfo->uSetting, "chat")) {
+				if (User::muteAlert($uId, User::ALERT_CHAT)) {
 					return 0;
 				}
 				$msgCat = UserMsg::CATEGORY_CHAT;
@@ -590,7 +591,7 @@ class WechatUtil
 				}
 				$openId = $userInfo['uOpenId'];
 				$nickname = $userInfo['uName'];
-				if (!User::getSet($userInfo->uSetting, "fans")) {
+				if (User::muteAlert($uId, User::ALERT_PRESENT)) {
 					return 0;
 				}
 				$msgCat = UserMsg::CATEGORY_GIVE_ROSE;
@@ -599,6 +600,18 @@ class WechatUtil
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['keyword1'] = $title;
 				$keywords['keyword2'] = $subTitle;
+				$keywords['remark'] = "\n点击下方详情查看吧~";
+				break;
+			case self::NOTICE_FAVOR:
+				if (User::muteAlert($uId, User::ALERT_FAVOR)) {
+					return 0;
+				}
+				$msgCat = UserMsg::CATEGORY_FAVOR;
+				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$url = $wxUrl . "/wx/single#heartbeat";
+				$keywords['first'] = "hi，$nickname\n";
+				$keywords['keyword1'] = '有人为你怦然心动了，快去看看吧';
+				$keywords['keyword2'] = '微媒100祝你今天好运又开心啊';
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			default:
@@ -733,7 +746,7 @@ class WechatUtil
 		$secretId = AppUtil::encrypt($myId);
 
 		if (AppUtil::isDev()) {
-			// return 0;
+			return 0;
 		}
 		$userInfo = User::findOne(["uId" => $uId]);
 		if (!$userInfo) {
@@ -749,8 +762,8 @@ class WechatUtil
 		$url = $urlPrefix . "/wx/sh?id=" . $secretId;
 		switch ($tag) {
 			case "favor":
-				if (!User::getSet($userInfo->uSetting, "favor")) {
-					 return 0;
+				if (User::muteAlert($uId, User::ALERT_FAVOR)) {
+					return 0;
 				}
 				$cat = $f ? UserMsg::CATEGORY_FAVOR : UserMsg::CATEGORY_FAVOR_CANCEL;
 				$keyword1Val = UserMsg::$catDict[$cat];
