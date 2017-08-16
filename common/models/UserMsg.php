@@ -6,6 +6,7 @@
 namespace common\models;
 
 use common\utils\AppUtil;
+use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
 
@@ -37,6 +38,7 @@ class UserMsg extends ActiveRecord
 	const CATEGORY_UPGRADE = 188;
 	const CATEGORY_SMS_RECALL = 200;
 	const CATEGORY_PRESENT = 210;
+	//const CATEGORY_ROUTINE = 250;
 
 	static $catDict = [
 		self::CATEGORY_ADMIN_PASS => "审核通过",
@@ -57,6 +59,7 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_UPGRADE => "最近更新",
 		self::CATEGORY_SMS_RECALL => "短信召回老用户",
 		self::CATEGORY_PRESENT => "送玫瑰花",
+
 	];
 
 	public static function tableName()
@@ -268,5 +271,69 @@ class UserMsg extends ActiveRecord
 		}
 
 		return [];
+	}
+
+	public static function routineAlert($uIds = [])
+	{
+		$hr = date('Hi');
+		if (!in_array($hr, ['0930','1130','1530','2130'])) {
+			return false;
+		}
+		$conn = AppUtil::db();
+		$cats = implode(',',
+			[self::CATEGORY_PRESENT, self::CATEGORY_FAVOR, self::CATEGORY_CHAT]);
+		$criteria = '';
+		if ($uIds) {
+			$criteria = ' AND mUId in (' . implode(',', $uIds) . ')';
+		}
+		$sql = 'SELECT count(1) as cnt, mUId,mCategory
+			 FROM im_user_msg
+			 WHERE mAddedOn BETWEEN :from AND :to ' . $criteria . '
+			 AND mAlertFlag=0 AND mCategory in (' . $cats . ')
+			 GROUP BY mUId,mCategory
+			 ORDER BY mUId,mId';
+		$ret = $conn->createCommand($sql)->bindValues([
+			':from' => date('Y-m-d'),
+			':to' => date('Y-m-d 23:59'),
+		])->queryAll();
+		$items = [];
+		foreach ($ret as $row) {
+			$uid = $row['mUId'];
+			$cnt = $row['cnt'];
+			if (!isset($items[$uid])) {
+				$items[$uid] = [];
+			}
+			switch ($row['mCategory']) {
+				case self::CATEGORY_PRESENT:
+					$title = '收到赠送的媒桂花' . $cnt . '次';
+					break;
+				case self::CATEGORY_FAVOR:
+					$title = '有人对你怦然心动了' . $cnt . '次';
+					break;
+				case self::CATEGORY_CHAT:
+					$title = '有人密聊你了' . $cnt . '次';
+					break;
+				default:
+					$title = '';
+					break;
+			}
+			if ($title) {
+				$items[$uid][] = [
+					'title' => $title,
+					'cnt' => $cnt
+				];
+			}
+		}
+		$sql = 'update im_user_msg set mAlertFlag = 1, mAlertDate=now() WHERE mUId=:id AND mAlertFlag=0';
+		$cmd = $conn->createCommand($sql);
+		foreach ($items as $uid => $item) {
+			$cmd->bindValues([
+				':id' => $uid
+			])->execute();
+			$titles = array_column($item, 'title');
+			WechatUtil::templateMsg(WechatUtil::NOTICE_ROUTINE,
+				$uid, '微媒100每日简报', implode('；', $titles));
+		}
+		return true;
 	}
 }
