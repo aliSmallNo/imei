@@ -37,8 +37,9 @@ class WechatUtil
 	const NOTICE_CHAT = 'notice_chat';
 	const NOTICE_AUDIT_PASS = 'notice_audit_pass';
 	const NOTICE_AUDIT = 'notice_audit';
-	const NOTICE_GIVE_ROSE = 'notice_give_rose';
+	const NOTICE_PRESENT = 'notice_present';
 	const NOTICE_FAVOR = 'notice_favor';
+	const NOTICE_ROUTINE = 'notice_routine';
 
 	/**
 	 * @param $sessionKey
@@ -584,7 +585,7 @@ class WechatUtil
 				$keywords['keyword2'] = $subTitle;
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
-			case self::NOTICE_GIVE_ROSE:
+			case self::NOTICE_PRESENT:
 				$userInfo = User::findOne(["uId" => $adminId]);
 				if (!$userInfo) {
 					return 0;
@@ -594,7 +595,7 @@ class WechatUtil
 				if (User::muteAlert($uId, User::ALERT_PRESENT)) {
 					return 0;
 				}
-				$msgCat = UserMsg::CATEGORY_GIVE_ROSE;
+				$msgCat = UserMsg::CATEGORY_PRESENT;
 				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = $wxUrl . "/wx/notice";
 				$keywords['first'] = "hi，$nickname\n";
