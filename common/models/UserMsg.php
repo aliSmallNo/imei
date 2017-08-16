@@ -36,7 +36,7 @@ class UserMsg extends ActiveRecord
 	const CATEGORY_BULLETIN = 186;
 	const CATEGORY_UPGRADE = 188;
 	const CATEGORY_SMS_RECALL = 200;
-	const CATEGORY_GIVE_ROSE = 210;
+	const CATEGORY_PRESENT = 210;
 
 	static $catDict = [
 		self::CATEGORY_ADMIN_PASS => "审核通过",
@@ -56,7 +56,7 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_BULLETIN => "最新公告",
 		self::CATEGORY_UPGRADE => "最近更新",
 		self::CATEGORY_SMS_RECALL => "短信召回老用户",
-		self::CATEGORY_GIVE_ROSE => "送玫瑰花",
+		self::CATEGORY_PRESENT => "送玫瑰花",
 	];
 
 	public static function tableName()
@@ -164,7 +164,7 @@ class UserMsg extends ActiveRecord
 					$v["url"] = "javascript:;";
 					$v["text"] = $v["mText"];
 					break;
-				case self::CATEGORY_GIVE_ROSE:
+				case self::CATEGORY_PRESENT:
 					$v["url"] = "/wx/sh?id=" . $v["secretId"];
 					$v["text"] = $v["uName"] . "给你" . $v["mText"] . "，您的花粉值增加了";
 					break;

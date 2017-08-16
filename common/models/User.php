@@ -211,6 +211,10 @@ class User extends ActiveRecord
 		self::CERT_STATUS_FAIL => "未通过",
 	];
 
+	const ALERT_FAVOR = 'favor';
+	const ALERT_PRESENT = 'fans';
+	const ALERT_CHAT = 'chat';
+
 	protected static $SmsCodeLimitPerDay = 36;
 	private static $SMS_SUPER_PASS = 15062716;
 
@@ -929,7 +933,7 @@ class User extends ActiveRecord
 		$gender = ($gender == 10) ? 11 : 10;
 
 		$status = self::STATUS_DELETE;
-		$condition = " u.uRole=$uRole and u.uGender=$gender and u.uStatus in (0,1,2,8) ";
+		$condition = " u.uRole=$uRole and u.uGender=$gender and u.uStatus in (0,1,8) ";
 		//$filterArr = json_decode($uFilter, 1);
 		if ($uFilter) {
 			$rankField = ",(case WHEN u.uLocation like '%$prov%' and u.uLocation like '%$city%' then 10
@@ -1117,9 +1121,18 @@ class User extends ActiveRecord
 			$nextPage = $page + 1;
 		}
 		$items = [];
+		$fields = ['password', 'phone', 'openid', 'addedon', 'updatedon', 'album', 'album_cnt', 'homeland', 'homeland_t',
+			'cert', 'certdate', 'certimage', 'certnote', 'certstatus', 'certstatus_t', 'location', 'rankdate', 'ranktmp',
+			'setting', 'rank', 'weight', 'weight_t', 'marital', 'marital_t', 'coord', 'diet', 'diet_t', 'pet', 'pet_t',
+			'birthyear', 'birthyear_t', 'alcohol', 'alcohol_t', 'rest', 'rest_t', 'fitness', 'fitness_t', 'hint',
+			'horos', 'horos_t', 'estate', 'estate_t', 'belief', 'belief_t', 'car', 'car_t', 'height', 'height_t',
+			'income', 'income_t'];
 		foreach ($ret as $row) {
 			$item = self::fmtRow($row);
 			$item['stat'] = UserNet::getStat($item['id']);
+			foreach ($fields as $field) {
+				unset($item[$field]);
+			}
 			$items[] = $item;
 		}
 		return [$items, $nextPage];
@@ -1799,17 +1812,20 @@ class User extends ActiveRecord
 		return true;
 	}
 
-	public static function getSet($uSetting, $field)
+	public static function muteAlert($uid, $field, $conn = '')
 	{
-		if (!$uSetting) {
-			return 1;
+		if (!$conn) {
+			$conn = AppUtil::db();
 		}
-		$set = json_decode($uSetting, 1);
-		if (isset($set[$field]) && $set[$field] == 0) {
-			return 0;
-		} else {
-			return 1;
+		$sql = 'select uSetting from im_user WHERE uId=:id';
+		$setting = $conn->createCommand($sql)->bindValues([
+			':id' => $uid
+		])->queryScalar();
+		$setting = json_decode($setting, 1);
+		if (isset($setting[$field]) && $setting[$field] == 0) {
+			return true;
 		}
+		return false;
+		/*{"fans":1,"chat":1,"favor":1}*/
 	}
-
 }

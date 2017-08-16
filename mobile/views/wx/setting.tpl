@@ -104,11 +104,9 @@
 <div class="set-item-notice">
 	取消密聊提醒后将不再收到 "微媒100" TA的密聊的推送
 </div>
-
-
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/setting.js?v=1.1.9" src="/assets/js/require.js"></script>
+<script data-main="/js/setting.js?v=1.2.1" src="/assets/js/require.js"></script>

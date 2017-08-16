@@ -57,7 +57,6 @@ require(["layer"],
 			toSet();
 		});
 
-
 		$(function () {
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
@@ -66,6 +65,5 @@ require(["layer"],
 			wx.ready(function () {
 				wx.hideOptionMenu();
 			});
-			$("body").css("background", "#eee");
 		});
 	});

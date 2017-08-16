@@ -223,7 +223,6 @@ class FooController extends Controller
 
 	public static function reformInfo()
 	{
-
 		$conn = AppUtil::db();
 		$sql = 'select uId,uRawData from im_user WHERE uHoros<1 AND uRawData!=\'\' ';
 		$ret = $conn->createCommand($sql)->queryAll();
@@ -381,18 +380,6 @@ class FooController extends Controller
 		var_dump($ret);
 	}
 
-	public function actionRefresh()
-	{
-		$ret = UserWechat::refreshWXInfo('', 1);
-		var_dump($ret);
-	}
-
-	public function actionRecycle()
-	{
-		$ret = UserNet::recycleReward();
-		var_dump($ret);
-	}
-
 	public function actionImg()
 	{
 
@@ -400,7 +387,6 @@ class FooController extends Controller
 		$ret = ImageUtil::save2Server($url, false);
 		var_dump($ret);
 	}
-
 
 	public function actionChat()
 	{
@@ -441,26 +427,8 @@ class FooController extends Controller
 		$conn->createCommand($sql)->execute();
 
 		ChatMsg::reset();
-		/*$sql = 'update im_chat_group set gUId1=:id1,gUId2=:id2 WHERE gId=:id ';
-		$cmdUpdate = $conn->createCommand($sql);
-		$sql = 'select * from im_chat_group';
-		$ret = $conn->createCommand($sql)->queryAll();
-		foreach ($ret as $row) {
-			$id = $row['gId'];
-			$key = $row['gKey'];
-			list($id1, $id2) = explode('.', $key);
-			$cmdUpdate->bindValues([
-				':id' => $id,
-				':id1' => $id1,
-				':id2' => $id2,
-			])->execute();
-		}*/
 	}
 
-	public function actionRank()
-	{
-		User::updateRank([], true);
-	}
 
 	public function actionSms($phone = 18600442970)
 	{
@@ -480,6 +448,12 @@ class FooController extends Controller
 			]);
 		}
 		var_dump(count($ret));
+	}
+
+	public function actionMsg($openId = 'oYDJew5EFMuyrJdwRrXkIZLU2c58', $msg = '测试测试啊')
+	{
+		$ret = UserWechat::sendMsg($openId, $msg);
+		var_dump($ret);
 	}
 
 	public function actionRain()
@@ -502,6 +476,6 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		var_dump(\GuzzleHttp\json_decode("",1));
+		var_dump(\GuzzleHttp\json_decode("", 1));
 	}
 }

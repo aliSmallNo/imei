@@ -5,7 +5,6 @@ require.config({
 	paths: {
 		"jquery": "/assets/js/jquery-3.2.1.min",
 		"layer": "/assets/js/layer_mobile/layer",
-		"iscroll": "/assets/js/iscroll",
 	}
 });
 

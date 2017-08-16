@@ -684,7 +684,7 @@ class ApiController extends Controller
 					return self::renderAPI(129, '送花失败~');
 				}
 				// 推送
-				WechatUtil::templateMsg(WechatUtil::NOTICE_GIVE_ROSE, $wxInfo["uId"], $title = '有人给你送花了', $subTitle = 'TA给你送玫瑰花了，快去看看吧~', $id);
+				WechatUtil::templateMsg(WechatUtil::NOTICE_PRESENT, $wxInfo["uId"], $title = '有人给你送花了', $subTitle = 'TA给你送玫瑰花了，快去看看吧~', $id);
 				return self::renderAPI(0, '送花成功~');
 			case "setting":
 				$flag = self::postParam("flag", 0);
