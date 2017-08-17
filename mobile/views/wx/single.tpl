@@ -165,7 +165,7 @@
 </section>
 <section id="shome" data-title="个人主页">
 	<div class="single-page profile-page"></div>
-	<div class="m-bottom-bar" data-id="CTpqWzE6QzM4MkhjMzUzNTk7O2xdMzxFNTo0SWU">
+	<div class="m-bottom-bar">
 		<p>
 			<a class="send btn-give">送TA花</a>
 		</p>
@@ -1023,4 +1023,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.8.3" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.8.4" src="/assets/js/require.js"></script>

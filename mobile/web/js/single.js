@@ -256,7 +256,7 @@ require(["layer"],
 			}, 2500);
 		});
 
-		var alertUlit = {
+		var AlertUtil = {
 			giveFlag: false,
 			payroseF: false,
 			hintFlag: false,
@@ -280,10 +280,10 @@ require(["layer"],
 								showMsg("请先选择打赏的媒瑰花");
 								return;
 							}
-							if (alertUlit.payroseF) {
+							if (AlertUtil.payroseF) {
 								return;
 							}
-							alertUlit.payroseF = 1;
+							AlertUtil.payroseF = 1;
 							$.post("/api/user", {
 								tag: "payrose",
 								num: num,
@@ -302,7 +302,7 @@ require(["layer"],
 								} else {
 									showMsg(resp.msg);
 								}
-								alertUlit.payroseF = 0;
+								AlertUtil.payroseF = 0;
 							}, "json");
 							break;
 						case "des":
@@ -329,14 +329,14 @@ require(["layer"],
 							break;
 					}
 				});
-				$(document).on(kClick, ".m-top-users .btn", function () {
+				$(document).on(kClick, ".m-top-users .btn, .m-bottom-bar a", function () {
 					var self = $(this);
 					if (self.hasClass('btn-like')) {
 						var id = self.attr("data-id");
-						if (!self.hasClass("favor")) {
-							alertUlit.hint(id, "yes", self);
+						if (self.hasClass("favor")) {
+							AlertUtil.hint(id, "no", self);
 						} else {
-							alertUlit.hint(id, "no", self);
+							AlertUtil.hint(id, "yes", self);
 						}
 					} else if (self.hasClass('btn-apply')) {
 						$sls.secretId = self.attr("data-id");
@@ -348,7 +348,6 @@ require(["layer"],
 						location.href = '#schat';
 					} else if (self.hasClass('btn-give')) {
 						$sls.secretId = self.attr("data-id");
-
 						$sls.main.show();
 						var html = Mustache.render($("#tpl_give").html(), {
 							items: [
@@ -362,10 +361,10 @@ require(["layer"],
 				});
 
 				$(document).on(kClick, ".btn-togive", function () {
-					if (alertUlit.giveFlag) {
+					if (AlertUtil.giveFlag) {
 						return;
 					}
-					alertUlit.giveFlag = 1;
+					AlertUtil.giveFlag = 1;
 					var amt = $('.topup-opt a.active').attr('data-amt');
 					if (amt) {
 						$.post("/api/user", {
@@ -373,7 +372,7 @@ require(["layer"],
 							id: $sls.secretId,
 							amt: amt
 						}, function (resp) {
-							alertUlit.giveFlag = 0;
+							AlertUtil.giveFlag = 0;
 							if (resp.code == 0) {
 								$sls.main.hide();
 								$sls.shade.fadeOut(160);
@@ -418,10 +417,10 @@ require(["layer"],
 				});
 			},
 			hint: function (id, f, obj) {
-				if (alertUlit.hintFlag) {
+				if (AlertUtil.hintFlag) {
 					return;
 				}
-				alertUlit.hintFlag = 1;
+				AlertUtil.hintFlag = 1;
 				$.post("/api/user", {
 					tag: "hint",
 					id: id,
@@ -430,23 +429,24 @@ require(["layer"],
 					//console.log(resp);
 
 					if (resp.code == 0) {
-
 						if (f == "yes") {
 							showMsg('心动成功~');
 							obj.addClass("favor");
+							ProfileUtil.toggleFavor(1);
 						} else {
 							showMsg('已取消心动');
 							obj.removeClass("favor");
+							ProfileUtil.toggleFavor(0);
 						}
 					} else {
-						showMsg(resp.msg)
+						showMsg(resp.msg);
 					}
-					alertUlit.hintFlag = 0;
+					AlertUtil.hintFlag = 0;
 				}, "json");
 			},
 
 		};
-		alertUlit.init();
+
 
 		var ChatUtil = {
 			sid: '',
@@ -1309,10 +1309,11 @@ require(["layer"],
 
 		var ProfileUtil = {
 			eid: '',
-			tmp: $('#tpl_shome').html(),
-			loading: 0,
-			content: $('.profile-page'),
 			loaded: 0,
+			loading: 0,
+			tmp: $('#tpl_shome').html(),
+			content: $('.profile-page'),
+			favor: $('#shome .btn-like'),
 			init: function () {
 				var util = this;
 				$(document).on(kClick, '.j-profile', function () {
@@ -1344,11 +1345,22 @@ require(["layer"],
 				util.content.html('');
 				util.loading = 0;
 			},
+			toggleFavor: function (flag) {
+				var util = this;
+				if (flag) {
+					util.favor.html('已心动');
+					util.favor.addClass('favor');
+				} else {
+					util.favor.html('心动TA');
+					util.favor.removeClass('favor');
+				}
+			},
 			reload: function () {
 				var util = this;
 				if (util.loaded || util.loading) {
 					return false;
 				}
+				$('#shome .m-bottom-bar a').attr('data-id', util.eid);
 				util.content.html('');
 				util.loading = 1;
 				$.post('/api/user',
@@ -1360,6 +1372,7 @@ require(["layer"],
 						if (resp.code == 0) {
 							var html = Mustache.render(util.tmp, resp.data);
 							util.content.html(html);
+							util.toggleFavor(resp.data.profile.favored);
 							ReportUtil.reload(resp.data.profile.name, resp.data.profile.thumb);
 						} else {
 							showMsg(resp.msg);
@@ -1517,6 +1530,7 @@ require(["layer"],
 			ProfileUtil.init();
 			ResumeUtil.init();
 			ReportUtil.init();
+			AlertUtil.init();
 
 			setTimeout(function () {
 				GreetingUtil.show();

@@ -71,7 +71,7 @@ class UserNet extends ActiveRecord
 		if (in_array($relation, [self::REL_INVITE, self::REL_BACKER])) {
 			$entity = self::findOne(['nSubUId' => $subUid, 'nRelation' => $relation, 'nDeletedFlag' => 0]);
 		} else if ($relation == self::REL_BLOCK) {
-			$entity = self::findOne(['nUId' => $uid,'nSubUId' => $subUid, 'nRelation' => $relation, 'nStatus' => self::STATUS_WAIT]);
+			$entity = self::findOne(['nUId' => $uid, 'nSubUId' => $subUid, 'nRelation' => $relation, 'nStatus' => self::STATUS_WAIT]);
 		} else {
 			$entity = self::findOne(['nUId' => $uid, 'nSubUId' => $subUid, 'nRelation' => $relation, 'nDeletedFlag' => 0]);
 		}
@@ -928,6 +928,17 @@ class UserNet extends ActiveRecord
 			];
 		}
 		return $myInfo;
+	}
+
+	public static function hasFavor($myId, $yourId)
+	{
+		$info = self::findOne([
+			"nRelation" => UserNet::REL_FAVOR,
+			"nDeletedFlag" => UserNet::DELETE_FLAG_NO,
+			"nUId" => $yourId,
+			"nSubUId" => $myId
+		]);
+		return $info ? true : false;
 	}
 
 	public static function hasBlack($uid, $id)
