@@ -541,7 +541,7 @@ class User extends ActiveRecord
 				$user['comment'] = $ret['comment'];
 			} else {
 				$user['mp_name'] = '';
-				$user['mp_thumb'] = '';
+				$user['mp_thumb'] = ImageUtil::DEFAULT_AVATAR;
 				$user['mp_scope'] = '';
 				$user['mp_encrypt_id'] = '';
 				$user['comment'] = '';
@@ -552,6 +552,103 @@ class User extends ActiveRecord
 			return $user;
 		}
 		return [];
+	}
+
+	public static function profile($uId, $conn = '')
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$uInfo = self::user(['uId' => $uId], $conn);
+		if (!$uInfo) {
+			return [];
+		}
+		$uInfo["albumJson"] = json_encode($uInfo["album"]);
+		$uInfo["album_str"] = implode(',', $uInfo["album"]);
+		$uInfo["album_t3"] = [];
+		if ($uInfo["album"]) {
+			$uInfo["album_t3"] = array_slice($uInfo["album"], 0, 3);
+		}
+		$baseInfo = [];
+		$fields = ['height_t', 'income_t', 'education_t', 'estate_t', 'car_t'];
+		foreach ($fields as $field) {
+			if ($uInfo[$field]) {
+				$baseInfo[] = $uInfo[$field];
+			}
+			if (count($baseInfo) >= 6) {
+				break;
+			}
+		}
+		$uInfo['baseInfo'] = $baseInfo;
+		$brief = [];
+		$fields = ['age', 'height_t', 'horos_t', 'scope_t'];
+		foreach ($fields as $field) {
+			if ($uInfo[$field]) {
+				$brief[] = $uInfo[$field];
+			}
+			if (count($brief) >= 4) {
+				break;
+			}
+		}
+		$uInfo['brief'] = implode(' . ', $brief);
+		if (!$uInfo['comment'] && $uInfo['mp_name']) {
+			$uInfo['comment'] = '（媒婆很懒，什么也没说）';
+		}
+
+		$fields = ['phone', 'certdate', 'certimage', 'certnote', 'location', 'homeland'];
+		foreach ($fields as $field) {
+			unset($uInfo[$field]);
+		}
+		return $uInfo;
+	}
+
+	public static function resume($uId, $conn = '')
+	{
+		$uInfo = self::profile($uId, $conn);
+		if (!$uInfo) {
+			return [];
+		}
+		$items = [
+			['content' => '基本资料', 'header' => 1],
+			['caption' => '昵称', 'content' => 'name'],
+			['caption' => '性别', 'content' => 'gender_t'],
+			['caption' => '所在城市', 'content' => 'location_t'],
+			['caption' => '出生年份', 'content' => 'birthyear'],
+			['caption' => '身高', 'content' => 'height_t'],
+			['caption' => '年薪', 'content' => 'income_t'],
+			['caption' => '学历', 'content' => 'education_t'],
+			['caption' => '星座', 'content' => 'horos_t'],
+			['content' => '个人小档案', 'header' => 1],
+			['caption' => '购房情况', 'content' => 'estate_t'],
+			['caption' => '购车情况', 'content' => 'car_t'],
+			['caption' => '从事行业', 'content' => 'scope_t'],
+			['caption' => '从事职业', 'content' => 'profession_t'],
+			['caption' => '饮酒情况', 'content' => 'alcohol_t'],
+			['caption' => '吸烟情况', 'content' => 'smoke_t'],
+			['caption' => '宗教信仰', 'content' => 'belief_t'],
+			['caption' => '健身习惯', 'content' => 'fitness_t'],
+			['caption' => '饮食习惯', 'content' => 'diet_t'],
+			['caption' => '作息习惯', 'content' => 'rest_t'],
+			['caption' => '关于宠物', 'content' => 'pet_t'],
+			['content' => '内心独白', 'header' => 1],
+			['content' => 'intro'],
+			['content' => '兴趣爱好', 'header' => 1],
+			['content' => 'interest'],
+		];
+		foreach ($items as $k => $item) {
+			$content = $item['content'];
+			if (isset($uInfo[$content])) {
+				$items[$k]['content'] = $uInfo[$content];
+			}
+			if ($k > 0 && isset($items[$k - 1]['header']) && $items[$k - 1]['header']) {
+				$items[$k]['first'] = 1;
+			}
+		}
+		return [
+			'items' => $items,
+			'avatar' => $uInfo['avatar'],
+			'thumb' => $uInfo['thumb']
+		];
 	}
 
 	public static function reg($data)

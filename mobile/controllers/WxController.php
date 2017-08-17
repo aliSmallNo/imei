@@ -483,40 +483,10 @@ class WxController extends BaseController
 		}
 
 		$items = [];
-		$uInfo = User::user(['uId' => $hid]);
+		$uInfo = User::profile($hid);
 		$genderName = $uInfo['gender'] == User::GENDER_MALE ? '男' : '女';
-		$uInfo["albumJson"] = json_encode($uInfo["album"]);
-
 		$favorInfo = UserNet::findOne(["nRelation" => UserNet::REL_FAVOR, "nDeletedFlag" => UserNet::DELETE_FLAG_NO, "nUId" => $uInfo["id"], "nSubUId" => $wxInfo["uId"]]);
 		$uInfo["favorFlag"] = $favorInfo ? 1 : 0;
-
-		$baseInfo = [];
-		if ($uInfo) {
-			$fields = ['height_t', 'income_t', 'education_t', 'estate_t', 'car_t'];
-			foreach ($fields as $field) {
-				if ($uInfo[$field]) {
-					$baseInfo[] = $uInfo[$field];
-				}
-				if (count($baseInfo) >= 6) {
-					break;
-				}
-			}
-		}
-		$brief = [];
-		if ($uInfo) {
-			$fields = ['age', 'height_t', 'horos_t', 'scope_t'];
-			foreach ($fields as $field) {
-				if ($uInfo[$field]) {
-					$brief[] = $uInfo[$field];
-				}
-				if (count($brief) >= 4) {
-					break;
-				}
-			}
-			if (!$uInfo['comment']) {
-				$uInfo['comment'] = '（媒婆很懒，什么也没说）';
-			}
-		}
 
 		return self::renderPage("shome.tpl",
 			[
@@ -527,8 +497,8 @@ class WxController extends BaseController
 				'prefer' => $prefer,
 				'hid' => $hid,
 				'secretId' => $secretId,
-				'baseInfo' => $baseInfo,
-				'brief' => implode(' . ', $brief),
+				'baseInfo' => $uInfo['baseInfo'],
+				'brief' => $uInfo['brief'],
 				'items' => json_encode($items),
 				'reasons' => self::$ReportReasons,
 				'role' => $wxInfo["uRole"],
@@ -1191,6 +1161,7 @@ class WxController extends BaseController
 			'bg-color');
 	}
 
+<<<<<<< HEAD
 	public function actionToparty()
 	{
 		return self::renderPage('toparty.tpl', [
@@ -1200,4 +1171,10 @@ class WxController extends BaseController
 	}
 
 
+=======
+	public function actionTest()
+	{
+		return self::renderPage('test.tpl', []);
+	}
+>>>>>>> 56cbe06e4523d0ffbafdf8a573271a9201516124
 }

@@ -97,7 +97,6 @@
 		<div class="item-des">
 			<div class="des">{{$user.interest}}</div>
 		</div>
-
 	</div>
 </div>
 

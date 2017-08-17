@@ -12,8 +12,8 @@ use Gregwar\Image\Image;
 
 class ImageUtil
 {
-	const DEFAULT_IMAGE = "//bpbhd-10063905.file.myqcloud.com/common/ic_default.jpg";
-	const DEFAULT_AVATAR = "//bpbhd-10063905.file.myqcloud.com/common/ic_default_sm.png";
+	const DEFAULT_IMAGE = "https://img.meipo100.com/2017/ic_default_t.jpg";
+	const DEFAULT_AVATAR = "https://img.meipo100.com/2017/ic_default_t.jpg";
 
 	// Rain: 大于10m,要分片上传
 	const MAX_UNSLICE_FILE_SIZE = 10485760;
