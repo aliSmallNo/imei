@@ -276,7 +276,7 @@ class UserMsg extends ActiveRecord
 	public static function routineAlert($uIds = [])
 	{
 		$hr = date('Hi');
-		if (!in_array($hr, ['0930','1130','1530','2130'])) {
+		if (!in_array($hr, ['0930', '1130', '1530', '2130'])) {
 			return false;
 		}
 		$conn = AppUtil::db();
@@ -293,7 +293,7 @@ class UserMsg extends ActiveRecord
 			 GROUP BY mUId,mCategory
 			 ORDER BY mUId,mId';
 		$ret = $conn->createCommand($sql)->bindValues([
-			':from' => date('Y-m-d'),
+			':from' => date('Y-m-d', time() - 3600 * 16),
 			':to' => date('Y-m-d 23:59'),
 		])->queryAll();
 		$items = [];
