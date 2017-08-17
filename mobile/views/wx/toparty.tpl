@@ -84,12 +84,13 @@
 	}
 
 	.par-order .par-order-t .pay a {
-		padding: .6rem 3rem;
+		padding: .8rem 4rem;
 		font-size: 1.3rem;
 		border-radius: .2rem;
 		color: #fff;
 		background: #44b549;
 		margin-top: 1rem;
+
 	}
 
 	.par-sub-container {
@@ -190,7 +191,7 @@
 		</div>
 		<div class="par-order-t">
 			<div class="pay" style="margin: 1rem 0;">
-				<a>支付</a>
+				<a class="btnOnline">支付</a>
 			</div>
 		</div>
 	</div>
