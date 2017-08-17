@@ -112,6 +112,41 @@ require(["layer"],
 			}
 		};
 
+		$(document).on(kClick, ".par-click", function () {
+			var self = $(this);
+			var tag = self.attr("data-tag");
+			var pObj = self.closest(".btn").find(".pcount");
+			var pcount = parseInt(pObj.html());
+
+			switch (tag) {
+				case "plus":
+					pObj.html(pcount + 1);
+					countPay(pcount + 1);
+					break;
+				case "sub":
+					if (pcount > 0) {
+						pObj.html(pcount - 1);
+						countPay(pcount - 1);
+					} else {
+						countPay(0);
+					}
+					break;
+			}
+		});
+
+		function countPay(co) {
+			var payNumObj = $(".paccount");
+			if (co < 1) {
+				payNumObj.html(0);
+			} else if (co == 1) {
+				payNumObj.html(60);
+			} else if (co == 2) {
+				payNumObj.html(100);
+			} else if (co > 2) {
+				payNumObj.html(40 * co);
+			}
+		}
+
 		function showMsg(title, sec) {
 			var delay = sec || 3;
 			layer.open({
@@ -123,7 +158,6 @@ require(["layer"],
 		}
 
 		$(function () {
-
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems'];
