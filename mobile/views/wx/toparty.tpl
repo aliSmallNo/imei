@@ -178,7 +178,7 @@
 		<li><img src="/images/p-0.jpg"></li>
 		<li><img src="/images/p-4.jpg"></li>
 		<li><img src="/images/p-2.jpg"></li>
-		<li><img src="/images/p-3.jpg"></li>
+		<li><img src="/images/p-5.jpg"></li>
 	</ul>
 
 	<div class="par-order">
