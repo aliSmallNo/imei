@@ -282,7 +282,7 @@ class UserMsg extends ActiveRecord
 	public static function routineAlert($uIds = [])
 	{
 		$hr = date('Hi');
-		if (!in_array($hr, ['0930', '1130', '1630', '2130'])) {
+		if (!in_array($hr, ['0900', '1130', '1630', '2130'])) {
 			return false;
 		}
 		$conn = AppUtil::db();
