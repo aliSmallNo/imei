@@ -59,6 +59,7 @@ class Pay extends ActiveRecord
 		if ($cat == self::CAT_RECHARGE) {
 			$entity->pNote = '充值' . $num . '媒桂花';
 		}else if($cat == self::CAT_MAKEING_FRIENDS){
+			$entity->pRId = 20170820;
 			$entity->pNote = '活动费用' . $num ;
 		}
 		$entity->save();
