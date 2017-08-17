@@ -4753,6 +4753,18 @@ section {
     display: block;
     padding-top: 1rem;
     font-weight: 300; }
+    .report_wrap label .report-av {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 1.3rem;
+      border: 1px solid #fff; }
+    .report_wrap label .report-name {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      line-height: 2.5rem;
+      padding-left: 0.6rem;
+      display: inline-block; }
     .report_wrap label b {
       font-weight: 500;
       color: #525252; }

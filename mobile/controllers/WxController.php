@@ -675,6 +675,7 @@ class WxController extends BaseController
 			'edu' => User::$EducationFilter,
 			'mpName' => $mpName,
 			'greeting' => $greeting,
+			'reasons' => self::$ReportReasons,
 			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
 		]);
 	}

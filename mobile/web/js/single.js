@@ -1322,6 +1322,8 @@ require(["layer"],
 					util.clear();
 					ResumeUtil.eid = eid;
 					ResumeUtil.clear();
+					ReportUtil.eid = eid;
+					ReportUtil.reload('', '');
 					location.href = '#shome';
 					return false;
 				});
@@ -1358,11 +1360,61 @@ require(["layer"],
 						if (resp.code == 0) {
 							var html = Mustache.render(util.tmp, resp.data);
 							util.content.html(html);
+							ReportUtil.reload(resp.data.profile.name, resp.data.profile.thumb);
 						} else {
 							showMsg(resp.msg);
 						}
 						util.loading = 0;
 						util.loaded = 1;
+					}, 'json');
+			}
+		};
+
+		var ReportUtil = {
+			eid: '',
+			av: $('.report-av'),
+			name: $('.report-name'),
+			text: $('.report-text'),
+			reason: $('.report-reason'),
+			loading: 0,
+			init: function () {
+				var util = this;
+				$('.btn-report').on(kClick, function () {
+					util.submit();
+				});
+			},
+			reload: function (nickname, avatar) {
+				var util = this;
+				util.av.attr('src', avatar);
+				util.name.html(nickname);
+				util.text.val('');
+				util.reason.val('');
+			},
+			submit: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				if (!util.reason.val()) {
+					showMsg('请先选择举报原因~');
+					return false;
+				}
+				util.loading = 1;
+				$.post('/api/user',
+					{
+						tag: 'ban',
+						id: util.eid,
+						reason: util.reason.val(),
+						text: $.trim(util.text.val())
+					},
+					function (resp) {
+						if (resp.code == 0) {
+							util.text.val('');
+							util.text.blur();
+							util.reason.val('');
+						}
+						showMsg(resp.msg);
+						util.loading = 0;
 					}, 'json');
 			}
 		};
@@ -1452,6 +1504,7 @@ require(["layer"],
 			GreetingUtil.init();
 			ProfileUtil.init();
 			ResumeUtil.init();
+			ReportUtil.init();
 
 			setTimeout(function () {
 				GreetingUtil.show();
