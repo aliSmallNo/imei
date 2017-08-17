@@ -229,11 +229,16 @@ class ApiController extends Controller
 				return self::renderAPI(0, '举报成功了！我们会尽快核查你提供的信息');
 				break;
 			case 'profile':
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
 				$id = AppUtil::decrypt($id);
 				$uInfo = User::profile($id);
 				if (!$uInfo) {
 					return self::renderAPI(129, '用户不存在~');
 				}
+				$uInfo['favored'] = UserNet::hasFavor($wxInfo['uId'], $id) ? 1 : 0;
 				return self::renderAPI(0, '', [
 					'profile' => $uInfo
 				]);
