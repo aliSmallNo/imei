@@ -10,6 +10,7 @@ use common\models\Feedback;
 use common\models\Log;
 use common\models\LogAction;
 use common\models\Mark;
+use common\models\Pay;
 use common\models\QuestionSea;
 use common\models\Trace;
 use common\models\User;
@@ -840,6 +841,29 @@ class SiteController extends BaseController
 				"name" => $name,
 				'pagination' => $pagination,
 				'list' => $list,
+			]);
+	}
+
+	public function actionEvents()
+	{
+		$page = self::getParam("page", 1);
+		$name = self::getParam('name');
+
+		$params = $criteria = [];
+		if ($name) {
+			$criteria[] = "  uName like :name ";
+			$params[':name'] = "%$name%";
+		}
+
+		list($list, $count) = Pay::items($criteria, $params, $page);
+		$pagination = self::pagination($page, $count);
+
+		return $this->renderPage('events.tpl',
+			[
+				'list' => $list,
+				"name" => $name,
+				'pagination' => $pagination,
+				'category' => 'data',
 			]);
 	}
 }

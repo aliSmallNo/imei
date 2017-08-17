@@ -9,6 +9,7 @@
 namespace common\models;
 
 
+use common\utils\AppUtil;
 use yii\db\ActiveRecord;
 
 class Pay extends ActiveRecord
@@ -76,5 +77,27 @@ class Pay extends ActiveRecord
 		$entity->pUpdatedOn = date('Y-m-d H:i:s');
 		$entity->pTransDate = date('Y-m-d H:i:s');
 		$entity->save();
+	}
+
+	public static function items($criteria, $params, $page = 1, $pageSize = 20)
+	{
+		$conn = AppUtil::db();
+		$strCriteria = '';
+		if ($criteria) {
+			$strCriteria = ' AND ' . implode(' AND ', $criteria);
+		}
+		$limit = "limit " . ($page - 1) * $pageSize . "," . $pageSize;
+		$sql = "SELECT u.uThumb,u.uName,u.uPhone,p.* from im_pay as p 
+				left join im_user as u on u.uId=p.pUId 
+				where p.pStatus=100 and p.pCategory=200 $strCriteria ";
+		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
+
+		$sql = "SELECT count(1) as co from im_pay as p 
+				left join im_user as u on u.uId=p.pUId 
+				where p.pStatus=100 and p.pCategory=200 $strCriteria ";
+		$count = $conn->createCommand($sql)->bindValues($params)->queryOne();
+		$count = $count ? $count["co"] : 0;
+
+		return [$res, $count];
 	}
 }
