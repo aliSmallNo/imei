@@ -144,7 +144,7 @@ class ApiController extends Controller
 				$num = intval($amt * 10.0);
 				$title = '微媒100 - 交友';
 				$subTitle = '活动费用' . $num . " 元";
-				if (Pay::findOne(["pUId" => $wxInfo['uId'], "pCategory" => Pay::CAT_MAKEING_FRIENDS])) {
+				if (Pay::findOne(["pUId" => $wxInfo['uId'], "pCategory" => Pay::CAT_MAKEING_FRIENDS, "pStatus" => Pay::MODE_WXPAY])) {
 					return self::renderAPI(129, '您已经报名了哦~');
 				}
 				$payId = Pay::prepay($wxInfo['uId'], $num, $amt * 100, Pay::CAT_MAKEING_FRIENDS);
