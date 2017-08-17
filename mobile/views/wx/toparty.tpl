@@ -172,10 +172,13 @@
 	<div class="pop">地点: 东台德润广场3楼  英伦时光咖啡店</div>
 	<div class="pop">时间: 2017年8月20日（周日）下午14:00-17:00</div>
 	<div class="pop">联系人：卢明
-		<a href="tel:15216375391">15216375391</a>
+		<a href="tel:15358903171">15358903171</a>
 	</div>
 	<ul class="images">
+		<li><img src="/images/p-0.jpg"></li>
 		<li><img src="/images/p-1.jpg"></li>
+		<li><img src="/images/p-2.jpg"></li>
+		<li><img src="/images/p-3.jpg"></li>
 	</ul>
 
 	<div class="par-order">
