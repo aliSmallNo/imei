@@ -56,7 +56,7 @@
 		flex: 0 0 7rem;
 	}
 
-	.par-order .par-order-t .btn {
+	.par-order .par-order-t .btn, .par-order .par-order-t .pay {
 		flex: 1;
 		text-align: right;
 	}
@@ -67,9 +67,18 @@
 		font-size: 1.8rem;
 	}
 
-	.par-order .par-order-t .btn span{
+	.par-order .par-order-t .btn span {
 		font-size: 1rem;
 		margin-right: 1rem;
+	}
+
+	.par-order .par-order-t .pay a {
+		padding: .6rem 3rem;
+		font-size: 1.3rem;
+		border-radius: .2rem;
+		color: #fff;
+		background: #44b549;
+		margin-top: 1rem;
 	}
 
 	.par-sub-container {
@@ -155,15 +164,21 @@
 		<div class="par-order-t">
 			<div class="otitle">参与人数</div>
 			<div class="btn">
-				<a class="par-sub">-</a>
-				<a>0</a>
-				<a class="par-plus">+</a>
+				<a class="par-click par-sub" data-tag="sub">-</a>
+				<a class="pcount">0</a>
+				<a class="par-click par-plus" data-tag="plus">+</a>
 			</div>
 		</div>
 		<div class="par-order-t">
 			<div class="otitle">金额</div>
 			<div class="btn">
-				0 <span>元</span>
+				<i class="paccount">0</i>
+				<span>元</span>
+			</div>
+		</div>
+		<div class="par-order-t">
+			<div class="pay" style="margin: 1rem 0;">
+				<a>支付</a>
 			</div>
 		</div>
 	</div>
