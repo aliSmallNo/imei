@@ -176,7 +176,7 @@
 	</div>
 	<ul class="images">
 		<li><img src="/images/p-0.jpg"></li>
-		<li><img src="/images/p-1.jpg"></li>
+		<li><img src="/images/p-4.jpg"></li>
 		<li><img src="/images/p-2.jpg"></li>
 		<li><img src="/images/p-3.jpg"></li>
 	</ul>
