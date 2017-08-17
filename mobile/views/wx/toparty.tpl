@@ -178,7 +178,9 @@
 		<li><img src="/images/p-0.jpg"></li>
 		<li><img src="/images/p-4.jpg"></li>
 		<li><img src="/images/p-2.jpg"></li>
-		<li><img src="/images/p-5.jpg"></li>
+		<li><img src="/images/p-6.jpg"></li>
+		<li><img src="/images/p-7.jpg"></li>
+		<li><img src="/images/p-8.jpg"></li>
 	</ul>
 
 	<div class="par-order">
@@ -216,6 +218,10 @@
 			<li>
 				<em>2</em>
 				<div>活动形式：微媒一百 相亲见面会</div>
+			</li>
+			<li>
+				<em>2</em>
+				<div>参与年龄：20-30岁的单身男女</div>
 			</li>
 			<li>
 				<em>3</em>
