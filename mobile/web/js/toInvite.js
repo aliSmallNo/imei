@@ -32,7 +32,7 @@ require(["layer"],
 				showMsg('充值中...');
 				$.post('/api/wallet',
 					{
-						tag: 'recharge',
+						tag: 'makefriends',
 						amt: amt
 					},
 					function (resp) {
