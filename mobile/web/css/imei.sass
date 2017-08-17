@@ -2858,9 +2858,43 @@ section
 			background: url(../images/bg_info.png) repeat-x bottom
 			background-size: auto 100%
 			color: #fff
+			h4
+				@include displayFlex
+				font-weight: $weightNormal
+				.u-info-name
+					@include displayFlex-1
+					@include textTail
+					font-weight: $weightBold
+					padding-left: 1.6rem
+					position: relative
+					&:before
+						content: ''
+						position: absolute
+						width: 1.2rem
+						height: 1.2rem
+						left: 0
+						top: 50%
+						margin-top: -.5rem
+					&.female:before
+						background: url(../images/ico_gender_female.png) no-repeat center center
+						background-size: 100% 100%
+					&.male:before
+						background: url(../images/ico_gender_male.png) no-repeat center center
+						background-size: 100% 100%
+				.u-info-other
+					@include displayFlex-w(8rem)
+					@include displayFlexVAlign
+					@include textTail
+					text-align: right
+			h5
+				color: #fff
+				font-weight: $weightNormal
+				line-height: 2rem
+				font-size: 1.2rem
 			em
 				font-weight: $weightBold
 				font-size: 1.8rem
+
 			p
 				font-size: 1.2rem
 				font-weight: $weightNormal

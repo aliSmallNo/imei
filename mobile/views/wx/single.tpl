@@ -781,10 +781,11 @@
 		<a href="javascript:;" data-eid="{[secretId]}" class="head j-profile">
 			<img src="{[avatar]}" class="nic">
 			<div class="u-info">
-				<em>{[name]}</em>
-				<i class="icon {[gender]}"></i>
-				<span class="pos">{[location]}</span>
-				<p>{[age]}岁 . {[height]} . {[horos]} . {[job]}</p>
+				<h4>
+					<div class="u-info-name {[gender]}"><em>{[name]}</em></div>
+					<div class="u-info-other"><span class="pos">{[location]}</span></div>
+				</h4>
+				<h5>{[age]}岁 . {[height]} . {[horos]} . {[job]}</h5>
 			</div>
 			{[#cert]}<i class="i-cert">已认证</i>{[/cert]}
 		</a>
@@ -1023,4 +1024,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.8.7" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.8.8" src="/assets/js/require.js"></script>
