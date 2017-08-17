@@ -52,8 +52,10 @@
 		padding: .5rem 0;
 	}
 
-	.par-order .par-order-t .title {
+	.par-order .par-order-t .otitle {
 		flex: 0 0 7rem;
+		align-items: center;
+		align-self: center;
 	}
 
 	.par-order .par-order-t .btn, .par-order .par-order-t .pay {
@@ -63,13 +65,22 @@
 
 	.par-order .par-order-t .btn a {
 		background: #eee;
-		padding: .2rem 1rem;
+		padding: .4rem 1.5rem;
 		font-size: 1.8rem;
+		color: #777;
 	}
 
 	.par-order .par-order-t .btn span {
 		font-size: 1rem;
 		margin-right: 1rem;
+	}
+
+	.btn .paccount, .btn span {
+		color: #ff0311;
+	}
+
+	.btn .paccount {
+		font-size: 2.4rem;
 	}
 
 	.par-order .par-order-t .pay a {
@@ -147,6 +158,7 @@
 		width: 66%;
 		height: auto;
 	}
+
 </style>
 
 <div class="par-title"><span>微媒100 - 交友会</span></div>
