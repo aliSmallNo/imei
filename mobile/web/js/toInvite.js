@@ -9,32 +9,27 @@ require(["layer"],
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
-			curFrag: "swallet",
 			wxString: $("#tpl_wx_info").html(),
 			newIdx: 0,
 			newsTimer: 0,
-			loading: 0
+			loading: 0,
+			payNumObj: $(".paccount")
 		};
 
 		var WalletUtil = {
-			page: 1,
-			loading: 0,
-			list: $('.charges'),
-			tmp: $('#tpl_record').html(),
-			uid: $('#cUID').val(),
-			spinner: $('#srecords .spinner'),
-			noMore: $('#srecords .no-more'),
 			paying: 0,
 			payBtn: null,
-			prepay: function ($btn) {
+			prepay: function () {
 				var util = this;
-				util.payBtn = $btn;
+				var amt = parseInt($sls.payNumObj.html());
+				if (amt <= 0) {
+					return;
+				}
 				if (util.paying) {
 					return false;
 				}
 				util.paying = 1;
-				util.payBtn.html('充值中...');
-				var amt = util.payBtn.attr('data-id');
+				showMsg('充值中...');
 				$.post('/api/wallet',
 					{
 						tag: 'recharge',
@@ -47,7 +42,6 @@ require(["layer"],
 							showMsg(resp.msg);
 						}
 						util.paying = 0;
-						util.payBtn.html(amt + '元');
 					}, 'json');
 			},
 			wechatPay: function (resData) {
@@ -66,7 +60,6 @@ require(["layer"],
 						function (res) {
 							if (res.err_msg == "get_brand_wcpay_request:ok") {
 								showMsg("您已经微信支付成功！");
-								util.reload();
 							} else {
 								showMsg("您已经取消微信支付！");
 							}
@@ -84,31 +77,6 @@ require(["layer"],
 				} else {
 					onBridgeReady(resData);
 				}
-			},
-			reload: function () {
-				var util = this;
-				if (util.loading) {
-					return;
-				}
-				if (util.page === 1) {
-					util.list.html('');
-				}
-				util.loading = 1;
-				util.spinner.show();
-				$.post('/api/wallet',
-					{
-						tag: 'records',
-						page: util.page
-					},
-					function (resp) {
-						if (resp.code == 0) {
-							var html = Mustache.render(util.tmp, resp.data);
-							util.list.html(html);
-							util.noMore.show();
-						}
-						util.spinner.hide();
-						util.loading = 0;
-					}, 'json');
 			}
 		};
 
@@ -135,15 +103,14 @@ require(["layer"],
 		});
 
 		function countPay(co) {
-			var payNumObj = $(".paccount");
 			if (co < 1) {
-				payNumObj.html(0);
+				$sls.payNumObj.html(0);
 			} else if (co == 1) {
-				payNumObj.html(60);
+				$sls.payNumObj.html(60);
 			} else if (co == 2) {
-				payNumObj.html(100);
+				$sls.payNumObj.html(100);
 			} else if (co > 2) {
-				payNumObj.html(40 * co);
+				$sls.payNumObj.html(40 * co);
 			}
 		}
 
@@ -166,9 +133,8 @@ require(["layer"],
 				wx.hideOptionMenu();
 			});
 
-			$(document).on(kClick, '.btn-recharge', function () {
-				var self = $(this);
-				WalletUtil.prepay(self);
+			$(document).on(kClick, '.btnOnline', function () {
+				WalletUtil.prepay();
 			});
 		});
 	});
