@@ -841,8 +841,7 @@ class UserNet extends ActiveRecord
 				join im_user as u on u.uId=n.nUId 
 				join im_user as u1 on u1.uId=n.nSubUId 
 				where n.nDeletedFlag= 0 $condition ";
-		$count = AppUtil::db()->createCommand($sql)->queryOne();
-		$count = $count ? $count["co"] : 0;
+		$count = AppUtil::db()->createCommand($sql)->queryScalar();
 
 		return [$res, $count];
 	}
