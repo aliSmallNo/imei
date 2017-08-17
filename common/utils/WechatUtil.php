@@ -510,7 +510,7 @@ class WechatUtil
 		}
 	}
 
-	public static function templateMsg($noticeTag, $uId, $title = '', $subTitle = '', $adminId = 1)
+	public static function templateMsg($noticeTag, $uId, $title = '', $subTitle = '', $subUId = 1)
 	{
 		if (AppUtil::isDev()) {
 			return 0;
@@ -586,12 +586,6 @@ class WechatUtil
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_PRESENT:
-				$userInfo = User::findOne(["uId" => $adminId]);
-				if (!$userInfo) {
-					return 0;
-				}
-				$openId = $userInfo['uOpenId'];
-				$nickname = $userInfo['uName'];
 				if (User::muteAlert($uId, User::ALERT_PRESENT)) {
 					return 0;
 				}
@@ -664,7 +658,7 @@ class WechatUtil
 				"mCategory" => $msgCat,
 				"mText" => $text,
 				"mRaw" => json_encode($bodyInfo, JSON_UNESCAPED_UNICODE),
-				"mAddedBy" => $adminId
+				"mAddedBy" => $subUId
 			]);
 		}
 
