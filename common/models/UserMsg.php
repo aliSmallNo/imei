@@ -50,7 +50,7 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_REQ_WX => "申请加你微信",
 		self::CATEGORY_ADDWX_PASS => "同意你的微信好友请求",
 		self::CATEGORY_ADDWX_REFUSE => "拒绝你的微信好友请求",
-		self::CATEGORY_RETURN_ROSE => "退回媒瑰花",
+		self::CATEGORY_RETURN_ROSE => "退回媒桂花",
 		self::CATEGORY_MP_SAY => "修改了你的媒婆说",
 		self::CATEGORY_REWARD_NEW => "新人奖励",
 		self::CATEGORY_CHAT => "密聊信息",
@@ -58,7 +58,7 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_BULLETIN => "最新公告",
 		self::CATEGORY_UPGRADE => "最近更新",
 		self::CATEGORY_SMS_RECALL => "短信召回老用户",
-		self::CATEGORY_PRESENT => "送玫瑰花",
+		self::CATEGORY_PRESENT => "收到媒桂花",
 
 	];
 
@@ -305,7 +305,7 @@ class UserMsg extends ActiveRecord
 			}
 			switch ($row['mCategory']) {
 				case self::CATEGORY_PRESENT:
-					$title = '收到赠送的媒桂花' . $cnt . '次';
+					$title = '收到媒桂花' . $cnt . '次';
 					break;
 				case self::CATEGORY_FAVOR:
 					$title = '有人对你怦然心动了' . $cnt . '次';
