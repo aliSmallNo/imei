@@ -1163,6 +1163,7 @@ class WxController extends BaseController
 
 	public function actionToparty()
 	{
+
 		return self::renderPage('toparty.tpl', [
 		],
 			'terse',
