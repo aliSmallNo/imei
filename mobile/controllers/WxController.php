@@ -1190,4 +1190,14 @@ class WxController extends BaseController
 			'提醒设置',
 			'bg-color');
 	}
+
+	public function actionToparty()
+	{
+		return self::renderPage('toparty.tpl', [
+		],
+			'terse',
+			'活动报名');
+	}
+
+
 }

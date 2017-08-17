@@ -318,7 +318,7 @@ class SiteController extends BaseController
 			]);
 	}
 
-	// 跟进
+	// 跟进用户
 	public function actionFollow()
 	{
 		Admin::staffOnly();
