@@ -493,9 +493,9 @@ section
 	z-index: 119
 	border-top-left-radius: 2.4rem
 	border-top-right-radius: 2.4rem
-	-webkit-transition: 0.2s all ease
-	-moz-transition: 0.2s all ease
-	transition: 0.2s all ease
+	-webkit-transition: 0.4s all ease
+	-moz-transition: 0.4s all ease
+	transition: 0.4s all ease
 	-webkit-backface-visibility: hidden
 	-moz-backface-visibility: hidden
 	backface-visibility: hidden
@@ -504,9 +504,9 @@ section
 		-moz-transform: translateY(0) translateZ(0)
 		transform: translateY(0) translateZ(0)
 	&.off
-		-webkit-transform: translateY(100%) translateZ(0)
-		-moz-transform: translateY(100%) translateZ(0)
-		transform: translateY(100%) translateZ(0)
+		-webkit-transform: translateY(200%) translateZ(0)
+		-moz-transform: translateY(200%) translateZ(0)
+		transform: translateY(200%) translateZ(0)
 	a
 		@include displayFlex-1
 		padding-top: 3rem
@@ -4292,6 +4292,7 @@ section
 		a:last-child
 			border-top: 5px solid #eee
 			border-bottom: none
+
 .charges
 	padding: 1rem
 	li
@@ -5426,3 +5427,51 @@ section
 			font-size: 1.4rem
 			&.active
 				background: #f06292
+.sinfo-av-wrap
+	overflow: hidden
+	width: 100%
+	height: 32rem
+	.sinfo-av
+		width: 100%
+.sinfo-items
+	li
+		padding: 1rem 1.5rem
+		background: #fff
+		@include displayFlex
+		position: relative
+		label
+			font-size: 1.2rem
+			color: $grayFontColor
+			@include displayFlex-w(5rem)
+			line-height: 2rem
+		span
+			@include displayFlex-1
+			text-align: right
+			line-height: 2rem
+			font-size: 1.4rem
+			&.content-block
+				text-align: left
+		&:after
+			content: ''
+			position: absolute
+			left: 1.5rem
+			right: 0
+			top: 0
+			height: 1px
+			background: $borderColorLight
+		&.first:after
+			display: none
+		&.no-caption
+			background: transparent
+			color: $grayFontColor
+			font-size: 1.2rem
+			&:before
+				content: ''
+				position: absolute
+				left: 0
+				right: 0
+				top: 0
+				height: 1px
+				background: $borderColor
+			&:after
+				display: none

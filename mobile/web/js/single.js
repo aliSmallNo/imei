@@ -22,8 +22,11 @@ require(["layer"],
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
-			contionString: "",
-			contionVal: "",
+			slook: $('#slook'),
+			singleTop: 0,
+			heartbeat: $('#heartbeat'),
+			contionString: '',
+			contionVal: '',
 
 			firstLoadFlag: true,
 			sprofileF: 0,
@@ -93,6 +96,9 @@ require(["layer"],
 						filterUlit.loadFilter("", filterUlit.sUserPage);
 						$sls.firstLoadFlag = 0;
 					}
+					if ($sls.singleTop) {
+						$(window).scrollTop(parseInt($sls.singleTop));
+					}
 					FootUtil.toggle(1);
 					break;
 				case 'sme':
@@ -124,6 +130,16 @@ require(["layer"],
 					break;
 				case 'sqrcode':
 					$('body').addClass('bg-qrcode');
+					FootUtil.toggle(0);
+					break;
+				case 'shome':
+					ProfileUtil.clear();
+					ProfileUtil.reload();
+					FootUtil.toggle(0);
+					break;
+				case 'sinfo':
+					ResumeUtil.clear();
+					ResumeUtil.reload();
 					FootUtil.toggle(0);
 					break;
 				default:
@@ -483,12 +499,12 @@ require(["layer"],
 					util.toggle(util.menus.hasClass("off"));
 					var self = $(this);
 					var tag = self.attr("data-tag");
-					switch (tag){
+					switch (tag) {
 						case "toblock":
 							layer.open({
-								content: '您确定要拉黑TA吗？'
-								,btn: ['确定', '取消']
-								,yes: function(index){
+								content: '您确定要拉黑TA吗？',
+								btn: ['确定', '取消'],
+								yes: function (index) {
 									util.toBlock();
 								}
 							});
@@ -920,23 +936,22 @@ require(["layer"],
 
 		$(window).on("scroll", function () {
 			var lastRow;
-			switch ($sls.curFrag) {
-				case "slook":
-					lastRow = filterUlit.list.find('li:last');
-					if (lastRow && eleInScreen(lastRow, 150) && filterUlit.sUserPage > 0) {
-						filterUlit.loadFilter("", filterUlit.sUserPage);
-						return false;
-					}
-					break;
-				case "heartbeat":
-					lastRow = $("#" + $sls.curFrag).find('.plist li').last();
-					if (lastRow && eleInScreen(lastRow, 180) && TabUtil.page > 0) {
-						TabUtil.getData();
-						return false;
-					}
-					break;
-				default:
-					break;
+			var sh = $(window).scrollTop();
+			if ($sls.curFrag == 'slook' && sh > 0) {
+				$sls.singleTop = $(window).scrollTop();
+			}
+			if ($sls.slook.css('display') === 'block') {
+				lastRow = filterUlit.list.find('li:last');
+				if (lastRow && eleInScreen(lastRow, 150) && filterUlit.sUserPage > 0) {
+					filterUlit.loadFilter("", filterUlit.sUserPage);
+					return false;
+				}
+			} else if ($sls.heartbeat.css('display') === 'block') {
+				lastRow = $("#" + $sls.curFrag).find('.plist li:last');
+				if (lastRow && eleInScreen(lastRow, 180) && TabUtil.page > 0) {
+					TabUtil.getData();
+					return false;
+				}
 			}
 		});
 
@@ -1264,6 +1279,100 @@ require(["layer"],
 			}
 		};
 
+		var ProfileUtil = {
+			eid: '',
+			tmp: $('#tpl_shome').html(),
+			loading: 0,
+			content: $('.profile-page'),
+			init: function () {
+				var util = this;
+				$(document).on(kClick, '.j-profile', function () {
+					var eid = $(this).attr('data-eid');
+					util.eid = eid;
+					ResumeUtil.eid = eid;
+					location.href = '#shome';
+					return false;
+				});
+				$(document).on(kClick, '.album-row', function () {
+					var urls = $(this).attr('data-album').split(',');
+					if (!urls) {
+						return false;
+					}
+					wx.previewImage({
+						current: '',
+						urls: urls
+					});
+					return false;
+				});
+			},
+			clear: function () {
+				var util = this;
+				util.content.html('');
+				util.loading = 0;
+			},
+			reload: function () {
+				var util = this;
+				if (util.loading) {
+					return false;
+				}
+				util.content.html('');
+				util.loading = 1;
+				$.post('/api/user',
+					{
+						tag: 'profile',
+						id: util.eid
+					},
+					function (resp) {
+						if (resp.code == 0) {
+							var html = Mustache.render(util.tmp, resp.data);
+							util.content.html(html);
+						} else {
+							showMsg(resp.msg);
+						}
+						util.loading = 0;
+					}, 'json');
+			}
+		};
+
+		var ResumeUtil = {
+			eid: '',
+			loading: 0,
+			tmp: $('#tpl_sinfo').html(),
+			content: $('.sinfo-items'),
+			av: $('.sinfo-av'),
+			init: function () {
+				var util = this;
+			},
+			clear: function () {
+				var util = this;
+				util.content.html('');
+				util.loading = 0;
+			},
+			reload: function () {
+				var util = this;
+				if (util.loading) {
+					return false;
+				}
+				util.content.html('');
+				util.loading = 1;
+				$.post('/api/user',
+					{
+						tag: 'resume',
+						id: util.eid
+					},
+					function (resp) {
+						if (resp.code == 0) {
+							var html = Mustache.render(util.tmp, resp.data.resume);
+							util.content.html(html);
+							util.av.attr('src', resp.data.resume.avatar);
+						} else {
+							showMsg(resp.msg);
+						}
+						util.loading = 0;
+					}, 'json');
+			}
+		};
+
 		var GreetingUtil = {
 			content: $.trim($('#tpl_greeting').html()),
 			init: function () {
@@ -1307,6 +1416,8 @@ require(["layer"],
 			WxNoUtil.init();
 			ChatUtil.init();
 			GreetingUtil.init();
+			ProfileUtil.init();
+			ResumeUtil.init();
 
 			setTimeout(function () {
 				GreetingUtil.show();

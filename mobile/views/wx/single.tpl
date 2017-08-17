@@ -173,22 +173,26 @@
 	</div>
 </section>
 <section id="shome" data-title="个人主页">
-	<div class="single-page main-page">
-
-		<a href="#sreport" class="report pushblack">举报拉黑</a>
-		<div style="height: 6rem;"></div>
-		<div class="m-bottom-bar" data-id="CTpqWzE6QzM4MkhjMzUzNTk7O2xdMzxFNTo0SWU">
-			<p>
-				<a class="send btn-give">送TA花</a>
-			</p>
-			<p>
-				<a class="heart btn-like ">心动</a>
-			</p>
-			<p>
-				<a class="chat btn-chat">密聊TA</a>
-			</p>
+	<div class="single-page profile-page"></div>
+	<div class="m-bottom-bar" data-id="CTpqWzE6QzM4MkhjMzUzNTk7O2xdMzxFNTo0SWU">
+		<p>
+			<a class="send btn-give">送TA花</a>
+		</p>
+		<p>
+			<a class="heart btn-like ">心动</a>
+		</p>
+		<p>
+			<a class="chat btn-chat">密聊TA</a>
+		</p>
+	</div>
+</section>
+<section id="sinfo" data-title="个人资料">
+	<div class="sinfo-top">
+		<div class="sinfo-av-wrap">
+			<img alt="" class="sinfo-av">
 		</div>
 	</div>
+	<ul class="sinfo-items"></ul>
 </section>
 <section id="addMeWx">
 	<div class="nav">
@@ -759,7 +763,7 @@
 	{[/secretId]}
 	{[#secretId]}
 	<li>
-		<a href="/wx/sh?id={[secretId]}" class="head">
+		<a href="javascript:;" data-eid="{[secretId]}" class="head j-profile">
 			<img src="{[avatar]}" class="nic">
 			<div class="u-info">
 				<em>{[name]}</em>
@@ -929,80 +933,79 @@
 	{{/if}}
 </script>
 <script type="text/template" id="tpl_shome">
-	<div class="single-page main-page">
-		<div class="head">
-			<img src="" class="avatar">
+	{[#profile]}
+	<div class="head">
+		<img src="{[avatar]}" class="avatar">
+	</div>
+	<div class="baseinfo">
+		<div class="title">
+			<h4><em>{[name]}</em> <i class="icon {[gender_ico]}"></i></h4>
+			<h5>{[location_t]}</h5>
 		</div>
-		<div class="baseinfo">
-			<div class="title">
-				<h4><em>大师兄了没</em> <i class="icon female"></i></h4>
-				<h5>江苏 盐城</h5>
-			</div>
-			<h6>33岁 . 156~160厘米 . 巨蟹座 . 服务业</h6>
-		</div>
-		<a href="javascript:;" class="album-row line-bottom2"
-			 album-string="[&quot;https:\/\/img.meipo100.com\/2017\/81\/113730_n.jpg&quot;,&quot;https:\/\/img.meipo100.com\/2017\/81\/113738_n.jpg&quot;,&quot;https:\/\/img.meipo100.com\/2017\/82\/115099_n.jpg&quot;,&quot;https:\/\/img.meipo100.com\/2017\/82\/115100_n.jpg&quot;]">
-			<ul class="photos">
-				<li class="title">
-					相册(4)
-				</li>
-				<li>
-					<img src="https://img.meipo100.com/2017/81/113730_n.jpg">
-				</li>
-				<li>
-					<img src="https://img.meipo100.com/2017/81/113738_n.jpg">
-				</li>
-				<li>
-					<img src="https://img.meipo100.com/2017/82/115099_n.jpg">
-				</li>
+		<h6>{[brief]}</h6>
+	</div>
+	{[#album_cnt]}
+	<a href="javascript:;" class="album-row line-bottom2" data-album="{[album_str]}">
+		<ul class="photos">
+			<li class="title">
+				相册({[album_cnt]})
+			</li>
+			{[#album_t3]}
+			<li>
+				<img src="{[.]}">
+			</li>
+			{[/album_t3]}
+		</ul>
+	</a>
+	{[/album_cnt]}
+	<div class="single-info">
+		<a href="#sinfo">
+			<span class="title">基本资料</span>
+			<ul class="clearfix">
+				{[#baseInfo]}
+				<li>{[.]}</li>
+				{[/baseInfo]}
 			</ul>
 		</a>
-		<div class="single-info">
-			<a href="#sinfo">
-				<span class="title">基本资料</span>
-				<ul class="clearfix">
-					<li>156~160厘米</li>
-					<li>16万~25万元</li>
-					<li>本科</li>
-					<li>计划购房</li>
-					<li>有车无贷</li>
-				</ul>
+	</div>
+	{[#mp_name]}
+	<div class="hnwords">
+		<div class="hninfo">
+			<a href="javascript:;" class="">
+				<div class="img">
+					<img src="{[mp_thumb]}">
+				</div>
 			</a>
+			<p class="name">{[mp_name]}</p>
+			<p class="desc">{[mp_scope]}</p>
 		</div>
-		<div class="hnwords">
-			<div class="hninfo">
-				<a href="/hn/p?uid=CTpqWzE6QzM4MkhjMzUzNTk7O2xdMzxFNTo0SWU" class=""></a>
-				<a href="/wx/mh?id=CjtrXDI7RDQ5M0hkNDY0NTw7PGxdND1GNjs1SmU#shome" class="">
-					<div class="img">
-						<img src="http://bpbhd-10063905.file.myqcloud.com/imei/170620113941110165.jpg">
-					</div>
-				</a>
-				<p class="name">奔跑吧</p>
-				<p class="desc">服务业</p>
-			</div>
-			<div class="wcontent">
-				<p class="words">（媒婆很懒，什么也没说）</p>
-			</div>
-		</div>
-		<div class="mywords">
-			<span class="title">内心独白</span>
-			<span class="words">大师兄说得都对啊，师傅也说得对啊！</span>
-		</div>
-		<a href="#sreport" class="report pushblack">举报拉黑</a>
-		<div style="height: 6rem;"></div>
-		<div class="m-bottom-bar" data-id="CTpqWzE6QzM4MkhjMzUzNTk7O2xdMzxFNTo0SWU">
-			<p>
-				<a class="send btn-give">送TA花</a>
-			</p>
-			<p>
-				<a class="heart btn-like ">心动</a>
-			</p>
-			<p>
-				<a class="chat btn-chat">密聊TA</a>
-			</p>
+		<div class="wcontent">
+			<p class="words">{[comment]}</p>
 		</div>
 	</div>
+	{[/mp_name]}
+	<div class="mywords">
+		<span class="title">内心独白</span>
+		<span class="words">{[intro]}</span>
+	</div>
+	{[/profile]}
+	<a href="#sreport" class="report btn-report">举报拉黑</a>
+</script>
+<script type="text/template" id="tpl_sinfo">
+	{[#items]}
+	{[#header]}
+	<li class="no-caption">
+		{[content]}
+	</li>
+	{[/header]}
+	{[^header]}
+	<li {[#first]}class="first" {[/first]}>
+		{[#caption]}<label>{[.]}</label>{[/caption]}
+		<span {[^caption]}class="content-block"{[/caption]}>{[content]}</span>
+	</li>
+	{[/header]}
+	{[/items]}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.7.6" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.7.8" src="/assets/js/require.js"></script>

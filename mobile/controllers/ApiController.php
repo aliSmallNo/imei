@@ -197,6 +197,26 @@ class ApiController extends Controller
 		}
 
 		switch ($tag) {
+			case 'profile':
+				$id = AppUtil::decrypt($id);
+				$uInfo = User::profile($id);
+				if (!$uInfo) {
+					return self::renderAPI(129, '用户不存在~');
+				}
+				return self::renderAPI(0, '', [
+					'profile' => $uInfo
+				]);
+				break;
+			case 'resume':
+				$id = AppUtil::decrypt($id);
+				$uInfo = User::resume($id);
+				if (!$uInfo) {
+					return self::renderAPI(129, '用户不存在~');
+				}
+				return self::renderAPI(0, '', [
+					'resume' => $uInfo
+				]);
+				break;
 			case 'boys':
 			case 'girls':
 			case 'female':
