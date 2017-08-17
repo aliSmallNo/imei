@@ -1511,6 +1511,22 @@ require(["layer"],
 			});
 		}
 
+		function pinLocation() {
+			wx.getLocation({
+				type: 'wgs84',
+				success: function (res) {
+					$.post('/api/user',
+						{
+							tag: 'pin-location',
+							lat: res.latitude,
+							lng: res.longitude
+						},
+						function (resp) {
+						}, 'json');
+				}
+			});
+		}
+
 		$(function () {
 			$("body").addClass("bg-color");
 			FootUtil.init();
@@ -1518,7 +1534,7 @@ require(["layer"],
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
-			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage'];
+			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage', 'getLocation'];
 			wx.config(wxInfo);
 			wx.ready(function () {
 				wx.hideOptionMenu();
@@ -1536,6 +1552,7 @@ require(["layer"],
 
 			setTimeout(function () {
 				GreetingUtil.show();
+				pinLocation();
 			}, 500);
 		});
 	});
