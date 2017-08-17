@@ -160,8 +160,13 @@
 		height: auto;
 	}
 
+	.par-top img {
+		width: 100%;
+	}
 </style>
-
+<div class="par-top">
+	<img src="/images/icon_party_time.jpg">
+</div>
 <div class="par-title"><span>微媒100 - 交友会</span></div>
 <div class="par-container" style="display: block;  ">
 	<div class="pop">地点: 东台德润广场3楼  英伦时光咖啡店</div>
