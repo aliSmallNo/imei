@@ -169,7 +169,7 @@
 </div>
 <div class="par-title"><span>微媒100 - 交友会</span></div>
 <div class="par-container" style="display: block;  ">
-	<div class="pop">地点: 东台德润广场3楼  英伦时光咖啡店</div>
+	<div class="pop">地点: 东台德润广场5楼  英伦时光咖啡店</div>
 	<div class="pop">时间: 2017年8月20日（周日）下午14:00-17:00</div>
 	<div class="pop">联系人：卢明
 		<a href="tel:15358903171">15358903171</a>
