@@ -1163,6 +1163,10 @@ class WxController extends BaseController
 
 	public function actionTest()
 	{
-		return self::renderPage('test.tpl', []);
+		return self::renderPage('test.tpl', []
+
+
+
+		);
 	}
 }
