@@ -536,6 +536,24 @@
 		</ol>
 	</div>
 </section>
+<section id="sreport">
+	<div class="report_wrap">
+		<h3>举报用户</h3>
+		<label><img src="" class="report-av"><b class="report-name"></b></label>
+		<div class="select">
+			<span class="report-reason-t">请选择举报原因</span>
+			<select class="report-reason">
+				<option value="">请选择举报原因</option>
+				{{foreach from=$reasons item=reason}}
+				<option value="{{$reason}}">{{$reason}}</option>
+				{{/foreach}}
+			</select>
+		</div>
+		<label>补充描述（选填）</label>
+		<textarea placeholder="详细信息" class="report-text"></textarea>
+		<a class="m-next btn-report">提交</a>
+	</div>
+</section>
 <div class="nav-foot on">
 	<a href="#slink" class="nav-link" data-tag="slink">
 		看媒婆
@@ -1002,4 +1020,5 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.8.0" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.8.2
+" src="/assets/js/require.js"></script>

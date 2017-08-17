@@ -197,6 +197,37 @@ class ApiController extends Controller
 		}
 
 		switch ($tag) {
+			case 'ban':
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				$text = self::postParam("text");
+				$rptUId = self::postParam("id");
+				$rptUId = AppUtil::decrypt($rptUId);
+				$reason = self::postParam("reason");
+				$black = UserNet::findOne([
+					"nUId" => $rptUId,
+					"nSubUId" => $wxInfo['uId'],
+					"nRelation" => UserNet::REL_BLOCK,
+					"nStatus" => UserNet::STATUS_WAIT,
+				]);
+				if ($reason == "加入黑名单") {
+					if ($black) {
+						return self::renderAPI(129, '你已经拉黑TA了哦~');
+					} else {
+						UserNet::add($rptUId, $wxInfo['uId'], UserNet::REL_BLOCK, $note = '');
+						Feedback::addReport($wxInfo['uId'], $rptUId, $reason, $text);
+						return self::renderAPI(0, '你已经成功拉黑TA了哦~');
+					}
+				} else {
+					if (Feedback::findOne(["fUId" => $wxInfo['uId'], "fReportUId" => $rptUId])) {
+						return self::renderAPI(0, '你曾经举报过TA，请勿重复举报~');
+					}
+					Feedback::addReport($wxInfo['uId'], $rptUId, $reason, $text);
+				}
+				return self::renderAPI(0, '举报成功了！我们会尽快核查你提供的信息');
+				break;
 			case 'profile':
 				$id = AppUtil::decrypt($id);
 				$uInfo = User::profile($id);
