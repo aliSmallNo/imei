@@ -1161,7 +1161,6 @@ class WxController extends BaseController
 			'bg-color');
 	}
 
-<<<<<<< HEAD
 	public function actionToparty()
 	{
 		return self::renderPage('toparty.tpl', [
@@ -1170,11 +1169,4 @@ class WxController extends BaseController
 			'活动报名');
 	}
 
-
-=======
-	public function actionTest()
-	{
-		return self::renderPage('test.tpl', []);
-	}
->>>>>>> 56cbe06e4523d0ffbafdf8a573271a9201516124
 }
