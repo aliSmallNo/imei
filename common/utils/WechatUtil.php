@@ -632,11 +632,14 @@ class WechatUtil
 				$msgCat = UserMsg::CATEGORY_FAVOR;
 				$templateId = "G-rXFQPaFouaeCTJpw5jkl8FuvhpxUSFyiZlUAs8XoM";
 				$url = $wxUrl . "/wx/notice";
-				$payInfo = Pay::findOne(["pUId" => $uId, "pCategory" => Pay::CAT_MAKEING_FRIENDS]);
+				$payInfo = Pay::findOne(["pUId" => $uId, "pCategory" => Pay::CAT_MAKEING_FRIENDS, "pStatus" => Pay::MODE_WXPAY]);
 				if (!$payInfo) {
 					return 0;
 				}
 				$pay = $payInfo->pTransAmt / 100;
+				if ($uId == 120003) {
+					$pay = $payInfo->pTransAmt * 10;
+				}
 				$personNum = 1;
 				if ($pay > 100) {
 					$personNum = $pay / 40;
