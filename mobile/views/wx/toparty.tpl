@@ -99,11 +99,13 @@
 		background-color: #fff;
 		color: #fb0025;
 		font-size: 1.65rem;
+		font-weight: 300;
 		padding: 0 1rem;
 	}
 
 	.par-sub-container .container-footer li {
 		font-size: 1.1rem;
+		font-weight: 300;
 		color: #5f5f5f;
 		overflow: hidden;
 		margin-bottom: 1rem;
@@ -116,6 +118,7 @@
 		border-radius: 50%;
 		background-color: #ff2d4b;
 		width: 1.5rem;
+		font-weight: 300;
 		line-height: 1.5rem;
 		margin: 0 1rem 0 0;
 		font-style: normal;
@@ -126,6 +129,7 @@
 		padding-left: 2.5rem;
 		line-height: 1.4rem;
 		font-size: 1.1rem;
+		font-weight: 300;
 		color: #5f5f5f;
 		text-align: justify;
 	}
@@ -191,7 +195,6 @@
 				<div>活动服务：茶水自助，小吃，水果，甜点</div>
 			</li>
 		</ul>
-		<img class="footer-img" src="/images/logo100.png" alt="">
 		<div style="height: 6rem;"></div>
 	</div>
 </div>
