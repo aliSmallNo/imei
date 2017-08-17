@@ -1372,8 +1372,8 @@ require(["layer"],
 
 		var ReportUtil = {
 			eid: '',
-			av: $('.report-av'),
-			name: $('.report-name'),
+			av: $('.report-user img'),
+			name: $('.report-user .name'),
 			text: $('.report-text'),
 			reason: $('.report-reason'),
 			sel_text: $('.report-reason-t'),

@@ -4541,6 +4541,23 @@ section
 		font-weight: $weightBold
 		margin: 0
 		line-height: 4rem
+	.report-user
+		@include displayFlex
+		margin-bottom: .5rem
+		.avatar
+			@include displayFlex-w(3.6rem)
+			text-align: center
+			img
+				width: 2.5rem
+				height: 2.5rem
+				border-radius: 1.3rem
+				border: 1px solid #fff
+				vertical-align: middle
+		.name
+			@include displayFlex-1
+			@include textTail
+			@include displayFlexVAlign
+
 	label
 		color: $grayFontColor
 		font-size: 1.2rem
@@ -4548,16 +4565,7 @@ section
 		display: block
 		padding-top: 1rem
 		font-weight: $weightNormal
-		.report-av
-			width: 2.5rem
-			height: 2.5rem
-			border-radius: 1.3rem
-			border: 1px solid #fff
-		.report-name
-			@include textTail
-			line-height: 2.5rem
-			padding-left: .6rem
-			display: inline-block
+
 		b
 			font-weight: $weightBold
 			color: $grayFontColorDark

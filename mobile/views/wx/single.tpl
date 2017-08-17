@@ -539,7 +539,10 @@
 <section id="sreport">
 	<div class="report_wrap">
 		<h3>举报用户</h3>
-		<label><img src="" class="report-av"><b class="report-name"></b></label>
+		<div class="report-user">
+			<span class="avatar"><img src=""></span>
+			<span class="name"></span>
+		</div>
 		<div class="select">
 			<span class="report-reason-t">请选择举报原因</span>
 			<select class="report-reason">
@@ -1020,5 +1023,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.8.2
-" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.8.3" src="/assets/js/require.js"></script>
