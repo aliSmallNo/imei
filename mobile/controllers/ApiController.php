@@ -221,6 +221,25 @@ class ApiController extends Controller
 		}
 
 		switch ($tag) {
+			case 'pin-location':
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if ($wxInfo) {
+					$lat = self::postParam("lat");
+					$lng = self::postParam("lng");
+					$newLog = [
+						"oCategory" => "location",
+						"oKey" => 'location',
+						"oUId" => $wxInfo['uId'],
+						"oOpenId" => $openId,
+						"oAfter" => json_encode([
+							'lat' => $lat,
+							'lng' => $lng,
+						]),
+					];
+					Log::add($newLog);
+				}
+				return self::renderAPI(0, '');
+				break;
 			case 'ban':
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
