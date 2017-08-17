@@ -1164,7 +1164,12 @@ class WxController extends BaseController
 
 	public function actionToparty()
 	{
-
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/index');
+			exit();
+		}
 		return self::renderPage('toparty.tpl', [
 		],
 			'terse',

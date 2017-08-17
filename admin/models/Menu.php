@@ -110,6 +110,12 @@ class Menu
 						"url" => "/site/questions",
 						"revise" => 1,
 						"level" => 820
+					],
+					[
+						"name" => "活动账单",
+						"url" => "/site/events",
+						"revise" => 1,
+						"level" => 820
 					]
 				]
 			],
