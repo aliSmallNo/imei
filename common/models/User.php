@@ -973,6 +973,17 @@ class User extends ActiveRecord
 				$myFilter["heightVal"] = 0;
 			}
 
+			if (isset($matchInfo["location"]) && $matchInfo["location"]) {
+				$locationArr = explode("-", $matchInfo["location"]);
+				if (count($locationArr) == 2) {
+					$myFilter["location"] = $locationArr[0] . '~' . $locationArr[1];
+					$myFilter["locationVal"] = $locationArr[0] . '-' . $locationArr[1];
+				}
+			} else {
+				$myFilter["location"] = "";
+				$myFilter["locationVal"] = "";
+			}
+
 			if (isset($matchInfo["edu"]) && $matchInfo["edu"] > 0) {
 				$myFilter["edu"] = self::$EducationFilter[$matchInfo["edu"]];
 				$myFilter["eduVal"] = $matchInfo["edu"];
@@ -998,7 +1009,7 @@ class User extends ActiveRecord
 			}
 		}
 		$text = '';
-		$fields = ['age', 'height', 'edu', 'income'];
+		$fields = ['age', 'height', 'edu', 'income', "location"];
 		foreach ($fields as $field) {
 			if (isset($myFilter[$field]) && $myFilter[$field]
 				&& isset($myFilter[$field . 'Val']) && $myFilter[$field . 'Val']) {
@@ -1027,21 +1038,10 @@ class User extends ActiveRecord
 		$city = (is_array($location) && $location) ? mb_substr($location[1]["text"], 0, 2) : "";
 
 		$uRole = User::ROLE_SINGLE;
-		$gender = ($gender == 10) ? 11 : 10;
+		$gender = ($gender == 10) ? 11 : 10 ;
 
 		$status = self::STATUS_DELETE;
 		$condition = " u.uRole=$uRole and u.uGender=$gender and u.uStatus in (0,1,8) ";
-		//$filterArr = json_decode($uFilter, 1);
-		if ($uFilter) {
-			$rankField = ",(case WHEN u.uLocation like '%$prov%' and u.uLocation like '%$city%' then 10
-					WHEN u.uLocation like '%$prov%' then 8 else 0 end) as rank";
-			//$condition .= "  and POSITION('$prov' IN u.uLocation) >0 and POSITION('$city' IN u.uLocation) >0 ";
-		} else {
-			$prov1 = "山东";
-			$prov2 = "江苏";
-			$rankField = ",(case WHEN u.uLocation like '%$prov1%' or u.uLocation like '%$prov2%' then 10 else 0 end) as rank";
-			//$condition .= "  and (POSITION('$prov1' IN u.uLocation) >0 or POSITION('$prov2' IN u.uLocation) >0) ";
-		}
 
 		if (!$data) {
 			$data = json_decode($uFilter, 1);
@@ -1059,6 +1059,32 @@ class User extends ActiveRecord
 			$startheight = (is_array($height) && count($height) == 2) ? $height[0] : 0;
 			$Endheight = (is_array($height) && count($height) == 2) ? $height[1] : 0;
 			$condition .= " and u.uHeight between $startheight and $Endheight ";
+		}
+
+		if ($uFilter) {
+			$rankField = ",(case WHEN u.uLocation like '%$prov%' and u.uLocation like '%$city%' then 10
+					WHEN u.uLocation like '%$prov%' then 8 else 0 end) as rank";
+			//$condition .= " and POSITION('$prov' IN u.uLocation) >0 and POSITION('$city' IN u.uLocation) >0 ";
+		} else {
+			$prov1 = "山东";
+			$prov2 = "江苏";
+			$rankField = ",(case WHEN u.uLocation like '%$prov1%' or u.uLocation like '%$prov2%' then 10 else 0 end) as rank";
+			// $condition .= "  and (POSITION('$prov1' IN u.uLocation) >0 or POSITION('$prov2' IN u.uLocation) >0) ";
+		}
+
+		if (isset($data["location"]) && $data["location"] != "") {
+			$location = explode("-", $data["location"]);
+			$fprovince = (is_array($location) && count($location) == 2) ? $location[0] : 0;
+			$fcity = (is_array($location) && count($location) == 2) ? $location[1] : 0;
+			$condition .= " and u.uLocation like '%$fprovince%' and u.uLocation like '%$fcity%' ";
+			$rankField = ",(case WHEN u.uLocation like '%$prov%' and u.uLocation like '%$fcity%' then 10
+					WHEN u.uLocation like '%$fprovince%' then 8 else 0 end) as rank";
+		} else {
+			if ($prov && $city) {
+				$condition .= " and u.uLocation like '%$prov%' and u.uLocation like '%$city%' ";
+			} else {
+				$condition .= " and u.uLocation like '%盐城%' ";
+			}
 		}
 
 		if (isset($data["edu"]) && $data["edu"] > 0) {
@@ -1315,6 +1341,20 @@ class User extends ActiveRecord
 		} else {
 			$ret["height"][] = ["key" => 0, "name" => "身高不限"];
 		}
+
+		if (isset($filterArr["location"]) && $locationArr = explode("-", $filterArr["location"])) {
+			$arr = [];
+			foreach ($locationArr as $k => $v) {
+				$ret["location"][] = ["key" => $k, "name" => $v];
+				if ($v) {
+					$arr[] = $v;
+				}
+			}
+			$titles[] = implode('-', $arr);
+		} else {
+			$ret["location"][] = ["key" => 0, "name" => ""];
+		}
+
 		if (isset($filterArr["income"]) && isset(User::$IncomeFilter[$filterArr["income"]])) {
 			$ret["income"] = ["key" => $filterArr["income"], "name" => User::$IncomeFilter[$filterArr["income"]]];
 			if ($filterArr["income"]) {
@@ -1323,6 +1363,7 @@ class User extends ActiveRecord
 		} else {
 			$ret["income"] = ["key" => 0, "name" => "收入不限"];
 		}
+
 		if (isset($filterArr["edu"]) && isset(User::$EducationFilter[$filterArr["edu"]])) {
 			$ret["edu"] = ["key" => $filterArr["edu"], "name" => User::$EducationFilter[$filterArr["edu"]]];
 			if ($filterArr["edu"]) {
@@ -1331,6 +1372,7 @@ class User extends ActiveRecord
 		} else {
 			$ret["edu"] = ["key" => 0, "name" => "学历不限"];
 		}
+
 		return [$ret, $titles];
 	}
 

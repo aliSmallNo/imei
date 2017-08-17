@@ -33,8 +33,33 @@ require(["layer"],
 			smeFlag: 0,
 			slinkFlag: 0,
 			slinkpage: 1,
-			secretId: ""
+			secretId: ''
 		};
+
+		$(window).on("scroll", function () {
+			var lastRow;
+			var sh = $(window).scrollTop();
+			if ($sls.curFrag == 'slook' && sh > 0) {
+				$sls.singleTop = $(window).scrollTop();
+			}
+			if ($sls.slook.css('display') === 'block') {
+				lastRow = filterUlit.list.find('li:last');
+				if (lastRow && eleInScreen(lastRow, 150) && filterUlit.sUserPage > 0) {
+					filterUlit.loadFilter("", filterUlit.sUserPage);
+					return false;
+				}
+			} else if ($sls.heartbeat.css('display') === 'block') {
+				lastRow = $("#" + $sls.curFrag).find('.plist li:last');
+				if (lastRow && eleInScreen(lastRow, 180) && TabUtil.page > 0) {
+					TabUtil.getData();
+					return false;
+				}
+			}
+		});
+
+		function eleInScreen($ele, $offset) {
+			return $ele && $ele.length > 0 && $ele.offset().top + $offset < $(window).scrollTop() + $(window).height();
+		}
 
 		var RechargeUtil = {
 			init: function () {
@@ -133,12 +158,10 @@ require(["layer"],
 					FootUtil.toggle(0);
 					break;
 				case 'shome':
-					ProfileUtil.clear();
 					ProfileUtil.reload();
 					FootUtil.toggle(0);
 					break;
 				case 'sinfo':
-					ResumeUtil.clear();
 					ResumeUtil.reload();
 					FootUtil.toggle(0);
 					break;
@@ -841,11 +864,19 @@ require(["layer"],
 			list: $(".m-top-users"),
 			criteriaTmp: $("#conditions").html(),
 			userTmp: $("#userFiter").html(),
+			cityTmp: '<div class="m-popup-options col4 clearfix" tag="city">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="city">{[name]}</a>{[/items]}</div>',
+			provinceTmp: '<div class="m-popup-options col4 clearfix" tag="province">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="province">{[name]}</a>{[/items]}</div>',
 			init: function () {
 				$("#matchCondition a").on(kClick, function () {
 					var self = $(this);
 					filterUlit.tag = self.attr("tag");
 					switch (filterUlit.tag) {
+						case "location":
+							var html = Mustache.render(filterUlit.provinceTmp, {items: mProvinces});
+							$sls.main.show();
+							$sls.content.html(html).addClass("animate-pop-in");
+							$sls.shade.fadeIn(160);
+							break;
 						case "age":
 						case "height":
 						case "income":
@@ -876,6 +907,17 @@ require(["layer"],
 					});
 					location.href = "#matchCondition";
 				});
+			},
+			getCity: function (pid) {
+				var util = this;
+				$.post('/api/config', {
+					tag: 'cities',
+					id: pid
+				}, function (resp) {
+					if (resp.code == 0) {
+						$sls.content.html(Mustache.render(filterUlit.cityTmp, resp.data));
+					}
+				}, 'json');
 			},
 			showCriteria: function () {
 				var tmp = $("#" + filterUlit.tag + "Tmp").html();
@@ -934,31 +976,6 @@ require(["layer"],
 		};
 		filterUlit.init();
 
-		$(window).on("scroll", function () {
-			var lastRow;
-			var sh = $(window).scrollTop();
-			if ($sls.curFrag == 'slook' && sh > 0) {
-				$sls.singleTop = $(window).scrollTop();
-			}
-			if ($sls.slook.css('display') === 'block') {
-				lastRow = filterUlit.list.find('li:last');
-				if (lastRow && eleInScreen(lastRow, 150) && filterUlit.sUserPage > 0) {
-					filterUlit.loadFilter("", filterUlit.sUserPage);
-					return false;
-				}
-			} else if ($sls.heartbeat.css('display') === 'block') {
-				lastRow = $("#" + $sls.curFrag).find('.plist li:last');
-				if (lastRow && eleInScreen(lastRow, 180) && TabUtil.page > 0) {
-					TabUtil.getData();
-					return false;
-				}
-			}
-		});
-
-		function eleInScreen($ele, $offset) {
-			return $ele && $ele.length > 0 && $ele.offset().top + $offset < $(window).scrollTop() + $(window).height();
-		}
-
 		$(document).on(kClick, ".m-popup-options a", function () {
 			var self = $(this);
 			var obj = self.closest(".m-popup-options");
@@ -1011,10 +1028,21 @@ require(["layer"],
 					$sls.main.hide();
 					$sls.shade.fadeOut(160);
 					break;
+				case "province":
+					$sls.contionString = $sls.contionVal = "";
+					$sls.contionString = $sls.contionVal = text;
+					filterUlit.getCity(key);
+					break;
+				case "city":
+					$sls.contionString = $sls.contionVal = $sls.contionVal + "-" + text;
+					$("#matchCondition a[tag=location]").find(".right").html($sls.contionString);
+					$("#matchCondition a[tag=location]").find(".right").attr("data-id", $sls.contionVal);
+					$sls.main.hide();
+					$sls.shade.fadeOut(160);
+					break;
 			}
 
 		});
-
 
 		var TabUtil = {
 			tag: "",
@@ -1289,7 +1317,9 @@ require(["layer"],
 				$(document).on(kClick, '.j-profile', function () {
 					var eid = $(this).attr('data-eid');
 					util.eid = eid;
+					util.clear();
 					ResumeUtil.eid = eid;
+					ResumeUtil.clear();
 					location.href = '#shome';
 					return false;
 				});
@@ -1346,6 +1376,7 @@ require(["layer"],
 			clear: function () {
 				var util = this;
 				util.content.html('');
+				util.av.attr('src', '');
 				util.loading = 0;
 			},
 			reload: function () {

@@ -11,6 +11,7 @@ use common\models\Log;
 use common\models\LogAction;
 use common\models\Mark;
 use common\models\QuestionSea;
+use common\models\Trace;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserBuzz;
@@ -317,6 +318,40 @@ class SiteController extends BaseController
 			]);
 	}
 
+	// 跟进
+	public function actionFollow()
+	{
+		Admin::staffOnly();
+		$uid = self::getParam("id", 120003);
+		$uInfo = User::findOne(["uId" => $uid]);
+		list($list) = Trace::items($uid);
+		return $this->renderPage('follow.tpl',
+			[
+				'category' => 'users',
+				'detailcategory' => 'site/accounts',
+				'list' => $list,
+				"uid" => $uid,
+				"name" => $uInfo->uName,
+				"avatar" => $uInfo->uThumb,
+			]);
+	}
+
+	public function actionFollow2u()
+	{
+		$uid = self::postParam("uid");
+		$content = self::postParam("content");
+		if ($uid && $content) {
+			Trace::add([
+				"tAddedBy" => Admin::getAdminId(),
+				"tAddedOn" => date("Y-m-d H:i:s"),
+				"tPId" => $uid,
+				"tCategory" => Trace::CATEGORY_FOLLOW,
+				"tNote" => $content,
+			]);
+		}
+		$this->redirect('/site/follow?id=' . $uid);
+	}
+
 	public function actionCert()
 	{
 		$page = self::getParam("page", 1);
@@ -446,7 +481,6 @@ class SiteController extends BaseController
 					"mText" => $content,
 				]);
 			}
-
 		}
 		$this->redirect('/site/wxreply?id=' . $openId);
 	}
