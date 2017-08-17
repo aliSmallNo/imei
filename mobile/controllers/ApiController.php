@@ -227,7 +227,7 @@ class ApiController extends Controller
 					$lat = self::postParam("lat");
 					$lng = self::postParam("lng");
 					$newLog = [
-						"oCategory" => "location",
+						"oCategory" => $tag,
 						"oKey" => 'location',
 						"oUId" => $wxInfo['uId'],
 						"oOpenId" => $openId,
