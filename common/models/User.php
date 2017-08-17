@@ -565,9 +565,9 @@ class User extends ActiveRecord
 		}
 		$uInfo["albumJson"] = json_encode($uInfo["album"]);
 		$uInfo["album_str"] = implode(',', $uInfo["album"]);
-		$uInfo["album_t3"] = [];
+		$uInfo["gallery3"] = [];
 		if ($uInfo["album"]) {
-			$uInfo["album_t3"] = array_slice($uInfo["album"], 0, 3);
+			$uInfo["gallery3"] = array_slice(self::gallery($uInfo["album"]), 0, 3);
 		}
 		$baseInfo = [];
 		$fields = ['height_t', 'income_t', 'education_t', 'estate_t', 'car_t'];
@@ -1040,7 +1040,7 @@ class User extends ActiveRecord
 		$city = (is_array($location) && $location) ? mb_substr($location[1]["text"], 0, 2) : "";
 
 		$uRole = User::ROLE_SINGLE;
-		$gender = ($gender == 10) ? 11 : 10 ;
+		$gender = ($gender == 10) ? 11 : 10;
 
 		$status = self::STATUS_DELETE;
 		$condition = " u.uRole=$uRole and u.uGender=$gender and u.uStatus in (0,1,8) ";
