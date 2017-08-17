@@ -58,9 +58,9 @@ class Pay extends ActiveRecord
 		$entity->pMode = $mode;
 		if ($cat == self::CAT_RECHARGE) {
 			$entity->pNote = '充值' . $num . '媒桂花';
-		}else if($cat == self::CAT_MAKEING_FRIENDS){
+		} else if ($cat == self::CAT_MAKEING_FRIENDS) {
 			$entity->pRId = 20170820;
-			$entity->pNote = '活动费用' . $num ;
+			$entity->pNote = '活动费用' . $num;
 		}
 		$entity->save();
 		return $entity->pId;
@@ -72,6 +72,7 @@ class Pay extends ActiveRecord
 		foreach ($params as $key => $val) {
 			$entity->$key = $val;
 		}
+
 		$entity->pUpdatedOn = date('Y-m-d H:i:s');
 		$entity->pTransDate = date('Y-m-d H:i:s');
 		$entity->save();

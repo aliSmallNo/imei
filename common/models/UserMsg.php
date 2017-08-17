@@ -39,6 +39,7 @@ class UserMsg extends ActiveRecord
 	const CATEGORY_SMS_RECALL = 200;
 	const CATEGORY_PRESENT = 210;
 	//const CATEGORY_ROUTINE = 250;
+	const CATEGORY_FRIRENDS = 260;
 
 	static $catDict = [
 		self::CATEGORY_ADMIN_PASS => "审核通过",
@@ -59,6 +60,7 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_UPGRADE => "最近更新",
 		self::CATEGORY_SMS_RECALL => "短信召回老用户",
 		self::CATEGORY_PRESENT => "收到媒桂花",
+		self::CATEGORY_FRIRENDS => "交友活动",
 
 	];
 
@@ -170,6 +172,10 @@ class UserMsg extends ActiveRecord
 				case self::CATEGORY_PRESENT:
 					$v["url"] = "/wx/sh?id=" . $v["secretId"];
 					$v["text"] = $v["uName"] . "给你" . $v["mText"] . "，您的花粉值增加了";
+					break;
+				case self::CATEGORY_FRIRENDS:
+					$v["url"] = "javascript:;";
+					$v["text"] = $v["mText"] . "支付成功";
 					break;
 			}
 

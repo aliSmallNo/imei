@@ -40,6 +40,7 @@ class WechatUtil
 	const NOTICE_PRESENT = 'notice_present';
 	const NOTICE_FAVOR = 'notice_favor';
 	const NOTICE_ROUTINE = 'notice_routine';
+	const NOTICE_MAKE_FRIRENDS = 'notice_firends';
 
 	/**
 	 * @param $sessionKey
@@ -500,6 +501,10 @@ class WechatUtil
 				'pTransAmt' => $data['cash_fee']
 			];
 			Pay::edit($pid, $data);
+			$entity = Pay::findOne(["pId" => $pid]);
+			if ($entity->pCategory == Pay::CAT_MAKEING_FRIENDS) {
+				WechatUtil::templateMsg(self::NOTICE_MAKE_FRIRENDS, $entity->pUId);
+			}
 			UserTrans::addByPID($pid);
 		} else {
 			$data = [
@@ -622,6 +627,31 @@ class WechatUtil
 				$keywords['keyword2'] = $subTitle;
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
+			case self::NOTICE_MAKE_FRIRENDS:
+				$subUId = $uId;
+				$msgCat = UserMsg::CATEGORY_FAVOR;
+				$templateId = "G-rXFQPaFouaeCTJpw5jkl8FuvhpxUSFyiZlUAs8XoM";
+				$url = $wxUrl . "/wx/notice";
+				$payInfo = Pay::findOne(["pUId" => $uId, "pCategory" => Pay::CAT_MAKEING_FRIENDS]);
+				if (!$payInfo) {
+					return 0;
+				}
+				$pay = $payInfo->pTransAmt / 100;
+				$personNum = 1;
+				if ($pay > 100) {
+					$personNum = $pay / 40;
+				} elseif ($pay == 100) {
+					$personNum = 2;
+				}
+				$keywords['first'] = "你好，$nickname!, 您的交友活动消费如下:\n";
+				$keywords['keyword1'] = $pay . ".00元"; // 支付金额
+				$keywords['keyword2'] = "微信支付";
+				$keywords['keyword3'] = "您在微媒100的相亲交友活动中支付了" . $pay . "元" . $personNum . "人的费用，请于8月20日(本周日)下午两点准时参加活动哦~";// 商品详情：{{keyword3.DATA}}
+				$keywords['keyword4'] = $payInfo->pTransId; // 支付单号：{{keyword4.DATA}}
+				$keywords['keyword5'] = "支付成功";// 备注：{{keyword5.DATA}}
+				$keywords['remark'] = "\n点击下方详情查看吧~";
+
+				break;
 			default:
 				$url = $templateId = '';
 				$msgCat = 0;
@@ -643,6 +673,23 @@ class WechatUtil
 				"remark" => ["color" => "#555555", "value" => $keywords['remark']],
 			]
 		];
+		if ($noticeTag == self::NOTICE_MAKE_FRIRENDS) {
+			$bodyInfo = [
+				"touser" => $openId,
+				"template_id" => $templateId,
+				"url" => $url,
+				"data" => [
+					"first" => ["color" => "#333333", "value" => $keywords['first']],
+					"keyword1" => ["color" => "#000000", "value" => $keywords['keyword1']],
+					"keyword2" => ["color" => "#000000", "value" => $keywords['keyword2']],
+					"keyword3" => ["color" => "#000000", "value" => $keywords['keyword3']],
+					"keyword4" => ["color" => "#000000", "value" => $keywords['keyword4']],
+					"keyword5" => ["color" => "#000000", "value" => $keywords['keyword5']],
+					"remark" => ["color" => "#000000", "value" => $keywords['remark']],
+				]
+			];
+
+		}
 		$routineNotices = [self::NOTICE_FAVOR, self::NOTICE_CHAT, self::NOTICE_PRESENT];
 		if (!in_array($noticeTag, $routineNotices)) {
 			$access_token = self::getAccessToken(self::ACCESS_CODE);

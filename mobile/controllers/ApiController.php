@@ -144,13 +144,16 @@ class ApiController extends Controller
 				$num = intval($amt * 10.0);
 				$title = '微媒100 - 交友';
 				$subTitle = '活动费用' . $num . " 元";
+				if (Pay::findOne(["pUId" => $wxInfo['uId'], "pCategory" => Pay::CAT_MAKEING_FRIENDS])) {
+					return self::renderAPI(129, '您已经报名了哦~');
+				}
 				$payId = Pay::prepay($wxInfo['uId'], $num, $amt * 100, Pay::CAT_MAKEING_FRIENDS);
 				if (AppUtil::isDev()) {
 					return self::renderAPI(129, '请在服务器测试该功能~');
 				}
 				$payFee = intval($amt * 100);
 				if ($openId == "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
-					$payFee = $amt/10;
+					$payFee = $amt / 10;
 				}
 				$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);
 				if ($ret) {
