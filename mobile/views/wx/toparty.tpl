@@ -102,9 +102,9 @@
 
 	.par-sub-container .container-footer {
 		margin: 0 0 2rem 0;
-		padding: 0;
 		text-align: center;
 		position: relative;
+		padding: 0 1rem;
 	}
 
 	.par-sub-container .container-footer .activity-title {
@@ -200,7 +200,7 @@
 
 <div class="par-sub-container">
 	<div class="container-footer">
-		<div class="activity-title"><span>见面会说明</span></div>
+		<div class="activity-title"><span>活动规则</span></div>
 		<ul class="container-footer">
 			<li>
 				<em>1</em>

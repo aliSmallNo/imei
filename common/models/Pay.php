@@ -14,6 +14,7 @@ use yii\db\ActiveRecord;
 class Pay extends ActiveRecord
 {
 	const CAT_RECHARGE = 100;
+	const CAT_MAKEING_FRIENDS = 200;
 
 	const MODE_WXPAY = 100;
 	const MODE_ALIPAY = 102;
@@ -23,7 +24,8 @@ class Pay extends ActiveRecord
 	const STATUS_FAIL = 110;
 
 	private static $CategoryDict = [
-		self::CAT_RECHARGE => '充值'
+		self::CAT_RECHARGE => '充值',
+		self::CAT_MAKEING_FRIENDS => '交友'
 	];
 
 	public static function tableName()
@@ -56,6 +58,8 @@ class Pay extends ActiveRecord
 		$entity->pMode = $mode;
 		if ($cat == self::CAT_RECHARGE) {
 			$entity->pNote = '充值' . $num . '媒桂花';
+		}else if($cat == self::CAT_MAKEING_FRIENDS){
+			$entity->pNote = '活动费用' . $num ;
 		}
 		$entity->save();
 		return $entity->pId;
