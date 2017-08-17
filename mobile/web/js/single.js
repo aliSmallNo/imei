@@ -1376,11 +1376,21 @@ require(["layer"],
 			name: $('.report-name'),
 			text: $('.report-text'),
 			reason: $('.report-reason'),
+			sel_text: $('.report-reason-t'),
 			loading: 0,
+			tip: '请选择举报原因',
 			init: function () {
 				var util = this;
 				$('.btn-report').on(kClick, function () {
 					util.submit();
+				});
+				util.reason.on('change', function () {
+					var self = $(this);
+					var text = self.val();
+					if (!text) {
+						text = util.tip;
+					}
+					util.sel_text.html(text);
 				});
 			},
 			reload: function (nickname, avatar) {
@@ -1389,6 +1399,7 @@ require(["layer"],
 				util.name.html(nickname);
 				util.text.val('');
 				util.reason.val('');
+				util.sel_text.html(util.tip);
 			},
 			submit: function () {
 				var util = this;
@@ -1396,7 +1407,7 @@ require(["layer"],
 					return;
 				}
 				if (!util.reason.val()) {
-					showMsg('请先选择举报原因~');
+					showMsg(util.tip);
 					return false;
 				}
 				util.loading = 1;
@@ -1412,6 +1423,7 @@ require(["layer"],
 							util.text.val('');
 							util.text.blur();
 							util.reason.val('');
+							util.sel_text.html(util.tip);
 						}
 						showMsg(resp.msg);
 						util.loading = 0;

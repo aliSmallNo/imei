@@ -541,7 +541,7 @@
 		<h3>举报用户</h3>
 		<label><img src="" class="report-av"><b class="report-name"></b></label>
 		<div class="select">
-			<span class="select-text">请选择举报原因</span>
+			<span class="report-reason-t">请选择举报原因</span>
 			<select class="report-reason">
 				<option value="">请选择举报原因</option>
 				{{foreach from=$reasons item=reason}}
@@ -1020,4 +1020,5 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.8.1" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.8.2
+" src="/assets/js/require.js"></script>
