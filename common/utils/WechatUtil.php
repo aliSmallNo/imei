@@ -629,7 +629,7 @@ class WechatUtil
 				break;
 			case self::NOTICE_MAKE_FRIRENDS:
 				$subUId = $uId;
-				$msgCat = UserMsg::CATEGORY_FAVOR;
+				$msgCat = UserMsg::CATEGORY_FRIRENDS;
 				$templateId = "G-rXFQPaFouaeCTJpw5jkl8FuvhpxUSFyiZlUAs8XoM";
 				$url = $wxUrl . "/wx/notice";
 				$payInfo = Pay::findOne(["pUId" => $uId, "pCategory" => Pay::CAT_MAKEING_FRIENDS, "pStatus" => Pay::MODE_WXPAY]);
