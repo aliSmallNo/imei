@@ -230,6 +230,10 @@
 				<em>5</em>
 				<div>活动服务：茶水自助，小吃，水果，甜点</div>
 			</li>
+			<li>
+				<em>6</em>
+				<div>此活动解释权归'微媒100'所有</div>
+			</li>
 		</ul>
 		<div style="height: 6rem;"></div>
 	</div>
