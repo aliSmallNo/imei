@@ -396,6 +396,7 @@ class SiteController extends BaseController
 		$getInfo = Yii::$app->request->get();
 		$page = self::getParam("page", 1);
 		$name = self::getParam("name");
+		$phone = self::getParam("phone");
 		$cat = self::getParam("cat");
 		$st = User::STATUS_ACTIVE;
 		//$criteria[] = " u.uStatus=$st ";
@@ -404,6 +405,10 @@ class SiteController extends BaseController
 		if ($name) {
 			$criteria[] = " u.uName like :name ";
 			$params[':name'] = '%' . trim($name) . '%';
+		}
+		if ($phone) {
+			$criteria[] = " u.uPhone like :phone ";
+			$params[':phone'] = trim($phone) . '%';
 		}
 		if ($cat) {
 			$criteria[] = " t.tCategory =$cat ";

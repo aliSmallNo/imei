@@ -5,16 +5,23 @@
 		color: #666;
 		font-weight: 300;
 	}
+
+	.uname {
+		font-size: 12px;
+		font-weight: 400;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="row">
 		<h4>充值账户记录列表</h4>
 	</div>
 	<div class="row">
-		<form action="/site/recharges" method="get" class="form-inline">
+		<form action="/site/recharges" class="form-inline">
 			<div class="form-group">
 				<input class="form-control" placeholder="用户名称" name="name"
-							 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
+							 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}">
+				<input class="form-control" placeholder="手机号" name="phone"
+							 value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}">
 			</div>
 			<div class="form-group">
 				<select class="form-control" name="cat">
@@ -61,7 +68,7 @@
 					头像
 				</th>
 				<th class="col-lg-3">
-					用户
+					账户余额
 				</th>
 				<th>
 					类型
@@ -80,10 +87,12 @@
 			<tbody>
 			{{foreach from=$items item=item}}
 			<tr>
-				<td align="center">
+				<td>
 					<img src="{{$item.avatar}}" style="width: 65px;height: 65px;">
+					<div class="uname">{{$item.uname}}<br>
+						{{$item.phone}}</div>
 				</td>
-				<td>{{$item.uname}}<br>
+				<td>
 					{{foreach from=$item.details key=key item=detail}}
 					{{if $key=='bal'}}
 					{{$detail.title}}: {{$detail.amt}}{{$detail.unit_name}}{{if $detail.amt2}}+{{$detail.amt2}}{{$detail.unit_name2}}{{/if}}<br>
