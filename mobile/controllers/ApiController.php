@@ -129,30 +129,7 @@ class ApiController extends Controller
 //				$payFee = $amt;
 				$payFee = intval($amt * 100);
 				if ($openId == "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
-					$payFee = 0.01;
-				}
-				$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);
-				if ($ret) {
-					return self::renderAPI(0, '', [
-						'prepay' => $ret,
-						'amt' => $amt
-					]);
-				}
-				return self::renderAPI(129, '操作失败~');
-			case 'makefriends':
-				$amt = self::postParam('amt'); // 单位人民币元
-				$num = intval($amt * 10.0);
-				$title = '微媒100 - 交友';
-				$subTitle = '活动费用' . $num . " 元";
-				$payId = Pay::prepay($wxInfo['uId'], $num, $amt * 100, Pay::CAT_MAKEING_FRIENDS);
-				if (AppUtil::isDev()) {
-					return self::renderAPI(129, '请在服务器测试该功能~');
-				}
-				// Rain: 测试阶段，payFee x元实际支付x分
-//				$payFee = $amt;
-				$payFee = intval($amt * 100);
-				if ($openId == "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
-					$payFee = 0.01;
+					$payFee = $amt;
 				}
 				$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);
 				if ($ret) {
