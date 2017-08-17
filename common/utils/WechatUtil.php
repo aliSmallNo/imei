@@ -627,7 +627,7 @@ class WechatUtil
 				$keywords['keyword2'] = $subTitle;
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
-			case self::NOTICE_MAKE_FRIRENDS:
+			case self::NOTICE_MAKE_FRIRENDS: //相亲交友活动支付通知 /wx/toparty
 				$subUId = $uId;
 				$msgCat = UserMsg::CATEGORY_FRIRENDS;
 				$templateId = "G-rXFQPaFouaeCTJpw5jkl8FuvhpxUSFyiZlUAs8XoM";
@@ -640,11 +640,13 @@ class WechatUtil
 				if ($uId == 120003) {
 					$pay = $payInfo->pTransAmt * 10;
 				}
-				$personNum = 1;
+				$personNum = 0;
 				if ($pay > 100) {
 					$personNum = $pay / 40;
 				} elseif ($pay == 100) {
 					$personNum = 2;
+				} elseif ($pay == 60) {
+					$personNum = 1;
 				}
 				$keywords['first'] = "你好，$nickname!, 您的交友活动消费如下:\n";
 				$keywords['keyword1'] = $pay . ".00元"; // 支付金额
