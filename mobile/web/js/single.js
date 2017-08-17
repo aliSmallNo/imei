@@ -570,7 +570,7 @@ require(["layer"],
 				if ($flag) {
 					util.timer = setInterval(function () {
 						util.reload();
-					}, 5000);
+					}, 5500);
 				} else {
 					clearInterval(util.timer);
 					util.timer = 0;
@@ -651,7 +651,7 @@ require(["layer"],
 				util.loading = 1;
 				if (util.lastId < 1) {
 					util.list.html('');
-					util.input.val('');
+					// util.input.val('');
 				}
 				$.post("/api/chat", {
 					tag: "list",
