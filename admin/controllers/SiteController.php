@@ -709,7 +709,8 @@ class SiteController extends BaseController
 				'firstDay' => $firstDay,
 				'endDay' => $endDay,
 				'weekDT' => AppUtil::getWeekInfo(),
-				"beginDate" => date("Y-m-d", time() - 15 * 86400),
+				"beginDate" => '2017-07-17',
+				//date("Y-m-d", time() - 15 * 86400),
 				"endDate" => date("Y-m-d"),
 				"colors" => json_encode(array_values($StatusColors))
 			]
