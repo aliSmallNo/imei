@@ -1161,12 +1161,13 @@ class WxController extends BaseController
 			'bg-color');
 	}
 
-	public function actionTest()
+	public function actionToparty()
 	{
-		return self::renderPage('test.tpl', []
 
-
-
-		);
+		return self::renderPage('toparty.tpl', [
+		],
+			'terse',
+			'活动报名');
 	}
+
 }

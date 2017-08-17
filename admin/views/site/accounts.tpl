@@ -276,7 +276,7 @@
 				{{/foreach}}
 			</td>
 			<td>
-				<a href="/site/follow?id={{$prod.id}}" class="follow btn btn-outline btn-success btn-xs">跟进信息</a>
+				<a href="/site/follow?id={{$prod.id}}" class="follow btn btn-outline btn-success btn-xs">跟进信息 {{if $prod.co>1}}({{$prod.co}}){{/if}} </a>
 				<div class="btn-divider"></div>
 				<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改信息</a>
 				<div class="btn-divider"></div>

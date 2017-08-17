@@ -452,10 +452,12 @@ class User extends ActiveRecord
 			$orderBy = ' order by uUpdatedOn desc,uAddedOn desc ';
 		}
 		$conn = AppUtil::db();
-		$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe,w.wWechatId
+		$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe,w.wWechatId,count(*) as uco
  				  FROM im_user as u 
 				  JOIN im_user_wechat as w on w.wUId=u.uId
+				  left JOIN im_trace as t on u.uId=t.tPId
 				  WHERE uId>0 $strCriteria 
+				  group by uId
 				  $orderBy Limit $offset, $pageSize";
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
