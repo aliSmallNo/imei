@@ -944,11 +944,11 @@
 			<li class="title">
 				相册({[album_cnt]})
 			</li>
-			{[#album_t3]}
+			{[#gallery3]}
 			<li>
-				<img src="{[.]}">
+				<img src="{[thumb]}">
 			</li>
-			{[/album_t3]}
+			{[/gallery3]}
 		</ul>
 	</a>
 	{[/album_cnt]}
@@ -1000,8 +1000,6 @@
 	{[/header]}
 	{[/items]}
 </script>
-
-
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.7.9" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.8.0" src="/assets/js/require.js"></script>

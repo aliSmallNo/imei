@@ -1312,11 +1312,13 @@ require(["layer"],
 			tmp: $('#tpl_shome').html(),
 			loading: 0,
 			content: $('.profile-page'),
+			loaded: 0,
 			init: function () {
 				var util = this;
 				$(document).on(kClick, '.j-profile', function () {
 					var eid = $(this).attr('data-eid');
 					util.eid = eid;
+					util.loaded = 0;
 					util.clear();
 					ResumeUtil.eid = eid;
 					ResumeUtil.clear();
@@ -1342,7 +1344,7 @@ require(["layer"],
 			},
 			reload: function () {
 				var util = this;
-				if (util.loading) {
+				if (util.loaded || util.loading) {
 					return false;
 				}
 				util.content.html('');
@@ -1360,6 +1362,7 @@ require(["layer"],
 							showMsg(resp.msg);
 						}
 						util.loading = 0;
+						util.loaded = 1;
 					}, 'json');
 			}
 		};
