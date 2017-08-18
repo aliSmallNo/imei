@@ -612,6 +612,7 @@ class User extends ActiveRecord
 			['content' => '基本资料', 'header' => 1],
 			['caption' => '昵称', 'content' => 'name'],
 			['caption' => '性别', 'content' => 'gender_t'],
+			['caption' => '籍贯', 'content' => 'homeland_t'],
 			['caption' => '所在城市', 'content' => 'location_t'],
 			['caption' => '出生年份', 'content' => 'birthyear'],
 			['caption' => '身高', 'content' => 'height_t'],
