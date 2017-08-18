@@ -34,9 +34,6 @@
 			<th class="col-sm-2">
 				时间
 			</th>
-			<th class="col-sm-1">
-				操作
-			</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -59,9 +56,7 @@
 			<td>
 				<div>创建于{{$prod.pAddedOn|date_format:'%y-%m-%d %H:%M'}}</div>
 			</td>
-			<td>
 
-			</td>
 		</tr>
 		{{/foreach}}
 		{{/if}}
