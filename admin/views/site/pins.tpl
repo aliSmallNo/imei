@@ -119,10 +119,11 @@
 	<div id="mapContainer" class="rightBox"></div>
 </div>
 <script>
+	var mLevel = 13;
 	var map = new AMap.Map("mapContainer", {
 		resizeEnable: true,
 		center: [120.320353, 32.845766],
-		zoom: 14
+		zoom: mLevel
 	});
 	var toolBar = new AMap.ToolBar({
 		visible: true
@@ -136,7 +137,7 @@
 		var lng = self.attr('data-lng');
 		var lnglat = lng + '-' + lat;
 		var coordsArr = lnglat.split('-');
-		map.setZoomAndCenter(14, coordsArr);
+		map.setZoomAndCenter(mLevel, coordsArr);
 		if (Markers[lnglat]) {
 			maxzIndex++;
 			Markers[lnglat].setzIndex(maxzIndex);
