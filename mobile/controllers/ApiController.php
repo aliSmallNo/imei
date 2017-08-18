@@ -15,6 +15,7 @@ use common\models\Log;
 use common\models\LogAction;
 use common\models\Lottery;
 use common\models\Pay;
+use common\models\Pin;
 use common\models\QuestionSea;
 use common\models\User;
 use common\models\UserAudit;
@@ -211,14 +212,37 @@ class ApiController extends Controller
 		return self::renderAPI(129);
 	}
 
-	public function actionUser()
+	public function actionLocation()
 	{
 		$tag = trim(strtolower(self::postParam('tag')));
-		$id = self::postParam('id');
 		$openId = self::postParam('openid');
 		if (!$openId) {
 			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
 		}
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			return self::renderAPI(129, '用户不存在啊~');
+		}
+		$uId = $wxInfo['uId'];
+		switch ($tag) {
+			case 'pin':
+				$lat = self::postParam("lat");
+				$lng = self::postParam("lng");
+				Pin::addPin(Pin::CAT_USER, $uId, $lat, $lng);
+				return self::renderAPI(0, '');
+				break;
+		}
+		return self::renderAPI(129, '操作无效~');
+	}
+
+	public function actionUser()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$openId = self::postParam('openid');
+		if (!$openId) {
+			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		}
+		$id = self::postParam('id');
 
 		switch ($tag) {
 			case 'pin-location':
@@ -226,17 +250,7 @@ class ApiController extends Controller
 				if ($wxInfo) {
 					$lat = self::postParam("lat");
 					$lng = self::postParam("lng");
-					$newLog = [
-						"oCategory" => $tag,
-						"oKey" => 'location',
-						"oUId" => $wxInfo['uId'],
-						"oOpenId" => $openId,
-						"oAfter" => json_encode([
-							'lat' => $lat,
-							'lng' => $lng,
-						]),
-					];
-					Log::add($newLog);
+					Pin::addPin(Pin::CAT_USER, $wxInfo['uId'], $lat, $lng);
 				}
 				return self::renderAPI(0, '');
 				break;

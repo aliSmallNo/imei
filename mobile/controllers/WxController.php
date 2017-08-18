@@ -485,8 +485,10 @@ class WxController extends BaseController
 		$items = [];
 		$uInfo = User::profile($hid);
 		$genderName = $uInfo['gender'] == User::GENDER_MALE ? '男' : '女';
-		$favorInfo = UserNet::findOne(["nRelation" => UserNet::REL_FAVOR, "nDeletedFlag" => UserNet::DELETE_FLAG_NO, "nUId" => $uInfo["id"], "nSubUId" => $wxInfo["uId"]]);
-		$uInfo["favorFlag"] = $favorInfo ? 1 : 0;
+		/*$favorInfo = UserNet::hasFavor($wxInfo["uId"],$uInfo["id"])?1:0;
+		UserNet::findOne(["nRelation" => UserNet::REL_FAVOR,"nDeletedFlag" => UserNet::DELETE_FLAG_NO,
+		 "nUId" => $uInfo["id"], "nSubUId" => $wxInfo["uId"]]);*/
+		$uInfo["favorFlag"] = UserNet::hasFavor($wxInfo["uId"], $uInfo["id"]) ? 1 : 0;
 
 		return self::renderPage("shome.tpl",
 			[
