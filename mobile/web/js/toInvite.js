@@ -127,12 +127,30 @@ require(["layer"],
 		$(function () {
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
-			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems'];
+			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
-				wx.hideOptionMenu();
+				//wx.hideOptionMenu();
+				wx.onMenuShareAppMessage({
+					title: '8月20日相约英伦时光，一起搞事情啊',
+					desc: '微媒100，东台市德润广场5楼英伦时光',
+					link: "https://wx.meipo100.com/wx/toparty",
+					imgUrl: "https://wx.meipo100.com/images/logo33.png",
+					type: '',
+					dataUrl: '',
+					success: function () {
+						//shareLog('share', '/wx/sh');
+					}
+				});
+				wx.onMenuShareTimeline({
+					title: '8月20日相约英伦时光，一起搞事情啊',
+					link: "https://wx.meipo100.com/wx/toparty",
+					imgUrl: "https://wx.meipo100.com/images/logo33.png",
+					success: function () {
+						//shareLog('moment', '/wx/sh');
+					}
+				});
 			});
-
 			$(document).on(kClick, '.btnOnline', function () {
 				WalletUtil.prepay();
 			});
