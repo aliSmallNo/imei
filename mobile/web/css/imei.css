@@ -2778,9 +2778,33 @@ section {
       right: 1rem;
       top: 1rem;
       font-size: 2rem; }
-  .m-top-users li .event-link img {
-    width: 100%;
-    vertical-align: middle; }
+  .m-top-users li .event-link {
+    overflow: hidden;
+    position: relative;
+    display: block; }
+    .m-top-users li .event-link img {
+      width: 100%;
+      vertical-align: middle; }
+    .m-top-users li .event-link .i-mark-event {
+      background: rgba(240, 98, 146, 0.65) url(../images/ico_ad_event.png) no-repeat 4.3rem 0.5rem;
+      background-size: 2.6rem 2.6rem;
+      width: 14rem;
+      height: 14rem;
+      display: inline-block;
+      position: absolute;
+      right: -7rem;
+      bottom: -7rem;
+      border-radius: 7rem;
+      color: #fff;
+      font-size: 1rem; }
+      .m-top-users li .event-link .i-mark-event span {
+        position: absolute;
+        top: 3rem;
+        left: 0.4rem;
+        font-size: 1.4rem;
+        display: inline-block;
+        width: 6rem;
+        text-align: center; }
   .m-top-users li .head {
     position: relative;
     display: block;

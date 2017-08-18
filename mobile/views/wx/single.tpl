@@ -773,6 +773,7 @@
 	<li>
 		<a href="{[url]}" class="event-link">
 			<img src="{[img]}">
+			<i class="i-mark-event"><span>一起<br>搞事情啦</span></i>
 		</a>
 	</li>
 	{[/secretId]}
