@@ -478,10 +478,12 @@ class ApiController extends Controller
 				$ret = User::getFilter($openId, $filter, $page);
 				if (isset($ret['data']) && count($ret['data']) > 3 && $page == 1) {
 					array_splice($ret['data'], 3, 0, [
+//						[
+//							'url' => '/wx/fansrank',
+//							'img' => '/images/event_fans.jpg',
+//						],
 						[
-							//'url' => '/wx/fansrank',
 							'url' => '/wx/toparty',
-							//'img' => '/images/event_fans.jpg'
 							'img' => '/images/icon-event0.jpg'
 						]
 					]);
