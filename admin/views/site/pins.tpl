@@ -162,8 +162,13 @@
 		var lat = link.attr('data-lat');
 		var lng = link.attr('data-lng');
 		var lnglat = lng + '-' + lat;
+		if (lnglat.length < 5) {
+			return;
+		}
+		console.log(lnglat);
 		var html = link.html();
 		var arr = html.split(' ');
+
 		if (arr.length < 2) {
 			return;
 		}
@@ -195,6 +200,9 @@
 
 	$(document).ready(function () {
 		switchMarkers(1);
+		setTimeout(function () {
+//			console.log(Markers);
+		}, 5000);
 //		showUnlocated();
 	});
 </script>
