@@ -13,7 +13,12 @@ require(["layer"],
 			newIdx: 0,
 			newsTimer: 0,
 			loading: 0,
-			payNumObj: $(".paccount")
+			payNumObj: $(".paccount"),
+
+			code: $('.code'),
+			btnCode: $('.btn-code'),
+			phone: $('.phone'),
+			counting: 0
 		};
 
 		var WalletUtil = {
@@ -123,6 +128,137 @@ require(["layer"],
 				time: delay
 			});
 		}
+
+		var msgAlert = {
+			name: "姓名",
+			phone: "手机",
+			birthyear: "出生日期",
+			code: "验证码"
+		};
+		$(document).on(kClick, ".par-sign", function () {
+			var err = 0;
+			var postData = {};
+			$("[data-field]").each(function () {
+				var self = $(this);
+				var field = self.attr("data-field");
+				var val = self.val();
+				postData[field] = val;
+				if (!val) {
+					err = 1;
+					self.focus();
+					showMsg(msgAlert[field] + "格式不正确");
+					return;
+				} else if (field == "phone" && !isPhone(val)) {
+					err = 1;
+					self.focus();
+					showMsg(msgAlert[field] + "格式不正确");
+					return;
+				}
+			});
+			if (err) {
+				return;
+			}
+			var gender = $("[name=sex]:checked").val();
+			if (!gender) {
+				$("[name=sex]:checked").focus();
+				showMsg("还没选性别哦！");
+				return;
+			}
+			postData["gender"] = gender;
+			console.log(postData);
+			if ($sls.loading) {
+				return;
+			}
+			$sls.loading = 1;
+			$.post('/api/crew',
+				{
+					tag: 'group',
+					data: JSON.stringify(postData)
+				},
+				function (resp) {
+					if (resp.code == 0) {
+						showMsg(resp.msg);
+					} else {
+						showMsg(resp.msg);
+					}
+					$sls.loading = 0;
+				},
+				'json');
+
+		});
+
+		$('.btn-code').on(kClick, function () {
+			smsCode();
+		});
+
+		function smsCode() {
+			if ($sls.counting) {
+				return false;
+			}
+			var phone = $.trim($sls.phone.val());
+			if (!isPhone(phone)) {
+				showMsg('请输入正确的手机号！');
+				$sls.phone.focus();
+				return false;
+			}
+			$sls.counting = 1;
+			$.post('/api/user',
+				{
+					tag: 'sms-code',
+					phone: phone
+				},
+				function (resp) {
+					if (resp.code == 0) {
+						showMsg(resp.msg);
+						smsCounting();
+					} else {
+						showMsg(resp.msg);
+						$sls.counting = 0;
+					}
+				}, 'json');
+		}
+
+		function smsCounting() {
+			var second = 60;
+			$sls.btnCode.html(second + "s后重试");
+			$sls.btnCode.addClass("disabled");
+			var timer = null;
+			timer = setInterval(function () {
+				second -= 1;
+				if (second > 0) {
+					$sls.btnCode.html(second + "s后重试");
+				} else {
+					clearInterval(timer);
+					$sls.btnCode.html("发送验证码");
+					$sls.btnCode.removeClass("disabled");
+					$sls.counting = 0;
+				}
+			}, 1000);
+		}
+
+		function isPhone(num) {
+			var partten = /^1[2-9][0-9]{9}$/;
+			return partten.test(num);
+		}
+
+		$(document).on("focus", ".my-date-input", function () {
+			var a = $(this);
+			a.attr("autocomplete", "off");
+			var e = a.attr("max-date");
+			var c = a.attr("min-date");
+			var b = a.attr("date-fmt");
+			if (!b || b.length == 0) {
+				b = "yyyy-MM-dd";
+			}
+			var d = {dateFmt: b};
+			if (e && e.length > 0) {
+				d.maxDate = e;
+			}
+			if (c && c.length > 0) {
+				d.minDate = c;
+			}
+			WdatePicker(d);
+		});
 
 		$(function () {
 			var wxInfo = JSON.parse($sls.wxString);

@@ -10,6 +10,7 @@ namespace mobile\controllers;
 
 use common\models\ChatMsg;
 use common\models\City;
+use common\models\EventCrew;
 use common\models\Feedback;
 use common\models\Log;
 use common\models\LogAction;
@@ -77,6 +78,38 @@ class ApiController extends Controller
 		} else {
 			echo $retStr;
 		}
+	}
+
+	public function actionCrew()
+	{
+		$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		$tag = trim(strtolower(self::postParam('tag')));
+		switch ($tag) {
+			case 'group':
+				$raw = self::postParam('data');
+				$data = json_decode($raw, 1);
+				$phone = isset($data["phone"]) ? $data["phone"] : 0;
+				$code = isset($data["code"]) ? $data["code"] : 0;
+				$name = isset($data["name"]) ? $data["name"] : '';
+				if (!AppUtil::checkPhone($phone)) {
+					return self::renderAPI(129, '手机号格式不正确~');
+				}
+				if (!User::verifySMSCode($phone, $code)) {
+					 return self::renderAPI(129, '输入的验证码不正确或者已经失效~');
+				}
+				if (EventCrew::findOne(["cPhone" => $phone])) {
+					return self::renderAPI(129, '您已经报名了，不要重复报名');
+				}
+				EventCrew::add([
+					"cPhone" => $phone,
+					"cName" => $name,
+					"cNote" => $raw,
+					"cOpenId" => $openId,
+				]);
+				return self::renderAPI(0, '报名成功~');
+				break;
+		}
+		return self::renderAPI(129, '操作失败~');
 	}
 
 	public function actionWallet()

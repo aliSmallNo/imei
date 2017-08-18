@@ -183,7 +183,7 @@
 		<li><img src="/images/p-8.jpg"></li>
 	</ul>
 
-	<div class="par-order">
+	<div class="par-order" style="display: none">
 		<div class="par-order-t">
 			<div class="otitle">参与人数</div>
 			<div class="btn">
@@ -205,6 +205,116 @@
 			</div>
 		</div>
 	</div>
+
+	<style>
+		.par-form {
+			padding: 2rem 1rem;
+			border-bottom: 1px solid #eee;
+			border-top: 1px solid #eee;
+		}
+
+		.par-input {
+			padding-bottom: 2rem;
+		}
+
+		.par-input label {
+			margin: .5rem 0;
+			display: block;
+		}
+
+		.par-input div {
+			border: 1px solid #777;
+			padding: .3rem 1rem;
+		}
+
+		.par-input div input[type=text] {
+			width: 97%;
+			height: 2rem;
+			border: none;
+			font-size: 1.2rem;
+		}
+
+		.par-input div input[type=radio] {
+			-webkit-appearance: radio;
+			width: 1.5rem;
+			height: 1.5rem;
+			margin: 0;
+			position: relative;
+			top: .3rem;
+			margin-right: .5rem;
+		}
+
+		.par-form .par-sign {
+			text-align: center;
+			display: block;
+			background: #ff3d7f;
+			padding: .5rem;
+			color: #fff;
+			margin-top: 3rem;
+		}
+
+		.par-yzm {
+			display: flex;
+		}
+
+		.par-yzm input {
+			flex: 1;
+			height: 2rem;
+			font-size: 1.2rem;
+			border: 1px solid #777;
+			padding: .3rem 1rem;
+		}
+
+		.par-yzm button {
+			flex: 0 0 10rem;
+			background: #ff3d7f;
+			color: #fff;
+			border: none;
+			font-size: 1.2rem;
+		}
+
+		.par-yzm button.disabled {
+			background: #b8b8b8;
+		}
+	</style>
+	<div class="par-form">
+		<div class="par-input">
+			<label>姓名</label>
+			<div>
+				<input type="text" data-field="name">
+			</div>
+		</div>
+		<div class="par-input">
+			<label>性别</label>
+			<div style="border-bottom: none;">
+				<input type="radio" name="sex" value="female">女
+			</div>
+			<div>
+				<input type="radio" name="sex" value="male">男
+			</div>
+		</div>
+		<div class="par-input">
+			<label>出生日期</label>
+			<div>
+				<input type="text" class="my-date-input" placeholder="例如: 1995-01-01" data-field="birthyear">
+			</div>
+		</div>
+		<div class="par-input">
+			<label>手机</label>
+			<div>
+				<input type="text" maxlength="11" class="phone" data-field="phone">
+			</div>
+			<label>验证码</label>
+			<p class="par-yzm">
+				<input type="text" maxlength="6" class="code" data-field="code">
+				<button class="btn-code">获取验证码</button>
+			</p>
+		</div>
+
+		<a class="par-sign">报名</a>
+	</div>
+
+
 </div>
 
 <div class="par-sub-container">
@@ -249,5 +359,6 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/toInvite.js?v=1.4.3" src="/assets/js/require.js"></script>
+<script data-main="/js/toInvite.js?v=1.4.6" src="/assets/js/require.js"></script>
+<script src="/assets/My97DatePicker/WdatePicker.js"></script>
 

@@ -19,12 +19,14 @@ require(["layer"],
 			mobile: $("#cur_mobile").val(),
 			cork: $(".app-cork"),
 			form: $('.form'),
-			phone: $('.phone'),
-			code: $('.code'),
+
 			wxString: $("#tpl_wx_info").html(),
-			btnCode: $('.btn-code'),
 			change: $('.change'),
+
+			code: $('.code'),
 			loading: 0,
+			btnCode: $('.btn-code'),
+			phone: $('.phone'),
 			counting: 0
 		};
 

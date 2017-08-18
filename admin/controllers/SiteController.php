@@ -6,6 +6,7 @@ use admin\models\Admin;
 use admin\models\Menu;
 use common\models\ChatMsg;
 use common\models\City;
+use common\models\EventCrew;
 use common\models\Feedback;
 use common\models\Log;
 use common\models\LogAction;
@@ -873,6 +874,160 @@ class SiteController extends BaseController
 				'category' => 'data',
 			]);
 	}
+
+	public function actionCrews()
+	{
+		$page = self::getParam("page", 1);
+		$name = self::getParam('name');
+
+		$params = $criteria = [];
+		if ($name) {
+			$criteria[] = "  uName like :name ";
+			$params[':name'] = "%$name%";
+		}
+
+		list($list, $count) = EventCrew::items($criteria, $params, $page);
+		$pagination = self::pagination($page, $count);
+
+		return $this->renderPage('crews.tpl',
+			[
+				'list' => $list,
+				"name" => $name,
+				'pagination' => $pagination,
+				'category' => 'data',
+			]);
+	}
+
+	public function actionEvent()
+	{
+//		$getInfo = Yii::$app->request->get();
+//		$queryId = self::getParam("id");
+//		$queryId = Utils::decrypt($queryId);
+//		if (!$queryId) {
+//			$queryId = "";
+//		}
+//		$error = [];
+//		$success = "";
+//
+//		$iId = self::postParam("iId");
+//		$sign = self::postParam("sign");
+//		$specsItems = self::postParam("cItems");
+//		$branchId = Admin::getBranch();
+//		$editItem = [];
+//		if ($sign) {
+//			$fields = [
+//				"iTitle" => [1, ""],
+//				"iTitleAbbr" => [1, ""],
+//				"iPrice" => [0, ""],
+//				"iPostage" => [0, "0.00"],
+//				"iAmount" => [1, 1],
+//				"iSubCategory" => [1, ""],
+//				"iMarginDay" => [0, "1"],
+//			];
+//			foreach ($fields as $field => $item) {
+//				$fRequired = ($item[0] == 1);
+//				$fDefault = $item[1];
+//				$fVal = self::postParam($field);
+//				if ($fRequired && strlen($fVal) == 0) {
+//					$error[] = '缺少参数' . $field;
+//					continue;
+//				}
+//				$editItem[$field] = $fVal ? $fVal : $fDefault;
+//			}
+//			$coverUrl = ImageOpt::uploadItemImages($_FILES['cover'], ImageOpt::CATEGORY_TRADE_ITEM);
+//			if ($coverUrl) {
+//				//Rain: 对团购商品特殊处理，直接返回图片url及缩率图url
+//				$urls = json_decode($coverUrl, 1);
+//				if ($urls && is_array($urls)) {
+//					$editItem['iCover'] = json_encode([$urls[0]]);
+//					if (isset($urls[1])) {
+//						$editItem['iThumb'] = $urls[1];
+//					}
+//				}
+//			}
+//			$cFeatures = json_decode(self::postParam("cFeatures"), 1);
+//			Utils::logFile(json_encode($cFeatures), 5, __FUNCTION__, __LINE__);
+//			if ($cFeatures && isset($_FILES['featureImage']) && $_FILES['featureImage']) {
+//				$newImages = ImageOpt::uploadItemImages($_FILES['featureImage'], ImageOpt::CATEGORY_MALL_ITEM);
+//				$newImages = json_decode($newImages, 1);
+//				if ($newImages) {
+//					foreach ($cFeatures as $key => $item) {
+//						if (!$item["image"] || ($item["image"] && $item["val"])) {
+//							continue;
+//						}
+//						$cFeatures[$key]["val"] = array_shift($newImages);
+//						if (!$newImages) {
+//							break;
+//						}
+//					}
+//				}
+//			}
+//			if (is_array($cFeatures)) {
+//				$editItem['iFeatures'] = json_encode($cFeatures, JSON_UNESCAPED_UNICODE);
+//			}
+//
+//			if (!$iId) {
+//				$editItem['iBranchId'] = $branchId;
+//				$editItem['zAddedBy'] = Admin::getAdminId();
+//			}
+//			$editItem['zUpdatedBy'] = Admin::getAdminId();
+//			Utils::logFile(json_encode($editItem), 5, __FUNCTION__, __LINE__);
+//			if (!$error) {
+//				$specsItems = json_decode($specsItems, 1);
+//				if (!$editItem["iPrice"] && $specsItems && is_array($specsItems)) {
+//					$newPrice = 0;
+//					foreach ($specsItems as $spec) {
+//						if (!$newPrice || $newPrice > $spec["price"]) {
+//							$newPrice = $spec["price"];
+//						}
+//					}
+//					if ($newPrice) {
+//						$editItem["iPrice"] = "团购价: " . $newPrice . "元起";
+//					}
+//				}
+//				if ($iId) {
+//					TradeItem::modify($iId, $editItem, Admin::getAdminId());
+//					TradeItemSpecs::edit($iId, $specsItems);
+//					$queryId = $iId;
+//					$success = self::ICON_OK_HTML . '修改成功';
+//				} else {
+//					$queryId = TradeItem::add($editItem, Admin::getAdminId());
+//					TradeItemSpecs::edit($queryId, $specsItems);
+//					$success = self::ICON_OK_HTML . '添加成功';
+//				}
+//			}
+//		}
+//		$specs = [];
+//		if ($queryId) {
+//			$editItem = TradeItem::getItem($queryId);
+//			$specs = TradeItemSpecs::getItems($queryId);
+//		}
+//
+//		if (!$specs) {
+//			$specs[] = [
+//				"id" => "",
+//				"name" => "",
+//				"unit" => "",
+//				"max" => "1000",
+//				"price" => "",
+//			];
+//		}
+//		return $this->renderPage('event.tpl',
+//			[
+//				'getInfo' => $getInfo,
+//				'detailcategory' => "trade/items",
+//				'debug' => (Admin::isDebugUser() && 1),
+//				'entity' => $editItem,
+//				"queryId" => $queryId,
+//				"specs" => $specs,
+//				"success" => $success,
+//				"error" => $error,
+//				"categories" => TradeItem::$Categories,
+//				"stringFeatures" => isset($editItem["features"]) ? json_encode($editItem["features"]) : '[]'
+//			]);
+	}
+
+
 
 	public function actionPins()
 	{
