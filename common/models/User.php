@@ -874,91 +874,18 @@ class User extends ActiveRecord
 		return $ret;
 	}
 
-	public static function sprofile($id)
+	public static function criteria($userInfo)
 	{
-		$id = AppUtil::decrypt($id);
-		$sql = "select u.*,u2.uAvatar as mavatar,u2.uName as mname,u2.uIntro as mintro,n.nNote as comment
-			from im_user as u
-			left join im_user_net as n on n.nSubUId=u.uId
-			left join im_user as u2 on u2.uId=n.nUId
-			where u.uId=:uid";
-		$Info = AppUtil::db()->createCommand($sql)->bindValues([
-			":uid" => $id,
-		])->queryOne();
-
-		$result = [
-			"imgList" => [],
-			"imglistJson" => "",
-			"img3" => [],
-			"co" => 0,
-		];
-		$uAlbum = $Info["uAlbum"];
-		if ($uAlbum) {
-			$uAlbum = json_decode($uAlbum, 1);
-			$result["imgList"] = $uAlbum;
-			$result["imglistJson"] = json_encode($uAlbum);
-			$result["co"] = count($uAlbum);
-			if (count($uAlbum) <= 3) {
-				$result["img3"] = $uAlbum;
-			} else {
-				for ($i = 0; $i < 3; $i++) {
-					$result["img3"][] = array_pop($uAlbum);
-				}
-			}
-		}
-
-
-		$result["mavatar"] = $Info["mavatar"];
-		$result["mname"] = $Info["mname"];
-		$result["comment"] = $Info["comment"];
-		$result["mintro"] = $Info["mintro"];
-		$result["scretId"] = AppUtil::encrypt($Info["uId"]);
-		$result["id"] = $Info["uId"];
-
-		//"avatar" => "uAvatar", "name" => "uName", "genderclass" => "uGender", "location" => "uLocation",
-		//"year" => "uBirthYear", "age" => "uBirthYear","intro" => "uIntro", "interest" => "uInterest",
-
-		$location = json_decode($Info["uLocation"], 1);
-		$result["avatar"] = $Info["uAvatar"];
-		$result["name"] = $Info["uName"];
-		$result["genderclass"] = $Info["uGender"] == 10 ? "female" : "male";
-		if (is_array($location) && count($location) == 2) {
-			$result["location"] = $location[0]["text"] . $location[1]["text"];
-		} else {
-			$result["location"] = "noLocation";
-		}
-		$result["year"] = $Info["uBirthYear"];
-		$result["age"] = date("Y") - $Info["uBirthYear"];
-		$result["intro"] = $Info["uIntro"];
-		$result["interest"] = $Info["uInterest"];
-
-		$fields = [
-			"gender" => "uGender",
-			"height" => "uHeight", "job" => "uProfession", "horos" => "uHoros", "edu" => "uEducation",
-			"income" => "uIncome", "house" => "uEstate", "car" => "uCar",
-			"scope" => "uScope", "smoke" => "uSmoke", "drink" => "uAlcohol", "belief" => "uBelief", "fitness" => "uFitness",
-			"diet" => "uDiet", "rest" => "uRest", "pet" => "uPet",
-		];
-		foreach ($fields as $k => $v) {
-			$fText = substr($v, 1);
-			$result[$k] = isset(self::$$fText[$Info[$v]]) ? self::$$fText[$Info[$v]] : "";
-		}
-
-		$result["cond"] = self::matchCondition($Info["uFilter"]);
-		$result["jdata"] = json_encode($result);
-		return $result;
-	}
-
-	public static function matchCondition($uFilter)
-	{
-		$matchInfo = json_decode($uFilter, 1);
 		$myFilter = [];
+		$matchInfo = json_decode($userInfo['uFilter'], 1);
+		$uLocation = json_decode($userInfo['uLocation'], 1);
+		$separator = '-';
 		if (is_array($matchInfo) && $matchInfo) {
 			if (isset($matchInfo["age"]) && $matchInfo["age"] > 0) {
-				$ageArr = explode("-", $matchInfo["age"]);
+				$ageArr = explode($separator, $matchInfo["age"]);
 				if (count($ageArr) == 2) {
-					$myFilter["age"] = $ageArr[0] . '~' . $ageArr[1] . '岁';
-					$myFilter["ageVal"] = $ageArr[0] . '-' . $ageArr[1];
+					$myFilter["age"] = $ageArr[0] . $separator . $ageArr[1] . '岁';
+					$myFilter["ageVal"] = $ageArr[0] . $separator . $ageArr[1];
 				}
 			} else {
 				$myFilter["age"] = self::$AgeFilter[0];
@@ -966,21 +893,24 @@ class User extends ActiveRecord
 			}
 
 			if (isset($matchInfo["height"]) && $matchInfo["height"] > 0) {
-				$heightArr = explode("-", $matchInfo["height"]);
+				$heightArr = explode($separator, $matchInfo["height"]);
 				if (count($heightArr) == 2) {
-					$myFilter["height"] = $heightArr[0] . '~' . $heightArr[1] . 'cm';
-					$myFilter["heightVal"] = $heightArr[0] . '-' . $heightArr[1];
+					$myFilter["height"] = $heightArr[0] . $separator . $heightArr[1] . 'cm';
+					$myFilter["heightVal"] = $heightArr[0] . $separator . $heightArr[1];
 				}
 			} else {
 				$myFilter["height"] = self::$HeightFilter[0];
 				$myFilter["heightVal"] = 0;
 			}
-
+			if ($uLocation && (!isset($matchInfo["location"]) || !$matchInfo["location"])) {
+				$text = array_column($uLocation, 'text');
+				$matchInfo["location"] = implode($separator, $text);
+			}
 			if (isset($matchInfo["location"]) && $matchInfo["location"]) {
-				$locationArr = explode("-", $matchInfo["location"]);
+				$locationArr = explode($separator, $matchInfo["location"]);
 				if (count($locationArr) == 2) {
-					$myFilter["location"] = $locationArr[0] . '~' . $locationArr[1];
-					$myFilter["locationVal"] = $locationArr[0] . '-' . $locationArr[1];
+					$myFilter["location"] = $locationArr[0] . $separator . $locationArr[1];
+					$myFilter["locationVal"] = $locationArr[0] . $separator . $locationArr[1];
 				}
 			} else {
 				$myFilter["location"] = "";
@@ -1033,7 +963,7 @@ class User extends ActiveRecord
 		$mId = $myInfo->uId;
 		$hint = $myInfo->uHint;
 		$uFilter = $myInfo->uFilter;
-		$myFilter = self::matchCondition($uFilter);
+		$myFilter = self::criteria($myInfo);
 
 		$gender = $myInfo->uGender;
 		$location = json_decode($myInfo->uLocation, 1);
@@ -1164,7 +1094,7 @@ class User extends ActiveRecord
 			$data["mpname"] = $row["mpname"];
 			$data["comment"] = $row["comment"];
 			$data["name"] = $row["uName"];
-				//mb_strlen($row["uName"]) > 4 ? mb_substr($row["uName"], 0, 4) . "..." : $row["uName"];
+			//mb_strlen($row["uName"]) > 4 ? mb_substr($row["uName"], 0, 4) . "..." : $row["uName"];
 			$data["gender"] = $row["uGender"] == 10 ? "female" : "male";
 			$data["age"] = date("Y") - $row["uBirthYear"];
 			$data["height"] = isset(User::$Height[$row["uHeight"]]) ? User::$Height[$row["uHeight"]] : "无身高";
