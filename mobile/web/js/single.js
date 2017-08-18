@@ -1513,7 +1513,7 @@ require(["layer"],
 
 		function pinLocation() {
 			wx.getLocation({
-				type: 'wgs84',
+				type: 'gcj02',
 				success: function (res) {
 					$.post('/api/user',
 						{
