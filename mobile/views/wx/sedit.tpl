@@ -100,15 +100,15 @@
 </div>
 <div class="sedit-title">基本资料</div>
 <div class="sedit-input">
-	<label>呢称</label>
-	<input type="text" name="name" placeholder="填写您的呢称" value="{{$uInfo.name}}">
+	<label>昵称</label>
+	<input type="text" name="name" placeholder="填写您的昵称" value="{{$uInfo.name}}">
 </div>
 <div class="sedit-input">
 	<label>性别</label>
 	<input type="text" placeholder="帅哥" value="{{$uInfo.gender_t}}" readonly>
 </div>
 <a class="sedit-alert action-homeland" data-pos="homeland">
-	<label>您的籍贯</label>
+	<label>你的籍贯</label>
 	<div class="sedit-alert-val homeland">
 		{{if $uInfo.homeland}}
 		{{foreach from=$uInfo.homeland item=item}}
@@ -130,7 +130,7 @@
 </a>
 
 <a class="sedit-alert action-com" data-field="year">
-	<label>出生年</label>
+	<label>出生年份</label>
 	<div class="sedit-alert-val action-val">
 		<em data-key="{{$uInfo.birthyear}}">{{$uInfo.birthyear_t}}</em>
 	</div>
