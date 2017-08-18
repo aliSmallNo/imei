@@ -165,7 +165,6 @@
 		if (lnglat.length < 5) {
 			return;
 		}
-		console.log(lnglat);
 		var html = link.html();
 		var arr = html.split(' ');
 
@@ -200,9 +199,5 @@
 
 	$(document).ready(function () {
 		switchMarkers(1);
-		setTimeout(function () {
-//			console.log(Markers);
-		}, 5000);
-//		showUnlocated();
 	});
 </script>

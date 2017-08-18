@@ -24,6 +24,9 @@ class Pin extends ActiveRecord
 
 	public static function addPin($cat, $pid, $lat, $lng)
 	{
+		if (!$lat || !$lng) {
+			return 0;
+		}
 		$entity = new self();
 		$entity->pCategory = $cat;
 		$entity->pPId = $pid;
