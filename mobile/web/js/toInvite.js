@@ -132,7 +132,7 @@ require(["layer"],
 			wx.ready(function () {
 				//wx.hideOptionMenu();
 				wx.onMenuShareAppMessage({
-					title: '8月20日相约英伦时光，一起搞事情啊',
+					title: '8月20日相约英伦时光，一起来脱单吧',
 					desc: '微媒100主办，东台市德润广场5楼英伦时光',
 					link: "https://wx.meipo100.com/wx/toparty",
 					imgUrl: "https://wx.meipo100.com/images/logo33.png",
@@ -143,7 +143,7 @@ require(["layer"],
 					}
 				});
 				wx.onMenuShareTimeline({
-					title: '8月20日相约英伦时光，一起搞事情啊',
+					title: '8月20日相约英伦时光，一起来脱单吧',
 					link: "https://wx.meipo100.com/wx/toparty",
 					imgUrl: "https://wx.meipo100.com/images/logo33.png",
 					success: function () {
