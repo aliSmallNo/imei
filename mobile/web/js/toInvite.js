@@ -133,7 +133,7 @@ require(["layer"],
 				//wx.hideOptionMenu();
 				wx.onMenuShareAppMessage({
 					title: '8月20日相约英伦时光，一起搞事情啊',
-					desc: '微媒100，东台市德润广场5楼英伦时光',
+					desc: '微媒100主办，东台市德润广场5楼英伦时光',
 					link: "https://wx.meipo100.com/wx/toparty",
 					imgUrl: "https://wx.meipo100.com/images/logo33.png",
 					type: '',
