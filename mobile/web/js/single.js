@@ -1552,7 +1552,10 @@ require(["layer"],
 
 			setTimeout(function () {
 				GreetingUtil.show();
-				pinLocation();
 			}, 500);
+
+			setTimeout(function () {
+				pinLocation();
+			}, 1000);
 		});
 	});
