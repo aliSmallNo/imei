@@ -1081,8 +1081,7 @@ class WxController extends BaseController
 	public function actionMplay()
 	{
 		return self::renderPage('mplay.tpl',
-			[
-			],
+			[],
 			'terse');
 	}
 
