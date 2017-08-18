@@ -5,8 +5,7 @@
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-12">
-			<h4>活动支付用户
-			</h4>
+			<h4>活动支付用户</h4>
 		</div>
 	</div>
 	<div class="row">
