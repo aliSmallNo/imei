@@ -43,7 +43,7 @@ class Pin extends ActiveRecord
 			 FROM im_user as u
 			 JOIN (select pPId,max(pId) as mid from im_pin where pCategory=:cat group by pPId) as t on t.pPId = u.uId
 			 JOIN im_pin as p on p.pId=t.mid
-			 order by pDate desc';
+			 order by pDate desc limit 150';
 		$ret = $conn->createCommand($sql)->bindValues([
 			':cat' => self::CAT_USER
 		])->queryAll();
