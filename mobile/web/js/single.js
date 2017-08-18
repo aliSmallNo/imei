@@ -1515,9 +1515,9 @@ require(["layer"],
 			wx.getLocation({
 				type: 'gcj02',
 				success: function (res) {
-					$.post('/api/user',
+					$.post('/api/location',
 						{
-							tag: 'pin-location',
+							tag: 'pin',
 							lat: res.latitude,
 							lng: res.longitude
 						},

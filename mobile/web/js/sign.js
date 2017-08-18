@@ -56,6 +56,22 @@ require(["layer"],
 			});
 		}
 
+		function pinLocation() {
+			wx.getLocation({
+				type: 'gcj02',
+				success: function (res) {
+					$.post('/api/location',
+						{
+							tag: 'pin',
+							lat: res.latitude,
+							lng: res.longitude
+						},
+						function (resp) {
+						}, 'json');
+				}
+			});
+		}
+
 		$(function () {
 			$("body").addClass("bg-color");
 			// FootUtil.init();
@@ -63,7 +79,7 @@ require(["layer"],
 			// FastClick.attach($sls.footer.get(0));
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
-			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage'];
+			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'previewImage', 'getLocation'];
 			wx.config(wxInfo);
 			wx.ready(function () {
 				wx.hideOptionMenu();
@@ -71,5 +87,8 @@ require(["layer"],
 
 			$sls.cork.hide();
 
+			setTimeout(function () {
+				pinLocation();
+			}, 1000);
 		});
 	});
