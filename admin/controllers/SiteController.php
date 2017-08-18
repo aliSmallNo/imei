@@ -11,6 +11,7 @@ use common\models\Log;
 use common\models\LogAction;
 use common\models\Mark;
 use common\models\Pay;
+use common\models\Pin;
 use common\models\QuestionSea;
 use common\models\Trace;
 use common\models\User;
@@ -872,4 +873,18 @@ class SiteController extends BaseController
 				'category' => 'data',
 			]);
 	}
+
+	public function actionPins()
+	{
+		$this->layout = 'terse';
+		$items = Pin::items();
+		return $this->renderPage('pins.tpl',
+			[
+				'items' => $items,
+				'category' => 'users',
+				'detailcategory' => "site/userstat",
+			]
+		);
+	}
+
 }

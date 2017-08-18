@@ -9,6 +9,7 @@
 namespace common\models;
 
 
+use common\utils\AppUtil;
 use yii\db\ActiveRecord;
 
 class Pin extends ActiveRecord
@@ -30,5 +31,22 @@ class Pin extends ActiveRecord
 		$entity->pLng = $lng;
 		$entity->save();
 		return $entity->pId;
+	}
+
+	public static function items()
+	{
+		$conn = AppUtil::db();
+		$sql = 'SELECT u.uId, u.uName as name, u.uPhone as phone, u.uThumb as thumb, p.pLat as lat, p.pLng as lng, p.pDate as dt
+			 FROM im_user as u
+			 JOIN (select pPId,max(pId) as mid from im_pin where pCategory=:cat group by pPId) as t on t.pPId = u.uId
+			 JOIN im_pin as p on p.pId=t.mid
+			 order by pDate desc';
+		$ret = $conn->createCommand($sql)->bindValues([
+			':cat' => self::CAT_USER
+		])->queryAll();
+		foreach ($ret as $k => $item) {
+			$ret[$k]['dt'] = AppUtil::prettyDate($item['dt']);
+		}
+		return $ret;
 	}
 }

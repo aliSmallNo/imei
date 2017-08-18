@@ -458,6 +458,7 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
+
 		/*$a = ['除去索要微信号功能',
 			'发起聊天需要消耗至少10朵媒桂花，如果对方无回复，5天后原数退回',
 			'新增分享到朋友圈送媒桂花活动。每天只奖励一次',
@@ -468,9 +469,9 @@ class FooController extends Controller
 //		echo  json_encode($a, JSON_UNESCAPED_UNICODE);
 //		AppUtil::logFile(json_encode($a, JSON_UNESCAPED_UNICODE), 5, __FUNCTION__);
 
-		var_dump(date('Y-m-d', strtotime("2017-08-15 +1 month")));
+		/*var_dump(date('Y-m-d', strtotime("2017-08-15 +1 month")));
 		var_dump(date('Y-m-d', strtotime("2017-08-15 +9 month")));
-		var_dump(date('Y-m-d', strtotime("2017-07-10 +0 week")));
+		var_dump(date('Y-m-d', strtotime("2017-07-10 +0 week")));*/
 
 	}
 
