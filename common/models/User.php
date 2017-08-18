@@ -874,91 +874,25 @@ class User extends ActiveRecord
 		return $ret;
 	}
 
-	public static function sprofile($id)
+	public static function criteria($userInfo)
 	{
-		$id = AppUtil::decrypt($id);
-		$sql = "select u.*,u2.uAvatar as mavatar,u2.uName as mname,u2.uIntro as mintro,n.nNote as comment
-			from im_user as u
-			left join im_user_net as n on n.nSubUId=u.uId
-			left join im_user as u2 on u2.uId=n.nUId
-			where u.uId=:uid";
-		$Info = AppUtil::db()->createCommand($sql)->bindValues([
-			":uid" => $id,
-		])->queryOne();
-
-		$result = [
-			"imgList" => [],
-			"imglistJson" => "",
-			"img3" => [],
-			"co" => 0,
-		];
-		$uAlbum = $Info["uAlbum"];
-		if ($uAlbum) {
-			$uAlbum = json_decode($uAlbum, 1);
-			$result["imgList"] = $uAlbum;
-			$result["imglistJson"] = json_encode($uAlbum);
-			$result["co"] = count($uAlbum);
-			if (count($uAlbum) <= 3) {
-				$result["img3"] = $uAlbum;
-			} else {
-				for ($i = 0; $i < 3; $i++) {
-					$result["img3"][] = array_pop($uAlbum);
-				}
-			}
-		}
-
-
-		$result["mavatar"] = $Info["mavatar"];
-		$result["mname"] = $Info["mname"];
-		$result["comment"] = $Info["comment"];
-		$result["mintro"] = $Info["mintro"];
-		$result["scretId"] = AppUtil::encrypt($Info["uId"]);
-		$result["id"] = $Info["uId"];
-
-		//"avatar" => "uAvatar", "name" => "uName", "genderclass" => "uGender", "location" => "uLocation",
-		//"year" => "uBirthYear", "age" => "uBirthYear","intro" => "uIntro", "interest" => "uInterest",
-
-		$location = json_decode($Info["uLocation"], 1);
-		$result["avatar"] = $Info["uAvatar"];
-		$result["name"] = $Info["uName"];
-		$result["genderclass"] = $Info["uGender"] == 10 ? "female" : "male";
-		if (is_array($location) && count($location) == 2) {
-			$result["location"] = $location[0]["text"] . $location[1]["text"];
-		} else {
-			$result["location"] = "noLocation";
-		}
-		$result["year"] = $Info["uBirthYear"];
-		$result["age"] = date("Y") - $Info["uBirthYear"];
-		$result["intro"] = $Info["uIntro"];
-		$result["interest"] = $Info["uInterest"];
-
-		$fields = [
-			"gender" => "uGender",
-			"height" => "uHeight", "job" => "uProfession", "horos" => "uHoros", "edu" => "uEducation",
-			"income" => "uIncome", "house" => "uEstate", "car" => "uCar",
-			"scope" => "uScope", "smoke" => "uSmoke", "drink" => "uAlcohol", "belief" => "uBelief", "fitness" => "uFitness",
-			"diet" => "uDiet", "rest" => "uRest", "pet" => "uPet",
-		];
-		foreach ($fields as $k => $v) {
-			$fText = substr($v, 1);
-			$result[$k] = isset(self::$$fText[$Info[$v]]) ? self::$$fText[$Info[$v]] : "";
-		}
-
-		$result["cond"] = self::matchCondition($Info["uFilter"]);
-		$result["jdata"] = json_encode($result);
-		return $result;
-	}
-
-	public static function matchCondition($uFilter)
-	{
-		$matchInfo = json_decode($uFilter, 1);
 		$myFilter = [];
+		$matchInfo = json_decode($userInfo['uFilter'], 1);
+		if (!$matchInfo) {
+			$matchInfo = [];
+		}
+		$uLocation = json_decode($userInfo['uLocation'], 1);
+		$separator = '-';
+		if ($uLocation && !isset($matchInfo['location'])) {
+			$text = array_column($uLocation, 'text');
+			$matchInfo["location"] = implode($separator, $text);
+		}
 		if (is_array($matchInfo) && $matchInfo) {
 			if (isset($matchInfo["age"]) && $matchInfo["age"] > 0) {
-				$ageArr = explode("-", $matchInfo["age"]);
+				$ageArr = explode($separator, $matchInfo["age"]);
 				if (count($ageArr) == 2) {
-					$myFilter["age"] = $ageArr[0] . '~' . $ageArr[1] . '岁';
-					$myFilter["ageVal"] = $ageArr[0] . '-' . $ageArr[1];
+					$myFilter["age"] = $ageArr[0] . $separator . $ageArr[1] . '岁';
+					$myFilter["ageVal"] = $ageArr[0] . $separator . $ageArr[1];
 				}
 			} else {
 				$myFilter["age"] = self::$AgeFilter[0];
@@ -966,21 +900,24 @@ class User extends ActiveRecord
 			}
 
 			if (isset($matchInfo["height"]) && $matchInfo["height"] > 0) {
-				$heightArr = explode("-", $matchInfo["height"]);
+				$heightArr = explode($separator, $matchInfo["height"]);
 				if (count($heightArr) == 2) {
-					$myFilter["height"] = $heightArr[0] . '~' . $heightArr[1] . 'cm';
-					$myFilter["heightVal"] = $heightArr[0] . '-' . $heightArr[1];
+					$myFilter["height"] = $heightArr[0] . $separator . $heightArr[1] . 'cm';
+					$myFilter["heightVal"] = $heightArr[0] . $separator . $heightArr[1];
 				}
 			} else {
 				$myFilter["height"] = self::$HeightFilter[0];
 				$myFilter["heightVal"] = 0;
 			}
-
+			if ($uLocation && (!isset($matchInfo["location"]) || !$matchInfo["location"])) {
+				$text = array_column($uLocation, 'text');
+				$matchInfo["location"] = implode($separator, $text);
+			}
 			if (isset($matchInfo["location"]) && $matchInfo["location"]) {
-				$locationArr = explode("-", $matchInfo["location"]);
+				$locationArr = explode($separator, $matchInfo["location"]);
 				if (count($locationArr) == 2) {
-					$myFilter["location"] = $locationArr[0] . '~' . $locationArr[1];
-					$myFilter["locationVal"] = $locationArr[0] . '-' . $locationArr[1];
+					$myFilter["location"] = $locationArr[0] . $separator . $locationArr[1];
+					$myFilter["locationVal"] = $locationArr[0] . $separator . $locationArr[1];
 				}
 			} else {
 				$myFilter["location"] = "";
@@ -1033,13 +970,9 @@ class User extends ActiveRecord
 		$mId = $myInfo->uId;
 		$hint = $myInfo->uHint;
 		$uFilter = $myInfo->uFilter;
-		$myFilter = self::matchCondition($uFilter);
+		$myFilter = self::criteria($myInfo);
 
 		$gender = $myInfo->uGender;
-		$location = json_decode($myInfo->uLocation, 1);
-		$prov = (is_array($location) && $location) ? mb_substr($location[0]["text"], 0, 2) : "";
-		$city = (is_array($location) && $location) ? mb_substr($location[1]["text"], 0, 2) : "";
-
 		$uRole = User::ROLE_SINGLE;
 		$gender = ($gender == 10) ? 11 : 10;
 
@@ -1064,31 +997,13 @@ class User extends ActiveRecord
 			$condition .= " and u.uHeight between $startheight and $Endheight ";
 		}
 
-		if ($uFilter) {
-			$rankField = ",(case WHEN u.uLocation like '%$prov%' and u.uLocation like '%$city%' then 10
+		$prov = '江苏';
+		$city = '盐城';
+		if (isset($myFilter['location'])) {
+			list($prov, $city) = explode('-', $myFilter['location']);
+		}
+		$rankField = ",(case WHEN u.uLocation like '%$prov%' and u.uLocation like '%$city%' then 10
 					WHEN u.uLocation like '%$prov%' then 8 else 0 end) as rank";
-			//$condition .= " and POSITION('$prov' IN u.uLocation) >0 and POSITION('$city' IN u.uLocation) >0 ";
-		} else {
-			$prov1 = "山东";
-			$prov2 = "江苏";
-			$rankField = ",(case WHEN u.uLocation like '%$prov1%' or u.uLocation like '%$prov2%' then 10 else 0 end) as rank";
-			// $condition .= "  and (POSITION('$prov1' IN u.uLocation) >0 or POSITION('$prov2' IN u.uLocation) >0) ";
-		}
-
-		if (isset($data["location"]) && $data["location"] != "") {
-			$location = explode("-", $data["location"]);
-			$fprovince = (is_array($location) && count($location) == 2) ? $location[0] : 0;
-			$fcity = (is_array($location) && count($location) == 2) ? $location[1] : 0;
-			$condition .= " and u.uLocation like '%$fprovince%' and u.uLocation like '%$fcity%' ";
-			$rankField = ",(case WHEN u.uLocation like '%$prov%' and u.uLocation like '%$fcity%' then 10
-					WHEN u.uLocation like '%$fprovince%' then 8 else 0 end) as rank";
-		} else {
-			if ($prov && $city) {
-				$condition .= " and u.uLocation like '%$prov%' and u.uLocation like '%$city%' ";
-			} else {
-				$condition .= " and u.uLocation like '%盐城%' ";
-			}
-		}
 
 		if (isset($data["edu"]) && $data["edu"] > 0) {
 			$edu = $data['edu'];
@@ -1107,10 +1022,9 @@ class User extends ActiveRecord
 
 		$sql = "select u.*
 				$rankField
-				from im_user as u 
+				FROM im_user as u 
 				JOIN im_user_wechat as w on u.uId=w.wUId
-				where $condition order by rank desc, u.uRank desc, uUpdatedOn desc limit $limit";
-//		AppUtil::logFile($sql, 5, __FUNCTION__, __LINE__);
+				WHERE $condition order by rank desc, u.uRank desc limit $limit";
 		$conn = AppUtil::db();
 		$ret = $conn->createCommand($sql)->queryAll();
 		$rows = [];
@@ -1126,7 +1040,8 @@ class User extends ActiveRecord
 			$IDs[] = $uid;
 		}
 
-		$sql = "SELECT u.*,n.nSubUId, n.nNote  FROM im_user as u 
+		$sql = "SELECT u.*,n.nSubUId, n.nNote  
+				FROM im_user as u 
 				JOIN im_user_net as n on u.uId=n.nUId and n.nRelation=$relation_mp and n.nDeletedFlag=0 
 				WHERE n.nSubUId in (" . implode(',', $IDs) . ")";
 		$mpList = $conn->createCommand($sql)->queryAll();
@@ -1164,7 +1079,7 @@ class User extends ActiveRecord
 			$data["mpname"] = $row["mpname"];
 			$data["comment"] = $row["comment"];
 			$data["name"] = $row["uName"];
-				//mb_strlen($row["uName"]) > 4 ? mb_substr($row["uName"], 0, 4) . "..." : $row["uName"];
+			//mb_strlen($row["uName"]) > 4 ? mb_substr($row["uName"], 0, 4) . "..." : $row["uName"];
 			$data["gender"] = $row["uGender"] == 10 ? "female" : "male";
 			$data["age"] = date("Y") - $row["uBirthYear"];
 			$data["height"] = isset(User::$Height[$row["uHeight"]]) ? User::$Height[$row["uHeight"]] : "无身高";
@@ -1390,7 +1305,6 @@ class User extends ActiveRecord
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		return $res;
 	}
-
 
 	public static function trendstat($k, $date, $trends)
 	{

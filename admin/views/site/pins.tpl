@@ -1,4 +1,4 @@
-<script src="//webapi.amap.com/maps?v=1.3&key=91beaaedf2dfe666c6afbe8a566ccc4b&plugin=AMap.ToolBar"></script>
+<script src="//webapi.amap.com/maps?v=1.3&key=ec9efaff78c90c42b5996b542b899f2d&plugin=AMap.ToolBar"></script>
 <style>
 
 	.leftBox {
@@ -162,8 +162,12 @@
 		var lat = link.attr('data-lat');
 		var lng = link.attr('data-lng');
 		var lnglat = lng + '-' + lat;
+		if (lnglat.length < 5) {
+			return;
+		}
 		var html = link.html();
 		var arr = html.split(' ');
+
 		if (arr.length < 2) {
 			return;
 		}
@@ -195,6 +199,5 @@
 
 	$(document).ready(function () {
 		switchMarkers(1);
-//		showUnlocated();
 	});
 </script>
