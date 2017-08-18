@@ -89,7 +89,8 @@ class Pay extends ActiveRecord
 		$limit = "limit " . ($page - 1) * $pageSize . "," . $pageSize;
 		$sql = "SELECT u.uThumb,u.uName,u.uPhone,p.* from im_pay as p 
 				left join im_user as u on u.uId=p.pUId 
-				where p.pStatus=100 and p.pCategory=200 $strCriteria ";
+				where p.pStatus=100 and p.pCategory=200 $strCriteria 
+				ORDER BY  pAddedOn desc $limit ";
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
 
 		$sql = "SELECT count(1) as co from im_pay as p 
