@@ -54,83 +54,44 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">活动名称:</label>
 					<div class="col-sm-8">
-							<textarea class="form-control" rows="3" name="iTitle" required
-												placeholder="(必填)">{{if isset($entity.iTitle)}}{{$entity.iTitle}}{{/if}}</textarea>
+							<textarea class="form-control" rows="3" name="eTitle" required
+												placeholder="(必填)">{{if isset($entity.eTitle)}}{{$entity.eTitle}}{{/if}}</textarea>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label">开始时间:</label>
+
+					<div class="col-sm-8">
+						<input type="text" name="eDateFrom" required placeholder="(必填)" class="form-control my-date-input"
+									 value="{{if isset($entity.eDateFrom)}}{{$entity.eDateFrom}}{{/if}}">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 control-label">活动简称:</label>
+					<label class="col-sm-3 control-label">截止时间:</label>
 					<div class="col-sm-8">
-						<input type="text" name="iTitleAbbr" required placeholder="(必填)"
+						<input type="text" class="form-control my-date-input" name="eDateTo"
+									 value="{{if isset($entity.eDateTo)}}{{$entity.eDateTo}}{{/if}}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">活动地址:</label>
+					<div class="col-sm-8">
+						<input name="eAddress" autocomplete="off" class="form-control"
+									 value="{{if isset($entity.eAddress)}}{{$entity.eAddress}}{{/if}}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">联系人:</label>
+					<div class="col-sm-8">
+						<input name="eContact" placeholder="例如 卢明：13344445555"
 									 autocomplete="off" class="form-control"
-									 value="{{if isset($entity.iTitleAbbr)}}{{$entity.iTitleAbbr}}{{/if}}">
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-3 control-label">封面图:</label>
-
-					<div class="col-sm-8">
-						<input type="file" class="form-control-static" name="cover[]" accept=".jpg,.jpeg">
-						<p class="help-block">（请使用640x320的jpg格式图片）</p>
-						<ul class="o-images">
-							{{if isset($entity.cover)}}
-							<li>
-								<img src="{{$entity.cover}}">
-							</li>
-							{{/if}}
-						</ul>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-3 control-label">所属分类:</label>
-
-					<div class="col-sm-8">
-						<select name="iSubCategory" class="form-control" required>
-							<option value="">请选择分类</option>
-							{{foreach from=$categories key=id item=name}}
-							<option value="{{$id}}" {{if isset($entity.iSubCategory) && $entity.iSubCategory == $id}}
-											selected {{/if}}>
-								{{$name}}
-							</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-3 control-label">可购数量:</label>
-
-					<div class="col-sm-8">
-						<input type="number" name="iAmount" required placeholder="(必填)"
-									 autocomplete="off" max="999999" min="1" step="1" class="form-control"
-									 value="{{if isset($entity.iAmount)}}{{$entity.iAmount}}{{else}}1000{{/if}}">
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-3 control-label">默认邮费:</label>
-					<div class="col-sm-8">
-						<input type="number" class="form-control" name="iPostage"
-									 autocomplete="off" max="999999" min="0" step="0.1"
-									 value="{{if isset($entity.iPostage)}}{{$entity.iPostage}}{{else}}0.00{{/if}}">
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-3 control-label">包邮市/地区:</label>
-					<div class="col-sm-8">
-						<input name="iPostageFreeAreas" autocomplete="off" class="form-control"
-									 value="{{if isset($entity.iPostageFree)}}{{$entity.iPostageFree}}{{/if}}">
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-3 control-label">显示价格:</label>
-					<div class="col-sm-8">
-						<input name="iPrice" placeholder="例如 团购价: 88元/箱起"
-									 autocomplete="off" class="form-control" value="{{if isset($entity.iPrice)}}{{$entity.iPrice}}{{/if}}">
+									 value="{{if isset($entity.eContact)}}{{$entity.eContact}}{{/if}}">
 					</div>
 				</div>
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<i class="fa fa-cog fa-fw"></i> 设置活动规格及价格
+						<i class="fa fa-cog fa-fw"></i> 设置活动规格或价格
 						<div class="pull-right">
 							<a href="javascript:;" class="addSpecs btn btn-outline btn-primary btn-xs">新增项</a>
 						</div>
@@ -141,30 +102,16 @@
 							<thead>
 							<tr>
 								<th>
-									活动规格
-								</th>
-								<th>售价
-								</th>
-								<th>
-									可售数量
+									活动规则
 								</th>
 								<th></th>
 							</tr>
 							</thead>
 							<tbody id="specsItems">
 							{{foreach from=$specs item=prod}}
-							<tr data-id="{{$prod.id}}">
+							<tr data-id="">
 								<td>
-									<input type="text" value="{{$prod.name}}" placeholder="(必填)"
-												 class="itemName form-control">
-								</td>
-								<td>
-									<input type="number" min="1" max="999999" placeholder="(必填)"
-												 class="itemPrice form-control" value="{{$prod.price}}">
-								</td>
-								<td>
-									<input type="number" min="1" max="99999" placeholder="(必填)" maxlength="5"
-												 class="itemMax form-control" value="{{$prod.max}}">
+									<input type="text" value="{{$prod.name}}" placeholder="(必填)" class="itemName form-control">
 								</td>
 								<td><a href="javascript:;" class="delItem btn btn-outline btn-danger btn-xs">删除</a>
 								</td>
@@ -173,7 +120,7 @@
 							</tbody>
 						</table>
 						<p class="help-block">
-							例如: 名称: 2斤装; 价格: 66.00; 可售数量: 900
+							例如: 价格：1人60元，2人100元，3人120元;
 						</p>
 					</div>
 				</div>
@@ -233,24 +180,13 @@
 			<input type="text" placeholder="(必填)" class="itemName form-control">
 		</td>
 		<td>
-			<input type="number" min="1" max="999999" placeholder="(必填)" class="itemPrice form-control">
-		</td>
-		<td>
-			<input type="number" min="1" max="99999" placeholder="(必填)" maxlength="5" class="itemMax form-control" value="1000">
-		</td>
-		<td>
 			<a href="javascript:;" class="delItem btn btn-outline btn-danger btn-xs">删除</a>
 		</td>
 	</tr>
 </script>
 
-<script src="/lib/jquery-ui1114.min.js"></script>
-<script charset="utf-8" src="/lib/ueditor/ueditor.config.js"></script>
-<script charset="utf-8" src="/lib/ueditor/ueditor.all.min.js"></script>
-<script src="/lib/ueditor/lang/zh-cn/zh-cn.js"></script>
 
 <script>
-	//UE.getEditor('iMemoEditor');
 
 	var mUploaderTmp = '<input type="file" value="添加 +" name="featureImage[]" class="file-uploader" accept="image/jpg, image/jpeg">' +
 		'<input type="hidden" name="featureImageVal">';
@@ -271,6 +207,12 @@
 	$(document).on("click", "li.text .m-del", function () {
 		var row = $(this).closest("li");
 		row.remove();
+	});
+
+	$(document).on("click", ".delItem", function () {
+		if ($(this).closest("tbody").find("tr").length > 1) {
+			$(this).closest("tr").remove();
+		}
 	});
 
 	$(document).on("change", ".file-uploader", function () {
@@ -317,7 +259,6 @@
 		layer.load();
 		console.log(items);
 		console.log(features);
-		return;
 		// $("#editForm").submit();
 	});
 
@@ -326,15 +267,12 @@
 		$.each(mSpecsItems.find("tr"), function () {
 			var row = $(this);
 			var name = row.find(".itemName").val();
-			var price = row.find(".itemPrice").val();
-			var max = row.find(".itemMax").val();
-			var id = row.attr("data-id");
-			if (name && name.length && $.isNumeric(price) && $.isNumeric(max)) {
+			// var price = row.find(".itemPrice").val();// && $.isNumeric(price)
+			// var id = row.attr("data-id");
+			if (name && name.length ) {
 				items.push({
-					id: id,
 					name: name,
-					price: price,
-					max: max,
+					// price: price,
 				});
 			}
 		});
@@ -378,7 +316,7 @@
 	$(function () {
 		if ($('.alert-success').length > 0) {
 			setTimeout(function () {
-				location.href = "/trade/items";
+				// location.href = "/site/events";
 			}, 600);
 		}
 		mFeatures.html(Mustache.render(mFeatureTmp, {items: mFeaturesInfo}));
