@@ -227,7 +227,7 @@
 			padding: .3rem 1rem;
 		}
 
-		.par-input div input[type=text] {
+		.par-input div input[type=text],.par-input div input[type=date] {
 			width: 97%;
 			height: 2rem;
 			border: none;
@@ -263,6 +263,7 @@
 			font-size: 1.2rem;
 			border: 1px solid #777;
 			padding: .3rem 1rem;
+			border-radius: 0;
 		}
 
 		.par-yzm button {
@@ -271,6 +272,8 @@
 			color: #fff;
 			border: none;
 			font-size: 1.2rem;
+			padding: .3rem 0;
+			border-radius: 0;
 		}
 
 		.par-yzm button.disabled {
@@ -296,7 +299,7 @@
 		<div class="par-input">
 			<label>出生日期</label>
 			<div>
-				<input type="text" class="my-date-input" placeholder="例如: 1995-01-01" data-field="birthyear">
+				<input type="date" class="my-date-input" placeholder="例如: 1995-01-01" data-field="birthyear">
 			</div>
 		</div>
 		<div class="par-input">

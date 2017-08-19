@@ -18,7 +18,11 @@ require(["layer"],
 			code: $('.code'),
 			btnCode: $('.btn-code'),
 			phone: $('.phone'),
-			counting: 0
+			counting: 0,
+
+			lat: 40.08034,
+			lng: 116.3483,
+
 		};
 
 		var WalletUtil = {
@@ -165,6 +169,8 @@ require(["layer"],
 				return;
 			}
 			postData["gender"] = gender;
+			postData["lat"] = $sls.lat;
+			postData["lng"] = $sls.lng;
 			console.log(postData);
 			if ($sls.loading) {
 				return;
@@ -290,5 +296,14 @@ require(["layer"],
 			$(document).on(kClick, '.btnOnline', function () {
 				WalletUtil.prepay();
 			});
+
+
+			wx.getLocation({
+				type: 'gcj02',
+				success: function (res) {
+					$sls.lat = res.latitude;
+					$sls.lng = res.longitude;
+				}
+			})
 		});
 	});
