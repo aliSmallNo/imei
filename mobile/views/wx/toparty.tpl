@@ -227,7 +227,7 @@
 			padding: .3rem 1rem;
 		}
 
-		.par-input div input[type=text],.par-input div input[type=date] {
+		.par-input div input[type=text], .par-input div input[type=date] {
 			width: 97%;
 			height: 2rem;
 			border: none;
@@ -277,6 +277,11 @@
 			text-align: center;
 		}
 
+		.par-yzm a span {
+			position: relative;
+			top: .3rem;
+		}
+
 		.par-yzm button.disabled {
 			background: #b8b8b8;
 		}
@@ -311,7 +316,7 @@
 			<label>验证码</label>
 			<p class="par-yzm">
 				<input type="text" maxlength="6" class="code" data-field="code">
-				<a class="btn-code">获取验证码</a>
+				<a class="btn-code"><span>获取验证码</span></a>
 			</p>
 		</div>
 		<a class="par-sign">报名</a>
