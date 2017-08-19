@@ -127,7 +127,7 @@ class UserMsg extends ActiveRecord
 		$sql = "select m.*,u.uName,u.uId,u.uThumb as avatar 
 			from im_user_msg as m
 			join im_user as u on m.mAddedBy=u.uId
-			WHERE mUId=:uid AND m.mAddedBy>1
+			WHERE mUId=:uid 
 			ORDER BY mId desc $limit ";
 		$conn = AppUtil::db();
 		$ret = $conn->createCommand($sql)->bindValues([
@@ -247,7 +247,9 @@ class UserMsg extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$sql = 'select count(1) from im_user_msg WHERE mUId=:uid and mReadFlag=:unread and mStatus=1';
+		$sql = 'select count(1) from im_user_msg as m
+				join im_user as u on m.mAddedBy=u.uId 
+				WHERE mUId=:uid and mReadFlag=:unread and mStatus=1 ';
 		$ret = $conn->createCommand($sql)->bindValues([
 			':uid' => $uid,
 			':unread' => self::UN_READ,

@@ -702,7 +702,7 @@ class WechatUtil
 			AppUtil::postJSON($url, json_encode($bodyInfo));
 		}
 		$text = isset(UserMsg::$catDict[$msgCat]) ? UserMsg::$catDict[$msgCat] : '';
-		if (in_array($noticeTag, [self::NOTICE_AUDIT, self::NOTICE_ROUTINE])) {
+		if (in_array($noticeTag, [self::NOTICE_ROUTINE])) {
 			$result = 1;
 		} else {
 			$result = UserMsg::edit(0, [
