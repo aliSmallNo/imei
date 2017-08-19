@@ -126,11 +126,13 @@ class UserMsg extends ActiveRecord
 		$limit = " limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
 		$sql = "select m.*,u.uName,u.uId,u.uThumb as avatar 
 			from im_user_msg as m
-			join im_user as u on m.mUId=u.uId
-			where mAddedBy=$hid 
+			join im_user as u on m.mAddedBy=u.uId
+			WHERE mUId=:uid AND m.mAddedBy>1
 			ORDER BY mId desc $limit ";
 		$conn = AppUtil::db();
-		$ret = $conn->createCommand($sql)->queryAll();
+		$ret = $conn->createCommand($sql)->bindValues([
+			':uid' => $hid
+		])->queryAll();
 		$nextPage = 0;
 		if ($ret && count($ret) > $pageSize) {
 			array_pop($ret);
@@ -140,7 +142,10 @@ class UserMsg extends ActiveRecord
 			$v["secretId"] = AppUtil::encrypt($v["uId"]);
 			switch ($v["mCategory"]) {
 				case self::CATEGORY_FAVOR:
-				case self::CATEGORY_FAVOR_CANCEL:
+					//case self::CATEGORY_FAVOR_CANCEL:
+					$v["text"] = $v["uName"] . '对你怦然心动啦~';
+					$v["url"] = "/wx/sh?id=" . $v["secretId"];
+					break;
 				case self::CATEGORY_FOCUS:
 				case self::CATEGORY_FOCUS_CANCEL:
 					$v["text"] = "你对" . $v["uName"] . self::$catDict[$v["mCategory"]];
@@ -163,7 +168,7 @@ class UserMsg extends ActiveRecord
 					break;
 				case self::CATEGORY_CHAT:
 					$v["url"] = "/wx/single#scontacts";
-					$v["text"] = "你有一条" . self::$catDict[$v["mCategory"]];
+					$v["text"] = $v["uName"] . "发送了一条密聊消息";
 					break;
 				case self::CATEGORY_AUDIT:
 					$v["url"] = "javascript:;";
@@ -171,7 +176,7 @@ class UserMsg extends ActiveRecord
 					break;
 				case self::CATEGORY_PRESENT:
 					$v["url"] = "/wx/sh?id=" . $v["secretId"];
-					$v["text"] = $v["uName"] . "给你" . $v["mText"] . "，您的花粉值增加了";
+					$v["text"] = $v["uName"] . "给你赠送媒桂花了，你的花粉值涨了";
 					break;
 				case self::CATEGORY_FRIRENDS:
 					$v["url"] = "javascript:;";

@@ -62,11 +62,13 @@ require(["layer"],
 			}, "json");
 		}
 
-		$(document).on(kClick, "a.j-notice", function () {
+		$(document).on(kClick, "a.cell-subtitle", function () {
 			var self = $(this);
 			var url = self.attr("data-url");
 			var id = self.attr("data-id");
-			if (self.hasClass('unread')) {
+			if (self.hasClass('read')) {
+				location.href = url;
+			} else {
 				if ($sls.loadFlag) {
 					return;
 				}
@@ -77,15 +79,13 @@ require(["layer"],
 				}, function (resp) {
 					$sls.loading.hide();
 					if (resp.code == 0) {
-						self.removeClass('unread');
+						self.addClass('read');
 						location.href = url;
 					} else {
 						showMsg(resp.msg);
 					}
 					$sls.loadFlag = 0;
 				}, "json");
-			} else {
-				location.href = url;
 			}
 		});
 

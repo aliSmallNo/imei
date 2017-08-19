@@ -12,7 +12,7 @@
 			 class="cell-subtitle {[#readflag]}read{[/readflag]}">
 			<div class="avatar"><img src="{[avatar]}"></div>
 			<div class="content">
-				<h5>{[text]}</h5>
+				<h5>{[&text]}</h5>
 				<h6>{[dt]}</h6>
 			</div>
 		</a>
@@ -21,7 +21,7 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/notice.js?v=1.2.0" src="/assets/js/require.js"></script>
+<script data-main="/js/notice.js?v=1.2.1" src="/assets/js/require.js"></script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
