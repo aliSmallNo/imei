@@ -21,9 +21,9 @@
 <script src="/js/amrnb.js"></script>
 <div id="page-wrapper">
 	<div class="row">
-		<h4> 对 {{$name}} 的跟进
-		</h4>
-		<img src="{{$avatar}}" style="width: 70px;height: 70px">
+		<h4> 对 {{$name}} 的跟进</h4>
+		<img src="{{$avatar}}" style="width: 64px;height: 64px">
+		<div>{{$phone}}</div>
 	</div>
 	<div class="row">
 		<form class="form-horizontal form" action="/site/follow2u" method="post">
@@ -47,7 +47,7 @@
 					<div class="message_status"><em class="tips">已回复</em></div>
 					<div class="message_time">{{$item.tAddedOn}}</div>
 					<div class="user_info">
-						<span class="remark_name">奔跑到家-{{$item.aName}}</span>
+						<span class="remark_name">微媒100-{{$item.aName}}</span>
 						<span class="nickname"></span>
 						<span class="avatar"><img src="/images/im_default_g.png"></span>
 					</div>

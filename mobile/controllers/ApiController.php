@@ -186,7 +186,7 @@ class ApiController extends Controller
 					return self::renderAPI(129, '请在服务器测试该功能~');
 				}
 				$payFee = intval($amt * 100);
-				if (in_array($wxInfo["uId"], [120003, 131277])) {
+				if (in_array($wxInfo["uId"], [120003, User::SERVICE_UID])) {
 					$payFee = $amt / 10;
 				}
 				$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);

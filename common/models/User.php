@@ -17,6 +17,8 @@ use yii\db\ActiveRecord;
 
 class User extends ActiveRecord
 {
+	const SERVICE_UID = 120000;
+
 	static $Scope = [
 		100 => 'IT互联网', 102 => '金融', 104 => '文化传媒',
 		106 => '服务业', 108 => '教育培训', 110 => '通信电子',
@@ -452,7 +454,7 @@ class User extends ActiveRecord
 			$orderBy = ' order by uUpdatedOn desc,uAddedOn desc ';
 		}
 		$conn = AppUtil::db();
-		$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe,w.wWechatId,count(*) as uco
+		$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe,w.wWechatId, count(t.tPId) as uco
  				  FROM im_user as u 
 				  JOIN im_user_wechat as w on w.wUId=u.uId
 				  left JOIN im_trace as t on u.uId=t.tPId
@@ -1190,7 +1192,7 @@ class User extends ActiveRecord
 			return ['code' => 159, 'msg' => '手机格式不正确'];
 		}
 		if (AppUtil::isDev()) {
-			 return ['code' => 159, 'msg' => '悲催啊~ 只能发布到服务器端才能测试这个功能~'];
+			return ['code' => 159, 'msg' => '悲催啊~ 只能发布到服务器端才能测试这个功能~'];
 		}
 		$smsLimit = RedisUtil::getCache(RedisUtil::KEY_SMS_CODE_CNT, date('ymd'), $phone);
 		if (!$smsLimit) {

@@ -86,10 +86,7 @@
 			<a href="/wx/sqr"><span class="title">分享给朋友</span></a>
 			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span class="tip">已认证</span>{{/if}}</a>
 			<a href="/wx/notice">
-				<span class="title">通知</span>
-				{{if $noReadFlag}}
-				<span class="noReadFlag"></span>
-				{{/if}}
+				<span class="title">通知</span>{{if $noReadFlag}}<span class="noReadFlag"></span>{{/if}}
 			</a>
 		</div>
 		<div class="m-rows line-bottom mymp" style="display: none">

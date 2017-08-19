@@ -10,6 +10,7 @@ namespace admin\controllers;
 
 
 use admin\models\Admin;
+use common\models\ChatMsg;
 use common\models\City;
 use common\models\LogAction;
 use common\models\QuestionGroup;
@@ -334,6 +335,21 @@ class ApiController extends Controller
 				$cat = self::postParam("cat");
 				$ret = LogAction::reuseDetail($cat, $begin, $end, $from, $to);
 				return self::renderAPI(0, '', ['items' => $ret]);
+				break;
+		}
+		return self::renderAPI(129, "什么操作也没做啊！");
+	}
+
+	public function actionChat()
+	{
+		$tag = strtolower(self::postParam("tag"));
+		$id = self::postParam("id");
+		switch ($tag) {
+			case 'send':
+				$serviceId = User::SERVICE_UID;
+				$text = self::postParam("text");
+				$ret = ChatMsg::addChat($serviceId, $id, $text, 0, Admin::getAdminId());
+				return self::renderAPI(0, '', $ret);
 				break;
 		}
 		return self::renderAPI(129, "什么操作也没做啊！");

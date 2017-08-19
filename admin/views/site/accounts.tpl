@@ -276,12 +276,12 @@
 				{{/foreach}}
 			</td>
 			<td>
-				<a href="/site/follow?id={{$prod.id}}" class="follow btn btn-outline btn-success btn-xs">跟进信息 {{if $prod.co>1}}({{$prod.co}}){{/if}} </a>
-				<div class="btn-divider"></div>
 				<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改信息</a>
-				<div class="btn-divider"></div>
-				<a href="javascript:;" class="check btn btn-outline btn-danger btn-xs" data-id="{{$prod.id}}"
+				<a href="javascript:;" class="check btn btn-outline btn-primary btn-xs" data-id="{{$prod.id}}"
 					 data-st="{{$prod.status}}" data-sst="{{$prod.substatus}}" data-reasons="">审核用户</a>
+				<div class="btn-divider"></div>
+				<a href="/site/follow?id={{$prod.id}}" class="follow btn btn-outline btn-success btn-xs">跟进详情{{if $prod.co>0}}({{$prod.co}}){{/if}}</a>
+				<a href="/site/interview?id={{$prod.id}}" class="follow btn btn-outline btn-success btn-xs">和TA密聊{{if $prod.mco>0}}({{$prod.mco}}){{/if}}</a>
 				<h5>创建于{{$prod.addedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 				<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 			</td>

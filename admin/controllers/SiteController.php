@@ -278,7 +278,8 @@ class SiteController extends BaseController
 		}
 
 		list($list, $count) = User::users($criteria, $params, $page);
-
+		$uids = array_column($list, 'id');
+		$mCnt = ChatMsg::serviceCnt($uids);
 		foreach ($list as &$v) {
 			$dataImg = [];
 			$v["reason"] = "";
@@ -293,6 +294,10 @@ class SiteController extends BaseController
 					"src" => $v1, // 原图地址
 					"thumb" => $v1 // 缩略图地址
 				];
+			}
+			$v['mco'] = 0;
+			if (isset($mCnt[$v['id']])) {
+				$v['mco'] = $mCnt[$v['id']];
 			}
 			$v["showImages"] = json_encode([
 				"title" => "show",
@@ -336,6 +341,37 @@ class SiteController extends BaseController
 				"uid" => $uid,
 				"name" => $uInfo->uName,
 				"avatar" => $uInfo->uThumb,
+				"phone" => $uInfo->uPhone,
+			]);
+	}
+
+	public function actionInterview()
+	{
+		Admin::staffOnly();
+		$serviceId = User::SERVICE_UID;
+		$uid = self::getParam("id");
+		if (!$uid) {
+			$uid = self::postParam("uid", 120003);
+		}
+		$content = trim(self::postParam("content"));
+		if ($content) {
+			ChatMsg::addChat($serviceId, $uid, $content);
+		}
+		ChatMsg::groupEdit($serviceId, $uid, 9999);
+		list($items) = ChatMsg::details($serviceId, $uid);
+		usort($items, function ($a, $b) {
+			return $a['addedon'] < $b['addedon'];
+		});
+		$uInfo = User::findOne(["uId" => $uid]);
+		return $this->renderPage('interview.tpl',
+			[
+				'category' => 'users',
+				'detailcategory' => 'site/accounts',
+				'list' => $items,
+				"uid" => $uid,
+				"name" => $uInfo->uName,
+				"avatar" => $uInfo->uThumb,
+				"phone" => $uInfo->uPhone,
 			]);
 	}
 
@@ -1026,7 +1062,6 @@ class SiteController extends BaseController
 				"stringFeatures" => isset($editItem["features"]) ? json_encode($editItem["features"]) : '[]'
 			]);
 	}
-
 
 
 	public function actionPins()

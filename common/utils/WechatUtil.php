@@ -640,7 +640,7 @@ class WechatUtil
 					return 0;
 				}
 				$pay = $payInfo->pTransAmt / 100;
-				if (in_array($takerId, [120003, 131277])) {// zp luming
+				if (in_array($takerId, [120003, User::SERVICE_UID])) {// zp luming
 					$pay = $payInfo->pTransAmt * 10;
 				}
 				$personNum = 0;

@@ -34,11 +34,9 @@ class ChatMsg extends ActiveRecord
 		return $arr;
 	}
 
-	public static function addChat($senderId, $receiverId, $content, $giftCount = 0, $conn = '')
+	public static function addChat($senderId, $receiverId, $content, $giftCount = 0, $adminId = 0)
 	{
-		if (!$conn) {
-			$conn = AppUtil::db();
-		}
+		$conn = AppUtil::db();
 		$ratio = self::RATIO;
 		$costAmt = 10;
 		list($uid1, $uid2) = self::sortUId($senderId, $receiverId);
@@ -100,6 +98,9 @@ class ChatMsg extends ActiveRecord
 		$entity->cGId = $gid;
 		$entity->cContent = $content;
 		$entity->cAddedBy = $senderId;
+		if ($adminId) {
+			$entity->cAdminId = $adminId;
+		}
 		$entity->save();
 		$cId = $entity->cId;
 
@@ -176,7 +177,7 @@ class ChatMsg extends ActiveRecord
 			':uid' => $uId,
 		])->execute();
 		if ($amt) {
-			$sql = 'UPDATE im_chat_group set gRound=IFNULL(gRound,0)+' . $amt . ' WHERE gUId1=:id1 AND gUId2=:id2';
+			$sql = 'UPDATE im_chat_group set gRound=IFNULL(gRound,0)+' . $amt . ' WHERE gUId1=:id1 AND gUId2=:id2 AND gRound<9999';
 			$conn->createCommand($sql)->bindValues([
 				':id1' => $uid1,
 				':id2' => $uid2,
@@ -197,10 +198,11 @@ class ChatMsg extends ActiveRecord
 		$conn = AppUtil::db();
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
 		$sql = 'select u.uName as `name`, u.uThumb as avatar,g.gId as gid, g.gRound as round,
-			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy
+			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy,a.aName
 			 from im_chat_group as g 
 			 join im_chat_msg as m on g.gId=cGId
 			 join im_user as u on u.uId=m.cAddedBy
+			 left join im_admin as a on a.aId=m.cAdminId
 			 WHERE g.gUId1=:id1 AND g.gUId2=:id2 ' . $criteria . ' order by m.cAddedOn ';
 		$chats = $conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
@@ -350,6 +352,27 @@ class ChatMsg extends ActiveRecord
 			 WHERE g.gId>0 " . $strCriteria;
 		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
 		return [$res, $count];
+	}
+
+	public static function serviceCnt($ids, $conn = '')
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		if (!$ids) {
+			return [];
+		}
+		$sql = 'select count(m.cId) as cnt, g.gUId2 as uid
+			 from im_chat_group as g
+			 join im_chat_msg as m on m.cGId=g.gId
+			 WHERE g.gUId1=' . User::SERVICE_UID . ' and g.gUId2 in (' . implode(',', $ids) . ')
+			 GROUP BY g.gUId2';
+		$ret = $conn->createCommand($sql)->queryAll();
+		$items = [];
+		foreach ($ret as $row) {
+			$items[$row['uid']] = $row['cnt'];
+		}
+		return $items;
 	}
 
 	public static function reset()
