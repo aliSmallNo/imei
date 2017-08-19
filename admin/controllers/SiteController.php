@@ -243,7 +243,7 @@ class SiteController extends BaseController
 				"status" => $status,
 				'success' => $success,
 				'error' => $error,
-				'detailcategory' => 'site/account',
+				'detailcategory' => 'site/accounts',
 				'category' => 'users',
 			]);
 	}
