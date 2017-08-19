@@ -581,7 +581,7 @@ class WechatUtil
 				$keywords['keyword2'] = date("Y年n月j日 H:i");
 				$keywords['keyword3'] = $subTitle;
 				$keywords['remark'] = "\n点击下方详情查看吧~";
-				$text = '个人信息审核通过了';
+				$text = '恭喜你，个人信息审核通过了。';
 				break;
 			case self::NOTICE_AUDIT:
 				$msgCat = UserMsg::CATEGORY_AUDIT;
@@ -591,7 +591,7 @@ class WechatUtil
 				$keywords['keyword1'] = "个人信息审核不通过";
 				$keywords['keyword2'] = $subTitle;
 				$keywords['remark'] = "\n点击下方详情查看吧~";
-				$text = "个人信息审核不通过。" . $subTitle;
+				$text = "个人信息审核不通过，" . $subTitle;
 				break;
 			case self::NOTICE_PRESENT:
 				if (User::muteAlert($takerId, User::ALERT_PRESENT)) {
