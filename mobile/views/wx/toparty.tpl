@@ -266,7 +266,7 @@
 			border-radius: 0;
 		}
 
-		.par-yzm button {
+		.par-yzm a {
 			flex: 0 0 10rem;
 			background: #ff3d7f;
 			color: #fff;
@@ -274,6 +274,7 @@
 			font-size: 1.2rem;
 			padding: .3rem 0;
 			border-radius: 0;
+			text-align: center;
 		}
 
 		.par-yzm button.disabled {
@@ -299,7 +300,7 @@
 		<div class="par-input">
 			<label>出生日期</label>
 			<div>
-				<input type="date" class="my-date-input" placeholder="例如: 1995-01-01" data-field="birthyear">
+				<input type="date" placeholder="例如: 1995-01-01" data-field="birthyear">
 			</div>
 		</div>
 		<div class="par-input">
@@ -310,13 +311,11 @@
 			<label>验证码</label>
 			<p class="par-yzm">
 				<input type="text" maxlength="6" class="code" data-field="code">
-				<button class="btn-code">获取验证码</button>
+				<a class="btn-code">获取验证码</a>
 			</p>
 		</div>
-
 		<a class="par-sign">报名</a>
 	</div>
-
 
 </div>
 
