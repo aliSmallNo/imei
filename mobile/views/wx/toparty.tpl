@@ -267,7 +267,7 @@
 		}
 
 		.par-yzm a {
-			flex: 0 0 10rem;
+			flex: 0 0 8rem;
 			background: #ff3d7f;
 			color: #fff;
 			border: none;
