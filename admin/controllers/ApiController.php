@@ -16,7 +16,6 @@ use common\models\QuestionGroup;
 use common\models\QuestionSea;
 use common\models\User;
 use common\models\UserAudit;
-use common\models\UserMsg;
 use common\models\UserNet;
 use common\utils\AppUtil;
 use common\utils\WechatUtil;
@@ -248,9 +247,9 @@ class ApiController extends Controller
 						$aid = UserAudit::replace($data);
 						WechatUtil::templateMsg(WechatUtil::NOTICE_AUDIT_PASS,
 							$id,
-							$title = '审核通知',
-							$subTitle = '审核通过',
-							$adminId = Admin::getAdminId());
+							'审核结果通知',
+							'审核通过',
+							$id);
 					} else {
 						$data["aReasons"] = $reason;
 						$data["aAddedBy"] = Admin::getAdminId();
@@ -262,20 +261,14 @@ class ApiController extends Controller
 							$str = "";
 							foreach ($reason as $v) {
 								if ($v["text"]) {
-									$str .= "您的" . $catArr[$v["tag"]] . "不合规: " . $v["text"] . "<br>";
+									$str .= '你的' . $catArr[$v["tag"]] . "不合规，" . $v["text"] . '；';
 								}
 							}
-							UserMsg::edit(0, [
-								"mUId" => $id,
-								"mCategory" => UserMsg::CATEGORY_AUDIT,
-								"mText" => $str,
-								"mAddedBy" => $id
-							]);
 							WechatUtil::templateMsg(WechatUtil::NOTICE_AUDIT,
 								$id,
-								$title = '审核通知',
-								$subTitle = str_replace("<br>", " ", $str),
-								$adminId = Admin::getAdminId());
+								'审核结果通知',
+								trim($str, '；'),
+								$id);
 						}
 					}
 

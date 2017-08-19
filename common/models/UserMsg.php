@@ -55,7 +55,7 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_MP_SAY => "修改了你的媒婆说",
 		self::CATEGORY_REWARD_NEW => "新人奖励",
 		self::CATEGORY_CHAT => "密聊信息",
-		self::CATEGORY_AUDIT => "审核通过",
+		self::CATEGORY_AUDIT => "审核结果通知",
 		self::CATEGORY_BULLETIN => "最新公告",
 		self::CATEGORY_UPGRADE => "最近更新",
 		self::CATEGORY_SMS_RECALL => "短信召回老用户",
@@ -127,7 +127,7 @@ class UserMsg extends ActiveRecord
 		$sql = "select m.*,u.uName,u.uId,u.uThumb as avatar 
 			from im_user_msg as m
 			join im_user as u on m.mAddedBy=u.uId
-			WHERE mUId=:uid AND m.mAddedBy>1
+			WHERE mUId=:uid 
 			ORDER BY mId desc $limit ";
 		$conn = AppUtil::db();
 		$ret = $conn->createCommand($sql)->bindValues([
@@ -247,7 +247,9 @@ class UserMsg extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$sql = 'select count(1) from im_user_msg WHERE mUId=:uid and mReadFlag=:unread and mStatus=1';
+		$sql = 'select count(1) from im_user_msg as m
+				join im_user as u on m.mAddedBy=u.uId 
+				WHERE mUId=:uid and mReadFlag=:unread and mStatus=1 ';
 		$ret = $conn->createCommand($sql)->bindValues([
 			':uid' => $uid,
 			':unread' => self::UN_READ,
