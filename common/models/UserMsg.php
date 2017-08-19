@@ -55,7 +55,7 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_MP_SAY => "修改了你的媒婆说",
 		self::CATEGORY_REWARD_NEW => "新人奖励",
 		self::CATEGORY_CHAT => "密聊信息",
-		self::CATEGORY_AUDIT => "审核通过",
+		self::CATEGORY_AUDIT => "审核结果通知",
 		self::CATEGORY_BULLETIN => "最新公告",
 		self::CATEGORY_UPGRADE => "最近更新",
 		self::CATEGORY_SMS_RECALL => "短信召回老用户",

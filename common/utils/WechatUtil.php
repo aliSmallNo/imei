@@ -536,6 +536,7 @@ class WechatUtil
 		];
 		$wxUrl = AppUtil::wechatUrl();
 		$msgCat = 0;
+		$text = '';
 		switch ($noticeTag) {
 			case self::NOTICE_REWARD_NEW:
 				$templateId = 'ZJVqVttar_9v9azyjydZzFiR8hF7pq-BpY_XBbugJDM';
@@ -580,6 +581,7 @@ class WechatUtil
 				$keywords['keyword2'] = date("Y年n月j日 H:i");
 				$keywords['keyword3'] = $subTitle;
 				$keywords['remark'] = "\n点击下方详情查看吧~";
+				$text = '个人信息审核通过了';
 				break;
 			case self::NOTICE_AUDIT:
 				$msgCat = UserMsg::CATEGORY_AUDIT;
@@ -589,6 +591,7 @@ class WechatUtil
 				$keywords['keyword1'] = "个人信息审核不通过";
 				$keywords['keyword2'] = $subTitle;
 				$keywords['remark'] = "\n点击下方详情查看吧~";
+				$text = "个人信息审核不通过。" . $subTitle;
 				break;
 			case self::NOTICE_PRESENT:
 				if (User::muteAlert($takerId, User::ALERT_PRESENT)) {
@@ -701,7 +704,10 @@ class WechatUtil
 			$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
 			AppUtil::postJSON($url, json_encode($bodyInfo));
 		}
-		$text = isset(UserMsg::$catDict[$msgCat]) ? UserMsg::$catDict[$msgCat] : '';
+		if (!$text) {
+			$text = isset(UserMsg::$catDict[$msgCat]) ? UserMsg::$catDict[$msgCat] : '';
+		}
+
 		if (in_array($noticeTag, [self::NOTICE_ROUTINE])) {
 			$result = 1;
 		} else {
