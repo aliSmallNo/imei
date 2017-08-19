@@ -20,8 +20,8 @@ require(["layer"],
 			phone: $('.phone'),
 			counting: 0,
 
-			lat: 40.08034,
-			lng: 116.3483,
+			lat: 32.769427,
+			lng: 120.410797, //云凤商店
 
 		};
 
