@@ -168,7 +168,7 @@ class UserMsg extends ActiveRecord
 					break;
 				case self::CATEGORY_CHAT:
 					$v["url"] = "/wx/single#scontacts";
-					$v["text"] = $v["uName"] . "发送了一条密聊消息";
+					$v["text"] = $v["uName"] . "给你发了一条消息";
 					break;
 				case self::CATEGORY_AUDIT:
 					$v["url"] = "javascript:;";
