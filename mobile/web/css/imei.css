@@ -5920,7 +5920,7 @@ section {
 
 .notices li {
   border-bottom: 1px solid #E4E4E4;
-  padding: 0.5rem 1.8rem 0.5rem 0;
+  padding: 0.5rem 2rem 0.5rem 0;
   position: relative; }
   .notices li:before {
     content: " ";
