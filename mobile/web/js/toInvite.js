@@ -247,29 +247,10 @@ require(["layer"],
 			return partten.test(num);
 		}
 
-		$(document).on("focus", ".my-date-input", function () {
-			var a = $(this);
-			a.attr("autocomplete", "off");
-			var e = a.attr("max-date");
-			var c = a.attr("min-date");
-			var b = a.attr("date-fmt");
-			if (!b || b.length == 0) {
-				b = "yyyy-MM-dd";
-			}
-			var d = {dateFmt: b};
-			if (e && e.length > 0) {
-				d.maxDate = e;
-			}
-			if (c && c.length > 0) {
-				d.minDate = c;
-			}
-			WdatePicker(d);
-		});
-
 		$(function () {
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
-			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
+			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage',"getLocation"];
 			wx.config(wxInfo);
 			wx.ready(function () {
 				//wx.hideOptionMenu();
