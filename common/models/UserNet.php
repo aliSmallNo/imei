@@ -471,7 +471,11 @@ class UserNet extends ActiveRecord
 			case "yes":
 				$info->nDeletedFlag = self::DELETE_FLAG_NO;
 				$info->nAddedOn = $date;
-				WechatUtil::templateMsg(WechatUtil::NOTICE_FAVOR, $uid);
+				WechatUtil::templateMsg(WechatUtil::NOTICE_FAVOR,
+					$uid,
+					'',
+					'',
+					$mId);
 				UserMsg::recall($uid);
 				break;
 			case "no":
@@ -619,10 +623,10 @@ class UserNet extends ActiveRecord
 			case "pass":
 				$updateStatus = self::STATUS_PASS;
 				WechatUtil::templateMsg(WechatUtil::NOTICE_APPROVE,
-					$myUid,
+					$targetId,
 					'TA同意给你微信号啦~',
 					'这是一个很棒的开始哦，加油，努力~',
-					$targetId);
+					$myUid);
 				// 奖励媒婆 mpId
 				$mpInfo = self::findOne(["nSubUId" => $myUid, 'nDeletedFlag' => 0, "nRelation" => self::REL_BACKER]);
 				if ($mpInfo && $payInfo) {
@@ -638,10 +642,10 @@ class UserNet extends ActiveRecord
 					UserTrans::add($myUid, $nid, UserTrans::CAT_RETURN,
 						UserTrans::$catDict[UserTrans::CAT_RETURN], $payAmt, UserTrans::UNIT_GIFT);
 					WechatUtil::templateMsg(WechatUtil::NOTICE_DECLINE,
-						$myUid,
+						$targetId,
 						'TA拒绝给你微信号，你送出的媒桂花也退回了',
 						'不用烦恼，不用气馁，还有更好的在未来等你',
-						$targetId);
+						$myUid);
 				}
 				break;
 			case "recycle":

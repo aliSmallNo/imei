@@ -246,7 +246,8 @@ class ApiController extends Controller
 
 					if ($f) {
 						$aid = UserAudit::replace($data);
-						WechatUtil::templateMsg("notice_audit_pass", $id,
+						WechatUtil::templateMsg(WechatUtil::NOTICE_AUDIT_PASS,
+							$id,
 							$title = '审核通知',
 							$subTitle = '审核通过',
 							$adminId = Admin::getAdminId());
@@ -270,7 +271,8 @@ class ApiController extends Controller
 								"mText" => $str,
 								"mAddedBy" => $id
 							]);
-							WechatUtil::templateMsg("notice_audit", $id,
+							WechatUtil::templateMsg(WechatUtil::NOTICE_AUDIT,
+								$id,
 								$title = '审核通知',
 								$subTitle = str_replace("<br>", " ", $str),
 								$adminId = Admin::getAdminId());
@@ -337,7 +339,7 @@ class ApiController extends Controller
 				$from = self::postParam("from");
 				$to = self::postParam("to");
 				$cat = self::postParam("cat");
-				$ret = LogAction::reuseDetail($cat,$begin, $end, $from, $to);
+				$ret = LogAction::reuseDetail($cat, $begin, $end, $from, $to);
 				return self::renderAPI(0, '', ['items' => $ret]);
 				break;
 		}

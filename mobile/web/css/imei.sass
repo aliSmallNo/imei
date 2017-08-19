@@ -6,7 +6,7 @@ $mainColorLighter: lighten($mainColor, 24%)
 $mainColorDark: darken($mainColor, 6%)
 $white: #fff
 $fontColor: #363438
-$grayFontColorLight: #999
+$grayFontColorLight: #a4a4a4
 $grayFontColor: #6a6572
 $grayFontColorDark: #525252
 $disabledFontColor: #aaa
@@ -5560,4 +5560,38 @@ section
 				background: $borderColor
 			&:after
 				display: none
+.notices
+	li
+		border-bottom: 1px solid $borderColor
+		padding: .5rem 1.8rem .5rem 0
+		position: relative
+		&:before
+			@include arrowRight
+			right: 1.2rem
+
+.cell-subtitle
+	@include displayFlex
+	.avatar
+		@include displayFlex-w(4.6rem)
+		@include displayFlexVAlign
+		text-align: center
+		img
+			width: 3.6rem
+			height: 3.6rem
+			vertical-align: middle
+	.content
+		@include displayFlex-1
+		@include displayFlexVAlign
+		h5
+			font-weight: $weightBold
+			font-size: 1.2rem
+		h6
+			color: $grayFontColorLight
+			font-weight: $weightNormal
+			font-size: 1rem
+	&.read
+		.content
+			h5
+				font-weight: $weightNormal
+				color: $grayFontColorLight
 

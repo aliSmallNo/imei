@@ -95,7 +95,7 @@ class ApiController extends Controller
 					return self::renderAPI(129, '手机号格式不正确~');
 				}
 				if (!User::verifySMSCode($phone, $code)) {
-					 return self::renderAPI(129, '输入的验证码不正确或者已经失效~');
+					return self::renderAPI(129, '输入的验证码不正确或者已经失效~');
 				}
 				if (EventCrew::findOne(["cPhone" => $phone])) {
 					return self::renderAPI(129, '您已经报名了，不要重复报名');
@@ -1332,8 +1332,12 @@ class ApiController extends Controller
 				} elseif (is_numeric($ret)) {
 					return self::renderAPI(129, '不好意思哦，最多只能聊' . $ret . '句');
 				} else {
-					WechatUtil::templateMsg(WechatUtil::NOTICE_CHAT, $receiverId,
-						'有人密聊你啦', 'TA给你发了一条密聊消息，快去看看吧~');
+					WechatUtil::templateMsg(WechatUtil::NOTICE_CHAT,
+						$receiverId,
+						'有人密聊你啦',
+						'TA给你发了一条密聊消息，快去看看吧~',
+						$uid
+					);
 					return self::renderAPI(0, '', [
 						'items' => $ret,
 						'gid' => $ret['gid'],

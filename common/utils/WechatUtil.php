@@ -515,18 +515,18 @@ class WechatUtil
 		}
 	}
 
-	public static function templateMsg($noticeTag, $uId, $title = '', $subTitle = '', $subUId = 1)
+	public static function templateMsg($noticeTag, $takerId, $title = '', $subTitle = '', $giverId = 1)
 	{
 		if (AppUtil::isDev()) {
 			return 0;
 		}
-		$userInfo = User::findOne(["uId" => $uId]);
+		$userInfo = User::findOne(["uId" => $takerId]);
 		if (!$userInfo) {
 			return 0;
 		}
 		$openId = $userInfo['uOpenId'];
 		$nickname = $userInfo['uName'];
-		$encryptId = AppUtil::encrypt($uId);
+		$encryptId = AppUtil::encrypt($takerId);
 		$keywords = [
 			'first' => '',
 			'keyword1' => $title,
@@ -562,7 +562,7 @@ class WechatUtil
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_CHAT:
-				if (User::muteAlert($uId, User::ALERT_CHAT)) {
+				if (User::muteAlert($takerId, User::ALERT_CHAT)) {
 					return 0;
 				}
 				$msgCat = UserMsg::CATEGORY_CHAT;
@@ -591,7 +591,7 @@ class WechatUtil
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_PRESENT:
-				if (User::muteAlert($uId, User::ALERT_PRESENT)) {
+				if (User::muteAlert($takerId, User::ALERT_PRESENT)) {
 					return 0;
 				}
 				$msgCat = UserMsg::CATEGORY_PRESENT;
@@ -603,7 +603,7 @@ class WechatUtil
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_FAVOR:
-				if (User::muteAlert($uId, User::ALERT_FAVOR)) {
+				if (User::muteAlert($takerId, User::ALERT_FAVOR)) {
 					return 0;
 				}
 				$msgCat = UserMsg::CATEGORY_FAVOR;
@@ -615,9 +615,9 @@ class WechatUtil
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_ROUTINE:
-				if (User::muteAlert($uId, User::ALERT_FAVOR)
-					&& User::muteAlert($uId, User::ALERT_PRESENT)
-					&& User::muteAlert($uId, User::ALERT_CHAT)) {
+				if (User::muteAlert($takerId, User::ALERT_FAVOR)
+					&& User::muteAlert($takerId, User::ALERT_PRESENT)
+					&& User::muteAlert($takerId, User::ALERT_CHAT)) {
 					return 0;
 				}
 				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
@@ -628,16 +628,16 @@ class WechatUtil
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_MAKE_FRIRENDS: //相亲交友活动支付通知 /wx/toparty
-				$subUId = $uId;
+				$giverId = $takerId;
 				$msgCat = UserMsg::CATEGORY_FRIRENDS;
 				$templateId = "G-rXFQPaFouaeCTJpw5jkl8FuvhpxUSFyiZlUAs8XoM";
 				$url = $wxUrl . "/wx/notice";
-				$payInfo = Pay::findOne(["pUId" => $uId, "pCategory" => Pay::CAT_MAKEING_FRIENDS, "pStatus" => Pay::MODE_WXPAY]);
+				$payInfo = Pay::findOne(["pUId" => $takerId, "pCategory" => Pay::CAT_MAKEING_FRIENDS, "pStatus" => Pay::MODE_WXPAY]);
 				if (!$payInfo) {
 					return 0;
 				}
 				$pay = $payInfo->pTransAmt / 100;
-				if (in_array($uId, [120003, 131277])) {// zp luming
+				if (in_array($takerId, [120003, 131277])) {// zp luming
 					$pay = $payInfo->pTransAmt * 10;
 				}
 				$personNum = 0;
@@ -706,11 +706,11 @@ class WechatUtil
 			$result = 1;
 		} else {
 			$result = UserMsg::edit(0, [
-				"mUId" => $uId,
+				"mUId" => $takerId,
 				"mCategory" => $msgCat,
 				"mText" => $text,
 				"mRaw" => json_encode($bodyInfo, JSON_UNESCAPED_UNICODE),
-				"mAddedBy" => $subUId
+				"mAddedBy" => $giverId
 			]);
 		}
 
