@@ -227,7 +227,7 @@
 			padding: .3rem 1rem;
 		}
 
-		.par-input div input[type=text] {
+		.par-input div input[type=text], .par-input div input[type=date] {
 			width: 97%;
 			height: 2rem;
 			border: none;
@@ -263,14 +263,23 @@
 			font-size: 1.2rem;
 			border: 1px solid #777;
 			padding: .3rem 1rem;
+			border-radius: 0;
 		}
 
-		.par-yzm button {
-			flex: 0 0 10rem;
+		.par-yzm a {
+			flex: 0 0 8rem;
 			background: #ff3d7f;
 			color: #fff;
 			border: none;
 			font-size: 1.2rem;
+			padding: .3rem 0;
+			border-radius: 0;
+			text-align: center;
+		}
+
+		.par-yzm a span {
+			position: relative;
+			top: .3rem;
 		}
 
 		.par-yzm button.disabled {
@@ -296,7 +305,7 @@
 		<div class="par-input">
 			<label>出生日期</label>
 			<div>
-				<input type="text" class="my-date-input" placeholder="例如: 1995-01-01" data-field="birthyear">
+				<input type="date" placeholder="例如: 1995-01-01" data-field="birthyear">
 			</div>
 		</div>
 		<div class="par-input">
@@ -307,13 +316,11 @@
 			<label>验证码</label>
 			<p class="par-yzm">
 				<input type="text" maxlength="6" class="code" data-field="code">
-				<button class="btn-code">获取验证码</button>
+				<a class="btn-code"><span>获取验证码</span></a>
 			</p>
 		</div>
-
 		<a class="par-sign">报名</a>
 	</div>
-
 
 </div>
 
@@ -359,6 +366,6 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/toInvite.js?v=1.4.6" src="/assets/js/require.js"></script>
+<script data-main="/js/toInvite.js?v=1.4.10" src="/assets/js/require.js"></script>
 <script src="/assets/My97DatePicker/WdatePicker.js"></script>
 
