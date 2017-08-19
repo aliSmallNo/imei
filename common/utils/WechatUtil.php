@@ -586,7 +586,7 @@ class WechatUtil
 				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = $wxUrl . "/wx/sedit";
 				$keywords['first'] = "hi，$nickname\n";
-				$keywords['keyword1'] = "个人资料审核不合规通知";
+				$keywords['keyword1'] = "个人信息审核不通过";
 				$keywords['keyword2'] = $subTitle;
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
