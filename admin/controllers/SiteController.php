@@ -6,6 +6,7 @@ use admin\models\Admin;
 use admin\models\Menu;
 use common\models\ChatMsg;
 use common\models\City;
+use common\models\Event;
 use common\models\EventCrew;
 use common\models\Feedback;
 use common\models\Log;
@@ -842,36 +843,12 @@ class SiteController extends BaseController
 
 		$pagination = self::pagination($page, $count);
 
-
 		return $this->renderPage('answers.tpl',
 			[
 				'category' => 'data',
 				"name" => $name,
 				'pagination' => $pagination,
 				'list' => $list,
-			]);
-	}
-
-	public function actionEvents()
-	{
-		$page = self::getParam("page", 1);
-		$name = self::getParam('name');
-
-		$params = $criteria = [];
-		if ($name) {
-			$criteria[] = "  uName like :name ";
-			$params[':name'] = "%$name%";
-		}
-
-		list($list, $count) = Pay::items($criteria, $params, $page);
-		$pagination = self::pagination($page, $count);
-
-		return $this->renderPage('events.tpl',
-			[
-				'list' => $list,
-				"name" => $name,
-				'pagination' => $pagination,
-				'category' => 'data',
 			]);
 	}
 
@@ -898,31 +875,53 @@ class SiteController extends BaseController
 			]);
 	}
 
+
+	public function actionEvents()
+	{
+		$page = self::getParam("page", 1);
+		$name = self::getParam('name');
+
+		$params = $criteria = [];
+		if ($name) {
+			$criteria[] = "  uName like :name ";
+			$params[':name'] = "%$name%";
+		}
+
+		list($list, $count) = Pay::items($criteria, $params, $page);
+		$pagination = self::pagination($page, $count);
+
+		return $this->renderPage('events.tpl',
+			[
+				'list' => $list,
+				"name" => $name,
+				'pagination' => $pagination,
+				'category' => 'data',
+			]);
+	}
+
+	// 添加活动 im_event add
 	public function actionEvent()
 	{
 		$getInfo = Yii::$app->request->get();
-		$queryId = self::getParam("id");
-		$queryId = AppUtil::decrypt($queryId);
-		if (!$queryId) {
-			$queryId = "";
-		}
+		$queryId = self::getParam("id", '');
 		$error = [];
 		$success = "";
-
-		$iId = self::postParam("iId");
+		$eId = self::postParam("eId");
 		$sign = self::postParam("sign");
-		$specsItems = self::postParam("cItems");
-		// $branchId = Admin::getBranch();
 		$editItem = [];
 		if ($sign) {
 			$fields = [
-				"iTitle" => [1, ""],
-				"iTitleAbbr" => [1, ""],
-				"iPrice" => [0, ""],
-				"iPostage" => [0, "0.00"],
-				"iAmount" => [1, 1],
-				"iSubCategory" => [1, ""],
-				"iMarginDay" => [0, "1"],
+				"eTitle" => [1, ""],
+				"ePrices" => [0, ""],
+				"eDateFrom" => [1, ""],
+				"eDateTo" => [1, ""],
+				"eRules" => [1, ""],
+				"eAddress" => [1, ""],
+				"eContact" => [1, ""],
+				// "eDetails" => [1, ""],
+
+				"eLocation" => [0, ""],
+				"eCategory" => [0, 100],
 			];
 			foreach ($fields as $field => $item) {
 				$fRequired = ($item[0] == 1);
@@ -934,21 +933,10 @@ class SiteController extends BaseController
 				}
 				$editItem[$field] = $fVal ? $fVal : $fDefault;
 			}
-			$coverUrl = ImageOpt::uploadItemImages($_FILES['cover'], ImageOpt::CATEGORY_TRADE_ITEM);
-			if ($coverUrl) {
-				//Rain: 对团购商品特殊处理，直接返回图片url及缩率图url
-				$urls = json_decode($coverUrl, 1);
-				if ($urls && is_array($urls)) {
-					$editItem['iCover'] = json_encode([$urls[0]]);
-					if (isset($urls[1])) {
-						$editItem['iThumb'] = $urls[1];
-					}
-				}
-			}
+
 			$cFeatures = json_decode(self::postParam("cFeatures"), 1);
-			Utils::logFile(json_encode($cFeatures), 5, __FUNCTION__, __LINE__);
-			if ($cFeatures && isset($_FILES['featureImage']) && $_FILES['featureImage']) {
-				$newImages = ImageOpt::uploadItemImages($_FILES['featureImage'], ImageOpt::CATEGORY_MALL_ITEM);
+			if ($cFeatures && isset($_FILES['featureImage']) && $_FILES['featureImage']['size'][0]) {
+				$newImages = ImageUtil::uploadItemImages($_FILES['featureImage'], 0);
 				$newImages = json_decode($newImages, 1);
 				if ($newImages) {
 					foreach ($cFeatures as $key => $item) {
@@ -962,71 +950,52 @@ class SiteController extends BaseController
 					}
 				}
 			}
+			//print_r($cFeatures);exit;
+
 			if (is_array($cFeatures)) {
-				$editItem['iFeatures'] = json_encode($cFeatures, JSON_UNESCAPED_UNICODE);
+				$editItem['eDetails'] = json_encode($cFeatures, JSON_UNESCAPED_UNICODE);
 			}
 
-			if (!$iId) {
-				$editItem['iBranchId'] = $branchId;
-				$editItem['zAddedBy'] = Admin::getAdminId();
+			if (!$eId) {
+				$editItem['eAddedBy'] = Admin::getAdminId();
 			}
-			$editItem['zUpdatedBy'] = Admin::getAdminId();
-			Utils::logFile(json_encode($editItem), 5, __FUNCTION__, __LINE__);
+			$editItem['eUpdatedBy'] = Admin::getAdminId();
 			if (!$error) {
-				$specsItems = json_decode($specsItems, 1);
-				if (!$editItem["iPrice"] && $specsItems && is_array($specsItems)) {
-					$newPrice = 0;
-					foreach ($specsItems as $spec) {
-						if (!$newPrice || $newPrice > $spec["price"]) {
-							$newPrice = $spec["price"];
-						}
-					}
-					if ($newPrice) {
-						$editItem["iPrice"] = "团购价: " . $newPrice . "元起";
-					}
-				}
-				if ($iId) {
-					TradeItem::modify($iId, $editItem, Admin::getAdminId());
-					TradeItemSpecs::edit($iId, $specsItems);
-					$queryId = $iId;
+				if ($eId) {
+					$queryId = Event::modify($eId, $editItem);
 					$success = self::ICON_OK_HTML . '修改成功';
 				} else {
-					$queryId = TradeItem::add($editItem, Admin::getAdminId());
-					TradeItemSpecs::edit($queryId, $specsItems);
+					$queryId = Event::add($editItem);
 					$success = self::ICON_OK_HTML . '添加成功';
 				}
 			}
 		}
 		$specs = [];
 		if ($queryId) {
-			// $editItem = TradeItem::getItem($queryId);
-			// $specs = TradeItemSpecs::getItems($queryId);
-		}
-
-		if (!$specs) {
+			$editItem = Event::findOne(["eId" => $queryId]);
+			$specs = $editItem->eRules ? json_decode($editItem->eRules, 1) : [
+				[
+					"name" => ""
+				]
+			];
+		} else {
 			$specs[] = [
-				"id" => "",
-				"name" => "",
-				"unit" => "",
-				"max" => "1000",
-				"price" => "",
+				"name" => ""
 			];
 		}
+
 		return $this->renderPage('event.tpl',
 			[
-				'getInfo' => $getInfo,
-				'detailcategory' => "trade/items",
-				'debug' => (Admin::isDebugUser() && 1),
+				//'getInfo' => $getInfo,
+				'detailcategory' => "site/events",
 				'entity' => $editItem,
 				"queryId" => $queryId,
 				"specs" => $specs,
 				"success" => $success,
 				"error" => $error,
-				// "categories" => TradeItem::$Categories,
-				"stringFeatures" => isset($editItem["features"]) ? json_encode($editItem["features"]) : '[]'
+				"stringFeatures" => isset($editItem["eDetails"]) ? $editItem["eDetails"] : '[]'
 			]);
 	}
-
 
 
 	public function actionPins()

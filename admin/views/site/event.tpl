@@ -44,11 +44,11 @@
 			{{/if}}
 		</div>
 	</div>
-	<form class="form-horizontal" id="editForm" method="post" enctype="multipart/form-data" action="/trade/detail">
+	<form class="form-horizontal" id="editForm" method="post" enctype="multipart/form-data" action="/site/event">
 		<div class="row">
 			<input type="hidden" name="sign" value="1">
-			<input type="hidden" name="iId" value="{{$queryId}}">
-			<input type="hidden" id="cItems" name="cItems">
+			<input type="hidden" name="eId" value="{{$queryId}}">
+			<input type="hidden" id="cItems" name="eRules">
 			<input type="hidden" id="cFeatures" name="cFeatures">
 			<div class="col-lg-6">
 				<div class="form-group">
@@ -185,7 +185,7 @@
 	</tr>
 </script>
 
-
+<script src="/js/jquery-ui.min.js"></script>
 <script>
 
 	var mUploaderTmp = '<input type="file" value="添加 +" name="featureImage[]" class="file-uploader" accept="image/jpg, image/jpeg">' +
@@ -259,7 +259,7 @@
 		layer.load();
 		console.log(items);
 		console.log(features);
-		// $("#editForm").submit();
+		 $("#editForm").submit();
 	});
 
 	function getSpecs() {
