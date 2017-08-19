@@ -367,5 +367,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script data-main="/js/toInvite.js?v=1.4.10" src="/assets/js/require.js"></script>
-<script src="/assets/My97DatePicker/WdatePicker.js"></script>
 
