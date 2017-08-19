@@ -624,7 +624,7 @@ class WechatUtil
 					return 0;
 				}
 				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
-				$url = $wxUrl . "/wx/single#sme";
+				$url = $wxUrl . "/wx/notice";
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['keyword1'] = $title;
 				$keywords['keyword2'] = $subTitle;
