@@ -47,10 +47,9 @@ class SiteController extends BaseController
 	public function actionError()
 	{
 		$exception = Yii::$app->errorHandler->exception;
-		/*if (0 && $exception && $exception->statusCode && $exception->statusCode == 404) {
-			echo '<p>非常抱歉！页面不存在~~~ 飞火星去了吧 (┬＿┬)</p>' . date("Y-m-d H:i:s");
-			exit();
-		}*/
+		if ($exception && $exception->statusCode && $exception->statusCode == 404) {
+			return $this->render('err404.tpl');
+		}
 		return $this->render('error', ['ex' => $exception]);
 	}
 
