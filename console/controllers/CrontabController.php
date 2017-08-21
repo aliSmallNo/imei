@@ -19,7 +19,8 @@ class CrontabController extends Controller
 
 	public function actionRefresh()
 	{
-		$ret = UserWechat::refreshWXInfo([120003, 131266, 131379, 134534], 1);
+		// 120003, 131266, 131379, 134534
+		$ret = UserWechat::refreshWXInfo([], 1);
 		var_dump($ret);
 	}
 
