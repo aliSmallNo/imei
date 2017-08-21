@@ -1192,4 +1192,19 @@ class WxController extends BaseController
 			'投票活动');
 	}
 
+	public function actionVoted()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/index');
+			exit();
+		}
+
+		return self::renderPage('voted.tpl', [
+		],
+			'terse',
+			'投票活动');
+	}
+
 }
