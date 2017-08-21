@@ -281,7 +281,7 @@ class UserWechat extends ActiveRecord
 			'country' => 'wCountry'
 		];
 		$sql2 = '';
-		foreach ($fields as $field) {
+		foreach ($fields as $k => $field) {
 			$sql2 .= ',' . $field . '=:' . $field;
 		}
 
