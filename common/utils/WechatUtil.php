@@ -368,11 +368,16 @@ class WechatUtil
 		$postData = [
 			"button" => [
 				[
+					"type" => "view",
 					"name" => "我是单身",
+					"url" => $wxUrl . "/wx/single#slook"
+				],
+				[
+					"name" => "个人中心",
 					"sub_button" => [
 						[
 							"type" => "view",
-							"name" => "发掘优秀单身",
+							"name" => "单身推荐",
 							"url" => $wxUrl . "/wx/single#slook"
 						],
 						[
@@ -382,38 +387,13 @@ class WechatUtil
 						],
 						[
 							"type" => "view",
-							"name" => "待处理请求",
-							"url" => $wxUrl . "/wx/single#addMeWx"
-						],
-						[
-							"type" => "view",
 							"name" => "个人中心",
 							"url" => $wxUrl . "/wx/single#sme"
-						]
-					]
-				],
-				[
-					"name" => "我是媒婆",
-					"sub_button" => [
-						[
-							"type" => "view",
-							"name" => "邀请单身好友",
-							"url" => $wxUrl . "/wx/sts"
 						],
 						[
 							"type" => "view",
-							"name" => "我的账户",
-							"url" => $wxUrl . "/wx/match#saccount"
-						],
-						[
-							"type" => "view",
-							"name" => "我的单身团",
-							"url" => $wxUrl . "/wx/match#sgroup"
-						],
-						[
-							"type" => "view",
-							"name" => "单身团动态",
-							"url" => $wxUrl . "/wx/match#srept"
+							"name" => "通知中心",
+							"url" => $wxUrl . "/wx/notice"
 						]
 					]
 				],

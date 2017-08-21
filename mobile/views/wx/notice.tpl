@@ -1,5 +1,5 @@
 <div class="nav">
-	<a href="single#sme">返回</a>
+	<a href="/wx/single#sme">返回</a>
 	<a href="#sme" style="display: none">个人中心</a>
 </div>
 <ul class="notices"></ul>
