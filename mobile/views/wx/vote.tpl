@@ -14,6 +14,7 @@
 		background: #f8f8f8;
 		margin: 1rem;
 		padding: 2rem;
+		border: 1px solid #eee;
 	}
 
 	.vote-item {
@@ -116,48 +117,121 @@
 		border: 1px solid #f06292;
 	}
 
+	.vote-btn {
+		margin: 0 1rem 3rem 1rem;
+		background: #f8f8f8;
+		text-align: center;
+		height: 4rem;
+		line-height: 4rem;
+		position: relative;
+		top: -1rem;
+		border: 1px solid #eee;
+		border-top: 0;
+	}
+
+	.vote-btn a {
+		display: block;
+		font-size: 1.2rem;
+		color: #E91E63;
+	}
+
+	.vote-item .opt-res {
+
+	}
+
 </style>
 <div class="vote-title">
 	<p>小微要组织一场活动，不知各位帅哥美女喜欢什么样的，那就一起来选吧。我们会根据大家的喜好，组织线下活动哦，欢迎参加</p>
 </div>
 <div class="vote">
 	<div class="vote-item">
-		<h4>1.您的性别(单选)</h4>
+		<h4>1.您的性别</h4>
 		<div class="opt">
-			<input class="magic-radio" type="radio" name="radio" id="r1" value="option1">
+			<input class="magic-radio" type="radio" name="gender" id="r1" value="male">
 			<label for="r1">男</label>
 		</div>
 		<div class="opt">
-			<input class="magic-radio" type="radio" name="radio" id="r2" value="option2" checked="">
+			<input class="magic-radio" type="radio" name="gender" id="r2" value="female">
 			<label for="r2">女</label>
 		</div>
 	</div>
 
 	<div class="vote-item">
-		<h4>2.您最想参加什么样的线下交友活动(多选)</h4>
+		<h4>2.您的年龄</h4>
 		<div class="opt">
-			<input class="magic-checkbox" type="checkbox" name="layout" id="c1">
+			<input class="magic-radio" type="radio" name="age" id="a1" value="0-20">
+			<label for="a1">20岁以下（含20岁）</label>
+		</div>
+		<div class="opt">
+			<input class="magic-radio" type="radio" name="age" id="a2" value="21-25">
+			<label for="a2">21-25岁</label>
+		</div>
+		<div class="opt">
+			<input class="magic-radio" type="radio" name="age" id="a3" value="26-30">
+			<label for="a3">26-30岁</label>
+		</div>
+		<div class="opt">
+			<input class="magic-radio" type="radio" name="age" id="a4" value="31-35">
+			<label for="a4">31-35岁</label>
+		</div>
+		<div class="opt">
+			<input class="magic-radio" type="radio" name="age" id="a5" value="36-100">
+			<label for="a5">35岁以上</label>
+		</div>
+	</div>
+
+	<div class="vote-item">
+		<h4>3.您最想参加什么样的线下交友活动(多选)</h4>
+		<div class="opt">
+			<input class="magic-checkbox" type="checkbox" name="active" id="c1" value="opt1">
 			<label for="c1">相亲见面会</label>
 		</div>
 		<div class="opt">
-			<input class="magic-checkbox" type="checkbox" name="layout" id="c2">
+			<input class="magic-checkbox" type="checkbox" name="active" id="c2" value="opt2">
 			<label for="c2">唱歌</label>
 		</div>
 		<div class="opt">
-			<input class="magic-checkbox" type="checkbox" name="layout" id="c3">
+			<input class="magic-checkbox" type="checkbox" name="active" id="c3" value="opt3">
 			<label for="c3">吃饭</label>
 		</div>
 		<div class="opt">
-			<input class="magic-checkbox" type="checkbox" name="layout" id="c4">
+			<input class="magic-checkbox" type="checkbox" name="active" id="c4" value="opt4">
 			<label for="c4">周边游</label>
 		</div>
 		<div class="opt">
-			<input class="magic-checkbox" type="checkbox" name="layout" id="c5">
+			<input class="magic-checkbox" type="checkbox" name="active" id="c5" value="opt5">
 			<label for="c5">其他</label>
 		</div>
 	</div>
 
 
+	<div class="vote-item">
+		<h4>4.您能接受的活动费用是多少(AA的情况)</h4>
+		<div class="opt">
+			<input class="magic-radio" type="radio" name="fee" id="f1" value="">
+			<label for="f1">30元以下（包括30）</label>
+		</div>
+		<div class="opt">
+			<input class="magic-radio" type="radio" name="fee" id="f2" value="">
+			<label for="f2">31-50元</label>
+		</div>
+		<div class="opt">
+			<input class="magic-radio" type="radio" name="fee" id="f3" value="">
+			<label for="f3">51-100元</label>
+		</div>
+		<div class="opt">
+			<input class="magic-radio" type="radio" name="fee" id="f4" value="">
+			<label for="f4">101-150元</label>
+		</div>
+		<div class="opt">
+			<input class="magic-radio" type="radio" name="fee" id="f5" value="">
+			<label for="f5">150元以上</label>
+		</div>
+	</div>
+
+</div>
+<div class="vote-btn">
+	<a>投票</a>
 </div>
 
 <script type="text/template" id="tpl_wx_info">
