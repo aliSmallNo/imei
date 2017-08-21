@@ -1177,4 +1177,19 @@ class WxController extends BaseController
 			'活动报名');
 	}
 
+	public function actionVote()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/index');
+			exit();
+		}
+
+		return self::renderPage('vote.tpl', [
+		],
+			'terse',
+			'投票活动');
+	}
+
 }
