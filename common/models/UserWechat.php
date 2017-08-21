@@ -260,7 +260,7 @@ class UserWechat extends ActiveRecord
 		$sql = "SELECT uOpenId FROM im_user WHERE uStatus!=8 ";
 		$params = [];
 		if ($openId) {
-			$sql .= ' AND wOpenId=:openid ';
+			$sql .= ' AND uOpenId=:openid ';
 			$params[':openid'] = $openId;
 		}
 		$openIds = $conn->createCommand($sql)->bindValues($params)->queryColumn();
