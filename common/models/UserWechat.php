@@ -338,7 +338,7 @@ class UserWechat extends ActiveRecord
 				];
 				$index = 0;
 				if ($debug) {
-					echo "updateCount:" . $updateCount . date(" Y-m-d H:i:s") . "\n" . __LINE__;
+					echo $updateCount . date(" - Y-m-d H:i:s") . __LINE__ . "\n";
 				}
 			}
 			$index++;
@@ -347,7 +347,7 @@ class UserWechat extends ActiveRecord
 			$updateCount += $updateInfo($fields, $token, $postData, $cmdUpdate, $debug);
 		}
 		if ($debug) {
-			echo "updateCount:" . $updateCount . date(" Y-m-d H:i:s") . "\n" . __LINE__;
+			echo $updateCount . date(" - Y-m-d H:i:s") . __LINE__ . "\n";
 		}
 		return true;
 	}
