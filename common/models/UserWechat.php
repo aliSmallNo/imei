@@ -303,6 +303,12 @@ class UserWechat extends ActiveRecord
 			$res = $cmdUpdate2->bindValues([
 				':openid' => $id
 			])->execute();
+
+			if ($debug) {
+				var_dump($cmdUpdate2->bindValues([
+					':openid' => $id
+				])->getRawSql());
+			}
 			if ($index > 95) {
 				$url = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=$token";
 				$res = AppUtil::postJSON($url, json_encode($postData));
@@ -323,6 +329,9 @@ class UserWechat extends ActiveRecord
 							if ($field == 'wSubscribeTime' && $val && is_numeric($val)) {
 								$params[':wSubscribeDate'] = date('Y-m-d H:i:s', $val);
 							}
+						}
+						if ($debug) {
+							var_dump($cmdUpdate->bindValues($params)->getRawSql());
 						}
 						$updateCount += $cmdUpdate->bindValues($params)->execute();
 					}
