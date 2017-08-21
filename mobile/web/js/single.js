@@ -1524,6 +1524,16 @@ require(["layer"],
 						},
 						function (resp) {
 						}, 'json');
+				},
+				fail: function () {
+					$.post('/api/location',
+						{
+							tag: 'pin',
+							lat: 0,
+							lng: 0
+						},
+						function (resp) {
+						}, 'json');
 				}
 			});
 		}
