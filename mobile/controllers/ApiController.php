@@ -286,15 +286,6 @@ class ApiController extends Controller
 		$id = self::postParam('id');
 
 		switch ($tag) {
-			case 'pin-location':
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if ($wxInfo) {
-					$lat = self::postParam("lat");
-					$lng = self::postParam("lng");
-					Pin::addPin(Pin::CAT_USER, $wxInfo['uId'], $lat, $lng);
-				}
-				return self::renderAPI(0, '');
-				break;
 			case 'ban':
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {

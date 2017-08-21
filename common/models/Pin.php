@@ -33,6 +33,15 @@ class Pin extends ActiveRecord
 		$entity->pLat = $lat;
 		$entity->pLng = $lng;
 		$entity->save();
+
+		if ($cat == self::CAT_USER) {
+			$conn = AppUtil::db();
+			$sql = 'UPDATE im_user SET uLogDate=now() WHERE uId=:id';
+			$conn->createCommand($sql)->bindValues([
+				':id' => $pid
+			])->execute();
+		}
+
 		return $entity->pId;
 	}
 
