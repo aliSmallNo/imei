@@ -165,8 +165,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<form class="form-inline" action="/site/accounts?status={{$status}}" method="get">
-
+		<form class="form-inline" action="/site/accounts?status={{$status}}">
 			<input class="form-control" name="name" placeholder="名字" value="{{$name}}">
 			<input class="form-control" name="phone" placeholder="手机号" value="{{$phone}}">
 			<select class="form-control" name="sub_status">
@@ -262,6 +261,7 @@
 				{{if $prod.status==2}}
 				<em>{{$prod.reason}}</em>
 				{{/if}}
+				<em>{{$prod.logdate|date_format:"上次操作于%Y-%m-%d %H:%M"}}</em>
 			</td>
 			<td class="album-items" data-images='{{$prod.showImages}}'>
 				{{if $prod.album}}
