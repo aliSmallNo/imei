@@ -524,8 +524,8 @@ class ApiController extends Controller
 							'img' => '/images/event_fans.jpg',
 						],
 //						[
-						//'url' => '/wx/toparty',
-						//'img' => '/images/icon-event0.jpg'
+//							'url' => '/wx/toparty',
+//							'img' => '/images/icon-event0.jpg'
 //						]
 					]);
 				}
