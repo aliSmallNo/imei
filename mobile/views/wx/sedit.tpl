@@ -141,6 +141,12 @@
 		<em data-key="{{$uInfo.height}}">{{$uInfo.height_t}}</em>
 	</div>
 </a>
+<a class="sedit-alert action-com" data-field="weight">
+	<label>体重</label>
+	<div class="sedit-alert-val action-val">
+		<em data-key="{{$uInfo.weight}}">{{$uInfo.weight_t}}</em>
+	</div>
+</a>
 <a class="sedit-alert action-com" data-field="income">
 	<label>年薪</label>
 	<div class="sedit-alert-val action-val">
@@ -160,12 +166,6 @@
 	</div>
 </a>
 <div class="sedit-title">个人小档案</div>
-<a class="sedit-alert action-com" data-field="weight">
-	<label>体重</label>
-	<div class="sedit-alert-val action-val">
-		<em data-key="{{$uInfo.weight}}">{{$uInfo.weight_t}}</em>
-	</div>
-</a>
 <a class="sedit-alert action-com" data-field="house">
 	<label>购房情况</label>
 	<div class="sedit-alert-val action-val">
@@ -356,7 +356,7 @@
 	</div>
 </script>
 <script id="weightTemp" type="text/html">
-	<div class="cells col2 clearfix">
+	<div class="cells col4 clearfix">
 		{{foreach from=$weight key=key item=item}}
 		<a href="javascript:;" style="width: 25%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
@@ -443,4 +443,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/sedit.js?v=1.2.8" src="/assets/js/require.js"></script>
+<script data-main="/js/sedit.js?v=1.3.0" src="/assets/js/require.js"></script>

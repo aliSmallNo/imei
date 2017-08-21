@@ -46,6 +46,7 @@ require(["layer"],
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
 			itemTmp: '{[#items]}<a href="javascript:;" data-key="{[key]}">{[name]}</a>{[/items]}',
+			districtTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="district">{[name]}</a>{[/items]}</div>',
 			cityTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="city">{[name]}</a>{[/items]}</div>',
 			provinceTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="province">{[name]}</a>{[/items]}</div>',
 			jobTemp: '<div class="cells col2 clearfix" data-tag="job">{[#items]}<a href="javascript:;" style="width: 25%"><em data-key="{[key]}">{[name]}</em></a>{[/items]} </div>',
@@ -71,9 +72,15 @@ require(["layer"],
 						case "province":
 							pos = util.btn.attr("data-pos");
 							util.btn.find("." + pos).html('<em data-key="' + key + '">' + text + '</em>');
-							util.getCity(key);
+							util.subAddr(key, 'city');
 							break;
 						case "city":
+							pos = util.btn.attr("data-pos");
+							util.btn.find("." + pos).append(' <em data-key="' + key + '">' + text + '</em>');
+							util.subAddr(key, 'district');
+							// util.toggle();
+							break;
+						case "district":
 							pos = util.btn.attr("data-pos");
 							util.btn.find("." + pos).append(' <em data-key="' + key + '">' + text + '</em>');
 							util.toggle();
@@ -284,14 +291,15 @@ require(["layer"],
 					util.shade.fadeOut(100);
 				}
 			},
-			getCity: function (pid) {
+			subAddr: function (pid, tag) {
 				var util = this;
 				$.post('/api/config', {
-					tag: 'cities',
+					tag: tag,
 					id: pid
 				}, function (resp) {
 					if (resp.code == 0) {
-						util.content.html(Mustache.render(util.cityTmp, resp.data));
+						var tmp = (tag == 'city' ? util.cityTmp : util.districtTmp);
+						util.content.html(Mustache.render(tmp, resp.data));
 					}
 				}, 'json');
 			}

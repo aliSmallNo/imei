@@ -71,4 +71,43 @@ class City
 		RedisUtil::setCache(json_encode($item), RedisUtil::KEY_CITY, $key);
 		return $item;
 	}
+
+	public static function subAddresses($key)
+	{
+		$items = RedisUtil::getCache(RedisUtil::KEY_ADDRESS_ITEMS, $key);
+		$items = json_decode($items, 1);
+		if ($items) {
+			return $items;
+		}
+		$conn = AppUtil::db();
+		$sql = 'select cName as name, cKey as `key`, cNickname as nickname
+ 					from im_address_city where cPKey in (:key) and cName not in (\'其他\',\'其它\') order by cSort';
+		$items = $conn->createCommand($sql)->bindValues([':key' => $key])->queryAll();
+		$items = array_values($items);
+		foreach ($items as $key => $item) {
+			if (isset($item['name']) && isset($item['nickname']) && $item['nickname']) {
+				$items[$key]['name'] = $item['nickname'];
+			}
+		}
+		RedisUtil::setCache(json_encode($items), RedisUtil::KEY_ADDRESS_ITEMS, $key);
+		return $items;
+	}
+
+	public static function subAddress($key)
+	{
+		$item = RedisUtil::getCache(RedisUtil::KEY_ADDRESS, $key);
+		$item = json_decode($item, 1);
+		if ($item) {
+			return $item;
+		}
+		$conn = AppUtil::db();
+		$sql = 'select cName as name, cKey as `key`, cPKey as `pkey`,cNickname as nickname
+ 					from im_address_city where cKey in (:key)';
+		$item = $conn->createCommand($sql)->bindValues([':key' => $key])->queryOne();
+		if (isset($item['name']) && isset($item['nickname']) && $item['nickname']) {
+			$item['name'] = $item['nickname'];
+		}
+		RedisUtil::setCache(json_encode($item), RedisUtil::KEY_ADDRESS, $key);
+		return $item;
+	}
 }

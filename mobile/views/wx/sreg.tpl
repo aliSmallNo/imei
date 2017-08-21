@@ -8,7 +8,10 @@
 		<a href="javascript:;" class="photo photo-file">
 			<img class="avatar" src="{{$avatar}}" localId="">
 		</a>
-		<label class="f-inline"><em>昵称：</em><input type="text" placeholder="昵称" class="input-s big nickname" value="{{$nickname}}"></label>
+		<label class="f-inline">
+			<em>昵称：</em>
+			<input type="text" placeholder="昵称" class="input-s big nickname" value="{{$nickname}}">
+		</label>
 		<div class="place-holder-s2">
 			<a href="javascript:;" class="btn-s s3" tag="avatar">下一步</a>
 		</div>
