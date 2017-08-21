@@ -89,6 +89,6 @@ require(["layer"],
 
 			setTimeout(function () {
 				pinLocation();
-			}, 1000);
+			}, 800);
 		});
 	});

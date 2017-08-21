@@ -25,4 +25,4 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/sign.js?v=1.2.0" src="/assets/js/require.js"></script>
+<script data-main="/js/sign.js?v=1.2.1" src="/assets/js/require.js"></script>
