@@ -1106,7 +1106,7 @@ class User extends ActiveRecord
 			$nextpage = 0;
 		}
 		//Rain: 不想展示太多页了
-		if ($nextpage > 5) {
+		if ($nextpage > 7) {
 			$nextpage = 0;
 		}
 		return ["data" => $result, "nextpage" => $nextpage, "condition" => $myFilter, 'page' => $page];
@@ -1598,7 +1598,7 @@ class User extends ActiveRecord
 			":uid" => $row["id"],
 			":mp" => $relBacker,
 		])->queryOne();
-		$I = ($iResult["wSubscribe"] > 0 ? 2 : 0) + ($iResult["nUId"] > 0 ? 0 : 0.1) + $I4 + $I5;
+		$I = ($iResult["wSubscribe"] > 0 ? 5 : 0) + ($iResult["nUId"] > 0 ? 0 : 0.1) + $I4 + $I5;
 
 		// "区分系数（Distinguish) D=-D1/10+D2*10+D3"	 D1:注册年龄 D2:资料完整度指标(资料完成度大于90%取值。小于90%视为缺省) D3:待定
 		$D = -intval($row["age"]) / 10 + ($row["percent"] > 90 ? $row["percent"] / 100 : 0) * 10;
