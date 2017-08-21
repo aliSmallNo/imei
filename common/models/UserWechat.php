@@ -300,16 +300,16 @@ class UserWechat extends ActiveRecord
 		$cmdUpdate2 = $conn->createCommand($sql);
 		foreach ($openIds as $id) {
 			$postData["user_list"][] = ["openid" => $id, "lang" => "zh_CN"];
-			$res = $cmdUpdate2->bindValues([
+			/*$res = $cmdUpdate2->bindValues([
 				':openid' => $id
-			])->execute();
+			])->execute();*/
 
-			if ($debug) {
+			/*if ($debug) {
 				var_dump($cmdUpdate2->bindValues([
 					':openid' => $id
 				])->getRawSql());
 				var_dump($token);
-			}
+			}*/
 			if ($index > 95) {
 				$url = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=$token";
 				$res = AppUtil::postJSON($url, json_encode($postData));
@@ -332,7 +332,7 @@ class UserWechat extends ActiveRecord
 							}
 						}
 						if ($debug) {
-							var_dump($cmdUpdate->bindValues($params)->getRawSql());
+							//var_dump($cmdUpdate->bindValues($params)->getRawSql());
 						}
 						$updateCount += $cmdUpdate->bindValues($params)->execute();
 					}
@@ -369,7 +369,7 @@ class UserWechat extends ActiveRecord
 						}
 					}
 					if ($debug) {
-						var_dump($cmdUpdate->bindValues($params)->getRawSql());
+						//var_dump($cmdUpdate->bindValues($params)->getRawSql());
 					}
 					$updateCount += $cmdUpdate->bindValues($params)->execute();
 				}
