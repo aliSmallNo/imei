@@ -72,7 +72,7 @@ class City
 		return $item;
 	}
 
-	public static function subAddresses($key)
+	public static function addrItems($key)
 	{
 		$items = RedisUtil::getCache(RedisUtil::KEY_ADDRESS_ITEMS, $key);
 		$items = json_decode($items, 1);
@@ -93,7 +93,7 @@ class City
 		return $items;
 	}
 
-	public static function subAddress($key)
+	public static function addr($key)
 	{
 		$item = RedisUtil::getCache(RedisUtil::KEY_ADDRESS, $key);
 		$item = json_decode($item, 1);

@@ -211,15 +211,15 @@ class ApiController extends Controller
 				break;
 			case 'city':
 			case 'cities':
-				$items = City::subAddresses($id);
-				$item = City::subAddress($id);
+				$item = City::addr($id);
+				$items = City::addrItems($id);
 				return self::renderAPI(0, '', [
 					'items' => $items,
 					'item' => $item,
 				]);
 			case 'district':
-				$items = City::subAddresses($id);
-				$item = City::subAddress($id);
+				$item = City::addr($id);
+				$items = City::addrItems($id);
 				return self::renderAPI(0, '', [
 					'items' => $items,
 					'item' => $item,
