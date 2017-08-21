@@ -1585,8 +1585,8 @@ class User extends ActiveRecord
 			default:
 				break;
 		}
-		if ($row["logdate"] > date('Y-m-d H:i', time() - 86400)) {
-			$I4 += 10;
+		if ($row["logdate"] > date('Y-m-d H:i', time() - 3 * 86400)) {
+			$I4 += 8;
 		}
 		$relBacker = UserNet::REL_BACKER;
 		$sql = "SELECT u.uName, IFNULL(w.wSubscribe,0) as wSubscribe,n.* 
