@@ -332,7 +332,7 @@ class UserWechat extends ActiveRecord
 							}
 						}
 						if ($debug) {
-							//var_dump($cmdUpdate->bindValues($params)->getRawSql());
+							var_dump($cmdUpdate->bindValues($params)->getRawSql());
 						}
 						$updateCount += $cmdUpdate->bindValues($params)->execute();
 					}
@@ -369,7 +369,7 @@ class UserWechat extends ActiveRecord
 						}
 					}
 					if ($debug) {
-						//var_dump($cmdUpdate->bindValues($params)->getRawSql());
+						var_dump($cmdUpdate->bindValues($params)->getRawSql());
 					}
 					$updateCount += $cmdUpdate->bindValues($params)->execute();
 				}
