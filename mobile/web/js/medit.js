@@ -48,6 +48,7 @@ require(["layer"],
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
 			itemTmp: '{[#items]}<a href="javascript:;" data-key="{[key]}">{[name]}</a>{[/items]}',
+			districtTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="district">{[name]}</a>{[/items]}</div>',
 			cityTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="city">{[name]}</a>{[/items]}</div>',
 			provinceTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="province">{[name]}</a>{[/items]}</div>',
 			jobTemp: '<div class="cells col2 clearfix" data-tag="job">{[#items]}<a href="javascript:;" style="width: 25%"><em data-key="{[key]}">{[name]}</em></a>{[/items]} </div>',
@@ -71,9 +72,13 @@ require(["layer"],
 					switch (tag) {
 						case "province":
 							util.btn.find(".location").html('<em data-key="' + key + '">' + text + '</em>');
-							util.getCity(key);
+							util.subAddress(key, 'city');
 							break;
 						case "city":
+							util.btn.find(".location").append(' <em data-key="' + key + '">' + text + '</em>');
+							util.subAddress(key, 'district');
+							break;
+						case "district":
 							util.btn.find(".location").append(' <em data-key="' + key + '">' + text + '</em>');
 							util.toggle();
 							break;
@@ -120,7 +125,7 @@ require(["layer"],
 					return false;
 				});
 
-				$(".medit-btn-comfirm").on(kClick, function () {
+				$(".btn-save").on(kClick, function () {
 
 					var inputFileds = ["nickname", "intro"];
 					var inputFiledsT = ["呢称", "自我介绍"];
@@ -188,14 +193,15 @@ require(["layer"],
 					util.shade.fadeOut(100);
 				}
 			},
-			getCity: function (pid) {
+			subAddress: function (pid, tag) {
 				var util = this;
 				$.post('/api/config', {
-					tag: 'cities',
+					tag: tag,
 					id: pid
 				}, function (resp) {
 					if (resp.code == 0) {
-						util.content.html(Mustache.render(util.cityTmp, resp.data));
+						var tmp = ( tag == 'city' ? util.cityTmp : util.districtTmp);
+						util.content.html(Mustache.render(tmp, resp.data));
 					}
 				}, 'json');
 			}

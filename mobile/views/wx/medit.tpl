@@ -14,7 +14,8 @@
 <div class="nav">
 	<a href="/wx/match#sme">返回</a>
 </div>
-<div class="sedit-avart" style="background: url('{{$avatar}}') no-repeat center center;background-size: 100% 100%;padding: 0;">
+<div class="sedit-avart">
+	<img src="{{$avatar}}" class="bg-blur">
 	<p class="sedit-avart-p">
 		<a class="photo">
 			<img src="{{$avatar}}" class="avatar">
@@ -90,9 +91,7 @@
 <div class="sedit-input">
 	<textarea rows="4" name="intro">{{$uInfo.intro}}</textarea>
 </div>
-<div class="sedit-btn">
-	<a class="medit-btn-comfirm">保存</a>
-</div>
+<a class="m-next btn-save">保存</a>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
 		<div class="m-popup-content"></div>
@@ -116,4 +115,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/medit.js?v=1.2.6" src="/assets/js/require.js"></script>
+<script data-main="/js/medit.js?v=1.3.1" src="/assets/js/require.js"></script>
