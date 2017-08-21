@@ -1599,7 +1599,7 @@ class User extends ActiveRecord
 			":mp" => $relBacker,
 		])->queryOne();
 		if (isset($iResult["wSubscribe"]) && $iResult["wSubscribe"]) {
-			$A += 6;
+			$A += 10;
 		}
 		$I = ($iResult["nUId"] > 0 ? 0 : 0.1) + $I4 + $I5 + 1;
 
