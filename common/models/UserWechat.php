@@ -257,7 +257,7 @@ class UserWechat extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$sql = "SELECT uOpenId FROM im_user WHERE uStatus!=8 ";
+		$sql = "SELECT uOpenId FROM im_user WHERE uOpenId LIKE 'oYDJew%' ";
 		if ($uIds) {
 			$sql .= ' AND uId in (' . implode(',', $uIds) . ') ';
 		}
