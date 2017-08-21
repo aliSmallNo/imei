@@ -24,6 +24,13 @@ class Pin extends ActiveRecord
 
 	public static function addPin($cat, $pid, $lat, $lng)
 	{
+		if ($cat == self::CAT_USER && $pid) {
+			$conn = AppUtil::db();
+			$sql = 'UPDATE im_user SET uLogDate=now() WHERE uId=:id';
+			$conn->createCommand($sql)->bindValues([
+				':id' => $pid
+			])->execute();
+		}
 		if (!$lat || !$lng) {
 			return 0;
 		}
@@ -34,13 +41,6 @@ class Pin extends ActiveRecord
 		$entity->pLng = $lng;
 		$entity->save();
 
-		if ($cat == self::CAT_USER) {
-			$conn = AppUtil::db();
-			$sql = 'UPDATE im_user SET uLogDate=now() WHERE uId=:id';
-			$conn->createCommand($sql)->bindValues([
-				':id' => $pid
-			])->execute();
-		}
 
 		return $entity->pId;
 	}
