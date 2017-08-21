@@ -313,9 +313,6 @@ class UserWechat extends ActiveRecord
 							$params[':wSubscribeDate'] = date('Y-m-d H:i:s', $val);
 						}
 					}
-					if ($debug) {
-						//var_dump($cmd->bindValues($params)->getRawSql());
-					}
 					$cnt += $cmd->bindValues($params)->execute();
 				}
 			}
@@ -341,7 +338,7 @@ class UserWechat extends ActiveRecord
 				];
 				$index = 0;
 				if ($debug) {
-					echo "updateCount:" . $updateCount . date(" Y-m-d H:i:s") . "\n";
+					echo "updateCount:" . $updateCount . date(" Y-m-d H:i:s") . "\n" . __LINE__;
 				}
 			}
 			$index++;
@@ -350,7 +347,7 @@ class UserWechat extends ActiveRecord
 			$updateCount += $updateInfo($fields, $token, $postData, $cmdUpdate, $debug);
 		}
 		if ($debug) {
-			echo "updateCount:" . $updateCount . date(" Y-m-d H:i:s") . "\n";
+			echo "updateCount:" . $updateCount . date(" Y-m-d H:i:s") . "\n" . __LINE__;
 		}
 		return true;
 	}
