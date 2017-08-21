@@ -150,17 +150,21 @@
 				<div class="form-group">
 					<label class="col-sm-4 control-label">您的位置:</label>
 					<div class="col-sm-8">
-						<div class="col-sm-6" style="padding: 0">
+						<div class="col-sm-4" style="padding: 0">
 							<select data-location="uLocation-p" class="form-control">
 								<option value="">请选择</option>
 							</select>
 						</div>
-						<div class="col-sm-6" style="padding: 0">
+						<div class="col-sm-4" style="padding: 0">
 							<select data-location="uLocation-c" class="form-control">
 								<option value="">请选择</option>
 							</select>
 						</div>
-
+						<div class="col-sm-4" style="padding: 0">
+							<select data-location="uLocation-d" class="form-control">
+								<option value="">请选择</option>
+							</select>
+						</div>
 					</div>
 				</div>
 				<div class="form-group">
@@ -371,6 +375,8 @@
 		mProvincesObj: $("[data-location=uLocation-p]"),
 		mcityObj: $("[data-location=uLocation-c]"),
 		mcityVal: null,
+		district: $('[data-location=uLocation-d]'),
+		districtVal: '',
 		job: "",
 		role: userInfo && userInfo.uRole ? userInfo.uRole : 10
 	};
@@ -480,15 +486,32 @@
 		$sls.mProvincesObj.html(html);
 		$sls.mProvincesObj.change(function () {
 			var pid = $sls.mProvincesObj.find("option:selected").val();
-			console.log(pid);
 			$.post('/api/config', {
-				tag: 'cities',
+				tag: 'city',
 				id: pid
 			}, function (resp) {
 				if (resp.code == 0) {
 					$sls.mcityObj.html(Mustache.render(optionTmp, resp.data));
 					if ($sls.mcityVal) {
-						$sls.mcityObj.val($sls.mcityVal)
+						$sls.mcityObj.val($sls.mcityVal);
+						if ($sls.mcityVal) {
+							$sls.mcityObj.trigger("change");
+						}
+					}
+				}
+			}, 'json');
+		});
+
+		$sls.mcityObj.change(function () {
+			var pid = $sls.mcityObj.find("option:selected").val();
+			$.post('/api/config', {
+				tag: 'district',
+				id: pid
+			}, function (resp) {
+				if (resp.code == 0) {
+					$sls.district.html(Mustache.render(optionTmp, resp.data));
+					if ($sls.districtVal) {
+						$sls.district.val($sls.districtVal)
 					}
 				}
 			}, 'json');
@@ -502,7 +525,10 @@
 				var location = JSON.parse(v);
 				$sls.mProvincesObj.val(parseInt(location[0].key));
 				$sls.mProvincesObj.trigger("change");
-				$sls.mcityVal = parseInt(location[1].key)
+				$sls.mcityVal = parseInt(location[1].key);
+				if (location.length > 2) {
+					$sls.districtVal = parseInt(location[2].key);
+				}
 			} else if (k == "uAvatar") {
 				$(".o-images").html('<li><img src="' + v + '"></li>');
 			} else if (k == "uScope") {

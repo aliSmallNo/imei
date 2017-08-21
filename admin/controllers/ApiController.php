@@ -185,12 +185,20 @@ class ApiController extends Controller
 		switch ($tag) {
 			case 'provinces':
 				break;
+			case 'city':
 			case 'cities':
-				$items = City::cities($id);
-				$item = City::city($id);
+				$item = City::addr($id);
+				$items = City::addrItems($id);
 				return self::renderAPI(0, '', [
-					'items' => $items,
 					'item' => $item,
+					'items' => $items,
+				]);
+			case 'district':
+				$item = City::addr($id);
+				$items = City::addrItems($id);
+				return self::renderAPI(0, '', [
+					'item' => $item,
+					'items' => $items,
 				]);
 			default:
 				break;
