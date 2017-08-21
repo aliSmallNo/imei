@@ -333,9 +333,7 @@ class UserWechat extends ActiveRecord
 			/*$res = $cmdUpdate2->bindValues([
 				':openid' => $id
 			])->execute();*/
-			if ($debug) {
-				var_dump($postData);
-			}
+
 			if ($index > 96) {
 				$updateCount += $updateInfo($fields, $token, $postData, $cmdUpdate, $debug);
 				$postData = [
