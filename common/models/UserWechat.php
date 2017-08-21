@@ -261,7 +261,7 @@ class UserWechat extends ActiveRecord
 		if ($uIds) {
 			$sql .= ' AND uId in (' . implode(',', $uIds) . ') ';
 		}
-		$openIds = $conn->createCommand($sql)->queryAll();
+		$openIds = $conn->createCommand($sql)->queryColumn();
 		if (!$openIds) {
 			return false;
 		}
