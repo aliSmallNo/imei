@@ -360,13 +360,7 @@ class User extends ActiveRecord
 
 			if ($newKey == 'location' || $newKey == 'homeland') {
 				$item[$newKey] = json_decode($val, 1);
-				$item[$newKey . '_t'] = '';
-				if ($item[$newKey]) {
-					foreach ($item[$newKey] as $loc) {
-						$item[$newKey . '_t'] .= $loc['text'] . ' ';
-					}
-					$item[$newKey . '_t'] = trim($item[$newKey . '_t']);
-				}
+				$item[$newKey . '_t'] = $item[$newKey] ? implode(' ', array_column($item[$newKey], 'text')) : '';
 				continue;
 			} elseif ($newKey == 'profession') {
 				$item[$newKey] = $val;
@@ -618,6 +612,7 @@ class User extends ActiveRecord
 			['caption' => '所在城市', 'content' => 'location_t'],
 			['caption' => '出生年份', 'content' => 'birthyear'],
 			['caption' => '身高', 'content' => 'height_t'],
+			['caption' => '体重', 'content' => 'weight_t'],
 			['caption' => '年薪', 'content' => 'income_t'],
 			['caption' => '学历', 'content' => 'education_t'],
 			['caption' => '星座', 'content' => 'horos_t'],

@@ -19,6 +19,8 @@ class RedisUtil
 	const KEY_PROVINCES = 'provinces';
 	const KEY_CITIES = 'cities';
 	const KEY_CITY = 'city';
+	const KEY_ADDRESS = 'address';
+	const KEY_ADDRESS_ITEMS = 'address_items';
 	const KEY_WX_TOKEN = 'wx_token';
 	const KEY_WX_TICKET = 'wx_ticket';
 	const KEY_WX_USER = 'wx_user';
@@ -34,16 +36,18 @@ class RedisUtil
 	const KEY_USER_STAT = 'user_stat';
 	const KEY_USER_WALLET = 'user_wallet';
 	const KEY_USER_RECORDS = 'user_records';
-	const KEY_WX_MESSAGE = 'wx_message'; //后台微信消息
+	const KEY_WX_MESSAGE = 'wx_message';
 	const KEY_XCX_SESSION_ID = 'xcx_session_id'; //小程序 sessionId
-	const KEY_STAT_TREND = "trend_stat"; // 统计数据
-	const KEY_STAT_REUSE = "reuse_stat"; // 留存率
+	const KEY_STAT_TREND = "trend_stat";
+	const KEY_STAT_REUSE = "reuse_stat";
 
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
 		self::KEY_CITIES => 86400,
 		self::KEY_CITY => 86400,
+		self::KEY_ADDRESS_ITEMS => 86400,
+		self::KEY_ADDRESS => 86400,
 		self::KEY_WX_TOKEN => 4800,
 		self::KEY_WX_TICKET => 4800,
 		self::KEY_WX_USER => 3600 * 8,

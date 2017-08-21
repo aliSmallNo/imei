@@ -29,6 +29,7 @@ require(['layer'],
 			btn: null,
 			shadeClose: false,
 			scopeTmp: '<div class="m-popup-options col3 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}">{[name]}</a>{[/items]}</div>',
+			districtTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="district">{[name]}</a>{[/items]}</div>',
 			cityTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="city">{[name]}</a>{[/items]}</div>',
 			provinceTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="province">{[name]}</a>{[/items]}</div>',
 			init: function () {
@@ -62,8 +63,11 @@ require(['layer'],
 					var tag = self.attr('data-tag');
 					if (tag && tag == 'province') {
 						util.btn.html('<em data-key="' + key + '">' + text + '</em>');
-						util.getCity(key);
+						util.subAddress(key, 'city');
 					} else if (tag && tag == 'city') {
+						util.btn.append('<em data-key="' + key + '">' + text + '</em>');
+						util.subAddress(key, 'district');
+					} else if (tag && tag == 'district') {
 						util.btn.append('<em data-key="' + key + '">' + text + '</em>');
 						util.toggle();
 					} else {
@@ -160,14 +164,15 @@ require(['layer'],
 					util.shade.fadeOut(100);
 				}
 			},
-			getCity: function (pid) {
+			subAddress: function (pid, tag) {
 				var util = this;
 				$.post('/api/config', {
-					tag: 'cities',
+					tag: tag,
 					id: pid
 				}, function (resp) {
 					if (resp.code == 0) {
-						util.content.html(Mustache.render(util.cityTmp, resp.data));
+						var tmp = ( tag == 'city' ? util.cityTmp : util.districtTmp);
+						util.content.html(Mustache.render(tmp, resp.data));
 					}
 				}, 'json');
 			}

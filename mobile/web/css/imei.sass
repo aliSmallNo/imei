@@ -1135,8 +1135,6 @@ section
 		display: inline-block
 		background: #fff
 		color: $grayFontColorDark
-		&:active, &.cur
-			background: $mainColorLight
 		&:before
 			content: " "
 			position: absolute
@@ -1163,17 +1161,48 @@ section
 	&.col2
 		a
 			width: 16rem
+			&:nth-child(4n+2),
+			&:nth-child(4n+3)
+				background: $bgColor
 			&:nth-child(2n+0):before
 				width: 0
+		a:nth-child(2n+1)
+			clear: left
 	&.col3
 		a
 			width: 10.66rem
+			&:nth-child(6n+2),
+			&:nth-child(6n+4),
+			&:nth-child(6n+6)
+				background: $bgColor
 			&:nth-child(3n+0):before
 				width: 0
+		a:nth-child(3n+1)
+			clear: left
+	&.col4
+		a
+			&:nth-child(8n+2),
+			&:nth-child(8n+4),
+			&:nth-child(8n+5),
+			&:nth-child(8n+7)
+				background: $bgColor
+
+		a:nth-child(4n+1)
+			clear: left
 	&.col5
+		a
+			&:nth-child(10n+2),
+			&:nth-child(10n+4),
+			&:nth-child(10n+6),
+			&:nth-child(10n+8),
+			&:nth-child(10n+10)
+				background: $bgColor
 		a:nth-child(5n+0):before
 			width: 0
-
+		a:nth-child(5n+1)
+			clear: left
+	a:active, a.cur
+		background: $mainColorLight
 .edit
 	padding: 1.5rem
 	textarea
@@ -2436,15 +2465,22 @@ section
 							&:active
 								background: $linkColorLight
 								color: #fff
+						&:nth-child(3n+1)
+							clear: left
 				&.col4
 					a
 						width: 25%
-						&:nth-of-type(4n+2),
-						&:nth-of-type(4n+4)
+						&:nth-of-type(8n+2),
+						&:nth-of-type(8n+4),
+						&:nth-of-type(8n+5),
+						&:nth-of-type(8n+7)
 							background: $bgColor
 							&:active
 								background: $linkColorLight
 								color: #fff
+						&:nth-child(4n+1)
+							clear: left
+
 				.m-popup-options-top
 					display: flex
 					padding: 1rem 1rem 0 1rem

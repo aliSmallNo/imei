@@ -352,7 +352,8 @@ require(["layer"],
 			},
 			showTip: function (gid, left) {
 				var util = this;
-				util.topTip.html('发起密聊将会被扣除10朵媒桂花，即可无限畅聊<br>如果对方一直无回复，5天后退回媒桂花');
+				// util.topTip.html('文明聊天，请注意礼貌用语~');
+				//util.topTip.html('发起密聊将会被扣除10朵媒桂花，即可无限畅聊<br>如果对方一直无回复，5天后退回媒桂花');
 				/*if (left) {
 					util.topTip.html('还可以密聊<b>' + left + '</b>句哦，要抓住机会哦~');
 				} else {

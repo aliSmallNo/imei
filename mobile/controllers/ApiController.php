@@ -209,9 +209,17 @@ class ApiController extends Controller
 			case 'provinces':
 
 				break;
+			case 'city':
 			case 'cities':
-				$items = City::cities($id);
-				$item = City::city($id);
+				$item = City::addr($id);
+				$items = City::addrItems($id);
+				return self::renderAPI(0, '', [
+					'items' => $items,
+					'item' => $item,
+				]);
+			case 'district':
+				$item = City::addr($id);
+				$items = City::addrItems($id);
 				return self::renderAPI(0, '', [
 					'items' => $items,
 					'item' => $item,
@@ -516,8 +524,13 @@ class ApiController extends Controller
 							'img' => '/images/event_fans.jpg',
 						],
 //						[
+<<<<<<< HEAD
 //							'url' => '/wx/toparty',
 //							'img' => '/images/icon-event0.jpg'
+=======
+						//'url' => '/wx/toparty',
+						//'img' => '/images/icon-event0.jpg'
+>>>>>>> bd065de07351d949192f04049c0d9fff82089e2a
 //						]
 					]);
 				}
