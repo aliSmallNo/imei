@@ -313,7 +313,7 @@ class UserWechat extends ActiveRecord
 						}
 					}
 					if ($debug) {
-						var_dump($cmd->bindValues($params)->getRawSql());
+						//var_dump($cmd->bindValues($params)->getRawSql());
 					}
 					$cnt += $cmd->bindValues($params)->execute();
 				}
