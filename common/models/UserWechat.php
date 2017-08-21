@@ -252,18 +252,16 @@ class UserWechat extends ActiveRecord
 		return $ret['errcode'];
 	}
 
-	public static function refreshWXInfo($openId = '', $debug = false, $conn = '')
+	public static function refreshWXInfo($uIds = [], $debug = false, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
 		$sql = "SELECT uOpenId FROM im_user WHERE uStatus!=8 ";
-		$params = [];
-		if ($openId) {
-			$sql .= ' AND uOpenId=:openid ';
-			$params[':openid'] = $openId;
+		if ($uIds) {
+			$sql .= ' AND uId in (' . implode(',', $uIds) . ') ';
 		}
-		$openIds = $conn->createCommand($sql)->bindValues($params)->queryColumn();
+		$openIds = $conn->createCommand($sql)->queryColumn();
 		if (!$openIds) {
 			return false;
 		}
@@ -292,6 +290,37 @@ class UserWechat extends ActiveRecord
 		];
 		$index = $updateCount = 0;
 
+		$updateInfo = function ($fields, $token, $postData, $cmd, $debug) {
+			$cnt = 0;
+			$url = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=$token";
+			$res = AppUtil::postJSON($url, json_encode($postData));
+			$res = json_decode(substr($res, strpos($res, '{')), true);
+			if (isset($res["user_info_list"]) && $res["user_info_list"]) {
+				foreach ($res["user_info_list"] as $user) {
+					if (!isset($user['nickname'])) continue;
+					$params = [
+						':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
+						':openid' => $user['openid']
+					];
+					foreach ($fields as $k => $field) {
+						$val = isset($user[$k]) ? $user[$k] : '';
+						if ($field == 'subscribe' && !$val) {
+							$val = 0;
+						}
+						$params[':' . $field] = $val;
+						if ($field == 'wSubscribeTime' && $val && is_numeric($val)) {
+							$params[':wSubscribeDate'] = date('Y-m-d H:i:s', $val);
+						}
+					}
+					if ($debug) {
+						var_dump($cmd->bindValues($params)->getRawSql());
+					}
+					$cnt += $cmd->bindValues($params)->execute();
+				}
+			}
+			return $cnt;
+		};
+
 		$sql = 'UPDATE im_user_wechat SET wUpdatedOn=now(),wRawData=:raw,wSubscribeDate=:wSubscribeDate ' . $sql2 . ' WHERE wOpenId=:openid ';
 		$cmdUpdate = $conn->createCommand($sql);
 		$sql = 'UPDATE im_user_wechat SET wUpdatedOn=now(),wSubscribe=0,wSubscribeDate=null,wSubscribeTime=0,
@@ -304,39 +333,8 @@ class UserWechat extends ActiveRecord
 				':openid' => $id
 			])->execute();*/
 
-			/*if ($debug) {
-				var_dump($cmdUpdate2->bindValues([
-					':openid' => $id
-				])->getRawSql());
-				var_dump($token);
-			}*/
-			if ($index > 95) {
-				$url = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=$token";
-				$res = AppUtil::postJSON($url, json_encode($postData));
-				$res = json_decode(substr($res, strpos($res, '{')), true);
-				if ($res && isset($res["user_info_list"])) {
-					foreach ($res["user_info_list"] as $user) {
-						if (!isset($user['nickname'])) continue;
-						$params = [
-							':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
-							':openid' => $user['openid']
-						];
-						foreach ($fields as $k => $field) {
-							$val = isset($user[$k]) ? $user[$k] : '';
-							if ($field == 'subscribe' && !$val) {
-								$val = 0;
-							}
-							$params[':' . $field] = $val;
-							if ($field == 'wSubscribeTime' && $val && is_numeric($val)) {
-								$params[':wSubscribeDate'] = date('Y-m-d H:i:s', $val);
-							}
-						}
-						if ($debug) {
-							var_dump($cmdUpdate->bindValues($params)->getRawSql());
-						}
-						$updateCount += $cmdUpdate->bindValues($params)->execute();
-					}
-				}
+			if ($index > 96) {
+				$updateCount += $updateInfo($fields, $token, $postData, $cmdUpdate, $debug);
 				$postData = [
 					"user_list" => []
 				];
@@ -348,32 +346,7 @@ class UserWechat extends ActiveRecord
 			$index++;
 		}
 		if ($postData["user_list"] && count($postData["user_list"])) {
-			$url = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=$token";
-			$res = AppUtil::postJSON($url, json_encode($postData));
-			$res = json_decode(substr($res, strpos($res, '{')), true);
-			if ($res && isset($res["user_info_list"])) {
-				foreach ($res["user_info_list"] as $user) {
-					if (!isset($user['nickname'])) continue;
-					$params = [
-						':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
-						':openid' => $user['openid']
-					];
-					foreach ($fields as $key => $field) {
-						$val = isset($user[$key]) ? $user[$key] : '';
-						if ($field == 'subscribe' && !$val) {
-							$val = 0;
-						}
-						$params[':' . $field] = $val;
-						if ($field == 'wSubscribeTime' && $val && is_numeric($val)) {
-							$params[':wSubscribeDate'] = date('Y-m-d H:i:s', $val);
-						}
-					}
-					if ($debug) {
-						var_dump($cmdUpdate->bindValues($params)->getRawSql());
-					}
-					$updateCount += $cmdUpdate->bindValues($params)->execute();
-				}
-			}
+			$updateCount += $updateInfo($fields, $token, $postData, $cmdUpdate, $debug);
 		}
 		if ($debug) {
 			echo "updateCount:" . $updateCount . date(" Y-m-d H:i:s") . "\n";
