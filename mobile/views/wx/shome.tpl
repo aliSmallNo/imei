@@ -82,7 +82,7 @@
 </div>
 <section id="schat" data-title="密聊中...">
 	<div class="report_wrap">
-		<p class="title chat-tip"></p>
+		<p class="title chat-tip">文明聊天，请注意礼貌用语~</p>
 		<ul class="chats"></ul>
 	</div>
 	<div class="m-bottom-pl"></div>
@@ -282,4 +282,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/shome.js?v=1.4.5" src="/assets/js/require.js"></script>
+<script data-main="/js/shome.js?v=1.4.6" src="/assets/js/require.js"></script>
