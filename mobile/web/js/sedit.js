@@ -299,7 +299,11 @@ require(["layer"],
 				}, function (resp) {
 					if (resp.code == 0) {
 						var tmp = (tag == 'city' ? util.cityTmp : util.districtTmp);
-						util.content.html(Mustache.render(tmp, resp.data));
+						if (resp.data.items && resp.data.items.length) {
+							util.content.html(Mustache.render(tmp, resp.data));
+						} else {
+							util.toggle();
+						}
 					}
 				}, 'json');
 			}
