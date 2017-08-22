@@ -253,7 +253,8 @@ class ChatMsg extends ActiveRecord
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
 		$sql = 'update im_chat_msg as m 
 				join im_chat_group as g on g.gId=m.cGId and g.gUId1=:id1 and g.gUId2=:id2
-				set cReadFlag=1 WHERE cReadFlag=0 AND cAddedBy=:uid';
+				set cReadFlag=1,cReadOn=now() 
+				WHERE cReadFlag=0 AND cAddedBy=:uid';
 		$conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,

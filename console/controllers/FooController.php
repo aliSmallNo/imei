@@ -458,6 +458,20 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
+		$conn = AppUtil::db();
+		$sql = 'update im_user_msg set mKey=(SELECT gId FROM im_chat_group WHERE gUId1=:uid1 AND gUId2=:uid2) WHERE mId=:id';
+		$cmd = $conn->createCommand($sql);
+
+		$sql = 'SELECT mId,mUId,mAddedBy,mKey from im_user_msg WHERE mKey=0 AND mCategory=170 AND mAddedBy>1';
+		$ret = $conn->createCommand($sql)->queryAll();
+		foreach ($ret as $row) {
+			list($uid1, $uid2) = ChatMsg::sortUId($row['mUId'], $row['mAddedBy']);
+			$cmd->bindValues([
+				':uid1' => $uid1,
+				':uid2' => $uid2,
+				':id' => $row['mId']
+			])->execute();
+		}
 
 		/*$a = ['除去索要微信号功能',
 			'发起聊天需要消耗至少10朵媒桂花，如果对方无回复，5天后原数退回',
