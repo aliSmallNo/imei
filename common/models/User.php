@@ -1089,8 +1089,10 @@ class User extends ActiveRecord
 			$data["mpname"] = $row["mpname"];
 			$data["comment"] = $row["comment"];
 			if (strlen($row["dist"])) {
-				if (floatval($row["dist"]) < 0.1) {
+				if (floatval($row["dist"]) <= 0.1) {
 					$data["dist"] = '距<100m';
+				} elseif (floatval($row["dist"]) <= .9) {
+					$data["dist"] = '距' . intval(floatval($row["dist"]) * 1000.0) . 'm';
 				} else {
 					$data["dist"] = '距' . $row["dist"] . 'km';
 				}
