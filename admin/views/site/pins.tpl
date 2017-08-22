@@ -55,7 +55,19 @@
 		height: 36px;
 		vertical-align: middle;
 		border-radius: 3px;
-		border: 1px solid #E8E8E8;
+		/*border: 1px solid #E8E8E8;*/
+	}
+
+	img.female {
+		border: 2px solid #f06292;
+	}
+
+	img.male {
+		border: 2px solid #007aff;
+	}
+
+	img.mei {
+		border: 2px solid #51c332;
 	}
 
 	.menu_body li .content {
@@ -75,11 +87,23 @@
 
 	.av-sm {
 		position: relative;
-		border: 1px solid #fff;
-		border-radius: 17px;
+		/*border: 1px solid #fff;*/
 		width: 32px;
 		height: 32px;
 		overflow: hidden;
+		border-radius: 16px;
+	}
+
+	.av-sm.female {
+		border: 1px solid #f06292;
+	}
+
+	.av-sm.male {
+		border: 1px solid #007aff;
+	}
+
+	.av-sm.mei {
+		border: 1px solid #51c332;
 	}
 
 	.av-sm img {
@@ -101,14 +125,51 @@
 		padding: 0;
 		margin: 0;
 	}
+
+	.pin-title {
+		text-align: center;
+		background: #fff;
+		line-height: 24px;
+	}
+
+	.pin-title label {
+		margin-right: 10px;
+		font-weight: 400;
+		font-size: 14px;
+	}
+
+	.pin-title label i {
+		display: inline-block;
+		width: 12px;
+		height: 12px;
+		border-radius: 3px;
+		margin-left: 2px;
+	}
+
+	.i-mark-male {
+		background: #007aff;
+	}
+
+	.i-mark-female {
+		background: #f06292;
+	}
+
+	.i-mark-mei {
+		background: #51c332;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="leftBox">
+		<div class="pin-title">
+			<label>男士<i class="i-mark-male"></i></label>
+			<label>女士<i class="i-mark-female"></i></label>
+			<label>媒婆<i class="i-mark-mei"></i></label>
+		</div>
 		<ul class="menu_body">
 			{{foreach from=$items key=k item=user}}
 			<li data-lat="{{$user.lat}}" data-lng="{{$user.lng}}" data-idx="{{$k+1}}">
 				<div class="seq">{{$k+1}}.</div>
-				<div class="avatar"><img src="{{$user.thumb}}" alt=""></div>
+				<div class="avatar"><img src="{{$user.thumb}}" alt="" class="{{$user.mark}}" data-mark="{{$user.mark}}"></div>
 				<div class="content">{{$user.name}} {{$user.phone}}
 					<div class="dt">{{$user.dt}}</div>
 				</div>
@@ -174,8 +235,10 @@
 		var marker = Markers[lnglat];
 		if (!marker) {
 			var div = document.createElement('label');
-			div.className = 'av-sm';
-			var src = link.find('img').attr('src');
+			var image = link.find('img');
+			var src = image.attr('src');
+			var mark = image.attr('data-mark');
+			div.className = 'av-sm ' + mark;
 			div.innerHTML = '<img src="' + src + '"><span>' + link.attr('data-idx') + '</span>';
 			marker = new AMap.Marker({
 				map: map,

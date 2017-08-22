@@ -64,7 +64,8 @@ class Pin extends ActiveRecord
 	public static function items()
 	{
 		$conn = AppUtil::db();
-		$sql = 'SELECT u.uId, u.uName as name, u.uPhone as phone, u.uThumb as thumb, p.pLat as lat, p.pLng as lng, p.pDate as dt
+		$sql = 'SELECT u.uId, u.uName as name, u.uPhone as phone, u.uThumb as thumb,u.uGender as gender,u.uRole as role,
+ 				p.pLat as lat, p.pLng as lng, p.pDate as dt
 			 FROM im_user as u
 			 JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=:cat
 			 order by pDate desc limit 250';
@@ -73,6 +74,14 @@ class Pin extends ActiveRecord
 		])->queryAll();
 		foreach ($ret as $k => $item) {
 			$ret[$k]['dt'] = AppUtil::prettyDate($item['dt']);
+			$ret[$k]['mark'] = '';
+			if ($item['role'] == User::ROLE_MATCHER) {
+				$ret[$k]['mark'] = 'mei';
+			} elseif ($item['gender'] == User::GENDER_MALE) {
+				$ret[$k]['mark'] = 'male';
+			} elseif ($item['gender'] == User::GENDER_FEMALE) {
+				$ret[$k]['mark'] = 'female';
+			}
 		}
 		return $ret;
 	}
