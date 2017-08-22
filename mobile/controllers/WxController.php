@@ -1210,6 +1210,10 @@ class WxController extends BaseController
 			exit();
 		}
 		$gid = 2002;
+		if (!Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oUId" => $wxInfo["uId"]])) {
+			header('location:/wx/vote');
+			exit();
+		}
 		$voteStat = QuestionGroup::voteStat($gid, $wxInfo["uId"]);
 		return self::renderPage('voted.tpl', [
 			"voteStat" => $voteStat,

@@ -2,7 +2,6 @@
 <style>
 	ul, li {
 		list-style: none;
-
 	}
 
 	.questionlist {
