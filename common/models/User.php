@@ -973,9 +973,18 @@ class User extends ActiveRecord
 		$uRole = User::ROLE_SINGLE;
 		$gender = ($gender == 10) ? 11 : 10;
 
-		$status = self::STATUS_DELETE;
 		$condition = " u.uRole=$uRole and u.uGender=$gender and u.uStatus in (0,1) ";
 
+		$prov = '江苏';
+		$city = '盐城';
+		if (isset($myFilter['location'])) {
+			list($prov, $city) = explode('-', $myFilter['location']);
+		}
+		$rankField = "(case WHEN u.uLocation like '%$prov%' and u.uLocation like '%$city%' then 10
+					WHEN u.uLocation like '%$prov%' then 8 else 0 end) as rank";
+
+		// 去掉筛选条件啦~
+		/*
 		if (!$data) {
 			$data = json_decode($uFilter, 1);
 		}
@@ -994,14 +1003,6 @@ class User extends ActiveRecord
 			$condition .= " and u.uHeight between $startheight and $Endheight ";
 		}
 
-		$prov = '江苏';
-		$city = '盐城';
-		if (isset($myFilter['location'])) {
-			list($prov, $city) = explode('-', $myFilter['location']);
-		}
-		$rankField = "(case WHEN u.uLocation like '%$prov%' and u.uLocation like '%$city%' then 10
-					WHEN u.uLocation like '%$prov%' then 8 else 0 end) as rank";
-
 		if (isset($data["edu"]) && $data["edu"] > 0) {
 			$edu = $data['edu'];
 			$condition .= " and u.uEducation > $edu ";
@@ -1010,7 +1011,7 @@ class User extends ActiveRecord
 		if (isset($data["income"]) && $data["income"] > 0) {
 			$income = $data['income'];
 			$condition .= " and u.uIncome > $income ";
-		}
+		}*/
 
 		$limit = ($page - 1) * $pageSize . "," . $pageSize;
 

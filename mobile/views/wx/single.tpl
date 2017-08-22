@@ -6,13 +6,13 @@
 	</div>
 </section>
 <section id="slook" data-title="发现单身">
-	<div class="my-condition">
+	<div class="my-condition" style="display: none">
 		<a href="javascript:;" class="conditions">
 			<span class="con-title">择偶条件: </span>
 		</a>
 	</div>
 	<ul class="m-top-users"></ul>
-	<div class="m-more">上拉加载更多</div>
+	<div class="m-more" >拼命加载中...</div>
 </section>
 <section id="matchCondition" data-title="筛选条件">
 	<div class="nav">
@@ -361,7 +361,7 @@
 			这个女的很棒！！
 		</div>
 	</div>
-	<div class="sprofile-condtion">
+	<div class="sprofile-condtion" >
 		<div class="title">择偶条件</div>
 		<div class="content">
 			<span>25-40岁</span>
