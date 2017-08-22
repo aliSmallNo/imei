@@ -152,7 +152,8 @@
 
 	.marry1-bot {
 		display: flex;
-		padding: 1rem 0;
+		padding: .6rem 0;
+		margin-left: 3rem;
 	}
 
 	.marry1-bot .img {
