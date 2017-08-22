@@ -54,7 +54,7 @@
 		width: 36px;
 		height: 36px;
 		vertical-align: middle;
-		border-radius: 3px;
+		border-radius: 4px;
 		/*border: 1px solid #E8E8E8;*/
 	}
 
