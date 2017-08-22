@@ -16,6 +16,7 @@ class Pin extends ActiveRecord
 {
 	const CAT_USER = 100;
 	const CAT_EVENT = 110;
+	const CAT_NOW = 200; // 最新位置
 
 	public static function tableName()
 	{
@@ -24,8 +25,8 @@ class Pin extends ActiveRecord
 
 	public static function addPin($cat, $pid, $lat, $lng)
 	{
+		$conn = AppUtil::db();
 		if ($cat == self::CAT_USER && $pid) {
-			$conn = AppUtil::db();
 			$sql = 'UPDATE im_user SET uLogDate=now() WHERE uId=:id';
 			$conn->createCommand($sql)->bindValues([
 				':id' => $pid
@@ -41,6 +42,21 @@ class Pin extends ActiveRecord
 		$entity->pLng = $lng;
 		$entity->save();
 
+		$sql = 'INSERT INTO im_pin(pCategory,pPId)
+				SELECT :cat,:pid FROM dual 
+				WHERE NOT EXISTS(SELECT 1 FROM im_pin WHERE pCategory=:cat AND pPId=:pid)';
+		$conn->createCommand($sql)->bindValues([
+			':cat' => self::CAT_NOW,
+			':pid' => $pid,
+		])->execute();
+		$sql = 'UPDATE im_pin SET pLat=:lat,pLng=:lng,pDate=now()
+ 				WHERE pCategory=:cat AND pPId=:pid';
+		$conn->createCommand($sql)->bindValues([
+			':cat' => self::CAT_NOW,
+			':pid' => $pid,
+			':lat' => $lat,
+			':lng' => $lng,
+		])->execute();
 
 		return $entity->pId;
 	}
