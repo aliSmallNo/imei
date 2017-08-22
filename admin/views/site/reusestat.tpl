@@ -15,6 +15,18 @@
 		white-space: nowrap;
 		font-size: 13px;
 	}
+
+	.users li {
+		padding-bottom: 5px;
+		font-size: 13px;
+	}
+
+	.users li img {
+		width: 32px;
+		height: 32px;
+		vertical-align: middle;
+		border-radius: 16px;
+	}
 </style>
 
 <div id="page-wrapper">
@@ -134,7 +146,7 @@
 			cat: mCat
 		}, function (resp) {
 			console.log(resp);
-			var temp = "<ol>{[#items]}<li>{[phone]} {[gender]} {[name]}</li>{[/items]}</ol>";
+			var temp = "<ol class='users'>{[#items]}<li><img src='{[thumb]}'> {[phone]} {[gender]} {[name]}</li>{[/items]}</ol>";
 			layer.open({
 				content: Mustache.render(temp, resp.data),
 				area: ['400px', '500px'],
