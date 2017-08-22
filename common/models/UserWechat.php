@@ -252,14 +252,14 @@ class UserWechat extends ActiveRecord
 		return $ret['errcode'];
 	}
 
-	public static function refreshWXInfo($uIds = [], $debug = false, $conn = '')
+	public static function refreshWXInfo($openId  , $debug = false, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
 		$sql = "SELECT uOpenId FROM im_user WHERE uOpenId LIKE 'oYDJew%' ";
-		if ($uIds) {
-			$sql .= ' AND uId in (' . implode(',', $uIds) . ') ';
+		if ($openId) {
+			$sql .= " AND uOpenId in ('$openId') " ;
 		}
 		$openIds = $conn->createCommand($sql)->queryColumn();
 		if (!$openIds) {
