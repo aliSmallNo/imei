@@ -86,7 +86,7 @@
 		<h4>{{$key+1}}.{{$item.qTitle}}</h4>
 		<div class="opt-res">
 			{{foreach from=$item.options item=opt}}
-			<h5>{{$opt.text}}(已选)</h5>
+			<h5>{{$opt.text}}{{if $opt.choose}}(已选){{/if}}</h5>
 			<div class="opt-res-list">
 				<div class="progress">
 					<div style="width: {{if $item.amt>0}}{{(($opt.co/$item.amt)|string_format:"%.2f")*100}}%{{else}}0%{{/if}};"></div>
