@@ -293,6 +293,14 @@ class UserMsg extends ActiveRecord
 			return false;
 		}
 		$conn = AppUtil::db();
+
+		$sql='UPDATE im_user_msg as m 
+		 JOIN im_chat_group as g on m.mKey=g.gId
+		 JOIN im_chat_msg as t on t.cGId=g.gId AND t.cId=g.gLastCId AND t.cReadFlag=1 AND t.cAddedOn
+		 SET m.mReadFlag=1,m.mAlertFlag=1,m.mAlertDate=t.cReadOn 
+		 WHERE m.mReadFlag=0';
+		$conn->createCommand($sql)->execute();
+
 		$cats = implode(',',
 			[self::CATEGORY_PRESENT, self::CATEGORY_FAVOR, self::CATEGORY_CHAT]);
 		$criteria = '';
