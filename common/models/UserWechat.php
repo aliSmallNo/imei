@@ -252,14 +252,14 @@ class UserWechat extends ActiveRecord
 		return $ret['errcode'];
 	}
 
-	public static function refreshWXInfo($openId  , $debug = false, $conn = '')
+	public static function refreshWXInfo($openId, $debug = false, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
 		$sql = "SELECT uOpenId FROM im_user WHERE uOpenId LIKE 'oYDJew%' ";
 		if ($openId) {
-			$sql .= " AND uOpenId in ('$openId') " ;
+			$sql .= " AND uOpenId in ('$openId') ";
 		}
 		$openIds = $conn->createCommand($sql)->queryColumn();
 		if (!$openIds) {
@@ -292,7 +292,8 @@ class UserWechat extends ActiveRecord
 		$index = $updateCount = 0;
 
 
-		$sql = 'UPDATE im_user_wechat SET wUpdatedOn=now(),wRawData=:raw,wSubscribeDate=:wSubscribeDate ' . $sql2 . ' WHERE wOpenId=:openid ';
+		$sql = 'UPDATE im_user_wechat SET wUpdatedOn=now(),wRawData=:raw,wSubscribeDate=:wSubscribeDate ' . $sql2
+			. ' WHERE wOpenId=:openid ';
 		$cmdUpdate = $conn->createCommand($sql);
 		$sql = 'UPDATE im_user_wechat SET wUpdatedOn=now(),wSubscribe=0,wSubscribeDate=null,wSubscribeTime=0,
 				wRawData = REPLACE(wRawData, \'"subscribe":1,\', \'"subscribe":0,\')
