@@ -55,8 +55,8 @@ class Feedback extends ActiveRecord
 			$condition = "where 1 $condition";
 		}
 
-		$sql = "select i.uName as iname,i.uPhone as iphone,i.uAvatar as iavatar,
-				u.uName as uname,u.uPhone as uphone,u.uAvatar as uavatar,
+		$sql = "select i.uName as iname,i.uPhone as iphone,i.uThumb as iavatar,
+				u.uName as uname,u.uPhone as uphone,u.uThumb as uavatar,
 				f.*
 				from im_feedback as f 
 				left join im_user as i on i.uId=f.fUId 

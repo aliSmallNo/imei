@@ -235,7 +235,7 @@ class UserTrans extends ActiveRecord
 		$order = $orders["default"];
 
 		$conn = AppUtil::db();
-		$sql = "select u.uId as uid,u.uName as uname, u.uPhone as phone,u.uAvatar as avatar,p.pAmt as amt ,
+		$sql = "select u.uId as uid,u.uName as uname, u.uPhone as phone,u.uThumb as avatar,p.pAmt as amt ,
 				t.tId, t.tAmt as flower,tAddedOn as date,t.tTitle as tcat,tUnit as unit,t.tCategory as cat
 				from im_user_trans as t 
 				join im_user as u on u.uId=t.tUId 
