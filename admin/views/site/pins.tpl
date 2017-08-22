@@ -78,6 +78,9 @@
 		align-self: center;
 		padding-left: 4px;
 	}
+	.menu_body li .content b{
+		font-weight: 400;
+	}
 
 	.menu_body li .content .dt {
 		font-size: 10px;
@@ -140,9 +143,9 @@
 
 	.pin-title label i {
 		display: inline-block;
-		width: 12px;
-		height: 12px;
-		border-radius: 3px;
+		width: 10px;
+		height: 10px;
+		border-radius: 2px;
 		margin-left: 2px;
 	}
 
@@ -170,7 +173,8 @@
 			<li data-lat="{{$user.lat}}" data-lng="{{$user.lng}}" data-idx="{{$k+1}}">
 				<div class="seq">{{$k+1}}.</div>
 				<div class="avatar"><img src="{{$user.thumb}}" alt="" class="{{$user.mark}}" data-mark="{{$user.mark}}"></div>
-				<div class="content">{{$user.name}} {{$user.phone}}
+				<div class="content">
+					<b>{{$user.phone}}</b> {{$user.name}}
 					<div class="dt">{{$user.dt}}</div>
 				</div>
 			</li>
