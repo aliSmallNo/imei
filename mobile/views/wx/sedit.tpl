@@ -241,7 +241,7 @@
 	<textarea rows="4" name="interest">{{$uInfo.interest}}</textarea>
 </div>
 
-<div class="sedit-title">择偶条件</div>
+<!--div class="sedit-title">择偶条件</div>
 <a class="sedit-alert action-cond" data-field="cage">
 	<label>年龄</label>
 	<div class="sedit-alert-val action-val">
@@ -269,7 +269,7 @@
 	<div class="sedit-alert-val action-val">
 		<em data-key="{{$filter.edu.key}}">{{$filter.edu.name}}</em>
 	</div>
-</a>
+</a-->
 <div style="height: 8rem"></div>
 <a class="m-next sedit-btn-comfirm">保存</a>
 
