@@ -31,16 +31,16 @@ require(["layer"],
 						ans: val
 					});
 				});
-				console.log(ans);
+				// console.log(ans);
 			}
 			if (ans.length < 4) {
 				showMsg("还有未投票的选题~");
 				return;
 			}
-			if ($sls.loadFlag) {
+			if ($sls.loading) {
 				return;
 			}
-			$sls.loadFlag = 1;
+			$sls.loading = 1;
 			$.post("/api/questions", {
 				tag: "answer",
 				data: JSON.stringify(ans),
@@ -51,11 +51,11 @@ require(["layer"],
 					showMsg(resp.msg);
 					setTimeout(function () {
 						location.href = "/wx/voted";
-					}, 1000);
+					}, 500);
 				} else {
 					showMsg(resp.msg);
 				}
-				$sls.loadFlag = 0;
+				$sls.loading = 0;
 			}, "json");
 		});
 
