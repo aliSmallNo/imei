@@ -189,7 +189,8 @@ class LogAction extends ActiveRecord
 			default:
 				$criteria = '';
 		}
-		$sql = 'SELECT DISTINCT u.uName as `name`,u.uPhone as phone
+		$sql = 'SELECT DISTINCT u.uName as `name`,u.uPhone as phone,
+			(CASE WHEN uGender=10 THEN \'女\' WHEN uGender=11 THEN \'男\' ELSE \'媒\' END)as gender
 			 FROM im_user as u
 			 JOIN im_user_wechat as w on u.uId=w.wUId
 			 WHERE uAddedOn BETWEEN :beginDT AND :endDT
@@ -199,7 +200,8 @@ class LogAction extends ActiveRecord
 			':endDT' => $end . ' 23:59',
 		];
 		if ($from && $to) {
-			$sql = 'SELECT DISTINCT u.uName as `name`,u.uPhone as phone
+			$sql = 'SELECT DISTINCT u.uName as `name`,u.uPhone as phone,
+			(CASE WHEN uGender=10 THEN \'女\' WHEN uGender=11 THEN \'男\' ELSE \'媒\' END)as gender
 			 FROM im_user as u
 			 JOIN im_user_wechat as w on u.uId=w.wUId
 			 JOIN im_log_action as a on a.aUId=u.uId AND a.aCategory>1000 AND a.aDate BETWEEN :from AND :to
