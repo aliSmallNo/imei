@@ -783,7 +783,7 @@
 					<p class="name {[gender]}"><em>{[name]}</em></p>
 					<p class="addr"><i class="i-mark-pos"></i>{[location]}</p>
 				</div>
-				<h5>{[age]}岁 . {[height]} . {[horos]} . {[job]}</h5>
+				<h5>{[#dist]}{[.]} . {[/dist]}{[age]}岁 . {[height]} . {[horos]} . {[job]}</h5>
 			</div>
 
 			{[#cert]}<i class="i-cert">已认证</i>{[/cert]}
@@ -792,15 +792,14 @@
 			<div class="mp">
 				{[#mpname]}
 				<img src="{[mavatar]}" alt="">
-				<span><b>媒婆 {[mpname]}</b> 推荐了TA</span>
+				<span><b>{[mpname]}</b> 推荐了TA</span>
 				{[/mpname]}
 				{[^mpname]}
 				<img src="/images/logo62.png" alt="">
 				<span>TA还没<b>媒婆</b></span>
 				{[/mpname]}
 			</div>
-			{[#comment]}
-			<div class="des"><b>“</b>{[.]}<b>”</b></div>{[/comment]}
+			{[#comment]}<div class="des"><b>“</b>{[.]}<b>”</b></div>{[/comment]}
 		</div>
 		{[#singleF]}
 		<div class="single-bar">

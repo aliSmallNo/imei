@@ -3023,7 +3023,7 @@ section {
       color: #fff;
       font-weight: 300;
       line-height: 2rem;
-      font-size: 1.2rem; }
+      font-size: 1rem; }
     .m-top-users li .u-info em {
       font-weight: 500;
       font-size: 1.8rem; }
@@ -3055,11 +3055,20 @@ section {
         background: url(../images/ico_gender_female.png) no-repeat center center;
         background-size: 100% 100%; }
   .m-top-users li .mp-info {
-    padding: 2rem 1.5rem;
+    padding: 2.5rem 1.5rem 2rem;
     position: relative; }
     .m-top-users li .mp-info .mp {
       position: relative;
-      padding-left: 4rem; }
+      padding-left: 3.8rem;
+      font-size: 1.4rem; }
+      .m-top-users li .mp-info .mp .dist {
+        position: absolute;
+        right: 0;
+        top: 0.2rem;
+        text-align: right;
+        display: inline-block;
+        font-size: 1rem;
+        font-weight: 300; }
       .m-top-users li .mp-info .mp b {
         font-weight: 500; }
       .m-top-users li .mp-info .mp img {

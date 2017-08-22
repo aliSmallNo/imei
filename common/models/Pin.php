@@ -16,6 +16,7 @@ class Pin extends ActiveRecord
 {
 	const CAT_USER = 100;
 	const CAT_EVENT = 110;
+	const CAT_NOW = 200; // 最新位置
 
 	public static function tableName()
 	{
@@ -24,8 +25,8 @@ class Pin extends ActiveRecord
 
 	public static function addPin($cat, $pid, $lat, $lng)
 	{
+		$conn = AppUtil::db();
 		if ($cat == self::CAT_USER && $pid) {
-			$conn = AppUtil::db();
 			$sql = 'UPDATE im_user SET uLogDate=now() WHERE uId=:id';
 			$conn->createCommand($sql)->bindValues([
 				':id' => $pid
@@ -41,6 +42,21 @@ class Pin extends ActiveRecord
 		$entity->pLng = $lng;
 		$entity->save();
 
+		$sql = 'INSERT INTO im_pin(pCategory,pPId)
+				SELECT :cat,:pid FROM dual 
+				WHERE NOT EXISTS(SELECT 1 FROM im_pin WHERE pCategory=:cat AND pPId=:pid)';
+		$conn->createCommand($sql)->bindValues([
+			':cat' => self::CAT_NOW,
+			':pid' => $pid,
+		])->execute();
+		$sql = 'UPDATE im_pin SET pLat=:lat,pLng=:lng,pDate=now()
+ 				WHERE pCategory=:cat AND pPId=:pid';
+		$conn->createCommand($sql)->bindValues([
+			':cat' => self::CAT_NOW,
+			':pid' => $pid,
+			':lat' => $lat,
+			':lng' => $lng,
+		])->execute();
 
 		return $entity->pId;
 	}
@@ -50,11 +66,10 @@ class Pin extends ActiveRecord
 		$conn = AppUtil::db();
 		$sql = 'SELECT u.uId, u.uName as name, u.uPhone as phone, u.uThumb as thumb, p.pLat as lat, p.pLng as lng, p.pDate as dt
 			 FROM im_user as u
-			 JOIN (select pPId,max(pId) as mid from im_pin where pCategory=:cat group by pPId) as t on t.pPId = u.uId
-			 JOIN im_pin as p on p.pId=t.mid
+			 JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=:cat
 			 order by pDate desc limit 250';
 		$ret = $conn->createCommand($sql)->bindValues([
-			':cat' => self::CAT_USER
+			':cat' => self::CAT_NOW,
 		])->queryAll();
 		foreach ($ret as $k => $item) {
 			$ret[$k]['dt'] = AppUtil::prettyDate($item['dt']);
