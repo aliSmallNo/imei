@@ -974,7 +974,7 @@ class User extends ActiveRecord
 		$gender = ($gender == 10) ? 11 : 10;
 
 		$status = self::STATUS_DELETE;
-		$condition = " u.uRole=$uRole and u.uGender=$gender and u.uStatus in (0,1,8) ";
+		$condition = " u.uRole=$uRole and u.uGender=$gender and u.uStatus in (0,1) ";
 
 		if (!$data) {
 			$data = json_decode($uFilter, 1);
@@ -1030,7 +1030,7 @@ class User extends ActiveRecord
 
 		$sql = "SELECT u.*, $distField , $rankField
 				FROM im_user as u 
-				JOIN im_user_wechat as w on u.uId=w.wUId
+				JOIN im_user_wechat as w on u.uId=w.wUId AND w.wSubscribe=1
 				LEFT JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=$pinCat
 				WHERE $condition order by dist, rank desc, u.uRank desc limit $limit";
 		$ret = $conn->createCommand($sql)->queryAll();
