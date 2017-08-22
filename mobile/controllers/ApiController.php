@@ -1486,10 +1486,24 @@ class ApiController extends Controller
 			case 'answer':
 				$answer = self::postParam('data');
 				$gId = self::postParam('gid');
+				$cat = self::postParam('cat', "ans");
 				if (Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gId, "oUId" => $uid])) {
 					return self::renderAPI(129, '您已经答过题了哦~');
 				}
-				if (QuestionSea::verifyAnswer($answer)) {
+				if ($cat == "ans") {
+					if (QuestionSea::verifyAnswer($answer)) {
+						Log::add([
+							"oCategory" => Log::CAT_QUESTION,
+							"oKey" => $gId,
+							"oUId" => $uid,
+							"oOpenId" => $openId,
+							"oAfter" => $answer,
+						]);
+						return self::renderAPI(0, '', "pass");
+					} else {
+						return self::renderAPI(0, '答错了题', "fail");
+					}
+				} elseif ($cat == "vote") {
 					Log::add([
 						"oCategory" => Log::CAT_QUESTION,
 						"oKey" => $gId,
@@ -1497,10 +1511,9 @@ class ApiController extends Controller
 						"oOpenId" => $openId,
 						"oAfter" => $answer,
 					]);
-					return self::renderAPI(0, '', "pass");
-				} else {
-					return self::renderAPI(0, '答错了题', "fail");
+					return self::renderAPI(0, '投票成功');
 				}
+
 				break;
 		}
 		return self::renderAPI(129, '操作无效~');

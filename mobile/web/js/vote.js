@@ -19,20 +19,44 @@ require(["layer"],
 
 		$(document).on(kClick, ".vote-btn a", function () {
 			var self = $(this);
-			var postData = [];
+			var ans = [];
+
 			if (!self.closest(".vote-btn").hasClass("disable")) {
-				$("input[name]").each(function () {// checked
+				$("input[name]:checked").each(function () {
 					var val = $(this).val();
 					var type = $(this).attr("type");
-					var name = $(this).attr("name");
-					postData.push({
-						name: name,
-						val: val,
-						type: type
+					var qid = $(this).attr("name");
+					ans.push({
+						id: qid,
+						ans: val
 					});
 				});
-				console.log(postData);
+				console.log(ans);
 			}
+			if (ans.length < 4) {
+				showMsg("还有未投票的选题~");
+				return;
+			}
+			if ($sls.loadFlag) {
+				return;
+			}
+			$sls.loadFlag = 1;
+			$.post("/api/questions", {
+				tag: "answer",
+				data: JSON.stringify(ans),
+				gid: $("#gId").val(),
+				cat: "vote"
+			}, function (resp) {
+				if (resp.code == 0) {
+					showMsg(resp.msg);
+					setTimeout(function () {
+						location.href = "/wx/voted";
+					}, 1000);
+				} else {
+					showMsg(resp.msg);
+				}
+				$sls.loadFlag = 0;
+			}, "json");
 		});
 
 		function showMsg(title, sec) {

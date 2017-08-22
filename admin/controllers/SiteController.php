@@ -828,7 +828,7 @@ class SiteController extends BaseController
 					"title" => $v["title"],
 					"options" => $v["options"],
 					"answer" => $v["answer"]
-				]);
+				],JSON_UNESCAPED_UNICODE);
 				$insertData[] = $insertItem;
 			}
 
@@ -836,7 +836,7 @@ class SiteController extends BaseController
 				foreach ($insertData as $val) {
 					QuestionSea::edit(0, $val);
 				}
-				$success = self::ICON_OK_HTML . '修改成功';
+				$success = self::ICON_OK_HTML . '添加成功';
 			}
 		}
 

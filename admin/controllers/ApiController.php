@@ -314,12 +314,14 @@ class ApiController extends Controller
 			case "savegroup":
 				$ids = self::postParam("ids");
 				$ids = implode(",", json_decode($ids, 1));
+				// $cat = self::postParam("cat");
+				$cat = QuestionGroup::CAT_VOTE;
 				QuestionGroup::add([
-					"gCategory" => QuestionGroup::CAT_AUG,
-					"gTitle" => QuestionGroup::TITLE_LOTT,
+					"gCategory" => $cat,
+					"gTitle" => QuestionGroup::$titleDict[$cat],
 					"gItems" => $ids,
 				]);
-				return self::renderAPI(0, '');
+				return self::renderAPI(0, '保存成功');
 		}
 		return self::renderAPI(129, "什么操作也没做啊！");
 	}

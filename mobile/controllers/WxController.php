@@ -9,6 +9,7 @@
 namespace mobile\controllers;
 
 use common\models\City;
+use common\models\Log;
 use common\models\LogAction;
 use common\models\Lottery;
 use common\models\QuestionGroup;
@@ -1185,8 +1186,16 @@ class WxController extends BaseController
 			header('location:/wx/index');
 			exit();
 		}
+		$gid = 2002;
+		if (Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oUId" => $wxInfo["uId"]])) {
+			header('location:/wx/voted');
+			exit();
+		}
+		list($questions, $gId) = QuestionGroup::findGroup($gid);
 
 		return self::renderPage('vote.tpl', [
+			"questions" => $questions,
+			"gId" => $gId
 		],
 			'terse',
 			'投票活动');
@@ -1200,8 +1209,10 @@ class WxController extends BaseController
 			header('location:/wx/index');
 			exit();
 		}
-
+		$gid = 2002;
+		$voteStat = QuestionGroup::voteStat($gid, $wxInfo["uId"]);
 		return self::renderPage('voted.tpl', [
+			"voteStat" => $voteStat,
 		],
 			'terse',
 			'投票活动');
