@@ -112,15 +112,23 @@ class Menu
 						"level" => 820
 					],
 					[
+						"name" => "投票",
+						"url" => "/site/vote",
+						"revise" => 1,
+						"level" => 820
+					],
+					[
 						"name" => "活动账单",
 						"url" => "/site/events",
 						"revise" => 1,
+						"hidden" => 1,
 						"level" => 820
 					],
 					[
 						"name" => "活动账单(新)",
 						"url" => "/site/crews",
 						"revise" => 1,
+						"hidden" => 1,
 						"level" => 820
 					]
 				]
