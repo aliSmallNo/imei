@@ -117,9 +117,9 @@
 	}
 
 	.marry1-top div {
-		font-size: 2.4rem;
+		font-size: 1.8rem;
 		color: #6c121b;
-		font-weight: 700;
+		font-weight: 500;
 	}
 
 	.marry1-top .mr {
@@ -139,14 +139,14 @@
 	.marry1 .marry1-date {
 		text-align: center;
 		color: #6c121b;
-		font-size: 1.5rem;
+		font-size: 1.3rem;
 		padding: .5rem 0;
 	}
 
 	.marry1 .marry1-addr {
 		text-align: center;
 		color: #6c121b;
-		font-size: 1.5rem;
+		font-size: 1.2rem;
 		font-weight: 300;
 	}
 
@@ -161,13 +161,13 @@
 	}
 
 	.marry1-bot .img img {
-		width: 5rem;
-		height: 5rem;
+		width: 6rem;
+		height: 6rem;
 	}
 
 	.marry1-bot .note {
 		flex: 1;
-		margin-top: .6rem;
+		margin-top: 1rem;
 	}
 
 	.marry1-bot .note div {
