@@ -314,8 +314,8 @@ class ApiController extends Controller
 			case "savegroup":
 				$ids = self::postParam("ids");
 				$ids = implode(",", json_decode($ids, 1));
-				// $cat = self::postParam("cat");
-				$cat = QuestionGroup::CAT_VOTE;
+				$cat = self::postParam("cat");
+				//$cat = QuestionGroup::CAT_VOTE;
 				QuestionGroup::add([
 					"gCategory" => $cat,
 					"gTitle" => QuestionGroup::$titleDict[$cat],

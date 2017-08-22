@@ -48,6 +48,16 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label>活动类别</label>
+					<div class="form-group input-group">
+						<select name="cat" class="form-control">
+							{{foreach from=$catDict key=key item=item}}
+							<option value="{{$key}}">{{$item}}</option>
+							{{/foreach}}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
 					<label>选择题目</label>
 					<ul class="form-control-static questionlist" id="questionlist">
 
@@ -132,11 +142,12 @@
 		}
 		$.post("/api/question", {
 			tag: "savegroup",
+			cat: $("[name=cat]").val(),
 			ids: JSON.stringify(ids),
 		}, function (resp) {
 			if (resp.code == 0) {
-				 // location.href = "/site/net"
-		  layer.msg(resp.msg);
+				// location.href = "/site/net"
+				layer.msg(resp.msg);
 			} else {
 				layer.msg(resp.msg);
 			}
@@ -146,7 +157,6 @@
 </script>
 
 <script type="text/template" id="tpl_question">
-
 	{[#data]}
 	<li tag="{[qId]}">
 		<div class="title">{[qTitle]}</div>
