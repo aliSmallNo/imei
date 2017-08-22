@@ -134,7 +134,7 @@
 			cat: mCat
 		}, function (resp) {
 			console.log(resp);
-			var temp = "<ol>{[#items]}<li>{[phone]} {[name]}</li>{[/items]}</ol>";
+			var temp = "<ol>{[#items]}<li>{[phone]} {[gender]} {[name]}</li>{[/items]}</ol>";
 			layer.open({
 				content: Mustache.render(temp, resp.data),
 				area: ['400px', '500px'],
