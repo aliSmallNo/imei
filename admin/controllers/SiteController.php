@@ -14,6 +14,7 @@ use common\models\LogAction;
 use common\models\Mark;
 use common\models\Pay;
 use common\models\Pin;
+use common\models\QuestionGroup;
 use common\models\QuestionSea;
 use common\models\Trace;
 use common\models\User;
@@ -828,7 +829,7 @@ class SiteController extends BaseController
 					"title" => $v["title"],
 					"options" => $v["options"],
 					"answer" => $v["answer"]
-				],JSON_UNESCAPED_UNICODE);
+				], JSON_UNESCAPED_UNICODE);
 				$insertData[] = $insertItem;
 			}
 
@@ -884,6 +885,17 @@ class SiteController extends BaseController
 				"name" => $name,
 				'pagination' => $pagination,
 				'list' => $list,
+			]);
+	}
+
+	public function actionVote()
+	{
+		$gid = 2002;
+		$voteStat = QuestionGroup::voteStat($gid);
+		return $this->renderPage('vote.tpl',
+			[
+				'category' => 'data',
+				'voteStat' => $voteStat
 			]);
 	}
 

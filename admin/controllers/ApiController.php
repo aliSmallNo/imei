@@ -322,6 +322,14 @@ class ApiController extends Controller
 					"gItems" => $ids,
 				]);
 				return self::renderAPI(0, '保存成功');
+			case "vote":
+				$ids = self::postParam("ids");
+				$sql = "select uName as `name`,uPhone as phone,uGender as gender from im_user where uId in ($ids)";
+				$res = AppUtil::db()->createCommand($sql)->queryAll();
+				foreach ($res as &$v) {
+					$v["sex"] = User::$Gender[$v["gender"]];
+				}
+				return self::renderAPI(0, '', ["items" => $res]);
 		}
 		return self::renderAPI(129, "什么操作也没做啊！");
 	}

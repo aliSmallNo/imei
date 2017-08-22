@@ -36,7 +36,7 @@
 		padding: .3rem 0 .8rem 0;
 	}
 
-	.opt-res-list div.progress {
+	.opt-res-list div.pro {
 		flex: 1;
 		background: #eee;
 		margin-right: 1rem;
@@ -46,7 +46,7 @@
 		border-radius: .5rem;
 	}
 
-	.opt-res-list div.progress div {
+	.opt-res-list div.pro div {
 		background: #f06292;
 		height: .3rem;
 		border-radius: .5rem;
@@ -88,7 +88,7 @@
 			{{foreach from=$item.options item=opt}}
 			<h5>{{$opt.text}}{{if $opt.choose}}(已选){{/if}}</h5>
 			<div class="opt-res-list">
-				<div class="progress">
+				<div class="pro">
 					<div style="width: {{if $item.amt>0}}{{(($opt.co/$item.amt)|string_format:"%.2f")*100}}%{{else}}0%{{/if}};"></div>
 				</div>
 				<div class="opt-res-list-r">{{$opt.co}}票</div>
