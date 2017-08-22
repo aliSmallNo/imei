@@ -4426,6 +4426,7 @@ section {
       -ms-flex: 0 0 11rem;
       flex: 0 0 11rem;
       text-align: right;
+      font-weight: 300;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden; }
