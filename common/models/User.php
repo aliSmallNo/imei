@@ -999,7 +999,7 @@ class User extends ActiveRecord
 		if (isset($myFilter['location'])) {
 			list($prov, $city) = explode('-', $myFilter['location']);
 		}
-		$rankField = ",(case WHEN u.uLocation like '%$prov%' and u.uLocation like '%$city%' then 10
+		$rankField = "(case WHEN u.uLocation like '%$prov%' and u.uLocation like '%$city%' then 10
 					WHEN u.uLocation like '%$prov%' then 8 else 0 end) as rank";
 
 		if (isset($data["edu"]) && $data["edu"] > 0) {
@@ -1016,13 +1016,23 @@ class User extends ActiveRecord
 
 		$relation_mp = UserNet::REL_BACKER;
 		$relation_favor = UserNet::REL_FAVOR;
+		$pinCat = Pin::CAT_NOW;
+		$conn = AppUtil::db();
+		$sql = "SELECT * from im_pin as p WHERE p.pCategory=$pinCat AND pPId=" . $mId;
+		$ret = $conn->createCommand($sql)->queryOne();
+		$myLat = $myLng = '0';
+		$distField = ' 9999 as dist';
+		if ($ret) {
+			$myLat = $ret['pLat'];
+			$myLng = $ret['pLng'];
+			$distField = "IFNULL(ROUND(6378.138*2*ASIN(SQRT(POW(SIN(($myLat*PI()/180-pLat*PI()/180)/2),2)+COS($myLat*PI()/180)*COS(pLat*PI()/180)*POW(SIN(($myLng*PI()/180-pLng*PI()/180)/2),2)))*100/100.0,1),9999) AS dist";
+		}
 
-		$sql = "select u.*
-				$rankField
+		$sql = "SELECT u.*, $distField , $rankField
 				FROM im_user as u 
 				JOIN im_user_wechat as w on u.uId=w.wUId
-				WHERE $condition order by rank desc, u.uRank desc limit $limit";
-		$conn = AppUtil::db();
+				LEFT JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=$pinCat
+				WHERE $condition order by dist, rank desc, u.uRank desc limit $limit";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$rows = [];
 		$IDs = [0];
@@ -1034,6 +1044,9 @@ class User extends ActiveRecord
 			$rows[$uid]['mpname'] = '';
 			$rows[$uid]['comment'] = '';
 			$rows[$uid]['hid'] = '';
+			if ($row['dist'] > 400) {
+				$rows[$uid]['dist'] = '';
+			}
 			$IDs[] = $uid;
 		}
 
@@ -1075,6 +1088,13 @@ class User extends ActiveRecord
 			$data["mavatar"] = $row["mpavatar"];
 			$data["mpname"] = $row["mpname"];
 			$data["comment"] = $row["comment"];
+			if (strlen($row["dist"])) {
+				if (floatval($row["dist"]) < 0.1) {
+					$data["dist"] = '距<100m';
+				} else {
+					$data["dist"] = '距' . $row["dist"] . 'km';
+				}
+			}
 			$data["name"] = $row["uName"];
 			//mb_strlen($row["uName"]) > 4 ? mb_substr($row["uName"], 0, 4) . "..." : $row["uName"];
 			$data["gender"] = $row["uGender"] == 10 ? "female" : "male";

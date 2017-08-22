@@ -1203,6 +1203,7 @@ section
 			clear: left
 	a:active, a.cur
 		background: $mainColorLight
+
 .edit
 	padding: 1.5rem
 	textarea
@@ -1332,6 +1333,7 @@ section
 	height: 1.5rem
 	display: inline-block
 	vertical-align: middle
+
 .i-mark-pos
 	background: url(../images/ico_location.png) no-repeat center center
 	background-size: 100% 100%
@@ -1339,6 +1341,7 @@ section
 	height: 1.5rem
 	display: inline-block
 	vertical-align: middle
+
 .i-mark-pos-gray
 	background: url(../images/ico_location_gray.png) no-repeat center center
 	background-size: 100% 100%
@@ -1346,6 +1349,7 @@ section
 	height: 1.5rem
 	display: inline-block
 	vertical-align: middle
+
 .line-bottom
 	margin-bottom: .5rem
 
@@ -2784,7 +2788,7 @@ section
 				width: 100%
 				vertical-align: middle
 			.i-mark-event
-				background: rgba(240,98,146,.65) url(../images/ico_ad_event.png) no-repeat 4.3rem .5rem
+				background: rgba(240, 98, 146, .65) url(../images/ico_ad_event.png) no-repeat 4.3rem .5rem
 				background-size: 2.6rem 2.6rem
 				width: 14rem
 				height: 14rem
@@ -2959,12 +2963,11 @@ section
 			h4
 				@include displayFlex
 				font-weight: $weightNormal
-
 			h5
 				color: #fff
 				font-weight: $weightNormal
 				line-height: 2rem
-				font-size: 1.2rem
+				font-size: 1rem
 			em
 				font-weight: $weightBold
 				font-size: 1.8rem
@@ -2998,11 +3001,20 @@ section
 					background-size: 100% 100%
 
 		.mp-info
-			padding: 2rem 1.5rem
+			padding: 2.5rem 1.5rem 2rem
 			position: relative
 			.mp
 				position: relative
-				padding-left: 4rem
+				padding-left: 3.8rem
+				font-size: 1.4rem
+				.dist
+					position: absolute
+					right: 0
+					top: .2rem
+					text-align: right
+					display: inline-block
+					font-size: 1rem
+					font-weight: $weightNormal
 				b
 					font-weight: $weightBold
 				img
@@ -4366,7 +4378,7 @@ section
 		a.schat-options
 			width: 5rem
 			height: 5rem
-			background: rgba(0,0,0,0.2) url(../images/icon_options.png?v=1.1.1) no-repeat center center
+			background: rgba(0, 0, 0, 0.2) url(../images/icon_options.png?v=1.1.1) no-repeat center center
 			background-size: 1.6rem 1.6rem
 			border: 0
 	.m-chat-wrap
@@ -4409,6 +4421,7 @@ section
 	background-color: rgba(0, 0, 0, 0.3)
 	pointer-events: auto
 	z-index: 8
+
 .charges
 	padding: 1rem
 	li
@@ -5522,11 +5535,13 @@ section
 		background: #f06292
 		padding: 1rem 3rem
 		color: #fff
+
 .que-count
 	text-align: center
 	padding: 2rem
 	font-size: 1.2rem
 	color: #777
+
 .qItem
 	margin: 0 2rem
 	padding: 2rem
@@ -5561,12 +5576,14 @@ section
 			font-size: 1.4rem
 			&.active
 				background: #f06292
+
 .sinfo-av-wrap
 	overflow: hidden
 	width: 100%
 	height: 32rem
 	.sinfo-av
 		width: 100%
+
 .sinfo-items
 	li
 		padding: 1rem 1.5rem
@@ -5609,6 +5626,7 @@ section
 				background: $borderColor
 			&:after
 				display: none
+
 .notices
 	li
 		border-bottom: 1px solid $borderColor
