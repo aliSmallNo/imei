@@ -1605,7 +1605,7 @@ class User extends ActiveRecord
 		$I = ($iResult["nUId"] > 0 ? 0 : 0.1) + $I4 + $I5 + 1;
 
 		// "区分系数（Distinguish) D=-D1/10+D2*10+D3"	 D1:注册年龄 D2:资料完整度指标(资料完成度大于90%取值。小于90%视为缺省) D3:待定
-		$D = intval(120 - $row["age"]) / 10.0 + ($row["percent"] > 90 ? $row["percent"] / 100 : 0) * 10;
+		$D = intval(120 - intval($row["age"])) / 10.0 + ($row["percent"] > 90 ? $row["percent"] / 100 : 0) * 10;
 
 		//计分公式: (B+V+A)*Q*I+D
 		$ranktemp = round(($A + $V + $B) * $Q * $I * $W + $D);
