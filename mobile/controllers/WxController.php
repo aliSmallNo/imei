@@ -1188,8 +1188,11 @@ class WxController extends BaseController
 		}
 		$gid = 2002;
 		if (Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oUId" => $wxInfo["uId"]])) {
-			header('location:/wx/voted');
-			exit();
+			if ($openId != "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
+				header('location:/wx/voted');
+				exit();
+			}
+
 		}
 		list($questions, $gId) = QuestionGroup::findGroup($gid);
 
@@ -1220,6 +1223,16 @@ class WxController extends BaseController
 		],
 			'terse',
 			'投票活动');
+	}
+
+	public function actionMarry()
+	{
+		return self::renderPage('marry.tpl', [
+			"firstName" => $firstName = "周",
+			"gender" => $gender = 1,
+		],
+			'terse',
+			'微媒100');
 	}
 
 }
