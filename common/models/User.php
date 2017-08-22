@@ -1583,7 +1583,7 @@ class User extends ActiveRecord
 		$point = 0;
 		for ($k = 1; $k < 9; $k++) {
 			if ($row["logdate"] > date('Y-m-d H:i', time() - $k * 86400)) {
-				$point = (10 - $k);
+				$point = 2 * (10 - $k);
 				break;
 			}
 		}
