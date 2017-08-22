@@ -314,8 +314,8 @@ class ApiController extends Controller
 			case "savegroup":
 				$ids = self::postParam("ids");
 				$ids = implode(",", json_decode($ids, 1));
-				// $cat = self::postParam("cat");
-				$cat = QuestionGroup::CAT_VOTE;
+				$cat = self::postParam("cat");
+				//$cat = QuestionGroup::CAT_VOTE;
 				QuestionGroup::add([
 					"gCategory" => $cat,
 					"gTitle" => QuestionGroup::$titleDict[$cat],
@@ -327,7 +327,7 @@ class ApiController extends Controller
 				$sql = "select uName as `name`,uPhone as phone,uGender as gender from im_user where uId in ($ids)";
 				$res = AppUtil::db()->createCommand($sql)->queryAll();
 				foreach ($res as &$v) {
-					$v["sex"] = User::$Gender[$v["gender"]];
+					$v["sex"] = isset(User::$Gender[$v["gender"]]) ? User::$Gender[$v["gender"]] : "";
 				}
 				return self::renderAPI(0, '', ["items" => $res]);
 		}

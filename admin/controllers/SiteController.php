@@ -855,9 +855,10 @@ class SiteController extends BaseController
 	// 添加题组
 	public function actionGroup()
 	{
-
+		$catDict = QuestionGroup::$titleDict;
 		return $this->renderPage('group.tpl',
 			[
+				'catDict' => $catDict,
 				'category' => 'data',
 				'detailcategory' => 'site/questions',
 			]);
