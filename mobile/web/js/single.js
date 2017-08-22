@@ -866,7 +866,7 @@ require(["layer"],
 			noMore: $("#slook .m-more"),
 			list: $(".m-top-users"),
 			criteriaTmp: $("#conditions").html(),
-			userTmp: $("#userFiter").html(),
+			userTmp: $("#tpl_user").html(),
 			cityTmp: '<div class="m-popup-options col4 clearfix" tag="city">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="city">{[name]}</a>{[/items]}</div>',
 			provinceTmp: '<div class="m-popup-options col4 clearfix" tag="province">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="province">{[name]}</a>{[/items]}</div>',
 			init: function () {

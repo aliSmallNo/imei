@@ -1332,7 +1332,20 @@ section
 	height: 1.5rem
 	display: inline-block
 	vertical-align: middle
-
+.i-mark-pos
+	background: url(../images/ico_location.png) no-repeat center center
+	background-size: 100% 100%
+	width: 1.5rem
+	height: 1.5rem
+	display: inline-block
+	vertical-align: middle
+.i-mark-pos-gray
+	background: url(../images/ico_location_gray.png) no-repeat center center
+	background-size: 100% 100%
+	width: 1.5rem
+	height: 1.5rem
+	display: inline-block
+	vertical-align: middle
 .line-bottom
 	margin-bottom: .5rem
 
@@ -2908,7 +2921,6 @@ section
 				margin-right: 1rem
 		.u-info
 			position: absolute
-			box-sizing: border-box
 			padding: 1.5rem 1.5rem 1rem
 			left: 0
 			bottom: 0
@@ -2916,10 +2928,10 @@ section
 			background: url(../images/bg_info.png) repeat-x bottom
 			background-size: auto 100%
 			color: #fff
-			h4
+			@include borderBox
+			.title
 				@include displayFlex
-				font-weight: $weightNormal
-				.u-info-name
+				.name
 					@include displayFlex-1
 					@include textTail
 					font-weight: $weightBold
@@ -2939,11 +2951,15 @@ section
 					&.male:before
 						background: url(../images/ico_gender_male.png) no-repeat center center
 						background-size: 100% 100%
-				.u-info-other
-					@include displayFlex-w(8rem)
+				.addr
+					@include displayFlex-w(11rem)
 					@include displayFlexVAlign
 					@include textTail
 					text-align: right
+			h4
+				@include displayFlex
+				font-weight: $weightNormal
+
 			h5
 				color: #fff
 				font-weight: $weightNormal
@@ -2958,7 +2974,6 @@ section
 				font-weight: $weightNormal
 				line-height: 2.2rem
 			.pos
-				padding-left: 1.4rem
 				font-size: 1.2rem
 				position: relative
 				&:before
@@ -4265,10 +4280,8 @@ section
 						background: url(../images/ico_gender_female.png) no-repeat center center
 						background-size: 100% 100%
 			h5
-				@include displayFlex-w(6rem)
-				padding-left: 1.6rem
-				background: url(../images/ico_location_gray.png) no-repeat left center
-				background-size: 1.4rem 1.4rem
+				@include displayFlex-w(11rem)
+				text-align: right
 				@include textTail
 
 .m-bottom-bar

@@ -1087,12 +1087,7 @@ class User extends ActiveRecord
 			$data["job"] = isset(User::$Scope[$row["uScope"]]) ? User::$Scope[$row["uScope"]] : "无行业";
 			$data["intro"] = $row["uIntro"];
 			$location = json_decode($row["uLocation"], 1);
-
-			if ($location && count($location)) {
-				$location = $location[0]["text"] . $location[1]["text"];
-			} else {
-				$location = "";
-			}
+			$location = $location ? implode(' ', array_column($location, 'text')) : '';
 			$data["location"] = $location;
 			$data["hintclass"] = $row["hid"] ? "icon-loved" : "icon-love";
 			$data["favor"] = $row["hid"] ? 'favor' : '';
@@ -1106,7 +1101,7 @@ class User extends ActiveRecord
 			$nextpage = 0;
 		}
 		//Rain: 不想展示太多页了
-		if ($nextpage > 7) {
+		if ($nextpage > 6) {
 			$nextpage = 0;
 		}
 		return ["data" => $result, "nextpage" => $nextpage, "condition" => $myFilter, 'page' => $page];

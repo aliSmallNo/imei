@@ -764,7 +764,7 @@
 	</li>
 	{[/data]}
 </script>
-<script type="text/html" id="userFiter">
+<script type="text/html" id="tpl_user">
 	{[#data]}
 	{[^secretId]}
 	<li>
@@ -779,12 +779,13 @@
 		<a href="javascript:;" data-eid="{[secretId]}" class="head j-profile">
 			<img src="{[avatar]}" class="nic">
 			<div class="u-info">
-				<h4>
-					<div class="u-info-name {[gender]}"><em>{[name]}</em></div>
-					<div class="u-info-other"><span class="pos">{[location]}</span></div>
-				</h4>
+				<div class="title">
+					<p class="name {[gender]}"><em>{[name]}</em></p>
+					<p class="addr"><i class="i-mark-pos"></i>{[location]}</p>
+				</div>
 				<h5>{[age]}岁 . {[height]} . {[horos]} . {[job]}</h5>
 			</div>
+
 			{[#cert]}<i class="i-cert">已认证</i>{[/cert]}
 		</a>
 		<div class="mp-info">
@@ -953,8 +954,8 @@
 	</div>
 	<div class="baseinfo">
 		<div class="title">
-			<h4><em>{[name]}</em> <i class="icon {[gender_ico]}"></i></h4>
-			<h5>{[location_t]}</h5>
+			<h4><i class="icon {[gender_ico]}"></i> <em>{[name]}</em></h4>
+			<h5><i class="i-mark-pos-gray"></i>{[location_t]}</h5>
 		</div>
 		<h6>{[brief]}</h6>
 	</div>
