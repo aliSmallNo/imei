@@ -135,7 +135,8 @@
 			ids: JSON.stringify(ids),
 		}, function (resp) {
 			if (resp.code == 0) {
-				// location.href = "/site/net"
+				 // location.href = "/site/net"
+		  layer.msg(resp.msg);
 			} else {
 				layer.msg(resp.msg);
 			}
