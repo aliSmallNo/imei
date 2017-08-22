@@ -735,17 +735,17 @@ class UserNet extends ActiveRecord
 	public static function relations($condition, $page, $pageSize = 20)
 	{
 		$offset = ($page - 1) * $pageSize;
-
-		$sql = "select u.uId as uId,u.uAvatar as avatar,u.uName as uname,u.uPhone as phone, u.uThumb as thumb,
+		$conn = AppUtil::db();
+		$sql = "select DISTINCT u.uId as uId,u.uAvatar as avatar,u.uName as uname,u.uPhone as phone, u.uThumb as thumb,
 				u1.uId as sId,u1.uAvatar as savatar,u1.uThumb as sthumb,u1.uName as sname,u1.uPhone as sphone,
-				n.nRelation,n.nStatus,n.nNote,n.nAddedOn as dt, IFNULL(q.qCode,'') as qcode
+				n.nRelation,n.nStatus,n.nNote, DATE_FORMAT(n.nAddedOn,'%Y-%m-%d %H:%i') as dt, IFNULL(q.qCode,'') as qcode
 				from im_user_net as n 
-				left join im_user_qr as q on n.nNote=q.qId
 				join im_user as u on u.uId=n.nUId 
-				join im_user as u1 on u1.uId=n.nSubUId 
+				join im_user as u1 on u1.uId=n.nSubUId
+				left join im_user_qr as q on n.nNote=q.qId 
 				where n.nDeletedFlag= 0  $condition
 				order by n.nAddedOn desc limit $offset,$pageSize";
-		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		$res = $conn->createCommand($sql)->queryAll();
 		foreach ($res as &$v) {
 			$v["rText"] = self::$RelDict[$v["nRelation"]];
 			$v["sText"] = self::$stDict[$v["nStatus"]];
@@ -840,12 +840,12 @@ class UserNet extends ActiveRecord
 				$v['text'] = call_user_func_array('sprintf', $memo);
 			}
 		}
-		$sql = "select count(1) as co
+		$sql = "select count(DISTINCT u.uId, u1.uId, DATE_FORMAT(n.nAddedOn,'%Y-%m-%d %H:%i')) as co
 				from im_user_net as n 
 				join im_user as u on u.uId=n.nUId 
 				join im_user as u1 on u1.uId=n.nSubUId 
 				where n.nDeletedFlag= 0 $condition ";
-		$count = AppUtil::db()->createCommand($sql)->queryScalar();
+		$count = $conn->createCommand($sql)->queryScalar();
 
 		return [$res, $count];
 	}
