@@ -1601,7 +1601,7 @@ class User extends ActiveRecord
 		])->queryOne();
 		$W = .01;
 		if (isset($iResult["wSubscribe"]) && $iResult["wSubscribe"]) {
-			$W = 1;
+			$W = 2;
 		}
 		$I = ($iResult["nUId"] > 0 ? 0 : 0.1) + $I4 + $I5 + 1;
 
