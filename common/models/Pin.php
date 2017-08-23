@@ -40,7 +40,6 @@ class Pin extends ActiveRecord
 		$entity->pPId = $pid;
 		$entity->pLat = $lat;
 		$entity->pLng = $lng;
-		$entity->pPoint = 'GeomFromText(\'POINT(' . $lat . ' ' . $lng . ')\')';
 		$entity->save();
 
 		$sql = 'INSERT INTO im_pin(pCategory,pPId)
@@ -50,15 +49,17 @@ class Pin extends ActiveRecord
 			':cat' => self::CAT_NOW,
 			':pid' => $pid,
 		])->execute();
-		$sql = 'UPDATE im_pin SET pLat=:lat,pLng=:lng,pPoint=:poi,pDate=now()
+		$sql = 'UPDATE im_pin SET pLat=:lat,pLng=:lng,pDate=now()
  				WHERE pCategory=:cat AND pPId=:pid';
 		$conn->createCommand($sql)->bindValues([
 			':cat' => self::CAT_NOW,
 			':pid' => $pid,
 			':lat' => $lat,
 			':lng' => $lng,
-			':poi' => 'GeomFromText(\'POINT(' . $lat . ' ' . $lng . ')\')',
 		])->execute();
+
+		$sql='update im_pin set pPoint= GeomFromText( CONCAT(\'POINT(\',pLat,\' \',pLng,\')\')) WHERE pPoint is null';
+		$conn->createCommand($sql)->execute();
 
 		return $entity->pId;
 	}
