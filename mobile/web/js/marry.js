@@ -68,6 +68,7 @@ require(["layer"],
 					//shareLog('share', '/wx/sh');
 				}
 			});
+			showMsg('done1');
 			wx.onMenuShareTimeline({
 				title: '小微要组织线下活动咯，不知各位帅哥美女喜欢什么样的，那就一起来选吧',
 				link: "https://wx.meipo100.com/wx/marry?name=" + $sls.name + "&gender=" + $sls.gender,
@@ -76,6 +77,7 @@ require(["layer"],
 					//shareLog('moment', '/wx/sh');
 				}
 			});
+			showMsg('done2');
 		}
 
 		$(function () {
@@ -83,6 +85,6 @@ require(["layer"],
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
-			wx.ready(resetShare());
+			wx.ready(resetShare);
 		});
 	});
