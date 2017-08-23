@@ -965,15 +965,20 @@ class User extends ActiveRecord
 		}
 		$isSingle = ($myInfo->uRole == 10) ? 1 : 0;
 		$mId = $myInfo->uId;
-		$hint = $myInfo->uHint;
 		$uFilter = $myInfo->uFilter;
 		$myFilter = self::criteria($myInfo);
 
 		$gender = $myInfo->uGender;
-		$uRole = User::ROLE_SINGLE;
-		$gender = ($gender == 10) ? 11 : 10;
+		$birthYear = $myInfo->uBirthYear;
+		$ageLimit = '';
+		if ($gender && $gender == self::GENDER_MALE && $birthYear) {
+			$ageLimit = ' and u.uBirthYear >' . ($birthYear - 8);
+		}
 
-		$condition = " u.uRole=$uRole and u.uGender=$gender and u.uStatus in (0,1) ";
+		$gender = ($gender == self::GENDER_FEMALE) ? self::GENDER_MALE : self::GENDER_FEMALE;
+		$uRole = User::ROLE_SINGLE;
+
+		$condition = " u.uRole=$uRole and u.uGender=$gender and u.uStatus in (0,1) " . $ageLimit;
 
 		$prov = '江苏';
 		$city = '盐城';
