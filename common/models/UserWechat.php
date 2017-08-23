@@ -313,6 +313,9 @@ class UserWechat extends ActiveRecord
 							$params[':wSubscribeDate'] = date('Y-m-d H:i:s', $val);
 						}
 					}
+					if ($user['openid'] == 'oYDJew7JO7pDnsiaQit6MZgy7XKo') {
+						var_dump($cmd->bindValues($params)->getRawSql());
+					}
 					$cnt += $cmd->bindValues($params)->execute();
 				}
 			}
@@ -331,7 +334,7 @@ class UserWechat extends ActiveRecord
 			$cmdUpdate2->bindValues([':openid' => $id])->execute();
 			$postData["user_list"][] = ["openid" => $id, "lang" => "zh_CN"];
 
-			if ($index > 10) {
+			if ($index > 50) {
 				$updateCount += $updateInfo($fields, $token, $postData, $cmdUpdate, $debug);
 				$postData = ["user_list" => []];
 				$index = 0;
