@@ -85,7 +85,7 @@ require(["layer"],
 			wx.config(wxInfo);
 			wx.ready(function () {
 				//wx.hideOptionMenu();
-				resetShare();
+				//resetShare();
 			});
 		});
 	});
