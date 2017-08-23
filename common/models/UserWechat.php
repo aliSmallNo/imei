@@ -306,7 +306,8 @@ class UserWechat extends ActiveRecord
 					];
 					foreach ($pFields as $k => $field) {
 						$val = isset($user[$k]) ? $user[$k] : '';
-						if (in_array($field, ['subscribe', 'subscribe_time']) && !$val) {
+						if (in_array($field, ['wSubscribe
+						', 'wSubscribeTime']) && !$val) {
 							$val = 0;
 						}
 						$params[':' . $field] = $val;
