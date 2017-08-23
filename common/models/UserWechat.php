@@ -289,7 +289,7 @@ class UserWechat extends ActiveRecord
 		$postData = [
 			"user_list" => []
 		];
-		$index = $updateCount = 0;
+
 
 		$updateInfo = function ($pFields, $pToken, $pData, $cmd) {
 			$cnt = 0;
@@ -326,12 +326,12 @@ class UserWechat extends ActiveRecord
 				wRawData = REPLACE(wRawData, \'"subscribe":1,\', \'"subscribe":0,\')
  				WHERE wOpenId=:openid ';
 		$cmdUpdate2 = $conn->createCommand($sql);
-
+		$index = $updateCount = 0;
 		foreach ($openIds as $id) {
 			$cmdUpdate2->bindValues([':openid' => $id])->execute();
 			$postData["user_list"][] = ["openid" => $id, "lang" => "zh_CN"];
 
-			if ($index > 96) {
+			if ($index > 90) {
 				$updateCount += $updateInfo($fields, $token, $postData, $cmdUpdate, $debug);
 				$postData = ["user_list" => []];
 				$index = 0;
