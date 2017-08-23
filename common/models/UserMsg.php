@@ -289,12 +289,12 @@ class UserMsg extends ActiveRecord
 	public static function routineAlert($uIds = [])
 	{
 		$hr = date('Hi');
-		if (!in_array($hr, ['0900', '1130', '1530', '1830', '2130'])) {
+		if (!in_array($hr, ['0730', '0930', '1200', '1600', '1900', '2200'])) {
 			return false;
 		}
 		$conn = AppUtil::db();
 
-		$sql='UPDATE im_user_msg as m 
+		$sql = 'UPDATE im_user_msg as m 
 		 JOIN im_chat_group as g on m.mKey=g.gId
 		 JOIN im_chat_msg as t on t.cGId=g.gId AND t.cId=g.gLastCId AND t.cReadFlag=1 AND t.cAddedOn
 		 SET m.mReadFlag=1,m.mAlertFlag=1,m.mAlertDate=t.cReadOn 
