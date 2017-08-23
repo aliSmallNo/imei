@@ -300,7 +300,7 @@ class UserWechat extends ActiveRecord
 				var_dump($pData);
 				$bol = true;
 			}
-			$res = AppUtil::postJSON($url, json_encode($pData));
+			$res = AppUtil::postJSON($url,$pData);
 			$res = json_decode(substr($res, strpos($res, '{')), true);
 			if (isset($res["user_info_list"]) && $res["user_info_list"]) {
 				if ($bol){
