@@ -1111,7 +1111,6 @@ class User extends ActiveRecord
 			}
 			$data["advise"] = trim($advise, ', ');
 			$data["name"] = $row["uName"];
-			//mb_strlen($row["uName"]) > 4 ? mb_substr($row["uName"], 0, 4) . "..." : $row["uName"];
 			$data["gender"] = $row["uGender"] == 10 ? "female" : "male";
 			$data["age"] = date("Y") - $row["uBirthYear"];
 			$data["height"] = isset(User::$Height[$row["uHeight"]]) ? User::$Height[$row["uHeight"]] : "无身高";
