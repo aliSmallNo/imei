@@ -30,11 +30,7 @@ require(["layer"],
 		}
 
 		$('.btn-preview').on(kClick, function () {
-			location.href = '/wx/marry?preview=1&name=' + $sls.name + '&gender=' + $sls.gender;
-		});
-
-		$('.btn-share').on(kClick, function () {
-			/*var name = $.trim($sls.input.val());
+			var name = $.trim($sls.input.val());
 			if (!name) {
 				showMsg('请先输入姓名~');
 				$sls.input.focus();
@@ -46,8 +42,11 @@ require(["layer"],
 				showMsg('请先选择性别~');
 				return;
 			}
-			$sls.gender = gender.val();*/
+			$sls.gender = gender.val();
+			location.href = '/wx/marry?preview=1&name=' + $sls.name + '&gender=' + $sls.gender;
+		});
 
+		$('.btn-share').on(kClick, function () {
 			var html = '<i class="share-arrow">点击菜单分享</i>';
 			$sls.main.show();
 			$sls.main.append(html);
