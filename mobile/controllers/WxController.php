@@ -1235,7 +1235,7 @@ class WxController extends BaseController
 		$uId = self::getParam('id', 120000);
 		$name = self::getParam('name');
 		$gender = self::getParam('gender');
-		$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_SALES, 'marry');
+		$qrcode = UserQR::createQR($uId, UserQR::CATEGORY_SALES, 'marry');
 		return self::renderPage('marry.tpl',
 			[
 				"name" => $name,
