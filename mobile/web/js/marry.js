@@ -83,9 +83,6 @@ require(["layer"],
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
-			wx.ready(function () {
-				//wx.hideOptionMenu();
-				resetShare();
-			});
+			wx.ready(resetShare);
 		});
 	});
