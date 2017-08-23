@@ -1,5 +1,5 @@
 {{if $name}}
-<div style="height: 36rem"></div>
+<div style="height: 35rem"></div>
 <div class="marry-wrap">
 	<h4 class="marry1-top">
 		{{if $gender==1}}{{$name}}先生{{else}}微媒先生{{/if}} & {{if $gender==0}}{{$name}}小姐{{else}}微媒小姐{{/if}}
