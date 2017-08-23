@@ -286,39 +286,32 @@ class UserWechat extends ActiveRecord
 
 		$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 
-		$postData = [
-			"user_list" => []
-		];
-
-
 		$updateInfo = function ($pFields, $pToken, $openId, $cmd) {
 			$cnt = 0;
 			$url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
 			$url = sprintf($url, $pToken, $openId);
 			$res = AppUtil::httpGet($url);
-			var_dump($res);
-			return 0;
-			$res = json_decode(substr($res, strpos($res, '{')), true);
-			if (isset($res["user_info_list"]) && $res["user_info_list"]) {
-				foreach ($res["user_info_list"] as $user) {
-					//if (!isset($user['nickname'])) continue;
-					$params = [
-						':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
-						':openid' => $user['openid']
-					];
-					foreach ($pFields as $k => $field) {
-						$val = isset($user[$k]) ? $user[$k] : '';
-						if (in_array($field, ['wSubscribe', 'wSubscribeTime']) && !$val) {
-							$val = 0;
-						}
-						$params[':' . $field] = $val;
-						if ($field == 'wSubscribeTime' && $val && is_numeric($val)) {
-							$params[':wSubscribeDate'] = date('Y-m-d H:i:s', $val);
-						}
-					}
-					$cnt += $cmd->bindValues($params)->execute();
+			$user = json_decode($res, 1);
+			if (!$user) {
+				return $cnt;
+			}
+			//if (!isset($user['nickname'])) continue;
+			$params = [
+				':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
+				':openid' => $user['openid']
+			];
+			foreach ($pFields as $k => $field) {
+				$val = isset($user[$k]) ? $user[$k] : '';
+				if (in_array($field, ['wSubscribe', 'wSubscribeTime']) && !$val) {
+					$val = 0;
+				}
+				$params[':' . $field] = $val;
+				if ($field == 'wSubscribeTime' && $val && is_numeric($val)) {
+					$params[':wSubscribeDate'] = date('Y-m-d H:i:s', $val);
 				}
 			}
+			$cnt += $cmd->bindValues($params)->execute();
+
 			return $cnt;
 		};
 
