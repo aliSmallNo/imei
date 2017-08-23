@@ -9,6 +9,7 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
+use common\models\Lottery;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
@@ -499,6 +500,13 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		var_dump(\GuzzleHttp\json_decode("", 1));
+		$data = [
+			"oItems" => json_encode([
+				//"/images/sign/sign_1.jpg", "/images/sign/sign_5.jpg", "/images/sign/sign_10.jpg", "/images/sign/sign_15.jpg",
+				//"/images/sign/sign_20.jpg", "/images/sign/sign_25.jpg", "/images/sign/sign_30.jpg", "/images/sign/sign_35.jpg",
+			]),
+			//"oTitle" => "签到",
+		];
+		//Lottery::add($data);
 	}
 }

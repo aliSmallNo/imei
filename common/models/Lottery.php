@@ -10,12 +10,24 @@ namespace common\models;
 
 use yii\db\ActiveRecord;
 
-
 class Lottery extends ActiveRecord
 {
 	public static function tableName()
 	{
 		return '{{%lottery}}';
+	}
+
+	public static function add($data)
+	{
+		if (!$data) {
+			return 0;
+		}
+		$entity = new self();
+		foreach ($data as $k => $v) {
+			$entity->$k = $v;
+		}
+		$entity->save();
+		return $entity->oId;
 	}
 
 	public static function getItem($oid)

@@ -1098,7 +1098,7 @@ class WxController extends BaseController
 		$oid = self::getParam('id');
 		$oid = AppUtil::decrypt($oid);
 		if (!$oid) {
-			$oid = 101;
+			 $oid = 101;
 		}
 		$gifts = [];
 		$title = '微媒100-幸运抽奖';
