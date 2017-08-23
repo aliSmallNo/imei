@@ -292,10 +292,9 @@ class UserWechat extends ActiveRecord
 			$url = sprintf($url, $pToken, $openId);
 			$res = AppUtil::httpGet($url);
 			$user = json_decode($res, 1);
-			if (!$user) {
+			if (!$user || !isset($user['nickname'])) {
 				return $cnt;
 			}
-			//if (!isset($user['nickname'])) continue;
 			$params = [
 				':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
 				':openid' => $user['openid']
@@ -326,7 +325,7 @@ class UserWechat extends ActiveRecord
 		foreach ($openIds as $id) {
 			$cmdUpdate2->bindValues([':openid' => $id])->execute();
 			$updateCount += $updateInfo($fields, $token, $id, $cmdUpdate);
-			if ($debug && $updateCount % 100 == 0) {
+			if ($debug && $updateCount % 200 == 0) {
 				echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . "\n";
 			}
 		}
