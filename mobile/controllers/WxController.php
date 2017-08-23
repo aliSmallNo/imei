@@ -1232,7 +1232,7 @@ class WxController extends BaseController
 	 */
 	public function actionMarry()
 	{
-		$uId = self::getParam('id', 120000);
+		$uId = self::getParam('id', User::SERVICE_UID);
 		$name = self::getParam('name');
 		$gender = self::getParam('gender');
 		$qrcode = UserQR::createQR($uId, UserQR::CATEGORY_SALES, 'marry');
