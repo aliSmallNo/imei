@@ -1227,14 +1227,20 @@ class WxController extends BaseController
 			'投票活动');
 	}
 
+	/**
+	 * @return string
+	 */
 	public function actionMarry()
 	{
+		$uId = self::getParam('id', 120000);
 		$name = self::getParam('name');
 		$gender = self::getParam('gender');
+		$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_SALES, 'marry');
 		return self::renderPage('marry.tpl',
 			[
 				"name" => $name,
-				"gender" => $gender
+				"gender" => $gender,
+				'qrcode' => $qrcode
 			],
 			'terse',
 			'微媒100',

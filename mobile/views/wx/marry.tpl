@@ -37,7 +37,7 @@
 	</h4>
 	<div class="bot-wrap">
 		<div class="avatar">
-			<img src="/images/qrmeipo100.jpg">
+			<img src="{{$qrcode}}">
 		</div>
 		<div class="content">
 			<h5>2017年8月28日<br>东台国际大酒店牡丹亭</h5>
