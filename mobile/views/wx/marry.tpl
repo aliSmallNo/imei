@@ -58,11 +58,19 @@
 	</label>
 	<div style="height: 4rem"></div>
 </div>
-<a class="m-next marry-btn">写好了，马上发布</a>
+
+<a class="m-next btn-share">写好了，马上分享</a>
 {{/if}}
+
+<div class="m-popup-shade"></div>
+<div class="m-popup-main" style="display: none">
+	<div class="m-popup-wrap">
+		<div class="m-popup-content no-bg"></div>
+	</div>
+</div>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/marry.js?v=1.4.10" src="/assets/js/require.js"></script>
+<script data-main="/js/marry.js?v=1.5.0" src="/assets/js/require.js"></script>
