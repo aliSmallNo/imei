@@ -296,16 +296,16 @@ class UserWechat extends ActiveRecord
 			$url = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=" . $pToken;
 			$pData = json_encode($pData);
 			$bol = false;
-			if(strpos($pData, 'oYDJew7JO7pDnsiaQit6MZgy7XKo')){
-				var_dump($pData);
+			if (strpos($pData, 'oYDJew7JO7pDnsiaQit6MZgy7XKo')) {
 				$bol = true;
 			}
-			$res = AppUtil::postJSON($url,$pData);
+			$res = AppUtil::postJSON($url, $pData);
+			if ($bol) {
+				var_dump($res);
+			}
 			$res = json_decode(substr($res, strpos($res, '{')), true);
 			if (isset($res["user_info_list"]) && $res["user_info_list"]) {
-				if ($bol){
-					var_dump($res);
-				}
+
 				foreach ($res["user_info_list"] as $user) {
 					//if (!isset($user['nickname'])) continue;
 
