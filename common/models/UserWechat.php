@@ -308,8 +308,7 @@ class UserWechat extends ActiveRecord
 					];
 					foreach ($pFields as $k => $field) {
 						$val = isset($user[$k]) ? $user[$k] : '';
-						if (in_array($field, ['wSubscribe
-						', 'wSubscribeTime']) && !$val) {
+						if (in_array($field, ['wSubscribe', 'wSubscribeTime']) && !$val) {
 							$val = 0;
 						}
 						$params[':' . $field] = $val;
@@ -330,20 +329,13 @@ class UserWechat extends ActiveRecord
 				wRawData = REPLACE(wRawData, \'"subscribe":1,\', \'"subscribe":0,\')
  				WHERE wOpenId=:openid ';
 		$cmdUpdate2 = $conn->createCommand($sql);
-		$index = $updateCount = 0;
+		$updateCount = 0;
 		foreach ($openIds as $id) {
 			$cmdUpdate2->bindValues([':openid' => $id])->execute();
-			$postData["user_list"][] = ["openid" => $id, "lang" => "zh_CN"];
-			$updateCount += $updateInfo($fields, $token, $postData, $cmdUpdate, $debug);
+			$updateCount += $updateInfo($fields, $token, $id, $cmdUpdate);
 			if ($debug && $updateCount % 100 == 0) {
 				echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . "\n";
 			}
-			$postData = [
-				"user_list" => []
-			];
-		}
-		if ($postData["user_list"] && count($postData["user_list"])) {
-			$updateCount += $updateInfo($fields, $token, $postData, $cmdUpdate, $debug);
 		}
 		if ($debug) {
 			echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . "\n";
