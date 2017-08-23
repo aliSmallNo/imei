@@ -53,7 +53,30 @@ require(["layer"],
 				$sls.main.find('.share-arrow').remove();
 				$sls.shade.fadeOut(100);
 			}, 2500);
+			resetShare();
 		});
+
+		function resetShare() {
+			wx.onMenuShareAppMessage({
+				title: '小微要组织线下活动咯',
+				desc: '不知各位帅哥美女喜欢什么样的，那就一起来选吧',
+				link: "https://wx.meipo100.com/wx/marry?name=" + $sls.name + "&gender=" + $sls.gender,
+				imgUrl: "https://wx.meipo100.com/images/logo33.png",
+				type: '',
+				dataUrl: '',
+				success: function () {
+					//shareLog('share', '/wx/sh');
+				}
+			});
+			wx.onMenuShareTimeline({
+				title: '小微要组织线下活动咯，不知各位帅哥美女喜欢什么样的，那就一起来选吧',
+				link: "https://wx.meipo100.com/wx/marry?name=" + $sls.name + "&gender=" + $sls.gender,
+				imgUrl: "https://wx.meipo100.com/images/logo33.png",
+				success: function () {
+					//shareLog('moment', '/wx/sh');
+				}
+			});
+		}
 
 		$(function () {
 			var wxInfo = JSON.parse($sls.wxString);
@@ -62,25 +85,7 @@ require(["layer"],
 			wx.config(wxInfo);
 			wx.ready(function () {
 				//wx.hideOptionMenu();
-				wx.onMenuShareAppMessage({
-					title: '小微要组织线下活动咯',
-					desc: '不知各位帅哥美女喜欢什么样的，那就一起来选吧',
-					link: "https://wx.meipo100.com/wx/marry?name=" + $sls.name + "&gender=" + $sls.gender,
-					imgUrl: "https://wx.meipo100.com/images/logo33.png",
-					type: '',
-					dataUrl: '',
-					success: function () {
-						//shareLog('share', '/wx/sh');
-					}
-				});
-				wx.onMenuShareTimeline({
-					title: '小微要组织线下活动咯，不知各位帅哥美女喜欢什么样的，那就一起来选吧',
-					link: "https://wx.meipo100.com/wx/marry?name=" + $sls.name + "&gender=" + $sls.gender,
-					imgUrl: "https://wx.meipo100.com/images/logo33.png",
-					success: function () {
-						//shareLog('moment', '/wx/sh');
-					}
-				});
+				resetShare();
 			});
 		});
 	});
