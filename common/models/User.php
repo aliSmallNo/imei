@@ -1026,7 +1026,8 @@ class User extends ActiveRecord
 		if ($ret) {
 			$myLat = $ret['pLat'];
 			$myLng = $ret['pLng'];
-			$distField = "IFNULL(ROUND(6378.138*2*ASIN(SQRT(POW(SIN(($myLat*PI()/180-pLat*PI()/180)/2),2)+COS($myLat*PI()/180)*COS(pLat*PI()/180)*POW(SIN(($myLng*PI()/180-pLng*PI()/180)/2),2)))*100/100.0,1),9999) AS dist";
+			$distField = 'round(IFNULL(ST_Distance(POINT(40.08032, 116.3481), p.pPoint) * 111.195,9999),1) as dist';
+			//"IFNULL(ROUND(6378.138*2*ASIN(SQRT(POW(SIN(($myLat*PI()/180-pLat*PI()/180)/2),2)+COS($myLat*PI()/180)*COS(pLat*PI()/180)*POW(SIN(($myLng*PI()/180-pLng*PI()/180)/2),2)))*100/100.0,1),9999) AS dist";
 		}
 
 		$sql = "SELECT u.*, $distField , $rankField
@@ -1034,6 +1035,7 @@ class User extends ActiveRecord
 				JOIN im_user_wechat as w on u.uId=w.wUId AND w.wSubscribe=1
 				LEFT JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=$pinCat
 				WHERE $condition order by dist, rank desc, u.uRank desc limit $limit";
+		AppUtil::logFile($sql, 5, __FUNCTION__, __LINE__);
 		$ret = $conn->createCommand($sql)->queryAll();
 		$rows = [];
 		$IDs = [0];
