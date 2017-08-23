@@ -68,7 +68,6 @@ require(["layer"],
 					//showMsg('分享成功啦，O(∩_∩)O谢谢你的参与');
 				}
 			});
-			showMsg('Done1');
 			wx.onMenuShareTimeline({
 				title: '小微要组织线下活动咯，不知各位帅哥美女喜欢什么样的，那就一起来选吧',
 				link: "https://wx.meipo100.com/wx/marry?name=" + $sls.name + "&gender=" + $sls.gender,
@@ -77,7 +76,6 @@ require(["layer"],
 					//showMsg('分享成功啦，O(∩_∩)O谢谢你的参与');
 				}
 			});
-			showMsg('Done2');
 		}
 
 		$(function () {
