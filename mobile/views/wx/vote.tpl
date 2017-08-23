@@ -22,8 +22,7 @@
 	}
 
 	.vote-item h4 {
-		height: 4rem;
-		line-height: 4rem;
+		margin-bottom: 1rem;
 		font-size: 1.3rem;
 	}
 
@@ -141,7 +140,7 @@
 
 </style>
 <div class="vote-title">
-	<p>小微要组织一场活动，不知各位帅哥美女喜欢什么样的，那就一起来选吧。我们会根据大家的喜好，组织线下活动哦，欢迎参加</p>
+	<p>小微要组织一场活动，不知各位帅哥美女喜欢什么样的，那就一起来投票吧（投票有惊喜哦），我们会根据大家的喜好，组织线下活动哦，欢迎参加！</p>
 </div>
 <div class="vote">
 	{{foreach from=$questions key=key item=item}}
@@ -156,7 +155,6 @@
 		{{/foreach}}
 	</div>
 	{{/foreach}}
-
 </div>
 <div class="vote-btn">
 	<a>投票</a>

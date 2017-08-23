@@ -25,6 +25,7 @@ class UserTrans extends ActiveRecord
 	const CAT_PRESENT = 128;
 	const CAT_RETURN = 130;
 	const CAT_MOMENT = 150;
+	const CAT_VOTE = 160;
 
 	static $catDict = [
 		self::CAT_RECHARGE => "充值",
@@ -37,6 +38,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_PRESENT => "赠送媒桂花",
 		self::CAT_RETURN => "拒绝退回",
 		self::CAT_MOMENT => "分享到朋友圈奖励",
+		self::CAT_VOTE => "投票奖励",
 	];
 
 	static $CatMinus = [

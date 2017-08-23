@@ -510,9 +510,13 @@ class ApiController extends Controller
 				$ret = User::getFilter($openId, $filter, $page);
 				if (isset($ret['data']) && count($ret['data']) > 3 && $page == 1) {
 					array_splice($ret['data'], 3, 0, [
+//						[
+//							'url' => '/wx/fansrank',
+//							'img' => '/images/event_fans.jpg',
+//						],
 						[
-							'url' => '/wx/fansrank',
-							'img' => '/images/event_fans.jpg',
+							'url' => '/wx/vote',
+							'img' => '/images/event_vote.jpg',
 						],
 //						[
 //							'url' => '/wx/toparty',
@@ -1513,9 +1517,10 @@ class ApiController extends Controller
 						"oOpenId" => $openId,
 						"oAfter" => $answer,
 					]);
-					return self::renderAPI(0, '投票成功');
+					$amt = 10;
+					UserTrans::add($uid, 0, UserTrans::CAT_VOTE, '投票奖励', $amt, UserTrans::UNIT_GIFT);
+					return self::renderAPI(0, '投票成功,奖励' . $amt . '朵媒瑰花！');
 				}
-
 				break;
 		}
 		return self::renderAPI(129, '操作无效~');

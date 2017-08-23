@@ -891,7 +891,8 @@ class SiteController extends BaseController
 
 	public function actionVote()
 	{
-		$gid = 2002;
+		//$gid = 2002;
+		$gid = 2012;
 		$voteStat = QuestionGroup::voteStat($gid);
 		return $this->renderPage('vote.tpl',
 			[

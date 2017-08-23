@@ -861,6 +861,7 @@ class WxController extends BaseController
 			}
 			$qrcode = UserQR::getQRCode($qrUserId, UserQR::CATEGORY_SINGLE);
 		}
+
 		return self::renderPage("sqr.tpl",
 			[
 				'uId' => $qrUserId,
@@ -1186,13 +1187,13 @@ class WxController extends BaseController
 			header('location:/wx/index');
 			exit();
 		}
-		$gid = 2002;
+		//$gid = 2002;
+		$gid = 2012;
 		if (Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oUId" => $wxInfo["uId"]])) {
-			if ($openId != "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
-				header('location:/wx/voted');
-				exit();
+			if ($openId == "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
 			}
-
+			header('location:/wx/voted');
+			exit();
 		}
 		list($questions, $gId) = QuestionGroup::findGroup($gid);
 
@@ -1212,7 +1213,8 @@ class WxController extends BaseController
 			header('location:/wx/index');
 			exit();
 		}
-		$gid = 2002;
+		//$gid = 2002;
+		$gid = 2012;
 		if (!Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oUId" => $wxInfo["uId"]])) {
 			header('location:/wx/vote');
 			exit();
