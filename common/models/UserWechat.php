@@ -337,6 +337,9 @@ class UserWechat extends ActiveRecord
 			if ($debug && $updateCount % 100 == 0) {
 				echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . "\n";
 			}
+			$postData = [
+				"user_list" => []
+			];
 		}
 		if ($postData["user_list"] && count($postData["user_list"])) {
 			$updateCount += $updateInfo($fields, $token, $postData, $cmdUpdate, $debug);
