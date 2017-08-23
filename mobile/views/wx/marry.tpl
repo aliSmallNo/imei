@@ -1,7 +1,7 @@
 <style>
 	.marry0 {
 		position: fixed;
-		bottom: 4rem;
+		bottom: 2rem;
 		left: 3rem;
 		right: 3rem;
 		text-align: center;
@@ -44,10 +44,12 @@
 			<h6>想要一张属于你的婚礼邀请函吗？<br>长按识别二维码两步搞定</h6>
 		</div>
 	</div>
+	{{if $preview}}
+	<div class="btn-wrap">
+		<a class="btn btn-main btn-share">马上分享</a>
+	</div>
+	{{/if}}
 </div>
-{{if $preview}}
-<a class="m-next btn-share">马上分享</a>
-{{/if}}
 {{else}}
 <div class="marry0">
 	<label>姓名
@@ -59,10 +61,10 @@
 	<label>
 		<input class="input-radio" name="gender" type="radio" value="0"><span>女士</span>
 	</label>
-	<div style="height: 4rem"></div>
+	<div class="btn-wrap">
+		<a class="btn btn-main btn-preview">写好了，去预览</a>
+	</div>
 </div>
-
-<a class="m-next btn-preview">写好了，去预览</a>
 {{/if}}
 
 <div class="m-popup-shade"></div>
@@ -77,4 +79,4 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/marry.js?v=1.6.5" src="/assets/js/require.js"></script>
+<script data-main="/js/marry.js?v=1.6.6" src="/assets/js/require.js"></script>

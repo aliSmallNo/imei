@@ -43,7 +43,7 @@ require(["layer"],
 				return;
 			}
 			$sls.gender = gender.val();
-			location.href = '/wx/marry?preview=1&name=' + $sls.name + '&gender=' + $sls.gender;
+			location.href = '/wx/marry?preview=1&name=' + encodeURI($sls.name) + '&gender=' + $sls.gender;
 		});
 
 		$('.btn-share').on(kClick, function () {
@@ -58,33 +58,31 @@ require(["layer"],
 			}, 2500);
 		});
 
-		function resetShare() {
-			wx.onMenuShareAppMessage({
-				title: '小微要组织线下活动咯',
-				desc: '不知各位帅哥美女喜欢什么样的，那就一起来选吧',
-				link: "https://wx.meipo100.com/wx/marry?name=" + $sls.name + "&gender=" + $sls.gender,
-				imgUrl: "https://wx.meipo100.com/images/logo33.png",
-				type: '',
-				dataUrl: '',
-				success: function () {
-					//showMsg('分享成功啦，O(∩_∩)O谢谢你的参与');
-				}
-			});
-			wx.onMenuShareTimeline({
-				title: '小微要组织线下活动咯，不知各位帅哥美女喜欢什么样的，那就一起来选吧',
-				link: "https://wx.meipo100.com/wx/marry?name=" + $sls.name + "&gender=" + $sls.gender,
-				imgUrl: "https://wx.meipo100.com/images/logo33.png",
-				success: function () {
-					//showMsg('分享成功啦，O(∩_∩)O谢谢你的参与');
-				}
-			});
-		}
-
 		$(function () {
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
-			wx.ready(resetShare);
+			wx.ready(function () {
+				wx.onMenuShareAppMessage({
+					title: '小微要组织线下活动咯',
+					desc: '不知各位帅哥美女喜欢什么样的，那就一起来选吧',
+					link: "https://wx.meipo100.com/wx/marry?name=" + $sls.name + "&gender=" + $sls.gender,
+					imgUrl: "https://wx.meipo100.com/images/logo33.png",
+					type: '',
+					dataUrl: '',
+					success: function () {
+						//showMsg('分享成功啦，O(∩_∩)O谢谢你的参与');
+					}
+				});
+				wx.onMenuShareTimeline({
+					title: '小微要组织线下活动咯，不知各位帅哥美女喜欢什么样的，那就一起来选吧',
+					link: "https://wx.meipo100.com/wx/marry?name=" + $sls.name + "&gender=" + $sls.gender,
+					imgUrl: "https://wx.meipo100.com/images/logo33.png",
+					success: function () {
+						//showMsg('分享成功啦，O(∩_∩)O谢谢你的参与');
+					}
+				});
+			});
 		});
 	});
