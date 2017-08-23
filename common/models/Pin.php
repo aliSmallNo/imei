@@ -40,7 +40,7 @@ class Pin extends ActiveRecord
 		$entity->pPId = $pid;
 		$entity->pLat = $lat;
 		$entity->pLng = $lng;
-		$entity->pPoint = 'POINT(' . $lat . ' ' . $lng . ')';
+		$entity->pPoint = 'GeomFromText(\'POINT(' . $lat . ' ' . $lng . ')\')';
 		$entity->save();
 
 		$sql = 'INSERT INTO im_pin(pCategory,pPId)
@@ -57,7 +57,7 @@ class Pin extends ActiveRecord
 			':pid' => $pid,
 			':lat' => $lat,
 			':lng' => $lng,
-			':poi' => 'POINT(' . $lat . ' ' . $lng . ')',
+			':poi' => 'GeomFromText(\'POINT(' . $lat . ' ' . $lng . ')\')',
 		])->execute();
 
 		return $entity->pId;
