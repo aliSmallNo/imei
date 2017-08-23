@@ -65,7 +65,7 @@ require(["layer"],
 				type: '',
 				dataUrl: '',
 				success: function () {
-					showMsg('分享成功啦，O(∩_∩)O谢谢你的参与');
+					//showMsg('分享成功啦，O(∩_∩)O谢谢你的参与');
 				}
 			});
 			wx.onMenuShareTimeline({
@@ -73,7 +73,7 @@ require(["layer"],
 				link: "https://wx.meipo100.com/wx/marry?name=" + $sls.name + "&gender=" + $sls.gender,
 				imgUrl: "https://wx.meipo100.com/images/logo33.png",
 				success: function () {
-					showMsg('分享成功啦，O(∩_∩)O谢谢你的参与');
+					//showMsg('分享成功啦，O(∩_∩)O谢谢你的参与');
 				}
 			});
 		}
