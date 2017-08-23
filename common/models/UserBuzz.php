@@ -86,7 +86,7 @@ class UserBuzz extends ActiveRecord
 媒婆可以将自己身边好友拉到平台上来帮助他们脱单。
 单身的朋友可以直接注册，在这里寻找心仪的另一半。";
 
-		$postData = json_decode([], 1);
+		$postData = json_decode($postJSON, 1);
 
 		if (!$postData || !isset($postData["FromUserName"])) {
 			return $resp;
