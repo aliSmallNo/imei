@@ -1,9 +1,6 @@
 <style>
 	.marry0 {
-		position: fixed;
-		bottom: 2rem;
-		left: 3rem;
-		right: 3rem;
+		margin-top: 36rem
 		text-align: center;
 	}
 
@@ -79,4 +76,4 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/marry.js?v=1.6.6" src="/assets/js/require.js"></script>
+<script data-main="/js/marry.js?v=1.6.7" src="/assets/js/require.js"></script>

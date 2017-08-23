@@ -6039,10 +6039,7 @@ section {
     color: #939393; }
 
 .marry-wrap {
-  position: fixed;
-  bottom: 1.2rem;
-  left: 0;
-  right: 0; }
+  margin-top: 36rem; }
   .marry-wrap h4 {
     font-size: 2rem;
     color: #6d4c41;
