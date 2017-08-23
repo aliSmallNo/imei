@@ -40,6 +40,7 @@ class Pin extends ActiveRecord
 		$entity->pPId = $pid;
 		$entity->pLat = $lat;
 		$entity->pLng = $lng;
+		$entity->pPoint = 'POINT(' . $lat . ' ' . $lng . ')';
 		$entity->save();
 
 		$sql = 'INSERT INTO im_pin(pCategory,pPId)
@@ -49,13 +50,14 @@ class Pin extends ActiveRecord
 			':cat' => self::CAT_NOW,
 			':pid' => $pid,
 		])->execute();
-		$sql = 'UPDATE im_pin SET pLat=:lat,pLng=:lng,pDate=now()
+		$sql = 'UPDATE im_pin SET pLat=:lat,pLng=:lng,pPoint=:poi,pDate=now()
  				WHERE pCategory=:cat AND pPId=:pid';
 		$conn->createCommand($sql)->bindValues([
 			':cat' => self::CAT_NOW,
 			':pid' => $pid,
 			':lat' => $lat,
 			':lng' => $lng,
+			':poi' => 'POINT(' . $lat . ' ' . $lng . ')',
 		])->execute();
 
 		return $entity->pId;

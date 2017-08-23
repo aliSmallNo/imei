@@ -11,6 +11,7 @@ namespace console\controllers;
 use common\models\ChatMsg;
 use common\models\User;
 use common\models\UserNet;
+use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
@@ -458,7 +459,7 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$conn = AppUtil::db();
+		/*$conn = AppUtil::db();
 		$sql = 'update im_user_msg set mKey=(SELECT gId FROM im_chat_group WHERE gUId1=:uid1 AND gUId2=:uid2) WHERE mId=:id';
 		$cmd = $conn->createCommand($sql);
 
@@ -471,7 +472,14 @@ class FooController extends Controller
 				':uid2' => $uid2,
 				':id' => $row['mId']
 			])->execute();
-		}
+		}*/
+		$items = [];
+		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn01');
+		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn02');
+		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn03');
+		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn04');
+		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn05');
+		var_dump($items);
 
 		/*$a = ['除去索要微信号功能',
 			'发起聊天需要消耗至少10朵媒桂花，如果对方无回复，5天后原数退回',
