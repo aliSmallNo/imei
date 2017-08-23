@@ -57,7 +57,7 @@
 					<div class="pro">
 						<div style="width: {{if $item.amt>0}}{{(($opt.co/$item.amt)|string_format:"%.2f")*100}}%{{else}}0%{{/if}};"></div>
 					</div>
-					<div class="opt-res-list-r"><a data-ids="{{$opt.ids}}">{{$opt.co}}</a>票</div>
+					<div class="opt-res-list-r"><a href="javascript:;" data-ids="{{$opt.ids}}" data-co="{{$opt.co}}">{{$opt.co}}票</a></div>
 					<div class="opt-res-list-r">{{if $item.amt>0}}{{(($opt.co/$item.amt)|string_format:"%.2f")*100}}%{{else}}
 						0%{{/if}}</div>
 				</div>
