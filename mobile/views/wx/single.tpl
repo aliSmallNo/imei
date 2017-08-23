@@ -783,12 +783,13 @@
 					<p class="name {[gender]}"><em>{[name]}</em></p>
 					<p class="addr"><i class="i-mark-pos"></i>{[location]}</p>
 				</div>
-				<h5>{[#dist]}{[.]} . {[/dist]}{[age]}岁 . {[height]} . {[horos]} . {[job]}</h5>
+				<h5>{[age]}岁 . {[height]} . {[horos]} . {[job]}</h5>
 			</div>
 
 			{[#cert]}<i class="i-cert">已认证</i>{[/cert]}
 		</a>
 		<div class="mp-info">
+			<div class="advise">{[advise]}</div>
 			<div class="mp">
 				{[#mpname]}
 				<img src="{[mavatar]}" alt="">

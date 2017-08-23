@@ -1090,6 +1090,7 @@ class User extends ActiveRecord
 			$data["mavatar"] = $row["mpavatar"];
 			$data["mpname"] = $row["mpname"];
 			$data["comment"] = $row["comment"];
+			$advise = '';
 			if (strlen($row["dist"])) {
 				if (floatval($row["dist"]) <= 0.1) {
 					$data["dist"] = '距<100m';
@@ -1098,7 +1099,17 @@ class User extends ActiveRecord
 				} else {
 					$data["dist"] = '距' . $row["dist"] . 'km';
 				}
+				$advise = $data["dist"] . ', ';
 			}
+			$mins = AppUtil::diffDate(date('Y-m-d H:i'), $row['uLogDate']);
+			if ($mins < 1) {
+				$advise .= '当前在线';
+			} elseif ($mins < 60) {
+				$advise .= intval($mins) . '分钟前活跃';
+			} elseif ($mins <= 60 * 8) {
+				$advise .= intval($mins / 60.0) . '小时前活跃';
+			}
+			$data["advise"] = trim($advise, ', ');
 			$data["name"] = $row["uName"];
 			//mb_strlen($row["uName"]) > 4 ? mb_substr($row["uName"], 0, 4) . "..." : $row["uName"];
 			$data["gender"] = $row["uGender"] == 10 ? "female" : "male";

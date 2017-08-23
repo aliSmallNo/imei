@@ -354,6 +354,30 @@ class AppUtil
 		return $newDate;
 	}
 
+	public static function diffDate($strDate1, $strDate2, $type = 'minute')
+	{
+		$second1 = strtotime($strDate1);
+		$second2 = strtotime($strDate2);
+
+		if ($second1 < $second2) {
+			$tmp = $second2;
+			$second2 = $second1;
+			$second1 = $tmp;
+		}
+		switch ($type) {
+			case 'day':
+				return ($second1 - $second2) / (3600 * 24);
+				break;
+			case 'hour':
+				return ($second1 - $second2) / 3600;
+				break;
+			default:
+				return ($second1 - $second2) / 60;
+				break;
+		}
+
+	}
+
 	public static function unicode2Utf8($str)
 	{
 		$code = intval(hexdec($str));
