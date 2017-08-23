@@ -22,8 +22,6 @@
 	}
 
 	.vote-item h4 {
-		/*height: 4rem;*/
-		/*line-height: 4rem;*/
 		margin-bottom: 1rem;
 		font-size: 1.3rem;
 	}

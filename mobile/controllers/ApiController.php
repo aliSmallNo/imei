@@ -1513,7 +1513,7 @@ class ApiController extends Controller
 						"oOpenId" => $openId,
 						"oAfter" => $answer,
 					]);
-					$amt = 20;
+					$amt = 10;
 					UserTrans::add($uid, 0, UserTrans::CAT_VOTE, '投票奖励', $amt, UserTrans::UNIT_GIFT);
 					return self::renderAPI(0, '投票成功,奖励' . $amt . '朵媒瑰花！');
 				}
