@@ -32,12 +32,6 @@ require(["layer"],
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
-			$("body").css({
-				"background": "url(/images/icon_bg_marry_1.jpg) no-repeat center center",
-				"background-size": "100% 100%",
-				"width": "100%",
-				"height": "100%",
-			})
 			wx.ready(function () {
 				//wx.hideOptionMenu();
 				wx.onMenuShareAppMessage({

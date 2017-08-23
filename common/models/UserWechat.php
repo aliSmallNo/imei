@@ -286,36 +286,31 @@ class UserWechat extends ActiveRecord
 
 		$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 
-		$postData = [
-			"user_list" => []
-		];
-		$index = $updateCount = 0;
-
-		$updateInfo = function ($pFields, $pToken, $pData, $cmd) {
+		$updateInfo = function ($pFields, $pToken, $openId, $cmd) {
 			$cnt = 0;
-			$url = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=" . $pToken;
-			$res = AppUtil::postJSON($url, json_encode($pData));
-			$res = json_decode(substr($res, strpos($res, '{')), true);
-			if (isset($res["user_info_list"]) && $res["user_info_list"]) {
-				foreach ($res["user_info_list"] as $user) {
-					if (!isset($user['nickname'])) continue;
-					$params = [
-						':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
-						':openid' => $user['openid']
-					];
-					foreach ($pFields as $k => $field) {
-						$val = isset($user[$k]) ? $user[$k] : '';
-						if ($field == 'subscribe' && !$val) {
-							$val = 0;
-						}
-						$params[':' . $field] = $val;
-						if ($field == 'wSubscribeTime' && $val && is_numeric($val)) {
-							$params[':wSubscribeDate'] = date('Y-m-d H:i:s', $val);
-						}
-					}
-					$cnt += $cmd->bindValues($params)->execute();
+			$url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
+			$url = sprintf($url, $pToken, $openId);
+			$res = AppUtil::httpGet($url);
+			$user = json_decode($res, 1);
+			if (!$user || !isset($user['nickname'])) {
+				return $cnt;
+			}
+			$params = [
+				':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
+				':openid' => $user['openid']
+			];
+			foreach ($pFields as $k => $field) {
+				$val = isset($user[$k]) ? $user[$k] : '';
+				if (in_array($field, ['wSubscribe', 'wSubscribeTime']) && !$val) {
+					$val = 0;
+				}
+				$params[':' . $field] = $val;
+				if ($field == 'wSubscribeTime' && $val && is_numeric($val)) {
+					$params[':wSubscribeDate'] = date('Y-m-d H:i:s', $val);
 				}
 			}
+			$cnt += $cmd->bindValues($params)->execute();
+
 			return $cnt;
 		};
 
@@ -326,23 +321,13 @@ class UserWechat extends ActiveRecord
 				wRawData = REPLACE(wRawData, \'"subscribe":1,\', \'"subscribe":0,\')
  				WHERE wOpenId=:openid ';
 		$cmdUpdate2 = $conn->createCommand($sql);
-
+		$updateCount = 0;
 		foreach ($openIds as $id) {
 			$cmdUpdate2->bindValues([':openid' => $id])->execute();
-			$postData["user_list"][] = ["openid" => $id, "lang" => "zh_CN"];
-
-			if ($index > 96) {
-				$updateCount += $updateInfo($fields, $token, $postData, $cmdUpdate, $debug);
-				$postData = ["user_list" => []];
-				$index = 0;
-				if ($debug) {
-					echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . "\n";
-				}
+			$updateCount += $updateInfo($fields, $token, $id, $cmdUpdate);
+			if ($debug && $updateCount % 200 == 0) {
+				echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . "\n";
 			}
-			$index++;
-		}
-		if ($postData["user_list"] && count($postData["user_list"])) {
-			$updateCount += $updateInfo($fields, $token, $postData, $cmdUpdate, $debug);
 		}
 		if ($debug) {
 			echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . "\n";

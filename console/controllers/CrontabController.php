@@ -17,10 +17,10 @@ use yii\console\Controller;
 class CrontabController extends Controller
 {
 
-	public function actionRefresh()
+	public function actionRefresh($openId = '')
 	{
 		// 120003, 131266, 131379, 134534
-		$ret = UserWechat::refreshWXInfo('', 1);
+		$ret = UserWechat::refreshWXInfo($openId, 1);
 		var_dump($ret);
 	}
 

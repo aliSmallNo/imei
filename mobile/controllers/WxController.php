@@ -1229,22 +1229,16 @@ class WxController extends BaseController
 
 	public function actionMarry()
 	{
-		$openId = self::$WX_OpenId;
-		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		if (!$wxInfo) {
-			header('location:/wx/index');
-			exit();
-		}
-		$senderUId = self::getParam('id');
-		$qrUserId = $senderUId ? $senderUId : $wxInfo['uId'];
-		$qrcode = UserQR::getQRCode($qrUserId, UserQR::CATEGORY_SINGLE);
-
-		return self::renderPage('marry.tpl', [
-			"firstName" => $firstName = "周",
-			"gender" => $gender = 1,
-		],
+		$name = self::getParam('name');
+		$gender = self::getParam('gender');
+		return self::renderPage('marry.tpl',
+			[
+				"name" => $name,
+				"gender" => $gender
+			],
 			'terse',
-			'微媒100');
+			'微媒100',
+			'bg-marry');
 	}
 
 }
