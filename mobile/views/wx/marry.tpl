@@ -1,33 +1,5 @@
-<style>
-	.marry0 {
-		margin-top: 38rem;
-		text-align: center;
-	}
-
-	.marry0 label {
-		margin-right: .6rem;
-		color: #6a6572;
-	}
-
-	.input-name {
-		border: none;
-		border-bottom: 1px solid #E4E4E4;
-		line-height: 2.8rem;
-		font-size: 1.8rem;
-		width: 10rem;
-		color: #333;
-
-	}
-
-	.input-radio {
-		-webkit-appearance: radio;
-		outline: thin;
-		cursor: pointer;
-		vertical-align: middle;
-	}
-
-</style>
 {{if $name}}
+<div style="height: 36rem"></div>
 <div class="marry-wrap">
 	<h4 class="marry1-top">
 		{{if $gender==1}}{{$name}}先生{{else}}微媒先生{{/if}} & {{if $gender==0}}{{$name}}小姐{{else}}微媒小姐{{/if}}
@@ -48,6 +20,7 @@
 	{{/if}}
 </div>
 {{else}}
+<div style="height: 38rem"></div>
 <div class="marry0">
 	<label>姓名
 		<input class="input-name" maxlength="4">
@@ -76,4 +49,4 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/marry.js?v=1.6.7" src="/assets/js/require.js"></script>
+<script data-main="/js/marry.js?v=1.6.8" src="/assets/js/require.js"></script>
