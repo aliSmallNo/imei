@@ -1099,6 +1099,7 @@ class WxController extends BaseController
 		$oid = AppUtil::decrypt($oid);
 		if (!$oid) {
 			 $oid = 101;
+			 $oid = 102;
 		}
 		$gifts = [];
 		$title = '微媒100-幸运抽奖';
@@ -1213,7 +1214,7 @@ class WxController extends BaseController
 			header('location:/wx/index');
 			exit();
 		}
-		//$gid = 2002;
+		// $gid = 2002;
 		$gid = 2012;
 		if (!Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oUId" => $wxInfo["uId"]])) {
 			header('location:/wx/vote');
