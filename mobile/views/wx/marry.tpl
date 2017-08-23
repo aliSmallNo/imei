@@ -15,11 +15,11 @@
 	.input-name {
 		border: none;
 		border-bottom: 1px solid #E4E4E4;
-		height: 3rem;
-		line-height: 3rem;
-		font-size: 1.4rem;
+		line-height: 2.8rem;
+		font-size: 1.8rem;
 		width: 10rem;
 		color: #333;
+
 	}
 
 	.input-radio {
@@ -73,4 +73,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/marry.js?v=1.5.8" src="/assets/js/require.js"></script>
+<script data-main="/js/marry.js?v=1.5.9" src="/assets/js/require.js"></script>
