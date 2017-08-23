@@ -15,8 +15,8 @@ require(["layer"],
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
 			input: $('.input-name'),
-			name: '',
-			gender: ''
+			name: $('#cNAME').val(),
+			gender: $('#cGENDER').val(),
 		};
 
 		function showMsg(title, sec) {
@@ -29,8 +29,12 @@ require(["layer"],
 			});
 		}
 
+		$('.btn-preview').on(kClick, function () {
+			location.href = '/wx/marry?preview=1&name=' + $sls.name + '&gender=' + $sls.gender;
+		});
+
 		$('.btn-share').on(kClick, function () {
-			var name = $.trim($sls.input.val());
+			/*var name = $.trim($sls.input.val());
 			if (!name) {
 				showMsg('请先输入姓名~');
 				$sls.input.focus();
@@ -42,7 +46,7 @@ require(["layer"],
 				showMsg('请先选择性别~');
 				return;
 			}
-			$sls.gender = gender.val();
+			$sls.gender = gender.val();*/
 
 			var html = '<i class="share-arrow">点击菜单分享</i>';
 			$sls.main.show();
@@ -53,7 +57,6 @@ require(["layer"],
 				$sls.main.find('.share-arrow').remove();
 				$sls.shade.fadeOut(100);
 			}, 2500);
-			resetShare();
 		});
 
 		function resetShare() {
@@ -83,6 +86,6 @@ require(["layer"],
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
-			// wx.ready(resetShare);
+			wx.ready(resetShare);
 		});
 	});

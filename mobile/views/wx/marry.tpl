@@ -45,6 +45,9 @@
 		</div>
 	</div>
 </div>
+{{if $preview}}
+<a class="m-next btn-share">马上分享</a>
+{{/if}}
 {{else}}
 <div class="marry0">
 	<label>姓名
@@ -59,7 +62,7 @@
 	<div style="height: 4rem"></div>
 </div>
 
-<a class="m-next btn-share">写好了，马上分享</a>
+<a class="m-next btn-preview">写好了，去预览</a>
 {{/if}}
 
 <div class="m-popup-shade"></div>
@@ -68,8 +71,10 @@
 		<div class="m-popup-content no-bg"></div>
 	</div>
 </div>
+<input type="hidden" id="cNAME" value="{{$name}}">
+<input type="hidden" id="cGENDER" value="{{$gender}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/marry.js?v=1.6.3" src="/assets/js/require.js"></script>
+<script data-main="/js/marry.js?v=1.6.4" src="/assets/js/require.js"></script>
