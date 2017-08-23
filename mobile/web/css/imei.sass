@@ -38,7 +38,7 @@ $linkColorDark: darken($linkColor, 6%)
 $actionColor: #877575
 $actionColorLight: lighten($actionColor, 12%)
 //#c93
-$actionColorDark: #630
+$actionColorDark: #5d4037
 $brownColor: #6d4c41
 
 @mixin unreadFlag
@@ -218,6 +218,10 @@ main
 .bg-qrcode
 	background: url(../images/bg_sqrcode.jpg) no-repeat center center
 	background-size: cover
+
+.bg-marry
+	background: #fff url(../images/bg_marry.jpg) no-repeat center top
+	background-size: contain
 
 .clearfix
 	zoom: 1
@@ -5672,3 +5676,35 @@ section
 				font-weight: $weightNormal
 				color: $grayFontColorLight
 
+.marry-wrap
+	position: fixed
+	bottom: 2rem
+	left: 0
+	right: 0
+	h4
+		font-size: 2rem
+		color: $brownColor
+		text-align: center
+		line-height: 5rem
+		display: block
+	.bot-wrap
+		@include displayFlex
+		.avatar
+			@include displayFlex-w(12rem)
+			text-align: center
+			@include displayFlexVAlign
+			img
+				width: 10rem
+				height: 10rem
+				vertical-align: middle
+		.content
+			@include displayFlex-1
+			@include displayFlexVAlign
+
+			h5
+				font-size: 1.4rem
+				color: $brownColor
+			h6
+				padding-top: 1.5rem
+				font-size: 1.2rem
+				font-weight: $weightNormal

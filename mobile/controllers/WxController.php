@@ -1227,12 +1227,16 @@ class WxController extends BaseController
 
 	public function actionMarry()
 	{
-		return self::renderPage('marry.tpl', [
-			"firstName" => $firstName = "周",
-			"gender" => $gender = 1,
-		],
+		$name = self::getParam('name');
+		$gender = self::getParam('gender');
+		return self::renderPage('marry.tpl',
+			[
+				"name" => $name,
+				"gender" => $gender
+			],
 			'terse',
-			'微媒100');
+			'微媒100',
+			'bg-marry');
 	}
 
 }
