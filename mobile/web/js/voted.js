@@ -36,7 +36,7 @@ require(["layer"],
 				//wx.hideOptionMenu();
 				wx.onMenuShareAppMessage({
 					title: '小微要组织线下活动咯',
-					desc: '不知各位帅哥美女喜欢什么样的，那就一起来选吧',
+					desc: '不知各位帅哥美女喜欢什么样的，那就一起来投票吧',
 					link: "https://wx.meipo100.com/wx/vote",
 					imgUrl: "https://wx.meipo100.com/images/logo33.png",
 					type: '',
@@ -46,7 +46,7 @@ require(["layer"],
 					}
 				});
 				wx.onMenuShareTimeline({
-					title: '小微要组织线下活动咯，不知各位帅哥美女喜欢什么样的，那就一起来选吧',
+					title: '小微要组织线下活动咯，不知各位帅哥美女喜欢什么样的，那就一起来投票吧',
 					link: "https://wx.meipo100.com/wx/vote",
 					imgUrl: "https://wx.meipo100.com/images/logo33.png",
 					success: function () {
