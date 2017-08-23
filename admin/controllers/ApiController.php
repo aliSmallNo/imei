@@ -324,7 +324,8 @@ class ApiController extends Controller
 				return self::renderAPI(0, '保存成功');
 			case "vote":
 				$ids = self::postParam("ids");
-				$sql = "select uName as `name`,uPhone as phone,uGender as gender from im_user where uId in ($ids)";
+				$sql = "select uName as `name`,uPhone as phone,uGender as gender,uThumb as thumb
+ 						from im_user where uId in ($ids)";
 				$res = AppUtil::db()->createCommand($sql)->queryAll();
 				foreach ($res as &$v) {
 					$v["sex"] = isset(User::$Gender[$v["gender"]]) ? User::$Gender[$v["gender"]] : "";

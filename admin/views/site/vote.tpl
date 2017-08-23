@@ -38,6 +38,34 @@
 		font-size: 15px;
 		color: #777;
 	}
+
+	.users {
+		padding-left: 20px;
+	}
+
+	.users li {
+		padding-bottom: 5px;
+		font-size: 13px;
+	}
+
+	.users li img {
+		width: 32px;
+		height: 32px;
+		vertical-align: middle;
+		border-radius: 16px;
+	}
+
+	.users li.gender11 img {
+		border: 2px solid #007aff;
+	}
+
+	.users li.gender10 img {
+		border: 2px solid #f06292;
+	}
+
+	.users li.gender img {
+		border: 2px solid #51c332;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="row">
@@ -77,10 +105,10 @@
 		}
 		$.post("/api/question", {
 			tag: "vote",
-			ids: ids,
+			ids: ids
 		}, function (resp) {
 			console.log(resp);
-			var temp = "<ol>{[#items]}<li>{[phone]} {[name]} {[sex]}</li>{[/items]}</ol>";
+			var temp = "<ol class='users'>{[#items]}<li class='gender{[gender]}'><img src='{[thumb]}'> {[phone]} {[name]}</li>{[/items]}</ol>";
 			layer.open({
 				content: Mustache.render(temp, resp.data),
 				area: ['400px', '500px'],
