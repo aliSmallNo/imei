@@ -71,6 +71,9 @@ class UserQR extends ActiveRecord
 
 	public static function createQR($uid, $category, $code = '', $bottomTitle = '微信扫一扫 关注微媒100')
 	{
+		if(AppUtil::isDev()){
+			return '/images/qrmeipo100.jpg';
+		}
 		$accessUrl = '';
 		$info = User::findOne(['uId' => $uid]);
 		if (!$info) {

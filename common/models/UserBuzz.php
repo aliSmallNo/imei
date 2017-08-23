@@ -114,7 +114,7 @@ class UserBuzz extends ActiveRecord
 					if ($qrInfo) {
 						$content = $qrInfo["qCode"];
 						$debug .= $addResult . "**";
-						$resp = self::welcomeMsg($fromUsername, $toUsername, $event);
+						$resp = self::welcomeMsg($fromUsername, $toUsername, $event, $content);
 					}
 				}
 				break;
@@ -127,7 +127,7 @@ class UserBuzz extends ActiveRecord
 						if ($qrInfo) {
 							$content = $qrInfo["qCode"];
 							self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SUBSCRIBE, $qId);
-							$resp = self::welcomeMsg($fromUsername, $toUsername, $event);
+							$resp = self::welcomeMsg($fromUsername, $toUsername, $event, $content);
 						}
 					}
 				} else {
@@ -191,6 +191,23 @@ class UserBuzz extends ActiveRecord
 		switch ($category) {
 			case "subscribe":
 			case "scan":
+				if ($extension == 'meipo100-marry') {
+					return self::json_to_xml([
+						'ToUserName' => $fromUsername,
+						'FromUserName' => $toUsername,
+						'CreateTime' => time(),
+						'MsgType' => 'news',
+						'ArticleCount' => 1,
+						'Articles' => [
+							'item' => [
+								'Title' => '微媒100 - 生成我自己的请帖',
+								'Description' => '生成我自己的请帖！',
+								'PicUrl' => 'https://wx.meipo100.com/images/welcome_720.jpg',
+								'Url' => 'https://wx.meipo100.com/wx/marry'
+							]
+						]
+					]);
+				}
 				return self::json_to_xml([
 					'ToUserName' => $fromUsername,
 					'FromUserName' => $toUsername,
