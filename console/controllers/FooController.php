@@ -436,7 +436,7 @@ class FooController extends Controller
 		$sql = 'select u.uId, u.uName,u.uPhone 
 			 from im_user as u 
 			 join im_user_wechat as w on w.wUId=u.uId
-			 where u.uGender in (11) and w.wSubscribe=1 and u.uStatus<8 and uPhone !=\'\' 
+			 where u.uGender in (10) and w.wSubscribe=1 and u.uStatus<8 and uPhone !=\'\' 
 			 group by u.uId,u.uName,u.uPhone';
 		$ret = $conn->createCommand($sql)->queryAll();
 		foreach ($ret as $row) {
