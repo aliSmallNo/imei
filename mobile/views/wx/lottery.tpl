@@ -6,7 +6,7 @@
 
 	.lottery-gifts li {
 		background: #fec8c8;
-		border: 1px solid #fe6a6a;/*#a70101;*/
+		border: 1px solid #fe6a6a;
 		box-sizing: border-box;
 	}
 
@@ -16,10 +16,9 @@
 
 	.lottery-gifts li a {
 		background: #fec8c8;
-		line-height: 3rem;
-		font-size: 2.4rem;
+		line-height: 9rem;
+		font-size: 1.8rem;
 		color: #a70101;
-		padding-top: 1.2rem;
 	}
 </style>
 <div class="lottery">
@@ -37,7 +36,7 @@
 			<img src="{{$gifts[7]}}">
 		</li>
 		<li>
-			<a href="#">签到<br>抽奖</a>
+			<a href="#">{{if $isSign}}已签到{{else}}签到抽奖{{/if}}</a>
 		</li>
 		<li class="unit unit-3">
 			<img src="{{$gifts[3]}}">
