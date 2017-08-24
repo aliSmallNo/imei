@@ -1098,8 +1098,8 @@ class WxController extends BaseController
 		$oid = self::getParam('id');
 		$oid = AppUtil::decrypt($oid);
 		if (!$oid) {
-			 $oid = 101;
-			 $oid = 102;
+			$oid = 101;
+			$oid = 102;
 		}
 		$gifts = [];
 		$title = '微媒100-幸运抽奖';
@@ -1236,7 +1236,7 @@ class WxController extends BaseController
 		$dt = self::getParam('dt');
 		$preview = self::getParam('preview', 0);
 		$bgSrc = '/images/bg_invitation.jpg';
-		$qrCode = '';
+		$qrCode = $cls = '';
 		if ($name) {
 			$qrCode = UserQR::createQR($uId, UserQR::CATEGORY_SALES, 'marry');
 			$title = $name . '先生 & 微小姐';
@@ -1248,6 +1248,7 @@ class WxController extends BaseController
 				$title,
 				date('Y年n月j日 晚6:58', strtotime($dt)),
 				$qrCode);
+			$cls = $preview ? '' : 'big';
 		}
 
 		/* 
@@ -1309,7 +1310,8 @@ class WxController extends BaseController
 				'preview' => $preview,
 				'bgSrc' => $bgSrc,
 				'dates' => $dates,
-				'dt' => $dt
+				'dt' => $dt,
+				'cls' => $cls
 			],
 			'terse',
 			'微媒100',

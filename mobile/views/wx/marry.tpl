@@ -1,5 +1,5 @@
 <div class="mycard">
-	<div class="card-wrap">
+	<div class="card-wrap {{$cls}}">
 		<img src="{{$bgSrc}}" alt="">
 	</div>
 	{{if $name}}
@@ -10,8 +10,10 @@
 	</div>
 	{{else}}
 	<br>
-	<span class="btn">长按上图保存</span>
-	<p class="tip-block center">分享图片到朋友圈，邀请好友来加入</p>
+	<span class="btn">
+		长按上图保存<br>
+		<span class="tip-block center">分享图片到朋友圈，邀请好友来加入</span>
+	</span>
 	{{/if}}
 	{{else}}
 	<div class="marry0">
@@ -39,7 +41,6 @@
 	</div>
 	{{/if}}
 </div>
-
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">

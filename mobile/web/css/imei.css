@@ -2070,6 +2070,8 @@ section {
     display: block;
     margin: 0 auto;
     position: relative; }
+    .mycard .card-wrap.big {
+      width: 80%; }
     .mycard .card-wrap:before {
       position: absolute;
       display: block;
