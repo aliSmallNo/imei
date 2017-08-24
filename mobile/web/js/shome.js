@@ -343,7 +343,7 @@ require(["layer"],
 				var util = this;
 				if ($flag) {
 					util.timer = setInterval(function () {
-						util.reload();
+						util.reload(0);
 					}, 5000);
 				} else {
 					clearInterval(util.timer);
@@ -404,7 +404,7 @@ require(["layer"],
 						util.list.append(html);*/
 						if (!util.loading) {
 							util.toggleTimer(0);
-							util.reload();
+							util.reload(1);
 						}
 						util.input.val('');
 						util.showTip(resp.data.gid, resp.data.left);
@@ -416,7 +416,7 @@ require(["layer"],
 					}
 				}, "json");
 			},
-			reload: function () {
+			reload: function (scrollFlag) {
 				var util = this;
 				if (util.loading) {
 					return;
@@ -424,7 +424,7 @@ require(["layer"],
 				util.loading = 1;
 				if (util.lastId < 1) {
 					util.list.html('');
-					util.input.val('');
+					// util.input.val('');
 				}
 				$.post("/api/chat", {
 					tag: "list",
@@ -440,9 +440,11 @@ require(["layer"],
 						}
 						util.showTip(resp.data.gid, resp.data.left);
 						util.lastId = resp.data.lastId;
-						setTimeout(function () {
-							util.bot.get(0).scrollIntoView(true);
-						}, 300);
+						if (scrollFlag) {
+							setTimeout(function () {
+								util.bot.get(0).scrollIntoView(true);
+							}, 300);
+						}
 						if (util.timer == 0) {
 							util.toggleTimer(1);
 						}
@@ -475,7 +477,7 @@ require(["layer"],
 					break;
 				case 'schat':
 					ChatUtil.lastId = 0;
-					ChatUtil.reload();
+					ChatUtil.reload(1);
 					$sls.mainPage.hide();
 					break;
 				default:
