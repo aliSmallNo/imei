@@ -46,7 +46,9 @@ require(["layer"],
 				type: 2,
 				content: '正在生成中...'
 			});
-			location.href = '/wx/marry?preview=1&dt=' + $sls.dt.val() + '&name=' + encodeURI(name) + '&gender=' + gender.val();
+			setTimeout(function () {
+				location.href = '/wx/marry?preview=1&dt=' + $sls.dt.val() + '&name=' + encodeURI(name) + '&gender=' + gender.val();
+			}, 300);
 		});
 
 		$('.btn-share').on(kClick, function () {
