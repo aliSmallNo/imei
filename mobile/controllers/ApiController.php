@@ -837,10 +837,17 @@ class ApiController extends Controller
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				if ($page >= 1) {
-					list($flist, $nextpage) = UserTrans::fansRank(0, $page, $ranktag);
+					list($items, $nextpage) = UserTrans::fansRank(0, $ranktag, $page);
+					$mInfo = UserTrans::fansRank($wxInfo["uId"], $ranktag, $page);
+					$mInfo['no'] = 0;
+					foreach ($items as $k => $item) {
+						if ($item['id'] == $mInfo['id']) {
+							$mInfo['no'] = $k + 1;
+						}
+					}
 					return self::renderAPI(0, '', [
-						"items" => $flist,
-						"mInfo" => UserTrans::fansRank($wxInfo["uId"]),
+						"items" => $items,
+						"mInfo" => $mInfo,
 						"nextpage" => $nextpage,
 					]);
 				} else {

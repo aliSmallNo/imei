@@ -441,7 +441,7 @@ class UserTrans extends ActiveRecord
 		return $ret;
 	}
 
-	public static function fansRank($uid, $page = 1, $ranktag = "fans-all", $pageSize = 20)
+	public static function fansRank($uid, $ranktag = "fans-all", $page = 1, $pageSize = 20)
 	{
 		list($beginDT, $endDT) = AppUtil::getEndStartTime(time(), 'today', true);
 		list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
@@ -483,7 +483,8 @@ class UserTrans extends ActiveRecord
 			$data[] = $v;
 		}
 		if ($uid && $data) {
-			return $data[0];
+			$myInfo = $data[0];
+			return $myInfo;
 		} elseif ($uid && !$data) {
 			return [];
 		}
