@@ -4,10 +4,12 @@
 	</div>
 	{{if $name}}
 	{{if $preview}}
+	<br>
 	<div class="btn-wrap">
 		<a class="btn btn-main btn-share">马上分享</a>
 	</div>
 	{{else}}
+	<br>
 	<span class="btn">长按上图保存</span>
 	<p class="tip-block center">分享图片到朋友圈，邀请好友来加入</p>
 	{{/if}}
