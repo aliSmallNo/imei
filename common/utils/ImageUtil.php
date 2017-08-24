@@ -34,6 +34,13 @@ class ImageUtil
 		return trim(AppUtil::imageUrl(), '/') . '/' . trim($fileName, '/');
 	}
 
+	public static function getFilePath($url)
+	{
+		//https://img.meipo100.com/2017/84/qr17514.jpg
+		$url = str_replace(AppUtil::imageUrl(), '', $url);
+		return AppUtil::imgDir(true) . trim($url, '/');
+	}
+
 	/**
 	 * 生成腾讯云对象存储服务签名 Cloud Object Storage
 	 * @param bool $oneTimeFlag 是否是一次性的
@@ -538,47 +545,5 @@ class ImageUtil
 		return ['', ''];
 	}
 
-	public static function createInvitation($h2, $h4, $h5)
-	{
-		$saveAs = 'inv' . RedisUtil::getImageSeq() . '.jpg';
-		$saveAs = AppUtil::imgDir() . $saveAs;
-		$rootFolder = AppUtil::rootDir();
-		$mergeFile = $rootFolder . 'common/assets/qr_invitation.jpeg';
-		$bgFile = $rootFolder . 'common/assets/bg_invitation.jpg';
-		$h2Font = $rootFolder . 'common/assets/twinklestar.ttf';
-		$h4Font = $h5Font = $rootFolder . 'common/assets/bmcheiti.ttf';
-		list($width, $height, $type) = getimagesize($bgFile);
-		$mergeSize = 174;
-		$mergeImg = Image::open($mergeFile)->zoomCrop($mergeSize, $mergeSize, 0xffffff, 'left', 'top');
-		$img = Image::open($bgFile)->merge($mergeImg, 10, 848, $mergeSize, $mergeSize);
-		if ($h2) {
-			$img->write($h2Font, $h2, $width / 2, 328, 60, 0, 0x6a131c, 'center');
-		}
-		if ($h4) {
-			$img->write($h4Font, $h4, $width / 2, 790, 36, 0, 0x6a131c, 'center');
-		}
-		if ($h5) {
-			$img->write($h5Font, $h5, $width / 2, 838, 22, 0, 0x6a131c, 'center');
-		}
-		$img->save($saveAs);
-		return $saveAs;
-		/*$mergeSize = intval($width / 6.0);
-		if (!$mergeFile) {
-			$mergeFile = $rootFolder . 'common/assets/logo180.jpg';
-		}
-		if (strpos($mergeFile, 'http') === 0) {
-			$mergeFile = self::downloadFile($mergeFile, AppUtil::imgDir() . 'm_' . $qrName);
-		}
-		$mergeImg = Image::open($mergeFile)->zoomCrop($mergeSize, $mergeSize, 0xffffff, 'left', 'top');
-		$img = Image::open($saveAs)->merge($mergeImg, ($width - $mergeSize) / 2, ($height - $mergeSize) / 2, $mergeSize, $mergeSize);
-		if ($bottomTitle) {
-			$img->write($fontPath, $bottomTitle, $width / 2, $height - 8, 14, 0, 0x000000, 'center');
-		}
-		if ($topTitle) {
-			$img->write($fontPath, $topTitle, $width / 2, 20, 11, 0, 0x000000, 'center');
-		}
-		$img->save($saveAs);
-		$accessUrl = ImageUtil::getUrl($saveAs);
-		unlink($mergeFile);*/
-	}
+
 }

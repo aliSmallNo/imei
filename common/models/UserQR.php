@@ -10,6 +10,7 @@ namespace common\models;
 
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
+use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use Gregwar\Image\Image;
 use yii\db\ActiveRecord;
@@ -19,6 +20,7 @@ class UserQR extends ActiveRecord
 	const CATEGORY_SALES = 10; //Rain: 销售推广
 	const CATEGORY_SINGLE = 20; //Rain: 拉单身汉
 	const CATEGORY_MATCH = 30; //Rain: 拉媒婆
+	const CATEGORY_MARRY = 100; //Rain: 婚礼请帖
 
 	public static function tableName()
 	{
@@ -71,7 +73,7 @@ class UserQR extends ActiveRecord
 
 	public static function createQR($uid, $category, $code = '', $bottomTitle = '微信扫一扫 关注微媒100')
 	{
-		if(AppUtil::isDev()){
+		if (AppUtil::isDev()) {
 			return '/images/qrmeipo100.jpg';
 		}
 		$accessUrl = '';
@@ -181,4 +183,52 @@ class UserQR extends ActiveRecord
 		return $saveAs . '.' . $ext;
 	}
 
+
+	public static function createInvitation($uid, $h2, $h4, $h5, $qrFile = '')
+	{
+		$subTitle = json_encode([$h2, $h4, $h5, $qrFile], JSON_UNESCAPED_UNICODE);
+		$title = md5($subTitle);
+		$qrInfo = self::findOne(['qUId' => $uid, 'qCategory' => self::CATEGORY_MARRY, 'qTitle' => $title]);
+		if ($qrInfo) {
+			return $qrInfo->qUrl;
+		}
+
+		$saveAs = 'inv' . RedisUtil::getImageSeq() . '.jpg';
+		$saveAs = AppUtil::imgDir() . $saveAs;
+		$rootFolder = AppUtil::rootDir();
+		$mergeFile = $rootFolder . 'common/assets/qr_invitation.jpeg';
+		if ($qrFile) {
+			$mergeFile = $qrFile;
+			if (strpos($qrFile, 'http') !== false) {
+				$mergeFile = ImageUtil::getFilePath($qrFile);
+			}
+		}
+		$bgFile = $rootFolder . 'common/assets/bg_invitation.jpg';
+		$h2Font = $rootFolder . 'common/assets/twinklestar.ttf';
+		$h4Font = $h5Font = $rootFolder . 'common/assets/bmcheiti.ttf';
+		list($width, $height, $type) = getimagesize($bgFile);
+		$mergeSize = 174;
+		$mergeImg = Image::open($mergeFile)->zoomCrop($mergeSize, $mergeSize, 0xffffff, 'left', 'top');
+		$img = Image::open($bgFile)->merge($mergeImg, 10, 848, $mergeSize, $mergeSize);
+		if ($h2) {
+			$img->write($h2Font, $h2, $width / 2, 328, 60, 0, 0x6a131c, 'center');
+		}
+		if ($h4) {
+			$img->write($h4Font, $h4, $width / 2, 790, 36, 0, 0x6a131c, 'center');
+		}
+		if ($h5) {
+			$img->write($h5Font, $h5, $width / 2, 838, 22, 0, 0x6a131c, 'center');
+		}
+		$img->save($saveAs);
+		$accessUrl = ImageUtil::getUrl($saveAs);
+
+		$entity = new self();
+		$entity->qUId = $uid;
+		$entity->qCategory = self::CATEGORY_MARRY;
+		$entity->qTitle = $title;
+		$entity->qSubTitle = $subTitle;
+		$entity->qUrl = $accessUrl;
+		$entity->save();
+		return $accessUrl;
+	}
 }

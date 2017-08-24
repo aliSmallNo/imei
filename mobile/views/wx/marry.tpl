@@ -1,10 +1,20 @@
 <div class="mycard">
-	<div class="card-wrap">
+	<div class="card-wrap {{$cls}}">
 		<img src="{{$bgSrc}}" alt="">
 	</div>
 	{{if $name}}
-	<span class="btn">长按上图保存</span>
-	<p class="tip-block center">分享图片到朋友圈，邀请好友来加入</p>
+	{{if $preview}}
+	<br>
+	<div class="btn-wrap">
+		<a class="btn btn-main btn-share">马上分享</a>
+	</div>
+	{{else}}
+	<br>
+	<span class="btn">
+		长按上图保存<br>
+		<span class="tip-block center">分享图片到朋友圈，邀请好友来加入</span>
+	</span>
+	{{/if}}
 	{{else}}
 	<div class="marry0">
 		<div style="height: 3rem"></div>
@@ -31,7 +41,6 @@
 	</div>
 	{{/if}}
 </div>
-
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
@@ -40,8 +49,9 @@
 </div>
 <input type="hidden" id="cNAME" value="{{$name}}">
 <input type="hidden" id="cGENDER" value="{{$gender}}">
+<input type="hidden" id="cDATE" value="{{$dt}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/marry.js?v=1.6.9" src="/assets/js/require.js"></script>
+<script data-main="/js/marry.js?v=1.7.1" src="/assets/js/require.js"></script>
