@@ -17,7 +17,7 @@ require(["layer"],
 			input: $('.input-name'),
 			name: $('#cNAME').val(),
 			gender: $('#cGENDER').val(),
-			dt: $('#cDATE'),
+			dt: $('.input-opt'),
 		};
 
 		function showMsg(title, sec) {
