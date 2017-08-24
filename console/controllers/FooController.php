@@ -16,6 +16,7 @@ use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
+use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -508,7 +509,8 @@ class FooController extends Controller
 //			"oTitle" => "签到",
 //		];
 //		Lottery::add($data);
-		echo Lottery::prize(1);
+
+		//WechatUtil::toAllUserTempMsg();
 
 	}
 }

@@ -881,4 +881,45 @@ class WechatUtil
 		]);
 		return $result;
 	}
+
+	public static function toAllUserTempMsg()
+	{
+		if (AppUtil::isDev()) {
+			// return 0;
+		}
+		$sql = "select uName,uPhone,uOpenId from im_user where uStatus <8 and uRole in (10,20) and uGender in (10,11)";
+		$users = AppUtil::db()->createCommand($sql)->queryAll();
+
+		$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+		$count = 0;
+		foreach ($users as $userInfo) {
+			if (!$userInfo) {
+				continue;
+			}
+			$openId = isset($userInfo["uOpenId"]) ? $userInfo["uOpenId"] : "";
+			if (!$openId || strlen($openId) < 12) {
+				continue;
+			}
+			$name = $userInfo["uName"];
+			$bodyInfo = [
+				"touser" => $openId,
+				"template_id" => "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI",
+				"url" => "https://mp.weixin.qq.com/s/0U3azqV4jlL_61UqIeJ7TA",
+				"data" => [
+					"first" => ["color" => "#555555", "value" => "你好，$name,您收到一条微媒100资讯!!\n"],
+					"keyword1" => ["color" => "#0D47A1", "value" => "微媒100资讯"],
+					"keyword2" => ["color" => "#f06292", "value" => "五天后，可能会有个男人捧着一束玫瑰花对你说..."],
+					"keyword3" => ["color" => "#333333", "value" => date("Y年n月j日 H:i")],
+					"remark" => ["color" => "#555555", "value" => "\n 点击下方详情查看吧~~"],
+				]
+			];
+
+			$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
+			$result = AppUtil::postJSON($url, json_encode($bodyInfo));
+			$count++;
+			AppUtil::logFile($name . ' ' . $count, 4);
+		}
+	}
+
+
 }

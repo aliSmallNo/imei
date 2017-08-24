@@ -518,6 +518,10 @@ class ApiController extends Controller
 							'url' => '/wx/vote',
 							'img' => '/images/event_vote.jpg',
 						],
+						[
+							'url' => '/wx/fansrank',
+							'img' => '/images/event_fans_cash.jpg',
+						],
 //						[
 //							'url' => '/wx/toparty',
 //							'img' => '/images/icon-event0.jpg'

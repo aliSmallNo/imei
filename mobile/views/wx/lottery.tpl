@@ -1,7 +1,25 @@
 <style>
-	.lot-bg{
-		background: url('/images/sign/imei_sign_8.jpeg') no-repeat center center;
+	.lot-bg {
+		background: url('/images/sign/imei_sign_9.jpeg') no-repeat center center;
 		background-size: 100% 100%;
+	}
+
+	.lottery-gifts li {
+		background: #fec8c8;
+		border: 1px solid #a70101;
+		box-sizing: border-box;
+	}
+
+	.lottery {
+		padding-top: 15rem;
+	}
+
+	.lottery-gifts li a {
+		background: #fec8c8;
+		line-height: 3rem;
+		font-size: 2.4rem;
+		color: #a70101;
+		padding-top: 1.2rem;
 	}
 </style>
 <div class="lottery">
@@ -19,7 +37,7 @@
 			<img src="{{$gifts[7]}}">
 		</li>
 		<li>
-			<a href="#"></a>
+			<a href="#">签到<br>抽奖</a>
 		</li>
 		<li class="unit unit-3">
 			<img src="{{$gifts[3]}}">
