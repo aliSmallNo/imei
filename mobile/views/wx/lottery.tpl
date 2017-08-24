@@ -6,12 +6,12 @@
 
 	.lottery-gifts li {
 		background: #fec8c8;
-		border: 1px solid #a70101;
+		border: 1px solid #fe6a6a;/*#a70101;*/
 		box-sizing: border-box;
 	}
 
 	.lottery {
-		padding-top: 15rem;
+		padding-top: 13rem;
 	}
 
 	.lottery-gifts li a {
