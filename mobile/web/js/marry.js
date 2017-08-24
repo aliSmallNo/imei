@@ -17,6 +17,7 @@ require(["layer"],
 			input: $('.input-name'),
 			name: $('#cNAME').val(),
 			gender: $('#cGENDER').val(),
+			dt: $('#cDATE'),
 		};
 
 		function showMsg(title, sec) {
@@ -36,14 +37,12 @@ require(["layer"],
 				$sls.input.focus();
 				return;
 			}
-			$sls.name = name;
 			var gender = $('.input-radio:checked');
 			if (!gender.length) {
 				showMsg('请先选择性别~');
 				return;
 			}
-			$sls.gender = gender.val();
-			location.href = '/wx/marry?preview=1&name=' + encodeURI($sls.name) + '&gender=' + $sls.gender;
+			location.href = '/wx/marry?preview=1&dt=' + $sls.dt.val() + '&name=' + encodeURI(name) + '&gender=' + gender.val();
 		});
 
 		$('.btn-share').on(kClick, function () {

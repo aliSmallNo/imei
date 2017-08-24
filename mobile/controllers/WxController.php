@@ -1227,17 +1227,27 @@ class WxController extends BaseController
 			'投票活动');
 	}
 
-	/**
-	 * @return string
-	 */
 	public function actionMarry()
 	{
 		$uId = self::getParam('id', User::SERVICE_UID);
 		$name = self::getParam('name');
-		$gender = self::getParam('gender');
+		$gender = self::getParam('gender', 1);
+		$dt = self::getParam('dt');
 		$preview = self::getParam('preview', 0);
-		$qrcode = UserQR::createQR($uId, UserQR::CATEGORY_SALES, 'marry');
-		$bgSrc = $name ? '/images/bg_invitation.jpg' : '/images/bg_invitation.jpg';
+		$bgSrc = '/images/bg_invitation.jpg';
+		$qrCode = '';
+		if ($name) {
+			$qrCode = UserQR::createQR($uId, UserQR::CATEGORY_SALES, 'marry');
+			$title = $name . '先生 & 微小姐';
+			if ($gender == 0) {
+				$title = '微先生 & ' . $name . '小姐';
+			}
+			$bgSrc = UserQR::createInvitation($uId,
+				substr($dt, 0, 4),
+				$title,
+				date('Y年n月j日 晚6:58', strtotime($dt)),
+				$qrCode);
+		}
 
 		/* 
 　　2017年11月宜嫁娶的良辰吉日
@@ -1290,19 +1300,18 @@ class WxController extends BaseController
 				unset($dates[$k]);
 			}
 		}
-
 		return self::renderPage('marry.tpl',
 			[
 				"name" => $name,
 				"gender" => $gender,
-				'qrcode' => $qrcode,
+				'qrcode' => $qrCode,
 				'preview' => $preview,
 				'bgSrc' => $bgSrc,
-				'dates' => $dates
+				'dates' => $dates,
+				'dt' => $dt
 			],
 			'terse',
 			'微媒100',
 			'bg-main');
 	}
-
 }

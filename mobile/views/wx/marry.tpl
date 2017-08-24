@@ -3,8 +3,14 @@
 		<img src="{{$bgSrc}}" alt="">
 	</div>
 	{{if $name}}
+	{{if $preview}}
+	<div class="btn-wrap">
+		<a class="btn btn-main btn-share">马上分享</a>
+	</div>
+	{{else}}
 	<span class="btn">长按上图保存</span>
 	<p class="tip-block center">分享图片到朋友圈，邀请好友来加入</p>
+	{{/if}}
 	{{else}}
 	<div class="marry0">
 		<div style="height: 3rem"></div>
@@ -40,6 +46,7 @@
 </div>
 <input type="hidden" id="cNAME" value="{{$name}}">
 <input type="hidden" id="cGENDER" value="{{$gender}}">
+<input type="hidden" id="cDATE" value="{{$dt}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
