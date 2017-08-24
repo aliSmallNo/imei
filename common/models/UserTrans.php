@@ -469,8 +469,9 @@ class UserTrans extends ActiveRecord
 				 JOIN im_user as u on u.uId=t.tUId 
 				 WHERE tCategory in ($cat) $criteria
 				 GROUP BY tUId ORDER BY co desc, tUId asc " . $limit;
-		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
-
+		$conn = AppUtil::db();
+		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		AppUtil::logFile($conn->createCommand($sql)->bindValues($params)->getRawSql(), 5);
 		$nextPage = 0;
 		if (count($res) > $pageSize) {
 			$nextPage = $page + 1;

@@ -835,9 +835,13 @@ class ApiController extends Controller
 					list($items, $nextpage) = UserTrans::fansRank(0, $ranktag, $page);
 					$mInfo = UserTrans::fansRank($wxInfo["uId"], $ranktag, $page);
 					$mInfo['no'] = 0;
-					foreach ($items as $k => $item) {
-						if ($item['id'] == $mInfo['id']) {
-							$mInfo['no'] = $k + 1;
+					$mInfo['uname'] = $wxInfo['uName'];
+					$mInfo['avatar'] = $wxInfo['uThumb'];
+					if ($mInfo && isset($mInfo['id'])) {
+						foreach ($items as $k => $item) {
+							if ($item['id'] == $mInfo['id']) {
+								$mInfo['no'] = $k + 1;
+							}
 						}
 					}
 					return self::renderAPI(0, '', [
