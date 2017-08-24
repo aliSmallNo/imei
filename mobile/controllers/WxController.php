@@ -1026,9 +1026,14 @@ class WxController extends BaseController
 			exit();
 		}
 
-		list($items) = UserTrans::getRoselist();
-		$mInfo = UserTrans::myGetRose($wxInfo["uId"]);
-
+		list($items) = UserTrans::fansRank(0);
+		$mInfo = UserTrans::fansRank($wxInfo["uId"]);
+		$mInfo['no'] = 0;
+		foreach ($items as $k => $item) {
+			if ($item['id'] == $mInfo['id']) {
+				$mInfo['no'] = $k + 1;
+			}
+		}
 		return self::renderPage('fans-rank.tpl',
 			[
 				"items" => $items,
@@ -1248,6 +1253,12 @@ class WxController extends BaseController
 
 	public function actionMarry()
 	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$userId = '';
+		if ($wxInfo) {
+			$userId = $wxInfo['uId'];
+		}
 		$uId = self::getParam('id', User::SERVICE_UID);
 		$name = self::getParam('name');
 		$gender = self::getParam('gender', 1);
@@ -1329,7 +1340,8 @@ class WxController extends BaseController
 				'bgSrc' => $bgSrc,
 				'dates' => $dates,
 				'dt' => $dt,
-				'cls' => $cls
+				'cls' => $cls,
+				'userId' => $userId
 			],
 			'terse',
 			'微媒100',

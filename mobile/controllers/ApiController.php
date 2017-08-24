@@ -832,10 +832,10 @@ class ApiController extends Controller
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				if ($page >= 1) {
-					list($flist, $nextpage) = UserTrans::getRoselist($page, $ranktag);
+					list($flist, $nextpage) = UserTrans::fansRank(0, $page, $ranktag);
 					return self::renderAPI(0, '', [
 						"items" => $flist,
-						"mInfo" => UserTrans::myGetRose($wxInfo["uId"], $ranktag),
+						"mInfo" => UserTrans::fansRank($wxInfo["uId"]),
 						"nextpage" => $nextpage,
 					]);
 				} else {

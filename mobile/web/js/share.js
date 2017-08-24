@@ -92,8 +92,6 @@ require(["layer"],
 
 		function resetMenuShare() {
 			var cid = $sls.dl.attr('data-id');
-			var cName = $sls.dl.html();
-			var name = $sls.nic.find('em').html();
 			var thumb = $sls.nic.find("img").attr('src');
 			var link = $sls.wxUrl + '/wx/share?id=' + $sls.uid + '&cid=' + cid;
 			var title = '我在东台做媒婆，帮助周边好友脱单，还能赚点零花钱';
