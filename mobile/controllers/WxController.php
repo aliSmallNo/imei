@@ -1244,6 +1244,12 @@ class WxController extends BaseController
 
 	public function actionMarry()
 	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$userId = '';
+		if ($wxInfo) {
+			$userId = $wxInfo['uId'];
+		}
 		$uId = self::getParam('id', User::SERVICE_UID);
 		$name = self::getParam('name');
 		$gender = self::getParam('gender', 1);
@@ -1325,7 +1331,8 @@ class WxController extends BaseController
 				'bgSrc' => $bgSrc,
 				'dates' => $dates,
 				'dt' => $dt,
-				'cls' => $cls
+				'cls' => $cls,
+				'userId' => $userId
 			],
 			'terse',
 			'微媒100',

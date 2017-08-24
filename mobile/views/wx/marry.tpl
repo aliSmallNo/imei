@@ -50,8 +50,9 @@
 <input type="hidden" id="cNAME" value="{{$name}}">
 <input type="hidden" id="cGENDER" value="{{$gender}}">
 <input type="hidden" id="cDATE" value="{{$dt}}">
+<input type="hidden" id="cUID" value="{{$userId}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/marry.js?v=1.7.4" src="/assets/js/require.js"></script>
+<script data-main="/js/marry.js?v=1.7.5" src="/assets/js/require.js"></script>

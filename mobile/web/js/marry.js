@@ -18,6 +18,7 @@ require(["layer"],
 			name: $('#cNAME').val(),
 			gender: $('#cGENDER').val(),
 			dt: $('.input-opt'),
+			uid: $('#cUID').val(),
 		};
 
 		function showMsg(title, sec) {
@@ -63,6 +64,18 @@ require(["layer"],
 			}, 2500);
 		});
 
+		function shareLog(tag, note) {
+			$.post("/api/share", {
+				tag: tag,
+				id: $sls.uid,
+				note: note
+			}, function (resp) {
+				if (resp.code == 0 && resp.msg) {
+					showMsg(resp.msg);
+				}
+			}, "json");
+		}
+
 		$(function () {
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
@@ -80,6 +93,7 @@ require(["layer"],
 					dataUrl: '',
 					success: function () {
 						//showMsg('分享成功啦，O(∩_∩)O谢谢你的参与');
+						shareLog('share', '/wx/marry');
 					}
 				});
 				wx.onMenuShareTimeline({
@@ -88,6 +102,7 @@ require(["layer"],
 					imgUrl: imgUrl,
 					success: function () {
 						//showMsg('分享成功啦，O(∩_∩)O谢谢你的参与');
+						shareLog('moment', '/wx/marry');
 					}
 				});
 			});
