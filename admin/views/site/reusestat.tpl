@@ -27,6 +27,18 @@
 		vertical-align: middle;
 		border-radius: 16px;
 	}
+
+	.users li.male img {
+		border: 2px solid #007aff;
+	}
+
+	.users li.female img {
+		border: 2px solid #f06292;
+	}
+
+	.users li.mei img {
+		border: 2px solid #51c332;
+	}
 </style>
 
 <div id="page-wrapper">
@@ -134,9 +146,14 @@
 	});
 
 	var mCat = $('#cCAT').val();
+	var mLoading = 0;
 	$(".percent a").on("click", function () {
 		var self = $(this);
 		var row = self.closest('tr');
+		if (mLoading) {
+			return false;
+		}
+		mLoading = 1;
 		$.post("/api/userchart", {
 			tag: "reuse_detail",
 			begin: row.attr('data-begin'),
@@ -145,14 +162,15 @@
 			to: self.attr('data-to'),
 			cat: mCat
 		}, function (resp) {
-			console.log(resp);
-			var temp = "<ol class='users'>{[#items]}<li><img src='{[thumb]}'> {[phone]} {[gender]} {[name]}</li>{[/items]}</ol>";
+			var temp = "<ol class='users'>{[#items]}<li class='{[gender]}'><img src='{[thumb]}'> {[phone]} {[name]}</li>{[/items]}</ol>";
 			layer.open({
 				content: Mustache.render(temp, resp.data),
 				area: ['400px', '500px'],
 				title: "用户列表"
 			});
+			mLoading = 0;
 		}, "json");
+
 	})
 </script>
 {{include file="layouts/footer.tpl"}}
