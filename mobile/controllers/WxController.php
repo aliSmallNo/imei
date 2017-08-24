@@ -1095,19 +1095,20 @@ class WxController extends BaseController
 
 	public function actionLottery()
 	{
-		$oid = self::getParam('id');
-		$oid = AppUtil::decrypt($oid);
-		if (!$oid) {
-			$oid = 101;
-			$oid = 102;
-		}
-		$gifts = [];
-		$title = '微媒100-幸运抽奖';
-		$lotteryInfo = Lottery::getItem($oid);
-		if ($lotteryInfo) {
-			$title = $lotteryInfo['oTitle'];
-			$gifts = $lotteryInfo['gifts'];
-		}
+//		$oid = self::getParam('id');
+//		$oid = AppUtil::decrypt($oid);
+//		if (!$oid) {
+//			$oid = 101;
+//			$oid = 102;
+//		}
+//		$gifts = [];
+		//$title = '微媒100-幸运抽奖';
+		$title = '微媒100-签到';
+//		$lotteryInfo = Lottery::getItem($oid);
+//		if ($lotteryInfo) {
+//			$title = $lotteryInfo['oTitle'];
+//			$gifts = $lotteryInfo['gifts'];
+//		}
 
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
@@ -1117,15 +1118,18 @@ class WxController extends BaseController
 		}
 		$isSign = false;
 		if (UserSign::isSign($wxInfo["uId"])) {
-			$title = UserSign::TIP_SIGNED;
+			//$title = UserSign::TIP_SIGNED;
 			$isSign = true;
 		}
+		$isMp = $wxInfo["uRole"] == 20 ? 1 : 0;
+		$str = $isMp ? "_mp" : "";
 
 		return self::renderPage('lottery.tpl',
 			[
 				'isSign' => $isSign,
-				'gifts' => $gifts,
-				'encryptId' => AppUtil::encrypt($oid)
+				'str' => $str,
+				//'gifts' => $gifts,
+				//'encryptId' => AppUtil::encrypt($oid)
 			],
 			'terse',
 			$title,
