@@ -518,6 +518,10 @@ class ApiController extends Controller
 							'url' => '/wx/vote',
 							'img' => '/images/event_vote.jpg',
 						],
+						[
+							'url' => '/wx/fansrank',
+							'img' => '/images/event_fans_cash.jpg',
+						],
 //						[
 //							'url' => '/wx/toparty',
 //							'img' => '/images/icon-event0.jpg'
@@ -1469,7 +1473,8 @@ class ApiController extends Controller
 				$prize = 0;
 				$lotteryInfo = Lottery::getItem($oid);
 				if ($lotteryInfo) {
-					$prize = $lotteryInfo['floor'];
+					//$prize = $lotteryInfo['floor'];
+					$prize = Lottery::prize(7);
 				}
 				return self::renderAPI(0, '幸运总是迟到，但绝不会缺席~ 加油啊，努力！', ['prize' => $prize]);
 				break;

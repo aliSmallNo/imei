@@ -5807,11 +5807,9 @@ section {
       height: 100%;
       display: block;
       text-decoration: none;
-      background: url(../images/lottery/lottery2.jpg) no-repeat top center;
       background-size: 100% 100%; }
       .lottery-gifts li a:active {
-        background-image: url(../images/lottery/lottery1.jpg);
-        background-size: 100% 100%; }
+        background: #faa4a4; }
     .lottery-gifts li.unit:after {
       content: "";
       display: none;
