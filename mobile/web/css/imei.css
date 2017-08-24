@@ -60,7 +60,7 @@ main {
   background-color: #F4F4F4; }
 
 .bg-main {
-  background-color: #fbd2e0; }
+  background-color: #fce4ec; }
 
 .bg-qrcode {
   background: url(../images/bg_sqrcode.jpg) no-repeat center center;
@@ -2061,9 +2061,10 @@ section {
         padding: 0.5rem 0; }
 
 .mycard {
-  background: #fbd2e0;
   text-align: center;
-  padding: 4rem 0; }
+  padding-top: 3rem; }
+  .mycard .btn-wrap {
+    padding: 1.5rem 2rem; }
   .mycard .card-wrap {
     width: 70%;
     display: block;
@@ -2086,15 +2087,7 @@ section {
       height: auto;
       position: relative;
       z-index: 3;
-      border: 1px solid #E4E4E4; }
-  .mycard .btn {
-    width: 24rem;
-    height: 4.5rem;
-    line-height: 4.5rem;
-    margin: 2.5rem auto 0;
-    display: block;
-    color: #fff;
-    text-align: center; }
+      border: 1px solid #fbd2e0; }
   .mycard h4 {
     text-align: center;
     font-size: 2rem;
@@ -6084,10 +6077,15 @@ section {
   .marry0 .input-name {
     border: none;
     border-bottom: 1px solid #E4E4E4;
-    line-height: 2.8rem;
+    line-height: 2.4rem;
     font-size: 1.8rem;
     width: 10rem;
     color: #333; }
+  .marry0 .input-opt {
+    line-height: 2.2rem;
+    font-size: 1.4rem;
+    padding-left: 1rem;
+    padding-right: 1rem; }
   .marry0 .input-radio {
     -webkit-appearance: radio;
     outline: thin;

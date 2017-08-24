@@ -3,6 +3,7 @@ $mainColor: #f06292
 $mainColorLight: lighten($mainColor, 8%)
 $mainColorLighter: lighten($mainColor, 24%)
 $mainColorDark: darken($mainColor, 6%)
+$mainColorBg: #fce4ec
 $white: #fff
 $fontColor: #363438
 $grayFontColorLight: #939393
@@ -213,7 +214,7 @@ main
 	background-color: $bgColor
 
 .bg-main
-	background-color: $mainColorLighter
+	background-color: $mainColorBg
 
 .bg-qrcode
 	background: url(../images/bg_sqrcode.jpg) no-repeat center center
@@ -2088,9 +2089,10 @@ section
 					padding: .5rem 0
 
 .mycard
-	background: $mainColorLighter
 	text-align: center
-	padding: 4rem 0
+	padding-top: 3rem
+	.btn-wrap
+		padding: 1.5rem 2rem
 	.card-wrap
 		width: 70%
 		display: block
@@ -2113,16 +2115,8 @@ section
 			height: auto
 			position: relative
 			z-index: 3
-			border: 1px solid $borderColor
+			border: 1px solid $mainColorLighter
 
-	.btn
-		width: 24rem
-		height: 4.5rem
-		line-height: 4.5rem
-		margin: 2.5rem auto 0
-		display: block
-		color: #fff
-		text-align: center
 	h4
 		text-align: center
 		font-size: 2rem
@@ -5714,11 +5708,15 @@ section
 	.input-name
 		border: none
 		border-bottom: 1px solid #E4E4E4
-		line-height: 2.8rem
+		line-height: 2.4rem
 		font-size: 1.8rem
 		width: 10rem
 		color: #333
-
+	.input-opt
+		line-height: 2.2rem
+		font-size: 1.4rem
+		padding-left: 1rem
+		padding-right: 1rem
 	.input-radio
 		-webkit-appearance: radio
 		outline: thin

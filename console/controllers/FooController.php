@@ -12,7 +12,6 @@ use common\models\ChatMsg;
 use common\models\Lottery;
 use common\models\User;
 use common\models\UserNet;
-use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
@@ -439,14 +438,14 @@ class FooController extends Controller
 		$sql = 'select u.uId, u.uName,u.uPhone 
 			 from im_user as u 
 			 join im_user_wechat as w on w.wUId=u.uId
-			 where u.uGender=10 and u.uStatus<8 and uPhone !=\'\' 
+			 where u.uGender in (10) and w.wSubscribe=1 and u.uStatus<8 and uPhone !=\'\' 
 			 group by u.uId,u.uName,u.uPhone';
 		$ret = $conn->createCommand($sql)->queryAll();
 		foreach ($ret as $row) {
 			$phone = $row['uPhone'];
 			QueueUtil::loadJob('sendSMS', [
 				'phone' => $phone,
-				'msg' => '相约德润英伦时光,一起来脱单吧!时间:8月20日周日下午2:00-5:00;地点:东台市德润5楼英伦时光.形式:8分钟交友,每人跟在场异性聊8分钟,费用:1人参加 60元/人,2人参加(拉单身朋友)50元/人,3人参加40元/人.要求:20-30岁单身男女,在公众号回复脱单,客服核查资格后,会及时通知你参加哦',
+				'msg' => '亲，您的花粉值可以提现了，看看您有多少花粉值吧。达到100花粉值，可提现5元现金。达到要求的小伙伴，可以在我们微信公众号回复花粉提现并转发朋友圈，领取红包。没有达到的，要加油哦',
 				'rnd' => 112
 			]);
 		}
@@ -475,27 +474,16 @@ class FooController extends Controller
 				':id' => $row['mId']
 			])->execute();
 		}*/
-		$items = [];
+		/*$items = [];
 		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn01');
 		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn02');
 		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn03');
 		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn04');
 		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn05');
-		var_dump($items);
+		var_dump($items);*/
 
-		/*$a = ['除去索要微信号功能',
-			'发起聊天需要消耗至少10朵媒桂花，如果对方无回复，5天后原数退回',
-			'新增分享到朋友圈送媒桂花活动。每天只奖励一次',
-			'七夕选出你心中的男神女神活动上线，可进入花粉排行榜查看排名',
-			'新上线送花功能可以对喜欢的人送花，助力TA上花粉排行榜',
-			'新增黑名单功能。进入TA的主页，点击举报拉黑，举报原因选择加入黑名单即可。黑名单的TA无法再和你聊天了'
-		];*/
-//		echo  json_encode($a, JSON_UNESCAPED_UNICODE);
-//		AppUtil::logFile(json_encode($a, JSON_UNESCAPED_UNICODE), 5, __FUNCTION__);
-
-		/*var_dump(date('Y-m-d', strtotime("2017-08-15 +1 month")));
-		var_dump(date('Y-m-d', strtotime("2017-08-15 +9 month")));
-		var_dump(date('Y-m-d', strtotime("2017-07-10 +0 week")));*/
+		$ret = ImageUtil::createInvitation('2017', '许阳先生 & 微媒小姐', '2017.8.28 晚6:58');
+		var_dump($ret);
 
 	}
 
