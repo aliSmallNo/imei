@@ -1108,8 +1108,22 @@ class WxController extends BaseController
 			$title = $lotteryInfo['oTitle'];
 			$gifts = $lotteryInfo['gifts'];
 		}
+
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/index');
+			exit();
+		}
+		$isSign = false;
+		if (UserSign::isSign($wxInfo["uId"])) {
+			$title = UserSign::TIP_SIGNED;
+			$isSign = true;
+		}
+
 		return self::renderPage('lottery.tpl',
 			[
+				'isSign' => $isSign,
 				'gifts' => $gifts,
 				'encryptId' => AppUtil::encrypt($oid)
 			],

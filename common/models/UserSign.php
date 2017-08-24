@@ -36,7 +36,7 @@ class UserSign extends ActiveRecord
 		return true;
 	}
 
-	public static function sign($uid)
+	public static function sign($uid, $amt = 0)
 	{
 		$date = date('Y-m-d');
 		$entity = self::findOne(['sUId' => $uid, 'sDate' => $date]);
@@ -51,7 +51,7 @@ class UserSign extends ActiveRecord
 		$ret = [];
 		switch ($role) {
 			case User::ROLE_MATCHER:
-				$amt = rand(1, 5) * 10;
+				$amt = $amt ? $amt : rand(1, 5) * 10;
 				$entity = new self();
 				$entity->sUId = $uid;
 				$entity->sDate = $date;
@@ -63,7 +63,7 @@ class UserSign extends ActiveRecord
 				UserTrans::add($uid, $entity->sId, UserTrans::CAT_SIGN, '签到奖励', $amt, UserTrans::UNIT_FEN);
 				break;
 			default:
-				$amt = rand(5, 35);
+				$amt = $amt ? $amt : rand(5, 35);
 				$entity = new self();
 				$entity->sUId = $uid;
 				$entity->sDate = $date;

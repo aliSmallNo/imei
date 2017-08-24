@@ -28,6 +28,7 @@ require(["layer"],
 			cycle: 60,
 			prize: -1,
 			msg: '',
+			title: '',
 			running: false,
 			oid: $('#cOID').val(),
 			table: $('.lottery-gifts'),
@@ -59,12 +60,15 @@ require(["layer"],
 				util.msg = '';
 				util.prize = -1;
 				util.table.find('.unit').removeClass('prize');
-				$.post('/api/lottery',
+				//$.post('/api/lottery',
+				$.post('/api/user',
 					{
-						tag: 'draw',
+						//tag: 'draw',
+						tag: 'lotsign',
 						id: util.oid
 					}, function (resp) {
 						util.prize = resp.data.prize;
+						util.title = resp.data.title;
 						if (resp.code == 0) {
 							util.msg = resp.msg;
 							util.spin();
@@ -86,6 +90,7 @@ require(["layer"],
 					util.table.find('.active').addClass('prize');
 					if (util.msg) {
 						showMsg(util.msg);
+						$(".lottery-gifts li a").html(util.title);
 					}
 				} else {
 					if (util.times < util.cycle) {

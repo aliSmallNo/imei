@@ -12,6 +12,10 @@ use yii\db\ActiveRecord;
 
 class Lottery extends ActiveRecord
 {
+	static $flowerDict = [
+		0 => 1, 1 => 5, 2 => 10, 3 => 15, 4 => 20, 5 => 25, 6 => 30, 7 => 35
+	];
+
 	public static function tableName()
 	{
 		return '{{%lottery}}';
@@ -49,6 +53,7 @@ class Lottery extends ActiveRecord
 		if ($prize == $i) {
 			self::prize($i);
 		}
+
 		return $prize;
 	}
 }

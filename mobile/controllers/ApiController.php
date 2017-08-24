@@ -417,6 +417,39 @@ class ApiController extends Controller
 					return self::renderAPI(129, '您今日已经签到过啦~');
 				}
 				break;
+			case 'lotsign':
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				if (UserSign::isSign($wxInfo["uId"])) {
+					return self::renderAPI(129, '已经签过到了哦~');
+				}
+				if ($wxInfo["uRole"] == User::ROLE_MATCHER) {
+					return self::renderAPI(129, '媒婆身份暂不支持签到抽奖~');
+				}
+				if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])) {
+					$msg = UserAudit::reasonMsg($wxInfo["uId"]);
+					return self::renderAPI(129, $msg);
+				}
+				$oid = self::postParam('id');
+				$oid = AppUtil::decrypt($oid);
+				$prize = 0;
+				$lotteryInfo = Lottery::getItem($oid);
+				if ($lotteryInfo) {
+					$prize = Lottery::prize(7);
+					$amt = Lottery::$flowerDict[$prize];
+					LogAction::add($wxInfo['uId'], $openId, LogAction::ACTION_SIGN);
+					list($amt, $unit) = UserSign::sign($wxInfo['uId'], $amt);
+					if ($amt) {
+						return self::renderAPI(0, '今日签到获得' . $amt . $unit . '奖励，请明天继续~',
+							['title' => "已签到", 'prize' => $prize]);
+					} else {
+						return self::renderAPI(129, '您今日已经签到过啦~');
+					}
+				}
+				// return self::renderAPI(0, '幸运总是迟到，但绝不会缺席~ 加油啊，努力！', ['prize' => $prize]);
+				break;
 			case 'follow':
 				$uid = self::postParam('uid', 0);
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
