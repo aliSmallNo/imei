@@ -1468,7 +1468,8 @@ class ApiController extends Controller
 				$prize = 0;
 				$lotteryInfo = Lottery::getItem($oid);
 				if ($lotteryInfo) {
-					$prize = $lotteryInfo['floor'];
+					//$prize = $lotteryInfo['floor'];
+					$prize = Lottery::prize(7);
 				}
 				return self::renderAPI(0, '幸运总是迟到，但绝不会缺席~ 加油啊，努力！', ['prize' => $prize]);
 				break;

@@ -42,4 +42,13 @@ class Lottery extends ActiveRecord
 		}
 		return [];
 	}
+
+	public static function prize($i)
+	{
+		$prize = random_int(0, 7);
+		if ($prize == $i) {
+			self::prize($i);
+		}
+		return $prize;
+	}
 }

@@ -111,5 +111,6 @@ require(["layer"],
 
 		$(function () {
 			LotteryUtil.init();
+			$("body").addClass("lot-bg");
 		});
 	});

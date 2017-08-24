@@ -1,3 +1,9 @@
+<style>
+	.lot-bg{
+		background: url('/images/sign/imei_sign_8.jpeg') no-repeat center center;
+		background-size: 100% 100%;
+	}
+</style>
 <div class="lottery">
 	<ul class="lottery-gifts clearfix">
 		<li class="unit unit-0">
