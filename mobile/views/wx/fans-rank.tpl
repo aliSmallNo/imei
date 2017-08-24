@@ -17,7 +17,8 @@
 	.rank-tab a.active {
 		color: #f06292;
 	}
-	.rank-tab a.active:after{
+
+	.rank-tab a.active:after {
 		content: "";
 		position: absolute;
 		bottom: 0;
@@ -46,7 +47,7 @@
 	<div class="favor-wAmt">
 		{{if $mInfo.co}}
 		{{$mInfo.co}}
-		{{if $mInfo.todayFavor}} <span>+{{$mInfo.todayFavor}}</span>{{/if}}
+		{{if $mInfo.todayFavor}} <span>{{$mInfo.todayFavor}}</span>{{/if}}
 		{{/if}}
 	</div>
 </div>
@@ -57,7 +58,7 @@
 			<div class="favor-key">{{$item.key}}</div>
 			<div class="favor-avatar"><img src="{{$item.avatar}}"></div>
 			<div class="favor-right">{{$item.uname}}</div>
-			<div class="favor-wAmt">{{$item.co}}{{if $item.todayFavor}} <span>+{{$item.todayFavor}}</span>{{/if}}</div>
+			<div class="favor-wAmt">{{$item.co}}{{if $item.todayFavor}} <span>{{$item.todayFavor}}</span>{{/if}}</div>
 		</a>
 	</li>
 	{{/foreach}}
@@ -80,7 +81,7 @@
 			<div class="favor-right">
 				<div class="title">{[uname]}</div>
 			</div>
-			<div class="favor-wAmt">{[co]} {[#todayFavor]}<span>+{[todayFavor]}</span>{[/todayFavor]}</div>
+			<div class="favor-wAmt">{[co]} {[#todayFavor]}<span>{[todayFavor]}</span>{[/todayFavor]}</div>
 		</a>
 	</li>
 	{[/items]}
@@ -95,8 +96,8 @@
 	</div>
 	<div class="favor-wAmt">
 		{[#co]}
-		{[co]}
-		{[#todayFavor]} <span>+{[todayFavor]}</span>{[/todayFavor]}
+		{[.]}
+		{[#todayFavor]} <span>{[todayFavor]}</span>{[/todayFavor]}
 		{[/co]}
 	</div>
 	{[/mInfo]}

@@ -26,6 +26,7 @@ class UserTrans extends ActiveRecord
 	const CAT_RETURN = 130;
 	const CAT_MOMENT = 150;
 	const CAT_VOTE = 160;
+	const CAT_FANS_DRAW = 170;
 
 	static $catDict = [
 		self::CAT_RECHARGE => "充值",
@@ -39,12 +40,14 @@ class UserTrans extends ActiveRecord
 		self::CAT_RETURN => "拒绝退回",
 		self::CAT_MOMENT => "分享到朋友圈奖励",
 		self::CAT_VOTE => "投票奖励",
+		self::CAT_FANS_DRAW => "花粉值提现",
 	];
 
 	static $CatMinus = [
 		self::CAT_REWARD,
 		self::CAT_CHAT,
 		self::CAT_PRESENT,
+		self::CAT_FANS_DRAW,
 	];
 
 	const UNIT_FEN = 'fen';
@@ -438,27 +441,28 @@ class UserTrans extends ActiveRecord
 		return $ret;
 	}
 
-	public static function getRoselist($page = 1, $ranktag = "fans-all", $pageSize = 20)
+	public static function fansRank($uid, $page = 1, $ranktag = "fans-all", $pageSize = 20)
 	{
-
 		list($beginDT, $endDT) = AppUtil::getEndStartTime(time(), 'today', true);
 		list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
 
 		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
-		$cat = UserTrans::CAT_RECEIVE;
-		$constr = "";
+		$cat = implode(',', [UserTrans::CAT_RECEIVE, UserTrans::CAT_FANS_DRAW]);
+		$criteria = '';
 		$params = [];
-		$params = [":cat" => $cat];
 		if ($ranktag == "fans-week") {
-			$constr = " and tAddedOn between :monday and :sunday ";
-			$params = [":cat" => $cat, ":monday" => $monday, ":sunday" => $sunday];
+			$criteria = " and tAddedOn between :monday and :sunday ";
+			$params = [":monday" => $monday, ":sunday" => $sunday];
 		}
-		$sql = "SELECT sum(tAmt) as co,
-				sum(case when tAddedOn BETWEEN '$beginDT' AND '$endDT' then t.tAmt else 0 end) as todayFavor,
+		if ($uid) {
+			$criteria .= ' AND u.uId=' . $uid;
+		}
+		$sql = "SELECT sum(case WHEN tCategory=127 THEN tAmt ELSE -tAmt END) as co,
+				sum(case when tAddedOn BETWEEN '$beginDT' AND '$endDT' then (case WHEN tCategory=127 THEN tAmt ELSE -tAmt END) else 0 end) as todayFavor,
 				 tUId as id, uName as uname, uThumb as avatar
 				 FROM im_user_trans as t
 				 JOIN im_user as u on u.uId=t.tUId 
-				 WHERE tCategory=:cat $constr
+				 WHERE tCategory in ($cat) $criteria
 				 GROUP BY tUId ORDER BY co desc, tUId asc " . $limit;
 		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
 
@@ -468,58 +472,22 @@ class UserTrans extends ActiveRecord
 			array_pop($res);
 		}
 		$data = [];
-		foreach ($res as $k => &$v) {
+		foreach ($res as $k => $v) {
 			$v["secretId"] = AppUtil::encrypt($v["id"]);
 			$v["key"] = ($page - 1) * $pageSize + $k + 1;
 			$v["todayFavor"] = intval($v["todayFavor"]);
+			if ($v["todayFavor"] > 0) {
+				$v["todayFavor"] = '+' . $v["todayFavor"];
+			}
 			$v["co"] = intval($v["co"]);
 			$data[] = $v;
 		}
-
+		if ($uid && $data) {
+			return $data[0];
+		} elseif ($uid && !$data) {
+			return [];
+		}
 		return [$data, $nextPage];
 	}
 
-	public static function myGetRose($uid, $ranktag = "fans-all")
-	{
-		$cat = UserTrans::CAT_RECEIVE;
-		list($sday, $eday) = AppUtil::getEndStartTime(time(), 'curweek', true);
-
-		$params = [":sDate" => $sday, ":eDate" => $eday, ":cat" => $cat];
-		$conStr = "";
-		if ($ranktag == "fans-week") {
-			$conStr = " and tAddedOn between :monday and :sunday ";
-			list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
-			$params[":monday"] = $monday;
-			$params[":sunday"] = $sunday;
-		}
-
-		$sql = "select sum(tAmt) as co,
-				sum(case when tAddedOn BETWEEN :sDate AND :eDate then t.tAmt else 0 end) as todayFavor, 
-				tUId as id, uName as uname, uThumb as avatar
-				from im_user_trans as t
-				left join im_user as u on u.uId=t.tUId 
-				where tCategory=:cat $conStr
-				GROUP BY tUId ORDER BY co desc,tUId asc ";
-		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
-		$myInfo = [];
-		foreach ($res as $k => $v) {
-			if ($v["id"] == $uid) {
-				$v["todayFavor"] = intval($v["todayFavor"]);
-				$v["co"] = intval($v["co"]);
-				$myInfo = $v;
-				$myInfo["no"] = $k + 1;
-			}
-		}
-		if (!$myInfo) {
-			$uInfo = User::findOne(["uId" => $uid]);
-			$myInfo = [
-				"no" => 0,
-				"avatar" => $uInfo->uAvatar,
-				"uname" => $uInfo->uName,
-				"co" => 0,
-				"todayFavor" => 0,
-			];
-		}
-		return $myInfo;
-	}
 }

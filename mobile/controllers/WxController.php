@@ -1026,9 +1026,14 @@ class WxController extends BaseController
 			exit();
 		}
 
-		list($items) = UserTrans::getRoselist();
-		$mInfo = UserTrans::myGetRose($wxInfo["uId"]);
-
+		list($items) = UserTrans::fansRank(0);
+		$mInfo = UserTrans::fansRank($wxInfo["uId"]);
+		$mInfo['no'] = 0;
+		foreach ($items as $k => $item) {
+			if ($item['id'] == $mInfo['id']) {
+				$mInfo['no'] = $k + 1;
+			}
+		}
 		return self::renderPage('fans-rank.tpl',
 			[
 				"items" => $items,
