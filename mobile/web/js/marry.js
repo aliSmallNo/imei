@@ -63,12 +63,13 @@ require(["layer"],
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			var linkUrl = "https://wx.meipo100.com/wx/marry?dt=" + $('#cDATE').val() + "&name=" + encodeURI($('#cNAME').val()) + "&gender=" + $('#cGENDER').val();
+			var imgUrl = "https://wx.meipo100.com/images/bg_marry_sm.jpg";
 			wx.ready(function () {
 				wx.onMenuShareAppMessage({
-					title: '小微要组织线下活动咯',
-					desc: '不知各位帅哥美女喜欢什么样的，那就一起来选吧',
+					title: '我要结婚了--诚邀您来参加我的婚礼',
+					desc: '我要结婚啦，在这个重要的日子希望有你的见证',
 					link: linkUrl,
-					imgUrl: "https://wx.meipo100.com/images/logo33.png",
+					imgUrl: imgUrl,
 					type: '',
 					dataUrl: '',
 					success: function () {
@@ -76,9 +77,9 @@ require(["layer"],
 					}
 				});
 				wx.onMenuShareTimeline({
-					title: '小微要组织线下活动咯，不知各位帅哥美女喜欢什么样的，那就一起来选吧',
+					title: '我要结婚啦，在这个重要的日子希望有你的见证',
 					link: linkUrl,
-					imgUrl: "https://wx.meipo100.com/images/logo33.png",
+					imgUrl: imgUrl,
 					success: function () {
 						//showMsg('分享成功啦，O(∩_∩)O谢谢你的参与');
 					}

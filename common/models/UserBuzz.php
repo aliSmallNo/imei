@@ -200,9 +200,9 @@ class UserBuzz extends ActiveRecord
 						'ArticleCount' => 1,
 						'Articles' => [
 							'item' => [
-								'Title' => '微媒100 - 生成我自己的请帖',
-								'Description' => '生成我自己的请帖！',
-								'PicUrl' => 'https://wx.meipo100.com/images/welcome_720.jpg',
+								'Title' => '只需二步生成你的结婚请帖',
+								'Description' => '一起搞事情啊，恶搞轰炸一下朋友圈呗~',
+								'PicUrl' => 'https://wx.meipo100.com/images/bg_marry_flag.jpg',
 								'Url' => 'https://wx.meipo100.com/wx/marry'
 							]
 						]
