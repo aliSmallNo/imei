@@ -49,8 +49,10 @@ class QuestionGroup extends ActiveRecord
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
 		$limit = "limit " . ($page - 1) * $pageSize . "," . $pageSize;
-		$sql = "select * from im_question_group 
+		$sql = "select g.*,count(1) as co from im_question_group as g 
+				left join im_log as o on o.oKey=g.gId
 				WHERE gId>0 $strCriteria
+				group BY gId
 				order by gUpdatedOn desc $limit";
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
 
@@ -61,7 +63,7 @@ class QuestionGroup extends ActiveRecord
 
 		foreach ($res as &$v) {
 			$ids = explode(",", $v["gItems"]);
-			$v["co"] = count($ids);
+			// $v["co"] = count($ids);
 			$v["qlist"] = [];
 			foreach ($ids as $id) {
 				$qsea = QuestionSea::findOne(["qId" => $id]);

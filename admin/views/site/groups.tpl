@@ -22,7 +22,7 @@
 		<thead>
 		<tr>
 			<th class="col-sm-2">
-				主题
+				主题(参与人数)
 			</th>
 			<th class="col-sm-6">
 				题列表
