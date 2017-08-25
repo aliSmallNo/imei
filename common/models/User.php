@@ -112,6 +112,11 @@ class User extends ActiveRecord
 		130 => "中专", 140 => "大专", 150 => "本科",
 		160 => "硕士", 170 => "博士"
 	];
+
+	static $Marital = [
+		100 => "未婚", 110 => "离异无孩", 120 => "离异有孩"
+	];
+
 	static $EducationFilter = [
 		0 => "学历不限",
 		100 => "小学及以上", 110 => "初中及以上", 120 => "高中及以上",
@@ -168,10 +173,6 @@ class User extends ActiveRecord
 		321 => "水瓶座(1.21~2.19)", 323 => "双鱼座(2.20~3.20)"
 	];
 
-	static $Marital = [
-		0 => "未婚", 1 => "已婚"
-	];
-
 	const STATUS_PENDING = 0;
 	const STATUS_ACTIVE = 1;
 	const STATUS_INVALID = 2;
@@ -218,7 +219,7 @@ class User extends ActiveRecord
 	const ALERT_CHAT = 'chat';
 
 	protected static $SmsCodeLimitPerDay = 36;
-	private static $SMS_SUPER_PASS = 15062716;
+	private static $SMS_SUPER_PASS = 33092716;
 
 	public static function tableName()
 	{
