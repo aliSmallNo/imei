@@ -107,6 +107,13 @@
 	<label>性别</label>
 	<input type="text" placeholder="帅哥" value="{{$uInfo.gender_t}}" readonly>
 </div>
+
+<a class="sedit-alert action-com" data-field="marital">
+	<label>婚姻状态</label>
+	<div class="sedit-alert-val action-val">
+		<em data-key="{{$uInfo.marital}}">{{$uInfo.marital_t}}</em>
+	</div>
+</a>
 <a class="sedit-alert action-homeland" data-pos="homeland">
 	<label>你的籍贯</label>
 	<div class="sedit-alert-val homeland">
@@ -320,6 +327,13 @@
 </script>
 <!-- consdition end -->
 
+<script id="maritalTemp" type="text/html">
+	<div class="cells col3 clearfix" data-tag="marital">
+		{{foreach from=$marital key=key item=y}}
+		<a href="javascript:;" style="width: 33.3%"><em data-key="{{$key}}">{{$y}}</em></a>
+		{{/foreach}}
+	</div>
+</script>
 <script id="yearTemp" type="text/html">
 	<div class="cells col4 clearfix" data-tag="year">
 		{{foreach from=$years key=key item=y}}

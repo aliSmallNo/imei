@@ -681,6 +681,7 @@ class User extends ActiveRecord
 			"workout" => "uFitness",
 			"year" => "uBirthYear",
 			"sign" => "uHoros",
+			"marital" => "uMarital",
 			"coord" => "uCoord",
 			"filter" => "uFilter",
 			"album" => "uAlbum",
