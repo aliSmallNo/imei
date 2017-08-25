@@ -183,7 +183,6 @@ class UserQR extends ActiveRecord
 		return $saveAs . '.' . $ext;
 	}
 
-
 	public static function createInvitation($uid, $h2, $h4, $h5, $qrFile = '')
 	{
 		$raw = json_encode([$h2, $h4, $h5, $qrFile], JSON_UNESCAPED_UNICODE);
@@ -226,6 +225,7 @@ class UserQR extends ActiveRecord
 		$entity = new self();
 		$entity->qUId = $uid;
 		$entity->qCategory = self::CATEGORY_MARRY;
+		$entity->qCode = 'meipo100-marry';
 		$entity->qMD5 = $md5;
 		$entity->qRaw = $raw;
 		$entity->qUrl = $accessUrl;
