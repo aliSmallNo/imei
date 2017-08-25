@@ -62,9 +62,10 @@ class UserQR extends ActiveRecord
 		return 0;
 	}
 
-	public static function getQRCode($uid, $category)
+	public static function getQRCode($uid, $category, $avatar = '')
 	{
-		$qrInfo = self::findOne(['qUId' => $uid, 'qCategory' => $category]);
+		$md5 = md5(json_encode([$uid, $category, $avatar], JSON_UNESCAPED_UNICODE));
+		$qrInfo = self::findOne(['qUId' => $uid, 'qCategory' => $category, 'qMD5' => $md5]);
 		if ($qrInfo && isset($qrInfo['qUrl']) && $qrInfo['qUrl']) {
 			return $qrInfo['qUrl'];
 		}
@@ -81,6 +82,8 @@ class UserQR extends ActiveRecord
 		if (!$info) {
 			return $accessUrl;
 		}
+		$thumb = $info['uThumb'];
+		$md5 = md5(json_encode([$uid, $category, $thumb], JSON_UNESCAPED_UNICODE));
 		switch ($category) {
 			case self::CATEGORY_SALES:
 				if (!$code) {
@@ -93,10 +96,11 @@ class UserQR extends ActiveRecord
 				$qid = self::edit($info['uOpenId'], $category, $code, [
 					'qTitle' => $bottomTitle,
 					'qSubTitle' => $code,
-					'qUId' => $uid
+					'qUId' => $uid,
+					'qMD5' => $md5
 				]);
 
-				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $code, $code, $bottomTitle, $info['uThumb']);
+				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $code, $code, $bottomTitle, $thumb);
 				if ($accessUrl) {
 					self::edit($info['uOpenId'], $category, $code, [
 						'qUrl' => $accessUrl,
@@ -109,10 +113,11 @@ class UserQR extends ActiveRecord
 				$qid = self::edit($info['uOpenId'], $category, $code, [
 					'qTitle' => $bottomTitle,
 					'qSubTitle' => $code,
-					'qUId' => $uid
+					'qUId' => $uid,
+					'qMD5' => $md5
 				]);
 
-				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $qid, $code, $bottomTitle, $info['uThumb']);
+				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $qid, $code, $bottomTitle, $thumb);
 				if ($accessUrl) {
 					self::edit($info['uOpenId'], $category, $code, [
 						'qUrl' => $accessUrl,

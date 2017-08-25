@@ -817,9 +817,9 @@ class WxController extends BaseController
 			$qrcode = '/images/qrmeipo100.jpg';
 		} else {
 			if ($senderUId && $matchInfo) {
-				$qrcode = UserQR::getQRCode($senderUId, UserQR::CATEGORY_MATCH);
+				$qrcode = UserQR::getQRCode($senderUId, UserQR::CATEGORY_MATCH, $avatar);
 			} else {
-				$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH);
+				$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH, $avatar);
 			}
 		}
 		return self::renderPage("share.tpl",
