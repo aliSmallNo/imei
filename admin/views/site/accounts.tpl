@@ -237,6 +237,7 @@
 					<div class="perc-bar-title">资料完整度 <b>{{$prod.percent}}%</b></div>
 					<div class="perc-bar-wrap"><p class="perc-bar"><em style="width: {{$prod.percent}}%"></em></p></div>
 				</div>
+				<span>{{$prod.marital_t}}</span>
 				<span>{{$prod.age}}</span>
 				<span>{{$prod.horos_t}}</span>
 				<span>{{$prod.gender_t}}</span>
