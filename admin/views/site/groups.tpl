@@ -11,7 +11,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<form class="form-inline" action="/site/questions" method="get">
+		<form class="form-inline" action="/site/groups" method="get">
 			<input class="form-control" name="name" placeholder="题目" value="{{$name}}">
 			<input type="submit" class="btn btn-primary" value="查询">
 		</form>
