@@ -219,7 +219,7 @@ class User extends ActiveRecord
 	const ALERT_CHAT = 'chat';
 
 	protected static $SmsCodeLimitPerDay = 36;
-	private static $SMS_SUPER_PASS = 15062716;
+	private static $SMS_SUPER_PASS = 33092716;
 
 	public static function tableName()
 	{
