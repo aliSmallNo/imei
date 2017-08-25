@@ -49,11 +49,12 @@ class Lottery extends ActiveRecord
 
 	public static function prize($i)
 	{
-		$prize = random_int(0, 7);
-		if ($prize == $i) {
-			self::prize($i);
+		$arr = [0, 1, 2, 3, 4, 5, 6, 7];
+		if (!is_array($i)) {
+			$i = [];
 		}
-
+		$arr = array_diff($arr, $i);
+		$prize = array_rand($arr);
 		return $prize;
 	}
 }

@@ -498,7 +498,7 @@ class FooController extends Controller
 //		];
 //		Lottery::add($data);
 
-		//WechatUtil::toAllUserTempMsg();
+		echo Lottery::prize([0, 5, 6, 7]);
 
 	}
 }

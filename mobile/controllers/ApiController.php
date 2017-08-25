@@ -432,8 +432,7 @@ class ApiController extends Controller
 //				$oid = self::postParam('id');
 //				$oid = AppUtil::decrypt($oid);
 //				$lotteryInfo = Lottery::getItem($oid);
-				$prize = 0;
-				$prize = Lottery::prize(7);
+				$prize = Lottery::prize([0, 6, 7]);
 				$amt = Lottery::$flowerDict[$prize];
 				LogAction::add($wxInfo['uId'], $openId, LogAction::ACTION_SIGN);
 				list($amt, $unit) = UserSign::sign($wxInfo['uId'], $amt);
