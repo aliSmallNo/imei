@@ -70,14 +70,13 @@
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-12">
-			<h4>用户投票</h4>
-			<p>小微要组织一场活动，不知各位帅哥美女喜欢什么样的，那就一起来选吧。我们会根据大家的喜好，组织线下活动哦，欢迎参加</p>
+			<h4>用户投票/答题结果</h4>
 		</div>
 	</div>
 	<div class="row">
 		{{foreach from=$voteStat key=key item=item}}
 		<div class="vote-item">
-			<p>{{$key+1}}.{{$item.qTitle}}</p>
+			<p>{{$key+1}}.{{$item.qTitle}} {{if $item.gCategory==100}}（答案：{{$item.answer}}）{{/if}}</p>
 			<div class="opt-res">
 				{{foreach from=$item.options item=opt}}
 				<em>{{$opt.text}}</em>

@@ -18,6 +18,8 @@
 		position: absolute;
 		top: 5px;
 		right: 5px;
+		z-index: 99;
+		background: #eee;
 	}
 
 	.seek-question li .title, .questionlist li .title {
@@ -47,6 +49,12 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label>活动主题</label>
+					<div class="form-group">
+						<input type="text" class="form-control" name="gTitle" id="gTitle" required placeholder="(必填)">
+					</div>
+				</div>
+				<div class="form-group">
 					<label>活动类别</label>
 					<div class="form-group input-group">
 						<select name="cat" class="form-control">
@@ -57,7 +65,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label>选择题目</label>
+					<label>选择题目列表</label>
 					<ul class="form-control-static questionlist" id="questionlist">
 
 					</ul>
@@ -142,6 +150,7 @@
 		$.post("/api/question", {
 			tag: "savegroup",
 			cat: $("[name=cat]").val(),
+			title: $("[name=gTitle]").val(),
 			ids: JSON.stringify(ids),
 		}, function (resp) {
 			if (resp.code == 0) {
@@ -181,7 +190,7 @@
 			{[options]}
 		</div>
 		<div>{[answer]}</div>
-		<a class="delQue">移除</a>
+		<a href="javascript:;" class="delQue">移除</a>
 	</li>
 </script>
 {{include file="layouts/footer.tpl"}}

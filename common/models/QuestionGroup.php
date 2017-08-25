@@ -41,14 +41,49 @@ class QuestionGroup extends ActiveRecord
 		return true;
 	}
 
+	public static function items($criteria, $params, $page = 1, $pageSize = 20)
+	{
+		$conn = AppUtil::db();
+		$strCriteria = '';
+		if ($criteria) {
+			$strCriteria = ' AND ' . implode(' AND ', $criteria);
+		}
+		$limit = "limit " . ($page - 1) * $pageSize . "," . $pageSize;
+		$sql = "select * from im_question_group 
+				WHERE gId>0 $strCriteria
+				order by gUpdatedOn desc $limit";
+		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
+
+		$sql = "select count(*) as co from im_question_group 
+				WHERE gId>0 $strCriteria ";
+		$count = $conn->createCommand($sql)->bindValues($params)->queryOne();
+		$count = $count ? $count["co"] : 0;
+
+		foreach ($res as &$v) {
+			$ids = explode(",", $v["gItems"]);
+			$v["co"] = count($ids);
+			$v["qlist"] = [];
+			foreach ($ids as $id) {
+				$qsea = QuestionSea::findOne(["qId" => $id]);
+				$v["qlist"][] = [
+					"title" => $qsea ? $qsea->qTitle : "",
+				];
+			}
+
+		}
+
+		return [$res, $count];
+	}
+
 
 	public static function findGroup($gid)
 	{
 		$conn = AppUtil::db();
-		$sql = "SELECT gItems,gId from im_question_group where gId=$gid";
+		$sql = "SELECT gItems,gId,gCategory from im_question_group where gId=$gid";
 		$ret = $conn->createCommand($sql)->queryOne();
 		$ids = $ret ? $ret["gItems"] : 0;
 		$gId = $ret ? $ret["gId"] : 0;
+		$gCategory = $ret ? $ret["gCategory"] : 100;
 		if (!$ids) {
 			return 0;
 		}
@@ -56,6 +91,7 @@ class QuestionGroup extends ActiveRecord
 		$res = $conn->createCommand($sql)->queryAll();
 		foreach ($res as &$v) {
 			$v = QuestionSea::fmt($v);
+			$v["gCategory"] = $gCategory;
 		}
 		return [$res, $gId];
 
@@ -70,7 +106,6 @@ class QuestionGroup extends ActiveRecord
 			":cat" => 1000,
 			":key" => $gid,
 		])->queryAll();
-
 
 		foreach ($qlist as &$q) {
 			$q["amt"] = 0;
@@ -93,7 +128,7 @@ class QuestionGroup extends ActiveRecord
 				}
 			}
 		}
-		// print_r($qlist);exit;
+		//print_r($qlist);exit;
 		return $qlist;
 	}
 

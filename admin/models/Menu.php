@@ -112,8 +112,8 @@ class Menu
 						"level" => 820
 					],
 					[
-						"name" => "投票",
-						"url" => "/site/vote",
+						"name" => "活动列表",
+						"url" => "/site/groups",
 						"revise" => 1,
 						"level" => 820
 					],

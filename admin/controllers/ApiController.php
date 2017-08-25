@@ -315,10 +315,11 @@ class ApiController extends Controller
 				$ids = self::postParam("ids");
 				$ids = implode(",", json_decode($ids, 1));
 				$cat = self::postParam("cat");
+				$title = self::postParam("title");
 				//$cat = QuestionGroup::CAT_VOTE;
 				QuestionGroup::add([
 					"gCategory" => $cat,
-					"gTitle" => QuestionGroup::$titleDict[$cat],
+					"gTitle" => $title,
 					"gItems" => $ids,
 				]);
 				return self::renderAPI(0, '保存成功');
