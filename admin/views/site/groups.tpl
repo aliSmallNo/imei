@@ -25,7 +25,7 @@
 				主题
 			</th>
 			<th class="col-sm-6">
-				选项
+				题列表
 			</th>
 			<th class="col-sm-2">
 				时间
@@ -39,12 +39,12 @@
 		{{if $list}}
 		{{foreach from=$list item=prod}}
 		<tr>
-			<td data-id="{{$prod.gId}}">
+			<td>
 				{{$prod.gTitle}}({{$prod.co}})
 			</td>
 			<td class="options">
-				{{foreach from=$prod.qlist item=q}}
-				<div>{{$q.title}}</div>
+				{{foreach from=$prod.qlist key=key item=q}}
+				<div>{{$key+1}}. {{$q.title}}</div>
 				{{/foreach}}
 			</td>
 
@@ -52,7 +52,7 @@
 				<div>创建于{{$prod.gAddedOn|date_format:'%y-%m-%d %H:%M'}}</div>
 			</td>
 			<td>
-				<a href="/site/vote?id={{$prod.gId}}" class=" btn btn-outline btn-primary btn-xs" data-id="{{$prod.gId}}">查看</a>
+				<a href="/site/vote?id={{$prod.gId}}" class=" btn btn-outline btn-primary btn-xs" data-id="{{$prod.gId}}">查看结果</a>
 			</td>
 		</tr>
 		{{/foreach}}
@@ -135,7 +135,7 @@
 		}, function (resp) {
 			loadflag = 0;
 			if (resp.code == 0) {
-				 location.reload();
+				location.reload();
 			} else {
 				layer.msg(resp.msg);
 			}
