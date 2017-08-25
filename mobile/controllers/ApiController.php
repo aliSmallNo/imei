@@ -437,12 +437,9 @@ class ApiController extends Controller
 				LogAction::add($wxInfo['uId'], $openId, LogAction::ACTION_SIGN);
 				list($amt, $unit) = UserSign::sign($wxInfo['uId'], $amt);
 				if ($amt) {
-					return self::renderAPI(0, '今日签到获得' . $amt . $unit . ',请明天继续~',
+					return self::renderAPI(0, '今日签到获得' . $amt . $unit . ',明天继续~',
 						['title' => "已签到", 'prize' => $prize]);
-				} else {
-					return self::renderAPI(129, '您今日已经签到过啦~');
 				}
-				// return self::renderAPI(0, '幸运总是迟到，但绝不会缺席~ 加油啊，努力！', ['prize' => $prize]);
 				break;
 			case 'follow':
 				$uid = self::postParam('uid', 0);
