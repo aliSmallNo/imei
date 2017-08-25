@@ -1281,7 +1281,7 @@ class ApiController extends Controller
 				if (AppUtil::isDev()) {
 					$qrcode = '../../images/qrmeipo100.jpg';
 				} else {
-					$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH);
+					$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH, $avatar);
 				}
 				$data = [
 					"qrcode" => $qrcode,

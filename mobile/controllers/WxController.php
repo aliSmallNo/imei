@@ -858,9 +858,8 @@ class WxController extends BaseController
 			if ($qrUserInfo) {
 				$avatar = ImageUtil::getItemImages($qrUserInfo["uThumb"])[0];
 			}
-			$qrcode = UserQR::getQRCode($qrUserId, UserQR::CATEGORY_SINGLE);
+			$qrcode = UserQR::getQRCode($qrUserId, UserQR::CATEGORY_SINGLE, $avatar);
 		}
-
 		return self::renderPage("sqr.tpl",
 			[
 				'uId' => $qrUserId,
@@ -897,6 +896,7 @@ class WxController extends BaseController
 				exit();
 			} else {
 				$nickname = $matchInfo["uName"];
+				$avatar = $matchInfo["uThumb"];
 			}
 		}
 		if ($senderUId && $uId) {
@@ -906,7 +906,7 @@ class WxController extends BaseController
 		if (AppUtil::isDev()) {
 			$qrcode = '/images/qrmeipo100.jpg';
 		} else {
-			$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_SINGLE);
+			$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH, $avatar);
 		}
 		return self::renderPage("sts.tpl",
 			[
