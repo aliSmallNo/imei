@@ -42,7 +42,7 @@
 	<div class="favor-avatar"><img src="{{$mInfo.avatar}}"></div>
 	<div class="favor-right">
 		<div class="title" style="top: 0">{{$mInfo.uname}}</div>
-		<div class="dt" style="color: #999">{{if $mInfo.no}}第{{$mInfo.no}}名{{else}}还没有排名{{/if}}</div>
+		<div class="dt" style="color: #999">{{if $mInfo.no}}第{{$mInfo.no}}名{{else}}没上榜，加油哦~{{/if}}</div>
 	</div>
 	<div class="favor-wAmt">
 		{{if $mInfo.co}}
@@ -92,7 +92,7 @@
 	<div class="favor-avatar"><img src="{[avatar]}"></div>
 	<div class="favor-right">
 		<div class="title" style="top: 0">{[uname]}</div>
-		<div class="dt" style="color: #999">{[#no]}第{[no]}名{[/no]}{[^no]}还没有排名{[/no]}</div>
+		<div class="dt" style="color: #999">{[#no]}第{[no]}名{[/no]}{[^no]}没上榜，加油哦~{[/no]}</div>
 	</div>
 	<div class="favor-wAmt">
 		{[#co]}

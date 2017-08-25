@@ -43,6 +43,7 @@ class UserQR extends ActiveRecord
 		foreach ($values as $key => $val) {
 			$newItem->$key = $val;
 		}
+		$newItem->qDate = date('Y-m-d H:i:s');
 		$newItem->save();
 		return $newItem->qId;
 	}
@@ -62,9 +63,10 @@ class UserQR extends ActiveRecord
 		return 0;
 	}
 
-	public static function getQRCode($uid, $category)
+	public static function getQRCode($uid, $category, $avatar = '')
 	{
-		$qrInfo = self::findOne(['qUId' => $uid, 'qCategory' => $category]);
+		$md5 = md5(json_encode([$uid, $category, $avatar], JSON_UNESCAPED_UNICODE));
+		$qrInfo = self::findOne(['qUId' => $uid, 'qCategory' => $category, 'qMD5' => $md5]);
 		if ($qrInfo && isset($qrInfo['qUrl']) && $qrInfo['qUrl']) {
 			return $qrInfo['qUrl'];
 		}
@@ -81,6 +83,8 @@ class UserQR extends ActiveRecord
 		if (!$info) {
 			return $accessUrl;
 		}
+		$thumb = $info['uThumb'];
+		$md5 = md5(json_encode([$uid, $category, $thumb], JSON_UNESCAPED_UNICODE));
 		switch ($category) {
 			case self::CATEGORY_SALES:
 				if (!$code) {
@@ -93,10 +97,11 @@ class UserQR extends ActiveRecord
 				$qid = self::edit($info['uOpenId'], $category, $code, [
 					'qTitle' => $bottomTitle,
 					'qSubTitle' => $code,
-					'qUId' => $uid
+					'qUId' => $uid,
+					'qMD5' => $md5
 				]);
 
-				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $code, $code, $bottomTitle, $info['uThumb']);
+				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $code, $code, $bottomTitle, $thumb);
 				if ($accessUrl) {
 					self::edit($info['uOpenId'], $category, $code, [
 						'qUrl' => $accessUrl,
@@ -109,10 +114,11 @@ class UserQR extends ActiveRecord
 				$qid = self::edit($info['uOpenId'], $category, $code, [
 					'qTitle' => $bottomTitle,
 					'qSubTitle' => $code,
-					'qUId' => $uid
+					'qUId' => $uid,
+					'qMD5' => $md5
 				]);
 
-				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $qid, $code, $bottomTitle, $info['uThumb']);
+				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $qid, $code, $bottomTitle, $thumb);
 				if ($accessUrl) {
 					self::edit($info['uOpenId'], $category, $code, [
 						'qUrl' => $accessUrl,
@@ -183,12 +189,11 @@ class UserQR extends ActiveRecord
 		return $saveAs . '.' . $ext;
 	}
 
-
 	public static function createInvitation($uid, $h2, $h4, $h5, $qrFile = '')
 	{
-		$subTitle = json_encode([$h2, $h4, $h5, $qrFile], JSON_UNESCAPED_UNICODE);
-		$title = md5($subTitle);
-		$qrInfo = self::findOne(['qUId' => $uid, 'qCategory' => self::CATEGORY_MARRY, 'qTitle' => $title]);
+		$raw = json_encode([$h2, $h4, $h5, $qrFile], JSON_UNESCAPED_UNICODE);
+		$md5 = md5($raw);
+		$qrInfo = self::findOne(['qUId' => $uid, 'qCategory' => self::CATEGORY_MARRY, 'qMD5' => $md5]);
 		if ($qrInfo) {
 			return $qrInfo->qUrl;
 		}
@@ -222,11 +227,13 @@ class UserQR extends ActiveRecord
 		$img->save($saveAs);
 		$accessUrl = ImageUtil::getUrl($saveAs);
 
+		self::deleteAll(['qUId' => $uid, 'qCategory' => self::CATEGORY_MARRY]);
 		$entity = new self();
 		$entity->qUId = $uid;
 		$entity->qCategory = self::CATEGORY_MARRY;
-		$entity->qTitle = $title;
-		$entity->qSubTitle = $subTitle;
+		$entity->qCode = 'meipo100-marry';
+		$entity->qMD5 = $md5;
+		$entity->qRaw = $raw;
 		$entity->qUrl = $accessUrl;
 		$entity->save();
 		return $accessUrl;

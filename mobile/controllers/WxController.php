@@ -11,7 +11,6 @@ namespace mobile\controllers;
 use common\models\City;
 use common\models\Log;
 use common\models\LogAction;
-use common\models\Lottery;
 use common\models\QuestionGroup;
 use common\models\User;
 use common\models\UserAudit;
@@ -818,9 +817,9 @@ class WxController extends BaseController
 			$qrcode = '/images/qrmeipo100.jpg';
 		} else {
 			if ($senderUId && $matchInfo) {
-				$qrcode = UserQR::getQRCode($senderUId, UserQR::CATEGORY_MATCH);
+				$qrcode = UserQR::getQRCode($senderUId, UserQR::CATEGORY_MATCH, $avatar);
 			} else {
-				$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH);
+				$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH, $avatar);
 			}
 		}
 		return self::renderPage("share.tpl",
@@ -1255,11 +1254,11 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		$userId = '';
+		$userId = User::SERVICE_UID;
 		if ($wxInfo) {
 			$userId = $wxInfo['uId'];
 		}
-		$uId = self::getParam('id', User::SERVICE_UID);
+		$uId = self::getParam('id', $userId);
 		$name = self::getParam('name');
 		$gender = self::getParam('gender', 1);
 		$dt = self::getParam('dt');

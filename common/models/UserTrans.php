@@ -295,7 +295,13 @@ class UserTrans extends ActiveRecord
 				$details[$uid] = $bal;
 			}
 			$unit = $balance['unit'];
-			if ($unit == self::UNIT_FEN) {
+			if ($unit == self::UNIT_GIFT) {
+				if (in_array($cat, self::$CatMinus)) {
+					$details[$uid]['bal']['amt'] -= $balance['amt'];
+				} else {
+					$details[$uid]['bal']['amt'] += $balance['amt'];
+				}
+			} elseif ($unit == self::UNIT_FEN) {
 				$balance['amt'] = sprintf('%.2f', $balance['amt'] / 100.0);
 				$unit = self::UNIT_YUAN;
 				if (in_array($cat, self::$CatMinus)) {
@@ -303,18 +309,17 @@ class UserTrans extends ActiveRecord
 				} else {
 					$details[$uid]['bal']['amt2'] += $balance['amt'];
 				}
-			} else if ($unit == self::UNIT_GIFT) {
+			} elseif ($unit == self::UNIT_FANS) {
 				if (in_array($cat, self::$CatMinus)) {
-					$details[$uid]['bal']['amt'] -= $balance['amt'];
+					$details[$uid]['bal']['amt3'] -= $balance['amt'];
 				} else {
-					$details[$uid]['bal']['amt'] += $balance['amt'];
+					$details[$uid]['bal']['amt3'] += $balance['amt'];
 				}
 			}
 			$balance['unit_name'] = self::$UnitDict[$unit];
 			$balance['unit'] = $unit;
 			$details[$uid][$cat . '-' . $unit] = $balance;
 		}
-
 
 		foreach ($items as $k => $item) {
 			$uid = $item['uid'];
@@ -441,7 +446,7 @@ class UserTrans extends ActiveRecord
 		return $ret;
 	}
 
-	public static function fansRank($uid, $page = 1, $ranktag = "fans-all", $pageSize = 20)
+	public static function fansRank($uid, $ranktag = "fans-all", $page = 1, $pageSize = 20)
 	{
 		list($beginDT, $endDT) = AppUtil::getEndStartTime(time(), 'today', true);
 		list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
@@ -464,8 +469,9 @@ class UserTrans extends ActiveRecord
 				 JOIN im_user as u on u.uId=t.tUId 
 				 WHERE tCategory in ($cat) $criteria
 				 GROUP BY tUId ORDER BY co desc, tUId asc " . $limit;
-		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
-
+		$conn = AppUtil::db();
+		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		AppUtil::logFile($conn->createCommand($sql)->bindValues($params)->getRawSql(), 5);
 		$nextPage = 0;
 		if (count($res) > $pageSize) {
 			$nextPage = $page + 1;
@@ -483,7 +489,8 @@ class UserTrans extends ActiveRecord
 			$data[] = $v;
 		}
 		if ($uid && $data) {
-			return $data[0];
+			$myInfo = $data[0];
+			return $myInfo;
 		} elseif ($uid && !$data) {
 			return [];
 		}
