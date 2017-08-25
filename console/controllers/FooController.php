@@ -438,14 +438,14 @@ class FooController extends Controller
 		$sql = 'select u.uId, u.uName,u.uPhone 
 			 from im_user as u 
 			 join im_user_wechat as w on w.wUId=u.uId
-			 where u.uGender in (10) and w.wSubscribe=1 and u.uStatus<8 and uPhone !=\'\' 
+			 where u.uGender in (10,11) and w.wSubscribe=1 and u.uStatus<8 and uPhone !=\'\' 
 			 group by u.uId,u.uName,u.uPhone';
 		$ret = $conn->createCommand($sql)->queryAll();
 		foreach ($ret as $row) {
 			$phone = $row['uPhone'];
 			QueueUtil::loadJob('sendSMS', [
 				'phone' => $phone,
-				'msg' => '亲，您的花粉值可以提现了，看看您有多少花粉值吧。达到100花粉值，可提现5元现金。达到要求的小伙伴，可以在我们微信公众号回复花粉提现并转发朋友圈，领取红包。没有达到的，要加油哦',
+				'msg' => '线下活动通知：8月26晚6：30，相约东台德润3楼英伦时光，参加多人牛排PARTY。男生AA，女生免费。名额有限哦，赶快回复公众号参加活动',
 				'rnd' => 112
 			]);
 		}
