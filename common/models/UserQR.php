@@ -43,6 +43,7 @@ class UserQR extends ActiveRecord
 		foreach ($values as $key => $val) {
 			$newItem->$key = $val;
 		}
+		$newItem->qDate = date('Y-m-d H:i:s');
 		$newItem->save();
 		return $newItem->qId;
 	}
