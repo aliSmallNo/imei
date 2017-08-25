@@ -864,6 +864,43 @@ class SiteController extends BaseController
 			]);
 	}
 
+	public function actionGroups()
+	{
+		$page = self::getParam("page", 1);
+		$name = self::getParam('name');
+
+		$params = $criteria = [];
+		if ($name) {
+			$criteria[] = "  gTitle like :name ";
+			$params[':name'] = "%$name%";
+		}
+
+		list($list, $count) = QuestionGroup::items($criteria, $params, $page);
+		$pagination = self::pagination($page, $count);
+
+		return $this->renderPage('groups.tpl',
+			[
+				'list' => $list,
+				"name" => $name,
+				'pagination' => $pagination,
+				'category' => 'data',
+				'isDebug' => in_array(Admin::getAdminId(), [1002]),
+			]);
+	}
+
+	public function actionVote()
+	{
+		$gid = self::getParam("id", 2002);
+		//$gid = 2012;
+		$voteStat = QuestionGroup::voteStat($gid);
+		return $this->renderPage('vote.tpl',
+			[
+				'category' => 'data',
+				'detailcategory' => "site/groups",
+				'voteStat' => $voteStat
+			]);
+	}
+
 	//用户回答列表
 	public function actionAnswers()
 	{
@@ -886,18 +923,6 @@ class SiteController extends BaseController
 				"name" => $name,
 				'pagination' => $pagination,
 				'list' => $list,
-			]);
-	}
-
-	public function actionVote()
-	{
-		//$gid = 2002;
-		$gid = 2012;
-		$voteStat = QuestionGroup::voteStat($gid);
-		return $this->renderPage('vote.tpl',
-			[
-				'category' => 'data',
-				'voteStat' => $voteStat
 			]);
 	}
 
