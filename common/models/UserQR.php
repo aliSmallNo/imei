@@ -187,8 +187,8 @@ class UserQR extends ActiveRecord
 	public static function createInvitation($uid, $h2, $h4, $h5, $qrFile = '')
 	{
 		$subTitle = json_encode([$h2, $h4, $h5, $qrFile], JSON_UNESCAPED_UNICODE);
-		$title = md5($subTitle);
-		$qrInfo = self::findOne(['qUId' => $uid, 'qCategory' => self::CATEGORY_MARRY, 'qTitle' => $title]);
+		$md5 = md5($subTitle);
+		$qrInfo = self::findOne(['qUId' => $uid, 'qCategory' => self::CATEGORY_MARRY, 'qMD5' => $md5]);
 		if ($qrInfo) {
 			return $qrInfo->qUrl;
 		}
@@ -222,10 +222,11 @@ class UserQR extends ActiveRecord
 		$img->save($saveAs);
 		$accessUrl = ImageUtil::getUrl($saveAs);
 
+		self::deleteAll(['qUId' => $uid, 'qCategory' => self::CATEGORY_MARRY]);
 		$entity = new self();
 		$entity->qUId = $uid;
 		$entity->qCategory = self::CATEGORY_MARRY;
-		$entity->qTitle = $title;
+		$entity->qMD5 = $md5;
 		$entity->qSubTitle = $subTitle;
 		$entity->qUrl = $accessUrl;
 		$entity->save();
