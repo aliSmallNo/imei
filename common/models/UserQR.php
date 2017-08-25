@@ -186,8 +186,8 @@ class UserQR extends ActiveRecord
 
 	public static function createInvitation($uid, $h2, $h4, $h5, $qrFile = '')
 	{
-		$subTitle = json_encode([$h2, $h4, $h5, $qrFile], JSON_UNESCAPED_UNICODE);
-		$md5 = md5($subTitle);
+		$raw = json_encode([$h2, $h4, $h5, $qrFile], JSON_UNESCAPED_UNICODE);
+		$md5 = md5($raw);
 		$qrInfo = self::findOne(['qUId' => $uid, 'qCategory' => self::CATEGORY_MARRY, 'qMD5' => $md5]);
 		if ($qrInfo) {
 			return $qrInfo->qUrl;
@@ -227,7 +227,7 @@ class UserQR extends ActiveRecord
 		$entity->qUId = $uid;
 		$entity->qCategory = self::CATEGORY_MARRY;
 		$entity->qMD5 = $md5;
-		$entity->qSubTitle = $subTitle;
+		$entity->qRaw = $raw;
 		$entity->qUrl = $accessUrl;
 		$entity->save();
 		return $accessUrl;
