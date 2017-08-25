@@ -419,7 +419,7 @@ class User extends ActiveRecord
 
 		// 资料完整度
 		$percent = 0;
-		$fields = ["role", "name", "phone", "avatar", "location", "scope", "gender", "birthyear", "horos", "height", "weight",
+		$fields = ["role", "name", "phone", "avatar", "location", "scope", "gender", "birthyear", "horos", 'marital', "height", "weight",
 			"income", "education", "profession", "estate", "car", "smoke", "alcohol", "belief", "fitness", "diet", "rest", "pet",
 			"interest", "intro", "filter"];
 		if ($item['role'] == self::ROLE_MATCHER) {
@@ -681,6 +681,7 @@ class User extends ActiveRecord
 			"workout" => "uFitness",
 			"year" => "uBirthYear",
 			"sign" => "uHoros",
+			"marital" => "uMarital",
 			"coord" => "uCoord",
 			"filter" => "uFilter",
 			"album" => "uAlbum",

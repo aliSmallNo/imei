@@ -114,6 +114,14 @@
 		{{/foreach}}
 	</div>
 </section>
+<section id="marital">
+	<p class="m-header s1">您的婚姻状态？</p>
+	<div class="cells col3 clearfix" data-tag="marital">
+		{{foreach from=$marital key=key item=y}}
+		<a href="javascript:;" data-key="{{$key}}">{{$y}}</a>
+		{{/foreach}}
+	</div>
+</section>
 <section id="height">
 	<p class="m-header s1">请问您的身高是多少？</p>
 	<div class="cells col2 clearfix" data-tag="height">

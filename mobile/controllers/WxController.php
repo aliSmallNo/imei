@@ -149,7 +149,7 @@ class WxController extends BaseController
 			}
 			$locInfo = $uInfo['location'];
 		}
-		$routes = ['photo', 'gender', 'homeland', 'location', 'year', 'horos', 'height', 'weight', 'income', 'edu', 'album', 'intro',
+		$routes = ['photo', 'gender', 'homeland', 'location', 'year', 'horos', 'marital', 'height', 'weight', 'income', 'edu', 'album', 'intro',
 			'scope', 'job', 'house', 'car', 'smoke', 'drink', 'belief', 'workout', 'diet', 'rest', 'pet', 'interest'];
 		if ($hasGender) {
 			unset($routes[1]);
@@ -179,6 +179,7 @@ class WxController extends BaseController
 				"rest" => User::$Rest,
 				"pet" => User::$Pet,
 				"sign" => User::$Horos,
+				"marital" => User::$Marital,
 				'routes' => json_encode($routes),
 				'switchRole' => $switchRole,
 				'certImage' => $certImage,
@@ -243,6 +244,7 @@ class WxController extends BaseController
 				"rest" => User::$Rest,
 				"pet" => User::$Pet,
 				"sign" => User::$Horos,
+				"marital" => User::$Marital,
 				'routes' => json_encode($routes),
 				'professions' => json_encode(User::$ProfessionDict),
 				'locInfo' => $locInfo,
