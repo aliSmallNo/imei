@@ -403,7 +403,8 @@ class WechatUtil
 						[
 							"type" => "view",
 							"name" => "签到领奖",
-							"url" => $wxUrl . "/wx/sign"
+							//"url" => $wxUrl . "/wx/sign"
+							"url" => $wxUrl . "/wx/lottery"
 						],
 						[
 							"type" => "view",
