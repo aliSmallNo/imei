@@ -482,67 +482,16 @@ class FooController extends Controller
 		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn05');
 		var_dump($items);*/
 
-
-		echo realpath('');
 //		return;
-		$imagePath = AppUtil::imgDir(true) . 'default-meipo.jpg';
-		$mergePath = AppUtil::imgDir(true) . 'mask_heart.png';
-		$saveAs = AppUtil::imgDir() . RedisUtil::getImageSeq() . '.png';
 
+		$imagePath = 'https://img.meipo100.com/2017/85/116545.jpg';
+		$imagePath = ImageUtil::getFilePath($imagePath);
+		echo $imagePath;
+		//AppUtil::imgDir(true) . 'default-meipo.jpg';
+		$saveAs = AppUtil::imgDir() . RedisUtil::getImageSeq() . '.png';
 
 		self::getCircleAvatar($imagePath, $saveAs, 200);
 		echo $saveAs;
-		return;
-
-		$img = imagecreatefromjpeg($imagePath);
-		$img = imagecropauto($img, IMG_CROP_WHITE);
-
-		//imagetruecolortopalette($img, false, 256); // convert
-
-		$stamp = imagecreatefrompng($mergePath);
-		$marge_right = 10;
-		$marge_bottom = 10;
-		$sx = imagesx($stamp);
-		$sy = imagesy($stamp);
-
-//		imagecopymerge($img, $stamp, imagesx($img) - $sx, imagesy($img) - $sy, 0, 0, imagesx($stamp), imagesy($stamp), 100);
-
-//		$color = imagecolorresolve($img, 0, 255, 0);
-//		imagecolortransparent($img, $color);
-		imagepng($img, $saveAs);
-		imagedestroy($img);
-		echo $saveAs;
-
-		/*$imagick = new \Imagick();
-		$imagick->readImage($imagePath);
-
-		$width = $imagick->getImageWidth();
-		$height = $imagick->getImageHeight();
-
-		$clipMask = new \Imagick();
-		$clipMask->newPseudoImage(
-			$width,
-			$height,
-			"canvas:transparent"
-		);
-
-		$draw = new \ImagickDraw();
-		$draw->setFillColor('white');
-		$draw->circle(
-			$width / 2,
-			$height / 2,
-			($width / 2) + ($width / 4),
-			$height / 2
-		);
-		$clipMask->drawImage($draw);
-		$imagick->setImageClipMask($clipMask);
-
-		$imagick->negateImage(false);
-		$imagick->setFormat("png");*/
-
-		/*$imagick->writeImage($saveAs);
-
-		echo $saveAs;*/
 
 	}
 
@@ -563,7 +512,8 @@ class FooController extends Controller
 		$draw->circle($r, $r, $r, $size);
 		$circle->drawimage($draw);*/
 
-		$mergePath = AppUtil::imgDir(true) . 'mask_heart2.png';
+		$mergePath = realpath('/mobile/assets/mask_heart.png');
+		echo  $mergePath;
 		$circle = new \Imagick();
 		$circle->readImage($mergePath);
 		$circle->cropThumbnailImage($size, $size);
