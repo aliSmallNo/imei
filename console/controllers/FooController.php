@@ -490,14 +490,13 @@ class FooController extends Controller
 		//AppUtil::imgDir(true) . 'default-meipo.jpg';
 		$saveAs = AppUtil::imgDir() . RedisUtil::getImageSeq() . '.png';
 
-		self::getCircleAvatar($imagePath, $saveAs, 200);
+		self::getCircleAvatar($imagePath, $saveAs, 400);
 		var_dump($saveAs);
 
 	}
 
-	function getCircleAvatar($avatar, $saveAs, $r)
+	function getCircleAvatar($avatar, $saveAs, $size)
 	{
-		$size = 200;
 		/*
 		$circle = new \Imagick();
 		$circle->newImage($size, $size, 'none');
