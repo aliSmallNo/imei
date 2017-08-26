@@ -189,6 +189,18 @@ class UserQR extends ActiveRecord
 		return $saveAs . '.' . $ext;
 	}
 
+
+	static $SuperStars = [
+		'fanbb' => ['name' => '范冰冰', 'avatar' => 'star_fanbb.jpg'],
+		'hug' => ['name' => '胡歌', 'avatar' => 'star_hug.jpg'],
+		'linzl' => ['name' => '林志玲', 'avatar' => 'star_linzl.jpg'],
+		'luh' => ['name' => '鹿晗', 'avatar' => 'star_luh.jpg'],
+		'wuyf' => ['name' => '吴亦凡', 'avatar' => 'star_wuyf.jpg'],
+		'wuyz' => ['name' => '吴彦祖', 'avatar' => 'star_wuyz.jpg'],
+		'yangm' => ['name' => '杨幂', 'avatar' => 'star_yangm.jpg'],
+		'zhaoly' => ['name' => '赵丽颖', 'avatar' => 'star_zhaoly.jpg'],
+	];
+
 	public static function createInvitation($uid, $starId, $h2, $h5)
 	{
 		$uInfo = User::findOne(['uId' => $uid]);
@@ -200,17 +212,8 @@ class UserQR extends ActiveRecord
 		$nickname = $uInfo->uName;
 		$gender = $uInfo->uGender;
 		$rootFolder = AppUtil::rootDir();
-		$stars = [
-			'fanbb' => ['name' => '范冰冰', 'avatar' => 'star_fanbb.jpg'],
-			'hug' => ['name' => '胡歌', 'avatar' => 'star_hug.jpg'],
-			'linzl' => ['name' => '林志玲', 'avatar' => 'star_linzl.jpg'],
-			'luh' => ['name' => '鹿晗', 'avatar' => 'star_luh.jpg'],
-			'wuyf' => ['name' => '吴亦凡', 'avatar' => 'star_wuyf.jpg'],
-			'wuyz' => ['name' => '吴彦祖', 'avatar' => 'star_wuyz.jpg'],
-			'yangm' => ['name' => '杨幂', 'avatar' => 'star_yangm.jpg'],
-			'zhaoly' => ['name' => '赵丽颖', 'avatar' => 'star_zhaoly.jpg'],
-		];
-		$star = $stars[$starId];
+
+		$star = self::$SuperStars[$starId];
 		$h4 = $nickname . ' & ' . $star['name'];
 		if ($gender == User::GENDER_FEMALE) {
 			$h4 = $star['name'] . ' & ' . $nickname;
@@ -231,7 +234,7 @@ class UserQR extends ActiveRecord
 		$raw = json_encode([$h2, $h4, $h5, $qrFile], JSON_UNESCAPED_UNICODE);
 		$md5 = md5($raw);
 		$qrInfo = self::findOne(['qUId' => $uid, 'qCategory' => self::CATEGORY_MARRY, 'qMD5' => $md5]);
-		if ($qrInfo && 0) {
+		if ($qrInfo && !AppUtil::isDev()) {
 			return $qrInfo->qUrl;
 		}
 

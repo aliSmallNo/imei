@@ -501,41 +501,6 @@ class FooController extends Controller
 		var_dump($bgSrc);
 	}
 
-	function getCircleAvatar($avatar, $saveAs, $size)
-	{
-		/*
-		$circle = new \Imagick();
-		$circle->newImage($size, $size, 'none');
-		$circle->setimageformat('png');
-		$circle->setimagematte(true);
-
-		/**
-		 * @des     在矩形上画一个白色圆
-		 */
-		/*$draw = new \ImagickDraw();
-		$draw->setfillcolor('#fff');
-		$draw->circle($r, $r, $r, $size);
-		$circle->drawimage($draw);*/
-
-		$mergePath = AppUtil::rootDir() . 'mobile/assets/mask_heart.png';
-		echo $mergePath . '  ' . __LINE__;
-		$circle = new \Imagick();
-		$circle->readImage($mergePath);
-		$circle->cropThumbnailImage($size, $size);
-
-		/**
-		 * @des     裁剪头像成圆形
-		 */
-		$imagick = new \Imagick();
-		$imagick->readImage($avatar);
-		$imagick->setImageFormat('png');
-		$imagick->setimagematte(true);
-		$imagick->cropThumbnailImage($size, $size);
-		$imagick->compositeimage($circle, \Imagick::COMPOSITE_COPYOPACITY, 0, 0);
-		$imagick->writeImage($saveAs);
-		$imagick->destroy();
-	}
-
 	public function actionZp()
 	{
 		$ins = file_get_contents(__DIR__ . "/q.log");

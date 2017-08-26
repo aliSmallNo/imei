@@ -1272,20 +1272,20 @@ class WxController extends BaseController
 		$name = self::getParam('name');
 		$gender = self::getParam('gender', 1);
 		$dt = self::getParam('dt');
+		$star = self::getParam('star');
 		$preview = self::getParam('preview', 0);
 		$bgSrc = '/images/bg_invitation.jpg';
-		$qrCode = $cls = '';
+		$qrCode = '';
+		$cls = 'small';
 		if ($name) {
-
-			$title = $name . '先生 & 微小姐';
+			/*$title = $name . '先生 & 微小姐';
 			if ($gender == 0) {
 				$title = '微先生 & ' . $name . '小姐';
-			}
+			}*/
 			$bgSrc = UserQR::createInvitation($uId,
+				$star,
 				substr($dt, 0, 4),
-				$title,
-				date('Y年n月j日 晚6:58', strtotime($dt))
-			);
+				date("Y年n月j日 晚6:58\n东台国际大酒店牡丹厅", strtotime($dt)));
 			$cls = $preview ? '' : 'big';
 		}
 
@@ -1349,6 +1349,8 @@ class WxController extends BaseController
 				'bgSrc' => $bgSrc,
 				'dates' => $dates,
 				'dt' => $dt,
+				'star' => $star,
+				'stars' => UserQR::$SuperStars,
 				'cls' => $cls,
 				'userId' => $userId
 			],

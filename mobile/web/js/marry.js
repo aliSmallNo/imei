@@ -18,6 +18,7 @@ require(["layer"],
 			name: $('#cNAME').val(),
 			gender: $('#cGENDER').val(),
 			dt: $('.input-opt'),
+			star: $('.input-star'),
 			uid: $('#cUID').val(),
 		};
 
@@ -34,21 +35,22 @@ require(["layer"],
 		$('.btn-preview').on(kClick, function () {
 			var name = $.trim($sls.input.val());
 			if (!name) {
-				showMsg('请先输入姓名~');
+				showMsg('请先输入你的姓名~');
 				$sls.input.focus();
 				return;
 			}
-			var gender = $('.input-radio:checked');
+			/*var gender = $('.input-radio:checked');
 			if (!gender.length) {
 				showMsg('请先选择性别~');
 				return;
-			}
+			}*/
+			var gender = 1;
 			layer.open({
 				type: 2,
 				content: '正在生成中...'
 			});
 			setTimeout(function () {
-				location.href = '/wx/marry?preview=1&dt=' + $sls.dt.val() + '&name=' + encodeURI(name) + '&gender=' + gender.val();
+				location.href = '/wx/marry?preview=1&star=' + $sls.star.val() + '&dt=' + $sls.dt.val() + '&name=' + encodeURI(name) + '&gender=' + gender;
 			}, 300);
 		});
 
@@ -81,7 +83,7 @@ require(["layer"],
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
-			var linkUrl = "https://wx.meipo100.com/wx/marry?dt=" + $('#cDATE').val() + "&name=" + encodeURI($('#cNAME').val()) + "&gender=" + $('#cGENDER').val();
+			var linkUrl = "https://wx.meipo100.com/wx/marry?star=" + $('#cStar').val() + "&dt=" + $('#cDATE').val() + "&name=" + encodeURI($('#cNAME').val()) + "&gender=" + $('#cGENDER').val();
 			var imgUrl = "https://wx.meipo100.com/images/bg_marry_sm.jpg";
 			wx.ready(function () {
 				wx.onMenuShareAppMessage({

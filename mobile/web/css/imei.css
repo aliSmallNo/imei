@@ -2072,6 +2072,8 @@ section {
     position: relative; }
     .mycard .card-wrap.big {
       width: 78%; }
+    .mycard .card-wrap.small {
+      width: 60%; }
     .mycard .card-wrap:before {
       position: absolute;
       display: block;
@@ -6140,10 +6142,11 @@ section {
     border: none;
     border-bottom: 1px solid #E4E4E4;
     line-height: 2.4rem;
-    font-size: 1.8rem;
-    width: 10rem;
-    color: #333; }
-  .marry0 .input-opt {
+    font-size: 1.6rem;
+    width: 11rem;
+    color: #333;
+    text-align: center; }
+  .marry0 .input-opt, .marry0 .input-star {
     line-height: 2.2rem;
     font-size: 1.4rem;
     padding-left: 1rem;
