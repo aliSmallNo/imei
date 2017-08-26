@@ -545,5 +545,25 @@ class ImageUtil
 		return ['', ''];
 	}
 
+	public static function clippingMask($sourceFile, $maskFile, $saveAs, $width, $height = 0)
+	{
+		if (!$height) {
+			$height = $width;
+		}
+		$circle = new \Imagick();
+		$circle->readImage($maskFile);
+		$circle->cropThumbnailImage($width, $height);
 
+		$imagick = new \Imagick();
+		$imagick->readImage($sourceFile);
+		$imagick->setImageFormat('png');
+		$imagick->setimagematte(true);
+		$imagick->cropThumbnailImage($width, $height);
+		$imagick->compositeimage($circle, \Imagick::COMPOSITE_COPYOPACITY, 0, 0);
+		$imagick->writeImage($saveAs);
+		$circle->destroy();
+		$imagick->destroy();
+
+		return $saveAs;
+	}
 }
