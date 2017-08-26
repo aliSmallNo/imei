@@ -486,7 +486,7 @@ class FooController extends Controller
 
 		$imagePath = 'https://img.meipo100.com/2017/85/116545.jpg';
 		$imagePath = ImageUtil::getFilePath($imagePath);
-		echo $imagePath;
+		echo $imagePath . '  ' . __LINE__;
 		//AppUtil::imgDir(true) . 'default-meipo.jpg';
 		$saveAs = AppUtil::imgDir() . RedisUtil::getImageSeq() . '.png';
 
@@ -513,7 +513,7 @@ class FooController extends Controller
 		$circle->drawimage($draw);*/
 
 		$mergePath = realpath('/mobile/assets/mask_heart.png');
-		echo  $mergePath;
+		echo $mergePath . '  ' . __LINE__;
 		$circle = new \Imagick();
 		$circle->readImage($mergePath);
 		$circle->cropThumbnailImage($size, $size);
