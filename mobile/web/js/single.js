@@ -462,6 +462,7 @@ require(["layer"],
 			bot: $('#schat .m-bottom-pl'),
 			topPL: $('#scontacts .m-top-pl'),
 			menus: $(".m-chat-wrap"),
+			helpchatMenu: $(".help-chat"),
 			menusBg: $(".m-schat-shade"),// m-schat-shade m-popup-shade
 			timer: 0,
 			init: function () {
@@ -510,16 +511,25 @@ require(["layer"],
 				});
 
 				$(document).on(kClick, ".schat-options", function () {
-					util.toggle(util.menus.hasClass("off"));
+					util.toggle(util.menus.hasClass("off"), util.menus);
 				});
 				util.menusBg.on(kClick, function () {
-					util.toggle(util.menus.hasClass("off"));
-				});
-				$(document).on(kClick, ".m-chat-wrap a:last-child", function () {
+
+					if (util.menus.hasClass("on")) {
+						util.toggle(false, util.menus);
+					}
+					if (util.helpchatMenu.hasClass("on")) {
+						util.toggle(false, util.helpchatMenu);
+					}
 
 				});
+				$(document).on(kClick, ".help-chat-item a", function () {
+
+					util.toggle(false, util.helpchatMenu);
+				});
+
 				$(document).on(kClick, ".schat-option", function () {
-					util.toggle(util.menus.hasClass("off"));
+					util.toggle(util.menus.hasClass("off"), util.menus);
 					var self = $(this);
 					var tag = self.attr("data-tag");
 					switch (tag) {
@@ -532,18 +542,21 @@ require(["layer"],
 								}
 							});
 							break;
+						case "tohelpchat":
+							util.toggle(util.helpchatMenu.hasClass("off"), util.helpchatMenu);
+							break;
 					}
 				});
 			},
-			toggle: function (showFlag) {
+			toggle: function (showFlag, obj) {
 				var util = this;
 				if (showFlag) {
 					setTimeout(function () {
-						util.menus.removeClass("off").addClass("on");
+						obj.removeClass("off").addClass("on");
 					}, 60);
 					util.menusBg.fadeIn(260);
 				} else {
-					util.menus.removeClass("on").addClass("off");
+					obj.removeClass("on").addClass("off");
 					util.menusBg.fadeOut(220);
 				}
 			},

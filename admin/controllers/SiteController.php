@@ -790,6 +790,7 @@ class SiteController extends BaseController
 			[
 				"answer" => "",
 				"title" => "",
+				"cat" => 100,
 				"options" => [
 					[
 						"opt" => "A",
@@ -805,35 +806,41 @@ class SiteController extends BaseController
 			$insertData = [];
 			foreach ($data as $k => $v) {
 				$insertItem = [];
+				$catQue = QuestionSea::CAT_QUESTION;
+				$cat = isset($v["cat"]) ? $v["cat"] : $catQue;
 				if (!$v["title"]) {
 					$error[] = "题干没填写";
 				}
-				if (
-					// !in_array($v["answer"], array_slice(["A", "B", "C", "D", "E", "F", "G"], 0, count($v["options"])))
-				!$v["answer"]
-				) {
-					$error[] = "答案格式不对";
-				}
-				if (count($v["options"]) <= 1) {
-					$error[] = "选项太少";
-				}
-				foreach ($v["options"] as $op) {
-					if (!$op["text"]) {
-						$error[] = "选项内容不全";
+				if (in_array($cat, [$catQue, QuestionSea::CAT_VOTE])) {
+					if (!$v["answer"]) {
+						$error[] = "答案格式不对";
 					}
+					if (count($v["options"]) <= 1) {
+						$error[] = "选项太少";
+					}
+					if (is_array($v["options"])) {
+						foreach ($v["options"] as $op) {
+							if (!$op["text"]) {
+								$error[] = "选项内容不全";
+							}
+						}
+					}
+					$insertItem["qRaw"] = json_encode([
+						"title" => $v["title"],
+						"options" => $v["options"],
+						"answer" => $v["answer"]
+					], JSON_UNESCAPED_UNICODE);
 				}
 
 				$insertItem["qAddedBy"] = Admin::getAdminId();
 				$insertItem["qTitle"] = $v["title"];
-				$insertItem["qRaw"] = json_encode([
-					"title" => $v["title"],
-					"options" => $v["options"],
-					"answer" => $v["answer"]
-				], JSON_UNESCAPED_UNICODE);
+				$insertItem["qCategory"] = $cat;
+
 				$insertData[] = $insertItem;
 			}
 
 			if (!$error) {
+				// print_r($insertData);exit;
 				foreach ($insertData as $val) {
 					QuestionSea::edit(0, $val);
 				}
@@ -847,6 +854,7 @@ class SiteController extends BaseController
 				"data" => $data,
 				'success' => $success,
 				'error' => $error,
+				'cats' => QuestionSea::$catDict,
 				'detailcategory' => 'site/questions',
 				'category' => 'data',
 			]);

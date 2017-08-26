@@ -21,10 +21,13 @@
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 		<tr>
-			<th class="col-sm-2">
+			<th class="col-sm-3">
 				题目
 			</th>
-			<th class="col-sm-6">
+			<th class="col-sm-1">
+				分类
+			</th>
+			<th class="col-sm-5">
 				选项
 			</th>
 			<th class="col-sm-1">
@@ -44,6 +47,9 @@
 		<tr>
 			<td>
 				{{$prod.qTitle}}
+			</td>
+			<td>
+				{{$prod.cat}}
 			</td>
 			<td class="options">
 				{{foreach from=$prod.options item=opt}}
