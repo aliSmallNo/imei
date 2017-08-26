@@ -221,7 +221,9 @@ class UserQR extends ActiveRecord
 		AppUtil::logFile($avatar, 5, __FUNCTION__, __LINE__);
 		if (strpos($avatar, 'http') !== false) {
 			$tmpFile = AppUtil::imgDir() . RedisUtil::getImageSeq();
+			AppUtil::logFile($tmpFile, 5, __FUNCTION__, __LINE__);
 			$avatar = self::downloadFile($avatar, $tmpFile);
+			AppUtil::logFile($avatar, 5, __FUNCTION__, __LINE__);
 		}
 		$maskSize = 230;
 		$maskFile = $rootFolder . 'mobile/assets/mask_heart.png';
