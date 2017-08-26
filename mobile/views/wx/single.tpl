@@ -12,7 +12,7 @@
 		</a>
 	</div>
 	<ul class="m-top-users"></ul>
-	<div class="m-more" >拼命加载中...</div>
+	<div class="m-more">拼命加载中...</div>
 </section>
 <section id="matchCondition" data-title="筛选条件">
 	<div class="nav">
@@ -361,7 +361,7 @@
 			这个女的很棒！！
 		</div>
 	</div>
-	<div class="sprofile-condtion" >
+	<div class="sprofile-condtion">
 		<div class="title">择偶条件</div>
 		<div class="content">
 			<span>25-40岁</span>
@@ -800,7 +800,8 @@
 				<span>TA还没<b>媒婆</b></span>
 				{[/mpname]}
 			</div>
-			{[#comment]}<div class="des"><b>“</b>{[.]}<b>”</b></div>{[/comment]}
+			{[#comment]}
+			<div class="des"><b>“</b>{[.]}<b>”</b></div>{[/comment]}
 		</div>
 		{[#singleF]}
 		<div class="single-bar">
@@ -938,11 +939,15 @@
 	{{if $greeting}}
 	<div class="greeting">
 		<h4>{{$greeting.title}}</h4>
+		{{if $greeting.items|@count==1}}
+		<div style="padding-top: 1rem;padding-bottom: 1rem">{{$greeting.items[0]}}</div>
+		{{else}}
 		<ol>
 			{{foreach from=$greeting.items item=item}}
 			<li>{{$item}}</li>
 			{{/foreach}}
 		</ol>
+		{{/if}}
 		<a href="javascript:;" class="m-popup-close"></a>
 	</div>
 	{{/if}}

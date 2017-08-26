@@ -482,8 +482,39 @@ class FooController extends Controller
 		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn05');
 		var_dump($items);*/
 
-		$ret = ImageUtil::createInvitation('2017', '许阳先生 & 微媒小姐', '2017.8.28 晚6:58');
-		var_dump($ret);
+		echo realpath('');
+//		return;
+		$imagePath = AppUtil::imgDir(true) . 'default-meipo.jpg';
+		$imagick = new \Imagick();
+		$imagick->readImage($imagePath);
+
+		$width = $imagick->getImageWidth();
+		$height = $imagick->getImageHeight();
+
+		$clipMask = new \Imagick();
+		$clipMask->newPseudoImage(
+			$width,
+			$height,
+			"canvas:transparent"
+		);
+
+		$draw = new \ImagickDraw();
+		$draw->setFillColor('white');
+		$draw->circle(
+			$width / 2,
+			$height / 2,
+			($width / 2) + ($width / 4),
+			$height / 2
+		);
+		$clipMask->drawImage($draw);
+		$imagick->setImageClipMask($clipMask);
+
+		$imagick->negateImage(false);
+		$imagick->setFormat("png");
+		$saveAs = AppUtil::imgDir() . RedisUtil::getImageSeq() . '.png';
+		$imagick->writeImage($saveAs);
+
+		echo $saveAs;
 
 	}
 
