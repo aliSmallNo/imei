@@ -1389,6 +1389,27 @@ class ApiController extends Controller
 					]);
 				}
 				break;
+			case "helpchat":
+				$htag = self::postParam("htag");
+				// personal experience family concept interest common future privacy marriage
+				$tagDict = [
+					"personal" => QuestionSea::CAT_PERSONAL,
+					"experience" => QuestionSea::CAT_EXPERIENCE,
+					"family" => QuestionSea::CAT_FAMILY,
+					"concept" => QuestionSea::CAT_CONCEPT,
+					"interest" => QuestionSea::CAT_INTEREST,
+					"common" => QuestionSea::CAT_COMMON,
+					"future" => QuestionSea::CAT_FUTURE,
+					"privacy" => QuestionSea::CAT_PRIVACY,
+					"marriage" => QuestionSea::CAT_MARRIAGE,
+				];
+				$cat = isset($tagDict[$htag]) ? $tagDict[$htag] : 0;
+				if (!$cat) {
+					return self::renderAPI(129, '无此题库哦~');
+				}
+				$title = QuestionSea::randQuestion($cat);
+				return self::renderAPI(0, '', $title);
+				break;
 			case 'list':
 				$lastId = self::postParam('last', 0);
 				$subUId = self::postParam('id');

@@ -147,65 +147,23 @@
 		<div class="help-chat off">
 			<div class="help-chat-item">
 				<a href="javascript:;">秀</a>
-				<a href="javascript:;">个人</a>
-				<a href="javascript:;">工作</a>
-				<a href="javascript:;">家庭</a>
-				<a href="javascript:;">家庭</a>
+				<a href="javascript:;" help-tag="personal">个人</a>
+				<a href="javascript:;" help-tag="experience">经历</a>
+				<a href="javascript:;" help-tag="family">家庭</a>
+				<a href="javascript:;" help-tag="concept">观念</a>
+				<a href="javascript:;" help-tag="interest">兴趣</a>
 			</div>
 			<div class="help-chat-item">
 				<a href="javascript:;">聊</a>
-				<a href="javascript:;">未来</a>
-				<a href="javascript:;">隐私</a>
-				<a href="javascript:;">婚嫁</a>
-				<a href="javascript:;">婚嫁</a>
+				<a href="javascript:;" help-tag="common">共同</a>
+				<a href="javascript:;" help-tag="future">未来</a>
+				<a href="javascript:;" help-tag="privacy">隐私</a>
+				<a href="javascript:;" help-tag="marriage">婚姻</a>
+				<a href="javascript:;" >加V</a>
 			</div>
 		</div>
 	</div>
 </section>
-<style>
-	.help-chat {
-		position: fixed;
-		left: 0;
-		bottom: 5rem;
-		right: 0;
-		-webkit-transition: .2s all ease;
-		-moz-transition: .2s all ease;
-		transition: .2s all ease;
-		-webkit-backface-visibility: hidden;
-		-moz-backface-visibility: hidden;
-		backface-visibility: hidden;
-		background: #fff;
-		z-index: 0;
-		width: initial;
-	}
-
-	.help-chat.off {
-		-webkit-transform: translateY(200%) translateZ(0);
-		-moz-transform: translateY(200%) translateZ(0);
-		transform: translateY(200%) translateZ(0);
-	}
-
-	.help-chat.on {
-		-webkit-transform: translateY(0) translateZ(0);
-		-moz-transform: translateY(0) translateZ(0);
-		transform: translateY(0) translateZ(0);
-	}
-
-	.help-chat-item {
-		overflow: hidden;
-		margin-bottom: .5rem;
-	}
-
-	.help-chat-item a {
-		float: left;
-		margin: 0 1px;
-		width: 6.2rem;
-		background: #ffc000;
-	}
-	.help-chat-item a:first-child{
-		background: #5b9bd5;
-	}
-</style>
 <section id="scontacts" data-title="我的密聊记录">
 	<div class="m-top-pl"></div>
 	<div class="contacts-wrap">
@@ -1090,4 +1048,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.9.8" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.9.9" src="/assets/js/require.js"></script>

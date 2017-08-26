@@ -4420,6 +4420,39 @@ section
 		a:last-child
 			border-top: 5px solid #eee
 			border-bottom: none
+	.help-chat
+		position: fixed
+		left: 0
+		bottom: 5rem
+		right: 0
+		-webkit-transition: .2s all ease
+		-moz-transition: .2s all ease
+		transition: .2s all ease
+		-webkit-backface-visibility: hidden
+		-moz-backface-visibility: hidden
+		backface-visibility: hidden
+		background: #fff
+		z-index: 0
+		width: initial
+		.help-chat-item
+			overflow: hidden
+			margin-bottom: .5rem
+			a
+				float: left
+				margin: 0 1px
+				width: 5.15rem
+				background: #ffc000
+			a:first-child
+				background: #5b9bd5
+		&.off
+			-webkit-transform: translateY(200%) translateZ(0)
+			-moz-transform: translateY(200%) translateZ(0)
+			transform: translateY(200%) translateZ(0)
+		&.on
+			-webkit-transform: translateY(0) translateZ(0)
+			-moz-transform: translateY(0) translateZ(0)
+			transform: translateY(0) translateZ(0)
+
 
 .m-schat-shade
 	position: fixed

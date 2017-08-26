@@ -524,8 +524,28 @@ require(["layer"],
 
 				});
 				$(document).on(kClick, ".help-chat-item a", function () {
-
-					util.toggle(false, util.helpchatMenu);
+					// util.toggle(false, util.helpchatMenu);
+					var self = $(this);
+					var htag = self.attr("help-tag");
+					if (!htag) {
+						return;
+					}
+					var util = ChatUtil;
+					if (util.loading) {
+						return;
+					}
+					util.loading = 1;
+					$.post("/api/chat", {
+						tag: "helpchat",
+						htag: htag
+					}, function (resp) {
+						util.loading = 0;
+						if (resp.code == 0) {
+							util.input.val(resp.data);
+						} else {
+							showMsg(resp.msg);
+						}
+					}, "json");
 				});
 
 				$(document).on(kClick, ".schat-option", function () {

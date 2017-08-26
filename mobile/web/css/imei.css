@@ -4576,6 +4576,38 @@ section {
     .m-bottom-bar .m-chat-wrap a:last-child {
       border-top: 5px solid #eee;
       border-bottom: none; }
+  .m-bottom-bar .help-chat {
+    position: fixed;
+    left: 0;
+    bottom: 5rem;
+    right: 0;
+    -webkit-transition: 0.2s all ease;
+    -moz-transition: 0.2s all ease;
+    transition: 0.2s all ease;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+    background: #fff;
+    z-index: 0;
+    width: initial; }
+    .m-bottom-bar .help-chat .help-chat-item {
+      overflow: hidden;
+      margin-bottom: 0.5rem; }
+      .m-bottom-bar .help-chat .help-chat-item a {
+        float: left;
+        margin: 0 1px;
+        width: 5.15rem;
+        background: #ffc000; }
+      .m-bottom-bar .help-chat .help-chat-item a:first-child {
+        background: #5b9bd5; }
+    .m-bottom-bar .help-chat.off {
+      -webkit-transform: translateY(200%) translateZ(0);
+      -moz-transform: translateY(200%) translateZ(0);
+      transform: translateY(200%) translateZ(0); }
+    .m-bottom-bar .help-chat.on {
+      -webkit-transform: translateY(0) translateZ(0);
+      -moz-transform: translateY(0) translateZ(0);
+      transform: translateY(0) translateZ(0); }
 
 .m-schat-shade {
   position: fixed;

@@ -30,16 +30,15 @@ class QuestionSea extends ActiveRecord
 		self::CAT_QUESTION => "选择题",
 		self::CAT_VOTE => "投票题",
 
-		self::CAT_PRIVACY => "隐私题",
-		self::CAT_INTEREST => "兴趣题",
-		self::CAT_FUTURE => "未来题",
-		self::CAT_EXPERIENCE => "经历题",
-		self::CAT_FAMILY => "家庭题",
-		self::CAT_MARRIAGE => "婚姻题",
-		self::CAT_CONCEPT => "观念题",
-		self::CAT_CONCEPT => "观念题",
-		self::CAT_COMMON => "共同题",
-		self::CAT_PERSONAL => "个人题",
+		self::CAT_PRIVACY => "隐私题",//
+		self::CAT_INTEREST => "兴趣题",//
+		self::CAT_FUTURE => "未来题",//
+		self::CAT_EXPERIENCE => "经历题",//
+		self::CAT_FAMILY => "家庭题",//
+		self::CAT_MARRIAGE => "婚姻题",//
+		self::CAT_CONCEPT => "观念题",//
+		self::CAT_COMMON => "共同题",//
+		self::CAT_PERSONAL => "个人题",//
 	];
 
 	public static function tableName()
@@ -130,6 +129,15 @@ class QuestionSea extends ActiveRecord
 			}
 		}
 		return $count > 2;
+	}
+
+	public static function randQuestion($cat, $count = 1)
+	{
+		$sql = " select * from im_question_sea where qCategory=$cat ";
+		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		$count = count($res);
+		$ret = $res[random_int(0, $count-1)];
+		return $ret["qTitle"];
 	}
 
 }

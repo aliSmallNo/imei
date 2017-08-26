@@ -528,7 +528,7 @@ class FooController extends Controller
 		$insertItem["qAddedBy"] = 1002;
 		foreach ($ins as $title) {
 			$insertItem["qTitle"] = $title;
-			QuestionSea::edit(0, $insertItem);
+			// QuestionSea::edit(0, $insertItem);
 		}
 
 
