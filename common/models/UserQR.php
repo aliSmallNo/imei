@@ -218,6 +218,7 @@ class UserQR extends ActiveRecord
 		if ($gender == User::GENDER_FEMALE) {
 			$h4 = $star['name'] . ' & ' . $nickname;
 		}
+		AppUtil::logFile($avatar, 5, __FUNCTION__, __LINE__);
 		if (strpos($avatar, 'http') !== false) {
 			$tmpFile = AppUtil::imgDir() . RedisUtil::getImageSeq();
 			$avatar = self::downloadFile($avatar, $tmpFile);

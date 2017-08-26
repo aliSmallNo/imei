@@ -1041,7 +1041,6 @@ class User extends ActiveRecord
 				JOIN im_user_wechat as w on u.uId=w.wUId AND w.wSubscribe=1
 				LEFT JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=$pinCat
 				WHERE $condition order by dist, rank desc, u.uRank desc limit $limit";
-		AppUtil::logFile($sql, 5, __FUNCTION__, __LINE__);
 		$ret = $conn->createCommand($sql)->queryAll();
 		$rows = [];
 		$IDs = [0];
