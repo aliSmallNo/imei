@@ -439,14 +439,14 @@ class FooController extends Controller
 		$sql = 'select u.uId, u.uName,u.uPhone 
 			 from im_user as u 
 			 join im_user_wechat as w on w.wUId=u.uId
-			 where u.uGender in (10) and w.wSubscribe=1 and u.uStatus<8 and uPhone !=\'\' 
+			 where u.uGender in (10,11) and w.wSubscribe=1 and u.uStatus<8 and uPhone !=\'\' 
 			 group by u.uId,u.uName,u.uPhone';
 		$ret = $conn->createCommand($sql)->queryAll();
 		foreach ($ret as $row) {
 			$phone = $row['uPhone'];
 			QueueUtil::loadJob('sendSMS', [
 				'phone' => $phone,
-				'msg' => '亲，您的花粉值可以提现了，看看您有多少花粉值吧。达到100花粉值，可提现5元现金。达到要求的小伙伴，可以在我们微信公众号回复花粉提现并转发朋友圈，领取红包。没有达到的，要加油哦',
+				'msg' => '线下活动通知：8月26晚6：30，相约东台德润3楼英伦时光，参加多人牛排PARTY。男生AA，女生免费。名额有限哦，赶快回复公众号参加活动',
 				'rnd' => 112
 			]);
 		}
@@ -483,8 +483,39 @@ class FooController extends Controller
 		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn05');
 		var_dump($items);*/
 
-		$ret = ImageUtil::createInvitation('2017', '许阳先生 & 微媒小姐', '2017.8.28 晚6:58');
-		var_dump($ret);
+		echo realpath('');
+//		return;
+		$imagePath = AppUtil::imgDir(true) . 'default-meipo.jpg';
+		$imagick = new \Imagick();
+		$imagick->readImage($imagePath);
+
+		$width = $imagick->getImageWidth();
+		$height = $imagick->getImageHeight();
+
+		$clipMask = new \Imagick();
+		$clipMask->newPseudoImage(
+			$width,
+			$height,
+			"canvas:transparent"
+		);
+
+		$draw = new \ImagickDraw();
+		$draw->setFillColor('white');
+		$draw->circle(
+			$width / 2,
+			$height / 2,
+			($width / 2) + ($width / 4),
+			$height / 2
+		);
+		$clipMask->drawImage($draw);
+		$imagick->setImageClipMask($clipMask);
+
+		$imagick->negateImage(false);
+		$imagick->setFormat("png");
+		$saveAs = AppUtil::imgDir() . RedisUtil::getImageSeq() . '.png';
+		$imagick->writeImage($saveAs);
+
+		echo $saveAs;
 
 	}
 
