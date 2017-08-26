@@ -12,7 +12,7 @@
 		</a>
 	</div>
 	<ul class="m-top-users"></ul>
-	<div class="m-more" >拼命加载中...</div>
+	<div class="m-more">拼命加载中...</div>
 </section>
 <section id="matchCondition" data-title="筛选条件">
 	<div class="nav">
@@ -84,7 +84,8 @@
 			<a href="#heartbeat"><span class="title">心动列表</span> <i class="i-mark-favor"></i></a>
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">我的账户</span> <i class="i-mark-rose"></i></a>
 			<a href="/wx/sqr"><span class="title">分享给朋友</span></a>
-			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span class="tip">已认证</span>{{/if}}</a>
+			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span
+								class="tip">已认证</span>{{/if}}</a>
 			<a href="/wx/notice">
 				<span class="title">通知</span>{{if $noReadFlag}}<span class="noReadFlag"></span>{{/if}}
 			</a>
@@ -135,15 +136,76 @@
 	</div>
 	<div class="m-bottom-pl"></div>
 	<div class="m-bottom-bar">
-		<div class="icons"><a class="schat-options"></a></div>
-		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120"></div>
-		<div class="action"><a class="btn-chat-send">发送</a></div>
+		<div class="icons" style="z-index: 1"><a class="schat-options"></a></div>
+		<div class="input"  style="z-index: 1"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120"></div>
+		<div class="action"  style="z-index: 1"><a class="btn-chat-send">发送</a></div>
 		<div class="m-chat-wrap off">
+			<a class="schat-option" data-tag="tohelpchat">助聊</a>
 			<a class="schat-option" data-tag="toblock">拉黑对方</a>
 			<a class="schat-option">取消</a>
 		</div>
+		<div class="help-chat off">
+			<div class="help-chat-item">
+				<a href="javascript:;">秀</a>
+				<a href="javascript:;">个人</a>
+				<a href="javascript:;">工作</a>
+				<a href="javascript:;">家庭</a>
+				<a href="javascript:;">家庭</a>
+			</div>
+			<div class="help-chat-item">
+				<a href="javascript:;">聊</a>
+				<a href="javascript:;">未来</a>
+				<a href="javascript:;">隐私</a>
+				<a href="javascript:;">婚嫁</a>
+				<a href="javascript:;">婚嫁</a>
+			</div>
+		</div>
 	</div>
 </section>
+<style>
+	.help-chat {
+		position: fixed;
+		left: 0;
+		bottom: 5rem;
+		right: 0;
+		-webkit-transition: .2s all ease;
+		-moz-transition: .2s all ease;
+		transition: .2s all ease;
+		-webkit-backface-visibility: hidden;
+		-moz-backface-visibility: hidden;
+		backface-visibility: hidden;
+		background: #fff;
+		z-index: 0;
+		width: initial;
+	}
+
+	.help-chat.off {
+		-webkit-transform: translateY(200%) translateZ(0);
+		-moz-transform: translateY(200%) translateZ(0);
+		transform: translateY(200%) translateZ(0);
+	}
+
+	.help-chat.on {
+		-webkit-transform: translateY(0) translateZ(0);
+		-moz-transform: translateY(0) translateZ(0);
+		transform: translateY(0) translateZ(0);
+	}
+
+	.help-chat-item {
+		overflow: hidden;
+		margin-bottom: .5rem;
+	}
+
+	.help-chat-item a {
+		float: left;
+		margin: 0 1px;
+		width: 6.2rem;
+		background: #ffc000;
+	}
+	.help-chat-item a:first-child{
+		background: #5b9bd5;
+	}
+</style>
 <section id="scontacts" data-title="我的密聊记录">
 	<div class="m-top-pl"></div>
 	<div class="contacts-wrap">
@@ -361,7 +423,7 @@
 			这个女的很棒！！
 		</div>
 	</div>
-	<div class="sprofile-condtion" >
+	<div class="sprofile-condtion">
 		<div class="title">择偶条件</div>
 		<div class="content">
 			<span>25-40岁</span>
@@ -800,7 +862,8 @@
 				<span>TA还没<b>媒婆</b></span>
 				{[/mpname]}
 			</div>
-			{[#comment]}<div class="des"><b>“</b>{[.]}<b>”</b></div>{[/comment]}
+			{[#comment]}
+			<div class="des"><b>“</b>{[.]}<b>”</b></div>{[/comment]}
 		</div>
 		{[#singleF]}
 		<div class="single-bar">

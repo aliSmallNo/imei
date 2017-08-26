@@ -15,6 +15,32 @@ use yii\db\ActiveRecord;
 
 class QuestionSea extends ActiveRecord
 {
+	const CAT_QUESTION = 100;
+	const CAT_VOTE = 110;
+	const CAT_PRIVACY = 500;
+	const CAT_INTEREST = 510;
+	const CAT_FUTURE = 520;
+	const CAT_EXPERIENCE = 530;
+	const CAT_FAMILY = 540;
+	const CAT_MARRIAGE = 550;
+	const CAT_CONCEPT = 560;
+	const CAT_COMMON = 570;
+	const CAT_PERSONAL = 580;
+	static $catDict = [
+		self::CAT_QUESTION => "选择题",
+		self::CAT_VOTE => "投票题",
+
+		self::CAT_PRIVACY => "隐私题",
+		self::CAT_INTEREST => "兴趣题",
+		self::CAT_FUTURE => "未来题",
+		self::CAT_EXPERIENCE => "经历题",
+		self::CAT_FAMILY => "家庭题",
+		self::CAT_MARRIAGE => "婚姻题",
+		self::CAT_CONCEPT => "观念题",
+		self::CAT_CONCEPT => "观念题",
+		self::CAT_COMMON => "共同题",
+		self::CAT_PERSONAL => "个人题",
+	];
 
 	public static function tableName()
 	{
@@ -66,6 +92,7 @@ class QuestionSea extends ActiveRecord
 	public static function fmt($data)
 	{
 		$options = json_decode($data["qRaw"], 1);
+		$data["cat"] = self::$catDict[$data["qCategory"]];
 		$data["answer"] = $options["answer"];
 		$data["options"] = $options["options"];
 		$data["mult"] = strlen($options["answer"]) > 1 ? 1 : 0;

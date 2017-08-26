@@ -10,6 +10,7 @@ namespace console\controllers;
  */
 use common\models\ChatMsg;
 use common\models\Lottery;
+use common\models\QuestionSea;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserWechat;
@@ -489,16 +490,16 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-//		$data = [
-//			"oItems" => json_encode([
-//				"/images/sign/sign_1.jpg", "/images/sign/sign_5.jpg", "/images/sign/sign_10.jpg", "/images/sign/sign_15.jpg",
-//				"/images/sign/sign_20.jpg", "/images/sign/sign_25.jpg", "/images/sign/sign_30.jpg", "/images/sign/sign_35.jpg",
-//			]),
-//			"oTitle" => "签到",
-//		];
-//		Lottery::add($data);
+		$ins = file_get_contents(__DIR__ . "/q.log");
+		$ins = explode("\n", $ins);
+//		 print_r($ins);exit;
+		$insertItem["qCategory"] = QuestionSea::CAT_PERSONAL;
+		$insertItem["qAddedBy"] = 1002;
+		foreach ($ins as $title) {
+			$insertItem["qTitle"] = $title;
+			QuestionSea::edit(0, $insertItem);
+		}
 
-		echo Lottery::prize([0, 5, 6, 7]);
 
 	}
 }

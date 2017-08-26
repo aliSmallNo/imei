@@ -45,6 +45,16 @@
 					<div class="panel-body">
 						<div class="col-sm-12 form-horizontal">
 							<div class="form-group">
+								<label class="col-sm-2 control-label">类别:</label>
+								<div class="col-sm-9">
+									<select data-tag="qCategory" class="form-control">
+										{{foreach from=$cats key=key item=cat}}
+										<option value="{{$key}}" {{if $item.cat==$key}}selected{{/if}}>{{$cat}}</option>
+										{{/foreach}}
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
 								<label class="col-sm-2 control-label">题干:</label>
 								<div class="col-sm-9">
 									<input data-tag="qTitle" required class="form-control" value="{{$item.title}}" placeholder="(必填)">
@@ -53,19 +63,22 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">选项:</label>
 								<div class="col-sm-9 opt-list">
+									{{if isset($item["options"])}}
 									{{foreach from=$item.options item=opt}}
 									<div class="input-group">
 										<div class="input-group-addon">{{$opt.opt}}</div>
-										<input data-option="{{$opt.opt}}" required class="form-control" value="{{$opt.text}}" placeholder="(必填)">
+										<input data-option="{{$opt.opt}}" required class="form-control" value="{{$opt.text}}"
+													 placeholder="(必填)">
 										<div class="optDel input-group-addon btn btn-outline btn-xs">删除</div>
 									</div>
 									{{/foreach}}
+									{{/if}}
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 control-label">答案:</label>
 								<div class="col-sm-9">
-									<input data-tag="answer" required value="{{$item.answer}}" class="form-control" placeholder="(必填)">
+									<input data-tag="answer" required value="{{if isset($item["answer"])}}{{$item.answer}}{{/if}}" class="form-control" placeholder="(必填)">
 								</div>
 							</div>
 
@@ -96,6 +109,16 @@
 			</div>
 			<div class="panel-body ">
 				<div class="col-sm-12 form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-2 control-label">类别:</label>
+						<div class="col-sm-9">
+							<select data-tag="qCategory" class="form-control">
+								{{foreach from=$cats key=key item=cat}}
+								<option value="{{$key}}">{{$cat}}</option>
+								{{/foreach}}
+							</select>
+						</div>
+					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">题干:</label>
 						<div class="col-sm-9">
@@ -175,36 +198,39 @@
 				return false;
 			}
 			item["title"] = title;
+			var cat = parseInt(self.find("[data-tag=qCategory]").val());
+			item["cat"] = cat;
 
-			self.find("[data-option]").each(function () {
-				var opt = $(this).attr("data-option");
-				var text = $.trim($(this).val());
-				if (!text) {
-					layer.msg("必填项不能为空！");
-					err = 1;
-					$(this).focus();
+			if ($.inArray(cat, [100, 110]) >= 0) {
+				self.find("[data-option]").each(function () {
+					var opt = $(this).attr("data-option");
+					var text = $.trim($(this).val());
+					if (!text) {
+						layer.msg("必填项不能为空！");
+						err = 1;
+						$(this).focus();
+						return false;
+					}
+					var option ={opt:opt,text:text};
+					options.push(option);
+				});
+				if (err) {
 					return false;
 				}
-				var option ={opt:opt,text:text};
-				options.push(option);
-			});
-			if (err) {
-				return false;
-			}
-			item["options"] = options;
+				item["options"] = options;
 
-			var aObj = self.find("[data-tag=answer]");
-			var answer = $.trim(aObj.val());
-			if (!answer
-					// || $.inArray(answer, optItems) < 0
-			) {
-				layer.msg("答案填写错误！");
-				aObj.focus();
-				err = 1;
-				return false;
+				var aObj = self.find("[data-tag=answer]");
+				var answer = $.trim(aObj.val());
+				if (!answer) {
+					layer.msg("答案填写错误！");
+					aObj.focus();
+					err = 1;
+					return false;
+				}
+				item["answer"] = answer;
 			}
-			item["answer"] = answer;
 			postData.push(item);
+
 		});
 
 		if (err) {
@@ -213,8 +239,8 @@
 
 		console.log(postData);
 
-		 $("#postData").val(JSON.stringify(postData));
-		 $("form").submit();
+		$("#postData").val(JSON.stringify(postData));
+		$("form").submit();
 	});
 
 	$(".questionAdd").on("click", function () {
