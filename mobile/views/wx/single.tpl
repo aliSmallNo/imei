@@ -129,42 +129,6 @@
     border-radius: 3rem" class="album-delete">删除</a>
 </section>
 <a class="m-schat-shade"></a>
-<style>
-	.help-chat-icon {
-		position: fixed;
-		left: 1rem;
-		top: 3rem;
-		width: 5rem;
-		height: 5rem;
-		border-radius: 4rem;
-		z-index: 999;
-		background: rgba(0, 0, 0, .4);
-		background: #f06292;
-	}
-
-	.help-chat-icon .img {
-		width: 3rem;
-		height: 3rem;
-		margin-left: 1rem;
-		position: relative;
-		top: .3rem;
-	}
-
-	.help-chat-icon .img img {
-		width: 100%;
-		height: 100%;
-	}
-
-	.help-chat-icon .text {
-		font-size: 1rem;
-		text-align: center;
-		height: 2rem;
-		line-height: 2rem;
-		color: #fff;
-		position: relative;
-		top:-.2rem;
-	}
-</style>
 <section id="schat" data-title="密聊中...">
 	<a href="javascript:;" class="help-chat-icon">
 		<div class="img"><img src="/images/ico_help_chat.png"></div>
