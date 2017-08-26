@@ -512,7 +512,7 @@ class FooController extends Controller
 		$draw->circle($r, $r, $r, $size);
 		$circle->drawimage($draw);*/
 
-		$mergePath = realpath('/mobile/assets/mask_heart.png');
+		$mergePath = AppUtil::rootDir() . '/mobile/assets/mask_heart.png';
 		echo $mergePath . '  ' . __LINE__;
 		$circle = new \Imagick();
 		$circle->readImage($mergePath);
