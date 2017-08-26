@@ -485,7 +485,29 @@ class FooController extends Controller
 		echo realpath('');
 //		return;
 		$imagePath = AppUtil::imgDir(true) . 'default-meipo.jpg';
-		$imagick = new \Imagick();
+		$mergePath = AppUtil::imgDir(true) . 'mask_heart.png';
+		$saveAs = AppUtil::imgDir() . RedisUtil::getImageSeq() . '.png';
+
+		$img = imagecreatefromjpeg($imagePath);
+		$img = imagecropauto($img , IMG_CROP_WHITE);
+
+		//imagetruecolortopalette($img, false, 256); // convert
+
+		$stamp = imagecreatefrompng($mergePath);
+		$marge_right = 10;
+		$marge_bottom = 10;
+		$sx = imagesx($stamp);
+		$sy = imagesy($stamp);
+
+//		imagecopymerge($img, $stamp, imagesx($img) - $sx, imagesy($img) - $sy, 0, 0, imagesx($stamp), imagesy($stamp), 100);
+
+//		$color = imagecolorresolve($img, 0, 255, 0);
+//		imagecolortransparent($img, $color);
+		imagepng($img, $saveAs);
+		imagedestroy($img);
+		echo $saveAs;
+
+		/*$imagick = new \Imagick();
 		$imagick->readImage($imagePath);
 
 		$width = $imagick->getImageWidth();
@@ -510,11 +532,11 @@ class FooController extends Controller
 		$imagick->setImageClipMask($clipMask);
 
 		$imagick->negateImage(false);
-		$imagick->setFormat("png");
-		$saveAs = AppUtil::imgDir() . RedisUtil::getImageSeq() . '.png';
-		$imagick->writeImage($saveAs);
+		$imagick->setFormat("png");*/
 
-		echo $saveAs;
+		/*$imagick->writeImage($saveAs);
+
+		echo $saveAs;*/
 
 	}
 
