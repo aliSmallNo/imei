@@ -490,7 +490,7 @@ class FooController extends Controller
 		//AppUtil::imgDir(true) . 'default-meipo.jpg';
 		$saveAs = AppUtil::imgDir() . RedisUtil::getImageSeq() . '.png';
 
-		self::getCircleAvatar($imagePath, $saveAs, 400);
+		self::getCircleAvatar($imagePath, $saveAs, 440);
 		var_dump($saveAs);
 
 	}
