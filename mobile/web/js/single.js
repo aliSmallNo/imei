@@ -514,14 +514,15 @@ require(["layer"],
 					util.toggle(util.menus.hasClass("off"), util.menus);
 				});
 				util.menusBg.on(kClick, function () {
-
 					if (util.menus.hasClass("on")) {
 						util.toggle(false, util.menus);
 					}
 					if (util.helpchatMenu.hasClass("on")) {
 						util.toggle(false, util.helpchatMenu);
 					}
-
+				});
+				$(document).on(kClick, ".help-chat-icon", function () {
+					util.toggle(util.helpchatMenu.hasClass("off"), util.helpchatMenu);
 				});
 				$(document).on(kClick, ".help-chat-item a", function () {
 					// util.toggle(false, util.helpchatMenu);
