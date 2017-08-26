@@ -101,7 +101,7 @@ class UserQR extends ActiveRecord
 					'qMD5' => $md5
 				]);
 
-				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $code, $code, $bottomTitle, $thumb);
+				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $qid, $code, $bottomTitle, $thumb);
 				if ($accessUrl) {
 					self::edit($info['uOpenId'], $category, $code, [
 						'qUrl' => $accessUrl,
@@ -218,12 +218,9 @@ class UserQR extends ActiveRecord
 		if ($gender == User::GENDER_FEMALE) {
 			$h4 = $star['name'] . ' & ' . $nickname;
 		}
-		AppUtil::logFile($avatar, 5, __FUNCTION__, __LINE__);
 		if (strpos($avatar, 'http') !== false) {
 			$tmpFile = AppUtil::imgDir() . RedisUtil::getImageSeq();
-			AppUtil::logFile($tmpFile, 5, __FUNCTION__, __LINE__);
 			$avatar = self::downloadFile($avatar, $tmpFile);
-			AppUtil::logFile($avatar, 5, __FUNCTION__, __LINE__);
 		}
 		$maskSize = 230;
 		$maskFile = $rootFolder . 'mobile/assets/mask_heart.png';
