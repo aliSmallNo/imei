@@ -652,6 +652,9 @@ require(["layer"],
 					showMsg('聊天内容不能为空！');
 					return false;
 				}
+				if (util.helpchatMenu.hasClass("on")) {
+					util.toggle(false, util.helpchatMenu);
+				}
 				$.post("/api/chat", {
 					tag: "sent",
 					id: util.sid,
