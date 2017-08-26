@@ -484,7 +484,7 @@ class FooController extends Controller
 
 //		return;
 
-		$imagePath = 'https://img.meipo100.com/2017/85/116545.jpg';
+		$imagePath = 'https://img.meipo100.com/2017/84/113272_n.jpg';
 		$imagePath = ImageUtil::getFilePath($imagePath);
 		echo $imagePath . '  ' . __LINE__;
 		//AppUtil::imgDir(true) . 'default-meipo.jpg';
@@ -492,7 +492,6 @@ class FooController extends Controller
 
 		self::getCircleAvatar($imagePath, $saveAs, 440);
 		var_dump($saveAs);
-
 	}
 
 	function getCircleAvatar($avatar, $saveAs, $size)
