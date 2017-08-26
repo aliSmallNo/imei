@@ -9,7 +9,6 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
-use common\models\Lottery;
 use common\models\QuestionSea;
 use common\models\User;
 use common\models\UserNet;
@@ -446,7 +445,7 @@ class FooController extends Controller
 			$phone = $row['uPhone'];
 			QueueUtil::loadJob('sendSMS', [
 				'phone' => $phone,
-				'msg' => '线下活动通知：8月26晚6：30，相约东台德润3楼英伦时光，参加多人牛排PARTY。男生AA，女生免费。名额有限哦，赶快回复公众号参加活动',
+				'msg' => '线下活动通知：今晚6:30，相约东台德润3楼英伦时光，参加多人牛排PARTY。男生AA，女生免费。名额有限哦，赶快回复公众号参加活动（8月26日）',
 				'rnd' => 112
 			]);
 		}
@@ -483,10 +482,38 @@ class FooController extends Controller
 		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn05');
 		var_dump($items);*/
 
+
 		echo realpath('');
 //		return;
 		$imagePath = AppUtil::imgDir(true) . 'default-meipo.jpg';
-		$imagick = new \Imagick();
+		$mergePath = AppUtil::imgDir(true) . 'mask_heart.png';
+		$saveAs = AppUtil::imgDir() . RedisUtil::getImageSeq() . '.png';
+
+
+		self::getCircleAvatar($imagePath, $saveAs, 200);
+		echo $saveAs;
+		return;
+
+		$img = imagecreatefromjpeg($imagePath);
+		$img = imagecropauto($img, IMG_CROP_WHITE);
+
+		//imagetruecolortopalette($img, false, 256); // convert
+
+		$stamp = imagecreatefrompng($mergePath);
+		$marge_right = 10;
+		$marge_bottom = 10;
+		$sx = imagesx($stamp);
+		$sy = imagesy($stamp);
+
+//		imagecopymerge($img, $stamp, imagesx($img) - $sx, imagesy($img) - $sy, 0, 0, imagesx($stamp), imagesy($stamp), 100);
+
+//		$color = imagecolorresolve($img, 0, 255, 0);
+//		imagecolortransparent($img, $color);
+		imagepng($img, $saveAs);
+		imagedestroy($img);
+		echo $saveAs;
+
+		/*$imagick = new \Imagick();
 		$imagick->readImage($imagePath);
 
 		$width = $imagick->getImageWidth();
@@ -511,12 +538,47 @@ class FooController extends Controller
 		$imagick->setImageClipMask($clipMask);
 
 		$imagick->negateImage(false);
-		$imagick->setFormat("png");
-		$saveAs = AppUtil::imgDir() . RedisUtil::getImageSeq() . '.png';
+		$imagick->setFormat("png");*/
+
+		/*$imagick->writeImage($saveAs);
+
+		echo $saveAs;*/
+
+	}
+
+	function getCircleAvatar($avatar, $saveAs, $r)
+	{
+		$size = 200;
+		/*
+		$circle = new \Imagick();
+		$circle->newImage($size, $size, 'none');
+		$circle->setimageformat('png');
+		$circle->setimagematte(true);
+
+		/**
+		 * @des     在矩形上画一个白色圆
+		 */
+		/*$draw = new \ImagickDraw();
+		$draw->setfillcolor('#fff');
+		$draw->circle($r, $r, $r, $size);
+		$circle->drawimage($draw);*/
+
+		$mergePath = AppUtil::imgDir(true) . 'mask_heart2.png';
+		$circle = new \Imagick();
+		$circle->readImage($mergePath);
+		$circle->cropThumbnailImage($size, $size);
+
+		/**
+		 * @des     裁剪头像成圆形
+		 */
+		$imagick = new \Imagick();
+		$imagick->readImage($avatar);
+		$imagick->setImageFormat('png');
+		$imagick->setimagematte(true);
+		$imagick->cropThumbnailImage($size, $size);
+		$imagick->compositeimage($circle, \Imagick::COMPOSITE_COPYOPACITY, 0, 0);
 		$imagick->writeImage($saveAs);
-
-		echo $saveAs;
-
+		$imagick->destroy();
 	}
 
 	public function actionZp()
