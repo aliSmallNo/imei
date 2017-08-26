@@ -129,7 +129,48 @@
     border-radius: 3rem" class="album-delete">删除</a>
 </section>
 <a class="m-schat-shade"></a>
+<style>
+	.help-chat-icon {
+		position: fixed;
+		left: 1rem;
+		top: 3rem;
+		width: 5rem;
+		height: 5rem;
+		border-radius: 4rem;
+		z-index: 999;
+		background: rgba(0, 0, 0, .4);
+		background: #f06292;
+	}
+
+	.help-chat-icon .img {
+		width: 3rem;
+		height: 3rem;
+		margin-left: 1rem;
+		position: relative;
+		top: .3rem;
+	}
+
+	.help-chat-icon .img img {
+		width: 100%;
+		height: 100%;
+	}
+
+	.help-chat-icon .text {
+		font-size: 1rem;
+		text-align: center;
+		height: 2rem;
+		line-height: 2rem;
+		color: #fff;
+		position: relative;
+		top:-.2rem;
+	}
+</style>
 <section id="schat" data-title="密聊中...">
+	<a href="javascript:;" class="help-chat-icon">
+		<div class="img"><img src="/images/ico_help_chat.png"></div>
+		<div class="text">助聊?</div>
+	</a>
+
 	<div class="report_wrap">
 		<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
 		<ul class="chats"></ul>
@@ -137,10 +178,10 @@
 	<div class="m-bottom-pl"></div>
 	<div class="m-bottom-bar">
 		<div class="icons" style="z-index: 1"><a class="schat-options"></a></div>
-		<div class="input"  style="z-index: 1"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120"></div>
-		<div class="action"  style="z-index: 1"><a class="btn-chat-send">发送</a></div>
+		<div class="input" style="z-index: 1"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120"></div>
+		<div class="action" style="z-index: 1"><a class="btn-chat-send">发送</a></div>
 		<div class="m-chat-wrap off">
-			<a class="schat-option" data-tag="tohelpchat">助聊</a>
+			<a class="schat-option" data-tag="tohelpchat" style="display: none">助聊</a>
 			<a class="schat-option" data-tag="toblock">拉黑对方</a>
 			<a class="schat-option">取消</a>
 		</div>
@@ -159,7 +200,7 @@
 				<a href="javascript:;" help-tag="future">未来</a>
 				<a href="javascript:;" help-tag="privacy">隐私</a>
 				<a href="javascript:;" help-tag="marriage">婚姻</a>
-				<a href="javascript:;" >加V</a>
+				<a href="javascript:;">加V</a>
 			</div>
 		</div>
 	</div>
@@ -1048,4 +1089,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.9.9" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.9.10" src="/assets/js/require.js"></script>
