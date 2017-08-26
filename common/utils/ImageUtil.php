@@ -560,9 +560,24 @@ class ImageUtil
 		$imagick->setimagematte(true);
 		$imagick->cropThumbnailImage($width, $height);
 		$imagick->compositeimage($circle, \Imagick::COMPOSITE_COPYOPACITY, 0, 0);
+
+
+		$border = new \Imagick();
+		$maskFile = str_replace('.png', '_border.png', $maskFile);
+		$border->readImage($maskFile);
+		$border->cropThumbnailImage($width, $height);
+		$imagick->compositeimage($border, \Imagick::COMPOSITE_ATOP, 0, 0);
+
+//		$shadow = new \Imagick();
+//		$shadow->readImage($maskFile);
+//		$shadow->setImageBackgroundColor(new \ImagickPixel('#000000'));
+//		$shadow->shadowImage(100, 3, 5, 5);
+//		$shadow->compositeImage($imagick, \Imagick::COMPOSITE_OVER, 0, 0);
+
 		$imagick->writeImage($saveAs);
 		$circle->destroy();
 		$imagick->destroy();
+		$border->destroy();
 
 		return $saveAs;
 	}
