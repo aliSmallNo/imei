@@ -490,7 +490,7 @@ class FooController extends Controller
 		$saveAs = AppUtil::imgDir() . RedisUtil::getImageSeq() . '.png';
 
 
-		self::getCircleAvatar($imagePath, $saveAs, 100);
+		self::getCircleAvatar($imagePath, $saveAs, 200);
 		echo $saveAs;
 		return;
 
@@ -548,11 +548,8 @@ class FooController extends Controller
 
 	function getCircleAvatar($avatar, $saveAs, $r)
 	{
-		/**
-		 * @des     画一个正方形
-		 * @size    两个半径
-		 */
-		$size = 2 * $r;
+		$size = 200;
+		/*
 		$circle = new \Imagick();
 		$circle->newImage($size, $size, 'none');
 		$circle->setimageformat('png');
@@ -561,10 +558,15 @@ class FooController extends Controller
 		/**
 		 * @des     在矩形上画一个白色圆
 		 */
-		$draw = new \ImagickDraw();
+		/*$draw = new \ImagickDraw();
 		$draw->setfillcolor('#fff');
 		$draw->circle($r, $r, $r, $size);
-		$circle->drawimage($draw);
+		$circle->drawimage($draw);*/
+
+		$mergePath = AppUtil::imgDir(true) . 'mask_heart2.png';
+		$circle = new \Imagick();
+		$circle->readImage($mergePath);
+		$circle->cropThumbnailImage($size, $size);
 
 		/**
 		 * @des     裁剪头像成圆形
@@ -573,7 +575,7 @@ class FooController extends Controller
 		$imagick->readImage($avatar);
 		$imagick->setImageFormat('png');
 		$imagick->setimagematte(true);
-		$imagick->cropimage($size, $size, 30, 0); // 修改裁剪属性
+		$imagick->cropThumbnailImage($size, $size);
 		$imagick->compositeimage($circle, \Imagick::COMPOSITE_COPYOPACITY, 0, 0);
 		$imagick->writeImage($saveAs);
 		$imagick->destroy();
