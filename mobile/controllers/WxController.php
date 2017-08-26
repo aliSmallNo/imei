@@ -1031,9 +1031,16 @@ class WxController extends BaseController
 		list($items) = UserTrans::fansRank(0);
 		$mInfo = UserTrans::fansRank($wxInfo["uId"]);
 		$mInfo['no'] = 0;
-		foreach ($items as $k => $item) {
-			if ($item['id'] == $mInfo['id']) {
-				$mInfo['no'] = $k + 1;
+		if (!isset($mInfo['co'])) {
+			$mInfo['co'] = 0;
+		}
+		$mInfo['avatar'] = $wxInfo['Avatar'];
+		$mInfo['uname'] = $wxInfo['uName'];
+		if (isset($mInfo['id'])) {
+			foreach ($items as $k => $item) {
+				if ($item['id'] == $mInfo['id']) {
+					$mInfo['no'] = $k + 1;
+				}
 			}
 		}
 		return self::renderPage('fans-rank.tpl',
