@@ -201,7 +201,7 @@ class UserQR extends ActiveRecord
 		'zhaoly' => ['name' => '赵丽颖', 'avatar' => 'star_zhaoly.jpg'],
 	];
 
-	public static function createInvitation($uid, $starId, $h2, $h5)
+	public static function createInvitation($uid, $nickname, $starId, $h2, $h5)
 	{
 		$uInfo = User::findOne(['uId' => $uid]);
 		if (!$uInfo) return '';
@@ -209,7 +209,9 @@ class UserQR extends ActiveRecord
 		if (AppUtil::isDev()) {
 			$avatar = AppUtil::rootDir() . 'mobile/assets/star_wuyz.jpg';
 		}
-		$nickname = $uInfo->uName;
+		if (!$nickname) {
+			$nickname = $uInfo->uName;
+		}
 		$gender = $uInfo->uGender;
 		$rootFolder = AppUtil::rootDir();
 
@@ -218,6 +220,7 @@ class UserQR extends ActiveRecord
 		if ($gender == User::GENDER_FEMALE) {
 			$h4 = $star['name'] . ' & ' . $nickname;
 		}
+
 		if (strpos($avatar, 'http') !== false) {
 			$tmpFile = AppUtil::imgDir() . RedisUtil::getImageSeq();
 			$avatar = self::downloadFile($avatar, $tmpFile);

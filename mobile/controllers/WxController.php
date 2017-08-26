@@ -1283,6 +1283,7 @@ class WxController extends BaseController
 				$title = '微先生 & ' . $name . '小姐';
 			}*/
 			$bgSrc = UserQR::createInvitation($uId,
+				$name,
 				$star,
 				substr($dt, 0, 4),
 				date("Y年n月j日 晚6:58\n东台国际大酒店牡丹厅", strtotime($dt)));

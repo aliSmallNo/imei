@@ -495,6 +495,7 @@ class FooController extends Controller
 		$uId = 131379;
 		$dt = date('Y-m-d', time() + 86400 * 10);
 		$bgSrc = UserQR::createInvitation($uId,
+			'大测试',
 			'fanbb',
 			substr($dt, 0, 4),
 			date("Y年n月j日 晚6:58\n东台国际大酒店牡丹厅", strtotime($dt)));
