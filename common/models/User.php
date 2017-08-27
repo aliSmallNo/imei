@@ -567,7 +567,7 @@ class User extends ActiveRecord
 			$uInfo["gallery3"] = array_slice(self::gallery($uInfo["album"]), 0, 3);
 		}
 		$baseInfo = [];
-		$fields = ['height_t', 'income_t', 'education_t', 'estate_t', 'car_t'];
+		$fields = ['marital_t', 'height_t', 'weight_t', 'income_t', 'education_t', 'estate_t'];
 		foreach ($fields as $field) {
 			if ($uInfo[$field]) {
 				$baseInfo[] = $uInfo[$field];
@@ -609,6 +609,7 @@ class User extends ActiveRecord
 			['content' => '基本资料', 'header' => 1],
 			['caption' => '昵称', 'content' => 'name'],
 			['caption' => '性别', 'content' => 'gender_t'],
+			['caption' => '婚姻状况', 'content' => 'marital_t'],
 			['caption' => '籍贯', 'content' => 'homeland_t'],
 			['caption' => '所在城市', 'content' => 'location_t'],
 			['caption' => '出生年份', 'content' => 'birthyear'],
