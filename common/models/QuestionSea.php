@@ -43,13 +43,20 @@ class QuestionSea extends ActiveRecord
 	];
 
 
+	const RANK_FEMALE_ONLY = 0;
+	const RANK_MALE_ONLY = 1;
+	const RANK_FIXED = 99;
+	const RANK_RANDOM = 999;
 	static $RankDict = [
-		0 => "限女生问",
-		1 => "限男生问",
-		99 => "固定",
-		999 => "随机",
+		self::RANK_FEMALE_ONLY => "限女生问",
+		self::RANK_MALE_ONLY => "限男生问",
+		self::RANK_FIXED => "固定",
+		self::RANK_RANDOM => "随机",
 	];
 
+	const RESP_RANDOM = 100;
+	const RESP_LADY_FIRST = 106;
+	const RESP_MAN_FIRST = 109;
 	static $RespDict = [
 		100 => "谁问谁先答",
 		106 => "女士先回答",
@@ -147,13 +154,83 @@ class QuestionSea extends ActiveRecord
 		return $count > 2;
 	}
 
-	public static function randQuestion($cat, $count = 1)
+	/**
+	 * @param $senderId 发送者UID
+	 * @param $receiverId 接收者UID
+	 * @param $cat
+	 * @param int $gender
+	 * @return mixed
+	 */
+	public static function randQuestion($senderId, $receiverId, $cat, $gender = 10)
 	{
-		$sql = " select * from im_question_sea where qCategory=$cat ";
-		$res = AppUtil::db()->createCommand($sql)->queryAll();
-		$count = count($res);
-		$ret = $res[random_int(0, $count - 1)];
-		return $ret["qTitle"];
+		$conn = AppUtil::db();
+		$rank = array_keys(self::$RankDict);
+		if ($gender == User::GENDER_FEMALE) {
+			unset($rank[self::RANK_MALE_ONLY]);
+		} else {
+			unset($rank[self::RANK_FEMALE_ONLY]);
+		}
+		$rankStr = implode(",", $rank);
+		$conStr = "and qRank in ($rankStr)";
+
+		if ($qIds = self::sendQIds($senderId, $receiverId)) {
+			$conStr .= " and qId not in ($qIds) ";
+		}
+
+		$res = self::findOneQestion($cat, $conStr);
+
+		if ($res) {
+			return ["id" => AppUtil::encrypt($res["qId"]), "title" => $res["qTitle"]];
+		} else {
+			// 清空 为$cat的 cNote
+			$sql = "select GROUP_CONCAT(qId) as qIds from im_question_sea where qCategory=$cat GROUP BY qCategory";
+			$ids = $conn->createCommand($sql)->queryOne()["qIds"];
+			$sql = "select GROUP_CONCAT(cId) as cIds from im_chat_msg 
+					where cNote in ($ids)
+					GROUP BY cGId";
+			$cIds = $conn->createCommand($sql)->queryOne()["cIds"];
+			$sql = " update im_chat_msg set cNote='' where cId in ($cIds) ";
+			$conn->createCommand($sql)->execute();
+
+			$res = self::findOneQestion($cat, $conStr);
+			if ($res) {
+				return ["id" => AppUtil::encrypt($res["qId"]), "title" => $res["qTitle"]];
+			} else {
+				return 0;
+			}
+		}
+	}
+
+	public static function findOneQestion($cat, $conStr)
+	{
+		$conn = AppUtil::db();
+		$sql = " select * from im_question_sea where qCategory=$cat $conStr ORDER by qRank asc limit 1";
+		$res = $conn->createCommand($sql)->queryOne();
+		return $res;
+	}
+
+	/**
+	 * @param $senderId
+	 * @param $receiverId
+	 * @return string 发送过的qId
+	 */
+	public static function sendQIds($senderId, $receiverId)
+	{
+		$conn = AppUtil::db();
+		list($uid1, $uid2) = ChatMsg::sortUId($senderId, $receiverId);
+		$sql = "select GROUP_CONCAT(cNote) as qIds from im_chat_group as g
+				left join im_chat_msg as c on c.cGId=g.gId 
+				where gUId1=:uid1 and gUId2=:uid2 and cNote GROUP BY cGId";
+		$ret = $conn->createCommand($sql)->bindValues([
+			":uid1" => $uid1,
+			":uid2" => $uid2,
+		])->queryOne();
+
+		$qIds = "";
+		if ($ret && $ret["qIds"]) {
+			$qIds = $ret["qIds"];
+		}
+		return $qIds;
 	}
 
 }
