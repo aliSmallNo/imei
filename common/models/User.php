@@ -764,7 +764,7 @@ class User extends ActiveRecord
 			$mediaIds = json_decode($mediaIds, 1);
 			$mediaIds = array_reverse($mediaIds);
 			foreach ($mediaIds as $mediaId) {
-				list($thumb, $url) = ImageUtil::save2Server($mediaId);
+				list($thumb, $url) = ImageUtil::save2Server2($mediaId);
 				$imageItems[] = [
 					'thumb' => $thumb,
 					'figure' => $url
@@ -793,7 +793,7 @@ class User extends ActiveRecord
 
 	public static function cert($id, $openId)
 	{
-		list($thumb, $url) = ImageUtil::save2Server($id, false);
+		list($thumb, $url) = ImageUtil::save2Server2($id, false);
 		$Info = self::findOne(["uOpenId" => $openId]);
 		if ($url && $Info) {
 			return self::edit($Info->uId, [
