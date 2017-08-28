@@ -485,67 +485,7 @@ class ImageUtil
 		return $result;
 	}
 
-	public static function save2Server($imageUrl, $squareFlag = false, $key = '')
-	{
-		if (!$key) {
-			$key = RedisUtil::getImageSeq();
-		}
-		if (strpos($imageUrl, 'http') !== 0) {
-			// Rain: Media ID (Wechat Server ID)
-			$accessToken = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
-			$baseUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s";
-			$imageUrl = sprintf($baseUrl, $accessToken, $imageUrl);
-		}
-
-		$ch = curl_init($imageUrl);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		curl_setopt($ch, CURLOPT_NOBODY, 0);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		$content = curl_exec($ch);
-		$httpInfo = curl_getinfo($ch);
-		curl_close($ch);
-
-		$contentType = $httpInfo["content_type"];
-		$contentType = strtolower($contentType);
-		$ext = AppUtil::getExtName($contentType);
-		if ($ext && strlen($content) > 200) {
-			if ($ext == "amr") {
-				$fileName = AppUtil::imgDir(true) . 'voice/' . $key . '.' . $ext;
-				file_put_contents($fileName, $content);
-				$ret = '/voice/' . $key . '.' . $ext;
-				return [$ret, $ret];
-			} else {
-				$path = AppUtil::imgDir() . $key;
-				$fileName = $path . '.' . $ext;
-				file_put_contents($fileName, $content);
-				$thumbSize = 150;
-				$figureSize = 560;
-				if ($squareFlag) {
-					$figureWidth = $figureHeight = $figureSize;
-				} else {
-					list($srcWidth, $srcHeight) = getimagesize($fileName);
-					if ($srcWidth > $srcHeight) {
-						$figureHeight = $figureSize;
-						$figureWidth = $srcWidth * $figureSize / $srcHeight;
-					} else {
-						$figureWidth = $figureSize;
-						$figureHeight = $srcHeight * $figureSize / $srcWidth;
-					}
-				}
-				$fileThumb = $path . '_t.' . $ext;
-				Image::open($fileName)->zoomCrop($thumbSize, $thumbSize, 0xffffff, 'center', 'center')->save($fileThumb);
-				$thumb = self::getUrl($fileThumb);
-				$fileNormal = $path . '_n.' . $ext;
-				Image::open($fileName)->zoomCrop($figureWidth, $figureHeight, 0xffffff, 'center', 'center')->save($fileNormal);
-				$figure = self::getUrl($fileNormal);
-				//unlink($fileName);
-				return [$thumb, $figure];
-			}
-		}
-		return ['', ''];
-	}
-
-	public static function save2Server2($imageUrl, $squareFlag = false, $top = -1, $left = -1)
+	public static function save2Server($imageUrl, $squareFlag = false, $top = -1, $left = -1)
 	{
 		$key = RedisUtil::getImageSeq();
 		if (strpos($imageUrl, 'http') !== 0) {

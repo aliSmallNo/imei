@@ -328,7 +328,7 @@ class User extends ActiveRecord
 			$entity->uUpdatedBy = $editBy;
 			$entity->uOpenId = $openid;
 			$entity->uName = $wxInfo['nickname'];
-			list($thumb, $figure) = ImageUtil::save2Server2($wxInfo['headimgurl'], false);
+			list($thumb, $figure) = ImageUtil::save2Server($wxInfo['headimgurl'], false);
 			$entity->uThumb = $thumb;
 			$entity->uAvatar = $figure;
 			$entity->save();
@@ -691,7 +691,7 @@ class User extends ActiveRecord
 		$avatar = isset($data["img"]) ? $data["img"] : '';
 		unset($data['img']);
 		if ($avatar) {
-			list($thumb, $figure) = ImageUtil::save2Server2($avatar, true);
+			list($thumb, $figure) = ImageUtil::save2Server($avatar, true);
 			$data["thumb"] = $thumb;
 			$data["img"] = $figure;
 		}
@@ -701,7 +701,7 @@ class User extends ActiveRecord
 			$data['album'] = [];
 			if ($album && is_array($album) && count($album)) {
 				foreach ($album as $item) {
-					list($thumb, $figure) = ImageUtil::save2Server2($item);
+					list($thumb, $figure) = ImageUtil::save2Server($item);
 					if ($figure) {
 						$data['album'][] = $figure;
 					}
@@ -787,7 +787,7 @@ class User extends ActiveRecord
 			$mediaIds = json_decode($mediaIds, 1);
 			$mediaIds = array_reverse($mediaIds);
 			foreach ($mediaIds as $mediaId) {
-				list($thumb, $url) = ImageUtil::save2Server2($mediaId);
+				list($thumb, $url) = ImageUtil::save2Server($mediaId);
 				$imageItems[] = [
 					'thumb' => $thumb,
 					'figure' => $url
@@ -816,7 +816,7 @@ class User extends ActiveRecord
 
 	public static function cert($id, $openId)
 	{
-		list($thumb, $url) = ImageUtil::save2Server2($id, false);
+		list($thumb, $url) = ImageUtil::save2Server($id, false);
 		$Info = self::findOne(["uOpenId" => $openId]);
 		if ($url && $Info) {
 			return self::edit($Info->uId, [

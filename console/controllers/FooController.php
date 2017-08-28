@@ -388,7 +388,7 @@ class FooController extends Controller
 	{
 
 		$url = 'http://wx.qlogo.cn/mmopen/PiajxSqBRaEK7yJviaSKaecbDokEibInMrKbVB0ib4FBXR0KL8dyxOSUYcoTBDLdHA8OVicZoyrC1libAY8nw8JYagibg/0';
-		$ret = ImageUtil::save2Server2($url, false);
+		$ret = ImageUtil::save2Server($url, false);
 		var_dump($ret);
 	}
 

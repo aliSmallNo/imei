@@ -136,7 +136,7 @@ class ApiController extends Controller
 				$src = self::postParam('src');
 				$field = self::postParam('field');
 				if ($src && $uid) {
-					list($thumb, $figure) = ImageUtil::save2Server2($src, true, $top, $left);
+					list($thumb, $figure) = ImageUtil::save2Server($src, true, $top, $left);
 					if ($thumb && $figure) {
 						User::setAvatar($uid, $thumb, $figure, Admin::getAdminId());
 						return self::renderAPI(0, '设置成功');
