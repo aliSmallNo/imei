@@ -136,7 +136,7 @@ class ApiController extends Controller
 				$src = self::postParam('src');
 				$field = self::postParam('field');
 				if ($src && $uid) {
-					$ret = ImageUtil::save2Server2($src, true, $left, $top);
+					$ret = ImageUtil::save2Server2($src, true, $top, $left);
 					return self::renderAPI(0, '', $ret);
 				}
 				break;
