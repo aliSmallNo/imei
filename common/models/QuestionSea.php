@@ -26,6 +26,7 @@ class QuestionSea extends ActiveRecord
 	const CAT_CONCEPT = 560;
 	const CAT_COMMON = 570;
 	const CAT_PERSONAL = 580;
+
 	static $catDict = [
 		self::CAT_QUESTION => "选择题",
 		self::CAT_VOTE => "投票题",
@@ -39,6 +40,21 @@ class QuestionSea extends ActiveRecord
 		self::CAT_CONCEPT => "观念题",//
 		self::CAT_COMMON => "共同题",//
 		self::CAT_PERSONAL => "个人题",//
+	];
+
+
+	static $RankDict = [
+		0 => "限女生问",
+		1 => "限男生问",
+		99 => "固定",
+		999 => "随机",
+	];
+
+	static $RespDict = [
+		100 => "谁问谁先答",
+		106 => "女士先回答",
+		109 => "男士先回答",
+
 	];
 
 	public static function tableName()
@@ -136,7 +152,7 @@ class QuestionSea extends ActiveRecord
 		$sql = " select * from im_question_sea where qCategory=$cat ";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		$count = count($res);
-		$ret = $res[random_int(0, $count-1)];
+		$ret = $res[random_int(0, $count - 1)];
 		return $ret["qTitle"];
 	}
 
