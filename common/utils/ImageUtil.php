@@ -580,12 +580,13 @@ class ImageUtil
 				$thumbSize = $thumbWidth = $thumbHeight = 160;
 				$figureSize = $figureWidth = $figureHeight = 600;
 				list($srcWidth, $srcHeight) = getimagesize($fileName);
+				AppUtil::logFile([$srcWidth, $srcHeight], 5, __FUNCTION__, __LINE__);
 				if ($srcWidth > $srcHeight) {
-					$figureWidth = $figureHeight * $srcWidth / $srcHeight;
-					$thumbWidth = $thumbHeight * $srcWidth / $srcHeight;
+					$figureWidth = round($figureHeight * $srcWidth / $srcHeight);
+					$thumbWidth = round($thumbHeight * $srcWidth / $srcHeight);
 				} else {
-					$figureHeight = $figureWidth * $srcHeight / $srcWidth;
-					$thumbHeight = $thumbWidth * $srcHeight / $srcWidth;
+					$figureHeight = round($figureWidth * $srcHeight / $srcWidth);
+					$thumbHeight = round($thumbWidth * $srcHeight / $srcWidth);
 				}
 				$fileThumb = $path . '_t.' . $ext;
 				$fileNormal = $path . '_n.' . $ext;
