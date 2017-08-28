@@ -222,7 +222,7 @@
 		{{foreach from=$list item=prod}}
 		<tr data-id="{{$prod.id}}">
 			<td>
-				<img src="{{$prod.thumb}}" width="100%">
+				<img src="{{$prod.thumb}}" bsrc="{{$prod.avatar}}" width="100%" class="i-av">
 			</td>
 			<td class="pInfo">
 				<span class="role{{$prod.role}}">{{$prod.role_t}}</span> {{$prod.name}}
@@ -266,8 +266,8 @@
 			</td>
 			<td class="album-items" data-images='{{$prod.showImages}}'>
 				{{if $prod.album}}
-				{{foreach from=$prod.album item=img}}
-				<img src="{{$img}}" alt="">
+				{{foreach from=$prod.album key=k item=img}}
+				<img src="{{$img}}" alt="" data-idx="{{$k}}">
 				{{/foreach}}
 				{{/if}}
 			</td>
@@ -362,10 +362,25 @@
 	$(document).on("click", ".album-items img", function () {
 		var self = $(this);
 		var images = self.closest("td").attr("data-images");
-		showImages(JSON.parse(images))
+		var idx = self.attr('data-idx');
+		showImages(JSON.parse(images), idx)
 	});
 
-	function showImages(imagesJson) {
+	$(document).on("click", ".i-av", function () {
+		var self = $(this);
+		var photos = {
+			title: 'show',
+			data: [{
+				src: self.attr("bsrc")
+			}]
+		};
+		showImages(photos);
+	});
+
+	function showImages(imagesJson, idx) {
+		if (idx) {
+			imagesJson.start = idx;
+		}
 		layer.photos({
 			photos: imagesJson,
 			shift: 5
