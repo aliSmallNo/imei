@@ -173,11 +173,7 @@ class QuestionSea extends ActiveRecord
 		$rankStr = implode(",", $rank);
 		$conStr = "and qRank in ($rankStr)";
 
-		if ($qIds = self::sendQIds($senderId, $receiverId)) {
-			$conStr .= " and qId not in ($qIds) ";
-		}
-
-		$res = self::findOneQestion($cat, $conStr);
+		$res = self::findOneQestion($senderId, $receiverId, $cat, $conStr);
 
 		if ($res) {
 			return ["id" => AppUtil::encrypt($res["qId"]), "title" => $res["qTitle"]];
@@ -192,7 +188,7 @@ class QuestionSea extends ActiveRecord
 			$sql = " update im_chat_msg set cNote='' where cId in ($cIds) ";
 			$conn->createCommand($sql)->execute();
 
-			$res = self::findOneQestion($cat, $conStr);
+			$res = self::findOneQestion($senderId, $receiverId, $cat, $conStr);
 			if ($res) {
 				return ["id" => AppUtil::encrypt($res["qId"]), "title" => $res["qTitle"]];
 			} else {
@@ -201,9 +197,12 @@ class QuestionSea extends ActiveRecord
 		}
 	}
 
-	public static function findOneQestion($cat, $conStr)
+	public static function findOneQestion($senderId, $receiverId, $cat, $conStr)
 	{
 		$conn = AppUtil::db();
+		if ($qIds = self::sendQIds($senderId, $receiverId)) {
+			$conStr .= " and qId not in ($qIds) ";
+		}
 		$sql = " select * from im_question_sea where qCategory=$cat $conStr ORDER by qRank asc limit 1";
 		$res = $conn->createCommand($sql)->queryOne();
 		return $res;
