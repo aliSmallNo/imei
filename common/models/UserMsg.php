@@ -272,7 +272,7 @@ class UserMsg extends ActiveRecord
 				 WHERE mStatus=1 and m.mCategory in (' . $strCats . ')
 				 GROUP BY m.mId HAVING cnt<2 ORDER BY m.mAddedOn desc';
 		$ret = $conn->createCommand($sql)->bindValues([
-			':uid' => $uid
+			':uid' => $uid,
 		])->queryAll();
 		if ($ret) {
 			$row = $ret[0];

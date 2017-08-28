@@ -449,6 +449,7 @@ require(["layer"],
 
 
 		var ChatUtil = {
+			qId: '',
 			sid: '',
 			lastId: 0,
 			loading: 0,
@@ -459,6 +460,7 @@ require(["layer"],
 			topupTmp: $('#tpl_chat_topup').html(),
 			topTip: $('#schat .chat-tip'),
 			input: $('.chat-input'),
+			inputVal: "",
 			bot: $('#schat .m-bottom-pl'),
 			topPL: $('#scontacts .m-top-pl'),
 			menus: $(".m-chat-wrap"),
@@ -538,11 +540,15 @@ require(["layer"],
 					util.loading = 1;
 					$.post("/api/chat", {
 						tag: "helpchat",
-						htag: htag
+						htag: htag,
+						id: util.sid,
 					}, function (resp) {
 						util.loading = 0;
 						if (resp.code == 0) {
-							util.input.val(resp.data);
+							util.inputVal = resp.data.title;
+							util.qId = resp.data.id;
+							util.toggle(false, util.helpchatMenu);
+							util.sent();
 						} else {
 							showMsg(resp.msg);
 						}
@@ -648,7 +654,7 @@ require(["layer"],
 			},
 			sent: function () {
 				var util = this;
-				var content = $.trim(util.input.val());
+				var content = util.inputVal ? util.inputVal : $.trim(util.input.val());
 				if (!content) {
 					showMsg('聊天内容不能为空！');
 					return false;
@@ -659,8 +665,10 @@ require(["layer"],
 				$.post("/api/chat", {
 					tag: "sent",
 					id: util.sid,
-					text: content
+					text: content,
+					qId: util.qId,
 				}, function (resp) {
+					util.qId = "";
 					if (resp.code == 0) {
 						/*if (!util.loading && resp.data.items.id > util.lastId) {
 							util.lastId = resp.data.items.id;

@@ -1355,6 +1355,8 @@ class ApiController extends Controller
 			case 'sent':
 				$receiverId = self::postParam('id');
 				$receiverId = AppUtil::decrypt($receiverId);
+				$qId = self::postParam('qId'); // 发送的助聊题库ID
+				$qId = AppUtil::decrypt($qId);
 				if (!$receiverId) {
 					return self::renderAPI(129, '对话用户不存在啊~');
 				}
@@ -1365,7 +1367,7 @@ class ApiController extends Controller
 				if (UserNet::hasBlack($wxInfo["uId"], $receiverId)) {
 					return self::renderAPI(129, self::MSG_BLACK);
 				}
-				$ret = ChatMsg::addChat($uid, $receiverId, $text);
+				$ret = ChatMsg::addChat($uid, $receiverId, $text, 0, 0, $qId);
 				//ChatMsg::add($uid, $receiverId, $text);
 				if ($ret === false) {
 					return self::renderAPI(129, '发送失败~');
@@ -1407,8 +1409,17 @@ class ApiController extends Controller
 				if (!$cat) {
 					return self::renderAPI(129, '无此题库哦~');
 				}
-				$title = QuestionSea::randQuestion($cat);
-				return self::renderAPI(0, '', $title);
+				$receiverId = self::postParam('id');
+				$receiverId = AppUtil::decrypt($receiverId);
+				if (!$receiverId) {
+					return self::renderAPI(129, '对话用户不存在啊~');
+				}
+				$resp = QuestionSea::randQuestion($uid, $receiverId, $cat, $wxInfo["uGender"]);
+				if ($resp) {
+					return self::renderAPI(0, '', $resp);
+				} else {
+					return self::renderAPI(129, '此助聊问题已经全部问过了哦~');
+				}
 				break;
 			case 'list':
 				$lastId = self::postParam('last', 0);

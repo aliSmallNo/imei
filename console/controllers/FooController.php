@@ -11,11 +11,13 @@ namespace console\controllers;
 use common\models\ChatMsg;
 use common\models\QuestionSea;
 use common\models\User;
+use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
+use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -504,42 +506,54 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		$ins = file_get_contents(__DIR__ . "/sea.log");
-		$ins = explode("\n", $ins);
+//		添加更新通知
+//		UserMsg::edit(0, [
+//			"mText" => json_encode(["如何开口说出第一句话，助聊可以帮你，赶快去试试吧！"], JSON_UNESCAPED_UNICODE),
+//			"mCategory" => UserMsg::CATEGORY_UPGRADE,
+//			"mUId" => RedisUtil::getIntSeq(),
+//		]);
 
-		$insertItem["qAddedBy"] = 1002;
-		foreach ($ins as $item) {
-			$item = preg_replace("/\s+/", " ", $item);
-			$item = explode(" ", $item);
-			if ($item[0] == "固定") {
-				$insertItem["qRank"] = 99;
-			} elseif ($item[0] == "限男生问") {
-				$insertItem["qRank"] = 1;
-			} elseif ($item[0] == "限女生问") {
-				$insertItem["qRank"] = 0;
-			} else {
-				$insertItem["qRank"] = 999;
-			}
-
-			if ($item[2] == "男士先回答") {
-				$insertItem["qResp"] = 109;
-			} elseif ($item[2] == "女士先回答") {
-				$insertItem["qResp"] = 106;
-			} else {
-				$insertItem["qResp"] = 100;
-			}
-
-			foreach (QuestionSea::$catDict as $k => $v) {
-				if (mb_substr($v, 0, 2) == $item[3]) {
-					$insertItem["qCategory"] = $k;
-				}
-			}
-			$insertItem["qTitle"] = $item[1] . "(" . $item[2] . ")";
-
+//		添加助聊
+//		$ins = file_get_contents(__DIR__ . "/sea.log");
+//		$ins = explode("\n", $ins);
+//
+//		$insertItem["qAddedBy"] = 1002;
+//		foreach ($ins as $item) {
+//			$item = preg_replace("/\s+/", " ", $item);
+//			$item = explode(" ", $item);
+//			if ($item[0] == "固定") {
+//				$insertItem["qRank"] = 99;
+//			} elseif ($item[0] == "限男生问") {
+//				$insertItem["qRank"] = 1;
+//			} elseif ($item[0] == "限女生问") {
+//				$insertItem["qRank"] = 0;
+//			} else {
+//				$insertItem["qRank"] = 999;
+//			}
+//			if ($item[2] == "男士先回答") {
+//				$insertItem["qResp"] = 109;
+//			} elseif ($item[2] == "女士先回答") {
+//				$insertItem["qResp"] = 106;
+//			} else {
+//				$insertItem["qResp"] = 100;
+//			}
+//			foreach (QuestionSea::$catDict as $k => $v) {
+//				if (mb_substr($v, 0, 2) == $item[3]) {
+//					$insertItem["qCategory"] = $k;
+//				}
+//			}
+//			$insertItem["qTitle"] = $item[1] . "(" . $item[2] . ")";
 //			print_r($insertItem);
-		//	 QuestionSea::edit(0, $insertItem);
-		}
+//			 QuestionSea::edit(0, $insertItem);
+//		}
 
+
+		//QuestionSea::randQuestion(120003, 128292, 510, 11);
+//		$qId = AppUtil::decrypt("CDlpWjA5QjI3MkdiMjM0NTM7a1wyO0Q0OTRJZA");
+//		echo ChatMsg::addChat(120003, 128292, "有酒窝吗？(女士先回答)", 0, 0, $qId);
+
+//		echo QuestionSea::sendQIds(120003, 128292);
+//		ChatMsg::edit(6717, ["cNote" => ""]);
 
 	}
 }

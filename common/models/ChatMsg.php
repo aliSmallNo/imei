@@ -27,6 +27,22 @@ class ChatMsg extends ActiveRecord
 		return '{{%chat_msg}}';
 	}
 
+	public static function edit($cid, $data)
+	{
+		if (!$cid || !$data) {
+			return 0;
+		}
+		$entity = self::findOne(["cId" => $cid]);
+		if (!$entity) {
+			return 0;
+		}
+		foreach ($data as $k => $v) {
+			$entity->$k = $v;
+		}
+		$entity->save();
+		return $entity->cId;
+	}
+
 	public static function sortUId($uId, $subUId)
 	{
 		$arr = [$uId, $subUId];
@@ -34,7 +50,16 @@ class ChatMsg extends ActiveRecord
 		return $arr;
 	}
 
-	public static function addChat($senderId, $receiverId, $content, $giftCount = 0, $adminId = 0)
+	/**
+	 * @param $senderId
+	 * @param $receiverId
+	 * @param $content
+	 * @param int $giftCount
+	 * @param int $adminId
+	 * @param string $qId 助聊题库qId
+	 * @return array|bool
+	 */
+	public static function addChat($senderId, $receiverId, $content, $giftCount = 0, $adminId = 0, $qId = '')
 	{
 		$conn = AppUtil::db();
 		$ratio = self::RATIO;
@@ -101,6 +126,11 @@ class ChatMsg extends ActiveRecord
 		if ($adminId) {
 			$entity->cAdminId = $adminId;
 		}
+
+		if ($qId) {
+			$entity->cNote = $qId;
+		}
+
 		$entity->save();
 		$cId = $entity->cId;
 
