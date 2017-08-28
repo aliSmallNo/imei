@@ -83,7 +83,12 @@ require(["layer"],
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
-			var linkUrl = "https://wx.meipo100.com/wx/marry?star=" + $('#cStar').val() + "&dt=" + $('#cDATE').val() + "&name=" + encodeURI($('#cNAME').val()) + "&gender=" + $('#cGENDER').val();
+			var linkUrl = "https://wx.meipo100.com/wx/marry?star="
+				+ $('#cStar').val()
+				+ "&id=" + $('#cUID').val()
+				+ "&dt=" + $('#cDATE').val()
+				+ "&name=" + encodeURI($('#cNAME').val())
+				+ "&gender=" + $('#cGENDER').val();
 			var imgUrl = "https://wx.meipo100.com/images/bg_marry_sm.jpg";
 			wx.ready(function () {
 				wx.onMenuShareAppMessage({
