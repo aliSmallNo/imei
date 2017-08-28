@@ -87,7 +87,6 @@
 		data: []
 	};
 	$(document).on("click", ".j-img", function () {
-		var src = $(this).attr('src');
 		if (!mPhotos.data.length) {
 			$.each($(".j-img"), function () {
 				var img = $(this);
@@ -97,7 +96,8 @@
 			});
 		}
 		var k = 0;
-		$.each(mPhotos.data, function () {
+	  var src = $(this).attr('src');
+	  $.each(mPhotos.data, function () {
 			if (src == this.src) {
 				return false;
 			}
