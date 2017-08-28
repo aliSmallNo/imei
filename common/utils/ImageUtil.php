@@ -580,7 +580,7 @@ class ImageUtil
 				$thumbSize = $thumbWidth = $thumbHeight = 160;
 				$figureSize = $figureWidth = $figureHeight = 600;
 				list($srcWidth, $srcHeight) = getimagesize($fileName);
-				AppUtil::logFile([$srcWidth, $srcHeight], 5, __FUNCTION__, __LINE__);
+				AppUtil::logFile([$fileName, $srcWidth, $srcHeight], 5, __FUNCTION__, __LINE__);
 				if ($srcWidth > $srcHeight) {
 					$figureWidth = round($figureHeight * $srcWidth / $srcHeight);
 					$thumbWidth = round($thumbHeight * $srcWidth / $srcHeight);
