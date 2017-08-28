@@ -599,7 +599,7 @@ class ImageUtil
 					$figureY = round($figureHeight * $top / 100.0);
 				} else {
 					$thumbY = round(($thumbHeight - $thumbSize) / 2.0);
-					$figureY = round(($figureHeight - $thumbSize) / 2.0);
+					$figureY = round(($figureHeight - $figureSize) / 2.0);
 				}
 				if (2 > $thumbY) $thumbY = 0;
 				if (2 > $figureY) $figureY = 0;
