@@ -19,6 +19,7 @@ use common\models\User;
 use common\models\UserAudit;
 use common\models\UserNet;
 use common\utils\AppUtil;
+use common\utils\ImageUtil;
 use common\utils\WechatUtil;
 use dosamigos\qrcode\QrCode;
 use Gregwar\Image\Image;
@@ -127,6 +128,17 @@ class ApiController extends Controller
 				$relation = self::postParam('relation');
 				$nid = UserNet::add($uid, $subUid, $relation);
 				$ret = ["code" => 0, "msg" => "修改成功"];
+				break;
+			case 'avatar':
+				$uid = self::postParam('id');
+				$top = self::postParam('top');
+				$left = self::postParam('left');
+				$src = self::postParam('src');
+				$field = self::postParam('field');
+				if ($src && $uid) {
+					$ret = ImageUtil::save2Server($src, true, $left, $top);
+					return self::renderAPI(0, '', $ret);
+				}
 				break;
 		}
 		return self::renderAPI($ret["code"], $ret["msg"]);

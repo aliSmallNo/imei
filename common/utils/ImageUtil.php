@@ -485,11 +485,9 @@ class ImageUtil
 		return $result;
 	}
 
-	public static function save2Server($imageUrl, $squareFlag = false, $key = '')
+	public static function save2Server($imageUrl, $squareFlag = false, $top = -1, $left = -1)
 	{
-		if (!$key) {
-			$key = RedisUtil::getImageSeq();
-		}
+		$key = RedisUtil::getImageSeq();
 		if (strpos($imageUrl, 'http') !== 0) {
 			// Rain: Media ID (Wechat Server ID)
 			$accessToken = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
@@ -518,25 +516,48 @@ class ImageUtil
 				$path = AppUtil::imgDir() . $key;
 				$fileName = $path . '.' . $ext;
 				file_put_contents($fileName, $content);
-				$thumbSize = 140;
-				$figureSize = 540;
-				if ($squareFlag) {
-					$figureWidth = $figureHeight = $figureSize;
+				$thumbSize = $thumbWidth = $thumbHeight = 160;
+				$figureSize = $figureWidth = $figureHeight = 600;
+				list($srcWidth, $srcHeight) = getimagesize($fileName);
+				if ($srcWidth > $srcHeight) {
+					$figureWidth = $figureHeight * $srcWidth / $srcHeight;
+					$thumbWidth = $thumbHeight * $srcWidth / $srcHeight;
 				} else {
-					list($srcWidth, $srcHeight) = getimagesize($fileName);
-					if ($srcWidth > $srcHeight) {
-						$figureHeight = $figureSize;
-						$figureWidth = $srcWidth * $figureSize / $srcHeight;
-					} else {
-						$figureWidth = $figureSize;
-						$figureHeight = $srcHeight * $figureSize / $srcWidth;
-					}
+					$figureHeight = $figureWidth * $srcHeight / $srcWidth;
+					$thumbHeight = $thumbWidth * $srcHeight / $srcWidth;
 				}
 				$fileThumb = $path . '_t.' . $ext;
-				Image::open($fileName)->zoomCrop($thumbSize, $thumbSize, 0xffffff, 'center', 'center')->save($fileThumb);
-				$thumb = self::getUrl($fileThumb);
 				$fileNormal = $path . '_n.' . $ext;
-				Image::open($fileName)->zoomCrop($figureWidth, $figureHeight, 0xffffff, 'center', 'center')->save($fileNormal);
+				$imgObj = Image::open($fileName);
+				$thumbObj = $imgObj->cropResize($thumbWidth, $thumbHeight, 0xffffff);
+				$figureObj = $imgObj->cropResize($figureWidth, $figureHeight, 0xffffff);
+				if ($squareFlag) {
+					if ($top >= 0) {
+						$thumbY = round($thumbHeight * $top / 100.0);
+						$figureY = round($figureHeight * $top / 100.0);
+					} else {
+						$thumbY = round(($thumbHeight - $thumbSize) / 2.0);
+						$figureY = round(($figureHeight - $thumbSize) / 2.0);
+					}
+					if (2 > $thumbY) $thumbY = 0;
+					if (2 > $figureY) $figureY = 0;
+
+					if ($left >= 0) {
+						$thumbX = round($thumbWidth * $left / 100.0);
+						$figureX = round($figureWidth * $left / 100.0);
+					} else {
+						$thumbX = round(($thumbWidth - $thumbSize) / 2.0);
+						$figureX = round(($figureWidth - $figureSize) / 2.0);
+					}
+					if (2 > $thumbX) $thumbX = 0;
+					if (2 > $figureX) $figureX = 0;
+
+					$thumbObj = $thumbObj->crop($thumbX, $thumbY, $thumbSize, $thumbSize);
+					$figureObj = $figureObj->crop($figureX, $figureY, $figureSize, $figureSize);
+				}
+				$thumbObj->save($fileThumb);
+				$thumb = self::getUrl($fileThumb);
+				$figureObj->save($fileNormal);
 				$figure = self::getUrl($fileNormal);
 				//unlink($fileName);
 				return [$thumb, $figure];

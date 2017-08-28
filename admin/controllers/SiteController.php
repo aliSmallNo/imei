@@ -290,8 +290,8 @@ class SiteController extends BaseController
 
 			foreach ($v["album"] as $v1) {
 				$dataImg[] = [
-					"alt" => "相册",
-					"pid" => 666, // 图片id
+					"alt" => "个人相册",
+					"pid" => $v['id'],
 					"src" => $v1, // 原图地址
 					"thumb" => $v1 // 缩略图地址
 				];
