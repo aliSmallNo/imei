@@ -447,7 +447,7 @@ class FooController extends Controller
 			$phone = $row['uPhone'];
 			QueueUtil::loadJob('sendSMS', [
 				'phone' => $phone,
-				'msg' => '线下活动通知：今晚6:30，相约东台德润3楼英伦时光，参加多人牛排PARTY。男生AA，女生免费。名额有限哦，赶快回复公众号参加活动（8月26日）',
+				'msg' => '有酬征集意见领袖用户，参加东台线下讨论会（每月至少一次），名额有限，回复我要报名+一条建议发送至公众号',
 				'rnd' => 112
 			]);
 		}
