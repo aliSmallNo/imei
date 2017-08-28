@@ -669,6 +669,7 @@ require(["layer"],
 					qId: util.qId,
 				}, function (resp) {
 					util.qId = "";
+					util.inputVal = "";
 					if (resp.code == 0) {
 						/*if (!util.loading && resp.data.items.id > util.lastId) {
 							util.lastId = resp.data.items.id;
