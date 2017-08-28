@@ -217,9 +217,9 @@ class UserQR extends ActiveRecord
 
 		$star = self::$SuperStars[$starId];
 		$h4 = $nickname . ' & ' . $star['name'];
-		if ($gender == User::GENDER_FEMALE) {
+		/*if ($gender == User::GENDER_FEMALE) {
 			$h4 = $star['name'] . ' & ' . $nickname;
-		}
+		}*/
 
 		if (strpos($avatar, 'http') !== false) {
 			$tmpFile = AppUtil::imgDir() . RedisUtil::getImageSeq();
