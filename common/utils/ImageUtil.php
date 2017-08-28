@@ -580,7 +580,6 @@ class ImageUtil
 				$thumbSize = $thumbWidth = $thumbHeight = 160;
 				$figureSize = $figureWidth = $figureHeight = 600;
 				list($srcWidth, $srcHeight) = getimagesize($fileName);
-				AppUtil::logFile([$fileName, $srcWidth, $srcHeight], 5, __FUNCTION__, __LINE__);
 				if ($srcWidth > $srcHeight) {
 					$figureWidth = round($figureHeight * $srcWidth / $srcHeight);
 					$thumbWidth = round($thumbHeight * $srcWidth / $srcHeight);
@@ -592,7 +591,6 @@ class ImageUtil
 				$fileNormal = $path . '_n.' . $ext;
 				$thumbObj = Image::open($fileName)->zoomCrop($thumbWidth, $thumbHeight, 0xffffff, 'left', 'top');
 				$figureObj = Image::open($fileName)->zoomCrop($figureWidth, $figureHeight, 0xffffff, 'left', 'top');
-				AppUtil::logFile([$thumbWidth, $thumbHeight, $figureWidth, $figureHeight], 5, __FUNCTION__, __LINE__);
 				if ($squareFlag) {
 					if ($top >= 0) {
 						$thumbY = round($thumbHeight * $top / 100.0);
@@ -613,9 +611,7 @@ class ImageUtil
 					}
 					if (2 > $thumbX) $thumbX = 0;
 					if (2 > $figureX) $figureX = 0;
-					AppUtil::logFile([$thumbX, $thumbY, $thumbSize], 5, __FUNCTION__, __LINE__);
 					$thumbObj = $thumbObj->crop($thumbX, $thumbY, $thumbSize, $thumbSize);
-					AppUtil::logFile([$figureX, $figureY, $figureSize], 5, __FUNCTION__, __LINE__);
 					$figureObj = $figureObj->crop($figureX, $figureY, $figureSize, $figureSize);
 				}
 				$thumbObj->save($fileThumb);

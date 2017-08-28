@@ -22,9 +22,7 @@ class BaseController extends Controller
 	const COOKIE_OPENID = "wx-openid";
 	static $WX_OpenId = "";
 
-
 	public static $branchId = 0;
-	public $ptitle = '';
 
 	public function beforeAction($action)
 	{
@@ -50,7 +48,7 @@ class BaseController extends Controller
 			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
 				self::$WX_OpenId = $wxUserInfo["openid"];
 				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
-				AppUtil::logFile(self::$WX_OpenId, 5, __FUNCTION__, __LINE__);
+				//AppUtil::logFile(self::$WX_OpenId, 5, __FUNCTION__, __LINE__);
 				// Rain: 发现如果action不执行完毕，getCookie获取不到刚刚赋值的cookie值
 				self::checkProfile(self::$WX_OpenId, $actionId);
 			}
@@ -59,8 +57,8 @@ class BaseController extends Controller
 			$wxUserInfo = UserWechat::getInfoByOpenId(self::$WX_OpenId);
 			if (!$wxUserInfo) {
 				$logMsg = [self::$WX_OpenId, json_encode($wxUserInfo)];
-				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
-//				header("location:/qr.html");
+				//AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
+				//header("location:/qr.html");
 				$currentUrl = Yii::$app->request->getAbsoluteUrl();
 				$newUrl = WechatUtil::getRedirectUrl(UserWechat::CATEGORY_MALL, $currentUrl);
 				header("location:" . $newUrl);
@@ -74,9 +72,8 @@ class BaseController extends Controller
 		} elseif (strlen(self::$WX_OpenId) < 20 && strlen($wxCode) < 20) {
 			$currentUrl = Yii::$app->request->getAbsoluteUrl();
 			$newUrl = WechatUtil::getRedirectUrl(UserWechat::CATEGORY_MALL, $currentUrl);
-			$userPhone = AppUtil::getCookie("user_phone");
-			$logMsg = [$currentUrl, $userPhone, $newUrl];
-			AppUtil::logFile($logMsg, 5, __FUNCTION__, __LINE__);
+			//$userPhone = AppUtil::getCookie("user_phone");
+			//AppUtil::logFile([$currentUrl, $userPhone, $newUrl], 5, __FUNCTION__, __LINE__);
 			//self::redirect($newUrl);
 			header("location:" . $newUrl);
 			exit;
