@@ -761,11 +761,16 @@ class SiteController extends BaseController
 	{
 		$page = self::getParam("page", 1);
 		$name = self::getParam('name');
+		$cat = self::getParam('cat');
 
 		$params = $criteria = [];
 		if ($name) {
 			$criteria[] = "  qTitle like :name ";
 			$params[':name'] = "%$name%";
+		}
+		if ($cat) {
+			$criteria[] = "  qCategory = :cat ";
+			$params[':cat'] = $cat;
 		}
 
 		list($list, $count) = QuestionSea::items($criteria, $params, $page);
@@ -777,6 +782,8 @@ class SiteController extends BaseController
 				"name" => $name,
 				'pagination' => $pagination,
 				'category' => 'data',
+				'cats' => QuestionSea::$catDict,
+				"cat" => $cat,
 			]);
 	}
 
