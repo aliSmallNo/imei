@@ -126,11 +126,9 @@ class ChatMsg extends ActiveRecord
 		if ($adminId) {
 			$entity->cAdminId = $adminId;
 		}
-
 		if ($qId) {
 			$entity->cNote = $qId;
 		}
-
 		$entity->save();
 		$cId = $entity->cId;
 
