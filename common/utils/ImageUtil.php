@@ -590,8 +590,8 @@ class ImageUtil
 				$fileThumb = $path . '_t.' . $ext;
 				$fileNormal = $path . '_n.' . $ext;
 				$imgObj = Image::open($fileName);
-				$thumbObj = $imgObj->cropResize($thumbWidth, $thumbHeight, 0xffffff);
-				$figureObj = $imgObj->cropResize($figureWidth, $figureHeight, 0xffffff);
+				$thumbObj = $imgObj->zoomCrop($thumbWidth, $thumbHeight, 0xffffff, 'center', 'center');
+				$figureObj = $imgObj->zoomCrop($figureWidth, $figureHeight, 0xffffff, 'center', 'center');
 				if ($squareFlag) {
 					if ($top >= 0) {
 						$thumbY = round($thumbHeight * $top / 100.0);
