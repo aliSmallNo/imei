@@ -67,7 +67,7 @@
 				<div class="message_content text">
 					<div class="wxMsg">
 						{{if $item.type=="image"}}
-						<img src="{{$item.txt}}">
+						<img src="{{$item.txt}}" class="j-img">
 						{{elseif $item.type=="voice"}}
 						<button data-src="{{$item.txt}}" class="play"><i class="fa fa-volume-up"></i> 播放语音</button>
 						{{else}}
@@ -82,6 +82,35 @@
 	<div class="row-divider">&nbsp;</div>
 </div>
 <script>
+	var mPhotos = {
+		title: '图片合集',
+		data: []
+	};
+	$(document).on("click", ".j-img", function () {
+		var src = $(this).attr('src');
+		if (!mPhotos.data.length) {
+			$.each($(".j-img"), function () {
+				var img = $(this);
+				mPhotos.data.push({
+					src: img.attr('src')
+				});
+			});
+		}
+		var k = 0;
+		$.each(mPhotos.data, function () {
+			if (src == this.src) {
+				return false;
+			}
+			k++;
+		});
+		mPhotos.start = k;
+		console.log(mPhotos);
+		layer.photos({
+			photos: mPhotos,
+			shift: 5
+		});
+	});
+
 	$(document).on("click", ".play", function () {
 		var self = $(this);
 		var xhr = new XMLHttpRequest();
