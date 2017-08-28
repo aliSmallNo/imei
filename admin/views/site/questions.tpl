@@ -12,6 +12,12 @@
 	</div>
 	<div class="row">
 		<form class="form-inline" action="/site/questions" method="get">
+			<select name="cat" class="form-control">
+				<option value="">-=类别=-</option>
+				{{foreach from=$cats key=k item=item}}
+				<option value="{{$k}}" {{if $k==$cat}}selected{{/if}}>{{$item}}</option>
+				{{/foreach}}
+			</select>
 			<input class="form-control" name="name" placeholder="题目" value="{{$name}}">
 			<input type="submit" class="btn btn-primary" value="查询">
 		</form>
@@ -65,7 +71,7 @@
 			</td>
 			<td>
 				<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" data-id="{{$prod.qId}}"
-					 data-raw='{{$prod.qRaw}}'>修改信息</a>
+					 data-raw='{{$prod.qRaw}}' data-title='{{$prod.qTitle}}'>修改信息</a>
 			</td>
 		</tr>
 		{{/foreach}}
@@ -82,11 +88,19 @@
 					<h4 class="modal-title">修改选题</h4>
 				</div>
 				<div class="modal-body" style="overflow:hidden">
+					<div class="col-sm-12 form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">题干:</label>
+							<div class="col-sm-9">
+								<input data-tag="title" required class="form-control" value="" placeholder="(必填)">
+							</div>
+						</div>
 
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-tag="" id="btnSave">确定保存</button>
+					<button type="button" class="btn btn-primary" data-tag="cat-chat" id="btnSave">确定保存</button>
 				</div>
 			</div>
 		</div>
@@ -97,45 +111,56 @@
 	$("a.modU").click(function () {
 		var self = $(this);
 		id = self.attr("data-id");
-		var raw = JSON.parse(self.attr("data-raw"));
-		console.log(raw);
-		var vHtml = Mustache.render($("#tpl_mod").html(), raw);
-		$(".modal-body").html(vHtml);
+		if (self.attr("data-raw")) {
+			self.attr("data-tag", "cat-vote");
+			var raw = JSON.parse(self.attr("data-raw"));
+			var vHtml = Mustache.render($("#tpl_mod").html(), raw);
+			$(".modal-body").html(vHtml);
+		} else {
+			$("[data-tag=title]").val(self.attr("data-title"));
+		}
 		$("#modModal").modal("show")
 	});
 
 	$(document).on("click", "#btnSave", function () {
-		var options = [], err = 0;
-		var fields = ["title", "answer"];
-		var fieldsAlert = ["题干", "答案"];
-		for (var i = 0; i < fields.length; i++) {
-			var obj = $("[data-tag=" + fields[i] + "]");
-			var val = $.trim(obj.val());
-			if (!val) {
-				layer.msg(fieldsAlert[i] + "不能为空哦~");
-				obj.focus();
-				return;
-			}
-			postData[fields[i]] = val;
+		var tag = $(this).attr("data-tag");
+		switch (tag) {
+			case "cat-chat":
+				postData["title"] = $("[data-tag=title]").val();
+				break;
+			case "cat-vote":
+				var options = [], err = 0;
+				var fields = ["title", "answer"];
+				var fieldsAlert = ["题干", "答案"];
+				for (var i = 0; i < fields.length; i++) {
+					var obj = $("[data-tag=" + fields[i] + "]");
+					var val = $.trim(obj.val());
+					if (!val) {
+						layer.msg(fieldsAlert[i] + "不能为空哦~");
+						obj.focus();
+						return;
+					}
+					postData[fields[i]] = val;
+				}
+				$("[data-option]").each(function () {
+					var opt = $(this).attr("data-option");
+					var text = $.trim($(this).val());
+					if (!text) {
+						layer.msg("必填项不能为空！");
+						err = 1;
+						$(this).focus();
+						return false;
+					}
+					var option ={opt:opt,text:text};
+					options.push(option);
+				});
+				if (err) {
+					return false;
+				}
+				postData["options"] = options;
+				console.log(postData);
+				break;
 		}
-
-		$("[data-option]").each(function () {
-			var opt = $(this).attr("data-option");
-			var text = $.trim($(this).val());
-			if (!text) {
-				layer.msg("必填项不能为空！");
-				err = 1;
-				$(this).focus();
-				return false;
-			}
-			var option ={opt:opt,text:text};
-			options.push(option);
-		});
-		if (err) {
-			return false;
-		}
-		postData["options"] = options;
-		console.log(postData);
 
 		if (loadflag) {
 			return;
@@ -143,16 +168,18 @@
 		loadflag = 1;
 		$.post("/api/question", {
 			tag: "mod",
+			subtag: tag,
 			id: id,
 			data: JSON.stringify(postData)
 		}, function (resp) {
 			loadflag = 0;
 			if (resp.code == 0) {
-				 location.reload();
+				location.reload();
 			} else {
 				layer.msg(resp.msg);
 			}
-		}, "json")
+		}, "json");
+
 	})
 
 </script>
