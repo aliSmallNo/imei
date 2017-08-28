@@ -83,7 +83,7 @@
 </div>
 <script>
 	var mPhotos = {
-		title: '图片合集',
+		title: '所有图片',
 		data: []
 	};
 	$(document).on("click", ".j-img", function () {
