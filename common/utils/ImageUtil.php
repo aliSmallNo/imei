@@ -593,7 +593,7 @@ class ImageUtil
 				$thumbObj = Image::open($fileName)->zoomCrop($thumbWidth, $thumbHeight, 0xffffff, 'left', 'top');
 				$figureObj = Image::open($fileName)->zoomCrop($figureWidth, $figureHeight, 0xffffff, 'left', 'top');
 				AppUtil::logFile([$thumbWidth, $thumbHeight, $figureWidth, $figureHeight], 5, __FUNCTION__, __LINE__);
-				if ($squareFlag && 0) {
+				if ($squareFlag) {
 					if ($top >= 0) {
 						$thumbY = round($thumbHeight * $top / 100.0);
 						$figureY = round($figureHeight * $top / 100.0);
