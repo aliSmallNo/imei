@@ -592,6 +592,7 @@ class ImageUtil
 				$imgObj = Image::open($fileName);
 				$thumbObj = $imgObj->zoomCrop($thumbWidth, $thumbHeight, 0xffffff, 'center', 'center');
 				$figureObj = $imgObj->zoomCrop($figureWidth, $figureHeight, 0xffffff, 'center', 'center');
+				AppUtil::logFile([$thumbWidth, $thumbHeight, $figureWidth, $figureHeight], 5, __FUNCTION__, __LINE__);
 				if ($squareFlag) {
 					if ($top >= 0) {
 						$thumbY = round($thumbHeight * $top / 100.0);
@@ -612,8 +613,9 @@ class ImageUtil
 					}
 					if (2 > $thumbX) $thumbX = 0;
 					if (2 > $figureX) $figureX = 0;
-
+					AppUtil::logFile([$thumbX, $thumbY, $thumbSize], 5, __FUNCTION__, __LINE__);
 					$thumbObj = $thumbObj->crop($thumbX, $thumbY, $thumbSize, $thumbSize);
+					AppUtil::logFile([$figureX, $figureY, $figureSize], 5, __FUNCTION__, __LINE__);
 					$figureObj = $figureObj->crop($figureX, $figureY, $figureSize, $figureSize);
 				}
 				$thumbObj->save($fileThumb);
