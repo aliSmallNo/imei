@@ -328,7 +328,7 @@ class User extends ActiveRecord
 			$entity->uUpdatedBy = $editBy;
 			$entity->uOpenId = $openid;
 			$entity->uName = $wxInfo['nickname'];
-			list($thumb, $figure) = ImageUtil::save2Server($wxInfo['headimgurl'], false);
+			list($thumb, $figure) = ImageUtil::save2Server2($wxInfo['headimgurl'], false);
 			$entity->uThumb = $thumb;
 			$entity->uAvatar = $figure;
 			$entity->save();
@@ -701,7 +701,7 @@ class User extends ActiveRecord
 			$data['album'] = [];
 			if ($album && is_array($album) && count($album)) {
 				foreach ($album as $item) {
-					list($thumb, $figure) = ImageUtil::save2Server($item);
+					list($thumb, $figure) = ImageUtil::save2Server2($item);
 					if ($figure) {
 						$data['album'][] = $figure;
 					}

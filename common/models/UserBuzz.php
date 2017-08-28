@@ -154,13 +154,13 @@ class UserBuzz extends ActiveRecord
 			case "image":
 				$mediaId = isset($postData["MediaId"]) ? $postData["MediaId"] : "";
 				if ($mediaId) {
-					list($thumb, $debug) = ImageUtil::save2Server($mediaId, false);
+					list($thumb, $debug) = ImageUtil::save2Server2($mediaId, false);
 				}
 				break;
 			case "voice":
 				$mediaId = isset($postData["MediaId"]) ? $postData["MediaId"] : "";
 				if ($mediaId) {
-					list($debug) = ImageUtil::save2Server($mediaId);
+					list($debug) = ImageUtil::save2Server2($mediaId);
 				}
 				break;
 			case "text":
