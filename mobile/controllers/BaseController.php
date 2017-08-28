@@ -23,6 +23,7 @@ class BaseController extends Controller
 	static $WX_OpenId = "";
 
 	public static $branchId = 0;
+	public $ptitle = '';
 
 	public function beforeAction($action)
 	{

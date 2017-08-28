@@ -518,8 +518,8 @@ class ImageUtil
 				$path = AppUtil::imgDir() . $key;
 				$fileName = $path . '.' . $ext;
 				file_put_contents($fileName, $content);
-				$thumbSize = 160;
-				$figureSize = 600;
+				$thumbSize = 150;
+				$figureSize = 560;
 				if ($squareFlag) {
 					$figureWidth = $figureHeight = $figureSize;
 				} else {
@@ -567,65 +567,66 @@ class ImageUtil
 		$contentType = $httpInfo["content_type"];
 		$contentType = strtolower($contentType);
 		$ext = AppUtil::getExtName($contentType);
-		if ($ext && strlen($content) > 200) {
-			if ($ext == "amr") {
-				$fileName = AppUtil::imgDir(true) . 'voice/' . $key . '.' . $ext;
-				file_put_contents($fileName, $content);
-				$ret = '/voice/' . $key . '.' . $ext;
-				return [$ret, $ret];
-			} else {
-				$path = AppUtil::imgDir() . $key;
-				$fileName = $path . '.' . $ext;
-				file_put_contents($fileName, $content);
-				$thumbSize = $thumbWidth = $thumbHeight = 160;
-				$figureSize = $figureWidth = $figureHeight = 600;
-				list($srcWidth, $srcHeight) = getimagesize($fileName);
-				if ($srcWidth > $srcHeight) {
-					$figureWidth = round($figureHeight * $srcWidth / $srcHeight);
-					$thumbWidth = round($thumbHeight * $srcWidth / $srcHeight);
-				} else {
-					$figureHeight = round($figureWidth * $srcHeight / $srcWidth);
-					$thumbHeight = round($thumbWidth * $srcHeight / $srcWidth);
-				}
-				$fileThumb = $path . '_t.' . $ext;
-				$fileNormal = $path . '_n.' . $ext;
-				$thumbObj = Image::open($fileName)->zoomCrop($thumbWidth, $thumbHeight, 0xffffff, 'left', 'top');
-				$figureObj = Image::open($fileName)->zoomCrop($figureWidth, $figureHeight, 0xffffff, 'left', 'top');
-				if ($squareFlag) {
-					if ($top >= 0) {
-						$thumbY = round($thumbHeight * $top / 100.0);
-						$figureY = round($figureHeight * $top / 100.0);
-					} else {
-						$thumbY = round(($thumbHeight - $thumbSize) / 2.0);
-						$figureY = round(($figureHeight - $thumbSize) / 2.0);
-					}
-					if (2 > $thumbY) $thumbY = 0;
-					if (2 > $figureY) $figureY = 0;
-
-					if ($left >= 0) {
-						$thumbX = round($thumbWidth * $left / 100.0);
-						$figureX = round($figureWidth * $left / 100.0);
-					} else {
-						$thumbX = round(($thumbWidth - $thumbSize) / 2.0);
-						$figureX = round(($figureWidth - $figureSize) / 2.0);
-					}
-					if (2 > $thumbX) $thumbX = 0;
-					if (2 > $figureX) $figureX = 0;
-					$thumbObj = $thumbObj->crop($thumbX, $thumbY, $thumbSize, $thumbSize);
-					$figureObj = $figureObj->crop($figureX, $figureY, $figureSize, $figureSize);
-				}
-				$thumbObj->save($fileThumb);
-				$thumb = self::getUrl($fileThumb);
-				$figureObj->save($fileNormal);
-				$figure = self::getUrl($fileNormal);
-				//unlink($fileName);
-				return [$thumb, $figure];
-			}
+		if (!$ext || strlen($content) < 128) {
+			return ['', ''];
 		}
-		return ['', ''];
+		if ($ext == "amr") {
+			$fileName = AppUtil::imgDir(true) . 'voice/' . $key . '.' . $ext;
+			file_put_contents($fileName, $content);
+			$ret = '/voice/' . $key . '.' . $ext;
+			return [$ret, $ret];
+		} else {
+			$path = AppUtil::imgDir() . $key;
+			$fileName = $path . '.' . $ext;
+			file_put_contents($fileName, $content);
+			$thumbSize = $thumbWidth = $thumbHeight = 150;
+			$figureSize = $figureWidth = $figureHeight = 560;
+			list($srcWidth, $srcHeight) = getimagesize($fileName);
+			if ($srcWidth > $srcHeight) {
+				$figureWidth = round($figureHeight * $srcWidth / $srcHeight);
+				$thumbWidth = round($thumbHeight * $srcWidth / $srcHeight);
+			} else {
+				$figureHeight = round($figureWidth * $srcHeight / $srcWidth);
+				$thumbHeight = round($thumbWidth * $srcHeight / $srcWidth);
+			}
+			$fileThumb = $path . '_t.' . $ext;
+			$fileNormal = $path . '_n.' . $ext;
+			$thumbObj = Image::open($fileName)->zoomCrop($thumbWidth, $thumbHeight, 0xffffff, 'left', 'top');
+			$figureObj = Image::open($fileName)->zoomCrop($figureWidth, $figureHeight, 0xffffff, 'left', 'top');
+			if ($squareFlag) {
+				if ($top >= 0) {
+					$thumbY = round($thumbHeight * $top / 100.0);
+					$figureY = round($figureHeight * $top / 100.0);
+				} else {
+					$thumbY = round(($thumbHeight - $thumbSize) / 2.0);
+					$figureY = round(($figureHeight - $thumbSize) / 2.0);
+				}
+				if (2 > $thumbY) $thumbY = 0;
+				if (2 > $figureY) $figureY = 0;
+
+				if ($left >= 0) {
+					$thumbX = round($thumbWidth * $left / 100.0);
+					$figureX = round($figureWidth * $left / 100.0);
+				} else {
+					$thumbX = round(($thumbWidth - $thumbSize) / 2.0);
+					$figureX = round(($figureWidth - $figureSize) / 2.0);
+				}
+				if (2 > $thumbX) $thumbX = 0;
+				if (2 > $figureX) $figureX = 0;
+				$thumbObj = $thumbObj->crop($thumbX, $thumbY, $thumbSize, $thumbSize);
+				$figureObj = $figureObj->crop($figureX, $figureY, $figureSize, $figureSize);
+			}
+			$thumbObj->save($fileThumb);
+			$thumb = self::getUrl($fileThumb);
+			$figureObj->save($fileNormal);
+			$figure = self::getUrl($fileNormal);
+			//unlink($fileName);
+			return [$thumb, $figure];
+		}
 	}
 
-	public static function clippingMask($sourceFile, $maskFile, $saveAs, $width, $height = 0)
+	public
+	static function clippingMask($sourceFile, $maskFile, $saveAs, $width, $height = 0)
 	{
 		if (!$height) {
 			$height = $width;
