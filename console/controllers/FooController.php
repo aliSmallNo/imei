@@ -12,10 +12,10 @@ use common\models\ChatMsg;
 use common\models\QuestionSea;
 use common\models\User;
 use common\models\UserNet;
+use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
-use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -484,49 +484,22 @@ class FooController extends Controller
 
 //		return;
 
-		$imagePath = 'https://img.meipo100.com/2017/84/113272_n.jpg';
+		/*$imagePath = 'https://img.meipo100.com/2017/84/113272_n.jpg';
 		$imagePath = ImageUtil::getFilePath($imagePath);
 		echo $imagePath . '  ' . __LINE__;
 		//AppUtil::imgDir(true) . 'default-meipo.jpg';
 		$saveAs = AppUtil::imgDir() . RedisUtil::getImageSeq() . '.png';
 
 		self::getCircleAvatar($imagePath, $saveAs, 440);
-		var_dump($saveAs);
-	}
-
-	function getCircleAvatar($avatar, $saveAs, $size)
-	{
-		/*
-		$circle = new \Imagick();
-		$circle->newImage($size, $size, 'none');
-		$circle->setimageformat('png');
-		$circle->setimagematte(true);
-
-		/**
-		 * @des     在矩形上画一个白色圆
-		 */
-		/*$draw = new \ImagickDraw();
-		$draw->setfillcolor('#fff');
-		$draw->circle($r, $r, $r, $size);
-		$circle->drawimage($draw);*/
-
-		$mergePath = AppUtil::rootDir() . 'mobile/assets/mask_heart.png';
-		echo $mergePath . '  ' . __LINE__;
-		$circle = new \Imagick();
-		$circle->readImage($mergePath);
-		$circle->cropThumbnailImage($size, $size);
-
-		/**
-		 * @des     裁剪头像成圆形
-		 */
-		$imagick = new \Imagick();
-		$imagick->readImage($avatar);
-		$imagick->setImageFormat('png');
-		$imagick->setimagematte(true);
-		$imagick->cropThumbnailImage($size, $size);
-		$imagick->compositeimage($circle, \Imagick::COMPOSITE_COPYOPACITY, 0, 0);
-		$imagick->writeImage($saveAs);
-		$imagick->destroy();
+		var_dump($saveAs);*/
+		$uId = 131379;
+		$dt = date('Y-m-d', time() + 86400 * 10);
+		$bgSrc = UserQR::createInvitation($uId,
+			'大测试',
+			'fanbb',
+			substr($dt, 0, 4),
+			date("Y年n月j日 晚6:58\n东台国际大酒店牡丹厅", strtotime($dt)));
+		var_dump($bgSrc);
 	}
 
 	public function actionZp()

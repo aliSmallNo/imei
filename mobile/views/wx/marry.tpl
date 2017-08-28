@@ -18,14 +18,17 @@
 	{{else}}
 	<div class="marry0">
 		<div style="height: 3rem"></div>
-		<label>姓名
-			<input class="input-name" maxlength="4">
-		</label>
 		<label>
-			<input class="input-radio" name="gender" type="radio" value="1"><span>男士</span>
+			<input class="input-name" maxlength="4" placeholder="输入你的姓名">
 		</label>
+		<label>&</label>
 		<label>
-			<input class="input-radio" name="gender" type="radio" value="0"><span>女士</span>
+			<span>名星</span>
+			<select class="input-star">
+				{{foreach from=$stars key=k item=item}}
+				<option value="{{$k}}">{{$item.name}}</option>
+				{{/foreach}}
+			</select>
 		</label>
 		<div style="height: .5rem"></div>
 		<label><span>良辰吉日</span>
@@ -50,9 +53,10 @@
 <input type="hidden" id="cNAME" value="{{$name}}">
 <input type="hidden" id="cGENDER" value="{{$gender}}">
 <input type="hidden" id="cDATE" value="{{$dt}}">
+<input type="hidden" id="cStar" value="{{$star}}">
 <input type="hidden" id="cUID" value="{{$userId}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/marry.js?v=1.7.5" src="/assets/js/require.js"></script>
+<script data-main="/js/marry.js?v=1.7.6" src="/assets/js/require.js"></script>

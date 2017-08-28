@@ -567,7 +567,7 @@ class User extends ActiveRecord
 			$uInfo["gallery3"] = array_slice(self::gallery($uInfo["album"]), 0, 3);
 		}
 		$baseInfo = [];
-		$fields = ['height_t', 'income_t', 'education_t', 'estate_t', 'car_t'];
+		$fields = ['marital_t', 'height_t', 'weight_t', 'income_t', 'education_t', 'estate_t'];
 		foreach ($fields as $field) {
 			if ($uInfo[$field]) {
 				$baseInfo[] = $uInfo[$field];
@@ -609,6 +609,7 @@ class User extends ActiveRecord
 			['content' => '基本资料', 'header' => 1],
 			['caption' => '昵称', 'content' => 'name'],
 			['caption' => '性别', 'content' => 'gender_t'],
+			['caption' => '婚姻状况', 'content' => 'marital_t'],
 			['caption' => '籍贯', 'content' => 'homeland_t'],
 			['caption' => '所在城市', 'content' => 'location_t'],
 			['caption' => '出生年份', 'content' => 'birthyear'],
@@ -1041,7 +1042,6 @@ class User extends ActiveRecord
 				JOIN im_user_wechat as w on u.uId=w.wUId AND w.wSubscribe=1
 				LEFT JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=$pinCat
 				WHERE $condition order by dist, rank desc, u.uRank desc limit $limit";
-		AppUtil::logFile($sql, 5, __FUNCTION__, __LINE__);
 		$ret = $conn->createCommand($sql)->queryAll();
 		$rows = [];
 		$IDs = [0];
