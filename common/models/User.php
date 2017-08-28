@@ -691,7 +691,7 @@ class User extends ActiveRecord
 		$avatar = isset($data["img"]) ? $data["img"] : '';
 		unset($data['img']);
 		if ($avatar) {
-			list($thumb, $figure) = ImageUtil::save2Server($avatar, true);
+			list($thumb, $figure) = ImageUtil::save2Server2($avatar, true);
 			$data["thumb"] = $thumb;
 			$data["img"] = $figure;
 		}
