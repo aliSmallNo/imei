@@ -445,7 +445,7 @@ class User extends ActiveRecord
 		}
 		$offset = ($page - 1) * $pageSize;
 		$orderBy = ' order by uAddedOn desc ';
-		if (isset($params[':status']) && $params[':status'] == 0) {
+		if (isset($params[':status']) && in_array($params[':status'], [0, 1])) {
 			$orderBy = ' order by uUpdatedOn desc,uAddedOn desc ';
 		}
 		$conn = AppUtil::db();
