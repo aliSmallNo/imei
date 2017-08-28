@@ -594,7 +594,7 @@
 			}, function (resp) {
 				resonLoad = 0;
 				if (resp.code == 0) {
-//					location.reload();
+					location.reload();
 				}
 				layer.msg(resp.msg);
 			}, "json")

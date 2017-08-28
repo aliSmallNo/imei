@@ -746,6 +746,29 @@ class User extends ActiveRecord
 		return $uid;
 	}
 
+	public static function setAvatar($uid, $thumb = '', $figure = '', $adminId = 1)
+	{
+		$Info = self::findOne(["uId" => $uid]);
+		if (!$Info) {
+			return [];
+		}
+		$uId = $Info->uId;
+		$openId = $Info->uOpenId;
+		$note = ['before' => [$Info->uThumb, $Info->uAvatar]];
+		if ($thumb) {
+			$Info->uThumb = $thumb;
+		}
+		if ($figure) {
+			$Info->uAvatar = $figure;
+		}
+		$note['after'] = [$thumb, $figure];
+		LogAction::add($uId, $openId, LogAction::ACTION_AVATAR, json_encode($note, JSON_UNESCAPED_UNICODE));
+		$Info->uUpdatedOn = date('Y-m-d H:i:s');
+		$Info->uUpdatedBy = $adminId;
+		$Info->save();
+		return true;
+	}
+
 	public static function album($mediaIds, $openId, $f = 'add')
 	{
 		$Info = self::findOne(["uOpenId" => $openId]);
