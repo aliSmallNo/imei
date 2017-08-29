@@ -41,6 +41,8 @@ class WechatUtil
 	const NOTICE_FAVOR = 'notice_favor';
 	const NOTICE_ROUTINE = 'notice_routine';
 	const NOTICE_MAKE_FRIRENDS = 'notice_firends';
+	const NOTICE_CERT_GRANT = 'notice_cert_grant';
+	const NOTICE_CERT_DENY = 'notice_cert_deny';
 
 	/**
 	 * @param $sessionKey
@@ -523,6 +525,24 @@ class WechatUtil
 				$keywords['first'] = "新人注册福利到啦，媒桂花奖励到啦。\n";
 				$keywords['remark'] = date("\nY年n月j日 H:i");
 				$msgCat = UserMsg::CATEGORY_REWARD_NEW;
+				break;
+			case self::NOTICE_CERT_GRANT:
+				$templateId = '4nyGB0Pxql4OYlE3D8Rl_g7tZfOZQMjlKfjrnaKLb6Y';
+				$url = $wxUrl . "/wx/single#sme";
+				$keywords['first'] = "你好，" . $nickname . "，你的实名认证审核通过了\n";
+				$keywords['keyword1'] = '实名认证通过';
+				$keywords['keyword2'] = date("Y年n月j日 H:i");
+				$keywords['remark'] = '如有疑问，请拨打咨询热线010-56123309';
+				$msgCat = UserMsg::CATEGORY_CERT_GRANT;
+				break;
+			case self::NOTICE_CERT_DENY:
+				$templateId = '4nyGB0Pxql4OYlE3D8Rl_g7tZfOZQMjlKfjrnaKLb6Y';
+				$url = $wxUrl . "/wx/cert?id=" . $encryptId;
+				$keywords['first'] = "你好，" . $nickname . "，你的实名认证审核不通过，请重新上传你的手持身份证照片\n";
+				$keywords['keyword1'] = '实名认证失败';
+				$keywords['keyword2'] = date("Y年n月j日 H:i");
+				$keywords['remark'] = '如有疑问，请拨打咨询热线010-56123309';
+				$msgCat = UserMsg::CATEGORY_CERT_DENY;
 				break;
 			case self::NOTICE_APPROVE:
 				if (!$msgCat) {

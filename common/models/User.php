@@ -847,7 +847,8 @@ class User extends ActiveRecord
 	{
 		$Info = self::findOne(["uId" => $id]);
 		if ($flag && $Info) {
-			WechatUtil::regNotice($id, "cert" . $flag);
+//			WechatUtil::regNotice($id, "cert" . $flag);
+			WechatUtil::templateMsg($flag == "pass" ? WechatUtil::NOTICE_CERT_GRANT : WechatUtil::NOTICE_CERT_DENY, $id);
 			return self::edit($id, [
 				"uCertStatus" => ($flag == "pass") ? User::CERT_STATUS_PASS : User::CERT_STATUS_FAIL,
 				"uCertDate" => date("Y-m-d H:i:s"),

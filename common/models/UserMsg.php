@@ -38,6 +38,8 @@ class UserMsg extends ActiveRecord
 	const CATEGORY_UPGRADE = 188;
 	const CATEGORY_SMS_RECALL = 200;
 	const CATEGORY_PRESENT = 210;
+	const CATEGORY_CERT_GRANT = 220;
+	const CATEGORY_CERT_DENY = 222;
 	//const CATEGORY_ROUTINE = 250;
 	const CATEGORY_FRIRENDS = 260;
 
@@ -60,6 +62,8 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_UPGRADE => "最近更新",
 		self::CATEGORY_SMS_RECALL => "短信召回老用户",
 		self::CATEGORY_PRESENT => "收到媒桂花",
+		self::CATEGORY_CERT_GRANT => "认证审核成功",
+		self::CATEGORY_CERT_DENY => "认证审核失败",
 		self::CATEGORY_FRIRENDS => "交友活动",
 
 	];
