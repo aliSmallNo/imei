@@ -5343,7 +5343,7 @@ section {
   .cert-bg div {
     width: 26rem;
     height: 18rem;
-    background-color: rgba(0, 0, 0, 0.7); }
+    background-color: rgba(0, 0, 0, 0.35); }
 
 .cert-img {
   position: relative; }
@@ -5353,7 +5353,7 @@ section {
     color: #fff;
     top: 50%;
     left: 50%;
-    border: 1px dotted #fff;
+    border: 1px dashed #fff;
     border-radius: 3.6rem;
     width: 7rem;
     height: 7rem;
