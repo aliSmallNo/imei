@@ -881,7 +881,7 @@ class ApiController extends Controller
 					$title = '有人给你送花了',
 					$subTitle = 'TA给你送媒桂花了，快去看看吧~',
 					$wxInfo['uId']);
-				return self::renderAPI(0, '送花成功~');
+				return self::renderAPI(0, '送花 ' . $amt . '朵 成功~');
 			case "setting":
 				$flag = self::postParam("flag", 0);
 				$setfield = self::postParam("set", 0);
