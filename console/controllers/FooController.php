@@ -9,15 +9,11 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
-use common\models\QuestionSea;
 use common\models\User;
-use common\models\UserMsg;
 use common\models\UserNet;
-use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
-use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -494,14 +490,18 @@ class FooController extends Controller
 
 		self::getCircleAvatar($imagePath, $saveAs, 440);
 		var_dump($saveAs);*/
-		$uId = 131379;
+
+
+		AppUtil::logFile('test ', 5);
+
+		/*$uId = 131379;
 		$dt = date('Y-m-d', time() + 86400 * 10);
 		$bgSrc = UserQR::createInvitation($uId,
 			'大测试',
 			'fanbb',
 			substr($dt, 0, 4),
 			date("Y年n月j日 晚6:58\n东台国际大酒店牡丹厅", strtotime($dt)));
-		var_dump($bgSrc);
+		var_dump($bgSrc);*/
 	}
 
 	public function actionZp()
