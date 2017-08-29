@@ -465,7 +465,9 @@ class User extends ActiveRecord
 		foreach ($ret as $row) {
 			$items[] = self::fmtRow($row);
 		}
-		$sql = "SELECT count(1) FROM im_user WHERE uId>0 $strCriteria ";
+		$sql = "SELECT count(1) FROM im_user as u
+				JOIN im_user_wechat as w on w.wUId=u.uId
+				WHERE uId>0 $strCriteria ";
 		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
 		return [$items, $count];
 	}
@@ -482,7 +484,8 @@ class User extends ActiveRecord
 		}
 		$sqlPart = trim($sqlPart, ',');
 		$sql = "select $sqlPart
-				from im_user
+				from im_user as u
+				JOIN im_user_wechat as w on w.wUId=u.uId
 				WHERE uId>0 $strCriteria ";
 		$conn = AppUtil::db();
 		unset($params[':status']);

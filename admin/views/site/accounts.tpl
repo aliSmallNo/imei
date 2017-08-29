@@ -144,7 +144,7 @@
 	}
 
 	.stat-item {
-		margin-left: 30px;
+		margin-left: 20px;
 		font-size: 14px;
 		font-weight: 500;
 	}
@@ -200,6 +200,7 @@
 				<option value="{{$k}}" {{if $k==$sub_status}}selected{{/if}}>{{$item}}</option>
 				{{/foreach}}
 			</select>
+			<label><input type="checkbox" name="fonly" value="1" {{if $fonly}}checked{{/if}}> 只显示关注 </label>
 			<input type="submit" class="btn btn-primary" value="查询">
 			<span class="stat-item">
 				<span><b>到访</b>{{$stat.amt}}</span>
@@ -216,7 +217,7 @@
 		<ul class="nav nav-tabs">
 			{{foreach from=$partHeader key=key item=prod}}
 			<li class="ng-scope {{if $status == $key}}active{{/if}}">
-				<a href="/site/accounts?status={{$key}}&name={{$name}}&phone={{$phone}}&sub_status={{$sub_status}}" class="ng-binding">
+				<a href="/site/accounts?fonly={{$fonly}}&status={{$key}}&name={{$name}}&phone={{$phone}}&sub_status={{$sub_status}}" class="ng-binding">
 					{{$prod}} {{if $partCount[$key]}}<span class="badge">{{$partCount[$key]}}</span>{{/if}}
 				</a>
 			</li>

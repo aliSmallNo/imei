@@ -256,6 +256,7 @@ class SiteController extends BaseController
 		$page = self::getParam("page", 1);
 		$name = self::getParam('name');
 		$phone = self::getParam('phone');
+		$fonly = self::getParam('fonly', 0);
 		$status = self::getParam('status', 0);
 		$subStatus = self::getParam('sub_status', 0);
 
@@ -276,6 +277,10 @@ class SiteController extends BaseController
 			$criteria[] = "  uName like :name ";
 			$partCriteria[] = "  uName like :name ";
 			$params[':name'] = "%$name%";
+		}
+		if ($fonly) {
+			$criteria[] = " wSubscribe=1";
+			$partCriteria[] = " wSubscribe=1";
 		}
 
 		list($list, $count) = User::users($criteria, $params, $page);
@@ -319,6 +324,7 @@ class SiteController extends BaseController
 				'stat' => $stat,
 				"name" => $name,
 				"phone" => $phone,
+				'fonly' => $fonly,
 				'pagination' => $pagination,
 				'category' => 'users',
 				"partCount" => $partCount,
