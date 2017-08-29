@@ -53,7 +53,7 @@
 	</div>
 	<div class="splay-step-text">
 		<span>8</span>
-		<div>打赏媒婆玫瑰花，之后就可以等待对方的回复了，如果通过就可以用微信聊天咯。</div>
+		<div>打赏媒婆媒桂花，之后就可以等待对方的回复了，如果通过就可以用微信聊天咯。</div>
 	</div>
 	<div class="splay-step-img">
 		<img src="/images/s_play_8.jpg">

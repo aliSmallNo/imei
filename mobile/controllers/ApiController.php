@@ -849,7 +849,7 @@ class ApiController extends Controller
 					return self::renderAPI(129, '参数错误~');
 				}
 
-			case "togive": // 送玫瑰花
+			case "togive": // 送媒桂花
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
@@ -879,7 +879,7 @@ class ApiController extends Controller
 				WechatUtil::templateMsg(WechatUtil::NOTICE_PRESENT,
 					$id,
 					$title = '有人给你送花了',
-					$subTitle = 'TA给你送玫瑰花了，快去看看吧~',
+					$subTitle = 'TA给你送媒桂花了，快去看看吧~',
 					$wxInfo['uId']);
 				return self::renderAPI(0, '送花成功~');
 			case "setting":
