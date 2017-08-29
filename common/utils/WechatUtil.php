@@ -534,6 +534,7 @@ class WechatUtil
 				$keywords['keyword2'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = '如有疑问，请拨打咨询热线010-56123309';
 				$msgCat = UserMsg::CATEGORY_CERT_GRANT;
+				$giverId = $takerId;
 				break;
 			case self::NOTICE_CERT_DENY:
 				$templateId = '4nyGB0Pxql4OYlE3D8Rl_g7tZfOZQMjlKfjrnaKLb6Y';
@@ -543,6 +544,7 @@ class WechatUtil
 				$keywords['keyword2'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = '如有疑问，请拨打咨询热线010-56123309';
 				$msgCat = UserMsg::CATEGORY_CERT_DENY;
+				$giverId = $takerId;
 				break;
 			case self::NOTICE_APPROVE:
 				if (!$msgCat) {

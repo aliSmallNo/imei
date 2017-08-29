@@ -137,6 +137,9 @@ class UserMsg extends ActiveRecord
 		$ret = $conn->createCommand($sql)->bindValues([
 			':uid' => $hid
 		])->queryAll();
+		AppUtil::logFile($conn->createCommand($sql)->bindValues([
+			':uid' => $hid
+		])->getRawSql(), 5, __FUNCTION__, __LINE__);
 		$nextPage = 0;
 		if ($ret && count($ret) > $pageSize) {
 			array_pop($ret);
@@ -173,6 +176,14 @@ class UserMsg extends ActiveRecord
 				case self::CATEGORY_CHAT:
 					$v["url"] = "/wx/single#scontacts";
 					$v["text"] = $v["uName"] . "给你发了一条消息";
+					break;
+				case self::CATEGORY_CERT_GRANT:
+					$v["url"] = "/wx/cert?id=" . $v["secretId"];
+					$v["text"] = "实名认证通过啦！";
+					break;
+				case self::CATEGORY_CERT_DENY:
+					$v["url"] = "/wx/cert?id=" . $v["secretId"];
+					$v["text"] = "实名认证不通过，请重新上传";
 					break;
 				case self::CATEGORY_AUDIT:
 					$v["url"] = "javascript:;";
