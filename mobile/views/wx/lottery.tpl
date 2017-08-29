@@ -1,6 +1,6 @@
 <style>
 	.lot-bg {
-		background: url('/images/sign/imei_sign_9.jpeg') no-repeat center center;
+		background: url(/images/sign/imei_sign_9.jpeg) no-repeat center center;
 		background-size: 100% 100%;
 		position: relative;
 	}
