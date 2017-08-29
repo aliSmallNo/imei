@@ -230,15 +230,12 @@
 				item["answer"] = answer;
 			}
 			postData.push(item);
-
 		});
 
 		if (err) {
 			return;
 		}
-
-		console.log(postData);
-
+		//console.log(postData);
 		$("#postData").val(JSON.stringify(postData));
 		$("form").submit();
 	});
@@ -246,7 +243,6 @@
 	$(".questionAdd").on("click", function () {
 		$(".qlist").append($("#tpl_question").html());
 	});
-
 
 	$(function () {
 		if ($('.alert-success').length > 0) {
