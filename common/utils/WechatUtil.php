@@ -391,6 +391,11 @@ class WechatUtil
 						],
 						[
 							"type" => "view",
+							"name" => "每日签到",
+							"url" => $wxUrl . "/wx/lottery"
+						],
+						[
+							"type" => "view",
 							"name" => "通知中心",
 							"url" => $wxUrl . "/wx/notice"
 						]
@@ -399,11 +404,6 @@ class WechatUtil
 				[
 					"name" => "更多",
 					"sub_button" => [
-						[
-							"type" => "view",
-							"name" => "签到领奖",
-							"url" => $wxUrl . "/wx/lottery"
-						],
 						[
 							"type" => "view",
 							"name" => "官方活动",
