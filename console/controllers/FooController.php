@@ -443,8 +443,8 @@ class FooController extends Controller
 			$phone = $row['uPhone'];
 			QueueUtil::loadJob('sendSMS', [
 				'phone' => $phone,
-				'msg' => '有酬征集意见领袖用户，参加东台线下讨论会（每月至少一次），名额有限，回复我要报名+一条建议发送至公众号',
-				'rnd' => 112
+				'msg' => '真实交友，我们是认真的！实名认证就送50个花粉值，转发朋友圈，花粉值就可兑现红包哦。单身的小伙伴，赶快来微媒100实名认证吧！',
+				'rnd' => 109
 			]);
 		}
 		var_dump(count($ret));
