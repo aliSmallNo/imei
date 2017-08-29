@@ -518,8 +518,12 @@ class ImageUtil
 			$path = AppUtil::imgDir() . $key;
 			$fileName = $path . '.' . $ext;
 			file_put_contents($fileName, $content);
-			$thumbSize = $thumbWidth = $thumbHeight = 150;
-			$figureSize = $figureWidth = $figureHeight = 560;
+			$thumbSize = $thumbWidth = $thumbHeight = 180;
+			$figureSize = $figureWidth = $figureHeight = 640;
+			if($squareFlag){
+				$thumbSize = $thumbWidth = $thumbHeight = 150;
+				$figureSize = $figureWidth = $figureHeight = 560;
+			}
 			list($srcWidth, $srcHeight) = getimagesize($fileName);
 			if ($srcWidth > $srcHeight) {
 				$figureWidth = round($figureHeight * $srcWidth / $srcHeight);
