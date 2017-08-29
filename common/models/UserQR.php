@@ -199,6 +199,7 @@ class UserQR extends ActiveRecord
 		'wuyz' => ['name' => '吴彦祖', 'avatar' => 'star_wuyz.jpg'],
 		'yangm' => ['name' => '杨幂', 'avatar' => 'star_yangm.jpg'],
 		'zhaoly' => ['name' => '赵丽颖', 'avatar' => 'star_zhaoly.jpg'],
+		'cheny' => ['name' => '陈瑶', 'avatar' => 'star_cheny.jpg'],
 	];
 
 	public static function createInvitation($uid, $nickname, $starId, $h2, $h5)
