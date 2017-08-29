@@ -10,6 +10,7 @@ namespace common\models;
 
 
 use common\utils\AppUtil;
+use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
 
 class Pin extends ActiveRecord
@@ -58,8 +59,10 @@ class Pin extends ActiveRecord
 			':lng' => $lng,
 		])->execute();
 
-		$sql='update im_pin set pPoint= GeomFromText( CONCAT(\'POINT(\',pLat,\' \',pLng,\')\')) WHERE pPoint is null';
+		$sql = 'update im_pin set pPoint= GeomFromText( CONCAT(\'POINT(\',pLat,\' \',pLng,\')\')) WHERE pPoint is null';
 		$conn->createCommand($sql)->execute();
+
+		QueueUtil::loadJob('regeo', ['id' => $pid]);
 
 		return $entity->pId;
 	}
@@ -87,5 +90,61 @@ class Pin extends ActiveRecord
 			}
 		}
 		return $ret;
+	}
+
+	static $GeoMap = [
+		'province' => 'pProvince',
+		'city' => 'pCity',
+		'citycode' => 'pCityCode',
+		'district' => 'pDistrict',
+		'adcode' => 'pAdCode',
+		'township' => 'pTown',
+		'towncode' => 'pTownCode'
+	];
+
+	public static function regeo($uid, $lat = '', $lng = '', $conn = '')
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		if (!$lat || !$lng) {
+			$sql = 'select pLat,pLng from im_pin WHERE pPId=:id and pCategory=' . self::CAT_NOW;
+			$ret = $conn->createCommand($sql)->bindValues([':id' => $uid])->queryOne();
+			if ($ret) {
+				$lat = $ret['pLat'];
+				$lng = $ret['pLng'];
+			}
+		}
+		if (!$lat || !$lng) return false;
+		$url = 'http://restapi.amap.com/v3/geocode/regeo?output=json&location=%s,%s&key=3b7105f564d93737d4b90411793beb67&radius=500&extensions=base';
+		$url = sprintf($url, $lng, $lat);
+		$ret = AppUtil::httpGet($url);
+		$ret = json_decode($ret, 1);
+		if (!isset($ret['regeocode']['addressComponent'])) {
+			return false;
+		}
+
+		$info = $ret['regeocode']['addressComponent'];
+		$sql = 'update im_pin set pRaw=:raw';
+		$params = [
+			':raw' => json_encode($info, JSON_UNESCAPED_UNICODE),
+			':id' => $uid,
+			':cat' => self::CAT_NOW,
+		];
+		foreach (self::$GeoMap as $key => $field) {
+			if (isset($info[$key])) {
+				$val = $info[$key];
+				if ($key == 'city' && !$info[$key] && $info['province']) {
+					$val = $info['province'];
+				}
+				if (is_array($val)) continue;
+				$sql .= ',' . $field . '=:' . $key;
+				$params[':' . $key] = $val;
+			}
+		}
+		$sql .= ' WHERE pPId=:id and pCategory=:cat ';
+		$conn->createCommand($sql)->bindValues($params)->execute();
+
+		return true;
 	}
 }

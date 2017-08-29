@@ -489,10 +489,17 @@ class ApiController extends Controller
 				}
 
 				$data["role"] = ($tag == 'mreg') ? User::ROLE_MATCHER : User::ROLE_SINGLE;
-				$ret = User::reg($data);
+				$userId = User::reg($data);
 				//Rain: 刷新用户cache数据
 				UserWechat::getInfoByOpenId($openId, 1);
-				return self::renderAPI(0, '保存成功啦~', $ret);
+				$data = [
+					'uid' => $userId,
+					'users' => []
+				];
+				if ($tag == 'sreg' && $userId) {
+					$data['users'] = User::greetUsers($userId);
+				}
+				return self::renderAPI(0, '保存成功啦~', $data);
 			case "album":
 				$f = self::postParam('f', 'add');
 				$text = ($f == "add" ? "添加" : '删除');
@@ -625,9 +632,9 @@ class ApiController extends Controller
 					'result' => $result,
 					'wechatID' => $wechatID
 				]);
-			case "addmewx":     //添加我微信
-			case "iaddwx":      //我添加微信
-			case "heartbeat":   // 心动列表
+			case "addmewx":
+			case "iaddwx":
+			case "heartbeat":
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');

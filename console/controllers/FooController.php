@@ -9,6 +9,7 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
+use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserWechat;
@@ -477,9 +478,18 @@ class FooController extends Controller
 
 		self::getCircleAvatar($imagePath, $saveAs, 440);
 		var_dump($saveAs);*/
+		$conn = AppUtil::db();
+		$sql = 'select pPId,pLat,pLng from im_pin WHERE pCategory=200 AND pCity=\'\' ';
+		$ret = $conn->createCommand($sql)->queryAll();
+		$count = 0;
+		foreach ($ret as $row) {
+			$count += Pin::regeo($row['pPId'], $row['pLat'], $row['pLng'], $conn) ? 1 : 0;
+		}
+		var_dump($count);
+		var_dump(count($ret));
+		//Pin::regeo(131379);
+		//Pin::regeo(134986);
 
-
-		AppUtil::logFile('test ', 5);
 
 		/*$uId = 131379;
 		$dt = date('Y-m-d', time() + 86400 * 10);

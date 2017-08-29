@@ -1970,5 +1970,25 @@ class User extends ActiveRecord
 		/*{"fans":1,"chat":1,"favor":1}*/
 	}
 
+	public static function greetUsers($uid, $conn = '')
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$ret = [];
+		$sql = 'select * from im_user WHERE uId=:id';
+		$uInfo = $conn->createCommand($sql)->bindValues([
+			':id' => $uid
+		])->queryOne();
+		if (!$uInfo) return $ret;
+		$gender = $uInfo['uGender'];
+		if ($gender != self::GENDER_MALE) return $ret;
+		$location = json_decode($uInfo['uLocation'], 1);
+		if (!$location) return $ret;
+		list($prov, $city) = array_column($location, 'text');
+		$birthYear = $uInfo['uBirthYear'];
+		$sql = '';
+		return $ret;
+	}
 
 }
