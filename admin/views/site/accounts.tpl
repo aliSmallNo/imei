@@ -144,7 +144,7 @@
 	}
 
 	.stat-item {
-		margin-left: 20px;
+		margin-left: 15px;
 		font-size: 14px;
 		font-weight: 500;
 	}
@@ -192,6 +192,7 @@
 	</div>
 	<div class="row">
 		<form class="form-inline" action="/site/accounts?status={{$status}}">
+			<label><input type="checkbox" name="fonly" value="1" {{if $fonly}}checked{{/if}}> 只显示已关注 </label>
 			<input class="form-control" name="name" placeholder="名字" value="{{$name}}">
 			<input class="form-control" name="phone" placeholder="手机号" value="{{$phone}}">
 			<select class="form-control" name="sub_status">
@@ -200,11 +201,10 @@
 				<option value="{{$k}}" {{if $k==$sub_status}}selected{{/if}}>{{$item}}</option>
 				{{/foreach}}
 			</select>
-			<label><input type="checkbox" name="fonly" value="1" {{if $fonly}}checked{{/if}}> 只显示关注 </label>
 			<input type="submit" class="btn btn-primary" value="查询">
 			<span class="stat-item">
 				<span><b>到访</b>{{$stat.amt}}</span>
-				<span><b>关注公众号</b>{{$stat.follow}}</span>
+				<span><b>已关注</b>{{$stat.follow}}</span>
 				<span><b>已注册</b>{{$stat.reg}}</span>
 				<span><b>帅哥</b>{{$stat.male}}</span>
 				<span><b>美女</b>{{$stat.female}}</span>
