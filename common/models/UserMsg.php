@@ -137,9 +137,6 @@ class UserMsg extends ActiveRecord
 		$ret = $conn->createCommand($sql)->bindValues([
 			':uid' => $hid
 		])->queryAll();
-		AppUtil::logFile($conn->createCommand($sql)->bindValues([
-			':uid' => $hid
-		])->getRawSql(), 5, __FUNCTION__, __LINE__);
 		$nextPage = 0;
 		if ($ret && count($ret) > $pageSize) {
 			array_pop($ret);
