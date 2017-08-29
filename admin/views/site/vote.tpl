@@ -39,31 +39,31 @@
 		color: #777;
 	}
 
-	.users {
+	.members {
 		padding-left: 20px;
 	}
 
-	.users li {
+	.members li {
 		padding-bottom: 5px;
 		font-size: 13px;
 	}
 
-	.users li img {
+	.members li img {
 		width: 32px;
 		height: 32px;
 		vertical-align: middle;
 		border-radius: 16px;
 	}
 
-	.users li.gender11 img {
+	.members li.gender11 img {
 		border: 2px solid #007aff;
 	}
 
-	.users li.gender10 img {
+	.members li.gender10 img {
 		border: 2px solid #f06292;
 	}
 
-	.users li.gender img {
+	.members li.gender img {
 		border: 2px solid #51c332;
 	}
 </style>
@@ -107,7 +107,7 @@
 			ids: ids
 		}, function (resp) {
 			console.log(resp);
-			var temp = "<ol class='users'>{[#items]}<li class='gender{[gender]}'><img src='{[thumb]}'> {[phone]} {[name]}</li>{[/items]}</ol>";
+			var temp = "<ol class='members'>{[#items]}<li class='gender{[gender]}'><img src='{[thumb]}'> {[phone]} {[name]}</li>{[/items]}</ol>";
 			layer.open({
 				content: Mustache.render(temp, resp.data),
 				area: ['400px', '500px'],
