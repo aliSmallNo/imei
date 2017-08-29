@@ -458,20 +458,7 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		/*$conn = AppUtil::db();
-		$sql = 'update im_user_msg set mKey=(SELECT gId FROM im_chat_group WHERE gUId1=:uid1 AND gUId2=:uid2) WHERE mId=:id';
-		$cmd = $conn->createCommand($sql);
 
-		$sql = 'SELECT mId,mUId,mAddedBy,mKey from im_user_msg WHERE mKey=0 AND mCategory=170 AND mAddedBy>1';
-		$ret = $conn->createCommand($sql)->queryAll();
-		foreach ($ret as $row) {
-			list($uid1, $uid2) = ChatMsg::sortUId($row['mUId'], $row['mAddedBy']);
-			$cmd->bindValues([
-				':uid1' => $uid1,
-				':uid2' => $uid2,
-				':id' => $row['mId']
-			])->execute();
-		}*/
 		/*$items = [];
 		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn01');
 		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn02');
