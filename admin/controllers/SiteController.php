@@ -416,7 +416,7 @@ class SiteController extends BaseController
 			$params[':name'] = "%$name%";
 		}
 
-		list($list, $count) = User::users($criteria, $params, $page);
+		list($list, $count) = User::users($criteria, $params, $page, 20, true);
 		$pagination = self::pagination($page, $count);
 		return $this->renderPage('cert.tpl',
 			[

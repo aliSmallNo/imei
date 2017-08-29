@@ -437,7 +437,7 @@ class User extends ActiveRecord
 		return $item;
 	}
 
-	public static function users($criteria, $params, $page = 1, $pageSize = 20)
+	public static function users($criteria, $params, $page = 1, $pageSize = 20, $orderbyUpdated = false)
 	{
 		$strCriteria = '';
 		if ($criteria) {
@@ -447,6 +447,9 @@ class User extends ActiveRecord
 		$orderBy = ' order by uAddedOn desc ';
 		if (isset($params[':status']) && in_array($params[':status'],
 				[self::STATUS_INVALID, self::SUB_ST_NORMAL, self::STATUS_PENDING])) {
+			$orderBy = ' order by uUpdatedOn desc,uAddedOn desc ';
+		}
+		if ($orderbyUpdated) {
 			$orderBy = ' order by uUpdatedOn desc,uAddedOn desc ';
 		}
 		$conn = AppUtil::db();
@@ -763,7 +766,8 @@ class User extends ActiveRecord
 			$Info->uAvatar = $figure;
 		}
 		$note['after'] = [$thumb, $figure];
-		LogAction::add($uId, $openId, LogAction::ACTION_AVATAR, json_encode($note, JSON_UNESCAPED_UNICODE));
+		LogAction::add($uId, $openId, LogAction::ACTION_AVATAR,
+			json_encode($note, JSON_UNESCAPED_UNICODE));
 		$Info->uUpdatedOn = date('Y-m-d H:i:s');
 		$Info->uUpdatedBy = $adminId;
 		$Info->save();
@@ -820,6 +824,13 @@ class User extends ActiveRecord
 		list($thumb, $url) = ImageUtil::save2Server($id, false);
 		$Info = self::findOne(["uOpenId" => $openId]);
 		if ($url && $Info) {
+			$uId = $Info->uId;
+			$note = [
+				'before' => $Info->uCertImage,
+				'after' => $url
+			];
+			LogAction::add($uId, $openId, LogAction::ACTION_CERT,
+				json_encode($note, JSON_UNESCAPED_UNICODE));
 			return self::edit($Info->uId, [
 				"uCertImage" => $url,
 				"uCertStatus" => User::CERT_STATUS_PENDING,
@@ -832,7 +843,6 @@ class User extends ActiveRecord
 	public static function toCertVerify($id, $flag)
 	{
 		$Info = self::findOne(["uId" => $id]);
-
 		if ($flag && $Info) {
 			WechatUtil::regNotice($id, "cert" . $flag);
 			return self::edit($id, [

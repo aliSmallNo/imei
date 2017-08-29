@@ -25,6 +25,7 @@ class LogAction extends ActiveRecord
 	const ACTION_ALBUM_DEL = 1020;
 	const ACTION_ALBUM_ADD = 1025;
 	const ACTION_AVATAR = 1027;
+	const ACTION_CERT = 1029;
 	const ACTION_CHAT = 1040;
 	const ACTION_GREETING = 1044;
 
@@ -40,6 +41,7 @@ class LogAction extends ActiveRecord
 		self::ACTION_ALBUM_DEL => "删除照片",
 		self::ACTION_ALBUM_ADD => "添加照片",
 		self::ACTION_AVATAR => "修改头像",
+		self::ACTION_CERT => "上传实名认证图",
 		self::ACTION_CHAT => "进入聊天",
 		self::ACTION_GREETING => "浏览公告栏/更新提醒"
 	];
