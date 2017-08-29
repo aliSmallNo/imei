@@ -2,6 +2,7 @@
 	.lot-bg {
 		background: url('/images/sign/imei_sign_9.jpeg') no-repeat center center;
 		background-size: 100% 100%;
+		position: relative;
 	}
 
 	.lottery-gifts li {
@@ -11,14 +12,31 @@
 	}
 
 	.lottery {
-		padding-top: 13rem;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 50%;
+		margin-top: -15rem;
+		padding: 0;
 	}
 
 	.lottery-gifts li a {
-		background: #fec8c8;
-		line-height: 9rem;
-		font-size: 1.8rem;
-		color: #a70101;
+		background: #f4511e;
+		color: #fff;
+		-webkit-box-sizing: border-box
+		-moz-box-sizing: border-box
+		box-sizing: border-box
+	}
+
+	.lottery-gifts li a p {
+		font-size: 2.8rem;
+		line-height: 4.2rem;
+		border: 1px solid #fff;
+	}
+
+	.lottery-gifts li a.gray p {
+		background: #aaa;
+		color: #ddd;
 	}
 </style>
 <div class="lottery">
@@ -36,7 +54,7 @@
 			<img src="/images/sign/sign{{$str}}_35.jpg">
 		</li>
 		<li>
-			<a href="#">{{if $isSign}}已签到{{else}}签到抽奖{{/if}}</a>
+			<a href="#" {{if $isSign}}class="gray" {{/if}}><p>{{if $isSign}}已经<br>签过{{else}}签到<br>抽奖{{/if}}</p></a>
 		</li>
 		<li class="unit unit-3">
 			<img src="/images/sign/sign{{$str}}_15.jpg">
