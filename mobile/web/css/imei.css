@@ -70,6 +70,11 @@ main {
   background: #fff url(../images/bg_marry.jpg) no-repeat center top;
   background-size: contain; }
 
+.bg-lottery {
+  background: #fdddde url(../images/sign/imei_sign_9.jpeg) no-repeat center center;
+  background-size: 100% 100%;
+  position: relative; }
+
 .clearfix {
   zoom: 1; }
   .clearfix:before, .clearfix:after {
@@ -4903,12 +4908,12 @@ section {
 .help-chat-icon {
   position: fixed;
   right: 1rem;
-  top: 4rem;
+  top: 2.5rem;
   width: 4rem;
   height: 4rem;
   border-radius: 4rem;
   z-index: 999;
-  background: rgba(240, 98, 146, 0.9); }
+  background: rgba(240, 98, 146, 0.8); }
   .help-chat-icon .img {
     width: 2rem;
     height: 2rem;
@@ -5849,18 +5854,28 @@ section {
       display: inline-block; }
 
 .lottery {
-  padding-top: 5rem; }
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  margin-top: -15rem;
+  padding: 0; }
 
 .lottery-gifts {
   margin: 0 auto;
   width: 27rem;
-  border: 2px solid #ba1809; }
+  border: 2px solid #E53935; }
   .lottery-gifts li {
     width: 9rem;
     height: 9rem;
     float: left;
     text-align: center;
-    position: relative; }
+    position: relative;
+    background: #fbd2e0;
+    border: 1px solid #f06292;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; }
     .lottery-gifts li img {
       display: block;
       width: 100%;
@@ -5870,9 +5885,20 @@ section {
       height: 100%;
       display: block;
       text-decoration: none;
-      background-size: 100% 100%; }
+      background: #E53935;
+      color: #fff;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box; }
       .lottery-gifts li a:active {
-        background: #faa4a4; }
+        background: #fbd2e0; }
+      .lottery-gifts li a p {
+        font-size: 2.8rem;
+        line-height: 4.2rem;
+        border: 1px solid #fff; }
+      .lottery-gifts li a.gray p {
+        background: #aaa;
+        color: #ddd; }
     .lottery-gifts li.unit:after {
       content: "";
       display: none;

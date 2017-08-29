@@ -1147,7 +1147,7 @@ class WxController extends BaseController
 			],
 			'terse',
 			$title,
-			'bg-color');
+			'bg-lottery');
 	}
 
 	public function actionQuestions()

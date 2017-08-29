@@ -90,13 +90,14 @@ require(["layer"],
 					util.table.find('.active').addClass('prize');
 					if (util.msg) {
 						showMsg(util.msg);
-						$(".lottery-gifts li a").html(util.title);
+						$(".lottery-gifts li a").html('<p>' + util.title + '</p>').addClass('gray');
 					}
 				} else {
 					if (util.times < util.cycle) {
 						util.speed -= 10;
 					} else {
-						if (util.times > util.cycle + 10 && ((util.prize == 0 && util.index == 7) || util.prize == util.index + 1)) {
+						if (util.times > util.cycle + 10
+							&& ((util.prize == 0 && util.index == 7) || util.prize == util.index + 1)) {
 							util.speed += 90;
 						} else {
 							util.speed += 30;

@@ -438,7 +438,7 @@ class ApiController extends Controller
 				list($amt, $unit) = UserSign::sign($wxInfo['uId'], $amt);
 				if ($amt) {
 					return self::renderAPI(0, '今日签到获得' . $amt . $unit . ',明天继续~',
-						['title' => "已签到", 'prize' => $prize]);
+						['title' => "已经<br>签到", 'prize' => $prize]);
 				}
 				break;
 			case 'follow':

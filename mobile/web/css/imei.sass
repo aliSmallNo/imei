@@ -224,6 +224,11 @@ main
 	background: #fff url(../images/bg_marry.jpg) no-repeat center top
 	background-size: contain
 
+.bg-lottery
+	background: #fdddde url(../images/sign/imei_sign_9.jpeg) no-repeat center center
+	background-size: 100% 100%
+	position: relative
+
 .clearfix
 	zoom: 1
 	&:before,
@@ -4455,7 +4460,6 @@ section
 			-moz-transform: translateY(0) translateZ(0)
 			transform: translateY(0) translateZ(0)
 
-
 .m-schat-shade
 	position: fixed
 	left: 0
@@ -4696,15 +4700,16 @@ section
 		top: 1rem
 		color: $grayFontColor
 		font-size: 1.2rem
+
 .help-chat-icon
 	position: fixed
 	right: 1rem
-	top: 4rem
+	top: 2.5rem
 	width: 4rem
 	height: 4rem
 	border-radius: 4rem
 	z-index: 999
-	background: rgba(240,98,146,.9)
+	background: rgba(240, 98, 146, .8)
 	.img
 		width: 2rem
 		height: 2rem
@@ -4722,6 +4727,7 @@ section
 		color: #fff
 		position: relative
 		top: -0.2rem
+
 .report_wrap
 	padding: 1.5rem
 	@include borderBox
@@ -5516,18 +5522,26 @@ section
 			display: inline-block
 
 .lottery
-	padding-top: 5rem
+	position: absolute
+	left: 0
+	right: 0
+	top: 50%
+	margin-top: -15rem
+	padding: 0
 
 .lottery-gifts
 	margin: 0 auto
 	width: 27rem
-	border: 2px solid #ba1809
+	border: 2px solid $redColor
 	li
 		width: 9rem
 		height: 9rem
 		float: left
 		text-align: center
 		position: relative
+		background: $mainColorLighter
+		border: 1px solid $mainColor
+		@include borderBox
 		img
 			display: block
 			width: 100%
@@ -5537,12 +5551,22 @@ section
 			height: 100%
 			display: block
 			text-decoration: none
+			background: $redColor
+			color: #fff
+			@include borderBox
 			// background: url(../images/lottery/lottery2.jpg) no-repeat top center
-			background-size: 100% 100%
 			&:active
 				//background-image: url(../images/lottery/lottery1.jpg)
-				background: #faa4a4
+				background: $mainColorLighter
 			//background-size: 100% 100%
+			p
+				font-size: 2.8rem
+				line-height: 4.2rem
+				border: 1px solid #fff
+			&.gray
+				p
+					background: #aaa
+					color: #ddd
 		&.unit
 			&:after
 				content: ''

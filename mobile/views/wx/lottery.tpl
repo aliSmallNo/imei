@@ -1,44 +1,3 @@
-<style>
-	.lot-bg {
-		background: url(/images/sign/imei_sign_9.jpeg) no-repeat center center;
-		background-size: 100% 100%;
-		position: relative;
-	}
-
-	.lottery-gifts li {
-		background: #fec8c8;
-		border: 1px solid #fe6a6a;
-		box-sizing: border-box;
-	}
-
-	.lottery {
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: 50%;
-		margin-top: -15rem;
-		padding: 0;
-	}
-
-	.lottery-gifts li a {
-		background: #f4511e;
-		color: #fff;
-		-webkit-box-sizing: border-box
-		-moz-box-sizing: border-box
-		box-sizing: border-box
-	}
-
-	.lottery-gifts li a p {
-		font-size: 2.8rem;
-		line-height: 4.2rem;
-		border: 1px solid #fff;
-	}
-
-	.lottery-gifts li a.gray p {
-		background: #aaa;
-		color: #ddd;
-	}
-</style>
 <div class="lottery">
 	<ul class="lottery-gifts clearfix">
 		<li class="unit unit-0">
@@ -70,6 +29,6 @@
 		</li>
 	</ul>
 </div>
-<input type="hidden" id="cOID" value="">
+<input type="hidden" id="cOID">
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/lottery.js?v=1.1.5" src="/assets/js/require.js"></script>
+<script data-main="/js/lottery.js?v=1.1.6" src="/assets/js/require.js"></script>
