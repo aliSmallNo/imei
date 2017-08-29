@@ -538,7 +538,7 @@ class WechatUtil
 			case self::NOTICE_CERT_DENY:
 				$templateId = '4nyGB0Pxql4OYlE3D8Rl_g7tZfOZQMjlKfjrnaKLb6Y';
 				$url = $wxUrl . "/wx/cert?id=" . $encryptId;
-				$keywords['first'] = "你好，" . $nickname . "，你的实名认证审核不通过，请重新上传你的手持身份证照片\n";
+				$keywords['first'] = "你好，" . $nickname . "，你的实名认证审核不通过，请重新上传你手持身份证的照片\n";
 				$keywords['keyword1'] = '实名认证失败';
 				$keywords['keyword2'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = '如有疑问，请拨打咨询热线010-56123309';
