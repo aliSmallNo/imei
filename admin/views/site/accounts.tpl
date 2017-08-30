@@ -297,7 +297,6 @@
 				{{if $prod.substatus>1}}<span>{{$prod.substatus_t}}</span>{{/if}}
 				<span class="status-{{if $prod.note_t}}10{{else}}{{$prod.status}}{{/if}}">{{if $prod.note_t}}{{$prod.note_t}}{{else}}{{$prod.status_t}}{{/if}}</span>
 				<span class="status-1">{{if $prod.certstatus==2}}{{$prod.certstatus_t}}{{/if}}</span>
-				<br>
 				<div class="perc-wrap">
 					<div class="perc-bar-title">资料完整度 <b>{{$prod.percent}}%</b></div>
 					<div class="perc-bar-wrap"><p class="perc-bar"><em style="width: {{$prod.percent}}%"></em></p></div>
