@@ -109,6 +109,7 @@ require(["layer"],
 			$sls.mainPage.removeClass('bg-lighter');
 			$('body').removeClass('bg-qrcode');
 			ChatUtil.toggleTimer(0);
+			RankUtil.clear();
 			switch (hashTag) {
 				case 'sranking':
 					RankUtil.page = 1;
@@ -1557,13 +1558,17 @@ require(["layer"],
 					util.reload();
 				});
 			},
+			clear: function () {
+				var util = this;
+				util.list.html('');
+				util.tip.html('');
+			},
 			reload: function () {
 				var util = this;
 				if (util.loading || util.page >= 2) {
 					return;
 				}
-				util.list.html('');
-				util.tip.html('');
+				util.clear();
 				util.loading = 1;
 				util.spinner.show();
 				$.post("/api/ranking", {

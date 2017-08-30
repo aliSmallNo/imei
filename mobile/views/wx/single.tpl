@@ -95,7 +95,7 @@
 			<a href="#focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
-			<a href="/wx/fansrank"><span>花粉排行榜</span> <i class="i-mark-hot"></i></a>
+			<a href="#sranking"><span>花粉排行榜</span> <i class="i-mark-hot"></i></a>
 			<a href="/wx/favor"><span>心动排行榜</span></a>
 		</div>
 		<div class="m-rows line-bottom">
@@ -1079,4 +1079,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.9.2" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.9.3" src="/assets/js/require.js"></script>
