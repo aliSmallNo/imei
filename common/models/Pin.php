@@ -51,14 +51,14 @@ class Pin extends ActiveRecord
 			':cat' => self::CAT_NOW,
 			':pid' => $pid,
 		])->execute();
-		$sql = 'UPDATE im_pin SET pLat=:lat,pLng=:lng,pDate=now(),pPoint= GeomFromText(:poi)
- 				WHERE pCategory=:cat AND pPId=:pid';
+		$poi = "POINT($lat, $lng)";
+		$sql = "UPDATE im_pin SET pLat=:lat,pLng=:lng,pDate=now(),pPoint= GeomFromText('$poi')
+ 				WHERE pCategory=:cat AND pPId=:pid";
 		$conn->createCommand($sql)->bindValues([
 			':cat' => self::CAT_NOW,
 			':pid' => $pid,
 			':lat' => $lat,
-			':lng' => $lng,
-			':poi' => "POINT($lat, $lng)"
+			':lng' => $lng
 		])->execute();
 
 		/*$sql = 'UPDATE im_pin SET pPoint= GeomFromText(CONCAT(\'POINT(\',pLat,\' \',pLng,\')\')) WHERE pPoint is null';
