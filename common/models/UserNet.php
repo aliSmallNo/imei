@@ -318,7 +318,8 @@ class UserNet extends ActiveRecord
 		$offset = ($page - 1) * $pageSize;
 
 		$conn = AppUtil::db();
-		$sql = 'select u.* from im_user as u  
+		$sql = 'select DISTINCT u.* 
+				from im_user as u  
 				join im_user_net as n on n.nSubUId=u.uId ' . $strCriteria .
 			' order by n.nAddedOn DESC limit ' . $offset . ',' . ($pageSize + 1);
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
@@ -332,7 +333,8 @@ class UserNet extends ActiveRecord
 			'certdate', 'certnote', 'coord', 'education', 'diet', 'filter', 'filter_t', 'homeland', 'location', 'pet', 'pet_t',
 			'rank', 'rankdate', 'ranktmp', 'rest', 'rest_t', 'province', 'city', 'status', 'status_t', 'updatedon', 'addedon',
 			'birthyear_t', 'email', 'estate', 'fitness', 'income', 'logdate', 'profession', 'weight', 'setting', 'smoke', 'smoke_t',
-			'role', 'note_t', 'invitedby', 'horos', 'height', 'certimage', 'certstatus', 'car', 'marital', 'scope', 'certstatus_t'];
+			'role', 'note_t', 'invitedby', 'horos', 'height', 'certimage', 'certstatus', 'car', 'marital', 'scope', 'certstatus_t',
+			'diet_t', 'car_t', 'estate_t', 'fitness_t', 'interest', 'role_t', 'income_t', 'marital_t', 'height_t', 'education_t'];
 		foreach ($ret as $row) {
 			$item = User::fmtRow($row);
 			$item['notes'] = User::notes($item);
