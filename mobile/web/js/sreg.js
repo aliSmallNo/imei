@@ -316,7 +316,7 @@ require(["layer"],
 				}, function (res) {
 					layer.closeAll();
 					if (res.code == 0) {
-						if (res.data && res.data.items) {
+						if (res.data && res.data.items && res.data.items.length) {
 							var html = Mustache.render(util.greetingTmp, res.data);
 							util.toggle(html);
 						} else {
