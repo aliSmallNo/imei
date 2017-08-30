@@ -3814,26 +3814,29 @@ section
 		text-align: center
 
 .tab
-	display: flex
-	padding: 1rem 1rem 0 1rem
+	@include displayFlex
+	padding: 0 1rem
 	border-bottom: 1px solid #d8d8d8
 	background: #fff
+	&.fixed-top
+		height: auto
+		border-bottom: none
 	a
-		flex: 1
+		@include displayFlex-1
 		text-align: center
 		font-size: 1.2rem
-		color: $grayFontColor
-		padding-bottom: 1rem
+		line-height: 3.8rem
+		font-weight: $weightBold
+		color: $grayFontColorLight
 		position: relative
 	a.active
-		//border-bottom: 1px solid $mainColorLight
 		color: $mainColor
 		&:after
 			content: ""
 			position: absolute
 			bottom: 0
-			left: .2rem
-			right: .2rem
+			left: .5rem
+			right: .5rem
 			height: 2px
 			background: $mainColorLight
 
@@ -5822,6 +5825,7 @@ section
 		font-size: 1.2rem
 	.btn-wrap
 		padding: 1rem 2.5rem
+
 .m-greeting-users
 	margin: 0 auto
 	@include borderBox
@@ -5841,3 +5845,66 @@ section
 			color: $grayFontColorLight
 			font-size: 1rem
 			text-align: center
+
+.ranking-tip
+	font-size: 1.2rem
+	text-align: center
+	line-height: 2.6rem
+	color: $grayFontColor
+	b
+		color: $mainColor
+		font-weight: $weightBold
+.ranking-list
+	padding: 0
+	background: #fff
+	border-top: 1px solid $borderColor
+	border-bottom: 1px solid $borderColor
+	li
+		padding: .5rem 1rem
+		position: relative
+		&:after
+			content: ''
+			position: absolute
+			height: 1px
+			left: 1rem
+			right: 0
+			bottom: 0
+			background: $borderColorLight
+		&:last-child:after
+			display: none
+		a
+			@include displayFlex
+			padding: .3rem 0
+			position: relative
+			&:after
+				@include arrowRight
+				right: .5rem
+			.seq
+				@include displayFlex-w(2rem)
+				@include displayFlexVAlign
+				font-size: 1.2rem
+				color: $grayFontColor
+
+			.avatar
+				@include displayFlex-w(3rem)
+				img
+					width: 3rem
+					height: 3rem
+					border-radius: 3rem
+					border: 1px solid $mainColorLighter
+					vertical-align: middle
+			.title
+				@include displayFlex-1
+				@include displayFlexVAlign
+				@include textTail
+				padding: 0 1rem
+			.amt
+				@include displayFlex-w(8rem)
+				@include displayFlexVAlign
+				font-size: 1.8rem
+				color: $mainColor
+				padding-right: 1.5rem
+				@include borderBox
+				span
+					font-size: 1rem
+					color: $mainColorLight

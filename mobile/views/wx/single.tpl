@@ -559,6 +559,19 @@
 		</ol>
 	</div>
 </section>
+<section id="sranking" data-title="微媒100排行榜">
+	<div class="tab fixed-top ranking-tab">
+		<a href="javascript:;" data-cat="total" class="active">花粉值-总排名</a>
+		<a href="javascript:;" data-cat="week" class="">花粉值-周排名</a>
+	</div>
+	<div style="height: 3.8rem"></div>
+	<div class="ranking-wrap">
+		<div class="ranking-tip"></div>
+		<ul class="ranking-list"></ul>
+		<div class="spinner" style="display: none"></div>
+	</div>
+
+</section>
 <section id="sreport">
 	<div class="report_wrap">
 		<h3>举报用户</h3>
@@ -887,6 +900,18 @@
 	</li>
 	{[/albums]}
 </script>
+<script type="text/template" id="tpl_ranking">
+	{[#items]}
+	<li>
+		<a href="/wx/sh?id={[secretId]}">
+			<div class="seq">{[key]}</div>
+			<div class="avatar"><img src="{[avatar]}"></div>
+			<div class="title">{[uname]}</div>
+			<div class="amt">{[co]} {[#todayFavor]}<span>{[.]}</span>{[/todayFavor]}</div>
+		</a>
+	</li>
+	{[/items]}
+</script>
 <script type="text/template" id="tpl_chat">
 	{[#items]}
 	<li class="{[dir]}">
@@ -1054,4 +1079,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.9.1" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.9.2" src="/assets/js/require.js"></script>
