@@ -1990,12 +1990,13 @@ class User extends ActiveRecord
 		if (!$location) return $ret;
 		list($prov, $city) = array_column($location, 'text');
 		$birthYear = $uInfo['uBirthYear'];
-		$sql = 'select uId,uName,uThumb,uLogDate,uBirthYear,uHeight,
+		$sql = 'select uId as id,uName as name,uThumb as thumb,uLogDate,uBirthYear,uHeight,uHoros,
 			 (case WHEN p.pProvince like :prov and p.pCity like :city then 10 WHEN p.pProvince like :prov then 8 else 0 end) as rank 
 			 from im_user as u
 			 join im_pin as p on p.pPId=u.uId and p.pCategory=:cat 
 			 WHERE uStatus < 2 and uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
 			 order by rank desc, uLogDate desc limit 10';
+
 		$active = $conn->createCommand($sql)->bindValues([
 			':prov' => $prov . '%',
 			':city' => $city . '%',
@@ -2004,7 +2005,7 @@ class User extends ActiveRecord
 			':y1' => $birthYear + 3,
 			':gender' => User::GENDER_MALE
 		])->queryAll();
-		$sql = 'select uId,uName,uThumb,uLogDate,uBirthYear,uHeight,
+		$sql = 'select uId as id,uName as name,uThumb as thumb,uLogDate,uBirthYear,uHeight,uHoros,
 			 (case WHEN p.pProvince like :prov and p.pCity like :city then 10 WHEN p.pProvince like :prov then 8 else 0 end) as rank 
 			 from im_user as u
 			 join im_pin as p on p.pPId=u.uId and p.pCategory=:cat 
@@ -2021,11 +2022,15 @@ class User extends ActiveRecord
 		$items = [];
 		$flag = true;
 		for ($k = 0; $k < 20; $k++) {
-			$item = array_shift($flag ? $active : $inactive);
+			if ($flag) {
+				$item = array_shift($active);
+			} else {
+				$item = array_shift($inactive);
+			}
 			if ($item) {
 				$item['age'] = $item['uBirthYear'] ? date('Y') - $item['uBirthYear'] : '';
-				$item['height'] = isset(self::$Height[$item['uHeight']]) ? self::$Height[$item['uHeight']] : '';
-				$items[$item['uId']] = $item;
+				$item['horos'] = isset(self::$Horos[$item['uHoros']]) ? mb_substr(self::$Horos[$item['uHoros']], 0, 3) : '';
+				$items[$item['id']] = $item;
 				$flag = !$flag;
 			}
 			if (count($items) == 6) {

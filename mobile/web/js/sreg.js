@@ -48,12 +48,33 @@ require(["layer"],
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
+			greetingTmp: $('#tpl_greeting_users').html(),
 			itemTmp: '{[#items]}<a href="javascript:;" data-key="{[key]}">{[name]}</a>{[/items]}',
 			districtTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="district">{[name]}</a>{[/items]}</div>',
 			cityTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="city">{[name]}</a>{[/items]}</div>',
 			provinceTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="province">{[name]}</a>{[/items]}</div>',
 			init: function () {
 				var util = this;
+				$(document).on(kClick, ".btn-greeting", function () {
+					var ids = [];
+					$.each($('.m-greeting-users li'), function () {
+						ids[ids.length] = $(this).attr('data-id');
+					});
+					$.post("/api/chat", {
+						tag: "greeting",
+						ids: JSON.stringify(ids)
+					}, function (res) {
+						util.toggle('');
+						if (res.code == 0) {
+							setTimeout(function () {
+								location.href = "/wx/single#slook";
+							}, 350);
+							showMsg(res.msg);
+						} else {
+							showMsg(res.msg);
+						}
+					}, "json");
+				});
 				$(".btn-s").on(kClick, function () {
 					var self = $(this);
 					var tag = self.attr("tag");
@@ -285,6 +306,7 @@ require(["layer"],
 				location.href = '#' + tag;
 			},
 			submit: function () {
+				var util = this;
 				$sls.postData["img"] = ($sls.serverId.length > 2) ? $sls.serverId[0] : '';
 				$sls.postData["album"] = ($sls.serverId.length > 2) ? $sls.serverId.slice(1) : $sls.serverId;
 				$sls.postData["coord"] = $sls.coord.val();
@@ -293,11 +315,18 @@ require(["layer"],
 					data: JSON.stringify($sls.postData),
 				}, function (res) {
 					layer.closeAll();
-					showMsg(res.msg);
 					if (res.code == 0) {
-						setTimeout(function () {
-							location.href = "/wx/single#slook";
-						}, 500);
+						if (res.data && res.data.items) {
+							var html = Mustache.render(util.greetingTmp, res.data);
+							util.toggle(html);
+						} else {
+							setTimeout(function () {
+								location.href = "/wx/single#slook";
+							}, 500);
+							showMsg(res.msg);
+						}
+					} else {
+						showMsg(res.msg);
 					}
 				}, "json");
 			},

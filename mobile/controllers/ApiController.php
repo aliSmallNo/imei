@@ -494,10 +494,10 @@ class ApiController extends Controller
 				UserWechat::getInfoByOpenId($openId, 1);
 				$data = [
 					'uid' => $userId,
-					'users' => []
+					'items' => []
 				];
 				if ($tag == 'sreg' && $userId) {
-					$data['users'] = User::greetUsers($userId);
+					$data['items'] = User::greetUsers($userId);
 				}
 				return self::renderAPI(0, '保存成功啦~', $data);
 			case "album":
@@ -1359,6 +1359,14 @@ class ApiController extends Controller
 		}
 
 		switch ($tag) {
+			case 'greeting':
+				$ids = self::postParam('ids');
+				$ids = json_decode($ids, 1);
+				if ($ids) {
+					$ret = ChatMsg::greeting($uid, $ids);
+				}
+				return self::renderAPI(0, '打招呼成功！', $ret);
+				break;
 			case 'sent':
 				$receiverId = self::postParam('id');
 				$receiverId = AppUtil::decrypt($receiverId);

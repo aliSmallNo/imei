@@ -628,8 +628,10 @@ section
 		color: #fff
 		text-align: center
 		padding: 0 2rem
-		line-height: 4.4rem
-		border-radius: 2.2rem
+		line-height: 4.2rem
+		border-radius: 2.1rem
+		font-size: 1.5rem
+		font-weight: $weightBold
 		&.btn-main
 			background: $mainColor
 		&.btn-blue
@@ -5805,3 +5807,36 @@ section
 		outline: thin
 		cursor: pointer
 		vertical-align: middle
+
+.m-greeting-wrap
+	padding: 1.5rem
+	background: #fff
+	border-radius: .5rem
+	text-align: center
+	h4
+		font-weight: $weightBold
+		font-size: 1.5rem
+		line-height: 2.5rem
+	h5
+		font-weight: $weightNormal
+		font-size: 1.2rem
+	.btn-wrap
+		padding: 1rem 2.5rem
+.m-greeting-users
+	margin: 0 auto
+	@include borderBox
+	li
+		float: left
+		width: 33%
+		text-align: center
+		padding: .5rem
+		@include borderBox
+		img
+			width: 96%
+			border-radius: .5rem
+			border: 1px solid $mainColorLighter
+			vertical-align: middle
+		div
+			color: $grayFontColorLight
+			font-size: 1rem
+			text-align: center

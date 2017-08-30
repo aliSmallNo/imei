@@ -479,7 +479,7 @@ class FooController extends Controller
 		self::getCircleAvatar($imagePath, $saveAs, 440);
 		var_dump($saveAs);*/
 		$conn = AppUtil::db();
-		$sql = 'select pPId,pLat,pLng from im_pin WHERE pCategory=200 AND pCity=\'\' limit 5';
+		$sql = 'select pPId,pLat,pLng from im_pin WHERE pCategory=200 AND pCity=\'\'';
 		$ret = $conn->createCommand($sql)->queryAll();
 		$count = 0;
 		foreach ($ret as $row) {
