@@ -328,7 +328,11 @@ class UserNet extends ActiveRecord
 			array_pop($ret);
 		}
 		$items = [];
-		$fields = ['phone', 'password', 'openid', 'percent'];
+		$fields = ['phone', 'password', 'openid', 'percent', 'album', 'album_cnt', 'alcohol', 'alcohol_t', 'belief', 'belief_t',
+			'certdate', 'certnote', 'coord', 'education', 'diet', 'filter', 'filter_t', 'homeland', 'location', 'pet', 'pet_t',
+			'rank', 'rankdate', 'ranktmp', 'rest', 'rest_t', 'province', 'city', 'status', 'status_t', 'updatedon', 'addedon',
+			'birthyear_t', 'email', 'estate', 'fitness', 'income', 'logdate', 'profession', 'weight', 'setting', 'smoke', 'smoke_t',
+			'role', 'note_t', 'invitedby', 'horos', 'height', 'certimage', 'certstatus', 'car', 'marital', 'scope', 'certstatus_t'];
 		foreach ($ret as $row) {
 			$item = User::fmtRow($row);
 			$item['notes'] = User::notes($item);

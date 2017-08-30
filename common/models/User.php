@@ -1237,12 +1237,13 @@ class User extends ActiveRecord
 			$nextPage = $page + 1;
 		}
 		$items = [];
-		$fields = ['password', 'phone', 'openid', 'addedon', 'updatedon', 'album', 'album_cnt', 'homeland', 'homeland_t',
+		$fields = ['password', 'phone', 'percent', 'openid', 'addedon', 'updatedon', 'album', 'album_cnt', 'homeland', 'homeland_t',
 			'cert', 'certdate', 'certimage', 'certnote', 'certstatus', 'certstatus_t', 'location', 'rankdate', 'ranktmp',
 			'setting', 'rank', 'weight', 'weight_t', 'marital', 'marital_t', 'coord', 'diet', 'diet_t', 'pet', 'pet_t',
 			'birthyear', 'birthyear_t', 'alcohol', 'alcohol_t', 'rest', 'rest_t', 'fitness', 'fitness_t', 'hint',
 			'horos', 'horos_t', 'estate', 'estate_t', 'belief', 'belief_t', 'car', 'car_t', 'height', 'height_t',
-			'income', 'income_t'];
+			'income', 'income_t', 'smoke', 'smoke_t', 'province', 'note', 'note_t', 'city', 'invitedby', 'status_t', 'status',
+			'logdate', 'filter', 'filter_t', 'scope', 'interest', 'email', 'education', 'education_t', 'mpuid', 'profession'];
 		foreach ($ret as $row) {
 			$item = self::fmtRow($row);
 			$item['stat'] = UserNet::getStat($item['id']);
