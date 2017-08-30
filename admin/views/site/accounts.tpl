@@ -302,9 +302,9 @@
 					<div class="perc-bar-wrap"><p class="perc-bar"><em style="width: {{$prod.percent}}%"></em></p></div>
 				</div>
 				<span>{{$prod.marital_t}}</span>
+				<span>{{$prod.gender_t}}</span>
 				<span>{{$prod.age}}</span>
 				<span>{{$prod.horos_t}}</span>
-				<span>{{$prod.gender_t}}</span>
 				<span>{{$prod.height_t}}</span>
 				<span>{{$prod.weight_t}}</span>
 				<span>{{$prod.education_t}}</span>
