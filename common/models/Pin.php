@@ -63,7 +63,7 @@ class Pin extends ActiveRecord
 		])->execute();
 
 		$sql = 'UPDATE im_pin SET pPoint= GeomFromText(CONCAT(\'POINT(\',pLat,\' \',pLng,\')\')) 
-				WHERE pPId=:pid AND pPoint is NULL';
+				WHERE pPId=:pid AND pPoint is NULL AND pLat!=\'\' AND pLng!=\'\' ';
 		$conn->createCommand($sql)->bindValues([
 			':pid' => $pid,
 		])->execute();
