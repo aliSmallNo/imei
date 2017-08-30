@@ -6210,6 +6210,7 @@ section {
     box-sizing: border-box; }
     .m-greeting-users li img {
       width: 96%;
+      min-height: 7.2rem;
       border-radius: 0.5rem;
       border: 1px solid #fbd2e0;
       vertical-align: middle; }

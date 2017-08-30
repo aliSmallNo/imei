@@ -1994,7 +1994,7 @@ class User extends ActiveRecord
 			 (case WHEN p.pProvince like :prov and p.pCity like :city then 10 WHEN p.pProvince like :prov then 8 else 0 end) as rank 
 			 from im_user as u
 			 join im_pin as p on p.pPId=u.uId and p.pCategory=:cat 
-			 WHERE uStatus < 2 and uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
+			 WHERE uStatus=1 and uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
 			 order by rank desc, uLogDate desc limit 10';
 
 		$active = $conn->createCommand($sql)->bindValues([
@@ -2009,7 +2009,7 @@ class User extends ActiveRecord
 			 (case WHEN p.pProvince like :prov and p.pCity like :city then 10 WHEN p.pProvince like :prov then 8 else 0 end) as rank 
 			 from im_user as u
 			 join im_pin as p on p.pPId=u.uId and p.pCategory=:cat 
-			 WHERE uStatus < 2 and uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
+			 WHERE uStatus=1 and uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
 			 order by rank desc, uLogDate limit 10';
 		$inactive = $conn->createCommand($sql)->bindValues([
 			':prov' => $prov . '%',
