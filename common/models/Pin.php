@@ -62,8 +62,11 @@ class Pin extends ActiveRecord
 			':lng' => $lng
 		])->execute();
 
-		/*$sql = 'UPDATE im_pin SET pPoint= GeomFromText(CONCAT(\'POINT(\',pLat,\' \',pLng,\')\')) WHERE pPoint is null';
-		$conn->createCommand($sql)->execute();*/
+		$sql = 'UPDATE im_pin SET pPoint= GeomFromText(CONCAT(\'POINT(\',pLat,\' \',pLng,\')\')) 
+				WHERE pPId=:pid AND pPoint is NULL';
+		$conn->createCommand($sql)->bindValues([
+			':pid' => $pid,
+		])->execute();
 
 		QueueUtil::loadJob('regeo', ['id' => $pid]);
 
