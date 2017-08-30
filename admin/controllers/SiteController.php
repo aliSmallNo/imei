@@ -311,6 +311,13 @@ class SiteController extends BaseController
 				"start" => 0,
 				"data" => $dataImg,
 			]);
+			$v['style'] = 'mei';
+			if ($v['gender'] == User::GENDER_MALE) {
+				$v['style'] = 'male';
+			}
+			if ($v['gender'] == User::GENDER_FEMALE) {
+				$v['style'] = 'female';
+			}
 		}
 		$stat = User::stat();
 		$partCount = User::partCount($partCriteria, $params);
