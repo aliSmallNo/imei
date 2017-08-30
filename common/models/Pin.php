@@ -10,6 +10,7 @@ namespace common\models;
 
 
 use common\utils\AppUtil;
+use common\utils\RedisUtil;
 use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
 
@@ -59,7 +60,7 @@ class Pin extends ActiveRecord
 			':lng' => $lng,
 		])->execute();
 
-		$sql = 'update im_pin set pPoint= GeomFromText( CONCAT(\'POINT(\',pLat,\' \',pLng,\')\')) WHERE pPoint is null';
+		$sql = 'update im_pin set pPoint= GeomFromText(CONCAT(\'POINT(\',pLat,\' \',pLng,\')\')) WHERE pPoint is null';
 		$conn->createCommand($sql)->execute();
 
 		QueueUtil::loadJob('regeo', ['id' => $pid]);
@@ -113,37 +114,76 @@ class Pin extends ActiveRecord
 			if ($ret) {
 				$lat = $ret['pLat'];
 				$lng = $ret['pLng'];
+			} else {
+				$sql = 'INSERT INTO im_pin(pCategory,pPId)
+					 SELECT DISTINCT :cat, uId FROM im_user 
+					 WHERE uId=:id AND NOT EXISTS(SELECT 1 FROM im_pin WHERE pCategory=:cat AND pPId=uId)';
+				$conn->createCommand($sql)->bindValues([
+					':id' => $uid,
+					':cat' => self::CAT_NOW
+				])->execute();
 			}
 		}
-		if (!$lat || !$lng) return false;
-		$url = 'http://restapi.amap.com/v3/geocode/regeo?output=json&location=%s,%s&key=3b7105f564d93737d4b90411793beb67&radius=500&extensions=base';
-		$url = sprintf($url, $lng, $lat);
+
+		$updateMapInfo = function ($uid, $info, $conn) {
+			$sql = 'update im_pin set pRaw=:raw';
+			$params = [
+				':raw' => json_encode($info, JSON_UNESCAPED_UNICODE),
+				':id' => $uid,
+				':cat' => self::CAT_NOW,
+			];
+			foreach (self::$GeoMap as $key => $field) {
+				if (isset($info[$key])) {
+					$val = $info[$key];
+					if ($key == 'city' && !$info[$key] && $info['province']) {
+						$val = $info['province'];
+					}
+					if (is_array($val)) continue;
+					$sql .= ',' . $field . '=:' . $key;
+					$params[':' . $key] = $val;
+				}
+			}
+			$sql .= ' WHERE pPId=:id and pCategory=:cat ';
+			$conn->createCommand($sql)->bindValues($params)->execute();
+		};
+		$mapKey = '3b7105f564d93737d4b90411793beb67';
+		if (!$lat || !$lng) {
+			$sql = 'select uLocation from im_user WHERE uId=' . $uid;
+			$ret = $conn->createCommand($sql)->queryScalar();
+			$ret = json_decode($ret, 1);
+			if ($ret && count($ret) > 1) {
+				$address = array_column($ret, 'text');
+				$address = implode('', $address);
+				$md5 = md5($address);
+				$info = RedisUtil::getCache(RedisUtil::KEY_PIN_GEO, $md5);
+				$info = json_decode($info, 1);
+				if ($info) {
+					$updateMapInfo($uid, $info, $conn);
+					return true;
+				}
+				$url = 'http://restapi.amap.com/v3/geocode/geo?address=%s&output=json&key=%s';
+				$url = sprintf($url, $address, $mapKey);
+				$mapInfo = AppUtil::httpGet($url);
+				$mapInfo = json_decode($mapInfo, 1);
+				if (isset($mapInfo['geocodes']) && $mapInfo['geocodes']) {
+					$info = $mapInfo['geocodes'][0];
+					$updateMapInfo($uid, $info, $conn);
+					RedisUtil::setCache(json_encode($info), RedisUtil::KEY_PIN_GEO, $md5);
+				}
+				return true;
+			}
+			return false;
+		}
+
+		$url = 'http://restapi.amap.com/v3/geocode/regeo?location=%s,%s&output=json&key=%s&radius=500&extensions=base';
+		$url = sprintf($url, $lng, $lat, $mapKey);
 		$ret = AppUtil::httpGet($url);
 		$ret = json_decode($ret, 1);
 		if (!isset($ret['regeocode']['addressComponent'])) {
 			return false;
 		}
-
 		$info = $ret['regeocode']['addressComponent'];
-		$sql = 'update im_pin set pRaw=:raw';
-		$params = [
-			':raw' => json_encode($info, JSON_UNESCAPED_UNICODE),
-			':id' => $uid,
-			':cat' => self::CAT_NOW,
-		];
-		foreach (self::$GeoMap as $key => $field) {
-			if (isset($info[$key])) {
-				$val = $info[$key];
-				if ($key == 'city' && !$info[$key] && $info['province']) {
-					$val = $info['province'];
-				}
-				if (is_array($val)) continue;
-				$sql .= ',' . $field . '=:' . $key;
-				$params[':' . $key] = $val;
-			}
-		}
-		$sql .= ' WHERE pPId=:id and pCategory=:cat ';
-		$conn->createCommand($sql)->bindValues($params)->execute();
+		$updateMapInfo($uid, $info, $conn);
 
 		return true;
 	}

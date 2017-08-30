@@ -13,6 +13,7 @@ use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
+use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
 
 class User extends ActiveRecord
@@ -749,7 +750,9 @@ class User extends ActiveRecord
 			':single' => self::ROLE_SINGLE
 		])->execute();
 		$ret = UserTrans::addReward($uid, UserTrans::CAT_NEW, $conn);
-		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
+
+		QueueUtil::loadJob('regeo', ['id' => $uid]);
+
 		return $uid;
 	}
 
@@ -1982,13 +1985,54 @@ class User extends ActiveRecord
 		])->queryOne();
 		if (!$uInfo) return $ret;
 		$gender = $uInfo['uGender'];
-		if ($gender != self::GENDER_MALE) return $ret;
+		if ($gender != self::GENDER_FEMALE) return $ret;
 		$location = json_decode($uInfo['uLocation'], 1);
 		if (!$location) return $ret;
 		list($prov, $city) = array_column($location, 'text');
 		$birthYear = $uInfo['uBirthYear'];
-		$sql = '';
-		return $ret;
+		$sql = 'select uId,uName,uThumb,uLogDate,uBirthYear,uHeight,
+			 (case WHEN p.pProvince like :prov and p.pCity like :city then 10 WHEN p.pProvince like :prov then 8 else 0 end) as rank 
+			 from im_user as u
+			 join im_pin as p on p.pPId=u.uId and p.pCategory=:cat 
+			 WHERE uStatus < 2 and uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
+			 order by rank desc, uLogDate desc limit 10';
+		$active = $conn->createCommand($sql)->bindValues([
+			':prov' => $prov . '%',
+			':city' => $city . '%',
+			':cat' => Pin::CAT_NOW,
+			':y0' => $birthYear - 12,
+			':y1' => $birthYear + 3,
+			':gender' => User::GENDER_MALE
+		])->queryAll();
+		$sql = 'select uId,uName,uThumb,uLogDate,uBirthYear,uHeight,
+			 (case WHEN p.pProvince like :prov and p.pCity like :city then 10 WHEN p.pProvince like :prov then 8 else 0 end) as rank 
+			 from im_user as u
+			 join im_pin as p on p.pPId=u.uId and p.pCategory=:cat 
+			 WHERE uStatus < 2 and uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
+			 order by rank desc, uLogDate limit 10';
+		$inactive = $conn->createCommand($sql)->bindValues([
+			':prov' => $prov . '%',
+			':city' => $city . '%',
+			':cat' => Pin::CAT_NOW,
+			':y0' => $birthYear - 12,
+			':y1' => $birthYear + 3,
+			':gender' => User::GENDER_MALE
+		])->queryAll();
+		$items = [];
+		$flag = true;
+		for ($k = 0; $k < 20; $k++) {
+			$item = array_shift($flag ? $active : $inactive);
+			if ($item) {
+				$item['age'] = $item['uBirthYear'] ? date('Y') - $item['uBirthYear'] : '';
+				$item['height'] = isset(self::$Height[$item['uHeight']]) ? self::$Height[$item['uHeight']] : '';
+				$items[$item['uId']] = $item;
+				$flag = !$flag;
+			}
+			if (count($items) == 6) {
+				break;
+			}
+		}
+		return array_values($items);
 	}
 
 }

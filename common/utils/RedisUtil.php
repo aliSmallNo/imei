@@ -40,7 +40,7 @@ class RedisUtil
 	const KEY_XCX_SESSION_ID = 'xcx_session_id'; //小程序 sessionId
 	const KEY_STAT_TREND = "trend_stat";
 	const KEY_STAT_REUSE = "reuse_stat";
-
+	const KEY_PIN_GEO = "pin_geo";
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
@@ -66,6 +66,7 @@ class RedisUtil
 		self::KEY_XCX_SESSION_ID => 3600 * 2,
 		self::KEY_STAT_TREND => 60 * 6,
 		self::KEY_STAT_REUSE => 3600 * 3,
+		self::KEY_PIN_GEO => 60 * 10,
 	];
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';

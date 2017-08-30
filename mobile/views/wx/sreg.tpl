@@ -301,6 +301,7 @@
 		<div class="m-popup-content"></div>
 	</div>
 </div>
+
 <input type="hidden" id="cCoord">
 <input type="hidden" id="cMaxYear" value="{{$maxYear}}">
 <input type="hidden" id="cGender" value="{{if $uInfo.gender}}{{$uInfo.gender}}{{/if}}">
