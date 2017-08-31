@@ -1378,12 +1378,15 @@ class ApiController extends Controller
 				if (UserNet::hasBlack($wxInfo["uId"], $receiverId)) {
 					return self::renderAPI(129, self::MSG_BLACK);
 				}
+				/*if ($wxInfo["uId"] == '131379') {
+					return self::renderAPI(101, '想要更多密聊机会，请先捐媒桂花吧~');
+				}*/
 				$ret = ChatMsg::addChat($uid, $receiverId, $text, 0, 0, $qId);
 				//ChatMsg::add($uid, $receiverId, $text);
 				if ($ret === false) {
 					return self::renderAPI(129, '发送失败~');
 				} elseif ($ret === 0) {
-					return self::renderAPI(129, '想要更多密聊机会，请先捐媒桂花吧~');
+					return self::renderAPI(101, '想要更多密聊机会，请先捐媒桂花吧~');
 				} elseif (is_numeric($ret)) {
 					return self::renderAPI(129, '不好意思哦，最多只能聊' . $ret . '句');
 				} else {

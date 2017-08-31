@@ -471,9 +471,10 @@ require(["layer"],
 			list: $('.chats'),
 			tmp: $('#tpl_chat').html(),
 			topupTmp: $('#tpl_chat_topup').html(),
+			shareTmp: $('#tpl_chat_share').html(),
 			topTip: $('#schat .chat-tip'),
 			input: $('.chat-input'),
-			inputVal: "",
+			inputVal: '',
 			bot: $('#schat .m-bottom-pl'),
 			topPL: $('#scontacts .m-top-pl'),
 			menus: $(".m-chat-wrap"),
@@ -698,6 +699,11 @@ require(["layer"],
 						setTimeout(function () {
 							util.bot.get(0).scrollIntoView(true);
 						}, 300);
+					} else if (resp.code == 101) {
+						$sls.main.show();
+						var html = Mustache.render(util.shareTmp, {});
+						$sls.content.html(html).addClass("animate-pop-in");
+						$sls.shade.fadeIn(160);
 					} else {
 						showMsg(resp.msg);
 					}

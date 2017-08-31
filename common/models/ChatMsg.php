@@ -143,7 +143,6 @@ class ChatMsg extends ActiveRecord
 		if ($left < 1) {
 			$stat = UserTrans::getStat($senderId, 1);
 			$flower = isset($stat['flower']) ? intval($stat['flower']) : 0;
-			AppUtil::logFile($stat, 5, __FUNCTION__);
 			if ($flower < $costAmt) {
 				return 0;
 			}
