@@ -1571,10 +1571,10 @@ class ApiController extends Controller
 			case "favor":
 				$page = self::postParam("page", 1);
 				$cat = self::postParam("cat");
-				list($flist, $nextpage) = UserNet::favorlist($page, $cat);
-				foreach ($flist as $k => $row) {
+				list($items, $nextpage) = UserNet::favorlist($page, $cat);
+				foreach ($items as $k => $row) {
 					if ($row['todayFavor'] > 0) {
-						$flist[$k]['todayFavor'] = '+' . $row['todayFavor'];
+						$items[$k]['todayFavor'] = '+' . $row['todayFavor'];
 					}
 				}
 				$mInfo = UserNet::myfavor($wxInfo["uId"], $cat);
@@ -1588,7 +1588,7 @@ class ApiController extends Controller
 					$mInfo['text'] .= '你没上榜，继续努力哦~';
 				}
 				return self::renderAPI(0, '', [
-					"items" => $flist,
+					"items" => $items,
 					"mInfo" => $mInfo,
 					"nextpage" => $nextpage,
 				]);
