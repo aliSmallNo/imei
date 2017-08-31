@@ -11,6 +11,7 @@ namespace common\models;
 
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
+use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
 
 class ChatMsg extends ActiveRecord
@@ -48,6 +49,79 @@ class ChatMsg extends ActiveRecord
 		$arr = [$uId, $subUId];
 		sort($arr);
 		return $arr;
+	}
+
+	public static function greeting($senderId, $ids, $content = '你好，初来乍到，请多多关照呦~', $conn = '')
+	{
+		$groups = [];
+		foreach ($ids as $id) {
+			$groups[] = self::sortUId($senderId, $id);
+		}
+		if (!$groups) {
+			return false;
+		}
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+
+		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound,gAddedBy)
+			SELECT :id1,:id2,9999,:uid FROM dual
+			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2)';
+		$cmdAdd = $conn->createCommand($sql);
+
+		$sql = 'SELECT gId,gFirstCId,gLastCId FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2';
+		$cmdSel = $conn->createCommand($sql);
+
+		$sql = 'update im_chat_group set gFirstCId=:cid,gAddedOn=now(),gAddedBy=:uid WHERE gId=:gid AND gFirstCId < 1';
+		$cmdUpdate1 = $conn->createCommand($sql);
+		$sql = 'update im_chat_group set gLastCId=:cid,gUpdatedOn=now(),gUpdatedBy=:uid WHERE gId=:gid';
+		$cmdUpdate2 = $conn->createCommand($sql);
+		foreach ($groups as $group) {
+			list($uid1, $uid2) = $group;
+			$cmdAdd->bindValues([
+				':id1' => $uid1,
+				':id2' => $uid2,
+				':uid' => $senderId,
+			])->execute();
+
+			$ret = $cmdSel->bindValues([
+				':id1' => $uid1,
+				':id2' => $uid2,
+			])->queryOne();
+			$gid = $ret['gId'];
+			$firstId = $ret['gFirstCId'];
+			if ($firstId > 0) {
+				continue;
+			}
+			$entity = new self();
+			$entity->cGId = $gid;
+			$entity->cContent = $content;
+			$entity->cAddedBy = $senderId;
+			$entity->cNote = 'greeting';
+			$entity->save();
+			$cId = $entity->cId;
+
+			$cmdUpdate1->bindValues([
+				':cid' => $cId,
+				':gid' => $gid,
+				':uid' => $senderId
+			])->execute();
+
+			$cmdUpdate2->bindValues([
+				':cid' => $cId,
+				':gid' => $gid,
+				':uid' => $senderId
+			])->execute();
+
+			WechatUtil::templateMsg(WechatUtil::NOTICE_CHAT,
+				($uid1 == $senderId ? $uid2 : $uid1),
+				'有人密聊你啦',
+				'TA给你发了一条密聊消息，快去看看吧~',
+				$senderId,
+				$gid
+			);
+		}
+		return true;
 	}
 
 	/**

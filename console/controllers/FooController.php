@@ -9,6 +9,7 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
+use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserWechat;
@@ -467,8 +468,6 @@ class FooController extends Controller
 		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn05');
 		var_dump($items);*/
 
-//		return;
-
 		/*$imagePath = 'https://img.meipo100.com/2017/84/113272_n.jpg';
 		$imagePath = ImageUtil::getFilePath($imagePath);
 		echo $imagePath . '  ' . __LINE__;
@@ -477,9 +476,23 @@ class FooController extends Controller
 
 		self::getCircleAvatar($imagePath, $saveAs, 440);
 		var_dump($saveAs);*/
+		$conn = AppUtil::db();
+		$sql = 'select pPId,pLat,pLng from im_pin 
+				WHERE pCategory=200 AND pCity!=\'\' AND pLat=\'\' order by pDate desc limit 1000 ';
+		$ret = $conn->createCommand($sql)->queryAll();
+		$count = 0;
+		foreach ($ret as $row) {
+			$count += Pin::regeo($row['pPId'], $row['pLat'], $row['pLng'], $conn) ? 1 : 0;
+			if ($count % 50 == 0) {
+				var_dump($count . date(' Y-m-d H:i:s'));
+			}
+		}
+		var_dump($count . '/' . count($ret));
+		/*$ret = User::greetUsers(131379);
+		var_dump($ret);*/
+		//Pin::regeo(131379);
+		//Pin::regeo(134986);
 
-
-		AppUtil::logFile('test ', 5);
 
 		/*$uId = 131379;
 		$dt = date('Y-m-d', time() + 86400 * 10);

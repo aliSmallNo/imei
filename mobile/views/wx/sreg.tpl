@@ -301,11 +301,29 @@
 		<div class="m-popup-content"></div>
 	</div>
 </div>
+
 <input type="hidden" id="cCoord">
 <input type="hidden" id="cMaxYear" value="{{$maxYear}}">
 <input type="hidden" id="cGender" value="{{if $uInfo.gender}}{{$uInfo.gender}}{{/if}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
+</script>
+<script type="text/template" id="tpl_greeting_users">
+	<div class="m-greeting-wrap">
+		<h4>微媒100为你推荐</h4>
+		<ul class="m-greeting-users clearfix">
+			{[#items]}
+			<li data-id="{[id]}">
+				<img src="{[thumb]}" alt="">
+				<div>{[age]}岁 {[horos]}</div>
+			</li>
+			{[/items]}
+		</ul>
+		<div class="btn-wrap">
+			<a href="javascript:;" class="btn btn-main btn-greeting">一键打招呼</a>
+		</div>
+		<h5>精选优质会员，错过要自己找呦</h5>
+	</div>
 </script>
 <script>
 	var mProvinces = {{$provinces}},
@@ -315,4 +333,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="//webapi.amap.com/maps?v=1.3&key=8dcdd1499361b46052bb94a1dfafbe49&plugin=AMap.Geocoder"></script>
-<script data-main="/js/sreg.js?v=1.3.3" src="/assets/js/require.js"></script>
+<script data-main="/js/sreg.js?v=1.3.6" src="/assets/js/require.js"></script>

@@ -446,7 +446,7 @@ class UserTrans extends ActiveRecord
 		return $ret;
 	}
 
-	public static function fansRank($uid, $ranktag = "fans-all", $page = 1, $pageSize = 20)
+	public static function fansRank($uid, $ranktag = "total", $page = 1, $pageSize = 20)
 	{
 		list($beginDT, $endDT) = AppUtil::getEndStartTime(time(), 'today', true);
 		list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
@@ -455,7 +455,7 @@ class UserTrans extends ActiveRecord
 		$cat = implode(',', [UserTrans::CAT_RECEIVE, UserTrans::CAT_FANS_DRAW]);
 		$criteria = '';
 		$params = [];
-		if ($ranktag == "fans-week") {
+		if ($ranktag == "fans-week" || $ranktag == "week") {
 			$criteria = " and tAddedOn between :monday and :sunday ";
 			$params = [":monday" => $monday, ":sunday" => $sunday];
 		}

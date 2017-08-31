@@ -489,10 +489,17 @@ class ApiController extends Controller
 				}
 
 				$data["role"] = ($tag == 'mreg') ? User::ROLE_MATCHER : User::ROLE_SINGLE;
-				$ret = User::reg($data);
+				$userId = User::reg($data);
 				//Rain: 刷新用户cache数据
 				UserWechat::getInfoByOpenId($openId, 1);
-				return self::renderAPI(0, '保存成功啦~', $ret);
+				$data = [
+					'uid' => $userId,
+					'items' => []
+				];
+				if ($tag == 'sreg' && $userId) {
+					$data['items'] = User::greetUsers($userId);
+				}
+				return self::renderAPI(0, '保存成功啦~', $data);
 			case "album":
 				$f = self::postParam('f', 'add');
 				$text = ($f == "add" ? "添加" : '删除');
@@ -531,25 +538,17 @@ class ApiController extends Controller
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				LogAction::add($wxInfo['uId'], $openId, LogAction::ACTION_SINGLE_LIST);
-				$ret = User::getFilter($openId, $filter, $page);
+				$ret = User::getFilter($openId, $filter, $page, 15);
 				if (isset($ret['data']) && count($ret['data']) > 3 && $page == 1) {
 					array_splice($ret['data'], 3, 0, [
-//						[
-//							'url' => '/wx/fansrank',
-//							'img' => '/images/event_fans.jpg',
-//						],
 						[
 							'url' => '/wx/vote',
 							'img' => '/images/event_vote.jpg',
 						],
 						[
-							'url' => '/wx/fansrank',
+							'url' => '#sranking',
 							'img' => '/images/event_fans_cash.jpg',
-						],
-//						[
-//							'url' => '/wx/toparty',
-//							'img' => '/images/icon-event0.jpg'
-//						]
+						]
 					]);
 				}
 				return self::renderAPI(0, '', $ret);
@@ -625,9 +624,9 @@ class ApiController extends Controller
 					'result' => $result,
 					'wechatID' => $wechatID
 				]);
-			case "addmewx":     //添加我微信
-			case "iaddwx":      //我添加微信
-			case "heartbeat":   // 心动列表
+			case "addmewx":
+			case "iaddwx":
+			case "heartbeat":
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
@@ -1353,6 +1352,14 @@ class ApiController extends Controller
 		}
 
 		switch ($tag) {
+			case 'greeting':
+				$ids = self::postParam('ids');
+				$ids = json_decode($ids, 1);
+				if ($ids) {
+					$ret = ChatMsg::greeting($uid, $ids);
+				}
+				return self::renderAPI(0, '打招呼成功！', $ret);
+				break;
 			case 'sent':
 				$receiverId = self::postParam('id');
 				$receiverId = AppUtil::decrypt($receiverId);
@@ -1548,6 +1555,76 @@ class ApiController extends Controller
 				break;
 		}
 		return self::renderAPI(129, '操作无效~', ['prize' => 4]);
+	}
+
+	public function actionRanking()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$openId = self::postParam('openid');
+		if (!$openId) {
+			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		}
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			return self::renderAPI(129, '用户不存在啊~');
+		}
+		switch ($tag) {
+			case "favor":
+				$page = self::postParam("page", 1);
+				$cat = self::postParam("cat");
+				list($items, $nextpage) = UserNet::favorlist($page, $cat);
+				foreach ($items as $k => $row) {
+					if ($row['todayFavor'] > 0) {
+						$items[$k]['todayFavor'] = '+' . $row['todayFavor'];
+					}
+				}
+				$mInfo = UserNet::myfavor($wxInfo["uId"], $cat);
+				$mInfo['text'] = '';
+				if (isset($mInfo['co']) && $mInfo['co']) {
+					$mInfo['text'] .= '你的心动值是<b>' . $mInfo['co'] . '</b>，';
+				}
+				if ($mInfo['no'] < 21 && $mInfo['no'] > 0) {
+					$mInfo['text'] .= '你排名第' . $mInfo['no'] . '，不错哦~';
+				} else {
+					$mInfo['text'] .= '你没上榜，继续努力哦~';
+				}
+				return self::renderAPI(0, '', [
+					"items" => $items,
+					"mInfo" => $mInfo,
+					"nextpage" => $nextpage,
+				]);
+				break;
+			case "fans": // 花粉值排行榜
+				$page = self::postParam("page", 1);
+				$cat = self::postParam("cat");
+				list($items, $nextpage) = UserTrans::fansRank(0, $cat, $page);
+				$mInfo = UserTrans::fansRank($wxInfo["uId"], $cat, $page);
+				$mInfo['no'] = 0;
+				$mInfo['uname'] = $wxInfo['uName'];
+				$mInfo['avatar'] = $wxInfo['uThumb'];
+				if ($mInfo && isset($mInfo['id'])) {
+					foreach ($items as $k => $item) {
+						if ($item['id'] == $mInfo['id']) {
+							$mInfo['no'] = $k + 1;
+						}
+					}
+				}
+				$mInfo['text'] = '';
+				if (isset($mInfo['co']) && $mInfo['co']) {
+					$mInfo['text'] .= '你的花粉值是<b>' . $mInfo['co'] . '</b>，';
+				}
+				if ($mInfo['no']) {
+					$mInfo['text'] .= '你排名第' . $mInfo['no'] . '，不错哦~';
+				} else {
+					$mInfo['text'] .= '你没上榜，继续努力哦~';
+				}
+				return self::renderAPI(0, '', [
+					"items" => $items,
+					"mInfo" => $mInfo,
+					"nextpage" => $nextpage,
+				]);
+		}
+		return self::renderAPI(129, '操作无效~');
 	}
 
 	public function actionQuestions()

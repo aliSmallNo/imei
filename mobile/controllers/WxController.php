@@ -156,6 +156,7 @@ class WxController extends BaseController
 			$routes = array_values($routes);
 		}
 		$certImage = '../images/cert_sample.jpg';
+
 		return self::renderPage("sreg.tpl",
 			[
 				'uInfo' => $uInfo,
@@ -184,7 +185,7 @@ class WxController extends BaseController
 				'switchRole' => $switchRole,
 				'certImage' => $certImage,
 				'professions' => json_encode(User::$ProfessionDict),
-				'locInfo' => $locInfo
+				'locInfo' => $locInfo,
 			],
 			'imei',
 			'注册单身身份');

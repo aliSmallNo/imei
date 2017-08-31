@@ -2,13 +2,23 @@
 <style>
 	.pInfo span {
 		font-size: 12px;
-		border: 1px solid #f491b2;
+		border: 1px solid #f06292;
 		padding: 0 3px;
 		line-height: 17px;
 		border-radius: 3px;
-		color: #f491b2;
+		color: #f06292;
 		display: inline-block;
 		margin: 3px 1px;
+	}
+
+	.m-style-mei span {
+		color: #51c332;
+		border: 1px solid #51c332;
+	}
+
+	.m-style-male span {
+		color: #007aff;
+		border: 1px solid #007aff;
 	}
 
 	.pInfo span:empty {
@@ -27,22 +37,27 @@
 		background: #f90;
 	}
 
-	.pInfo .role20 {
+	.m-role {
 		font-size: 12px;
 		line-height: 16px;
 		color: #fff;
-		background: #f491b2;
+		background: #f06292;
 		padding: 0 5px;
 		border: none;
 	}
-
-	.pInfo .role10 {
-		font-size: 12px;
-		line-height: 16px;
+	.m-style-female .m-role {
+		background: #f06292;
 		color: #fff;
-		background: #a5a5a5;
-		padding: 0 5px;
-		border: none;
+	}
+
+	.m-style-mei .m-role {
+		background: #51c332;
+		color: #fff;
+	}
+
+	.m-style-male .m-role {
+		background: #007aff;
+		color: #fff;
 	}
 
 	.pInfo span.status-1 {
@@ -91,12 +106,19 @@
 
 	.perc-bar-title {
 		font-size: 12px;
-		color: #f491b2;
+		color: #f06292;
 		margin: 0;
-		-webkit-box-flex: 0 0 108px;
 		-webkit-flex: 0 0 108px;
 		-ms-flex: 0 0 108px;
 		flex: 0 0 108px;
+	}
+
+	.m-style-mei .perc-bar-title {
+		color: #51c332;
+	}
+
+	.m-style-male .perc-bar-title {
+		color: #007aff;
 	}
 
 	.perc-bar-wrap {
@@ -108,17 +130,33 @@
 	}
 
 	.perc-bar {
-		border: 1px solid #f491b2;
+		border: 1px solid #f06292;
 		width: 65%;
 		height: 4px;
 		border-radius: 3px
 	}
 
 	.perc-bar em {
-		background: #f491b2;
+		background: #f06292;
 		display: block;
 		height: 2px;
 		border-radius: 3px
+	}
+
+	.m-style-mei .perc-bar {
+		border: 1px solid #51c332;
+	}
+
+	.m-style-mei .perc-bar em {
+		background: #51c332;
+	}
+
+	.m-style-male .perc-bar {
+		border: 1px solid #007aff;
+	}
+
+	.m-style-male .perc-bar em {
+		background: #007aff;
 	}
 
 	.album-items img {
@@ -228,18 +266,18 @@
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 		<tr>
-			<th style="width: 70px">
+			<th class="col-sm-1">
 				头像
 			</th>
-			<th class="col-sm-6">
+			<th class="col-sm-7">
 				个人信息
 			</th>
 			<th class="col-sm-2">
 				相册
 			</th>
-			<th class="col-sm-1">
+			<!--th class="col-sm-1">
 				择偶标准
-			</th>
+			</th-->
 			<th>
 				操作
 			</th>
@@ -251,23 +289,22 @@
 			<td>
 				<img src="{{$prod.thumb}}" bsrc="{{$prod.avatar}}" width="100%" class="i-av">
 			</td>
-			<td class="pInfo">
-				<span class="role{{$prod.role}}">{{$prod.role_t}}</span> {{$prod.name}}
+			<td class="pInfo m-style-{{$prod.style}}">
+				<span class="m-role">{{$prod.role_t}}</span> {{$prod.name}}
 				<em>{{$prod.phone}} {{$prod.wechatid}} {{$prod.location_t}}</em>
 				<em style="display: none">{{$prod.note_t}}</em>
 				<span class="sub{{$prod.subscribe}}">{{if $prod.subscribe}}已关注{{else}}未关注{{/if}}</span>
 				{{if $prod.substatus>1}}<span>{{$prod.substatus_t}}</span>{{/if}}
 				<span class="status-{{if $prod.note_t}}10{{else}}{{$prod.status}}{{/if}}">{{if $prod.note_t}}{{$prod.note_t}}{{else}}{{$prod.status_t}}{{/if}}</span>
 				<span class="status-1">{{if $prod.certstatus==2}}{{$prod.certstatus_t}}{{/if}}</span>
-				<br>
 				<div class="perc-wrap">
 					<div class="perc-bar-title">资料完整度 <b>{{$prod.percent}}%</b></div>
 					<div class="perc-bar-wrap"><p class="perc-bar"><em style="width: {{$prod.percent}}%"></em></p></div>
 				</div>
 				<span>{{$prod.marital_t}}</span>
+				<span>{{$prod.gender_t}}</span>
 				<span>{{$prod.age}}</span>
 				<span>{{$prod.horos_t}}</span>
-				<span>{{$prod.gender_t}}</span>
 				<span>{{$prod.height_t}}</span>
 				<span>{{$prod.weight_t}}</span>
 				<span>{{$prod.education_t}}</span>
@@ -298,11 +335,11 @@
 				{{/foreach}}
 				{{/if}}
 			</td>
-			<td class="pInfo">
+			<!--td class="pInfo">
 				{{foreach from=$prod.filter_t item=item}}
 				<span>{{$item}}</span>
 				{{/foreach}}
-			</td>
+			</td-->
 			<td>
 				<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改信息</a>
 				<a href="javascript:;" class="check btn btn-outline btn-primary btn-xs" data-id="{{$prod.id}}"

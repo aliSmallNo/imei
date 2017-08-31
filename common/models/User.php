@@ -13,6 +13,7 @@ use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
+use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
 
 class User extends ActiveRecord
@@ -749,7 +750,9 @@ class User extends ActiveRecord
 			':single' => self::ROLE_SINGLE
 		])->execute();
 		$ret = UserTrans::addReward($uid, UserTrans::CAT_NEW, $conn);
-		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
+
+		QueueUtil::loadJob('regeo', ['id' => $uid]);
+
 		return $uid;
 	}
 
@@ -1180,7 +1183,7 @@ class User extends ActiveRecord
 			$nextpage = 0;
 		}
 		//Rain: 不想展示太多页了
-		if ($nextpage > 6) {
+		if ($nextpage > 10) {
 			$nextpage = 0;
 		}
 		return ["data" => $result, "nextpage" => $nextpage, "condition" => $myFilter, 'page' => $page];
@@ -1234,12 +1237,13 @@ class User extends ActiveRecord
 			$nextPage = $page + 1;
 		}
 		$items = [];
-		$fields = ['password', 'phone', 'openid', 'addedon', 'updatedon', 'album', 'album_cnt', 'homeland', 'homeland_t',
+		$fields = ['password', 'phone', 'percent', 'openid', 'addedon', 'updatedon', 'album', 'album_cnt', 'homeland', 'homeland_t',
 			'cert', 'certdate', 'certimage', 'certnote', 'certstatus', 'certstatus_t', 'location', 'rankdate', 'ranktmp',
 			'setting', 'rank', 'weight', 'weight_t', 'marital', 'marital_t', 'coord', 'diet', 'diet_t', 'pet', 'pet_t',
 			'birthyear', 'birthyear_t', 'alcohol', 'alcohol_t', 'rest', 'rest_t', 'fitness', 'fitness_t', 'hint',
 			'horos', 'horos_t', 'estate', 'estate_t', 'belief', 'belief_t', 'car', 'car_t', 'height', 'height_t',
-			'income', 'income_t'];
+			'income', 'income_t', 'smoke', 'smoke_t', 'province', 'note', 'note_t', 'city', 'invitedby', 'status_t', 'status',
+			'logdate', 'filter', 'filter_t', 'scope', 'interest', 'email', 'education', 'education_t', 'mpuid', 'profession'];
 		foreach ($ret as $row) {
 			$item = self::fmtRow($row);
 			$item['stat'] = UserNet::getStat($item['id']);
@@ -1970,5 +1974,71 @@ class User extends ActiveRecord
 		/*{"fans":1,"chat":1,"favor":1}*/
 	}
 
+	public static function greetUsers($uid, $conn = '')
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$ret = [];
+		$sql = 'select * from im_user WHERE uId=:id';
+		$uInfo = $conn->createCommand($sql)->bindValues([
+			':id' => $uid
+		])->queryOne();
+		if (!$uInfo) return $ret;
+		$gender = $uInfo['uGender'];
+		if ($gender != self::GENDER_FEMALE) return $ret;
+		$location = json_decode($uInfo['uLocation'], 1);
+		if (!$location) return $ret;
+		list($prov, $city) = array_column($location, 'text');
+		$birthYear = $uInfo['uBirthYear'];
+		$sql = 'select uId as id,uName as name,uThumb as thumb,uLogDate,uBirthYear,uHeight,uHoros,
+			 (case WHEN p.pProvince like :prov and p.pCity like :city then 10 WHEN p.pProvince like :prov then 8 else 0 end) as rank 
+			 from im_user as u
+			 join im_pin as p on p.pPId=u.uId and p.pCategory=:cat 
+			 WHERE uStatus=1 and uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
+			 order by rank desc, uLogDate desc limit 10';
+
+		$active = $conn->createCommand($sql)->bindValues([
+			':prov' => $prov . '%',
+			':city' => $city . '%',
+			':cat' => Pin::CAT_NOW,
+			':y0' => $birthYear - 12,
+			':y1' => $birthYear + 3,
+			':gender' => User::GENDER_MALE
+		])->queryAll();
+		$sql = 'select uId as id,uName as name,uThumb as thumb,uLogDate,uBirthYear,uHeight,uHoros,
+			 (case WHEN p.pProvince like :prov and p.pCity like :city then 10 WHEN p.pProvince like :prov then 8 else 0 end) as rank 
+			 from im_user as u
+			 join im_pin as p on p.pPId=u.uId and p.pCategory=:cat 
+			 WHERE uStatus=1 and uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
+			 order by rank desc, uLogDate limit 10';
+		$inactive = $conn->createCommand($sql)->bindValues([
+			':prov' => $prov . '%',
+			':city' => $city . '%',
+			':cat' => Pin::CAT_NOW,
+			':y0' => $birthYear - 12,
+			':y1' => $birthYear + 3,
+			':gender' => User::GENDER_MALE
+		])->queryAll();
+		$items = [];
+		$flag = true;
+		for ($k = 0; $k < 20; $k++) {
+			if ($flag) {
+				$item = array_shift($active);
+			} else {
+				$item = array_shift($inactive);
+			}
+			if ($item) {
+				$item['age'] = $item['uBirthYear'] ? date('Y') - $item['uBirthYear'] : '';
+				$item['horos'] = isset(self::$Horos[$item['uHoros']]) ? mb_substr(self::$Horos[$item['uHoros']], 0, 3) : '';
+				$items[$item['id']] = $item;
+				$flag = !$flag;
+			}
+			if (count($items) == 6) {
+				break;
+			}
+		}
+		return array_values($items);
+	}
 
 }

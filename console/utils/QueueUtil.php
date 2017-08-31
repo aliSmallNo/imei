@@ -9,6 +9,8 @@
 
 namespace console\utils;
 
+use common\models\Pin;
+use common\utils\AppUtil;
 use common\utils\RedisUtil;
 use console\lib\beanstalkSocket;
 use yii\base\Exception;
@@ -25,6 +27,9 @@ class QueueUtil
 
 	public static function loadJob($methodName, $params = [], $tube = '', $delay = 0)
 	{
+		if (AppUtil::isDev()) {
+			return;
+		}
 		if (!$tube) {
 			$tube = self::QUEUE_TUBE;
 		}
@@ -100,6 +105,13 @@ class QueueUtil
 		$ret = self::QUEUE_TUBE . " 更新代码成功! \n" . date("Y-m-d H:i:s") . "\n\n更新日志: \n" . $ret;
 		RedisUtil::setCache($ret, RedisUtil::KEY_PUB_CODE, $id);
 		return $ret;
+	}
+
+	public static function regeo($params)
+	{
+		$uid = $params["id"];
+		Pin::regeo($uid);
+		return true;
 	}
 
 	protected static function smsMessage($phone, $msg, $appendId = '1234', $type = 'sale')

@@ -318,7 +318,8 @@ class UserNet extends ActiveRecord
 		$offset = ($page - 1) * $pageSize;
 
 		$conn = AppUtil::db();
-		$sql = 'select u.* from im_user as u  
+		$sql = 'select DISTINCT u.* 
+				from im_user as u  
 				join im_user_net as n on n.nSubUId=u.uId ' . $strCriteria .
 			' order by n.nAddedOn DESC limit ' . $offset . ',' . ($pageSize + 1);
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
@@ -328,9 +329,18 @@ class UserNet extends ActiveRecord
 			array_pop($ret);
 		}
 		$items = [];
+		$fields = ['phone', 'password', 'openid', 'percent', 'album', 'album_cnt', 'alcohol', 'alcohol_t', 'belief', 'belief_t',
+			'certdate', 'certnote', 'coord', 'education', 'diet', 'filter', 'filter_t', 'homeland', 'location', 'pet', 'pet_t',
+			'rank', 'rankdate', 'ranktmp', 'rest', 'rest_t', 'province', 'city', 'status', 'status_t', 'updatedon', 'addedon',
+			'birthyear_t', 'email', 'estate', 'fitness', 'income', 'logdate', 'profession', 'weight', 'setting', 'smoke', 'smoke_t',
+			'role', 'note_t', 'invitedby', 'horos', 'height', 'certimage', 'certstatus', 'car', 'marital', 'scope', 'certstatus_t',
+			'diet_t', 'car_t', 'estate_t', 'fitness_t', 'interest', 'role_t', 'income_t', 'marital_t', 'height_t', 'education_t'];
 		foreach ($ret as $row) {
 			$item = User::fmtRow($row);
 			$item['notes'] = User::notes($item);
+			foreach ($fields as $field) {
+				unset($item[$field]);
+			}
 			$items[] = $item;
 		}
 		return [$items, $nextPage];
@@ -561,10 +571,11 @@ class UserNet extends ActiveRecord
 		}
 		$fields = ['album', 'album_cnt', 'alcohol', 'alcohol_t', 'belief', 'belief_t', 'coord', 'city', 'province',
 			'education', 'education_t', 'fitness', 'fitness_t', 'income', 'income_t', 'smoke', 'smoke_t', 'status', 'status_t',
-			'updatedon', 'weight', 'weight_t', 'password', 'profession', 'profession_t', 'rest', 'rest_t',
-			'pet', 'pet_t', 'estate', 'estate_t', 'diet', 'diet_t', 'car', 'car_t',
+			'updatedon', 'weight', 'weight_t', 'password', 'profession', 'profession_t', 'rest', 'rest_t', 'logdate',
+			'pet', 'pet_t', 'estate', 'estate_t', 'diet', 'diet_t', 'car', 'car_t', 'phone', 'email', 'hint', 'addedon',
 			'birthyear', 'birthyear_t', 'marital', 'marital_t', 'location', 'cert', 'certdate', 'certimage', 'certnote',
-			'certstatus', 'certstatus_t', 'filter', 'filter_t'];
+			'certstatus', 'certstatus_t', 'filter', 'filter_t', 'invitedby', 'interest', 'gender', 'height', 'horos', 'percent',
+			'scope', 'rank', 'ranktmp', 'rankdate', 'openid', 'homeland', 'role', 'setting'];
 		$items = [];
 		foreach ($ret as $row) {
 			$item = User::fmtRow($row);
@@ -850,16 +861,15 @@ class UserNet extends ActiveRecord
 		return [$res, $count];
 	}
 
-	public static function favorlist($page = 1, $ranktag = "favor-all", $pageSize = 20)
+	public static function favorlist($page = 1, $ranktag = "total", $pageSize = 20)
 	{
-
 		list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
 		list($today0, $today1) = AppUtil::getEndStartTime(time(), 'today', true);
 		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
 
 		$params = [":today0" => $today0, ":today1" => $today1];
 		$conStr = '';
-		if ($ranktag == "favor-week") {
+		if ($ranktag == "favor-week" || $ranktag == "week") {
 			$conStr = " and nAddedOn BETWEEN :sDate and :eDate ";
 			$params[":sDate"] = $monday;
 			$params[":eDate"] = $sunday;
@@ -890,13 +900,13 @@ class UserNet extends ActiveRecord
 		return [$data, $nextPage];
 	}
 
-	public static function myfavor($uid, $ranktag = "favor-all")
+	public static function myfavor($uid, $tag = "total")
 	{
 		list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
 		list($today0, $today1) = AppUtil::getEndStartTime(time(), 'today', true);
 		$params = [":today0" => $today0, ":today1" => $today1];
 		$conStr = "";
-		if ($ranktag == "favor-week") {
+		if ($tag == "week") {
 			$conStr = " and nAddedOn BETWEEN :sDate and :eDate ";
 			$params[":sDate"] = $monday;
 			$params[":eDate"] = $sunday;

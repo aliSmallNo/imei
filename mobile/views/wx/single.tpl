@@ -95,8 +95,8 @@
 			<a href="#focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
-			<a href="/wx/fansrank"><span>花粉排行榜</span> <i class="i-mark-hot"></i></a>
-			<a href="/wx/favor"><span>心动排行榜</span></a>
+			<a href="#sranking"><span>花粉排行榜</span> <i class="i-mark-hot"></i></a>
+			<a href="#sfavors"><span>心动排行榜</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
 
@@ -559,6 +559,30 @@
 		</ol>
 	</div>
 </section>
+<section id="sranking" data-title="微媒100-花粉值排行榜">
+	<div class="tab fixed-top ranking-tab">
+		<a href="javascript:;" data-cat="total" class="active">花粉值-总排名</a>
+		<a href="javascript:;" data-cat="week" class="">花粉值-周排名</a>
+	</div>
+	<div style="height: 3.8rem"></div>
+	<div class="ranking-wrap">
+		<div class="ranking-tip"></div>
+		<ul class="ranking-list"></ul>
+		<div class="spinner" style="display: none"></div>
+	</div>
+</section>
+<section id="sfavors" data-title="微媒100-心动值排行榜">
+	<div class="tab fixed-top ranking-tab">
+		<a href="javascript:;" data-cat="total" class="active">心动值-总排行</a>
+		<a href="javascript:;" data-cat="week" class="">心动值-周排行</a>
+	</div>
+	<div style="height: 3.8rem"></div>
+	<div class="ranking-wrap">
+		<div class="ranking-tip"></div>
+		<ul class="ranking-list"></ul>
+		<div class="spinner" style="display: none"></div>
+	</div>
+</section>
 <section id="sreport">
 	<div class="report_wrap">
 		<h3>举报用户</h3>
@@ -754,22 +778,22 @@
 <script type="text/html" id="wechats">
 	{[#data]}
 	<li>
-		<a href="javascript:;" data-id={[encryptId]}" data-nid="{[nid]}" class="sprofile">
-		<div class="plist-l">
-			<img src="{[thumb]}">
-		</div>
-		<div class="plist-r">
-			<p>{[name]}</p>
-			<p>{[location_t]}</p>
-			<i>{[age]} {[height]}cm {[horos_t]} {[scope_t]}</i>
-		</div>
-		{[#pendingWxFlag]}
-		<div class="wx-process">
-			<button class="pass">同意</button>
-			<div style="height: .5rem"></div>
-			<button class="refuse">拒绝</button>
-		</div>
-		{[/pendingWxFlag]}
+		<a href="javascript:;" data-eid="{[encryptId]}" data-nid="{[nid]}" class="j-profile">
+			<div class="plist-l">
+				<img src="{[thumb]}">
+			</div>
+			<div class="plist-r">
+				<p>{[name]}</p>
+				<p>{[location_t]}</p>
+				<i>{[age]} {[height]}cm {[horos_t]} {[scope_t]}</i>
+			</div>
+			{[#pendingWxFlag]}
+			<div class="wx-process">
+				<button class="pass">同意</button>
+				<div style="height: .5rem"></div>
+				<button class="refuse">拒绝</button>
+			</div>
+			{[/pendingWxFlag]}
 		</a>
 		{[#showWxFlag]}
 		<div class="m-wxid">微信号: <em>{[wechatid]}</em></div>{[/showWxFlag]}
@@ -886,6 +910,18 @@
 		<a href="javascript:;" class="del"></a>
 	</li>
 	{[/albums]}
+</script>
+<script type="text/template" id="tpl_ranking">
+	{[#items]}
+	<li>
+		<a href="javascript:;" data-eid="{[secretId]}" class="j-profile">
+			<div class="seq">{[key]}</div>
+			<div class="avatar"><img src="{[avatar]}"></div>
+			<div class="title">{[uname]}</div>
+			<div class="amt">{[co]} {[#todayFavor]}<span>{[.]}</span>{[/todayFavor]}</div>
+		</a>
+	</li>
+	{[/items]}
 </script>
 <script type="text/template" id="tpl_chat">
 	{[#items]}
@@ -1054,4 +1090,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.9.1" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.9.6" src="/assets/js/require.js"></script>

@@ -31,8 +31,6 @@ require(["layer"],
 			firstLoadFlag: true,
 			sprofileF: 0,
 			smeFlag: 0,
-			slinkFlag: 0,
-			slinkpage: 1,
 			secretId: ''
 		};
 
@@ -111,9 +109,23 @@ require(["layer"],
 			$sls.mainPage.removeClass('bg-lighter');
 			$('body').removeClass('bg-qrcode');
 			ChatUtil.toggleTimer(0);
+			RankUtil.reset();
+			FavorUtil.reset();
 			switch (hashTag) {
+				case 'sranking':
+					RankUtil.page = 1;
+					RankUtil.cat = 'total';
+					RankUtil.reload();
+					FootUtil.toggle(0);
+					break;
+				case 'sfavors':
+					FavorUtil.page = 1;
+					FavorUtil.cat = 'total';
+					FavorUtil.reload();
+					FootUtil.toggle(0);
+					break;
 				case 'slink':
-					slinkUlit.slink();
+					MeipoUtil.reload();
 					FootUtil.toggle(1);
 					break;
 				case 'slook':
@@ -186,9 +198,9 @@ require(["layer"],
 			layer.closeAll();
 		}
 
-		var slinkUlit = {
-			slinkpage: 1,
-			slinkFlag: false,
+		var MeipoUtil = {
+			page: 1,
+			loading: false,
 			nomore: $("a[tag=recomend]"),
 			recommendMp: $(".recommendMp"),
 			slinkTemp: $("#slinkTemp").html(),
@@ -197,37 +209,38 @@ require(["layer"],
 					if ($(this).attr("fl")) {
 						return;
 					}
-					slinkUlit.slink();
+					MeipoUtil.reload();
 				});
 			},
-			slink: function () {
-				if (slinkUlit.slinkFlag) {
+			reload: function () {
+				var util = this;
+				if (util.loading || util.page < 1) {
 					return;
 				}
-				slinkUlit.slinkFlag = 1;
-				slinkUlit.nomore.html("拼命加载中...");
+				util.loading = 1;
+				util.nomore.html("拼命加载中...");
 				$.post("/api/user", {
 					tag: "matcher",
-					page: slinkUlit.slinkpage,
+					page: util.page,
 				}, function (resp) {
-					var html = Mustache.render(slinkUlit.slinkTemp, resp.data);
-					if (slinkUlit.slinkpage == 1) {
-						slinkUlit.recommendMp.html(html);
+					var html = Mustache.render(util.slinkTemp, resp.data);
+					if (util.page == 1) {
+						util.recommendMp.html(html);
 					} else {
-						slinkUlit.recommendMp.append(html);
+						util.recommendMp.append(html);
 					}
-					slinkUlit.slinkpage = resp.data.nextPage;
-					if (slinkUlit.slinkpage == 0) {
-						slinkUlit.nomore.html("没有更多了~");
-						slinkUlit.nomore.attr("fl", 1);
+					util.page = resp.data.nextPage;
+					if (util.page < 1) {
+						util.nomore.html("没有更多了~");
+						util.nomore.attr("fl", 1);
 					} else {
-						slinkUlit.nomore.html("点击加载更多");
+						util.nomore.html("点击加载更多");
 					}
-					slinkUlit.slinkFlag = 0;
+					util.loading = 0;
 				}, "json");
-			},
+			}
 		};
-		slinkUlit.init();
+
 
 		$(".nav-foot > a").on(kClick, function () {
 			var self = $(this);
@@ -1102,7 +1115,7 @@ require(["layer"],
 			listMore: $(".plist-more"),
 			Tmp: $("#wechats").html(),
 			init: function () {
-				$(".tab a").on(kClick, function () {
+				$("#heartbeat .tab a").on(kClick, function () {
 					TabUtil.tabObj = $(this).closest(".tab");
 					TabUtil.tag = TabUtil.tabObj.attr("tag");
 					TabUtil.subtag = $(this).attr("subtag");
@@ -1121,10 +1134,10 @@ require(["layer"],
 					}
 				});
 
-				$(document).on(kClick, "a.sprofile", function () {
+				/*$(document).on(kClick, "a.sprofile", function () {
 					var id = $(this).attr("data-id");
 					location.href = "/wx/sh?id=" + id;
-				});
+				});*/
 
 				$(document).on(kClick, ".wx-process button", function (e) {
 					e.stopPropagation();
@@ -1533,6 +1546,102 @@ require(["layer"],
 			}
 		};
 
+		var RankUtil = {
+			page: 1,
+			loading: 0,
+			tag: 'fans',
+			cat: 'total',
+			tip: $('#sranking .ranking-tip'),
+			list: $('#sranking .ranking-list'),
+			spinner: $('#sranking .spinner'),
+			tmp: $('#tpl_ranking').html(),
+			init: function () {
+				var util = this;
+				$('#sranking .tab a').on(kClick, function () {
+					var self = $(this);
+					util.cat = self.attr('data-cat');
+					self.closest('div').find('a').removeClass('active');
+					self.addClass('active');
+					util.reload();
+				});
+			},
+			reset: function () {
+				var util = this;
+				util.list.html('');
+				util.tip.html('');
+			},
+			reload: function () {
+				var util = this;
+				if (util.loading || util.page >= 2) {
+					return;
+				}
+				util.reset();
+				util.loading = 1;
+				util.spinner.show();
+				$.post("/api/ranking", {
+					tag: util.tag,
+					page: util.page,
+					cat: util.cat
+				}, function (resp) {
+					if (resp.code == 0) {
+						var html = Mustache.render(util.tmp, resp.data);
+						util.list.html(html);
+						util.tip.html(resp.data.mInfo.text);
+					}
+					util.spinner.hide();
+					util.loading = 0;
+				}, "json");
+			}
+		};
+
+		var FavorUtil = {
+			page: 1,
+			loading: 0,
+			tag: 'favor',
+			cat: 'total',
+			tip: $('#sfavors .ranking-tip'),
+			list: $('#sfavors .ranking-list'),
+			spinner: $('#sfavors .spinner'),
+			tmp: $('#tpl_ranking').html(),
+			init: function () {
+				var util = this;
+				$('#sfavors .tab a').on(kClick, function () {
+					var self = $(this);
+					util.cat = self.attr('data-cat');
+					self.closest('div').find('a').removeClass('active');
+					self.addClass('active');
+					util.reload();
+				});
+			},
+			reset: function () {
+				var util = this;
+				util.list.html('');
+				util.tip.html('');
+			},
+			reload: function () {
+				var util = this;
+				if (util.loading || util.page >= 2) {
+					return;
+				}
+				util.reset();
+				util.loading = 1;
+				util.spinner.show();
+				$.post("/api/ranking", {
+					tag: util.tag,
+					page: util.page,
+					cat: util.cat
+				}, function (resp) {
+					if (resp.code == 0) {
+						var html = Mustache.render(util.tmp, resp.data);
+						util.list.html(html);
+						util.tip.html(resp.data.mInfo.text);
+					}
+					util.spinner.hide();
+					util.loading = 0;
+				}, "json");
+			}
+		};
+
 		var GreetingUtil = {
 			content: $.trim($('#tpl_greeting').html()),
 			init: function () {
@@ -1602,10 +1711,13 @@ require(["layer"],
 			WxNoUtil.init();
 			ChatUtil.init();
 			GreetingUtil.init();
+			MeipoUtil.init();
 			ProfileUtil.init();
 			ResumeUtil.init();
 			ReportUtil.init();
 			AlertUtil.init();
+			RankUtil.init();
+			FavorUtil.init();
 
 			setTimeout(function () {
 				GreetingUtil.show();
