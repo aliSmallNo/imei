@@ -329,7 +329,7 @@ require(["layer"],
 							util.toggle(html);
 						} else {
 							setTimeout(function () {
-								//location.href = "/wx/single#slook";
+								location.href = "/wx/single#slook";
 							}, 350);
 							showMsg(res.msg);
 						}
