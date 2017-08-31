@@ -538,7 +538,7 @@ class ApiController extends Controller
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				LogAction::add($wxInfo['uId'], $openId, LogAction::ACTION_SINGLE_LIST);
-				$ret = User::getFilter($openId, $filter, $page);
+				$ret = User::getFilter($openId, $filter, $page, 15);
 				if (isset($ret['data']) && count($ret['data']) > 3 && $page == 1) {
 					array_splice($ret['data'], 3, 0, [
 						[

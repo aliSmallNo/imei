@@ -914,7 +914,7 @@
 <script type="text/template" id="tpl_ranking">
 	{[#items]}
 	<li>
-		<a href="/wx/sh?id={[secretId]}">
+		<a href="javascript:;" data-eid="{[secretId]}" class="j-profile">
 			<div class="seq">{[key]}</div>
 			<div class="avatar"><img src="{[avatar]}"></div>
 			<div class="title">{[uname]}</div>
@@ -1090,4 +1090,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.9.4" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.9.5" src="/assets/js/require.js"></script>
