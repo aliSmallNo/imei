@@ -778,22 +778,22 @@
 <script type="text/html" id="wechats">
 	{[#data]}
 	<li>
-		<a href="javascript:;" data-id={[encryptId]}" data-nid="{[nid]}" class="sprofile">
-		<div class="plist-l">
-			<img src="{[thumb]}">
-		</div>
-		<div class="plist-r">
-			<p>{[name]}</p>
-			<p>{[location_t]}</p>
-			<i>{[age]} {[height]}cm {[horos_t]} {[scope_t]}</i>
-		</div>
-		{[#pendingWxFlag]}
-		<div class="wx-process">
-			<button class="pass">同意</button>
-			<div style="height: .5rem"></div>
-			<button class="refuse">拒绝</button>
-		</div>
-		{[/pendingWxFlag]}
+		<a href="javascript:;" data-eid="{[encryptId]}" data-nid="{[nid]}" class="j-profile">
+			<div class="plist-l">
+				<img src="{[thumb]}">
+			</div>
+			<div class="plist-r">
+				<p>{[name]}</p>
+				<p>{[location_t]}</p>
+				<i>{[age]} {[height]}cm {[horos_t]} {[scope_t]}</i>
+			</div>
+			{[#pendingWxFlag]}
+			<div class="wx-process">
+				<button class="pass">同意</button>
+				<div style="height: .5rem"></div>
+				<button class="refuse">拒绝</button>
+			</div>
+			{[/pendingWxFlag]}
 		</a>
 		{[#showWxFlag]}
 		<div class="m-wxid">微信号: <em>{[wechatid]}</em></div>{[/showWxFlag]}
@@ -1090,4 +1090,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.9.5" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.9.6" src="/assets/js/require.js"></script>

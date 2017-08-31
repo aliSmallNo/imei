@@ -1115,7 +1115,7 @@ require(["layer"],
 			listMore: $(".plist-more"),
 			Tmp: $("#wechats").html(),
 			init: function () {
-				/*$(".tab a").on(kClick, function () {
+				$("#heartbeat .tab a").on(kClick, function () {
 					TabUtil.tabObj = $(this).closest(".tab");
 					TabUtil.tag = TabUtil.tabObj.attr("tag");
 					TabUtil.subtag = $(this).attr("subtag");
@@ -1132,12 +1132,12 @@ require(["layer"],
 							TabUtil.getData();
 							break;
 					}
-				});*/
+				});
 
-				$(document).on(kClick, "a.sprofile", function () {
+				/*$(document).on(kClick, "a.sprofile", function () {
 					var id = $(this).attr("data-id");
 					location.href = "/wx/sh?id=" + id;
-				});
+				});*/
 
 				$(document).on(kClick, ".wx-process button", function (e) {
 					e.stopPropagation();

@@ -571,10 +571,11 @@ class UserNet extends ActiveRecord
 		}
 		$fields = ['album', 'album_cnt', 'alcohol', 'alcohol_t', 'belief', 'belief_t', 'coord', 'city', 'province',
 			'education', 'education_t', 'fitness', 'fitness_t', 'income', 'income_t', 'smoke', 'smoke_t', 'status', 'status_t',
-			'updatedon', 'weight', 'weight_t', 'password', 'profession', 'profession_t', 'rest', 'rest_t',
-			'pet', 'pet_t', 'estate', 'estate_t', 'diet', 'diet_t', 'car', 'car_t',
+			'updatedon', 'weight', 'weight_t', 'password', 'profession', 'profession_t', 'rest', 'rest_t', 'logdate',
+			'pet', 'pet_t', 'estate', 'estate_t', 'diet', 'diet_t', 'car', 'car_t', 'phone', 'email', 'hint', 'addedon',
 			'birthyear', 'birthyear_t', 'marital', 'marital_t', 'location', 'cert', 'certdate', 'certimage', 'certnote',
-			'certstatus', 'certstatus_t', 'filter', 'filter_t'];
+			'certstatus', 'certstatus_t', 'filter', 'filter_t', 'invitedby', 'interest', 'gender', 'height', 'horos', 'percent',
+			'scope', 'rank', 'ranktmp', 'rankdate', 'openid', 'homeland', 'role', 'setting'];
 		$items = [];
 		foreach ($ret as $row) {
 			$item = User::fmtRow($row);
