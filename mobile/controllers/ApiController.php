@@ -916,12 +916,22 @@ class ApiController extends Controller
 				$location = $data["info"]["location"];
 				$ckey = ($location && isset($location[0]["key"]) && $location[0]["key"]) ? $location[0]["key"] : 100100;
 				$data["city"] = City::cities($ckey);
-				//
+
 				$dkey = 160100;
 				if (isset($data["info"]) && $data["info"]["location"] && isset($data["info"]["location"][1])) {
 					$dkey = $data["info"]["location"][1]["key"];
 				}
-				$data["district"] = City::addrItems($dkey);;
+				$data["district"] = City::addrItems($dkey);
+
+				$homeland = $data["info"]["homeland"];
+				$ckey = ($homeland && isset($homeland[0]["key"]) && $homeland[0]["key"]) ? $homeland[0]["key"] : 100100;
+				$data["hcity"] = City::cities($ckey);
+				$dkey = 160100;
+				if (isset($data["info"]) && $data["info"]["homeland"] && isset($data["info"]["homeland"][1])) {
+					$dkey = $data["info"]["homeland"][1]["key"];
+				}
+				$data["hdistrict"] = City::addrItems($dkey);;
+
 
 				$data["gender"] = User::$Gender;
 				//alcohol  educationcation estate profession gender horos
