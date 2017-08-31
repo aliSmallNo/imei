@@ -69,7 +69,7 @@ class ChatMsg extends ActiveRecord
 			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2)';
 		$cmdAdd = $conn->createCommand($sql);
 
-		$sql = 'SELECT gId FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2';
+		$sql = 'SELECT gId,gFirstCId,gLastCId FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2';
 		$cmdSel = $conn->createCommand($sql);
 
 		$sql = 'update im_chat_group set gFirstCId=:cid,gAddedOn=now(),gAddedBy=:uid WHERE gId=:gid AND gFirstCId < 1';
@@ -84,11 +84,15 @@ class ChatMsg extends ActiveRecord
 				':uid' => $senderId,
 			])->execute();
 
-			$gid = $cmdSel->bindValues([
+			$ret = $cmdSel->bindValues([
 				':id1' => $uid1,
 				':id2' => $uid2,
-			])->queryScalar();
-
+			])->queryOne();
+			$gid = $ret['gId'];
+			$firstId = $ret['gFirstCId'];
+			if ($firstId > 0) {
+				continue;
+			}
 			$entity = new self();
 			$entity->cGId = $gid;
 			$entity->cContent = $content;
