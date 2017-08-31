@@ -1376,9 +1376,9 @@ class ApiController extends Controller
 				if (UserNet::hasBlack($wxInfo["uId"], $receiverId)) {
 					return self::renderAPI(129, self::MSG_BLACK);
 				}
-				if ($wxInfo["uId"] == '131379') {
+				/*if ($wxInfo["uId"] == '131379') {
 					return self::renderAPI(101, '想要更多密聊机会，请先捐媒桂花吧~');
-				}
+				}*/
 				$ret = ChatMsg::addChat($uid, $receiverId, $text, 0, 0, $qId);
 				//ChatMsg::add($uid, $receiverId, $text);
 				if ($ret === false) {
