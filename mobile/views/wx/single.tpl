@@ -945,6 +945,16 @@
 	</a>
 	{[/items]}
 </script>
+<script type="text/template" id="tpl_chat_share">
+	<div class="topup-wrap">
+		<h4>你没有媒桂花了哟</h4>
+		<div class="topup-bot">
+			<p>快去分享到朋友圈，收获奖励，但是每天只奖励一次哦~<br></p>
+			<a href="/wx/sqr" class="btn">分享到朋友圈</a>
+		</div>
+		<a href="javascript:;" class="m-popup-close"></a>
+	</div>
+</script>
 <script type="text/template" id="tpl_chat_topup">
 	<div class="topup-wrap">
 		<h4>我要跟TA密聊</h4>
@@ -1090,4 +1100,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.9.6" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.9.9" src="/assets/js/require.js"></script>
