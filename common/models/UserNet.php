@@ -899,13 +899,13 @@ class UserNet extends ActiveRecord
 		return [$data, $nextPage];
 	}
 
-	public static function myfavor($uid, $ranktag = "favor-all")
+	public static function myfavor($uid, $tag = "total")
 	{
 		list($monday, $sunday) = AppUtil::getEndStartTime(time(), 'curweek', true);
 		list($today0, $today1) = AppUtil::getEndStartTime(time(), 'today', true);
 		$params = [":today0" => $today0, ":today1" => $today1];
 		$conStr = "";
-		if ($ranktag == "favor-week") {
+		if ($tag == "week") {
 			$conStr = " and nAddedOn BETWEEN :sDate and :eDate ";
 			$params[":sDate"] = $monday;
 			$params[":eDate"] = $sunday;

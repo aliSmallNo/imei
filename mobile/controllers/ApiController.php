@@ -1580,9 +1580,24 @@ class ApiController extends Controller
 				$page = self::postParam("page", 1);
 				$cat = self::postParam("cat");
 				list($flist, $nextpage) = UserNet::favorlist($page, $cat);
+				foreach ($flist as $k => $row) {
+					if ($row['todayFavor'] > 0) {
+						$flist[$k]['todayFavor'] = '+' . $row['todayFavor'];
+					}
+				}
+				$mInfo = UserNet::myfavor($wxInfo["uId"], $cat);
+				$mInfo['text'] = '';
+				if (isset($mInfo['co']) && $mInfo['co']) {
+					$mInfo['text'] .= '你的心动值是<b>' . $mInfo['co'] . '</b>，';
+				}
+				if ($mInfo['no'] < 21 && $mInfo['no'] > 0) {
+					$mInfo['text'] .= '你排名第' . $mInfo['no'] . '，不错哦~';
+				} else {
+					$mInfo['text'] .= '你没上榜，继续努力哦~';
+				}
 				return self::renderAPI(0, '', [
 					"items" => $flist,
-					"mInfo" => UserNet::myfavor($wxInfo["uId"], $cat),
+					"mInfo" => $mInfo,
 					"nextpage" => $nextpage,
 				]);
 				break;

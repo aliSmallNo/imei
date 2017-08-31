@@ -96,7 +96,7 @@
 		</div>
 		<div class="m-rows line-bottom">
 			<a href="#sranking"><span>花粉排行榜</span> <i class="i-mark-hot"></i></a>
-			<a href="/wx/favor"><span>心动排行榜</span></a>
+			<a href="#sfavors"><span>心动排行榜</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
 
@@ -559,7 +559,7 @@
 		</ol>
 	</div>
 </section>
-<section id="sranking" data-title="微媒100排行榜">
+<section id="sranking" data-title="微媒100-花粉值排行榜">
 	<div class="tab fixed-top ranking-tab">
 		<a href="javascript:;" data-cat="total" class="active">花粉值-总排名</a>
 		<a href="javascript:;" data-cat="week" class="">花粉值-周排名</a>
@@ -570,7 +570,18 @@
 		<ul class="ranking-list"></ul>
 		<div class="spinner" style="display: none"></div>
 	</div>
-
+</section>
+<section id="sfavors" data-title="微媒100-心动值排行榜">
+	<div class="tab fixed-top ranking-tab">
+		<a href="javascript:;" data-cat="total" class="active">心动值-总排行</a>
+		<a href="javascript:;" data-cat="week" class="">心动值-周排行</a>
+	</div>
+	<div style="height: 3.8rem"></div>
+	<div class="ranking-wrap">
+		<div class="ranking-tip"></div>
+		<ul class="ranking-list"></ul>
+		<div class="spinner" style="display: none"></div>
+	</div>
 </section>
 <section id="sreport">
 	<div class="report_wrap">
@@ -1079,4 +1090,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.9.3" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.9.4" src="/assets/js/require.js"></script>

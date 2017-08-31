@@ -468,8 +468,6 @@ class FooController extends Controller
 		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn05');
 		var_dump($items);*/
 
-//		return;
-
 		/*$imagePath = 'https://img.meipo100.com/2017/84/113272_n.jpg';
 		$imagePath = ImageUtil::getFilePath($imagePath);
 		echo $imagePath . '  ' . __LINE__;

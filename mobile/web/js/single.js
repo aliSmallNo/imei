@@ -109,12 +109,19 @@ require(["layer"],
 			$sls.mainPage.removeClass('bg-lighter');
 			$('body').removeClass('bg-qrcode');
 			ChatUtil.toggleTimer(0);
-			RankUtil.clear();
+			RankUtil.reset();
+			FavorUtil.reset();
 			switch (hashTag) {
 				case 'sranking':
 					RankUtil.page = 1;
 					RankUtil.cat = 'total';
 					RankUtil.reload();
+					FootUtil.toggle(0);
+					break;
+				case 'sfavors':
+					FavorUtil.page = 1;
+					FavorUtil.cat = 'total';
+					FavorUtil.reload();
 					FootUtil.toggle(0);
 					break;
 				case 'slink':
@@ -1544,13 +1551,13 @@ require(["layer"],
 			loading: 0,
 			tag: 'fans',
 			cat: 'total',
-			tip: $('.ranking-tip'),
-			list: $('.ranking-list'),
-			tmp: $('#tpl_ranking').html(),
+			tip: $('#sranking .ranking-tip'),
+			list: $('#sranking .ranking-list'),
 			spinner: $('#sranking .spinner'),
+			tmp: $('#tpl_ranking').html(),
 			init: function () {
 				var util = this;
-				$('.ranking-tab a').on(kClick, function () {
+				$('#sranking .tab a').on(kClick, function () {
 					var self = $(this);
 					util.cat = self.attr('data-cat');
 					self.closest('div').find('a').removeClass('active');
@@ -1558,7 +1565,7 @@ require(["layer"],
 					util.reload();
 				});
 			},
-			clear: function () {
+			reset: function () {
 				var util = this;
 				util.list.html('');
 				util.tip.html('');
@@ -1568,7 +1575,55 @@ require(["layer"],
 				if (util.loading || util.page >= 2) {
 					return;
 				}
-				util.clear();
+				util.reset();
+				util.loading = 1;
+				util.spinner.show();
+				$.post("/api/ranking", {
+					tag: util.tag,
+					page: util.page,
+					cat: util.cat
+				}, function (resp) {
+					if (resp.code == 0) {
+						var html = Mustache.render(util.tmp, resp.data);
+						util.list.html(html);
+						util.tip.html(resp.data.mInfo.text);
+					}
+					util.spinner.hide();
+					util.loading = 0;
+				}, "json");
+			}
+		};
+
+		var FavorUtil = {
+			page: 1,
+			loading: 0,
+			tag: 'favor',
+			cat: 'total',
+			tip: $('#sfavors .ranking-tip'),
+			list: $('#sfavors .ranking-list'),
+			spinner: $('#sfavors .spinner'),
+			tmp: $('#tpl_ranking').html(),
+			init: function () {
+				var util = this;
+				$('#sfavors .tab a').on(kClick, function () {
+					var self = $(this);
+					util.cat = self.attr('data-cat');
+					self.closest('div').find('a').removeClass('active');
+					self.addClass('active');
+					util.reload();
+				});
+			},
+			reset: function () {
+				var util = this;
+				util.list.html('');
+				util.tip.html('');
+			},
+			reload: function () {
+				var util = this;
+				if (util.loading || util.page >= 2) {
+					return;
+				}
+				util.reset();
 				util.loading = 1;
 				util.spinner.show();
 				$.post("/api/ranking", {
@@ -1662,6 +1717,7 @@ require(["layer"],
 			ReportUtil.init();
 			AlertUtil.init();
 			RankUtil.init();
+			FavorUtil.init();
 
 			setTimeout(function () {
 				GreetingUtil.show();
