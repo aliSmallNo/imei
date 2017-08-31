@@ -25,26 +25,28 @@ require(["layer"],
 			routeIndex: 0,
 			coord: $('#cCoord'),
 			routeLength: mRoutes.length,
-			routeSkip: $.inArray('scope', mRoutes),
+			routeSkip: $('#cSkipIndex').val(),
 			locationRow: $('.location-row'),
 			homelandRow: $('.homeland-row'),
+			skipTmp: $('#tpl_skip').html(),
 			mLat: 0,
 			mLng: 0
 		};
 
 		var SingleUtil = {
-			step2: $("#step2"),
 			year: "",
 			height: "",
 			salary: "",
 			edu: "",
+			btn: null,
+			gender: "",
+			step2: $("#step2"),
 			avatar: $(".avatar"),
 			album: $(".j-album"),
 			nickname: $(".nickname"),
-			gender: "",
 			progressBar: $(".progress > div"),
+			progressTip: $('.progress-tip .title'),
 			professions: $('.professions'),
-			btn: null,
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
@@ -55,6 +57,7 @@ require(["layer"],
 			provinceTmp: '<div class="m-popup-options col4 clearfix">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="province">{[name]}</a>{[/items]}</div>',
 			init: function () {
 				var util = this;
+
 				$(document).on(kClick, ".btn-greeting", function () {
 					var ids = [];
 					$.each($('.m-greeting-users li'), function () {
@@ -271,39 +274,44 @@ require(["layer"],
 						return;
 					}
 					$sls.postData["interest"] = interest;
-					$sls.photos = [];
-					var localId = util.avatar.attr("localId");
-					if (localId) {
-						$sls.photos.push(localId);
-					}
-					$.each($('.j-album a'), function () {
-						var img = $(this).attr('localId');
-						if (img) {
-							$sls.photos.push(img);
-						}
-					});
-
-					layer.open({
-						type: 2,
-						content: '正在保存中...'
-					});
-					if ($sls.photos.length) {
-						var pid = $sls.photos.shift();
-						uploadImages(pid);
-					} else {
-						util.submit();
-					}
+					util.beforeSubmit();
 				});
 			},
 			progress: function () {
 				var util = this;
-				var val = parseFloat($sls.routeIndex) * (100.0 / $sls.routeLength);
+				var val = parseFloat($sls.routeIndex + 1) * (100.0 / $sls.routeLength);
 				util.progressBar.css("width", val + "%");
+				util.progressTip.html(($sls.routeIndex + 1) + '/' + $sls.routeLength);
 			},
 			next: function () {
 				$sls.routeIndex++;
 				var tag = mRoutes[$sls.routeIndex];
 				location.href = '#' + tag;
+			},
+			beforeSubmit: function () {
+				var util = this;
+				$sls.photos = [];
+				var localId = util.avatar.attr("localId");
+				if (localId) {
+					$sls.photos.push(localId);
+				}
+				$.each($('.j-album a'), function () {
+					var img = $(this).attr('localId');
+					if (img) {
+						$sls.photos.push(img);
+					}
+				});
+
+				layer.open({
+					type: 2,
+					content: '正在保存中...'
+				});
+				if ($sls.photos.length) {
+					var pid = $sls.photos.shift();
+					uploadImages(pid);
+				} else {
+					util.submit();
+				}
 			},
 			submit: function () {
 				var util = this;
@@ -321,8 +329,8 @@ require(["layer"],
 							util.toggle(html);
 						} else {
 							setTimeout(function () {
-								location.href = "/wx/single#slook";
-							}, 500);
+								//location.href = "/wx/single#slook";
+							}, 350);
 							showMsg(res.msg);
 						}
 					} else {
@@ -416,6 +424,19 @@ require(["layer"],
 				}
 			}
 		};
+
+		$sls.btnSkip.on(kClick, function () {
+			SingleUtil.toggle($sls.skipTmp);
+		});
+
+		$(document).on(kClick, '.btn-skip-yes', function () {
+			SingleUtil.beforeSubmit();
+			SingleUtil.toggle();
+		});
+
+		$(document).on(kClick, '.btn-skip-no', function () {
+			SingleUtil.toggle();
+		});
 
 		function locationHashChanged() {
 			var hashTag = location.hash;

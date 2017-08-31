@@ -497,8 +497,10 @@ section {
     font-weight: 500; }
     .btn-wrap .btn.btn-main {
       background: #f06292; }
-    .btn-wrap .btn.btn-blue {
-      background: #4da2ff; }
+    .btn-wrap .btn.btn-warn {
+      background: #f80; }
+  .btn-wrap.btn-multi .btn {
+    margin-bottom: 1rem; }
 
 .progress {
   height: 0.3rem;
@@ -514,6 +516,21 @@ section {
     -webkit-transition: 0.2s all ease;
     -moz-transition: 0.2s all ease;
     transition: 0.2s all ease; }
+
+.progress-tip {
+  padding-left: 1rem;
+  color: #939393;
+  position: relative;
+  line-height: 2.4rem; }
+  .progress-tip .title {
+    font-size: 1.2rem; }
+  .progress-tip .action-sm {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 1.2rem;
+    color: #007aff;
+    padding: 0 1rem; }
 
 .file {
   position: absolute;
@@ -674,7 +691,6 @@ section {
 
 .btn-s-wrap {
   padding-top: 2rem;
-  padding-left: 1rem;
   text-align: center; }
 
 .btn-s {

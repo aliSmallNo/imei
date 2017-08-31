@@ -149,12 +149,13 @@ class WxController extends BaseController
 			}
 			$locInfo = $uInfo['location'];
 		}
-		$routes = ['photo', 'gender', 'homeland', 'location', 'year', 'horos', 'marital', 'height', 'weight', 'income', 'edu', 'album', 'intro',
-			'scope', 'job', 'house', 'car', 'smoke', 'drink', 'belief', 'workout', 'diet', 'rest', 'pet', 'interest'];
+		$routes = ['photo', 'gender', 'location', 'homeland', 'year', 'horos', 'marital', 'height', 'weight', 'income', 'edu', 'album',
+			'intro', 'scope', 'profession', 'house', 'car', 'smoke', 'drink', 'belief', 'workout', 'diet', 'rest', 'pet', 'interest'];
 		if ($hasGender) {
 			unset($routes[1]);
 			$routes = array_values($routes);
 		}
+		$skipIndex = array_search('location', $routes) + 1;
 		$certImage = '../images/cert_sample.jpg';
 
 		return self::renderPage("sreg.tpl",
@@ -179,13 +180,14 @@ class WxController extends BaseController
 				"diet" => User::$Diet,
 				"rest" => User::$Rest,
 				"pet" => User::$Pet,
-				"sign" => User::$Horos,
+				"horos" => User::$Horos,
 				"marital" => User::$Marital,
 				'routes' => json_encode($routes),
 				'switchRole' => $switchRole,
 				'certImage' => $certImage,
 				'professions' => json_encode(User::$ProfessionDict),
 				'locInfo' => $locInfo,
+				'skipIndex' => $skipIndex
 			],
 			'imei',
 			'注册单身身份');

@@ -60,10 +60,13 @@ class UserAudit extends ActiveRecord
 		return $res;
 	}
 
-	public static function reasonMsg($uid, $adminFlag = 0)
+	public static function reasonMsg($uid, $adminFlag = 0, $conn = '')
 	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
 		$sql = "select * from im_user_audit where aUId=:uid and aUStatus=:status and aValid=:valid order by aId desc limit 1";
-		$res = AppUtil::db()->createCommand($sql)->bindValues([
+		$res = $conn->createCommand($sql)->bindValues([
 			":uid" => $uid,
 			":status" => User::STATUS_INVALID,
 			":valid" => self::VALID_FAIL,
@@ -99,5 +102,28 @@ class UserAudit extends ActiveRecord
 			return true;
 		}
 		return false;
+	}
+
+	public static function validate($uid, $conn = '')
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$uInfo = $conn->createCommand('select * from im_user WHERE uId=' . $uid)->queryOne();
+		if (!$uInfo) {
+			return [129, '用户不存在'];
+		}
+		$status = $uInfo['uStatus'];
+		if ($status == User::STATUS_VISITOR) {
+			return [129, '权限不足，请先完善你的个人资料'];
+		}
+		if ($status == User::STATUS_PENDING) {
+			return [129, '你的身份信息还在审核中，请稍后重试'];
+		}
+		if (in_array($status, [User::STATUS_INVALID, User::STATUS_PRISON])) {
+			$msg = self::reasonMsg($uid, 0, $conn);
+			return [129, $msg];
+		}
+		return [0, ''];
 	}
 }

@@ -477,7 +477,7 @@ class ApiController extends Controller
 				$data = self::postParam('data');
 				$data = json_decode($data, 1);
 				$data["openId"] = $openId;
-				$uInfo = User::findOne(["uOpenId" => $openId]);
+				/*$uInfo = User::findOne(["uOpenId" => $openId]);
 				if ($uInfo && $uInfo->uStatus == User::STATUS_INVALID &&
 					((isset($data["img"]) && $data["img"]) ||
 						(isset($data["intro"]) && $data["intro"]) ||
@@ -486,7 +486,7 @@ class ApiController extends Controller
 				) {
 					// uAvatar,uName,uInterest,uIntro
 					$data["status"] = User::STATUS_PENDING;
-				}
+				}*/
 
 				$data["role"] = ($tag == 'mreg') ? User::ROLE_MATCHER : User::ROLE_SINGLE;
 				$userId = User::reg($data);
@@ -569,9 +569,9 @@ class ApiController extends Controller
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])) {
-					$msg = UserAudit::reasonMsg($wxInfo["uId"]);
-					return self::renderAPI(129, $msg);
+				list($code, $msg) = UserAudit::validate($wxInfo["uId"]);
+				if ($code && $msg) {
+					return self::renderAPI($code, $msg);
 				}
 				$id = self::postParam("id");
 				$f = self::postParam("f");
@@ -592,11 +592,10 @@ class ApiController extends Controller
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])) {
-					$msg = UserAudit::reasonMsg($wxInfo["uId"]);
-					return self::renderAPI(129, $msg);
+				list($code, $msg) = UserAudit::validate($wxInfo["uId"]);
+				if ($code && $msg) {
+					return self::renderAPI($code, $msg);
 				}
-
 				$num = self::postParam("num");
 				$id = self::postParam("id");
 				$id = AppUtil::decrypt($id);
@@ -1346,10 +1345,11 @@ class ApiController extends Controller
 			return self::renderAPI(129, '用户不存在啊~');
 		}
 		$uid = $wxInfo['uId'];
-		if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])
-			&& in_array($tag, ["sent", "list", "read"])) {
-			$msg = ($wxInfo["uStatus"] == User::STATUS_INVALID) ? UserAudit::reasonMsg($wxInfo["uId"]) : "无权限操作！";
-			return self::renderAPI(129, $msg);
+		if (in_array($tag, ["sent", "list", "read"])) {
+			list($code, $msg) = UserAudit::validate($wxInfo["uId"]);
+			if ($code && $msg) {
+				return self::renderAPI($code, $msg);
+			}
 		}
 
 		switch ($tag) {

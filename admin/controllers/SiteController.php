@@ -215,6 +215,7 @@ class SiteController extends BaseController
 		$userInfo = User::findOne(["uId" => $id])->toArray();
 		$status = User::$Status;
 		//unset($status[2]);
+
 		return $this->renderPage('account.tpl',
 			[
 				"userInfo" => json_encode($userInfo, JSON_UNESCAPED_UNICODE),
@@ -243,6 +244,7 @@ class SiteController extends BaseController
 				"status" => $status,
 				'success' => $success,
 				'error' => $error,
+				'openid' => $userInfo['uOpenId'],
 				'detailcategory' => 'site/accounts',
 				'category' => 'users',
 			]);

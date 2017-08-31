@@ -174,19 +174,26 @@ class User extends ActiveRecord
 		321 => "水瓶座(1.21~2.19)", 323 => "双鱼座(2.20~3.20)"
 	];
 
-	const STATUS_PENDING = 0;
+	const STATUS_VISITOR = 0;
 	const STATUS_ACTIVE = 1;
 	const STATUS_INVALID = 2;
+	const STATUS_PENDING = 3;
 	const STATUS_PRISON = 7;
 	const STATUS_DUMMY = 8;
 	const STATUS_DELETE = 9;
 	static $Status = [
+		self::STATUS_VISITOR => "游客",
 		self::STATUS_PENDING => "待审核",
 		self::STATUS_ACTIVE => "已通过",
 		self::STATUS_INVALID => "不合规",
 		self::STATUS_PRISON => "小黑屋",
 		self::STATUS_DUMMY => "稻草人",
 		self::STATUS_DELETE => "已删除",
+	];
+
+	static $StatusVisible = [
+		self::STATUS_PENDING,
+		self::STATUS_ACTIVE
 	];
 
 	const SUB_ST_NORMAL = 1;
@@ -418,24 +425,28 @@ class User extends ActiveRecord
 			unset($item[$field]);
 		}
 
-		// 资料完整度
+		$item["percent"] = self::percentage($item);
+
+		return $item;
+	}
+
+	protected static function percentage($info)
+	{
 		$percent = 0;
-		$fields = ["role", "name", "phone", "avatar", "location", "scope", "gender", "birthyear", "horos", 'marital', "height", "weight",
-			"income", "education", "profession", "estate", "car", "smoke", "alcohol", "belief", "fitness", "diet", "rest", "pet",
-			"interest", "intro", "filter"];
-		if ($item['role'] == self::ROLE_MATCHER) {
+		$fields = ["role", "name", "phone", "avatar", "location", 'homeland', "scope", "gender", "birthyear", "horos", 'marital',
+			"height", "weight", "income", "education", "profession", "estate", "car", "smoke", "alcohol", "belief", "fitness",
+			"diet", "rest", "pet", "interest", "intro"];
+		if ($info['role'] == self::ROLE_MATCHER) {
 			$fields = ["role", "name", "phone", "avatar", "location", "scope", "intro"];
 		}
 		$fill = [];
 		foreach ($fields as $field) {
-			if (isset($item[$field]) && $item[$field]) {
+			if (isset($item[$field]) && $info[$field]) {
 				$percent++;
 				$fill[] = $field;
 			}
 		}
-		$item["percent"] = ceil($percent * 100.00 / count($fields));
-
-		return $item;
+		return ceil($percent * 100.00 / count($fields));
 	}
 
 	public static function users($criteria, $params, $page = 1, $pageSize = 20, $orderbyUpdated = false)
@@ -682,14 +693,14 @@ class User extends ActiveRecord
 			"house" => "uEstate",
 			"income" => "uIncome",
 			"interest" => "uInterest",
-			"job" => "uProfession",
+			"profession" => "uProfession",
 			"pet" => "uPet",
 			"rest" => "uRest",
 			"smoke" => "uSmoke",
 			"weight" => "uWeight",
 			"workout" => "uFitness",
 			"year" => "uBirthYear",
-			"sign" => "uHoros",
+			"horos" => "uHoros",
 			"marital" => "uMarital",
 			"coord" => "uCoord",
 			"filter" => "uFilter",
@@ -716,19 +727,35 @@ class User extends ActiveRecord
 				}
 			}
 		}
-		AppUtil::logFile($data, 5, __FUNCTION__, __LINE__);
 		$userData = [];
 		foreach ($fields as $k => $field) {
 			if (isset($data[$k])) {
 				$userData[$field] = $data[$k];
 			}
 		}
-		AppUtil::logFile($userData, 5, __FUNCTION__, __LINE__);
 		$uid = self::add($userData);
-		AppUtil::logFile($uid, 5, __FUNCTION__, __LINE__);
 
 		//Rain: 添加媒婆关系
 		$conn = AppUtil::db();
+
+		$sql = 'select * from im_user WHERE uId=:id ';
+		$uInfo = $conn->createCommand($sql)->bindValues([
+			':id' => $uid,
+		])->queryOne();
+		$uInfo = self::fmtRow($uInfo);
+		//$preStatus = $uInfo['status'];
+		if ($uInfo['percent'] < 50) {
+			$newStatus = self::STATUS_VISITOR;
+		} else {
+			$newStatus = self::STATUS_PENDING;
+		}
+		if ($newStatus > -1) {
+			$sql = 'update im_user set uStatus=:st WHERE uId=:id';
+			$conn->createCommand($sql)->bindValues([
+				':id' => $uid,
+				':st' => $newStatus
+			])->execute();
+		}
 
 		$sql = 'INSERT INTO im_user_net(nUId,nSubUId,nRelation,nAddedOn,nUpdatedOn)
 			 SELECT n.nUId,u.uId,:backer,u.uUpdatedOn ,u.uUpdatedOn 
@@ -1022,14 +1049,15 @@ class User extends ActiveRecord
 		$gender = ($gender == self::GENDER_FEMALE) ? self::GENDER_MALE : self::GENDER_FEMALE;
 		$uRole = User::ROLE_SINGLE;
 
-		$condition = " u.uRole=$uRole and u.uGender=$gender and u.uStatus in (0,1) " . $ageLimit;
+		$condition = " u.uRole=$uRole AND u.uGender=$gender 
+				AND u.uStatus in (" . implode(',', self::$StatusVisible) . ") " . $ageLimit;
 
 		$prov = '江苏';
 		$city = '盐城';
 		if (isset($myFilter['location'])) {
 			list($prov, $city) = explode('-', $myFilter['location']);
 		}
-		$rankField = "(case WHEN u.uLocation like '%$prov%' and u.uLocation like '%$city%' then 10
+		$rankField = "(CASE WHEN u.uLocation like '%$prov%' and u.uLocation like '%$city%' then 10
 					WHEN u.uLocation like '%$prov%' then 8 else 0 end) as rank";
 
 		// 去掉筛选条件啦~
@@ -1642,7 +1670,8 @@ class User extends ActiveRecord
 				$I4 = 1;
 				break;
 			case self::STATUS_DUMMY:
-				$I4 = .5;
+			case self::STATUS_VISITOR:
+				$I4 = 0;
 				break;
 			case self::STATUS_PENDING:
 				$I4 = 2;
@@ -2040,5 +2069,6 @@ class User extends ActiveRecord
 		}
 		return array_values($items);
 	}
+
 
 }

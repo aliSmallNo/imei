@@ -634,8 +634,11 @@ section
 		font-weight: $weightBold
 		&.btn-main
 			background: $mainColor
-		&.btn-blue
-			background: $linkColorLight
+		&.btn-warn
+			background: $tipColor
+	&.btn-multi
+		.btn
+			margin-bottom: 1rem
 
 .progress
 	height: .3rem
@@ -651,6 +654,21 @@ section
 		-webkit-transition: 0.2s all ease
 		-moz-transition: 0.2s all ease
 		transition: 0.2s all ease
+
+.progress-tip
+	padding-left: 1rem
+	color: $grayFontColorLight
+	position: relative
+	line-height: 2.4rem
+	.title
+		font-size: 1.2rem
+	.action-sm
+		position: absolute
+		right: 0
+		top: 0
+		font-size: 1.2rem
+		color: $linkColor
+		padding: 0 1rem
 
 .file
 	position: absolute
@@ -793,14 +811,12 @@ section
 				position: absolute
 				top: 0.2rem
 				right: .2rem
-		span
-//margin-left: 3rem
+
 .line-space
 	height: 1rem
 
 .btn-s-wrap
 	padding-top: 2rem
-	padding-left: 1rem
 	text-align: center
 
 .btn-s
@@ -5854,6 +5870,7 @@ section
 	b
 		color: $mainColor
 		font-weight: $weightBold
+
 .ranking-list
 	padding: 0
 	background: #fff

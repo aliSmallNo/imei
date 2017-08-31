@@ -18,11 +18,21 @@
 		width: 100%;
 		height: auto;
 	}
+
+	.s-openid {
+		font-size: 10px;
+		color: #999;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-sm-6">
-			<h4>{{if not $userInfo}}添加用户{{else}}修改用户{{/if}}</h4>
+			<h4>{{if $userInfo}}
+				修改用户
+				<small class="s-openid">{{$openid}}</small>
+				{{else}}
+				添加用户
+				{{/if}}</h4>
 		</div>
 		<div class="col-sm-6">
 			{{if $success}}

@@ -1,6 +1,10 @@
 <div class="progress">
 	<div style="width: 0%;"></div>
 </div>
+<div class="progress-tip">
+	<p class="title"></p>
+	<a href="javascript:;" class="action-sm action-skip" style="display: none">跳过，以后再填</a>
+</div>
 <div class="m-popup-shade"></div>
 <section id="photo">
 	<p class="m-header">请上传真人头像<i>否则不会审核通过</i></p>
@@ -108,8 +112,8 @@
 </section>
 <section id="horos">
 	<p class="m-header s1">您的星座？</p>
-	<div class="cells col2 clearfix" data-tag="sign">
-		{{foreach from=$sign key=key item=y}}
+	<div class="cells col2 clearfix" data-tag="horos">
+		{{foreach from=$horos key=key item=y}}
 		<a href="javascript:;" data-key="{{$key}}">{{$y}}</a>
 		{{/foreach}}
 	</div>
@@ -188,9 +192,9 @@
 		{{/foreach}}
 	</div>
 </section>
-<section id="job">
+<section id="profession">
 	<p class="m-header s1">请问您的职业是什么？</p>
-	<div class="cells col3 clearfix professions" data-tag="job">
+	<div class="cells col3 clearfix professions" data-tag="profession">
 	</div>
 </section>
 <section id="house">
@@ -290,10 +294,10 @@
 	</div>
 </section>
 <div class="m-footer-tip">
-	{{if $switchRole}}
+	{{if $switchRole && 0}}
 	<a href="/wx/match" class="action-sm action-matcher">返回媒婆角色</a>
 	{{/if}}
-	<a href="#interest" class="action-sm action-skip" style="display: none">跳过，以后再填</a>
+
 </div>
 
 <div class="m-popup-main" style="display: none">
@@ -303,10 +307,23 @@
 </div>
 
 <input type="hidden" id="cCoord">
+<input type="hidden" id="cSkipIndex" value="{{$skipIndex}}">
 <input type="hidden" id="cMaxYear" value="{{$maxYear}}">
 <input type="hidden" id="cGender" value="{{if $uInfo.gender}}{{$uInfo.gender}}{{/if}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
+</script>
+<script type="text/template" id="tpl_skip">
+	<div class="m-greeting-wrap">
+		<h4>
+			资料不全，将会被限制使用部分功能<br>
+			你是否确定要跳过填写剩下的资料？
+		</h4>
+		<div class="btn-wrap btn-multi">
+			<a href="javascript:;" class="btn btn-warn btn-skip-yes">我先进去看看</a>
+			<a href="javascript:;" class="btn btn-main btn-skip-no">不，我要填完</a>
+		</div>
+	</div>
 </script>
 <script type="text/template" id="tpl_greeting_users">
 	<div class="m-greeting-wrap">
@@ -333,4 +350,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="//webapi.amap.com/maps?v=1.3&key=8dcdd1499361b46052bb94a1dfafbe49&plugin=AMap.Geocoder"></script>
-<script data-main="/js/sreg.js?v=1.3.6" src="/assets/js/require.js"></script>
+<script data-main="/js/sreg.js?v=1.4.0" src="/assets/js/require.js"></script>
