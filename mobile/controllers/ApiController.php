@@ -1100,7 +1100,7 @@ class ApiController extends Controller
 				$openid = self::postParam("openid");
 				$album = User::findOne(["uOpenId" => $openid])->uAlbum;
 				$album = $album ? json_decode($album, 1) : [];
-				$newThumb = ImageUtil::uploadItemImages($info, 1);
+				$newThumb = ImageUtil::uploadItemImages($info);
 				$newThumb = $newThumb ? json_decode($newThumb, 1) : [];
 				$thumb = array_merge($album, $newThumb);
 				$data = $thumb;
