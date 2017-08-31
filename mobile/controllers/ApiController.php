@@ -913,9 +913,27 @@ class ApiController extends Controller
 				}
 				$data["prov"] = City::provinces();
 				$location = $data["info"]["location"];
-				$key = ($location && isset($location[0]["key"]) && $location[0]["key"]) ? $location[0]["key"] : 100100;
-				$data["city"] = City::cities($key);
+				$ckey = ($location && isset($location[0]["key"]) && $location[0]["key"]) ? $location[0]["key"] : 100100;
+				$data["city"] = City::cities($ckey);
+
+				$dkey = 160100;
+				if (isset($data["info"]) && $data["info"]["location"] && isset($data["info"]["location"][1])) {
+					$dkey = $data["info"]["location"][1]["key"];
+				}
+				$data["district"] = City::addrItems($dkey);
+
+				$homeland = $data["info"]["homeland"];
+				$ckey = ($homeland && isset($homeland[0]["key"]) && $homeland[0]["key"]) ? $homeland[0]["key"] : 100100;
+				$data["hcity"] = City::cities($ckey);
+				$dkey = 160100;
+				if (isset($data["info"]) && $data["info"]["homeland"] && isset($data["info"]["homeland"][1])) {
+					$dkey = $data["info"]["homeland"][1]["key"];
+				}
+				$data["hdistrict"] = City::addrItems($dkey);;
+
+
 				$data["gender"] = User::$Gender;
+				$data["marital"] = User::$Marital;
 				//alcohol  educationcation estate profession gender horos
 				$data["height"] = User::$Height;
 				$data["year"] = User::$Birthyear;
@@ -1099,11 +1117,13 @@ class ApiController extends Controller
 				$openid = self::postParam("openid");
 				$album = User::findOne(["uOpenId" => $openid])->uAlbum;
 				$album = $album ? json_decode($album, 1) : [];
+				if (count($album) > 6) {
+					$data = "";
+					break;
+				}
 				$newThumb = ImageUtil::uploadItemImages($info);
 				$newThumb = $newThumb ? json_decode($newThumb, 1) : [];
 				$thumb = array_merge($album, $newThumb);
-				$data = $thumb;
-				break;
 				User::edit($openid, ["uAlbum" => json_encode($thumb)]);
 				$data = $newThumb ? $newThumb[0] : "";
 				break;

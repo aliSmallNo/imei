@@ -49,7 +49,7 @@ class WxPayApi
 		}
 
 		$inputObj->SetAppid(WxPayConfig::APPID);//公众账号ID
-		$inputObj->SetMch_id(WxPayConfig::MCHID);//商户号}
+		$inputObj->SetMch_id(WxPayConfig::MCHID);//商户号
 
 		$inputObj->SetSpbill_create_ip($_SERVER['REMOTE_ADDR']);//终端ip	  
 		//$inputObj->SetSpbill_create_ip("1.1.1.1");  	    
