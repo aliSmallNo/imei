@@ -45,6 +45,7 @@
 		padding: 0 5px;
 		border: none;
 	}
+
 	.m-style-female .m-role {
 		background: #f06292;
 		color: #fff;
@@ -221,6 +222,11 @@
 		height: 244px;
 		cursor: pointer;
 	}
+
+	.s-gray {
+		color: #888;
+		font-size: 12px;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="row">
@@ -326,7 +332,7 @@
 				{{if $prod.status==2}}
 				<em>{{$prod.reason}}</em>
 				{{/if}}
-				<em>{{$prod.logdate|date_format:"上次操作于%Y-%m-%d %H:%M"}}</em>
+				<div class="s-gray">{{$prod.logdate|date_format:"上次操作于%Y-%m-%d %H:%M"}}</div>
 			</td>
 			<td class="album-items" data-images='{{$prod.showImages}}'>
 				{{if $prod.album}}

@@ -60,29 +60,6 @@ class UserAudit extends ActiveRecord
 		return $res;
 	}
 
-	public static function reasonMsg($uid, $adminFlag = 0, $conn = '')
-	{
-		if (!$conn) {
-			$conn = AppUtil::db();
-		}
-		$sql = "select * from im_user_audit where aUId=:uid and aUStatus=:status and aValid=:valid order by aId desc limit 1";
-		$res = $conn->createCommand($sql)->bindValues([
-			":uid" => $uid,
-			":status" => User::STATUS_INVALID,
-			":valid" => self::VALID_FAIL,
-		])->queryOne();
-		$str = $adminFlag ? "" : "您的个人信息: ";
-		if ($res && $reason = json_decode($res["aReasons"], 1)) {
-			foreach ($reason as $v) {
-				foreach (self::$reasonDict as $k => $r) {
-					if ($v["tag"] == $k) {
-						$str .= $adminFlag ? ($r . "不合规:" . $v["text"] . "<br>") : ($r . "不合规  ");
-					}
-				}
-			}
-		}
-		return $str;
-	}
 
 	public static function invalid($uid, $conn = '')
 	{
@@ -104,7 +81,7 @@ class UserAudit extends ActiveRecord
 		return false;
 	}
 
-	public static function validate($uid, $conn = '')
+	public static function verify($uid, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -121,9 +98,35 @@ class UserAudit extends ActiveRecord
 			return [129, '你的身份信息还在审核中，请稍后重试'];
 		}
 		if (in_array($status, [User::STATUS_INVALID, User::STATUS_PRISON])) {
-			$msg = self::reasonMsg($uid, 0, $conn);
+			$msg = self::fault($uid, 0, $conn);
 			return [129, $msg];
 		}
 		return [0, ''];
+	}
+
+	public static function fault($uid, $adminFlag = 0, $conn = '')
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$sql = "select * from im_user_audit
+				where aUId=:uid and aUStatus=:status and aValid=:valid order by aId desc limit 1";
+		$res = $conn->createCommand($sql)->bindValues([
+			":uid" => $uid,
+			":status" => User::STATUS_INVALID,
+			":valid" => self::VALID_FAIL,
+		])->queryOne();
+
+		$str = $adminFlag ? "" : "系统提示您: ";
+		$reasons = json_decode($res["aReasons"], 1);
+		if ($res && $reasons) {
+			$text = [];
+			foreach ($reasons as $reason) {
+				if (!isset(self::$reasonDict[$reason['tag']])) continue;
+				$title = self::$reasonDict[$reason['tag']];
+				$text[] = $title . "不合规，" . $reason["text"];
+			}
+		}
+		return $str . implode('<br>', $text);
 	}
 }

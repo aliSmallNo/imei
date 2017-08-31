@@ -404,9 +404,9 @@ class ApiController extends Controller
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])) {
-					$msg = UserAudit::reasonMsg($wxInfo["uId"]);
-					return self::renderAPI(129, $msg);
+				list($code, $msg) = UserAudit::verify($wxInfo["uId"]);
+				if ($code && $msg) {
+					return self::renderAPI($code, $msg);
 				}
 				LogAction::add($wxInfo['uId'], $openId, LogAction::ACTION_SIGN);
 				list($amt, $unit) = UserSign::sign($wxInfo['uId']);
@@ -425,9 +425,9 @@ class ApiController extends Controller
 				if (UserSign::isSign($wxInfo["uId"])) {
 					return self::renderAPI(129, '已经签过到了哦~');
 				}
-				if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])) {
-					$msg = UserAudit::reasonMsg($wxInfo["uId"]);
-					return self::renderAPI(129, $msg);
+				list($code, $msg) = UserAudit::verify($wxInfo["uId"]);
+				if ($code && $msg) {
+					return self::renderAPI($code, $msg);
 				}
 //				$oid = self::postParam('id');
 //				$oid = AppUtil::decrypt($oid);
@@ -448,9 +448,9 @@ class ApiController extends Controller
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 
-				if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])) {
-					$msg = UserAudit::reasonMsg($wxInfo["uId"]);
-					return self::renderAPI(129, $msg);
+				list($code, $msg) = UserAudit::verify($wxInfo["uId"]);
+				if ($code && $msg) {
+					return self::renderAPI($code, $msg);
 				}
 
 				if (UserNet::hasBlack($wxInfo["uId"], $uid)) {
@@ -569,7 +569,7 @@ class ApiController extends Controller
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				list($code, $msg) = UserAudit::validate($wxInfo["uId"]);
+				list($code, $msg) = UserAudit::verify($wxInfo["uId"]);
 				if ($code && $msg) {
 					return self::renderAPI($code, $msg);
 				}
@@ -592,7 +592,7 @@ class ApiController extends Controller
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				list($code, $msg) = UserAudit::validate($wxInfo["uId"]);
+				list($code, $msg) = UserAudit::verify($wxInfo["uId"]);
 				if ($code && $msg) {
 					return self::renderAPI($code, $msg);
 				}
@@ -642,9 +642,9 @@ class ApiController extends Controller
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				if (in_array($wxInfo["uStatus"], [User::STATUS_INVALID, User::STATUS_PRISON])) {
-					$msg = UserAudit::reasonMsg($wxInfo["uId"]);
-					return self::renderAPI(129, $msg);
+				list($code, $msg) = UserAudit::verify($wxInfo["uId"]);
+				if ($code && $msg) {
+					return self::renderAPI($code, $msg);
 				}
 
 				$text = ($pf == "pass") ? "通过" : "拒绝";
@@ -1366,7 +1366,7 @@ class ApiController extends Controller
 		}
 		$uid = $wxInfo['uId'];
 		if (in_array($tag, ["sent", "list", "read"])) {
-			list($code, $msg) = UserAudit::validate($wxInfo["uId"]);
+			list($code, $msg) = UserAudit::verify($wxInfo["uId"]);
 			if ($code && $msg) {
 				return self::renderAPI($code, $msg);
 			}

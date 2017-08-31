@@ -286,13 +286,17 @@ class SiteController extends BaseController
 		}
 
 		list($list, $count) = User::users($criteria, $params, $page);
+
 		$uids = array_column($list, 'id');
 		$mCnt = ChatMsg::serviceCnt($uids);
+		//var_dump($list);exit();
 		foreach ($list as &$v) {
 			$dataImg = [];
+			$userId = $v["id"];
 			$v["reason"] = "";
+
 			if ($v["status"] == User::STATUS_INVALID) {
-				$v["reason"] = UserAudit::reasonMsg($v["id"], 1);
+				$v["reason"] = UserAudit::fault($userId, 1);
 			}
 
 			foreach ($v["album"] as $v1) {
@@ -321,6 +325,7 @@ class SiteController extends BaseController
 				$v['style'] = 'female';
 			}
 		}
+
 		$stat = User::stat();
 		$partCount = User::partCount($partCriteria, $params);
 		$pagination = self::pagination($page, $count);
