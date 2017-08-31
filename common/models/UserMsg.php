@@ -301,9 +301,9 @@ class UserMsg extends ActiveRecord
 	public static function routineAlert($uIds = [])
 	{
 		$hr = date('Hi');
-		if (!in_array($hr, ['0730', '0930', '1200', '1600', '1900', '2200'])) {
+		/*if (!in_array($hr, ['0730', '0930', '1200', '1600', '1900', '2200'])) {
 			return false;
-		}
+		}*/
 		$conn = AppUtil::db();
 
 		$sql = 'UPDATE im_user_msg as m 
