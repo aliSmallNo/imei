@@ -914,8 +914,15 @@ class ApiController extends Controller
 				}
 				$data["prov"] = City::provinces();
 				$location = $data["info"]["location"];
-				$key = ($location && isset($location[0]["key"]) && $location[0]["key"]) ? $location[0]["key"] : 100100;
-				$data["city"] = City::cities($key);
+				$ckey = ($location && isset($location[0]["key"]) && $location[0]["key"]) ? $location[0]["key"] : 100100;
+				$data["city"] = City::cities($ckey);
+				//
+				$dkey = 160100;
+				if (isset($data["info"]) && $data["info"]["location"] && isset($data["info"]["location"][1])) {
+					$dkey = $data["info"]["location"][1]["key"];
+				}
+				$data["district"] = City::addrItems($dkey);;
+
 				$data["gender"] = User::$Gender;
 				//alcohol  educationcation estate profession gender horos
 				$data["height"] = User::$Height;
