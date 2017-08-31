@@ -131,7 +131,7 @@ class Pin extends ActiveRecord
 			}
 		}
 
-		$updateMapInfo = function ($uid, $info, $conn) {
+		$updateMapInfo = function ($uid, $lat, $lng, $info, $conn) {
 			$sql = 'update im_pin set pRaw=:raw';
 			$params = [
 				':raw' => json_encode($info, JSON_UNESCAPED_UNICODE),
@@ -151,9 +151,32 @@ class Pin extends ActiveRecord
 			}
 			$sql .= ' WHERE pPId=:id and pCategory=:cat ';
 			$conn->createCommand($sql)->bindValues($params)->execute();
+
+			if (isset($info['location']) && $info['location'] && !$lat && !$lng) {
+				list($lng, $lat) = explode(',', $info['location']);
+				$sql = 'update im_pin set pLat=:lat,pLng=:lng,pPoint=GeomFromText(:poi) WHERE pPId=:id and pCategory=:cat ';
+				$params = [
+					':lat' => $lat,
+					':lng' => $lng,
+					':poi' => "POINT($lat $lng)",
+					':id' => $uid,
+					':cat' => self::CAT_NOW,
+				];
+				$conn->createCommand($sql)->bindValues($params)->execute();
+			}
 		};
 		$mapKey = '3b7105f564d93737d4b90411793beb67';
-		if (!$lat || !$lng) {
+		if ($lat && $lng) {
+			$url = 'http://restapi.amap.com/v3/geocode/regeo?location=%s,%s&output=json&key=%s&radius=500&extensions=base';
+			$url = sprintf($url, $lng, $lat, $mapKey);
+			$ret = AppUtil::httpGet($url);
+			$ret = json_decode($ret, 1);
+			if (!isset($ret['regeocode']['addressComponent'])) {
+				return false;
+			}
+			$info = $ret['regeocode']['addressComponent'];
+			$updateMapInfo($uid, $lat, $lng, $info, $conn);
+		} else {
 			$sql = 'select uLocation from im_user WHERE uId=' . $uid;
 			$ret = $conn->createCommand($sql)->queryScalar();
 			$ret = json_decode($ret, 1);
@@ -164,7 +187,7 @@ class Pin extends ActiveRecord
 				$info = RedisUtil::getCache(RedisUtil::KEY_PIN_GEO, $md5);
 				$info = json_decode($info, 1);
 				if ($info) {
-					$updateMapInfo($uid, $info, $conn);
+					$updateMapInfo($uid, 0, 0, $info, $conn);
 					return true;
 				}
 				$url = 'http://restapi.amap.com/v3/geocode/geo?address=%s&output=json&key=%s';
@@ -173,24 +196,13 @@ class Pin extends ActiveRecord
 				$mapInfo = json_decode($mapInfo, 1);
 				if (isset($mapInfo['geocodes']) && $mapInfo['geocodes']) {
 					$info = $mapInfo['geocodes'][0];
-					$updateMapInfo($uid, $info, $conn);
+					$updateMapInfo($uid, 0, 0, $info, $conn);
 					RedisUtil::setCache(json_encode($info), RedisUtil::KEY_PIN_GEO, $md5);
 				}
 				return true;
 			}
-			return false;
 		}
 
-		$url = 'http://restapi.amap.com/v3/geocode/regeo?location=%s,%s&output=json&key=%s&radius=500&extensions=base';
-		$url = sprintf($url, $lng, $lat, $mapKey);
-		$ret = AppUtil::httpGet($url);
-		$ret = json_decode($ret, 1);
-		if (!isset($ret['regeocode']['addressComponent'])) {
-			return false;
-		}
-		$info = $ret['regeocode']['addressComponent'];
-		$updateMapInfo($uid, $info, $conn);
-
-		return true;
+		return false;
 	}
 }

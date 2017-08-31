@@ -479,14 +479,17 @@ class FooController extends Controller
 		self::getCircleAvatar($imagePath, $saveAs, 440);
 		var_dump($saveAs);*/
 		$conn = AppUtil::db();
-		$sql = 'select pPId,pLat,pLng from im_pin WHERE pCategory=200 AND pCity=\'\'';
+		$sql = 'select pPId,pLat,pLng from im_pin 
+				WHERE pCategory=200 AND pCity!=\'\' AND pLat=\'\' order by pDate desc limit 1000 ';
 		$ret = $conn->createCommand($sql)->queryAll();
 		$count = 0;
 		foreach ($ret as $row) {
 			$count += Pin::regeo($row['pPId'], $row['pLat'], $row['pLng'], $conn) ? 1 : 0;
+			if ($count % 50 == 0) {
+				var_dump($count . date(' Y-m-d H:i:s'));
+			}
 		}
-		var_dump($count);
-		var_dump(count($ret));
+		var_dump($count . '/' . count($ret));
 		/*$ret = User::greetUsers(131379);
 		var_dump($ret);*/
 		//Pin::regeo(131379);
