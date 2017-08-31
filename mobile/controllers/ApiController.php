@@ -1097,7 +1097,8 @@ class ApiController extends Controller
 						$infoTemp["size"]
 					]
 				];
-				return $info;
+				$data = $info;
+				break;
 				$openid = self::postParam("openid");
 				$album = User::findOne(["uOpenId" => $openid])->uAlbum;
 				$album = $album ? json_decode($album, 1) : [];
