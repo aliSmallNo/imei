@@ -25,6 +25,8 @@ require(["layer"],
 
 		$('.btn').on(kClick, function () {
 			var self = $(this);
+			// showMsg('谢谢，你今天已经签到过了，明天再来吧');
+			// showMsg('谢谢，你今天已经签到过了，明天再来吧', 3);
 			if (self.hasClass('signed') || $sls.loading) {
 				return false;
 			}
@@ -46,11 +48,20 @@ require(["layer"],
 			}, 'json');
 		});
 
-		function showMsg(title, sec) {
+		function showMsg(msg, sec, tag) {
 			var delay = sec || 3;
+			var ico = '';
+			if (tag && tag === 10) {
+				ico = '<i class="i-msg-ico i-msg-fault"></i>';
+			} else if (tag && tag === 11) {
+				ico = '<i class="i-msg-ico i-msg-success"></i>';
+			} else if (tag && tag === 12) {
+				ico = '<i class="i-msg-ico i-msg-warning"></i>';
+			}
+			var html = '<div class="m-msg-wrap">' + ico + '<p>' + msg + '</p></div>';
 			layer.open({
 				type: 99,
-				content: title,
+				content: html,
 				skin: 'msg',
 				time: delay
 			});

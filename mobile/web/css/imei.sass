@@ -640,6 +640,30 @@ section
 		.btn
 			margin-bottom: 1rem
 
+.m-msg-wrap
+	text-align: center
+	color: #fff
+	.i-msg-ico
+		width: 4.4rem
+		height: 4.4rem
+		display: inline-block
+	p
+		max-width: 16rem
+		font-size: 1.4rem
+		font-weight: 400
+
+.i-msg-success
+	background: url(../images/ico_msg_tick.png) no-repeat center center
+	background-size: 100% 100%
+
+.i-msg-warning
+	background: url(../images/ico_msg_warn.png) no-repeat center center
+	background-size: 100% 100%
+
+.i-msg-fault
+	background: url(../images/ico_msg_cross.png) no-repeat center center
+	background-size: 100% 100%
+
 .progress
 	height: .3rem
 	background: $mainColorLighter
@@ -4401,9 +4425,10 @@ section
 			font-size: 1.4rem
 			border: none
 			width: 99%
-			line-height: 4.6rem
+			line-height: 4.5rem
 			margin: 0
 			padding: 0 1rem
+			z-index: 99
 	.action
 		@include displayFlex-w(7rem)
 		a

@@ -72,9 +72,9 @@ require(["layer"],
 							setTimeout(function () {
 								location.href = "/wx/single#slook";
 							}, 350);
-							showMsg(res.msg);
+							showMsg(res.msg, 3, 11);
 						} else {
-							showMsg(res.msg);
+							showMsg(res.msg, 6, 12);
 						}
 					}, "json");
 				});
@@ -91,7 +91,7 @@ require(["layer"],
 								}
 							});
 							if (albumImages.length < 2) {
-								showMsg("请先选择上传2张生活照片吧~");
+								showMsg("请先选择上传2张生活照片吧~", 3, 12);
 								return false;
 							}
 							util.next();
@@ -99,12 +99,12 @@ require(["layer"],
 						case "avatar":
 							var img = util.avatar.attr("localId");
 							if (!img && !util.avatar.attr('src')) {
-								showMsg("头像还没有上传哦~");
+								showMsg("头像还没有上传哦~", 3, 12);
 								return;
 							}
 							var nickname = $.trim(util.nickname.val());
 							if (!nickname) {
-								showMsg("昵称还没有填写哦~");
+								showMsg("昵称还没有填写哦~", 3, 12);
 								return;
 							}
 							$sls.postData["name"] = nickname;
@@ -119,7 +119,7 @@ require(["layer"],
 								});
 							});
 							if (lItem.length < 2) {
-								showMsg("位置信息不全哦~");
+								showMsg("位置信息不全哦~", 3, 12);
 								return;
 							}
 							$sls.postData["location"] = JSON.stringify(lItem);
@@ -134,7 +134,7 @@ require(["layer"],
 								});
 							});
 							if (hItem.length < 2) {
-								showMsg("籍贯信息不全哦~");
+								showMsg("籍贯信息不全哦~", 3, 12);
 								return;
 							}
 							$sls.postData["homeland"] = JSON.stringify(hItem);
@@ -144,7 +144,7 @@ require(["layer"],
 						case "intro":
 							var intro = $.trim($("[data-tag=intro]").val());
 							if (!intro) {
-								showMsg("内心独白要填写哦~");
+								showMsg("内心独白要填写哦~", 3, 12);
 								return;
 							}
 							$sls.postData["intro"] = intro;
@@ -270,7 +270,7 @@ require(["layer"],
 				$(".btn-done").on(kClick, function () {
 					var interest = $.trim($("[data-tag=interest]").val());
 					if (!interest) {
-						showMsg("兴趣爱好要填写哦~");
+						showMsg("兴趣爱好要填写哦~", 3, 12);
 						return;
 					}
 					$sls.postData["interest"] = interest;
@@ -330,11 +330,11 @@ require(["layer"],
 						} else {
 							setTimeout(function () {
 								location.href = "/wx/single#slook";
-							}, 350);
-							showMsg(res.msg);
+							}, 500);
+							showMsg(res.msg, 3, 11);
 						}
 					} else {
-						showMsg(res.msg);
+						showMsg(res.msg, 3, 12);
 					}
 				}, "json");
 			},
@@ -476,15 +476,22 @@ require(["layer"],
 			layer.closeAll();
 		}
 
-		function showMsg(title, sec) {
-			var duration = 2;
-			if (sec) {
-				duration = sec;
+		function showMsg(msg, sec, tag) {
+			var delay = sec || 3;
+			var ico = '';
+			if (tag && tag === 10) {
+				ico = '<i class="i-msg-ico i-msg-fault"></i>';
+			} else if (tag && tag === 11) {
+				ico = '<i class="i-msg-ico i-msg-success"></i>';
+			} else if (tag && tag === 12) {
+				ico = '<i class="i-msg-ico i-msg-warning"></i>';
 			}
+			var html = '<div class="m-msg-wrap">' + ico + '<p>' + msg + '</p></div>';
 			layer.open({
-				content: title,
+				type: 99,
+				content: html,
 				skin: 'msg',
-				time: duration
+				time: delay
 			});
 		}
 
