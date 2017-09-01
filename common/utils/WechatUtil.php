@@ -408,6 +408,11 @@ class WechatUtil
 					"sub_button" => [
 						[
 							"type" => "view",
+							"name" => "搞笑请帖",
+							"url" => $wxUrl . "/wx/marry"
+						],
+						[
+							"type" => "view",
 							"name" => "官方活动",
 							"url" => $wxUrl . "/wx/event"
 						],

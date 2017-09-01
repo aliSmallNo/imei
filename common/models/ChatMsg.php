@@ -313,7 +313,8 @@ class ChatMsg extends ActiveRecord
 			$chats[$k]['avatar'] = ImageUtil::getItemImages($chat['avatar'])[0];
 			$chats[$k]['dt'] = AppUtil::prettyDate($chat['addedon']);
 			$chats[$k]['dir'] = ($uId == $chat['cAddedBy'] ? 'right' : 'left');
-			$chats[$k]['url'] = ($uId == $chat['cAddedBy'] ? 'javascript:;' : '/wx/sh?id=' . AppUtil::encrypt($subUId));
+			$chats[$k]['url'] = 'javascript:;';
+			$chats[$k]['eid'] = ($uId == $chat['cAddedBy'] ? '' : AppUtil::encrypt($subUId));
 			unset($chats[$k]['cAddedBy'], $chats[$k]['round']);
 			if ($chat['cid'] > $lastId) {
 				$lastId = $chat['cid'];

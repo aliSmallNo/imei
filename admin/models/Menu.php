@@ -78,6 +78,16 @@ class Menu
 		return $forks;
 	}
 
+	public static function menusMd5()
+	{
+		$ret = RedisUtil::getCache(RedisUtil::KEY_MENUS_MD5);
+		if (!$ret) {
+			$ret = md5(json_encode(self::menus()));
+			RedisUtil::setCache($ret, RedisUtil::KEY_MENUS_MD5);
+		}
+		return $ret;
+	}
+
 	public static function menus()
 	{
 		return [
@@ -106,7 +116,7 @@ class Menu
 						"level" => 820
 					],
 					[
-						"name" => "选题列表",
+						"name" => "题库题海",
 						"url" => "/site/questions",
 						"revise" => 1,
 						"level" => 820

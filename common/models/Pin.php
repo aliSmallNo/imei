@@ -81,7 +81,7 @@ class Pin extends ActiveRecord
 			 FROM im_user as u
 			 JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=:cat AND p.pLat!=\'\' AND p.pLng!=\'\'
 			 WHERE u.uStatus < 8
-			 order by pDate desc limit 250';
+			 order by u.uLogDate desc limit 250';
 		$ret = $conn->createCommand($sql)->bindValues([
 			':cat' => self::CAT_NOW,
 		])->queryAll();

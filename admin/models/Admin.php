@@ -165,11 +165,13 @@ class Admin extends ActiveRecord
 		$uid = $adminId ? $adminId : self::getAdminId();
 		$info = RedisUtil::getCache(RedisUtil::KEY_ADMIN_INFO, $uid);
 		$info = json_decode($info, 1);
-		if (!$info) {
+		$menuMd5 = Menu::menusMd5();
+		if (!isset($info['menu_md5']) || $info['menu_md5'] != $menuMd5) {
 			$userObj = self::findOne(['aId' => $uid, "aStatus" => 1]);
 			if ($userObj) {
 				$info = $userObj->toArray();
 				$info = self::privileges($info);
+				$info['menu_md5'] = $menuMd5;
 				RedisUtil::setCache(json_encode($info), RedisUtil::KEY_ADMIN_INFO, $uid);
 			} else {
 				return [];
