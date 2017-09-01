@@ -454,6 +454,7 @@ class WechatUtil
 		return [];
 	}
 
+	// 小程序支付
 	public static function jsPrepayXcx($payId, $openId, $amt, $title = '微媒100', $subTitle = '支付详情(略)')
 	{
 		$input = new \WxPayUnifiedOrder();
