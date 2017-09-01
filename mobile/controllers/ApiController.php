@@ -876,6 +876,10 @@ class ApiController extends Controller
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
+				list($code, $msg) = UserAudit::verify($wxInfo["uId"]);
+				if ($code && $msg) {
+					return self::renderAPI($code, $msg);
+				}
 				$id = self::postParam("id");
 				$id = AppUtil::decrypt($id);
 				$amt = self::postParam("amt");
