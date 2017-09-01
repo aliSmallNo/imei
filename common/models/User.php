@@ -2028,6 +2028,7 @@ class User extends ActiveRecord
 		$sql = 'select uId as id,uName as name,uThumb as thumb,uLogDate,uBirthYear,uHeight,uHoros,
 			 (case WHEN p.pProvince like :prov and p.pCity like :city then 10 WHEN p.pProvince like :prov then 8 else 0 end) as rank 
 			 from im_user as u
+			 JOIN im_user_wechat as w on w.wUId=u.uId AND w.wSubscribe=1
 			 join im_pin as p on p.pPId=u.uId and p.pCategory=:cat 
 			 WHERE uStatus=1 and uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
 			 order by rank desc, uLogDate desc limit 10';
@@ -2043,6 +2044,7 @@ class User extends ActiveRecord
 		$sql = 'select uId as id,uName as name,uThumb as thumb,uLogDate,uBirthYear,uHeight,uHoros,
 			 (case WHEN p.pProvince like :prov and p.pCity like :city then 10 WHEN p.pProvince like :prov then 8 else 0 end) as rank 
 			 from im_user as u
+			 JOIN im_user_wechat as w on w.wUId=u.uId AND w.wSubscribe=1
 			 join im_pin as p on p.pPId=u.uId and p.pCategory=:cat 
 			 WHERE uStatus=1 and uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
 			 order by rank desc, uLogDate limit 10';
