@@ -290,7 +290,7 @@ require(["layer"],
 						case "pay":
 							var num = self.closest(".reward-wx-wrap").find(".options a.active").attr("num");
 							if (!num) {
-								showMsg("请先选择打赏的媒瑰花");
+								showMsg("请先选择打赏的媒瑰花", 3, 12);
 								return;
 							}
 							if (AlertUtil.payroseF) {
@@ -313,7 +313,7 @@ require(["layer"],
 										$(".not-enough-rose").show();
 									}
 								} else {
-									showMsg(resp.msg);
+									showMsg(resp.msg, 3, 12);
 								}
 								AlertUtil.payroseF = 0;
 							}, "json");
@@ -389,11 +389,13 @@ require(["layer"],
 							if (resp.code == 0) {
 								$sls.main.hide();
 								$sls.shade.fadeOut(160);
+								showMsg(resp.msg, 3, 11);
+							} else {
+								showMsg(resp.msg, 3, 12);
 							}
-							showMsg(resp.msg);
 						}, "json");
 					} else {
-						showMsg('请先选择媒桂花数量哦~');
+						showMsg('请先选择媒桂花数量哦~', 3, 12);
 					}
 
 					return false;
@@ -410,7 +412,7 @@ require(["layer"],
 						case "btn-confirm":
 							var wname = $.trim($(".m-wxid-input").val());
 							if (!wname) {
-								showMsg("请填写正确的微信号哦~");
+								showMsg("请填写正确的微信号哦~", 3, 12);
 								return;
 							}
 							$.post("/api/user", {
@@ -418,7 +420,7 @@ require(["layer"],
 								wname: wname,
 							}, function (resp) {
 								if (resp.data) {
-									showMsg("已发送给对方，请等待TA的同意");
+									showMsg("已发送给对方，请等待TA的同意", 3, 12);
 									setTimeout(function () {
 										self.closest(".getWechat").hide();
 										$sls.cork.hide();
@@ -443,16 +445,16 @@ require(["layer"],
 
 					if (resp.code == 0) {
 						if (f == "yes") {
-							showMsg('心动成功~');
+							showMsg('心动成功~', 3, 11);
 							obj.addClass("favor");
 							ProfileUtil.toggleFavor(1);
 						} else {
-							showMsg('已取消心动');
+							showMsg('已取消心动', 3, 12);
 							obj.removeClass("favor");
 							ProfileUtil.toggleFavor(0);
 						}
 					} else {
-						showMsg(resp.msg);
+						showMsg(resp.msg, 3, 12);
 					}
 					AlertUtil.hintFlag = 0;
 				}, "json");
@@ -564,7 +566,7 @@ require(["layer"],
 							util.toggle(false, util.helpchatMenu);
 							util.sent();
 						} else {
-							showMsg(resp.msg);
+							showMsg(resp.msg, 3, 12);
 						}
 					}, "json");
 				});
@@ -613,9 +615,9 @@ require(["layer"],
 				}, function (resp) {
 					util.loading = 0;
 					if (resp.code == 0) {
-						showMsg(resp.msg);
+						showMsg(resp.msg, 3, 11);
 					} else {
-						showMsg(resp.msg);
+						showMsg(resp.msg, 3, 12);
 					}
 				}, "json");
 			},
@@ -659,18 +661,18 @@ require(["layer"],
 							$sls.shade.fadeOut(160);
 							util.showTip(resp.data.gid, resp.data.left);
 						} else {
-							showMsg(resp.msg);
+							showMsg(resp.msg, 3, 12);
 						}
 					}, "json");
 				} else {
-					showMsg('请先选择媒桂花数量哦~');
+					showMsg('请先选择媒桂花数量哦~', 3, 12);
 				}
 			},
 			sent: function () {
 				var util = this;
 				var content = util.inputVal ? util.inputVal : $.trim(util.input.val());
 				if (!content) {
-					showMsg('聊天内容不能为空！');
+					showMsg('聊天内容不能为空！', 3, 12);
 					return false;
 				}
 				if (util.helpchatMenu.hasClass("on")) {
@@ -705,7 +707,7 @@ require(["layer"],
 						$sls.content.html(html).addClass("animate-pop-in");
 						$sls.shade.fadeIn(160);
 					} else {
-						showMsg(resp.msg);
+						showMsg(resp.msg, 3, 12);
 					}
 				}, "json");
 			},
@@ -742,7 +744,7 @@ require(["layer"],
 							util.toggleTimer(1);
 						}
 					} else {
-						showMsg(resp.msg);
+						showMsg(resp.msg, 3, 12);
 					}
 					util.loading = 0;
 				}, "json");
@@ -763,7 +765,7 @@ require(["layer"],
 							util.topPL.get(0).scrollIntoView(true);
 						}, 300);
 					} else {
-						showMsg(resp.msg);
+						showMsg(resp.msg, 3, 12);
 					}
 					util.loading = 0;
 				}, "json");
@@ -842,7 +844,7 @@ require(["layer"],
 								SmeUtil.delImgFlag = 0;
 								row.remove();
 								layer.closeAll();
-								showMsg(resp.msg);
+								showMsg(resp.msg, 3, (resp.code == 0 ? 11 : 12));
 							}, "json");
 						}
 					});
@@ -910,12 +912,12 @@ require(["layer"],
 					tag: "album",
 					id: JSON.stringify(SmeUtil.serverIds)
 				}, function (resp) {
-					showMsg(resp.msg);
 					if (resp.code == 0) {
 						$("#album .photos").append(Mustache.render(SmeUtil.albumSingleTmp, resp.data));
 						layer.closeAll();
+						showMsg(resp.msg, 3, 11);
 					} else {
-						showMsg(resp.msg);
+						showMsg(resp.msg, 3, 12);
 					}
 					SmeUtil.uploadImgFlag = 0;
 				}, "json");
@@ -1155,17 +1157,17 @@ require(["layer"],
 						pf: pf,
 						nid: nid
 					}, function (resp) {
-						showMsg(resp.msg);
 						if (resp.data) {
 							setTimeout(function () {
 								self.closest("li").remove();
 							}, 500);
+							showMsg(resp.msg, 3, 11);
 						}
 						if (resp.code == 130) {
 							setTimeout(function () {
 								location.href = "#myWechatNo";
 							}, 1000);
-
+							showMsg(resp.msg, 3, 12);
 						}
 					}, "json");
 				});
@@ -1297,7 +1299,7 @@ require(["layer"],
 				var util = this;
 				var txt = $.trim(util.text.val());
 				if (!txt) {
-					showMsg('详细情况不能为空啊~');
+					showMsg('详细情况不能为空啊~', 3, 12);
 					util.text.focus();
 					return false;
 				}
@@ -1315,9 +1317,9 @@ require(["layer"],
 						if (resp.code == 0) {
 							util.text.val('');
 							util.text.blur();
-							showMsg(resp.msg, 3);
+							showMsg(resp.msg, 3, 11);
 						} else {
-							showMsg(resp.msg);
+							showMsg(resp.msg, 3, 12);
 						}
 						util.loading = 0;
 					}, 'json');
@@ -1337,19 +1339,19 @@ require(["layer"],
 				var util = this;
 				var wxno = $.trim(util.text.val());
 				if (!wxno) {
-					showMsg('请填写真实的微信号');
+					showMsg('请填写真实的微信号', 3, 12);
 					util.text.blur();
 					return false;
 				}
 				var reg = /.*[\u4e00-\u9fa5]+.*$/;
 				if (reg.test(wxno)) {
-					showMsg('微信号不能含有中文哦~', 3);
+					showMsg('微信号不能含有中文哦~', 3, 12);
 					util.text.blur();
 					return false;
 				}
 				var arr = wxno.split(' ');
 				if (arr.length > 1) {
-					showMsg('微信号不能含有空格哦~', 3);
+					showMsg('微信号不能含有空格哦~', 3, 12);
 					util.text.blur();
 					return false;
 				}
@@ -1366,9 +1368,9 @@ require(["layer"],
 						layer.closeAll();
 						if (resp.code == 0) {
 							util.text.blur();
-							showMsg(resp.msg, 3);
+							showMsg(resp.msg, 3, 11);
 						} else {
-							showMsg(resp.msg);
+							showMsg(resp.msg, 3, 12);
 						}
 						util.loading = 0;
 					}, 'json');
@@ -1445,8 +1447,9 @@ require(["layer"],
 							util.content.html(html);
 							util.toggleFavor(resp.data.profile.favored);
 							ReportUtil.reload(resp.data.profile.name, resp.data.profile.thumb);
+							showMsg(resp.msg, 3, 11);
 						} else {
-							showMsg(resp.msg);
+							showMsg(resp.msg, 3, 12);
 						}
 						util.loading = 0;
 						util.loaded = 1;
@@ -1491,7 +1494,7 @@ require(["layer"],
 					return;
 				}
 				if (!util.reason.val()) {
-					showMsg(util.tip);
+					showMsg(util.tip, 3, 12);
 					return false;
 				}
 				util.loading = 1;
@@ -1508,8 +1511,10 @@ require(["layer"],
 							util.text.blur();
 							util.reason.val('');
 							util.sel_text.html(util.tip);
+							showMsg(resp.msg, 3, 11);
+						} else {
+							showMsg(resp.msg, 3, 12);
 						}
-						showMsg(resp.msg);
 						util.loading = 0;
 					}, 'json');
 			}
@@ -1548,7 +1553,7 @@ require(["layer"],
 							util.content.html(html);
 							util.av.attr('src', resp.data.resume.avatar);
 						} else {
-							showMsg(resp.msg);
+							showMsg(resp.msg, 3, 12);
 						}
 						util.loading = 0;
 					}, 'json');
@@ -1667,12 +1672,22 @@ require(["layer"],
 			}
 		};
 
-		function showMsg(title, sec) {
-			var duration = sec || 2;
+		function showMsg(msg, sec, tag) {
+			var delay = sec || 3;
+			var ico = '';
+			if (tag && tag === 10) {
+				ico = '<i class="i-msg-ico i-msg-fault"></i>';
+			} else if (tag && tag === 11) {
+				ico = '<i class="i-msg-ico i-msg-success"></i>';
+			} else if (tag && tag === 12) {
+				ico = '<i class="i-msg-ico i-msg-warning"></i>';
+			}
+			var html = '<div class="m-msg-wrap">' + ico + '<p>' + msg + '</p></div>';
 			layer.open({
-				content: title,
+				type: 99,
+				content: html,
 				skin: 'msg',
-				time: duration
+				time: delay
 			});
 		}
 
