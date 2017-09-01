@@ -926,7 +926,7 @@
 <script type="text/template" id="tpl_chat">
 	{[#items]}
 	<li class="{[dir]}">
-		<a href="{[url]}" class="avatar"><img src="{[avatar]}"></a>
+		<a href="{[url]}" {[#eid]}data-eid="{[.]}"{[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
 		<div class="content"><span>{[content]}</span></div>
 	</li>
 	{[/items]}
@@ -1100,4 +1100,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.9.9" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.10.1" src="/assets/js/require.js"></script>

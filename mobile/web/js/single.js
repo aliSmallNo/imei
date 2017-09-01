@@ -1386,6 +1386,9 @@ require(["layer"],
 				var util = this;
 				$(document).on(kClick, '.j-profile', function () {
 					var eid = $(this).attr('data-eid');
+					if (!eid) {
+						return false;
+					}
 					util.eid = eid;
 					util.loaded = 0;
 					util.clear();
