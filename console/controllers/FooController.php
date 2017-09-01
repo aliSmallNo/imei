@@ -9,7 +9,6 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
-use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserWechat;
@@ -476,7 +475,7 @@ class FooController extends Controller
 
 		self::getCircleAvatar($imagePath, $saveAs, 440);
 		var_dump($saveAs);*/
-		$conn = AppUtil::db();
+		/*$conn = AppUtil::db();
 		$sql = 'select pPId,pLat,pLng from im_pin 
 				WHERE pCategory=200 AND pCity!=\'\' AND pLat=\'\' order by pDate desc limit 1000 ';
 		$ret = $conn->createCommand($sql)->queryAll();
@@ -487,13 +486,47 @@ class FooController extends Controller
 				var_dump($count . date(' Y-m-d H:i:s'));
 			}
 		}
-		var_dump($count . '/' . count($ret));
+		var_dump($count . '/' . count($ret));*/
 		/*$ret = User::greetUsers(131379);
 		var_dump($ret);*/
 		//Pin::regeo(131379);
 		//Pin::regeo(134986);
 
+		$ret = date('Y-m-d', strtotime("0 day", time()));
+		var_dump($ret);
+		$ret = date('Y-m-d', strtotime("-1 day", time()));
+		var_dump($ret);
+		$ret = date('Y-m-d', strtotime("-2 day", time()));
+		var_dump($ret);
+		$ret = date('Y-m-d', strtotime("-3 day", time()));
+		var_dump($ret);
+		$ret = date('Y-m-d', strtotime("-4 day", time()));
+		var_dump($ret);
+		var_dump('');
 
+		$ret = date('Y-m-d', strtotime("0 week", time() + 86400 * 24));
+		var_dump($ret);
+		$ret = date('Y-m-d', strtotime("-1 week", time() + 86400 * 24));
+		var_dump($ret);
+		$ret = date('Y-m-d', strtotime("-2 week", time() + 86400 * 24));
+		var_dump($ret);
+		$ret = date('Y-m-d', strtotime("-3 week", time() + 86400 * 24));
+		var_dump($ret);
+		$ret = date('Y-m-d', strtotime("-4 week", time() + 86400 * 24));
+		var_dump($ret);
+		var_dump('');
+
+		$ret = date('Y-m-d', strtotime("0 month", time() + 86400 * 29));
+		var_dump($ret);
+		$ret = date('Y-m-d', strtotime("-1 month", time() + 86400 * 29));
+		var_dump($ret);
+		$ret = date('Y-m-d', strtotime("-2 month", time() + 86400 * 29));
+		var_dump($ret);
+		$ret = date('Y-m-d', strtotime("-3 month", time() + 86400 * 29));
+		var_dump($ret);
+		$ret = date('Y-m-d', strtotime("-4 month", time() + 86400 * 29));
+		var_dump($ret);
+		var_dump('');
 		/*$uId = 131379;
 		$dt = date('Y-m-d', time() + 86400 * 10);
 		$bgSrc = UserQR::createInvitation($uId,

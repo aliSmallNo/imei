@@ -1410,12 +1410,17 @@ class User extends ActiveRecord
 		return $res;
 	}
 
-	public static function trendstat($k, $date, $trends)
+	public static function trendStat($k, $date, $trends, $step)
 	{
 		list($beginDate, $endDate) = $date;
 		$conn = AppUtil::db();
-		$trends['titles'][$k] = date('n.j', strtotime($date[1]));
-		$trends['dates'][$k] = date('Y-m-d', strtotime($date[1]));
+		$trends['titles'][$k] = date('n.j', strtotime($endDate));
+		$trends['dates'][$k] = date('n.j', strtotime($endDate));
+		if ($step == 'week') {
+			$trends['dates'][$k] = date('n.j', strtotime($beginDate)) . '~' . date('n.j', strtotime($endDate));
+		} elseif ($step == 'month') {
+			$trends['dates'][$k] = date('n月', strtotime($endDate));
+		}
 		$trends["focus"][$k] = 0;
 		$trends["newvisitor"][$k] = 0;
 		$trends["newmember"][$k] = 0;

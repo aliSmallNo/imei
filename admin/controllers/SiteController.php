@@ -646,26 +646,32 @@ class SiteController extends BaseController
 		$trends = json_decode($trends, 1);
 
 		if (!$trends || Admin::isDebugUser()) {
-			$categories = [self::TREND_DATA_DAY, self::TREND_DATA_WEEK];
-			$records = 14;
+			$records = 16;
 			$trends = [];
-			foreach ($categories as $category) {
-				$subtrends = [];
-				if ($category == self::TREND_DATA_DAY) {
-					for ($k = 0; $k <= $records; $k++) {
-						$date = AppUtil::getEndStartTime(time() - $k * 86400, 'today', true);
-						$subtrends = User::trendstat($k, $date, $subtrends);
+			$steps = ['day', 'week', 'month'];
+			foreach ($steps as $step) {
+				$trendData = [];
+				for ($k = 0; $k < $records; $k++) {
+					$dt = date('Y-m-d', strtotime(-$k . " " . $step));
+					switch ($step) {
+						case 'day':
+							$dates = [$dt . ' 00:00:00', $dt . ' 23:59:00'];
+							break;
+						case 'week':
+							list($tmp, $begin, $end) = AppUtil::getWeekInfo($dt);
+							$dates = [$begin . ' 00:00:00', $end . ' 23:59:00'];
+							break;
+						default:
+							list($tmp, $begin, $end) = AppUtil::getMonthInfo($dt);
+							$dates = [$begin . ' 00:00:00', $end . ' 23:59:00'];
+							break;
 					}
-				} else if ($category == self::TREND_DATA_WEEK) {
-					for ($k = 0; $k <= $records; $k++) {
-						$date = AppUtil::getEndStartTime(time() - $k * 86400 * 7, 'curweek', true);
-						$subtrends = User::trendstat($k, $date, $subtrends);
-					}
+					$trendData = User::trendStat($k, $dates, $trendData, $step);
 				}
-				foreach ($subtrends as &$v) {
+				foreach ($trendData as &$v) {
 					$v = array_reverse($v);
 				}
-				$trends[] = $subtrends;
+				$trends[] = $trendData;
 			}
 			RedisUtil::setCache(json_encode($trends), RedisUtil::KEY_STAT_TREND);
 		}
