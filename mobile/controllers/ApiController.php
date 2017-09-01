@@ -567,11 +567,11 @@ class ApiController extends Controller
 					array_splice($ret['data'], 3, 0, [
 						[
 							'url' => '/wx/vote',
-							'img' => '/images/event_vote.jpg',
+							'img' => 'https://img.meipo100.com/default/event_vote.jpg',
 						],
 						[
 							'url' => '#sranking',
-							'img' => '/images/event_fans_cash.jpg',
+							'img' => 'https://img.meipo100.com/default/event_fans_cash.jpg',
 						]
 					]);
 				}
