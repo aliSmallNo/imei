@@ -11,8 +11,7 @@
 	{{else}}
 	<br>
 	<span class="btn">
-		长按上图保存<br>
-		<span class="tip-block center">分享图片到朋友圈，邀请好友来加入</span>
+		长按上图保存<br>分享图片到朋友圈，邀请好友来加入
 	</span>
 	{{/if}}
 	{{else}}
