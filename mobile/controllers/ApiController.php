@@ -173,7 +173,7 @@ class ApiController extends Controller
 					]);
 				}
 				return self::renderAPI(129, '操作失败~');
-			case 'xcxrecharge':
+			case 'xcxrecharge'://小程序支付
 				$amt = self::postParam('amt'); // 单位人民币元
 				$xcxOpenid = self::postParam('xcxopenid');
 				$num = intval($amt * 10.0);
@@ -937,22 +937,26 @@ class ApiController extends Controller
 				}
 				$data["prov"] = City::provinces();
 				$location = $data["info"]["location"];
-				$ckey = ($location && isset($location[0]["key"]) && $location[0]["key"]) ? $location[0]["key"] : 100100;
+				$ckey = ($location && isset($location[0]["key"]) && $location[0]["key"]) ? $location[0]["key"] : 160000;
+				$ckey=160000;
 				$data["city"] = City::cities($ckey);
 
-				$dkey = 160100;
+				$dkey = 160900;
 				if (isset($data["info"]) && $data["info"]["location"] && isset($data["info"]["location"][1])) {
 					$dkey = $data["info"]["location"][1]["key"];
 				}
+				$dkey = 160900;
 				$data["district"] = City::addrItems($dkey);
 
 				$homeland = $data["info"]["homeland"];
-				$ckey = ($homeland && isset($homeland[0]["key"]) && $homeland[0]["key"]) ? $homeland[0]["key"] : 100100;
+				$ckey = ($homeland && isset($homeland[0]["key"]) && $homeland[0]["key"]) ? $homeland[0]["key"] : 160000;
+				$ckey=160000;
 				$data["hcity"] = City::cities($ckey);
-				$dkey = 160100;
+				$dkey = 160900;
 				if (isset($data["info"]) && $data["info"]["homeland"] && isset($data["info"]["homeland"][1])) {
 					$dkey = $data["info"]["homeland"][1]["key"];
 				}
+				$dkey = 160900;
 				$data["hdistrict"] = City::addrItems($dkey);;
 
 

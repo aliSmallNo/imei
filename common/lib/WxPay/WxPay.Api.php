@@ -67,7 +67,7 @@ class WxPayApi
 		return $result;
 	}
 
-
+	// 小程序支付
 	public static function unifiedOrderXcx($inputObj, $timeOut = 6)
 	{
 		$url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
