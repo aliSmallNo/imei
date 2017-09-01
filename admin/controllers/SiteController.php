@@ -646,32 +646,36 @@ class SiteController extends BaseController
 		$trends = json_decode($trends, 1);
 
 		if (!$trends || Admin::isDebugUser()) {
-			$records = 16;
+			$records = 15;
 			$trends = [];
 			$steps = ['day', 'week', 'month'];
-			foreach ($steps as $step) {
-				$trendData = [];
-				for ($k = 0; $k < $records; $k++) {
+			foreach ($steps as $idx => $step) {
+				for ($k = $records; $k > -1; $k--) {
 					$dt = date('Y-m-d', strtotime(-$k . " " . $step));
 					switch ($step) {
 						case 'day':
-							$dates = [$dt . ' 00:00:00', $dt . ' 23:59:00'];
+							$begin = $dt . ' 00:00:00';
+							$end = $dt . ' 23:59:00';
 							break;
 						case 'week':
 							list($tmp, $begin, $end) = AppUtil::getWeekInfo($dt);
-							$dates = [$begin . ' 00:00:00', $end . ' 23:59:00'];
+							$begin .= ' 00:00:00';
+							$end .= ' 23:59:00';
 							break;
 						default:
 							list($tmp, $begin, $end) = AppUtil::getMonthInfo($dt);
-							$dates = [$begin . ' 00:00:00', $end . ' 23:59:00'];
+							$begin .= ' 00:00:00';
+							$end .= ' 23:59:00';
 							break;
 					}
-					$trendData = User::trendStat($k, $dates, $trendData, $step);
+					$ret = User::trendStat($step, $begin, $end);
+					foreach ($ret as $field => $val) {
+						if (!isset($trends[$idx][$field])) {
+							$trends[$idx][$field] = [];
+						}
+						$trends[$idx][$field][] = $val;
+					}
 				}
-				foreach ($trendData as &$v) {
-					$v = array_reverse($v);
-				}
-				$trends[] = $trendData;
 			}
 			RedisUtil::setCache(json_encode($trends), RedisUtil::KEY_STAT_TREND);
 		}

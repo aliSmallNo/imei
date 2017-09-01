@@ -1410,39 +1410,38 @@ class User extends ActiveRecord
 		return $res;
 	}
 
-	public static function trendStat($k, $date, $trends, $step)
+	public static function trendStat($step, $beginDate, $endDate)
 	{
-		list($beginDate, $endDate) = $date;
 		$conn = AppUtil::db();
-		$trends['titles'][$k] = date('n.j', strtotime($endDate));
-		$trends['dates'][$k] = date('n.j', strtotime($endDate));
+		$trends['titles'] = date('n.j', strtotime($endDate));
+		$trends['dates'] = date('n.j', strtotime($endDate));
 		if ($step == 'week') {
-			$trends['dates'][$k] = date('n.j', strtotime($beginDate)) . '~' . date('n.j', strtotime($endDate));
+			$trends['dates'] = date('n.j', strtotime($beginDate)) . '~' . date('n.j', strtotime($endDate));
 		} elseif ($step == 'month') {
-			$trends['dates'][$k] = date('n月', strtotime($endDate));
+			$trends['dates'] = date('n月', strtotime($endDate));
 		}
-		$trends["focus"][$k] = 0;
-		$trends["newvisitor"][$k] = 0;
-		$trends["newmember"][$k] = 0;
-		$trends["reg"][$k] = 0;
-		$trends["focusRate"][$k] = 0;
-		$trends["todayblur"][$k] = 0;
-		$trends["male"][$k] = 0;
-		$trends["female"][$k] = 0;
-		$trends["mps"][$k] = 0;
-		$trends["amt"][$k] = 0;
-		$trends["visitor"][$k] = 0;
-		$trends["member"][$k] = 0;
-		$trends["active"][$k] = 0;
-		$trends["activemale"][$k] = 0;
-		$trends["activefemale"][$k] = 0;
-		$trends["activemp"][$k] = 0;
-		$trends["activeRate"][$k] = 0;
-		$trends["favor"][$k] = 0;
-		$trends["getwxno"][$k] = 0;
-		$trends["pass"][$k] = 0;
-		$trends["chat"][$k] = 0;
-		$trends["trans"][$k] = 0;
+		$trends["focus"] = 0;
+		$trends["newvisitor"] = 0;
+		$trends["newmember"] = 0;
+		$trends["reg"] = 0;
+		$trends["focusRate"] = 0;
+		$trends["todayblur"] = 0;
+		$trends["male"] = 0;
+		$trends["female"] = 0;
+		$trends["mps"] = 0;
+		$trends["amt"] = 0;
+		$trends["visitor"] = 0;
+		$trends["member"] = 0;
+		$trends["active"] = 0;
+		$trends["activemale"] = 0;
+		$trends["activefemale"] = 0;
+		$trends["activemp"] = 0;
+		$trends["activeRate"] = 0;
+		$trends["favor"] = 0;
+		$trends["getwxno"] = 0;
+		$trends["pass"] = 0;
+		$trends["chat"] = 0;
+		$trends["trans"] = 0;
 
 		$sql = "SELECT 
 				count(*) as reg,
@@ -1461,15 +1460,15 @@ class User extends ActiveRecord
 			':endDT' => $endDate,
 		])->queryOne();
 		if ($res) {
-			$trends['focus'][$k] = intval($res["focus"]); // 新增关注
-			$trends['newvisitor'][$k] = intval($res["newvisitor"]); // 新增游客
-			$trends['newmember'][$k] = intval($res["newmember"]); // 新增会员
-			$trends['reg'][$k] = intval($res["reg"]);     // 新增注册
-			$trends['focusRate'][$k] = ($res["reg"] > 0) ? intval(round($res["focus"] / $res["reg"], 2) * 100) : 0;   // 转化率
-			$trends['todayblur'][$k] = intval($res["todayblur"]);   //  新增取消关注
-			$trends['male'][$k] = intval($res["male"]);   //  新增男
-			$trends['female'][$k] = intval($res["female"]);// 新增女
-			$trends['mps'][$k] = intval($res["mps"]);     //  新增媒婆
+			$trends['focus'] = intval($res["focus"]); // 新增关注
+			$trends['newvisitor'] = intval($res["newvisitor"]); // 新增游客
+			$trends['newmember'] = intval($res["newmember"]); // 新增会员
+			$trends['reg'] = intval($res["reg"]);     // 新增注册
+			$trends['focusRate'] = ($res["reg"] > 0) ? intval(round($res["focus"] / $res["reg"], 2) * 100) : 0;   // 转化率
+			$trends['todayblur'] = intval($res["todayblur"]);   //  新增取消关注
+			$trends['male'] = intval($res["male"]);   //  新增男
+			$trends['female'] = intval($res["female"]);// 新增女
+			$trends['mps'] = intval($res["mps"]);     //  新增媒婆
 		}
 
 		$sql = "SELECT 
@@ -1487,13 +1486,13 @@ class User extends ActiveRecord
 			':endDT' => $endDate,
 		])->queryOne();
 		if ($res2) {
-			$trends['amt'][$k] = intval($res2["amt"]); //累计用户
-			$trends['visitor'][$k] = intval($res2["visitor"]); //累计游客
-			$trends['member'][$k] = intval($res2["member"]); //累计会员
-			$trends['follows'][$k] = intval($res2["follows"]); //累计关注用户
-			$trends['meipos'][$k] = intval($res2["meipos"]);
-			$trends['girls'][$k] = intval($res2["girls"]);
-			$trends['boys'][$k] = intval($res2["boys"]);
+			$trends['amt'] = intval($res2["amt"]); //累计用户
+			$trends['visitor'] = intval($res2["visitor"]); //累计游客
+			$trends['member'] = intval($res2["member"]); //累计会员
+			$trends['follows'] = intval($res2["follows"]); //累计关注用户
+			$trends['meipos'] = intval($res2["meipos"]);
+			$trends['girls'] = intval($res2["girls"]);
+			$trends['boys'] = intval($res2["boys"]);
 		}
 
 //		$sql = "select
@@ -1522,11 +1521,11 @@ class User extends ActiveRecord
 			':endDT' => $endDate,
 		])->queryOne();
 		if ($res3) {
-			$trends['active'][$k] = intval($res3["active"]); //活跃人数
-			$trends['activemale'][$k] = intval($res3["activemale"]); //活跃男
-			$trends['activefemale'][$k] = intval($res3["activefemale"]); //活跃女
-			$trends['activemp'][$k] = intval($res3["activemp"]); //活跃媒婆
-			$trends['activeRate'][$k] = ($res2["member"] > 0) ? intval(round($res3["active"] / $res2["member"], 2) * 100) : 0; // 活跃度
+			$trends['active'] = intval($res3["active"]); //活跃人数
+			$trends['activemale'] = intval($res3["activemale"]); //活跃男
+			$trends['activefemale'] = intval($res3["activefemale"]); //活跃女
+			$trends['activemp'] = intval($res3["activemp"]); //活跃媒婆
+			$trends['activeRate'] = ($res2["member"] > 0) ? intval(round($res3["active"] / $res2["member"], 2) * 100) : 0; // 活跃度
 		}
 
 		$sql = "select 
@@ -1540,9 +1539,9 @@ class User extends ActiveRecord
 			':endDT' => $endDate,
 		])->queryOne();
 		if ($res4) {
-			$trends['favor'][$k] = intval($res4["favor"]); // 新增心动
-			$trends['getwxno'][$k] = intval($res4["getwxno"]); // 新增牵线
-			$trends['pass'][$k] = intval($res4["pass"]); // 新增牵线成功
+			$trends['favor'] = intval($res4["favor"]); // 新增心动
+			$trends['getwxno'] = intval($res4["getwxno"]); // 新增牵线
+			$trends['pass'] = intval($res4["pass"]); // 新增牵线成功
 		}
 
 		$sql = "SELECT SUM(pTransAmt/100) as trans
@@ -1552,7 +1551,7 @@ class User extends ActiveRecord
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
 		])->queryScalar();
-		$trends['trans'][$k] = intval($res5);
+		$trends['trans'] = intval($res5);
 
 		$sql = "SELECT count(1) as chat  
 				FROM im_chat_group
@@ -1561,7 +1560,7 @@ class User extends ActiveRecord
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
 		])->queryScalar();
-		$trends['chat'][$k] = intval($res6);
+		$trends['chat'] = intval($res6);
 		return $trends;
 	}
 

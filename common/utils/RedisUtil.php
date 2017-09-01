@@ -68,7 +68,7 @@ class RedisUtil
 		self::KEY_STAT_TREND => 60 * 6,
 		self::KEY_STAT_REUSE => 3600 * 3,
 		self::KEY_PIN_GEO => 60 * 10,
-		self::KEY_MENUS_MD5 => 86400 * 10,
+		self::KEY_MENUS_MD5 => 86400,
 	];
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';
