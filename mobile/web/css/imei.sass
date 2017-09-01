@@ -6,6 +6,7 @@ $mainColorDark: darken($mainColor, 6%)
 $mainColorBg: #fce4ec
 $white: #fff
 $fontColor: #363438
+$grayFontColorLighter: #aaa
 $grayFontColorLight: #939393
 $grayFontColor: #6a6572
 $grayFontColorDark: #525252
@@ -17,6 +18,7 @@ $adviseColor: #00a79b
 $greenColor: #51c332
 $greenLight: #afdb64
 $yellowColor: #fdd835
+$yellowColorDark: darken($yellowColor, 10%)
 $rewardColor: #f9cd9a
 $hintColor: #fff59d
 $greetingBg: #fce4ec
@@ -3545,6 +3547,7 @@ section
 	.input
 		text-align: center
 		margin-bottom: 1rem
+
 		input
 			font-size: 1.2rem
 			padding: .8rem 1rem
@@ -4420,6 +4423,8 @@ section
 		justify-content: center
 		align-self: center
 		align-items: center
+		background: #fff
+		z-index: 99
 		input
 			@include borderBox
 			font-size: 1.4rem
@@ -4428,8 +4433,8 @@ section
 			line-height: 4.5rem
 			margin: 0
 			padding: 0 1rem
-			z-index: 99
 	.action
+		z-index: 99
 		@include displayFlex-w(7rem)
 		a
 			display: block
@@ -4437,11 +4442,12 @@ section
 			text-align: center
 			color: #fff
 	.icons
-		flex: 0 0 5rem
+		z-index: 99
+		@include displayFlex-w(5rem)
 		a.schat-options
 			width: 5rem
 			height: 5rem
-			background: rgba(0, 0, 0, 0.2) url(../images/icon_options.png?v=1.1.1) no-repeat center center
+			background: $grayFontColorLighter url(../images/icon_options.png?v=1.1.1) no-repeat center center
 			background-size: 1.6rem 1.6rem
 			border: 0
 	.m-chat-wrap
@@ -4489,14 +4495,24 @@ section
 		width: initial
 		.help-chat-item
 			overflow: hidden
-			margin-bottom: .5rem
+			padding-bottom: .5rem
+			@include displayFlex
 			a
-				float: left
-				margin: 0 1px
-				width: 5.15rem
-				background: #ffc000
-			a:first-child
-				background: #5b9bd5
+				@include displayFlex-1
+				background: $yellowColorDark
+				position: relative
+				&:after
+					content: ''
+					position: absolute
+					right: 0
+					top: 0
+					bottom: 0
+					background: #fff
+					width: 1px
+				&:last-child:after
+					display: none
+				&:first-child
+					background: $linkColorLight
 		&.off
 			-webkit-transform: translateY(200%) translateZ(0)
 			-moz-transform: translateY(200%) translateZ(0)

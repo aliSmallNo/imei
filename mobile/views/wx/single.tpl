@@ -142,9 +142,6 @@
 	</div>
 	<div class="m-bottom-pl"></div>
 	<div class="m-bottom-bar">
-		<div class="icons" style="z-index: 1"><a class="schat-options"></a></div>
-		<div class="input" style="z-index: 1"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120"></div>
-		<div class="action" style="z-index: 1"><a class="btn-chat-send">发送</a></div>
 		<div class="m-chat-wrap off">
 			<a class="schat-option" data-tag="tohelpchat" style="display: none">助聊</a>
 			<a class="schat-option" data-tag="toblock">拉黑对方</a>
@@ -168,6 +165,9 @@
 				<a href="javascript:;">加V</a>
 			</div>
 		</div>
+		<div class="icons"><a class="schat-options"></a></div>
+		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120"></div>
+		<div class="action"><a class="btn-chat-send">发送</a></div>
 	</div>
 </section>
 <section id="scontacts" data-title="我的密聊记录">
