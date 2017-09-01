@@ -6,7 +6,7 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<h4>活动列表
-				{{if $isDebug}}<a class="btn btn-primary btn-xs" href="/site/group">添加活动</a>{{/if}}
+				{{if $debug}}<a class="btn btn-primary btn-xs" href="/site/group">添加活动</a>{{/if}}
 			</h4>
 		</div>
 	</div>
@@ -22,7 +22,7 @@
 		<thead>
 		<tr>
 			<th class="col-sm-2">
-				主题(参与人数)
+				主题/参与人数
 			</th>
 			<th class="col-sm-6">
 				题列表
@@ -40,7 +40,8 @@
 		{{foreach from=$list item=prod}}
 		<tr>
 			<td>
-				{{$prod.gTitle}}({{$prod.co}})
+				{{$prod.gTitle}}<br>
+				{{$prod.co}}人
 			</td>
 			<td class="options">
 				{{foreach from=$prod.qlist key=key item=q}}

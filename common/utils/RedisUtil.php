@@ -41,6 +41,7 @@ class RedisUtil
 	const KEY_STAT_TREND = "trend_stat";
 	const KEY_STAT_REUSE = "reuse_stat";
 	const KEY_PIN_GEO = "pin_geo";
+	const KEY_MENUS_MD5 = "key_menus_md5";
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
@@ -67,6 +68,7 @@ class RedisUtil
 		self::KEY_STAT_TREND => 60 * 6,
 		self::KEY_STAT_REUSE => 3600 * 3,
 		self::KEY_PIN_GEO => 60 * 10,
+		self::KEY_MENUS_MD5 => 86400 * 10,
 	];
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';
