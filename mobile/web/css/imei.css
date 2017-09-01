@@ -502,6 +502,30 @@ section {
   .btn-wrap.btn-multi .btn {
     margin-bottom: 1rem; }
 
+.m-msg-wrap {
+  text-align: center;
+  color: #fff; }
+  .m-msg-wrap .i-msg-ico {
+    width: 4.4rem;
+    height: 4.4rem;
+    display: inline-block; }
+  .m-msg-wrap p {
+    max-width: 16rem;
+    font-size: 1.4rem;
+    font-weight: 400; }
+
+.i-msg-success {
+  background: url(../images/ico_msg_tick.png) no-repeat center center;
+  background-size: 100% 100%; }
+
+.i-msg-warning {
+  background: url(../images/ico_msg_warn.png) no-repeat center center;
+  background-size: 100% 100%; }
+
+.i-msg-fault {
+  background: url(../images/ico_msg_cross.png) no-repeat center center;
+  background-size: 100% 100%; }
+
 .progress {
   height: 0.3rem;
   background: #fbd2e0;
