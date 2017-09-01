@@ -202,7 +202,7 @@ class User extends ActiveRecord
 	static $Substatus = [
 		self::SUB_ST_NORMAL => "普通用户",
 		self::SUB_ST_STAFF => "员工用户",
-		self::SUB_ST_FISH => "鲶鱼(托)",
+		self::SUB_ST_FISH => "鲶鱼用户",
 	];
 
 	const ROLE_SINGLE = 10;
