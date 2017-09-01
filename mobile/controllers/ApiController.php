@@ -1155,6 +1155,8 @@ class ApiController extends Controller
 				$data = $newThumb ? $newThumb[0] : "";
 				break;
 			case "save":
+				$openId = self::postParam("openid");
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				/*
 					coord: '',
 					edu: "170",
@@ -1192,7 +1194,7 @@ class ApiController extends Controller
 							$infoTemp["size"]
 						]
 					];
-					$newAvatar = ImageUtil::uploadItemImages($info, 1);
+					$newAvatar = ImageUtil::uploadItemImages($info);
 					$newAvatar = $newAvatar ? json_decode($newAvatar, 1)[0] : '';
 				}
 				$fieldMap = [
@@ -1203,9 +1205,10 @@ class ApiController extends Controller
 					"horos" => "sign",
 					"profession" => "job",
 				];
-				$openId = self::postParam("openid");
 				$data = json_decode(self::postParam("data"), 1);
-				unset($data["gender"]);
+				if ($wxInfo && $wxInfo["uGender"]) {
+					unset($data["gender"]);
+				}
 				foreach ($fieldMap as $k => $v) {
 					if (isset($data[$k])) {
 						$data[$v] = $data[$k];
