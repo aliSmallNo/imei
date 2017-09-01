@@ -173,6 +173,30 @@ class ApiController extends Controller
 					]);
 				}
 				return self::renderAPI(129, '操作失败~');
+			case 'xcxrecharge':
+				$amt = self::postParam('amt'); // 单位人民币元
+				$xcxOpenid = self::postParam('xcxopenid');
+				$num = intval($amt * 10.0);
+				$title = '微媒100-充值';
+				$subTitle = '充值' . $num . '媒桂花';
+				$payId = Pay::prepay($wxInfo['uId'], $num, $amt * 100);
+				if (AppUtil::isDev()) {
+					return self::renderAPI(129, '请在服务器测试该功能~');
+				}
+				// Rain: 测试阶段，payFee x元实际支付x分
+//				$payFee = $amt;
+				$payFee = intval($amt * 100);
+				if ($openId == "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
+					$payFee = $amt;
+				}
+				$ret = WechatUtil::jsPrepayXcx($payId, $xcxOpenid, $payFee, $title, $subTitle);
+				if ($ret) {
+					return self::renderAPI(0, '', [
+						'prepay' => $ret,
+						'amt' => $amt
+					]);
+				}
+				return self::renderAPI(129, '操作失败~');
 			case 'makefriends':
 				$amt = self::postParam('amt'); // 单位人民币元
 				$num = intval($amt * 10.0);
@@ -1776,7 +1800,7 @@ class ApiController extends Controller
 			return AppUtil::data_to_xml($data);
 		}
 
-		//解析数据列表
+		// 解析数据列表
 		$rData = AppUtil::xml_to_data($xml);
 		if (!$rData || !isset($rData['return_code']) || $rData['return_code'] != 'SUCCESS') {
 			return AppUtil::data_to_xml($data);
