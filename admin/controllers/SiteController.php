@@ -1137,4 +1137,8 @@ class SiteController extends BaseController
 		);
 	}
 
+	public function actionInfo()
+	{
+		echo phpinfo();
+	}
 }
