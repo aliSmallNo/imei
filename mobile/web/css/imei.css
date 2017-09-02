@@ -4040,23 +4040,23 @@ section {
       display: inline-block; }
     .plist li .wx-process button.refuse {
       background: #f80; }
-.plist .plist-defalt {
+.plist .plist-default {
   padding: 10rem 1rem; }
-  .plist .plist-defalt .img {
+  .plist .plist-default .img {
     text-align: center; }
-    .plist .plist-defalt .img img {
+    .plist .plist-default .img img {
       width: 7rem;
       height: 7rem; }
-  .plist .plist-defalt p {
+  .plist .plist-default p {
     font-size: 1rem;
     color: #aaa;
     text-align: center;
     padding-top: 2rem; }
-    .plist .plist-defalt p a {
+    .plist .plist-default p a {
       font-size: 1.2rem;
       color: #f781ab;
       display: initial; }
-      .plist .plist-defalt p a:after {
+      .plist .plist-default p a:after {
         width: 0;
         height: 0; }
 

@@ -651,6 +651,7 @@ class ApiController extends Controller
 			case "addmewx":
 			case "iaddwx":
 			case "heartbeat":
+			case "fav":
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
 					return self::renderAPI(129, '用户不存在啊~');

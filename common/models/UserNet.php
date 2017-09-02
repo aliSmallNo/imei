@@ -510,6 +510,7 @@ class UserNet extends ActiveRecord
 		$sql = "";
 		switch ($tag) {
 			case "heartbeat":
+			case "fav":
 				$nRelation = self::REL_FAVOR;
 
 				if ($subtag == "fav-me") {
@@ -517,12 +518,12 @@ class UserNet extends ActiveRecord
 							from im_user as u 
 							join im_user_net  as n on n.nSubUId=u.uId and nRelation=$nRelation and n.nDeletedFlag=$deleteflag
 							where n.nUId=$MyUid $orderBy $limit ";
-				} elseif ($subtag == "I-fav") {
+				} elseif ($subtag == "I-fav" || $subtag == "fav-ta") {
 					$sql = "select u.*,n.nId as uNid
 							from im_user as u 
 							join im_user_net  as n on n.nUId=u.uId and  nRelation=$nRelation and n.nDeletedFlag=$deleteflag
 							where n.nSubUId=$MyUid $orderBy $limit";
-				} elseif ($subtag == "fav-together") {
+				} elseif ($subtag == "fav-together" || $subtag == "fav-both") {
 					$sql = "select u.*,n.nId as uNid
 							from im_user as u 
 							join im_user_net  as n on n.nUId=u.uId and n.nRelation=$nRelation and n.nDeletedFlag=$deleteflag and n.nSubUId=$MyUid
@@ -594,6 +595,17 @@ class UserNet extends ActiveRecord
 				$item["showWxFlag"] = 0;
 				$item["wxNo"] = "";
 			}
+			$brief = [];
+			$fields = ['age', 'height_t', 'horos_t', 'scope_t'];
+			foreach ($fields as $field) {
+				if ($item[$field]) {
+					$brief[] = $item[$field];
+				}
+				if (count($brief) >= 4) {
+					break;
+				}
+			}
+			$item['brief'] = implode(' . ', $brief);
 			foreach ($fields as $field) {
 				unset($item[$field]);
 			}

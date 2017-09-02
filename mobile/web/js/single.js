@@ -24,7 +24,7 @@ require(["layer"],
 			content: $(".m-popup-content"),
 			slook: $('#slook'),
 			singleTop: 0,
-			heartbeat: $('#heartbeat'),
+			heartbeat: $('#sfav'),
 			contionString: '',
 			contionVal: '',
 
@@ -47,9 +47,9 @@ require(["layer"],
 					return false;
 				}
 			} else if ($sls.heartbeat.css('display') === 'block') {
-				lastRow = $("#" + $sls.curFrag).find('.plist li:last');
-				if (lastRow && eleInScreen(lastRow, 180) && TabUtil.page > 0) {
-					TabUtil.getData();
+				lastRow = $('#' + $sls.curFrag + ' .plist li:last');
+				if (lastRow && eleInScreen(lastRow, 80) && TabUtil.page > 0) {
+					TabUtil.reload();
 					return false;
 				}
 			}
@@ -161,8 +161,8 @@ require(["layer"],
 					break;
 				case 'addMeWx':
 				case 'IaddWx':
-				case 'heartbeat':
-					$('#' + hashTag).find(".tab a:first").trigger(kClick);
+				case 'sfav':
+					$('#' + hashTag + " .tab a:first").trigger(kClick);
 					FootUtil.toggle(0);
 					break;
 				case 'sqrcode':
@@ -1120,28 +1120,25 @@ require(["layer"],
 			tag: "",
 			subtag: "",
 			tabObj: null,
+			list: null,
 			tabFlag: false,
 			page: 1,
-			listMore: $(".plist-more"),
-			Tmp: $("#wechats").html(),
+			listMore: $("#sfav .m-more"),
+			spinner: $("#sfav .spinner"),
+			tmp: $("#wechats").html(),
 			init: function () {
-				$("#heartbeat .tab a").on(kClick, function () {
-					TabUtil.tabObj = $(this).closest(".tab");
-					TabUtil.tag = TabUtil.tabObj.attr("tag");
-					TabUtil.subtag = $(this).attr("subtag");
-					TabUtil.tabObj.find("a").removeClass();
-					$(this).addClass("active");
-
-					TabUtil.page = 1;
-					TabUtil.tabObj.next().html("");
-
-					switch (TabUtil.tag) {
-						case "addMeWx":
-						case "IaddWx":
-						case "heartbeat":
-							TabUtil.getData();
-							break;
-					}
+				var util = this;
+				$("#sfav .tab a").on(kClick, function () {
+					var self = $(this);
+					util.tabObj = self.closest(".tab");
+					util.tag = util.tabObj.attr("data-tag");
+					util.list = util.tabObj.closest('section').find('.plist');
+					util.subtag = self.attr("data-tag");
+					util.tabObj.find("a").removeClass('active');
+					self.addClass("active");
+					util.page = 1;
+					util.tabObj.next().html('');
+					util.reload();
 				});
 
 				/*$(document).on(kClick, "a.sprofile", function () {
@@ -1174,34 +1171,34 @@ require(["layer"],
 					}, "json");
 				});
 			},
-			getData: function () {
-				if (TabUtil.tabFlag) {
+			reload: function () {
+				var util = this;
+				if (util.tabFlag) {
 					return;
 				}
-				TabUtil.tabFlag = 1;
-				TabUtil.listMore.html("加载中...");
+				util.tabFlag = 1;
+				util.listMore.hide();
+				util.spinner.show();
 				$.post("/api/user", {
-					tag: TabUtil.tag,
-					subtag: TabUtil.subtag,
-					page: TabUtil.page,
-
-				}, function (resp) {
-					if (TabUtil.page == 1) {
-						TabUtil.tabObj.next().html(Mustache.render(TabUtil.Tmp, resp.data));
-					} else {
-						TabUtil.tabObj.next().append(Mustache.render(TabUtil.Tmp, resp.data));
-					}
-
-					TabUtil.tabFlag = 0;
-					TabUtil.page = resp.data.nextpage;
-					if (TabUtil.page == 0) {
-						TabUtil.listMore.html("没有更多了~");
-					} else {
-						TabUtil.listMore.html("上滑加载更多");
-					}
-
-				}, "json");
-			},
+						tag: util.tag,
+						subtag: util.subtag,
+						page: util.page,
+					},
+					function (resp) {
+						var html = Mustache.render(util.tmp, resp.data);
+						if (util.page == 1) {
+							util.list.html(html);
+						} else {
+							util.list.append(html);
+						}
+						util.tabFlag = 0;
+						util.page = resp.data.nextpage;
+						util.spinner.hide();
+						if (util.page < 1) {
+							util.listMore.show();
+						}
+					}, "json");
+			}
 		};
 		TabUtil.init();
 
@@ -1449,7 +1446,6 @@ require(["layer"],
 							util.content.html(html);
 							util.toggleFavor(resp.data.profile.favored);
 							ReportUtil.reload(resp.data.profile.name, resp.data.profile.thumb);
-							showMsg(resp.msg, 3, 11);
 						} else {
 							showMsg(resp.msg, 3, 12);
 						}
