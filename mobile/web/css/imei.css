@@ -1493,11 +1493,10 @@ section {
     padding-top: 0.8rem; }
     .u-my-bar .title h5 {
       color: #6a6572;
-      font-weight: 500;
+      font-weight: 400;
       font-size: 1.2rem; }
       .u-my-bar .title h5.percent {
-        color: #939393;
-        font-weight: 400; }
+        color: #939393; }
     .u-my-bar .title h4 {
       font-size: 1.4rem;
       font-weight: 500;
