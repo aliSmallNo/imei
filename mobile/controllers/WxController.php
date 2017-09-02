@@ -667,7 +667,6 @@ class WxController extends BaseController
 		$noReadFlag = UserMsg::hasUnread($uId, $conn) ? 1 : 0;
 		$audit = UserAudit::invalid($uId, $conn) ? 1 : 0;
 		$greeting = UserMsg::greeting($uId, $openId, $conn);
-
 		return self::renderPage("single.tpl", [
 			'noReadFlag' => $noReadFlag,
 			'nickname' => $nickname,

@@ -59,12 +59,14 @@
 		<div class="u-my-wrap line-bottom">
 			<div class="u-my-bar">
 				<div class="avatar single">
-					<img src="{{$avatar}}" alt="">
+					<div class="img {{if $uInfo.pending}}pending{{/if}}">
+						<img src="{{$avatar}}" alt="">
+					</div>
 					{{if $uInfo.cert}}<i class="i-cert"></i>{{/if}}
 				</div>
 				<div class="title">
 					<h4>{{$nickname}}</h4>
-					<i>资料完成度<span>30</span>%</i>
+					<h5 class="percent">资料完成度<span>0</span>%</h5>
 					<h5>{{$uInfo.intro}}</h5>
 				</div>
 				<a href="/wx/switch" class="btn-outline change-role">切换成媒婆</a>
@@ -1100,4 +1102,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/single.js?v=1.10.2" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.10.3" src="/assets/js/require.js"></script>

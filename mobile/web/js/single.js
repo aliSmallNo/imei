@@ -870,14 +870,16 @@ require(["layer"],
 					tag: "myinfo",
 				}, function (resp) {
 					$(".u-my-album .photos").html(Mustache.render(SmeUtil.thumbTmp, {items: resp.data.img4}));
-
 					SmeUtil.albums = resp.data.gallery;
 					$("#album .photos").html(Mustache.render(SmeUtil.albumTmp, SmeUtil));
-
-					$(".u-my-album .title").html("相册(" + resp.data.co + ")");
-
+					$(".u-my-album .title").html("相册(" + resp.data.album_cnt + ")");
 					var tipHtml = resp.data.hasMp ? "" : "还没有媒婆";
-					$(".u-my-bar i span").html(resp.data.percent);
+					$(".u-my-bar .percent span").html(resp.data.percent);
+					var imgWrap = $(".u-my-bar .img");
+					imgWrap.removeClass('pending');
+					if (resp.data.pending) {
+						imgWrap.addClass('pending');
+					}
 					$("[to=myMP]").find(".tip").html(tipHtml);
 					SmeUtil.smeFlag = 0;
 					SmeUtil.editToggle(false);

@@ -1475,7 +1475,6 @@ section
 		top: 0
 		left: 0
 		right: 0
-
 	a
 		@include displayFlex-1
 		text-align: center
@@ -1526,11 +1525,28 @@ section
 		text-align: center
 		padding: 1.5rem 0
 		position: relative
-		img
+		.img
 			width: 7rem
 			height: 7rem
 			border-radius: 3.6rem
 			border: 2px solid $mainColorLighter
+			overflow: hidden
+			margin: 0 auto
+			position: relative
+			&.pending:after
+				content: '\5ba1\6838\4e2d'
+				position: absolute
+				background: rgba(0, 0, 0, .6)
+				color: #fff
+				line-height: 2.6rem
+				font-size: 1.2rem
+				font-weight: $weightNormal
+				left: 0
+				right: 0
+				bottom: 0
+			img
+				width: 100%
+				vertical-align: middle
 		&:after
 			content: ''
 			background: url(../images/ico_mark_match.png) no-repeat center center
@@ -1549,28 +1565,25 @@ section
 				position: absolute
 				width: 1.8rem
 				height: 1.8rem
-				right: 1rem
+				right: 1.1rem
 				top: 1.9rem
 	.title
 		@include displayFlex-1
-		justify-content: center
-		align-items: center
-		align-self: center
+		@include displayFlexVAlign
+		padding-top: .8rem
 		h5
 			color: $grayFontColor
-			font-weight: $weightNormal
+			font-weight: $weightBold
 			font-size: 1.2rem
+			&.percent
+				color: $grayFontColorLight
+				font-weight: $weightNormal
 		h4
-			padding-top: .5rem
-			line-height: 2.4rem
 			font-size: 1.4rem
 			font-weight: $weightBold
 			@include textTail
-		i
-			font-size: 1.2rem
-			font-weight: $weightNormal
-			font-style: normal
-			color: $grayFontColorLight
+
+
 	&:after
 		content: ''
 		position: absolute
@@ -1599,20 +1612,25 @@ section
 			float: left
 			width: 4.4rem
 			height: 4.4rem
-			overflow: hidden
 			border: 1px solid $mainColorLighter
 			border-radius: .3rem
 			margin-right: 1.2rem
+			overflow: hidden
 			&:last-child
 				margin-right: 0
-			img
-				width: 100%
-				height: auto
-				vertical-align: middle
-				top: 50%
+			.has-pic
+				width: 4.4rem
+				height: 4.4rem
 				position: relative
-				-webkit-transform: translate(0, -50%)
-				transform: translate(0, -50%)
+				display: inline-block
+				img
+					width: 100%
+					height: auto
+					vertical-align: middle
+					position: absolute
+					top: 50%
+					-webkit-transform: translate(0, -50%)
+					transform: translate(0, -50%)
 
 .u-my-count
 	@include displayFlex

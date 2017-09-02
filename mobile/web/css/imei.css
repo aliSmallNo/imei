@@ -1439,11 +1439,28 @@ section {
     text-align: center;
     padding: 1.5rem 0;
     position: relative; }
-    .u-my-bar .avatar img {
+    .u-my-bar .avatar .img {
       width: 7rem;
       height: 7rem;
       border-radius: 3.6rem;
-      border: 2px solid #fbd2e0; }
+      border: 2px solid #fbd2e0;
+      overflow: hidden;
+      margin: 0 auto;
+      position: relative; }
+      .u-my-bar .avatar .img.pending:after {
+        content: "审核中";
+        position: absolute;
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        line-height: 2.6rem;
+        font-size: 1.2rem;
+        font-weight: 300;
+        left: 0;
+        right: 0;
+        bottom: 0; }
+      .u-my-bar .avatar .img img {
+        width: 100%;
+        vertical-align: middle; }
     .u-my-bar .avatar:after {
       content: "";
       background: url(../images/ico_mark_match.png) no-repeat center center;
@@ -1463,7 +1480,7 @@ section {
       position: absolute;
       width: 1.8rem;
       height: 1.8rem;
-      right: 1rem;
+      right: 1.1rem;
       top: 1.9rem; }
   .u-my-bar .title {
     -webkit-box-flex: 1;
@@ -1472,24 +1489,21 @@ section {
     flex: 1;
     justify-content: center;
     align-items: center;
-    align-self: center; }
+    align-self: center;
+    padding-top: 0.8rem; }
     .u-my-bar .title h5 {
       color: #6a6572;
-      font-weight: 300;
+      font-weight: 500;
       font-size: 1.2rem; }
+      .u-my-bar .title h5.percent {
+        color: #939393;
+        font-weight: 300; }
     .u-my-bar .title h4 {
-      padding-top: 0.5rem;
-      line-height: 2.4rem;
       font-size: 1.4rem;
       font-weight: 500;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden; }
-    .u-my-bar .title i {
-      font-size: 1.2rem;
-      font-weight: 300;
-      font-style: normal;
-      color: #939393; }
   .u-my-bar:after {
     content: "";
     position: absolute;
@@ -1538,20 +1552,25 @@ section {
       float: left;
       width: 4.4rem;
       height: 4.4rem;
-      overflow: hidden;
       border: 1px solid #fbd2e0;
       border-radius: 0.3rem;
-      margin-right: 1.2rem; }
+      margin-right: 1.2rem;
+      overflow: hidden; }
       .u-my-album .photos li:last-child {
         margin-right: 0; }
-      .u-my-album .photos li img {
-        width: 100%;
-        height: auto;
-        vertical-align: middle;
-        top: 50%;
+      .u-my-album .photos li .has-pic {
+        width: 4.4rem;
+        height: 4.4rem;
         position: relative;
-        -webkit-transform: translate(0, -50%);
-        transform: translate(0, -50%); }
+        display: inline-block; }
+        .u-my-album .photos li .has-pic img {
+          width: 100%;
+          height: auto;
+          vertical-align: middle;
+          position: absolute;
+          top: 50%;
+          -webkit-transform: translate(0, -50%);
+          transform: translate(0, -50%); }
 
 .u-my-count {
   display: -webkit-box;

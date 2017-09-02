@@ -426,7 +426,7 @@ class User extends ActiveRecord
 		}
 
 		$item["percent"] = self::percentage($item);
-
+		$item["pending"] = $item['status'] == User::STATUS_PENDING ? 1 : 0;
 		return $item;
 	}
 
@@ -569,6 +569,29 @@ class User extends ActiveRecord
 			return $user;
 		}
 		return [];
+	}
+
+	public static function shrinkUser($uInfo)
+	{
+		if (!$uInfo) {
+			return [];
+		}
+//		$uInfo["imgList"] = $uInfo["album"];
+		$uInfo["img4"] = [];
+		$gallery = User::gallery($uInfo['album']);
+		$uInfo["gallery"] = $gallery;
+		foreach ($gallery as $k => $val) {
+			if ($k >= 4) break;
+			$uInfo["img4"][] = $val['thumb'];
+		}
+		$fields = ['password', 'phone', 'location', 'album', 'province', 'city', 'certimage', 'certdate', 'logdate',
+			'rank', 'rankdate', 'ranktmp', 'addedon', 'updatedon', 'subscribe', 'wechatid', 'weight', 'weight_t', 'marital',
+			'income', 'homeland', 'pet', 'diet', 'scope', 'role', 'smoke', 'setting', 'mp_encrypt_id', 'horos', 'hint',
+			'alcohol', 'belief', 'car', 'education', 'estate', 'fitness', 'height', 'invitedby', 'rest', 'profession', 'openid'];
+		foreach ($fields as $field) {
+			unset($uInfo[$field]);
+		}
+		return $uInfo;
 	}
 
 	public static function profile($uId, $conn = '')
@@ -892,8 +915,8 @@ class User extends ActiveRecord
 
 	public static function getItem($openId)
 	{
-		$sql = "select n.nUId as mpId,u.* from 
-				im_user as u 
+		$sql = "select n.nUId as mpId,u.*  
+				from im_user as u 
 				left join im_user_net as n on n.nSubUId=u.uId and  nRelation=120
 				where u.uOpenId=:openId";
 		$Info = AppUtil::db()->createCommand($sql)->bindValues([
@@ -920,7 +943,7 @@ class User extends ActiveRecord
 		return $items;
 	}
 
-	protected static function gallery($album)
+	public static function gallery($album)
 	{
 		if (!$album || !is_array($album)) {
 			return [];

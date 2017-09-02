@@ -543,7 +543,8 @@ class ApiController extends Controller
 					return self::renderAPI(129, '上传失败', $uId);
 				}
 			case "myinfo":
-				$info = User::getItem($openId);
+				$info = User::user(['uOpenId' => $openId]);
+				$info = User::shrinkUser($info);
 				return self::renderAPI(0, '', $info);
 			case "userfilter":
 				$page = self::postParam("page", 1);
