@@ -231,7 +231,7 @@
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-12">
-			<h4>用户列表 </h4>
+			<h4>用户列表 <a href="/site/pins" class="btn btn-primary btn-xs" target="_blank">大杀器-地图</a></h4>
 		</div>
 	</div>
 	<div class="row">

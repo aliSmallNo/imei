@@ -118,12 +118,11 @@
 		{{foreach from=$list item=prod}}
 		<tr data-id="{{$prod.id}}">
 			<td>
-				<img src="{{$prod.thumb}}" width="100%">
+				<img src="{{$prod.thumb}}" bsrc="{{$prod.avatar}}" width="100%" class="i-img">
 			</td>
 			<td class="pInfo">
 				<span class="role{{$prod.role}}">{{$prod.role_t}}</span> {{$prod.name}}
 				<em>{{$prod.phone}} {{$prod.location_t}}</em>
-
 				<br>
 				<span>{{$prod.age}}</span>
 				<span>{{$prod.gender_t}}</span>
@@ -134,7 +133,7 @@
 				<span class="status-{{$prod.certstatus}}">{{$prod.certstatus_t}}</span>
 			</td>
 			<td class="pInfo">
-				<img src="{{$prod.certimage}}">
+				<img src="{{$prod.certimage}}" bsrc="{{$prod.cert_big}}" class="i-img">
 			</td>
 			<td class="pInfo">
 				<h5>更新于{{$prod.certdate|date_format:'%y-%m-%d %H:%M'}}</h5>
@@ -150,14 +149,7 @@
 	{{$pagination}}
 </div>
 <script>
-	$(".pInfo img").click(function () {
-		var src = $(this).attr("src");
-		layer.open({
-			title: '待实名审核用户',
-			content: "<img src='" + src + "' style='width:500rpx;height:300px'>",
-			area: ['500px', '500px']
-		});
-	});
+
 
 	$("a.operate").click(function () {
 		var id = $(this).attr("cid");
@@ -183,6 +175,31 @@
 			}
 			layer.msg(resp.msg);
 		}, "json");
+	}
+
+	$(document).on("click", ".i-img", function () {
+		var bSrc = $(this).attr("bsrc");
+		if (!bSrc) return false;
+		var photos = {
+			title: '大图',
+			data: [{
+				src: bSrc
+			}]
+		};
+		showImages(photos);
+	});
+
+	function showImages(imagesJson, idx) {
+		if (idx) {
+			imagesJson.start = idx;
+		}
+		layer.photos({
+			photos: imagesJson,
+			shift: 5,
+			tab: function (info) {
+				console.log(info);
+			}
+		});
 	}
 </script>
 

@@ -44,7 +44,7 @@
 				<option value="11">只看男生</option>
 			</select>
 			<a href="javascript:;" class="btn btn-primary btnQuery">查询</a>
-			<a href="/site/pins" class="btn btn-primary" target="_blank">大杀器--地图</a>
+			<a href="/site/pins" class="btn btn-primary" target="_blank">大杀器-地图</a>
 			<span class="space"></span>
 			<a href="javascript:;" class="j-scope" data-from="{{$today}}" data-to="{{$today}}">今天</a>
 			<a href="javascript:;" class="j-scope" data-from="{{$yesterday}}" data-to="{{$yesterday}}">昨天</a>

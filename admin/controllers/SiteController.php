@@ -437,6 +437,13 @@ class SiteController extends BaseController
 		}
 
 		list($list, $count) = User::users($criteria, $params, $page, 20, true);
+		foreach ($list as $k => $row) {
+			$certImage = $row['certimage'];
+			if (strpos($certImage, '_n.') !== false) {
+				$certImage = str_replace('_n.', '.', $certImage);
+			}
+			$list[$k]['cert_big'] = $certImage;
+		}
 		$pagination = self::pagination($page, $count);
 		return $this->renderPage('cert.tpl',
 			[
