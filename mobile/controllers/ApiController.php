@@ -992,6 +992,10 @@ class ApiController extends Controller
 				User::edit($openid, ["uFilter" => $cond]);
 				$data = User::edit($openid, ["uFilter" => $cond]) ?: 0;
 				break;
+			case "myinfo":
+				$openId = self::postParam("openid");
+				$info = User::user(['uOpenId' => $openId]);
+				return self::renderAPI(0, '', $info);
 			case "shome":
 				$hid = self::postParam("id");
 				$openId = self::postParam("openid");
