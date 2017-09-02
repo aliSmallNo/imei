@@ -183,9 +183,9 @@
 	}
 
 	.stat-item {
-		margin-left: 15px;
 		font-size: 14px;
 		font-weight: 500;
+		line-height: 44px;
 	}
 
 	.stat-item b {
@@ -231,7 +231,7 @@
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-12">
-			<h4>用户列表 <a href="/site/pins" class="btn btn-primary btn-xs" target="_blank">大杀器-地图</a></h4>
+			<h4>用户列表</h4>
 		</div>
 	</div>
 	<div class="row">
@@ -245,17 +245,17 @@
 				<option value="{{$k}}" {{if $k==$sub_status}}selected{{/if}}>{{$item}}</option>
 				{{/foreach}}
 			</select>
-			<input type="submit" class="btn btn-primary" value="查询">
-			<span class="stat-item">
+			<button class="btn btn-primary">查询</button>
+			<a href="/site/pins" class="btn btn-primary" target="_blank">大杀器-地图</a>
+			<div class="stat-item">
 				<span><b>到访</b>{{$stat.amt}}</span>
 				<span><b>已关注</b>{{$stat.follow}}</span>
 				<span><b>已注册</b>{{$stat.reg}}</span>
 				<span><b>帅哥</b>{{$stat.male}}</span>
 				<span><b>美女</b>{{$stat.female}}</span>
-			</span>
+			</div>
 		</form>
 	</div>
-	<div class="row-divider"></div>
 
 	<div class="row">
 		<ul class="nav nav-tabs">
