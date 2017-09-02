@@ -246,7 +246,7 @@
 				{{/foreach}}
 			</select>
 			<button class="btn btn-primary">查询</button>
-			<a href="/site/pins" class="btn btn-primary" target="_blank">大杀器-地图</a>
+			<a href="/site/pins" class="btn btn-primary" target="_blank">用户地图分布</a>
 			<div class="stat-item">
 				<span><b>到访</b>{{$stat.amt}}</span>
 				<span><b>已关注</b>{{$stat.follow}}</span>
