@@ -516,8 +516,8 @@ class User extends ActiveRecord
 		$st = self::STATUS_DELETE;
 		$sql = "select 
 				COUNT(1) as amt,
-				COUNT(CASE WHEN uGender=11 THEN  1 END ) as male,
-				COUNT(CASE WHEN uGender=10 THEN  1 END ) as female,
+				COUNT(CASE WHEN uPhone!='' AND uGender=11 THEN  1 END ) as male,
+				COUNT(CASE WHEN uPhone!='' AND uGender=10 THEN  1 END ) as female,
 				COUNT(CASE WHEN uPhone!='' AND uScope>0 THEN  1 END ) as reg,
 				COUNT(CASE WHEN wSubscribe=1 THEN  1 END ) as follow
 				FROM im_user as u
