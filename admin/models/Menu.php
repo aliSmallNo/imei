@@ -92,7 +92,7 @@ class Menu
 	{
 		return [
 			[
-				"name" => "全网数据",
+				"name" => "数据统计",
 				"id" => "data",
 				"icon" => "fa-cloud",
 				"staff" => 1,
@@ -116,18 +116,6 @@ class Menu
 						"level" => 820
 					],
 					[
-						"name" => "题库题海",
-						"url" => "/site/questions",
-						"revise" => 1,
-						"level" => 820
-					],
-					[
-						"name" => "活动列表",
-						"url" => "/site/groups",
-						"revise" => 1,
-						"level" => 820
-					],
-					[
 						"name" => "活动账单",
 						"url" => "/site/events",
 						"revise" => 1,
@@ -140,15 +128,7 @@ class Menu
 						"revise" => 1,
 						"hidden" => 1,
 						"level" => 820
-					]
-				]
-			],
-			[
-				"name" => "用户管理",
-				"id" => "users",
-				"icon" => "fa-group",
-				"branched" => 1,
-				"items" => [
+					],
 					[
 						"name" => "添加用户",
 						"url" => "/site/account",
@@ -161,12 +141,7 @@ class Menu
 						"url" => "/site/accounts"
 					],
 					[
-						"name" => "公众号消息",
-						"url" => "/site/wxmsg",
-						"level" => 820
-					],
-					[
-						"name" => "账户操作",
+						"name" => "账户变更",
 						"url" => "/site/recharges",
 						"level" => 820
 					],
@@ -176,8 +151,13 @@ class Menu
 						"level" => 820
 					],
 					[
-						"name" => "反馈消息",
+						"name" => "意见反馈",
 						"url" => "/site/feedback",
+						"level" => 820
+					],
+					[
+						"name" => "聊天列表",
+						"url" => "/site/chat",
 						"level" => 820
 					],
 					[
@@ -186,8 +166,20 @@ class Menu
 						"level" => 820
 					],
 					[
-						"name" => "聊天列表",
-						"url" => "/site/chat",
+						"name" => "公众号消息",
+						"url" => "/site/wxmsg",
+						"level" => 820
+					],
+					[
+						"name" => "题库题海",
+						"url" => "/site/questions",
+						"revise" => 1,
+						"level" => 820
+					],
+					[
+						"name" => "活动列表",
+						"url" => "/site/groups",
+						"revise" => 1,
 						"level" => 820
 					]
 				]

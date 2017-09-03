@@ -246,7 +246,7 @@ class SiteController extends BaseController
 				'error' => $error,
 				'openid' => $userInfo['uOpenId'],
 				'detailcategory' => 'site/accounts',
-				'category' => 'users',
+				'category' => 'data',
 			]);
 	}
 
@@ -340,7 +340,7 @@ class SiteController extends BaseController
 				"phone" => $phone,
 				'fonly' => $fonly,
 				'pagination' => $pagination,
-				'category' => 'users',
+				'category' => 'data',
 				"partCount" => $partCount,
 				"partHeader" => User::$Status,
 				"subStatus" => User::$Substatus,
@@ -356,7 +356,7 @@ class SiteController extends BaseController
 		list($list) = Trace::items($uid);
 		return $this->renderPage('follow.tpl',
 			[
-				'category' => 'users',
+				'category' => 'data',
 				'detailcategory' => 'site/accounts',
 				'list' => $list,
 				"uid" => $uid,
@@ -386,7 +386,7 @@ class SiteController extends BaseController
 		$uInfo = User::findOne(["uId" => $uid]);
 		return $this->renderPage('interview.tpl',
 			[
-				'category' => 'users',
+				'category' => 'data',
 				'detailcategory' => 'site/accounts',
 				'list' => $items,
 				"uid" => $uid,
@@ -452,7 +452,7 @@ class SiteController extends BaseController
 				"name" => $name,
 				"phone" => $phone,
 				'pagination' => $pagination,
-				'category' => 'users',
+				'category' => 'data',
 				"statusT" => User::$Certstatus,
 			]);
 	}
@@ -490,7 +490,7 @@ class SiteController extends BaseController
 				'getInfo' => $getInfo,
 				'items' => $items,
 				'pagination' => $pagination,
-				'category' => 'users',
+				'category' => 'data',
 				'catDict' => UserTrans::$catDict,
 			]
 		);
@@ -506,7 +506,7 @@ class SiteController extends BaseController
 			[
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
-				'category' => 'users',
+				'category' => 'data',
 				//'detailcategory' => commonData::getRequestUri(),
 				'list' => $list,
 			]
@@ -524,7 +524,7 @@ class SiteController extends BaseController
 		$regInfo = User::fmtRow(User::find()->where(["uOpenId" => $openId])->asArray()->one());
 		return $this->renderPage('wx-reply.tpl',
 			[
-				'category' => 'users',
+				'category' => 'data',
 				'detailcategory' => 'site/wxmsg',
 				'list' => $list,
 				"pid" => $lastId,
@@ -583,7 +583,7 @@ class SiteController extends BaseController
 			[
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
-				'category' => 'users',
+				'category' => 'data',
 				'list' => $list,
 				'relations' => UserNet::$RelDict,
 			]
@@ -598,7 +598,7 @@ class SiteController extends BaseController
 		return $this->renderPage("searchnet.tpl",
 			[
 				'info' => $info,
-				'category' => 'users',
+				'category' => 'data',
 				'detailcategory' => 'site/net',
 				'relations' => UserNet::$RelDict,
 			]
@@ -640,7 +640,7 @@ class SiteController extends BaseController
 			[
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
-				'category' => 'users',
+				'category' => 'data',
 				'list' => $list,
 				'cats' => Feedback::$stDict,
 			]
@@ -732,7 +732,7 @@ class SiteController extends BaseController
 			[
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
-				'category' => 'users',
+				'category' => 'data',
 				'list' => $list
 			]
 		);
@@ -750,7 +750,7 @@ class SiteController extends BaseController
 		});
 		return $this->renderPage("chatdes.tpl",
 			[
-				'category' => 'users',
+				'category' => 'data',
 				'detailcategory' => 'site/chat',
 				'list' => $list,
 			]
@@ -1131,7 +1131,7 @@ class SiteController extends BaseController
 		return $this->renderPage('pins.tpl',
 			[
 				'items' => $items,
-				'category' => 'users',
+				'category' => 'data',
 				'detailcategory' => "site/userstat",
 			]
 		);
