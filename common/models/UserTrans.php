@@ -471,7 +471,6 @@ class UserTrans extends ActiveRecord
 				 GROUP BY tUId ORDER BY co desc, tUId asc " . $limit;
 		$conn = AppUtil::db();
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
-		AppUtil::logFile($conn->createCommand($sql)->bindValues($params)->getRawSql(), 5);
 		$nextPage = 0;
 		if (count($res) > $pageSize) {
 			$nextPage = $page + 1;
