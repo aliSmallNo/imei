@@ -590,5 +590,6 @@ class FooController extends Controller
 //		ChatMsg::edit(6717, ["cNote" => ""]);
 
 		//UserQR::downloadFile("http://img.taopic.com/uploads/allimg/120727/201995-120HG1030762.jpg", AppUtil::imgDir() . RedisUtil::getImageSeq());
+
 	}
 }
