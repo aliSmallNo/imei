@@ -10,10 +10,12 @@ namespace console\controllers;
  */
 use common\models\ChatMsg;
 use common\models\User;
+use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
+use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -540,11 +542,11 @@ class FooController extends Controller
 	public function actionZp()
 	{
 //		添加更新通知
-//		UserMsg::edit(0, [
-//			"mText" => json_encode(["如何开口说出第一句话，助聊可以帮你，赶快去试试吧！"], JSON_UNESCAPED_UNICODE),
-//			"mCategory" => UserMsg::CATEGORY_UPGRADE,
-//			"mUId" => RedisUtil::getIntSeq(),
-//		]);
+		UserMsg::edit(0, [
+			"mText" => json_encode(["每日一句：现在有更多的单身朋友关注哦，赶快来聊一聊！"], JSON_UNESCAPED_UNICODE),
+			"mCategory" => UserMsg::CATEGORY_UPGRADE,
+			"mUId" => RedisUtil::getIntSeq(),
+		]);
 
 //		添加助聊
 //		$ins = file_get_contents(__DIR__ . "/sea.log");
