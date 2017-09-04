@@ -468,6 +468,7 @@ class FooController extends Controller
 			echo $url;
 			echo PHP_EOL;
 		}
+		echo PHP_EOL;
 
 		$uid = 131430;
 		$ucode = 'fs';

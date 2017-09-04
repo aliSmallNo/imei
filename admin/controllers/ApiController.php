@@ -394,4 +394,8 @@ class ApiController extends Controller
 		}
 		return self::renderAPI(129, "什么操作也没做啊！");
 	}
+
+	public function actionFoo(){
+		return self::renderAPI(0, "Foo got it！");
+	}
 }

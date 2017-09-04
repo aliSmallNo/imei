@@ -178,12 +178,16 @@
 </div>
 <script src="/assets/js/socket.io.js"></script>
 <script>
-	var socket = io.connect('ws://localhost:8086');
+	/*var socket = io.connect('ws://localhost:8086');
 	socket.emit("message", {
 		name: navigator.userAgent,
 		msg: "hello world"
 	});
 	socket.on("message", function (obj) {
 		console.log(obj);
+	});*/
+
+	$('.send').on('click', function () {
+		$.post('')
 	});
 </script>
