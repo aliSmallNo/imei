@@ -10,13 +10,11 @@ namespace console\controllers;
  */
 use common\models\ChatMsg;
 use common\models\User;
-use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
-use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -463,21 +461,21 @@ class FooController extends Controller
 	{
 
 
-		$items = [];
 		$uid = 131277;
 		$ucode = 'lm';
-		for ($k = 1; $k < 6; $k++) {
-			$items[] = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . $k);
+		for ($k = 101; $k < 106; $k++) {
+			$url = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . substr($k, 1));
+			echo $url;
+			echo PHP_EOL;
 		}
-		var_dump($items);
 
-		$items = [];
 		$uid = 131430;
 		$ucode = 'fs';
-		for ($k = 1; $k < 6; $k++) {
-			$items[] = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . $k);
+		for ($k = 101; $k < 106; $k++) {
+			$url = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . substr($k, 1));
+			echo $url;
+			echo PHP_EOL;
 		}
-		var_dump($items);
 
 		/*$imagePath = 'https://img.meipo100.com/2017/84/113272_n.jpg';
 		$imagePath = ImageUtil::getFilePath($imagePath);
