@@ -493,6 +493,7 @@ class FooController extends Controller
 		var_dump($ret);*/
 		//Pin::regeo(131379);
 		//Pin::regeo(134986);
+		AppUtil::logFile('test', 5);
 
 		$ret = date('Y-m-d', strtotime("0 day", time()));
 		var_dump($ret);
