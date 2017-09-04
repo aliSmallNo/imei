@@ -1345,6 +1345,18 @@ class ApiController extends Controller
 					"uId" => $uId,
 				];
 				break;
+			case "blacklist":
+				$openId = self::postParam("openid");
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在');
+				}
+				list($items, $nextpage) = UserNet::blacklist($wxInfo["uId"]);
+				$data = [
+					"items" => $items,
+					"nextPage" => $nextpage,
+				];
+				break;
 		}
 		return self::renderAPI(0, '', $data);
 	}
