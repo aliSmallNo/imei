@@ -1141,4 +1141,14 @@ class SiteController extends BaseController
 	{
 		echo phpinfo();
 	}
+
+	public function actionWs()
+	{
+		return $this->renderPage('ws.tpl',
+			[
+				'category' => 'data',
+				'detailcategory' => "site/userstat",
+			]
+		);
+	}
 }

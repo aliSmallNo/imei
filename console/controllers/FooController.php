@@ -11,6 +11,7 @@ namespace console\controllers;
 use common\models\ChatMsg;
 use common\models\User;
 use common\models\UserNet;
+use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
@@ -459,13 +460,22 @@ class FooController extends Controller
 	public function actionRain()
 	{
 
-		/*$items = [];
-		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn01');
-		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn02');
-		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn03');
-		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn04');
-		$items[] = UserQR::createQR(131284, UserQR::CATEGORY_SALES, 'mn05');
-		var_dump($items);*/
+
+		$items = [];
+		$uid = 131277;
+		$ucode = 'lm';
+		for ($k = 1; $k < 6; $k++) {
+			$items[] = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . $k);
+		}
+		var_dump($items);
+
+		$items = [];
+		$uid = 131430;
+		$ucode = 'fs';
+		for ($k = 1; $k < 6; $k++) {
+			$items[] = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . $k);
+		}
+		var_dump($items);
 
 		/*$imagePath = 'https://img.meipo100.com/2017/84/113272_n.jpg';
 		$imagePath = ImageUtil::getFilePath($imagePath);
@@ -493,41 +503,41 @@ class FooController extends Controller
 		//Pin::regeo(134986);
 		AppUtil::logFile('test', 5);
 
-		$ret = date('Y-m-d', strtotime("0 day", time()));
-		var_dump($ret);
-		$ret = date('Y-m-d', strtotime("-1 day", time()));
-		var_dump($ret);
-		$ret = date('Y-m-d', strtotime("-2 day", time()));
-		var_dump($ret);
-		$ret = date('Y-m-d', strtotime("-3 day", time()));
-		var_dump($ret);
-		$ret = date('Y-m-d', strtotime("-4 day", time()));
-		var_dump($ret);
-		var_dump('');
+		/*		$ret = date('Y-m-d', strtotime("0 day", time()));
+				var_dump($ret);
+				$ret = date('Y-m-d', strtotime("-1 day", time()));
+				var_dump($ret);
+				$ret = date('Y-m-d', strtotime("-2 day", time()));
+				var_dump($ret);
+				$ret = date('Y-m-d', strtotime("-3 day", time()));
+				var_dump($ret);
+				$ret = date('Y-m-d', strtotime("-4 day", time()));
+				var_dump($ret);
+				var_dump('');
 
-		$ret = date('Y-m-d', strtotime("0 week", time() + 86400 * 24));
-		var_dump($ret);
-		$ret = date('Y-m-d', strtotime("-1 week", time() + 86400 * 24));
-		var_dump($ret);
-		$ret = date('Y-m-d', strtotime("-2 week", time() + 86400 * 24));
-		var_dump($ret);
-		$ret = date('Y-m-d', strtotime("-3 week", time() + 86400 * 24));
-		var_dump($ret);
-		$ret = date('Y-m-d', strtotime("-4 week", time() + 86400 * 24));
-		var_dump($ret);
-		var_dump('');
+				$ret = date('Y-m-d', strtotime("0 week", time() + 86400 * 24));
+				var_dump($ret);
+				$ret = date('Y-m-d', strtotime("-1 week", time() + 86400 * 24));
+				var_dump($ret);
+				$ret = date('Y-m-d', strtotime("-2 week", time() + 86400 * 24));
+				var_dump($ret);
+				$ret = date('Y-m-d', strtotime("-3 week", time() + 86400 * 24));
+				var_dump($ret);
+				$ret = date('Y-m-d', strtotime("-4 week", time() + 86400 * 24));
+				var_dump($ret);
+				var_dump('');
 
-		$ret = date('Y-m-d', strtotime("0 month", time() + 86400 * 29));
-		var_dump($ret);
-		$ret = date('Y-m-d', strtotime("-1 month", time() + 86400 * 29));
-		var_dump($ret);
-		$ret = date('Y-m-d', strtotime("-2 month", time() + 86400 * 29));
-		var_dump($ret);
-		$ret = date('Y-m-d', strtotime("-3 month", time() + 86400 * 29));
-		var_dump($ret);
-		$ret = date('Y-m-d', strtotime("-4 month", time() + 86400 * 29));
-		var_dump($ret);
-		var_dump('');
+				$ret = date('Y-m-d', strtotime("0 month", time() + 86400 * 29));
+				var_dump($ret);
+				$ret = date('Y-m-d', strtotime("-1 month", time() + 86400 * 29));
+				var_dump($ret);
+				$ret = date('Y-m-d', strtotime("-2 month", time() + 86400 * 29));
+				var_dump($ret);
+				$ret = date('Y-m-d', strtotime("-3 month", time() + 86400 * 29));
+				var_dump($ret);
+				$ret = date('Y-m-d', strtotime("-4 month", time() + 86400 * 29));
+				var_dump($ret);
+				var_dump('');*/
 		/*$uId = 131379;
 		$dt = date('Y-m-d', time() + 86400 * 10);
 		$bgSrc = UserQR::createInvitation($uId,
