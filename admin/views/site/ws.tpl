@@ -178,18 +178,42 @@
 </div>
 <script src="/assets/js/socket.io.js"></script>
 <script>
-	/*var socket = io.connect('ws://localhost:8086');
+	//	var socket = io('http://ws.meipo100.com');
+	var socket = io('http://localhost:3000');
 	socket.emit("message", {
-		name: navigator.userAgent,
+		name: 'imei_rain',
 		msg: "hello world"
 	});
+
 	socket.on("message", function (obj) {
 		console.log(obj);
-	});*/
-
-	$('.send').on('click', function () {
-		$.post('http://admin.meipo100.com/api/foo',{}, function (resp) {
-			console.log(resp);
-		}, 'json');
 	});
+
+	socket.on('connect', function () {
+		socket.emit('join', 102, 'dashixiong');
+	});
+
+	var mMsg = $('#msg');
+	$('.send').on('click', function () {
+		var msg = mMsg.val();
+		if (msg) {
+			socket.send(msg);
+			mMsg.val('');
+		}
+		return false;
+	});
+
+	/*$('.send').on('click', function () {
+		$.ajax({
+			type: 'get',
+			url: 'http://admin.meipo100.com/api/foo',
+			dataType: 'jsonp',
+			data: 'jsonpcallback=',
+			jsonp: 'jsonpcallback',
+			success: function (resp) {
+				console.log(resp);
+			}
+		});
+
+	});*/
 </script>
