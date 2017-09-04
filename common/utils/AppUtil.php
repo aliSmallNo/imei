@@ -92,6 +92,29 @@ class AppUtil
 		return (Yii::$app->params['scene'] == 'dev');
 	}
 
+	public static function swooleSet()
+	{
+		return Yii::$app->params['swoole_set'];
+	}
+
+	public static function swooleHost()
+	{
+		return Yii::$app->params['swoole_host'];
+	}
+
+	public static function logDir()
+	{
+		if (self::isDev()) {
+			$folder = __DIR__ . '/../../../logs/';
+		} else {
+			$folder = '/data/tmp/' . self::PROJECT_NAME . '/';
+		}
+		if (!is_dir($folder)) {
+			mkdir($folder);
+		}
+		return $folder;
+	}
+
 	public static function imgDir($rootOnly = false)
 	{
 		$folder = '/data/prodimage/' . self::PROJECT_NAME . '/';
@@ -755,12 +778,16 @@ class AppUtil
 		if ($level < 2) {
 			return false;
 		}
+		$file = self::logDir() . date("Ymd") . '.log';
 		if (self::isDev()) {
+			$file = self::logDir() . self::PROJECT_NAME . '_' . date("Ym") . '.log';
+		}
+		/*if (self::isDev()) {
 			$file = __DIR__ . '/../../../' . self::PROJECT_NAME . '_' . date("Ym") . '.log';
 		} else {
 			$day = (date("d") % 15) + 1;
 			$file = '/data/tmp/' . self::PROJECT_NAME . '_' . date("Ym") . $day . '.log';
-		}
+		}*/
 		$txt = [];
 		if ($func) {
 			$txt[] = $func;
@@ -811,7 +838,7 @@ class AppUtil
 			'dev' => __DIR__ . '/../../../upload/',
 			'prod' => '/data/prodimage/',
 		];
-		$env = AppUtil::scene();
+		$env = self::scene();
 		$prefix = $pathEnv[$env];
 		if (!$category) {
 			$category = "upload";
@@ -929,7 +956,7 @@ class AppUtil
 			];
 		}
 		for ($k = 14; $k >= 0; $k--) {
-			$res = AppUtil::getWeekInfo(date("Y-m-d", strtotime("-$k week")));
+			$res = self::getWeekInfo(date("Y-m-d", strtotime("-$k week")));
 			unset($res[0]);
 			unset($res[3]);
 			unset($res[4]);
@@ -938,7 +965,7 @@ class AppUtil
 		date_default_timezone_set('Asia/Shanghai');
 		$t = strtotime(date('Y-m', time()) . '-01 00:00:01');
 		for ($k = 11; $k >= 0; $k--) {
-			$res = AppUtil::getMonthInfo(date("Y-m-d", strtotime("- $k month", $t)));
+			$res = self::getMonthInfo(date("Y-m-d", strtotime("- $k month", $t)));
 			unset($res[0]);
 			unset($res[3]);
 			$months[] = array_values($res);
