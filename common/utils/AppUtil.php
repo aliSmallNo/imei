@@ -107,7 +107,7 @@ class AppUtil
 		if (self::isDev()) {
 			$folder = __DIR__ . '/../../../logs/';
 		} else {
-			$folder = '/data/tmp/' . self::PROJECT_NAME . '/';
+			$folder = '/data/logs/' . self::PROJECT_NAME . '/';
 		}
 		if (!is_dir($folder)) {
 			mkdir($folder);
