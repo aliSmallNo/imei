@@ -543,11 +543,11 @@ class FooController extends Controller
 	public function actionZp()
 	{
 //		添加更新通知
-		UserMsg::edit(0, [
-			"mText" => json_encode(["每日一句：现在有更多的单身朋友关注哦，赶快来聊一聊！"], JSON_UNESCAPED_UNICODE),
-			"mCategory" => UserMsg::CATEGORY_UPGRADE,
-			"mUId" => RedisUtil::getIntSeq(),
-		]);
+//		UserMsg::edit(0, [
+//			"mText" => json_encode(["每日一句：现在有更多的单身朋友关注哦，赶快来聊一聊！"], JSON_UNESCAPED_UNICODE),
+//			"mCategory" => UserMsg::CATEGORY_UPGRADE,
+//			"mUId" => RedisUtil::getIntSeq(),
+//		]);
 
 //		添加助聊
 //		$ins = file_get_contents(__DIR__ . "/sea.log");

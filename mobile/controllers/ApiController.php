@@ -528,13 +528,12 @@ class ApiController extends Controller
 				$f = self::postParam('f', 'add');
 				$text = ($f == "add" ? "添加" : '删除');
 				$items = User::album($id, $openId, $f);
-				if ($items) {
-					return self::renderAPI(0, $text . '成功', [
-						'items' => $items,
-					]);
-				} else {
+				if (!$items && $f == "add") {
 					return self::renderAPI(129, $text . '失败');
 				}
+				return self::renderAPI(0, $text . '成功', [
+					'items' => $items,
+				]);
 			case "cert":
 				$uId = User::cert($id, $openId);
 				if ($uId) {
@@ -1099,7 +1098,11 @@ class ApiController extends Controller
 
 				$unionId = (isset($rawData["unionId"]) && $rawData["unionId"]) ? $rawData["unionId"] : '';
 				if ($unionId && $info = UserWechat::findOne(["wUnionId" => $unionId])) {
-					$data["openid"] = $info->wOpenId;
+					if ($info->wOpenId) {
+						$data["openid"] = $info->wOpenId;
+					} else {
+						$data = "";
+					}
 					if (!$info->wXcxId) {
 						$xcxOpenid = isset($rawData["openId"]) ? $rawData["openId"] : "";
 						$data["xcxopenid"] = $xcxOpenid;
