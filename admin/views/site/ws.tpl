@@ -188,6 +188,8 @@
 	});*/
 
 	$('.send').on('click', function () {
-		$.post('')
+		$.post('http://admin.meipo100.com/api/foo',{}, function (resp) {
+			console.log(resp);
+		}, 'json');
 	});
 </script>

@@ -30,7 +30,7 @@ class BaseController extends Controller
 				'class' => Cors::className(),
 				'cors' => [
 					'Origin' => ['*'],
-					'Access-Control-Request-Method' => ['GET', 'POST', 'HEAD', 'OPTIONS'],
+					'Access-Control-Request-Method' => ['*'],
 				],
 			],
 		], parent::behaviors());
