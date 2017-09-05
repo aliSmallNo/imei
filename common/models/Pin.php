@@ -79,7 +79,7 @@ class Pin extends ActiveRecord
 		$sql = 'SELECT u.uId, u.uName as name, u.uPhone as phone, u.uThumb as thumb,u.uGender as gender,
  				u.uRole as role, p.pLat as lat, p.pLng as lng, uLogDate as dt
 			 FROM im_user as u
-			 JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=:cat AND p.pLat!=\'\' AND p.pLng!=\'\'
+			 JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=:cat AND p.pLat!=\'\' AND p.pLng!=\'\' AND p.pDistrict!=\'\'
 			 WHERE u.uStatus < 8
 			 order by u.uLogDate desc limit 250';
 		$ret = $conn->createCommand($sql)->bindValues([

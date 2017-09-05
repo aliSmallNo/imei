@@ -189,15 +189,16 @@
 		console.log(obj);
 	});
 
+	var mGId = 1022;
 	socket.on('connect', function () {
-		socket.emit('join', 102, 'dashixiong');
+		socket.emit('join', mGId, 'dashixiong');
 	});
 
 	var mMsg = $('#msg');
 	$('.send').on('click', function () {
 		var msg = mMsg.val();
 		if (msg) {
-			socket.send(msg);
+			socket.send(msg, mGId);
 			mMsg.val('');
 		}
 		return false;
