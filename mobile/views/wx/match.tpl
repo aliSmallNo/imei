@@ -21,7 +21,7 @@
 </section>
 <section id="sgroup" data-title="我的单身团">
 	<div class="m-rows line-bottom">
-		<a href="/wx/sts">扩大我的单身团</a>
+		<a href="/wx/mshare">扩大我的单身团</a>
 		<a href="#snewbie" style="display: none">新的单身团申请</a>
 		<a href="#srept">单身团动态</a>
 	</div>
@@ -70,7 +70,7 @@
 		</a>
 	</div>
 	<div class="m-discovery-act">
-		<a href="/wx/sts" class="btn white">扩大我的单身团</a>
+		<a href="/wx/mshare" class="btn white">扩大我的单身团</a>
 		<a href="/wx/share" class="btn white" style="display: none">邀请朋友当媒婆</a>
 	</div>
 	<div class="news-wrap">
@@ -128,7 +128,7 @@
 	</div>
 	<div class="m-rows line-bottom">
 		<a href="#saccount">账户</a>
-		<a href="/wx/sts">分享给朋友</a>
+		<a href="/wx/mshare">分享给朋友</a>
 	</div>
 	<div class="m-rows line-bottom">
 		<a href="#smsg">通知</a>
