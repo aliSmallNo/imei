@@ -358,7 +358,7 @@
 					 class="follow btn btn-outline btn-success btn-xs">和TA密聊{{if $prod.mco>0}}({{$prod.mco}}){{/if}}</a>
 				<div class="btn-divider"></div>
 				<a href="javascript:;" class="dummyChat btn btn-outline btn-danger btn-xs" data-gender="{{$prod.gender}}"
-					 data-id="{{$prod.id}}">稻草人代聊</a>
+					 data-id="{{$prod.id}}" data-name="{{$prod.name}}" data-thumb="{{$prod.thumb}}">稻草人代聊</a>
 				<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 				<h5>创建于{{$prod.addedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 			</td>
@@ -474,6 +474,8 @@
 	  var dummyId1, dummyId2;
 	  $(document).on("click", ".dummyChat", function () {
 		  var self = $(this);
+		  var name = self.attr("data-name");
+		  var thumb = self.attr("data-thumb");
 		  var gender = self.attr("data-gender");
 		  dummyId1 = self.attr("data-id");
 		  var items = dummys[gender];
@@ -481,6 +483,7 @@
 		  console.log(items);
 		  var Vhtml = Mustache.render($("#dummyChatTemp").html(), items);
 		  $("#DummyModal .modal-body").html(Vhtml);
+		  $("#DummyModal .modal-title").html("选择稻草人与" + name + "<img src=" + thumb + " style='width:30px;height:30px;border-radius:30px'>" + "聊天");
 		  $("#DummyModal").modal('show');
 	  });
 	  $(document).on("click", "#btnSaveDu", function () {
