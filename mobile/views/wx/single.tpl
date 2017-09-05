@@ -52,8 +52,8 @@
 		{{/if}}
 		{{if $audit}}
 		<div class="m-hint">
-			<span>你的个人信息审核未通过</span>
-			<a href="/wx/notice">去看看</a>
+			<span><i class="i-mark-warning"></i> {{$audit}}</span>
+			<a href="/wx/sedit">去完善资料</a>
 		</div>
 		{{/if}}
 		<div class="u-my-wrap line-bottom">
