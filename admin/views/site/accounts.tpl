@@ -166,7 +166,7 @@
 		height: 50px;
 		display: inline-block;
 		margin-bottom: 5px;
-		border: 1px solid #d8d8d8;
+		border: 1px solid #c4c4c4;
 	}
 
 	.album-item img {
@@ -176,8 +176,8 @@
 
 	.album-item a {
 		position: absolute;
-		top: 1px;
-		right: 1px;
+		top: 0px;
+		right: 0px;
 		width: 10px;
 		height: 10px;
 		border-radius: 5px;
