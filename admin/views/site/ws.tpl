@@ -189,6 +189,8 @@
 		console.log(obj);
 	});
 
+
+
 	var mGId = 1022;
 	socket.on('connect', function () {
 		socket.emit('join', mGId, 'dashixiong');

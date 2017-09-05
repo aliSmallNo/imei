@@ -1670,6 +1670,33 @@ require(["layer"],
 			}
 		};
 
+		var SocketUtil = {
+			socket: null,
+			euid: 0,
+			gid: 0,
+			init: function () {
+				var util = this;
+				util.euid = $('#cEncryptId').val();
+				util.socket = io('http://localhost:3000');
+				util.socket.emit('buzz', util.euid, 'login');
+				util.socket.on("msg", function () {
+					console.log(obj);
+				});
+				util.socket.on("sys", function () {
+					console.log(obj);
+				});
+			},
+			group: function (gid) {
+				var util = this;
+				util.gid = gid;
+				util.socket.emit('join', gid, util.euid);
+			},
+			send: function (msg) {
+				var util = this;
+				util.socket.send(msg, gid, util.euid);
+			}
+		};
+
 		function showMsg(msg, sec, tag) {
 			var delay = sec || 3;
 			var ico = '';
@@ -1740,6 +1767,7 @@ require(["layer"],
 			AlertUtil.init();
 			RankUtil.init();
 			FavorUtil.init();
+			// SocketUtil.init();
 
 			setTimeout(function () {
 				GreetingUtil.show();
