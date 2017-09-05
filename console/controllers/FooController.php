@@ -445,6 +445,11 @@ class FooController extends Controller
 			 join im_user_wechat as w on u.uId=w.wUId and w.wSubscribe=0
 			 WHERE u.uGender>9 AND u.uStatus<8 AND uPhone!=\'\';';
 
+		$sql = 'select u.uName,u.uPhone,u.uGender,u.uAddedOn,w.wSubscribe
+			 from im_user as u 
+			 join im_user_wechat as w on u.uId=w.wUId and w.wSubscribe=1
+			 WHERE u.uGender>9 AND u.uStatus=2 and uPhone!=\'\';';
+
 		$ret = $conn->createCommand($sql)->queryAll();
 		/*
 		 * 最近有一波妹子刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100
@@ -454,11 +459,12 @@ class FooController extends Controller
 		foreach ($ret as $row) {
 			$phone = $row['uPhone'];
 			$gender = $row['uGender'] == 10 ? '帅哥' : '美女';
-			$msg = '最近有一波' . $gender . '刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100';
+//			$msg = '最近有一波' . $gender . '刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100';
+			$msg = '亲，有2个' . $gender . '想跟你聊天，你无法接收，需完善资料才可以查收哦，赶紧去完善你的个人资料吧';
 			QueueUtil::loadJob('sendSMS', [
 				'phone' => $phone,
 				'msg' => $msg,
-				'rnd' => 101
+				'rnd' => 102
 			]);
 		}
 		var_dump(count($ret));
