@@ -72,7 +72,7 @@ require(["layer"],
 			wx.config(wxInfo);
 			var linkUrl = "https://wx.meipo100.com/wx/mshare?id=" + $('#cUID').val();
 			var imgUrl = "https://wx.meipo100.com/images/logo170.png";
-			var title = '我在东台做媒婆，帮助周边好友脱单，还能赚点零花钱';
+			var title = '我在做媒婆，帮助周边单身好友脱单';
 			var desc = '微媒100，帮助身边的单身青年脱单';
 			wx.ready(function () {
 				wx.onMenuShareAppMessage({
