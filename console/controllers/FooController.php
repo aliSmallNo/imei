@@ -439,13 +439,26 @@ class FooController extends Controller
 			 join im_user_wechat as w on w.wUId=u.uId
 			 where u.uGender in (10,11) and w.wSubscribe=1 and u.uStatus<8 and uPhone !=\'\' 
 			 group by u.uId,u.uName,u.uPhone';
+
+		$sql = 'select u.uName,u.uPhone,u.uGender,u.uAddedOn
+			 from im_user as u 
+			 join im_user_wechat as w on u.uId=w.wUId and w.wSubscribe=0
+			 WHERE u.uGender>9 AND u.uStatus<8 AND uPhone!=\'\';';
+
 		$ret = $conn->createCommand($sql)->queryAll();
+		/*
+		 * 最近有一波妹子刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100
+最近有一波帅哥刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100
+		 * */
+
 		foreach ($ret as $row) {
 			$phone = $row['uPhone'];
+			$gender = $row['uGender'] == 10 ? '帅哥' : '美女';
+			$msg = '最近有一波' . $gender . '刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100';
 			QueueUtil::loadJob('sendSMS', [
 				'phone' => $phone,
-				'msg' => '真实交友，我们是认真的！实名认证就送50个花粉值，转发朋友圈，花粉值就可兑现红包哦。单身的小伙伴，赶快来微媒100实名认证吧！',
-				'rnd' => 109
+				'msg' => $msg,
+				'rnd' => 101
 			]);
 		}
 		var_dump(count($ret));

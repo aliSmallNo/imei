@@ -1127,7 +1127,7 @@ class User extends ActiveRecord
 		if ($ret) {
 			$myLat = $ret['pLat'];
 			$myLng = $ret['pLng'];
-			$distField = 'round(IFNULL(ST_Distance(POINT(' . $myLat . ', ' . $myLng . '), p.pPoint) * 111.195,9999),1) as dist';
+			$distField = 'ROUND(IFNULL(ST_Distance(POINT(' . $myLat . ', ' . $myLng . '), p.pPoint) * 111.195,9999),1) as dist';
 		}
 
 		$sql = "SELECT u.*, $distField , $rankField
