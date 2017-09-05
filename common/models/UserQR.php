@@ -167,10 +167,8 @@ class UserQR extends ActiveRecord
 			$qrFile = $rootFolder . 'mobile/web/images/qrmeipo100.jpg';
 		} elseif (strpos($qrFile, 'http') !== false) {
 			$tmpFile = AppUtil::imgDir() . 'qr' . RedisUtil::getImageSeq();
-			var_dump($tmpFile);
 			$qrFile = self::downloadFile($qrFile, $tmpFile);
 		}
-		var_dump($qrFile);
 		$qrSize = 330;
 		list($width, $height, $type) = getimagesize($bgImage);
 		$fontPath = $rootFolder . 'common/assets/FZY3JW.ttf';
@@ -185,7 +183,6 @@ class UserQR extends ActiveRecord
 			$img = $img->write($fontPath2, $text, ($width + $qrSize) / 2, $height - 240 + $k * 40, 19, 0, 0x111111, 'center');
 		}
 		$img->save($saveAs);
-		var_dump($saveAs);
 		$qUrl = ImageUtil::getUrl($saveAs);
 
 		$sql = 'update im_user_qr set qStatus=0 WHERE qUId=:uid AND qCategory=:cat';
