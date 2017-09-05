@@ -94,7 +94,9 @@
 	<div class="u-my-wrap line-bottom">
 		<div class="u-my-bar">
 			<div class="avatar">
-				<img src="{{$avatar}}" alt="">
+				<div class="img">
+					<img src="{{$avatar}}" alt="">
+				</div>
 			</div>
 			<div class="title">
 				<h4>{{$nickname}}</h4>

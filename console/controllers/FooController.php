@@ -443,16 +443,16 @@ class FooController extends Controller
 		$sql = 'select u.uName,u.uPhone,u.uGender,u.uAddedOn
 			 from im_user as u 
 			 join im_user_wechat as w on u.uId=w.wUId and w.wSubscribe=0
-			 WHERE u.uGender>9 AND u.uStatus<8 AND uPhone!=\'\';';
+			 WHERE u.uGender>9 AND u.uRole=10 AND u.uStatus<8 AND uPhone!=\'\';';
 
 		$sql = 'select u.uName,u.uPhone,u.uGender,u.uAddedOn,w.wSubscribe
 			 from im_user as u 
 			 join im_user_wechat as w on u.uId=w.wUId and w.wSubscribe=1
-			 WHERE u.uGender>9 AND u.uStatus=2 and uPhone!=\'\';';
+			 WHERE u.uGender>9 AND u.uRole=10 AND u.uStatus=2 and uPhone!=\'\';';
 
 		$sql = 'select u.uName,u.uPhone,u.uGender,u.uAddedOn 
 			 from im_user as u 
-			 WHERE u.uGender<10 AND u.uStatus<8 and uPhone!=\'\';';
+			 WHERE u.uGender<10 AND u.uRole=10 AND u.uStatus<8 and uPhone!=\'\';';
 
 		$dt = date('Y-m-d', time() - 86400 * 7);
 		$sql = 'select u.uName,u.uPhone,u.uGender,u.uAddedOn,u.uLogDate,w.wSubscribe
