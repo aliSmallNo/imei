@@ -178,7 +178,7 @@ class UserQR extends ActiveRecord
 		$arrSubTitle = explode("\n", $subTitle);
 		$img = Image::open($bgImage)
 			->merge($mergeImg, 15, $height - $qrSize - 20, $qrSize, $qrSize)
-			->write($fontPath, $title, $width / 2, 608, 25.5, 0, 0x111111, 'center');
+			->write($fontPath, $title, $width / 2, 608, 25, 0, 0x111111, 'center');
 		foreach ($arrSubTitle as $k => $text) {
 			$img = $img->write($fontPath2, $text, ($width + $qrSize) / 2, $height - 240 + $k * 40, 19, 0, 0x111111, 'center');
 		}
