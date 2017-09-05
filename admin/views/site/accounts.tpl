@@ -261,7 +261,8 @@
 		<ul class="nav nav-tabs">
 			{{foreach from=$partHeader key=key item=prod}}
 			<li class="ng-scope {{if $status == $key}}active{{/if}}">
-				<a href="/site/accounts?fonly={{$fonly}}&status={{$key}}&name={{$name}}&phone={{$phone}}&sub_status={{$sub_status}}" class="ng-binding">
+				<a href="/site/accounts?fonly={{$fonly}}&status={{$key}}&name={{$name}}&phone={{$phone}}&sub_status={{$sub_status}}"
+					 class="ng-binding">
 					{{$prod}} {{if $partCount[$key]}}<span class="badge">{{$partCount[$key]}}</span>{{/if}}
 				</a>
 			</li>
@@ -351,8 +352,13 @@
 				<a href="javascript:;" class="check btn btn-outline btn-primary btn-xs" data-id="{{$prod.id}}"
 					 data-st="{{$prod.status}}" data-sst="{{$prod.substatus}}" data-reasons="">审核用户</a>
 				<div class="btn-divider"></div>
-				<a href="/site/follow?id={{$prod.id}}" class="follow btn btn-outline btn-success btn-xs">跟进详情{{if $prod.co>0}}({{$prod.co}}){{/if}}</a>
-				<a href="/site/interview?id={{$prod.id}}" class="follow btn btn-outline btn-success btn-xs">和TA密聊{{if $prod.mco>0}}({{$prod.mco}}){{/if}}</a>
+				<a href="/site/follow?id={{$prod.id}}" class="follow btn btn-outline btn-success btn-xs">跟进详情{{if $prod.co>0}}
+					({{$prod.co}}){{/if}}</a>
+				<a href="/site/interview?id={{$prod.id}}"
+					 class="follow btn btn-outline btn-success btn-xs">和TA密聊{{if $prod.mco>0}}({{$prod.mco}}){{/if}}</a>
+				<div class="btn-divider"></div>
+				<a href="javascript:;" class="dummyChat btn btn-outline btn-danger btn-xs" data-gender="{{$prod.gender}}"
+					 data-id="{{$prod.id}}">稻草人代聊</a>
 				<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 				<h5>创建于{{$prod.addedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 			</td>
@@ -413,7 +419,8 @@
 		<div class="modal-dialog" role="document" style="width: 276px;">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+										aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title">设置用户头像</h4>
 				</div>
 				<div class="modal-body av-wrap">
@@ -426,225 +433,278 @@
 				</div>
 			</div>
 		</div>
-		<script>
-		function delUser(id) {
-			$.post("/api/users", {
-				tag: "del-user",
-				id: id
-			}, function (resp) {
-				if (resp.code == 0) {
-					location.reload();
-				}
-				layer.msg(resp.msg);
-			}, "json");
-		}
-
-		$("a.modU").click(function () {
-			var cid = $(this).attr("cid");
-			location.href = "/site/account?id=" + cid;
-		});
-
-		$(document).on("click", ".album-items img", function () {
-			var self = $(this);
-			var images = self.closest("td").attr("data-images");
-			var idx = self.attr('data-idx');
-			var photos = JSON.parse(images);
-			photos.title = '个人相册';
-			$.each(photos.data, function () {
-				this.alt = '设为头像';
-			});
-			showImages(photos, idx)
-		});
-
-		$(document).on("click", ".i-av", function () {
-			var self = $(this);
-			var photos = {
-				title: '头像大图',
-				data: [{
-					src: self.attr("bsrc")
-				}]
-			};
-			showImages(photos);
-		});
-
-
-		function showImages(imagesJson, idx) {
-			if (idx) {
-				imagesJson.start = idx;
-			}
-			layer.photos({
-				photos: imagesJson,
-				shift: 5,
-				tab: function (info) {
-					console.log(info);
-				}
-			});
-		}
-
-		var statusOPt = $(".status-opt"),
-			subStatusOpt = $(".sub-status-opt"),
-			reasonsWrap = $(".reasons-wrap"),
-			btnCoupon = $("#btnCoupon"),
-			hasReson = 1,
-			resonLoad = 0,
-			uid
-		;
-
-		$("a.check").click(function () {
-			var self = $(this);
-			uid = self.attr("data-id");
-			var st = self.attr("data-st");
-			statusOPt.val(st);
-			var subSt = self.attr("data-sst");
-			subStatusOpt.val(subSt);
-			$('#modModal').modal('show');
-		});
-
-		statusOPt.on("change", function () {
-			var self = $(this);
-			if (self.val() == 2) {
-				reasonsWrap.show()
-			} else {
-				reasonsWrap.hide();
-			}
-		});
-
-		btnCoupon.on("click", function () {
-			// console.log(uid);return;
-			var statusOPtVal = statusOPt.val();
-			var reason = [];
-			if (statusOPtVal == 2) {
-				hasReson = 1;
-				$("input[name=reasons]").each(function () {
-					var self = $(this);
-					if (self.val()) {
-						var item = {
-							tag: self.attr("data-tag"),
-							text: self.val()
-						};
-						reason.push(item);
-						hasReson = 0
-					}
-				});
-				if (hasReson) {
-					layer.msg("还没有填写不合规原因哦~");
-					return;
-				}
-			}
-			if (resonLoad) {
-				return;
-			}
-			resonLoad = 1;
-			$.post("/api/users", {
-				tag: "reason",
-				reason: JSON.stringify(reason),
-				st: statusOPtVal,
-				sst: subStatusOpt.val(),
-				id: uid
-			}, function (resp) {
-				resonLoad = 0;
-				if (resp.code == 0) {
-					location.reload();
-				}
-				layer.msg(resp.msg);
-			}, "json");
-		});
-
-		var mAvBorder = $(".av-border");
-		var mAvWrap = $('.av-wrap');
-		var mDialog = $('.modal-dialog');
-		var mAvModal = $('#avModal');
-		var mAvImage = $('.av-img');
-		var mAvUId = 0;
-		var mAvMargin = 15;
-		$(document).on("click", ".layui-layer-imgtit a", function () {
-			layer.closeAll();
-			var self = $(this);
-			var img = self.closest('.layui-layer-phimg').find('img');
-			var src = img.attr('src');
-			mAvUId = img.attr('layer-pid');
-			mAvImage.attr('src', src);
-			mAvModal.modal('show');
-		});
-
-		mAvModal.on('shown.bs.modal', function () {
-			var width = mAvImage.width();
-			var height = mAvImage.height();
-			console.log(width);
-			console.log(height);
-			if (height >= width) {
-				mDialog.css('width', '276px');
-			} else {
-				var h = parseInt(244.0 * width / height) + mAvMargin * 2;
-				mDialog.css('width', h + 'px');
-			}
-			mAvBorder.css({
-				top: mAvMargin + "px",
-				left: mAvMargin + "px"
-			});
-		});
-
-		mAvModal.on('hide.bs.modal', function () {
-			mDialog.css('width', '276px');
-			mAvBorder.css({
-				top: mAvMargin + "px",
-				left: mAvMargin + "px"
-			});
-		});
-
-		mAvBorder.mousedown(function (event) {
-			var curY = event.clientY;
-			var curX = event.clientX;
-			var height = mAvBorder.height();
-			var width = mAvBorder.width();
-			var curTop = parseInt(mAvBorder.css("top"));
-			var curLeft = parseInt(mAvBorder.css("left"));
-			var heightWrap = mAvWrap.height();
-			var widthWrap = mAvWrap.width();
-			var ceil = mAvMargin;
-			var floor = heightWrap - height + 11;
-			if (heightWrap < widthWrap) {
-				floor = widthWrap - width + 11;
-			}
-			mAvBorder.mousemove(function (ev) {
-				if (heightWrap >= widthWrap) {
-					var top = curTop + ev.clientY - curY;
-					if (top < ceil) top = ceil;
-					if (top > floor) top = floor;
-					mAvBorder.css("top", top + "px");
-				} else {
-					var left = curLeft + ev.clientX - curX;
-					if (left < ceil) left = ceil;
-					if (left > floor) left = floor;
-					mAvBorder.css("left", left + "px");
-				}
-			});
-		});
-		mAvBorder.mouseup(function () {
-			mAvBorder.unbind("mousemove");
-		});
-		$("#btnSaveAV").click(function () {
-			var left = parseInt(mAvBorder.css("left")) - mAvMargin;
-			left = Math.round(100.0 * left / mAvImage.width());
-			var top = parseInt(mAvBorder.css("top")) - mAvMargin;
-			top = Math.round(100.0 * top / mAvImage.height());
-			$.post("/api/user", {
-				tag: "avatar",
-				field: 'album',
-				src: mAvImage.attr('src'),
-				left: left,
-				top: top,
-				id: mAvUId
-			}, function (resp) {
-				resonLoad = 0;
-				if (resp.code == 0) {
-					location.reload();
-				}
-				layer.msg(resp.msg);
-			}, "json")
-		});
-		</script>
 	</div>
+	<div class="modal fade" id="DummyModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+										aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">选择稻草人与TA聊天</h4>
+				</div>
+				<div class="modal-body">
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" id="btnSaveDu">确定保存</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/html" id="dummyChatTemp">
+		<div class="form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-4 control-label">请选择:</label>
+				<div class="col-sm-7">
+					<select class="form-control dummy-opt">
+						{[#items]}
+						<option value="{[id]}">{[name]}</option>
+						{[/items]}
+					</select>
+				</div>
+			</div>
+		</div>
+	</script>
+	<script>
+	  var dummys ={{$dummys}}
+	</script>
+	<script>
+	  console.log(dummys);
+	  var dummyId1, dummyId2;
+	  $(document).on("click", ".dummyChat", function () {
+		  var self = $(this);
+		  var gender = self.attr("data-gender");
+		  dummyId1 = self.attr("data-id");
+		  var items = dummys[gender];
+		  items ={items:items};
+		  console.log(items);
+		  var Vhtml = Mustache.render($("#dummyChatTemp").html(), items);
+		  $("#DummyModal .modal-body").html(Vhtml);
+		  $("#DummyModal").modal('show');
+	  });
+	  $(document).on("click", "#btnSaveDu", function () {
+		  dummyId2 = $(".dummy-opt").val();
+		  location.href = "/site/dummychat?id1=" + dummyId1 + "&id2=" + dummyId2;
+	  });
+
+	  function delUser(id) {
+		  $.post("/api/users", {
+			  tag: "del-user",
+			  id: id
+		  }, function (resp) {
+			  if (resp.code == 0) {
+				  location.reload();
+			  }
+			  layer.msg(resp.msg);
+		  }, "json");
+	  }
+
+	  $("a.modU").click(function () {
+		  var cid = $(this).attr("cid");
+		  location.href = "/site/account?id=" + cid;
+	  });
+
+	  $(document).on("click", ".album-items img", function () {
+		  var self = $(this);
+		  var images = self.closest("td").attr("data-images");
+		  var idx = self.attr('data-idx');
+		  var photos = JSON.parse(images);
+		  photos.title = '个人相册';
+		  $.each(photos.data, function () {
+			  this.alt = '设为头像';
+		  });
+		  showImages(photos, idx)
+	  });
+
+	  $(document).on("click", ".i-av", function () {
+		  var self = $(this);
+		  var photos = {
+			  title: '头像大图',
+			  data: [{
+				  src: self.attr("bsrc")
+			  }]
+		  };
+		  showImages(photos);
+	  });
+
+
+	  function showImages(imagesJson, idx) {
+		  if (idx) {
+			  imagesJson.start = idx;
+		  }
+		  layer.photos({
+			  photos: imagesJson,
+			  shift: 5,
+			  tab: function (info) {
+				  console.log(info);
+			  }
+		  });
+	  }
+
+	  var statusOPt = $(".status-opt"),
+		  subStatusOpt = $(".sub-status-opt"),
+		  reasonsWrap = $(".reasons-wrap"),
+		  btnCoupon = $("#btnCoupon"),
+		  hasReson = 1,
+		  resonLoad = 0,
+		  uid
+	  ;
+
+	  $("a.check").click(function () {
+		  var self = $(this);
+		  uid = self.attr("data-id");
+		  var st = self.attr("data-st");
+		  statusOPt.val(st);
+		  var subSt = self.attr("data-sst");
+		  subStatusOpt.val(subSt);
+		  $('#modModal').modal('show');
+	  });
+
+	  statusOPt.on("change", function () {
+		  var self = $(this);
+		  if (self.val() == 2) {
+			  reasonsWrap.show()
+		  } else {
+			  reasonsWrap.hide();
+		  }
+	  });
+
+	  btnCoupon.on("click", function () {
+		  // console.log(uid);return;
+		  var statusOPtVal = statusOPt.val();
+		  var reason = [];
+		  if (statusOPtVal == 2) {
+			  hasReson = 1;
+			  $("input[name=reasons]").each(function () {
+				  var self = $(this);
+				  if (self.val()) {
+					  var item = {
+						  tag: self.attr("data-tag"),
+						  text: self.val()
+					  };
+					  reason.push(item);
+					  hasReson = 0
+				  }
+			  });
+			  if (hasReson) {
+				  layer.msg("还没有填写不合规原因哦~");
+				  return;
+			  }
+		  }
+		  if (resonLoad) {
+			  return;
+		  }
+		  resonLoad = 1;
+		  $.post("/api/users", {
+			  tag: "reason",
+			  reason: JSON.stringify(reason),
+			  st: statusOPtVal,
+			  sst: subStatusOpt.val(),
+			  id: uid
+		  }, function (resp) {
+			  resonLoad = 0;
+			  if (resp.code == 0) {
+				  location.reload();
+			  }
+			  layer.msg(resp.msg);
+		  }, "json");
+	  });
+
+	  var mAvBorder = $(".av-border");
+	  var mAvWrap = $('.av-wrap');
+	  var mDialog = $('.modal-dialog');
+	  var mAvModal = $('#avModal');
+	  var mAvImage = $('.av-img');
+	  var mAvUId = 0;
+	  var mAvMargin = 15;
+	  $(document).on("click", ".layui-layer-imgtit a", function () {
+		  layer.closeAll();
+		  var self = $(this);
+		  var img = self.closest('.layui-layer-phimg').find('img');
+		  var src = img.attr('src');
+		  mAvUId = img.attr('layer-pid');
+		  mAvImage.attr('src', src);
+		  mAvModal.modal('show');
+	  });
+
+	  mAvModal.on('shown.bs.modal', function () {
+		  var width = mAvImage.width();
+		  var height = mAvImage.height();
+		  console.log(width);
+		  console.log(height);
+		  if (height >= width) {
+			  mDialog.css('width', '276px');
+		  } else {
+			  var h = parseInt(244.0 * width / height) + mAvMargin * 2;
+			  mDialog.css('width', h + 'px');
+		  }
+		  mAvBorder.css({
+			  top: mAvMargin + "px",
+			  left: mAvMargin + "px"
+		  });
+	  });
+
+	  mAvModal.on('hide.bs.modal', function () {
+		  mDialog.css('width', '276px');
+		  mAvBorder.css({
+			  top: mAvMargin + "px",
+			  left: mAvMargin + "px"
+		  });
+	  });
+
+	  mAvBorder.mousedown(function (event) {
+		  var curY = event.clientY;
+		  var curX = event.clientX;
+		  var height = mAvBorder.height();
+		  var width = mAvBorder.width();
+		  var curTop = parseInt(mAvBorder.css("top"));
+		  var curLeft = parseInt(mAvBorder.css("left"));
+		  var heightWrap = mAvWrap.height();
+		  var widthWrap = mAvWrap.width();
+		  var ceil = mAvMargin;
+		  var floor = heightWrap - height + 11;
+		  if (heightWrap < widthWrap) {
+			  floor = widthWrap - width + 11;
+		  }
+		  mAvBorder.mousemove(function (ev) {
+			  if (heightWrap >= widthWrap) {
+				  var top = curTop + ev.clientY - curY;
+				  if (top < ceil) top = ceil;
+				  if (top > floor) top = floor;
+				  mAvBorder.css("top", top + "px");
+			  } else {
+				  var left = curLeft + ev.clientX - curX;
+				  if (left < ceil) left = ceil;
+				  if (left > floor) left = floor;
+				  mAvBorder.css("left", left + "px");
+			  }
+		  });
+	  });
+	  mAvBorder.mouseup(function () {
+		  mAvBorder.unbind("mousemove");
+	  });
+	  $("#btnSaveAV").click(function () {
+		  var left = parseInt(mAvBorder.css("left")) - mAvMargin;
+		  left = Math.round(100.0 * left / mAvImage.width());
+		  var top = parseInt(mAvBorder.css("top")) - mAvMargin;
+		  top = Math.round(100.0 * top / mAvImage.height());
+		  $.post("/api/user", {
+			  tag: "avatar",
+			  field: 'album',
+			  src: mAvImage.attr('src'),
+			  left: left,
+			  top: top,
+			  id: mAvUId
+		  }, function (resp) {
+			  resonLoad = 0;
+			  if (resp.code == 0) {
+				  location.reload();
+			  }
+			  layer.msg(resp.msg);
+		  }, "json")
+	  });
+	</script>
 </div>
 
 {{include file="layouts/footer.tpl"}}

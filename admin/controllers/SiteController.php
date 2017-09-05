@@ -344,6 +344,7 @@ class SiteController extends BaseController
 				"partCount" => $partCount,
 				"partHeader" => User::$Status,
 				"subStatus" => User::$Substatus,
+				"dummys" => json_encode(ChatMsg::$dummyMap, JSON_UNESCAPED_UNICODE),
 			]);
 	}
 
@@ -393,6 +394,82 @@ class SiteController extends BaseController
 				"name" => $uInfo->uName,
 				"avatar" => $uInfo->uThumb,
 				"phone" => $uInfo->uPhone,
+			]);
+	}
+
+	public function actionDummychats()
+	{
+		$getInfo = Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+		$condition = $params = [];
+		if ($name) {
+			$condition[] = '(u1.uName like :name or u2.uName like :name)';
+			$params[':name'] = '%' . $name . '%';
+		}
+		if ($phone) {
+			$condition[] = '(u1.uPhone like :phone or u2.uPhone like :phone)';
+			$params[':phone'] = $phone . '%';
+		}
+		list($list, $count) = ChatMsg::items(1, $condition, $params, $page);
+		$pagination = self::pagination($page, $count);
+		return $this->renderPage("dummychats.tpl",
+			[
+				'getInfo' => $getInfo,
+				'pagination' => $pagination,
+				'category' => 'data',
+				'list' => $list
+			]
+		);
+	}
+
+	public function actionDummychat()
+	{
+		Admin::staffOnly();
+		$id1 = self:: getParam("id1");
+		$id2 = self:: getParam("id2");
+		$u1Info = User::findOne(["uId" => $id1]);
+		if ($u1Info->uStatus == 8) {
+			$serviceId = $id1;
+			$uid = $id2;
+		} else {
+			$uid = $id1;
+			$serviceId = $id2;
+		}
+
+		if (!$serviceId) {
+			$serviceId = 132648;// $serviceId dummy ID
+		}
+		if (!$uid) {
+			$uid = self::postParam("uid", 120003);
+		}
+
+		$content = trim(self::postParam("content"));
+		if ($content) {
+			ChatMsg::addChat($serviceId, $uid, $content);
+		}
+		ChatMsg::groupEdit($serviceId, $uid, 9999);
+		list($items) = ChatMsg::details($serviceId, $uid);
+		usort($items, function ($a, $b) {
+			return $a['addedon'] < $b['addedon'];
+		});
+		$uInfo = User::findOne(["uId" => $uid]);
+		$dInfo = User::findOne(["uId" => $serviceId]);
+		return $this->renderPage('dummychat.tpl',
+			[
+				'category' => 'data',
+				'detailcategory' => 'site/dummychats',
+				'list' => $items,
+				"uid" => $uid,
+				"name" => $uInfo->uName,
+				"avatar" => $uInfo->uThumb,
+				"phone" => $uInfo->uPhone,
+
+				"dname" => $dInfo->uName,
+				"davatar" => $dInfo->uThumb,
+				"dphone" => $dInfo->uPhone,
+				"dId" => $serviceId,
 			]);
 	}
 
@@ -726,7 +803,7 @@ class SiteController extends BaseController
 			$condition[] = '(u1.uPhone like :phone or u2.uPhone like :phone)';
 			$params[':phone'] = $phone . '%';
 		}
-		list($list, $count) = ChatMsg::items($condition, $params, $page);
+		list($list, $count) = ChatMsg::items(0, $condition, $params, $page);
 		$pagination = self::pagination($page, $count);
 		return $this->renderPage("chat.tpl",
 			[
