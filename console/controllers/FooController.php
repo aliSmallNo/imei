@@ -458,7 +458,7 @@ class FooController extends Controller
 		$sql = 'select u.uName,u.uPhone,u.uGender,u.uAddedOn,u.uLogDate,w.wSubscribe
 		 from im_user as u 
 		 join im_user_wechat as w on u.uId=w.wUId and w.wSubscribe=1
-		 WHERE u.uGender>9 AND u.uLogDate<\'' . $dt . '\' AND u.uStatus=1 and uPhone!=\'\';';
+		 WHERE u.uGender>9 AND u.uRole=10 AND u.uLogDate<\'' . $dt . '\' AND u.uStatus=1 and uPhone!=\'\';';
 
 		$ret = $conn->createCommand($sql)->queryAll();
 		/*
