@@ -602,7 +602,7 @@ class ImageUtil
 		return $saveAs;
 	}
 
-	public static function rotate($imageUrl, $angle = 90)
+	public static function rotate($imageUrl, $angle = -90)
 	{
 		$saveAs = self::getFilePath($imageUrl);
 		if (!is_file($saveAs)) {
