@@ -178,9 +178,9 @@
 		position: absolute;
 		top: 1px;
 		right: 1px;
-		width: 12px;
-		height: 12px;
-		border-radius: 6px;
+		width: 10px;
+		height: 10px;
+		border-radius: 5px;
 		display: inline-block;
 		background: rgba(0, 0, 0, .5) url(/images/ico_rotate_w.png) no-repeat center center;
 		background-size: 100% 100%;
