@@ -166,7 +166,7 @@
 		height: 50px;
 		display: inline-block;
 		margin-bottom: 5px;
-		border: 1px solid #c4c4c4;
+		border: 1px solid #b8b8b8;
 	}
 
 	.album-item img {
