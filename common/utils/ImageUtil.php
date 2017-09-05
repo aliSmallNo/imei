@@ -37,7 +37,11 @@ class ImageUtil
 	public static function getFilePath($url)
 	{
 		//https://img.meipo100.com/2017/84/qr17514.jpg
-		$url = str_replace(AppUtil::imageUrl(), '', $url);
+		$urlPrefix = AppUtil::imageUrl();
+		if (AppUtil::isDev()) {
+			$urlPrefix = 'https://img.meipo100.com';
+		}
+		$url = str_replace($urlPrefix, '', $url);
 		return AppUtil::imgDir(true) . trim($url, '/');
 	}
 
@@ -520,7 +524,7 @@ class ImageUtil
 			file_put_contents($fileName, $content);
 			$thumbSize = $thumbWidth = $thumbHeight = 180;
 			$figureSize = $figureWidth = $figureHeight = 640;
-			if($squareFlag){
+			if ($squareFlag) {
 				$thumbSize = $thumbWidth = $thumbHeight = 150;
 				$figureSize = $figureWidth = $figureHeight = 560;
 			}

@@ -490,9 +490,10 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
+		$ret = UserQR::mpShareQR(131379);
+		var_dump($ret);
 
-
-		$uid = 131277;
+		/*$uid = 131277;
 		$ucode = 'lm';
 		for ($k = 101; $k < 106; $k++) {
 			$url = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . substr($k, 1));
@@ -507,7 +508,7 @@ class FooController extends Controller
 			$url = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . substr($k, 1));
 			echo $url;
 			echo PHP_EOL;
-		}
+		}*/
 
 		/*$imagePath = 'https://img.meipo100.com/2017/84/113272_n.jpg';
 		$imagePath = ImageUtil::getFilePath($imagePath);
@@ -533,7 +534,6 @@ class FooController extends Controller
 		var_dump($ret);*/
 		//Pin::regeo(131379);
 		//Pin::regeo(134986);
-		AppUtil::logFile('test', 5);
 
 		/*		$ret = date('Y-m-d', strtotime("0 day", time()));
 				var_dump($ret);

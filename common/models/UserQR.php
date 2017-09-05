@@ -20,6 +20,7 @@ class UserQR extends ActiveRecord
 	const CATEGORY_SALES = 10; //Rain: 销售推广
 	const CATEGORY_SINGLE = 20; //Rain: 拉单身汉
 	const CATEGORY_MATCH = 30; //Rain: 拉媒婆
+	const CATEGORY_MATCH_SHARE = 35; //Rain: 媒婆推广
 	const CATEGORY_MARRY = 100; //Rain: 婚礼请帖
 
 	public static function tableName()
@@ -128,6 +129,83 @@ class UserQR extends ActiveRecord
 				break;
 		}
 		return $accessUrl;
+	}
+
+	public static function mpShareQR($uid, $avatar = '', $title = '')
+	{
+		$conn = AppUtil::db();
+		if (!$avatar) {
+			$sql = 'select uThumb from im_user WHERE uId=:id ';
+			$avatar = $conn->createCommand($sql)->bindValues([
+				':id' => $uid
+			])->queryScalar();
+		}
+		if (!$title) {
+			$title = "你所以为的巧合\n不过是另一个人使用『微媒100』的结果";
+		}
+		$subTitle = "想找对象就上微媒100\n\n本地相亲交友平台\n扫一扫脱单就这么简单";
+		$category = self::CATEGORY_MATCH_SHARE;
+
+		$rootFolder = AppUtil::rootDir();
+		$bgImage = $rootFolder . 'mobile/assets/bg_mp01.jpg';
+		$raw = json_encode([$uid, $avatar, $title, $subTitle, $bgImage], JSON_UNESCAPED_UNICODE);
+		$md5 = md5($raw);
+
+		$sql = 'select * from im_user_qr 
+			WHERE qUId=:uid AND qCategory=:cat AND qMD5=:md5 AND qStatus=1';
+		$ret = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':cat' => $category,
+			':md5' => $md5,
+		])->queryOne();
+		if ($ret) {
+			return $ret['qUrl'];
+		}
+
+		$qrFile = self::getQRCode($uid, self::CATEGORY_MATCH, $avatar);
+		if (AppUtil::isDev()) {
+			$qrFile = $rootFolder . 'mobile/web/images/qrmeipo100.jpg';
+		} elseif (strpos($qrFile, 'http') !== false) {
+			$tmpFile = AppUtil::imgDir() . 'qr' . RedisUtil::getImageSeq();
+			var_dump($tmpFile);
+			$qrFile = self::downloadFile($qrFile, $tmpFile);
+		}
+		var_dump($qrFile);
+		$qrSize = 330;
+		list($width, $height, $type) = getimagesize($bgImage);
+		$fontPath = $rootFolder . 'common/assets/FZY3JW.ttf';
+		$fontPath2 = $rootFolder . 'common/assets/FZZQJW.ttf';
+		$saveAs = AppUtil::imgDir() . 'qr' . RedisUtil::getImageSeq() . '.jpg';
+		$mergeImg = Image::open($qrFile)->zoomCrop($qrSize, $qrSize, 0xffffff, 'left', 'top');
+		$arrSubTitle = explode("\n", $subTitle);
+		$img = Image::open($bgImage)
+			->merge($mergeImg, 15, $height - $qrSize - 20, $qrSize, $qrSize)
+			->write($fontPath, $title, $width / 2, 608, 25.5, 0, 0x111111, 'center');
+		foreach ($arrSubTitle as $k => $text) {
+			$img = $img->write($fontPath2, $text, ($width + $qrSize) / 2, $height - 240 + $k * 40, 19, 0, 0x111111, 'center');
+		}
+		$img->save($saveAs);
+		var_dump($saveAs);
+		$qUrl = ImageUtil::getUrl($saveAs);
+
+		$sql = 'update im_user_qr set qStatus=0 WHERE qUId=:uid AND qCategory=:cat';
+		$conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':cat' => $category,
+		])->execute();
+
+		$sql = 'INSERT INTO im_user_qr(qUId,qOpenId,qCategory,qMD5,qTitle,qSubTitle,qUrl,qRaw) 
+			SELECT uId,uOpenId,:cat,:md5,:title,:subtitle,:url,:raw FROM im_user WHERE uId=:uid ';
+		$conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':cat' => $category,
+			':md5' => $md5,
+			':title' => $title,
+			':subtitle' => $subTitle,
+			':raw' => $raw,
+			':url' => $qUrl,
+		])->execute();
+		return $qUrl;
 	}
 
 	protected static function makeQR($qid, $qrName = '', $topTitle = '', $bottomTitle = '', $mergeFile = '')
