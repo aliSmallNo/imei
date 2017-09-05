@@ -1469,9 +1469,9 @@ class User extends ActiveRecord
 		$sql = "SELECT 
 				count(*) as reg,
 				SUM(IFNULL(w.wSubscribe,0)) as focus,
-				SUM(CASE WHEN u.uRole not in (10,20) AND  w.wSubscribe not in (1) THEN 1 END) as newvisitor,
+				SUM(CASE WHEN wSubscribe is NULL THEN 1 END) as newvisitor,
 				SUM(CASE WHEN uPhone!='' AND uRole>9 THEN 1 END) as newmember,
-				SUM(CASE WHEN (w.wAddedOn BETWEEN :beginDT and :endDT) AND IFNULL(wSubscribe,0)=0 THEN  1 END ) as todayblur,
+				SUM(CASE WHEN w.wAddedOn BETWEEN :beginDT AND :endDT AND wSubscribe =0 THEN 1 END ) as todayblur,
 				SUM(CASE WHEN u.uRole=10 AND u.uGender=11 THEN  1 END ) as male,
 				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 THEN  1 END ) as female,
 				SUM(CASE WHEN u.uRole=20 THEN  1 END) as mps
