@@ -11,7 +11,6 @@ namespace console\controllers;
 use common\models\ChatMsg;
 use common\models\User;
 use common\models\UserNet;
-use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
@@ -490,7 +489,10 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = UserQR::mpShareQR(131379);
+		/*$ret = UserQR::mpShareQR(131379);
+		var_dump($ret);*/
+		$srcPath = 'https://img.meipo100.com/2017/92/119168_n.jpg';
+		$ret = pathinfo($srcPath, PATHINFO_BASENAME);
 		var_dump($ret);
 
 		/*$uid = 131277;

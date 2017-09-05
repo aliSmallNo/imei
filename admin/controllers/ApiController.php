@@ -158,6 +158,16 @@ class ApiController extends Controller
 					}
 				}
 				break;
+			case 'rotate':
+				$src = self::postParam('src');
+				if ($src) {
+					$ret = ImageUtil::rotate($src);
+					if ($ret) {
+						return self::renderAPI(0, '旋转图片成功！');
+					}
+				}
+				return self::renderAPI(129, '旋转图片失败~');
+				break;
 		}
 		return self::renderAPI($ret["code"], $ret["msg"]);
 	}

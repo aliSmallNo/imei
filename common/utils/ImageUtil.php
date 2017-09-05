@@ -601,4 +601,19 @@ class ImageUtil
 
 		return $saveAs;
 	}
+
+	public static function rotate($imageUrl, $angle = 90)
+	{
+		$saveAs = self::getFilePath($imageUrl);
+		if (!is_file($saveAs)) {
+			return false;
+		}
+		$saveThumb = str_replace('_n.', '_t.', $saveAs);
+		if (!is_file($saveThumb)) {
+			return false;
+		}
+		Image::open($saveAs)->rotate($angle)->save($saveAs);
+		Image::open($saveThumb)->rotate($angle)->save($saveThumb);
+		return true;
+	}
 }

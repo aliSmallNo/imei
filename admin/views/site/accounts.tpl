@@ -160,9 +160,31 @@
 		background: #007aff;
 	}
 
-	.album-items img {
-		width: 40px;
-		height: 40px;
+	.album-item {
+		position: relative;
+		width: 50px;
+		height: 50px;
+		display: inline-block;
+		margin-bottom: 5px;
+		border: 1px solid #d8d8d8;
+	}
+
+	.album-item img {
+		width: 100%;
+		height: 100%;
+	}
+
+	.album-item a {
+		position: absolute;
+		top: 1px;
+		right: 1px;
+		width: 12px;
+		height: 12px;
+		border-radius: 6px;
+		display: inline-block;
+		background: rgba(0, 0, 0, .5) url(/images/ico_rotate_w.png) no-repeat center center;
+		background-size: 100% 100%;
+		visibility: hidden;
 	}
 
 	.form-inline b {
@@ -278,7 +300,7 @@
 			<th class="col-sm-7">
 				个人信息
 			</th>
-			<th class="col-sm-2">
+			<th style="width: 185px">
 				相册
 			</th>
 			<!--th class="col-sm-1">
@@ -334,10 +356,13 @@
 				{{/if}}
 				<div class="s-gray">{{$prod.logdate|date_format:"上次操作于%Y-%m-%d %H:%M"}}</div>
 			</td>
-			<td class="album-items" data-images='{{$prod.showImages}}'>
+			<td data-images='{{$prod.showImages}}'>
 				{{if $prod.album}}
 				{{foreach from=$prod.album key=k item=img}}
-				<img src="{{$img}}" alt="" data-idx="{{$k}}">
+				<span class="album-item">
+					<img src="{{$img}}" alt="" data-idx="{{$k}}">
+					<a href="javascript:;" data-id="{{$img}}"></a>
+				</span>
 				{{/foreach}}
 				{{/if}}
 			</td>
@@ -444,7 +469,37 @@
 			location.href = "/site/account?id=" + cid;
 		});
 
-		$(document).on("click", ".album-items img", function () {
+		$(document).on("click", ".album-item a", function () {
+			var self = $(this);
+			$.post("/api/user", {
+				tag: "rotate",
+				angle: "90",
+				src: self.attr('data-id')
+			}, function (resp) {
+				if (resp.code == 0) {
+					location.reload();
+				}
+				layer.msg(resp.msg);
+			}, "json");
+		});
+
+		$(document).on("mouseover", ".album-item a", function () {
+			var self = $(this);
+			self.css('visibility', 'visible');
+		});
+
+		$(document).on("mouseover", ".album-item img", function () {
+			var self = $(this);
+			self.closest('span').find('a').css('visibility', 'visible');
+		});
+
+
+		$(document).on("mouseout", ".album-item img", function () {
+			var self = $(this);
+			self.closest('span').find('a').css('visibility', 'hidden');
+		});
+
+		$(document).on("click", ".album-item img", function () {
 			var self = $(this);
 			var images = self.closest("td").attr("data-images");
 			var idx = self.attr('data-idx');
@@ -560,6 +615,7 @@
 		$(document).on("click", ".layui-layer-imgtit a", function () {
 			layer.closeAll();
 			var self = $(this);
+			var text = self.html();
 			var img = self.closest('.layui-layer-phimg').find('img');
 			var src = img.attr('src');
 			mAvUId = img.attr('layer-pid');
@@ -641,7 +697,7 @@
 					location.reload();
 				}
 				layer.msg(resp.msg);
-			}, "json")
+			}, "json");
 		});
 		</script>
 	</div>
