@@ -601,7 +601,7 @@ class FooController extends Controller
 	{
 //		添加更新通知
 //		UserMsg::edit(0, [
-//			"mText" => json_encode(["每日一句：现在有更多的单身朋友关注哦，赶快来聊一聊！"], JSON_UNESCAPED_UNICODE),
+//			"mText" => json_encode(["每日一句：微媒100，衷心的希望大家都能找到属于自己的另一半，加油！"], JSON_UNESCAPED_UNICODE),
 //			"mCategory" => UserMsg::CATEGORY_UPGRADE,
 //			"mUId" => RedisUtil::getIntSeq(),
 //		]);
@@ -650,5 +650,23 @@ class FooController extends Controller
 
 		//UserQR::downloadFile("http://img.taopic.com/uploads/allimg/120727/201995-120HG1030762.jpg", AppUtil::imgDir() . RedisUtil::getImageSeq());
 
+		// 稻草人聊天
+//		$st = User::STATUS_DUMMY;
+//		$dummyMap = ChatMsg::$dummyMap;
+//		$conn = AppUtil::db();
+//		foreach ($dummyMap as $gender => $items) {
+//			foreach ($items as $k => $item) {
+//				$name = $item["name"];
+//				$sql = "select * from im_user where uStatus=$st and uGender=$gender and uName like '%$name%' ";
+//				$ret = $conn->createCommand($sql)->queryAll();
+//				if ($ret && count($ret) == 1) {
+//					$ret = $ret[0];
+//					$dummyMap[$gender][$k]["openid"] = $ret["uOpenId"];
+//					$dummyMap[$gender][$k]["id"] = $ret["uId"];
+//				}
+//			}
+//		}
+//		print_r($dummyMap);
+//		exit;
 	}
 }

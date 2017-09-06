@@ -23,6 +23,54 @@ class ChatMsg extends ActiveRecord
 
 	const RATIO = 1; //1.0 / 2.0;
 
+	// 后台聊天稻草人
+	static $dummyMap = [
+		User::GENDER_MALE => [
+			["name" => "肖页儿", "id" => 132465, "openid" => "3585701d6c2b433fbc1f8ed4cdf68822"],
+			["name" => "宝宝", "id" => 132466, "openid" => "d4689171a2784401b3cb1f0fa5a69325"],
+			["name" => "怹", "id" => 132457, "openid" => "87b54f46f915418aad7e4b6863555f13"],
+			["name" => "达娃卓玛", "id" => 132458, "openid" => "86b5641f9b3249d2bb9beac32fc6b8df"],
+			["name" => "萌芽", "id" => 132460, "openid" => "ce7637e0dd144d5381c3cab3127301e9"],
+			["name" => "凯叉", "id" => 132455, "openid" => "65a5454ff301485189fa965680584cee"],
+			["name" => "Ljs", "id" => 132447, "openid" => "73a8b41c368941fab07998f907d56632"],
+			["name" => "Sylvia", "id" => 130477, "openid" => "c52dbe29c84a4ed1bf86934121df25cb"],
+			["name" => "corbe", "id" => 132439, "openid" => "dec1deb5bfb749bc85dcf0126abd249f"],
+			["name" => "任宇超Melody", "id" => 132433, "openid" => "5a774c0c60f446918be6b758d351b480"],
+			["name" => "他不看见我吗？", "id" => 132503, "openid" => "bd3721f75f3e4cd3bd32fc4ff197182c"],
+			["name" => "Janny Von", "id" => 132421, "openid" => "309abde7bb804314832bf2b0fd046aa4"],
+			["name" => "Sunshine Rose", "id" => 132423, "openid" => "097008d352eb43f7855c5597cf459940"],
+			["name" => "肥兔子", "id" => 132415, "openid" => "039df4ae43344c2ebcd33c9a49892694"],
+			["name" => "四月一日君", "id" => 132406, "openid" => "adfb6b8865694e09a75d31e3c6b84d5d"],
+			["name" => "Demi 壹壹", "id" => 132370, "openid" => "4d20471c30094affb41dbfc8e14d7d89"],
+			["name" => "徐小栗", "id" => 132323, "openid" => "12fee1f496bc4e0a829788c7b4090d49"],
+			["name" => "帆古古的小可爱", "id" => 132272, "openid" => "62484514e1204d6c810840c4f59fc346"],
+			["name" => "纯纯纯", "id" => 132275, "openid" => "e7dd5cd732b843e89dbee7603c465c0f"],
+			["name" => "翊嘉", "id" => 132111, "openid" => "7f149ff4b6fd49fcaddfd5071767ad76"],
+		],
+		User::GENDER_FEMALE => [
+			["name" => "洛风帮主", "id" => 132429, "openid" => "b265045c23c546e29713649dc0485e33"],
+			["name" => "小 太 阳", "id" => 132430, "openid" => "b1387fea6ea44c6daac7e4c07b06b604"],
+			["name" => "小瑞", "id" => 132412, "openid" => "d418a64423ef4893b1e8af756b7c5f14"],
+			["name" => "TK.Chen", "id" => 131747, "openid" => "b50c60b916fa4518ba04dc8e0ce1cbc7"],
+			["name" => "AAA琉璃i", "id" => 132391, "openid" => "45007a91f87c42dab7de16120a5ba458"],
+			["name" => "杨树文", "id" => 132392, "openid" => "915a48001907448ea4dc9c5bd53e3aca"],
+			["name" => "Hx丶", "id" => 132394, "openid" => "e03bd8dff1024670a7fe7fd93896e19d"],
+			["name" => "大肚蚂蚁", "id" => 132494, "openid" => "97a6312f00b040159e641726c7400492"],
+			["name" => "Fill", "id" => 132363, "openid" => "dcb7bc0293564b09bac773c0dbf53ccc"],
+			["name" => "Christian Grey", "id" => 132360, "openid" => "a9fb2af14f454c80b9bb936e8615bd48"],
+			["name" => "何勇", "id" => 132348, "openid" => "2ae6cb00b9db4e92a6cbb7c63a6e301c"],
+			["name" => "太阳power", "id" => 132343, "openid" => "3fa795590e024e32b81bd43394af8032"],
+			["name" => "振乾", "id" => 132329, "openid" => "3792fd656e004266ab8b084f562afb60"],
+			["name" => "肖恩", "id" => 132326, "openid" => "03787ba9bf294b7e998d0b6f97e54c99"],
+			["name" => "周小福", "id" => 132314, "openid" => "3dbac729267e4665b822ad34d5990b03"],
+			["name" => "威猛的小老虎", "id" => 132278, "openid" => "954437d21c6d433883a72bac381e9881"],
+			["name" => "丁一辰", "id" => 132228, "openid" => "2853f2d13ab847559f3eb89a57130f6b"],
+			["name" => "丁兴", "id" => 132210, "openid" => "16d14085dd774a8d9f62bb94f8f4d534"],
+			["name" => "张贺家", "id" => 132195, "openid" => "d0c7fa3bd9cb470fb62f6b27f087f507"],
+			["name" => "Jerry", "id" => 132452, "openid" => "9afab75a63d14318abf242229ddeb7d1"],
+		],
+	];
+
 	public static function tableName()
 	{
 		return '{{%chat_msg}}';
@@ -411,26 +459,31 @@ class ChatMsg extends ActiveRecord
 		return [$contacts, $nextPage];
 	}
 
-	public static function items($criteria, $params = [], $page = 1, $pageSize = 20)
+	public static function items($isDummy = false, $criteria, $params = [], $page = 1, $pageSize = 20)
 	{
 		$limit = "limit " . ($page - 1) * $pageSize . "," . $pageSize;
-		$strCriteria = '';
+		$st = User::STATUS_DUMMY;
+		$strCriteria = ' and u1.uStatus !=8 and u2.uStatus !=8 ';
+		if ($isDummy) {
+			 $strCriteria = ' and (u1.uStatus =8 or u2.uStatus =8) ';
+		}
 		if ($criteria) {
-			$strCriteria = ' AND ' . implode(' AND ', $criteria);
+			$strCriteria .= ' AND ' . implode(' AND ', $criteria);
 		}
 		$conn = AppUtil::db();
 		$sql = 'select g.gId,g.gUId1,g.gUId2,g.gAddedBy,m.cContent as content,m.cAddedOn,
-			 u1.uName as name1,u1.uPhone as phone1,u1.uThumb as avatar1,
-			 u2.uName as name2,u2.uPhone as phone2,u2.uThumb as avatar2,
+			 u1.uName as name1,u1.uPhone as phone1,u1.uThumb as avatar1,u1.uId as id1,
+			 u2.uName as name2,u2.uPhone as phone2,u2.uThumb as avatar2,u2.uId as id2,
 			 COUNT(case when m2.cAddedBy=g.gUId1 then 1 end) as cnt1,
- 			 COUNT(case when m2.cAddedBy=g.gUId2 then 1 end) as cnt2
-			 from im_chat_group as g
-			 JOIN im_chat_msg as m on g.gId=m.cGId and g.gLastCId=m.cId
+ 			 COUNT(case when m2.cAddedBy=g.gUId2 then 1 end) as cnt2 
+			 from im_chat_group as g 
+			 JOIN im_chat_msg as m on g.gId=m.cGId and g.gLastCId=m.cId 
 			 JOIN im_chat_msg as m2 on g.gId=m2.cGId
-			 JOIN im_user as u1 on u1.uId=g.gUId1
-			 JOIN im_user as u2 on u2.uId=g.gUId2
+			 JOIN im_user as u1 on u1.uId=g.gUId1 
+			 JOIN im_user as u2 on u2.uId=g.gUId2 
 			 WHERE g.gId>0 ' . $strCriteria . ' GROUP BY g.gId
 			 order by g.gUpdatedOn desc ' . $limit;
+
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as $k => $row) {
 			$res[$k]['avatar1'] = ImageUtil::getItemImages($row['avatar1'])[0];
@@ -449,9 +502,11 @@ class ChatMsg extends ActiveRecord
 			}
 		}
 
-		$sql = "select count(1) from im_chat_group as g
-			 JOIN im_user as u1 on u1.uId=g.gUId1
-			 JOIN im_user as u2 on u2.uId=g.gUId2
+		$sql = "select count(DISTINCT gId) from im_chat_group as g
+			  JOIN im_chat_msg as m on g.gId=m.cGId and g.gLastCId=m.cId 
+			 JOIN im_chat_msg as m2 on g.gId=m2.cGId
+			 JOIN im_user as u1 on u1.uId=g.gUId1 
+			 JOIN im_user as u2 on u2.uId=g.gUId2 
 			 WHERE g.gId>0 " . $strCriteria;
 		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
 		return [$res, $count];

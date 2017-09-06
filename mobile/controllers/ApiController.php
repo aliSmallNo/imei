@@ -569,10 +569,10 @@ class ApiController extends Controller
 							'url' => '/wx/vote',
 							'img' => 'https://img.meipo100.com/default/event_vote.jpg',
 						],
-						[
-							'url' => '#sranking',
-							'img' => 'https://img.meipo100.com/default/event_fans_cash.jpg',
-						]
+//						[
+//							'url' => '#sranking',
+//							'img' => 'https://img.meipo100.com/default/event_fans_cash.jpg',
+//						]
 					]);
 				}
 				return self::renderAPI(0, '', $ret);

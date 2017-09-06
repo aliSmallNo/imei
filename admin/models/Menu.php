@@ -161,6 +161,11 @@ class Menu
 						"level" => 820
 					],
 					[
+						"name" => "稻草人聊天",
+						"url" => "/site/dummychats",
+						"level" => 820
+					],
+					[
 						"name" => "实名认证",
 						"url" => "/site/cert",
 						"level" => 820

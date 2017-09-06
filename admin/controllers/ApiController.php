@@ -416,6 +416,12 @@ class ApiController extends Controller
 				$ret = ChatMsg::addChat($serviceId, $id, $text, 0, Admin::getAdminId());
 				return self::renderAPI(0, '', $ret);
 				break;
+			case "dsend":
+				$serviceId = self::postParam("did");;
+				$text = self::postParam("text");
+				$ret = ChatMsg::addChat($serviceId, $id, $text, 0, Admin::getAdminId());
+				return self::renderAPI(0, '', $ret);
+				break;
 		}
 		return self::renderAPI(129, "什么操作也没做啊！");
 	}
