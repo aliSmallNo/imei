@@ -1227,10 +1227,12 @@ class WxController extends BaseController
 		//$gid = 2002;
 		$gid = 2012;
 		if (Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oUId" => $wxInfo["uId"]])) {
-			if ($openId == "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
+			if ($openId != "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
+
 			}
 			header('location:/wx/voted');
 			exit();
+
 		}
 		list($questions, $gId) = QuestionGroup::findGroup($gid);
 

@@ -657,12 +657,14 @@ class FooController extends Controller
 //		foreach ($dummyMap as $gender => $items) {
 //			foreach ($items as $k => $item) {
 //				$name = $item["name"];
-//				$sql = "select * from im_user where uStatus=$st and uGender=$gender and uName like '%$name%' ";
+//				$id = $item["id"];
+//				$sql = "select * from im_user where uId=$id ";
 //				$ret = $conn->createCommand($sql)->queryAll();
 //				if ($ret && count($ret) == 1) {
 //					$ret = $ret[0];
 //					$dummyMap[$gender][$k]["openid"] = $ret["uOpenId"];
 //					$dummyMap[$gender][$k]["id"] = $ret["uId"];
+//					$dummyMap[$gender][$k]["avatar"] = $ret["uThumb"];
 //				}
 //			}
 //		}
