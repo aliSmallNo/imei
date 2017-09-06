@@ -21,7 +21,8 @@
 <script src="/js/amrnb.js"></script>
 <div id="page-wrapper">
 	<div class="row">
-		<h4>稻草人{{$dname}}({{$dphone}}) <img src="{{$davatar}}" style="width: 30px;height: 30px"> 和 {{$name}}({{$phone}}) <img src="{{$avatar}}" style="width: 30px;height: 30px"> 密聊中...</h4>
+		<h4>稻草人{{$dname}}({{$dphone}}) <img src="{{$davatar}}" style="width: 30px;height: 30px"> 和 {{$name}}({{$phone}})
+			<img src="{{$avatar}}" style="width: 30px;height: 30px"> 密聊中...</h4>
 	</div>
 	<div class="row">
 		<input type="hidden" name="uid" id="cUID" value="{{$uid}}">
@@ -43,7 +44,8 @@
 					<div class="message_status"><em class="tips">已回复</em></div>
 					<div class="message_time">{{$item.dt}}</div>
 					<div class="user_info">
-						<span class="remark_name">{{if $item.dir=='left'}}{{$item.name}}{{else}}{{$item.name}} ({{$item.aName}}){{/if}}</span>
+						<span class="remark_name">{{if $item.dir=='left'}}{{$item.name}}{{else}}{{$item.name}} ({{$item.aName}}
+							){{/if}}</span>
 						<span class="nickname"></span>
 						<span class="avatar"><img src="{{$item.avatar}}"></span>
 					</div>
@@ -63,9 +65,12 @@
 <script>
 	var mUID = $('#cUID').val();
 	var dId = $('#dId').val();
+	var chatFlag = 0;
 	$('.btn-send').on('click', function () {
 		var text = $.trim($('.content').val());
 		if (!text) return false;
+		if (chatFlag) return false;
+		chatFlag = 1;
 		$.post('/api/chat',
 			{
 				tag: 'dsend',
@@ -74,11 +79,11 @@
 				id: mUID
 			},
 			function (resp) {
+				chatFlag = 0;
 				if (resp.code == 0) {
 					location.reload();
 				}
 			}, 'json');
-
 	});
 
 	$(function () {
