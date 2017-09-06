@@ -344,7 +344,6 @@ require(["layer"],
 				util.uni = $('#cUNI').val();
 				util.socket = io('https://ws.meipo100.com');
 				util.socket.emit('buzz', 'login', util.uni);
-				util.socket.emit('join', util.gid, util.uni);
 				util.socket.on("msg", function (resp) {
 					if (resp.code == 0) {
 						$.each(resp.data.items, function () {
@@ -362,6 +361,15 @@ require(["layer"],
 						}
 					}
 				});
+
+				util.socket.on('connect', function () {
+					util.socket.emit('join', util.gid, util.uni);
+				});
+
+				util.socket.on("leave", function (obj) {
+
+				});
+
 				util.socket.on("sys", function (obj) {
 					// console.log(obj);
 				});
