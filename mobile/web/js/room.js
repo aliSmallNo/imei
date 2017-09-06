@@ -351,6 +351,7 @@ require(["layer"],
 							var item = this;
 							if (item.uid == util.uni) {
 								item.dir = 'right';
+								item.avatar = '/images/logo62.png';
 							}
 						});
 						var html = Mustache.render(util.tmp, resp.data);
