@@ -6,9 +6,8 @@
 	<div class="report_wrap">
 		<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
 		<ul class="chats"></ul>
-		<div style="height: 6rem"></div>
 	</div>
-	<div class="m-bottom-pl"></div>
+	<div class="m-bottom-pl" style="height: 5rem"></div>
 	<div class="m-bottom-bar">
 		<div class="m-chat-wrap off">
 			<a class="schat-option" data-tag="tohelpchat" style="display: none">助聊</a>
@@ -95,4 +94,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
-<script data-main="/js/room.js?v=1.1.7" src="/assets/js/require.js"></script>
+<script data-main="/js/room.js?v=1.1.8" src="/assets/js/require.js"></script>

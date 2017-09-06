@@ -338,6 +338,7 @@ require(["layer"],
 			gid: 991,
 			list: $('.chats'),
 			input: $('.chat-input'),
+			bot: $('#schat .m-bottom-pl'),
 			tmp: $('#tpl_chat').html(),
 			init: function () {
 				var util = this;
@@ -359,6 +360,9 @@ require(["layer"],
 						} else {
 							util.list.append(html);
 						}
+						setTimeout(function () {
+							util.bot.get(0).scrollIntoView(true);
+						}, 300);
 					}
 				});
 
