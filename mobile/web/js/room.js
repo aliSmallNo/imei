@@ -334,13 +334,13 @@ require(["layer"],
 
 		var SocketUtil = {
 			socket: null,
-			euid: 0,
-			gid: 0,
+			uni: 0,
+			gid: 991,
 			init: function () {
 				var util = this;
-				util.euid = $('#cUNI').val();
+				util.uni = $('#cUNI').val();
 				util.socket = io('http://localhost:3000');
-				util.socket.emit('buzz', util.euid, 'login');
+				util.socket.emit('buzz', util.uni, 'login');
 				util.socket.on("msg", function (obj) {
 					console.log(obj);
 				});
@@ -348,20 +348,17 @@ require(["layer"],
 					console.log(obj);
 				});
 			},
-			group: function (gid) {
+			group: function () {
 				var util = this;
-				util.gid = gid;
-				util.socket.emit('join', gid, util.euid);
+				util.socket.emit('join', util.uni, util.gid);
 			},
 			send: function (msg) {
 				var util = this;
-				util.socket.send(msg, util.gid, util.euid);
+				util.socket.send(msg, util.uni, util.gid);
 			}
 		};
 
 		$(function () {
-			// FootUtil.init();
-			// SingleUtil.init();
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems'];

@@ -283,6 +283,7 @@ class User extends ActiveRecord
 		if (!$entity) {
 			$entity = new self();
 			$entity->uAddedBy = $editBy;
+			$entity->uUniqid = uniqid();
 		}
 		foreach ($params as $key => $val) {
 			$entity->$key = $val;
@@ -336,6 +337,7 @@ class User extends ActiveRecord
 			$entity->uAddedBy = $editBy;
 			$entity->uUpdatedBy = $editBy;
 			$entity->uOpenId = $openid;
+			$entity->uUniqid = uniqid();
 			$entity->uName = $wxInfo['nickname'];
 			list($thumb, $figure) = ImageUtil::save2Server($wxInfo['headimgurl'], false);
 			$entity->uThumb = $thumb;
