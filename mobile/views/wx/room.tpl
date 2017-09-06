@@ -6,6 +6,7 @@
 	<div class="report_wrap">
 		<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
 		<ul class="chats"></ul>
+		<div style="height: 6rem"></div>
 	</div>
 	<div class="m-bottom-pl"></div>
 	<div class="m-bottom-bar">
