@@ -52,8 +52,8 @@
 		{{/if}}
 		{{if $audit}}
 		<div class="m-hint">
-			<span>你的个人信息审核未通过</span>
-			<a href="/wx/notice">去看看</a>
+			<span><i class="i-mark-warning"></i> {{$audit}}</span>
+			<a href="/wx/sedit">去完善资料</a>
 		</div>
 		{{/if}}
 		<div class="u-my-wrap line-bottom">
@@ -85,7 +85,7 @@
 			<a href="#IaddWx"><span class="title">我加微信的人</span> </a-->
 			<a href="#sfav"><span class="title">心动列表</span> <i class="i-mark-favor"></i></a>
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">我的账户</span> <i class="i-mark-rose"></i></a>
-			<a href="/wx/sqr"><span class="title">分享给朋友</span></a>
+			<a href="/wx/mshare"><span class="title">分享给朋友</span></a>
 			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span
 								class="tip">已认证</span>{{/if}}</a>
 			<a href="/wx/notice">
@@ -725,7 +725,7 @@
 		<div class="m-popup-content"></div>
 	</div>
 </div>
-
+<input type="hidden" id="cEncryptId" value="{{$encryptId}}">
 <script>
 	var mProvinces = {{$provinces}};
 </script>
@@ -942,7 +942,7 @@
 		<h4>你没有媒桂花了哟</h4>
 		<div class="topup-bot">
 			<p>快去分享到朋友圈，收获奖励，但是每天只奖励一次哦~<br></p>
-			<a href="/wx/sqr" class="btn">分享到朋友圈</a>
+			<a href="/wx/mshare" class="btn">分享到朋友圈</a>
 		</div>
 		<a href="javascript:;" class="m-popup-close"></a>
 	</div>
@@ -968,7 +968,7 @@
 		<div class="split"><span>或者</span></div>
 		<div class="topup-bot">
 			<p>没有媒桂花了，分享到朋友圈，收获奖励<br>但是一天内只奖励一次哦~</p>
-			<a href="/wx/sqr" class="btn">分享到朋友圈</a>
+			<a href="/wx/mshare" class="btn">分享到朋友圈</a>
 		</div>
 		<a href="javascript:;" class="m-popup-close"></a>
 	</div>
@@ -1092,4 +1092,5 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
+<script src="/assets/js/socket.io.slim.js"></script>
 <script data-main="/js/single.js?v=1.10.4" src="/assets/js/require.js"></script>

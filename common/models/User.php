@@ -1127,7 +1127,7 @@ class User extends ActiveRecord
 		if ($ret) {
 			$myLat = $ret['pLat'];
 			$myLng = $ret['pLng'];
-			$distField = 'round(IFNULL(ST_Distance(POINT(' . $myLat . ', ' . $myLng . '), p.pPoint) * 111.195,9999),1) as dist';
+			$distField = 'ROUND(IFNULL(ST_Distance(POINT(' . $myLat . ', ' . $myLng . '), p.pPoint) * 111.195,9999),1) as dist';
 		}
 
 		$sql = "SELECT u.*, $distField , $rankField
@@ -1235,7 +1235,7 @@ class User extends ActiveRecord
 			$nextpage = 0;
 		}
 		//Rain: 不想展示太多页了
-		if ($nextpage > 10) {
+		if ($nextpage > 12) {
 			$nextpage = 0;
 		}
 		return ["data" => $result, "nextpage" => $nextpage, "condition" => $myFilter, 'page' => $page];
@@ -1469,9 +1469,9 @@ class User extends ActiveRecord
 		$sql = "SELECT 
 				count(*) as reg,
 				SUM(IFNULL(w.wSubscribe,0)) as focus,
-				SUM(CASE WHEN u.uRole not in (10,20) AND  w.wSubscribe not in (1) THEN 1 END) as newvisitor,
+				SUM(CASE WHEN wSubscribe is NULL THEN 1 END) as newvisitor,
 				SUM(CASE WHEN uPhone!='' AND uRole>9 THEN 1 END) as newmember,
-				SUM(CASE WHEN (w.wAddedOn BETWEEN :beginDT and :endDT) AND IFNULL(wSubscribe,0)=0 THEN  1 END ) as todayblur,
+				SUM(CASE WHEN w.wAddedOn BETWEEN :beginDT AND :endDT AND wSubscribe =0 THEN 1 END ) as todayblur,
 				SUM(CASE WHEN u.uRole=10 AND u.uGender=11 THEN  1 END ) as male,
 				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 THEN  1 END ) as female,
 				SUM(CASE WHEN u.uRole=20 THEN  1 END) as mps

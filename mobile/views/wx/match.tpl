@@ -21,7 +21,7 @@
 </section>
 <section id="sgroup" data-title="我的单身团">
 	<div class="m-rows line-bottom">
-		<a href="/wx/sts">扩大我的单身团</a>
+		<a href="/wx/mshare">扩大我的单身团</a>
 		<a href="#snewbie" style="display: none">新的单身团申请</a>
 		<a href="#srept">单身团动态</a>
 	</div>
@@ -70,8 +70,8 @@
 		</a>
 	</div>
 	<div class="m-discovery-act">
-		<a href="/wx/sts" class="btn white">扩大我的单身团</a>
-		<a href="/wx/share" class="btn white">邀请朋友当媒婆</a>
+		<a href="/wx/mshare" class="btn white">扩大我的单身团</a>
+		<a href="/wx/share" class="btn white" style="display: none">邀请朋友当媒婆</a>
 	</div>
 	<div class="news-wrap">
 		<p class="title"><span>平台动态</span></p>
@@ -94,7 +94,9 @@
 	<div class="u-my-wrap line-bottom">
 		<div class="u-my-bar">
 			<div class="avatar">
-				<img src="{{$avatar}}" alt="">
+				<div class="img">
+					<img src="{{$avatar}}" alt="">
+				</div>
 			</div>
 			<div class="title">
 				<h4>{{$nickname}}</h4>
@@ -126,9 +128,10 @@
 	</div>
 	<div class="m-rows line-bottom">
 		<a href="#saccount">账户</a>
-		<a href="#smsg">通知</a>
+		<a href="/wx/mshare">分享给朋友</a>
 	</div>
 	<div class="m-rows line-bottom">
+		<a href="#smsg">通知</a>
 		<a href="#sfeedback">意见反馈</a>
 		<a href="#sguide" style="display: none">媒婆攻略</a>
 		<a href="/wx/mplay">媒婆玩法</a>

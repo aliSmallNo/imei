@@ -66,7 +66,7 @@ class UserAudit extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$sql = 'select count(1)
+		$sql = 'select count(1) as cnt 
 			 from im_user_audit as a
 			 join im_user as u on u.uId=a.aUId
 			 where aUId=:uid and aUStatus=:st and aValid=:valid and u.uStatus=:st';
@@ -76,9 +76,9 @@ class UserAudit extends ActiveRecord
 			':valid' => self::VALID_FAIL,
 		])->queryScalar();
 		if ($ret) {
-			return true;
+			return '你的个人信息审核未通过';
 		}
-		return false;
+		return '';
 	}
 
 	public static function verify($uid, $conn = '')

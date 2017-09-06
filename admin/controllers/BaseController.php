@@ -11,6 +11,8 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use yii\data\Pagination;
+use yii\filters\Cors;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\widgets\LinkPager;
 
@@ -20,6 +22,19 @@ class BaseController extends Controller
 	const ICON_ALERT_HTML = '<i class="fa fa-exclamation-circle gIcon"></i> ';
 	const PAGE_SIZE = 20;
 	protected static $MenuForkId = "summary";
+
+	public function behaviors()
+	{
+		return ArrayHelper::merge([
+			[
+				'class' => Cors::className(),
+				'cors' => [
+					'Origin' => ['*'],
+					'Access-Control-Request-Method' => ['*'],
+				],
+			],
+		], parent::behaviors());
+	}
 
 	public function beforeAction($action)
 	{

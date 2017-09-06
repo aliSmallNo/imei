@@ -665,7 +665,10 @@ class WxController extends BaseController
 
 		// 通知有未读
 		$noReadFlag = UserMsg::hasUnread($uId, $conn) ? 1 : 0;
-		$audit = UserAudit::invalid($uId, $conn) ? 1 : 0;
+		$audit = UserAudit::invalid($uId, $conn);
+		if ($uInfo['status'] == User::STATUS_VISITOR) {
+			$audit = '你的个人信息不完整，请尽快完善';
+		}
 		$greeting = UserMsg::greeting($uId, $openId, $conn);
 		return self::renderPage("single.tpl", [
 			'noReadFlag' => $noReadFlag,
@@ -1259,6 +1262,37 @@ class WxController extends BaseController
 		],
 			'terse',
 			'投票活动');
+	}
+
+	public function actionMshare()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$userId = User::SERVICE_UID;
+		if ($wxInfo) {
+			$userId = $wxInfo['uId'];
+		}
+		$uId = self::getParam('id', $userId);
+		$preview = ($uId == $userId ? 1 : 0);
+		$bgSrc = '/images/bg_invitation.jpg';
+		$qrCode = '';
+		$cls = 'small';
+		if ($uId) {
+			$bgSrc = UserQR::mpShareQR($uId);
+			$cls = $preview ? '' : 'big';
+		}
+		return self::renderPage('mshare.tpl',
+			[
+				'qrcode' => $qrCode,
+				'preview' => $preview,
+				'bgSrc' => $bgSrc,
+				'stars' => UserQR::$SuperStars,
+				'cls' => $cls,
+				'userId' => $userId
+			],
+			'terse',
+			'微媒100',
+			'bg-main');
 	}
 
 	public function actionMarry()

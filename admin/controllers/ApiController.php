@@ -24,6 +24,8 @@ use common\utils\WechatUtil;
 use dosamigos\qrcode\QrCode;
 use Gregwar\Image\Image;
 use Yii;
+use yii\filters\Cors;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\Response;
 
@@ -33,6 +35,19 @@ class ApiController extends Controller
 
 	const ICON_OK_HTML = '<i class="fa fa-check-circle gIcon"></i> ';
 	const ICON_ALERT_HTML = '<i class="fa fa-exclamation-circle gIcon"></i> ';
+
+	public function behaviors()
+	{
+		return ArrayHelper::merge([
+			[
+				'class' => Cors::className(),
+				'cors' => [
+					'Origin' => ['*'],
+					'Access-Control-Request-Method' => ['*'],
+				],
+			],
+		], parent::behaviors());
+	}
 
 	/**
 	 * 后台用户 admin
@@ -142,6 +157,16 @@ class ApiController extends Controller
 						return self::renderAPI(0, '设置成功');
 					}
 				}
+				break;
+			case 'rotate':
+				$src = self::postParam('src');
+				if ($src) {
+					$ret = ImageUtil::rotate($src);
+					if ($ret) {
+						return self::renderAPI(0, '旋转图片成功！');
+					}
+				}
+				return self::renderAPI(129, '旋转图片失败~');
 				break;
 		}
 		return self::renderAPI($ret["code"], $ret["msg"]);
@@ -399,5 +424,10 @@ class ApiController extends Controller
 				break;
 		}
 		return self::renderAPI(129, "什么操作也没做啊！");
+	}
+
+	public function actionFoo()
+	{
+		return self::renderAPI(0, "Foo got it！");
 	}
 }
