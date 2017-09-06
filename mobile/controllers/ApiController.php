@@ -565,10 +565,10 @@ class ApiController extends Controller
 				$ret = User::getFilter($openId, $filter, $page, 15);
 				if (isset($ret['data']) && count($ret['data']) > 3 && $page == 1) {
 					array_splice($ret['data'], 3, 0, [
-						[
-							'url' => '/wx/vote',
-							'img' => 'https://img.meipo100.com/default/event_vote.jpg',
-						],
+//						[
+//							'url' => '/wx/vote',
+//							'img' => 'https://img.meipo100.com/default/event_vote.jpg',
+//						],
 //						[
 //							'url' => '#sranking',
 //							'img' => 'https://img.meipo100.com/default/event_fans_cash.jpg',
