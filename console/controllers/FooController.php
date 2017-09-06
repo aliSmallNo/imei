@@ -8,9 +8,7 @@ namespace console\controllers;
  * Date: 11/5/2017
  * Time: 2:11 PM
  */
-use admin\models\Admin;
 use common\models\ChatMsg;
-use common\models\QuestionSea;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserWechat;
@@ -496,8 +494,8 @@ class FooController extends Controller
 		/*$srcPath = 'https://img.meipo100.com/2017/92/119168_n.jpg';
 		$ret = pathinfo($srcPath, PATHINFO_BASENAME);
 		var_dump($ret);*/
-
-		$conn = AppUtil::db();
+		AppUtil::logFile('test', 5, __FUNCTION__, __LINE__);
+		/*$conn = AppUtil::db();
 		$sql = 'select uId from im_user WHERE uUniqid=\'\' ';
 		$ret = $conn->createCommand($sql)->queryAll();
 
@@ -510,7 +508,7 @@ class FooController extends Controller
 				':qid' => uniqid($count % 7)
 			])->execute();
 			$count++;
-		}
+		}*/
 
 		/*$uid = 131277;
 		$ucode = 'lm';

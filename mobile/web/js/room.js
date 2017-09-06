@@ -363,7 +363,7 @@ require(["layer"],
 					}
 				});
 				util.socket.on("sys", function (obj) {
-					console.log(obj);
+					// console.log(obj);
 				});
 
 				$('.btn-chat-send').on(kClick, function () {
