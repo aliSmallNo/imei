@@ -549,7 +549,7 @@
 		  var name = self.attr("data-name");
 		  var thumb = self.attr("data-thumb");
 		  var gender = self.attr("data-gender");
-		  if (!gender) {
+		  if (parseInt(gender) < 10) {
 			  layer.msg("用户还没性别哦~");
 			  return;
 		  }
@@ -565,10 +565,10 @@
 	  $(document).on("click", "#btnSaveDu", function () {
 		  dummyId2 = $(".dummy-opt.active").attr("data-id");
 		  // console.log("/site/dummychat?id1=" + dummyId1 + "&id2=" + dummyId2);
-	    if (!dummyId2) {
-		    layer.msg("还没选择稻草人哦~");
-		    return;
-	    }
+		  if (!dummyId2) {
+			  layer.msg("还没选择稻草人哦~");
+			  return;
+		  }
 		  location.href = "/site/dummychat?id1=" + dummyId1 + "&id2=" + dummyId2;
 	  });
 	  $(document).on("click", ".dummy-opt", function () {
