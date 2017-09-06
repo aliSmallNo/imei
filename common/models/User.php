@@ -242,12 +242,13 @@ class User extends ActiveRecord
 		$openId = isset($data["uOpenId"]) ? $data["uOpenId"] : '';
 		if ($openId) {
 			$conn = AppUtil::db();
-			$sql = 'INSERT INTO im_user(uOpenId,uAddedBy) 
-				SELECT :id,:aid FROM dual 
+			$sql = 'INSERT INTO im_user(uOpenId,uUniqid,uAddedBy) 
+				SELECT :id,:uni,:aid FROM dual 
 				WHERE NOT EXISTS(SELECT 1 FROM im_user WHERE uOpenId=:id)';
 			$conn->createCommand($sql)->bindValues([
 				':id' => $openId,
-				':aid' => $adminId
+				':uni' => uniqid(),
+				':aid' => $adminId,
 			])->execute();
 		}
 		$entity = self::findOne(["uOpenId" => $openId]);
@@ -282,6 +283,7 @@ class User extends ActiveRecord
 		if (!$entity) {
 			$entity = new self();
 			$entity->uAddedBy = $editBy;
+			$entity->uUniqid = uniqid();
 		}
 		foreach ($params as $key => $val) {
 			$entity->$key = $val;
@@ -335,6 +337,7 @@ class User extends ActiveRecord
 			$entity->uAddedBy = $editBy;
 			$entity->uUpdatedBy = $editBy;
 			$entity->uOpenId = $openid;
+			$entity->uUniqid = uniqid();
 			$entity->uName = $wxInfo['nickname'];
 			list($thumb, $figure) = ImageUtil::save2Server($wxInfo['headimgurl'], false);
 			$entity->uThumb = $thumb;

@@ -491,9 +491,24 @@ class FooController extends Controller
 	{
 		/*$ret = UserQR::mpShareQR(131379);
 		var_dump($ret);*/
-		$srcPath = 'https://img.meipo100.com/2017/92/119168_n.jpg';
+		/*$srcPath = 'https://img.meipo100.com/2017/92/119168_n.jpg';
 		$ret = pathinfo($srcPath, PATHINFO_BASENAME);
-		var_dump($ret);
+		var_dump($ret);*/
+
+		$conn = AppUtil::db();
+		$sql = 'select uId from im_user WHERE uUniqid=\'\' ';
+		$ret = $conn->createCommand($sql)->queryAll();
+
+		$sql = 'update im_user set uUniqid=:qid WHERE uId=:id';
+		$cmd = $conn->createCommand($sql);
+		$count = 0;
+		foreach ($ret as $row) {
+			$cmd->bindValues([
+				':id' => $row['uId'],
+				':qid' => uniqid($count % 7)
+			])->execute();
+			$count++;
+		}
 
 		/*$uid = 131277;
 		$ucode = 'lm';
