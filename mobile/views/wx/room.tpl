@@ -43,7 +43,7 @@
 		<div class="m-popup-content"></div>
 	</div>
 </div>
-<input type="hidden" id="cEncryptId" value="{{$uId}}">
+<input type="hidden" id="cUNI" value="{{$uni}}">
 <script type="text/template" id="tpl_chat">
 	{[#items]}
 	<li class="{[dir]}">

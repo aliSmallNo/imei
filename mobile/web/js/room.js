@@ -338,7 +338,7 @@ require(["layer"],
 			gid: 0,
 			init: function () {
 				var util = this;
-				util.euid = $('#cEncryptId').val();
+				util.euid = $('#cUNI').val();
 				util.socket = io('http://localhost:3000');
 				util.socket.emit('buzz', util.euid, 'login');
 				util.socket.on("msg", function (obj) {
@@ -360,7 +360,6 @@ require(["layer"],
 		};
 
 		$(function () {
-			$("body").addClass("bg-color");
 			// FootUtil.init();
 			// SingleUtil.init();
 			var wxInfo = JSON.parse($sls.wxString);

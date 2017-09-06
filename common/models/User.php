@@ -243,11 +243,11 @@ class User extends ActiveRecord
 		if ($openId) {
 			$conn = AppUtil::db();
 			$sql = 'INSERT INTO im_user(uOpenId,uUniqid,uAddedBy) 
-				SELECT :id,:uniq,:aid FROM dual 
+				SELECT :id,:uni,:aid FROM dual 
 				WHERE NOT EXISTS(SELECT 1 FROM im_user WHERE uOpenId=:id)';
 			$conn->createCommand($sql)->bindValues([
 				':id' => $openId,
-				':uniq' => uniqid(),
+				':uni' => uniqid(),
 				':aid' => $adminId,
 			])->execute();
 		}
