@@ -549,6 +549,10 @@
 		  var name = self.attr("data-name");
 		  var thumb = self.attr("data-thumb");
 		  var gender = self.attr("data-gender");
+		  if (!gender) {
+			  layer.msg("用户还没性别哦~");
+			  return;
+		  }
 		  dummyId1 = self.attr("data-id");
 		  var items = dummys[gender];
 		  items ={items:items};
@@ -561,6 +565,10 @@
 	  $(document).on("click", "#btnSaveDu", function () {
 		  dummyId2 = $(".dummy-opt.active").attr("data-id");
 		  // console.log("/site/dummychat?id1=" + dummyId1 + "&id2=" + dummyId2);
+	    if (!dummyId2) {
+		    layer.msg("还没选择稻草人哦~");
+		    return;
+	    }
 		  location.href = "/site/dummychat?id1=" + dummyId1 + "&id2=" + dummyId2;
 	  });
 	  $(document).on("click", ".dummy-opt", function () {
@@ -586,61 +594,61 @@
 		  location.href = "/site/account?id=" + cid;
 	  });
 
-    //////////////////////////////
-    $(document).on("click", ".album-item a", function () {
-	    var self = $(this);
-	    $.post("/api/user", {
-		    tag: "rotate",
-		    angle: "90",
-		    src: self.attr('data-id')
-	    }, function (resp) {
-		    if (resp.code == 0) {
-			    location.reload();
-		    }
-		    layer.msg(resp.msg);
-	    }, "json");
-    });
+	  //////////////////////////////
+	  $(document).on("click", ".album-item a", function () {
+		  var self = $(this);
+		  $.post("/api/user", {
+			  tag: "rotate",
+			  angle: "90",
+			  src: self.attr('data-id')
+		  }, function (resp) {
+			  if (resp.code == 0) {
+				  location.reload();
+			  }
+			  layer.msg(resp.msg);
+		  }, "json");
+	  });
 
-    $(document).on("mouseover", ".album-item a", function () {
-	    var self = $(this);
-	    self.css('visibility', 'visible');
-    });
+	  $(document).on("mouseover", ".album-item a", function () {
+		  var self = $(this);
+		  self.css('visibility', 'visible');
+	  });
 
-    $(document).on("mouseover", ".album-item img", function () {
-	    var self = $(this);
-	    self.closest('span').find('a').css('visibility', 'visible');
-    });
+	  $(document).on("mouseover", ".album-item img", function () {
+		  var self = $(this);
+		  self.closest('span').find('a').css('visibility', 'visible');
+	  });
 
 
-    $(document).on("mouseout", ".album-item img", function () {
-	    var self = $(this);
-	    self.closest('span').find('a').css('visibility', 'hidden');
-    });
+	  $(document).on("mouseout", ".album-item img", function () {
+		  var self = $(this);
+		  self.closest('span').find('a').css('visibility', 'hidden');
+	  });
 
-    $(document).on("click", ".album-item img", function () {
-	    var self = $(this);
-	    var images = self.closest("td").attr("data-images");
-	    var idx = self.attr('data-idx');
-	    var photos = JSON.parse(images);
-	    photos.title = '个人相册';
-	    $.each(photos.data, function () {
-		    this.alt = '设为头像';
-	    });
-	    showImages(photos, idx)
-    });
-    //////////////////////////
+	  $(document).on("click", ".album-item img", function () {
+		  var self = $(this);
+		  var images = self.closest("td").attr("data-images");
+		  var idx = self.attr('data-idx');
+		  var photos = JSON.parse(images);
+		  photos.title = '个人相册';
+		  $.each(photos.data, function () {
+			  this.alt = '设为头像';
+		  });
+		  showImages(photos, idx)
+	  });
+	  //////////////////////////
 
-//	  $(document).on("click", ".album-items img", function () {
-//		  var self = $(this);
-//		  var images = self.closest("td").attr("data-images");
-//		  var idx = self.attr('data-idx');
-//		  var photos = JSON.parse(images);
-//		  photos.title = '个人相册';
-//		  $.each(photos.data, function () {
-//			  this.alt = '设为头像';
-//		  });
-//		  showImages(photos, idx)
-//	  });
+	  //	  $(document).on("click", ".album-items img", function () {
+	  //		  var self = $(this);
+	  //		  var images = self.closest("td").attr("data-images");
+	  //		  var idx = self.attr('data-idx');
+	  //		  var photos = JSON.parse(images);
+	  //		  photos.title = '个人相册';
+	  //		  $.each(photos.data, function () {
+	  //			  this.alt = '设为头像';
+	  //		  });
+	  //		  showImages(photos, idx)
+	  //	  });
 
 	  $(document).on("click", ".i-av", function () {
 		  var self = $(this);
