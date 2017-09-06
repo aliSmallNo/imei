@@ -673,39 +673,6 @@ class FooController extends Controller
 //		print_r($dummyMap);
 //		exit;
 
-		$Qdata = [
-			"qCategory" => QuestionSea::CAT_VOTE,
-			"qTitle" => "名字征集	",
-			"qRaw" => json_encode([
-				"title" => "名字征集	",
-				"options" => [
-					["opt" => "A", "text" => "婚否"],
-					["opt" => "B", "text" => "趣聊聊"],
-					["opt" => "C", "text" => "鹊桥"],
-					["opt" => "D", "text" => "微恋"],
-					["opt" => "E", "text" => "相遇"],
-					["opt" => "F", "text" => "恋恋"],
-					["opt" => "G", "text" => "优恋"],
-					["opt" => "H", "text" => "美恋"],
-					["opt" => "I", "text" => "美丽恋"],
-					["opt" => "J", "text" => "伊缘"],
-					["opt" => "K", "text" => "woo恋"],
-					["opt" => "L", "text" => "恋源"],
-					["opt" => "M", "text" => "良缘"],
-					["opt" => "N", "text" => "百年"],
-					["opt" => "O", "text" => "千百度"],
-					["opt" => "P", "text" => "恋多多"],
-					["opt" => "Q", "text" => "帮恋"],
-					["opt" => "R", "text" => "牵度"],
-					["opt" => "S", "text" => "快趣恋"],
-					["opt" => "T", "text" => "趣快恋"],
-					["opt" => "U", "text" => "微恋"],
-					["opt" => "V", "text" => "快恋"],
-				],
-				"answer" => "ABC",
-			], JSON_UNESCAPED_UNICODE),
-			"qAddedBy" => 1002,
-		];
-		QuestionSea::edit(0, $Qdata);
+
 	}
 }
