@@ -94,4 +94,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
-<script data-main="/js/room.js?v=1.1.3" src="/assets/js/require.js"></script>
+<script data-main="/js/room.js?v=1.1.4" src="/assets/js/require.js"></script>

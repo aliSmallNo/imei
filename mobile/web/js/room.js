@@ -337,8 +337,8 @@ require(["layer"],
 			uni: 0,
 			gid: 991,
 			list: $('.chats'),
-			tmp: $('#tpl_chat').html(),
 			input: $('.chat-input'),
+			tmp: $('#tpl_chat').html(),
 			init: function () {
 				var util = this;
 				util.uni = $('#cUNI').val();
@@ -381,7 +381,7 @@ require(["layer"],
 					showMsg('聊天内容不能为空！', 3, 12);
 					return false;
 				}
-				util.socket.send(util.gid, util.uni, content);
+				util.socket.send(util.uni, content);
 				util.input.val('');
 			}
 		};
