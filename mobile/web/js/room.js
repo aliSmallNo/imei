@@ -381,7 +381,7 @@ require(["layer"],
 					showMsg('聊天内容不能为空！', 3, 12);
 					return false;
 				}
-				util.socket.send(util.uni, content);
+				util.socket.send(util.gid, util.uni, content);
 				util.input.val('');
 			}
 		};
