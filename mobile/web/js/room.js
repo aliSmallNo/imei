@@ -57,9 +57,9 @@ require(["layer"],
 			timer: 0,
 			init: function () {
 				var util = this;
-				$('.btn-chat-send').on(kClick, function () {
+				/*$('.btn-chat-send').on(kClick, function () {
 					util.sent();
-				});
+				});*/
 
 				$(document).on(kClick, ".chat-input", function () {
 					setTimeout(function () {
@@ -336,25 +336,52 @@ require(["layer"],
 			socket: null,
 			uni: 0,
 			gid: 991,
+			list: $('.chats'),
+			tmp: $('#tpl_chat').html(),
+			input: $('.chat-input'),
 			init: function () {
 				var util = this;
 				util.uni = $('#cUNI').val();
 				util.socket = io('http://localhost:3000');
-				util.socket.emit('buzz', util.uni, 'login');
-				util.socket.on("msg", function (obj) {
-					console.log(obj);
+				util.socket.emit('buzz', 'login', util.uni);
+				util.socket.emit('join', util.gid, util.uni);
+				util.socket.on("msg", function (resp) {
+					if (resp.code == 0) {
+						$.each(resp.data.items, function () {
+							var item = this;
+							if (item.uid == util.uni) {
+								item.dir = 'right';
+							}
+						});
+						var html = Mustache.render(util.tmp, resp.data);
+						if (resp.data.lastId < 1) {
+							util.list.html(html);
+						} else {
+							util.list.append(html);
+						}
+					}
 				});
 				util.socket.on("sys", function (obj) {
 					console.log(obj);
 				});
+
+				$('.btn-chat-send').on(kClick, function () {
+					util.send();
+				});
 			},
-			group: function () {
+			/*group: function () {
 				var util = this;
 				util.socket.emit('join', util.uni, util.gid);
-			},
-			send: function (msg) {
+			},*/
+			send: function () {
 				var util = this;
-				util.socket.send(msg, util.uni, util.gid);
+				var content = $.trim(util.input.val());
+				if (!content) {
+					showMsg('聊天内容不能为空！', 3, 12);
+					return false;
+				}
+				util.socket.send(util.gid, util.uni, content);
+				util.input.val('');
 			}
 		};
 
