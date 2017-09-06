@@ -242,12 +242,13 @@ class User extends ActiveRecord
 		$openId = isset($data["uOpenId"]) ? $data["uOpenId"] : '';
 		if ($openId) {
 			$conn = AppUtil::db();
-			$sql = 'INSERT INTO im_user(uOpenId,uAddedBy) 
-				SELECT :id,:aid FROM dual 
+			$sql = 'INSERT INTO im_user(uOpenId,uUniqid,uAddedBy) 
+				SELECT :id,:uniq,:aid FROM dual 
 				WHERE NOT EXISTS(SELECT 1 FROM im_user WHERE uOpenId=:id)';
 			$conn->createCommand($sql)->bindValues([
 				':id' => $openId,
-				':aid' => $adminId
+				':uniq' => uniqid(),
+				':aid' => $adminId,
 			])->execute();
 		}
 		$entity = self::findOne(["uOpenId" => $openId]);

@@ -1394,4 +1394,23 @@ class WxController extends BaseController
 			'微媒100',
 			'bg-main');
 	}
+
+	public function actionRoom()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if ($wxInfo) {
+			$avatar = $wxInfo["Avatar"];
+			$nickname = $wxInfo["uName"];
+			$uId = $wxInfo['uId'];
+		}
+		return self::renderPage("room.tpl",
+			[
+				'uId' => $uId,
+				'avatar' => $avatar,
+				'nickname' => $nickname,
+				'wxUrl' => AppUtil::wechatUrl(),
+			],
+			'terse');
+	}
 }
