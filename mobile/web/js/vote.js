@@ -33,7 +33,7 @@ require(["layer"],
 				});
 				// console.log(ans);
 			}
-			if (ans.length < 4) {
+			if (ans.length < parseInt($("#count").val())) {
 				showMsg("还有未投票的选题~");
 				return;
 			}

@@ -1225,20 +1225,24 @@ class WxController extends BaseController
 			exit();
 		}
 		//$gid = 2002;
-		$gid = 2012;
+		// $gid = 2012;
+		$gid = 2013;
 		if (Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oUId" => $wxInfo["uId"]])) {
 			if ($openId != "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
 
 			}
 			header('location:/wx/voted');
 			exit();
-
 		}
 		list($questions, $gId) = QuestionGroup::findGroup($gid);
 
+		//$note = "小微要组织一场活动，不知各位帅哥美女喜欢什么样的，那就一起来投票吧（投票有惊喜哦），我们会根据大家的喜好，组织线下活动哦，欢迎参加！";
+		$note = "'微媒100'要改名字了，不知各位帅哥美女喜欢什么样的，那就一起来投票吧（投票有惊喜哦），我们会根据大家的意见，决定启用哪个，欢迎参加！";
 		return self::renderPage('vote.tpl', [
 			"questions" => $questions,
-			"gId" => $gId
+			"gId" => $gId,
+			"count" => count($questions),
+			"note" => $note,
 		],
 			'terse',
 			'投票活动');
@@ -1253,12 +1257,14 @@ class WxController extends BaseController
 			exit();
 		}
 		// $gid = 2002;
-		$gid = 2012;
+		//$gid = 2012;
+		$gid = 2013;
 		if (!Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oUId" => $wxInfo["uId"]])) {
 			header('location:/wx/vote');
 			exit();
 		}
 		$voteStat = QuestionGroup::voteStat($gid, $wxInfo["uId"]);
+
 		return self::renderPage('voted.tpl', [
 			"voteStat" => $voteStat,
 		],
