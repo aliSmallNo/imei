@@ -10,13 +10,11 @@ namespace console\controllers;
  */
 use common\models\ChatMsg;
 use common\models\User;
-use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
-use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -497,7 +495,13 @@ class FooController extends Controller
 		/*$srcPath = 'https://img.meipo100.com/2017/92/119168_n.jpg';
 		$ret = pathinfo($srcPath, PATHINFO_BASENAME);
 		var_dump($ret);*/
-		AppUtil::logFile('test', 5, __FUNCTION__, __LINE__);
+//		AppUtil::logFile('test', 5, __FUNCTION__, __LINE__);
+		$openId = 'oYDJewzT010cQ65SbLScH7qpeSCc';
+		$ret = UserWechat::refreshWXInfo($openId, 1);
+		var_dump($ret);
+		$openId = 'oYDJew5wGt0OmO8fODf1oOTUVDVU';
+		$ret = UserWechat::refreshWXInfo($openId, 1);
+		var_dump($ret);
 		/*$conn = AppUtil::db();
 		$sql = 'select uId from im_user WHERE uUniqid=\'\' ';
 		$ret = $conn->createCommand($sql)->queryAll();

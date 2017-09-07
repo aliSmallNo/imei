@@ -287,7 +287,7 @@ class UserWechat extends ActiveRecord
 
 		$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 
-		$updateInfo = function ($pFields, $pToken, $openId, $cmd) {
+		$updateInfo = function ($pFields, $pToken, $openId, $cmd, $debugFlag) {
 			$cnt = 0;
 			$url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
 			$url = sprintf($url, $pToken, $openId);
@@ -295,6 +295,9 @@ class UserWechat extends ActiveRecord
 			$user = json_decode($res, 1);
 			if (!$user || !isset($user['nickname'])) {
 				return $cnt;
+			}
+			if ($debugFlag) {
+				var_dump($user);
 			}
 			$params = [
 				':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
@@ -325,7 +328,7 @@ class UserWechat extends ActiveRecord
 		$updateCount = 0;
 		foreach ($openIds as $id) {
 			$cmdUpdate2->bindValues([':openid' => $id])->execute();
-			$updateCount += $updateInfo($fields, $token, $id, $cmdUpdate);
+			$updateCount += $updateInfo($fields, $token, $id, $cmdUpdate, $debug);
 			if ($debug && $updateCount % 200 == 0) {
 				echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . "\n";
 			}
