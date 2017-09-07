@@ -21,6 +21,7 @@
 	</div>
 </div>
 <input type="hidden" id="cUID" value="{{$userId}}">
+<input type="hidden" id="cCITY" value="{{$city}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>

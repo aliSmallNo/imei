@@ -1281,6 +1281,16 @@ class WxController extends BaseController
 		if ($wxInfo) {
 			$userId = $wxInfo['uId'];
 		}
+
+		$city = json_decode($wxInfo["uLocation"], 1);
+		if (isset($city[2])) {
+			$city = mb_substr($city[2]["text"], 0, 2);
+		} elseif (isset($city[1])) {
+			$city = mb_substr($city[1]["text"], 0, 2);
+		} else {
+			$city = "盐城";
+		}
+
 		$uId = self::getParam('id', $userId);
 		$preview = ($uId == $userId ? 1 : 0);
 		$bgSrc = '/images/bg_invitation.jpg';
@@ -1297,7 +1307,8 @@ class WxController extends BaseController
 				'bgSrc' => $bgSrc,
 				'stars' => UserQR::$SuperStars,
 				'cls' => $cls,
-				'userId' => $userId
+				'userId' => $userId,
+				'city' => $city,
 			],
 			'terse',
 			'微媒100',
