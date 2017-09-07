@@ -162,7 +162,7 @@ class ApiController extends Controller
 				// Rain: 测试阶段，payFee x元实际支付x分
 //				$payFee = $amt;
 				$payFee = intval($amt * 100);
-				if ($openId == "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
+				if (in_array($openId, ['oYDJew5EFMuyrJdwRrXkIZLU2c58', 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'])) {
 					$payFee = $amt;
 				}
 				$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);

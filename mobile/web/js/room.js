@@ -337,20 +337,21 @@ require(["layer"],
 			uni: 0,
 			gid: 991,
 			list: $('.chats'),
-			tmp: $('#tpl_chat').html(),
 			input: $('.chat-input'),
+			bot: $('#schat .m-bottom-pl'),
+			tmp: $('#tpl_chat').html(),
 			init: function () {
 				var util = this;
 				util.uni = $('#cUNI').val();
 				util.socket = io('https://ws.meipo100.com');
 				util.socket.emit('buzz', 'login', util.uni);
-				util.socket.emit('join', util.gid, util.uni);
 				util.socket.on("msg", function (resp) {
 					if (resp.code == 0) {
 						$.each(resp.data.items, function () {
 							var item = this;
 							if (item.uid == util.uni) {
 								item.dir = 'right';
+								item.avatar = '/images/logo62.png';
 							}
 						});
 						var html = Mustache.render(util.tmp, resp.data);
@@ -359,10 +360,22 @@ require(["layer"],
 						} else {
 							util.list.append(html);
 						}
+						setTimeout(function () {
+							util.bot.get(0).scrollIntoView(true);
+						}, 300);
 					}
 				});
+
+				util.socket.on('connect', function () {
+					util.socket.emit('join', util.gid, util.uni);
+				});
+
+				util.socket.on("leave", function (obj) {
+
+				});
+
 				util.socket.on("sys", function (obj) {
-					console.log(obj);
+					// console.log(obj);
 				});
 
 				$('.btn-chat-send').on(kClick, function () {
@@ -380,7 +393,7 @@ require(["layer"],
 					showMsg('聊天内容不能为空！', 3, 12);
 					return false;
 				}
-				util.socket.send(util.gid, util.uni, content);
+				util.socket.send(content);
 				util.input.val('');
 			}
 		};
