@@ -12,10 +12,13 @@ use admin\models\Admin;
 use common\models\ChatMsg;
 use common\models\QuestionSea;
 use common\models\User;
+use common\models\UserMsg;
 use common\models\UserNet;
+use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
+use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -601,78 +604,9 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-//		添加更新通知
-//		UserMsg::edit(0, [
-//			"mText" => json_encode(["每日一句：微媒100，衷心的希望大家都能找到属于自己的另一半，加油！"], JSON_UNESCAPED_UNICODE),
-//			"mCategory" => UserMsg::CATEGORY_UPGRADE,
-//			"mUId" => RedisUtil::getIntSeq(),
-//		]);
-
-//		添加助聊
-//		$ins = file_get_contents(__DIR__ . "/sea.log");
-//		$ins = explode("\n", $ins);
-//
-//		$insertItem["qAddedBy"] = 1002;
-//		foreach ($ins as $item) {
-//			$item = preg_replace("/\s+/", " ", $item);
-//			$item = explode(" ", $item);
-//			if ($item[0] == "固定") {
-//				$insertItem["qRank"] = 99;
-//			} elseif ($item[0] == "限男生问") {
-//				$insertItem["qRank"] = 1;
-//			} elseif ($item[0] == "限女生问") {
-//				$insertItem["qRank"] = 0;
-//			} else {
-//				$insertItem["qRank"] = 999;
-//			}
-//			if ($item[2] == "男士先回答") {
-//				$insertItem["qResp"] = 109;
-//			} elseif ($item[2] == "女士先回答") {
-//				$insertItem["qResp"] = 106;
-//			} else {
-//				$insertItem["qResp"] = 100;
-//			}
-//			foreach (QuestionSea::$catDict as $k => $v) {
-//				if (mb_substr($v, 0, 2) == $item[3]) {
-//					$insertItem["qCategory"] = $k;
-//				}
-//			}
-//			$insertItem["qTitle"] = $item[1] . "(" . $item[2] . ")";
-//			print_r($insertItem);
-//			 QuestionSea::edit(0, $insertItem);
-//		}
-
-
-		//QuestionSea::randQuestion(120003, 128292, 510, 11);
-//		$qId = AppUtil::decrypt("CDlpWjA5QjI3MkdiMjM0NTM7a1wyO0Q0OTRJZA");
-//		echo ChatMsg::addChat(120003, 128292, "有酒窝吗？(女士先回答)", 0, 0, $qId);
-
-//		echo QuestionSea::sendQIds(120003, 128292);
-//		ChatMsg::edit(6717, ["cNote" => ""]);
-
-		//UserQR::downloadFile("http://img.taopic.com/uploads/allimg/120727/201995-120HG1030762.jpg", AppUtil::imgDir() . RedisUtil::getImageSeq());
-
-		// 稻草人聊天
-//		$st = User::STATUS_DUMMY;
-//		$dummyMap = ChatMsg::$dummyMap;
-//		$conn = AppUtil::db();
-//		foreach ($dummyMap as $gender => $items) {
-//			foreach ($items as $k => $item) {
-//				$name = $item["name"];
-//				$id = $item["id"];
-//				$sql = "select * from im_user where uId=$id ";
-//				$ret = $conn->createCommand($sql)->queryAll();
-//				if ($ret && count($ret) == 1) {
-//					$ret = $ret[0];
-//					$dummyMap[$gender][$k]["openid"] = $ret["uOpenId"];
-//					$dummyMap[$gender][$k]["id"] = $ret["uId"];
-//					$dummyMap[$gender][$k]["avatar"] = $ret["uThumb"];
-//				}
-//			}
-//		}
-//		print_r($dummyMap);
-//		exit;
-
-
+		$uId = 131379;
+		$dt = date('Y-m-d', time() + 86400 * 10);
+		$bgSrc = UserQR::createInvitationForTest();
+		var_dump($bgSrc);
 	}
 }
