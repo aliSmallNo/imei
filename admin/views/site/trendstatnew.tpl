@@ -99,8 +99,8 @@
 		var items = [], names = [], fields = [];
 		switch (cat) {
 			case 'new':
-				names = ["到访", "路人", "会员", "关注", "取消关注", "转化率", "充值", "媒婆", "帅哥", "美女"];
-				fields = ["reg", "newvisitor", "newmember", "focus", "todayblur", "focusRate", "trans", "mps", "male", "female"];
+				names = ["到访", "游客", "会员", "关注", "取消关注", "转化率", "充值", "媒婆", "帅哥", "美女"];
+				fields = ["reg", "nvisitor", "newmember", "focus", "todayblur", "focusRate", "trans", "mps", "male", "female"];
 				for (var i = 0; i < fields.length; i++) {
 					items.push({
 						name: names[i],
@@ -109,8 +109,8 @@
 				}
 				break;
 			case 'net':
-				names = ["心动", "牵线", "牵线成功", "聊天数"];
-				fields = ["favor", "getwxno", "pass", "chat"];
+				names = ["心动数", "聊天数", "送媒桂花"];
+				fields = ["favor", "chat", "gift"];
 				for (var i = 0; i < fields.length; i++) {
 					items.push({
 						name: names[i],
@@ -119,7 +119,7 @@
 				}
 				break;
 			case 'amt':
-				names = ["累计到访", "累计路人", '累计关注', "累计会员", '累计单身男', '累计单身女', '累计媒婆'];
+				names = ["累计到访", "累计游客", '累计关注', "累计会员", '累计单身男', '累计单身女', '累计媒婆'];
 				fields = ["amt", "visitor", 'follows', "member", 'boys', 'girls', 'meipos'];
 				for (var i = 0; i < fields.length; i++) {
 					items.push({
@@ -140,7 +140,7 @@
 				break;
 		}
 
-		var colors = ['#F30', '#212121', '#208850', '#337ab7', '#b87b00', '#ab47cb', '#777', "#86c351", "#FF8800", "#996699"];
+		var colors = ['#e91e63', '#2196F3', '#4CAF50', '#FF8A80', '#47639E', '#00bcd4', "#ff5722", "#9c27b0", "#86c351", '#795548'];
 		Highcharts.theme = {
 			colors: colors
 		};
