@@ -1264,9 +1264,10 @@ class WxController extends BaseController
 			exit();
 		}
 		$voteStat = QuestionGroup::voteStat($gid, $wxInfo["uId"]);
-
+		$note = "'微媒100'要改名字了，不知各位帅哥美女喜欢什么样的，那就一起来投票吧（投票有惊喜哦），我们会根据大家的意见，决定启用哪个，欢迎参加！";
 		return self::renderPage('voted.tpl', [
 			"voteStat" => $voteStat,
+			"note" => $note,
 		],
 			'terse',
 			'投票活动');

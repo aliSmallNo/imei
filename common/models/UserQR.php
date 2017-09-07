@@ -360,4 +360,58 @@ class UserQR extends ActiveRecord
 		$entity->save();
 		return $accessUrl;
 	}
+
+	public static function createInvitationForTest()
+	{
+		$gy = "2017";
+		$gm = "18";
+		$gd = "8";
+		$w = "四";
+		$man = "小明";
+		$woman = "小红";
+		$time = "下午18点18分";
+		$addr = "北京路8号";
+		$addrDes = "东台大酒店2楼宴会厅";
+		$rootFolder = AppUtil::rootDir();
+		$h5Font = $rootFolder . 'common/assets/hkst.ttf';
+
+		$saveAs = 'inv' . RedisUtil::getImageSeq() . '.jpg';
+		$saveAs = AppUtil::imgDir() . $saveAs;
+
+		$bgFile = $rootFolder . 'mobile/assets/qt.jpg';
+		$img = Image::open($bgFile);
+		if ($gy) {
+			$img->write($h5Font, $gy, 455, 573, 15, 34, 0x000000, 'center');
+		}
+		if ($gm) {
+			$img->write($h5Font, $gm, 510, 529, 15, 34, 0x000000, 'center');
+		}
+		if ($gd) {
+			$img->write($h5Font, $gd, 550, 500, 15, 34, 0x000000, 'center');
+		}
+
+		if ($w) {
+			$img->write($h5Font, $w, 640, 441, 15, 34, 0x000000, 'center');
+		}
+		if ($man) {
+			$img->write($h5Font, $man, 470, 636, 15, 33, 0x000000, 'center');
+		}
+		if ($woman) {
+			$img->write($h5Font, $woman, 490, 663, 15, 33, 0x000000, 'center');
+		}
+		if ($time) {
+			$img->write($h5Font, $time, 532, 708, 12, 33, 0x000000, 'center');
+		}
+		if ($addrDes) {
+			$img->write($h5Font, $addrDes, 565, 728, 12, 33, 0x000000, 'center');
+		}
+		if ($addr) {
+			$img->write($h5Font, $addr, 545, 748, 12, 33, 0x000000, 'center');
+		}
+		$img->save($saveAs);
+		$accessUrl = ImageUtil::getUrl($saveAs);
+		return $accessUrl;
+	}
+
+
 }
