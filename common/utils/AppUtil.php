@@ -798,9 +798,9 @@ class AppUtil
 		$txt[] = is_array($msg) ? json_encode($msg, JSON_UNESCAPED_UNICODE) : $msg;
 		$hasLog = is_file($file);
 		$ret = @file_put_contents($file, date('ymd H:i:s') . PHP_EOL . implode(" - ", $txt) . PHP_EOL, 8);
-		if (!$hasLog) {
-			//chmod($file, 0666);
-		}
+		/*if (!$hasLog) {
+			chmod($file, 0666);
+		}*/
 		return $ret;
 	}
 
