@@ -174,7 +174,7 @@ class ApiController extends Controller
 				if ($uInfo) {
 					$openId = $uInfo['uOpenId'];
 					UserWechat::getInfoByOpenId($openId, 1);
-					UserWechat::refreshWXInfo($openId, 1);
+					UserWechat::refreshWXInfo($openId);
 					return self::renderAPI(0, '刷新成功~');
 				} else {
 					return self::renderAPI(129, '用户不存在~');
