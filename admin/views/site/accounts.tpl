@@ -433,6 +433,9 @@
 				<div class="btn-divider"></div>
 				<a href="javascript:;" class="dummyChat btn btn-outline btn-danger btn-xs" data-gender="{{$prod.gender}}"
 					 data-id="{{$prod.id}}" data-name="{{$prod.name}}" data-thumb="{{$prod.thumb}}">稻草人代聊</a>
+				{{if $debug}}
+				<a href="javascript:;" class="btn-refresh btn btn-outline btn-danger btn-xs" data-id="{{$prod.id}}">刷新</a>
+				{{/if}}
 				<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 				<h5>创建于{{$prod.addedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 			</td>
@@ -575,6 +578,19 @@
 		  var self = $(this);
 		  self.closest(".dummy-opts").find(".dummy-opt").removeClass("active");
 		  self.addClass("active");
+	  });
+
+	  $(document).on("click", ".btn-refresh", function () {
+		  var self = $(this);
+		  $.post("/api/user", {
+			  tag: "refresh",
+			  id: self.attr('data-id')
+		  }, function (resp) {
+			  if (resp.code == 0) {
+				  location.reload();
+			  }
+			  layer.msg(resp.msg);
+		  }, "json");
 	  });
 
 	  function delUser(id) {
