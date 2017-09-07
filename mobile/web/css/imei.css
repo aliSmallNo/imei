@@ -4636,7 +4636,7 @@ section {
     .m-bottom-bar .icons a.schat-options {
       width: 5rem;
       height: 5rem;
-      background: #aaa url(../images/icon_options.png?v=1.1.1) no-repeat center center;
+      background: #b8b8b8 url(../images/icon_options.png?v=1.1.1) no-repeat center center;
       background-size: 1.6rem 1.6rem;
       border: 0; }
   .m-bottom-bar .m-chat-wrap {
@@ -5643,6 +5643,16 @@ section {
       border-radius: 0.4rem;
       padding: 0.8rem;
       display: inline-block; }
+  .chats li.tip {
+    text-align: center;
+    display: block; }
+    .chats li.tip em {
+      background: #d4d4d4;
+      color: #fff;
+      font-size: 1rem;
+      border-radius: 0.3rem;
+      padding: 0.3rem 0.6rem;
+      font-weight: 300; }
   .chats li.right {
     direction: rtl; }
     .chats li.right .avatar {

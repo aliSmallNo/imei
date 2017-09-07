@@ -26,11 +26,20 @@ require(["layer"],
 			loading: 0
 		};
 
-		function showMsg(title, sec) {
+		function showMsg(msg, sec, tag) {
 			var delay = sec || 3;
+			var ico = '';
+			if (tag && tag === 10) {
+				ico = '<i class="i-msg-ico i-msg-fault"></i>';
+			} else if (tag && tag === 11) {
+				ico = '<i class="i-msg-ico i-msg-success"></i>';
+			} else if (tag && tag === 12) {
+				ico = '<i class="i-msg-ico i-msg-warning"></i>';
+			}
+			var html = '<div class="m-msg-wrap">' + ico + '<p>' + msg + '</p></div>';
 			layer.open({
 				type: 99,
-				content: title,
+				content: html,
 				skin: 'msg',
 				time: delay
 			});
@@ -340,6 +349,7 @@ require(["layer"],
 			input: $('.chat-input'),
 			bot: $('#schat .m-bottom-pl'),
 			tmp: $('#tpl_chat').html(),
+			tipTmp: $('#tpl_chat_tip').html(),
 			init: function () {
 				var util = this;
 				util.uni = $('#cUNI').val();
@@ -374,8 +384,12 @@ require(["layer"],
 
 				});
 
-				util.socket.on("sys", function (obj) {
-					// console.log(obj);
+				util.socket.on("tip", function (resp) {
+					if (resp.exclude && resp.exclude.indexOf(util.uni) >= 0) {
+						return;
+					}
+					var html = Mustache.render(util.tipTmp, resp);
+					util.list.append(html);
 				});
 
 				$('.btn-chat-send').on(kClick, function () {

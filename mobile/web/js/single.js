@@ -462,7 +462,6 @@ require(["layer"],
 
 		};
 
-
 		var ChatUtil = {
 			qId: '',
 			sid: '',

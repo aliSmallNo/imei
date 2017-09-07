@@ -20,12 +20,8 @@ class BaseController extends Controller
 	const ICON_OK_HTML = '<i class="fa fa-check-circle gIcon"></i> ';
 	const ICON_ALERT_HTML = '<i class="fa fa-exclamation-circle gIcon"></i> ';
 	const COOKIE_OPENID = "wx-openid";
-	const CSS_VERSION = '1.1.4.4';
+	const CSS_VERSION = '1.1.4.6';
 	static $WX_OpenId = "";
-
-	public static $branchId = 0;
-	public $ptitle = '';
-
 
 	public function beforeAction($action)
 	{
@@ -156,7 +152,6 @@ class BaseController extends Controller
 		if (!$title) {
 			$title = '微媒100-媒桂花飘香';
 		}
-		$this->ptitle = $title;
 		$appView = YII::$app->view;
 		$appView->params['page_head_title'] = $title;
 		$appView->params['page_body_cls'] = $bodyClass;

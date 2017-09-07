@@ -1472,8 +1472,8 @@ class User extends ActiveRecord
 		$sql = "SELECT 
 				count(*) as reg,
 				SUM(IFNULL(w.wSubscribe,0)) as focus,
-				SUM(CASE WHEN wSubscribe is NULL THEN 1 END) as newvisitor,
-				SUM(CASE WHEN uPhone!='' AND uRole>9 THEN 1 END) as newmember,
+				SUM(CASE WHEN uStatus=0 THEN 1 END) as nvisitor,
+				SUM(CASE WHEN uStatus in (1,2,3) THEN 1 END) as newmember,
 				SUM(CASE WHEN w.wAddedOn BETWEEN :beginDT AND :endDT AND wSubscribe =0 THEN 1 END ) as todayblur,
 				SUM(CASE WHEN u.uRole=10 AND u.uGender=11 THEN  1 END ) as male,
 				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 THEN  1 END ) as female,
@@ -1487,7 +1487,7 @@ class User extends ActiveRecord
 		])->queryOne();
 		if ($res) {
 			$trends['focus'] = intval($res["focus"]); // 新增关注
-			$trends['newvisitor'] = intval($res["newvisitor"]); // 新增游客
+			$trends['nvisitor'] = intval($res["nvisitor"]); // 新增游客
 			$trends['newmember'] = intval($res["newmember"]); // 新增会员
 			$trends['reg'] = intval($res["reg"]);     // 新增注册
 			$trends['focusRate'] = ($res["reg"] > 0) ? intval(round($res["focus"] / $res["reg"], 2) * 100) : 0;   // 转化率
@@ -1499,12 +1499,12 @@ class User extends ActiveRecord
 
 		$sql = "SELECT 
 				COUNT(1) as amt,
-				SUM(CASE WHEN u.uRole not in (10,20) AND  w.wSubscribe not in (1) THEN 1 END) as visitor,
-				SUM(CASE WHEN uPhone!='' AND uRole>9 THEN 1 END) as member,
+				COUNT(CASE WHEN u.uStatus=0 THEN 1 END) as visitor,
+				COUNT(CASE WHEN uRole>9 AND uStatus in (1,2,3) THEN 1 END) as member,
 				SUM(IFNULL(w.wSubscribe,0)) as follows,
-				SUM(CASE WHEN u.uRole=20 THEN 1 END) as meipos,
-				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 THEN 1 END) as girls,
-				SUM(CASE WHEN u.uRole=10 AND u.uGender=11  THEN 1 END) as boys
+				SUM(CASE WHEN u.uRole=20 AND uStatus in (1,2,3) THEN 1 END) as meipos,
+				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 AND uStatus in (1,2,3) THEN 1 END) as girls,
+				SUM(CASE WHEN u.uRole=10 AND u.uGender=11 AND uStatus in (1,2,3) THEN 1 END) as boys
 				FROM im_user as u
 				JOIN im_user_wechat as w on w.wUId=u.uId
 				WHERE uStatus<8 AND uAddedOn < :endDT ";
@@ -1513,12 +1513,13 @@ class User extends ActiveRecord
 		])->queryOne();
 		if ($res2) {
 			$trends['amt'] = intval($res2["amt"]); //累计用户
-			$trends['visitor'] = intval($res2["visitor"]); //累计游客
 			$trends['member'] = intval($res2["member"]); //累计会员
 			$trends['follows'] = intval($res2["follows"]); //累计关注用户
 			$trends['meipos'] = intval($res2["meipos"]);
 			$trends['girls'] = intval($res2["girls"]);
 			$trends['boys'] = intval($res2["boys"]);
+			$trends['visitor'] = intval($res2["visitor"]);
+//			$trends['visitor'] = $trends['amt'] - $trends['member'];
 		}
 
 //		$sql = "select
@@ -1557,7 +1558,8 @@ class User extends ActiveRecord
 		$sql = "select 
 				SUM(CASE WHEN  nRelation=150 THEN  1 END ) as favor,
 				SUM(CASE WHEN  nRelation=140 THEN  1 END ) as getwxno,
-				SUM(CASE WHEN  nRelation=140 and nStatus=2 THEN  1 END) as pass
+				SUM(CASE WHEN  nRelation=140 AND nStatus=2 THEN  1 END) as pass,
+				SUM(CASE WHEN  nRelation=180 THEN  1 END) as gift
 				FROM im_user_net
 				WHERE nAddedOn BETWEEN :beginDT and :endDT AND nDeletedFlag=0 ";
 		$res4 = $conn->createCommand($sql)->bindValues([
@@ -1568,6 +1570,7 @@ class User extends ActiveRecord
 			$trends['favor'] = intval($res4["favor"]); // 新增心动
 			$trends['getwxno'] = intval($res4["getwxno"]); // 新增牵线
 			$trends['pass'] = intval($res4["pass"]); // 新增牵线成功
+			$trends['gift'] = intval($res4["gift"]); // 赠送礼物/媒桂花
 		}
 
 		$sql = "SELECT SUM(pTransAmt/100) as trans
