@@ -379,9 +379,9 @@ class UserQR extends ActiveRecord
 		list($width, $height, $type) = getimagesize($bgFile);
 		$mergeSize = 40;
 		// echo $mergeFile;exit;
-		$mergeImg = Image::open($mergeFile)->zoomCrop($mergeSize, $mergeSize, 0xffffff, 'left', 'top');
-		$img = Image::open($bgFile)->merge($mergeImg, $width / 2, $height / 2, $mergeSize, $mergeSize);
-		// print_r($img);exit;
+		//$mergeImg = Image::open($mergeFile)->zoomCrop($mergeSize, $mergeSize, 0xffffff, 'center', 'center');
+		$img = Image::open($bgFile)->merge((Image::open($mergeFile)), 50, 50, $mergeSize, $mergeSize);
+
 		$gy = date("Y", strtotime($dt));
 		$gm = date("m", strtotime($dt));
 		$gd = date("d", strtotime($dt));

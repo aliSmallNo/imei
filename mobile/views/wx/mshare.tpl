@@ -21,8 +21,9 @@
 	</div>
 </div>
 <input type="hidden" id="cUID" value="{{$userId}}">
+<input type="hidden" id="cCITY" value="{{$city}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/mshare.js?v=1.1.2" src="/assets/js/require.js"></script>
+<script data-main="/js/mshare.js?v=1.1.3" src="/assets/js/require.js"></script>
