@@ -353,7 +353,8 @@ require(["layer"],
 			init: function () {
 				var util = this;
 				util.uni = $('#cUNI').val();
-				util.socket = io('https://ws.meipo100.com');
+				// util.socket = io('https://ws.meipo100.com');
+				util.socket = io('https://wx.meipo100.com:9502');
 				util.socket.emit('buzz', 'login', util.uni);
 				util.socket.on("msg", function (resp) {
 					if (resp.code == 0) {

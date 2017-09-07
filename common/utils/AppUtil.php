@@ -799,7 +799,7 @@ class AppUtil
 		$hasLog = is_file($file);
 		$ret = @file_put_contents($file, date('ymd H:i:s') . PHP_EOL . implode(" - ", $txt) . PHP_EOL, 8);
 		if (!$hasLog) {
-			chmod($file, 0666);
+			//chmod($file, 0666);
 		}
 		return $ret;
 	}
