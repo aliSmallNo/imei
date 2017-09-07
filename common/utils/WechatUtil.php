@@ -409,7 +409,7 @@ class WechatUtil
 						[
 							"type" => "view",
 							"name" => "搞笑请帖",
-							"url" => $wxUrl . "/wx/marry"
+							"url" => $wxUrl . "/wx/marry2"
 						],
 						[
 							"type" => "view",
