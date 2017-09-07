@@ -41,7 +41,7 @@
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<i class="fa fa-bar-chart-o fa-fw"></i> 累计注册
+			<i class="fa fa-bar-chart-o fa-fw"></i> 累计数据
 		</div>
 		<div class="panel-body">
 			<div id="amt-chart" class="chart-wrapper"></div>
@@ -49,7 +49,7 @@
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<i class="fa fa-bar-chart-o fa-fw"></i> 活跃用户
+			<i class="fa fa-bar-chart-o fa-fw"></i> 活跃数据
 			<small>活跃度 = 活跃人数 / 累计会员数</small>
 		</div>
 		<div class="panel-body">
@@ -109,8 +109,8 @@
 			}
 		}
 		if (cat == "net") {
-			var names = ["心动", "牵线", "牵线成功","聊天数"];
-			var fields = ["favor", "getwxno", "pass","chat"];
+			var names = ["心动", "牵线", "牵线成功", "聊天数"];
+			var fields = ["favor", "getwxno", "pass", "chat"];
 			for (var i = 0; i < fields.length; i++) {
 				items.push({
 					name: names[i],
@@ -120,8 +120,8 @@
 		}
 
 		if (cat == "amt") {
-			var names = ["累计到访", "累计会员", "累计路人", '累计关注', '累计媒婆', '累计单身男', '累计单身女'];
-			var fields = ["amt", "member", "visitor", 'follows', 'meipos', 'boys', 'girls'];
+			var names = ["累计到访", "累计路人", "累计会员", '累计关注', '累计单身男', '累计单身女', '累计媒婆'];
+			var fields = ["amt", "visitor", "member", 'follows', 'boys', 'girls', 'meipos'];
 			for (var i = 0; i < fields.length; i++) {
 				items.push({
 					name: names[i],
