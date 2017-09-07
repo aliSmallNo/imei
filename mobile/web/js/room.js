@@ -384,11 +384,12 @@ require(["layer"],
 
 				});
 
-				util.socket.on("tip", function (msg, listeners) {
-					if (listeners.indexOf(util.uni) >= 0) {
-						var html = Mustache.render(util.tipTmp, {content: msg});
-						util.list.append(html);
+				util.socket.on("tip", function (resp) {
+					if (resp.exclude && resp.exclude.indexOf(util.uni) >= 0) {
+						return;
 					}
+					var html = Mustache.render(util.tipTmp, resp);
+					util.list.append(html);
 				});
 
 				$('.btn-chat-send').on(kClick, function () {
