@@ -496,10 +496,10 @@ class FooController extends Controller
 		$ret = pathinfo($srcPath, PATHINFO_BASENAME);
 		var_dump($ret);*/
 //		AppUtil::logFile('test', 5, __FUNCTION__, __LINE__);
-		$openId = 'oYDJewzT010cQ65SbLScH7qpeSCc';
+		$openId = 'oYDJew1i-gciwSg4yRv8gt1u61yk';
 		$ret = UserWechat::refreshWXInfo($openId, 1);
 		var_dump($ret);
-		$openId = 'oYDJew5wGt0OmO8fODf1oOTUVDVU';
+		$openId = 'oYDJew2g9fSle3MuVoACQdWoK-co';
 		$ret = UserWechat::refreshWXInfo($openId, 1);
 		var_dump($ret);
 		/*$conn = AppUtil::db();
