@@ -52,7 +52,7 @@ require(["layer"],
 				content: '正在生成中...'
 			});
 			setTimeout(function () {
-				location.href = '/wx/marry2?preview=1&star=' + $sls.star.val() + '&dt=' + $sls.dt.val() + '&name1=' + encodeURI(name1) + '&name1=' + name2;
+				location.href = '/wx/marry2?preview=1&dt=' + $sls.dt.val() + '&name1=' + encodeURI(name1) + '&name2=' + name2;
 			}, 300);
 		});
 
