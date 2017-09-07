@@ -330,11 +330,11 @@ class UserWechat extends ActiveRecord
 			$cmdUpdate2->bindValues([':openid' => $id])->execute();
 			$updateCount += $updateInfo($fields, $token, $id, $cmdUpdate, $debug);
 			if ($debug && $updateCount % 200 == 0) {
-				echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . "\n";
+				echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . PHP_EOL;
 			}
 		}
 		if ($debug) {
-			echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . "\n";
+			echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . PHP_EOL;
 		}
 		return true;
 	}
