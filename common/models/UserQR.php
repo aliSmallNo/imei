@@ -380,9 +380,9 @@ class UserQR extends ActiveRecord
 				$mergeFile = ImageUtil::getFilePath($qrFile);
 			}
 		}
-		$mergeSize = 210;
+		$mergeSize = 330;
 		$mergeImg = Image::open($mergeFile)->zoomCrop($mergeSize, $mergeSize, 0xffffff, 'center', 'center');
-		$img = Image::open($bgFile)->merge($mergeImg, 50, 850, $mergeSize, $mergeSize);
+		$img = Image::open($bgFile)->merge($mergeImg, 20, 860, $mergeSize, $mergeSize);
 
 		$gy = date("Y", strtotime($dt));
 		$gm = date("m", strtotime($dt));
@@ -392,8 +392,8 @@ class UserQR extends ActiveRecord
 		$woman = $name2;
 		$xing = mb_substr($man, 0, 1);
 		$time = "下午18点18分";
-		$addr = "北京路8号";
-		$addrDes = "东台大酒店2楼宴会厅";
+		$addr = "微媒大道88号";
+		$addrDes = "五洲国际大酒店2楼宴会厅";
 		$from = $xing . "爸爸&" . $xing . "妈妈";
 		$h5Font = $rootFolder . 'common/assets/hkst.ttf';
 
@@ -423,10 +423,10 @@ class UserQR extends ActiveRecord
 			$img->write($h5Font, $time, 524, 708, 10, 34, 0x000000, 'center');
 		}
 		if ($addrDes) {
-			$img->write($h5Font, $addrDes, 553, 727, 10, 34, 0x000000, 'center');
+			$img->write($h5Font, $addrDes, 560, 732, 10, 34, 0x000000, 'center');
 		}
 		if ($addr) {
-			$img->write($h5Font, $addr, 537, 748, 10, 34, 0x000000, 'center');
+			$img->write($h5Font, $addr, 545, 752, 10, 34, 0x000000, 'center');
 		}
 		if ($from) {
 			$img->write($h5Font, $from, 700, 668, 10, 34, 0x000000, 'center');
