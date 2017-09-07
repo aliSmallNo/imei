@@ -23,10 +23,6 @@ class BaseController extends Controller
 	const CSS_VERSION = '1.1.4.6';
 	static $WX_OpenId = "";
 
-	public static $branchId = 0;
-	public $ptitle = '';
-
-
 	public function beforeAction($action)
 	{
 		$actionId = $action->id;
@@ -156,7 +152,6 @@ class BaseController extends Controller
 		if (!$title) {
 			$title = '微媒100-媒桂花飘香';
 		}
-		$this->ptitle = $title;
 		$appView = YII::$app->view;
 		$appView->params['page_head_title'] = $title;
 		$appView->params['page_body_cls'] = $bodyClass;
