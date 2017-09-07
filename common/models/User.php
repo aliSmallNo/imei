@@ -1518,9 +1518,8 @@ class User extends ActiveRecord
 			$trends['meipos'] = intval($res2["meipos"]);
 			$trends['girls'] = intval($res2["girls"]);
 			$trends['boys'] = intval($res2["boys"]);
-			$trends['visitor'] = $trends['amt'] - $trends['member'];
-			//intval($res2["visitor"]); //累计游客
-
+			$trends['visitor'] = intval($res2["visitor"]);
+//			$trends['visitor'] = $trends['amt'] - $trends['member'];
 		}
 
 //		$sql = "select
