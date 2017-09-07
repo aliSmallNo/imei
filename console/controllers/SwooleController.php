@@ -20,7 +20,7 @@ class SwooleController extends Controller
 	{
 		$this->serv = new \swoole_server(AppUtil::swooleHost(), 9502);
 		$config = AppUtil::swooleSet();
-		$config['log_file'] = AppUtil::logDir() . AppUtil::PROJECT_NAME . '_swoole.log';
+		$config['log_file'] = AppUtil::logDir() . 'swoole.log';
 		$this->serv->set(AppUtil::swooleSet());
 		$this->serv->on('Start', array($this, 'onStart'));
 		$this->serv->on('Connect', array($this, 'onConnect'));
@@ -31,7 +31,7 @@ class SwooleController extends Controller
 
 	public function onStart($serv)
 	{
-		echo "Start\n";
+		echo "Start";
 	}
 
 	public function onConnect($serv, $fd, $from_id)
