@@ -65,6 +65,19 @@ require(["layer"],
 			}, "json");
 		}
 
+		$(document).on("click", ".btn-mshare-rule", function () {
+			layer.open({
+				content: "<p style='text-align: left;font-size: 1.2rem'>1. 时间：2017年9月7日-2017年9月15日</p>" +
+				"<p style='text-align: left;font-size: 1.2rem'>2. 奖励条件：推荐3名以上（包含3名）单身好友注册微媒100，并审核通过。</p>" +
+				"<p style='text-align: left;font-size: 1.2rem'>3. 用户要求：3.1.单身 3.2.年龄22-30周岁</p>" +
+				"<p style='text-align: left;font-size: 1.2rem'>4. 奖励红包：10元现金（通过微信发放）。</p>" +
+				"<p style='text-align: left;font-size: 1.2rem'>5. 操作：<br/>5.1.分享链接: a 已注册用户，点击活动页面，分享链接 b.未注册用户，注册成成单身-个人中心-分享给朋友。<br/>" +
+				"5.2.单身好友通过链接注册达到3名以上\n" +
+				"<br/>5.3.奖励统计时间为9月15日，发放奖励时间为9月16日</p>",
+				btn: "我知道了"
+			});
+		});
+
 		$(function () {
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;

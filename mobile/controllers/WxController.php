@@ -1284,9 +1284,9 @@ class WxController extends BaseController
 
 		$city = json_decode($wxInfo["uLocation"], 1);
 		if (isset($city[2])) {
-			$city = mb_substr($city[2]["text"], 0, 2);
+			$city = $city[2]["text"];
 		} elseif (isset($city[1])) {
-			$city = mb_substr($city[1]["text"], 0, 2);
+			$city = $city[1]["text"];
 		} else {
 			$city = "盐城";
 		}

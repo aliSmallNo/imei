@@ -207,6 +207,22 @@ class UserBuzz extends ActiveRecord
 							]
 						]
 					]);
+				} else if ($extension == 'meipo100-marry2') {
+					return self::json_to_xml([
+						'ToUserName' => $fromUsername,
+						'FromUserName' => $toUsername,
+						'CreateTime' => time(),
+						'MsgType' => 'news',
+						'ArticleCount' => 1,
+						'Articles' => [
+							'item' => [
+								'Title' => '只需二步生成你的结婚请帖',
+								'Description' => '一起搞事情啊，恶搞轰炸一下朋友圈呗~',
+								'PicUrl' => 'https://wx.meipo100.com/images/qt.jpg',
+								'Url' => 'https://wx.meipo100.com/wx/marry2'
+							]
+						]
+					]);
 				}
 				return self::json_to_xml([
 					'ToUserName' => $fromUsername,

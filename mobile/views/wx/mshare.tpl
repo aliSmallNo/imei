@@ -4,8 +4,11 @@
 	</div>
 	{{if $preview}}
 	<br>
-	<div class="btn-wrap">
-		<a class="btn btn-main btn-share">马上分享</a>
+	<div class="btn-wrap" style="padding: .5rem 2rem">
+		<a class="btn btn-main btn-share" >马上分享</a>
+	</div>
+	<div>
+		<a class="btn btn-mshare-rule" style="color: #0272ff;display: block;font-size: 1.2rem">活动规则</a>
 	</div>
 	{{else}}
 	<br>
@@ -26,4 +29,4 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/mshare.js?v=1.1.3" src="/assets/js/require.js"></script>
+<script data-main="/js/mshare.js?v=1.1.4" src="/assets/js/require.js"></script>

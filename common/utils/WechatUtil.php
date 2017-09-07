@@ -414,7 +414,8 @@ class WechatUtil
 						[
 							"type" => "view",
 							"name" => "官方活动",
-							"url" => $wxUrl . "/wx/event"
+							//"url" => $wxUrl . "/wx/event"
+							"url" => $wxUrl . "/wx/mshare"
 						],
 						[
 							"type" => "view",
