@@ -361,25 +361,44 @@ class UserQR extends ActiveRecord
 		return $accessUrl;
 	}
 
-	public static function createInvitationForTest()
+	public static function createInvitationForMarry($uId, $name1, $name2, $dt)
 	{
-		$gy = "2017";
-		$gm = "18";
-		$gd = "8";
-		$w = "四";
-		$man = "小明";
-		$woman = "小红";
+		$rootFolder = AppUtil::rootDir();
+		$bgFile = $rootFolder . 'mobile/assets/qt100.jpg';
+		$qrFile = UserQR::createQR($uId, UserQR::CATEGORY_SALES, 'marry2');
+		if (AppUtil::isDev()) {
+			$qrFile = $rootFolder . $qrFile;
+		}
+		$mergeFile = $qrFile;
+		if ($qrFile) {
+			$mergeFile = $qrFile;
+			if (strpos($qrFile, 'http') !== false) {
+				$mergeFile = ImageUtil::getFilePath($qrFile);
+			}
+		}
+		list($width, $height, $type) = getimagesize($bgFile);
+		$mergeSize = 40;
+		// echo $mergeFile;exit;
+		$mergeImg = Image::open($mergeFile)->zoomCrop($mergeSize, $mergeSize, 0xffffff, 'left', 'top');
+		$img = Image::open($bgFile)->merge($mergeImg, $width / 2, $height / 2, $mergeSize, $mergeSize);
+		// print_r($img);exit;
+		$gy = date("Y", strtotime($dt));
+		$gm = date("m", strtotime($dt));
+		$gd = date("d", strtotime($dt));
+		$w = date("w", strtotime($dt));
+		$man = $name1;
+		$woman = $name2;
+		$xing = mb_substr($man, 0, 1);
 		$time = "下午18点18分";
 		$addr = "北京路8号";
 		$addrDes = "东台大酒店2楼宴会厅";
-		$rootFolder = AppUtil::rootDir();
+		$from = $xing . "爸爸&" . $xing . "妈妈";
 		$h5Font = $rootFolder . 'common/assets/hkst.ttf';
 
 		$saveAs = 'inv' . RedisUtil::getImageSeq() . '.jpg';
 		$saveAs = AppUtil::imgDir() . $saveAs;
 
-		$bgFile = $rootFolder . 'mobile/assets/qt.jpg';
-		$img = Image::open($bgFile);
+		// $img = Image::open($bgFile);
 		if ($gy) {
 			$img->write($h5Font, $gy, 455, 573, 15, 34, 0x000000, 'center');
 		}
@@ -389,24 +408,26 @@ class UserQR extends ActiveRecord
 		if ($gd) {
 			$img->write($h5Font, $gd, 550, 500, 15, 34, 0x000000, 'center');
 		}
-
 		if ($w) {
 			$img->write($h5Font, $w, 640, 441, 15, 34, 0x000000, 'center');
 		}
 		if ($man) {
-			$img->write($h5Font, $man, 470, 636, 15, 33, 0x000000, 'center');
+			$img->write($h5Font, $man, 470, 636, 15, 34, 0x000000, 'center');
 		}
 		if ($woman) {
-			$img->write($h5Font, $woman, 490, 663, 15, 33, 0x000000, 'center');
+			$img->write($h5Font, $woman, 490, 663, 15, 34, 0x000000, 'center');
 		}
 		if ($time) {
-			$img->write($h5Font, $time, 532, 708, 12, 33, 0x000000, 'center');
+			$img->write($h5Font, $time, 524, 708, 10, 34, 0x000000, 'center');
 		}
 		if ($addrDes) {
-			$img->write($h5Font, $addrDes, 565, 728, 12, 33, 0x000000, 'center');
+			$img->write($h5Font, $addrDes, 553, 727, 10, 34, 0x000000, 'center');
 		}
 		if ($addr) {
-			$img->write($h5Font, $addr, 545, 748, 12, 33, 0x000000, 'center');
+			$img->write($h5Font, $addr, 537, 748, 10, 34, 0x000000, 'center');
+		}
+		if ($from) {
+			$img->write($h5Font, $from, 700, 668, 10, 34, 0x000000, 'center');
 		}
 		$img->save($saveAs);
 		$accessUrl = ImageUtil::getUrl($saveAs);

@@ -1404,6 +1404,71 @@ class WxController extends BaseController
 			'bg-main');
 	}
 
+
+	public function actionMarry2()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$userId = User::SERVICE_UID;
+		if ($wxInfo) {
+			$userId = $wxInfo['uId'];
+		}
+		$uId = self::getParam('id', $userId);
+		$name1 = self::getParam('name1');
+		$name2 = self::getParam('name2');
+		$name = self::getParam('mname');
+		$gender = self::getParam('gender', 1);
+		$dt = self::getParam('dt');
+		$star = self::getParam('star');
+		$preview = self::getParam('preview', 0);
+		$bgSrc = '/images/qt.jpg';
+		$cls = 'small';
+		if ($name1) {
+			$bgSrc = UserQR::createInvitationForMarry($uId, $name1, $name2, $dt);
+			$cls = $preview ? '' : 'big';
+		}
+
+		// $cls = 'big';$preview = 1;$name = "sss";
+
+		$dates = [
+			'2017-09-08' => '2017.09.08周五 七月十八',
+			'2017-09-14' => '2017.09.14周四 七月廿四',
+			'2017-09-15' => '2017.09.15周五 七月廿五',
+			'2017-09-20' => '2017.09.20周三 八月初一',
+			'2017-09-23' => '2017.09.23周六 八月初四',
+			'2017-09-27' => '2017.09.27周三 八月初八',
+			'2017-09-28' => '2017.09.28周四 八月初九',
+			'2017-09-30' => '2017.09.30周六 八月十一',
+			'2017-10-05' => '2017.10.05周四 八月十六',
+			'2017-10-10' => '2017.10.10周二 八月廿一',
+			'2017-10-12' => '2017.10.12周四 八月廿三',
+			'2017-10-13' => '2017.10.13周五 八月廿四',
+			'2017-10-19' => '2017.10.19周四 八月三十',
+			'2017-10-22' => '2017.10.22周日 九月初三',
+			'2017-10-24' => '2017.10.24周二 九月初五',
+			'2017-10-26' => '2017.10.26周四 九月初七',
+		];
+		foreach ($dates as $k => $date) {
+			if (strtotime($k) < time()) {
+				unset($dates[$k]);
+			}
+		}
+		return self::renderPage('marry2.tpl',
+			[
+				"name1" => $name1,
+				"name2" => $name2,
+				'preview' => $preview,
+				'bgSrc' => $bgSrc,
+				'dates' => $dates,
+				'dt' => $dt,
+				'cls' => $cls,
+				'userId' => $userId
+			],
+			'terse',
+			'微媒100',
+			'bg-main');
+	}
+
 	public function actionRoom()
 	{
 		$openId = self::$WX_OpenId;
