@@ -314,7 +314,7 @@ class UserQR extends ActiveRecord
 		$md5 = md5($raw);
 		$qrInfo = self::findOne(['qUId' => $uid, 'qCategory' => self::CATEGORY_MARRY, 'qMD5' => $md5]);
 		if ($qrInfo && !AppUtil::isDev()) {
-			return $qrInfo->qUrl;
+			 return $qrInfo->qUrl;
 		}
 
 		$saveAs = 'inv' . RedisUtil::getImageSeq() . '.jpg';
@@ -366,21 +366,23 @@ class UserQR extends ActiveRecord
 		$rootFolder = AppUtil::rootDir();
 		$bgFile = $rootFolder . 'mobile/assets/qt100.jpg';
 		$qrFile = UserQR::createQR($uId, UserQR::CATEGORY_SALES, 'marry2');
-		if (AppUtil::isDev()) {
-			$qrFile = $rootFolder . $qrFile;
+
+		$raw = json_encode([$name1, $name2, $dt, $qrFile], JSON_UNESCAPED_UNICODE);
+		$md5 = md5($raw);
+		$qrInfo = self::findOne(['qUId' => $uId, 'qCategory' => self::CATEGORY_MARRY, 'qMD5' => $md5]);
+		if ($qrInfo && !AppUtil::isDev()) {
+			return $qrInfo->qUrl;
 		}
-		$mergeFile = $qrFile;
-		if ($qrFile) {
+		$mergeFile = $rootFolder . 'common/assets/qr_invitation.jpeg';
+		if ($qrFile && !AppUtil::isDev()) {
 			$mergeFile = $qrFile;
 			if (strpos($qrFile, 'http') !== false) {
 				$mergeFile = ImageUtil::getFilePath($qrFile);
 			}
 		}
-		list($width, $height, $type) = getimagesize($bgFile);
-		$mergeSize = 40;
-		// echo $mergeFile;exit;
-		//$mergeImg = Image::open($mergeFile)->zoomCrop($mergeSize, $mergeSize, 0xffffff, 'center', 'center');
-		$img = Image::open($bgFile)->merge((Image::open($mergeFile)), 50, 50, $mergeSize, $mergeSize);
+		$mergeSize = 210;
+		$mergeImg = Image::open($mergeFile)->zoomCrop($mergeSize, $mergeSize, 0xffffff, 'center', 'center');
+		$img = Image::open($bgFile)->merge($mergeImg, 50, 850, $mergeSize, $mergeSize);
 
 		$gy = date("Y", strtotime($dt));
 		$gm = date("m", strtotime($dt));
@@ -431,6 +433,16 @@ class UserQR extends ActiveRecord
 		}
 		$img->save($saveAs);
 		$accessUrl = ImageUtil::getUrl($saveAs);
+
+		self::deleteAll(['qUId' => $uId, 'qCategory' => self::CATEGORY_MARRY]);
+		$entity = new self();
+		$entity->qUId = $uId;
+		$entity->qCategory = self::CATEGORY_MARRY;
+		$entity->qCode = 'meipo100-marry2';
+		$entity->qMD5 = $md5;
+		$entity->qRaw = $raw;
+		$entity->qUrl = $accessUrl;
+		$entity->save();
 		return $accessUrl;
 	}
 

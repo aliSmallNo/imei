@@ -57,4 +57,4 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/marry2.js?v=1.7.8" src="/assets/js/require.js"></script>
+<script data-main="/js/marry2.js?v=1.7.9" src="/assets/js/require.js"></script>
