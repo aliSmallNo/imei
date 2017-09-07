@@ -52,6 +52,11 @@
 	</li>
 	{[/items]}
 </script>
+<script type="text/template" id="tpl_chat_tip">
+	<li class="tip">
+		<em>{[content]}</em>
+	</li>
+</script>
 <script type="text/template" id="tpl_chat_topup">
 	<div class="topup-wrap">
 		<h4>我要跟TA密聊</h4>
@@ -94,4 +99,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
-<script data-main="/js/room.js?v=1.1.8" src="/assets/js/require.js"></script>
+<script data-main="/js/room.js?v=1.2.0" src="/assets/js/require.js"></script>

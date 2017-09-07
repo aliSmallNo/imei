@@ -6,7 +6,7 @@ $mainColorDark: darken($mainColor, 6%)
 $mainColorBg: #fce4ec
 $white: #fff
 $fontColor: #363438
-$grayFontColorLighter: #aaa
+$grayFontColorLighter: #b8b8b8
 $grayFontColorLight: #939393
 $grayFontColor: #6a6572
 $grayFontColorDark: #525252
@@ -5351,6 +5351,16 @@ section
 				border-radius: .4rem
 				padding: .8rem
 				display: inline-block
+		&.tip
+			text-align: center
+			display: block
+			em
+				background: $grayFontColorLighter
+				color: #fff
+				font-size: 1rem
+				border-radius: .3rem
+				padding: .3rem .6rem
+				font-weight: $weightNormal
 		&.left
 		&.right
 			direction: rtl
