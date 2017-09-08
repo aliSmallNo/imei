@@ -639,6 +639,7 @@ class WxController extends BaseController
 			exit();
 		}
 		$uId = $wxInfo["uId"];
+		$uni = $wxInfo['uUniqid'];
 		LogAction::add($uId, $openId, LogAction::ACTION_SINGLE);
 		$conn = AppUtil::db();
 		$uInfo = User::user(['uId' => $uId], $conn);
@@ -685,6 +686,7 @@ class WxController extends BaseController
 			'edu' => User::$EducationFilter,
 			'mpName' => $mpName,
 			'greeting' => $greeting,
+			'uni' => $uni,
 			'reasons' => self::$ReportReasons,
 			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
 		]);

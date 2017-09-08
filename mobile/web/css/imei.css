@@ -350,6 +350,50 @@ section {
         right: 0;
         bottom: 0; }
 
+.m-notice {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 219;
+  padding-left: 3.5rem;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  font-size: 1.4rem;
+  line-height: 4rem;
+  font-size: 1.2rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-transition: 0.4s all ease;
+  -moz-transition: 0.4s all ease;
+  transition: 0.4s all ease;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden; }
+  .m-notice:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    margin-top: -1rem;
+    width: 2rem;
+    height: 2rem;
+    background: url(../images/ico_notice_w.png) no-repeat center center;
+    background-size: 100% 100%; }
+  .m-notice.on {
+    -webkit-transform: translateY(0) translateZ(0);
+    -moz-transform: translateY(0) translateZ(0);
+    transform: translateY(0) translateZ(0); }
+  .m-notice.off {
+    -webkit-transform: translateY(-120%) translateZ(0);
+    -moz-transform: translateY(-120%) translateZ(0);
+    transform: translateY(-120%) translateZ(0); }
+  .m-notice a {
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 300; }
+
 .nav-foot {
   display: -webkit-box;
   display: -webkit-flex;

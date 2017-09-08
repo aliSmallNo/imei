@@ -41,9 +41,9 @@ require(["layer"],
 				$sls.singleTop = $(window).scrollTop();
 			}
 			if ($sls.slook.css('display') === 'block') {
-				lastRow = filterUlit.list.find('li:last');
-				if (lastRow && eleInScreen(lastRow, 150) && filterUlit.sUserPage > 0) {
-					filterUlit.loadFilter("", filterUlit.sUserPage);
+				lastRow = FilterUtil.list.find('li:last');
+				if (lastRow && eleInScreen(lastRow, 150) && FilterUtil.sUserPage > 0) {
+					FilterUtil.loadFilter("", FilterUtil.sUserPage);
 					return false;
 				}
 			} else if ($sls.heartbeat.css('display') === 'block') {
@@ -130,7 +130,7 @@ require(["layer"],
 					break;
 				case 'slook':
 					if ($sls.firstLoadFlag) {
-						filterUlit.loadFilter("", filterUlit.sUserPage);
+						FilterUtil.loadFilter("", FilterUtil.sUserPage);
 						$sls.firstLoadFlag = 0;
 					}
 					if ($sls.singleTop) {
@@ -471,6 +471,7 @@ require(["layer"],
 			bookTmp: $('#tpl_contact').html(),
 			list: $('.chats'),
 			tmp: $('#tpl_chat').html(),
+			tipTmp: $('#tpl_chat_tip').html(),
 			topupTmp: $('#tpl_chat_topup').html(),
 			shareTmp: $('#tpl_chat_share').html(),
 			topTip: $('#schat .chat-tip'),
@@ -631,15 +632,29 @@ require(["layer"],
 					util.timer = 0;
 				}
 			},
-			showTip: function (gid, left) {
+			showTip: function (gid, msg) {
+
+			},
+			hint: function (msg) {
 				var util = this;
-				//util.topTip.html('文明聊天，请注意礼貌用语~');
-				//util.topTip.html('发起密聊将会被扣除10朵媒桂花，即可无限畅聊<br>如果对方一直无回复，5天后退回媒桂花');
-				/*if (left < 100 && left > 0) {
-					util.topTip.html('还可以密聊<b>' + left + '</b>句哦，要抓住机会哦~');
+				var html = Mustache.render(util.tipTmp, {msg: msg});
+				util.list.append(html);
+			},
+			messages: function (data, flag) {
+				var util = this;
+				var html = Mustache.render(util.tmp, data);
+				if (data.lastId < 1) {
+					util.list.html(html);
 				} else {
-					util.topTip.html('想要更多密聊机会，请先<a href="javascript:;" data-id="' + gid + '" class="btn-chat-topup">捐媒桂花</a>吧~');
-				}*/
+					util.list.append(html);
+				}
+				util.showTip(data.gid, data.left);
+				util.lastId = data.lastId;
+				if (flag) {
+					setTimeout(function () {
+						util.bot.get(0).scrollIntoView(true);
+					}, 300);
+				}
 			},
 			topup: function () {
 				var util = this;
@@ -726,19 +741,7 @@ require(["layer"],
 					last: util.lastId
 				}, function (resp) {
 					if (resp.code == 0) {
-						var html = Mustache.render(util.tmp, resp.data);
-						if (resp.data.lastId < 1) {
-							util.list.html(html);
-						} else {
-							util.list.append(html);
-						}
-						util.showTip(resp.data.gid, resp.data.left);
-						util.lastId = resp.data.lastId;
-						if (scrollFlag) {
-							setTimeout(function () {
-								util.bot.get(0).scrollIntoView(true);
-							}, 300);
-						}
+						util.messages(resp.data, scrollFlag);
 						if (util.timer == 0) {
 							util.toggleTimer(1);
 						}
@@ -926,7 +929,7 @@ require(["layer"],
 		};
 		SmeUtil.init();
 
-		var filterUlit = {
+		var FilterUtil = {
 			tag: "",
 			cond: {},
 			getUserFiterFlag: false,
@@ -938,12 +941,13 @@ require(["layer"],
 			cityTmp: '<div class="m-popup-options col4 clearfix" tag="city">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="city">{[name]}</a>{[/items]}</div>',
 			provinceTmp: '<div class="m-popup-options col4 clearfix" tag="province">{[#items]}<a href="javascript:;" data-key="{[key]}" data-tag="province">{[name]}</a>{[/items]}</div>',
 			init: function () {
+				var util = this;
 				$("#matchCondition a").on(kClick, function () {
 					var self = $(this);
-					filterUlit.tag = self.attr("tag");
-					switch (filterUlit.tag) {
+					util.tag = self.attr("tag");
+					switch (util.tag) {
 						case "location":
-							var html = Mustache.render(filterUlit.provinceTmp, {items: mProvinces});
+							var html = Mustache.render(util.provinceTmp, {items: mProvinces});
 							$sls.main.show();
 							$sls.content.html(html).addClass("animate-pop-in");
 							$sls.shade.fadeIn(160);
@@ -952,7 +956,7 @@ require(["layer"],
 						case "height":
 						case "income":
 						case "edu":
-							filterUlit.showCriteria();
+							util.showCriteria();
 							break;
 						case "comfirm":
 							var data = {};
@@ -962,18 +966,18 @@ require(["layer"],
 								data[ta] = value;
 							});
 							console.log(data);
-							filterUlit.list.html('');
-							filterUlit.loadFilter(data, 1);
+							util.list.html('');
+							util.loadFilter(data, 1);
 							location.href = "#slook";
 							break;
 					}
 				});
 				$(document).on(kClick, ".conditions", function () {
-					$.each(filterUlit.cond, function (k, v) {
+					$.each(util.cond, function (k, v) {
 						var obj = $(".condtion-item[tag=" + k + "]").find(".right");
 						if (obj) {
 							obj.html(v);
-							obj.attr("data-id", filterUlit.cond[k + 'Val']);
+							obj.attr("data-id", util.cond[k + 'Val']);
 						}
 					});
 					location.href = "#matchCondition";
@@ -986,24 +990,25 @@ require(["layer"],
 					id: pid
 				}, function (resp) {
 					if (resp.code == 0) {
-						$sls.content.html(Mustache.render(filterUlit.cityTmp, resp.data));
+						$sls.content.html(Mustache.render(util.cityTmp, resp.data));
 					}
 				}, 'json');
 			},
 			showCriteria: function () {
-				var tmp = $("#" + filterUlit.tag + "Tmp").html();
-				console.log(filterUlit);
-				var h = (filterUlit.tag == "age") ? "年龄" : "身高";
+				var util = this;
+				var tmp = $("#" + util.tag + "Tmp").html();
+				console.log(util);
+				var h = (util.tag == "age") ? "年龄" : "身高";
 				var mData = {start: h + "不限", end: h + "不限"};
-				var Val = filterUlit.cond[filterUlit.tag + "Val"];
+				var Val = util.cond[util.tag + "Val"];
 				if (Val && parseInt(Val) != 0) {
-					var vT = filterUlit.cond[filterUlit.tag];
+					var vT = util.cond[util.tag];
 					var vTArr = vT.split('~');
 					var st = "";
-					if (filterUlit.tag == "age") {
+					if (util.tag == "age") {
 						st = vTArr[0] + "岁";
 					}
-					if (filterUlit.tag == "height") {
+					if (util.tag == "height") {
 						st = vTArr[0] + "cm";
 					}
 					mData = {start: st, end: vTArr[1]};
@@ -1013,39 +1018,40 @@ require(["layer"],
 				$sls.shade.fadeIn(160);
 			},
 			loadFilter: function (data, page) {
-				if (filterUlit.getUserFiterFlag) {
+				var util = this;
+				if (util.getUserFiterFlag) {
 					return;
 				}
-				filterUlit.getUserFiterFlag = 1;
-				filterUlit.noMore.html("拼命加载中...");
+				util.getUserFiterFlag = 1;
+				util.noMore.html("拼命加载中...");
 				$.post("/api/user", {
 					tag: "userfilter",
 					page: page,
 					data: JSON.stringify(data),
 				}, function (resp) {
-					var html = Mustache.render(filterUlit.userTmp, resp.data);
+					var html = Mustache.render(util.userTmp, resp.data);
 					if (page < 2) {
-						filterUlit.list.html(html);
-						filterUlit.cond = resp.data.condition;
-						$(".my-condition").html(Mustache.render(filterUlit.criteriaTmp, resp.data.condition));
+						util.list.html(html);
+						util.cond = resp.data.condition;
+						$(".my-condition").html(Mustache.render(util.criteriaTmp, resp.data.condition));
 						if (resp.data.condition.toString().length < 5) {
 							$(".con-des").html("您还没有设置择偶条件哦!");
 						}
 					} else {
-						filterUlit.list.append(html);
+						util.list.append(html);
 					}
 
-					filterUlit.getUserFiterFlag = 0;
-					filterUlit.sUserPage = resp.data.nextpage;
-					if (filterUlit.sUserPage < 1) {
-						filterUlit.noMore.html("没有更多了~");
+					util.getUserFiterFlag = 0;
+					util.sUserPage = resp.data.nextpage;
+					if (util.sUserPage < 1) {
+						util.noMore.html("没有更多了~");
 					} else {
-						filterUlit.noMore.html("上拉加载更多");
+						util.noMore.html("上拉加载更多");
 					}
 				}, "json");
 			},
 		};
-		filterUlit.init();
+		FilterUtil.init();
 
 		$(document).on(kClick, ".m-popup-options a", function () {
 			var self = $(this);
@@ -1102,7 +1108,7 @@ require(["layer"],
 				case "province":
 					$sls.contionString = $sls.contionVal = "";
 					$sls.contionString = $sls.contionVal = text;
-					filterUlit.getCity(key);
+					FilterUtil.getCity(key);
 					break;
 				case "city":
 					$sls.contionString = $sls.contionVal = $sls.contionVal + "-" + text;
@@ -1654,7 +1660,8 @@ require(["layer"],
 		};
 
 		var GreetingUtil = {
-			content: $.trim($('#tpl_greeting').html()),
+			tmp: $('#tpl_greet').html(),
+			content: $.trim($('#ctx_greet').html()),
 			init: function () {
 
 			},
@@ -1669,30 +1676,71 @@ require(["layer"],
 			}
 		};
 
-		var SocketUtil = {
+		var NoticeUtil = {
 			socket: null,
-			euid: 0,
-			gid: 0,
+			uni: 0,
+			timer: 0,
+			board: $('.m-notice'),
 			init: function () {
 				var util = this;
-				util.euid = $('#cEncryptId').val();
-				util.socket = io('http://localhost:3000');
-				util.socket.emit('buzz', util.euid, 'login');
-				util.socket.on("msg", function () {
-					console.log(obj);
+				util.uni = $('#cUNI').val();
+				util.socket = io('https://ws.meipo100.com');
+				// util.socket = io('https://wx.meipo100.com:9502');
+				util.socket.on('connect', function () {
+					console.log(util.uni);
+					util.socket.emit('house', util.uni);
 				});
-				util.socket.on("sys", function () {
-					console.log(obj);
+
+				util.socket.on("notice", function (resp) {
+					var msg = resp.msg;
+					if (!msg) {
+						return;
+					}
+					switch (resp.tag) {
+						case 'hint':
+							util.toggle(msg);
+							break;
+						case 'greet':
+							GreetingUtil.show();
+							break;
+					}
+				});
+
+				util.socket.on("chat", function (resp) {
+					switch (resp.tag) {
+						case 'tip':
+							ChatUtil.showTip(resp.msg);
+							break;
+						case 'msg':
+							ChatUtil.messages(resp.msg, 1);
+							break;
+					}
 				});
 			},
-			group: function (gid) {
+			join: function (gid) {
 				var util = this;
 				util.gid = gid;
-				util.socket.emit('join', gid, util.euid);
+				var params = {
+					gid: util.gid,
+					uid: util.uni
+				};
+				util.socket.emit('join', params);
 			},
-			send: function (msg) {
+			toggle: function (content) {
 				var util = this;
-				util.socket.send(msg, gid, util.euid);
+				if (content) {
+					util.board.html(content);
+					util.board.removeClass('off').addClass('on');
+					if (util.timer) {
+						clearTimeout(util.timer);
+					}
+					util.timer = setTimeout(function () {
+						util.board.removeClass('on').addClass('off');
+					}, 3500);
+				} else {
+					util.board.html('');
+					util.board.removeClass('on').addClass('off');
+				}
 			}
 		};
 
@@ -1766,7 +1814,7 @@ require(["layer"],
 			AlertUtil.init();
 			RankUtil.init();
 			FavorUtil.init();
-			// SocketUtil.init();
+			NoticeUtil.init();
 
 			setTimeout(function () {
 				GreetingUtil.show();
@@ -1775,5 +1823,6 @@ require(["layer"],
 			setTimeout(function () {
 				pinLocation();
 			}, 800);
+
 		});
 	});

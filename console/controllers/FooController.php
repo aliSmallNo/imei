@@ -10,16 +10,13 @@ namespace console\controllers;
  */
 use common\models\ChatMsg;
 use common\models\User;
-use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
-use common\utils\RedisUtil;
+use common\utils\PushUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
-use ElephantIO\Client;
-use ElephantIO\Engine\SocketIO\Version2X;
 use Gregwar\Image\Image;
 use yii\console\Controller;
 
@@ -494,11 +491,7 @@ class FooController extends Controller
 	public function actionRain()
 	{
 
-		$client = new Client(new Version2X('http://127.0.0.1:3000'));
-		$client->initialize();
-//		$client->emit('join', ['gid' => 991, 'uid' => '59b147d7929f5']);
-		$client->emit('message', ['gid' => 991, 'uid' => '059af5c749741c', 'msg' => 'test ' . time()]);
-		$client->close();
+		PushUtil::hint('你的个人资料不完整啊~', '059af5c749741c');
 
 		/*$ret = UserQR::mpShareQR(131379);
 		var_dump($ret);*/

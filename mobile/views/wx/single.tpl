@@ -725,7 +725,11 @@
 		<div class="m-popup-content"></div>
 	</div>
 </div>
+<div class="m-notice off">
+	<a href="javascript:;">有人对你怦然心动了</a>
+</div>
 <input type="hidden" id="cEncryptId" value="{{$encryptId}}">
+<input type="hidden" id="cUNI" value="{{$uni}}">
 <script>
 	var mProvinces = {{$provinces}};
 </script>
@@ -923,6 +927,11 @@
 	</li>
 	{[/items]}
 </script>
+<script type="text/template" id="tpl_chat_tip">
+	<li class="tip">
+		<em>{[msg]}</em>
+	</li>
+</script>
 <script type="text/template" id="tpl_contact">
 	{[#items]}
 	<a href="javascript:;" data-id="{[encryptId]}" data-cid="{[cid]}" data-read="{[readflag]}">
@@ -999,7 +1008,7 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-<script type="text/template" id="tpl_greeting">
+<script type="text/template" id="ctx_greet">
 	{{if $greeting}}
 	<div class="greeting">
 		<h4>{{$greeting.title}}</h4>
@@ -1015,6 +1024,26 @@
 		<a href="javascript:;" class="m-popup-close"></a>
 	</div>
 	{{/if}}
+</script>
+<script type="text/template" id="tpl_greet">
+	{[/greet]}
+	<div class="greeting">
+		<h4>{[title]}</h4>
+		{[#isList]}
+		<ol>
+			{[#items]}
+			<li>{[.]}</li>
+			{[/items]}
+		</ol>
+		{[/isList]}
+		{[^isList]}
+		{[#items]}
+		<div style="padding-top: 1rem;padding-bottom: 1rem">{[.]}</div>
+		{[/items]}
+		{[/isList]}
+		<a href="javascript:;" class="m-popup-close"></a>
+	</div>
+	{[/greet]}
 </script>
 <script type="text/template" id="tpl_shome">
 	{[#profile]}

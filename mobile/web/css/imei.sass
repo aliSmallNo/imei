@@ -496,6 +496,52 @@ section
 				right: 0
 				bottom: 0
 
+.m-notice
+	position: fixed
+	left: 0
+	right: 0
+	top: 0
+	z-index: 219
+	padding-left: 3.5rem
+	background: rgba(0, 0, 0, .65)
+	color: #fff
+	font-size: 1.4rem
+	//rgba(255, 245, 157, 1)
+	line-height: 4rem
+	font-size: 1.2rem
+	@include textTail
+	//border: 1px solid $borderColorDark
+	//border-top: none
+	//border-bottom-left-radius: .5rem
+	//border-bottom-right-radius: .5rem
+	-webkit-transition: 0.4s all ease
+	-moz-transition: 0.4s all ease
+	transition: 0.4s all ease
+	-webkit-backface-visibility: hidden
+	-moz-backface-visibility: hidden
+	backface-visibility: hidden
+	&:before
+		content: ''
+		position: absolute
+		top: 50%
+		left: 1rem
+		margin-top: -1rem
+		width: 2rem
+		height: 2rem
+		background: url(../images/ico_notice_w.png) no-repeat center center
+		background-size: 100% 100%
+	&.on
+		-webkit-transform: translateY(0) translateZ(0)
+		-moz-transform: translateY(0) translateZ(0)
+		transform: translateY(0) translateZ(0)
+	&.off
+		-webkit-transform: translateY(-120%) translateZ(0)
+		-moz-transform: translateY(-120%) translateZ(0)
+		transform: translateY(-120%) translateZ(0)
+	a
+		color: #fff
+		font-size: 1.4rem
+		font-weight: $weightNormal
 .nav-foot
 	@include displayFlex
 	background: $mainColor
@@ -1590,7 +1636,6 @@ section
 			font-size: 1.4rem
 			font-weight: $weightBold
 			@include textTail
-
 
 	&:after
 		content: ''
