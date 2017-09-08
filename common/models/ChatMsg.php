@@ -99,6 +99,17 @@ class ChatMsg extends ActiveRecord
 		return $arr;
 	}
 
+	static $greetDict = [
+		"初来乍到，请多多关照呦~",
+		"嗨，你好！我是新人呦",
+		"新人报道，希望遇到有缘人呦",
+		"相遇即是缘分，希望真心交往",
+		"有缘相聚，希望真心交流",
+		"相遇，相逢，相知，希望真心交流",
+		"新人报道，真心交友 ",
+		"我是新人，多多关照"
+	];
+
 	public static function greeting($senderId, $ids, $content = '你好，初来乍到，请多多关照呦~', $conn = '')
 	{
 		$groups = [];
@@ -141,6 +152,10 @@ class ChatMsg extends ActiveRecord
 			if ($firstId > 0) {
 				continue;
 			}
+
+			$greetMap = self::$greetDict;
+			$content = $greetMap[array_rand($greetMap, 1)];
+
 			$entity = new self();
 			$entity->cGId = $gid;
 			$entity->cContent = $content;
@@ -465,7 +480,7 @@ class ChatMsg extends ActiveRecord
 		$st = User::STATUS_DUMMY;
 		$strCriteria = ' and u1.uStatus !=8 and u2.uStatus !=8 ';
 		if ($isDummy) {
-			 $strCriteria = ' and (u1.uStatus =8 or u2.uStatus =8) ';
+			$strCriteria = ' and (u1.uStatus =8 or u2.uStatus =8) ';
 		}
 		if ($criteria) {
 			$strCriteria .= ' AND ' . implode(' AND ', $criteria);

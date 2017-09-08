@@ -2099,7 +2099,7 @@ class User extends ActiveRecord
 				$items[$item['id']] = $item;
 				$flag = !$flag;
 			}
-			if (count($items) == 6) {
+			if (count($items) == 8) {
 				break;
 			}
 		}

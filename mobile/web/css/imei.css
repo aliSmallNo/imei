@@ -6311,7 +6311,7 @@ section {
   box-sizing: border-box; }
   .m-greeting-users li {
     float: left;
-    width: 33%;
+    width: 25%;
     text-align: center;
     padding: 0.5rem;
     -webkit-box-sizing: border-box;
@@ -6319,7 +6319,7 @@ section {
     box-sizing: border-box; }
     .m-greeting-users li img {
       width: 96%;
-      min-height: 7.2rem;
+      min-height: 5.2rem;
       border-radius: 0.5rem;
       border: 1px solid #fbd2e0;
       vertical-align: middle; }
