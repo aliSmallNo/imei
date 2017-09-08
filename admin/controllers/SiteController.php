@@ -667,6 +667,28 @@ class SiteController extends BaseController
 		);
 	}
 
+	public function actionNetstat()
+	{
+		$getInfo = Yii::$app->request->get();
+		$sdate = self::getParam("sdate");
+		$edate = self::getParam("edate");
+		$condition = "";
+		$st = User::STATUS_ACTIVE;
+		if ($sdate && $edate) {
+			$condition = " where  n.nAddedOn between '$sdate 00:00:00'  and '$edate 23:59:50' ";
+		}
+
+		$scanStat = UserNet::netStat($condition);
+		return $this->renderPage("netstat.tpl",
+			[
+				'getInfo' => $getInfo,
+				'category' => 'data',
+				'scanStat' => $scanStat,
+			]
+		);
+	}
+
+
 	public function actionSearchnet()
 	{
 		$id = self::getParam("id");

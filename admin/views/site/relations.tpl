@@ -29,7 +29,8 @@
 		<select class="form-control" name="relation">
 			<option value="">-=请选择用户操作=-</option>
 			{{foreach from=$relations key=key item=item}}
-			<option value="{{$key}}" {{if isset($getInfo["relation"]) && $getInfo["relation"]==$key}}selected{{/if}}>{{$item}}</option>
+			<option value="{{$key}}"
+							{{if isset($getInfo["relation"]) && $getInfo["relation"]==$key}}selected{{/if}}>{{$item}}</option>
 			{{/foreach}}
 		</select>
 		<button class="btn btn-primary">查询</button>

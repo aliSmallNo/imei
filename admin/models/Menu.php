@@ -151,6 +151,11 @@ class Menu
 						"level" => 820
 					],
 					[
+						"name" => "推广统计",
+						"url" => "/site/netstat",
+						"level" => 820
+					],
+					[
 						"name" => "意见反馈",
 						"url" => "/site/feedback",
 						"level" => 820
