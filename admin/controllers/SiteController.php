@@ -655,7 +655,6 @@ class SiteController extends BaseController
 			$condition .= " and (u.uPhone like '$phone%' or u1.uPhone like '$phone%')";
 		}
 		list($list, $count) = UserNet::relations($condition, $page);
-		$scanStat = UserNet::scanStat();
 		$pagination = self::pagination($page, $count);
 		return $this->renderPage("relations.tpl",
 			[
@@ -663,11 +662,32 @@ class SiteController extends BaseController
 				'pagination' => $pagination,
 				'category' => 'data',
 				'list' => $list,
-				'scanStat' => $scanStat,
 				'relations' => UserNet::$RelDict,
 			]
 		);
 	}
+
+	public function actionNetstat()
+	{
+		$getInfo = Yii::$app->request->get();
+		$sdate = self::getParam("sdate");
+		$edate = self::getParam("edate");
+		$condition = "";
+		$st = User::STATUS_ACTIVE;
+		if ($sdate && $edate) {
+			$condition = " where  n.nAddedOn between '$sdate 00:00:00'  and '$edate 23:59:50' ";
+		}
+
+		$scanStat = UserNet::netStat($condition);
+		return $this->renderPage("netstat.tpl",
+			[
+				'getInfo' => $getInfo,
+				'category' => 'data',
+				'scanStat' => $scanStat,
+			]
+		);
+	}
+
 
 	public function actionSearchnet()
 	{

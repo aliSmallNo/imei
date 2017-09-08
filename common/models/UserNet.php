@@ -755,7 +755,7 @@ class UserNet extends ActiveRecord
 		return $items;
 	}
 
-	public static function scanStat()
+	public static function netStat($condition = '')
 	{
 		$conn = AppUtil::db();
 		$sql = "select u.uName as `name`,u.uId as id,
@@ -768,6 +768,7 @@ class UserNet extends ActiveRecord
 			join im_user as u on u.uId=n.nUId 
 			join im_user as u1 on u1.uId =n.nSubUId 
 			join im_user_wechat as w on u1.uOpenId=w.wOpenId
+			$condition
 			GROUP BY n.nUId ORDER BY reg desc limit 10";
 		$ret = $conn->createCommand($sql)->bindValues([
 			":rel1" => self::REL_QR_SCAN,

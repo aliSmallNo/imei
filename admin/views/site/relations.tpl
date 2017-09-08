@@ -40,58 +40,6 @@
 		<table class="table table-striped table-bordered">
 			<thead>
 			<tr>
-				<th>
-					用户
-				</th>
-				<th>
-					扫码数
-				</th>
-				<th>
-					扫码关注数
-				</th>
-				<th>
-					取消关注
-				</th>
-				<th>
-					关注并注册
-				</th>
-				<th>
-					注册成功
-				</th>
-
-			</tr>
-			</thead>
-			<tbody>
-			{{foreach from=$scanStat item=stat}}
-			<tr>
-				<td>
-					{{$stat.name}}
-				</td>
-				<td>
-					{{$stat.scan}}
-				</td>
-				<td>
-					{{$stat.subscribe}}
-				</td>
-				<td>
-					{{$stat.unsubscribe}}
-				</td>
-				<td>
-					{{$stat.reg}}
-				</td>
-				<td>
-					{{$stat.mps}}
-				</td>
-
-			</tr>
-			{{/foreach}}
-			</tbody>
-		</table>
-	</div>
-	<div class="row">
-		<table class="table table-striped table-bordered">
-			<thead>
-			<tr>
 				<th class="col-sm-1">
 					头像
 				</th>
