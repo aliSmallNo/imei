@@ -17,7 +17,8 @@
 	}
 
 	.users li {
-		padding-bottom: 5px;
+		padding-top: 3px;
+		padding-bottom: 3px;
 		font-size: 13px;
 	}
 
@@ -38,6 +39,10 @@
 
 	.users li.mei img {
 		border: 2px solid #51c332;
+	}
+
+	.item9 {
+		background: #d4d4d4;
 	}
 </style>
 
@@ -162,7 +167,7 @@
 			to: self.attr('data-to'),
 			cat: mCat
 		}, function (resp) {
-			var temp = "<ol class='users'>{[#items]}<li class='{[gender]}'><img src='{[thumb]}'> {[phone]} {[name]}</li>{[/items]}</ol>";
+			var temp = "<ol class='users'>{[#items]}<li class='{[gender]} item{[active]}'><img src='{[thumb]}'> {[phone]} {[name]}</li>{[/items]}</ol>";
 			layer.open({
 				content: Mustache.render(temp, resp.data),
 				area: ['400px', '500px'],
