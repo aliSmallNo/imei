@@ -40,6 +40,7 @@ return array(
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'Faker\\' => array($vendorDir . '/fzaninotto/faker/src/Faker'),
     'Facebook\\WebDriver\\' => array($vendorDir . '/facebook/webdriver/lib'),
+    'ElephantIO\\' => array($vendorDir . '/wisembly/elephant.io/src', $vendorDir . '/wisembly/elephant.io/test'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
     'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
     'Codeception\\Extension\\' => array($vendorDir . '/codeception/codeception/ext', $vendorDir . '/codeception/base/ext'),

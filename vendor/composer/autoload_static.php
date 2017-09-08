@@ -81,6 +81,10 @@ class ComposerStaticInit57eab4d0870c082e9f88da494937fc2a
             'Faker\\' => 6,
             'Facebook\\WebDriver\\' => 19,
         ),
+        'E' => 
+        array (
+            'ElephantIO\\' => 11,
+        ),
         'D' => 
         array (
             'Doctrine\\Instantiator\\' => 22,
@@ -231,6 +235,11 @@ class ComposerStaticInit57eab4d0870c082e9f88da494937fc2a
         'Facebook\\WebDriver\\' => 
         array (
             0 => __DIR__ . '/..' . '/facebook/webdriver/lib',
+        ),
+        'ElephantIO\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wisembly/elephant.io/src',
+            1 => __DIR__ . '/..' . '/wisembly/elephant.io/test',
         ),
         'Doctrine\\Instantiator\\' => 
         array (
@@ -421,7 +430,7 @@ class ComposerStaticInit57eab4d0870c082e9f88da494937fc2a
         'PHPUnit\\Util\\TestDox\\TextResultPrinter' => __DIR__ . '/..' . '/phpunit/phpunit/src/Util/TestDox/TextResultPrinter.php',
         'PHPUnit\\Util\\TestDox\\XmlResultPrinter' => __DIR__ . '/..' . '/phpunit/phpunit/src/Util/TestDox/XmlResultPrinter.php',
         'PHPUnit\\Util\\Type' => __DIR__ . '/..' . '/phpunit/phpunit/src/Util/Type.php',
-        'PHPUnit\\Util\\Xml' => __DIR__ . '/..' . '/phpunit/phpunit/src/Util/Xml.php',
+        'PHPUnit\\Util\\Xml' => __DIR__ . '/..' . '/phpunit/phpunit/src/Util/XML.php',
         'PHPUnit_Framework_MockObject_BadMethodCallException' => __DIR__ . '/..' . '/phpunit/phpunit-mock-objects/src/Exception/BadMethodCallException.php',
         'PHPUnit_Framework_MockObject_Builder_Identity' => __DIR__ . '/..' . '/phpunit/phpunit-mock-objects/src/Builder/Identity.php',
         'PHPUnit_Framework_MockObject_Builder_InvocationMocker' => __DIR__ . '/..' . '/phpunit/phpunit-mock-objects/src/Builder/InvocationMocker.php',
