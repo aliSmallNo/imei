@@ -286,7 +286,7 @@ class SiteController extends BaseController
 			$partCriteria[] = " wSubscribe=1";
 		}
 
-		list($list, $count) = User::users($criteria, $params, $page);
+		list($list, $count) = User::users($criteria, $params, $page, 20, false, $inactive);
 
 		$uids = array_column($list, 'id');
 		$mCnt = ChatMsg::serviceCnt($uids);
@@ -328,7 +328,7 @@ class SiteController extends BaseController
 		}
 
 		$stat = User::stat();
-		$partCount = User::partCount($partCriteria, $params);
+		$partCount = User::partCount($partCriteria, $params, $inactive);
 		$pagination = self::pagination($page, $count);
 
 		return $this->renderPage('accounts.tpl',
