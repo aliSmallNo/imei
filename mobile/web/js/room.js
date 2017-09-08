@@ -378,7 +378,11 @@ require(["layer"],
 				});
 
 				util.socket.on('connect', function () {
-					util.socket.emit('join', util.gid, util.uni);
+					var params = {
+						gid: util.gid,
+						uid: util.uni
+					};
+					util.socket.emit('join', params);
 				});
 
 				util.socket.on("leave", function (obj) {
