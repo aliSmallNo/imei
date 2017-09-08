@@ -1072,6 +1072,9 @@ class User extends ActiveRecord
 		if ($gender && $gender == self::GENDER_MALE && $birthYear) {
 			$ageLimit = ' and u.uBirthYear >' . ($birthYear - 8);
 		}
+		if ($gender && $gender == self::GENDER_FEMALE && $birthYear) {
+			$ageLimit = ' and u.uBirthYear >' . ($birthYear - 12);
+		}
 
 		$gender = ($gender == self::GENDER_FEMALE) ? self::GENDER_MALE : self::GENDER_FEMALE;
 		$uRole = User::ROLE_SINGLE;
