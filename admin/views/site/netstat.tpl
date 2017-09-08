@@ -19,7 +19,7 @@
 </style>
 <div id="page-wrapper">
 	<div class="row">
-		<h4>用户操作统计</h4>
+		<h4>推广统计</h4>
 	</div>
 	<form action="/site/netstat" class="form-inline">
 		<input class="form-control my-date-input" placeholder="开始时间" name="sdate"

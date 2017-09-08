@@ -151,7 +151,7 @@ class Menu
 						"level" => 820
 					],
 					[
-						"name" => "用户操作统计",
+						"name" => "推广统计",
 						"url" => "/site/netstat",
 						"level" => 820
 					],
