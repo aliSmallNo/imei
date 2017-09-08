@@ -17,8 +17,7 @@
 	}
 
 	.users li {
-		padding-top: 3px;
-		padding-bottom: 3px;
+		padding: 3px;
 		font-size: 13px;
 	}
 
