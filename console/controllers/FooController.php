@@ -19,6 +19,7 @@ use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use ElephantIO\Client;
 use ElephantIO\Engine\SocketIO\Version2X;
+use ElephantIO\Engine\SocketIO\Version1X;
 use Gregwar\Image\Image;
 use yii\console\Controller;
 
@@ -493,14 +494,10 @@ class FooController extends Controller
 	public function actionRain()
 	{
 
-		$client = new Client(new Version2X('https://ws.meipo100.com', [
-			'headers' => [
-				'X-My-Header: websocket rocks',
-				'Authorization: Bearer 12b3c4d5e6f7g8h9i',
-			],
-		]));
+		$client = new Client(new Version2X('http://127.0.0.1:3000'));
+		var_dump($client);
 		$client->initialize();
-		$client->emit('join', [991, '59b147d7929f5']);
+//		$client->emit('join', [991, '59b147d7929f5']);
 		$client->close();
 
 		/*$ret = UserQR::mpShareQR(131379);
