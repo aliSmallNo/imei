@@ -259,6 +259,7 @@ class SiteController extends BaseController
 		$name = self::getParam('name');
 		$phone = self::getParam('phone');
 		$fonly = self::getParam('fonly', 0);
+		$inactive = self::getParam('inactive', 0);
 		$status = self::getParam('status', 0);
 		$subStatus = self::getParam('sub_status', 0);
 
@@ -339,6 +340,7 @@ class SiteController extends BaseController
 				"name" => $name,
 				"phone" => $phone,
 				'fonly' => $fonly,
+				'inactive' => $inactive,
 				'pagination' => $pagination,
 				'category' => 'data',
 				"partCount" => $partCount,

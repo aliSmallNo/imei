@@ -468,6 +468,7 @@ class User extends ActiveRecord
 		if ($orderbyUpdated) {
 			$orderBy = ' order by uUpdatedOn desc,uAddedOn desc ';
 		}
+		// $inactive = " left join im_log_action as a on a.aUId=u.uId and a.aCategory in (1000,1002,1004) and a.aDate BETWEEN '2017-09-02 00:00:00' and '2017-09-08 23:59:50' ";
 		$conn = AppUtil::db();
 		$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe,w.wWechatId, count(t.tPId) as uco
  				  FROM im_user as u 

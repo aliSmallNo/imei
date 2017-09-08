@@ -994,11 +994,11 @@ class WxController extends BaseController
 
 		list($items) = UserMsg::notice($wxInfo["uId"]);
 
-		return self::renderPage('notice.tpl',
-			[
-				"items" => $items
-			],
-			'terse');
+		return self::renderPage('notice.tpl', [
+			"items" => $items
+		],
+			'terse',
+			'通知');
 	}
 
 	// 心动排行榜
