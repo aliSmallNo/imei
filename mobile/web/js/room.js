@@ -412,7 +412,12 @@ require(["layer"],
 					showMsg('聊天内容不能为空！', 3, 12);
 					return false;
 				}
-				util.socket.send(content);
+				var params = {
+					gid: util.gid,
+					uid: util.uid,
+					msg: content
+				};
+				util.socket.send(params);
 				util.input.val('');
 			}
 		};
