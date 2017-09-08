@@ -681,11 +681,22 @@ class SiteController extends BaseController
 		}
 
 		$scanStat = UserNet::netStat($condition);
+
+		list($wd, $monday, $sunday) = AppUtil::getWeekInfo();
+		list($md, $firstDay, $endDay) = AppUtil::getMonthInfo();
+
 		return $this->renderPage("netstat.tpl",
 			[
 				'getInfo' => $getInfo,
 				'category' => 'data',
 				'scanStat' => $scanStat,
+
+				'today' => date('Y-m-d'),
+				'yesterday' => date('Y-m-d', time() - 86400),
+				'monday' => $monday,
+				'sunday' => $sunday,
+				'firstDay' => $firstDay,
+				'endDay' => $endDay,
 			]
 		);
 	}
@@ -876,6 +887,7 @@ class SiteController extends BaseController
 		];
 		list($wd, $monday, $sunday) = AppUtil::getWeekInfo();
 		list($md, $firstDay, $endDay) = AppUtil::getMonthInfo();
+
 		return $this->renderPage('userstat.tpl',
 			[
 				'category' => "data",
