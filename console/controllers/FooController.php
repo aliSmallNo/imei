@@ -17,6 +17,8 @@ use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
+use ElephantIO\Client;
+use ElephantIO\Engine\SocketIO\Version2X;
 use Gregwar\Image\Image;
 use yii\console\Controller;
 
@@ -490,18 +492,29 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
+
+		$client = new Client(new Version2X('https://ws.meipo100.com', [
+			'headers' => [
+				'X-My-Header: websocket rocks',
+				'Authorization: Bearer 12b3c4d5e6f7g8h9i',
+			],
+		]));
+		$client->initialize();
+		$client->emit('join', [991, '59b147d7929f5']);
+		$client->close();
+
 		/*$ret = UserQR::mpShareQR(131379);
 		var_dump($ret);*/
 		/*$srcPath = 'https://img.meipo100.com/2017/92/119168_n.jpg';
 		$ret = pathinfo($srcPath, PATHINFO_BASENAME);
 		var_dump($ret);*/
 //		AppUtil::logFile('test', 5, __FUNCTION__, __LINE__);
-		$openId = 'oYDJew03rmzi-7daKZkYenJP46Hg';
-		$ret = UserWechat::refreshWXInfo($openId, 1);
-		var_dump($ret);
-		$openId = 'oYDJew5wGt0OmO8fODf1oOTUVDVU';
-		$ret = UserWechat::refreshWXInfo($openId, 1);
-		var_dump($ret);
+		/*	$openId = 'oYDJew03rmzi-7daKZkYenJP46Hg';
+			$ret = UserWechat::refreshWXInfo($openId, 1);
+			var_dump($ret);
+			$openId = 'oYDJew5wGt0OmO8fODf1oOTUVDVU';
+			$ret = UserWechat::refreshWXInfo($openId, 1);
+			var_dump($ret);*/
 		/*$conn = AppUtil::db();
 		$sql = 'select uId from im_user WHERE uUniqid=\'\' ';
 		$ret = $conn->createCommand($sql)->queryAll();
