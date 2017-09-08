@@ -471,7 +471,9 @@ class User extends ActiveRecord
 
 		$inactive1 = $inactive2 = '';
 		if ($inactive) {
-			$inactive1 = " left join im_log_action as a on a.aUId=u.uId and a.aCategory in (1000,1002,1004) and a.aDate BETWEEN '2017-09-02 00:00:00' and '2017-09-08 23:59:50' ";
+			$edate = date("Y-m-d H:i:s");
+			$sdate = date("Y-m-d H:i:s", time() - 86400 * 7);
+			$inactive1 = " left join im_log_action as a on a.aUId=u.uId and a.aCategory in (1000,1002,1004) and a.aDate BETWEEN '$sdate' and '$edate' ";
 			$inactive2 = " and a.aUId is null ";
 		}
 
@@ -510,7 +512,9 @@ class User extends ActiveRecord
 		$sqlPart = trim($sqlPart, ',');
 		$inactive1 = $inactive2 = '';
 		if ($inactive) {
-			$inactive1 = " left join im_log_action as a on a.aUId=u.uId and a.aCategory in (1000,1002,1004) and a.aDate BETWEEN '2017-09-02 00:00:00' and '2017-09-08 23:59:50' ";
+			$edate = date("Y-m-d H:i:s");
+			$sdate = date("Y-m-d H:i:s", time() - 86400 * 7);
+			$inactive1 = " left join im_log_action as a on a.aUId=u.uId and a.aCategory in (1000,1002,1004) and a.aDate BETWEEN '$sdate' and '$edate' ";
 			$inactive2 = " and a.aUId is null ";
 		}
 		$sql = "select $sqlPart
