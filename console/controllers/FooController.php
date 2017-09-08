@@ -11,7 +11,6 @@ namespace console\controllers;
 use common\models\ChatMsg;
 use common\models\User;
 use common\models\UserNet;
-use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
@@ -19,7 +18,6 @@ use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use ElephantIO\Client;
 use ElephantIO\Engine\SocketIO\Version2X;
-use ElephantIO\Engine\SocketIO\Version1X;
 use Gregwar\Image\Image;
 use yii\console\Controller;
 
@@ -496,7 +494,7 @@ class FooController extends Controller
 
 		$client = new Client(new Version2X('http://127.0.0.1:3000'));
 		$client->initialize();
-		$client->emit('join', [991, '59b147d7929f5']);
+		$client->emit('join', ['gid' => 991, 'uid' => '59b147d7929f5']);
 		$client->close();
 
 		/*$ret = UserQR::mpShareQR(131379);
