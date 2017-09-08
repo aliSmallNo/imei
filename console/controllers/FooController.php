@@ -619,8 +619,13 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
+		/*
 		$dt = date('Y-m-d', time() + 86400 * 10);
 		$bgSrc = UserQR::createInvitationForMarry(120003, "周夫", "周夫", "2017-08-08");
 		var_dump($bgSrc);
+		 */
+		$arr = ChatMsg::$greetDict;
+		$index = array_rand($arr, 1);
+		echo $arr[$index];
 	}
 }
