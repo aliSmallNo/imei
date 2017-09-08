@@ -308,6 +308,7 @@
 	<div class="row">
 		<form class="form-inline" action="/site/accounts?status={{$status}}">
 			<label><input type="checkbox" name="fonly" value="1" {{if $fonly}}checked{{/if}}> 只显示已关注 </label>
+			<label><input type="checkbox" name="inactive" value="1" {{if $inactive}}checked{{/if}}> 只显示七天没活跃 </label>
 			<input class="form-control" name="name" placeholder="名字" value="{{$name}}">
 			<input class="form-control" name="phone" placeholder="手机号" value="{{$phone}}">
 			<select class="form-control" name="sub_status">
@@ -332,8 +333,7 @@
 		<ul class="nav nav-tabs">
 			{{foreach from=$partHeader key=key item=prod}}
 			<li class="ng-scope {{if $status == $key}}active{{/if}}">
-				<a href="/site/accounts?fonly={{$fonly}}&status={{$key}}&name={{$name}}&phone={{$phone}}&sub_status={{$sub_status}}"
-					 class="ng-binding">
+				<a href="/site/accounts?inactive={{$inactive}}&fonly={{$fonly}}&status={{$key}}&name={{$name}}&phone={{$phone}}&sub_status={{$sub_status}}" class="ng-binding">
 					{{$prod}} {{if $partCount[$key]}}<span class="badge">{{$partCount[$key]}}</span>{{/if}}
 				</a>
 			</li>

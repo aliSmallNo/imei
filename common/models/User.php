@@ -453,7 +453,7 @@ class User extends ActiveRecord
 		return ceil($percent * 100.00 / count($fields));
 	}
 
-	public static function users($criteria, $params, $page = 1, $pageSize = 20, $orderbyUpdated = false)
+	public static function users($criteria, $params, $page = 1, $pageSize = 20, $orderbyUpdated = false, $inactive = 0)
 	{
 		$strCriteria = '';
 		if ($criteria) {
@@ -468,12 +468,22 @@ class User extends ActiveRecord
 		if ($orderbyUpdated) {
 			$orderBy = ' order by uUpdatedOn desc,uAddedOn desc ';
 		}
+
+		$inactive1 = $inactive2 = '';
+		if ($inactive) {
+			$edate = date("Y-m-d H:i:s");
+			$sdate = date("Y-m-d H:i:s", time() - 86400 * 7);
+			$inactive1 = " left join im_log_action as a on a.aUId=u.uId and a.aCategory in (1000,1002,1004) and a.aDate BETWEEN '$sdate' and '$edate' ";
+			$inactive2 = " and a.aUId is null ";
+		}
+
 		$conn = AppUtil::db();
 		$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe,w.wWechatId, count(t.tPId) as uco
  				  FROM im_user as u 
 				  JOIN im_user_wechat as w on w.wUId=u.uId
 				  left JOIN im_trace as t on u.uId=t.tPId
-				  WHERE uId>0 $strCriteria 
+				  $inactive1
+				  WHERE uId>0 $strCriteria $inactive2
 				  group by uId
 				  $orderBy Limit $offset, $pageSize";
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
@@ -483,12 +493,13 @@ class User extends ActiveRecord
 		}
 		$sql = "SELECT count(1) FROM im_user as u
 				JOIN im_user_wechat as w on w.wUId=u.uId
-				WHERE uId>0 $strCriteria ";
+				$inactive1
+				WHERE uId>0 $strCriteria $inactive2 ";
 		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
 		return [$items, $count];
 	}
 
-	public static function partCount($criteria, $params)
+	public static function partCount($criteria, $params, $inactive = 0)
 	{
 		$strCriteria = '';
 		if ($criteria) {
@@ -499,10 +510,18 @@ class User extends ActiveRecord
 			$sqlPart .= 'SUM(CASE WHEN uStatus=' . $k . '  THEN 1 END) as c' . $k . ',';
 		}
 		$sqlPart = trim($sqlPart, ',');
+		$inactive1 = $inactive2 = '';
+		if ($inactive) {
+			$edate = date("Y-m-d H:i:s");
+			$sdate = date("Y-m-d H:i:s", time() - 86400 * 7);
+			$inactive1 = " left join im_log_action as a on a.aUId=u.uId and a.aCategory in (1000,1002,1004) and a.aDate BETWEEN '$sdate' and '$edate' ";
+			$inactive2 = " and a.aUId is null ";
+		}
 		$sql = "select $sqlPart
 				from im_user as u
 				JOIN im_user_wechat as w on w.wUId=u.uId
-				WHERE uId>0 $strCriteria ";
+				$inactive1
+				WHERE uId>0 $strCriteria $inactive2";
 		$conn = AppUtil::db();
 		unset($params[':status']);
 		$res = $conn->createCommand($sql)->bindValues($params)->queryOne();

@@ -259,6 +259,7 @@ class SiteController extends BaseController
 		$name = self::getParam('name');
 		$phone = self::getParam('phone');
 		$fonly = self::getParam('fonly', 0);
+		$inactive = self::getParam('inactive', 0);
 		$status = self::getParam('status', 0);
 		$subStatus = self::getParam('sub_status', 0);
 
@@ -285,7 +286,7 @@ class SiteController extends BaseController
 			$partCriteria[] = " wSubscribe=1";
 		}
 
-		list($list, $count) = User::users($criteria, $params, $page);
+		list($list, $count) = User::users($criteria, $params, $page, 20, false, $inactive);
 
 		$uids = array_column($list, 'id');
 		$mCnt = ChatMsg::serviceCnt($uids);
@@ -327,7 +328,7 @@ class SiteController extends BaseController
 		}
 
 		$stat = User::stat();
-		$partCount = User::partCount($partCriteria, $params);
+		$partCount = User::partCount($partCriteria, $params, $inactive);
 		$pagination = self::pagination($page, $count);
 
 		return $this->renderPage('accounts.tpl',
@@ -339,6 +340,7 @@ class SiteController extends BaseController
 				"name" => $name,
 				"phone" => $phone,
 				'fonly' => $fonly,
+				'inactive' => $inactive,
 				'pagination' => $pagination,
 				'category' => 'data',
 				"partCount" => $partCount,
@@ -679,11 +681,22 @@ class SiteController extends BaseController
 		}
 
 		$scanStat = UserNet::netStat($condition);
+
+		list($wd, $monday, $sunday) = AppUtil::getWeekInfo();
+		list($md, $firstDay, $endDay) = AppUtil::getMonthInfo();
+
 		return $this->renderPage("netstat.tpl",
 			[
 				'getInfo' => $getInfo,
 				'category' => 'data',
 				'scanStat' => $scanStat,
+
+				'today' => date('Y-m-d'),
+				'yesterday' => date('Y-m-d', time() - 86400),
+				'monday' => $monday,
+				'sunday' => $sunday,
+				'firstDay' => $firstDay,
+				'endDay' => $endDay,
 			]
 		);
 	}
@@ -874,6 +887,7 @@ class SiteController extends BaseController
 		];
 		list($wd, $monday, $sunday) = AppUtil::getWeekInfo();
 		list($md, $firstDay, $endDay) = AppUtil::getMonthInfo();
+
 		return $this->renderPage('userstat.tpl',
 			[
 				'category' => "data",
