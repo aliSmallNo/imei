@@ -1431,6 +1431,7 @@ class ApiController extends Controller
 			case 'greeting':
 				$ids = self::postParam('ids');
 				$ids = json_decode($ids, 1);
+
 				if ($ids) {
 					$ret = ChatMsg::greeting($uid, $ids);
 				}

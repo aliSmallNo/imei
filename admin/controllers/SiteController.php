@@ -655,6 +655,7 @@ class SiteController extends BaseController
 			$condition .= " and (u.uPhone like '$phone%' or u1.uPhone like '$phone%')";
 		}
 		list($list, $count) = UserNet::relations($condition, $page);
+		$scanStat = UserNet::scanStat();
 		$pagination = self::pagination($page, $count);
 		return $this->renderPage("relations.tpl",
 			[
@@ -662,6 +663,7 @@ class SiteController extends BaseController
 				'pagination' => $pagination,
 				'category' => 'data',
 				'list' => $list,
+				'scanStat' => $scanStat,
 				'relations' => UserNet::$RelDict,
 			]
 		);

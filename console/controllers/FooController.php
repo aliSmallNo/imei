@@ -10,11 +10,13 @@ namespace console\controllers;
  */
 use common\models\ChatMsg;
 use common\models\User;
+use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
+use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -611,8 +613,5 @@ class FooController extends Controller
 		$bgSrc = UserQR::createInvitationForMarry(120003, "周夫", "周夫", "2017-08-08");
 		var_dump($bgSrc);
 		 */
-		$arr = ChatMsg::$greetDict;
-		$index = array_rand($arr, 1);
-		echo $arr[$index];
 	}
 }

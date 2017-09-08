@@ -29,12 +29,65 @@
 		<select class="form-control" name="relation">
 			<option value="">-=请选择用户操作=-</option>
 			{{foreach from=$relations key=key item=item}}
-			<option value="{{$key}}" {{if isset($getInfo["relation"]) && $getInfo["relation"]==$key}}selected{{/if}}>{{$item}}</option>
+			<option value="{{$key}}"
+							{{if isset($getInfo["relation"]) && $getInfo["relation"]==$key}}selected{{/if}}>{{$item}}</option>
 			{{/foreach}}
 		</select>
 		<button class="btn btn-primary">查询</button>
 	</form>
 	<div class="row-divider"></div>
+	<div class="row">
+		<table class="table table-striped table-bordered">
+			<thead>
+			<tr>
+				<th>
+					用户
+				</th>
+				<th>
+					扫码数
+				</th>
+				<th>
+					扫码关注数
+				</th>
+				<th>
+					取消关注
+				</th>
+				<th>
+					关注并注册
+				</th>
+				<th>
+					注册成功
+				</th>
+
+			</tr>
+			</thead>
+			<tbody>
+			{{foreach from=$scanStat item=stat}}
+			<tr>
+				<td>
+					{{$stat.name}}
+				</td>
+				<td>
+					{{$stat.scan}}
+				</td>
+				<td>
+					{{$stat.subscribe}}
+				</td>
+				<td>
+					{{$stat.unsubscribe}}
+				</td>
+				<td>
+					{{$stat.reg}}
+				</td>
+				<td>
+					{{$stat.mps}}
+				</td>
+
+			</tr>
+			{{/foreach}}
+			</tbody>
+		</table>
+	</div>
 	<div class="row">
 		<table class="table table-striped table-bordered">
 			<thead>
