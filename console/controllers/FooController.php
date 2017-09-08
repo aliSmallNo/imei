@@ -497,7 +497,7 @@ class FooController extends Controller
 		$client = new Client(new Version2X('http://127.0.0.1:3000'));
 		var_dump($client);
 		$client->initialize();
-//		$client->emit('join', [991, '59b147d7929f5']);
+		$client->emit('join', [991, '59b147d7929f5']);
 		$client->close();
 
 		/*$ret = UserQR::mpShareQR(131379);
