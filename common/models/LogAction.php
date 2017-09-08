@@ -193,31 +193,28 @@ class LogAction extends ActiveRecord
 			default:
 				$criteria = '';
 		}
-		$sql = 'SELECT DISTINCT u.uName as `name`,u.uPhone as phone, u.uThumb as thumb,
-			(CASE WHEN uGender=10 THEN \'female\' WHEN uGender=11 THEN \'male\' ELSE \'mei\' END)as gender
-			 FROM im_user as u
-			 JOIN im_user_wechat as w on u.uId=w.wUId
-			 WHERE uAddedOn BETWEEN :beginDT AND :endDT
-			 AND uStatus<8 AND uPhone!=\'\' AND uScope>0 AND uRole>9 ' . $criteria;
 		$params = [
 			':beginDT' => $begin . ' 00:00',
 			':endDT' => $end . ' 23:59',
 		];
+		$sqlExt = ', 1 as active';
 		if ($from && $to) {
-			$sql = 'SELECT DISTINCT u.uName as `name`,u.uPhone as phone, u.uThumb as thumb,
-			(CASE WHEN uGender=10 THEN \'female\' WHEN uGender=11 THEN \'male\' ELSE \'mei\' END)as gender
-			 FROM im_user as u
-			 JOIN im_user_wechat as w on u.uId=w.wUId
-			 JOIN im_log_action as a on a.aUId=u.uId AND a.aCategory>1000 AND a.aDate BETWEEN :from AND :to
-			 WHERE uAddedOn BETWEEN :beginDT AND :endDT
-			 AND uStatus<8 AND uPhone!=\'\' AND uScope>0 AND uRole>9 ' . $criteria;
+			$sqlExt = ', (CASE WHEN a.aDate BETWEEN :from AND :to THEN 1 ELSE 9 END) as active';
 			$params['from'] = $from . ' 00:00';
 			$params['to'] = $to . ' 23:59';
 		}
+		$sql = 'SELECT DISTINCT u.uName as `name`,u.uPhone as phone, u.uThumb as thumb,
+			(CASE WHEN uGender=10 THEN \'female\' WHEN uGender=11 THEN \'male\' ELSE \'mei\' END)as gender ' . $sqlExt
+			. ' FROM im_user as u
+			 JOIN im_user_wechat as w on u . uId = w . wUId
+			 LEFT JOIN im_log_action as a on a . aUId = u . uId AND a . aCategory > 1000
+			 WHERE uAddedOn BETWEEN :beginDT AND :endDT
+			AND uStatus < 8 AND uPhone != \'\' AND uScope>0 AND uRole>9 ' . $criteria;
+
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		usort($ret, function ($a, $b) {
-			return iconv('UTF-8', 'GBK//IGNORE', $a['name']) >
-				iconv('UTF-8', 'GBK//IGNORE', $b['name']);
+			return iconv('UTF-8', 'GBK//IGNORE', $a['active'] . $a['name']) >
+				iconv('UTF-8', 'GBK//IGNORE', $b['active'] . $b['name']);
 		});
 		foreach ($ret as $k => $row) {
 			$ret[$k]['idx'] = $k + 1;

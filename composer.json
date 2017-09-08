@@ -19,13 +19,13 @@
         "yiisoft/yii2-redis": "~2.0.0",
         "yiisoft/yii2-sphinx": "~2.0.0",
         "yiisoft/yii2-smarty": "~2.0.0",
-        "yiisoft/yii2-mongodb": "~2.1.0",
         "gregwar/image": "2.*",
         "symfony/yaml": "^3.0",
         "monolog/monolog": "^1.18",
         "wazaari/monolog-mysql": "^1.0",
         "2amigos/yii2-qrcode-helper": "~1.0",
-        "firebase/php-jwt": "~3.0.0"
+        "firebase/php-jwt": "~3.0.0",
+        "wisembly/elephant.io": "^3.3"
     },
     "require-dev": {
         "codeception/codeception": "*",

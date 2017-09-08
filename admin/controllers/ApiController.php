@@ -18,6 +18,7 @@ use common\models\QuestionSea;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserNet;
+use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\WechatUtil;
@@ -167,6 +168,17 @@ class ApiController extends Controller
 					}
 				}
 				return self::renderAPI(129, '旋转图片失败~');
+				break;
+			case 'refresh':
+				$uInfo = User::findOne(['uId' => $id]);
+				if ($uInfo) {
+					$openId = $uInfo['uOpenId'];
+					UserWechat::getInfoByOpenId($openId, 1);
+					UserWechat::refreshWXInfo($openId);
+					return self::renderAPI(0, '刷新成功~');
+				} else {
+					return self::renderAPI(129, '用户不存在~');
+				}
 				break;
 		}
 		return self::renderAPI($ret["code"], $ret["msg"]);
