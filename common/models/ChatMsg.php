@@ -278,8 +278,9 @@ class ChatMsg extends ActiveRecord
 		];
 
 		//Rain: push to the sender
-		PushUtil::chat('msg', $infoA['uni'], [
+		PushUtil::chat('msg', $gid, $infoA['uni'], [
 			'id' => $cId,
+			'lastId' => $cId,
 			'gid' => $gid,
 			'left' => $left,
 			'uid' => $senderId,
@@ -293,14 +294,15 @@ class ChatMsg extends ActiveRecord
 		]);
 
 		//Rain: push to the receiver
-		PushUtil::chat('msg', $infoB['uni'], [
+		PushUtil::chat('msg', $gid, $infoB['uni'], [
 			'id' => $cId,
+			'lastId' => $cId,
 			'gid' => $gid,
 			'left' => $left,
 			'uid' => $senderId,
 			'name' => $infoB['uName'],
 			'uni' => $infoB['uni'],
-			'eid' => AppUtil::encrypt($senderId),
+			'eid' => AppUtil::encrypt($receiverId),
 			'avatar' => $infoB['uThumb'],
 			'content' => $content,
 			'addedon' => date('Y-m-d H:i:s'),

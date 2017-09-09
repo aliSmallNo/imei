@@ -1714,8 +1714,8 @@ require(["layer"],
 				});
 
 				util.socket.on("chat", function (resp) {
-					var gid = resp.info.gid;
 					console.log(resp);
+					var gid = resp.gid;
 					if (ChatUtil.gid != gid) {
 						return;
 					}
@@ -1724,7 +1724,7 @@ require(["layer"],
 							ChatUtil.showTip(resp.msg);
 							break;
 						case 'msg':
-							ChatUtil.messages(resp.info, 1);
+							ChatUtil.messages(resp, 1);
 							break;
 					}
 				});
