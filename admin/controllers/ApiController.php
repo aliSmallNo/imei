@@ -21,6 +21,7 @@ use common\models\UserNet;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
+use common\utils\PushUtil;
 use common\utils\WechatUtil;
 use dosamigos\qrcode\QrCode;
 use Gregwar\Image\Image;
@@ -303,7 +304,7 @@ class ApiController extends Controller
 					} else {
 						return self::renderAPI(129, '用户不存在');
 					}
-
+					$uni = $uInfo['uUniqid'];
 					if ($f) {
 						$aid = UserAudit::replace($data);
 						WechatUtil::templateMsg(WechatUtil::NOTICE_AUDIT_PASS,
@@ -311,6 +312,7 @@ class ApiController extends Controller
 							'审核结果通知',
 							'审核通过',
 							$id);
+						PushUtil::hint('你的个人资料审核通过啦', $uni, 'refresh-profile');
 					} else {
 						$data["aReasons"] = $reason;
 						$data["aAddedBy"] = Admin::getAdminId();
@@ -330,6 +332,7 @@ class ApiController extends Controller
 								'审核结果通知',
 								trim($str, '；'),
 								$id);
+							PushUtil::hint('你的个人资料需要修改完善', $uni, 'refresh-profile');
 						}
 					}
 

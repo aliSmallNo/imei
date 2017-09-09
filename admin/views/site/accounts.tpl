@@ -487,7 +487,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-tag="" id="btnCoupon">确定保存</button>
+					<button type="button" class="btn btn-primary" data-tag="" id="btnAudit">确定保存</button>
 				</div>
 			</div>
 		</div>
@@ -496,8 +496,7 @@
 		<div class="modal-dialog" role="document" style="width: 276px;">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-										aria-hidden="true">&times;</span></button>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title">设置用户头像</h4>
 				</div>
 				<div class="modal-body av-wrap">
@@ -610,7 +609,6 @@
 		  location.href = "/site/account?id=" + cid;
 	  });
 
-	  //////////////////////////////
 	  $(document).on("click", ".album-item a", function () {
 		  var self = $(this);
 		  $.post("/api/user", {
@@ -694,11 +692,9 @@
 	  var statusOPt = $(".status-opt"),
 		  subStatusOpt = $(".sub-status-opt"),
 		  reasonsWrap = $(".reasons-wrap"),
-		  btnCoupon = $("#btnCoupon"),
 		  hasReson = 1,
 		  resonLoad = 0,
-		  uid
-	  ;
+		  uid;
 
 	  $("a.check").click(function () {
 		  var self = $(this);
@@ -719,7 +715,7 @@
 		  }
 	  });
 
-	  btnCoupon.on("click", function () {
+	  $('#btnAudit').on("click", function () {
 		  // console.log(uid);return;
 		  var statusOPtVal = statusOPt.val();
 		  var reason = [];
