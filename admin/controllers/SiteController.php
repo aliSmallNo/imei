@@ -519,7 +519,8 @@ class SiteController extends BaseController
 				if ($serviceId && $uid) {
 					list($uid1, $uid2) = ChatMsg::sortUId($serviceId, $uid);
 					$sql = "select * from im_chat_group where gUId1=$uid1 and gUId2=$uid2 ";
-					if (!$conn->createCommand($sql)->queryOne()) {
+					$item = $conn->createCommand($sql)->queryOne();
+					if (!$item) {
 						ChatMsg::groupEdit($serviceId, $uid, 9999);
 						ChatMsg::addChat($serviceId, $uid, $content, 0, Admin::getAdminId());
 						$arr[] = "$count. from:" . $serviceId . " to" . $uid . " \n";
@@ -532,7 +533,7 @@ class SiteController extends BaseController
 				}
 			}
 
-			 header('location:/site/dummychats');
+			header('location:/site/dummychats');
 
 		}
 
