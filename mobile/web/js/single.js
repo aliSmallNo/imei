@@ -108,7 +108,7 @@ require(["layer"],
 			$sls.hashPage = hashTag;
 			$sls.mainPage.removeClass('bg-lighter');
 			$('body').removeClass('bg-qrcode');
-			ChatUtil.toggleTimer(0);
+			// ChatUtil.toggleTimer(0);
 			RankUtil.reset();
 			FavorUtil.reset();
 			switch (hashTag) {
@@ -706,10 +706,11 @@ require(["layer"],
 							var html = Mustache.render(util.tmp, resp.data);
 							util.list.append(html);
 						}*/
-						if (!util.loading) {
+
+						/*if (!util.loading) {
 							util.toggleTimer(0);
 							util.reload(1);
-						}
+						}*/
 						util.input.val('');
 						util.showTip(resp.data.gid, resp.data.left);
 						setTimeout(function () {
@@ -742,9 +743,9 @@ require(["layer"],
 				}, function (resp) {
 					if (resp.code == 0) {
 						util.messages(resp.data, scrollFlag);
-						if (util.timer == 0) {
+						/*if (util.timer == 0) {
 							util.toggleTimer(1);
-						}
+						}*/
 					} else {
 						showMsg(resp.msg, 3, 12);
 					}
@@ -1713,12 +1714,17 @@ require(["layer"],
 				});
 
 				util.socket.on("chat", function (resp) {
+					var gid = resp.gid;
+					console.log(resp);
+					if (ChatUtil.gid != gid) {
+						return;
+					}
 					switch (resp.tag) {
 						case 'tip':
 							ChatUtil.showTip(resp.msg);
 							break;
 						case 'msg':
-							ChatUtil.messages(resp.msg, 1);
+							ChatUtil.messages(resp.info, 1);
 							break;
 					}
 				});

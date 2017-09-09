@@ -11,6 +11,7 @@ namespace common\models;
 
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
+use common\utils\PushUtil;
 use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
 
@@ -94,7 +95,7 @@ class ChatMsg extends ActiveRecord
 
 	public static function sortUId($uId, $subUId)
 	{
-		$arr = [$uId, $subUId];
+		$arr = [intval($uId), intval($subUId)];
 		sort($arr);
 		return $arr;
 	}
@@ -282,26 +283,78 @@ class ChatMsg extends ActiveRecord
 			':uid' => $senderId
 		])->execute();
 
-		$sql = 'select uName,uThumb,uId from im_user WHERE uId=:uid';
-		$uInfo = $conn->createCommand($sql)->bindValues([
-			':uid' => $senderId
-		])->queryOne();
-		if ($uInfo) {
-			$left = self::chatLeft($senderId, $receiverId, $conn);
-			return [
-				'id' => $cId,
-				'senderid' => $senderId,
-				'receiverid' => $receiverId,
-				'content' => $content,
-				'addedon' => date('Y-m-d H:i:s'),
-				'name' => $uInfo['uName'],
-				'avatar' => ImageUtil::getItemImages($uInfo['uThumb'])[0],
-				'dir' => 'right',
-				'left' => $left,
-				'gid' => $ret['gId']
-			];
+		$infoA = $infoB = [];
+		$sql = 'SELECT uName,uThumb,uId,uUniqid as uni 
+				FROM im_user WHERE uId in (' . implode(',', [$senderId, $receiverId]) . ') ';
+		$ret = $conn->createCommand($sql)->queryAll();
+		foreach ($ret as $row) {
+			if ($row['uId'] == $senderId) {
+				$infoA = $row;
+			} else {
+				$infoB = $row;
+			}
 		}
-		return false;
+		if (!$infoA || !$infoB) {
+			return false;
+		}
+		$left = self::chatLeft($senderId, $receiverId, $conn);
+		$info = [
+			'id' => $cId,
+			'gid' => $gid,
+			'left' => $left,
+			'content' => $content,
+			'addedon' => date('Y-m-d H:i:s'),
+			'senderid' => $senderId,
+			'receiverid' => $receiverId,
+			'name' => $infoA['uName'],
+			'avatar' => $infoA['uThumb'],
+			'dir' => 'right',
+			'ua' => [
+				'id' => $senderId,
+				'name' => $infoA['uName'],
+				'uni' => $infoA['uni'],
+				'avatar' => $infoA['uThumb'],
+				'eid' => AppUtil::encrypt($senderId),
+			],
+			'ub' => [
+				'id' => intval($receiverId),
+				'name' => $infoB['uName'],
+				'uni' => $infoB['uni'],
+				'avatar' => $infoB['uThumb'],
+				'eid' => AppUtil::encrypt($receiverId),
+			],
+		];
+
+		//Rain: push to the sender
+		PushUtil::chat('msg', $infoA['uni'], [
+			'id' => $cId,
+			'gid' => $gid,
+			'left' => $left,
+			'uid' => $senderId,
+			'name' => $infoA['uName'],
+			'uni' => $infoA['uni'],
+			'eid' => '', // AppUtil::encrypt($senderId),
+			'avatar' => $infoA['uThumb'],
+			'content' => $content,
+			'addedon' => date('Y-m-d H:i:s'),
+			'dir' => 'right',
+		]);
+
+		//Rain: push to the receiver
+		PushUtil::chat('msg', $infoB['uni'], [
+			'id' => $cId,
+			'gid' => $gid,
+			'left' => $left,
+			'uid' => $senderId,
+			'name' => $infoB['uName'],
+			'uni' => $infoB['uni'],
+			'eid' => AppUtil::encrypt($senderId),
+			'avatar' => $infoB['uThumb'],
+			'content' => $content,
+			'addedon' => date('Y-m-d H:i:s'),
+			'dir' => 'left',
+		]);
+		return $info;
 	}
 
 	public static function chatLeft($uId, $subUId, $conn = '')
@@ -361,7 +414,8 @@ class ChatMsg extends ActiveRecord
 		$criteria = ' AND cId> ' . $lastId;
 		$conn = AppUtil::db();
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
-		$sql = 'select u.uName as `name`, u.uThumb as avatar,g.gId as gid, g.gRound as round,
+		$sql = 'select u.uName as `name`, u.uThumb as avatar,u.uUniqid as uni,
+			g.gId as gid, g.gRound as round,
 			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy,a.aName
 			 from im_chat_group as g 
 			 join im_chat_msg as m on g.gId=cGId
@@ -433,7 +487,7 @@ class ChatMsg extends ActiveRecord
 		$limit = ' LIMIT ' . ($page - 1) * $pageSize . ',' . ($pageSize + 1);
 		$sql = 'select * FROM (select    
 			 g.gUId2 as uid, 
-			 u.uName as `name`, u.uThumb as avatar,
+			 u.uName as `name`, u.uThumb as avatar,u.uUniqid as uni,
 			 m.cId as cid,m.cContent as content,m.cAddedOn,m.cReadFlag,m.cAddedBy
 			 from im_chat_group as g 
 			  JOIN im_chat_msg as m on g.gId=m.cGId AND g.gLastCId=m.cId
@@ -442,7 +496,7 @@ class ChatMsg extends ActiveRecord
 			 UNION 
 			 select    
 			 g.gUId1 as uid, 
-			 u.uName as `name`, u.uThumb as avatar, 
+			 u.uName as `name`, u.uThumb as avatar,u.uUniqid as uni,
 			 m.cId as cid,m.cContent as content,m.cAddedOn,m.cReadFlag,m.cAddedBy
 			 from im_chat_group as g 
 			  JOIN im_chat_msg as m on g.gId=m.cGId AND g.gLastCId=m.cId
@@ -487,8 +541,8 @@ class ChatMsg extends ActiveRecord
 		}
 		$conn = AppUtil::db();
 		$sql = 'select g.gId,g.gUId1,g.gUId2,g.gAddedBy,m.cContent as content,m.cAddedOn,
-			 u1.uName as name1,u1.uPhone as phone1,u1.uThumb as avatar1,u1.uId as id1,
-			 u2.uName as name2,u2.uPhone as phone2,u2.uThumb as avatar2,u2.uId as id2,
+			 u1.uName as name1,u1.uPhone as phone1,u1.uThumb as avatar1,u1.uId as id1,u1.uUniqid as uni1,
+			 u2.uName as name2,u2.uPhone as phone2,u2.uThumb as avatar2,u2.uId as id2,u2.uUniqid as uni2,
 			 COUNT(case when m2.cAddedBy=g.gUId1 then 1 end) as cnt1,
  			 COUNT(case when m2.cAddedBy=g.gUId2 then 1 end) as cnt2 
 			 from im_chat_group as g 
@@ -505,15 +559,17 @@ class ChatMsg extends ActiveRecord
 			$res[$k]['avatar2'] = ImageUtil::getItemImages($row['avatar2'])[0];
 			$res[$k]['dt'] = AppUtil::prettyDate($row['cAddedOn']);
 			if ($row['gAddedBy'] == $row['gUId2']) {
-				list($name, $phone, $avatar, $cnt) = [$row['name1'], $row['phone1'], $row['avatar1'], $row['cnt1']];
+				list($name, $phone, $avatar, $cnt, $uni) = [$row['name1'], $row['phone1'], $row['avatar1'], $row['cnt1'], $row['uni1']];
 				$res[$k]['name1'] = $row['name2'];
 				$res[$k]['phone1'] = $row['phone2'];
 				$res[$k]['avatar1'] = $row['avatar2'];
 				$res[$k]['cnt1'] = $row['cnt2'];
+				$res[$k]['uni1'] = $row['uni2'];
 				$res[$k]['name2'] = $name;
 				$res[$k]['phone2'] = $phone;
 				$res[$k]['avatar2'] = $avatar;
 				$res[$k]['cnt2'] = $cnt;
+				$res[$k]['uni2'] = $uni;
 			}
 		}
 

@@ -45,18 +45,16 @@ class PushUtil
 	}
 
 	/**
-	 * @param $gid int
-	 * @param $uni string
 	 * @param $tag string
-	 * @param $msg string
+	 * @param $uni string
+	 * @param $info array
 	 */
-	public static function chat($gid, $uni, $tag, $msg)
+	public static function chat($tag, $uni, $info)
 	{
 		$params = [
 			'tag' => $tag,
-			'uid' => $uni,
-			'gid' => $gid,
-			'msg' => $msg
+			'uni' => $uni,
+			'info' => $info
 		];
 		self::pushMsg('chat', $params);
 	}
