@@ -769,7 +769,7 @@ class UserNet extends ActiveRecord
 			join im_user as u1 on u1.uId =n.nSubUId 
 			join im_user_wechat as w on u1.uOpenId=w.wOpenId
 			$condition
-			GROUP BY n.nUId ORDER BY reg desc limit 10";
+			GROUP BY n.nUId ORDER BY subscribe desc limit 10";
 		$ret = $conn->createCommand($sql)->bindValues([
 			":rel1" => self::REL_QR_SCAN,
 			":rel2" => self::REL_QR_SUBSCRIBE,
