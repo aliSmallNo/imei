@@ -43,7 +43,7 @@
 				<th>
 					用户
 				</th>
-				<th>
+				<th style="display: none">
 					扫码数
 				</th>
 				<th>
@@ -67,7 +67,7 @@
 				<td>
 					{{$stat.name}}
 				</td>
-				<td>
+				<td  style="display: none">
 					{{$stat.scan}}
 				</td>
 				<td>
