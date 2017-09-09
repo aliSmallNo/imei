@@ -77,7 +77,7 @@ class Pin extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		$sql = 'SELECT u.uId, u.uName as name, u.uPhone as phone, u.uThumb as thumb,u.uGender as gender,
- 				u.uRole as role, p.pLat as lat, p.pLng as lng, uLogDate as dt
+ 				u.uRole as role,u.uUniqid as uni, p.pLat as lat, p.pLng as lng, uLogDate as dt
 			 FROM im_user as u
 			 JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=:cat AND p.pLat!=\'\' AND p.pLng!=\'\' AND p.pTown!=\'\'
 			 WHERE u.uStatus < 8

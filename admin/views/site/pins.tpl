@@ -70,6 +70,10 @@
 		border: 2px solid #51c332;
 	}
 
+	.menu_body li {
+		position: relative;
+	}
+
 	.menu_body li .content {
 		flex: 1;
 		font-size: 12px;
@@ -78,7 +82,8 @@
 		align-self: center;
 		padding-left: 4px;
 	}
-	.menu_body li .content b{
+
+	.menu_body li .content b {
 		font-weight: 400;
 	}
 
@@ -160,6 +165,17 @@
 	.i-mark-mei {
 		background: #51c332;
 	}
+
+	.online::after {
+		content: '';
+		position: absolute;
+		right: 5px;
+		top: 5px;
+		width: 12px;
+		height: 12px;
+		background: url(/images/am_online.gif) no-repeat center center;
+		background-size: 100% 100%;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="leftBox">
@@ -170,11 +186,11 @@
 		</div>
 		<ul class="menu_body">
 			{{foreach from=$items key=k item=user}}
-			<li data-lat="{{$user.lat}}" data-lng="{{$user.lng}}" data-idx="{{$k+1}}">
+			<li class="" data-lat="{{$user.lat}}" data-lng="{{$user.lng}}" data-idx="{{$k+1}}" data-uni="{{$user.uni}}">
 				<div class="seq">{{$k+1}}.</div>
 				<div class="avatar"><img src="{{$user.thumb}}" alt="" class="{{$user.mark}}" data-mark="{{$user.mark}}"></div>
 				<div class="content">
-					<b>{{$user.phone}}</b> {{$user.name}}
+					<div class="name"><b>{{$user.phone}}</b> {{$user.name}}</div>
 					<div class="dt">{{$user.dt}}</div>
 				</div>
 			</li>
@@ -183,6 +199,8 @@
 	</div>
 	<div id="mapContainer" class="rightBox"></div>
 </div>
+<input type="hidden" id="cUNI" value="{{$uni}}">
+<script src="/assets/js/socket.io.js"></script>
 <script>
 	var mLevel = 13;
 	var map = new AMap.Map("mapContainer", {
@@ -264,7 +282,43 @@
 		}
 	}
 
-	$(document).ready(function () {
+	var NoticeUtil = {
+		socket: null,
+		uni: 0,
+		timer: 0,
+		board: $('.m-notice'),
+		list: $('.menu_body'),
+		init: function () {
+			var util = this;
+			util.uni = $('#cUNI').val();
+			util.socket = io('https://ws.meipo100.com');
+			util.socket.on('connect', function () {
+				util.socket.emit('house', util.uni);
+			});
+
+			util.socket.on("waveup", function (resp) {
+//				console.log(resp);
+				util.list.find('li').removeClass('online');
+				$.each(resp.house, function () {
+					var id = this;
+					$('li[data-uni=' + id + ']').addClass('online');
+				});
+				var row = $('li[data-uni=' + resp.uid + ']');
+				if (row.length) {
+					row.insertBefore('.menu_body li:first');
+				}
+			});
+
+			util.socket.on("wavedown", function (resp) {
+//				console.log(resp);
+				$('li[data-uni=' + resp.uid + ']').removeClass('online');
+			});
+		}
+	};
+
+	$(function () {
 		switchMarkers(1);
+		NoticeUtil.init();
 	});
+
 </script>

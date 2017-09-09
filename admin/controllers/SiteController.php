@@ -1243,6 +1243,7 @@ class SiteController extends BaseController
 		$items = Pin::items();
 		return $this->renderPage('pins.tpl',
 			[
+				'uni' => Admin::getAdminId(),
 				'items' => $items,
 				'category' => 'data',
 				'detailcategory' => "site/userstat",
