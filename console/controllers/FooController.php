@@ -619,5 +619,8 @@ class FooController extends Controller
 		$bgSrc = UserQR::createInvitationForMarry(120003, "周夫", "周夫", "2017-08-08");
 		var_dump($bgSrc);
 		 */
+
+		$ret = User::greetUsers(136449);
+		print_r($ret);
 	}
 }

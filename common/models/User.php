@@ -2076,6 +2076,15 @@ class User extends ActiveRecord
 		if (!$location) return $ret;
 		list($prov, $city) = array_column($location, 'text');
 		$birthYear = $uInfo['uBirthYear'];
+
+		if ($gender == self::GENDER_MALE) {
+			$gender = self::GENDER_FEMALE;
+		} elseif ($gender == self::GENDER_FEMALE) {
+			$gender = self::GENDER_MALE;
+		} else {
+			return $ret;
+		}
+
 		$sql = 'select uId as id,uName as name,uThumb as thumb,uLogDate,uBirthYear,uHeight,uHoros,
 			 (case WHEN p.pProvince like :prov and p.pCity like :city then 10 WHEN p.pProvince like :prov then 8 else 0 end) as rank 
 			 from im_user as u
@@ -2090,7 +2099,7 @@ class User extends ActiveRecord
 			':cat' => Pin::CAT_NOW,
 			':y0' => $birthYear - 12,
 			':y1' => $birthYear + 3,
-			':gender' => User::GENDER_MALE
+			':gender' => $gender
 		])->queryAll();
 		$sql = 'select uId as id,uName as name,uThumb as thumb,uLogDate,uBirthYear,uHeight,uHoros,
 			 (case WHEN p.pProvince like :prov and p.pCity like :city then 10 WHEN p.pProvince like :prov then 8 else 0 end) as rank 
@@ -2105,7 +2114,7 @@ class User extends ActiveRecord
 			':cat' => Pin::CAT_NOW,
 			':y0' => $birthYear - 12,
 			':y1' => $birthYear + 3,
-			':gender' => User::GENDER_MALE
+			':gender' => $gender
 		])->queryAll();
 		$items = [];
 		$flag = true;
