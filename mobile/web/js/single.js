@@ -693,6 +693,7 @@ require(["layer"],
 				if (util.helpchatMenu.hasClass("on")) {
 					util.toggle(false, util.helpchatMenu);
 				}
+				util.input.val('');
 				$.post("/api/chat", {
 					tag: "sent",
 					id: util.sid,
@@ -712,7 +713,6 @@ require(["layer"],
 							util.toggleTimer(0);
 							util.reload(1);
 						}*/
-						util.input.val('');
 						util.showTip(resp.data.gid, resp.data.left);
 						setTimeout(function () {
 							util.bot.get(0).scrollIntoView(true);
