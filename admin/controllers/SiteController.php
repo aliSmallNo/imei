@@ -346,7 +346,7 @@ class SiteController extends BaseController
 				"partCount" => $partCount,
 				"partHeader" => User::$Status,
 				"subStatus" => User::$Substatus,
-				"dummys" => json_encode(ChatMsg::$dummyMap, JSON_UNESCAPED_UNICODE),
+				"dummys" => json_encode(User::dummyForChat(), JSON_UNESCAPED_UNICODE),
 			]);
 	}
 
