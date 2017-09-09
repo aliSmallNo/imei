@@ -43,7 +43,7 @@
 				<th>
 					用户
 				</th>
-				<th>
+				<th style="display: none">
 					扫码数
 				</th>
 				<th>
@@ -67,7 +67,7 @@
 				<td>
 					{{$stat.name}}
 				</td>
-				<td>
+				<td  style="display: none">
 					{{$stat.scan}}
 				</td>
 				<td>
@@ -85,11 +85,10 @@
 			</tr>
 			{{/foreach}}
 			<tr>
-				<td colspan="6" style="font-size: 12px;color: #777">1.每个人的扫码的数
-					2.每个人的扫码关注的数
-					3.每个人关注 并注册的用户
-					4.每个人注册成功（我们成为XX媒婆的数据）
-					5. 取消关注用户数
+				<td colspan="6" style="font-size: 12px;color: #777">1.每个人的扫码关注的数
+					2.每个人关注 并注册的用户
+					3.每个人注册成功（我们成为XX媒婆的数据）
+					4. 取消关注用户数
 				</td>
 			</tr>
 			</tbody>
