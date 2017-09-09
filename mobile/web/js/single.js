@@ -1714,7 +1714,7 @@ require(["layer"],
 				});
 
 				util.socket.on("chat", function (resp) {
-					var gid = resp.gid;
+					var gid = resp.info.gid;
 					console.log(resp);
 					if (ChatUtil.gid != gid) {
 						return;
