@@ -1699,6 +1699,7 @@ require(["layer"],
 					switch (resp.tag) {
 						case 'hint':
 							util.toggle(msg);
+							util.handle(resp.action);
 							break;
 						case 'greet':
 							GreetingUtil.show();
@@ -1716,6 +1717,13 @@ require(["layer"],
 							break;
 					}
 				});
+			},
+			handle: function ($action) {
+				switch ($action){
+					case 'refresh-profile':
+
+						break;
+				}
 			},
 			join: function (gid) {
 				var util = this;

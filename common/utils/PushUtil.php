@@ -17,13 +17,15 @@ class PushUtil
 	/**
 	 * @param $msg string
 	 * @param $uni string
+	 * @param $action string
 	 */
-	public static function hint($msg, $uni = '')
+	public static function hint($msg, $uni = '', $action = '')
 	{
 		$params = [
 			'tag' => 'hint',
 			'msg' => $msg,
-			'uid' => $uni
+			'uid' => $uni,
+			'action' => $action
 		];
 		self::pushMsg('notice', $params);
 	}
