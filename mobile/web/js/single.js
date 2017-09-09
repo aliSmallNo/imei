@@ -139,7 +139,7 @@ require(["layer"],
 					FootUtil.toggle(1);
 					break;
 				case 'sme':
-					SmeUtil.sme();
+					SmeUtil.reload();
 					FootUtil.toggle(1);
 					break;
 				case 'scontacts':
@@ -786,12 +786,13 @@ require(["layer"],
 			thumbTmp: '{[#items]}<li><a class="has-pic"><img src="{[.]}"></a></li>{[/items]}',
 			albumSingleTmp: '{[#items]}<li><a class="has-pic"><img src="{[thumb]}" bsrc="{[figure]}"></a><a href="javascript:;" class="del"></a></li>{[/items]}',
 			init: function () {
+				var util = this;
 				$(document).on(kClick, "a.e-album", function () {
-					SmeUtil.editToggle(!SmeUtil.editable);
+					util.editToggle(!util.editable);
 				});
 
 				$(document).on(kClick, "a.choose-img", function () {
-					if (SmeUtil.delImgFlag || SmeUtil.editable) {
+					if (util.delImgFlag || util.editable) {
 						return false;
 					}
 					wx.chooseImage({
@@ -799,22 +800,22 @@ require(["layer"],
 						sizeType: ['original', 'compressed'],
 						sourceType: ['album', 'camera'],
 						success: function (res) {
-							SmeUtil.localIds = res.localIds;
-							if (SmeUtil.localIds && SmeUtil.localIds.length) {
-								SmeUtil.uploadImgFlag = 1;
-								SmeUtil.serverIds = [];
+							util.localIds = res.localIds;
+							if (util.localIds && util.localIds.length) {
+								util.uploadImgFlag = 1;
+								util.serverIds = [];
 								layer.open({
 									type: 2,
 									content: '正在上传中...'
 								});
-								SmeUtil.wxUploadImages();
+								util.wxUploadImages();
 							}
 						}
 					});
 				});
 
 				$(document).on(kClick, ".album-photos a.has-pic", function () {
-					if (SmeUtil.delImgFlag || SmeUtil.editable || !SmeUtil.albums) {
+					if (util.delImgFlag || util.editable || !util.albums) {
 						return false;
 					}
 					var self = $(this);
@@ -837,13 +838,13 @@ require(["layer"],
 						btn: ['删除', '取消'],
 						content: '<p class="msg-content">是否确定要删除这张图片？</p>',
 						yes: function () {
-							SmeUtil.delImgFlag = 1;
+							util.delImgFlag = 1;
 							$.post("/api/user", {
 								id: src,
 								tag: "album",
 								f: "del"
 							}, function (resp) {
-								SmeUtil.delImgFlag = 0;
+								util.delImgFlag = 0;
 								row.remove();
 								layer.closeAll();
 								showMsg(resp.msg, 3, (resp.code == 0 ? 11 : 12));
@@ -853,9 +854,10 @@ require(["layer"],
 				});
 			},
 			editToggle: function (canEdit) {
-				SmeUtil.editable = canEdit;
+				var util = this;
+				util.editable = canEdit;
 				var btn = $("a.e-album");
-				if (SmeUtil.editable) {
+				if (util.editable) {
 					btn.html('完成');
 					$('.album-photos a.del').show();
 				} else {
@@ -863,17 +865,18 @@ require(["layer"],
 					$('.album-photos a.del').hide();
 				}
 			},
-			sme: function () {
-				if (SmeUtil.smeFlag) {
+			reload: function () {
+				var util = this;
+				if (util.smeFlag) {
 					return;
 				}
-				SmeUtil.smeFlag = 1;
+				util.smeFlag = 1;
 				$.post("/api/user", {
 					tag: "myinfo",
 				}, function (resp) {
-					$(".u-my-album .photos").html(Mustache.render(SmeUtil.thumbTmp, {items: resp.data.img4}));
-					SmeUtil.albums = resp.data.gallery;
-					$("#album .photos").html(Mustache.render(SmeUtil.albumTmp, SmeUtil));
+					$(".u-my-album .photos").html(Mustache.render(util.thumbTmp, {items: resp.data.img4}));
+					util.albums = resp.data.gallery;
+					$("#album .photos").html(Mustache.render(util.albumTmp, util));
 					$(".u-my-album .title").html("相册(" + resp.data.album_cnt + ")");
 					var tipHtml = resp.data.hasMp ? "" : "还没有媒婆";
 					$(".u-my-bar .percent span").html(resp.data.percent);
@@ -883,25 +886,26 @@ require(["layer"],
 						imgWrap.addClass('pending');
 					}
 					$("[to=myMP]").find(".tip").html(tipHtml);
-					SmeUtil.smeFlag = 0;
-					SmeUtil.editToggle(false);
+					util.smeFlag = 0;
+					util.editToggle(false);
 				}, "json");
 			},
 			wxUploadImages: function () {
-				if (SmeUtil.localIds.length < 1 && SmeUtil.serverIds.length) {
-					SmeUtil.uploadImages();
+				var util = this;
+				if (util.localIds.length < 1 && util.serverIds.length) {
+					util.uploadImages();
 					return;
 				}
-				var localId = SmeUtil.localIds.pop();
+				var localId = util.localIds.pop();
 				wx.uploadImage({
 					localId: localId,
 					isShowProgressTips: 0,
 					success: function (res) {
-						SmeUtil.serverIds.push(res.serverId);
-						if (SmeUtil.localIds.length < 1) {
-							SmeUtil.uploadImages();
+						util.serverIds.push(res.serverId);
+						if (util.localIds.length < 1) {
+							util.uploadImages();
 						} else {
-							SmeUtil.wxUploadImages();
+							util.wxUploadImages();
 						}
 					},
 					fail: function () {
@@ -912,18 +916,19 @@ require(["layer"],
 				});
 			},
 			uploadImages: function () {
+				var util = this;
 				$.post("/api/user", {
 					tag: "album",
-					id: JSON.stringify(SmeUtil.serverIds)
+					id: JSON.stringify(util.serverIds)
 				}, function (resp) {
 					if (resp.code == 0) {
-						$("#album .photos").append(Mustache.render(SmeUtil.albumSingleTmp, resp.data));
+						$("#album .photos").append(Mustache.render(util.albumSingleTmp, resp.data));
 						layer.closeAll();
 						showMsg(resp.msg, 3, 11);
 					} else {
 						showMsg(resp.msg, 3, 12);
 					}
-					SmeUtil.uploadImgFlag = 0;
+					util.uploadImgFlag = 0;
 				}, "json");
 			}
 		};
@@ -1719,9 +1724,9 @@ require(["layer"],
 				});
 			},
 			handle: function ($action) {
-				switch ($action){
+				switch ($action) {
 					case 'refresh-profile':
-
+						SmeUtil.reload();
 						break;
 				}
 			},
