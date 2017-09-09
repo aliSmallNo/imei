@@ -441,16 +441,17 @@ class SiteController extends BaseController
 		}
 
 		if (!$serviceId) {
-			$serviceId = 132648;// $serviceId dummy ID
+			$serviceId = 132648;// $serviceId => dummy ID
 		}
 		if (!$uid) {
 			$uid = self::postParam("uid", 120003);
 		}
 
-		$content = trim(self::postParam("content"));
-		if ($content) {
-			ChatMsg::addChat($serviceId, $uid, $content);
-		}
+//		$content = trim(self::postParam("content"));
+//		if ($content) {
+//			ChatMsg::addChat($serviceId, $uid, $content);
+//		}
+
 		ChatMsg::groupEdit($serviceId, $uid, 9999);
 		list($items) = ChatMsg::details($serviceId, $uid);
 		usort($items, function ($a, $b) {

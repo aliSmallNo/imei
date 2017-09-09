@@ -32,7 +32,7 @@
 	<div class="row">
 		<h4>用户聊天列表</h4>
 	</div>
-	<form action="/site/chat" class="form-inline">
+	<form action="/site/dummychats" class="form-inline">
 		<input class="form-control" placeholder="用户名称" name="name"
 					 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
 		<input class="form-control" placeholder="用户手机" name="phone"

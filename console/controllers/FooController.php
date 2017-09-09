@@ -8,6 +8,7 @@ namespace console\controllers;
  * Date: 11/5/2017
  * Time: 2:11 PM
  */
+use admin\models\Admin;
 use common\models\ChatMsg;
 use common\models\User;
 use common\models\UserNet;
@@ -614,11 +615,52 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		/*
-		$dt = date('Y-m-d', time() + 86400 * 10);
-		$bgSrc = UserQR::createInvitationForMarry(120003, "周夫", "周夫", "2017-08-08");
-		var_dump($bgSrc);
-		 */
+		$content = "你好，可以认识下吗？";  // 发送内容
+		$serviceId = 0; // 稻草人 uId
+		$uid = 0;       // 不活跃用户 uId
+
+		$allDummys = User::dummyForChat(); // 所有稻草人
+
+		$edate = date("Y-m-d H:i:s");
+		$sdate = date("Y-m-d H:i:s", time() - 86400 * 7);
+
+		$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe,w.wWechatId, count(t.tPId) as uco 
+				FROM im_user as u 
+				JOIN im_user_wechat as w on w.wUId=u.uId 
+				left JOIN im_trace as t on u.uId=t.tPId 
+				left join im_log_action as a on a.aUId=u.uId and a.aCategory in (1000,1002,1004) and a.aDate BETWEEN '$sdate' and '$edate' 
+				WHERE uId>0 AND uStatus=1 AND wSubscribe=1 and a.aUId is null 
+				group by uId order by uAddedOn desc ";
+
+		$inactiveUsers = AppUtil::db()->createCommand($sql)->queryAll();// 审核用过的 关注状态的 近七天不活跃用户
+
+		// echo count($inactiveUsers);exit;
+
+		foreach ($inactiveUsers as $user) {
+			if ($user["uGender"] == User::GENDER_MALE) {
+				$serviceId = $allDummys[User::GENDER_MALE][0]["uId"];
+				$uid = $user["uId"];
+				echo $serviceId."==".$uid;exit;
+				if ($serviceId && $uid) {
+					$ret = ChatMsg::addChat($serviceId, $uid, $content, 0, 1002);
+					ChatMsg::groupEdit($serviceId, $uid, 9999);
+				}
+				break;
+				exit;
+
+			} else if ($user["uGender"] == User::GENDER_FEMALE) {
+				$serviceId = $allDummys[User::GENDER_FEMALE][0]["uId"];
+				$uid = $user["uId"];
+				echo $serviceId."==".$uid;exit;
+				if ($serviceId && $uid) {
+					$ret = ChatMsg::addChat($serviceId, $uid, $content, 0, 1002);
+					ChatMsg::groupEdit($serviceId, $uid, 9999);
+				}
+				break;
+				exit;
+			}
+		}
+
 
 	}
 }
