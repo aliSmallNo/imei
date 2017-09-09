@@ -465,6 +465,7 @@ require(["layer"],
 		var ChatUtil = {
 			qId: '',
 			sid: '',
+			gid: 0,
 			lastId: 0,
 			loading: 0,
 			book: $('.contacts'),
@@ -746,6 +747,7 @@ require(["layer"],
 						/*if (util.timer == 0) {
 							util.toggleTimer(1);
 						}*/
+						util.gid = resp.data.gid;
 					} else {
 						showMsg(resp.msg, 3, 12);
 					}
