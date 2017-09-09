@@ -620,7 +620,5 @@ class FooController extends Controller
 		var_dump($bgSrc);
 		 */
 
-		$ret = User::greetUsers(136449);
-		print_r($ret);
 	}
 }

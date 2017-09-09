@@ -2137,5 +2137,23 @@ class User extends ActiveRecord
 		return array_values($items);
 	}
 
+	// 后台聊天稻草人
+	public static function dummyForChat()
+	{
+		$sql = "select uName,uThumb,uId,uGender from im_user where uSubStatus=:sst and uStatus=:st ORDER by uId desc";
+		$ret = AppUtil::db()->createCommand($sql)->bindValues([
+			":sst" => self::SUB_ST_FISH,
+			":st" => self::STATUS_DUMMY,
+		])->queryAll();
+		$res = [];
+		foreach ($ret as $v) {
+			if ($v["uGender"] == self::GENDER_MALE) {
+				$res[self::GENDER_FEMALE][] = $v;
+			} elseif ($v["uGender"] == self::GENDER_FEMALE) {
+				$res[self::GENDER_MALE][] = $v;
+			}
+		}
+		return $res;
+	}
 
 }

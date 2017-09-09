@@ -532,9 +532,9 @@
 	<script type="text/html" id="dummyChatTemp">
 		<div class="col-sm-12 dummy-opts">
 			{[#items]}
-			<div data-id="{[id]}" class="dummy-opt">
-				<div><img src="{[avatar]}"></div>
-				<div>{[name]}</div>
+			<div data-id="{[uId]}" class="dummy-opt">
+				<div><img src="{[uThumb]}"></div>
+				<div>{[uName]}</div>
 				<span></span>
 			</div>
 			{[/items]}

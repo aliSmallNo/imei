@@ -23,54 +23,6 @@ class ChatMsg extends ActiveRecord
 
 	const RATIO = 1; //1.0 / 2.0;
 
-	// 后台聊天稻草人
-	static $dummyMap = [
-		User::GENDER_MALE => [
-			["name" => "肖页儿", "id" => 132465, "avatar" => "http://img.meipo100.com/avatar/3585701d6c2b433fbc1f8ed4cdf68822_t.jpg"],
-			["name" => "宝宝", "id" => 132466, "avatar" => "http://img.meipo100.com/avatar/d4689171a2784401b3cb1f0fa5a69325_t.jpg"],
-			["name" => "怹", "id" => 132457, "avatar" => "http://img.meipo100.com/avatar/87b54f46f915418aad7e4b6863555f13_t.jpg"],
-			["name" => "达娃卓玛", "id" => 132458, "avatar" => "http://img.meipo100.com/avatar/86b5641f9b3249d2bb9beac32fc6b8df_t.jpg"],
-			["name" => "萌芽", "id" => 132460, "avatar" => "http://img.meipo100.com/avatar/ce7637e0dd144d5381c3cab3127301e9_t.jpg"],
-			["name" => "凯叉", "id" => 132455, "avatar" => "http://img.meipo100.com/avatar/65a5454ff301485189fa965680584cee_t.jpg"],
-			["name" => "Ljs", "id" => 132447, "avatar" => "http://img.meipo100.com/avatar/73a8b41c368941fab07998f907d56632_t.jpg"],
-			["name" => "Sylvia", "id" => 130477, "avatar" => "http://img.meipo100.com/avatar/c52dbe29c84a4ed1bf86934121df25cb_t.jpg"],
-			["name" => "corbe", "id" => 132439, "avatar" => "http://img.meipo100.com/avatar/dec1deb5bfb749bc85dcf0126abd249f_t.jpg"],
-			["name" => "任宇超Melody", "id" => 132433, "avatar" => "http://img.meipo100.com/avatar/5a774c0c60f446918be6b758d351b480_t.jpg"],
-			["name" => "他不看见我吗？", "id" => 132503, "avatar" => "http://img.meipo100.com/avatar/bd3721f75f3e4cd3bd32fc4ff197182c_t.jpg"],
-			["name" => "Janny Von", "id" => 132421, "avatar" => "http://img.meipo100.com/avatar/309abde7bb804314832bf2b0fd046aa4_t.jpg"],
-			["name" => "Sunshine Rose", "id" => 132423, "avatar" => "http://img.meipo100.com/avatar/097008d352eb43f7855c5597cf459940_t.jpg"],
-			["name" => "肥兔子", "id" => 132415, "avatar" => "http://img.meipo100.com/avatar/039df4ae43344c2ebcd33c9a49892694_t.jpg"],
-			["name" => "四月一日君", "id" => 132406, "avatar" => "http://img.meipo100.com/avatar/adfb6b8865694e09a75d31e3c6b84d5d_t.jpg"],
-			["name" => "Demi 壹壹", "id" => 132370, "avatar" => "http://img.meipo100.com/avatar/4d20471c30094affb41dbfc8e14d7d89_t.jpg"],
-			["name" => "徐小栗", "id" => 132323, "avatar" => "http://img.meipo100.com/avatar/12fee1f496bc4e0a829788c7b4090d49_t.jpg"],
-			["name" => "帆古古的小可爱", "id" => 132272, "avatar" => "http://img.meipo100.com/avatar/62484514e1204d6c810840c4f59fc346_t.jpg"],
-			["name" => "纯纯纯", "id" => 132275, "avatar" => "http://img.meipo100.com/avatar/e7dd5cd732b843e89dbee7603c465c0f_t.jpg"],
-			["name" => "翊嘉", "id" => 132111, "avatar" => "http://img.meipo100.com/avatar/7f149ff4b6fd49fcaddfd5071767ad76_t.jpg"],
-		],
-		User::GENDER_FEMALE => [
-			["name" => "洛风帮主", "id" => 132429, "avatar" => "http://img.meipo100.com/avatar/b265045c23c546e29713649dc0485e33_t.jpg"],
-			["name" => "小 太 阳", "id" => 132430, "avatar" => "http://img.meipo100.com/avatar/b1387fea6ea44c6daac7e4c07b06b604_t.jpg"],
-			["name" => "小瑞", "id" => 132412, "avatar" => "http://img.meipo100.com/avatar/d418a64423ef4893b1e8af756b7c5f14_t.jpg"],
-			["name" => "TK.Chen", "id" => 131747, "avatar" => "http://img.meipo100.com/avatar/b50c60b916fa4518ba04dc8e0ce1cbc7_t.jpg"],
-			["name" => "AAA琉璃i", "id" => 132391, "avatar" => "http://img.meipo100.com/avatar/45007a91f87c42dab7de16120a5ba458_t.jpg"],
-			["name" => "杨树文", "id" => 132392, "avatar" => "http://img.meipo100.com/avatar/915a48001907448ea4dc9c5bd53e3aca_t.jpg"],
-			["name" => "Hx丶", "id" => 132394, "avatar" => "http://img.meipo100.com/avatar/e03bd8dff1024670a7fe7fd93896e19d_t.jpg"],
-			["name" => "大肚蚂蚁", "id" => 132494, "avatar" => "http://img.meipo100.com/avatar/97a6312f00b040159e641726c7400492_t.jpg"],
-			["name" => "Fill", "id" => 132363, "avatar" => "http://img.meipo100.com/avatar/dcb7bc0293564b09bac773c0dbf53ccc_t.jpg"],
-			["name" => "Christian Grey", "id" => 132360, "avatar" => "http://img.meipo100.com/avatar/a9fb2af14f454c80b9bb936e8615bd48_t.jpg"],
-			["name" => "何勇", "id" => 132348, "avatar" => "http://img.meipo100.com/avatar/2ae6cb00b9db4e92a6cbb7c63a6e301c_t.jpg"],
-			["name" => "太阳power", "id" => 132343, "avatar" => "http://img.meipo100.com/avatar/3fa795590e024e32b81bd43394af8032_t.jpg"],
-			["name" => "振乾", "id" => 132329, "avatar" => "http://img.meipo100.com/avatar/3792fd656e004266ab8b084f562afb60_t.jpg"],
-			["name" => "肖恩", "id" => 132326, "avatar" => "http://img.meipo100.com/avatar/03787ba9bf294b7e998d0b6f97e54c99_t.jpg"],
-			["name" => "周小福", "id" => 132314, "avatar" => "http://img.meipo100.com/avatar/3dbac729267e4665b822ad34d5990b03_t.jpg"],
-			["name" => "威猛的小老虎", "id" => 132278, "avatar" => "http://img.meipo100.com/avatar/954437d21c6d433883a72bac381e9881_t.jpg"],
-			["name" => "丁一辰", "id" => 132228, "avatar" => "http://img.meipo100.com/avatar/2853f2d13ab847559f3eb89a57130f6b_t.jpg"],
-			["name" => "丁兴", "id" => 132210, "avatar" => "http://img.meipo100.com/avatar/16d14085dd774a8d9f62bb94f8f4d534_t.jpg"],
-			["name" => "张贺家", "id" => 132195, "avatar" => "http://img.meipo100.com/avatar/d0c7fa3bd9cb470fb62f6b27f087f507_t.jpg"],
-			["name" => "Jerry", "id" => 132452, "avatar" => "http://img.meipo100.com/avatar/9afab75a63d14318abf242229ddeb7d1_t.jpg"],
-		],
-	];
-
 	public static function tableName()
 	{
 		return '{{%chat_msg}}';
@@ -595,4 +547,5 @@ class ChatMsg extends ActiveRecord
 		$conn->createCommand($sql)->execute();*/
 
 	}
+
 }
