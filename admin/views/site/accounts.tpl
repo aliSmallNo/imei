@@ -369,7 +369,7 @@
 			</td>
 			<td class="pInfo m-style-{{$prod.style}}">
 				<span class="m-role">{{$prod.role_t}}</span> {{$prod.name}}
-				<em>{{$prod.phone}} {{$prod.wechatid}} {{$prod.location_t}}</em>
+				<em>{{$prod.phone}} {{$prod.wechatid}} {{$prod.location_t}} (籍贯: {{$prod.homeland_t}})</em>
 				<em style="display: none">{{$prod.note_t}}</em>
 				<span class="sub{{$prod.subscribe}}">{{if $prod.subscribe}}已关注{{else}}未关注{{/if}}</span>
 				{{if $prod.substatus>1}}<span>{{$prod.substatus_t}}</span>{{/if}}
