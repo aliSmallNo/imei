@@ -109,8 +109,8 @@
 				}
 				break;
 			case 'net':
-				names = ["心动数", "聊天数", "送媒桂花"];
-				fields = ["favor", "chat", "gift"];
+				names = ["心动数", "聊天数", "送媒桂花", "充值金额"];
+				fields = ["favor", "chat", "gift", 'recharge'];
 				for (var i = 0; i < fields.length; i++) {
 					items.push({
 						name: names[i],
