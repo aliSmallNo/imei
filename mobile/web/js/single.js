@@ -889,8 +889,11 @@ require(["layer"],
 					if (resp.data.pending) {
 						imgWrap.addClass('pending');
 					}
-					if (resp.data.status === 1) {
-						util.hint.remove();
+					if (resp.data.audit.length === 0) {
+						util.hint.hide();
+					} else {
+						util.hint.find('span').html('<span><i class="i-mark-warning"></i> ' + resp.data.audit + '</span>');
+						util.hint.show();
 					}
 					$("[to=myMP]").find(".tip").html(tipHtml);
 					util.smeFlag = 0;

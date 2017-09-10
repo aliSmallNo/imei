@@ -44,12 +44,10 @@
 </section>
 <section id="sme" data-title="个人中心">
 	<div class="useruc">
-		{{if $audit}}
-		<div class="m-hint" id="cUserHint">
+		<div class="m-hint" id="cUserHint" {{if !$audit}}style="display:none"{{/if}}>
 			<span><i class="i-mark-warning"></i> {{$audit}}</span>
 			<a href="/wx/sedit">去完善资料</a>
 		</div>
-		{{/if}}
 		<div class="u-my-wrap line-bottom">
 			<div class="u-my-bar">
 				<div class="avatar single">
