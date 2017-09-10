@@ -476,6 +476,77 @@ class SiteController extends BaseController
 			]);
 	}
 
+	public function actionDummychatall()
+	{
+		Admin::staffOnly();
+
+		$sign = self::getParam("sign", 0);
+		$content = self::getParam("content", "");// 发送内容
+		$maleUID = self::getParam("male", "");// 男稻草人uId
+		$femaleUID = self::getParam("female", "");// 女稻草人uId
+
+		$uid = 0;       // 不活跃用户 uId
+
+		$allDummys = User::dummyForChat(); // 所有稻草人
+		$dmales = $allDummys[User::GENDER_MALE];
+		$dfemales = $allDummys[User::GENDER_FEMALE];
+
+		if ($sign && $content && $maleUID && $femaleUID) {
+			$edate = date("Y-m-d H:i:s");
+			$sdate = date("Y-m-d H:i:s", time() - 86400 * 7);
+
+			$conn = AppUtil::db();
+			$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe,w.wWechatId, count(t.tPId) as uco 
+				FROM im_user as u 
+				JOIN im_user_wechat as w on w.wUId=u.uId 
+				left JOIN im_trace as t on u.uId=t.tPId 
+				left join im_log_action as a on a.aUId=u.uId and a.aCategory in (1000,1002,1004) and a.aDate BETWEEN '$sdate' and '$edate' 
+				WHERE uId>0 AND uStatus=1 AND wSubscribe=1 and a.aUId is null 
+				group by uId order by uAddedOn desc ";
+
+			$inactiveUsers = $conn->createCommand($sql)->queryAll();// 审核通过的 关注状态的 近七天不活跃用户
+
+			$count = 1;
+			$arr = [];
+			foreach ($inactiveUsers as $user) {
+				$serviceId = 0;
+				if ($user["uGender"] == User::GENDER_MALE) {
+					$serviceId = $femaleUID;
+				} else if ($user["uGender"] == User::GENDER_FEMALE) {
+					$serviceId = $maleUID;
+				}
+				$uid = $user["uId"];
+				if ($serviceId && $uid) {
+					list($uid1, $uid2) = ChatMsg::sortUId($serviceId, $uid);
+					$sql = "select * from im_chat_group where gUId1=$uid1 and gUId2=$uid2 ";
+					$item = $conn->createCommand($sql)->queryOne();
+					if (!$item) {
+						ChatMsg::groupEdit($serviceId, $uid, 9999);
+						ChatMsg::addChat($serviceId, $uid, $content, 0, Admin::getAdminId());
+						$arr[] = "$count. from:" . $serviceId . " to" . $uid . " \n";
+					}
+					$count++;
+				}
+
+				if ($count == 1) {
+					// print_r($arr);exit;
+				}
+			}
+
+			header('location:/site/dummychats');
+
+		}
+
+		return $this->renderPage('dummychatall.tpl',
+			[
+				'category' => 'data',
+				'detailcategory' => 'site/dummychats',
+				'dmales' => $dmales,
+				'dfemales' => $dfemales,
+
+			]);
+	}
+
 	public function actionFollow2u()
 	{
 		$uid = self::postParam("uid");

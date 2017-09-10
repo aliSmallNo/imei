@@ -636,28 +636,30 @@ class FooController extends Controller
 
 		// echo count($inactiveUsers);exit;
 
+		$count = 0;
 		foreach ($inactiveUsers as $user) {
 			if ($user["uGender"] == User::GENDER_MALE) {
-				$serviceId = $allDummys[User::GENDER_MALE][0]["uId"];
+				$serviceId = $allDummys[User::GENDER_MALE][7]["uId"];
 				$uid = $user["uId"];
-				echo $serviceId."==".$uid;exit;
+				echo "$count. " . $serviceId . "==" . $uid . " 男\n";
 				if ($serviceId && $uid) {
-					$ret = ChatMsg::addChat($serviceId, $uid, $content, 0, 1002);
 					ChatMsg::groupEdit($serviceId, $uid, 9999);
+					$ret = ChatMsg::addChat($serviceId, $uid, $content, 0, 1002);
 				}
-				break;
-				exit;
+				// break;exit;
 
 			} else if ($user["uGender"] == User::GENDER_FEMALE) {
-				$serviceId = $allDummys[User::GENDER_FEMALE][0]["uId"];
+				$serviceId = $allDummys[User::GENDER_FEMALE][7]["uId"];
 				$uid = $user["uId"];
-				echo $serviceId."==".$uid;exit;
+				echo "$count. " . $serviceId . "==" . $uid . " 女\n";
 				if ($serviceId && $uid) {
-					$ret = ChatMsg::addChat($serviceId, $uid, $content, 0, 1002);
 					ChatMsg::groupEdit($serviceId, $uid, 9999);
+					$ret = ChatMsg::addChat($serviceId, $uid, $content, 0, 1002);
 				}
-				break;
-				exit;
+			}
+			$count++;
+			if($count==10){
+				// break;exit;
 			}
 		}
 

@@ -30,7 +30,8 @@
 </style>
 <div id="page-wrapper">
 	<div class="row">
-		<h4>用户聊天列表</h4>
+		<h4>用户聊天列表
+			<a class="btn btn-primary btn-xs" href="/site/dummychatall">聊一遍</a></h4>
 	</div>
 	<form action="/site/dummychats" class="form-inline">
 		<input class="form-control" placeholder="用户名称" name="name"
