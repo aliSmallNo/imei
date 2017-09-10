@@ -835,8 +835,11 @@ class SiteController extends BaseController
 	{
 		$trends = RedisUtil::getCache(RedisUtil::KEY_STAT_TREND);
 		$trends = json_decode($trends, 1);
-
-		if (!$trends || AppUtil::isDev() ) {
+		$reset = self::getParam("reset");
+		if ($reset) {
+			$trends = [];
+		}
+		if (!$trends || AppUtil::isDev()) {
 			$records = 15;
 			$trends = [];
 			$steps = ['day', 'week', 'month'];
