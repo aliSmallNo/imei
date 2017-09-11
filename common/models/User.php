@@ -1809,7 +1809,7 @@ class User extends ActiveRecord
 
 	public static function rankCalNew()
 	{
-		$sql = " select uId,uName,uAddedOn from im_user ";
+		$sql = " select uId,uName,uAddedOn from im_user where uStatus<8  order by uId ASC ";
 		$conn = AppUtil::db();
 		$ret = $conn->createCommand($sql)->queryAll();
 		foreach ($ret as $v) {
