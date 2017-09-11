@@ -8,7 +8,6 @@ namespace console\controllers;
  * Date: 11/5/2017
  * Time: 2:11 PM
  */
-use admin\models\Admin;
 use common\models\ChatMsg;
 use common\models\User;
 use common\models\UserNet;
@@ -439,7 +438,7 @@ class FooController extends Controller
 			 from im_user as u 
 			 join im_user_wechat as w on w.wUId=u.uId
 			 where u.uGender in (10,11) and w.wSubscribe=1 and u.uStatus<8 and uPhone !=\'\' 
-			 group by u.uId,u.uName,u.uPhone';
+			 ORDER by u.uId,u.uName,u.uPhone';
 
 		$sql = 'select u.uName,u.uPhone,u.uGender,u.uAddedOn
 			 from im_user as u 
@@ -461,6 +460,12 @@ class FooController extends Controller
 		 join im_user_wechat as w on u.uId=w.wUId and w.wSubscribe=1
 		 WHERE u.uGender>9 AND u.uRole=10 AND u.uLogDate<\'' . $dt . '\' AND u.uStatus=1 and uPhone!=\'\';';
 
+
+		$sql = 'SELECT u.uId, u.uName,u.uPhone 
+			 FROM im_user as u 
+			 JOIN im_user_wechat as w on w.wUId=u.uId
+			 WHERE u.uStatus<8 and uPhone !=\'\' 
+			 ORDER BY u.uPhone';
 		$ret = $conn->createCommand($sql)->queryAll();
 		/*
 		 * 最近有一波妹子刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100
@@ -473,7 +478,8 @@ class FooController extends Controller
 //			$msg = '最近有一波' . $gender . '刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100';
 //			$msg = '亲，有2个' . $gender . '想跟你聊天，你无法接收，需完善资料才可以查收哦，赶紧去完善你的个人资料吧';
 //			$msg = '哇，本地单身都在公众号微媒100找对象，真实靠谱，赶快来完成注册吧';
-			$msg = '哇，才几个小时，微媒100上又有3个' . $gender . '对你怦然心动了，距你最近的才800米';
+//			$msg = '哇，才几个小时，微媒100上又有3个' . $gender . '对你怦然心动了，距你最近的才800米';
+			$msg = '邀请新用户最高可领50元红包！每邀请3名身边单身好友注册成功，就可获得10元红包，最高可获得50元奖励哦！参与活动，请点击公众号主菜单-更多-官方活动 分享朋友圈吧！';
 			QueueUtil::loadJob('sendSMS', [
 				'phone' => $phone,
 				'msg' => $msg,
@@ -658,7 +664,7 @@ class FooController extends Controller
 				}
 			}
 			$count++;
-			if($count==10){
+			if ($count == 10) {
 				// break;exit;
 			}
 		}
