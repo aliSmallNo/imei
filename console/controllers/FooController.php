@@ -474,7 +474,7 @@ class FooController extends Controller
 
 		foreach ($ret as $row) {
 			$phone = $row['uPhone'];
-			$gender = $row['uGender'] == 10 ? '帅哥' : '美女';
+//			$gender = $row['uGender'] == 10 ? '帅哥' : '美女';
 //			$msg = '最近有一波' . $gender . '刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100';
 //			$msg = '亲，有2个' . $gender . '想跟你聊天，你无法接收，需完善资料才可以查收哦，赶紧去完善你的个人资料吧';
 //			$msg = '哇，本地单身都在公众号微媒100找对象，真实靠谱，赶快来完成注册吧';
