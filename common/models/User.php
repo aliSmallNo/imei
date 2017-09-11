@@ -1899,7 +1899,6 @@ class User extends ActiveRecord
 			])->queryOne();
 			$rankVal = $favor ? ($rankVal + 1) : $rankVal;
 
-			echo $uid . ' date: ' . $sd . ' ' . $rankVal . "\n";
 			if (date("Y-m-d", $dt) == date("Y-m-d", time() - 86400)) {
 				// 记录昨天的分数
 				$sql = "delete from im_stat where sKey=:uid and sCategory=:cat ";
