@@ -165,6 +165,11 @@ class AppUtil
 		return Yii::$app->params['imageUrl'];
 	}
 
+	public static function wsUrl()
+	{
+		return Yii::$app->params['wsUrl'];
+	}
+
 	public static function checkPhone($mobile)
 	{
 

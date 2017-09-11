@@ -64,7 +64,7 @@ class PushUtil
 	protected static function pushMsg($event, $params, $url = '')
 	{
 		if (!$url) {
-			$url = 'http://127.0.0.1:3000';
+			$url = AppUtil::wsUrl();
 		}
 		if (AppUtil::isDev() || !is_array($params)) {
 			return false;
