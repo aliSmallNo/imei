@@ -1843,6 +1843,7 @@ class User extends ActiveRecord
 
 		$uid = $item["uId"];
 		$arr = [];
+		$sd = $ed = '';
 		do {
 			$sd = date("Y-m-d 00:00:00", $dt);
 			$ed = date("Y-m-d 23:59:50", $dt);
@@ -1899,7 +1900,7 @@ class User extends ActiveRecord
 			])->queryOne();
 			$rankVal = $favor ? ($rankVal + 1) : $rankVal;
 
-			echo $uid . ' date: ' . $sd . ' ' . $rankVal . "\n";
+
 			if (date("Y-m-d", $dt) == date("Y-m-d", time() - 86400)) {
 				// 记录昨天的分数
 				$sql = "delete from im_stat where sKey=:uid and sCategory=:cat ";
@@ -1921,7 +1922,7 @@ class User extends ActiveRecord
 			}
 			$dt += 86400;
 		} while ($dt < $time);
-
+		echo $uid . ' date: ' . $sd . ' ' . $rankVal . PHP_EOL;
 	}
 
 
