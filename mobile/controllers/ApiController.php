@@ -544,6 +544,7 @@ class ApiController extends Controller
 			case "myinfo":
 				$info = User::user(['uOpenId' => $openId]);
 				$info = User::shrinkUser($info);
+				$info['audit'] = UserAudit::invalid($info['id']);
 				return self::renderAPI(0, '', $info);
 			case "userfilter":
 				$page = self::postParam("page", 1);

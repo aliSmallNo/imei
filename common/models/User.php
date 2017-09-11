@@ -1493,6 +1493,7 @@ class User extends ActiveRecord
 		$trends["pass"] = 0;
 		$trends["chat"] = 0;
 		$trends["trans"] = 0;
+		$trends["recharge"] = 0;
 
 		$sql = "SELECT 
 				count(*) as reg,
@@ -1596,6 +1597,18 @@ class User extends ActiveRecord
 			$trends['getwxno'] = intval($res4["getwxno"]); // 新增牵线
 			$trends['pass'] = intval($res4["pass"]); // 新增牵线成功
 			$trends['gift'] = intval($res4["gift"]); // 赠送礼物/媒桂花
+		}
+
+		$sql = "select SUM(tAmt/10.0) as amt
+ 				from im_user_trans 
+ 				WHERE tCategory=100 and tUnit='flower' 
+ 					and tAddedOn BETWEEN :beginDT and :endDT ";
+		$ret = $conn->createCommand($sql)->bindValues([
+			':beginDT' => $beginDate,
+			':endDT' => $endDate,
+		])->queryScalar();
+		if ($ret) {
+			$trends['recharge'] = intval($ret); // 新增心动
 		}
 
 		$sql = "SELECT SUM(pTransAmt/100) as trans

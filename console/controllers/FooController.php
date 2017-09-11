@@ -8,7 +8,6 @@ namespace console\controllers;
  * Date: 11/5/2017
  * Time: 2:11 PM
  */
-use admin\models\Admin;
 use common\models\ChatMsg;
 use common\models\LogAction;
 use common\models\User;
@@ -441,7 +440,7 @@ class FooController extends Controller
 			 from im_user as u 
 			 join im_user_wechat as w on w.wUId=u.uId
 			 where u.uGender in (10,11) and w.wSubscribe=1 and u.uStatus<8 and uPhone !=\'\' 
-			 group by u.uId,u.uName,u.uPhone';
+			 ORDER by u.uId,u.uName,u.uPhone';
 
 		$sql = 'select u.uName,u.uPhone,u.uGender,u.uAddedOn
 			 from im_user as u 
@@ -463,6 +462,12 @@ class FooController extends Controller
 		 join im_user_wechat as w on u.uId=w.wUId and w.wSubscribe=1
 		 WHERE u.uGender>9 AND u.uRole=10 AND u.uLogDate<\'' . $dt . '\' AND u.uStatus=1 and uPhone!=\'\';';
 
+
+		$sql = 'SELECT u.uId, u.uName,u.uPhone 
+			 FROM im_user as u 
+			 JOIN im_user_wechat as w on w.wUId=u.uId
+			 WHERE u.uStatus<8 and uPhone !=\'\' 
+			 ORDER BY u.uPhone';
 		$ret = $conn->createCommand($sql)->queryAll();
 		/*
 		 * 最近有一波妹子刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100
@@ -471,11 +476,12 @@ class FooController extends Controller
 
 		foreach ($ret as $row) {
 			$phone = $row['uPhone'];
-			$gender = $row['uGender'] == 10 ? '帅哥' : '美女';
+//			$gender = $row['uGender'] == 10 ? '帅哥' : '美女';
 //			$msg = '最近有一波' . $gender . '刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100';
 //			$msg = '亲，有2个' . $gender . '想跟你聊天，你无法接收，需完善资料才可以查收哦，赶紧去完善你的个人资料吧';
 //			$msg = '哇，本地单身都在公众号微媒100找对象，真实靠谱，赶快来完成注册吧';
-			$msg = '哇，才几个小时，微媒100上又有3个' . $gender . '对你怦然心动了，距你最近的才800米';
+//			$msg = '哇，才几个小时，微媒100上又有3个' . $gender . '对你怦然心动了，距你最近的才800米';
+			$msg = '邀请新用户最高可领50元红包！每邀请3名身边单身好友注册成功，就可获得10元红包，最高可获得50元奖励哦！参与活动，请点击公众号主菜单-更多-官方活动 分享朋友圈吧！';
 			QueueUtil::loadJob('sendSMS', [
 				'phone' => $phone,
 				'msg' => $msg,
@@ -499,7 +505,16 @@ class FooController extends Controller
 	public function actionRain()
 	{
 
-		PushUtil::hint('你的个人资料不完整啊~', '059af5c749741c');
+		/*$uid = 131276;
+		$ucode = 'xy';
+		for ($k = 110; $k < 116; $k++) {
+			$url = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . substr($k, 1));
+			echo $url;
+			echo PHP_EOL;
+		}
+		echo PHP_EOL;*/
+
+//		PushUtil::hint('你的个人资料不完整啊~', '059af5c749741c');
 
 		/*$ret = UserQR::mpShareQR(131379);
 		var_dump($ret);*/
@@ -528,23 +543,6 @@ class FooController extends Controller
 			$count++;
 		}*/
 
-		/*$uid = 131277;
-		$ucode = 'lm';
-		for ($k = 101; $k < 106; $k++) {
-			$url = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . substr($k, 1));
-			echo $url;
-			echo PHP_EOL;
-		}
-		echo PHP_EOL;
-
-		$uid = 131430;
-		$ucode = 'fs';
-		for ($k = 101; $k < 106; $k++) {
-			$url = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . substr($k, 1));
-			echo $url;
-			echo PHP_EOL;
-		}*/
-
 		/*$imagePath = 'https://img.meipo100.com/2017/84/113272_n.jpg';
 		$imagePath = ImageUtil::getFilePath($imagePath);
 		echo $imagePath . '  ' . __LINE__;
@@ -570,41 +568,6 @@ class FooController extends Controller
 		//Pin::regeo(131379);
 		//Pin::regeo(134986);
 
-		/*		$ret = date('Y-m-d', strtotime("0 day", time()));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-1 day", time()));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-2 day", time()));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-3 day", time()));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-4 day", time()));
-				var_dump($ret);
-				var_dump('');
-
-				$ret = date('Y-m-d', strtotime("0 week", time() + 86400 * 24));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-1 week", time() + 86400 * 24));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-2 week", time() + 86400 * 24));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-3 week", time() + 86400 * 24));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-4 week", time() + 86400 * 24));
-				var_dump($ret);
-				var_dump('');
-
-				$ret = date('Y-m-d', strtotime("0 month", time() + 86400 * 29));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-1 month", time() + 86400 * 29));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-2 month", time() + 86400 * 29));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-3 month", time() + 86400 * 29));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-4 month", time() + 86400 * 29));
-				var_dump($ret);
-				var_dump('');*/
 		/*$uId = 131379;
 		$dt = date('Y-m-d', time() + 86400 * 10);
 		$bgSrc = UserQR::createInvitation($uId,
@@ -641,6 +604,7 @@ class FooController extends Controller
 
 		$count = 0;
 		foreach ($inactiveUsers as $user) {
+<<<<<<< HEAD
 		if ($user["uGender"] == User::GENDER_MALE) {
 		$serviceId = $allDummys[User::GENDER_MALE][7]["uId"];
 		$uid = $user["uId"];
@@ -648,6 +612,31 @@ class FooController extends Controller
 		if ($serviceId && $uid) {
 		ChatMsg::groupEdit($serviceId, $uid, 9999);
 		$ret = ChatMsg::addChat($serviceId, $uid, $content, 0, 1002);
+=======
+			if ($user["uGender"] == User::GENDER_MALE) {
+				$serviceId = $allDummys[User::GENDER_MALE][7]["uId"];
+				$uid = $user["uId"];
+				echo "$count. " . $serviceId . "==" . $uid . " 男\n";
+				if ($serviceId && $uid) {
+					ChatMsg::groupEdit($serviceId, $uid, 9999);
+					$ret = ChatMsg::addChat($serviceId, $uid, $content, 0, 1002);
+				}
+				// break;exit;
+
+			} else if ($user["uGender"] == User::GENDER_FEMALE) {
+				$serviceId = $allDummys[User::GENDER_FEMALE][7]["uId"];
+				$uid = $user["uId"];
+				echo "$count. " . $serviceId . "==" . $uid . " 女\n";
+				if ($serviceId && $uid) {
+					ChatMsg::groupEdit($serviceId, $uid, 9999);
+					$ret = ChatMsg::addChat($serviceId, $uid, $content, 0, 1002);
+				}
+			}
+			$count++;
+			if ($count == 10) {
+				// break;exit;
+			}
+>>>>>>> 564b90ed9a4199127b8d8179bd624109a26ccc15
 		}
 		// break;exit;
 

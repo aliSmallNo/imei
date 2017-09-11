@@ -785,6 +785,7 @@ require(["layer"],
 			delImgFlag: false,
 			editable: false,
 			albums: [],
+			hint: $('#cUserHint'),
 			albumTmp: $('#tpl_album').html(),
 			thumbTmp: '{[#items]}<li><a class="has-pic"><img src="{[.]}"></a></li>{[/items]}',
 			albumSingleTmp: '{[#items]}<li><a class="has-pic"><img src="{[thumb]}" bsrc="{[figure]}"></a><a href="javascript:;" class="del"></a></li>{[/items]}',
@@ -875,7 +876,7 @@ require(["layer"],
 				}
 				util.smeFlag = 1;
 				$.post("/api/user", {
-					tag: "myinfo",
+					tag: "myinfo"
 				}, function (resp) {
 					$(".u-my-album .photos").html(Mustache.render(util.thumbTmp, {items: resp.data.img4}));
 					util.albums = resp.data.gallery;
@@ -887,6 +888,12 @@ require(["layer"],
 					imgWrap.removeClass('pending');
 					if (resp.data.pending) {
 						imgWrap.addClass('pending');
+					}
+					if (resp.data.audit.length === 0) {
+						util.hint.hide();
+					} else {
+						util.hint.find('span').html('<span><i class="i-mark-warning"></i> ' + resp.data.audit + '</span>');
+						util.hint.show();
 					}
 					$("[to=myMP]").find(".tip").html(tipHtml);
 					util.smeFlag = 0;

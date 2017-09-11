@@ -66,19 +66,34 @@ class UserAudit extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$sql = 'select count(1) as cnt 
-			 from im_user_audit as a
-			 join im_user as u on u.uId=a.aUId
-			 where aUId=:uid and aUStatus=:st and aValid=:valid and u.uStatus=:st';
+		$sql = 'select IFNULL(a.aReasons,\'\') as reasons, uId, uStatus  
+			 from im_user as u
+			 left join im_user_audit as a on a.aUId=u.uId and aUStatus=:st and aValid=:valid
+			 where uId=:uid 
+			 and u.uStatus in (' . implode(',', [User::STATUS_VISITOR, User::STATUS_INVALID]) . ') order by aId desc ';
 		$ret = $conn->createCommand($sql)->bindValues([
 			':uid' => $uid,
 			':st' => User::STATUS_INVALID,
 			':valid' => self::VALID_FAIL,
-		])->queryScalar();
+		])->queryOne();
+		$msg = '';
 		if ($ret) {
-			return '你的个人信息审核未通过';
+			$reasons = json_decode($ret['reasons'], 1);
+			if ($reasons) {
+				$tags = array_column($reasons, 'tag');
+				$text = [];
+				foreach ($tags as $tag) {
+					$text[] = isset(self::$reasonDict[$tag]) ? self::$reasonDict[$tag] : '';
+				}
+				if ($text) {
+					$msg = '你的' . implode(',', $text) . '审核未通过';
+				}
+			}
+			if ($ret['uStatus'] == User::STATUS_VISITOR) {
+				$msg = '你的个人信息不完整，请尽快完善';
+			}
 		}
-		return '';
+		return $msg;
 	}
 
 	public static function verify($uid, $conn = '')

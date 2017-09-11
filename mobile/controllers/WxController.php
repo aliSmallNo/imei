@@ -667,9 +667,6 @@ class WxController extends BaseController
 		// 通知有未读
 		$noReadFlag = UserMsg::hasUnread($uId, $conn) ? 1 : 0;
 		$audit = UserAudit::invalid($uId, $conn);
-		if ($uInfo['status'] == User::STATUS_VISITOR) {
-			$audit = '你的个人信息不完整，请尽快完善';
-		}
 		$greeting = UserMsg::greeting($uId, $openId, $conn);
 		return self::renderPage("single.tpl", [
 			'noReadFlag' => $noReadFlag,
