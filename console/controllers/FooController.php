@@ -502,7 +502,7 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		PushUtil::hint('测试测试', '059af5c749741c', '', 'http://nd.meipo100.com');
+		PushUtil::hint('测试测试', '059af5c749741c', '', 'http://10.141.42.9:3000');
 		/*$uid = 131276;
 		$ucode = 'xy';
 		for ($k = 110; $k < 116; $k++) {
