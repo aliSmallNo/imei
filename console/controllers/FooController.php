@@ -11,6 +11,7 @@ namespace console\controllers;
 use common\models\ChatMsg;
 use common\models\User;
 use common\models\UserNet;
+use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
@@ -503,7 +504,16 @@ class FooController extends Controller
 	public function actionRain()
 	{
 
-		PushUtil::hint('你的个人资料不完整啊~', '059af5c749741c');
+		$uid = 120000;
+		$ucode = 'wm';
+		for ($k = 101; $k < 106; $k++) {
+			$url = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . substr($k, 1));
+			echo $url;
+			echo PHP_EOL;
+		}
+		echo PHP_EOL;
+
+//		PushUtil::hint('你的个人资料不完整啊~', '059af5c749741c');
 
 		/*$ret = UserQR::mpShareQR(131379);
 		var_dump($ret);*/
