@@ -504,14 +504,14 @@ class FooController extends Controller
 	public function actionRain()
 	{
 
-		/*$uid = 120000;
-		$ucode = 'wm';
-		for ($k = 101; $k < 106; $k++) {
+		$uid = 131276;
+		$ucode = 'xy';
+		for ($k = 110; $k < 116; $k++) {
 			$url = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . substr($k, 1));
 			echo $url;
 			echo PHP_EOL;
 		}
-		echo PHP_EOL;*/
+		echo PHP_EOL;
 
 //		PushUtil::hint('你的个人资料不完整啊~', '059af5c749741c');
 
