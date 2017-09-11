@@ -504,14 +504,14 @@ class FooController extends Controller
 	public function actionRain()
 	{
 
-		$uid = 120000;
+		/*$uid = 120000;
 		$ucode = 'wm';
 		for ($k = 101; $k < 106; $k++) {
 			$url = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . substr($k, 1));
 			echo $url;
 			echo PHP_EOL;
 		}
-		echo PHP_EOL;
+		echo PHP_EOL;*/
 
 //		PushUtil::hint('你的个人资料不完整啊~', '059af5c749741c');
 
@@ -542,23 +542,6 @@ class FooController extends Controller
 			$count++;
 		}*/
 
-		/*$uid = 131277;
-		$ucode = 'lm';
-		for ($k = 101; $k < 106; $k++) {
-			$url = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . substr($k, 1));
-			echo $url;
-			echo PHP_EOL;
-		}
-		echo PHP_EOL;
-
-		$uid = 131430;
-		$ucode = 'fs';
-		for ($k = 101; $k < 106; $k++) {
-			$url = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . substr($k, 1));
-			echo $url;
-			echo PHP_EOL;
-		}*/
-
 		/*$imagePath = 'https://img.meipo100.com/2017/84/113272_n.jpg';
 		$imagePath = ImageUtil::getFilePath($imagePath);
 		echo $imagePath . '  ' . __LINE__;
@@ -584,41 +567,6 @@ class FooController extends Controller
 		//Pin::regeo(131379);
 		//Pin::regeo(134986);
 
-		/*		$ret = date('Y-m-d', strtotime("0 day", time()));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-1 day", time()));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-2 day", time()));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-3 day", time()));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-4 day", time()));
-				var_dump($ret);
-				var_dump('');
-
-				$ret = date('Y-m-d', strtotime("0 week", time() + 86400 * 24));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-1 week", time() + 86400 * 24));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-2 week", time() + 86400 * 24));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-3 week", time() + 86400 * 24));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-4 week", time() + 86400 * 24));
-				var_dump($ret);
-				var_dump('');
-
-				$ret = date('Y-m-d', strtotime("0 month", time() + 86400 * 29));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-1 month", time() + 86400 * 29));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-2 month", time() + 86400 * 29));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-3 month", time() + 86400 * 29));
-				var_dump($ret);
-				$ret = date('Y-m-d', strtotime("-4 month", time() + 86400 * 29));
-				var_dump($ret);
-				var_dump('');*/
 		/*$uId = 131379;
 		$dt = date('Y-m-d', time() + 86400 * 10);
 		$bgSrc = UserQR::createInvitation($uId,
