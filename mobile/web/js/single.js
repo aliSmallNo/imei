@@ -1700,7 +1700,7 @@ require(["layer"],
 				var util = this;
 				util.uni = $('#cUNI').val();
 				util.socket = io('https://ws.meipo100.com');
-				// util.socket = io('https://wx.meipo100.com:9502');
+				// util.socket = io('http://nd.meipo100.com');
 				util.socket.on('connect', function () {
 					console.log(util.uni);
 					util.socket.emit('house', util.uni);
