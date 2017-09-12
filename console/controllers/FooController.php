@@ -9,6 +9,7 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
+use common\models\Stat;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserWechat;
@@ -655,7 +656,7 @@ class FooController extends Controller
 		 * }
 		 * }
 		 */
-		User::rankCalNew();
+		Stat::userRank();
 
 	}
 }

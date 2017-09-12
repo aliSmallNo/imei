@@ -38,15 +38,10 @@ class Stat extends ActiveRecord
 		return $entity->sId;
 	}
 
-	public static function userRank($item, $conn = '')
+	public static function userRank()
 	{
-		// 注册rank 10000: 今日不活跃 -3,刷新列表+1, 聊天+1,  充值+n , 心动+1, 送花+1
-		if (!$conn) {
-			$conn = AppUtil::db();
-		}
-		$dt = strtotime($item["uAddedOn"]);
-		$time = strtotime(date("Y-m-d 23:59:00", time()));
-		$rankVal = 10000;
+		$conn = AppUtil::db();
+
 		$sql = "select count(*) as co 
 					from im_user as u
 					join im_log_action as a on a.aUId=u.uId  
@@ -79,89 +74,99 @@ class Stat extends ActiveRecord
 		$sql = "update im_user set uRankTmp=:rank,uRankDate=now() where uId=:uid ";
 		$cmdUpdate = $conn->createCommand($sql);
 
-		$uid = $item["uId"];
-		$arr = [];
-		$sd = $ed = '';
-		do {
-			$sd = date("Y-m-d 00:00:00", $dt);
-			$ed = date("Y-m-d 23:59:50", $dt);
-			// 今日不活跃
-			$active = $link1->bindValues([
-				":uid" => $uid,
-				":cats" => "1002,1003",
-				":sd" => $sd,
-				":ed" => $ed,
-			])->queryOne();
-			$rankVal = $active ? ($rankVal) : ($rankVal - 3);
-
-			// 刷新列表
-			$refresh = $link1->bindValues([
-				":uid" => $uid,
-				":cats" => "1010,1012",
-				":sd" => $sd,
-				":ed" => $ed,
-			])->queryOne();
-			$rankVal = $refresh ? ($rankVal + 1) : $rankVal;
-
-			// 聊天 +1
-			$chat = $link2->bindValues([
-				":uid" => $uid,
-				":sd" => $sd,
-				":ed" => $ed,
-			])->queryOne();
-			$rankVal = $chat ? ($rankVal + 1) : $rankVal;
-
-			// 充值 +n
-			$recharge = $link3->bindValues([
-				":uid" => $uid,
-				":cat" => UserTrans::CAT_RECHARGE,
-				":sd" => $sd,
-				":ed" => $ed,
-			])->queryOne();
-			$rankVal = $recharge ? ($rankVal + floor($recharge["amt"] / 100)) : $rankVal;
-
-			// 送花 +1
-			$payRose = $link3->bindValues([
-				":uid" => $uid,
-				":cat" => UserTrans::CAT_PRESENT,
-				":sd" => $sd,
-				":ed" => $ed,
-			])->queryOne();
-			$rankVal = $payRose ? ($rankVal + 1) : $rankVal;
-
-			// 心动 +1
-			$favor = $link4->bindValues([
-				":uid" => $uid,
-				":rel" => UserNet::REL_FAVOR,
-				":sd" => $sd,
-				":ed" => $ed,
-			])->queryOne();
-			$rankVal = $favor ? ($rankVal + 1) : $rankVal;
-
-
-			if (date("Y-m-d", $dt) == date("Y-m-d", time() - 86400)) {
-				// 记录昨天的分数
-				$cmdDel->bindValues([
+		$sql = "SELECT uId,uName,uAddedOn FROM im_user WHERE uStatus<8 order by uId ASC limit 200";
+		$ret = $conn->createCommand($sql)->queryAll();
+		$time = strtotime(date("Y-m-d 23:59:00"));
+		foreach ($ret as $item) {
+			$dt = strtotime($item["uAddedOn"]);
+			$uid = $item["uId"];
+			$sd = $ed = '';
+			$rankVal = 10000;
+			do {
+				$sd = date("Y-m-d 00:00:00", $dt);
+				$ed = date("Y-m-d 23:59:50", $dt);
+				$offset = 0;
+				// 今日不活跃
+				/*$active = $link1->bindValues([
 					":uid" => $uid,
-					":cat" => Stat::CAT_RANK,
-				])->execute();
-				$cmdAdd->bindValues([
-					":sBeginDate" => $item["uAddedOn"],
-					":sEndDate" => $ed,
-					":sKey" => $uid,
-					":sCategory" => Stat::CAT_RANK,
-					":sRaw" => $rankVal,
-				])->execute();
-			}
-			if (date("Y-m-d", $dt) == date("Y-m-d", time())) {
-				// 记录今天的分数
-				$cmdUpdate->bindValues([
-					':rank' => $rankVal,
-					':uid' => $uid
-				])->execute();
-			}
-			$dt += 86400;
-		} while ($dt < $time);
-		echo $uid . ' date: ' . $sd . ' ' . $rankVal . PHP_EOL;
+					":cats" => "1002,1003",
+					":sd" => $sd,
+					":ed" => $ed,
+				])->queryOne();
+				$rankVal = $active ? ($rankVal) : ($rankVal - 3);*/
+
+				// 刷新列表
+				$refresh = $link1->bindValues([
+					":uid" => $uid,
+					":cats" => "1010,1012",
+					":sd" => $sd,
+					":ed" => $ed,
+				])->queryScalar();
+				$offset += $refresh ? 1 : 0;
+
+				// 聊天 +1
+				$chat = $link2->bindValues([
+					":uid" => $uid,
+					":sd" => $sd,
+					":ed" => $ed,
+				])->queryScalar();
+				$offset += $chat ? 1 : 0;
+
+				// 充值 +n
+				$recharge = $link3->bindValues([
+					":uid" => $uid,
+					":cat" => UserTrans::CAT_RECHARGE,
+					":sd" => $sd,
+					":ed" => $ed,
+				])->queryScalar();
+				$offset += $recharge ? floor($recharge / 100) : 0;
+
+				// 送花 +1
+				$payRose = $link3->bindValues([
+					":uid" => $uid,
+					":cat" => UserTrans::CAT_PRESENT,
+					":sd" => $sd,
+					":ed" => $ed,
+				])->queryScalar();
+				$offset += $payRose ? 1 : 0;
+
+				// 心动 +1
+				$favor = $link4->bindValues([
+					":uid" => $uid,
+					":rel" => UserNet::REL_FAVOR,
+					":sd" => $sd,
+					":ed" => $ed,
+				])->queryScalar();
+				$offset += $favor ? 1 : 0;
+				if ($offset < 1) {
+					$offset = -3;
+				}
+				$rankVal += $offset;
+
+				if (date("Y-m-d", $dt) == date("Y-m-d", time() - 86400)) {
+					// 记录昨天的分数
+					$cmdDel->bindValues([
+						":uid" => $uid,
+						":cat" => Stat::CAT_RANK,
+					])->execute();
+					$cmdAdd->bindValues([
+						":sBeginDate" => $item["uAddedOn"],
+						":sEndDate" => $ed,
+						":sKey" => $uid,
+						":sCategory" => Stat::CAT_RANK,
+						":sRaw" => $rankVal,
+					])->execute();
+				}
+				if (date("Y-m-d", $dt) == date("Y-m-d", time())) {
+					// 记录今天的分数
+					$cmdUpdate->bindValues([
+						':rank' => $rankVal,
+						':uid' => $uid
+					])->execute();
+				}
+				$dt += 86400;
+			} while ($dt < $time);
+			echo $uid . ' date: ' . $sd . ' ' . $rankVal . PHP_EOL;
+		}
 	}
 }
