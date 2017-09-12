@@ -181,6 +181,19 @@ class ApiController extends Controller
 					return self::renderAPI(129, '用户不存在~');
 				}
 				break;
+			case 'waveup':
+			case 'wavedown':
+				$uInfo = User::findOne(['uId' => $id]);
+				if ($uInfo) {
+					$openId = $uInfo['uOpenId'];
+					LogAction::add($id, $openId,
+						$tag == 'waveup' ? LogAction::ACTION_ONLINE : LogAction::ACTION_OFFLINE);
+					User::edit($id, ['uLogDate' => date('Y-m-d H:i:s')], Admin::getAdminId());
+					return self::renderAPI(0, '刷新成功~');
+				} else {
+					return self::renderAPI(129, '用户不存在~');
+				}
+				break;
 		}
 		return self::renderAPI($ret["code"], $ret["msg"]);
 	}

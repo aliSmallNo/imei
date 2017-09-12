@@ -307,12 +307,22 @@
 				if (row.length) {
 					row.insertBefore('.menu_body li:first');
 				}
+				util.upgrade(resp.uid, 'waveup');
 			});
 
 			util.socket.on("wavedown", function (resp) {
 //				console.log(resp);
 				$('li[data-uni=' + resp.uid + ']').removeClass('online');
+				util.upgrade(resp.uid, 'wavedown');
 			});
+		},
+		upgrade: function (uid, tag) {
+			$.post('/api/user', {
+				tag: tag,
+				id: uid
+			}, function () {
+
+			}, 'json');
 		}
 	};
 
