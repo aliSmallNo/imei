@@ -1807,6 +1807,7 @@ class User extends ActiveRecord
 		// AppUtil::logFile("uid:" . $row["id"] . ' rank: ' . $ranktemp, 5);
 	}
 
+<<<<<<< HEAD
 	public static function rankCalNew()
 	{
 		$sql = " select uId,uName,uAddedOn from im_user where uStatus<8  order by uId ASC ";
@@ -1925,6 +1926,8 @@ class User extends ActiveRecord
 	}
 
 
+=======
+>>>>>>> 2a8788b6f82cdc56222da6c2a11e0d89665d2134
 	protected static function fmtStat($items)
 	{
 		if ($items && count($items) > 7) {

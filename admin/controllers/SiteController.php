@@ -1319,6 +1319,7 @@ class SiteController extends BaseController
 		return $this->renderPage('pins.tpl',
 			[
 				'uni' => Admin::getAdminId(),
+				'ws_url' => AppUtil::wsUrl(),
 				'items' => $items,
 				'category' => 'data',
 				'detailcategory' => "site/userstat",

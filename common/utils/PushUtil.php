@@ -18,8 +18,9 @@ class PushUtil
 	 * @param $msg string
 	 * @param $uni string
 	 * @param $action string
+	 * @param $url string
 	 */
-	public static function hint($msg, $uni = '', $action = '')
+	public static function hint($msg, $uni = '', $action = '', $url = '')
 	{
 		$params = [
 			'tag' => 'hint',
@@ -27,7 +28,7 @@ class PushUtil
 			'uid' => $uni,
 			'action' => $action
 		];
-		self::pushMsg('notice', $params);
+		self::pushMsg('notice', $params, $url);
 	}
 
 	/**
@@ -60,12 +61,15 @@ class PushUtil
 		self::pushMsg('chat', $params);
 	}
 
-	protected static function pushMsg($event, $params)
+	protected static function pushMsg($event, $params, $url = '')
 	{
+		if (!$url) {
+			$url = AppUtil::wsUrl();
+		}
 		if (AppUtil::isDev() || !is_array($params)) {
 			return false;
 		}
-		$client = new Client(new Version2X('http://127.0.0.1:3000'));
+		$client = new Client(new Version2X($url));
 		$client->initialize()->emit($event, $params)->close();
 		return true;
 	}
