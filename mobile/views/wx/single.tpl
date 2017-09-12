@@ -941,8 +941,8 @@
 		<em>{[msg]}</em>
 	</li>
 </script>
-<style>
 
+<style>
 	.opt.hide {
 		display: none;
 	}
@@ -1029,7 +1029,6 @@
 	.magic-radio:checked + label:before {
 		border: 1px solid #f06292;
 	}
-
 
 </style>
 <script type="text/template" id="tpl_contact">
@@ -1226,4 +1225,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
-<script data-main="/js/single.js?v=1.11.3" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.11.4" src="/assets/js/require.js"></script>
