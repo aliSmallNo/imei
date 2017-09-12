@@ -38,7 +38,7 @@ class Stat extends ActiveRecord
 		return $entity->sId;
 	}
 
-	public static function userRank()
+	public static function userRank($uid = '')
 	{
 		$conn = AppUtil::db();
 
@@ -74,7 +74,11 @@ class Stat extends ActiveRecord
 		$sql = "update im_user set uRankTmp=:rank,uRankDate=now() where uId=:uid ";
 		$cmdUpdate = $conn->createCommand($sql);
 
-		$sql = "SELECT uId,uName,uAddedOn FROM im_user WHERE uStatus<8 order by uId ASC limit 200";
+		$strCriteria = '';
+		if ($uid) {
+			$strCriteria = ' AND uId=' . $uid;
+		}
+		$sql = "SELECT uId,uName,uAddedOn FROM im_user WHERE uStatus<8 $strCriteria order by uId ASC";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$time = strtotime(date("Y-m-d 23:59:00"));
 		foreach ($ret as $item) {
