@@ -305,11 +305,13 @@ class UserBuzz extends ActiveRecord
 
 		$sql = "SELECT b.bId,b.bFrom, b.bTo,
 				(case when b.bType='image' THEN '[图片]' when b.bType='voice' THEN '[声音]' else b.bContent end) as bContent, 
-				b.bCreateTime, b.bDate , w.wNickName, w.wAvatar, (case WHEN m.mUId is null THEN 0 ELSE 1 END) as readFlag
+				b.bCreateTime, b.bDate , w.wNickName, w.wAvatar, (case WHEN m.mUId is null THEN 0 ELSE 1 END) as readFlag,
+				u.uPhone as phone,u.uStatus as status,u.uRole as role
 				FROM im_user_buzz as b 
 				JOIN (select max(bId) as bId,bFrom from im_user_buzz where bType in ('text','image','voice') group by bFrom ORDER BY bid DESC limit $offset, $pageSize) as t on t.bId = b.bId
 				LEFT JOIN im_user_wechat as w on w.wOpenId = t.bFrom
 				LEFT JOIN im_mark as m on m.mUId=b.bId AND m.mPId=$adminId AND m.mCategory=$cat
+				LEFT JOIN im_user as u on u.uOpenId = t.bFrom
 				ORDER BY b.bId DESC";
 
 		$res = $conn->createCommand($sql)->queryAll();
@@ -324,6 +326,9 @@ class UserBuzz extends ActiveRecord
 			$res[$key]['iType'] = "微信消息";
 			$name = self::lastReply($row['bDate'], $row["bFrom"]);
 			$res[$key]['rname'] = $name ? $name : $row["wNickName"];
+
+			$res[$key]['role_t'] = isset(User::$Role[$row["role"]]) ? User::$Role[$row["role"]] : "";
+			$res[$key]['status_t'] = isset(User::$Status[$row["status"]]) ? User::$Status[$row["status"]] : "";
 		}
 
 		if ($pageSize < 10) {
@@ -331,6 +336,8 @@ class UserBuzz extends ActiveRecord
 		} else {
 			RedisUtil::delCache(RedisUtil::KEY_WX_MESSAGE, $adminId);
 		}
+
+		//print_r($res);exit;
 
 		return [$res, $count];
 	}

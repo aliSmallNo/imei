@@ -469,9 +469,9 @@ class FooController extends Controller
 			 ORDER BY u.uPhone';
 		$ret = $conn->createCommand($sql)->queryAll();
 		/*
-		 * 最近有一波妹子刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100
+ 最近有一波妹子刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100
 最近有一波帅哥刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100
-		 * */
+ */
 
 		foreach ($ret as $row) {
 			$phone = $row['uPhone'];
@@ -581,82 +581,8 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		/**
-		 * $content = "你好，可以认识下吗？";  // 发送内容
-		 * $serviceId = 0; // 稻草人 uId
-		 * $uid = 0;       // 不活跃用户 uId
-		 *
-		 * $allDummys = User::dummyForChat(); // 所有稻草人
-		 *
-		 * $edate = date("Y-m-d H:i:s");
-		 * $sdate = date("Y-m-d H:i:s", time() - 86400 * 7);
-		 *
-		 * $sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe,w.wWechatId, count(t.tPId) as uco
-		 * FROM im_user as u
-		 * JOIN im_user_wechat as w on w.wUId=u.uId
-		 * left JOIN im_trace as t on u.uId=t.tPId
-		 * left join im_log_action as a on a.aUId=u.uId and a.aCategory in (1000,1002,1004) and a.aDate BETWEEN '$sdate' and '$edate'
-		 * WHERE uId>0 AND uStatus=1 AND wSubscribe=1 and a.aUId is null
-		 * group by uId order by uAddedOn desc ";
-		 *
-		 * $inactiveUsers = AppUtil::db()->createCommand($sql)->queryAll();// 审核用过的 关注状态的 近七天不活跃用户
-		 *
-		 * // echo count($inactiveUsers);exit;
-		 *
-		 * $count = 0;
-		 * foreach ($inactiveUsers as $user) {
-		 * <<<<<<< HEAD
-		 * if ($user["uGender"] == User::GENDER_MALE) {
-		 * $serviceId = $allDummys[User::GENDER_MALE][7]["uId"];
-		 * $uid = $user["uId"];
-		 * echo "$count. " . $serviceId . "==" . $uid . " 男\n";
-		 * if ($serviceId && $uid) {
-		 * ChatMsg::groupEdit($serviceId, $uid, 9999);
-		 * $ret = ChatMsg::addChat($serviceId, $uid, $content, 0, 1002);
-		 * =======
-		 * if ($user["uGender"] == User::GENDER_MALE) {
-		 * $serviceId = $allDummys[User::GENDER_MALE][7]["uId"];
-		 * $uid = $user["uId"];
-		 * echo "$count. " . $serviceId . "==" . $uid . " 男\n";
-		 * if ($serviceId && $uid) {
-		 * ChatMsg::groupEdit($serviceId, $uid, 9999);
-		 * $ret = ChatMsg::addChat($serviceId, $uid, $content, 0, 1002);
-		 * }
-		 * // break;exit;
-		 *
-		 * } else if ($user["uGender"] == User::GENDER_FEMALE) {
-		 * $serviceId = $allDummys[User::GENDER_FEMALE][7]["uId"];
-		 * $uid = $user["uId"];
-		 * echo "$count. " . $serviceId . "==" . $uid . " 女\n";
-		 * if ($serviceId && $uid) {
-		 * ChatMsg::groupEdit($serviceId, $uid, 9999);
-		 * $ret = ChatMsg::addChat($serviceId, $uid, $content, 0, 1002);
-		 * }
-		 * }
-		 * $count++;
-		 * if ($count == 10) {
-		 * // break;exit;
-		 * }
-		 * >>>>>>> 564b90ed9a4199127b8d8179bd624109a26ccc15
-		 * }
-		 * // break;exit;
-		 *
-		 * } else if ($user["uGender"] == User::GENDER_FEMALE) {
-		 * $serviceId = $allDummys[User::GENDER_FEMALE][7]["uId"];
-		 * $uid = $user["uId"];
-		 * echo "$count. " . $serviceId . "==" . $uid . " 女\n";
-		 * if ($serviceId && $uid) {
-		 * ChatMsg::groupEdit($serviceId, $uid, 9999);
-		 * $ret = ChatMsg::addChat($serviceId, $uid, $content, 0, 1002);
-		 * }
-		 * }
-		 * $count++;
-		 * if($count==10){
-		 * // break;exit;
-		 * }
-		 * }
-		 */
-		 Stat::userRank();
+
+		Stat::userRank();
 
 	}
 }
