@@ -58,9 +58,9 @@
 				</td>
 				<td>
 					{{if isset($info.wNickName)}}{{$info.wNickName}}{{/if}}
-					{{if isset($info.phone)}}{{$info.phone}}{{/if}}
 					<br>
 					<span class="role-status">
+						{{if isset($info.phone)}}{{$info.phone}}{{/if}}
 					{{if isset($info.role_t)}}{{$info.role_t}}{{/if}}
 						{{if isset($info.status_t)}}{{$info.status_t}}{{/if}}
 					</span>
