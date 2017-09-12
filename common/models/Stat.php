@@ -42,6 +42,9 @@ class Stat extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 
+		$sql = "select * from im_stat where sKey=:uid and sCategory=:cat ORDER BY sId desc limit 1";
+		$link0 = $conn->createCommand($sql);
+
 		$sql = "select count(*) as co 
 					from im_user as u
 					join im_log_action as a on a.aUId=u.uId  
@@ -86,18 +89,28 @@ class Stat extends ActiveRecord
 			$uid = $item["uId"];
 			$sd = $ed = '';
 			$rankVal = 10000;
+
+			$statInit = $link0->bindValues([
+				":uid" => $uid,
+				":cat" => self::CAT_RANK,
+			])->queryOne();
+			if ($statInit) {
+				$dt = strtotime($statInit["sEndDate"]) + 86400;
+				$rankVal = $statInit["sRaw"];
+			}
+
 			do {
 				$sd = date("Y-m-d 00:00:00", $dt);
 				$ed = date("Y-m-d 23:59:50", $dt);
 				$offset = 0;
 				// 今日不活跃
-				/*$active = $link1->bindValues([
+				/* $active = $link1->bindValues([
 					":uid" => $uid,
 					":cats" => "1002,1003",
 					":sd" => $sd,
 					":ed" => $ed,
 				])->queryOne();
-				$rankVal = $active ? ($rankVal) : ($rankVal - 3);*/
+				$rankVal = $active ? ($rankVal) : ($rankVal - 3); */
 
 				// 刷新列表
 				$refresh = $link1->bindValues([

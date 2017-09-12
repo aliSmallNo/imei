@@ -656,7 +656,7 @@ class FooController extends Controller
 		 * }
 		 * }
 		 */
-		Stat::userRank();
+		 Stat::userRank();
 
 	}
 }
