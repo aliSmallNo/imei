@@ -303,17 +303,21 @@
 					var id = this;
 					$('li[data-uni=' + id + ']').addClass('online');
 				});
-				var row = $('li[data-uni=' + resp.uid + ']');
-				if (row.length) {
-					row.insertBefore('.menu_body li:first');
+				if (resp.uid) {
+					var row = $('li[data-uni=' + resp.uid + ']');
+					if (row.length) {
+						row.insertBefore('.menu_body li:first');
+					}
+					util.upgrade(resp.uid, 'waveup');
 				}
-				util.upgrade(resp.uid, 'waveup');
 			});
 
 			util.socket.on("wavedown", function (resp) {
 				console.log(resp);
-				$('li[data-uni=' + resp.uid + ']').removeClass('online');
-				util.upgrade(resp.uid, 'wavedown');
+				if (resp.uid) {
+					$('li[data-uni=' + resp.uid + ']').removeClass('online');
+					util.upgrade(resp.uid, 'wavedown');
+				}
 			});
 		},
 		upgrade: function (uid, tag) {

@@ -183,12 +183,12 @@ class ApiController extends Controller
 				break;
 			case 'waveup':
 			case 'wavedown':
-				$uInfo = User::findOne(['uId' => $id]);
+				$uInfo = User::findOne(['uUniqid' => $id]);
 				if ($uInfo) {
 					$openId = $uInfo['uOpenId'];
-					LogAction::add($id, $openId,
+					LogAction::add($uInfo['uId'], $openId,
 						$tag == 'waveup' ? LogAction::ACTION_ONLINE : LogAction::ACTION_OFFLINE);
-					User::edit($id, ['uLogDate' => date('Y-m-d H:i:s')], Admin::getAdminId());
+					User::edit($uInfo['uId'], ['uLogDate' => date('Y-m-d H:i:s')], Admin::getAdminId());
 					return self::renderAPI(0, '刷新成功~');
 				} else {
 					return self::renderAPI(129, '用户不存在~');
