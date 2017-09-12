@@ -297,7 +297,7 @@
 			});
 
 			util.socket.on("waveup", function (resp) {
-				console.log(resp);
+//				console.log(resp);
 				util.list.find('li').removeClass('online');
 				$.each(resp.house, function () {
 					var id = this;
@@ -313,7 +313,7 @@
 			});
 
 			util.socket.on("wavedown", function (resp) {
-				console.log(resp);
+//				console.log(resp);
 				if (resp.uid) {
 					$('li[data-uni=' + resp.uid + ']').removeClass('online');
 					util.upgrade(resp.uid, 'wavedown');
