@@ -188,7 +188,7 @@ class Stat extends ActiveRecord
 			}
 		}
 		if ($execFlag) {
-			$sql = 'Update im_user set uRankDate=now(),uRank=uRankTmp';
+			$sql = 'Update im_user set uRankDate=now(),uRank=uRankTmp WHERE uStatus<8 ';
 			$conn->createCommand($sql)->execute();
 		}
 	}
