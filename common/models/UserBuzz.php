@@ -164,19 +164,37 @@ class UserBuzz extends ActiveRecord
 				}
 				break;
 			case "text":
-				$keyword = trim($postData["Content"]);
-				if ($keyword) {
-					$conn = AppUtil::db();
-					$sql = 'SELECT count(1) FROM im_user_buzz WHERE bType=:type AND bFrom=:uid AND bDate>:dt ';
-					$ret = $conn->createCommand($sql)->bindValues([
-						':uid' => $fromUsername,
-						':type' => 'text',
-						':dt' => date('Y-m-d H:i:s', time() - 86400 * 2)
-					])->queryScalar();
-					$resp = '';
-					if (!$ret) {
-						// Rain: 说明两天之内曾经聊过，不出现提示了
-						$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
+				$content = trim($postData["Content"]);
+				if ($content) {
+					if ($content == 178) {
+						$resp = self::json_to_xml([
+							'ToUserName' => $fromUsername,
+							'FromUserName' => $toUsername,
+							'CreateTime' => time(),
+							'MsgType' => 'news',
+							'ArticleCount' => 1,
+							'Articles' => [
+								'item' => [
+									'Title' => '→打后照片记得点这里←千万别错过获得50元现金福利>>',
+									'Description' => '一起搞事情啊，恶搞轰炸一下朋友圈呗~',
+									'PicUrl' => 'https://img.meipo100.com/default/flag_178.jpg',
+									'Url' => 'https://wx.meipo100.com/wx/mshare'
+								]
+							]
+						]);
+					} else {
+						$conn = AppUtil::db();
+						$sql = 'SELECT count(1) FROM im_user_buzz WHERE bType=:type AND bFrom=:uid AND bDate>:dt ';
+						$ret = $conn->createCommand($sql)->bindValues([
+							':uid' => $fromUsername,
+							':type' => 'text',
+							':dt' => date('Y-m-d H:i:s', time() - 86400 * 2)
+						])->queryScalar();
+						$resp = '';
+						if (!$ret) {
+							// Rain: 说明两天之内曾经聊过，不出现提示了
+							$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
+						}
 					}
 				}
 				break;
