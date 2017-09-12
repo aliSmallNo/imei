@@ -324,8 +324,10 @@
 			$.post('/api/user', {
 				tag: tag,
 				id: uid
-			}, function () {
-
+			}, function (resp) {
+				if (resp.code == 0) {
+					$('li[data-uni=' + uid + '] .dt').html(resp.data.dt);
+				}
 			}, 'json');
 		}
 	};
