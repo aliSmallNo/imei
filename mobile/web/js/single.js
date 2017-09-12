@@ -144,6 +144,7 @@ require(["layer"],
 					break;
 				case 'scontacts':
 					ChatUtil.contacts();
+					ChatUtil.delChatBtn($(".contacts-edit"), "chat");
 					FootUtil.toggle(1);
 					break;
 				case 'noMP':
@@ -496,9 +497,46 @@ require(["layer"],
 					}, 250);
 				});
 				$(document).on(kClick, ".contacts a", function () {
-					util.sid = $(this).attr('data-id');
-					util.lastId = 0;
-					location.href = '#schat';
+					if ($(this).hasClass("chat")) {
+						util.sid = $(this).attr('data-id');
+						util.lastId = 0;
+						location.href = '#schat';
+					}
+				});
+
+				$(document).on(kClick, ".contacts-edit", function () {
+					var self = $(this);
+					var tag = self.attr("data-tag");
+
+					if (tag == "edit") {
+						ChatUtil.delChatBtn(self, tag);
+					} else if (tag == "chat") {
+						var gids = [];
+						self.next().find("a").find(".opt").find("input:checked").each(function () {
+							gids.push($(this).val());
+						});
+						console.log(gids);
+						if (gids.length == 0) {
+							ChatUtil.delChatBtn(self, "chat");
+							return;
+						}
+						if (ChatUtil.loading) {
+							return;
+						}
+						ChatUtil.loading = 1;
+						$.post("/api/chat", {
+							tag: "del",
+							gids: JSON.stringify(gids)
+						}, function (resp) {
+							ChatUtil.loading = 0;
+							if (resp.code == 0) {
+								self.next().find("a").find(".opt").find("input:checked").closest("a").remove();
+							} else {
+							}
+							showMsg(resp.msg);
+							ChatUtil.delChatBtn(self, "chat");
+						}, "json");
+					}
 				});
 
 				$(document).on(kClick, ".btn-chat-topup", function () {
@@ -591,6 +629,19 @@ require(["layer"],
 							break;
 					}
 				});
+			},
+			delChatBtn: function (obj, tag) {
+				if (tag == "edit") {
+					obj.next().find("a").removeClass().addClass("edit");
+					obj.attr("data-tag", "chat");
+					obj.html("删除");
+					obj.next().find("a").find(".opt").removeClass("hide").addClass("show");
+				} else if (tag == "chat") {
+					obj.next().find("a").removeClass().addClass("chat");
+					obj.attr("data-tag", "edit");
+					obj.html("编辑");
+					obj.next().find("a").find(".opt").removeClass("show").addClass("hide");
+				}
 			},
 			toggle: function (showFlag, obj) {
 				var util = this;

@@ -1536,6 +1536,15 @@ class ApiController extends Controller
 					'nextPage' => intval($nextPage)
 				]);
 				break;
+			case "del":
+				$gids = self::postParam("gids");
+				$gids = json_decode($gids, 1);
+				if (!$gids) {
+					return self::renderAPI(129, '删除失败');
+				}
+				$co = ChatMsg::delContacts($gids);
+				return self::renderAPI(0, '删除成功', $co);
+				break;
 			case 'topup':
 				$subUId = self::postParam('id');
 				if (!is_numeric($subUId)) {

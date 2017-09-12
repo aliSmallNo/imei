@@ -63,11 +63,12 @@ class PushUtil
 
 	protected static function pushMsg($event, $params, $url = '')
 	{
-		if (!$url) {
-			$url = AppUtil::wsUrl();
-		}
+
 		if (AppUtil::isDev() || !is_array($params)) {
 			return false;
+		}
+		if (!$url) {
+			$url = AppUtil::wsUrl();
 		}
 		$client = new Client(new Version2X($url));
 		$client->initialize()->emit($event, $params)->close();

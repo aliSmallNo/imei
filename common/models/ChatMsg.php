@@ -24,6 +24,9 @@ class ChatMsg extends ActiveRecord
 
 	const RATIO = 1; //1.0 / 2.0;
 
+	const ST_ACTIVE = 1;
+	const ST_DEL = 0;
+
 	public static function tableName()
 	{
 		return '{{%chat_msg}}';
@@ -168,37 +171,41 @@ class ChatMsg extends ActiveRecord
 
 		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound,gAddedBy)
 			SELECT :id1,:id2,9999,:uid FROM dual
-			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2)';
+			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2 and g.gStatus=:st)';
 		$conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,
 			':uid' => $senderId,
+			':st' => self::ST_ACTIVE,
 		])->execute();
 		if ($giftCount) {
 			$amt = intval($giftCount * $ratio);
-			$sql = 'UPDATE im_chat_group set gRound=IFNULL(gRound,0)+' . $amt . ' WHERE g.gUId1=:id1 AND g.gUId2=:id2';
+			$sql = 'UPDATE im_chat_group set gRound=IFNULL(gRound,0)+' . $amt . ' WHERE g.gUId1=:id1 AND g.gUId2=:id2 and g.gStatus=:st';
 			$conn->createCommand($sql)->bindValues([
 				':id1' => $uid1,
 				':id2' => $uid2,
+				':st' => self::ST_ACTIVE,
 			])->execute();
 		}
-		$sql = 'SELECT gId,gRound FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2';
+		$sql = 'SELECT gId,gRound FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2 and g.gStatus=:st';
 		$ret = $conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,
+			':st' => self::ST_ACTIVE,
 		])->queryOne();
 		$gid = $ret['gId'];
 		$gRound = intval($ret['gRound']);
 		if ($costAmt) {
 			UserTrans::add($senderId, $gid, UserTrans::CAT_CHAT, '', $costAmt, UserTrans::UNIT_GIFT);
-			$sql = 'update im_chat_group set gRound=9999 WHERE gId=:id';
+			$sql = 'update im_chat_group set gRound=9999 WHERE gId=:id and gStatus=:st';
 			$conn->createCommand($sql)->bindValues([
 				':id' => $gid,
+				':st' => self::ST_ACTIVE,
 			])->execute();
 			$gRound = 9999;
 		}
 
-		$sql = 'select count(1) from im_chat_msg WHERE cGId=:gid and cAddedBy=:uid';
+		$sql = 'select count(1) from im_chat_msg WHERE cGId=:gid and cAddedBy=:uid ';
 		$cnt = $conn->createCommand($sql)->bindValues([
 			':uid' => $senderId,
 			':gid' => $gid,
@@ -301,6 +308,24 @@ class ChatMsg extends ActiveRecord
 		return $info;
 	}
 
+	public static function delContacts($gids)
+	{
+		if (!$gids || !is_array($gids)) {
+			return 0;
+		}
+		$sql = "update im_chat_group set gStatus=:st,gStatusDate=:dt where gId=:gid ";
+		$del = AppUtil::db()->createCommand($sql);
+		$co = 0;
+		foreach ($gids as $gid) {
+			$co += $del->bindValues([
+				":st" => self::ST_DEL,
+				":gid" => $gid,
+				":dt" => date("Y-m-d H:i:s"),
+			])->execute();
+		}
+		return $co;
+	}
+
 	public static function chatLeft($uId, $subUId, $conn = '')
 	{
 		if (!$conn) {
@@ -310,12 +335,13 @@ class ChatMsg extends ActiveRecord
 		$sql = 'SELECT gId,gRound,count(m.cId) as cnt 
 				  FROM im_chat_group as g
  				  LEFT JOIN im_chat_msg as m on g.gId=m.cGId AND m.cAddedBy=:uid
-				  WHERE g.gUId1=:id1 AND g.gUId2=:id2
+				  WHERE g.gUId1=:id1 AND g.gUId2=:id2 and g.gStatus=:st
 				  GROUP BY gId,gRound';
 		$ret = $conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,
 			':uid' => $uId,
+			':st' => self::ST_ACTIVE,
 		])->queryOne();
 		$left = intval($ret['gRound'] - $ret['cnt']);
 		return $left < 0 ? 0 : $left;
@@ -331,23 +357,26 @@ class ChatMsg extends ActiveRecord
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
 		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound,gAddedBy)
 			SELECT :id1,:id2,0,:uid FROM dual
-			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2)';
+			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2 and g.gStatus=:st)';
 		$ret = $conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,
 			':uid' => $uId,
+			':st' => self::ST_ACTIVE,
 		])->execute();
 		if ($amt) {
-			$sql = 'UPDATE im_chat_group set gRound=IFNULL(gRound,0)+' . $amt . ' WHERE gUId1=:id1 AND gUId2=:id2 AND gRound<9999';
+			$sql = 'UPDATE im_chat_group set gRound=IFNULL(gRound,0)+' . $amt . ' WHERE gUId1=:id1 AND gUId2=:id2 AND gRound<9999 and gStatus=:st';
 			$conn->createCommand($sql)->bindValues([
 				':id1' => $uid1,
 				':id2' => $uid2,
+				':st' => self::ST_ACTIVE,
 			])->execute();
 		}
-		$sql = 'select gId from im_chat_group WHERE gUId1=:id1 AND gUId2=:id2';
+		$sql = 'select gId from im_chat_group WHERE gUId1=:id1 AND gUId2=:id2 and gStatus=:st';
 		$gid = $conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,
+			':st' => self::ST_ACTIVE,
 		])->queryScalar();
 		$left = self::chatLeft($uId, $subUId, $conn);
 		return [$gid, $left];
@@ -365,10 +394,11 @@ class ChatMsg extends ActiveRecord
 			 join im_chat_msg as m on g.gId=cGId
 			 join im_user as u on u.uId=m.cAddedBy
 			 left join im_admin as a on a.aId=m.cAdminId
-			 WHERE g.gUId1=:id1 AND g.gUId2=:id2 ' . $criteria . ' order by m.cAddedOn ';
+			 WHERE g.gUId1=:id1 AND g.gUId2=:id2 and g.gStatus=:st ' . $criteria . ' order by m.cAddedOn ';
 		$chats = $conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,
+			':st' => self::ST_ACTIVE,
 		])->queryAll();
 		foreach ($chats as $k => $chat) {
 			$chats[$k]['avatar'] = ImageUtil::getItemImages($chat['avatar'])[0];
@@ -430,26 +460,27 @@ class ChatMsg extends ActiveRecord
 		$conn = AppUtil::db();
 		$limit = ' LIMIT ' . ($page - 1) * $pageSize . ',' . ($pageSize + 1);
 		$sql = 'select * FROM (select    
-			 g.gUId2 as uid, 
+			 g.gUId2 as uid,g.gId as gid, 
 			 u.uName as `name`, u.uThumb as avatar,u.uUniqid as uni,
 			 m.cId as cid,m.cContent as content,m.cAddedOn,m.cReadFlag,m.cAddedBy
 			 from im_chat_group as g 
 			  JOIN im_chat_msg as m on g.gId=m.cGId AND g.gLastCId=m.cId
 			  JOIN im_user as u on u.uId=g.gUId2
-			 WHERE g.gUId1=:uid  
+			 WHERE g.gUId1=:uid  and g.gStatus=:st
 			 UNION 
 			 select    
-			 g.gUId1 as uid, 
+			 g.gUId1 as uid, g.gId as gid, 
 			 u.uName as `name`, u.uThumb as avatar,u.uUniqid as uni,
 			 m.cId as cid,m.cContent as content,m.cAddedOn,m.cReadFlag,m.cAddedBy
 			 from im_chat_group as g 
 			  JOIN im_chat_msg as m on g.gId=m.cGId AND g.gLastCId=m.cId
 			  JOIN im_user as u on u.uId=g.gUId1
-			 WHERE g.gUId2=:uid ) as t
+			 WHERE g.gUId2=:uid and g.gStatus=:st) as t
 			 order by cAddedOn desc ' . $limit;
 
 		$contacts = $conn->createCommand($sql)->bindValues([
-			':uid' => $uId
+			':uid' => $uId,
+			':st' => self::ST_ACTIVE,
 		])->queryAll();
 		$nextPage = 0;
 		if ($contacts && count($contacts) > $pageSize) {
