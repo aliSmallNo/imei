@@ -28,6 +28,8 @@ class LogAction extends ActiveRecord
 	const ACTION_CERT = 1029;
 	const ACTION_CHAT = 1040;
 	const ACTION_GREETING = 1044;
+	const ACTION_ONLINE = 1090;
+	const ACTION_OFFLINE = 1093;
 
 	static $actionDict = [
 		self::ACTION_LOGIN => "登录",
@@ -43,7 +45,9 @@ class LogAction extends ActiveRecord
 		self::ACTION_AVATAR => "修改头像",
 		self::ACTION_CERT => "上传实名认证图",
 		self::ACTION_CHAT => "进入聊天",
-		self::ACTION_GREETING => "浏览公告栏/更新提醒"
+		self::ACTION_GREETING => "浏览公告栏/更新提醒",
+		self::ACTION_ONLINE => "上线",
+		self::ACTION_OFFLINE => "下线"
 	];
 
 	const REUSE_DATA_WEEK = 73;

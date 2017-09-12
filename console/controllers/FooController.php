@@ -582,7 +582,7 @@ class FooController extends Controller
 	public function actionZp()
 	{
 
-		Stat::userRank();
+		Stat::userRank('', true);
 
 	}
 }
