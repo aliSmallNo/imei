@@ -8,6 +8,7 @@ namespace console\controllers;
  * Date: 11/5/2017
  * Time: 2:11 PM
  */
+use common\models\Stat;
 use common\models\User;
 use common\models\UserMsg;
 use common\models\UserNet;
@@ -32,7 +33,8 @@ class CrontabController extends Controller
 
 	public function actionRank()
 	{
-		User::updateRank([], true);
+//		User::updateRank([], true);
+		Stat::userRank('', true);
 	}
 
 	public function actionAlert()
