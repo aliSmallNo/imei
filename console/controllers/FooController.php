@@ -9,7 +9,6 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
-use common\models\Stat;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserWechat;
@@ -469,9 +468,9 @@ class FooController extends Controller
 			 ORDER BY u.uPhone';
 		$ret = $conn->createCommand($sql)->queryAll();
 		/*
-		 * 最近有一波妹子刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100
+ 最近有一波妹子刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100
 最近有一波帅哥刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100
-		 * */
+ */
 
 		foreach ($ret as $row) {
 			$phone = $row['uPhone'];
@@ -657,6 +656,7 @@ class FooController extends Controller
 		 * }
 		 */
 		// Stat::userRank('', true);
+
 
 	}
 }
