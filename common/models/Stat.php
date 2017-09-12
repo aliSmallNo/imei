@@ -38,7 +38,7 @@ class Stat extends ActiveRecord
 		return $entity->sId;
 	}
 
-	public static function userRank($uid = '')
+	public static function userRank($uid = '', $execFlag = false, $debug = false)
 	{
 		$conn = AppUtil::db();
 
@@ -183,7 +183,13 @@ class Stat extends ActiveRecord
 				}
 				$dt += 86400;
 			} while ($dt < $time);
-			echo $uid . ' date: ' . $sd . ' ' . $rankVal . PHP_EOL;
+			if ($debug) {
+				echo $uid . ' date: ' . $sd . ' ' . $rankVal . PHP_EOL;
+			}
+		}
+		if ($execFlag) {
+			$sql = 'Update im_user set uRankDate=now(),uRank=uRankTmp';
+			$conn->createCommand($sql)->execute();
 		}
 	}
 }
