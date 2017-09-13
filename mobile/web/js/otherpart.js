@@ -71,12 +71,10 @@ require(["layer"],
 			var gender = $('input[name=gender]:checked').val();
 			if (!name) {
 				showMsg('请先输入您的大名~');
-				$sls.input1.focus();
 				return;
 			}
 			if (!gender) {
 				showMsg('请先输入您的性别~');
-				$sls.input2.focus();
 				return;
 			}
 			console.log(name);
