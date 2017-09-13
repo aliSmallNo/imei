@@ -10,6 +10,14 @@
 		font-size: 12px;
 		color: #777;
 	}
+
+	.s-unsub {
+		background: #f40;
+		color: #fff;
+		font-size: 12px;
+		padding: 1px 3px;
+		border-radius: 3px;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="row">
@@ -35,14 +43,12 @@
 				</th>
 				<th>
 					最后回复
-				<th>
+				</th>
+				<th class="col-sm-2">
 					最后回复者
 				</th>
 				<th>
 					状态
-				</th>
-				<th>
-					类型
 				</th>
 				<th>
 					操作
@@ -60,7 +66,10 @@
 					{{if isset($info.wNickName)}}{{$info.wNickName}}{{/if}}
 					<br>
 					<span class="role-status">
-						{{if isset($info.phone)}}{{$info.phone}}{{/if}} {{if isset($info.role_t)}}{{$info.role_t}}{{/if}} {{if isset($info.status_t)}}{{$info.status_t}}{{/if}}
+						{{if !$info.sub}}<span class="s-unsub">已取关</span>{{/if}}
+						{{if isset($info.status_t)}}{{$info.status_t}}{{/if}}
+						{{if isset($info.phone)}}{{$info.phone}}{{/if}}
+						{{if isset($info.role_t)}}{{$info.role_t}}{{/if}}
 					</span>
 				</td>
 				<td class="w-title">
@@ -69,7 +78,7 @@
 				<td>
 					{{if isset($info.dt)}}<span>{{$info.dt}}</span>{{/if}}
 					{{if isset($info.tdiff) && $info.tdiff}}
-					<div class="text-warning" style="font-size: 0.9em">
+					<div class="text-warning" style="font-size: 12px">
 						<i class="fa fa-hourglass-half"></i> {{$info.tdiff}}内可回复
 					</div>
 					{{/if}}
@@ -79,9 +88,6 @@
 				</td>
 				<td>
 					{{if $info.readFlag}}已读{{else}}<span class="text-danger">未读</span>{{/if}}
-				</td>
-				<td>
-					{{if isset($info.iType)}}{{$info.iType}}{{/if}}
 				</td>
 				<td>
 					<a href="/site/wxreply?id={{$info.bFrom}}" class="btn btn-outline btn-primary btn-xs">详情</a>

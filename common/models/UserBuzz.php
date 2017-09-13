@@ -321,15 +321,15 @@ class UserBuzz extends ActiveRecord
 		$offset = ($page - 1) * $pageSize;
 		$cat = Mark::CATEGORY_WECHAT;
 
-		$sql = "SELECT b.bId,b.bFrom, b.bTo,
+		$sql = "SELECT b.bId,b.bFrom, b.bTo, IFNULL(w.wSubscribe,0) as sub,
 				(case when b.bType='image' THEN '[图片]' when b.bType='voice' THEN '[声音]' else b.bContent end) as bContent, 
 				b.bCreateTime, b.bDate , w.wNickName, w.wAvatar, (case WHEN m.mUId is null THEN 0 ELSE 1 END) as readFlag,
 				u.uPhone as phone,u.uStatus as status,u.uRole as role
 				FROM im_user_buzz as b 
 				JOIN (select max(bId) as bId,bFrom from im_user_buzz where bType in ('text','image','voice') group by bFrom ORDER BY bid DESC limit $offset, $pageSize) as t on t.bId = b.bId
-				LEFT JOIN im_user_wechat as w on w.wOpenId = t.bFrom
+				JOIN im_user as u on u.uOpenId = t.bFrom
+				JOIN im_user_wechat as w on w.wOpenId = t.bFrom
 				LEFT JOIN im_mark as m on m.mUId=b.bId AND m.mPId=$adminId AND m.mCategory=$cat
-				LEFT JOIN im_user as u on u.uOpenId = t.bFrom
 				ORDER BY b.bId DESC";
 
 		$res = $conn->createCommand($sql)->queryAll();
@@ -354,8 +354,6 @@ class UserBuzz extends ActiveRecord
 		} else {
 			RedisUtil::delCache(RedisUtil::KEY_WX_MESSAGE, $adminId);
 		}
-
-		//print_r($res);exit;
 
 		return [$res, $count];
 	}
