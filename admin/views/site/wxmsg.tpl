@@ -18,6 +18,18 @@
 		padding: 1px 3px;
 		border-radius: 3px;
 	}
+	.status0 {
+		color: #fff;
+		background: #b4b4b4;
+		padding: 1px 3px;
+		border-radius: 3px;
+	}
+	.status1, .status3 {
+		color: #fff;
+		background: #51c332;
+		padding: 1px 3px;
+		border-radius: 3px;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="row">
@@ -66,8 +78,8 @@
 					{{if isset($info.wNickName)}}{{$info.wNickName}}{{/if}}
 					<br>
 					<span class="role-status">
+						{{if isset($info.status_t)}}<span class="status{{$info.status}}">{{$info.status_t}}</span>{{/if}}
 						{{if !$info.sub}}<span class="s-unsub">已取关</span>{{/if}}
-						{{if isset($info.status_t)}}{{$info.status_t}}{{/if}}
 						{{if isset($info.phone)}}{{$info.phone}}{{/if}}
 						{{if isset($info.role_t)}}{{$info.role_t}}{{/if}}
 					</span>
