@@ -177,7 +177,7 @@ class UserBuzz extends ActiveRecord
 								'item' => [
 									'Title' => '→打后照片记得点这里←千万别错过获得50元现金福利>>',
 									'Description' => '盐城本地相亲交友平台，一起来脱单吧！',
-									'PicUrl' => 'https://img.meipo100.com/default/flag_178.jpg?v=1.1.3',
+									'PicUrl' => 'https://img.meipo100.com/default/flag_178.jpg?v=1.1.4',
 									'Url' => 'https://wx.meipo100.com/wx/single#slook'
 								]
 							]
