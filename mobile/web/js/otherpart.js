@@ -117,7 +117,7 @@ require(["layer"],
 				+ "id=" + $('#cUID').val()
 				+ "name=" + encodeURI($('#cNAME').val())
 				+ "&gender=" + encodeURI($('#cGENDER').val());
-			var imgUrl = "https://wx.meipo100.com/images/qt.jpg";
+			var imgUrl = "https://wx.meipo100.com/images/op_1.jpg";
 			wx.ready(function () {
 				wx.onMenuShareAppMessage({
 					title: '测试你的另一半',
@@ -132,6 +132,7 @@ require(["layer"],
 				});
 				wx.onMenuShareTimeline({
 					title: '测试你的另一半',
+					desc: '想知道你的另一半前世长什么样吗？快来测测吧~',
 					link: linkUrl,
 					imgUrl: imgUrl,
 					success: function () {
