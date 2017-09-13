@@ -246,7 +246,7 @@
 		</div>
 	</div>
 	<div class="o-btn-test">
-		<a href="#part2" data-tag="test">测一测</a>
+		<a href="javascript:;" data-tag="test">测一测</a>
 	</div>
 	<div class="o-tip">
 		本测试仅供娱乐，没有任何科学依据，请勿当真！
