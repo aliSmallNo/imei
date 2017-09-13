@@ -1480,19 +1480,19 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		$avatar = $nickname = $uId = $uni = '';
+		$uId = '';
+		$uId = self::getParam("id",131266);// dingfei
+		$gender = self::getParam("gender");
+		$name = self::getParam("name");
+
 		if ($wxInfo) {
-//			$avatar = $wxInfo["Avatar"];
-//			$nickname = $wxInfo["uName"];
-//			$uni = $wxInfo['uUniqid'];
 			$uId = $wxInfo['uId'];
 		}
 		return self::renderPage("otherpart.tpl",
 			[
 				'uId' => $uId,
-				'avatar' => $avatar,
-				'nickname' => $nickname,
-				'uni' => $uni,
+				'gender' => $gender,
+				'name' => $name,
 				'wxUrl' => AppUtil::wechatUrl(),
 			],
 			'terse',

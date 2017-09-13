@@ -9,19 +9,36 @@ require(["layer"],
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
+			hashPage: "",
 			wxString: $("#tpl_wx_info").html(),
 			loading: 0,
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
-			input1: $('.input-name1'),
-			input2: $('.input-name2'),
+
+			input1: $('#name'),
+			input2: $('input[name=gender]'),
 			name: $('#cNAME').val(),
 			gender: $('#cGENDER').val(),
-			dt: $('.input-opt'),
-			star: $('.input-star'),
 			uid: $('#cUID').val(),
+
 		};
+
+		function locationHashChanged() {
+			var hashTag = location.hash;
+			hashTag = hashTag.replace("#!", "");
+			hashTag = hashTag.replace("#", "");
+			$sls.hashPage = hashTag;
+			$('body').removeClass('bg-qrcode');
+			switch (hashTag) {
+
+				case 'part2':
+					break;
+				default:
+					break;
+			}
+			$sls.curFrag = hashTag;
+		}
 
 		function showMsg(title, sec) {
 			var delay = sec || 3;
@@ -33,30 +50,39 @@ require(["layer"],
 			});
 		}
 
-		$('.btn-preview').on(kClick, function () {
-			var name1 = $.trim($sls.input1.val());
-			var name2 = $.trim($sls.input2.val());
-			if (!name1) {
-				showMsg('请先输入新郎的姓名~');
-				$sls.input1.focus();
-				return;
+		$(document).on(kClick, ".o-btn-test a", function () {
+			var tag = $(this).attr("data-tag");
+			switch (tag) {
+				case "test":
+					toTest();
+					break;
+				case "share":
+					oshare();
+					break;
+				case "again":
+					location.href = "/wx/otherpart";
+					break;
 			}
-			if (!name2) {
-				showMsg('请先输入新娘的姓名~');
-				$sls.input2.focus();
-				return;
-			}
-
-			layer.open({
-				type: 2,
-				content: '正在生成中...'
-			});
-			setTimeout(function () {
-				location.href = '/wx/marry2?preview=1&dt=' + $sls.dt.val() + '&name1=' + encodeURI(name1) + '&name2=' + name2;
-			}, 300);
 		});
 
-		$('.btn-share').on(kClick, function () {
+		function toTest() {
+			var id = $sls.uid;
+			var name = $.trim($sls.input1.val());
+			var gender = $('input[name=gender]:checked').val();
+			if (!name) {
+				showMsg('请先输入您的大名~');
+				return;
+			}
+			if (!gender) {
+				showMsg('请先输入您的性别~');
+				return;
+			}
+			console.log(name);
+			console.log(gender);
+			location.href = "/wx/otherpart?id=" + id + "&name=" + name + "&gender=" + gender;
+		}
+
+		function oshare() {
 			var html = '<i class="share-arrow">点击菜单分享</i>';
 			$sls.main.show();
 			$sls.main.append(html);
@@ -66,7 +92,7 @@ require(["layer"],
 				$sls.main.find('.share-arrow').remove();
 				$sls.shade.fadeOut(100);
 			}, 2500);
-		});
+		}
 
 		function shareLog(tag, note) {
 			$.post("/api/share", {
@@ -81,36 +107,35 @@ require(["layer"],
 		}
 
 		$(function () {
+			window.onhashchange = locationHashChanged;
+			locationHashChanged();
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
-			var linkUrl = "https://wx.meipo100.com/wx/marry2?"
+			var linkUrl = "https://wx.meipo100.com/wx/otherpart?"
 				+ "id=" + $('#cUID').val()
-				+ "&dt=" + $('#cDATE').val()
-				+ "&name1=" + encodeURI($('#cNAME1').val())
-				+ "&name2=" + encodeURI($('#cNAME2').val());
-			var imgUrl = "https://wx.meipo100.com/images/qt.jpg";
+				+ "name=" + encodeURI($('#cNAME').val())
+				+ "&gender=" + encodeURI($('#cGENDER').val());
+			var imgUrl = "https://wx.meipo100.com/images/op_1.jpg";
 			wx.ready(function () {
 				wx.onMenuShareAppMessage({
-					title: '我要结婚了--诚邀您来参加我的婚礼',
-					desc: '我要结婚啦，在这个重要的日子希望有你的见证',
+					title: '测试你的另一半',
+					desc: '想知道你的另一半前世长什么样吗？快来测测吧~',
 					link: linkUrl,
 					imgUrl: imgUrl,
 					type: '',
 					dataUrl: '',
 					success: function () {
-						//showMsg('分享成功啦，O(∩_∩)O谢谢你的参与');
-						shareLog('share', '/wx/marry2');
+						shareLog('share', '/wx/otherpart');
 					}
 				});
 				wx.onMenuShareTimeline({
-					title: '我要结婚啦，在这个重要的日子希望有你的见证',
+					title: '测试你的另一半',
 					link: linkUrl,
 					imgUrl: imgUrl,
 					success: function () {
-						//showMsg('分享成功啦，O(∩_∩)O谢谢你的参与');
-						shareLog('moment', '/wx/marry2');
+						shareLog('moment', '/wx/otherpart');
 					}
 				});
 			});
