@@ -31,7 +31,6 @@ require(["layer"],
 			$sls.hashPage = hashTag;
 			$('body').removeClass('bg-qrcode');
 			switch (hashTag) {
-
 				case 'part2':
 					break;
 				default:
@@ -77,8 +76,7 @@ require(["layer"],
 				showMsg('请先输入您的性别~');
 				return;
 			}
-			console.log(name);
-			console.log(gender);
+			// console.log(name);console.log(gender);
 			location.href = "/wx/otherpart?id=" + id + "&name=" + name + "&gender=" + gender;
 		}
 
@@ -107,16 +105,16 @@ require(["layer"],
 		}
 
 		$(function () {
-			window.onhashchange = locationHashChanged;
-			locationHashChanged();
+			// window.onhashchange = locationHashChanged;
+			// locationHashChanged();
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			var linkUrl = "https://wx.meipo100.com/wx/otherpart?"
-				+ "id=" + $('#cUID').val()
-				+ "name=" + encodeURI($('#cNAME').val())
-				+ "&gender=" + encodeURI($('#cGENDER').val());
+				+ "id=" + $sls.uid
+				+ "name=" + encodeURI($sls.name)
+				+ "&gender=" + $sls.gender;
 			var imgUrl = "https://wx.meipo100.com/images/op_1.jpg";
 			wx.ready(function () {
 				wx.onMenuShareAppMessage({
