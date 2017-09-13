@@ -132,7 +132,6 @@ require(["layer"],
 				});
 				wx.onMenuShareTimeline({
 					title: '测试你的另一半',
-					desc: '想知道你的另一半前世长什么样吗？快来测测吧~',
 					link: linkUrl,
 					imgUrl: imgUrl,
 					success: function () {

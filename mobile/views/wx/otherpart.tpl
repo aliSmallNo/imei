@@ -265,4 +265,4 @@
 <input type="hidden" id="cNAME" value="{{$name}}">
 <input type="hidden" id="cGENDER" value="{{$gender}}">
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/otherpart.js?v=1.1.5" src="/assets/js/require.js"></script>
+<script data-main="/js/otherpart.js?v=1.1.6" src="/assets/js/require.js"></script>
