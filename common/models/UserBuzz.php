@@ -164,19 +164,37 @@ class UserBuzz extends ActiveRecord
 				}
 				break;
 			case "text":
-				$keyword = trim($postData["Content"]);
-				if ($keyword) {
-					$conn = AppUtil::db();
-					$sql = 'SELECT count(1) FROM im_user_buzz WHERE bType=:type AND bFrom=:uid AND bDate>:dt ';
-					$ret = $conn->createCommand($sql)->bindValues([
-						':uid' => $fromUsername,
-						':type' => 'text',
-						':dt' => date('Y-m-d H:i:s', time() - 86400 * 2)
-					])->queryScalar();
-					$resp = '';
-					if (!$ret) {
-						// Rain: 说明两天之内曾经聊过，不出现提示了
-						$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
+				$content = trim($postData["Content"]);
+				if ($content) {
+					if ($content == 178) {
+						$resp = self::json_to_xml([
+							'ToUserName' => $fromUsername,
+							'FromUserName' => $toUsername,
+							'CreateTime' => time(),
+							'MsgType' => 'news',
+							'ArticleCount' => 1,
+							'Articles' => [
+								'item' => [
+									'Title' => '→打后照片记得点这里←千万别错过获得50元现金福利>>',
+									'Description' => '盐城本地相亲交友平台，赶快帮助身边朋友脱单吧~',
+									'PicUrl' => 'https://img.meipo100.com/default/flag_178.jpg?v=1.1.1',
+									'Url' => 'https://wx.meipo100.com/wx/mshare'
+								]
+							]
+						]);
+					} else {
+						$conn = AppUtil::db();
+						$sql = 'SELECT count(1) FROM im_user_buzz WHERE bType=:type AND bFrom=:uid AND bDate>:dt ';
+						$ret = $conn->createCommand($sql)->bindValues([
+							':uid' => $fromUsername,
+							':type' => 'text',
+							':dt' => date('Y-m-d H:i:s', time() - 86400 * 2)
+						])->queryScalar();
+						$resp = '';
+						if (!$ret) {
+							// Rain: 说明两天之内曾经聊过，不出现提示了
+							$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
+						}
 					}
 				}
 				break;
@@ -303,15 +321,15 @@ class UserBuzz extends ActiveRecord
 		$offset = ($page - 1) * $pageSize;
 		$cat = Mark::CATEGORY_WECHAT;
 
-		$sql = "SELECT b.bId,b.bFrom, b.bTo,
+		$sql = "SELECT b.bId,b.bFrom, b.bTo, IFNULL(w.wSubscribe,0) as sub,
 				(case when b.bType='image' THEN '[图片]' when b.bType='voice' THEN '[声音]' else b.bContent end) as bContent, 
 				b.bCreateTime, b.bDate , w.wNickName, w.wAvatar, (case WHEN m.mUId is null THEN 0 ELSE 1 END) as readFlag,
 				u.uPhone as phone,u.uStatus as status,u.uRole as role
 				FROM im_user_buzz as b 
 				JOIN (select max(bId) as bId,bFrom from im_user_buzz where bType in ('text','image','voice') group by bFrom ORDER BY bid DESC limit $offset, $pageSize) as t on t.bId = b.bId
-				LEFT JOIN im_user_wechat as w on w.wOpenId = t.bFrom
+				JOIN im_user as u on u.uOpenId = t.bFrom
+				JOIN im_user_wechat as w on w.wOpenId = t.bFrom
 				LEFT JOIN im_mark as m on m.mUId=b.bId AND m.mPId=$adminId AND m.mCategory=$cat
-				LEFT JOIN im_user as u on u.uOpenId = t.bFrom
 				ORDER BY b.bId DESC";
 
 		$res = $conn->createCommand($sql)->queryAll();
@@ -336,8 +354,6 @@ class UserBuzz extends ActiveRecord
 		} else {
 			RedisUtil::delCache(RedisUtil::KEY_WX_MESSAGE, $adminId);
 		}
-
-		//print_r($res);exit;
 
 		return [$res, $count];
 	}
