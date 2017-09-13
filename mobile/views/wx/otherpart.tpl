@@ -8,12 +8,12 @@
 		margin-left: 1rem;
 	}
 
-	.magic-radio, .magic-checkbox {
+	.magic-radio {
 		position: absolute;
 		display: none;
 	}
 
-	.magic-radio + label, .magic-checkbox + label {
+	.magic-radio + label {
 		position: relative;
 		display: block;
 		padding-left: 3.5rem;
@@ -22,7 +22,7 @@
 		font-size: 1.2rem
 	}
 
-	.magic-radio + label:before, .magic-checkbox + label:before {
+	.magic-radio + label:before {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -30,43 +30,20 @@
 		width: 3rem;
 		height: 3rem;
 		content: '';
-		border: 1px solid #c0c0c0;
+		border: 1px solid #777;
 	}
 
-	.magic-checkbox + label:before {
-		border-radius: .3rem;
-	}
-
-	.magic-radio:checked + label:before, .magic-checkbox:checked + label:before {
+	.magic-radio:checked + label:before, {
 		animation-name: none;
 	}
 
-	.magic-checkbox:checked + label:before {
-		border: #660000;
-		background: #660000;
-	}
-
-	.magic-radio + label:after, .magic-checkbox + label:after {
+	.magic-radio + label:after {
 		position: absolute;
 		display: none;
 		content: '';
 	}
 
-	.magic-checkbox + label:after {
-		top: .2rem;
-		left: .7rem;
-		box-sizing: border-box;
-		width: .6rem;
-		height: 1.2rem;
-		transform: rotate(45deg);
-		border-width: .2rem;
-		border-style: solid;
-		border-color: #fff;
-		border-top: 0;
-		border-left: 0;
-	}
-
-	.magic-radio:checked + label:after, .magic-checkbox:checked + label:after {
+	.magic-radio:checked + label:after {
 		display: block;
 	}
 
@@ -214,10 +191,10 @@
 		</div>
 	</div>
 	<div class="o-btn-test">
-		<a href="javascript:;"  data-tag="again">再测一测别人</a>
+		<a href="javascript:;" data-tag="again">再测一测别人</a>
 	</div>
 	<div class="o-btn-test">
-		<a href="JavaScript:;"  data-tag="share">分享</a>
+		<a href="JavaScript:;" data-tag="share">分享</a>
 	</div>
 	<div class="o-tip">
 		本测试仅供娱乐，没有任何科学依据，请勿当真！
@@ -246,7 +223,7 @@
 		</div>
 	</div>
 	<div class="o-btn-test">
-		<a href="#part2" data-tag="test">测一测</a>
+		<a href="javascript:;" data-tag="test">测一测</a>
 	</div>
 	<div class="o-tip">
 		本测试仅供娱乐，没有任何科学依据，请勿当真！
@@ -264,5 +241,8 @@
 <input type="hidden" id="cUID" value="{{$uId}}">
 <input type="hidden" id="cNAME" value="{{$name}}">
 <input type="hidden" id="cGENDER" value="{{$gender}}">
+<script type="text/template" id="tpl_wx_info">
+	{{$wxInfoString}}
+</script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/otherpart.js?v=1.1.6" src="/assets/js/require.js"></script>
+<script data-main="/js/otherpart.js?v=1.1.8" src="/assets/js/require.js"></script>
