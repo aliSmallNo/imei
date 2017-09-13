@@ -20,7 +20,7 @@
 	}
 	.status0 {
 		color: #fff;
-		background: #b4b4b4;
+		background: #a8a8a8;
 		padding: 1px 3px;
 		border-radius: 3px;
 	}

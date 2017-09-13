@@ -8,7 +8,6 @@
 
 namespace common\models;
 
-
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
 use console\utils\QueueUtil;
