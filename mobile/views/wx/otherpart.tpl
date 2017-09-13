@@ -241,5 +241,8 @@
 <input type="hidden" id="cUID" value="{{$uId}}">
 <input type="hidden" id="cNAME" value="{{$name}}">
 <input type="hidden" id="cGENDER" value="{{$gender}}">
+<script type="text/template" id="tpl_wx_info">
+	{{$wxInfoString}}
+</script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/otherpart.js?v=1.1.7" src="/assets/js/require.js"></script>
+<script data-main="/js/otherpart.js?v=1.1.8" src="/assets/js/require.js"></script>

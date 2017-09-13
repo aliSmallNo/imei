@@ -105,8 +105,6 @@ require(["layer"],
 		}
 
 		$(function () {
-			// window.onhashchange = locationHashChanged;
-			// locationHashChanged();
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
@@ -116,10 +114,12 @@ require(["layer"],
 				+ "name=" + encodeURI($sls.name)
 				+ "&gender=" + $sls.gender;
 			var imgUrl = "https://wx.meipo100.com/images/op_1.jpg";
+			var title = "测试你的另一半";
+			var desc = "想知道你的另一半前世长什么样吗？快来测测吧~";
 			wx.ready(function () {
 				wx.onMenuShareAppMessage({
-					title: '测试你的另一半',
-					desc: '想知道你的另一半前世长什么样吗？快来测测吧~',
+					title: title,
+					desc: desc,
 					link: linkUrl,
 					imgUrl: imgUrl,
 					type: '',
@@ -129,7 +129,7 @@ require(["layer"],
 					}
 				});
 				wx.onMenuShareTimeline({
-					title: '测试你的另一半',
+					title: title,
 					link: linkUrl,
 					imgUrl: imgUrl,
 					success: function () {
