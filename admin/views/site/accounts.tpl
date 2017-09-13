@@ -33,8 +33,8 @@
 
 	.pInfo span.status-0 {
 		color: #fff;
-		border: 1px solid #f90;
-		background: #f90;
+		border: 1px solid #a8a8a8;
+		background: #a8a8a8;
 	}
 
 	.m-role {
