@@ -30,7 +30,7 @@
 		width: 3rem;
 		height: 3rem;
 		content: '';
-		border: 1px solid #c0c0c0;
+		border: 1px solid #777;
 	}
 
 	.magic-checkbox + label:before {
