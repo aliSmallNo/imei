@@ -164,19 +164,6 @@
 		<div class="action"><a class="btn-chat-send">发送</a></div>
 	</div>
 </section>
-<style>
-	.contacts-edit {
-		position: fixed;
-		right: 1.5rem;
-		top: 1rem;
-		background: rgba(0, 0, 0, .5);
-		color: #fff;
-		padding: 1.3rem 1rem;
-		border-radius: 3rem;
-		font-size: 1.2rem;
-		z-index: 99;
-	}
-</style>
 <section id="scontacts" data-title="我的密聊记录">
 	<div class="m-top-pl"></div>
 	<div class="contacts-wrap" style="position: relative">
@@ -942,95 +929,6 @@
 	</li>
 </script>
 
-<style>
-	.opt.hide {
-		display: none;
-	}
-
-	.opt.show {
-		display: block;
-	}
-
-	.magic-radio, .magic-checkbox {
-		position: absolute;
-		display: none;
-	}
-
-	.magic-radio + label, .magic-checkbox + label {
-		position: relative;
-		display: block;
-		padding-left: 3rem;
-		cursor: pointer;
-		vertical-align: middle;
-		font-size: 1.2rem
-	}
-
-	.magic-radio + label:before, .magic-checkbox + label:before {
-		position: absolute;
-		top: 0;
-		left: 0;
-		display: inline-block;
-		width: 2rem;
-		height: 2rem;
-		content: '';
-		border: 1px solid #c0c0c0;
-	}
-
-	.magic-checkbox + label:before {
-		border-radius: .3rem;
-	}
-
-	.magic-radio:checked + label:before, .magic-checkbox:checked + label:before {
-		animation-name: none;
-	}
-
-	.magic-checkbox:checked + label:before {
-		border: #f06292;
-		background: #f06292;
-	}
-
-	.magic-radio + label:after, .magic-checkbox + label:after {
-		position: absolute;
-		display: none;
-		content: '';
-	}
-
-	.magic-checkbox + label:after {
-		top: .2rem;
-		left: .7rem;
-		box-sizing: border-box;
-		width: .6rem;
-		height: 1.2rem;
-		transform: rotate(45deg);
-		border-width: .2rem;
-		border-style: solid;
-		border-color: #fff;
-		border-top: 0;
-		border-left: 0;
-	}
-
-	.magic-radio:checked + label:after, .magic-checkbox:checked + label:after {
-		display: block;
-	}
-
-	.magic-radio + label:before {
-		border-radius: 50%;
-	}
-
-	.magic-radio + label:after {
-		top: .7rem;
-		left: .7rem;
-		width: .8rem;
-		height: .8rem;
-		border-radius: 50%;
-		background: #f06292;
-	}
-
-	.magic-radio:checked + label:before {
-		border: 1px solid #f06292;
-	}
-
-</style>
 <script type="text/template" id="tpl_contact">
 	{[#items]}
 	<a href="javascript:;" data-id="{[encryptId]}" data-cid="{[cid]}" data-read="{[readflag]}" class="chat">
@@ -1225,4 +1123,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
-<script data-main="/js/single.js?v=1.11.4" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.11.5" src="/assets/js/require.js"></script>

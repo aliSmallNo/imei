@@ -5574,7 +5574,18 @@ section {
 .contacts-wrap {
   background: #fff;
   padding: 0 1rem;
-  border-bottom: 1px solid #E4E4E4; }
+  border-bottom: 1px solid #E4E4E4;
+  position: relative; }
+  .contacts-wrap .contacts-edit {
+    position: fixed;
+    right: 1.5rem;
+    top: 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 1.3rem 1rem;
+    border-radius: 3rem;
+    font-size: 1.2rem;
+    z-index: 99; }
 
 .contacts a {
   display: -webkit-box;
@@ -5584,6 +5595,10 @@ section {
   padding: 0.6rem 0;
   position: relative;
   border-bottom: 1px solid #E4E4E4; }
+  .contacts a .opt.hide {
+    display: none; }
+  .contacts a .opt.show {
+    display: block; }
   .contacts a:last-child {
     border-bottom: none; }
   .contacts a .avatar {
@@ -5641,6 +5656,50 @@ section {
     background: #f24;
     left: 3.2rem;
     top: 0.2rem; }
+
+.magic-checkbox {
+  position: absolute;
+  display: none; }
+
+.magic-checkbox + label {
+  position: relative;
+  display: block;
+  padding-left: 3rem;
+  cursor: pointer;
+  vertical-align: middle;
+  font-size: 1.2rem; }
+  .magic-checkbox + label:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    content: "";
+    border: 1px solid #c0c0c0;
+    border-radius: 0.3rem; }
+
+.magic-checkbox:checked + label:before {
+  animation-name: none;
+  border: #f06292;
+  background: #f06292; }
+
+.magic-checkbox + label:after {
+  position: absolute;
+  display: none;
+  content: "";
+  top: 0.2rem;
+  left: 0.7rem;
+  box-sizing: border-box;
+  width: 0.6rem;
+  height: 1.2rem;
+  transform: rotate(45deg);
+  border-width: 0.2rem;
+  border-style: solid;
+  border-color: #fff;
+  border-top: 0;
+  border-left: 0;
+  display: block; }
 
 .chats li {
   display: -webkit-box;
