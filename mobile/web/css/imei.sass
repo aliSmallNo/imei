@@ -5315,6 +5315,17 @@ section
 	background: #fff
 	padding: 0 1rem
 	border-bottom: 1px solid $borderColor
+	position: relative
+	.contacts-edit
+		position: fixed
+		right: 1.5rem
+		top: 1rem
+		background: rgba(0, 0, 0, .5)
+		color: #fff
+		padding: 1.3rem 1rem
+		border-radius: 3rem
+		font-size: 1.2rem
+		z-index: 99
 
 .contacts
 	a
@@ -5322,6 +5333,10 @@ section
 		padding: .6rem 0
 		position: relative
 		border-bottom: 1px solid $borderColor
+		.opt.hide
+			display: none
+		.opt.show
+			display: block
 		&:last-child
 			border-bottom: none
 		.avatar
@@ -5358,7 +5373,46 @@ section
 			@include unreadFlag
 			left: 3.2rem
 			top: 0.2rem
-
+.magic-checkbox
+	position: absolute
+	display: none
+.magic-checkbox + label
+	position: relative
+	display: block
+	padding-left: 3rem
+	cursor: pointer
+	vertical-align: middle
+	font-size: 1.2rem
+	&:before
+		position: absolute
+		top: 0
+		left: 0
+		display: inline-block
+		width: 2rem
+		height: 2rem
+		content: ''
+		border: 1px solid #c0c0c0
+		border-radius: .3rem
+.magic-checkbox:checked + label:before
+	animation-name: none
+	border: #f06292
+	background: #f06292
+.magic-checkbox + label:after
+	position: absolute
+	display: none
+	content: ''
+	top: .2rem
+	left: .7rem
+	box-sizing: border-box
+	width: .6rem
+	height: 1.2rem
+	transform: rotate(45deg)
+	border-width: .2rem
+	border-style: solid
+	border-color: #fff
+	border-top: 0
+	border-left: 0
+	display: block
 .chats
 	li
 		@include displayFlex

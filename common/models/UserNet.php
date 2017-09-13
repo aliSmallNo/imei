@@ -763,7 +763,8 @@ class UserNet extends ActiveRecord
 			sum(case WHEN n.nRelation=:rel2 then 1 end) as subscribe,
 			sum(case WHEN n.nRelation=:rel2 and w.wSubscribe=0 then 1 end) as unsubscribe,
 			sum(case WHEN n.nRelation=:rel2 and u1.uPhone then 1 end) as reg,
-			sum(case WHEN n.nRelation=:mp  then 1 end) as mps
+			sum(case WHEN n.nRelation=:mp  then 1 end) as mps,
+			sum(case WHEN n.nRelation=:focus  then 1 end) as focus
 			from im_user_net as n 
 			join im_user as u on u.uId=n.nUId 
 			join im_user as u1 on u1.uId =n.nSubUId 
@@ -774,6 +775,7 @@ class UserNet extends ActiveRecord
 			":rel1" => self::REL_QR_SCAN,
 			":rel2" => self::REL_QR_SUBSCRIBE,
 			":mp" => self::REL_BACKER,
+			":focus" => self::REL_FOLLOW,
 		])->queryAll();
 		return $ret;
 	}

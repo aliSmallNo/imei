@@ -1426,10 +1426,7 @@ class WxController extends BaseController
 		$uId = self::getParam('id', $userId);
 		$name1 = self::getParam('name1');
 		$name2 = self::getParam('name2');
-		$name = self::getParam('mname');
-		$gender = self::getParam('gender', 1);
 		$dt = self::getParam('dt');
-		$star = self::getParam('star');
 		$preview = self::getParam('preview', 0);
 		$bgSrc = '/images/qt.jpg';
 		$cls = 'small';
@@ -1479,6 +1476,30 @@ class WxController extends BaseController
 			'bg-main');
 	}
 
+	public function actionOtherpart()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$avatar = $nickname = $uId = $uni = '';
+		if ($wxInfo) {
+//			$avatar = $wxInfo["Avatar"];
+//			$nickname = $wxInfo["uName"];
+//			$uni = $wxInfo['uUniqid'];
+			$uId = $wxInfo['uId'];
+		}
+		return self::renderPage("otherpart.tpl",
+			[
+				'uId' => $uId,
+				'avatar' => $avatar,
+				'nickname' => $nickname,
+				'uni' => $uni,
+				'wxUrl' => AppUtil::wechatUrl(),
+			],
+			'terse',
+			'测测你的另一半',
+			'bg-color');
+	}
+
 	public function actionRoom()
 	{
 		$openId = self::$WX_OpenId;
@@ -1502,4 +1523,6 @@ class WxController extends BaseController
 			'',
 			'bg-color');
 	}
+
+
 }
