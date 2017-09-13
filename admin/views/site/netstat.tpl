@@ -43,8 +43,8 @@
 				<th>
 					用户
 				</th>
-				<th style="display: none">
-					扫码数
+				<th >
+					关注数
 				</th>
 				<th>
 					扫码关注数
@@ -67,8 +67,8 @@
 				<td>
 					{{$stat.name}}
 				</td>
-				<td  style="display: none">
-					{{$stat.scan}}
+				<td>
+					{{$stat.focus}}
 				</td>
 				<td>
 					{{$stat.subscribe}}
