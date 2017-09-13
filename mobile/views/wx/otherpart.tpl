@@ -214,10 +214,10 @@
 		</div>
 	</div>
 	<div class="o-btn-test">
-		<a href="#part1">再测一测别人</a>
+		<a href="javascript:;"  data-tag="again">再测一测别人</a>
 	</div>
 	<div class="o-btn-test">
-		<a href="JavaScript:;" class="o-share">分享</a>
+		<a href="JavaScript:;"  data-tag="share">分享</a>
 	</div>
 	<div class="o-tip">
 		本测试仅供娱乐，没有任何科学依据，请勿当真！
