@@ -178,16 +178,16 @@
 {{if $name}}
 <div class="otherpart">
 	<div class="o-tpic">
-		<img src="/images/op_1.jpg">
+		<img src="/images/op/op_1.jpg">
 	</div>
 	<div class="o-result">
 		<div class="o-result-title">
-			<span>丁飞</span>的另一半
+			<span>{{$name}}</span>的另一半
 		</div>
 		<div class="o-result-bg">
-			<h5>长得很像 <span>某电影中的莫文蔚</span></h5>
-			<img src="/images/op_res_0.jpg" alt="">
-			<p><span>专家点评:</span>你最好从了他</p>
+			<h5><span>{{$item.title}}</span></h5>
+			<img src="{{$item.src}}" alt="">
+			<p><span>专家点评:</span>{{$item.comment}}</p>
 		</div>
 	</div>
 	<div class="o-btn-test">
@@ -203,7 +203,7 @@
 {{else}}
 <div class="otherpart">
 	<div class="o-tpic">
-		<img src="/images/op_2.jpg">
+		<img src="/images/op/op_2.jpg">
 	</div>
 	<div class="o-name">
 		<label for="name">输入你的大名：</label>

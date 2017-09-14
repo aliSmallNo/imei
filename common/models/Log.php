@@ -15,6 +15,10 @@ use yii\db\ActiveRecord;
 class Log extends ActiveRecord
 {
 	const CAT_QUESTION = 1000;
+	const CAT_SPREAD = 2000;// 推广活动
+
+
+	const SPREAD_PART = 500;//测试的你另一半长相
 
 	public static function tableName()
 	{

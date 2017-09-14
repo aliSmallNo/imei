@@ -42,6 +42,63 @@ class AppUtil
 	private static $SMS_SIGN = '微媒100';
 	private static $SMS_TMP_ID = 9179;
 
+	static $otherPartDict = [
+		"male"=>[
+			[
+				"title" => "长得很像包青天",
+				"src" => "/images/op/m_baoqt.jpg",
+				"comment" => "开封有个包青天，铁面无私辨忠奸...！",
+			],
+			[
+				"title" => "长得很像郭德纲",
+				"src" => "/images/op/m_guodg.jpg",
+				"comment" => "不要被他的外表迷惑，他只是和林志颖同龄的小伙子！",
+			],
+			[
+				"title" => "长得很像胡歌",
+				"src" => "/images/op/m_hug.jpg",
+				"comment" => "这，只是个游戏！",
+			],
+			[
+				"title" => "长得很像金城武",
+				"src" => "/images/op/m_jincw.jpg",
+				"comment" => "恭喜你，你中奖了！",
+			],
+			[
+				"title" => "长得很像吴孟达",
+				"src" => "/images/op/m_wumd.jpg",
+				"comment" => "对，就是你！",
+			]
+		],
+		"female"=>[
+			[
+				"title" => "身手很像郭芙蓉",
+				"src" => "/images/op/f_guofr.jpg",
+				"comment" => "兄弟保重！",
+			],
+			[
+				"title" => "长的很像非主流MM",
+				"src" => "/images/op/f_feizl.jpg",
+				"comment" => "反正我不知道是男是女！",
+			],
+			[
+				"title" => "长得很像益达广告美女",
+				"src" => "/images/op/f_adyd.jpg",
+				"comment" => "恭喜你，全国只有0.01%的人能抽到她！",
+			],
+			[
+				"title" => "长得很像金泰熙",
+				"src" => "/images/op/f_jintx.jpg",
+				"comment" => "据说她是韩国少有没整容的女子！",
+			],
+			[
+				"title" => "长得很像吉泽",
+				"src" => "/images/op/f_jiz.jpg",
+				"comment" => "此人是谁？好面熟，好像是个演员！",
+			]
+		],
+	];
+
 	/**
 	 * @return \yii\db\Connection
 	 */
