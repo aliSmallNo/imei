@@ -477,10 +477,42 @@
 						<div class="form-group reasons-wrap">
 							<label class="col-sm-4 control-label">不通过原因:</label>
 							<div class="col-sm-7">
-								<label class="form-inline"><b>头像不合规</b><input name="reasons" value="" data-tag="avatar"></label><br>
-								<label class="form-inline"><b>昵称不合规</b><input name="reasons" value="" data-tag="nickname"></label><br>
-								<label class="form-inline"><b>个人简介不合规</b><input name="reasons" value="" data-tag="intro"></label><br>
-								<label class="form-inline"><b>个人兴趣不合规</b><input name="reasons" value="" data-tag="interest"></label>
+								<label class="form-inline">
+									<select class="form-control" name="reasons" data-tag="avatar">
+										<option value="">-请选择头像不合规原因-</option>
+										<option value="头像必须是自己本人的照片">头像必须是自己本人的照片</option>
+										<option value="头像照片不清晰">头像照片不清晰</option>
+										<option value="头位要很正哦">头位要很正哦</option>
+										<option value="头部遮挡物很多">头部遮挡物很多</option>
+									</select>
+								</label><br>
+								<label class="form-inline">
+									<select class="form-control" name="reasons" data-tag="nickname">
+										<option value="">-请选昵称不合规原因-</option>
+										<option value="昵称假冒党政机关">昵称假冒党政机关</option>
+										<option value="昵称假冒名人">昵称假冒名人</option>
+										<option value="昵称冒用他人身份">昵称冒用他人身份</option>
+										<option value="昵称宣扬低俗文化">昵称宣扬低俗文化</option>
+										<option value="昵称违反法律法规">昵称违反法律法规</option>
+										<option value="昵称有广告嫌疑">昵称有广告嫌疑</option>
+									</select>
+								</label><br>
+								<label class="form-inline">
+									<select class="form-control" name="reasons" data-tag="intro">
+										<option value="">-请选个人简介不合规原因-</option>
+										<option value="宣扬低俗文化">宣扬低俗文化</option>
+										<option value="违反法律法规">违反法律法规</option>
+										<option value="有广告嫌疑">有广告嫌疑</option>
+									</select>
+								</label><br>
+								<label class="form-inline">
+									<select class="form-control" name="reasons" data-tag="interest">
+										<option value="">-请选个人兴趣不合规原因-</option>
+										<option value="宣扬低俗文化">宣扬低俗文化</option>
+										<option value="违反法律法规">违反法律法规</option>
+										<option value="有广告嫌疑">有广告嫌疑</option>
+									</select>
+								</label>
 							</div>
 						</div>
 					</div>
@@ -721,7 +753,7 @@
 		  var reason = [];
 		  if (statusOPtVal == 2) {
 			  hasReson = 1;
-			  $("input[name=reasons]").each(function () {
+			  $("[name=reasons]").each(function () {
 				  var self = $(this);
 				  if (self.val()) {
 					  var item = {
