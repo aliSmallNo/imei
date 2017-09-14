@@ -123,7 +123,7 @@ require(["layer"],
 				wx.onMenuShareAppMessage({
 					title: title,
 					desc: desc,
-					link: imgUrl,//linkUrl,
+					link: linkUrl,
 					imgUrl: imgUrl,
 					type: '',
 					dataUrl: '',
@@ -134,7 +134,7 @@ require(["layer"],
 				});
 				wx.onMenuShareTimeline({
 					title: title,
-					link: imgUrl,
+					link: linkUrl,
 					imgUrl: imgUrl,
 					success: function () {
 						$sls.resultBg.removeClass("o-sharing");
