@@ -480,20 +480,18 @@
 							</div>
 						</div>
 						<div class="form-group reasons-wrap">
-							<label class="col-sm-4 control-label">不通过原因:</label>
+							<label class="col-sm-4 control-label">不合规原因:</label>
 							<div class="col-sm-7">
 								<div class="input-group">
 									<input type="text" class="form-control" name="reasons" data-tag="avatar" placeholder="头像不合规原因">
 									<div class="input-group-btn">
 										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-														aria-haspopup="true" aria-expanded="false">
-											请选择 <span class="caret"></span>
-										</button>
+														aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span></button>
 										<ul class="dropdown-menu dropdown-menu-right">
-											<li><a href="javascript:;">头像必须是自己本人的照片</a></li>
-											<li><a href="javascript:;">头像照片不清晰</a></li>
-											<li><a href="javascript:;">头位要很正哦</a></li>
-											<li><a href="javascript:;">头部遮挡物很多</a></li>
+											<li><a href="javascript:;">请上传本人正脸照片</a></li>
+											<li><a href="javascript:;">请上传清晰可辨正脸照片</a></li>
+											<li><a href="javascript:;">脸部遮挡物太多</a></li>
+											<li><a href="javascript:;">照片拍摄距离太远，看不清楚</a></li>
 										</ul>
 									</div>
 								</div>
@@ -502,16 +500,14 @@
 									<input type="text" class="form-control" name="reasons" data-tag="nickname" placeholder="昵称不合规原因">
 									<div class="input-group-btn">
 										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-														aria-haspopup="true" aria-expanded="false">
-											请选择 <span class="caret"></span>
-										</button>
+														aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span></button>
 										<ul class="dropdown-menu dropdown-menu-right">
-											<li><a href="javascript:;">昵称假冒党政机关</a></li>
-											<li><a href="javascript:;">昵称假冒名人</a></li>
-											<li><a href="javascript:;">昵称冒用他人身份</a></li>
-											<li><a href="javascript:;">昵称宣扬低俗文化</a></li>
-											<li><a href="javascript:;">昵称违反法律法规</a></li>
-											<li><a href="javascript:;">昵称有广告嫌疑</a></li>
+											<li><a href="javascript:;">有广告嫌疑</a></li>
+											<li><a href="javascript:;">冒用他人身份</a></li>
+											<li><a href="javascript:;">违反法律法规</a></li>
+											<li><a href="javascript:;">假冒党政机关</a></li>
+											<li><a href="javascript:;">假冒名人名星</a></li>
+											<li><a href="javascript:;">宣扬低俗文化</a></li>
 										</ul>
 									</div>
 								</div>
@@ -520,9 +516,7 @@
 									<input type="text" class="form-control" name="reasons" data-tag="intro" placeholder="个人简介不合规原因">
 									<div class="input-group-btn">
 										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-														aria-haspopup="true" aria-expanded="false">
-											请选择 <span class="caret"></span>
-										</button>
+														aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span></button>
 										<ul class="dropdown-menu dropdown-menu-right">
 											<li><a href="javascript:;">宣扬低俗文化</a></li>
 											<li><a href="javascript:;">违反法律法规</a></li>
@@ -535,9 +529,7 @@
 									<input type="text" class="form-control" name="reasons" data-tag="interest" placeholder="个人兴趣不合规原因">
 									<div class="input-group-btn">
 										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-														aria-haspopup="true" aria-expanded="false">
-											请选择 <span class="caret"></span>
-										</button>
+														aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span></button>
 										<ul class="dropdown-menu dropdown-menu-right">
 											<li><a href="javascript:;">宣扬低俗文化</a></li>
 											<li><a href="javascript:;">违反法律法规</a></li>
