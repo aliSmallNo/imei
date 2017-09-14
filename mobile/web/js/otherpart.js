@@ -127,7 +127,7 @@ require(["layer"],
 					type: '',
 					dataUrl: '',
 					success: function () {
-						$sls.resultBg.remove("o-sharing");
+						$sls.resultBg.removeClass("o-sharing");
 						shareLog('share', '/wx/otherpart');
 					}
 				});
@@ -136,7 +136,7 @@ require(["layer"],
 					link: linkUrl,
 					imgUrl: imgUrl,
 					success: function () {
-						$sls.resultBg.remove("o-sharing");
+						$sls.resultBg.removeClass("o-sharing");
 						shareLog('moment', '/wx/otherpart');
 					}
 				});
