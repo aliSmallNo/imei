@@ -8,12 +8,8 @@
 
 namespace common\models;
 
-use admin\models\Admin;
 use common\utils\AppUtil;
-use common\utils\ImageUtil;
 use common\utils\RedisUtil;
-use common\utils\WechatUtil;
-use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
 
 class User extends ActiveRecord
@@ -320,6 +316,26 @@ class User extends ActiveRecord
 		if ($entity) {
 			$entity->uPhone = $phone;
 			$entity->uRole = $role;
+			$entity->uUpdatedOn = date('Y-m-d H:i:s');
+			$entity->save();
+			RedisUtil::delCache(RedisUtil::KEY_WX_USER, $openId);
+			return true;
+		}
+		return false;
+	}
+
+	public static function reg0($openId, $phone, $role, $gender = '', $location = '')
+	{
+		$entity = self::findOne(['uOpenId' => $openId]);
+		if ($entity) {
+			$entity->uPhone = $phone;
+			$entity->uRole = $role;
+			if ($gender) {
+				$entity->uGender = $gender;
+			}
+			if ($location) {
+				$entity->uLocation = json_encode($location, JSON_UNESCAPED_UNICODE);
+			}
 			$entity->uUpdatedOn = date('Y-m-d H:i:s');
 			$entity->save();
 			RedisUtil::delCache(RedisUtil::KEY_WX_USER, $openId);
@@ -2021,6 +2037,7 @@ class User extends ActiveRecord
 				'女生' => 0,
 			];
 		}
+
 		foreach ($ret as $row) {
 			$hr = intval($row['hr']);
 			$gid = $row['gender'] == self::GENDER_MALE ? '男生' : '女生';
@@ -2038,7 +2055,8 @@ class User extends ActiveRecord
 		];
 	}
 
-	public static function setting($uid, $flag, $setfield)
+	public
+	static function setting($uid, $flag, $setfield)
 	{
 		// $fields = ["favor" => 1, "fans" => 1, "chat" => 1];
 		$uInfo = self::findOne(["uId" => $uid]);
@@ -2057,7 +2075,8 @@ class User extends ActiveRecord
 		return true;
 	}
 
-	public static function muteAlert($uid, $field, $conn = '')
+	public
+	static function muteAlert($uid, $field, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -2074,7 +2093,8 @@ class User extends ActiveRecord
 		/*{"fans":1,"chat":1,"favor":1}*/
 	}
 
-	public static function greetUsers($uid, $conn = '')
+	public
+	static function greetUsers($uid, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -2152,8 +2172,9 @@ class User extends ActiveRecord
 		return array_values($items);
 	}
 
-	// 后台聊天稻草人
-	public static function dummyForChat()
+// 后台聊天稻草人
+	public
+	static function dummyForChat()
 	{
 		$sql = "select uName,uThumb,uId,uGender from im_user where uSubStatus=:sst and uStatus=:st ORDER by uId desc";
 		$ret = AppUtil::db()->createCommand($sql)->bindValues([

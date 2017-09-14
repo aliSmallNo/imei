@@ -861,19 +861,15 @@ section {
     left: 3rem;
     top: 6.2rem; }
   .form.sms-form {
-    padding-top: 13.5rem; }
+    padding-top: 11rem; }
   .form.sms-form:before {
-    content: " ";
+    content: "";
     position: absolute;
-    width: 26rem;
-    height: 11.5rem;
-    left: 3rem;
-    top: 2rem; }
-  .form.matcher:before {
-    background: url(../images/ico_sms_matcher.png) no-repeat center center;
-    background-size: 100% 100%; }
-  .form.single:before {
-    background: url(../images/ico_sms_single.png) no-repeat center center;
+    width: 19rem;
+    height: 7.4rem;
+    left: 6.5rem;
+    top: 2rem;
+    background: url(../images/wm260_pink.png) no-repeat center center;
     background-size: 100% 100%; }
   .form.matcher .btn-change[data-tag="single"] {
     top: 6rem;
@@ -910,6 +906,150 @@ section {
     margin-bottom: 1rem;
     font-size: 1.4rem;
     -webkit-appearance: none; }
+  .form .row {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    margin-bottom: 1.5rem;
+    line-height: 4rem;
+    position: relative; }
+    .form .row label {
+      -webkit-box-flex: 0 0 7rem;
+      -webkit-flex: 0 0 7rem;
+      -ms-flex: 0 0 7rem;
+      flex: 0 0 7rem;
+      justify-content: center;
+      align-items: center;
+      align-self: center;
+      text-align: right;
+      padding-right: 1rem; }
+    .form .row input {
+      -webkit-appearance: none;
+      font-size: 1.4rem;
+      border: 0;
+      height: 4rem;
+      overflow: hidden; }
+    .form .row .group {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      justify-content: center;
+      align-items: center;
+      align-self: center;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      border: 1px solid #E4E4E4;
+      border-radius: 0.5rem;
+      height: 4.2rem;
+      padding-left: 0.6rem;
+      padding-right: 0.6rem; }
+      .form .row .group input {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1; }
+      .form .row .group a {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        text-align: center;
+        position: relative; }
+        .form .row .group a.line:after {
+          content: "";
+          position: absolute;
+          top: 0.5rem;
+          bottom: 0.5rem;
+          left: 0;
+          width: 1px;
+          background: #E4E4E4; }
+    .form .row .j-radio {
+      font-size: 1.4rem;
+      padding-left: 3rem;
+      padding-right: 3rem;
+      position: relative;
+      line-height: 4rem; }
+      .form .row .j-radio:before {
+        content: "";
+        position: absolute;
+        width: 2rem;
+        height: 2rem;
+        left: 0.5rem;
+        top: 1rem;
+        background: url(../images/ico_radio_off.png) no-repeat center center;
+        background-size: 100% 100%; }
+      .form .row .j-radio.active:before {
+        background: url(../images/ico_radio_on.png) no-repeat center center;
+        background-size: 100% 100%; }
+    .form .row .action {
+      position: relative;
+      text-align: left;
+      align-self: flex-start;
+      justify-content: flex-start;
+      align-items: flex-start;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden; }
+      .form .row .action:after {
+        content: " ";
+        display: inline-block;
+        height: 0.8rem;
+        width: 0.8rem;
+        border-width: 1px 1px 0 0;
+        border-color: #939393;
+        border-style: solid;
+        -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+        transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+        position: absolute;
+        top: 50%;
+        right: 0;
+        margin-top: -0.5rem;
+        right: 0.8rem; }
+      .form .row .action em {
+        padding-right: 0.3rem; }
+    .form .row .tip {
+      position: absolute;
+      bottom: -2.1rem;
+      left: 8.3rem;
+      font-size: 1.2rem;
+      color: #939393;
+      line-height: 2rem;
+      font-weight: 300; }
+
+.m-radios {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+  .m-radios a {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    font-size: 1.4rem;
+    padding-left: 3rem;
+    position: relative;
+    line-height: 4rem; }
+    .m-radios a:before {
+      content: "";
+      position: absolute;
+      width: 2rem;
+      height: 2rem;
+      left: 0.5rem;
+      top: 1rem;
+      background: url(../images/ico_radio_off.png) no-repeat center center;
+      background-size: 100% 100%; }
+
+.h-padding1 {
+  padding-left: 1rem;
+  padding-right: 1rem; }
 
 .m-header {
   text-align: center;

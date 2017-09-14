@@ -117,7 +117,11 @@ class WxController extends BaseController
 
 	public function actionImei()
 	{
-		return self::renderPage("imei.tpl");
+		return self::renderPage("imei.tpl",
+			[
+				'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
+			],
+			'terse');
 	}
 
 	public function actionSreg()

@@ -289,13 +289,16 @@ class ApiController extends Controller
 			return self::renderAPI(129, '用户不存在啊~');
 		}
 		$uId = $wxInfo['uId'];
+		$lat = self::postParam("lat");
+		$lng = self::postParam("lng");
 		switch ($tag) {
 			case 'pin':
-				$lat = self::postParam("lat");
-				$lng = self::postParam("lng");
 				Pin::addPin(Pin::CAT_USER, $uId, $lat, $lng);
 				return self::renderAPI(0, '');
-				break;
+			case 'regeo':
+				Pin::addPin(Pin::CAT_USER, $uId, $lat, $lng);
+				$info = Pin::locationInfo($lat, $lng);
+				return self::renderAPI(0, '', $info);
 		}
 		return self::renderAPI(129, '操作无效~');
 	}
@@ -422,6 +425,23 @@ class ApiController extends Controller
 					return self::renderAPI(0, '您已经注册了' . User::$Role[$role] . '身份');
 				} else {
 					return self::renderAPI(129, '输入的验证码不正确或者已经失效~');
+				}
+			case 'reg0':
+				$phone = self::postParam('phone');
+				$code = self::postParam('code');
+				$role = self::postParam('role');
+				$gender = self::postParam('gender');
+				$location = self::postParam('location');
+				$location = json_decode($location, 1);
+				if (!AppUtil::checkPhone($phone)) {
+					return self::renderAPI(129, '手机号格式不正确~');
+				}
+				if (User::verifySMSCode($phone, $code)) {
+					$role = ($role == 'single') ? User::ROLE_SINGLE : User::ROLE_MATCHER;
+					User::reg0($openId, $phone, $role, $gender, $location);
+					return self::renderAPI(0, '你已成功注册成为游客了');
+				} else {
+					return self::renderAPI(129, '输入的验证码不正确或者已经失效');
 				}
 			case 'sign':
 				$wxInfo = UserWechat::getInfoByOpenId($openId);

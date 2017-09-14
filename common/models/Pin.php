@@ -108,6 +108,8 @@ class Pin extends ActiveRecord
 		'towncode' => 'pTownCode'
 	];
 
+	static $AmapKey = '3b7105f564d93737d4b90411793beb67';
+
 	public static function regeo($uid, $lat = '', $lng = '', $conn = '')
 	{
 		if (!$conn) {
@@ -131,7 +133,7 @@ class Pin extends ActiveRecord
 		}
 
 		$updateMapInfo = function ($uid, $lat, $lng, $info, $conn) {
-			$sql = 'update im_pin set pRaw=:raw';
+			$sql = 'UPDATE im_pin SET pRaw=:raw';
 			$params = [
 				':raw' => json_encode($info, JSON_UNESCAPED_UNICODE),
 				':id' => $uid,
@@ -153,7 +155,7 @@ class Pin extends ActiveRecord
 
 			if (isset($info['location']) && $info['location'] && !$lat && !$lng) {
 				list($lng, $lat) = explode(',', $info['location']);
-				$sql = 'update im_pin set pLat=:lat,pLng=:lng,pPoint=GeomFromText(:poi) WHERE pPId=:id and pCategory=:cat ';
+				$sql = 'UPDATE im_pin SET pLat=:lat,pLng=:lng,pPoint=GeomFromText(:poi) WHERE pPId=:id AND pCategory=:cat ';
 				$params = [
 					':lat' => $lat,
 					':lng' => $lng,
@@ -164,10 +166,10 @@ class Pin extends ActiveRecord
 				$conn->createCommand($sql)->bindValues($params)->execute();
 			}
 		};
-		$mapKey = '3b7105f564d93737d4b90411793beb67';
+
 		if ($lat && $lng) {
 			$url = 'http://restapi.amap.com/v3/geocode/regeo?location=%s,%s&output=json&key=%s&radius=500&extensions=base';
-			$url = sprintf($url, $lng, $lat, $mapKey);
+			$url = sprintf($url, $lng, $lat, self::$AmapKey);
 			$ret = AppUtil::httpGet($url);
 			$ret = json_decode($ret, 1);
 			if (!isset($ret['regeocode']['addressComponent'])) {
@@ -176,7 +178,7 @@ class Pin extends ActiveRecord
 			$info = $ret['regeocode']['addressComponent'];
 			$updateMapInfo($uid, $lat, $lng, $info, $conn);
 		} else {
-			$sql = 'select uLocation from im_user WHERE uId=' . $uid;
+			$sql = 'SELECT uLocation FROM im_user WHERE uId=' . $uid;
 			$ret = $conn->createCommand($sql)->queryScalar();
 			$ret = json_decode($ret, 1);
 			if ($ret && count($ret) > 1) {
@@ -190,7 +192,7 @@ class Pin extends ActiveRecord
 					return true;
 				}
 				$url = 'http://restapi.amap.com/v3/geocode/geo?address=%s&output=json&key=%s';
-				$url = sprintf($url, $address, $mapKey);
+				$url = sprintf($url, $address, self::$AmapKey);
 				$mapInfo = AppUtil::httpGet($url);
 				$mapInfo = json_decode($mapInfo, 1);
 				if (isset($mapInfo['geocodes']) && $mapInfo['geocodes']) {
@@ -203,5 +205,36 @@ class Pin extends ActiveRecord
 		}
 
 		return false;
+	}
+
+	public static function locationInfo($lat, $lng)
+	{
+		$url = 'http://restapi.amap.com/v3/geocode/regeo?location=%s,%s&output=json&key=%s&radius=500&extensions=base';
+		$url = sprintf($url, $lng, $lat, self::$AmapKey);
+		$ret = AppUtil::httpGet($url);
+		$ret = json_decode($ret, 1);
+		if (!isset($ret['regeocode']['addressComponent'])) {
+			return false;
+		}
+		$info = $ret['regeocode']['addressComponent'];
+		$locInfo = [
+			[
+				'key' => isset($info['citycode']) ? $info['citycode'] : '',
+				'text' => isset($info['province']) ? $info['province'] : '',
+			]
+		];
+		if (isset($info['city']) && $info['city']) {
+			$locInfo[] = [
+				'key' => isset($info['citycode']) ? $info['citycode'] : '',
+				'text' => isset($info['city']) ? $info['city'] : '',
+			];
+		}
+		if (isset($info['district']) && $info['district']) {
+			$locInfo[] = [
+				'key' => isset($info['adcode']) ? $info['adcode'] : '',
+				'text' => isset($info['district']) ? $info['district'] : '',
+			];
+		}
+		return $locInfo;
 	}
 }

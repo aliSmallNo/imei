@@ -542,6 +542,7 @@ section
 		color: #fff
 		font-size: 1.4rem
 		font-weight: $weightNormal
+
 .nav-foot
 	@include displayFlex
 	background: $mainColor
@@ -984,20 +985,23 @@ section
 		left: 3rem
 		top: 6.2rem
 	&.sms-form
-		padding-top: 13.5rem
+		padding-top: 11rem
 	&.sms-form:before
-		content: " "
+		content: ''
 		position: absolute
-		width: 26rem
-		height: 11.5rem
-		left: 3rem
+		width: 19rem
+		height: 7.4rem
+		left: 6.5rem
 		top: 2rem
-	&.matcher:before
-		background: url(../images/ico_sms_matcher.png) no-repeat center center
+		background: url(../images/wm260_pink.png) no-repeat center center
 		background-size: 100% 100%
-	&.single:before
-		background: url(../images/ico_sms_single.png) no-repeat center center
-		background-size: 100% 100%
+
+	//&.matcher:before
+	//	background: url(../images/ico_sms_matcher.png) no-repeat center center
+	//	background-size: 100% 100%
+	//&.single:before
+	//	background: url(../images/ico_sms_single.png) no-repeat center center
+	//	background-size: 100% 100%
 	&.matcher
 		.btn-change[data-tag="single"]
 			top: 6rem
@@ -1023,6 +1027,105 @@ section
 		margin-bottom: 1rem
 		font-size: 1.4rem
 		-webkit-appearance: none
+	.row
+		@include displayFlex
+		margin-bottom: 1.5rem
+		line-height: 4rem
+		position: relative
+		label
+			@include displayFlex-w(7rem)
+			@include displayFlexVAlign
+			text-align: right
+			padding-right: 1rem
+		input
+			-webkit-appearance: none
+			font-size: 1.4rem
+			border: 0
+			height: 4rem
+			overflow: hidden
+		.group
+			@include displayFlex-1
+			@include displayFlexVAlign
+			@include displayFlex
+			border: 1px solid $borderColor
+			border-radius: .5rem
+			height: 4.2rem
+			padding-left: .6rem
+			padding-right: .6rem
+			input
+				@include displayFlex-1
+			a
+				@include displayFlex-1
+				text-align: center
+				position: relative
+				&.line:after
+					content: ''
+					position: absolute
+					top: .5rem
+					bottom: .5rem
+					left: 0
+					width: 1px
+					background: $borderColor
+		.j-radio
+			font-size: 1.4rem
+			padding-left: 3rem
+			padding-right: 3rem
+			position: relative
+			line-height: 4rem
+			&:before
+				content: ''
+				position: absolute
+				width: 2rem
+				height: 2rem
+				left: .5rem
+				top: 1rem
+				background: url(../images/ico_radio_off.png) no-repeat center center
+				background-size: 100% 100%
+			&.active:before
+				background: url(../images/ico_radio_on.png) no-repeat center center
+				background-size: 100% 100%
+		.action
+			position: relative
+			text-align: left
+			align-self: flex-start
+			justify-content: flex-start
+			align-items: flex-start
+			@include textTail
+			&:after
+				@include arrowRight
+				right: .8rem
+			em
+				padding-right: .3rem
+		.tip
+			position: absolute
+			bottom: -2.1rem
+			left: 8.3rem
+			font-size: 1.2rem
+			color: $grayFontColorLight
+			line-height: 2rem
+			font-weight: $weightNormal
+.m-radios
+	@include displayFlex
+	a
+		@include displayFlex-1
+		@include displayFlexVAlign
+		font-size: 1.4rem
+		padding-left: 3rem
+		position: relative
+		line-height: 4rem
+		&:before
+			content: ''
+			position: absolute
+			width: 2rem
+			height: 2rem
+			left: .5rem
+			top: 1rem
+			background: url(../images/ico_radio_off.png) no-repeat center center
+			background-size: 100% 100%
+
+.h-padding1
+	padding-left: 1rem
+	padding-right: 1rem
 
 .m-header
 	text-align: center
@@ -5373,9 +5476,11 @@ section
 			@include unreadFlag
 			left: 3.2rem
 			top: 0.2rem
+
 .magic-checkbox
 	position: absolute
 	display: none
+
 .magic-checkbox + label
 	position: relative
 	display: block
@@ -5393,10 +5498,12 @@ section
 		content: ''
 		border: 1px solid #c0c0c0
 		border-radius: .3rem
+
 .magic-checkbox:checked + label:before
 	animation-name: none
 	border: #f06292
 	background: #f06292
+
 .magic-checkbox + label:after
 	position: absolute
 	display: none
@@ -5413,6 +5520,7 @@ section
 	border-top: 0
 	border-left: 0
 	display: block
+
 .chats
 	li
 		@include displayFlex
