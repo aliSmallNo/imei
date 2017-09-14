@@ -298,6 +298,10 @@
 		flex: 1;
 		align-self: center;
 	}
+
+	.input-group {
+		margin-top: 5px;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="row">
@@ -333,7 +337,8 @@
 		<ul class="nav nav-tabs">
 			{{foreach from=$partHeader key=key item=prod}}
 			<li class="ng-scope {{if $status == $key}}active{{/if}}">
-				<a href="/site/accounts?inactive={{$inactive}}&fonly={{$fonly}}&status={{$key}}&name={{$name}}&phone={{$phone}}&sub_status={{$sub_status}}" class="ng-binding">
+				<a href="/site/accounts?inactive={{$inactive}}&fonly={{$fonly}}&status={{$key}}&name={{$name}}&phone={{$phone}}&sub_status={{$sub_status}}"
+					 class="ng-binding">
 					{{$prod}} {{if $partCount[$key]}}<span class="badge">{{$partCount[$key]}}</span>{{/if}}
 				</a>
 			</li>
@@ -477,42 +482,70 @@
 						<div class="form-group reasons-wrap">
 							<label class="col-sm-4 control-label">不通过原因:</label>
 							<div class="col-sm-7">
-								<label class="form-inline">
-									<select class="form-control" name="reasons" data-tag="avatar">
-										<option value="">-请选择头像不合规原因-</option>
-										<option value="头像必须是自己本人的照片">头像必须是自己本人的照片</option>
-										<option value="头像照片不清晰">头像照片不清晰</option>
-										<option value="头位要很正哦">头位要很正哦</option>
-										<option value="头部遮挡物很多">头部遮挡物很多</option>
-									</select>
-								</label><br>
-								<label class="form-inline">
-									<select class="form-control" name="reasons" data-tag="nickname">
-										<option value="">-请选昵称不合规原因-</option>
-										<option value="昵称假冒党政机关">昵称假冒党政机关</option>
-										<option value="昵称假冒名人">昵称假冒名人</option>
-										<option value="昵称冒用他人身份">昵称冒用他人身份</option>
-										<option value="昵称宣扬低俗文化">昵称宣扬低俗文化</option>
-										<option value="昵称违反法律法规">昵称违反法律法规</option>
-										<option value="昵称有广告嫌疑">昵称有广告嫌疑</option>
-									</select>
-								</label><br>
-								<label class="form-inline">
-									<select class="form-control" name="reasons" data-tag="intro">
-										<option value="">-请选个人简介不合规原因-</option>
-										<option value="宣扬低俗文化">宣扬低俗文化</option>
-										<option value="违反法律法规">违反法律法规</option>
-										<option value="有广告嫌疑">有广告嫌疑</option>
-									</select>
-								</label><br>
-								<label class="form-inline">
-									<select class="form-control" name="reasons" data-tag="interest">
-										<option value="">-请选个人兴趣不合规原因-</option>
-										<option value="宣扬低俗文化">宣扬低俗文化</option>
-										<option value="违反法律法规">违反法律法规</option>
-										<option value="有广告嫌疑">有广告嫌疑</option>
-									</select>
-								</label>
+								<div class="input-group">
+									<input type="text" class="form-control" name="reasons" data-tag="avatar" placeholder="头像不合规原因">
+									<div class="input-group-btn">
+										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+														aria-haspopup="true" aria-expanded="false">
+											请选择 <span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu dropdown-menu-right">
+											<li><a href="javascript:;">头像必须是自己本人的照片</a></li>
+											<li><a href="javascript:;">头像照片不清晰</a></li>
+											<li><a href="javascript:;">头位要很正哦</a></li>
+											<li><a href="javascript:;">头部遮挡物很多</a></li>
+										</ul>
+									</div>
+								</div>
+
+								<div class="input-group">
+									<input type="text" class="form-control" name="reasons" data-tag="nickname" placeholder="昵称不合规原因">
+									<div class="input-group-btn">
+										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+														aria-haspopup="true" aria-expanded="false">
+											请选择 <span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu dropdown-menu-right">
+											<li><a href="javascript:;">昵称假冒党政机关</a></li>
+											<li><a href="javascript:;">昵称假冒名人</a></li>
+											<li><a href="javascript:;">昵称冒用他人身份</a></li>
+											<li><a href="javascript:;">昵称宣扬低俗文化</a></li>
+											<li><a href="javascript:;">昵称违反法律法规</a></li>
+											<li><a href="javascript:;">昵称有广告嫌疑</a></li>
+										</ul>
+									</div>
+								</div>
+
+								<div class="input-group">
+									<input type="text" class="form-control" name="reasons" data-tag="intro" placeholder="个人简介不合规原因">
+									<div class="input-group-btn">
+										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+														aria-haspopup="true" aria-expanded="false">
+											请选择 <span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu dropdown-menu-right">
+											<li><a href="javascript:;">宣扬低俗文化</a></li>
+											<li><a href="javascript:;">违反法律法规</a></li>
+											<li><a href="javascript:;">有广告嫌疑</a></li>
+										</ul>
+									</div>
+								</div>
+
+								<div class="input-group">
+									<input type="text" class="form-control" name="reasons" data-tag="interest" placeholder="个人兴趣不合规原因">
+									<div class="input-group-btn">
+										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+														aria-haspopup="true" aria-expanded="false">
+											请选择 <span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu dropdown-menu-right">
+											<li><a href="javascript:;">宣扬低俗文化</a></li>
+											<li><a href="javascript:;">违反法律法规</a></li>
+											<li><a href="javascript:;">有广告嫌疑</a></li>
+										</ul>
+									</div>
+								</div>
+
 							</div>
 						</div>
 					</div>
@@ -528,7 +561,8 @@
 		<div class="modal-dialog" role="document" style="width: 276px;">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+										aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title">设置用户头像</h4>
 				</div>
 				<div class="modal-body av-wrap">
@@ -727,6 +761,12 @@
 		  hasReson = 1,
 		  resonLoad = 0,
 		  uid;
+
+	  $(document).on("click", ".reasons-wrap li", function () {
+		  var self = $(this);
+		  var val = self.find("a").html();
+		  self.closest(".input-group").find("input").val(val);
+	  });
 
 	  $("a.check").click(function () {
 		  var self = $(this);
