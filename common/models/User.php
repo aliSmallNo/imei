@@ -9,6 +9,7 @@
 namespace common\models;
 
 use common\utils\AppUtil;
+use common\utils\ImageUtil;
 use common\utils\RedisUtil;
 use yii\db\ActiveRecord;
 
