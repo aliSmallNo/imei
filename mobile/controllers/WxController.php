@@ -1501,7 +1501,6 @@ class WxController extends BaseController
 			if ($log = Log::findOne(["oCategory" => Log::CAT_SPREAD, "oKey" => Log::SPREAD_PART, "oBefore" => $name . '-' . $gender])) {
 				$item = json_decode($log["oAfter"], 1);
 			} else {
-				$gender = $gender == "male" ? "female" : "male";
 				$items = isset(AppUtil::$otherPartDict[$gender]) ? AppUtil::$otherPartDict[$gender] : [];
 				if ($items) {
 					$item = $items[array_rand($items, 1)];
