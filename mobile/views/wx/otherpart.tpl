@@ -260,4 +260,4 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/otherpart.js?v=1.1.11" src="/assets/js/require.js"></script>
+<script data-main="/js/otherpart.js?v=1.1.9" src="/assets/js/require.js"></script>

@@ -123,7 +123,7 @@ require(["layer"],
 				wx.onMenuShareAppMessage({
 					title: title,
 					desc: desc,
-					link: linkUrl,
+					link: imgUrl,//linkUrl,
 					imgUrl: imgUrl,
 					type: '',
 					dataUrl: '',
