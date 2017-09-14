@@ -43,7 +43,7 @@ class AppUtil
 	private static $SMS_TMP_ID = 9179;
 
 	static $otherPartDict = [
-		"male"=>[
+		"female"=>[
 			[
 				"title" => "长得很像包青天",
 				"src" => "/images/op/m_baoqt.jpg",
@@ -70,7 +70,7 @@ class AppUtil
 				"comment" => "对，就是你！",
 			]
 		],
-		"female"=>[
+		"male"=>[
 			[
 				"title" => "身手很像郭芙蓉",
 				"src" => "/images/op/f_guofr.jpg",

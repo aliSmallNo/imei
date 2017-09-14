@@ -1484,16 +1484,16 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		$uId = '';
-		$uId = self::getParam("id");
+		$sId = $uId = '';
+		$sId = self::getParam("id");
 		$gender = self::getParam("gender");
 		$name = self::getParam("name");
 
 		if ($wxInfo) {
-			$uId = $wxInfo['uId'];
+			 $uId = $wxInfo['uId'];
 		} else {
-			header('location:/wx/index');
-			exit();
+//			header('location:/wx/index');
+//			exit();
 		}
 
 		$item = [
@@ -1502,10 +1502,9 @@ class WxController extends BaseController
 			"comment" => "你最好从了他！",
 		];
 		if ($gender && $name) {
-			if ($log = Log::findOne(["oCategory" => Log::CAT_SPREAD, "oKey" => Log::SPREAD_PART, "oBefore" => $name])) {
+			if ($log = Log::findOne(["oCategory" => Log::CAT_SPREAD, "oKey" => Log::SPREAD_PART, "oBefore" => $name . '-' . $gender])) {
 				$item = json_decode($log["oAfter"], 1);
 			} else {
-				$gender = $gender == "male" ? "female" : "male";
 				$items = isset(AppUtil::$otherPartDict[$gender]) ? AppUtil::$otherPartDict[$gender] : [];
 				if ($items) {
 					$item = $items[array_rand($items, 1)];
@@ -1515,7 +1514,7 @@ class WxController extends BaseController
 						"oUId" => $uId,
 						"oOpenId" => $openId,
 						"oAfter" => json_encode($item, JSON_UNESCAPED_UNICODE),
-						"oBefore" => $name,
+						"oBefore" => $name . '-' . $gender,
 					]);
 				}
 			}
@@ -1523,11 +1522,11 @@ class WxController extends BaseController
 
 		return self::renderPage("otherpart.tpl",
 			[
+				'sId' => $sId,
 				'uId' => $uId,
 				'gender' => $gender,
 				'name' => $name,
 				'item' => $item,
-				'wxUrl' => AppUtil::wechatUrl(),
 			],
 			'terse',
 			'测测你的另一半',
