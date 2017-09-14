@@ -252,6 +252,7 @@
 	</div>
 	<i class="share-arrow">点击菜单分享</i>
 </div>
+<input type="hidden" id="cSUID" value="{{$sId}}">
 <input type="hidden" id="cUID" value="{{$uId}}">
 <input type="hidden" id="cNAME" value="{{$name}}">
 <input type="hidden" id="cGENDER" value="{{$gender}}">

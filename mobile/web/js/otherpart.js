@@ -21,6 +21,7 @@ require(["layer"],
 			name: $('#cNAME').val(),
 			gender: $('#cGENDER').val(),
 			uid: $('#cUID').val(),
+			sid: $('#cSUID').val(),
 
 			resultBg: $(".o-result-bg"),
 
@@ -97,11 +98,11 @@ require(["layer"],
 		function shareLog(tag, note) {
 			$.post("/api/share", {
 				tag: tag,
-				id: $sls.uid ? $sls.uid : 120003,
+				id: $sls.sid ? $sls.sid : 120003,
 				note: note
 			}, function (resp) {
 				if (resp.code == 0 && resp.msg) {
-					showMsg(resp.msg);
+					// showMsg(resp.msg);
 				}
 			}, "json");
 		}
@@ -112,7 +113,7 @@ require(["layer"],
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			var linkUrl = "https://wx.meipo100.com/wx/otherpart?"
-			//+ "id=" + $sls.uid
+				+ "id=" + $sls.uid
 			//+ "name=" + encodeURI($sls.name)
 			//+ "&gender=" + $sls.gender;
 			var imgUrl = "https://wx.meipo100.com/images/op/op_1.jpg";
