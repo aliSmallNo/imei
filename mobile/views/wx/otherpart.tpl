@@ -125,10 +125,17 @@
 		margin: 0 auto;
 	}
 
-	.o-tip {
+	.o-tip div {
 		font-size: 1rem;
 		text-align: center;
 		color: #660000;
+	}
+
+	.o-tip div img {
+		width: 10rem;
+		height: 10rem;
+		margin: 0 auto;
+		padding-top: 3rem;
 	}
 
 	.o-result {
@@ -151,6 +158,10 @@
 		padding: 1rem;
 		text-align: center;
 		margin: 1rem 0;
+	}
+
+	.o-result .o-sharing {
+		filter: blur(6px);
 	}
 
 	.o-result .o-result-bg h5 {
@@ -184,7 +195,7 @@
 		<div class="o-result-title">
 			<span>{{$name}}</span>的另一半
 		</div>
-		<div class="o-result-bg">
+		<div class="o-result-bg o-sharing">
 			<h5><span>{{$item.title}}</span></h5>
 			<img src="{{$item.src}}" alt="">
 			<p><span>专家点评:</span>{{$item.comment}}</p>
@@ -194,10 +205,10 @@
 		<a href="javascript:;" data-tag="again">再测一测别人</a>
 	</div>
 	<div class="o-btn-test">
-		<a href="JavaScript:;" data-tag="share">分享</a>
+		<a href="JavaScript:;" data-tag="share">分享查看另一半</a>
 	</div>
 	<div class="o-tip">
-		本测试仅供娱乐，没有任何科学依据，请勿当真！
+		<div>本测试仅供娱乐，没有任何科学依据，请勿当真！</div>
 	</div>
 </div>
 {{else}}
@@ -226,7 +237,10 @@
 		<a href="javascript:;" data-tag="test">测一测</a>
 	</div>
 	<div class="o-tip">
-		本测试仅供娱乐，没有任何科学依据，请勿当真！
+		<div>本测试仅供娱乐，没有任何科学依据，请勿当真！</div>
+		<div>
+			<img src="/images/qrmeipo100.jpg">
+		</div>
 	</div>
 </div>
 {{/if}}

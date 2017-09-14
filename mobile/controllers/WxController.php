@@ -1488,8 +1488,8 @@ class WxController extends BaseController
 		if ($wxInfo) {
 			$uId = $wxInfo['uId'];
 		} else {
-			header('location:/wx/index');
-			exit();
+//			header('location:/wx/index');
+//			exit();
 		}
 
 		$item = [
@@ -1523,7 +1523,6 @@ class WxController extends BaseController
 				'gender' => $gender,
 				'name' => $name,
 				'item' => $item,
-				'wxUrl' => AppUtil::wechatUrl(),
 			],
 			'terse',
 			'测测你的另一半',

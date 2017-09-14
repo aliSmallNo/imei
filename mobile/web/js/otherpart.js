@@ -22,6 +22,8 @@ require(["layer"],
 			gender: $('#cGENDER').val(),
 			uid: $('#cUID').val(),
 
+			resultBg: $(".o-result-bg"),
+
 		};
 
 		function locationHashChanged() {
@@ -76,7 +78,7 @@ require(["layer"],
 				showMsg('请先输入您的性别~');
 				return;
 			}
-			// console.log(name);console.log(gender);
+
 			location.href = "/wx/otherpart?id=" + id + "&name=" + name + "&gender=" + gender;
 		}
 
@@ -95,7 +97,7 @@ require(["layer"],
 		function shareLog(tag, note) {
 			$.post("/api/share", {
 				tag: tag,
-				id: $sls.uid,
+				id: $sls.uid ? $sls.uid : 120003,
 				note: note
 			}, function (resp) {
 				if (resp.code == 0 && resp.msg) {
@@ -110,9 +112,9 @@ require(["layer"],
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			var linkUrl = "https://wx.meipo100.com/wx/otherpart?"
-				+ "id=" + $sls.uid
-				+ "name=" + encodeURI($sls.name)
-				+ "&gender=" + $sls.gender;
+			//+ "id=" + $sls.uid
+			//+ "name=" + encodeURI($sls.name)
+			//+ "&gender=" + $sls.gender;
 			var imgUrl = "https://wx.meipo100.com/images/op_1.jpg";
 			var title = "测试你的另一半";
 			var desc = "想知道你的另一半前世长什么样吗？快来测测吧~";
@@ -125,6 +127,7 @@ require(["layer"],
 					type: '',
 					dataUrl: '',
 					success: function () {
+						$sls.resultBg.remove("o-sharing");
 						shareLog('share', '/wx/otherpart');
 					}
 				});
@@ -133,6 +136,7 @@ require(["layer"],
 					link: linkUrl,
 					imgUrl: imgUrl,
 					success: function () {
+						$sls.resultBg.remove("o-sharing");
 						shareLog('moment', '/wx/otherpart');
 					}
 				});
