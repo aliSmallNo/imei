@@ -1498,7 +1498,7 @@ class WxController extends BaseController
 			"comment" => "你最好从了他！",
 		];
 		if ($gender && $name) {
-			if ($log = Log::findOne(["oCategory" => Log::CAT_SPREAD, "oKey" => Log::SPREAD_PART, "oBefore" => $name])) {
+			if ($log = Log::findOne(["oCategory" => Log::CAT_SPREAD, "oKey" => Log::SPREAD_PART, "oBefore" => $name . '-' . $gender])) {
 				$item = json_decode($log["oAfter"], 1);
 			} else {
 				$gender = $gender == "male" ? "female" : "male";
@@ -1511,7 +1511,7 @@ class WxController extends BaseController
 						"oUId" => $uId,
 						"oOpenId" => $openId,
 						"oAfter" => json_encode($item, JSON_UNESCAPED_UNICODE),
-						"oBefore" => $name,
+						"oBefore" => $name . '-' . $gender,
 					]);
 				}
 			}
