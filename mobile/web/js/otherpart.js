@@ -113,8 +113,8 @@ require(["layer"],
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			var linkUrl = "https://wx.meipo100.com/wx/otherpart?"
-				+ "id=" + $sls.uid
-			//+ "name=" + encodeURI($sls.name)
+				+ "id=" + $sls.uid;
+			//+ "&name=" + encodeURI($sls.name)
 			//+ "&gender=" + $sls.gender;
 			var imgUrl = "https://wx.meipo100.com/images/op/op_1.jpg";
 			var title = "测试你的另一半";
