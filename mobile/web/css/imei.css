@@ -944,7 +944,6 @@ section {
       display: flex;
       border: 1px solid #E4E4E4;
       border-radius: 0.5rem;
-      height: 4.2rem;
       padding-left: 0.6rem;
       padding-right: 0.6rem; }
       .form .row .group input {
@@ -970,7 +969,8 @@ section {
     .form .row .j-radio {
       font-size: 1.4rem;
       padding-left: 3rem;
-      padding-right: 3rem;
+      padding-right: 2rem;
+      margin-right: 1rem;
       position: relative;
       line-height: 4rem; }
       .form .row .j-radio:before {
