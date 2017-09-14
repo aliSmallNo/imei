@@ -115,7 +115,7 @@ require(["layer"],
 			//+ "id=" + $sls.uid
 			//+ "name=" + encodeURI($sls.name)
 			//+ "&gender=" + $sls.gender;
-			var imgUrl = "https://wx.meipo100.com/images/op_1.jpg";
+			var imgUrl = "https://wx.meipo100.com/images/op/op_1.jpg";
 			var title = "测试你的另一半";
 			var desc = "想知道你的另一半前世长什么样吗？快来测测吧~";
 			wx.ready(function () {
