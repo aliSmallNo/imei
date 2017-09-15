@@ -322,8 +322,8 @@
 		<form class="form-inline" action="/site/accounts?status={{$status}}">
 			<label><input type="checkbox" name="fonly" value="1" {{if $fonly}}checked{{/if}}> 显示已关注 </label>
 			<label><input type="checkbox" name="inactive" value="1" {{if $inactive}}checked{{/if}}> 显示7天不活跃 </label>
-			<input class="form-control" name="name" placeholder="名字" value="{{$name}}" style="width: 14rem">
-			<input class="form-control" name="phone" placeholder="手机号" value="{{$phone}}" style="width: 14rem">
+			<input class="form-control" name="name" placeholder="名字" value="{{$name}}" style="width: 15rem">
+			<input class="form-control" name="phone" placeholder="手机号" value="{{$phone}}" style="width: 15rem">
 			<select class="form-control" name="sub_status">
 				<option value="">-=请选择=-</option>
 				{{foreach from=$subStatus key=k item=item}}
