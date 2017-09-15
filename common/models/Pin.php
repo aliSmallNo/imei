@@ -152,7 +152,6 @@ class Pin extends ActiveRecord
 			}
 			$sql .= ' WHERE pPId=:id and pCategory=:cat ';
 			$conn->createCommand($sql)->bindValues($params)->execute();
-			AppUtil::logFile($params, 5, __FUNCTION__, __LINE__);
 			if (isset($info['location']) && $info['location'] && !$lat && !$lng) {
 				list($lng, $lat) = explode(',', $info['location']);
 				$sql = 'UPDATE im_pin SET pLat=:lat,pLng=:lng,pPoint=GeomFromText(:poi) WHERE pPId=:id AND pCategory=:cat ';
@@ -195,8 +194,8 @@ class Pin extends ActiveRecord
 				$url = sprintf($url, $address, self::$AmapKey);
 				$mapInfo = AppUtil::httpGet($url);
 				$mapInfo = json_decode($mapInfo, 1);
-				AppUtil::logFile($mapInfo, 5, __FUNCTION__, __LINE__);
-				if (isset($mapInfo['geocodes']) && $mapInfo['geocodes']) {
+				if (isset($mapI
+				nfo['geocodes']) && $mapInfo['geocodes']) {
 					$info = $mapInfo['geocodes'][0];
 					$updateMapInfo($uid, 0, 0, $info, $conn);
 					RedisUtil::setCache(json_encode($info), RedisUtil::KEY_PIN_GEO, $md5);
