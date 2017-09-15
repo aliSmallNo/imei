@@ -519,7 +519,7 @@ class FooController extends Controller
 	public function actionRegeo(){
 		$conn = AppUtil::db();
 		$sql = 'select pPId,pLat,pLng from im_pin 
-				WHERE pCategory=200 AND pCity!=\'\' AND pLat=\'\' order by pDate desc limit 1000 ';
+				WHERE pCategory=200 AND pLat=\'\' order by pDate desc limit 1000 ';
 		$ret = $conn->createCommand($sql)->queryAll();
 		$count = 0;
 		foreach ($ret as $row) {
