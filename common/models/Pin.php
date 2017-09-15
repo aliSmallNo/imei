@@ -152,7 +152,7 @@ class Pin extends ActiveRecord
 			}
 			$sql .= ' WHERE pPId=:id and pCategory=:cat ';
 			$conn->createCommand($sql)->bindValues($params)->execute();
-
+			AppUtil::logFile($params, 5, __FUNCTION__, __LINE__);
 			if (isset($info['location']) && $info['location'] && !$lat && !$lng) {
 				list($lng, $lat) = explode(',', $info['location']);
 				$sql = 'UPDATE im_pin SET pLat=:lat,pLng=:lng,pPoint=GeomFromText(:poi) WHERE pPId=:id AND pCategory=:cat ';
