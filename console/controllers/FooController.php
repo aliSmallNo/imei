@@ -602,6 +602,13 @@ class FooController extends Controller
 	public function actionZp()
 	{
 		// Stat::userRank('', true);
+		$a = $b = 1;
+		$b = 2;
+		if ($a > 0) {
+			echo 1;
+		} elseif ($b > 1) {
+			echo 2;
+		}
 
 	}
 }

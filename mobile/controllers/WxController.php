@@ -1490,10 +1490,10 @@ class WxController extends BaseController
 		$name = self::getParam("name");
 
 		if ($wxInfo) {
-			 $uId = $wxInfo['uId'];
+			$uId = $wxInfo['uId'];
 		} else {
-//			header('location:/wx/index');
-//			exit();
+			header('location:/wx/index');
+			exit();
 		}
 
 		$item = [
@@ -1533,6 +1533,29 @@ class WxController extends BaseController
 			'bg-color');
 	}
 
+	public function actionPin8()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$uId = '';
+		$uId = self::getParam("id");
+
+		if ($wxInfo) {
+			$uId = $wxInfo['uId'];
+		} else {
+			header('location:/wx/index');
+			exit();
+		}
+
+		return self::renderPage("pin8.tpl",
+			[
+				'uId' => $uId,
+			],
+			'terse',
+			'0元领取 iphone8Plus',
+			'bg-color');
+	}
+
 	public function actionRoom()
 	{
 		$openId = self::$WX_OpenId;
@@ -1556,6 +1579,8 @@ class WxController extends BaseController
 			'',
 			'bg-color');
 	}
+
+
 
 
 }

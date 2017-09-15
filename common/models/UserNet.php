@@ -758,7 +758,7 @@ class UserNet extends ActiveRecord
 	public static function netStat($condition = '')
 	{
 		$conn = AppUtil::db();
-		$sql = "select u.uName as `name`,u.uId as id,
+		$sql = "select u.uName as `name`,u.uPhone as phone,u.uId as id,
 			sum(case WHEN n.nRelation=:rel1 then 1 end) as scan,
 			sum(case WHEN n.nRelation=:rel2 then 1 end) as subscribe,
 			sum(case WHEN n.nRelation=:rel2 and w.wSubscribe=0 then 1 end) as unsubscribe,

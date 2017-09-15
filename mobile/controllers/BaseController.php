@@ -42,12 +42,13 @@ class BaseController extends Controller
 		}
 		self::$WX_OpenId = AppUtil::getCookie(self::COOKIE_OPENID);
 		$wxCode = self::getParam("code");
+
 		if (strlen($wxCode) >= 20) {
 			$wxUserInfo = UserWechat::getInfoByCode($wxCode);
 			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
 				self::$WX_OpenId = $wxUserInfo["openid"];
 				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
-				//AppUtil::logFile(self::$WX_OpenId, 5, __FUNCTION__, __LINE__);
+				// AppUtil::logFile(self::$WX_OpenId, 5, __FUNCTION__, __LINE__);
 				// Rain: 发现如果action不执行完毕，getCookie获取不到刚刚赋值的cookie值
 				self::checkProfile(self::$WX_OpenId, $actionId);
 			}
