@@ -519,8 +519,9 @@ class FooController extends Controller
 	public function actionRegeo()
 	{
 		$conn = AppUtil::db();
-
-		$sql = 'select pPId,pLat,pLng from im_pin 
+		$sql = 'select pPId,pLat,pLng 
+				from im_pin as p
+				JOIN im_user as u on u.uId=p.pPId
 				WHERE pCategory=200 AND pLat=\'\' order by pDate desc limit 1000 ';
 		$ret = $conn->createCommand($sql)->queryAll();
 		$count = 0;
