@@ -2056,8 +2056,7 @@ class User extends ActiveRecord
 		];
 	}
 
-	public
-	static function setting($uid, $flag, $setfield)
+	public static function setting($uid, $flag, $setfield)
 	{
 		// $fields = ["favor" => 1, "fans" => 1, "chat" => 1];
 		$uInfo = self::findOne(["uId" => $uid]);
@@ -2076,8 +2075,7 @@ class User extends ActiveRecord
 		return true;
 	}
 
-	public
-	static function muteAlert($uid, $field, $conn = '')
+	public static function muteAlert($uid, $field, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -2094,8 +2092,7 @@ class User extends ActiveRecord
 		/*{"fans":1,"chat":1,"favor":1}*/
 	}
 
-	public
-	static function greetUsers($uid, $conn = '')
+	public static function greetUsers($uid, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -2127,7 +2124,7 @@ class User extends ActiveRecord
 			 JOIN im_user_wechat as w on w.wUId=u.uId AND w.wSubscribe=1
 			 join im_pin as p on p.pPId=u.uId and p.pCategory=:cat 
 			 WHERE uStatus=1 and uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
-			 order by rank desc, uLogDate desc limit 10';
+			 order by rank desc, uLogDate desc limit 20';
 
 		$active = $conn->createCommand($sql)->bindValues([
 			':prov' => $prov . '%',
@@ -2143,7 +2140,7 @@ class User extends ActiveRecord
 			 JOIN im_user_wechat as w on w.wUId=u.uId AND w.wSubscribe=1
 			 join im_pin as p on p.pPId=u.uId and p.pCategory=:cat 
 			 WHERE uStatus=1 and uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
-			 order by rank desc, uLogDate limit 10';
+			 order by rank desc, uLogDate limit 20';
 		$inactive = $conn->createCommand($sql)->bindValues([
 			':prov' => $prov . '%',
 			':city' => $city . '%',
@@ -2173,9 +2170,8 @@ class User extends ActiveRecord
 		return array_values($items);
 	}
 
-// 后台聊天稻草人
-	public
-	static function dummyForChat()
+	// 后台聊天稻草人
+	public static function dummyForChat()
 	{
 		$sql = "select uName,uThumb,uId,uGender from im_user where uSubStatus=:sst and uStatus=:st ORDER by uId desc";
 		$ret = AppUtil::db()->createCommand($sql)->bindValues([

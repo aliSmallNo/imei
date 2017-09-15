@@ -110,7 +110,7 @@ class ChatMsg extends ActiveRecord
 			}
 
 			$greetMap = self::$greetDict;
-			$content = $greetMap[array_rand($greetMap, 1)];
+			$content = $greetMap[rand(0, count($greetMap) - 1)];
 
 			$entity = new self();
 			$entity->cGId = $gid;
