@@ -111,7 +111,7 @@ class QueueUtil
 	public static function rain($params)
 	{
 		$id = $params["id"];
-		$ret = shell_exec("/data/code/pub_imei.sh 2>&1");
+		$ret = shell_exec("/data/code/foo_rain.sh 2>&1");
 		$ret = self::QUEUE_TUBE . " 执行 ./yii foo/rain 成功! " . PHP_EOL
 			. date("Y-m-d H:i:s") . PHP_EOL . "结果如下:" . PHP_EOL . $ret;
 		RedisUtil::setCache($ret, RedisUtil::KEY_PUB_CODE, $id);
@@ -121,7 +121,7 @@ class QueueUtil
 	public static function zp($params)
 	{
 		$id = $params["id"];
-		$ret = shell_exec("/data/code/pub_imei.sh 2>&1");
+		$ret = shell_exec("/data/code/foo_zp.sh 2>&1");
 		$ret = self::QUEUE_TUBE . " 执行 ./yii foo/zp 成功! " . PHP_EOL
 			. date("Y-m-d H:i:s") . PHP_EOL . "结果如下:" . PHP_EOL . $ret;
 		RedisUtil::setCache($ret, RedisUtil::KEY_PUB_CODE, $id);
