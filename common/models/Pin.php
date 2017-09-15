@@ -194,8 +194,7 @@ class Pin extends ActiveRecord
 				$url = sprintf($url, $address, self::$AmapKey);
 				$mapInfo = AppUtil::httpGet($url);
 				$mapInfo = json_decode($mapInfo, 1);
-				if (isset($mapI
-				nfo['geocodes']) && $mapInfo['geocodes']) {
+				if (isset($mapInfo['geocodes']) && $mapInfo['geocodes']) {
 					$info = $mapInfo['geocodes'][0];
 					$updateMapInfo($uid, 0, 0, $info, $conn);
 					RedisUtil::setCache(json_encode($info), RedisUtil::KEY_PIN_GEO, $md5);
