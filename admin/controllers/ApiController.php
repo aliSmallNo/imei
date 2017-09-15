@@ -188,7 +188,7 @@ class ApiController extends Controller
 					$openId = $uInfo['uOpenId'];
 					LogAction::add($uInfo['uId'], $openId,
 						$tag == 'waveup' ? LogAction::ACTION_ONLINE : LogAction::ACTION_OFFLINE);
-					User::edit($uInfo['uId'], ['uLogDate' => date('Y-m-d H:i:s')], Admin::getAdminId());
+					User::logDate($uInfo['uId']);
 					return self::renderAPI(0, '刷新成功~', ['dt' => AppUtil::prettyDate()]);
 				} else {
 					return self::renderAPI(129, '用户不存在~');

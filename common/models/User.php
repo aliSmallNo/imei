@@ -291,6 +291,18 @@ class User extends ActiveRecord
 		return $uid;
 	}
 
+
+	public static function logDate($uid, $conn = '')
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$sql = 'update im_user set uLogDate=now() WHERE uId=:id';
+		$conn->createCommand($sql)->bindValues([
+			':id' => $uid
+		])->execute();
+	}
+
 	public static function remove($id)
 	{
 		$entity = self::findOne(['uId' => $id]);
