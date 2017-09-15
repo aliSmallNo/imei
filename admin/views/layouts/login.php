@@ -19,6 +19,7 @@
 		<link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png">
 		<link href="/assets/css/materialize.min.css" rel="stylesheet">
 		<link href="/css/login.min.css?v=1.1.2" rel="stylesheet">
+		<script src="/assets/js/jquery221.min.js"></script>
 	</head>
 	<body class="signin">
 	<?php $this->beginBody() ?>
@@ -26,8 +27,6 @@
 		<?= $content ?>
 	</div>
 	<?php $this->endBody() ?>
-	<script src="/assets/js/jquery221.min.js"></script>
-	<script src="/assets/js/materialize.min.js"></script>
 	</body>
 	</html>
 <?php $this->endPage() ?>
