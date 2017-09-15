@@ -195,6 +195,7 @@ class Pin extends ActiveRecord
 				$url = sprintf($url, $address, self::$AmapKey);
 				$mapInfo = AppUtil::httpGet($url);
 				$mapInfo = json_decode($mapInfo, 1);
+				AppUtil::logFile($mapInfo, 5, __FUNCTION__, __LINE__);
 				if (isset($mapInfo['geocodes']) && $mapInfo['geocodes']) {
 					$info = $mapInfo['geocodes'][0];
 					$updateMapInfo($uid, 0, 0, $info, $conn);
