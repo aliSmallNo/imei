@@ -779,7 +779,7 @@ class WechatUtil
 		$templateId = 'x7IJx0xG8yn67akF4T-gy9XULI6MPASOGJyvltkbNbQ';
 		switch ($tag) {
 			case "pass":
-				$url = "https://wx.meipo100.com/wx/single";
+				$url = "https://wx.meipo100.com/wx/single#slook";
 				$keywords['first'] = "你好，您的注册资质已经审核通过，欢迎使用微媒100。\n";
 				$keywords['keyword1'] = '微媒100用户 ' . $userInfo["uName"] . ' 注册信息';
 				$keywords['keyword2'] = "审核通过";
@@ -788,7 +788,7 @@ class WechatUtil
 				$cat = UserMsg::CATEGORY_ADMIN_PASS;
 				break;
 			case "refuse":
-				$url = "https://wx.meipo100.com/wx/single";
+				$url = "https://wx.meipo100.com/wx/single#slook";
 				$keywords['first'] = "你好，很遗憾！您注册的微媒100资质已被取消！您将无法使用微媒100!\n";
 				$keywords['keyword1'] = '微媒100用户 ' . $userInfo["uName"] . ' 注册信息';
 				$keywords['keyword2'] = "审核不通过";
@@ -797,7 +797,7 @@ class WechatUtil
 				$cat = UserMsg::CATEGORY_ADMIN_REFUSE;
 				break;
 			case "certpass":
-				$url = "https://wx.meipo100.com/wx/single";
+				$url = "https://wx.meipo100.com/wx/single#slook";
 				$keywords['first'] = "你好，您的实名认证已经审核通过，欢迎使用微媒100。\n";
 				$keywords['keyword1'] = '微媒100用户 ' . $userInfo["uName"] . ' 实名信息';
 				$keywords['keyword2'] = "审核通过";
@@ -806,7 +806,7 @@ class WechatUtil
 				$cat = UserMsg::CATEGORY_ADMIN_PASS;
 				break;
 			case "certfail":
-				$url = "https://wx.meipo100.com/wx/single";
+				$url = "https://wx.meipo100.com/wx/single#slook";
 				$keywords['first'] = "你好，您的实名认证审核不通过，请重新上传符合要求的实名图片，欢迎使用微媒100。\n";
 				$keywords['keyword1'] = '微媒100用户 ' . $userInfo["uName"] . ' 实名信息';
 				$keywords['keyword2'] = "审核不通过";

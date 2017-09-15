@@ -17,9 +17,7 @@
 					<label class="active" for="pass">密码</label>
 				</div>
 			</div>
-			<button type="submit" class="btn waves-effect waves-teal">
-				登 录
-			</button>
+			<button type="submit" class="btn btn-3d">登 录</button>
 			{{if isset($tip) && $tip}}
 			<p class="help-block" style="font-size: 14px;color: #f33">{{$tip}}</p>
 			{{/if}}

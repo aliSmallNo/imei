@@ -143,21 +143,36 @@ class SiteController extends BaseController
 
 	public function actionPubCodes()
 	{
+		self::queue('publish');
+	}
+
+	public function actionFooRain()
+	{
+		self::queue('rain');
+	}
+
+	public function actionFooZp()
+	{
+		self::queue('zp');
+	}
+
+	protected function queue($method = 'publish')
+	{
 		Admin::checkAccessLevel(Admin::LEVEL_HIGH);
 		$id = RedisUtil::getIntSeq();
-		QueueUtil::loadJob('publish', ['id' => $id]);
+		QueueUtil::loadJob($method, ['id' => $id]);
 		sleep(2); // 等待3秒钟
 		$ret = RedisUtil::getCache(RedisUtil::KEY_PUB_CODE, $id);
-		if (!$ret) {
+		if ($ret) {
+			echo "<pre>" . $ret . "</pre>";
+		} else {
 			sleep(2); // 等待3秒钟
 			$ret = RedisUtil::getCache(RedisUtil::KEY_PUB_CODE, $id);
 			if ($ret) {
 				echo "<pre>" . $ret . "</pre>";
 			} else {
-				echo "更新失败吧！" . date("Y-m-d H:i:s");
+				echo "运行失败了~" . date("Y-m-d H:i:s");
 			}
-		} else {
-			echo "<pre>" . $ret . "</pre>";
 		}
 	}
 
@@ -747,11 +762,9 @@ class SiteController extends BaseController
 		$sdate = self::getParam("sdate");
 		$edate = self::getParam("edate");
 		$condition = "";
-		$st = User::STATUS_ACTIVE;
 		if ($sdate && $edate) {
-			$condition = " where  n.nAddedOn between '$sdate 00:00:00'  and '$edate 23:59:50' ";
+			$condition = " WHERE  n.nAddedOn between '$sdate 00:00:00'  and '$edate 23:59:50' ";
 		}
-
 		$scanStat = UserNet::netStat($condition);
 
 		list($wd, $monday, $sunday) = AppUtil::getWeekInfo();
@@ -762,15 +775,13 @@ class SiteController extends BaseController
 				'getInfo' => $getInfo,
 				'category' => 'data',
 				'scanStat' => $scanStat,
-
 				'today' => date('Y-m-d'),
 				'yesterday' => date('Y-m-d', time() - 86400),
 				'monday' => $monday,
 				'sunday' => $sunday,
 				'firstDay' => $firstDay,
 				'endDay' => $endDay,
-			]
-		);
+			]);
 	}
 
 
