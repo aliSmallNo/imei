@@ -120,7 +120,7 @@ require(["layer"],
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
-			var linkUrl = "https://wx.meipo100.com/wx/otherpart?"
+			var linkUrl = "https://wx.meipo100.com/wx/pin8?"
 				+ "id=" + $sls.uid;
 			var imgUrl = "https://wx.meipo100.com/images/pin8/pin8-8p.jpg";
 			var title = "免费抽iPhone8Plus？";
