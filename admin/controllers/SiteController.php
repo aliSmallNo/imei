@@ -747,11 +747,9 @@ class SiteController extends BaseController
 		$sdate = self::getParam("sdate");
 		$edate = self::getParam("edate");
 		$condition = "";
-		$st = User::STATUS_ACTIVE;
 		if ($sdate && $edate) {
-			$condition = " where  n.nAddedOn between '$sdate 00:00:00'  and '$edate 23:59:50' ";
+			$condition = " WHERE  n.nAddedOn between '$sdate 00:00:00'  and '$edate 23:59:50' ";
 		}
-
 		$scanStat = UserNet::netStat($condition);
 
 		list($wd, $monday, $sunday) = AppUtil::getWeekInfo();
@@ -762,15 +760,13 @@ class SiteController extends BaseController
 				'getInfo' => $getInfo,
 				'category' => 'data',
 				'scanStat' => $scanStat,
-
 				'today' => date('Y-m-d'),
 				'yesterday' => date('Y-m-d', time() - 86400),
 				'monday' => $monday,
 				'sunday' => $sunday,
 				'firstDay' => $firstDay,
 				'endDay' => $endDay,
-			]
-		);
+			]);
 	}
 
 
