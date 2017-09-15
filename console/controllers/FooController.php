@@ -516,14 +516,15 @@ class FooController extends Controller
 		echo PHP_EOL;
 	}
 
-	public function actionRegeo(){
+	public function actionRegeo()
+	{
 		$conn = AppUtil::db();
 		$sql = 'select pPId,pLat,pLng from im_pin 
 				WHERE pCategory=200 AND pLat=\'\' order by pDate desc limit 1000 ';
 		$ret = $conn->createCommand($sql)->queryAll();
 		$count = 0;
 		foreach ($ret as $row) {
-			$count += Pin::regeo($row['pPId'], $row['pLat'], $row['pLng'], $conn) ? 1 : 0;
+			$count += Pin::regeo($row['pPId'], '', '', $conn) ? 1 : 0;
 			if ($count % 50 == 0) {
 				var_dump($count . date(' Y-m-d H:i:s'));
 			}
