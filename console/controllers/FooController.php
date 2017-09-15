@@ -504,7 +504,7 @@ class FooController extends Controller
 	public function actionQr($uid = 133519, $ucode = 'fs')
 	{
 		if (!$ucode || !$uid) {
-			echo '参数不全 : ./yii foo/qr 133519 "fs" ';
+			echo '参数不全: ./yii foo/qr 133519 "fs" ';
 			return;
 		}
 		for ($k = 110; $k < 116; $k++) {
@@ -520,9 +520,6 @@ class FooController extends Controller
 		/*PushUtil::hint('测试测试', '059af5c749741c', '', 'http://10.141.42.9:3000');
 
 		PushUtil::hint('测试测试', '059af5c749741c');*/
-
-
-//		PushUtil::hint('你的个人资料不完整啊~', '059af5c749741c');
 
 		/*$ret = UserQR::mpShareQR(131379);
 		var_dump($ret);*/
