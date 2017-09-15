@@ -2112,8 +2112,10 @@ class User extends ActiveRecord
 
 		if ($gender == self::GENDER_MALE) {
 			$gender = self::GENDER_FEMALE;
+			list($y0, $y1) = [$birthYear - 3, $birthYear + 8];
 		} elseif ($gender == self::GENDER_FEMALE) {
 			$gender = self::GENDER_MALE;
+			list($y0, $y1) = [$birthYear - 8, $birthYear + 3];
 		} else {
 			return $ret;
 		}
@@ -2130,8 +2132,8 @@ class User extends ActiveRecord
 			':prov' => $prov . '%',
 			':city' => $city . '%',
 			':cat' => Pin::CAT_NOW,
-			':y0' => $birthYear - 12,
-			':y1' => $birthYear + 3,
+			':y0' => $y0,
+			':y1' => $y1,
 			':gender' => $gender
 		])->queryAll();
 		$sql = 'select uId as id,uName as name,uThumb as thumb,uLogDate,uBirthYear,uHeight,uHoros,
@@ -2145,8 +2147,8 @@ class User extends ActiveRecord
 			':prov' => $prov . '%',
 			':city' => $city . '%',
 			':cat' => Pin::CAT_NOW,
-			':y0' => $birthYear - 12,
-			':y1' => $birthYear + 3,
+			':y0' => $y0,
+			':y1' => $y1,
 			':gender' => $gender
 		])->queryAll();
 		$items = [];
