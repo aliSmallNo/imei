@@ -143,21 +143,36 @@ class SiteController extends BaseController
 
 	public function actionPubCodes()
 	{
+		self::queue('publish');
+	}
+
+	public function actionFooRain()
+	{
+		self::queue('rain');
+	}
+
+	public function actionFooZp()
+	{
+		self::queue('zp');
+	}
+
+	protected function queue($method = 'publish')
+	{
 		Admin::checkAccessLevel(Admin::LEVEL_HIGH);
 		$id = RedisUtil::getIntSeq();
-		QueueUtil::loadJob('publish', ['id' => $id]);
+		QueueUtil::loadJob($method, ['id' => $id]);
 		sleep(2); // 等待3秒钟
 		$ret = RedisUtil::getCache(RedisUtil::KEY_PUB_CODE, $id);
-		if (!$ret) {
+		if ($ret) {
+			echo "<pre>" . $ret . "</pre>";
+		} else {
 			sleep(2); // 等待3秒钟
 			$ret = RedisUtil::getCache(RedisUtil::KEY_PUB_CODE, $id);
 			if ($ret) {
 				echo "<pre>" . $ret . "</pre>";
 			} else {
-				echo "更新失败吧！" . date("Y-m-d H:i:s");
+				echo "运行失败了~" . date("Y-m-d H:i:s");
 			}
-		} else {
-			echo "<pre>" . $ret . "</pre>";
 		}
 	}
 
