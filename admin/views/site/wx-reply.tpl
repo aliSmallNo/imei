@@ -25,7 +25,7 @@
 			<small>
 				{{if isset($regInfo) && $regInfo}}
 				<ul class="reg">
-					<li>注册信息: {{$regInfo.name}} {{$regInfo.phone}}</li>
+					<li>注册信息: <a href="/site/accounts?name={{$regInfo.name}}&phone={{$regInfo.phone}}">{{$regInfo.name}} {{$regInfo.phone}}</a></li>
 					<li>注册地址: {{foreach from=$regInfo.location item=item}}{{$item.text}} {{/foreach}} </li>
 					<li>当前状态: {{$regInfo.status_t}} </li>
 				</ul>
@@ -96,8 +96,8 @@
 			});
 		}
 		var k = 0;
-	  var src = $(this).attr('src');
-	  $.each(mPhotos.data, function () {
+		var src = $(this).attr('src');
+		$.each(mPhotos.data, function () {
 			if (src == this.src) {
 				return false;
 			}
