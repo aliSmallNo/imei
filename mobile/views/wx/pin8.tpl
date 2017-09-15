@@ -150,7 +150,7 @@
 	}
 
 	.pin8-sh {
-
+		margin: 0 1rem;
 	}
 
 	.pin8-sh a {
