@@ -2120,37 +2120,32 @@ class User extends ActiveRecord
 			return $ret;
 		}
 
+		$params = [
+			':prov' => $prov . '%',
+			':city' => $city . '%',
+			':cat' => Pin::CAT_NOW,
+			':y0' => $y0,
+			':y1' => $y1,
+			':gender' => $gender
+		];
+
 		$sql = 'select uId as id,uName as name,uThumb as thumb,uLogDate,uBirthYear,uHeight,uHoros,
 			 (case WHEN p.pProvince like :prov and p.pCity like :city then 10 WHEN p.pProvince like :prov then 8 else 0 end) as rank 
 			 from im_user as u
 			 JOIN im_user_wechat as w on w.wUId=u.uId AND w.wSubscribe=1
-			 join im_pin as p on p.pPId=u.uId and p.pCategory=:cat 
+			 JOIN im_pin as p on p.pPId=u.uId and p.pCategory=:cat 
 			 WHERE uStatus=1 and uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
 			 order by rank desc, uLogDate desc limit 20';
+		$active = $conn->createCommand($sql)->bindValues($params)->queryAll();
 
-		$active = $conn->createCommand($sql)->bindValues([
-			':prov' => $prov . '%',
-			':city' => $city . '%',
-			':cat' => Pin::CAT_NOW,
-			':y0' => $y0,
-			':y1' => $y1,
-			':gender' => $gender
-		])->queryAll();
 		$sql = 'select uId as id,uName as name,uThumb as thumb,uLogDate,uBirthYear,uHeight,uHoros,
 			 (case WHEN p.pProvince like :prov and p.pCity like :city then 10 WHEN p.pProvince like :prov then 8 else 0 end) as rank 
 			 from im_user as u
 			 JOIN im_user_wechat as w on w.wUId=u.uId AND w.wSubscribe=1
-			 join im_pin as p on p.pPId=u.uId and p.pCategory=:cat 
+			 JOIN im_pin as p on p.pPId=u.uId and p.pCategory=:cat 
 			 WHERE uStatus=1 and uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
 			 order by rank desc, uLogDate limit 20';
-		$inactive = $conn->createCommand($sql)->bindValues([
-			':prov' => $prov . '%',
-			':city' => $city . '%',
-			':cat' => Pin::CAT_NOW,
-			':y0' => $y0,
-			':y1' => $y1,
-			':gender' => $gender
-		])->queryAll();
+		$inactive = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
 		$flag = true;
 		for ($k = 0; $k < 20; $k++) {
