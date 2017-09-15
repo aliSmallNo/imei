@@ -70,6 +70,11 @@ class UserWechat extends ActiveRecord
 		return $entity->wId;
 	}
 
+	/**
+	 * @param $wxInfo
+	 * $wxInfo 入库
+	 * @return mixed
+	 */
 	public static function upgrade($wxInfo)
 	{
 		$uId = User::addWX($wxInfo);

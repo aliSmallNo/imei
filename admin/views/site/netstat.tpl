@@ -65,7 +65,7 @@
 			{{foreach from=$scanStat item=stat}}
 			<tr>
 				<td>
-					{{$stat.name}}
+					{{$stat.name}} {{$stat.phone}}
 				</td>
 				<td>
 					{{$stat.focus}}
