@@ -11,6 +11,7 @@ namespace console\controllers;
 use common\models\ChatMsg;
 use common\models\User;
 use common\models\UserNet;
+use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
@@ -500,21 +501,25 @@ class FooController extends Controller
 		PushUtil::hint($msg, '059af5c749741c');
 	}
 
-	public function actionRain()
+	public function actionQr($uid = 133519, $ucode = 'fs')
 	{
-		/*PushUtil::hint('测试测试', '059af5c749741c', '', 'http://10.141.42.9:3000');
-
-		PushUtil::hint('测试测试', '059af5c749741c');*/
-		/*$uid = 131276;
-		$ucode = 'xy';
+		if (!$ucode || !$uid) {
+			echo '参数不全: ./yii foo/qr 133519 "fs" ';
+			return;
+		}
 		for ($k = 110; $k < 116; $k++) {
 			$url = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . substr($k, 1));
 			echo $url;
 			echo PHP_EOL;
 		}
-		echo PHP_EOL;*/
+		echo PHP_EOL;
+	}
 
-//		PushUtil::hint('你的个人资料不完整啊~', '059af5c749741c');
+	public function actionRain()
+	{
+		/*PushUtil::hint('测试测试', '059af5c749741c', '', 'http://10.141.42.9:3000');
+
+		PushUtil::hint('测试测试', '059af5c749741c');*/
 
 		/*$ret = UserQR::mpShareQR(131379);
 		var_dump($ret);*/
