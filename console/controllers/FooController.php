@@ -9,6 +9,7 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
+use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
@@ -513,6 +514,21 @@ class FooController extends Controller
 			echo PHP_EOL;
 		}
 		echo PHP_EOL;
+	}
+
+	public function actionRegeo(){
+		$conn = AppUtil::db();
+		$sql = 'select pPId,pLat,pLng from im_pin 
+				WHERE pCategory=200 AND pCity!=\'\' AND pLat=\'\' order by pDate desc limit 1000 ';
+		$ret = $conn->createCommand($sql)->queryAll();
+		$count = 0;
+		foreach ($ret as $row) {
+			$count += Pin::regeo($row['pPId'], $row['pLat'], $row['pLng'], $conn) ? 1 : 0;
+			if ($count % 50 == 0) {
+				var_dump($count . date(' Y-m-d H:i:s'));
+			}
+		}
+		var_dump($count . '/' . count($ret));
 	}
 
 	public function actionRain()
