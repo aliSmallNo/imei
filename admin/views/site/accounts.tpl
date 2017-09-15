@@ -302,6 +302,15 @@
 	.input-group {
 		margin-top: 5px;
 	}
+
+	label {
+		font-weight: 400;
+	}
+
+	.close {
+		font-weight: 400;
+		font-size: 12px;
+	}
 </style>
 <div id="page-wrapper">
 	<div class="row">
@@ -311,18 +320,24 @@
 	</div>
 	<div class="row">
 		<form class="form-inline" action="/site/accounts?status={{$status}}">
-			<label><input type="checkbox" name="fonly" value="1" {{if $fonly}}checked{{/if}}> 只显示已关注 </label>
-			<label><input type="checkbox" name="inactive" value="1" {{if $inactive}}checked{{/if}}> 只显示七天没活跃 </label>
-			<input class="form-control" name="name" placeholder="名字" value="{{$name}}">
-			<input class="form-control" name="phone" placeholder="手机号" value="{{$phone}}">
+			<label><input type="checkbox" name="fonly" value="1" {{if $fonly}}checked{{/if}}> 显示已关注 </label>
+			<label><input type="checkbox" name="inactive" value="1" {{if $inactive}}checked{{/if}}> 显示7天不活跃 </label>
+			<input class="form-control" name="name" placeholder="名字" value="{{$name}}" style="width: 14rem">
+			<input class="form-control" name="phone" placeholder="手机号" value="{{$phone}}" style="width: 14rem">
 			<select class="form-control" name="sub_status">
 				<option value="">-=请选择=-</option>
 				{{foreach from=$subStatus key=k item=item}}
 				<option value="{{$k}}" {{if $k==$sub_status}}selected{{/if}}>{{$item}}</option>
 				{{/foreach}}
 			</select>
+			<select class="form-control" name="user_type">
+				<option value="">-=所有用户=-</option>
+				{{foreach from=$userTypes key=k item=item}}
+				<option value="{{$k}}" {{if $k==$userType}}selected{{/if}}>{{$item}}</option>
+				{{/foreach}}
+			</select>
 			<button class="btn btn-primary">查询</button>
-			<a href="/site/pins" class="btn btn-primary" target="_blank">用户地图分布</a>
+			<a href="/site/pins" class="btn btn-primary" target="_blank">地图分布</a>
 			<div class="stat-item">
 				<span><b>到访</b>{{$stat.amt}}</span>
 				<span><b>已关注</b>{{$stat.follow}}</span>
@@ -332,7 +347,16 @@
 			</div>
 		</form>
 	</div>
-
+	{{if $criteriaNote}}
+	<div class="row">
+		<div class="col-lg-7">
+			<div class=" alert alert-success alert-dismissable">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">清除</button>
+				搜索{{$criteriaNote}}，结果如下
+			</div>
+		</div>
+	</div>
+	{{/if}}
 	<div class="row">
 		<ul class="nav nav-tabs">
 			{{foreach from=$partHeader key=key item=prod}}
@@ -602,7 +626,13 @@
 	  var dummys ={{$dummys}}
 	</script>
 	<script>
-	  console.log(dummys);
+	  $(document).on("click", "button.close", function () {
+		  var fm = $("form");
+		  fm.find(".form-control").val('');
+		  $("[type=checkbox]").removeAttr("checked");
+		  fm.submit();
+	  });
+
 	  var dummyId1, dummyId2;
 	  $(document).on("click", ".dummyChat", function () {
 		  var self = $(this);

@@ -277,28 +277,66 @@ class SiteController extends BaseController
 		$inactive = self::getParam('inactive', 0);
 		$status = self::getParam('status', 0);
 		$subStatus = self::getParam('sub_status', 0);
+		$userType = self::getParam('user_type');
 
-		$partCriteria = [];
+		$partCriteria = $criteria = $criteriaNote = [];
 		$criteria[] = " uStatus=:status ";
 		$params[':status'] = $status;
 
-		if ($subStatus) {
-			$criteria[] = " uSubStatus=" . $subStatus;
-			$partCriteria[] = " uSubStatus=" . $subStatus;
+		if ($fonly) {
+			$criteria[] = " wSubscribe=1";
+			$partCriteria[] = " wSubscribe=1";
+			$criteriaNote[] = '显示已关注';
 		}
-		if ($phone) {
-			$criteria[] = " uPhone like :phone ";
-			$partCriteria[] = " uPhone like :phone ";
-			$params[':phone'] = "$phone%";
+		if ($inactive) {
+			$criteriaNote[] = '显示7天不活跃';
 		}
 		if ($name) {
 			$criteria[] = "  uName like :name ";
 			$partCriteria[] = "  uName like :name ";
 			$params[':name'] = "%$name%";
+			$criteriaNote[] = $name;
 		}
-		if ($fonly) {
-			$criteria[] = " wSubscribe=1";
-			$partCriteria[] = " wSubscribe=1";
+		if ($phone) {
+			$criteria[] = " uPhone like :phone ";
+			$partCriteria[] = " uPhone like :phone ";
+			$params[':phone'] = "$phone%";
+			$criteriaNote[] = $phone;
+		}
+		if ($subStatus) {
+			$criteria[] = " uSubStatus=" . $subStatus;
+			$partCriteria[] = " uSubStatus=" . $subStatus;
+			$criteriaNote[] = User::$Substatus[$subStatus];
+		}
+		$userTypes = [
+			'g11' => '男士',
+			'g10' => '女士',
+			'r10' => '单身',
+			'r20' => '媒婆',
+		];
+		switch ($userType) {
+			case 'r10':
+				$criteria[] = " uRole=10";
+				$partCriteria[] = " uRole=10";
+				$criteriaNote[] = $userTypes[$userType];
+				break;
+			case 'r20':
+				$criteria[] = " uRole=20";
+				$partCriteria[] = " uRole=20";
+				$criteriaNote[] = $userTypes[$userType];
+				break;
+			case 'g11':
+				$criteria[] = " uGender=11";
+				$partCriteria[] = " uGender=11";
+				$criteriaNote[] = $userTypes[$userType];
+				break;
+			case 'g10':
+				$criteria[] = " uGender=10";
+				$partCriteria[] = " uGender=10";
+				$criteriaNote[] = $userTypes[$userType];
+				break;
+			default:
+				break;
 		}
 
 		list($list, $count) = User::users($criteria, $params, $page, 20, false, $inactive);
@@ -345,6 +383,9 @@ class SiteController extends BaseController
 		$stat = User::stat();
 		$partCount = User::partCount($partCriteria, $params, $inactive);
 		$pagination = self::pagination($page, $count);
+		if ($criteriaNote) {
+			$criteriaNote = ' ＜' . implode('＞ ＜', $criteriaNote) . '＞';
+		}
 
 		return $this->renderPage('accounts.tpl',
 			[
@@ -358,6 +399,9 @@ class SiteController extends BaseController
 				'inactive' => $inactive,
 				'pagination' => $pagination,
 				'category' => 'data',
+				'criteriaNote' => $criteriaNote,
+				'userType' => $userType,
+				'userTypes' => $userTypes,
 				"partCount" => $partCount,
 				"partHeader" => User::$Status,
 				"subStatus" => User::$Substatus,
