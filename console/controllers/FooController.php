@@ -536,70 +536,7 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		/*PushUtil::hint('测试测试', '059af5c749741c', '', 'http://10.141.42.9:3000');
 
-		PushUtil::hint('测试测试', '059af5c749741c');*/
-
-		/*$ret = UserQR::mpShareQR(131379);
-		var_dump($ret);*/
-		/*$srcPath = 'https://img.meipo100.com/2017/92/119168_n.jpg';
-		$ret = pathinfo($srcPath, PATHINFO_BASENAME);
-		var_dump($ret);*/
-//		AppUtil::logFile('test', 5, __FUNCTION__, __LINE__);
-		/*	$openId = 'oYDJew03rmzi-7daKZkYenJP46Hg';
-			$ret = UserWechat::refreshWXInfo($openId, 1);
-			var_dump($ret);
-			$openId = 'oYDJew5wGt0OmO8fODf1oOTUVDVU';
-			$ret = UserWechat::refreshWXInfo($openId, 1);
-			var_dump($ret);*/
-		/*$conn = AppUtil::db();
-		$sql = 'select uId from im_user WHERE uUniqid=\'\' ';
-		$ret = $conn->createCommand($sql)->queryAll();
-
-		$sql = 'update im_user set uUniqid=:qid WHERE uId=:id';
-		$cmd = $conn->createCommand($sql);
-		$count = 0;
-		foreach ($ret as $row) {
-			$cmd->bindValues([
-				':id' => $row['uId'],
-				':qid' => uniqid($count % 7)
-			])->execute();
-			$count++;
-		}*/
-
-		/*$imagePath = 'https://img.meipo100.com/2017/84/113272_n.jpg';
-		$imagePath = ImageUtil::getFilePath($imagePath);
-		echo $imagePath . '  ' . __LINE__;
-		//AppUtil::imgDir(true) . 'default-meipo.jpg';
-		$saveAs = AppUtil::imgDir() . RedisUtil::getImageSeq() . '.png';
-
-		self::getCircleAvatar($imagePath, $saveAs, 440);
-		var_dump($saveAs);*/
-		/*$conn = AppUtil::db();
-		$sql = 'select pPId,pLat,pLng from im_pin 
-				WHERE pCategory=200 AND pCity!=\'\' AND pLat=\'\' order by pDate desc limit 1000 ';
-		$ret = $conn->createCommand($sql)->queryAll();
-		$count = 0;
-		foreach ($ret as $row) {
-			$count += Pin::regeo($row['pPId'], $row['pLat'], $row['pLng'], $conn) ? 1 : 0;
-			if ($count % 50 == 0) {
-				var_dump($count . date(' Y-m-d H:i:s'));
-			}
-		}
-		var_dump($count . '/' . count($ret));*/
-		/*$ret = User::greetUsers(131379);
-		var_dump($ret);*/
-		//Pin::regeo(131379);
-		//Pin::regeo(134986);
-
-		/*$uId = 131379;
-		$dt = date('Y-m-d', time() + 86400 * 10);
-		$bgSrc = UserQR::createInvitation($uId,
-			'大测试',
-			'fanbb',
-			substr($dt, 0, 4),
-			date("Y年n月j日 晚6:58\n东台国际大酒店牡丹厅", strtotime($dt)));
-		var_dump($bgSrc);*/
 	}
 
 	public function actionZp()
