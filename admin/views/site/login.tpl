@@ -17,12 +17,15 @@
 					<label class="active" for="pass">密码</label>
 				</div>
 			</div>
-			<button type="submit" class="btn waves-effect waves-teal">
-				登 录
-			</button>
+			<a href="javascript:;" class="a-btn btn-3d">登 录</a>
 			{{if isset($tip) && $tip}}
 			<p class="help-block" style="font-size: 14px;color: #f33">{{$tip}}</p>
 			{{/if}}
 		</form>
 	</div>
 </div>
+<script>
+	$('.a-btn').on('click', function () {
+		$('form').submit();
+	});
+</script>

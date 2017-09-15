@@ -18,7 +18,7 @@
 		<link rel="icon" href="/favicon-62.png" sizes="62x62" type="image/png">
 		<link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png">
 		<link href="/assets/css/materialize.min.css" rel="stylesheet">
-		<link href="/css/login.min.css?v=1.1.1" rel="stylesheet">
+		<link href="/css/login.min.css?v=1.1.2" rel="stylesheet">
 	</head>
 	<body class="signin">
 	<?php $this->beginBody() ?>
