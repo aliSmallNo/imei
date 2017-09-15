@@ -519,7 +519,8 @@ class FooController extends Controller
 	public function actionRegeo()
 	{
 		$conn = AppUtil::db();
-		Pin::regeo(133909, '', '', $conn) ? 1 : 0;
+		AppUtil::logFile(133909, 5, __FUNCTION__, __LINE__);
+		Pin::regeo(133909, '', '', $conn);
 		return;
 
 		$sql = 'select pPId,pLat,pLng from im_pin 
