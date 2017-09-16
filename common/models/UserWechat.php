@@ -15,6 +15,10 @@ use yii\db\ActiveRecord;
 
 require_once __DIR__ . '/../lib/WxPay/WxPay.Api.php';
 
+/**
+ * Class UserWechat
+ * @package common\models
+ */
 class UserWechat extends ActiveRecord
 {
 
