@@ -1653,6 +1653,7 @@ class ApiController extends Controller
 					"oKey" => Log::SPREAD_IP8,
 					"oUId" => $uid,
 					"oOpenId" => $openId,
+					"oBefore" => array_rand([1, 2, 3, 4, 5, 6, 7, 8, 9], 1),
 					"oAfter" => json_encode([
 						"url" => $note,
 						"tag" => $subtag,

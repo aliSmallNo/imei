@@ -89,7 +89,7 @@ class Log extends ActiveRecord
 
 	public static function countSpread($init = 1315, $cat = self::CAT_SPREAD, $key = self::SPREAD_IP8)
 	{
-		$sql = "select count(*) from im_log where oCategory=:cat and oKey=:key ";
+		$sql = "select sum(oBefore) as co from im_log where oCategory=:cat and oKey=:key ";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":cat" => $cat,
 			":key" => $key,

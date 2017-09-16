@@ -542,13 +542,7 @@ class FooController extends Controller
 	public function actionZp()
 	{
 		// Stat::userRank('', true);
-		$a = $b = 1;
-		$b = 2;
-		if ($a > 0) {
-			echo 1;
-		} elseif ($b > 1) {
-			echo 2;
-		}
+		echo array_rand([1, 2, 3, 4, 5, 6, 7, 8, 9], 1);
 
 	}
 }
