@@ -1611,12 +1611,9 @@ class ApiController extends Controller
 			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
 		}
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		$msg = "用户不存在啊";
-		if (in_array($tag, ["log"])) {
-			$msg = "您还没关注/注册'微媒100'哦~ ";
-		}
+
 		if (!$wxInfo) {
-			return self::renderAPI(129, $msg);
+			return self::renderAPI(129, '用户不存在啊');
 		}
 		$uid = $wxInfo['uId'];
 		$subUId = self::postParam('id');
@@ -1645,6 +1642,9 @@ class ApiController extends Controller
 			case "log":
 				$subtag = self::postParam('subtag');
 				$note = self::postParam('note');
+				if (!User::findOne(["uId" => $uid])->uPhone) {
+					return self::renderAPI(0, "您还没关注/注册'微媒100'哦~ ");
+				}
 				if (Log::findOne(["oCategory" => Log::CAT_SPREAD, "oKey" => Log::SPREAD_IP8, "oUId" => $uid,])) {
 					return self::renderAPI(0, '您已经参与抽奖了哦~');
 				}
