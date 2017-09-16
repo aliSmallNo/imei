@@ -2139,7 +2139,9 @@ class User extends ActiveRecord
 			':cat' => Pin::CAT_NOW,
 			':y0' => $y0,
 			':y1' => $y1,
-			':gender' => $gender
+			':gender' => $gender,
+			':st' => self::STATUS_ACTIVE,
+			':subst' => self::SUB_ST_NORMAL,
 		];
 
 		$sql = 'select uId as id,uName as name,uThumb as thumb,uLogDate,uBirthYear,uHeight,uHoros,
@@ -2147,7 +2149,7 @@ class User extends ActiveRecord
 			 from im_user as u
 			 JOIN im_user_wechat as w on w.wUId=u.uId AND w.wSubscribe=1
 			 JOIN im_pin as p on p.pPId=u.uId and p.pCategory=:cat 
-			 WHERE uStatus=1 and uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
+			 WHERE uStatus=:st AND uSubStatus=:subst AND uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
 			 order by rank desc, uLogDate desc limit 20';
 		$active = $conn->createCommand($sql)->bindValues($params)->queryAll();
 
@@ -2156,7 +2158,7 @@ class User extends ActiveRecord
 			 from im_user as u
 			 JOIN im_user_wechat as w on w.wUId=u.uId AND w.wSubscribe=1
 			 JOIN im_pin as p on p.pPId=u.uId and p.pCategory=:cat 
-			 WHERE uStatus=1 and uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
+			 WHERE uStatus=:st AND uSubStatus=:subst AND uBirthYear BETWEEN :y0 AND :y1 AND uGender=:gender
 			 order by rank desc, uLogDate limit 20';
 		$inactive = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
