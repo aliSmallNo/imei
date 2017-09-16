@@ -534,14 +534,9 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$uid = 131379;
-		$ucode = 'wr';
-		for ($k = 110; $k < 116; $k++) {
-			$url = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . substr($k, 1));
-			echo $url;
-			echo PHP_EOL;
-		}
-		echo PHP_EOL;
+		$uid = 139743;
+		$ret = User::greetUsers($uid);
+		var_dump($ret);
 	}
 
 	public function actionZp()

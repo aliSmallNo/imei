@@ -11,6 +11,7 @@ namespace common\models;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
+use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
 
 class User extends ActiveRecord
