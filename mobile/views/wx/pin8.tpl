@@ -4,7 +4,7 @@
 	}
 
 	.pin8 {
-		border-bottom: 3px solid #eee;
+
 	}
 
 	.pin8 .pin8-t {
@@ -75,22 +75,22 @@
 	}
 
 	.pin8-content {
-		display: flex;
 		padding: 2rem 1rem;
 	}
 
 	.pin8-content .pin8-c-l {
-		flex: 0 0 10rem;
 		align-self: center;
+		text-align: center;
 	}
 
 	.pin8-content .pin8-c-l img {
-		width: 10rem;
-		height: 10rem;
+		width: 25rem;
+		height: 25rem;
 	}
 
-	.pin8-content .pin8-c-r{} .pin8-content .pin8-c-r .pin8-c-des {
-		font-size: 1rem;
+	.pin8-content .pin8-c-r{}
+	.pin8-content .pin8-c-r .pin8-c-des {
+		font-size: 1.4rem;
 	}
 
 	.pin8-content .pin8-c-r .pin8-c-price {
@@ -163,6 +163,21 @@
 		padding: 1rem;
 	}
 
+	.pin8-rule {
+		padding: 2rem;
+	}
+	.pin8-rule h5{
+
+	}
+	.pin8-rule p{
+		font-size: 1rem;
+		letter-spacing: .05rem;
+		margin: .2rem 0;
+		color: #777;
+	}
+	.pin8-rule p.c{
+		color: #e02f25;
+	}
 </style>
 <div class="pin8">
 	<div class="pin8-t">
@@ -170,11 +185,10 @@
 			<img src="/images/pin8/logo.png">
 		</div>
 		<div class="pin8-title">
-			您的iphone8Plus还没领取
+			在本地找对象,到微媒100
 		</div>
-		<a href="javascript:;" class="pin8-btn" data-tag="focus">点击领取</a>
+		<a href="javascript:;" class="pin8-btn" data-tag="focus">点击关注</a>
 	</div>
-
 	<div class="pin8-content">
 		<div class="pin8-c-l">
 			<img src="/images/pin8/pin8-8p.jpg">
@@ -189,7 +203,6 @@
 			</div>
 		</div>
 	</div>
-
 	<div class="pin8-tag">
 		<div class="pin-item">
 			<span></span>
@@ -204,13 +217,22 @@
 			<em>48小时发货</em>
 		</div>
 	</div>
-
 	<div class="pin8-time">
 		剩余时间 <span>28:45:36</span>
 	</div>
 	<div class="pin8-sh">
-		<a href="javascript:;" class="pin8-btn" data-tag="share">马上参与</a>
+		<a href="javascript:;" class="pin8-btn" data-tag="share">马上抽奖</a>
 	</div>
+
+	<div class="pin8-rule">
+		<h5>抽奖规则</h5>
+		<p class="c">抽奖规则准时公布，请前往公众号"微媒100"查看。</p>
+		<p>活动时间：9月16日00:00-9月22日8:00</p>
+		<p>1.活动时间结束后，将从参与成功的所有参与人中随机抽取一位中奖者！中奖人数1名。中奖后会有工作人员在3日内联系您并确认您的收货信息。</p>
+		<p>2.如何参与活动：<br>2.1首先需要点击"点击关注"按钮，识别二维码后进入公众号，然后关注公众号，并完成单身注册且审核通过。
+			<br>2.2 点击抽奖，把此页面分享到朋友圈。并且24小时内不删除。即为参与成功。</p>
+	</div>
+
 </div>
 
 <div class="m-popup-shade" style="display: none;"></div>
