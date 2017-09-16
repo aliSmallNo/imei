@@ -156,10 +156,14 @@
 		color: #fff;
 		font-size: 1.2rem;
 		text-align: center;
-		background: #e02f25;
+		background: rgba(224, 47, 37, 1);
 		border-radius: .5rem;
 		display: block;
 		padding: 1rem;
+	}
+
+	.pin8-sh a {
+		background: rgba(224, 47, 37, .4);
 	}
 
 	.pin8-rule {
