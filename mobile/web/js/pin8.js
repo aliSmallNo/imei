@@ -135,9 +135,9 @@ require(["layer"],
 					type: '',
 					dataUrl: '',
 					success: function () {
-						$sls.pin8Sh.addClass("done");
-						$sls.pin8Sh.html("已抽奖");
-						shareLog('share', '/wx/pin8');
+						//$sls.pin8Sh.addClass("done");
+						//$sls.pin8Sh.html("已抽奖");
+						//shareLog('share', '/wx/pin8');
 					}
 				});
 				// 分享到朋友圈
