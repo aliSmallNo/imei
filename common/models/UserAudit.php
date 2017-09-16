@@ -134,8 +134,8 @@ class UserAudit extends ActiveRecord
 
 		$str = $adminFlag ? "" : "系统提示您: ";
 		$reasons = json_decode($res["aReasons"], 1);
+		$text = [];
 		if ($res && $reasons) {
-			$text = [];
 			foreach ($reasons as $reason) {
 				if (!isset(self::$reasonDict[$reason['tag']])) continue;
 				$title = self::$reasonDict[$reason['tag']];

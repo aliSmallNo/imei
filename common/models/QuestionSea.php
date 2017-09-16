@@ -155,8 +155,8 @@ class QuestionSea extends ActiveRecord
 	}
 
 	/**
-	 * @param $senderId 发送者UID
-	 * @param $receiverId 接收者UID
+	 * @param $senderId
+	 * @param $receiverId
 	 * @param $cat
 	 * @param int $gender
 	 * @return mixed

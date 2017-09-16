@@ -8,9 +8,11 @@
 
 namespace common\models;
 
+use admin\models\Admin;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
+use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
 

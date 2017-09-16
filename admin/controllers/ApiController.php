@@ -143,7 +143,7 @@ class ApiController extends Controller
 				$uid = self::postParam('uid');
 				$subUid = self::postParam('subuid');
 				$relation = self::postParam('relation');
-				$nid = UserNet::add($uid, $subUid, $relation);
+				UserNet::add($uid, $subUid, $relation);
 				$ret = ["code" => 0, "msg" => "修改成功"];
 				break;
 			case 'avatar':
@@ -151,7 +151,6 @@ class ApiController extends Controller
 				$top = self::postParam('top');
 				$left = self::postParam('left');
 				$src = self::postParam('src');
-				$field = self::postParam('field');
 				if ($src && $uid) {
 					list($thumb, $figure) = ImageUtil::save2Server($src, true, $top, $left);
 					if ($thumb && $figure) {
@@ -200,7 +199,6 @@ class ApiController extends Controller
 
 	public function actionQr()
 	{
-		$tag = trim(strtolower(self::postParam('tag')));
 		$id = self::getParam('id', '5dff94c2-c793-4519-bcf0-17b8c889dd5f');
 		$url = 'http://view.mplink.cn/Pay/Home.aspx?deviceid=%s';
 		$url = sprintf($url, $id);
@@ -415,7 +413,6 @@ class ApiController extends Controller
 		$tag = strtolower($tag);
 		$beginDate = self::postParam("beginDate", date("Y-m-01"));
 		$endDate = self::postParam("endDate", date("Y-m-d"));
-		$gender = self::postParam("gender");
 		switch ($tag) {
 			case "stat":
 				$ret = User::propStat($beginDate, $endDate);

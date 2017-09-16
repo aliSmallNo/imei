@@ -1,4 +1,5 @@
 <?php
+
 namespace common\utils;
 
 use yii\base\Exception;
@@ -82,6 +83,7 @@ class Pinyin
 	 */
 	private static function zh2py($iWORD, $hanOnly = false)
 	{
+		$result = '';
 		if ($iWORD > 0 && $iWORD < 160) {
 			if ($hanOnly) {
 				return "";
@@ -100,7 +102,7 @@ class Pinyin
 
 
 	/**
-	 * @param $s 字符串
+	 * @param $s string 字符串
 	 * @param bool $isFirst 是否只是首字母
 	 * @param bool $hanOnly 是否汉字only
 	 * @return string

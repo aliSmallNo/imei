@@ -544,8 +544,6 @@ class SiteController extends BaseController
 		$maleUID = self::getParam("male", "");// 男稻草人uId
 		$femaleUID = self::getParam("female", "");// 女稻草人uId
 
-		$uid = 0;       // 不活跃用户 uId
-
 		$allDummys = User::dummyForChat(); // 所有稻草人
 		$dmales = $allDummys[User::GENDER_MALE];
 		$dfemales = $allDummys[User::GENDER_FEMALE];

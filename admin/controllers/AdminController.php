@@ -5,8 +5,6 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use admin\models\Menu;
-use common\models\UserTrans;
-use common\utils\AppUtil;
 
 
 class AdminController extends BaseController

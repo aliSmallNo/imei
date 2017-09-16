@@ -1454,9 +1454,9 @@ class ApiController extends Controller
 				$ids = json_decode($ids, 1);
 
 				if ($ids) {
-					$ret = ChatMsg::greeting($uid, $ids);
+					ChatMsg::greeting($uid, $ids);
 				}
-				return self::renderAPI(0, '打招呼成功！', $ret);
+				return self::renderAPI(0, '打招呼成功！', 1);
 				break;
 			case 'sent':
 				$receiverId = self::postParam('id');
