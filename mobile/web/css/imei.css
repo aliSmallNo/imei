@@ -1787,8 +1787,7 @@ section {
       font-weight: 500;
       color: #363438;
       display: block;
-      line-height: 2.4rem;
-      font-family: Verdana, Arial; }
+      line-height: 2.4rem; }
 
 #sinvite {
   background: #fff; }
@@ -1824,7 +1823,6 @@ section {
       display: block;
       font-size: 1.7rem;
       font-weight: 500;
-      font-family: Verdana, Arial;
       color: #363438; }
 
 .m-discovery-act {
