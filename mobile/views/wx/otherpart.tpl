@@ -102,6 +102,7 @@
 	.o-gender {
 		margin: 1rem 0;
 		text-align: center;
+		color: #660000;
 	}
 
 	.o-gender label {
@@ -136,6 +137,11 @@
 		height: 10rem;
 		margin: 0 auto;
 		padding-top: 3rem;
+	}
+
+	.o-tip div .o-bot-r p{
+		margin: 1rem;
+		font-size: 1.2rem;
 	}
 
 	.o-result {
@@ -240,6 +246,9 @@
 		<div>本测试仅供娱乐，没有任何科学依据，请勿当真！</div>
 		<div>
 			<img src="/images/qrmeipo100.jpg">
+			<div class="o-bot-r">
+				<p>找对象？来呀，扫我呀~</p>
+			</div>
 		</div>
 	</div>
 </div>
