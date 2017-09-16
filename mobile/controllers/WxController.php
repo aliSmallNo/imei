@@ -1551,7 +1551,6 @@ class WxController extends BaseController
 			$done = "done";
 		}
 
-
 		return self::renderPage("pin8.tpl",
 			[
 				'uId' => $uId,

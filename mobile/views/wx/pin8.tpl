@@ -162,7 +162,7 @@
 		padding: 1rem;
 	}
 
-	.pin8-sh a {
+	.pin8-sh a.done {
 		background: rgba(224, 47, 37, .4);
 	}
 
