@@ -1611,8 +1611,12 @@ class ApiController extends Controller
 			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
 		}
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$msg = "用户不存在啊";
+		if (in_array($tag, ["log"])) {
+			$msg = "您还没关注/注册'微媒100'哦~ ";
+		}
 		if (!$wxInfo) {
-			return self::renderAPI(129, '用户不存在啊~');
+			return self::renderAPI(129, $msg);
 		}
 		$uid = $wxInfo['uId'];
 		$subUId = self::postParam('id');
