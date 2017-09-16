@@ -124,8 +124,8 @@ require(["layer"],
 			var linkUrl = "https://wx.meipo100.com/wx/pin8?"
 				+ "id=" + $sls.uid;
 			var imgUrl = "https://wx.meipo100.com/images/pin8/pin8-8p.jpg";
-			var title = "免费抽iPhone8Plus？";
-			var desc = "免费抽iPhone8Plus？快来参与吧~";
+			var title = "免费得iPhone8Plus只需两步？";
+			var desc = "免费得iPhone8Plus只需两步？1.关注微媒100。2.注册微媒100。";
 			wx.ready(function () {
 				wx.onMenuShareAppMessage({
 					title: title,
