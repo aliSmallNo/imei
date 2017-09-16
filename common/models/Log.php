@@ -19,6 +19,7 @@ class Log extends ActiveRecord
 
 
 	const SPREAD_PART = 500;//测试的你另一半长相
+	const SPREAD_IP8 = 510;//0元抽iphone8Plus
 
 	public static function tableName()
 	{
@@ -84,6 +85,16 @@ class Log extends ActiveRecord
 			];
 		}
 		return $result;
+	}
+
+	public static function countSpread($init = 1315, $cat = self::CAT_SPREAD, $key = self::SPREAD_IP8)
+	{
+		$sql = "select count(*) from im_log where oCategory=:cat and oKey=:key ";
+		$res = AppUtil::db()->createCommand($sql)->bindValues([
+			":cat" => $cat,
+			":key" => $key,
+		])->queryScalar();
+		return $res + $init;
 	}
 
 

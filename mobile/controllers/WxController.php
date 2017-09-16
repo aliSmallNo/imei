@@ -1547,9 +1547,17 @@ class WxController extends BaseController
 			exit();
 		}
 
+		$done = "";
+		if (Log::findOne(["oCategory" => Log::CAT_SPREAD, "oKey" => Log::SPREAD_IP8, "oUId" => $uId,])) {
+			$done = "done";
+		}
+
+
 		return self::renderPage("pin8.tpl",
 			[
 				'uId' => $uId,
+				'done' => $done,
+				'count' => Log::countSpread(),
 			],
 			'terse',
 			'0元领取 iphone8Plus',
@@ -1579,8 +1587,6 @@ class WxController extends BaseController
 			'',
 			'bg-color');
 	}
-
-
 
 
 }

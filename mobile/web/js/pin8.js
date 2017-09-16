@@ -81,12 +81,13 @@ require(["layer"],
 
 		function shareLog(tag, note) {
 			$.post("/api/share", {
-				tag: tag,
-				id: $sls.sid ? $sls.sid : 120003,
+				tag: "log",
+				subtag: tag,
 				note: note
 			}, function (resp) {
 				if (resp.code == 0 && resp.msg) {
-					// showMsg(resp.msg);
+					showMsg(resp.msg);
+					$(".pin8-c-price span").html(resp.data);
 				}
 			}, "json");
 		}
@@ -135,17 +136,18 @@ require(["layer"],
 					dataUrl: '',
 					success: function () {
 						$sls.pin8Sh.addClass("done");
-						$sls.pin8Sh.html("参与成功");
+						$sls.pin8Sh.html("已抽奖");
 						shareLog('share', '/wx/pin8');
 					}
 				});
+				// 分享到朋友圈
 				wx.onMenuShareTimeline({
 					title: title,
 					link: linkUrl,
 					imgUrl: imgUrl,
 					success: function () {
 						$sls.pin8Sh.addClass("done");
-						$sls.pin8Sh.html("参与成功");
+						$sls.pin8Sh.html("已抽奖");
 						shareLog('moment', '/wx/pin8');
 					}
 				});

@@ -1638,6 +1638,24 @@ class ApiController extends Controller
 					return self::renderAPI(0, '分享到朋友圈已经奖励过了，一天只奖励一次哦~');
 				}
 				break;
+			case "log":
+				$subtag = self::postParam('subtag');
+				$note = self::postParam('note');
+				if (Log::findOne(["oCategory" => Log::CAT_SPREAD, "oKey" => Log::SPREAD_IP8, "oUId" => $uid,])) {
+					return self::renderAPI(0, '您已经参与抽奖了哦~');
+				}
+				Log::add([
+					"oCategory" => Log::CAT_SPREAD,
+					"oKey" => Log::SPREAD_IP8,
+					"oUId" => $uid,
+					"oOpenId" => $openId,
+					"oAfter" => json_encode([
+						"url" => $note,
+						"tag" => $subtag,
+					], JSON_UNESCAPED_UNICODE),
+				]);
+				return self::renderAPI(0, '参与成功~', Log::countSpread());
+				break;
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

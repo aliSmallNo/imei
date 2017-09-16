@@ -88,8 +88,7 @@
 		height: 25rem;
 	}
 
-	.pin8-content .pin8-c-r{}
-	.pin8-content .pin8-c-r .pin8-c-des {
+	.pin8-content .pin8-c-r{} .pin8-content .pin8-c-r .pin8-c-des {
 		font-size: 1.4rem;
 	}
 
@@ -166,16 +165,19 @@
 	.pin8-rule {
 		padding: 2rem;
 	}
-	.pin8-rule h5{
+
+	.pin8-rule h5 {
 
 	}
-	.pin8-rule p{
+
+	.pin8-rule p {
 		font-size: 1rem;
 		letter-spacing: .05rem;
 		margin: .2rem 0;
 		color: #777;
 	}
-	.pin8-rule p.c{
+
+	.pin8-rule p.c {
 		color: #e02f25;
 	}
 </style>
@@ -199,7 +201,7 @@
 				【iPhone新品回馈】新一代iPhone，让智能看起来更不一样。9月22日上午8:00准时公布中奖结果！
 			</div>
 			<div class="pin8-c-price">
-				<p>参与人数 <span>1945</span>人</p>
+				<p>参与人数 <span>{{$count}}</span>人</p>
 			</div>
 		</div>
 	</div>
@@ -221,7 +223,7 @@
 		剩余时间 <span>28:45:36</span>
 	</div>
 	<div class="pin8-sh">
-		<a href="javascript:;" class="pin8-btn" data-tag="share">马上抽奖</a>
+		<a href="javascript:;" class="pin8-btn {{$done}}" data-tag="share">{{if $done}}已抽奖{{else}}马上抽奖{{/if}}</a>
 	</div>
 
 	<div class="pin8-rule">
