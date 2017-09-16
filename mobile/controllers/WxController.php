@@ -1538,7 +1538,6 @@ class WxController extends BaseController
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$uId = '';
-		$uId = self::getParam("id");
 
 		if ($wxInfo) {
 			$uId = $wxInfo['uId'];
