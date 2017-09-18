@@ -22,6 +22,7 @@ use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
+use common\utils\RedisUtil;
 
 class WxController extends BaseController
 {
@@ -1536,6 +1537,14 @@ class WxController extends BaseController
 	public function actionPin8()
 	{
 		$openId = self::$WX_OpenId;
+
+		if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
+			RedisUtil::setCache("", RedisUtil::KEY_WX_USER, $openId);
+			AppUtil::setCookie(AppUtil::COOKIE_OPENID, "oYDJew5MfQtAT12g3Ocso0OKLMyA", time() - 1);
+			exit;
+		}
+
+		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$uId = $phone = '';
 
@@ -1550,10 +1559,6 @@ class WxController extends BaseController
 		$done = "";
 		if (Log::findOne(["oCategory" => Log::CAT_SPREAD, "oKey" => Log::SPREAD_IP8, "oUId" => $uId,])) {
 			$done = "done";
-		}
-
-		if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
-			// $done = $phone = "";
 		}
 
 		return self::renderPage("pin8.tpl",
