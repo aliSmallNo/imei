@@ -182,6 +182,19 @@ class UserBuzz extends ActiveRecord
 								]
 							]
 						]);
+					} elseif ($content == "金秋送礼") {
+						if (!User::findOne(["uOpenId" => $toUsername])->uStatus) {
+							$content = "尊敬的微媒100用户，您好，您的手机号还没有登录哦~<a href='https://wx.meipo100.com/wx/imei'>点我登录</a>查看活动。";
+						}else{
+							$content = "新品iphone8,微媒送好礼。恭喜您获得参加此活动机会，动动手指参与吧.....<a href='https://wx.meipo100.com/wx/pin8'>点击了解活动详情</a>。";
+						}
+						$resp = self::json_to_xml([
+							'ToUserName' => $fromUsername,
+							'FromUserName' => $toUsername,
+							'CreateTime' => time(),
+							'MsgType' => 'text',
+							'Content' => $content,
+						]);
 					} else {
 						$conn = AppUtil::db();
 						$sql = 'SELECT count(1) FROM im_user_buzz WHERE bType=:type AND bFrom=:uid AND bDate>:dt ';
