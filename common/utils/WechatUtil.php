@@ -164,9 +164,11 @@ class WechatUtil
 
 	public static function wxInfo($openId, $renewFlag = false)
 	{
-		$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
+
 		if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
-			return $ret;
+			$ret = "";
+		} else {
+			$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
 		}
 
 		$ret = json_decode($ret, 1);
