@@ -170,9 +170,7 @@ class WechatUtil
 		} else {
 			$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
 		}
-		if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
-			var_dump($ret);exit;
-		}
+
 		$ret = json_decode($ret, 1);
 		if ($ret && is_array($ret) && isset($ret['uId']) && !$renewFlag) {
 			return $ret;
@@ -183,6 +181,9 @@ class WechatUtil
 		}
 		if (strlen($openId) < 24) {
 			return 0;
+		}
+		if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
+			var_dump($ret);exit;
 		}
 
 		$ret = "";
