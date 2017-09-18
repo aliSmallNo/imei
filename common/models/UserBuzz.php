@@ -197,7 +197,9 @@ class UserBuzz extends ActiveRecord
 						]);
 					} elseif ($content == "中奖") {
 						if (time() >= strtotime("2017-10-15 23:59:59")) {
-							$contents = "中奖用户是 Frankie~<a href='https://wx.meipo100.com/wx/sh?id=AzxsXTQ9Rjc8NkxnNzo6P0E_QXJjOUNMPEI8UW0'>点击查看TA</a>。";
+							$contents = "中奖用户是 Frankie~";
+						} elseif ($fromUsername == "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
+							$contents = "中奖用户是 Frankie~<a href='https://wx.meipo100.com/wx/sh?id=AzxsXTQ9Rjc8NkxnNzo6P0E_QXJjOUNMPEI8UW0'>点击查看TA</a>";
 						} else {
 							$contents = "还没到开奖时间哦，敬请期待.....<a href='https://wx.meipo100.com/wx/pin8'>点击了解活动详情</a>。";
 						}
