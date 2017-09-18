@@ -165,9 +165,6 @@ class WechatUtil
 	public static function wxInfo($openId, $renewFlag = false)
 	{
 		$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
-		if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
-			return $ret;
-		}
 
 		$ret = json_decode($ret, 1);
 		if ($ret && is_array($ret) && isset($ret['uId']) && !$renewFlag) {
@@ -196,6 +193,7 @@ class WechatUtil
 				break;
 			}
 		}
+
 		if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
 			$ret['uId'] = UserWechat::upgrade($ret);
 			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);

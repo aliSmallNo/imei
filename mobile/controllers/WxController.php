@@ -1550,11 +1550,10 @@ class WxController extends BaseController
 		$uId = $phone = '';
 
 		if ($wxInfo) {
-			if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
-				$wxInfo = WechatUtil::wxInfo("oYDJew5MfQtAT12g3Ocso0OKLMyA", 1);
-				print_r($wxInfo);
-				exit;
-			}
+//			if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
+				//$wxInfo = WechatUtil::wxInfo("oYDJew5MfQtAT12g3Ocso0OKLMyA", 1);
+				//print_r($wxInfo);exit;
+//			}
 			$uId = $wxInfo['uId'];
 			$phone = $wxInfo['uPhone'];
 		} else {
