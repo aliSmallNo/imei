@@ -182,7 +182,9 @@ class WechatUtil
 		if (strlen($openId) < 24) {
 			return 0;
 		}
-
+		if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
+			var_dump($ret);
+		}
 		$ret = "";
 		$urlBase = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
 		/*
