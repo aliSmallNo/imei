@@ -927,7 +927,7 @@ class SiteController extends BaseController
 			RedisUtil::setCache(json_encode($trends), RedisUtil::KEY_STAT_TREND);
 		}
 
-		return $this->renderPage('trendstatnew.tpl',
+		return $this->renderPage('trend.tpl',
 			[
 				'category' => "data",
 				'today' => date('Y年n月j日', time()),
