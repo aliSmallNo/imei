@@ -202,7 +202,7 @@
 		<div class="pin8-c-r">
 			<div class="pin8-c-des">
 				Apple iPhone 8 64GB 金色 移动联通电信4G手机<br>
-				【iPhone新品回馈】新一代iPhone，让智能看起来更不一样。9月22日上午8:00准时公布中奖结果！
+				【iPhone新品回馈】新一代iPhone，让智能看起来更不一样。10月15日上午24:00准时公布中奖结果！
 			</div>
 			<div class="pin8-c-price">
 				<p>参与人数 <span>{{$count}}</span>人</p>
