@@ -104,11 +104,17 @@ require(["layer"],
 			hours = checkTime(hours);
 			minutes = checkTime(minutes);
 			seconds = checkTime(seconds);
-			$(".pin8-time span").html(days + "天 " + hours + ":" + minutes + ":" + seconds);
+			if (days == 0 && hours == 0 && minutes == 0 && seconds >= 0) {
+				$(".pin8-time span").html(days + "天 " + hours + ":" + minutes + ":" + seconds);
+			} else {
+				$(".pin8-time").html("已开奖！赶快去公众号回复'中奖'查看开奖结果吧！");
+				clearInterval(intt);
+			}
+
 		}
 
-		setInterval(function () {
-			leftTimer(2017, 9, 22, 8, 0, 0);
+		var intt = setInterval(function () {
+			leftTimer(2017, 10, 15, 23, 59, 59);
 		}, 1000);
 
 		function checkTime(i) { //将0-9的数字前面加上0，例1变为01

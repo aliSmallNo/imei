@@ -233,7 +233,7 @@
 	<div class="pin8-rule">
 		<h5>抽奖规则</h5>
 		<p class="c">抽奖结果准时公布，请前往公众号"微媒100"查看。</p>
-		<p>活动时间：9月16日00:00-9月22日8:00</p>
+		<p>活动时间：9月16日00:00-10月15日24:00</p>
 		<p>1.活动时间结束后，将从参与成功的所有参与人中随机抽取一位中奖者！中奖人数1名。中奖后会有工作人员在3日内联系您并确认您的收货信息。</p>
 		<p>2.如何参与活动：<br>2.1首先需要点击"点击关注"按钮，识别二维码后进入公众号，然后关注公众号，并完成单身注册且审核通过。
 			<br>2.2 点击抽奖，把此页面分享到朋友圈。并且24小时内不删除。即为参与成功。</p>
@@ -253,4 +253,4 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/pin8.js?v=1.1.8" src="/assets/js/require.js"></script>
+<script data-main="/js/pin8.js?v=1.1.9" src="/assets/js/require.js"></script>
