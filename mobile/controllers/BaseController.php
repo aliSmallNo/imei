@@ -30,16 +30,21 @@ class BaseController extends Controller
 		if (in_array($actionId, $safeActions)) {
 			return parent::beforeAction($action);
 		}
+
 		if (self::isLocalhost()) {
+
 			self::$WX_OpenId = Yii::$app->params['openid'];
 			AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
 			self::checkProfile(self::$WX_OpenId, $actionId);
+			//echo self::$WX_OpenId;exit;
+
 			return parent::beforeAction($action);
 		}
 		if (!self::isWechat()) {
 			header("location:/wxerr.html");
 			exit;
 		}
+
 		self::$WX_OpenId = AppUtil::getCookie(self::COOKIE_OPENID);
 		$wxCode = self::getParam("code");
 
@@ -84,8 +89,9 @@ class BaseController extends Controller
 	protected function checkProfile($openId, $actionId)
 	{
 		$wxUserInfo = UserWechat::getInfoByOpenId($openId);
+
 		$newActionId = $anchor = '';
-		$safeActions = ['share', 'invite'];
+		$safeActions = ['share', 'invite', "pin8", "otherpart"];
 		if (in_array($actionId, $safeActions)) {
 			return;
 		}
