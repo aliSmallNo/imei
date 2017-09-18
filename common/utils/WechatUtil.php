@@ -182,9 +182,6 @@ class WechatUtil
 		if (strlen($openId) < 24) {
 			return 0;
 		}
-		if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
-			var_dump($ret);exit;
-		}
 
 		$ret = "";
 		$urlBase = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
@@ -200,6 +197,9 @@ class WechatUtil
 			if ($ret && isset($ret["openid"])) {
 				break;
 			}
+		}
+		if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
+			var_dump($ret);exit;
 		}
 
 		if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
