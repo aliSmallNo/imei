@@ -1539,7 +1539,7 @@ class WxController extends BaseController
 		$openId = self::$WX_OpenId;
 
 		if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
-			RedisUtil::setCache("", RedisUtil::KEY_WX_USER, $openId);
+//			RedisUtil::setCache("", RedisUtil::KEY_WX_USER, $openId);
 //			AppUtil::setCookie(AppUtil::COOKIE_OPENID, "oYDJew5MfQtAT12g3Ocso0OKLMyA", time() - 1);
 //			exit;
 		}
