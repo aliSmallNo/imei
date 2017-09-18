@@ -1553,7 +1553,7 @@ class WxController extends BaseController
 		}
 
 		if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
-			$done = $phone = "";
+			// $done = $phone = "";
 		}
 
 		return self::renderPage("pin8.tpl",
