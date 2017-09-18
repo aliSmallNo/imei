@@ -23,6 +23,7 @@ use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
+use common\utils\WechatUtil;
 
 class WxController extends BaseController
 {
@@ -1550,6 +1551,7 @@ class WxController extends BaseController
 
 		if ($wxInfo) {
 			if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
+				WechatUtil::wxInfo("oYDJew5MfQtAT12g3Ocso0OKLMyA");
 				print_r($wxInfo);
 				exit;
 			}
