@@ -26,6 +26,13 @@ $.pjax({
 	}
 });
 
+$.pjax({
+	selector: "a[data-page]",
+	container: '#page-wrapper',
+	show: 'fade',
+	cache: false,
+});
+
 $('.admin-branch>a').on('click', function () {
 	location.href = "/site/branch?bid=" + $(this).attr('bId');
 });
