@@ -1,3 +1,5 @@
+{{if isset($pjax) && $pjax}}
+{{else}}
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
 	<div class="navbar-header">
 		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -11,7 +13,6 @@
 		</a>
 	</div>
 	<ul class="nav navbar-top-links navbar-right">
-
 		{{if isset($adminWechatList) && $adminWechatList}}
 		<li class="dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -61,13 +62,13 @@
 	<div class="sidebar-nav navbar-collapse" id="nav-left-menus">
 		<div id="treeScroller">
 			<ul class="nav left-menus" id="side-menu">
-				<li>
-					<a href="/site/summary" {{if $category == "summary"}}class="active"{{/if}}>
+				<li class="g-menu-folder">
+					<a href="/site/summary" class="g-summary left-menu-group {{if $category == "summary"}}active{{/if}}">
 						<i class="fa fa-dashboard fa-fw"></i> 账户概览
 					</a>
 					{{foreach from=$adminInfo.menus item=menu}}
 					{{if $menu.items && $menu.items|@count>0}}
-				<li class="{{$menu.id}} {{if $category == $menu.id}}active bgw{{/if}}">
+				<li class="g-menu-folder {{$menu.id}} {{if $category == $menu.id}}active bgw{{/if}}">
 					<a href="javascript:;" class="nav-top-menu {{if $category == $menu.id}}cur{{/if}}">
 						<i class="fa {{$menu.icon}} fa-fw"></i>
 						{{$menu.name}}
@@ -75,18 +76,21 @@
 					</a>
 					<ul class="nav nav-second-level collapse {{$menu.cls2}}" {{if $menu.flag}}aria-expanded="true"{{/if}}>
 						{{foreach from=$menu.items key=tmpId item=subMenu}}
-						<li class="{{$subMenu.cls}}">
-							<a href="{{$subMenu.url}}" class="nav-sub-menu {{$subMenu.cls2}}">
-								{{$subMenu.icon}}{{$subMenu.name}}
+						<li>
+							<a href="{{$subMenu.url}}" class="nav-sub-menu {{$subMenu.cls2}}" data-pj="1">
+								{{$subMenu.name}}
 							</a>
 						</li>
 						{{/foreach}}
 					</ul>
-					{{/if}}
-					{{/foreach}}
+				</li>
+				{{/if}}
+				{{/foreach}}
 				</li>
 			</ul>
 		</div>
 	</div>
 	<input type="hidden" id="adminInfo_Id" value="{{$adminInfo.aId}}">
 </div>
+<div id="page-wrapper">
+{{/if}}

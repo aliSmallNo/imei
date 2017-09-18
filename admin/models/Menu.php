@@ -203,12 +203,14 @@ class Menu
 						"name" => "添加用户",
 						"url" => "/admin/user",
 						"revise" => 1,
-						"level" => 830
+						"level" => 830,
+						'pjax' => 1
 					],
 					[
 						"name" => "用户列表",
 						"url" => "/admin/users",
-						"level" => 830
+						"level" => 830,
+						'pjax' => 1
 					]
 				]
 			]

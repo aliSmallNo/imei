@@ -5,10 +5,13 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use admin\models\Menu;
+use common\utils\AppUtil;
 
 
 class AdminController extends BaseController
 {
+	public $layout = "main";
+
 	/**
 	 * 增加权限用户
 	 * */
@@ -65,11 +68,11 @@ class AdminController extends BaseController
 	 * */
 	public function actionUsers()
 	{
-
 		Admin::staffOnly();
 		$page = self::getParam("page", 1);
 		$name = self::getParam('name');
 		$note = self::getParam('note');
+
 		$status = Admin::STATUS_ACTIVE;
 		$condition = " aStatus=$status ";
 		if ($name) {

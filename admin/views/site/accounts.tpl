@@ -312,638 +312,632 @@
 		font-size: 12px;
 	}
 </style>
-<div id="page-wrapper">
-	<div class="row">
-		<div class="col-lg-12">
-			<h4>用户列表</h4>
-		</div>
-	</div>
-	<div class="row">
-		<form class="form-inline" action="/site/accounts?status={{$status}}">
-			<label><input type="checkbox" name="fonly" value="1" {{if $fonly}}checked{{/if}}> 显示已关注 </label>
-			<label><input type="checkbox" name="inactive" value="1" {{if $inactive}}checked{{/if}}> 显示7天不活跃 </label>
-			<input class="form-control" name="name" placeholder="名字" value="{{$name}}" style="width: 15rem">
-			<input class="form-control" name="phone" placeholder="手机号" value="{{$phone}}" style="width: 15rem">
-			<select class="form-control" name="sub_status">
-				<option value="">-=请选择=-</option>
-				{{foreach from=$subStatus key=k item=item}}
-				<option value="{{$k}}" {{if $k==$sub_status}}selected{{/if}}>{{$item}}</option>
-				{{/foreach}}
-			</select>
-			<select class="form-control" name="user_type">
-				<option value="">-=所有用户=-</option>
-				{{foreach from=$userTypes key=k item=item}}
-				<option value="{{$k}}" {{if $k==$userType}}selected{{/if}}>{{$item}}</option>
-				{{/foreach}}
-			</select>
-			<button class="btn btn-primary">查询</button>
-			<a href="/site/pins" class="btn btn-primary" target="_blank">地图分布</a>
-			<div class="stat-item">
-				<span><b>到访</b>{{$stat.amt}}</span>
-				<span><b>已关注</b>{{$stat.follow}}</span>
-				<span><b>已注册</b>{{$stat.reg}}</span>
-				<span><b>帅哥</b>{{$stat.male}}</span>
-				<span><b>美女</b>{{$stat.female}}</span>
-			</div>
-		</form>
-	</div>
-	{{if $criteriaNote}}
-	<div class="row">
-		<div class="col-lg-7">
-			<div class=" alert alert-success alert-dismissable">
-				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">清除</button>
-				搜索{{$criteriaNote}}，结果如下
-			</div>
-		</div>
-	</div>
-	{{/if}}
-	<div class="row">
-		<ul class="nav nav-tabs">
-			{{foreach from=$partHeader key=key item=prod}}
-			<li class="ng-scope {{if $status == $key}}active{{/if}}">
-				<a href="/site/accounts?inactive={{$inactive}}&fonly={{$fonly}}&status={{$key}}&name={{$name}}&phone={{$phone}}&sub_status={{$sub_status}}"
-					 class="ng-binding">
-					{{$prod}} {{if $partCount[$key]}}<span class="badge">{{$partCount[$key]}}</span>{{/if}}
-				</a>
-			</li>
+<div class="row">
+	<h4>用户列表</h4>
+</div>
+<div class="row">
+	<form class="form-inline" action="/site/accounts?status={{$status}}">
+		<label><input type="checkbox" name="fonly" value="1" {{if $fonly}}checked{{/if}}> 显示已关注 </label>
+		<label><input type="checkbox" name="inactive" value="1" {{if $inactive}}checked{{/if}}> 显示7天不活跃 </label>
+		<input class="form-control" name="name" placeholder="名字" value="{{$name}}" style="width: 15rem">
+		<input class="form-control" name="phone" placeholder="手机号" value="{{$phone}}" style="width: 15rem">
+		<select class="form-control" name="sub_status">
+			<option value="">-=请选择=-</option>
+			{{foreach from=$subStatus key=k item=item}}
+			<option value="{{$k}}" {{if $k==$sub_status}}selected{{/if}}>{{$item}}</option>
 			{{/foreach}}
-		</ul>
+		</select>
+		<select class="form-control" name="user_type">
+			<option value="">-=所有用户=-</option>
+			{{foreach from=$userTypes key=k item=item}}
+			<option value="{{$k}}" {{if $k==$userType}}selected{{/if}}>{{$item}}</option>
+			{{/foreach}}
+		</select>
+		<button class="btn btn-primary">查询</button>
+		<a href="/site/pins" class="btn btn-primary" target="_blank">地图分布</a>
+		<div class="stat-item">
+			<span><b>到访</b>{{$stat.amt}}</span>
+			<span><b>已关注</b>{{$stat.follow}}</span>
+			<span><b>已注册</b>{{$stat.reg}}</span>
+			<span><b>帅哥</b>{{$stat.male}}</span>
+			<span><b>美女</b>{{$stat.female}}</span>
+		</div>
+	</form>
+</div>
+{{if $criteriaNote}}
+<div class="row">
+	<div class="col-lg-7">
+		<div class=" alert alert-success alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">清除</button>
+			搜索{{$criteriaNote}}，结果如下
+		</div>
 	</div>
-	<div class="row-divider"></div>
-	<table class="table table-striped table-bordered table-hover">
-		<thead>
-		<tr>
-			<th class="col-sm-1">
-				头像
-			</th>
-			<th class="col-sm-7">
-				个人信息
-			</th>
-			<th style="width: 185px">
-				相册
-			</th>
-			<!--th class="col-sm-1">
-				择偶标准
-			</th-->
-			<th>
-				操作
-			</th>
-		</tr>
-		</thead>
-		<tbody>
-		{{foreach from=$list item=prod}}
-		<tr data-id="{{$prod.id}}">
-			<td>
-				<img src="{{$prod.thumb}}" bsrc="{{$prod.avatar}}" width="100%" class="i-av">
-			</td>
-			<td class="pInfo m-style-{{$prod.style}}">
-				<span class="m-role">{{$prod.role_t}}</span> {{$prod.name}}
-				<em>{{$prod.phone}} {{$prod.wechatid}} {{$prod.location_t}} (籍贯: {{$prod.homeland_t}})</em>
-				<em style="display: none">{{$prod.note_t}}</em>
-				<span class="sub{{$prod.subscribe}}">{{if $prod.subscribe}}已关注{{else}}未关注{{/if}}</span>
-				{{if $prod.substatus>1}}<span>{{$prod.substatus_t}}</span>{{/if}}
-				<span class="status-{{if $prod.note_t}}10{{else}}{{$prod.status}}{{/if}}">{{if $prod.note_t}}{{$prod.note_t}}{{else}}{{$prod.status_t}}{{/if}}</span>
-				<span class="status-1">{{if $prod.certstatus==2}}{{$prod.certstatus_t}}{{/if}}</span>
-				<div class="perc-wrap">
-					<div class="perc-bar-title">资料完整度 <b>{{$prod.percent}}%</b></div>
-					<div class="perc-bar-wrap"><p class="perc-bar"><em style="width: {{$prod.percent}}%"></em></p></div>
-				</div>
-				<span>{{$prod.marital_t}}</span>
-				<span>{{$prod.gender_t}}</span>
-				<span>{{$prod.age}}</span>
-				<span>{{$prod.horos_t}}</span>
-				<span>{{$prod.height_t}}</span>
-				<span>{{$prod.weight_t}}</span>
-				<span>{{$prod.education_t}}</span>
-				<span>{{$prod.scope_t}}</span>
-				<span>{{$prod.profession_t}}</span>
-				<span>{{$prod.income_t}}</span>
-				<span>{{$prod.estate_t}}</span>
-				<span>{{$prod.car_t}}</span>
-				<span>{{$prod.smoke_t}}</span>
-				<span>{{$prod.alcohol_t}}</span>
-				<span>{{$prod.diet_t}}</span>
-				<span>{{$prod.rest_t}}</span>
-				<span>{{$prod.fitness_t}}</span>
-				<span>{{$prod.belief_t}}</span>
-				<span>{{$prod.pet_t}}</span>
-				<span>{{$prod.intro}}</span>
-				<span>{{$prod.interest}}</span>
-				<br>
-				{{if $prod.status==2}}
-				<em>{{$prod.reason}}</em>
-				{{/if}}
-				<div class="s-gray">{{$prod.logdate|date_format:"上次操作于%Y-%m-%d %H:%M"}}</div>
-			</td>
-			<td data-images='{{$prod.showImages}}'>
-				{{if $prod.album}}
-				{{foreach from=$prod.album key=k item=img}}
-				<span class="album-item">
+</div>
+{{/if}}
+<div class="row">
+	<ul class="nav nav-tabs">
+		{{foreach from=$partHeader key=key item=prod}}
+		<li class="ng-scope {{if $status == $key}}active{{/if}}">
+			<a href="/site/accounts?inactive={{$inactive}}&fonly={{$fonly}}&status={{$key}}&name={{$name}}&phone={{$phone}}&sub_status={{$sub_status}}"
+				 class="ng-binding">
+				{{$prod}} {{if $partCount[$key]}}<span class="badge">{{$partCount[$key]}}</span>{{/if}}
+			</a>
+		</li>
+		{{/foreach}}
+	</ul>
+</div>
+<div class="row-divider"></div>
+<table class="table table-striped table-bordered table-hover">
+	<thead>
+	<tr>
+		<th class="col-sm-1">
+			头像
+		</th>
+		<th class="col-sm-7">
+			个人信息
+		</th>
+		<th style="width: 185px">
+			相册
+		</th>
+		<!--th class="col-sm-1">
+			择偶标准
+		</th-->
+		<th>
+			操作
+		</th>
+	</tr>
+	</thead>
+	<tbody>
+	{{foreach from=$list item=prod}}
+	<tr data-id="{{$prod.id}}">
+		<td>
+			<img src="{{$prod.thumb}}" bsrc="{{$prod.avatar}}" width="100%" class="i-av">
+		</td>
+		<td class="pInfo m-style-{{$prod.style}}">
+			<span class="m-role">{{$prod.role_t}}</span> {{$prod.name}}
+			<em>{{$prod.phone}} {{$prod.wechatid}} {{$prod.location_t}} (籍贯: {{$prod.homeland_t}})</em>
+			<em style="display: none">{{$prod.note_t}}</em>
+			<span class="sub{{$prod.subscribe}}">{{if $prod.subscribe}}已关注{{else}}未关注{{/if}}</span>
+			{{if $prod.substatus>1}}<span>{{$prod.substatus_t}}</span>{{/if}}
+			<span class="status-{{if $prod.note_t}}10{{else}}{{$prod.status}}{{/if}}">{{if $prod.note_t}}{{$prod.note_t}}{{else}}{{$prod.status_t}}{{/if}}</span>
+			<span class="status-1">{{if $prod.certstatus==2}}{{$prod.certstatus_t}}{{/if}}</span>
+			<div class="perc-wrap">
+				<div class="perc-bar-title">资料完整度 <b>{{$prod.percent}}%</b></div>
+				<div class="perc-bar-wrap"><p class="perc-bar"><em style="width: {{$prod.percent}}%"></em></p></div>
+			</div>
+			<span>{{$prod.marital_t}}</span>
+			<span>{{$prod.gender_t}}</span>
+			<span>{{$prod.age}}</span>
+			<span>{{$prod.horos_t}}</span>
+			<span>{{$prod.height_t}}</span>
+			<span>{{$prod.weight_t}}</span>
+			<span>{{$prod.education_t}}</span>
+			<span>{{$prod.scope_t}}</span>
+			<span>{{$prod.profession_t}}</span>
+			<span>{{$prod.income_t}}</span>
+			<span>{{$prod.estate_t}}</span>
+			<span>{{$prod.car_t}}</span>
+			<span>{{$prod.smoke_t}}</span>
+			<span>{{$prod.alcohol_t}}</span>
+			<span>{{$prod.diet_t}}</span>
+			<span>{{$prod.rest_t}}</span>
+			<span>{{$prod.fitness_t}}</span>
+			<span>{{$prod.belief_t}}</span>
+			<span>{{$prod.pet_t}}</span>
+			<span>{{$prod.intro}}</span>
+			<span>{{$prod.interest}}</span>
+			<br>
+			{{if $prod.status==2}}
+			<em>{{$prod.reason}}</em>
+			{{/if}}
+			<div class="s-gray">{{$prod.logdate|date_format:"上次操作于%Y-%m-%d %H:%M"}}</div>
+		</td>
+		<td data-images='{{$prod.showImages}}'>
+			{{if $prod.album}}
+			{{foreach from=$prod.album key=k item=img}}
+			<span class="album-item">
 					<img src="{{$img}}" alt="" data-idx="{{$k}}">
 					<a href="javascript:;" data-id="{{$img}}"></a>
 				</span>
-				{{/foreach}}
-				{{/if}}
-			</td>
-			<!--td class="pInfo">
+			{{/foreach}}
+			{{/if}}
+		</td>
+		<!--td class="pInfo">
 				{{foreach from=$prod.filter_t item=item}}
 				<span>{{$item}}</span>
 				{{/foreach}}
 			</td-->
-			<td>
-				<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改信息</a>
-				<a href="javascript:;" class="check btn btn-outline btn-primary btn-xs" data-id="{{$prod.id}}"
-					 data-st="{{$prod.status}}" data-sst="{{$prod.substatus}}" data-reasons="">审核用户</a>
-				<div class="btn-divider"></div>
-				<a href="/site/follow?id={{$prod.id}}" class="follow btn btn-outline btn-success btn-xs">跟进详情{{if $prod.co>0}}
-					({{$prod.co}}){{/if}}</a>
-				<a href="/site/interview?id={{$prod.id}}"
-					 class="follow btn btn-outline btn-success btn-xs">和TA密聊{{if $prod.mco>0}}({{$prod.mco}}){{/if}}</a>
-				<div class="btn-divider"></div>
-				<a href="javascript:;" class="dummyChat btn btn-outline btn-danger btn-xs" data-gender="{{$prod.gender}}"
-					 data-id="{{$prod.id}}" data-name="{{$prod.name}}" data-thumb="{{$prod.thumb}}">稻草人代聊</a>
-				{{if $debug}}
-				<a href="javascript:;" class="btn-refresh btn btn-outline btn-danger btn-xs" data-id="{{$prod.id}}">刷新</a>
-				{{/if}}
-				<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
-				<h5>创建于{{$prod.addedon|date_format:'%y-%m-%d %H:%M'}}</h5>
-			</td>
-		</tr>
-		{{/foreach}}
-		</tbody>
-	</table>
-	{{$pagination}}
-	<div class="modal fade" id="modModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-										aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">审核用户</h4>
-				</div>
-				<div class="modal-body">
-					<div class="form-horizontal">
-						<div class="form-group">
-							<label class="col-sm-4 control-label">特殊身份:</label>
-							<div class="col-sm-7">
-								<select class="form-control sub-status-opt">
-									{{foreach from=$subStatus key=k item=item}}
-									<option value="{{$k}}">{{$item}}</option>
-									{{/foreach}}
-								</select>
-							</div>
+		<td>
+			<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改信息</a>
+			<a href="javascript:;" class="check btn btn-outline btn-primary btn-xs" data-id="{{$prod.id}}"
+				 data-st="{{$prod.status}}" data-sst="{{$prod.substatus}}" data-reasons="">审核用户</a>
+			<div class="btn-divider"></div>
+			<a href="/site/follow?id={{$prod.id}}" class="follow btn btn-outline btn-success btn-xs">跟进详情{{if $prod.co>0}}
+				({{$prod.co}}){{/if}}</a>
+			<a href="/site/interview?id={{$prod.id}}"
+				 class="follow btn btn-outline btn-success btn-xs">和TA密聊{{if $prod.mco>0}}({{$prod.mco}}){{/if}}</a>
+			<div class="btn-divider"></div>
+			<a href="javascript:;" class="dummyChat btn btn-outline btn-danger btn-xs" data-gender="{{$prod.gender}}"
+				 data-id="{{$prod.id}}" data-name="{{$prod.name}}" data-thumb="{{$prod.thumb}}">稻草人代聊</a>
+			{{if $debug}}
+			<a href="javascript:;" class="btn-refresh btn btn-outline btn-danger btn-xs" data-id="{{$prod.id}}">刷新</a>
+			{{/if}}
+			<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
+			<h5>创建于{{$prod.addedon|date_format:'%y-%m-%d %H:%M'}}</h5>
+		</td>
+	</tr>
+	{{/foreach}}
+	</tbody>
+</table>
+{{$pagination}}
+<div class="modal fade" id="modModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+									aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">审核用户</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">特殊身份:</label>
+						<div class="col-sm-7">
+							<select class="form-control sub-status-opt">
+								{{foreach from=$subStatus key=k item=item}}
+								<option value="{{$k}}">{{$item}}</option>
+								{{/foreach}}
+							</select>
 						</div>
-						<div class="form-group">
-							<label class="col-sm-4 control-label">用户状态:</label>
-							<div class="col-sm-7">
-								<select class="form-control status-opt">
-									{{foreach from=$partHeader key=key item=item}}
-									<option value="{{$key}}">{{$item}}</option>
-									{{/foreach}}
-								</select>
-							</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">用户状态:</label>
+						<div class="col-sm-7">
+							<select class="form-control status-opt">
+								{{foreach from=$partHeader key=key item=item}}
+								<option value="{{$key}}">{{$item}}</option>
+								{{/foreach}}
+							</select>
 						</div>
-						<div class="form-group reasons-wrap">
-							<label class="col-sm-4 control-label">不合规原因:</label>
-							<div class="col-sm-7">
-								<div class="input-group">
-									<input type="text" class="form-control" name="reasons" data-tag="avatar" placeholder="头像不合规原因">
-									<div class="input-group-btn">
-										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-														aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span></button>
-										<ul class="dropdown-menu dropdown-menu-right">
-											<li><a href="javascript:;">请上传本人正脸照片</a></li>
-											<li><a href="javascript:;">请上传清晰可辨正脸照片</a></li>
-											<li><a href="javascript:;">脸部遮挡物太多</a></li>
-											<li><a href="javascript:;">照片拍摄距离太远，看不清楚</a></li>
-										</ul>
-									</div>
+					</div>
+					<div class="form-group reasons-wrap">
+						<label class="col-sm-4 control-label">不合规原因:</label>
+						<div class="col-sm-7">
+							<div class="input-group">
+								<input type="text" class="form-control" name="reasons" data-tag="avatar" placeholder="头像不合规原因">
+								<div class="input-group-btn">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+													aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span></button>
+									<ul class="dropdown-menu dropdown-menu-right">
+										<li><a href="javascript:;">请上传本人正脸照片</a></li>
+										<li><a href="javascript:;">请上传清晰可辨正脸照片</a></li>
+										<li><a href="javascript:;">脸部遮挡物太多</a></li>
+										<li><a href="javascript:;">照片拍摄距离太远，看不清楚</a></li>
+									</ul>
 								</div>
-
-								<div class="input-group">
-									<input type="text" class="form-control" name="reasons" data-tag="nickname" placeholder="昵称不合规原因">
-									<div class="input-group-btn">
-										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-														aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span></button>
-										<ul class="dropdown-menu dropdown-menu-right">
-											<li><a href="javascript:;">有广告嫌疑</a></li>
-											<li><a href="javascript:;">冒用他人身份</a></li>
-											<li><a href="javascript:;">违反法律法规</a></li>
-											<li><a href="javascript:;">假冒党政机关</a></li>
-											<li><a href="javascript:;">假冒名人名星</a></li>
-											<li><a href="javascript:;">宣扬低俗文化</a></li>
-										</ul>
-									</div>
-								</div>
-
-								<div class="input-group">
-									<input type="text" class="form-control" name="reasons" data-tag="intro" placeholder="个人简介不合规原因">
-									<div class="input-group-btn">
-										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-														aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span></button>
-										<ul class="dropdown-menu dropdown-menu-right">
-											<li><a href="javascript:;">宣扬低俗文化</a></li>
-											<li><a href="javascript:;">违反法律法规</a></li>
-											<li><a href="javascript:;">有广告嫌疑</a></li>
-										</ul>
-									</div>
-								</div>
-
-								<div class="input-group">
-									<input type="text" class="form-control" name="reasons" data-tag="interest" placeholder="个人兴趣不合规原因">
-									<div class="input-group-btn">
-										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-														aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span></button>
-										<ul class="dropdown-menu dropdown-menu-right">
-											<li><a href="javascript:;">宣扬低俗文化</a></li>
-											<li><a href="javascript:;">违反法律法规</a></li>
-											<li><a href="javascript:;">有广告嫌疑</a></li>
-										</ul>
-									</div>
-								</div>
-
 							</div>
+
+							<div class="input-group">
+								<input type="text" class="form-control" name="reasons" data-tag="nickname" placeholder="昵称不合规原因">
+								<div class="input-group-btn">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+													aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span></button>
+									<ul class="dropdown-menu dropdown-menu-right">
+										<li><a href="javascript:;">有广告嫌疑</a></li>
+										<li><a href="javascript:;">冒用他人身份</a></li>
+										<li><a href="javascript:;">违反法律法规</a></li>
+										<li><a href="javascript:;">假冒党政机关</a></li>
+										<li><a href="javascript:;">假冒名人名星</a></li>
+										<li><a href="javascript:;">宣扬低俗文化</a></li>
+									</ul>
+								</div>
+							</div>
+
+							<div class="input-group">
+								<input type="text" class="form-control" name="reasons" data-tag="intro" placeholder="个人简介不合规原因">
+								<div class="input-group-btn">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+													aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span></button>
+									<ul class="dropdown-menu dropdown-menu-right">
+										<li><a href="javascript:;">宣扬低俗文化</a></li>
+										<li><a href="javascript:;">违反法律法规</a></li>
+										<li><a href="javascript:;">有广告嫌疑</a></li>
+									</ul>
+								</div>
+							</div>
+
+							<div class="input-group">
+								<input type="text" class="form-control" name="reasons" data-tag="interest" placeholder="个人兴趣不合规原因">
+								<div class="input-group-btn">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+													aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span></button>
+									<ul class="dropdown-menu dropdown-menu-right">
+										<li><a href="javascript:;">宣扬低俗文化</a></li>
+										<li><a href="javascript:;">违反法律法规</a></li>
+										<li><a href="javascript:;">有广告嫌疑</a></li>
+									</ul>
+								</div>
+							</div>
+
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-tag="" id="btnAudit">确定保存</button>
-				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" data-tag="" id="btnAudit">确定保存</button>
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="avModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document" style="width: 276px;">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-										aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">设置用户头像</h4>
-				</div>
-				<div class="modal-body av-wrap">
-					<img src="" alt="" class="av-img">
-					<div class="av-border"></div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" id="btnSaveAV">确定保存</button>
-				</div>
-			</div>
-		</div>
-
-	</div>
-	<div class="modal fade" id="DummyModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-										aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">选择稻草人与TA聊天</h4>
-				</div>
-				<div class="modal-body">
-
-				</div>
-				<div class="modal-footer" style="overflow: hidden">
-					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" id="btnSaveDu">确定保存</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<script type="text/html" id="dummyChatTemp">
-		<div class="col-sm-12 dummy-opts">
-			{[#items]}
-			<div data-id="{[uId]}" class="dummy-opt">
-				<div><img src="{[uThumb]}"></div>
-				<div>{[uName]}</div>
-				<span></span>
-			</div>
-			{[/items]}
-		</div>
-	</script>
-	<script>
-	  var dummys ={{$dummys}}
-	</script>
-	<script>
-	  $(document).on("click", "button.close", function () {
-		  var fm = $("form");
-		  fm.find(".form-control").val('');
-		  $("[type=checkbox]").removeAttr("checked");
-		  fm.submit();
-	  });
-
-	  var dummyId1, dummyId2;
-	  $(document).on("click", ".dummyChat", function () {
-		  var self = $(this);
-		  var name = self.attr("data-name");
-		  var thumb = self.attr("data-thumb");
-		  var gender = self.attr("data-gender");
-		  if (parseInt(gender) < 10) {
-			  layer.msg("用户还没性别哦~");
-			  return;
-		  }
-		  dummyId1 = self.attr("data-id");
-		  var items = dummys[gender];
-		  items ={items:items};
-		  console.log(items);
-		  var Vhtml = Mustache.render($("#dummyChatTemp").html(), items);
-		  $("#DummyModal .modal-body").html(Vhtml);
-		  $("#DummyModal .modal-title").html("选择稻草人与" + name + "<img src=" + thumb + " style='width:30px;height:30px;border-radius:30px'>" + "聊天");
-		  $("#DummyModal").modal('show');
-	  });
-	  $(document).on("click", "#btnSaveDu", function () {
-		  dummyId2 = $(".dummy-opt.active").attr("data-id");
-		  // console.log("/site/dummychat?id1=" + dummyId1 + "&id2=" + dummyId2);
-		  if (!dummyId2) {
-			  layer.msg("还没选择稻草人哦~");
-			  return;
-		  }
-		  location.href = "/site/dummychat?id1=" + dummyId1 + "&id2=" + dummyId2;
-	  });
-	  $(document).on("click", ".dummy-opt", function () {
-		  var self = $(this);
-		  self.closest(".dummy-opts").find(".dummy-opt").removeClass("active");
-		  self.addClass("active");
-	  });
-
-	  $(document).on("click", ".btn-refresh", function () {
-		  var self = $(this);
-		  $.post("/api/user", {
-			  tag: "refresh",
-			  id: self.attr('data-id')
-		  }, function (resp) {
-			  if (resp.code == 0) {
-				  location.reload();
-			  }
-			  layer.msg(resp.msg);
-		  }, "json");
-	  });
-
-	  function delUser(id) {
-		  $.post("/api/users", {
-			  tag: "del-user",
-			  id: id
-		  }, function (resp) {
-			  if (resp.code == 0) {
-				  location.reload();
-			  }
-			  layer.msg(resp.msg);
-		  }, "json");
-	  }
-
-	  $("a.modU").click(function () {
-		  var cid = $(this).attr("cid");
-		  location.href = "/site/account?id=" + cid;
-	  });
-
-	  $(document).on("click", ".album-item a", function () {
-		  var self = $(this);
-		  $.post("/api/user", {
-			  tag: "rotate",
-			  angle: "90",
-			  src: self.attr('data-id')
-		  }, function (resp) {
-			  if (resp.code == 0) {
-				  location.reload();
-			  }
-			  layer.msg(resp.msg);
-		  }, "json");
-	  });
-
-	  $(document).on("mouseover", ".album-item a", function () {
-		  var self = $(this);
-		  self.css('visibility', 'visible');
-	  });
-
-	  $(document).on("mouseover", ".album-item img", function () {
-		  var self = $(this);
-		  self.closest('span').find('a').css('visibility', 'visible');
-	  });
-
-
-	  $(document).on("mouseout", ".album-item img", function () {
-		  var self = $(this);
-		  self.closest('span').find('a').css('visibility', 'hidden');
-	  });
-
-	  $(document).on("click", ".album-item img", function () {
-		  var self = $(this);
-		  var images = self.closest("td").attr("data-images");
-		  var idx = self.attr('data-idx');
-		  var photos = JSON.parse(images);
-		  photos.title = '个人相册';
-		  $.each(photos.data, function () {
-			  this.alt = '设为头像';
-		  });
-		  showImages(photos, idx)
-	  });
-	  //////////////////////////
-
-	  //	  $(document).on("click", ".album-items img", function () {
-	  //		  var self = $(this);
-	  //		  var images = self.closest("td").attr("data-images");
-	  //		  var idx = self.attr('data-idx');
-	  //		  var photos = JSON.parse(images);
-	  //		  photos.title = '个人相册';
-	  //		  $.each(photos.data, function () {
-	  //			  this.alt = '设为头像';
-	  //		  });
-	  //		  showImages(photos, idx)
-	  //	  });
-
-	  $(document).on("click", ".i-av", function () {
-		  var self = $(this);
-		  var photos = {
-			  title: '头像大图',
-			  data: [{
-				  src: self.attr("bsrc")
-			  }]
-		  };
-		  showImages(photos);
-	  });
-
-
-	  function showImages(imagesJson, idx) {
-		  if (idx) {
-			  imagesJson.start = idx;
-		  }
-		  layer.photos({
-			  photos: imagesJson,
-			  shift: 5,
-			  tab: function (info) {
-				  console.log(info);
-			  }
-		  });
-	  }
-
-	  var statusOPt = $(".status-opt"),
-		  subStatusOpt = $(".sub-status-opt"),
-		  reasonsWrap = $(".reasons-wrap"),
-		  hasReson = 1,
-		  resonLoad = 0,
-		  uid;
-
-	  $(document).on("click", ".reasons-wrap li", function () {
-		  var self = $(this);
-		  var val = self.find("a").html();
-		  self.closest(".input-group").find("input").val(val);
-	  });
-
-	  $("a.check").click(function () {
-		  var self = $(this);
-		  uid = self.attr("data-id");
-		  var st = self.attr("data-st");
-		  statusOPt.val(st);
-		  var subSt = self.attr("data-sst");
-		  subStatusOpt.val(subSt);
-		  $('#modModal').modal('show');
-	  });
-
-	  statusOPt.on("change", function () {
-		  var self = $(this);
-		  if (self.val() == 2) {
-			  reasonsWrap.show()
-		  } else {
-			  reasonsWrap.hide();
-		  }
-	  });
-
-	  $('#btnAudit').on("click", function () {
-		  // console.log(uid);return;
-		  var statusOPtVal = statusOPt.val();
-		  var reason = [];
-		  if (statusOPtVal == 2) {
-			  hasReson = 1;
-			  $("[name=reasons]").each(function () {
-				  var self = $(this);
-				  if (self.val()) {
-					  var item = {
-						  tag: self.attr("data-tag"),
-						  text: self.val()
-					  };
-					  reason.push(item);
-					  hasReson = 0
-				  }
-			  });
-			  if (hasReson) {
-				  layer.msg("还没有填写不合规原因哦~");
-				  return;
-			  }
-		  }
-		  if (resonLoad) {
-			  return;
-		  }
-		  resonLoad = 1;
-		  $.post("/api/users", {
-			  tag: "reason",
-			  reason: JSON.stringify(reason),
-			  st: statusOPtVal,
-			  sst: subStatusOpt.val(),
-			  id: uid
-		  }, function (resp) {
-			  resonLoad = 0;
-			  if (resp.code == 0) {
-				  location.reload();
-			  }
-			  layer.msg(resp.msg);
-		  }, "json");
-	  });
-
-	  var mAvBorder = $(".av-border");
-	  var mAvWrap = $('.av-wrap');
-	  var mDialog = $('.modal-dialog');
-	  var mAvModal = $('#avModal');
-	  var mAvImage = $('.av-img');
-	  var mAvUId = 0;
-	  var mAvMargin = 15;
-	  $(document).on("click", ".layui-layer-imgtit a", function () {
-		  layer.closeAll();
-		  var self = $(this);
-		  var img = self.closest('.layui-layer-phimg').find('img');
-		  var src = img.attr('src');
-		  mAvUId = img.attr('layer-pid');
-		  mAvImage.attr('src', src);
-		  mAvModal.modal('show');
-	  });
-
-	  mAvModal.on('shown.bs.modal', function () {
-		  var width = mAvImage.width();
-		  var height = mAvImage.height();
-		  console.log(width);
-		  console.log(height);
-		  if (height >= width) {
-			  mDialog.css('width', '276px');
-		  } else {
-			  var h = parseInt(244.0 * width / height) + mAvMargin * 2;
-			  mDialog.css('width', h + 'px');
-		  }
-		  mAvBorder.css({
-			  top: mAvMargin + "px",
-			  left: mAvMargin + "px"
-		  });
-	  });
-
-	  mAvModal.on('hide.bs.modal', function () {
-		  mDialog.css('width', '276px');
-		  mAvBorder.css({
-			  top: mAvMargin + "px",
-			  left: mAvMargin + "px"
-		  });
-	  });
-
-	  mAvBorder.mousedown(function (event) {
-		  var curY = event.clientY;
-		  var curX = event.clientX;
-		  var height = mAvBorder.height();
-		  var width = mAvBorder.width();
-		  var curTop = parseInt(mAvBorder.css("top"));
-		  var curLeft = parseInt(mAvBorder.css("left"));
-		  var heightWrap = mAvWrap.height();
-		  var widthWrap = mAvWrap.width();
-		  var ceil = mAvMargin;
-		  var floor = heightWrap - height + 11;
-		  if (heightWrap < widthWrap) {
-			  floor = widthWrap - width + 11;
-		  }
-		  mAvBorder.mousemove(function (ev) {
-			  if (heightWrap >= widthWrap) {
-				  var top = curTop + ev.clientY - curY;
-				  if (top < ceil) top = ceil;
-				  if (top > floor) top = floor;
-				  mAvBorder.css("top", top + "px");
-			  } else {
-				  var left = curLeft + ev.clientX - curX;
-				  if (left < ceil) left = ceil;
-				  if (left > floor) left = floor;
-				  mAvBorder.css("left", left + "px");
-			  }
-		  });
-	  });
-	  mAvBorder.mouseup(function () {
-		  mAvBorder.unbind("mousemove");
-	  });
-	  $("#btnSaveAV").click(function () {
-		  var left = parseInt(mAvBorder.css("left")) - mAvMargin;
-		  left = Math.round(100.0 * left / mAvImage.width());
-		  var top = parseInt(mAvBorder.css("top")) - mAvMargin;
-		  top = Math.round(100.0 * top / mAvImage.height());
-		  $.post("/api/user", {
-			  tag: "avatar",
-			  field: 'album',
-			  src: mAvImage.attr('src'),
-			  left: left,
-			  top: top,
-			  id: mAvUId
-		  }, function (resp) {
-			  resonLoad = 0;
-			  if (resp.code == 0) {
-				  location.reload();
-			  }
-			  layer.msg(resp.msg);
-		  }, "json")
-	  });
-	</script>
 </div>
+<div class="modal fade" id="avModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document" style="width: 276px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+									aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">设置用户头像</h4>
+			</div>
+			<div class="modal-body av-wrap">
+				<img src="" alt="" class="av-img">
+				<div class="av-border"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="btnSaveAV">确定保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="DummyModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+									aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">选择稻草人与TA聊天</h4>
+			</div>
+			<div class="modal-body">
 
+			</div>
+			<div class="modal-footer" style="overflow: hidden">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="btnSaveDu">确定保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/html" id="dummyChatTemp">
+	<div class="col-sm-12 dummy-opts">
+		{[#items]}
+		<div data-id="{[uId]}" class="dummy-opt">
+			<div><img src="{[uThumb]}"></div>
+			<div>{[uName]}</div>
+			<span></span>
+		</div>
+		{[/items]}
+	</div>
+</script>
+<script>
+	var dummys ={{$dummys}}
+</script>
+<script>
+	$(document).on("click", "button.close", function () {
+		var fm = $("form");
+		fm.find(".form-control").val('');
+		$("[type=checkbox]").removeAttr("checked");
+		fm.submit();
+	});
+
+	var dummyId1, dummyId2;
+	$(document).on("click", ".dummyChat", function () {
+		var self = $(this);
+		var name = self.attr("data-name");
+		var thumb = self.attr("data-thumb");
+		var gender = self.attr("data-gender");
+		if (parseInt(gender) < 10) {
+			layer.msg("用户还没性别哦~");
+			return;
+		}
+		dummyId1 = self.attr("data-id");
+		var items = dummys[gender];
+		items ={items:items};
+		console.log(items);
+		var Vhtml = Mustache.render($("#dummyChatTemp").html(), items);
+		$("#DummyModal .modal-body").html(Vhtml);
+		$("#DummyModal .modal-title").html("选择稻草人与" + name + "<img src=" + thumb + " style='width:30px;height:30px;border-radius:30px'>" + "聊天");
+		$("#DummyModal").modal('show');
+	});
+	$(document).on("click", "#btnSaveDu", function () {
+		dummyId2 = $(".dummy-opt.active").attr("data-id");
+		// console.log("/site/dummychat?id1=" + dummyId1 + "&id2=" + dummyId2);
+		if (!dummyId2) {
+			layer.msg("还没选择稻草人哦~");
+			return;
+		}
+		location.href = "/site/dummychat?id1=" + dummyId1 + "&id2=" + dummyId2;
+	});
+	$(document).on("click", ".dummy-opt", function () {
+		var self = $(this);
+		self.closest(".dummy-opts").find(".dummy-opt").removeClass("active");
+		self.addClass("active");
+	});
+
+	$(document).on("click", ".btn-refresh", function () {
+		var self = $(this);
+		$.post("/api/user", {
+			tag: "refresh",
+			id: self.attr('data-id')
+		}, function (resp) {
+			if (resp.code == 0) {
+				location.reload();
+			}
+			layer.msg(resp.msg);
+		}, "json");
+	});
+
+	function delUser(id) {
+		$.post("/api/users", {
+			tag: "del-user",
+			id: id
+		}, function (resp) {
+			if (resp.code == 0) {
+				location.reload();
+			}
+			layer.msg(resp.msg);
+		}, "json");
+	}
+
+	$("a.modU").click(function () {
+		var cid = $(this).attr("cid");
+		location.href = "/site/account?id=" + cid;
+	});
+
+	$(document).on("click", ".album-item a", function () {
+		var self = $(this);
+		$.post("/api/user", {
+			tag: "rotate",
+			angle: "90",
+			src: self.attr('data-id')
+		}, function (resp) {
+			if (resp.code == 0) {
+				location.reload();
+			}
+			layer.msg(resp.msg);
+		}, "json");
+	});
+
+	$(document).on("mouseover", ".album-item a", function () {
+		var self = $(this);
+		self.css('visibility', 'visible');
+	});
+
+	$(document).on("mouseover", ".album-item img", function () {
+		var self = $(this);
+		self.closest('span').find('a').css('visibility', 'visible');
+	});
+
+
+	$(document).on("mouseout", ".album-item img", function () {
+		var self = $(this);
+		self.closest('span').find('a').css('visibility', 'hidden');
+	});
+
+	$(document).on("click", ".album-item img", function () {
+		var self = $(this);
+		var images = self.closest("td").attr("data-images");
+		var idx = self.attr('data-idx');
+		var photos = JSON.parse(images);
+		photos.title = '个人相册';
+		$.each(photos.data, function () {
+			this.alt = '设为头像';
+		});
+		showImages(photos, idx)
+	});
+	//////////////////////////
+
+	//	  $(document).on("click", ".album-items img", function () {
+	//		  var self = $(this);
+	//		  var images = self.closest("td").attr("data-images");
+	//		  var idx = self.attr('data-idx');
+	//		  var photos = JSON.parse(images);
+	//		  photos.title = '个人相册';
+	//		  $.each(photos.data, function () {
+	//			  this.alt = '设为头像';
+	//		  });
+	//		  showImages(photos, idx)
+	//	  });
+
+	$(document).on("click", ".i-av", function () {
+		var self = $(this);
+		var photos = {
+			title: '头像大图',
+			data: [{
+				src: self.attr("bsrc")
+			}]
+		};
+		showImages(photos);
+	});
+
+
+	function showImages(imagesJson, idx) {
+		if (idx) {
+			imagesJson.start = idx;
+		}
+		layer.photos({
+			photos: imagesJson,
+			shift: 5,
+			tab: function (info) {
+				console.log(info);
+			}
+		});
+	}
+
+	var statusOPt = $(".status-opt"),
+		subStatusOpt = $(".sub-status-opt"),
+		reasonsWrap = $(".reasons-wrap"),
+		hasReson = 1,
+		resonLoad = 0,
+		uid;
+
+	$(document).on("click", ".reasons-wrap li", function () {
+		var self = $(this);
+		var val = self.find("a").html();
+		self.closest(".input-group").find("input").val(val);
+	});
+
+	$("a.check").click(function () {
+		var self = $(this);
+		uid = self.attr("data-id");
+		var st = self.attr("data-st");
+		statusOPt.val(st);
+		var subSt = self.attr("data-sst");
+		subStatusOpt.val(subSt);
+		$('#modModal').modal('show');
+	});
+
+	statusOPt.on("change", function () {
+		var self = $(this);
+		if (self.val() == 2) {
+			reasonsWrap.show()
+		} else {
+			reasonsWrap.hide();
+		}
+	});
+
+	$('#btnAudit').on("click", function () {
+		// console.log(uid);return;
+		var statusOPtVal = statusOPt.val();
+		var reason = [];
+		if (statusOPtVal == 2) {
+			hasReson = 1;
+			$("[name=reasons]").each(function () {
+				var self = $(this);
+				if (self.val()) {
+					var item = {
+						tag: self.attr("data-tag"),
+						text: self.val()
+					};
+					reason.push(item);
+					hasReson = 0
+				}
+			});
+			if (hasReson) {
+				layer.msg("还没有填写不合规原因哦~");
+				return;
+			}
+		}
+		if (resonLoad) {
+			return;
+		}
+		resonLoad = 1;
+		$.post("/api/users", {
+			tag: "reason",
+			reason: JSON.stringify(reason),
+			st: statusOPtVal,
+			sst: subStatusOpt.val(),
+			id: uid
+		}, function (resp) {
+			resonLoad = 0;
+			if (resp.code == 0) {
+				location.reload();
+			}
+			layer.msg(resp.msg);
+		}, "json");
+	});
+
+	var mAvBorder = $(".av-border");
+	var mAvWrap = $('.av-wrap');
+	var mDialog = $('.modal-dialog');
+	var mAvModal = $('#avModal');
+	var mAvImage = $('.av-img');
+	var mAvUId = 0;
+	var mAvMargin = 15;
+	$(document).on("click", ".layui-layer-imgtit a", function () {
+		layer.closeAll();
+		var self = $(this);
+		var img = self.closest('.layui-layer-phimg').find('img');
+		var src = img.attr('src');
+		mAvUId = img.attr('layer-pid');
+		mAvImage.attr('src', src);
+		mAvModal.modal('show');
+	});
+
+	mAvModal.on('shown.bs.modal', function () {
+		var width = mAvImage.width();
+		var height = mAvImage.height();
+		console.log(width);
+		console.log(height);
+		if (height >= width) {
+			mDialog.css('width', '276px');
+		} else {
+			var h = parseInt(244.0 * width / height) + mAvMargin * 2;
+			mDialog.css('width', h + 'px');
+		}
+		mAvBorder.css({
+			top: mAvMargin + "px",
+			left: mAvMargin + "px"
+		});
+	});
+
+	mAvModal.on('hide.bs.modal', function () {
+		mDialog.css('width', '276px');
+		mAvBorder.css({
+			top: mAvMargin + "px",
+			left: mAvMargin + "px"
+		});
+	});
+
+	mAvBorder.mousedown(function (event) {
+		var curY = event.clientY;
+		var curX = event.clientX;
+		var height = mAvBorder.height();
+		var width = mAvBorder.width();
+		var curTop = parseInt(mAvBorder.css("top"));
+		var curLeft = parseInt(mAvBorder.css("left"));
+		var heightWrap = mAvWrap.height();
+		var widthWrap = mAvWrap.width();
+		var ceil = mAvMargin;
+		var floor = heightWrap - height + 11;
+		if (heightWrap < widthWrap) {
+			floor = widthWrap - width + 11;
+		}
+		mAvBorder.mousemove(function (ev) {
+			if (heightWrap >= widthWrap) {
+				var top = curTop + ev.clientY - curY;
+				if (top < ceil) top = ceil;
+				if (top > floor) top = floor;
+				mAvBorder.css("top", top + "px");
+			} else {
+				var left = curLeft + ev.clientX - curX;
+				if (left < ceil) left = ceil;
+				if (left > floor) left = floor;
+				mAvBorder.css("left", left + "px");
+			}
+		});
+	});
+	mAvBorder.mouseup(function () {
+		mAvBorder.unbind("mousemove");
+	});
+	$("#btnSaveAV").click(function () {
+		var left = parseInt(mAvBorder.css("left")) - mAvMargin;
+		left = Math.round(100.0 * left / mAvImage.width());
+		var top = parseInt(mAvBorder.css("top")) - mAvMargin;
+		top = Math.round(100.0 * top / mAvImage.height());
+		$.post("/api/user", {
+			tag: "avatar",
+			field: 'album',
+			src: mAvImage.attr('src'),
+			left: left,
+			top: top,
+			id: mAvUId
+		}, function (resp) {
+			resonLoad = 0;
+			if (resp.code == 0) {
+				location.reload();
+			}
+			layer.msg(resp.msg);
+		}, "json")
+	});
+</script>
 {{include file="layouts/footer.tpl"}}

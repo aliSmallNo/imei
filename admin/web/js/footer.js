@@ -1,6 +1,31 @@
-/**
- * Created by weirui on 22/9/2016.
- */
+/*$(document).on('click', "a.nav-sub-menu[data-pj]", function () {
+	var url = $(this).attr('data-pj');
+	console.log(url);
+
+});*/
+
+var mLeftMenuFolders = $('.g-menu-folder');
+var mLastSubMenu = $('.cur-sub-nav');
+var mSummary = $('.g-summary');
+$.pjax({
+	selector: "a.nav-sub-menu[data-pj]",
+	container: '#page-wrapper',
+	show: 'fade',
+	cache: false,
+	filter: function () {
+		if (mLastSubMenu) {
+			mLastSubMenu.removeClass('cur-sub-nav');
+		}
+		var self = $(this);
+		var folder = self.closest('.g-menu-folder');
+		mLeftMenuFolders.removeClass('bgw');
+		folder.addClass('bgw');
+		self.addClass('cur-sub-nav');
+		mLastSubMenu = self;
+		mSummary.removeClass('active');
+	}
+});
+
 $('.admin-branch>a').on('click', function () {
 	location.href = "/site/branch?bid=" + $(this).attr('bId');
 });
@@ -105,6 +130,7 @@ $(document).on('click', 'button.modProfile_btn', function () {
 			}
 		}, "json");
 });
+
 
 $(document).on("focus", ".my-date-input", function () {
 	var self = $(this);
@@ -232,7 +258,6 @@ function bpbPopupImage(strSrc, strTitle) {
 	});
 }
 
-
 $(document).ready(function () {
 	resetLeftMenuScroll();
 	setTimeout(function () {
@@ -242,4 +267,3 @@ $(document).ready(function () {
 		setInterval(checkNotice, 180 * 1000);
 	}
 });
-

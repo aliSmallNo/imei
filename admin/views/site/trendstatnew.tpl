@@ -8,59 +8,56 @@
 		color: #888;
 	}
 </style>
-<div id="page-wrapper">
-	<div class="row">
-		<div class="col-lg-9">
-			<p class="help-block">{{$today}}汇总数据(延迟10分钟左右)</p>
-		</div>
-		<div class="col-lg-3">
-			<div class="btn-group" role="group">
-				<button type="button" class="btn btn-default active" tag="0">日</button>
-				<button type="button" class="btn btn-default" tag="1">周</button>
-				<button type="button" class="btn btn-default" tag="2">月</button>
-			</div>
+<div class="row">
+	<div class="col-lg-9">
+		<p class="help-block">{{$today}}汇总数据(延迟10分钟左右)</p>
+	</div>
+	<div class="col-lg-3">
+		<div class="btn-group" role="group">
+			<button type="button" class="btn btn-default active" tag="0">日</button>
+			<button type="button" class="btn btn-default" tag="1">周</button>
+			<button type="button" class="btn btn-default" tag="2">月</button>
 		</div>
 	</div>
-	<div class="row-divider"></div>
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<i class="fa fa-bar-chart-o fa-fw"></i> 用户数据
-			<small>转化率 = 关注 / 注册</small>
-		</div>
-		<div class="panel-body">
-			<div id="new-chart" class="chart-wrapper"></div>
-		</div>
+</div>
+<div class="row-divider"></div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<i class="fa fa-bar-chart-o fa-fw"></i> 用户数据
+		<small>转化率 = 关注 / 注册</small>
 	</div>
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<i class="fa fa-bar-chart-o fa-fw"></i> 用户关系
-		</div>
-		<div class="panel-body">
-			<div id="net-chart" class="chart-wrapper"></div>
-		</div>
+	<div class="panel-body">
+		<div id="new-chart" class="chart-wrapper"></div>
 	</div>
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<i class="fa fa-bar-chart-o fa-fw"></i> 累计数据
-		</div>
-		<div class="panel-body">
-			<div id="amt-chart" class="chart-wrapper"></div>
-		</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<i class="fa fa-bar-chart-o fa-fw"></i> 用户关系
 	</div>
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<i class="fa fa-bar-chart-o fa-fw"></i> 活跃数据
-			<small>活跃度 = 活跃人数 / 累计会员数</small>
-		</div>
-		<div class="panel-body">
-			<div id="active-chart" class="chart-wrapper"></div>
-		</div>
+	<div class="panel-body">
+		<div id="net-chart" class="chart-wrapper"></div>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<i class="fa fa-bar-chart-o fa-fw"></i> 累计数据
+	</div>
+	<div class="panel-body">
+		<div id="amt-chart" class="chart-wrapper"></div>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<i class="fa fa-bar-chart-o fa-fw"></i> 活跃数据
+		<small>活跃度 = 活跃人数 / 累计会员数</small>
+	</div>
+	<div class="panel-body">
+		<div id="active-chart" class="chart-wrapper"></div>
 	</div>
 </div>
 <script type="text/html" id="cTrendsTmp">
 	{{$trends}}
 </script>
-
 <script src="/js/highcharts/highcharts.js"></script>
 <script>
 
@@ -231,8 +228,6 @@
 			series: items
 		});
 	}
-
-
 </script>
 
 {{include file="layouts/footer.tpl"}}

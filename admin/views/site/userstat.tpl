@@ -28,92 +28,89 @@
 		margin: 0 2px;
 	}
 </style>
-
-<div id="page-wrapper">
-	<div class="row">
-		<div class="col-lg-2">
-			<h4>用户分析</h4>
-		</div>
-		<div class="col-lg-10 form-inline">
-			<input class="my-date-input form-control beginDate" name="beginDate" value="{{$beginDate}}" placeholder="开始时间">
-			至
-			<input class="my-date-input form-control endDate" name="endDate" value="{{$endDate}}" placeholder="结束时间">
-			<select class="form-control gender" style="display: none">
-				<option value="">-=全部=-</option>
-				<option value="10">只看女生</option>
-				<option value="11">只看男生</option>
-			</select>
-			<a href="javascript:;" class="btn btn-primary btnQuery">查询</a>
-			<a href="/site/pins" class="btn btn-primary" target="_blank">用户地图分布</a>
-			<span class="space"></span>
-			<a href="javascript:;" class="j-scope" data-from="{{$today}}" data-to="{{$today}}">今天</a>
-			<a href="javascript:;" class="j-scope" data-from="{{$yesterday}}" data-to="{{$yesterday}}">昨天</a>
-			<a href="javascript:;" class="j-scope" data-from="{{$monday}}" data-to="{{$sunday}}">本周</a>
-			<a href="javascript:;" class="j-scope" data-from="{{$firstDay}}" data-to="{{$endDay}}">本月</a>
-		</div>
+<div class="row">
+	<div class="col-lg-2">
+		<h4>用户分析</h4>
 	</div>
-	<div class="row-divider"></div>
-	<div class="row">
-		<div class="col-sm-4">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-bar-chart-o fa-fw"></i> 性别统计
-				</div>
-				<div class="panel-body">
-					<div id="chart_gender" class="chart-wrapper"></div>
-				</div>
+	<div class="col-lg-10 form-inline">
+		<input class="my-date-input form-control beginDate" name="beginDate" value="{{$beginDate}}" placeholder="开始时间">
+		至
+		<input class="my-date-input form-control endDate" name="endDate" value="{{$endDate}}" placeholder="结束时间">
+		<select class="form-control gender" style="display: none">
+			<option value="">-=全部=-</option>
+			<option value="10">只看女生</option>
+			<option value="11">只看男生</option>
+		</select>
+		<a href="javascript:;" class="btn btn-primary btnQuery">查询</a>
+		<a href="/site/pins" class="btn btn-primary" target="_blank">用户地图分布</a>
+		<span class="space"></span>
+		<a href="javascript:;" class="j-scope" data-from="{{$today}}" data-to="{{$today}}">今天</a>
+		<a href="javascript:;" class="j-scope" data-from="{{$yesterday}}" data-to="{{$yesterday}}">昨天</a>
+		<a href="javascript:;" class="j-scope" data-from="{{$monday}}" data-to="{{$sunday}}">本周</a>
+		<a href="javascript:;" class="j-scope" data-from="{{$firstDay}}" data-to="{{$endDay}}">本月</a>
+	</div>
+</div>
+<div class="row-divider"></div>
+<div class="row">
+	<div class="col-sm-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-bar-chart-o fa-fw"></i> 性别统计
 			</div>
-		</div>
-		<div class="col-sm-8">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-bar-chart-o fa-fw"></i> 每个时段操作人数统计
-				</div>
-				<div class="panel-body">
-					<div id="chart_times" class="chart-wrapper"></div>
-				</div>
+			<div class="panel-body">
+				<div id="chart_gender" class="chart-wrapper"></div>
 			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-sm-4">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-bar-chart-o fa-fw"></i> 全员统计
-				</div>
-				<div class="panel-body">
-					<div id="chart_age" class="chart-wrapper"></div>
-					<div id="chart_income" class="chart-wrapper"></div>
-					<div id="chart_edu" class="chart-wrapper"></div>
-					<div id="chart_height" class="chart-wrapper"></div>
-				</div>
+	<div class="col-sm-8">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-bar-chart-o fa-fw"></i> 每个时段操作人数统计
 			</div>
+			<div class="panel-body">
+				<div id="chart_times" class="chart-wrapper"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-bar-chart-o fa-fw"></i> 全员统计
+			</div>
+			<div class="panel-body">
+				<div id="chart_age" class="chart-wrapper"></div>
+				<div id="chart_income" class="chart-wrapper"></div>
+				<div id="chart_edu" class="chart-wrapper"></div>
+				<div id="chart_height" class="chart-wrapper"></div>
+			</div>
+		</div>
 
-		</div>
-		<div class="col-sm-4">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-bar-chart-o fa-fw"></i> 男生统计
-				</div>
-				<div class="panel-body">
-					<div id="chart_age_m" class="chart-wrapper"></div>
-					<div id="chart_income_m" class="chart-wrapper"></div>
-					<div id="chart_edu_m" class="chart-wrapper"></div>
-					<div id="chart_height_m" class="chart-wrapper"></div>
-				</div>
+	</div>
+	<div class="col-sm-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-bar-chart-o fa-fw"></i> 男生统计
+			</div>
+			<div class="panel-body">
+				<div id="chart_age_m" class="chart-wrapper"></div>
+				<div id="chart_income_m" class="chart-wrapper"></div>
+				<div id="chart_edu_m" class="chart-wrapper"></div>
+				<div id="chart_height_m" class="chart-wrapper"></div>
 			</div>
 		</div>
-		<div class="col-sm-4">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-bar-chart-o fa-fw"></i> 女生统计
-				</div>
-				<div class="panel-body">
-					<div id="chart_age_f" class="chart-wrapper"></div>
-					<div id="chart_income_f" class="chart-wrapper"></div>
-					<div id="chart_edu_f" class="chart-wrapper"></div>
-					<div id="chart_height_f" class="chart-wrapper"></div>
-				</div>
+	</div>
+	<div class="col-sm-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-bar-chart-o fa-fw"></i> 女生统计
+			</div>
+			<div class="panel-body">
+				<div id="chart_age_f" class="chart-wrapper"></div>
+				<div id="chart_income_f" class="chart-wrapper"></div>
+				<div id="chart_edu_f" class="chart-wrapper"></div>
+				<div id="chart_height_f" class="chart-wrapper"></div>
 			</div>
 		</div>
 	</div>

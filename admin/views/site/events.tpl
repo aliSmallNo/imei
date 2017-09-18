@@ -1,83 +1,77 @@
 {{include file="layouts/header.tpl"}}
-<style>
 
-</style>
-<div id="page-wrapper">
-	<div class="row">
-		<div class="col-lg-12">
-			<h4>活动支付用户</h4>
-		</div>
-	</div>
-	<div class="row">
-		<form class="form-inline" action="/site/events" method="get">
-			<input class="form-control" name="name" placeholder="姓名" value="{{$name}}">
-			<input type="submit" class="btn btn-primary" value="查询">
-		</form>
-	</div>
-	<div class="row-divider"></div>
+<div class="row">
+	<h4>活动支付用户</h4>
+</div>
+<div class="row">
+	<form class="form-inline" action="/site/events" method="get">
+		<input class="form-control" name="name" placeholder="姓名" value="{{$name}}">
+		<input type="submit" class="btn btn-primary" value="查询">
+	</form>
+</div>
+<div class="row-divider"></div>
 
-	<table class="table table-striped table-bordered table-hover">
-		<thead>
-		<tr>
-			<th class="col-sm-1">
-				头像
-			</th>
-			<th class="col-sm-2">
-				信息
-			</th>
-			<th class="col-sm-2">
-				应付
-			</th>
-			<th class="col-sm-2">
-				实际支付
-			</th>
-			<th class="col-sm-2">
-				时间
-			</th>
-		</tr>
-		</thead>
-		<tbody>
-		{{if $list}}
-		{{foreach from=$list item=prod}}
-		<tr>
-			<td>
-				<img src="{{$prod.uThumb}}" style="width: 70px;height: 70px">
-			</td>
-			<td>
-				{{$prod.uName}}<br>
-				{{$prod.uPhone}}
-			</td>
-			<td>
-				{{$prod.pAmt/100}}元
-			</td>
-			<td>
-				{{$prod.pTransAmt/100}}元
-			</td>
-			<td>
-				<div>创建于{{$prod.pAddedOn|date_format:'%y-%m-%d %H:%M'}}</div>
-			</td>
+<table class="table table-striped table-bordered table-hover">
+	<thead>
+	<tr>
+		<th class="col-sm-1">
+			头像
+		</th>
+		<th class="col-sm-2">
+			信息
+		</th>
+		<th class="col-sm-2">
+			应付
+		</th>
+		<th class="col-sm-2">
+			实际支付
+		</th>
+		<th class="col-sm-2">
+			时间
+		</th>
+	</tr>
+	</thead>
+	<tbody>
+	{{if $list}}
+	{{foreach from=$list item=prod}}
+	<tr>
+		<td>
+			<img src="{{$prod.uThumb}}" style="width: 70px;height: 70px">
+		</td>
+		<td>
+			{{$prod.uName}}<br>
+			{{$prod.uPhone}}
+		</td>
+		<td>
+			{{$prod.pAmt/100}}元
+		</td>
+		<td>
+			{{$prod.pTransAmt/100}}元
+		</td>
+		<td>
+			<div>创建于{{$prod.pAddedOn|date_format:'%y-%m-%d %H:%M'}}</div>
+		</td>
 
-		</tr>
-		{{/foreach}}
-		{{/if}}
-		</tbody>
-	</table>
-	{{$pagination}}
-	<div class="modal fade" id="modModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-										aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">修改选题</h4>
-				</div>
-				<div class="modal-body" style="overflow:hidden">
+	</tr>
+	{{/foreach}}
+	{{/if}}
+	</tbody>
+</table>
+{{$pagination}}
+<div class="modal fade" id="modModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+									aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">修改选题</h4>
+			</div>
+			<div class="modal-body" style="overflow:hidden">
 
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-tag="" id="btnSave">确定保存</button>
-				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" data-tag="" id="btnSave">确定保存</button>
 			</div>
 		</div>
 	</div>
@@ -138,7 +132,7 @@
 		}, function (resp) {
 			loadflag = 0;
 			if (resp.code == 0) {
-				 location.reload();
+				location.reload();
 			} else {
 				layer.msg(resp.msg);
 			}

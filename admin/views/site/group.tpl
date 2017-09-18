@@ -28,63 +28,61 @@
 	}
 
 </style>
-<div id="page-wrapper">
-	<div class="row">
-		<h4>添加题组</h4>
-	</div>
-	<div class="row">
-		<div class="col-sm-12">
-			<div class="col-sm-6">
-				<input type="hidden" name="sign" value="sign">
-				<input type="hidden" id="mpId" value="">
-				<div class="form-group">
-					<label>搜索题目</label>
-					<div class="form-group input-group">
-						<input type="text" class="form-control" name="name" id="searchName" required placeholder="(必填)">
-						<span class="input-group-btn">
+<div class="row">
+	<h4>添加题组</h4>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="col-sm-6">
+			<input type="hidden" name="sign" value="sign">
+			<input type="hidden" id="mpId" value="">
+			<div class="form-group">
+				<label>搜索题目</label>
+				<div class="form-group input-group">
+					<input type="text" class="form-control" name="name" id="searchName" required placeholder="(必填)">
+					<span class="input-group-btn">
 								<button class="btn btn-default" type="button">
 									<i class="fa fa-search"></i>
 								</button>
 							</span>
-					</div>
-				</div>
-				<div class="form-group">
-					<label>活动主题</label>
-					<div class="form-group">
-						<input type="text" class="form-control" name="gTitle" id="gTitle" required placeholder="(必填)">
-					</div>
-				</div>
-				<div class="form-group">
-					<label>活动类别</label>
-					<div class="form-group input-group">
-						<select name="cat" class="form-control">
-							{{foreach from=$catDict key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label>选择题目列表</label>
-					<ul class="form-control-static questionlist" id="questionlist">
-
-					</ul>
 				</div>
 			</div>
-			<div class="col-sm-6">
-				<div class="seek-wrapper">
-					<ul class="seek-question">
-
-					</ul>
+			<div class="form-group">
+				<label>活动主题</label>
+				<div class="form-group">
+					<input type="text" class="form-control" name="gTitle" id="gTitle" required placeholder="(必填)">
 				</div>
+			</div>
+			<div class="form-group">
+				<label>活动类别</label>
+				<div class="form-group input-group">
+					<select name="cat" class="form-control">
+						{{foreach from=$catDict key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>选择题目列表</label>
+				<ul class="form-control-static questionlist" id="questionlist">
+
+				</ul>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="seek-wrapper">
+				<ul class="seek-question">
+
+				</ul>
 			</div>
 		</div>
 	</div>
+</div>
 
-	<div style="height:4em"></div>
-	<div class="m-bar-bottom">
-		<a href="javascript:;" class="opSave btn btn-primary">确定保存</a>
-	</div>
+<div style="height:4em"></div>
+<div class="m-bar-bottom">
+	<a href="javascript:;" class="opSave btn btn-primary">确定保存</a>
 </div>
 
 <script>

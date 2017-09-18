@@ -24,356 +24,353 @@
 		color: #999;
 	}
 </style>
-<div id="page-wrapper">
+<div class="row">
+	<div class="col-sm-6">
+		<h4>{{if $userInfo}}
+			修改用户
+			<small class="s-openid">{{$openid}}</small>
+			{{else}}
+			添加用户
+			{{/if}}</h4>
+	</div>
+	<div class="col-sm-6">
+		{{if $success}}
+		<div class="alert alert-success alert-dismissable">
+			<button type="button" class="close alert-close" data-dismiss="alert" aria-hidden="true">×</button>
+			{{$success}}
+		</div>
+		{{/if}}
+		{{if $error}}
+		<div class="alert alert-danger alert-dismissable">
+			<button type="button" class="close alert-close" data-dismiss="alert" aria-hidden="true">×</button>
+			{{foreach from=$error item=prod}}
+			{{$prod}}
+			{{/foreach}}
+		</div>
+		{{/if}}
+	</div>
+</div>
+
+<form action="/site/account" method="post" enctype="multipart/form-data">
 	<div class="row">
-		<div class="col-sm-6">
-			<h4>{{if $userInfo}}
-				修改用户
-				<small class="s-openid">{{$openid}}</small>
-				{{else}}
-				添加用户
-				{{/if}}</h4>
-		</div>
-		<div class="col-sm-6">
-			{{if $success}}
-			<div class="alert alert-success alert-dismissable">
-				<button type="button" class="close alert-close" data-dismiss="alert" aria-hidden="true">×</button>
-				{{$success}}
+		<div class="col-sm-6 form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-4 control-label">昵称:</label>
+				<div class="col-sm-8">
+					<input data-tag="uName" required class="form-control" placeholder="(必填)">
+				</div>
 			</div>
-			{{/if}}
-			{{if $error}}
-			<div class="alert alert-danger alert-dismissable">
-				<button type="button" class="close alert-close" data-dismiss="alert" aria-hidden="true">×</button>
-				{{foreach from=$error item=prod}}
-				{{$prod}}
-				{{/foreach}}
+			<div class="form-group">
+				<label class="col-sm-4 control-label">手机:</label>
+				<div class="col-sm-8">
+					<input data-tag="uPhone" class="form-control" placeholder="(非必填)">
+				</div>
 			</div>
-			{{/if}}
-		</div>
-	</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">密码:</label>
+				<div class="col-sm-8">
+					<input data-tag="uPassword" class="form-control" placeholder="(非必填)">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">邮件:</label>
+				<div class="col-sm-8">
+					<input data-tag="uEmail" class="form-control" placeholder="(非必填)">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的性别:</label>
+				<div class="col-sm-8">
+					<select data-tag="uGender" class="form-control">
+						<option value="">请选择</option>
+						{{foreach from=$gender key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">用户状态:</label>
+				<div class="col-sm-8">
+					<select data-tag="uStatus" class="form-control">
+						{{foreach from=$status key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
 
-	<form action="/site/account" method="post" enctype="multipart/form-data">
-		<div class="row">
-			<div class="col-sm-6 form-horizontal">
-				<div class="form-group">
-					<label class="col-sm-4 control-label">昵称:</label>
-					<div class="col-sm-8">
-						<input data-tag="uName" required class="form-control" placeholder="(必填)">
-					</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">头像:</label>
+				<div class="col-sm-8 imglist">
+					<input type="file" class="form-control-static inputFile" name="uAvatar[]" accept=".jpg,.jpeg,.png">
+					<p class="help-block">（最好上传<b>宽480px高480px</b>的jpg图片）</p>
+					<ul class="o-images desc">
+						<li>
+							<img src="">
+						</li>
+					</ul>
 				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">手机:</label>
-					<div class="col-sm-8">
-						<input data-tag="uPhone" class="form-control" placeholder="(非必填)">
-					</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的出生年份:</label>
+				<div class="col-sm-8">
+					<select data-tag="uBirthYear" class="form-control">
+						<option value="0">请选择</option>
+						{{foreach from=$year key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
 				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">密码:</label>
-					<div class="col-sm-8">
-						<input data-tag="uPassword" class="form-control" placeholder="(非必填)">
-					</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的星座:</label>
+				<div class="col-sm-8">
+					<select data-tag="uHoros" class="form-control">
+						<option value="0">请选择</option>
+						{{foreach from=$sign key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
 				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">邮件:</label>
-					<div class="col-sm-8">
-						<input data-tag="uEmail" class="form-control" placeholder="(非必填)">
-					</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的身高:</label>
+				<div class="col-sm-8">
+					<select data-tag="uHeight" class="form-control">
+						<option value="0">请选择</option>
+						{{foreach from=$height key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
 				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的性别:</label>
-					<div class="col-sm-8">
-						<select data-tag="uGender" class="form-control">
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的体重:</label>
+				<div class="col-sm-8">
+					<select data-tag="uWeight" class="form-control">
+						<option value="0">请选择</option>
+						{{foreach from=$weight key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的位置:</label>
+				<div class="col-sm-8">
+					<div class="col-sm-4" style="padding: 0">
+						<select data-location="uLocation-p" class="form-control">
 							<option value="">请选择</option>
-							{{foreach from=$gender key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
 						</select>
 					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">用户状态:</label>
-					<div class="col-sm-8">
-						<select data-tag="uStatus" class="form-control">
-							{{foreach from=$status key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
+					<div class="col-sm-4" style="padding: 0">
+						<select data-location="uLocation-c" class="form-control">
+							<option value="">请选择</option>
 						</select>
 					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-4 control-label">头像:</label>
-					<div class="col-sm-8 imglist">
-						<input type="file" class="form-control-static inputFile" name="uAvatar[]" accept=".jpg,.jpeg,.png">
-						<p class="help-block">（最好上传<b>宽480px高480px</b>的jpg图片）</p>
-						<ul class="o-images desc">
-							<li>
-								<img src="">
-							</li>
-						</ul>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的出生年份:</label>
-					<div class="col-sm-8">
-						<select data-tag="uBirthYear" class="form-control">
-							<option value="0">请选择</option>
-							{{foreach from=$year key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的星座:</label>
-					<div class="col-sm-8">
-						<select data-tag="uHoros" class="form-control">
-							<option value="0">请选择</option>
-							{{foreach from=$sign key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的身高:</label>
-					<div class="col-sm-8">
-						<select data-tag="uHeight" class="form-control">
-							<option value="0">请选择</option>
-							{{foreach from=$height key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的体重:</label>
-					<div class="col-sm-8">
-						<select data-tag="uWeight" class="form-control">
-							<option value="0">请选择</option>
-							{{foreach from=$weight key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的位置:</label>
-					<div class="col-sm-8">
-						<div class="col-sm-4" style="padding: 0">
-							<select data-location="uLocation-p" class="form-control">
-								<option value="">请选择</option>
-							</select>
-						</div>
-						<div class="col-sm-4" style="padding: 0">
-							<select data-location="uLocation-c" class="form-control">
-								<option value="">请选择</option>
-							</select>
-						</div>
-						<div class="col-sm-4" style="padding: 0">
-							<select data-location="uLocation-d" class="form-control">
-								<option value="">请选择</option>
-							</select>
-						</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的角色:</label>
-					<div class="col-sm-8">
-						<select data-tag="uRole" class="form-control">
-							{{foreach from=$role key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">婚否:</label>
-					<div class="col-sm-8">
-						<select data-tag="uMarital" class="form-control">
-							{{foreach from=$marital key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
+					<div class="col-sm-4" style="padding: 0">
+						<select data-location="uLocation-d" class="form-control">
+							<option value="">请选择</option>
 						</select>
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-6 form-horizontal">
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的教育程度:</label>
-					<div class="col-sm-8">
-						<select data-tag="uEducation" class="form-control">
-							<option value="0">请选择</option>
-							{{foreach from=$edu key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的角色:</label>
+				<div class="col-sm-8">
+					<select data-tag="uRole" class="form-control">
+						{{foreach from=$role key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
 				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的行业:</label>
-					<div class="col-sm-8">
-						<select data-tag="uScope" class="form-control">
-							<option value="0">请选择</option>
-							{{foreach from=$scope key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的职业:</label>
-					<div class="col-sm-8">
-						<select data-tag="uProfession" class="form-control">
-							<option value="0">请选择</option>
-							{{foreach from=$job key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的收入:</label>
-					<div class="col-sm-8">
-						<select data-tag="uIncome" class="form-control">
-							<option value="0">请选择</option>
-							{{foreach from=$income key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的房产:</label>
-					<div class="col-sm-8">
-						<select data-tag="uEstate" class="form-control">
-							<option value="0">请选择</option>
-							{{foreach from=$house key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您购车情况:</label>
-					<div class="col-sm-8">
-						<select data-tag="uCar" class="form-control">
-							<option value="0">请选择</option>
-							{{foreach from=$car key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的健身习惯:</label>
-					<div class="col-sm-8">
-						<select data-tag="uFitness" class="form-control">
-							<option value="0">请选择</option>
-							{{foreach from=$workout key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的饮食:</label>
-					<div class="col-sm-8">
-						<select data-tag="uDiet" class="form-control">
-							<option value="0">请选择</option>
-							{{foreach from=$diet key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的作息习惯:</label>
-					<div class="col-sm-8">
-						<select data-tag="uRest" class="form-control">
-							<option value="0">请选择</option>
-							{{foreach from=$rest key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的抽烟情况:</label>
-					<div class="col-sm-8">
-						<select data-tag="uSmoke" class="form-control">
-							<option value="0">请选择</option>
-							{{foreach from=$smoke key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的饮酒习惯:</label>
-					<div class="col-sm-8">
-						<select data-tag="uAlcohol" class="form-control">
-							<option value="0">请选择</option>
-							{{foreach from=$drink key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的信仰:</label>
-					<div class="col-sm-8">
-						<select data-tag="uBelief" class="form-control">
-							<option value="0">请选择</option>
-							{{foreach from=$belief key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您养宠物吗:</label>
-					<div class="col-sm-8">
-						<select data-tag="uPet" class="form-control">
-							<option value="0">请选择</option>
-							{{foreach from=$pet key=key item=item}}
-							<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">你的兴趣爱好:</label>
-					<div class="col-sm-8">
-						<textarea data-tag="uInterest" required class="form-control" placeholder="(必填)"></textarea>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的内心独白:</label>
-					<div class="col-sm-8">
-						<textarea data-tag="uIntro" required class="form-control" placeholder="(必填)"></textarea>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-4 control-label">您的备注:</label>
-					<div class="col-sm-8">
-						<textarea data-tag="uNote" class="form-control" placeholder="(非必填)"></textarea>
-					</div>
-				</div>
-
 			</div>
-
-			<input type="hidden" data-tag="uId" name="id">
-			<input type="hidden" name="data" id="postData" value=''>
-			<input type="hidden" name="sign" value="1">
+			<div class="form-group">
+				<label class="col-sm-4 control-label">婚否:</label>
+				<div class="col-sm-8">
+					<select data-tag="uMarital" class="form-control">
+						{{foreach from=$marital key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
 		</div>
-	</form>
+		<div class="col-sm-6 form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的教育程度:</label>
+				<div class="col-sm-8">
+					<select data-tag="uEducation" class="form-control">
+						<option value="0">请选择</option>
+						{{foreach from=$edu key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的行业:</label>
+				<div class="col-sm-8">
+					<select data-tag="uScope" class="form-control">
+						<option value="0">请选择</option>
+						{{foreach from=$scope key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的职业:</label>
+				<div class="col-sm-8">
+					<select data-tag="uProfession" class="form-control">
+						<option value="0">请选择</option>
+						{{foreach from=$job key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的收入:</label>
+				<div class="col-sm-8">
+					<select data-tag="uIncome" class="form-control">
+						<option value="0">请选择</option>
+						{{foreach from=$income key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的房产:</label>
+				<div class="col-sm-8">
+					<select data-tag="uEstate" class="form-control">
+						<option value="0">请选择</option>
+						{{foreach from=$house key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您购车情况:</label>
+				<div class="col-sm-8">
+					<select data-tag="uCar" class="form-control">
+						<option value="0">请选择</option>
+						{{foreach from=$car key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的健身习惯:</label>
+				<div class="col-sm-8">
+					<select data-tag="uFitness" class="form-control">
+						<option value="0">请选择</option>
+						{{foreach from=$workout key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的饮食:</label>
+				<div class="col-sm-8">
+					<select data-tag="uDiet" class="form-control">
+						<option value="0">请选择</option>
+						{{foreach from=$diet key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的作息习惯:</label>
+				<div class="col-sm-8">
+					<select data-tag="uRest" class="form-control">
+						<option value="0">请选择</option>
+						{{foreach from=$rest key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的抽烟情况:</label>
+				<div class="col-sm-8">
+					<select data-tag="uSmoke" class="form-control">
+						<option value="0">请选择</option>
+						{{foreach from=$smoke key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的饮酒习惯:</label>
+				<div class="col-sm-8">
+					<select data-tag="uAlcohol" class="form-control">
+						<option value="0">请选择</option>
+						{{foreach from=$drink key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的信仰:</label>
+				<div class="col-sm-8">
+					<select data-tag="uBelief" class="form-control">
+						<option value="0">请选择</option>
+						{{foreach from=$belief key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
 
-	<div style="height:5em"></div>
-	<div class="m-bar-bottom">
-		<a href="javascript:;" class="opSave btn btn-primary" data-id="">确认保存</a>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您养宠物吗:</label>
+				<div class="col-sm-8">
+					<select data-tag="uPet" class="form-control">
+						<option value="0">请选择</option>
+						{{foreach from=$pet key=key item=item}}
+						<option value="{{$key}}">{{$item}}</option>
+						{{/foreach}}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">你的兴趣爱好:</label>
+				<div class="col-sm-8">
+					<textarea data-tag="uInterest" required class="form-control" placeholder="(必填)"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的内心独白:</label>
+				<div class="col-sm-8">
+					<textarea data-tag="uIntro" required class="form-control" placeholder="(必填)"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">您的备注:</label>
+				<div class="col-sm-8">
+					<textarea data-tag="uNote" class="form-control" placeholder="(非必填)"></textarea>
+				</div>
+			</div>
+
+		</div>
+
+		<input type="hidden" data-tag="uId" name="id">
+		<input type="hidden" name="data" id="postData" value=''>
+		<input type="hidden" name="sign" value="1">
 	</div>
+</form>
+<div style="height:5em"></div>
+<div class="m-bar-bottom">
+	<a href="javascript:;" class="opSave btn btn-primary" data-id="">确认保存</a>
 </div>
 <script>
 	var mProvinces = {{$provinces}};

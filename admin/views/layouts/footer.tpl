@@ -1,8 +1,12 @@
+{{if isset($pjax) && $pjax}}
+{{else}}
+</div>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/lib/My97DatePicker/WdatePicker.js"></script>
 <script src="/js/sb-admin-2.js"></script>
 <script src="/assets/js/iscroll.js"></script>
-
+<script src="/assets/js/countUp.js"></script>
+<script src="/assets/js/jquery.pjax.js"></script>
 <script type="text/html" id="cModPwdTmp">
 	<div class="form-horizontal">
 		<div class="row-divider"></div>
@@ -36,55 +40,6 @@
 		</div>
 	</div>
 </script>
-<script type="text/html" id="cModProfileTmp">
-	<div class="form-horizontal">
-		<div class="row-divider"></div>
-		<div class="form-group">
-			<label class="col-sm-3 control-label">公司简称</label>
-
-			<div class="col-sm-8">
-				<input type="text" class="form-control" id="modProfile_name" placeholder="请输入公司简称">
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 control-label">公司全称</label>
-
-			<div class="col-sm-8">
-				<input type="text" class="form-control" id="modProfile_fullname" placeholder="请输入公司全称"
-							 value="{{if isset($adminBranchInfo.bFullName)}}{{$adminBranchInfo.bFullName}}{{/if}}">
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 control-label">客服电话</label>
-
-			<div class="col-sm-8">
-				<input type="text" class="form-control" id="modProfile_phone" placeholder="请输入客服电话" value="{{if isset($adminBranchInfo.bPhone)}}{{$adminBranchInfo.bPhone}}{{/if}}"/>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 control-label"></label>
-
-			<div class="col-sm-8">
-				<button class="btn btn-default modProfile_btn">确定保存</button>
-			</div>
-		</div>
-	</div>
-</script>
-<script type="text/html" id="admin_todo_tpl">
-	{[#items]}
-	<li class="{[light]}">
-		<a href="{[action]}">
-			<div>
-				<span class="badge">{[no]}</span><b>{[title]}</b>
-				<span class="pull-right text-muted"><em>{[time]}</em></span>
-			</div>
-			<div>{[tip]}</div>
-		</a>
-	</li>
-	{[#show_divider]}
-	<li class="divider"></li>{[/show_divider]}
-	{[/items]}
-</script>
 <script type="text/html" id="admin_wxmsg_tpl">
 	{[#items]}
 	<li>
@@ -105,7 +60,7 @@
 		</a>
 	</li>
 </script>
-<script src="/assets/js/countUp.js"></script>
-<script src="/js/footer.min.js?v={{#gVersion#}}"></script>
+<script src="/js/footer.js?v=1.5.0"></script>
 </body>
 </html>
+{{/if}}

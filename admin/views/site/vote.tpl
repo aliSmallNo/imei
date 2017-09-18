@@ -67,33 +67,28 @@
 		border: 2px solid #51c332;
 	}
 </style>
-<div id="page-wrapper">
-	<div class="row">
-		<div class="col-lg-12">
-			<h4>用户投票/答题结果</h4>
-		</div>
-	</div>
-	<div class="row">
-		{{foreach from=$voteStat key=key item=item}}
-		<div class="vote-item">
-			<p>{{$key+1}}.{{$item.qTitle}} {{if $item.gCategory==100}}（答案：{{$item.answer}}）{{/if}}</p>
-			<div class="opt-res">
-				{{foreach from=$item.options item=opt}}
-				<em>{{$opt.text}}</em>
-				<div class="opt-res-list">
-					<div class="pro">
-						<div style="width: {{if $item.amt>0}}{{(($opt.co/$item.amt)|string_format:"%.2f")*100}}%{{else}}0%{{/if}};"></div>
-					</div>
-					<div class="opt-res-list-r"><a href="javascript:;" data-ids="{{$opt.ids}}" data-co="{{$opt.co}}">{{$opt.co}}票</a></div>
-					<div class="opt-res-list-r">{{if $item.amt>0}}{{(($opt.co/$item.amt)|string_format:"%.2f")*100}}%{{else}}
-						0%{{/if}}</div>
+<div class="row">
+	<h4>用户投票/答题结果</h4>
+</div>
+<div class="row">
+	{{foreach from=$voteStat key=key item=item}}
+	<div class="vote-item">
+		<p>{{$key+1}}.{{$item.qTitle}} {{if $item.gCategory==100}}（答案：{{$item.answer}}）{{/if}}</p>
+		<div class="opt-res">
+			{{foreach from=$item.options item=opt}}
+			<em>{{$opt.text}}</em>
+			<div class="opt-res-list">
+				<div class="pro">
+					<div style="width: {{if $item.amt>0}}{{(($opt.co/$item.amt)|string_format:"%.2f")*100}}%{{else}}0%{{/if}};"></div>
 				</div>
-				{{/foreach}}
+				<div class="opt-res-list-r"><a href="javascript:;" data-ids="{{$opt.ids}}" data-co="{{$opt.co}}">{{$opt.co}}票</a></div>
+				<div class="opt-res-list-r">{{if $item.amt>0}}{{(($opt.co/$item.amt)|string_format:"%.2f")*100}}%{{else}}
+					0%{{/if}}</div>
 			</div>
+			{{/foreach}}
 		</div>
-		{{/foreach}}
 	</div>
-
+	{{/foreach}}
 </div>
 <script>
 	$(".opt-res-list-r a").on("click", function () {

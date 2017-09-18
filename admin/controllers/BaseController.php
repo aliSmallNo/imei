@@ -70,6 +70,13 @@ class BaseController extends Controller
 
 	public function renderPage($view, $params = [], $guestFlag = false)
 	{
+		$pjax = self::getParam('pjax');
+		$params['pjax'] = $pjax;
+		$params["debug"] = Admin::isDebugUser() ? 1 : 0;
+		if ($pjax) {
+			$this->layout = false;
+			return self::render($view, $params);
+		}
 		if ($guestFlag) {
 			return self::render($view, $params);
 		}
@@ -85,11 +92,9 @@ class BaseController extends Controller
 		}
 		$params["branch_editable"] = $adminInfo["aLevel"] >= Admin::LEVEL_MODIFY ? 1 : 0;
 		$params["adminInfo"] = $adminInfo;
-		$params["adminInfoNews"] = [];//Info::listNotRead();
+		$params["adminInfoNews"] = []; //Info::listNotRead();
 		$params["adminBranchInfo"] = [];
-		if (!isset($params["debug"])) {
-			$params["debug"] = Admin::isDebugUser() ? 1 : 0;
-		}
+
 		$params["adminInfo"]["todo"] = [];
 		$params["adminWechatListUnread"] = 0;
 		if ($adminInfo) {
@@ -143,6 +148,12 @@ class BaseController extends Controller
 			header("location:/site/login");
 			exit;
 		}
+	}
+
+	protected function getHeader($field, $defaultVal = "")
+	{
+		$headers = \Yii::$app->request->headers;
+		return $headers->has($field) ? trim($headers->get($field)) : $defaultVal;
 	}
 
 	protected function getParam($field, $defaultVal = "")

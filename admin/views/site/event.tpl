@@ -21,134 +21,132 @@
 	}
 
 </style>
-<div id="page-wrapper">
-	<div class="row">
-		<div class="col-lg-6">
-			<h4>{{if isset($entity.iId)}}修改活动{{else}}添加活动{{/if}}
-			</h4>
-		</div>
-		<div class="col-lg-6">
-			{{if $success}}
-			<div class="alert alert-success alert-dismissable">
-				<button type="button" class="close alert-close" data-dismiss="alert" aria-hidden="true">×</button>
-				{{$success}}
-			</div>
-			{{/if}}
-			{{if $error}}
-			<div class="alert alert-danger alert-dismissable">
-				<button type="button" class="close alert-close" data-dismiss="alert" aria-hidden="true">×</button>
-				{{foreach from=$error item=prod}}
-				{{$prod}}
-				{{/foreach}}
-			</div>
-			{{/if}}
-		</div>
+<div class="row">
+	<div class="col-lg-6">
+		<h4>{{if isset($entity.iId)}}修改活动{{else}}添加活动{{/if}}
+		</h4>
 	</div>
-	<form class="form-horizontal" id="editForm" method="post" enctype="multipart/form-data" action="/site/event">
-		<div class="row">
-			<input type="hidden" name="sign" value="1">
-			<input type="hidden" name="eId" value="{{$queryId}}">
-			<input type="hidden" id="cItems" name="eRules">
-			<input type="hidden" id="cFeatures" name="cFeatures">
-			<div class="col-lg-6">
-				<div class="form-group">
-					<label class="col-sm-3 control-label">活动名称:</label>
-					<div class="col-sm-8">
+	<div class="col-lg-6">
+		{{if $success}}
+		<div class="alert alert-success alert-dismissable">
+			<button type="button" class="close alert-close" data-dismiss="alert" aria-hidden="true">×</button>
+			{{$success}}
+		</div>
+		{{/if}}
+		{{if $error}}
+		<div class="alert alert-danger alert-dismissable">
+			<button type="button" class="close alert-close" data-dismiss="alert" aria-hidden="true">×</button>
+			{{foreach from=$error item=prod}}
+			{{$prod}}
+			{{/foreach}}
+		</div>
+		{{/if}}
+	</div>
+</div>
+<form class="form-horizontal" id="editForm" method="post" enctype="multipart/form-data" action="/site/event">
+	<div class="row">
+		<input type="hidden" name="sign" value="1">
+		<input type="hidden" name="eId" value="{{$queryId}}">
+		<input type="hidden" id="cItems" name="eRules">
+		<input type="hidden" id="cFeatures" name="cFeatures">
+		<div class="col-lg-6">
+			<div class="form-group">
+				<label class="col-sm-3 control-label">活动名称:</label>
+				<div class="col-sm-8">
 							<textarea class="form-control" rows="3" name="eTitle" required
 												placeholder="(必填)">{{if isset($entity.eTitle)}}{{$entity.eTitle}}{{/if}}</textarea>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-3 control-label">开始时间:</label>
-
-					<div class="col-sm-8">
-						<input type="text" name="eDateFrom" required placeholder="(必填)" class="form-control my-date-input"
-									 value="{{if isset($entity.eDateFrom)}}{{$entity.eDateFrom}}{{/if}}">
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-3 control-label">截止时间:</label>
-					<div class="col-sm-8">
-						<input type="text" class="form-control my-date-input" name="eDateTo"
-									 value="{{if isset($entity.eDateTo)}}{{$entity.eDateTo}}{{/if}}">
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-3 control-label">活动地址:</label>
-					<div class="col-sm-8">
-						<input name="eAddress" autocomplete="off" class="form-control"
-									 value="{{if isset($entity.eAddress)}}{{$entity.eAddress}}{{/if}}">
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-3 control-label">联系人:</label>
-					<div class="col-sm-8">
-						<input name="eContact" placeholder="例如 卢明：13344445555"
-									 autocomplete="off" class="form-control"
-									 value="{{if isset($entity.eContact)}}{{$entity.eContact}}{{/if}}">
-					</div>
-				</div>
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<i class="fa fa-cog fa-fw"></i> 设置活动规格或价格
-						<div class="pull-right">
-							<a href="javascript:;" class="addSpecs btn btn-outline btn-primary btn-xs">新增项</a>
-						</div>
-
-					</div>
-					<div class="panel-body">
-						<table class="table table-striped table-bordered">
-							<thead>
-							<tr>
-								<th>
-									活动规则
-								</th>
-								<th></th>
-							</tr>
-							</thead>
-							<tbody id="specsItems">
-							{{foreach from=$specs item=prod}}
-							<tr data-id="">
-								<td>
-									<input type="text" value="{{$prod.name}}" placeholder="(必填)" class="itemName form-control">
-								</td>
-								<td><a href="javascript:;" class="delItem btn btn-outline btn-danger btn-xs">删除</a>
-								</td>
-							</tr>
-							{{/foreach}}
-							</tbody>
-						</table>
-						<p class="help-block">
-							例如: 价格：1人60元，2人100元，3人120元;
-						</p>
-					</div>
 				</div>
 			</div>
-			<div class="col-lg-6">
 
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<i class="fa fa-cog fa-fw"></i> 详情描述
-						<div class="pull-right">
-							<a href="javascript:;" class="add-image btn btn-outline btn-primary btn-xs">新增图片</a>
-							<a href="javascript:;" class="add-text btn btn-outline btn-primary btn-xs">新增文本</a>
-						</div>
-						<p class="help-block">
-							提示：拖动图片或文本的左上角可以移动排序
-						</p>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">开始时间:</label>
+
+				<div class="col-sm-8">
+					<input type="text" name="eDateFrom" required placeholder="(必填)" class="form-control my-date-input"
+								 value="{{if isset($entity.eDateFrom)}}{{$entity.eDateFrom}}{{/if}}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">截止时间:</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control my-date-input" name="eDateTo"
+								 value="{{if isset($entity.eDateTo)}}{{$entity.eDateTo}}{{/if}}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">活动地址:</label>
+				<div class="col-sm-8">
+					<input name="eAddress" autocomplete="off" class="form-control"
+								 value="{{if isset($entity.eAddress)}}{{$entity.eAddress}}{{/if}}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">联系人:</label>
+				<div class="col-sm-8">
+					<input name="eContact" placeholder="例如 卢明：13344445555"
+								 autocomplete="off" class="form-control"
+								 value="{{if isset($entity.eContact)}}{{$entity.eContact}}{{/if}}">
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-cog fa-fw"></i> 设置活动规格或价格
+					<div class="pull-right">
+						<a href="javascript:;" class="addSpecs btn btn-outline btn-primary btn-xs">新增项</a>
 					</div>
-					<div class="panel-body">
-						<ul class="features"></ul>
-					</div>
+
+				</div>
+				<div class="panel-body">
+					<table class="table table-striped table-bordered">
+						<thead>
+						<tr>
+							<th>
+								活动规则
+							</th>
+							<th></th>
+						</tr>
+						</thead>
+						<tbody id="specsItems">
+						{{foreach from=$specs item=prod}}
+						<tr data-id="">
+							<td>
+								<input type="text" value="{{$prod.name}}" placeholder="(必填)" class="itemName form-control">
+							</td>
+							<td><a href="javascript:;" class="delItem btn btn-outline btn-danger btn-xs">删除</a>
+							</td>
+						</tr>
+						{{/foreach}}
+						</tbody>
+					</table>
+					<p class="help-block">
+						例如: 价格：1人60元，2人100元，3人120元;
+					</p>
 				</div>
 			</div>
 		</div>
-	</form>
-	<div style="height: 5em"></div>
-	<div class="m-bar-bottom">
-		<a href="javascript:;" class="opSave btn btn-primary">保存活动</a>
+		<div class="col-lg-6">
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-cog fa-fw"></i> 详情描述
+					<div class="pull-right">
+						<a href="javascript:;" class="add-image btn btn-outline btn-primary btn-xs">新增图片</a>
+						<a href="javascript:;" class="add-text btn btn-outline btn-primary btn-xs">新增文本</a>
+					</div>
+					<p class="help-block">
+						提示：拖动图片或文本的左上角可以移动排序
+					</p>
+				</div>
+				<div class="panel-body">
+					<ul class="features"></ul>
+				</div>
+			</div>
+		</div>
 	</div>
+</form>
+<div style="height: 5em"></div>
+<div class="m-bar-bottom">
+	<a href="javascript:;" class="opSave btn btn-primary">保存活动</a>
 </div>
 <script type="text/template" id="tpl_feature_item">
 	{[#items]}
@@ -259,7 +257,7 @@
 		layer.load();
 		console.log(items);
 		console.log(features);
-		 $("#editForm").submit();
+		$("#editForm").submit();
 	});
 
 	function getSpecs() {
@@ -269,7 +267,7 @@
 			var name = row.find(".itemName").val();
 			// var price = row.find(".itemPrice").val();// && $.isNumeric(price)
 			// var id = row.attr("data-id");
-			if (name && name.length ) {
+			if (name && name.length) {
 				items.push({
 					name: name,
 					// price: price,

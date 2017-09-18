@@ -52,84 +52,77 @@
 		color: #333;
 	}
 </style>
-<div id="page-wrapper">
-	<div class="row">
-		<h4>{{if not $userInfo}}添加后台用户{{else}}修改后台用户{{/if}}</h4>
-	</div>
 
-	<div class="row">
-		<div class="col-lg-5 form-horizontal">
-			<div class="form-group">
-				<label class="col-sm-4 control-label">登录ID:</label>
+<div class="row">
+	<h4>{{if not $userInfo}}添加后台用户{{else}}修改后台用户{{/if}}</h4>
+</div>
 
-				<div class="col-sm-8">
-					<input type="text" class="form-control" name="name" autocomplete="off" required
-								 placeholder="(必填)登录ID. 例如:liming, 13912138868"
-								 value="{{if $userInfo}}{{$userInfo.aLoginId}}{{/if}}"/>
-				</div>
+<div class="row">
+	<div class="col-lg-5 form-horizontal">
+		<div class="form-group">
+			<label class="col-sm-4 control-label">登录ID:</label>
+			<div class="col-sm-8">
+				<input type="text" class="form-control" name="name" autocomplete="off" required
+							 placeholder="(必填)登录ID. 例如:liming, 13912138868"
+							 value="{{if $userInfo}}{{$userInfo.aLoginId}}{{/if}}">
 			</div>
-
-			<div class="form-group">
-				<label class="col-sm-4 control-label">登录密码:</label>
-
-				<div class="col-sm-8">
-					<input type="text" class="form-control" name="pass" autocomplete="off" {{if $userInfo}}
-								 placeholder="(选填)不填则不修改登录密码" {{else}} required
-								 placeholder="(必填)登录密码. 最好超过6位字符" {{/if}}/>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-4 control-label">用户名称:</label>
-				<div class="col-sm-8">
-					<input type="text" class="form-control" name="note" autocomplete="off" required
-								 placeholder="(必填)用户名称. 例如:张三, 李四" value="{{if $userInfo}}{{$userInfo.aName}}{{/if}}"/>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-4 control-label">用户手机:</label>
-				<div class="col-sm-8">
-					<input type="text" class="form-control" name="phone" autocomplete="off" required
-								 placeholder="(非必填)" value="{{if $userInfo}}{{$userInfo.aPhone}}{{/if}}"/>
-				</div>
-			</div>
-
-			<div class="form-group">
-				<label class="col-sm-4 control-label">权限等级:</label>
-				<div class="col-sm-8">
-					<select name="level" required="required" class="form-control">
-						<option>请选择</option>
-						{{foreach from=$levels key=k item=level}}
-						<option value="{{$k}}" {{if $userInfo && $userInfo['aLevel']==$k}}selected{{/if}}>{{$level}}</option>
-						{{/foreach}}
-					</select>
-				</div>
-			</div>
-
 		</div>
-		<div class="col-lg-7">
-			<div class="form-group">
-				<label class="col-sm-4 control-label">可见菜单:</label>
-				<div class="col-sm-8">
-					<ul class="folders">
-						{{foreach from=$rights key=rId item=rItem}}
-						<li>
-							<label>
-								<input name="rights" class="ck-rights" type="checkbox"
-											 value="{{$rId}}" {{$rItem["checked"]}}> {{$rItem["name"]}}
-							</label>
-						</li>
-						{{/foreach}}
-					</ul>
-				</div>
-			</div>
 
+		<div class="form-group">
+			<label class="col-sm-4 control-label">登录密码:</label>
+
+			<div class="col-sm-8">
+				<input type="text" class="form-control" name="pass" autocomplete="off" {{if $userInfo}}
+							 placeholder="(选填)不填则不修改登录密码" {{else}} required {{/if}}>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-4 control-label">用户名称:</label>
+			<div class="col-sm-8">
+				<input type="text" class="form-control" name="note" autocomplete="off" required
+							 placeholder="(必填)用户名称. 例如:张三, 李四" value="{{if $userInfo}}{{$userInfo.aName}}{{/if}}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-4 control-label">用户手机:</label>
+			<div class="col-sm-8">
+				<input type="text" class="form-control" name="phone" autocomplete="off" required
+							 placeholder="(非必填)" value="{{if $userInfo}}{{$userInfo.aPhone}}{{/if}}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-4 control-label">权限等级:</label>
+			<div class="col-sm-8">
+				<select name="level" required="required" class="form-control">
+					<option>请选择</option>
+					{{foreach from=$levels key=k item=level}}
+					<option value="{{$k}}" {{if $userInfo && $userInfo['aLevel']==$k}}selected{{/if}}>{{$level}}</option>
+					{{/foreach}}
+				</select>
+			</div>
 		</div>
 	</div>
-
-	<div style="height:5em"></div>
-	<div class="m-bar-bottom">
-		<a href="javascript:;" class="opSave btn btn-primary" data-id="{{$id}}">确认保存</a>
+	<div class="col-lg-7">
+		<div class="form-group">
+			<label class="col-sm-4 control-label">可见菜单:</label>
+			<div class="col-sm-8">
+				<ul class="folders">
+					{{foreach from=$rights key=rId item=rItem}}
+					<li>
+						<label>
+							<input name="rights" class="ck-rights" type="checkbox" value="{{$rId}}" {{$rItem["checked"]}}>
+							{{$rItem["name"]}}
+						</label>
+					</li>
+					{{/foreach}}
+				</ul>
+			</div>
+		</div>
 	</div>
+</div>
+<div style="height:5em"></div>
+<div class="m-bar-bottom">
+	<a href="javascript:;" class="opSave btn btn-primary" data-id="{{$id}}">确认保存</a>
 </div>
 <script>
 	$(".opSave").on("click", function () {
@@ -171,6 +164,5 @@
 			}
 		}, "json");
 	});
-
 </script>
 {{include file="layouts/footer.tpl"}}
