@@ -198,7 +198,7 @@
 				$this.html(data);
 				callback && callback.call($this, data, isCached);
 			}else{
-				this.fadeOut(500, function(){
+				this.fadeOut(350, function(){
 					$this.html(data).fadeIn(500, function(){
 						callback && callback.call($this, data, isCached);
 					});
