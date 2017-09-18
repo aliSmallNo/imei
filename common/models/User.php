@@ -1531,11 +1531,11 @@ class User extends ActiveRecord
 				count(*) as reg,
 				SUM(IFNULL(w.wSubscribe,0)) as focus,
 				SUM(CASE WHEN uStatus=0 THEN 1 END) as nvisitor,
-				SUM(CASE WHEN uStatus in (1,2,3) THEN 1 END) as newmember,
+				SUM(CASE WHEN (u.uRole=20 or (u.uRole=10 AND u.uGender>9)) AND u.uPhone!='' THEN 1 END) as newmember,
 				SUM(CASE WHEN w.wAddedOn BETWEEN :beginDT AND :endDT AND wSubscribe =0 THEN 1 END ) as todayblur,
-				SUM(CASE WHEN u.uRole=10 AND u.uGender=11 THEN  1 END ) as male,
-				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 THEN  1 END ) as female,
-				SUM(CASE WHEN u.uRole=20 THEN  1 END) as mps
+				SUM(CASE WHEN u.uRole=10 AND u.uGender=11 AND u.uPhone!='' THEN  1 END ) as male,
+				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 AND u.uPhone!='' THEN  1 END ) as female,
+				SUM(CASE WHEN u.uRole=20 AND u.uPhone!='' THEN  1 END) as mps
 				FROM im_user as u 
 				JOIN im_user_wechat as w on w.wUId=u.uId
 				where u.uStatus<8 and u.uAddedOn BETWEEN :beginDT and :endDT ";
