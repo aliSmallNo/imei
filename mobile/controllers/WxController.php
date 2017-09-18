@@ -1549,6 +1549,10 @@ class WxController extends BaseController
 		$uId = $phone = '';
 
 		if ($wxInfo) {
+			if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
+				print_r($wxInfo);
+				exit;
+			}
 			$uId = $wxInfo['uId'];
 			$phone = $wxInfo['uPhone'];
 		} else {
