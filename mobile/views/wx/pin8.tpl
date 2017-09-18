@@ -248,8 +248,9 @@
 
 </div>
 <input type="hidden" id="cUID" value="{{$uId}}">
+<input type="hidden" id="cUPHONE" value="{{$phone}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/pin8.js?v=1.1.10" src="/assets/js/require.js"></script>
+<script data-main="/js/pin8.js?v=1.1.11" src="/assets/js/require.js"></script>

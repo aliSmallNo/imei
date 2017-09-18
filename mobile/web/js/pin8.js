@@ -21,7 +21,7 @@ require(["layer"],
 			name: $('#cNAME').val(),
 			gender: $('#cGENDER').val(),
 			uid: $('#cUID').val(),
-			sid: $('#cSUID').val(),
+			phone: $('#cUPHONE').val(),
 
 			pin8Sh: $(".pin8-sh a"),
 
@@ -55,15 +55,26 @@ require(["layer"],
 		});
 
 		function oshare() {
-			var html = '<i class="share-arrow">点击菜单分享</i>';
-			$sls.main.show();
-			$sls.main.append(html);
-			$sls.shade.fadeIn(160);
-			setTimeout(function () {
-				$sls.main.hide();
-				$sls.main.find('.share-arrow').remove();
-				$sls.shade.fadeOut(100);
-			}, 2500);
+			if ($sls.phone) {
+				var html = '<i class="share-arrow">点击菜单分享</i>';
+				$sls.main.show();
+				$sls.main.append(html);
+				$sls.shade.fadeIn(160);
+				setTimeout(function () {
+					$sls.main.hide();
+					$sls.main.find('.share-arrow').remove();
+					$sls.shade.fadeOut(100);
+				}, 2500);
+			} else {
+				layer.open({
+					content: '您还没注册微媒100哦，现在去注册？',
+					btn: ['注册', '不要'],
+					yes: function (index) {
+						location.href = "/wx/imei";
+					}
+				});
+			}
+
 		}
 
 		function pinFocus(f) {
@@ -104,7 +115,7 @@ require(["layer"],
 			hours = checkTime(hours);
 			minutes = checkTime(minutes);
 			seconds = checkTime(seconds);
-			if (days == 0 && hours == 0 && minutes == 0 && seconds >= 0) {
+			if (leftTime >= 0) {
 				$(".pin8-time span").html(days + "天 " + hours + ":" + minutes + ":" + seconds);
 			} else {
 				$(".pin8-time").html("已开奖！赶快去公众号回复'中奖'查看开奖结果吧！");

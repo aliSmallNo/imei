@@ -1537,10 +1537,11 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		$uId = '';
+		$uId = $phone = '';
 
 		if ($wxInfo) {
 			$uId = $wxInfo['uId'];
+			$phone = $wxInfo['uPhone'];
 		} else {
 			// header('location:/wx/index');
 			// exit();
@@ -1551,9 +1552,14 @@ class WxController extends BaseController
 			$done = "done";
 		}
 
+		if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
+			$done = $phone = "";
+		}
+
 		return self::renderPage("pin8.tpl",
 			[
 				'uId' => $uId,
+				'phone' => $phone,
 				'done' => $done,
 				'count' => Log::countSpread(),
 			],
