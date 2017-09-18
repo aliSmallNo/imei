@@ -1492,8 +1492,8 @@ class WxController extends BaseController
 		if ($wxInfo) {
 			$uId = $wxInfo['uId'];
 		} else {
-			header('location:/wx/index');
-			exit();
+			//header('location:/wx/index');
+			//exit();
 		}
 
 		$item = [
@@ -1542,8 +1542,8 @@ class WxController extends BaseController
 		if ($wxInfo) {
 			$uId = $wxInfo['uId'];
 		} else {
-			header('location:/wx/index');
-			exit();
+			// header('location:/wx/index');
+			// exit();
 		}
 
 		$done = "";
