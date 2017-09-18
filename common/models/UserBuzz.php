@@ -185,8 +185,21 @@ class UserBuzz extends ActiveRecord
 					} elseif ($content == "金秋送礼") {
 						if (!User::findOne(["uOpenId" => $fromUsername])->uStatus) {
 							$contents = "尊敬的微媒100用户，您好，您的手机号还没有登录哦~<a href='https://wx.meipo100.com/wx/imei'>点我登录</a>查看活动。";
-						}else{
-							$contents = "新品iphone8,微媒送好礼。恭喜您获得参加此活动机会，动动手指参与吧.....<a href='https://wx.meipo100.com/wx/pin8'>点击了解活动详情</a>。";
+						} else {
+							$contents = "新品iphone8,微媒送好礼。恭喜您获得参加此活动机会，动动手指参与活动吧.....<a href='https://wx.meipo100.com/wx/pin8'>点击了解活动详情</a>。";
+						}
+						$resp = self::json_to_xml([
+							'ToUserName' => $fromUsername,
+							'FromUserName' => $toUsername,
+							'CreateTime' => time(),
+							'MsgType' => 'text',
+							'Content' => $contents,
+						]);
+					} elseif ($content == "中奖") {
+						if (time() >= strtotime("2017-10-15 23:59:59")) {
+							$contents = "中奖用户是 Frankie~<a href='https://wx.meipo100.com/wx/sh?id=AzxsXTQ9Rjc8NkxnNzo6P0E_QXJjOUNMPEI8UW0'>点击查看TA</a>。";
+						} else {
+							$contents = "还没到开奖时间哦，敬请期待.....<a href='https://wx.meipo100.com/wx/pin8'>点击了解活动详情</a>。";
 						}
 						$resp = self::json_to_xml([
 							'ToUserName' => $fromUsername,
