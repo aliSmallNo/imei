@@ -1194,8 +1194,13 @@ class User extends ActiveRecord
 				FROM im_user as u 
 				JOIN im_user_wechat as w on u.uId=w.wUId AND w.wSubscribe=1
 				LEFT JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=$pinCat
-				WHERE $condition order by dist, rank desc, u.uRank desc limit $limit";
+				WHERE uId!=133491 and $condition  order by dist, rank desc, u.uRank desc limit $limit";
 		$ret = $conn->createCommand($sql)->queryAll();
+		$sql = "select *,9999 as dist,20 as rank from im_user where uId in (133491)";
+		// 置顶
+		$Top = $conn->createCommand($sql)->queryAll();
+		$ret = array_merge($Top, $ret);
+
 		$rows = [];
 		$IDs = [0];
 		foreach ($ret as $row) {
