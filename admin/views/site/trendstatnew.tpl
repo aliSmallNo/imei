@@ -62,7 +62,6 @@
 <script>
 
 	var mTrends = $.parseJSON($('#cTrendsTmp').html());
-	console.log(mTrends);
 	var mTrend = null;
 
 	function initCharts() {
@@ -81,10 +80,6 @@
 		initCharts();
 	});
 
-	$(document).ready(function () {
-		initCharts();
-	});
-
 	function initChart(pid, cat) {
 		var btn = $('div.btn-group').find('.active');
 		var tag = btn.attr('tag');
@@ -98,43 +93,27 @@
 			case 'new':
 				names = ["到访", "游客", "会员", "关注", "取消关注", "转化率", "充值", "媒婆", "帅哥", "美女"];
 				fields = ["reg", "nvisitor", "newmember", "focus", "todayblur", "focusRate", "trans", "mps", "male", "female"];
-				for (var i = 0; i < fields.length; i++) {
-					items.push({
-						name: names[i],
-						data: mTrend[fields[i]]
-					})
-				}
 				break;
 			case 'net':
 				names = ["心动数", "聊天数", "送媒桂花", "充值金额"];
 				fields = ["favor", "chat", "gift", 'recharge'];
-				for (var i = 0; i < fields.length; i++) {
-					items.push({
-						name: names[i],
-						data: mTrend[fields[i]]
-					})
-				}
 				break;
 			case 'amt':
 				names = ["累计到访", "累计游客", '累计关注', "累计会员", '累计单身男', '累计单身女', '累计媒婆'];
 				fields = ["amt", "visitor", 'follows', "member", 'boys', 'girls', 'meipos'];
-				for (var i = 0; i < fields.length; i++) {
-					items.push({
-						name: names[i],
-						data: mTrend[fields[i]]
-					})
-				}
 				break;
 			case 'active':
 				names = ["活跃用户", "活跃度(%)", "活跃男", "活跃女", "活跃媒婆"];
 				fields = ["active", "activeRate", "activemale", "activefemale", "activemp"];
-				for (var i = 0; i < fields.length; i++) {
-					items.push({
-						name: names[i],
-						data: mTrend[fields[i]]
-					})
-				}
 				break;
+		}
+		if (names) {
+			for (var i in fields) {
+				items.push({
+					name: names[i],
+					data: mTrend[fields[i]]
+				});
+			}
 		}
 
 		var colors = ['#e91e63', '#2196F3', '#4CAF50', '#FF8A80', '#47639E', '#00bcd4', "#ff5722", "#9c27b0", "#86c351", '#795548'];
@@ -160,7 +139,7 @@
 				}
 			};
 		}
-		console.log(items);
+//		console.log(items);
 
 		Highcharts.chart(pid, {
 			chart: {
@@ -228,6 +207,12 @@
 			series: items
 		});
 	}
+
+	$(function () {
+		setTimeout(function () {
+			initCharts();
+		}, 550);
+	});
 </script>
 
 {{include file="layouts/footer.tpl"}}
