@@ -201,8 +201,8 @@
 		</div>
 		<div class="pin8-c-r">
 			<div class="pin8-c-des">
-				Apple iPhone 8 Plus (A1864) 64GB 金色 移动联通电信4G手机<br>
-				【iPhone新品回馈】新一代iPhone，让智能看起来更不一样。9月22日上午8:00准时公布中奖结果！
+				Apple iPhone 8 64GB 金色 移动联通电信4G手机<br>
+				【iPhone新品回馈】新一代iPhone，让智能看起来更不一样。10月15日上午24:00准时公布中奖结果！
 			</div>
 			<div class="pin8-c-price">
 				<p>参与人数 <span>{{$count}}</span>人</p>
@@ -233,13 +233,12 @@
 	<div class="pin8-rule">
 		<h5>抽奖规则</h5>
 		<p class="c">抽奖结果准时公布，请前往公众号"微媒100"查看。</p>
-		<p>活动时间：9月16日00:00-9月22日8:00</p>
+		<p>活动时间：9月16日00:00-10月15日24:00</p>
 		<p>1.活动时间结束后，将从参与成功的所有参与人中随机抽取一位中奖者！中奖人数1名。中奖后会有工作人员在3日内联系您并确认您的收货信息。</p>
 		<p>2.如何参与活动：<br>2.1首先需要点击"点击关注"按钮，识别二维码后进入公众号，然后关注公众号，并完成单身注册且审核通过。
 			<br>2.2 点击抽奖，把此页面分享到朋友圈。并且24小时内不删除。即为参与成功。</p>
 		<p>3.此活动解释权归"微媒100"公众号所有，参与抽奖即默认同意此规则</p>
 		<p>PS:获奖者奖品后，需缴纳个人部分的所得税。具体详询"微媒100"公众号。</p>
-
 	</div>
 
 </div>
@@ -249,8 +248,9 @@
 
 </div>
 <input type="hidden" id="cUID" value="{{$uId}}">
+<input type="hidden" id="cUPHONE" value="{{$phone}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/pin8.js?v=1.1.7" src="/assets/js/require.js"></script>
+<script data-main="/js/pin8.js?v=1.1.12" src="/assets/js/require.js"></script>

@@ -21,7 +21,7 @@ require(["layer"],
 			name: $('#cNAME').val(),
 			gender: $('#cGENDER').val(),
 			uid: $('#cUID').val(),
-			sid: $('#cSUID').val(),
+			phone: $('#cUPHONE').val(),
 
 			pin8Sh: $(".pin8-sh a"),
 
@@ -55,15 +55,26 @@ require(["layer"],
 		});
 
 		function oshare() {
-			var html = '<i class="share-arrow">点击菜单分享</i>';
-			$sls.main.show();
-			$sls.main.append(html);
-			$sls.shade.fadeIn(160);
-			setTimeout(function () {
-				$sls.main.hide();
-				$sls.main.find('.share-arrow').remove();
-				$sls.shade.fadeOut(100);
-			}, 2500);
+			if ($sls.phone) {
+				var html = '<i class="share-arrow">点击菜单分享</i>';
+				$sls.main.show();
+				$sls.main.append(html);
+				$sls.shade.fadeIn(160);
+				setTimeout(function () {
+					$sls.main.hide();
+					$sls.main.find('.share-arrow').remove();
+					$sls.shade.fadeOut(100);
+				}, 2500);
+			} else {
+				layer.open({
+					content: '您还没注册微媒100哦，现在去注册？',
+					btn: ['注册', '不要'],
+					yes: function (index) {
+						location.href = "/wx/imei";
+					}
+				});
+			}
+
 		}
 
 		function pinFocus(f) {
@@ -86,9 +97,11 @@ require(["layer"],
 				note: note
 			}, function (resp) {
 				if (resp.code == 0 && resp.msg) {
-					showMsg(resp.msg);
 					$(".pin8-c-price span").html(resp.data);
+					$sls.pin8Sh.addClass("done");
+					$sls.pin8Sh.html("已抽奖");
 				}
+				showMsg(resp.msg);
 			}, "json");
 		}
 
@@ -102,11 +115,17 @@ require(["layer"],
 			hours = checkTime(hours);
 			minutes = checkTime(minutes);
 			seconds = checkTime(seconds);
-			$(".pin8-time span").html(days + "天 " + hours + ":" + minutes + ":" + seconds);
+			if (leftTime >= 0) {
+				$(".pin8-time span").html(days + "天 " + hours + ":" + minutes + ":" + seconds);
+			} else {
+				$(".pin8-time").html("已开奖！赶快去公众号回复'中奖'查看开奖结果吧！");
+				clearInterval(intt);
+			}
+
 		}
 
-		setInterval(function () {
-			leftTimer(2017, 9, 22, 8, 0, 0);
+		var intt = setInterval(function () {
+			leftTimer(2017, 10, 15, 23, 59, 59);
 		}, 1000);
 
 		function checkTime(i) { //将0-9的数字前面加上0，例1变为01
@@ -124,8 +143,8 @@ require(["layer"],
 			var linkUrl = "https://wx.meipo100.com/wx/pin8?"
 				+ "id=" + $sls.uid;
 			var imgUrl = "https://wx.meipo100.com/images/pin8/pin8-8p.jpg";
-			var title = "免费得iPhone8Plus只需两步？";
-			var desc = "免费得iPhone8Plus只需两步？1.关注微媒100。2.注册微媒100。";
+			var title = "免费得iPhone8只需两步？";
+			var desc = "免费得iPhone8只需两步？1.关注微媒100。2.注册微媒100。";
 			wx.ready(function () {
 				wx.onMenuShareAppMessage({
 					title: title,
@@ -146,8 +165,6 @@ require(["layer"],
 					link: linkUrl,
 					imgUrl: imgUrl,
 					success: function () {
-						$sls.pin8Sh.addClass("done");
-						$sls.pin8Sh.html("已抽奖");
 						shareLog('moment', '/wx/pin8');
 					}
 				});
