@@ -245,7 +245,7 @@ class UserQR extends ActiveRecord
 		return ['', ''];
 	}
 
-	private static function downloadFile($url, $saveAs)
+	protected static function downloadFile($url, $saveAs)
 	{
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_POST, 0);

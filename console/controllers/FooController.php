@@ -534,9 +534,42 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$uid = 139743;
+		$version = curl_version();
+		var_dump($version);
+		/*$uid = 139743;
 		$ret = User::greetUsers($uid);
-		var_dump($ret);
+		var_dump($ret);*/
+//		self::downloadFile('https://img.meipo100.com/2017/ic_default_t.jpg', '/Users/weirui/Documents/aaa');
+		/*$client = new \GuzzleHttp\Client();
+		$res = $client->request("GET", "https://api.github.com/repos/guzzle/guzzle");
+		echo $res->getStatusCode();
+		echo $res->getHeaderLine('content-type');
+		echo $res->getBody();*/
+	}
+
+	protected function downloadFile($url, $saveAs)
+	{
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		if (strpos($url, 'https') !== false) {
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); //不验证证书
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); //不验证证书
+		}
+		$file_content = curl_exec($ch);
+		$httpInfo = curl_getinfo($ch);
+		curl_close($ch);
+		$contentType = $httpInfo["content_type"];
+		$contentType = strtolower($contentType);
+		$ext = AppUtil::getExtName($contentType);
+
+		$downloaded_file = fopen($saveAs . '.' . $ext, 'w');
+		fwrite($downloaded_file, $file_content);
+		fclose($downloaded_file);
+		return $saveAs . '.' . $ext;
 	}
 
 	public function actionZp()
