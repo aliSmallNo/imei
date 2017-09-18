@@ -198,6 +198,9 @@ class WechatUtil
 				break;
 			}
 		}
+		if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
+			print_r($ret);exit;
+		}
 		if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
 			$ret['uId'] = UserWechat::upgrade($ret);
 			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
