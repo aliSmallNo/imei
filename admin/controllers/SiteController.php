@@ -892,7 +892,7 @@ class SiteController extends BaseController
 		if ($reset) {
 			$trends = [];
 		}
-		if (!$trends || AppUtil::isDev()) {
+		if (!$trends) {
 			$records = 15;
 			$trends = [];
 			$steps = ['day', 'week', 'month'];

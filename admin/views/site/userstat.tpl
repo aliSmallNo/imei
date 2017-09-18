@@ -116,7 +116,6 @@
 	</div>
 </div>
 <script src="/js/highcharts/highcharts.js"></script>
-<script src="/js/highcharts/funnel.js"></script>
 <script>
 	var mBtnQuery = $('.btnQuery');
 	var mBeginDate = $('.beginDate');
@@ -291,19 +290,22 @@
 		});
 	}
 
-	$(document).ready(function () {
-		reloadData();
-	});
-
 	mBtnQuery.on('click', function () {
 		reloadData();
 	});
+
 	$('.j-scope').click(function () {
 		var self = $(this);
 		mBeginDate.val(self.attr('data-from'));
 		mEndDate.val(self.attr('data-to'));
 		reloadData();
 		self.blur();
+	});
+
+	$(function () {
+		setTimeout(function () {
+			reloadData();
+		}, 400);
 	});
 </script>
 
