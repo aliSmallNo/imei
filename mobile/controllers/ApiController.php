@@ -1643,10 +1643,10 @@ class ApiController extends Controller
 				$subtag = self::postParam('subtag');
 				$note = self::postParam('note');
 				if (!User::findOne(["uId" => $uid])->uPhone) {
-					return self::renderAPI(0, "您还没关注/注册'微媒100'哦~ ");
+					return self::renderAPI(129, "您还没关注/注册'微媒100'哦~ ");
 				}
 				if (Log::findOne(["oCategory" => Log::CAT_SPREAD, "oKey" => Log::SPREAD_IP8, "oUId" => $uid,])) {
-					return self::renderAPI(0, '您已经参与抽奖了哦~');
+					return self::renderAPI(129, '您已经参与抽奖了哦~');
 				}
 				Log::add([
 					"oCategory" => Log::CAT_SPREAD,

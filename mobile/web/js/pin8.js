@@ -86,9 +86,11 @@ require(["layer"],
 				note: note
 			}, function (resp) {
 				if (resp.code == 0 && resp.msg) {
-					showMsg(resp.msg);
 					$(".pin8-c-price span").html(resp.data);
+					$sls.pin8Sh.addClass("done");
+					$sls.pin8Sh.html("已抽奖");
 				}
+				showMsg(resp.msg);
 			}, "json");
 		}
 
@@ -146,8 +148,6 @@ require(["layer"],
 					link: linkUrl,
 					imgUrl: imgUrl,
 					success: function () {
-						$sls.pin8Sh.addClass("done");
-						$sls.pin8Sh.html("已抽奖");
 						shareLog('moment', '/wx/pin8');
 					}
 				});
