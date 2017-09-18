@@ -164,7 +164,6 @@ class WechatUtil
 
 	public static function wxInfo($openId, $renewFlag = false)
 	{
-
 		if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
 			$ret = "";
 		} else {
