@@ -1551,7 +1551,7 @@ class WxController extends BaseController
 
 		if ($wxInfo) {
 			if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
-				$wxInfo = WechatUtil::wxInfo("oYDJew5MfQtAT12g3Ocso0OKLMyA");
+				$wxInfo = WechatUtil::wxInfo("oYDJew5MfQtAT12g3Ocso0OKLMyA", 1);
 				print_r($wxInfo);
 				exit;
 			}
