@@ -201,7 +201,7 @@
 		</div>
 		<div class="pin8-c-r">
 			<div class="pin8-c-des">
-				Apple iPhone 8 Plus (A1864) 64GB 金色 移动联通电信4G手机<br>
+				Apple iPhone 8 64GB 金色 移动联通电信4G手机<br>
 				【iPhone新品回馈】新一代iPhone，让智能看起来更不一样。9月22日上午8:00准时公布中奖结果！
 			</div>
 			<div class="pin8-c-price">
@@ -252,4 +252,4 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/pin8.js?v=1.1.9" src="/assets/js/require.js"></script>
+<script data-main="/js/pin8.js?v=1.1.10" src="/assets/js/require.js"></script>
