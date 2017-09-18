@@ -77,7 +77,7 @@
 					<ul class="nav nav-second-level collapse {{$menu.cls2}}" {{if $menu.flag}}aria-expanded="true"{{/if}}>
 						{{foreach from=$menu.items key=tmpId item=subMenu}}
 						<li>
-							<a href="{{$subMenu.url}}" class="nav-sub-menu {{$subMenu.cls2}}" data-pj="1">
+							<a href="{{$subMenu.url}}" class="nav-sub-menu {{$subMenu.cls2}}" data-pj="1" title="{{$subMenu.name}}">
 								{{$subMenu.name}}
 							</a>
 						</li>

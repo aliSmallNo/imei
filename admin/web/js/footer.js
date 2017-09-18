@@ -12,6 +12,7 @@ $.pjax({
 	container: '#page-wrapper',
 	show: 'fade',
 	cache: false,
+	title: '微媒100后台',
 	filter: function () {
 		if (mLastSubMenu) {
 			mLastSubMenu.removeClass('cur-sub-nav');
@@ -31,6 +32,7 @@ $.pjax({
 	container: '#page-wrapper',
 	show: 'fade',
 	cache: false,
+	title: '微媒100后台'
 });
 
 $('.admin-branch>a').on('click', function () {

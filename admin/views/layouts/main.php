@@ -2,7 +2,7 @@
 	<!DOCTYPE html>
 	<html lang="zh-cmn-Hans">
 	<head>
-		<title>媒婆100 - 运营维护后台</title>
+		<title>微媒100后台</title>
 		<meta charset="utf-8">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		<meta http-equiv="Cache-Control" content="no-siteapp, no-cache">
