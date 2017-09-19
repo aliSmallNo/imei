@@ -538,6 +538,8 @@ class FooController extends Controller
 		/*$version = curl_version();
 		var_dump($version);*/
 
+		UserWechat::refreshWXInfo('oYDJewx6Uj3xIV_-7ciyyDMLq8Wc');
+
 		/*$url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s&next_openid=%s';
 		$url = sprintf($url, $token, $next_openid);
 		$res = AppUtil::httpGet($url);
