@@ -162,6 +162,16 @@ class BaseController extends Controller
 		return isset($getInfo[$field]) ? trim($getInfo[$field]) : $defaultVal;
 	}
 
+	protected function getBundle(...$fields)
+	{
+		$getInfo = \Yii::$app->request->get();
+		$ret = [];
+		foreach ($fields as $field) {
+			$ret[$field] = isset($getInfo[$field]) ? trim($getInfo[$field]) : '';
+		}
+		return $ret;
+	}
+
 	protected function postParam($field, $defaultVal = "")
 	{
 		$postInfo = \Yii::$app->request->post();

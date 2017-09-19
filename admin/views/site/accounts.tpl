@@ -358,7 +358,7 @@
 	<ul class="nav nav-tabs">
 		{{foreach from=$partHeader key=key item=prod}}
 		<li class="ng-scope {{if $status == $key}}active{{/if}}">
-			<a href="/site/accounts?inactive={{$inactive}}&fonly={{$fonly}}&status={{$key}}&name={{$name}}&phone={{$phone}}&sub_status={{$sub_status}}"
+			<a href="/site/accounts?status={{$key}}{{$suffix}}"
 				 class="ng-binding">
 				{{$prod}} {{if $partCount[$key]}}<span class="badge">{{$partCount[$key]}}</span>{{/if}}
 			</a>
