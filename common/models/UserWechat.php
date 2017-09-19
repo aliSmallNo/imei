@@ -271,6 +271,9 @@ class UserWechat extends ActiveRecord
 		$getOpenIds = function ($pToken, $nextId) {
 			$openIds = [];
 			$next_openid = '';
+			// 公众号可通过本接口来获取帐号的关注者列表，关注者列表由一串OpenID（加密后的微信号，每个用户对每个公众号的OpenID是唯一的）组成。
+			// 一次拉取调用最多拉取10000个关注者的OpenID，可以通过多次拉取的方式来满足需求。
+			// $next_openid: 第一个拉取的OPENID，不填默认从头开始拉取
 			$url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s&next_openid=%s';
 			$url = sprintf($url, $pToken, $nextId);
 			$res = AppUtil::httpGet($url);
