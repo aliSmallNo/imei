@@ -1285,7 +1285,8 @@ class User extends ActiveRecord
 			$data["name"] = $row["uName"];
 			$data["gender"] = $row["uGender"] == 10 ? "female" : "male";
 			$data["age"] = date("Y") - $row["uBirthYear"];
-			$data["height"] = isset(User::$Height[$row["uHeight"]]) ? User::$Height[$row["uHeight"]] : "无身高";
+			//$data["height"] = isset(User::$Height[$row["uHeight"]]) ? User::$Height[$row["uHeight"]] : "无身高";
+			$data["height"] = $row["uHeight"]."cm";
 			$data["horos"] = isset(User::$Horos[$row["uHoros"]]) ? User::$Horos[$row["uHoros"]] : "无星座";
 			if ($data["horos"] && mb_strlen($data["horos"]) > 3) {
 				$data["horos"] = mb_substr($data["horos"], 0, 3);
