@@ -1543,8 +1543,7 @@ class WxController extends BaseController
 //			RedisUtil::setCache("", RedisUtil::KEY_WX_USER, $openId);
 //			AppUtil::setCookie(AppUtil::COOKIE_OPENID, "oYDJew5MfQtAT12g3Ocso0OKLMyA", time() - 1);
 //			exit;
-
-			print_r(WechatUtil::wxInfo($openId, 1));exit;
+			//print_r(WechatUtil::wxInfo($openId, 1));exit;
 		}
 
 		$openId = self::$WX_OpenId;
@@ -1552,10 +1551,6 @@ class WxController extends BaseController
 		$uId = $phone = '';
 
 		if ($wxInfo) {
-//			if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
-			//$wxInfo = WechatUtil::wxInfo("oYDJew5MfQtAT12g3Ocso0OKLMyA", 1);
-			//print_r($wxInfo);exit;
-//			}
 			$uId = $wxInfo['uId'];
 			$phone = $wxInfo['uPhone'];
 		} else {
