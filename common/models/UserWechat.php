@@ -322,7 +322,7 @@ class UserWechat extends ActiveRecord
 			$sql2 .= ',' . $field . '=:' . $field;
 		}
 
-		$getInfo = function ($pFields, $pToken, $arrIds, $cmd, $debugFlag) {
+		$getInfo = function ($pFields, $pToken, $arrIds, $cmd) {
 			$cnt = 0;
 			//$url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
 			$url = 'https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=%s';
@@ -341,9 +341,6 @@ class UserWechat extends ActiveRecord
 				return $cnt;
 			}
 			$users = $res['user_info_list'];
-			if ($debugFlag) {
-				var_dump(count($users));
-			}
 			foreach ($users as $user) {
 				$params = [
 					':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
@@ -376,7 +373,7 @@ class UserWechat extends ActiveRecord
 		foreach ($openIds as $id) {
 			$items[] = $id;
 			if (count($items) > 90) {
-				$updateCount += $getInfo($fields, $token, $items, $cmdUpdate, $debug);
+				$updateCount += $getInfo($fields, $token, $items, $cmdUpdate);
 				if ($debug && $updateCount % 200 == 0) {
 					echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . PHP_EOL;
 				}
@@ -384,7 +381,7 @@ class UserWechat extends ActiveRecord
 			}
 		}
 		if ($items) {
-			$updateCount += $getInfo($fields, $token, $items, $cmdUpdate, $debug);
+			$updateCount += $getInfo($fields, $token, $items, $cmdUpdate);
 			if ($debug && $updateCount % 200 == 0) {
 				echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . PHP_EOL;
 			}

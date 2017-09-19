@@ -17,7 +17,6 @@ use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\PushUtil;
-use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -537,9 +536,8 @@ class FooController extends Controller
 	{
 		/*$version = curl_version();
 		var_dump($version);*/
-
-		UserWechat::refreshWXInfo('oYDJewx6Uj3xIV_-7ciyyDMLq8Wc');
-
+		self::downloadFile('https://img.meipo100.com/2017/ic_default_t.jpg',
+			'/Users/weirui/Documents/' . time());
 		/*$url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s&next_openid=%s';
 		$url = sprintf($url, $token, $next_openid);
 		$res = AppUtil::httpGet($url);
@@ -566,7 +564,6 @@ class FooController extends Controller
 	{
 
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -580,11 +577,11 @@ class FooController extends Controller
 		$contentType = $httpInfo["content_type"];
 		$contentType = strtolower($contentType);
 		$ext = AppUtil::getExtName($contentType);
-
-		$downloaded_file = fopen($saveAs . '.' . $ext, 'w');
+		$saveAs .= '.' . $ext;
+		$downloaded_file = fopen($saveAs, 'w');
 		fwrite($downloaded_file, $file_content);
 		fclose($downloaded_file);
-		return $saveAs . '.' . $ext;
+		return $saveAs;
 	}
 
 	public function actionZp()
