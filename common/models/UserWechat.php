@@ -268,7 +268,19 @@ class UserWechat extends ActiveRecord
 			$conn = AppUtil::db();
 		}
 		$next_openid = '';
+		$openIds = [];
 		$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+		$url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s&next_openid=%s';
+		$url = sprintf($url, $token, $next_openid);
+		$res = AppUtil::httpGet($url);
+		$res = json_decode($res, 1);
+		if ($res && isset($res['data']['openid'])) {
+			$openIds = array_merge($openIds, $res['data']['openid']);
+			$next_openid = $res['next_openid'];
+			unset($res['data']['openid'] );
+			var_dump($res);
+		}
+
 		/*$url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s&next_openid=%s';
 		$url = sprintf($url, $token, $next_openid);
 		$res = AppUtil::httpGet($url);
