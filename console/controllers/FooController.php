@@ -576,7 +576,5 @@ class FooController extends Controller
 	public function actionZp()
 	{
 		// Stat::userRank('', true);
-		//echo array_rand([1, 2, 3, 4, 5, 6, 7, 8, 9], 1);
-
 	}
 }

@@ -432,11 +432,6 @@ class User extends ActiveRecord
 					$item[$newKey . '_t'] = isset($professions[$val]) ? $professions[$val] : '';
 				}
 				continue;
-			} elseif ($newKey == "height") {
-				//height_t
-				$item[$newKey . '_t'] = $val;
-				$item[$newKey] = $val;
-				continue;
 			}
 			if ($newKey == "note") {
 				if ($row["uNote"] == "dummy") {
