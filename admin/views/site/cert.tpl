@@ -132,7 +132,7 @@
 			<span class="status-{{$prod.certstatus}}">{{$prod.certstatus_t}}</span>
 		</td>
 		<td class="pInfo">
-			<img src="{{$prod.certimage}}?v=1.1.0" bsrc="{{$prod.cert_big}}?v=1.1.0" class="i-img">
+			<img src="{{$prod.certimage}}?v=1.1.1" bsrc="{{$prod.cert_big}}?v=1.1.1" class="i-img">
 		</td>
 		<td class="pInfo">
 			<h5>更新于{{$prod.certdate|date_format:'%y-%m-%d %H:%M'}}</h5>
