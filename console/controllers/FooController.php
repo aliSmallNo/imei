@@ -537,33 +537,6 @@ class FooController extends Controller
 		/*$version = curl_version();
 		var_dump($version);*/
 
-
-		$getOpenIds = function ($pToken, $nextId) {
-			$openIds = [];
-			$next_openid = '';
-			$url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s&next_openid=%s';
-			$url = sprintf($url, $pToken, $nextId);
-			$res = AppUtil::httpGet($url);
-			$res = json_decode($res, 1);
-			if ($res && isset($res['data']['openid'])) {
-				$openIds = array_merge($openIds, $res['data']['openid']);
-				$next_openid = $res['next_openid'];
-			}
-			return [$openIds, $next_openid];
-		};
-
-		$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
-		$next_openid = '';
-		$openIds = [];
-		for ($k = 0; $k < 20; $k++) {
-			list($ids, $next_openid) = $getOpenIds($token, $next_openid);
-			$openIds = array_merge($openIds, $ids);
-			var_dump(count($openIds));
-			var_dump($next_openid);
-			if (!$next_openid) break;
-		}
-
-
 		/*$url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s&next_openid=%s';
 		$url = sprintf($url, $token, $next_openid);
 		$res = AppUtil::httpGet($url);
