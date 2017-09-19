@@ -1408,6 +1408,15 @@ section
 			clear: left
 	a:active, a.cur
 		background: $mainColorLight
+	&.col6
+		a
+			&:nth-child(12n+2),
+			&:nth-child(12n+4),
+			&:nth-child(12n+6),
+			&:nth-child(12n+7),
+			&:nth-child(12n+9),
+			&:nth-child(12n+11)
+				background: $bgColor
 
 .edit
 	padding: 1.5rem

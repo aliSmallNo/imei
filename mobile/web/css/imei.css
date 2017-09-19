@@ -1325,6 +1325,8 @@ section {
     clear: left; }
   .cells a:active, .cells a.cur {
     background: #f487ac; }
+  .cells.col6 a:nth-child(12n+2), .cells.col6 a:nth-child(12n+4), .cells.col6 a:nth-child(12n+6), .cells.col6 a:nth-child(12n+7), .cells.col6 a:nth-child(12n+9), .cells.col6 a:nth-child(12n+11) {
+    background: #F4F4F4; }
 
 .edit {
   padding: 1.5rem; }

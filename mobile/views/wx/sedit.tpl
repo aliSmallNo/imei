@@ -341,6 +341,7 @@
 		{{/foreach}}
 	</div>
 </script>
+
 <script id="heightTemp" type="text/html">
 	<div class="cells col6 clearfix">
 		{{foreach from=$height key=key item=h}}
