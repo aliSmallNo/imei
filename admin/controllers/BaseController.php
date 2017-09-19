@@ -72,6 +72,7 @@ class BaseController extends Controller
 	{
 		$pjax = self::getHeader('X-PJAX');
 		$params['pjax'] = $pjax;
+
 		$params["debug"] = Admin::isDebugUser() ? 1 : 0;
 		if ($pjax) {
 			$this->layout = false;

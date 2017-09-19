@@ -342,9 +342,9 @@
 	</div>
 </script>
 <script id="heightTemp" type="text/html">
-	<div class="cells col5 clearfix">
+	<div class="cells col6 clearfix">
 		{{foreach from=$height key=key item=h}}
-		<a href="javascript:;" style="width: 20%"><em data-key="{{$key}}">{{$h}}</em></a>
+		<a href="javascript:;" style="width: 16.6%"><em data-key="{{$key}}">{{$h}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
