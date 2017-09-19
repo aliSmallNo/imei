@@ -544,8 +544,10 @@ class FooController extends Controller
 		$url = sprintf($url, $token, $next_openid);
 		$res = AppUtil::httpGet($url);
 		$res = json_decode($res, 1);
-		AppUtil::logFile($res, 5, __FUNCTION__, __LINE__);
-		var_dump($res);
+		if ($res && isset($res['data']['openid'])) {
+			$openIds = $res['data']['openid'];
+			AppUtil::logFile($openIds, 5, __FUNCTION__, __LINE__);
+		}
 
 		/*$uid = 139743;
 		$ret = User::greetUsers($uid);
