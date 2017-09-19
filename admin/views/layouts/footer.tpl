@@ -6,7 +6,7 @@
 <script src="/js/sb-admin-2.js"></script>
 <script src="/assets/js/iscroll.js"></script>
 <script src="/assets/js/countUp.js"></script>
-<script src="/assets/js/jquery.pjax.js"></script>
+<script src="/assets/js/jquery.pjax.js?v=1.1.1"></script>
 <script type="text/html" id="cModPwdTmp">
 	<div class="form-horizontal">
 		<div class="row-divider"></div>
@@ -60,7 +60,7 @@
 		</a>
 	</li>
 </script>
-<script src="/js/footer.js?v=1.5.2"></script>
+<script src="/js/footer.js?v=1.5.3"></script>
 </body>
 </html>
 {{/if}}
