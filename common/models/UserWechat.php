@@ -267,6 +267,14 @@ class UserWechat extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
+		$next_openid = '';
+		$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+		/*$url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s&next_openid=%s';
+		$url = sprintf($url, $token, $next_openid);
+		$res = AppUtil::httpGet($url);
+		$res = json_decode($res, 1);*/
+
+
 		$sql = "SELECT uOpenId FROM im_user WHERE uOpenId LIKE 'oYDJew%' ";
 		if ($openId) {
 			$sql .= " AND uOpenId in ('$openId') ";
@@ -293,8 +301,6 @@ class UserWechat extends ActiveRecord
 		foreach ($fields as $k => $field) {
 			$sql2 .= ',' . $field . '=:' . $field;
 		}
-
-		$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 
 		$updateInfo = function ($pFields, $pToken, $openId, $cmd, $debugFlag) {
 			$cnt = 0;
