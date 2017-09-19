@@ -547,6 +547,8 @@ class FooController extends Controller
 		if ($res && isset($res['data']['openid'])) {
 			$openIds = $res['data']['openid'];
 			AppUtil::logFile($openIds, 5, __FUNCTION__, __LINE__);
+			unset($res['data']['openid']);
+			var_dump($res);
 		}
 
 		/*$uid = 139743;
