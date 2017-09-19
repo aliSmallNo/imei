@@ -17,7 +17,6 @@ use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\PushUtil;
-use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -545,6 +544,7 @@ class FooController extends Controller
 		$url = sprintf($url, $token, $next_openid);
 		$res = AppUtil::httpGet($url);
 		$res = json_decode($res, 1);
+		AppUtil::logFile($res, 5, __FUNCTION__, __LINE__);
 		var_dump($res);
 
 		/*$uid = 139743;
