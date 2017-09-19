@@ -559,7 +559,7 @@ class FooController extends Controller
 			list($ids, $next_openid) = $getOpenIds($token, $next_openid);
 			$openIds = array_merge($openIds, $ids);
 			var_dump(count($openIds));
-			var_dump(count($next_openid));
+			var_dump($next_openid);
 			if (!$next_openid) break;
 		}
 
