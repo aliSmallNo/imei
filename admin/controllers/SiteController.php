@@ -270,14 +270,23 @@ class SiteController extends BaseController
 	 */
 	public function actionAccounts()
 	{
-		$page = self::getParam("page", 1);
+		$bundle = self::getBundle('page', 'name', 'phone', 'fonly', 'inactive', 'status', 'sub_status', 'user_type');
+		list($page, $name, $phone, $fonly, $inactive, $status, $sub_status, $user_type) = array_values($bundle);
+		if (!$page) $page = 1;
+		if (!$status) $status = 0;
+		$suffix = '';
+		foreach ($bundle as $field => $val) {
+			if ($field == 'status' || $field == 'page') continue;
+			$suffix .= '&' . $field . '=' . $val;
+		}
+		/*$page = self::getParam("page", 1);
 		$name = self::getParam('name');
 		$phone = self::getParam('phone');
 		$fonly = self::getParam('fonly', 0);
 		$inactive = self::getParam('inactive', 0);
 		$status = self::getParam('status', 0);
 		$subStatus = self::getParam('sub_status', 0);
-		$userType = self::getParam('user_type');
+		$userType = self::getParam('user_type');*/
 
 		$partCriteria = $criteria = $criteriaNote = [];
 		$criteria[] = " uStatus=:status ";
@@ -303,10 +312,10 @@ class SiteController extends BaseController
 			$params[':phone'] = "$phone%";
 			$criteriaNote[] = $phone;
 		}
-		if ($subStatus) {
-			$criteria[] = " uSubStatus=" . $subStatus;
-			$partCriteria[] = " uSubStatus=" . $subStatus;
-			$criteriaNote[] = User::$Substatus[$subStatus];
+		if ($sub_status) {
+			$criteria[] = " uSubStatus=" . $sub_status;
+			$partCriteria[] = " uSubStatus=" . $sub_status;
+			$criteriaNote[] = User::$Substatus[$sub_status];
 		}
 		$userTypes = [
 			'g11' => '男士',
@@ -314,26 +323,26 @@ class SiteController extends BaseController
 			'r10' => '单身',
 			'r20' => '媒婆',
 		];
-		switch ($userType) {
+		switch ($user_type) {
 			case 'r10':
 				$criteria[] = " uRole=10";
 				$partCriteria[] = " uRole=10";
-				$criteriaNote[] = $userTypes[$userType];
+				$criteriaNote[] = $userTypes[$user_type];
 				break;
 			case 'r20':
 				$criteria[] = " uRole=20";
 				$partCriteria[] = " uRole=20";
-				$criteriaNote[] = $userTypes[$userType];
+				$criteriaNote[] = $userTypes[$user_type];
 				break;
 			case 'g11':
 				$criteria[] = " uGender=11";
 				$partCriteria[] = " uGender=11";
-				$criteriaNote[] = $userTypes[$userType];
+				$criteriaNote[] = $userTypes[$user_type];
 				break;
 			case 'g10':
 				$criteria[] = " uGender=10";
 				$partCriteria[] = " uGender=10";
-				$criteriaNote[] = $userTypes[$userType];
+				$criteriaNote[] = $userTypes[$user_type];
 				break;
 			default:
 				break;
@@ -390,7 +399,7 @@ class SiteController extends BaseController
 		return $this->renderPage('accounts.tpl',
 			[
 				"status" => $status,
-				'sub_status' => $subStatus,
+				'sub_status' => $sub_status,
 				'list' => $list,
 				'stat' => $stat,
 				"name" => $name,
@@ -400,11 +409,12 @@ class SiteController extends BaseController
 				'pagination' => $pagination,
 				'category' => 'data',
 				'criteriaNote' => $criteriaNote,
-				'userType' => $userType,
+				'userType' => $user_type,
 				'userTypes' => $userTypes,
 				"partCount" => $partCount,
 				"partHeader" => User::$Status,
 				"subStatus" => User::$Substatus,
+				'suffix' => $suffix,
 				"dummys" => json_encode(User::dummyForChat(), JSON_UNESCAPED_UNICODE),
 			]);
 	}
