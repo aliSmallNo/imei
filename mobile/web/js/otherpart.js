@@ -22,6 +22,7 @@ require(["layer"],
 			gender: $('#cGENDER').val(),
 			uid: $('#cUID').val(),
 			sid: $('#cSUID').val(),
+			phone: $('#cPHONE').val(),
 
 			resultBg: $(".o-result-bg"),
 
@@ -68,19 +69,28 @@ require(["layer"],
 		});
 
 		function toTest() {
-			var id = $sls.uid;
-			var name = $.trim($sls.input1.val());
-			var gender = $('input[name=gender]:checked').val();
-			if (!name) {
-				showMsg('请先输入您的大名~');
-				return;
+			if (!$sls.phone) {
+				layer.open({
+					content: '您还没注册微媒100哦，现在去注册？',
+					btn: ['注册', '不要'],
+					yes: function (index) {
+						location.href = "/wx/imei";
+					}
+				});
+			} else {
+				var id = $sls.uid;
+				var name = $.trim($sls.input1.val());
+				var gender = $('input[name=gender]:checked').val();
+				if (!name) {
+					showMsg('请先输入您的大名~');
+					return;
+				}
+				if (!gender) {
+					showMsg('请先输入您的性别~');
+					return;
+				}
+				location.href = "/wx/otherpart?id=" + id + "&name=" + name + "&gender=" + gender;
 			}
-			if (!gender) {
-				showMsg('请先输入您的性别~');
-				return;
-			}
-
-			location.href = "/wx/otherpart?id=" + id + "&name=" + name + "&gender=" + gender;
 		}
 
 		function oshare() {

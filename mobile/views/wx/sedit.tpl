@@ -342,9 +342,9 @@
 	</div>
 </script>
 <script id="heightTemp" type="text/html">
-	<div class="cells col2 clearfix">
+	<div class="cells col5 clearfix">
 		{{foreach from=$height key=key item=h}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$h}}</em></a>
+		<a href="javascript:;" style="width: 20%"><em data-key="{{$key}}">{{$h}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
@@ -457,4 +457,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/sedit.js?v=1.3.1" src="/assets/js/require.js"></script>
+<script data-main="/js/sedit.js?v=1.3.2" src="/assets/js/require.js"></script>

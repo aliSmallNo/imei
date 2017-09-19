@@ -230,6 +230,7 @@ class WxController extends BaseController
 		} else {
 			$job = User::$ProfessionDict[100];
 		}
+
 		return self::renderPage("sedit.tpl",
 			[
 				'uInfo' => $uInfo,
@@ -1486,13 +1487,14 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		$sId = $uId = '';
+		$phone = $uId = $sId = '';
 		$sId = self::getParam("id");
 		$gender = self::getParam("gender");
 		$name = self::getParam("name");
 
 		if ($wxInfo) {
 			$uId = $wxInfo['uId'];
+			$phone = $wxInfo['uPhone'];
 		} else {
 			//header('location:/wx/index');
 			//exit();
@@ -1524,6 +1526,7 @@ class WxController extends BaseController
 
 		return self::renderPage("otherpart.tpl",
 			[
+				'phone' => $phone,
 				'sId' => $sId,
 				'uId' => $uId,
 				'gender' => $gender,
@@ -1543,8 +1546,7 @@ class WxController extends BaseController
 //			RedisUtil::setCache("", RedisUtil::KEY_WX_USER, $openId);
 //			AppUtil::setCookie(AppUtil::COOKIE_OPENID, "oYDJew5MfQtAT12g3Ocso0OKLMyA", time() - 1);
 //			exit;
-
-			print_r(WechatUtil::wxInfo($openId, 1));exit;
+			//print_r(WechatUtil::wxInfo($openId, 1));exit;
 		}
 
 		$openId = self::$WX_OpenId;
@@ -1552,10 +1554,6 @@ class WxController extends BaseController
 		$uId = $phone = '';
 
 		if ($wxInfo) {
-//			if ($openId == "oYDJew5MfQtAT12g3Ocso0OKLMyA") {
-			//$wxInfo = WechatUtil::wxInfo("oYDJew5MfQtAT12g3Ocso0OKLMyA", 1);
-			//print_r($wxInfo);exit;
-//			}
 			$uId = $wxInfo['uId'];
 			$phone = $wxInfo['uPhone'];
 		} else {

@@ -128,7 +128,7 @@
 </section>
 <section id="height">
 	<p class="m-header s1">请问您的身高是多少？</p>
-	<div class="cells col2 clearfix" data-tag="height">
+	<div class="cells col5 clearfix" data-tag="height">
 		{{foreach from=$height key=key item=h}}
 		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
