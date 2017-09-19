@@ -419,6 +419,7 @@ class User extends ActiveRecord
 			} elseif ($newKey == "height") {
 				//height_t
 				$item[$newKey . '_t'] = $val;
+				$item[$newKey] = $val;
 				continue;
 			}
 			if ($newKey == "note") {
