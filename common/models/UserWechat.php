@@ -267,8 +267,39 @@ class UserWechat extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$next_openid = '';
+
+		$getOpenIds = function ($pToken, $nextId) {
+			$openIds = [];
+			$next_openid = '';
+			$url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s&next_openid=%s';
+			$url = sprintf($url, $pToken, $nextId);
+			$res = AppUtil::httpGet($url);
+			$res = json_decode($res, 1);
+			if ($res && isset($res['data']['openid'])) {
+				$openIds = array_merge($openIds, $res['data']['openid']);
+				$next_openid = $res['next_openid'];
+			}
+			return [$openIds, $next_openid];
+		};
+
 		$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+		$next_openid = '';
+		$openIds = [];
+		for ($k = 0; $k < 20; $k++) {
+			list($ids, $next_openid) = $getOpenIds($token, $next_openid);
+			$openIds = array_merge($openIds, $ids);
+			if (!$next_openid) break;
+		}
+		$sql = 'update im_user_wechat set wSubscribe=0,wSubscribeDate=null,wSubscribeTime=0 WHERE wOpenId LIKE \'oYDJew%\' ';
+		$conn->createCommand($sql)->execute();
+		$sql = 'update im_user_wechat set wSubscribe=1,wUpdatedOn=now() WHERE wOpenId=:id AND wOpenId LIKE \'oYDJew%\' ';
+		$cmdSub = $conn->createCommand($sql);
+		foreach ($openIds as $oid){
+			$cmdSub->bindValues([
+				':id'=>$oid
+			])->execute();
+		}
+
 		/*$url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s&next_openid=%s';
 		$url = sprintf($url, $token, $next_openid);
 		$res = AppUtil::httpGet($url);
@@ -289,7 +320,7 @@ class UserWechat extends ActiveRecord
 			'unionid' => 'wUnionId',
 			'nickname' => 'wNickname',
 			'headimgurl' => 'wAvatar',
-			'subscribe' => 'wSubscribe',
+			//'subscribe' => 'wSubscribe',
 			'subscribe_time' => 'wSubscribeTime',
 			'sex' => 'wGender',
 			'city' => 'wCity',
@@ -336,13 +367,13 @@ class UserWechat extends ActiveRecord
 		$sql = 'UPDATE im_user_wechat SET wUpdatedOn=now(),wRawData=:raw,wSubscribeDate=:wSubscribeDate ' . $sql2
 			. ' WHERE wOpenId=:openid ';
 		$cmdUpdate = $conn->createCommand($sql);
-		$sql = 'UPDATE im_user_wechat SET wUpdatedOn=now(),wSubscribe=0,wSubscribeDate=null,wSubscribeTime=0,
+		/*$sql = 'UPDATE im_user_wechat SET wUpdatedOn=now(),wSubscribe=0,wSubscribeDate=null,wSubscribeTime=0,
 				wRawData = REPLACE(wRawData, \'"subscribe":1,\', \'"subscribe":0,\')
  				WHERE wOpenId=:openid ';
-		$cmdUpdate2 = $conn->createCommand($sql);
+		$cmdUpdate2 = $conn->createCommand($sql);*/
 		$updateCount = 0;
 		foreach ($openIds as $id) {
-			$cmdUpdate2->bindValues([':openid' => $id])->execute();
+//			$cmdUpdate2->bindValues([':openid' => $id])->execute();
 			$updateCount += $updateInfo($fields, $token, $id, $cmdUpdate, $debug);
 			if ($debug && $updateCount % 200 == 0) {
 				echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . PHP_EOL;
