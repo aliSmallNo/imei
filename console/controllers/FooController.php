@@ -17,7 +17,6 @@ use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\PushUtil;
-use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -535,8 +534,23 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$version = curl_version();
-		var_dump($version);
+		/*$version = curl_version();
+		var_dump($version);*/
+
+
+		$next_openid = '';
+		$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+		$url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s&next_openid=%s';
+		$url = sprintf($url, $token, $next_openid);
+		$res = AppUtil::httpGet($url);
+		$res = json_decode($res, 1);
+		if ($res && isset($res['data']['openid'])) {
+			$openIds = $res['data']['openid'];
+			AppUtil::logFile($openIds, 5, __FUNCTION__, __LINE__);
+			unset($res['data']['openid']);
+			var_dump($res);
+		}
+
 		/*$uid = 139743;
 		$ret = User::greetUsers($uid);
 		var_dump($ret);*/
