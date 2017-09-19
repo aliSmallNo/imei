@@ -589,7 +589,6 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, "oYDJew5MfQtAT12g3Ocso0OKLMyA");
-		print_r(json_decode($ret,1));
+
 	}
 }
