@@ -378,7 +378,7 @@ class UserWechat extends ActiveRecord
 		$items = [];
 		foreach ($openIds as $id) {
 			$items[] = $id;
-			if (count($items) > 20) {
+			if (count($items) > 90) {
 				$updateCount += $getInfo($fields, $token, $items, $cmdUpdate, $debug);
 				if ($debug && $updateCount % 200 == 0) {
 					echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . PHP_EOL;
