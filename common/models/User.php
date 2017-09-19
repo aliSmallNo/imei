@@ -79,6 +79,7 @@ class User extends ActiveRecord
 		185 => '181~185厘米', 190 => '185~190厘米', 195 => '191~195厘米',
 		200 => '196~200厘米', 205 => '201厘米以上',
 	];
+
 	static $HeightFilter = [
 		0 => "身高不限",
 		140 => '不到140cm', 145 => '145cm', 150 => '150cm',
@@ -414,6 +415,10 @@ class User extends ActiveRecord
 					$professions = self::$ProfessionDict[$row['uScope']];
 					$item[$newKey . '_t'] = isset($professions[$val]) ? $professions[$val] : '';
 				}
+				continue;
+			} elseif ($newKey == "height") {
+				//height_t
+				$item[$newKey . '_t'] = $val;
 				continue;
 			}
 			if ($newKey == "note") {
@@ -1197,7 +1202,7 @@ class User extends ActiveRecord
 				WHERE uId!=133491 and $condition  order by dist, rank desc, u.uRank desc limit $limit";
 		$ret = $conn->createCommand($sql)->queryAll();
 		// 置顶
-		if($page==1){
+		if ($page == 1) {
 			$sql = "select *,9999 as dist,20 as rank from im_user where uId in (133491)";
 			$Top = $conn->createCommand($sql)->queryAll();
 			$ret = array_merge($Top, $ret);

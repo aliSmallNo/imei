@@ -163,6 +163,10 @@ class WxController extends BaseController
 		}
 		$skipIndex = array_search('location', $routes) + 1;
 		$certImage = '../images/cert_sample.jpg';
+		$height = [];
+		for ($i = 135; $i < 200; $i++) {
+			$height[$i] = $i;
+		}
 
 		return self::renderPage("sreg.tpl",
 			[
@@ -172,7 +176,7 @@ class WxController extends BaseController
 				"maxYear" => 1999,
 				'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
 				"years" => User::$Birthyear,
-				"height" => User::$Height,
+				"height" => $height,//User::$Height,
 				"weight" => User::$Weight,
 				"income" => User::$Income,
 				"edu" => User::$Education,
