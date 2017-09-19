@@ -70,7 +70,7 @@ class BaseController extends Controller
 
 	public function renderPage($view, $params = [], $guestFlag = false)
 	{
-		$pjax = self::getParam('pjax');
+		$pjax = self::getHeader('X-PJAX');
 		$params['pjax'] = $pjax;
 		$params["debug"] = Admin::isDebugUser() ? 1 : 0;
 		if ($pjax) {

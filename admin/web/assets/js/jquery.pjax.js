@@ -167,7 +167,7 @@
 		titleSuffix : '',// 标题后缀
 		type : 'GET',
 		data : {
-			pjax : true
+			/*pjax : true*/
 		},
 		dataType : 'html',
 		callback : null, // 回调函数
