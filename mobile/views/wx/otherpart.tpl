@@ -103,6 +103,7 @@
 		margin: 1rem 0;
 		text-align: center;
 		color: #660000;
+
 	}
 
 	.o-gender label {
@@ -139,7 +140,7 @@
 		padding-top: 3rem;
 	}
 
-	.o-tip div .o-bot-r p{
+	.o-tip div .o-bot-r p {
 		margin: 1rem;
 		font-size: 1.2rem;
 	}
@@ -261,6 +262,7 @@
 	</div>
 	<i class="share-arrow">点击菜单分享</i>
 </div>
+<input type="hidden" id="cPHONE" value="{{$phone}}">
 <input type="hidden" id="cSUID" value="{{$sId}}">
 <input type="hidden" id="cUID" value="{{$uId}}">
 <input type="hidden" id="cNAME" value="{{$name}}">
@@ -269,4 +271,4 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/otherpart.js?v=1.1.4" src="/assets/js/require.js"></script>
+<script data-main="/js/otherpart.js?v=1.1.5" src="/assets/js/require.js"></script>
