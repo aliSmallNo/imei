@@ -290,9 +290,9 @@ class UserWechat extends ActiveRecord
 			$openIds = array_merge($openIds, $ids);
 			if (!$next_openid) break;
 		}
-		$sql = 'update im_user_wechat set wSubscribe=0,wSubscribeDate=null,wSubscribeTime=0 WHERE uOpenId LIKE \'oYDJew%\' ';
+		$sql = 'update im_user_wechat set wSubscribe=0,wSubscribeDate=null,wSubscribeTime=0 WHERE wOpenId LIKE \'oYDJew%\' ';
 		$conn->createCommand($sql)->execute();
-		$sql = 'update im_user_wechat set wSubscribe=1,wUpdatedOn=now() WHERE wOpenId=:id AND uOpenId LIKE \'oYDJew%\' ';
+		$sql = 'update im_user_wechat set wSubscribe=1,wUpdatedOn=now() WHERE wOpenId=:id AND wOpenId LIKE \'oYDJew%\' ';
 		$cmdSub = $conn->createCommand($sql);
 		foreach ($openIds as $oid){
 			$cmdSub->bindValues([
