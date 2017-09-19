@@ -17,6 +17,7 @@ use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\PushUtil;
+use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -576,6 +577,6 @@ class FooController extends Controller
 	{
 		// Stat::userRank('', true);
 		//echo array_rand([1, 2, 3, 4, 5, 6, 7, 8, 9], 1);
-		var_dump(WechatUtil::wxInfo("oYDJew5MfQtAT12g3Ocso0OKLMyA"));
+		RedisUtil::setCache("", RedisUtil::KEY_WX_USER, "oYDJew5MfQtAT12g3Ocso0OKLMyA");
 	}
 }
