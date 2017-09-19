@@ -1544,7 +1544,7 @@ class WxController extends BaseController
 //			AppUtil::setCookie(AppUtil::COOKIE_OPENID, "oYDJew5MfQtAT12g3Ocso0OKLMyA", time() - 1);
 //			exit;
 
-			//print_r(WechatUtil::wxInfo($openId, 1));exit;
+			print_r(WechatUtil::wxInfo($openId, 1));exit;
 		}
 
 		$openId = self::$WX_OpenId;

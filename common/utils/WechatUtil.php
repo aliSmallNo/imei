@@ -186,7 +186,6 @@ class WechatUtil
 		*/
 		for ($k = 0; $k < 3; $k++) {
 			$access_token = WechatUtil::accessToken($k > 0);
-			echo $access_token;
 			$url = sprintf($urlBase, $access_token, $openId);
 			$ret = AppUtil::httpGet($url);
 			$ret = json_decode($ret, 1);
@@ -194,7 +193,6 @@ class WechatUtil
 				break;
 			}
 		}
-		var_dump($ret);
 
 		if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
 			$ret['uId'] = UserWechat::upgrade($ret);
