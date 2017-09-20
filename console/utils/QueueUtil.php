@@ -34,7 +34,6 @@ class QueueUtil
 			$tube = self::QUEUE_TUBE;
 		}
 		try {
-
 			$beanstalk = new beanstalkSocket(self::$QueueConfig);
 			$beanstalk->connect();
 			//选择Tube
