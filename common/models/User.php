@@ -590,9 +590,10 @@ class User extends ActiveRecord
 		$st = self::STATUS_DELETE;
 		$sql = "select 
 				COUNT(1) as amt,
-				COUNT(CASE WHEN uPhone!='' AND uGender=11 THEN  1 END ) as male,
-				COUNT(CASE WHEN uPhone!='' AND uGender=10 THEN  1 END ) as female,
-				COUNT(CASE WHEN uPhone!='' AND uScope>0 THEN  1 END ) as reg,
+				COUNT(CASE WHEN uPhone!='' AND uRole in (10) AND uGender=11 THEN  1 END ) as male,
+				COUNT(CASE WHEN uPhone!='' AND uRole in (10) AND uGender=10 THEN  1 END ) as female,
+				COUNT(CASE WHEN uPhone!='' AND uRole in (20) THEN  1 END ) as mp,
+				COUNT(CASE WHEN uPhone!='' AND (uRole=20 or (uRole=10 AND uGender>9)) THEN  1 END ) as reg,
 				COUNT(CASE WHEN wSubscribe=1 THEN  1 END ) as follow
 				FROM im_user as u
 				JOIN im_user_wechat as w on w.wUId=u.uId
@@ -1584,11 +1585,11 @@ class User extends ActiveRecord
 		$sql = "SELECT 
 				COUNT(1) as amt,
 				COUNT(CASE WHEN u.uStatus=0 THEN 1 END) as visitor,
-				COUNT(CASE WHEN uRole>9 AND uStatus in (1,2,3) THEN 1 END) as member,
+				COUNT(CASE WHEN uPhone!='' AND (uRole=20 or (uRole=10 AND uGender>9)) THEN 1 END) as member,
 				SUM(IFNULL(w.wSubscribe,0)) as follows,
-				SUM(CASE WHEN u.uRole=20 AND uStatus in (1,2,3) THEN 1 END) as meipos,
-				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 AND uStatus in (1,2,3) THEN 1 END) as girls,
-				SUM(CASE WHEN u.uRole=10 AND u.uGender=11 AND uStatus in (1,2,3) THEN 1 END) as boys
+				SUM(CASE WHEN u.uRole=20 AND uPhone!='' THEN 1 END) as meipos,
+				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 AND uPhone!='' THEN 1 END) as girls,
+				SUM(CASE WHEN u.uRole=10 AND u.uGender=11 AND uPhone!='' THEN 1 END) as boys
 				FROM im_user as u
 				JOIN im_user_wechat as w on w.wUId=u.uId
 				WHERE uStatus<8 AND uAddedOn < :endDT ";

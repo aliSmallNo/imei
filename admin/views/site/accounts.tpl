@@ -339,6 +339,7 @@
 			<span><b>到访</b>{{$stat.amt}}</span>
 			<span><b>已关注</b>{{$stat.follow}}</span>
 			<span><b>已注册</b>{{$stat.reg}}</span>
+			<span><b>媒婆</b>{{$stat.mp}}</span>
 			<span><b>帅哥</b>{{$stat.male}}</span>
 			<span><b>美女</b>{{$stat.female}}</span>
 		</div>
