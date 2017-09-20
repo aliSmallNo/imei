@@ -51,7 +51,7 @@ class RedisUtil
 		self::KEY_ADDRESS => 86400,
 		self::KEY_WX_TOKEN => 4800,
 		self::KEY_WX_TICKET => 4800,
-		self::KEY_WX_USER => (3600 * 8),
+		self::KEY_WX_USER => 3600 * 8,
 		self::KEY_WX_PAY => 3600,
 		self::KEY_ADMIN_INFO => 86400 * 7,
 		self::KEY_PUB_CODE => 600,
