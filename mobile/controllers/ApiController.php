@@ -566,7 +566,7 @@ class ApiController extends Controller
 					'uid' => $userId,
 					'items' => []
 				];
-				if ($tag == 'sreg' && $userId) {
+				if ($tag == 'sreglite' && $userId) {
 					$data['items'] = User::greetUsers($userId);
 				}
 				return self::renderAPI(0, '保存成功啦~', $data);
