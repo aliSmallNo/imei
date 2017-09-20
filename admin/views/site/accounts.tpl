@@ -206,7 +206,7 @@
 
 	.stat-item {
 		font-size: 14px;
-		font-weight: 500;
+		font-weight: 400;
 		line-height: 44px;
 	}
 
@@ -217,6 +217,12 @@
 		width: auto;
 		padding: 0 2px 0 5px;
 		font-weight: 300;
+	}
+	.stat-item em{
+		font-style: normal;
+		font-size: 14px;
+		font-weight: 400;
+		color: #007aff;
 	}
 
 	.av-wrap {
@@ -337,11 +343,11 @@
 		<a href="/site/pins" class="btn btn-primary" target="_blank">地图分布</a>
 		<div class="stat-item">
 			<span><b>到访</b>{{$stat.amt}}</span>
-			<span><b>已关注</b>{{$stat.follow}}</span>
-			<span><b>已注册</b>{{$stat.reg}}</span>
-			<span><b>媒婆</b>{{$stat.mp}}</span>
-			<span><b>帅哥</b>{{$stat.male}}</span>
-			<span><b>美女</b>{{$stat.female}}</span>
+			<span><b>已关注</b><em>{{$stat.follow}}</em></span>
+			<span><b>已注册</b><em>{{$stat.reg0}}</em> / {{$stat.reg}}</span>
+			<span><b>媒婆</b><em>{{$stat.mp0}}</em> / {{$stat.mp}}</span>
+			<span><b>帅哥</b><em>{{$stat.male0}}</em> / {{$stat.male}}</span>
+			<span><b>美女</b><em>{{$stat.female0}}</em> / {{$stat.female}}</span>
 		</div>
 	</form>
 </div>
