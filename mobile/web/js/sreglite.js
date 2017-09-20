@@ -287,6 +287,7 @@ require(["layer"],
 				// SingleUtil.jobVal = {items: items};
 			},
 			submit: function () {
+				var util = this;
 				$sls.postData["img"] = $sls.serverId;
 				$sls.postData["coord"] = $sls.coord.val();
 				layer.open({
