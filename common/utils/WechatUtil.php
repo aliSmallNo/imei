@@ -410,6 +410,11 @@ class WechatUtil
 					"sub_button" => [
 						[
 							"type" => "view",
+							"name" => "测另一半",
+							"url" => $wxUrl . "/wx/otherpart"
+						],
+						[
+							"type" => "view",
 							"name" => "搞笑请帖",
 							"url" => $wxUrl . "/wx/marry2"
 						],

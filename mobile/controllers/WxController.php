@@ -52,7 +52,6 @@ class WxController extends BaseController
 	const URL_SINGLE_REG = '/wx/sreg#photo';
 	const URL_SWAP = '/wx/swap';
 
-
 	public function actionIndex()
 	{
 		$openId = self::$WX_OpenId;
