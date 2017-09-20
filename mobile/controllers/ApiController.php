@@ -544,6 +544,32 @@ class ApiController extends Controller
 					$data['items'] = User::greetUsers($userId);
 				}
 				return self::renderAPI(0, '保存成功啦~', $data);
+			case "sreglite":
+				$data = self::postParam('data');
+				$data = json_decode($data, 1);
+				$data["openId"] = $openId;
+				$phone = isset($data["phone"]) ? $data["phone"] : "";
+				$code = isset($data["code"]) ? $data["code"] : "";
+				if (!AppUtil::checkPhone($phone)) {
+					return self::renderAPI(129, '手机号格式不正确~');
+				}
+				$data["role"] = $role = ($tag == 'mreg') ? User::ROLE_MATCHER : User::ROLE_SINGLE;
+				if (!User::verifySMSCode($phone, $code)) {
+					// User::reg0($openId, $phone, $role, $gender, $location);
+					// return self::renderAPI(0, '你已成功注册成为游客了');
+					return self::renderAPI(129, '输入的验证码不正确或者已经失效');
+				}
+				$userId = User::reg($data);
+				//Rain: 刷新用户cache数据
+				UserWechat::getInfoByOpenId($openId, 1);
+				$data = [
+					'uid' => $userId,
+					'items' => []
+				];
+				if ($tag == 'sreg' && $userId) {
+					$data['items'] = User::greetUsers($userId);
+				}
+				return self::renderAPI(0, '保存成功啦~', $data);
 			case "album":
 				$f = self::postParam('f', 'add');
 				$text = ($f == "add" ? "添加" : '删除');
@@ -1653,7 +1679,7 @@ class ApiController extends Controller
 					"oKey" => Log::SPREAD_IP8,
 					"oUId" => $uid,
 					"oOpenId" => $openId,
-					"oBefore" => random_int(5,55),
+					"oBefore" => random_int(5, 55),
 					"oAfter" => json_encode([
 						"url" => $note,
 						"tag" => $subtag,

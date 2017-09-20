@@ -270,6 +270,79 @@ class WxController extends BaseController
 			'bg-color');
 	}
 
+
+	public function actionSreglite()
+	{
+		$openId = self::$WX_OpenId;
+		$nickname = $avatar = '';
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$uInfo = [];
+		$locInfo = [
+			['key' => 100100, 'text' => '北京市'],
+			['key' => 100105, 'text' => '朝阳区']
+		];
+		if ($wxInfo) {
+			$avatar = $wxInfo["Avatar"];
+			$nickname = $wxInfo["uName"];
+			if ($wxInfo["uGender"] < 10) {
+				header('location:' . self::URL_SINGLE_REG);
+				exit();
+			}
+			if ($wxInfo["uRole"] == User::ROLE_MATCHER) {
+			}
+			$uInfo = User::user(['uId' => $wxInfo['uId']]);
+		}
+		list($filter) = User::Filter($uInfo["filter"]);
+
+		$routes = ['photo', 'gender', 'location', 'year', 'horos', 'height', 'weight', 'income', 'edu', 'intro', 'scope',
+			'job', 'house', 'car', 'smoke', 'drink', 'belief', 'workout', 'diet', 'rest', 'pet', 'interest'];
+
+		if (isset($uInfo["scope"]) && $uInfo["scope"]) {
+			$job = User::$ProfessionDict[$uInfo["scope"]];
+		} else {
+			$job = User::$ProfessionDict[100];
+		}
+
+		return self::renderPage("sreglite.tpl",
+			[
+				//'uInfo' => $uInfo,
+				//'nickname' => $nickname,
+				//'avatar' => $avatar,
+				"maxYear" => 1999,
+				'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
+				"years" => User::$Birthyear,
+				"height" => User::$Height,
+//				"weight" => User::$Weight,
+				"gender" => User::$Gender,
+//				"income" => User::$Income,
+//				"edu" => User::$Education,
+//				"scope" => User::$Scope,
+//				"house" => User::$Estate,
+//				"car" => User::$Car,
+//				"smoke" => User::$Smoke,
+//				"drink" => User::$Alcohol,
+//				"belief" => User::$Belief,
+//				"workout" => User::$Fitness,
+//				"diet" => User::$Diet,
+//				"rest" => User::$Rest,
+//				"pet" => User::$Pet,
+//				"sign" => User::$Horos,
+				"marital" => User::$Marital,
+//				'routes' => json_encode($routes),
+//				'professions' => json_encode(User::$ProfessionDict),
+//				'locInfo' => $locInfo,
+//				'heightF' => User::$HeightFilter,
+//				'ageF' => User::$AgeFilter,
+//				'incomeF' => User::$IncomeFilter,
+//				'eduF' => User::$EducationFilter,
+//				"job" => json_encode($job),
+//				"filter" => $filter,
+			],
+			'terse',
+			'40秒闪电注册,本地好友尽在眼前',
+			'bg-color');
+	}
+
 	public function actionMedit()
 	{
 		$openId = self::$WX_OpenId;
