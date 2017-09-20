@@ -534,9 +534,9 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		WechatUtil::createWechatMenus();
-		/*$version = curl_version();
-		var_dump($version);*/
+//		WechatUtil::createWechatMenus();
+		$version = curl_version();
+		var_dump($version);
 		/*self::downloadFile('https://img.meipo100.com/2017/ic_default_t.jpg',
 			'/Users/weirui/Documents/' . time());*/
 		/*$url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s&next_openid=%s';
