@@ -37,11 +37,24 @@
 		display: block;
 		border-radius: 2px;
 	}
+
+	.sreglite-tip {
+		padding: 1rem;
+	}
+
+	.sreglite-tip h4 {
+		font-size: 1.5rem;
+	}
+
+	.sreglite-tip span {
+		font-size: 1rem;
+		color: #777;
+	}
 </style>
 <div class="m-popup-shade"></div>
 
-<div class="nav">
-	<a href="/wx/single#sme">返回</a>
+<div class="sreglite-tip">
+	<h4>微信为媒，真实100%</h4><span>40秒完成注册，本地婚恋交友尽在眼前</span>
 </div>
 <div class="sedit-avart">
 	<img src="" class="bg-blur">

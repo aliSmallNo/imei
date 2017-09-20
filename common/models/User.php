@@ -132,7 +132,7 @@ class User extends ActiveRecord
 	];
 
 	static $Marital = [
-		100 => "未婚", 110 => "离异不带孩", 120 => "离异带孩"
+		100 => "未婚", 110 => "离异不带孩", 120 => "离异带孩",130 => "已婚"
 	];
 
 	static $EducationFilter = [
