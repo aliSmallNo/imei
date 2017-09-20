@@ -41,6 +41,7 @@ require(["layer"],
 			height: "",
 			salary: "",
 			edu: "",
+			bgblur: $(".bg-blur"),
 			avatar: $(".avatar"),
 			nickname: $(".nickname"),
 			gender: "",
@@ -170,6 +171,7 @@ require(["layer"],
 								var localId = localIds[0];
 								util.avatar.attr("localId", localId);
 								util.avatar.attr("src", localId);
+								util.bgblur.attr("src", localId);
 								DrawUtil.toggle(false);
 							}
 						}
