@@ -588,6 +588,6 @@ class FooController extends Controller
 	public function actionZp()
 	{
 		$ret = WechatUtil::createWechatMenus();
-		echo json_encode($ret, JSON_UNESCAPED_UNICODE);
+		var_dump($ret);
 	}
 }
