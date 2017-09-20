@@ -586,6 +586,6 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-
+		WechatUtil::createWechatMenus();
 	}
 }
