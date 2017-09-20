@@ -297,13 +297,13 @@ require(["layer"],
 					tag: "sreglite",
 					data: JSON.stringify($sls.postData),
 				}, function (res) {
+					layer.closeAll();
 					if (res.code == 0) {
 						// setTimeout(function () {
 						// 	location.href = "/wx/single";
 						// 	layer.closeAll();
 						// }, 500);
 
-						layer.closeAll();
 						if (res.data && res.data.items && res.data.items.length) {
 							var html = Mustache.render(util.greetingTmp, res.data);
 							util.toggle(html);
