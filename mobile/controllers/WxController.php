@@ -57,7 +57,8 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		$url = '/wx/imei';
+		//$url = '/wx/imei';
+		$url = '/wx/sreglite';
 		if ($wxInfo) {
 			LogAction::add($wxInfo["uId"], $openId, LogAction::ACTION_LOGIN);
 			if ($wxInfo["uRole"] == User::ROLE_MATCHER) {

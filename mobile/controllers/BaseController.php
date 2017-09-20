@@ -91,7 +91,7 @@ class BaseController extends Controller
 		$wxUserInfo = UserWechat::getInfoByOpenId($openId);
 
 		$newActionId = $anchor = '';
-		$safeActions = ['share', 'invite', "pin8", "otherpart", "sreglite"];
+		$safeActions = ['share', 'invite', "pin8", "otherpart"];
 		if (in_array($actionId, $safeActions)) {
 			return;
 		}
@@ -100,7 +100,8 @@ class BaseController extends Controller
 //			exit;
 //		} else
 		if (!$wxUserInfo || !isset($wxUserInfo['uPhone']) || !$wxUserInfo['uPhone'] || !$wxUserInfo['uRole']) {
-			$newActionId = 'imei';
+			//$newActionId = 'imei';
+			$newActionId = 'sreglite';
 		} elseif (!$wxUserInfo['uLocation']) {
 			$newActionId = $wxUserInfo['uRole'] == User::ROLE_SINGLE ? 'sreg' : 'mreg';
 			$anchor = User::ROLE_SINGLE ? '#photo' : '';
