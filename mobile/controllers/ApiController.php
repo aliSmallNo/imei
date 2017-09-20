@@ -559,6 +559,7 @@ class ApiController extends Controller
 					// return self::renderAPI(0, '你已成功注册成为游客了');
 					return self::renderAPI(129, '输入的验证码不正确或者已经失效');
 				}
+				$data["phone"] = $phone;
 				$userId = User::reg($data);
 				//Rain: 刷新用户cache数据
 				UserWechat::getInfoByOpenId($openId, 1);
