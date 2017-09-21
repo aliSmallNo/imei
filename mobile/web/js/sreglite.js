@@ -201,7 +201,7 @@ require(["layer"],
 						};
 						lItem.push(item);
 					});
-					if (lItem.length < 3) {
+					if (lItem.length < 2) {
 						showMsg("所在城市还没填写哦~");
 						return;
 					}
@@ -215,7 +215,7 @@ require(["layer"],
 						};
 						hItem.push(item);
 					});
-					if (hItem.length < 3) {
+					if (hItem.length < 2) {
 						showMsg("籍贯还没填写哦~");
 						return;
 					}
