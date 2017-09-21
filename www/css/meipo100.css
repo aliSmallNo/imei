@@ -1,11 +1,5 @@
 body, html {
-	/*font-size: 10px;
-	font-size: -moz-calc(100vw / 32);
-	font-size: -webkit-calc(100vw / 32);
-	font-size: calc(100vw / 32);
-	color: #000;
 	font-family: 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	height: 100%;*/
 }
 
 body, html, a, p, ul, div, h4, h5, h6 {
@@ -157,71 +151,6 @@ body, html, a, p, ul, div, h4, h5, h6 {
 .pcpage .phone .component {
 	position: absolute
 }
-/*
-.pcpage .phone .pg1c {
-	background: url(//zlpic.1meipo.com/spa/home/pc/01-pops.png);
-	-webkit-background-size: 100% 100%;
-	-ms-background-size: 100% 100%;
-	-moz-background-size: 100% 100%;
-	-o-background-size: 100% 100%;
-	background-size: 100% 100%;
-	width: 360px;
-	height: 60px;
-	left: -52px;
-	top: 365px
-}
-
-.pcpage .phone .pg2c {
-	background: url(//zlpic.1meipo.com/spa/home/pc/02-pops.png);
-	-webkit-background-size: 100% 100%;
-	-ms-background-size: 100% 100%;
-	-moz-background-size: 100% 100%;
-	-o-background-size: 100% 100%;
-	background-size: 100% 100%;
-	width: 360px;
-	height: 79px;
-	left: -52px;
-	top: 255px
-}
-
-.pcpage .phone .pg3c {
-	background: url(//zlpic.1meipo.com/spa/home/pc/03-button.png);
-	-webkit-background-size: 100% 100%;
-	-ms-background-size: 100% 100%;
-	-moz-background-size: 100% 100%;
-	-o-background-size: 100% 100%;
-	background-size: 100% 100%;
-	width: 142px;
-	height: 64px;
-	right: -15px;
-	top: 305px
-}
-
-.pcpage .phone .pg4chb {
-	background: url(//zlpic.1meipo.com/spa/home/pc/04-hb.png);
-	-webkit-background-size: 100% 100%;
-	-ms-background-size: 100% 100%;
-	-moz-background-size: 100% 100%;
-	-o-background-size: 100% 100%;
-	background-size: 100% 100%;
-	width: 347px;
-	height: 253px;
-	top: 80px;
-	left: -45px
-}
-
-.pcpage .phone .pg4cmp {
-	background: url(//zlpic.1meipo.com/spa/home/pc/04-smallmp.png);
-	-webkit-background-size: 100% 100%;
-	-ms-background-size: 100% 100%;
-	-moz-background-size: 100% 100%;
-	-o-background-size: 100% 100%;
-	background-size: 100% 100%;
-	width: 300px;
-	height: 105px;
-	bottom: 25px;
-	left: 0
-}*/
 
 .pcpage .right {
 	position: absolute;
@@ -260,7 +189,7 @@ body, html, a, p, ul, div, h4, h5, h6 {
 }
 
 .pcpage .app .wx {
-	width: 120px;
+	width: 160px;
 	position: absolute;
 	left: 70px;
 	top: 0;
@@ -270,9 +199,13 @@ body, html, a, p, ul, div, h4, h5, h6 {
 }
 
 .pcpage .app .wx img {
-	width: 120px;
-	height: 120px;
+	width: 160px;
+	height: 160px;
 	margin-bottom: 5px
+}
+
+.wx span {
+	font-size: 15px;
 }
 
 .pcpage .app a {
