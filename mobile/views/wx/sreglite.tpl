@@ -184,6 +184,12 @@
 		<em data-key=""></em>
 	</div>
 </a>
+<a class="sedit-alert action-com" data-field="horos">
+	<label>星座</label>
+	<div class="sedit-alert-val action-val">
+		<em data-key=""></em>
+	</div>
+</a>
 <a class="sedit-alert action-com" data-field="height">
 	<label>身高</label>
 	<div class="sedit-alert-val action-val">
@@ -218,6 +224,13 @@
 	<div class="cells col4 clearfix" data-tag="year">
 		{{foreach from=$years key=key item=y}}
 		<a href="javascript:;" style="width: 25%"><em data-key="{{$key}}">{{$y}}</em></a>
+		{{/foreach}}
+	</div>
+</script>
+<script id="horosTemp" type="text/html">
+	<div class="cells col2 clearfix" data-tag="horos">
+		{{foreach from=$horos key=key item=h}}
+		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$h}}</em></a>
 		{{/foreach}}
 	</div>
 </script>

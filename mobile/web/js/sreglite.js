@@ -221,7 +221,7 @@ require(["layer"],
 					}
 					$sls.postData["homeland"] = JSON.stringify(hItem);
 
-					var comFiledsT = {gender: "性别", marital: "婚姻状态", year: "出生年份", height: "身高"};
+					var comFiledsT = {gender: "性别", marital: "婚姻状态", year: "出生年份", height: "身高", sign: "星座"};
 					var err = 0;
 					$(".action-com").each(function () {
 						var self = $(this);
