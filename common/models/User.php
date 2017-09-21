@@ -460,6 +460,9 @@ class User extends ActiveRecord
 		if ($item['horos_t'] && mb_strlen($item['horos_t']) > 3) {
 			$item['horos_t'] = mb_substr($item['horos_t'], 0, 3);
 		}
+		if ($item['height_t'] && strpos($item['height_t'], 'cm') === false) {
+			$item['height_t'] .= 'cm';
+		}
 		$item['vip'] = intval($item['vip']);
 		$item['album'] = json_decode($item['album'], 1);
 		if (!$item['album']) {
