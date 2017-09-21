@@ -704,6 +704,16 @@ class WxController extends BaseController
 			'nickname' => $nickname,
 			'avatar' => $avatar,
 			'uInfo' => $uInfo,
+
+
+
+
+
+
+
+
+
+
 			'prices' => $prices,
 			'encryptId' => $encryptId,
 			'hint' => $hint,
