@@ -587,7 +587,17 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		$ret = WechatUtil::createWechatMenus();
-		echo json_encode($ret, JSON_UNESCAPED_UNICODE);
+		/**
+		$string = "http://www.meipo.com/wx/single";
+		$token = strtok($string, "/");
+		$arr[] = $token;
+		while ($token != false) {
+		$token = strtok("/");
+		//echo $token.(integer)strtok("/")."\n";
+		$arr[] = $token;
+		}
+		print_r($arr);
+		 */
+
 	}
 }
