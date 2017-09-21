@@ -157,7 +157,7 @@ body, html, a, p, ul, div, h4, h5, h6 {
 .pcpage .phone .component {
 	position: absolute
 }
-
+/*
 .pcpage .phone .pg1c {
 	background: url(//zlpic.1meipo.com/spa/home/pc/01-pops.png);
 	-webkit-background-size: 100% 100%;
@@ -221,7 +221,7 @@ body, html, a, p, ul, div, h4, h5, h6 {
 	height: 105px;
 	bottom: 25px;
 	left: 0
-}
+}*/
 
 .pcpage .right {
 	position: absolute;
