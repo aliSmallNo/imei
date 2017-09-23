@@ -359,6 +359,8 @@ class UserWechat extends ActiveRecord
 						$params[':wSubscribeDate'] = date('Y-m-d H:i:s', $val);
 					}
 				}
+				AppUtil::logFile($params, 5, __FUNCTION__, __LINE__);
+				AppUtil::logFile($cmd->getRawSql(), 5, __FUNCTION__, __LINE__);
 				$cnt += $cmd->bindValues($params)->execute();
 			}
 			return $cnt;
