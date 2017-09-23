@@ -290,6 +290,10 @@ class UserWechat extends ActiveRecord
 		// Rain: openId为空，表示更新全部
 		if ($openId) {
 			$openIds[] = $openId;
+			$sql = 'update im_user_wechat set wSubscribe=0,wSubscribeDate=null,wSubscribeTime=0 WHERE wOpenId=:id ';
+			$conn->createCommand($sql)->bindValues([
+				':id' => $openId
+			])->execute();
 		} else {
 			$next_openid = '';
 			for ($k = 0; $k < 20; $k++) {
@@ -360,8 +364,6 @@ class UserWechat extends ActiveRecord
 						$params[':wSubscribeDate'] = date('Y-m-d H:i:s', $val);
 					}
 				}
-				AppUtil::logFile($params, 5, __FUNCTION__, __LINE__);
-				AppUtil::logFile($cmd->getRawSql(), 5, __FUNCTION__, __LINE__);
 				$cnt += $cmd->bindValues($params)->execute();
 			}
 			return $cnt;
