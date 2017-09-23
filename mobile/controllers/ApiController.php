@@ -485,6 +485,38 @@ class ApiController extends Controller
 						['title' => "已经<br>签到", 'prize' => $prize]);
 				}
 				break;
+			case "lot2":
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				$uId = $wxInfo["uId"];
+				if (UserWechat::findOne(["wOpenId" => $openId])->wSubscribe != 1) {
+					return self::renderAPI(129, '您还没关注微媒100公众号哦~');
+				}
+				$prize = [2 => "50M流量", 4 => "100M流量", 10 => "30M流量"];
+				$a = [2, 4, 10];
+				$i = array_rand($a, 1);
+				$p = $a[$i];
+				$co = 0;
+				if ($log = Log::findOne(["oCategory" => Log::CAT_SPREAD, "oKey" => Log::SPREAD_LOT2, "oUId" => $uId])) {
+					$co = $log->oBefore;
+				}
+				if ($co > 1) {
+					return self::renderAPI(129, '您没有抽奖机会了哦~');
+				}
+				if (0) {
+					Log::add([
+						"oCategory" => Log::CAT_SPREAD,
+						"oKey" => Log::SPREAD_LOT2,
+						"oUId" => $uId,
+						"oOpenId" => $openId,
+						"oAfter" => $p,
+						"oBefore" => $co++,
+					]);
+				}
+				return self::renderAPI(0, '恭喜您获得' . $prize[$p], $p);
+				break;
 			case 'follow':
 				$uid = self::postParam('uid', 0);
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
@@ -1687,6 +1719,11 @@ class ApiController extends Controller
 					], JSON_UNESCAPED_UNICODE),
 				]);
 				return self::renderAPI(0, '参与成功~', Log::countSpread());
+				break;
+			case "lot2":
+				if (UserWechat::findOne(["wOpenId" => $openId])->wSubscribe != 1) {
+					return self::renderAPI(129, '您还没关注微媒100公众号哦~');
+				}
 				break;
 		}
 		return self::renderAPI(129, '操作无效~');

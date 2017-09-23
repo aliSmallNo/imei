@@ -1633,4 +1633,26 @@ class WxController extends BaseController
 	}
 
 
+	public function actionLot2()
+	{
+		$title = '微媒100-抽奖';
+
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/index');
+			exit();
+		}
+
+
+		return self::renderPage('lot2.tpl',
+			[
+
+			],
+			'terse',
+			$title,
+			'bg-lot2');
+	}
+
+
 }

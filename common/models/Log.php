@@ -20,6 +20,7 @@ class Log extends ActiveRecord
 
 	const SPREAD_PART = 500;//测试的你另一半长相
 	const SPREAD_IP8 = 510;//0元抽iphone8Plus
+	const SPREAD_LOT2 = 520;//抽奖活动
 
 	public static function tableName()
 	{
