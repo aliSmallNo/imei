@@ -347,7 +347,8 @@ class UserWechat extends ActiveRecord
 			foreach ($users as $user) {
 				$params = [
 					':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
-					':openid' => $user['openid']
+					':openid' => $user['openid'],
+					':wSubscribeDate' => ''
 				];
 				foreach ($pFields as $k => $field) {
 					$val = isset($user[$k]) ? $user[$k] : '';
