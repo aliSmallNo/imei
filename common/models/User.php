@@ -1323,8 +1323,9 @@ class User extends ActiveRecord
 			$result[] = $data;
 		}
 
-		if (count($ret) == $pageSize) {
+		if (count($ret) >= $pageSize) {
 			$nextpage = $page + 1;
+			array_pop($result);
 		} else {
 			$nextpage = 0;
 		}
