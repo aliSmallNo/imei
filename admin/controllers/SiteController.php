@@ -836,20 +836,20 @@ class SiteController extends BaseController
 			]);
 	}
 
-
 	public function actionSearchnet()
 	{
 		$id = self::getParam("id");
-		$info = User::find()->where(["uId" => $id])->asArray()->one();
-
+		$info = User::findOne(['uId' => $id]);
+		if ($info) {
+			$info = $info->toArray();
+		}
 		return $this->renderPage("searchnet.tpl",
 			[
 				'info' => $info,
 				'category' => 'data',
 				'detailcategory' => 'site/net',
 				'relations' => UserNet::$RelDict,
-			]
-		);
+			]);
 	}
 
 	public function actionFeedback()
