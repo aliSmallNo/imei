@@ -216,10 +216,12 @@ class User extends ActiveRecord
 	const SUB_ST_NORMAL = 1;
 	const SUB_ST_STAFF = 2;
 	const SUB_ST_FISH = 3;
+	const SUB_ST_STICK = 4;
 	static $Substatus = [
 		self::SUB_ST_NORMAL => "普通用户",
 		self::SUB_ST_STAFF => "员工用户",
 		self::SUB_ST_FISH => "鲶鱼用户",
+		self::SUB_ST_STICK => "置顶用户",
 	];
 
 	const ROLE_SINGLE = 10;
@@ -1323,9 +1325,8 @@ class User extends ActiveRecord
 			$result[] = $data;
 		}
 		$next_page = 0;
-		if (count($ret) >= $pageSize) {
+		if (count($result) >= $pageSize) {
 			$next_page = $page + 1;
-//			array_pop($result);
 		}
 		//Rain: 不想展示太多页了
 		if ($next_page > 12) {
