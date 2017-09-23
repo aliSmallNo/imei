@@ -1200,7 +1200,7 @@ class User extends ActiveRecord
 			$condition .= " and u.uIncome > $income ";
 		}*/
 
-		$limit = ($page - 1) * $pageSize . "," . ($pageSize + 1);
+		$limit = ($page - 1) * $pageSize . "," . $pageSize;
 
 		$relation_mp = UserNet::REL_BACKER;
 		$relation_favor = UserNet::REL_FAVOR;
@@ -1322,18 +1322,16 @@ class User extends ActiveRecord
 			$data["singleF"] = $isSingle;
 			$result[] = $data;
 		}
-
+		$next_page = 0;
 		if (count($ret) >= $pageSize) {
-			$nextpage = $page + 1;
-			array_pop($result);
-		} else {
-			$nextpage = 0;
+			$next_page = $page + 1;
+//			array_pop($result);
 		}
 		//Rain: 不想展示太多页了
-		if ($nextpage > 12) {
-			$nextpage = 0;
+		if ($next_page > 12) {
+			$next_page = 0;
 		}
-		return ["data" => $result, "nextpage" => $nextpage, "condition" => $myFilter, 'page' => $page];
+		return ["data" => $result, "nextpage" => $next_page, "condition" => $myFilter, 'page' => $page];
 	}
 
 	public static function mymp($openId)
