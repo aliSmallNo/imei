@@ -1200,7 +1200,7 @@ class User extends ActiveRecord
 			$condition .= " and u.uIncome > $income ";
 		}*/
 
-		$limit = ($page - 1) * $pageSize . "," . $pageSize;
+		$limit = ($page - 1) * $pageSize . "," . ($pageSize + 1);
 
 		$relation_mp = UserNet::REL_BACKER;
 		$relation_favor = UserNet::REL_FAVOR;
