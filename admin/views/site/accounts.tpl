@@ -37,6 +37,11 @@
 		background: #a8a8a8;
 	}
 
+	.pInfo span.subst {
+		border: 1px solid #f61;
+		color: #f50;
+	}
+
 	.m-role {
 		font-size: 12px;
 		line-height: 16px;
@@ -218,7 +223,8 @@
 		padding: 0 2px 0 5px;
 		font-weight: 300;
 	}
-	.stat-item em{
+
+	.stat-item em {
 		font-style: normal;
 		font-size: 14px;
 		font-weight: 400;
@@ -317,6 +323,8 @@
 		font-weight: 400;
 		font-size: 12px;
 	}
+
+
 </style>
 <div class="row">
 	<h4>用户列表</h4>
@@ -405,7 +413,7 @@
 			<em>{{$prod.phone}} {{$prod.wechatid}} {{$prod.location_t}} (籍贯: {{$prod.homeland_t}})</em>
 			<em style="display: none">{{$prod.note_t}}</em>
 			<span class="sub{{$prod.subscribe}}">{{if $prod.subscribe}}已关注{{else}}未关注{{/if}}</span>
-			{{if $prod.substatus>1}}<span>{{$prod.substatus_t}}</span>{{/if}}
+			{{if $prod.substatus>1}}<span class="subst">{{$prod.substatus_t}}</span>{{/if}}
 			<span class="status-{{if $prod.note_t}}10{{else}}{{$prod.status}}{{/if}}">{{if $prod.note_t}}{{$prod.note_t}}{{else}}{{$prod.status_t}}{{/if}}</span>
 			<span class="status-1">{{if $prod.certstatus==2}}{{$prod.certstatus_t}}{{/if}}</span>
 			<div class="perc-wrap">
