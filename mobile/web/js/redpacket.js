@@ -98,8 +98,8 @@ require(["layer"],
 			submit: function () {
 				var uitl = this;
 				var ling = $.trim(uitl.ling.val());
-				var amt = parseInt(uitl.amt.val(), 10);
-				var count = parseInt(uitl.count.val(), 10);
+				var amt = parseInt(uitl.amt.val());
+				var count = parseInt(uitl.count.val());
 				if (uitl.loading) {
 					return;
 				}
@@ -130,7 +130,7 @@ require(["layer"],
 				util.paying = 1;
 				$.post('/api/wallet',
 					{
-						tag: 'recharge',
+						tag: 'rechargeredpacket',
 						amt: amt
 					},
 					function (resp) {
