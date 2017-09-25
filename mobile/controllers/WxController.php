@@ -1637,8 +1637,6 @@ class WxController extends BaseController
 			header('location:/wx/index');
 			exit();
 		}
-
-
 		return self::renderPage('lot2.tpl',
 			[
 
@@ -1689,5 +1687,4 @@ class WxController extends BaseController
 			"语音红包",
 			'bg-graplist');
 	}
-
 }
