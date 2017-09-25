@@ -1,0 +1,25 @@
+db: 
+    class: yii\db\Connection
+    tablePrefix: im_
+    username: cdb_outerroot
+    password: y1sVt0vB7Zyn9ssJ
+    dsn: 'mysql:host=57cd732c929ed.bj.cdb.myqcloud.com;port=5704;dbname=imei'
+    attributes:
+        2: 10
+redis:
+    class: yii\redis\Connection
+    hostname: 10.66.137.99
+    port: 6379
+    password: crs-fieg566s:keJ9drukB27Dm05X
+    database: 0
+sphinx:
+    class: yii\sphinx\Connection
+    dsn: 'mysql:host=127.0.0.1;port=9306;'
+    username: ''
+    password: ''
+hostnames:
+    notify: 'http://api.meipo100.com'
+    api: 'http://api.meipo100.com'
+    wechat: 'https://wx.meipo100.com'
+    admin: 'https://admin.meipo100.com'
+scene: 'prod'

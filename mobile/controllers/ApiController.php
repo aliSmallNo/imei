@@ -1490,7 +1490,6 @@ class ApiController extends Controller
 			case 'create':
 				$data = self::postParam('data');
 				$data = json_decode($data, 1);
-				$payId = isset($data["payId"]) && $data["payId"] ? $data["payId"] : 0;
 				$ling = isset($data["ling"]) ? $data["ling"] : '';
 				$amt = isset($data["amt"]) ? $data["amt"] : 0;
 				$count = isset($data["count"]) ? $data["count"] : 0;
@@ -1503,6 +1502,18 @@ class ApiController extends Controller
 				if ($count <= 1) {
 					return self::renderAPI(129, '数量还没填');
 				}
+<<<<<<< HEAD
+				$payId = 10;
+				UserTrans::CalRedPacketRemain($uid);
+				RedPacket::add([
+					"rUId" => $uid,
+					"rAmount" => $amt,
+					"rCode" => $ling,
+					"rCount" => $count,
+					"rPayId" => $payId,
+				]);
+
+=======
 				if (!$payId) {
 					// 余额发红包
 					$remain = UserTrans::CalRedPacketRemain($uid);
@@ -1531,6 +1542,7 @@ class ApiController extends Controller
 					]);
 					return self::renderAPI(0, '');
 				}
+>>>>>>> 40c10711ebdd196c526aa49ac74c2b0916ed67a8
 				break;
 		}
 
