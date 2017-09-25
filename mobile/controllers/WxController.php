@@ -1656,6 +1656,7 @@ class WxController extends BaseController
 		}
 		$uid = $wxInfo["uId"];
 		$remain = UserTrans::CalRedPacketRemain($uid);
+		echo $remain;exit;
 		return self::renderPage('redpacket.tpl',
 			[
 				"remain" => $remain,

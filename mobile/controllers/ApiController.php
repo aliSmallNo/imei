@@ -1507,10 +1507,10 @@ class ApiController extends Controller
 					// 余额发红包
 					$remain = UserTrans::CalRedPacketRemain($uid);
 					if ($amt <= $remain) {
-						$tId = UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_SEND, "发红包", $amt, UserTrans::UNIT_YUAN);
+						$tId = UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_SEND, "发红包", $amt * 100, UserTrans::UNIT_FEN);
 						RedPacket::add([
 							"rUId" => $uid,
-							"rAmount" => $amt,
+							"rAmount" => $amt * 100,
 							"rCode" => $ling,
 							"rCount" => $count,
 							"rPayId" => $tId,
@@ -1521,10 +1521,10 @@ class ApiController extends Controller
 					}
 				} else {
 					// 充值发红包
-					$tId = UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_SEND, "发红包", $amt, UserTrans::UNIT_YUAN);
+					$tId = UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_SEND, "发红包", $amt * 100, UserTrans::UNIT_FEN);
 					RedPacket::add([
 						"rUId" => $uid,
-						"rAmount" => $amt,
+						"rAmount" => $amt * 100,
 						"rCode" => $ling,
 						"rCount" => $count,
 						"rPayId" => $tId,
