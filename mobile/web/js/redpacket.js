@@ -78,12 +78,12 @@ require(["layer"],
 					uitl.ling.focus();
 					return;
 				}
-				if (amt < 1) {
+				if (amt <= 1) {
 					showMsg(alertMsg["amt"]);
 					uitl.amt.focus();
 					return;
 				}
-				if (count < 1) {
+				if (count <= 1) {
 					uitl.amt.count();
 					showMsg(alertMsg["count"]);
 					return;
@@ -98,8 +98,8 @@ require(["layer"],
 			submit: function () {
 				var uitl = this;
 				var ling = $.trim(uitl.ling.val());
-				var amt = parseInt(uitl.amt.val());
-				var count = parseInt(uitl.count.val());
+				var amt = parseInt(uitl.amt.val(), 10);
+				var count = parseInt(uitl.count.val(), 10);
 				if (uitl.loading) {
 					return;
 				}
@@ -130,7 +130,7 @@ require(["layer"],
 				util.paying = 1;
 				$.post('/api/wallet',
 					{
-						tag: 'rechargeredpacket',
+						tag: 'recharge',
 						amt: amt
 					},
 					function (resp) {

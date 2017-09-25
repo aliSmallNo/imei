@@ -1490,7 +1490,6 @@ class ApiController extends Controller
 			case 'create':
 				$data = self::postParam('data');
 				$data = json_decode($data, 1);
-				$payId = isset($data["payId"]) && $data["payId"] ? $data["payId"] : 0;
 				$ling = isset($data["ling"]) ? $data["ling"] : '';
 				$amt = isset($data["amt"]) ? $data["amt"] : 0;
 				$count = isset($data["count"]) ? $data["count"] : 0;
@@ -1503,34 +1502,16 @@ class ApiController extends Controller
 				if ($count <= 1) {
 					return self::renderAPI(129, '数量还没填');
 				}
-				if (!$payId) {
-					// 余额发红包
-					$remain = UserTrans::CalRedPacketRemain($uid);
-					if ($amt <= $remain) {
-						$tId = UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_SEND, "发红包", $amt, UserTrans::UNIT_YUAN);
-						RedPacket::add([
-							"rUId" => $uid,
-							"rAmount" => $amt,
-							"rCode" => $ling,
-							"rCount" => $count,
-							"rPayId" => $tId,
-						]);
-						return self::renderAPI(0, '~');
-					} else {
-						return self::renderAPI(129, '余额不够哦~');
-					}
-				} else {
-					// 充值发红包
-					$tId = UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_SEND, "发红包", $amt, UserTrans::UNIT_YUAN);
-					RedPacket::add([
-						"rUId" => $uid,
-						"rAmount" => $amt,
-						"rCode" => $ling,
-						"rCount" => $count,
-						"rPayId" => $tId,
-					]);
-					return self::renderAPI(0, '');
-				}
+				$payId = 10;
+				UserTrans::CalRedPacketRemain($uid);
+				RedPacket::add([
+					"rUId" => $uid,
+					"rAmount" => $amt,
+					"rCode" => $ling,
+					"rCount" => $count,
+					"rPayId" => $payId,
+				]);
+
 				break;
 		}
 

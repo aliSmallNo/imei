@@ -517,7 +517,7 @@ class UserTrans extends ActiveRecord
 			":c2" => $c2,
 			":uid" => $uid,
 		])->queryScalar();
-		return $amt ? $amt / 100 : 0;
+		return $amt ? $amt : 0;
 	}
 
 }
