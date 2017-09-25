@@ -1680,9 +1680,7 @@ class WxController extends BaseController
 		$rid = self::getParam("id");
 		//$rInfo = Redpacket::findOne(["rId" => $rid]);
 		//$list = RedpacketList::items(["dRId" => $rid]);
-
 		$uid = $wxInfo["uId"];
-
 		return self::renderPage('graplist.tpl',
 			[
 				//"list" => $list,
