@@ -587,19 +587,11 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		/**
-		$string = "http://www.meipo.com/wx/single";
-		$token = strtok($string, "/");
-		$arr[] = $token;
-		while ($token != false) {
-		$token = strtok("/");
-		//echo $token.(integer)strtok("/")."\n";
-		$arr[] = $token;
+		$str = '全部是汉字测';
+		if (preg_match_all("/^[\x7f-\xff]+$/", $str, $match)) {
+			echo '全部是汉字';
+		} else {
+			echo '不全是汉字';
 		}
-		print_r($arr);
-		 */
-
-		$ret = WechatUtil::createWechatMenus();
-		var_dump($ret);
 	}
 }

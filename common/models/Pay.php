@@ -16,6 +16,7 @@ class Pay extends ActiveRecord
 {
 	const CAT_RECHARGE = 100;
 	const CAT_MAKEING_FRIENDS = 200;
+	const CAT_REDPACKET = 300;
 
 	const MODE_WXPAY = 100;
 	const MODE_ALIPAY = 102;
@@ -26,7 +27,8 @@ class Pay extends ActiveRecord
 
 	private static $CategoryDict = [
 		self::CAT_RECHARGE => '充值',
-		self::CAT_MAKEING_FRIENDS => '交友'
+		self::CAT_MAKEING_FRIENDS => '交友',
+		self::CAT_REDPACKET => '红包'
 	];
 
 	public static function tableName()
@@ -62,6 +64,8 @@ class Pay extends ActiveRecord
 		} else if ($cat == self::CAT_MAKEING_FRIENDS) {
 			$entity->pRId = 20170820;
 			$entity->pNote = '活动费用' . $num;
+		} else if ($cat == self::CAT_REDPACKET) {
+			$entity->pNote = '红包' . $num;
 		}
 		$entity->save();
 		return $entity->pId;

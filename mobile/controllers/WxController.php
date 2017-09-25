@@ -706,14 +706,6 @@ class WxController extends BaseController
 			'uInfo' => $uInfo,
 
 
-
-
-
-
-
-
-
-
 			'prices' => $prices,
 			'encryptId' => $encryptId,
 			'hint' => $hint,
@@ -1654,5 +1646,23 @@ class WxController extends BaseController
 			'bg-lot2');
 	}
 
+	public function actionRedpacket()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/error');
+			exit();
+		}
+		$uid = $wxInfo["uId"];
+		$remain = UserTrans::CalRedPacketRemain($uid);
+		return self::renderPage('redpacket.tpl',
+			[
+				"remain" => $remain,
+			],
+			'terse',
+			"语音红包",
+			'bg-redpacket');
+	}
 
 }

@@ -18,6 +18,7 @@ use common\models\Lottery;
 use common\models\Pay;
 use common\models\Pin;
 use common\models\QuestionSea;
+use common\models\RedPacket;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserBuzz;
@@ -169,7 +170,31 @@ class ApiController extends Controller
 				if ($ret) {
 					return self::renderAPI(0, '', [
 						'prepay' => $ret,
-						'amt' => $amt
+						'amt' => $amt,
+						'payId' => $payId,
+					]);
+				}
+				return self::renderAPI(129, '操作失败~');
+			case 'rechargeredpacket':
+				$amt = self::postParam('amt'); // 单位人民币元
+				$title = '红包-充值';
+				$subTitle = '充值' . $amt . '元';
+				$payId = Pay::prepay($wxInfo['uId'], $amt * 10.0, $amt * 100, Pay::CAT_REDPACKET);
+				if (AppUtil::isDev()) {
+					return self::renderAPI(129, '请在服务器测试该功能~');
+				}
+				// Rain: 测试阶段，payFee x元实际支付x分
+//				$payFee = $amt;
+				$payFee = intval($amt * 100);
+				if (in_array($openId, ['oYDJew5EFMuyrJdwRrXkIZLU2c58', 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'])) {
+					$payFee = $amt;
+				}
+				$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);
+				if ($ret) {
+					return self::renderAPI(0, '', [
+						'prepay' => $ret,
+						'amt' => $amt,
+						'payId' => $payId,
 					]);
 				}
 				return self::renderAPI(129, '操作失败~');
@@ -1446,6 +1471,51 @@ class ApiController extends Controller
 				break;
 		}
 		return self::renderAPI(0, '', $data);
+	}
+
+
+	public function actionRedpacket()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$openId = self::postParam('openid');
+		if (!$openId) {
+			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		}
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			return self::renderAPI(129, '用户不存在啊~');
+		}
+		$uid = $wxInfo["uId"];
+		switch ($tag) {
+			case 'create':
+				$data = self::postParam('data');
+				$data = json_decode($data, 1);
+				$ling = isset($data["ling"]) ? $data["ling"] : '';
+				$amt = isset($data["amt"]) ? $data["amt"] : 0;
+				$count = isset($data["count"]) ? $data["count"] : 0;
+				if (preg_match_all("/^[\x7f-\xff]+$/", $ling, $match)) {
+					return self::renderAPI(129, '口令格式不正确');
+				}
+				if ($amt <= 1) {
+					return self::renderAPI(129, '金额太少了');
+				}
+				if ($count <= 1) {
+					return self::renderAPI(129, '数量还没填');
+				}
+				$payId = 10;
+				UserTrans::CalRedPacketRemain($uid);
+				RedPacket::add([
+					"rUId" => $uid,
+					"rAmount" => $amt,
+					"rCode" => $ling,
+					"rCount" => $count,
+					"rPayId" => $payId,
+				]);
+
+				break;
+		}
+
+		return self::renderAPI(129, '操作无效~');
 	}
 
 	public function actionNews()

@@ -28,6 +28,10 @@ class UserTrans extends ActiveRecord
 	const CAT_VOTE = 160;
 	const CAT_FANS_DRAW = 170;
 
+
+	const CAT_REDPACKET = 500;
+	const CAT_REDPACKET_SEND = 510;
+
 	static $catDict = [
 		self::CAT_RECHARGE => "充值",
 		self::CAT_SIGN => "签到奖励",
@@ -41,6 +45,9 @@ class UserTrans extends ActiveRecord
 		self::CAT_MOMENT => "分享到朋友圈奖励",
 		self::CAT_VOTE => "投票奖励",
 		self::CAT_FANS_DRAW => "花粉值提现",
+
+		self::CAT_REDPACKET => "红包充值",
+		self::CAT_REDPACKET_SEND => "发红包",
 	];
 
 	static $CatMinus = [
@@ -60,6 +67,7 @@ class UserTrans extends ActiveRecord
 		self::UNIT_GIFT => '媒桂花',
 		self::UNIT_FANS => '花粉值',
 	];
+
 
 	public static function tableName()
 	{
@@ -106,7 +114,7 @@ class UserTrans extends ActiveRecord
 		return $ret;
 	}
 
-	public static function addByPID($pid)
+	public static function addByPID($pid, $cat = self::CAT_RECHARGE)
 	{
 		$payInfo = Pay::findOne(['pId' => $pid]);
 		if (!$payInfo) {
@@ -120,7 +128,7 @@ class UserTrans extends ActiveRecord
 		$entity->tPId = $pid;
 		$entity->tUId = $payInfo['pUId'];
 		$entity->tTitle = $payInfo['pTitle'];
-		$entity->tCategory = self::CAT_RECHARGE;
+		$entity->tCategory = $cat;
 		switch ($payInfo['pCategory']) {
 			case Pay::CAT_RECHARGE:
 				$entity->tAmt = $payInfo['pRId'];
@@ -494,6 +502,22 @@ class UserTrans extends ActiveRecord
 			return [];
 		}
 		return [$data, $nextPage];
+	}
+
+
+	public static function CalRedPacketRemain($uid)
+	{
+		$c1 = self::CAT_REDPACKET;
+		$c2 = self::CAT_REDPACKET_SEND;
+		$sql = "SELECT sum(case when tCategory=:c1 then tAmt when tCategory=:c2 then -tAmt end) as remain 
+				from im_user_trans
+				where tCategory in (:c1,:c2) and tUId=:uid ";
+		$amt = AppUtil::db()->createCommand($sql)->bindValues([
+			":c1" => $c1,
+			":c2" => $c2,
+			":uid" => $uid,
+		])->queryScalar();
+		return $amt ? $amt : 0;
 	}
 
 }

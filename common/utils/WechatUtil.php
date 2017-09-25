@@ -521,10 +521,12 @@ class WechatUtil
 			];
 			Pay::edit($pid, $data);
 			$entity = Pay::findOne(["pId" => $pid]);
-			if ($entity->pCategory == Pay::CAT_MAKEING_FRIENDS) {
-				WechatUtil::templateMsg(self::NOTICE_MAKE_FRIRENDS, $entity->pUId);
+			if ($entity->pCategory == Pay::CAT_REDPACKET) {
+				UserTrans::addByPID($pid, UserTrans::CAT_REDPACKET);
+			} else {
+				UserTrans::addByPID($pid);
 			}
-			UserTrans::addByPID($pid);
+
 		} else {
 			$data = [
 				'pTransRaw' => json_encode($data, JSON_UNESCAPED_UNICODE),
