@@ -1659,7 +1659,7 @@ class WxController extends BaseController
 		$uid = $wxInfo["uId"];
 		$remain = UserTrans::CalRedPacketRemain($uid);
 		echo $remain;
-		exit;
+		exit();
 		return self::renderPage('redpacket.tpl',
 			[
 				"remain" => $remain,
@@ -1669,7 +1669,7 @@ class WxController extends BaseController
 			'bg-redpacket');
 	}
 
-	public function actionGraplist()
+	/*public function actionGraplist()
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
@@ -1690,6 +1690,6 @@ class WxController extends BaseController
 			'terse',
 			"语音红包",
 			'bg-graplist');
-	}
+	}*/
 
 }
