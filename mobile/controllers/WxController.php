@@ -12,7 +12,8 @@ use common\models\City;
 use common\models\Log;
 use common\models\LogAction;
 use common\models\QuestionGroup;
-use common\models\RedPacket;
+use common\models\Redpacket;
+use common\models\RedpacketList;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserMsg;
@@ -1677,18 +1678,18 @@ class WxController extends BaseController
 			exit();
 		}
 		$rid = self::getParam("id");
-		$qInfo = RedPacket::findOne(["qId" => $rid]);
-		$list = RedPacketList::items(["dRId" => $rid]);
+		//$rInfo = Redpacket::findOne(["rId" => $rid]);
+		//$list = RedpacketList::items(["dRId" => $rid]);
 
 		$uid = $wxInfo["uId"];
 
-		return self::renderPage('redpacket.tpl',
+		return self::renderPage('graplist.tpl',
 			[
-				"remain" => ,
+				//"list" => $list,
 			],
 			'terse',
 			"语音红包",
-			'bg-redpacket');
+			'bg-graplist');
 	}
 
 }

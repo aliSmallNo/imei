@@ -504,7 +504,6 @@ class UserTrans extends ActiveRecord
 		return [$data, $nextPage];
 	}
 
-
 	public static function CalRedPacketRemain($uid)
 	{
 		$c1 = self::CAT_REDPACKET;
@@ -517,7 +516,7 @@ class UserTrans extends ActiveRecord
 			":c2" => $c2,
 			":uid" => $uid,
 		])->queryScalar();
-		return $amt ? $amt : 0;
+		return $amt ? $amt / 100 : 0;
 	}
 
 }

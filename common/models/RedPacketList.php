@@ -12,7 +12,7 @@ namespace common\models;
 use common\utils\AppUtil;
 use yii\db\ActiveRecord;
 
-class RedpackList extends ActiveRecord
+class RedpacketList extends ActiveRecord
 {
 	const LIMIT_NUM = 10;
 
@@ -35,11 +35,10 @@ class RedpackList extends ActiveRecord
 		return $entity->qId;
 	}
 
-	public static function sortUId($uId, $subUId)
+	public static function items($rid)
 	{
-		$arr = [intval($uId), intval($subUId)];
-		sort($arr);
-		return $arr;
+		$items = self::find()->where(["dRId" => $rid]);
+		return $items;
 	}
 
 }

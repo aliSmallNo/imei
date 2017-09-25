@@ -35,11 +35,5 @@ class Redpacket extends ActiveRecord
 		return $entity->qId;
 	}
 
-	public static function sortUId($uId, $subUId)
-	{
-		$arr = [intval($uId), intval($subUId)];
-		sort($arr);
-		return $arr;
-	}
 
 }
