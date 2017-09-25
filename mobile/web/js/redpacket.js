@@ -78,12 +78,12 @@ require(["layer"],
 					uitl.ling.focus();
 					return;
 				}
-				if (amt <= 1) {
+				if (amt < 1) {
 					showMsg(alertMsg["amt"]);
 					uitl.amt.focus();
 					return;
 				}
-				if (count <= 1) {
+				if (count < 1) {
 					uitl.amt.count();
 					showMsg(alertMsg["count"]);
 					return;
