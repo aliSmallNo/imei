@@ -12,7 +12,7 @@ namespace common\models;
 use common\utils\AppUtil;
 use yii\db\ActiveRecord;
 
-class RedPacket extends ActiveRecord
+class Redpacket extends ActiveRecord
 {
 	const LIMIT_NUM = 10;
 

@@ -12,6 +12,7 @@ use common\models\City;
 use common\models\Log;
 use common\models\LogAction;
 use common\models\QuestionGroup;
+use common\models\RedPacket;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserMsg;
@@ -1656,10 +1657,34 @@ class WxController extends BaseController
 		}
 		$uid = $wxInfo["uId"];
 		$remain = UserTrans::CalRedPacketRemain($uid);
-		echo $remain;exit;
+		echo $remain;
+		exit;
 		return self::renderPage('redpacket.tpl',
 			[
 				"remain" => $remain,
+			],
+			'terse',
+			"语音红包",
+			'bg-redpacket');
+	}
+
+	public function actionGraplist()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/error');
+			exit();
+		}
+		$rid = self::getParam("id");
+		$qInfo = RedPacket::findOne(["qId" => $rid]);
+		$list = RedPacketList::items(["dRId" => $rid]);
+
+		$uid = $wxInfo["uId"];
+
+		return self::renderPage('redpacket.tpl',
+			[
+				"remain" => ,
 			],
 			'terse',
 			"语音红包",

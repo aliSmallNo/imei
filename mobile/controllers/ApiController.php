@@ -18,7 +18,7 @@ use common\models\Lottery;
 use common\models\Pay;
 use common\models\Pin;
 use common\models\QuestionSea;
-use common\models\RedPacket;
+use common\models\Redpacket;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserBuzz;
