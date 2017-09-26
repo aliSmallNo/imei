@@ -1230,6 +1230,11 @@ class ApiController extends Controller
 				}
 				$data["userinfo"] = $userinfo;
 				break;
+			case "remain":
+				$uid = self::postParam("uid");
+				$reamin = UserTrans::CalRedPacketRemain($uid);
+				$data["remain"] = $reamin;
+				break;
 			case "saccount":
 				$openId = self::postParam("openid");
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
