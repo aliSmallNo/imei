@@ -1207,7 +1207,7 @@ class ApiController extends Controller
 						]
 				];
 				*/
-				$data = "";
+				$data = [];
 				$unionId = (isset($rawData["unionId"]) && $rawData["unionId"]) ? $rawData["unionId"] : '';
 				if ($unionId && $info = UserWechat::findOne(["wUnionId" => $unionId])) {
 					if ($info->wOpenId) {
