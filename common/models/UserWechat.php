@@ -411,7 +411,7 @@ class UserWechat extends ActiveRecord
 		$unionId = (isset($rawData["unionId"]) && $rawData["unionId"]) ? $rawData["unionId"] : '';
 		$winfo = UserWechat::findOne(["wUnionId" => $unionId]);
 		if ($winfo) {
-			return 0;
+			return $winfo;
 		}
 		$uId = $winfo->wUId;
 		$uinfo = User::findOne(["uId" => $uId]);
@@ -424,7 +424,7 @@ class UserWechat extends ActiveRecord
 				"headimgurl" => $avatar,
 			], 1, $unionId);
 
-			UserWechat::add([
+			$wid = UserWechat::add([
 				"wOpenId" => "",
 				"wNickName" => $nickname,
 				"wAvatar" => $avatar,
@@ -436,9 +436,9 @@ class UserWechat extends ActiveRecord
 				"wUnionId" => $unionId,
 				"wUId" => $uid,
 			]);
-			return 1;
+			return self::findOne(["wId" => $wid]);
 		}
-		return 0;
+		return '';
 
 	}
 }
