@@ -1514,7 +1514,7 @@ class ApiController extends Controller
 		$tag = trim(strtolower(self::postParam('tag')));
 		$uid = self::postParam("uid");
 		switch ($tag) {
-			case 'create':
+			case 'create': // 发红包
 				$data = self::postParam('data');
 				$payId = self::postParam('payId');
 				$data = json_decode($data, 1);
@@ -1559,7 +1559,7 @@ class ApiController extends Controller
 					return self::renderAPI(0, '');
 				}
 				break;
-			case "ito":
+			case "ito":// 发送的红包 统计
 				if ($uid) {
 					list($res, $amt, $count) = Redpacket::items($uid);
 					return self::renderAPI(0, '~', [
@@ -1568,6 +1568,14 @@ class ApiController extends Controller
 						"count" => $count,
 					]);
 				}
+				break;
+			case "redinfo":// 红包信息
+				$rid = self::postParam("rid");
+				list($des, $follows) = Redpacket::rInfo($rid, $uid);
+				return self::renderAPI(0, '~', [
+					"items" => $des,
+					"amt" => $follows,
+				]);
 				break;
 		}
 

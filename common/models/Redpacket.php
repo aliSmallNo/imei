@@ -67,5 +67,42 @@ class Redpacket extends ActiveRecord
 		return [$res["amt"], $res["co"]];
 	}
 
+	public static function rInfo($rid, $uid)
+	{
+		$sql = "SELECT 
+				w.wNickName as oname,w.wAvatar as oavatar,
+				w2.wNickName as fname,w.wAvatar as favatar,
+				r.*,d.*
+				from im_redpacket as r
+				left join im_redpacket_list as d on d.dRId=r.rId 
+				left join im_user_wechat as w on w.wUId=r.rUId
+				left join im_user_wechat as w2 on w2.wUId=d.dUId
+				where rId=:rid";
+		$res = AppUtil::db()->createCommand($sql)->bindValues([
+			":rid" => $rid,
+		])->queryAll();
+		$des = [
+			"grapflag" => 0,    // 我有没有抢过这个红包
+			"remainflag" => 0,  // 是否有剩余红包
+		];
+		$follow = [];
+		$count = 0;
+		foreach ($res as $v) {
+			$des["count"] = $v["rCount"];
+			$des["oname"] = $v["oname"];
+			$des["oavatar"] = $v["oavatar"];
+			if ($v["dId"]) {
+				$follow[] = $v;
+				$count = $count + 1;
+			}
+			if ($v["dUId"] == $uid) {
+				$des["grapflag"] = 1;
+			}
+		}
+		if ($count >= $des["count"]) {
+			$des["remainflag"] = 1;
+		}
+		return [$des, $follow];
+	}
 
 }
