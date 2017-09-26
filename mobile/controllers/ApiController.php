@@ -1229,6 +1229,7 @@ class ApiController extends Controller
 					$userinfo["avatar"] = $info["wAvatar"];
 					$userinfo["name"] = $info["wNickName"];
 					$userinfo["gender"] = $info["wGender"];
+					$userinfo["uid"] = $info["wUId"];
 				}
 				$data["userinfo"] = $userinfo;
 				break;
