@@ -1219,18 +1219,8 @@ class ApiController extends Controller
 						$info->wXcxId = $xcxOpenid;
 						$info->save();
 					}
-				} else if ($unionId && !$info = UserWechat::findOne(["wUnionId" => $unionId])) {
-					UserWechat::add([
-						"wOpenId" => "",
-						"wNickName" => (isset($rawData["nickName"]) && $rawData["nickName"]) ? $rawData["nickName"] : '',
-						"wAvatar" => (isset($rawData["avatarUrl"]) && $rawData["avatarUrl"]) ? $rawData["avatarUrl"] : '',
-						"wGender" => (isset($rawData["gender"]) && $rawData["gender"]) ? $rawData["gender"] : '',
-						"wProvince" => (isset($rawData["province"]) && $rawData["province"]) ? $rawData["province"] : '',
-						"wCity" => (isset($rawData["city"]) && $rawData["city"]) ? $rawData["city"] : '',
-						"wCountry" => (isset($rawData["country"]) && $rawData["country"]) ? $rawData["country"] : '',
-						"wXcxId" => (isset($rawData["openId"]) && $rawData["openId"]) ? $rawData["openId"] : '',
-						"wUnionId" => $unionId,
-					]);
+				} else if ($unionId && $rawData) {
+					UserWechat::addXcxUser($rawData);
 					$data["xcxopenid"] = $rawData["openId"];
 					$data["openid"] = "";
 				}

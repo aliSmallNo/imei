@@ -400,4 +400,45 @@ class UserWechat extends ActiveRecord
 		}
 		return true;
 	}
+
+	/**
+	 * 添加小程序（语音红包）用户
+	 * @param $rawData
+	 * @return int
+	 */
+	public static function addXcxUser($rawData)
+	{
+		$unionId = (isset($rawData["unionId"]) && $rawData["unionId"]) ? $rawData["unionId"] : '';
+		$winfo = UserWechat::findOne(["wUnionId" => $unionId]);
+		if ($winfo) {
+			return 0;
+		}
+		$uId = $winfo->wUId;
+		$uinfo = User::findOne(["uId" => $uId]);
+		if (!$uinfo) {
+			$nickname = (isset($rawData["nickName"]) && $rawData["nickName"]) ? $rawData["nickName"] : '';
+			$avatar = (isset($rawData["avatarUrl"]) && $rawData["avatarUrl"]) ? $rawData["avatarUrl"] : '';
+			$uid = User::addWX([
+				"openid" => '',
+				"nickname" => $nickname,
+				"headimgurl" => $avatar,
+			], 1, $unionId);
+
+			UserWechat::add([
+				"wOpenId" => "",
+				"wNickName" => $nickname,
+				"wAvatar" => $avatar,
+				"wGender" => (isset($rawData["gender"]) && $rawData["gender"]) ? $rawData["gender"] : '',
+				"wProvince" => (isset($rawData["province"]) && $rawData["province"]) ? $rawData["province"] : '',
+				"wCity" => (isset($rawData["city"]) && $rawData["city"]) ? $rawData["city"] : '',
+				"wCountry" => (isset($rawData["country"]) && $rawData["country"]) ? $rawData["country"] : '',
+				"wXcxId" => (isset($rawData["openId"]) && $rawData["openId"]) ? $rawData["openId"] : '',
+				"wUnionId" => $unionId,
+				"wUId" => $uid,
+			]);
+			return 1;
+		}
+		return 0;
+
+	}
 }

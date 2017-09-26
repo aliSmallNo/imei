@@ -379,8 +379,11 @@ class User extends ActiveRecord
 		return false;
 	}
 
-	public static function addWX($wxInfo, $editBy = 1)
+	public static function addWX($wxInfo, $editBy = 1, $uniqid = 0)
 	{
+		if (!$uniqid) {
+			$uniqid = uniqid();
+		}
 		$openid = $wxInfo['openid'];
 		$entity = self::findOne(['uOpenId' => $openid]);
 		if (!$entity) {
@@ -388,7 +391,7 @@ class User extends ActiveRecord
 			$entity->uAddedBy = $editBy;
 			$entity->uUpdatedBy = $editBy;
 			$entity->uOpenId = $openid;
-			$entity->uUniqid = uniqid();
+			$entity->uUniqid = $uniqid;
 			$entity->uName = $wxInfo['nickname'];
 			list($thumb, $figure) = ImageUtil::save2Server($wxInfo['headimgurl'], false);
 			$entity->uThumb = $thumb;
