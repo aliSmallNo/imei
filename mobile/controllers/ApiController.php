@@ -1043,6 +1043,7 @@ class ApiController extends Controller
 	{
 		$tag = self::postParam('tag');
 		$openid = self::postParam('openid');
+		$xcxopenid = self::postParam('xcxopenid');
 		$data = [];
 		switch ($tag) {
 			case 'init':
@@ -1159,15 +1160,18 @@ class ApiController extends Controller
 				$data = WechatUtil::getXcxSessionKey($code);
 				$data = json_decode($data, 1);
 				/*
-				$data = [
-					"session_key" => "dzwrkrMzko64Tw8pqomccg==",
-					"expires_in" => 7200,
-					"openid" => "ouvPv0Cz6rb-QB_i9oYwHZWjGtv8"
-				];
-				$data = [
-					"errcode"=> 40029,
-                    "errmsg"=> "invalid code"
-				];
+					成功返回
+					$data = [
+						"session_key" => "dzwrkrMzko64Tw8pqomccg==",
+						"expires_in" => 7200,
+						"openid" => "ouvPv0Cz6rb-QB_i9oYwHZWjGtv8"
+					];
+
+					失败返回
+					$data = [
+						"errcode"=> 40029,
+	                    "errmsg"=> "invalid code"
+					];
 				*/
 				if (isset($data["session_key"])) {
 					RedisUtil::setCache($data["session_key"], RedisUtil::KEY_XCX_SESSION_ID, $data["openid"]);
@@ -1179,7 +1183,6 @@ class ApiController extends Controller
 				}
 				break;
 			case "unionid":
-				//$sessionKey = self::postParam("sid");
 				$XcxOpneid = self::postParam("openid");
 				$sessionKey = RedisUtil::getCache(RedisUtil::KEY_XCX_SESSION_ID, $XcxOpneid);
 				$encryptedData = self::postParam("data");
@@ -1204,23 +1207,45 @@ class ApiController extends Controller
 						]
 				];
 				*/
-
+				$data = "";
 				$unionId = (isset($rawData["unionId"]) && $rawData["unionId"]) ? $rawData["unionId"] : '';
 				if ($unionId && $info = UserWechat::findOne(["wUnionId" => $unionId])) {
 					if ($info->wOpenId) {
 						$data["openid"] = $info->wOpenId;
-					} else {
-						$data = "";
 					}
-					if (!$info->wXcxId) {
+					if (!$info->wXcxId) { // 存小程序 openID 到 UserWechat 表
 						$xcxOpenid = isset($rawData["openId"]) ? $rawData["openId"] : "";
 						$data["xcxopenid"] = $xcxOpenid;
 						$info->wXcxId = $xcxOpenid;
 						$info->save();
 					}
-				} else {
-					$data = '';
+				} else if ($unionId && !$info = UserWechat::findOne(["wUnionId" => $unionId])) {
+					UserWechat::add([
+						"wOpenId" => "",
+						"wNickName" => (isset($rawData["nickName"]) && $rawData["nickName"]) ? $rawData["nickName"] : '',
+						"wAvatar" => (isset($rawData["avatarUrl"]) && $rawData["avatarUrl"]) ? $rawData["avatarUrl"] : '',
+						"wGender" => (isset($rawData["gender"]) && $rawData["gender"]) ? $rawData["gender"] : '',
+						"wProvince" => (isset($rawData["province"]) && $rawData["province"]) ? $rawData["province"] : '',
+						"wCity" => (isset($rawData["city"]) && $rawData["city"]) ? $rawData["city"] : '',
+						"wCountry" => (isset($rawData["country"]) && $rawData["country"]) ? $rawData["country"] : '',
+						"wXcxId" => (isset($rawData["openId"]) && $rawData["openId"]) ? $rawData["openId"] : '',
+						"wUnionId" => $unionId,
+					]);
+					$data["xcxopenid"] = $rawData["openId"];
+					$data["openid"] = "";
 				}
+				break;
+			case "userinfo":
+
+				$info = UserWechat::findOne(["wXcxId" => $xcxopenid]);
+				$userinfo = [];
+				if ($info) {
+					$userinfo["avatar"] = $info["wAvatar"];
+					$userinfo["name"] = $info["wNickName"];
+					$userinfo["gender"] = $info["wGender"];
+				}
+				$data["userinfo"] = $userinfo;
+				return $data;
 				break;
 			case "saccount":
 				$openId = self::postParam("openid");
