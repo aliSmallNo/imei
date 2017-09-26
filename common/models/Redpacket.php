@@ -32,7 +32,7 @@ class Redpacket extends ActiveRecord
 		}
 
 		$entity->save();
-		return $entity->qId;
+		return $entity->rId;
 	}
 
 
