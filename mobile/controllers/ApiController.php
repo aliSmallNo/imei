@@ -1561,8 +1561,12 @@ class ApiController extends Controller
 				break;
 			case "ito":
 				if ($uid) {
-					$res = Redpacket::items($uid);
-					return self::renderAPI(0, '~', $res);
+					list($res, $amt, $count) = Redpacket::items($uid);
+					return self::renderAPI(0, '~', [
+						"items" => $res,
+						"amt" => $amt,
+						"count" => $count,
+					]);
 				}
 				break;
 		}

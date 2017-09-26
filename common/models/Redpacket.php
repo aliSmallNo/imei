@@ -48,7 +48,23 @@ class Redpacket extends ActiveRecord
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":uid" => $uid,
 		])->queryAll();
-		return $res;
+
+		list($amt, $count) = self::oneStat($uid);
+
+		return [$res, $amt, $count];
+	}
+
+	public static function oneStat($uid)
+	{
+		$sql = "SELECT 
+				sum(rAmount) as amt,
+				count(rId) as co
+				from im_redpacket 
+				where rUId=:uid";
+		$res = AppUtil::db()->createCommand($sql)->bindValues([
+			":uid" => $uid,
+		])->queryOne();
+		return [$res["amt"], $res["co"]];
 	}
 
 
