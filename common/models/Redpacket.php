@@ -18,7 +18,7 @@ class Redpacket extends ActiveRecord
 
 	public static function tableName()
 	{
-		return '{{%red_packet}}';
+		return '{{%redpacket}}';
 	}
 
 	public static function add($data)
