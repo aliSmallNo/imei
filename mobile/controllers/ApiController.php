@@ -1207,13 +1207,10 @@ class ApiController extends Controller
 						]
 				];
 				*/
-				$data = [];
+				$data["xcxopenid"] = $XcxOpneid;
 				$unionId = (isset($rawData["unionId"]) && $rawData["unionId"]) ? $rawData["unionId"] : '';
 				$info = UserWechat::findOne(["wUnionId" => $unionId]);
 				if ($unionId && $info) {
-					if ($info->wOpenId) {
-						$data["openid"] = $info->wOpenId;
-					}
 					if (!$info->wXcxId) { // 存小程序 openID 到 UserWechat 表
 						$xcxOpenid = isset($rawData["openId"]) ? $rawData["openId"] : "";
 						$data["xcxopenid"] = $xcxOpenid;
