@@ -100,6 +100,8 @@ class Redpacket extends ActiveRecord
 				$des["grapflag"] = 1;
 			}
 		}
+		$des["fcount"] = $count;
+
 		if ($count >= $des["count"]) {
 			$des["remainflag"] = 1;
 		}

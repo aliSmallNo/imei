@@ -1572,10 +1572,9 @@ class ApiController extends Controller
 			case "redinfo":// 红包信息
 				$rid = self::postParam("rid");
 				list($des, $follows) = Redpacket::rInfo($rid, $uid);
-				return self::renderAPI(0, '~', [
+				return self::renderAPI(0, '', [
 					"des" => $des,
 					"follows" => $follows,
-					"amt" => $follows,
 				]);
 				break;
 		}
