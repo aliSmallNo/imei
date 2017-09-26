@@ -1044,6 +1044,7 @@ class ApiController extends Controller
 		$tag = self::postParam('tag');
 		$openid = self::postParam('openid');
 		$xcxopenid = self::postParam('xcxopenid');
+		$uid = self::postParam('uid');
 		$data = [];
 		switch ($tag) {
 			case 'init':
@@ -1234,6 +1235,27 @@ class ApiController extends Controller
 				$uid = self::postParam("uid");
 				$reamin = UserTrans::CalRedPacketRemain($uid);
 				$data["remain"] = $reamin;
+				break;
+			case "":
+			case 'xcxrecharge'://小程序支付
+				$amt = self::postParam('amt'); // 单位人民币元
+				$title = '微媒100-充值';
+				$subTitle = '充值' . $amt . '元';
+				$payId = Pay::prepay($uid, $amt * 10.0, $amt * 100, Pay::CAT_REDPACKET);
+
+				$payFee = intval($amt * 100);
+				if (in_array($uid, [120003])) {
+					$payFee = $amt;
+				}
+				$ret = WechatUtil::jsPrepayXcx($payId, $xcxopenid, $payFee, $title, $subTitle);
+				if ($ret) {
+					return self::renderAPI(0, '', [
+						'prepay' => $ret,
+						'amt' => $amt,
+						'payId' => $payId,
+					]);
+				}
+				return self::renderAPI(129, '操作失败~');
 				break;
 			case "saccount":
 				$openId = self::postParam("openid");
@@ -1490,15 +1512,7 @@ class ApiController extends Controller
 	public function actionRedpacket()
 	{
 		$tag = trim(strtolower(self::postParam('tag')));
-		$openId = self::postParam('openid');
-		if (!$openId) {
-			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
-		}
-		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		if (!$wxInfo) {
-			return self::renderAPI(129, '用户不存在啊~');
-		}
-		$uid = $wxInfo["uId"];
+		$uid = self::postParam("uid");
 		switch ($tag) {
 			case 'create':
 				$data = self::postParam('data');
@@ -1509,21 +1523,13 @@ class ApiController extends Controller
 				if (preg_match_all("/^[\x7f-\xff]+$/", $ling, $match)) {
 					return self::renderAPI(129, '口令格式不正确');
 				}
-				if ($amt <= 1) {
+				if ($amt <= 0) {
 					return self::renderAPI(129, '金额太少了');
 				}
-				if ($count <= 1) {
+				if ($count <= 0) {
 					return self::renderAPI(129, '数量还没填');
 				}
 				$payId = 10;
-				UserTrans::CalRedPacketRemain($uid);
-				Redpacket::add([
-					"rUId" => $uid,
-					"rAmount" => $amt,
-					"rCode" => $ling,
-					"rCount" => $count,
-					"rPayId" => $payId,
-				]);
 
 				if (!$payId) {
 					// 余额发红包
