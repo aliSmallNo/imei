@@ -1516,11 +1516,12 @@ class ApiController extends Controller
 		switch ($tag) {
 			case 'create':
 				$data = self::postParam('data');
+				$payId = self::postParam('payId');
 				$data = json_decode($data, 1);
 				$ling = isset($data["ling"]) ? $data["ling"] : '';
 				$amt = isset($data["amt"]) ? $data["amt"] : 0;
 				$count = isset($data["count"]) ? $data["count"] : 0;
-				if (preg_match_all("/^[\x7f-\xff]+$/", $ling, $match)) {
+				if (!preg_match_all("/^[\x7f-\xff]+$/", $ling, $match)) {
 					return self::renderAPI(129, '口令格式不正确');
 				}
 				if ($amt <= 0) {
@@ -1529,11 +1530,9 @@ class ApiController extends Controller
 				if ($count <= 0) {
 					return self::renderAPI(129, '数量还没填');
 				}
-				$payId = 10;
-
-				if (!$payId) {
+				$remain = UserTrans::CalRedPacketRemain($uid);
+				if ($remain >= $amt) {
 					// 余额发红包
-					$remain = UserTrans::CalRedPacketRemain($uid);
 					if ($amt <= $remain) {
 						$tId = UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_SEND, "发红包", $amt * 100, UserTrans::UNIT_FEN);
 						Redpacket::add([
@@ -1547,7 +1546,7 @@ class ApiController extends Controller
 					} else {
 						return self::renderAPI(129, '余额不够哦~');
 					}
-				} else {
+				} elseif ($payId) {
 					// 充值发红包
 					$tId = UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_SEND, "发红包", $amt * 100, UserTrans::UNIT_FEN);
 					Redpacket::add([
