@@ -1245,7 +1245,6 @@ class ApiController extends Controller
 					$userinfo["gender"] = $info["wGender"];
 				}
 				$data["userinfo"] = $userinfo;
-				return $data;
 				break;
 			case "saccount":
 				$openId = self::postParam("openid");
