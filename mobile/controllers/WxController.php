@@ -1637,8 +1637,6 @@ class WxController extends BaseController
 			header('location:/wx/index');
 			exit();
 		}
-
-
 		return self::renderPage('lot2.tpl',
 			[
 
@@ -1659,7 +1657,7 @@ class WxController extends BaseController
 		$uid = $wxInfo["uId"];
 		$remain = UserTrans::CalRedPacketRemain($uid);
 		echo $remain;
-		exit;
+		exit();
 		return self::renderPage('redpacket.tpl',
 			[
 				"remain" => $remain,
@@ -1680,9 +1678,7 @@ class WxController extends BaseController
 		$rid = self::getParam("id");
 		//$rInfo = Redpacket::findOne(["rId" => $rid]);
 		//$list = RedpacketList::items(["dRId" => $rid]);
-
 		$uid = $wxInfo["uId"];
-
 		return self::renderPage('graplist.tpl',
 			[
 				//"list" => $list,
@@ -1691,5 +1687,4 @@ class WxController extends BaseController
 			"语音红包",
 			'bg-graplist');
 	}
-
 }
