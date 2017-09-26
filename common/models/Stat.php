@@ -156,7 +156,7 @@ class Stat extends ActiveRecord
 				])->queryScalar();
 				$offset += $favor ? 1 : 0;
 				if ($offset < 1) {
-					$offset = -3;
+					$offset = -4;
 				}
 				$rankVal += $offset;
 
