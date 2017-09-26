@@ -35,5 +35,21 @@ class Redpacket extends ActiveRecord
 		return $entity->rId;
 	}
 
+	public static function items($uid, $page = 1, $pagesize = 20)
+	{
+		$limit = "limit " . ($page - 1) * $pagesize . ',' . $pagesize;
+		$sql = "SELECT count(d.dId) as co,w.wAvatar,w.wNickName,r.* 
+				from im_redpacket as r 
+				left join im_user_wechat as w on w.wUId=r.rUId
+				left join im_redpacket_list as d on r.rId=d.dRId
+				where wUId=:uid
+				group by r.rId
+				order by rId desc $limit ";
+		$res = AppUtil::db()->createCommand($sql)->bindValues([
+			":uid" => $uid,
+		])->queryAll();
+		return $res;
+	}
+
 
 }

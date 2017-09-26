@@ -1559,6 +1559,12 @@ class ApiController extends Controller
 					return self::renderAPI(0, '');
 				}
 				break;
+			case "ito":
+				if ($uid) {
+					$res = Redpacket::items($uid);
+					return self::renderAPI(0, '~', $res);
+				}
+				break;
 		}
 
 		return self::renderAPI(129, '操作无效~');
