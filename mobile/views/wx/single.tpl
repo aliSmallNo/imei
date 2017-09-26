@@ -1123,4 +1123,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
-<script data-main="/js/single.js?v=1.11.5" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.11.8" src="/assets/js/require.js"></script>

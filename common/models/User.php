@@ -1142,6 +1142,7 @@ class User extends ActiveRecord
 
 	public static function getFilter($openId, $data, $page = 1, $pageSize = 20)
 	{
+		AppUtil::logFile($openId, 5, __FUNCTION__, __LINE__);
 		$myInfo = self::findOne(["uOpenId" => $openId]);
 		if (!$myInfo) {
 			return 0;
@@ -1212,22 +1213,30 @@ class User extends ActiveRecord
 		$pinCat = Pin::CAT_NOW;
 		$conn = AppUtil::db();
 		$sql = "SELECT * from im_pin as p WHERE p.pCategory=$pinCat AND pPId=" . $mId;
+		AppUtil::logFile($sql, 5, __FUNCTION__, __LINE__);
 		$ret = $conn->createCommand($sql)->queryOne();
 		$myLat = $myLng = '0';
 		$distField = ' 9999 as dist';
 		if ($ret) {
 			$myLat = $ret['pLat'];
 			$myLng = $ret['pLng'];
+			$tmpDist = 'ROUND(IFNULL(ST_Distance(POINT(' . $myLat . ', ' . $myLng . '), p.pPoint) * 111.195,9999),1)';
+			$distRank = "u.uRank + (case when $tmpDist <= 30 then 40 
+							when $tmpDist <= 60 AND $tmpDist > 30 then 32
+							when $tmpDist <= 90 AND $tmpDist > 60 then 24
+							when $tmpDist <= 120 AND $tmpDist > 90 then 16
+							when $tmpDist <= 150 AND $tmpDist > 120 then 8
+							else 0 end) as mRank";
 			$distField = 'ROUND(IFNULL(ST_Distance(POINT(' . $myLat . ', ' . $myLng . '), p.pPoint) * 111.195,9999),1) as dist';
 		}
 
-		$sql = "SELECT u.*, (CASE WHEN uSubStatus=4 THEN 1 ELSE 9 END) as stickRank, $distField , $rankField
+		$sql = "SELECT u.*, (CASE WHEN uSubStatus=4 THEN 1 ELSE 9 END) as stickRank,$distRank ,$distField 
 				FROM im_user as u 
 				JOIN im_user_wechat as w on u.uId=w.wUId AND w.wSubscribe=1
 				LEFT JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=$pinCat
-				WHERE $condition  order by stickRank, dist, rank desc, u.uRank desc limit $limit";
+				WHERE $condition  order by stickRank, mRank desc limit $limit";
+		AppUtil::logFile($sql, 5, __FUNCTION__, __LINE__);
 		$ret = $conn->createCommand($sql)->queryAll();
-
 		$rows = [];
 		$IDs = [0];
 		foreach ($ret as $row) {
@@ -1277,6 +1286,7 @@ class User extends ActiveRecord
 			//$data["id"] = $v["uOpenId"];
 			//$data["ids"] = $v["uId"];
 			$data["secretId"] = AppUtil::encrypt($row["uId"]);
+			$data["uni"] = $row["uUniqid"];
 			$data["avatar"] = $row["uAvatar"];
 			$data["cert"] = (isset($row["uCertStatus"]) && $row["uCertStatus"] == User::CERT_STATUS_PASS ? 1 : 0);
 			$data["mavatar"] = $row["mpavatar"];

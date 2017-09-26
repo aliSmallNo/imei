@@ -998,6 +998,7 @@ require(["layer"],
 		var FilterUtil = {
 			tag: "",
 			cond: {},
+			unis: [],
 			getUserFiterFlag: false,
 			sUserPage: 1,
 			noMore: $("#slook .m-more"),
@@ -1090,12 +1091,23 @@ require(["layer"],
 				}
 				util.getUserFiterFlag = 1;
 				util.noMore.html("拼命加载中...");
+				if (page < 2) {
+					util.unis = [];
+				}
 				$.post("/api/user", {
 					tag: "userfilter",
 					page: page,
 					data: JSON.stringify(data),
 				}, function (resp) {
-					var html = Mustache.render(util.userTmp, resp.data);
+					var items = [];
+					$.each(resp.data.data, function () {
+						var uni = this['uni'];
+						if (util.unis.indexOf(uni) < 0) {
+							items.push(this);
+							util.unis.push(uni);
+						}
+					});
+					var html = Mustache.render(util.userTmp, {data: items});
 					if (page < 2) {
 						util.list.html(html);
 						util.cond = resp.data.condition;
