@@ -83,6 +83,7 @@ class Redpacket extends ActiveRecord
 		])->queryAll();
 		$des = [
 			"grapflag" => 0,    // 我有没有抢过这个红包
+			"fmoney" => 0,      // 我抢的红包
 			"remainflag" => 0,  // 是否有剩余红包
 		];
 		$follow = [];
@@ -98,6 +99,7 @@ class Redpacket extends ActiveRecord
 			}
 			if ($v["dUId"] == $uid) {
 				$des["grapflag"] = 1;
+				$des["fmoney"] = $v["dAmount"];
 			}
 		}
 		$des["fcount"] = $count;

@@ -1236,7 +1236,6 @@ class ApiController extends Controller
 				$reamin = UserTrans::CalRedPacketRemain($uid);
 				$data["remain"] = $reamin;
 				break;
-			case "":
 			case 'xcxrecharge'://小程序支付
 				$amt = self::postParam('amt'); // 单位人民币元
 				$title = '微媒100-充值';
@@ -1576,6 +1575,34 @@ class ApiController extends Controller
 					"des" => $des,
 					"follows" => $follows,
 				]);
+				break;
+			case "record":
+				$data = json_decode(self::postParam("data"), 1);
+				$infoTemp = isset($_FILES["record"]) && $_FILES["record"] ? $_FILES["record"] : '';
+				return self::renderAPI(0, '', [
+					"data" => $data,
+					"records" => $infoTemp,
+				]);
+				if ($infoTemp) {
+					$info = [
+						"name" => [
+							$infoTemp["name"]
+						],
+						"tmp_name" => [
+							$infoTemp["tmp_name"]
+						],
+						"type" => [
+							$infoTemp["type"]
+						],
+						"error" => [
+							$infoTemp["error"]
+						],
+						"size" => [
+							$infoTemp["size"]
+						]
+					];
+					//$newAvatar = ImageUtil::uploadItemImages($info);
+				}
 				break;
 		}
 
