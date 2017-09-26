@@ -1573,7 +1573,8 @@ class ApiController extends Controller
 				$rid = self::postParam("rid");
 				list($des, $follows) = Redpacket::rInfo($rid, $uid);
 				return self::renderAPI(0, '~', [
-					"items" => $des,
+					"des" => $des,
+					"follows" => $follows,
 					"amt" => $follows,
 				]);
 				break;
