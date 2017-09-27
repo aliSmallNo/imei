@@ -1595,10 +1595,10 @@ class ApiController extends Controller
 				 */
 				$res = AppUtil::uploadSilk("record", "voice");
 
-				$rid = isset($data["rid"]) && $data["rid"] ? $data["rid"] : '';
+				$rid = isset($data["rid"]) && $data["rid"] ? intval($data["rid"]) : '';
 				$ling = isset($data["ling"]) && $data["ling"] ? $data["ling"] : '';
-				$uid = isset($data["uid"]) && $data["uid"] ? $data["uid"] : '';
-				$miao = isset($data["seconds"]) && $data["seconds"] ? $data["seconds"] : 3;
+				$uid = isset($data["uid"]) && $data["uid"] ? intval($data["uid"]) : '';
+				$miao = isset($data["seconds"]) && $data["seconds"] ? intval($data["seconds"]) : 3;
 				$url = $res["msg"];
 				if ($rid && $ling && $uid && $res["code"] == 0) {
 
