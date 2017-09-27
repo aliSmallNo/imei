@@ -55,9 +55,9 @@ class BaiduUtil
 			'token' => $token,
 			'lan' => 'zh',
 			'speech' => base64_encode($fileData),
-			'len' => mb_strlen($fileData)
+			'len' => strlen($fileData)
 		];
-		$ret = AppUtil::postJSON($url, $postData);
+		$ret = AppUtil::postJSON($url, json_encode($postData));
 		$ret = json_decode($ret, 1);
 		if ($ret) {
 			return $ret;
