@@ -1604,14 +1604,19 @@ class ApiController extends Controller
 
 					$parseCode = BaiduUtil::postVoice($url);
 					if (mb_strpos($parseCode, $ling) !== false || 1) {
-
-						$aff = RedpacketList::Grap($rid, $uid, $url, $miao);
 						return self::renderAPI(0, 'test', [
-							"data" => $data,
-							"records" => $res,
-							"pase" => $parseCode,
-							"aff" => $aff,
+							"rid" => $rid,
+							"uid" => $uid,
+							"url" => $url,
+							"miao" => $miao,
 						]);
+						$aff = RedpacketList::Grap($rid, $uid, $url, $miao);
+//						return self::renderAPI(0, 'test', [
+//							"data" => $data,
+//							"records" => $res,
+//							"pase" => $parseCode,
+//							"aff" => $aff,
+//						]);
 						if ($aff) {
 							list($des, $follows) = Redpacket::rInfo($rid, $uid);
 							return self::renderAPI(0, '', [
