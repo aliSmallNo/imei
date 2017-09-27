@@ -1590,13 +1590,13 @@ class ApiController extends Controller
 				 */
 				$res = AppUtil::uploadSilk("record", "voice");
 				if ($data && $data["uid"] == 120003 && $res["code"] == 0) {
-					RedpacketList::add([
-						"dRId" => $data["rid"],
-						"dUId" => $data["uid"],
-						"dAmount" => 0.8,
-						"dAnswer" => $res["msg"],
-						"dDuration" => $data["seconds"],
-					]);
+//					RedpacketList::add([
+//						"dRId" => $data["rid"],
+//						"dUId" => $data["uid"],
+//						"dAmount" => 0.8,
+//						"dAnswer" => $res["msg"],
+//						"dDuration" => $data["seconds"],
+//					]);
 				}
 				return self::renderAPI(0, '', [
 					"data" => $data,
