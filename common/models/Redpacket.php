@@ -47,7 +47,7 @@ class Redpacket extends ActiveRecord
 		foreach ($arr as $v) {
 			$inserCmd->bindValues([
 				":rid" => $rid,
-				":amt" => $v,
+				":amt" => $v * 100,
 			])->execute();
 		}
 		return 1;
