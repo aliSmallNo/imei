@@ -594,10 +594,9 @@ class FooController extends Controller
 			echo '不全是汉字';
 		}
 
-		$str1 = "/data/prodimage/imei/upload/xxx.slik";
-		$str2 = "https://img.meipo100.com/upload/xxx.slik";
-		$str3 = "https://img.meipo100.com/";
-		$str4 = str_replace("/data/prodimage/imei/", "https://img.meipo100.com/", $str1);
-		echo $str4;
+		$arr = AppUtil::randnum(0.05, 4);
+		print_r($arr);
 	}
+
+
 }
