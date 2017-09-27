@@ -1579,7 +1579,10 @@ class ApiController extends Controller
 			case "record":
 				$data = json_decode(self::postParam("data"), 1);
 				$infoTemp = isset($_FILES["record"]) && $_FILES["record"] ? $_FILES["record"] : '';
-
+				return self::renderAPI(0, '', [
+					"data" => $data,
+					"records" => $infoTemp,
+				]);
 				/**
 				 * {  error:0,
 				 *    name:"tmp_1408909127o6zAJs7qWNihg_c18S2NUN0sDT4M88cdad736c5bb3e5773a7bac85c3bf4a.silk",
