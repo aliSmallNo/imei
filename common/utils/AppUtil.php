@@ -610,12 +610,16 @@ class AppUtil
 				$key = RedisUtil::getImageSeq();
 				$name = $key . '.slk';
 				$filePath = "$uploads_dir/$name";
-				move_uploaded_file($tmp_name, $filePath);
+				$uploadData = file_get_contents($tmp_name);
+				$uploadData = base64_decode($uploadData);
+				file_put_contents($filePath, $uploadData);
+				unlink($tmp_name);
+//				move_uploaded_file($tmp_name, $filePath);
 			}
 		}
 		if ($filePath) {
-			$rootpath = self::getRootPath();
-			$filePath = str_replace($rootpath, 'https://img.meipo100.com/', $filePath);
+			$rootPath = self::getRootPath();
+			$filePath = str_replace($rootPath, 'https://img.meipo100.com/', $filePath);
 			return ["code" => 0, "msg" => $filePath, "key" => $key];
 		}
 		return ["code" => 159, "msg" => "上传文件失败，请稍后重试"];
