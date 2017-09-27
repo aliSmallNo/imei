@@ -34,7 +34,7 @@ class BaiduUtil
 
 	/**
 	 * @param string $voiceUrl 语音url地址
-	 * @return array
+	 * @return array|string
 	 */
 	public static function postVoice($voiceUrl)
 	{
@@ -42,7 +42,7 @@ class BaiduUtil
 		$token = self::token();
 		$filePath = ImageUtil::getFilePath($voiceUrl);
 		if (!$filePath || strpos($filePath, '.wav') === false) {
-			return [];
+			return '';
 		}
 		$cuid = md5($token);
 		var_dump($filePath);
@@ -59,9 +59,9 @@ class BaiduUtil
 		];
 		$ret = AppUtil::postJSON($url, json_encode($postData));
 		$ret = json_decode($ret, 1);
-		if ($ret) {
-			return $ret;
+		if (isset($ret['result']) && $ret['result']) {
+			return $ret['result'];
 		}
-		return [];
+		return '';
 	}
 }
