@@ -613,7 +613,8 @@ class AppUtil
 			}
 		}
 		if ($filePath) {
-			$filePath = str_replace($filePath, 'https://img.meipo100.com/', $filePath);
+			$rootpath = self::getRootPath();
+			$filePath = str_replace($rootpath, 'https://img.meipo100.com/', $filePath);
 			return ["code" => 0, "msg" => $filePath, "key" => $key];
 		}
 		return ["code" => 159, "msg" => "上传文件失败，请稍后重试"];
