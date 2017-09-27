@@ -47,7 +47,6 @@ class BaiduUtil
 		$cuid = md5($token);
 		var_dump($filePath);
 		$fileData = file_get_contents($filePath);
-		var_dump($fileData);
 		$postData = [
 			'format' => 'wav',
 			'rate' => 8000,
@@ -56,7 +55,7 @@ class BaiduUtil
 			'token' => $token,
 			'lan' => 'zh',
 			'speech' => base64_encode($fileData),
-			'len' => strlen($fileData)
+			'len' => mb_strlen($fileData)
 		];
 		$ret = AppUtil::postJSON($url, $postData);
 		$ret = json_decode($ret, 1);
