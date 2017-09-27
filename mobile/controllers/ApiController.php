@@ -19,6 +19,7 @@ use common\models\Pay;
 use common\models\Pin;
 use common\models\QuestionSea;
 use common\models\Redpacket;
+use common\models\RedpacketList;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserBuzz;
@@ -1588,6 +1589,15 @@ class ApiController extends Controller
 				 * }
 				 */
 				$res = AppUtil::uploadSilk("record", "voice");
+				if ($data && $data["uid"] == 120003 && $res["code"] == 0) {
+//					RedpacketList::add([
+//						"dRId" => $data["rid"],
+//						"dUId" => $data["uid"],
+//						"dAmount" => 0.8,
+//						"dAnswer" => $res["msg"],
+//						"dDuration" => $data["seconds"],
+//					]);
+				}
 				return self::renderAPI(0, '', [
 					"data" => $data,
 					"records" => $res,

@@ -93,8 +93,9 @@ class Redpacket extends ActiveRecord
 			$des["oname"] = $v["oname"];
 			$des["oavatar"] = $v["oavatar"];
 			$des["code"] = $v["rCode"];
-			if ($v["dId"]) {
-				$follow[] = $v;
+			if ($v["dUId"]) {
+				$v["isSpeak"] = 0;
+				$follow[$v["dId"]] = $v;
 				$count = $count + 1;
 			}
 			if ($v["dUId"] == $uid) {

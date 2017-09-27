@@ -14,7 +14,6 @@ use yii\db\ActiveRecord;
 
 class RedpacketList extends ActiveRecord
 {
-	const LIMIT_NUM = 10;
 
 	public static function tableName()
 	{
@@ -32,7 +31,7 @@ class RedpacketList extends ActiveRecord
 		}
 
 		$entity->save();
-		return $entity->qId;
+		return $entity->dId;
 	}
 
 	public static function items($rid)
