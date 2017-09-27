@@ -630,7 +630,7 @@ class AppUtil
 			}
 		}
 		if ($filePath) {
-			$rootPath = self::getRootPath();
+			$rootPath = self::catDir(true);
 			$filePath = str_replace($rootPath, 'https://img.meipo100.com/', $filePath);
 			return ["code" => 0, "msg" => $filePath, "key" => $key];
 		}
