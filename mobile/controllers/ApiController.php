@@ -1608,7 +1608,7 @@ class ApiController extends Controller
 //						"records" => $res,
 //						"parseCode" => $parseCode,
 //					]);
-					if (mb_strpos($parseCode, $ling) !== false) {
+					if (mb_strpos($parseCode, $ling) !== false || 1) {
 						$res = RedpacketList::Grap($rid, $uid, $url, $miao);
 						if ($res) {
 							list($des, $follows) = Redpacket::rInfo($rid, $uid);
