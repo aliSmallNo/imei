@@ -15,6 +15,7 @@ use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
+use common\utils\BaiduUtil;
 use common\utils\ImageUtil;
 use common\utils\PushUtil;
 use common\utils\WechatUtil;
@@ -534,9 +535,8 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = WechatUtil::createWechatMenus();
-//		$ret = curl_version();
-		var_dump($ret);
+		 $ret = BaiduUtil::postVoice('https://img.meipo100.com/voice/2017/97/130480.wav');
+		 var_dump($ret);
 		/*self::downloadFile('https://img.meipo100.com/2017/ic_default_t.jpg',
 			'/Users/weirui/Documents/' . time());*/
 		/*$url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s&next_openid=%s';
