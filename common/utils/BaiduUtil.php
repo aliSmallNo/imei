@@ -45,6 +45,7 @@ class BaiduUtil
 			return [];
 		}
 		$cuid = md5($token);
+		var_dump($filePath);
 		$fileData = file_get_contents($filePath);
 		$postData = [
 			'format' => 'wav',
