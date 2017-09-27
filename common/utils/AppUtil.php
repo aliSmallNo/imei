@@ -350,17 +350,18 @@ class AppUtil
 		return $lst['rst'];
 	}
 
-	public static function postJSON($url, $jsonString = "", $sslFlag = false)
+	public static function postJSON($url, $jsonString = '', $sslFlag = false)
 	{
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonString);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+		curl_setopt($ch, CURLOPT_HTTPHEADER,
+			[
 				'Content-Type: application/json',
-				'Content-Length: ' . strlen($jsonString))
-		);
+				'Content-Length: ' . strlen($jsonString)
+			]);
 		if ($sslFlag) {
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
@@ -604,16 +605,12 @@ class AppUtil
 		return ["code" => 159, "msg" => "上传文件失败，请稍后重试"];
 	}
 
-	public static function uploadSilk($fieldName, $cate = "")
+	public static function uploadSilk($fieldName, $cate = 'voice')
 	{
-		$filePath = "";
-		$key = "";
-		if (!$cate) {
-			$cate = self::UPLOAD_DEFAULT;
-		}
+		$fileWav = $filePath = $key = '';
 		if (isset($_FILES[$fieldName])) {
 			$info = $_FILES[$fieldName];
-			$uploads_dir = self::catDir(false, 'voice');
+			$uploads_dir = self::catDir(false, $cate);
 			if ($info['error'] == UPLOAD_ERR_OK) {
 				$tmp_name = $info["tmp_name"];
 				$key = RedisUtil::getImageSeq();
@@ -629,10 +626,10 @@ class AppUtil
 //				move_uploaded_file($tmp_name, $filePath);
 			}
 		}
-		if ($filePath) {
+		if ($fileWav) {
 			$rootPath = self::catDir(true);
-			$filePath = str_replace($rootPath, 'https://img.meipo100.com/', $filePath);
-			return ["code" => 0, "msg" => $filePath, "key" => $key];
+			$fileWav = str_replace($rootPath, 'https://img.meipo100.com/', $fileWav);
+			return ["code" => 0, "msg" => $fileWav, "key" => $key];
 		}
 		return ["code" => 159, "msg" => "上传文件失败，请稍后重试"];
 	}
