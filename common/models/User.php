@@ -274,7 +274,7 @@ class User extends ActiveRecord
 		$entity->uUpdatedOn = date('Y-m-d H:i:s');
 		$entity->uUpdatedBy = $adminId;
 		foreach ($data as $key => $val) {
-			if (is_array($val) && $val && $key == 'uAlbum') {
+			if ($key == 'uAlbum' && is_array($val) && $val) {
 				$album = json_decode($entity->uAlbum, 1);
 				if ($album) {
 					$val = array_merge($album, $val);
@@ -844,6 +844,14 @@ class User extends ActiveRecord
 				$userData[$field] = $data[$k];
 			}
 		}
+
+		//Rain: 新注册的用户，假如没有添加album，直接把头像放入album中
+		if (!isset($userData['uAlbum']) && $userData['uAvatar']) {
+			$album0 = $userData['uAvatar'];
+			$album0 = str_replace('_n.', '.', $album0);
+			$userData['uAlbum'] = [$album0];
+		}
+
 		$uid = self::add($userData);
 
 		//Rain: 添加媒婆关系
