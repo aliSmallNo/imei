@@ -605,15 +605,18 @@ class AppUtil
 			$uploads_dir = self::getUploadFolder($cate);
 
 			if ($info['error'] == UPLOAD_ERR_OK) {
-				AppUtil::logFile($info, 5, __FUNCTION__, __LINE__);
+
 				$tmp_name = $info["tmp_name"];
 				$key = RedisUtil::getImageSeq();
 				$name = $key . '.webm';
 				$filePath = "$uploads_dir/$name";
+				$fileWav = str_replace('.webm', '.wav', $filePath);
 				$uploadData = file_get_contents($tmp_name);
 				$uploadData = str_replace("data:audio/webm;base64,", "", $uploadData);
 				$uploadData = base64_decode($uploadData);
 				file_put_contents($filePath, $uploadData);
+				exec('/usr/bin/ffmpeg -i ' . $filePath . ' -ab 12.2k -ar 8000 -ac 1 ' . $fileWav, $out);
+				AppUtil::logFile($out, 5, __FUNCTION__, __LINE__);
 				unlink($tmp_name);
 //				move_uploaded_file($tmp_name, $filePath);
 			}
