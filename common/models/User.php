@@ -391,6 +391,7 @@ class User extends ActiveRecord
 			$entity->uAddedBy = $editBy;
 			$entity->uUpdatedBy = $editBy;
 			$entity->uOpenId = $openid;
+			$entity->uUnionId = isset($wxInfo['unionid']) ? $wxInfo['unionid'] : '';
 			$entity->uUniqid = $uniqid;
 			$entity->uName = $wxInfo['nickname'];
 			list($thumb, $figure) = ImageUtil::save2Server($wxInfo['headimgurl'], false);
