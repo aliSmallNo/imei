@@ -1579,30 +1579,20 @@ class ApiController extends Controller
 			case "record":
 				$data = json_decode(self::postParam("data"), 1);
 				$infoTemp = isset($_FILES["record"]) && $_FILES["record"] ? $_FILES["record"] : '';
+
+				/**
+				 * {  error:0,
+				 *    name:"tmp_1408909127o6zAJs7qWNihg_c18S2NUN0sDT4M88cdad736c5bb3e5773a7bac85c3bf4a.silk",
+				 *    size:43427,
+				 *    tmp_name:"/tmp/phpzSHUpC",
+				 *    type:"application/octet-stream"
+				 * }
+				 */
+				$res = AppUtil::uploadSilk("record", "voice");
 				return self::renderAPI(0, '', [
 					"data" => $data,
-					"records" => $infoTemp,
+					"records" => $res,
 				]);
-				if ($infoTemp) {
-					$info = [
-						"name" => [
-							$infoTemp["name"]
-						],
-						"tmp_name" => [
-							$infoTemp["tmp_name"]
-						],
-						"type" => [
-							$infoTemp["type"]
-						],
-						"error" => [
-							$infoTemp["error"]
-						],
-						"size" => [
-							$infoTemp["size"]
-						]
-					];
-					//$newAvatar = ImageUtil::uploadItemImages($info);
-				}
 				break;
 		}
 

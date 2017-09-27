@@ -593,6 +593,44 @@ class AppUtil
 		return ["code" => 159, "msg" => "上传文件失败，请稍后重试"];
 	}
 
+	public static function uploadSilk($fieldName, $cate = "")
+	{
+		$filePath = "";
+		$key = "";
+		if (!$cate) {
+			$cate = self::UPLOAD_DEFAULT;
+		}
+		if (isset($_FILES[$fieldName])) {
+			$info = $_FILES[$fieldName];
+			$uploads_dir = self::getUploadFolder($cate);
+
+			if ($info['error'] == UPLOAD_ERR_OK) {
+				$tmp_name = $info["tmp_name"];
+				$key = RedisUtil::getImageSeq();
+				$name = $key . '.silk';
+				$filePath = "$uploads_dir/$name";
+				move_uploaded_file($tmp_name, $filePath);
+			}
+		}
+		if ($filePath) {
+			$filePath = str_replace($filePath, 'https://img.meipo100.com/', $filePath);
+			return ["code" => 0, "msg" => $filePath, "key" => $key];
+		}
+		return ["code" => 159, "msg" => "上传文件失败，请稍后重试"];
+	}
+
+	public static function getRootPath()
+	{
+		$env = AppUtil::scene();
+		$pathEnv = [
+			'test' => '/tmp/',
+			'dev' => __DIR__ . '/../../../upload/',
+			'prod' => '/data/prodimage/' . self::PROJECT_NAME . '/',
+		];
+		$prefix = $pathEnv[$env];
+		return $prefix;
+	}
+
 	public static function getUploadFolder($category = "")
 	{
 		if (!$category) {
@@ -620,8 +658,8 @@ class AppUtil
 			mkdir($path, 0777, true);
 		}
 		return isset($paths[$category]) ? $paths[$category] : $paths['default'];
-
 	}
+
 
 	public static function weatherImage($cond_day, $code = 99)
 	{
