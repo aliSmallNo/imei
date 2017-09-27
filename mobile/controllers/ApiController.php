@@ -1600,17 +1600,18 @@ class ApiController extends Controller
 				$uid = isset($data["uid"]) && $data["uid"] ? $data["uid"] : '';
 				$miao = isset($data["seconds"]) && $data["seconds"] ? $data["seconds"] : 3;
 				$url = $res["msg"];
-				if ($rid && $ling && $uid && $uid == 120003 && $res["code"] == 0) {
+				if ($rid && $ling && $uid && $res["code"] == 0) {
 
 					$parseCode = BaiduUtil::postVoice($url);
 					if (mb_strpos($parseCode, $ling) !== false || 1) {
+
+						$aff = RedpacketList::Grap($rid, $uid, $url, $miao);
 						return self::renderAPI(129, 'test', [
 							"data" => $data,
 							"records" => $res,
-							"aff" => '',
+							"pase" => $parseCode,
+							"aff" => $aff,
 						]);
-						$aff = RedpacketList::Grap($rid, $uid, $url, $miao);
-
 						if ($aff) {
 							list($des, $follows) = Redpacket::rInfo($rid, $uid);
 							return self::renderAPI(0, '', [
