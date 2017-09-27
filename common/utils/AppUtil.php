@@ -676,6 +676,41 @@ class AppUtil
 	}
 
 
+	/**
+	 * @param $total 红包总额
+	 * @param $num 分成8个红包，支持8人随机领取
+	 * @param float $min 每个人最少能收到0.01元
+	 * @return array
+	 */
+	public static function randnum($total, $num, $min = 0.01)
+	{
+		$arr = [];
+		if ($num > 1) {
+			$safe_total = ($total - ($num - 1) * $min) / ($num - 1);
+			if ($min * 100 > $safe_total * 100) {
+				$co = 1;
+				$avg = floor($total * 100 / $num) / 100;
+				for ($i = 1; $i < $num; $i++) {
+					$arr[] = $avg;
+					$co = $i;
+				}
+				$arr[] = $total - $avg * $co;
+				shuffle($arr);
+				return $arr;
+			}
+		}
+		for ($i = 1; $i < $num; $i++) {
+			$safe_total = ($total - ($num - $i) * $min) / ($num - $i);//随机安全上限
+			$money = mt_rand($min * 100, $safe_total * 100) / 100;
+			$total = $total - $money;
+			$arr[] = $money;
+		}
+		$arr[] = $total;
+		shuffle($arr);
+		return $arr;
+	}
+
+
 	public static function weatherImage($cond_day, $code = 99)
 	{
 		$iconUrl = '/images/weather/' . $code . '.png';

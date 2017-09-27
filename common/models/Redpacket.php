@@ -35,6 +35,25 @@ class Redpacket extends ActiveRecord
 		return $entity->rId;
 	}
 
+	public static function addRedpacket($data)
+	{
+		$amount = $data["rAmount"] / 100;
+		$count = $data["rAmount"];
+		$rid = self::add($data);
+
+		$arr = AppUtil::randnum($amount, $count);
+		$sql = "INSERT into im_redpacket_list (dRId,dAmount) values (:rid,:amt)";
+		$inserCmd = AppUtil::db()->createCommand($sql);
+		foreach ($arr as $v) {
+			$inserCmd->bindValues([
+				":rid" => $rid,
+				":amt" => $v,
+			])->execute();
+		}
+		return 1;
+	}
+
+
 	public static function items($uid, $page = 1, $pagesize = 20)
 	{
 		$limit = "limit " . ($page - 1) * $pagesize . ',' . $pagesize;
@@ -89,6 +108,7 @@ class Redpacket extends ActiveRecord
 		$follow = [];
 		$count = 0;
 		foreach ($res as $v) {
+			$des["ling"] = $v["rCode"];
 			$des["count"] = $v["rCount"];
 			$des["oname"] = $v["oname"];
 			$des["oavatar"] = $v["oavatar"];

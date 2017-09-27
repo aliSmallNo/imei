@@ -1530,12 +1530,15 @@ class ApiController extends Controller
 				if ($count <= 0) {
 					return self::renderAPI(129, '数量还没填');
 				}
+				if ($amt / $count <= 0.01) {
+					return self::renderAPI(129, "最小红包不能低于0.01元");
+				}
 				$remain = UserTrans::CalRedPacketRemain($uid);
 				if ($remain >= $amt) {
 					// 余额发红包
 					if ($amt <= $remain) {
 						$tId = UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_SEND, "发红包", $amt * 100, UserTrans::UNIT_FEN);
-						Redpacket::add([
+						Redpacket::addRedpacket([
 							"rUId" => $uid,
 							"rAmount" => $amt * 100,
 							"rCode" => $ling,
@@ -1549,7 +1552,7 @@ class ApiController extends Controller
 				} elseif ($payId) {
 					// 充值发红包
 					$tId = UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_SEND, "发红包", $amt * 100, UserTrans::UNIT_FEN);
-					Redpacket::add([
+					Redpacket::addRedpacket([
 						"rUId" => $uid,
 						"rAmount" => $amt * 100,
 						"rCode" => $ling,
@@ -1579,8 +1582,9 @@ class ApiController extends Controller
 				break;
 			case "record":
 				$data = json_decode(self::postParam("data"), 1);
-				$infoTemp = isset($_FILES["record"]) && $_FILES["record"] ? $_FILES["record"] : '';
 				/**
+				 * $infoTemp = isset($_FILES["record"]) && $_FILES["record"] ? $_FILES["record"] : '';
+				 * $infoTemp:
 				 * {  error:0,
 				 *    name:"tmp_1408909127o6zAJs7qWNihg_c18S2NUN0sDT4M88cdad736c5bb3e5773a7bac85c3bf4a.silk",
 				 *    size:43427,
@@ -1590,13 +1594,8 @@ class ApiController extends Controller
 				 */
 				$res = AppUtil::uploadSilk("record", "voice");
 				if ($data && $data["uid"] == 120003 && $res["code"] == 0) {
-//					RedpacketList::add([
-//						"dRId" => $data["rid"],
-//						"dUId" => $data["uid"],
-//						"dAmount" => 0.8,
-//						"dAnswer" => $res["msg"],
-//						"dDuration" => $data["seconds"],
-//					]);
+					$parseCode = BaiduUtil::postVoice($res["msg"]);
+
 				}
 				return self::renderAPI(0, '', [
 					"data" => $data,
