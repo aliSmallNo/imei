@@ -516,12 +516,19 @@ class UserTrans extends ActiveRecord
 	{
 		$c1 = self::CAT_REDPACKET;
 		$c2 = self::CAT_REDPACKET_SEND;
-		$sql = "SELECT sum(case when tCategory=:c1 then tAmt when tCategory=:c2 then -tAmt end) as remain 
+		$c3 = self::CAT_REDPACKET_GRAP;
+		$c4 = self::CAT_REDPACKET_RETURN;
+		$sql = "SELECT sum(case when tCategory=:c1 then tAmt 
+							when tCategory=:c2 then -tAmt 
+							when tCategory=:c3 then tAmt
+							when tCategory=:c4 then tAmt end) as remain 
 				from im_user_trans
-				where tCategory in (:c1,:c2) and tUId=:uid ";
+				where tCategory in (:c1,:c2,:c3,:c4) and tUId=:uid ";
 		$amt = AppUtil::db()->createCommand($sql)->bindValues([
 			":c1" => $c1,
 			":c2" => $c2,
+			":c3" => $c3,
+			":c4" => $c4,
 			":uid" => $uid,
 		])->queryScalar();
 		return $amt ? $amt / 100 : 0;
