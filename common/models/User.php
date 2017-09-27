@@ -846,7 +846,7 @@ class User extends ActiveRecord
 		}
 
 		//Rain: 新注册的用户，假如没有添加album，直接把头像放入album中
-		if (!isset($userData['uAlbum']) && $userData['uAvatar']) {
+		if (!isset($userData['uAlbum']) && isset($userData['uAvatar']) && $userData['uAvatar']) {
 			$album0 = $userData['uAvatar'];
 			$album0 = str_replace('_n.', '.', $album0);
 			$userData['uAlbum'] = [$album0];
