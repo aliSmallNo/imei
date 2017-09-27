@@ -611,6 +611,7 @@ class AppUtil
 				$name = $key . '.slk';
 				$filePath = "$uploads_dir/$name";
 				$uploadData = file_get_contents($tmp_name);
+				$uploadData = str_replace("data:audio/webm;base64,", "", $uploadData);
 				$uploadData = base64_decode($uploadData);
 				file_put_contents($filePath, $uploadData);
 				unlink($tmp_name);
