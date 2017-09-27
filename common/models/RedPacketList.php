@@ -14,7 +14,6 @@ use yii\db\ActiveRecord;
 
 class RedpacketList extends ActiveRecord
 {
-	const LIMIT_NUM = 10;
 
 	public static function tableName()
 	{
