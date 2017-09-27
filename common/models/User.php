@@ -1213,7 +1213,6 @@ class User extends ActiveRecord
 		$pinCat = Pin::CAT_NOW;
 		$conn = AppUtil::db();
 		$sql = "SELECT * from im_pin as p WHERE p.pCategory=$pinCat AND pPId=" . $mId;
-		AppUtil::logFile($sql, 5, __FUNCTION__, __LINE__);
 		$ret = $conn->createCommand($sql)->queryOne();
 		$myLat = $myLng = '0';
 		$distField = ' 9999 as dist';
@@ -1235,7 +1234,6 @@ class User extends ActiveRecord
 				JOIN im_user_wechat as w on u.uId=w.wUId AND w.wSubscribe=1
 				LEFT JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=$pinCat
 				WHERE $condition  order by stickRank, mRank desc limit $limit";
-		AppUtil::logFile($sql, 5, __FUNCTION__, __LINE__);
 		$ret = $conn->createCommand($sql)->queryAll();
 		$rows = [];
 		$IDs = [0];

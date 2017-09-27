@@ -171,18 +171,29 @@ class AppUtil
 
 	public static function imgDir($rootOnly = false)
 	{
+		return self::catDir($rootOnly);
+	}
+
+	public static function catDir($rootOnly = false, $cat = '')
+	{
 		$folder = '/data/prodimage/' . self::PROJECT_NAME . '/';
 		if (self::isDev()) {
-			$folder = __DIR__ . '/../../../img/' . self::PROJECT_NAME . '/';
+			$folder = self::rootDir() . '../img/' . self::PROJECT_NAME . '/';
 		}
 		if ($rootOnly) {
 			return $folder;
+		}
+		if ($cat) {
+			$folder .= $cat . '/';
+			if (!is_dir($folder)) {
+				mkdir($folder);
+			}
 		}
 		$folder .= date('Y');
 		if (!is_dir($folder)) {
 			mkdir($folder);
 		}
-		$folder .= '/' . date('n') . (date('j') % 15);
+		$folder .= '/' . date('n') . (date('j') % 10);
 		if (!is_dir($folder)) {
 			mkdir($folder);
 		}
@@ -602,15 +613,12 @@ class AppUtil
 		}
 		if (isset($_FILES[$fieldName])) {
 			$info = $_FILES[$fieldName];
-			$uploads_dir = self::getUploadFolder($cate);
-
+			$uploads_dir = self::catDir($cate, 'voice');
 			if ($info['error'] == UPLOAD_ERR_OK) {
-
 				$tmp_name = $info["tmp_name"];
 				$key = RedisUtil::getImageSeq();
-				$name = $key . '.webm';
-				$filePath = "$uploads_dir/$name";
-				$fileWav = str_replace('.webm', '.wav', $filePath);
+				$filePath = $uploads_dir . $key . '.webm';
+				$fileWav = $uploads_dir . $key . '.wav';
 				$uploadData = file_get_contents($tmp_name);
 				$uploadData = str_replace("data:audio/webm;base64,", "", $uploadData);
 				$uploadData = base64_decode($uploadData);
