@@ -605,9 +605,10 @@ class AppUtil
 			$uploads_dir = self::getUploadFolder($cate);
 
 			if ($info['error'] == UPLOAD_ERR_OK) {
+				AppUtil::logFile($info, 5, __FUNCTION__, __LINE__);
 				$tmp_name = $info["tmp_name"];
 				$key = RedisUtil::getImageSeq();
-				$name = $key . '.silk';
+				$name = $key . '.slk';
 				$filePath = "$uploads_dir/$name";
 				move_uploaded_file($tmp_name, $filePath);
 			}
