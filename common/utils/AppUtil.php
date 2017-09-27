@@ -613,7 +613,7 @@ class AppUtil
 		}
 		if (isset($_FILES[$fieldName])) {
 			$info = $_FILES[$fieldName];
-			$uploads_dir = self::catDir($cate, 'voice');
+			$uploads_dir = self::catDir(false, 'voice');
 			if ($info['error'] == UPLOAD_ERR_OK) {
 				$tmp_name = $info["tmp_name"];
 				$key = RedisUtil::getImageSeq();
