@@ -10,6 +10,7 @@ namespace console\controllers;
  */
 use common\models\ChatMsg;
 use common\models\Pin;
+use common\models\RedpacketList;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
@@ -596,7 +597,9 @@ class FooController extends Controller
 //		$arr = AppUtil::randnum(0.05, 4);
 //		print_r($arr);
 
-		var_dump(mb_strpos("稍等胜多负少",'胜多负少'));
+//		var_dump(mb_strpos("稍等胜多负少",'胜多负少'));
+
+		echo RedpacketList::Grap(6, 120003, "http://", 10);
 	}
 
 
