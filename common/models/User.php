@@ -381,24 +381,22 @@ class User extends ActiveRecord
 
 	public static function addWX($wxInfo, $editBy = 1, $uniqid = 0)
 	{
-		if (!$uniqid) {
-			$uniqid = uniqid();
-		}
 		$openid = $wxInfo['openid'];
 		$entity = self::findOne(['uOpenId' => $openid]);
-		if (!$entity) {
-			$entity = new self();
-			$entity->uAddedBy = $editBy;
-			$entity->uUpdatedBy = $editBy;
-			$entity->uOpenId = $openid;
-			$entity->uUnionId = isset($wxInfo['unionid']) ? $wxInfo['unionid'] : '';
-			$entity->uUniqid = $uniqid;
-			$entity->uName = $wxInfo['nickname'];
-			list($thumb, $figure) = ImageUtil::save2Server($wxInfo['headimgurl'], false);
-			$entity->uThumb = $thumb;
-			$entity->uAvatar = $figure;
-			$entity->save();
+		if ($entity) {
+			return $entity->uId;
 		}
+		$entity = new self();
+		$entity->uAddedBy = $editBy;
+		$entity->uUpdatedBy = $editBy;
+		$entity->uOpenId = $openid;
+		$entity->uUnionId = isset($wxInfo['unionid']) ? $wxInfo['unionid'] : '';
+		$entity->uUniqid = ($uniqid ? $uniqid : uniqid());
+		$entity->uName = $wxInfo['nickname'];
+		list($thumb, $figure) = ImageUtil::save2Server($wxInfo['headimgurl'], false);
+		$entity->uThumb = $thumb;
+		$entity->uAvatar = $figure;
+		$entity->save();
 		return $entity->uId;
 	}
 
