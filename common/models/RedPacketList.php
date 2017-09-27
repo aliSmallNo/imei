@@ -32,7 +32,7 @@ class RedpacketList extends ActiveRecord
 		}
 
 		$entity->save();
-		return $entity->qId;
+		return $entity->dId;
 	}
 
 	public static function items($rid)
