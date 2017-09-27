@@ -1606,12 +1606,12 @@ class ApiController extends Controller
 					if (mb_strpos($parseCode, $ling) !== false || 1) {
 
 						$aff = RedpacketList::Grap($rid, $uid, $url, $miao);
-						return self::renderAPI(0, 'test', [
-							"data" => $data,
-							"records" => $res,
-							"pase" => $parseCode,
-							"aff" => $aff,
-						]);
+//						return self::renderAPI(129, 'test', [
+//							"data" => $data,
+//							"records" => $res,
+//							"pase" => $parseCode,
+//							"aff" => $aff,
+//						]);
 						if ($aff) {
 							list($des, $follows) = Redpacket::rInfo($rid, $uid);
 							return self::renderAPI(0, '', [
