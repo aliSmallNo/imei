@@ -38,7 +38,7 @@ class Redpacket extends ActiveRecord
 	public static function addRedpacket($data)
 	{
 		$amount = $data["rAmount"] / 100;
-		$count = $data["rAmount"];
+		$count = $data["rCount"];
 		$rid = self::add($data);
 
 		$arr = AppUtil::randnum($amount, $count);
