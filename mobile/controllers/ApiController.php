@@ -1604,7 +1604,7 @@ class ApiController extends Controller
 
 					$parseCode = BaiduUtil::postVoice($url);
 					if (mb_strpos($parseCode, $ling) !== false || 1) {
-						return self::renderAPI(0, 'test', [
+						return self::renderAPI(0, '', [
 							"rid" => $rid,
 							"uid" => $uid,
 							"url" => $url,
