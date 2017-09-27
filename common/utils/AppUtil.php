@@ -608,7 +608,7 @@ class AppUtil
 				AppUtil::logFile($info, 5, __FUNCTION__, __LINE__);
 				$tmp_name = $info["tmp_name"];
 				$key = RedisUtil::getImageSeq();
-				$name = $key . '.slk';
+				$name = $key . '.webm';
 				$filePath = "$uploads_dir/$name";
 				$uploadData = file_get_contents($tmp_name);
 				$uploadData = str_replace("data:audio/webm;base64,", "", $uploadData);
