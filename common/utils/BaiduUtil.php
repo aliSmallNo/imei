@@ -34,7 +34,7 @@ class BaiduUtil
 
 	/**
 	 * @param string $voiceUrl 语音url地址
-	 * @return array|string
+	 * @return string
 	 */
 	public static function postVoice($voiceUrl)
 	{
@@ -60,7 +60,10 @@ class BaiduUtil
 		$ret = AppUtil::postJSON($url, json_encode($postData));
 		$ret = json_decode($ret, 1);
 		if (isset($ret['result']) && $ret['result']) {
-			return $ret['result'];
+			$ret = $ret['result'];
+			if (is_array($ret) && $ret) {
+				return $ret[0];
+			}
 		}
 		return '';
 	}
