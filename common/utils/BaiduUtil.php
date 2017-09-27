@@ -62,7 +62,7 @@ class BaiduUtil
 		if (isset($ret['result']) && $ret['result']) {
 			$ret = $ret['result'];
 			if (is_array($ret) && $ret) {
-				return $ret[0];
+				return trim($ret[0]);
 			}
 		}
 		return '';
