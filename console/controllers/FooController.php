@@ -535,8 +535,8 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		 $ret = BaiduUtil::postVoice('https://img.meipo100.com/voice/2017/97/130480.wav');
-		 var_dump($ret);
+		$ret = BaiduUtil::postVoice('https://img.meipo100.com/voice/2017/97/130480.wav');
+		var_dump($ret);
 		/*self::downloadFile('https://img.meipo100.com/2017/ic_default_t.jpg',
 			'/Users/weirui/Documents/' . time());*/
 		/*$url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s&next_openid=%s';
@@ -586,15 +586,17 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		$str = '全部是汉字测';
-		if (preg_match_all("/^[\x7f-\xff]+$/", $str, $match)) {
-			echo '全部是汉字';
-		} else {
-			echo '不全是汉字';
-		}
+//		$str = '全部是汉字测';
+//		if (preg_match_all("/^[\x7f-\xff]+$/", $str, $match)) {
+//			echo '全部是汉字';
+//		} else {
+//			echo '不全是汉字';
+//		}
 
-		$arr = AppUtil::randnum(0.05, 4);
-		print_r($arr);
+//		$arr = AppUtil::randnum(0.05, 4);
+//		print_r($arr);
+
+		var_dump(mb_strpos("稍等胜多负少",'胜多负少'));
 	}
 
 

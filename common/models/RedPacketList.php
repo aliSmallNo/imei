@@ -40,4 +40,21 @@ class RedpacketList extends ActiveRecord
 		return $items;
 	}
 
+	public static function Grap($rid, $uid, $url, $miao)
+	{
+		if ($rid && $uid && $url) {
+			$sql = "update im_redpacket_list set dUId=:uid,dAnswer=:url,dDuring=:miao where rUId=:rid and rUId is null order by dId desc limit 1";
+			$num = AppUtil::db()->createCommand($sql)->bindValues([
+				":url" => $url,
+				":maio" => $miao,
+				":uid" => $uid,
+				":rid" => $rid,
+			])->execute();
+			return $num;
+		}
+		return 0;
+
+
+	}
+
 }

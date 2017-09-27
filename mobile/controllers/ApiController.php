@@ -30,6 +30,7 @@ use common\models\UserSign;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
+use common\utils\BaiduUtil;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
@@ -1593,9 +1594,19 @@ class ApiController extends Controller
 				 * }
 				 */
 				$res = AppUtil::uploadSilk("record", "voice");
-				if ($data && $data["uid"] == 120003 && $res["code"] == 0) {
-					$parseCode = BaiduUtil::postVoice($res["msg"]);
 
+				$rid = isset($data["rid"]) && $data["rid"] ? $data["rid"] : '';
+				$ling = isset($data["ling"]) && $data["ling"] ? $data["ling"] : '';
+				$uid = isset($data["uid"]) && $data["uid"] ? $data["uid"] : '';
+				$miao = isset($data["seconds"]) && $data["seconds"] ? $data["seconds"] : 3;
+				$url = $res["msg"];
+				if ($rid && $ling && $uid && $uid == 120003 && $res["code"] == 0) {
+					$parseCode = BaiduUtil::postVoice($url);
+					if (mb_strpos($parseCode, $ling) >= 0) {
+						RedpacketList::Grap($rid, $uid, $url, $miao);
+					} else {
+						self::renderAPI(129, '抢红包失败');
+					}
 				}
 				return self::renderAPI(0, '', [
 					"data" => $data,
