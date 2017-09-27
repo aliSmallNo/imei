@@ -59,7 +59,6 @@ class BaiduUtil
 		];
 		$ret = AppUtil::postJSON($url, json_encode($postData));
 		$ret = json_decode($ret, 1);
-		var_dump($ret);
 		if (isset($ret['result']) && $ret['result']) {
 			$ret = $ret['result'];
 			if (is_array($ret) && $ret) {
