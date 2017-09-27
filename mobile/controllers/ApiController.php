@@ -1602,6 +1602,11 @@ class ApiController extends Controller
 				$url = $res["msg"];
 				if ($rid && $ling && $uid && $uid == 120003 && $res["code"] == 0) {
 					$parseCode = BaiduUtil::postVoice($url);
+					return self::renderAPI(0, '', [
+						"data" => $data,
+						"records" => $res,
+						"parseCode" => $parseCode,
+					]);
 					if (mb_strpos($parseCode, $ling) >= 0) {
 						$res = RedpacketList::Grap($rid, $uid, $url, $miao);
 						if ($res) {
