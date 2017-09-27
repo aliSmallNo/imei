@@ -57,7 +57,7 @@ class Redpacket extends ActiveRecord
 	public static function items($uid, $page = 1, $pagesize = 20)
 	{
 		$limit = "limit " . ($page - 1) * $pagesize . ',' . $pagesize;
-		$sql = "SELECT count(d.dId) as co,w.wAvatar,w.wNickName,r.* 
+		$sql = "SELECT count(d.dUId) as co,w.wAvatar,w.wNickName,r.* 
 				from im_redpacket as r 
 				left join im_user_wechat as w on w.wUId=r.rUId
 				left join im_redpacket_list as d on r.rId=d.dRId
