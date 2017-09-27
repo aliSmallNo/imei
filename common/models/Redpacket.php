@@ -71,7 +71,7 @@ class Redpacket extends ActiveRecord
 	{
 		$sql = "SELECT 
 				w.wNickName as oname,w.wAvatar as oavatar,
-				w2.wNickName as fname,w.wAvatar as favatar,
+				w2.wNickName as fname,w2.wAvatar as favatar,
 				r.*,d.*
 				from im_redpacket as r
 				left join im_redpacket_list as d on d.dRId=r.rId 
