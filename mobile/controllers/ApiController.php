@@ -1601,11 +1601,11 @@ class ApiController extends Controller
 				$miao = isset($data["seconds"]) && $data["seconds"] ? $data["seconds"] : 3;
 				$url = $res["msg"];
 				if ($rid && $ling && $uid && $uid == 120003 && $res["code"] == 0) {
-					return self::renderAPI(129, 'test', [
-						"data" => $data,
-						"records" => $res,
-						"parseCode" => '',
-					]);
+//					return self::renderAPI(129, 'test', [
+//						"data" => $data,
+//						"records" => $res,
+//						"parseCode" => '',
+//					]);
 					$parseCode = BaiduUtil::postVoice($url);
 
 					if (mb_strpos($parseCode, $ling) >= 0) {
