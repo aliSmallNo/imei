@@ -44,10 +44,12 @@ class RedpacketList extends ActiveRecord
 	{
 		$num = 0;
 		if ($rid && $uid && $url) {
-			$sql = "select dId from im_redpacket_list where dRId=:rid  and dUId=0 order by dId desc limit 1 ";
-			$dId = AppUtil::db()->createCommand($sql)->bindValues([
+			$sql = "select dId,dAmount from im_redpacket_list where dRId=:rid  and dUId=0 order by dId desc limit 1 ";
+			$result = AppUtil::db()->createCommand($sql)->bindValues([
 				":rid" => $rid,
-			])->queryScalar();
+			])->queryOne();
+			$dId = isset($result["dId"]) ? $result["dId"] : 0;
+			$amt = isset($result["dAmount"]) ? $result["dAmount"] : 0;
 
 			if ($dId) {
 				$sql = "update im_redpacket_list set dUId=:uid,dAnswer=:url,dDuration=:miao where dId=:did";
@@ -57,6 +59,8 @@ class RedpacketList extends ActiveRecord
 					":uid" => $uid,
 					":did" => $dId,
 				])->execute();
+				$title = UserTrans::$catDict[UserTrans::CAT_REDPACKET_GRAP];
+				UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_GRAP, $title, $amt, UserTrans::UNIT_FEN);
 			}
 		}
 		return $num;

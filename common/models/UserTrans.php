@@ -31,6 +31,8 @@ class UserTrans extends ActiveRecord
 
 	const CAT_REDPACKET = 500;
 	const CAT_REDPACKET_SEND = 510;
+	const CAT_REDPACKET_GRAP = 520;
+	const CAT_REDPACKET_RETURN = 530;
 
 	static $catDict = [
 		self::CAT_RECHARGE => "充值",
@@ -48,6 +50,8 @@ class UserTrans extends ActiveRecord
 
 		self::CAT_REDPACKET => "红包充值",
 		self::CAT_REDPACKET_SEND => "发红包",
+		self::CAT_REDPACKET_GRAP => "抢红包",
+		self::CAT_REDPACKET_RETURN => "红包过期退回",
 	];
 
 	static $CatMinus = [
@@ -120,6 +124,10 @@ class UserTrans extends ActiveRecord
 		if (!$payInfo) {
 			return false;
 		}
+		$ptitle = $payInfo['pTitle'];
+		if ($cat == self::CAT_REDPACKET) {
+			$ptitle = self::$catDict[self::CAT_REDPACKET];
+		}
 		$entity = self::findOne(['tPId' => $pid]);
 		if ($entity) {
 			return false;
@@ -127,7 +135,7 @@ class UserTrans extends ActiveRecord
 		$entity = new self();
 		$entity->tPId = $pid;
 		$entity->tUId = $payInfo['pUId'];
-		$entity->tTitle = $payInfo['pTitle'];
+		$entity->tTitle = $ptitle;
 		$entity->tCategory = $cat;
 		switch ($payInfo['pCategory']) {
 			case Pay::CAT_RECHARGE:
