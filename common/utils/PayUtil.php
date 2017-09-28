@@ -23,7 +23,7 @@ class PayUtil
 	 * @param string $openId 用户的公众号openid 或者 用户的小程序openid
 	 * @param int $amt 金额，单位分
 	 * @param \yii\db\connection $conn
-	 * @return array [余额, 系统提醒消息]
+	 * @return array [余额（单位分）, 系统提醒消息]
 	 */
 	public static function withdraw($openId, $amt, $conn = null)
 	{
