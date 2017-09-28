@@ -536,8 +536,13 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = BaiduUtil::postVoice('https://img.meipo100.com/voice/2017/97/130480.wav');
+
+		$ret = getcwd();
 		var_dump($ret);
+
+		$ret = AppUtil::rootDir();
+		var_dump($ret);
+
 		/*self::downloadFile('https://img.meipo100.com/2017/ic_default_t.jpg',
 			'/Users/weirui/Documents/' . time());*/
 		/*$url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s&next_openid=%s';
