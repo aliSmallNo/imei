@@ -1625,7 +1625,7 @@ class ApiController extends Controller
 				];
 				Log::add($newLog);
 
-				if ($rid && $ling && $uid ) {
+				if (1 || $rid && $ling && $uid ) {
 
 					///////////////
 					$newLog = [
