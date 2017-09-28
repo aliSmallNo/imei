@@ -16,9 +16,10 @@ use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
-use common\utils\BaiduUtil;
 use common\utils\ImageUtil;
+use common\utils\PayUtil;
 use common\utils\PushUtil;
+use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -536,12 +537,17 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
+		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
+		$openId = 'oYDJew_lEh4b4gxSv6rFW1lHGPkk';
+		$tradeNo = RedisUtil::getIntSeq();
+		$ret = PayUtil::withdraw($openId, $tradeNo, '赵武', 100);
+		var_dump($ret);
 
-		$ret = getcwd();
+		/*$ret = getcwd();
 		var_dump($ret);
 
 		$ret = AppUtil::rootDir();
-		var_dump($ret);
+		var_dump($ret);*/
 
 		/*self::downloadFile('https://img.meipo100.com/2017/ic_default_t.jpg',
 			'/Users/weirui/Documents/' . time());*/
