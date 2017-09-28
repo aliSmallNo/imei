@@ -1603,6 +1603,8 @@ class ApiController extends Controller
 				 *    type:"application/octet-stream"
 				 * }
 				 */
+				///////////////
+
 				$res = AppUtil::uploadSilk("record", "voice");
 
 				$rid = isset($data["rid"]) && $data["rid"] ? intval($data["rid"]) : '';
@@ -1621,6 +1623,7 @@ class ApiController extends Controller
 						"uid"=>$uid,
 					]),
 				];
+				Log::add($newLog);
 
 				if ($rid && $ling && $uid && $res["code"] == 0) {
 
@@ -1632,6 +1635,8 @@ class ApiController extends Controller
 							"index"=>0,
 						]),
 					];
+					Log::add($newLog);
+
 					$parseCode = BaiduUtil::postVoice($url);
 					///////////////
 					$newLog = [
