@@ -1625,7 +1625,7 @@ class ApiController extends Controller
 				];
 				Log::add($newLog);
 
-				if ($rid && $ling && $uid && $res["code"] == 0) {
+				if ($rid && $ling && $uid ) {
 
 					///////////////
 					$newLog = [
@@ -1681,9 +1681,8 @@ class ApiController extends Controller
 						return self::renderAPI(129, '抢红包失败');
 					}
 				}
-				return self::renderAPI(0, '', [
-					"data" => $data,
-					"records" => $res,
+				return self::renderAPI(129, 'error', [
+
 				]);
 				break;
 			case "shareinfo":
