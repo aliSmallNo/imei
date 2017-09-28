@@ -538,7 +538,7 @@ class FooController extends Controller
 	public function actionRain()
 	{
 		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
-		$openId = 'oYDJew_lEh4b4gxSv6rFW1lHGPkk';
+		$openId = 'ouvPv0Cz6rb-QB_i9oYwHZWjGtv8';
 		$tradeNo = RedisUtil::getIntSeq();
 		$ret = PayUtil::withdraw($openId, $tradeNo, '赵武', 100);
 		var_dump($ret);

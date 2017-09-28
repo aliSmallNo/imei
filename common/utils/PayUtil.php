@@ -10,6 +10,7 @@ namespace common\utils;
 
 require_once __DIR__ . '/../lib/WxPay/WxPay.Config.php';
 require_once __DIR__ . '/../lib/WxPay/WxPay.Api.php';
+
 class PayUtil
 {
 
@@ -40,8 +41,12 @@ class PayUtil
 		<sign>C97BDBACF37622775366F38B629F45E3</sign>
 		</xml>
 		 * */
+		$appId = \WxPayConfig::X_APPID;
+		if (strpos($openId, 'oYDJe') === 0) {
+			$appId = \WxPayConfig::APPID;
+		}
 		$postData = [
-			'mch_appid' => \WxPayConfig::APPID,
+			'mch_appid' => $appId,
 			'mchid' => \WxPayConfig::MCHID,
 			'nonce_str' => self::nonceStr(),
 			'partner_trade_no' => $tradeNo,
