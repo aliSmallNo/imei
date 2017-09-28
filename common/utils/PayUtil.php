@@ -26,12 +26,20 @@ class PayUtil
 	 * @param int $amt 金额，单位分
 	 * @return bool
 	 */
-	public static function withdraw($openId, $tradeNo, $nickname, $amt)
+	public static function withdraw($openId, $tradeNo, $amt)
 	{
 		$appId = \WxPayConfig::X_APPID;
 		if (strpos($openId, 'oYDJe') === 0) {
 			$appId = \WxPayConfig::APPID;
 		}
+		$conn = AppUtil::db();
+		$sql = 'select wUId,wNickName from im_user_wechat WHERE wOpenId=:id or wXcxId=:id';
+		$row = $conn->createCommand($sql)->bindValues([':id' => $openId])->queryOne();
+		if (!$row) {
+			return false;
+		}
+		$nickname = $row['wNickName'];
+		$uId = $row['wUId'];
 		$postData = [
 			'mch_appid' => $appId,
 			'mchid' => \WxPayConfig::MCHID,
@@ -62,6 +70,8 @@ class PayUtil
 					'tPayNo' => $payment_no,
 					'tPayRaw' => $ret,
 					'tStatus' => 1,
+					'tAmt' => $amt,
+					'tUId' => $uId,
 				]);
 				return true;
 			}
