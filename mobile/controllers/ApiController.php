@@ -1593,10 +1593,10 @@ class ApiController extends Controller
 				break;
 			case "record":
 				$data = json_decode(self::postParam("data"), 1);
-				return self::renderAPI(129, 'test', [
+				/*return self::renderAPI(129, 'test', [
 					"data" => $data,
 					"record" => $_FILES["record"],
-				]);
+				]);*/
 				/**
 				 * $infoTemp = isset($_FILES["record"]) && $_FILES["record"] ? $_FILES["record"] : '';
 				 * $infoTemp:
