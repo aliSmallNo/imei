@@ -9,6 +9,7 @@
 namespace common\models;
 
 
+use common\utils\AppUtil;
 use yii\db\ActiveRecord;
 
 class RedpacketTrans extends ActiveRecord
@@ -32,6 +33,22 @@ class RedpacketTrans extends ActiveRecord
 	public static function tableName()
 	{
 		return '{{%redpacket_trans}}';
+	}
+
+	/**
+	 * @param int $uid
+	 * @param \yii\db\connection $conn
+	 * @return int
+	 */
+	public static function balance($uid, $conn = null)
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$strMinus = implode(',', RedpacketTrans::$MinusCats);
+		$sql = 'SELECT sum(CASE WHEN tCategory IN (' . $strMinus . ') THEN -tAmt ELSE tAmt END)  
+			FROM im_redpacket_trans WHERE tUId=:id ';
+		return $conn->createCommand($sql)->bindValues([':id' => $uid])->queryScalar();
 	}
 
 	public static function edit($values)
