@@ -32,16 +32,16 @@ class RedpacketTrans extends ActiveRecord
 		return '{{%redpacket_trans}}';
 	}
 
-	public static function edit($values)
+	public static function replace($values)
 	{
 		$tId = (isset($values['tId']) ? $values['tId'] : 0);
 		$info = self::findOne(['tId' => $tId]);
 		$tPId = (isset($values['tPId']) ? $values['tPId'] : 0);
-		if(!$info && $tPId){
+		if (!$info && $tPId) {
 			$info = self::findOne(['tPId' => $tPId]);
 		}
 		if (!$info) {
-			$info = new self();
+			return 0;
 		}
 		foreach ($values as $field => $val) {
 			if ($field == 'tId') continue;
@@ -50,4 +50,5 @@ class RedpacketTrans extends ActiveRecord
 		$info->save();
 		return $info->tId;
 	}
+
 }

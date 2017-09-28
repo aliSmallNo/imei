@@ -56,12 +56,12 @@ class PayUtil
 			if (isset($ret['return_code']) && $ret['return_code'] == 'SUCCESS') {
 				$payment_no = $ret['payment_no'];
 				$partner_trade_no = $ret['partner_trade_no'];
-				RedpacketTrans::edit([
+				RedpacketTrans::replace([
 					'tPId' => $partner_trade_no,
 					'tCategory' => RedpacketTrans::CAT_WITHDRAW,
 					'tPayNo' => $payment_no,
 					'tPayRaw' => $ret,
-					'tStatus' => 1
+					'tStatus' => 1,
 				]);
 				return true;
 			}
