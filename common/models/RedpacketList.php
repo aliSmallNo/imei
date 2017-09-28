@@ -52,12 +52,13 @@ class RedpacketList extends ActiveRecord
 			$amt = isset($result["dAmount"]) ? $result["dAmount"] : 0;
 
 			if ($dId) {
-				$sql = "update im_redpacket_list set dUId=:uid,dAnswer=:url,dDuration=:miao where dId=:did";
+				$sql = "update im_redpacket_list set dUId=:uid,dAnswer=:url,dDuration=:miao,:dAddedOn=:dt where dId=:did";
 				$num = AppUtil::db()->createCommand($sql)->bindValues([
 					":url" => $url,
 					":miao" => $miao,
 					":uid" => $uid,
 					":did" => $dId,
+					":dt" => date("Y-m-d H:i:s"),
 				])->execute();
 				$title = UserTrans::$catDict[UserTrans::CAT_REDPACKET_GRAP];
 				UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_GRAP, $title, $amt, UserTrans::UNIT_FEN);

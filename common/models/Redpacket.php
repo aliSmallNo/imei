@@ -159,6 +159,7 @@ class Redpacket extends ActiveRecord
 			$des["code"] = $v["rCode"];
 			if ($v["dUId"]) {
 				$v["isSpeak"] = 0;
+				$v["dt"]=date("m月d日 H:i",strtotime($v["dAddedOn"]));
 				$follow[$v["dId"]] = $v;
 				$count = $count + 1;
 			}
