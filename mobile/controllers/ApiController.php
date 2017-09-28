@@ -1593,6 +1593,10 @@ class ApiController extends Controller
 				break;
 			case "record":
 				$data = json_decode(self::postParam("data"), 1);
+				return self::renderAPI(129, 'test', [
+					"data" => $data,
+					"record" => $_FILES["record"],
+				]);
 				/**
 				 * $infoTemp = isset($_FILES["record"]) && $_FILES["record"] ? $_FILES["record"] : '';
 				 * $infoTemp:
@@ -1652,6 +1656,7 @@ class ApiController extends Controller
 						Log::add($newLog);
 
 						$aff = RedpacketList::Grap($rid, $uid, $url, $miao);
+						///////////////
 						$newLog = [
 							"oCategory" => "redpacket",
 							"oKey" => 'redpacket: ',
@@ -1662,6 +1667,7 @@ class ApiController extends Controller
 							],
 						];
 						Log::add($newLog);
+
 						if ($aff) {
 							list($des, $follows) = Redpacket::rInfo($rid, $uid);
 							return self::renderAPI(0, '', [
