@@ -40,6 +40,7 @@ class RedpacketTrans extends ActiveRecord
 			$info = new self();
 		}
 		foreach ($values as $field => $val) {
+			if ($field == 'tId') continue;
 			$info->$field = is_array($val) ? json_encode($val, JSON_UNESCAPED_UNICODE) : $val;
 		}
 		$info->save();
