@@ -612,19 +612,29 @@ class AppUtil
 		if (isset($_FILES[$fieldName])) {
 			$info = $_FILES[$fieldName];
 			$uploads_dir = self::catDir(false, $cate);
+			$silkFlag = false;
+			$extension = '.webm';
 			if ($info['error'] == UPLOAD_ERR_OK) {
 				$tmp_name = $info["tmp_name"];
 				AppUtil::logFile($info, 5, __FUNCTION__, __LINE__);
 				$key = RedisUtil::getImageSeq();
-				$filePath = $uploads_dir . $key . '.webm';
-				$fileWav = $uploads_dir . $key . '.wav';
 				$uploadData = file_get_contents($tmp_name);
-				AppUtil::logFile($uploadData, 5, __FUNCTION__, __LINE__);
-
-				$uploadData = explode(",", $uploadData);
-				$uploadData = base64_decode($uploadData[1]);
-				file_put_contents($filePath, $uploadData);
-				exec('/usr/bin/ffmpeg -i ' . $filePath . ' -ab 12.2k -ar 8000 -ac 1 ' . $fileWav, $out);
+				if (strpos($uploadData, 'SILK_V3') !== false) {
+					$silkFlag = true;
+					$extension = '.slk';
+				}
+				$filePath = $uploads_dir . $key . $extension;
+				$fileWav = $uploads_dir . $key . '.wav';
+				//AppUtil::logFile($uploadData, 5, __FUNCTION__, __LINE__);
+				if ($silkFlag) {
+					file_put_contents($filePath, $uploadData);
+					exec('sh /data/code/silk-v3/converter.sh ' . $filePath . ' wav', $out);
+				} else {
+					$uploadData = explode(",", $uploadData);
+					$uploadData = base64_decode($uploadData[1]);
+					file_put_contents($filePath, $uploadData);
+					exec('/usr/bin/ffmpeg -i ' . $filePath . ' -ab 12.2k -ar 8000 -ac 1 ' . $fileWav, $out);
+				}
 				AppUtil::logFile($filePath, 5, __FUNCTION__, __LINE__);
 				AppUtil::logFile($out, 5, __FUNCTION__, __LINE__);
 				unlink($tmp_name);
