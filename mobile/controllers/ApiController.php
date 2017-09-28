@@ -1613,7 +1613,6 @@ class ApiController extends Controller
 				$url = $res["msg"];
 				///////////////
 
-
 				if ($rid && $ling && $uid && $res['code'] == 0) {
 					$newLog = [
 						"oCategory" => "redpacket",
