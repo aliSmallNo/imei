@@ -1610,6 +1610,18 @@ class ApiController extends Controller
 				$uid = isset($data["uid"]) && $data["uid"] ? intval($data["uid"]) : '';
 				$miao = isset($data["seconds"]) && $data["seconds"] ? intval($data["seconds"]) : 3;
 				$url = $res["msg"];
+				///////////////
+				$newLog = [
+					"oCategory" => "redpacket",
+					"oKey" => 'redpacket: '.$res["code"],
+					"oAfter" => json_encode([
+						"index"=>-1,
+						"rid"=>$rid,
+						"ling"=>$ling,
+						"uid"=>$uid,
+					]),
+				];
+
 				if ($rid && $ling && $uid && $res["code"] == 0) {
 
 					///////////////
