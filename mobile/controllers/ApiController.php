@@ -1612,6 +1612,14 @@ class ApiController extends Controller
 				$url = $res["msg"];
 				if ($rid && $ling && $uid && $res["code"] == 0) {
 
+					///////////////
+					$newLog = [
+						"oCategory" => "redpacket",
+						"oKey" => 'redpacket: ',
+						"oAfter" => json_encode([
+							"index"=>0,
+						]),
+					];
 					$parseCode = BaiduUtil::postVoice($url);
 					///////////////
 					$newLog = [
