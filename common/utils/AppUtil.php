@@ -159,7 +159,7 @@ class AppUtil
 	public static function logDir()
 	{
 		if (self::isDev()) {
-			$folder = __DIR__ . '/../../../logs/';
+			$folder = self::rootDir() . '../logs/';
 		} else {
 			$folder = '/data/logs/' . self::PROJECT_NAME . '/';
 		}
@@ -202,7 +202,7 @@ class AppUtil
 
 	public static function rootDir()
 	{
-		return __DIR__ . '/../../';
+		return getcwd();
 	}
 
 	public static function notifyUrl()
@@ -639,7 +639,7 @@ class AppUtil
 		$env = AppUtil::scene();
 		$pathEnv = [
 			'test' => '/tmp/',
-			'dev' => __DIR__ . '/../../../upload/',
+			'dev' => self::rootDir() . '../upload/',
 			'prod' => '/data/prodimage/' . self::PROJECT_NAME . '/',
 		];
 		$prefix = $pathEnv[$env];
@@ -654,7 +654,7 @@ class AppUtil
 		$env = AppUtil::scene();
 		$pathEnv = [
 			'test' => '/tmp/',
-			'dev' => __DIR__ . '/../../../upload/',
+			'dev' => self::rootDir() . '../upload/',
 			'prod' => '/data/prodimage/' . self::PROJECT_NAME . '/',
 		];
 
@@ -677,8 +677,8 @@ class AppUtil
 
 
 	/**
-	 * @param $total 红包总额
-	 * @param $num 分成8个红包，支持8人随机领取
+	 * @param float $total 红包总额
+	 * @param int $num 分成8个红包，支持8人随机领取
 	 * @param float $min 每个人最少能收到0.01元
 	 * @return array
 	 */
@@ -931,12 +931,6 @@ class AppUtil
 		if (self::isDev()) {
 			$file = self::logDir() . self::PROJECT_NAME . '_' . date("Ym") . '.log';
 		}
-		/*if (self::isDev()) {
-			$file = __DIR__ . '/../../../' . self::PROJECT_NAME . '_' . date("Ym") . '.log';
-		} else {
-			$day = (date("d") % 15) + 1;
-			$file = '/data/tmp/' . self::PROJECT_NAME . '_' . date("Ym") . $day . '.log';
-		}*/
 		$txt = [];
 		if ($func) {
 			$txt[] = $func;
@@ -945,7 +939,6 @@ class AppUtil
 			$txt[] = $line;
 		}
 		$txt[] = is_array($msg) ? json_encode($msg, JSON_UNESCAPED_UNICODE) : $msg;
-		$hasLog = is_file($file);
 		$ret = @file_put_contents($file, date('ymd H:i:s') . PHP_EOL . implode(" - ", $txt) . PHP_EOL, 8);
 		/*if (!$hasLog) {
 			chmod($file, 0666);
@@ -984,7 +977,7 @@ class AppUtil
 	{
 		$pathEnv = [
 			'test' => '/tmp/',
-			'dev' => __DIR__ . '/../../../upload/',
+			'dev' => self::rootDir() . '../upload/',
 			'prod' => '/data/prodimage/',
 		];
 		$env = self::scene();
@@ -1237,8 +1230,11 @@ class AppUtil
 
 	/**
 	 * 获取开始时间和结束时间
-	 *
-	 * */
+	 * @param $time
+	 * @param string $category
+	 * @param bool $dateFlag
+	 * @return array
+	 */
 	public static function getEndStartTime($time, $category = 'now', $dateFlag = false)
 	{
 		$lowerCategory = strtolower($category);

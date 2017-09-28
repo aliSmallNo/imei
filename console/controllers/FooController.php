@@ -540,6 +540,9 @@ class FooController extends Controller
 		$ret = getcwd();
 		var_dump($ret);
 
+		$ret = AppUtil::rootDir();
+		var_dump($ret);
+
 		/*self::downloadFile('https://img.meipo100.com/2017/ic_default_t.jpg',
 			'/Users/weirui/Documents/' . time());*/
 		/*$url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s&next_openid=%s';
