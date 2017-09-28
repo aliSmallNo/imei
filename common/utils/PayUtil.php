@@ -17,30 +17,15 @@ class PayUtil
 	const DESC_WITHDRAW = '趣红包-现金提现';
 
 	/**
-	 * 提现
-	 * @param string $openId
-	 * @param string $tradeNo
-	 * @param string $nickname
-	 * @param int $amt
+	 * 现金提现，直接进入微信零钱
+	 * @param string $openId 用户的公众号openid 或者 用户的小程序openid
+	 * @param string $tradeNo 流水号，应该是 im_user_trans 里的唯一ID
+	 * @param string $nickname 用户的昵称
+	 * @param int $amt 金额，单位分
 	 * @return bool
 	 */
 	public static function withdraw($openId, $tradeNo, $nickname, $amt)
 	{
-		/*
-		 * <xml>
-		<mch_appid>wxe062425f740c30d8</mch_appid>
-		<mchid>10000098</mchid>
-		<nonce_str>3PG2J4ILTKCH16CQ2502SI8ZNMTM67VS</nonce_str>
-		<partner_trade_no>100000982014120919616</partner_trade_no>
-		<openid>ohO4Gt7wVPxIT1A9GjFaMYMiZY1s</openid>
-		<check_name>FORCE_CHECK</check_name>
-		<re_user_name>张三</re_user_name>
-		<amount>100</amount>
-		<desc>节日快乐!</desc>
-		<spbill_create_ip>10.2.3.10</spbill_create_ip>
-		<sign>C97BDBACF37622775366F38B629F45E3</sign>
-		</xml>
-		 * */
 		$appId = \WxPayConfig::X_APPID;
 		if (strpos($openId, 'oYDJe') === 0) {
 			$appId = \WxPayConfig::APPID;
