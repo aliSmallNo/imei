@@ -1638,6 +1638,7 @@ class ApiController extends Controller
 						"oKey" => 'redpacket: ',
 						"oAfter" => [
 							"index" => __LINE__,
+							'url' => $url,
 							'code' => $parseCode
 						],
 					];
@@ -1648,8 +1649,8 @@ class ApiController extends Controller
 							"oCategory" => "redpacket",
 							"oKey" => 'redpacket: ',
 							"oAfter" => [
-
 								"index" => __LINE__,
+								'url' => $url,
 								'code' => $parseCode
 							],
 						];
