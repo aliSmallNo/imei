@@ -1620,6 +1620,7 @@ class ApiController extends Controller
 						"rid" => $rid,
 						"ling" => $ling,
 						"uid" => $uid,
+						'res' => $res
 					]),
 				];
 				Log::add($newLog);

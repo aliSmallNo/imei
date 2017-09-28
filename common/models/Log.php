@@ -35,7 +35,7 @@ class Log extends ActiveRecord
 		}
 		$logger = new self();
 		foreach ($values as $key => $val) {
-			$logger->$key = $val;
+			$logger->$key = is_array($val) ? json_encode($val, JSON_UNESCAPED_UNICODE) : $val;
 		}
 		$logger->save();
 		return true;
