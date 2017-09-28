@@ -542,7 +542,7 @@ class FooController extends Controller
 		$tradeNo = RedisUtil::getIntSeq();  // 流水号，应该是 im_user_trans 里的唯一ID
 		$nickname = '赵武'; // 用户的昵称
 		$amount = 100; // 金额，单位分
-		$ret = PayUtil::withdraw($openId, $tradeNo, $nickname, $amount);
+		$ret = PayUtil::withdraw($openId, $amount);
 		var_dump($ret);
 
 		/*$ret = getcwd();

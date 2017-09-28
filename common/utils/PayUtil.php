@@ -26,25 +26,35 @@ class PayUtil
 	 * @param int $amt 金额，单位分
 	 * @return bool
 	 */
-	public static function withdraw($openId, $tradeNo, $amt)
+	public static function withdraw($openId, $amt)
 	{
 		$appId = \WxPayConfig::X_APPID;
 		if (strpos($openId, 'oYDJe') === 0) {
 			$appId = \WxPayConfig::APPID;
 		}
 		$conn = AppUtil::db();
-		$sql = 'select wUId,wNickName from im_user_wechat WHERE wOpenId=:id or wXcxId=:id';
+		$sql = 'SELECT wUId,wNickName FROM im_user_wechat WHERE wOpenId=:id or wXcxId=:id';
 		$row = $conn->createCommand($sql)->bindValues([':id' => $openId])->queryOne();
 		if (!$row) {
 			return false;
 		}
 		$nickname = $row['wNickName'];
 		$uId = $row['wUId'];
+		$trade_no = RedisUtil::getIntSeq();
+		$sql = 'INSERT INTO im_redpacket_trans(tPId,tCategory,tStatus,tAmt,tUId)
+				SELECT :tPId,:tCategory,0,:tAmt,:tUId FROM dual';
+		$conn->createCommand($sql)->bindValues([
+			':tPId' => $trade_no,
+			':tCategory' => RedpacketTrans::CAT_WITHDRAW,
+			':tAmt' => $amt,
+			':tUId' => $uId,
+		])->execute();
+
 		$postData = [
 			'mch_appid' => $appId,
 			'mchid' => \WxPayConfig::MCHID,
 			'nonce_str' => self::nonceStr(),
-			'partner_trade_no' => $tradeNo,
+			'partner_trade_no' => $trade_no,
 			'openid' => $openId,
 			'check_name' => 'NO_CHECK',
 			're_user_name' => $nickname,
@@ -64,15 +74,12 @@ class PayUtil
 			if (isset($ret['return_code']) && $ret['return_code'] == 'SUCCESS') {
 				$payment_no = $ret['payment_no'];
 				$partner_trade_no = $ret['partner_trade_no'];
-				RedpacketTrans::replace([
-					'tPId' => $partner_trade_no,
-					'tCategory' => RedpacketTrans::CAT_WITHDRAW,
-					'tPayNo' => $payment_no,
-					'tPayRaw' => $ret,
-					'tStatus' => 1,
-					'tAmt' => $amt,
-					'tUId' => $uId,
-				]);
+				$sql = 'update im_redpacket_trans set tPayNo=:tPayNo,tPayRaw=:tPayRaw,tStatus=1 WHERE tPId=:tPId';
+				$conn->createCommand($sql)->bindValues([
+					':tPId' => $partner_trade_no,
+					':tPayNo' => $payment_no,
+					':tPayRaw' => json_encode($ret, JSON_UNESCAPED_UNICODE),
+				])->execute();
 				return true;
 			}
 		}
