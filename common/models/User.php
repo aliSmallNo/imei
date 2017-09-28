@@ -1149,7 +1149,6 @@ class User extends ActiveRecord
 
 	public static function getFilter($openId, $data, $page = 1, $pageSize = 20)
 	{
-		AppUtil::logFile($openId, 5, __FUNCTION__, __LINE__);
 		$myInfo = self::findOne(["uOpenId" => $openId]);
 		if (!$myInfo) {
 			return 0;
