@@ -1614,27 +1614,27 @@ class ApiController extends Controller
 				///////////////
 				$newLog = [
 					"oCategory" => "redpacket",
-					"oKey" => 'redpacket: '.$res["code"],
+					"oKey" => 'redpacket: ' . $res["code"],
 					"oAfter" => json_encode([
-						"index"=>-1,
-						"rid"=>$rid,
-						"ling"=>$ling,
-						"uid"=>$uid,
+						"index" => -1,
+						"rid" => $rid,
+						"ling" => $ling,
+						"uid" => $uid,
 					]),
 				];
 				Log::add($newLog);
 
-				if (1 || $rid && $ling && $uid ) {
-
+//				if (1 || $rid && $ling && $uid) {
+				if (1 == 1) {
 					///////////////
 					$newLog = [
 						"oCategory" => "redpacket",
-						"oKey" => 'redpacket: '.$url,
+						"oKey" => 'redpacket: ' . $url,
 						"oAfter" => json_encode([
-							"index"=>1,
-							"rid"=>$rid,
-							"ling"=>$ling,
-							"uid"=>$uid,
+							"index" => 1,
+							"rid" => $rid,
+							"ling" => $ling,
+							"uid" => $uid,
 						]),
 					];
 					Log::add($newLog);
@@ -1643,9 +1643,9 @@ class ApiController extends Controller
 					///////////////
 					$newLog = [
 						"oCategory" => "redpacket",
-						"oKey" => 'redpacket: '.$parseCode,
+						"oKey" => 'redpacket: ' . $parseCode,
 						"oAfter" => json_encode([
-							"index"=>2,
+							"index" => 2,
 						]),
 					];
 					Log::add($newLog);
@@ -1653,9 +1653,9 @@ class ApiController extends Controller
 						///////////////
 						$newLog = [
 							"oCategory" => "redpacket",
-							"oKey" => 'redpacket: '.$parseCode,
+							"oKey" => 'redpacket: ' . $parseCode,
 							"oAfter" => json_encode([
-								"index"=>2,
+								"index" => 2,
 							]),
 						];
 						Log::add($newLog);
@@ -1664,9 +1664,9 @@ class ApiController extends Controller
 						///////////////
 						$newLog = [
 							"oCategory" => "redpacket",
-							"oKey" => 'redpacket: '.$parseCode.' '.$aff,
+							"oKey" => 'redpacket: ' . $parseCode . ' ' . $aff,
 							"oAfter" => json_encode([
-								"index"=>2,
+								"index" => 2,
 							]),
 						];
 						Log::add($newLog);
