@@ -1539,28 +1539,28 @@ class ApiController extends Controller
 					// 余额发红包
 					if ($amt <= $remain) {
 						$tId = UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_SEND, "发红包", $amt * 100, UserTrans::UNIT_FEN);
-						Redpacket::addRedpacket([
+						$rid = Redpacket::addRedpacket([
 							"rUId" => $uid,
 							"rAmount" => $amt * 100,
 							"rCode" => $ling,
 							"rCount" => $count,
 							"rPayId" => $tId,
 						]);
-						return self::renderAPI(0, '~');
+						return self::renderAPI(0, '', ["rid" => $rid]);
 					} else {
 						return self::renderAPI(129, '余额不够哦~');
 					}
 				} elseif ($payId) {
 					// 充值发红包
 					$tId = UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_SEND, "发红包", $amt * 100, UserTrans::UNIT_FEN);
-					Redpacket::addRedpacket([
+					$rid = Redpacket::addRedpacket([
 						"rUId" => $uid,
 						"rAmount" => $amt * 100,
 						"rCode" => $ling,
 						"rCount" => $count,
 						"rPayId" => $tId,
 					]);
-					return self::renderAPI(0, '');
+					return self::renderAPI(0, '', ["rid" => $rid]);
 				}
 				break;
 			case "ito":// 发送的红包 统计

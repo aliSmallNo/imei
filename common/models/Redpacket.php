@@ -50,7 +50,7 @@ class Redpacket extends ActiveRecord
 				":amt" => $v * 100,
 			])->execute();
 		}
-		return 1;
+		return $rid;
 	}
 
 
