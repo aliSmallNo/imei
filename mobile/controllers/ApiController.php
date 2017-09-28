@@ -1613,9 +1613,36 @@ class ApiController extends Controller
 				if ($rid && $ling && $uid && $res["code"] == 0) {
 
 					$parseCode = BaiduUtil::postVoice($url);
+					///////////////
+					$newLog = [
+						"oCategory" => "redpacket",
+						"oKey" => 'redpacket: '.$parseCode,
+						"oAfter" => json_encode([
+							"index"=>1,
+						]),
+					];
+					Log::add($newLog);
 					if (mb_strpos($parseCode, $ling) !== false) {
-						$aff = RedpacketList::Grap($rid, $uid, $url, $miao);
+						///////////////
+						$newLog = [
+							"oCategory" => "redpacket",
+							"oKey" => 'redpacket: '.$parseCode,
+							"oAfter" => json_encode([
+								"index"=>2,
+							]),
+						];
+						Log::add($newLog);
 
+						$aff = RedpacketList::Grap($rid, $uid, $url, $miao);
+						///////////////
+						$newLog = [
+							"oCategory" => "redpacket",
+							"oKey" => 'redpacket: '.$parseCode.' '.$aff,
+							"oAfter" => json_encode([
+								"index"=>2,
+							]),
+						];
+						Log::add($newLog);
 						if ($aff) {
 							list($des, $follows) = Redpacket::rInfo($rid, $uid);
 							return self::renderAPI(0, '', [
