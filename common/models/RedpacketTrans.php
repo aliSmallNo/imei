@@ -36,6 +36,10 @@ class RedpacketTrans extends ActiveRecord
 	{
 		$tId = (isset($values['tId']) ? $values['tId'] : 0);
 		$info = self::findOne(['tId' => $tId]);
+		$tPId = (isset($values['tPId']) ? $values['tPId'] : 0);
+		if(!$info && $tPId){
+			$info = self::findOne(['tPId' => $tPId]);
+		}
 		if (!$info) {
 			$info = new self();
 		}
