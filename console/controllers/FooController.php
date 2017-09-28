@@ -539,7 +539,7 @@ class FooController extends Controller
 	{
 		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
 		$tradeNo = RedisUtil::getIntSeq();
-		$ret = PayUtil::withdraw($openId, $tradeNo, '赵武', 2);
+		$ret = PayUtil::withdraw($openId, $tradeNo, '赵武', 100);
 		var_dump($ret);
 
 		/*$ret = getcwd();
