@@ -1612,31 +1612,19 @@ class ApiController extends Controller
 				$miao = isset($data["seconds"]) && $data["seconds"] ? intval($data["seconds"]) : 3;
 				$url = $res["msg"];
 				///////////////
-				$newLog = [
-					"oCategory" => "redpacket",
-					"oKey" => 'redpacket: ' . $res["code"],
-					"oAfter" => json_encode([
-						"index" => -1,
-						"rid" => $rid,
-						"ling" => $ling,
-						"uid" => $uid,
-						'res' => $res
-					]),
-				];
-				Log::add($newLog);
 
-//				if (1 || $rid && $ling && $uid) {
-				if (1 == 1) {
-					///////////////
+
+				if ($rid && $ling && $uid && $res['code'] == 0) {
 					$newLog = [
 						"oCategory" => "redpacket",
-						"oKey" => 'redpacket: ' . $url,
-						"oAfter" => json_encode([
-							"index" => 1,
+						"oKey" => 'redpacket: ',
+						"oAfter" => [
+							"index" => __LINE__,
 							"rid" => $rid,
 							"ling" => $ling,
 							"uid" => $uid,
-						]),
+							'url' => $url
+						],
 					];
 					Log::add($newLog);
 
@@ -1644,20 +1632,23 @@ class ApiController extends Controller
 					///////////////
 					$newLog = [
 						"oCategory" => "redpacket",
-						"oKey" => 'redpacket: ' . $parseCode,
-						"oAfter" => json_encode([
-							"index" => 2,
-						]),
+						"oKey" => 'redpacket: ',
+						"oAfter" => [
+							"index" => __LINE__,
+							'code' => $parseCode
+						],
 					];
 					Log::add($newLog);
 					if (mb_strpos($parseCode, $ling) !== false) {
 						///////////////
 						$newLog = [
 							"oCategory" => "redpacket",
-							"oKey" => 'redpacket: ' . $parseCode,
-							"oAfter" => json_encode([
-								"index" => 2,
-							]),
+							"oKey" => 'redpacket: ',
+							"oAfter" => [
+
+								"index" => __LINE__,
+								'code' => $parseCode
+							],
 						];
 						Log::add($newLog);
 
@@ -1665,9 +1656,11 @@ class ApiController extends Controller
 						///////////////
 						$newLog = [
 							"oCategory" => "redpacket",
-							"oKey" => 'redpacket: ' . $parseCode . ' ' . $aff,
+							"oKey" => 'redpacket: ',
 							"oAfter" => json_encode([
-								"index" => 2,
+								"index" => __LINE__,
+								'code' => $parseCode,
+								'aff' => $aff
 							]),
 						];
 						Log::add($newLog);
