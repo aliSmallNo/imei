@@ -1653,15 +1653,14 @@ class ApiController extends Controller
 						Log::add($newLog);
 
 						$aff = RedpacketList::Grap($rid, $uid, $url, $miao);
-						///////////////
 						$newLog = [
 							"oCategory" => "redpacket",
 							"oKey" => 'redpacket: ',
-							"oAfter" => json_encode([
+							"oAfter" => [
 								"index" => __LINE__,
 								'code' => $parseCode,
 								'aff' => $aff
-							]),
+							],
 						];
 						Log::add($newLog);
 						if ($aff) {
