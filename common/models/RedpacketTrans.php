@@ -13,10 +13,12 @@ use yii\db\ActiveRecord;
 
 class RedpacketTrans extends ActiveRecord
 {
-	const CAT_REDPACKET = 100;
+	const CAT_RECHARGE = 100;
+	const CAT_REDPACKET = 102;
 	const CAT_LOTTERY = 105;
 	const CAT_WITHDRAW = 110;
 	static $CatDict = [
+		self::CAT_RECHARGE => '充值',
 		self::CAT_REDPACKET => '发红包',
 		self::CAT_LOTTERY => '领红包',
 		self::CAT_WITHDRAW => '现金提现',
@@ -24,7 +26,7 @@ class RedpacketTrans extends ActiveRecord
 
 	//Rain: 哪些cat应该是负数
 	static $MinusCats = [
-		self::CAT_WITHDRAW
+		self::CAT_REDPACKET, self::CAT_WITHDRAW
 	];
 
 	public static function tableName()
