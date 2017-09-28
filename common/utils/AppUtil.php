@@ -618,10 +618,12 @@ class AppUtil
 				$filePath = $uploads_dir . $key . '.webm';
 				$fileWav = $uploads_dir . $key . '.wav';
 				$uploadData = file_get_contents($tmp_name);
+				AppUtil::logFile($uploadData, 5, __FUNCTION__, __LINE__);
 				$uploadData = str_replace("data:audio/webm;base64,", "", $uploadData);
 				$uploadData = base64_decode($uploadData);
 				file_put_contents($filePath, $uploadData);
 				exec('/usr/bin/ffmpeg -i ' . $filePath . ' -ab 12.2k -ar 8000 -ac 1 ' . $fileWav, $out);
+				AppUtil::logFile($filePath, 5, __FUNCTION__, __LINE__);
 				AppUtil::logFile($out, 5, __FUNCTION__, __LINE__);
 				unlink($tmp_name);
 //				move_uploaded_file($tmp_name, $filePath);
