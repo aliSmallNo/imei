@@ -1565,7 +1565,17 @@ class ApiController extends Controller
 				break;
 			case "ito":// 发送的红包 统计
 				if ($uid) {
-					list($res, $amt, $count) = Redpacket::items($uid);
+					list($res, $amt, $count) = Redpacket::toItems($uid);
+					return self::renderAPI(0, '~', [
+						"items" => $res,
+						"amt" => $amt,
+						"count" => $count,
+					]);
+				}
+				break;
+			case "iget":
+				if ($uid) {
+					list($res, $amt, $count) = Redpacket::getItems($uid);
 					return self::renderAPI(0, '~', [
 						"items" => $res,
 						"amt" => $amt,
