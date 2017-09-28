@@ -1603,7 +1603,6 @@ class ApiController extends Controller
 				 *    type:"application/octet-stream"
 				 * }
 				 */
-				///////////////
 
 				$res = AppUtil::uploadSilk("record", "voice");
 
@@ -1684,9 +1683,7 @@ class ApiController extends Controller
 						return self::renderAPI(129, '抢红包失败');
 					}
 				}
-				return self::renderAPI(129, 'error', [
-
-				]);
+				return self::renderAPI(129, 'error');
 				break;
 			case "shareinfo":
 				$rid = self::postParam("rid");
