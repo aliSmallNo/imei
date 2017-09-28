@@ -1615,7 +1615,7 @@ class ApiController extends Controller
 					///////////////
 					$newLog = [
 						"oCategory" => "redpacket",
-						"oKey" => 'redpacket: ',
+						"oKey" => 'redpacket: '.$url,
 						"oAfter" => json_encode([
 							"index"=>0,
 						]),
