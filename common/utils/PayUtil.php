@@ -8,6 +8,8 @@
 
 namespace common\utils;
 
+use common\models\RedpacketTrans;
+
 require_once __DIR__ . '/../lib/WxPay/WxPay.Config.php';
 require_once __DIR__ . '/../lib/WxPay/WxPay.Api.php';
 
@@ -48,8 +50,23 @@ class PayUtil
 
 		$url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers';
 		$ret = self::post($url, $postData);
-		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
-		return true;
+		if ($ret) {
+			$ret = AppUtil::xml_to_data($ret);
+			AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
+			if (isset($ret['return_code']) && $ret['return_code'] == 'SUCCESS') {
+				$payment_no = $ret['payment_no'];
+				$partner_trade_no = $ret['partner_trade_no'];
+				RedpacketTrans::edit([
+					'tId' => $partner_trade_no,
+					'tCategory' => RedpacketTrans::CAT_WITHDRAW,
+					'tPayNo' => $payment_no,
+					'tPayRaw' => $ret,
+					'tStatus' => 1
+				]);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	protected static function post($url, $vars, $second = 30, $aHeader = [])
