@@ -131,4 +131,19 @@ class Redpacket extends ActiveRecord
 		return [$des, $follow];
 	}
 
+	public static function shareInfo($rid)
+	{
+		$sql = "SELECT 
+				w.wNickName as oname,w.wAvatar as oavatar,
+				r.*
+				from im_redpacket as r
+				left join im_user_wechat as w on w.wUId=r.rUId
+				where rId=:rid";
+		$res = AppUtil::db()->createCommand($sql)->bindValues([
+			":rid" => $rid,
+		])->queryOne();
+
+		return $res;
+	}
+
 }

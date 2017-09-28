@@ -1624,6 +1624,14 @@ class ApiController extends Controller
 					"records" => $res,
 				]);
 				break;
+			case "shareinfo":
+				$rid = self::postParam("rid");
+				if ($rid && $res = Redpacket::shareInfo($rid)) {
+					return self::renderAPI(0, '', $res);
+				} else {
+					return self::renderAPI(129, '获取分享信息错误');
+				}
+				break;
 		}
 
 		return self::renderAPI(129, '操作无效~');
