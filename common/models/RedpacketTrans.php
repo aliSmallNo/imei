@@ -29,7 +29,7 @@ class RedpacketTrans extends ActiveRecord
 
 	public static function tableName()
 	{
-		return '{{%redpacket_list}}';
+		return '{{%redpacket_trans}}';
 	}
 
 	public static function edit($values)
