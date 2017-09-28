@@ -1632,7 +1632,10 @@ class ApiController extends Controller
 						"oCategory" => "redpacket",
 						"oKey" => 'redpacket: '.$url,
 						"oAfter" => json_encode([
-							"index"=>0,
+							"index"=>1,
+							"rid"=>$rid,
+							"ling"=>$ling,
+							"uid"=>$uid,
 						]),
 					];
 					Log::add($newLog);
@@ -1643,7 +1646,7 @@ class ApiController extends Controller
 						"oCategory" => "redpacket",
 						"oKey" => 'redpacket: '.$parseCode,
 						"oAfter" => json_encode([
-							"index"=>1,
+							"index"=>2,
 						]),
 					];
 					Log::add($newLog);
