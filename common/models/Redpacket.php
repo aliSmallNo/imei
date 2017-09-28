@@ -50,7 +50,7 @@ class Redpacket extends ActiveRecord
 				":amt" => $v * 100,
 			])->execute();
 		}
-		return 1;
+		return $rid;
 	}
 
 
@@ -63,7 +63,7 @@ class Redpacket extends ActiveRecord
 	public static function toItems($uid, $page = 1, $pagesize = 20)
 	{
 		$limit = "limit " . ($page - 1) * $pagesize . ',' . $pagesize;
-		$sql = "SELECT count(d.dAnswer) as co,w.wAvatar,w.wNickName,r.* 
+		$sql = "SELECT sum(case when dUId>0 then 1 else 0 end ) as co,w.wAvatar,w.wNickName,r.* 
 				from im_redpacket as r 
 				left join im_user_wechat as w on w.wUId=r.rUId
 				left join im_redpacket_list as d on r.rId=d.dRId
@@ -159,6 +159,7 @@ class Redpacket extends ActiveRecord
 			$des["code"] = $v["rCode"];
 			if ($v["dUId"]) {
 				$v["isSpeak"] = 0;
+				$v["dt"]=date("m月d日 H:i",strtotime($v["dAddedOn"]));
 				$follow[$v["dId"]] = $v;
 				$count = $count + 1;
 			}

@@ -386,21 +386,23 @@ class UserWechat extends ActiveRecord
 	{
 		$unionId = (isset($rawData["unionId"]) && $rawData["unionId"]) ? $rawData["unionId"] : '';
 		$winfo = UserWechat::findOne(["wUnionId" => $unionId]);
-		if ($winfo) {
+		if ($winfo && $uId = $winfo->wUId) {
 			return $winfo;
 		}
-		$uId = $winfo->wUId;
-		$uinfo = User::findOne(["uId" => $uId]);
-		if (!$uinfo) {
-			$nickname = (isset($rawData["nickName"]) && $rawData["nickName"]) ? $rawData["nickName"] : '';
-			$avatar = (isset($rawData["avatarUrl"]) && $rawData["avatarUrl"]) ? $rawData["avatarUrl"] : '';
-			$uid = User::addWX([
-				"openid" => '',
-				"nickname" => $nickname,
-				"unionid" => $unionId,
-				"headimgurl" => $avatar,
-			], 1);
 
+		$nickname = (isset($rawData["nickName"]) && $rawData["nickName"]) ? $rawData["nickName"] : '';
+		$avatar = (isset($rawData["avatarUrl"]) && $rawData["avatarUrl"]) ? $rawData["avatarUrl"] : '';
+		$uid = User::addWX([
+			"openid" => '',
+			"nickname" => $nickname,
+			"unionid" => $unionId,
+			"headimgurl" => $avatar,
+		], 1);
+
+		if ($winfo) {
+			$winfo->wUId = $uid;
+			$winfo->save();
+		} else {
 			$wid = UserWechat::add([
 				"wOpenId" => "",
 				"wNickName" => $nickname,
@@ -413,9 +415,8 @@ class UserWechat extends ActiveRecord
 				"wUnionId" => $unionId,
 				"wUId" => $uid,
 			]);
-			return self::findOne(["wId" => $wid]);
+			$winfo = self::findOne(["wId" => $wid]);
 		}
-		return '';
-
+		return $winfo;
 	}
 }

@@ -1539,28 +1539,28 @@ class ApiController extends Controller
 					// 余额发红包
 					if ($amt <= $remain) {
 						$tId = UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_SEND, "发红包", $amt * 100, UserTrans::UNIT_FEN);
-						Redpacket::addRedpacket([
+						$rid = Redpacket::addRedpacket([
 							"rUId" => $uid,
 							"rAmount" => $amt * 100,
 							"rCode" => $ling,
 							"rCount" => $count,
 							"rPayId" => $tId,
 						]);
-						return self::renderAPI(0, '~');
+						return self::renderAPI(0, '', ["rid" => $rid]);
 					} else {
 						return self::renderAPI(129, '余额不够哦~');
 					}
 				} elseif ($payId) {
 					// 充值发红包
 					$tId = UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_SEND, "发红包", $amt * 100, UserTrans::UNIT_FEN);
-					Redpacket::addRedpacket([
+					$rid = Redpacket::addRedpacket([
 						"rUId" => $uid,
 						"rAmount" => $amt * 100,
 						"rCode" => $ling,
 						"rCount" => $count,
 						"rPayId" => $tId,
 					]);
-					return self::renderAPI(0, '');
+					return self::renderAPI(0, '', ["rid" => $rid]);
 				}
 				break;
 			case "ito":// 发送的红包 统计
@@ -1603,6 +1603,8 @@ class ApiController extends Controller
 				 *    type:"application/octet-stream"
 				 * }
 				 */
+				///////////////
+
 				$res = AppUtil::uploadSilk("record", "voice");
 
 				$rid = isset($data["rid"]) && $data["rid"] ? intval($data["rid"]) : '';
@@ -1610,12 +1612,65 @@ class ApiController extends Controller
 				$uid = isset($data["uid"]) && $data["uid"] ? intval($data["uid"]) : '';
 				$miao = isset($data["seconds"]) && $data["seconds"] ? intval($data["seconds"]) : 3;
 				$url = $res["msg"];
-				if ($rid && $ling && $uid && $res["code"] == 0) {
+				///////////////
+				$newLog = [
+					"oCategory" => "redpacket",
+					"oKey" => 'redpacket: '.$res["code"],
+					"oAfter" => json_encode([
+						"index"=>-1,
+						"rid"=>$rid,
+						"ling"=>$ling,
+						"uid"=>$uid,
+					]),
+				];
+				Log::add($newLog);
+
+				if (1 || $rid && $ling && $uid ) {
+
+					///////////////
+					$newLog = [
+						"oCategory" => "redpacket",
+						"oKey" => 'redpacket: '.$url,
+						"oAfter" => json_encode([
+							"index"=>1,
+							"rid"=>$rid,
+							"ling"=>$ling,
+							"uid"=>$uid,
+						]),
+					];
+					Log::add($newLog);
 
 					$parseCode = BaiduUtil::postVoice($url);
+					///////////////
+					$newLog = [
+						"oCategory" => "redpacket",
+						"oKey" => 'redpacket: '.$parseCode,
+						"oAfter" => json_encode([
+							"index"=>2,
+						]),
+					];
+					Log::add($newLog);
 					if (mb_strpos($parseCode, $ling) !== false) {
-						$aff = RedpacketList::Grap($rid, $uid, $url, $miao);
+						///////////////
+						$newLog = [
+							"oCategory" => "redpacket",
+							"oKey" => 'redpacket: '.$parseCode,
+							"oAfter" => json_encode([
+								"index"=>2,
+							]),
+						];
+						Log::add($newLog);
 
+						$aff = RedpacketList::Grap($rid, $uid, $url, $miao);
+						///////////////
+						$newLog = [
+							"oCategory" => "redpacket",
+							"oKey" => 'redpacket: '.$parseCode.' '.$aff,
+							"oAfter" => json_encode([
+								"index"=>2,
+							]),
+						];
+						Log::add($newLog);
 						if ($aff) {
 							list($des, $follows) = Redpacket::rInfo($rid, $uid);
 							return self::renderAPI(0, '', [
@@ -1629,9 +1684,8 @@ class ApiController extends Controller
 						return self::renderAPI(129, '抢红包失败');
 					}
 				}
-				return self::renderAPI(0, '', [
-					"data" => $data,
-					"records" => $res,
+				return self::renderAPI(129, 'error', [
+
 				]);
 				break;
 			case "shareinfo":
