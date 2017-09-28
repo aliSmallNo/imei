@@ -203,7 +203,7 @@ class AppUtil
 	public static function rootDir()
 	{
 		return __DIR__ . '/../../';
-//		return getcwd().'/';
+		//return getcwd().'/';
 	}
 
 	public static function notifyUrl()
