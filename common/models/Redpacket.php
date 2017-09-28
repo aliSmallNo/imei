@@ -54,10 +54,16 @@ class Redpacket extends ActiveRecord
 	}
 
 
-	public static function items($uid, $page = 1, $pagesize = 20)
+	/**
+	 * @param $uid 发出去的红包
+	 * @param int $page
+	 * @param int $pagesize
+	 * @return array
+	 */
+	public static function toItems($uid, $page = 1, $pagesize = 20)
 	{
 		$limit = "limit " . ($page - 1) * $pagesize . ',' . $pagesize;
-		$sql = "SELECT count(d.dId) as co,w.wAvatar,w.wNickName,r.* 
+		$sql = "SELECT count(d.dAnswer) as co,w.wAvatar,w.wNickName,r.* 
 				from im_redpacket as r 
 				left join im_user_wechat as w on w.wUId=r.rUId
 				left join im_redpacket_list as d on r.rId=d.dRId
@@ -67,6 +73,9 @@ class Redpacket extends ActiveRecord
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":uid" => $uid,
 		])->queryAll();
+		foreach ($res as &$v){
+			$v["dt"]=date("m月d日 H:i",strtotime($v["rAddedOn"]));
+		}
 
 		list($amt, $count) = self::oneStat($uid);
 
@@ -84,6 +93,41 @@ class Redpacket extends ActiveRecord
 			":uid" => $uid,
 		])->queryOne();
 		return [$res["amt"], $res["co"]];
+	}
+
+	/**
+	 * 收到的红包信息
+	 * @param $uid
+	 * @param int $page
+	 * @param int $pagesize
+	 */
+	public static function getItems($uid, $page = 1, $pagesize = 20)
+	{
+		$limit = "limit " . ($page - 1) * $pagesize . ',' . $pagesize;
+		$sql = "SELECT w.wAvatar as oavatar,w.wNickName as oname,rAddedOn,rId,d.* 
+				from im_redpacket_list as d  
+				left join im_redpacket as r on r.rId=d.dRId
+				left join im_user_wechat as w on w.wUId=r.rUId
+				where dUId=:uid
+				order by rAddedOn desc $limit ";
+		$res = AppUtil::db()->createCommand($sql)->bindValues([
+			":uid" => $uid,
+		])->queryAll();
+		foreach ($res as &$v){
+			$v["dt"]=date("m月d日 H:i",strtotime($v["rAddedOn"]));
+		}
+
+		$sql = "SELECT count(1) as co,sum(dAmount) as amt
+			from im_redpacket_list as d  
+			left join im_redpacket as r on r.rId=d.dRId
+			left join im_user_wechat as w on w.wUId=r.rUId
+			where dUId=:uid";
+		$ret = AppUtil::db()->createCommand($sql)->bindValues([
+			":uid" => $uid,
+		])->queryOne();
+
+		return [$res, $ret["amt"], $ret["co"]];
+
 	}
 
 	public static function rInfo($rid, $uid)
@@ -129,6 +173,21 @@ class Redpacket extends ActiveRecord
 			$des["remainflag"] = 1;
 		}
 		return [$des, $follow];
+	}
+
+	public static function shareInfo($rid)
+	{
+		$sql = "SELECT 
+				w.wNickName as oname,w.wAvatar as oavatar,
+				r.*
+				from im_redpacket as r
+				left join im_user_wechat as w on w.wUId=r.rUId
+				where rId=:rid";
+		$res = AppUtil::db()->createCommand($sql)->bindValues([
+			":rid" => $rid,
+		])->queryOne();
+
+		return $res;
 	}
 
 }

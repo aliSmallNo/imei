@@ -397,8 +397,9 @@ class UserWechat extends ActiveRecord
 			$uid = User::addWX([
 				"openid" => '',
 				"nickname" => $nickname,
+				"unionid" => $unionId,
 				"headimgurl" => $avatar,
-			], 1, $unionId);
+			], 1);
 
 			$wid = UserWechat::add([
 				"wOpenId" => "",

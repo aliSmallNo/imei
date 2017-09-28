@@ -31,6 +31,9 @@ class UserTrans extends ActiveRecord
 
 	const CAT_REDPACKET = 500;
 	const CAT_REDPACKET_SEND = 510;
+	const CAT_REDPACKET_GRAP = 520;
+	const CAT_REDPACKET_RETURN = 530;
+	const CAT_REDPACKET_CASH = 540;
 
 	static $catDict = [
 		self::CAT_RECHARGE => "充值",
@@ -48,6 +51,9 @@ class UserTrans extends ActiveRecord
 
 		self::CAT_REDPACKET => "红包充值",
 		self::CAT_REDPACKET_SEND => "发红包",
+		self::CAT_REDPACKET_GRAP => "抢红包",
+		self::CAT_REDPACKET_RETURN => "红包过期退回",
+		self::CAT_REDPACKET_CASH => "红包余额提现",
 	];
 
 	static $CatMinus = [
@@ -120,6 +126,10 @@ class UserTrans extends ActiveRecord
 		if (!$payInfo) {
 			return false;
 		}
+		$ptitle = $payInfo['pTitle'];
+		if ($cat == self::CAT_REDPACKET) {
+			$ptitle = self::$catDict[self::CAT_REDPACKET];
+		}
 		$entity = self::findOne(['tPId' => $pid]);
 		if ($entity) {
 			return false;
@@ -127,7 +137,7 @@ class UserTrans extends ActiveRecord
 		$entity = new self();
 		$entity->tPId = $pid;
 		$entity->tUId = $payInfo['pUId'];
-		$entity->tTitle = $payInfo['pTitle'];
+		$entity->tTitle = $ptitle;
 		$entity->tCategory = $cat;
 		switch ($payInfo['pCategory']) {
 			case Pay::CAT_RECHARGE:
@@ -508,12 +518,22 @@ class UserTrans extends ActiveRecord
 	{
 		$c1 = self::CAT_REDPACKET;
 		$c2 = self::CAT_REDPACKET_SEND;
-		$sql = "SELECT sum(case when tCategory=:c1 then tAmt when tCategory=:c2 then -tAmt end) as remain 
+		$c3 = self::CAT_REDPACKET_GRAP;
+		$c4 = self::CAT_REDPACKET_RETURN;
+		$c5 = self::CAT_REDPACKET_CASH;
+		$sql = "SELECT sum(case when tCategory=:c1 then tAmt 
+							when tCategory=:c2 then -tAmt 
+							when tCategory=:c5 then -tAmt 
+							when tCategory=:c3 then tAmt
+							when tCategory=:c4 then tAmt end) as remain 
 				from im_user_trans
-				where tCategory in (:c1,:c2) and tUId=:uid ";
+				where tCategory in (:c1,:c2,:c3,:c4,:c5) and tUId=:uid ";
 		$amt = AppUtil::db()->createCommand($sql)->bindValues([
 			":c1" => $c1,
 			":c2" => $c2,
+			":c3" => $c3,
+			":c4" => $c4,
+			":c5" => $c5,
 			":uid" => $uid,
 		])->queryScalar();
 		return $amt ? $amt / 100 : 0;

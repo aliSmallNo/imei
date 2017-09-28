@@ -599,10 +599,11 @@ class FooController extends Controller
 //		$arr = AppUtil::randnum(0.05, 4);
 //		print_r($arr);
 
-//		var_dump(mb_strpos("稍等胜多负少",'胜多负少'));
+		//var_dump(mb_strpos("稍等多负少",'胜多负少'));
 
-		//echo RedpacketList::Grap(6, 120003, "http://", 10);
-		echo BaiduUtil::postVoice('https://img.meipo100.com/voice/2017/97/130532.wav');
+		echo RedpacketList::Grap(6, 120003, "http://", 10);
+		//echo BaiduUtil::postVoice('https://img.meipo100.com/voice/2017/97/130532.wav');
+
 	}
 
 

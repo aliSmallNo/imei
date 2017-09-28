@@ -1565,7 +1565,17 @@ class ApiController extends Controller
 				break;
 			case "ito":// 发送的红包 统计
 				if ($uid) {
-					list($res, $amt, $count) = Redpacket::items($uid);
+					list($res, $amt, $count) = Redpacket::toItems($uid);
+					return self::renderAPI(0, '~', [
+						"items" => $res,
+						"amt" => $amt,
+						"count" => $count,
+					]);
+				}
+				break;
+			case "iget":
+				if ($uid) {
+					list($res, $amt, $count) = Redpacket::getItems($uid);
 					return self::renderAPI(0, '~', [
 						"items" => $res,
 						"amt" => $amt,
@@ -1595,22 +1605,18 @@ class ApiController extends Controller
 				 */
 				$res = AppUtil::uploadSilk("record", "voice");
 
-				$rid = isset($data["rid"]) && $data["rid"] ? $data["rid"] : '';
+				$rid = isset($data["rid"]) && $data["rid"] ? intval($data["rid"]) : '';
 				$ling = isset($data["ling"]) && $data["ling"] ? $data["ling"] : '';
-				$uid = isset($data["uid"]) && $data["uid"] ? $data["uid"] : '';
-				$miao = isset($data["seconds"]) && $data["seconds"] ? $data["seconds"] : 3;
+				$uid = isset($data["uid"]) && $data["uid"] ? intval($data["uid"]) : '';
+				$miao = isset($data["seconds"]) && $data["seconds"] ? intval($data["seconds"]) : 3;
 				$url = $res["msg"];
-				if ($rid && $ling && $uid && $uid == 120003 && $res["code"] == 0) {
-					return self::renderAPI(129, 'test', [
-						"data" => $data,
-						"records" => $res,
-						"parseCode" => '',
-					]);
-					$parseCode = BaiduUtil::postVoice($url);
+				if ($rid && $ling && $uid && $res["code"] == 0) {
 
-					if (mb_strpos($parseCode, $ling) >= 0) {
-						$res = RedpacketList::Grap($rid, $uid, $url, $miao);
-						if ($res) {
+					$parseCode = BaiduUtil::postVoice($url);
+					if (mb_strpos($parseCode, $ling) !== false) {
+						$aff = RedpacketList::Grap($rid, $uid, $url, $miao);
+
+						if ($aff) {
 							list($des, $follows) = Redpacket::rInfo($rid, $uid);
 							return self::renderAPI(0, '', [
 								"des" => $des,
@@ -1627,6 +1633,14 @@ class ApiController extends Controller
 					"data" => $data,
 					"records" => $res,
 				]);
+				break;
+			case "shareinfo":
+				$rid = self::postParam("rid");
+				if ($rid && $res = Redpacket::shareInfo($rid)) {
+					return self::renderAPI(0, '', $res);
+				} else {
+					return self::renderAPI(129, '获取分享信息错误');
+				}
 				break;
 		}
 
