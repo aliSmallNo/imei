@@ -33,6 +33,7 @@ class UserTrans extends ActiveRecord
 	const CAT_REDPACKET_SEND = 510;
 	const CAT_REDPACKET_GRAP = 520;
 	const CAT_REDPACKET_RETURN = 530;
+	const CAT_REDPACKET_CASH = 540;
 
 	static $catDict = [
 		self::CAT_RECHARGE => "充值",
@@ -52,6 +53,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_REDPACKET_SEND => "发红包",
 		self::CAT_REDPACKET_GRAP => "抢红包",
 		self::CAT_REDPACKET_RETURN => "红包过期退回",
+		self::CAT_REDPACKET_CASH => "红包余额提现",
 	];
 
 	static $CatMinus = [
@@ -518,17 +520,20 @@ class UserTrans extends ActiveRecord
 		$c2 = self::CAT_REDPACKET_SEND;
 		$c3 = self::CAT_REDPACKET_GRAP;
 		$c4 = self::CAT_REDPACKET_RETURN;
+		$c5 = self::CAT_REDPACKET_CASH;
 		$sql = "SELECT sum(case when tCategory=:c1 then tAmt 
 							when tCategory=:c2 then -tAmt 
+							when tCategory=:c5 then -tAmt 
 							when tCategory=:c3 then tAmt
 							when tCategory=:c4 then tAmt end) as remain 
 				from im_user_trans
-				where tCategory in (:c1,:c2,:c3,:c4) and tUId=:uid ";
+				where tCategory in (:c1,:c2,:c3,:c4,:c5) and tUId=:uid ";
 		$amt = AppUtil::db()->createCommand($sql)->bindValues([
 			":c1" => $c1,
 			":c2" => $c2,
 			":c3" => $c3,
 			":c4" => $c4,
+			":c5" => $c5,
 			":uid" => $uid,
 		])->queryScalar();
 		return $amt ? $amt / 100 : 0;
