@@ -57,7 +57,7 @@ class PayUtil
 				$payment_no = $ret['payment_no'];
 				$partner_trade_no = $ret['partner_trade_no'];
 				RedpacketTrans::edit([
-					'tId' => $partner_trade_no,
+					'tPId' => $partner_trade_no,
 					'tCategory' => RedpacketTrans::CAT_WITHDRAW,
 					'tPayNo' => $payment_no,
 					'tPayRaw' => $ret,
