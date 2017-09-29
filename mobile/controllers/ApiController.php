@@ -1767,8 +1767,8 @@ class ApiController extends Controller
 				if ($remain < $amount) {
 					return self::renderAPI(129, '余额不足');
 				}
-				$ret = PayUtil::withdraw($xcxopenid, $amount);
-				return self::renderAPI($ret["code"], $ret["msg"]);
+				list($code, $msg) = PayUtil::withdraw($xcxopenid, $amount);
+				return self::renderAPI($code, $msg);
 				break;
 		}
 
