@@ -190,6 +190,7 @@ class Redpacket extends ActiveRecord
 				where dUId=:uid  and rId=:rid ";
 		$w = AppUtil::db()->createCommand($sql)->bindValues([
 			":rid" => $rid,
+			":uid" => $uid,
 		])->queryOne();
 		if ($w) {
 			$des["grapflag"] = 1;
