@@ -153,6 +153,7 @@ class Redpacket extends ActiveRecord
 		$follow = [];
 		$count = 0;
 		foreach ($res as $v) {
+			$des["st"] = $v["rStatus"];
 			$des["ling"] = $v["rCode"];
 			$des["count"] = $v["rCount"];
 			$des["oname"] = $v["oname"];
