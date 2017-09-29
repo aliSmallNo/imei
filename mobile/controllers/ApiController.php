@@ -1592,6 +1592,7 @@ class ApiController extends Controller
 						'tUId' => $uid,
 						'tPId' => $rid,
 						'tAmt' => $amtFen,
+						'tPayAmt' => $amtFen * (1 + RedpacketTrans::TAX),
 						'tCategory' => RedpacketTrans::CAT_REDPACKET,
 						'tStatus' => RedpacketTrans::STATUS_DONE,
 						'tNote' => '余额发红包'
