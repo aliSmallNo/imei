@@ -178,7 +178,7 @@ class Redpacket extends ActiveRecord
 		])->queryScalar();
 		$des["fcount"] = $co;
 
-		if ($count >= $des["count"]) {
+		if ($co >= $count) {
 			$des["remainflag"] = 1;
 		}
 
