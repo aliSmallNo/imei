@@ -176,7 +176,8 @@ class Redpacket extends ActiveRecord
 		$co = AppUtil::db()->createCommand($sql)->bindValues([
 			":rid" => $rid,
 		])->queryScalar();
-		$des["fcount"] = $co;
+		$des["fcount"] = $co;   //领取的个数
+		$des["count"] = $count; //总个数
 
 		if ($co >= $count) {
 			$des["remainflag"] = 1;
