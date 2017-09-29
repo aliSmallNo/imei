@@ -131,8 +131,9 @@ class Redpacket extends ActiveRecord
 
 	}
 
-	public static function rInfo($rid, $uid)
+	public static function rInfo($rid, $uid, $page = 1, $pagesize = 20)
 	{
+		$limit = "limit " . ($page - 1) * $pagesize . ',' . $pagesize;
 		$sql = "SELECT 
 				w.wNickName as oname,w.wAvatar as oavatar,
 				w2.wNickName as fname,w2.wAvatar as favatar,
@@ -141,22 +142,24 @@ class Redpacket extends ActiveRecord
 				JOIN im_redpacket_list as d on d.dRId=r.rId 
 				JOIN im_user_wechat as w on w.wUId=r.rUId
 				LEFT JOIN im_user_wechat as w2 on w2.wUId=d.dUId
-				WHERE rId=:rid";
+				WHERE rId=:rid
+				 order by dId asc $limit ";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":rid" => $rid,
 		])->queryAll();
+
 		$des = [
 			"grapflag" => 0,    // 我有没有抢过这个红包
 			"fmoney" => 0,      // 我抢的红包
 			"remainflag" => 0,  // 是否有剩余红包
-			"count" => 0,
+			//"count" => 0,
 		];
 		$follow = [];
 		$count = 0;
 		foreach ($res as $v) {
 			$des["st"] = $v["rStatus"];
 			$des["ling"] = $v["rCode"];
-			$des["count"] = $v["rCount"];
+			$count = $v["rCount"];
 			$des["oname"] = $v["oname"];
 			$des["oavatar"] = $v["oavatar"];
 			$des["code"] = $v["rCode"];
@@ -164,18 +167,35 @@ class Redpacket extends ActiveRecord
 				$v["isSpeak"] = 0;
 				$v["dt"] = date("m月d日 H:i", strtotime($v["dAddedOn"]));
 				$follow[$v["dId"]] = $v;
-				$count = $count + 1;
-			}
-			if ($v["dUId"] == $uid) {
-				$des["grapflag"] = 1;
-				$des["fmoney"] = $v["dAmount"];
 			}
 		}
-		$des["fcount"] = $count;
+
+		$sql = "select count(1) as co from
+				im_redpacket_list  
+				where rId=:rid and dUId>0 ";
+		$co = AppUtil::db()->createCommand($sql)->bindValues([
+			":rid" => $rid,
+		])->queryScalar();
+		$des["fcount"] = $co;
 
 		if ($count >= $des["count"]) {
 			$des["remainflag"] = 1;
 		}
+
+		$sql = "SELECT 
+				w2.wNickName as fname,w2.wAvatar as favatar,
+				r.*,d.*
+				FROM im_redpacket as r
+				JOIN im_redpacket_list as d on d.dRId=r.rId 
+				where dUId=:uid  and rId=:rid ";
+		$w = AppUtil::db()->createCommand($sql)->bindValues([
+			":rid" => $rid,
+		])->queryOne();
+		if ($w) {
+			$des["grapflag"] = 1;
+			$des["fmoney"] = $w["dAmount"];
+		}
+
 		return [$des, $follow];
 	}
 

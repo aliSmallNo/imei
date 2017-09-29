@@ -403,8 +403,8 @@ class UserWechat extends ActiveRecord
 			$winfo->wUId = $uid;
 			$winfo->save();
 		} else {
-			$wid = UserWechat::add([
-				"wOpenId" => "",
+			$wInfo = [
+				"wOpenId" => RedisUtil::getIntSeq(),
 				"wNickName" => $nickname,
 				"wAvatar" => $avatar,
 				"wGender" => (isset($rawData["gender"]) && $rawData["gender"]) ? $rawData["gender"] : '',
@@ -414,7 +414,8 @@ class UserWechat extends ActiveRecord
 				"wXcxId" => (isset($rawData["openId"]) && $rawData["openId"]) ? $rawData["openId"] : '',
 				"wUnionId" => $unionId,
 				"wUId" => $uid,
-			]);
+			];
+			$wid = UserWechat::add($wInfo);
 			$winfo = self::findOne(["wId" => $wid]);
 		}
 		return $winfo;
