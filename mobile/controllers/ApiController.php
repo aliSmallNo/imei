@@ -1250,6 +1250,16 @@ class ApiController extends Controller
 				break;
 			case "userinfo":
 				$info = UserWechat::findOne(["wXcxId" => $xcxopenid]);
+				$newLog = [
+					"oCategory" => "redpacket",
+					"oKey" => 'redpacket: ',
+					"oAfter" => [
+						"index" => __LINE__,
+						'url' => $info["wNickName"],
+						'code' => $info["wUId"]
+					],
+				];
+				Log::add($newLog);
 				$userinfo = [];
 				if ($info) {
 					$userinfo["avatar"] = $info["wAvatar"];
