@@ -12,6 +12,7 @@ namespace common\utils;
 use admin\models\Admin;
 use common\models\Log;
 use common\models\Pay;
+use common\models\RedpacketTrans;
 use common\models\User;
 use common\models\UserMsg;
 use common\models\UserTrans;
@@ -439,7 +440,13 @@ class WechatUtil
 		return $res;
 	}
 
-	public static function jsPrepay($payId, $openId, $amt, $title = '微媒100', $subTitle = '支付详情(略)')
+	public static function jsPrepay($payId,
+	                                $openId,
+	                                $amt,
+	                                $title = '微媒100',
+	                                $subTitle = '支付详情(略)',
+	                                $xcxFlag = false,
+	                                $tag = 'imei')
 	{
 		$input = new \WxPayUnifiedOrder();
 		$input->SetBody($title);
@@ -448,13 +455,13 @@ class WechatUtil
 		// Rain: 货币单位是分
 		$input->SetTotal_fee($amt);
 		$input->SetDetail($subTitle);
-		$input->SetGoods_tag('imei');
+		$input->SetGoods_tag($tag);
 		$input->SetNotify_url(AppUtil::notifyUrl());
 		$input->SetTime_start(date("YmdHis"));
 		$input->SetTime_expire(date("YmdHis", time() + 60 * 10));
 		$input->SetTrade_type('JSAPI');
 		$input->SetOpenid($openId);
-		$order = \WxPayApi::unifiedOrder($input);
+		$order = \WxPayApi::unifiedOrder($input, 6, $xcxFlag);
 		$jsApiParameters = self::jsApiParameters($order);
 		if ($jsApiParameters) {
 			$jsApiParameters['timeStamp'] = strval($jsApiParameters['timeStamp']);
@@ -464,28 +471,15 @@ class WechatUtil
 	}
 
 	// 小程序支付
-	public static function jsPrepayXcx($payId, $openId, $amt, $title = '微媒100', $subTitle = '支付详情(略)')
+	public static function jsPrepayXcx($payId, $openId, $amt, $title = '小程序支付', $subTitle = '支付详情(略)')
 	{
-		$input = new \WxPayUnifiedOrder();
-		$input->SetBody($title);
-		$input->SetAttach($title);
-		$input->SetOut_trade_no($payId);
-		// Rain: 货币单位是分
-		$input->SetTotal_fee($amt);
-		$input->SetDetail($subTitle);
-		$input->SetGoods_tag('imei');
-		$input->SetNotify_url(AppUtil::notifyUrl());
-		$input->SetTime_start(date("YmdHis"));
-		$input->SetTime_expire(date("YmdHis", time() + 60 * 10));
-		$input->SetTrade_type('JSAPI');
-		$input->SetOpenid($openId);
-		$order = \WxPayApi::unifiedOrderXcx($input);
-		$jsApiParameters = self::jsApiParameters($order);
-		if ($jsApiParameters) {
-			$jsApiParameters['timeStamp'] = strval($jsApiParameters['timeStamp']);
-			return $jsApiParameters;
-		}
-		return [];
+		return self::jsPrepay($payId, $openId, $amt, $title, $subTitle, true);
+	}
+
+	//Rain: 趣红包支付
+	public static function jsPrepayQhb($payId, $openId, $amt, $title = '趣红包-支付', $subTitle = '支付详情(略)')
+	{
+		return self::jsPrepay($payId, $openId, $amt, $title, $subTitle, true, 'qhb');
 	}
 
 	private static function jsApiParameters($order)
@@ -509,6 +503,10 @@ class WechatUtil
 		if (!$pid) {
 			return false;
 		}
+		//Rain: 如果是趣红包相关的，则返回true，则不再执行后面的代码了
+		if (RedpacketTrans::afterPaid($pid, $data)) {
+			return true;
+		}
 		$payInfo = Pay::findOne(['pId' => $pid]);
 		if (!$payInfo) {
 			return false;
@@ -523,7 +521,7 @@ class WechatUtil
 			Pay::edit($pid, $data);
 			$entity = Pay::findOne(["pId" => $pid]);
 			if ($entity->pCategory == Pay::CAT_REDPACKET) {
-				UserTrans::addByPID($pid, UserTrans::CAT_REDPACKET);
+				//UserTrans::addByPID($pid, UserTrans::CAT_REDPACKET);
 			} else {
 				UserTrans::addByPID($pid);
 			}
@@ -682,7 +680,7 @@ class WechatUtil
 					return 0;
 				}
 				$pay = $payInfo->pTransAmt / 100;
-				if (in_array($takerId, [120003, User::SERVICE_UID])) {// zp luming
+				if (AppUtil::isDebuger($takerId)) {// zp luming
 					$pay = $payInfo->pTransAmt * 10;
 				}
 				$personNum = 0;

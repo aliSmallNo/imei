@@ -32,6 +32,7 @@ class WxPayConfig
 	const X_MCHID = "";
 	const X_KEY = "";
 
+	const NOTIFY_URL = 'https://wx.meipo100.com/api/paid';
 	//=======【证书路径设置】=====================================
 	/**
 	 * TODO：设置商户证书路径

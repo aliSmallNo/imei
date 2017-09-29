@@ -37,9 +37,9 @@ class Pay extends ActiveRecord
 	}
 
 	/**
-	 * @param $uid
-	 * @param $num
-	 * @param $amt integer 单位人民币分
+	 * @param int $uid
+	 * @param float $num
+	 * @param int $amt 单位人民币分
 	 * @param string $cat
 	 * @param int $mode 支付方式
 	 * @return integer

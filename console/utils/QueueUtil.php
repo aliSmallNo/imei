@@ -70,12 +70,8 @@ class QueueUtil
 		} else {
 			$msg = 'message: ' . $msg;
 		}
-		$fileName = '/data/tmp/imei_beanstalkd.log';
-		$hasLog = is_file($fileName);
+		$fileName = '/data/logs/' . AppUtil::PROJECT_NAME . '/queue_' . date('Ymd') . '.log';
 		@file_put_contents($fileName, PHP_EOL . date('Y-m-d H:i:s') . ' ' . $msg . PHP_EOL, FILE_APPEND);
-		if (!$hasLog) {
-			chmod($fileName, 0666);
-		}
 	}
 
 	public static function sendSMS($params)

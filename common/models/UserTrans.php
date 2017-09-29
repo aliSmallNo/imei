@@ -28,13 +28,6 @@ class UserTrans extends ActiveRecord
 	const CAT_VOTE = 160;
 	const CAT_FANS_DRAW = 170;
 
-
-	const CAT_REDPACKET = 500;
-	const CAT_REDPACKET_SEND = 510;
-	const CAT_REDPACKET_GRAP = 520;
-	const CAT_REDPACKET_RETURN = 530;
-	const CAT_REDPACKET_CASH = 540;
-
 	static $catDict = [
 		self::CAT_RECHARGE => "充值",
 		self::CAT_SIGN => "签到奖励",
@@ -48,12 +41,6 @@ class UserTrans extends ActiveRecord
 		self::CAT_MOMENT => "分享到朋友圈奖励",
 		self::CAT_VOTE => "投票奖励",
 		self::CAT_FANS_DRAW => "花粉值提现",
-
-		self::CAT_REDPACKET => "红包充值",
-		self::CAT_REDPACKET_SEND => "发红包",
-		self::CAT_REDPACKET_GRAP => "抢红包",
-		self::CAT_REDPACKET_RETURN => "红包过期退回",
-		self::CAT_REDPACKET_CASH => "红包余额提现",
 	];
 
 	static $CatMinus = [
@@ -127,9 +114,6 @@ class UserTrans extends ActiveRecord
 			return false;
 		}
 		$ptitle = $payInfo['pTitle'];
-		if ($cat == self::CAT_REDPACKET) {
-			$ptitle = self::$catDict[self::CAT_REDPACKET];
-		}
 		$entity = self::findOne(['tPId' => $pid]);
 		if ($entity) {
 			return false;
@@ -514,29 +498,5 @@ class UserTrans extends ActiveRecord
 		return [$data, $nextPage];
 	}
 
-	public static function CalRedPacketRemain($uid)
-	{
-		$c1 = self::CAT_REDPACKET;
-		$c2 = self::CAT_REDPACKET_SEND;
-		$c3 = self::CAT_REDPACKET_GRAP;
-		$c4 = self::CAT_REDPACKET_RETURN;
-		$c5 = self::CAT_REDPACKET_CASH;
-		$sql = "SELECT sum(case when tCategory=:c1 then tAmt 
-							when tCategory=:c2 then -tAmt 
-							when tCategory=:c5 then -tAmt 
-							when tCategory=:c3 then tAmt
-							when tCategory=:c4 then tAmt end) as remain 
-				from im_user_trans
-				where tCategory in (:c1,:c2,:c3,:c4,:c5) and tUId=:uid ";
-		$amt = AppUtil::db()->createCommand($sql)->bindValues([
-			":c1" => $c1,
-			":c2" => $c2,
-			":c3" => $c3,
-			":c4" => $c4,
-			":c5" => $c5,
-			":uid" => $uid,
-		])->queryScalar();
-		return $amt ? $amt / 100 : 0;
-	}
 
 }
