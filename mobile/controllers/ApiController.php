@@ -20,6 +20,7 @@ use common\models\Pin;
 use common\models\QuestionSea;
 use common\models\Redpacket;
 use common\models\RedpacketList;
+use common\models\RedpacketTrans;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserBuzz;
@@ -1235,7 +1236,7 @@ class ApiController extends Controller
 				break;
 			case "remain":
 				$uid = self::postParam("uid");
-				$reamin = UserTrans::CalRedPacketRemain($uid);
+				$reamin = RedpacketTrans::balance($uid);
 				$data["remain"] = $reamin;
 				break;
 			case 'xcxrecharge'://小程序支付
@@ -1534,7 +1535,7 @@ class ApiController extends Controller
 				if ($amt / $count <= 0.01) {
 					return self::renderAPI(129, "最小红包不能低于0.01元");
 				}
-				$remain = UserTrans::CalRedPacketRemain($uid);
+				$remain = RedpacketTrans::balance($uid);
 				if ($remain >= $amt) {
 					// 余额发红包
 					if ($amt <= $remain) {
