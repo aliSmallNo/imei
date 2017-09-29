@@ -1241,6 +1241,8 @@ class ApiController extends Controller
 			case 'xcxrecharge'://小程序支付
 				$amt = self::postParam('amt'); // 单位人民币元
 				$title = '微媒100-充值';
+				$rate = 1.02;
+				$amt = $amt * $rate;
 				$subTitle = '充值' . $amt . '元';
 				$payId = Pay::prepay($uid, $amt * 10.0, $amt * 100, Pay::CAT_REDPACKET);
 

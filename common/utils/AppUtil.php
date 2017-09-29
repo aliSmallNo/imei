@@ -614,6 +614,7 @@ class AppUtil
 			$uploads_dir = self::catDir(false, $cate);
 			if ($info['error'] == UPLOAD_ERR_OK) {
 				$tmp_name = $info["tmp_name"];
+				AppUtil::logFile($info, 5, __FUNCTION__, __LINE__);
 				$key = RedisUtil::getImageSeq();
 				$filePath = $uploads_dir . $key . '.webm';
 				$fileWav = $uploads_dir . $key . '.wav';
