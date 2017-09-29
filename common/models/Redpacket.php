@@ -183,7 +183,6 @@ class Redpacket extends ActiveRecord
 		}
 
 		$sql = "SELECT 
-				w2.wNickName as fname,w2.wAvatar as favatar,
 				r.*,d.*
 				FROM im_redpacket as r
 				JOIN im_redpacket_list as d on d.dRId=r.rId 
