@@ -10,7 +10,6 @@ namespace console\controllers;
  */
 use common\models\ChatMsg;
 use common\models\Pin;
-use common\models\RedpacketList;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
@@ -482,7 +481,8 @@ class FooController extends Controller
 //			$msg = '亲，有2个' . $gender . '想跟你聊天，你无法接收，需完善资料才可以查收哦，赶紧去完善你的个人资料吧';
 //			$msg = '哇，本地单身都在公众号微媒100找对象，真实靠谱，赶快来完成注册吧';
 //			$msg = '哇，才几个小时，微媒100上又有3个' . $gender . '对你怦然心动了，距你最近的才800米';
-			$msg = '邀请新用户最高可领50元红包！每邀请3名身边单身好友注册成功，就可获得10元红包，最高可获得50元奖励哦！参与活动，请点击公众号主菜单-更多-官方活动 分享朋友圈吧！';
+			//$msg = '邀请新用户最高可领50元红包！每邀请3名身边单身好友注册成功，就可获得10元红包，最高可获得50元奖励哦！参与活动，请点击公众号主菜单-更多-官方活动 分享朋友圈吧！';
+			$msg = '国庆长假要到了，优质单身男女返乡了，趁此良机上“微媒100”公众号给自己找个伴吧';
 			QueueUtil::loadJob('sendSMS', [
 				'phone' => $phone,
 				'msg' => $msg,
