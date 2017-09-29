@@ -541,14 +541,14 @@ class FooController extends Controller
 
 		$ret = RedpacketTrans::balance(120003);
 		var_dump($ret);
-/*		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'; // 可以是公众号的OpenId
-//		$openId = 'ouvPv0Cz6rb-QB_i9oYwHZWjGtv8'; // 可以是小程序的OpenId
-		$openId = 'ouvPv0Cz6rb-QB_i9oYwHZWjGtv8';
-		$tradeNo = RedisUtil::getIntSeq();  // 流水号，应该是 im_user_trans 里的唯一ID
-		$nickname = '赵武'; // 用户的昵称
-		$amount = 100; // 金额，单位分
-		$ret = PayUtil::withdraw($openId, $amount);
-		var_dump($ret);*/
+		/*		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'; // 可以是公众号的OpenId
+		//		$openId = 'ouvPv0Cz6rb-QB_i9oYwHZWjGtv8'; // 可以是小程序的OpenId
+				$openId = 'ouvPv0Cz6rb-QB_i9oYwHZWjGtv8';
+				$tradeNo = RedisUtil::getIntSeq();  // 流水号，应该是 im_user_trans 里的唯一ID
+				$nickname = '赵武'; // 用户的昵称
+				$amount = 100; // 金额，单位分
+				$ret = PayUtil::withdraw($openId, $amount);
+				var_dump($ret);*/
 
 		/*$ret = getcwd();
 		var_dump($ret);
@@ -620,7 +620,8 @@ class FooController extends Controller
 		//echo RedpacketList::Grap(6, 120003, "http://", 10);
 		//echo BaiduUtil::postVoice('https://img.meipo100.com/voice/2017/97/130532.wav');
 		//echo WechatUtil::XCXaccessToken();
-		WechatUtil::XCXTempMsg(120003);
+		//WechatUtil::XCXTempMsg(120003);
+		echo RedpacketTrans::cashTimes(120003);
 
 	}
 

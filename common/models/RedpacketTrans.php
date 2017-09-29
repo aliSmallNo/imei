@@ -109,4 +109,14 @@ class RedpacketTrans extends ActiveRecord
 		return false;
 	}
 
+	public static function cashTimes($uid)
+	{
+		$sql = "select count(*) as co from im_redpacket_trans where tCategory=:cat and tUId=:uid ";
+		$co = AppUtil::db()->createCommand($sql)->bindValues([
+			':cat' => RedpacketTrans::CAT_WITHDRAW,
+			':uid' => $uid,
+		])->queryScalar();
+		return $co;
+	}
+
 }
