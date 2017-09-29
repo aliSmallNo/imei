@@ -1580,7 +1580,8 @@ class ApiController extends Controller
 					return self::renderAPI(129, "赏金太少或分发数量太大啦，实在是分不下去了");
 				}
 				$balance = RedpacketTrans::balance($uid);
-				if ($balance >= $amtFen * (1 + RedpacketTrans::TAX)) {
+				$payee = $amtFen * (1 + RedpacketTrans::TAX);
+				if ($balance >= $payee) {
 					// 余额发红包
 					$rid = Redpacket::addRedpacket([
 						"rUId" => $uid,
@@ -1591,8 +1592,8 @@ class ApiController extends Controller
 					RedpacketTrans::edit([
 						'tUId' => $uid,
 						'tPId' => $rid,
-						'tAmt' => $amtFen,
-						'tPayAmt' => $amtFen * (1 + RedpacketTrans::TAX),
+						'tAmt' => $payee,
+						'tPayAmt' => $payee,
 						'tCategory' => RedpacketTrans::CAT_REDPACKET,
 						'tStatus' => RedpacketTrans::STATUS_DONE,
 						'tNote' => '余额发红包'
