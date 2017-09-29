@@ -10,6 +10,7 @@ namespace console\controllers;
  */
 use common\models\ChatMsg;
 use common\models\Pin;
+use common\models\RedpacketTrans;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
@@ -537,14 +538,17 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'; // 可以是公众号的OpenId
+
+		$ret = RedpacketTrans::balance(120003);
+		var_dump($ret);
+/*		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'; // 可以是公众号的OpenId
 //		$openId = 'ouvPv0Cz6rb-QB_i9oYwHZWjGtv8'; // 可以是小程序的OpenId
 		$openId = 'ouvPv0Cz6rb-QB_i9oYwHZWjGtv8';
 		$tradeNo = RedisUtil::getIntSeq();  // 流水号，应该是 im_user_trans 里的唯一ID
 		$nickname = '赵武'; // 用户的昵称
 		$amount = 100; // 金额，单位分
 		$ret = PayUtil::withdraw($openId, $amount);
-		var_dump($ret);
+		var_dump($ret);*/
 
 		/*$ret = getcwd();
 		var_dump($ret);
