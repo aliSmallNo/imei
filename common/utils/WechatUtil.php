@@ -10,6 +10,7 @@
 namespace common\utils;
 
 use admin\models\Admin;
+use common\models\Log;
 use common\models\Pay;
 use common\models\User;
 use common\models\UserMsg;
@@ -980,6 +981,111 @@ class WechatUtil
 			$count++;
 			AppUtil::logFile($name . ' ' . $count, 4);
 		}
+	}
+
+
+	/**
+	 * 小程序推送消息
+	 */
+	public static function XCXTempMsg($uid)
+	{
+		if (AppUtil::isDev()) {
+			// return 0;
+		}
+		$sql = "select w.wNickName,w.wXcxId,r.rCode
+				from im_user_wechat as w 
+				left join im_redpaket as r on r.rUId=w.wUId 
+				where w.wUId=:uid";
+		$user = AppUtil::db()->createCommand($sql)->bindValues([":uid" => $uid])->queryOne();
+
+		$access_token = WechatUtil::XCXaccessToken();
+		$openId = $user["wXcxId"];
+		if (!$user || !$openId) {
+			return 0;
+		}
+
+		$name = $user["wNickName"];
+		$code = $user["rCode"];
+		$bodyInfo = [
+			"touser" => $openId,
+			"template_id" => "iiDApmBXhO2nm4bYoJFt3u9FYq_Ep5_utTcPIWQ2vwQ",
+			"page" => "cash",
+			"form_id" => RedisUtil::getIntSeq(),
+			"data" => [
+				"keyword1" => ["color" => "#0132a0", "value" => "1.2元"],
+				"keyword2" => ["color" => "#0132a0", "value" => "语音口令" . $code . "'未抢完"],
+				"keyword3" => ["color" => "#0132a0", "value" => date("Y年n月j日 H:i")],
+				"keyword4" => ["color" => "0132a0", "value" => "小程序账户余额"],
+				"keyword5" => ["color" => "#0132a0", "value" => "点击查看账户余额"],
+			],
+			"emphasis_keyword" => "keyword1.DATA"
+		];
+
+		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
+
+		$result = AppUtil::postJSON($url, json_encode($bodyInfo));
+		//print_r($result);exit;
+		return 1;
+		/**
+		 * {
+		 * "touser": "OPENID",
+		 * "template_id": "TEMPLATE_ID",
+		 * "page": "index",
+		 * "form_id": "FORMID",
+		 * "data": {
+		 * "keyword1": {
+		 * "value": "339208499",
+		 * "color": "#173177"
+		 * },
+		 * "keyword2": {
+		 * "value": "2015年01月05日 12:30",
+		 * "color": "#173177"
+		 * },
+		 * "keyword3": {
+		 * "value": "粤海喜来登酒店",
+		 * "color": "#173177"
+		 * } ,
+		 * "keyword4": {
+		 * "value": "广州市天河区天河路208号",
+		 * "color": "#173177"
+		 * }
+		 * },
+		 * "emphasis_keyword": "keyword1.DATA"
+		 * }
+		 */
+	}
+
+
+	/**
+	 * 获取小程序 accessToken
+	 * @param bool $reset
+	 * @param string $code
+	 * @return mixed|string
+	 */
+	public static function XCXaccessToken($reset = false, $code = '')
+	{
+		$accessToken = RedisUtil::getCache(RedisUtil::KEY_XCX_TOKEN);
+		if (!$accessToken || $reset) {
+			$appId = \WxPayConfig::X_APPID;
+			$secret = \WxPayConfig::X_APPSECRET;
+			$url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appId&secret=$secret";
+			if ($code) {
+				//$baseUrl = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code';
+				//$url = sprintf($baseUrl, $appId, $secret, $code);
+			}
+			$res = AppUtil::httpGet($url);
+			$res = json_decode($res, 1);
+			$accessToken = isset($res['access_token']) ? $res['access_token'] : "";
+			if ($accessToken) {
+				RedisUtil::setCache($accessToken, RedisUtil::KEY_XCX_TOKEN);
+			}
+			/*$newLog = [
+				"oCategory" => "xcx-token",
+				"oAfter" => json_decode($res),
+			];
+			Log::add($newLog);*/
+		}
+		return $accessToken;
 	}
 
 
