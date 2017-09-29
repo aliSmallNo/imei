@@ -1768,7 +1768,8 @@ class ApiController extends Controller
 					return self::renderAPI(129, '余额不足');
 				}
 				list($code, $msg) = PayUtil::withdraw($xcxopenid, $amount);
-				return self::renderAPI($code, $msg);
+				$remain = $balance = RedpacketTrans::balance($uid);
+				return self::renderAPI($code, $msg, ["remain" => $remain]);
 				break;
 		}
 
