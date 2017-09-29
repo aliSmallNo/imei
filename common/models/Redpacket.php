@@ -172,7 +172,7 @@ class Redpacket extends ActiveRecord
 
 		$sql = "select count(1) as co from
 				im_redpacket_list  
-				where rId=:rid and dUId>0 ";
+				where dRId=:rid and dUId>0 ";
 		$co = AppUtil::db()->createCommand($sql)->bindValues([
 			":rid" => $rid,
 		])->queryScalar();
