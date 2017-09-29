@@ -1191,6 +1191,12 @@ class ApiController extends Controller
 						"errmsg" => "success",
 						"openid" => $data["openid"]
 					];
+				} else {
+					$data = [
+						"errcode" => 129,
+						"errmsg" => "fail",
+						"openid" => ""
+					];
 				}
 				break;
 			case "unionid":
@@ -1232,6 +1238,18 @@ class ApiController extends Controller
 					$info = UserWechat::addXcxUser($rawData);
 					$data["xcxopenid"] = $rawData["openId"];
 				}
+				$userinfo = [];
+				if ($info) {
+					$userinfo["avatar"] = $info["wAvatar"];
+					$userinfo["name"] = $info["wNickName"];
+					$userinfo["gender"] = $info["wGender"];
+					$userinfo["uid"] = $info["wUId"];
+					$userinfo["xcxopenid"] = $info["wXcxId"];
+				}
+				$data["userinfo"] = $userinfo;
+				break;
+			case "userinfo":
+				$info = UserWechat::findOne(["wXcxId" => $xcxopenid]);
 				$userinfo = [];
 				if ($info) {
 					$userinfo["avatar"] = $info["wAvatar"];
