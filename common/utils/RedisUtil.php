@@ -22,6 +22,7 @@ class RedisUtil
 	const KEY_ADDRESS = 'address';
 	const KEY_ADDRESS_ITEMS = 'address_items';
 	const KEY_WX_TOKEN = 'wx_token';
+	const KEY_XCX_TOKEN = 'xcx_token';
 	const KEY_WX_TICKET = 'wx_ticket';
 	const KEY_WX_USER = 'wx_user';
 	const KEY_WX_PAY = 'wx_pay';
@@ -51,6 +52,7 @@ class RedisUtil
 		self::KEY_ADDRESS_ITEMS => 86400,
 		self::KEY_ADDRESS => 86400,
 		self::KEY_WX_TOKEN => 4800,
+		self::KEY_XCX_TOKEN => 4800,
 		self::KEY_WX_TICKET => 4800,
 		self::KEY_WX_USER => 3600 * 8,
 		self::KEY_WX_PAY => 3600,

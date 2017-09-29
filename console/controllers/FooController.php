@@ -614,7 +614,8 @@ class FooController extends Controller
 
 		//echo RedpacketList::Grap(6, 120003, "http://", 10);
 		//echo BaiduUtil::postVoice('https://img.meipo100.com/voice/2017/97/130532.wav');
-
+		//echo WechatUtil::XCXaccessToken();
+		WechatUtil::XCXTempMsg(120003);
 
 	}
 
