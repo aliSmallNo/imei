@@ -157,6 +157,7 @@ class Redpacket extends ActiveRecord
 
 
 		$des = [
+			"st" => 1,          // 红包状态
 			"grapflag" => 0,    // 我有没有抢过这个红包
 			"fmoney" => 0,      // 我抢的红包
 			"remainflag" => 0,  // 是否有剩余红包
