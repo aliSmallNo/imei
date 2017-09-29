@@ -1639,6 +1639,9 @@ class ApiController extends Controller
 				break;
 			case "redinfo":// 红包信息
 				$rid = self::postParam("rid");
+				if (!$rid || !$uid) {
+					return self::renderAPI(129, '参数错误');
+				}
 				list($des, $follows) = Redpacket::rInfo($rid, $uid);
 				return self::renderAPI(0, '', [
 					"des" => $des,
