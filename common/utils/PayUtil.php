@@ -8,6 +8,8 @@
 
 namespace common\utils;
 
+use common\models\RedpacketTrans;
+
 require_once __DIR__ . '/../lib/WxPay/WxPay.Config.php';
 require_once __DIR__ . '/../lib/WxPay/WxPay.Api.php';
 
@@ -19,22 +21,46 @@ class PayUtil
 	/**
 	 * 现金提现，直接进入微信零钱
 	 * @param string $openId 用户的公众号openid 或者 用户的小程序openid
-	 * @param string $tradeNo 流水号，应该是 im_user_trans 里的唯一ID
-	 * @param string $nickname 用户的昵称
 	 * @param int $amt 金额，单位分
-	 * @return bool
+	 * @param \yii\db\connection $conn
+	 * @return array [code（大于0表示失败）, 系统提醒消息]
 	 */
-	public static function withdraw($openId, $tradeNo, $nickname, $amt)
+	public static function withdraw($openId, $amt, $conn = null)
 	{
-		$appId = \WxPayConfig::X_APPID;
-		if (strpos($openId, 'oYDJe') === 0) {
-			$appId = \WxPayConfig::APPID;
+		if ($amt < 100) {
+			return [129, '提现金额不能小于1元'];
 		}
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$appId = (strpos($openId, 'oYDJe') === 0) ? \WxPayConfig::APPID : \WxPayConfig::X_APPID;
+		$sql = 'SELECT wUId,wNickName FROM im_user_wechat WHERE wOpenId=:id or wXcxId=:id';
+		$row = $conn->createCommand($sql)->bindValues([':id' => $openId])->queryOne();
+		if (!$row) {
+			return [129, '提现失败！用户不存在'];
+		}
+		$nickname = $row['wNickName'];
+		$uId = $row['wUId'];
+		$balance = RedpacketTrans::balance($uId, $conn);
+		if ($balance < $amt) {
+			return [129, '提现失败！余额不足'];
+		}
+
+		$trade_no = RedisUtil::getIntSeq();
+		$sql = 'INSERT INTO im_redpacket_trans(tPId,tCategory,tStatus,tAmt,tUId)
+				SELECT :tPId,:tCategory,0,:tAmt,:tUId FROM dual';
+		$conn->createCommand($sql)->bindValues([
+			':tPId' => $trade_no,
+			':tCategory' => RedpacketTrans::CAT_WITHDRAW,
+			':tAmt' => $amt,
+			':tUId' => $uId,
+		])->execute();
+
 		$postData = [
 			'mch_appid' => $appId,
 			'mchid' => \WxPayConfig::MCHID,
 			'nonce_str' => self::nonceStr(),
-			'partner_trade_no' => $tradeNo,
+			'partner_trade_no' => $trade_no,
 			'openid' => $openId,
 			'check_name' => 'NO_CHECK',
 			're_user_name' => $nickname,
@@ -48,8 +74,22 @@ class PayUtil
 
 		$url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers';
 		$ret = self::post($url, $postData);
-		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
-		return true;
+		if ($ret) {
+			$ret = AppUtil::xml_to_data($ret);
+			AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
+			if (isset($ret['return_code']) && $ret['return_code'] == 'SUCCESS') {
+				$payment_no = $ret['payment_no'];
+				$partner_trade_no = $ret['partner_trade_no'];
+				$sql = 'update im_redpacket_trans set tPayNo=:tPayNo,tPayRaw=:tPayRaw,tStatus=1 WHERE tPId=:tPId';
+				$conn->createCommand($sql)->bindValues([
+					':tPId' => $partner_trade_no,
+					':tPayNo' => $payment_no,
+					':tPayRaw' => json_encode($ret, JSON_UNESCAPED_UNICODE),
+				])->execute();
+				return [0, '提现成功！请查收'];
+			}
+		}
+		return [0, '将在1~5个工作日内转入你的零钱包'];
 	}
 
 	protected static function post($url, $vars, $second = 30, $aHeader = [])

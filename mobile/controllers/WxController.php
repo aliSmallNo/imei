@@ -14,6 +14,7 @@ use common\models\LogAction;
 use common\models\QuestionGroup;
 use common\models\Redpacket;
 use common\models\RedpacketList;
+use common\models\RedpacketTrans;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserMsg;
@@ -1655,7 +1656,7 @@ class WxController extends BaseController
 			exit();
 		}
 		$uid = $wxInfo["uId"];
-		$remain = UserTrans::CalRedPacketRemain($uid);
+		$remain = RedpacketTrans::balance($uid);
 		echo $remain;
 		exit();
 		return self::renderPage('redpacket.tpl',

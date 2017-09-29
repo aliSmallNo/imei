@@ -43,9 +43,9 @@ class Redpacket extends ActiveRecord
 
 		$arr = AppUtil::randnum($amount, $count);
 		$sql = "INSERT into im_redpacket_list (dRId,dAmount) values (:rid,:amt)";
-		$inserCmd = AppUtil::db()->createCommand($sql);
+		$cmd = AppUtil::db()->createCommand($sql);
 		foreach ($arr as $v) {
-			$inserCmd->bindValues([
+			$cmd->bindValues([
 				":rid" => $rid,
 				":amt" => $v * 100,
 			])->execute();
@@ -55,7 +55,7 @@ class Redpacket extends ActiveRecord
 
 
 	/**
-	 * @param $uid 发出去的红包
+	 * @param int $uid 发出去的红包
 	 * @param int $page
 	 * @param int $pagesize
 	 * @return array
@@ -65,16 +65,16 @@ class Redpacket extends ActiveRecord
 		$limit = "limit " . ($page - 1) * $pagesize . ',' . $pagesize;
 		$sql = "SELECT sum(case when dUId>0 then 1 else 0 end ) as co,w.wAvatar,w.wNickName,r.* 
 				from im_redpacket as r 
-				left join im_user_wechat as w on w.wUId=r.rUId
-				left join im_redpacket_list as d on r.rId=d.dRId
+				join im_user_wechat as w on w.wUId=r.rUId
+				join im_redpacket_list as d on r.rId=d.dRId
 				where wUId=:uid
 				group by r.rId
 				order by rId desc $limit ";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":uid" => $uid,
 		])->queryAll();
-		foreach ($res as &$v){
-			$v["dt"]=date("m月d日 H:i",strtotime($v["rAddedOn"]));
+		foreach ($res as &$v) {
+			$v["dt"] = date("m月d日 H:i", strtotime($v["rAddedOn"]));
 		}
 
 		list($amt, $count) = self::oneStat($uid);
@@ -100,26 +100,27 @@ class Redpacket extends ActiveRecord
 	 * @param $uid
 	 * @param int $page
 	 * @param int $pagesize
+	 * @return array
 	 */
 	public static function getItems($uid, $page = 1, $pagesize = 20)
 	{
 		$limit = "limit " . ($page - 1) * $pagesize . ',' . $pagesize;
 		$sql = "SELECT w.wAvatar as oavatar,w.wNickName as oname,rAddedOn,rId,d.* 
 				from im_redpacket_list as d  
-				left join im_redpacket as r on r.rId=d.dRId
-				left join im_user_wechat as w on w.wUId=r.rUId
+				join im_redpacket as r on r.rId=d.dRId
+				join im_user_wechat as w on w.wUId=r.rUId
 				where dUId=:uid
 				order by rAddedOn desc $limit ";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":uid" => $uid,
 		])->queryAll();
-		foreach ($res as &$v){
-			$v["dt"]=date("m月d日 H:i",strtotime($v["rAddedOn"]));
+		foreach ($res as &$v) {
+			$v["dt"] = date("m月d日 H:i", strtotime($v["rAddedOn"]));
 		}
 
 		$sql = "SELECT count(1) as co,sum(dAmount) as amt
 			from im_redpacket_list as d  
-			left join im_redpacket as r on r.rId=d.dRId
+			join im_redpacket as r on r.rId=d.dRId
 			left join im_user_wechat as w on w.wUId=r.rUId
 			where dUId=:uid";
 		$ret = AppUtil::db()->createCommand($sql)->bindValues([
@@ -136,11 +137,11 @@ class Redpacket extends ActiveRecord
 				w.wNickName as oname,w.wAvatar as oavatar,
 				w2.wNickName as fname,w2.wAvatar as favatar,
 				r.*,d.*
-				from im_redpacket as r
-				left join im_redpacket_list as d on d.dRId=r.rId 
-				left join im_user_wechat as w on w.wUId=r.rUId
-				left join im_user_wechat as w2 on w2.wUId=d.dUId
-				where rId=:rid";
+				FROM im_redpacket as r
+				JOIN im_redpacket_list as d on d.dRId=r.rId 
+				JOIN im_user_wechat as w on w.wUId=r.rUId
+				LEFT JOIN im_user_wechat as w2 on w2.wUId=d.dUId
+				WHERE rId=:rid";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":rid" => $rid,
 		])->queryAll();
@@ -159,7 +160,7 @@ class Redpacket extends ActiveRecord
 			$des["code"] = $v["rCode"];
 			if ($v["dUId"]) {
 				$v["isSpeak"] = 0;
-				$v["dt"]=date("m月d日 H:i",strtotime($v["dAddedOn"]));
+				$v["dt"] = date("m月d日 H:i", strtotime($v["dAddedOn"]));
 				$follow[$v["dId"]] = $v;
 				$count = $count + 1;
 			}
@@ -182,12 +183,11 @@ class Redpacket extends ActiveRecord
 				w.wNickName as oname,w.wAvatar as oavatar,
 				r.*
 				from im_redpacket as r
-				left join im_user_wechat as w on w.wUId=r.rUId
+			    join im_user_wechat as w on w.wUId=r.rUId
 				where rId=:rid";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":rid" => $rid,
 		])->queryOne();
-
 		return $res;
 	}
 
