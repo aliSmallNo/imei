@@ -116,6 +116,8 @@ class PayUtil
 		curl_setopt($ch, CURLOPT_SSLKEYTYPE, 'PEM');
 		curl_setopt($ch, CURLOPT_SSLKEY, AppUtil::rootDir() . '../imei_cert/apiclient_key.pem');
 
+		curl_setopt($ch, CURLOPT_CAINFO, AppUtil::rootDir() . '../imei_cert/rootca.pem');
+
 		//第二种方式，两个文件合成一个.pem文件
 		//curl_setopt($ch, CURLOPT_SSLCERT, getcwd() . '/all.pem');
 
