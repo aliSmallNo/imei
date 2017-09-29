@@ -1262,7 +1262,7 @@ class ApiController extends Controller
 					'tPayAmt' => $payFee,
 				]);
 				if (in_array($uid, [120003, 131379])) {
-					$payFee = $amtYuan;
+					$payFee = intval($payFee / 100.0);
 				}
 				$ret = WechatUtil::jsPrepayQhb('qhb' . $payId, $xcxopenid, $payFee, $title, $subTitle);
 				if ($ret) {
