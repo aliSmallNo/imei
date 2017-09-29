@@ -78,7 +78,7 @@ class PayUtil
 			$ret = AppUtil::xml_to_data($ret);
 			AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 			if (isset($ret['return_code']) && $ret['return_code'] == 'SUCCESS') {
-				$payment_no = $ret['payment_no'];
+				$payment_no = isset($ret['payment_no']) ? $ret['payment_no'] : '';
 				$partner_trade_no = $ret['partner_trade_no'];
 				$sql = 'update im_redpacket_trans set tPayNo=:tPayNo,tPayRaw=:tPayRaw,tStatus=1 WHERE tPId=:tPId';
 				$conn->createCommand($sql)->bindValues([
