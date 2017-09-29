@@ -146,6 +146,11 @@ class AppUtil
 		return (Yii::$app->params['scene'] == 'dev');
 	}
 
+	public static function isDebuger($uid)
+	{
+		return in_array($uid, [120003, 131379]);
+	}
+
 	public static function swooleSet()
 	{
 		return Yii::$app->params['swoole_set'];
