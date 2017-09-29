@@ -133,7 +133,7 @@ class Redpacket extends ActiveRecord
 
 	public static function rInfo($rid, $uid, $page = 1, $pagesize = 20)
 	{
-		$limit = "limit " . ($page - 1) * $pagesize . ',' . $pagesize;
+		$limit = "limit " . ($page - 1) * $pagesize . ',' . ($pagesize + 1);
 		$sql = "SELECT 
 				w.wNickName as oname,w.wAvatar as oavatar,
 				w2.wNickName as fname,w2.wAvatar as favatar,
@@ -147,6 +147,14 @@ class Redpacket extends ActiveRecord
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			":rid" => $rid,
 		])->queryAll();
+
+		if (count($res) > $pagesize) {
+			$nextpage = $page + 1;
+			array_pop($res);
+		} else {
+			$nextpage = 0;
+		}
+
 
 		$des = [
 			"grapflag" => 0,    // 我有没有抢过这个红包
@@ -197,7 +205,7 @@ class Redpacket extends ActiveRecord
 			$des["fmoney"] = $w["dAmount"];
 		}
 
-		return [$des, $follow];
+		return [$des, $follow, $nextpage];
 	}
 
 	public static function shareInfo($rid)
