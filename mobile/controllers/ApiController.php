@@ -1775,7 +1775,7 @@ class ApiController extends Controller
 					return self::renderAPI(129, '余额不足');
 				}
 				if (RedpacketTrans::cashTimes($uid) >= 3) {
-					return self::renderAPI(129, '今天已经体现三次了，明天再来吧');
+					return self::renderAPI(129, '今天已经提现三次了，明天再来吧');
 				}
 				list($code, $msg) = PayUtil::withdraw($xcxopenid, $amount);
 				$remain = $balance = RedpacketTrans::balance($uid) / 100;
