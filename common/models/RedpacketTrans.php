@@ -14,7 +14,7 @@ use yii\db\ActiveRecord;
 
 class RedpacketTrans extends ActiveRecord
 {
-	const TAX = 5;
+	const TAX = 0.05;
 
 	const CAT_RECHARGE = 600;
 	const CAT_REDPACKET = 602;

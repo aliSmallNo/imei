@@ -612,8 +612,9 @@ class FooController extends Controller
 
 		//var_dump(mb_strpos("稍等多负少",'胜多负少'));
 
-		echo RedpacketList::Grap(6, 120003, "http://", 10);
+		//echo RedpacketList::Grap(6, 120003, "http://", 10);
 		//echo BaiduUtil::postVoice('https://img.meipo100.com/voice/2017/97/130532.wav');
+
 
 	}
 

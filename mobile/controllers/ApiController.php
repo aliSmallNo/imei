@@ -33,6 +33,7 @@ use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\BaiduUtil;
 use common\utils\ImageUtil;
+use common\utils\PayUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use dosamigos\qrcode\QrCode;
@@ -1237,6 +1238,7 @@ class ApiController extends Controller
 					$userinfo["name"] = $info["wNickName"];
 					$userinfo["gender"] = $info["wGender"];
 					$userinfo["uid"] = $info["wUId"];
+					$userinfo["xcxopenid"] = $info["wXcxId"];
 				}
 				$data["userinfo"] = $userinfo;
 				break;
@@ -1246,26 +1248,27 @@ class ApiController extends Controller
 				$data["remain"] = $reamin;
 				break;
 			case 'xcxrecharge'://小程序支付
-				$amt = self::postParam('amt'); // 单位人民币元
+				$amtYuan = self::postParam('amt'); // 单位人民币元
 				$title = '趣红包-充值';
-				$subTitle = '充值' . $amt . '元';
+				$subTitle = '充值' . $amtYuan . '元';
 				//$payId = Pay::prepay($uid, $amt * 10.0, $amt * 100, Pay::CAT_REDPACKET);
-				$payFee = $amt * (100 + RedpacketTrans::TAX);
+				$amtFen = $amtYuan * 100;
+				$payFee = $amtFen * (1 + RedpacketTrans::TAX);
 				$payId = RedpacketTrans::edit([
 					'tUId' => $uid,
 					'tCategory' => RedpacketTrans::CAT_RECHARGE,
 					'tStatus' => RedpacketTrans::STATUS_WEAK,
-					'tAmt' => $amt * 100,
-					'tPayAmt' => $amt * (100 + RedpacketTrans::TAX),
+					'tAmt' => $amtFen,
+					'tPayAmt' => $payFee,
 				]);
 				if (in_array($uid, [120003, 131379])) {
-					$payFee = $amt;
+					$payFee = $amtYuan;
 				}
 				$ret = WechatUtil::jsPrepayQhb('qhb' . $payId, $xcxopenid, $payFee, $title, $subTitle);
 				if ($ret) {
 					return self::renderAPI(0, '', [
 						'prepay' => $ret,
-						'amt' => $amt,
+						'amt' => $amtYuan,
 						'payId' => $payId,
 					]);
 				}
@@ -1533,34 +1536,34 @@ class ApiController extends Controller
 				$data = json_decode($data, 1);
 				$payId = self::postParam('payId');
 				$ling = isset($data["ling"]) ? $data["ling"] : '';
-				$amt = isset($data["amt"]) ? $data["amt"] : 0;
-				$amt *= 100;
+				$amtYuan = isset($data["amt"]) ? $data["amt"] : 0;
+				$amtFen = $amtYuan * 100;
 				$count = isset($data["count"]) ? $data["count"] : 0;
 				if (!preg_match_all("/^[\x7f-\xff]+$/", $ling, $match)) {
 					return self::renderAPI(129, '口令格式不正确，请使用简体中文');
 				}
-				if ($amt <= 100) {
+				if ($amtFen <= 100) {
 					return self::renderAPI(129, '赏金请勿低于1元');
 				}
 				if ($count <= 0) {
 					return self::renderAPI(129, '分发数量还没填');
 				}
-				if ($amt / $count <= 1) {
+				if (($amtFen * 1.0 / $count) <= 1) {
 					return self::renderAPI(129, "赏金太少或分发数量太大啦，实在是分不下去了");
 				}
 				$balance = RedpacketTrans::balance($uid);
-				if ($balance >= $amt * (1 + RedpacketTrans::TAX)) {
+				if ($balance >= $amtFen * (1 + RedpacketTrans::TAX)) {
 					// 余额发红包
 					$rid = Redpacket::addRedpacket([
 						"rUId" => $uid,
-						"rAmount" => $amt,
+						"rAmount" => $amtFen,
 						"rCode" => $ling,
 						"rCount" => $count,
 					]);
 					RedpacketTrans::edit([
 						'tUId' => $uid,
 						'tPId' => $rid,
-						'tAmt' => $amt,
+						'tAmt' => $amtFen,
 						'tCategory' => RedpacketTrans::CAT_REDPACKET,
 						'tStatus' => RedpacketTrans::STATUS_DONE,
 						'tNote' => '余额发红包'
@@ -1570,14 +1573,14 @@ class ApiController extends Controller
 					// 充值发红包
 					$rid = Redpacket::addRedpacket([
 						"rUId" => $uid,
-						"rAmount" => $amt,
+						"rAmount" => $amtFen,
 						"rCode" => $ling,
 						"rCount" => $count,
 					]);
 					RedpacketTrans::edit([
 						'tUId' => $uid,
 						'tPId' => $rid,
-						'tAmt' => $amt,
+						'tAmt' => $amtFen,
 						'tCategory' => RedpacketTrans::CAT_REDPACKET,
 						'tStatus' => RedpacketTrans::STATUS_DONE,
 						'tPayNo' => $payId
@@ -1704,7 +1707,7 @@ class ApiController extends Controller
 						return self::renderAPI(129, '抢红包失败');
 					}
 				}
-				return self::renderAPI(129, 'error');
+				return self::renderAPI(129, '抢红包失败');
 				break;
 			case "shareinfo":
 				$rid = self::postParam("rid");
@@ -1713,6 +1716,30 @@ class ApiController extends Controller
 				} else {
 					return self::renderAPI(129, '获取分享信息错误');
 				}
+				break;
+			case "tocash":
+				/**
+				 * $openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'; // 可以是公众号的OpenId
+				 * $openId = 'ouvPv0Cz6rb-QB_i9oYwHZWjGtv8'; // 可以是小程序的OpenId
+				 * $tradeNo = RedisUtil::getIntSeq();  // 流水号，应该是 im_user_trans 里的唯一ID
+				 * $nickname = '赵武';   // 用户的昵称
+				 * $amount = 100;          // 金额，单位分
+				 * $ret = PayUtil::withdraw($openId, $tradeNo, $nickname, $amount);
+				 */
+				$xcxopenid = self::postParam("xcxopenid");
+				if ($uid && $xcxopenid) {
+					return self::renderAPI(129, '参数错误');
+				}
+				$amount = self::postParam("amt", 0) * 100;
+				if ($amount < 100) {
+					return self::renderAPI(129, '提现金额不足1元');
+				}
+				$remain = RedpacketTrans::balance($uid);
+				if ($remain < $amount) {
+					return self::renderAPI(129, '余额不足');
+				}
+				$ret = PayUtil::withdraw($xcxopenid, $amount);
+				return self::renderAPI($ret["code"], $ret["msg"]);
 				break;
 		}
 
