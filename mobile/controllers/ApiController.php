@@ -33,6 +33,7 @@ use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\BaiduUtil;
 use common\utils\ImageUtil;
+use common\utils\PayUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use dosamigos\qrcode\QrCode;
@@ -1231,6 +1232,7 @@ class ApiController extends Controller
 					$userinfo["name"] = $info["wNickName"];
 					$userinfo["gender"] = $info["wGender"];
 					$userinfo["uid"] = $info["wUId"];
+					$userinfo["xcxopenid"] = $info["wXcxId"];
 				}
 				$data["userinfo"] = $userinfo;
 				break;
@@ -1243,7 +1245,7 @@ class ApiController extends Controller
 				$amt = self::postParam('amt'); // 单位人民币元
 				$title = '微媒100-充值';
 				$rate = 1.02;
-				$amt = $amt * $rate;
+				// $amt = ceil($amt * 100 * $rate) / 100;
 				$subTitle = '充值' . $amt . '元';
 				$payId = Pay::prepay($uid, $amt * 10.0, $amt * 100, Pay::CAT_REDPACKET);
 
@@ -1685,7 +1687,7 @@ class ApiController extends Controller
 						return self::renderAPI(129, '抢红包失败');
 					}
 				}
-				return self::renderAPI(129, 'error');
+				return self::renderAPI(129, '抢红包失败');
 				break;
 			case "shareinfo":
 				$rid = self::postParam("rid");
@@ -1694,6 +1696,30 @@ class ApiController extends Controller
 				} else {
 					return self::renderAPI(129, '获取分享信息错误');
 				}
+				break;
+			case "tocash":
+				/**
+				 * $openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'; // 可以是公众号的OpenId
+				 * $openId = 'ouvPv0Cz6rb-QB_i9oYwHZWjGtv8'; // 可以是小程序的OpenId
+				 * $tradeNo = RedisUtil::getIntSeq();  // 流水号，应该是 im_user_trans 里的唯一ID
+				 * $nickname = '赵武';   // 用户的昵称
+				 * $amount = 100;          // 金额，单位分
+				 * $ret = PayUtil::withdraw($openId, $tradeNo, $nickname, $amount);
+				 */
+				$xcxopenid = self::postParam("xcxopenid");
+				if ($uid && $xcxopenid) {
+					return self::renderAPI(129, '参数错误');
+				}
+				$amount = self::postParam("amt", 0) * 100;
+				if ($amount < 100) {
+					return self::renderAPI(129, '提现金额不足1元');
+				}
+				$remain = RedpacketTrans::balance($uid);
+				if ($remain < $amount) {
+					return self::renderAPI(129, '余额不足');
+				}
+				$ret = PayUtil::withdraw($xcxopenid, $amount);
+				return self::renderAPI($ret["code"], $ret["msg"]);
 				break;
 		}
 
