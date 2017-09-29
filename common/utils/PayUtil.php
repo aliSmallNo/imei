@@ -33,6 +33,7 @@ class PayUtil
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
+		AppUtil::logFile([$openId, $amt], 5, __FUNCTION__, __LINE__);
 		$appId = (strpos($openId, 'oYDJe') === 0) ? \WxPayConfig::APPID : \WxPayConfig::X_APPID;
 		$sql = 'SELECT wUId,wNickName FROM im_user_wechat WHERE wOpenId=:id or wXcxId=:id';
 		$row = $conn->createCommand($sql)->bindValues([':id' => $openId])->queryOne();
