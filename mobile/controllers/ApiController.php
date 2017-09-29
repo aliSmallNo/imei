@@ -182,7 +182,13 @@ class ApiController extends Controller
 				$amt = self::postParam('amt'); // 单位人民币元
 				$title = '红包-充值';
 				$subTitle = '充值' . $amt . '元';
-				$payId = Pay::prepay($wxInfo['uId'], $amt * 10.0, $amt * 100, Pay::CAT_REDPACKET);
+				//$payId = Pay::prepay($wxInfo['uId'], $amt * 10.0, $amt * 100, Pay::CAT_REDPACKET);
+				$payId = RedpacketTrans::edit([
+					'tUId' => $wxInfo['uId'],
+					'tCategory' => RedpacketTrans::CAT_RECHARGE,
+					'tStatus' => RedpacketTrans::STATUS_WEAK,
+					'tAmt' => $amt * 100,
+				]);
 				if (AppUtil::isDev()) {
 					return self::renderAPI(129, '请在服务器测试该功能~');
 				}
@@ -1241,15 +1247,21 @@ class ApiController extends Controller
 				break;
 			case 'xcxrecharge'://小程序支付
 				$amt = self::postParam('amt'); // 单位人民币元
-				$title = '微媒100-充值';
+				$title = '趣红包-充值';
 				$subTitle = '充值' . $amt . '元';
-				$payId = Pay::prepay($uid, $amt * 10.0, $amt * 100, Pay::CAT_REDPACKET);
-
-				$payFee = intval($amt * 100);
-				if (in_array($uid, [120003])) {
+				//$payId = Pay::prepay($uid, $amt * 10.0, $amt * 100, Pay::CAT_REDPACKET);
+				$payFee = $amt * (100 + RedpacketTrans::TAX);
+				$payId = RedpacketTrans::edit([
+					'tUId' => $uid,
+					'tCategory' => RedpacketTrans::CAT_RECHARGE,
+					'tStatus' => RedpacketTrans::STATUS_WEAK,
+					'tAmt' => $amt * 100,
+					'tPayAmt' => $amt * (100 + RedpacketTrans::TAX),
+				]);
+				if (in_array($uid, [120003, 131379])) {
 					$payFee = $amt;
 				}
-				$ret = WechatUtil::jsPrepayXcx($payId, $xcxopenid, $payFee, $title, $subTitle);
+				$ret = WechatUtil::jsPrepayQhb('qhb' . $payId, $xcxopenid, $payFee, $title, $subTitle);
 				if ($ret) {
 					return self::renderAPI(0, '', [
 						'prepay' => $ret,
@@ -1518,48 +1530,57 @@ class ApiController extends Controller
 		switch ($tag) {
 			case 'create': // 发红包
 				$data = self::postParam('data');
-				$payId = self::postParam('payId');
 				$data = json_decode($data, 1);
+				$payId = self::postParam('payId');
 				$ling = isset($data["ling"]) ? $data["ling"] : '';
 				$amt = isset($data["amt"]) ? $data["amt"] : 0;
+				$amt *= 100;
 				$count = isset($data["count"]) ? $data["count"] : 0;
 				if (!preg_match_all("/^[\x7f-\xff]+$/", $ling, $match)) {
-					return self::renderAPI(129, '口令格式不正确');
+					return self::renderAPI(129, '口令格式不正确，请使用简体中文');
 				}
-				if ($amt <= 0) {
-					return self::renderAPI(129, '金额太少了');
+				if ($amt <= 100) {
+					return self::renderAPI(129, '赏金请勿低于1元');
 				}
 				if ($count <= 0) {
-					return self::renderAPI(129, '数量还没填');
+					return self::renderAPI(129, '分发数量还没填');
 				}
-				if ($amt / $count <= 0.01) {
-					return self::renderAPI(129, "最小红包不能低于0.01元");
+				if ($amt / $count <= 1) {
+					return self::renderAPI(129, "赏金太少或分发数量太大啦，实在是分不下去了");
 				}
-				$remain = RedpacketTrans::balance($uid);
-				if ($remain >= $amt) {
+				$balance = RedpacketTrans::balance($uid);
+				if ($balance >= $amt * (1 + RedpacketTrans::TAX)) {
 					// 余额发红包
-					if ($amt <= $remain) {
-						$tId = UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_SEND, "发红包", $amt * 100, UserTrans::UNIT_FEN);
-						$rid = Redpacket::addRedpacket([
-							"rUId" => $uid,
-							"rAmount" => $amt * 100,
-							"rCode" => $ling,
-							"rCount" => $count,
-							"rPayId" => $tId,
-						]);
-						return self::renderAPI(0, '', ["rid" => $rid]);
-					} else {
-						return self::renderAPI(129, '余额不够哦~');
-					}
-				} elseif ($payId) {
-					// 充值发红包
-					$tId = UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_SEND, "发红包", $amt * 100, UserTrans::UNIT_FEN);
 					$rid = Redpacket::addRedpacket([
 						"rUId" => $uid,
-						"rAmount" => $amt * 100,
+						"rAmount" => $amt,
 						"rCode" => $ling,
 						"rCount" => $count,
-						"rPayId" => $tId,
+					]);
+					RedpacketTrans::edit([
+						'tUId' => $uid,
+						'tPId' => $rid,
+						'tAmt' => $amt,
+						'tCategory' => RedpacketTrans::CAT_REDPACKET,
+						'tStatus' => RedpacketTrans::STATUS_DONE,
+						'tNote' => '余额发红包'
+					]);
+					return self::renderAPI(0, '', ["rid" => $rid]);
+				} elseif ($payId) {
+					// 充值发红包
+					$rid = Redpacket::addRedpacket([
+						"rUId" => $uid,
+						"rAmount" => $amt,
+						"rCode" => $ling,
+						"rCount" => $count,
+					]);
+					RedpacketTrans::edit([
+						'tUId' => $uid,
+						'tPId' => $rid,
+						'tAmt' => $amt,
+						'tCategory' => RedpacketTrans::CAT_REDPACKET,
+						'tStatus' => RedpacketTrans::STATUS_DONE,
+						'tPayNo' => $payId
 					]);
 					return self::renderAPI(0, '', ["rid" => $rid]);
 				}

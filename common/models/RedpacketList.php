@@ -60,8 +60,13 @@ class RedpacketList extends ActiveRecord
 					":did" => $dId,
 					":dt" => date("Y-m-d H:i:s"),
 				])->execute();
-				$title = UserTrans::$catDict[UserTrans::CAT_REDPACKET_GRAP];
-				UserTrans::add($uid, 0, UserTrans::CAT_REDPACKET_GRAP, $title, $amt, UserTrans::UNIT_FEN);
+				RedpacketTrans::edit([
+					'tUId' => $uid,
+					'tPId' => $rid,
+					'tCategory' => RedpacketTrans::CAT_GRAB,
+					'tAmt' => $amt,
+					'tStatus' => RedpacketTrans::STATUS_DONE,
+				]);
 			}
 		}
 		return $num;
