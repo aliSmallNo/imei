@@ -1542,7 +1542,7 @@ class ApiController extends Controller
 				if (!preg_match_all("/^[\x7f-\xff]+$/", $ling, $match)) {
 					return self::renderAPI(129, '口令格式不正确，请使用简体中文');
 				}
-				if ($amtFen <= 100) {
+				if ($amtFen < 100) {
 					return self::renderAPI(129, '赏金请勿低于1元');
 				}
 				if ($count <= 0) {
@@ -1587,6 +1587,7 @@ class ApiController extends Controller
 					]);
 					return self::renderAPI(0, '', ["rid" => $rid]);
 				}
+				return self::renderAPI(129, "参数错误");
 				break;
 			case "ito":// 发送的红包 统计
 				if ($uid) {
@@ -1727,7 +1728,7 @@ class ApiController extends Controller
 				 * $ret = PayUtil::withdraw($openId, $tradeNo, $nickname, $amount);
 				 */
 				$xcxopenid = self::postParam("xcxopenid");
-				if ($uid && $xcxopenid) {
+				if (!$uid && !$xcxopenid) {
 					return self::renderAPI(129, '参数错误');
 				}
 				$amount = self::postParam("amt", 0) * 100;
