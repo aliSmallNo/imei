@@ -23,10 +23,13 @@ class PayUtil
 	 * @param string $openId 用户的公众号openid 或者 用户的小程序openid
 	 * @param int $amt 金额，单位分
 	 * @param \yii\db\connection $conn
-	 * @return array [余额（单位分）, 系统提醒消息]
+	 * @return array [code（大于0表示失败）, 系统提醒消息]
 	 */
 	public static function withdraw($openId, $amt, $conn = null)
 	{
+		if ($amt < 100) {
+			return [129, '提现金额不能小于1元'];
+		}
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
@@ -34,13 +37,13 @@ class PayUtil
 		$sql = 'SELECT wUId,wNickName FROM im_user_wechat WHERE wOpenId=:id or wXcxId=:id';
 		$row = $conn->createCommand($sql)->bindValues([':id' => $openId])->queryOne();
 		if (!$row) {
-			return [0, '提现失败！用户不存在'];
+			return [129, '提现失败！用户不存在'];
 		}
 		$nickname = $row['wNickName'];
 		$uId = $row['wUId'];
 		$balance = RedpacketTrans::balance($uId, $conn);
 		if ($balance < $amt) {
-			return [$balance, '提现失败！余额不足'];
+			return [129, '提现失败！余额不足'];
 		}
 
 		$trade_no = RedisUtil::getIntSeq();
@@ -83,12 +86,10 @@ class PayUtil
 					':tPayNo' => $payment_no,
 					':tPayRaw' => json_encode($ret, JSON_UNESCAPED_UNICODE),
 				])->execute();
-				$balance = RedpacketTrans::balance($uId, $conn);
-				return [$balance, '提现成功！请查收'];
+				return [0, '提现成功！请查收'];
 			}
 		}
-		$balance = RedpacketTrans::balance($uId, $conn);
-		return [$balance, '将在1~5个工作日内转入你的零钱包'];
+		return [0, '将在1~5个工作日内转入你的零钱包'];
 	}
 
 	protected static function post($url, $vars, $second = 30, $aHeader = [])
