@@ -1272,8 +1272,8 @@ class ApiController extends Controller
 				break;
 			case "remain":
 				$uid = self::postParam("uid");
-				$reamin = RedpacketTrans::balance($uid);
-				$data["remain"] = $reamin;
+				$bal = RedpacketTrans::balance($uid);
+				$data["remain"] = round($bal / 100.0, 2);
 				break;
 			case 'xcxrecharge'://小程序支付
 				$amtYuan = self::postParam('amt'); // 单位人民币元
