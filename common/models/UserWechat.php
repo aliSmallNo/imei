@@ -392,7 +392,7 @@ class UserWechat extends ActiveRecord
 
 		$nickname = (isset($rawData["nickName"]) && $rawData["nickName"]) ? $rawData["nickName"] : '';
 		$avatar = (isset($rawData["avatarUrl"]) && $rawData["avatarUrl"]) ? $rawData["avatarUrl"] : '';
-		$uid = User::addWX([
+		$uid = User::addWXByUnionId([
 			"openid" => '',
 			"nickname" => $nickname,
 			"unionid" => $unionId,
