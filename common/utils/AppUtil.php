@@ -138,40 +138,34 @@ class AppUtil
 
 	public static function scene()
 	{
-		return Yii::$app->params['scene'];
+		return self::getParam('scene');
 	}
 
 	public static function isDev()
 	{
-		return (Yii::$app->params['scene'] == 'dev');
+		return (self::scene() == 'dev');
 	}
 
-	public static function isDebuger($uid)
+	public static function isDebugger($uid)
 	{
 		return in_array($uid, [120003, 131379]);
 	}
 
-	public static function swooleSet()
+	public static function resDir()
 	{
-		return Yii::$app->params['swoole_set'];
-	}
-
-	public static function swooleHost()
-	{
-		return Yii::$app->params['swoole_host'];
+		return self::getParam('folders', 'res');
 	}
 
 	public static function logDir()
 	{
-		if (self::isDev()) {
-			$folder = self::rootDir() . '../logs/';
-		} else {
-			$folder = '/data/logs/' . self::PROJECT_NAME . '/';
-		}
-		if (!is_dir($folder)) {
-			mkdir($folder);
-		}
-		return $folder;
+		return self::getParam('folders', 'log');
+	}
+
+	public static function rootDir()
+	{
+		//		return __DIR__ . '/../../';
+		//return getcwd().'/';
+		return self::getParam('folders', 'root');
 	}
 
 	public static function imgDir($rootOnly = false)
@@ -181,10 +175,7 @@ class AppUtil
 
 	public static function catDir($rootOnly = false, $cat = '')
 	{
-		$folder = '/data/prodimage/' . self::PROJECT_NAME . '/';
-		if (self::isDev()) {
-			$folder = self::rootDir() . '../img/' . self::PROJECT_NAME . '/';
-		}
+		$folder = self::resDir();
 		if ($rootOnly) {
 			return $folder;
 		}
@@ -205,40 +196,49 @@ class AppUtil
 		return $folder . '/';
 	}
 
-	public static function rootDir()
+
+	protected static function getParam($key, $subKey = '')
 	{
-		return __DIR__ . '/../../';
-		//return getcwd().'/';
+		if ($subKey) {
+			return Yii::$app->params[$key][$subKey];
+		}
+		return Yii::$app->params[$key];
 	}
 
 	public static function notifyUrl()
 	{
-		return Yii::$app->params['notifyUrl'];
+//		return Yii::$app->params['notifyUrl'];
+		return self::getParam('hosts', 'notify');
 	}
 
 	public static function apiUrl()
 	{
-		return Yii::$app->params['apiUrl'];
+//		return Yii::$app->params['apiUrl'];
+		return self::getParam('hosts', 'api');
 	}
 
 	public static function adminUrl()
 	{
-		return Yii::$app->params['adminUrl'];
+//		return Yii::$app->params['adminUrl'];
+		return self::getParam('hosts', 'admin');
 	}
 
 	public static function wechatUrl()
 	{
-		return Yii::$app->params['wechatUrl'];
+//		return Yii::$app->params['wechatUrl'];
+		return self::getParam('hosts', 'wx');
 	}
 
 	public static function imageUrl()
 	{
-		return Yii::$app->params['imageUrl'];
+//		return Yii::$app->params['imageUrl'];
+		return self::getParam('hosts', 'img');
 	}
 
 	public static function wsUrl()
 	{
-		return Yii::$app->params['wsUrl'];
+//		return Yii::$app->params['wsUrl'];
+		return self::getParam('hosts', 'ws');
 	}
 
 	public static function checkPhone($mobile)
@@ -274,7 +274,6 @@ class AppUtil
 
 	public static function xml_to_data($xml)
 	{
-
 		if (!$xml) {
 			return false;
 		}
@@ -654,31 +653,12 @@ class AppUtil
 		return ["code" => 159, "msg" => "上传文件失败，请稍后重试"];
 	}
 
-	public static function getRootPath()
-	{
-		$env = AppUtil::scene();
-		$pathEnv = [
-			'test' => '/tmp/',
-			'dev' => self::rootDir() . '../upload/',
-			'prod' => '/data/prodimage/' . self::PROJECT_NAME . '/',
-		];
-		$prefix = $pathEnv[$env];
-		return $prefix;
-	}
-
 	public static function getUploadFolder($category = "")
 	{
 		if (!$category) {
 			$category = self::UPLOAD_DEFAULT;
 		}
-		$env = AppUtil::scene();
-		$pathEnv = [
-			'test' => '/tmp/',
-			'dev' => self::rootDir() . '../upload/',
-			'prod' => '/data/prodimage/' . self::PROJECT_NAME . '/',
-		];
-
-		$prefix = $pathEnv[$env];
+		$prefix = self::resDir();
 		$paths = [
 			'default' => $prefix . 'default',
 			'person' => $prefix . 'person',
@@ -948,9 +928,6 @@ class AppUtil
 			return false;
 		}
 		$file = self::logDir() . date("Ymd") . '.log';
-		if (self::isDev()) {
-			$file = self::logDir() . self::PROJECT_NAME . '_' . date("Ym") . '.log';
-		}
 		$txt = [];
 		if ($func) {
 			$txt[] = $func;
@@ -991,43 +968,6 @@ class AppUtil
 		$cookies = \Yii::$app->response->cookies;
 		$cookies->remove($name);
 		unset($cookies[$name]);
-	}
-
-	public static function getUploadPath($fileExt = "", $category = "")
-	{
-		$pathEnv = [
-			'test' => '/tmp/',
-			'dev' => self::rootDir() . '../upload/',
-			'prod' => '/data/prodimage/',
-		];
-		$env = self::scene();
-		$prefix = $pathEnv[$env];
-		if (!$category) {
-			$category = "upload";
-		}
-		$paths = [
-			'default' => $prefix . 'default',
-			'person' => $prefix . 'person',
-			'excel' => $prefix . 'excel',
-			'upload' => $prefix . 'upload',
-			'mail' => $prefix . 'mail',
-			'image' => $prefix . 'image'
-		];
-		foreach ($paths as $path) {
-			if (is_dir($path)) {
-				continue;
-			}
-			mkdir($path, 0777, true);
-		}
-		$basePath = isset($paths[$category]) ? $paths[$category] : $paths['default'];
-		$fileDir = $basePath . date("/ym");
-		if (!is_dir($fileDir)) {
-			mkdir($fileDir, 0777, true);
-		}
-		$fileName = (time() . rand(100, 999)) . ($fileExt ? "." . $fileExt : "");
-		$fullPath = $fileDir . "/" . $fileName;
-		$shortPath = "/" . $category . date("/ym") . "/" . $fileName;
-		return [$fullPath, $shortPath];
 	}
 
 	public static function decrypt($string)

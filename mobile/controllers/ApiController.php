@@ -245,7 +245,7 @@ class ApiController extends Controller
 					return self::renderAPI(129, '请在服务器测试该功能~');
 				}
 				$payFee = intval($amt * 100);
-				if (AppUtil::isDebuger($wxInfo["uId"])) {
+				if (AppUtil::isDebugger($wxInfo["uId"])) {
 					$payFee = $amt / 10;
 				}
 				$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);
@@ -1289,7 +1289,7 @@ class ApiController extends Controller
 					'tAmt' => $amtFen,
 					'tPayAmt' => $payFee,
 				]);
-				if (AppUtil::isDebuger($uid)) {
+				if (AppUtil::isDebugger($uid)) {
 					$payFee = intval($payFee / 100.0);
 				}
 				$ret = WechatUtil::jsPrepayQhb('qhb' . $payId, $xcxopenid, $payFee, $title, $subTitle);
@@ -2213,34 +2213,6 @@ class ApiController extends Controller
 				break;
 		}
 		return self::renderAPI(129, '操作无效~');
-	}
-
-	public function actionQr()
-	{
-		$tag = trim(strtolower(self::postParam('tag')));
-		$id = self::getParam('id', '5dff94c2-c793-4519-bcf0-17b8c889dd5f');
-		$url = 'http://view.mplink.cn/Pay/Home.aspx?deviceid=%s';
-		$url = sprintf($url, $id);
-		$folder = '/data/tmp/';
-		if (AppUtil::isDev()) {
-			$folder = '/Users/weirui/Documents/';
-		}
-		$time = time();
-		$fileName = $folder . $time . '.jpg';
-		QrCode::jpg($url, $fileName, 3, 13, 1);
-		list($width, $height, $type) = getimagesize($fileName);
-		$fontPath = __DIR__ . '/../../common/assets/Arial.ttf';
-		$saveName = $folder . $time . '_t.jpg';
-		$mergeImage = __DIR__ . '/../../common/assets/logo.jpg';
-		$mergeSize = 120;
-		$mergeImage = Image::open($mergeImage)->zoomCrop($mergeSize, $mergeSize, 0xffffff, 'left', 'top');
-		$content = Image::open($fileName)
-			->resize($width, $height + 60)
-			->zoomCrop($width, $height + 30, 0xffffff, 'center', 'bottom')
-			->write($fontPath, '30009393', $width / 2, $height + 20, 24, 0, 0x000000, 'center')
-			->merge($mergeImage, ($width - $mergeSize) / 2, ($height - $mergeSize + 20) / 2, $mergeSize, $mergeSize)
-			->save($saveName);
-		return self::renderAPI(0, $saveName, [$content]);
 	}
 
 	public function actionPaid()

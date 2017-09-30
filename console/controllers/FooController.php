@@ -17,9 +17,7 @@ use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
-use common\utils\PayUtil;
 use common\utils\PushUtil;
-use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -203,12 +201,7 @@ class FooController extends Controller
 		$contentType = $httpInfo["content_type"];
 		$contentType = strtolower($contentType);
 		$ext = AppUtil::getExtName($contentType);
-		$env = AppUtil::scene();
-		$pathEnv = [
-			'dev' => __DIR__ . '/../../../upload/',
-			'prod' => '/data/prodimage/' . AppUtil::PROJECT_NAME . '/',
-		];
-		$path = $pathEnv[$env] . 'avatar/' . $key;
+		$path = AppUtil::resDir() . 'avatar/' . $key;
 		$ret = [];
 		if ($ext && strlen($content) > 200) {
 			$fileName = $path . '.' . $ext;

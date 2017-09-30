@@ -680,7 +680,7 @@ class WechatUtil
 					return 0;
 				}
 				$pay = $payInfo->pTransAmt / 100;
-				if (AppUtil::isDebuger($takerId)) {// zp luming
+				if (AppUtil::isDebugger($takerId)) {// zp luming
 					$pay = $payInfo->pTransAmt * 10;
 				}
 				$personNum = 0;

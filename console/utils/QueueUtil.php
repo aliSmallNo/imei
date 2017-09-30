@@ -70,7 +70,7 @@ class QueueUtil
 		} else {
 			$msg = 'message: ' . $msg;
 		}
-		$fileName = '/data/logs/' . AppUtil::PROJECT_NAME . '/queue_' . date('Ymd') . '.log';
+		$fileName = AppUtil::logDir() . 'queue_' . date('Ymd') . '.log';
 		@file_put_contents($fileName, PHP_EOL . date('Y-m-d H:i:s') . ' ' . $msg . PHP_EOL, FILE_APPEND);
 	}
 
