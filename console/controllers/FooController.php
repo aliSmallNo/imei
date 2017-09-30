@@ -461,6 +461,7 @@ class FooController extends Controller
 			 FROM im_user as u 
 			 JOIN im_user_wechat as w on w.wUId=u.uId
 			 WHERE u.uStatus<8 and uPhone !=\'\' 
+			 AND (uLocation like \'%东台%\' or uHomeland like \'%东台%\')
 			 ORDER BY u.uPhone';
 		$ret = $conn->createCommand($sql)->queryAll();
 		/*
@@ -476,11 +477,11 @@ class FooController extends Controller
 //			$msg = '哇，本地单身都在公众号微媒100找对象，真实靠谱，赶快来完成注册吧';
 //			$msg = '哇，才几个小时，微媒100上又有3个' . $gender . '对你怦然心动了，距你最近的才800米';
 			//$msg = '邀请新用户最高可领50元红包！每邀请3名身边单身好友注册成功，就可获得10元红包，最高可获得50元奖励哦！参与活动，请点击公众号主菜单-更多-官方活动 分享朋友圈吧！';
-			$msg = '国庆长假要到了，优质单身男女返乡了，趁此良机上“微媒100”公众号给自己找个伴吧';
+			$msg = '10月2日微媒100东台用户同城趴，吃饭K歌两不误，男A女免，帅哥美女报名方式：公众号留言“东台活动”，届时会有组织者与你联系';
 			QueueUtil::loadJob('sendSMS', [
 				'phone' => $phone,
 				'msg' => $msg,
-				'rnd' => 105
+				'rnd' => 106
 			]);
 		}
 		var_dump(count($ret));
