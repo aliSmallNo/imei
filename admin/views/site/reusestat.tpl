@@ -1,9 +1,9 @@
 {{include file="layouts/header.tpl"}}
 <style>
-	td.percent {
+	.percent {
 		text-align: right;
 		font-size: 13px;
-
+		vertical-align: middle !important;
 	}
 
 	th.percent {
@@ -42,6 +42,10 @@
 
 	.item9 {
 		background: #d4d4d4;
+	}
+
+	.j-link {
+		display: block;
 	}
 </style>
 <div class="row">
@@ -125,7 +129,7 @@
 				<a href="javascript:;" class="j-link" data-from="" data-to="">{{$item[$cat].cnt}}</a>
 			</td>
 			{{foreach from=$item[$cat].items key=k item=subItem}}
-			<td class="percent">
+			<td class="percent" valign="middle">
 				{{if $k<12}}
 				<a href="javascript:;" class="j-link" data-from="{{$subItem.from}}" data-to="{{$subItem.to}}">
 					{{$subItem.per|string_format:"%.1f"}}%
