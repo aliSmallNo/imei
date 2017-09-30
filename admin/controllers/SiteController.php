@@ -1392,7 +1392,7 @@ class SiteController extends BaseController
 
 	public function actionInfo()
 	{
-		AppUtil::logFile(Admin::getAdminId(), 5, __FUNCTION__, __LINE__);
+		AppUtil::logFile([Admin::getAdminId(), AppUtil::IP()], 5, __FUNCTION__, __LINE__);
 		echo phpinfo();
 	}
 
