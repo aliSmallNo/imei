@@ -36,8 +36,6 @@ use common\utils\ImageUtil;
 use common\utils\PayUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
-use dosamigos\qrcode\QrCode;
-use Gregwar\Image\Image;
 use Yii;
 use yii\web\Controller;
 use yii\web\Response;
