@@ -67,7 +67,7 @@ class PayUtil
 			're_user_name' => $nickname,
 			'amount' => $amt,
 			'desc' => self::DESC_WITHDRAW,
-			'spbill_create_ip' => '139.199.31.56',
+			'spbill_create_ip' => AppUtil::IP(),
 		];
 		$sign = self::makeSign($postData);
 		$postData['sign'] = $sign;

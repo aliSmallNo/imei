@@ -146,6 +146,14 @@ class AppUtil
 		return (self::scene() == 'dev');
 	}
 
+	public static function IP()
+	{
+		if (self::isDev()) {
+			return '127.0.0.1';
+		}
+		return self::getParam('ip');
+	}
+
 	public static function isDebugger($uid)
 	{
 		return in_array($uid, [120003, 131379]);
