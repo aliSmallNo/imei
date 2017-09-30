@@ -129,7 +129,7 @@
 				<a href="javascript:;" class="j-link" data-from="" data-to="">{{$item[$cat].cnt}}</a>
 			</td>
 			{{foreach from=$item[$cat].items key=k item=subItem}}
-			<td class="percent" valign="middle">
+			<td class="percent">
 				{{if $k<12}}
 				<a href="javascript:;" class="j-link" data-from="{{$subItem.from}}" data-to="{{$subItem.to}}">
 					{{$subItem.per|string_format:"%.1f"}}%
