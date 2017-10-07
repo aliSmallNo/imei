@@ -490,7 +490,7 @@ class ImageUtil
 
 	public static function save2Server($imageUrl, $squareFlag = false, $top = -1, $left = -1)
 	{
-		$key = RedisUtil::getImageSeq();
+		$key = RedisUtil::getImageSeq() . date('His');
 		if (strpos($imageUrl, 'http') !== 0) {
 			// Rain: Media ID (Wechat Server ID)
 			$accessToken = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
