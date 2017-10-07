@@ -4,7 +4,7 @@
 
 });*/
 
-var mLeftMenuFolders = $('.g-menu-folder');
+/*var mLeftMenuFolders = $('.g-menu-folder');
 var mLastSubMenu = $('.cur-sub-nav');
 var mSummary = $('.g-summary');
 $.pjax({
@@ -33,7 +33,7 @@ $.pjax({
 	show: 'fade',
 	cache: false,
 	title: '微媒100后台'
-});
+});*/
 
 $('.admin-branch>a').on('click', function () {
 	location.href = "/site/branch?bid=" + $(this).attr('bId');
