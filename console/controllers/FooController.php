@@ -532,9 +532,9 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-
-		$ret = RedpacketTrans::balance(120003);
-		var_dump($ret);
+		Pin::regeo(143103, '', '');
+//		$ret = RedpacketTrans::balance(120003);
+//		var_dump($ret);
 		/*		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'; // 可以是公众号的OpenId
 		//		$openId = 'ouvPv0Cz6rb-QB_i9oYwHZWjGtv8'; // 可以是小程序的OpenId
 				$openId = 'ouvPv0Cz6rb-QB_i9oYwHZWjGtv8';
