@@ -72,23 +72,6 @@ class AdminController extends BaseController
 	{
 		Admin::staffOnly();
 
-		$conn = AppUtil::db();
-		$sql = 'select bId,bType,bResult from im_user_buzz where bType =\'voice\' and bResult like \'%amr\';';
-		$ret = $conn->createCommand($sql)->queryAll();
-		foreach ($ret as $row) {
-			$id = $row['bId'];
-			$fileName = AppUtil::catDir(true) . $row['bResult'];
-			if (!is_file($fileName)) continue;
-			$fileMP3 = AppUtil::catDir(false, 'voice') . RedisUtil::getImageSeq() . '.mp3';
-			exec('/usr/bin/ffmpeg -i ' . $fileName . ' -ab 12.2k -ar 16000 -ac 1 ' . $fileMP3, $out);
-			$addr = ImageUtil::getUrl($fileMP3);
-			$sql = 'update im_user_buzz set bResult=:addr WHERE bId=:id ';
-			$conn->createCommand($sql)->bindValues([
-				':addr' => $addr,
-				':id' => $id
-			])->execute();
-		}
-
 		$page = self::getParam("page", 1);
 		$name = self::getParam('name');
 		$note = self::getParam('note');

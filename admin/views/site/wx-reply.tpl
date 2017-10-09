@@ -68,7 +68,9 @@
 					{{if $item.type=="image"}}
 					<img src="{{$item.txt}}" class="j-img">
 					{{elseif $item.type=="voice"}}
-					<button data-src="{{$item.txt}}" class="play"><i class="fa fa-volume-up"></i> 播放语音</button>
+					<audio src="{{$item.txt}}" controls="controls">
+						您的浏览器不支持 audio 标签。
+					</audio>
 					{{else}}
 					{{$item.txt}}
 					{{/if}}
