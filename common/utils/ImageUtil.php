@@ -514,9 +514,13 @@ class ImageUtil
 			return ['', ''];
 		}
 		if ($ext == "amr") {
-			$fileName = AppUtil::imgDir(true) . 'voice/' . $key . '.' . $ext;
+			$filePrefix = AppUtil::catDir(false, "voice") . $key;
+			$fileName = $filePrefix . ".amr";
+			$fileMP3 = $filePrefix . ".mp3";
 			file_put_contents($fileName, $content);
-			$ret = '/voice/' . $key . '.' . $ext;
+			exec('/usr/bin/ffmpeg -i ' . $fileName . ' -ab 12.2k -ar 16000 -ac 1 ' . $fileMP3, $out);
+			$ret = ImageUtil::getUrl($fileMP3);
+			//$ret = '/voice/' . $key . '.' . $ext;
 			return [$ret, $ret];
 		} else {
 			$path = AppUtil::imgDir() . $key;

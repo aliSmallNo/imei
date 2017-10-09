@@ -1105,49 +1105,6 @@ class AppUtil
 		return $heaps;
 	}
 
-	/**
-	 * 获取云存储链接
-	 * @param $mediaId string 微信中的mediaId, 或者http下载链接
-	 * @param bool $thumbFlag 如果是图片，是否压缩成为缩率图
-	 * @param bool $squareFlag 如果是图片，是否存储成正方形
-	 * @return string
-	 */
-	public static function getMediaUrl($mediaId, $thumbFlag = false, $squareFlag = false)
-	{
-		$imageUrl = $mediaId;
-		if (strpos($imageUrl, 'http') !== 0) {
-			$accessToken = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
-			$baseUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s";
-			$imageUrl = sprintf($baseUrl, $accessToken, $mediaId);
-		}
-		$ch = curl_init($imageUrl);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		curl_setopt($ch, CURLOPT_NOBODY, 0);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		$content = curl_exec($ch);
-		$httpInfo = curl_getinfo($ch);
-		curl_close($ch);
-
-		$contentType = $httpInfo["content_type"];
-		$contentType = strtolower($contentType);
-		$ext = self::getExtName($contentType);
-		if ($ext && strlen($content) > 200) {
-			if ($ext == "amr") {
-				$iSeq = RedisUtil::getIntSeq();
-				$fileName = self::getUploadFolder("voice") . "/" . $iSeq . ".amr";
-				file_put_contents($fileName, $content);
-				return "/voice/" . $iSeq . ".amr";
-			} else {
-				$fileName = self::getUploadFolder() . "/" . RedisUtil::getIntSeq();
-				file_put_contents($fileName, $content);
-				$imageUrl = ImageUtil::upload2COS($fileName, $thumbFlag, $squareFlag, $ext);
-				unlink($fileName);
-				return $imageUrl;
-			}
-		}
-		return '';
-	}
-
 	public static function getExtName($contentType)
 	{
 		$fileExt = "";

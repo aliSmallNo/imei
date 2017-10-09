@@ -5,7 +5,10 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use admin\models\Menu;
+use common\models\Redpacket;
 use common\utils\AppUtil;
+use common\utils\ImageUtil;
+use common\utils\RedisUtil;
 
 
 class AdminController extends BaseController
@@ -69,6 +72,23 @@ class AdminController extends BaseController
 	public function actionUsers()
 	{
 		Admin::staffOnly();
+
+		$conn = AppUtil::db();
+		$sql = 'select bId,bType,bResult from im_user_buzz where bType =\'voice\' and bResult like \'%amr\';';
+		$ret = $conn->createCommand($sql)->queryAll();
+		foreach ($ret as $row) {
+			$id = $row['bId'];
+			$fileName = AppUtil::catDir(true) . $row['bResult'];
+			$fileMP3 = AppUtil::catDir(false, 'voice') . RedisUtil::getImageSeq() . '.mp3';
+			exec('/usr/bin/ffmpeg -i ' . $fileName . ' -ab 12.2k -ar 16000 -ac 1 ' . $fileMP3, $out);
+			$addr = ImageUtil::getUrl($fileMP3);
+			$sql = 'update hd_user_buzz set bResult=:addr WHERE bId=:id ';
+			$conn->createCommand($sql)->bindValues([
+				':addr' => $addr,
+				':id' => $id
+			])->execute();
+		}
+
 		$page = self::getParam("page", 1);
 		$name = self::getParam('name');
 		$note = self::getParam('note');
