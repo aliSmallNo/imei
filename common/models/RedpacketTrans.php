@@ -109,9 +109,13 @@ class RedpacketTrans extends ActiveRecord
 		return false;
 	}
 
+	/**
+	 * @param $uid
+	 * @return false|null|string 提现次数
+	 */
 	public static function cashTimes($uid)
 	{
-		$sql = "select count(*) as co from im_redpacket_trans where tCategory=:cat and tUId=:uid ";
+		$sql = "select count(*) as co from im_redpacket_trans where tCategory=:cat and tUId=:uid and DATE_FORMAT(tAddedOn,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d')";
 		$co = AppUtil::db()->createCommand($sql)->bindValues([
 			':cat' => RedpacketTrans::CAT_WITHDRAW,
 			':uid' => $uid,
