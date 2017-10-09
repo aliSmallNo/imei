@@ -527,7 +527,7 @@ class ApiController extends Controller
 				if (UserWechat::findOne(["wOpenId" => $openId])->wSubscribe != 1) {
 					return self::renderAPI(129, '您还没关注微媒100公众号哦~');
 				}
-				$prize = [2 => "50M流量", 4 => "100M流量", 10 => "30M流量"];
+				$prize = [2 => "50M流量", 3 => "不服再来", 4 => "100M流量", 6 => "运气先攒着", 9 => "继续加油", 10 => "30M流量", 12 => "再接再厉"];
 				$a = [2, 4, 10];
 				$i = array_rand($a, 1);
 				$p = $a[$i];
@@ -1761,7 +1761,7 @@ class ApiController extends Controller
 				 * $ret = PayUtil::withdraw($openId, $tradeNo, $nickname, $amount);
 				 */
 				$xcxopenid = self::postParam("xcxopenid");
-				if (!$uid && !$xcxopenid) {
+				if (!$uid || !$xcxopenid) {
 					return self::renderAPI(129, '参数错误');
 				}
 				$amount = self::postParam("amt", 0) * 100;

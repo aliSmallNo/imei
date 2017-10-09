@@ -11,6 +11,7 @@ require(["layer"],
 		var $sls = {
 			wxString: $("#tpl_wx_info").html(),
 			loading: false,
+			msg: "",
 		}
 
 		function showMsg(title, sec) {
