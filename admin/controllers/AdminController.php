@@ -5,7 +5,6 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use admin\models\Menu;
-use common\models\Redpacket;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
@@ -79,10 +78,11 @@ class AdminController extends BaseController
 		foreach ($ret as $row) {
 			$id = $row['bId'];
 			$fileName = AppUtil::catDir(true) . $row['bResult'];
+			if (!is_file($fileName)) continue;
 			$fileMP3 = AppUtil::catDir(false, 'voice') . RedisUtil::getImageSeq() . '.mp3';
 			exec('/usr/bin/ffmpeg -i ' . $fileName . ' -ab 12.2k -ar 16000 -ac 1 ' . $fileMP3, $out);
 			$addr = ImageUtil::getUrl($fileMP3);
-			$sql = 'update hd_user_buzz set bResult=:addr WHERE bId=:id ';
+			$sql = 'update im_user_buzz set bResult=:addr WHERE bId=:id ';
 			$conn->createCommand($sql)->bindValues([
 				':addr' => $addr,
 				':id' => $id
