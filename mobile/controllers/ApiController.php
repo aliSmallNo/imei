@@ -24,6 +24,7 @@ use common\models\RedpacketTrans;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserBuzz;
+use common\models\UserComment;
 use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
@@ -1935,11 +1936,15 @@ class ApiController extends Controller
 				LogAction::add($uid, $openId, LogAction::ACTION_CHAT, $subUId);
 				list($gId, $left) = ChatMsg::groupEdit($uid, $subUId);
 				list($items, $lastId) = ChatMsg::details($uid, $subUId, $lastId);
+				// 是否评价一次TA
+				$commentFlag = UserComment::hasComment($subUId, $uid);
+
 				return self::renderAPI(0, '', [
 					'items' => $items,
 					'lastId' => intval($lastId),
 					'left' => $left,
-					'gid' => $gId
+					'gid' => $gId,
+					'commentFlag' => $commentFlag
 				]);
 				break;
 			case 'contacts':
@@ -1959,6 +1964,38 @@ class ApiController extends Controller
 				}
 				$co = ChatMsg::delContacts($gids);
 				return self::renderAPI(0, '删除成功', $co);
+				break;
+			case "comment":
+				$sid = self::postParam("sid");
+				$cat = self::postParam("cat");
+				$cot = self::postParam("cot");
+				if (!$sid || !$cat || !$cot) {
+					return self::renderAPI(129, '参数错误');
+				}
+				$sid = AppUtil::decrypt($sid);
+				$id = UserComment::add([
+					"cUId" => $sid,
+					"cAddedBy" => $uid,
+					"cCategory" => $cat,
+					"cComment" => $cot,
+				]);
+				if ($id > 0) {
+					$items = UserComment::iTems($sid);
+					return self::renderAPI(0, '评论成功', [
+						"data" => $items
+					]);
+				}
+				break;
+			case "commentlist":
+				$sid = self::postParam("sid");
+				$sid = AppUtil::decrypt($sid);
+				if (!$sid) {
+					return self::renderAPI(129, '参数错误');
+				}
+				$res = UserComment::iTems($sid);
+				return self::renderAPI(0, '评论成功', [
+					"data" => $res
+				]);
 				break;
 			case 'topup':
 				$subUId = self::postParam('id');

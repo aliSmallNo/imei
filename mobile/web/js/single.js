@@ -464,12 +464,23 @@ require(["layer"],
 		};
 
 		var ChatUtil = {
+			commentFlag: 0,
+			leftCount: 0,
+			rightCount: 0,
+			commentContent: $(".co-content textarea"),
+			commentCat1: $(".co-cat-content1"),
+			commentCat2: $(".co-cat-content2"),
+			commentBtn: $(".co-btn a"),
+			commentListTmp: $("#comment-list-temp").html(),
+			cul: $("ul.co-ul"),
+
 			qId: '',
-			sid: '',
+			sid: '',// 对方的uid
 			gid: 0,
 			lastId: 0,
 			loading: 0,
 			book: $('.contacts'),
+			comment: $('.user-comment'),
 			bookTmp: $('#tpl_contact').html(),
 			list: $('.chats'),
 			tmp: $('#tpl_chat').html(),
@@ -503,6 +514,77 @@ require(["layer"],
 						location.href = '#schat';
 					}
 				});
+				////////// 评论 start///////////
+				$(document).on(kClick, ".user-comment", function () {
+					if (util.loading) {
+						return;
+					}
+					util.loading = 1;
+					$.post("/api/chat", {
+						tag: "commentlist",
+						sid: util.sid,
+					}, function (resp) {
+						util.loading = 0;
+						if (resp.code == 0) {
+							util.commentContent.val("");
+							util.commentlist(resp.data);
+							location.href = '#scomment';
+						} else {
+							showMsg(resp.msg);
+						}
+					}, "json");
+				});
+				$(document).on("change", ".co-cat-content1", function () {
+					var val = $(this).val();
+					var datatemp = catDes[val];
+					var arr = [];
+					for (var i = 0; i < datatemp.length; i++) {
+						arr.push({opt: datatemp[i]});
+					}
+					var data = {data: arr};
+					var html = Mustache.render('{[#data]}<option value="{[opt]}">{[opt]}</option>{[/data]}', data);
+					util.commentCat2.html(html);
+					util.commentContent.val(datatemp[0]);
+				});
+				$(document).on("change", ".co-cat-content2", function () {
+					var val = $(this).val();
+					util.commentContent.val(val);
+				});
+				util.commentBtn.on(kClick, function () {
+					var catVal = util.commentCat1.val();
+					var cot = $.trim(util.commentContent.val());
+					if (!catVal) {
+						showMsg("评论类型不能为空");
+						return;
+					}
+					if (!cot) {
+						showMsg("评论内容不能为空");
+						util.commentContent.focus();
+						return;
+					}
+					if (util.loading) {
+						return;
+					}
+					util.loading = 1;
+					$.post("/api/chat", {
+						tag: "comment",
+						sid: util.sid,
+						cat: catVal,
+						cot: cot,
+					}, function (resp) {
+						util.loading = 0;
+						if (resp.code == 0) {
+							util.commentContent.val("");
+							util.commentlist(resp.data);
+							util.reload(0); // 刷新commentFlag状态
+						} else {
+							showMsg(resp.msg);
+						}
+
+					}, "json");
+				});
+				////////// 评论 end ///////////
+
 
 				$(document).on(kClick, ".contacts-edit", function () {
 					var self = $(this);
@@ -707,6 +789,27 @@ require(["layer"],
 						util.bot.get(0).scrollIntoView(true);
 					}, 300);
 				}
+				// 判断comment按钮show/hide
+				util.leftCount = 0;
+				util.rightCount = 0;
+				util.list.find("li").each(function () {
+					var self = $(this);
+					if (self.hasClass("left")) {
+						util.leftCount++;
+					}
+					if (self.hasClass("right")) {
+						util.rightCount++;
+					}
+				});
+				//console.log(util.leftCount);console.log(util.rightCount);
+				if (util.leftCount >= 2 && util.rightCount >= 2) {
+					util.comment.show();
+				} else {
+					util.comment.hide();
+				}
+				if (util.leftCount < 10 || util.rightCount < 10) {
+					util.commentFlag = 1;
+				}
 			},
 			topup: function () {
 				var util = this;
@@ -736,6 +839,10 @@ require(["layer"],
 			},
 			sent: function () {
 				var util = this;
+				if (!util.commentFlag) {
+					showMsg("聊了这么多，觉得ta怎么样呢，快去匿名评价吧~");
+					return false;
+				}
 				var content = util.inputVal ? util.inputVal : $.trim(util.input.val());
 				if (!content) {
 					showMsg('聊天内容不能为空！', 3, 12);
@@ -794,11 +901,13 @@ require(["layer"],
 					last: util.lastId
 				}, function (resp) {
 					if (resp.code == 0) {
+						util.commentFlag = parseInt(resp.data.commentFlag);
 						util.messages(resp.data, scrollFlag);
 						/*if (util.timer == 0) {
 							util.toggleTimer(1);
 						}*/
 						util.gid = resp.data.gid;
+
 					} else {
 						showMsg(resp.msg, 3, 12);
 					}
@@ -825,6 +934,13 @@ require(["layer"],
 					}
 					util.loading = 0;
 				}, "json");
+			},
+			commentlist: function (data) {
+				var util = this;
+				if (data.data.length > 0) {
+					var html = Mustache.render(util.commentListTmp, data);
+					util.cul.html(html);
+				}
 			}
 		};
 
