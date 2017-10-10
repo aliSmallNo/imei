@@ -1184,10 +1184,10 @@ class User extends ActiveRecord
 		$birthYear = $myInfo->uBirthYear;
 		$ageLimit = '';
 		if ($gender && $gender == self::GENDER_MALE && $birthYear) {
-			$ageLimit = ' and u.uBirthYear >' . ($birthYear - 6);
+			$ageLimit = ' AND u.uBirthYear BETWEEN ' . ($birthYear - 5) . ' AND ' . ($birthYear + 12);
 		}
 		if ($gender && $gender == self::GENDER_FEMALE && $birthYear) {
-			$ageLimit = ' and u.uBirthYear >' . ($birthYear - 10);
+			$ageLimit = ' AND u.uBirthYear BETWEEN ' . ($birthYear - 12) . ' AND ' . ($birthYear + 3);
 		}
 
 		$gender = ($gender == self::GENDER_FEMALE) ? self::GENDER_MALE : self::GENDER_FEMALE;
