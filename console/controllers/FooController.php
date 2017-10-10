@@ -532,7 +532,7 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		Pin::regeo(143103, '', '');
+		Pin::regeo(134588, '', '');
 //		$ret = RedpacketTrans::balance(120003);
 //		var_dump($ret);
 		/*		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'; // 可以是公众号的OpenId
