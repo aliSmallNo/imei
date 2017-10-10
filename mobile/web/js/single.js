@@ -807,9 +807,6 @@ require(["layer"],
 				} else {
 					util.comment.hide();
 				}
-				if (util.leftCount < 10 || util.rightCount < 10) {
-					util.commentFlag = 1;
-				}
 			},
 			topup: function () {
 				var util = this;
@@ -872,6 +869,7 @@ require(["layer"],
 							util.reload(1);
 						}*/
 						util.showTip(resp.data.gid, resp.data.left);
+						util.commentFlag = resp.data.commentFlag;
 						setTimeout(function () {
 							util.bot.get(0).scrollIntoView(true);
 						}, 300);

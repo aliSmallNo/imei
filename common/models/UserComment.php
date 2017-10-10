@@ -71,11 +71,43 @@ class UserComment extends ActiveRecord
 	/**
 	 * @param $uid
 	 * 是否评价过他
+	 * $uid =>我
 	 */
 	public static function hasComment($id, $uid)
 	{
 		$one = self::findOne(["cUId" => $id, "cAddedBy" => $uid]);
-		return $one ? 1 : 0;
+		if ($one) {
+			return 1;
+		} else {
+			list($uid1, $uid2) = ChatMsg::sortUId($id, $uid);
+			$conn = AppUtil::db();
+			$sql = "SELECT gId from im_chat_group where gUId1=:uid1 and gUId2=:uid2 and gStatus=:st";
+			$gid = $conn->createCommand($sql)->bindValues([
+				":uid1" => $uid1,
+				":uid2" => $uid2,
+				":st" => ChatMsg::ST_ACTIVE,
+			])->queryScalar();
+			$sql = "SELECT 
+				sum(case when cAddedBy=:uid1 then 1 else 0 end) as co1,
+				sum(case when cAddedBy=:uid2 then 1 else 0 end) as co2
+				from im_chat_msg 
+				where cGId=:gid";
+			$cos = $conn->createCommand($sql)->bindValues([
+				":uid1" => $id,
+				":uid2" => $uid,
+				":gid" => $gid,
+			])->queryOne();
+			$co1 = $co2 = 0;
+			if ($cos) {
+				$co1 = $cos["co1"];
+				$co2 = $cos["co2"];
+			}
+			if ($co1 < 10 || $co2 < 10) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
 	}
 
 }

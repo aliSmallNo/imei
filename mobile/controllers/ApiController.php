@@ -1892,7 +1892,8 @@ class ApiController extends Controller
 					return self::renderAPI(0, '', [
 						'items' => $ret,
 						'gid' => $ret['gid'],
-						'left' => $ret['left']
+						'left' => $ret['left'],
+						'commentFlag' => UserComment::hasComment($receiverId, $uid),// 是否评价一次TA
 					]);
 				}
 				break;
@@ -1993,7 +1994,7 @@ class ApiController extends Controller
 					return self::renderAPI(129, '参数错误');
 				}
 				$res = UserComment::iTems($sid);
-				return self::renderAPI(0, '评论成功', [
+				return self::renderAPI(0, '', [
 					"data" => $res
 				]);
 				break;
