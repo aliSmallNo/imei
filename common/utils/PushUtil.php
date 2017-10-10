@@ -64,7 +64,7 @@ class PushUtil
 	protected static function pushMsg($event, $params, $url = '')
 	{
 
-		if (AppUtil::isDev() || !is_array($params)) {
+		if (!is_array($params)) {
 			return false;
 		}
 		if (!$url) {
