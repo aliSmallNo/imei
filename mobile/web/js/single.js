@@ -576,7 +576,7 @@ require(["layer"],
 						if (resp.code == 0) {
 							util.commentContent.val("");
 							util.commentlist(resp.data);
-							util.reload(0); // 刷新commentFlag状态
+							location.href = "#schat";
 						} else {
 							showMsg(resp.msg);
 						}
