@@ -17,6 +17,7 @@ use common\models\RedpacketList;
 use common\models\RedpacketTrans;
 use common\models\User;
 use common\models\UserAudit;
+use common\models\UserComment;
 use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
@@ -708,7 +709,6 @@ class WxController extends BaseController
 			'avatar' => $avatar,
 			'uInfo' => $uInfo,
 
-
 			'prices' => $prices,
 			'encryptId' => $encryptId,
 			'hint' => $hint,
@@ -722,6 +722,9 @@ class WxController extends BaseController
 			'uni' => $uni,
 			'reasons' => self::$ReportReasons,
 			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
+			'cats' => UserComment::$commentCats,
+			'catDesFirst' => UserComment::$commentCatsDes[100],
+			'catDes' => json_encode(UserComment::$commentCatsDes, JSON_UNESCAPED_UNICODE),
 		]);
 	}
 

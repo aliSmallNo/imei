@@ -124,6 +124,38 @@
     border-radius: 3rem" class="album-delete">删除</a>
 </section>
 <a class="m-schat-shade"></a>
+<section id="scomment" data-title="评价中...">
+	<div class="co-cat">
+		<label>评论类型</label>
+		<select class="co-cat-content1">
+			<option value="">-请选择-</option>
+			{{foreach from=$cats key=k item=cat}}
+			<option value="{{$k}}">{{$cat}}</option>
+			{{/foreach}}
+		</select>
+		<span></span>
+	</div>
+	<div class="co-cat">
+		<label>评论类型详细</label>
+		<select class="co-cat-content2">
+			<option value="">-请选择-</option>
+		</select>
+		<span></span>
+	</div>
+	<div class="co-content">
+		<label>评论内容</label>
+		<textarea rows="3"></textarea>
+	</div>
+	<div class="co-btn">
+		<a href="javascript:;">提交</a>
+	</div>
+	<ul class="co-ul">
+		还没有人对他进行评价哦~
+	</ul>
+</section>
+<style>
+
+</style>
 <section id="schat" data-title="密聊中...">
 	<a href="javascript:;" class="help-chat-icon">
 		<div class="img"><img src="/images/ico_help_chat.png"></div>
@@ -132,7 +164,10 @@
 
 	<div class="report_wrap">
 		<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
-		<ul class="chats"></ul>
+		<ul class="chats">
+
+		</ul>
+		<a class="user-comment" href="javascript:;" style="display: none">匿名评价TA</a>
 	</div>
 	<div class="m-bottom-pl"></div>
 	<div class="m-bottom-bar">
@@ -169,9 +204,7 @@
 	<div class="contacts-wrap" style="position: relative">
 		<a href="javascript:;" class="contacts-edit" data-tag="edit">编辑</a>
 		<div class="contacts"></div>
-		<div>
-
-		</div>
+		<div></div>
 	</div>
 </section>
 <section id="sfeedback" data-title="意见反馈">
@@ -728,6 +761,7 @@
 <input type="hidden" id="cUNI" value="{{$uni}}">
 <script>
 	var mProvinces = {{$provinces}};
+	var catDes = {{$catDes}};
 </script>
 <script type="text/html" id="heightTmp">
 	<div class="m-popup-options col3 clearfix" tag="height">
@@ -1120,7 +1154,15 @@
 	{[/header]}
 	{[/items]}
 </script>
+<script type="text/template" id="comment-list-temp">
+	{[#data]}
+	<li>
+		<p>对{[cat]}的评价：{[cComment]}</p>
+		<span>{[dt]}</span>
+	</li>
+	{[/data]}
+</script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
-<script data-main="/js/single.js?v=1.11.8" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.11.10" src="/assets/js/require.js"></script>
