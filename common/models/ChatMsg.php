@@ -508,7 +508,7 @@ class ChatMsg extends ActiveRecord
 		$limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
 		$strCriteria = ' (u1.uOpenId like \'oYDJew%\' AND u1.uOpenId like \'oYDJew%\') ';
 		if ($isDummy) {
-			$strCriteria = ' NOT ' . $strCriteria;
+			$strCriteria = ' (u1.uOpenId not like \'oYDJew%\' OR u1.uOpenId not like \'oYDJew%\') ';
 		}
 		if ($criteria) {
 			$strCriteria .= ' AND ' . implode(' AND ', $criteria);
