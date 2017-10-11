@@ -178,6 +178,10 @@ require(["layer"],
 					ResumeUtil.reload();
 					FootUtil.toggle(0);
 					break;
+				case 'comments':
+					CommentUtil.reload();
+					FootUtil.toggle(0);
+					break;
 				default:
 					FootUtil.toggle(0);
 					break;
@@ -1747,6 +1751,43 @@ require(["layer"],
 							var html = Mustache.render(util.tmp, resp.data.resume);
 							util.content.html(html);
 							util.av.attr('src', resp.data.resume.avatar);
+						} else {
+							showMsg(resp.msg, 3, 12);
+						}
+						util.loading = 0;
+					}, 'json');
+			}
+		};
+
+		var CommentUtil = {
+			eid: '',
+			loading: 0,
+			tmp: $("#comment-list-temp").html(),
+			content: $('.comments-items'),
+			init: function () {
+				var util = this;
+			},
+			clear: function () {
+				var util = this;
+				util.content.html('');
+				util.loading = 0;
+			},
+			reload: function () {
+				var util = this;
+				if (util.loading) {
+					return false;
+				}
+				util.content.html('');
+				util.loading = 1;
+				$.post('/api/chat',
+					{
+						tag: 'commentlist',
+						sid: ProfileUtil.eid
+					},
+					function (resp) {
+						if (resp.code == 0) {
+							var html = Mustache.render(util.tmp, resp.data);
+							util.content.html(html);
 						} else {
 							showMsg(resp.msg, 3, 12);
 						}

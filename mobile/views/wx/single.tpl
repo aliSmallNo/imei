@@ -240,6 +240,10 @@
 	</div>
 	<ul class="sinfo-items"></ul>
 </section>
+<section id="comments" data-title="评论">
+	<ul class="comments-items co-ul"></ul>
+</section>
+
 <section id="addMeWx">
 	<div class="nav">
 		<a href="#sme">返回</a>
@@ -1137,9 +1141,33 @@
 		<span class="title">内心独白</span>
 		<span class="words">{[intro]}</span>
 	</div>
+	{[#commentFlag]}
+	<a class="mywords arrow-right" href="#comments">
+		<span class="title">用户评价</span>
+		<span class="words">{[comment]}</span>
+	</a>
+	{[/commentFlag]}
 	{[/profile]}
 	<a href="#sreport" class="report btn-report">举报拉黑</a>
 </script>
+<style>
+	a.arrow-right:after {
+		content: " ";
+		display: inline-block;
+		height: .8rem;
+		width: .8rem;
+		border-width: 1px 1px 0 0;
+		border-color: #939393;
+		border-style: solid;
+		-webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+		transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+		position: absolute;
+		top: 50%;
+		right: 0;
+		margin-top: -0.5rem;
+		right: 1.5rem;
+	}
+</style>
 <script type="text/template" id="tpl_sinfo">
 	{[#items]}
 	{[#header]}
@@ -1166,4 +1194,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
-<script data-main="/js/single.js?v=1.11.7" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.11.8" src="/assets/js/require.js"></script>

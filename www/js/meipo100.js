@@ -41,3 +41,34 @@ $(".next").on("click", function () {
 	c();
 	t = setInterval(c, 3000);
 });
+
+//mobile page
+$(document).on("click", ".arraw", function () {
+	var box = $("#pagebox");
+	var dots = $(".dots2");
+	var i = box.attr("data-index");
+	if (i == 4) {
+		i = 0;
+	} else {
+		i++;
+	}
+	box.css({"top": -i * 100 + '%'});
+	dots.find("span").removeClass();
+	dots.find("span[data-i=" + i + "]").addClass("on");
+	box.attr("data-index", i);
+});
+
+$(function () {
+	var h = window.screen.availHeight;
+	var w = window.screen.availWidth;
+	// console.log(w);console.log(h);
+	if (w < 1000) {
+		$(".pcpage").hide();
+		$(".homepage").show();
+		$("html").css("font-size", w / 10 + "px");
+		$(".homepage").css("height", h + "px");
+	} else {
+		$(".pcpage").show();
+		$(".homepage").hide();
+	}
+});

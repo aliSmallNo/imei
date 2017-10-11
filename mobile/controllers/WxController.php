@@ -1658,7 +1658,13 @@ class WxController extends BaseController
 			header('location:/wx/error');
 			exit();
 		}
-		$uid = $wxInfo["uId"];
+		$id = self::getParam("id");
+		if ($id) {
+			$uid = $id;
+		} else {
+			$uid = $wxInfo["uId"];
+		}
+
 		$items = UserComment::iTems($uid);
 		return self::renderPage('comments.tpl',
 			[
