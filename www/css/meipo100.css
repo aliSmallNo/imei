@@ -538,7 +538,7 @@ body, html, a, p, ul, div, h4, h5, h6 {
 }
 
 .homepage .page .content img {
-	width: 5.5rem;
+	width: 4.5rem;
 	height: 8rem;
 	position: absolute;
 	left: .75rem;
@@ -546,7 +546,7 @@ body, html, a, p, ul, div, h4, h5, h6 {
 }
 
 .homepage .page .content {
-	width: 7rem;
+	width: 6rem;
 	height: 10rem;
 	background: url(../images/iPhone@2x.png);
 	-webkit-background-size: 100% 100%;
