@@ -903,11 +903,12 @@ class SiteController extends BaseController
 			$trends = [];
 		}
 		if (!$trends) {
-			$records = 15;
 			$trends = [];
+			$counts = [30, 12, 12];
 			$steps = ['day', 'week', 'month'];
 			foreach ($steps as $idx => $step) {
-				for ($k = $records; $k > -1; $k--) {
+				$cnt = $counts[$idx];
+				for ($k = $cnt; $k > -1; $k--) {
 					$dt = date('Y-m-d', strtotime(-$k . " " . $step));
 					switch ($step) {
 						case 'day':
