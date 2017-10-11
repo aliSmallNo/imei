@@ -505,11 +505,10 @@ class ChatMsg extends ActiveRecord
 
 	public static function items($isDummy = false, $criteria, $params = [], $page = 1, $pageSize = 20)
 	{
-		$limit = "limit " . ($page - 1) * $pageSize . "," . $pageSize;
-		$st = User::STATUS_DUMMY;
-		$strCriteria = ' and u1.uStatus !=8 and u2.uStatus !=8 ';
+		$limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
+		$strCriteria = ' (u1.uOpenId like \'oYDJew%\' AND u1.uOpenId like \'oYDJew%\') ';
 		if ($isDummy) {
-			$strCriteria = ' and (u1.uStatus =8 or u2.uStatus =8) ';
+			$strCriteria = ' NOT ' . $strCriteria;
 		}
 		if ($criteria) {
 			$strCriteria .= ' AND ' . implode(' AND ', $criteria);
@@ -520,12 +519,12 @@ class ChatMsg extends ActiveRecord
 			 u2.uName as name2,u2.uPhone as phone2,u2.uThumb as avatar2,u2.uId as id2,u2.uUniqid as uni2,
 			 COUNT(case when m2.cAddedBy=g.gUId1 then 1 end) as cnt1,
  			 COUNT(case when m2.cAddedBy=g.gUId2 then 1 end) as cnt2 
-			 from im_chat_group as g 
+			 FROM im_chat_group as g 
 			 JOIN im_chat_msg as m on g.gId=m.cGId and g.gLastCId=m.cId 
 			 JOIN im_chat_msg as m2 on g.gId=m2.cGId
 			 JOIN im_user as u1 on u1.uId=g.gUId1 
 			 JOIN im_user as u2 on u2.uId=g.gUId2 
-			 WHERE g.gId>0 ' . $strCriteria . ' GROUP BY g.gId
+			 WHERE ' . $strCriteria . ' GROUP BY g.gId
 			 order by g.gUpdatedOn desc ' . $limit;
 
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
@@ -549,11 +548,11 @@ class ChatMsg extends ActiveRecord
 		}
 
 		$sql = "select count(DISTINCT gId) from im_chat_group as g
-			  JOIN im_chat_msg as m on g.gId=m.cGId and g.gLastCId=m.cId 
-			 JOIN im_chat_msg as m2 on g.gId=m2.cGId
-			 JOIN im_user as u1 on u1.uId=g.gUId1 
-			 JOIN im_user as u2 on u2.uId=g.gUId2 
-			 WHERE g.gId>0 " . $strCriteria;
+				JOIN im_chat_msg as m on g.gId=m.cGId and g.gLastCId=m.cId 
+			 	JOIN im_chat_msg as m2 on g.gId=m2.cGId
+			 	JOIN im_user as u1 on u1.uId=g.gUId1 
+			 	JOIN im_user as u2 on u2.uId=g.gUId2 
+			 	WHERE " . $strCriteria;
 		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
 		return [$res, $count];
 	}
