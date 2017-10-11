@@ -551,7 +551,7 @@ body, html, a, p, ul, div, h4, h5, h6 {
 	background: url(../images/iPhone@2x.png);
 	-webkit-background-size: 100% 100%;
 	background-size: 100% 100%;
-	margin: 1.33333333rem auto 0;
+	margin: .5rem auto 0;
 	position: relative;
 }
 
