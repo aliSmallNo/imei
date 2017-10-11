@@ -171,6 +171,11 @@ class Menu
 						"level" => 820
 					],
 					[
+						"name" => "评价审核",
+						"url" => "/site/comments",
+						"level" => 820
+					],
+					[
 						"name" => "实名认证",
 						"url" => "/site/cert",
 						"level" => 820

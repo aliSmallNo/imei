@@ -9,6 +9,7 @@
 namespace common\models;
 
 
+use admin\models\Admin;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use yii\db\ActiveRecord;
@@ -51,6 +52,22 @@ class UserComment extends ActiveRecord
 		}
 		$entity->save();
 		return true;
+	}
+
+	public static function edit($id, $data)
+	{
+		if (!$id || !$data) {
+			return 0;
+		}
+		$entity = self::findOne(["cId" => $id]);
+		if (!$entity) {
+			return 0;
+		}
+		foreach ($data as $k => $v) {
+			$entity->$k = $v;
+		}
+		$entity->save();
+		return $entity->cId;
 	}
 
 	public static function iTems($uid)
@@ -147,4 +164,19 @@ class UserComment extends ActiveRecord
 		}
 	}
 
+	public static function commentVerify($id, $flag = "pass")
+	{
+		$res = 0;
+		switch ($flag) {
+			case "pass":
+				$res = self::edit($id, [
+					"cStatus" => self::ST_PASS,
+					"cStatusDate" => date("Y-m-d H:i:s"),
+					"cUpdatedOn" => date("Y-m-d H:i:s"),
+					"cUpdatedBy" => Admin::getAdminId(),
+				]);
+				break;
+		}
+		return $res;
+	}
 }
