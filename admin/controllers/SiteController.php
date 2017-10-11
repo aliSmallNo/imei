@@ -904,11 +904,12 @@ class SiteController extends BaseController
 			$trends = [];
 		}
 		if (!$trends) {
-			$records = 15;
 			$trends = [];
+			$counts = [30, 12, 12];
 			$steps = ['day', 'week', 'month'];
 			foreach ($steps as $idx => $step) {
-				for ($k = $records; $k > -1; $k--) {
+				$cnt = $counts[$idx];
+				for ($k = $cnt; $k > -1; $k--) {
 					$dt = date('Y-m-d', strtotime(-$k . " " . $step));
 					switch ($step) {
 						case 'day':
@@ -1040,17 +1041,18 @@ class SiteController extends BaseController
 	public function actionUserstat()
 	{
 		$StatusColors = [
-			0 => "#0D47A1",
-			1 => "#1565C0",
-			2 => "#1E88E5",
-			3 => "#2196F3",
-			4 => "#42A5F5",
-			5 => "#64B5F6",
-			6 => "#90CAF9",
-			7 => "#BBDEFB",
-			8 => '#E3F2FD',
-			9 => '#9e9e9e',
-			10 => '#e0e0e0',
+			0 => "#222222",
+			1 => "#0E47A1",
+			2 => "#1565C0",
+			3 => "#1E88E5",
+			4 => "#2196F3",
+			5 => "#42A5F5",
+			6 => "#64B5F6",
+			7 => "#90CAF9",
+			8 => "#BBDEFB",
+			9 => '#E3F2FD',
+			10 => '#9e9e9e',
+			11 => '#e0e0e0',
 		];
 		list($wd, $monday, $sunday) = AppUtil::getWeekInfo();
 		list($md, $firstDay, $endDay) = AppUtil::getMonthInfo();

@@ -91,7 +91,7 @@
 		var items = [], names = [], fields = [];
 		switch (cat) {
 			case 'new':
-				names = ["到访", "游客", "关注", "取消关注", "转化率", "会员", "媒婆", "帅哥", "美女"];
+				names = ["到访", "游客", "关注", "取关", "转化率", "会员", "媒婆", "帅哥", "美女"];
 				fields = ["reg", "nvisitor", "focus", "todayblur", "focusRate", "newmember", "mps", "male", "female"];
 				break;
 			case 'net':
