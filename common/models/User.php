@@ -209,6 +209,8 @@ class User extends ActiveRecord
 		self::STATUS_DELETE => "已删除",
 	];
 
+	const STATUS_XCX = 100;
+
 	static $StatusVisible = [
 		self::STATUS_PENDING,
 		self::STATUS_ACTIVE
@@ -412,6 +414,7 @@ class User extends ActiveRecord
 		$entity->uAddedBy = $editBy;
 		$entity->uUpdatedBy = $editBy;
 		$entity->uOpenId = "";
+		$entity->uStatus = User::STATUS_XCX;
 		$entity->uUnionId = $openId;
 		$entity->uUniqid = uniqid();
 		$entity->uName = $wxInfo['nickname'];

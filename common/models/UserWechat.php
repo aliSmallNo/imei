@@ -414,6 +414,7 @@ class UserWechat extends ActiveRecord
 				"wXcxId" => (isset($rawData["openId"]) && $rawData["openId"]) ? $rawData["openId"] : '',
 				"wUnionId" => "",
 				"wUId" => $uid,
+				"wRawData" => json_encode($rawData,JSON_UNESCAPED_UNICODE),
 			];
 			$wid = UserWechat::add($wInfo);
 			$winfo = self::findOne(["wId" => $wid]);
