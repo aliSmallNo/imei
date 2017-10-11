@@ -23,6 +23,16 @@
 		font-size: 10px;
 		color: #999;
 	}
+
+	.m-loc {
+		display: flex;
+	}
+
+	.m-loc select {
+		flex: 1;
+		padding: 0;
+		margin-right: 1px;
+	}
 </style>
 <div class="row">
 	<div class="col-sm-6">
@@ -157,23 +167,19 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-4 control-label">您的位置:</label>
-				<div class="col-sm-8">
-					<div class="col-sm-4" style="padding: 0">
-						<select data-location="uLocation-p" class="form-control">
-							<option value="">请选择</option>
-						</select>
-					</div>
-					<div class="col-sm-4" style="padding: 0">
-						<select data-location="uLocation-c" class="form-control">
-							<option value="">请选择</option>
-						</select>
-					</div>
-					<div class="col-sm-4" style="padding: 0">
-						<select data-location="uLocation-d" class="form-control">
-							<option value="">请选择</option>
-						</select>
-					</div>
+				<label class="col-sm-4 control-label">所在城市:</label>
+				<div class="col-sm-8 m-loc" data-key="uLocation">
+					<select class="form-control m-province"></select>
+					<select class="form-control m-city"></select>
+					<select class="form-control m-district"></select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">你的籍贯:</label>
+				<div class="col-sm-8 m-loc" data-key="uHomeland">
+					<select class="form-control m-province"></select>
+					<select class="form-control m-city"></select>
+					<select class="form-control m-district"></select>
 				</div>
 			</div>
 			<div class="form-group">
@@ -345,13 +351,13 @@
 			<div class="form-group">
 				<label class="col-sm-4 control-label">你的兴趣爱好:</label>
 				<div class="col-sm-8">
-					<textarea data-tag="uInterest" required class="form-control" placeholder="(必填)"></textarea>
+					<textarea data-tag="uInterest" class="form-control"></textarea>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-4 control-label">您的内心独白:</label>
 				<div class="col-sm-8">
-					<textarea data-tag="uIntro" required class="form-control" placeholder="(必填)"></textarea>
+					<textarea data-tag="uIntro" class="form-control"></textarea>
 				</div>
 			</div>
 			<div class="form-group">
@@ -375,15 +381,10 @@
 <script>
 	var mProvinces = {{$provinces}};
 	var userInfo = {{$userInfo}};
-	var mprofessions = {{$professions}};
-</script>
-<script>
+	var mProfessions = {{$professions}};
+	var mLocationTmp = '<option value="">请选择</option>{[#items]}<option value="{[key]}">{[name]}</option>{[/items]}';
+
 	var $sls = {
-		mProvincesObj: $("[data-location=uLocation-p]"),
-		mcityObj: $("[data-location=uLocation-c]"),
-		mcityVal: null,
-		district: $('[data-location=uLocation-d]'),
-		districtVal: '',
 		job: "",
 		role: userInfo && userInfo.uRole ? userInfo.uRole : 10
 	};
@@ -392,7 +393,8 @@
 		"uName": "呢称",
 		"uInterest": "兴趣爱好",
 		"uIntro": "内心独白",
-		"uLocation": "您的位置",
+		"uLocation": "所在城市",
+		"uHomeland": "你的籍贯",
 		"uGender": "性别",
 		"uBirthYear": "出生年份",
 		"uHoros": "星座",
@@ -428,9 +430,9 @@
 				return false;
 			}
 			postData[field] = val;
-		})
+		});
 		if (err.length > 0) {
-			return;
+			return false;
 		}
 
 		if (!$(".inputFile").val() &&
@@ -438,24 +440,27 @@
 			layer.msg("还没上传头像哦~");
 		}
 
-		var location = [];
-		$("[data-location]").each(function () {
-			var self = $(this).find("option:selected");
-			var key = self.val();
-			var text = self.text();
-			var item = {
-				key: key,
-				text: text
-			};
-			location.push(item)
+		$(".m-loc").each(function () {
+			var self = $(this);
+			var field = self.attr('data-key');
+			var opts = self.find("select");
+			var location = [];
+			for (var m = 0; m < opts.length; m++) {
+				var opt = opts.eq(m);
+				console.log(opt);
+				if (opt.val()) {
+					location.push({
+						key: opt.val(),
+						text: opt.find("option:selected").text()
+					});
+				}
+				if ($sls.role == 10 && m < 2 && !opt.val()) {
+					layer.msg(fieldsText[field] + "还没填写哦");
+					return false;
+				}
+			}
+			postData[field] = JSON.stringify(location);
 		});
-		if ($sls.mcityObj.find("option:selected").text() == "请选择" && $sls.role == 10) {
-			layer.msg(fieldsText["uLocation"] + "还没填写哦");
-			return;
-		}
-		postData["uLocation"] = JSON.stringify(location);
-
-		console.log(postData);
 		$("#postData").val(JSON.stringify(postData));
 		$("form").submit();
 	});
@@ -467,93 +472,109 @@
 
 	function changeScope(val) {
 		var items = [];
-		for (var i = 0; i < mprofessions[val].length; i++) {
+		for (var i = 0; i < mProfessions[val].length; i++) {
 			var item = {
-				key: i, name: mprofessions[val][i]
+				key: i, name: mProfessions[val][i]
 			};
 			items.push(item);
 		}
 		var profObj = $("[data-tag=uProfession]");
 		profObj.html('<option value="">请选择</option>');
 		profObj.append(Mustache.render('{[#items]}<option value="{[key]}">{[name]}</option>{[/items]}',{items:items}));
-		if ($sls.job != "" || $sls.job) {
+		if ($sls.job != '' || $sls.job) {
 			profObj.val($sls.job);
 		}
 	}
+
+	$(document).on('change', '.m-province', function () {
+		var self = $(this);
+		var cityOpt = self.closest('.m-loc').find('.m-city');
+		var pid = self.find("option:selected").val();
+		$.post('/api/config', {
+			tag: 'city',
+			id: pid
+		}, function (resp) {
+			if (resp.code == 0) {
+				cityOpt.html(Mustache.render(mLocationTmp, resp.data));
+				var val = cityOpt.attr('data-val');
+				if (val) {
+					cityOpt.val(val);
+					cityOpt.trigger('change');
+					cityOpt.removeAttr('data-val');
+				}
+			}
+		}, 'json');
+	});
+
+	$(document).on('change', '.m-city', function () {
+		var self = $(this);
+		var districtOpt = self.closest('.m-loc').find('.m-district');
+		var pid = self.find("option:selected").val();
+		$.post('/api/config', {
+			tag: 'district',
+			id: pid
+		}, function (resp) {
+			if (resp.code == 0) {
+				districtOpt.html(Mustache.render(mLocationTmp, resp.data));
+				var val = districtOpt.attr('data-val');
+				if (val) {
+					districtOpt.val(val);
+					districtOpt.removeAttr('data-val');
+				}
+			}
+		}, 'json');
+	});
 
 	$(function () {
 		if ($('.alert-success').length > 0) {
 			setTimeout(function () {
 				location.href = "/site/accounts";
-			}, 1000);
+			}, 800);
 		}
 
-		var optionTmp = '{[#items]}<option value="{[key]}">{[name]}</option>{[/items]}'
-		var html = Mustache.render(optionTmp, {items: mProvinces});
-		$sls.mProvincesObj.html(html);
-		$sls.mProvincesObj.change(function () {
-			var pid = $sls.mProvincesObj.find("option:selected").val();
-			$.post('/api/config', {
-				tag: 'city',
-				id: pid
-			}, function (resp) {
-				if (resp.code == 0) {
-					$sls.mcityObj.html(Mustache.render(optionTmp, resp.data));
-					if ($sls.mcityVal) {
-						$sls.mcityObj.val($sls.mcityVal);
-						if ($sls.mcityVal) {
-							$sls.mcityObj.trigger("change");
-						}
-					}
-				}
-			}, 'json');
-		});
+		var html = Mustache.render(mLocationTmp, {items: mProvinces});
+		$('.m-province').html(html);
 
-		$sls.mcityObj.change(function () {
-			var pid = $sls.mcityObj.find("option:selected").val();
-			$.post('/api/config', {
-				tag: 'district',
-				id: pid
-			}, function (resp) {
-				if (resp.code == 0) {
-					$sls.district.html(Mustache.render(optionTmp, resp.data));
-					if ($sls.districtVal) {
-						$sls.district.val($sls.districtVal)
-					}
-				}
-			}, 'json');
-		});
-
-		console.log(userInfo);
-		// 赋默认值
 		$.each(userInfo, function (k, v) {
-			// console.log(k);
-			if (k == "uLocation" && v) {
-				var location = JSON.parse(v);
-				$sls.mProvincesObj.val(parseInt(location[0].key));
-				$sls.mProvincesObj.trigger("change");
-				$sls.mcityVal = parseInt(location[1].key);
-				if (location.length > 2) {
-					$sls.districtVal = parseInt(location[2].key);
-				}
-			} else if (k == "uAvatar") {
-				$(".o-images").html('<li><img src="' + v + '"></li>');
-			} else if (k == "uScope") {
-				$("[data-tag=" + k + "]").val(v);
-				console.log(k);
-				console.log(v);
-				if (v) {
-					changeScope(v);
-				}
-
-			} else if (k == "uProfession") {
-				$sls.job = v;
-				$("[data-tag=uProfession]").val(v);
-			} else {
-				$("[data-tag=" + k + "]").val(v);
+			switch (k) {
+				case 'uLocation':
+				case 'uHomeland':
+					if (!v) {
+						return true;
+					}
+					var location = JSON.parse(v);
+					console.log(location);
+					var bar = $('[data-key=' + k + ']');
+					var provOpt = bar.find('.m-province');
+					var cityOpt = bar.find('.m-city');
+					var districtOpt = bar.find('.m-district');
+					provOpt.val($.trim(location[0].key));
+					provOpt.trigger("change");
+					cityOpt.attr('data-val', $.trim(location[1].key));
+					if (location.length > 2) {
+						districtOpt.attr('data-val', $.trim(location[2].key));
+					}
+					break;
+				case 'uAvatar':
+					$(".o-images").html('<li><img src="' + v + '"></li>');
+					break;
+				case 'uScope':
+					$("[data-tag=" + k + "]").val(v);
+					if (v) {
+						changeScope(v);
+					}
+					break;
+				case 'uProfession':
+					$sls.job = v;
+					$("[data-tag=uProfession]").val(v);
+					break;
+				default:
+					$("[data-tag=" + k + "]").val(v);
+					break;
 			}
-		})
-	})
+		});
+
+	});
 
 </script>
 {{include file="layouts/footer.tpl"}}
