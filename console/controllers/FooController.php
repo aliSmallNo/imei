@@ -10,16 +10,13 @@ namespace console\controllers;
  */
 use common\models\ChatMsg;
 use common\models\Pin;
-use common\models\RedpacketTrans;
 use common\models\User;
-use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\PushUtil;
-use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -480,11 +477,13 @@ class FooController extends Controller
 //			$msg = '哇，才几个小时，微媒100上又有3个' . $gender . '对你怦然心动了，距你最近的才800米';
 			//$msg = '邀请新用户最高可领50元红包！每邀请3名身边单身好友注册成功，就可获得10元红包，最高可获得50元奖励哦！参与活动，请点击公众号主菜单-更多-官方活动 分享朋友圈吧！';
 			$msg = '10月2日微媒100东台用户同城趴，吃饭K歌两不误，男A女免，帅哥美女报名方式：公众号留言“东台活动”，届时会有组织者与你联系';
-			QueueUtil::loadJob('sendSMS', [
-				'phone' => $phone,
-				'msg' => $msg,
-				'rnd' => 106
-			]);
+			QueueUtil::loadJob('sendSMS',
+				[
+					'phone' => $phone,
+					'msg' => $msg,
+					'rnd' => 106
+				],
+				QueueUtil::QUEUE_TUBE_SMS);
 		}
 		var_dump(count($ret));
 	}

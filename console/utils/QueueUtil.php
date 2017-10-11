@@ -18,6 +18,8 @@ use yii\base\Exception;
 class QueueUtil
 {
 	const QUEUE_TUBE = 'imei';
+	const QUEUE_TUBE_SMS = 'sms_imei';
+
 	public static $QueueConfig = [
 		'persistent' => false,
 		'host' => '127.0.0.1',
