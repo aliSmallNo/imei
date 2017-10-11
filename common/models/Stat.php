@@ -81,7 +81,8 @@ class Stat extends ActiveRecord
 		if ($uid) {
 			$strCriteria = ' AND uId=' . $uid;
 		}
-		$sql = "SELECT uId,uName,uAddedOn FROM im_user WHERE uStatus<8 $strCriteria order by uId ASC";
+		$sql = "SELECT uId,uName,uAddedOn FROM im_user 
+				WHERE uOpenId like 'oYDJew%' AND uStatus<8 $strCriteria order by uId ASC";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$time = strtotime(date("Y-m-d 23:59:00"));
 		foreach ($ret as $item) {
