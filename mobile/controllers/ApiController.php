@@ -1276,7 +1276,7 @@ class ApiController extends Controller
 				break;
 			case 'xcxrecharge'://小程序支付
 				$amtYuan = self::postParam('amt'); // 单位人民币元
-				$title = '趣红包-充值';
+				$title = '趣发包-充值';
 				$subTitle = '充值' . $amtYuan . '元';
 				//$payId = Pay::prepay($uid, $amt * 10.0, $amt * 100, Pay::CAT_REDPACKET);
 				$amtFen = $amtYuan * 100;

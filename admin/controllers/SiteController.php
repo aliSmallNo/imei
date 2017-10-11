@@ -20,6 +20,7 @@ use common\models\Trace;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserBuzz;
+use common\models\UserComment;
 use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserTrans;
@@ -989,6 +990,34 @@ class SiteController extends BaseController
 		);
 	}
 
+
+	public function actionComments()
+	{
+		$getInfo = Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+		$condition = $params = [];
+		if ($name) {
+			$condition[] = '(u1.uName like :name or u2.uName like :name)';
+			$params[':name'] = '%' . $name . '%';
+		}
+		if ($phone) {
+			$condition[] = '(u1.uPhone like :phone or u2.uPhone like :phone)';
+			$params[':phone'] = $phone . '%';
+		}
+		list($list, $count) = UserComment::clist($condition, $params, $page);
+		$pagination = self::pagination($page, $count);
+		return $this->renderPage("comments.tpl",
+			[
+				'getInfo' => $getInfo,
+				'pagination' => $pagination,
+				'category' => 'data',
+				'list' => $list
+			]
+		);
+	}
+
 	public function actionChatdes()
 	{
 		$gid = self::getParam("gid");
@@ -1407,5 +1436,6 @@ class SiteController extends BaseController
 			]
 		);
 	}
+
 
 }

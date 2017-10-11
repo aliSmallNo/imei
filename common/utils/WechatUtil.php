@@ -18,6 +18,7 @@ use common\models\UserMsg;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use WXBizDataCrypt;
+use WxPayConfig;
 use Yii;
 
 require_once __DIR__ . '/../lib/WxPay/WxPay.Config.php';
@@ -29,8 +30,6 @@ class WechatUtil
 {
 
 	const ACCESS_CODE = "N8JoVKwSNP5irhG2d19w";
-	const XCX_APP_ID = "wx1aa5e80d0066c1d7";
-	const XCX_APP_SECRET = "981d82a2eddf8e31ddd45e70020848f9";
 
 	const NOTICE_REWARD_NEW = 'notice_reward_new';
 	const NOTICE_DECLINE = 'notice_decline';
@@ -58,7 +57,7 @@ class WechatUtil
 //		$sessionKey = "dzwrkrMzko64Tw8pqomccg==";
 //		$encryptedData = "fgYb6c8JaGS73RYUp2BVbqwVkQRsbd9+zUMhQ2pS1QlY0lKU2zl+HJdPE6N3qD5PuDHi7kJAjRkrTQXbebpRrLZFWQZNAnlk7nDr5ohL/5zOUdnhT0K+3Uo9P+VTjdEjxLkhnIS4CrpXpXTtGgLubRmhIcy044nad8NlA2Z1HfFfGObHWduqtUZoYjZjeVDTQy+gOL1Ws36kJGhB2MNSlguExEUY75FQ8Yy6CAgAomIK8oS/mZNwTM4cloLTokslGcfMS6d8cR+ZnHL6KWVRjEpwqSzkOiH0effa/Nsgb8b3HdHJRCK1KBsLlMMkprrZWKlNCdlVF6RoysfK2Hs8MJOa9bXovFtUaH53NMXlQDiJnTayUMRRSiISfQHOLlTKHTrBqhzi93e5Zz/cmSvI9BfmCd6vnUJfyxxHErE+XOyRBjUj59GH0cuNR6XZWHqE0EkJdlwSOfRbxzE7f34lDiKOUWCMk6WBlVAbpaJnXPM=";
 //		$iv = "RmFUu1s3xRWwntY8Dw5TDQ==";
-		$appid = self::XCX_APP_ID;
+		$appid = WxPayConfig::X_APPID;
 		$pc = new WXBizDataCrypt($appid, $sessionKey);
 		$errCode = $pc->decryptData($encryptedData, $iv, $data);
 
@@ -76,8 +75,8 @@ class WechatUtil
 	 */
 	public static function getXcxSessionKey($code)
 	{
-		$appid = self::XCX_APP_ID;
-		$app_session = self::XCX_APP_SECRET;
+		$appid = WxPayConfig::X_APPID;
+		$app_session = WxPayConfig::X_APPSECRET;
 		$url = "https://api.weixin.qq.com/sns/jscode2session?appid=$appid&secret=$app_session&js_code=$code&grant_type=authorization_code";
 		return AppUtil::httpGet($url);
 	}
@@ -477,7 +476,7 @@ class WechatUtil
 	}
 
 	//Rain: 趣红包支付
-	public static function jsPrepayQhb($payId, $openId, $amt, $title = '趣红包-支付', $subTitle = '支付详情(略)')
+	public static function jsPrepayQhb($payId, $openId, $amt, $title = '趣发包-支付', $subTitle = '支付详情(略)')
 	{
 		return self::jsPrepay($payId, $openId, $amt, $title, $subTitle, true, 'qhb');
 	}

@@ -10,6 +10,7 @@ namespace common\models;
 
 
 use common\utils\AppUtil;
+use common\utils\ImageUtil;
 use yii\db\ActiveRecord;
 
 class UserComment extends ActiveRecord
@@ -66,6 +67,42 @@ class UserComment extends ActiveRecord
 			}
 		}
 		return $res;
+	}
+
+	public static function clist($criteria, $params = [], $page = 1, $pageSize = 20)
+	{
+		$limit = "limit " . ($page - 1) * $pageSize . "," . $pageSize;
+
+		$strCriteria = '';
+
+		if ($criteria) {
+			$strCriteria .= ' AND ' . implode(' AND ', $criteria);
+		}
+		$conn = AppUtil::db();
+		$sql = 'select c.*,
+			 u1.uName as name1,u1.uPhone as phone1,u1.uThumb as avatar1,u1.uId as id1,
+			 u2.uName as name2,u2.uPhone as phone2,u2.uThumb as avatar2,u2.uId as id2
+			 from im_user_comment as c
+			 JOIN im_user as u1 on u1.uId=c.cUId 
+			 JOIN im_user as u2 on u2.uId=c.cAddedBy 
+			 WHERE c.cId>0 ' . $strCriteria . '
+			 order by cAddedOn desc ' . $limit;
+
+		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		foreach ($res as $k => $row) {
+			$res[$k]['avatar1'] = ImageUtil::getItemImages($row['avatar1'])[0];
+			$res[$k]['avatar2'] = ImageUtil::getItemImages($row['avatar2'])[0];
+			$res[$k]['dt'] = AppUtil::prettyDate($row['cAddedOn']);
+			$res[$k]['cat'] = self::$commentCats[$row['cCategory']];
+
+		}
+
+		$sql = "select count(cId) from im_user_comment as c
+			 JOIN im_user as u1 on u1.uId=c.cUId 
+			 JOIN im_user as u2 on u2.uId=c.cAddedBy 
+			 WHERE c.cId>0 " . $strCriteria;
+		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
+		return [$res, $count];
 	}
 
 	/**
