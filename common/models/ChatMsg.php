@@ -506,9 +506,9 @@ class ChatMsg extends ActiveRecord
 	public static function items($isDummy = false, $criteria, $params = [], $page = 1, $pageSize = 20)
 	{
 		$limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
-		$strCriteria = ' (u1.uOpenId like \'oYDJew%\' AND u1.uOpenId like \'oYDJew%\') ';
+		$strCriteria = ' (u1.uOpenId like \'oYDJew%\' AND u2.uOpenId like \'oYDJew%\') ';
 		if ($isDummy) {
-			$strCriteria = ' (u1.uOpenId not like \'oYDJew%\' OR u1.uOpenId not like \'oYDJew%\') ';
+			$strCriteria = ' (u1.uOpenId not like \'oYDJew%\' OR u2.uOpenId not like \'oYDJew%\') ';
 		}
 		if ($criteria) {
 			$strCriteria .= ' AND ' . implode(' AND ', $criteria);
