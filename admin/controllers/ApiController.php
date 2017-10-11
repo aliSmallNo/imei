@@ -24,8 +24,6 @@ use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\PushUtil;
 use common\utils\WechatUtil;
-use dosamigos\qrcode\QrCode;
-use Gregwar\Image\Image;
 use Yii;
 use yii\filters\Cors;
 use yii\helpers\ArrayHelper;

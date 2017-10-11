@@ -572,6 +572,8 @@ class ImageUtil
 			$figureObj->save($fileNormal);
 			$figure = self::getUrl($fileNormal);
 			//unlink($fileName);
+			$thumbObj = null;
+			$figureObj = null;
 			return [$thumb, $figure];
 		}
 	}
