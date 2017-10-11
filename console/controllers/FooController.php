@@ -615,7 +615,8 @@ class FooController extends Controller
 		//echo BaiduUtil::postVoice('https://img.meipo100.com/voice/2017/97/130532.wav');
 		//echo WechatUtil::XCXaccessToken();
 		//WechatUtil::XCXTempMsg(120003);
-		echo RedpacketTrans::cashTimes(120003);
+		//echo RedpacketTrans::cashTimes(120003);
+
 
 	}
 
