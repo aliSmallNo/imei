@@ -403,8 +403,8 @@ class User extends ActiveRecord
 
 	public static function addWXByUnionId($wxInfo, $editBy = 1)
 	{
-		$unionid = $wxInfo['unionid'];
-		$entity = self::findOne(['uUnionId' => $unionid]);
+		$openId = $wxInfo['unionid'];
+		$entity = self::findOne(['uUnionId' => $openId]);
 		if ($entity) {
 			return $entity->uId;
 		}
@@ -412,7 +412,7 @@ class User extends ActiveRecord
 		$entity->uAddedBy = $editBy;
 		$entity->uUpdatedBy = $editBy;
 		$entity->uOpenId = "";
-		$entity->uUnionId = $unionid;
+		$entity->uUnionId = $openId;
 		$entity->uUniqid = uniqid();
 		$entity->uName = $wxInfo['nickname'];
 		list($thumb, $figure) = ImageUtil::save2Server($wxInfo['headimgurl'], false);

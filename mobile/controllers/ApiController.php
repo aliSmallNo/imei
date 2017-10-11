@@ -1224,8 +1224,8 @@ class ApiController extends Controller
 				];
 				*/
 				$data["xcxopenid"] = $XcxOpneid;
-				$unionId = (isset($rawData["unionId"]) && $rawData["unionId"]) ? $rawData["unionId"] : '';
-				$info = UserWechat::findOne(["wUnionId" => $unionId]);
+				$XcxOpneid = (isset($rawData["openId"]) && $rawData["openId"]) ? $rawData["openId"] : '';
+				$info = UserWechat::findOne(["wXcxId" => $XcxOpneid]);
 
 				$newLog = [
 					"oCategory" => "qfc",
@@ -1237,14 +1237,9 @@ class ApiController extends Controller
 				];
 				Log::add($newLog);
 
-				if ($unionId && $info) {
-					if (!$info->wXcxId) { // 存小程序 openID 到 UserWechat 表
-						$xcxOpenid = isset($rawData["openId"]) ? $rawData["openId"] : "";
-						$data["xcxopenid"] = $xcxOpenid;
-						$info->wXcxId = $xcxOpenid;
-						$info->save();
-					}
-				} else if ($unionId && $rawData) {
+				if ($info) {
+
+				} else if (!$info && $rawData) {
 					$info = UserWechat::addXcxUser($rawData);
 					$data["xcxopenid"] = $rawData["openId"];
 				}
