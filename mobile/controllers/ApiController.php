@@ -389,6 +389,9 @@ class ApiController extends Controller
 					return self::renderAPI(129, '用户不存在~');
 				}
 				$uInfo['favored'] = UserNet::hasFavor($wxInfo['uId'], $id) ? 1 : 0;
+				$comment = UserComment::hasCommentOne($id);
+				$uInfo['commentFlag'] = $comment ? 1 : 0;
+				$uInfo['comment'] = $comment;
 				return self::renderAPI(0, '', [
 					'profile' => $uInfo
 				]);

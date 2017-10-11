@@ -164,6 +164,20 @@ class UserComment extends ActiveRecord
 		}
 	}
 
+	public static function hasCommentOne($id)
+	{
+		$text = '';
+		$sql = "select * from im_user_comment where cUId=:uid and cStatus=:st order by cId desc limit 1";
+		$res = AppUtil::db()->createCommand($sql)->bindValues([
+			":uid" => $id,
+			":st" => self::ST_PASS,
+		])->queryOne();
+		if ($res) {
+			$text = $res["cComment"];
+		}
+		return $text;
+	}
+
 	public static function commentVerify($id, $flag = "pass")
 	{
 		$res = 0;
