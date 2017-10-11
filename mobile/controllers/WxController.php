@@ -1650,7 +1650,7 @@ class WxController extends BaseController
 			'bg-lot2');
 	}
 
-	public function actionRedpacket()
+	public function actionComments()
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
@@ -1659,36 +1659,15 @@ class WxController extends BaseController
 			exit();
 		}
 		$uid = $wxInfo["uId"];
-		$remain = RedpacketTrans::balance($uid);
-		echo $remain;
-		exit();
-		return self::renderPage('redpacket.tpl',
+		$items = UserComment::iTems($uid);
+		return self::renderPage('comments.tpl',
 			[
-				"remain" => $remain,
+				"items" => $items,
+				"nomore" => $items ? "block" : "none",
 			],
 			'terse',
-			"语音红包",
-			'bg-redpacket');
+			"我的评论",
+			'comment-bg');
 	}
 
-	public function actionGraplist()
-	{
-		$openId = self::$WX_OpenId;
-		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		if (!$wxInfo) {
-			header('location:/wx/error');
-			exit();
-		}
-		$rid = self::getParam("id");
-		//$rInfo = Redpacket::findOne(["rId" => $rid]);
-		//$list = RedpacketList::items(["dRId" => $rid]);
-		$uid = $wxInfo["uId"];
-		return self::renderPage('graplist.tpl',
-			[
-				//"list" => $list,
-			],
-			'terse',
-			"语音红包",
-			'bg-graplist');
-	}
 }

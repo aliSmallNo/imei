@@ -76,6 +76,7 @@
 			<!--a href="#addMeWx" id="pending_applications" ><span class="title">加我微信的人</span> </a>
 			<a href="#IaddWx"><span class="title">我加微信的人</span> </a-->
 			<a href="#sfav"><span class="title">心动列表</span> <i class="i-mark-favor"></i></a>
+			<a href="/wx/comments"><span class="title">对我的评论</span></a>
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">我的账户</span> <i class="i-mark-rose"></i></a>
 			<a href="/wx/mshare"><span class="title">分享给朋友</span></a>
 			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span

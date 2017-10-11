@@ -209,6 +209,8 @@ class User extends ActiveRecord
 		self::STATUS_DELETE => "已删除",
 	];
 
+	const STATUS_XCX = 100;
+
 	static $StatusVisible = [
 		self::STATUS_PENDING,
 		self::STATUS_ACTIVE
@@ -403,8 +405,8 @@ class User extends ActiveRecord
 
 	public static function addWXByUnionId($wxInfo, $editBy = 1)
 	{
-		$unionid = $wxInfo['unionid'];
-		$entity = self::findOne(['uUnionId' => $unionid]);
+		$openId = $wxInfo['unionid'];
+		$entity = self::findOne(['uUnionId' => $openId]);
 		if ($entity) {
 			return $entity->uId;
 		}
@@ -412,7 +414,8 @@ class User extends ActiveRecord
 		$entity->uAddedBy = $editBy;
 		$entity->uUpdatedBy = $editBy;
 		$entity->uOpenId = "";
-		$entity->uUnionId = $unionid;
+		$entity->uStatus = User::STATUS_XCX;
+		$entity->uUnionId = $openId;
 		$entity->uUniqid = uniqid();
 		$entity->uName = $wxInfo['nickname'];
 		list($thumb, $figure) = ImageUtil::save2Server($wxInfo['headimgurl'], false);

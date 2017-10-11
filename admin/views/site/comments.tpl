@@ -47,7 +47,7 @@
 				头像
 			</th>
 			<th class="col-sm-2">
-				用户
+				评价者
 			</th>
 			<th class="col-sm-1">
 				类型
@@ -59,7 +59,7 @@
 				头像
 			</th>
 			<th class="col-sm-2">
-				用户
+				被评价者
 			</th>
 			<th>
 				审核
@@ -70,11 +70,11 @@
 		{{foreach from=$list item=item}}
 		<tr>
 			<td align="center">
-				<img src="{{$item.avatar1}}">
+				<img src="{{$item.avatar2}}">
 			</td>
 			<td>
-				{{$item.name1}}<br>
-				{{$item.phone1}}
+				{{$item.name2}}<br>
+				{{$item.phone2}}
 			</td>
 			<td>
 				{{$item.cat}}
@@ -83,15 +83,15 @@
 				<div class="note"><i>{{$item.dt}}</i><br></span>{{$item.cComment}}</div>
 			</td>
 			<td>
-				<img src="{{$item.avatar2}}">
+				<img src="{{$item.avatar1}}">
 			</td>
 			<td>
-				{{$item.name2}}<br>
-				{{$item.phone2}}
+				{{$item.name1}}<br>
+				{{$item.phone1}}
 			</td>
 			<td>
 				{{if $item.cStatus==0}}
-				<a href="javascript:;" class="btn btn-outline btn-primary btn-xs">审核通过</a>
+				<a href="javascript:;" class="operate btn btn-outline btn-primary btn-xs" data-cid="{{$item.cId}}" data-tag="pass">审核通过</a>
 				{{else}}
 				<div class="note">审核时间<br>{{$item.cStatusDate}}</div>
 				{{/if}}
@@ -102,4 +102,31 @@
 	</table>
 	{{$pagination}}
 </div>
+<script>
+	$("a.operate").click(function () {
+		var id = $(this).attr("data-cid");
+		var tag = $(this).attr("data-tag");
+		var text = $(this).html();
+		layer.confirm('您确定' + text, {
+			btn: ['确定', '取消'],
+			title: '审核评论'
+		}, function () {
+			toOpt(id, tag);
+		}, function () {
+		});
+	});
+
+	function toOpt(id, f) {
+		$.post("/api/user", {
+			tag: "comment",
+			f: f,
+			id: id
+		}, function (resp) {
+			if (resp.code == 0) {
+				location.reload();
+			}
+			layer.msg(resp.msg);
+		}, "json");
+	}
+</script>
 {{include file="layouts/footer.tpl"}}

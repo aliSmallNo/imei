@@ -17,6 +17,7 @@ use common\models\QuestionGroup;
 use common\models\QuestionSea;
 use common\models\User;
 use common\models\UserAudit;
+use common\models\UserComment;
 use common\models\UserNet;
 use common\models\UserWechat;
 use common\utils\AppUtil;
@@ -108,6 +109,15 @@ class ApiController extends Controller
 			case "cert":
 				$flag = self::postParam("f");
 				$result = User::toCertVerify($id, $flag);
+				if ($result) {
+					$ret = ["code" => 0, "msg" => "操作成功！"];
+				} else {
+					$ret = ["code" => 0, "msg" => "操作失败！"];
+				}
+				break;
+			case "comment":
+				$flag = self::postParam("f");
+				$result = UserComment::commentVerify($id, $flag);
 				if ($result) {
 					$ret = ["code" => 0, "msg" => "操作成功！"];
 				} else {

@@ -679,10 +679,10 @@ class ApiController extends Controller
 				$ret = User::getFilter($openId, $filter, $page, 15);
 				if (isset($ret['data']) && count($ret['data']) > 3 && $page == 1) {
 					array_splice($ret['data'], 3, 0, [
-						[
-							"url" => "/wx/mshare",
-							"img" => "https://img.meipo100.com/default/reward10.jpg",
-						],
+//						[
+//							"url" => "/wx/mshare",
+//							"img" => "https://img.meipo100.com/default/reward10.jpg",
+//						],
 //						[
 //							'url' => '/wx/vote',
 //							'img' => 'https://img.meipo100.com/default/event_vote.jpg',
@@ -1224,16 +1224,22 @@ class ApiController extends Controller
 				];
 				*/
 				$data["xcxopenid"] = $XcxOpneid;
-				$unionId = (isset($rawData["unionId"]) && $rawData["unionId"]) ? $rawData["unionId"] : '';
-				$info = UserWechat::findOne(["wUnionId" => $unionId]);
-				if ($unionId && $info) {
-					if (!$info->wXcxId) { // 存小程序 openID 到 UserWechat 表
-						$xcxOpenid = isset($rawData["openId"]) ? $rawData["openId"] : "";
-						$data["xcxopenid"] = $xcxOpenid;
-						$info->wXcxId = $xcxOpenid;
-						$info->save();
-					}
-				} else if ($unionId && $rawData) {
+				$XcxOpneid = (isset($rawData["openId"]) && $rawData["openId"]) ? $rawData["openId"] : '';
+				$info = UserWechat::findOne(["wXcxId" => $XcxOpneid]);
+
+				$newLog = [
+					"oCategory" => "qfc",
+					"oKey" => 'qfc',
+					"oAfter" => [
+						"index" => __LINE__,
+						'data' => $rawData,
+					],
+				];
+				Log::add($newLog);
+
+				if ($info) {
+
+				} else if (!$info && $rawData) {
 					$info = UserWechat::addXcxUser($rawData);
 					$data["xcxopenid"] = $rawData["openId"];
 				}

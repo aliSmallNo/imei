@@ -384,8 +384,8 @@ class UserWechat extends ActiveRecord
 	 */
 	public static function addXcxUser($rawData)
 	{
-		$unionId = (isset($rawData["unionId"]) && $rawData["unionId"]) ? $rawData["unionId"] : '';
-		$winfo = UserWechat::findOne(["wUnionId" => $unionId]);
+		$openId = (isset($rawData["openId"]) && $rawData["openId"]) ? $rawData["openId"] : '';
+		$winfo = UserWechat::findOne(["wXcxId" => $openId]);
 		if ($winfo && $uId = $winfo->wUId) {
 			return $winfo;
 		}
@@ -393,9 +393,9 @@ class UserWechat extends ActiveRecord
 		$nickname = (isset($rawData["nickName"]) && $rawData["nickName"]) ? $rawData["nickName"] : '';
 		$avatar = (isset($rawData["avatarUrl"]) && $rawData["avatarUrl"]) ? $rawData["avatarUrl"] : '';
 		$uid = User::addWXByUnionId([
-			"openid" => '',
+			"openid" => "",
 			"nickname" => $nickname,
-			"unionid" => $unionId,
+			"unionid" => $openId,
 			"headimgurl" => $avatar,
 		], 1);
 
@@ -412,8 +412,9 @@ class UserWechat extends ActiveRecord
 				"wCity" => (isset($rawData["city"]) && $rawData["city"]) ? $rawData["city"] : '',
 				"wCountry" => (isset($rawData["country"]) && $rawData["country"]) ? $rawData["country"] : '',
 				"wXcxId" => (isset($rawData["openId"]) && $rawData["openId"]) ? $rawData["openId"] : '',
-				"wUnionId" => $unionId,
+				"wUnionId" => "",
 				"wUId" => $uid,
+				"wRawData" => json_encode($rawData,JSON_UNESCAPED_UNICODE),
 			];
 			$wid = UserWechat::add($wInfo);
 			$winfo = self::findOne(["wId" => $wid]);
