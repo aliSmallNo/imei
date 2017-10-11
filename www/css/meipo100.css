@@ -379,3 +379,263 @@ body, html, a, p, ul, div, h4, h5, h6 {
 	}
 }
 
+/********* homepage **********/
+
+.homepage {
+	background: url(//zlpic.1meipo.com/spa/home/v3/bg@2x.png) top repeat-y;
+	-webkit-background-size: 100% auto;
+	background-size: 100% auto;
+	width: 100%;
+	overflow: hidden
+}
+
+.homepage .clewEl {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	z-index: 99999;
+	background: #fff
+}
+
+.homepage .clewEl span {
+	border: #feb7ac 1px solid;
+	border-radius: 10px;
+	padding: 10px;
+	line-height: 24px;
+	width: 150px;
+	display: block;
+	padding-left: 40px;
+	background: url(//zlpic.1meipo.com/spa/home/rotate.png) no-repeat 10px 10px;
+	-webkit-background-size: 24px 24px;
+	background-size: 24px 24px;
+	color: #feb7ac;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -95px;
+	margin-top: -23px
+}
+
+.homepage .loading {
+	position: fixed;
+	z-index: 9999;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: none
+}
+
+.homepage .loading .bg {
+	background: #fff;
+	width: 100%;
+	height: 100%
+}
+
+.homepage .loading .progress {
+	width: 160px;
+	height: 40px;
+	background: #fff;
+	background: url(//zlpic.1meipo.com/spa/loading.gif) no-repeat top;
+	-webkit-background-size: auto 100%;
+	background-size: auto 100%;
+	position: absolute;
+	left: 50%;
+	margin-left: -80px;
+	top: 50%;
+	margin-top: -50px
+}
+
+.homepage .loading .progress div {
+	width: 100%;
+	height: 2px;
+	border: #fe8775 1px solid;
+	border-radius: 2px
+}
+
+.homepage .loading .progress div span {
+	display: block;
+	height: 100%;
+	background: #ffcdc5;
+	width: 0
+}
+
+.homepage .loading p {
+	color: #999;
+	text-align: center;
+	line-height: 40px;
+	font-size: 12px;
+	margin-bottom: 5px
+}
+
+.homepage .dots2 {
+	width: .16rem;
+	right: .53333333rem;
+	bottom: 50%;
+	position: fixed
+}
+
+.homepage .dots2 span {
+	background: #fff;
+	width: 100%;
+	height: .16rem;
+	border-radius: .08rem;
+	margin: .16rem 0;
+	display: block;
+	transition: .3s all linear;
+	-webkit-transition: .3s all linear
+}
+
+.homepage .dots2 .on {
+	height: .93333333rem
+}
+
+.homepage .page_title {
+	font-size: .85333333rem;
+	color: #29272a;
+	text-align: center;
+	line-height: .85333333rem;
+	padding: 1.86666667rem 0 .4rem;
+	text-shadow: #f0a194 2px 2px 2px
+}
+
+.homepage .page_ctitle {
+	text-align: center;
+	color: #29272a;
+	font-size: .4rem
+}
+
+.homepage .page_box {
+	background: #fff;
+	width: 16rem;
+	height: 16.8rem;
+	margin: 0 auto;
+	border-radius: 10px;
+	padding: 1.06666667rem 0;
+	box-sizing: border-box;
+	box-shadow: rgba(166, 0, 6, .2) 0 10px 20px
+}
+
+.homepage .pagebox {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	top: 0
+}
+
+.homepage .pagebox.animate {
+	-webkit-transition: .3s all linear;
+	transition: .3s all linear
+}
+
+.homepage .pagebox > div {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	float: left
+}
+
+.homepage .page .content img {
+	width: 5.5rem;
+	height: 8rem;
+	position: absolute;
+	left: .75rem;
+	top: 1.5rem;
+}
+
+.homepage .page .content {
+	width: 7rem;
+	height: 10rem;
+	background: url(../images/iPhone@2x.png);
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%;
+	margin: 1.33333333rem auto 0;
+	position: relative;
+}
+
+/*
+.homepage .page1 .content {
+	width: 6rem;
+	height: 9rem;
+	background: url(../images/mp_1.jpg);
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%;
+	margin: 1.33333333rem auto 0
+}
+
+.homepage .page2 .content {
+	width: 6rem;
+	height: 9rem;
+	background: url(../images/mp_2.jpg);
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%;
+	margin: 1.33333333rem auto 0
+}
+
+.homepage .page3 .content {
+	width: 6rem;
+	height: 9rem;
+	background: url(../images/mp_3.jpg);
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%;
+	margin: 1.33333333rem auto 0
+}
+
+.homepage .page4 .content {
+	width: 6rem;
+	height: 9rem;
+	background: url(../images/mp_4.jpg);
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%;
+	margin: 1.33333333rem auto 0
+}*/
+
+.homepage .page5 {
+}
+
+.homepage .page5 .page5_title {
+	text-align: center;
+	font-size: .85333333rem;
+	color: #29272a;
+	padding: 2.13333333rem 0 1.33333333rem
+}
+
+.homepage .page5 .meipo_slogon {
+	background: url(../images/qr-wm10.jpg);
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%;
+	width: 5.62666667rem;
+	height: 5.66666667rem;
+	margin: 0 auto
+}
+
+.homepage .page5 .app {
+	width: 6.29333333rem;
+	height: 1.44rem;
+	display: block;
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%;
+	font-size: 0.6rem;
+	text-align: center;
+	margin: .6rem auto;
+}
+
+.homepage .arraw {
+	display: block;
+	width: 35px;
+	height: 58px;
+	position: absolute;
+	bottom: 10px;
+	left: 50%;
+	margin-left: -18px;
+	z-index: 20;
+	background: url(../images/down1.png);
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%;
+	-webkit-animation: bounceIn 1s linear infinite;
+	animation: bounceIn 1s linear infinite
+}
+
+
