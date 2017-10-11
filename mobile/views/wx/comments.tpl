@@ -38,12 +38,12 @@
 	{{if $items}}
 	{{foreach from=$items item=item}}
 	<li>
-		<p>对我〖{{$item.cat}}〗的评价：{{$item.cComment}}</p>
+		<p>对〖{{$item.cat}}〗的评价：{{$item.cComment}}</p>
 		<span>{{$item.dt}}</span>
 	</li>
 	{{/foreach}}
 	{{else}}
-	<div>还没有人对我评价哦~</div>
+	<div>还没有人评价哦~</div>
 	{{/if}}
 </ul>
 <div class="comment-no-more" style="display: {{$nomore}}">没有更多了~</div>
