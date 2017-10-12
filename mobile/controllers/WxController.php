@@ -1662,8 +1662,9 @@ class WxController extends BaseController
 		if ($id) {
 			$uid = $id;
 		} else {
-			$uid = $wxInfo["uId"];
 		}
+
+		$uid = $wxInfo["uId"];
 
 		$items = UserComment::iTems($uid);
 		return self::renderPage('comments.tpl',
