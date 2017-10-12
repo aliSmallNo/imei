@@ -426,6 +426,54 @@ class FooController extends Controller
 		ChatMsg::reset();
 	}
 
+	public function actionInvoke($testPhone = '')
+	{
+		$conn = AppUtil::db();
+		$strCriteria = '';
+		if ($testPhone) {
+			$strCriteria = ' AND uPhone=' . $testPhone;
+		}
+		$sql = "SELECT u.uId,u.uName,u.uPhone,u.uGender,u.uStatus,uLocation,
+					IFNULL(w.wSubscribe,0) as sub, DATEDIFF(Now(),uLogDate) as dc 
+			 FROM im_user as u 
+			 JOIN im_user_wechat as w on w.wUId=u.uId
+			 WHERE u.uGender in (10,11) AND u.uStatus < 8 AND uPhone !='' AND uOpenId LIKE 'oYDJew%' $strCriteria
+			 ORDER BY u.uId,u.uName,u.uPhone";
+		$ret = $conn->createCommand($sql)->queryAll();
+		$contents = [];
+		foreach ($ret as $row) {
+			$phone = $row['uPhone'];
+			$status = $row['uStatus'];
+			$sub = $row['sub'];
+			$dc = $row['dc'];
+			$location = json_decode($row['uLocation'], 1);
+			$object = $row['uGender'] == User::GENDER_MALE ? '美女' : '帅哥';
+			if (!isset($contents[$phone])) {
+				$contents[$phone] = '';
+			}
+			if ($location && $sub && $dc >= 7) {
+				$contents[$phone] = '哇，才1个小时，微媒100上又有3个' . $object . '找你聊天，最近的才500米';
+			} elseif ($location && $sub && $status != User::STATUS_ACTIVE) {
+				$contents[$phone] = '亲，有3个' . $object . '想跟你聊天。完善资料才可以聊天哦，赶快完善资料吧';
+			} elseif ($location && !$sub) {
+				$contents[$phone] = '最近有一波' . $object . '刚注册微媒100找对象，离您最近的才5公理，赶快来看看吧，关注微信公众号微媒100';
+			}
+		}
+		$cnt = 0;
+		foreach ($contents as $phone => $msg) {
+			if (!$msg) continue;
+			QueueUtil::loadJob('sendSMS',
+				[
+					'phone' => $phone,
+					'msg' => $msg,
+					'rnd' => 106
+				],
+				QueueUtil::QUEUE_TUBE_SMS);
+			$cnt++;
+		}
+		var_dump($cnt);
+	}
+
 	public function actionSms($phone = 18600442970)
 	{
 		$conn = AppUtil::db();
