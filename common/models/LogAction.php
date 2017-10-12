@@ -134,7 +134,7 @@ class LogAction extends ActiveRecord
 			 FROM im_user as u
 			 JOIN im_user_wechat as w on u.uId=w.wUId
 			 WHERE uAddedOn BETWEEN :beginDT AND :endDT
-			 AND uStatus<8 AND uPhone!=\'\' AND uScope>0 AND uRole>9 ';
+			 AND uStatus<8 AND uPhone!=\'\'  AND uRole>9 ';// 10.12 delete by zp: AND uScope>0
 		$ret = $conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate . ' 00:00',
 			':endDT' => $endDate . ' 23:59',
@@ -153,7 +153,7 @@ class LogAction extends ActiveRecord
 			 JOIN im_user_wechat as w on u.uId=w.wUId
 			 JOIN im_log_action as a on a.aUId=u.uId AND a.aCategory>1000 AND a.aDate BETWEEN :from AND :to
 			 WHERE uAddedOn BETWEEN :beginDT AND :endDT
-			 AND uStatus<8 AND uPhone!=\'\' AND uScope>0 AND uRole>9';
+			 AND uStatus<8 AND uPhone!=\'\'  AND uRole>9';// 10.12 delete by zp: AND uScope>0
 		$cmd = $conn->createCommand($sql);
 
 		for ($k = 1; $k < 20; $k++) {

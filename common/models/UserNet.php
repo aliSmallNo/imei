@@ -762,7 +762,7 @@ class UserNet extends ActiveRecord
 			sum(case WHEN n.nRelation=:rel1 then 1 end) as scan,
 			sum(case WHEN n.nRelation=:rel2 then 1 end) as subscribe,
 			sum(case WHEN n.nRelation=:rel2 and IFNULL(w.wSubscribe,0)=0 then 1 end) as unsubscribe,
-			sum(case WHEN n.nRelation=:rel2 AND u1.uPhone!='' AND u1.uLocation!='' then 1 end) as reg,
+			sum(case WHEN n.nRelation=:rel2 AND u1.uPhone!='' and u1.uRole>9  then 1 end) as reg,
 			sum(case WHEN n.nRelation=:mp  then 1 end) as mps,
 			sum(case WHEN n.nRelation=:focus  then 1 end) as focus
 			from im_user_net as n 
