@@ -59,10 +59,10 @@ $(document).on("click", ".arraw", function () {
 });
 
 $(function () {
-	var h = window.screen.availHeight;
+	/*var h = window.screen.availHeight;
 	var w = window.screen.availWidth;
 	// console.log(w);console.log(h);
-	if (w < 1000) {
+	if (w < 800) {
 		$(".pcpage").hide();
 		$(".homepage").show();
 		$("html").css("font-size", w / 10 + "px");
@@ -70,5 +70,5 @@ $(function () {
 	} else {
 		$(".pcpage").show();
 		$(".homepage").hide();
-	}
+	}*/
 });

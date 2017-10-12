@@ -380,9 +380,39 @@ body, html, a, p, ul, div, h4, h5, h6 {
 }
 
 /********* homepage **********/
+@media screen and (max-width: 800px) {
+	.pcpage {
+		display: none !important;
+	}
+
+	.homepage {
+		display: block !important;
+		height: 100vh !important;
+	}
+
+	html, body {
+		font-size: 10vw !important;
+	}
+
+}
+@media screen and (min-width: 800px) {
+	.pcpage {
+		display: block !important;
+	}
+
+	.homepage {
+		display: none !important;
+		height: 100vh !important;
+	}
+
+	html, body {
+		font-size: 1vw !important;
+	}
+
+}
 
 .homepage {
-	background: url(//zlpic.1meipo.com/spa/home/v3/bg@2x.png) top repeat-y;
+	background: url(../images/bg2x.png) top repeat-y;
 	-webkit-background-size: 100% auto;
 	background-size: 100% auto;
 	width: 100%;
