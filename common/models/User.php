@@ -555,7 +555,8 @@ class User extends ActiveRecord
 			$edate = date("Y-m-d H:i:s");
 			$sdate = date("Y-m-d H:i:s", time() - 86400 * 7);
 			$inactive1 = " left join im_log_action as a on a.aUId=u.uId and a.aCategory in (1000,1002,1004) and a.aDate BETWEEN '$sdate' and '$edate' ";
-			$inactive2 = " and a.aUId is null ";
+			// $inactive2 = " and a.aUId is null ";
+			$inactive2 = ($inactive == 1) ? " and a.aUId is null " : " and a.aUId ";
 		}
 
 		$conn = AppUtil::db();
@@ -599,13 +600,22 @@ class User extends ActiveRecord
 			$edate = date("Y-m-d H:i:s");
 			$sdate = date("Y-m-d H:i:s", time() - 86400 * 7);
 			$inactive1 = " left join im_log_action as a on a.aUId=u.uId and a.aCategory in (1000,1002,1004) and a.aDate BETWEEN '$sdate' and '$edate' ";
-			$inactive2 = " and a.aUId is null ";
+			// $inactive2 = " and a.aUId is null ";
+			$inactive2 = ($inactive == 1) ? " and a.aUId is null " : " and a.aUId ";
 		}
-		$sql = "select $sqlPart
+		/*$sql = "select $sqlPart
 				from im_user as u
 				JOIN im_user_wechat as w on w.wUId=u.uId
 				$inactive1
-				WHERE uId>0 $strCriteria $inactive2";
+				WHERE uId>0 $strCriteria $inactive2";*/
+		$sql = "select $sqlPart
+				from 
+				(
+				select u.* from im_user as u
+				JOIN im_user_wechat as w on w.wUId=u.uId
+				$inactive1
+				WHERE uId>0 $strCriteria $inactive2 group by uId
+				) as a";
 		$conn = AppUtil::db();
 		unset($params[':status']);
 		$res = $conn->createCommand($sql)->bindValues($params)->queryOne();

@@ -271,8 +271,8 @@ class SiteController extends BaseController
 	 */
 	public function actionAccounts()
 	{
-		$bundle = self::getBundle('page', 'name', 'phone', 'fonly', 'inactive', 'status', 'sub_status', 'user_type');
-		list($page, $name, $phone, $fonly, $inactive, $status, $sub_status, $user_type) = array_values($bundle);
+		$bundle = self::getBundle('page', 'name', 'location', 'phone', 'fonly', 'inactive', 'status', 'sub_status', 'user_type');
+		list($page, $name, $location, $phone, $fonly, $inactive, $status, $sub_status, $user_type) = array_values($bundle);
 		if (!$page) $page = 1;
 		if (!$status) $status = 0;
 		$suffix = '';
@@ -293,19 +293,31 @@ class SiteController extends BaseController
 		$criteria[] = " uStatus=:status ";
 		$params[':status'] = $status;
 
-		if ($fonly) {
+		if ($fonly == 1) {
 			$criteria[] = " wSubscribe=1";
 			$partCriteria[] = " wSubscribe=1";
 			$criteriaNote[] = '显示已关注';
+		} else if ($fonly == 2) {
+			$criteria[] = " wSubscribe !=1";
+			$partCriteria[] = " wSubscribe !=1";
+			$criteriaNote[] = '显示未关注';
 		}
-		if ($inactive) {
+		if ($inactive == 1) {
 			$criteriaNote[] = '显示7天不活跃';
+		} else if ($inactive == 2) {
+			$criteriaNote[] = '显示7天内活跃';
 		}
 		if ($name) {
 			$criteria[] = "  uName like :name ";
 			$partCriteria[] = "  uName like :name ";
 			$params[':name'] = "%$name%";
 			$criteriaNote[] = $name;
+		}
+		if ($location) {
+			$criteria[] = "  uLocation like :location ";
+			$partCriteria[] = "  uLocation like :location ";
+			$params[':location'] = "%$location%";
+			$criteriaNote[] = $location;
 		}
 		if ($phone) {
 			$criteria[] = " uPhone like :phone ";
@@ -404,6 +416,7 @@ class SiteController extends BaseController
 				'list' => $list,
 				'stat' => $stat,
 				"name" => $name,
+				"location" => $location,
 				"phone" => $phone,
 				'fonly' => $fonly,
 				'inactive' => $inactive,
