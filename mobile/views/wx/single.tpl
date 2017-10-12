@@ -207,6 +207,11 @@
 		<div class="contacts"></div>
 		<div></div>
 	</div>
+	<div class="contacts-nomore messages" style="display: none">
+		<div class="empty middle">
+			<p class="title">您目前没有聊天记录~</p>
+		</div>
+	</div>
 </section>
 <section id="sfeedback" data-title="意见反馈">
 	<div class="report_wrap">
@@ -958,7 +963,9 @@
 	{[#items]}
 	<li class="{[dir]}">
 		<a href="{[url]}" {[#eid]}data-eid="{[.]}"{[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
-		<div class="content"><span>{[content]}</span></div>
+		<div class="content">
+			<span>{[content]}</span>
+		</div>
 	</li>
 	{[/items]}
 </script>
@@ -985,6 +992,7 @@
 		{[/readflag]}
 	</a>
 	{[/items]}
+
 </script>
 <script type="text/template" id="tpl_chat_share">
 	<div class="topup-wrap">
@@ -1194,4 +1202,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
-<script data-main="/js/single.js?v=1.11.8" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.11.9" src="/assets/js/require.js"></script>

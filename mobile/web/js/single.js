@@ -471,6 +471,7 @@ require(["layer"],
 			commentFlag: 0,
 			leftCount: 0,
 			rightCount: 0,
+			comment: $('.user-comment'),
 			commentContent: $(".co-content textarea"),
 			commentCat1: $(".co-cat-content1"),
 			commentCat2: $(".co-cat-content2"),
@@ -484,7 +485,8 @@ require(["layer"],
 			lastId: 0,
 			loading: 0,
 			book: $('.contacts'),
-			comment: $('.user-comment'),
+			booknoMore: $(".contacts-nomore"),
+			bookEdit: $(".contacts-edit"),
 			bookTmp: $('#tpl_contact').html(),
 			list: $('.chats'),
 			tmp: $('#tpl_chat').html(),
@@ -928,6 +930,13 @@ require(["layer"],
 					if (resp.code == 0) {
 						var html = Mustache.render(util.bookTmp, resp.data);
 						util.book.html(html);
+						if (resp.data.items.length == 0) {
+							util.bookEdit.hide();
+							util.booknoMore.show();
+						} else {
+							util.bookEdit.show();
+							util.booknoMore.hide();
+						}
 						setTimeout(function () {
 							util.topPL.get(0).scrollIntoView(true);
 						}, 300);

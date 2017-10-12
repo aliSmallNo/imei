@@ -108,7 +108,8 @@
 	<input type="text" placeholder="帅哥" value="{{$uInfo.gender_t}}" readonly>
 </div>
 
-<a class="sedit-alert action-com" data-field="marital">
+<!-- data-field="marital" -->
+<a class="sedit-alert action-com" >
 	<label>婚姻状态</label>
 	<div class="sedit-alert-val action-val">
 		<em data-key="{{$uInfo.marital}}">{{$uInfo.marital_t}}</em>

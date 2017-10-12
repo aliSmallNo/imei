@@ -1948,7 +1948,6 @@ class ApiController extends Controller
 				list($items, $lastId) = ChatMsg::details($uid, $subUId, $lastId);
 				// 是否评价一次TA
 				$commentFlag = UserComment::hasComment($subUId, $uid);
-
 				return self::renderAPI(0, '', [
 					'items' => $items,
 					'lastId' => intval($lastId),
