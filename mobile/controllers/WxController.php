@@ -1677,4 +1677,11 @@ class WxController extends BaseController
 			'comment-bg');
 	}
 
+	public function actionT()
+	{
+		$userAgent = \Yii::$app->request->userAgent;
+		echo $userAgent;
+		exit;
+	}
+
 }

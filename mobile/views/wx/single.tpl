@@ -969,6 +969,14 @@
 	</li>
 	{[/items]}
 </script>
+<!--
+<br><span class="optItem">可以</span>
+-->
+<style>
+	.chats li .content span.optItem {
+		margin: .2rem 0;
+	}
+</style>
 <script type="text/template" id="tpl_chat_tip">
 	<li class="tip">
 		<em>{[msg]}</em>
