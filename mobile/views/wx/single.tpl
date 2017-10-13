@@ -1159,22 +1159,7 @@
 	<a href="#sreport" class="report btn-report">举报拉黑</a>
 </script>
 <style>
-	a.arrow-right:after {
-		content: " ";
-		display: inline-block;
-		height: .8rem;
-		width: .8rem;
-		border-width: 1px 1px 0 0;
-		border-color: #939393;
-		border-style: solid;
-		-webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
-		transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
-		position: absolute;
-		top: 50%;
-		right: 0;
-		margin-top: -0.5rem;
-		right: 1.5rem;
-	}
+
 </style>
 <script type="text/template" id="tpl_sinfo">
 	{[#items]}
