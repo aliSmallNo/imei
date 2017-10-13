@@ -5190,6 +5190,22 @@ section {
     color: #6a6572;
     font-size: 1.2rem; }
 
+.arrow-right:after {
+  content: " ";
+  display: inline-block;
+  height: 0.8rem;
+  width: 0.8rem;
+  border-width: 1px 1px 0 0;
+  border-color: #939393;
+  border-style: solid;
+  -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+  transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+  position: absolute;
+  top: 50%;
+  right: 0;
+  margin-top: -0.5rem;
+  right: 1.5rem; }
+
 .help-chat-icon {
   position: fixed;
   right: 1rem;
