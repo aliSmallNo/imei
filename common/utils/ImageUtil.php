@@ -464,6 +464,7 @@ class ImageUtil
 			$fileNormal = $path . '_n.' . $fileExt;
 
 			file_put_contents($fileName, $content);
+			$content = null;
 			$thumbSize = 160;
 			$figureSize = 560;
 			if ($squareFlag) {
@@ -518,6 +519,7 @@ class ImageUtil
 			$fileName = $filePrefix . ".amr";
 			$fileMP3 = $filePrefix . ".mp3";
 			file_put_contents($fileName, $content);
+			$content = null;
 			exec('/usr/bin/ffmpeg -i ' . $fileName . ' -ab 12.2k -ar 16000 -ac 1 ' . $fileMP3, $out);
 			$ret = ImageUtil::getUrl($fileMP3);
 			//$ret = '/voice/' . $key . '.' . $ext;
@@ -526,6 +528,7 @@ class ImageUtil
 			$path = AppUtil::imgDir() . $key;
 			$fileName = $path . '.' . $ext;
 			file_put_contents($fileName, $content);
+			$content = null;
 			$thumbSize = $thumbWidth = $thumbHeight = 180;
 			$figureSize = $figureWidth = $figureHeight = 640;
 			if ($squareFlag) {
