@@ -30,7 +30,7 @@ class UserBuzz extends ActiveRecord
 
 	static $Token = "BLkNmzT5HdJQT8DMZu1kIK";
 	private static $WelcomeMsg = '';
-	private static $IMEI_UID = 133042;
+	private static $IMEI_UID = 120000;
 
 	public static function tableName()
 	{
