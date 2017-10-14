@@ -1160,7 +1160,7 @@
 	{[#commentFlag]}
 	<a class="mywords arrow-right" href="#comments">
 		<span class="title">用户评价</span>
-		<span class="words">{[comment]}</span>
+		<span class="words">{[usercomment]}</span>
 	</a>
 	{[/commentFlag]}
 	{[/profile]}
