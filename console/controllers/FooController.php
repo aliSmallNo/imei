@@ -880,6 +880,16 @@ class FooController extends Controller
 				}
 			}
 			$insertItem["qTitle"] = $item[1] . "(" . $item[2] . ")";
+			/*
+			$insertItem["qRaw"] = json_encode([
+				"title" => $item[1] . "(" . $item[2] . ")",
+				"answer" => "",
+				"options" => [
+					["opt" => "A", "text" => ""],
+					["opt" => "B", "text" => ""],
+				],
+			], JSON_UNESCAPED_UNICODE);
+			*/
 			print_r($insertItem);
 			// QuestionSea::edit(0, $insertItem);
 		}

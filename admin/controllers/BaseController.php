@@ -102,7 +102,6 @@ class BaseController extends Controller
 			list($params["adminWechatList"], $params["adminWechatListUnread"]) = Admin::wxBuzz($adminId);
 		}
 
-
 		$params["gIconOK"] = self::ICON_OK_HTML;
 		$params["gIconAlert"] = self::ICON_ALERT_HTML;
 

@@ -391,7 +391,7 @@ class ApiController extends Controller
 				$uInfo['favored'] = UserNet::hasFavor($wxInfo['uId'], $id) ? 1 : 0;
 				$comment = UserComment::hasCommentOne($id);
 				$uInfo['commentFlag'] = $comment ? 1 : 0;
-				$uInfo['comment'] = $comment;
+				$uInfo['usercomment'] = $comment;
 				return self::renderAPI(0, '', [
 					'profile' => $uInfo
 				]);

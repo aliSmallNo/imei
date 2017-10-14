@@ -969,6 +969,14 @@
 	</li>
 	{[/items]}
 </script>
+<!--
+<br><span class="optItem">可以</span>
+-->
+<style>
+	.chats li .content span.optItem {
+		margin: .2rem 0;
+	}
+</style>
 <script type="text/template" id="tpl_chat_tip">
 	<li class="tip">
 		<em>{[msg]}</em>
@@ -1152,7 +1160,7 @@
 	{[#commentFlag]}
 	<a class="mywords arrow-right" href="#comments">
 		<span class="title">用户评价</span>
-		<span class="words">{[comment]}</span>
+		<span class="words">{[usercomment]}</span>
 	</a>
 	{[/commentFlag]}
 	{[/profile]}
