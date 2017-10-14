@@ -594,7 +594,6 @@ class FooController extends Controller
 			, 15261957507
 			, 15358286802
 		];
-		$phones = [18600442970];
 		$cnt = 0;
 		$msg = '对象难找，上微媒100！盐城本地的真实靠谱的单身男女都在这里。关注微信公众号“微媒100”即可注册，快点加入吧。微信客服yctoutiao1';
 		foreach ($phones as $phone) {
@@ -604,7 +603,7 @@ class FooController extends Controller
 					'msg' => $msg,
 					'rnd' => 107
 				],
-				QueueUtil::QUEUE_TUBE);
+				QueueUtil::QUEUE_TUBE_SMS);
 			$cnt++;
 		}
 		var_dump($cnt);
