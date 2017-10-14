@@ -31,13 +31,13 @@ class UserNet extends ActiveRecord
 	const REL_SUBSCRIBE = 255;
 
 	static $RelDict = [
-		self::REL_INVITE => '邀请',
+		self::REL_INVITE => '邀请Ta',
 		self::REL_BACKER => '媒婆',
-		self::REL_FOLLOW => '关注',
-		self::REL_LINK => '牵线',
-		self::REL_FAVOR => '心动',
-		self::REL_BLOCK => '拉黑',
-		self::REL_PRESENT => '赠送',
+		self::REL_FOLLOW => '关注Ta',
+		self::REL_LINK => '牵线Ta',
+		self::REL_FAVOR => '心动Ta',
+		self::REL_BLOCK => '拉黑Ta',
+		self::REL_PRESENT => '赠送Ta',
 		self::REL_QR_SCAN => '扫推广二维码',
 		self::REL_QR_SUBSCRIBE => '扫二维码且关注',
 		self::REL_QR_SHARE => '发送给朋友',
