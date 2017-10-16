@@ -134,7 +134,7 @@ class LogAction extends ActiveRecord
 			 FROM im_user as u
 			 JOIN im_user_wechat as w on u.uId=w.wUId
 			 WHERE uAddedOn BETWEEN :beginDT AND :endDT
-			 AND uStatus<8 AND uPhone!=\'\'  AND uRole>9 ';
+			 AND uStatus<8 AND uPhone!=\'\'  AND uRole>9 AND uGender in (10,11) ';
 		$ret = $conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate . ' 00:00',
 			':endDT' => $endDate . ' 23:59',
@@ -153,7 +153,7 @@ class LogAction extends ActiveRecord
 			 JOIN im_user_wechat as w on u.uId=w.wUId
 			 JOIN im_log_action as a on a.aUId=u.uId AND a.aCategory>1000 AND a.aDate BETWEEN :from AND :to
 			 WHERE uAddedOn BETWEEN :beginDT AND :endDT
-			 AND uStatus<8 AND uPhone!=\'\'  AND uRole>9';
+			 AND uStatus<8 AND uPhone!=\'\'  AND uRole>9 AND uGender in (10,11) ';
 		$cmd = $conn->createCommand($sql);
 
 		for ($k = 1; $k < 20; $k++) {
@@ -211,9 +211,9 @@ class LogAction extends ActiveRecord
 			(CASE WHEN uGender=10 THEN \'female\' WHEN uGender=11 THEN \'male\' ELSE \'mei\' END)as gender ' . $sqlExt
 			. ' FROM im_user as u
 			 JOIN im_user_wechat as w on u . uId = w . wUId
-			 LEFT JOIN im_log_action as a on a . aUId = u . uId AND a . aCategory > 1000
+			 LEFT JOIN im_log_action as a on a . aUId = u . uId AND a . aCategory > 1000 AND a.aDate BETWEEN :from AND :to
 			 WHERE uAddedOn BETWEEN :beginDT AND :endDT
-			AND uStatus < 8 AND uPhone != \'\' AND uScope>0 AND uRole>9 ' . $criteria;
+			AND uStatus < 8 AND uPhone != \'\' AND uRole>9 ' . $criteria;   // AND uScope>0
 
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		usort($ret, function ($a, $b) {
