@@ -1166,9 +1166,7 @@
 	{[/profile]}
 	<a href="#sreport" class="report btn-report">举报拉黑</a>
 </script>
-<style>
 
-</style>
 <script type="text/template" id="tpl_sinfo">
 	{[#items]}
 	{[#header]}
