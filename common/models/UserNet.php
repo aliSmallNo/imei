@@ -32,7 +32,7 @@ class UserNet extends ActiveRecord
 
 	static $RelDict = [
 		self::REL_INVITE => '邀请Ta',
-		self::REL_BACKER => '媒婆',
+		self::REL_BACKER => '媒婆Ta',
 		self::REL_FOLLOW => '关注Ta',
 		self::REL_LINK => '牵线Ta',
 		self::REL_FAVOR => '心动Ta',
