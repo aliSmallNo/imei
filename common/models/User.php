@@ -1036,8 +1036,8 @@ class User extends ActiveRecord
 			return self::edit($id, [
 				"uCertStatus" => ($flag == "pass") ? User::CERT_STATUS_PASS : User::CERT_STATUS_FAIL,
 				"uCertDate" => date("Y-m-d H:i:s"),
-				"uUpdatedOn" => date("Y-m-d H:i:s"),
-				"uUpdatedBy" => Admin::getAdminId()
+				//"uUpdatedOn" => date("Y-m-d H:i:s"),
+				//"uUpdatedBy" => Admin::getAdminId()
 			]);
 		}
 		return 0;
