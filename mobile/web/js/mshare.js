@@ -85,7 +85,7 @@ require(["layer"],
 			wx.config(wxInfo);
 			var city = $("#cCITY").val();
 			var linkUrl = "https://wx.meipo100.com/wx/mshare?id=" + $('#cUID').val();
-			var imgUrl = "https://wx.meipo100.com/images/logo170.png";
+			var imgUrl = "https://wx.meipo100.com/images/logo170.png?id=1.1.2";
 			var title = '微媒100，' + city + '的单身男女都在这，赶快来相互认识下吧！';
 			var desc = '微媒100，帮助身边的单身青年尽快脱单,推荐身边3名单身好友注册可以获得10元红包哦~';
 			wx.ready(function () {
