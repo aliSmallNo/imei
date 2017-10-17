@@ -138,8 +138,12 @@
 			<h5>更新于{{$prod.certdate|date_format:'%y-%m-%d %H:%M'}}</h5>
 		</td>
 		<td>
+			{{if $prod.certstatus==1}}
 			<a href="javascript:;" class="operate btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}" tag="pass">审核通过</a>
 			<a href="javascript:;" class="operate btn btn-outline btn-danger btn-xs" cid="{{$prod.id}}" tag="fail">审核失败</a>
+			{{else}}
+			<h5>审核于{{$prod.certdate|date_format:'%y-%m-%d %H:%M'}}</h5>
+			{{/if}}
 		</td>
 	</tr>
 	{{/foreach}}

@@ -12,11 +12,13 @@ use common\models\ChatMsg;
 use common\models\Pin;
 use common\models\QuestionSea;
 use common\models\User;
+use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\PushUtil;
+use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -841,50 +843,6 @@ class FooController extends Controller
 		//WechatUtil::XCXTempMsg(120003);
 		//echo RedpacketTrans::cashTimes(120003);
 
-
-		//添加助聊
-		$ins = file_get_contents(__DIR__ . "/sea.log");
-		$ins = explode("\n", $ins);
-
-		$insertItem["qAddedBy"] = 1002;
-		foreach ($ins as $item) {
-			$item = preg_replace("/\s+/", " ", $item);
-			$item = explode(" ", $item);
-			if ($item[0] == "固定") {
-				$insertItem["qRank"] = 99;
-			} elseif ($item[0] == "限男生问") {
-				$insertItem["qRank"] = 1;
-			} elseif ($item[0] == "限女生问") {
-				$insertItem["qRank"] = 0;
-			} else {
-				$insertItem["qRank"] = 999;
-			}
-			if ($item[2] == "男士先回答") {
-				$insertItem["qResp"] = 109;
-			} elseif ($item[2] == "女士先回答") {
-				$insertItem["qResp"] = 106;
-			} else {
-				$insertItem["qResp"] = 100;
-			}
-			foreach (QuestionSea::$catDict as $k => $v) {
-				if (mb_substr($v, 0, 2) == $item[3]) {
-					$insertItem["qCategory"] = $k;
-				}
-			}
-			$insertItem["qTitle"] = $item[1] . "(" . $item[2] . ")";
-			/*
-			$insertItem["qRaw"] = json_encode([
-				"title" => $item[1] . "(" . $item[2] . ")",
-				"answer" => "",
-				"options" => [
-					["opt" => "A", "text" => ""],
-					["opt" => "B", "text" => ""],
-				],
-			], JSON_UNESCAPED_UNICODE);
-			*/
-			print_r($insertItem);
-			// QuestionSea::edit(0, $insertItem);
-		}
 	}
 
 
