@@ -1705,13 +1705,18 @@ require(["layer"],
 					showMsg(util.tip, 3, 12);
 					return false;
 				}
+				var text = $.trim(util.text.val());
+				if (!text) {
+					showMsg("详细信息还没填写哦", 3, 12);
+					return false;
+				}
 				util.loading = 1;
 				$.post('/api/user',
 					{
 						tag: 'ban',
 						id: util.eid,
 						reason: util.reason.val(),
-						text: $.trim(util.text.val())
+						text: text
 					},
 					function (resp) {
 						if (resp.code == 0) {

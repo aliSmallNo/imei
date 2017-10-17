@@ -1321,12 +1321,12 @@ class WxController extends BaseController
 		}
 
 		$city = json_decode($wxInfo["uLocation"], 1);
+		$area = "";
+		if (isset($city[1])) {
+			$area = $city[1]["text"];
+		}
 		if (isset($city[2])) {
-			$city = $city[2]["text"];
-		} elseif (isset($city[1])) {
-			$city = $city[1]["text"];
-		} else {
-			$city = "盐城";
+			$area .= $city[2]["text"];
 		}
 
 		$uId = self::getParam('id', $userId);
@@ -1346,7 +1346,7 @@ class WxController extends BaseController
 				'stars' => UserQR::$SuperStars,
 				'cls' => $cls,
 				'userId' => $userId,
-				'city' => $city,
+				'city' => $area ? $area : "盐城",
 			],
 			'terse',
 			'微媒100',
@@ -1676,7 +1676,6 @@ class WxController extends BaseController
 			"我的评论",
 			'comment-bg');
 	}
-
 
 
 }

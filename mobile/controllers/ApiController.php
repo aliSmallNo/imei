@@ -356,6 +356,9 @@ class ApiController extends Controller
 				$rptUId = self::postParam("id");
 				$rptUId = AppUtil::decrypt($rptUId);
 				$reason = self::postParam("reason");
+				if (!$text) {
+					return self::renderAPI(129, '您还没填写详细信息哦~');
+				}
 				$black = UserNet::findOne([
 					"nUId" => $rptUId,
 					"nSubUId" => $wxInfo['uId'],
