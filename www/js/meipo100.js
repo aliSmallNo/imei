@@ -43,10 +43,12 @@ $(".next").on("click", function () {
 });
 
 //mobile page
+var box = $("#pagebox");
+var dots = $(".dots2");
+var i = 0;
 $(document).on("click", ".arraw", function () {
-	var box = $("#pagebox");
-	var dots = $(".dots2");
-	var i = box.attr("data-index");
+	//...
+	i = box.attr("data-index");
 	if (i == 4) {
 		i = 0;
 	} else {
@@ -57,6 +59,32 @@ $(document).on("click", ".arraw", function () {
 	dots.find("span[data-i=" + i + "]").addClass("on");
 	box.attr("data-index", i);
 });
+
+//给最大的盒子增加事件监听
+$("#pagebox").swipe(
+	{
+		swipe: function (event, direction, distance, duration, fingerCount) {
+			i = box.attr("data-index");
+			if (direction == "up") {
+				i = i + 1;
+			}
+			// else if (direction == "down") {
+				//i = i - 1;
+			// }
+
+			if (i >= 4) {
+				i = 0;
+			} else {
+				i++;
+			}
+			box.css({"top": -i * 100 + '%'});
+			dots.find("span").removeClass();
+			dots.find("span[data-i=" + i + "]").addClass("on");
+			box.attr("data-index", i);
+
+		}
+	}
+);
 
 $(function () {
 	/*var h = window.screen.availHeight;
