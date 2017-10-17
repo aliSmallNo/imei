@@ -8,7 +8,7 @@
 		<a class="btn btn-main btn-share" >马上分享</a>
 	</div>
 	<div>
-		<a class="btn btn-mshare-rule" style="color: #0272ff;display: block;font-size: 1.2rem">活动规则</a>
+		<a class="btn btn-mshare-rule" style="color: #0272ff;display: none;font-size: 1.2rem">活动规则</a>
 	</div>
 	{{else}}
 	<br>
