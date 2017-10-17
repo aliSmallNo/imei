@@ -65,11 +65,11 @@ $("#pagebox").swipe(
 	{
 		swipe: function (event, direction, distance, duration, fingerCount) {
 			i = box.attr("data-index");
-			if (direction == "up") {
+			if (direction == "down") {
 				i = i + 1;
 			}
-			// else if (direction == "down") {
-				//i = i - 1;
+			// else if (direction == "up") {
+			// 	i = i - 1;
 			// }
 
 			if (i >= 4) {
