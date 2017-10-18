@@ -843,6 +843,12 @@ class FooController extends Controller
 		//WechatUtil::XCXTempMsg(120003);
 		//echo RedpacketTrans::cashTimes(120003);
 
+
+		UserMsg::edit(0, [
+			"mText" => json_encode(["每日一句：恭喜YYY和frannki签手成功，平台送上最真挚的祝福，有平台签手成功的可以在公众号上留言，我们微媒大家庭一起祝福你们！"], JSON_UNESCAPED_UNICODE),
+			"mCategory" => UserMsg::CATEGORY_UPGRADE,
+			"mUId" => RedisUtil::getIntSeq(),
+		]);
 	}
 
 
