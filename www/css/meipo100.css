@@ -395,6 +395,7 @@ body, html, a, p, ul, div, h4, h5, h6 {
 	}
 
 }
+
 @media screen and (min-width: 800px) {
 	.pcpage {
 		display: block !important;
@@ -583,6 +584,17 @@ body, html, a, p, ul, div, h4, h5, h6 {
 	background-size: 100% 100%;
 	margin: .5rem auto 0;
 	position: relative;
+}
+
+.homepage .page .content:before {
+	content: '';
+	position: absolute;
+	background: url(../images/qr-wm10.jpg) no-repeat center center;
+	background-size: 100% 100%;
+	width: 2rem;
+	height: 2rem;
+	top: 7rem;
+	left: -2rem;
 }
 
 /*
