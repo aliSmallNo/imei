@@ -64,19 +64,22 @@ $(document).on("click", ".arraw", function () {
 $("#pagebox").swipe(
 	{
 		swipe: function (event, direction, distance, duration, fingerCount) {
-			i = box.attr("data-index");
+			i = parseInt(box.attr("data-index"));
 			if (direction == "down") {
+				i = i - 1;
+				console.log("down line 70 " + i);
+			}
+			else if (direction == "up") {
 				i = i + 1;
+				console.log("up line 74 " + i);
 			}
-			// else if (direction == "up") {
-			// 	i = i - 1;
-			// }
 
-			if (i >= 4) {
+			if (i > 4) {
 				i = 0;
-			} else {
-				i++;
+			} else if (i < 0) {
+				i = 4;
 			}
+			console.log("res line 82 " + i);
 			box.css({"top": -i * 100 + '%'});
 			dots.find("span").removeClass();
 			dots.find("span[data-i=" + i + "]").addClass("on");
