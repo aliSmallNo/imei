@@ -373,7 +373,7 @@ class WechatUtil
 			"button" => [
 				[
 					"type" => "view",
-					"name" => "我是单身",
+					"name" => "找对象",
 					"url" => $wxUrl . "/wx/single#slook"
 				],
 				[
