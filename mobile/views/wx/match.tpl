@@ -244,7 +244,7 @@
 	</div>
 </section>
 <div class="nav-foot on">
-	<a href="#slink" class="nav-link active" data-tag="slink">
+	<a href="#slink" class="nav-link active" data-tag="slink" style="display: none">
 		发现
 	</a>
 	<a href="#sgroup" class="nav-group" data-tag="sgroup">
