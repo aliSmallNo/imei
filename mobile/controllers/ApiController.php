@@ -819,6 +819,7 @@ class ApiController extends Controller
 				$text = self::postParam("text");
 				$rptUId = self::postParam("uid");
 				$reason = self::postParam("reason");
+
 				$black = UserNet::findOne([
 					"nUId" => $rptUId,
 					"nSubUId" => $wxInfo['uId'],
