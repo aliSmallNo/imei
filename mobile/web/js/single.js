@@ -479,6 +479,9 @@ require(["layer"],
 			commentListTmp: $("#comment-list-temp").html(),
 			cul: $("ul.co-ul"),
 
+			commentItemTemp: $("#comment_tmp").html(),
+			commentItem: $(".comment-items"),
+
 			qId: '',
 			sid: '',// 对方的uid
 			gid: 0,
@@ -544,6 +547,7 @@ require(["layer"],
 					var val = $(this).val();
 					var datatemp = catDes[val];
 					var arr = [];
+					/*
 					for (var i = 0; i < datatemp.length; i++) {
 						arr.push({opt: datatemp[i]});
 					}
@@ -551,6 +555,18 @@ require(["layer"],
 					var html = Mustache.render('{[#data]}<option value="{[opt]}">{[opt]}</option>{[/data]}', data);
 					util.commentCat2.html(html);
 					util.commentContent.val(datatemp[0]);
+					*/
+					var items = datatemp.items;
+					var type = datatemp.type;
+					var k;
+					for (var i = 0; i < items.length; i++) {
+						k = type == 'radio' ? 1 : i;
+						arr.push({val: items[i], type: type, index: i, k: k});
+					}
+					var data = {data: arr};
+					var html = Mustache.render(util.commentItemTemp, data);
+					util.commentItem.html(html);
+
 				});
 				$(document).on("change", ".co-cat-content2", function () {
 					var val = $(this).val();
@@ -558,11 +574,16 @@ require(["layer"],
 				});
 				util.commentBtn.on(kClick, function () {
 					var catVal = util.commentCat1.val();
-					var cot = $.trim(util.commentContent.val());
+					//var cot = $.trim(util.commentContent.val());
+					var cot = '';
 					if (!catVal) {
 						showMsg("评论类型不能为空");
 						return;
 					}
+					$(".comment-items").find("input:checked").each(function () {
+						cot = cot + ' ' + $(this).val();
+					});
+					return;
 					if (!cot) {
 						showMsg("评论内容不能为空");
 						util.commentContent.focus();
@@ -576,7 +597,7 @@ require(["layer"],
 						tag: "comment",
 						sid: util.sid,
 						cat: catVal,
-						cot: cot,
+						cot: $.trim(cot),
 					}, function (resp) {
 						util.loading = 0;
 						if (resp.code == 0) {

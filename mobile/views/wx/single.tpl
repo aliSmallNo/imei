@@ -125,6 +125,93 @@
     border-radius: 3rem" class="album-delete">删除</a>
 </section>
 <a class="m-schat-shade"></a>
+<style>
+
+	.magic-radio, .magic-checkbox {
+		position: absolute;
+		display: none;
+	}
+
+	.magic-radio + label, .magic-checkbox + label {
+		position: relative;
+		display: block;
+		padding-left: 3rem;
+		cursor: pointer;
+		vertical-align: middle;
+		font-size: 1.2rem
+	}
+
+	.magic-radio + label:before, .magic-checkbox + label:before {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: inline-block;
+		width: 2rem;
+		height: 2rem;
+		content: '';
+		border: 1px solid #c0c0c0;
+	}
+
+	.magic-checkbox + label:before {
+		border-radius: .3rem;
+	}
+
+	.magic-radio:checked + label:before, .magic-checkbox:checked + label:before {
+		animation-name: none;
+	}
+
+	.magic-checkbox:checked + label:before {
+		border: #f06292;
+		background: #f06292;
+	}
+
+	.magic-radio + label:after, .magic-checkbox + label:after {
+		position: absolute;
+		display: none;
+		content: '';
+	}
+
+	.magic-checkbox + label:after {
+		top: .2rem;
+		left: .7rem;
+		box-sizing: border-box;
+		width: .6rem;
+		height: 1.2rem;
+		transform: rotate(45deg);
+		border-width: .2rem;
+		border-style: solid;
+		border-color: #fff;
+		border-top: 0;
+		border-left: 0;
+	}
+
+	.magic-radio:checked + label:after, .magic-checkbox:checked + label:after {
+		display: block;
+	}
+
+	.magic-radio + label:before {
+		border-radius: 50%;
+	}
+
+	.magic-radio + label:after {
+		top: .7rem;
+		left: .7rem;
+		width: .8rem;
+		height: .8rem;
+		border-radius: 50%;
+		background: #f06292;
+	}
+
+	.magic-radio:checked + label:before {
+		border: 1px solid #f06292;
+	}
+
+
+	.comment-items .opt{
+		line-height: 2.4rem;
+		height: 2.4rem;
+	}
+</style>
 <section id="scomment" data-title="评价中...">
 	<div class="co-cat">
 		<label>评论类型</label>
@@ -136,14 +223,24 @@
 		</select>
 		<span></span>
 	</div>
-	<div class="co-cat">
+
+	<div class="co-cat" style="display: none">
 		<label>评论类型详细</label>
 		<select class="co-cat-content2">
 			<option value="">-请选择-</option>
 		</select>
 		<span></span>
 	</div>
-	<div class="co-content">
+
+	<div class="co-cat" >
+		<label>评论类型详细</label>
+		<div class="comment-items">
+
+		</div>
+	</div>
+
+
+	<div class="co-content" style="display: none">
 		<label>评论内容</label>
 		<textarea rows="3"></textarea>
 	</div>
@@ -154,9 +251,14 @@
 		还没有人对他进行评价哦~
 	</ul>
 </section>
-<style>
-
-</style>
+<script type="text/html" id="comment_tmp">
+{[#data]}
+<div class="opt">
+	<input class="magic-{[type]}" type="{[type]}" name="name{[k]}" id="c{[index]}" value="{[val]}">
+	<label for="c{[index]}">{[val]}</label>
+</div>
+{[/data]}
+</script>
 <section id="schat" data-title="密聊中...">
 	<a href="javascript:;" class="help-chat-icon">
 		<div class="img"><img src="/images/ico_help_chat.png"></div>
