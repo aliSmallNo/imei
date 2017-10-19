@@ -545,9 +545,8 @@ section
 
 .nav-foot
 	@include displayFlex
-	background: #fafafa
-	opacity: .95
-	border-top: 1px solid #e4e4e4
+	background-color: rgba(252, 252, 252, .95)
+	border-top: 1px solid #d8d8d8
 	position: fixed
 	left: 0
 	right: 0
@@ -581,14 +580,14 @@ section
 		&.active
 			font-weight: $weightBold
 			color: #F06292
-			&:before
-				position: absolute
-				bottom: 0
-				left: 2rem
-				right: 2rem
-				height: 2px
-				background: #fff
-				content: ''
+			//&:before
+			//	position: absolute
+			//	bottom: 0
+			//	left: 2rem
+			//	right: 2rem
+			//	height: 2px
+			//	background: #fff
+			//	content: ''
 		&:after
 			position: absolute
 			top: .5rem
@@ -1117,6 +1116,7 @@ section
 			color: $grayFontColorLight
 			line-height: 2rem
 			font-weight: $weightNormal
+
 .m-radios
 	@include displayFlex
 	a
@@ -4956,10 +4956,12 @@ section
 		top: 1rem
 		color: $grayFontColor
 		font-size: 1.2rem
+
 .arrow-right
 	&:after
 		@include arrowRight
 		right: 1.5rem
+
 .help-chat-icon
 	position: fixed
 	right: 1rem
@@ -6231,6 +6233,7 @@ section
 				span
 					font-size: 1rem
 					color: $mainColorLight
+
 a.user-comment
 	background: #f80
 	color: #fff
@@ -6241,6 +6244,7 @@ a.user-comment
 	width: 10rem
 	text-align: center
 	margin: 0 auto
+
 .co-cat, .co-content
 	margin: 1rem 0
 	padding: .5rem 1rem
@@ -6250,12 +6254,13 @@ a.user-comment
 	label
 		flex: 0 0 8rem
 		font-size: 1.2rem
-	select,textarea
+	select, textarea
 		flex: 1
 		font-size: 1.2rem
 		border: none
 		padding: 0 1rem
 		background: #fff
+
 .co-cat
 	span
 		position: absolute
@@ -6267,6 +6272,7 @@ a.user-comment
 		right: 1rem
 		top: 1rem
 		transform: rotate(-45deg)
+
 .co-btn
 	a
 		background: #f06292
@@ -6277,6 +6283,7 @@ a.user-comment
 		padding: .5rem
 		font-size: 1.2rem
 		border-radius: .5rem
+
 ul.co-ul
 	background: #fff
 	padding: 1rem

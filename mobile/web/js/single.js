@@ -583,9 +583,8 @@ require(["layer"],
 					$(".comment-items").find("input:checked").each(function () {
 						cot = cot + ' ' + $(this).val();
 					});
-					return;
 					if (!cot) {
-						showMsg("评论内容不能为空");
+						showMsg("评论详细不能为空");
 						util.commentContent.focus();
 						return;
 					}
