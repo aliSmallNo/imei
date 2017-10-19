@@ -600,8 +600,8 @@ require(["layer"],
 					}, function (resp) {
 						util.loading = 0;
 						if (resp.code == 0) {
-							// util.commentContent.val("");
-							 util.commentItem.val("");
+							//util.commentContent.val("");
+							 util.commentItem.html("");
 							util.commentlist(resp.data);
 							location.href = "#schat";
 						} else {
