@@ -877,14 +877,26 @@
 		<div class="mp-info">
 			<div class="advise">{[advise]}</div>
 			<div class="mp">
+				{[#delete]}
 				{[#mpname]}
 				<img src="{[mavatar]}" alt="">
-				<span><b>{[mpname]}</b> 推荐了TA</span>
+				<span ><b>{[mpname]}</b> 推荐了TA</span>
 				{[/mpname]}
 				{[^mpname]}
 				<img src="/images/logo62.png" alt="">
-				<span>TA还没<b>媒婆</b></span>
+				<span >TA还没<b>媒婆</b></span>
 				{[/mpname]}
+				{[/delete]}
+
+				{[#intro]}
+				<img src="/images/logo62.png" alt="">
+				<span >{[intro]}</span>
+				{[/intro]}
+				{[^intro]}
+				<img src="/images/logo62.png" alt="">
+				<span >Ta还没有填写内心独白</span>
+				{[/intro]}
+
 			</div>
 			{[#comment]}
 			<div class="des"><b>“</b>{[.]}<b>”</b></div>{[/comment]}

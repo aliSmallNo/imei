@@ -2006,8 +2006,7 @@ class ApiController extends Controller
 				}
 				$res = UserComment::iTems($sid);
 				return self::renderAPI(0, '', [
-					"data" => $res
-				]);
+					"data" => $res]);
 				break;
 			case 'topup':
 				$subUId = self::postParam('id');
