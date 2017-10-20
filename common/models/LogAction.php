@@ -82,7 +82,8 @@ class LogAction extends ActiveRecord
 		if ($reuseData && !$resetFlag) {
 			return $reuseData;
 		}
-		$sCategory = LogAction::REUSE_DATA_WEEK;
+		//$sCategory = LogAction::REUSE_DATA_WEEK;
+		$sCategory = $category;
 		$reuseData = [];
 		$tmpDate = '2017-07-17';
 		$conn = AppUtil::db();

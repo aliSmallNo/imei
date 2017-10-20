@@ -49,20 +49,34 @@
 	}
 </style>
 <div class="row">
-	<div class="col-lg-9">
+	<div class="col-lg-6">
 		<h4>留存率
 			{{if $debug==1}}
 			<a href="/site/reusestat?sign=reset" class="opReset btn btn-outline btn-danger btn-xs">重置刷新</a>
 			{{/if}}
 		</h4>
 	</div>
-	<div class="col-lg-3">
-		<div class="btn-group " role="group">
-			<button type="button" class="btn btn-default {{if $cat == 'all'}}active{{/if}}" tag="all">全部</button>
-			<button type="button" class="btn btn-default {{if $cat == 'male'}}active{{/if}}" tag="male">男</button>
-			<button type="button" class="btn btn-default {{if $cat == 'female'}}active{{/if}}" tag="female">女</button>
-		</div>
-	</div>
+	<form class=" form-inline">
+		<label class="radio-inline">
+			<input type="radio" name="way" {{if $way == 'week'}}checked{{/if}} value="week"> 按周统计
+		</label>
+		<label class="radio-inline">
+			<input type="radio" name="way" {{if $way == 'month'}}checked{{/if}} value="month"> 按月统计
+		</label>
+
+		<label class="radio-inline">
+			<input type="radio" name="cat" {{if $cat == 'all'}}checked{{/if}} value="all"> 全部
+		</label>
+		<label class="radio-inline">
+			<input type="radio" name="cat" {{if $cat == 'male'}}checked{{/if}} value="male"> 男
+		</label>
+		<label class="radio-inline">
+			<input type="radio" name="cat" {{if $cat == 'female'}}checked{{/if}} value="female"> 女
+		</label>
+
+		<button class="btn btn-primary">确定</button>
+	</form>
+
 </div>
 <div class="row">
 	<table class="table table-bordered" style="empty-cells: show;">
