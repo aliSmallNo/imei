@@ -3527,7 +3527,6 @@ section {
     border-width: 1px;
     border-style: solid;
     border-color: #888 #888 transparent transparent;
-    background-color: #fbd2e0;
     transform: rotate(-135deg) translateZ(0); }
   .nav a {
     -webkit-box-flex: 1;

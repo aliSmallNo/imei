@@ -660,6 +660,15 @@ class ApiController extends Controller
 				} else {
 					return self::renderAPI(129, '上传失败', $uId);
 				}
+			case "certnew":
+
+				$uId = User::certnew($id, $openId);
+				if ($uId) {
+					return self::renderAPI(0, '上传成功', $uId);
+				} else {
+					return self::renderAPI(129, '上传失败', $uId);
+				}
+				break;
 			case "myinfo":
 				$info = User::user(['uOpenId' => $openId]);
 				$info = User::shrinkUser($info);

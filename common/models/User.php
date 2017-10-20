@@ -1027,6 +1027,36 @@ class User extends ActiveRecord
 		return 0;
 	}
 
+	public static function certnew($ids, $openId)
+	{
+		$ids = json_decode($ids, 1);
+		$urls = [];
+		foreach ($ids as $v) {
+			list($thumb, $url) = ImageUtil::save2Server($v["id"], false);
+			$urls[] = [
+				"tag" => $v["tag"],
+				"url" => $url,
+			];
+		}
+		//list($thumb, $url) = ImageUtil::save2Server($id, false);
+		$Info = self::findOne(["uOpenId" => $openId]);
+		if ($urls && $Info) {
+			$uId = $Info->uId;
+			$note = [
+				'before' => $Info->uCertImage,
+				'after' => $urls
+			];
+			LogAction::add($uId, $openId, LogAction::ACTION_CERT,
+				json_encode($note, JSON_UNESCAPED_UNICODE));
+			return self::edit($Info->uId, [
+				"uCertImage" => json_encode($urls),
+				"uCertStatus" => User::CERT_STATUS_PENDING,
+				"uCertDate" => date("Y-m-d H:i:s")
+			]);
+		}
+		return 0;
+	}
+
 	public static function toCertVerify($id, $flag)
 	{
 		$Info = self::findOne(["uId" => $id]);

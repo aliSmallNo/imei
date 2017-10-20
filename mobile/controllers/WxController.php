@@ -660,6 +660,45 @@ class WxController extends BaseController
 			'实名认证');
 	}
 
+	public function actionCert2()
+	{
+		$hid = self::getParam('id');
+		$hid = AppUtil::decrypt($hid);
+
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$avatar = $nickname = '';
+		$stat = [];
+		if ($wxInfo) {
+			$avatar = $wxInfo["Avatar"];
+			$nickname = $wxInfo["uName"];
+		} else {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+
+		if (!$hid) {
+			$hid = $wxInfo["uId"];
+			if (!$hid) {
+				header('location:/wx/error?msg=用户不存在啊~');
+				exit();
+			}
+		}
+		$userInfo = User::findOne(["uId" => $hid]);
+
+		return self::renderPage("cert2.tpl",
+			[
+				'avatar' => $avatar,
+				'nickname' => $nickname,
+				'hid' => $hid,
+				'stat' => $stat,
+				'bgImage' => ($userInfo && $userInfo->uCertImage) ? $userInfo->uCertImage : "/images/cert_sample.jpg",
+				'certFlag' => $userInfo ? (($userInfo->uCertStatus == User::CERT_STATUS_PASS) ? 1 : 0) : 0
+			],
+			'terse',
+			'身份认证');
+	}
+
 	public function actionSingle()
 	{
 		$openId = self::$WX_OpenId;
