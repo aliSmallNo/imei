@@ -5,7 +5,6 @@
 
 	.nav {
 		background: #fafafa;
-		border-bottom: 1px solid #b2b2b2;
 	}
 
 	.nav a {
