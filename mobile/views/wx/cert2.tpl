@@ -5,6 +5,10 @@
 
 	.nav {
 		background: #fafafa;
+		position: fixed;
+		left: 0;
+		right: 0;
+		top: 0;
 	}
 
 	.nav a {
@@ -25,7 +29,7 @@
 	}
 
 	.c-content .c-titles {
-		margin-bottom: 2rem;
+		margin-bottom: 1.2rem;
 	}
 
 	.c-content .c-titles h3 {
