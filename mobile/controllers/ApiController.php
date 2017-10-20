@@ -1869,7 +1869,7 @@ class ApiController extends Controller
 		$uInfo = User::findOne(["uId" => $uid]);
 		$certstatus = $uInfo['uCertStatus'];
 		$status = $uInfo['uSubStatus'];
-		if (in_array($tag,["sent",'list','helpchat'])
+		if (in_array($tag, ["sent", 'list', 'helpchat'])
 			&& $status != User::SUB_ST_STAFF
 			&& in_array($certstatus, [User::CERT_STATUS_DEFAULT, User::CERT_STATUS_FAIL])) {
 			return self::renderAPI(129, '你还没有实名认证，赶快去个人中心实名认证吧~');

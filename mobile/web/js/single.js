@@ -601,7 +601,7 @@ require(["layer"],
 						util.loading = 0;
 						if (resp.code == 0) {
 							//util.commentContent.val("");
-							 util.commentItem.html("");
+							util.commentItem.html("");
 							util.commentlist(resp.data);
 							location.href = "#schat";
 						} else {
@@ -863,6 +863,7 @@ require(["layer"],
 			},
 			sent: function () {
 				var util = this;
+				console.log(util.commentFlag);
 				if (!util.commentFlag) {
 					showMsg("聊了这么多，觉得ta怎么样呢，快去匿名评价吧~");
 					return false;
@@ -934,6 +935,7 @@ require(["layer"],
 						util.gid = resp.data.gid;
 
 					} else {
+						util.commentFlag = 1;
 						showMsg(resp.msg, 3, 12);
 					}
 					util.loading = 0;
