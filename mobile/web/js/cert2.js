@@ -55,7 +55,7 @@ require(["layer"],
 		function uploadImages() {
 			alert(JSON.stringify($sls.localId));
 			alert($sls.localId.length);
-			if (!$sls.localId || !$sls.localId.length < 2) {
+			if (!$sls.localId || $sls.localId.length < 2) {
 				showMsg("上传照片信息不全哦");
 				return;
 			}
