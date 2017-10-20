@@ -70,13 +70,13 @@
 	<div class="c-up">
 		<div class="c-up-item">
 			<h5>身份证正面照</h5>
-			<a href="javascript:;" data-tag="zm">
+			<a href="javascript:;" data-tag="zm" localId="">
 				<img src="/images/cert/cert_1x.png">
 			</a>
 		</div>
 		<div class="c-up-item">
 			<h5>手持身份证照片</h5>
-			<a href="javascript:;" data-tag="sc">
+			<a href="javascript:;" data-tag="sc" localId="">
 				<img src="/images/cert/cert_2x.png">
 			</a>
 		</div>
