@@ -49,7 +49,7 @@ require(["layer"],
 				}
 			});
 			$sls.serverId = [];
-			alert(JSON.stringify($sls.localId));
+			// alert(JSON.stringify($sls.localId));
 			if (!$sls.localId || $sls.localId.length < 2) {
 				showMsg("上传照片信息不全哦");
 				return;
@@ -85,8 +85,7 @@ require(["layer"],
 		}
 
 		function submitItem() {
-			alert(JSON.stringify($sls.serverId));
-			return;
+			// alert(JSON.stringify($sls.serverId));return;
 			layer.open({
 				type: 2,
 				content: '正在上传中...'
