@@ -671,10 +671,18 @@ class SiteController extends BaseController
 		list($list, $count) = User::users($criteria, $params, $page, 20, true);
 		foreach ($list as $k => $row) {
 			$certImage = $row['certimage'];
-			if (strpos($certImage, '_n.') !== false) {
-				$certImage = str_replace('_n.', '.', $certImage);
+			if (strpos($certImage, "[{") !== false) {
+				$certImage = json_decode($certImage, 1);
+				foreach ($certImage as $v) {
+					$list[$k]["certs"][] = ["url" => $v["url"], "cert_big" => $v["url"]];
+				}
+			} else {
+				if (strpos($certImage, '_n.') !== false) {
+					$certImage = str_replace('_n.', '.', $certImage);
+				}
+				$list[$k]['cert_big'] = $certImage;
 			}
-			$list[$k]['cert_big'] = $certImage;
+
 		}
 		$pagination = self::pagination($page, $count);
 		return $this->renderPage('cert.tpl',

@@ -79,7 +79,7 @@
 			<a href="/wx/comments"><span class="title">对我的评论</span></a>
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">我的账户</span> <i class="i-mark-rose"></i></a>
 			<a href="/wx/mshare"><span class="title">分享给朋友</span></a>
-			<a href="/wx/cert?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span
+			<a href="/wx/cert2?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span
 								class="tip">已认证</span>{{/if}}</a>
 			<a href="/wx/notice">
 				<span class="title">通知</span>{{if $noReadFlag}}<span class="noReadFlag"></span>{{/if}}

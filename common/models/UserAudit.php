@@ -106,6 +106,7 @@ class UserAudit extends ActiveRecord
 			return [129, '用户不存在'];
 		}
 		$status = $uInfo['uStatus'];
+
 		if ($status == User::STATUS_VISITOR) {
 			return [129, '权限不足，请先完善你的个人资料'];
 		}
@@ -116,6 +117,7 @@ class UserAudit extends ActiveRecord
 			$msg = self::fault($uid, 0, $conn);
 			return [129, $msg];
 		}
+
 		return [0, ''];
 	}
 

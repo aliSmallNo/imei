@@ -132,7 +132,13 @@
 			<span class="status-{{$prod.certstatus}}">{{$prod.certstatus_t}}</span>
 		</td>
 		<td class="pInfo">
+			{{if isset($prod.certs)}}
+			{{foreach from=$prod.certs item=img }}
+				<img src="{{$img.url}}?v=1.1.1" bsrc="{{$img.url}}?v=1.1.1" class="i-img">
+			{{/foreach}}
+			{{else}}
 			<img src="{{$prod.certimage}}?v=1.1.1" bsrc="{{$prod.cert_big}}?v=1.1.1" class="i-img">
+			{{/if}}
 		</td>
 		<td class="pInfo">
 			<h5>更新于{{$prod.certdate|date_format:'%y-%m-%d %H:%M'}}</h5>

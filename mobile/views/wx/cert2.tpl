@@ -52,7 +52,8 @@
 	}
 
 	.c-up-item img {
-		width: 100%;
+		width: 13rem;
+		height: 13rem;
 	}
 
 </style>
@@ -99,4 +100,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/cert2.js?v=1.1.7" src="/assets/js/require.js"></script>
+<script data-main="/js/cert2.js?v=1.1.8" src="/assets/js/require.js"></script>

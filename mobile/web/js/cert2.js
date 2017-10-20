@@ -110,7 +110,7 @@ require(["layer"],
 		}
 
 		//////////////////////////////////////////////////
-		$(document).on(kClick, "a.choose-img", function () {
+	/*	$(document).on(kClick, "a.choose-img", function () {
 			if ($sls.certFlag == 1) {
 				showMsg("您已通过实名认证~");
 				return;
@@ -166,7 +166,7 @@ require(["layer"],
 				}
 				$sls.uploadImgFlag = 0;
 			}, "json");
-		}
+		}*/
 
 		function showMsg(title, sec) {
 			var delay = sec || 3;
