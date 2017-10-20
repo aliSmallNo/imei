@@ -21,7 +21,7 @@
 	}
 
 	.c-content {
-		padding: 1rem 1rem 3rem 1rem;
+		padding: 0rem 1rem 3rem 1rem;
 	}
 
 	.c-content .c-titles {
