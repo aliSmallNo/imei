@@ -157,6 +157,7 @@
 	</table>
 </div>
 <input type="hidden" id="cCAT" value="{{$cat}}">
+<input type="hidden" id="cWay" value="{{$way}}">
 <script>
 	$('button').on('click', function () {
 		var self = $(this);
