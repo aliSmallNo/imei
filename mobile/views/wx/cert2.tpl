@@ -30,6 +30,7 @@
 
 	.c-content .c-titles h3 {
 		font-size: 1.5rem;
+		margin: .6rem 0;
 	}
 
 	.c-content .c-titles p {
@@ -52,7 +53,7 @@
 
 	.c-up-item img {
 		width: 13rem;
-		height: 13rem;
+		height: 12rem;
 	}
 
 </style>
