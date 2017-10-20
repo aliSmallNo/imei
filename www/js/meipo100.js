@@ -49,7 +49,7 @@ var i = 0;
 $(document).on("click", ".arraw", function () {
 	//...
 	i = box.attr("data-index");
-	if (i == 4) {
+	if (i == 5) {
 		i = 0;
 	} else {
 		i++;
@@ -72,10 +72,10 @@ $("#pagebox").swipe(
 				i = i + 1;
 			}
 
-			if (i > 4) {
+			if (i > 5) {
 				i = 0;
 			} else if (i < 0) {
-				i = 4;
+				i = 5;
 			}
 			box.css({"top": -i * 100 + '%'});
 			dots.find("span").removeClass();

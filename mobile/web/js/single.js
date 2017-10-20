@@ -907,7 +907,7 @@ require(["layer"],
 						$sls.content.html(html).addClass("animate-pop-in");
 						$sls.shade.fadeIn(160);
 					} else {
-						showMsg(resp.msg, 3, 12);
+						showMsg(resp.msg, 8, 12);
 					}
 				}, "json");
 			},
@@ -936,7 +936,7 @@ require(["layer"],
 
 					} else {
 						util.commentFlag = 1;
-						showMsg(resp.msg, 3, 12);
+						showMsg(resp.msg, 8, 12);
 					}
 					util.loading = 0;
 				}, "json");
