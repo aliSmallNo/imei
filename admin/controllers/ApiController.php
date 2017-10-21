@@ -12,6 +12,7 @@ namespace admin\controllers;
 use admin\models\Admin;
 use common\models\ChatMsg;
 use common\models\City;
+use common\models\Log;
 use common\models\LogAction;
 use common\models\QuestionGroup;
 use common\models\QuestionSea;
@@ -435,6 +436,20 @@ class ApiController extends Controller
 				break;
 		}
 		return self::renderAPI(129, "什么操作也没做啊！");
+	}
+
+	// 今日头条推广 官网过来的 用户
+	public function actionSource()
+	{
+		$mess = self::postParam('mess');
+		$mess = json_decode($mess, 1);
+		$p = isset($mess['bigCat']) ? $mess['bigCat'] : '';
+		$c = isset($mess['smallCat']) ? $mess['smallCat'] : '';
+		$phone = self::postParam('phone');
+		Log::add([
+			'oCategory' => Log::CAT_SOURCE,
+			'oAfter' => ['prov' => $p, 'city' => $c, 'phone' => $phone]
+		]);
 	}
 
 	public function actionFoo()

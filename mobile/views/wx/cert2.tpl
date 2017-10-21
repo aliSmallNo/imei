@@ -39,10 +39,12 @@
 
 	.c-content .c-titles p {
 		font-size: 1.2rem;
+		margin-bottom: 1.5rem;
 	}
 
 	.c-up {
 		display: flex;
+		margin-bottom: 1rem;
 	}
 
 	.c-up-item {

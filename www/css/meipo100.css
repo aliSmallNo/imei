@@ -664,6 +664,50 @@ body, html, a, p, ul, div, h4, h5, h6 {
 	margin: .6rem auto;
 }
 
+.homepage .page5 .form{
+	margin: 0 1.5rem;
+}
+.homepage .page5 .form .form-group{
+	height: 31px;
+}
+.homepage .page5 .form .form-group label{
+	display: inline-block;
+	font-size: .4rem;
+
+}
+.homepage .page5 .form .form-group select{
+	background-color: white;
+	font-family: inherit;
+	width: 60%;
+	border: 1px solid #eee;
+	box-sizing: content-box;
+}
+.homepage .page5 .form .form-group select option{}
+.homepage .page5 .form a{
+	background: #ec7d6e;
+	color: #fff;
+	text-decoration: none;
+	display: inline-block;
+	padding: .15rem .4rem;
+	border-radius: .1rem;
+	margin-top: 1rem;
+	font-size: .4rem;
+	margin-left: 2rem;
+}
+.homepage .page5 .form .form-group input{
+	background-color: white;
+	font-family: inherit;
+	width: 57%;
+	border: 1px solid #eee;
+	box-sizing: content-box;
+}
+.homepage .page5 .form .form-group span{
+	font-size: .3rem;
+	color: red;
+	display: inherit;
+	margin-left: 2.1rem;
+}
+
 .homepage .arraw {
 	display: block;
 	width: 35px;
