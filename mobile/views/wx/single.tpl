@@ -1198,9 +1198,8 @@
 <script type="text/template" id="ctx_greet_new">
 	<div class="greeting">
 		<h4>{[title]}</h4>
-		<div style="padding-top: 1rem;padding-bottom: 1rem"></div>
+		<div style="padding-top: 1rem;padding-bottom: 1rem">{[content]}</div>
 		<ol>
-			<li>{[content]}</li>
 		</ol>
 		<a href="javascript:;" class="m-popup-close" style="display: none"></a>
 		<a href="{[url]}" class="m-popup-to" style="background: #f779a3;padding: 1rem 0;display: block;text-align: center;border-radius: .5rem;color: #fff;margin-top: 2rem;">

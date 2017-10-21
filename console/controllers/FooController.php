@@ -851,7 +851,7 @@ class FooController extends Controller
 
 
 		UserMsg::edit(0, [
-			"mText" => json_encode(["每日一句：恭喜YYY和frannki签手成功，平台送上最真挚的祝福，有平台签手成功的可以在公众号上留言，我们微媒大家庭一起祝福你们！"], JSON_UNESCAPED_UNICODE),
+			"mText" => json_encode(["每日一句：应国家规定，婚恋平台必须实名认证，为营造一个真实交友婚恋平台，即日起微媒100平台实施实名认证。没有实名认证的功能将受到限制！"], JSON_UNESCAPED_UNICODE),
 			"mCategory" => UserMsg::CATEGORY_UPGRADE,
 			"mUId" => RedisUtil::getIntSeq(),
 		]);
