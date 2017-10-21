@@ -642,13 +642,14 @@ class FooController extends Controller
 			}
 		}
 		$cnt = 0;
+		$rnd = rand(101, 118);
 		foreach ($contents as $phone => $msg) {
 			if (!$msg) continue;
 			QueueUtil::loadJob('sendSMS',
 				[
 					'phone' => $phone,
 					'msg' => $msg,
-					'rnd' => rand(101, 118)
+					'rnd' => $rnd
 				],
 				QueueUtil::QUEUE_TUBE_SMS);
 			$cnt++;
