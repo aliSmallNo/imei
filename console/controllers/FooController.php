@@ -648,7 +648,7 @@ class FooController extends Controller
 				[
 					'phone' => $phone,
 					'msg' => $msg,
-					'rnd' => 106
+					'rnd' => rand(101, 118)
 				],
 				QueueUtil::QUEUE_TUBE_SMS);
 			$cnt++;
