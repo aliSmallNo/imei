@@ -1203,7 +1203,7 @@
 			<li>{[content]}</li>
 		</ol>
 		<a href="javascript:;" class="m-popup-close" style="display: none"></a>
-		<a href="{[url]}" class="m-popup-to" style="background: #f779a3;padding: .5rem 0;display: block;text-align: center;border-radius: .5rem;color: #fff;margin-top: 2rem;">
+		<a href="{[url]}" class="m-popup-to" style="background: #f779a3;padding: 1rem 0;display: block;text-align: center;border-radius: .5rem;color: #fff;margin-top: 2rem;">
 			去实名</a>
 	</div>
 </script>
