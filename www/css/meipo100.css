@@ -678,9 +678,11 @@ body, html, a, p, ul, div, h4, h5, h6 {
 .homepage .page5 .form .form-group select{
 	background-color: white;
 	font-family: inherit;
-	width: 60%;
 	border: 1px solid #eee;
 	box-sizing: content-box;
+	width: 4rem;
+	height: .6rem;
+	font-size: .3rem;
 }
 .homepage .page5 .form .form-group select option{}
 .homepage .page5 .form a{
@@ -697,9 +699,11 @@ body, html, a, p, ul, div, h4, h5, h6 {
 .homepage .page5 .form .form-group input{
 	background-color: white;
 	font-family: inherit;
-	width: 57%;
 	border: 1px solid #eee;
 	box-sizing: content-box;
+	width: 4rem;
+	height: .6rem;
+	font-size: .3rem;
 }
 .homepage .page5 .form .form-group span{
 	font-size: .3rem;
