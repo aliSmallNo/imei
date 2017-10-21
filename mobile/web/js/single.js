@@ -906,8 +906,10 @@ require(["layer"],
 						var html = Mustache.render(util.shareTmp, {});
 						$sls.content.html(html).addClass("animate-pop-in");
 						$sls.shade.fadeIn(160);
+					} else if (resp.code == 102) {
+						alertModel.show('通知', '根据国家有关法规要求，婚恋交友平台用户须实名认证。您还没有实名认证，赶快去个人中心实名认证吧', '/wx/cert2');
 					} else {
-						showMsg(resp.msg, 8, 12);
+						showMsg(resp.msg, 3, 12);
 					}
 				}, "json");
 			},
@@ -934,8 +936,9 @@ require(["layer"],
 						}*/
 						util.gid = resp.data.gid;
 
+					} else if (resp.code = 102) {
+						alertModel.show('通知', '根据国家有关法规要求，婚恋交友平台用户须实名认证。您还没有实名认证，赶快去个人中心实名认证吧', '/wx/cert2');
 					} else {
-						util.commentFlag = 1;
 						showMsg(resp.msg, 8, 12);
 					}
 					util.loading = 0;
@@ -1946,6 +1949,29 @@ require(["layer"],
 			}
 		};
 
+		var alertModel = {
+			tmp: $('#ctx_greet_new').html(),
+			//content: $.trim($('#ctx_greet').html()),
+			content: '',
+			init: function () {
+
+			},
+			show: function (title, content, url) {
+				var util = this;
+				// if (util.content.length < 10) {
+				// 	return false;
+				// }
+				$sls.main.show();
+				var html = Mustache.render(util.tmp, {
+					title: title,
+					content: content,
+					url: url
+				});
+				$sls.content.html(html).addClass("animate-pop-in");
+				$sls.shade.fadeIn(160);
+			}
+		};
+
 		var NoticeUtil = {
 			socket: null,
 			uni: 0,
@@ -2090,6 +2116,7 @@ require(["layer"],
 			WxNoUtil.init();
 			ChatUtil.init();
 			GreetingUtil.init();
+			alertModel.init();
 			MeipoUtil.init();
 			ProfileUtil.init();
 			ResumeUtil.init();

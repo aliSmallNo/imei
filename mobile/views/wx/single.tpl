@@ -1194,6 +1194,20 @@
 	</div>
 	{{/if}}
 </script>
+
+<script type="text/template" id="ctx_greet_new">
+	<div class="greeting">
+		<h4>{[title]}</h4>
+		<div style="padding-top: 1rem;padding-bottom: 1rem"></div>
+		<ol>
+			<li>{[content]}</li>
+		</ol>
+		<a href="javascript:;" class="m-popup-close" style="display: none"></a>
+		<a href="{[url]}" class="m-popup-to" style="background: #f779a3;padding: .5rem 0;display: block;text-align: center;border-radius: .5rem;color: #fff;margin-top: 2rem;">
+			去实名</a>
+	</div>
+</script>
+
 <script type="text/template" id="tpl_greet">
 	{[/greet]}
 	<div class="greeting">
@@ -1306,4 +1320,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
-<script data-main="/js/single.js?v=1.11.19" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.11.20" src="/assets/js/require.js"></script>
