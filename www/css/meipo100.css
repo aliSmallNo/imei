@@ -655,11 +655,11 @@ body, html, a, p, ul, div, h4, h5, h6 {
 
 .homepage .page5 .app {
 	width: 6.29333333rem;
-	height: 1.44rem;
+	height: 1rem;
 	display: block;
 	-webkit-background-size: 100% 100%;
 	background-size: 100% 100%;
-	font-size: 0.5rem;
+	font-size: 0.3rem;
 	text-align: center;
 	margin: .6rem auto;
 }
@@ -674,6 +674,9 @@ body, html, a, p, ul, div, h4, h5, h6 {
 	display: inline-block;
 	font-size: .4rem;
 
+	position: relative;
+	top: -.4rem;
+
 }
 .homepage .page5 .form .form-group select{
 	background-color: white;
@@ -683,6 +686,9 @@ body, html, a, p, ul, div, h4, h5, h6 {
 	width: 4rem;
 	height: .6rem;
 	font-size: .3rem;
+
+	position: relative;
+	top: -.4rem;
 }
 .homepage .page5 .form .form-group select option{}
 .homepage .page5 .form a{
@@ -704,6 +710,9 @@ body, html, a, p, ul, div, h4, h5, h6 {
 	width: 4rem;
 	height: .6rem;
 	font-size: .3rem;
+
+	position: relative;
+	top: -.4rem;
 }
 .homepage .page5 .form .form-group span{
 	font-size: .3rem;
