@@ -17,6 +17,7 @@ function updateArea(areaName) {
 	$('#recipient-smallcat').html(smallCat);
 }
 
+var loadflag = 0;
 $('#btnSave').click(function () {
 	var phone = $("#recipient-phone").val();
 	var bigCat = $("#recipient-bigcat").val();
@@ -35,8 +36,14 @@ $('#btnSave').click(function () {
 		bigCat: bigCat,
 		smallCat: smallCat
 	};
-	console.log(mess);
-	console.log(phone);
+	//console.log(mess);console.log(phone);
+
+	if (!phone || mess.length < 2 || loadflag) {
+		console.log(mess.length);
+		return;
+	}
+	loadflag = 1;
+
 
 	$.post("/index.php",
 		{
@@ -44,6 +51,7 @@ $('#btnSave').click(function () {
 			phone: phone
 		},
 		function () {
+			loadflag = 0;
 			$("#recipient-phone").val('');
 			// $('#exampleModal').modal('show');
 		}, 'json');

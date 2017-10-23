@@ -1038,7 +1038,7 @@ class User extends ActiveRecord
 				"url" => $url,
 			];
 		}
-		//list($thumb, $url) = ImageUtil::save2Server($id, false);
+		// list($thumb, $url) = ImageUtil::save2Server($id, false);
 		$Info = self::findOne(["uOpenId" => $openId]);
 		if ($urls && $Info) {
 			$uId = $Info->uId;
@@ -1061,7 +1061,6 @@ class User extends ActiveRecord
 	{
 		$Info = self::findOne(["uId" => $id]);
 		if ($flag && $Info) {
-//			WechatUtil::regNotice($id, "cert" . $flag);
 			WechatUtil::templateMsg($flag == "pass" ? WechatUtil::NOTICE_CERT_GRANT : WechatUtil::NOTICE_CERT_DENY, $id);
 			return self::edit($id, [
 				"uCertStatus" => ($flag == "pass") ? User::CERT_STATUS_PASS : User::CERT_STATUS_FAIL,
