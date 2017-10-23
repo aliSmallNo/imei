@@ -141,7 +141,7 @@
 			{{/if}}
 		</td>
 		<td class="pInfo">
-			<h5>更新于{{$prod.certdate|date_format:'%y-%m-%d %H:%M'}}</h5>
+			<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 		</td>
 		<td>
 			{{if $prod.certstatus==1}}
@@ -177,7 +177,7 @@
 			id: id
 		}, function (resp) {
 			if (resp.code == 0) {
-				location.reload();
+			//	location.reload();
 			}
 			layer.msg(resp.msg);
 		}, "json");

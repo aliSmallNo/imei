@@ -682,7 +682,6 @@ class SiteController extends BaseController
 				}
 				$list[$k]['cert_big'] = $certImage;
 			}
-
 		}
 		$pagination = self::pagination($page, $count);
 		return $this->renderPage('cert.tpl',

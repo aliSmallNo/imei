@@ -307,11 +307,14 @@ class User extends ActiveRecord
 			$entity->uAddedBy = $editBy;
 			$entity->uUniqid = uniqid();
 		}
+
 		foreach ($params as $key => $val) {
 			$entity->$key = $val;
 		}
+
 		$entity->uUpdatedBy = $editBy;
 		$entity->uUpdatedOn = date('Y-m-d H:i:s');
+
 		$uid = $entity->save();
 		return $uid;
 	}
@@ -1065,9 +1068,7 @@ class User extends ActiveRecord
 			return self::edit($id, [
 				"uCertStatus" => ($flag == "pass") ? User::CERT_STATUS_PASS : User::CERT_STATUS_FAIL,
 				"uCertDate" => date("Y-m-d H:i:s"),
-				// "uUpdatedOn" => date("Y-m-d H:i:s"),
-				"uUpdatedBy" => Admin::getAdminId()
-			]);
+			], Admin::getAdminId());
 		}
 		return 0;
 	}
