@@ -446,6 +446,9 @@ class ApiController extends Controller
 		$p = isset($mess['bigCat']) ? $mess['bigCat'] : '';
 		$c = isset($mess['smallCat']) ? $mess['smallCat'] : '';
 		$phone = self::postParam('phone');
+		if (!AppUtil::checkPhone($phone) || !$p || !$c) {
+			return 0;
+		}
 		Log::add([
 			'oCategory' => Log::CAT_SOURCE,
 			'oAfter' => ['prov' => $p, 'city' => $c, 'phone' => $phone]
