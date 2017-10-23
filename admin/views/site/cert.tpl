@@ -177,7 +177,7 @@
 			id: id
 		}, function (resp) {
 			if (resp.code == 0) {
-			//	location.reload();
+				location.reload();
 			}
 			layer.msg(resp.msg);
 		}, "json");
