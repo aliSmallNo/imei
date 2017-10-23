@@ -1981,7 +1981,7 @@ class ApiController extends Controller
 				break;
 			case 'contacts':
 				$page = self::postParam('page', 1);
-				list($items, $nextPage) = ChatMsg::contacts($uid, $page, 30);
+				list($items, $nextPage) = ChatMsg::contacts($uid, $page, 40);
 				return self::renderAPI(0, '', [
 					'items' => $items,
 					'page' => intval($page),
