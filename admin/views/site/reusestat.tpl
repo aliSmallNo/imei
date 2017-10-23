@@ -49,33 +49,27 @@
 	}
 </style>
 <div class="row">
-	<div class="col-lg-6">
+	<div class="col-lg-7">
 		<h4>留存率
 			{{if $debug==1}}
 			<a href="/site/reusestat?sign=reset" class="opReset btn btn-outline btn-danger btn-xs">重置刷新</a>
 			{{/if}}
 		</h4>
 	</div>
-	<form class=" form-inline">
-		<label class="radio-inline">
-			<input type="radio" name="way" {{if $way == 'week'}}checked{{/if}} value="week"> 按周统计
-		</label>
-		<label class="radio-inline">
-			<input type="radio" name="way" {{if $way == 'month'}}checked{{/if}} value="month"> 按月统计
-		</label>
 
-		<label class="radio-inline">
-			<input type="radio" name="cat" {{if $cat == 'all'}}checked{{/if}} value="all"> 全部
-		</label>
-		<label class="radio-inline">
-			<input type="radio" name="cat" {{if $cat == 'male'}}checked{{/if}} value="male"> 男
-		</label>
-		<label class="radio-inline">
-			<input type="radio" name="cat" {{if $cat == 'female'}}checked{{/if}} value="female"> 女
-		</label>
+	<div class="col-lg-5 form-inline">
+		<div class="btn-group " role="group">
+			<button class="btn btn-default btn-cat {{if $cat == 'all'}}active{{/if}}" tag="all">全部</button>
+			<button class="btn btn-default btn-cat {{if $cat == 'male'}}active{{/if}}" tag="male">男性</button>
+			<button class="btn btn-default btn-cat {{if $cat == 'female'}}active{{/if}}" tag="female">女性</button>
+		</div>
+		<span class="space"></span>
+		<div class="btn-group " role="group">
+			<button class="btn btn-default btn-scope {{if $scope == 'week'}}active{{/if}}" tag="week">周统计</button>
+			<button class="btn btn-default btn-scope {{if $scope == 'month'}}active{{/if}}" tag="month">月统计</button>
+		</div>
 
-		<button class="btn btn-primary">确定</button>
-	</form>
+	</div>
 
 </div>
 <div class="row">
@@ -144,7 +138,7 @@
 			</td>
 			{{foreach from=$item[$cat].items key=k item=subItem}}
 			<td class="percent">
-				{{if $k<12}}
+				{{if $k<15}}
 				<a href="javascript:;" class="j-link" data-from="{{$subItem.from}}" data-to="{{$subItem.to}}">
 					{{$subItem.per|string_format:"%.1f"}}%
 				</a>
@@ -157,11 +151,14 @@
 	</table>
 </div>
 <input type="hidden" id="cCAT" value="{{$cat}}">
-<input type="hidden" id="cWay" value="{{$way}}">
+<input type="hidden" id="cWay" value="{{$scope}}">
 <script>
-	$('button').on('click', function () {
+	$('.btn-cat, .btn-scope').on('click', function () {
 		var self = $(this);
-		location.href = "/site/reusestat?cat=" + self.attr('tag');
+		self.closest('.btn-group').find('button').removeClass('active');
+		self.addClass('active');
+		self.blur();
+		location.href = "/site/reusestat?cat=" + $('.btn-cat.active').attr('tag') + '&scope=' + $('.btn-scope.active').attr('tag');
 	});
 
 	var mCat = $('#cCAT').val();

@@ -973,16 +973,16 @@ class SiteController extends BaseController
 	public function actionReusestat()
 	{
 		$cat = self::getParam("cat", "all");
-		$way = self::getParam("way", "week");
+		$scope = self::getParam("scope", "week");
 		$sign = self::getParam("sign");
-		$category = $way == 'week' ? LogAction::REUSE_DATA_WEEK : LogAction::REUSE_DATA_MONTH;
+		$category = ($scope == 'week' ? LogAction::REUSE_DATA_WEEK : LogAction::REUSE_DATA_MONTH);
 		$reuseData = LogAction::reuseData($category, ($sign == 'reset'));
 		return $this->renderPage("reusestat.tpl",
 			[
 				'category' => "data",
 				'reuseData' => $reuseData,
 				'cat' => $cat,
-				'way' => $way,
+				'scope' => $scope,
 			]
 		);
 	}
