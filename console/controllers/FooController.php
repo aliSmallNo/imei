@@ -635,11 +635,13 @@ class FooController extends Controller
 			} elseif ($location && !$sub) {
 				$contents[$phone] = '最近有一波' . $object . '刚注册微媒100找对象，离您最近的才5公理，赶快来看看吧，关注微信公众号微媒100';
 			}*/
-			if ($gender == User::GENDER_MALE) {
+			/*if ($gender == User::GENDER_MALE) {
 				$contents[$phone] = '周推荐开始了，看糖宝美女是不是你的菜，进入公众号微媒100来看一下吧';
 			} elseif ($gender == User::GENDER_FEMALE) {
 				$contents[$phone] = '周推荐开始了，2位不同年龄的帅哥暖男在这里，进入公众号微媒100来看下吧';
-			}
+			}*/
+
+			$contents[$phone] = '为了答谢大家对微媒100的关注，本平台将推出第一期“我们在微媒的牵手故事”为主题 ，有奖征集在微媒成功找到另一半的故事，微信公众号回复对方手机号码报名，报名对象：10月15日前成为情侣的恋人，核实后将抽取一组最佳情侣送上千元奖励哦！';
 		}
 		$cnt = 0;
 		$rnd = rand(101, 118);
