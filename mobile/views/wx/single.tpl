@@ -6,7 +6,7 @@
 	</div>
 </section>
 <section id="slook" data-title="发现单身">
-	<div class="my-condition">
+	<div class="my-condition"  style="display: none">
 		<a href="javascript:;" class="conditions">
 			<span class="con-title">择偶条件: </span>
 		</a>
