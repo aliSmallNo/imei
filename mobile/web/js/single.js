@@ -1149,6 +1149,7 @@ require(["layer"],
 		SmeUtil.init();
 
 		var FilterUtil = {
+			data: {},
 			tag: "",
 			cond: {},
 			unis: [],
@@ -1179,15 +1180,15 @@ require(["layer"],
 							util.showCriteria();
 							break;
 						case "comfirm":
-							var data = {};
+							FilterUtil.data = {};
 							self.closest("section").find(".condtion-item").each(function () {
 								var ta = $(this).attr("tag");
 								var value = $(this).find(".right").attr("data-id");
-								data[ta] = value;
+								FilterUtil.data[ta] = value;
 							});
-							console.log(data);
+							console.log(FilterUtil.data);
 							util.list.html('');
-							util.loadFilter(data, 1);
+							util.loadFilter(FilterUtil.data, 1);
 							location.href = "#slook";
 							break;
 					}
@@ -1250,7 +1251,7 @@ require(["layer"],
 				$.post("/api/user", {
 					tag: "userfilter",
 					page: page,
-					data: JSON.stringify(data),
+					data: JSON.stringify(FilterUtil.data),
 				}, function (resp) {
 					var items = [];
 					$.each(resp.data.data, function () {

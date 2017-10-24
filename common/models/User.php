@@ -1220,7 +1220,7 @@ class User extends ActiveRecord
 		}
 		$isSingle = ($myInfo->uRole == 10) ? 1 : 0;
 		$mId = $myInfo->uId;
-		$uFilter = $myInfo->uFilter;
+		// $uFilter = $myInfo->uFilter;
 		$myFilter = self::criteria($myInfo);
 
 		$gender = $myInfo->uGender;
@@ -1236,7 +1236,9 @@ class User extends ActiveRecord
 		$gender = ($gender == self::GENDER_FEMALE) ? self::GENDER_MALE : self::GENDER_FEMALE;
 		$uRole = User::ROLE_SINGLE;
 
-		$condition = " u.uRole=$uRole AND u.uGender=$gender 
+		$marry = $myInfo->uMarital == 100 ? '100' : '110,120,130';
+
+		$condition = " u.uRole=$uRole AND u.uGender=$gender and u.uMarital in ($marry) 
 				AND u.uStatus in (" . implode(',', self::$StatusVisible) . ") " . $ageLimit;
 
 		$prov = '江苏';
@@ -1248,10 +1250,6 @@ class User extends ActiveRecord
 					WHEN u.uLocation like '%$prov%' then 8 else 0 end) as rank";
 
 		// 去掉筛选条件啦~
-		/*
-		if (!$data) {
-			$data = json_decode($uFilter, 1);
-		}
 		if (isset($data["age"]) && $data["age"] != 0) {
 			$age = explode("-", $data["age"]);
 			$year = date("Y");
@@ -1259,6 +1257,17 @@ class User extends ActiveRecord
 			$ageEnd = $year - $age[0];
 			$condition .= " and u.uBirthYear  between $ageStart and $ageEnd ";
 		}
+		if (isset($data['location']) && $data['location']) {
+			list($fp, $fc) = explode('-', $data['location']);
+			$condition .= $fc ? " and u.uLocation  like '%$fp%' && u.uLocation like '%$fc%' " :
+				" and u.uLocation  like '%$fp%' ";
+		}
+
+		/*
+		if (!$data) {
+			$data = json_decode($uFilter, 1);
+		}
+
 
 		if (isset($data["height"]) && $data["height"] != 0) {
 			$height = explode("-", $data["height"]);
@@ -1408,7 +1417,13 @@ class User extends ActiveRecord
 		if ($next_page > 12) {
 			$next_page = 0;
 		}
-		return ["data" => $result, "nextpage" => $next_page, "condition" => $myFilter, 'page' => $page];
+		return [
+			"data" => $result,
+			"nextpage" => $next_page,
+			//"condition" => $myFilter,
+			"condition" => '',
+			'page' => $page
+		];
 	}
 
 	public static function mymp($openId)

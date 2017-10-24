@@ -2741,8 +2741,6 @@ section {
             .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options.col3 a:nth-of-type(3n+2):active {
               background: #4da2ff;
               color: #fff; }
-          .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options.col3 a:nth-child(3n+1) {
-            clear: left; }
         .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options.col4 a {
           width: 25%; }
           .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options.col4 a:nth-of-type(8n+2), .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options.col4 a:nth-of-type(8n+4), .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options.col4 a:nth-of-type(8n+5), .m-popup-main .m-popup-wrap .m-popup-content .m-popup-options.col4 a:nth-of-type(8n+7) {

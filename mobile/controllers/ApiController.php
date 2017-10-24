@@ -679,12 +679,12 @@ class ApiController extends Controller
 				$filter = self::postParam("data");
 				$filter = json_decode($filter, 1);
 				if ($filter) {
-					foreach ($filter as $k => $val) {
+					/*foreach ($filter as $k => $val) {
 						if (!$val) {
 							unset($filter[$k]);
 						}
 					}
-					User::edit($openId, ["uFilter" => json_encode($filter, JSON_UNESCAPED_UNICODE)]);
+					User::edit($openId, ["uFilter" => json_encode($filter, JSON_UNESCAPED_UNICODE)]);*/
 				}
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {

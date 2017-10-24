@@ -6,7 +6,7 @@
 	</div>
 </section>
 <section id="slook" data-title="发现单身">
-	<div class="my-condition" style="display: none">
+	<div class="my-condition">
 		<a href="javascript:;" class="conditions">
 			<span class="con-title">择偶条件: </span>
 		</a>
@@ -28,15 +28,15 @@
 		<div class="left">年龄</div>
 		<div class="right">请选择</div>
 	</a>
-	<a href="javascript:;" class="condtion-item" tag="height">
+	<a href="javascript:;" class="condtion-item" tag="height" style="display: none">
 		<div class="left">身高</div>
 		<div class="right">请选择</div>
 	</a>
-	<a href="javascript:;" class="condtion-item" tag="income">
+	<a href="javascript:;" class="condtion-item" tag="income" style="display: none">
 		<div class="left">年薪</div>
 		<div class="right">请选择</div>
 	</a>
-	<a href="javascript:;" class="condtion-item" tag="edu">
+	<a href="javascript:;" class="condtion-item" tag="edu" style="display: none">
 		<div class="left">学历</div>
 		<div class="right">请选择</div>
 	</a>

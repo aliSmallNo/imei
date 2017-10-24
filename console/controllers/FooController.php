@@ -853,7 +853,7 @@ class FooController extends Controller
 
 
 		UserMsg::edit(0, [
-			"mText" => json_encode(["每日一句：应国家规定，婚恋平台必须实名认证，为营造一个真实交友婚恋平台，即日起微媒100平台实施实名认证。没有实名认证的功能将受到限制！"], JSON_UNESCAPED_UNICODE),
+			"mText" => json_encode(["为了答谢大家对微媒100的关注，微媒100推出第一期“我们在微媒的牵手故事”为主题 ，有奖征集大家在微媒成功找到另一半的故事，微信公众号回复对方手机号码开始报名，报名对象：10月15日前成为情侣的恋人，核实后我们会抽取一组最佳情侣送上千元奖励哦！"], JSON_UNESCAPED_UNICODE),
 			"mCategory" => UserMsg::CATEGORY_UPGRADE,
 			"mUId" => RedisUtil::getIntSeq(),
 		]);
