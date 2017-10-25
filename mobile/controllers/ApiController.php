@@ -699,7 +699,6 @@ class ApiController extends Controller
 							"img" => "https://img.meipo100.com/default/img_profile.png",
 						],
 
-						//https://img.meipo100.com/default/img_favor.png
 					]);
 					array_splice($ret['data'], 7, 0, [
 						[

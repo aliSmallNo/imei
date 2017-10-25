@@ -1282,7 +1282,9 @@ require(["layer"],
 					var items = [];
 					$.each(resp.data.data, function () {
 						var uni = this['uni'];
-						if (util.unis.indexOf(uni) < 0) {
+						if (!uni) {
+							items.push(this);
+						} else if (util.unis.indexOf(uni) < 0) {
 							items.push(this);
 							util.unis.push(uni);
 						}
