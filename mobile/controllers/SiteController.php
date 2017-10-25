@@ -33,7 +33,7 @@ class SiteController extends BaseController
 		$bgSrc = '';
 		$preview = 0;
 		if ($uId) {
-			$bgSrc = UserQR::mpShareQR($uId);
+			$bgSrc = UserQR::mpShareQR($uId, 'https://img.meipo100.com/default-meipo-sm.jpg');
 			$cls = $preview ? '' : 'big';
 		}
 		return self::renderPage('share.tpl',
