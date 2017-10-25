@@ -25,7 +25,7 @@ class SiteController extends BaseController
 		return self::renderPage('error.tpl');
 	}
 
-	public function actionShare()
+	public function actionPubShare()
 	{
 		$uId = self::getParam('id');
 		$city = self::getParam('city', '盐城');
