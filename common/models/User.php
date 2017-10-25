@@ -274,6 +274,7 @@ class User extends ActiveRecord
 			])->execute();
 		}
 		$entity = self::findOne(["uOpenId" => $openId]);
+		$preInfo = $entity->toArray();
 		$entity->uUpdatedOn = date('Y-m-d H:i:s');
 		$entity->uUpdatedBy = $adminId;
 		foreach ($data as $key => $val) {
@@ -290,7 +291,14 @@ class User extends ActiveRecord
 			}
 		}
 		$entity->save();
-
+		$afterInfo = $entity->toArray();
+		Log::add([
+			"oCategory" => Log::CAT_USER_MODIFY,
+			"oUId" => $entity->uId,
+			"oOpenId" => $openId,
+			"oAfter" => $afterInfo,
+			"oBefore" => $preInfo,
+		]);
 		return $entity->uId;
 	}
 
@@ -1260,7 +1268,7 @@ class User extends ActiveRecord
 		if (isset($data['location']) && $data['location']) {
 			list($fp, $fc) = explode('-', $data['location']);
 			//$condition .= $fc ? " and u.uLocation  like '%$fp%' && u.uLocation like '%$fc%' " : " and u.uLocation  like '%$fp%' ";
-			$condition .=  " and u.uLocation  like '%$fp%' ";
+			$condition .= " and u.uLocation  like '%$fp%' ";
 		}
 
 		/*
