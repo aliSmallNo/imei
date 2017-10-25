@@ -687,9 +687,11 @@ require(["layer"],
 						util.toggle(false, util.helpchatMenu);
 					}
 				});
-				$(document).on(kClick, ".help-chat-icon", function () {
+
+				$(document).on(kClick, ".help-chat-icon-btn", function () {
 					util.toggle(util.helpchatMenu.hasClass("off"), util.helpchatMenu);
 				});
+
 				$(document).on(kClick, ".help-chat-item a", function () {
 					// util.toggle(false, util.helpchatMenu);
 					var self = $(this);
@@ -738,6 +740,30 @@ require(["layer"],
 							break;
 					}
 				});
+
+				$(document).on(kClick, ".schat-top-bar a", function () {
+					// util.toggle(util.menus.hasClass("off"), util.menus);
+					var self = $(this);
+					var tag = self.attr("data-tag");
+					switch (tag) {
+						case "toblock":
+							layer.open({
+								content: '您确定要拉黑TA吗？',
+								btn: ['确定', '取消'],
+								yes: function (index) {
+									util.toBlock();
+								}
+							});
+							break;
+						case "helpchat":
+							util.toggle(util.helpchatMenu.hasClass("off"), util.helpchatMenu);
+							break;
+						case 'date':
+							// location.href = '#date';
+							break;
+					}
+				});
+
 			},
 			delChatBtn: function (obj, tag) {
 				if (tag == "edit") {

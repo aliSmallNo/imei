@@ -6,7 +6,7 @@
 	</div>
 </section>
 <section id="slook" data-title="发现单身">
-	<div class="my-condition"  style="display: none">
+	<div class="my-condition" style="display: none">
 		<a href="javascript:;" class="conditions">
 			<span class="con-title">择偶条件: </span>
 		</a>
@@ -205,8 +205,7 @@
 		border: 1px solid #f06292;
 	}
 
-
-	.comment-items .opt{
+	.comment-items .opt {
 		line-height: 2.4rem;
 		height: 2.4rem;
 	}
@@ -231,7 +230,7 @@
 		<span></span>
 	</div>
 
-	<div class="co-cat" >
+	<div class="co-cat">
 		<label>评论类型详细</label>
 		<div class="comment-items">
 
@@ -250,21 +249,70 @@
 		还没有人对他进行评价哦~
 	</ul>
 </section>
-<script type="text/html" id="comment_tmp">
-{[#data]}
-<div class="opt">
-	<input class="magic-{[type]}" type="{[type]}" name="name{[k]}" id="c{[index]}" value="{[val]}">
-	<label for="c{[index]}">{[val]}</label>
-</div>
-{[/data]}
-</script>
+
+<style>
+	.schat-top-bar {
+		position: fixed;
+		left: 0;
+		right: 0;
+		top: 0;
+		z-index: 7;
+		display: flex;
+		padding: .5rem 0;
+		background: #fff;
+	}
+
+	.schat-top-bar a {
+		flex: 1;
+		position: relative;
+	}
+
+	.schat-top-bar a:not(:last-child):after {
+		position: absolute;
+		content: '';
+		right: 0;
+		top: .8rem;
+		width: .1rem;
+		height: 3rem;
+		background: #eee;
+
+	}
+
+	.schat-top-bar a img {
+		width: 2.4rem;
+		height: 2.4rem;
+		display: block;
+		margin: 0 auto;
+	}
+
+	.schat-top-bar a div {
+		font-size: 1rem;
+		text-align: center;
+	}
+
+</style>
+
 <section id="schat" data-title="密聊中...">
-	<a href="javascript:;" class="help-chat-icon">
+	<div class="schat-top-bar">
+		<a href="javascript:;" data-tag="helpchat">
+			<img src="/images/top_help_chat.png">
+			<div>助聊</div>
+		</a>
+		<a href="javascript:;" data-tag="date">
+			<img src="/images/top_date.png">
+			<div>帮我约TA</div>
+		</a>
+		<a href="javascript:;" data-tag="toblock">
+			<img src="/images/top_block.png">
+			<div>拉黑TA</div>
+		</a>
+	</div>
+	<a href="javascript:;" class="help-chat-icon help-chat-icon-btn" style="display: none">
 		<div class="img"><img src="/images/ico_help_chat.png"></div>
 		<div class="text">助聊?</div>
 	</a>
 
-	<div class="report_wrap">
+	<div class="report_wrap schat-content">
 		<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
 		<ul class="chats">
 
@@ -981,21 +1029,21 @@
 				{[#delete]}
 				{[#mpname]}
 				<img src="{[mavatar]}" alt="">
-				<span ><b>{[mpname]}</b> 推荐了TA</span>
+				<span><b>{[mpname]}</b> 推荐了TA</span>
 				{[/mpname]}
 				{[^mpname]}
 				<img src="/images/logo62.png" alt="">
-				<span >TA还没<b>媒婆</b></span>
+				<span>TA还没<b>媒婆</b></span>
 				{[/mpname]}
 				{[/delete]}
 
 				{[#intro]}
 				<img src="/images/logo62.png" alt="">
-				<span >{[intro]}</span>
+				<span>{[intro]}</span>
 				{[/intro]}
 				{[^intro]}
 				<img src="/images/logo62.png" alt="">
-				<span >Ta还没有填写内心独白</span>
+				<span>Ta还没有填写内心独白</span>
 				{[/intro]}
 
 			</div>
@@ -1202,7 +1250,8 @@
 		<ol>
 		</ol>
 		<a href="javascript:;" class="m-popup-close" style="display: none"></a>
-		<a href="{[url]}" class="m-popup-to" style="background: #f779a3;padding: 1rem 0;display: block;text-align: center;border-radius: .5rem;color: #fff;margin-top: 2rem;">
+		<a href="{[url]}" class="m-popup-to"
+			 style="background: #f779a3;padding: 1rem 0;display: block;text-align: center;border-radius: .5rem;color: #fff;margin-top: 2rem;">
 			去实名</a>
 	</div>
 </script>
@@ -1316,7 +1365,15 @@
 	</li>
 	{[/data]}
 </script>
+<script type="text/html" id="comment_tmp">
+	{[#data]}
+	<div class="opt">
+		<input class="magic-{[type]}" type="{[type]}" name="name{[k]}" id="c{[index]}" value="{[val]}">
+		<label for="c{[index]}">{[val]}</label>
+	</div>
+	{[/data]}
+</script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script src="/assets/js/mustache.min.js"></script>
+<script src="/assets/js/mustache.min.js?v=1.2.1"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
-<script data-main="/js/single.js?v=1.11.20" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.11.21" src="/assets/js/require.js"></script>

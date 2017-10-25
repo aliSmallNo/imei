@@ -1258,9 +1258,9 @@ class User extends ActiveRecord
 			$condition .= " and u.uBirthYear  between $ageStart and $ageEnd ";
 		}
 		if (isset($data['location']) && $data['location']) {
-//			list($fp, $fc) = explode('-', $data['location']);
-//			$condition .= $fc ? " and u.uLocation  like '%$fp%' && u.uLocation like '%$fc%' " :
-//				" and u.uLocation  like '%$fp%' ";
+			list($fp, $fc) = explode('-', $data['location']);
+			//$condition .= $fc ? " and u.uLocation  like '%$fp%' && u.uLocation like '%$fc%' " : " and u.uLocation  like '%$fp%' ";
+			$condition .=  " and u.uLocation  like '%$fp%' ";
 		}
 
 		/*

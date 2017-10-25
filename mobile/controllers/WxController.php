@@ -1716,5 +1716,33 @@ class WxController extends BaseController
 			'comment-bg');
 	}
 
+	public function actionDate()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/error');
+			exit();
+		}
+		$id = self::getParam("id");
+		$id=AppUtil::decrypt($id);
+		if (!$id) {
+//			header('location:/wx/error');
+//			exit();
+
+		}
+
+		$uid = $wxInfo["uId"];
+
+		$items = UserComment::iTems($uid);
+		return self::renderPage('date.tpl',
+			[
+				"items" => $items,
+			],
+			'terse',
+			"我的邀约",
+			'');
+	}
+
 
 }
