@@ -693,13 +693,17 @@ class ApiController extends Controller
 				LogAction::add($wxInfo['uId'], $openId, LogAction::ACTION_SINGLE_LIST);
 				$ret = User::getFilter($openId, $filter, $page, 15);
 				if (isset($ret['data']) && count($ret['data']) > 3 && $page == 1) {
-					array_splice($ret['data'], 3, 0, [
-						[
-							"url" => "/wx/sedit",
-							"img" => "https://img.meipo100.com/default/img_profile.png",
-						],
+					$u = User::find()->where(["uId" => $wxInfo["uId"]])->asArray()->one();
+					$u = User::fmtRow($u);
+					if ($u["percent"] < 90) {
+						array_splice($ret['data'], 3, 0, [
+							[
+								"url" => "/wx/sedit",
+								"img" => "https://img.meipo100.com/default/img_profile.png",
+							],
+						]);
+					}
 
-					]);
 					array_splice($ret['data'], 7, 0, [
 						[
 							"url" => "/wx/lottery",
