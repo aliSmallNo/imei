@@ -92,7 +92,7 @@ class UserBuzz extends ActiveRecord
 <a href="http://www.hdb.com/party/tq722.html?h_share_uid=jror5u">东台线下交友活动报名中……</a>' . PHP_EOL . '
 <a href="http://mp.weixin.qq.com/s/tVgb0FV7_XCEidQjwtkw8Q">转发有奖活动ing</a>' . PHP_EOL . '
 <a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI3NzczMDQwMA==&scene=124#wechat_redirect">往期回顾</a>' . PHP_EOL . '
-<a href="https://wx.meipo100.com/wx/single#slook">找对象→微媒100最靠谱的同城找对象平台</a>';
+<a href="https://wx.meipo100.com/wx/single#slook">找对象👉微媒100最靠谱的同城找对象平台</a>';
 		/* "『微媒100』是一个真实婚恋交友平台。在这里你可以有两种身份，媒婆和单身。
 媒婆可以将自己身边好友拉到平台上来帮助他们脱单。
 单身的朋友可以直接注册，在这里寻找心仪的另一半。";*/
