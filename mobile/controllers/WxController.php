@@ -1733,12 +1733,14 @@ class WxController extends BaseController
 			header('location:/wx/error');
 			exit();
 		}
+		$TA = User::findOne(["uId" => $id]);
+		if (!$TA) {
+			header('location:/wx/error');
+			exit();
+		}
 
 		list($d, $st, $role) = Date::oneInfoForWx($wxInfo["uId"], $id);
-//		echo $st.'<br>';
-//		echo $role.'<br>';
-//		print_r($d);
-//		exit;
+
 		$uid = $wxInfo["uId"];
 		$items = UserComment::iTems($uid);
 
@@ -1757,6 +1759,8 @@ class WxController extends BaseController
 				"sid" => $sid,
 				"uid" => $uid,
 				"id" => $id,
+				"phone" => $TA->uPhone,
+				"TA" => $TA,
 			],
 			'terse',
 			"我的邀约",

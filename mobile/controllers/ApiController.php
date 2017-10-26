@@ -2142,7 +2142,6 @@ class ApiController extends Controller
 				}
 				break;
 			case "date_pay":
-				//$amt = self::postParam('amt'); // 单位人民币元
 				$amt = 49; // 单位人民币元
 				$num = intval($amt);
 				$did = self::postParam('did');
@@ -2152,8 +2151,6 @@ class ApiController extends Controller
 				if (AppUtil::isDev()) {
 					return self::renderAPI(129, '请在服务器测试该功能~');
 				}
-				// Rain: 测试阶段，payFee x元实际支付x分
-//				$payFee = $amt;
 				$payFee = intval($amt * 100);
 				if (in_array($openId, ['oYDJew5EFMuyrJdwRrXkIZLU2c58', 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'])) {
 					$payFee = 1;
@@ -2167,6 +2164,15 @@ class ApiController extends Controller
 					]);
 				} else {
 					self::renderAPI(129, '支付失败~');
+				}
+				break;
+			case "date_phone":
+				$did = self::postParam('did');
+				$res = Date::edit($did, ["dStatus" => Date::STATUS_MEET]);
+				if ($res) {
+					return self::renderAPI(0, '操作成功~');
+				} else {
+					return self::renderAPI(129, '操作失败~');
 				}
 				break;
 		}
