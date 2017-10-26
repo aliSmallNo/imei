@@ -272,7 +272,7 @@
 
 <div class="date-nav">
 	<a href="/wx/single#sme" class="date-return">返回</a>
-	{{if $st==100 && $role=='active'}}
+	{{if $st<120 && $role=='active'}}
 	<a href="javascript:;" class="date-cancel">取消邀约</a>
 	{{/if}}
 </div>
