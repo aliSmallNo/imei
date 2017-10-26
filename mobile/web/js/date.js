@@ -195,6 +195,7 @@ require(["layer"],
 								showMsg("您已经微信支付成功！");
 								location.href = "/wx/date?id=" + util.sid;
 							} else {
+								util.payBtn.html('付款平台');
 								showMsg("您已经取消微信支付！");
 							}
 						}
