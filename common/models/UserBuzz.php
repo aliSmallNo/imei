@@ -82,6 +82,22 @@ class UserBuzz extends ActiveRecord
 		self::$WelcomeMsg .= '点击底栏“我是单身”，为自己找对象！' . PHP_EOL . PHP_EOL;
 		self::$WelcomeMsg .= '这里的单身，均有好友做推荐，让交友变得真实';*/
 
+
+		self::$WelcomeMsg = 'hi,等你好久了！<br>
+<br>
+--想遇到更多缘分--<br>
+【本周微媒100推荐】<br>
+<a href="http://mp.weixin.qq.com/s/XZ_dfqDdzjqKoHo1zGrQhQ">爱情可遇不可求，希望遇见就不再错过</a><br>
+<a href="http://mp.weixin.qq.com/s/ZhdPCxDv2DeODzHm0dBAyA">90后小伙：我已经来了，你在哪呢</a><br>
+<a href="http://mp.weixin.qq.com/s/YGtcevsf7dwg9pJLxQuRYw">向往纯粹爱情的他，是否能得到你的青睐</a><br>
+<a href="http://www.hdb.com/party/tq722.html?h_share_uid=jror5u">东台线下交友活动报名中……</a><br>
+<br>
+<a href="http://mp.weixin.qq.com/s/tVgb0FV7_XCEidQjwtkw8Q">转发有奖活动ing</a><br>
+<br>
+<a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI3NzczMDQwMA==&scene=124#wechat_redirect">往期回顾</a><br>
+<br>
+微媒100最靠谱的同城找对象平台';
+
 		self::$WelcomeMsg = "『微媒100』是一个真实婚恋交友平台。在这里你可以有两种身份，媒婆和单身。
 媒婆可以将自己身边好友拉到平台上来帮助他们脱单。
 单身的朋友可以直接注册，在这里寻找心仪的另一半。";
@@ -182,6 +198,44 @@ class UserBuzz extends ActiveRecord
 								]
 							]
 						]);
+					} elseif ($content == 219) {
+						$resp = self::json_to_xml([
+							'ToUserName' => $fromUsername,
+							'FromUserName' => $toUsername,
+							'CreateTime' => time(),
+							'MsgType' => 'news',
+							'ArticleCount' => 1,
+							'Articles' => [
+								'item' => [
+									'Title' => '→打后照片记得点这里←千万别错过获得50元现金福利>>',
+									'Description' => '盐城本地相亲交友平台，一起来脱单吧！',
+									'PicUrl' => 'https://img.meipo100.com/default/flag_178.jpg?v=1.1.4',
+									'Url' => 'https://wx.meipo100.com/wx/single#slook'
+								]
+							]
+						]);
+						$contents = 'hi,等你好久了！<br>
+<br>
+--想遇到更多缘分--<br>
+【本周微媒100推荐】<br>
+<a href="http://mp.weixin.qq.com/s/XZ_dfqDdzjqKoHo1zGrQhQ">爱情可遇不可求，希望遇见就不再错过</a><br>
+<a href="http://mp.weixin.qq.com/s/ZhdPCxDv2DeODzHm0dBAyA">90后小伙：我已经来了，你在哪呢</a><br>
+<a href="http://mp.weixin.qq.com/s/YGtcevsf7dwg9pJLxQuRYw">向往纯粹爱情的他，是否能得到你的青睐</a><br>
+<a href="http://www.hdb.com/party/tq722.html?h_share_uid=jror5u">东台线下交友活动报名中……</a><br>
+<br>
+<a href="http://mp.weixin.qq.com/s/tVgb0FV7_XCEidQjwtkw8Q">转发有奖活动ing</a><br>
+<br>
+<a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI3NzczMDQwMA==&scene=124#wechat_redirect">往期回顾</a><br>
+<br>
+微媒100最靠谱的同城找对象平台';
+						$resp = self::json_to_xml([
+							'ToUserName' => $fromUsername,
+							'FromUserName' => $toUsername,
+							'CreateTime' => time(),
+							'MsgType' => 'text',
+							'Content' => $contents,
+						]);
+
 					} elseif ($content == "金秋送礼") {
 						if (!User::findOne(["uOpenId" => $fromUsername])->uStatus) {
 							$contents = "尊敬的微媒100用户，您好，您的手机号还没有登录哦~<a href='https://wx.meipo100.com/wx/imei'>点我登录</a>查看活动。";
@@ -200,7 +254,7 @@ class UserBuzz extends ActiveRecord
 							$contents = "中奖用户是 Frankie~";
 						}
 						//elseif ($fromUsername == "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
-							// $contents = "中奖用户是 Frankie~<a href='https://wx.meipo100.com/wx/sh?id=AzxsXTQ9Rjc8NkxnNzo6P0E_QXJjOUNMPEI8UW0'>点击查看TA</a>";
+						// $contents = "中奖用户是 Frankie~<a href='https://wx.meipo100.com/wx/sh?id=AzxsXTQ9Rjc8NkxnNzo6P0E_QXJjOUNMPEI8UW0'>点击查看TA</a>";
 						//}
 						else {
 							$contents = "还没到开奖时间哦，敬请期待.....<a href='https://wx.meipo100.com/wx/pin8'>点击了解活动详情</a>。";
