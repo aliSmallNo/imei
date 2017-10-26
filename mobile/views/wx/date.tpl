@@ -334,6 +334,7 @@
 <input type="hidden" id="user_role" value="{{$role}}">
 <input type="hidden" id="user_st" value="{{$st}}">
 <input type="hidden" id="user_sid" value="{{$sid}}">
+<input type="hidden" id="user_did" value="{{if isset($d.dId)}}{{$d.dId}}{{/if}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>

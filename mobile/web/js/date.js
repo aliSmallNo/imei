@@ -28,6 +28,7 @@ require(["layer"],
 		var dateUtil = {
 			tag: '',
 			role: $("#user_role").val(),
+			did: $("#user_did").val(),
 			st: $("#user_st").val(),
 			sid: $("#user_sid").val(),
 			r1fields: ['cat', 'paytype', 'title', 'intro'], //邀请方字段
@@ -168,7 +169,7 @@ require(["layer"],
 				$.post('/api/date',
 					{
 						tag: util.tag,
-						sid: util.sid,
+						did: util.did,
 					},
 					function (resp) {
 						if (resp.code == 0) {
