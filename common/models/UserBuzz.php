@@ -138,14 +138,12 @@ class UserBuzz extends ActiveRecord
 						if ($qrInfo) {
 							$content = $qrInfo["qCode"];
 							self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SUBSCRIBE, $qId);
-							$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
-							//self::welcomeMsg($fromUsername, $toUsername, $event, $content);
+							$resp = self::welcomeMsg($fromUsername, $toUsername, $event, $content);
 						}
 					}
 				} else {
 					UserNet::addByOpenId($fromUsername, self::$IMEI_UID, UserNet::REL_SUBSCRIBE);
-					$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
-					//self::welcomeMsg($fromUsername, $toUsername, $event);
+					$resp = self::welcomeMsg($fromUsername, $toUsername, $event);
 				}
 				// Rain: 添加或者更新微信用户信息
 				UserWechat::refreshWXInfo($fromUsername);
@@ -275,7 +273,7 @@ class UserBuzz extends ActiveRecord
 						]
 					]);
 				}
-				//return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
+			//return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
 			/*return self::json_to_xml([
 				'ToUserName' => $fromUsername,
 				'FromUserName' => $toUsername,
