@@ -739,7 +739,11 @@ class FooController extends Controller
 			return;
 		}
 		for ($k = 110; $k < 116; $k++) {
-			$url = UserQR::createQR($uid, UserQR::CATEGORY_SALES, $ucode . substr($k, 1));
+			$url = UserQR::createQR($uid,
+				UserQR::CATEGORY_SALES,
+				$ucode . substr($k, 1),
+				'微信扫一扫 关注微媒100',
+				true);
 			echo $url;
 			echo PHP_EOL;
 		}

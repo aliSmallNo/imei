@@ -74,7 +74,7 @@ class UserQR extends ActiveRecord
 		return self::createQR($uid, $category, '');
 	}
 
-	public static function createQR($uid, $category, $code = '', $bottomTitle = '微信扫一扫 关注微媒100')
+	public static function createQR($uid, $category, $code = '', $bottomTitle = '微信扫一扫 关注微媒100', $logoFlag = false)
 	{
 		if (AppUtil::isDev()) {
 			return '/images/qrmeipo100.jpg';
@@ -85,6 +85,9 @@ class UserQR extends ActiveRecord
 			return $accessUrl;
 		}
 		$thumb = $info['uThumb'];
+		if ($logoFlag) {
+			$thumb = 'https://img.meipo100.com/default-meipo-sm.jpg';
+		}
 		$md5 = md5(json_encode([$uid, $category, $thumb], JSON_UNESCAPED_UNICODE));
 		switch ($category) {
 			case self::CATEGORY_SALES:
@@ -314,7 +317,7 @@ class UserQR extends ActiveRecord
 		$md5 = md5($raw);
 		$qrInfo = self::findOne(['qUId' => $uid, 'qCategory' => self::CATEGORY_MARRY, 'qMD5' => $md5]);
 		if ($qrInfo && !AppUtil::isDev()) {
-			 return $qrInfo->qUrl;
+			return $qrInfo->qUrl;
 		}
 
 		$saveAs = 'inv' . RedisUtil::getImageSeq() . '.jpg';

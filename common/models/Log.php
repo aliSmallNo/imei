@@ -17,7 +17,7 @@ class Log extends ActiveRecord
 	const CAT_QUESTION = 1000;
 	const CAT_SPREAD = 2000;// 推广活动
 	const CAT_SOURCE = 3000;// 官网过来用户
-
+	const CAT_USER_MODIFY = 800;//用户更改
 
 	const SPREAD_PART = 500;//测试的你另一半长相
 	const SPREAD_IP8 = 510;//0元抽iphone8Plus
@@ -99,6 +99,5 @@ class Log extends ActiveRecord
 		])->queryScalar();
 		return $res + $init;
 	}
-
 
 }
