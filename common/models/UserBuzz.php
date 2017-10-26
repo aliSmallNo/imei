@@ -82,9 +82,20 @@ class UserBuzz extends ActiveRecord
 		self::$WelcomeMsg .= '点击底栏“我是单身”，为自己找对象！' . PHP_EOL . PHP_EOL;
 		self::$WelcomeMsg .= '这里的单身，均有好友做推荐，让交友变得真实';*/
 
-		self::$WelcomeMsg = "『微媒100』是一个真实婚恋交友平台。在这里你可以有两种身份，媒婆和单身。
+
+		self::$WelcomeMsg = 'hi,等你好久了！' . PHP_EOL . '
+--想遇到更多缘分--
+【本周微媒100推荐】
+<a href="http://mp.weixin.qq.com/s/XZ_dfqDdzjqKoHo1zGrQhQ">💁本周女神</a>
+<a href="http://mp.weixin.qq.com/s/ZhdPCxDv2DeODzHm0dBAyA">👨暖心男神</a>
+<a href="http://mp.weixin.qq.com/s/YGtcevsf7dwg9pJLxQuRYw">👨居家男神</a>' . PHP_EOL . '
+<a href="http://www.hdb.com/party/tq722.html?h_share_uid=jror5u">🔥东台线下交友活动报名中……</a>' . PHP_EOL . '
+<a href="http://mp.weixin.qq.com/s/tVgb0FV7_XCEidQjwtkw8Q">🎉转发有奖活动ing</a>' . PHP_EOL . '
+<a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI3NzczMDQwMA==&scene=124#wechat_redirect">往期回顾</a>' . PHP_EOL . '
+<a href="https://wx.meipo100.com/wx/single#slook">找对象👉微媒100最靠谱的同城找对象平台</a>';
+		/* "『微媒100』是一个真实婚恋交友平台。在这里你可以有两种身份，媒婆和单身。
 媒婆可以将自己身边好友拉到平台上来帮助他们脱单。
-单身的朋友可以直接注册，在这里寻找心仪的另一半。";
+单身的朋友可以直接注册，在这里寻找心仪的另一半。";*/
 
 		$postData = json_decode($postJSON, 1);
 
@@ -182,36 +193,26 @@ class UserBuzz extends ActiveRecord
 								]
 							]
 						]);
+					} elseif ($content == 333) {
+						$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
 					} elseif ($content == "金秋送礼") {
 						if (!User::findOne(["uOpenId" => $fromUsername])->uStatus) {
 							$contents = "尊敬的微媒100用户，您好，您的手机号还没有登录哦~<a href='https://wx.meipo100.com/wx/imei'>点我登录</a>查看活动。";
 						} else {
 							$contents = "新品iphone8,微媒送好礼。恭喜您获得参加此活动机会，动动手指参与活动吧.....<a href='https://wx.meipo100.com/wx/pin8'>点击了解活动详情</a>。";
 						}
-						$resp = self::json_to_xml([
-							'ToUserName' => $fromUsername,
-							'FromUserName' => $toUsername,
-							'CreateTime' => time(),
-							'MsgType' => 'text',
-							'Content' => $contents,
-						]);
+						$resp = self::textMsg($fromUsername, $toUsername, $contents);
 					} elseif ($content == "中奖") {
 						if (time() >= strtotime("2017-10-15 23:59:59")) {
 							$contents = "中奖用户是 Frankie~";
 						}
 						//elseif ($fromUsername == "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
-							// $contents = "中奖用户是 Frankie~<a href='https://wx.meipo100.com/wx/sh?id=AzxsXTQ9Rjc8NkxnNzo6P0E_QXJjOUNMPEI8UW0'>点击查看TA</a>";
+						// $contents = "中奖用户是 Frankie~<a href='https://wx.meipo100.com/wx/sh?id=AzxsXTQ9Rjc8NkxnNzo6P0E_QXJjOUNMPEI8UW0'>点击查看TA</a>";
 						//}
 						else {
 							$contents = "还没到开奖时间哦，敬请期待.....<a href='https://wx.meipo100.com/wx/pin8'>点击了解活动详情</a>。";
 						}
-						$resp = self::json_to_xml([
-							'ToUserName' => $fromUsername,
-							'FromUserName' => $toUsername,
-							'CreateTime' => time(),
-							'MsgType' => 'text',
-							'Content' => $contents,
-						]);
+						$resp = self::textMsg($fromUsername, $toUsername, $contents);
 					} else {
 						$conn = AppUtil::db();
 						$sql = 'SELECT count(1) FROM im_user_buzz WHERE bType=:type AND bFrom=:uid AND bDate>:dt ';
@@ -272,21 +273,22 @@ class UserBuzz extends ActiveRecord
 						]
 					]);
 				}
-				return self::json_to_xml([
-					'ToUserName' => $fromUsername,
-					'FromUserName' => $toUsername,
-					'CreateTime' => time(),
-					'MsgType' => 'news',
-					'ArticleCount' => 1,
-					'Articles' => [
-						'item' => [
-							'Title' => '微媒100 - 本地真实交友平台',
-							'Description' => '每周推荐1名本地男女候选人，点击页面了解本周候选人吧！',//'Description' => '注册就可以签到领媒桂花。来吧，使劲戳我吧~让我们立刻开始这段感情吧！',
-							'PicUrl' => 'https://wx.meipo100.com/images/welcome_720.jpg',
-							'Url' => 'https://wx.meipo100.com/wx/index'
-						]
+			//return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
+			/*return self::json_to_xml([
+				'ToUserName' => $fromUsername,
+				'FromUserName' => $toUsername,
+				'CreateTime' => time(),
+				'MsgType' => 'news',
+				'ArticleCount' => 1,
+				'Articles' => [
+					'item' => [
+						'Title' => '微媒100 - 本地真实交友平台',
+						'Description' => '每周推荐1名本地男女候选人，点击页面了解本周候选人吧！',//'Description' => '注册就可以签到领媒桂花。来吧，使劲戳我吧~让我们立刻开始这段感情吧！',
+						'PicUrl' => 'https://wx.meipo100.com/images/welcome_720.jpg',
+						'Url' => 'https://wx.meipo100.com/wx/index'
 					]
-				]);
+				]
+			]);*/
 			default:
 				return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
 		}
@@ -301,8 +303,7 @@ class UserBuzz extends ActiveRecord
 			'MsgType' => 'text',
 			'Content' => $contentStr
 		];
-		$ret = self::json_to_xml($resp);
-		return $ret;
+		return self::json_to_xml($resp);
 	}
 
 	public static function json_to_xml($array)

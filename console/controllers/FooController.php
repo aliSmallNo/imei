@@ -695,6 +695,14 @@ class FooController extends Controller
 			 WHERE u.uStatus<8 and uPhone !=\'\' 
 			 AND (uLocation like \'%东台%\' or uHomeland like \'%东台%\')
 			 ORDER BY u.uPhone';
+
+		$sql="SELECT u.uId, u.uName,u.uPhone ,COUNT(DISTINCT DATE_FORMAT(a.aDate,'%Y-%m-%d')) as cnt
+			 FROM im_user as u 
+			 JOIN im_user_wechat as w on w.wUId=u.uId
+			 JOIN im_log_action as a on a.aUId = u.uId AND a.aCategory>1000
+			 WHERE u.uStatus<8 and uPhone !=''
+			 AND (uLocation like '%东台%' or uHomeland like '%东台%')
+			 GROUP BY u.uId,u.uName,u.uPhone HAVING cnt > 10;";
 		$ret = $conn->createCommand($sql)->queryAll();
 		/*
  最近有一波妹子刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100
@@ -709,14 +717,14 @@ class FooController extends Controller
 //			$msg = '哇，本地单身都在公众号微媒100找对象，真实靠谱，赶快来完成注册吧';
 //			$msg = '哇，才几个小时，微媒100上又有3个' . $gender . '对你怦然心动了，距你最近的才800米';
 			//$msg = '邀请新用户最高可领50元红包！每邀请3名身边单身好友注册成功，就可获得10元红包，最高可获得50元奖励哦！参与活动，请点击公众号主菜单-更多-官方活动 分享朋友圈吧！';
-			$msg = '10月2日微媒100东台用户同城趴，吃饭K歌两不误，男A女免，帅哥美女报名方式：公众号留言“东台活动”，届时会有组织者与你联系';
-			/*QueueUtil::loadJob('sendSMS',
+			$msg = '我们正在招募10名平台测试和需求反馈的兼职人员，不坐班，没有时长要求，每月有固定工资，期待你的参与。加微信号meipo1001进行报名哦。回复TD退订';
+			QueueUtil::loadJob('sendSMS',
 				[
 					'phone' => $phone,
 					'msg' => $msg,
 					'rnd' => 106
 				],
-				QueueUtil::QUEUE_TUBE_SMS);*/
+				QueueUtil::QUEUE_TUBE_SMS);
 		}
 		var_dump(count($ret));
 	}
