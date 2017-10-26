@@ -2147,7 +2147,7 @@ class ApiController extends Controller
 				$num = intval($amt);
 				$title = '微媒100-充值';
 				$subTitle = '平台服务费';
-				$payId = Pay::prepay($uid, $num, $amt * 100, Pay::CAT_MEET);
+				$payId = Pay::prepay($uid, $sid, $amt * 100, Pay::CAT_MEET);
 				if (AppUtil::isDev()) {
 					return self::renderAPI(129, '请在服务器测试该功能~');
 				}

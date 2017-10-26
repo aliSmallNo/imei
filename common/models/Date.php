@@ -69,6 +69,9 @@ class Date extends ActiveRecord
 	public static function edit($did, $params)
 	{
 		$entity = self::findOne(['dId' => $did]);
+		if (!$entity) {
+			return 0;
+		}
 		foreach ($params as $key => $val) {
 			$entity->$key = $val;
 		}

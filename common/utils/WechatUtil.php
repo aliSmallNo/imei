@@ -10,6 +10,7 @@
 namespace common\utils;
 
 use admin\models\Admin;
+use common\models\Date;
 use common\models\Log;
 use common\models\Pay;
 use common\models\RedpacketTrans;
@@ -521,6 +522,7 @@ class WechatUtil
 			$entity = Pay::findOne(["pId" => $pid]);
 			if ($entity->pCategory == Pay::CAT_MEET) {
 				UserTrans::addByPID($pid, UserTrans::CAT_RECHARGE_MEET);
+				Date::edit($entity->pRId, ["dStatus" => Date::STATUS_PAY]);
 			} else {
 				UserTrans::addByPID($pid);
 			}

@@ -129,7 +129,7 @@ class UserTrans extends ActiveRecord
 				$entity->tAmt = $payInfo['pRId'];
 				$entity->tUnit = self::UNIT_GIFT;
 				break;
-			case Pay::CAT_RECHARGE_MEET:
+			case Pay::CAT_MEET:
 				$entity->tAmt = $payInfo['pAmt'] * 100;
 				$entity->tUnit = self::UNIT_FEN;
 				break;

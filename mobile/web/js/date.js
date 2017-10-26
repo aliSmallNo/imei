@@ -168,6 +168,7 @@ require(["layer"],
 				$.post('/api/date',
 					{
 						tag: util.tag,
+						sid: util.sid,
 					},
 					function (resp) {
 						if (resp.code == 0) {
