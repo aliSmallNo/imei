@@ -83,9 +83,9 @@ class UserBuzz extends ActiveRecord
 		self::$WelcomeMsg .= '这里的单身，均有好友做推荐，让交友变得真实';*/
 
 
-		$welcome = 'hi,等你好久了！' . PHP_EOL  . '
---想遇到更多缘分--' . PHP_EOL . '
-【本周微媒100推荐】' . PHP_EOL . '
+		$welcome = 'hi,等你好久了！
+--想遇到更多缘分--
+【本周微媒100推荐】
 <a href="http://mp.weixin.qq.com/s/XZ_dfqDdzjqKoHo1zGrQhQ">爱情可遇不可求，希望遇见就不再错过</a>' . PHP_EOL . '
 <a href="http://mp.weixin.qq.com/s/ZhdPCxDv2DeODzHm0dBAyA">90后小伙：我已经来了，你在哪呢</a>' . PHP_EOL . '
 <a href="http://mp.weixin.qq.com/s/YGtcevsf7dwg9pJLxQuRYw">向往纯粹爱情的他，是否能得到你的青睐</a>' . PHP_EOL . '
