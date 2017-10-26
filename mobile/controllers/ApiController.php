@@ -2175,6 +2175,12 @@ class ApiController extends Controller
 					return self::renderAPI(129, '操作失败~');
 				}
 				break;
+			case "date_list":
+				$subtag = self::postParam("subtag");
+				$page = self::postParam("page", 1);
+				list($ret, $nextpage) = Date::items($wxInfo["uId"], $tag, $subtag, $page);
+				return self::renderAPI(0, '', ["data" => $ret, "nextpage" => $nextpage]);
+				break;
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

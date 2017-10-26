@@ -443,6 +443,17 @@
 	<div class="spinner" style="display: none"></div>
 	<div class="m-more" style="display: none">没有更多了~</div>
 </section>
+<section id="date">
+	<div class="tab fixed-top" data-tag="date_list">
+		<a href="javascript:;" data-tag="date-me" class="active">邀约我的</a>
+		<a href="javascript:;" data-tag="date-ta">我邀约的</a>
+		<a href="javascript:;" data-tag="date-both">邀约成功</a>
+	</div>
+	<div style="height: 3.8rem"></div>
+	<ul class="plist"></ul>
+	<div class="spinner" style="display: none"></div>
+	<div class="m-more" style="display: none">没有更多了~</div>
+</section>
 <section id="sqrcode">
 	<div class="qrcode-wrap">
 		<div class="top">
@@ -981,7 +992,24 @@
 			{[/pendingWxFlag]}
 		</a>
 		{[#showWxFlag]}
-		<div class="m-wxid">微信号: <em>{[wechatid]}</em></div>{[/showWxFlag]}
+		<div class="m-wxid">微信号: <em>{[wechatid]}</em></div>
+		{[/showWxFlag]}
+	</li>
+	{[/data]}
+</script>
+<script type="text/html" id="tmp_date">
+	{[#data]}
+	<li>
+		<a href="javascript:;" data-eid="{[encryptId]}" data-nid="{[nid]}" class="date_item">
+			<div class="plist-l">
+				<img src="{[thumb]}">
+			</div>
+			<div class="plist-r">
+				<p>{[name]}</p>
+				<p>{[location_t]}</p>
+				<i>{[brief]}</i>
+			</div>
+		</a>
 	</li>
 	{[/data]}
 </script>
@@ -1376,4 +1404,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js?v=1.2.1"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
-<script data-main="/js/single.js?v=1.1.1.2" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.1.1.3" src="/assets/js/require.js"></script>

@@ -1725,8 +1725,8 @@ class WxController extends BaseController
 			header('location:/wx/error');
 			exit();
 		}
-//		$sid = self::getParam("id", 'AjtrXTM9Rjc8N0xoODw7QTlBQ3RlPEVPP0U_VXA');//zp_hongmi
-		$sid = self::getParam("id", 'ATprXTQ-SDk_OlBsPT8-P0BES3xuRU9ZSlBLYX0');//zp
+		$sid = self::getParam("id", 'AjtrXTM9Rjc8N0xoODw7QTlBQ3RlPEVPP0U_VXA');//zp_hongmi
+//		$sid = self::getParam("id", 'ATprXTQ-SDk_OlBsPT8-P0BES3xuRU9ZSlBLYX0');//zp
 		$tag = self::getParam("tag");
 		$id = AppUtil::decrypt($sid);
 		if (!$id) {

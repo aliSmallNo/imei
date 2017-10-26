@@ -25,6 +25,7 @@ require(["layer"],
 			slook: $('#slook'),
 			singleTop: 0,
 			heartbeat: $('#sfav'),
+			date: $('#date'),
 			contionString: '',
 			contionVal: '',
 
@@ -50,6 +51,12 @@ require(["layer"],
 				lastRow = $('#' + $sls.curFrag + ' .plist li:last');
 				if (lastRow && eleInScreen(lastRow, 80) && TabUtil.page > 0) {
 					TabUtil.reload();
+					return false;
+				}
+			} else if ($sls.date.css('display') === 'block') {
+				lastRow = $('#' + $sls.curFrag + ' .plist li:last');
+				if (lastRow && eleInScreen(lastRow, 80) && TabUtil.page > 0) {
+					DateUtil.reload();
 					return false;
 				}
 			}
@@ -163,6 +170,10 @@ require(["layer"],
 				case 'addMeWx':
 				case 'IaddWx':
 				case 'sfav':
+					$('#' + hashTag + " .tab a:first").trigger(kClick);
+					FootUtil.toggle(0);
+					break;
+				case 'date':
 					$('#' + hashTag + " .tab a:first").trigger(kClick);
 					FootUtil.toggle(0);
 					break;
@@ -1466,6 +1477,69 @@ require(["layer"],
 			}
 		};
 		TabUtil.init();
+
+		var DateUtil = {
+			tag: "",
+			subtag: "",
+			tabObj: null,
+			list: null,
+			tabFlag: false,
+			page: 1,
+			listMore: $("#date .m-more"),
+			spinner: $("#date .spinner"),
+			tmp: $("#tmp_date").html(),
+			init: function () {
+				var util = this;
+				$("#date .tab a").on(kClick, function () {
+					var self = $(this);
+					util.tabObj = self.closest(".tab");
+					util.tag = util.tabObj.attr("data-tag");
+					util.list = util.tabObj.closest('section').find('.plist');
+					util.subtag = self.attr("data-tag");
+					util.tabObj.find("a").removeClass('active');
+					self.addClass("active");
+					util.page = 1;
+					util.tabObj.next().html('');
+					util.reload();
+				});
+
+				$(document).on(kClick, "a.date_item", function (e) {
+					// e.stopPropagation();
+					var self = $(this);
+					var sid = self.attr("data-eid");
+					location.href = '/wx/date?id=' + sid;
+				});
+			},
+			reload: function () {
+				var util = this;
+				if (util.tabFlag || !util.page) {
+					return;
+				}
+				util.tabFlag = 1;
+				util.listMore.hide();
+				util.spinner.show();
+				$.post("/api/date", {
+						tag: util.tag,
+						subtag: util.subtag,
+						page: util.page,
+					},
+					function (resp) {
+						var html = Mustache.render(util.tmp, resp.data);
+						if (util.page == 1) {
+							util.list.html(html);
+						} else {
+							util.list.append(html);
+						}
+						util.tabFlag = 0;
+						util.page = resp.data.nextpage;
+						util.spinner.hide();
+						if (util.page < 1) {
+							util.listMore.show();
+						}
+					}, "json");
+			}
+		};
+		DateUtil.init();
 
 		var mpUlit = {
 			to: "",

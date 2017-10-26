@@ -139,4 +139,62 @@ class Date extends ActiveRecord
 		}
 	}
 
+	public static function items($MyUid, $tag, $subtag, $page, $pageSize = 10)
+	{
+		$limit = "limit " . ($page - 1) * $pageSize . " , " . ($pageSize + 1);
+
+		$sql = "";
+		switch ($subtag) {
+			case "date-me"://邀约我的
+				$sql = "select * from 
+				(select u.* ,dAddedOn
+				from im_date as d 
+				join im_user as u on u.uId=dUId1
+				where  dUId2=$MyUid and dStatus>99 and dAddedBy!=$MyUid
+				UNION 
+				SELECT  u.* ,dAddedOn
+				from im_date as d 
+				join im_user as u on u.uId=dUId2
+				where dUId1=$MyUid  and dAddedBy!=$MyUid and dStatus>99) as t  order by dAddedOn desc $limit ";
+				break;
+			case "date-ta"://我邀约ta的
+				$sql = "select * from 
+				(select u.* ,dAddedOn
+				from im_date as d 
+				join im_user as u on u.uId=dUId1
+				where  dUId2=$MyUid and dStatus>99 and dAddedBy=$MyUid
+				UNION 
+				SELECT  u.* ,dAddedOn
+				from im_date as d 
+				join im_user as u on u.uId=dUId2
+				where dUId1=$MyUid and dStatus>99 and dAddedBy=$MyUid) as t order by dAddedOn desc $limit ";
+				break;
+			case "date-both"://邀约成功的
+				$sql = "select * from 
+				(select u.* ,dAddedOn
+				from im_date as d 
+				join im_user as u on u.uId=dUId1
+				where  dUId2=$MyUid and dStatus>110
+				UNION 
+				SELECT  u.* ,dAddedOn
+				from im_date as d 
+				join im_user as u on u.uId=dUId2
+				where dUId1=$MyUid and dStatus>110 ) as t order by dAddedOn desc $limit ";
+				break;
+		}
+		$ret = AppUtil::db()->createCommand($sql)->queryAll();
+		$nextpage = 0;
+		if (count($ret) > $pageSize) {
+			array_pop($ret);
+			$nextpage = $page + 1;
+		}
+
+		$items = [];
+		foreach ($ret as $row) {
+			$item = User::fmtRow($row);
+			$items[] = $item;
+		}
+		return [$items, $nextpage];
+	}
+
 }
