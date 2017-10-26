@@ -133,6 +133,19 @@
 		display: flex;
 		background: #fff;
 		padding: .5rem;
+		position: relative;
+	}
+
+	.date-input:after {
+		position: absolute;
+		content: '';
+		width: 1rem;
+		height: 1rem;
+		border-right: .12rem solid #777;
+		border-bottom: .12rem solid #777;
+		transform: rotate(-44deg);
+		right: 1rem;
+		top: .7rem;
 	}
 
 	.date-input .date-input-label {
@@ -144,6 +157,7 @@
 		font-size: 1.2rem;
 		flex: 1;
 		border: none;
+		margin: 0 2rem  0 .5rem;
 
 	}
 

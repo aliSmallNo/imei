@@ -45,6 +45,10 @@ require(["layer"],
 						self.addClass("on");
 					}
 				});
+				$(document).on(kClick, ".date-cancel", function () {
+					util.tag = 'date_fail';
+					util.submit();
+				});
 				$(document).on(kClick, ".date-btn a", function () {
 					var self = $(this);
 					util.tag = self.attr("data-tag");
@@ -140,7 +144,6 @@ require(["layer"],
 					tag: util.tag,
 					data: JSON.stringify(postdata),
 					st: util.st,
-					//role: util.role,
 					sid: util.sid,
 				}, function (resp) {
 					if (resp.code == 0) {
