@@ -10,13 +10,28 @@
 		float: left;
 		width: 50px;
 		text-align: center;
-		margin-right: 6px;
+		margin-right: 20px;
 		position: relative;
 	}
 
+	.o-images.album li span {
+		width: 20px;
+		height: 20px;
+		border: 20px;
+		position: absolute;
+		left: -10px;
+		top: -10px;
+	}
+
+	.o-images.album li span img {
+		width: 20px;
+		height: 20px;
+		border: 20px;
+	}
+
 	.o-images li img {
-		width: 100%;
-		height: auto;
+		width: 50px;
+		height: 50px;
 	}
 
 	.s-openid {
@@ -62,6 +77,7 @@
 </div>
 
 <form action="/site/account" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="tImagesTmp" value='' id="tImagesTmp">
 	<div class="row">
 		<div class="col-sm-6 form-horizontal">
 			<div class="form-group">
@@ -115,13 +131,27 @@
 				<div class="col-sm-8 imglist">
 					<input type="file" class="form-control-static inputFile" name="uAvatar[]" accept=".jpg,.jpeg,.png">
 					<p class="help-block">（最好上传<b>宽480px高480px</b>的jpg图片）</p>
-					<ul class="o-images desc">
+					<ul class="avatar o-images desc">
 						<li>
 							<img src="">
 						</li>
 					</ul>
 				</div>
 			</div>
+
+			<div class="form-group">
+				<label class="col-sm-4 control-label">相册:</label>
+				<div class="col-sm-8 imglist">
+					<input type="file" class="form-control-static inputFile" name="uAvatar[]" accept=".jpg,.jpeg,.png">
+					<p class="help-block">（最好上传<b>宽480px高480px</b>的jpg图片）</p>
+					<ul class="album o-images desc">
+						<li>
+							<img src="">
+						</li>
+					</ul>
+				</div>
+			</div>
+
 			<div class="form-group">
 				<label class="col-sm-4 control-label">您的出生年份:</label>
 				<div class="col-sm-8">
@@ -415,6 +445,10 @@
 		"uPet": "您养宠物",
 	};
 	$(".opSave").on("click", function () {
+		var tImages = getImgList();
+		$('#tImagesTmp').val(JSON.stringify(tImages));
+		console.log(tImages);
+
 		$sls.role = $("[data-tag=uRole]").val();
 		var err = [];
 		var postData = {};
@@ -463,6 +497,25 @@
 		});
 		$("#postData").val(JSON.stringify(postData));
 		$("form").submit();
+	});
+
+	function getImgList() {
+		var items = [];
+		$.each($('.o-images.album').find("li"), function () {
+			var src = $(this).find('img').attr('src');
+			items.push(src);
+		});
+		return items;
+	}
+
+	$(document).on("click", ".o-images.album li span", function () {
+		var items = getImgList();
+		if (items.length > 1) {
+			$(this).closest("li").remove();
+		} else {
+			layer.msg("至少留一张");
+		}
+
 	});
 
 	$("[data-tag=uScope]").on("change", function () {
@@ -556,7 +609,12 @@
 					}
 					break;
 				case 'uAvatar':
-					$(".o-images").html('<li><img src="' + v + '"></li>');
+					$(".o-images.avatar").html('<li><img src="' + v + '"></li>');
+					break;
+				case 'uAlbum':
+					var album = JSON.parse(v);
+					album ={album:album};
+					$(".o-images.album").html(Mustache.render('{[#album]}<li><img src="{[.]}"><span><img src="/images/ico_delete.png"></span></li>{[/album]}', album));
 					break;
 				case 'uScope':
 					$("[data-tag=" + k + "]").val(v);

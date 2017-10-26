@@ -197,6 +197,9 @@ class SiteController extends BaseController
 				}
 			}
 
+			$tImagesTmp = self::postParam('tImagesTmp');
+			$data['uAlbum'] = $tImagesTmp;
+
 			$vFields = ["uName", "uInterest", "uIntro"];//验证
 			$vFieldsText = ["uName" => "呢称", "uInterest" => "兴趣爱好", "uIntro" => "内心独白"];
 			$fields = ["uName", "uPassword", "uInterest", "uIntro"];
