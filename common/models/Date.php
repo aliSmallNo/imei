@@ -14,14 +14,16 @@ use yii\db\ActiveRecord;
 
 class Date extends ActiveRecord
 {
+	const STATUS_DETAULT = 1;
+	const STATUS_FAIL = 99;// 约会取消
 	const STATUS_INVITE = 100;
-	const STATUS_WAIT = 110;
+	const STATUS_PASS = 110;
 	const STATUS_PAY = 120;
 	const STATUS_MEET = 130;
 	const STATUS_COMMENT = 140;
 	static $statusDict = [
-		self::STATUS_INVITE => '邀请对方',
-		self::STATUS_WAIT => '对方同意',
+		self::STATUS_INVITE => '发出邀请',
+		self::STATUS_PASS => '对方同意',
 		self::STATUS_PAY => '付款平台',
 		self::STATUS_MEET => '线下见面',
 		self::STATUS_COMMENT => '评价对方',
@@ -64,38 +66,74 @@ class Date extends ActiveRecord
 		return $entity->dId;
 	}
 
-	public static function edit($pid, $params)
+	public static function edit($did, $params)
 	{
-		$entity = self::findOne(['pId' => $pid]);
+		$entity = self::findOne(['dId' => $did]);
 		foreach ($params as $key => $val) {
 			$entity->$key = $val;
 		}
-
-		$entity->pUpdatedOn = date('Y-m-d H:i:s');
-		$entity->pTransDate = date('Y-m-d H:i:s');
 		$entity->save();
+		return $entity->dId;
 	}
 
-	public static function items($criteria, $params, $page = 1, $pageSize = 20)
+	public static function sortUId($uid1, $uid2)
 	{
-		$conn = AppUtil::db();
-		$strCriteria = '';
-		if ($criteria) {
-			$strCriteria = ' AND ' . implode(' AND ', $criteria);
-		}
-		$limit = "limit " . ($page - 1) * $pageSize . "," . $pageSize;
-		$sql = "SELECT u.uThumb,u.uName,u.uPhone,p.* from im_pay as p 
-				left join im_user as u on u.uId=p.pUId 
-				where p.pStatus=100 and p.pCategory=200 $strCriteria 
-				ORDER BY  pAddedOn desc $limit ";
-		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
-
-		$sql = "SELECT count(1) as co from im_pay as p 
-				left join im_user as u on u.uId=p.pUId 
-				where p.pStatus=100 and p.pCategory=200 $strCriteria ";
-		$count = $conn->createCommand($sql)->bindValues($params)->queryOne();
-		$count = $count ? $count["co"] : 0;
-
-		return [$res, $count];
+		$arr = [$uid1, $uid2];
+		sort($arr);
+		return $arr;
 	}
+
+	public static function oneInfo($myUId, $taUId)
+	{
+		list($uid1, $uid2) = self::sortUId($myUId, $taUId);
+		$d = self::findOne(["dUId1" => $uid1, "dUId2" => $uid2,
+			'dStatus' => [self::STATUS_INVITE, self::STATUS_PASS, self::STATUS_PAY, self::STATUS_MEET, self::STATUS_COMMENT]]);
+		//$d = self::find()->where(["dUId1" => $uid1, "dUId2" => $uid2])->asArray()->one();
+		return $d;
+	}
+
+	public static function oneInfoForWx($myUId, $taUId)
+	{
+		$st = self::STATUS_DETAULT;
+		$role = "active";
+		$d = self::oneInfo($myUId, $taUId);
+		if ($d) {
+			$st = $d->dStatus;
+			$role = $d->dAddedBy == $myUId ? 'active' : 'inactive';
+		}
+		return [$d, $st, $role];
+	}
+
+	public static function reg($myUId, $taUId, $data)
+	{
+		$fields = [
+			'cat' => 'dCategory',
+			'paytype' => 'dPayType',
+			'title' => 'dTitle',
+			'intro' => 'dIntro',
+			'time' => 'dDate',
+			'location' => 'dLocation',
+			'st' => 'dStatus',
+		];
+		$insert = [];
+		foreach ($fields as $k => $f) {
+			if (isset($data[$k])) {
+				$insert[$f] = $data[$k];
+			}
+		}
+
+		list($uid1, $uid2) = self::sortUId($myUId, $taUId);
+		$d = self::oneInfo($myUId, $taUId);
+		if (!$d) {
+			$insert['dAddedBy'] = $myUId;
+			$insert['dUId1'] = $uid1;
+			$insert['dUId2'] = $uid2;
+			$insert['dDate'] = '';
+			$insert['dStatus'] = self::STATUS_INVITE;
+			return self::add($insert);
+		} else {
+			return self::edit($d->dId, $insert);
+		}
+	}
+
 }

@@ -9,6 +9,7 @@
 namespace mobile\controllers;
 
 use common\models\City;
+use common\models\Date;
 use common\models\Log;
 use common\models\LogAction;
 use common\models\QuestionGroup;
@@ -1724,24 +1725,42 @@ class WxController extends BaseController
 			header('location:/wx/error');
 			exit();
 		}
-		$id = self::getParam("id");
-		$id=AppUtil::decrypt($id);
+		//$sid = self::getParam("id", 'AjtrXTM9Rjc8N0xoODw7QTlBQ3RlPEVPP0U_VXA');//zp_hongmi
+		$sid = self::getParam("id", 'ATprXTQ-SDk_OlBsPT8-P0BES3xuRU9ZSlBLYX0');//zp
+		$tag = self::getParam("tag");
+		$id = AppUtil::decrypt($sid);
 		if (!$id) {
-//			header('location:/wx/error');
-//			exit();
-
+			header('location:/wx/error');
+			exit();
 		}
 
+		list($d, $st, $role) = Date::oneInfoForWx($wxInfo["uId"], $id);
+//		echo $st.'<br>';
+//		echo $role.'<br>';
+//		print_r($d);
+//		exit;
 		$uid = $wxInfo["uId"];
-
 		$items = UserComment::iTems($uid);
+
+		$stDict = Date::$statusDict;
+		if ($role == "inactive") {
+			unset($stDict[Date::STATUS_PASS]);
+		}
 		return self::renderPage('date.tpl',
 			[
 				"items" => $items,
+				"stDic" => $stDict,
+				"catDic" => Date::$catDict,
+				"d" => $d,
+				"st" => $st,
+				"role" => $role,
+				"sid" => $sid,
+				"uid" => $uid,
+				"id" => $id,
 			],
 			'terse',
 			"我的邀约",
-			'');
+			'data-bg');
 	}
 
 

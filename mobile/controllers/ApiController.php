@@ -10,6 +10,7 @@ namespace mobile\controllers;
 
 use common\models\ChatMsg;
 use common\models\City;
+use common\models\Date;
 use common\models\EventCrew;
 use common\models\Feedback;
 use common\models\Log;
@@ -2069,6 +2070,108 @@ class ApiController extends Controller
 		return self::renderAPI(129, '操作无效~');
 	}
 
+	public function actionDate()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			return self::renderAPI(129, '用户不存在啊');
+		}
+		$uid = $wxInfo['uId'];
+		$sid = self::postParam("sid");
+		$sid = AppUtil::decrypt($sid);
+		$st = self::postParam("st");
+		$role = self::postParam("role");
+		$fT = ['cat' => '约会项目', 'paytype' => '约会预算', 'title' => '约会说明', 'intro' => '自我介绍', 'time' => '约会时间', 'location' => '约会地点'];
+
+		switch ($tag) {
+			case 'start_date':
+				$data = self::postParam('data');
+				$data = json_decode($data, 1);
+				$fields = ['cat', 'paytype', 'title', 'intro'];
+				$insert = [];
+				foreach ($fields as $v) {
+					if (!isset($data[$v]) || !$data[$v]) {
+						return self::renderAPI(129, $fT[$v] . '还没填写哦');
+					}
+					if ($v == 'paytype') {
+						if ($data['paytype'] == 'ta') {
+							$insert[$v] = $sid;
+						} else if ($data['paytype'] == 'me') {
+							$insert[$v] = $uid;
+						} else {
+							$insert[$v] = 1;
+						}
+						continue;
+					}
+					$insert[$v] = $data[$v];
+				}
+				$res = Date::reg($uid, $sid, $insert);
+				if ($res) {
+					return self::renderAPI(0, '邀约成功~');
+				} else {
+					return self::renderAPI(129, '邀约失败~');
+				}
+				break;
+			case 'date_fail':
+				$res = Date::reg($uid, $sid, ['st' => Date::STATUS_FAIL]);
+				if ($res) {
+					return self::renderAPI(0, '操作成功~');
+				} else {
+					return self::renderAPI(129, '操作失败~');
+				}
+				break;
+			case 'date_agree':
+				$data = self::postParam('data');
+				$data = json_decode($data, 1);
+				$fields = ['time', 'location'];
+				$insert = [];
+				foreach ($fields as $v) {
+					if (!isset($data[$v]) || !$data[$v]) {
+						return self::renderAPI(129, $fT[$v] . '还没填写哦');
+					}
+					$insert[$v] = $data[$v];
+				}
+				$insert["st"] = Date::STATUS_PASS;
+				$res = Date::reg($uid, $sid, $insert);
+				if ($res) {
+					return self::renderAPI(0, '操作成功~');
+				} else {
+					return self::renderAPI(129, '操作失败~');
+				}
+				break;
+			case "date_pay":
+				//$amt = self::postParam('amt'); // 单位人民币元
+				$amt = 49; // 单位人民币元
+				$num = intval($amt);
+				$title = '微媒100-充值';
+				$subTitle = '平台服务费';
+				$payId = Pay::prepay($uid, $num, $amt * 100, Pay::CAT_MEET);
+				if (AppUtil::isDev()) {
+					return self::renderAPI(129, '请在服务器测试该功能~');
+				}
+				// Rain: 测试阶段，payFee x元实际支付x分
+//				$payFee = $amt;
+				$payFee = intval($amt * 100);
+				if (in_array($openId, ['oYDJew5EFMuyrJdwRrXkIZLU2c58', 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'])) {
+					$payFee = $amt;
+				}
+				$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);
+				if ($ret) {
+					return self::renderAPI(0, '', [
+						'prepay' => $ret,
+						'amt' => $amt,
+						'payId' => $payId,
+					]);
+				} else {
+					self::renderAPI(129, '支付失败~');
+				}
+				break;
+		}
+		return self::renderAPI(129, '操作无效~');
+	}
+
 	public function actionShare()
 	{
 		$tag = trim(strtolower(self::postParam('tag')));
@@ -2077,7 +2180,6 @@ class ApiController extends Controller
 			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
 		}
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
-
 		if (!$wxInfo) {
 			return self::renderAPI(129, '用户不存在啊');
 		}

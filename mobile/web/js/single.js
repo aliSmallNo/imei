@@ -759,7 +759,7 @@ require(["layer"],
 							util.toggle(util.helpchatMenu.hasClass("off"), util.helpchatMenu);
 							break;
 						case 'date':
-							location.href = '/wx/date?id=' + util.sid;
+							// location.href = '/wx/date?id='+util.sid;
 							break;
 					}
 				});

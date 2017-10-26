@@ -15,6 +15,7 @@ use yii\db\ActiveRecord;
 
 class UserTrans extends ActiveRecord
 {
+	const CAT_RECHARGE_MEET = 90;//约会充值
 	const CAT_RECHARGE = 100;
 	const CAT_SIGN = 105;
 	const CAT_NEW = 108;
@@ -127,6 +128,10 @@ class UserTrans extends ActiveRecord
 			case Pay::CAT_RECHARGE:
 				$entity->tAmt = $payInfo['pRId'];
 				$entity->tUnit = self::UNIT_GIFT;
+				break;
+			case Pay::CAT_RECHARGE_MEET:
+				$entity->tAmt = $payInfo['pAmt'] * 100;
+				$entity->tUnit = self::UNIT_FEN;
 				break;
 			default:
 				$entity->tAmt = $payInfo['pAmt'];

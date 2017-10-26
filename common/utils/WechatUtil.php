@@ -519,12 +519,11 @@ class WechatUtil
 			];
 			Pay::edit($pid, $data);
 			$entity = Pay::findOne(["pId" => $pid]);
-			if ($entity->pCategory == Pay::CAT_REDPACKET) {
-				//UserTrans::addByPID($pid, UserTrans::CAT_REDPACKET);
+			if ($entity->pCategory == Pay::CAT_MEET) {
+				UserTrans::addByPID($pid, UserTrans::CAT_RECHARGE_MEET);
 			} else {
 				UserTrans::addByPID($pid);
 			}
-
 		} else {
 			$data = [
 				'pTransRaw' => json_encode($data, JSON_UNESCAPED_UNICODE),
