@@ -275,7 +275,7 @@ class UserBuzz extends ActiveRecord
 						]
 					]);
 				}
-//				return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
+				//return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
 			/*return self::json_to_xml([
 				'ToUserName' => $fromUsername,
 				'FromUserName' => $toUsername,
