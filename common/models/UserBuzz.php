@@ -83,7 +83,7 @@ class UserBuzz extends ActiveRecord
 		self::$WelcomeMsg .= '这里的单身，均有好友做推荐，让交友变得真实';*/
 
 
-		self::$WelcomeMsg = 'hi,等你好久了！' . PHP_EOL . PHP_EOL . '
+		$welcome = 'hi,等你好久了！' . PHP_EOL . PHP_EOL . '
 --想遇到更多缘分--' . PHP_EOL . '
 【本周微媒100推荐】' . PHP_EOL . '
 <a href="http://mp.weixin.qq.com/s/XZ_dfqDdzjqKoHo1zGrQhQ">爱情可遇不可求，希望遇见就不再错过</a>' . PHP_EOL . '
@@ -197,36 +197,8 @@ class UserBuzz extends ActiveRecord
 								]
 							]
 						]);
-					} elseif ($content == 219) {
-						$resp = self::json_to_xml([
-							'ToUserName' => $fromUsername,
-							'FromUserName' => $toUsername,
-							'CreateTime' => time(),
-							'MsgType' => 'news',
-							'ArticleCount' => 1,
-							'Articles' => [
-								'item' => [
-									'Title' => '→打后照片记得点这里←千万别错过获得50元现金福利>>',
-									'Description' => '盐城本地相亲交友平台，一起来脱单吧！',
-									'PicUrl' => 'https://img.meipo100.com/default/flag_178.jpg?v=1.1.4',
-									'Url' => 'https://wx.meipo100.com/wx/single#slook'
-								]
-							]
-						]);
-						$contents = 'hi,等你好久了！<br>
-<br>
---想遇到更多缘分--<br>
-【本周微媒100推荐】<br>
-<a href="http://mp.weixin.qq.com/s/XZ_dfqDdzjqKoHo1zGrQhQ">爱情可遇不可求，希望遇见就不再错过</a><br>
-<a href="http://mp.weixin.qq.com/s/ZhdPCxDv2DeODzHm0dBAyA">90后小伙：我已经来了，你在哪呢</a><br>
-<a href="http://mp.weixin.qq.com/s/YGtcevsf7dwg9pJLxQuRYw">向往纯粹爱情的他，是否能得到你的青睐</a><br>
-<a href="http://www.hdb.com/party/tq722.html?h_share_uid=jror5u">东台线下交友活动报名中……</a><br>
-<br>
-<a href="http://mp.weixin.qq.com/s/tVgb0FV7_XCEidQjwtkw8Q">转发有奖活动ing</a><br>
-<br>
-<a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI3NzczMDQwMA==&scene=124#wechat_redirect">往期回顾</a><br>
-<br>
-微媒100最靠谱的同城找对象平台';
+					} elseif ($content == 333) {
+						$contents = $welcome;
 						$resp = self::json_to_xml([
 							'ToUserName' => $fromUsername,
 							'FromUserName' => $toUsername,
