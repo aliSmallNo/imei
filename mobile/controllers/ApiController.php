@@ -2107,6 +2107,9 @@ class ApiController extends Controller
 					}
 					$insert[$v] = $data[$v];
 				}
+				if (Date::oneInfo($uid, $sid)) {
+					return self::renderAPI(129, '你们已经约会过了哦~');
+				}
 				$res = Date::reg($uid, $sid, $insert);
 				if ($res) {
 					return self::renderAPI(0, '邀约成功~');

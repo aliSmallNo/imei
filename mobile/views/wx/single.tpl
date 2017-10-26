@@ -443,7 +443,7 @@
 	<div class="spinner" style="display: none"></div>
 	<div class="m-more" style="display: none">没有更多了~</div>
 </section>
-<section id="date">
+<section id="date" data-title="邀约列表">
 	<div class="tab fixed-top" data-tag="date_list">
 		<a href="javascript:;" data-tag="date-me" class="active">邀约我的</a>
 		<a href="javascript:;" data-tag="date-ta">我邀约的</a>

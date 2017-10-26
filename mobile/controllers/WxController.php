@@ -1763,7 +1763,7 @@ class WxController extends BaseController
 				"TA" => $TA,
 			],
 			'terse',
-			"我的邀约",
+			"邀约",
 			'data-bg');
 	}
 

@@ -195,8 +195,8 @@ require(["layer"],
 						},
 						function (res) {
 							if (res.err_msg == "get_brand_wcpay_request:ok") {
-								showMsg("您已经微信支付成功！");
 								location.href = "/wx/date?id=" + util.sid;
+								showMsg("您已经微信支付成功！");
 							} else {
 								util.payBtn.html('付款平台');
 								showMsg("您已经取消微信支付！");
