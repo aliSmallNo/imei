@@ -61,6 +61,10 @@ require(["layer"],
 						case "date_pay":
 							util.prepay(self);
 							break;
+						case 'date_phone':
+							// var phone = self.parseInt(self.attr('data-phone'));
+							util.tomeet();
+							break;
 					}
 				});
 			},
@@ -140,17 +144,13 @@ require(["layer"],
 					sid: util.sid,
 				}, function (resp) {
 					if (resp.code == 0) {
-						// location.href = '/wx/date?id=' + util.sid;
 						switch (util.tag) {
 							case 'start_date':
 							case "date_agree":
-								// location.href = '/wx/date?id=' + util.sid;
+								location.href = '/wx/date?id=' + util.sid;
 								break;
 							case "date_fail":
-								// location.href = '/wx/single#sme;
-								break;
-							case "date_pay":
-
+								location.href = '/wx/single#sme';
 								break;
 						}
 					} else {
@@ -182,6 +182,7 @@ require(["layer"],
 			},
 			wechatPay: function (resData) {
 				var util = this;
+
 				function onBridgeReady(resData) {
 					WeixinJSBridge.invoke('getBrandWCPayRequest',
 						{
@@ -215,6 +216,24 @@ require(["layer"],
 					onBridgeReady(resData);
 				}
 			},
+			tomeet: function (self) {
+				var util = dateUtil;
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post('/api/date', {
+					tag: util.tag,
+					did: util.did,
+				}, function (resp) {
+					if (resp.code == 0) {
+						$(".date-tel").removeClass("hide");
+					} else {
+						showMsg(resp.msg);
+					}
+				}, 'json');
+			},
+
 		};
 		dateUtil.init();
 

@@ -185,6 +185,13 @@
 		display: flex;
 	}
 
+	.date-btn p {
+		font-size: 1.2rem;
+		text-align: center;
+		padding: .6rem;
+		display: none;
+	}
+
 	.date-btn a.date-pay-rule {
 		text-align: center;
 		font-size: 1.2rem;
@@ -204,6 +211,49 @@
 	.date-btn a[data-tag].fail {
 		background: #555;
 	}
+
+	.date-tel {
+		display: flex;
+		background: #fff;
+		padding: .5rem 1rem;
+	}
+
+	.date-tel.hide {
+		display: none;
+	}
+
+	.date-tel .date-avatar {
+		flex: 0 0 3rem;
+		width: 3rem;
+		height: 3rem;
+	}
+
+	.date-tel .date-avatar img {
+		width: 3rem;
+		height: 3rem;
+		border-radius: 3rem;
+	}
+
+	.date-tel .date-ta-des {
+		flex: 1;
+		font-size: 1.2rem;
+		margin: 0 1rem;
+		align-self: center;
+	}
+
+	.date-tel a {
+		flex: 0 0 3rem;
+		width: 3rem;
+		height: 3rem;
+	}
+
+	.date-tel a img {
+		width: 2rem;
+		height: 2rem;
+		padding: .3rem;
+		border-radius: 2rem;
+		border: 1px solid #d4237a;
+	}
 </style>
 
 <div class="date-nav">
@@ -218,6 +268,15 @@
 		 data-val="{{$k}}">{{$item}}</a>
 	{{/foreach}}
 </div>
+{{if $st>110}}
+<div class="date-tel date-margintop {{if $st==120}}hide{{/if}}">
+	<div class="date-avatar"><img src="{{$TA.uAvatar}}"></div>
+	<div class="date-ta-des">
+		{{$TA.uName}} {{$TA.uPhone}}
+	</div>
+	<a href="tel:{{$TA.uPhone}}"><img src="/images/date_phone.png"></a>
+</div>
+{{/if}}
 <div class="date-item date-margintop">
 	<div class="date-label">约会项目</div>
 	<div class="date-option" data-field="cat">
@@ -306,13 +365,15 @@
 {{/if}}
 
 {{if $st==120}}
-<div class="date-btn">
-	<a href="javascript:;" data-tag="date_phone">查看对方手机号</a>
+<div class="date-btn flex-column">
+	<p>对方联系方式：{{$phone}}</p>
+	<a href="javascript:;" data-tag="date_phone" data-phone="{{$phone}}">申请他的联系方式</a>
 </div>
 {{/if}}
 
 {{if $st==130}}
-<div class="date-btn">
+<div class="date-btn flex-column">
+	<p>对方联系方式：{{$phone}}</p>
 	<a href="javascript:;" data-tag="date_common">评论对方</a>
 </div>
 {{/if}}
@@ -339,4 +400,4 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/date.js?v=1.1.11" src="/assets/js/require.js"></script>
+<script data-main="/js/date.js?v=1.1.12" src="/assets/js/require.js"></script>
