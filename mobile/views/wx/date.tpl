@@ -406,7 +406,7 @@
 
 	.magic-radio + label:after {
 		top: .4rem;
-		left: .4rem;
+		left: .45rem;
 		width: .8rem;
 		height: .8rem;
 		border-radius: 50%;
