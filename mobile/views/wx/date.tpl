@@ -231,6 +231,19 @@
 		display: flex;
 		background: #fff;
 		padding: .5rem 1rem;
+		position: relative;
+	}
+
+	.date-tel span {
+		position: absolute;
+		content: '';
+		width: 1rem;
+		height: 1rem;
+		border-right: .12rem solid #777;
+		border-bottom: .12rem solid #777;
+		transform: rotate(-44deg);
+		right: 1rem;
+		top: 1.5rem;
 	}
 
 	.date-tel.hide {
@@ -294,6 +307,14 @@
 		</div>
 		<a href="tel:{{$TA.uPhone}}"><img src="/images/date_phone.png"></a>
 	</div>
+	{{else}}
+	<a class="date-tel date-margintop" href="/wx/sh?id={{$sid}}">
+		<div class="date-avatar"><img src="{{$TA.uAvatar}}"></div>
+		<div class="date-ta-des">
+			{{$TA.uName}}
+		</div>
+		<span></span>
+	</a>
 	{{/if}}
 	<div class="date-item date-margintop">
 		<div class="date-label">约会项目</div>
