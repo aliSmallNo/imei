@@ -525,6 +525,7 @@ class User extends ActiveRecord
 		return $item;
 	}
 
+
 	protected static function percentage($info)
 	{
 		$fields = ["role", "name", "phone", "avatar", "location", 'homeland', "scope", "gender", "birthyear", "horos",
@@ -543,6 +544,30 @@ class User extends ActiveRecord
 			}
 		}
 		return ceil($percent * 100.00 / count($fields));
+	}
+
+
+	public static function insertPercent()
+	{
+		// User::propStat();
+		$role = self::ROLE_SINGLE;
+		$sql = "select * from im_user 
+				where uStatus <8 and uRole=:role AND uGender>9 order by uId desc ";
+		$conn = AppUtil::db();
+		$res = $conn->createCommand($sql)->bindValues([
+			":role" => $role,
+		])->queryAll();
+		$sql2 = "update im_user set uPercent=:percent where uId=:uid ";
+		$modCmd = $conn->createCommand($sql2);
+		foreach ($res as $v) {
+			$fmt = self::fmtRow($v);
+			$uid = $v["uId"];
+			$percent = $fmt["percent"];
+			$modCmd->bindValues([
+				':percent' => $percent,
+				':uid' => $uid
+			])->execute();
+		}
 	}
 
 	public static function users($criteria, $params, $page = 1, $pageSize = 20, $orderbyUpdated = false, $inactive = 0)

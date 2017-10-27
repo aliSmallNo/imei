@@ -45,6 +45,7 @@ class WechatUtil
 	const NOTICE_MAKE_FRIRENDS = 'notice_firends';
 	const NOTICE_CERT_GRANT = 'notice_cert_grant';
 	const NOTICE_CERT_DENY = 'notice_cert_deny';
+	const NOTICE_DATE = 'notice_date';
 
 	/**
 	 * @param $sessionKey
@@ -670,6 +671,12 @@ class WechatUtil
 				$keywords['keyword2'] = $subTitle;
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
+			case self::NOTICE_DATE:
+				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$url = $wxUrl . "/wx/single#date";
+				$keywords['first'] = "hi，$nickname\n";
+				$keywords['remark'] = "\n点击下方详情查看吧~";
+				break;
 			case self::NOTICE_MAKE_FRIRENDS: //相亲交友活动支付通知 /wx/toparty
 				$giverId = $takerId;
 				$msgCat = UserMsg::CATEGORY_FRIRENDS;
@@ -748,7 +755,7 @@ class WechatUtil
 			$text = isset(UserMsg::$catDict[$msgCat]) ? UserMsg::$catDict[$msgCat] : '';
 		}
 
-		if (in_array($noticeTag, [self::NOTICE_ROUTINE])) {
+		if (in_array($noticeTag, [self::NOTICE_ROUTINE, self::NOTICE_DATE])) {
 			$result = 1;
 		} else {
 			$result = UserMsg::edit(0, [

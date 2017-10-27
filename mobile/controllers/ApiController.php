@@ -2116,6 +2116,11 @@ class ApiController extends Controller
 				}
 				$res = Date::reg($uid, $sid, $insert);
 				if ($res) {
+					WechatUtil::templateMsg(WechatUtil::NOTICE_DATE,
+						$sid,
+						'有人邀请线下见面',
+						'申请您通过',
+						$sid);
 					return self::renderAPI(0, '邀约成功~');
 				} else {
 					return self::renderAPI(129, '邀约失败~');
