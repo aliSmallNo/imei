@@ -1737,12 +1737,13 @@ class WxController extends BaseController
 
 		list($d, $st, $role) = Date::oneInfoForWx($uid, $id);
 		$commentFlag = 0;
-		if ($uid == $d->dAddedBy) {
-			$commentFlag = $d->dComment1 ? 1 : 0;
-		} else {
-			$commentFlag = $d->dComment2 ? 1 : 0;
+		if ($d) {
+			if ($uid == $d->dAddedBy) {
+				$commentFlag = $d->dComment1 ? 1 : 0;
+			} else {
+				$commentFlag = $d->dComment2 ? 1 : 0;
+			}
 		}
-
 
 		$stDict = Date::$statusDict;
 		if ($role == "inactive") {
