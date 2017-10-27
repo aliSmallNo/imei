@@ -130,7 +130,7 @@ require(["layer"],
 				}, function (res) {
 					util.loading = 0;
 					if (res.code == 0) {
-						//location.href = "/wx/date?id=" + util.sid;
+						location.href = "/wx/date?id=" + util.sid;
 					} else {
 						showMsg(res.msg);
 					}

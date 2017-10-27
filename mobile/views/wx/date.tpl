@@ -632,4 +632,4 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/date.js?v=1.1.12" src="/assets/js/require.js"></script>
+<script data-main="/js/date.js?v=1.1.13" src="/assets/js/require.js"></script>
