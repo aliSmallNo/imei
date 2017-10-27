@@ -902,8 +902,8 @@ require(["layer"],
 				var util = this;
 				console.log(util.commentFlag);
 				if (!util.commentFlag) {
-					showMsg("聊了这么多，觉得ta怎么样呢，快去匿名评价吧~");
-					return false;
+					//showMsg("聊了这么多，觉得ta怎么样呢，快去匿名评价吧~");
+					//return false;
 				}
 				var content = util.inputVal ? util.inputVal : $.trim(util.input.val());
 				if (!content) {
@@ -973,7 +973,7 @@ require(["layer"],
 						}*/
 						util.gid = resp.data.gid;
 
-					} else if (resp.code = 102) {
+					} else if (resp.code == 102) {
 						alertModel.show('通知', '根据国家有关法规要求，婚恋交友平台用户须实名认证。您还没有实名认证，赶快去个人中心实名认证吧', '/wx/cert2');
 					} else {
 						showMsg(resp.msg, 8, 12);

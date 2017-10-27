@@ -1904,6 +1904,9 @@ class ApiController extends Controller
 				if (UserNet::hasBlack($wxInfo["uId"], $receiverId)) {
 					return self::renderAPI(129, self::MSG_BLACK);
 				}
+				if(!UserComment::hasComment($receiverId, $uid)){
+					return self::renderAPI(129, '聊了这么多，觉得ta怎么样呢，快去匿名评价吧~');
+				}
 				/*if ($wxInfo["uId"] == '131379') {
 					return self::renderAPI(101, '想要更多密聊机会，请先捐媒桂花吧~');
 				}*/
