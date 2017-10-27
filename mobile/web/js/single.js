@@ -56,7 +56,7 @@ require(["layer"],
 			} else if ($sls.date.css('display') === 'block') {
 				lastRow = $('#' + $sls.curFrag + ' .plist li:last');
 				if (lastRow && eleInScreen(lastRow, 80) && TabUtil.page > 0) {
-					DateUtil.reload();
+					// DateUtil.reload();
 					return false;
 				}
 			}
