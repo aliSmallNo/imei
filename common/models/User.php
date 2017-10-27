@@ -987,6 +987,7 @@ class User extends ActiveRecord
 		}
 		$imageItems = [];
 		if ($f == 'add') {
+			$Info->uStatus = self::STATUS_PENDING;
 			$mediaIds = json_decode($mediaIds, 1);
 			$mediaIds = array_reverse($mediaIds);
 			foreach ($mediaIds as $mediaId) {

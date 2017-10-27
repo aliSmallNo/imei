@@ -1768,34 +1768,4 @@ class WxController extends BaseController
 			'date-bg');
 	}
 
-	public function actionDatecomment()
-	{
-		$openId = self::$WX_OpenId;
-		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		if (!$wxInfo) {
-			header('location:/wx/error');
-			exit();
-		}
-		$sid = self::getParam("id");
-		$id = AppUtil::decrypt($sid);
-
-		$uid = $wxInfo["uId"];
-		$d = Date::oneInfo($uid, $id);
-		if (!$d) {
-			header('location:/wx/error');
-			exit();
-		}
-
-		return self::renderPage('datecomment.tpl',
-			[
-				"d" => $d,
-
-			],
-			'terse',
-			"约会互评",
-			'date-bg');
-
-	}
-
-
 }
