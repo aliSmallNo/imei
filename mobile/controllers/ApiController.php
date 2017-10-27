@@ -2081,6 +2081,7 @@ class ApiController extends Controller
 		$uid = $wxInfo['uId'];
 		$sid = self::postParam("sid");
 		$sid = AppUtil::decrypt($sid);
+		$did = self::postParam('did');
 		$st = self::postParam("st");
 		$role = self::postParam("role");
 		$fT = ['cat' => '约会项目', 'paytype' => '约会预算', 'title' => '约会说明', 'intro' => '自我介绍', 'time' => '约会时间', 'location' => '约会地点'];
@@ -2147,7 +2148,6 @@ class ApiController extends Controller
 			case "date_pay":
 				$amt = 49; // 单位人民币元
 				$num = intval($amt);
-				$did = self::postParam('did');
 				$title = '微媒100-充值';
 				$subTitle = '平台服务费';
 				$payId = Pay::prepay($uid, $did, $amt * 100, Pay::CAT_MEET);
@@ -2183,6 +2183,35 @@ class ApiController extends Controller
 				$page = self::postParam("page", 1);
 				list($ret, $nextpage) = Date::items($wxInfo["uId"], $tag, $subtag, $page);
 				return self::renderAPI(0, '', ["data" => $ret, "nextpage" => $nextpage]);
+				break;
+			case "data_comment":
+				$data = self::postParam('data');
+				//$d = Date::oneInfo($uid, $sid);
+				$d = Date::findOne(["dId" => $did, 'dStatus' => [100, 110, 120, 130, 140]]);
+				if (!$d) {
+					return self::renderAPI(129, '参数错误~');
+				}
+
+				if ($d->dAddedBy == $uid) {
+					if ($d->dComment1) {
+						return self::renderAPI(129, '请勿重复评论~');
+					}
+					$d->dComment1 = $data;
+					if ($d->dComment2) {
+						$d->dStatus = Date::STATUS_COMMENT;
+					}
+					$d->save();
+				} else {
+					if ($d->dComment2) {
+						return self::renderAPI(129, '请勿重复评论~');
+					}
+					$d->dComment2 = $data;
+					if ($d->dComment1) {
+						$d->dStatus = Date::STATUS_COMMENT;
+					}
+					$d->save();
+				}
+				return self::renderAPI(0, '匿名评论成功~');
 				break;
 		}
 		return self::renderAPI(129, '操作无效~');

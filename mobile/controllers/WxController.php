@@ -1725,24 +1725,24 @@ class WxController extends BaseController
 			header('location:/wx/error');
 			exit();
 		}
+		$uid = $wxInfo["uId"];
 		$sid = self::getParam("id", 'AjtrXTM9Rjc8N0xoODw7QTlBQ3RlPEVPP0U_VXA');//zp_hongmi
 //		$sid = self::getParam("id", 'ATprXTQ-SDk_OlBsPT8-P0BES3xuRU9ZSlBLYX0');//zp
-		$tag = self::getParam("tag");
 		$id = AppUtil::decrypt($sid);
-		if (!$id) {
-			header('location:/wx/error');
-			exit();
-		}
 		$TA = User::findOne(["uId" => $id]);
 		if (!$TA) {
 			header('location:/wx/error');
 			exit();
 		}
 
-		list($d, $st, $role) = Date::oneInfoForWx($wxInfo["uId"], $id);
+		list($d, $st, $role) = Date::oneInfoForWx($uid, $id);
+		$commentFlag = 0;
+		if ($uid == $d->dAddedBy) {
+			$commentFlag = $d->dComment1 ? 1 : 0;
+		} else {
+			$commentFlag = $d->dComment2 ? 1 : 0;
+		}
 
-		$uid = $wxInfo["uId"];
-		$items = UserComment::iTems($uid);
 
 		$stDict = Date::$statusDict;
 		if ($role == "inactive") {
@@ -1750,7 +1750,6 @@ class WxController extends BaseController
 		}
 		return self::renderPage('date.tpl',
 			[
-				"items" => $items,
 				"stDic" => $stDict,
 				"catDic" => Date::$catDict,
 				"d" => $d,
@@ -1761,10 +1760,40 @@ class WxController extends BaseController
 				"id" => $id,
 				"phone" => $TA->uPhone,
 				"TA" => $TA,
+				"commentFlag" => $commentFlag,
 			],
 			'terse',
 			"邀约",
-			'data-bg');
+			'date-bg');
+	}
+
+	public function actionDatecomment()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/error');
+			exit();
+		}
+		$sid = self::getParam("id");
+		$id = AppUtil::decrypt($sid);
+
+		$uid = $wxInfo["uId"];
+		$d = Date::oneInfo($uid, $id);
+		if (!$d) {
+			header('location:/wx/error');
+			exit();
+		}
+
+		return self::renderPage('datecomment.tpl',
+			[
+				"d" => $d,
+
+			],
+			'terse',
+			"约会互评",
+			'date-bg');
+
 	}
 
 

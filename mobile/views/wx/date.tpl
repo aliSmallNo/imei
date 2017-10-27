@@ -1,6 +1,7 @@
 <style>
-	.data-bg {
+	.date-bg {
 		background: #f8f8f8;
+		padding-bottom: 4rem;
 	}
 
 	.date-margintop {
@@ -157,7 +158,7 @@
 		font-size: 1.2rem;
 		flex: 1;
 		border: none;
-		margin: 0 2rem  0 .5rem;
+		margin: 0 2rem 0 .5rem;
 
 	}
 
@@ -278,80 +279,294 @@
 </div>
 <div class="date-rate date-margintop">
 	{{foreach from=$stDic key=k item=item}}
-	<a href="javascript:;" class="{{if $st>=$k}}on{{/if}} {{if $role=='inactive'}}role-inactive{{/if}}"
+	<a href="javascript:;"
+		 class="{{if $st>=$k}}on{{/if}}{{if $k==140 && (($st==130 || st==140) && $commentFlag) }}on{{/if}} {{if $role=='inactive'}}role-inactive{{/if}}"
 		 data-val="{{$k}}">{{$item}}</a>
 	{{/foreach}}
 </div>
-{{if $st>110}}
-<div class="date-tel date-margintop {{if $st==120}}hide{{/if}}">
-	<div class="date-avatar"><img src="{{$TA.uAvatar}}"></div>
-	<div class="date-ta-des">
-		{{$TA.uName}} {{$TA.uPhone}}
+
+<div class="date_meet_content">
+	{{if $st>110}}
+	<div class="date-tel date-margintop {{if $st==120}}hide{{/if}}">
+		<div class="date-avatar"><img src="{{$TA.uAvatar}}"></div>
+		<div class="date-ta-des">
+			{{$TA.uName}} {{$TA.uPhone}}
+		</div>
+		<a href="tel:{{$TA.uPhone}}"><img src="/images/date_phone.png"></a>
 	</div>
-	<a href="tel:{{$TA.uPhone}}"><img src="/images/date_phone.png"></a>
-</div>
-{{/if}}
-<div class="date-item date-margintop">
-	<div class="date-label">约会项目</div>
-	<div class="date-option" data-field="cat">
-		{{foreach from=$catDic key=k item=item}}
-		<a href="javascript:;" class="{{if isset($d.dCategory) && $d.dCategory==$k}}on{{/if}}" data-val="{{$k}}"
-			 tag-edit="{{if $role=="active" && $st==1}}able{{/if}}">{{$item}}</a>
-		{{/foreach}}
+	{{/if}}
+	<div class="date-item date-margintop">
+		<div class="date-label">约会项目</div>
+		<div class="date-option" data-field="cat">
+			{{foreach from=$catDic key=k item=item}}
+			<a href="javascript:;" class="{{if isset($d.dCategory) && $d.dCategory==$k}}on{{/if}}" data-val="{{$k}}"
+				 tag-edit="{{if $role=="active" && $st==1}}able{{/if}}">{{$item}}</a>
+			{{/foreach}}
+		</div>
 	</div>
-</div>
-<div class="date-item date-margintop">
-	<div class="date-label">约会预算</div>
-	<div class="date-option" data-field="paytype">
-		<a href="javascript:;" tag-edit="{{if $role=="active" && $st==1}}able{{/if}}"
-			 class="{{if isset($d['dPayType']) && $d['dPayType']!=$uid && $d['dPayType']!=$id}}on{{/if}}" data-val="aa">AA</a>
-		<a href="javascript:;" tag-edit="{{if $role=="active" && $st==1}}able{{/if}}"
-			 class="{{if isset($d['dPayType']) && $d['dPayType']==$id}}on{{/if}}" data-val="ta">TA买单</a>
-		<a href="javascript:;" tag-edit="{{if $role=="active" && $st==1}}able{{/if}}"
-			 class="{{if isset($d['dPayType']) && $d['dPayType']==$uid}}on{{/if}}" data-val="me">我买单</a>
+	<div class="date-item date-margintop">
+		<div class="date-label">约会预算</div>
+		<div class="date-option" data-field="paytype">
+			<a href="javascript:;" tag-edit="{{if $role=="active" && $st==1}}able{{/if}}"
+				 class="{{if isset($d['dPayType']) && $d['dPayType']!=$uid && $d['dPayType']!=$id}}on{{/if}}"
+				 data-val="aa">AA</a>
+			<a href="javascript:;" tag-edit="{{if $role=="active" && $st==1}}able{{/if}}"
+				 class="{{if isset($d['dPayType']) && $d['dPayType']==$id}}on{{/if}}" data-val="ta">TA买单</a>
+			<a href="javascript:;" tag-edit="{{if $role=="active" && $st==1}}able{{/if}}"
+				 class="{{if isset($d['dPayType']) && $d['dPayType']==$uid}}on{{/if}}" data-val="me">我买单</a>
+		</div>
+	</div>
+
+	{{if $role=="active" && $st<=100}}
+	{{else}}
+	<div class="date-input date-margintop">
+		<div class="date-input-label">约会时间</div>
+		{{if $st>100}}
+		<p>{{if isset($d.dDate)}}{{$d.dDate|date_format:'%Y-%m-%d'}}{{/if}}</p>
+		{{else}}
+		<input type="date" tag-edit="{{if $role=="active"}}readonly{{/if}}" data-input="time"
+					 value="{{if isset($d.dDate)}}{{$d.dDate}}{{/if}}">
+		{{/if}}
+	</div>
+	<div class="date-input date-margintop">
+		<div class="date-input-label">约会地点</div>
+		{{if $st>100}}
+		<p>{{if isset($d.dLocation)}}{{$d.dLocation}}{{/if}}</p>
+		{{else}}
+		<input type="text" tag-edit="{{if $role=="active"}}readonly{{/if}}" data-input="location"
+					 value="{{if isset($d.dLocation)}}{{$d.dLocation}}{{/if}}">
+		{{/if}}
+	</div>
+	{{/if}}
+
+	<div class="date-textarea date-margintop">
+		<div class="date-textarea-label">约会说明</div>
+		{{if $role=="active" && $st==1}}
+		<textarea rows="4" placeholder="写下你对这个约会的预见，期许等"
+							data-input="title">{{if isset($d.dTitle)}}{{$d.dTitle}}{{/if}}</textarea>
+		{{else}}
+		<p>{{if isset($d.dTitle)}}{{$d.dTitle}}{{/if}}</p>
+		{{/if}}
+	</div>
+	<div class="date-textarea date-margintop">
+		<div class="date-textarea-label">自我介绍</div>
+		{{if $role=="active" && $st==1}}
+		<textarea rows="5" placeholder="写下你的个人信息，提高约会成功率"
+							data-input="intro">{{if isset($d.dTitle)}}{{$d.dTitle}}{{/if}}</textarea>
+		{{else}}
+		<p>{{if isset($d.dIntro)}}{{$d.dIntro}}{{/if}}</p>
+		{{/if}}
 	</div>
 </div>
 
-{{if $role=="active" && $st<=100}}
-{{else}}
-<div class="date-input date-margintop">
-	<div class="date-input-label">约会时间</div>
-	{{if $st>100}}
-	<p>{{if isset($d.dDate)}}{{$d.dDate|date_format:'%Y-%m-%d'}}{{/if}}</p>
-	{{else}}
-	<input type="date" tag-edit="{{if $role=="active"}}readonly{{/if}}" data-input="time"
-				 value="{{if isset($d.dDate)}}{{$d.dDate}}{{/if}}">
-	{{/if}}
-</div>
-<div class="date-input date-margintop">
-	<div class="date-input-label">约会地点</div>
-	{{if $st>100}}
-	<p>{{if isset($d.dLocation)}}{{$d.dLocation}}{{/if}}</p>
-	{{else}}
-	<input type="text" tag-edit="{{if $role=="active"}}readonly{{/if}}" data-input="location"
-				 value="{{if isset($d.dLocation)}}{{$d.dLocation}}{{/if}}">
-	{{/if}}
+<style>
+
+	.magic-radio {
+		position: absolute;
+		display: none;
+	}
+
+	.magic-radio + label {
+		position: relative;
+		display: block;
+		padding-left: 2.4rem;
+		cursor: pointer;
+		vertical-align: middle;
+		font-size: 1.2rem
+	}
+
+	.magic-radio + label:before {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: inline-block;
+		width: 1.5rem;
+		height: 1.5rem;
+		content: '';
+		border: 1px solid #c0c0c0;
+	}
+
+	.magic-radio:checked + label:before {
+		animation-name: none;
+	}
+
+	.magic-radio + label:after {
+		position: absolute;
+		display: none;
+		content: '';
+	}
+
+	.magic-radio:checked + label:after {
+		display: block;
+	}
+
+	.magic-radio + label:before {
+		border-radius: 50%;
+	}
+
+	.magic-radio + label:after {
+		top: .4rem;
+		left: .4rem;
+		width: .8rem;
+		height: .8rem;
+		border-radius: 50%;
+		background: #f06292;
+	}
+
+	.magic-radio:checked + label:before {
+		border: 1px solid #f06292;
+	}
+
+	.date-comment-item {
+		background: #fff;
+		margin-top: .5rem;
+		padding: 1rem .5rem;
+	}
+
+	.date-comment-item h4 {
+		font-size: 1.3rem;
+		margin-bottom: 1rem;
+	}
+
+	.date-comment-item .opt-star a {
+		width: 4rem;
+		height: 3rem;
+		display: inline-block;
+		position: relative;
+	}
+
+	.date-comment-item .opt-star a:after {
+		position: absolute;
+		content: '';
+		background: url('/images/date_star_default.png') no-repeat center center;
+		background-size: 100% 100%;
+		width: 2rem;
+		height: 2rem;
+	}
+
+	.date-comment-item .opt-star a.on:after {
+		background: url('/images/date_star_hl.png') no-repeat center center;
+		background-size: 100% 100%;
+	}
+
+	.date-comment-item .opt-radio .opt {
+		width: 30%;
+		display: inline-block;
+		margin-bottom: .5rem;
+	}
+
+	.date-comment-item textarea {
+		border: none;
+		font-size: 1.2rem;
+		color: #777;
+		width: 30rem;
+	}
+
+</style>
+{{if $st==130}}
+<div class="date-comment" style="margin-bottom: 5rem;display: none">
+	<div class="date-comment-item">
+		<h4>是否见面完成</h4>
+		<div class="opt-radio">
+			<div class="opt">
+				<input class="magic-radio" type="radio" name="name1" id="cr11" value="见面完成">
+				<label for="cr11">见面完成</label>
+			</div>
+			<div class="opt">
+				<input class="magic-radio" type="radio" name="name1" id="cr12" value="未见面">
+				<label for="cr12">未见面</label>
+			</div>
+		</div>
+	</div>
+
+	<div class="date-comment-item">
+		<h4>见面时长</h4>
+		<div class="opt-radio">
+			<div class="opt">
+				<input class="magic-radio" type="radio" name="name2" id="cr21" value="1-2小时">
+				<label for="cr21">1-2小时</label>
+			</div>
+			<div class="opt">
+				<input class="magic-radio" type="radio" name="name2" id="cr22" value="2-4小时">
+				<label for="cr22">2-4小时</label>
+			</div>
+			<div class="opt">
+				<input class="magic-radio" type="radio" name="name2" id="cr23" value="4小时以上">
+				<label for="cr23">4小时以上</label>
+			</div>
+		</div>
+	</div>
+	<div class="date-comment-item">
+		<h4>对方约会目的</h4>
+		<div class="opt-radio">
+			<div class="opt">
+				<input class="magic-radio" type="radio" name="name3" id="cr31" value="交友">
+				<label for="cr31">交友</label>
+			</div>
+			<div class="opt">
+				<input class="magic-radio" type="radio" name="name3" id="cr32" value="找对象">
+				<label for="cr32">找对象</label>
+			</div>
+			<div class="opt">
+				<input class="magic-radio" type="radio" name="name3" id="cr33" value="结婚">
+				<label for="cr33">结婚</label>
+			</div>
+			<div class="opt">
+				<input class="magic-radio" type="radio" name="name3" id="cr34" value="玩玩">
+				<label for="cr34">玩玩</label>
+			</div>
+			<div class="opt">
+				<input class="magic-radio" type="radio" name="name3" id="cr35" value="目的不清楚">
+				<label for="cr35">目的不清楚</label>
+			</div>
+		</div>
+	</div>
+	<div class="date-comment-item">
+		<h4>本人于照片一致程度</h4>
+		<div class="opt-star">
+			<a href="javascript:;" data-val="1"></a>
+			<a href="javascript:;" data-val="2"></a>
+			<a href="javascript:;" data-val="3"></a>
+			<a href="javascript:;" data-val="4"></a>
+			<a href="javascript:;" data-val="5"></a>
+		</div>
+	</div>
+	<div class="date-comment-item">
+		<h4>本人实际资料与平台个人资料一致程度</h4>
+		<div class="opt-star">
+			<a href="javascript:;" data-val="1"></a>
+			<a href="javascript:;" data-val="2"></a>
+			<a href="javascript:;" data-val="3"></a>
+			<a href="javascript:;" data-val="4"></a>
+			<a href="javascript:;" data-val="5"></a>
+		</div>
+	</div>
+	<div class="date-comment-item">
+		<h4>约见对方好感程度</h4>
+		<div class="opt-star">
+			<a href="javascript:;" data-val="1"></a>
+			<a href="javascript:;" data-val="2"></a>
+			<a href="javascript:;" data-val="3"></a>
+			<a href="javascript:;" data-val="4"></a>
+			<a href="javascript:;" data-val="5"></a>
+		</div>
+	</div>
+	<div class="date-comment-item">
+		<h4>继续线下交往意愿</h4>
+		<div class="opt-star">
+			<a href="javascript:;" data-val="1"></a>
+			<a href="javascript:;" data-val="2"></a>
+			<a href="javascript:;" data-val="3"></a>
+			<a href="javascript:;" data-val="4"></a>
+			<a href="javascript:;" data-val="5"></a>
+		</div>
+	</div>
+	<div class="date-comment-item">
+		<h4>对此次线下见面的其他补充评价</h4>
+		<textarea rows="4"></textarea>
+	</div>
 </div>
 {{/if}}
-
-<div class="date-textarea date-margintop">
-	<div class="date-textarea-label">约会说明</div>
-	{{if $role=="active" && $st==1}}
-	<textarea rows="4" placeholder="写下你对这个约会的预见，期许等"
-						data-input="title">{{if isset($d.dTitle)}}{{$d.dTitle}}{{/if}}</textarea>
-	{{else}}
-	<p>{{if isset($d.dTitle)}}{{$d.dTitle}}{{/if}}</p>
-	{{/if}}
-</div>
-<div class="date-textarea date-margintop">
-	<div class="date-textarea-label">自我介绍</div>
-	{{if $role=="active" && $st==1}}
-	<textarea rows="5" placeholder="写下你的个人信息，提高约会成功率"
-						data-input="intro">{{if isset($d.dTitle)}}{{$d.dTitle}}{{/if}}</textarea>
-	{{else}}
-	<p>{{if isset($d.dIntro)}}{{$d.dIntro}}{{/if}}</p>
-	{{/if}}
-</div>
 
 {{if $st==99}}
 <div class="date-btn">
@@ -387,8 +602,11 @@
 
 {{if $st==130}}
 <div class="date-btn flex-column">
-	<p>对方联系方式：{{$phone}}</p>
-	<a href="javascript:;" data-tag="date_common">评论对方</a>
+	{{if $commentFlag}}
+	<a href="javascript:;" data-tag="date_complete">约会成功</a>
+	{{else}}
+	<a href="javascript:;" data-tag="date_to_comment">匿名评论对方</a>
+	{{/if}}
 </div>
 {{/if}}
 

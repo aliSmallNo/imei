@@ -88,6 +88,9 @@ class Date extends ActiveRecord
 
 	public static function oneInfo($myUId, $taUId)
 	{
+		if (!$myUId || !$taUId) {
+			return 0;
+		}
 		list($uid1, $uid2) = self::sortUId($myUId, $taUId);
 		$d = self::findOne(["dUId1" => $uid1, "dUId2" => $uid2,
 			'dStatus' => [self::STATUS_INVITE, self::STATUS_PASS, self::STATUS_PAY, self::STATUS_MEET, self::STATUS_COMMENT]]);

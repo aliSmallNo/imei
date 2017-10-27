@@ -49,6 +49,11 @@ require(["layer"],
 					util.tag = 'date_fail';
 					util.submit();
 				});
+				$(document).on(kClick, ".opt-star a", function () {
+					$(this).closest(".opt-star").find("a").removeClass("on choose");
+					$(this).prevAll().addClass("on");
+					$(this).addClass("on choose");
+				});
 				$(document).on(kClick, ".date-btn a", function () {
 					var self = $(this);
 					util.tag = self.attr("data-tag");
@@ -69,8 +74,67 @@ require(["layer"],
 							// var phone = self.parseInt(self.attr('data-phone'));
 							util.tomeet();
 							break;
+						case "date_to_comment":
+							$(".date_meet_content").hide();
+							$(".date-comment").show();
+							self.html('提交评论');
+							self.attr('data-tag', 'date_comment');
+							break;
+						case "date_comment":
+							util.comment();
+							break;
 					}
 				});
+			},
+			comment: function () {
+				var util = dateUtil;
+				var err = 0;
+				var data = [];
+				$(".date-comment-item").each(function () {
+					var self = $(this);
+					var title = self.find("h4").html();
+					if (self.find(".opt-radio").length > 0) {
+						var v1 = self.find(".opt-radio").find("input[type=radio]:checked").val();
+						if (!v1) {
+							showMsg(title + "还没填写");
+							err = 1;
+							return false;
+						}
+						data.push({title: title, value: v1});
+					} else if (self.find(".opt-star").length > 0) {
+						var v2 = self.find(".opt-star").find("a.on.choose").attr("data-val");
+						if (!v2) {
+							showMsg(title + "还没填写");
+							err = 1;
+							return false;
+						}
+						data.push({title: title, value: v2});
+					} else if (self.find("textarea").length > 0) {
+						var v3 = self.find("textarea").val();
+						data.push({title: title, value: v3});
+					}
+				});
+				if (err) {
+					return;
+				}
+				console.log(data);
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post("/api/date", {
+					data: JSON.stringify(data),
+					tag: 'data_comment',
+					did: util.did,
+					//sid: util.sid,
+				}, function (res) {
+					util.loading = 0;
+					if (res.code == 0) {
+						//location.href = "/wx/date?id=" + util.sid;
+					} else {
+						showMsg(res.msg);
+					}
+				}, 'json');
 			},
 			varify: function () {
 				var util = dateUtil;
