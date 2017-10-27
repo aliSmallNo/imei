@@ -283,7 +283,7 @@ require(["layer"],
 					onBridgeReady(resData);
 				}
 			},
-			tomeet: function (self) {
+			tomeet: function () {
 				var util = dateUtil;
 				if (util.loading) {
 					return;
@@ -294,7 +294,7 @@ require(["layer"],
 					did: util.did,
 				}, function (resp) {
 					if (resp.code == 0) {
-						$(".date-tel").removeClass("hide");
+						location.href = "/wx/date?id=" + util.sid;
 					} else {
 						showMsg(resp.msg);
 					}

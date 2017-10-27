@@ -286,8 +286,8 @@
 </div>
 
 <div class="date_meet_content">
-	{{if $st>110}}
-	<div class="date-tel date-margintop {{if $st==120}}hide{{/if}}">
+	{{if $st>120}}
+	<div class="date-tel date-margintop">
 		<div class="date-avatar"><img src="{{$TA.uAvatar}}"></div>
 		<div class="date-ta-des">
 			{{$TA.uName}} {{$TA.uPhone}}
@@ -595,7 +595,6 @@
 
 {{if $st==120}}
 <div class="date-btn flex-column">
-	<p>对方联系方式：{{$phone}}</p>
 	<a href="javascript:;" data-tag="date_phone" data-phone="{{$phone}}">申请他的联系方式</a>
 </div>
 {{/if}}
@@ -632,4 +631,4 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/date.js?v=1.1.13" src="/assets/js/require.js"></script>
+<script data-main="/js/date.js?v=1.1.14" src="/assets/js/require.js"></script>
