@@ -2120,7 +2120,7 @@ class ApiController extends Controller
 						$sid,
 						'有人邀请线下见面',
 						'申请您通过',
-						$sid);
+						$uid);
 					return self::renderAPI(0, '邀约成功~');
 				} else {
 					return self::renderAPI(129, '邀约失败~');

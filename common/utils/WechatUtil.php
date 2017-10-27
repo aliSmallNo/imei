@@ -673,7 +673,7 @@ class WechatUtil
 				break;
 			case self::NOTICE_DATE:
 				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
-				$url = $wxUrl . "/wx/single#date";
+				$url = $wxUrl . "/wx/date?id=" . AppUtil::encrypt($giverId);
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
