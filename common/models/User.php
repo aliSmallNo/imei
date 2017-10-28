@@ -132,8 +132,16 @@ class User extends ActiveRecord
 		160 => "硕士", 170 => "博士"
 	];
 
+	const MARITAL_UNMARRIED = 100;
+	const MARITAL_DIVORCE_KID = 110;
+	const MARITAL_DIVORCE_NO_KID = 120;
+	const MARITAL_MARRIED = 130;
+
 	static $Marital = [
-		100 => "未婚", 110 => "离异不带孩", 120 => "离异带孩", 130 => "已婚"
+		self::MARITAL_UNMARRIED => "未婚",
+		self::MARITAL_DIVORCE_KID => "离异不带孩",
+		self::MARITAL_DIVORCE_NO_KID => "离异带孩",
+		self::MARITAL_MARRIED => "已婚"
 	];
 
 	static $EducationFilter = [
@@ -1270,7 +1278,8 @@ class User extends ActiveRecord
 		$gender = ($gender == self::GENDER_FEMALE) ? self::GENDER_MALE : self::GENDER_FEMALE;
 		$uRole = User::ROLE_SINGLE;
 
-		$marry = $myInfo->uMarital == 100 ? '100' : '110,120,130';
+		$marry = $myInfo->uMarital == self::MARITAL_MARRIED ? self::MARITAL_MARRIED
+			: implode(',', [self::MARITAL_UNMARRIED, self::MARITAL_DIVORCE_KID, self::MARITAL_DIVORCE_NO_KID]);
 
 		$condition = " u.uRole=$uRole AND u.uGender=$gender and u.uMarital in ($marry) 
 				AND u.uStatus in (" . implode(',', self::$StatusVisible) . ") " . $ageLimit;
@@ -1289,19 +1298,18 @@ class User extends ActiveRecord
 			$year = date("Y");
 			$ageStart = $year - $age[1];
 			$ageEnd = $year - $age[0];
-			$condition .= " and u.uBirthYear  between $ageStart and $ageEnd ";
+			$condition .= " and u.uBirthYear BETWEEN $ageStart AND $ageEnd ";
 		}
 		if (isset($data['location']) && $data['location']) {
 			list($fp, $fc) = explode('-', $data['location']);
 			//$condition .= $fc ? " and u.uLocation  like '%$fp%' && u.uLocation like '%$fc%' " : " and u.uLocation  like '%$fp%' ";
-			$condition .= " and u.uLocation  like '%$fp%' ";
+			$condition .= " AND u.uLocation like '%$fp%' ";
 		}
 
 		/*
 		if (!$data) {
 			$data = json_decode($uFilter, 1);
 		}
-
 
 		if (isset($data["height"]) && $data["height"] != 0) {
 			$height = explode("-", $data["height"]);
