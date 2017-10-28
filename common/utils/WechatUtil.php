@@ -523,7 +523,7 @@ class WechatUtil
 			$entity = Pay::findOne(["pId" => $pid]);
 			if ($entity->pCategory == Pay::CAT_MEET) {
 				UserTrans::addByPID($pid, UserTrans::CAT_RECHARGE_MEET);
-				Date::edit($entity->pRId, ["dStatus" => Date::STATUS_PAY]);
+				Date::edit($entity->pRId, ["dStatus" => Date::STATUS_PAY, 'dPayId' => $pid]);
 			} else {
 				UserTrans::addByPID($pid);
 			}
