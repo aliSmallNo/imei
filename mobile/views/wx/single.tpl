@@ -447,7 +447,7 @@
 	<div class="tab fixed-top" data-tag="date_list">
 		<a href="javascript:;" data-tag="date-me" class="active">邀约我的</a>
 		<a href="javascript:;" data-tag="date-ta">我邀约的</a>
-		<a href="javascript:;" data-tag="date-both">线下见面</a>
+		<a href="javascript:;" data-tag="date-both">约会成功</a>
 	</div>
 	<div style="height: 3.8rem"></div>
 	<ul class="plist"></ul>
