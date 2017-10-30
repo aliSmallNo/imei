@@ -6,6 +6,7 @@ use admin\models\Admin;
 use admin\models\Menu;
 use common\models\ChatMsg;
 use common\models\City;
+use common\models\Date;
 use common\models\Event;
 use common\models\EventCrew;
 use common\models\Feedback;
@@ -828,6 +829,39 @@ class SiteController extends BaseController
 				'category' => 'data',
 				'list' => $list,
 				'relations' => UserNet::$RelDict,
+			]
+		);
+	}
+
+	public function actionDate()
+	{
+		$getInfo = Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$st = self::getParam("st");
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+		$condition = "";
+		if ($st) {
+			$condition .= " and d.dStatus=$st ";
+		}
+		if ($name) {
+			$name = str_replace("'", "", $name);
+			$condition .= " and (u1.uName like '%$name%' or u2.uName like '%$name%')";
+		}
+		if ($phone) {
+			$phone = str_replace("'", "", $phone);
+			$condition .= " and (u1.uPhone like '$phone%' or u2.uPhone like '$phone%')";
+		}
+
+		list($list, $count) = Date::dateItems($condition, $page);
+		$pagination = self::pagination($page, $count);
+		return $this->renderPage("dates.tpl",
+			[
+				'getInfo' => $getInfo,
+				'pagination' => $pagination,
+				'category' => 'data',
+				'list' => $list,
+				'relations' => Date::$statusDict,
 			]
 		);
 	}

@@ -22,6 +22,7 @@ class Date extends ActiveRecord
 	const STATUS_MEET = 130;
 	const STATUS_COMMENT = 140;
 	static $statusDict = [
+		self::STATUS_FAIL => '约会取消',
 		self::STATUS_INVITE => '发出邀请',
 		self::STATUS_PASS => '对方同意',
 		self::STATUS_PAY => '送媒瑰花',
@@ -198,6 +199,63 @@ class Date extends ActiveRecord
 			$items[] = $item;
 		}
 		return [$items, $nextpage];
+	}
+
+
+	public static function dateItems($condition, $page, $pageSize = 20)
+	{
+		$offset = ($page - 1) * $pageSize;
+		$conn = AppUtil::db();
+		//  DATE_FORMAT(n.nAddedOn,'%Y-%m-%d %H:%i') as dt
+		$sql = "SELECT u1.uName as name1,u1.uPhone as phone1,u1.uThumb as thumb1,u1.uAvatar as avatar1,
+				u2.uName as name2,u2.uPhone as phone2,u2.uThumb as thumb2,u2.uAvatar as avatar2,d.*
+				from im_date as d 
+				join im_user as u1 on d.dUId1=u1.uId
+				join im_user as u2 on d.dUId2=u2.uId
+				where dId>0   $condition
+				order by d.dAddedOn desc limit $offset,$pageSize";
+		$res = $conn->createCommand($sql)->queryAll();
+		foreach ($res as &$v) {
+			$v["cText"] = self::$catDict[$v["dCategory"]];
+			$v["sText"] = self::$statusDict[$v["dStatus"]];
+			$v["payText"] = '';
+			if ($v["dPayType"] == $v["dUId1"]) {
+				$v["payText"] = $v['name1'] . '付款';
+			} else if ($v["dPayType"] == $v["dUId2"]) {
+				$v["payText"] = $v['name2'] . '付款';
+			} else {
+				$v["payText"] = 'AA';
+			}
+
+			$v['av1'] = $v['thumb1'] ? $v['thumb1'] : $v['avatar1'];
+			$v['av2'] = $v['thumb2'] ? $v['thumb2'] : $v['avatar2'];
+
+			$left = $right = [];
+			$uInfo = ['id' => $v['dUId1'], 'avatar' => $v['av1'], 'name' => $v['name1'], 'phone' => $v['phone1']];
+			$sInfo = ['id' => $v['dUId2'], 'avatar' => $v['av2'], 'name' => $v['name2'], 'phone' => $v['phone2']];
+			if ($v["dAddedBy"] == $v["dUId1"]) {
+				$left = $uInfo;
+				$right = $sInfo;
+			} else {
+				$left = $sInfo;
+				$right = $uInfo;
+			}
+			$v['left'] = $left;
+			$v['right'] = $right;
+			$v['text'] = '';
+			if ( $left && $right) {
+				$memo = ['<b>%s</b>%s<b>%s</b> %s %s', $left['name'], '约会', $right['name'],$v["cText"],$v["payText"]];
+				$v['text'] = call_user_func_array('sprintf', $memo);
+			}
+		}
+		$sql = "SELECT count(*)
+				from im_date as d 
+				join im_user as u1 on d.dUId1=u1.uId
+				join im_user as u2 on d.dUId2=u2.uId
+				where dId>0   $condition ";
+		$count = $conn->createCommand($sql)->queryScalar();
+
+		return [$res, $count];
 	}
 
 }

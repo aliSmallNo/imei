@@ -1727,7 +1727,7 @@ class WxController extends BaseController
 		}
 		$uid = $wxInfo["uId"];
 		$sid = self::getParam("id", 'AjtrXTM9Rjc8N0xoODw7QTlBQ3RlPEVPP0U_VXA');//zp_hongmi
-//		$sid = self::getParam("id", 'ATprXTQ-SDk_OlBsPT8-P0BES3xuRU9ZSlBLYX0');//zp
+//		$sid = self::getParam("id", 'ATprXTQ-SDk_OlBsPT8-P0BES3xuRU9ZSlBLYX0');// zp
 		$id = AppUtil::decrypt($sid);
 		$TA = User::findOne(["uId" => $id]);
 		if (!$TA) {
@@ -1746,6 +1746,7 @@ class WxController extends BaseController
 		}
 
 		$stDict = Date::$statusDict;
+		unset($stDict[Date::STATUS_FAIL]);
 		$title = '邀约' . $TA->uName;
 		if ($role == "inactive") {
 			unset($stDict[Date::STATUS_PASS]);

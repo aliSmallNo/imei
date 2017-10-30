@@ -515,7 +515,7 @@ class ChatMsg extends ActiveRecord
 			$strCriteria .= ' AND ' . implode(' AND ', $criteria);
 		}
 		$conn = AppUtil::db();
-		$sql = 'select g.gId,g.gUId1,g.gUId2,g.gAddedBy,m.cContent as content,m.cAddedOn,
+		$sql = 'select g.gId,g.gUId1,g.gUId2,g.gAddedBy,m.cContent as content,m.cAddedOn,gStatus,
 			 u1.uName as name1,u1.uPhone as phone1,u1.uThumb as avatar1,u1.uId as id1,u1.uUniqid as uni1,
 			 u2.uName as name2,u2.uPhone as phone2,u2.uThumb as avatar2,u2.uId as id2,u2.uUniqid as uni2,
 			 COUNT(case when m2.cAddedBy=g.gUId1 then 1 end) as cnt1,
@@ -533,6 +533,7 @@ class ChatMsg extends ActiveRecord
 			$res[$k]['avatar1'] = ImageUtil::getItemImages($row['avatar1'])[0];
 			$res[$k]['avatar2'] = ImageUtil::getItemImages($row['avatar2'])[0];
 			$res[$k]['dt'] = AppUtil::prettyDate($row['cAddedOn']);
+			$res[$k]['st'] = $row['gStatus'];
 			if ($row['gAddedBy'] == $row['gUId2']) {
 				list($name, $phone, $avatar, $cnt, $uni) = [$row['name1'], $row['phone1'], $row['avatar1'], $row['cnt1'], $row['uni1']];
 				$res[$k]['name1'] = $row['name2'];

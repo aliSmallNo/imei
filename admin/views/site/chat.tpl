@@ -27,6 +27,12 @@
 		width: 64px;
 		height: 64px;
 	}
+
+	.chat-st {
+		color: #ee6e73;
+		font-size: 13px;
+		padding-bottom: 5px;
+	}
 </style>
 <div class="row">
 	<h4>用户聊天列表</h4>
@@ -85,6 +91,8 @@
 				{{$item.phone2}}
 			</td>
 			<td>
+				{{if $item.st==0}}
+				<div class="chat-st">已删除</div>{{/if}}
 				<a href="/site/chatdes?gid={{$item.gId}}" class="btn btn-outline btn-primary btn-xs">详情</a>
 			</td>
 		</tr>
