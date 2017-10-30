@@ -1746,8 +1746,10 @@ class WxController extends BaseController
 		}
 
 		$stDict = Date::$statusDict;
+		$title = '邀约' . $TA->uName;
 		if ($role == "inactive") {
 			unset($stDict[Date::STATUS_PASS]);
+			$title = $TA->uName . '邀约你';
 		}
 		return self::renderPage('date.tpl',
 			[
@@ -1764,7 +1766,7 @@ class WxController extends BaseController
 				"commentFlag" => $commentFlag,
 			],
 			'terse',
-			"邀约",
+			$title,
 			'date-bg');
 	}
 

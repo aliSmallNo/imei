@@ -177,12 +177,12 @@ class Date extends ActiveRecord
 				(select u.* ,dAddedOn
 				from im_date as d 
 				join im_user as u on u.uId=dUId1
-				where  dUId2=$MyUid and dStatus>110
+				where  dUId2=$MyUid and dStatus=140
 				UNION 
 				SELECT  u.* ,dAddedOn
 				from im_date as d 
 				join im_user as u on u.uId=dUId2
-				where dUId1=$MyUid and dStatus>110 ) as t order by dAddedOn desc $limit ";
+				where dUId1=$MyUid and dStatus=140 ) as t order by dAddedOn desc $limit ";
 				break;
 		}
 		$ret = AppUtil::db()->createCommand($sql)->queryAll();
