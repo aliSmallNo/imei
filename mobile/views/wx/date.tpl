@@ -224,7 +224,12 @@
 	}
 
 	.date-btn a[data-tag].fail {
+		flex: 0 0 6rem;
 		background: #555;
+	}
+
+	.date-btn a[data-tag].fails {
+		background: #aaa;
 	}
 
 	.date-tel {
@@ -483,6 +488,10 @@
 		width: 30rem;
 	}
 
+	.topup-wrap .topup-opt a.active:after {
+		content: initial;
+	}
+
 </style>
 {{if $st==130}}
 <div class="date-comment" style="margin-bottom: 5rem;display: none">
@@ -591,7 +600,7 @@
 
 {{if $st==99}}
 <div class="date-btn">
-	<a href="javascript:;" data-tag="to-fail" class="fail">约会失败</a>
+	<a href="javascript:;" data-tag="to-fail" class="fails">约会失败</a>
 </div>
 {{/if}}
 
@@ -608,8 +617,8 @@
 {{/if}}
 {{if $st==110}}
 <div class="date-btn flex-column ">
-	<a href="javascript:;" class="date-pay-rule">查看付款平台规则</a>
-	<a href="javascript:;" data-tag="date_pay">付款平台</a>
+	<a href="javascript:;" class="date-rule" data-rule-tag="data_rule_rose" style="display: none">查看付款平台规则</a>
+	<a href="javascript:;" data-tag="date_pay">送TA媒瑰花</a>
 </div>
 {{/if}}
 {{/if}}
@@ -630,16 +639,23 @@
 </div>
 {{/if}}
 
+{{if $st==140}}
+<div class="date-btn ">
+	<a href="javascript:;" data-tag="date_complete">约会成功</a>
+</div>
+{{/if}}
+
 {{if $role=="inactive"}}
 {{if $st==100}}
 <div class="date-btn">
+	<a href="javascript:;" data-tag="" class="date-rule" data-rule-tag="data_rule_agree" style="background: #009e02">查看接受规则</a>
 	<a href="javascript:;" data-tag="date_fail" class="fail">残忍拒绝</a>
 	<a href="javascript:;" data-tag="date_agree">欣然接受</a>
 </div>
 {{/if}}
 {{if $st==110}}
 <div class="date-btn">
-	<a href="javascript:;" data-tag="wait">等待对方付款平台</a>
+	<a href="javascript:;" data-tag="wait">等待对方送你媒瑰花</a>
 </div>
 {{/if}}
 {{/if}}
@@ -648,8 +664,38 @@
 <input type="hidden" id="user_st" value="{{$st}}">
 <input type="hidden" id="user_sid" value="{{$sid}}">
 <input type="hidden" id="user_did" value="{{if isset($d.dId)}}{{$d.dId}}{{/if}}">
+<div class="m-popup-shade"></div>
+<div class="m-popup-main" style="display: none">
+	<div class="m-popup-wrap">
+		<div class="m-popup-content"></div>
+	</div>
+</div>
+<script type="text/template" id="tpl_give">
+	<div class="topup-wrap">
+		<h4>送TA媒桂花</h4>
+		<h5>约会我的他OR她</h5>
+		<div class="topup-opt clearfix">
+			{[#items]}
+			<a href="javascript:;" data-amt="{[amt]}">
+				<div class="img"><img src="/images/ico_rose.png"></div>
+				<div class="des">
+					<em>x {[amt]}朵</em>
+				</div>
+			</a>
+			{[/items]}
+		</div>
+		<div class="topup-action">
+			<a href="javascript:;" class="btn-togive">送媒<br>桂花</a>
+		</div>
+		<div class="topup-bot" style="display: none">
+			<a href="javascript:;">送花给TA，你会有意外惊喜哦~</a>
+		</div>
+		<a href="javascript:;" class="m-popup-close"></a>
+	</div>
+</script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
+<script src="/assets/js/mustache.min.js?v=1.2.1"></script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script data-main="/js/date.js?v=1.1.14" src="/assets/js/require.js"></script>

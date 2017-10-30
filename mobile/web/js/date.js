@@ -36,6 +36,10 @@ require(["layer"],
 			fieldsText: {cat: '约会项目', paytype: '约会预算', title: '约会说明', intro: '自我介绍', time: '约会时间', location: '约会地点'},
 			paying: 0,
 			payBtn: null,
+
+			main: $(".m-popup-main"),
+			content: $(".m-popup-content"),
+			shade: $(".m-popup-shade"),
 			init: function () {
 				var util = dateUtil;
 				$(document).on(kClick, ".date-option a", function () {
@@ -54,6 +58,18 @@ require(["layer"],
 					$(this).prevAll().addClass("on");
 					$(this).addClass("on choose");
 				});
+				$(document).on(kClick, ".topup-wrap a", function () {
+					var self = $(this);
+					if (self.hasClass("m-popup-close")) {
+						util.main.hide();
+						util.shade.fadeOut(160);
+					} else if (self.hasClass("btn-togive")) {
+						util.payRole();
+					} else if (parseInt(self.attr('data-amt')) > 0) {
+						self.closest(".topup-opt").find("a").removeClass("active");
+						self.addClass("active");
+					}
+				});
 				$(document).on(kClick, ".date-btn a", function () {
 					var self = $(this);
 					util.tag = self.attr("data-tag");
@@ -68,7 +84,8 @@ require(["layer"],
 							util.varify();
 							break;
 						case "date_pay":
-							util.prepay(self);
+							//util.prepay(self);
+							util.Flowers();
 							break;
 						case 'date_phone':
 							// var phone = self.parseInt(self.attr('data-phone'));
@@ -85,6 +102,48 @@ require(["layer"],
 							break;
 					}
 				});
+			},
+			payRole: function () {
+				var util = dateUtil;
+				var amt = parseInt($(".topup-opt a.active").attr("data-amt"));
+				console.log(amt);
+
+				if (!amt || amt < 520) {
+					showMsg("你还没选择送TA的媒瑰花数哦");
+					return;
+				}
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post("/api/date", {
+					tag: 'pay_rose',
+					amt: amt,
+					sid: util.sid,
+					did: util.did,
+				}, function (res) {
+					if (res.code == 0) {
+						util.refresh();
+					} else {
+						showMsg(res.msg);
+					}
+				}, 'json');
+			},
+			refresh: function () {
+				var util = dateUtil;
+				location.href = "/wx/date?id=" + util.sid;
+			},
+			Flowers: function () {
+				var util = dateUtil;
+				dateUtil.main.show();
+				var html = Mustache.render($("#tpl_give").html(), {
+					items: [
+						{amt: 520}, {amt: 999},
+						{amt: 1314}, {amt: 9999}
+					]
+				});
+				dateUtil.content.html(html).addClass("animate-pop-in");
+				dateUtil.shade.fadeIn(160);
 			},
 			comment: function () {
 				var util = dateUtil;
@@ -130,7 +189,7 @@ require(["layer"],
 				}, function (res) {
 					util.loading = 0;
 					if (res.code == 0) {
-						location.href = "/wx/date?id=" + util.sid;
+						util.refresh();
 					} else {
 						showMsg(res.msg);
 					}
@@ -262,7 +321,7 @@ require(["layer"],
 						},
 						function (res) {
 							if (res.err_msg == "get_brand_wcpay_request:ok") {
-								location.href = "/wx/date?id=" + util.sid;
+								util.refresh();
 								showMsg("您已经微信支付成功！");
 							} else {
 								util.payBtn.html('付款平台');
@@ -294,7 +353,7 @@ require(["layer"],
 					did: util.did,
 				}, function (resp) {
 					if (resp.code == 0) {
-						location.href = "/wx/date?id=" + util.sid;
+						util.refresh();
 					} else {
 						showMsg(resp.msg);
 					}
@@ -304,12 +363,26 @@ require(["layer"],
 		};
 		dateUtil.init();
 
-		$(document).on("click", ".date-pay-rule", function () {
+		$(document).on("click", ".date-rule", function () {
+			var self = $(this);
+			var catRule = self.attr('data-rule-tag');
+			var content = '';
+			switch (catRule) {
+				case 'data_rule_rose':
+					content = "<p style='text-align: left;font-size: 1.2rem'>1. 付款原由：平台牵线服务费</p>" +
+						"<p style='text-align: left;font-size: 1.2rem'>2. 服务费一次性收取，一律不予退还。</p>" +
+						"<p style='text-align: left;font-size: 1.2rem'>3. 用户付费默认同意此规则。</p>" +
+						"<p style='text-align: left;font-size: 1.2rem'>4. 本活动解释权归微媒100所有。</p>";
+					break;
+				case 'data_rule_agree':
+					content = "<p style='text-align: left;font-size: 1.2rem'>1. 点击接受代表您有同对方进行线下见面意愿。同意线下见面可能。</p>" +
+						"<p style='text-align: left;font-size: 1.2rem'>2. 同意之后，平台会要求对方送您不少于520朵媒瑰花。</p>" +
+						"<p style='text-align: left;font-size: 1.2rem'>3. 平台会在你们现在见面结束，双方互评完成送您一定数目的花粉值。</p>" +
+						"<p style='text-align: left;font-size: 1.2rem'>4. 本活动解释权归微媒100所有。</p>";
+					break;
+			}
 			layer.open({
-				content: "<p style='text-align: left;font-size: 1.2rem'>1. 付款原由：平台牵线服务费</p>" +
-				"<p style='text-align: left;font-size: 1.2rem'>2. 服务费一次性收取，一律不予退还。</p>" +
-				"<p style='text-align: left;font-size: 1.2rem'>3. 用户付费默认同意此规则。</p>" +
-				"<p style='text-align: left;font-size: 1.2rem'>4. 本活动解释权归微媒100所有。</p>",
+				content: content,
 				btn: "我知道了"
 			});
 		});

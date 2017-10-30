@@ -1904,7 +1904,7 @@ class ApiController extends Controller
 				if (UserNet::hasBlack($wxInfo["uId"], $receiverId)) {
 					return self::renderAPI(129, self::MSG_BLACK);
 				}
-				if(!UserComment::hasComment($receiverId, $uid)){
+				if (!UserComment::hasComment($receiverId, $uid)) {
 					return self::renderAPI(129, '聊了这么多，觉得ta怎么样呢，快去匿名评价吧~');
 				}
 				/*if ($wxInfo["uId"] == '131379') {
@@ -2217,9 +2217,29 @@ class ApiController extends Controller
 					if ($d->dComment1) {
 						$d->dStatus = Date::STATUS_COMMENT;
 					}
+					$t = UserTrans::findOne(["tId" => $d->dTId]);
+					UserTrans::add($uid, $d->dNId, UserTrans::CAT_RECEIVE,
+						UserTrans::$catDict[UserTrans::CAT_RECEIVE], floor($t->tAmt / 10), UserTrans::UNIT_FANS);
 					$d->save();
 				}
 				return self::renderAPI(0, '匿名评论成功~');
+				break;
+			case "pay_rose":
+				$amt = self::postParam("amt");
+				if ($amt < 520) {
+					return self::renderAPI(129, '你还没选择要送她的媒瑰花数~');
+				}
+				$remainRose = UserTrans::getStat($wxInfo["uId"], 1);
+				$flower = isset($remainRose['flower']) ? $remainRose['flower'] : 0;
+				if ($flower < $amt) {
+					return self::renderAPI(129, '你的媒桂花只剩' . $flower . '朵了，不足' . $amt . '朵，该充值了哦~');
+				}
+				list($nId, $tId) = UserNet::addPresent($wxInfo["uId"], $sid, $amt, UserTrans::UNIT_GIFT);
+				if (!$tId) {
+					return self::renderAPI(129, '送花失败~');
+				}
+				Date::edit($did, ['dNId' => $nId, 'dTId' => $tId, 'dStatus' => Date::STATUS_PAY]);
+				return self::renderAPI(0, '送花 ' . $amt . '朵 成功~');
 				break;
 		}
 		return self::renderAPI(129, '操作无效~');
