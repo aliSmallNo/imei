@@ -121,6 +121,7 @@ class Date extends ActiveRecord
 			'time' => 'dDate',
 			'location' => 'dLocation',
 			'st' => 'dStatus',
+			'note' => 'dNote',
 		];
 		$insert = [];
 		foreach ($fields as $k => $f) {
@@ -224,7 +225,7 @@ class Date extends ActiveRecord
 			} else if ($v["dPayType"] == $v["dUId2"]) {
 				$v["payText"] = $v['name2'] . '付款';
 			} else {
-				$v["payText"] = 'AA';
+				$v["payText"] = 'AA付款';
 			}
 
 			$v['av1'] = $v['thumb1'] ? $v['thumb1'] : $v['avatar1'];
@@ -244,7 +245,7 @@ class Date extends ActiveRecord
 			$v['right'] = $right;
 			$v['text'] = '';
 			if ( $left && $right) {
-				$memo = ['<b>%s</b>%s<b>%s</b> %s %s', $left['name'], '约会', $right['name'],$v["cText"],$v["payText"]];
+				$memo = ['<b>%s</b>%s<b>%s</b>%s <b>%s</b>', $left['name'], '约', $right['name'],$v["cText"],$v["payText"]];
 				$v['text'] = call_user_func_array('sprintf', $memo);
 			}
 		}

@@ -291,8 +291,8 @@
 
 <div class="date-nav">
 	<a href="/wx/single#sme" class="date-return">返回</a>
-	{{if ($st==100 || $st==110) && $role=='active'}}
-	<a href="javascript:;" class="date-cancel">取消邀约</a>
+	{{if ($st==100 || $st==110) }}
+	<a href="javascript:;" class="date-cancel">取消约会</a>
 	{{/if}}
 </div>
 <div class="date-rate date-margintop">
@@ -617,7 +617,7 @@
 {{/if}}
 {{if $st==110}}
 <div class="date-btn flex-column ">
-	<a href="javascript:;" class="date-rule" data-rule-tag="data_rule_rose" style="display: none">查看付款平台规则</a>
+	<a href="javascript:;" class="date-rule date-pay-rule" data-rule-tag="data_rule_rose">查看付款平台规则</a>
 	<a href="javascript:;" data-tag="date_pay">送TA媒瑰花</a>
 </div>
 {{/if}}
@@ -647,9 +647,8 @@
 
 {{if $role=="inactive"}}
 {{if $st==100}}
-<div class="date-btn">
-	<a href="javascript:;" data-tag="" class="date-rule" data-rule-tag="data_rule_agree" style="background: #009e02">查看接受规则</a>
-	<a href="javascript:;" data-tag="date_fail" class="fail">残忍拒绝</a>
+<div class="date-btn flex-column">
+	<a href="javascript:;" class="date-rule date-pay-rule" data-rule-tag="data_rule_agree">查看接受规则</a>
 	<a href="javascript:;" data-tag="date_agree">欣然接受</a>
 </div>
 {{/if}}
@@ -691,6 +690,59 @@
 			<a href="javascript:;">送花给TA，你会有意外惊喜哦~</a>
 		</div>
 		<a href="javascript:;" class="m-popup-close"></a>
+	</div>
+</script>
+<style>
+	.date-wrap{
+		background: #fff;
+		padding: 1rem;
+	}
+	.date-wrap h4{
+		margin-bottom: 1rem;
+	}
+	.date-wrap .date-cancel-opt{
+		text-align: left;
+	}
+	.date-wrap .date-cancel-opt a{
+		font-size: 1.2rem;
+		border: 1px solid #eee;
+		color: #777;
+		padding: .5rem 1rem;
+		display: inline-block;
+		margin: 0 .5rem .5rem 0;
+	}
+	.date-wrap .date-cancel-opt a.active{
+		border: 1px solid #f06292;
+		color: #f06292;
+	}
+	.date-wrap .date-cancel {
+		margin-top: 1rem;
+	}
+	.date-wrap .date-cancel a{
+		display: block;
+		color: #f06292;
+		background: #f8f8f8;
+		padding: .5rem 1rem;
+	}
+</style>
+<script type="text/template" id="tpl_cancel_reason">
+	<div class="date-wrap">
+		<h4>取消此次约会的原因</h4>
+		<div class="date-cancel-opt">
+			<a href="javascript:;">有过婚史</a>
+			<a href="javascript:;">年龄太大</a>
+			<a href="javascript:;">年龄太小</a>
+			<a href="javascript:;">学历太低</a>
+			<a href="javascript:;">异地恋</a>
+			<a href="javascript:;">物资条件太高</a>
+			<a href="javascript:;">物资条件太低</a>
+			<a href="javascript:;">素质差</a>
+			<a href="javascript:;">三观不一致</a>
+			<a href="javascript:;">其他原因</a>
+		</div>
+		<div class="date-cancel">
+			<a href="javascript:;" class="btn-date-cancel">确定</a>
+		</div>
 	</div>
 </script>
 <script type="text/template" id="tpl_wx_info">

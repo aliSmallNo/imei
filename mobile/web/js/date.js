@@ -40,6 +40,7 @@ require(["layer"],
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
 			shade: $(".m-popup-shade"),
+			reason: [],
 			init: function () {
 				var util = dateUtil;
 				$(document).on(kClick, ".date-option a", function () {
@@ -51,7 +52,29 @@ require(["layer"],
 				});
 				$(document).on(kClick, ".date-cancel", function () {
 					util.tag = 'date_fail';
-					util.submit();
+					util.reasonShow();
+					//util.submit();
+				});
+				$(document).on(kClick, ".date-wrap a", function () {
+					var self = $(this);
+					if (self.hasClass('btn-date-cancel')) {
+						util.reason = [];
+						$(".date-cancel-opt a.active").each(function () {
+							util.reason.push($(this).html());
+						});
+						if (util.reason.length == 0) {
+							showMsg("选择原因哦");
+							return;
+						}
+						console.log(util.reason);
+						util.submit();
+					} else {
+						if (self.hasClass("active")) {
+							self.removeClass("active");
+						} else {
+							self.addClass("active");
+						}
+					}
 				});
 				$(document).on(kClick, ".opt-star a", function () {
 					$(this).closest(".opt-star").find("a").removeClass("on choose");
@@ -103,6 +126,13 @@ require(["layer"],
 					}
 				});
 			},
+			reasonShow: function () {
+				var util = dateUtil;
+				util.main.show();
+				var html = $("#tpl_cancel_reason").html();
+				util.content.html(html).addClass("animate-pop-in");
+				util.shade.fadeIn(160);
+			},
 			payRole: function () {
 				var util = dateUtil;
 				var amt = parseInt($(".topup-opt a.active").attr("data-amt"));
@@ -135,15 +165,15 @@ require(["layer"],
 			},
 			Flowers: function () {
 				var util = dateUtil;
-				dateUtil.main.show();
+				util.main.show();
 				var html = Mustache.render($("#tpl_give").html(), {
 					items: [
 						{amt: 520}, {amt: 999},
 						{amt: 1314}, {amt: 9999}
 					]
 				});
-				dateUtil.content.html(html).addClass("animate-pop-in");
-				dateUtil.shade.fadeIn(160);
+				util.content.html(html).addClass("animate-pop-in");
+				util.shade.fadeIn(160);
 			},
 			comment: function () {
 				var util = dateUtil;
@@ -268,6 +298,7 @@ require(["layer"],
 					data: JSON.stringify(postdata),
 					st: util.st,
 					sid: util.sid,
+					reason: JSON.stringify(util.reason),
 				}, function (resp) {
 					if (resp.code == 0) {
 						switch (util.tag) {
@@ -369,9 +400,9 @@ require(["layer"],
 			var content = '';
 			switch (catRule) {
 				case 'data_rule_rose':
-					content = "<p style='text-align: left;font-size: 1.2rem'>1. 付款原由：平台牵线服务费</p>" +
-						"<p style='text-align: left;font-size: 1.2rem'>2. 服务费一次性收取，一律不予退还。</p>" +
-						"<p style='text-align: left;font-size: 1.2rem'>3. 用户付费默认同意此规则。</p>" +
+					content = "<p style='text-align: left;font-size: 1.2rem'>1. 平台要求约见对方需打赏对方一定数目的媒瑰花</p>" +
+						"<p style='text-align: left;font-size: 1.2rem'>2. 媒瑰花一次性扣除，一律不予退还。约会成功(双方互评)后对方可获得一定数目的花粉值</p>" +
+						"<p style='text-align: left;font-size: 1.2rem'>3. 用户送对方花默认同意此规则。</p>" +
 						"<p style='text-align: left;font-size: 1.2rem'>4. 本活动解释权归微媒100所有。</p>";
 					break;
 				case 'data_rule_agree':
