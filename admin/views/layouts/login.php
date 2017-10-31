@@ -12,11 +12,11 @@
 		<meta name="description" content="奔跑到家是一个乡镇网购平台">
 		<meta name="author" content="北京奔跑吧货滴科技有限公司">
 		<link rel="icon" href="/favicon.ico">
-		<link rel="icon" href="/favicon-16.png" sizes="16x16" type="image/png">
-		<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
-		<link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png">
-		<link rel="icon" href="/favicon-62.png" sizes="62x62" type="image/png">
-		<link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png">
+		<link rel="icon" href="/favicon-16.jpg" sizes="16x16" type="image/jpg">
+		<link rel="icon" href="/favicon-32.jpg" sizes="32x32" type="image/jpg">
+		<link rel="icon" href="/favicon-48.jpg" sizes="48x48" type="image/jpg">
+		<link rel="icon" href="/favicon-62.jpg" sizes="62x62" type="image/jpg">
+		<link rel="icon" href="/favicon-192.jpg" sizes="192x192" type="image/jpg">
 		<link href="/assets/css/materialize.min.css" rel="stylesheet">
 		<link href="/css/login.min.css?v=1.1.7" rel="stylesheet">
 		<script src="/assets/js/jquery221.min.js"></script>

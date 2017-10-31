@@ -516,6 +516,7 @@ require(["layer"],
 			helpchatMenu: $(".help-chat"),
 			menusBg: $(".m-schat-shade"),// m-schat-shade m-popup-shade
 			timer: 0,
+			reason: [],
 			init: function () {
 				var util = this;
 				$('.btn-chat-send').on(kClick, function () {
@@ -738,13 +739,17 @@ require(["layer"],
 					var tag = self.attr("data-tag");
 					switch (tag) {
 						case "toblock":
-							layer.open({
-								content: '您确定要拉黑TA吗？',
-								btn: ['确定', '取消'],
-								yes: function (index) {
-									util.toBlock();
-								}
-							});
+							// layer.open({
+							// 	content: '您确定要拉黑TA吗？',
+							// 	btn: ['确定', '取消'],
+							// 	yes: function (index) {
+							// 		util.toBlock();
+							// 	}
+							// });
+							$sls.main.show();
+							var html = $("#tpl_cancel_reason").html();
+							$sls.content.html(html).addClass("animate-pop-in");
+							$sls.shade.fadeIn(160);
 							break;
 						case "tohelpchat":
 							util.toggle(util.helpchatMenu.hasClass("off"), util.helpchatMenu);
@@ -758,13 +763,17 @@ require(["layer"],
 					var tag = self.attr("data-tag");
 					switch (tag) {
 						case "toblock":
-							layer.open({
-								content: '您确定要拉黑TA吗？',
-								btn: ['确定', '取消'],
-								yes: function (index) {
-									util.toBlock();
-								}
-							});
+							// layer.open({
+							// 	content: '您确定要拉黑TA吗？',
+							// 	btn: ['确定', '取消'],
+							// 	yes: function (index) {
+							// 		util.toBlock();
+							// 	}
+							// });
+							$sls.main.show();
+							var html = $("#tpl_cancel_reason").html();
+							$sls.content.html(html).addClass("animate-pop-in");
+							$sls.shade.fadeIn(160);
 							break;
 						case "helpchat":
 							util.toggle(util.helpchatMenu.hasClass("off"), util.helpchatMenu);
@@ -774,7 +783,30 @@ require(["layer"],
 							break;
 					}
 				});
-
+				$(document).on(kClick, ".date-wrap a", function () {
+					var self = $(this);
+					if (self.hasClass('btn-date-cancel')) {
+						util.reason = [];
+						$(".date-cancel-opt a.active").each(function () {
+							util.reason.push($(this).html());
+						});
+						if (util.reason.length == 0) {
+							showMsg("选择原因哦");
+							return;
+						}
+						console.log(util.reason);
+						util.toBlock();
+					} else if (self.hasClass("date-close")) {
+						$sls.main.hide();
+						$sls.shade.fadeOut(160);
+					} else {
+						if (self.hasClass("active")) {
+							self.removeClass("active");
+						} else {
+							self.addClass("active");
+						}
+					}
+				});
 			},
 			delChatBtn: function (obj, tag) {
 				if (tag == "edit") {
@@ -809,10 +841,13 @@ require(["layer"],
 				util.loading = 1;
 				$.post("/api/chat", {
 					tag: "toblock",
-					sid: util.sid
+					sid: util.sid,
+					reason: JSON.stringify(util.reason),
 				}, function (resp) {
 					util.loading = 0;
 					if (resp.code == 0) {
+						$sls.main.hide();
+						$sls.shade.fadeOut(160);
 						showMsg(resp.msg, 3, 11);
 					} else {
 						showMsg(resp.msg, 3, 12);
@@ -2086,7 +2121,7 @@ require(["layer"],
 				// util.socket = io('https://ws.meipo100.com');
 				util.socket = io('https://nd.meipo100.com');
 				util.socket.on('connect', function () {
-					console.log(util.uni);
+					//console.log(util.uni);
 					util.socket.emit('house', util.uni);
 				});
 
@@ -2107,7 +2142,7 @@ require(["layer"],
 				});
 
 				util.socket.on("chat", function (resp) {
-					console.log(resp);
+					//console.log(resp);
 					var gid = resp.gid;
 					if (ChatUtil.gid != gid) {
 						return;

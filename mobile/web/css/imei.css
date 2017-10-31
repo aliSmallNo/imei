@@ -7000,5 +7000,13 @@ ul.co-ul {
       color: #f06292;
       background: #f8f8f8;
       padding: 0.5rem 1rem; }
+  .date-wrap a.date-close {
+    position: absolute;
+    right: 0.3rem;
+    top: 0.3rem;
+    width: 3.4rem;
+    height: 3.4rem;
+    background: url(/images/ico_close_gray.png) no-repeat center center;
+    background-size: 1.8rem 1.8rem; }
 
 /*# sourceMappingURL=imei.css.map */
