@@ -137,7 +137,7 @@ class BaseController extends Controller
 	protected function renderPage($view,
 	                              $params = [],
 	                              $layout = 'imei.php',
-	                              $title = '千寻恋恋-媒桂花飘香',
+	                              $title = '',
 	                              $bodyClass = '')
 	{
 		$this->layout = $layout;
@@ -158,7 +158,7 @@ class BaseController extends Controller
 			$params['wxInfoString'] = json_encode($sign);
 		}
 		if (!$title) {
-			$title = '千寻恋恋-媒桂花飘香';
+			$title = '千寻恋恋-缘来是你';
 		}
 		$appView = YII::$app->view;
 		$appView->params['page_head_title'] = $title;
