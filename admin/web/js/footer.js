@@ -12,7 +12,7 @@ $.pjax({
 	container: '#page-wrapper',
 	show: 'fade',
 	cache: false,
-	title: '千寻恋恋后台',
+	title: '千寻恋恋-运维后台',
 	filter: function () {
 		if (mLastSubMenu) {
 			mLastSubMenu.removeClass('cur-sub-nav');
@@ -32,7 +32,7 @@ $.pjax({
 	container: '#page-wrapper',
 	show: 'fade',
 	cache: false,
-	title: '千寻恋恋后台'
+	title: '千寻恋恋-运维后台'
 });*/
 
 $('.admin-branch>a').on('click', function () {
