@@ -1403,7 +1403,7 @@
 </script>
 <script type="text/template" id="tpl_cancel_reason">
 	<div class="date-wrap">
-		<h4>取消此次约会的原因</h4>
+		<h4>屏蔽对方的原因</h4>
 		<div class="date-cancel-opt">
 			<a href="javascript:;">有过婚史</a>
 			<a href="javascript:;">年龄太大</a>
