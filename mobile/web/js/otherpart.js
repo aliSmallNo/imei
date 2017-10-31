@@ -71,7 +71,7 @@ require(["layer"],
 		function toTest() {
 			if (!$sls.phone) {
 				layer.open({
-					content: '您还没注册微媒100哦，现在去注册？',
+					content: '您还没注册千寻恋恋哦，现在去注册？',
 					btn: ['注册', '不要'],
 					yes: function (index) {
 						location.href = "/wx/imei";

@@ -533,7 +533,7 @@ class ApiController extends Controller
 				}
 				$uId = $wxInfo["uId"];
 				if (UserWechat::findOne(["wOpenId" => $openId])->wSubscribe != 1) {
-					return self::renderAPI(129, '您还没关注微媒100公众号哦~');
+					return self::renderAPI(129, '您还没关注千寻恋恋公众号哦~');
 				}
 				$prize = [2 => "50M流量", 3 => "不服再来", 4 => "100M流量", 6 => "运气先攒着", 9 => "继续加油", 10 => "30M流量", 12 => "再接再厉"];
 				$a = [2, 4, 10];

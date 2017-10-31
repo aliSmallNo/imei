@@ -403,13 +403,13 @@ require(["layer"],
 					content = "<p style='text-align: left;font-size: 1.2rem'>1. 平台要求约见对方需打赏对方一定数目的媒瑰花</p>" +
 						"<p style='text-align: left;font-size: 1.2rem'>2. 媒瑰花一次性扣除，一律不予退还。约会成功(双方互评)后对方可获得一定数目的花粉值</p>" +
 						"<p style='text-align: left;font-size: 1.2rem'>3. 用户送对方花默认同意此规则。</p>" +
-						"<p style='text-align: left;font-size: 1.2rem'>4. 本活动解释权归微媒100所有。</p>";
+						"<p style='text-align: left;font-size: 1.2rem'>4. 本活动解释权归千寻恋恋所有。</p>";
 					break;
 				case 'data_rule_agree':
 					content = "<p style='text-align: left;font-size: 1.2rem'>1. 点击接受代表您有同对方进行线下见面意愿。同意线下见面可能。</p>" +
 						"<p style='text-align: left;font-size: 1.2rem'>2. 同意之后，平台会要求对方送您不少于520朵媒瑰花。</p>" +
 						"<p style='text-align: left;font-size: 1.2rem'>3. 平台会在你们现在见面结束，双方互评完成送您一定数目的花粉值。</p>" +
-						"<p style='text-align: left;font-size: 1.2rem'>4. 本活动解释权归微媒100所有。</p>";
+						"<p style='text-align: left;font-size: 1.2rem'>4. 本活动解释权归千寻恋恋所有。</p>";
 					break;
 			}
 			layer.open({

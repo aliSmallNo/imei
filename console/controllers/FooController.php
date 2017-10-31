@@ -629,16 +629,16 @@ class FooController extends Controller
 				$contents[$phone] = '';
 			}
 			/*if ($location && $sub && $dc >= 7) {
-				$contents[$phone] = '哇，才1个小时，微媒100上又有3个' . $object . '找你聊天，最近的才500米';
+				$contents[$phone] = '哇，才1个小时，千寻恋恋上又有3个' . $object . '找你聊天，最近的才500米';
 			} elseif ($location && $sub && $status != User::STATUS_ACTIVE) {
 				$contents[$phone] = '亲，有3个' . $object . '想跟你聊天。完善资料才可以聊天哦，赶快完善资料吧';
 			} elseif ($location && !$sub) {
-				$contents[$phone] = '最近有一波' . $object . '刚注册微媒100找对象，离您最近的才5公理，赶快来看看吧，关注微信公众号微媒100';
+				$contents[$phone] = '最近有一波' . $object . '刚注册千寻恋恋找对象，离您最近的才5公理，赶快来看看吧，关注微信公众号微媒100';
 			}*/
 			if ($gender == User::GENDER_MALE) {
-				$contents[$phone] = '新活动又双叒叕来了，有高颜值美女，有线下活动，快来微媒100公众号来看看吧。回复TD退订';
+				$contents[$phone] = '新活动又双叒叕来了，有高颜值美女，有线下活动，快来千寻恋恋公众号来看看吧。回复TD退订';
 			} elseif ($gender == User::GENDER_FEMALE) {
-				$contents[$phone] = '新活动又双叒叕来了，有高颜值帅哥，有线下活动，快来微媒100公众号来看看吧。回复TD退订';
+				$contents[$phone] = '新活动又双叒叕来了，有高颜值帅哥，有线下活动，快来千寻恋恋公众号来看看吧。回复TD退订';
 			}
 
 			//$contents[$phone] = '为了答谢大家对微媒100的关注，本平台将推出第一期“我们在微媒的牵手故事”为主题 ，有奖征集在微媒成功找到另一半的故事，微信公众号回复对方手机号码报名，报名对象：10月15日前成为情侣的恋人，核实后将抽取一组最佳情侣送上千元奖励哦！';
@@ -750,7 +750,7 @@ class FooController extends Controller
 			$url = UserQR::createQR($uid,
 				UserQR::CATEGORY_SALES,
 				$ucode . substr($k, 1),
-				'微信扫一扫 关注微媒100',
+				'微信扫一扫 关注千寻恋恋',
 				true);
 			echo $url;
 			echo PHP_EOL;

@@ -366,7 +366,7 @@ class UserMsg extends ActiveRecord
 			$titles = array_column($item, 'title');
 			WechatUtil::templateMsg(WechatUtil::NOTICE_ROUTINE,
 				$uid,
-				'微媒100每日简报',
+				'千寻恋恋每日简报',
 				implode('；', $titles));
 		}
 		return true;

@@ -191,7 +191,7 @@
 			<img src="/images/pin8/logo.png">
 		</div>
 		<div class="pin8-title">
-			在本地找对象,到微媒100
+			在本地找对象,到千寻恋恋
 		</div>
 		<a href="javascript:;" class="pin8-btn" data-tag="focus">点击关注</a>
 	</div>

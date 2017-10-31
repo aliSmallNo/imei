@@ -67,7 +67,7 @@ require(["layer"],
 				}, 2500);
 			} else {
 				layer.open({
-					content: '您还没注册微媒100哦，现在去注册？',
+					content: '您还没注册千寻恋恋哦，现在去注册？',
 					btn: ['注册', '不要'],
 					yes: function (index) {
 						location.href = "/wx/imei";
@@ -144,7 +144,7 @@ require(["layer"],
 				+ "id=" + $sls.uid;
 			var imgUrl = "https://wx.meipo100.com/images/pin8/pin8-8p.jpg";
 			var title = "免费得iPhone8只需两步？";
-			var desc = "免费得iPhone8只需两步？1.关注微媒100。2.注册微媒100。";
+			var desc = "免费得iPhone8只需两步？1.关注千寻恋恋；2.注册千寻恋恋。";
 			wx.ready(function () {
 				wx.onMenuShareAppMessage({
 					title: title,

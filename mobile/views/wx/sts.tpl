@@ -2,7 +2,7 @@
 	<div id="inviteInfo" class="invite-wrap">
 		<div class="sender-wrap">
 			<div class="title">
-				<h4>我在微媒100当媒婆</h4>
+				<h4>我在千寻恋恋当媒婆</h4>
 				<h5>快加入我的单身团带你脱单带你飞</h5>
 			</div>
 		</div>

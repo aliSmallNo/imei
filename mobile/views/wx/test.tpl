@@ -398,7 +398,7 @@
 		<h5>推荐身边的优秀单身</h5>
 		<h5><b>丰厚的礼金等你！</b></h5>
 		<div class="qrcode">
-			<p>长按识别二维码 关注微媒100</p>
+			<p>长按识别二维码 关注千寻恋恋</p>
 			<p>即刻开始 还有活动哦~</p>
 			<img src="/images/ico_qrcode.jpg" class="qrcode">
 			<p>长按识别二维码 惊喜等着你</p>

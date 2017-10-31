@@ -37,7 +37,7 @@
 		{{/if}}
 	</div>
 </div>
-<a href="/wx/index" class="m-next btn-enter">进入微媒100</a>
+<a href="/wx/index" class="m-next btn-enter">进入千寻恋恋</a>
 {{/if}}
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
