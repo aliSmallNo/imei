@@ -17,6 +17,23 @@
 		<link rel="stylesheet" href="/assets/css/layer.min.css?v=1.1.2">
 		<link rel="stylesheet" href="/css/imei.min.css?v=<?= $this->params['ver'] ?>">
 		<script src="/assets/js/jweixin-1.2.0.js"></script>
+		<script src="/assets/js/jweixin-1.2.0.js"></script>
+		<script>
+			var _vds = _vds || [];
+			window._vds = _vds;
+			(function () {
+				_vds.push(['setAccountId', '85375c72629aa991']);
+				(function () {
+					var vds = document.createElement('script');
+					vds.type = 'text/javascript';
+					vds.async = true;
+					vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'dn-growing.qbox.me/vds.js';
+					var s = document.getElementsByTagName('script')[0];
+					s.parentNode.insertBefore(vds, s);
+				})();
+			})();
+		</script>
+		<script src="https://assets.growingio.com/sdk/wx/vds-wx-plugin.js"></script>
 	</head>
 	<body class="<?= $this->params['page_body_cls'] ?>">
 	<?= $content ?>
