@@ -1,11 +1,11 @@
 <div class="mycard" style="background: #fff">
 	<h4>
-		你还没有关注微媒100<br>
+		你还没有关注千寻恋恋<br>
 		请关注我们吧~
 	</h4>
 	<div class="tip">
 		长按识别二维码<br>
-		关注微媒100公众号
+		关注千寻恋恋公众号
 	</div>
 	<div class="card-wrap">
 		<img src="/images/qrmeipo100.jpg" alt="">

@@ -68,7 +68,7 @@ require(["layer"],
 		$(document).on("click", ".btn-mshare-rule", function () {
 			layer.open({
 				content: "<p style='text-align: left;font-size: 1.2rem'>1. 时间：2017年9月7日-2017年9月15日</p>" +
-				"<p style='text-align: left;font-size: 1.2rem'>2. 奖励条件：推荐3名以上（包含3名）单身好友注册微媒100，并审核通过。</p>" +
+				"<p style='text-align: left;font-size: 1.2rem'>2. 奖励条件：推荐3名以上（包含3名）单身好友注册千寻恋恋，并审核通过。</p>" +
 				"<p style='text-align: left;font-size: 1.2rem'>3. 用户要求：3.1.单身 3.2.年龄22-30周岁</p>" +
 				"<p style='text-align: left;font-size: 1.2rem'>4. 奖励红包：10元现金（通过微信发放）。</p>" +
 				"<p style='text-align: left;font-size: 1.2rem'>5. 操作：<br/>5.1.分享链接: a 已注册用户，点击活动页面，分享链接 b.未注册用户，注册成成单身-个人中心-分享给朋友。<br/>" +
@@ -86,8 +86,8 @@ require(["layer"],
 			var city = $("#cCITY").val();
 			var linkUrl = "https://wx.meipo100.com/wx/mshare?id=" + $('#cUID').val();
 			var imgUrl = "https://img.meipo100.com/default/logo170.png?id=1.1.2";
-			var title = '微媒100，' + city + '的单身男女都在这，赶快来相互认识下吧！';
-			var desc = '微媒100，帮助身边的单身青年尽快脱单,推荐身边3名单身好友注册可以获得10元红包哦~';
+			var title = '千寻恋恋，' + city + '的单身男女都在这，赶快来相互认识下吧！';
+			var desc = '千寻恋恋，帮助身边的单身青年尽快脱单,推荐身边3名单身好友注册可以获得10元红包哦~';
 			wx.ready(function () {
 				wx.onMenuShareAppMessage({
 					title: title,

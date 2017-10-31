@@ -444,7 +444,7 @@ class WechatUtil
 	public static function jsPrepay($payId,
 	                                $openId,
 	                                $amt,
-	                                $title = '微媒100',
+	                                $title = '千寻恋恋',
 	                                $subTitle = '支付详情(略)',
 	                                $xcxFlag = false,
 	                                $tag = 'imei')
@@ -655,7 +655,7 @@ class WechatUtil
 				$url = $wxUrl . "/wx/single#heartbeat";
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['keyword1'] = '有人为你怦然心动了，快去看看吧';
-				$keywords['keyword2'] = '微媒100祝你今天好运又开心啊';
+				$keywords['keyword2'] = '千寻恋恋祝你今天好运又开心啊';
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_ROUTINE:
@@ -701,7 +701,7 @@ class WechatUtil
 				$keywords['first'] = "你好，$nickname!, 您的交友活动消费如下:\n";
 				$keywords['keyword1'] = $pay . ".00元"; // 支付金额
 				$keywords['keyword2'] = "微信支付";
-				$keywords['keyword3'] = "您在微媒100的相亲交友活动中支付了" . $pay . "元" . $personNum . "人的费用，请于8月20日(本周日)下午两点准时参加活动哦~";// 商品详情：{{keyword3.DATA}}
+				$keywords['keyword3'] = "您在千寻恋恋的相亲交友活动中支付了" . $pay . "元" . $personNum . "人的费用，请于8月20日(本周日)下午两点准时参加活动哦~";// 商品详情：{{keyword3.DATA}}
 				$keywords['keyword4'] = $payInfo->pTransId; // 支付单号：{{keyword4.DATA}}
 				$keywords['keyword5'] = "支付成功";// 备注：{{keyword5.DATA}}
 				$keywords['remark'] = "\n点击下方详情查看吧~";
@@ -795,8 +795,8 @@ class WechatUtil
 		switch ($tag) {
 			case "pass":
 				$url = "https://wx.meipo100.com/wx/single#slook";
-				$keywords['first'] = "你好，您的注册资质已经审核通过，欢迎使用微媒100。\n";
-				$keywords['keyword1'] = '微媒100用户 ' . $userInfo["uName"] . ' 注册信息';
+				$keywords['first'] = "你好，您的注册资质已经审核通过，欢迎使用千寻恋恋。\n";
+				$keywords['keyword1'] = '千寻恋恋用户 ' . $userInfo["uName"] . ' 注册信息';
 				$keywords['keyword2'] = "审核通过";
 				$keywords['remark'] = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309";
 				$text = $keywords['keyword2'];
@@ -804,8 +804,8 @@ class WechatUtil
 				break;
 			case "refuse":
 				$url = "https://wx.meipo100.com/wx/single#slook";
-				$keywords['first'] = "你好，很遗憾！您注册的微媒100资质已被取消！您将无法使用微媒100!\n";
-				$keywords['keyword1'] = '微媒100用户 ' . $userInfo["uName"] . ' 注册信息';
+				$keywords['first'] = "你好，很遗憾！您注册的千寻恋恋资质已被取消！您将无法使用千寻恋恋!\n";
+				$keywords['keyword1'] = '千寻恋恋用户 ' . $userInfo["uName"] . ' 注册信息';
 				$keywords['keyword2'] = "审核不通过";
 				$keywords['remark'] = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309！";
 				$text = $keywords['keyword2'];
@@ -813,8 +813,8 @@ class WechatUtil
 				break;
 			case "certpass":
 				$url = "https://wx.meipo100.com/wx/single#slook";
-				$keywords['first'] = "你好，您的实名认证已经审核通过，欢迎使用微媒100。\n";
-				$keywords['keyword1'] = '微媒100用户 ' . $userInfo["uName"] . ' 实名信息';
+				$keywords['first'] = "你好，您的实名认证已经审核通过，欢迎使用千寻恋恋。\n";
+				$keywords['keyword1'] = '千寻恋恋用户 ' . $userInfo["uName"] . ' 实名信息';
 				$keywords['keyword2'] = "审核通过";
 				$keywords['remark'] = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309";
 				$text = $keywords['keyword2'];
@@ -822,8 +822,8 @@ class WechatUtil
 				break;
 			case "certfail":
 				$url = "https://wx.meipo100.com/wx/single#slook";
-				$keywords['first'] = "你好，您的实名认证审核不通过，请重新上传符合要求的实名图片，欢迎使用微媒100。\n";
-				$keywords['keyword1'] = '微媒100用户 ' . $userInfo["uName"] . ' 实名信息';
+				$keywords['first'] = "你好，您的实名认证审核不通过，请重新上传符合要求的实名图片，欢迎使用千寻恋恋。\n";
+				$keywords['keyword1'] = '千寻恋恋用户 ' . $userInfo["uName"] . ' 实名信息';
 				$keywords['keyword2'] = "审核不通过";
 				$keywords['remark'] = "\n感谢您的使用！若有什么疑问请拨打客服热线 01056123309";
 				$text = $keywords['keyword2'];
@@ -917,9 +917,9 @@ class WechatUtil
 				break;
 			default:
 				$url = $urlPrefix . "/wx/sreg";
-				$keyword1Val = "微媒100";
+				$keyword1Val = "千寻恋恋";
 				$cat = UserMsg::CATEGORY_DEFAULT;
-				$keyword2Val = "欢迎来到微媒100，这是一个真实的相亲交友软件！";
+				$keyword2Val = "欢迎来到千寻恋恋，这是一个真实的相亲交友软件！";
 		}
 
 		//$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
@@ -973,8 +973,8 @@ class WechatUtil
 				"template_id" => "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI",
 				"url" => "https://mp.weixin.qq.com/s/0U3azqV4jlL_61UqIeJ7TA",
 				"data" => [
-					"first" => ["color" => "#555555", "value" => "你好，$name,您收到一条微媒100资讯!!\n"],
-					"keyword1" => ["color" => "#0D47A1", "value" => "微媒100资讯"],
+					"first" => ["color" => "#555555", "value" => "你好，$name,您收到一条千寻恋恋资讯!!\n"],
+					"keyword1" => ["color" => "#0D47A1", "value" => "千寻恋恋资讯"],
 					"keyword2" => ["color" => "#f06292", "value" => "五天后，可能会有个男人捧着一束媒桂花对你说..."],
 					"keyword3" => ["color" => "#333333", "value" => date("Y年n月j日 H:i")],
 					"remark" => ["color" => "#555555", "value" => "\n 点击下方详情查看吧~~"],

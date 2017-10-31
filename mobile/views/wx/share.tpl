@@ -15,22 +15,22 @@
 				<img src="{{$avatar}}" alt="">
 				<em>{{$nickname}}</em>
 			</p>
-			<h4>一起来注册「微媒100」</h4>
+			<h4>一起来注册「千寻恋恋」</h4>
 			<h5>随手帮助身边的单身青年，功德无量哦~</h5>
 			{{if $editable}}
 			<a href="javascript:;" class="btn-s-1 s1 btn-share">邀请单身朋友</a>
 			{{elseif !$hasReg}}
-			<a href="/wx/imei" class="btn-s-1 s0 btn-look">马上去注册微媒100</a>
+			<a href="/wx/imei" class="btn-s-1 s0 btn-look">马上去注册千寻恋恋</a>
 			{{else}}
 			<a href="/wx/mh?id={{$encryptId}}#shome" class="btn-s-1 s0 btn-look">查看TA的单身团</a>
 			{{/if}}
 		</div>
 		<div class="share-cont">
-			<p class="share-title">微媒100我觉得是个靠谱的平台，单身的都是朋友介绍来的、一起来当媒婆帮身身边朋友找对象吧！</p>
+			<p class="share-title">千寻恋恋我觉得是个靠谱的平台，单身的都是朋友介绍来的、一起来当媒婆帮身身边朋友找对象吧！</p>
 			<div class="share-items">
 				<div class="share-item">
-					<span>关于微媒100</span>
-					<p>微媒100是一个通过好友推荐实现单身信息共享和互动的全新婚恋平台。平台的单身用户均由朋友推荐。解决了以往网络上婚恋平台交友不靠谱这一大难题。</p>
+					<span>关于千寻恋恋</span>
+					<p>千寻恋恋是一个通过好友推荐实现单身信息共享和互动的全新婚恋平台。平台的单身用户均由朋友推荐。解决了以往网络上婚恋平台交友不靠谱这一大难题。</p>
 				</div>
 				<div class="share-item">
 					<span>当媒婆可以干嘛</span>
@@ -85,7 +85,7 @@
 			</div>
 		</div>
 		<div class="footer" style="display: none">
-			<p class="copy"><span>微媒100 | 挖掘优秀单身</span></p>
+			<p class="copy"><span>千寻恋恋 | 挖掘优秀单身</span></p>
 		</div>
 	</div>
 </div>

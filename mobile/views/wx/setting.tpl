@@ -82,7 +82,7 @@
 	</div>
 </div>
 <div class="set-item-notice">
-	取消心动提醒后将不再收到 "微媒100" TA的心动的推送
+	取消心动提醒后将不再收到 "千寻恋恋" TA的心动的推送
 </div>
 
 <div class="set-item">
@@ -92,7 +92,7 @@
 	</div>
 </div>
 <div class="set-item-notice">
-	取消送花提醒后将不再收到 "微媒100" TA的送花提醒
+	取消送花提醒后将不再收到 "千寻恋恋" TA的送花提醒
 </div>
 
 <div class="set-item">
@@ -102,7 +102,7 @@
 	</div>
 </div>
 <div class="set-item-notice">
-	取消密聊提醒后将不再收到 "微媒100" TA的密聊的推送
+	取消密聊提醒后将不再收到 "千寻恋恋" TA的密聊的推送
 </div>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}

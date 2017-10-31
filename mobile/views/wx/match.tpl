@@ -54,7 +54,7 @@
 		<div class="no-more" {{if count($singles)>0}}style="display: none;"{{/if}}>没有更多了~</div>
 	</div>
 </section>
-<section id="snews" data-title="微媒100新动态">
+<section id="snews" data-title="千寻恋恋新动态">
 	<div class="m-discovery-head">
 		<img src="{{$avatar}}" alt="">
 	</div>
@@ -208,7 +208,7 @@
 <section id="sqrcode">
 	<div class="qrcode-wrap">
 		<h4>想知道哪些好友加入了<br>你的单身团？</h4>
-		<h5>长按识别二维码<br>关注微媒100公众号</h5>
+		<h5>长按识别二维码<br>关注千寻恋恋公众号</h5>
 		<div>
 			<img src="/images/ico_qrcode.jpg" class="qrcode">
 		</div>

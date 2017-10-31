@@ -167,7 +167,7 @@
 <div class="par-top">
 	<img src="/images/icon_party_time.jpg">
 </div>
-<div class="par-title"><span>微媒100 - 交友会</span></div>
+<div class="par-title"><span>千寻恋恋 - 交友会</span></div>
 <div class="par-container" style="display: block;  ">
 	<div class="pop">地点: 东台德润广场5楼  英伦时光咖啡店</div>
 	<div class="pop">时间: 2017年8月20日（周日）下午14:00-17:00</div>
@@ -354,7 +354,7 @@
 			</li>
 			<li>
 				<em>6</em>
-				<div>此活动解释权归'微媒100'所有</div>
+				<div>此活动解释权归'千寻恋恋'所有</div>
 			</li>
 		</ul>
 		<div style="height: 6rem;"></div>

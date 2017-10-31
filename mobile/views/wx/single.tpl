@@ -472,7 +472,7 @@
 		<h5>推荐身边的优秀单身</h5>
 		<h5><b>丰厚的礼金等你！</b></h5>
 		<div class="qrcode">
-			<p>长按识别二维码 关注微媒100</p>
+			<p>长按识别二维码 关注千寻恋恋</p>
 			<p>即刻开始 还有活动哦~</p>
 			<img src="/images/ico_qrcode.jpg" class="qrcode">
 			<p>长按识别二维码 惊喜等着你</p>
@@ -499,7 +499,7 @@
 		<div class="nomp-up">
 			<h4>找个好友做媒婆<br>帮我写推荐</h4>
 			<strong>?</strong>
-			<p>"微媒100" 上每一个单身都有一位身边的小伙伴做"媒婆"，为Ta的真实身份背书，并写上几句推荐语</p>
+			<p>"千寻恋恋" 上每一个单身都有一位身边的小伙伴做"媒婆"，为Ta的真实身份背书，并写上几句推荐语</p>
 		</div>
 		<div class="nomp-down">
 			<a href="javascript:;" class="btn-share">找个媒婆给我写推荐</a>
@@ -750,7 +750,7 @@
 		</ol>
 	</div>
 </section>
-<section id="sranking" data-title="微媒100-花粉值排行榜">
+<section id="sranking" data-title="千寻恋恋-花粉值排行榜">
 	<div class="tab fixed-top ranking-tab">
 		<a href="javascript:;" data-cat="total" class="active">花粉值-总排名</a>
 		<a href="javascript:;" data-cat="week" class="">花粉值-周排名</a>
@@ -762,7 +762,7 @@
 		<div class="spinner" style="display: none"></div>
 	</div>
 </section>
-<section id="sfavors" data-title="微媒100-心动值排行榜">
+<section id="sfavors" data-title="千寻恋恋-心动值排行榜">
 	<div class="tab fixed-top ranking-tab">
 		<a href="javascript:;" data-cat="total" class="active">心动值-总排行</a>
 		<a href="javascript:;" data-cat="week" class="">心动值-周排行</a>

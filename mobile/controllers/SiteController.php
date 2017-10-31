@@ -46,7 +46,7 @@ class SiteController extends BaseController
 				'userId' => $uId
 			],
 			'terse',
-			'微媒100',
+			'千寻恋恋',
 			'bg-main');
 	}
 }

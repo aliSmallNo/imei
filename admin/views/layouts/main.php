@@ -2,7 +2,7 @@
 	<!DOCTYPE html>
 	<html lang="zh-cmn-Hans">
 	<head>
-		<title>微媒100后台</title>
+		<title>千寻恋恋后台</title>
 		<meta charset="utf-8">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		<meta http-equiv="Cache-Control" content="no-siteapp, no-cache">
@@ -11,7 +11,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, shrink-to-fit=no, user-scalable=0">
 		<meta name="format-detection" content="telephone=no">
 		<meta name="google" content="notranslate">
-		<meta name="description" content="微媒100是北京奔跑吧货滴科技有限公司倾力打造的一个真实相亲交友平台">
+		<meta name="description" content="千寻恋恋是北京奔跑吧货滴科技有限公司倾力打造的一个真实相亲交友平台">
 		<meta name="author" content="北京奔跑吧货滴科技有限公司">
 		<link rel="icon" href="/favicon.png" type="image/png">
 		<link rel="icon" href="/favicon-16.png" sizes="16x16" type="image/png">

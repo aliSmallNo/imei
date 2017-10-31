@@ -327,7 +327,7 @@
 </script>
 <script type="text/template" id="tpl_greeting_users">
 	<div class="m-greeting-wrap">
-		<h4>微媒100为你推荐</h4>
+		<h4>千寻恋恋为你推荐</h4>
 		<ul class="m-greeting-users clearfix">
 			{[#items]}
 			<li data-id="{[id]}">

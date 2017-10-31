@@ -110,7 +110,7 @@ require(["layer"],
 			//var title = name + '和' + cName + '一起做媒婆了';
 			// var title = '我是' + name + '，我身边的单身都在这了，快进来互相认识下吧';
 			var title = '我在东台做媒婆，帮助周边好友脱单，还能赚点零花钱';
-			var desc = '微媒100，帮助身边的单身青年脱单';
+			var desc = '千寻恋恋，帮助身边的单身青年脱单';
 			wx.onMenuShareTimeline({
 				title: title,
 				link: link,

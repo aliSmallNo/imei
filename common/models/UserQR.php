@@ -74,7 +74,7 @@ class UserQR extends ActiveRecord
 		return self::createQR($uid, $category, '');
 	}
 
-	public static function createQR($uid, $category, $code = '', $bottomTitle = '微信扫一扫 关注微媒100', $logoFlag = false)
+	public static function createQR($uid, $category, $code = '', $bottomTitle = '微信扫一扫 关注千寻恋恋', $logoFlag = false)
 	{
 		if (AppUtil::isDev()) {
 			return '/images/qrmeipo100.jpg';
@@ -144,9 +144,9 @@ class UserQR extends ActiveRecord
 			])->queryScalar();
 		}
 		if (!$title) {
-			$title = "你所以为的巧合\n不过是另一个人使用『微媒100』的结果";
+			$title = "你所以为的巧合\n不过是另一个人使用『千寻恋恋』的结果";
 		}
-		$subTitle = "想找对象就上微媒100\n\n本地相亲交友平台\n扫一扫脱单就这么简单";
+		$subTitle = "想找对象就上千寻恋恋\n\n本地相亲交友平台\n扫一扫脱单就这么简单";
 		$category = self::CATEGORY_MATCH_SHARE;
 
 		$rootFolder = AppUtil::rootDir();

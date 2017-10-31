@@ -2,7 +2,7 @@
 	<div id="inviteInfo" class="invite-wrap">
 		<div class="sender-wrap">
 			<div class="title">
-				<h4>我在微媒100当媒婆</h4>
+				<h4>我在千寻恋恋当媒婆</h4>
 				<h5>快加入我的单身团带你脱单带你飞</h5>
 			</div>
 		</div>
@@ -10,7 +10,7 @@
 			<img src="/images/logo100.png" alt="">
 		</p>
 		<div class="btns bg-repeat">
-			<h4>微媒100 相当靠谱</h4>
+			<h4>千寻恋恋 相当靠谱</h4>
 			<h6>1.所有单身都有朋友背书绝对靠谱，没有托</h6>
 			<h6>2.对方要联系方式需要你同意，不会被骚扰</h6>
 			<h6>3.优质单身特别多、还能看到朋友的评价</h6>
