@@ -8,274 +8,64 @@
 		margin-top: .5rem;
 	}
 
-	.date-rate {
-		display: flex;
-		background: #fff;
-		border-bottom: 1px solid #eee;
-	}
-
-	.date-rate a {
-		flex: 1;
-		position: relative;
-		padding: .8rem 0 0.6rem 0;
-		margin-bottom: 1.5rem;
-		font-size: 1rem;
-		text-align: center;
-		border-bottom: .12rem solid #bbb;
-	}
-
-	.date-rate a:after {
+	.magic-radio {
 		position: absolute;
-		content: '';
-		background: #bbb;
-		width: 1rem;
-		height: 1rem;
-		border-radius: 1rem;
-		top: 2.1rem;
-		left: 2.5rem;
-		border: .2rem solid #fff;
+		display: none;
 	}
 
-	.date-rate a.role-inactive:after {
-		left: 3rem;
-	}
-
-	.date-rate a.on {
-		color: #d4237a;
-	}
-
-	.date-rate a.on:before {
-		background: #d4237a;
-	}
-
-	.date-rate a.on {
-		border-bottom: #d4237a solid .12rem;
-	}
-
-	.date-rate a.on:after {
-		background: #d4237a;
-	}
-
-	.date-nav {
-		background: #fff;
-		padding: 1rem 2rem;
-		border-bottom: 1px solid #eee;
-		display: flex;
-	}
-
-	.date-nav a {
-		flex: 1;
+	.magic-radio + label {
+		position: relative;
 		display: block;
-		font-size: 1.4rem;
-		color: #d4237a;
-		position: relative;
+		padding-left: 2.4rem;
+		cursor: pointer;
+		vertical-align: middle;
+		font-size: 1.2rem
 	}
 
-	.date-nav a.date-return:before {
+	.magic-radio + label:before {
 		position: absolute;
-		content: '';
-		width: 1rem;
-		height: 1rem;
-		border-left: .12rem solid #d4237a;
-		border-bottom: .12rem solid #d4237a;
-		transform: rotate(44deg);
-		left: -1rem;
-		top: .4rem;
-	}
-
-	.date-nav a.date-cancel {
-		text-align: right;
-	}
-
-	.date-item {
-		display: flex;
-		background: #fff;
-		padding: .8rem .5rem;
-	}
-
-	.date-item .date-label {
-		flex: 0 0 6rem;
-		font-size: 1.2rem;
-		align-items: center;
-		justify-content: center;
-		align-self: center;
-	}
-
-	.date-item .date-option {
-		flex: 1;
-	}
-
-	.date-item .date-option a {
-		position: relative;
-		display: inline-block;
-		font-size: 1.2rem;
-		padding: .2rem 0.5rem;
-		border-radius: .5rem;
-		background: #f8f8f8;
-	}
-
-	.date-item .date-option a.on {
-		background: #d4237a;
-		color: #fff;
-		border: 1px solid #d4237a;
-	}
-
-	.date-input {
-		display: flex;
-		background: #fff;
-		padding: .5rem;
-		position: relative;
-	}
-
-	.date-input:after {
-		position: absolute;
-		content: '';
-		width: 1rem;
-		height: 1rem;
-		border-right: .12rem solid #777;
-		border-bottom: .12rem solid #777;
-		transform: rotate(-44deg);
-		right: 1rem;
-		top: .7rem;
-	}
-
-	.date-input .date-input-label {
-		flex: 0 0 6rem;
-		font-size: 1.3rem;
-	}
-
-	.date-input input, .date-input p {
-		font-size: 1.2rem;
-		flex: 1;
-		border: none;
-		margin: 0 2rem 0 .5rem;
-
-	}
-
-	.date-input p {
-		text-align: right;
-		margin-right: 2rem;
-	}
-
-	.date-textarea {
-		background: #fff;
-		padding: 1rem .5rem;
-	}
-
-	.date-textarea .date-textarea-label {
-		font-size: 1.3rem;
-		margin-bottom: .5rem;
-	}
-
-	.date-textarea textarea, .date-textarea p {
-		display: block;
-		width: 30rem;
-		font-size: 1.2rem;
-		border: none;
-	}
-
-	.date-textarea p {
-		color: #777;
-	}
-
-	.flex-column {
-		flex-direction: column;
-	}
-
-	.date-btn {
-		position: fixed;
+		top: 0;
 		left: 0;
-		right: 0;
-		bottom: 0;
-		display: flex;
-	}
-
-	.date-btn p {
-		font-size: 1.2rem;
-		text-align: center;
-		padding: .6rem;
-		display: none;
-	}
-
-	.date-btn a.date-pay-rule {
-		text-align: center;
-		font-size: 1.2rem;
-		color: #0012ff;
-		padding: 1rem;
-	}
-
-	.date-btn a[data-tag] {
-		flex: 1;
-		display: block;
-		background: #d4237a;
-		text-align: center;
-		padding: 1rem;
-		color: #fff;
-	}
-
-	.date-btn a[data-tag].fail {
-		flex: 0 0 6rem;
-		background: #555;
-	}
-
-	.date-btn a[data-tag].fails {
-		background: #aaa;
-	}
-
-	.date-tel {
-		display: flex;
-		background: #fff;
-		padding: .5rem 1rem;
-		position: relative;
-	}
-
-	.date-tel span {
-		position: absolute;
+		display: inline-block;
+		width: 1.5rem;
+		height: 1.5rem;
 		content: '';
-		width: 1rem;
-		height: 1rem;
-		border-right: .12rem solid #777;
-		border-bottom: .12rem solid #777;
-		transform: rotate(-44deg);
-		right: 1rem;
-		top: 1.5rem;
+		border: 1px solid #c0c0c0;
 	}
 
-	.date-tel.hide {
+	.magic-radio:checked + label:before {
+		animation-name: none;
+	}
+
+	.magic-radio + label:after {
+		position: absolute;
 		display: none;
+		content: '';
 	}
 
-	.date-tel .date-avatar {
-		flex: 0 0 3rem;
-		width: 3rem;
-		height: 3rem;
+	.magic-radio:checked + label:after {
+		display: block;
 	}
 
-	.date-tel .date-avatar img {
-		width: 3rem;
-		height: 3rem;
-		border-radius: 3rem;
+	.magic-radio + label:before {
+		border-radius: 50%;
 	}
 
-	.date-tel .date-ta-des {
-		flex: 1;
-		font-size: 1.2rem;
-		margin: 0 1rem;
-		align-self: center;
+	.magic-radio + label:after {
+		top: .4rem;
+		left: .45rem;
+		width: .8rem;
+		height: .8rem;
+		border-radius: 50%;
+		background: #f06292;
 	}
 
-	.date-tel a {
-		flex: 0 0 3rem;
-		width: 3rem;
-		height: 3rem;
+	.magic-radio:checked + label:before {
+		border: 1px solid #f06292;
 	}
 
-	.date-tel a img {
-		width: 2rem;
-		height: 2rem;
-		padding: .3rem;
-		border-radius: 2rem;
-		border: 1px solid #d4237a;
+	.topup-wrap .topup-opt a.active:after {
+		content: initial;
 	}
 </style>
 
@@ -375,114 +165,6 @@
 	</div>
 </div>
 
-<style>
-
-	.magic-radio {
-		position: absolute;
-		display: none;
-	}
-
-	.magic-radio + label {
-		position: relative;
-		display: block;
-		padding-left: 2.4rem;
-		cursor: pointer;
-		vertical-align: middle;
-		font-size: 1.2rem
-	}
-
-	.magic-radio + label:before {
-		position: absolute;
-		top: 0;
-		left: 0;
-		display: inline-block;
-		width: 1.5rem;
-		height: 1.5rem;
-		content: '';
-		border: 1px solid #c0c0c0;
-	}
-
-	.magic-radio:checked + label:before {
-		animation-name: none;
-	}
-
-	.magic-radio + label:after {
-		position: absolute;
-		display: none;
-		content: '';
-	}
-
-	.magic-radio:checked + label:after {
-		display: block;
-	}
-
-	.magic-radio + label:before {
-		border-radius: 50%;
-	}
-
-	.magic-radio + label:after {
-		top: .4rem;
-		left: .45rem;
-		width: .8rem;
-		height: .8rem;
-		border-radius: 50%;
-		background: #f06292;
-	}
-
-	.magic-radio:checked + label:before {
-		border: 1px solid #f06292;
-	}
-
-	.date-comment-item {
-		background: #fff;
-		margin-top: .5rem;
-		padding: 1rem .5rem;
-	}
-
-	.date-comment-item h4 {
-		font-size: 1.3rem;
-		margin-bottom: 1rem;
-	}
-
-	.date-comment-item .opt-star a {
-		width: 4rem;
-		height: 3rem;
-		display: inline-block;
-		position: relative;
-	}
-
-	.date-comment-item .opt-star a:after {
-		position: absolute;
-		content: '';
-		background: url('/images/date_star_default.png') no-repeat center center;
-		background-size: 100% 100%;
-		width: 2rem;
-		height: 2rem;
-	}
-
-	.date-comment-item .opt-star a.on:after {
-		background: url('/images/date_star_hl.png') no-repeat center center;
-		background-size: 100% 100%;
-	}
-
-	.date-comment-item .opt-radio .opt {
-		width: 30%;
-		display: inline-block;
-		margin-bottom: .5rem;
-	}
-
-	.date-comment-item textarea {
-		border: none;
-		font-size: 1.2rem;
-		color: #777;
-		width: 30rem;
-	}
-
-	.topup-wrap .topup-opt a.active:after {
-		content: initial;
-	}
-
-</style>
 {{if $st==130}}
 <div class="date-comment" style="margin-bottom: 5rem;display: none">
 	<div class="date-comment-item">
@@ -682,39 +364,6 @@
 		<a href="javascript:;" class="m-popup-close"></a>
 	</div>
 </script>
-<style>
-	.date-wrap{
-		background: #fff;
-		padding: 1rem;
-	}
-	.date-wrap h4{
-		margin-bottom: 1rem;
-	}
-	.date-wrap .date-cancel-opt{
-		text-align: left;
-	}
-	.date-wrap .date-cancel-opt a{
-		font-size: 1.2rem;
-		border: 1px solid #eee;
-		color: #777;
-		padding: .5rem 1rem;
-		display: inline-block;
-		margin: 0 .5rem .5rem 0;
-	}
-	.date-wrap .date-cancel-opt a.active{
-		border: 1px solid #f06292;
-		color: #f06292;
-	}
-	.date-wrap .date-cancel {
-		margin-top: 1rem;
-	}
-	.date-wrap .date-cancel a{
-		display: block;
-		color: #f06292;
-		background: #f8f8f8;
-		padding: .5rem 1rem;
-	}
-</style>
 <script type="text/template" id="tpl_cancel_reason">
 	<div class="date-wrap">
 		<h4>取消此次约会的原因</h4>

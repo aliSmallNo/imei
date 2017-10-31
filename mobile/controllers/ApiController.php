@@ -2055,6 +2055,7 @@ class ApiController extends Controller
 				break;
 			case "toblock":
 				$rptUId = self::postParam("sid");
+				$reason = self::postParam("reason");
 				$rptUId = AppUtil::decrypt($rptUId);
 				$black = UserNet::findOne([
 					"nUId" => $rptUId,
@@ -2066,8 +2067,15 @@ class ApiController extends Controller
 				if ($black) {
 					return self::renderAPI(129, '你已经拉黑TA了哦~');
 				} else {
+					$reason = json_decode($reason, 1);
+					if (!$reason) {
+						return self::renderAPI(129, '还没写原因哦~');
+					}
+					$reason = implode(' ', $reason);
 					UserNet::add($rptUId, $wxInfo['uId'], UserNet::REL_BLOCK, $note = '');
-					return self::renderAPI(129, '你已经成功拉黑TA了哦~');
+
+					Feedback::addReport($wxInfo['uId'], $rptUId, "加入黑名单", $reason);
+					return self::renderAPI(0, '你已经成功拉黑TA了哦~');
 				}
 		}
 		return self::renderAPI(129, '操作无效~');

@@ -1401,7 +1401,28 @@
 	</div>
 	{[/data]}
 </script>
+<script type="text/template" id="tpl_cancel_reason">
+	<div class="date-wrap">
+		<h4>取消此次约会的原因</h4>
+		<div class="date-cancel-opt">
+			<a href="javascript:;">有过婚史</a>
+			<a href="javascript:;">年龄太大</a>
+			<a href="javascript:;">年龄太小</a>
+			<a href="javascript:;">学历太低</a>
+			<a href="javascript:;">异地恋</a>
+			<a href="javascript:;">物资条件太高</a>
+			<a href="javascript:;">物资条件太低</a>
+			<a href="javascript:;">素质差</a>
+			<a href="javascript:;">三观不一致</a>
+			<a href="javascript:;">其他原因</a>
+		</div>
+		<div class="date-cancel">
+			<a href="javascript:;" class="btn-date-cancel">确定</a>
+		</div>
+		<a href="javascript:;" class="date-close"></a>
+	</div>
+</script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js?v=1.2.1"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
-<script data-main="/js/single.js?v=1.1.1.6" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.1.1.7" src="/assets/js/require.js"></script>
