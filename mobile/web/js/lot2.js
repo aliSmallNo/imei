@@ -88,8 +88,8 @@ require(["layer"],
 			wx.config(wxInfo);
 			wx.ready(function () {
 				wx.onMenuShareAppMessage({
-					title: '微媒100-抽奖活动',
-					desc: '微媒100-抽奖活动，大奖等你来拿！',
+					title: '千寻恋恋-抽奖活动',
+					desc: '千寻恋恋-抽奖活动，大奖等你来拿！',
 					link: "https://wx.meipo100.com/wx/lot2",
 					imgUrl: "https://wx.meipo100.com/images/lot2/lot2_4.png",
 					type: '',
@@ -99,7 +99,7 @@ require(["layer"],
 					}
 				});
 				wx.onMenuShareTimeline({
-					title: '微媒100-抽奖活动',
+					title: '千寻恋恋-抽奖活动',
 					link: "https://wx.meipo100.com/wx/lot2",
 					imgUrl: "https://wx.meipo100.com/images/lot2/lot2_4.png",
 					success: function () {

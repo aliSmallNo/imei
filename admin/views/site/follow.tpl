@@ -46,7 +46,7 @@
 				<div class="message_status"><em class="tips">已回复</em></div>
 				<div class="message_time">{{$item.tAddedOn}}</div>
 				<div class="user_info">
-					<span class="remark_name">微媒100-{{$item.aName}}</span>
+					<span class="remark_name">千寻恋恋-{{$item.aName}}</span>
 					<span class="nickname"></span>
 					<span class="avatar"><img src="/images/im_default_g.png"></span>
 				</div>

@@ -491,7 +491,7 @@ require(["layer"],
 			// FootUtil.reset();
 			var title = $("#" + hashTag).attr("data-title");
 			if (!title) {
-				title = '微媒100-媒桂花飘香';
+				title = '千寻恋恋-媒桂花飘香';
 			}
 			$(document).attr("title", title);
 			$("title").html(title);
@@ -527,7 +527,7 @@ require(["layer"],
 				//wx.hideOptionMenu();
 				wx.onMenuShareAppMessage({
 					title: '推荐一位优秀的单身给你',
-					desc: '微媒100，挖掘身边优秀单身！',
+					desc: '千寻恋恋，挖掘身边优秀单身！',
 					link: "https://wx.meipo100.com/wx/sh?id=" + $("#secretId").val(),
 					imgUrl: $("#avatarID").val(),
 					type: '',

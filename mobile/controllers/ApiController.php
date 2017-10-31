@@ -158,7 +158,7 @@ class ApiController extends Controller
 				$amt = self::postParam('amt'); // 单位人民币元
 				$IsXcx = self::postParam('xflag', 0); // 是否为小程序支付订单
 				$num = intval($amt * 10.0);
-				$title = '微媒100-充值';
+				$title = '千寻恋恋-充值';
 				$subTitle = '充值' . $num . '媒桂花';
 				$payId = Pay::prepay($wxInfo['uId'], $num, $amt * 100);
 				if (AppUtil::isDev()) {
@@ -212,7 +212,7 @@ class ApiController extends Controller
 				$amt = self::postParam('amt'); // 单位人民币元
 				$xcxOpenid = self::postParam('xcxopenid');
 				$num = intval($amt * 10.0);
-				$title = '微媒100-充值';
+				$title = '千寻恋恋-充值';
 				$subTitle = '充值' . $num . '媒桂花';
 				$payId = Pay::prepay($wxInfo['uId'], $num, $amt * 100);
 				if (AppUtil::isDev()) {
@@ -235,7 +235,7 @@ class ApiController extends Controller
 			case 'makefriends':
 				$amt = self::postParam('amt'); // 单位人民币元
 				$num = intval($amt * 10.0);
-				$title = '微媒100 - 交友';
+				$title = '千寻恋恋 - 交友';
 				$subTitle = '活动费用' . $num . " 元";
 				if (Pay::findOne(["pUId" => $wxInfo['uId'], "pCategory" => Pay::CAT_MAKEING_FRIENDS, "pStatus" => Pay::MODE_WXPAY])) {
 					return self::renderAPI(129, '您已经报名了哦~');
@@ -2161,7 +2161,7 @@ class ApiController extends Controller
 			case "date_pay":
 				$amt = 49; // 单位人民币元
 				$num = intval($amt);
-				$title = '微媒100-充值';
+				$title = '千寻恋恋-充值';
 				$subTitle = '平台服务费';
 				$payId = Pay::prepay($uid, $did, $amt * 100, Pay::CAT_MEET);
 				if (AppUtil::isDev()) {
@@ -2289,7 +2289,7 @@ class ApiController extends Controller
 				$subtag = self::postParam('subtag');
 				$note = self::postParam('note');
 				if (!User::findOne(["uId" => $uid])->uPhone) {
-					return self::renderAPI(129, "您还没关注/注册'微媒100'哦~ ");
+					return self::renderAPI(129, "您还没关注/注册'千寻恋恋'哦~ ");
 				}
 				if (Log::findOne(["oCategory" => Log::CAT_SPREAD, "oKey" => Log::SPREAD_IP8, "oUId" => $uid,])) {
 					return self::renderAPI(129, '您已经参与抽奖了哦~');
@@ -2309,7 +2309,7 @@ class ApiController extends Controller
 				break;
 			case "lot2":
 				if (UserWechat::findOne(["wOpenId" => $openId])->wSubscribe != 1) {
-					return self::renderAPI(129, '您还没关注微媒100公众号哦~');
+					return self::renderAPI(129, '您还没关注千寻恋恋公众号哦~');
 				}
 				break;
 		}

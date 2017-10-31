@@ -588,7 +588,7 @@ class FooController extends Controller
 			, 15358286802
 		];
 		$cnt = 0;
-		$msg = '对象难找，上微媒100！盐城本地的真实靠谱的单身男女都在这里。关注微信公众号“微媒100”即可注册，快点加入吧。微信客服yctoutiao1';
+		$msg = '对象难找，上千寻恋恋！盐城本地的真实靠谱的单身男女都在这里。关注微信公众号“千寻恋恋”即可注册，快点加入吧。微信客服yctoutiao1';
 		foreach ($phones as $phone) {
 			QueueUtil::loadJob('sendSMS',
 				[

@@ -444,7 +444,7 @@ class WechatUtil
 	public static function jsPrepay($payId,
 	                                $openId,
 	                                $amt,
-	                                $title = '微媒100',
+	                                $title = '千寻恋恋',
 	                                $subTitle = '支付详情(略)',
 	                                $xcxFlag = false,
 	                                $tag = 'imei')
@@ -917,9 +917,9 @@ class WechatUtil
 				break;
 			default:
 				$url = $urlPrefix . "/wx/sreg";
-				$keyword1Val = "微媒100";
+				$keyword1Val = "千寻恋恋";
 				$cat = UserMsg::CATEGORY_DEFAULT;
-				$keyword2Val = "欢迎来到微媒100，这是一个真实的相亲交友软件！";
+				$keyword2Val = "欢迎来到千寻恋恋，这是一个真实的相亲交友软件！";
 		}
 
 		//$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);

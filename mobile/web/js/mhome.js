@@ -188,7 +188,7 @@ require(["layer"],
 				//wx.hideOptionMenu();
 				wx.onMenuShareAppMessage({
 					title: $("#nameId").val() + '身边的单身都在这，赶紧去认识认识吧！', // 分享标题
-					desc: '微媒100，发现身边优秀单身！', // 分享描述
+					desc: '千寻恋恋，发现身边优秀单身！', // 分享描述
 					link: "https://wx.meipo100.com/wx/mh?id=" + $("#secretId").val(), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
 					imgUrl: $("#avatarID").val(), // 分享图标
 					type: '', // 分享类型,music、video或link，不填默认为link

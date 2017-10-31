@@ -15,12 +15,12 @@
 				<img src="{{$avatar}}" alt="">
 				<em>{{$nickname}}</em>
 			</p>
-			<h4>一起来注册「微媒100」</h4>
+			<h4>一起来注册「千寻恋恋」</h4>
 			<h5>随手帮助身边的单身青年，功德无量哦~</h5>
 			{{if $editable}}
 			<a href="javascript:;" class="btn-s-1 s1 btn-share">邀请单身朋友</a>
 			{{elseif !$hasReg}}
-			<a href="/wx/imei" class="btn-s-1 s0 btn-look">马上去注册微媒100</a>
+			<a href="/wx/imei" class="btn-s-1 s0 btn-look">马上去注册千寻恋恋</a>
 			{{else}}
 			<a href="/wx/mh?id={{$encryptId}}#shome" class="btn-s-1 s0 btn-look">查看TA的单身团</a>
 			{{/if}}
@@ -85,7 +85,7 @@
 			</div>
 		</div>
 		<div class="footer" style="display: none">
-			<p class="copy"><span>微媒100 | 挖掘优秀单身</span></p>
+			<p class="copy"><span>千寻恋恋 | 挖掘优秀单身</span></p>
 		</div>
 	</div>
 </div>

@@ -36,7 +36,7 @@ class AppUtil
 	const MODE_ADMIN = 5;
 	const MODE_UNKNOWN = 9;
 
-	private static $SMS_SIGN = '微媒100';
+	private static $SMS_SIGN = '千寻恋恋';
 	private static $SMS_TMP_ID = 9179;
 
 	static $otherPartDict = [

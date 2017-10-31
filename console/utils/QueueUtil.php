@@ -135,8 +135,8 @@ class QueueUtil
 	protected static function smsMessage($phone, $msg, $appendId = '1234', $type = 'sale')
 	{
 		$formatMsg = $msg;
-		if (mb_strpos($msg, '【微媒100】') == false) {
-			$formatMsg = '【微媒100】' . $msg;
+		if (mb_strpos($msg, '【千寻恋恋】') == false) {
+			$formatMsg = '【千寻恋恋】' . $msg;
 		}
 		$openId = "benpao";
 		$openPwd = "bpbHD2015";

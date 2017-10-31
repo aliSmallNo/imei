@@ -75,8 +75,8 @@ require(["layer"],
 		function resetMenuShare() {
 			var thumb = $sls.avatar;
 			var link = $sls.wxUrl + '/wx/sqr?id=' + $sls.uid;
-			var title = '我在微媒100找朋友，快来支持我啊';
-			var desc = '微媒100，帮助身边的青年脱单';
+			var title = '我在千寻恋恋找朋友，快来支持我啊';
+			var desc = '千寻恋恋，帮助身边的青年脱单';
 			wx.onMenuShareTimeline({
 				title: title,
 				link: link,

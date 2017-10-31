@@ -1198,8 +1198,8 @@ class WxController extends BaseController
 //			$oid = 102;
 //		}
 //		$gifts = [];
-		//$title = '微媒100-幸运抽奖';
-		$title = '微媒100-签到';
+		//$title = '千寻恋恋-幸运抽奖';
+		$title = '千寻恋恋-签到';
 //		$lotteryInfo = Lottery::getItem($oid);
 //		if ($lotteryInfo) {
 //			$title = $lotteryInfo['oTitle'];
@@ -1315,7 +1315,7 @@ class WxController extends BaseController
 		list($questions, $gId) = QuestionGroup::findGroup($gid);
 
 		//$note = "小微要组织一场活动，不知各位帅哥美女喜欢什么样的，那就一起来投票吧（投票有惊喜哦），我们会根据大家的喜好，组织线下活动哦，欢迎参加！";
-		$note = "'微媒100'要改名字了，不知各位帅哥美女喜欢什么样的，那就一起来投票吧（投票有惊喜哦），我们会根据大家的意见，决定启用哪个，欢迎参加！";
+		$note = "'千寻恋恋'要改名字了，不知各位帅哥美女喜欢什么样的，那就一起来投票吧（投票有惊喜哦），我们会根据大家的意见，决定启用哪个，欢迎参加！";
 		return self::renderPage('vote.tpl', [
 			"questions" => $questions,
 			"gId" => $gId,
@@ -1342,7 +1342,7 @@ class WxController extends BaseController
 			exit();
 		}
 		$voteStat = QuestionGroup::voteStat($gid, $wxInfo["uId"]);
-		$note = "'微媒100'要改名字了，不知各位帅哥美女喜欢什么样的，那就一起来投票吧（投票有惊喜哦），我们会根据大家的意见，决定启用哪个，欢迎参加！";
+		$note = "'千寻恋恋'要改名字了，不知各位帅哥美女喜欢什么样的，那就一起来投票吧（投票有惊喜哦），我们会根据大家的意见，决定启用哪个，欢迎参加！";
 		return self::renderPage('voted.tpl', [
 			"voteStat" => $voteStat,
 			"note" => $note,
@@ -1389,7 +1389,7 @@ class WxController extends BaseController
 				'city' => $area ? $area : "盐城",
 			],
 			'terse',
-			'微媒100',
+			'千寻恋恋',
 			'bg-main');
 	}
 
@@ -1489,7 +1489,7 @@ class WxController extends BaseController
 				'userId' => $userId
 			],
 			'terse',
-			'微媒100',
+			'千寻恋恋',
 			'bg-main');
 	}
 
@@ -1551,7 +1551,7 @@ class WxController extends BaseController
 				'userId' => $userId
 			],
 			'terse',
-			'微媒100',
+			'千寻恋恋',
 			'bg-main');
 	}
 
@@ -1673,7 +1673,7 @@ class WxController extends BaseController
 
 	public function actionLot2()
 	{
-		$title = '微媒100-抽奖';
+		$title = '千寻恋恋-抽奖';
 
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);

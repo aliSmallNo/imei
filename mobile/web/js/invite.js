@@ -129,8 +129,8 @@ require(["layer"],
 		function resetMenuShare() {
 			var thumb = $sls.thumb;
 			var link = $sls.wxUrl + '/wx/invite?id=' + $sls.uid;
-			var title = '我是' + $sls.sender + '，我在『微媒100』上找' + $sls.friend + '，快来帮忙~';
-			var desc = '微媒100，想相亲交友的就戳这里，戳这里...';
+			var title = '我是' + $sls.sender + '，我在『千寻恋恋』上找' + $sls.friend + '，快来帮忙~';
+			var desc = '千寻恋恋，想相亲交友的就戳这里，戳这里...';
 			wx.onMenuShareTimeline({
 				title: title,
 				link: link,

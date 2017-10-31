@@ -226,7 +226,7 @@ class UserMsg extends ActiveRecord
 		$count = 0;
 		foreach ($ret as $row) {
 			$uId = $row['uId'];
-			$msg = '有人%s。如果你找不到回「微媒100」的路，请在微信中搜索公众号「微媒100」关注了就行';
+			$msg = '有人%s。如果你找不到回「千寻恋恋」的路，请在微信中搜索公众号「千寻恋恋」关注了就行';
 			switch ($row['rel']) {
 				case UserNet::REL_LINK:
 					$msg = sprintf($msg, '跟你要微信号了');

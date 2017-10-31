@@ -427,7 +427,7 @@
 		<div class="nomp-up">
 			<h4>找个好友做媒婆<br>帮我写推荐</h4>
 			<strong>?</strong>
-			<p>"微媒100" 上每一个单身都有一位身边的小伙伴做"媒婆"，为Ta的真实身份背书，并写上几句推荐语</p>
+			<p>"千寻恋恋" 上每一个单身都有一位身边的小伙伴做"媒婆"，为Ta的真实身份背书，并写上几句推荐语</p>
 		</div>
 		<div class="nomp-down">
 			<a href="javascript:;" class="btn-share">找个媒婆给我写推荐</a>

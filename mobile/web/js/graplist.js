@@ -133,8 +133,8 @@ require(["layer"],
 			wx.ready(function () {
 				wx.hideOptionMenu();
 				wx.onMenuShareAppMessage({
-					title: '微媒100 - 语音红包',
-					desc: '微媒100-语音红包，说出口令，赢得红包！',
+					title: '千寻恋恋 - 语音红包',
+					desc: '千寻恋恋-语音红包，说出口令，赢得红包！',
 					link: "https://wx.meipo100.com/wx/redpacket",
 					imgUrl: "https://wx.meipo100.com/images/lot2/lot2_4.png",
 					type: '',
@@ -144,7 +144,7 @@ require(["layer"],
 					}
 				});
 				wx.onMenuShareTimeline({
-					title: '微媒100 - 语音红包',
+					title: '千寻恋恋 - 语音红包',
 					link: "https://wx.meipo100.com/wx/redpacket",
 					imgUrl: "https://wx.meipo100.com/images/lot2/lot2_4.png",
 					success: function () {
