@@ -1060,7 +1060,7 @@
 				<span><b>{[mpname]}</b> 推荐了TA</span>
 				{[/mpname]}
 				{[^mpname]}
-				<img src="/images/logo62.png" alt="">
+				<img src="/images/logo62.png?v=1.1.2" alt="">
 				<span>TA还没<b>媒婆</b></span>
 				{[/mpname]}
 				{[/delete]}
