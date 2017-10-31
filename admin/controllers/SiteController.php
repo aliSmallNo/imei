@@ -1009,7 +1009,7 @@ class SiteController extends BaseController
 	public function actionReusestat()
 	{
 		$cat = self::getParam("cat", "all");
-		$scope = self::getParam("scope", "week");
+		$scope = self::getParam("scope", "month");
 		$sign = self::getParam("sign");
 		$category = ($scope == 'week' ? LogAction::REUSE_DATA_WEEK : LogAction::REUSE_DATA_MONTH);
 		$reuseData = LogAction::reuseData($category, ($sign == 'reset'));

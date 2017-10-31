@@ -696,7 +696,7 @@ class FooController extends Controller
 			 AND (uLocation like \'%东台%\' or uHomeland like \'%东台%\')
 			 ORDER BY u.uPhone';
 
-		$sql="SELECT u.uId, u.uName,u.uPhone ,COUNT(DISTINCT DATE_FORMAT(a.aDate,'%Y-%m-%d')) as cnt
+		$sql = "SELECT u.uId, u.uName,u.uPhone ,COUNT(DISTINCT DATE_FORMAT(a.aDate,'%Y-%m-%d')) as cnt
 			 FROM im_user as u 
 			 JOIN im_user_wechat as w on w.wUId=u.uId
 			 JOIN im_log_action as a on a.aUId = u.uId AND a.aCategory>1000
@@ -845,30 +845,14 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-//		$str = '全部是汉字测';
-//		if (preg_match_all("/^[\x7f-\xff]+$/", $str, $match)) {
-//			echo '全部是汉字';
-//		} else {
-//			echo '不全是汉字';
-//		}
 
-//		$arr = AppUtil::randnum(0.05, 4);
-//		print_r($arr);
-
-		//var_dump(mb_strpos("稍等多负少",'胜多负少'));
-
-		//echo RedpacketList::Grap(6, 120003, "http://", 10);
-		//echo BaiduUtil::postVoice('https://img.meipo100.com/voice/2017/97/130532.wav');
-		//echo WechatUtil::XCXaccessToken();
-		//WechatUtil::XCXTempMsg(120003);
-		//echo RedpacketTrans::cashTimes(120003);
+//		UserMsg::edit(0, [
+//			"mText" => json_encode(["为了答谢大家对微媒100的关注，微媒100推出第一期“我们在微媒的牵手故事”为主题 ，有奖征集大家在微媒成功找到另一半的故事，微信公众号回复对方手机号码开始报名，报名对象：10月15日前成为情侣的恋人，核实后我们会抽取一组最佳情侣送上千元奖励哦！"], JSON_UNESCAPED_UNICODE),
+//			"mCategory" => UserMsg::CATEGORY_UPGRADE,
+//			"mUId" => RedisUtil::getIntSeq(),
+//		]);
 
 
-		UserMsg::edit(0, [
-			"mText" => json_encode(["为了答谢大家对微媒100的关注，微媒100推出第一期“我们在微媒的牵手故事”为主题 ，有奖征集大家在微媒成功找到另一半的故事，微信公众号回复对方手机号码开始报名，报名对象：10月15日前成为情侣的恋人，核实后我们会抽取一组最佳情侣送上千元奖励哦！"], JSON_UNESCAPED_UNICODE),
-			"mCategory" => UserMsg::CATEGORY_UPGRADE,
-			"mUId" => RedisUtil::getIntSeq(),
-		]);
 	}
 
 

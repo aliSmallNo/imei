@@ -157,9 +157,16 @@ class LogAction extends ActiveRecord
 			 AND uStatus<8 AND uPhone!=\'\'  AND uRole>9 AND uGender in (10,11) ';
 		$cmd = $conn->createCommand($sql);
 
+		$lastDay=$endDate;
 		for ($k = 1; $k < 20; $k++) {
 			$fromDate = date('Y-m-d', strtotime($beginDate) + 86400 * $step * $k);
 			$toDate = date('Y-m-d', strtotime($endDate) + 86400 * $step * $k);
+			if ($category == self::REUSE_DATA_MONTH) {
+				list($md, $firstDay, $lastDay) = AppUtil::getMonthInfo(date("Y-m-d", strtotime($lastDay) + 86401 * $k));
+				$fromDate = $firstDay;
+				$toDate = $lastDay;
+				$lastDay = $toDate;
+			}
 			if (strtotime($fromDate) > time()) break;
 			$ret = $cmd->bindValues([
 				':beginDT' => $beginDate . ' 00:00',
