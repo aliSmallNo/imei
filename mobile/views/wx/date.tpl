@@ -24,16 +24,6 @@
 		border-bottom: .12rem solid #bbb;
 	}
 
-	.date-rate a:before {
-		/*position: absolute;
-		content: '';
-		width: 6.4rem;
-		height: .12rem;
-		background: #bbb;
-		top: 2.8rem;
-		left: 0;*/
-	}
-
 	.date-rate a:after {
 		position: absolute;
 		content: '';
