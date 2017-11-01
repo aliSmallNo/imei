@@ -11,13 +11,11 @@ namespace console\controllers;
 use common\models\ChatMsg;
 use common\models\Pin;
 use common\models\User;
-use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\PushUtil;
-use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -602,6 +600,50 @@ class FooController extends Controller
 		var_dump($cnt);
 	}
 
+	static $TDPhones = [
+		15315379160,
+		18571539869,
+		15901248796,
+		17625350948,
+		17766230245,
+		17864222369,
+		18751862329,
+		17712518969,
+		13813230029,
+		18066170777,
+		13046511706,
+		18352092453,
+		15189206363,
+		17625081994,
+		18960426803,
+		17625385990,
+		13770091373,
+		18261212485,
+		13951485922,
+		15722517841,
+		15157906358,
+		15751103458,
+		17802585585,
+		15905107010,
+		18014666616,
+		13961965831,
+		17701300929,
+		18796502428,
+		18761212310,
+		15261941641,
+		13862727509,
+		13862727509,
+		13813178452,
+		13819033609,
+		18252225926,
+		15061640063,
+		15996067731,
+		18812680146,
+		17798777216,
+		18066158086,
+		18852691786,
+	];
+
 	public function actionInvoke($testPhone = '')
 	{
 		$conn = AppUtil::db();
@@ -619,6 +661,9 @@ class FooController extends Controller
 		$contents = [];
 		foreach ($ret as $row) {
 			$phone = $row['uPhone'];
+			if (in_array($phone, self::$TDPhones)) {
+				continue;
+			}
 			$status = $row['uStatus'];
 			$sub = $row['sub'];
 			$dc = $row['dc'];
@@ -711,6 +756,9 @@ class FooController extends Controller
 
 		foreach ($ret as $row) {
 			$phone = $row['uPhone'];
+			if (in_array($phone, self::$TDPhones)) {
+				continue;
+			}
 //			$gender = $row['uGender'] == 10 ? '帅哥' : '美女';
 //			$msg = '最近有一波' . $gender . '刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100';
 //			$msg = '亲，有2个' . $gender . '想跟你聊天，你无法接收，需完善资料才可以查收哦，赶紧去完善你的个人资料吧';
