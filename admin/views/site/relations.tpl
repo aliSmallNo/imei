@@ -105,6 +105,7 @@
 		src: ''
 	};
 	$(document).on('click', '.modMp', function () {
+		return;
 		var self = $(this);
 		$sls.id = self.attr("data-id");
 		$sls.name = self.attr("data-name");
