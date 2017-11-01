@@ -121,14 +121,16 @@ require(["layer"],
 			switch (hashTag) {
 				case 'sranking':
 					RankUtil.page = 1;
-					RankUtil.cat = 'total';
-					RankUtil.reload();
+					//RankUtil.cat = 'total';
+					//RankUtil.reload();
+					$('#' + hashTag + " a[data-cat=total]").trigger(kClick);
 					FootUtil.toggle(0);
 					break;
 				case 'sfavors':
 					FavorUtil.page = 1;
-					FavorUtil.cat = 'total';
-					FavorUtil.reload();
+					//FavorUtil.cat = 'total';
+					//FavorUtil.reload();
+					$('#' + hashTag + " a[data-cat=total]").trigger(kClick);
 					FootUtil.toggle(0);
 					break;
 				case 'slink':
