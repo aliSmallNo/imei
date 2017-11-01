@@ -306,7 +306,8 @@ require(["layer"],
 								location.href = '/wx/single#scontacts';
 								break;
 							case "date_agree":
-								util.refresh();
+								//util.refresh();
+								location.reload();
 								break;
 							case "date_fail":
 								location.href = '/wx/single#sme';
