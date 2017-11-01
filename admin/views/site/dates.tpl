@@ -21,6 +21,22 @@
 		border-radius: 3px;
 	}
 
+	.color99 {
+		background: #eee;
+	}
+
+	.color100 {
+		background: #f80;
+	}
+
+	.color105, .color110, .color120, .color130 {
+		background: #0f9d58;
+	}
+
+	.color140 {
+		background: #ee021b;
+	}
+
 	td img {
 		width: 64px;
 		height: 64px;
@@ -97,16 +113,17 @@
 				{{$item.right.phone}}
 			</td>
 			<td>
-				<span class="co status">{{$item.sText}}</span><br>
-				<span class="co">约会说明:{{$item.dTitle}}</span><br>
-				<span class="co">自我介绍:{{$item.dIntro}}</span><br>
+				<span class="co status color{{$item.dStatus}}">{{$item.sText}}</span><br>
+				<span class="co"> <b>约会说明:</b>	<span class="note">{{$item.dTitle}}</span></span><br>
+				<span class="co"> <b>自我介绍:</b>	<span class="note">{{$item.dIntro}}</span></span><br>
 			</td>
 			<td>
 				{{$item.dAddedOn}}
 			</td>
 			<td>
 				{{if $item.dStatus==100}}
-				<a href="javascript:;" class="operate btn btn-outline btn-primary btn-xs" cid="{{$item.dId}}" tag="pass">审核通过</a>
+				<a href="javascript:;" class="operate btn btn-outline btn-primary btn-xs" cid="{{$item.dId}}"
+					 tag="pass">审核通过</a>
 				<a href="javascript:;" class="operate btn btn-outline btn-danger btn-xs" cid="{{$item.dId}}" tag="fail">审核失败</a>
 				{{else}}
 				<p>审核于{{$item.dAuditDate|date_format:'%y-%m-%d %H:%M'}}</p>
