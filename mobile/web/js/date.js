@@ -303,7 +303,7 @@ require(["layer"],
 					if (resp.code == 0) {
 						switch (util.tag) {
 							case 'start_date':
-								location.href = '/wx/single#sme';
+								location.href = '/wx/single#scontacts';
 								break;
 							case "date_agree":
 								util.refresh();
