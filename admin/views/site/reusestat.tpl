@@ -134,7 +134,7 @@
 		<tr data-begin="{{$item.begin}}" data-end="{{$item.end}}">
 			<td class="dt">{{$item.begin}}<br>{{$item.end}}</td>
 			<td class="percent">
-				<a href="javascript:;" class="j-link" data-from="" data-to="">{{$item[$cat].cnt}}</a>
+				<a href="javascript:;" class="j-link" data-from="{{$item.begin}}" data-to="{{$item.end}}">{{$item[$cat].cnt}}</a>
 			</td>
 			{{foreach from=$item[$cat].items key=k item=subItem}}
 			<td class="percent">
