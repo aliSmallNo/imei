@@ -1066,7 +1066,7 @@
 				{[/delete]}
 
 				{[#intro]}
-				<img src="/images/logo62.png" alt="">
+				<img src="/images/logo62.png?v=1.1.2" alt="">
 				<span>{[intro]}</span>
 				{[/intro]}
 				{[^intro]}
