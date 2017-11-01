@@ -161,7 +161,7 @@ require(["layer"],
 			},
 			refresh: function () {
 				var util = dateUtil;
-				location.href = "/wx/date?id=" + util.sid;
+				location.href = "/wx/date?id=" + util.sid + '&time=' + (new Date()).getTime();
 			},
 			Flowers: function () {
 				var util = dateUtil;
@@ -306,8 +306,8 @@ require(["layer"],
 								location.href = '/wx/single#scontacts';
 								break;
 							case "date_agree":
-								//util.refresh();
-								location.reload();
+								util.refresh();
+								//location.reload();
 								break;
 							case "date_fail":
 								location.href = '/wx/single#sme';
