@@ -303,8 +303,10 @@ require(["layer"],
 					if (resp.code == 0) {
 						switch (util.tag) {
 							case 'start_date':
+								location.href = '/wx/single#sme';
+								break;
 							case "date_agree":
-								location.href = '/wx/date?id=' + util.sid;
+								util.refresh();
 								break;
 							case "date_fail":
 								location.href = '/wx/single#sme';

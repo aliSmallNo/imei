@@ -17,6 +17,7 @@ class Date extends ActiveRecord
 	const STATUS_DETAULT = 1;
 	const STATUS_FAIL = 99;// 约会取消
 	const STATUS_INVITE = 100;
+	const STATUS_PENDING = 105;
 	const STATUS_PASS = 110;
 	const STATUS_PAY = 120;
 	const STATUS_MEET = 130;
@@ -24,6 +25,7 @@ class Date extends ActiveRecord
 	static $statusDict = [
 		self::STATUS_FAIL => '约会取消',
 		self::STATUS_INVITE => '发出邀请',
+		self::STATUS_PENDING => '系统审核',
 		self::STATUS_PASS => '对方同意',
 		self::STATUS_PAY => '送媒瑰花',
 		self::STATUS_MEET => '线下见面',
@@ -94,7 +96,7 @@ class Date extends ActiveRecord
 		}
 		list($uid1, $uid2) = self::sortUId($myUId, $taUId);
 		$d = self::findOne(["dUId1" => $uid1, "dUId2" => $uid2,
-			'dStatus' => [self::STATUS_INVITE, self::STATUS_PASS, self::STATUS_PAY, self::STATUS_MEET, self::STATUS_COMMENT]]);
+			'dStatus' => [self::STATUS_INVITE, self::STATUS_PENDING, self::STATUS_PASS, self::STATUS_PAY, self::STATUS_MEET, self::STATUS_COMMENT]]);
 		//$d = self::find()->where(["dUId1" => $uid1, "dUId2" => $uid2])->asArray()->one();
 		return $d;
 	}
@@ -244,8 +246,8 @@ class Date extends ActiveRecord
 			$v['left'] = $left;
 			$v['right'] = $right;
 			$v['text'] = '';
-			if ( $left && $right) {
-				$memo = ['<b>%s</b>%s<b>%s</b>%s <b>%s</b>', $left['name'], '约', $right['name'],$v["cText"],$v["payText"]];
+			if ($left && $right) {
+				$memo = ['<b>%s</b>%s<b>%s</b>%s <b>%s</b>', $left['name'], '约', $right['name'], $v["cText"], $v["payText"]];
 				$v['text'] = call_user_func_array('sprintf', $memo);
 			}
 		}

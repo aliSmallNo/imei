@@ -12,8 +12,8 @@
 		<meta name="format-detection" content="telephone=no">
 		<meta name="keywords" content="千寻恋恋,微媒,微媒100,相亲,交友,真实相亲,真实交友,北京奔跑吧货滴">
 		<meta name="description" content="千寻恋恋是北京奔跑吧货滴科技有限公司倾力打造的一个真实相亲交友平台">
-		<link type="image/png" href="/favicon.png" rel="icon">
-		<link type="image/png" href="/favicon.png" rel="shortcut icon">
+		<link type="image/png" href="/favicon.png?v=1.1.2" rel="icon">
+		<link type="image/png" href="/favicon.png?v=1.1.2" rel="shortcut icon">
 		<link rel="stylesheet" href="/assets/css/layer.min.css?v=1.1.2">
 		<link rel="stylesheet" href="/css/imei.min.css?v=<?= $this->params['ver'] ?>">
 		<script src="/assets/js/jweixin-1.2.0.js"></script>
