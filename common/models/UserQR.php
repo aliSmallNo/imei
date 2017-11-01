@@ -150,7 +150,7 @@ class UserQR extends ActiveRecord
 		$category = self::CATEGORY_MATCH_SHARE;
 
 		$rootFolder = AppUtil::rootDir();
-		$bgImage = $rootFolder . 'mobile/assets/bg_mp01.jpg';
+		$bgImage = $rootFolder . 'mobile/assets/bg_mp02.jpg';
 		$raw = json_encode([$uid, $avatar, $title, $subTitle, $bgImage], JSON_UNESCAPED_UNICODE);
 		$md5 = md5($raw);
 

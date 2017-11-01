@@ -58,7 +58,7 @@
 	</div>
 	<a href="#sreport" class="report pushblack">举报拉黑</a>
 	<div style="height: 6rem;"></div>
-	<div class="m-bottom-bar" {{if $role==10}}style="display: none"{{/if}}>
+	<div class="m-bottom-bar">
 		{{if $role==10}}
 		<p>
 			<a class="send btn-give" data-id="{{$uInfo.encryptId}}">送TA花</a>

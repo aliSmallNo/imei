@@ -249,49 +249,6 @@
 		还没有人对他进行评价哦~
 	</ul>
 </section>
-
-<style>
-	.schat-top-bar {
-		position: fixed;
-		left: 0;
-		right: 0;
-		top: 0;
-		z-index: 7;
-		display: flex;
-		padding: .5rem 0;
-		background: #fff;
-	}
-
-	.schat-top-bar a {
-		flex: 1;
-		position: relative;
-	}
-
-	.schat-top-bar a:not(:last-child):after {
-		position: absolute;
-		content: '';
-		right: 0;
-		top: .8rem;
-		width: .1rem;
-		height: 3rem;
-		background: #eee;
-
-	}
-
-	.schat-top-bar a img {
-		width: 2.4rem;
-		height: 2.4rem;
-		display: block;
-		margin: 0 auto;
-	}
-
-	.schat-top-bar a div {
-		font-size: 1rem;
-		text-align: center;
-	}
-
-</style>
-
 <section id="schat" data-title="密聊中...">
 	<div class="schat-top-bar">
 		<a href="javascript:;" data-tag="helpchat">

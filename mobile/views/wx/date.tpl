@@ -71,7 +71,7 @@
 
 <div class="date-nav">
 	<a href="/wx/single#sme" class="date-return">返回</a>
-	{{if ($st==100 || $st==110) }}
+	{{if in_array($st,[100,105,110])}}
 	<a href="javascript:;" class="date-cancel">取消约会</a>
 	{{/if}}
 </div>
@@ -122,12 +122,12 @@
 				 class="{{if isset($d['dPayType']) && $d['dPayType']==$uid}}on{{/if}}" data-val="me">我买单</a>
 		</div>
 	</div>
-
-	{{if $role=="active" && $st<=100}}
+{{if $st!=100}}
+	{{if $role=="active" && $st<=105}}
 	{{else}}
 	<div class="date-input date-margintop">
 		<div class="date-input-label">约会时间</div>
-		{{if $st>100}}
+		{{if $st>105}}
 		<p>{{if isset($d.dDate)}}{{$d.dDate|date_format:'%Y-%m-%d'}}{{/if}}</p>
 		{{else}}
 		<input type="date" tag-edit="{{if $role=="active"}}readonly{{/if}}" data-input="time"
@@ -136,7 +136,7 @@
 	</div>
 	<div class="date-input date-margintop">
 		<div class="date-input-label">约会地点</div>
-		{{if $st>100}}
+		{{if $st>105}}
 		<p>{{if isset($d.dLocation)}}{{$d.dLocation}}{{/if}}</p>
 		{{else}}
 		<input type="text" tag-edit="{{if $role=="active"}}readonly{{/if}}" data-input="location"
@@ -163,6 +163,7 @@
 		<p>{{if isset($d.dIntro)}}{{$d.dIntro}}{{/if}}</p>
 		{{/if}}
 	</div>
+	{{/if}}
 </div>
 
 {{if $st==130}}
@@ -276,13 +277,19 @@
 </div>
 {{/if}}
 
+{{if $st==100}}
+<div class="date-btn">
+	<a href="javascript:;" data-tag="to-fail" class="fails">等待系统审核</a>
+</div>
+{{/if}}
+
 {{if $role=="active"}}
 {{if $st==1}}
 <div class="date-btn">
 	<a href="javascript:;" data-tag="start_date">发出邀请</a>
 </div>
 {{/if}}
-{{if $st==100}}
+{{if $st==105}}
 <div class="date-btn">
 	<a href="javascript:;" data-tag="wait_agree">等待对方同意</a>
 </div>
@@ -318,7 +325,7 @@
 {{/if}}
 
 {{if $role=="inactive"}}
-{{if $st==100}}
+{{if $st==105}}
 <div class="date-btn flex-column">
 	<a href="javascript:;" class="date-rule date-pay-rule" data-rule-tag="data_rule_agree">查看接受规则</a>
 	<a href="javascript:;" data-tag="date_agree">欣然接受</a>
