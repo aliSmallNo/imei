@@ -99,7 +99,7 @@
 			<td>
 				<span class="co status">{{$item.sText}}</span><br>
 				<span class="co">约会说明:{{$item.dTitle}}</span><br>
-				<span class="co" style="display: none">自我介绍:{{$item.dIntro}}</span><br>
+				<span class="co">自我介绍:{{$item.dIntro}}</span><br>
 			</td>
 			<td>
 				{{$item.dAddedOn}}
