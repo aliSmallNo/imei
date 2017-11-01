@@ -69,6 +69,9 @@
 			<th>
 				日期
 			</th>
+			<th>
+				审核
+			</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -101,6 +104,14 @@
 			<td>
 				{{$item.dAddedOn}}
 			</td>
+			<td>
+				{{if $item.dStatus==100}}
+				<a href="javascript:;" class="operate btn btn-outline btn-primary btn-xs" cid="{{$item.dId}}" tag="pass">审核通过</a>
+				<a href="javascript:;" class="operate btn btn-outline btn-danger btn-xs" cid="{{$item.dId}}" tag="fail">审核失败</a>
+				{{else}}
+				<p>审核于{{$item.dAuditDate|date_format:'%y-%m-%d %H:%M'}}</p>
+				{{/if}}
+			</td>
 		</tr>
 		{{/foreach}}
 		</tbody>
@@ -108,18 +119,30 @@
 	{{$pagination}}
 </div>
 <script>
-	$sls = {
-		id: '',
-		name: '',
-		src: ''
-	};
-	$(document).on('click', '.modMp', function () {
-		var self = $(this);
-		$sls.id = self.attr("data-id");
-		$sls.name = self.attr("data-name");
-		$sls.src = self.find("img").attr("src");
-		location.href = "/site/searchnet?id=" + $sls.id;
-		//$('#modModal').modal('show');
+	$("a.operate").click(function () {
+		var id = $(this).attr("cid");
+		var tag = $(this).attr("tag");
+		var text = $(this).html();
+		layer.confirm('您确定' + text, {
+			btn: ['确定', '取消'],
+			title: '审核评论'
+		}, function () {
+			toOpt(id, tag);
+		}, function () {
+		});
 	});
+
+	function toOpt(id, f) {
+		$.post("/api/user", {
+			tag: "date",
+			f: f,
+			id: id
+		}, function (resp) {
+			if (resp.code == 0) {
+				location.reload();
+			}
+			layer.msg(resp.msg);
+		}, "json");
+	}
 </script>
 {{include file="layouts/footer.tpl"}}

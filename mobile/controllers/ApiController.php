@@ -2141,7 +2141,9 @@ class ApiController extends Controller
 				if (count($reason) == 0) {
 					return self::renderAPI(129, '还没填写原因哦~');
 				}
-				$res = Date::reg($uid, $sid, ['st' => Date::STATUS_FAIL, 'note' => $reasonStr]);
+				$res = Date::reg($uid, $sid, [
+					'st' => Date::STATUS_FAIL,'cnote' => $uid, 'cdate' => date('Y-m-d H:i:s'), 'cby' => $uid
+				]);
 				if ($res) {
 					return self::renderAPI(0, '操作成功~');
 				} else {

@@ -12,6 +12,7 @@ namespace admin\controllers;
 use admin\models\Admin;
 use common\models\ChatMsg;
 use common\models\City;
+use common\models\Date;
 use common\models\Log;
 use common\models\LogAction;
 use common\models\QuestionGroup;
@@ -117,6 +118,15 @@ class ApiController extends Controller
 			case "comment":
 				$flag = self::postParam("f");
 				$result = UserComment::commentVerify($id, $flag);
+				if ($result) {
+					$ret = ["code" => 0, "msg" => "操作成功！"];
+				} else {
+					$ret = ["code" => 0, "msg" => "操作失败！"];
+				}
+				break;
+			case "date":
+				$flag = self::postParam("f");
+				$result = Date::adminAudit($id, $flag);
 				if ($result) {
 					$ret = ["code" => 0, "msg" => "操作成功！"];
 				} else {

@@ -9,6 +9,7 @@
 namespace common\models;
 
 
+use admin\models\Admin;
 use common\utils\AppUtil;
 use yii\db\ActiveRecord;
 
@@ -124,6 +125,9 @@ class Date extends ActiveRecord
 			'location' => 'dLocation',
 			'st' => 'dStatus',
 			'note' => 'dNote',
+			'cdate' => 'dCanceledDate',
+			'cby' => 'dCanceledBy',
+			'cnote' => 'dCanceledNote',
 		];
 		$insert = [];
 		foreach ($fields as $k => $f) {
@@ -261,4 +265,25 @@ class Date extends ActiveRecord
 		return [$res, $count];
 	}
 
+	public static function adminAudit($id, $flag = "pass")
+	{
+		$res = 0;
+		switch ($flag) {
+			case "pass":
+				$res = self::edit($id, [
+					"dStatus" => self::STATUS_PENDING,
+					"dAuditDate" => date("Y-m-d H:i:s"),
+					"dAuditBy" => Admin::getAdminId(),
+				]);
+				break;
+			case "fail":
+				$res = self::edit($id, [
+					"dStatus" => self::STATUS_FAIL,
+					"dAuditDate" => date("Y-m-d H:i:s"),
+					"dAuditBy" => Admin::getAdminId(),
+				]);
+				break;
+		}
+		return $res;
+	}
 }
