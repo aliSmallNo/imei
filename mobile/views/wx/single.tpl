@@ -301,7 +301,7 @@
 				<a href="javascript:;">加V</a>
 			</div>
 		</div>
-		<div class="icons"><a class="schat-options"></a></div>
+		<div class="icons" style="display: none"><a class="schat-options"></a></div>
 		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120"></div>
 		<div class="action"><a class="btn-chat-send">发送</a></div>
 	</div>
