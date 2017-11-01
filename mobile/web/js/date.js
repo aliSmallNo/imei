@@ -264,7 +264,7 @@ require(["layer"],
 					}
 					console.log(postdata);
 					util.submit(postdata);
-				} else if (util.role == 'inactive' && util.st == 100) {
+				} else if (util.role == 'inactive' && util.st == 105) {
 					$("[data-input]").each(function () {
 						var self = $(this);
 						var field = self.attr('data-input');
