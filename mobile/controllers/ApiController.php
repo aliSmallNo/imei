@@ -2142,7 +2142,7 @@ class ApiController extends Controller
 					return self::renderAPI(129, '还没填写原因哦~');
 				}
 				$res = Date::reg($uid, $sid, [
-					'st' => Date::STATUS_FAIL,'cnote' => $uid, 'cdate' => date('Y-m-d H:i:s'), 'cby' => $uid
+					'st' => Date::STATUS_FAIL,'cnote' => $reasonStr, 'cdate' => date('Y-m-d H:i:s'), 'cby' => $uid
 				]);
 				if ($res) {
 					return self::renderAPI(0, '操作成功~');
