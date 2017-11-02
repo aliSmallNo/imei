@@ -899,6 +899,7 @@ class FooController extends Controller
 //			"mUId" => RedisUtil::getIntSeq(),
 //		]);
 
+//		echo (ChatMsg::Cert(120003, 143807));
 
 	}
 

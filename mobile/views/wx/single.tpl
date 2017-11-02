@@ -1240,7 +1240,35 @@
 			去实名</a>
 	</div>
 </script>
+<style>
+	.greet-btn-to {
+		display: flex;
+	}
 
+	.greet-btn-to a {
+		flex: 1;
+		text-align: center;
+		margin: 0 1rem;
+		background: #f779a3;
+		padding: 1rem 0;
+		display: block;
+		border-radius: .5rem;
+		color: #fff;
+	}
+</style>
+<script type="text/template" id="ctx_greet_new2">
+	<div class="greeting">
+		<h4>{[title]}</h4>
+		<div style="padding-top: 1rem;padding-bottom: 1rem">{[content]}</div>
+		<ol>
+		</ol>
+		<a href="javascript:;" class="m-popup-close" style="display: none"></a>
+		<div class="greet-btn-to">
+			<a href="{[url]}" data-tag="yes">是</a>
+			<a href="javascript:;" data-tag="no">否</a>
+		</div>
+	</div>
+</script>
 <script type="text/template" id="tpl_greet">
 	{[/greet]}
 	<div class="greeting">
@@ -1382,4 +1410,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js?v=1.2.1"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
-<script data-main="/js/single.js?v=1.1.1.9" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.1.1.10" src="/assets/js/require.js"></script>

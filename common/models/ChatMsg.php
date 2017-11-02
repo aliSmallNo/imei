@@ -628,4 +628,35 @@ class ChatMsg extends ActiveRecord
 
 	}
 
+	/**
+	 * @param $uid male uId
+	 * @param $receiverId female uId
+	 */
+	public static function Cert($uid, $receiverId)
+	{
+		$uInfo = User::findOne(["uId" => $uid]);
+		$gender = $uInfo["uGender"];
+		$certstatus = $uInfo['uCertStatus'];
+		$status = $uInfo['uSubStatus'];
+
+		if (//$status == User::SUB_ST_STAFF ||
+			$gender == User::GENDER_FEMALE ||
+			in_array($certstatus, [User::CERT_STATUS_PENDING, User::CERT_STATUS_PASS])
+		) {
+			return 0;
+		}
+
+		list($uid1, $uid2) = self::sortUId($uid, $receiverId);
+		$conn = AppUtil::db();
+		$sql = "SELECT sum(case when cAddedBy=:receiverId then 1 else 0 end) as co from im_chat_msg 
+				where cGId=(SELECT gId from im_chat_group where gUId1=:uid1 and gUId2=:uid2 and gStatus=:st) ";
+		$co = $conn->createCommand($sql)->bindValues([
+			':uid1' => $uid1,
+			':uid2' => $uid2,
+			':receiverId' => $receiverId,
+			':st' => self::ST_ACTIVE,
+		])->queryScalar();
+		return $co;
+	}
+
 }
