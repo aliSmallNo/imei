@@ -181,6 +181,11 @@ class Menu
 						"level" => 820
 					],
 					[
+						"name" => "约会审核",
+						"url" => "/site/date",
+						"level" => 820
+					],
+					[
 						"name" => "公众号消息",
 						"url" => "/site/wxmsg",
 						"level" => 820
