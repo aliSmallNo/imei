@@ -2238,7 +2238,7 @@ class ApiController extends Controller
 					}
 					$t = UserTrans::findOne(["tId" => $d->dTId]);
 					UserTrans::add($uid, $d->dNId, UserTrans::CAT_RECEIVE,
-						UserTrans::$catDict[UserTrans::CAT_RECEIVE], floor($t->tAmt / 10), UserTrans::UNIT_FANS);
+						UserTrans::$catDict[UserTrans::CAT_RECEIVE], floor($t->tAmt), UserTrans::UNIT_FANS);
 					$d->save();
 				}
 				return self::renderAPI(0, '匿名评论成功~');
