@@ -433,6 +433,7 @@ require(["layer"],
 			laydate.render({
 				elem: '#datetime' //指定元素
 				,type: 'datetime'
+				,theme: '#d4237a'
 			});
 		});
 	});

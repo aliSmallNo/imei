@@ -396,4 +396,4 @@
 <script src="/assets/js/mustache.min.js?v=1.2.1"></script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/laydate/laydate.js"></script>
-<script data-main="/js/date.js?v=1.1.23" src="/assets/js/require.js"></script>
+<script data-main="/js/date.js?v=1.1.24" src="/assets/js/require.js"></script>
