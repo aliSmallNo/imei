@@ -639,7 +639,7 @@ class ChatMsg extends ActiveRecord
 		$certstatus = $uInfo['uCertStatus'];
 		$status = $uInfo['uSubStatus'];
 
-		if (//$status == User::SUB_ST_STAFF ||
+		if ($status == User::SUB_ST_STAFF ||
 			$gender == User::GENDER_FEMALE ||
 			in_array($certstatus, [User::CERT_STATUS_PENDING, User::CERT_STATUS_PASS])
 		) {
