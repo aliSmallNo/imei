@@ -102,7 +102,7 @@
 			</td>
 			<td>
 				<div class="note">{{$item.text}}</div>
-				<div class="note">时间:{{$item.dDate|date_format:'%Y-%m-%d'}}</div>
+				<div class="note">时间:{{$item.dDate|date_format:'%Y-%m-%d %H:%M:%S'}}</div>
 				<div class="note">地点:{{$item.dLocation}}</div>
 			</td>
 			<td class="modMp" data-id="{{$item.right.id}}" data-name="{{$item.right.name}}">
