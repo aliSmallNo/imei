@@ -273,22 +273,22 @@ class UserBuzz extends ActiveRecord
 						]
 					]);
 				}
-			//return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
-			/*return self::json_to_xml([
-				'ToUserName' => $fromUsername,
-				'FromUserName' => $toUsername,
-				'CreateTime' => time(),
-				'MsgType' => 'news',
-				'ArticleCount' => 1,
-				'Articles' => [
-					'item' => [
-						'Title' => '千寻恋恋 - 本地真实交友平台',
-						'Description' => '每周推荐1名本地男女候选人，点击页面了解本周候选人吧！',//'Description' => '注册就可以签到领媒桂花。来吧，使劲戳我吧~让我们立刻开始这段感情吧！',
-						'PicUrl' => 'https://wx.meipo100.com/images/welcome_720.jpg',
-						'Url' => 'https://wx.meipo100.com/wx/index'
+				//return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
+				return self::json_to_xml([
+					'ToUserName' => $fromUsername,
+					'FromUserName' => $toUsername,
+					'CreateTime' => time(),
+					'MsgType' => 'news',
+					'ArticleCount' => 1,
+					'Articles' => [
+						'item' => [
+							'Title' => '千寻恋恋 - 本地真实交友平台',
+							'Description' => '每周推荐1名本地男女候选人，点击页面了解本周候选人吧！',
+							'PicUrl' => 'https://wx.meipo100.com/images/welcome_720.jpg',
+							'Url' => 'https://wx.meipo100.com/wx/index'
+						]
 					]
-				]
-			]);*/
+				]);
 			default:
 				return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
 		}
