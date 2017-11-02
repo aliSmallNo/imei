@@ -764,18 +764,18 @@ class UserNet extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		$sql = "select u.uName as `name`,u.uPhone as phone,u.uId as id,u.uThumb as thumb,
-			sum(case WHEN n.nRelation=:rel1 then 1 end) as scan,
-			sum(case WHEN n.nRelation=:rel2 then 1 end) as subscribe,
-			sum(case WHEN n.nRelation=:rel2 and IFNULL(w.wSubscribe,0)=0 then 1 end) as unsubscribe,
-			sum(case WHEN n.nRelation=:rel2 AND u1.uPhone!='' and u1.uRole>9  then 1 end) as reg,
-			sum(case WHEN n.nRelation=:mp  then 1 end) as mps,
-			sum(case WHEN n.nRelation=:focus  then 1 end) as focus
-			from im_user_net as n 
-			join im_user as u on u.uId=n.nUId 
-			join im_user as u1 on u1.uId =n.nSubUId 
-			join im_user_wechat as w on u1.uOpenId=w.wOpenId
-			$condition
-			GROUP BY n.nUId ORDER BY subscribe desc limit 20";
+			COUNT(case WHEN n.nRelation=:rel1 then 1 end) as scan,
+			COUNT(case WHEN n.nRelation=:rel2 then 1 end) as subscribe,
+			COUNT(case WHEN n.nRelation=:rel2 AND IFNULL(w.wSubscribe,0)=0 then 1 end) as unsubscribe,
+			COUNT(case WHEN n.nRelation=:rel2 AND u1.uPhone!='' AND u1.uRole>9 then 1 end) as reg,
+			COUNT(case WHEN n.nRelation=:mp  then 1 end) as mps,
+			COUNT(case WHEN n.nRelation=:focus  then 1 end) as focus
+			FROM im_user_net as n 
+			JOIN im_user as u on u.uId=n.nUId 
+			JOIN im_user as u1 on u1.uId =n.nSubUId 
+			JOIN im_user_wechat as w on u1.uOpenId=w.wOpenId $condition
+			GROUP BY n.nUId ORDER BY subscribe DESC limit 20";
+
 		$ret = $conn->createCommand($sql)->bindValues([
 			":rel1" => self::REL_QR_SCAN,
 			":rel2" => self::REL_QR_SUBSCRIBE,
