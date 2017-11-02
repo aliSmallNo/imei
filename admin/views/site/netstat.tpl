@@ -21,6 +21,34 @@
 		font-weight: 300;
 		font-size: 13px;
 	}
+
+	.person {
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: -ms-flexbox;
+		display: flex;
+		border: none;
+	}
+
+	.person .avatar {
+		-webkit-flex: 0 0 44px;
+		-ms-flex: 0 0 44px;
+		flex: 0 0 44px;
+		text-align: left;
+	}
+
+	.person .avatar img {
+		width: 92%;
+		height: auto;
+	}
+
+	.person .title {
+		-webkit-box-flex: 1
+		-webkit-flex: 1
+		-ms-flex: 1
+		flex: 1
+		padding-left: 10px;
+	}
 </style>
 <div class="row">
 	<h4>推广统计</h4>
@@ -43,7 +71,7 @@
 	<table class="table table-striped table-bordered">
 		<thead>
 		<tr>
-			<th>
+			<th class="col-lg-4">
 				用户
 			</th>
 			<!--th>
@@ -66,9 +94,14 @@
 		<tbody>
 		{{foreach from=$scanStat item=stat}}
 		<tr>
-			<td>
-				{{$stat.name}}
-				<div class="tip">{{$stat.phone}}</div>
+			<td class="person">
+				<div class="avatar">
+					<img src="{{$stat.thumb}}">
+				</div>
+				<div class="title">
+					<div>{{$stat.name}}</div>
+					<div class="tip">{{$stat.phone}}</div>
+				</div>
 			</td>
 			<!--td>
 					{{$stat.focus}}
