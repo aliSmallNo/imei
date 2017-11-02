@@ -128,10 +128,9 @@
 	<div class="date-input date-margintop">
 		<div class="date-input-label">约会时间</div>
 		{{if $st>105}}
-		<p>{{if isset($d.dDate)}}{{$d.dDate|date_format:'%Y-%m-%d'}}{{/if}}</p>
+		<p>{{if isset($d.dDate)}}{{$d.dDate|date_format:'%Y-%m-%d %H:%M'}}{{/if}}</p>
 		{{else}}
-		<input type="date" tag-edit="{{if $role=="active"}}readonly{{/if}}" data-input="time"
-					 value="{{if isset($d.dDate)}}{{$d.dDate}}{{/if}}">
+		<input type="text" id="datetime" tag-edit="{{if $role=="active"}}readonly{{/if}}" data-input="time" value="{{if isset($d.dDate)}}{{$d.dDate}}{{/if}}">
 		{{/if}}
 	</div>
 	<div class="date-input date-margintop">
@@ -396,4 +395,5 @@
 </script>
 <script src="/assets/js/mustache.min.js?v=1.2.1"></script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/date.js?v=1.1.20" src="/assets/js/require.js"></script>
+<script src="/assets/js/laydate/laydate.js"></script>
+<script data-main="/js/date.js?v=1.1.24" src="/assets/js/require.js"></script>

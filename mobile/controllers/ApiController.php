@@ -1870,7 +1870,7 @@ class ApiController extends Controller
 			}
 		}
 
-		$uInfo = User::findOne(["uId" => $uid]);
+		/*$uInfo = User::findOne(["uId" => $uid]);
 		$gender = $uInfo["uGender"];
 		$certstatus = $uInfo['uCertStatus'];
 		$status = $uInfo['uSubStatus'];
@@ -1878,7 +1878,7 @@ class ApiController extends Controller
 			&& $status != User::SUB_ST_STAFF && $gender != User::GENDER_FEMALE
 			&& in_array($certstatus, [User::CERT_STATUS_DEFAULT, User::CERT_STATUS_FAIL])) {
 			return self::renderAPI(102, '根据国家有关法规要求，婚恋交友平台用户须实名认证。您还没有实名认证，赶快去个人中心实名认证吧');
-		}
+		}*/
 
 		switch ($tag) {
 			case 'greeting':
@@ -1904,6 +1904,9 @@ class ApiController extends Controller
 				}
 				if (UserNet::hasBlack($wxInfo["uId"], $receiverId)) {
 					return self::renderAPI(129, self::MSG_BLACK);
+				}
+				if (ChatMsg::Cert($uid, $receiverId)) {
+					return self::renderAPI(103, '对方设置了聊天室身份认证要求，要求您进行身份认证，提供安全保障才能继续聊天，您是否继续聊天？');
 				}
 				if (!UserComment::hasComment($receiverId, $uid)) {
 					return self::renderAPI(129, '聊了这么多，觉得ta怎么样呢，快去匿名评价吧~');
@@ -2142,7 +2145,7 @@ class ApiController extends Controller
 					return self::renderAPI(129, '还没填写原因哦~');
 				}
 				$res = Date::reg($uid, $sid, [
-					'st' => Date::STATUS_FAIL,'cnote' => $reasonStr, 'cdate' => date('Y-m-d H:i:s'), 'cby' => $uid
+					'st' => Date::STATUS_FAIL, 'cnote' => $reasonStr, 'cdate' => date('Y-m-d H:i:s'), 'cby' => $uid
 				]);
 				if ($res) {
 					return self::renderAPI(0, '操作成功~');
@@ -2235,7 +2238,7 @@ class ApiController extends Controller
 					}
 					$t = UserTrans::findOne(["tId" => $d->dTId]);
 					UserTrans::add($uid, $d->dNId, UserTrans::CAT_RECEIVE,
-						UserTrans::$catDict[UserTrans::CAT_RECEIVE], floor($t->tAmt / 10), UserTrans::UNIT_FANS);
+						UserTrans::$catDict[UserTrans::CAT_RECEIVE], floor($t->tAmt), UserTrans::UNIT_FANS);
 					$d->save();
 				}
 				return self::renderAPI(0, '匿名评论成功~');

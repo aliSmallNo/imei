@@ -781,7 +781,7 @@ require(["layer"],
 							util.toggle(util.helpchatMenu.hasClass("off"), util.helpchatMenu);
 							break;
 						case 'date':
-							// location.href = '/wx/date?id='+util.sid;
+							location.href = '/wx/date?id='+util.sid;
 							break;
 					}
 				});
@@ -982,6 +982,8 @@ require(["layer"],
 						$sls.shade.fadeIn(160);
 					} else if (resp.code == 102) {
 						alertModel.show('通知', '根据国家有关法规要求，婚恋交友平台用户须实名认证。您还没有实名认证，赶快去个人中心实名认证吧', '/wx/cert2');
+					} else if (resp.code == 103) {
+						alertModel.show2('通知', resp.msg, '/wx/cert2');
 					} else {
 						showMsg(resp.msg, 3, 12);
 					}
@@ -2091,10 +2093,14 @@ require(["layer"],
 
 		var alertModel = {
 			tmp: $('#ctx_greet_new').html(),
+			tmp2: $('#ctx_greet_new2').html(),
 			//content: $.trim($('#ctx_greet').html()),
 			content: '',
 			init: function () {
-
+				$(document).on(kClick, ".greet-btn-to a[data-tag=no]", function () {
+					$sls.main.hide();
+					$sls.shade.fadeOut(160);
+				});
 			},
 			show: function (title, content, url) {
 				var util = this;
@@ -2103,6 +2109,17 @@ require(["layer"],
 				// }
 				$sls.main.show();
 				var html = Mustache.render(util.tmp, {
+					title: title,
+					content: content,
+					url: url
+				});
+				$sls.content.html(html).addClass("animate-pop-in");
+				$sls.shade.fadeIn(160);
+			},
+			show2: function (title, content, url) {
+				var util = this;
+				$sls.main.show();
+				var html = Mustache.render(util.tmp2, {
 					title: title,
 					content: content,
 					url: url

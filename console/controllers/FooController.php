@@ -11,11 +11,13 @@ namespace console\controllers;
 use common\models\ChatMsg;
 use common\models\Pin;
 use common\models\User;
+use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\PushUtil;
+use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -894,11 +896,12 @@ class FooController extends Controller
 	{
 
 //		UserMsg::edit(0, [
-//			"mText" => json_encode(["为了答谢大家对微媒100的关注，微媒100推出第一期“我们在微媒的牵手故事”为主题 ，有奖征集大家在微媒成功找到另一半的故事，微信公众号回复对方手机号码开始报名，报名对象：10月15日前成为情侣的恋人，核实后我们会抽取一组最佳情侣送上千元奖励哦！"], JSON_UNESCAPED_UNICODE),
+//			"mText" => json_encode(["每日一句：千寻恋恋升级，“约”的功能上线，如果感觉和他（她）投缘，直接约他（她）。有平台做备案，让约会更放心。 聊得来就约他（她）吧！！！"], JSON_UNESCAPED_UNICODE),
 //			"mCategory" => UserMsg::CATEGORY_UPGRADE,
 //			"mUId" => RedisUtil::getIntSeq(),
 //		]);
 
+//		echo (ChatMsg::Cert(120003, 143807));
 
 	}
 

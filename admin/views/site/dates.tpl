@@ -102,7 +102,7 @@
 			</td>
 			<td>
 				<div class="note">{{$item.text}}</div>
-				<div class="note">时间:{{$item.dDate|date_format:'%Y-%m-%d'}}</div>
+				<div class="note">时间:{{$item.dDate|date_format:'%Y-%m-%d %H:%M:%S'}}</div>
 				<div class="note">地点:{{$item.dLocation}}</div>
 			</td>
 			<td class="modMp" data-id="{{$item.right.id}}" data-name="{{$item.right.name}}">
@@ -113,7 +113,9 @@
 				{{$item.right.phone}}
 			</td>
 			<td>
-				<span class="co status color{{$item.dStatus}}">{{$item.sText}}</span><br>
+				<a href="javascript:;" class="commentView co status color{{$item.dStatus}}"
+					 {{if $item.dStatus==140}}data-com1='{{$item.dComment1}}' data-com2='{{$item.dComment2}}'
+					 data-name1="{{$item.left.name}}" data-name2="{{$item.right.name}}"{{/if}}>{{$item.sText}}</a><br>
 				<span class="co"> <b>约会说明:</b>	<span class="note">{{$item.dTitle}}</span></span><br>
 				<span class="co"> <b>自我介绍:</b>	<span class="note">{{$item.dIntro}}</span></span><br>
 			</td>
@@ -135,7 +137,82 @@
 	</table>
 	{{$pagination}}
 </div>
+<div class="modal fade" id="CommentModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+									aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">约会评论</h4>
+			</div>
+			<div class="modal-body" style="overflow: hidden">
+
+			</div>
+			<div class="modal-footer" style="overflow: hidden">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="btnSaveDu">确定保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+	.comment-item {
+		padding: 0;
+	}
+
+	.comment-item h5{} .comment-item div {
+		border-bottom: 1px solid #eee;
+		padding: 7px;
+	}
+
+	.comment-item span
+
+	{}
+</style>
+<script type="text/html" id="cTemp">
+	{[#data]}
+	<table class="table">
+		<thead>
+		<th class="col-sm-4"></th>
+		<th class="col-sm-4">{[name1]}</th>
+		<th class="col-sm-4">{[name2]}</th>
+		</thead>
+		<tbody>
+		{[#items]}
+		<tr>
+			<td>{[title]}</td>
+			<td>{[c1]}</td>
+			<td>{[c2]}</td>
+		</tr>
+		{[/items]}
+		</tbody>
+	</table>
+	{[/data]}
+
+</script>
 <script>
+	$(document).on("click", ".commentView", function () {
+		var self = $(this);
+		var com1 = self.attr("data-com1");
+		var com2 = self.attr("data-com2");
+		var name1 = self.attr("data-name1");
+		var name2 = self.attr("data-name2");
+		if (!com1 || !com2) {
+			return;
+		}
+		com1 = JSON.parse(com1);
+		com2 = JSON.parse(com2);
+		var items = [];
+		for (var i = 0; i < com1.length; i++) {
+			items.push({title:com1[i]['title'],c1:com1[i]['value'],c2:com2[i]['value']});
+		}
+		items ={data:{items:items,name1:name1,name2:name2}};
+		var Vhtml = Mustache.render($("#cTemp").html(), items);
+		$("#CommentModal .modal-body").html(Vhtml);
+		$("#CommentModal .modal-title").html(name1 + '约会' + name2);
+		$("#CommentModal").modal('show');
+	});
+
 	$("a.operate").click(function () {
 		var id = $(this).attr("cid");
 		var tag = $(this).attr("tag");
