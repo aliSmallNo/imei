@@ -1,6 +1,7 @@
 require.config({
 	paths: {
 		"layer": "/assets/js/layer_mobile/layer",
+		"laydate": "/assets/js/laydate/laydate",
 	}
 });
 
@@ -429,6 +430,9 @@ require(["layer"],
 			wx.ready(function () {
 				wx.hideOptionMenu();
 			});
-
+			laydate.render({
+				elem: '#datetime' //指定元素
+				,type: 'datetime'
+			});
 		});
 	});
