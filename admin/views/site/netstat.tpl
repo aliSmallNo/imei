@@ -38,8 +38,9 @@
 	}
 
 	.person .avatar img {
-		width: 92%;
+		width: 90%;
 		height: auto;
+		border-radius: 3px;
 	}
 
 	.person .title {
