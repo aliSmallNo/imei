@@ -128,7 +128,7 @@
 	<div class="date-input date-margintop">
 		<div class="date-input-label">约会时间</div>
 		{{if $st>105}}
-		<p>{{if isset($d.dDate)}}{{$d.dDate|date_format:'%Y-%m-%d %H:%i'}}{{/if}}</p>
+		<p>{{if isset($d.dDate)}}{{$d.dDate|date_format:'%Y-%m-%d %H:%M'}}{{/if}}</p>
 		{{else}}
 		<input type="text" id="datetime" tag-edit="{{if $role=="active"}}readonly{{/if}}" data-input="time" value="{{if isset($d.dDate)}}{{$d.dDate}}{{/if}}">
 		{{/if}}
