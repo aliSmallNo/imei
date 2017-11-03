@@ -290,7 +290,6 @@ class Date extends ActiveRecord
 					"dAuditDate" => date("Y-m-d H:i:s"),
 					"dAuditBy" => Admin::getAdminId(),
 				]);
-				self::toSendMsg($id);
 				break;
 			case "fail":
 				$res = self::edit($id, [
@@ -298,7 +297,6 @@ class Date extends ActiveRecord
 					"dAuditDate" => date("Y-m-d H:i:s"),
 					"dAuditBy" => Admin::getAdminId(),
 				]);
-				self::toSendMsg($id);
 				break;
 		}
 		return $res;
