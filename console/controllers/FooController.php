@@ -904,7 +904,7 @@ class FooController extends Controller
 
 //		echo (ChatMsg::Cert(120003, 143807));
 
-		Date::toSendMsg(Date::getDid(120003, 143807));
+		Date::toSendMsg(15);
 	}
 
 

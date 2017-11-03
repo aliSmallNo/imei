@@ -96,7 +96,9 @@ class Date extends ActiveRecord
 	public static function getDid($uid, $sid)
 	{
 		list($uid1, $uid2) = self::sortUId($uid, $sid);
-		$d = self::findOne(["dUId1" => $uid1, 'dUId2' => $uid2]);
+		$d = self::findOne(["dUId1" => $uid1, 'dUId2' => $uid2,
+			'dStatus' => [self::STATUS_INVITE, self::STATUS_PENDING, self::STATUS_PASS, self::STATUS_PAY, self::STATUS_MEET, self::STATUS_COMMENT]
+		]);
 		if ($d) {
 			return $d->dId;
 		}
@@ -352,7 +354,7 @@ class Date extends ActiveRecord
 
 	public static function sendmsg($phone, $msg)
 	{
-		 echo $phone . "==" . $msg . "\n";
+		echo $phone . "==" . $msg . "\n";
 		QueueUtil::loadJob('sendSMS',
 			[
 				'phone' => $phone,
