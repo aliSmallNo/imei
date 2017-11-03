@@ -306,14 +306,17 @@ class Date extends ActiveRecord
 
 	public static function toSendMsg($did)
 	{
-		if (!$did) {
+		$d = self::findOne(["dId" => $did]);
+		if (!$d) {
 			return 0;
 		}
-		$d = self::findOne(["dId" => $did]);
 		$uid1 = $d->dAddedBy == $d->dUId1 ? $d->dUId2 : $d->dUId1;
 		$uid2 = $d->dAddedBy == $d->dUId1 ? $d->dUId1 : $d->dUId2;
 		$u1 = User::findOne(['uId' => $uid1]);//被约方
 		$u2 = User::findOne(['uId' => $uid2]);
+		if (!$u1 || !$u2) {
+			return 0;
+		}
 		$name1 = $u1->uName;//被约方
 		$name2 = $u2->uName;
 		$cat = self::$catDict[$d->dCategory];

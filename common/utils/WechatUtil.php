@@ -674,7 +674,9 @@ class WechatUtil
 			case self::NOTICE_DATE:
 				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = $wxUrl . "/wx/date?id=" . AppUtil::encrypt($giverId);
+				$u2 = User::findOne(["uId" => $giverId]);
 				$keywords['first'] = "hi，$nickname\n";
+				$keywords['keyword1'] = "平台用户" . $u2->uName . "邀请线下见面";
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_MAKE_FRIRENDS: //相亲交友活动支付通知 /wx/toparty
