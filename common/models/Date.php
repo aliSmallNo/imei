@@ -98,7 +98,6 @@ class Date extends ActiveRecord
 		list($uid1, $uid2) = self::sortUId($myUId, $taUId);
 		$d = self::findOne(["dUId1" => $uid1, "dUId2" => $uid2,
 			'dStatus' => [self::STATUS_INVITE, self::STATUS_PENDING, self::STATUS_PASS, self::STATUS_PAY, self::STATUS_MEET, self::STATUS_COMMENT]]);
-		//$d = self::find()->where(["dUId1" => $uid1, "dUId2" => $uid2])->asArray()->one();
 		return $d;
 	}
 

@@ -113,9 +113,13 @@
 				{{$item.right.phone}}
 			</td>
 			<td>
-				<a href="javascript:;" class="commentView co status color{{$item.dStatus}}"
-					 {{if $item.dStatus==140}}data-com1='{{$item.dComment1}}' data-com2='{{$item.dComment2}}'
-					 data-name1="{{$item.left.name}}" data-name2="{{$item.right.name}}"{{/if}}>{{$item.sText}}</a><br>
+				<a href="javascript:;" class="commentView co status color{{$item.dStatus}}" data-st="{{$item.dStatus}}"
+					 data-name1="{{$item.left.name}}" data-id1="{{$item.left.id}}" data-name2="{{$item.right.name}}"
+					 data-id2="{{$item.right.id}}"
+					 {{if $item.dStatus==140}}data-com1='{{$item.dComment1}}' data-com2='{{$item.dComment2}}'{{/if}}
+					 {{if $item.dStatus==99}}data-cby='{{$item.dCanceledBy}}' data-ctime='{{$item.dCanceledDate}}'
+					 data-creason='{{$item.dCanceledNote}}'{{/if}}
+				>{{$item.sText}}</a><br>
 				<span class="co"> <b>约会说明:</b>	<span class="note">{{$item.dTitle}}</span></span><br>
 				<span class="co"> <b>自我介绍:</b>	<span class="note">{{$item.dIntro}}</span></span><br>
 			</td>
@@ -169,7 +173,7 @@
 
 	{}
 </style>
-<script type="text/html" id="cTemp">
+<script type="text/html" id="c140Temp">
 	{[#data]}
 	<table class="table">
 		<thead>
@@ -188,29 +192,71 @@
 		</tbody>
 	</table>
 	{[/data]}
-
+</script>
+<script type="text/html" id="c99Temp">
+	<span>{[name]} </span>
+	<span> {[time]} </span>
+	<span> {[reason]} </span>
 </script>
 <script>
 	$(document).on("click", ".commentView", function () {
 		var self = $(this);
-		var com1 = self.attr("data-com1");
-		var com2 = self.attr("data-com2");
 		var name1 = self.attr("data-name1");
 		var name2 = self.attr("data-name2");
-		if (!com1 || !com2) {
-			return;
-		}
-		com1 = JSON.parse(com1);
-		com2 = JSON.parse(com2);
+		var st = self.attr("data-st");
 		var items = [];
-		for (var i = 0; i < com1.length; i++) {
-			items.push({title:com1[i]['title'],c1:com1[i]['value'],c2:com2[i]['value']});
+		console.log(st);
+		switch (st) {
+			case '99':
+				var id1 = self.attr("data-id1");
+				var id2 = self.attr("data-id2");
+				var time = self.attr("data-ctime");
+				var by = self.attr("data-cby");
+				var reason = self.attr("data-creason");
+				if (reason) {
+					reason = JSON.parse(self.attr("data-creason"));
+					reason = reason.join(",");
+				}
+				var name;
+				items ={time:time,reason:reason};
+				if (by == id1) {
+					name = name1 + '取消约会';
+				} else if (by == id2) {
+					name = name2 + '取消约会';
+				} else {
+					name = '系统审核不通过';
+				}
+				items['name'] = name;
+
+				layer.open({
+					title: name,
+					content: "<p style='text-align: left;font-size: 12px'>" + name + "</p>" +
+					"<p style='text-align: left;font-size: 12px'>取消原因: " + reason + "</p>" +
+					"<p style='text-align: left;font-size: 12px'>取消时间: " + time + "</p>",
+				});
+				//$("#CommentModal .modal-title").html(name);
+				//var Vhtml = Mustache.render($("#c99Temp").html(), items);
+				break;
+			case '140':
+				var com1 = self.attr("data-com1");
+				var com2 = self.attr("data-com2");
+				if (!com1 || !com2) {
+					return;
+				}
+				com1 = JSON.parse(com1);
+				com2 = JSON.parse(com2);
+				for (var i = 0; i < com1.length; i++) {
+					items.push({title:com1[i]['title'],c1:com1[i]['value'],c2:com2[i]['value']});
+				}
+				items ={data:{items:items,name1:name1,name2:name2}};
+				$("#CommentModal .modal-title").html(name1 + '约会' + name2);
+				var Vhtml = Mustache.render($("#c140Temp").html(), items);
+				$("#CommentModal .modal-body").html(Vhtml);
+				$("#CommentModal").modal('show');
+				break;
 		}
-		items ={data:{items:items,name1:name1,name2:name2}};
-		var Vhtml = Mustache.render($("#cTemp").html(), items);
-		$("#CommentModal .modal-body").html(Vhtml);
-		$("#CommentModal .modal-title").html(name1 + '约会' + name2);
-		$("#CommentModal").modal('show');
+
+
 	});
 
 	$("a.operate").click(function () {

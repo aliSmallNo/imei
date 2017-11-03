@@ -750,7 +750,6 @@ class SiteController extends BaseController
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
 				'category' => 'data',
-				//'detailcategory' => commonData::getRequestUri(),
 				'list' => $list,
 			]
 		);
