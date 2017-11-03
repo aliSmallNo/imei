@@ -9,6 +9,7 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
+use common\models\Date;
 use common\models\Pin;
 use common\models\User;
 use common\models\UserMsg;
@@ -903,6 +904,7 @@ class FooController extends Controller
 
 //		echo (ChatMsg::Cert(120003, 143807));
 
+		Date::toSendMsg(15);
 	}
 
 
