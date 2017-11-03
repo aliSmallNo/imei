@@ -17,6 +17,7 @@ use yii\db\ActiveRecord;
 class Date extends ActiveRecord
 {
 	const STATUS_DETAULT = 1;
+	const STATUS_PENDING_FAIL = 88;
 	const STATUS_FAIL = 99;// 约会取消
 	const STATUS_INVITE = 100;
 	const STATUS_PENDING = 105;
@@ -25,9 +26,10 @@ class Date extends ActiveRecord
 	const STATUS_MEET = 130;
 	const STATUS_COMMENT = 140;
 	static $statusDict = [
+		self::STATUS_PENDING_FAIL => '审核失败',
 		self::STATUS_FAIL => '约会取消',
 		self::STATUS_INVITE => '发出邀请',
-		self::STATUS_PENDING => '系统审核',
+		self::STATUS_PENDING => '审核通过',
 		self::STATUS_PASS => '对方同意',
 		self::STATUS_PAY => '送媒瑰花',
 		self::STATUS_MEET => '线下见面',
@@ -275,33 +277,73 @@ class Date extends ActiveRecord
 					"dAuditDate" => date("Y-m-d H:i:s"),
 					"dAuditBy" => Admin::getAdminId(),
 				]);
-				$d = self::findOne(["dId" => $id]);
-				$uid1 = $d->dAddedBy == $d->dUId1 ? $d->dUId2 : $d->dUId1;
-				$uid2 = $d->dAddedBy == $d->dUId1 ? $d->dUId1 : $d->dUId2;
-				$u1 = User::findOne(['uId' => $uid1]);//被约方
-				$u2 = User::findOne(['uId' => $uid2]);
-				if ($u1 && $u2) {
-					$phone = $u1->uPhone;
-					$name1 = $u1->uName;
-					$name = $u2->uName;
-					$msg = "嗨！$name1,$name 约你" . self::$catDict[$d->dCategory];
-					QueueUtil::loadJob('sendSMS',
-						[
-							'phone' => $phone,
-							'msg' => $msg,
-							'rnd' => 106
-						],
-						QueueUtil::QUEUE_TUBE_SMS);
-				}
+				self::toSendMsg($id);
 				break;
 			case "fail":
 				$res = self::edit($id, [
-					"dStatus" => self::STATUS_FAIL,
+					"dStatus" => self::STATUS_PENDING_FAIL,
 					"dAuditDate" => date("Y-m-d H:i:s"),
 					"dAuditBy" => Admin::getAdminId(),
 				]);
+				self::toSendMsg($id);
 				break;
 		}
 		return $res;
+	}
+
+	public static function toSendMsg($did)
+	{
+		if ($did != 15) {
+			return 0;
+		}
+		$d = self::findOne(["dId" => $did]);
+		$uid1 = $d->dAddedBy == $d->dUId1 ? $d->dUId2 : $d->dUId1;
+		$uid2 = $d->dAddedBy == $d->dUId1 ? $d->dUId1 : $d->dUId2;
+		$u1 = User::findOne(['uId' => $uid1]);//被约方
+		$u2 = User::findOne(['uId' => $uid2]);
+		$name1 = $u1->uName;//被约方
+		$name2 = $u2->uName;
+		$cat = self::$catDict[$d->dCategory];
+		$st = $d->dStatus;
+		switch ($st) {
+			case self::STATUS_PENDING_FAIL:
+				$msg = "尊敬的用户，您与平台用户“" . $name1 . "”未通过审核，您填写的方式由错误，请您尽快修改，避免错失约会";
+				self::sendmsg($u2->uPhone, $msg);
+				break;
+			case self::STATUS_FAIL:
+				$msg = "尊敬的用户，您与平台用户“" . $name2 . "”的“" . $cat . "”约会，对方已经取消！请双方另行再约";
+				self::sendmsg($u1->uPhone, $msg);
+				$msg = "尊敬的用户，您与平台用户“" . $name1 . "”的“" . $cat . "”约会，对方已经取消！请双方另行再约";
+				self::sendmsg($u2->uPhone, $msg);
+				break;
+			case self::STATUS_PENDING:
+				$msg = "尊敬的用户，平台用户'$name2'在线邀请您" . $cat . "，请您到平台查看！安排约会时间地点";
+				self::sendmsg($u1->uPhone, $msg);
+				$msg = "尊敬的用户，平台用户“" . $name1 . "”已经收到您的“" . $cat . "”邀请，请您耐心等待！";
+				self::sendmsg($u2->uPhone, $msg);
+				break;
+			case self::STATUS_PAY:
+				$msg = "尊敬的用户，您与平台用户“" . $name2 . "”的“" . $cat . "”约会已经双方确定，时间是“" . date("Y-m-d H:i", strtotime($d->dDate)) . "”，地点“" . $d->dLocation . "”，请准时赴约。";
+				self::sendmsg($u1->uPhone, $msg);
+				$msg = "尊敬的用户，您与平台用户“" . $name1 . "”的“" . $cat . "”约会已经双方确定，时间是“" . date("Y-m-d H:i", strtotime($d->dDate)) . "”，地点“" . $d->dLocation . "”，请准时赴约。";
+				self::sendmsg($u2->uPhone, $msg);
+				break;
+			case self::STATUS_MEET:
+				break;
+			case self::STATUS_COMMENT:
+				break;
+		}
+
+	}
+
+	public static function sendmsg($phone, $msg)
+	{
+		QueueUtil::loadJob('sendSMS',
+			[
+				'phone' => $phone,
+				'msg' => $msg,
+				'rnd' => 106
+			],
+			QueueUtil::QUEUE_TUBE_SMS);
 	}
 }

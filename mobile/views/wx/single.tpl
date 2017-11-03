@@ -11,6 +11,28 @@
 			<span class="con-title">择偶条件: </span>
 		</a>
 	</div>
+	<div class="user_filter" style="display: none">
+		<div class="user_filter_item">
+			<a href="javascript:;" class="user_filter_title">全部</a>
+			<ul>
+				<li><a href="javascript:;">全部</a></li>
+				<li><a href="javascript:;">本县市</a></li>
+				<li><a href="javascript:;">本市</a></li>
+				<li><a href="javascript:;">老乡</a></li>
+				<li><a href="javascript:;">距离1公里</a></li>
+				<li><a href="javascript:;">距离30公里</a></li>
+			</ul>
+		</div>
+		<div class="user_filter_item">
+			<a href="javascript:;" class="user_filter_title">全部</a>
+			<ul>
+				<li><a href="javascript:;">全部</a></li>
+				<li><a href="javascript:;">未婚</a></li>
+				<li><a href="javascript:;">离异带孩</a></li>
+				<li><a href="javascript:;">离异不带孩</a></li>
+			</ul>
+		</div>
+	</div>
 	<ul class="m-top-users"></ul>
 	<div class="m-more">拼命加载中...</div>
 </section>

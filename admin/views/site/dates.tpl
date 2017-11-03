@@ -237,6 +237,12 @@
 				//$("#CommentModal .modal-title").html(name);
 				//var Vhtml = Mustache.render($("#c99Temp").html(), items);
 				break;
+			case "88":
+				layer.open({
+					title: '系统审核不通过',
+					content: "<p style='text-align: left;font-size: 12px'>系统审核不通过</p>",
+				});
+				break;
 			case '140':
 				var com1 = self.attr("data-com1");
 				var com2 = self.attr("data-com2");
