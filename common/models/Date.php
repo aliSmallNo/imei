@@ -11,6 +11,7 @@ namespace common\models;
 
 use admin\models\Admin;
 use common\utils\AppUtil;
+use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
 
 class Date extends ActiveRecord
@@ -274,6 +275,24 @@ class Date extends ActiveRecord
 					"dAuditDate" => date("Y-m-d H:i:s"),
 					"dAuditBy" => Admin::getAdminId(),
 				]);
+				$d = self::findOne(["dId" => $id]);
+				$uid1 = $d->dAddedBy == $d->dUId1 ? $d->dUId2 : $d->dUId1;
+				$uid2 = $d->dAddedBy == $d->dUId1 ? $d->dUId1 : $d->dUId2;
+				$u1 = User::findOne(['uId' => $uid1]);//被约方
+				$u2 = User::findOne(['uId' => $uid2]);
+				if ($u1 && $u2) {
+					$phone = $u1->uPhone;
+					$name1 = $u1->uName;
+					$name = $u2->uName;
+					$msg = "嗨！$name1,$name 约你" . self::$catDict[$d->dCategory];
+					QueueUtil::loadJob('sendSMS',
+						[
+							'phone' => $phone,
+							'msg' => $msg,
+							'rnd' => 106
+						],
+						QueueUtil::QUEUE_TUBE_SMS);
+				}
 				break;
 			case "fail":
 				$res = self::edit($id, [
