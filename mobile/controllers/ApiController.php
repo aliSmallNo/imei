@@ -2147,7 +2147,6 @@ class ApiController extends Controller
 				$res = Date::reg($uid, $sid, [
 					'st' => Date::STATUS_FAIL, 'cnote' => $reasonStr, 'cdate' => date('Y-m-d H:i:s'), 'cby' => $uid
 				]);
-				Date::toSendMsg($res);
 				if ($res) {
 					return self::renderAPI(0, '操作成功~');
 				} else {
@@ -2166,8 +2165,10 @@ class ApiController extends Controller
 					$insert[$v] = $data[$v];
 				}
 				$insert["st"] = Date::STATUS_PASS;
-				$res = Date::reg($uid, $sid, $insert);
-				Date::toSendMsg($res);
+				$res = 0;
+				if (Date::findOne(["dId" => $did])->dStatus == Date::STATUS_PENDING) {
+					$res = Date::reg($uid, $sid, $insert);
+				}
 				if ($res) {
 					return self::renderAPI(0, '操作成功~');
 				} else {
@@ -2259,8 +2260,10 @@ class ApiController extends Controller
 				if (!$tId) {
 					return self::renderAPI(129, '送花失败~');
 				}
-				$did = Date::edit($did, ['dNId' => $nId, 'dTId' => $tId, 'dStatus' => Date::STATUS_PAY]);
-				Date::toSendMsg($did);
+				if (Date::findOne(["dId" => $did])->dStatus == Date::STATUS_PASS) {
+					$did = Date::edit($did, ['dNId' => $nId, 'dTId' => $tId, 'dStatus' => Date::STATUS_PAY]);
+				}
+
 				return self::renderAPI(0, '送花 ' . $amt . '朵 成功~');
 				break;
 		}

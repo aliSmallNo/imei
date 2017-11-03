@@ -83,6 +83,7 @@ class Date extends ActiveRecord
 			$entity->$key = $val;
 		}
 		$entity->save();
+		Date::toSendMsg($entity->dId);
 		return $entity->dId;
 	}
 
@@ -323,7 +324,7 @@ class Date extends ActiveRecord
 				self::sendmsg($u2->uPhone, $msg);
 				break;
 			case self::STATUS_FAIL:
-				$msg = "尊敬的用户，您与平台用户“" . $name2 . "”的“" . $cat . "”约会，对方已经取消！请双方另行再约";
+				$msg = "尊敬的用户，您与平台用户“" . $name2 . "”的“" . $cat . "”约会，您已经取消！请双方另行再约";
 				self::sendmsg($u1->uPhone, $msg);
 				$msg = "尊敬的用户，您与平台用户“" . $name1 . "”的“" . $cat . "”约会，对方已经取消！请双方另行再约";
 				self::sendmsg($u2->uPhone, $msg);
