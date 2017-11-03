@@ -870,7 +870,7 @@ class SiteController extends BaseController
 		$getInfo = Yii::$app->request->get();
 		$sdate = self::getParam("sdate");
 		$edate = self::getParam("edate");
-		$condition = "";
+		$condition = '';
 		if ($sdate && $edate) {
 			$condition = " WHERE  n.nAddedOn between '$sdate 00:00:00'  and '$edate 23:59:50' ";
 		}
