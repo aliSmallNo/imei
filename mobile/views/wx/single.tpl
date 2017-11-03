@@ -5,6 +5,86 @@
 		<div class="see-more"><a href="javascript:;" tag="recomend">查看更多</a></div>
 	</div>
 </section>
+<style>
+	.user_filter {
+		display: flex;
+	}
+
+	.user_filter .user_filter_item {
+		flex: 1;
+		background: #fff;
+		text-align: center;
+		position: relative;
+	}
+
+	.user_filter .user_filter_item .user_filter_title {
+		height: 3.5rem;
+		line-height: 3.5rem;
+		font-size: 1.3rem;
+		position: relative;
+	}
+
+	.user_filter .user_filter_item .user_filter_title:after {
+		position: absolute;
+		content: '';
+		width: 0;
+		height: 0;
+		border-top: .5rem solid #777;
+		border-left: .5rem solid transparent;
+		border-right: .5rem solid transparent;
+		top: 0.7rem;
+		right: -1.5rem;
+	}
+
+	.user_filter .user_filter_item ul {
+		position: absolute;
+		width: 101%;
+		top: 3.5rem;
+		left: 0;
+		right: 0;
+		z-index: 1000;
+		background: #fff;
+		min-height: 22rem;
+		display: none;
+	}
+
+	.user_filter .user_filter_item.show ul {
+		display: block;
+	}
+
+	.user_filter .user_filter_item ul li {
+		height: 3.5rem;
+		line-height: 3.5rem;
+	}
+
+	.user_filter .user_filter_item ul li a {
+		font-size: 1.3rem;
+		width: 7rem;
+		display: block;
+		margin: 0 auto;
+		position: relative;
+	}
+
+	.user_filter .user_filter_item ul li a.user_filter_btn {
+		position: absolute;
+		right: 0;
+		bottom: 1.5rem;
+		left: 0;
+		border: 1px solid #F06292;
+	}
+
+	.user_filter .user_filter_item ul li a.active:after {
+		position: absolute;
+		content: '';
+		width: 1.5rem;
+		height: .8rem;
+		border-left: .12rem solid #F06292;
+		border-bottom: .12rem solid #F06292;
+		left: -2.5rem;
+		top: 1rem;
+		transform: rotate(-45deg);
+	}
+</style>
 <section id="slook" data-title="发现单身">
 	<div class="my-condition" style="display: none">
 		<a href="javascript:;" class="conditions">
@@ -12,24 +92,25 @@
 		</a>
 	</div>
 	<div class="user_filter" style="display: none">
-		<div class="user_filter_item">
+		<div href="javascript:;" class="user_filter_item">
 			<a href="javascript:;" class="user_filter_title">全部</a>
 			<ul>
-				<li><a href="javascript:;">全部</a></li>
-				<li><a href="javascript:;">本县市</a></li>
-				<li><a href="javascript:;">本市</a></li>
-				<li><a href="javascript:;">老乡</a></li>
-				<li><a href="javascript:;">距离1公里</a></li>
-				<li><a href="javascript:;">距离30公里</a></li>
+				<li><a href="javascript:;" data-cat="l" data-tag="all">全部</a></li>
+				<li><a href="javascript:;" data-cat="l" data-tag="county">本县市</a></li>
+				<li><a href="javascript:;" data-cat="l" data-tag="city">本市</a></li>
+				<li><a href="javascript:;" data-cat="l" data-tag="fellow">老乡</a></li>
+				<li><a href="javascript:;" data-cat="l" data-tag="1km">距离1公里</a></li>
+				<li><a href="javascript:;" data-cat="l" data-tag="30km">距离30公里</a></li>
 			</ul>
 		</div>
-		<div class="user_filter_item">
-			<a href="javascript:;" class="user_filter_title">全部</a>
+		<div href="javascript:;" class="user_filter_item">
+			<a href="javascript:;" class="user_filter_title">离异不带孩</a>
 			<ul>
-				<li><a href="javascript:;">全部</a></li>
-				<li><a href="javascript:;">未婚</a></li>
-				<li><a href="javascript:;">离异带孩</a></li>
-				<li><a href="javascript:;">离异不带孩</a></li>
+				<li><a href="javascript:;" data-cat="m" data-tag="all" class="active">全部</a></li>
+				<li><a href="javascript:;" data-cat="m" data-tag="100">未婚</a></li>
+				<li><a href="javascript:;" data-cat="m" data-tag="110">离异带孩</a></li>
+				<li><a href="javascript:;" data-cat="m" data-tag="120" class="active">离异不带孩</a></li>
+				<li><a href="javascript:;" data-cat="m" class="user_filter_btn">确定</a></li>
 			</ul>
 		</div>
 	</div>

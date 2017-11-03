@@ -278,12 +278,19 @@
 		});
 	});
 
+	var loading = 0;
+
 	function toOpt(id, f) {
+		if (loading) {
+			return;
+		}
+		loading = 1;
 		$.post("/api/user", {
 			tag: "date",
 			f: f,
 			id: id
 		}, function (resp) {
+			loading = 0;
 			if (resp.code == 0) {
 				location.reload();
 			}

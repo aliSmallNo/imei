@@ -1293,7 +1293,8 @@ class User extends ActiveRecord
 					WHEN u.uLocation like '%$prov%' then 8 else 0 end) as rank";
 
 		// 去掉筛选条件啦~
-		if (isset($data["age"]) && $data["age"] != 0) {
+		/*
+		 if (isset($data["age"]) && $data["age"] != 0) {
 			$age = explode("-", $data["age"]);
 			$year = date("Y");
 			$ageStart = $year - $age[1];
@@ -1305,7 +1306,22 @@ class User extends ActiveRecord
 			//$condition .= $fc ? " and u.uLocation  like '%$fp%' && u.uLocation like '%$fc%' " : " and u.uLocation  like '%$fp%' ";
 			$condition .= " AND u.uLocation like '%$fp%' ";
 		}
-
+		*/
+		/*if (isset($data['location']) && $data['location']) {
+			$l = $data['location'];
+			switch ($l) {
+				case "county":
+					break;
+				case "city":
+					break;
+				case "fellow":
+					break;
+				case "1km":
+					break;
+				case "30km":
+					break;
+			}
+		}*/
 		/*
 		if (!$data) {
 			$data = json_decode($uFilter, 1);

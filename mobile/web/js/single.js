@@ -781,7 +781,7 @@ require(["layer"],
 							util.toggle(util.helpchatMenu.hasClass("off"), util.helpchatMenu);
 							break;
 						case 'date':
-							location.href = '/wx/date?id='+util.sid;
+							location.href = '/wx/date?id=' + util.sid;
 							break;
 					}
 				});
@@ -1223,6 +1223,37 @@ require(["layer"],
 			}
 		};
 		SmeUtil.init();
+
+		var nFilterUtil = {
+			f1: "",
+			f2: "",
+			init: function () {
+				var util = this;
+				$(document).on(kClick, ".user_filter_item a", function () {
+					var self = $(this);
+					var item = self.closest(".user_filter_item");
+					if (self.hasClass("user_filter_title")) {
+						if (item.hasClass("show")) {
+							item.removeClass("show");
+						} else {
+							item.addClass("show");
+						}
+					} else if (self.attr("data-tag")) {
+						var ul = self.closest("ul");
+						ul.find("a[data-tag]").removeClass("active");
+						self.addClass("active");
+						var ftext = self.html();
+						self.closest(".user_filter_item").find("a.user_filter_title").html(ftext);
+						var tag = self.attr("data-tag");
+						self.attr("data-cat") == "l" ? (util.f1 = tag) : (util.f2 = tag);
+						console.log(util.f1 + "<=f1 f2=>" + util.f2);
+					} else if (self.hasClass("user_filter_btn")) {
+						self.closest(".user_filter").find(".user_filter_item").removeClass("show");
+					}
+				});
+			},
+		};
+		nFilterUtil.init();
 
 		var FilterUtil = {
 			data: {},
