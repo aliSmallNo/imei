@@ -355,7 +355,7 @@ class Date extends ActiveRecord
 
 	public static function sendmsg($phone, $msg)
 	{
-		echo $phone . "==" . $msg . "\n";
+		//echo $phone . "==" . $msg . "\n";
 		QueueUtil::loadJob('sendSMS',
 			[
 				'phone' => $phone,
