@@ -322,6 +322,10 @@ class Date extends ActiveRecord
 				$msg = "尊敬的用户，平台用户“" . $name1 . "”已经收到您的“" . $cat . "”邀请，请您耐心等待！";
 				self::sendmsg($u2->uPhone, $msg);
 				break;
+			case self::STATUS_PASS:
+				$msg = "尊敬的用户，平台用户“" . $name1 . "”已经接受了您“" . $cat . "”邀请，并安排时间" . date("Y-m-d H:i", strtotime($d->dDate)) . "、地点" . $d->dLocation . "见面，请您到平台查看！请您最终确定是否赴约。";
+				self::sendmsg($u2->uPhone, $msg);
+				break;
 			case self::STATUS_PAY:
 				$msg = "尊敬的用户，您与平台用户“" . $name2 . "”的“" . $cat . "”约会已经双方确定，时间是“" . date("Y-m-d H:i", strtotime($d->dDate)) . "”，地点“" . $d->dLocation . "”，请准时赴约。";
 				self::sendmsg($u1->uPhone, $msg);
@@ -338,6 +342,7 @@ class Date extends ActiveRecord
 
 	public static function sendmsg($phone, $msg)
 	{
+		// echo $phone . "==" . $msg . "\n";
 		QueueUtil::loadJob('sendSMS',
 			[
 				'phone' => $phone,
