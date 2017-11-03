@@ -2144,9 +2144,12 @@ class ApiController extends Controller
 				if (count($reason) == 0) {
 					return self::renderAPI(129, '还没填写原因哦~');
 				}
-				$res = Date::reg($uid, $sid, [
-					'st' => Date::STATUS_FAIL, 'cnote' => $reasonStr, 'cdate' => date('Y-m-d H:i:s'), 'cby' => $uid
-				]);
+				$res = 0;
+				if (in_array(Date::oneInfo($uid, $sid)->dStatus, [Date::STATUS_INVITE, Date::STATUS_PENDING, Date::STATUS_PASS])) {
+					$res = Date::reg($uid, $sid, [
+						'st' => Date::STATUS_FAIL, 'cnote' => $reasonStr, 'cdate' => date('Y-m-d H:i:s'), 'cby' => $uid
+					]);
+				}
 				if ($res) {
 					return self::renderAPI(0, '操作成功~');
 				} else {
@@ -2166,7 +2169,7 @@ class ApiController extends Controller
 				}
 				$insert["st"] = Date::STATUS_PASS;
 				$res = 0;
-				if (Date::findOne(["dId" => $did])->dStatus == Date::STATUS_PENDING) {
+				if (Date::oneInfo($uid, $sid)->dStatus == Date::STATUS_PENDING) {
 					$res = Date::reg($uid, $sid, $insert);
 				}
 				if ($res) {
@@ -2263,7 +2266,6 @@ class ApiController extends Controller
 				if (Date::findOne(["dId" => $did])->dStatus == Date::STATUS_PASS) {
 					$did = Date::edit($did, ['dNId' => $nId, 'dTId' => $tId, 'dStatus' => Date::STATUS_PAY]);
 				}
-
 				return self::renderAPI(0, '送花 ' . $amt . '朵 成功~');
 				break;
 		}
