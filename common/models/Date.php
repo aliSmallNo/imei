@@ -306,7 +306,7 @@ class Date extends ActiveRecord
 
 	public static function toSendMsg($did)
 	{
-		if ($did != 15) {
+		if (!$did) {
 			return 0;
 		}
 		$d = self::findOne(["dId" => $did]);

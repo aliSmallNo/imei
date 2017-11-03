@@ -1726,7 +1726,7 @@ class WxController extends BaseController
 			exit();
 		}
 		$uid = $wxInfo["uId"];
-		$sid = self::getParam("id", 'AjtrXTM9Rjc8N0xoODw7QTlBQ3RlPEVPP0U_VXA');//zp_hongmi
+		$sid = self::getParam("id", '');//zp_hongmi AjtrXTM9Rjc8N0xoODw7QTlBQ3RlPEVPP0U_VXA
 //		$sid = self::getParam("id", 'ATprXTQ-SDk_OlBsPT8-P0BES3xuRU9ZSlBLYX0');// zp
 		$id = AppUtil::decrypt($sid);
 		$TA = User::findOne(["uId" => $id]);
