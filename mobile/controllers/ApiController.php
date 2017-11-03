@@ -2147,6 +2147,7 @@ class ApiController extends Controller
 				$res = Date::reg($uid, $sid, [
 					'st' => Date::STATUS_FAIL, 'cnote' => $reasonStr, 'cdate' => date('Y-m-d H:i:s'), 'cby' => $uid
 				]);
+				Date::toSendMsg(Date::getDid($uid, $sid));
 				if ($res) {
 					return self::renderAPI(0, '操作成功~');
 				} else {
@@ -2166,6 +2167,7 @@ class ApiController extends Controller
 				}
 				$insert["st"] = Date::STATUS_PASS;
 				$res = Date::reg($uid, $sid, $insert);
+				Date::toSendMsg(Date::getDid($uid, $sid));
 				if ($res) {
 					return self::renderAPI(0, '操作成功~');
 				} else {
@@ -2258,6 +2260,7 @@ class ApiController extends Controller
 					return self::renderAPI(129, '送花失败~');
 				}
 				Date::edit($did, ['dNId' => $nId, 'dTId' => $tId, 'dStatus' => Date::STATUS_PAY]);
+				Date::toSendMsg(Date::getDid($uid, $sid));
 				return self::renderAPI(0, '送花 ' . $amt . '朵 成功~');
 				break;
 		}

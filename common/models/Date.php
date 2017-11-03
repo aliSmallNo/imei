@@ -93,6 +93,16 @@ class Date extends ActiveRecord
 		return $arr;
 	}
 
+	public static function getDid($uid, $sid)
+	{
+		list($uid1, $uid2) = self::sortUId($uid, $sid);
+		$d = self::findOne(["dUId1" => $uid1, 'dUId2' => $uid2]);
+		if ($d) {
+			return $d->dId;
+		}
+		return 0;
+	}
+
 	public static function oneInfo($myUId, $taUId)
 	{
 		if (!$myUId || !$taUId) {
