@@ -1229,7 +1229,7 @@ class WxController extends BaseController
 
 	public function actionQuiz()
 	{
-		return self::actionQuestions(2014);
+		return self::actionVote(2014);
 	}
 
 	public function actionQuestions($defaultGId = 2001)
@@ -1295,7 +1295,7 @@ class WxController extends BaseController
 			'活动报名');
 	}
 
-	public function actionVote()
+	public function actionVote($defaultId = 2014)
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
@@ -1305,7 +1305,7 @@ class WxController extends BaseController
 		}
 		//$gid = 2002;
 		// $gid = 2012;
-		$gid = 2014;
+		$gid = self::getParam('gid', $defaultId);
 		if (Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oUId" => $wxInfo["uId"]])) {
 			if ($openId != "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
 
