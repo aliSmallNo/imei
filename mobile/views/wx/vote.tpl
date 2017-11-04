@@ -23,13 +23,9 @@
 		border: 1px solid #eee;
 	}
 
-	.vote-item {
-
-	}
-
 	.vote-item h4 {
 		margin-bottom: 1rem;
-		font-size: 1.3rem;
+		font-size: 1.4rem;
 	}
 
 	.vote-item .opt {
@@ -139,11 +135,6 @@
 		font-size: 1.2rem;
 		color: #E91E63;
 	}
-
-	.vote-item .opt-res {
-
-	}
-
 </style>
 <div class="vote-title">
 	<p class="title">{{$title}}</p>
@@ -152,7 +143,7 @@
 <div class="vote">
 	{{foreach from=$questions key=key item=item}}
 	<div class="vote-item">
-		<h4>{{$key+1}}.{{$item.qTitle}}</h4>
+		<h4>{{$key+1}}. {{$item.qTitle}}</h4>
 		{{foreach from=$item.options item=opt}}
 		<div class="opt">
 			<input class="magic-{{if $item.mult}}checkbox{{else}}radio{{/if}}"
