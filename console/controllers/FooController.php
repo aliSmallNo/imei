@@ -9,6 +9,7 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
+use common\models\Log;
 use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
@@ -900,6 +901,8 @@ class FooController extends Controller
 
 //		echo (ChatMsg::Cert(120003, 143807));
 
+		$res = Log::sCenterItems(120003);
+		print_r($res);
 	}
 
 

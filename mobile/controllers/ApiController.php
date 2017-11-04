@@ -348,6 +348,21 @@ class ApiController extends Controller
 		$id = self::postParam('id');
 
 		switch ($tag) {
+			case "security_center":
+				$wxInfo = UserWechat::getInfoByOpenId($openId);
+				if (!$wxInfo) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				$uid = $wxInfo["uId"];
+				$flag = self::postParam("flag");
+				$key = self::postParam("key");
+				$val = self::postParam("val");
+				if (!$key || !$val || !$flag) {
+					return self::renderAPI(129, '参数错误~');
+				}
+				$oid = Log::sCenterEdit($uid, $flag, $key, $val);
+				return self::renderAPI(0, '', ["oid" => $oid]);
+				break;
 			case 'ban':
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
@@ -815,7 +830,6 @@ class ApiController extends Controller
 				}
 				$ret = UserNet::processWx($nid, $pf);
 				return self::renderAPI(0, "已" . $text, $ret);
-
 			case 'feedback':
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
@@ -884,7 +898,6 @@ class ApiController extends Controller
 				} else {
 					return self::renderAPI(129, '参数错误~');
 				}
-
 			case 'wxno':
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {
@@ -1009,7 +1022,6 @@ class ApiController extends Controller
 				} else {
 					return self::renderAPI(129, '参数错误~');
 				}
-
 			case "togive": // 送媒桂花
 				$wxInfo = UserWechat::getInfoByOpenId($openId);
 				if (!$wxInfo) {

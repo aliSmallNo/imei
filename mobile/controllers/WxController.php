@@ -1281,6 +1281,29 @@ class WxController extends BaseController
 			'bg-color');
 	}
 
+	/**
+	 * @return string
+	 * 安全中心 Security Center
+	 */
+	public function actionScenter()
+	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			header('location:/wx/index');
+			exit();
+		}
+		$uid = $wxInfo["uId"];
+		$l = Log::sCenterItems($uid);
+
+		return self::renderPage('scenter.tpl', [
+			"l" => $l,
+		],
+			'terse',
+			'互动功能限制',
+			'bg-color');
+	}
+
 	public function actionToparty()
 	{
 		$openId = self::$WX_OpenId;
