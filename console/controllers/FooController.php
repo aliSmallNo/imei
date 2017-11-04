@@ -9,16 +9,13 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
-use common\models\Date;
 use common\models\Pin;
 use common\models\User;
-use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\PushUtil;
-use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -704,6 +701,7 @@ class FooController extends Controller
 		}
 		var_dump($cnt);
 	}
+
 
 	public function actionSms($phone = 18600442970)
 	{
