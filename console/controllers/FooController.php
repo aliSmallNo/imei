@@ -683,11 +683,10 @@ class FooController extends Controller
 				$contents[$phone] = '最近有一波' . $object . '刚注册千寻恋恋找对象，离您最近的才5公理，赶快来看看吧，关注微信公众号微媒100';
 			}*/
 			if ($gender == User::GENDER_MALE) {
-				$contents[$phone] = '新活动又双叒叕来了，有高颜值美女，有线下活动，快来千寻恋恋公众号来看看吧。回复TD退订';
+				$contents[$phone] = '“约Ta”的功能上线，感觉妹子不错就直接来约吧！回复TD退订';
 			} elseif ($gender == User::GENDER_FEMALE) {
-				$contents[$phone] = '新活动又双叒叕来了，有高颜值帅哥，有线下活动，快来千寻恋恋公众号来看看吧。回复TD退订';
+				$contents[$phone] = '有帅哥在平台约你，请尽快查看资料。回复TD退订';
 			}
-
 			//$contents[$phone] = '为了答谢大家对微媒100的关注，本平台将推出第一期“我们在微媒的牵手故事”为主题 ，有奖征集在微媒成功找到另一半的故事，微信公众号回复对方手机号码报名，报名对象：10月15日前成为情侣的恋人，核实后将抽取一组最佳情侣送上千元奖励哦！';
 		}
 		$cnt = 0;
@@ -748,7 +747,6 @@ class FooController extends Controller
 			 JOIN im_user_wechat as w on w.wUId=u.uId
 			 JOIN im_log_action as a on a.aUId = u.uId AND a.aCategory>1000
 			 WHERE u.uStatus<8 and uPhone !=''
-			 AND (uLocation like '%东台%' or uHomeland like '%东台%')
 			 GROUP BY u.uId,u.uName,u.uPhone HAVING cnt > 10;";
 		$ret = $conn->createCommand($sql)->queryAll();
 		/*
@@ -761,7 +759,7 @@ class FooController extends Controller
 			if (in_array($phone, self::$TDPhones)) {
 				continue;
 			}
-//			$gender = $row['uGender'] == 10 ? '帅哥' : '美女';
+			$gender = $row['uGender'] == 10 ? '帅哥' : '美女';
 //			$msg = '最近有一波' . $gender . '刚注册微媒100找对象，离您最近的才1.1公理，赶快来看看吧，关注公众号微媒100';
 //			$msg = '亲，有2个' . $gender . '想跟你聊天，你无法接收，需完善资料才可以查收哦，赶紧去完善你的个人资料吧';
 //			$msg = '哇，本地单身都在公众号微媒100找对象，真实靠谱，赶快来完成注册吧';
