@@ -1305,7 +1305,7 @@ class WxController extends BaseController
 		}
 		//$gid = 2002;
 		// $gid = 2012;
-		$gid = 2013;
+		$gid = 2014;
 		if (Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oUId" => $wxInfo["uId"]])) {
 			if ($openId != "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
 
@@ -1316,7 +1316,7 @@ class WxController extends BaseController
 		list($questions, $gId) = QuestionGroup::findGroup($gid);
 
 		//$note = "小微要组织一场活动，不知各位帅哥美女喜欢什么样的，那就一起来投票吧（投票有惊喜哦），我们会根据大家的喜好，组织线下活动哦，欢迎参加！";
-		$note = "'千寻恋恋'要改名字了，不知各位帅哥美女喜欢什么样的，那就一起来投票吧（投票有惊喜哦），我们会根据大家的意见，决定启用哪个，欢迎参加！";
+		$note = "'千寻恋恋'又找你们搞事情啦，不知各位帅哥美女喜欢什么样的另一半，那就一起来投票吧（投票有惊喜哦），我们会根据大家的意见，为您挑选更优质的TA，欢迎参加！";
 		return self::renderPage('vote.tpl', [
 			"questions" => $questions,
 			"gId" => $gId,
@@ -1337,13 +1337,13 @@ class WxController extends BaseController
 		}
 		// $gid = 2002;
 		//$gid = 2012;
-		$gid = 2013;
+		$gid = 2014;
 		if (!Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oUId" => $wxInfo["uId"]])) {
 			header('location:/wx/vote');
 			exit();
 		}
 		$voteStat = QuestionGroup::voteStat($gid, $wxInfo["uId"]);
-		$note = "'千寻恋恋'要改名字了，不知各位帅哥美女喜欢什么样的，那就一起来投票吧（投票有惊喜哦），我们会根据大家的意见，决定启用哪个，欢迎参加！";
+		$note = "'千寻恋恋'又找你们搞事情啦，不知各位帅哥美女喜欢什么样的另一半，那就一起来投票吧（投票有惊喜哦），我们会根据大家的意见，为您挑选更优质的TA，欢迎参加！";
 		return self::renderPage('voted.tpl', [
 			"voteStat" => $voteStat,
 			"note" => $note,
