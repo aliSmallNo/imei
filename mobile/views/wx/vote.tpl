@@ -5,9 +5,15 @@
 	}
 
 	.vote-title p {
-		font-size: 1.2rem;
+		font-size: 1rem;
 		line-height: 2rem;
 		letter-spacing: .1rem;
+	}
+
+	.vote-title p.title {
+		font-size: 1.4rem;
+		font-weight: 800;
+		margin-bottom: 1rem;
 	}
 
 	.vote {
@@ -131,6 +137,7 @@
 	}
 </style>
 <div class="vote-title">
+	<p class="title">{{$title}}</p>
 	<p>{{$note}}</p>
 </div>
 <div class="vote">
@@ -139,7 +146,8 @@
 		<h4>{{$key+1}}. {{$item.qTitle}}</h4>
 		{{foreach from=$item.options item=opt}}
 		<div class="opt">
-			<input class="magic-{{if $item.mult}}checkbox{{else}}radio{{/if}}" type="{{if $item.mult}}checkbox{{else}}radio{{/if}}"
+			<input class="magic-{{if $item.mult}}checkbox{{else}}radio{{/if}}"
+						 type="{{if $item.mult}}checkbox{{else}}radio{{/if}}"
 						 name="{{$item.qId}}" id="{{$opt.opt}}{{$item.qId}}" value="{{$opt.opt}}">
 			<label for="{{$opt.opt}}{{$item.qId}}">{{$opt.text}}</label>
 		</div>

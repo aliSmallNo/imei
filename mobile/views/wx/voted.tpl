@@ -5,9 +5,16 @@
 	}
 
 	.vote-title p {
-		font-size: 1.2rem;
+		font-size: 1rem;
 		line-height: 2rem;
 		letter-spacing: .1rem;
+	}
+
+
+	.vote-title p.title {
+		font-size: 1.4rem;
+		font-weight: 800;
+		margin-bottom: 1rem;
 	}
 
 	.vote {
@@ -74,6 +81,7 @@
 	}
 </style>
 <div class="vote-title">
+	<p class="title">{{$title}}</p>
 	<p>{{$note}}</p>
 </div>
 <div class="vote">
