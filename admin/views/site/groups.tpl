@@ -36,7 +36,7 @@
 	<tr>
 		<td>
 			[{{$prod.gId}}] {{$prod.gTitle}}<br>
-			{{$prod.co}}人
+			<b>{{$prod.co}}人参与</b>
 		</td>
 		<td class="options">
 			{{foreach from=$prod.qlist key=key item=q}}
