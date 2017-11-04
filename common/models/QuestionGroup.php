@@ -81,11 +81,12 @@ class QuestionGroup extends ActiveRecord
 	public static function findGroup($gid)
 	{
 		$conn = AppUtil::db();
-		$sql = "SELECT gItems,gId,gCategory from im_question_group where gId=$gid";
+		$sql = "SELECT gItems,gId,gCategory,gTitle from im_question_group where gId=$gid";
 		$ret = $conn->createCommand($sql)->queryOne();
 		$ids = $ret ? $ret["gItems"] : 0;
 		$gId = $ret ? $ret["gId"] : 0;
 		$gCategory = $ret ? $ret["gCategory"] : 100;
+		$gTitle = $ret["gTitle"];
 		if (!$ids) {
 			return 0;
 		}
@@ -95,7 +96,7 @@ class QuestionGroup extends ActiveRecord
 			$v = QuestionSea::fmt($v);
 			$v["gCategory"] = $gCategory;
 		}
-		return [$res, $gId];
+		return [$res, $gId, $gTitle];
 
 	}
 

@@ -129,7 +129,7 @@ class QueueUtil
 	{
 		$uid = $params["id"];
 		Pin::regeo($uid);
-		return true;act
+		return true;
 	}
 
 	protected static function smsMessage($phone, $msg, $appendId = '1234', $type = 'sale')

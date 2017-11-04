@@ -1241,7 +1241,7 @@ class WxController extends BaseController
 			exit();
 		}
 		$gid = self::getParam('gid', $defaultGId);
-		list($questions, $gId) = QuestionGroup::findGroup($gid);
+		list($questions, $gId, $gTitle) = QuestionGroup::findGroup($gid);
 		if (!$questions) {
 			header('location:/wx/error');
 		}
@@ -1250,6 +1250,7 @@ class WxController extends BaseController
 			"questions" => $questions,
 			"count" => count($questions),
 			"gId" => $gId,
+			'gTitle' => $gTitle
 		],
 			'terse');
 	}

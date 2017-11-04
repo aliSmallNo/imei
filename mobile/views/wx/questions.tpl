@@ -11,12 +11,12 @@
 
 {{foreach from=$questions key=key item=item}}
 <section id="Q{{$key+1}}">
-	<div class="que-count">{{$key+1}}/{{$count}}</div>
+	<div class="que-count">{{$gTitle}} <em>{{$key+1}}/{{$count}}</em></div>
 	<div class="qItem">
 		<div class="title">{{$key+1}}. {{$item.qTitle}}</div>
 		<div class="options" mult="{{$item.mult}}" data-id="{{$item.qId}}">
 			{{foreach from=$item.options key=key item=opt}}
-			<a class="option" mult="{{$item.mult}}" data-an="{{$opt.opt}}">{{$opt.opt}} {{$opt.text}}</a>
+			<a class="option" mult="{{$item.mult}}" data-an="{{$opt.opt}}"><em>{{$opt.opt}}.</em> {{$opt.text}}</a>
 			{{/foreach}}
 		</div>
 		<div class="next-que">

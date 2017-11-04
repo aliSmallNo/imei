@@ -5959,10 +5959,10 @@ section
 		color: #fff
 
 .que-count
-	text-align: center
+	text-align: left
 	padding: 2rem
 	font-size: 1.2rem
-	color: #777
+	color: $grayFontColor
 
 .qItem
 	margin: 0 2rem
@@ -5975,9 +5975,12 @@ section
 		padding: 1rem
 		a
 			display: block
-			padding: 1.5rem 1rem
+			padding: 1.3rem 1rem
 			position: relative
-			border-bottom: 1px solid #eee
+			border-bottom: 1px solid $borderColor
+			em
+				font-size: 1.1rem
+				color: $grayFontColorLight
 			&.active
 				color: #f06292
 			&.active:after
