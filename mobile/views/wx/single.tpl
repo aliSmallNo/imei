@@ -1209,12 +1209,29 @@
 	</li>
 	{[/items]}
 </script>
+<style>
+	.chats li.read .content span:before {
+		position: absolute;
+		content: '已读';
+		left: -3rem;
+		font-size: 1rem;
+		top: 1.2rem;
+	}
+
+	.chats li.unread .content span:before {
+		position: absolute;
+		content: '未读';
+		left: -3rem;
+		font-size: 1rem;
+		top: 1.2rem;
+	}
+</style>
 <script type="text/template" id="tpl_chat">
 	{[#items]}
-	<li class="{[dir]}">
+	<li class="{[dir]}" data-r="{[readflag]}">
 		<a href="{[url]}" {[#eid]}data-eid="{[.]}"{[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
 		<div class="content">
-			<span>{[content]}</span>
+			<span style="position: relative">{[content]}</span>
 		</div>
 	</li>
 	{[/items]}

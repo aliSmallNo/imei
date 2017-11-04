@@ -389,7 +389,7 @@ class ChatMsg extends ActiveRecord
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
 		$sql = 'select u.uName as `name`, u.uThumb as avatar,u.uUniqid as uni,
 			g.gId as gid, g.gRound as round,
-			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy,a.aName
+			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy,a.aName,m.cReadFlag as readflag
 			 from im_chat_group as g 
 			 join im_chat_msg as m on g.gId=cGId
 			 join im_user as u on u.uId=m.cAddedBy

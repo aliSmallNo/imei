@@ -902,7 +902,17 @@ require(["layer"],
 						util.rightCount++;
 					}
 				});
-				//console.log(util.leftCount);console.log(util.rightCount);
+
+				util.list.find("li.right").each(function () {
+					var self = $(this);
+					if (self.attr("data-r") == 1) {
+						self.addClass("read");
+					} else {
+						self.addClass("unread");
+					}
+				});
+
+
 				if (util.leftCount >= 2 && util.rightCount >= 2) {
 					util.comment.show();
 				} else {
