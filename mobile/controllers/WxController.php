@@ -1298,18 +1298,15 @@ class WxController extends BaseController
 	public function actionVote($defaultId = 2014)
 	{
 		$openId = self::$WX_OpenId;
-		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		if (!$wxInfo) {
-			header('location:/wx/index');
-			exit();
-		}
+//		$wxInfo = UserWechat::getInfoByOpenId($openId);
+//		if (!$wxInfo) {
+//			header('location:/wx/index');
+//			exit();
+//		}
 		//$gid = 2002;
 		// $gid = 2012;
 		$gid = self::getParam('gid', $defaultId);
-		if (Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oUId" => $wxInfo["uId"]])) {
-			if ($openId != "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
-
-			}
+		if (Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oOpenId" => $openId])) {
 			header('location:/wx/voted');
 			exit();
 		}
@@ -1330,20 +1327,15 @@ class WxController extends BaseController
 	public function actionVoted()
 	{
 		$openId = self::$WX_OpenId;
-		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		if (!$wxInfo) {
-			header('location:/wx/index');
-			exit();
-		}
 		// $gid = 2002;
 		//$gid = 2012;
 		$gid = 2014;
-		if (!Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oUId" => $wxInfo["uId"]])) {
+		if (!Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oOpenId" => $openId])) {
 			header('location:/wx/vote');
 			exit();
 		}
 		$gInfo = QuestionGroup::findOne(['gId' => $gid]);
-		$voteStat = QuestionGroup::voteStat($gid, $wxInfo["uId"]);
+		$voteStat = QuestionGroup::voteStat($gid, $openId);
 		$title = $gInfo->gTitle;
 		$note = "'千寻恋恋'又找你搞事情啦，一起来投票吧（投票有惊喜哦），我们会根据你的意见，为你挑选更优质的TA，欢迎参加！";
 		return self::renderPage('voted.tpl', [

@@ -105,9 +105,8 @@ class QuestionGroup extends ActiveRecord
 
 	}
 
-	public static function voteStat($gid, $uid = 0)
+	public static function voteStat($gid, $openId = '')
 	{
-
 		list($qlist) = self::findGroup($gid);
 		$sql = "select * from im_log where oCategory=:cat and oKey=:key ";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
@@ -127,7 +126,7 @@ class QuestionGroup extends ActiveRecord
 						if ($q["qId"] == $an["id"] && $opt["opt"] == $an["ans"]) {
 							$opt["co"]++;
 							$opt["ids"] = trim($opt["ids"] . "," . $v["oUId"], ",");
-							if ($v["oUId"] == $uid) {
+							if ($v["oOpenId"] == $openId) {
 								$opt["choose"] = 1;
 							}
 							$q["amt"]++;
