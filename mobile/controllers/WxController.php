@@ -1303,7 +1303,7 @@ class WxController extends BaseController
 			header('location:/wx/index');
 			exit();
 		}
-		//$gid = 2002;
+		// $gid = 2002;
 		// $gid = 2012;
 		$gid = self::getParam('gid', $defaultId);
 		if (Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oUId" => $wxInfo["uId"]])) {
