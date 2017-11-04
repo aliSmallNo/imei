@@ -16,10 +16,10 @@
 <table class="table table-striped table-bordered table-hover">
 	<thead>
 	<tr>
-		<th class="col-sm-2">
+		<th class="col-sm-3">
 			主题/参与人数
 		</th>
-		<th class="col-sm-6">
+		<th class="col-sm-5">
 			题列表
 		</th>
 		<th class="col-sm-2">
@@ -35,7 +35,7 @@
 	{{foreach from=$list item=prod}}
 	<tr>
 		<td>
-			{{$prod.gTitle}}<br>
+			[{{$prod.gId}}] {{$prod.gTitle}}<br>
 			{{$prod.co}}人
 		</td>
 		<td class="options">
