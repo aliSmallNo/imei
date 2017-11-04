@@ -13,9 +13,6 @@ use common\models\Date;
 use common\models\Log;
 use common\models\LogAction;
 use common\models\QuestionGroup;
-use common\models\Redpacket;
-use common\models\RedpacketList;
-use common\models\RedpacketTrans;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserComment;
@@ -27,8 +24,6 @@ use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
-use common\utils\RedisUtil;
-use common\utils\WechatUtil;
 
 class WxController extends BaseController
 {
@@ -1232,7 +1227,12 @@ class WxController extends BaseController
 			'bg-lottery');
 	}
 
-	public function actionQuestions()
+	public function actionQuiz()
+	{
+		return self::actionQuestions(2014);
+	}
+
+	public function actionQuestions($defaultGId = 2001)
 	{
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
@@ -1240,7 +1240,7 @@ class WxController extends BaseController
 			header('location:/wx/index');
 			exit();
 		}
-		$gid = 2001;
+		$gid = self::getParam('gid', $defaultGId);
 		list($questions, $gId) = QuestionGroup::findGroup($gid);
 		if (!$questions) {
 			header('location:/wx/error');
