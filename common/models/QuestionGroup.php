@@ -90,12 +90,17 @@ class QuestionGroup extends ActiveRecord
 		if (!$ids) {
 			return 0;
 		}
+		$arrId = explode(',', $ids);
 		$sql = "SELECT * from im_question_sea where qId in ($ids) ORDER  BY qUpdatedOn asc ";
 		$res = $conn->createCommand($sql)->queryAll();
 		foreach ($res as &$v) {
 			$v = QuestionSea::fmt($v);
 			$v["gCategory"] = $gCategory;
+			$v["idx"] = array_search($v['qId'], $arrId);
 		}
+		usort($res, function ($a, $b) {
+			return intval($a['idx']) > intval($b['idx']);
+		});
 		return [$res, $gId, $gTitle];
 
 	}
