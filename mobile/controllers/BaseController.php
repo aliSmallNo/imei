@@ -26,7 +26,7 @@ class BaseController extends Controller
 	public function beforeAction($action)
 	{
 		$actionId = $action->id;
-		$safeActions = ['error', 'err', 'help','pub-share'];
+		$safeActions = ['error', 'err', 'help', 'pub-share'];
 		if (in_array($actionId, $safeActions)) {
 			return parent::beforeAction($action);
 		}
@@ -91,7 +91,7 @@ class BaseController extends Controller
 		$wxUserInfo = UserWechat::getInfoByOpenId($openId);
 
 		$newActionId = $anchor = '';
-		$safeActions = ['share', 'invite', "pin8", "otherpart"];
+		$safeActions = ['share', 'invite', "pin8", "otherpart", 'vote', 'voted'];
 		if (in_array($actionId, $safeActions)) {
 			return;
 		}
