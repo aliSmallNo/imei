@@ -81,8 +81,8 @@
 	}
 </style>
 <div class="vote-title">
-	<p class="title">{{$title}}</p>
 	<p>{{$note}}</p>
+	<p class="title">{{$title}}</p>
 </div>
 <div class="vote">
 	{{foreach from=$voteStat key=key item=item}}
@@ -113,5 +113,5 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/voted.js?v=1.4.11" src="/assets/js/require.js"></script>
+<script data-main="/js/voted.js?v=1.4.12" src="/assets/js/require.js"></script>
 

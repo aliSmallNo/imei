@@ -90,19 +90,23 @@ class QuestionGroup extends ActiveRecord
 		if (!$ids) {
 			return 0;
 		}
+		$arrId = explode(',', $ids);
 		$sql = "SELECT * from im_question_sea where qId in ($ids) ORDER  BY qUpdatedOn asc ";
 		$res = $conn->createCommand($sql)->queryAll();
 		foreach ($res as &$v) {
 			$v = QuestionSea::fmt($v);
 			$v["gCategory"] = $gCategory;
+			$v["idx"] = array_search($v['qId'], $arrId);
 		}
+		usort($res, function ($a, $b) {
+			return intval($a['idx']) > intval($b['idx']);
+		});
 		return [$res, $gId, $gTitle];
 
 	}
 
-	public static function voteStat($gid, $uid = 0)
+	public static function voteStat($gid, $openId = '')
 	{
-
 		list($qlist) = self::findGroup($gid);
 		$sql = "select * from im_log where oCategory=:cat and oKey=:key ";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
@@ -122,7 +126,7 @@ class QuestionGroup extends ActiveRecord
 						if ($q["qId"] == $an["id"] && $opt["opt"] == $an["ans"]) {
 							$opt["co"]++;
 							$opt["ids"] = trim($opt["ids"] . "," . $v["oUId"], ",");
-							if ($v["oUId"] == $uid) {
+							if ($v["oOpenId"] == $openId) {
 								$opt["choose"] = 1;
 							}
 							$q["amt"]++;

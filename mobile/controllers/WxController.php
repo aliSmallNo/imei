@@ -1298,25 +1298,21 @@ class WxController extends BaseController
 	public function actionVote($defaultId = 2014)
 	{
 		$openId = self::$WX_OpenId;
-		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		if (!$wxInfo) {
-			header('location:/wx/index');
-			exit();
-		}
-		// $gid = 2002;
-		// $gid = 2012;
-		$gid = self::getParam('gid', $defaultId);
-		if (Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oUId" => $wxInfo["uId"]])) {
-			if ($openId != "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
 
-			}
+//		$wxInfo = UserWechat::getInfoByOpenId($openId);
+//		if (!$wxInfo) {
+//			header('location:/wx/index');
+//			exit();
+//		}
+
+		$gid = self::getParam('gid', $defaultId);
+		if (Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oOpenId" => $openId])) {
 			header('location:/wx/voted');
 			exit();
 		}
-		list($questions, $gId) = QuestionGroup::findGroup($gid);
+		list($questions, $gId, $title) = QuestionGroup::findGroup($gid);
 
-		$title = "你更关注结婚对象的哪些条件？（7分制，分数越高越关注）";
-		$note = "'千寻恋恋'又找你们搞事情啦，不知各位帅哥美女关注结婚对象的哪些条件，那就一起来投票吧（投票有惊喜哦），我们会根据大家的意见，为您挑选更优质的TA，欢迎参加！";
+		$note = "'千寻恋恋'又找你搞事情啦，一起来投票吧（投票有惊喜哦），我们会根据你的意见，为你挑选更优质的TA，欢迎参加！";
 		return self::renderPage('vote.tpl', [
 			"questions" => $questions,
 			"gId" => $gId,
@@ -1331,21 +1327,17 @@ class WxController extends BaseController
 	public function actionVoted()
 	{
 		$openId = self::$WX_OpenId;
-		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		if (!$wxInfo) {
-			header('location:/wx/index');
-			exit();
-		}
 		// $gid = 2002;
 		//$gid = 2012;
 		$gid = 2014;
-		if (!Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oUId" => $wxInfo["uId"]])) {
+		if (!Log::findOne(["oCategory" => Log::CAT_QUESTION, "oKey" => $gid, "oOpenId" => $openId])) {
 			header('location:/wx/vote');
 			exit();
 		}
-		$voteStat = QuestionGroup::voteStat($gid, $wxInfo["uId"]);
-		$title = "你更关注结婚对象的哪些条件？（7分制，分数越高越关注）";
-		$note = "'千寻恋恋'又找你们搞事情啦，不知各位帅哥美女关注结婚对象的哪些条件，那就一起来投票吧（投票有惊喜哦），我们会根据大家的意见，为您挑选更优质的TA，欢迎参加！";
+		$gInfo = QuestionGroup::findOne(['gId' => $gid]);
+		$voteStat = QuestionGroup::voteStat($gid, $openId);
+		$title = $gInfo->gTitle;
+		$note = "'千寻恋恋'又找你搞事情啦，一起来投票吧（投票有惊喜哦），我们会根据你的意见，为你挑选更优质的TA，欢迎参加！";
 		return self::renderPage('voted.tpl', [
 			"voteStat" => $voteStat,
 			"note" => $note,

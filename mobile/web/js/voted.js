@@ -38,7 +38,7 @@ require(["layer"],
 					title: '你更关注结婚对象的哪些条件？',
 					desc: '不知各位帅哥美女喜欢什么样的，那就一起来投票吧',
 					link: "https://wx.meipo100.com/wx/vote",
-					imgUrl: "https://wx.meipo100.com/images/logo33.png",
+					imgUrl: "https://wx.meipo100.com/images/logo33.png?v=1.1.1",
 					type: '',
 					dataUrl: '',
 					success: function () {
@@ -48,7 +48,7 @@ require(["layer"],
 				wx.onMenuShareTimeline({
 					title: '你更关注结婚对象的哪些条件？，那就一起来投票吧',
 					link: "https://wx.meipo100.com/wx/vote",
-					imgUrl: "https://wx.meipo100.com/images/logo33.png",
+					imgUrl: "https://wx.meipo100.com/images/logo33.png?v=1.1.1",
 					success: function () {
 						//shareLog('moment', '/wx/sh');
 					}
