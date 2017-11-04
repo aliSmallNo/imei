@@ -36,17 +36,7 @@
 		<div class="col-sm-6">
 			<input type="hidden" name="sign" value="sign">
 			<input type="hidden" id="mpId" value="">
-			<div class="form-group">
-				<label>搜索题目</label>
-				<div class="form-group input-group">
-					<input type="text" class="form-control" name="name" id="searchName" required placeholder="(必填)">
-					<span class="input-group-btn">
-								<button class="btn btn-default" type="button">
-									<i class="fa fa-search"></i>
-								</button>
-							</span>
-				</div>
-			</div>
+
 			<div class="form-group">
 				<label>活动主题</label>
 				<div class="form-group">
@@ -71,6 +61,17 @@
 			</div>
 		</div>
 		<div class="col-sm-6">
+			<div class="form-group">
+				<label>搜索题目</label>
+				<div class="form-group input-group">
+					<input type="text" class="form-control" name="name" id="searchName" required placeholder="(必填)">
+					<span class="input-group-btn">
+								<button class="btn btn-default" type="button">
+									<i class="fa fa-search"></i>
+								</button>
+							</span>
+				</div>
+			</div>
 			<div class="seek-wrapper">
 				<ul class="seek-question">
 
