@@ -17,14 +17,10 @@
 		border: 1px solid #eee;
 	}
 
-	.vote-item {
-
-	}
-
 	.vote-item h4 {
 		/*height: 4rem;
 		line-height: 4rem;*/
-		font-size: 1.3rem;
+		font-size: 1.4rem;
 		margin-bottom: 1rem;
 	}
 
@@ -59,7 +55,6 @@
 		color: #777;
 	}
 
-
 	.vote-btn {
 		margin: 0 1rem 3rem 1rem;
 		background: #f8f8f8;
@@ -84,7 +79,7 @@
 <div class="vote">
 	{{foreach from=$voteStat key=key item=item}}
 	<div class="vote-item">
-		<h4>{{$key+1}}.{{$item.qTitle}}</h4>
+		<h4>{{$key+1}}. {{$item.qTitle}}</h4>
 		<div class="opt-res">
 			{{foreach from=$item.options item=opt}}
 			<h5>{{$opt.text}}{{if $opt.choose}}(已选){{/if}}</h5>
