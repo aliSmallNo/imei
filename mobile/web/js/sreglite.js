@@ -194,8 +194,6 @@ require(["layer"],
 						if (inputFileds[i] == "name" && !chenkName(inputVal)) {
 							return;
 						}
-						console.log(inputVal + " end");
-						return;
 						$sls.postData[inputFileds[i]] = inputVal;
 					}
 					var lItem = [];
