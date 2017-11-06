@@ -1280,7 +1280,7 @@ class User extends ActiveRecord
 
 		$marry = $myInfo->uMarital == self::MARITAL_MARRIED ? self::MARITAL_MARRIED : implode(',', [self::MARITAL_UNMARRIED, self::MARITAL_DIVORCE_KID, self::MARITAL_DIVORCE_NO_KID]);
 
-		if ($data) {
+		if ($data && isset($data["loc"]) && isset($data["mar"]) && !($data["loc"] == "all" && $data["mar"] == "all")) {
 			$condition = " u.uRole=$uRole AND u.uGender=$gender  AND u.uStatus in (" . implode(',', self::$StatusVisible) . ") ";
 		} else {
 			$condition = " u.uRole=$uRole AND u.uGender=$gender and u.uMarital in ($marry) AND u.uStatus in (" . implode(',', self::$StatusVisible) . ") " . $ageLimit;
@@ -1362,7 +1362,7 @@ class User extends ActiveRecord
 			$distField = 'ROUND(IFNULL(ST_Distance(POINT(' . $myLat . ', ' . $myLng . '), p.pPoint) * 111.195,9999),1) as dist';
 		}
 
-		$loc="江苏";
+		$loc = "江苏";
 		$fmRank = "(CASE WHEN uMarital in (100,110,120) then 10 else 0 end) as fmRank";
 		if ($data) {
 			$homeland = json_decode($myInfo->uHomeland, 1);
