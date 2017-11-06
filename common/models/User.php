@@ -1380,15 +1380,20 @@ class User extends ActiveRecord
 					case "all":
 						$loc = "江苏";
 						break;
+					case "province":
+						$loc = $prov;
+						break;
 					case "city":
-						$loc = $shi;
+						$loc = $city;
 						break;
 					case "county":
-					case "fellow":
-					case "1km":
 					case "30km":
-						$loc = $xian;
+						$loc = $country;
 						break;
+					case "fellow":
+						$loc = $shi;
+						break;
+
 				}
 			}
 			if (isset($data['mar']) && $mar = $data['mar']) {
