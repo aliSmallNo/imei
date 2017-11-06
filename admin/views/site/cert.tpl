@@ -134,7 +134,7 @@
 		<td class="pInfo">
 			{{if isset($prod.certs)}}
 			{{foreach from=$prod.certs item=img }}
-				<img src="{{$img.url}}?v=1.1.1" bsrc="{{$img.url}}?v=1.1.1" class="i-img">
+			<img src="{{$img.url}}?v=1.1.1" bsrc="{{$img.url}}?v=1.1.1" class="i-img">
 			{{/foreach}}
 			{{else}}
 			<img src="{{$prod.certimage}}?v=1.1.1" bsrc="{{$prod.cert_big}}?v=1.1.1" class="i-img">
@@ -176,7 +176,7 @@
 			f: f,
 			id: id
 		}, function (resp) {
-			if (resp.code == 0) {
+			if (resp.code < 1) {
 				location.reload();
 			}
 			layer.msg(resp.msg);
@@ -184,15 +184,20 @@
 	}
 
 	$(document).on("click", ".i-img", function () {
-		var bSrc = $(this).attr("bsrc");
+		var self = $(this);
+		var bSrc = self.attr("bsrc");
 		if (!bSrc) return false;
+		var images = [];
+		$.each(self.closest('td').find('.i-img'), function () {
+			images.push({
+				src: $(this).attr('bsrc')
+			});
+		});
 		var photos = {
 			title: '大图',
-			data: [{
-				src: bSrc
-			}]
+			data: images
 		};
-		showImages(photos);
+		showImages(photos, self.index());
 	});
 
 	function showImages(imagesJson, idx) {
