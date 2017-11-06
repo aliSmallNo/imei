@@ -20,11 +20,13 @@ use common\models\QuestionSea;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserComment;
+use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\PushUtil;
+use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use Yii;
 use yii\filters\Cors;
@@ -61,10 +63,18 @@ class ApiController extends Controller
 		$id = self::postParam("id");
 		$ret = ["code" => 159, "msg" => self::ICON_ALERT_HTML . "无操作！"];
 		switch ($tag) {
+			case "sys_notice":
+				$msg = self::postParam("msg");
+				 UserMsg::edit(0, [
+					"mText" => json_encode([$msg], JSON_UNESCAPED_UNICODE),
+					"mCategory" => UserMsg::CATEGORY_UPGRADE,
+					"mUId" => RedisUtil::getIntSeq(),
+				]);
+				$ret = ["code" => 0, "msg" => ""];
+				break;
 			case "edit-admin":
 				$name = self::postParam("name");
 				$pass = self::postParam("pass");
-
 				$data = [
 					"aId" => $id ? $id : 0,
 					"aLoginId" => $name,

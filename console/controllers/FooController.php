@@ -12,11 +12,13 @@ use common\models\ChatMsg;
 use common\models\Log;
 use common\models\Pin;
 use common\models\User;
+use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\PushUtil;
+use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -894,15 +896,14 @@ class FooController extends Controller
 	{
 
 //		UserMsg::edit(0, [
-//			"mText" => json_encode(["每日一句：千寻恋恋升级，“约”的功能上线，如果感觉和他（她）投缘，直接约他（她）。有平台做备案，让约会更放心。 聊得来就约他（她）吧！！！"], JSON_UNESCAPED_UNICODE),
+//			"mText" => json_encode(["每日一句:千寻恋恋新功能上线，增加筛选功能，更精准的找到她（他）。"], JSON_UNESCAPED_UNICODE),
 //			"mCategory" => UserMsg::CATEGORY_UPGRADE,
 //			"mUId" => RedisUtil::getIntSeq(),
 //		]);
 
 //		echo (ChatMsg::Cert(120003, 143807));
 
-		$res = Log::sCenterItems(120003);
-		print_r($res);
+//		$res = Log::sCenterItems(120003);
 	}
 
 

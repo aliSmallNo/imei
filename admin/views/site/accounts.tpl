@@ -327,7 +327,9 @@
 
 </style>
 <div class="row">
-	<h4>用户列表</h4>
+	<h4>用户列表
+		<a href="javascript:;" class="addSysNotice btn btn-primary btn-xs" target="_blank">添加通知消息</a>
+	</h4>
 </div>
 <div class="row">
 	<form class="form-inline" action="/site/accounts?status={{$status}}">
@@ -632,6 +634,24 @@
 		</div>
 	</div>
 </div>
+<div class="modal fade" id="sysNoticeModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+									aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">通知内容</h4>
+			</div>
+			<div class="modal-body">
+
+			</div>
+			<div class="modal-footer" style="overflow: hidden">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="sysNoticeSave">确定保存</button>
+			</div>
+		</div>
+	</div>
+</div>
 <script type="text/html" id="dummyChatTemp">
 	<div class="col-sm-12 dummy-opts">
 		{[#items]}
@@ -643,10 +663,46 @@
 		{[/items]}
 	</div>
 </script>
+<script type="text/html" id="sysNoticeTemp">
+	<form>
+		<div class="form-group">
+			<label for="sysNoticeContent">通知内容</label>
+			<textarea class="form-control" id="sysNoticeContent" cols="5" placeholder="在这里填写通知内容"></textarea>
+		</div>
+	</form>
+</script>
 <script>
 	var dummys ={{$dummys}}
 </script>
 <script>
+	var loading = 0;
+
+	$(document).on("click", ".addSysNotice", function () {
+		var Vhtml = $("#sysNoticeTemp").html();
+		$("#sysNoticeModal .modal-body").html(Vhtml);
+		$("#sysNoticeModal").modal('show');
+	});
+
+	$(document).on("click", "#sysNoticeSave", function () {
+		var content = $.trim($("#sysNoticeContent").val());
+		if (!content) {
+			return;
+		}
+		if (loading) {
+			return;
+		}
+		loading = 1;
+		$.post("/api/user", {
+			msg: content,
+			tag: "sys_notice"
+		}, function (res) {
+			loading = 0;
+			if (res.code == 0) {
+				$("#sysNoticeModal").modal('hide');
+			}
+		}, "json");
+	});
+
 	$(document).on("click", "button.close", function () {
 		var fm = $("form");
 		fm.find(".form-control").val('');
