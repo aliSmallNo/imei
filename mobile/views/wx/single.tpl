@@ -22,6 +22,9 @@
 		line-height: 3.5rem;
 		font-size: 1.3rem;
 		position: relative;
+		display: block;
+		width: 7rem;
+		margin: 0 auto;
 	}
 
 	.user_filter .user_filter_item .user_filter_title:after {
@@ -32,8 +35,8 @@
 		border-top: .5rem solid #777;
 		border-left: .5rem solid transparent;
 		border-right: .5rem solid transparent;
-		top: 0.7rem;
-		right: -1.5rem;
+		top: 1.5rem;
+		right: -1rem;
 	}
 
 	.user_filter .user_filter_item ul {
