@@ -191,6 +191,11 @@ require(["layer"],
 							showMsg(inputFiledsT[i] + "还没有填写哦~");
 							return;
 						}
+						if (inputFileds[i] == "name" && !chenkName(inputVal)) {
+							return;
+						}
+						console.log(inputVal + " end");
+						return;
 						$sls.postData[inputFileds[i]] = inputVal;
 					}
 					var lItem = [];
@@ -448,6 +453,16 @@ require(["layer"],
 		function isPhone(num) {
 			var regex = /^1[2-9][0-9]{9}$/;
 			return regex.test(num);
+		}
+
+		function chenkName(name) {
+			if ($.trim(name).length > 7) {
+				showMsg("呢称长度太长了");
+				return false;
+			}
+			var regex = /^[\u4e00-\u9fa5]+$/;
+			showMsg("呢称必须全部是中文汉字");
+			return regex.test(name);
 		}
 
 

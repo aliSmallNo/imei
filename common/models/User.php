@@ -1393,7 +1393,6 @@ class User extends ActiveRecord
 					case "fellow":
 						$loc = $shi;
 						break;
-
 				}
 			}
 			if (isset($data['mar']) && $mar = $data['mar']) {
