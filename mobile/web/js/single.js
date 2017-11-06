@@ -1361,17 +1361,14 @@ require(["layer"],
 			},
 			loadFilter: function (data, page) {
 				var util = this;
-				console.log(0);
 				if (util.getUserFiterFlag) {
 					return;
 				}
-				console.log(1);
 				util.getUserFiterFlag = 1;
 				util.noMore.html("拼命加载中...");
 				if (page < 2) {
 					util.unis = [];
 				}
-				console.log(2);
 				$.post("/api/user", {
 					tag: "userfilter",
 					page: page,
