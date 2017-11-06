@@ -1380,12 +1380,10 @@ class User extends ActiveRecord
 					case "all":
 						$loc = "江苏";
 						break;
-					case "county":
-						$loc = $sheng;
-						break;
 					case "city":
 						$loc = $shi;
 						break;
+					case "county":
 					case "fellow":
 					case "1km":
 					case "30km":
