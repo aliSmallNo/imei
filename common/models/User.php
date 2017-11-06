@@ -1278,20 +1278,30 @@ class User extends ActiveRecord
 		$gender = ($gender == self::GENDER_FEMALE) ? self::GENDER_MALE : self::GENDER_FEMALE;
 		$uRole = User::ROLE_SINGLE;
 
-		$marry = $myInfo->uMarital == self::MARITAL_MARRIED ? self::MARITAL_MARRIED
-			: implode(',', [self::MARITAL_UNMARRIED, self::MARITAL_DIVORCE_KID, self::MARITAL_DIVORCE_NO_KID]);
+		$marry = $myInfo->uMarital == self::MARITAL_MARRIED ? self::MARITAL_MARRIED : implode(',', [self::MARITAL_UNMARRIED, self::MARITAL_DIVORCE_KID, self::MARITAL_DIVORCE_NO_KID]);
 
-		$condition = " u.uRole=$uRole AND u.uGender=$gender and u.uMarital in ($marry) 
-				AND u.uStatus in (" . implode(',', self::$StatusVisible) . ") " . $ageLimit;
+		if ($data) {
+			$condition = " u.uRole=$uRole AND u.uGender=$gender  AND u.uStatus in (" . implode(',', self::$StatusVisible) . ") ";
+		} else {
+			$condition = " u.uRole=$uRole AND u.uGender=$gender and u.uMarital in ($marry) AND u.uStatus in (" . implode(',', self::$StatusVisible) . ") " . $ageLimit;
+		}
+
 
 		$prov = '江苏';
 		$city = '盐城';
+		$country = '东台';
 		if (isset($myFilter['location'])) {
 			list($prov, $city) = explode('-', $myFilter['location']);
 		}
 		$rankField = "(CASE WHEN u.uLocation like '%$prov%' and u.uLocation like '%$city%' then 10
 					WHEN u.uLocation like '%$prov%' then 8 else 0 end) as rank";
 
+		$ulocation = json_decode($myInfo->uLocation, 1);
+		if (is_array($ulocation) && count($ulocation) >= 2) {
+			$prov = isset($ulocation[0]) ? $ulocation[0]["text"] : $prov;
+			$city = isset($ulocation[1]) ? $ulocation[1]["text"] : $city;
+			$country = isset($ulocation[2]) ? $ulocation[2]["text"] : $country;
+		}
 		// 去掉筛选条件啦~
 		/*
 		 if (isset($data["age"]) && $data["age"] != 0) {
@@ -1307,21 +1317,6 @@ class User extends ActiveRecord
 			$condition .= " AND u.uLocation like '%$fp%' ";
 		}
 		*/
-		/*if (isset($data['location']) && $data['location']) {
-			$l = $data['location'];
-			switch ($l) {
-				case "county":
-					break;
-				case "city":
-					break;
-				case "fellow":
-					break;
-				case "1km":
-					break;
-				case "30km":
-					break;
-			}
-		}*/
 		/*
 		if (!$data) {
 			$data = json_decode($uFilter, 1);
@@ -1367,11 +1362,51 @@ class User extends ActiveRecord
 			$distField = 'ROUND(IFNULL(ST_Distance(POINT(' . $myLat . ', ' . $myLng . '), p.pPoint) * 111.195,9999),1) as dist';
 		}
 
-		$sql = "SELECT u.*, (CASE WHEN uSubStatus=4 THEN 1 ELSE 9 END) as stickRank,$distRank ,$distField 
+		$loc="江苏";
+		$fmRank = "(CASE WHEN uMarital in (100,110,120) then 10 else 0 end) as fmRank";
+		if ($data) {
+			$homeland = json_decode($myInfo->uHomeland, 1);
+			$sheng = $prov;
+			$shi = $city;
+			$xian = $country;
+			if (is_array($homeland) && count($homeland) >= 2) {
+				$sheng = isset($homeland[0]) ? $homeland[0]["text"] : $prov;
+				$shi = isset($homeland[1]) ? $homeland[1]["text"] : $city;
+				$xian = isset($homeland[2]) ? $homeland[2]["text"] : $country;
+			}
+			if (isset($data['loc']) && $data['loc']) {
+				$l = $data['loc'];
+				switch ($l) {
+					case "all":
+						$loc = "江苏";
+						break;
+					case "county":
+						$loc = $sheng;
+						break;
+					case "city":
+						$loc = $shi;
+						break;
+					case "fellow":
+					case "1km":
+					case "30km":
+						$loc = $xian;
+						break;
+				}
+			}
+			if (isset($data['mar']) && $mar = $data['mar']) {
+				if ($mar != "all") {
+					$fmRank = "(CASE WHEN uMarital =$mar then 10 else 0 end) as fmRank";
+				}
+			}
+		}
+		$flRank = "(CASE WHEN uLocation like '%$loc%' then 10 else 0 end) as flRank";
+
+		$sql = "SELECT u.*, (CASE WHEN uSubStatus=4 THEN 1 ELSE 9 END) as stickRank,$distRank ,$distField ,$flRank,$fmRank
 				FROM im_user as u 
 				JOIN im_user_wechat as w on u.uId=w.wUId AND w.wSubscribe=1
 				LEFT JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=$pinCat
-				WHERE $condition  order by stickRank, mRank desc limit $limit";
+				WHERE $condition  order by stickRank,fmRank desc,flRank desc, mRank desc limit $limit";
+
 		$ret = $conn->createCommand($sql)->queryAll();
 		$rows = [];
 		$IDs = [0];

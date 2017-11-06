@@ -259,7 +259,6 @@ require(["layer"],
 			}
 		};
 
-
 		$(".nav-foot > a").on(kClick, function () {
 			var self = $(this);
 			self.closest(".nav-foot").find("a").removeClass("active");
@@ -1244,9 +1243,11 @@ require(["layer"],
 					var item = self.closest(".user_filter_item");
 					if (self.hasClass("user_filter_title")) {
 						if (item.hasClass("show")) {
-							item.removeClass("show");
+							self.closest(".user_filter").find(".user_filter_item").removeClass("show");
+							//item.removeClass("show");
 						} else {
-							item.addClass("show");
+							self.closest(".user_filter").find(".user_filter_item").addClass("show");
+							//item.addClass("show");
 						}
 					} else if (self.attr("data-tag")) {
 						var ul = self.closest("ul");
@@ -1259,6 +1260,9 @@ require(["layer"],
 						console.log(util.f1 + "<=f1 f2=>" + util.f2);
 					} else if (self.hasClass("user_filter_btn")) {
 						self.closest(".user_filter").find(".user_filter_item").removeClass("show");
+						FilterUtil.sUserPage = 1;
+						FilterUtil.data = {loc: util.f1, mar: util.f2};
+						FilterUtil.loadFilter("", FilterUtil.sUserPage);
 					}
 				});
 			},
@@ -1357,14 +1361,17 @@ require(["layer"],
 			},
 			loadFilter: function (data, page) {
 				var util = this;
+				console.log(0);
 				if (util.getUserFiterFlag) {
 					return;
 				}
+				console.log(1);
 				util.getUserFiterFlag = 1;
 				util.noMore.html("拼命加载中...");
 				if (page < 2) {
 					util.unis = [];
 				}
+				console.log(2);
 				$.post("/api/user", {
 					tag: "userfilter",
 					page: page,

@@ -91,7 +91,7 @@
 			<span class="con-title">择偶条件: </span>
 		</a>
 	</div>
-	<div class="user_filter" style="display: none">
+	<div class="user_filter" style="">
 		<div href="javascript:;" class="user_filter_item">
 			<a href="javascript:;" class="user_filter_title">全部</a>
 			<ul>
@@ -106,10 +106,10 @@
 		<div href="javascript:;" class="user_filter_item">
 			<a href="javascript:;" class="user_filter_title">离异不带孩</a>
 			<ul>
-				<li><a href="javascript:;" data-cat="m" data-tag="all" class="active">全部</a></li>
+				<li><a href="javascript:;" data-cat="m" data-tag="all">全部</a></li>
 				<li><a href="javascript:;" data-cat="m" data-tag="100">未婚</a></li>
 				<li><a href="javascript:;" data-cat="m" data-tag="110">离异带孩</a></li>
-				<li><a href="javascript:;" data-cat="m" data-tag="120" class="active">离异不带孩</a></li>
+				<li><a href="javascript:;" data-cat="m" data-tag="120">离异不带孩</a></li>
 				<li><a href="javascript:;" data-cat="m" class="user_filter_btn">确定</a></li>
 			</ul>
 		</div>
@@ -1531,4 +1531,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js?v=1.2.1"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
-<script data-main="/js/single.js?v=1.1.1.13" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.1.1.14" src="/assets/js/require.js"></script>
