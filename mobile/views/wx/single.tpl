@@ -99,12 +99,12 @@
 				<li><a href="javascript:;" data-cat="l" data-tag="county">本县市</a></li>
 				<li><a href="javascript:;" data-cat="l" data-tag="city">本市</a></li>
 				<li><a href="javascript:;" data-cat="l" data-tag="fellow">老乡</a></li>
-				<li><a href="javascript:;" data-cat="l" data-tag="1km">距离1公里</a></li>
+				<li><a href="javascript:;" data-cat="l" data-tag="1km" >距离1公里</a></li>
 				<li><a href="javascript:;" data-cat="l" data-tag="30km">距离30公里</a></li>
 			</ul>
 		</div>
 		<div href="javascript:;" class="user_filter_item">
-			<a href="javascript:;" class="user_filter_title">离异不带孩</a>
+			<a href="javascript:;" class="user_filter_title">全部</a>
 			<ul>
 				<li><a href="javascript:;" data-cat="m" data-tag="all">全部</a></li>
 				<li><a href="javascript:;" data-cat="m" data-tag="100">未婚</a></li>
