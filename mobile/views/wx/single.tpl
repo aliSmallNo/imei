@@ -271,11 +271,8 @@
 	<div class="co-cat">
 		<label>评论类型详细</label>
 		<div class="comment-items">
-
 		</div>
 	</div>
-
-
 	<div class="co-content" style="display: none">
 		<label>评论内容</label>
 		<textarea rows="3"></textarea>
@@ -345,6 +342,11 @@
 	</div>
 </section>
 <section id="scontacts" data-title="我的密聊记录">
+	{{if $service_sm}}
+	<div class="m-service">
+		<img src="{{$service_sm}}" alt="">
+	</div>
+	{{/if}}
 	<div class="m-top-pl"></div>
 	<div class="contacts-wrap" style="position: relative">
 		<a href="javascript:;" class="contacts-edit" data-tag="edit">编辑</a>
@@ -1465,4 +1467,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js?v=1.2.1"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
-<script data-main="/js/single.js?v=1.1.1.16" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.1.2.1" src="/assets/js/require.js"></script>

@@ -512,7 +512,7 @@ require(["layer"],
 			input: $('.chat-input'),
 			inputVal: '',
 			bot: $('#schat .m-bottom-pl'),
-			topPL: $('#scontacts .m-top-pl'),
+			topPL: $('#scontacts .m-service'),
 			menus: $(".m-chat-wrap"),
 			helpchatMenu: $(".help-chat"),
 			menusBg: $(".m-schat-shade"),// m-schat-shade m-popup-shade
