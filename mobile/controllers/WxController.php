@@ -739,8 +739,10 @@ class WxController extends BaseController
 		$audit = UserAudit::invalid($uId, $conn);
 		$greeting = UserMsg::greeting($uId, $openId, $conn);
 		$service = AppUtil::wechatUrl() . "/images/ad/service_female.jpg";
+		$service_sm = AppUtil::wechatUrl() . "/images/ad/service_female_sm.jpg";
 		if ($uInfo["gender"] == User::GENDER_FEMALE) {
 			$service = AppUtil::wechatUrl() . "/images/ad/service_male.jpg";
+			$service_sm = AppUtil::wechatUrl() . "/images/ad/service_male_sm.jpg";
 		}
 		return self::renderPage("single.tpl", [
 			'noReadFlag' => $noReadFlag,
@@ -748,6 +750,7 @@ class WxController extends BaseController
 			'avatar' => $avatar,
 			'uInfo' => $uInfo,
 			'service' => $service,
+			'service_sm' => $service_sm,
 			'prices' => $prices,
 			'encryptId' => $encryptId,
 			'hint' => $hint,
