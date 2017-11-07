@@ -236,7 +236,6 @@
 	</div>
 </a>
 
-
 <!-- =========== 兴趣爱好 =============== -->
 <div class="sedit-title">兴趣爱好</div>
 <a class="sedit-alert action-com" data-field="drink">

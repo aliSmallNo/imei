@@ -533,6 +533,8 @@ require(["layer"],
 					if ($(this).hasClass("chat")) {
 						util.sid = $(this).attr('data-id');
 						util.lastId = 0;
+						var name = $(this).find(".content").find("em").html();
+						$("#schat").attr("data-title", name);
 						location.href = '#schat';
 					}
 				});
