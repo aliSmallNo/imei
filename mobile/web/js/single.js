@@ -1246,10 +1246,12 @@ require(["layer"],
 					if (self.hasClass("user_filter_title")) {
 						if (item.hasClass("show")) {
 							self.closest(".user_filter").find(".user_filter_item").removeClass("show");
+							$sls.shade.fadeOut();
 							//item.removeClass("show");
 						} else {
 							self.closest(".user_filter").find(".user_filter_item").addClass("show");
 							//item.addClass("show");
+							$sls.shade.fadeIn();
 						}
 					} else if (self.attr("data-tag")) {
 						var ul = self.closest("ul");
@@ -1269,6 +1271,7 @@ require(["layer"],
 						console.log(util.f1 + "<=f1 f2=>" + util.f2 + " f3=>" + util.f3);
 					} else if (self.hasClass("user_filter_btn")) {
 						self.closest(".user_filter").find(".user_filter_item").removeClass("show");
+						$sls.shade.fadeOut();
 						FilterUtil.sUserPage = 1;
 						FilterUtil.data = {loc: util.f1, mar: util.f2, age: util.f3};
 						FilterUtil.loadFilter("", FilterUtil.sUserPage);

@@ -3001,7 +3001,9 @@ section {
       top: 0.6rem; }
 
 .user_filter {
-  display: flex; }
+  display: flex;
+  position: relative;
+  z-index: 9999; }
   .user_filter .user_filter_item {
     flex: 1;
     background: #fff;
