@@ -1364,6 +1364,7 @@ class User extends ActiveRecord
 
 		$loc = "江苏";
 		$fmRank = "(CASE WHEN uMarital in (100,110,120) then 10 else 0 end) as fmRank";
+		$ageRank = "";
 		if ($data) {
 			$homeland = json_decode($myInfo->uHomeland, 1);
 			$sheng = $prov;
@@ -1400,6 +1401,16 @@ class User extends ActiveRecord
 					$fmRank = "(CASE WHEN uMarital =$mar then 10 else 0 end) as fmRank";
 				}
 			}
+			if (isset($data['age']) && $age = $data['age']) {
+
+				if ($age == 1) {
+					$ageRank = "u.uBirthYear asc,";
+				} elseif ($age == 2) {
+					$ageRank = "u.uBirthYear desc,";
+				} elseif ($age == 3) {
+					$condition .= $ageLimit;
+				}
+			}
 		}
 		$flRank = "(CASE WHEN uLocation like '%$loc%' then 10 else 0 end) as flRank";
 
@@ -1407,7 +1418,7 @@ class User extends ActiveRecord
 				FROM im_user as u 
 				JOIN im_user_wechat as w on u.uId=w.wUId AND w.wSubscribe=1
 				LEFT JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=$pinCat
-				WHERE $condition  order by stickRank,fmRank desc,flRank desc, mRank desc limit $limit";
+				WHERE $condition  order by stickRank,fmRank desc,flRank desc,$ageRank mRank desc limit $limit";
 
 		$ret = $conn->createCommand($sql)->queryAll();
 		$rows = [];

@@ -1258,12 +1258,19 @@ require(["layer"],
 						var ftext = self.html();
 						self.closest(".user_filter_item").find("a.user_filter_title").html(ftext);
 						var tag = self.attr("data-tag");
-						self.attr("data-cat") == "l" ? (util.f1 = tag) : (util.f2 = tag);
-						console.log(util.f1 + "<=f1 f2=>" + util.f2);
+						var cat = self.attr("data-cat");
+						if (cat == "l") {
+							util.f1 = tag;
+						} else if (cat == "m") {
+							util.f2 = tag;
+						} else if (cat == "age") {
+							util.f3 = tag;
+						}
+						console.log(util.f1 + "<=f1 f2=>" + util.f2 + " f3=>" + util.f3);
 					} else if (self.hasClass("user_filter_btn")) {
 						self.closest(".user_filter").find(".user_filter_item").removeClass("show");
 						FilterUtil.sUserPage = 1;
-						FilterUtil.data = {loc: util.f1, mar: util.f2};
+						FilterUtil.data = {loc: util.f1, mar: util.f2, age: util.f3};
 						FilterUtil.loadFilter("", FilterUtil.sUserPage);
 					}
 				});

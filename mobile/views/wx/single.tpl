@@ -13,24 +13,33 @@
 	</div>
 	<div class="user_filter" style="">
 		<div href="javascript:;" class="user_filter_item">
-			<a href="javascript:;" class="user_filter_title">全部</a>
+			<a href="javascript:;" class="user_filter_title">全部地区</a>
 			<ul>
-				<li><a href="javascript:;" data-cat="l" data-tag="all">全部</a></li>
+				<li><a href="javascript:;" data-cat="l" data-tag="all">全部地区</a></li>
 				<li><a href="javascript:;" data-cat="l" data-tag="province">本省</a></li>
 				<li><a href="javascript:;" data-cat="l" data-tag="county">本县市</a></li>
 				<li><a href="javascript:;" data-cat="l" data-tag="city">本市</a></li>
 				<li><a href="javascript:;" data-cat="l" data-tag="fellow">老乡</a></li>
-				<li><a href="javascript:;" data-cat="l" data-tag="30km">距离30公里</a></li>
+				<li><a href="javascript:;" data-cat="l" data-tag="30km">按距离</a></li>
 			</ul>
 		</div>
 		<div href="javascript:;" class="user_filter_item">
-			<a href="javascript:;" class="user_filter_title">全部</a>
+			<a href="javascript:;" class="user_filter_title">全部状态</a>
 			<ul>
-				<li><a href="javascript:;" data-cat="m" data-tag="all">全部</a></li>
+				<li><a href="javascript:;" data-cat="m" data-tag="all">全部状态</a></li>
 				<li><a href="javascript:;" data-cat="m" data-tag="100">未婚</a></li>
 				<li><a href="javascript:;" data-cat="m" data-tag="110">离异带孩</a></li>
 				<li><a href="javascript:;" data-cat="m" data-tag="120">离异不带孩</a></li>
 				<li><a href="javascript:;" data-cat="m" class="user_filter_btn">确定</a></li>
+			</ul>
+		</div>
+		<div href="javascript:;" class="user_filter_item">
+			<a href="javascript:;" class="user_filter_title">全部年龄</a>
+			<ul>
+				<li><a href="javascript:;" data-cat="age" data-tag="all">全部年龄</a></li>
+				<li><a href="javascript:;" data-cat="age" data-tag="1">从高到低</a></li>
+				<li><a href="javascript:;" data-cat="age" data-tag="2">从低到高</a></li>
+				<li><a href="javascript:;" data-cat="age" data-tag="3">同龄人</a></li>
 			</ul>
 		</div>
 	</div>
@@ -1451,4 +1460,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js?v=1.2.1"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
-<script data-main="/js/single.js?v=1.1.1.15" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.1.1.16" src="/assets/js/require.js"></script>

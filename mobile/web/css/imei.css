@@ -3039,7 +3039,7 @@ section {
         height: 3.5rem;
         line-height: 3.5rem; }
         .user_filter .user_filter_item ul li a {
-          font-size: 1.3rem;
+          font-size: 1.2rem;
           width: 7rem;
           display: block;
           margin: 0 auto;
@@ -3050,16 +3050,18 @@ section {
             bottom: 1.5rem;
             left: 0;
             border: 1px solid #F06292; }
-          .user_filter .user_filter_item ul li a.active:after {
-            position: absolute;
-            content: "";
-            width: 1.5rem;
-            height: 0.8rem;
-            border-left: 0.12rem solid #F06292;
-            border-bottom: 0.12rem solid #F06292;
-            left: -2.5rem;
-            top: 1rem;
-            transform: rotate(-45deg); }
+          .user_filter .user_filter_item ul li a.active {
+            color: #F06292; }
+            .user_filter .user_filter_item ul li a.active:after {
+              position: absolute;
+              content: "";
+              width: 1.3rem;
+              height: 0.65rem;
+              border-left: 0.12rem solid #F06292;
+              border-bottom: 0.12rem solid #F06292;
+              left: -1.5rem;
+              top: 1.1rem;
+              transform: rotate(-45deg); }
     .user_filter .user_filter_item.show ul {
       display: block; }
 
