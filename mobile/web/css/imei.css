@@ -3006,7 +3006,8 @@ section {
     flex: 1;
     background: #fff;
     text-align: center;
-    position: relative; }
+    position: relative;
+    border-bottom: 0.1rem solid #eee; }
     .user_filter .user_filter_item .user_filter_title {
       height: 3.5rem;
       line-height: 3.5rem;
@@ -3026,7 +3027,7 @@ section {
     .user_filter .user_filter_item ul {
       position: absolute;
       width: 101%;
-      top: 3.5rem;
+      top: 3.6rem;
       left: 0;
       right: 0;
       z-index: 1000;

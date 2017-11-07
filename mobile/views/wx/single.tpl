@@ -36,8 +36,8 @@
 			<a href="javascript:;" class="user_filter_title">全部年龄</a>
 			<ul>
 				<li><a href="javascript:;" data-cat="age" data-tag="all">全部年龄</a></li>
-				<li><a href="javascript:;" data-cat="age" data-tag="1">从高到低</a></li>
-				<li><a href="javascript:;" data-cat="age" data-tag="2">从低到高</a></li>
+				<li><a href="javascript:;" data-cat="age" data-tag="1">年龄从高到低</a></li>
+				<li><a href="javascript:;" data-cat="age" data-tag="2">年龄从低到高</a></li>
 				<li><a href="javascript:;" data-cat="age" data-tag="3">同龄人</a></li>
 				<li><a href="javascript:;" data-cat="m" class="user_filter_btn">确定</a></li>
 			</ul>
