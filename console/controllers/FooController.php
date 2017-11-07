@@ -795,7 +795,7 @@ class FooController extends Controller
 			echo '参数不全: ./yii foo/qr 133519 "fs" ';
 			return;
 		}
-		for ($k = 110; $k < 116; $k++) {
+		for ($k = 121; $k < 131; $k++) {
 			$url = UserQR::createQR($uid,
 				UserQR::CATEGORY_SALES,
 				$ucode . substr($k, 1),
