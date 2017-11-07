@@ -43,9 +43,14 @@
 			</ul>
 		</div>
 	</div>
-	{{if $service}}
-	<div class="m-service">
-		<img src="{{$service}}" alt="">
+	{{if $adverts}}
+	<div class="swiper-container">
+		<div class="swiper-wrapper">
+			{{foreach from=$adverts item=item}}
+			<div class="swiper-slide"><img src="{{$item}}" alt=""></div>
+			{{/foreach}}
+		</div>
+		<div class="swiper-pagination"></div>
 	</div>
 	{{/if}}
 	<ul class="m-top-users"></ul>
@@ -88,9 +93,7 @@
 		<div class="u-my-wrap line-bottom">
 			<div class="u-my-bar">
 				<div class="avatar single">
-					<div class="img {{if $uInfo.pending}}pending{{/if}}">
-						<img src="{{$avatar}}" alt="">
-					</div>
+					<div class="img {{if $uInfo.pending}}pending{{/if}}" style="background-image: url({{$avatar}})"></div>
 					{{if $uInfo.cert}}<i class="i-cert"></i>{{/if}}
 				</div>
 				<div class="title">
@@ -1462,4 +1465,5 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js?v=1.2.1"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
+<script src="/assets/js/swiper.jquery.min.js"></script>
 <script data-main="/js/single.js?v=1.1.2.2" src="/assets/js/require.js"></script>

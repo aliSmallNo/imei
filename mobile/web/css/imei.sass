@@ -1715,6 +1715,11 @@ section
 			overflow: hidden
 			margin: 0 auto
 			position: relative
+			display: inline-block
+			text-align: center
+			background-position: center
+			background-repeat: no-repeat
+			background-size: cover
 			&.pending:after
 				content: '\5ba1\6838\4e2d'
 				position: absolute
@@ -1726,9 +1731,9 @@ section
 				left: 0
 				right: 0
 				bottom: 0
-			img
-				width: 100%
-				vertical-align: middle
+		//img
+		//	width: 100%
+		//	vertical-align: middle
 		&:after
 			content: ''
 			background: url(../images/ico_mark_match.png) no-repeat center center
@@ -5545,13 +5550,14 @@ section
 		&:last-child
 			border-bottom: none
 		.avatar
-			@include displayFlex-w(4rem)
+			@include displayFlex-w(4.3rem)
 			text-align: left
 			img
-				width: 3rem
-				height: 3rem
+				width: 3.5rem
+				height: 3.5rem
 				border-radius: .3rem
 				border: 1px solid $mainColorLighter
+				vertical-align: middle
 		.content
 			@include displayFlex-1
 			position: relative
@@ -5567,7 +5573,7 @@ section
 					@include displayFlex-w(6.5rem)
 					text-align: right
 					font-size: 1rem
-					color: $grayFontColor
+					color: $grayFontColorLight
 					justify-content: center
 					align-self: center
 			.bot-t
@@ -5576,8 +5582,8 @@ section
 				font-weight: $weightNormal
 		.readflag
 			@include unreadFlag
-			left: 3.2rem
-			top: 0.2rem
+			left: 3.3rem
+			top: 0.3rem
 
 .magic-checkbox
 	position: absolute
@@ -6689,4 +6695,11 @@ ul.co-ul
 	img
 		width: 100%
 		vertical-align: middle
+
+.swiper-container
+	width: 100%
+	height: 7.85rem
+	.swiper-slide
+		img
+			width: 100%
 

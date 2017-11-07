@@ -9,17 +9,12 @@
 namespace mobile\controllers;
 
 use common\models\City;
-use common\models\Date;
-use common\models\Log;
 use common\models\LogAction;
-use common\models\QuestionGroup;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserComment;
 use common\models\UserMsg;
 use common\models\UserNet;
-use common\models\UserQR;
-use common\models\UserSign;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
@@ -744,6 +739,8 @@ class WxController extends BaseController
 			$service = AppUtil::wechatUrl() . "/images/ad/service_male.jpg";
 			$service_sm = AppUtil::wechatUrl() . "/images/ad/service_male_sm.jpg";
 		}
+		$adverts = [$service, AppUtil::wechatUrl() . "/images/ad/activity_1111.jpg"];
+
 		return self::renderPage("single.tpl", [
 			'noReadFlag' => $noReadFlag,
 			'nickname' => $nickname,
@@ -751,6 +748,7 @@ class WxController extends BaseController
 			'uInfo' => $uInfo,
 			'service' => $service,
 			'service_sm' => $service_sm,
+			'adverts' => $adverts,
 			'prices' => $prices,
 			'encryptId' => $encryptId,
 			'hint' => $hint,
@@ -783,7 +781,7 @@ class WxController extends BaseController
 			$title = UserSign::TIP_SIGNED;
 			$isSign = true;
 		}
-		return self::renderPage("sign.tpl",
+		return self::renderPage("sign . tpl",
 			[
 				'nickname' => $nickname,
 				'avatar' => $avatar,
@@ -831,7 +829,7 @@ class WxController extends BaseController
 				}
 			}
 		}
-		return self::renderPage("invite.tpl",
+		return self::renderPage("invite . tpl",
 			[
 				'senderId' => $senderId,
 				'senderName' => $senderName,
@@ -870,7 +868,7 @@ class WxController extends BaseController
 		if ($senderUId) {
 			$matchInfo = User::user(['uId' => $senderUId]);
 			if (!$matchInfo) {
-				header("location:/wx/error?msg=链接地址错误");
+				header("location:/wx / error ? msg = 链接地址错误");
 				exit();
 			} else {
 				$avatar = $matchInfo["thumb"];
@@ -909,7 +907,7 @@ class WxController extends BaseController
 				$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH, $avatar);
 			}
 		}
-		return self::renderPage("share.tpl",
+		return self::renderPage("share . tpl",
 			[
 				'nickname' => $nickname,
 				'avatar' => $avatar,
@@ -947,7 +945,7 @@ class WxController extends BaseController
 			}
 			$qrcode = UserQR::getQRCode($qrUserId, UserQR::CATEGORY_SINGLE, $avatar);
 		}
-		return self::renderPage("sqr.tpl",
+		return self::renderPage("sqr . tpl",
 			[
 				'uId' => $qrUserId,
 				'avatar' => $avatar,
@@ -979,7 +977,7 @@ class WxController extends BaseController
 		if ($senderUId) {
 			$matchInfo = User::findOne(['uId' => $senderUId]);
 			if (!$matchInfo) {
-				header("location:/wx/error?msg=链接地址错误");
+				header("location:/wx / error ? msg = 链接地址错误");
 				exit();
 			} else {
 				$nickname = $matchInfo["uName"];
@@ -995,7 +993,7 @@ class WxController extends BaseController
 		} else {
 			$qrcode = UserQR::getQRCode($uId, UserQR::CATEGORY_MATCH, $avatar);
 		}
-		return self::renderPage("sts.tpl",
+		return self::renderPage("sts . tpl",
 			[
 				'uId' => $uId,
 				'avatar' => $avatar,
@@ -1024,13 +1022,13 @@ class WxController extends BaseController
 		if ($id) {
 			$matchInfo = User::findOne(['uId' => $id]);
 			if (!$matchInfo) {
-				header("location:/wx/error?msg=链接地址错误");
+				header("location:/wx / error ? msg = 链接地址错误");
 				exit();
 			}
 			UserNet::add($id, $uId, UserNet::REL_INVITE);
 		}
 
-		return self::renderPage("card.tpl",
+		return self::renderPage("card . tpl",
 			[
 				'nickname' => $nickname,
 				'avatar' => $avatar,
@@ -1600,7 +1598,7 @@ class WxController extends BaseController
 
 		$item = [
 			"title" => "某电影中的莫文蔚",
-			"src" => "/images/op/op_res_0.jpg",
+			"src" => " / images / op / op_res_0 . jpg",
 			"comment" => "你最好从了他！",
 		];
 		if ($gender && $name) {
@@ -1622,7 +1620,7 @@ class WxController extends BaseController
 			}
 		}
 
-		return self::renderPage("otherpart.tpl",
+		return self::renderPage("otherpart . tpl",
 			[
 				'phone' => $phone,
 				'sId' => $sId,
@@ -1660,7 +1658,7 @@ class WxController extends BaseController
 			$done = "done";
 		}
 
-		return self::renderPage("pin8.tpl",
+		return self::renderPage("pin8 . tpl",
 			[
 				'uId' => $uId,
 				'phone' => $phone,
@@ -1683,7 +1681,7 @@ class WxController extends BaseController
 			$uId = $wxInfo['uId'];
 			$uni = $wxInfo['uUniqid'];
 		}
-		return self::renderPage("room.tpl",
+		return self::renderPage("room . tpl",
 			[
 				'uId' => $uId,
 				'avatar' => $avatar,

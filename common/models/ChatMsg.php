@@ -493,7 +493,7 @@ class ChatMsg extends ActiveRecord
 				$readFlag = 1;
 			}
 			$contacts[$k]['readflag'] = $readFlag;
-			$contacts[$k]['dt'] = AppUtil::prettyDate($contact['cAddedOn']);
+			$contacts[$k]['dt'] = AppUtil::miniDate($contact['cAddedOn']);
 			$contacts[$k]['encryptId'] = AppUtil::encrypt($contact['uid']);
 			$contacts[$k]['avatar'] = ImageUtil::getItemImages($contact['avatar'])[0];
 			unset($contacts[$k]['cAddedBy'],

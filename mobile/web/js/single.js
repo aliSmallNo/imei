@@ -2311,6 +2311,16 @@ require(["layer"],
 			});
 		}
 
+		function initSwiper() {
+			new Swiper('.swiper-container', {
+				direction: 'horizontal',
+				loop: true,
+				pagination: '.swiper-pagination',
+				autoplay: 8000,
+				speed: 1000,
+			});
+		}
+
 		$(function () {
 			$("body").addClass("bg-color");
 			FootUtil.init();
@@ -2338,6 +2348,7 @@ require(["layer"],
 			RankUtil.init();
 			FavorUtil.init();
 			NoticeUtil.init();
+			initSwiper();
 
 			setTimeout(function () {
 				GreetingUtil.show();
