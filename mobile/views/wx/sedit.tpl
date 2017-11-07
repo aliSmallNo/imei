@@ -37,6 +37,31 @@
 		display: block;
 		border-radius: 2px;
 	}
+	.sedit-textarea {
+		display: flex;
+		background: #fff;
+		padding: 1rem;
+		border-bottom: 1px solid #eee;
+		position: relative;
+	}
+
+	.sedit-textarea label {
+		flex: 0 0 6rem;
+		font-size: 1.2rem;
+	}
+
+	.sedit-textarea div {
+		flex: 1;
+		background: #fff;
+		display: flex;
+		position: relative
+	}
+	.sedit-textarea div textarea{
+		width: 100%;
+		background: #fff;
+		border: none;
+		font-size: 1.2rem;
+	}
 </style>
 <div class="m-popup-shade"></div>
 
@@ -109,7 +134,7 @@
 </div>
 
 <!-- data-field="marital" -->
-<a class="sedit-alert action-com" >
+<a class="sedit-alert action-com">
 	<label>婚姻状态</label>
 	<div class="sedit-alert-val action-val">
 		<em data-key="{{$uInfo.marital}}">{{$uInfo.marital_t}}</em>
@@ -155,25 +180,25 @@
 		<em data-key="{{$uInfo.weight}}">{{$uInfo.weight_t}}</em>
 	</div>
 </a>
-<a class="sedit-alert action-com" data-field="income">
-	<label>年薪</label>
-	<div class="sedit-alert-val action-val">
-		<em data-key="{{$uInfo.income}}">{{$uInfo.income_t}}</em>
-	</div>
-</a>
-<a class="sedit-alert action-com" data-field="edu">
-	<label>学历</label>
-	<div class="sedit-alert-val action-val">
-		<em data-key="{{$uInfo.education}}">{{$uInfo.education_t}}</em>
-	</div>
-</a>
+
 <a class="sedit-alert action-com" data-field="sign">
 	<label>星座</label>
 	<div class="sedit-alert-val action-val">
 		<em data-key="{{$uInfo.horos}}">{{$uInfo.horos_t}}</em>
 	</div>
 </a>
-<div class="sedit-title">个人小档案</div>
+<!-- =========== 个人背景 =============== -->
+<div class="sedit-title">个人背景</div>
+<a class="sedit-alert action-com" data-field="edu">
+	<label>学历</label>
+	<div class="sedit-alert-val action-val">
+		<em data-key="{{$uInfo.education}}">{{$uInfo.education_t}}</em>
+	</div>
+</a>
+
+
+<!-- =========== 工作和资产 =============== -->
+<div class="sedit-title">工作和资产</div>
 <a class="sedit-alert action-com" data-field="house">
 	<label>购房情况</label>
 	<div class="sedit-alert-val action-val">
@@ -198,6 +223,22 @@
 		<em data-key="{{$uInfo.profession}}">{{$uInfo.profession_t}}</em>
 	</div>
 </a>
+<a class="sedit-alert action-com" data-field="income">
+	<label>年薪</label>
+	<div class="sedit-alert-val action-val">
+		<em data-key="{{$uInfo.income}}">{{$uInfo.income_t}}</em>
+	</div>
+</a>
+<a class="sedit-textarea action-com" style="display: none">
+	<label>现在单位</label>
+	<div class="">
+		<textarea rows="4" name="" placeholder="不对第三方显示"></textarea>
+	</div>
+</a>
+
+
+<!-- =========== 兴趣爱好 =============== -->
+<div class="sedit-title">兴趣爱好</div>
 <a class="sedit-alert action-com" data-field="drink">
 	<label>饮酒情况</label>
 	<div class="sedit-alert-val action-val">
@@ -210,28 +251,16 @@
 		<em data-key="{{$uInfo.smoke}}">{{$uInfo.smoke_t}}</em>
 	</div>
 </a>
-<a class="sedit-alert action-com" data-field="belief">
-	<label>宗教信仰</label>
-	<div class="sedit-alert-val action-val">
-		<em data-key="{{$uInfo.belief}}">{{$uInfo.belief_t}}</em>
-	</div>
-</a>
-<a class="sedit-alert action-com" data-field="workout">
-	<label>健身情况</label>
-	<div class="sedit-alert-val action-val">
-		<em data-key="{{$uInfo.fitness}}">{{$uInfo.fitness_t}}</em>
-	</div>
-</a>
-<a class="sedit-alert action-com" data-field="diet">
-	<label>饮食习惯</label>
-	<div class="sedit-alert-val action-val">
-		<em data-key="{{$uInfo.diet}}">{{$uInfo.diet_t}}</em>
-	</div>
-</a>
 <a class="sedit-alert action-com" data-field="rest">
 	<label>作息习惯</label>
 	<div class="sedit-alert-val action-val">
 		<em data-key="{{$uInfo.rest}}">{{$uInfo.rest_t}}</em>
+	</div>
+</a>
+<a class="sedit-alert action-com" data-field="belief">
+	<label>宗教信仰</label>
+	<div class="sedit-alert-val action-val">
+		<em data-key="{{$uInfo.belief}}">{{$uInfo.belief_t}}</em>
 	</div>
 </a>
 <a class="sedit-alert action-com" data-field="pet">
@@ -240,6 +269,19 @@
 		<em data-key="{{$uInfo.pet}}">{{$uInfo.pet_t}}</em>
 	</div>
 </a>
+<a class="sedit-alert action-com" data-field="workout">
+	<label>健身习惯</label>
+	<div class="sedit-alert-val action-val">
+		<em data-key="{{$uInfo.fitness}}">{{$uInfo.fitness_t}}</em>
+	</div>
+</a>
+<a class="sedit-alert action-com" data-field="diet">
+	<label>喜欢的食物</label>
+	<div class="sedit-alert-val action-val">
+		<em data-key="{{$uInfo.diet}}">{{$uInfo.diet_t}}</em>
+	</div>
+</a>
+
 <div class="sedit-title">自我评价</div>
 <div class="sedit-input">
 	<textarea rows="4" name="intro">{{$uInfo.intro}}</textarea>
@@ -448,6 +490,22 @@
 		{{/foreach}}
 	</div>
 </script>
+
+
+<script type="text/template" id="mTemp">
+	<div class="date-wrap">
+		<h4></h4>
+		<div class="date-cancel-opt">
+			<a href="javascript:;"><em data-key="">有过婚史</em></a>
+			<a href="javascript:;"><em data-key="">年龄太大</em></a>
+			<a href="javascript:;"><em data-key="">年龄太小</em></a>
+			<a href="javascript:;"><em data-key="">其他原因</em></a>
+		</div>
+		<div class="date-cancel">
+			<a href="javascript:;" class="btn-date-cancel">确定</a>
+		</div>
+	</div>
+</script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
@@ -459,4 +517,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/sedit.js?v=1.3.2" src="/assets/js/require.js"></script>
+<script data-main="/js/sedit.js?v=1.3.3" src="/assets/js/require.js"></script>

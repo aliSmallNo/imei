@@ -904,6 +904,8 @@ class FooController extends Controller
 //		echo (ChatMsg::Cert(120003, 143807));
 
 //		$res = Log::sCenterItems(120003);
+
+		// echo AppUtil::encrypt(143696) . "\n";
 	}
 
 

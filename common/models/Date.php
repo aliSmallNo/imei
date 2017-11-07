@@ -47,7 +47,7 @@ class Date extends ActiveRecord
 		self::CAT_SING => "唱歌",
 		self::CAT_FILM => "看电影",
 		self::CAT_FITNESS => "健身",
-		self::CAT_TYIP => "旅游",
+		self::CAT_TYIP => "郊游",
 		self::CAT_OTHER => "其他",
 	];
 

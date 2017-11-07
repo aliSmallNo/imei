@@ -68,6 +68,7 @@ require(["layer"],
 					var key = self.attr('data-key');
 					var tag = self.attr('data-tag');
 					var pos = '';
+					console.log("m-popup-options > a");
 					switch (tag) {
 						case "province":
 							pos = util.btn.attr("data-pos");
@@ -137,6 +138,7 @@ require(["layer"],
 					var tag = self.closest(".cells").attr("data-tag");
 					util.btn.find(".action-val").html(self.html());
 					util.toggle();
+					console.log("cells > a");
 					if (tag == "scope") {
 						var scopeVal = parseInt(self.find("em").attr("data-key"));
 						util.jobVal = mProfessions[scopeVal];
@@ -175,8 +177,9 @@ require(["layer"],
 					var inputFiledsT = ["呢称", "兴趣爱好", "自我介绍"];
 					for (var i = 0; i < inputFileds.length; i++) {
 						var inputVal = $.trim($("[name=" + inputFileds[i] + "]").val());
+						// console.log(inputFiledsT[i] + inputFileds[i] + ":" + inputVal);
 						if (!inputVal) {
-							showMsg(inputFiledsT[i] + "还没有填写哦~");
+							showMsg(inputFiledsT[i] + ':' + "还没有填写哦~");
 							return;
 						}
 						$sls.postData[inputFileds[i]] = inputVal;
@@ -236,7 +239,7 @@ require(["layer"],
 						}
 					});
 					$sls.postData["filter"] = JSON.stringify(cItem);
-					console.log($sls.postData);
+					// console.log($sls.postData);
 
 					var localId = util.avatar.attr("localId");
 					if (localId) {
@@ -260,6 +263,7 @@ require(["layer"],
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
 				$sls.postData["coord"] = $sls.coord.val();
+				// console.log($sls.postData);return;
 				layer.open({
 					type: 2,
 					content: '保存中...'
