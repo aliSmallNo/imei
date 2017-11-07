@@ -36,8 +36,8 @@
 			<a href="javascript:;" class="user_filter_title">全部年龄</a>
 			<ul>
 				<li><a href="javascript:;" data-cat="age" data-tag="all">全部年龄</a></li>
-				<li><a href="javascript:;" data-cat="age" data-tag="1">从高到低</a></li>
-				<li><a href="javascript:;" data-cat="age" data-tag="2">从低到高</a></li>
+				<li><a href="javascript:;" data-cat="age" data-tag="1">年龄从高到低</a></li>
+				<li><a href="javascript:;" data-cat="age" data-tag="2">年龄从低到高</a></li>
 				<li><a href="javascript:;" data-cat="age" data-tag="3">同龄人</a></li>
 				<li><a href="javascript:;" data-cat="m" class="user_filter_btn">确定</a></li>
 			</ul>
@@ -118,11 +118,8 @@
 			<a href="/wx/comments"><span class="title">对我的评论</span></a>
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">我的账户</span> <i class="i-mark-base i-mark-rose"></i></a>
 			<a href="/wx/mshare"><span class="title">分享给朋友</span></a>
-			<a href="/wx/cert2?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span
-								class="tip">已认证</span>{{/if}}</a>
-			<a href="/wx/notice">
-				<span class="title">通知</span>{{if $noReadFlag}}<span class="noReadFlag"></span>{{/if}}
-			</a>
+			<a href="/wx/cert2?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span class="tip">已认证</span>{{/if}}</a>
+			<a href="/wx/notice"><span class="title">通知</span>{{if $noReadFlag}}<span class="noReadFlag"></span>{{/if}}</a>
 		</div>
 		<div class="m-rows line-bottom mymp" style="display: none">
 			<a href="/wx/invite"><span class="title">我的媒婆</span> <span class="tip">{{$mpName}}</span></a>
