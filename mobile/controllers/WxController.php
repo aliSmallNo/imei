@@ -738,12 +738,16 @@ class WxController extends BaseController
 		$noReadFlag = UserMsg::hasUnread($uId, $conn) ? 1 : 0;
 		$audit = UserAudit::invalid($uId, $conn);
 		$greeting = UserMsg::greeting($uId, $openId, $conn);
+		$service = AppUtil::wechatUrl() . "/images/ad/service_female.jpg";
+		if ($uInfo["gender"] == User::GENDER_FEMALE) {
+			$service = AppUtil::wechatUrl() . "/images/ad/service_male.jpg";
+		}
 		return self::renderPage("single.tpl", [
 			'noReadFlag' => $noReadFlag,
 			'nickname' => $nickname,
 			'avatar' => $avatar,
 			'uInfo' => $uInfo,
-
+			'service' => $service,
 			'prices' => $prices,
 			'encryptId' => $encryptId,
 			'hint' => $hint,

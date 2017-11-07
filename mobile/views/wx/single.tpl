@@ -43,6 +43,11 @@
 			</ul>
 		</div>
 	</div>
+	{{if $service}}
+	<div class="m-service">
+		<img src="{{$service}}" alt="">
+	</div>
+	{{/if}}
 	<ul class="m-top-users"></ul>
 	<div class="m-more">拼命加载中...</div>
 </section>

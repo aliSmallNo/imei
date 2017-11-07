@@ -7106,4 +7106,13 @@ ul.co-ul {
       font-size: 1rem;
       text-align: center; }
 
+.m-service {
+  border-top: 1px solid #E4E4E4;
+  border-bottom: 1px solid #E4E4E4;
+  margin: 0;
+  padding: 0; }
+  .m-service img {
+    width: 100%;
+    vertical-align: middle; }
+
 /*# sourceMappingURL=imei.css.map */
