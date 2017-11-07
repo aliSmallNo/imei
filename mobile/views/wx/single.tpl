@@ -30,7 +30,6 @@
 				<li><a href="javascript:;" data-cat="m" data-tag="100">未婚</a></li>
 				<li><a href="javascript:;" data-cat="m" data-tag="110">离异带孩</a></li>
 				<li><a href="javascript:;" data-cat="m" data-tag="120">离异不带孩</a></li>
-				<li><a href="javascript:;" data-cat="m" class="user_filter_btn">确定</a></li>
 			</ul>
 		</div>
 		<div href="javascript:;" class="user_filter_item">
@@ -40,6 +39,7 @@
 				<li><a href="javascript:;" data-cat="age" data-tag="1">从高到低</a></li>
 				<li><a href="javascript:;" data-cat="age" data-tag="2">从低到高</a></li>
 				<li><a href="javascript:;" data-cat="age" data-tag="3">同龄人</a></li>
+				<li><a href="javascript:;" data-cat="m" class="user_filter_btn">确定</a></li>
 			</ul>
 		</div>
 	</div>

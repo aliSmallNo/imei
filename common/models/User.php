@@ -1402,7 +1402,6 @@ class User extends ActiveRecord
 				}
 			}
 			if (isset($data['age']) && $age = $data['age']) {
-
 				if ($age == 1) {
 					$ageRank = "u.uBirthYear asc,";
 				} elseif ($age == 2) {
