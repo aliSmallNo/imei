@@ -505,7 +505,7 @@ section
 	padding-left: 3.5rem
 	background: rgba(0, 0, 0, .65)
 	color: #fff
-	font-size: 1.4rem
+	//font-size: 1.4rem
 	//rgba(255, 245, 157, 1)
 	line-height: 4rem
 	font-size: 1.2rem
@@ -1537,29 +1537,27 @@ section
 	height: 1.2rem
 	display: inline-block
 
-.i-mark-hot
-	background: url(../images/ico_mark_hot.png) no-repeat center center
-	background-size: 100% 100%
+.i-mark-base
 	width: 1.5rem
 	height: 1.5rem
 	display: inline-block
 	vertical-align: middle
+
+.i-mark-hot
+	background: url(../images/ico_mark_hot.png) no-repeat center center
+	background-size: 100% 100%
 
 .i-mark-rose
 	background: url(../images/ico_rose.png) no-repeat center center
 	background-size: 100% 100%
-	width: 1.5rem
-	height: 1.5rem
-	display: inline-block
-	vertical-align: middle
 
 .i-mark-favor
 	background: url(../images/ico_mark_heart.png) no-repeat center center
 	background-size: 100% 100%
-	width: 1.5rem
-	height: 1.5rem
-	display: inline-block
-	vertical-align: middle
+
+.i-mark-sign
+	background: url(../images/ico_mark_sign.png) no-repeat center center
+	background-size: 100% 100%
 
 .i-mark-warning
 	background: url(../images/ico_warning.png) no-repeat center center
@@ -1773,23 +1771,22 @@ section
 
 .u-my-album
 	@include displayFlex
-	line-height: 5rem
+	line-height: 4.2rem
 	padding: 1rem 2.5rem 1rem 1.5rem
 	position: relative
 	&:after
 		@include arrowRight
 		border-color: $grayFontColorLight
 		right: 1.5rem
-
 	.title
-		@include displayFlex-w(5.5rem)
+		@include displayFlex-w(6rem)
 		text-align: left
 	.photos
 		@include displayFlex-1
 		li
 			float: left
-			width: 4.4rem
-			height: 4.4rem
+			width: 4rem
+			height: 4rem
 			border: 1px solid $mainColorLighter
 			border-radius: .3rem
 			margin-right: 1.2rem
@@ -1797,18 +1794,22 @@ section
 			&:last-child
 				margin-right: 0
 			.has-pic
-				width: 4.4rem
-				height: 4.4rem
+				width: 4rem
 				position: relative
 				display: inline-block
-				img
-					width: 100%
-					height: auto
-					vertical-align: middle
-					position: absolute
-					top: 50%
-					-webkit-transform: translate(0, -50%)
-					transform: translate(0, -50%)
+				text-align: center
+				padding-bottom: 100%
+				background-position: center
+				background-repeat: no-repeat
+				background-size: cover
+//img
+//	width: 100%
+//	height: auto
+//	vertical-align: middle
+//	position: absolute
+//	top: 50%
+//	-webkit-transform: translate(0, -50%)
+//	transform: translate(0, -50%)
 
 .u-my-count
 	@include displayFlex
@@ -4034,21 +4035,23 @@ section
 				clear: left
 			a
 				border: 1px solid $mainColorLighter
-				border-radius: 2px
-				background-color: #fff
-				padding: 0
+				border-radius: .3rem
 				display: inline-block
 				width: 9rem
 				height: 9rem
-				overflow: hidden
-				img
-					width: 100%
-					height: auto
-					vertical-align: middle
-					top: 50%
-					position: relative
-					-webkit-transform: translate(0, -50%)
-					transform: translate(0, -50%)
+				text-align: center
+				background-color: #fff
+				background-position: center
+				background-repeat: no-repeat
+				background-size: cover
+				//img
+				//	width: 100%
+				//	height: auto
+				//	vertical-align: middle
+				//	top: 50%
+				//	position: relative
+				//	-webkit-transform: translate(0, -50%)
+				//	transform: translate(0, -50%)
 				&.choose-img
 					&:before
 						content: " "
@@ -6673,6 +6676,7 @@ ul.co-ul
 		div
 			font-size: 1rem
 			text-align: center
+
 .m-service
 	border-top: 1px solid $borderColor
 	border-bottom: 1px solid $borderColor

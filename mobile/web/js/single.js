@@ -1078,8 +1078,8 @@ require(["layer"],
 			albums: [],
 			hint: $('#cUserHint'),
 			albumTmp: $('#tpl_album').html(),
-			thumbTmp: '{[#items]}<li><a class="has-pic"><img src="{[.]}"></a></li>{[/items]}',
-			albumSingleTmp: '{[#items]}<li><a class="has-pic"><img src="{[thumb]}" bsrc="{[figure]}"></a><a href="javascript:;" class="del"></a></li>{[/items]}',
+			thumbTmp: '{[#items]}<li><a class="has-pic" style="background-image:url({[.]});"></a></li>{[/items]}',
+			albumSingleTmp: '{[#items]}<li><a class="has-pic" style="background-image:url({[thumb]});" bsrc="{[figure]}"></a><a href="javascript:;" class="del"></a></li>{[/items]}',
 			init: function () {
 				var util = this;
 				$(document).on(kClick, "a.e-album", function () {
@@ -1109,14 +1109,14 @@ require(["layer"],
 					});
 				});
 
-				$(document).on(kClick, ".album-photos a.has-pic", function () {
+				$(document).on(kClick, ".album-photos .has-pic", function () {
 					if (util.delImgFlag || util.editable || !util.albums) {
 						return false;
 					}
 					var self = $(this);
-					var src = self.find("img").attr("bsrc");
+					var src = self.attr("bsrc");
 					var URLs = [];
-					$.each($('.album-photos img'), function () {
+					$.each($('.album-photos .has-pic'), function () {
 						URLs[URLs.length] = $(this).attr('bsrc');
 					});
 					wx.previewImage({
