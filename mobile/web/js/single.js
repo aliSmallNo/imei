@@ -2317,7 +2317,7 @@ require(["layer"],
 				loop: true,
 				pagination: '.swiper-pagination',
 				autoplay: 8000,
-				speed: 1000,
+				speed: 800
 			});
 		}
 
