@@ -1432,29 +1432,27 @@ section {
   height: 1.2rem;
   display: inline-block; }
 
-.i-mark-hot {
-  background: url(../images/ico_mark_hot.png) no-repeat center center;
-  background-size: 100% 100%;
+.i-mark-base {
   width: 1.5rem;
   height: 1.5rem;
   display: inline-block;
   vertical-align: middle; }
+
+.i-mark-hot {
+  background: url(../images/ico_mark_hot.png) no-repeat center center;
+  background-size: 100% 100%; }
 
 .i-mark-rose {
   background: url(../images/ico_rose.png) no-repeat center center;
-  background-size: 100% 100%;
-  width: 1.5rem;
-  height: 1.5rem;
-  display: inline-block;
-  vertical-align: middle; }
+  background-size: 100% 100%; }
 
 .i-mark-favor {
   background: url(../images/ico_mark_heart.png) no-repeat center center;
-  background-size: 100% 100%;
-  width: 1.5rem;
-  height: 1.5rem;
-  display: inline-block;
-  vertical-align: middle; }
+  background-size: 100% 100%; }
+
+.i-mark-sign {
+  background: url(../images/ico_mark_sign.png) no-repeat center center;
+  background-size: 100% 100%; }
 
 .i-mark-warning {
   background: url(../images/ico_warning.png) no-repeat center center;
@@ -1705,7 +1703,7 @@ section {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  line-height: 5rem;
+  line-height: 4.2rem;
   padding: 1rem 2.5rem 1rem 1.5rem;
   position: relative; }
   .u-my-album:after {
@@ -1725,10 +1723,10 @@ section {
     border-color: #939393;
     right: 1.5rem; }
   .u-my-album .title {
-    -webkit-box-flex: 0 0 5.5rem;
-    -webkit-flex: 0 0 5.5rem;
-    -ms-flex: 0 0 5.5rem;
-    flex: 0 0 5.5rem;
+    -webkit-box-flex: 0 0 6rem;
+    -webkit-flex: 0 0 6rem;
+    -ms-flex: 0 0 6rem;
+    flex: 0 0 6rem;
     text-align: left; }
   .u-my-album .photos {
     -webkit-box-flex: 1;
@@ -1737,8 +1735,8 @@ section {
     flex: 1; }
     .u-my-album .photos li {
       float: left;
-      width: 4.4rem;
-      height: 4.4rem;
+      width: 4rem;
+      height: 4rem;
       border: 1px solid #fbd2e0;
       border-radius: 0.3rem;
       margin-right: 1.2rem;
@@ -1746,18 +1744,14 @@ section {
       .u-my-album .photos li:last-child {
         margin-right: 0; }
       .u-my-album .photos li .has-pic {
-        width: 4.4rem;
-        height: 4.4rem;
+        width: 4rem;
         position: relative;
-        display: inline-block; }
-        .u-my-album .photos li .has-pic img {
-          width: 100%;
-          height: auto;
-          vertical-align: middle;
-          position: absolute;
-          top: 50%;
-          -webkit-transform: translate(0, -50%);
-          transform: translate(0, -50%); }
+        display: inline-block;
+        text-align: center;
+        padding-bottom: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover; }
 
 .u-my-count {
   display: -webkit-box;
@@ -4111,21 +4105,15 @@ section {
       clear: left; }
     #album .photos li a {
       border: 1px solid #fbd2e0;
-      border-radius: 2px;
-      background-color: #fff;
-      padding: 0;
+      border-radius: 0.3rem;
       display: inline-block;
       width: 9rem;
       height: 9rem;
-      overflow: hidden; }
-      #album .photos li a img {
-        width: 100%;
-        height: auto;
-        vertical-align: middle;
-        top: 50%;
-        position: relative;
-        -webkit-transform: translate(0, -50%);
-        transform: translate(0, -50%); }
+      text-align: center;
+      background-color: #fff;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover; }
       #album .photos li a.choose-img:before {
         content: " ";
         position: absolute;

@@ -112,10 +112,11 @@
 		<div class="m-rows line-bottom wx-hint">
 			<!--a href="#addMeWx" id="pending_applications" ><span class="title">加我微信的人</span> </a>
 			<a href="#IaddWx"><span class="title">我加微信的人</span> </a-->
-			<a href="#sfav"><span class="title">心动列表</span> <i class="i-mark-favor"></i></a>
+			<a href="/wx/lottery"><span class="title">每日签到</span> <i class="i-mark-base i-mark-sign"></i></a>
+			<a href="#sfav"><span class="title">心动列表</span> <i class="i-mark-base i-mark-favor"></i></a>
 			<a href="#date"><span class="title">我的约会</span></i></a>
 			<a href="/wx/comments"><span class="title">对我的评论</span></a>
-			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">我的账户</span> <i class="i-mark-rose"></i></a>
+			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">我的账户</span> <i class="i-mark-base i-mark-rose"></i></a>
 			<a href="/wx/mshare"><span class="title">分享给朋友</span></a>
 			<a href="/wx/cert2?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span
 								class="tip">已认证</span>{{/if}}</a>
@@ -128,13 +129,12 @@
 			<a href="#focusMP" id="myfollow"><span class="title">关注的媒婆</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
-			<a href="#sranking"><span>花粉排行榜</span> <i class="i-mark-hot"></i></a>
+			<a href="#sranking"><span>花粉排行榜</span> <i class="i-mark-base i-mark-hot"></i></a>
 			<a href="#sfavors"><span>心动排行榜</span> </a>
 		</div>
 		<div class="m-rows line-bottom">
 
 			<!--a href="#myWechatNo"><span class="title">我的微信号</span></a-->
-			<a href="/wx/lottery"><span class="title">每日签到</span></a>
 			<a href="/wx/setting"><span class="title">提醒设置</span></a>
 			<a href="/wx/blacklist"><span class="title">黑名单</span></a>
 			<a href="#sfeedback"><span class="title">意见反馈</span> </a>
@@ -1126,9 +1126,7 @@
 	<li><a href="javascript:;" class="choose-img"></a></li>
 	{[#albums]}
 	<li>
-		<a class="has-pic">
-			<img src="{[thumb]}" bsrc="{[figure]}">
-		</a>
+		<a class="has-pic" style="background-image:url({[thumb]});" bsrc="{[figure]}"></a>
 		<a href="javascript:;" class="del"></a>
 	</li>
 	{[/albums]}
@@ -1467,4 +1465,4 @@
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js?v=1.2.1"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
-<script data-main="/js/single.js?v=1.1.2.1" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.1.2.2" src="/assets/js/require.js"></script>
