@@ -114,7 +114,7 @@
 			<a href="#IaddWx"><span class="title">我加微信的人</span> </a-->
 			<a href="/wx/lottery"><span class="title">每日签到</span> <i class="i-mark-base i-mark-sign"></i></a>
 			<a href="#sfav"><span class="title">心动列表</span> <i class="i-mark-base i-mark-favor"></i></a>
-			<a href="#date"><span class="title">我的约会</span></i></a>
+			<a href="#date"><span class="title">我的约会</span></i> <i class="i-mark-base i-mark-date"></i></a>
 			<a href="/wx/comments"><span class="title">对我的评论</span></a>
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">我的账户</span> <i class="i-mark-base i-mark-rose"></i></a>
 			<a href="/wx/mshare"><span class="title">分享给朋友</span></a>
