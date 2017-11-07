@@ -1430,10 +1430,10 @@ class WxController extends BaseController
 		$qrCode = '';
 		$cls = 'small';
 		if ($name) {
-			/*$title = $name . '先生 & 微小姐';
+			/* $title = $name . '先生 & 微小姐';
 			if ($gender == 0) {
 				$title = '微先生 & ' . $name . '小姐';
-			}*/
+			} */
 			$bgSrc = UserQR::createInvitation($uId,
 				$name,
 				$star,

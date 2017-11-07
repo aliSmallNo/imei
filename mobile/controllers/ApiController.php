@@ -715,15 +715,20 @@ class ApiController extends Controller
 						array_splice($ret['data'], 3, 0, [
 							[
 								"url" => "/wx/sedit",
-								"img" => "https://img.meipo100.com/default/img_profile.png",
+								"img" => AppUtil::wechatUrl() . "/images/ad/13.jpg",
 							],
 						]);
 					}
-
-					array_splice($ret['data'], 7, 0, [
+					array_splice($ret['data'], 6, 0, [
 						[
 							"url" => "/wx/lottery",
-							"img" => "https://img.meipo100.com/default/img_sign.png",
+							"img" => AppUtil::wechatUrl() . "/images/ad/11.jpg"
+						],
+					]);
+					array_splice($ret['data'], 1, 0, [
+						[
+							"url" => "javascript:;",
+							"img" => AppUtil::wechatUrl() . "/images/ad/12.jpg"
 						],
 					]);
 				}

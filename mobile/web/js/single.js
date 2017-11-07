@@ -1395,7 +1395,6 @@ require(["layer"],
 					} else {
 						util.list.append(html);
 					}
-
 					util.getUserFiterFlag = 0;
 					util.sUserPage = resp.data.nextpage;
 					if (util.sUserPage < 1) {
