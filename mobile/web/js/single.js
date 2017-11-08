@@ -2354,7 +2354,6 @@ require(["layer"],
 			wx.ready(function () {
 				wx.hideOptionMenu();
 			});
-			locationHashChanged();
 			$sls.cork.hide();
 			FeedbackUtil.init();
 			WxNoUtil.init();
@@ -2378,6 +2377,7 @@ require(["layer"],
 			setTimeout(function () {
 				pinLocation();
 			}, 800);
+			locationHashChanged();
 
 		});
 	});
