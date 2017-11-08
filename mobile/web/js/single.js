@@ -157,9 +157,11 @@ require(["layer"],
 					ChatUtil.delChatBtn($(".contacts-edit"), "chat");
 					FootUtil.toggle(1);
 					if ($sls.chat_id) {
-						ChatUtil.chatRoom($sls.chat_id, $sls.chat_title);
-						$sls.chat_id = '';
-						$sls.chat_title = '';
+						setTimeout(function () {
+							ChatUtil.chatRoom($sls.chat_id, $sls.chat_title);
+							$sls.chat_id = '';
+							$sls.chat_title = '';
+						}, 350);
 					}
 					break;
 				case 'noMP':
@@ -2377,6 +2379,7 @@ require(["layer"],
 			setTimeout(function () {
 				pinLocation();
 			}, 800);
+
 			locationHashChanged();
 
 		});
