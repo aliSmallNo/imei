@@ -883,6 +883,7 @@ require(["layer"],
 				util.list.append(html);
 			},
 			messages: function (data, flag) {
+				//console.log(data);
 				var util = this;
 				var html = Mustache.render(util.tmp, data);
 				if (data.lastId < 1) {
