@@ -158,7 +158,7 @@ class LogAction extends ActiveRecord
 		$cmd = $conn->createCommand($sql);
 
 		$lastDay=$endDate;
-		for ($k = 1; $k < 20; $k++) {
+		for ($k = 1; $k < 16; $k++) {
 			$fromDate = date('Y-m-d', strtotime($beginDate) + 86400 * $step * $k);
 			$toDate = date('Y-m-d', strtotime($endDate) + 86400 * $step * $k);
 			if ($category == self::REUSE_DATA_MONTH) {
