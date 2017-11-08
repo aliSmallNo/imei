@@ -744,8 +744,16 @@ class WxController extends BaseController
 			$service = AppUtil::wechatUrl() . "/images/ad/service_male.jpg";
 			$service_sm = AppUtil::wechatUrl() . "/images/ad/service_male_sm.jpg";
 		}
-		$adverts = [$service];
-		//[$service, AppUtil::wechatUrl() . "/images/ad/activity_1111.jpg"];
+		$adverts = [
+			[
+				'image' => $service,
+				'url' => '长按图片识别二维码，添加我们的客服为好友'
+			],
+			[
+				'image' => AppUtil::wechatUrl() . "/images/ad/activity_1111.jpg",
+				'url' => 'http://www.hdb.com/party/tq722.html?hdb_pos=manager_info'
+			]
+		];
 
 		return self::renderPage("single.tpl", [
 			'noReadFlag' => $noReadFlag,

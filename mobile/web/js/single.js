@@ -2322,8 +2322,13 @@ require(["layer"],
 				autoplay: 8000,
 				speed: 800,
 				onClick: function (swiper) {
-					var slider = swiper.slides[swiper.activeIndex];
-					console.log(slider);
+					var slider = $(swiper.slides[swiper.activeIndex]);
+					var url = slider.attr('data-url');
+					if (url.indexOf('http') >= 0) {
+						location.href = url;
+					} else {
+						NoticeUtil.toggle(url);
+					}
 				}
 			});
 		}
