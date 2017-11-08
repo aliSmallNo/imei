@@ -195,6 +195,17 @@ class UserBuzz extends ActiveRecord
 						]);
 					} elseif ($content == 333) {
 						$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
+					} elseif ($content == '任务') {
+						$txt = "小任务详情：" . PHP_EOL . "
+1、一段走心的自我介绍；" . PHP_EOL . "
+2、发3张自己保留好久的照片可以介绍一下意义哦！（照片的形式：自拍、景区、全家福、好友等等）；" . PHP_EOL . "
+3、猜拳游戏真心话大冒险。赢的要问输的问题，一定要真实发自内心的回答；" . PHP_EOL . "
+4、互相为对方搭配一套衣服。图片可以借鉴某宝；" . PHP_EOL . "
+5、每个人发给平台一段对对方的评价，如果有啥不好意思说的想法，可以发送本平台哦，平台会帮您送达给对方；" . PHP_EOL . "
+6、最后互相道一句晚安，结束一天的cp任务。；" . PHP_EOL . "
+ 
+做完记得截图回复千寻恋恋微信公众账号哦！";
+						$resp = self::textMsg($fromUsername, $toUsername, $txt);
 					} elseif ($content == "金秋送礼") {
 						if (!User::findOne(["uOpenId" => $fromUsername])->uStatus) {
 							$contents = "尊敬的千寻恋恋用户，您好，您的手机号还没有登录哦~<a href='https://wx.meipo100.com/wx/imei'>点我登录</a>查看活动。";
