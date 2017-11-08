@@ -6,6 +6,7 @@
 namespace common\models;
 
 use common\utils\AppUtil;
+use common\utils\NoticeUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
@@ -300,7 +301,6 @@ class UserMsg extends ActiveRecord
 
 	public static function routineAlert($uIds = [])
 	{
-		$hr = date('Hi');
 		/*if (!in_array($hr, ['0730', '0930', '1200', '1600', '1900', '2200'])) {
 			return false;
 		}*/
@@ -314,7 +314,7 @@ class UserMsg extends ActiveRecord
 		$conn->createCommand($sql)->execute();
 
 		$cats = implode(',',
-			[self::CATEGORY_PRESENT, self::CATEGORY_FAVOR, self::CATEGORY_CHAT]);
+			[self::CATEGORY_PRESENT, self::CATEGORY_FAVOR /*, self::CATEGORY_CHAT*/]);
 		$criteria = '';
 		if ($uIds) {
 			$criteria = ' AND mUId in (' . implode(',', $uIds) . ')';
@@ -326,7 +326,7 @@ class UserMsg extends ActiveRecord
 			 GROUP BY mUId,mCategory
 			 ORDER BY mUId,mId';
 		$ret = $conn->createCommand($sql)->bindValues([
-			':from' => date('Y-m-d', time() - 3600 * 16),
+			':from' => date('Y-m-d', time() - 3600 * 12),
 			':to' => date('Y-m-d 23:59'),
 		])->queryAll();
 		$items = [];
@@ -368,6 +368,29 @@ class UserMsg extends ActiveRecord
 				$uid,
 				'千寻恋恋每日简报',
 				implode('；', $titles));
+		}
+
+		// Rain: 单独处理chat info
+		$sql = "SELECT count(1) as cnt, mUId as receiverUId,mAddedBy as senderUId, mCategory as cat
+			 FROM im_user_msg
+			 WHERE mAddedOn BETWEEN :from AND :to $criteria  
+			 AND mAlertFlag=0 AND mCategory =:cat 
+			 AND mUId=131379
+			 GROUP BY mUId,mCategory
+			 ORDER BY mUId,mId";
+		$ret = $conn->createCommand($sql)->bindValues([
+			':from' => date('Y-m-d', time() - 3600 * 12),
+			':to' => date('Y-m-d 23:59'),
+			':cat' => self::CATEGORY_CHAT
+		])->queryAll();
+		foreach ($ret as $row) {
+			$receiverUId = $row['receiverUId'];
+			$senderUId = $row['senderUId'];
+			$cmd->bindValues([
+				':id' => $receiverUId
+			])->execute();
+			AppUtil::logFile([$receiverUId, $senderUId], 5, __FUNCTION__, __LINE__);
+			NoticeUtil::init(WechatUtil::NOTICE_CHAT, $receiverUId, $senderUId)->send(['有人密聊你了' . $row['cnt'] . '次']);
 		}
 		return true;
 	}
