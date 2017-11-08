@@ -163,91 +163,6 @@
     border-radius: 3rem" class="album-delete">删除</a>
 </section>
 <a class="m-schat-shade"></a>
-<style>
-	.magic-radio, .magic-checkbox {
-		position: absolute;
-		display: none;
-	}
-
-	.magic-radio + label, .magic-checkbox + label {
-		position: relative;
-		display: block;
-		padding-left: 3rem;
-		cursor: pointer;
-		vertical-align: middle;
-		font-size: 1.2rem
-	}
-
-	.magic-radio + label:before, .magic-checkbox + label:before {
-		position: absolute;
-		top: 0;
-		left: 0;
-		display: inline-block;
-		width: 2rem;
-		height: 2rem;
-		content: '';
-		border: 1px solid #c0c0c0;
-	}
-
-	.magic-checkbox + label:before {
-		border-radius: .3rem;
-	}
-
-	.magic-radio:checked + label:before, .magic-checkbox:checked + label:before {
-		animation-name: none;
-	}
-
-	.magic-checkbox:checked + label:before {
-		border: #f06292;
-		background: #f06292;
-	}
-
-	.magic-radio + label:after, .magic-checkbox + label:after {
-		position: absolute;
-		display: none;
-		content: '';
-	}
-
-	.magic-checkbox + label:after {
-		top: .2rem;
-		left: .7rem;
-		box-sizing: border-box;
-		width: .6rem;
-		height: 1.2rem;
-		transform: rotate(45deg);
-		border-width: .2rem;
-		border-style: solid;
-		border-color: #fff;
-		border-top: 0;
-		border-left: 0;
-	}
-
-	.magic-radio:checked + label:after, .magic-checkbox:checked + label:after {
-		display: block;
-	}
-
-	.magic-radio + label:before {
-		border-radius: 50%;
-	}
-
-	.magic-radio + label:after {
-		top: .7rem;
-		left: .7rem;
-		width: .8rem;
-		height: .8rem;
-		border-radius: 50%;
-		background: #f06292;
-	}
-
-	.magic-radio:checked + label:before {
-		border: 1px solid #f06292;
-	}
-
-	.comment-items .opt {
-		line-height: 2.4rem;
-		height: 2.4rem;
-	}
-</style>
 <section id="scomment" data-title="评价中...">
 	<div class="co-cat">
 		<label>评论类型</label>
@@ -1143,23 +1058,6 @@
 	</li>
 	{[/items]}
 </script>
-<style>
-	.chats li.read .content span:before {
-		position: absolute;
-		content: '已读';
-		left: -3rem;
-		font-size: 1rem;
-		top: 1.2rem;
-	}
-
-	.chats li.unread .content span:before {
-		position: absolute;
-		content: '未读';
-		left: -3rem;
-		font-size: 1rem;
-		top: 1.2rem;
-	}
-</style>
 <script type="text/template" id="tpl_chat">
 	{[#items]}
 	<li class="{[dir]}" data-r="{[readflag]}">
@@ -1170,20 +1068,11 @@
 	</li>
 	{[/items]}
 </script>
-<!--
-<br><span class="optItem">可以</span>
--->
-<style>
-	.chats li .content span.optItem {
-		margin: .2rem 0;
-	}
-</style>
 <script type="text/template" id="tpl_chat_tip">
 	<li class="tip">
 		<em>{[msg]}</em>
 	</li>
 </script>
-
 <script type="text/template" id="tpl_contact">
 	{[#items]}
 	<a href="javascript:;" data-id="{[encryptId]}" data-cid="{[cid]}" data-read="{[readflag]}" class="chat">
@@ -1295,22 +1184,6 @@
 			去实名</a>
 	</div>
 </script>
-<style>
-	.greet-btn-to {
-		display: flex;
-	}
-
-	.greet-btn-to a {
-		flex: 1;
-		text-align: center;
-		margin: 0 1rem;
-		background: #f779a3;
-		padding: 1rem 0;
-		display: block;
-		border-radius: .5rem;
-		color: #fff;
-	}
-</style>
 <script type="text/template" id="ctx_greet_new2">
 	<div class="greeting">
 		<h4>{[title]}</h4>
