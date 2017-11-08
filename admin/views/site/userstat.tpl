@@ -84,6 +84,7 @@
 				<div id="chart_income" class="chart-wrapper"></div>
 				<div id="chart_edu" class="chart-wrapper"></div>
 				<div id="chart_height" class="chart-wrapper"></div>
+				<div id="chart_marry" class="chart-wrapper"></div>
 			</div>
 		</div>
 
@@ -98,6 +99,7 @@
 				<div id="chart_income_m" class="chart-wrapper"></div>
 				<div id="chart_edu_m" class="chart-wrapper"></div>
 				<div id="chart_height_m" class="chart-wrapper"></div>
+				<div id="chart_marry_m" class="chart-wrapper"></div>
 			</div>
 		</div>
 	</div>
@@ -111,6 +113,7 @@
 				<div id="chart_income_f" class="chart-wrapper"></div>
 				<div id="chart_edu_f" class="chart-wrapper"></div>
 				<div id="chart_height_f" class="chart-wrapper"></div>
+				<div id="chart_marry_f" class="chart-wrapper"></div>
 			</div>
 		</div>
 	</div>
@@ -132,6 +135,10 @@
 		}, function (resp) {
 			layer.closeAll();
 			if (resp.code == 0) {
+				// console.log(resp.data);
+				initPie(resp.data.mar.all, "chart_marry", '全员婚姻');
+				initPie(resp.data.mar.male, "chart_marry_m", '男生婚姻');
+				initPie(resp.data.mar.female, "chart_marry_f", '女生婚姻');
 				initPie(resp.data.height.all, "chart_height", '全员身高');
 				initPie(resp.data.height.male, "chart_height_m", '男生身高');
 				initPie(resp.data.height.female, "chart_height_f", '女生身高');
