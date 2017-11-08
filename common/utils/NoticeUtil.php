@@ -93,7 +93,8 @@ class NoticeUtil
 				}
 				$util->msg_cat = UserMsg::CATEGORY_CHAT;
 				$util->template_id = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
-				$util->url .= "/wx/single?chat_id=$encryptSenderId&chat_title=". urlencode($util->sender_name)  ."#scontacts";
+				//$util->url .= "/wx/single?chat_id=$encryptSenderId&chat_title=". urlencode($util->sender_name)  ."#scontacts";
+				$util->url .= "/wx/single#scontacts";
 				$util->first = "hi，$util->receiver_name\n";
 				$util->remark = "\n点击下方详情查看吧~";
 				break;
