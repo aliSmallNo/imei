@@ -381,6 +381,8 @@ require(["layer"],
 					} else if (self.hasClass('btn-chat')) {
 						ChatUtil.sid = self.attr("data-id");
 						ChatUtil.lastId = 0;
+						var schat_title = self.closest("li").find(".u-info").find("p.name").find("em").html();
+						$("#schat").attr("data-title", schat_title);
 						location.href = '#schat';
 					} else if (self.hasClass('btn-give')) {
 						$sls.secretId = self.attr("data-id");
