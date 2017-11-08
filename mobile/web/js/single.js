@@ -161,7 +161,7 @@ require(["layer"],
 							ChatUtil.chatRoom($sls.chat_id, $sls.chat_title);
 							$sls.chat_id = '';
 							$sls.chat_title = '';
-						}, 350);
+						}, 400);
 					}
 					break;
 				case 'noMP':
@@ -924,7 +924,6 @@ require(["layer"],
 					}
 				});
 
-
 				if (util.leftCount >= 2 && util.rightCount >= 2) {
 					util.comment.show();
 				} else {
@@ -1051,10 +1050,10 @@ require(["layer"],
 				$.post("/api/chat", {
 					tag: "contacts"
 				}, function (resp) {
-					if (resp.code == 0) {
+					if (resp.code < 1) {
 						var html = Mustache.render(util.bookTmp, resp.data);
 						util.book.html(html);
-						if (resp.data.items.length == 0) {
+						if (resp.data.items.length < 1) {
 							util.bookEdit.hide();
 							util.booknoMore.show();
 						} else {
@@ -2357,6 +2356,7 @@ require(["layer"],
 				wx.hideOptionMenu();
 			});
 			$sls.cork.hide();
+			NoticeUtil.init();
 			FeedbackUtil.init();
 			WxNoUtil.init();
 			ChatUtil.init();
@@ -2369,7 +2369,6 @@ require(["layer"],
 			AlertUtil.init();
 			RankUtil.init();
 			FavorUtil.init();
-			NoticeUtil.init();
 			initSwiper();
 
 			setTimeout(function () {
