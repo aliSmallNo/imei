@@ -1232,14 +1232,10 @@
 	{[#album_cnt]}
 	<a href="javascript:;" class="album-row line-bottom2" data-album="{[album_str]}">
 		<ul class="photos">
-			<li class="title">
-				相册({[album_cnt]})
-			</li>
-			{[#gallery3]}
-			<li>
-				<img src="{[thumb]}">
-			</li>
-			{[/gallery3]}
+			<li class="title">相册({[album_cnt]})</li>
+			{[#gallery4]}
+			<li style="background-image: url({[thumb]})"></li>
+			{[/gallery4]}
 		</ul>
 	</a>
 	{[/album_cnt]}
