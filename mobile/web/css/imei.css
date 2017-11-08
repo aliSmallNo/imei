@@ -1505,9 +1505,9 @@ section {
     font-size: 1.4rem; }
     .m-rows a .noReadFlag {
       position: absolute;
-      width: 0.6rem;
-      height: 0.6rem;
-      border-radius: 0.3rem;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 0.5rem;
       background: #f24;
       top: 1rem;
       left: 5rem; }
@@ -5855,11 +5855,11 @@ section {
       font-weight: 300; }
   .contacts a .readflag {
     position: absolute;
-    width: 0.6rem;
-    height: 0.6rem;
-    border-radius: 0.3rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 0.5rem;
     background: #f24;
-    left: 3.3rem;
+    left: 3.2rem;
     top: 0.3rem; }
 
 .magic-radio, .magic-checkbox {
@@ -6045,9 +6045,9 @@ section {
     color: #6a6572; }
   .notice-item .notice-read-flag, .favor-item .notice-read-flag {
     position: absolute;
-    width: 0.6rem;
-    height: 0.6rem;
-    border-radius: 0.3rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 0.5rem;
     background: #f24;
     left: 3.1rem;
     top: 0.4rem; }
