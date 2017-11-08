@@ -233,7 +233,7 @@ class ChatMsg extends ActiveRecord
 		$conn->createCommand($sql)->bindValues([
 			':r' => self::HAS_READ,
 			':gid' => $gid,
-			':uid' => $receiverId
+			':id' => $receiverId
 		])->execute();
 
 		$sql = 'update im_chat_group set gFirstCId=:cid,gAddedOn=now(),gAddedBy=:uid WHERE gId=:gid AND gFirstCId < 1';
