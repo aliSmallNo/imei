@@ -33,7 +33,8 @@ require(["layer"],
 			firstLoadFlag: true,
 			sprofileF: 0,
 			smeFlag: 0,
-			secretId: ''
+			secretId: '',
+			swiperFlag: 0
 		};
 
 		$(window).on("scroll", function () {
@@ -147,6 +148,7 @@ require(["layer"],
 						$(window).scrollTop(parseInt($sls.singleTop));
 					}
 					FootUtil.toggle(1);
+					SwiperUtil.init();
 					break;
 				case 'sme':
 					SmeUtil.reload();
@@ -2276,6 +2278,33 @@ require(["layer"],
 			}
 		};
 
+		var SwiperUtil = {
+			loaded: 0,
+			init: function () {
+				var util = this;
+				if (util.loaded || $('.swiper-container .swiper-slide').length < 2) {
+					return false;
+				}
+				util.loaded = 1;
+				new Swiper('.swiper-container', {
+					direction: 'horizontal',
+					loop: true,
+					pagination: '.swiper-pagination',
+					autoplay: 8000,
+					speed: 800,
+					onClick: function (swiper) {
+						var slider = $(swiper.slides[swiper.activeIndex]);
+						var url = slider.attr('data-url');
+						if (url.indexOf('http') >= 0) {
+							location.href = url;
+						} else {
+							NoticeUtil.toggle(url);
+						}
+					}
+				});
+			}
+		};
+
 		function showMsg(msg, sec, tag) {
 			var delay = sec || 3;
 			var ico = '';
@@ -2321,28 +2350,6 @@ require(["layer"],
 			});
 		}
 
-		function initSwiper() {
-			if ($('.swiper-container .swiper-slide').length < 2) {
-				return false;
-			}
-			new Swiper('.swiper-container', {
-				direction: 'horizontal',
-				loop: true,
-				pagination: '.swiper-pagination',
-				autoplay: 8000,
-				speed: 800,
-				onClick: function (swiper) {
-					var slider = $(swiper.slides[swiper.activeIndex]);
-					var url = slider.attr('data-url');
-					if (url.indexOf('http') >= 0) {
-						location.href = url;
-					} else {
-						NoticeUtil.toggle(url);
-					}
-				}
-			});
-		}
-
 		$(function () {
 			$("body").addClass("bg-color");
 			FootUtil.init();
@@ -2369,7 +2376,6 @@ require(["layer"],
 			AlertUtil.init();
 			RankUtil.init();
 			FavorUtil.init();
-			initSwiper();
 
 			setTimeout(function () {
 				GreetingUtil.show();
