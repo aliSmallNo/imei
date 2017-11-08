@@ -770,9 +770,9 @@ class User extends ActiveRecord
 		}
 		$uInfo["albumJson"] = json_encode($uInfo["album"]);
 		$uInfo["album_str"] = implode(',', $uInfo["album"]);
-		$uInfo["gallery3"] = [];
+		$uInfo["gallery4"] = [];
 		if ($uInfo["album"]) {
-			$uInfo["gallery3"] = array_slice(self::gallery($uInfo["album"]), 0, 3);
+			$uInfo["gallery4"] = array_slice(self::gallery($uInfo["album"]), 0, 4);
 		}
 		$baseInfo = [];
 		$fields = ['marital_t', 'height_t', 'weight_t', 'income_t', 'education_t', 'estate_t'];
