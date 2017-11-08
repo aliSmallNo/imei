@@ -383,6 +383,11 @@ class UserMsg extends ActiveRecord
 			':to' => date('Y-m-d 23:59'),
 			':cat' => self::CATEGORY_CHAT
 		])->queryAll();
+		AppUtil::logFile($conn->createCommand($sql)->bindValues([
+			':from' => date('Y-m-d', time() - 3600 * 12),
+			':to' => date('Y-m-d 23:59'),
+			':cat' => self::CATEGORY_CHAT
+		])->getRawSql(), 5, __FUNCTION__, __LINE__);
 		foreach ($ret as $row) {
 			$receiverUId = $row['receiverUId'];
 			$senderUId = $row['senderUId'];
@@ -390,7 +395,12 @@ class UserMsg extends ActiveRecord
 				':id' => $receiverUId
 			])->execute();
 			AppUtil::logFile([$receiverUId, $senderUId], 5, __FUNCTION__, __LINE__);
-			NoticeUtil::init(WechatUtil::NOTICE_CHAT, $receiverUId, $senderUId)->send(['有人密聊你了' . $row['cnt'] . '次']);
+			NoticeUtil::init(WechatUtil::NOTICE_CHAT, $receiverUId, $senderUId)
+				->send([
+					'千寻恋恋每日简报',
+					'有人密聊你了' . $row['cnt'] . '次',
+					date("Y年n月j日 H:i")
+				]);
 		}
 		return true;
 	}
