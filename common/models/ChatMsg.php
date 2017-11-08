@@ -229,7 +229,8 @@ class ChatMsg extends ActiveRecord
 		$cId = $entity->cId;
 
 		// 修改对方信息为已读
-		$sql = 'update im_chat_msg set cReadFlag=:r,cReadOn=:readon WHERE cGId=:gid AND cAddedBy=:id and cReadFlag=:unread';
+	/*
+	$sql = 'update im_chat_msg set cReadFlag=:r,cReadOn=:readon WHERE cGId=:gid AND cAddedBy=:id and cReadFlag=:unread';
 		$conn->createCommand($sql)->bindValues([
 			':r' => self::HAS_READ,
 			':unread' => self::NO_READ,
@@ -237,6 +238,7 @@ class ChatMsg extends ActiveRecord
 			':gid' => $gid,
 			':id' => $receiverId
 		])->execute();
+	*/
 
 		$sql = 'update im_chat_group set gFirstCId=:cid,gAddedOn=now(),gAddedBy=:uid WHERE gId=:gid AND gFirstCId < 1';
 		$conn->createCommand($sql)->bindValues([
