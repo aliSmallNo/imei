@@ -891,7 +891,7 @@ require(["layer"],
 						util.bot.get(0).scrollIntoView(true);
 					}, 300);
 				}
-				// 判断comment按钮show/hide
+				// 判断comment按钮 show/hide
 				util.leftCount = 0;
 				util.rightCount = 0;
 				util.list.find("li").each(function () {
@@ -907,7 +907,7 @@ require(["layer"],
 				util.list.find("li.right").each(function () {
 					var self = $(this);
 					if (self.attr("data-r") == 1) {
-						self.addClass("read");
+						self.removeClass("unread").addClass("read");
 					} else {
 						self.addClass("unread");
 					}
