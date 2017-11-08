@@ -708,6 +708,8 @@ class WxController extends BaseController
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
 		}
+		$chatId = self::getParam('chat_id');
+		$chatTitle = self::getParam('chat_title');
 		$uId = $wxInfo["uId"];
 		$uni = $wxInfo['uUniqid'];
 		LogAction::add($uId, $openId, LogAction::ACTION_SINGLE);
@@ -774,6 +776,8 @@ class WxController extends BaseController
 			'mpName' => $mpName,
 			'greeting' => $greeting,
 			'uni' => $uni,
+			'chatId' => $chatId,
+			'chatTitle' => $chatTitle,
 			'reasons' => self::$ReportReasons,
 			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
 			'cats' => UserComment::$commentCats,

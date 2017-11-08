@@ -28,7 +28,8 @@ require(["layer"],
 			date: $('#date'),
 			contionString: '',
 			contionVal: '',
-
+			chat_id: $('#cChatId').val(),
+			chat_title: $('#cChatTitle').val(),
 			firstLoadFlag: true,
 			sprofileF: 0,
 			smeFlag: 0,
@@ -155,6 +156,11 @@ require(["layer"],
 					ChatUtil.contacts();
 					ChatUtil.delChatBtn($(".contacts-edit"), "chat");
 					FootUtil.toggle(1);
+					if ($sls.chat_id) {
+						ChatUtil.chatRoom($sls.chat_id, $sls.chat_title);
+						$sls.chat_id = '';
+						$sls.chat_title = '';
+					}
 					break;
 				case 'noMP':
 					$sls.mainPage.addClass('bg-lighter');
@@ -490,12 +496,11 @@ require(["layer"],
 			commentBtn: $(".co-btn a"),
 			commentListTmp: $("#comment-list-temp").html(),
 			cul: $("ul.co-ul"),
-
 			commentItemTemp: $("#comment_tmp").html(),
 			commentItem: $(".comment-items"),
-
+			section: $('#schat'),
 			qId: '',
-			sid: '',// 对方的uid
+			sid: '',
 			gid: 0,
 			lastId: 0,
 			loading: 0,
@@ -530,15 +535,12 @@ require(["layer"],
 					}, 250);
 				});
 				$(document).on(kClick, ".contacts a", function () {
-					if ($(this).hasClass("chat")) {
-						util.sid = $(this).attr('data-id');
-						util.lastId = 0;
-						var name = $(this).find(".content").find("em").html();
-						$("#schat").attr("data-title", name);
-						location.href = '#schat';
+					var self = $(this);
+					if (self.hasClass("chat")) {
+						util.chatRoom(self.attr('data-id'), self.find(".content").find("em").html());
 					}
+					return false;
 				});
-				////////// 评论 start///////////
 				$(document).on(kClick, ".user-comment", function () {
 					if (util.loading) {
 						return;
@@ -549,7 +551,7 @@ require(["layer"],
 						sid: util.sid,
 					}, function (resp) {
 						util.loading = 0;
-						if (resp.code == 0) {
+						if (resp.code < 1) {
 							util.commentContent.val("");
 							util.commentlist(resp.data);
 							location.href = '#scomment';
@@ -614,7 +616,7 @@ require(["layer"],
 						cot: $.trim(cot),
 					}, function (resp) {
 						util.loading = 0;
-						if (resp.code == 0) {
+						if (resp.code < 1) {
 							//util.commentContent.val("");
 							util.commentItem.html("");
 							util.commentlist(resp.data);
@@ -625,8 +627,6 @@ require(["layer"],
 
 					}, "json");
 				});
-				////////// 评论 end ///////////
-
 
 				$(document).on(kClick, ".contacts-edit", function () {
 					var self = $(this);
@@ -653,9 +653,8 @@ require(["layer"],
 							gids: JSON.stringify(gids)
 						}, function (resp) {
 							ChatUtil.loading = 0;
-							if (resp.code == 0) {
+							if (resp.code < 1) {
 								self.next().find("a").find(".opt").find("input:checked").closest("a").remove();
-							} else {
 							}
 							showMsg(resp.msg);
 							ChatUtil.delChatBtn(self, "chat");
@@ -810,6 +809,13 @@ require(["layer"],
 						}
 					}
 				});
+			},
+			chatRoom: function (cid, name) {
+				var util = this;
+				util.sid = cid;
+				util.lastId = 0;
+				util.section.attr("data-title", name);
+				location.href = '#schat';
 			},
 			delChatBtn: function (obj, tag) {
 				if (tag == "edit") {

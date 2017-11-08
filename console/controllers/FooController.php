@@ -9,16 +9,13 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
-use common\models\Log;
 use common\models\Pin;
 use common\models\User;
-use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\PushUtil;
-use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -867,29 +864,6 @@ class FooController extends Controller
 		echo $res->getStatusCode();
 		echo $res->getHeaderLine('content-type');
 		echo $res->getBody();*/
-	}
-
-	protected function downloadFile($url, $saveAs)
-	{
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		if (strpos($url, 'https') !== false) {
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); //不验证证书
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); //不验证证书
-		}
-		$file_content = curl_exec($ch);
-		$httpInfo = curl_getinfo($ch);
-		curl_close($ch);
-		$contentType = $httpInfo["content_type"];
-		$contentType = strtolower($contentType);
-		$ext = AppUtil::getExtName($contentType);
-		$saveAs .= '.' . $ext;
-		$downloaded_file = fopen($saveAs, 'w');
-		fwrite($downloaded_file, $file_content);
-		fclose($downloaded_file);
-		return $saveAs;
 	}
 
 	public function actionZp()

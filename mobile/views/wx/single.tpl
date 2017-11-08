@@ -841,6 +841,8 @@
 </div>
 <input type="hidden" id="cEncryptId" value="{{$encryptId}}">
 <input type="hidden" id="cUNI" value="{{$uni}}">
+<input type="hidden" id="cChatId" value="{{$chatId}}">
+<input type="hidden" id="cChatTitle" value="{{$chatTitle}}">
 <script>
 	var mProvinces = {{$provinces}};
 	var catDes = {{$catDes}};
@@ -1090,7 +1092,6 @@
 		{[/readflag]}
 	</a>
 	{[/items]}
-
 </script>
 <script type="text/template" id="tpl_chat_share">
 	<div class="topup-wrap">
@@ -1335,4 +1336,4 @@
 <script src="/assets/js/mustache.min.js?v=1.2.1"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
 <script src="/assets/js/swiper.jquery.min.js"></script>
-<script data-main="/js/single.js?v=1.1.2.8" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.1.2.9" src="/assets/js/require.js"></script>
