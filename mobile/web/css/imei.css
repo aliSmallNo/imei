@@ -3178,7 +3178,8 @@ section {
       .m-top-users li .head img {
         width: 32rem;
         height: 32rem;
-        vertical-align: middle; }
+        vertical-align: middle;
+        filter: contrast(130%); }
         .m-top-users li .head img.avatar {
           width: 4rem;
           height: 4rem;
