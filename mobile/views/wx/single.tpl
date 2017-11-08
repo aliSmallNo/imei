@@ -47,7 +47,7 @@
 	<div class="swiper-container">
 		<div class="swiper-wrapper">
 			{{foreach from=$adverts item=item}}
-			<div class="swiper-slide"><img src="{{$item}}" alt=""></div>
+			<div class="swiper-slide" data-url="{{$item.url}}"><img src="{{$item.image}}" alt=""></div>
 			{{/foreach}}
 		</div>
 		<div class="swiper-pagination"></div>
@@ -1335,4 +1335,4 @@
 <script src="/assets/js/mustache.min.js?v=1.2.1"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
 <script src="/assets/js/swiper.jquery.min.js"></script>
-<script data-main="/js/single.js?v=1.1.2.6" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.1.2.8" src="/assets/js/require.js"></script>
