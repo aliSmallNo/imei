@@ -880,6 +880,9 @@ class FooController extends Controller
 //		$res = Log::sCenterItems(120003);
 
 //		 echo AppUtil::encrypt(143696) . "\n";
+
+		//
+//		User::propStat("2017-07-17","2017-11-08");
 	}
 
 

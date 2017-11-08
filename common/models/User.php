@@ -2186,6 +2186,19 @@ class User extends ActiveRecord
 			$strCriteria = ' AND uGender=' . $gender;
 		}
 		$role = self::ROLE_SINGLE;
+
+		$sql = "select COUNT(1) as co ,uMarital as val, uGender as gender
+				from im_user 
+				where uStatus <8 and uRole=:role AND uGender>9 
+					and uAddedOn between :sDate and :eDate $strCriteria
+				GROUP by uMarital,uGender ";
+		$ret = AppUtil::db()->createCommand($sql)->bindValues([
+			":role" => $role,
+			":sDate" => $beginDate . ' 00:00:00',
+			":eDate" => $endDate . ' 23:59:00',
+		])->queryAll();
+		$marrayData = $fmtRet($ret, self::$Marital);
+
 		$sql = "select COUNT(1) as co ,uIncome as val, uGender as gender
 				from im_user 
 				where uStatus <8 and uRole=:role AND uGender>9 
@@ -2297,6 +2310,7 @@ class User extends ActiveRecord
 			'height' => $heightData,
 			'gender' => $genderData,
 			'edu' => $eduData,
+			'mar' => $marrayData,
 			'times' => $times
 		];
 	}
