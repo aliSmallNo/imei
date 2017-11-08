@@ -161,7 +161,7 @@ require(["layer"],
 							ChatUtil.chatRoom($sls.chat_id, $sls.chat_title);
 							$sls.chat_id = '';
 							$sls.chat_title = '';
-						}, 400);
+						}, 500);
 					}
 					break;
 				case 'noMP':
