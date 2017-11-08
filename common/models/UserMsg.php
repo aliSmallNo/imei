@@ -371,11 +371,11 @@ class UserMsg extends ActiveRecord
 		}
 
 		// Rain: 单独处理chat info
+		//$criteria.=' AND mUId=131379 '; // Rain: for testing
 		$sql = "SELECT count(1) as cnt, mUId as receiverUId,mAddedBy as senderUId, mCategory as cat
 			 FROM im_user_msg
 			 WHERE mAddedOn BETWEEN :from AND :to $criteria  
 			 AND mAlertFlag=0 AND mCategory =:cat 
-			 AND mUId=131379
 			 GROUP BY mUId,mCategory
 			 ORDER BY mUId,mId";
 		$ret = $conn->createCommand($sql)->bindValues([
