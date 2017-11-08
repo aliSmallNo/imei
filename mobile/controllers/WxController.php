@@ -9,12 +9,17 @@
 namespace mobile\controllers;
 
 use common\models\City;
+use common\models\Date;
+use common\models\Log;
 use common\models\LogAction;
+use common\models\QuestionGroup;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserComment;
 use common\models\UserMsg;
 use common\models\UserNet;
+use common\models\UserQR;
+use common\models\UserSign;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
