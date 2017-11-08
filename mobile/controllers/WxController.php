@@ -744,7 +744,8 @@ class WxController extends BaseController
 			$service = AppUtil::wechatUrl() . "/images/ad/service_male.jpg";
 			$service_sm = AppUtil::wechatUrl() . "/images/ad/service_male_sm.jpg";
 		}
-		$adverts = [$service, AppUtil::wechatUrl() . "/images/ad/activity_1111.jpg"];
+		$adverts = [$service];
+		//[$service, AppUtil::wechatUrl() . "/images/ad/activity_1111.jpg"];
 
 		return self::renderPage("single.tpl", [
 			'noReadFlag' => $noReadFlag,

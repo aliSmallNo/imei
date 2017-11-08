@@ -2312,12 +2312,19 @@ require(["layer"],
 		}
 
 		function initSwiper() {
+			if ($('.swiper-container .swiper-slide').length < 2) {
+				return false;
+			}
 			new Swiper('.swiper-container', {
 				direction: 'horizontal',
 				loop: true,
 				pagination: '.swiper-pagination',
 				autoplay: 8000,
-				speed: 800
+				speed: 800,
+				onClick: function (swiper) {
+					var slider = swiper.slides[swiper.activeIndex];
+					console.log(slider);
+				}
 			});
 		}
 
