@@ -383,11 +383,6 @@ class UserMsg extends ActiveRecord
 			':to' => date('Y-m-d 23:59'),
 			':cat' => self::CATEGORY_CHAT
 		])->queryAll();
-		AppUtil::logFile($conn->createCommand($sql)->bindValues([
-			':from' => date('Y-m-d', time() - 3600 * 12),
-			':to' => date('Y-m-d 23:59'),
-			':cat' => self::CATEGORY_CHAT
-		])->getRawSql(), 5, __FUNCTION__, __LINE__);
 		foreach ($ret as $row) {
 			$receiverUId = $row['receiverUId'];
 			$senderUId = $row['senderUId'];
