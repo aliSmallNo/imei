@@ -1291,7 +1291,6 @@ class User extends ActiveRecord
 			$condition = " u.uRole=$uRole AND u.uGender=$gender and u.uMarital in ($marry) AND u.uStatus in (" . implode(',', self::$StatusVisible) . ") " . $ageLimit;
 		}
 
-
 		$prov = '江苏';
 		$city = '盐城';
 		$country = '东台';
@@ -1371,7 +1370,7 @@ class User extends ActiveRecord
 		}
 
 		$loc = "江苏";
-		$fmRank = "(CASE WHEN uMarital in (100,110,120) then 10 else 0 end) as fmRank";
+		$fmRank = "(CASE WHEN uMarital in (0,100,110,120) then 10 else 0 end) as fmRank";
 		$ageRank = "";
 		if ($data) {
 			$homeland = json_decode($myInfo->uHomeland, 1);
@@ -1387,7 +1386,7 @@ class User extends ActiveRecord
 				$l = $data['loc'];
 				switch ($l) {
 					case "all":
-						$loc = "江苏";
+						$loc = $shi;
 						break;
 					case "province":
 						$loc = $prov;
