@@ -149,6 +149,26 @@ require(["layer"],
 					}
 					return false;
 				});
+				$(document).on(kClick, ".sedit_mult_wrap a", function () {
+					var self = $(this);
+					var tag = self.closest(".sedit_mult_wrap").attr("data-tag");
+					if (self.hasClass("sedit_mult_options_btn")) {
+						var html = "";
+						self.closest(".sedit_mult_wrap").find(".sedit_mult_options").find("a.active").each(function () {
+							html += $(this).html();
+						});
+						console.log(html);
+						console.log(tag);
+						$("[data-field=" + tag + "]").find(".action-val").html(html);
+						util.toggle();
+					} else {
+						if (self.hasClass("active")) {
+							self.removeClass("active");
+						} else {
+							self.addClass("active");
+						}
+					}
+				});
 				$(document).on(kClick, ".action-cond", function () {
 					util.btn = $(this);
 					var field = $(this).attr("data-field");
@@ -208,8 +228,14 @@ require(["layer"],
 					$(".action-com").each(function () {
 						var self = $(this);
 						var field = self.attr("data-field");
-						var Val = self.find("em").attr("data-key");
-						$sls.postData[field] = Val;
+						var Val;
+						if (self.hasClass("action-mult")) {
+
+						} else {
+							Val = self.find("em").attr("data-key");
+							$sls.postData[field] = Val;
+						}
+
 					});
 
 					var cItem = {};
@@ -239,7 +265,8 @@ require(["layer"],
 						}
 					});
 					$sls.postData["filter"] = JSON.stringify(cItem);
-					// console.log($sls.postData);
+					console.log($sls.postData);
+					// return;
 
 					var localId = util.avatar.attr("localId");
 					if (localId) {
