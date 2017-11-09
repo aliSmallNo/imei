@@ -1482,6 +1482,7 @@ class User extends ActiveRecord
 			$data["secretId"] = AppUtil::encrypt($row["uId"]);
 			$data["uni"] = $row["uUniqid"];
 			$data["avatar"] = $row["uAvatar"];
+			$data["thumb"] = $row["uThumb"];
 			$data["cert"] = (isset($row["uCertStatus"]) && $row["uCertStatus"] == User::CERT_STATUS_PASS ? 1 : 0);
 			$data["mavatar"] = $row["mpavatar"];
 			$data["mpname"] = $row["mpname"];

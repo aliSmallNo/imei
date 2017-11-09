@@ -222,6 +222,12 @@ class ApiController extends Controller
 					return self::renderAPI(129, '用户不存在~');
 				}
 				break;
+			case 'filter':
+				$openId = self::postParam("id");
+				$page = self::postParam("page", 1);
+				$ret = User::getFilter($openId, [], $page, 15);
+				return self::renderAPI(0, '', $ret);
+				break;
 		}
 		return self::renderAPI($ret["code"], $ret["msg"]);
 	}

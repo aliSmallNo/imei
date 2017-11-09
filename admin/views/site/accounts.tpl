@@ -324,7 +324,46 @@
 		font-size: 12px;
 	}
 
+	.user-list {
+		height: 400px;
+		overflow-y: auto;
+		margin: 0;
+		padding-left: 2em;
+		padding-right: 1em;
+		list-style: none;
+	}
 
+	.user-list .wrap {
+		display: flex;
+		border-bottom: 1px solid #E4E4E4;
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+
+	.user-list .avatar {
+		flex: 0 0 56px;
+		text-align: center;
+	}
+
+	.user-list .num {
+		flex: 0 0 32px;
+		font-size: 13px;
+	}
+
+	.user-list .avatar img {
+		width: 50px;
+		vertical-align: middle;
+	}
+
+	.user-list .u-info {
+		flex: 1;
+		padding-left: 10px;
+	}
+
+	.user-list .u-info .i-cert {
+		font-size: 12px;
+		color: #969696;
+	}
 </style>
 <div class="row">
 	<h4>用户列表
@@ -474,13 +513,14 @@
 				<span>{{$item}}</span>
 				{{/foreach}}
 			</td-->
-		<td>
+		<td data-oid="{{$prod.openid}}">
 			<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改信息</a>
 			<a href="javascript:;" class="check btn btn-outline btn-primary btn-xs" data-id="{{$prod.id}}"
 				 data-st="{{$prod.status}}" data-sst="{{$prod.substatus}}" data-reasons="">审核用户</a>
 			<div class="btn-divider"></div>
-			<a href="/site/follow?id={{$prod.id}}" class="follow btn btn-outline btn-success btn-xs">跟进详情{{if $prod.co>0}}
-				({{$prod.co}}){{/if}}</a>
+			<!--a href="/site/follow?id={{$prod.id}}" class="follow btn btn-outline btn-success btn-xs">跟进详情{{if $prod.co>0}}
+				({{$prod.co}}){{/if}}</a-->
+			<a href="javascript:;" class="btn-list btn btn-outline btn-success btn-xs">推荐列表</a>
 			<a href="/site/interview?id={{$prod.id}}"
 				 class="follow btn btn-outline btn-success btn-xs">和TA密聊{{if $prod.mco>0}}({{$prod.mco}}){{/if}}</a>
 			<div class="btn-divider"></div>
@@ -497,12 +537,11 @@
 	</tbody>
 </table>
 {{$pagination}}
-<div class="modal fade" id="modModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal" id="modModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-									aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title">审核用户</h4>
 			</div>
 			<div class="modal-body">
@@ -543,7 +582,6 @@
 									</ul>
 								</div>
 							</div>
-
 							<div class="input-group">
 								<input type="text" class="form-control" name="reasons" data-tag="nickname" placeholder="昵称不合规原因">
 								<div class="input-group-btn">
@@ -559,7 +597,6 @@
 									</ul>
 								</div>
 							</div>
-
 							<div class="input-group">
 								<input type="text" class="form-control" name="reasons" data-tag="intro" placeholder="个人简介不合规原因">
 								<div class="input-group-btn">
@@ -572,7 +609,6 @@
 									</ul>
 								</div>
 							</div>
-
 							<div class="input-group">
 								<input type="text" class="form-control" name="reasons" data-tag="interest" placeholder="个人兴趣不合规原因">
 								<div class="input-group-btn">
@@ -585,7 +621,6 @@
 									</ul>
 								</div>
 							</div>
-
 						</div>
 					</div>
 				</div>
@@ -597,12 +632,11 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="avModal" tabindex="-1" role="dialog">
+<div class="modal" id="avModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document" style="width: 276px;">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-									aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title">设置用户头像</h4>
 			</div>
 			<div class="modal-body av-wrap">
@@ -616,17 +650,14 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="DummyModal" tabindex="-1" role="dialog">
+<div class="modal" id="DummyModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-									aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title">选择稻草人与TA聊天</h4>
 			</div>
-			<div class="modal-body">
-
-			</div>
+			<div class="modal-body"></div>
 			<div class="modal-footer" style="overflow: hidden">
 				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 				<button type="button" class="btn btn-primary" id="btnSaveDu">确定保存</button>
@@ -634,20 +665,34 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="sysNoticeModal" tabindex="-1" role="dialog">
+<div class="modal" id="sysNoticeModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-									aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title">通知内容</h4>
 			</div>
-			<div class="modal-body">
-
-			</div>
+			<div class="modal-body"></div>
 			<div class="modal-footer" style="overflow: hidden">
 				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 				<button type="button" class="btn btn-primary" id="sysNoticeSave">确定保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal" id="usersModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Ta的推荐列表</h4>
+			</div>
+			<div class="modal-body">
+				<ul class="user-list"></ul>
+			</div>
+			<div class="modal-footer" style="overflow: hidden">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<!--button type="button" class="btn btn-primary" id="sysNoticeSave">确定保存</button-->
 			</div>
 		</div>
 	</div>
@@ -671,11 +716,87 @@
 		</div>
 	</form>
 </script>
+<script type="text/html" id="tpl_user">
+	{[#data]}
+	<li>
+		<div class="wrap">
+			<div class="num">{[idx]}.</div>
+			<div class="avatar">
+				<img src="{[thumb]}" class="nic">
+			</div>
+			<div class="u-info">
+				<div><b>{[name]}</b> {[#cert]}<i class="i-cert">已认证</i>{[/cert]}</div>
+				<div>{[age]}岁 . {[height]} . {[horos]} . {[job]} . {[location]}</div>
+			</div>
+		</div>
+	</li>
+	{[/data]}
+</script>
 <script>
-	var dummys ={{$dummys}}
+	var dummys ={{$dummys}};
 </script>
 <script>
 	var loading = 0;
+	var mPageIndex = 1;
+	var mUserTmp = $('#tpl_user').html();
+	var mUserList = $('.user-list');
+	var mUnis = [];
+	var mOpenId = '';
+	var mLoading = false;
+	var mUserIndex = 1;
+	$(document).on("click", ".btn-list", function () {
+		mPageIndex = 1;
+		mUserIndex = 1;
+		mUnis = [];
+		mUserList.html('');
+		mOpenId = $(this).closest('td').attr('data-oid');
+		reloadUsers();
+		$("#usersModal").modal('show');
+	});
+
+	function reloadUsers() {
+		if (!mOpenId || mLoading) return;
+		mLoading = true;
+		$.post('/api/user',
+			{
+				tag: 'filter',
+				id: mOpenId,
+				page: mPageIndex
+			}, function (resp) {
+				var items = [];
+				$.each(resp.data.data, function () {
+					var uni = this['uni'];
+					if (!uni) {
+						this.idx = mUserIndex;
+						items.push(this);
+					} else if (mUnis.indexOf(uni) < 0) {
+						this.idx = mUserIndex;
+						items.push(this);
+						mUnis.push(uni);
+					}
+					mUserIndex++;
+				});
+				var html = Mustache.render(mUserTmp, {data: items});
+				if (mPageIndex < 2) {
+					mUserList.html(html);
+				} else {
+					mUserList.append(html);
+				}
+				mPageIndex = resp.data.nextpage;
+				mLoading = false;
+			}, 'json');
+	}
+
+	function eleInScreen($el) {
+		return $el[0].scrollTop + $el.height() + 200 > $el[0].scrollHeight;
+	}
+
+	mUserList.on("scroll", function () {
+		if (eleInScreen(mUserList) && mPageIndex > 0) {
+			reloadUsers();
+		}
+		return false;
+	});
 
 	$(document).on("click", ".addSysNotice", function () {
 		var Vhtml = $("#sysNoticeTemp").html();
@@ -697,7 +818,7 @@
 			tag: "sys_notice"
 		}, function (res) {
 			loading = 0;
-			if (res.code == 0) {
+			if (res.code < 1) {
 				$("#sysNoticeModal").modal('hide');
 			}
 		}, "json");
@@ -750,7 +871,7 @@
 			tag: "refresh",
 			id: self.attr('data-id')
 		}, function (resp) {
-			if (resp.code == 0) {
+			if (resp.code < 1) {
 				location.reload();
 			}
 			layer.msg(resp.msg);
@@ -762,7 +883,7 @@
 			tag: "del-user",
 			id: id
 		}, function (resp) {
-			if (resp.code == 0) {
+			if (resp.code < 1) {
 				location.reload();
 			}
 			layer.msg(resp.msg);
@@ -781,7 +902,7 @@
 			angle: "90",
 			src: self.attr('data-id')
 		}, function (resp) {
-			if (resp.code == 0) {
+			if (resp.code < 1) {
 				location.reload();
 			}
 			layer.msg(resp.msg);
@@ -815,7 +936,6 @@
 		});
 		showImages(photos, idx)
 	});
-	//////////////////////////
 
 	//	  $(document).on("click", ".album-items img", function () {
 	//		  var self = $(this);
@@ -839,7 +959,6 @@
 		};
 		showImages(photos);
 	});
-
 
 	function showImages(imagesJson, idx) {
 		if (idx) {
@@ -887,7 +1006,6 @@
 	});
 
 	$('#btnAudit').on("click", function () {
-		// console.log(uid);return;
 		var statusOPtVal = statusOPt.val();
 		var reason = [];
 		if (statusOPtVal == 2) {
@@ -920,7 +1038,7 @@
 			id: uid
 		}, function (resp) {
 			resonLoad = 0;
-			if (resp.code == 0) {
+			if (resp.code < 1) {
 				location.reload();
 			}
 			layer.msg(resp.msg);
@@ -1014,11 +1132,12 @@
 			id: mAvUId
 		}, function (resp) {
 			resonLoad = 0;
-			if (resp.code == 0) {
+			if (resp.code < 1) {
 				location.reload();
 			}
 			layer.msg(resp.msg);
 		}, "json")
 	});
+
 </script>
 {{include file="layouts/footer.tpl"}}
