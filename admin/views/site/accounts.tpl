@@ -328,7 +328,7 @@
 		height: 400px;
 		overflow-y: auto;
 		margin: 0;
-		padding-left: 2em;
+		padding-left: 1.5em;
 		padding-right: 1em;
 		list-style: none;
 	}
@@ -513,7 +513,7 @@
 				<span>{{$item}}</span>
 				{{/foreach}}
 			</td-->
-		<td data-oid="{{$prod.openid}}">
+		<td data-oid="{{$prod.openid}}" data-name="{{$prod.name}}" data-phone="{{$prod.phone}}" data-thumb="{{$prod.thumb}}">
 			<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改信息</a>
 			<a href="javascript:;" class="check btn btn-outline btn-primary btn-xs" data-id="{{$prod.id}}"
 				 data-st="{{$prod.status}}" data-sst="{{$prod.substatus}}" data-reasons="">审核用户</a>
@@ -685,7 +685,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Ta的推荐列表</h4>
+				<h4 class="modal-title users-name">Ta的推荐列表</h4>
 			</div>
 			<div class="modal-body">
 				<ul class="user-list"></ul>
@@ -749,14 +749,17 @@
 		mUserIndex = 1;
 		mUnis = [];
 		mUserList.html('');
-		mOpenId = $(this).closest('td').attr('data-oid');
+		var row = $(this).closest('td');
+		mOpenId = row.attr('data-oid');
 		reloadUsers();
 		$("#usersModal").modal('show');
+		$('.users-name').html('<img src="' + row.attr('data-thumb') + '" width="35px"> ' + row.attr('data-name') + row.attr('data-phone'));
 	});
 
 	function reloadUsers() {
 		if (!mOpenId || mLoading) return;
 		mLoading = true;
+		layer.load(2);
 		$.post('/api/user',
 			{
 				tag: 'filter',
@@ -784,6 +787,7 @@
 				}
 				mPageIndex = resp.data.nextpage;
 				mLoading = false;
+				layer.closeAll();
 			}, 'json');
 	}
 
