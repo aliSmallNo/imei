@@ -680,9 +680,9 @@ class FooController extends Controller
 				$contents[$phone] = '最近有一波' . $object . '刚注册千寻恋恋找对象，离您最近的才5公理，赶快来看看吧，关注微信公众号微媒100';
 			}*/
 			if ($gender == User::GENDER_MALE) {
-				$contents[$phone] = '“约Ta”的功能上线，感觉妹子不错就直接来约吧！回复TD退订';
+				$contents[$phone] = '今日推荐，看今天的美女是不是你的菜，详情请登录微信公众号千寻恋恋。回复TD退订';
 			} elseif ($gender == User::GENDER_FEMALE) {
-				$contents[$phone] = '有帅哥在平台约你，请尽快查看资料。回复TD退订';
+				$contents[$phone] = '今日推荐，看这周恋爱星座运势，脱单就在今天，详情请登录微信公众号千寻恋恋。回复TD退订';
 			}
 			//$contents[$phone] = '为了答谢大家对微媒100的关注，本平台将推出第一期“我们在微媒的牵手故事”为主题 ，有奖征集在微媒成功找到另一半的故事，微信公众号回复对方手机号码报名，报名对象：10月15日前成为情侣的恋人，核实后将抽取一组最佳情侣送上千元奖励哦！';
 		}
