@@ -258,9 +258,9 @@
 </section>
 <section id="scontacts" data-title="我的密聊记录">
 	{{if $advert_chat}}
-	<div class="m-service j-url" data-url="{{$advert_chat.url}}">
+	<a class="m-service" href="{{$advert_chat.url}}">
 		<img src="{{$advert_chat.image}}" alt="">
-	</div>
+	</a>
 	{{/if}}
 	<div class="m-top-pl"></div>
 	<div class="contacts-wrap">
