@@ -754,8 +754,8 @@ class WxController extends BaseController
 				'url' => '长按图片识别二维码，添加我们的客服为好友'
 			],
 			[
-				'image' => AppUtil::wechatUrl() . "/images/ad/activity_1111.jpg",
-				'url' => 'http://www.hdb.com/party/tq722.html?hdb_pos=manager_info'
+				'image' => AppUtil::wechatUrl() . "/images/ad/activity_1daylove.jpg",
+				'url' => 'http://mp.weixin.qq.com/s/ZODj8prAWrUkaTdRO3UmeA'
 			]
 		];
 
