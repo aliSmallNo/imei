@@ -148,7 +148,7 @@ require(["layer"],
 						$(window).scrollTop(parseInt($sls.singleTop));
 					}
 					FootUtil.toggle(1);
-					SwiperUtil.init();
+					AdvertUtil.initSwiper();
 					break;
 				case 'sme':
 					SmeUtil.reload();
@@ -2278,9 +2278,19 @@ require(["layer"],
 			}
 		};
 
-		var SwiperUtil = {
+		var AdvertUtil = {
 			loaded: 0,
 			init: function () {
+				$(document).on(kClick, '.j-url', function () {
+					var url = $(this).attr('data-url');
+					if (url.indexOf('http') >= 0) {
+						location.href = url;
+					} else {
+						NoticeUtil.toggle(url);
+					}
+				});
+			},
+			initSwiper: function () {
 				var util = this;
 				if (util.loaded || $('.swiper-container .swiper-slide').length < 2) {
 					return false;
@@ -2376,6 +2386,7 @@ require(["layer"],
 			AlertUtil.init();
 			RankUtil.init();
 			FavorUtil.init();
+			AdvertUtil.init();
 
 			setTimeout(function () {
 				GreetingUtil.show();

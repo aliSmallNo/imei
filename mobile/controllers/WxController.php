@@ -741,11 +741,13 @@ class WxController extends BaseController
 		$audit = UserAudit::invalid($uId, $conn);
 		$greeting = UserMsg::greeting($uId, $openId, $conn);
 		$service = AppUtil::wechatUrl() . "/images/ad/service_female.jpg";
-		$service_sm = AppUtil::wechatUrl() . "/images/ad/service_female_sm.jpg";
 		if ($uInfo["gender"] == User::GENDER_FEMALE) {
 			$service = AppUtil::wechatUrl() . "/images/ad/service_male.jpg";
-			$service_sm = AppUtil::wechatUrl() . "/images/ad/service_male_sm.jpg";
 		}
+		$advert_chat = [
+			'image' => AppUtil::wechatUrl() . "/images/ad/activity_1111_sm.jpg",
+			'url' => 'http://www.hdb.com/party/tq722.html?hdb_pos=manager_info'
+		];
 		$adverts = [
 			[
 				'image' => $service,
@@ -763,7 +765,7 @@ class WxController extends BaseController
 			'avatar' => $avatar,
 			'uInfo' => $uInfo,
 			'service' => $service,
-			'service_sm' => $service_sm,
+			'advert_chat' => $advert_chat,
 			'adverts' => $adverts,
 			'prices' => $prices,
 			'encryptId' => $encryptId,

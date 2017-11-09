@@ -770,6 +770,15 @@ section {
     color: #fff;
     background-color: #f06292; }
 
+.btn-cert {
+  background: #f779a3;
+  padding: 1rem 0;
+  display: block;
+  text-align: center;
+  border-radius: 0.5rem;
+  color: #fff;
+  margin-top: 2rem; }
+
 .roles {
   margin-top: 3rem; }
   .roles .title {

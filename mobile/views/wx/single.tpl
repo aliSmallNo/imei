@@ -257,13 +257,13 @@
 	</div>
 </section>
 <section id="scontacts" data-title="我的密聊记录">
-	{{if $service_sm}}
+	{{if $advert_chat}}
 	<div class="m-service">
-		<img src="{{$service_sm}}" alt="">
+		<img src="{{$advert_chat.image}}" alt="" class="j-url" data-url="{{$advert_chat.url}}">
 	</div>
 	{{/if}}
 	<div class="m-top-pl"></div>
-	<div class="contacts-wrap" style="position: relative">
+	<div class="contacts-wrap">
 		<a href="javascript:;" class="contacts-edit" data-tag="edit">编辑</a>
 		<div class="contacts"></div>
 		<div></div>
@@ -1180,9 +1180,7 @@
 		<ol>
 		</ol>
 		<a href="javascript:;" class="m-popup-close" style="display: none"></a>
-		<a href="{[url]}" class="m-popup-to"
-			 style="background: #f779a3;padding: 1rem 0;display: block;text-align: center;border-radius: .5rem;color: #fff;margin-top: 2rem;">
-			去实名</a>
+		<a href="{[url]}" class="m-popup-to btn-cert">去实名</a>
 	</div>
 </script>
 <script type="text/template" id="ctx_greet_new2">
