@@ -5745,22 +5745,24 @@ section
 					&.optItem
 						margin: .2rem 0
 
-		&.read
-			.content span:before
-				position: absolute
-				content: '\5df2\8bfb'
-				left: -3rem
-				font-size: 1rem
-				top: 1.2rem
-				color: $grayFontColorLight
-		&.unread
-			.content span:before
-				position: absolute
-				content: '\672a\8bfb'
-				left: -3rem
-				font-size: 1rem
-				top: 1.2rem
-				color: $grayFontColorLight
+			&.read
+				span:before
+					position: absolute
+					content: '\5df2\8bfb'
+					left: -3rem
+					font-size: 1rem
+					font-weight: $weightNormal
+					top: 1.2rem
+					color: $grayFontColorLight
+			&.unread
+				span:before
+					position: absolute
+					content: '\672a\8bfb'
+					left: -3rem
+					font-size: 1rem
+					font-weight: $weightNormal
+					top: 1.2rem
+					color: $grayFontColorLight
 
 .m-bot-pl, .m-top-pl
 	height: 1px

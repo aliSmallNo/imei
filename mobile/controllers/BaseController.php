@@ -20,7 +20,7 @@ class BaseController extends Controller
 	const ICON_OK_HTML = '<i class="fa fa-check-circle gIcon"></i> ';
 	const ICON_ALERT_HTML = '<i class="fa fa-exclamation-circle gIcon"></i> ';
 	const COOKIE_OPENID = "wx-openid";
-	const CSS_VERSION = '1.1.7.3';
+	const CSS_VERSION = '1.1.7.4';
 	static $WX_OpenId = "";
 
 	public function beforeAction($action)
@@ -32,7 +32,6 @@ class BaseController extends Controller
 		}
 
 		if (self::isLocalhost()) {
-
 			self::$WX_OpenId = Yii::$app->params['openid'];
 			AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
 			self::checkProfile(self::$WX_OpenId, $actionId);

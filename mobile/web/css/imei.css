@@ -6026,20 +6026,22 @@ section {
         border-color: #a6e264; }
         .chats li.right .content span.optItem {
           margin: 0.2rem 0; }
-  .chats li.read .content span:before {
-    position: absolute;
-    content: "已读";
-    left: -3rem;
-    font-size: 1rem;
-    top: 1.2rem;
-    color: #969696; }
-  .chats li.unread .content span:before {
-    position: absolute;
-    content: "未读";
-    left: -3rem;
-    font-size: 1rem;
-    top: 1.2rem;
-    color: #969696; }
+    .chats li.right.read span:before {
+      position: absolute;
+      content: "已读";
+      left: -3rem;
+      font-size: 1rem;
+      font-weight: 300;
+      top: 1.2rem;
+      color: #969696; }
+    .chats li.right.unread span:before {
+      position: absolute;
+      content: "未读";
+      left: -3rem;
+      font-size: 1rem;
+      font-weight: 300;
+      top: 1.2rem;
+      color: #969696; }
 
 .m-bot-pl, .m-top-pl {
   height: 1px;

@@ -965,7 +965,7 @@ require(["layer"],
 					//showMsg("聊了这么多，觉得ta怎么样呢，快去匿名评价吧~");
 					//return false;
 				}
-				var content = util.inputVal ? util.inputVal : $.trim(util.input.val());
+				var content = util.inputVal ? util.inputVal : util.input.val().trim();
 				if (!content) {
 					showMsg('聊天内容不能为空！', 3, 12);
 					return false;

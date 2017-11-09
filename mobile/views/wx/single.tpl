@@ -221,9 +221,7 @@
 
 	<div class="report_wrap schat-content">
 		<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
-		<ul class="chats">
-
-		</ul>
+		<ul class="chats"></ul>
 		<a class="user-comment" href="javascript:;" style="display: none">匿名评价TA</a>
 	</div>
 	<div class="m-bottom-pl"></div>
@@ -1064,7 +1062,7 @@
 	{[#items]}
 	<li class="{[dir]}" data-r="{[readflag]}">
 		<a href="{[url]}" {[#eid]}data-eid="{[.]}"{[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
-		<div class="content">
+		<div class="content read{[readflag]}">
 			<span style="position: relative">{[content]}</span>
 		</div>
 	</li>
