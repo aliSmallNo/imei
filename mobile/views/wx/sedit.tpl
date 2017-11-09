@@ -37,6 +37,7 @@
 		display: block;
 		border-radius: 2px;
 	}
+
 	.sedit-textarea {
 		display: flex;
 		background: #fff;
@@ -56,7 +57,8 @@
 		display: flex;
 		position: relative
 	}
-	.sedit-textarea div textarea{
+
+	.sedit-textarea div textarea {
 		width: 100%;
 		background: #fff;
 		border: none;
@@ -134,7 +136,7 @@
 </div>
 
 <!-- data-field="marital" -->
-<a class="sedit-alert action-com">
+<a class="sedit-alert">
 	<label>婚姻状态</label>
 	<div class="sedit-alert-val action-val">
 		<em data-key="{{$uInfo.marital}}">{{$uInfo.marital_t}}</em>
@@ -229,12 +231,6 @@
 		<em data-key="{{$uInfo.income}}">{{$uInfo.income_t}}</em>
 	</div>
 </a>
-<a class="sedit-textarea action-com" style="display: none">
-	<label>现在单位</label>
-	<div class="">
-		<textarea rows="4" name="" placeholder="不对第三方显示"></textarea>
-	</div>
-</a>
 
 <!-- =========== 兴趣爱好 =============== -->
 <div class="sedit-title">兴趣爱好</div>
@@ -278,6 +274,50 @@
 	<label>喜欢的食物</label>
 	<div class="sedit-alert-val action-val">
 		<em data-key="{{$uInfo.diet}}">{{$uInfo.diet_t}}</em>
+	</div>
+</a>
+
+<!-- =========== 婚恋倾向	 =============== -->
+<style>
+	.action-mult em {
+		display: block;
+	}
+
+	.sedit_hide {
+		display: none;
+	}
+</style>
+<div class="sedit-title sedit_hide">婚恋倾向</div>
+<a class="sedit_hide sedit-alert action-com action-mult" data-field="love_trend_1">
+	<label>对婚史家境教育要求</label>
+	<div class="sedit-alert-val action-val">
+		<em data-key=""></em>
+	</div>
+</a>
+<script type="text/template" id="love_trend_1Temp">
+	<div class="date-wrap sedit_mult_wrap" data-tag="love_trend_1">
+		<h4></h4>
+		<div class="date-cancel-opt sedit_mult_options">
+			<a href="javascript:;"><em data-key="">必须未婚</em></a>
+			<a href="javascript:;"><em data-key="">可接受离异不带孩</em></a>
+			<a href="javascript:;"><em data-key="">可接受离异带孩</em></a>
+			<a href="javascript:;"><em data-key="">需有稳定收入</em></a>
+			<a href="javascript:;"><em data-key="">有房有车</em></a>
+			<a href="javascript:;"><em data-key="">年收入5万以上</em></a>
+			<a href="javascript:;"><em data-key="">年收入10万以上</em></a>
+			<a href="javascript:;"><em data-key="">对收入无要求</em></a>
+			<a href="javascript:;"><em data-key="">不接受初中学历</em></a>
+			<a href="javascript:;"><em data-key="">不接受高中以下</em></a>
+		</div>
+		<div class="date-cancel">
+			<a href="javascript:;" class="btn-date-cancel sedit_mult_options_btn">确定</a>
+		</div>
+	</div>
+</script>
+<a class="sedit-textarea sedit_hide" data-field="love_trend_2">
+	<label>其他需求</label>
+	<div class="">
+		<textarea rows="4" name="" placeholder="不对第三方显示"></textarea>
 	</div>
 </a>
 
@@ -490,21 +530,6 @@
 	</div>
 </script>
 
-
-<script type="text/template" id="mTemp">
-	<div class="date-wrap">
-		<h4></h4>
-		<div class="date-cancel-opt">
-			<a href="javascript:;"><em data-key="">有过婚史</em></a>
-			<a href="javascript:;"><em data-key="">年龄太大</em></a>
-			<a href="javascript:;"><em data-key="">年龄太小</em></a>
-			<a href="javascript:;"><em data-key="">其他原因</em></a>
-		</div>
-		<div class="date-cancel">
-			<a href="javascript:;" class="btn-date-cancel">确定</a>
-		</div>
-	</div>
-</script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
