@@ -5860,7 +5860,16 @@ section {
     border-radius: 0.5rem;
     background: #f24;
     left: 3.2rem;
-    top: 0.3rem; }
+    top: 0.3rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1rem;
+    color: #fdd835;
+    text-align: center;
+    display: inline-block;
+    width: auto;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem; }
 
 .magic-radio, .magic-checkbox {
   position: absolute;

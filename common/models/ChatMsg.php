@@ -229,16 +229,16 @@ class ChatMsg extends ActiveRecord
 		$cId = $entity->cId;
 
 		// 修改对方信息为已读
-	/*
-	$sql = 'update im_chat_msg set cReadFlag=:r,cReadOn=:readon WHERE cGId=:gid AND cAddedBy=:id and cReadFlag=:unread';
-		$conn->createCommand($sql)->bindValues([
-			':r' => self::HAS_READ,
-			':unread' => self::NO_READ,
-			':readon' => date("Y-m-d H:i:s"),
-			':gid' => $gid,
-			':id' => $receiverId
-		])->execute();
-	*/
+		/*
+		$sql = 'update im_chat_msg set cReadFlag=:r,cReadOn=:readon WHERE cGId=:gid AND cAddedBy=:id and cReadFlag=:unread';
+			$conn->createCommand($sql)->bindValues([
+				':r' => self::HAS_READ,
+				':unread' => self::NO_READ,
+				':readon' => date("Y-m-d H:i:s"),
+				':gid' => $gid,
+				':id' => $receiverId
+			])->execute();
+		*/
 
 		$sql = 'update im_chat_group set gFirstCId=:cid,gAddedOn=now(),gAddedBy=:uid WHERE gId=:gid AND gFirstCId < 1';
 		$conn->createCommand($sql)->bindValues([
@@ -471,29 +471,36 @@ class ChatMsg extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		$limit = ' LIMIT ' . ($page - 1) * $pageSize . ',' . ($pageSize + 1);
-		$sql = 'select * FROM (select    
-			 g.gUId2 as uid,g.gId as gid, 
-			 u.uName as `name`, u.uThumb as avatar,u.uUniqid as uni,
-			 m.cId as cid,m.cContent as content,m.cAddedOn,m.cReadFlag,m.cAddedBy
-			 from im_chat_group as g 
-			  JOIN im_chat_msg as m on g.gId=m.cGId AND g.gLastCId=m.cId
-			  JOIN im_user as u on u.uId=g.gUId2
-			 WHERE g.gUId1=:uid  and g.gStatus=:st
-			 UNION 
-			 select    
-			 g.gUId1 as uid, g.gId as gid, 
-			 u.uName as `name`, u.uThumb as avatar,u.uUniqid as uni,
-			 m.cId as cid,m.cContent as content,m.cAddedOn,m.cReadFlag,m.cAddedBy
-			 from im_chat_group as g 
-			  JOIN im_chat_msg as m on g.gId=m.cGId AND g.gLastCId=m.cId
-			  JOIN im_user as u on u.uId=g.gUId1
-			 WHERE g.gUId2=:uid and g.gStatus=:st) as t
-			 order by cAddedOn desc ' . $limit;
+		$sql = 'SELECT t.*, COUNT(m.cId) as cnt 
+				FROM (SELECT    
+				 	g.gUId2 as uid,g.gId as gid, 
+				 	u.uName as `name`, u.uThumb as avatar,u.uUniqid as uni,
+				 	m.cId as cid,m.cContent as content,m.cAddedOn,m.cReadFlag,m.cAddedBy
+				 	FROM im_chat_group as g 
+				  	JOIN im_chat_msg as m on g.gId=m.cGId AND g.gLastCId=m.cId
+				  	JOIN im_user as u on u.uId=g.gUId2
+				 	WHERE g.gUId1=:uid  and g.gStatus=:st
+				 	UNION 
+				 	SELECT    
+				 	g.gUId1 as uid, g.gId as gid, 
+				 	u.uName as `name`, u.uThumb as avatar,u.uUniqid as uni,
+				 	m.cId as cid,m.cContent as content,m.cAddedOn,m.cReadFlag,m.cAddedBy
+				 	FROM im_chat_group as g 
+				  	JOIN im_chat_msg as m on g.gId=m.cGId AND g.gLastCId=m.cId
+				  	JOIN im_user as u on u.uId=g.gUId1
+				 	WHERE g.gUId2=:uid and g.gStatus=:st) as t
+			 	LEFT JOIN im_chat_msg as m on m.cGId=t.gid AND m.cReadFlag=0 AND m.cAddedBy!=:uid
+			 	GROUP BY t.gid,t.uid
+			 	ORDER BY cAddedOn DESC ' . $limit;
 
 		$contacts = $conn->createCommand($sql)->bindValues([
 			':uid' => $uId,
 			':st' => self::ST_ACTIVE,
 		])->queryAll();
+		AppUtil::logFile($conn->createCommand($sql)->bindValues([
+			':uid' => $uId,
+			':st' => self::ST_ACTIVE,
+		])->getRawSql(), 5, __FUNCTION__, __LINE__);
 		$nextPage = 0;
 		if ($contacts && count($contacts) > $pageSize) {
 			array_pop($contacts);

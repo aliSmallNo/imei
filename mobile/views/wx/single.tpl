@@ -1088,7 +1088,7 @@
 			<div class="bot-t">{[content]}</div>
 		</div>
 		{[^readflag]}
-		<span class="readflag"></span>
+		<span class="readflag">{[cnt]}</span>
 		{[/readflag]}
 	</a>
 	{[/items]}
