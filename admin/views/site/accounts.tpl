@@ -341,7 +341,7 @@
 	}
 
 	.user-list .avatar {
-		flex: 0 0 56px;
+		flex: 0 0 60px;
 		text-align: center;
 	}
 
@@ -351,7 +351,7 @@
 	}
 
 	.user-list .avatar img {
-		width: 50px;
+		width: 55px;
 		vertical-align: middle;
 	}
 
