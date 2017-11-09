@@ -278,7 +278,7 @@ class SiteController extends BaseController
 		$bundle = self::getBundle('page', 'name', 'location', 'phone', 'fonly', 'inactive', 'status', 'sub_status', 'user_type');
 		list($page, $name, $location, $phone, $fonly, $inactive, $status, $sub_status, $user_type) = array_values($bundle);
 		if (!$page) $page = 1;
-		if (!$status) $status = User::STATUS_PENDING;
+		if (!strlen($status)) $status = User::STATUS_PENDING;
 		$suffix = '';
 		foreach ($bundle as $field => $val) {
 			if ($field == 'status' || $field == 'page') continue;
