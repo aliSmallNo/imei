@@ -756,6 +756,10 @@ class WxController extends BaseController
 			[
 				'image' => AppUtil::wechatUrl() . "/images/ad/activity_1daylove.jpg",
 				'url' => 'http://mp.weixin.qq.com/s/ZODj8prAWrUkaTdRO3UmeA'
+			],
+			[
+				'image' => AppUtil::wechatUrl() . "/images/ad/activity_1111.jpg",
+				'url' => 'http://www.hdb.com/party/tq722.html?hdb_pos=manager_info'
 			]
 		];
 
