@@ -618,10 +618,10 @@ class FooController extends Controller
 		}
 		$sql = "SELECT u.uId,u.uName,u.uPhone,u.uGender,u.uStatus,uLocation,
 					IFNULL(w.wSubscribe,0) as sub, DATEDIFF(Now(),uLogDate) as dc 
-			 FROM im_user as u 
-			 JOIN im_user_wechat as w on w.wUId=u.uId
-			 WHERE u.uGender in (10,11) AND u.uStatus < 8 AND uPhone !='' AND uOpenId LIKE 'oYDJew%' $strCriteria
-			 ORDER BY u.uId,u.uName,u.uPhone";
+				 FROM im_user as u 
+				 JOIN im_user_wechat as w on w.wUId=u.uId
+				 WHERE u.uGender in (10,11) AND u.uStatus < 8 AND uPhone !='' AND uOpenId LIKE 'oYDJew%' $strCriteria
+				 ORDER BY u.uId,u.uName,u.uPhone";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$contents = [];
 		foreach ($ret as $row) {
