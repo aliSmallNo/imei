@@ -1267,12 +1267,17 @@ class User extends ActiveRecord
 
 		$gender = $myInfo->uGender;
 		$birthYear = $myInfo->uBirthYear;
-		$ageLimit = '';
+		$ageLimit = $ageRank = '';
+		$ageFrom = $ageTo = 0;
 		if ($gender && $gender == self::GENDER_MALE && $birthYear) {
-			$ageLimit = ' AND u.uBirthYear BETWEEN ' . ($birthYear - 5) . ' AND ' . ($birthYear + 12);
+			$ageLimit = ' AND u.uBirthYear BETWEEN ' . ($birthYear - 3) . ' AND ' . ($birthYear + 9);
+			$ageFrom = $birthYear - 1;
+			$ageTo = $birthYear + 3;
 		}
 		if ($gender && $gender == self::GENDER_FEMALE && $birthYear) {
-			$ageLimit = ' AND u.uBirthYear BETWEEN ' . ($birthYear - 12) . ' AND ' . ($birthYear + 3);
+			$ageLimit = ' AND u.uBirthYear BETWEEN ' . ($birthYear - 9) . ' AND ' . ($birthYear + 2);
+			$ageFrom = $birthYear - 3;
+			$ageTo = $birthYear + 1;
 		}
 
 		$gender = ($gender == self::GENDER_FEMALE) ? self::GENDER_MALE : self::GENDER_FEMALE;
@@ -1353,7 +1358,10 @@ class User extends ActiveRecord
 			$myLat = $ret['pLat'];
 			$myLng = $ret['pLng'];
 			$tmpDist = 'ROUND(IFNULL(ST_Distance(POINT(' . $myLat . ', ' . $myLng . '), p.pPoint) * 111.195,9999),1)';
-			$distRank = "u.uRank + (case when $tmpDist <= 30 then 40 
+			$distRank = "UNIX_TIMESTAMP(u.uLogDate)/1000 
+							+ UNIX_TIMESTAMP(u.uAddedOn)/1000 
+							+ (CASE WHEN u.uBirthYear BETWEEN " . $ageFrom . " AND " . $ageTo . " then 10000 else 0 END)
+			                + (case when $tmpDist <= 30 then 40 
 							when $tmpDist <= 60 AND $tmpDist > 30 then 32
 							when $tmpDist <= 90 AND $tmpDist > 60 then 24
 							when $tmpDist <= 120 AND $tmpDist > 90 then 16
@@ -1413,13 +1421,16 @@ class User extends ActiveRecord
 		}
 		$flRank = "(CASE WHEN uLocation like '%$loc%' then 10 else 0 end) as flRank";
 
-		$sql = "SELECT u.*, (CASE WHEN uSubStatus=4 THEN 1 ELSE 9 END) as stickRank,$distRank ,$distField ,$flRank,$fmRank
+		$sql = "SELECT u.*, (CASE WHEN uSubStatus=4 THEN 1 ELSE 9 END) as stickRank,
+ 				$distRank ,$distField ,$flRank,$fmRank
 				FROM im_user as u 
 				JOIN im_user_wechat as w on u.uId=w.wUId AND w.wSubscribe=1
 				LEFT JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=$pinCat
-				WHERE $condition  order by stickRank,fmRank desc,flRank desc,$ageRank mRank desc limit $limit";
+				WHERE $condition 
+				ORDER BY stickRank,fmRank desc,flRank desc,$ageRank mRank desc limit $limit";
 
 		$ret = $conn->createCommand($sql)->queryAll();
+		AppUtil::logFile($conn->createCommand($sql)->getRawSql(), 5, __FUNCTION__, __LINE__);
 		$rows = [];
 		$IDs = [0];
 		foreach ($ret as $row) {
