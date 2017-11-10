@@ -2162,6 +2162,7 @@ require(["layer"],
 		var alertModel = {
 			tmp: $('#ctx_greet_new').html(),
 			tmp2: $('#ctx_greet_new2').html(),
+			tmp3: $('#ctx_greet_new3').html(),
 			//content: $.trim($('#ctx_greet').html()),
 			content: '',
 			init: function () {
@@ -2193,6 +2194,15 @@ require(["layer"],
 					url: url
 				});
 				$sls.content.html(html).addClass("animate-pop-in");
+				$sls.shade.fadeIn(160);
+			},
+			show3: function (url) {
+				var util = this;
+				$sls.main.show();
+				var html =  Mustache.render(util.tmp3, {
+					url: "/images/active_greeting.jpg"
+				});
+				$sls.content.html(html).addClass("animate-pop-in height90");
 				$sls.shade.fadeIn(160);
 			}
 		};
@@ -2379,6 +2389,8 @@ require(["layer"],
 			ChatUtil.init();
 			GreetingUtil.init();
 			alertModel.init();
+			//alertModel.show2("title","sdfsfsfsf","javascript:;");
+			alertModel.show3('');
 			MeipoUtil.init();
 			ProfileUtil.init();
 			ResumeUtil.init();

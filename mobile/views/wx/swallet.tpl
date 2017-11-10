@@ -19,7 +19,6 @@
 				</div>
 			</li>
 			{{/foreach}}
-			{{if $isDebug}}
 			<li style="margin-top:1.5rem">
 				<div class="title m-ico-member">单身俱乐部单身会员
 					<a href="javascript:;">￥299</a>
@@ -27,7 +26,6 @@
 				<div class="action"><a href="javascript:;" class="btn-recharge" data-id="99" data-cat="member">99元</a>
 				</div>
 			</li>
-			{{/if}}
 		</ul>
 		<p class="tip-block">媒桂花仅用于打赏，不能提现或退款</p>
 	</div>
@@ -54,4 +52,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/swallet.js?v=1.1.4" src="/assets/js/require.js"></script>
+<script data-main="/js/swallet.js?v=1.1.5" src="/assets/js/require.js"></script>

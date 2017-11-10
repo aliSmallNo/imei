@@ -160,8 +160,8 @@ class ApiController extends Controller
 				$IsXcx = self::postParam('xflag', 0); // 是否为小程序支付订单
 				$num = intval($amt * 10.0);
 				$title = '千寻恋恋-充值';
-				$subTitle = '充值' . $num . '媒桂花';
 				$pcat = $cat == "member" ? Pay::CAT_MEMBER : Pay::CAT_RECHARGE;
+				$subTitle = $cat == "member" ? "单身会员充值" : '充值' . $num . '媒桂花';
 				$payId = Pay::prepay($wxInfo['uId'], $num, $amt * 100, $pcat);
 				if (AppUtil::isDev()) {
 					return self::renderAPI(129, '请在服务器测试该功能~');
@@ -170,7 +170,7 @@ class ApiController extends Controller
 //				$payFee = $amt;
 				$payFee = intval($amt * 100);
 				if (AppUtil::isDebugger($wxInfo["uId"])) {
-					$payFee = $amt;
+					$payFee = 1;
 				}
 				$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);
 				if ($ret) {

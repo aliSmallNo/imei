@@ -121,7 +121,8 @@
 			<a href="/wx/comments"><span class="title">对我的评论</span></a>
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">我的账户</span> <i class="i-mark-base i-mark-rose"></i></a>
 			<a href="/wx/mshare"><span class="title">分享给朋友</span></a>
-			<a href="/wx/cert2?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span class="tip">已认证</span>{{/if}}</a>
+			<a href="/wx/cert2?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span
+								class="tip">已认证</span>{{/if}}</a>
 			<a href="/wx/notice"><span class="title">通知</span>{{if $noReadFlag}}<span class="noReadFlag"></span>{{/if}}</a>
 		</div>
 		<div class="m-rows line-bottom mymp" style="display: none">
@@ -1192,6 +1193,14 @@
 			<a href="{[url]}" data-tag="yes">是</a>
 			<a href="javascript:;" data-tag="no">否</a>
 		</div>
+	</div>
+</script>
+<script type="text/template" id="ctx_greet_new3">
+	<div class="greeting_index">
+		<a href="http://mp.weixin.qq.com/s/ZODj8prAWrUkaTdRO3UmeA">
+			<img src="{[url]}">
+		</a>
+		<a href="javascript:;" class="m-popup-close"></a>
 	</div>
 </script>
 <script type="text/template" id="tpl_greet">
