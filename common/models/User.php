@@ -564,9 +564,11 @@ class User extends ActiveRecord
 
 	protected static function percentage($info)
 	{
+		// ["parent","sibling","dwelling","worktype","employer"，"music","book","movie","highschool","university",]
 		$fields = ["role", "name", "phone", "avatar", "location", 'homeland', "scope", "gender", "birthyear", "horos",
 			'marital', "height", "weight", "income", "education", "estate", "car", "smoke", "alcohol", "belief", "fitness",
-			"diet", "rest", "pet", "interest", "intro"];
+			"diet", "rest", "pet", "interest", "intro",
+			"parent", "sibling", "dwelling", "worktype", "employer", "music", "book", "movie", "highschool", "university"];
 		if ($info['role'] == self::ROLE_MATCHER) {
 			$fields = ["role", "name", "phone", "avatar", "location", "scope", "intro"];
 		}
