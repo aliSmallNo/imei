@@ -33,15 +33,7 @@
 	var mTip = $('.tip');
 	var mTip2 = $('.tip2');
 	var mSoundPlaying = false;
-	var mSound = new Howl({
-		src: ['/assets/sound/shake.mp3'],
-		preload: true,
-		onend: function () {
-			setTimeout(function () {
-				mSoundPlaying = false;
-			}, 1000);
-		}
-	});
+	var mSound = null;
 	$(function () {
 		if (window.DeviceMotionEvent) {
 			mTip.html('Please shake');
@@ -69,6 +61,17 @@
 							//mTip2.html('可惜了，不支持手机震动');
 						}
 						if (!mSoundPlaying) {
+							if (!mSound) {
+								mSound = new Howl({
+									src: ['/assets/sound/shake.mp3'],
+									preload: true,
+									onend: function () {
+										setTimeout(function () {
+											mSoundPlaying = false;
+										}, 500);
+									}
+								});
+							}
 							mSoundPlaying = true;
 							mSound.play();
 							mTip2.html('声音播放了吗？');
