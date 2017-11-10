@@ -15,7 +15,7 @@
 	}
 </style>
 <h2 style="text-align: center; padding: 4rem;">
-	千寻摇摇<br>用你的手机摇一摇试试看
+	千寻摇摇<br>手机摇一摇，试试看
 </h2>
 <div class="home_mask">
 	<div class="ico"></div>
@@ -27,13 +27,16 @@
 <div class="tip"></div>
 <br>
 <div class="tip2"></div>
+<audio id="musicAudio">
+	<source src="/assets/sound/shake.mp3" type="audio/mpeg">
+</audio>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/howler.min.js?v=1.1.1"></script>
 <script>
 	var mTip = $('.tip');
 	var mTip2 = $('.tip2');
 	var mSoundPlaying = false;
-	var mSound = null;
+	var mSound = $('#musicAudio');
 	$(function () {
 		if (window.DeviceMotionEvent) {
 			mTip.html('Please shake');
@@ -61,38 +64,46 @@
 							//mTip2.html('可惜了，不支持手机震动');
 						}
 						if (!mSoundPlaying) {
-							if (!mSound) {
-								mSound = new Howl({
-									src: ['/assets/sound/shake.mp3'],
-									preload: true,
-									autoplay: false,
-									onend: function () {
-										setTimeout(function () {
-											mSoundPlaying = false;
-										}, 500);
-									}
-								});
-							} else {
-								mTip2.html('声音播放了吗？');
-								mTip2.trigger('click');
-								mSoundPlaying = true;
-								mSound.stop();
-								mSound.play();
-							}
-
+//							if (!mSound) {
+//								mSound = new Howl({
+//									src: ['/assets/sound/shake.mp3'],
+//									preload: true,
+//									autoplay: false,
+//									onend: function () {
+//										setTimeout(function () {
+//											mSoundPlaying = false;
+//										}, 500);
+//									}
+//								});
+//							} else {
+							mTip2.html('声音播放了吗？');
+//								mTip2.trigger('click');
+							mSoundPlaying = true;
+							mSound.play();
+//							mSound.stop();
+//							mSound.play();
+							setTimeout(function () {
+								mSoundPlaying = false;
+							}, 500);
 						}
-
-						setTimeout(function () {
-							$('.home_mask').show();
-							$('.home_page .ico').removeClass('wobble');
-						}, 1000);
 					}
-					lastX = x;
-					lastY = y;
-				}, false);
+
+					setTimeout(function () {
+						$('.home_mask').show();
+						$('.home_page .ico').removeClass('wobble');
+					}, 1000);
+				}
+			lastX = x;
+			lastY = y;
 		}
-		else {
-			mTip.html('not support mobile event');
-		}
-	});
+	,
+		false
+	);
+	}
+	else
+	{
+		mTip.html('not support mobile event');
+	}
+	})
+	;
 </script>
