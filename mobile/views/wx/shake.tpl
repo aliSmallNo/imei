@@ -37,7 +37,7 @@
 					y = acceleration.y;
 					if (Math.abs(x - lastX) > speed || Math.abs(y - lastY) > speed) {
 
-						mTip.html("x:" + Math.abs(x - lastX) + " y:" + Math.abs(y - lastY));
+						mTip.html("x:" + Math.round(x - lastX) + " y:" + Math.round(y - lastY));
 
 						if ($('.home_mask').is(':visible')) return false;
 
