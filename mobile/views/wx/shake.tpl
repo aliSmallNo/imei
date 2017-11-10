@@ -1,9 +1,10 @@
 <style>
-	.home_mask{
+	.home_mask {
 		text-align: center;
 		color: #333;
 	}
-	.wobble{
+
+	.wobble {
 		color: #ff0000;
 	}
 </style>
@@ -41,6 +42,7 @@
 							$('.home_page .ico').removeClass('wobble');
 						}, 1000);
 					}
+					alert('shake now');
 					lastX = x;
 					lastY = y;
 				}, false);
