@@ -62,6 +62,7 @@
 					}, 500);
 				}
 			});
+			mSound.mute();
 			mSound.play();
 
 			initShake();
@@ -101,19 +102,13 @@
 						$('.home_page .ico').addClass('wobble');
 
 						if (!mSoundPlaying) {
-//							if (!mSound) {
-
-//							} else {
 							mTip2.html('声音播放了吗？');
-//								mTip2.trigger('click');
 							mSoundPlaying = true;
+							mSound.unmute();
 							mSound.play();
-//							mSound.stop();
-//							mSound.play();
 							setTimeout(function () {
 								mSoundPlaying = false;
 							}, 800);
-//						}
 						}
 						setTimeout(function () {
 							$('.home_mask').show();
