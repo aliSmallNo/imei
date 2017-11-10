@@ -19,7 +19,6 @@
 				</div>
 			</li>
 			{{/foreach}}
-			{{if $isDebug}}
 			<li style="margin-top:1.5rem">
 				<div class="title m-ico-member">单身俱乐部单身会员
 					<a href="javascript:;">￥299</a>
@@ -27,7 +26,6 @@
 				<div class="action"><a href="javascript:;" class="btn-recharge" data-id="99" data-cat="member">99元</a>
 				</div>
 			</li>
-			{{/if}}
 		</ul>
 		<p class="tip-block">媒桂花仅用于打赏，不能提现或退款</p>
 	</div>
