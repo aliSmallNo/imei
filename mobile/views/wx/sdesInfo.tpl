@@ -45,7 +45,7 @@
 		<div class="title">个人小档案</div>
 		<div class="item-des">
 			<div class="left">购房情况</div>
-			<div class="right">{{$user.estate_t}}</div>
+			<div class="right">{{$user.estate_txt}}</div>
 		</div>
 		<div class="item-des">
 			<div class="left">购车情况</div>

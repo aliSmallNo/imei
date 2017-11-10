@@ -629,7 +629,7 @@ class User extends ActiveRecord
 			$edate = date("Y-m-d H:i:s");
 			$sdate = date("Y-m-d H:i:s", time() - 86400 * 7);
 			$inactive1 = " left join im_log_action as a on a.aUId=u.uId and a.aCategory in (1000,1002,1004) and a.aDate BETWEEN '$sdate' and '$edate' ";
-			// $inactive2 = " and a.aUId is null ";
+			//$inactive2 = " and a.aUId is null ";
 			$inactive2 = ($inactive == 1) ? " and a.aUId is null " : " and a.aUId ";
 		}
 
