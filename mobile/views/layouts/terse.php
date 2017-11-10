@@ -17,7 +17,6 @@
 		<link rel="stylesheet" href="/assets/css/layer.min.css?v=1.1.2">
 		<link rel="stylesheet" href="/css/imei.min.css?v=<?= $this->params['ver'] ?>">
 		<script src="/assets/js/jweixin-1.2.0.js"></script>
-		<script src="/assets/js/jweixin-1.2.0.js"></script>
 	</head>
 	<body class="<?= $this->params['page_body_cls'] ?>">
 	<?= $content ?>
