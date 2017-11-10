@@ -1347,6 +1347,15 @@ class WxController extends BaseController
 			'活动报名');
 	}
 
+	public function actionShake()
+	{
+		$openId = self::$WX_OpenId;
+		return self::renderPage('shake.tpl',
+			[],
+			'terse',
+			'摇一摇');
+	}
+
 	public function actionVote($defaultId = 2014)
 	{
 		$openId = self::$WX_OpenId;
