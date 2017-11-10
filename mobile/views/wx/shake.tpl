@@ -28,7 +28,7 @@
 <br>
 <div class="tip2"></div>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script src="/assets/js/howler.min.js"></script>
+<script src="/assets/js/howler.min.js?v=1.1.1"></script>
 <script>
 	var mTip = $('.tip');
 	var mTip2 = $('.tip2');
