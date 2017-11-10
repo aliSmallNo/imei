@@ -28,7 +28,10 @@
 <br>
 <div class="tip2"></div>
 <a href="javascript:;" class="cPlay">play</a>
-<audio id="musicAudio">
+<!--audio id="musicAudio">
+	<source src="/assets/sound/shake.mp3" preload type="audio/mpeg">
+</audio-->
+<audio style="display:none" id="musicAudio" preload="metadata" controls autoplay="false">
 	<source src="/assets/sound/shake.mp3" preload type="audio/mpeg">
 </audio>
 <script type="text/template" id="tpl_wx_info">
@@ -48,7 +51,9 @@
 		wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 		wx.config(wxInfo);
 		wx.ready(function () {
-			initShake();
+			mSound = document.getElementById('musicAudio');
+			mSound.play();
+//			initShake();
 			wx.hideMenuItems({
 				menuList: [
 					'menuItem:copyUrl',
@@ -64,7 +69,7 @@
 	});
 
 	function initShake() {
-		mSound = document.getElementById('musicAudio');
+
 		$('.cPlay').on('click', function () {
 			mSound.play();
 		});
