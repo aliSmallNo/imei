@@ -59,12 +59,10 @@
 				onend: function () {
 					setTimeout(function () {
 						mSoundPlaying = false;
-					}, 500);
+					}, 600);
 				}
 			});
-			mSound.mute();
 			mSound.play();
-
 			initShake();
 			wx.hideMenuItems({
 				menuList: [
@@ -84,9 +82,7 @@
 
 		if (window.DeviceMotionEvent) {
 			mTip.html('Please shake');
-
 			var speed = 25;
-
 			var x = t = z = lastX = lastY = lastZ = 0;
 			window.addEventListener('devicemotion',
 				function () {
@@ -104,7 +100,7 @@
 						if (!mSoundPlaying) {
 							mTip2.html('声音播放了吗？');
 							mSoundPlaying = true;
-							mSound.unmute();
+//							mSound.unmute();
 							mSound.play();
 							setTimeout(function () {
 								mSoundPlaying = false;
