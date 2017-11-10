@@ -19,6 +19,9 @@
 <div class="home_mask">
 	<div class="ico">What's happen???</div>
 </div>
+<br>
+<br>
+下面数字变化越大，说明摇晃的越厉害
 <div class="tip"></div>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script>
@@ -37,7 +40,7 @@
 					y = acceleration.y;
 					if (Math.abs(x - lastX) > speed || Math.abs(y - lastY) > speed) {
 
-						mTip.html("x:" + Math.round(x - lastX) + " y:" + Math.round(y - lastY));
+						mTip.html("x:" + Math.round(x - lastX) + "  y:" + Math.round(y - lastY));
 
 						if ($('.home_mask').is(':visible')) return false;
 
