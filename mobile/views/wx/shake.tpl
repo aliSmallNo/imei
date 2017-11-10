@@ -29,8 +29,11 @@
 <div class="tip2"></div>
 <a href="javascript:;" class="cPlay">play</a>
 <audio id="musicAudio">
-	<source src="/assets/sound/shake.mp3" type="audio/mpeg">
+	<source src="/assets/sound/shake.mp3" preload type="audio/mpeg">
 </audio>
+<script type="text/template" id="tpl_wx_info">
+	{{$wxInfoString}}
+</script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/howler.min.js?v=1.1.1"></script>
 <script>
@@ -38,7 +41,29 @@
 	var mTip2 = $('.tip2');
 	var mSoundPlaying = false;
 	var mSound;
+	var mWXString = $("#tpl_wx_info").html();
 	$(function () {
+		var wxInfo = JSON.parse(mWXString);
+		wxInfo.debug = false;
+		wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
+		wx.config(wxInfo);
+		wx.ready(function () {
+			initShake();
+			wx.hideMenuItems({
+				menuList: [
+					'menuItem:copyUrl',
+					'menuItem:openWithQQBrowser',
+					'menuItem:openWithSafari',
+					'menuItem:share:qq',
+					'menuItem:share:weiboApp',
+					'menuItem:share:QZone',
+					'menuItem:share:facebook'
+				]
+			});
+		});
+	});
+
+	function initShake() {
 		mSound = document.getElementById('musicAudio');
 		$('.cPlay').on('click', function () {
 			mSound.play();
@@ -92,7 +117,6 @@
 							}, 500);
 //						}
 						}
-
 						setTimeout(function () {
 							$('.home_mask').show();
 							$('.home_page .ico').removeClass('wobble');
@@ -100,14 +124,12 @@
 					}
 					lastX = x;
 					lastY = y;
-				}
-				,
+				},
 				false
 			);
 		}
 		else {
 			mTip.html('not support mobile event');
 		}
-	})
-	;
+	}
 </script>
