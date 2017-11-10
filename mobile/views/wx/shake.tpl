@@ -103,7 +103,7 @@
 					setTimeout(function () {
 						mSoundPlaying = false;
 						mHand.removeClass('hand-animate');
-					}, 600);
+					}, 550);
 				}
 			});
 			mSound.play();
@@ -135,7 +135,7 @@
 					y = acceleration.y;
 					if (Math.abs(x - lastX) > speed || Math.abs(y - lastY) > speed) {
 
-						mTip.html("x:" + Math.round(x - lastX) + "  y:" + Math.round(y - lastY));
+						mTip.html("x:" + Math.round(x - lastX) + "<br>y:" + Math.round(y - lastY));
 
 						//if ($('.home_mask').is(':visible')) return false;
 						mHand.addClass('hand-animate');
@@ -145,11 +145,7 @@
 						if (!mSoundPlaying) {
 							mTip2.html('声音播放了吗？');
 							mSoundPlaying = true;
-//							mSound.unmute();
 							mSound.play();
-							setTimeout(function () {
-								mSoundPlaying = false;
-							}, 800);
 						}
 						setTimeout(function () {
 							$('.home_mask').show();
