@@ -13,10 +13,25 @@
 		color: #049;
 		font-size: 18px;
 	}
+
+	.hand {
+		width: 40%;
+		margin: 15px auto;
+	}
+
+	.hand img {
+		width: 100%;
+		height: auto;
+	}
+
+	.hand-animate {
+		-webkit-animation: hand_move infinite 0.6s;
+	}
 </style>
-<h2 style="text-align: center; padding: 4rem;">
+<h2 style="text-align: center; padding: 2rem;">
 	千寻摇摇<br>手机摇一摇，试试看
 </h2>
+<div id="hand" class="m-hand hand"><img src="/images/ico_shake_hand.png"></div>
 <div class="home_mask">
 	<div class="ico"></div>
 </div>
@@ -41,6 +56,7 @@
 <script>
 	var mTip = $('.tip');
 	var mTip2 = $('.tip2');
+	var mHand = $('.m-hand');
 	var mSoundPlaying = false;
 	var mSound;
 	var mWXString = $("#tpl_wx_info").html();
@@ -59,6 +75,7 @@
 				onend: function () {
 					setTimeout(function () {
 						mSoundPlaying = false;
+						mHand.removeClass('hand-animate');
 					}, 600);
 				}
 			});
@@ -94,6 +111,7 @@
 						mTip.html("x:" + Math.round(x - lastX) + "  y:" + Math.round(y - lastY));
 
 						//if ($('.home_mask').is(':visible')) return false;
+						mHand.addClass('hand-animate');
 
 						$('.home_page .ico').addClass('wobble');
 
