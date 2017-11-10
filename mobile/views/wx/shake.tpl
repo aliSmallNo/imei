@@ -108,7 +108,10 @@
 	千寻摇摇<br>手机摇一摇，试试看
 </h2>
 <div id="hand" class="m-hand hand"><img src="/images/ico_shake_hand.png"></div>
-<div id="loading" class="loading"><span class="icon"></span><span class="txt">正在努力的加载结果，请稍候~</span></div>
+<div id="loading" class="loading">
+	<span class="icon"></span>
+	<span class="txt"> 正在努力的加载结果，请稍候~</span>
+</div>
 <div class="home_mask">
 	<div class="ico"></div>
 </div>
@@ -140,7 +143,7 @@
 	var mLoading = $('#loading');
 	$(function () {
 
-	  var wxInfo = JSON.parse(mWXString);
+		var wxInfo = JSON.parse(mWXString);
 		wxInfo.debug = false;
 		wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 		wx.config(wxInfo);
