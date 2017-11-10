@@ -11,7 +11,7 @@
 	.tip, .tip2 {
 		text-align: center;
 		color: #049;
-		font-size: 15px;
+		font-size: 18px;
 	}
 </style>
 <h3 style="text-align: center; padding: 4rem;">
