@@ -50,8 +50,20 @@
 		wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 		wx.config(wxInfo);
 		wx.ready(function () {
-			mSound = document.getElementById('musicAudio');
+			//mSound = document.getElementById('musicAudio');
+
+			mSound = new Howl({
+				src: ['/assets/sound/shake.mp3'],
+				preload: true,
+				autoplay: false,
+				onend: function () {
+					setTimeout(function () {
+						mSoundPlaying = false;
+					}, 500);
+				}
+			});
 			mSound.play();
+
 			initShake();
 			wx.hideMenuItems({
 				menuList: [
@@ -90,16 +102,7 @@
 
 						if (!mSoundPlaying) {
 //							if (!mSound) {
-//								mSound = new Howl({
-//									src: ['/assets/sound/shake.mp3'],
-//									preload: true,
-//									autoplay: false,
-//									onend: function () {
-//										setTimeout(function () {
-//											mSoundPlaying = false;
-//										}, 500);
-//									}
-//								});
+
 //							} else {
 							mTip2.html('声音播放了吗？');
 //								mTip2.trigger('click');
@@ -109,7 +112,7 @@
 //							mSound.play();
 							setTimeout(function () {
 								mSoundPlaying = false;
-							}, 500);
+							}, 800);
 //						}
 						}
 						setTimeout(function () {
