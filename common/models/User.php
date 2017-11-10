@@ -1309,6 +1309,7 @@ class User extends ActiveRecord
 
 		$gender = $myInfo->uGender;
 		$birthYear = $myInfo->uBirthYear;
+		$marital = $myInfo->uMarital;
 		$ageLimit = $ageRank = '';
 		$ageFrom = $ageTo = 0;
 		if ($gender && $gender == self::GENDER_MALE && $birthYear) {
@@ -1412,7 +1413,26 @@ class User extends ActiveRecord
 		}
 
 		$loc = "江苏";
-		$fmRank = "(CASE WHEN uMarital in (0,100,110,120) then 10 else 0 end) as fmRank";
+
+		switch ($marital) {
+			case self::MARITAL_UNMARRIED:
+				$strMarital = implode(',', [self::MARITAL_UNMARRIED]);
+				$fmRank = "(CASE WHEN uMarital in ($strMarital) then 10 else 0 end) as fmRank";
+				break;
+			case self::MARITAL_DIVORCE_KID:
+				$strMarital = implode(',', [self::MARITAL_DIVORCE_KID, self::MARITAL_DIVORCE_NO_KID]);
+				$fmRank = "(CASE WHEN uMarital in ($strMarital) then 10 else 0 end) as fmRank";
+				break;
+			case self::MARITAL_DIVORCE_NO_KID:
+				$fmRank = "(CASE WHEN uMarital=" . self::MARITAL_DIVORCE_NO_KID . " then 10
+				 WHEN uMarital=" . self::MARITAL_DIVORCE_KID . " then 8
+				 WHEN uMarital=" . self::MARITAL_UNMARRIED . " then 5
+				 ELSE 0 END) as fmRank";
+				break;
+			default:
+				$fmRank = "1 as fmRank";
+				break;
+		}
 		$ageRank = "";
 		if ($data) {
 			$homeland = json_decode($myInfo->uHomeland, 1);
