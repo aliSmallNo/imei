@@ -15,7 +15,7 @@
 	}
 </style>
 <h2 style="text-align: center; padding: 4rem;">
-	千寻摇摇，测试你的手机看看
+	千寻摇摇<br>用你的手机摇一摇试试看
 </h2>
 <div class="home_mask">
 	<div class="ico"></div>
