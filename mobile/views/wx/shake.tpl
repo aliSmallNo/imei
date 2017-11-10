@@ -28,9 +28,12 @@
 <br>
 <div class="tip2"></div>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
+<script src="/assets/js/howler.min.js"></script>
 <script>
 	var mTip = $('.tip');
 	var mTip2 = $('.tip2');
+	var mSound = new Howl({urls: ['/assets/sound/shake.mp3']}).load();
+	var mSoundPlaying = false;
 	$(function () {
 		if (window.DeviceMotionEvent) {
 			mTip.html('Please shake');
@@ -56,6 +59,13 @@
 							mTip2.html('vibrate');
 						} else {
 							mTip2.html('可惜了，不支持手机震动');
+						}
+						if (!mSoundPlaying) {
+							mSound.play();
+							mSoundPlaying = true;
+							setTimeout(function () {
+								mSoundPlaying = false;
+							}, 3000);
 						}
 
 						setTimeout(function () {
