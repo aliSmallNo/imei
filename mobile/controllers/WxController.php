@@ -615,7 +615,8 @@ class WxController extends BaseController
 				'nickname' => $nickname,
 				'prices' => $prices,
 				'hid' => $hid,
-				'stat' => $stat
+				'stat' => $stat,
+				"isDebug" => AppUtil::isDebugger($wxInfo["uId"])
 			],
 			'imei',
 			'我的媒桂花');

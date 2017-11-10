@@ -156,18 +156,20 @@ class ApiController extends Controller
 				return self::renderAPI(0, '暂时不能提现~');
 			case 'recharge':
 				$amt = self::postParam('amt'); // 单位人民币元
+				$cat = self::postParam('cat');
 				$IsXcx = self::postParam('xflag', 0); // 是否为小程序支付订单
 				$num = intval($amt * 10.0);
 				$title = '千寻恋恋-充值';
 				$subTitle = '充值' . $num . '媒桂花';
-				$payId = Pay::prepay($wxInfo['uId'], $num, $amt * 100);
+				$pcat = $cat == "member" ? Pay::CAT_MEMBER : Pay::CAT_RECHARGE;
+				$payId = Pay::prepay($wxInfo['uId'], $num, $amt * 100, $pcat);
 				if (AppUtil::isDev()) {
 					return self::renderAPI(129, '请在服务器测试该功能~');
 				}
 				// Rain: 测试阶段，payFee x元实际支付x分
 //				$payFee = $amt;
 				$payFee = intval($amt * 100);
-				if (in_array($openId, ['oYDJew5EFMuyrJdwRrXkIZLU2c58', 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'])) {
+				if (AppUtil::isDebugger($wxInfo["uId"])) {
 					$payFee = $amt;
 				}
 				$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);
@@ -196,7 +198,7 @@ class ApiController extends Controller
 				// Rain: 测试阶段，payFee x元实际支付x分
 //				$payFee = $amt;
 				$payFee = intval($amt * 100);
-				if (in_array($openId, ['oYDJew5EFMuyrJdwRrXkIZLU2c58', 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'])) {
+				if (AppUtil::isDebugger($wxInfo["uId"])) {
 					$payFee = $amt;
 				}
 				$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);

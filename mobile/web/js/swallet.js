@@ -75,6 +75,7 @@ require(["layer"],
 				util.paying = 1;
 				util.payBtn.html('充值中...');
 				var amt = util.payBtn.attr('data-id');
+				var cat = util.payBtn.attr('data-cat');
 				$.post('/api/wallet',
 					{
 						tag: 'recharge',

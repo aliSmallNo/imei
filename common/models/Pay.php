@@ -18,6 +18,7 @@ class Pay extends ActiveRecord
 	const CAT_MAKEING_FRIENDS = 200;
 	const CAT_REDPACKET = 300;
 	const CAT_MEET = 400;
+	const CAT_MEMBER = 500;
 
 	const MODE_WXPAY = 100;
 	const MODE_ALIPAY = 102;
@@ -30,7 +31,8 @@ class Pay extends ActiveRecord
 		self::CAT_RECHARGE => '充值',
 		self::CAT_MAKEING_FRIENDS => '交友',
 		self::CAT_REDPACKET => '红包',
-		self::CAT_MEET => '约会'
+		self::CAT_MEET => '约会',
+		self::CAT_MEMBER => '单身会员',
 	];
 
 	public static function tableName()
@@ -70,6 +72,8 @@ class Pay extends ActiveRecord
 			$entity->pNote = '红包' . $num;
 		} else if ($cat == self::CAT_MEET) {
 			$entity->pNote = '约会平台服务费';
+		} else if ($cat == self::CAT_MEMBER) {
+			$entity->pNote = '单身俱乐部单身会员';
 		}
 		$entity->save();
 		return $entity->pId;
