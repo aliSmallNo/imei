@@ -82,7 +82,7 @@
 
 		if (window.DeviceMotionEvent) {
 			mTip.html('Please shake');
-			var speed = 25;
+			var speed = 30;
 			var x = t = z = lastX = lastY = lastZ = 0;
 			window.addEventListener('devicemotion',
 				function () {
