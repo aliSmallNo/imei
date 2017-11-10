@@ -27,6 +27,7 @@
 <div class="tip"></div>
 <br>
 <div class="tip2"></div>
+<a href="javascript:;" class="cPlay">play</a>
 <audio id="musicAudio">
 	<source src="/assets/sound/shake.mp3" type="audio/mpeg">
 </audio>
@@ -39,6 +40,9 @@
 	var mSound;
 	$(function () {
 		mSound = document.getElementById('musicAudio');
+		$('.cPlay').on('click', function () {
+			mSound.play();
+		});
 		if (window.DeviceMotionEvent) {
 			mTip.html('Please shake');
 
