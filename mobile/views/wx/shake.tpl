@@ -15,7 +15,7 @@
 	}
 
 	.hand {
-		width: 30%;
+		width: 33%;
 		margin: 10px auto;
 	}
 
@@ -25,10 +25,8 @@
 	}
 
 	.hand-animate {
-		animation: hand_move infinite 0.35s;
-		-moz-animation: hand_move infinite 0.35s;
-		-webkit-animation: hand_move infinite 0.35s;
-		-o-animation: hand_move infinite 0.35s;
+		animation: hand_move infinite 1.5s;
+		-webkit-animation: hand_move infinite 1.5s;
 	}
 
 	.loading {
@@ -53,17 +51,15 @@
 		background-size: auto 100%;
 		-webkit-animation: loading infinite linear 1s;
 		-moz-animation: loading infinite linear 1s;
-		-ms-animation: loading infinite linear 1s;
 		-o-animation: loading infinite linear 1s;
 		animation: loading infinite linear 1s;
 		-webkit-transition: all 1s;
 		-moz-transition: all 1s;
-		-ms-transition: all 1s;
 		-o-transition: all 1s;
 		transition: all 1s;
 	}
 
-	@-webkit-keyframes hand_move {
+/*	@-webkit-keyframes hand_move {
 		0% {
 			-webkit-transform: rotate(0);
 			-moz-transform: rotate(0);
@@ -85,21 +81,35 @@
 			-o-transform: rotate(0);
 			transform: rotate(0);
 		}
+	}*/
+
+	@-webkit-keyframes hand_move {
+		0%, 10%, 20%, 30% {
+			-webkit-transform: rotate(5deg)
+		}
+		15%, 25%, 35%, 5% {
+			-webkit-transform: rotate(-5deg)
+		}
+	}
+
+	@keyframes hand_move {
+		0%, 10%, 20%, 30% {
+			transform: rotate(5deg)
+		}
+		15%, 25%, 35%, 5% {
+			transform: rotate(-5deg)
+		}
 	}
 
 	@-webkit-keyframes loading {
 		0% {
 			-webkit-transform: rotate(0);
 			-moz-transform: rotate(0);
-			-ms-transform: rotate(0);
-			-o-transform: rotate(0);
 			transform: rotate(0);
 		}
 		100% {
 			-webkit-transform: rotate(360deg);
 			-moz-transform: rotate(360deg);
-			-ms-transform: rotate(360deg);
-			-o-transform: rotate(360deg);
 			transform: rotate(360deg);
 		}
 	}
