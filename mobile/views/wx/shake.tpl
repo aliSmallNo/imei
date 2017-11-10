@@ -22,8 +22,11 @@
 <div class="tip"></div>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script>
+	var mTip = $('.tip');
 	$(function () {
 		if (window.DeviceMotionEvent) {
+			mTip.html('Please shake');
+
 			var speed = 25;
 
 			var x = t = z = lastX = lastY = lastZ = 0;
@@ -33,6 +36,8 @@
 					x = acceleration.x;
 					y = acceleration.y;
 					if (Math.abs(x - lastX) > speed || Math.abs(y - lastY) > speed) {
+
+						mTip.html("x:" + Math.abs(x - lastX) + " y:" + Math.abs(y - lastY));
 
 						if ($('.home_mask').is(':visible')) return false;
 
@@ -49,13 +54,12 @@
 							$('.home_page .ico').removeClass('wobble');
 						}, 1000);
 					}
-					$('.tip').html('shake now');
 					lastX = x;
 					lastY = y;
 				}, false);
 		}
 		else {
-			$('.tip').html('not support mobile event');
+			mTip.html('not support mobile event');
 		}
 	});
 </script>
