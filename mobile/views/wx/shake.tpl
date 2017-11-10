@@ -25,10 +25,10 @@
 	}
 
 	.hand-animate {
-		animation: hand_move infinite 0.4s;
-		-moz-animation: hand_move infinite 0.4s;
-		-webkit-animation: hand_move infinite 0.4s;
-		-o-animation: hand_move infinite 0.4s;
+		animation: hand_move infinite 0.35s;
+		-moz-animation: hand_move infinite 0.35s;
+		-webkit-animation: hand_move infinite 0.35s;
+		-o-animation: hand_move infinite 0.35s;
 	}
 
 	@-webkit-keyframes hand_move {
