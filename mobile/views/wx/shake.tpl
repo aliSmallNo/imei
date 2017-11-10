@@ -85,25 +85,24 @@
 							setTimeout(function () {
 								mSoundPlaying = false;
 							}, 500);
+//						}
 						}
-					}
 
-					setTimeout(function () {
-						$('.home_mask').show();
-						$('.home_page .ico').removeClass('wobble');
-					}, 1000);
+						setTimeout(function () {
+							$('.home_mask').show();
+							$('.home_page .ico').removeClass('wobble');
+						}, 1000);
+					}
+					lastX = x;
+					lastY = y;
 				}
-			lastX = x;
-			lastY = y;
+				,
+				false
+			);
 		}
-	,
-		false
-	);
-	}
-	else
-	{
-		mTip.html('not support mobile event');
-	}
+		else {
+			mTip.html('not support mobile event');
+		}
 	})
 	;
 </script>
