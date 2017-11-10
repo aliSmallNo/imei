@@ -31,18 +31,18 @@
 		-o-animation: hand_move infinite 0.35s;
 	}
 
-	.loading-show {
-		opacity: 1;
-	}
-
 	.loading {
 		width: auto;
 		margin: 0 auto;
-		color: #eee;
+		color: #999;
 		font-size: 14px;
 		text-align: center;
 		height: 30px;
 		opacity: 0;
+	}
+
+	.loading-show {
+		opacity: 1;
 	}
 
 	.loading span.icon {
@@ -139,7 +139,8 @@
 	var mWXString = $("#tpl_wx_info").html();
 	var mLoading = $('#loading');
 	$(function () {
-		var wxInfo = JSON.parse(mWXString);
+
+	  var wxInfo = JSON.parse(mWXString);
 		wxInfo.debug = false;
 		wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 		wx.config(wxInfo);
