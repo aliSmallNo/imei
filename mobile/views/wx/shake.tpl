@@ -15,8 +15,8 @@
 	}
 
 	.hand {
-		width: 40%;
-		margin: 15px auto;
+		width: 30%;
+		margin: 10px auto;
 	}
 
 	.hand img {
