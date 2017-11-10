@@ -66,6 +66,7 @@
 							setTimeout(function () {
 								mSoundPlaying = false;
 							}, 3000);
+							mTip2.html('声音播放了吗？');
 						}
 
 						setTimeout(function () {
