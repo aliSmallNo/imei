@@ -40,11 +40,11 @@
 			transform: rotate(0);
 		}
 		50% {
-			-webkit-transform: rotate(25deg);
-			-moz-transform: rotate(25deg);
-			-ms-transform: rotate(25deg);
-			-o-transform: rotate(25deg);
-			transform: rotate(25deg);
+			-webkit-transform: rotate(20deg);
+			-moz-transform: rotate(20deg);
+			-ms-transform: rotate(20deg);
+			-o-transform: rotate(20deg);
+			transform: rotate(20deg);
 		}
 		100% {
 			-webkit-transform: rotate(0);
