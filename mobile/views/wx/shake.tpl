@@ -25,7 +25,10 @@
 	}
 
 	.hand-animate {
-		-webkit-animation: hand_move infinite 0.6s;
+		animation: hand_move infinite 0.4s;
+		-moz-animation: hand_move infinite 0.4s;
+		-webkit-animation: hand_move infinite 0.4s;
+		-o-animation: hand_move infinite 0.4s;
 	}
 
 	@-webkit-keyframes hand_move {
@@ -37,11 +40,11 @@
 			transform: rotate(0);
 		}
 		50% {
-			-webkit-transform: rotate(15deg);
-			-moz-transform: rotate(15deg);
-			-ms-transform: rotate(15deg);
-			-o-transform: rotate(15deg);
-			transform: rotate(15deg);
+			-webkit-transform: rotate(25deg);
+			-moz-transform: rotate(25deg);
+			-ms-transform: rotate(25deg);
+			-o-transform: rotate(25deg);
+			transform: rotate(25deg);
 		}
 		100% {
 			-webkit-transform: rotate(0);
