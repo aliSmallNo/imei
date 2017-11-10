@@ -32,8 +32,17 @@
 <script>
 	var mTip = $('.tip');
 	var mTip2 = $('.tip2');
-	var mSound = new Howl({src: ['/assets/sound/shake.mp3']});
 	var mSoundPlaying = false;
+	var mSound = new Howl({
+		src: ['/assets/sound/shake.mp3'],
+		html5: true,
+		preload: true,
+		onend: function () {
+			setTimeout(function () {
+				mSoundPlaying = false;
+			}, 1000);
+		}
+	});
 	$(function () {
 		if (window.DeviceMotionEvent) {
 			mTip.html('Please shake');
@@ -62,10 +71,6 @@
 						}
 						if (!mSoundPlaying) {
 							mSound.play();
-							mSoundPlaying = true;
-							setTimeout(function () {
-								mSoundPlaying = false;
-							}, 3000);
 							mTip2.html('声音播放了吗？');
 						}
 
