@@ -3440,7 +3440,7 @@ section
 	font-weight: $weightBold
 	text-align: center
 
-.m-ico-rose
+.m-ico-rose,.m-ico-member
 	display: inline-block
 	position: relative
 	@include borderBox
@@ -3455,6 +3455,24 @@ section
 		width: 1.8rem
 		height: 1.8rem
 		margin-top: -.9rem
+.m-ico-member
+	a
+		text-decoration: line-through
+		font-size: 1.2rem
+		color: #777
+		font-weight: 200
+	&:before
+		background: url(../images/ico_month_member.png) no-repeat center center
+		background-size: 1.5rem 1.5rem
+		top: 40%
+	&:after
+		content: ' '
+		position: absolute
+		background: #f3f3f3
+		width: 34rem
+		height: 1.5rem
+		left: -2rem
+		top: -3.2rem
 
 .account-header
 	height: 12rem

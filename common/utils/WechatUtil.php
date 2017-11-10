@@ -524,6 +524,8 @@ class WechatUtil
 			if ($entity->pCategory == Pay::CAT_MEET) {
 				UserTrans::addByPID($pid, UserTrans::CAT_RECHARGE_MEET);
 				Date::edit($entity->pRId, ["dStatus" => Date::STATUS_PAY, 'dPayId' => $pid]);
+			} else if ($entity->pCategory == Pay::CAT_MEMBER) {
+				UserTrans::addByPID($pid, UserTrans::CAT_RECHARGE_MEMBER);
 			} else {
 				UserTrans::addByPID($pid);
 			}
