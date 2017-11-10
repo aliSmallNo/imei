@@ -7,6 +7,11 @@
 	.wobble {
 		color: #ff0000;
 	}
+
+	.tip {
+		text-align: center;
+		color: #1de9b6;
+	}
 </style>
 <h4 style="text-align: center; padding: 4rem">
 	摇一摇，试试看
@@ -14,8 +19,10 @@
 <div class="home_mask">
 	<div class="ico">What's happen???</div>
 </div>
+<div class="tip"></div>
+<script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script>
-	$(document).ready(function () {
+	$(function () {
 		if (window.DeviceMotionEvent) {
 			var speed = 25;
 
@@ -42,13 +49,13 @@
 							$('.home_page .ico').removeClass('wobble');
 						}, 1000);
 					}
-					alert('shake now');
+					$('.tip').html('shake now');
 					lastX = x;
 					lastY = y;
 				}, false);
 		}
 		else {
-			alert('not support mobile event');
+			$('.tip').html('not support mobile event');
 		}
 	});
 </script>
