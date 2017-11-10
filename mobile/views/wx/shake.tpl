@@ -1,5 +1,4 @@
-{{include file="layouts/header.tpl"}}
-<h4>
+<h4 style="text-align: center; padding: 4rem">
 	摇一摇，试试看
 </h4>
 <div class="home_mask">
@@ -42,4 +41,3 @@
 		}
 	});
 </script>
-{{include file="layouts/footer.tpl"}}
