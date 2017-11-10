@@ -170,7 +170,7 @@ class ApiController extends Controller
 //				$payFee = $amt;
 				$payFee = intval($amt * 100);
 				if (AppUtil::isDebugger($wxInfo["uId"])) {
-					$payFee = $amt;
+					$payFee = 1;
 				}
 				$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);
 				if ($ret) {
