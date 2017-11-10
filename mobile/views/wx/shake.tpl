@@ -32,7 +32,7 @@
 <script>
 	var mTip = $('.tip');
 	var mTip2 = $('.tip2');
-	var mSound = new Howl({src: ['/assets/sound/shake.mp3']}).load();
+	var mSound = new Howl({src: ['/assets/sound/shake.mp3']});
 	var mSoundPlaying = false;
 	$(function () {
 		if (window.DeviceMotionEvent) {
