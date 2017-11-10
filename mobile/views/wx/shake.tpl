@@ -8,7 +8,7 @@
 		color: #ff0000;
 	}
 
-	.tip {
+	.tip, tip2 {
 		text-align: center;
 		color: #1de9b6;
 	}
@@ -21,11 +21,13 @@
 </div>
 <br>
 <br>
-下面数字变化越大，说明摇晃的越厉害
+<center>下面数字变化越大，说明摇晃的越厉害</center>
 <div class="tip"></div>
+<div class="tip2"></div>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script>
 	var mTip = $('.tip');
+	var mTip2 = $('.tip2');
 	$(function () {
 		if (window.DeviceMotionEvent) {
 			mTip.html('Please shake');
@@ -50,6 +52,8 @@
 							navigator.vibrate(1000);
 						} else if (navigator.webkitVibrate) {
 							navigator.webkitVibrate(1000);
+						} else {
+							mTip2.html('可惜了，不支持震动');
 						}
 
 						setTimeout(function () {
