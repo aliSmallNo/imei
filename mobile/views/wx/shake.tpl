@@ -44,7 +44,7 @@
 
 						mTip.html("x:" + Math.round(x - lastX) + "  y:" + Math.round(y - lastY));
 
-						if ($('.home_mask').is(':visible')) return false;
+						//if ($('.home_mask').is(':visible')) return false;
 
 						$('.home_page .ico').addClass('wobble');
 
