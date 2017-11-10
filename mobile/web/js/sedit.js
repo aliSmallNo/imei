@@ -235,7 +235,6 @@ require(["layer"],
 							Val = self.find("em").attr("data-key");
 							$sls.postData[field] = Val;
 						}
-
 					});
 
 					var cItem = {};
@@ -266,7 +265,7 @@ require(["layer"],
 					});
 					$sls.postData["filter"] = JSON.stringify(cItem);
 					console.log($sls.postData);
-					// return;
+
 
 					var localId = util.avatar.attr("localId");
 					if (localId) {

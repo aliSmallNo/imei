@@ -49,6 +49,7 @@
 	.sedit-textarea label {
 		flex: 0 0 6rem;
 		font-size: 1.2rem;
+		color: #777;
 	}
 
 	.sedit-textarea div {
@@ -63,6 +64,12 @@
 		background: #fff;
 		border: none;
 		font-size: 1.2rem;
+	}
+	.action-mult em {
+		display: block;
+	}
+	.sedit_hide {
+		display: none;
 	}
 </style>
 <div class="m-popup-shade"></div>
@@ -197,7 +204,36 @@
 		<em data-key="{{$uInfo.education}}">{{$uInfo.education_t}}</em>
 	</div>
 </a>
-
+<a class="sedit-alert action-com sedit_hide" data-field="parent">
+	<label>父母情况(propadd)</label>
+	<div class="sedit-alert-val action-val">
+		<em data-key=""></em>
+	</div>
+</a>
+<a class="sedit-alert action-com sedit_hide" data-field="homerank">
+	<label>家中排行(propadd)</label>
+	<div class="sedit-alert-val action-val">
+		<em data-key=""></em>
+	</div>
+</a>
+<a class="sedit-alert action-com sedit_hide" data-field="sleepwith">
+	<label>居住情况(propadd)</label>
+	<div class="sedit-alert-val action-val">
+		<em data-key=""></em>
+	</div>
+</a>
+<a class="sedit-textarea sedit_hide" data-field="highschool">
+	<label>曾读高中名字（propadd）</label>
+	<div class="">
+		<textarea rows="4" name="" placeholder="不对第三方显示"></textarea>
+	</div>
+</a>
+<a class="sedit-textarea sedit_hide" data-field="university">
+	<label>曾读大学名字（propadd）</label>
+	<div class="">
+		<textarea rows="4" name="" placeholder="不对第三方显示"></textarea>
+	</div>
+</a>
 
 <!-- =========== 工作和资产 =============== -->
 <div class="sedit-title">工作和资产</div>
@@ -205,6 +241,12 @@
 	<label>购房情况</label>
 	<div class="sedit-alert-val action-val">
 		<em data-key="{{$uInfo.estate}}">{{$uInfo.estate_t}}</em>
+	</div>
+</a>
+<a class="sedit-alert action-com action-mult sedit_hide" data-field="houseprop">
+	<label>房屋属性（propadd）</label>
+	<div class="sedit-alert-val action-val">
+		<em data-key=""></em>
 	</div>
 </a>
 <a class="sedit-alert action-com" data-field="car">
@@ -225,12 +267,41 @@
 		<em data-key="{{$uInfo.profession}}">{{$uInfo.profession_t}}</em>
 	</div>
 </a>
+<a class="sedit-alert action-com sedit_hide" data-field="workprop">
+	<label>职业属性（propadd）</label>
+	<div class="sedit-alert-val action-val">
+		<em data-key=""></em>
+	</div>
+</a>
 <a class="sedit-alert action-com" data-field="income">
 	<label>年薪</label>
 	<div class="sedit-alert-val action-val">
 		<em data-key="{{$uInfo.income}}">{{$uInfo.income_t}}</em>
 	</div>
 </a>
+<a class="sedit-textarea sedit_hide" data-field="workplace">
+	<label>现在单位（propadd）</label>
+	<div class="">
+		<textarea rows="4" name="" placeholder="不对第三方显示"></textarea>
+	</div>
+</a>
+
+<script type="text/template" id="housepropTemp">
+	<div class="date-wrap sedit_mult_wrap" data-tag="houseprop">
+		<h4></h4>
+		<div class="date-cancel-opt sedit_mult_options">
+			<a href="javascript:;"><em data-key="">市区有房</em></a>
+			<a href="javascript:;"><em data-key="">有门面房</em></a>
+			<a href="javascript:;"><em data-key="">老家有房</em></a>
+			<a href="javascript:;"><em data-key="">乡下有房</em></a>
+			<a href="javascript:;"><em data-key="">有房贷</em></a>
+		</div>
+		<div class="date-cancel">
+			<a href="javascript:;" class="btn-date-cancel sedit_mult_options_btn">确定</a>
+		</div>
+	</div>
+</script>
+
 
 <!-- =========== 兴趣爱好 =============== -->
 <div class="sedit-title">兴趣爱好</div>
@@ -276,50 +347,26 @@
 		<em data-key="{{$uInfo.diet}}">{{$uInfo.diet_t}}</em>
 	</div>
 </a>
-
-<!-- =========== 婚恋倾向	 =============== -->
-<style>
-	.action-mult em {
-		display: block;
-	}
-
-	.sedit_hide {
-		display: none;
-	}
-</style>
-<div class="sedit-title sedit_hide">婚恋倾向</div>
-<a class="sedit_hide sedit-alert action-com action-mult" data-field="love_trend_1">
-	<label>对婚史家境教育要求</label>
-	<div class="sedit-alert-val action-val">
-		<em data-key=""></em>
-	</div>
-</a>
-<script type="text/template" id="love_trend_1Temp">
-	<div class="date-wrap sedit_mult_wrap" data-tag="love_trend_1">
-		<h4></h4>
-		<div class="date-cancel-opt sedit_mult_options">
-			<a href="javascript:;"><em data-key="">必须未婚</em></a>
-			<a href="javascript:;"><em data-key="">可接受离异不带孩</em></a>
-			<a href="javascript:;"><em data-key="">可接受离异带孩</em></a>
-			<a href="javascript:;"><em data-key="">需有稳定收入</em></a>
-			<a href="javascript:;"><em data-key="">有房有车</em></a>
-			<a href="javascript:;"><em data-key="">年收入5万以上</em></a>
-			<a href="javascript:;"><em data-key="">年收入10万以上</em></a>
-			<a href="javascript:;"><em data-key="">对收入无要求</em></a>
-			<a href="javascript:;"><em data-key="">不接受初中学历</em></a>
-			<a href="javascript:;"><em data-key="">不接受高中以下</em></a>
-		</div>
-		<div class="date-cancel">
-			<a href="javascript:;" class="btn-date-cancel sedit_mult_options_btn">确定</a>
-		</div>
-	</div>
-</script>
-<a class="sedit-textarea sedit_hide" data-field="love_trend_2">
-	<label>其他需求</label>
+<a class="sedit-textarea sedit_hide" data-field="music">
+	<label>喜欢音乐（propadd）</label>
 	<div class="">
 		<textarea rows="4" name="" placeholder="不对第三方显示"></textarea>
 	</div>
 </a>
+<a class="sedit-textarea sedit_hide" data-field="book">
+	<label>喜欢书籍（propadd）</label>
+	<div class="">
+		<textarea rows="4" name="" placeholder="不对第三方显示"></textarea>
+	</div>
+</a>
+<a class="sedit-textarea sedit_hide" data-field="film">
+	<label>喜欢电影（propadd）</label>
+	<div class="">
+		<textarea rows="4" name="" placeholder="不对第三方显示"></textarea>
+	</div>
+</a>
+
+<!-- =========== 婚恋倾向	 =============== -->
 
 <div class="sedit-title">自我评价</div>
 <div class="sedit-input">
@@ -527,6 +574,36 @@
 		{{foreach from=$pet key=key item=item}}
 		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
+	</div>
+</script>
+<script id="workpropTemp" type="text/html">
+	<div class="cells col2 clearfix">
+		<a href="javascript:;" style="width: 50%"><em data-key="">公务员编制</em></a>
+		<a href="javascript:;" style="width: 50%"><em data-key="">事业编制</em></a>
+		<a href="javascript:;" style="width: 50%"><em data-key="">个体创业</em></a>
+		<a href="javascript:;" style="width: 50%"><em data-key="">家庭自由</em></a>
+		<a href="javascript:;" style="width: 50%"><em data-key="">无业</em></a>
+	</div>
+</script>
+<script id="parentTemp" type="text/html">
+	<div class="cells col2 clearfix">
+		<a href="javascript:;" style="width: 50%"><em data-key="">单亲</em></a>
+		<a href="javascript:;" style="width: 50%"><em data-key="">都健在</em></a>
+	</div>
+</script>
+<script id="homerankTemp" type="text/html">
+	<div class="cells col2 clearfix">
+		<a href="javascript:;" style="width: 50%"><em data-key="">独生子女</em></a>
+		<a href="javascript:;" style="width: 50%"><em data-key="">排行老大</em></a>
+		<a href="javascript:;" style="width: 50%"><em data-key="">排行最小</em></a>
+		<a href="javascript:;" style="width: 50%"><em data-key="">排行中间</em></a>
+	</div>
+</script>
+<script id="sleepwithTemp" type="text/html">
+	<div class="cells col2 clearfix">
+		<a href="javascript:;" style="width: 50%"><em data-key="">与父母同住</em></a>
+		<a href="javascript:;" style="width: 50%"><em data-key="">租房住</em></a>
+		<a href="javascript:;" style="width: 50%"><em data-key="">住自购房</em></a>
 	</div>
 </script>
 
