@@ -79,7 +79,8 @@ require(["layer"],
 				$.post('/api/wallet',
 					{
 						tag: 'recharge',
-						amt: amt
+						amt: amt,
+						cat: cat,
 					},
 					function (resp) {
 						if (resp.code == 0) {
