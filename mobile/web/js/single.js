@@ -2199,7 +2199,7 @@ require(["layer"],
 			show3: function (url) {
 				var util = this;
 				$sls.main.show();
-				var html =  Mustache.render(util.tmp3, {
+				var html = Mustache.render(util.tmp3, {
 					url: "/images/active_greeting.jpg"
 				});
 				$sls.content.html(html).addClass("animate-pop-in height90");
@@ -2389,8 +2389,9 @@ require(["layer"],
 			ChatUtil.init();
 			GreetingUtil.init();
 			alertModel.init();
-			//alertModel.show2("title","sdfsfsfsf","javascript:;");
-			alertModel.show3('');
+			if (Date.parse(new Date()) < Date.parse("2017/11/12")) {
+				alertModel.show3('');
+			}
 			MeipoUtil.init();
 			ProfileUtil.init();
 			ResumeUtil.init();
