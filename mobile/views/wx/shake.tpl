@@ -27,6 +27,30 @@
 	.hand-animate {
 		-webkit-animation: hand_move infinite 0.6s;
 	}
+
+	@-webkit-keyframes hand_move {
+		0% {
+			-webkit-transform: rotate(0);
+			-moz-transform: rotate(0);
+			-ms-transform: rotate(0);
+			-o-transform: rotate(0);
+			transform: rotate(0);
+		}
+		50% {
+			-webkit-transform: rotate(15deg);
+			-moz-transform: rotate(15deg);
+			-ms-transform: rotate(15deg);
+			-o-transform: rotate(15deg);
+			transform: rotate(15deg);
+		}
+		100% {
+			-webkit-transform: rotate(0);
+			-moz-transform: rotate(0);
+			-ms-transform: rotate(0);
+			-o-transform: rotate(0);
+			transform: rotate(0);
+		}
+	}
 </style>
 <h2 style="text-align: center; padding: 2rem;">
 	千寻摇摇<br>手机摇一摇，试试看
