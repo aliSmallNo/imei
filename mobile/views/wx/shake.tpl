@@ -1,8 +1,17 @@
+<style>
+	.home_mask{
+		text-align: center;
+		color: #333;
+	}
+	.wobble{
+		color: #ff0000;
+	}
+</style>
 <h4 style="text-align: center; padding: 4rem">
 	摇一摇，试试看
 </h4>
 <div class="home_mask">
-	<div class="ico"></div>
+	<div class="ico">What's happen???</div>
 </div>
 <script>
 	$(document).ready(function () {
