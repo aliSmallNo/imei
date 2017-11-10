@@ -77,7 +77,7 @@
 								mTip2.trigger('click');
 								mSoundPlaying = true;
 								mSound.stop();
-								mSound.play();
+								mSound.fadeIn(0.5, 500);
 							}
 
 						}
