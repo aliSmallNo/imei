@@ -38,7 +38,7 @@
 	var mSoundPlaying = false;
 	var mSound;
 	$(function () {
-		mSound = $('#musicAudio')[0];
+		mSound = document.getElementById('musicAudio');
 		if (window.DeviceMotionEvent) {
 			mTip.html('Please shake');
 
