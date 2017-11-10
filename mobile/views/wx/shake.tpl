@@ -8,21 +8,23 @@
 		color: #ff0000;
 	}
 
-	.tip, tip2 {
+	.tip, .tip2 {
 		text-align: center;
 		color: #1de9b6;
 	}
 </style>
-<h4 style="text-align: center; padding: 4rem">
+<h3 style="text-align: center; padding: 4rem;">
 	摇一摇，试试看
-</h4>
+</h3>
 <div class="home_mask">
-	<div class="ico">What's happen???</div>
+	<div class="ico"></div>
 </div>
 <br>
 <br>
 <center>下面数字变化越大，说明摇晃的越厉害</center>
+<br>
 <div class="tip"></div>
+<br>
 <div class="tip2"></div>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script>
@@ -47,13 +49,10 @@
 						//if ($('.home_mask').is(':visible')) return false;
 
 						$('.home_page .ico').addClass('wobble');
-
-						if (navigator.vibrate) {
-							navigator.vibrate(1000);
+						var myVibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+						if (myVibrate) {
+							myVibrate(1500);
 							mTip2.html('vibrate');
-						} else if (navigator.webkitVibrate) {
-							navigator.webkitVibrate(1000);
-							mTip2.html('webkitVibrate');
 						} else {
 							mTip2.html('可惜了，不支持震动');
 						}
