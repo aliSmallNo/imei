@@ -10,7 +10,8 @@
 
 	.tip, .tip2 {
 		text-align: center;
-		color: #1de9b6;
+		color: #049;
+		font-size: 15px;
 	}
 </style>
 <h3 style="text-align: center; padding: 4rem;">
@@ -54,7 +55,7 @@
 							myVibrate(1500);
 							mTip2.html('vibrate');
 						} else {
-							mTip2.html('可惜了，不支持震动');
+							mTip2.html('可惜了，不支持手机震动');
 						}
 
 						setTimeout(function () {
