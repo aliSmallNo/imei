@@ -52,7 +52,7 @@
 		wx.config(wxInfo);
 		wx.ready(function () {
 			mSound = document.getElementById('musicAudio');
-			//mSound.play();
+			mSound.play();
 			initShake();
 			wx.hideMenuItems({
 				menuList: [
