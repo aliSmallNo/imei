@@ -91,13 +91,7 @@
 						//if ($('.home_mask').is(':visible')) return false;
 
 						$('.home_page .ico').addClass('wobble');
-						var myVibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
-						if (myVibrate) {
-							myVibrate(1500);
-							mTip2.html('vibrate');
-						} else {
-							//mTip2.html('可惜了，不支持手机震动');
-						}
+
 						if (!mSoundPlaying) {
 //							if (!mSound) {
 //								mSound = new Howl({
