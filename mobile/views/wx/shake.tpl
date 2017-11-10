@@ -71,10 +71,12 @@
 										}, 500);
 									}
 								});
+							} else {
+								mSoundPlaying = true;
+								mSound.play();
+								mTip2.html('声音播放了吗？');
 							}
-							mSoundPlaying = true;
-							mSound.play();
-							mTip2.html('声音播放了吗？');
+
 						}
 
 						setTimeout(function () {
