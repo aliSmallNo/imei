@@ -70,6 +70,7 @@
 							//mTip2.html('可惜了，不支持手机震动');
 						}
 						if (!mSoundPlaying) {
+							mSoundPlaying = true;
 							mSound.play();
 							mTip2.html('声音播放了吗？');
 						}
