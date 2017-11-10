@@ -65,6 +65,7 @@
 								mSound = new Howl({
 									src: ['/assets/sound/shake.mp3'],
 									preload: true,
+									autoplay: false,
 									onend: function () {
 										setTimeout(function () {
 											mSoundPlaying = false;
@@ -75,6 +76,7 @@
 								mTip2.html('声音播放了吗？');
 								mTip2.trigger('click');
 								mSoundPlaying = true;
+								mSound.stop();
 								mSound.play();
 							}
 
