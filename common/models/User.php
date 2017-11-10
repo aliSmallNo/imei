@@ -158,7 +158,20 @@ class User extends ActiveRecord
 		119 => "行政后勤", 121 => "测试客服", 123 => "项目管理"
 	];
 	static $Estate = [
-		201 => "有房无贷", 203 => "有房有贷", 205 => "计划购房", 207 => "暂无购房计划"
+		201 => "有房无贷", 203 => "有房有贷", 205 => "计划购房", 207 => "暂无购房计划",
+		209 => "市区有房", 211 => "有门面房", 213 => "老家有房", 215 => "乡下有房",
+	];
+	static $Worktype = [
+		210 => "公务员编制", 220 => "事业编制", 230 => "私营企业", 240 => "个体创业", 250 => "家庭自由"
+	];
+	static $Parent = [
+		210 => "单亲", 220 => "都健在"
+	];
+	static $Sibling = [
+		210 => "独生子女", 220 => "排行老大", 230 => "排行最小", 240 => "排行中间"
+	];
+	static $Dwelling = [
+		210 => "与父母同住", 220 => "租房住", 230 => "住自购房"
 	];
 	static $Car = [
 		211 => "有车无贷", 213 => "有车有贷", 215 => "计划购车", 217 => "暂无购车计划"
@@ -480,6 +493,21 @@ class User extends ActiveRecord
 					$item[$newKey . '_t'] = isset($professions[$val]) ? $professions[$val] : '';
 				}
 				continue;
+			} else if (in_array($newKey, ["estate"])) {
+				$newKey = ucfirst($newKey);
+				$item[strtolower($newKey) . '_t'] = [];
+				$item[strtolower($newKey) . '_txt'] = "";
+				if (isset(self::$$newKey) && is_array(self::$$newKey) && $val) {
+					$val = explode(",", $val);
+					if ($val && is_array($val)) {
+						foreach ($val as $v) {
+							$item[strtolower($newKey) . '_t'][$v] = isset(self::$$newKey[$v]) ? self::$$newKey[$v] : '';
+							$item[strtolower($newKey) . '_txt'] .= isset(self::$$newKey[$v]) ? "," . self::$$newKey[$v] : '';
+						}
+						$item[strtolower($newKey) . '_txt'] = trim($item[strtolower($newKey) . '_txt'], ",");
+					}
+				}
+				continue;
 			}
 			if ($newKey == "note") {
 				if ($row["uNote"] == "dummy") {
@@ -775,7 +803,7 @@ class User extends ActiveRecord
 			$uInfo["gallery4"] = array_slice(self::gallery($uInfo["album"]), 0, 4);
 		}
 		$baseInfo = [];
-		$fields = ['marital_t', 'height_t', 'weight_t', 'income_t', 'education_t', 'estate_t'];
+		$fields = ['marital_t', 'height_t', 'weight_t', 'income_t', 'education_t', 'estate_txt'];
 		foreach ($fields as $field) {
 			if ($uInfo[$field]) {
 				$baseInfo[] = $uInfo[$field];
@@ -827,7 +855,7 @@ class User extends ActiveRecord
 			['caption' => '学历', 'content' => 'education_t'],
 			['caption' => '星座', 'content' => 'horos_t'],
 			['content' => '个人小档案', 'header' => 1],
-			['caption' => '购房情况', 'content' => 'estate_t'],
+			['caption' => '购房情况', 'content' => 'estate_txt'],
 			['caption' => '购车情况', 'content' => 'car_t'],
 			['caption' => '从事行业', 'content' => 'scope_t'],
 			['caption' => '从事职业', 'content' => 'profession_t'],
@@ -896,7 +924,19 @@ class User extends ActiveRecord
 			"filter" => "uFilter",
 			"album" => "uAlbum",
 			"status" => "uStatus",
+
+			"parent" => "uParent",
+			"sibling" => "uSibling",
+			"dwelling" => "uDwelling",
+			"worktype" => "uWorkType",
+			"employer" => "uEmployer",
+			"music" => "uMusic",
+			"book" => "uBook",
+			"movie" => "uMovie",
+			"highschool" => "uHighSchool",
+			"university" => "uUniversity",
 		];
+		// ["parent","sibling","dwelling","worktype","employer"，"music","book","movie","highschool","university",]
 		$avatar = isset($data["img"]) ? $data["img"] : '';
 		unset($data['img']);
 		if ($avatar) {
@@ -920,7 +960,7 @@ class User extends ActiveRecord
 		$userData = [];
 		foreach ($fields as $k => $field) {
 			if (isset($data[$k])) {
-				$userData[$field] = $data[$k];
+				$userData[$field] = trim($data[$k], ",");
 			}
 		}
 

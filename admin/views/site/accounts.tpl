@@ -481,7 +481,7 @@
 			<span>{{$prod.scope_t}}</span>
 			<span>{{$prod.profession_t}}</span>
 			<span>{{$prod.income_t}}</span>
-			<span>{{$prod.estate_t}}</span>
+			<span>{{$prod.estate_txt}}</span>
 			<span>{{$prod.car_t}}</span>
 			<span>{{$prod.smoke_t}}</span>
 			<span>{{$prod.alcohol_t}}</span>
@@ -492,6 +492,17 @@
 			<span>{{$prod.pet_t}}</span>
 			<span>{{$prod.intro}}</span>
 			<span>{{$prod.interest}}</span>
+
+			<span>{{$prod.parent_t}}</span>
+			<span>{{$prod.sibling_t}}</span>
+			<span>{{$prod.dwelling_t}}</span>
+			<span>{{$prod.worktype_t}}</span>
+			<span>{{$prod.employer}}</span>
+			<span>{{$prod.music}}</span>
+			<span>{{$prod.book}}</span>
+			<span>{{$prod.movie}}</span>
+			<span>{{$prod.highschool}}</span>
+			<span>{{$prod.university}}</span>
 			<br>
 			{{if $prod.status==2}}
 			<em>{{$prod.reason}}</em>

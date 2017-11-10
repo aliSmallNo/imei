@@ -848,6 +848,8 @@ class FooController extends Controller
 
 		//
 //		User::propStat("2017-07-17","2017-11-08");
+		//print_r(explode(",", ""));
+		print_r(User::fmtRow(User::find()->where(["uId" => 120003])->asArray()->one()));
 	}
 
 

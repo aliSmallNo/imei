@@ -192,9 +192,10 @@ require(["layer"],
 					});
 					return false;
 				});
+				// ["parent","sibling","dwelling","worktype","employer"，"music","book","movie","highschool","university",]
 				$(".sedit-btn-comfirm").on(kClick, function () {
-					var inputFileds = ["name", "interest", "intro"];
-					var inputFiledsT = ["呢称", "兴趣爱好", "自我介绍"];
+					var inputFileds = ["name", "highschool", "university", "employer", "music", "book", "movie", "interest", "intro",];
+					var inputFiledsT = ["呢称", "曾读高中名字", "曾读大学名字", "现在单位", "喜欢音乐", "喜欢书籍", "喜欢电影", "兴趣爱好", "自我介绍"];
 					for (var i = 0; i < inputFileds.length; i++) {
 						var inputVal = $.trim($("[name=" + inputFileds[i] + "]").val());
 						// console.log(inputFiledsT[i] + inputFileds[i] + ":" + inputVal);
@@ -228,13 +229,15 @@ require(["layer"],
 					$(".action-com").each(function () {
 						var self = $(this);
 						var field = self.attr("data-field");
-						var Val;
+						var Val = "";
 						if (self.hasClass("action-mult")) {
-
+							self.find(".action-val em").each(function () {
+								Val += "," + $(this).attr("data-key");
+							});
 						} else {
 							Val = self.find("em").attr("data-key");
-							$sls.postData[field] = Val;
 						}
+						$sls.postData[field] = Val;
 					});
 
 					var cItem = {};
@@ -265,7 +268,6 @@ require(["layer"],
 					});
 					$sls.postData["filter"] = JSON.stringify(cItem);
 					console.log($sls.postData);
-
 
 					var localId = util.avatar.attr("localId");
 					if (localId) {
