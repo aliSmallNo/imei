@@ -35,7 +35,6 @@
 	var mSoundPlaying = false;
 	var mSound = new Howl({
 		src: ['/assets/sound/shake.mp3'],
-		html5: true,
 		preload: true,
 		onend: function () {
 			setTimeout(function () {
