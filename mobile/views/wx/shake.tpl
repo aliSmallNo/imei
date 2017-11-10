@@ -50,8 +50,10 @@
 
 						if (navigator.vibrate) {
 							navigator.vibrate(1000);
+							mTip2.html('vibrate');
 						} else if (navigator.webkitVibrate) {
 							navigator.webkitVibrate(1000);
+							mTip2.html('webkitVibrate');
 						} else {
 							mTip2.html('可惜了，不支持震动');
 						}
