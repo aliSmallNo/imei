@@ -14,9 +14,9 @@
 		font-size: 18px;
 	}
 </style>
-<h3 style="text-align: center; padding: 4rem;">
-	摇一摇，试试看
-</h3>
+<h2 style="text-align: center; padding: 4rem;">
+	千寻摇摇，测试你的手机看看
+</h2>
 <div class="home_mask">
 	<div class="ico"></div>
 </div>
