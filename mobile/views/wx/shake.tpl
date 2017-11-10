@@ -52,8 +52,8 @@
 		wx.config(wxInfo);
 		wx.ready(function () {
 			mSound = document.getElementById('musicAudio');
-			mSound.play();
-//			initShake();
+			//mSound.play();
+			initShake();
 			wx.hideMenuItems({
 				menuList: [
 					'menuItem:copyUrl',
