@@ -72,9 +72,10 @@
 									}
 								});
 							} else {
+								mTip2.html('声音播放了吗？');
+								mTip2.trigger('click');
 								mSoundPlaying = true;
 								mSound.play();
-								mTip2.html('声音播放了吗？');
 							}
 
 						}
