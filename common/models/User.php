@@ -1303,7 +1303,7 @@ class User extends ActiveRecord
 			return 0;
 		}
 		$isSingle = ($myInfo->uRole == 10) ? 1 : 0;
-		$mId = $myInfo->uId;
+		$myId = $myInfo->uId;
 		// $uFilter = $myInfo->uFilter;
 		$myFilter = self::criteria($myInfo);
 
@@ -1392,7 +1392,7 @@ class User extends ActiveRecord
 		$relation_favor = UserNet::REL_FAVOR;
 		$pinCat = Pin::CAT_NOW;
 		$conn = AppUtil::db();
-		$sql = "SELECT * from im_pin as p WHERE p.pCategory=$pinCat AND pPId=" . $mId;
+		$sql = "SELECT * from im_pin as p WHERE p.pCategory=$pinCat AND pPId=" . $myId;
 		$ret = $conn->createCommand($sql)->queryOne();
 		$myLat = $myLng = '0';
 		$distField = ' 9999 as dist';
@@ -1482,16 +1482,18 @@ class User extends ActiveRecord
 		}
 		$flRank = "(CASE WHEN uLocation like '%$loc%' then 10 else 0 end) as flRank";
 
-		$sql = "SELECT u.*, (CASE WHEN uSubStatus=4 THEN 1 ELSE 9 END) as stickRank,
+		$sql = "SELECT u.*,
+ 				(CASE WHEN u.uOpenId LIKE 'oYDJew%' THEN IFNULL(h.hCount, 0) ELSE 9999 END) + (CASE WHEN uSubStatus=4 THEN 1 ELSE 99 END) as stickRank,
  				$distRank ,$distField ,$flRank,$fmRank
 				FROM im_user as u 
 				JOIN im_user_wechat as w on u.uId=w.wUId AND w.wSubscribe=1
 				LEFT JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=$pinCat
+				LEFT JOIN im_hit as h on h.hUId=$myId AND h.hSubUId=u.uId
 				WHERE $condition 
 				ORDER BY stickRank,fmRank desc,flRank desc,$ageRank mRank desc limit $limit";
 
 		$ret = $conn->createCommand($sql)->queryAll();
-		AppUtil::logFile($conn->createCommand($sql)->getRawSql(), 5, __FUNCTION__, __LINE__);
+		//AppUtil::logFile($conn->createCommand($sql)->getRawSql(), 5, __FUNCTION__, __LINE__);
 		$rows = [];
 		$IDs = [0];
 		foreach ($ret as $row) {
@@ -1525,7 +1527,7 @@ class User extends ActiveRecord
 
 		$sql = "SELECT n.nUId
 				FROM im_user_net as n  
-				WHERE n.nRelation=$relation_favor AND n.nDeletedFlag=0 AND n.nSubUId=$mId
+				WHERE n.nRelation=$relation_favor AND n.nDeletedFlag=0 AND n.nSubUId=$myId
 				AND n.nUId in (" . implode(',', $IDs) . ")";
 		$favorList = $conn->createCommand($sql)->queryAll();
 		foreach ($favorList as $favor) {
@@ -1540,6 +1542,7 @@ class User extends ActiveRecord
 			$data = [];
 			//$data["id"] = $v["uOpenId"];
 			//$data["ids"] = $v["uId"];
+			Hit::add($myId, $row["uId"]);
 			$data["secretId"] = AppUtil::encrypt($row["uId"]);
 			$data["uni"] = $row["uUniqid"];
 			$data["avatar"] = $row["uAvatar"];
