@@ -3351,8 +3351,9 @@ section
 
 			.mp
 				position: relative
-				padding-left: 3.8rem
 				font-size: 1.4rem
+				padding-right: 1rem
+				padding-left: 1rem
 				.dist
 					position: absolute
 					right: 0
@@ -3372,8 +3373,29 @@ section
 					border: $borderColor 1px solid
 					border-radius: 1.5rem
 				span
+					position: relative
 					display: inline-block
 					padding-top: .6rem
+					&:before
+						content: ''
+						position: absolute
+						display: inline-block
+						width: 1.2rem
+						height: 1.2rem
+						background: url(../images/ico_quote1.png) no-repeat center center
+						background-size: 100% 100%
+						left: -1.5rem
+						top: .7rem
+					&:after
+						content: ''
+						position: absolute
+						display: inline-block
+						width: 1.2rem
+						height: 1.2rem
+						background: url(../images/ico_quote2.png) no-repeat center center
+						background-size: 100% 100%
+						right: -1.5rem
+						bottom: .5rem
 			.des
 				color: $grayFontColor
 				padding-top: 1rem

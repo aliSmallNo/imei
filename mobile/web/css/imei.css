@@ -3397,8 +3397,9 @@ section {
         color: #00a79b; }
       .m-top-users li .mp-info .mp {
         position: relative;
-        padding-left: 3.8rem;
-        font-size: 1.4rem; }
+        font-size: 1.4rem;
+        padding-right: 1rem;
+        padding-left: 1rem; }
         .m-top-users li .mp-info .mp .dist {
           position: absolute;
           right: 0;
@@ -3418,8 +3419,29 @@ section {
           border: #E4E4E4 1px solid;
           border-radius: 1.5rem; }
         .m-top-users li .mp-info .mp span {
+          position: relative;
           display: inline-block;
           padding-top: 0.6rem; }
+          .m-top-users li .mp-info .mp span:before {
+            content: "";
+            position: absolute;
+            display: inline-block;
+            width: 1.2rem;
+            height: 1.2rem;
+            background: url(../images/ico_quote1.png) no-repeat center center;
+            background-size: 100% 100%;
+            left: -1.5rem;
+            top: 0.7rem; }
+          .m-top-users li .mp-info .mp span:after {
+            content: "";
+            position: absolute;
+            display: inline-block;
+            width: 1.2rem;
+            height: 1.2rem;
+            background: url(../images/ico_quote2.png) no-repeat center center;
+            background-size: 100% 100%;
+            right: -1.5rem;
+            bottom: 0.5rem; }
       .m-top-users li .mp-info .des {
         color: #6a6572;
         padding-top: 1rem; }

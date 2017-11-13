@@ -979,14 +979,11 @@
 				{[/delete]}
 
 				{[#intro]}
-				<img src="/images/logo62.png?v=1.1.2" alt="">
 				<span>{[intro]}</span>
 				{[/intro]}
 				{[^intro]}
-				<img src="/images/logo62.png?v=1.1.2" alt="">
-				<span>Ta还没有填写内心独白</span>
+				<span>（Ta啥也没说）</span>
 				{[/intro]}
-
 			</div>
 			{[#comment]}
 			<div class="des"><b>“</b>{[.]}<b>”</b></div>{[/comment]}

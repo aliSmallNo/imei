@@ -96,8 +96,7 @@ require(["layer"],
 					if (util.times < util.cycle) {
 						util.speed -= 10;
 					} else {
-						if (util.times > util.cycle + 10
-							&& ((util.prize == 0 && util.index == 7) || util.prize == util.index + 1)) {
+						if (util.times > util.cycle + 10 && ((util.prize == 0 && util.index == 7) || util.prize == util.index + 1)) {
 							util.speed += 80;
 						} else {
 							util.speed += 30;
