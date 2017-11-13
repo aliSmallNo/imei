@@ -510,8 +510,8 @@ class User extends ActiveRecord
 				continue;
 			}
 			if ($newKey == "note") {
-				if ($row["uNote"] == "dummy") {
-					$item["note_t"] = "测试数据";
+				if (strpos($item['openid'], 'oYDJew') !== 0 ) {
+					$item["note_t"] = "稻草人";
 				} else {
 					$item["note_t"] = "";
 				}
@@ -551,11 +551,11 @@ class User extends ActiveRecord
 		$item['cert'] = (isset($item['certstatus']) && $item['certstatus'] == self::CERT_STATUS_PASS ? 1 : 0);
 		$item['gender_ico'] = $item['gender'] == self::GENDER_FEMALE ? 'female' : 'male';
 		$item['encryptId'] = AppUtil::encrypt($item['id']);
+
 		$fields = ['approvedby', 'approvedon', 'addedby', 'updatedby', 'rawdata'];
 		foreach ($fields as $field) {
 			unset($item[$field]);
 		}
-
 		$item["percent"] = self::percentage($item);
 		$item["pending"] = $item['status'] == User::STATUS_PENDING ? 1 : 0;
 		return $item;

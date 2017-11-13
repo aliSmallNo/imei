@@ -93,8 +93,8 @@
 
 	.pInfo span.status-10 {
 		color: #fff;
-		border: 1px solid #4d4d4d;
-		background: #4d4d4d;
+		border: 1px solid #777;
+		background: #777;
 	}
 
 	td h5 {
