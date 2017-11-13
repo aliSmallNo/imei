@@ -98,13 +98,13 @@ require(["layer"],
 					} else {
 						if (util.times > util.cycle + 10
 							&& ((util.prize == 0 && util.index == 7) || util.prize == util.index + 1)) {
-							util.speed += 90;
+							util.speed += 80;
 						} else {
 							util.speed += 30;
 						}
 					}
-					if (util.speed < 60) {
-						util.speed = 60;
+					if (util.speed < 50) {
+						util.speed = 50;
 					}
 					// console.log(util.prize + ' ' + util.index + ' ' + util.times + ' ' + util.speed);
 					util.timer = setTimeout(function () {
