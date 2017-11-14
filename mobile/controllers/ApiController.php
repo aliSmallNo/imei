@@ -1948,8 +1948,7 @@ class ApiController extends Controller
 						'有人密聊你啦',
 						'TA给你发了一条密聊消息，快去看看吧~',
 						$uid,
-						$msgKey
-					);
+						$msgKey);
 					return self::renderAPI(0, '', [
 						'items' => $ret,
 						'gid' => $ret['gid'],

@@ -65,7 +65,7 @@ class ApiController extends Controller
 		switch ($tag) {
 			case "sys_notice":
 				$msg = self::postParam("msg");
-				 UserMsg::edit(0, [
+				UserMsg::edit(0, [
 					"mText" => json_encode([$msg], JSON_UNESCAPED_UNICODE),
 					"mCategory" => UserMsg::CATEGORY_UPGRADE,
 					"mUId" => RedisUtil::getIntSeq(),
@@ -453,13 +453,17 @@ class ApiController extends Controller
 				$text = self::postParam("text");
 				$ret = ChatMsg::addChat($serviceId, $id, $text, 0, Admin::getAdminId());
 				return self::renderAPI(0, '', $ret);
-				break;
 			case "dsend":
 				$serviceId = self::postParam("did");;
 				$text = self::postParam("text");
 				$ret = ChatMsg::addChat($serviceId, $id, $text, 0, Admin::getAdminId());
+				WechatUtil::templateMsg(WechatUtil::NOTICE_CHAT,
+					$id,
+					'有人密聊你啦',
+					'TA给你发了一条密聊消息，快去看看吧~',
+					$serviceId,
+					$ret['gid']);
 				return self::renderAPI(0, '', $ret);
-				break;
 		}
 		return self::renderAPI(129, "什么操作也没做啊！");
 	}
