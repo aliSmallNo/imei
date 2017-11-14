@@ -457,36 +457,6 @@ class SiteController extends BaseController
 			]);
 	}
 
-	public function actionInterview()
-	{
-		Admin::staffOnly();
-		$serviceId = User::SERVICE_UID;
-		$uid = self::getParam("id");
-		if (!$uid) {
-			$uid = self::postParam("uid", 120003);
-		}
-		$content = trim(self::postParam("content"));
-		if ($content) {
-			ChatMsg::addChat($serviceId, $uid, $content);
-		}
-		ChatMsg::groupEdit($serviceId, $uid, 9999);
-		list($items) = ChatMsg::details($serviceId, $uid);
-		usort($items, function ($a, $b) {
-			return $a['addedon'] < $b['addedon'];
-		});
-		$uInfo = User::findOne(["uId" => $uid]);
-		return $this->renderPage('interview.tpl',
-			[
-				'category' => 'data',
-				'detailcategory' => 'site/accounts',
-				'list' => $items,
-				"uid" => $uid,
-				"name" => $uInfo->uName,
-				"avatar" => $uInfo->uThumb,
-				"phone" => $uInfo->uPhone,
-			]);
-	}
-
 	public function actionDummychats()
 	{
 		$getInfo = Yii::$app->request->get();

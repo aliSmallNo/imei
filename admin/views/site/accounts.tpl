@@ -529,14 +529,13 @@
 			<div class="btn-divider"></div>
 			<!--a href="/site/follow?id={{$prod.id}}" class="follow btn btn-outline btn-success btn-xs">跟进详情{{if $prod.co>0}}
 				({{$prod.co}}){{/if}}</a-->
-			<a href="javascript:;" class="btn-list btn btn-outline btn-success btn-xs">推荐列表</a>
-			<a href="/site/interview?id={{$prod.id}}"
-				 class="follow btn btn-outline btn-success btn-xs">和TA密聊{{if $prod.mco>0}}({{$prod.mco}}){{/if}}</a>
-			<div class="btn-divider"></div>
 			<a href="javascript:;" class="bait btn btn-outline btn-danger btn-xs" data-gender="{{$prod.gender}}"
 				 data-id="{{$prod.id}}" data-name="{{$prod.name}}" data-thumb="{{$prod.thumb}}">稻草人聊</a>
+			<a href="/site/bait?did=120000&uid={{$prod.id}}" class="follow btn btn-outline btn-danger btn-xs">客服聊TA{{if $prod.mco>0}}({{$prod.mco}}){{/if}}</a>
+			<div class="btn-divider"></div>
+			<a href="javascript:;" class="btn-list btn btn-outline btn-warning btn-xs">推荐列表</a>
 			{{if $debug}}
-			<a href="javascript:;" class="btn-refresh btn btn-outline btn-danger btn-xs" data-id="{{$prod.id}}">刷新</a>
+			<a href="javascript:;" class="btn-refresh btn btn-outline btn-warning btn-xs" data-id="{{$prod.id}}">刷新</a>
 			{{/if}}
 			<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 			<h5>创建于{{$prod.addedon|date_format:'%y-%m-%d %H:%M'}}</h5>
@@ -712,7 +711,9 @@
 		<div data-id="{[uId]}" class="dummy-opt">
 			<div><img src="{[uThumb]}"></div>
 			<div>
-				{[uName]} <small>{[age]}岁</small> <br>
+				{[uName]}
+				<small>{[age]}岁</small>
+				<br>
 				<small>所在地：</small>{[location]}<br>
 				<small>籍贯：</small>{[homeland]}
 			</div>
