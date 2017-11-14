@@ -13,9 +13,10 @@ use Yii;
 
 class RedisUtil
 {
+	private $keys = [];
 	private static $Glue = ":";
-	const FIXED_PREFIX = "imei";
 
+	const FIXED_PREFIX = "imei";
 	const KEY_PROVINCES = 'provinces';
 	const KEY_CITIES = 'cities';
 	const KEY_CITY = 'city';
@@ -44,6 +45,8 @@ class RedisUtil
 	const KEY_PIN_GEO = "pin_geo";
 	const KEY_MENUS_MD5 = "key_menus_md5";
 	const KEY_BAIDU_TOKEN = "baidu_token";
+	const KEY_DUMMY_TOP = "dummy_top";
+
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
@@ -72,7 +75,8 @@ class RedisUtil
 		self::KEY_STAT_REUSE => 3600 * 3,
 		self::KEY_PIN_GEO => 60 * 10,
 		self::KEY_MENUS_MD5 => 3600,
-		self::KEY_BAIDU_TOKEN => 86400 * 28
+		self::KEY_BAIDU_TOKEN => 86400 * 28,
+		self::KEY_DUMMY_TOP => 60 * 30,
 	];
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';
@@ -86,21 +90,29 @@ class RedisUtil
 	/**
 	 * @return \yii\redis\Connection
 	 */
-	public static function redis()
+	protected function redis()
 	{
 		return Yii::$app->redis;
 	}
 
-	public static function getCache(...$keys)
+	public static function init(...$keys)
 	{
-		$redis = AppUtil::redis();
+		$util = new self();
+		$util->keys = $keys;
+		return $util;
+	}
+
+	public function getCache()
+	{
+		$redis = self::redis();
 		$mainKey = '*******';
+		$keys = $this->keys;
 		if (is_array($keys) && count($keys)) {
 			$mainKey = $keys[0];
 		}
 		switch ($mainKey) {
 			case self::KEY_WX_PAY:
-				$redisKey = self::getPrefix(...$keys);
+				$redisKey = self::getPrefix();
 				$ret = $redis->incr($redisKey);
 				$expired = isset(self::$CacheDuration[$redisKey]) ? self::$CacheDuration[$redisKey] : 3600;
 				$redis->expire($redisKey, $expired);
@@ -112,15 +124,20 @@ class RedisUtil
 				$redisKey = implode(self::$Glue, $keys);
 				return $redis->hget(self::FIXED_PREFIX . self::$Glue . $mainKey, $redisKey);
 			default:
-				$redisKey = self::getPrefix(...$keys);
+				$redisKey = self::getPrefix();
+				//AppUtil::logFile([$redisKey, ($redis->get($redisKey) ? 1 : 0)], 5, __FUNCTION__);
 				return $redis->get($redisKey);
 		}
 	}
 
-	public static function setCache($val, ...$keys)
+	public function setCache($val)
 	{
-		$redis = AppUtil::redis();
+		$redis = self::redis();
+		if (is_array($val)) {
+			$val = json_encode($val);
+		}
 		$mainKey = '*******';
+		$keys = $this->keys;
 		if (is_array($keys) && count($keys)) {
 			$mainKey = $keys[0];
 		}
@@ -133,7 +150,7 @@ class RedisUtil
 				$redis->hset(self::FIXED_PREFIX . self::$Glue . $mainKey, $redisKey, $val);
 				break;
 			default:
-				$redisKey = self::getPrefix(...$keys);
+				$redisKey = self::getPrefix();
 				$redis->set($redisKey, $val);
 				$expired = isset(self::$CacheDuration[$mainKey]) ? self::$CacheDuration[$mainKey] : 3600;
 				$redis->expire($redisKey, $expired);
@@ -141,15 +158,16 @@ class RedisUtil
 		}
 	}
 
-	public static function delCache(...$keys)
+	public function delCache()
 	{
-		$redis = AppUtil::redis();
-		$redisKey = self::getPrefix(...$keys);
+		$redis = self::redis();
+		$redisKey = self::getPrefix();
 		$redis->del($redisKey);
 	}
 
-	public static function getPrefix(...$keys)
+	protected function getPrefix()
 	{
+		$keys = $this->keys;
 		array_unshift($keys, self::FIXED_PREFIX);
 		$ret = implode(self::$Glue, $keys);
 		return $ret;

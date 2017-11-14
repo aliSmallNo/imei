@@ -376,7 +376,7 @@ class User extends ActiveRecord
 		$conn->createCommand($sql)->bindValues([
 			':openid' => $openid
 		])->execute();
-		RedisUtil::delCache(RedisUtil::KEY_WX_USER, $openid);
+		RedisUtil::init(RedisUtil::KEY_WX_USER, $openid)->delCache();
 		return true;
 	}
 
@@ -388,7 +388,7 @@ class User extends ActiveRecord
 			$entity->uRole = $role;
 			$entity->uUpdatedOn = date('Y-m-d H:i:s');
 			$entity->save();
-			RedisUtil::delCache(RedisUtil::KEY_WX_USER, $openId);
+			RedisUtil::init(RedisUtil::KEY_WX_USER, $openId)->delCache();
 			return true;
 		}
 		return false;
@@ -408,7 +408,7 @@ class User extends ActiveRecord
 			}
 			$entity->uUpdatedOn = date('Y-m-d H:i:s');
 			$entity->save();
-			RedisUtil::delCache(RedisUtil::KEY_WX_USER, $openId);
+			RedisUtil::init(RedisUtil::KEY_WX_USER, $openId)->delCache();
 			return true;
 		}
 		return false;
@@ -1685,19 +1685,20 @@ class User extends ActiveRecord
 		if (AppUtil::isDev()) {
 			return ['code' => 159, 'msg' => '悲催啊~ 只能发布到服务器端才能测试这个功能~'];
 		}
-		$smsLimit = RedisUtil::getCache(RedisUtil::KEY_SMS_CODE_CNT, date('ymd'), $phone);
+		$redis = RedisUtil::init(RedisUtil::KEY_SMS_CODE_CNT, date('ymd'), $phone);
+		$smsLimit = $redis->getCache();
 		if (!$smsLimit) {
-			RedisUtil::setCache(1, RedisUtil::KEY_SMS_CODE_CNT, date('ymd'), $phone);
+			$redis->setCache(1);
 		} elseif ($smsLimit > self::$SmsCodeLimitPerDay) {
 			return ['code' => 159, 'msg' => '每天获取验证码的次数不能超过' . self::$SmsCodeLimitPerDay . '次'];
 		} else {
-			RedisUtil::setCache($smsLimit + 1, RedisUtil::KEY_SMS_CODE_CNT, date('ymd'), $phone);
+			$redis->setCache($smsLimit + 1);
 		}
 		$code = rand(100000, 999999);
 		$minutes = 10;
 
 		AppUtil::sendTXSMS($phone, AppUtil::SMS_NORMAL, ["params" => [strval($code), strval($minutes)]]);
-		RedisUtil::setCache($code, RedisUtil::KEY_SMS_CODE, $phone);
+		RedisUtil::init(RedisUtil::KEY_SMS_CODE, $phone)->setCache($code);
 		return ['code' => 0, 'msg' => '验证码已发送到手机【' . $phone . '】<br>请注意查收手机短信'];
 	}
 
@@ -1706,7 +1707,7 @@ class User extends ActiveRecord
 		if ($code == self::$SMS_SUPER_PASS) {
 			return true;
 		}
-		$smsCode = RedisUtil::getCache(RedisUtil::KEY_SMS_CODE, $phone);
+		$smsCode = RedisUtil::init(RedisUtil::KEY_SMS_CODE, $phone)->getCache();
 		return ($smsCode && $code == $smsCode);
 	}
 
@@ -2505,33 +2506,34 @@ class User extends ActiveRecord
 	}
 
 	// 后台聊天稻草人
-	public static function dummyForChat()
+	public static function topDummies()
 	{
+		$conn = AppUtil::db();
 		/*$sql = "select uName,uThumb,uId,uGender
 				from im_user where uSubStatus=:sst and uStatus=:st ORDER by uId desc";*/
 		$sql = "SELECT uName,uThumb,uId,uGender,uLocation,uHomeLand,uBirthYear
 			FROM im_user 
 			WHERE uOpenId not LIKE 'oYDJew%' AND uHomeLand!='' AND uStatus=:st LIMIT 120";
-		$ret = AppUtil::db()->createCommand($sql)->bindValues([
+		$ret = $conn->createCommand($sql)->bindValues([
 			":st" => self::STATUS_ACTIVE,
 		])->queryAll();
 		$res = [];
-		foreach ($ret as $v) {
-			$v["location"] = '';
-			if (isset($v['uLocation']) && $v['uLocation']) {
-				$text = array_column(json_decode($v['uLocation'], 1), 'text');
-				$v["location"] = implode(' ', $text);
+		foreach ($ret as $row) {
+			$row["location"] = '';
+			if (isset($row['uLocation']) && $row['uLocation']) {
+				$text = array_column(json_decode($row['uLocation'], 1), 'text');
+				$row["location"] = implode(' ', $text);
 			}
-			$v["homeland"] = '';
-			if (isset($v['uHomeLand']) && $v['uHomeLand']) {
-				$text = array_column(json_decode($v['uHomeLand'], 1), 'text');
-				$v["homeland"] = implode(' ', $text);
+			$row["homeland"] = '';
+			if (isset($row['uHomeLand']) && $row['uHomeLand']) {
+				$text = array_column(json_decode($row['uHomeLand'], 1), 'text');
+				$row["homeland"] = implode(' ', $text);
 			}
-			$v["age"] = date('Y') - $v['uBirthYear'];
-			if ($v["uGender"] == self::GENDER_MALE) {
-				$res[self::GENDER_FEMALE][] = $v;
-			} elseif ($v["uGender"] == self::GENDER_FEMALE) {
-				$res[self::GENDER_MALE][] = $v;
+			$row["age"] = date('Y') - $row['uBirthYear'];
+			if ($row["uGender"] == self::GENDER_MALE) {
+				$res[self::GENDER_FEMALE][] = $row;
+			} elseif ($row["uGender"] == self::GENDER_FEMALE) {
+				$res[self::GENDER_MALE][] = $row;
 			}
 
 		}

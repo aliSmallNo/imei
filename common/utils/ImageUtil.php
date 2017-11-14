@@ -57,7 +57,8 @@ class ImageUtil
 		$bucket = "bpbhd";
 		$url = "http://web.file.myqcloud.com/files/v2/$app_id/$bucket";
 		$host = "web.file.myqcloud.com";
-		$signStr = RedisUtil::getCache(RedisUtil::KEY_CLOUD_COS, $oneTimeFlag ? 1 : 0);
+		$redis = RedisUtil::init(RedisUtil::KEY_CLOUD_COS, $oneTimeFlag ? 1 : 0);
+		$signStr = $redis->getCache();
 		if (!$signStr) {
 			$secret_id = "AKIDEqyJNctINqB6re8NBeckX0wOH2CnGL0R";
 			$secret_key = "At5h3sa9zKz8rsSMVqPUMN4L48uHNfNk";
@@ -72,7 +73,7 @@ class ImageUtil
 			$bin = hash_hmac('SHA1', $srcStr, $secret_key, true);
 			$bin .= $srcStr;
 			$signStr = base64_encode($bin);
-			RedisUtil::setCache($signStr, RedisUtil::KEY_CLOUD_COS, $oneTimeFlag ? 1 : 0);
+			$redis->setCache($signStr);
 		}
 		return [
 			"url" => $url,

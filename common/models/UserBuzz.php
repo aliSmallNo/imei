@@ -82,7 +82,7 @@ class UserBuzz extends ActiveRecord
 		self::$WelcomeMsg .= '点击底栏“我是单身”，为自己找对象！' . PHP_EOL . PHP_EOL;
 		self::$WelcomeMsg .= '这里的单身，均有好友做推荐，让交友变得真实';*/
 
-		self::$WelcomeMsg='欢迎来到千寻恋恋交友网👏' . PHP_EOL . '
+		self::$WelcomeMsg = '欢迎来到千寻恋恋交友网👏' . PHP_EOL . '
 千寻恋恋交友网是由腾讯众创推出的婚恋交友品牌！
 15年诚信婚恋机构，每天撮合成功千对以上，会员均为优质男女！' . PHP_EOL . '
 ------------------------------' . PHP_EOL . '
@@ -281,21 +281,21 @@ class UserBuzz extends ActiveRecord
 					]);
 				}
 				return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
-				/*return self::json_to_xml([
-					'ToUserName' => $fromUsername,
-					'FromUserName' => $toUsername,
-					'CreateTime' => time(),
-					'MsgType' => 'news',
-					'ArticleCount' => 1,
-					'Articles' => [
-						'item' => [
-							'Title' => '千寻恋恋 - 本地真实交友平台',
-							'Description' => '每周推荐1名本地男女候选人，点击页面了解本周候选人吧！',
-							'PicUrl' => 'https://wx.meipo100.com/images/welcome_720.jpg',
-							'Url' => 'https://wx.meipo100.com/wx/index'
-						]
+			/*return self::json_to_xml([
+				'ToUserName' => $fromUsername,
+				'FromUserName' => $toUsername,
+				'CreateTime' => time(),
+				'MsgType' => 'news',
+				'ArticleCount' => 1,
+				'Articles' => [
+					'item' => [
+						'Title' => '千寻恋恋 - 本地真实交友平台',
+						'Description' => '每周推荐1名本地男女候选人，点击页面了解本周候选人吧！',
+						'PicUrl' => 'https://wx.meipo100.com/images/welcome_720.jpg',
+						'Url' => 'https://wx.meipo100.com/wx/index'
 					]
-				]);*/
+				]
+			]);*/
 			default:
 				return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
 		}
@@ -340,8 +340,9 @@ class UserBuzz extends ActiveRecord
 
 	public static function wxMessages($adminId, $page, $pageSize = 20, $renewFlag = false)
 	{
+		$redis = RedisUtil::init(RedisUtil::KEY_WX_MESSAGE, $adminId);
 		if ($pageSize < 10 && $renewFlag) {
-			$ret = RedisUtil::getCache(RedisUtil::KEY_WX_MESSAGE, $adminId);
+			$ret = $redis->getCache();
 			$ret = json_decode($ret, true);
 			if ($ret) {
 				return $ret;
@@ -388,9 +389,9 @@ class UserBuzz extends ActiveRecord
 		}
 
 		if ($pageSize < 10) {
-			RedisUtil::setCache(json_encode([$res, $count]), RedisUtil::KEY_WX_MESSAGE, $adminId);
+			$redis->setCache([$res, $count]);
 		} else {
-			RedisUtil::delCache(RedisUtil::KEY_WX_MESSAGE, $adminId);
+			$redis->delCache();
 		}
 
 		return [$res, $count];

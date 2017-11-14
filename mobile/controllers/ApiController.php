@@ -1223,7 +1223,7 @@ class ApiController extends Controller
 					];
 				*/
 				if (isset($data["session_key"])) {
-					RedisUtil::setCache($data["session_key"], RedisUtil::KEY_XCX_SESSION_ID, $data["openid"]);
+					RedisUtil::init(RedisUtil::KEY_XCX_SESSION_ID, $data["openid"])->setCache($data["session_key"]);
 					$data = [
 						"errcode" => 0,
 						"errmsg" => "success",
@@ -1239,7 +1239,7 @@ class ApiController extends Controller
 				break;
 			case "unionid":
 				$XcxOpneid = self::postParam("openid");
-				$sessionKey = RedisUtil::getCache(RedisUtil::KEY_XCX_SESSION_ID, $XcxOpneid);
+				$sessionKey = RedisUtil::init(RedisUtil::KEY_XCX_SESSION_ID, $XcxOpneid)->getCache();
 				$encryptedData = self::postParam("data");
 				$iv = self::postParam("iv");
 				$rawData = WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
@@ -2565,7 +2565,7 @@ class ApiController extends Controller
 		Log::add($newLog);
 
 		$outTradeNo = $rData['out_trade_no'];
-		$ret = RedisUtil::getCache(RedisUtil::KEY_WX_PAY, $outTradeNo);
+		$ret = RedisUtil::init(RedisUtil::KEY_WX_PAY, $outTradeNo)->getCache();
 		//避免重复请求
 		if ($ret > 1) {
 			return AppUtil::data_to_xml($data);

@@ -184,8 +184,8 @@ class Pin extends ActiveRecord
 				$address = array_column($ret, 'text');
 				$address = implode('', $address);
 				$md5 = md5($address);
-				$info = RedisUtil::getCache(RedisUtil::KEY_PIN_GEO, $md5);
-				$info = json_decode($info, 1);
+				$redis = RedisUtil::init(RedisUtil::KEY_PIN_GEO, $md5);
+				$info = json_decode($redis->getCache(), 1);
 				if ($info) {
 					$updateMapInfo($uid, 0, 0, $info, $conn);
 					return true;
@@ -197,7 +197,7 @@ class Pin extends ActiveRecord
 				if (isset($mapInfo['geocodes']) && $mapInfo['geocodes']) {
 					$info = $mapInfo['geocodes'][0];
 					$updateMapInfo($uid, 0, 0, $info, $conn);
-					RedisUtil::setCache(json_encode($info), RedisUtil::KEY_PIN_GEO, $md5);
+					$redis->setCache($info);
 				}
 				return true;
 			}

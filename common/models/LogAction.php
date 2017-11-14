@@ -77,8 +77,8 @@ class LogAction extends ActiveRecord
 
 	public static function reuseData($category, $resetFlag = false)
 	{
-		$reuseData = RedisUtil::getCache(RedisUtil::KEY_STAT_REUSE, $category);
-		$reuseData = json_decode($reuseData, 1);
+		$redis = RedisUtil::init(RedisUtil::KEY_STAT_REUSE, $category);
+		$reuseData = json_decode($redis->getCache(), 1);
 		if ($reuseData && !$resetFlag) {
 			return $reuseData;
 		}
@@ -101,7 +101,7 @@ class LogAction extends ActiveRecord
 			$data = LogAction::reuseCal($sCategory, $firstDay, $lastDay, $conn);
 			$reuseData[] = $data;
 		}
-		RedisUtil::setCache(json_encode($reuseData), RedisUtil::KEY_STAT_REUSE, $category);
+		$redis->setCache($reuseData);
 		return $reuseData;
 	}
 
@@ -157,7 +157,7 @@ class LogAction extends ActiveRecord
 			 AND uStatus<8 AND uPhone!=\'\'  AND uRole>9 AND uGender in (10,11) ';
 		$cmd = $conn->createCommand($sql);
 
-		$lastDay=$endDate;
+		$lastDay = $endDate;
 		for ($k = 1; $k < 16; $k++) {
 			$fromDate = date('Y-m-d', strtotime($beginDate) + 86400 * $step * $k);
 			$toDate = date('Y-m-d', strtotime($endDate) + 86400 * $step * $k);

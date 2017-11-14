@@ -101,7 +101,7 @@ class QueueUtil
 		$ret = shell_exec("/data/code/pub_imei.sh 2>&1");
 		$ret = self::QUEUE_TUBE . " 更新代码成功! " . PHP_EOL
 			. date("Y-m-d H:i:s") . PHP_EOL . "更新日志:" . PHP_EOL . $ret;
-		RedisUtil::setCache($ret, RedisUtil::KEY_PUB_CODE, $id);
+		RedisUtil::init(RedisUtil::KEY_PUB_CODE, $id)->setCache($ret);
 		return $ret;
 	}
 
@@ -111,7 +111,7 @@ class QueueUtil
 		$ret = shell_exec("/data/code/foo_rain.sh 2>&1");
 		$ret = self::QUEUE_TUBE . " 执行 ./yii foo/rain 成功! " . PHP_EOL
 			. date("Y-m-d H:i:s") . PHP_EOL . "结果如下:" . PHP_EOL . $ret;
-		RedisUtil::setCache($ret, RedisUtil::KEY_PUB_CODE, $id);
+		RedisUtil::init(RedisUtil::KEY_PUB_CODE, $id)->setCache($ret);
 		return $ret;
 	}
 
@@ -121,7 +121,7 @@ class QueueUtil
 		$ret = shell_exec("/data/code/foo_zp.sh 2>&1");
 		$ret = self::QUEUE_TUBE . " 执行 ./yii foo/zp 成功! " . PHP_EOL
 			. date("Y-m-d H:i:s") . PHP_EOL . "结果如下:" . PHP_EOL . $ret;
-		RedisUtil::setCache($ret, RedisUtil::KEY_PUB_CODE, $id);
+		RedisUtil::init(RedisUtil::KEY_PUB_CODE, $id)->setCache($ret);
 		return $ret;
 	}
 

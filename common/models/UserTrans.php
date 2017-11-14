@@ -184,12 +184,12 @@ class UserTrans extends ActiveRecord
 			}
 		}
 		foreach ($items as $key => $item) {
-			RedisUtil::setCache(json_encode($item), RedisUtil::KEY_USER_WALLET, $key);
+			RedisUtil::init(RedisUtil::KEY_USER_WALLET, $key)->setCache($item);
 		}
 
 		if ($uid) {
-			$ret = RedisUtil::getCache(RedisUtil::KEY_USER_WALLET, $uid);
-			$ret = json_decode($ret, 1);
+			$redis = RedisUtil::init(RedisUtil::KEY_USER_WALLET, $uid);
+			$ret = json_decode($redis->getCache(), 1);
 			if (!isset($ret['expire'])) {
 				$ret = [
 					self::UNIT_FEN => 0,
@@ -197,7 +197,7 @@ class UserTrans extends ActiveRecord
 					self::UNIT_GIFT => 0,
 					'expire' => time() + 3600 * 8
 				];
-				RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_USER_WALLET, $uid);
+				$redis->setCache($ret);
 			}
 			return $ret;
 		}
@@ -206,7 +206,7 @@ class UserTrans extends ActiveRecord
 
 	public static function getStat($uid, $resetFlag = false)
 	{
-		$ret = RedisUtil::getCache(RedisUtil::KEY_USER_WALLET, $uid);
+		$ret = RedisUtil::init(RedisUtil::KEY_USER_WALLET, $uid)->getCache();
 		$ret = json_decode($ret, 1);
 		if (!$resetFlag && $ret && $ret['expire'] > time()) {
 			return $ret;

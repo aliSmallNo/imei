@@ -497,10 +497,6 @@ class ChatMsg extends ActiveRecord
 			':uid' => $uId,
 			':st' => self::ST_ACTIVE,
 		])->queryAll();
-		AppUtil::logFile($conn->createCommand($sql)->bindValues([
-			':uid' => $uId,
-			':st' => self::ST_ACTIVE,
-		])->getRawSql(), 5, __FUNCTION__, __LINE__);
 		$nextPage = 0;
 		if ($contacts && count($contacts) > $pageSize) {
 			array_pop($contacts);

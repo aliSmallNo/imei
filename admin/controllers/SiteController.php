@@ -165,12 +165,12 @@ class SiteController extends BaseController
 		$id = RedisUtil::getIntSeq();
 		QueueUtil::loadJob($method, ['id' => $id]);
 		sleep(2); // 等待3秒钟
-		$ret = RedisUtil::getCache(RedisUtil::KEY_PUB_CODE, $id);
+		$ret = RedisUtil::init(RedisUtil::KEY_PUB_CODE, $id)->getCache();
 		if ($ret) {
 			echo "<pre>" . $ret . "</pre>";
 		} else {
 			sleep(3); // 等待3秒钟
-			$ret = RedisUtil::getCache(RedisUtil::KEY_PUB_CODE, $id);
+			$ret = RedisUtil::init(RedisUtil::KEY_PUB_CODE, $id)->getCache();
 			if ($ret) {
 				echo "<pre>" . $ret . "</pre>";
 			} else {
@@ -230,7 +230,7 @@ class SiteController extends BaseController
 				}
 				User::edit($id, $data, Admin::getAdminId());
 				$success = self::ICON_OK_HTML . '修改成功';
-				RedisUtil::delCache(RedisUtil::KEY_WX_USER, $userInfo['uOpenId']);
+				RedisUtil::init(RedisUtil::KEY_WX_USER, $userInfo['uOpenId'])->delCache();
 			}
 		}
 		$userInfo = User::findOne(["uId" => $id])->toArray();
@@ -413,7 +413,7 @@ class SiteController extends BaseController
 		if ($criteriaNote) {
 			$criteriaNote = ' ＜' . implode('＞ ＜', $criteriaNote) . '＞';
 		}
-		$dummies = json_encode(User::dummyForChat(), JSON_UNESCAPED_UNICODE);
+		$dummies = json_encode(User::topDummies(), JSON_UNESCAPED_UNICODE);
 		return $this->renderPage('accounts.tpl',
 			[
 				"status" => $status,
@@ -530,7 +530,7 @@ class SiteController extends BaseController
 		$maleUID = self::getParam("male", "");// 男稻草人uId
 		$femaleUID = self::getParam("female", "");// 女稻草人uId
 
-		$allDummys = User::dummyForChat(); // 所有稻草人
+		$allDummys = User::topDummies(); // 所有稻草人
 		$dmales = $allDummys[User::GENDER_MALE];
 		$dfemales = $allDummys[User::GENDER_FEMALE];
 
@@ -908,8 +908,8 @@ class SiteController extends BaseController
 
 	public function actionTrend()
 	{
-		$trends = RedisUtil::getCache(RedisUtil::KEY_STAT_TREND);
-		$trends = json_decode($trends, 1);
+		$redis = RedisUtil::init(RedisUtil::KEY_STAT_TREND);
+		$trends = json_decode($redis->getCache(), 1);
 		$reset = self::getParam("reset");
 		if ($reset) {
 			$trends = [];
@@ -947,7 +947,7 @@ class SiteController extends BaseController
 					}
 				}
 			}
-			RedisUtil::setCache(json_encode($trends), RedisUtil::KEY_STAT_TREND);
+			$redis->setCache(json_encode($trends));
 		}
 
 		return $this->renderPage('trend.tpl',

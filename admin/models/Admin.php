@@ -163,8 +163,8 @@ class Admin extends ActiveRecord
 			return self::$userInfo;
 		}
 		$uid = $adminId ? $adminId : self::getAdminId();
-		$info = RedisUtil::getCache(RedisUtil::KEY_ADMIN_INFO, $uid);
-		$info = json_decode($info, 1);
+		$redis = RedisUtil::init(RedisUtil::KEY_ADMIN_INFO, $uid);
+		$info = json_decode($redis->getCache(), 1);
 		$menuMd5 = Menu::menusMd5();
 		if (!isset($info['menu_md5']) || $info['menu_md5'] != $menuMd5) {
 			$userObj = self::findOne(['aId' => $uid, "aStatus" => 1]);
@@ -172,7 +172,7 @@ class Admin extends ActiveRecord
 				$info = $userObj->toArray();
 				$info = self::privileges($info);
 				$info['menu_md5'] = $menuMd5;
-				RedisUtil::setCache(json_encode($info), RedisUtil::KEY_ADMIN_INFO, $uid);
+				$redis->setCache($info);
 			} else {
 				return [];
 			}
@@ -253,7 +253,7 @@ class Admin extends ActiveRecord
 		if (!$uid) {
 			return;
 		}
-		RedisUtil::delCache(RedisUtil::KEY_ADMIN_INFO, $uid);
+		RedisUtil::init(RedisUtil::KEY_ADMIN_INFO, $uid)->delCache();
 	}
 
 	public static function logout()

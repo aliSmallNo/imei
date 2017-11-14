@@ -539,8 +539,8 @@ class AppUtil
 		}
 		$strPoints = implode(";", $points);
 		$redisField = md5("$baseLng,$baseLat;" . $strPoints);
-		$ret = RedisUtil::getCache(RedisUtil::KEY_DISTANCE, $redisField);
-		$ret = json_decode($ret, 1);
+		$redis = RedisUtil::init(RedisUtil::KEY_DISTANCE, $redisField);
+		$ret = json_decode($redis->getCache(), 1);
 		if ($ret && $ret["expire"] > time()) {
 			return $ret["route"]["paths"][0]["distance"];
 		}
@@ -550,7 +550,7 @@ class AppUtil
 		$ret = json_decode($ret, true);
 		if ($ret && isset($ret["route"]["paths"]) && $ret["status"] == 1) {
 			$ret["expire"] = time() + 86400 * 25;
-			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_DISTANCE, $redisField);
+			$redis->setCache($ret);
 			return $ret["route"]["paths"][0]["distance"];
 		}
 		return 0;
@@ -774,8 +774,8 @@ class AppUtil
 		if (!$ip) {
 			return '';
 		}
-		$ret = RedisUtil::getCache(RedisUtil::KEY_CITY_IP, $ip);
-		$ret = json_decode($ret, true);
+		$redis = RedisUtil::init(RedisUtil::KEY_CITY_IP, $ip);
+		$ret = json_decode($redis->getCache(), true);
 		if ($ret && isset($ret["retData"]["district"])) {
 			return $ret["retData"]["district"];
 		}
@@ -783,7 +783,7 @@ class AppUtil
 			["apikey:eaae340d496d883c14df61447fcc2e22"]);
 		$ret = json_decode($ret, true);
 		if ($ret && isset($ret["retData"]["district"])) {
-			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_CITY_IP, $ip);
+			$redis->setCache($ret);
 			return $ret["retData"]["district"];
 		}
 		return '';

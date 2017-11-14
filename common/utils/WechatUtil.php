@@ -11,7 +11,6 @@ namespace common\utils;
 
 use admin\models\Admin;
 use common\models\Date;
-use common\models\Log;
 use common\models\Pay;
 use common\models\RedpacketTrans;
 use common\models\User;
@@ -111,7 +110,8 @@ class WechatUtil
 	 */
 	private static function accessToken($reset = false, $code = '')
 	{
-		$accessToken = RedisUtil::getCache(RedisUtil::KEY_WX_TOKEN);
+		$redis = RedisUtil::init(RedisUtil::KEY_WX_TOKEN);
+		$accessToken = $redis->getCache();
 		if (!$accessToken || $reset) {
 			$appId = \WxPayConfig::APPID;
 			$secret = \WxPayConfig::APPSECRET;
@@ -124,7 +124,7 @@ class WechatUtil
 			$res = json_decode($res, 1);
 			$accessToken = isset($res['access_token']) ? $res['access_token'] : "";
 			if ($accessToken) {
-				RedisUtil::setCache($accessToken, RedisUtil::KEY_WX_TOKEN);
+				$redis->setCache($accessToken);
 				//过期时间一般是2个小时
 			}
 			/*$newLog = [
@@ -167,14 +167,13 @@ class WechatUtil
 
 	public static function wxInfo($openId, $renewFlag = false)
 	{
-		$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
-
-		$ret = json_decode($ret, 1);
+		$redis = RedisUtil::init(RedisUtil::KEY_WX_USER, $openId);
+		$ret = json_decode($redis->getCache(), 1);
 		if ($ret && is_array($ret) && isset($ret['uId']) && !$renewFlag) {
 			return $ret;
 		} elseif ($ret && is_array($ret) && !isset($ret['uId']) && isset($ret["nickname"]) && !$renewFlag) {
 			$ret['uId'] = UserWechat::upgrade($ret);
-			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
+			$redis->setCache($ret);
 			return $ret;
 		}
 		if (strlen($openId) < 24) {
@@ -199,14 +198,14 @@ class WechatUtil
 
 		if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
 			$ret['uId'] = UserWechat::upgrade($ret);
-			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
+			$redis->setCache($ret);
 			return $ret;
 		} elseif ($ret && isset($ret["openid"])) {
 			$info = UserWechat::findOne(['wOpenId' => $ret["openid"]]);
 			if ($info && isset($info['wRawData']) && $info['wRawData']) {
 				$wxInfo = json_decode($info['wRawData'], 1);
 				$wxInfo['uId'] = $info['wUId'];
-				RedisUtil::setCache(json_encode($wxInfo), RedisUtil::KEY_WX_USER, $openId);
+				$redis->setCache($wxInfo);
 				return $wxInfo;
 			}
 			return $ret;
@@ -223,6 +222,7 @@ class WechatUtil
 		$ret = json_decode($ret, true);
 		if ($ret && isset($ret["access_token"]) && isset($ret["openid"])) {
 			$openId = $ret["openid"];
+			$redis = RedisUtil::init(RedisUtil::KEY_WX_USER, $openId);
 			$accessToken = $ret["access_token"];
 			$baseUrl = 'https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN';
 			$url = sprintf($baseUrl, $accessToken, $openId);
@@ -230,15 +230,15 @@ class WechatUtil
 			$ret = json_decode($ret, 1);
 			if ($ret && isset($ret["openid"]) && isset($ret["nickname"])) {
 //				AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
-				RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
+				$redis->setCache($ret);
 				return $ret;
 			}
 //			RedisUtil::setCache($accessToken, RedisUtil::KEY_WX_TOKEN);
 			if (!$renewFlag) {
-				$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
+				$ret = $redis->getCache();
 				$ret = json_decode($ret, 1);
 				if ($ret && is_array($ret)) {
-					RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
+					$redis->setCache($ret);
 					return $ret;
 				}
 			}
@@ -306,7 +306,8 @@ class WechatUtil
 
 	public static function getJsApiTicket()
 	{
-		$jsTicket = RedisUtil::getCache(RedisUtil::KEY_WX_TICKET);
+		$redis = RedisUtil::init(RedisUtil::KEY_WX_TICKET);
+		$jsTicket = $redis->getCache();
 		if ($jsTicket) {
 			return $jsTicket;
 		}
@@ -318,7 +319,7 @@ class WechatUtil
 			$res = json_decode($res, true);
 			$jsTicket = isset($res['ticket']) ? $res['ticket'] : '';
 			if ($jsTicket) {
-				RedisUtil::setCache($jsTicket, RedisUtil::KEY_WX_TICKET);
+				$redis->setCache($jsTicket);
 			}
 		}
 		return $jsTicket;
@@ -1073,7 +1074,8 @@ class WechatUtil
 	 */
 	public static function XCXaccessToken($reset = false, $code = '')
 	{
-		$accessToken = RedisUtil::getCache(RedisUtil::KEY_XCX_TOKEN);
+		$redis = RedisUtil::init(RedisUtil::KEY_XCX_TOKEN);
+		$accessToken = $redis->getCache();
 		if (!$accessToken || $reset) {
 			$appId = \WxPayConfig::X_APPID;
 			$secret = \WxPayConfig::X_APPSECRET;
@@ -1086,7 +1088,7 @@ class WechatUtil
 			$res = json_decode($res, 1);
 			$accessToken = isset($res['access_token']) ? $res['access_token'] : "";
 			if ($accessToken) {
-				RedisUtil::setCache($accessToken, RedisUtil::KEY_XCX_TOKEN);
+				$redis->setCache($accessToken);
 			}
 			/*$newLog = [
 				"oCategory" => "xcx-token",

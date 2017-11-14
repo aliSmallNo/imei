@@ -230,6 +230,7 @@ class UserNet extends ActiveRecord
 
 	public static function stat($uid = 0)
 	{
+
 		$strCriteria = '';
 		$params = [];
 		if ($uid) {
@@ -257,11 +258,11 @@ class UserNet extends ActiveRecord
 				'male' => intval($row['male']),
 				'expire' => time() + 86400 * 7
 			];
-			RedisUtil::setCache(json_encode($data), RedisUtil::KEY_USER_STAT, $row['nUId']);
+			RedisUtil::init(RedisUtil::KEY_USER_STAT, $row['nUId'])->setCache($data);
 		}
 		if ($uid) {
-			$ret = RedisUtil::getCache(RedisUtil::KEY_USER_STAT, $uid);
-			$ret = json_decode($ret, 1);
+			$redis = RedisUtil::init(RedisUtil::KEY_USER_STAT, $uid);
+			$ret = json_decode($redis->getCache(), 1);
 			if (!isset($ret['expire'])) {
 				$ret = [
 					'fans' => 0,
@@ -271,7 +272,7 @@ class UserNet extends ActiveRecord
 					'male' => 0,
 					'expire' => time() + 3600 * 8
 				];
-				RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_USER_STAT, $uid);
+				$redis->setCache($ret);
 			}
 			return $ret;
 		}
@@ -280,7 +281,7 @@ class UserNet extends ActiveRecord
 
 	public static function getStat($uid, $resetFlag = false)
 	{
-		$ret = RedisUtil::getCache(RedisUtil::KEY_USER_STAT, $uid);
+		$ret = RedisUtil::init(RedisUtil::KEY_USER_STAT, $uid)->getCache();
 		$ret = json_decode($ret, 1);
 		if (!$resetFlag && $ret && $ret['expire'] > time()) {
 			return $ret;

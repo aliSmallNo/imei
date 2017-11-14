@@ -15,8 +15,8 @@ class City
 {
 	public static function provinces()
 	{
-		$items = RedisUtil::getCache(RedisUtil::KEY_PROVINCES);
-		$items = json_decode($items, 1);
+		$redis = RedisUtil::init(RedisUtil::KEY_PROVINCES);
+		$items = json_decode($redis->getCache(), 1);
 		if ($items) {
 			return $items;
 		}
@@ -29,14 +29,14 @@ class City
 		/*usort($items, function ($a, $b) {
 			return iconv('UTF-8', 'GBK//IGNORE', $a['name']) > iconv('UTF-8', 'GBK//IGNORE', $b['name']);
 		});*/
-		RedisUtil::setCache(json_encode($items, JSON_UNESCAPED_UNICODE), RedisUtil::KEY_PROVINCES);
+		$redis->setCache($items);
 		return $items;
 	}
 
 	public static function cities($key)
 	{
-		$items = RedisUtil::getCache(RedisUtil::KEY_CITIES, $key);
-		$items = json_decode($items, 1);
+		$redis = RedisUtil::init(RedisUtil::KEY_CITIES, $key);
+		$items = json_decode($redis->getCache(), 1);
 		if ($items) {
 			return $items;
 		}
@@ -50,14 +50,14 @@ class City
 				$items[$key]['name'] = $item['nickname'];
 			}
 		}
-		RedisUtil::setCache(json_encode($items), RedisUtil::KEY_CITIES, $key);
+		$redis->setCache($items);
 		return $items;
 	}
 
 	public static function city($key)
 	{
-		$item = RedisUtil::getCache(RedisUtil::KEY_CITY, $key);
-		$item = json_decode($item, 1);
+		$redis = RedisUtil::init(RedisUtil::KEY_CITY, $key);
+		$item = json_decode($redis->getCache(), 1);
 		if ($item) {
 			return $item;
 		}
@@ -68,14 +68,14 @@ class City
 		if (isset($item['name']) && isset($item['nickname']) && $item['nickname']) {
 			$item['name'] = $item['nickname'];
 		}
-		RedisUtil::setCache(json_encode($item), RedisUtil::KEY_CITY, $key);
+		$redis->setCache($item);
 		return $item;
 	}
 
 	public static function addrItems($key)
 	{
-		$items = RedisUtil::getCache(RedisUtil::KEY_ADDRESS_ITEMS, $key);
-		$items = json_decode($items, 1);
+		$redis = RedisUtil::init(RedisUtil::KEY_ADDRESS_ITEMS, $key);
+		$items = json_decode($redis->getCache(), 1);
 		if ($items) {
 			return $items;
 		}
@@ -89,13 +89,14 @@ class City
 				$items[$key]['name'] = $item['nickname'];
 			}
 		}
-		RedisUtil::setCache(json_encode($items), RedisUtil::KEY_ADDRESS_ITEMS, $key);
+		$redis->setCache($items);
 		return $items;
 	}
 
 	public static function addr($key)
 	{
-		$item = RedisUtil::getCache(RedisUtil::KEY_ADDRESS, $key);
+		$redis = RedisUtil::init(RedisUtil::KEY_ADDRESS, $key);
+		$item = $redis->getCache();
 		$item = json_decode($item, 1);
 		if ($item) {
 			return $item;
@@ -107,7 +108,7 @@ class City
 		if (isset($item['name']) && isset($item['nickname']) && $item['nickname']) {
 			$item['name'] = $item['nickname'];
 		}
-		RedisUtil::setCache(json_encode($item), RedisUtil::KEY_ADDRESS, $key);
+		$redis->setCache($item);
 		return $item;
 	}
 }

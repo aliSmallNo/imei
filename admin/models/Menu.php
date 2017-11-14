@@ -8,7 +8,8 @@ class Menu
 {
 	public static function keepMenu($uId, $url)
 	{
-		$info = self::getNameByUrl($url);
+		return true;
+		/*$info = self::getNameByUrl($url);
 
 		if (!$info) {
 			return false;
@@ -20,12 +21,13 @@ class Menu
 		$redis->lrem($redisKey, 0, $strURI);
 		$redis->lpush($redisKey, $strURI);
 		$redis->ltrim($redisKey, 0, 11);
-		return true;
+		return true;*/
 	}
 
 	public static function oftenMenu($uId)
 	{
-		$redisKey = RedisUtil::getPrefix(RedisUtil::KEY_ADMIN_OFTEN, $uId);
+		return [];
+		/*$redisKey = RedisUtil::getPrefix(RedisUtil::KEY_ADMIN_OFTEN, $uId);
 		$redis = RedisUtil::redis();
 		$result = $redis->lrange($redisKey, 0, -1);
 
@@ -39,7 +41,7 @@ class Menu
 				break;
 			}
 		}
-		return $res;
+		return $res;*/
 	}
 
 	public static function getNameByUrl($url)
@@ -80,10 +82,11 @@ class Menu
 
 	public static function menusMd5()
 	{
-		$ret = RedisUtil::getCache(RedisUtil::KEY_MENUS_MD5);
+		$redis = RedisUtil::init(RedisUtil::KEY_MENUS_MD5);
+		$ret = $redis->getCache();
 		if (!$ret) {
 			$ret = md5(json_encode(self::menus()));
-			RedisUtil::setCache($ret, RedisUtil::KEY_MENUS_MD5);
+			$redis->setCache($ret);
 		}
 		return $ret;
 	}

@@ -144,8 +144,8 @@ class UserWechat extends ActiveRecord
 
 	public static function getInfoByOpenId($openId, $resetFlag = false)
 	{
-		$ret = RedisUtil::getCache(RedisUtil::KEY_WX_USER, $openId);
-		$ret = json_decode($ret, 1);
+		$redis = RedisUtil::init(RedisUtil::KEY_WX_USER, $openId);
+		$ret = json_decode($redis->getCache(), 1);
 		if (AppUtil::isDev()) {
 			$resetFlag = true;
 		}
@@ -168,7 +168,7 @@ class UserWechat extends ActiveRecord
 				$ret[$field] = isset($uInfo[$field]) ? $uInfo[$field] : '';
 			}
 			$ret['Avatar'] = $ret['uThumb'] ? $ret['uThumb'] : $ret['uAvatar'];
-			RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
+			$redis->setCache($ret);
 			return $ret;
 		} else {
 			$ret = WechatUtil::wxInfo($openId, $resetFlag);
@@ -178,7 +178,7 @@ class UserWechat extends ActiveRecord
 					$ret[$field] = isset($uInfo[$field]) ? $uInfo[$field] : '';
 				}
 				$ret['Avatar'] = $ret['uThumb'] ? $ret['uThumb'] : $ret['uAvatar'];
-				RedisUtil::setCache(json_encode($ret), RedisUtil::KEY_WX_USER, $openId);
+				$redis->setCache($ret);
 				return $ret;
 			} elseif ($ret && isset($ret["openid"])) {
 				return $ret;
@@ -414,7 +414,7 @@ class UserWechat extends ActiveRecord
 				"wXcxId" => (isset($rawData["openId"]) && $rawData["openId"]) ? $rawData["openId"] : '',
 				"wUnionId" => "",
 				"wUId" => $uid,
-				"wRawData" => json_encode($rawData,JSON_UNESCAPED_UNICODE),
+				"wRawData" => json_encode($rawData, JSON_UNESCAPED_UNICODE),
 			];
 			$wid = UserWechat::add($wInfo);
 			$winfo = self::findOne(["wId" => $wid]);

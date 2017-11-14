@@ -16,7 +16,8 @@ class BaiduUtil
 
 	public static function token($resetFlag = false)
 	{
-		$token = RedisUtil::getCache(RedisUtil::KEY_BAIDU_TOKEN);
+		$redis = RedisUtil::init(RedisUtil::KEY_BAIDU_TOKEN);
+		$token = $redis->getCache();
 		if ($token && !$resetFlag) {
 			return $token;
 		}
@@ -26,7 +27,7 @@ class BaiduUtil
 		$ret = json_decode($ret, 1);
 		if (isset($ret['access_token'])) {
 			$token = $ret['access_token'];
-			RedisUtil::setCache($token, RedisUtil::KEY_BAIDU_TOKEN);
+			$redis->setCache($token);
 			return $token;
 		}
 		return '';
