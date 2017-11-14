@@ -93,8 +93,7 @@
 
 	.pInfo span.status-10 {
 		color: #fff;
-		border: 1px solid #777;
-		background: #777;
+		border: none;
 	}
 
 	td h5 {
@@ -462,10 +461,9 @@
 		<td class="pInfo m-style-{{$prod.style}}">
 			<span class="m-role">{{$prod.role_t}}</span> {{$prod.name}}
 			<em>{{$prod.phone}} {{$prod.wechatid}} {{$prod.location_t}} (籍贯: {{$prod.homeland_t}})</em>
-			<em style="display: none">{{$prod.note_t}}</em>
 			<span class="sub{{$prod.subscribe}}">{{if $prod.subscribe}}已关注{{else}}未关注{{/if}}</span>
 			{{if $prod.substatus>1}}<span class="subst">{{$prod.substatus_t}}</span>{{/if}}
-			<span class="status-{{if $prod.note_t}}10{{else}}{{$prod.status}}{{/if}}">{{if $prod.note_t}}{{$prod.note_t}}{{else}}{{$prod.status_t}}{{/if}}</span>
+			<span class="status-{{if $prod.note_t}}10 m-dummy{{else}}{{$prod.status}}{{/if}}">{{if $prod.note_t}}{{$prod.note_t}}{{else}}{{$prod.status_t}}{{/if}}</span>
 			<span class="status-1">{{if $prod.certstatus==2}}{{$prod.certstatus_t}}{{/if}}</span>
 			<div class="perc-wrap">
 				<div class="perc-bar-title">资料完整度 <b>{{$prod.percent}}%</b></div>
