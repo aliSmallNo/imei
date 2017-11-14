@@ -2264,11 +2264,11 @@ class User extends ActiveRecord
 		}
 		$role = self::ROLE_SINGLE;
 
-		$sql = "select COUNT(1) as co ,uMarital as val, uGender as gender
+		$sql = "select COUNT(1) as co , IFNULL(uMarital,0) as val, uGender as gender
 				from im_user 
 				where uStatus <8 and uRole=:role AND uGender>9 
 					and uAddedOn between :sDate and :eDate $strCriteria
-				GROUP by uMarital,uGender ";
+				GROUP by val, uGender ";
 		$ret = AppUtil::db()->createCommand($sql)->bindValues([
 			":role" => $role,
 			":sDate" => $beginDate . ' 00:00:00',
@@ -2319,7 +2319,6 @@ class User extends ActiveRecord
 			];
 			$genderData[] = $item;
 		}
-
 
 		$sql = "select COUNT(1) as co ,uHeight as val, uGender as gender
 				from im_user 
@@ -2514,8 +2513,16 @@ class User extends ActiveRecord
 		$sql = "SELECT uName,uThumb,uId,uGender,uLocation,uHomeLand,uBirthYear
 			FROM im_user 
 			WHERE uOpenId not LIKE 'oYDJew%' AND uHomeLand!='' AND uStatus=:st LIMIT 120";
+		$sql = "SELECT * FROM (SELECT uName,uThumb,uId,uGender,uLocation,uHomeLand,uBirthYear FROM im_user 
+			 WHERE uOpenId not LIKE :openid AND uHomeLand!='' AND uStatus=:st AND uGender=:female LIMIT 50) as f
+			 UNION
+			 SELECT * FROM (SELECT uName,uThumb,uId,uGender,uLocation,uHomeLand,uBirthYear FROM im_user 
+			 WHERE uOpenId not LIKE :openid AND uHomeLand!='' AND uStatus=:st AND uGender=:male LIMIT 50) as m";
 		$ret = $conn->createCommand($sql)->bindValues([
 			":st" => self::STATUS_ACTIVE,
+			":male" => self::GENDER_MALE,
+			":female" => self::GENDER_FEMALE,
+			":openid" => 'oYDJew%'
 		])->queryAll();
 		$res = [];
 		foreach ($ret as $row) {
