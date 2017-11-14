@@ -24,7 +24,7 @@
 		<link rel="stylesheet" href="/assets/css/bootstrap336.min.css">
 		<link rel="stylesheet" href="/assets/css/font-awesome450.min.css">
 		<link rel="stylesheet" href="/assets/css/metisMenu113.min.css">
-		<link rel="stylesheet" href="/css/admin.min.css?v=1.5.0">
+		<link rel="stylesheet" href="/css/admin.min.css?v=1.5.1">
 
 		<link rel="stylesheet" href="/assets/css/jquery-ui.min.css">
 		<!--[if lt IE 9]>
