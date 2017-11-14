@@ -1834,4 +1834,15 @@ class WxController extends BaseController
 			'date-bg');
 	}
 
+	public function actionHi()
+	{
+
+		return self::renderPage('hi.tpl',
+			[
+
+			],
+			'terse',
+			'',
+			'date-bg');
+	}
 }
