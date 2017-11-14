@@ -82,18 +82,6 @@ class UserBuzz extends ActiveRecord
 		self::$WelcomeMsg .= '点击底栏“我是单身”，为自己找对象！' . PHP_EOL . PHP_EOL;
 		self::$WelcomeMsg .= '这里的单身，均有好友做推荐，让交友变得真实';*/
 
-
-		self::$WelcomeMsg = 'hi,等你好久了！' . PHP_EOL . '
---想遇到更多缘分--
-【本周千寻恋恋推荐】
-<a href="http://mp.weixin.qq.com/s/XZ_dfqDdzjqKoHo1zGrQhQ">💁本周女神</a>
-<a href="http://mp.weixin.qq.com/s/ZhdPCxDv2DeODzHm0dBAyA">👨暖心男神</a>
-<a href="http://mp.weixin.qq.com/s/YGtcevsf7dwg9pJLxQuRYw">👨居家男神</a>' . PHP_EOL . '
-<a href="http://www.hdb.com/party/tq722.html?h_share_uid=jror5u">🔥东台线下交友活动报名中……</a>' . PHP_EOL . '
-<a href="http://mp.weixin.qq.com/s/tVgb0FV7_XCEidQjwtkw8Q">🎉转发有奖活动ing</a>' . PHP_EOL . '
-<a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI3NzczMDQwMA==&scene=124#wechat_redirect">往期回顾</a>' . PHP_EOL . '
-<a href="https://wx.meipo100.com/wx/single#slook">找对象👉千寻恋恋最靠谱的同城找对象平台</a>';
-
 		self::$WelcomeMsg='欢迎来到千寻恋恋交友网👏' . PHP_EOL . '
 千寻恋恋交友网是由腾讯众创推出的婚恋交友品牌！
 15年诚信婚恋机构，每天撮合成功千对以上，会员均为优质男女！' . PHP_EOL . '
@@ -292,8 +280,8 @@ class UserBuzz extends ActiveRecord
 						]
 					]);
 				}
-				//return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
-				return self::json_to_xml([
+				return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
+				/*return self::json_to_xml([
 					'ToUserName' => $fromUsername,
 					'FromUserName' => $toUsername,
 					'CreateTime' => time(),
@@ -307,7 +295,7 @@ class UserBuzz extends ActiveRecord
 							'Url' => 'https://wx.meipo100.com/wx/index'
 						]
 					]
-				]);
+				]);*/
 			default:
 				return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
 		}
