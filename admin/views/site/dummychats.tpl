@@ -71,8 +71,9 @@
 				<img src="{{$item.avatar1}}">
 			</td>
 			<td>
-				{{$item.name1}}<br>
-				{{$item.phone1}}
+				{{$item.name1}}
+				{{if $item.phone1}}<br>{{$item.phone1}}{{/if}}
+				{{if $item.dummy1}}<br><span class="m-dummy">稻草人</span>{{/if}}
 			</td>
 			<td>
 				<div class="sm">&larr;{{$item.cnt1}}句 | {{$item.cnt2}}句&rarr;</div>
@@ -82,11 +83,12 @@
 				<img src="{{$item.avatar2}}">
 			</td>
 			<td>
-				{{$item.name2}}<br>
-				{{$item.phone2}}
+				{{$item.name2}}
+				{{if $item.phone2}}<br>{{$item.phone2}}{{/if}}
+				{{if $item.dummy2}}<br><span class="m-dummy">稻草人</span>{{/if}}
 			</td>
 			<td>
-				<a href="/site/dummychat?id1={{$item.id1}}&id2={{$item.id2}}" class="btn btn-outline btn-primary btn-xs">详情</a>
+				<a href="/site/bait?did={{$item.did}}&uid={{$item.uid}}" class="btn btn-outline btn-primary btn-xs">详情</a>
 			</td>
 		</tr>
 		{{/foreach}}

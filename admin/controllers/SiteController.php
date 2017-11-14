@@ -32,6 +32,7 @@ use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Yii;
+use yii\base\Exception;
 
 
 class SiteController extends BaseController
@@ -513,53 +514,40 @@ class SiteController extends BaseController
 		);
 	}
 
-	public function actionDummychat()
+	public function actionBait()
 	{
 		Admin::staffOnly();
-		$id1 = self:: getParam("id1");
-		$id2 = self:: getParam("id2");
-		$u1Info = User::findOne(["uId" => $id1]);
-		if ($u1Info->uStatus == 8) {
-			$serviceId = $id1;
-			$uid = $id2;
-		} else {
-			$uid = $id1;
-			$serviceId = $id2;
-		}
+		$dummyId = self:: getParam("did", 132648);
+		$userId = self:: getParam("uid");
 
-		if (!$serviceId) {
-			$serviceId = 132648;// $serviceId => dummy ID
-		}
-		if (!$uid) {
-			$uid = self::postParam("uid", 120003);
-		}
-
-//		$content = trim(self::postParam("content"));
-//		if ($content) {
-//			ChatMsg::addChat($serviceId, $uid, $content);
-//		}
-
-		ChatMsg::groupEdit($serviceId, $uid, 9999);
-		list($items) = ChatMsg::details($serviceId, $uid);
+		ChatMsg::groupEdit($dummyId, $userId, 9999);
+		list($items) = ChatMsg::details($dummyId, $userId);
 		usort($items, function ($a, $b) {
 			return $a['addedon'] < $b['addedon'];
 		});
-		$uInfo = User::findOne(["uId" => $uid]);
-		$dInfo = User::findOne(["uId" => $serviceId]);
-		return $this->renderPage('dummychat.tpl',
+		$uInfo = User::findOne(["uId" => $userId]);
+		if(!$uInfo){
+			throw new Exception("用户不存在啊~");
+		}
+		$uInfo = $uInfo->toArray();
+		$dInfo = User::findOne(["uId" => $dummyId]);
+		if(!$dInfo){
+			throw new Exception("稻草人不存在啊~");
+		}
+		$dInfo = $dInfo->toArray();
+		return $this->renderPage('bait.tpl',
 			[
 				'category' => 'data',
 				'detailcategory' => 'site/dummychats',
 				'list' => $items,
-				"uid" => $uid,
-				"name" => $uInfo->uName,
-				"avatar" => $uInfo->uThumb,
-				"phone" => $uInfo->uPhone,
-
-				"dname" => $dInfo->uName,
-				"davatar" => $dInfo->uThumb,
-				"dphone" => $dInfo->uPhone,
-				"dId" => $serviceId,
+				"uid" => $userId,
+				"name" => $uInfo['uName'],
+				"avatar" => $uInfo['uThumb'],
+				"phone" => $uInfo['uPhone'],
+				"dname" => $dInfo['uName'],
+				"davatar" => $dInfo['uThumb'],
+				"dphone" => $dInfo['uPhone'],
+				"dId" => $dummyId,
 			]);
 	}
 

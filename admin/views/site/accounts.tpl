@@ -535,8 +535,8 @@
 			<a href="/site/interview?id={{$prod.id}}"
 				 class="follow btn btn-outline btn-success btn-xs">和TA密聊{{if $prod.mco>0}}({{$prod.mco}}){{/if}}</a>
 			<div class="btn-divider"></div>
-			<a href="javascript:;" class="dummyChat btn btn-outline btn-danger btn-xs" data-gender="{{$prod.gender}}"
-				 data-id="{{$prod.id}}" data-name="{{$prod.name}}" data-thumb="{{$prod.thumb}}">稻草人代聊</a>
+			<a href="javascript:;" class="bait btn btn-outline btn-danger btn-xs" data-gender="{{$prod.gender}}"
+				 data-id="{{$prod.id}}" data-name="{{$prod.name}}" data-thumb="{{$prod.thumb}}">稻草人聊</a>
 			{{if $debug}}
 			<a href="javascript:;" class="btn-refresh btn btn-outline btn-danger btn-xs" data-id="{{$prod.id}}">刷新</a>
 			{{/if}}
@@ -847,7 +847,7 @@
 	});
 
 	var dummyId1, dummyId2;
-	$(document).on("click", ".dummyChat", function () {
+	$(document).on("click", ".bait", function () {
 		var self = $(this);
 		var name = self.attr("data-name");
 		var thumb = self.attr("data-thumb");
@@ -867,12 +867,11 @@
 	});
 	$(document).on("click", "#btnSaveDu", function () {
 		dummyId2 = $(".dummy-opt.active").attr("data-id");
-		// console.log("/site/dummychat?id1=" + dummyId1 + "&id2=" + dummyId2);
 		if (!dummyId2) {
 			layer.msg("还没选择稻草人哦~");
 			return;
 		}
-		location.href = "/site/dummychat?id1=" + dummyId1 + "&id2=" + dummyId2;
+		location.href = "/site/bait?uid=" + dummyId1 + "&did=" + dummyId2;
 	});
 	$(document).on("click", ".dummy-opt", function () {
 		var self = $(this);

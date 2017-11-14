@@ -399,9 +399,9 @@ class ChatMsg extends ActiveRecord
 		$criteria = ' AND cId> ' . $lastId;
 		$conn = AppUtil::db();
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
-		$sql = 'select u.uName as `name`, u.uThumb as avatar,u.uUniqid as uni,
-			g.gId as gid, g.gRound as round,
-			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy,a.aName,m.cReadFlag as readflag
+		$sql = 'select u.uName as `name`, u.uThumb as avatar,u.uUniqid as uni, g.gId as gid, g.gRound as round,
+			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy,a.aName,m.cReadFlag as readflag,
+			 (CASE WHEN u.uOpenId LIKE \'oYDJew%\' THEN 0 ELSE 1 END) as dummy
 			 from im_chat_group as g 
 			 join im_chat_msg as m on g.gId=cGId
 			 join im_user as u on u.uId=m.cAddedBy
@@ -534,9 +534,11 @@ class ChatMsg extends ActiveRecord
 			$strCriteria .= ' AND ' . implode(' AND ', $criteria);
 		}
 		$conn = AppUtil::db();
-		$sql = 'select g.gId,g.gUId1,g.gUId2,g.gAddedBy,m.cContent as content,m.cAddedOn,gStatus,
+		$sql = "select g.gId,g.gUId1,g.gUId2,g.gAddedBy,m.cContent as content,m.cAddedOn,gStatus,
 			 u1.uName as name1,u1.uPhone as phone1,u1.uThumb as avatar1,u1.uId as id1,u1.uUniqid as uni1,
+			 (CASE WHEN u1.uOpenId LIKE 'oYDJew%' THEN 0 ELSE 1 END) as dummy1,
 			 u2.uName as name2,u2.uPhone as phone2,u2.uThumb as avatar2,u2.uId as id2,u2.uUniqid as uni2,
+			 (CASE WHEN u2.uOpenId LIKE 'oYDJew%' THEN 0 ELSE 1 END) as dummy2,
 			 COUNT(case when m2.cAddedBy=g.gUId1 then 1 end) as cnt1,
  			 COUNT(case when m2.cAddedBy=g.gUId2 then 1 end) as cnt2 
 			 FROM im_chat_group as g 
@@ -544,31 +546,45 @@ class ChatMsg extends ActiveRecord
 			 JOIN im_chat_msg as m2 on g.gId=m2.cGId
 			 JOIN im_user as u1 on u1.uId=g.gUId1 
 			 JOIN im_user as u2 on u2.uId=g.gUId2 
-			 WHERE ' . $strCriteria . ' GROUP BY g.gId
-			 order by g.gUpdatedOn desc ' . $limit;
+			 WHERE $strCriteria
+			 GROUP BY g.gId ORDER BY g.gUpdatedOn desc " . $limit;
 
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
+
 		foreach ($res as $k => $row) {
 			$res[$k]['avatar1'] = ImageUtil::getItemImages($row['avatar1'])[0];
 			$res[$k]['avatar2'] = ImageUtil::getItemImages($row['avatar2'])[0];
 			$res[$k]['dt'] = AppUtil::prettyDate($row['cAddedOn']);
 			$res[$k]['st'] = $row['gStatus'];
 			if ($row['gAddedBy'] == $row['gUId2']) {
-				list($name, $phone, $avatar, $cnt, $uni) = [$row['name1'], $row['phone1'], $row['avatar1'], $row['cnt1'], $row['uni1']];
+				list($id, $name, $phone, $avatar, $cnt, $uni, $dummy) = [$row['id1'], $row['name1'], $row['phone1'],
+					$row['avatar1'], $row['cnt1'], $row['uni1'], $row['dummy1']];
+				$res[$k]['id1'] = $row['id2'];
 				$res[$k]['name1'] = $row['name2'];
 				$res[$k]['phone1'] = $row['phone2'];
 				$res[$k]['avatar1'] = $row['avatar2'];
 				$res[$k]['cnt1'] = $row['cnt2'];
 				$res[$k]['uni1'] = $row['uni2'];
+				$res[$k]['dummy1'] = $row['dummy2'];
+				$res[$k]['id2'] = $id;
 				$res[$k]['name2'] = $name;
 				$res[$k]['phone2'] = $phone;
 				$res[$k]['avatar2'] = $avatar;
 				$res[$k]['cnt2'] = $cnt;
 				$res[$k]['uni2'] = $uni;
+				$res[$k]['dummy2'] = $dummy;
+			}
+			if ($res[$k]['dummy1']) {
+				$res[$k]['did'] = $res[$k]['id1'];
+				$res[$k]['uid'] = $res[$k]['id2'];
+			} else {
+				$res[$k]['did'] = $res[$k]['id2'];
+				$res[$k]['uid'] = $res[$k]['id1'];
 			}
 		}
 
-		$sql = "select count(DISTINCT gId) from im_chat_group as g
+		$sql = "select count(DISTINCT gId) 
+				FROM im_chat_group as g
 				JOIN im_chat_msg as m on g.gId=m.cGId and g.gLastCId=m.cId 
 			 	JOIN im_chat_msg as m2 on g.gId=m2.cGId
 			 	JOIN im_user as u1 on u1.uId=g.gUId1 
