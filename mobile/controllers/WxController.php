@@ -746,26 +746,28 @@ class WxController extends BaseController
 		$audit = UserAudit::invalid($uId, $conn);
 		$greeting = UserMsg::greeting($uId, $openId, $conn);
 		$service = AppUtil::wechatUrl() . "/images/ad/service_female.jpg";
+		$service_sm = AppUtil::wechatUrl() . "/images/ad/service_female_sm.jpg";
 		if ($uInfo["gender"] == User::GENDER_FEMALE) {
 			$service = AppUtil::wechatUrl() . "/images/ad/service_male.jpg";
+			$service_sm = AppUtil::wechatUrl() . "/images/ad/service_male_sm.jpg";
 		}
 		$advert_chat = [
-			'image' => AppUtil::wechatUrl() . "/images/ad/activity_1111_sm.jpg",
-			'url' => 'http://www.hdb.com/party/tq722.html?hdb_pos=manager_info'
+			'image' => $service_sm,
+			'url' => '长按图片识别二维码，添加我们的客服为好友'
 		];
 		$adverts = [
 			[
 				'image' => $service,
 				'url' => '长按图片识别二维码，添加我们的客服为好友'
 			],
-			[
+			/*[
 				'image' => AppUtil::wechatUrl() . "/images/ad/activity_1daylove.jpg",
 				'url' => 'http://mp.weixin.qq.com/s/ZODj8prAWrUkaTdRO3UmeA'
 			],
 			[
 				'image' => AppUtil::wechatUrl() . "/images/ad/activity_1111.jpg",
 				'url' => 'http://www.hdb.com/party/tq722.html?hdb_pos=manager_info'
-			]
+			]*/
 		];
 
 		return self::renderPage("single.tpl", [
