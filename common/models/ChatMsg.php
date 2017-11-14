@@ -664,8 +664,9 @@ class ChatMsg extends ActiveRecord
 	}
 
 	/**
-	 * @param $uid male uId
-	 * @param $receiverId female uId
+	 * @param $uid int male uId
+	 * @param $receiverId int female uId
+	 * @return int
 	 */
 	public static function Cert($uid, $receiverId)
 	{

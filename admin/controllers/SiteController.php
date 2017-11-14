@@ -413,7 +413,7 @@ class SiteController extends BaseController
 		if ($criteriaNote) {
 			$criteriaNote = ' ＜' . implode('＞ ＜', $criteriaNote) . '＞';
 		}
-
+		$dummies = json_encode(User::dummyForChat(), JSON_UNESCAPED_UNICODE);
 		return $this->renderPage('accounts.tpl',
 			[
 				"status" => $status,
@@ -434,7 +434,7 @@ class SiteController extends BaseController
 				"partHeader" => User::$Status,
 				"subStatus" => User::$Substatus,
 				'suffix' => $suffix,
-				"dummys" => json_encode(User::dummyForChat(), JSON_UNESCAPED_UNICODE),
+				"dummies" => $dummies,
 			]);
 	}
 
@@ -526,12 +526,12 @@ class SiteController extends BaseController
 			return $a['addedon'] < $b['addedon'];
 		});
 		$uInfo = User::findOne(["uId" => $userId]);
-		if(!$uInfo){
+		if (!$uInfo) {
 			throw new Exception("用户不存在啊~");
 		}
 		$uInfo = $uInfo->toArray();
 		$dInfo = User::findOne(["uId" => $dummyId]);
-		if(!$dInfo){
+		if (!$dInfo) {
 			throw new Exception("稻草人不存在啊~");
 		}
 		$dInfo = $dInfo->toArray();
@@ -605,11 +605,8 @@ class SiteController extends BaseController
 					// print_r($arr);exit;
 				}
 			}
-
 			header('location:/site/dummychats');
-
 		}
-
 		return $this->renderPage('dummychatall.tpl',
 			[
 				'category' => 'data',

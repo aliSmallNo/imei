@@ -510,7 +510,7 @@ class User extends ActiveRecord
 				continue;
 			}
 			if ($newKey == "note") {
-				if (strpos($item['openid'], 'oYDJew') !== 0 ) {
+				if (strpos($item['openid'], 'oYDJew') !== 0) {
 					$item["note_t"] = "稻草人";
 				} else {
 					$item["note_t"] = "";
@@ -2507,18 +2507,33 @@ class User extends ActiveRecord
 	// 后台聊天稻草人
 	public static function dummyForChat()
 	{
-		$sql = "select uName,uThumb,uId,uGender from im_user where uSubStatus=:sst and uStatus=:st ORDER by uId desc";
+		/*$sql = "select uName,uThumb,uId,uGender
+				from im_user where uSubStatus=:sst and uStatus=:st ORDER by uId desc";*/
+		$sql = "SELECT uName,uThumb,uId,uGender,uLocation,uHomeLand,uBirthYear
+			FROM im_user 
+			WHERE uOpenId not LIKE 'oYDJew%' AND uHomeLand!='' AND uStatus=:st LIMIT 120";
 		$ret = AppUtil::db()->createCommand($sql)->bindValues([
-			":sst" => self::SUB_ST_FISH,
-			":st" => self::STATUS_DUMMY,
+			":st" => self::STATUS_ACTIVE,
 		])->queryAll();
 		$res = [];
 		foreach ($ret as $v) {
+			$v["location"] = '';
+			if (isset($v['uLocation']) && $v['uLocation']) {
+				$text = array_column(json_decode($v['uLocation'], 1), 'text');
+				$v["location"] = implode(' ', $text);
+			}
+			$v["homeland"] = '';
+			if (isset($v['uHomeLand']) && $v['uHomeLand']) {
+				$text = array_column(json_decode($v['uHomeLand'], 1), 'text');
+				$v["homeland"] = implode(' ', $text);
+			}
+			$v["age"] = date('Y') - $v['uBirthYear'];
 			if ($v["uGender"] == self::GENDER_MALE) {
 				$res[self::GENDER_FEMALE][] = $v;
 			} elseif ($v["uGender"] == self::GENDER_FEMALE) {
 				$res[self::GENDER_MALE][] = $v;
 			}
+
 		}
 		return $res;
 	}

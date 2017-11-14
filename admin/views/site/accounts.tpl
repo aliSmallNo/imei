@@ -302,7 +302,7 @@
 	.dummy-opt div:first-child img {
 		width: 50px;
 		height: 50px;
-		border-radius: 50px;
+		border-radius: 5px;
 	}
 
 	.dummy-opt div {
@@ -711,7 +711,11 @@
 		{[#items]}
 		<div data-id="{[uId]}" class="dummy-opt">
 			<div><img src="{[uThumb]}"></div>
-			<div>{[uName]}</div>
+			<div>
+				{[uName]} <small>{[age]}岁</small> <br>
+				<small>所在地：</small>{[location]}<br>
+				<small>籍贯：</small>{[homeland]}
+			</div>
 			<span></span>
 		</div>
 		{[/items]}
@@ -742,7 +746,7 @@
 	{[/data]}
 </script>
 <script>
-	var dummys ={{$dummys}};
+	var mDummies ={{$dummies}};
 </script>
 <script>
 	var loading = 0;
@@ -855,7 +859,7 @@
 			return;
 		}
 		dummyId1 = self.attr("data-id");
-		var items = dummys[gender];
+		var items = mDummies[gender];
 		items ={items:items};
 		console.log(items);
 		var Vhtml = Mustache.render($("#dummyChatTemp").html(), items);
