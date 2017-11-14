@@ -93,6 +93,15 @@ class UserBuzz extends ActiveRecord
 <a href="http://mp.weixin.qq.com/s/tVgb0FV7_XCEidQjwtkw8Q">🎉转发有奖活动ing</a>' . PHP_EOL . '
 <a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI3NzczMDQwMA==&scene=124#wechat_redirect">往期回顾</a>' . PHP_EOL . '
 <a href="https://wx.meipo100.com/wx/single#slook">找对象👉千寻恋恋最靠谱的同城找对象平台</a>';
+
+		self::$WelcomeMsg="欢迎来到千寻恋恋交友网👏
+千寻恋恋交友网是由腾讯众创推出的婚恋交友品牌！
+15年诚信婚恋机构，每天撮合成功千对以上，会员均为优质男女！
+------------------------------
+【新用户】首日试配，不少于100人
+【首次邀约异性线下见面】费用全免
+【配对成功】更有千元现金大礼包赠送
+< a href='https://wx.meipo100.com/wx/single#slook'>👉点击立刻在线配对👈</a >";
 		/* "『千寻恋恋』是一个真实婚恋交友平台。在这里你可以有两种身份，媒婆和单身。
 媒婆可以将自己身边好友拉到平台上来帮助他们脱单。
 单身的朋友可以直接注册，在这里寻找心仪的另一半。";*/
