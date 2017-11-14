@@ -487,7 +487,7 @@ class SiteController extends BaseController
 	public function actionBait()
 	{
 		Admin::staffOnly();
-		$dummyId = self:: getParam("did", 132648);
+		$dummyId = self:: getParam("did", User::SERVICE_UID);
 		$userId = self:: getParam("uid");
 
 		ChatMsg::groupEdit($dummyId, $userId, 9999);

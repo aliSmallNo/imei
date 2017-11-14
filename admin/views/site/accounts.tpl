@@ -531,7 +531,7 @@
 				({{$prod.co}}){{/if}}</a-->
 			<a href="javascript:;" class="bait btn btn-outline btn-danger btn-xs" data-gender="{{$prod.gender}}"
 				 data-id="{{$prod.id}}" data-name="{{$prod.name}}" data-thumb="{{$prod.thumb}}">稻草人聊</a>
-			<a href="/site/bait?did=120000&uid={{$prod.id}}" class="follow btn btn-outline btn-danger btn-xs">客服聊TA{{if $prod.mco>0}}({{$prod.mco}}){{/if}}</a>
+			<a href="/site/bait?uid={{$prod.id}}" class="follow btn btn-outline btn-danger btn-xs">客服聊TA{{if $prod.mco>0}}({{$prod.mco}}){{/if}}</a>
 			<div class="btn-divider"></div>
 			<a href="javascript:;" class="btn-list btn btn-outline btn-warning btn-xs">推荐列表</a>
 			{{if $debug}}
