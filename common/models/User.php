@@ -2507,18 +2507,17 @@ class User extends ActiveRecord
 	public static function hiDummies($page = 1, $resetFlag = false)
 	{
 		$dummies = self::topDummies($resetFlag);
+		//var_dump($dummies);
 		if ($page > 9) {
 			$page = 1;
 		}
-		$items = [];
-		$items = array_merge($items, array_slice($dummies[self::GENDER_FEMALE], $page * 6));
-		$items = array_merge($items, array_slice($dummies[self::GENDER_MALE], $page * 6));
+		$items = array_merge(array_slice($dummies[self::GENDER_FEMALE], $page * 6),
+			array_slice($dummies[self::GENDER_MALE], $page * 6));
 		shuffle($items);
-		$rows = [];
-		$rows[] = array_slice($items, 0, 3);
-		$rows[] = array_slice($items, 3, 3);
-		$rows[] = array_slice($items, 6, 3);
-		$rows[] = array_slice($items, 9, 3);
+		$rows[] = ['subs' => array_slice($items, 0, 3)];
+		$rows[] = ['subs' => array_slice($items, 3, 3)];
+		$rows[] = ['subs' => array_slice($items, 6, 3)];
+		$rows[] = ['subs' => array_slice($items, 9, 3)];
 		return $rows;
 	}
 

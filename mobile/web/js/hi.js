@@ -20,6 +20,7 @@ require(["layer"],
 		}
 
 		var HiUtil = {
+			page: 1,
 			index: 1,
 			count: 8,
 			timer: 0,
@@ -29,15 +30,13 @@ require(["layer"],
 			prize: -1,
 			msg: '',
 			title: '',
-			running: false,
-			oid: $('#cOID').val(),
-			table: $('.lottery-gifts'),
+			loading: false,
+			list: $('.m-crew'),
+			tmp: $('#tpl_crew').html(),
 			init: function () {
 				var util = this;
-				util.table.find(".unit-" + util.index).addClass("active");
-				util.table.find('a').click(function () {
-					util.run();
-					return false;
+				$(document).on(kClick, '.btn-switch', function () {
+					util.reload();
 				});
 			},
 			move: function () {
@@ -50,30 +49,25 @@ require(["layer"],
 				util.table.find(".unit-" + util.index).addClass("active");
 				return false;
 			},
-			run: function () {
+			reload: function () {
 				var util = this;
-				if (util.running) {
+				if (util.loading) {
 					return false;
 				}
-				util.running = true;
-				util.speed = 100;
-				util.msg = '';
-				util.prize = -1;
-				util.table.find('.unit').removeClass('prize');
-				$.post('/api/user',
+				util.loading = true;
+				$.post('/api/dummy',
 					{
-						//tag: 'draw',
-						tag: 'lotsign',
-						id: util.oid
+						tag: 'hi',
+						id: util.page
 					}, function (resp) {
-						util.prize = resp.data.prize;
-						util.title = resp.data.title;
-						if (resp.code == 0) {
-							util.msg = resp.msg;
-							util.spin();
+						if (resp.code < 1) {
+							var html = Mustache.render(util.tmp, resp.data);
+							util.list.html(html);
 						} else {
 							showMsg(resp.msg);
 						}
+						util.page = resp.data.next;
+						util.loading = false;
 					}, 'json');
 			}
 		};

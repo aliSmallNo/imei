@@ -1597,6 +1597,24 @@ class ApiController extends Controller
 		return self::renderAPI(0, '', $data);
 	}
 
+	public function actionDummy()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		switch ($tag) {
+			case 'hi':
+				$page = self::postParam("page", 1);
+				$items = User::hiDummies($page++);
+				if ($page > 9) {
+					$page = 1;
+				}
+				return self::renderAPI(0, '',
+					[
+						'items' => $items,
+						'next' => $page
+					]);
+		}
+		return self::renderAPI(129, '操作无效');
+	}
 
 	public function actionRedpacket()
 	{

@@ -2,7 +2,7 @@
 	<ul class="m-crew">
 		{{foreach from=$dummies item=item}}
 		<li>
-			{{foreach from=$item item=dummy}}
+			{{foreach from=$item.subs item=dummy}}
 			<a href="javascript:;" style="background-image:url({{$dummy.uThumb}});"></a>
 			{{/foreach}}
 		</li>
@@ -16,9 +16,12 @@
 <script type="text/html" id="tpl_crew">
 	{[#items]}
 	<li>
-		<a href="javascript:;" style="background-image:url({[thumb]});"></a>
+		{[#subs]}
+		<a href="javascript:;" style="background-image:url({[uThumb]});"></a>
+		{[/subs]}
 	</li>
 	{[/items]}
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/hi.js?v=1.1.6" src="/assets/js/require.js"></script>
+<script src="/assets/js/mustache.min.js"></script>
+<script data-main="/js/hi.js?v=1.2.1" src="/assets/js/require.js"></script>
