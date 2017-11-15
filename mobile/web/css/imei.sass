@@ -7,7 +7,7 @@ $mainColorBg: #fce4ec
 $white: #fff
 $fontColor: #363438
 $grayFontColorLighter: #b8b8b8
-$grayFontColorLight: #969696
+$grayFontColorLight: #969494
 $grayFontColor: #6a6572
 $grayFontColorDark: #525252
 $disabledFontColor: #aaa
@@ -706,13 +706,13 @@ section
 	text-align: center
 	color: #fff
 	.i-msg-ico
-		width: 4.4rem
-		height: 4.4rem
+		width: 2.5rem
+		height: 2.5rem
 		display: inline-block
 	p
 		max-width: 16rem
 		font-size: 1.4rem
-		font-weight: 400
+		font-weight: $weightNormal
 
 .i-msg-success
 	background: url(../images/ico_msg_tick.png) no-repeat center center
@@ -1131,7 +1131,7 @@ section
 .sms-form
 	position: relative
 	padding-top: 13rem
-	color: $grayFontColor
+	color: $grayFontColorLight
 	&:before
 		content: ''
 		position: absolute
@@ -1143,7 +1143,6 @@ section
 		background: url(../images/i_brand.png) no-repeat center center
 		background-size: 100% 100%
 	.row
-		@include displayFlex
 		margin-left: 4rem
 		margin-right: 4rem
 		border-bottom: 1px solid $borderColorDark
@@ -1178,27 +1177,30 @@ section
 				padding-left: 2rem
 				font-size: 1.2rem
 	label
-		@include displayFlex-1
 		@include displayFlex
 		span
 			@include displayFlex-w(5rem)
 			font-size: 1.2rem
+			text-align: left
 		input
+			@include displayFlex-1
 			border: none
 			background: transparent
 			height: 3rem
-
-	.btn-code
-		background: $mainColor
-		color: #fff
-		border-radius: 1.3rem
-		line-height: 2.6rem
-		height: 2.6rem
-		text-align: center
-		font-size: 1.2rem
-		display: inline-block
-		@include displayFlex-w(7.5rem)
-		@include displayFlexVAlign
+			font-size: 1.5rem
+			padding: 0
+			min-width: 4rem
+		.btn-code
+			background: $mainColor
+			color: #fff
+			border-radius: 1.3rem
+			line-height: 2.6rem
+			height: 2.6rem
+			text-align: center
+			font-size: 1.2rem
+			display: inline-block
+			@include displayFlex-w(7.5rem)
+			@include displayFlexVAlign
 
 .m-protocol
 	position: fixed
@@ -1207,11 +1209,12 @@ section
 	right: 1rem
 	text-align: center
 	a
-		color: $grayFontColor
+		color: $grayFontColorLight
 		font-size: 1.2rem
 		line-height: 2rem
 		b
 			color: $mainColor
+
 .m-radios
 	@include displayFlex
 	a
@@ -6977,5 +6980,6 @@ ul.co-ul
 			&:active
 				background: url(../images/btn_switch_hl.png) no-repeat center center
 				background-size: cover
+
 .flex-1
 	@include displayFlex-1

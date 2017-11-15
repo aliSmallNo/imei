@@ -543,13 +543,13 @@ section {
   text-align: center;
   color: #fff; }
   .m-msg-wrap .i-msg-ico {
-    width: 4.4rem;
-    height: 4.4rem;
+    width: 2.5rem;
+    height: 2.5rem;
     display: inline-block; }
   .m-msg-wrap p {
     max-width: 16rem;
     font-size: 1.4rem;
-    font-weight: 400; }
+    font-weight: 300; }
 
 .i-msg-success {
   background: url(../images/ico_msg_tick.png) no-repeat center center;
@@ -580,7 +580,7 @@ section {
 
 .progress-tip {
   padding-left: 1rem;
-  color: #969696;
+  color: #969494;
   position: relative;
   line-height: 2.4rem; }
   .progress-tip .title {
@@ -765,7 +765,7 @@ section {
     color: #f06292;
     border: 1px solid #d4d4d4; }
     .btn-s.s1.disabled {
-      color: #969696; }
+      color: #969494; }
   .btn-s.s3 {
     color: #fff;
     background-color: #f06292; }
@@ -1003,7 +1003,7 @@ section {
         height: 0.8rem;
         width: 0.8rem;
         border-width: 1px 1px 0 0;
-        border-color: #969696;
+        border-color: #969494;
         border-style: solid;
         -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
         transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -1019,14 +1019,14 @@ section {
       bottom: -2.1rem;
       left: 8.3rem;
       font-size: 1.2rem;
-      color: #969696;
+      color: #969494;
       line-height: 2rem;
       font-weight: 300; }
 
 .sms-form {
   position: relative;
   padding-top: 13rem;
-  color: #6a6572; }
+  color: #969494; }
   .sms-form:before {
     content: "";
     position: absolute;
@@ -1038,10 +1038,6 @@ section {
     background: url(../images/i_brand.png) no-repeat center center;
     background-size: 100% 100%; }
   .sms-form .row {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
     margin-left: 4rem;
     margin-right: 4rem;
     border-bottom: 1px solid #d4d4d4;
@@ -1076,10 +1072,6 @@ section {
         padding-left: 2rem;
         font-size: 1.2rem; }
   .sms-form label {
-    -webkit-box-flex: 1;
-    -webkit-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -1089,27 +1081,35 @@ section {
       -webkit-flex: 0 0 5rem;
       -ms-flex: 0 0 5rem;
       flex: 0 0 5rem;
-      font-size: 1.2rem; }
+      font-size: 1.2rem;
+      text-align: left; }
     .sms-form label input {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
       border: none;
       background: transparent;
-      height: 3rem; }
-  .sms-form .btn-code {
-    background: #f06292;
-    color: #fff;
-    border-radius: 1.3rem;
-    line-height: 2.6rem;
-    height: 2.6rem;
-    text-align: center;
-    font-size: 1.2rem;
-    display: inline-block;
-    -webkit-box-flex: 0 0 7.5rem;
-    -webkit-flex: 0 0 7.5rem;
-    -ms-flex: 0 0 7.5rem;
-    flex: 0 0 7.5rem;
-    justify-content: center;
-    align-items: center;
-    align-self: center; }
+      height: 3rem;
+      font-size: 1.5rem;
+      padding: 0;
+      min-width: 4rem; }
+    .sms-form label .btn-code {
+      background: #f06292;
+      color: #fff;
+      border-radius: 1.3rem;
+      line-height: 2.6rem;
+      height: 2.6rem;
+      text-align: center;
+      font-size: 1.2rem;
+      display: inline-block;
+      -webkit-box-flex: 0 0 7.5rem;
+      -webkit-flex: 0 0 7.5rem;
+      -ms-flex: 0 0 7.5rem;
+      flex: 0 0 7.5rem;
+      justify-content: center;
+      align-items: center;
+      align-self: center; }
 
 .m-protocol {
   position: fixed;
@@ -1118,7 +1118,7 @@ section {
   right: 1rem;
   text-align: center; }
   .m-protocol a {
-    color: #6a6572;
+    color: #969494;
     font-size: 1.2rem;
     line-height: 2rem; }
     .m-protocol a b {
@@ -1258,7 +1258,7 @@ section {
     transform: translateY(100%) translateZ(0); }
   .m-draw-wrap .title {
     font-size: 1rem;
-    color: #969696;
+    color: #969494;
     padding: 1rem 0; }
   .m-draw-wrap .images {
     margin: 0; }
@@ -1345,7 +1345,7 @@ section {
     height: 0.8rem;
     width: 0.8rem;
     border-width: 1px 1px 0 0;
-    border-color: #969696;
+    border-color: #969494;
     border-style: solid;
     -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
     transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -1657,7 +1657,7 @@ section {
       height: 0.8rem;
       width: 0.8rem;
       border-width: 1px 1px 0 0;
-      border-color: #969696;
+      border-color: #969494;
       border-style: solid;
       -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
       transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -1798,7 +1798,7 @@ section {
       font-weight: 400;
       font-size: 1.2rem; }
       .u-my-bar .title h5.percent {
-        color: #969696; }
+        color: #969494; }
     .u-my-bar .title h4 {
       font-size: 1.4rem;
       font-weight: 500;
@@ -1828,7 +1828,7 @@ section {
     height: 0.8rem;
     width: 0.8rem;
     border-width: 1px 1px 0 0;
-    border-color: #969696;
+    border-color: #969494;
     border-style: solid;
     -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
     transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -1836,7 +1836,7 @@ section {
     top: 50%;
     right: 0;
     margin-top: -0.5rem;
-    border-color: #969696;
+    border-color: #969494;
     right: 1.5rem; }
   .u-my-album .title {
     -webkit-box-flex: 0 0 6rem;
@@ -2089,7 +2089,7 @@ section {
       line-height: 3rem; }
     .singles .single .title .note, .singles .single .title .cnt {
       font-size: 1rem;
-      color: #969696; }
+      color: #969494; }
     .singles .single .title .note {
       font-weight: 500; }
       .singles .single .title .note em:after {
@@ -2475,12 +2475,12 @@ section {
     left: 0; }
   .empty .title {
     line-height: 4rem;
-    color: #969696;
+    color: #969494;
     font-size: 1.6rem;
     font-weight: 500; }
   .empty .tip {
     font-size: 1.2rem;
-    color: #969696; }
+    color: #969494; }
 
 .account .head {
   background: #f487ac;
@@ -2616,7 +2616,7 @@ section {
   position: relative; }
   .advices .title {
     padding: 1rem;
-    color: #969696;
+    color: #969494;
     font-size: 1.2rem;
     line-height: 1.6rem; }
   .advices .form {
@@ -2933,7 +2933,7 @@ section {
       -ms-flex: 0 0 6rem;
       flex: 0 0 6rem;
       font-size: 1.4rem;
-      color: #969696;
+      color: #969494;
       text-align: right;
       padding-right: 1rem;
       justify-content: center;
@@ -2961,7 +2961,7 @@ section {
         height: 0.8rem;
         width: 0.8rem;
         border-width: 1px 1px 0 0;
-        border-color: #969696;
+        border-color: #969494;
         border-style: solid;
         -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
         transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -2969,7 +2969,7 @@ section {
         top: 50%;
         right: 0;
         margin-top: -0.5rem;
-        border-color: #969696;
+        border-color: #969494;
         right: 1.2rem; }
     .m-form li input {
       -webkit-box-flex: 1;
@@ -3038,7 +3038,7 @@ section {
     color: #f487ac;
     font-size: 1.5rem; }
     .m-sign .btn.signed {
-      color: #969696; }
+      color: #969494; }
   .m-sign .help {
     color: #fff;
     text-decoration: underline;
@@ -3092,7 +3092,7 @@ section {
       height: 0.8rem;
       width: 0.8rem;
       border-width: 1px 1px 0 0;
-      border-color: #969696;
+      border-color: #969494;
       border-style: solid;
       -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
       transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -3370,7 +3370,7 @@ section {
         background: #EEEFF3; }
       .m-top-users li .action .pos {
         font-size: 1.2rem;
-        color: #969696;
+        color: #969494;
         display: block;
         line-height: 3rem;
         float: left; }
@@ -3719,7 +3719,7 @@ section {
     .recharge li.th {
       padding: 1rem 0 0;
       font-size: 1.2rem;
-      color: #969696;
+      color: #969494;
       border-bottom: none; }
       .recharge li.th > div {
         font-size: 1.2rem;
@@ -3895,7 +3895,7 @@ section {
       height: 0.8rem;
       width: 0.8rem;
       border-width: 1px 1px 0 0;
-      border-color: #969696;
+      border-color: #969494;
       border-style: solid;
       -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
       transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -3923,7 +3923,7 @@ section {
     height: 0.8rem;
     width: 0.8rem;
     border-width: 1px 1px 0 0;
-    border-color: #969696;
+    border-color: #969494;
     border-style: solid;
     -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
     transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -4328,7 +4328,7 @@ section {
     height: 0.8rem;
     width: 0.8rem;
     border-width: 1px 1px 0 0;
-    border-color: #969696;
+    border-color: #969494;
     border-style: solid;
     -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
     transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -4375,7 +4375,7 @@ section {
     font-size: 1.2rem;
     line-height: 3.8rem;
     font-weight: 500;
-    color: #969696;
+    color: #969494;
     position: relative; }
   .tab a.active {
     color: #f06292; }
@@ -4401,7 +4401,7 @@ section {
       height: 0.8rem;
       width: 0.8rem;
       border-width: 1px 1px 0 0;
-      border-color: #969696;
+      border-color: #969494;
       border-style: solid;
       -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
       transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -4613,7 +4613,7 @@ section {
       -webkit-flex: 1;
       -ms-flex: 1;
       flex: 1;
-      color: #969696;
+      color: #969494;
       text-align: left;
       padding-left: 0.5rem; }
       .received-wrap .mp-info .content .btn-wrap {
@@ -4666,7 +4666,7 @@ section {
       height: 0.8rem;
       width: 0.8rem;
       border-width: 1px 1px 0 0;
-      border-color: #969696;
+      border-color: #969494;
       border-style: solid;
       -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
       transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -4828,7 +4828,7 @@ section {
           background: url(../images/ico_gender_female.png) no-repeat center center;
           background-size: 100% 100%; }
     .users2 a .intro {
-      color: #969696;
+      color: #969494;
       font-size: 1rem;
       margin-top: 0.3rem;
       height: 1.4rem;
@@ -4848,7 +4848,7 @@ section {
   background: url(../images/ico_rpt.png) no-repeat left;
   background-size: 1.5rem 1.5rem;
   padding-left: 1.6rem;
-  color: #969696;
+  color: #969494;
   margin: 2rem auto;
   text-align: center; }
 
@@ -5220,7 +5220,7 @@ section {
         position: relative;
         top: -0.5rem; }
     .incomes li .tip-block {
-      color: #969696;
+      color: #969494;
       padding: 0;
       line-height: 3.2rem; }
 
@@ -5234,7 +5234,7 @@ section {
     height: 0.8rem;
     width: 0.8rem;
     border-width: 1px 1px 0 0;
-    border-color: #969696;
+    border-color: #969494;
     border-style: solid;
     -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
     transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -5279,7 +5279,7 @@ section {
     height: 0.8rem;
     width: 0.8rem;
     border-width: 1px 1px 0 0;
-    border-color: #969696;
+    border-color: #969494;
     border-style: solid;
     -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
     transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -5396,7 +5396,7 @@ section {
   height: 0.8rem;
   width: 0.8rem;
   border-width: 1px 1px 0 0;
-  border-color: #969696;
+  border-color: #969494;
   border-style: solid;
   -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
   transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -5485,12 +5485,12 @@ section {
       font-weight: 500;
       color: #525252; }
   .report_wrap .title {
-    color: #969696;
+    color: #969494;
     font-size: 1.3rem;
     margin-bottom: 1.5rem; }
     .report_wrap .title.chat-tip {
       text-align: center;
-      color: #969696;
+      color: #969494;
       font-size: 1.2rem; }
       .report_wrap .title.chat-tip b {
         color: #6a6572; }
@@ -5523,7 +5523,7 @@ section {
       height: 0.8rem;
       width: 0.8rem;
       border-width: 1px 1px 0 0;
-      border-color: #969696;
+      border-color: #969494;
       border-style: solid;
       -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
       transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -5549,7 +5549,7 @@ section {
 
 .chat-tip {
   text-align: center;
-  color: #969696;
+  color: #969494;
   font-size: 1.2rem; }
   .chat-tip b {
     color: #6a6572; }
@@ -5641,7 +5641,7 @@ section {
 .sedit-title {
   padding: 1rem;
   font-size: 1.2rem;
-  color: #969696; }
+  color: #969494; }
 
 .sedit-input, .sedit-alert {
   background: #fff;
@@ -5677,7 +5677,7 @@ section {
   height: 0.8rem;
   width: 0.8rem;
   border-width: 1px 1px 0 0;
-  border-color: #969696;
+  border-color: #969494;
   border-style: solid;
   -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
   transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -6000,7 +6000,7 @@ section {
         flex: 0 0 6.5rem;
         text-align: right;
         font-size: 1rem;
-        color: #969696;
+        color: #969494;
         justify-content: center;
         align-self: center; }
     .contacts a .content .bot-t {
@@ -6178,7 +6178,7 @@ section {
       font-size: 1rem;
       font-weight: 300;
       top: 1.2rem;
-      color: #969696; }
+      color: #969494; }
     .chats li.right.unread span:before {
       position: absolute;
       content: "未读";
@@ -6186,7 +6186,7 @@ section {
       font-size: 1rem;
       font-weight: 300;
       top: 1.2rem;
-      color: #969696; }
+      color: #969494; }
 
 .m-bot-pl, .m-top-pl {
   height: 1px;
@@ -6227,7 +6227,7 @@ section {
     height: 0.8rem;
     width: 0.8rem;
     border-width: 1px 1px 0 0;
-    border-color: #969696;
+    border-color: #969494;
     border-style: solid;
     -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
     transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -6275,7 +6275,7 @@ section {
     font-size: 1rem;
     font-weight: 300;
     text-align: left;
-    color: #969696; }
+    color: #969494; }
   .notice-item .favor-wAmt, .favor-item .favor-wAmt {
     -webkit-box-flex: 0 0 8rem;
     -webkit-flex: 0 0 8rem;
@@ -6615,7 +6615,7 @@ section {
       border-bottom: 1px solid #E4E4E4; }
       .qItem .options a em {
         font-size: 1.1rem;
-        color: #969696; }
+        color: #969494; }
       .qItem .options a.active {
         color: #f06292; }
       .qItem .options a.active:after {
@@ -6705,7 +6705,7 @@ section {
     height: 0.8rem;
     width: 0.8rem;
     border-width: 1px 1px 0 0;
-    border-color: #969696;
+    border-color: #969494;
     border-style: solid;
     -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
     transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -6745,12 +6745,12 @@ section {
       font-weight: 500;
       font-size: 1.2rem; }
     .cell-subtitle .content h6 {
-      color: #969696;
+      color: #969494;
       font-weight: 300;
       font-size: 1rem; }
   .cell-subtitle.read .content h5 {
     font-weight: 300;
-    color: #969696; }
+    color: #969494; }
 
 .marry-wrap h4 {
   font-size: 2rem;
@@ -6851,7 +6851,7 @@ section {
       border: 1px solid #fbd2e0;
       vertical-align: middle; }
     .m-greeting-users li div {
-      color: #969696;
+      color: #969494;
       font-size: 1rem;
       text-align: center; }
 
@@ -6895,7 +6895,7 @@ section {
         height: 0.8rem;
         width: 0.8rem;
         border-width: 1px 1px 0 0;
-        border-color: #969696;
+        border-color: #969494;
         border-style: solid;
         -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
         transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);

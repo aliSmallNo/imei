@@ -2,15 +2,15 @@
 	<div class="row">
 		<label>
 			<span>手机号</span>
-			<input type="number" class="phone flex-1">
+			<input type="number" class="phone">
 		</label>
 	</div>
 	<div class="row">
 		<label>
 			<span>验证码</span>
-			<input type="number" class="code flex-1">
+			<input type="number" class="code">
+			<a href="javascript:;" class="btn-code">获取验证码</a>
 		</label>
-		<a href="javascript:;" class="btn-code">获取验证码</a>
 	</div>
 	<div class="action">
 		<a href="javascript:;" class="btn-reg">注册</a>
@@ -40,4 +40,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/reg0.js?v=1.1.1" src="/assets/js/require.js"></script>
+<script data-main="/js/reg0.js?v=1.1.2" src="/assets/js/require.js"></script>
