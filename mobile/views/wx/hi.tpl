@@ -9,8 +9,8 @@
 		{{/foreach}}
 	</ul>
 	<div class="m-crew-bar">
-		<a href="javascript:;" class="btn-switch"></a>
-		<a href="javascript:;" class="btn-reg"></a>
+		<a href="javascript:alert('');" class="btn-switch"></a>
+		<a href="javascript:alert('');" class="btn-reg"></a>
 	</div>
 </div>
 <script type="text/html" id="tpl_crew">

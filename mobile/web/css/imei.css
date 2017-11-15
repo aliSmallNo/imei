@@ -7274,6 +7274,7 @@ ul.co-ul {
       background-size: cover; }
 
 .m-crew-bar {
+  padding-top: 1rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
