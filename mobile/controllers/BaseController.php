@@ -99,8 +99,7 @@ class BaseController extends Controller
 //			exit;
 //		} else
 		if (!$wxUserInfo || !isset($wxUserInfo['uPhone']) || !$wxUserInfo['uPhone'] || !$wxUserInfo['uRole']) {
-			//$newActionId = 'imei';
-			$newActionId = 'sreglite';
+			$newActionId = 'hi'; //'sreglite';
 		} elseif (!$wxUserInfo['uLocation']) {
 			$newActionId = $wxUserInfo['uRole'] == User::ROLE_SINGLE ? 'sreg' : 'mreg';
 			$anchor = User::ROLE_SINGLE ? '#photo' : '';
