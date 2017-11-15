@@ -8,7 +8,7 @@
 		</li>
 		{{/foreach}}
 	</ul>
-	<div class="m-crew-bar">
+	<div class="m-crew-bar" ontouchstart="" onmouseover="">
 		<a href="javascript:alert('');" class="btn-switch"></a>
 		<a href="javascript:alert('');" class="btn-reg"></a>
 	</div>
