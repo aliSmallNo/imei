@@ -7287,6 +7287,8 @@ ul.co-ul {
     justify-content: center;
     align-items: center;
     align-self: center;
+    background: url(../images/btn_reg_hl.png) no-repeat center center;
+    background: url(../images/btn_reg_hl.png) no-repeat center center;
     padding: 3rem 0; }
     .m-crew-bar a.btn-reg {
       background: url(../images/btn_reg.png) no-repeat center center;
