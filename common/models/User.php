@@ -982,7 +982,7 @@ class User extends ActiveRecord
 		])->queryOne();
 		$uInfo = self::fmtRow($uInfo);
 		//$preStatus = $uInfo['status'];
-		if ($uInfo['percent'] < 43) {
+		if ($uInfo['percent'] < 31) {
 			$newStatus = self::STATUS_VISITOR;
 		} else {
 			$newStatus = self::STATUS_PENDING;
