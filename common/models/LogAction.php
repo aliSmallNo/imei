@@ -17,6 +17,7 @@ class LogAction extends ActiveRecord
 	const ACTION_LOGIN = 1000;
 	const ACTION_SINGLE = 1002;
 	const ACTION_MATCH = 1004;
+	const ACTION_HI = 1005;
 	const ACTION_REG0 = 1006;
 	const ACTION_REG1 = 1007;
 	const ACTION_SINGLE_LIST = 1010;

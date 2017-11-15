@@ -1838,6 +1838,13 @@ class WxController extends BaseController
 
 	public function actionHi()
 	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$uid = 0;
+		if ($wxInfo) {
+			$uid = $wxInfo["uId"];
+		}
+		LogAction::add($uid, $openId, LogAction::ACTION_HI);
 		$rows = [0, 1, 2, 3];
 		return self::renderPage('hi.tpl',
 			[
