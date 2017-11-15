@@ -59,7 +59,6 @@ require(["layer"],
 				var phone = util.phone.val().trim();
 				if (!isPhone(phone)) {
 					showMsg('请输入正确的手机号！');
-					util.phone.focus();
 					return false;
 				}
 				util.counting = 1;
@@ -106,12 +105,10 @@ require(["layer"],
 					role = 'single';
 				if (!isPhone(phone)) {
 					showMsg('请输入正确的手机号');
-					util.phone.focus();
 					return false;
 				}
 				if (!code) {
 					showMsg('请输入验证码');
-					util.code.focus();
 					return false;
 				}
 
