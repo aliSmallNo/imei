@@ -1850,6 +1850,13 @@ class WxController extends BaseController
 
 	public function actionReg0()
 	{
+		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$uid = 0;
+		if ($wxInfo) {
+			$uid = $wxInfo["uId"];
+		}
+		LogAction::add($uid, $openId, LogAction::ACTION_REG0);
 		return self::renderPage('reg0.tpl',
 			[],
 			'terse',
@@ -1860,6 +1867,12 @@ class WxController extends BaseController
 	public function actionReg1()
 	{
 		$openId = self::$WX_OpenId;
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		$uid = 0;
+		if ($wxInfo) {
+			$uid = $wxInfo["uId"];
+		}
+		LogAction::add($uid, $openId, LogAction::ACTION_REG1);
 		$marital = [
 			User::MARITAL_UNMARRIED => "未婚（无婚史）",
 			User::MARITAL_DIVORCE_NO_KID => "离异带孩",
