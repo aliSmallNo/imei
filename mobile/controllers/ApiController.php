@@ -634,6 +634,22 @@ class ApiController extends Controller
 					$data['items'] = User::greetUsers($userId);
 				}
 				return self::renderAPI(0, '保存成功啦~', $data);
+			case 'reg1':
+				$data = self::postParam('data');
+				$data = json_decode($data, 1);
+				$data["openId"] = $openId;
+				$data["role"] = User::ROLE_SINGLE;
+				$userId = User::reg($data);
+				//Rain: 刷新用户cache数据
+				UserWechat::getInfoByOpenId($openId, 1);
+				$data = [
+					'uid' => $userId,
+					'items' => []
+				];
+				if ($userId) {
+					$data['items'] = User::greetUsers($userId);
+				}
+				return self::renderAPI(0, '保存成功啦~', $data);
 			case "sreglite":
 				$data = self::postParam('data');
 				$data = json_decode($data, 1);

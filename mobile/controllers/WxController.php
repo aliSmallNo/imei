@@ -1856,4 +1856,38 @@ class WxController extends BaseController
 			'',
 			'bg-color');
 	}
+
+	public function actionReg1()
+	{
+		$openId = self::$WX_OpenId;
+		$marital = [
+			User::MARITAL_UNMARRIED => "未婚（无婚史）",
+			User::MARITAL_DIVORCE_NO_KID => "离异带孩",
+			User::MARITAL_DIVORCE_KID => "离异不带孩",
+			User::MARITAL_MARRIED => "已婚（请离开吧）"
+		];
+		$gender = [
+			User::GENDER_FEMALE => "女性",
+			User::GENDER_MALE => "男性"
+		];
+		$height = User::$Height;
+		foreach ($height as $key => $v) {
+			if ($key < 140) {
+				unset($height[$key]);
+			}
+		}
+		return self::renderPage("reg1.tpl",
+			[
+				"maxYear" => 1999,
+				'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
+				"years" => User::$Birthyear,
+				"horos" => User::$Horos,
+				"height" => $height,
+				"gender" => $gender,
+				"marital" => $marital,
+			],
+			'terse',
+			'注册单身',
+			'bg-color');
+	}
 }
