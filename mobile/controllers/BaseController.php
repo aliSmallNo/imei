@@ -101,7 +101,8 @@ class BaseController extends Controller
 		if (!$wxUserInfo || !isset($wxUserInfo['uPhone']) || !$wxUserInfo['uPhone'] || !$wxUserInfo['uRole']) {
 			$newActionId = 'hi'; //'sreglite';
 		} elseif (!$wxUserInfo['uLocation']) {
-			$newActionId = $wxUserInfo['uRole'] == User::ROLE_SINGLE ? 'sreg' : 'mreg';
+			$newActionId = "reg1";
+				//$wxUserInfo['uRole'] == User::ROLE_SINGLE ? 'sreg' : 'mreg';
 			$anchor = User::ROLE_SINGLE ? '#photo' : '';
 		}
 		if ($newActionId && $actionId != $newActionId) {
