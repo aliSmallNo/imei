@@ -1007,14 +1007,16 @@ section
 		top: 6.2rem
 	&.sms-form
 		padding-top: 11rem
+
 	&.sms-form:before
 		content: ''
 		position: absolute
-		width: 19rem
-		height: 7.4rem
-		left: 6.5rem
+		width: 17.3rem
+		height: 4rem
+		left: 50%
 		top: 2rem
-		background: url(../images/wm260_pink.png) no-repeat center center
+		margin-left: -8.65rem
+		background: url(../images/i_brand.png) no-repeat center center
 		background-size: 100% 100%
 
 	//&.matcher:before
@@ -1126,6 +1128,90 @@ section
 			line-height: 2rem
 			font-weight: $weightNormal
 
+.sms-form
+	position: relative
+	padding-top: 13rem
+	color: $grayFontColor
+	&:before
+		content: ''
+		position: absolute
+		width: 21.6rem
+		height: 5rem
+		left: 50%
+		top: 4rem
+		margin-left: -10.8rem
+		background: url(../images/i_brand.png) no-repeat center center
+		background-size: 100% 100%
+	.row
+		@include displayFlex
+		margin-left: 4rem
+		margin-right: 4rem
+		border-bottom: 1px solid $borderColorDark
+		line-height: 3rem
+		margin-bottom: 3rem
+		text-align: center
+	.action
+		text-align: center
+		padding-right: 4.5rem
+		padding-left: 4.5rem
+		padding-top: 2rem
+		.btn-reg
+			background: $mainColor
+			color: #fff
+			border-radius: 1.9rem
+			line-height: 3.8rem
+			height: 3.8rem
+			text-align: center
+			font-size: 1.4rem
+			display: inline-block
+			width: 100%
+	.tip
+		padding-top: 2rem
+		font-size: 1.2rem
+		text-align: center
+		div
+			display: inline-block
+			text-align: left
+			font-size: 1.2rem
+			ol
+				margin: .5rem 0
+				padding-left: 2rem
+				font-size: 1.2rem
+	label
+		@include displayFlex-1
+		@include displayFlex
+		span
+			@include displayFlex-w(5rem)
+			font-size: 1.2rem
+		input
+			border: none
+			background: transparent
+			height: 3rem
+
+	.btn-code
+		background: $mainColor
+		color: #fff
+		border-radius: 1.3rem
+		line-height: 2.6rem
+		height: 2.6rem
+		text-align: center
+		font-size: 1.2rem
+		display: inline-block
+		@include displayFlex-w(7.5rem)
+		@include displayFlexVAlign
+
+.m-protocol
+	position: fixed
+	bottom: 1rem
+	left: 1rem
+	right: 1rem
+	text-align: center
+	a
+		color: $grayFontColor
+		font-size: 1.2rem
+		line-height: 2rem
+		b
+			color: $mainColor
 .m-radios
 	@include displayFlex
 	a
@@ -3465,7 +3551,7 @@ section
 	font-weight: $weightBold
 	text-align: center
 
-.m-ico-rose,.m-ico-member
+.m-ico-rose, .m-ico-member
 	display: inline-block
 	position: relative
 	@include borderBox
@@ -3480,6 +3566,7 @@ section
 		width: 1.8rem
 		height: 1.8rem
 		margin-top: -.9rem
+
 .m-ico-member
 	a
 		text-decoration: line-through
@@ -5739,7 +5826,8 @@ section
 				position: absolute
 				background: #fff
 				border-width: 0 0 1px 1px
-				border-color: #fff //$borderColorDark
+				border-color: #fff
+				//$borderColorDark
 				border-style: solid
 				-webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
 				transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
@@ -5747,7 +5835,8 @@ section
 				left: -.4rem
 			span
 				background: #fff
-				border: 1px solid #fff // $borderColorDark
+				border: 1px solid #fff
+				// $borderColorDark
 				border-radius: .4rem
 				padding: .8rem
 				display: inline-block
@@ -5772,7 +5861,8 @@ section
 				&:after
 					content: ''
 					border-width: 1px 1px 0 0
-					border-color: $greenLight // $borderColorDark
+					border-color: $greenLight
+					// $borderColorDark
 					border-style: solid
 					-webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
 					transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
@@ -6847,6 +6937,7 @@ ul.co-ul
 			height: 3.4rem
 			background: url(/images/ico_close_gray.png) no-repeat center center
 			background-size: 1.8rem 1.8rem
+
 .m-crew
 	padding-top: 3px
 	li
@@ -6865,6 +6956,7 @@ ul.co-ul
 			background-repeat: no-repeat
 			background-size: cover
 			background-color: $mainColorLighter
+
 .m-crew-bar
 	padding-top: 1rem
 	@include displayFlex
@@ -6885,3 +6977,5 @@ ul.co-ul
 			&:active
 				background: url(../images/btn_switch_hl.png) no-repeat center center
 				background-size: cover
+.flex-1
+	@include displayFlex-1

@@ -1841,10 +1841,19 @@ class WxController extends BaseController
 		$rows = [0, 1, 2, 3];
 		return self::renderPage('hi.tpl',
 			[
-				'rows'=> $rows
+				'rows' => $rows
 			],
 			'terse',
 			'',
 			'bg-main');
+	}
+
+	public function actionReg0()
+	{
+		return self::renderPage('reg0.tpl',
+			[],
+			'terse',
+			'',
+			'bg-color');
 	}
 }

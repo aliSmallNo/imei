@@ -30,6 +30,9 @@
 	</div>
 	<a href="javascript:;" class="m-submit-m m-submit-m-active">进入注册</a>
 </div>
+<div class="m-protocol">
+
+</div>
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
