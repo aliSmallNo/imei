@@ -281,7 +281,7 @@ require(["layer"],
 						} else {
 							setTimeout(function () {
 								location.href = "/wx/single#slook";
-							}, 500);
+							}, 450);
 							showMsg(res.msg, 3, 11);
 						}
 					} else {
