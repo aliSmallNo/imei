@@ -1838,13 +1838,13 @@ class WxController extends BaseController
 
 	public function actionHi()
 	{
-
+		$dummies = User::hiDummies(1);
 		return self::renderPage('hi.tpl',
 			[
-
+				'dummies' => $dummies
 			],
 			'terse',
 			'',
-			'date-bg');
+			'bg-main');
 	}
 }

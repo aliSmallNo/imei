@@ -6847,3 +6847,39 @@ ul.co-ul
 			height: 3.4rem
 			background: url(/images/ico_close_gray.png) no-repeat center center
 			background-size: 1.8rem 1.8rem
+.m-crew
+	padding-top: 4px
+	li
+		@include displayFlex
+		padding-left: 1px
+		padding-right: 1px
+		a
+			@include displayFlex-1
+			margin: 1px
+			display: inline-block
+			overflow: hidden
+			border-radius: .2rem
+			height: 10.6rem
+			text-align: center
+			background-position: center
+			background-repeat: no-repeat
+			background-size: cover
+.m-crew-bar
+	padding: 2rem 0
+	@include displayFlex
+	a
+		@include displayFlex-1
+		@include displayFlexVAlign
+		padding: 3rem 0
+		&.btn-reg
+			background: url(../images/btn_reg.png) no-repeat center center
+			background-size: cover
+			&:active
+				background: url(../images/btn_reg_hl.png) no-repeat center center
+				background-size: cover
+		&.btn-switch
+			background: url(../images/btn_switch.png) no-repeat center center
+			background-size: cover
+			&:active
+				background: url(../images/btn_switch_hl.png) no-repeat center center
+				background-size: cover

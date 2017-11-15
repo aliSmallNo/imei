@@ -7249,4 +7249,56 @@ ul.co-ul {
       background: url(/images/ico_close_gray.png) no-repeat center center;
       background-size: 1.8rem 1.8rem; }
 
+.m-crew {
+  padding-top: 4px; }
+  .m-crew li {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 1px;
+    padding-right: 1px; }
+    .m-crew li a {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      margin: 1px;
+      display: inline-block;
+      overflow: hidden;
+      border-radius: 0.2rem;
+      height: 10.6rem;
+      text-align: center;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover; }
+
+.m-crew-bar {
+  padding: 2rem 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+  .m-crew-bar a {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    padding: 3rem 0; }
+    .m-crew-bar a.btn-reg {
+      background: url(../images/btn_reg.png) no-repeat center center;
+      background-size: cover; }
+      .m-crew-bar a.btn-reg:active {
+        background: url(../images/btn_reg_hl.png) no-repeat center center;
+        background-size: cover; }
+    .m-crew-bar a.btn-switch {
+      background: url(../images/btn_switch.png) no-repeat center center;
+      background-size: cover; }
+      .m-crew-bar a.btn-switch:active {
+        background: url(../images/btn_switch_hl.png) no-repeat center center;
+        background-size: cover; }
+
 /*# sourceMappingURL=imei.css.map */

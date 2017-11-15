@@ -2504,26 +2504,44 @@ class User extends ActiveRecord
 		return array_values($items);
 	}
 
-	// 后台聊天稻草人
-	public static function topDummies()
+	public static function hiDummies($page = 1, $resetFlag = false)
 	{
-		$conn = AppUtil::db();
-		/*$sql = "select uName,uThumb,uId,uGender
-				from im_user where uSubStatus=:sst and uStatus=:st ORDER by uId desc";*/
-		$sql = "SELECT uName,uThumb,uId,uGender,uLocation,uHomeLand,uBirthYear
-			FROM im_user 
-			WHERE uOpenId not LIKE 'oYDJew%' AND uHomeLand!='' AND uStatus=:st LIMIT 120";
-		$sql = "SELECT * FROM (SELECT uName,uThumb,uId,uGender,uLocation,uHomeLand,uBirthYear FROM im_user 
-			 WHERE uOpenId not LIKE :openid AND uHomeLand!='' AND uStatus=:st AND uGender=:female LIMIT 50) as f
-			 UNION
-			 SELECT * FROM (SELECT uName,uThumb,uId,uGender,uLocation,uHomeLand,uBirthYear FROM im_user 
-			 WHERE uOpenId not LIKE :openid AND uHomeLand!='' AND uStatus=:st AND uGender=:male LIMIT 50) as m";
-		$ret = $conn->createCommand($sql)->bindValues([
-			":st" => self::STATUS_ACTIVE,
-			":male" => self::GENDER_MALE,
-			":female" => self::GENDER_FEMALE,
-			":openid" => 'oYDJew%'
-		])->queryAll();
+		$dummies = self::topDummies($resetFlag);
+		if ($page > 9) {
+			$page = 1;
+		}
+		$items = [];
+		$items = array_merge($items, array_slice($dummies[self::GENDER_FEMALE], $page * 6));
+		$items = array_merge($items, array_slice($dummies[self::GENDER_MALE], $page * 6));
+		shuffle($items);
+		$rows = [];
+		$rows[] = array_slice($items, 0, 3);
+		$rows[] = array_slice($items, 3, 3);
+		$rows[] = array_slice($items, 6, 3);
+		$rows[] = array_slice($items, 9, 3);
+		return $rows;
+	}
+
+	// 后台聊天稻草人
+	public static function topDummies($resetFlag = false)
+	{
+		$redis = RedisUtil::init(RedisUtil::KEY_DUMMY_TOP);
+		$ret = json_decode($redis->getCache(), 1);
+		if (!$ret || $resetFlag) {
+			$conn = AppUtil::db();
+			$sql = "SELECT * FROM (SELECT uName,uThumb,uId,uGender,uLocation,uHomeLand,uBirthYear FROM im_user 
+				 WHERE uOpenId not LIKE :openid AND uHomeLand!='' AND uStatus=:st AND uGender=:female LIMIT 60) as f
+				 UNION
+				 SELECT * FROM (SELECT uName,uThumb,uId,uGender,uLocation,uHomeLand,uBirthYear FROM im_user 
+				 WHERE uOpenId not LIKE :openid AND uHomeLand!='' AND uStatus=:st AND uGender=:male LIMIT 60) as m";
+			$ret = $conn->createCommand($sql)->bindValues([
+				":st" => self::STATUS_ACTIVE,
+				":male" => self::GENDER_MALE,
+				":female" => self::GENDER_FEMALE,
+				":openid" => 'oYDJew%'
+			])->queryAll();
+			$redis->setCache($ret);
+		}
 		$res = [];
 		foreach ($ret as $row) {
 			$row["location"] = '';
@@ -2542,7 +2560,6 @@ class User extends ActiveRecord
 			} elseif ($row["uGender"] == self::GENDER_FEMALE) {
 				$res[self::GENDER_MALE][] = $row;
 			}
-
 		}
 		return $res;
 	}

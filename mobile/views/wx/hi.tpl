@@ -1,8 +1,16 @@
 <div class="">
-	<ul class="m-crew"></ul>
+	<ul class="m-crew">
+		{{foreach from=$dummies item=item}}
+		<li>
+			{{foreach from=$item item=dummy}}
+			<a href="javascript:;" style="background-image:url({{$dummy.uThumb}});"></a>
+			{{/foreach}}
+		</li>
+		{{/foreach}}
+	</ul>
 	<div class="m-crew-bar">
-		<a href="javascript:;">换一批</a>
-		<a href="javascript:;">马上注册</a>
+		<a href="javascript:;" class="btn-switch"></a>
+		<a href="javascript:;" class="btn-reg"></a>
 	</div>
 </div>
 <script type="text/html" id="tpl_crew">
