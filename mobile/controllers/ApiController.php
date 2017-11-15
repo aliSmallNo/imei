@@ -1603,14 +1603,11 @@ class ApiController extends Controller
 		switch ($tag) {
 			case 'hi':
 				$page = self::postParam("page", 1);
-				$items = User::hiDummies($page++);
-				if ($page > 9) {
-					$page = 1;
-				}
+				list($items, $next) = User::hiDummies($page);
 				return self::renderAPI(0, '',
 					[
 						'items' => $items,
-						'next' => $page
+						'next' => $next
 					]);
 		}
 		return self::renderAPI(129, '操作无效');

@@ -1838,10 +1838,10 @@ class WxController extends BaseController
 
 	public function actionHi()
 	{
-		$dummies = User::hiDummies(1);
+		$rows = [0, 1, 2, 3];
 		return self::renderPage('hi.tpl',
 			[
-				'dummies' => $dummies
+				'rows'=> $rows
 			],
 			'terse',
 			'',

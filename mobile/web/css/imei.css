@@ -7250,7 +7250,7 @@ ul.co-ul {
       background-size: 1.8rem 1.8rem; }
 
 .m-crew {
-  padding-top: 4px; }
+  padding-top: 3px; }
   .m-crew li {
     display: -webkit-box;
     display: -webkit-flex;
@@ -7271,7 +7271,8 @@ ul.co-ul {
       text-align: center;
       background-position: center;
       background-repeat: no-repeat;
-      background-size: cover; }
+      background-size: cover;
+      background-color: #fbd2e0; }
 
 .m-crew-bar {
   padding-top: 1rem;
@@ -7287,8 +7288,6 @@ ul.co-ul {
     justify-content: center;
     align-items: center;
     align-self: center;
-    background: url(../images/btn_reg_hl.png) no-repeat center center;
-    background: url(../images/btn_reg_hl.png) no-repeat center center;
     padding: 3rem 0; }
     .m-crew-bar a.btn-reg {
       background: url(../images/btn_reg.png) no-repeat center center;

@@ -2511,14 +2511,10 @@ class User extends ActiveRecord
 		if ($page > 9) {
 			$page = 1;
 		}
-		$items = array_merge(array_slice($dummies[self::GENDER_FEMALE], $page * 6),
-			array_slice($dummies[self::GENDER_MALE], $page * 6));
+		$items = array_merge(array_slice($dummies[self::GENDER_FEMALE], $page * 6, 6),
+			array_slice($dummies[self::GENDER_MALE], $page * 6, 6));
 		shuffle($items);
-		$rows[] = ['subs' => array_slice($items, 0, 3)];
-		$rows[] = ['subs' => array_slice($items, 3, 3)];
-		$rows[] = ['subs' => array_slice($items, 6, 3)];
-		$rows[] = ['subs' => array_slice($items, 9, 3)];
-		return $rows;
+		return [$items, $page + 1];
 	}
 
 	// 后台聊天稻草人
@@ -2554,6 +2550,7 @@ class User extends ActiveRecord
 				$row["homeland"] = implode(' ', $text);
 			}
 			$row["age"] = date('Y') - $row['uBirthYear'];
+			unset($row['uBirthYear'],$row['uHomeLand'],$row['uLocation']);
 			if ($row["uGender"] == self::GENDER_MALE) {
 				$res[self::GENDER_FEMALE][] = $row;
 			} elseif ($row["uGender"] == self::GENDER_FEMALE) {

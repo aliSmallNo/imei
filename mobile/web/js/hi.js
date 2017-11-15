@@ -58,11 +58,17 @@ require(["layer"],
 				$.post('/api/dummy',
 					{
 						tag: 'hi',
-						id: util.page
+						page: util.page
 					}, function (resp) {
 						if (resp.code < 1) {
-							var html = Mustache.render(util.tmp, resp.data);
-							util.list.html(html);
+							var idx = 0;
+							$.each(util.list.find('a'), function () {
+								var self = $(this);
+								var item = resp.data.items[idx];
+								self.attr("data-id", item['uId']);
+								self.css("background-image", "url(" + item['uThumb'] + ")");
+								idx++;
+							});
 						} else {
 							showMsg(resp.msg);
 						}
@@ -74,5 +80,6 @@ require(["layer"],
 
 		$(function () {
 			HiUtil.init();
+			HiUtil.reload();
 		});
 	});

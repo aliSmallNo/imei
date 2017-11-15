@@ -1,10 +1,10 @@
 <div class="">
 	<ul class="m-crew">
-		{{foreach from=$dummies item=item}}
+		{{foreach from=$rows item=item}}
 		<li>
-			{{foreach from=$item.subs item=dummy}}
-			<a href="javascript:;" style="background-image:url({{$dummy.uThumb}});"></a>
-			{{/foreach}}
+			<a href="javascript:;"></a>
+			<a href="javascript:;"></a>
+			<a href="javascript:;"></a>
 		</li>
 		{{/foreach}}
 	</ul>
