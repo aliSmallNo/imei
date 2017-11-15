@@ -1103,13 +1103,16 @@ section {
       text-align: center;
       font-size: 1.2rem;
       display: inline-block;
-      -webkit-box-flex: 0 0 7.5rem;
-      -webkit-flex: 0 0 7.5rem;
-      -ms-flex: 0 0 7.5rem;
-      flex: 0 0 7.5rem;
+      -webkit-box-flex: 0 0 8rem;
+      -webkit-flex: 0 0 8rem;
+      -ms-flex: 0 0 8rem;
+      flex: 0 0 8rem;
       justify-content: center;
       align-items: center;
       align-self: center; }
+      .sms-form label .btn-code.disabled {
+        background: #d4d4d4;
+        color: #969494; }
 
 .m-protocol {
   position: fixed;

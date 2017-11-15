@@ -1199,8 +1199,11 @@ section
 			text-align: center
 			font-size: 1.2rem
 			display: inline-block
-			@include displayFlex-w(7.5rem)
+			@include displayFlex-w(8rem)
 			@include displayFlexVAlign
+			&.disabled
+				background: $borderColorDark
+				color: $grayFontColorLight
 
 .m-protocol
 	position: fixed
