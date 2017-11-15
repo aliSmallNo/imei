@@ -123,14 +123,14 @@ require(["layer"],
 					postData,
 					function (resp) {
 						if (resp.code < 1) {
-							//showMsg(resp.msg, 3, 11);
 							setTimeout(function () {
+								util.loading = 0;
 								location.href = '/wx/reg1';
-							}, 500);
+							}, 450);
 						} else {
 							showMsg(resp.msg);
+							util.loading = 0;
 						}
-						util.loading = 0;
 					}, 'json');
 			}
 		};
