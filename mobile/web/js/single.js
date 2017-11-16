@@ -2330,8 +2330,8 @@ require(["layer"],
 			lastLeftObj: null,
 			lastX: 0,
 			lastXForMobile: 0,
-			speed: 350,
-			offset: 90,
+			speed: 300,
+			offset: 85,
 			start: null,
 			init: function () {
 				var util = this;
