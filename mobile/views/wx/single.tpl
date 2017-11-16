@@ -264,7 +264,7 @@
 	<div class="m-top-pl"></div>
 	<div class="contacts-wrap">
 		<a href="javascript:;" class="contacts-edit" data-tag="edit">编辑</a>
-		<div class="contacts"></div>
+		<ul class="contacts"></ul>
 		<div></div>
 	</div>
 	<div class="contacts-nomore messages" style="display: none">
@@ -1073,20 +1073,26 @@
 </script>
 <script type="text/template" id="tpl_contact">
 	{[#items]}
-	<a href="javascript:;" data-id="{[encryptId]}" data-cid="{[cid]}" data-read="{[readflag]}" class="chat">
-		<div class="opt hide">
-			<input class="magic-checkbox" type="checkbox" name="name{[cid]}" id="{[encryptId]}" value="{[gid]}">
-			<label for="{[encryptId]}"></label>
+	<li>
+		<div class="action">
+			<a href="javascript:;" class="contact-top"><span>置顶</span></a>
+			<a href="javascript:;" class="contact-del"><span>删除</span></a>
 		</div>
-		<div class="avatar"><img src="{[avatar]}"></div>
-		<div class="content">
-			<div class="top-t"><em>{[name]}</em><i>{[dt]}</i></div>
-			<div class="bot-t">{[content]}</div>
-		</div>
-		{[^readflag]}
-		<span class="readflag">{[cnt]}</span>
-		{[/readflag]}
-	</a>
+		<a href="javascript:;" data-id="{[encryptId]}" data-cid="{[cid]}" data-read="{[readflag]}" class="chat a-swipe">
+			<div class="opt hide">
+				<input class="magic-checkbox" type="checkbox" name="name{[cid]}" id="{[encryptId]}" value="{[gid]}">
+				<label for="{[encryptId]}"></label>
+			</div>
+			<div class="avatar"><img src="{[avatar]}"></div>
+			<div class="content">
+				<div class="top-t"><em>{[name]}</em><i>{[dt]}</i></div>
+				<div class="bot-t">{[content]}</div>
+			</div>
+			{[^readflag]}
+			<span class="readflag">{[cnt]}</span>
+			{[/readflag]}
+		</a>
+	</li>
 	{[/items]}
 </script>
 <script type="text/template" id="tpl_chat_share">
@@ -1338,4 +1344,4 @@
 <script src="/assets/js/mustache.min.js?v=1.2.1"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
 <script src="/assets/js/swiper.jquery.min.js"></script>
-<script data-main="/js/single.js?v=1.1.4.0" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.1.4.1" src="/assets/js/require.js"></script>

@@ -5671,7 +5671,7 @@ section
 
 .contacts-wrap
 	background: #fff
-	padding: 0 1rem
+	padding: 0
 	border-bottom: 1px solid $borderColor
 	position: relative
 	.contacts-edit
@@ -5686,61 +5686,106 @@ section
 		z-index: 99
 
 .contacts
-	a
-		@include displayFlex
-		padding: .6rem 0
+	li
 		position: relative
-		border-bottom: 1px solid $borderColor
-		.opt.hide
-			display: none
-		.opt.show
-			display: block
-		&:last-child
-			border-bottom: none
-		.avatar
-			@include displayFlex-w(4.3rem)
-			text-align: left
-			img
-				width: 3.5rem
-				height: 3.5rem
-				border-radius: .3rem
-				border: 1px solid $mainColorLighter
-				vertical-align: middle
-		.content
-			@include displayFlex-1
-			position: relative
-			padding-left: 0
-			.top-t
-				@include displayFlex
-				em
-					@include displayFlex-1
-					font-size: 1.4rem
-					font-weight: $weightBold
-					@include textTail
-				i
-					@include displayFlex-w(6.5rem)
-					text-align: right
-					font-size: 1rem
-					color: $grayFontColorLight
-					justify-content: center
-					align-self: center
-			.bot-t
-				color: $grayFontColor
-				font-size: 1.2rem
-				font-weight: $weightNormal
-		.readflag
-			@include unreadFlag
-			left: 3.2rem
-			top: 0.3rem
-			font-size: .8rem
-			font-weight: $weightBold
-			line-height: 1rem
-			color: $yellowColor
-			text-align: center
+		display: block
+		&:after
+			content: ''
+			position: absolute
+			left: 0
+			bottom: 0
+			right: 0
+			height: 1px
+			background: $borderColor
+		a
+			//@include displayFlex
 			display: inline-block
-			width: auto
-			padding-left: .3rem
-			padding-right: .3rem
+			width: 32rem
+			background: #fff
+			padding: .6rem 0
+			position: relative
+			.opt.hide
+				display: none
+			.opt.show
+				display: block
+			&:last-child
+				border-bottom: none
+			.avatar
+				//@include displayFlex-w(4.5rem)
+				position: absolute
+				left: .7rem
+				top: .5rem
+				bottom: 0
+				text-align: left
+				img
+					width: 3.5rem
+					height: 3.5rem
+					border-radius: .3rem
+					border: 1px solid $mainColorLighter
+					vertical-align: middle
+			.content
+				margin-left: 5.2rem
+				//@include displayFlex-1
+				//@include displayFlex-w(27.5rem)
+				position: relative
+				padding-left: 0
+				padding-right: .7rem
+				.top-t
+					@include displayFlex
+					em
+						@include displayFlex-1
+						font-size: 1.4rem
+						font-weight: $weightBold
+						@include textTail
+					i
+						@include displayFlex-w(6.5rem)
+						text-align: right
+						font-size: 1rem
+						color: $grayFontColorLight
+						justify-content: center
+						align-self: center
+				.bot-t
+					color: $grayFontColor
+					font-size: 1.2rem
+					font-weight: $weightNormal
+			.readflag
+				@include unreadFlag
+				left: 3.2rem
+				top: 0.3rem
+				font-size: .8rem
+				font-weight: $weightBold
+				line-height: 1rem
+				color: $yellowColor
+				text-align: center
+				display: inline-block
+				width: auto
+				padding-left: .3rem
+				padding-right: .3rem
+		.action
+			position: absolute
+			right: 0
+			top: 0
+			bottom: 0
+			height: 100%
+			width: 12rem
+			@include displayFlex
+			//z-index: 99
+			a
+				@include displayFlex-1
+				@include displayFlex
+				height: 100%
+				text-align: center
+				padding: 0
+				margin: 0
+				vertical-align: middle
+				color: #fff
+				span
+					display: inline-block
+					margin: auto
+				&.contact-del
+					background: $redColorLight
+				&.contact-top
+					background: $grayFontColorLighter
 
 .magic-radio, .magic-checkbox
 	position: absolute

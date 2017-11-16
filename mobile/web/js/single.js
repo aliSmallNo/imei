@@ -2325,6 +2325,62 @@ require(["layer"],
 			}
 		};
 
+		var SwipeUtil = {
+			pressedObj: null,
+			lastLeftObj: null,
+			lastX: 0,
+			lastXForMobile: 0,
+			speed: 350,
+			start: null,
+			init: function () {
+				var util = this;
+				$(document).on('touchstart', '.a-swipe', function (ev) {
+					util.lastXForMobile = ev.changedTouches[0].pageX;
+					util.pressedObj = this; // 记录被按下的对象
+
+					// 记录开始按下时的点
+					var touches = ev.touches[0];
+					util.start = {
+						x: touches.pageX, // 横坐标
+						y: touches.pageY  // 纵坐标
+					};
+				});
+				$(document).on('touchmove', '.a-swipe', function (ev) {
+					// 计算划动过程中x和y的变化量
+					var touches = ev.touches[0];
+					var delta = {
+						x: touches.pageX - util.start.x,
+						y: touches.pageY - util.start.y
+					};
+
+					// 横向位移大于纵向位移，阻止纵向滚动
+					if (Math.abs(delta.x) > Math.abs(delta.y)) {
+						ev.preventDefault();
+					}
+				});
+
+				$(document).on('touchmove', '.a-swipe', function (ev) {
+					if (util.lastLeftObj && util.pressedObj != util.lastLeftObj) {
+						// 点击除当前左滑对象之外的任意其他位置
+						$(util.lastLeftObj).animate({marginLeft: "0"}, util.speed - 50); // 右滑
+						util.lastLeftObj = null; // 清空上一个左滑的对象
+					}
+					var diffX = ev.changedTouches[0].pageX - util.lastXForMobile;
+					if (diffX < -150) {
+						$(util.pressedObj).animate({marginLeft: "-12rem"}, util.speed); // 左滑
+						util.lastLeftObj && util.lastLeftObj != util.pressedObj &&
+						$(util.lastLeftObj).animate({marginLeft: "0"}, util.speed - 50); // 已经左滑状态的按钮右滑
+						util.lastLeftObj = util.pressedObj; // 记录上一个左滑的对象
+					} else if (diffX > 150) {
+						if (util.pressedObj == util.lastLeftObj) {
+							$(util.pressedObj).animate({marginLeft: "0"}, util.speed - 50); // 右滑
+							util.lastLeftObj = null; // 清空上一个左滑的对象
+						}
+					}
+				});
+			}
+		};
+
 		function showMsg(msg, sec, tag) {
 			var delay = sec || 3;
 			var ico = '';
@@ -2400,6 +2456,7 @@ require(["layer"],
 			RankUtil.init();
 			FavorUtil.init();
 			AdvertUtil.init();
+			SwipeUtil.init();
 
 			setTimeout(function () {
 				GreetingUtil.show();

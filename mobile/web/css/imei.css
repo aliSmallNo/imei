@@ -5934,7 +5934,7 @@ section {
 
 .contacts-wrap {
   background: #fff;
-  padding: 0 1rem;
+  padding: 0;
   border-bottom: 1px solid #E4E4E4;
   position: relative; }
   .contacts-wrap .contacts-edit {
@@ -5948,85 +5948,125 @@ section {
     font-size: 1.2rem;
     z-index: 99; }
 
-.contacts a {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 0.6rem 0;
+.contacts li {
   position: relative;
-  border-bottom: 1px solid #E4E4E4; }
-  .contacts a .opt.hide {
-    display: none; }
-  .contacts a .opt.show {
-    display: block; }
-  .contacts a:last-child {
-    border-bottom: none; }
-  .contacts a .avatar {
-    -webkit-box-flex: 0 0 4.3rem;
-    -webkit-flex: 0 0 4.3rem;
-    -ms-flex: 0 0 4.3rem;
-    flex: 0 0 4.3rem;
-    text-align: left; }
-    .contacts a .avatar img {
-      width: 3.5rem;
-      height: 3.5rem;
-      border-radius: 0.3rem;
-      border: 1px solid #fbd2e0;
-      vertical-align: middle; }
-  .contacts a .content {
-    -webkit-box-flex: 1;
-    -webkit-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-    position: relative;
-    padding-left: 0; }
-    .contacts a .content .top-t {
+  display: block; }
+  .contacts li:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 1px;
+    background: #E4E4E4; }
+  .contacts li a {
+    display: inline-block;
+    width: 32rem;
+    background: #fff;
+    padding: 0.6rem 0;
+    position: relative; }
+    .contacts li a .opt.hide {
+      display: none; }
+    .contacts li a .opt.show {
+      display: block; }
+    .contacts li a:last-child {
+      border-bottom: none; }
+    .contacts li a .avatar {
+      position: absolute;
+      left: 0.7rem;
+      top: 0.5rem;
+      bottom: 0;
+      text-align: left; }
+      .contacts li a .avatar img {
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 0.3rem;
+        border: 1px solid #fbd2e0;
+        vertical-align: middle; }
+    .contacts li a .content {
+      margin-left: 5.2rem;
+      position: relative;
+      padding-left: 0;
+      padding-right: 0.7rem; }
+      .contacts li a .content .top-t {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex; }
+        .contacts li a .content .top-t em {
+          -webkit-box-flex: 1;
+          -webkit-flex: 1;
+          -ms-flex: 1;
+          flex: 1;
+          font-size: 1.4rem;
+          font-weight: 500;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden; }
+        .contacts li a .content .top-t i {
+          -webkit-box-flex: 0 0 6.5rem;
+          -webkit-flex: 0 0 6.5rem;
+          -ms-flex: 0 0 6.5rem;
+          flex: 0 0 6.5rem;
+          text-align: right;
+          font-size: 1rem;
+          color: #969494;
+          justify-content: center;
+          align-self: center; }
+      .contacts li a .content .bot-t {
+        color: #6a6572;
+        font-size: 1.2rem;
+        font-weight: 300; }
+    .contacts li a .readflag {
+      position: absolute;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 0.5rem;
+      background: #f24;
+      left: 3.2rem;
+      top: 0.3rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      line-height: 1rem;
+      color: #fdd835;
+      text-align: center;
+      display: inline-block;
+      width: auto;
+      padding-left: 0.3rem;
+      padding-right: 0.3rem; }
+  .contacts li .action {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    width: 12rem;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+    .contacts li .action a {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
-      display: flex; }
-      .contacts a .content .top-t em {
-        -webkit-box-flex: 1;
-        -webkit-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
-        font-size: 1.4rem;
-        font-weight: 500;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden; }
-      .contacts a .content .top-t i {
-        -webkit-box-flex: 0 0 6.5rem;
-        -webkit-flex: 0 0 6.5rem;
-        -ms-flex: 0 0 6.5rem;
-        flex: 0 0 6.5rem;
-        text-align: right;
-        font-size: 1rem;
-        color: #969494;
-        justify-content: center;
-        align-self: center; }
-    .contacts a .content .bot-t {
-      color: #6a6572;
-      font-size: 1.2rem;
-      font-weight: 300; }
-  .contacts a .readflag {
-    position: absolute;
-    width: 1rem;
-    height: 1rem;
-    border-radius: 0.5rem;
-    background: #f24;
-    left: 3.2rem;
-    top: 0.3rem;
-    font-size: 0.8rem;
-    font-weight: 500;
-    line-height: 1rem;
-    color: #fdd835;
-    text-align: center;
-    display: inline-block;
-    width: auto;
-    padding-left: 0.3rem;
-    padding-right: 0.3rem; }
+      display: flex;
+      height: 100%;
+      text-align: center;
+      padding: 0;
+      margin: 0;
+      vertical-align: middle;
+      color: #fff; }
+      .contacts li .action a span {
+        display: inline-block;
+        margin: auto; }
+      .contacts li .action a.contact-del {
+        background: #f24; }
+      .contacts li .action a.contact-top {
+        background: #b8b8b8; }
 
 .magic-radio, .magic-checkbox {
   position: absolute;
