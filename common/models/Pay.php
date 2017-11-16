@@ -73,7 +73,7 @@ class Pay extends ActiveRecord
 		} else if ($cat == self::CAT_MEET) {
 			$entity->pNote = '约会平台服务费';
 		} else if ($cat == self::CAT_MEMBER) {
-			$entity->pNote = '单身俱乐部单身会员';
+			$entity->pNote = '单身俱乐部会员';
 		}
 		$entity->save();
 		return $entity->pId;

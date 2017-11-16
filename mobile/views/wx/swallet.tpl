@@ -20,7 +20,7 @@
 			</li>
 			{{/foreach}}
 			<li style="margin-top:1.5rem">
-				<div class="title m-ico-member">单身俱乐部单身会员
+				<div class="title m-ico-member">单身俱乐部会员
 					<a href="javascript:;">￥299</a>
 				</div>
 				<div class="action"><a href="javascript:;" class="btn-recharge" data-id="99" data-cat="member">99元</a>
