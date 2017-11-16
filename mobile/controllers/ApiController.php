@@ -1937,6 +1937,7 @@ class ApiController extends Controller
 
 				if ($ids) {
 					ChatMsg::greeting($uid, $ids);
+					ChatMsg::greeting(User::SERVICE_UID, [$uid],'你好，我是千寻恋恋小助手，你有任何问题都可以跟我说啊！');
 				}
 				return self::renderAPI(0, '打招呼成功！', 1);
 				break;

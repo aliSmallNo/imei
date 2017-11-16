@@ -66,7 +66,14 @@ class ChatMsg extends ActiveRecord
 		"我是新人，多多关照"
 	];
 
-	public static function greeting($senderId, $ids, $content = '你好，初来乍到，请多多关照呦~', $conn = '')
+	/**
+	 * @param int $senderId 发送者ID
+	 * @param array $ids 接收者IDs
+	 * @param string $content 发送内容
+	 * @param /yii/db/connection $conn
+	 * @return bool
+	 */
+	public static function greeting($senderId, $ids, $content = '', $conn = null)
 	{
 		$groups = [];
 		foreach ($ids as $id) {
@@ -110,7 +117,9 @@ class ChatMsg extends ActiveRecord
 			}
 
 			$greetMap = self::$greetDict;
-			$content = $greetMap[rand(0, count($greetMap) - 1)];
+			if (!$content) {
+				$content = $greetMap[mt_rand(0, count($greetMap) - 1)];
+			}
 
 			$entity = new self();
 			$entity->cGId = $gid;
