@@ -5,7 +5,7 @@
 		<div class="see-more"><a href="javascript:;" tag="recomend">查看更多</a></div>
 	</div>
 </section>
-<section id="slook" data-title="发现单身">
+<section id="slook" data-title="千寻恋恋">
 	<div class="my-condition" style="display: none">
 		<a href="javascript:;" class="conditions">
 			<span class="con-title">择偶条件: </span>
@@ -711,13 +711,13 @@
 		看媒婆
 	</a>
 	<a href="#slook" class="nav-invite" data-tag="slook">
-		单身推荐
+		千寻
 	</a>
 	<a href="#scontacts" class="nav-chat" data-tag="scontacts">
-		密聊记录
+		密聊
 	</a>
 	<a href="#sme" class="nav-me" data-tag="sme">
-		个人中心
+		个人
 	</a>
 </div>
 <div class="app-cork" style="background-color: rgba(0,0,0,0.1)"></div>
