@@ -1139,7 +1139,7 @@ require(["layer"],
 
 				$(document).on(kClick, ".album-photos a.del", function () {
 					var row = $(this).closest('li');
-					var src = row.find('img').attr('bsrc');
+					var src = row.find('.has-pic').attr('bsrc');
 					layer.open({
 						title: false,
 						btn: ['删除', '取消'],
