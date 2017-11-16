@@ -2331,6 +2331,7 @@ require(["layer"],
 			lastX: 0,
 			lastXForMobile: 0,
 			speed: 350,
+			offset: 120,
 			start: null,
 			init: function () {
 				var util = this;
@@ -2366,12 +2367,12 @@ require(["layer"],
 						util.lastLeftObj = null; // 清空上一个左滑的对象
 					}
 					var diffX = ev.changedTouches[0].pageX - util.lastXForMobile;
-					if (diffX < -150) {
+					if (diffX < -util.offset) {
 						$(util.pressedObj).animate({marginLeft: "-12rem"}, util.speed); // 左滑
 						util.lastLeftObj && util.lastLeftObj != util.pressedObj &&
 						$(util.lastLeftObj).animate({marginLeft: "0"}, util.speed - 50); // 已经左滑状态的按钮右滑
 						util.lastLeftObj = util.pressedObj; // 记录上一个左滑的对象
-					} else if (diffX > 150) {
+					} else if (diffX > util.offset) {
 						if (util.pressedObj == util.lastLeftObj) {
 							$(util.pressedObj).animate({marginLeft: "0"}, util.speed - 50); // 右滑
 							util.lastLeftObj = null; // 清空上一个左滑的对象
