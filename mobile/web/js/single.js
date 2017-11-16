@@ -68,6 +68,95 @@ require(["layer"],
 			return $ele && $ele.length > 0 && $ele.offset().top + $offset < $(window).scrollTop() + $(window).height();
 		}
 
+		var SwipeUtil = {
+			pressedObj: null,
+			lastLeftObj: null,
+			lastX: 0,
+			lastXForMobile: 0,
+			speed: 300,
+			diff: 90,
+			offset: '-8rem',
+			start: null,
+			editable: function () {
+				var ret = false;
+				$.each($('a.a-swipe'), function () {
+					var left = parseFloat($(this).css('margin-left'));
+					if (left < -40) {
+						ret = true;
+						return false;
+					}
+				});
+				return ret;
+			},
+			init: function () {
+				var util = this;
+				$(document).on('touchstart', '.a-swipe', function (ev) {
+					util.lastXForMobile = ev.changedTouches[0].pageX;
+					util.pressedObj = this; // 记录被按下的对象
+
+					// 记录开始按下时的点
+					var touches = ev.touches[0];
+					util.start = {
+						x: touches.pageX, // 横坐标
+						y: touches.pageY  // 纵坐标
+					};
+				});
+				$(document).on('touchmove', '.a-swipe', function (ev) {
+					// 计算划动过程中x和y的变化量
+					var touches = ev.touches[0];
+					var delta = {
+						x: touches.pageX - util.start.x,
+						y: touches.pageY - util.start.y
+					};
+
+					// 横向位移大于纵向位移，阻止纵向滚动
+					if (Math.abs(delta.x) > Math.abs(delta.y)) {
+						ev.preventDefault();
+					}
+				});
+
+				$(document).on('touchmove', '.a-swipe', function (ev) {
+					if (util.lastLeftObj && util.pressedObj != util.lastLeftObj) {
+						// 点击除当前左滑对象之外的任意其他位置
+						$(util.lastLeftObj).animate({marginLeft: 0}, util.speed - 50); // 右滑
+						util.lastLeftObj = null; // 清空上一个左滑的对象
+					}
+					var diffX = ev.changedTouches[0].pageX - util.lastXForMobile;
+					if (diffX < -util.diff) {
+						$(util.pressedObj).animate({marginLeft: util.offset}, util.speed); // 左滑
+						util.lastLeftObj && util.lastLeftObj != util.pressedObj &&
+						$(util.lastLeftObj).animate({marginLeft: 0}, util.speed - 50); // 已经左滑状态的按钮右滑
+						util.lastLeftObj = util.pressedObj; // 记录上一个左滑的对象
+					} else if (diffX > util.diff) {
+						if (util.pressedObj == util.lastLeftObj) {
+							$(util.pressedObj).animate({marginLeft: 0}, util.speed - 50); // 右滑
+							util.lastLeftObj = null; // 清空上一个左滑的对象
+						}
+					}
+				});
+
+				$(document).on(kClick, '.contact-del', function () {
+					util.remove($(this));
+				});
+			},
+			remove: function (el) {
+				var row = el.closest('li');
+				row.fadeOut(500, function () {
+					row.remove();
+				});
+				var ids = [row.attr('data-gid')];
+				$.post("/api/chat", {
+					tag: "del",
+					gids: JSON.stringify(ids)
+				}, function (resp) {
+					ChatUtil.loading = 0;
+					if (resp.code < 1) {
+
+					}
+				}, "json");
+			}
+		};
+
 		var RechargeUtil = {
 			init: function () {
 				$(document).on(kClick, '.btn-recharge', function () {
@@ -470,8 +559,6 @@ require(["layer"],
 					id: id,
 					f: f
 				}, function (resp) {
-					//console.log(resp);
-
 					if (resp.code == 0) {
 						if (f == "yes") {
 							showMsg('心动成功~', 3, 11);
@@ -541,6 +628,9 @@ require(["layer"],
 					}, 250);
 				});
 				$(document).on(kClick, ".contacts a", function () {
+					if (SwipeUtil.editable()) {
+						return false;
+					}
 					var self = $(this);
 					if (self.hasClass("chat")) {
 						util.chatRoom(self.attr('data-id'), self.find(".content").find("em").html());
@@ -645,7 +735,6 @@ require(["layer"],
 						self.next().find("a").find(".opt").find("input:checked").each(function () {
 							gids.push($(this).val());
 						});
-						console.log(gids);
 						if (gids.length == 0) {
 							ChatUtil.delChatBtn(self, "chat");
 							return;
@@ -802,7 +891,6 @@ require(["layer"],
 							showMsg("选择原因哦");
 							return;
 						}
-						console.log(util.reason);
 						util.toBlock();
 					} else if (self.hasClass("date-close")) {
 						$sls.main.hide();
@@ -889,7 +977,6 @@ require(["layer"],
 				util.list.append(html);
 			},
 			messages: function (data, flag) {
-				//console.log(data);
 				var util = this;
 				var html = Mustache.render(util.tmp, data);
 				if (data.lastId < 1) {
@@ -960,7 +1047,6 @@ require(["layer"],
 			},
 			sent: function () {
 				var util = this;
-				console.log(util.commentFlag);
 				if (!util.commentFlag) {
 					//showMsg("聊了这么多，觉得ta怎么样呢，快去匿名评价吧~");
 					//return false;
@@ -982,7 +1068,7 @@ require(["layer"],
 				}, function (resp) {
 					util.qId = "";
 					util.inputVal = "";
-					if (resp.code == 0) {
+					if (resp.code < 1) {
 						/*if (!util.loading && resp.data.items.id > util.lastId) {
 							util.lastId = resp.data.items.id;
 							var html = Mustache.render(util.tmp, resp.data);
@@ -1280,7 +1366,6 @@ require(["layer"],
 						} else if (cat == "age") {
 							util.f3 = tag;
 						}
-						console.log(util.f1 + "<=f1 f2=>" + util.f2 + " f3=>" + util.f3);
 					} else if (self.hasClass("user_filter_btn")) {
 						self.closest(".user_filter").find(".user_filter_item").removeClass("show");
 						$sls.shade.fadeOut();
@@ -1331,7 +1416,6 @@ require(["layer"],
 								var value = $(this).find(".right").attr("data-id");
 								FilterUtil.data[ta] = value;
 							});
-							console.log(FilterUtil.data);
 							util.list.html('');
 							util.loadFilter(FilterUtil.data, 1);
 							location.href = "#slook";
@@ -1363,7 +1447,6 @@ require(["layer"],
 			showCriteria: function () {
 				var util = this;
 				var tmp = $("#" + util.tag + "Tmp").html();
-				console.log(util);
 				var h = (util.tag == "age") ? "年龄" : "身高";
 				var mData = {start: h + "不限", end: h + "不限"};
 				var Val = util.cond[util.tag + "Val"];
@@ -1648,21 +1731,22 @@ require(["layer"],
 		};
 		DateUtil.init();
 
-		var mpUlit = {
+		var MeipoUtil = {
 			to: "",
 			page: 1,
 			mympF: false,
 			mympTemp: $("#mympTemp").html(),
 			focusMpTemp: $("#focusMPTemp").html(),
 			init: function () {
+				var util = this;
 				$(document).on(kClick, ".mymp a", function () {
-					mpUlit.to = $(this).attr("to");
-					switch (mpUlit.to) {
+					util.to = $(this).attr("to");
+					switch (util.to) {
 						case "myMP":
-							mpUlit.mymp();
+							util.mymp();
 							break;
 						case "focusMP":
-							mpUlit.focusMP();
+							util.focusMP();
 							break;
 					}
 				});
@@ -1691,46 +1775,46 @@ require(["layer"],
 				});
 			},
 			mymp: function () {
-				if (mpUlit.mympF) {
+				var util = this;
+				if (util.mympF) {
 					return;
 				}
-				mpUlit.mympF = 1;
+				util.mympF = 1;
 				$.post("/api/user", {
 					tag: "mymp",
 				}, function (resp) {
 					if (resp.data) {
-						$(".mymp-des").html(Mustache.render(mpUlit.mympTemp, resp.data));
-						location.href = "#" + mpUlit.to;
+						$(".mymp-des").html(Mustache.render(util.mympTemp, resp.data));
+						location.href = "#" + util.to;
 					} else {
 						location.href = "#noMP";
 					}
-					mpUlit.mympF = 0;
+					util.mympF = 0;
 				}, "json");
 			},
 			focusMP: function () {
-				if (mpUlit.mympF) {
+				var util = this;
+				if (util.mympF) {
 					return;
 				}
-				mpUlit.mympF = 1;
+				util.mympF = 1;
 				$.post("/api/user", {
 					tag: "focusmp",
-					page: mpUlit.page,
+					page: util.page,
 				}, function (resp) {
 					if (resp.data) {
-						if (mpUlit.page == 1) {
-							console.log(Mustache.render(mpUlit.focusMpTemp, resp.data))
-							$("#focusMP ul").html(Mustache.render(mpUlit.focusMpTemp, resp.data));
+						if (util.page < 2) {
+							$("#focusMP ul").html(Mustache.render(util.focusMpTemp, resp.data));
 						} else {
-							$("#focusMP ul").append(Mustache.render(mpUlit.focusMpTemp, resp.data));
+							$("#focusMP ul").append(Mustache.render(util.focusMpTemp, resp.data));
 						}
 					}
 
-					mpUlit.mympF = 0;
-					location.href = "#" + mpUlit.to;
+					util.mympF = 0;
+					location.href = "#" + util.to;
 				}, "json");
-			},
+			}
 		};
-		mpUlit.init();
 
 		var FeedbackUtil = {
 			text: $('.feedback-text'),
@@ -1887,7 +1971,7 @@ require(["layer"],
 						id: util.eid
 					},
 					function (resp) {
-						if (resp.code == 0) {
+						if (resp.code < 1) {
 							var html = Mustache.render(util.tmp, resp.data);
 							util.content.html(html);
 							util.toggleFavor(resp.data.profile.favored);
@@ -2218,7 +2302,6 @@ require(["layer"],
 				// util.socket = io('https://ws.meipo100.com');
 				util.socket = io('https://nd.meipo100.com');
 				util.socket.on('connect', function () {
-					//console.log(util.uni);
 					util.socket.emit('house', util.uni);
 				});
 
@@ -2239,7 +2322,6 @@ require(["layer"],
 				});
 
 				util.socket.on("chat", function (resp) {
-					//console.log(resp);
 					var gid = resp.gid;
 					if (ChatUtil.gid != gid) {
 						return;
@@ -2325,63 +2407,6 @@ require(["layer"],
 			}
 		};
 
-		var SwipeUtil = {
-			pressedObj: null,
-			lastLeftObj: null,
-			lastX: 0,
-			lastXForMobile: 0,
-			speed: 300,
-			offset: 90,
-			start: null,
-			init: function () {
-				var util = this;
-				$(document).on('touchstart', '.a-swipe', function (ev) {
-					util.lastXForMobile = ev.changedTouches[0].pageX;
-					util.pressedObj = this; // 记录被按下的对象
-
-					// 记录开始按下时的点
-					var touches = ev.touches[0];
-					util.start = {
-						x: touches.pageX, // 横坐标
-						y: touches.pageY  // 纵坐标
-					};
-				});
-				$(document).on('touchmove', '.a-swipe', function (ev) {
-					// 计算划动过程中x和y的变化量
-					var touches = ev.touches[0];
-					var delta = {
-						x: touches.pageX - util.start.x,
-						y: touches.pageY - util.start.y
-					};
-
-					// 横向位移大于纵向位移，阻止纵向滚动
-					if (Math.abs(delta.x) > Math.abs(delta.y)) {
-						ev.preventDefault();
-					}
-				});
-
-				$(document).on('touchmove', '.a-swipe', function (ev) {
-					if (util.lastLeftObj && util.pressedObj != util.lastLeftObj) {
-						// 点击除当前左滑对象之外的任意其他位置
-						$(util.lastLeftObj).animate({marginLeft: "0"}, util.speed - 50); // 右滑
-						util.lastLeftObj = null; // 清空上一个左滑的对象
-					}
-					var diffX = ev.changedTouches[0].pageX - util.lastXForMobile;
-					if (diffX < -util.offset) {
-						$(util.pressedObj).animate({marginLeft: "-12rem"}, util.speed); // 左滑
-						util.lastLeftObj && util.lastLeftObj != util.pressedObj &&
-						$(util.lastLeftObj).animate({marginLeft: "0"}, util.speed - 50); // 已经左滑状态的按钮右滑
-						util.lastLeftObj = util.pressedObj; // 记录上一个左滑的对象
-					} else if (diffX > util.offset) {
-						if (util.pressedObj == util.lastLeftObj) {
-							$(util.pressedObj).animate({marginLeft: "0"}, util.speed - 50); // 右滑
-							util.lastLeftObj = null; // 清空上一个左滑的对象
-						}
-					}
-				});
-			}
-		};
-
 		function showMsg(msg, sec, tag) {
 			var delay = sec || 3;
 			var ico = '';
@@ -2457,6 +2482,7 @@ require(["layer"],
 			RankUtil.init();
 			FavorUtil.init();
 			AdvertUtil.init();
+			MeipoUtil.init();
 			SwipeUtil.init();
 
 			setTimeout(function () {

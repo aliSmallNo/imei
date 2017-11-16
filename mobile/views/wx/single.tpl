@@ -263,7 +263,7 @@
 	{{/if}}
 	<div class="m-top-pl"></div>
 	<div class="contacts-wrap">
-		<a href="javascript:;" class="contacts-edit" data-tag="edit">编辑</a>
+		<!--a href="javascript:;" class="contacts-edit" data-tag="edit">编辑</a-->
 		<ul class="contacts"></ul>
 		<div></div>
 	</div>
@@ -1073,16 +1073,12 @@
 </script>
 <script type="text/template" id="tpl_contact">
 	{[#items]}
-	<li>
+	<li data-gid="{[gid]}">
 		<div class="action">
 			<a href="javascript:;" class="contact-top"><span>置顶</span></a>
 			<a href="javascript:;" class="contact-del"><span>删除</span></a>
 		</div>
 		<a href="javascript:;" data-id="{[encryptId]}" data-cid="{[cid]}" data-read="{[readflag]}" class="chat a-swipe">
-			<div class="opt hide">
-				<input class="magic-checkbox" type="checkbox" name="name{[cid]}" id="{[encryptId]}" value="{[gid]}">
-				<label for="{[encryptId]}"></label>
-			</div>
 			<div class="avatar"><img src="{[avatar]}"></div>
 			<div class="content">
 				<div class="top-t"><em>{[name]}</em><i>{[dt]}</i></div>
@@ -1344,4 +1340,4 @@
 <script src="/assets/js/mustache.min.js?v=1.2.1"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
 <script src="/assets/js/swiper.jquery.min.js"></script>
-<script data-main="/js/single.js?v=1.1.4.6" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.1.4.8" src="/assets/js/require.js"></script>
