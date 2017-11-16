@@ -507,19 +507,19 @@ class WxController extends BaseController
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
 		}
-
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		$prefer = 'male';
+		$isMember = false;
 		if ($wxInfo) {
 			$avatar = $wxInfo["Avatar"];
 			$nickname = $wxInfo["uName"];
 			$role = $wxInfo["uRole"];
-
+			$isMember = ($wxInfo["uPhone"] && $wxInfo["uLocation"]);
 		} else {
 			$avatar = ImageUtil::DEFAULT_AVATAR;
 			$nickname = "本地测试";
-			$role = 10;
+			$role = User::ROLE_SINGLE;
 		}
 
 		$items = [];
@@ -529,7 +529,9 @@ class WxController extends BaseController
 		UserNet::findOne(["nRelation" => UserNet::REL_FAVOR,"nDeletedFlag" => UserNet::DELETE_FLAG_NO,
 		 "nUId" => $uInfo["id"], "nSubUId" => $wxInfo["uId"]]);*/
 		$uInfo["favorFlag"] = UserNet::hasFavor($wxInfo["uId"], $uInfo["id"]) ? 1 : 0;
-
+		if (!$isMember) {
+			$uInfo["encryptId"] = '';
+		}
 		return self::renderPage("shome.tpl",
 			[
 				'nickname' => $nickname,
@@ -544,7 +546,8 @@ class WxController extends BaseController
 				'items' => json_encode($items),
 				'reasons' => self::$ReportReasons,
 				'role' => $wxInfo["uRole"],
-				'genderName' => $genderName
+				'genderName' => $genderName,
+				'isMember' => $isMember
 			],
 			'terse');
 	}

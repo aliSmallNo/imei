@@ -1,7 +1,7 @@
 <div class="single-page main-page">
 	<div class="head">
 		<img src="{{$uInfo.avatar}}" class="avatar">
-		<a class="a-home" href="{{$homeUrl}}"></a>
+		{{if $isMember}}<a class="a-home" href="{{$homeUrl}}"></a>{{/if}}
 	</div>
 	<div class="baseinfo">
 		<div class="title">
@@ -18,9 +18,7 @@
 			</li>
 			{{foreach from=$uInfo.album item=item name=foo}}
 			{{if $smarty.foreach.foo.index <3}}
-			<li>
-				<img src="{{$item}}">
-			</li>
+			<li style="background-image: url({{$item}})"></li>
 			{{/if}}
 			{{/foreach}}
 		</ul>
@@ -56,10 +54,9 @@
 		<span class="title">内心独白</span>
 		<span class="words">{{$uInfo.intro}}</span>
 	</div>
-	<a href="#sreport" class="report pushblack">举报拉黑</a>
+	{{if $isMember}}<a href="#sreport" class="report pushblack">举报拉黑</a>{{/if}}
 	<div style="height: 6rem;"></div>
 	<div class="m-bottom-bar">
-		{{if $role==10}}
 		<p>
 			<a class="send btn-give" data-id="{{$uInfo.encryptId}}">送TA花</a>
 		</p>
@@ -73,11 +70,9 @@
 		<!--p >
 			<a class="weixin btn-apply" data-id="{{$uInfo.encryptId}}">加微信聊聊</a>
 		</p-->
-		{{else}}
-		<div>
+		<!--div>
 			<a class="btn-recommend">向朋友推荐TA</a>
-		</div>
-		{{/if}}
+		</div-->
 	</div>
 </div>
 <section id="schat" data-title="密聊中...">
@@ -282,4 +277,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/shome.js?v=1.4.8" src="/assets/js/require.js"></script>
+<script data-main="/js/shome.js?v=1.5.0" src="/assets/js/require.js"></script>

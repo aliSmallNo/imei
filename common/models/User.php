@@ -2512,6 +2512,9 @@ class User extends ActiveRecord
 		$items = array_merge(array_slice($dummies[self::GENDER_FEMALE], $page * 6, 6),
 			array_slice($dummies[self::GENDER_MALE], $page * 6, 6));
 		shuffle($items);
+		foreach ($items as $k => $item) {
+			$items[$k]['sid'] = AppUtil::encrypt($item['uId']);
+		}
 		return [$items, $page + 1];
 	}
 

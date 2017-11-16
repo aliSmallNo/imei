@@ -21,15 +21,6 @@ require(["layer"],
 
 		var HiUtil = {
 			page: 1,
-			index: 1,
-			count: 8,
-			timer: 0,
-			speed: 100,
-			times: 0,
-			cycle: 60,
-			prize: -1,
-			msg: '',
-			title: '',
 			loading: false,
 			list: $('.m-crew'),
 			tmp: $('#tpl_crew').html(),
@@ -37,17 +28,13 @@ require(["layer"],
 				var util = this;
 				$(document).on(kClick, '.btn-switch', function () {
 					util.reload();
+					return false;
 				});
-			},
-			move: function () {
-				var util = this;
-				util.table.find(".unit").removeClass("active");
-				util.index++;
-				if (util.index >= util.count) {
-					util.index = 0;
-				}
-				util.table.find(".unit-" + util.index).addClass("active");
-				return false;
+				$(document).on(kClick, '.j-sh', function () {
+					var self = $(this);
+					location.href = '/wx/sh?id=' + self.attr('data-id');
+					return false;
+				});
 			},
 			reload: function () {
 				var util = this;
@@ -65,8 +52,8 @@ require(["layer"],
 							$.each(util.list.find('a'), function () {
 								var self = $(this);
 								var item = resp.data.items[idx];
-								self.attr("data-id", item['uId']);
-								self.css("background-image", "url(" + item['uThumb'] + ")");
+								self.attr("data-id", item.sid);
+								self.css("background-image", "url(" + item.uThumb + ")");
 								idx++;
 							});
 						} else {

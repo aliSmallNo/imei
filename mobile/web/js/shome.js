@@ -100,15 +100,26 @@ require(["layer"],
 				var util = this;
 				$(document).on(kClick, ".m-bottom-bar a", function () {
 					var self = $(this);
+					var sid = self.attr("data-id");
+					if (!sid) {
+						layer.open({
+							content: '<p class="msg-content">你还没有注册呢，注册并完善个人资料后才能使用这个功能</p>',
+							btn: ['马上注册', '再逛逛'],
+							title: false,
+							yes: function () {
+								location.href = '/wx/reg0';
+							}
+						});
+						return false;
+					}
 					if (self.hasClass('btn-like')) {
-						var id = self.attr("data-id");
 						if (!self.hasClass("favor")) {
-							alertUlit.hint(id, "yes", self);
+							alertUlit.hint(sid, "yes", self);
 						} else {
-							alertUlit.hint(id, "no", self);
+							alertUlit.hint(sid, "no", self);
 						}
 					} else if (self.hasClass('btn-apply')) {
-						alertUlit.secretId = self.attr("data-id");
+						alertUlit.secretId = sid;
 						alertUlit.cork.show();
 						alertUlit.payMP.show();
 					} else if (self.hasClass("btn-recommend")) {
@@ -121,11 +132,11 @@ require(["layer"],
 							img.hide();
 						}, 2000);
 					} else if (self.hasClass("btn-chat")) {
-						ChatUtil.sid = self.attr("data-id");
+						ChatUtil.sid = sid;
 						ChatUtil.lastId = 0;
 						location.href = '#schat';
 					} else if (self.hasClass('btn-give')) {
-						$sls.secretId = self.attr("data-id");
+						$sls.secretId = sid;
 						$sls.main.show();
 						var html = Mustache.render(util.sendTmp, {
 							items: [
@@ -136,7 +147,6 @@ require(["layer"],
 						$sls.content.html(html).addClass("animate-pop-in");
 						$sls.shade.fadeIn(160);
 					}
-
 				});
 
 				$(document).on(kClick, ".btn-togive", function () {

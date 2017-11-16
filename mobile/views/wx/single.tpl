@@ -101,7 +101,7 @@
 					<h5 class="percent">资料完成度<span>0</span>%</h5>
 					<h5>{{$uInfo.intro}}</h5>
 				</div>
-				<a href="/wx/switch" class="btn-outline change-role">切换成媒婆</a>
+				<a href="/wx/switch" class="btn-outline change-role" style="display: none">切换成媒婆</a>
 				<a href="/wx/sedit" class="btn-outline edit-role">编辑</a>
 			</div>
 			<a href="#album" class="u-my-album">

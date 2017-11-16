@@ -2,9 +2,9 @@
 	<ul class="m-crew">
 		{{foreach from=$rows item=item}}
 		<li>
-			<a href="javascript:;"></a>
-			<a href="javascript:;"></a>
-			<a href="javascript:;"></a>
+			<a href="javascript:;" class="j-sh"></a>
+			<a href="javascript:;" class="j-sh"></a>
+			<a href="javascript:;" class="j-sh"></a>
 		</li>
 		{{/foreach}}
 	</ul>
