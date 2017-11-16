@@ -5963,7 +5963,7 @@ section {
     display: inline-block;
     width: 32rem;
     background: #fff;
-    padding: 0.6rem 0;
+    padding: 1rem 0;
     position: relative; }
     .contacts li a .opt.hide {
       display: none; }
@@ -5974,7 +5974,7 @@ section {
     .contacts li a .avatar {
       position: absolute;
       left: 0.7rem;
-      top: 0.5rem;
+      top: 0.9rem;
       bottom: 0;
       text-align: left; }
       .contacts li a .avatar img {

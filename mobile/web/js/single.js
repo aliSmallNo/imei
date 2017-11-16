@@ -2331,7 +2331,7 @@ require(["layer"],
 			lastX: 0,
 			lastXForMobile: 0,
 			speed: 300,
-			offset: 85,
+			offset: 90,
 			start: null,
 			init: function () {
 				var util = this;
