@@ -458,7 +458,7 @@ class ChatMsg extends ActiveRecord
 		$limit = ' Limit ' . ($page - 1) * $pageSize . ',' . $pageSize;
 		$conn = AppUtil::db();
 		$sql = 'select u.uName as `name`, u.uThumb as avatar,g.gId as gid, g.gRound as round,
-			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy
+			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy,m.cType as `type`
 			 from im_chat_group as g 
 			 join im_chat_msg as m on g.gId=cGId
 			 join im_user as u on u.uId=m.cAddedBy

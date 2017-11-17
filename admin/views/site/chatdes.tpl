@@ -49,7 +49,11 @@
 			</div>
 			<div class="message_content text">
 				<div class="wxMsg">
+					{{if $item.type==110}}
+					<img src="{{$item.content}}" alt="">
+					{{else}}
 					{{$item.content}}
+					{{/if}}
 				</div>
 			</div>
 		</li>
