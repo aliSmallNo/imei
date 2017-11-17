@@ -2485,6 +2485,14 @@ require(["layer"],
 			MeipoUtil.init();
 			SwipeUtil.init();
 
+			$(document).on(kClick, ".m-img-zoom", function () {
+				var url = $(this).attr('src');
+				wx.previewImage({
+					current: url,
+					urls: [url]
+				});
+			});
+
 			setTimeout(function () {
 				GreetingUtil.show();
 			}, 500);
