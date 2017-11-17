@@ -27,6 +27,9 @@ class ChatMsg extends ActiveRecord
 	const ST_ACTIVE = 1;
 	const ST_DEL = 0;
 
+	const TYPE_TEXT = 100;
+	const TYPE_IMAGE = 110;
+
 	public static function tableName()
 	{
 		return '{{%chat_msg}}';
