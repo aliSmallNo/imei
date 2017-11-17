@@ -539,15 +539,20 @@ class SiteController extends BaseController
 			$sdate = date("Y-m-d H:i:s", time() - 86400 * 7);
 
 			$conn = AppUtil::db();
-			$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe,w.wWechatId, count(t.tPId) as uco 
+			$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe, w.wWechatId, count(t.tPId) as uco 
 				FROM im_user as u 
-				JOIN im_user_wechat as w on w.wUId=u.uId 
-				left JOIN im_trace as t on u.uId=t.tPId 
-				left join im_log_action as a on a.aUId=u.uId and a.aCategory in (1000,1002,1004) and a.aDate BETWEEN '$sdate' and '$edate' 
-				WHERE uId>0 AND uStatus=1 AND wSubscribe=1 and a.aUId is null 
-				group by uId order by uAddedOn desc ";
+				JOIN im_user_wechat as w on w.wUId=u.uId AND w.wOpenId LIKE 'oYDJew%'
+				LEFT JOIN im_trace as t on u.uId=t.tPId 
+				LEFT JOIN im_log_action as a on a.aUId=u.uId AND a.aCategory in (1000,1002,1004) 
+							AND a.aDate BETWEEN :sdt AND :edt 
+				WHERE uId>0 AND uStatus=1 AND wSubscribe=1 AND a.aUId is null 
+				GROUP BY uId ORDER BY uAddedOn desc ";
 
-			$inactiveUsers = $conn->createCommand($sql)->queryAll();// 审核通过的 关注状态的 近七天不活跃用户
+			$inactiveUsers = $conn->createCommand($sql)->bindValues([
+				':sdt' => $sdate,
+				':edt' => $edate,
+			])->queryAll();
+			// 审核通过的 关注状态的 近七天不活跃用户
 
 			$count = 1;
 			$arr = [];
@@ -569,10 +574,6 @@ class SiteController extends BaseController
 						$arr[] = "$count. from:" . $serviceId . " to" . $uid . " \n";
 					}
 					$count++;
-				}
-
-				if ($count == 1) {
-					// print_r($arr);exit;
 				}
 			}
 			header('location:/site/dummychats');

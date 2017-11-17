@@ -789,9 +789,25 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
+		$conn = AppUtil::db();
+		$sql = 'delete from im_chat_group WHERE gId=:id';
+		$cmd = $conn->createCommand($sql);
 
-		$ret = ChatMsg::mergeGroup();
-		var_dump($ret);
+		$sql = "SELECT DISTINCT g.gId,g.gAddedOn
+ FROM im_chat_group as g
+ JOIN im_user as u1 on g.gUId1=u1.uId and u1.uOpenId not LIKE 'oYDJew%'
+ JOIN im_user as u2 on g.gUId2=u2.uId and u2.uOpenId not LIKE 'oYDJew%'";
+		$ret = $conn->createCommand($sql)->queryAll();
+		$cnt = 0;
+		foreach ($ret as $row) {
+			$cmd->bindValues([
+				":id" => $row['gId']
+			])->execute();
+			$cnt++;
+		}
+		var_dump($cnt);
+		/*$ret = ChatMsg::mergeGroup();
+		var_dump($ret);*/
 		/*$uid = 139743;
 		$ret = User::greetUsers($uid);
 		var_dump($ret);*/
