@@ -6156,7 +6156,7 @@ section {
     flex: 1;
     position: relative;
     padding-left: 0;
-    padding-right: 5rem; }
+    padding-right: 4.5rem; }
     .chats li .content:after {
       content: "";
       display: inline-block;
@@ -6177,6 +6177,9 @@ section {
       border-radius: 0.4rem;
       padding: 0.8rem;
       display: inline-block; }
+      .chats li .content span img {
+        width: 100%;
+        vertical-align: middle; }
   .chats li.tip {
     text-align: center;
     display: block; }
@@ -6193,7 +6196,7 @@ section {
       text-align: right; }
     .chats li.right .content {
       text-align: right;
-      padding-left: 5rem;
+      padding-left: 4.5rem;
       padding-right: 0; }
       .chats li.right .content:after {
         content: "";

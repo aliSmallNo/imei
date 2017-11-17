@@ -1060,7 +1060,10 @@
 	<li class="{[dir]}" data-r="{[readflag]}">
 		<a href="{[url]}" {[#eid]}data-eid="{[.]}"{[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
 		<div class="content read{[readflag]}">
-			<span style="position: relative">{[content]}</span>
+			<span style="position: relative">
+				{[#image]}<img src="{[.]}">{[/image]}
+				{[^image]}{[content]}{[/image]}
+			</span>
 		</div>
 	</li>
 	{[/items]}

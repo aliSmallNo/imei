@@ -1937,7 +1937,7 @@ class ApiController extends Controller
 
 				if ($ids) {
 					ChatMsg::greeting($uid, $ids);
-					ChatMsg::greeting(User::SERVICE_UID, [$uid],'你好，我是千寻恋恋小助手，你有任何问题都可以跟我说啊！');
+					ChatMsg::greeting(User::SERVICE_UID, [$uid], '你好，我是千寻恋恋小助手，你有任何问题都可以跟我说啊！');
 				}
 				return self::renderAPI(0, '打招呼成功！', 1);
 				break;
@@ -2030,6 +2030,12 @@ class ApiController extends Controller
 				LogAction::add($uid, $openId, LogAction::ACTION_CHAT, $subUId);
 				list($gId, $left) = ChatMsg::groupEdit($uid, $subUId);
 				list($items, $lastId) = ChatMsg::details($uid, $subUId, $lastId);
+				foreach ($items as $k => $item) {
+					$items[$k]['image'] = '';
+					if ($item['type'] == ChatMsg::TYPE_IMAGE) {
+						$items[$k]['image'] = $item['content'];
+					}
+				}
 				// 是否评价一次TA
 				$commentFlag = UserComment::hasComment($subUId, $uid);
 				return self::renderAPI(0, '', [
