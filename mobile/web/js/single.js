@@ -624,7 +624,7 @@ require(["layer"],
 
 				$(document).on(kClick, ".m-img-zoom", function () {
 					var url = $(this).attr('src');
-					console.log(url);
+					showMsg(url);
 					wx.previewImage({
 						current: url,
 						urls: [url]
