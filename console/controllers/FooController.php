@@ -790,19 +790,29 @@ class FooController extends Controller
 	public function actionRain()
 	{
 		$conn = AppUtil::db();
-		$sql = 'delete from im_chat_group WHERE gId=:id';
-		$cmd = $conn->createCommand($sql);
 
-		$sql = "SELECT DISTINCT g.gId,g.gAddedOn
- FROM im_chat_group as g
- JOIN im_user as u1 on g.gUId1=u1.uId and u1.uOpenId not LIKE 'oYDJew%'
- JOIN im_user as u2 on g.gUId2=u2.uId and u2.uOpenId not LIKE 'oYDJew%'";
+		$sql = "SELECT uId,uGender from im_user WHERE uGender>9 and uPhone!='' ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
+		$senderId = User::SERVICE_UID;
 		foreach ($ret as $row) {
-			$cmd->bindValues([
-				":id" => $row['gId']
-			])->execute();
+			$uid = $row['uId'];
+			$gender = $row['uGender'];
+			$content = 'https://wx.meipo100.com/images/ad/for_male_600.jpg';
+			if ($gender == User::GENDER_FEMALE) {
+				$content = 'https://wx.meipo100.com/images/ad/for_female_600.jpg';
+			}
+
+			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999);
+			ChatMsg::addChat($senderId, $uid, $content, 0, 1001);
+
+			WechatUtil::templateMsg(WechatUtil::NOTICE_CHAT,
+				$uid,
+				'有人密聊你啦',
+				'TA给你发了一条密聊消息，快去看看吧~',
+				$senderId,
+				$gid);
+
 			$cnt++;
 		}
 		var_dump($cnt);
