@@ -1060,10 +1060,10 @@
 	<li class="{[dir]}" data-r="{[readflag]}">
 		<a href="{[url]}" {[#eid]}data-eid="{[.]}"{[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
 		<div class="content read{[readflag]}">
-			<span style="position: relative">
-				{[#image]}<img src="{[.]}" class="m-img-zoom">{[/image]}
+			<a href="javascript:;" class="j-content-wrap">
+				{[#image]}<img src="{[.]}">{[/image]}
 				{[^image]}{[content]}{[/image]}
-			</span>
+			</a>
 		</div>
 	</li>
 	{[/items]}
@@ -1342,4 +1342,4 @@
 <script src="/assets/js/mustache.min.js?v=1.2.1"></script>
 <script src="/assets/js/socket.io.slim.js"></script>
 <script src="/assets/js/swiper.jquery.min.js"></script>
-<script data-main="/js/single.js?v=1.1.5.2" src="/assets/js/require.js"></script>
+<script data-main="/js/single.js?v=1.1.5.3" src="/assets/js/require.js"></script>

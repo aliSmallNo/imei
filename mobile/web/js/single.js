@@ -622,13 +622,16 @@ require(["layer"],
 					util.sent();
 				});
 
-				$(document).on(kClick, ".m-img-zoom", function () {
-					var url = $(this).attr('src');
-					showMsg(url);
+				$(document).on(kClick, ".j-content-wrap", function () {
+					var url = $(this).find('img').attr('src');
+					if (!url) {
+						return false;
+					}
 					wx.previewImage({
 						current: url,
 						urls: [url]
 					});
+					return false;
 				});
 
 				$(document).on(kClick, ".chat-input", function () {

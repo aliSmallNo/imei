@@ -6171,13 +6171,13 @@ section {
       transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
       top: 1rem;
       left: -0.4rem; }
-    .chats li .content span {
+    .chats li .content a {
       background: #fff;
       border: 1px solid #fff;
       border-radius: 0.4rem;
       padding: 0.8rem;
       display: inline-block; }
-      .chats li .content span img {
+      .chats li .content a img {
         width: 100%;
         vertical-align: middle; }
   .chats li.tip {
@@ -6208,15 +6208,15 @@ section {
         top: 1rem;
         right: -0.4rem;
         background: #a6e264; }
-      .chats li.right .content span {
+      .chats li.right .content a {
         text-align: left;
         direction: ltr;
         position: relative;
         background: #a6e264;
         border-color: #a6e264; }
-        .chats li.right .content span.optItem {
+        .chats li.right .content a.optItem {
           margin: 0.2rem 0; }
-    .chats li.right.read span:before {
+    .chats li.right.read a:before {
       position: absolute;
       content: "已读";
       left: -3rem;
@@ -6224,7 +6224,7 @@ section {
       font-weight: 300;
       top: 1.2rem;
       color: #969494; }
-    .chats li.right.unread span:before {
+    .chats li.right.unread a:before {
       position: absolute;
       content: "未读";
       left: -3rem;
