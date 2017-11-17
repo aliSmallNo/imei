@@ -71,7 +71,7 @@ class RedisUtil
 		self::KEY_USER_RECORDS => 3600 * 8,
 		self::KEY_XCX_TOKEN => 4800,
 		self::KEY_XCX_SESSION_ID => 3600 * 2,
-		self::KEY_STAT_TREND => 60 * 12,
+		self::KEY_STAT_TREND => 60 * 10,
 		self::KEY_STAT_REUSE => 3600 * 6,
 		self::KEY_PIN_GEO => 60 * 10,
 		self::KEY_MENUS_MD5 => 3600,

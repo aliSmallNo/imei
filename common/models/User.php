@@ -1843,7 +1843,7 @@ class User extends ActiveRecord
 				SUM(CASE WHEN u.uRole=20 AND u.uPhone!='' THEN  1 END) as mps
 				FROM im_user as u 
 				JOIN im_user_wechat as w on w.wUId=u.uId
-				where u.uStatus<8 and u.uAddedOn BETWEEN :beginDT and :endDT ";
+				where u.uStatus<8 AND u.uOpenId LIKE 'oYDJew%' AND u.uAddedOn BETWEEN :beginDT and :endDT ";
 		$res = $conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
@@ -1870,7 +1870,7 @@ class User extends ActiveRecord
 				SUM(CASE WHEN u.uRole=10 AND u.uGender=11 AND uPhone!='' THEN 1 END) as boys
 				FROM im_user as u
 				JOIN im_user_wechat as w on w.wUId=u.uId
-				WHERE uStatus<8 AND uAddedOn < :endDT ";
+				WHERE uStatus<8 AND uOpenId LIKE 'oYDJew%' AND uAddedOn < :endDT ";
 		$res2 = $conn->createCommand($sql)->bindValues([
 			':endDT' => $endDate,
 		])->queryOne();
@@ -1903,7 +1903,7 @@ class User extends ActiveRecord
 				FROM (SELECT DISTINCT uId,uName,uGender,uRole
 					FROM im_user as u 
 					JOIN im_log_action as a on u.uId=a.aUId 
-					WHERE uStatus<8 AND a.aCategory in (1000,1002,1004)
+					WHERE uStatus<8 AND uOpenId LIKE 'oYDJew%' AND a.aCategory in (1000,1002,1004)
 						AND a.aDate BETWEEN :beginDT AND :endDT 
 					GROUP BY aUId) as temp";
 		$res3 = $conn->createCommand($sql)->bindValues([
