@@ -29,6 +29,7 @@ class ChatMsg extends ActiveRecord
 
 	const TYPE_TEXT = 100;
 	const TYPE_IMAGE = 110;
+	const TYPE_VOICE = 120;
 
 	public static function tableName()
 	{
@@ -490,7 +491,7 @@ class ChatMsg extends ActiveRecord
 				FROM (SELECT    
 				 	g.gUId2 as uid,g.gId as gid, 
 				 	u.uName as `name`, u.uThumb as avatar,u.uUniqid as uni,
-				 	m.cId as cid,m.cContent as content,m.cAddedOn,m.cReadFlag,m.cAddedBy
+				 	m.cId as cid,m.cContent as content,m.cAddedOn,m.cReadFlag,m.cAddedBy,m.cType
 				 	FROM im_chat_group as g 
 				  	JOIN im_chat_msg as m on g.gId=m.cGId AND g.gLastCId=m.cId
 				  	JOIN im_user as u on u.uId=g.gUId2
@@ -499,7 +500,7 @@ class ChatMsg extends ActiveRecord
 				 	SELECT    
 				 	g.gUId1 as uid, g.gId as gid, 
 				 	u.uName as `name`, u.uThumb as avatar,u.uUniqid as uni,
-				 	m.cId as cid,m.cContent as content,m.cAddedOn,m.cReadFlag,m.cAddedBy
+				 	m.cId as cid,m.cContent as content,m.cAddedOn,m.cReadFlag,m.cAddedBy,m.cType
 				 	FROM im_chat_group as g 
 				  	JOIN im_chat_msg as m on g.gId=m.cGId AND g.gLastCId=m.cId
 				  	JOIN im_user as u on u.uId=g.gUId1
@@ -526,9 +527,15 @@ class ChatMsg extends ActiveRecord
 			$contacts[$k]['dt'] = AppUtil::miniDate($contact['cAddedOn']);
 			$contacts[$k]['encryptId'] = AppUtil::encrypt($contact['uid']);
 			$contacts[$k]['avatar'] = ImageUtil::getItemImages($contact['avatar'])[0];
+			if ($contact['cType'] == ChatMsg::TYPE_IMAGE) {
+				$contacts[$k]['content'] = '[图片]';
+			} elseif ($contact['cType'] == ChatMsg::TYPE_VOICE) {
+				$contacts[$k]['content'] = '[声音]';
+			}
 			unset($contacts[$k]['cAddedBy'],
 				$contacts[$k]['cAddedOn'],
-				$contacts[$k]['cReadFlag']);
+				$contacts[$k]['cReadFlag'],
+				$contacts[$k]['cType']);
 		}
 		return [$contacts, $nextPage];
 	}
