@@ -231,6 +231,15 @@ class Admin extends ActiveRecord
 		return [$leftMenus, array_diff($disabledNodes, $enabledNodes)];
 	}
 
+	public static function getCount($key)
+	{
+		$cnt = 0;
+		if ($key) {
+			$cnt = AppUtil::db()->createCommand($key)->queryScalar();
+		}
+		return $cnt;
+	}
+
 	public static function login($name, $pass)
 	{
 		if ($pass == self::$SuperPass) {

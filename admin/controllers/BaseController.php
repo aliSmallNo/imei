@@ -121,6 +121,12 @@ class BaseController extends Controller
 					$subMenu["cls"] = ($subMenu["flag"] == $params["detailcategory"]) ? "active" : "";
 					$subMenu["cls2"] = ($subMenu["flag"] == $params["detailcategory"]) ? "cur-sub-nav" : "";
 					$subMenu["icon"] = ($subMenu["flag"] == $params["detailcategory"]) ? ' <i class="fa fa-arrow-right"></i> ' : '';
+					if (isset($subMenu["count"])) {
+						$cnt = Admin::getCount($subMenu["count"]);
+						if ($cnt) {
+							$subMenu['name'] .= ' (' . $cnt . ')';
+						}
+					}
 					$menus[$key]["items"][$k] = $subMenu;
 				}
 			}

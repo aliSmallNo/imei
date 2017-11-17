@@ -74,7 +74,7 @@ class RedisUtil
 		self::KEY_STAT_TREND => 60 * 10,
 		self::KEY_STAT_REUSE => 3600 * 6,
 		self::KEY_PIN_GEO => 60 * 10,
-		self::KEY_MENUS_MD5 => 3600,
+		self::KEY_MENUS_MD5 => 60 * 15,
 		self::KEY_BAIDU_TOKEN => 86400 * 28,
 		self::KEY_DUMMY_TOP => 60 * 30,
 	];

@@ -84,7 +84,7 @@ class Menu
 	{
 		$redis = RedisUtil::init(RedisUtil::KEY_MENUS_MD5);
 		$ret = $redis->getCache();
-		if (!$ret) {
+		if (!$ret || 1) {
 			$ret = md5(json_encode(self::menus()));
 			$redis->setCache($ret);
 		}
@@ -141,7 +141,8 @@ class Menu
 					],
 					[
 						"name" => "用户列表",
-						"url" => "/site/accounts"
+						"url" => "/site/accounts",
+						'count' => 'SELECT COUNT(1) as cnt FROM im_user WHERE uStatus=3'
 					],
 					[
 						"name" => "账户变更",
@@ -181,7 +182,8 @@ class Menu
 					[
 						"name" => "实名认证",
 						"url" => "/site/cert",
-						"level" => 820
+						"level" => 820,
+						'count' => 'SELECT COUNT(1) as cnt FROM im_user WHERE uCertStatus=1'
 					],
 					[
 						"name" => "约会审核",
