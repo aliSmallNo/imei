@@ -756,12 +756,14 @@ class WxController extends BaseController
 		}
 		$advert_chat = [
 			'image' => $service_sm,
-			'url' => '长按图片识别二维码，添加我们的客服为好友'
+			'url' => 'javascript:;',
+			'tip' => '长按图片识别二维码，添加我们的客服为好友'
 		];
 		$adverts = [
 			[
 				'image' => $service,
-				'url' => '长按图片识别二维码，添加我们的客服为好友'
+				'url' => 'javascript:;',
+				'tip' => '长按图片识别二维码，添加我们的客服为好友'
 			],
 			/*[
 				'image' => AppUtil::wechatUrl() . "/images/ad/activity_1daylove.jpg",
