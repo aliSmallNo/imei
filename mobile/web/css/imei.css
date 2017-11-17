@@ -5935,7 +5935,6 @@ section {
 .contacts-wrap {
   background: #fff;
   padding: 0;
-  border-bottom: 1px solid #E4E4E4;
   position: relative; }
   .contacts-wrap .contacts-edit {
     position: fixed;

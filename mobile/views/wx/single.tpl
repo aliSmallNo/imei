@@ -961,7 +961,6 @@
 				</div>
 				<h5>{[age]}岁 . {[height]} . {[horos]} . {[job]}</h5>
 			</div>
-
 			{[#cert]}<i class="i-cert">已认证</i>{[/cert]}
 		</a>
 		<div class="mp-info">

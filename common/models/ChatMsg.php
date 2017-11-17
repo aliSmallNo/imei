@@ -180,41 +180,39 @@ class ChatMsg extends ActiveRecord
 
 		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound,gAddedBy)
 			SELECT :id1,:id2,9999,:uid FROM dual
-			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2 and g.gStatus=:st)';
+			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2)';
 		$conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,
 			':uid' => $senderId,
-			':st' => self::ST_ACTIVE,
 		])->execute();
 		if ($giftCount) {
 			$amt = intval($giftCount * $ratio);
-			$sql = 'UPDATE im_chat_group set gRound=IFNULL(gRound,0)+' . $amt . ' WHERE g.gUId1=:id1 AND g.gUId2=:id2 and g.gStatus=:st';
+			$sql = 'UPDATE im_chat_group set gRound=IFNULL(gRound,0)+' . $amt
+				. ' WHERE g.gUId1=:id1 AND g.gUId2=:id2';
 			$conn->createCommand($sql)->bindValues([
 				':id1' => $uid1,
 				':id2' => $uid2,
-				':st' => self::ST_ACTIVE,
 			])->execute();
 		}
-		$sql = 'SELECT gId,gRound FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2 and g.gStatus=:st';
+		$sql = 'SELECT gId,gRound FROM im_chat_group as g 
+				WHERE g.gUId1=:id1 AND g.gUId2=:id2';
 		$ret = $conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,
-			':st' => self::ST_ACTIVE,
 		])->queryOne();
 		$gid = $ret['gId'];
 		$gRound = intval($ret['gRound']);
 		if ($costAmt) {
 			UserTrans::add($senderId, $gid, UserTrans::CAT_CHAT, '', $costAmt, UserTrans::UNIT_GIFT);
-			$sql = 'update im_chat_group set gRound=9999 WHERE gId=:id and gStatus=:st';
+			$sql = 'UPDATE im_chat_group SET gRound=9999 WHERE gId=:id';
 			$conn->createCommand($sql)->bindValues([
 				':id' => $gid,
-				':st' => self::ST_ACTIVE,
 			])->execute();
 			$gRound = 9999;
 		}
 
-		$sql = 'select count(1) from im_chat_msg WHERE cGId=:gid and cAddedBy=:uid ';
+		$sql = 'SELECT count(1) FROM im_chat_msg WHERE cGId=:gid AND cAddedBy=:uid ';
 		$cnt = $conn->createCommand($sql)->bindValues([
 			':uid' => $senderId,
 			':gid' => $gid,
@@ -249,18 +247,20 @@ class ChatMsg extends ActiveRecord
 			])->execute();
 		*/
 
-		$sql = 'update im_chat_group set gFirstCId=:cid,gAddedOn=now(),gAddedBy=:uid WHERE gId=:gid AND gFirstCId < 1';
+		$sql = 'UPDATE im_chat_group SET gFirstCId=:cid,gAddedOn=now(),gAddedBy=:uid
+ 				WHERE gId=:gid AND gFirstCId < 1';
 		$conn->createCommand($sql)->bindValues([
 			':cid' => $cId,
 			':gid' => $gid,
-			':uid' => $senderId
+			':uid' => $senderId,
 		])->execute();
 
-		$sql = 'update im_chat_group set gLastCId=:cid,gUpdatedOn=now(),gUpdatedBy=:uid WHERE gId=:gid';
+		$sql = 'UPDATE im_chat_group SET gLastCId=:cid,gUpdatedOn=now(),gUpdatedBy=:uid,gStatus=:st WHERE gId=:gid';
 		$conn->createCommand($sql)->bindValues([
 			':cid' => $cId,
 			':gid' => $gid,
-			':uid' => $senderId
+			':uid' => $senderId,
+			':st' => self::ST_ACTIVE
 		])->execute();
 
 		$infoA = $infoB = [];
@@ -356,13 +356,12 @@ class ChatMsg extends ActiveRecord
 		$sql = 'SELECT gId,gRound,count(m.cId) as cnt 
 				  FROM im_chat_group as g
  				  LEFT JOIN im_chat_msg as m on g.gId=m.cGId AND m.cAddedBy=:uid
-				  WHERE g.gUId1=:id1 AND g.gUId2=:id2 and g.gStatus=:st
+				  WHERE g.gUId1=:id1 AND g.gUId2=:id2
 				  GROUP BY gId,gRound';
 		$ret = $conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,
 			':uid' => $uId,
-			':st' => self::ST_ACTIVE,
 		])->queryOne();
 		$left = intval($ret['gRound'] - $ret['cnt']);
 		return $left < 0 ? 0 : $left;
@@ -378,27 +377,32 @@ class ChatMsg extends ActiveRecord
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
 		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound,gAddedBy)
 			SELECT :id1,:id2,0,:uid FROM dual
-			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2 and g.gStatus=:st)';
-		$ret = $conn->createCommand($sql)->bindValues([
+			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2)';
+		$conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,
 			':uid' => $uId,
-			':st' => self::ST_ACTIVE,
 		])->execute();
 		if ($amt) {
-			$sql = 'UPDATE im_chat_group set gRound=IFNULL(gRound,0)+' . $amt . ' WHERE gUId1=:id1 AND gUId2=:id2 AND gRound<9999 and gStatus=:st';
+			$sql = 'UPDATE im_chat_group set gRound=IFNULL(gRound,0)+' . $amt . ' WHERE gUId1=:id1 AND gUId2=:id2 AND gRound<9999';
 			$conn->createCommand($sql)->bindValues([
 				':id1' => $uid1,
 				':id2' => $uid2,
-				':st' => self::ST_ACTIVE,
 			])->execute();
 		}
-		$sql = 'select gId from im_chat_group WHERE gUId1=:id1 AND gUId2=:id2 and gStatus=:st';
+
+		$sql = 'SELECT gId FROM im_chat_group WHERE gUId1=:id1 AND gUId2=:id2 ';
 		$gid = $conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,
-			':st' => self::ST_ACTIVE,
 		])->queryScalar();
+
+		$sql = "UPDATE im_chat_group SET gStatus=:st WHERE gId=:gid";
+		$conn->createCommand($sql)->bindValues([
+			':gid' => $gid,
+			':st' => self::ST_ACTIVE
+		])->execute();
+
 		$left = self::chatLeft($uId, $subUId, $conn);
 		return [$gid, $left];
 	}
@@ -415,11 +419,10 @@ class ChatMsg extends ActiveRecord
 			 join im_chat_msg as m on g.gId=cGId
 			 join im_user as u on u.uId=m.cAddedBy
 			 left join im_admin as a on a.aId=m.cAdminId
-			 WHERE g.gUId1=:id1 AND g.gUId2=:id2 and g.gStatus=:st ' . $criteria . ' order by m.cAddedOn ';
+			 WHERE g.gUId1=:id1 AND g.gUId2=:id2 ' . $criteria . ' order by m.cAddedOn ';
 		$chats = $conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,
-			':st' => self::ST_ACTIVE,
 		])->queryAll();
 		foreach ($chats as $k => $chat) {
 			$chats[$k]['avatar'] = ImageUtil::getItemImages($chat['avatar'])[0];
@@ -689,15 +692,118 @@ class ChatMsg extends ActiveRecord
 
 		list($uid1, $uid2) = self::sortUId($uid, $receiverId);
 		$conn = AppUtil::db();
-		$sql = "SELECT sum(case when cAddedBy=:receiverId then 1 else 0 end) as co from im_chat_msg 
-				where cGId=(SELECT gId from im_chat_group where gUId1=:uid1 and gUId2=:uid2 and gStatus=:st) ";
+		/*$sql = "SELECT sum(case when cAddedBy=:receiverId then 1 else 0 end) as co from im_chat_msg
+				where cGId=(SELECT gId from im_chat_group where gUId1=:uid1 and gUId2=:uid2 and gStatus=:st) ";*/
+		$sql = "SELECT COUNT(CASE when cAddedBy=:receiverId then 1 end) as co 
+				FROM im_chat_group as g
+				JOIN im_chat_msg as m on g.gId = m.cGId
+				WHERE gUId1 =:uid1 AND gUId2 =:uid2 ";
 		$co = $conn->createCommand($sql)->bindValues([
 			':uid1' => $uid1,
 			':uid2' => $uid2,
 			':receiverId' => $receiverId,
-			':st' => self::ST_ACTIVE,
 		])->queryScalar();
 		return $co;
+	}
+
+	public static function mergeGroup($queryUid1 = 0, $queryUid2 = 0)
+	{
+		$conn = AppUtil::db();
+		$sql = 'SELECT gId,gUId1,gUId2,gFirstCId,gLastCId,gRound,gTitle,gNote,gStatus,gStatusDate,gUpdatedOn,gUpdatedBy,gAddedOn,gAddedBy
+ 				FROM im_chat_group WHERE gUId1=:uid1 AND gUId2=:uid2 ';
+		$cmdSel = $conn->createCommand($sql);
+
+		$sql = "update im_chat_group set
+					gFirstCId=:first,
+					gAddedBy=:add_by,
+					gAddedOn=:add_on,
+					gLastCId=:last,
+					gTitle=:title,
+					gNote=:note,
+					gStatus=:status,
+					gStatusDate=:status_on,
+					gUpdatedOn=:update_on,
+					gUpdatedBy=:update_by
+ 					where gId=:gid ";
+		$cmdMod = $conn->createCommand($sql);
+
+		$strCriteria = '';
+		if ($queryUid1 && $queryUid2) {
+			list($ret1, $ret2) = self::sortUId($queryUid1, $queryUid2);
+			$strCriteria = " AND gUId1=$ret1 AND gUId2=$ret2 ";
+		}
+		$sql = "SELECT COUNT(*) as cnt, gUId1,gUId2 
+				FROM im_chat_group WHERE gId>0 $strCriteria
+				GROUP BY gUId1,gUId2 HAVING cnt>1";
+		$ret = $conn->createCommand($sql)->queryAll();
+
+		$groupCnt = 0;
+		foreach ($ret as $row) {
+			$uid1 = $row['gUId1'];
+			$uid2 = $row['gUId2'];
+			//$key = $uid1 . ':' . $uid2;
+			$group = [
+				'uid1' => $uid1,
+				'uid2' => $uid2,
+				'first' => 0,
+				'add_by' => '',
+				'add_on' => '',
+				'gid' => 0,
+				'last' => 0,
+				'title' => '',
+				'note' => '',
+				'status' => 1,
+				'status_on' => '',
+				'update_by' => '',
+				'update_on' => '',
+				'ids' => ''
+			];
+			$items = $cmdSel->bindValues([
+				':uid1' => $uid1,
+				':uid2' => $uid2,
+			])->queryAll();
+			//gId,gUId1,gUId2,gFirstCId,gLastCId,gRound,gTitle,gNote,gStatus,gStatusDate,gUpdatedOn,gUpdatedBy,gAddedOn,gAddedBy
+			foreach ($items as $item) {
+				if (!$group['first']) {
+					$group['first'] = $item['gFirstCId'];
+					$group['add_by'] = $item['gAddedBy'];
+					$group['add_on'] = $item['gAddedOn'];
+				}
+				$group['gid'] = $item['gId'];
+				$group['last'] = $item['gLastCId'];
+				$group['title'] = $item['gTitle'];
+				$group['note'] = $item['gNote'];
+				$group['status'] = $item['gStatus'];
+				$group['status_on'] = $item['gStatusDate'];
+				$group['update_by'] = $item['gUpdatedBy'];
+				$group['update_on'] = $item['gUpdatedOn'];
+				$group['ids'] .= $item['gId'] . ',';
+			}
+			$group['ids'] = trim($group['ids'], ',');
+
+			$sql = "update im_chat_msg set cGId=" . $group['gid'] . " where cGId in (" . $group['ids'] . ")";
+			$conn->createCommand($sql)->execute();
+
+			$sql = "delete from im_chat_group where gId in (" . $group['ids'] . ") AND gId!=" . $group['gid'];
+			$conn->createCommand($sql)->execute();
+
+			$cmdMod->bindValues([
+				':first' => $group['first'],
+				':add_by' => $group['add_by'],
+				':add_on' => $group['add_on'],
+				':last' => $group['last'],
+				':title' => $group['title'],
+				':note' => $group['note'],
+				':status' => $group['status'],
+				':status_on' => $group['status_on'],
+				':update_on' => $group['update_on'],
+				':update_by' => $group['update_by'],
+				':gid' => $group['gid']
+			])->execute();
+
+			$groupCnt++;
+		}
+		return $groupCnt;
 	}
 
 }

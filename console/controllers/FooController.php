@@ -789,38 +789,9 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = User::greetUsers(131379);
+
+		$ret = ChatMsg::mergeGroup();
 		var_dump($ret);
-//		$ret = RedpacketTrans::balance(120003);
-//		var_dump($ret);
-		/*		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'; // 可以是公众号的OpenId
-		//		$openId = 'ouvPv0Cz6rb-QB_i9oYwHZWjGtv8'; // 可以是小程序的OpenId
-				$openId = 'ouvPv0Cz6rb-QB_i9oYwHZWjGtv8';
-				$tradeNo = RedisUtil::getIntSeq();  // 流水号，应该是 im_user_trans 里的唯一ID
-				$nickname = '赵武'; // 用户的昵称
-				$amount = 100; // 金额，单位分
-				$ret = PayUtil::withdraw($openId, $amount);
-				var_dump($ret);*/
-
-		/*$ret = getcwd();
-		var_dump($ret);
-
-		$ret = AppUtil::rootDir();
-		var_dump($ret);*/
-
-		/*self::downloadFile('https://img.meipo100.com/2017/ic_default_t.jpg',
-			'/Users/weirui/Documents/' . time());*/
-		/*$url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s&next_openid=%s';
-		$url = sprintf($url, $token, $next_openid);
-		$res = AppUtil::httpGet($url);
-		$res = json_decode($res, 1);
-		if ($res && isset($res['data']['openid'])) {
-			$openIds = array_merge($openIds, $res['data']['openid']);
-			$next_openid = $res['next_openid'];
-			unset($res['data']['openid']);
-			var_dump($res);
-		}*/
-
 		/*$uid = 139743;
 		$ret = User::greetUsers($uid);
 		var_dump($ret);*/

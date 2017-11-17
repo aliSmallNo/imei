@@ -153,11 +153,10 @@ class UserComment extends ActiveRecord
 		} else {
 			list($uid1, $uid2) = ChatMsg::sortUId($id, $uid);
 			$conn = AppUtil::db();
-			$sql = "SELECT gId from im_chat_group where gUId1=:uid1 and gUId2=:uid2 and gStatus=:st";
+			$sql = "SELECT gId from im_chat_group where gUId1=:uid1 and gUId2=:uid2";
 			$gid = $conn->createCommand($sql)->bindValues([
 				":uid1" => $uid1,
 				":uid2" => $uid2,
-				":st" => ChatMsg::ST_ACTIVE,
 			])->queryScalar();
 			$sql = "SELECT 
 				sum(case when cAddedBy=:uid1 then 1 else 0 end) as co1,
