@@ -124,7 +124,7 @@ class BaseController extends Controller
 					if (isset($subMenu["count"])) {
 						$cnt = Admin::getCount($subMenu["count"]);
 						if ($cnt) {
-							$subMenu['name'] .= ' (' . $cnt . ')';
+							$subMenu['name'] .= ' <span class="badge">' . $cnt . '</span>';
 						}
 					}
 					$menus[$key]["items"][$k] = $subMenu;
