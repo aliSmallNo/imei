@@ -1246,4 +1246,13 @@ class AppUtil
 		}
 		return $times;
 	}
+
+	public static function endWith($haystack, $needle)
+	{
+		$length = strlen($needle);
+		if ($length == 0) {
+			return true;
+		}
+		return (substr($haystack, -$length) === $needle);
+	}
 }

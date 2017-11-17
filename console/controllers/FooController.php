@@ -791,7 +791,10 @@ class FooController extends Controller
 	{
 		$conn = AppUtil::db();
 
-		$sql = "SELECT uId,uGender from im_user WHERE uGender>9 and uPhone!='' ";
+		$sql = "SELECT uId,uGender 
+ 				from im_user as u
+ 				WHERE uGender>9 and uPhone!=''
+  					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'2017-11-17 15:30') ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
 		$senderId = User::SERVICE_UID;

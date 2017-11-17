@@ -229,6 +229,16 @@ class ChatMsg extends ActiveRecord
 		$entity = new self();
 		$entity->cGId = $gid;
 		$entity->cContent = $content;
+		$lower = strtolower($content);
+		if (AppUtil::endWith($lower, '.jpg')
+			|| AppUtil::endWith($lower, '.jpeg')
+			|| AppUtil::endWith($lower, '.png')
+			|| AppUtil::endWith($lower, '.gif')) {
+			$entity->cType = self::TYPE_IMAGE;
+		} elseif (AppUtil::endWith($lower, '.mp3')
+			|| AppUtil::endWith($lower, '.amr')) {
+			$entity->cType = self::TYPE_VOICE;
+		}
 		$entity->cAddedBy = $senderId;
 		if ($adminId) {
 			$entity->cAdminId = $adminId;
@@ -552,7 +562,7 @@ class ChatMsg extends ActiveRecord
 			$strCriteria .= ' AND ' . implode(' AND ', $criteria);
 		}
 		$conn = AppUtil::db();
-		$sql = "select g.gId,g.gUId1,g.gUId2,g.gAddedBy,m.cContent as content,m.cAddedOn,gStatus,
+		$sql = "select g.gId,g.gUId1,g.gUId2,g.gAddedBy,m.cContent as content,m.cAddedOn, m.cType,gStatus,
 			 u1.uName as name1,u1.uPhone as phone1,u1.uThumb as avatar1,u1.uId as id1,u1.uUniqid as uni1,
 			 (CASE WHEN u1.uOpenId LIKE 'oYDJew%' THEN 0 ELSE 1 END) as dummy1,
 			 u2.uName as name2,u2.uPhone as phone2,u2.uThumb as avatar2,u2.uId as id2,u2.uUniqid as uni2,
@@ -574,6 +584,11 @@ class ChatMsg extends ActiveRecord
 			$res[$k]['avatar2'] = ImageUtil::getItemImages($row['avatar2'])[0];
 			$res[$k]['dt'] = AppUtil::prettyDate($row['cAddedOn']);
 			$res[$k]['st'] = $row['gStatus'];
+			if ($row['cType'] == ChatMsg::TYPE_IMAGE) {
+				$res[$k]['content'] = '[图片]';
+			} elseif ($row['cType'] == ChatMsg::TYPE_VOICE) {
+				$res[$k]['content'] = '[声音]';
+			}
 			if ($row['gAddedBy'] == $row['gUId2']) {
 				list($id, $name, $phone, $avatar, $cnt, $uni, $dummy) = [$row['id1'], $row['name1'], $row['phone1'],
 					$row['avatar1'], $row['cnt1'], $row['uni1'], $row['dummy1']];
