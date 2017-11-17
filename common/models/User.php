@@ -507,6 +507,7 @@ class User extends ActiveRecord
 				}
 				continue;
 			}
+
 			if ($newKey == "note") {
 				if (strpos($item['openid'], 'oYDJew') !== 0) {
 					$item["note_t"] = "稻草人";
@@ -527,6 +528,10 @@ class User extends ActiveRecord
 				$item[strtolower($newKey) . '_t'] = isset(self::$$newKey[$val]) ? self::$$newKey[$val] : '';
 				$item[strtolower($newKey)] = intval($item[strtolower($newKey)]);
 			}
+		}
+		$item["dummy"] = 0;
+		if (strpos($item['openid'], 'oYDJew') !== 0) {
+			$item["dummy"] = 1;
 		}
 		if (!$item['thumb']) {
 			$item['thumb'] = $item['avatar'];

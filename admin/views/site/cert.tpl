@@ -122,6 +122,7 @@
 		<td class="pInfo">
 			<span class="role{{$prod.role}}">{{$prod.role_t}}</span> {{$prod.name}}
 			<em>{{$prod.phone}} {{$prod.location_t}}</em>
+			{{if $prod.dummy}}<span class="m-dummy">稻草人</span>{{/if}}
 			<br>
 			<span>{{$prod.age}}</span>
 			<span>{{$prod.gender_t}}</span>

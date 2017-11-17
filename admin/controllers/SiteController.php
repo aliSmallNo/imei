@@ -644,6 +644,7 @@ class SiteController extends BaseController
 			}
 		}
 		$pagination = self::pagination($page, $count);
+
 		return $this->renderPage('cert.tpl',
 			[
 				"status" => $status,
