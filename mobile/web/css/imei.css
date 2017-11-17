@@ -6147,8 +6147,8 @@ section {
     .chats li .avatar img {
       width: 2.8rem;
       height: 2.8rem;
-      border-radius: 1.5rem;
-      border: 1px solid #fbd2e0; }
+      border-radius: 0.3rem;
+      border: 1px solid #fff; }
   .chats li .content {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
