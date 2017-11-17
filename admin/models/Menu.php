@@ -84,7 +84,7 @@ class Menu
 	{
 		$redis = RedisUtil::init(RedisUtil::KEY_MENUS_MD5);
 		$ret = $redis->getCache();
-		if (!$ret || 1) {
+		if (!$ret) {
 			$ret = md5(json_encode(self::menus()));
 			$redis->setCache($ret);
 		}
