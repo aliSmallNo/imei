@@ -622,6 +622,15 @@ require(["layer"],
 					util.sent();
 				});
 
+				$(document).on(kClick, ".m-img-zoom", function () {
+					var url = $(this).attr('src');
+					console.log(url);
+					wx.previewImage({
+						current: url,
+						urls: [url]
+					});
+				});
+
 				$(document).on(kClick, ".chat-input", function () {
 					setTimeout(function () {
 						document.body.scrollTop = document.body.scrollHeight;
@@ -2484,14 +2493,6 @@ require(["layer"],
 			AdvertUtil.init();
 			MeipoUtil.init();
 			SwipeUtil.init();
-
-			$(document).on(kClick, ".m-img-zoom", function () {
-				var url = $(this).attr('src');
-				wx.previewImage({
-					current: url,
-					urls: [url]
-				});
-			});
 
 			setTimeout(function () {
 				GreetingUtil.show();
