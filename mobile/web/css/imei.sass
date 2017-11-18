@@ -3600,16 +3600,16 @@ section
 		font-weight: 200
 	&:before
 		background: url(../images/ico_month_member.png) no-repeat center center
-		background-size: 1.5rem 1.5rem
-		top: 40%
-	&:after
-		content: ' '
-		position: absolute
-		background: #f3f3f3
-		width: 34rem
-		height: 1.5rem
-		left: -2rem
-		top: -3.2rem
+		background-size: 1.8rem 1.8rem
+	//top: 40%
+	//&:after
+	//	content: ' '
+	//	position: absolute
+	//	background: #f3f3f3
+	//	width: 34rem
+	//	height: 1.5rem
+	//	left: -2rem
+	//	top: -3.2rem
 
 .account-header
 	height: 12rem
@@ -3643,9 +3643,24 @@ section
 	li
 		padding: 1.6rem 0
 		@include displayFlex
-		border-bottom: 1px solid $borderColorLight
-		&:last-child
-			border-bottom: none
+		border-top: 1px solid $borderColorLight
+		position: relative
+		&:first-child, &:last-child
+			border-top: none
+		&.line
+			background: $bgColor
+			height: 1.5rem
+			padding: 0
+			margin-left: -1.5rem
+			margin-right: -1.5rem
+
+			//&:before
+			//	content: ''
+			//	position: absolute
+			//	height: 1.5rem
+			//	left: 0
+			//	right: 0
+			//	top: 0
 		.title
 			text-align: left
 			@include displayFlex-1
@@ -3670,13 +3685,12 @@ section
 					background: $mainColorLight
 					color: #fff
 		&.th
-			padding: 1rem 0 0
+			padding: .5rem 1rem
 			font-size: 1.2rem
 			color: $grayFontColorLight
 			border-bottom: none
 			& > div
 				font-size: 1.2rem
-				padding-right: 1rem
 
 .sgroup-top
 	@at-root .nav

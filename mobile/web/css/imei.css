@@ -3644,16 +3644,7 @@ section {
   font-weight: 200; }
 .m-ico-member:before {
   background: url(../images/ico_month_member.png) no-repeat center center;
-  background-size: 1.5rem 1.5rem;
-  top: 40%; }
-.m-ico-member:after {
-  content: " ";
-  position: absolute;
-  background: #f3f3f3;
-  width: 34rem;
-  height: 1.5rem;
-  left: -2rem;
-  top: -3.2rem; }
+  background-size: 1.8rem 1.8rem; }
 
 .account-header {
   height: 12rem;
@@ -3690,9 +3681,16 @@ section {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    border-bottom: 1px solid #EEEFF3; }
-    .recharge li:last-child {
-      border-bottom: none; }
+    border-top: 1px solid #EEEFF3;
+    position: relative; }
+    .recharge li:first-child, .recharge li:last-child {
+      border-top: none; }
+    .recharge li.line {
+      background: #f3f3f3;
+      height: 1.5rem;
+      padding: 0;
+      margin-left: -1.5rem;
+      margin-right: -1.5rem; }
     .recharge li .title {
       text-align: left;
       -webkit-box-flex: 1;
@@ -3723,13 +3721,12 @@ section {
           background: #f487ac;
           color: #fff; }
     .recharge li.th {
-      padding: 1rem 0 0;
+      padding: 0.5rem 1rem;
       font-size: 1.2rem;
       color: #969494;
       border-bottom: none; }
       .recharge li.th > div {
-        font-size: 1.2rem;
-        padding-right: 1rem; }
+        font-size: 1.2rem; }
 
 .nav {
   background: #fbd2e0;
