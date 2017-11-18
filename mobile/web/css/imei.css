@@ -49,6 +49,9 @@ main {
   main.bg-lighter {
     background: #fbd2e0; }
 
+.none {
+  display: none !important; }
+
 .g-blank {
   width: 0;
   height: 0;

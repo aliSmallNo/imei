@@ -1257,7 +1257,7 @@
 		</a>
 	</div>
 	{[#mp_name]}
-	<div class="hnwords">
+	<div class="hnwords none">
 		<div class="hninfo">
 			<a href="javascript:;" class="">
 				<div class="img">
@@ -1274,7 +1274,7 @@
 	{[/mp_name]}
 	<div class="mywords">
 		<span class="title">内心独白</span>
-		<span class="words">{[intro]}</span>
+		<span class="words">{[intro]}&nbsp;</span>
 	</div>
 	{[#commentFlag]}
 	<a class="mywords arrow-right" href="#comments">

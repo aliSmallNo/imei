@@ -35,7 +35,7 @@
 			</ul>
 		</a>
 	</div>
-	<div class="hnwords">
+	<div class="hnwords none">
 		<div class="hninfo">
 			<a href="/hn/p?uid={{$uInfo.encryptId}}" class="">
 				<a href="/wx/mh?id={{$uInfo.mp_encrypt_id}}#shome" class="">
