@@ -10,6 +10,38 @@
 		font-size: 12px;
 		font-weight: 400;
 	}
+
+	.total-row {
+	}
+
+	.total-row ul {
+		margin: 0;
+		padding: 0 8px;
+		list-style: none;
+		border-left: 1px solid #d4d4d4;
+	}
+
+	.total-row li {
+		display: flex;
+	}
+
+	.total-row li em {
+		font-style: normal;
+		flex: 0 0 120px;
+		font-weight: 400;
+	}
+
+	.total-row li b {
+		font-style: normal;
+		font-weight: 400;
+		flex: 1;
+		text-align: right;
+		color: #848484;
+	}
+
+	.total-row ul:first-child {
+		border-left: none;
+	}
 </style>
 <div class="row">
 	<h4>充值账户记录列表</h4>
@@ -35,28 +67,14 @@
 	</form>
 </div>
 <div class="row-divider"></div>
-<div class="row">
-	<table class="table table-striped table-bordered">
-		<thead>
-		<tr>
-			{{foreach from=$balance item=item}}
-			<th>{{$item.title}}</th>
-			{{/foreach}}
-		</tr>
-		</thead>
-		<tbody>
-		<tr>
-			{{foreach from=$balance item=item}}
-			<td>{{$item.amt}} {{$item.unit_name}}</td>
-			{{/foreach}}
-		</tr>
-		</tbody>
-		<tfoot>
-		<tr>
-			<td colspan="{{$balance|@count}}"><b class="f-tip">10朵媒桂花 = 1元</b></td>
-		</tr>
-		</tfoot>
-	</table>
+<div class="row total-row">
+	{{foreach from=$balance item=bal}}
+	<ul class="col-lg-3">
+		{{foreach from=$bal item=item}}
+		<li><em>{{$item.title}}</em><b>{{$item.amt}}{{$item.unit_name}}</b></li>
+		{{/foreach}}
+	</ul>
+	{{/foreach}}
 </div>
 <div class="row-divider"></div>
 <div class="row">

@@ -2,10 +2,10 @@
 
 namespace admin\models;
 
-use common\utils\RedisUtil;
-
 class Menu
 {
+	const VERSION = 171118.1;
+
 	public static function keepMenu($uId, $url)
 	{
 		return true;
@@ -80,15 +80,16 @@ class Menu
 		return $forks;
 	}
 
-	public static function menusMd5()
+	public static function menusVer()
 	{
-		$redis = RedisUtil::init(RedisUtil::KEY_MENUS_MD5);
+		/*$redis = RedisUtil::init(RedisUtil::KEY_MENUS_MD5);
 		$ret = $redis->getCache();
 		if (!$ret) {
 			$ret = md5(json_encode(self::menus()));
 			$redis->setCache($ret);
 		}
-		return $ret;
+		return $ret;*/
+		return 17111801;
 	}
 
 	public static function menus()
