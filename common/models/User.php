@@ -267,6 +267,8 @@ class User extends ActiveRecord
 	const ALERT_PRESENT = 'fans';
 	const ALERT_CHAT = 'chat';
 
+	const OPENID_PREFIX = 'oYDJew';
+
 	protected static $SmsCodeLimitPerDay = 36;
 	private static $SMS_SUPER_PASS = 33092716;
 

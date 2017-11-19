@@ -555,28 +555,24 @@
 			<div class="modal-body">
 				<div class="form-horizontal">
 					<div class="form-group">
-						<label class="col-sm-4 control-label">特殊身份:</label>
-						<div class="col-sm-7">
-							<select class="form-control sub-status-opt">
-								{{foreach from=$subStatus key=k item=item}}
-								<option value="{{$k}}">{{$item}}</option>
-								{{/foreach}}
-							</select>
+						<label class="col-sm-3 control-label">特殊身份:</label>
+						<div class="col-sm-9">
+							{{foreach from=$subStatus key=key item=item}}
+							<label class="radio-inline"><input class="sub-status-opt" type="radio" name="sub-status-opt" {{$key}} value="{{$key}}">{{$item}}</label>
+							{{/foreach}}
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-4 control-label">用户状态:</label>
-						<div class="col-sm-7">
-							<select class="form-control status-opt">
-								{{foreach from=$partHeader key=key item=item}}
-								<option value="{{$key}}">{{$item}}</option>
-								{{/foreach}}
-							</select>
+						<label class="col-sm-3 control-label">用户状态:</label>
+						<div class="col-sm-9">
+							{{foreach from=$partHeader key=key item=item}}
+							<label class="radio-inline"><input class="status-opt" type="radio" name="status-opt" {{$key}} value="{{$key}}">{{$item}}</label>
+							{{/foreach}}
 						</div>
 					</div>
 					<div class="form-group reasons-wrap">
-						<label class="col-sm-4 control-label">不合规原因:</label>
-						<div class="col-sm-7">
+						<label class="col-sm-3 control-label">不合规原因:</label>
+						<div class="col-sm-8">
 							<div class="input-group">
 								<input type="text" class="form-control" name="reasons" data-tag="avatar" placeholder="头像不合规原因">
 								<div class="input-group-btn">
@@ -990,9 +986,7 @@
 		});
 	}
 
-	var statusOPt = $(".status-opt"),
-		subStatusOpt = $(".sub-status-opt"),
-		reasonsWrap = $(".reasons-wrap"),
+	var reasonsWrap = $(".reasons-wrap"),
 		hasReson = 1,
 		resonLoad = 0,
 		uid;
@@ -1007,15 +1001,17 @@
 		var self = $(this);
 		uid = self.attr("data-id");
 		var st = self.attr("data-st");
-		statusOPt.val(st);
+		$('.status-opt[value="' + st + '"]').attr('checked', true);
 		var subSt = self.attr("data-sst");
-		subStatusOpt.val(subSt);
+		$('.sub-status-opt[value="' + subSt + '"]').attr('checked', true);
+//		subStatusOpt.val(subSt);
 		$('#modModal').modal('show');
 	});
 
-	statusOPt.on("change", function () {
+
+	$(document).on("click", '.status-opt', function () {
 		var self = $(this);
-		if (self.val() == 2) {
+		if (self.prop('checked') && self.val() == 2) {
 			reasonsWrap.show()
 		} else {
 			reasonsWrap.hide();
@@ -1023,7 +1019,7 @@
 	});
 
 	$('#btnAudit').on("click", function () {
-		var statusOPtVal = statusOPt.val();
+		var statusOPtVal = $('.status-opt:checked').val();
 		var reason = [];
 		if (statusOPtVal == 2) {
 			hasReson = 1;
@@ -1051,7 +1047,7 @@
 			tag: "reason",
 			reason: JSON.stringify(reason),
 			st: statusOPtVal,
-			sst: subStatusOpt.val(),
+			sst: $('.sub-status-opt:checked').val(),
 			id: uid
 		}, function (resp) {
 			resonLoad = 0;
