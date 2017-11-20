@@ -836,7 +836,7 @@ class FooController extends Controller
 		$cmd = $conn->createCommand($sql);
 		$sql = "SELECT uId,uThumb,uAvatar,uRawData
  				FROM im_user as u
- 				WHERE uOpenId not LIKE 'oYDJew%' AND uThumb!='' 
+ 				WHERE uOpenId not LIKE 'oYDJew%' AND uAvatar!='' AND uRawData!=''
   				AND not EXISTS(select 1 from im_img i WHERE u.uId=i.tUId)  ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
@@ -862,6 +862,36 @@ class FooController extends Controller
 				var_dump($cnt);
 			}
 		}
+		$sql = "SELECT uId,uThumb,uAvatar,uRawData
+ 				FROM im_user as u
+ 				WHERE uOpenId LIKE 'oYDJew%' AND uAvatar!='' 
+  				AND not EXISTS(select 1 from im_img i WHERE u.uId=i.tUId) LIMIT 5 ";
+		$ret = $conn->createCommand($sql)->queryAll();
+		$cnt = 0;
+		foreach ($ret as $row) {
+			$uid = $row['uId'];
+			$avatar = $row['uAvatar'];
+			$path = str_replace('_n.', '.', $avatar);
+			$util = COSUtil::init(COSUtil::UPLOAD_URL, $path);
+			if ($util->hasError) continue;
+			$thumb = $util->upload(true, true);
+			$figure = $util->upload(false, true);
+			$cmd->bindValues([
+				':uid' => $uid,
+				':path' => $path,
+				':thumb' => $thumb,
+				':figure' => $figure,
+				':saved' => $util->savedPath,
+			])->execute();
+			$cnt++;
+			if ($cnt % 50 == 0) {
+				var_dump($cnt);
+			}
+		}
+		$sql = "UPDATE im_user as u 
+			 JOIN im_img as i on u.uId=i.tUId AND i.tCategory=100
+			 SET u.uThumb=i.tThumb, u.uAvatar=i.tFigure";
+		$conn->createCommand($sql)->execute();
 		var_dump($cnt);
 	}
 
