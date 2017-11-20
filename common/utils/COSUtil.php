@@ -13,11 +13,11 @@ use Gregwar\Image\Image;
 
 class COSUtil
 {
-	protected $resPath;
 	protected $resType;
 	protected $resRename;
 	protected $resExtension;
 	protected $uploadFolder;
+	public $resPath;
 	public $savedPath;
 	public $hasError = false;
 

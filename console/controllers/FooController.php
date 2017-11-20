@@ -873,7 +873,11 @@ class FooController extends Controller
 			$avatar = $row['uAvatar'];
 			$path = str_replace('_n.', '.', $avatar);
 			$util = COSUtil::init(COSUtil::UPLOAD_URL, $path);
-			if ($util->hasError) continue;
+			if ($util->hasError) {
+				$path = $avatar;
+				$util = COSUtil::init(COSUtil::UPLOAD_URL, $path);
+				if ($util->hasError) continue;
+			}
 			$thumb = $util->upload(true, true);
 			$figure = $util->upload(false, true);
 			$cmd->bindValues([
@@ -889,7 +893,7 @@ class FooController extends Controller
 			}
 		}
 		$sql = "UPDATE im_user as u 
-			 JOIN im_img as i on u.uId=i.tUId AND i.tCategory=100
+			 JOIN im_img as i on u.uId=i.tUId AND i.tCategory=100 AND i.tDeletedFlag=0
 			 SET u.uThumb=i.tThumb, u.uAvatar=i.tFigure";
 		$conn->createCommand($sql)->execute();
 		var_dump($cnt);
