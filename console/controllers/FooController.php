@@ -841,10 +841,9 @@ class FooController extends Controller
 		$ret = $conn->createCommand($sql)->queryAll();
 		foreach ($ret as $row) {
 			$uid = $row['uId'];
-
-			$avatar = $row['uAvatar'];
-			$path = str_replace('_n.', '.', $avatar);
-			var_dump($path);
+			$path = $row['uAvatar'];
+//			$path =  str_replace('_n.', '.', $avatar);
+//			var_dump($path);
 			$util = COSUtil::init(COSUtil::UPLOAD_URL, $path);
 			if ($util->hasError) continue;
 			$thumb = $util->upload(true, true) ;
