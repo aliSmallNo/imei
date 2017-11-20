@@ -28,7 +28,7 @@ class COSUtil
 	private $Bucket = 'imei';
 	private $Secret_Id = 'AKIDEqyJNctINqB6re8NBeckX0wOH2CnGL0R';
 	private $Secret_Key = 'At5h3sa9zKz8rsSMVqPUMN4L48uHNfNk';
-	private $Host = "imei-1252387446.cosbj.myqcloud.com";
+	private $Host = "bj.file.myqcloud.com";
 
 	public static function init($resType, $resPath)
 	{
@@ -211,8 +211,7 @@ class COSUtil
 	protected function curlUpload($url, $data)
 	{
 		$method = "POST";
-		$field = "/" . $this->App_Id . "/" . $this->Bucket . "/" . $this->uploadFolder . "/" . $this->resRename;
-		$header = $this->getHeader('',true);
+		$header = $this->getHeader('', true);
 		$curlHandler = curl_init();
 		curl_setopt($curlHandler, CURLOPT_URL, $url);
 		$method = strtoupper($method);
@@ -263,9 +262,7 @@ class COSUtil
 			$srcStr = "a=%s&b=%s&k=%s&e=%s&t=%s&r=%s&f=%s";
 			$srcStr = sprintf($srcStr, $this->App_Id, $this->Bucket, $this->Secret_Id,
 				$current, $rnd, $expired, $oneTimeField);
-			$bin = hash_hmac('SHA1', $srcStr, $this->Secret_Key, true);
-			$bin .= $srcStr;
-			$signStr = base64_encode($bin);
+			$signStr = base64_encode(hash_hmac('sha1', $srcStr, $this->Secret_Key, true) . $srcStr);
 		}
 		if (!$oneTimeField) {
 			RedisUtil::init(RedisUtil::KEY_COS_SIGN)->setCache($signStr);
