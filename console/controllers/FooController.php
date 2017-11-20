@@ -834,20 +834,22 @@ class FooController extends Controller
 		$sql = "insert into im_img(tUId,tPath,tThumb,tFigure) 
  				VALUES(:uid,:path,:thumb,:figure)";
 		$cmd = $conn->createCommand($sql);
-		$sql = "SELECT uId,uThumb,uAvatar 
+		$sql = "SELECT uId,uThumb,uAvatar,uRawData
  				FROM im_user as u
  				WHERE uOpenId not LIKE 'oYDJew%' AND uThumb!='' 
   				AND not EXISTS(select 1 from im_img i WHERE u.uId=i.tUId) limit 10 ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		foreach ($ret as $row) {
 			$uid = $row['uId'];
-			$path = $row['uAvatar'];
+			$raw = json_decode($row['uRawData'], 1);
+			if (!isset($raw['avatar'])) continue;
+			$path = $raw['avatar'];
 //			$path =  str_replace('_n.', '.', $avatar);
 			var_dump($path);
 			$util = COSUtil::init(COSUtil::UPLOAD_URL, $path);
 			if ($util->hasError) continue;
-			$thumb = $util->upload(true, true) ;
-			$figure = $util->upload(false, true) ;
+			$thumb = $util->upload(true, true);
+			$figure = $util->upload(false, true);
 			$cmd->bindValues([
 				':uid' => $uid,
 				':path' => $path,
