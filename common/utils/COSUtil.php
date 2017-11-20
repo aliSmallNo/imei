@@ -220,8 +220,6 @@ class COSUtil
 		$curlHandler = curl_init();
 		curl_setopt($curlHandler, CURLOPT_URL, $url);
 		$method = strtoupper($method);
-//		$header = isset($header) ? $header : [];
-//		$header[] = 'Method:' . $method;
 
 		curl_setopt($curlHandler, CURLOPT_TIMEOUT, 150);
 		curl_setopt($curlHandler, CURLOPT_HTTPHEADER, $header);
