@@ -86,7 +86,7 @@
 					</span>
 			</td>
 			<td class="w-title">
-				<span>{{if isset($info.bContent)}}{{$info.bContent}}{{/if}}</span>
+				<span style="word-break: break-all">{{if isset($info.bContent)}}{{$info.bContent}}{{/if}}</span>
 			</td>
 			<td>
 				{{if isset($info.dt)}}<span>{{$info.dt}}</span>{{/if}}
