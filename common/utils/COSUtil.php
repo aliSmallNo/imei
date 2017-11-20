@@ -261,7 +261,7 @@ class COSUtil
 			$rnd = mt_rand(1000001, 9999999);
 			$srcStr = "a=%s&b=%s&k=%s&e=%s&t=%s&r=%s&f=%s";
 			$srcStr = sprintf($srcStr, $this->App_Id, $this->Bucket, $this->Secret_Id,
-				$current, $rnd, $expired, $oneTimeField);
+				$expired, $current, $rnd, $oneTimeField);
 			$signStr = base64_encode(hash_hmac('sha1', $srcStr, $this->Secret_Key, true) . $srcStr);
 		}
 		if (!$oneTimeField) {
