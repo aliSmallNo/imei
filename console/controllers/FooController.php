@@ -826,8 +826,9 @@ class FooController extends Controller
 
 		$res = COSUtil::init(COSUtil::UPLOAD_URL,
 			"https://img.meipo100.com/avatar/4fa5106bce7d4b649a9878135712a427.jpg");
+
 		var_dump($res->upload(true, true));
-//		var_dump($res->upload(false, true));
+		var_dump($res->upload(false, true));
 	}
 
 	public function actionZp()

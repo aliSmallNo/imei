@@ -25,17 +25,17 @@ class COSUtil
 	const UPLOAD_MEDIA = 120;
 
 	private $App_Id = '10063905';
-	private $Bucket = 'imei';
+	private $Bucket = 'bpbhd';
 	private $Secret_Id = 'AKIDEqyJNctINqB6re8NBeckX0wOH2CnGL0R';
 	private $Secret_Key = 'At5h3sa9zKz8rsSMVqPUMN4L48uHNfNk';
-	private $Host = "bj.file.myqcloud.com";
+	private $Host = "sh.file.myqcloud.com";
 
 	public static function init($resType, $resPath)
 	{
 		$util = new self();
 		$util->resPath = $resPath;
 		$util->resType = $resType;
-		$util->resRename = date('Ymd') . (1000001 + RedisUtil::getImageSeq());
+		$util->resRename = date('ymd') . (1000001 + RedisUtil::getImageSeq());
 		$util->resSavedPath = $util->save2Local();
 		return $util;
 	}
@@ -198,11 +198,7 @@ class COSUtil
 			$data['sha'] = $sha1;
 		}
 
-		$url = $this->getUrl() . "/" . $this->resRename;
-		var_dump($url);
-		$temp = $data;
-		unset($temp['filecontent']);
-		var_dump($temp);
+		$url = $this->getUrl() . "/" . ($thumbFlag ? 't' : 'n') . $this->resRename;
 		$ret = $this->curlUpload($url, $data);
 		$ret = json_decode($ret, true);
 		return isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
@@ -211,7 +207,7 @@ class COSUtil
 	protected function curlUpload($url, $data)
 	{
 		$method = "POST";
-		$header = $this->getHeader('', true);
+		$header = $this->getHeader();
 		$curlHandler = curl_init();
 		curl_setopt($curlHandler, CURLOPT_URL, $url);
 		$method = strtoupper($method);
@@ -241,32 +237,25 @@ class COSUtil
 	}
 
 	/**
-	 * @param string $oneTimeField
 	 * @param bool $resetFlag
 	 * @return array
 	 */
-	protected function getHeader($oneTimeField = '', $resetFlag = false)
+	protected function getHeader($resetFlag = false)
 	{
-		$signStr = '';
-		if (!$oneTimeField) {
-			$redis = RedisUtil::init(RedisUtil::KEY_COS_SIGN);
-			$signStr = $redis->getCache();
-		}
-		if ($oneTimeField || $resetFlag || !$signStr) {
+		$redis = RedisUtil::init(RedisUtil::KEY_COS_SIGN);
+		$signStr = $redis->getCache();
+
+		if ($resetFlag || !$signStr) {
 			$current = time();
 			$expired = $current + 86400 + 120;
-			if ($oneTimeField) {
-				$expired = 0;
-			}
+
 			$rnd = mt_rand(1000001, 9999999);
-			$srcStr = "a=%s&b=%s&k=%s&e=%s&t=%s&r=%s&f=%s";
+			$srcStr = "a=%s&b=%s&k=%s&e=%s&t=%s&r=%s&f=";
 			$srcStr = sprintf($srcStr, $this->App_Id, $this->Bucket, $this->Secret_Id,
-				$expired, $current, $rnd, $oneTimeField);
+				$expired, $current, $rnd);
 			$signStr = base64_encode(hash_hmac('sha1', $srcStr, $this->Secret_Key, true) . $srcStr);
 		}
-		if (!$oneTimeField) {
-			RedisUtil::init(RedisUtil::KEY_COS_SIGN)->setCache($signStr);
-		}
+		RedisUtil::init(RedisUtil::KEY_COS_SIGN)->setCache($signStr);
 		$ret = [
 			"Content-Type:multipart/form-data",
 			"Host:" . $this->Host,
