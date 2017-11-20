@@ -31,6 +31,7 @@ class RedisUtil
 	const KEY_ADMIN_OFTEN = 'admin_often';
 	const KEY_PUB_CODE = 'pub_code';
 	const KEY_CLOUD_COS = 'cloud_cos';
+	const KEY_COS_SIGN = 'cos_sign';
 	const KEY_SMS_CODE = 'sms_code';
 	const KEY_SMS_CODE_CNT = 'sms_code_cnt';
 	const KEY_DISTANCE = 'dist';
@@ -61,7 +62,8 @@ class RedisUtil
 		self::KEY_WX_MESSAGE => 60 * 10,
 		self::KEY_ADMIN_INFO => 86400 * 7,
 		self::KEY_PUB_CODE => 600,
-		self::KEY_CLOUD_COS => 3600 * 10,
+		self::KEY_CLOUD_COS => 86400,
+		self::KEY_COS_SIGN => 86400,
 		self::KEY_SMS_CODE => 60 * 10,
 		self::KEY_SMS_CODE_CNT => 86400,
 		self::KEY_DISTANCE => 86400 * 20,
@@ -90,7 +92,7 @@ class RedisUtil
 	/**
 	 * @return \yii\redis\Connection
 	 */
-	protected function redis()
+	protected static function redis()
 	{
 		return Yii::$app->redis;
 	}

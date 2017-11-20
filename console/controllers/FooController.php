@@ -15,6 +15,7 @@ use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
+use common\utils\COSUtil;
 use common\utils\PushUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
@@ -787,10 +788,9 @@ class FooController extends Controller
 		var_dump($count . '/' . count($ret));
 	}
 
-	public function actionRain()
+	public function actionMassmsg()
 	{
 		$conn = AppUtil::db();
-
 		$sql = "SELECT uId,uGender 
  				from im_user as u
  				WHERE uGender>9 and uPhone!=''
@@ -819,17 +819,15 @@ class FooController extends Controller
 			$cnt++;
 		}
 		var_dump($cnt);
-		/*$ret = ChatMsg::mergeGroup();
-		var_dump($ret);*/
-		/*$uid = 139743;
-		$ret = User::greetUsers($uid);
-		var_dump($ret);*/
-//		self::downloadFile('https://img.meipo100.com/2017/ic_default_t.jpg', '/Users/weirui/Documents/aaa');
-		/*$client = new \GuzzleHttp\Client();
-		$res = $client->request("GET", "https://api.github.com/repos/guzzle/guzzle");
-		echo $res->getStatusCode();
-		echo $res->getHeaderLine('content-type');
-		echo $res->getBody();*/
+	}
+
+	public function actionRain()
+	{
+
+		$res = COSUtil::init(COSUtil::UPLOAD_URL,
+			"https://img.meipo100.com/avatar/4fa5106bce7d4b649a9878135712a427.jpg");
+		var_dump($res->upload(true, true));
+//		var_dump($res->upload(false, true));
 	}
 
 	public function actionZp()
