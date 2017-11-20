@@ -831,13 +831,13 @@ class FooController extends Controller
 		var_dump($res->upload(false, true));*/
 
 		$conn = AppUtil::db();
-		$sql = "insert into im_img(tUId,tPath,tThumb,tFigure) 
- 				VALUES(:uid,:path,:thumb,:figure)";
+		$sql = "insert into im_img(tUId,tPath,tSaved,tThumb,tFigure) 
+ 				VALUES(:uid,:path,:saved,:thumb,:figure)";
 		$cmd = $conn->createCommand($sql);
 		$sql = "SELECT uId,uThumb,uAvatar,uRawData
  				FROM im_user as u
  				WHERE uOpenId not LIKE 'oYDJew%' AND uThumb!='' 
-  				AND not EXISTS(select 1 from im_img i WHERE u.uId=i.tUId)   ";
+  				AND not EXISTS(select 1 from im_img i WHERE u.uId=i.tUId)  ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
 		foreach ($ret as $row) {
@@ -855,6 +855,7 @@ class FooController extends Controller
 				':path' => $path,
 				':thumb' => $thumb,
 				':figure' => $figure,
+				':saved' => $util->savedPath,
 			])->execute();
 			$cnt++;
 			if ($cnt % 50 == 0) {

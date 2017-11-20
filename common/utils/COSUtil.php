@@ -14,11 +14,11 @@ use Gregwar\Image\Image;
 class COSUtil
 {
 	protected $resPath;
-	protected $resSavedPath;
 	protected $resType;
 	protected $resRename;
 	protected $resExtension;
 	protected $uploadFolder;
+	public $savedPath;
 	public $hasError = false;
 
 	const UPLOAD_URL = 100;
@@ -37,8 +37,8 @@ class COSUtil
 		$util->resPath = $resPath;
 		$util->resType = $resType;
 		$util->resRename = date('ymd') . (1000001 + RedisUtil::getImageSeq());
-		$util->resSavedPath = $util->save2Local();
-		$util->hasError = (!$util->resSavedPath);
+		$util->savedPath = $util->save2Local();
+		$util->hasError = (!$util->savedPath);
 		return $util;
 	}
 
