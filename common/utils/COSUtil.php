@@ -212,7 +212,7 @@ class COSUtil
 	{
 		$method = "POST";
 		$field = "/" . $this->App_Id . "/" . $this->Bucket . "/" . $this->uploadFolder . "/" . $this->resRename;
-		$header = $this->getHeader();
+		$header = $this->getHeader('',true);
 		$curlHandler = curl_init();
 		curl_setopt($curlHandler, CURLOPT_URL, $url);
 		$method = strtoupper($method);
