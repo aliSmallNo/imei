@@ -25,10 +25,10 @@ class COSUtil
 	const UPLOAD_MEDIA = 120;
 
 	private $App_Id = '10063905';
-	private $Bucket = 'bpbhd';
+	private $Bucket = 'imei';
 	private $Secret_Id = 'AKIDEqyJNctINqB6re8NBeckX0wOH2CnGL0R';
 	private $Secret_Key = 'At5h3sa9zKz8rsSMVqPUMN4L48uHNfNk';
-	private $Host = "web.file.myqcloud.com";
+	private $Host = "imei-1252387446.cosbj.myqcloud.com";
 
 	public static function init($resType, $resPath)
 	{
