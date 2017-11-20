@@ -208,7 +208,9 @@ class COSUtil
 		$url = $this->getUrl() . "/" . ($thumbFlag ? 't' : 'n') . $this->resRename;
 		$ret = $this->curlUpload($url, $data);
 		$ret = json_decode($ret, true);
-		return isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
+		$cosUrl = isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
+		$cosUrl = str_replace('http://', 'https://', $cosUrl);
+		return $cosUrl;
 	}
 
 	protected function curlUpload($url, $data)
