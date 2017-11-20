@@ -169,7 +169,7 @@ class COSUtil
 			'op' => 'upload',
 			"insertOnly" => 0
 		];
-		$srcPath = $this->resSavedPath;
+		$srcPath = $this->savedPath;
 		// Rain: 对图片做压缩
 		if ($this->uploadFolder == 'image') {
 			$thumbSide = 200;
