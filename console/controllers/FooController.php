@@ -824,11 +824,38 @@ class FooController extends Controller
 	public function actionRain()
 	{
 
-		$res = COSUtil::init(COSUtil::UPLOAD_URL,
+		/*$res = COSUtil::init(COSUtil::UPLOAD_URL,
 			"https://img.meipo100.com/avatar/4fa5106bce7d4b649a9878135712a427.jpg");
 
 		var_dump($res->upload(true, true));
-		var_dump($res->upload(false, true));
+		var_dump($res->upload(false, true));*/
+
+		$conn = AppUtil::db();
+		$sql = "insert into im_img(tUId,tPath,tThumb,tFigure) 
+ 				VALUES(:uid,:path,:thumb,:figure)";
+		$cmd = $conn->createCommand($sql);
+		$sql = "SELECT uId,uThumb,uAvatar 
+ 				FROM im_user as u
+ 				WHERE uOpenId not LIKE 'oYDJew%' AND uThumb!='' 
+  				AND not EXISTS(select 1 from im_img i WHERE u.uId=i.tUId) limit 20 ";
+		$ret = $conn->createCommand($sql)->queryAll();
+		foreach ($ret as $row) {
+			$uid = $row['uId'];
+
+			$avatar = $row['uAvatar'];
+			$path = str_replace('_n.', '', $avatar);
+			$util = COSUtil::init(COSUtil::UPLOAD_URL, $path);
+			if ($util->hasError) continue;
+			$thumb = $util->upload(true, true) ;
+			$figure = $util->upload(false, true) ;
+			$cmd->bindValues([
+				':uid' => $uid,
+				':path' => $path,
+				':thumb' => $thumb,
+				':figure' => $figure,
+			])->execute();
+		}
+
 	}
 
 	public function actionZp()

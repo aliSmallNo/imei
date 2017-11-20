@@ -19,6 +19,7 @@ class COSUtil
 	protected $resRename;
 	protected $resExtension;
 	protected $uploadFolder;
+	public $hasError = false;
 
 	const UPLOAD_URL = 100;
 	const UPLOAD_PATH = 110;
@@ -37,6 +38,7 @@ class COSUtil
 		$util->resType = $resType;
 		$util->resRename = date('ymd') . (1000001 + RedisUtil::getImageSeq());
 		$util->resSavedPath = $util->save2Local();
+		$util->hasError = (!$util->resSavedPath);
 		return $util;
 	}
 
@@ -56,10 +58,15 @@ class COSUtil
 				$this->resRename .= '.' . $this->resExtension;
 				break;
 			case self::UPLOAD_PATH:
-				$this->resExtension = pathinfo($this->resPath, PATHINFO_EXTENSION);
-				$this->resRename .= '.' . $this->resExtension;
-				$content = file_get_contents($this->resPath);
+				if (is_file($this->resPath)) {
+					$this->resExtension = pathinfo($this->resPath, PATHINFO_EXTENSION);
+					$this->resRename .= '.' . $this->resExtension;
+					$content = file_get_contents($this->resPath);
+				}
 				break;
+		}
+		if (!$this->resExtension) {
+			return '';
 		}
 		$this->uploadFolder = self::getFolder($this->resExtension);
 		$saveAs = AppUtil::catDir(false, $this->uploadFolder) . $this->resRename;
