@@ -865,7 +865,7 @@ class FooController extends Controller
 		$sql = "SELECT uId,uThumb,uAvatar,uRawData
  				FROM im_user as u
  				WHERE uOpenId LIKE 'oYDJew%' AND uAvatar!='' 
-  				AND not EXISTS(select 1 from im_img i WHERE u.uId=i.tUId) LIMIT 5 ";
+  				AND not EXISTS(select 1 from im_img i WHERE u.uId=i.tUId) ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
 		foreach ($ret as $row) {
