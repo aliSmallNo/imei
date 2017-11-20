@@ -837,13 +837,14 @@ class FooController extends Controller
 		$sql = "SELECT uId,uThumb,uAvatar 
  				FROM im_user as u
  				WHERE uOpenId not LIKE 'oYDJew%' AND uThumb!='' 
-  				AND not EXISTS(select 1 from im_img i WHERE u.uId=i.tUId) limit 20 ";
+  				AND not EXISTS(select 1 from im_img i WHERE u.uId=i.tUId) ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		foreach ($ret as $row) {
 			$uid = $row['uId'];
 
 			$avatar = $row['uAvatar'];
-			$path = str_replace('_n.', '', $avatar);
+			$path = str_replace('_n.', '.', $avatar);
+			var_dump($path);
 			$util = COSUtil::init(COSUtil::UPLOAD_URL, $path);
 			if ($util->hasError) continue;
 			$thumb = $util->upload(true, true) ;
