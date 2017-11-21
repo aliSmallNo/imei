@@ -1099,5 +1099,22 @@ class WechatUtil
 		return $accessToken;
 	}
 
-
+	public static function summonVisitor()
+	{
+		$conn = AppUtil::db();
+		$sql = "SELECT u.uName,u.uOpenId,uPhone,uGender,wSubscribe
+			 FROM im_user as u 
+			 JOIN im_user_wechat as w on u.uId = w.wUId
+			 WHERE w.wSubscribe=1 AND u.uPhone='' AND u.uOpenId LIKE 'oYDJew%' 
+			 AND u.uId=131379 ";
+		$ret = $conn->createCommand($sql)->queryAll();
+		$cnt = 0;
+		foreach ($ret as $row) {
+			$name = $row['uName'];
+			$openid = $row['uOpenId'];
+			$content = $name . ' 你的一位微信联系人在［千寻恋恋］上将你设置为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。详情<a href="https://wx.meipo100.com/wx/hi">点击这里</a>';
+			$cnt += UserWechat::sendMsg($openid, $content);
+		}
+		return $cnt;
+	}
 }

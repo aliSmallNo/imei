@@ -749,9 +749,7 @@ class SiteController extends BaseController
 	public function actionReply2wx()
 	{
 		$openId = self::postParam("openId");
-
 		$uId = User::findOne(["uOpenId" => $openId])->uId;
-		$pid = self::postParam("pid");
 		$content = self::postParam("content");
 		if ($openId && $content) {
 			$result = UserWechat::sendMsg($openId, $content);

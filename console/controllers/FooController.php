@@ -13,7 +13,6 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
-use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\PushUtil;
@@ -741,12 +740,6 @@ class FooController extends Controller
 		var_dump(count($ret));
 	}
 
-	public function actionMsg($openId = 'oYDJew5EFMuyrJdwRrXkIZLU2c58', $msg = '测试测试啊')
-	{
-		$ret = UserWechat::sendMsg($openId, $msg);
-		var_dump($ret);
-	}
-
 	public function actionHint($msg = '你的个人资料不完整啊~')
 	{
 		PushUtil::hint($msg, '059af5c749741c');
@@ -901,11 +894,8 @@ class FooController extends Controller
 			echo 'https://wx.meipo100.com/wx/sh?id=' . AppUtil::encrypt($id);
 			echo PHP_EOL;
 		}*/
-		$content = '【千寻恋恋】✘✘✘，你的一位微信联系人在［千寻恋恋］上将你设置为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。
-		详情<a href="https://wx.meipo100.com/wx/hi">点击这里</a>';
-		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
-		$result = UserWechat::sendMsg($openId, $content);
-		var_dump($result);
+		$ret = WechatUtil::summonVisitor();
+		var_dump($ret);
 	}
 
 	public function actionZp()
