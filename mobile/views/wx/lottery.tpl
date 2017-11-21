@@ -30,5 +30,4 @@
 	</ul>
 </div>
 <input type="hidden" id="cOID">
-<script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/lottery.js?v=1.1.6" src="/assets/js/require.js"></script>
+<script src="/assets/js/require.js" data-main="/js/lottery.js?v=1.2.0"></script>
