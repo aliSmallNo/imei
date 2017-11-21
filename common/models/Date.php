@@ -16,9 +16,9 @@ use yii\db\ActiveRecord;
 
 class Date extends ActiveRecord
 {
-	const STATUS_DETAULT = 1;
+	const STATUS_DEFAULT = 1;
 	const STATUS_PENDING_FAIL = 88;
-	const STATUS_FAIL = 99;// 约会取消
+	const STATUS_CANCEL = 99; // 约会取消
 	const STATUS_INVITE = 100;
 	const STATUS_PENDING = 105;
 	const STATUS_PASS = 110;
@@ -27,7 +27,7 @@ class Date extends ActiveRecord
 	const STATUS_COMMENT = 140;
 	static $statusDict = [
 		self::STATUS_PENDING_FAIL => '审核失败',
-		self::STATUS_FAIL => '约会取消',
+		self::STATUS_CANCEL => '约会取消',
 		self::STATUS_INVITE => '发出邀请',
 		self::STATUS_PENDING => '审核通过',
 		self::STATUS_PASS => '对方同意',
@@ -130,7 +130,7 @@ class Date extends ActiveRecord
 
 	public static function oneInfoForWx($myUId, $taUId)
 	{
-		$st = self::STATUS_DETAULT;
+		$st = self::STATUS_DEFAULT;
 		$role = "active";
 		$d = self::oneInfo($myUId, $taUId);
 		if ($d) {
@@ -175,7 +175,11 @@ class Date extends ActiveRecord
 				self::NEW_DATE_COST, UserTrans::UNIT_GIFT);
 			return $did;
 		} else {
-			return self::edit($d->dId, $insert);
+			$did = self::edit($d->dId, $insert);
+			if ($did && in_array($insert['dStatus'], [self::STATUS_CANCEL, self::STATUS_PENDING_FAIL])) {
+				UserTrans::remove($myUId, $did, UserTrans::CAT_DATE_NEW);
+			}
+			return $did;
 		}
 	}
 
@@ -337,7 +341,7 @@ class Date extends ActiveRecord
 				$msg = "尊敬的用户，您与平台用户“" . $name1 . "”未通过审核，您填写的方式由错误，请您尽快修改，避免错失约会";
 				self::sendmsg($u2->uPhone, $msg);
 				break;
-			case self::STATUS_FAIL:
+			case self::STATUS_CANCEL:
 				$msg = "尊敬的用户，您与平台用户“" . $name2 . "”的“" . $cat . "”约会，您已经取消！请双方另行再约";
 				self::sendmsg($u1->uPhone, $msg);
 				$msg = "尊敬的用户，您与平台用户“" . $name1 . "”的“" . $cat . "”约会，对方已经取消！请双方另行再约";

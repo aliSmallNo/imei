@@ -5121,13 +5121,13 @@ section {
   z-index: 8; }
 
 .charges {
-  padding: 1rem; }
+  padding: 0.5rem 1rem; }
   .charges li {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    padding: 1rem 0.5rem;
+    padding: 0.5rem;
     border-bottom: 1px solid #E4E4E4; }
     .charges li .title {
       -webkit-box-flex: 0 0 18rem;
@@ -5135,7 +5135,7 @@ section {
       -ms-flex: 0 0 18rem;
       flex: 0 0 18rem; }
       .charges li .title h5 {
-        color: #6a6572;
+        color: #969494;
         font-size: 1.2rem;
         font-weight: 300; }
     .charges li .content {
@@ -5150,6 +5150,8 @@ section {
         line-height: 3rem;
         font-weight: 500;
         font-size: 1.4rem; }
+        .charges li .content em.amt- {
+          color: #E53935; }
         .charges li .content em.flower {
           padding-right: 2rem; }
           .charges li .content em.flower:after {

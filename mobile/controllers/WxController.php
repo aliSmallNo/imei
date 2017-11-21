@@ -1796,7 +1796,7 @@ class WxController extends BaseController
 		}
 
 		$stDict = Date::$statusDict;
-		unset($stDict[Date::STATUS_FAIL]);
+		unset($stDict[Date::STATUS_CANCEL]);
 		unset($stDict[Date::STATUS_PENDING_FAIL]);
 		$title = '邀约' . $TA->uName;
 		if ($role == "inactive") {

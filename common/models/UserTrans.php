@@ -72,6 +72,16 @@ class UserTrans extends ActiveRecord
 		return '{{%user_trans}}';
 	}
 
+	public static function remove($uid, $pid, $cat)
+	{
+		$info = self::findOne(['tCategory' => $cat, 'tPId' => $pid, 'tUId' => $uid]);
+		if ($info) {
+			$info->tDeletedOn = date('Y-m-d H:i:s');
+			$info->tDeletedFlag = 1;
+			$info->save();
+		}
+	}
+
 	public static function add($uid, $pid, $cat, $title, $amt, $unit)
 	{
 		$entity = new self();
@@ -164,7 +174,8 @@ class UserTrans extends ActiveRecord
 		$strMinus = implode(',', self::$CatMinus);
 		$sql = 'SELECT SUM(case when tCategory in (' . $strPlus . ') then tAmt when tCategory in (' . $strMinus . ') then -tAmt end) as amt,
 				tUnit as unit, tUId as uid 
- 				from im_user_trans WHERE tUId>0 ' . $strCriteria . ' GROUP BY tUId,tUnit';
+ 				FROM im_user_trans 
+ 				WHERE tDeletedFlag=0 ' . $strCriteria . ' GROUP BY tUId,tUnit';
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
 		foreach ($ret as $row) {
@@ -219,13 +230,14 @@ class UserTrans extends ActiveRecord
 
 	public static function balance($criteria, $params, $conn = '')
 	{
-		$criteria = implode(" AND ", $criteria);
+		$strCriteria = '';
 		if ($criteria) {
-			$criteria = ' WHERE ' . $criteria;
+			$strCriteria .= ' AND ' . implode(" AND ", $criteria);
 		}
 		$sql = 'SELECT sum(tAmt) as amt,tCategory as cat,tTitle as title,tUnit as unit
  				FROM im_user_trans as t 
- 				JOIN im_user as u on t.tUId = u.uId ' . $criteria . ' group by tCategory,tTitle,tUnit';
+ 				JOIN im_user as u on t.tUId = u.uId 
+ 				WHERE tDeletedFlag=0 ' . $strCriteria . ' group by tCategory,tTitle,tUnit';
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
@@ -245,7 +257,7 @@ class UserTrans extends ActiveRecord
 		$limit = ($page - 1) * $pageSize . "," . $pageSize;
 		$criteria = implode(" and ", $criteria);
 		//$where = " where t.tCategory in (100,105,110,120,130) ";
-		$where = " where t.tCategory > 0 ";
+		$where = " WHERE t.tCategory > 0 AND t.tDeletedFlag=0 ";
 		if ($criteria) {
 			$where .= " and " . $criteria;
 		}
@@ -382,7 +394,8 @@ class UserTrans extends ActiveRecord
 					  SUM(CASE WHEN tCategory=$catCost THEN tAmt ELSE 0 END ) as cost,
 					  SUM(CASE WHEN tCategory=110 and tUnit='$unitFen' THEN tAmt ELSE 0 END ) as link,
 					  tUId as uid
-				from im_user_trans WHERE tUId>0 and tUId in ($uid) GROUP BY tUId";
+				FROM im_user_trans 
+				WHERE tDeletedFlag=0 and tUId in ($uid) GROUP BY tUId";
 		$ret = $conn->createCommand($sql)->queryAll();
 
 		$sql = "SELECT sum(p.pAmt) as allcharge 
@@ -402,20 +415,26 @@ class UserTrans extends ActiveRecord
 		}
 		$offset = ($page - 1) * $pageSize;
 		$conn = AppUtil::db();
-		$sql = 'SELECT * FROM im_user_trans WHERE tUId>0 ' . $strCriteria
+		$sql = 'SELECT * FROM im_user_trans WHERE tDeletedFlag=0 ' . $strCriteria
 			. ' ORDER BY tAddedOn DESC LIMIT ' . $offset . ',' . $pageSize;
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
 		foreach ($ret as $row) {
 			$unit = $row['tUnit'];
+			$cat = $row['tCategory'];
 			$item = [
 				'id' => $row['tId'],
 				'title' => $row['tTitle'],
 				'date' => $row['tAddedOn'],
+				'dt' => AppUtil::miniDate($row['tAddedOn']),
+				'prefix' => '',
 				'amt' => $row['tAmt'],
 				'unit' => $unit,
 				'unit_name' => isset(self::$UnitDict[$unit]) ? self::$UnitDict[$unit] : '',
 			];
+			if (in_array($cat, self::$CatMinus)) {
+				$item['prefix'] = '-';
+			}
 			if ($unit == self::UNIT_FEN) {
 				$item['amt'] = sprintf('%.2f', $item['amt'] / 100.00);
 				$item['unit'] = 'yuan';
@@ -510,6 +529,4 @@ class UserTrans extends ActiveRecord
 		}
 		return [$data, $nextPage];
 	}
-
-
 }

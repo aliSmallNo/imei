@@ -3600,15 +3600,15 @@ section
 	&:before
 		background: url(../images/ico_month_member.png) no-repeat center center
 		background-size: 1.8rem 1.8rem
-	//top: 40%
-	//&:after
-	//	content: ' '
-	//	position: absolute
-	//	background: #f3f3f3
-	//	width: 34rem
-	//	height: 1.5rem
-	//	left: -2rem
-	//	top: -3.2rem
+//top: 40%
+//&:after
+//	content: ' '
+//	position: absolute
+//	background: #f3f3f3
+//	width: 34rem
+//	height: 1.5rem
+//	left: -2rem
+//	top: -3.2rem
 
 .account-header
 	height: 12rem
@@ -3653,13 +3653,13 @@ section
 			margin-left: -1.5rem
 			margin-right: -1.5rem
 
-			//&:before
-			//	content: ''
-			//	position: absolute
-			//	height: 1.5rem
-			//	left: 0
-			//	right: 0
-			//	top: 0
+		//&:before
+		//	content: ''
+		//	position: absolute
+		//	height: 1.5rem
+		//	left: 0
+		//	right: 0
+		//	top: 0
 		.title
 			text-align: left
 			@include displayFlex-1
@@ -4986,15 +4986,15 @@ section
 	z-index: 8
 
 .charges
-	padding: 1rem
+	padding: .5rem 1rem
 	li
 		@include displayFlex
-		padding: 1rem .5rem
+		padding: .5rem
 		border-bottom: 1px solid $borderColor
 		.title
 			@include displayFlex-w(18rem)
 			h5
-				color: $grayFontColor
+				color: $grayFontColorLight
 				font-size: 1.2rem
 				font-weight: $weightNormal
 		.content
@@ -5006,6 +5006,8 @@ section
 				line-height: 3rem
 				font-weight: $weightBold
 				font-size: 1.4rem
+				&.amt-
+					color: $redColor
 				&.flower
 					padding-right: 2rem
 					&:after

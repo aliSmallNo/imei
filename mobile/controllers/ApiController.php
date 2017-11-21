@@ -2207,7 +2207,7 @@ class ApiController extends Controller
 				$res = 0;
 				if (in_array(Date::oneInfo($uid, $sid)->dStatus, [Date::STATUS_INVITE, Date::STATUS_PENDING, Date::STATUS_PASS])) {
 					$res = Date::reg($uid, $sid, [
-						'st' => Date::STATUS_FAIL, 'cnote' => $reasonStr, 'cdate' => date('Y-m-d H:i:s'), 'cby' => $uid
+						'st' => Date::STATUS_CANCEL, 'cnote' => $reasonStr, 'cdate' => date('Y-m-d H:i:s'), 'cby' => $uid
 					]);
 				}
 				if ($res) {
