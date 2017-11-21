@@ -1112,7 +1112,7 @@ class WechatUtil
 		foreach ($ret as $row) {
 			$name = $row['uName'];
 			$openid = $row['uOpenId'];
-			$content = $name . '，有人对你怦然心动了！快去注册并完善你的个人资料吧~<a href="https://wx.meipo100.com/wx/hi">👉点击马上注册👈</a>';
+			$content = $name . '，有人对你怦然心动了！快去注册并完善你的个人资料吧~👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
 			$cnt += UserWechat::sendMsg($openid, $content);
 		}
 		return $cnt;
