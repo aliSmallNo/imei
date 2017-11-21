@@ -48,7 +48,7 @@ class ApiController extends Controller
 	public $layout = false;
 	const COOKIE_OPENID = "wx-openid";
 
-	const MSG_BLACK = "对方禁止了你的操作";
+	const MSG_BLACK = "对方已经屏蔽（拉黑）你了";
 
 	public function actionBuzz()
 	{
@@ -1953,14 +1953,14 @@ class ApiController extends Controller
 				if (!$text) {
 					return self::renderAPI(129, '消息不能为空啊~');
 				}
-				if (UserNet::hasBlack($wxInfo["uId"], $receiverId)) {
+				if (UserNet::hasBlack($uid, $receiverId)) {
 					return self::renderAPI(129, self::MSG_BLACK);
 				}
-				if (ChatMsg::Cert($uid, $receiverId)) {
-					return self::renderAPI(103, '对方设置了聊天室身份认证要求，要求您进行身份认证，提供安全保障才能继续聊天，您是否继续聊天？');
+				if (ChatMsg::requireCert($uid, $receiverId)) {
+					return self::renderAPI(103, '对方设置了密聊身份认证要求，要求你进行身份认证，提供安全保障才能继续聊天，你是否继续聊天？');
 				}
 				if (!UserComment::hasComment($receiverId, $uid)) {
-					return self::renderAPI(129, '聊了这么多，觉得ta怎么样呢，快去匿名评价吧~');
+					return self::renderAPI(129, '聊了这么多，觉得Ta怎么样呢，快去匿名评价吧~');
 				}
 				/*if ($wxInfo["uId"] == '131379') {
 					return self::renderAPI(101, '想要更多密聊机会，请先捐媒桂花吧~');
@@ -2079,7 +2079,7 @@ class ApiController extends Controller
 					"cComment" => $cot,
 				]);
 				if ($id > 0) {
-					$items = UserComment::iTems($sid);
+					$items = UserComment::items($sid);
 					return self::renderAPI(0, '评论成功', [
 						"data" => $items
 					]);
@@ -2091,7 +2091,7 @@ class ApiController extends Controller
 				if (!$sid) {
 					return self::renderAPI(129, '参数错误');
 				}
-				$res = UserComment::iTems($sid);
+				$res = UserComment::items($sid);
 				return self::renderAPI(0, '', [
 					"data" => $res]);
 				break;

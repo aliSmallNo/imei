@@ -88,7 +88,7 @@ class UserComment extends ActiveRecord
 		return $entity->cId;
 	}
 
-	public static function iTems($uid)
+	public static function items($uid)
 	{
 		$sql = "select * from im_user_comment where cUId=:uid and cStatus=:st order by cId desc limit 30";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([

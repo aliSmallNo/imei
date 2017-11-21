@@ -23,6 +23,19 @@ class BaseController extends Controller
 	const CSS_VERSION = '1.1.9.5';
 	static $WX_OpenId = "";
 
+	protected $user_id = 0;
+	protected $user_role = 0;
+	protected $user_gender = 0;
+	protected $user_status = 0;
+	protected $user_phone = '';
+	protected $user_name = '';
+	protected $user_avatar = '';
+	protected $user_uni = '';
+	protected $user_eid = '';
+	protected $user_hint = '';
+	protected $user_location = '';
+	protected $user_subscribe = 1;
+
 	public function beforeAction($action)
 	{
 		$actionId = $action->id;
@@ -88,9 +101,23 @@ class BaseController extends Controller
 	protected function checkProfile($openId, $actionId)
 	{
 		$wxUserInfo = UserWechat::getInfoByOpenId($openId);
+		if ($wxUserInfo) {
+			$this->user_id = $wxUserInfo['uId'];
+			$this->user_role = $wxUserInfo['uRole'];
+			$this->user_gender = $wxUserInfo['uGender'];
+			$this->user_phone = $wxUserInfo['uPhone'];
+			$this->user_status = $wxUserInfo['uStatus'];
+			$this->user_name = $wxUserInfo['uName'];
+			$this->user_avatar = $wxUserInfo['Avatar'];
+			$this->user_hint = $wxUserInfo['uHint'];
+			$this->user_location = json_decode($wxUserInfo['uLocation'], 1);
+			$this->user_subscribe = isset($wxUserInfo['subscribe']) ? $wxUserInfo['subscribe'] : 0;
+			$this->user_uni = $wxUserInfo['uUniqid'];
+			$this->user_eid = AppUtil::encrypt($wxUserInfo['uId']);
+		}
 
 		$newActionId = $anchor = '';
-		$safeActions = ['share', 'invite', "pin8", "otherpart", 'vote', 'voted', 'reg0','sh'];
+		$safeActions = ['share', 'invite', "pin8", "otherpart", 'vote', 'voted', 'reg0', 'sh'];
 		if (in_array($actionId, $safeActions)) {
 			return;
 		}

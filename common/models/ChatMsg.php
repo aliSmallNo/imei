@@ -701,17 +701,14 @@ class ChatMsg extends ActiveRecord
 	 * @param $receiverId int female uId
 	 * @return int
 	 */
-	public static function Cert($uid, $receiverId)
+	public static function requireCert($uid, $receiverId)
 	{
 		$uInfo = User::findOne(["uId" => $uid]);
 		$gender = $uInfo["uGender"];
-		$certstatus = $uInfo['uCertStatus'];
-		$status = $uInfo['uSubStatus'];
+		$certStatus = $uInfo['uCertStatus'];
 
-		if ($status == User::SUB_ST_STAFF ||
-			$gender == User::GENDER_FEMALE ||
-			in_array($certstatus, [User::CERT_STATUS_PENDING, User::CERT_STATUS_PASS])
-		) {
+		if ($gender == User::GENDER_FEMALE ||
+			in_array($certStatus, [User::CERT_STATUS_PASS])) {
 			return 0;
 		}
 
