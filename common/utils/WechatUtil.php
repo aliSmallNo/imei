@@ -1106,7 +1106,7 @@ class WechatUtil
 			 FROM im_user as u 
 			 JOIN im_user_wechat as w on u.uId = w.wUId
 			 WHERE w.wSubscribe=1 AND u.uOpenId LIKE 'oYDJew%' 
-			 AND uId= 146306 ";
+			 AND u.uPhone='' ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
 		foreach ($ret as $row) {

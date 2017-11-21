@@ -886,6 +886,12 @@ class FooController extends Controller
 		var_dump($cnt);
 	}
 
+	public function actionSummon()
+	{
+		$ret = WechatUtil::summonVisitor(true);
+		var_dump($ret);
+	}
+
 	public function actionRain()
 	{
 		/*$ids = [130602,130667,130523,129662,130052,130019,129895,129532,
@@ -894,8 +900,6 @@ class FooController extends Controller
 			echo 'https://wx.meipo100.com/wx/sh?id=' . AppUtil::encrypt($id);
 			echo PHP_EOL;
 		}*/
-		$ret = WechatUtil::summonVisitor();
-		var_dump($ret);
 	}
 
 	public function actionZp()
