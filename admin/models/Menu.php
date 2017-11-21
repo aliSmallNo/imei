@@ -4,7 +4,7 @@ namespace admin\models;
 
 class Menu
 {
-	const VERSION = 171118.1;
+	const VERSION = 171121.1;
 
 	public static function keepMenu($uId, $url)
 	{
@@ -189,7 +189,8 @@ class Menu
 					[
 						"name" => "约会审核",
 						"url" => "/site/date",
-						"level" => 820
+						"level" => 820,
+						'count' => 'SELECT COUNT(1) as cnt FROM im_date WHERE dStatus = 100'
 					],
 					[
 						"name" => "公众号消息",

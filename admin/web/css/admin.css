@@ -408,7 +408,8 @@ span.space {
 
 .badge {
   font-weight: normal;
-  background-color: #747474; }
+  background-color: #747474;
+  padding: 3px 6px; }
 
 .nav-tabs > li.active > a .badge {
   background-color: #44b549; }
