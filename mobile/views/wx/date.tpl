@@ -394,6 +394,4 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-<script data-main="/js/date.js?v=1.2.2
-
-" src="/assets/js/require.js"></script>
+<script data-main="/js/date.js?v=1.2.3" src="/assets/js/require.js"></script>

@@ -294,6 +294,7 @@ require(['jquery', 'mustache', "layer", 'laydate'],
 					sid: util.sid,
 					reason: JSON.stringify(util.reason)
 				}, function (resp) {
+					util.loading = 0;
 					if (resp.code < 1) {
 						switch (util.tag) {
 							case 'start_date':
@@ -318,7 +319,6 @@ require(['jquery', 'mustache', "layer", 'laydate'],
 					} else {
 						showMsg(resp.msg);
 					}
-					util.loading = 0;
 				}, 'json');
 			},
 			prepay: function ($btn) {
