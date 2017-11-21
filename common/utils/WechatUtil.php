@@ -1112,7 +1112,7 @@ class WechatUtil
 		foreach ($ret as $row) {
 			$name = $row['uName'];
 			$openid = $row['uOpenId'];
-			$content = $name . '，你的一位微信联系人在［千寻恋恋］上将你设置为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。详情<a href="https://wx.meipo100.com/wx/hi">点击这里</a>';
+			$content = $name . '，有人对你怦然心动了！快去注册完善你的个人资料吧~<a href="https://wx.meipo100.com/wx/hi">点击这里</a>';
 			$cnt += UserWechat::sendMsg($openid, $content);
 		}
 		return $cnt;
