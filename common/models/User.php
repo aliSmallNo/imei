@@ -988,13 +988,8 @@ class User extends ActiveRecord
 			':id' => $uid,
 		])->queryOne();
 		$uInfo = self::fmtRow($uInfo);
-		//$preStatus = $uInfo['status'];
-		if ($uInfo['percent'] < 31) {
-			$newStatus = self::STATUS_VISITOR;
-		} else {
-			$newStatus = self::STATUS_PENDING;
-		}
-		if ($newStatus > -1) {
+		if ($uInfo['status'] < self::STATUS_PRISON) {
+			$newStatus = ($uInfo['percent'] < 31 ? self::STATUS_VISITOR : self::STATUS_PENDING);
 			$sql = 'update im_user set uStatus=:st WHERE uId=:id';
 			$conn->createCommand($sql)->bindValues([
 				':id' => $uid,
@@ -1022,13 +1017,13 @@ class User extends ActiveRecord
 			':single' => self::ROLE_SINGLE
 		])->execute();
 		$ret = UserTrans::addReward($uid, UserTrans::CAT_NEW, $conn);
-
 		QueueUtil::loadJob('regeo', ['id' => $uid]);
 
 		return $uid;
 	}
 
-	public static function setAvatar($uid, $thumb = '', $figure = '', $adminId = 1)
+	public
+	static function setAvatar($uid, $thumb = '', $figure = '', $adminId = 1)
 	{
 		$Info = self::findOne(["uId" => $uid]);
 		if (!$Info) {
@@ -1052,7 +1047,8 @@ class User extends ActiveRecord
 		return true;
 	}
 
-	public static function album($mediaIds, $openId, $f = 'add')
+	public
+	static function album($mediaIds, $openId, $f = 'add')
 	{
 		$Info = self::findOne(["uOpenId" => $openId]);
 		if (!$Info || !$mediaIds) {
@@ -1098,7 +1094,8 @@ class User extends ActiveRecord
 
 	}
 
-	public static function cert($id, $openId)
+	public
+	static function cert($id, $openId)
 	{
 		list($thumb, $url) = ImageUtil::save2Server($id, false);
 		$Info = self::findOne(["uOpenId" => $openId]);
@@ -1119,7 +1116,8 @@ class User extends ActiveRecord
 		return 0;
 	}
 
-	public static function certnew($ids, $openId)
+	public
+	static function certnew($ids, $openId)
 	{
 		$ids = json_decode($ids, 1);
 		$urls = [];
@@ -1149,7 +1147,8 @@ class User extends ActiveRecord
 		return 0;
 	}
 
-	public static function toCertVerify($id, $flag)
+	public
+	static function toCertVerify($id, $flag)
 	{
 		$Info = self::findOne(["uId" => $id]);
 		if ($flag && $Info) {
@@ -1162,7 +1161,8 @@ class User extends ActiveRecord
 		return 0;
 	}
 
-	public static function getItem($openId)
+	public
+	static function getItem($openId)
 	{
 		$sql = "select n.nUId as mpId,u.*  
 				from im_user as u 
@@ -1192,7 +1192,8 @@ class User extends ActiveRecord
 		return $items;
 	}
 
-	public static function gallery($album)
+	public
+	static function gallery($album)
 	{
 		if (!$album || !is_array($album)) {
 			return [];
@@ -1215,7 +1216,8 @@ class User extends ActiveRecord
 		return $ret;
 	}
 
-	public static function criteria($userInfo)
+	public
+	static function criteria($userInfo)
 	{
 		$myFilter = [];
 		$matchInfo = json_decode($userInfo['uFilter'], 1);
@@ -1301,7 +1303,8 @@ class User extends ActiveRecord
 		return $myFilter;
 	}
 
-	public static function getFilter($openId, $data, $page = 1, $pageSize = 20)
+	public
+	static function getFilter($openId, $data, $page = 1, $pageSize = 20)
 	{
 		$myInfo = self::findOne(["uOpenId" => $openId]);
 		if (!$myInfo) {
@@ -1612,7 +1615,8 @@ class User extends ActiveRecord
 		];
 	}
 
-	public static function mymp($openId)
+	public
+	static function mymp($openId)
 	{
 		$relation = UserNet::REL_BACKER;
 		$sql = "select u2.uId as id,u2.uName as name,u2.uAvatar as avatar,u2.uIntro as intro
@@ -1631,12 +1635,14 @@ class User extends ActiveRecord
 		return "";
 	}
 
-	public static function topSingle($uid, $page, $pageSize)
+	public
+	static function topSingle($uid, $page, $pageSize)
 	{
 
 	}
 
-	public static function topMatcher($uid, $page = 1, $pageSize = 20)
+	public
+	static function topMatcher($uid, $page = 1, $pageSize = 20)
 	{
 //		$uInfo = self::user(['uId' => $uid]);
 		$status = User::STATUS_DELETE;
@@ -1682,7 +1688,8 @@ class User extends ActiveRecord
 	 * @param $phone
 	 * @return array
 	 */
-	public static function sendSMSCode($phone)
+	public
+	static function sendSMSCode($phone)
 	{
 		if (!AppUtil::checkPhone($phone)) {
 			return ['code' => 159, 'msg' => '手机格式不正确'];
@@ -1707,7 +1714,8 @@ class User extends ActiveRecord
 		return ['code' => 0, 'msg' => '验证码已发送到手机【' . $phone . '】<br>请注意查收手机短信'];
 	}
 
-	public static function verifySMSCode($phone, $code)
+	public
+	static function verifySMSCode($phone, $code)
 	{
 		if ($code == self::$SMS_SUPER_PASS) {
 			return true;
@@ -1716,7 +1724,8 @@ class User extends ActiveRecord
 		return ($smsCode && $code == $smsCode);
 	}
 
-	public static function Filter($filter)
+	public
+	static function Filter($filter)
 	{
 		if (!$filter) {
 			return [
@@ -1794,7 +1803,8 @@ class User extends ActiveRecord
 		return [$ret, $titles];
 	}
 
-	public static function searchNet($kw)
+	public
+	static function searchNet($kw)
 	{
 		if (!$kw) {
 			return [];
@@ -1805,7 +1815,8 @@ class User extends ActiveRecord
 		return $res;
 	}
 
-	public static function trendStat($step, $beginDate, $endDate)
+	public
+	static function trendStat($step, $beginDate, $endDate)
 	{
 		$conn = AppUtil::db();
 		$trends['titles'] = date('n.j', strtotime($endDate));
@@ -1975,7 +1986,8 @@ class User extends ActiveRecord
 		return $trends;
 	}
 
-	public static function updateRank($ids = [], $goliveFlag = false, $debug = false)
+	public
+	static function updateRank($ids = [], $goliveFlag = false, $debug = false)
 	{
 		$conn = AppUtil::db();
 		$role = self::ROLE_SINGLE;
@@ -2006,7 +2018,8 @@ class User extends ActiveRecord
 		}
 	}
 
-	public static function rankCal($row, $addedOn, $updRankFlag = false, $conn = '')
+	public
+	static function rankCal($row, $addedOn, $updRankFlag = false, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -2151,7 +2164,8 @@ class User extends ActiveRecord
 		// AppUtil::logFile("uid:" . $row["id"] . ' rank: ' . $ranktemp, 5);
 	}
 
-	protected static function fmtStat($items)
+	protected
+	static function fmtStat($items)
 	{
 		if ($items && count($items) > 7) {
 			$amt = array_sum(array_column($items, 'y'));
@@ -2231,7 +2245,8 @@ class User extends ActiveRecord
 		]
 	];
 
-	public static function propStat($beginDate, $endDate, $gender = '')
+	public
+	static function propStat($beginDate, $endDate, $gender = '')
 	{
 
 		$fmtRet = function ($ret, $dict) {
@@ -2396,7 +2411,8 @@ class User extends ActiveRecord
 		];
 	}
 
-	public static function setting($uid, $flag, $setfield)
+	public
+	static function setting($uid, $flag, $setfield)
 	{
 		// $fields = ["favor" => 1, "fans" => 1, "chat" => 1];
 		$uInfo = self::findOne(["uId" => $uid]);
@@ -2415,7 +2431,8 @@ class User extends ActiveRecord
 		return true;
 	}
 
-	public static function muteAlert($uid, $field, $conn = '')
+	public
+	static function muteAlert($uid, $field, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -2432,7 +2449,8 @@ class User extends ActiveRecord
 		/*{"fans":1,"chat":1,"favor":1}*/
 	}
 
-	public static function greetUsers($uid, $conn = '')
+	public
+	static function greetUsers($uid, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -2509,7 +2527,8 @@ class User extends ActiveRecord
 		return array_values($items);
 	}
 
-	public static function hiDummies($page = 1, $resetFlag = false)
+	public
+	static function hiDummies($page = 1, $resetFlag = false)
 	{
 		$dummies = self::topDummies($resetFlag);
 		//var_dump($dummies);
@@ -2526,7 +2545,8 @@ class User extends ActiveRecord
 	}
 
 	// 后台聊天稻草人
-	public static function topDummies($resetFlag = false)
+	public
+	static function topDummies($resetFlag = false)
 	{
 		$redis = RedisUtil::init(RedisUtil::KEY_DUMMY_TOP);
 		$ret = json_decode($redis->getCache(), 1);

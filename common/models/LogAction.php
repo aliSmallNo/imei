@@ -315,7 +315,7 @@ class LogAction extends ActiveRecord
 			}
 			return $lineData;
 		}
-
+		return [];
 	}
 
 
