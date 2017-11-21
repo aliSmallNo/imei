@@ -895,12 +895,17 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ids = [131119, 130455, 130966, 131044, 130412,
+		/*$ids = [131119, 130455, 130966, 131044, 130412,
 			131113, 129602, 131110];
 		foreach ($ids as $id) {
 			echo 'https://wx.meipo100.com/wx/sh?id=' . AppUtil::encrypt($id);
 			echo PHP_EOL;
-		}
+		}*/
+		$content = '【千寻恋恋】✘✘✘，你的一位微信联系人在［千寻恋恋］上将你设置为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。
+		详情<a href="https://wx.meipo100.com/wx/hi">点击这里</a>';
+		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
+		$result = UserWechat::sendMsg($openId, $content);
+		var_dump($result);
 	}
 
 	public function actionZp()

@@ -111,50 +111,5 @@
 		});
 	});
 
-	$(document).on("click", ".play", function () {
-		var self = $(this);
-		var xhr = new XMLHttpRequest();
-		xhr.open('GET', self.attr("data-src"));
-		xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
-		xhr.responseType = 'blob';
-		xhr.onload = function () {
-			playAmrBlob(this.response);
-		};
-		xhr.send();
-	});
-
-	function playAmrBlob(blob, callback) {
-		readBlob(blob, function (data) {
-			playAmrArray(data);
-		});
-	}
-
-	function readBlob(blob, callback) {
-		var reader = new FileReader();
-		reader.onload = function (e) {
-			var data = new Uint8Array(e.target.result);
-			callback(data);
-		};
-		reader.readAsArrayBuffer(blob);
-	}
-
-	function playAmrArray(array) {
-		var samples = AMR.decode(array);
-		if (!samples) {
-			alert('Failed to decode!');
-			return;
-		}
-		playPcm(samples);
-	}
-
-	function playPcm(samples) {
-		var ctx = new AudioContext();
-		var src = ctx.createBufferSource();
-		var buffer = ctx.createBuffer(1, samples.length, 8000);
-		buffer.copyToChannel(samples, 0, 0);
-		src.buffer = buffer;
-		src.connect(ctx.destination);
-		src.start();
-	}
 </script>
 {{include file="layouts/footer.tpl"}}

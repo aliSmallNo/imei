@@ -224,7 +224,8 @@ class UserWechat extends ActiveRecord
 			"errmsg" => "default"
 		];
 		if ($openId && $msg) {
-			$url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' . WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+			$url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=';
+			$url .= WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 			$postData = [
 				"msgtype" => "text",
 				"touser" => $openId,
