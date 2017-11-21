@@ -363,6 +363,14 @@
 		font-size: 12px;
 		color: #969696;
 	}
+
+	.uid {
+		font-weight: 300;
+		font-size: 10px;
+		color: #999;
+		text-align: center;
+		line-height: 18px;
+	}
 </style>
 <div class="row">
 	<h4>用户列表
@@ -457,6 +465,7 @@
 	<tr data-id="{{$prod.id}}">
 		<td>
 			<img src="{{$prod.thumb}}" bsrc="{{$prod.avatar}}" width="100%" class="i-av">
+			<div class="uid">{{$prod.id}}</div>
 		</td>
 		<td class="pInfo m-style-{{$prod.style}}">
 			<span class="m-role">{{$prod.role_t}}</span> {{$prod.name}}

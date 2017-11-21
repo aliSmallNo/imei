@@ -821,14 +821,8 @@ class FooController extends Controller
 		var_dump($cnt);
 	}
 
-	public function actionRain()
+	public function actionCos()
 	{
-
-		/*$res = COSUtil::init(COSUtil::UPLOAD_URL,
-			"https://img.meipo100.com/avatar/4fa5106bce7d4b649a9878135712a427.jpg");
-
-		var_dump($res->upload(true, true));
-		var_dump($res->upload(false, true));*/
 
 		$conn = AppUtil::db();
 		$sql = "INSERT INTO im_img(tUId,tPath,tSaved,tThumb,tFigure) 
@@ -897,6 +891,14 @@ class FooController extends Controller
 			 SET u.uThumb=i.tThumb, u.uAvatar=i.tFigure";
 		$conn->createCommand($sql)->execute();
 		var_dump($cnt);
+	}
+
+	public function actionRain()
+	{
+		$ids = [131119, 130455];
+		foreach ($ids as $id) {
+			var_dump(AppUtil::encrypt($id));
+		}
 	}
 
 	public function actionZp()
