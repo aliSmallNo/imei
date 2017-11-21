@@ -111,7 +111,7 @@
 		</div>
 	</div>
 	<div class="date-item date-margintop">
-		<div class="date-label">约会预算</div>
+		<div class="date-label">约会付费</div>
 		<div class="date-option" data-field="paytype">
 			<a href="javascript:;" tag-edit="{{if $role=="active" && $st==1}}able{{/if}}"
 				 class="{{if isset($d['dPayType']) && $d['dPayType']!=$uid && $d['dPayType']!=$id}}on{{/if}}"

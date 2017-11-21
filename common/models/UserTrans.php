@@ -15,13 +15,14 @@ use yii\db\ActiveRecord;
 
 class UserTrans extends ActiveRecord
 {
-	const CAT_RECHARGE_MEMBER = 80;//会员充值
-	const CAT_RECHARGE_MEET = 90;//约会充值
+	const CAT_RECHARGE_MEMBER = 80;
+	const CAT_RECHARGE_MEET = 90;
 	const CAT_RECHARGE = 100;
 	const CAT_SIGN = 105;
 	const CAT_NEW = 108;
 	const CAT_LINK = 110;
 	const CAT_REWARD = 120;
+	const CAT_DATE_NEW = 122;
 	const CAT_CHAT = 125;
 	const CAT_RECEIVE = 127;
 	const CAT_PRESENT = 128;
@@ -36,6 +37,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_NEW => "新人奖励",
 		self::CAT_LINK => "牵线奖励",
 		self::CAT_REWARD => "打赏",
+		self::CAT_DATE_NEW => "发起约会付费",
 		self::CAT_CHAT => "密聊付费",
 		self::CAT_RECEIVE => "收到花粉值",
 		self::CAT_PRESENT => "赠送媒桂花",

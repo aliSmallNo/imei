@@ -53,12 +53,12 @@ class Date extends ActiveRecord
 
 	const PAY_TYPE_AA = 1;
 
+	const NEW_DATE_COST = 50;
 
 	public static function tableName()
 	{
 		return '{{%date}}';
 	}
-
 
 	public static function add($data)
 	{
@@ -108,10 +108,10 @@ class Date extends ActiveRecord
 
 	public static function checkBal($uid)
 	{
-		$costAmt = 50;
+		$costAmt = self::NEW_DATE_COST;
 		$stat = UserTrans::getStat($uid, 1);
 		$flower = isset($stat['flower']) ? intval($stat['flower']) : 0;
-		if ($flower < $costAmt || $uid == 131379) {
+		if ($flower < $costAmt) {
 			return '你的媒桂花不足' . $costAmt . '，不能发起约会，快去充值再来吧';
 		}
 		return '';
@@ -170,7 +170,10 @@ class Date extends ActiveRecord
 			$insert['dUId2'] = $uid2;
 			$insert['dDate'] = '';
 			$insert['dStatus'] = self::STATUS_INVITE;
-			return self::add($insert);
+			$did = self::add($insert);
+			UserTrans::add($myUId, $did, UserTrans::CAT_DATE_NEW, '',
+				self::NEW_DATE_COST, UserTrans::UNIT_GIFT);
+			return $did;
 		} else {
 			return self::edit($d->dId, $insert);
 		}
@@ -233,7 +236,6 @@ class Date extends ActiveRecord
 		}
 		return [$items, $nextpage];
 	}
-
 
 	public static function dateItems($condition, $page, $pageSize = 20)
 	{
@@ -362,7 +364,7 @@ class Date extends ActiveRecord
 			case self::STATUS_COMMENT:
 				break;
 		}
-
+		return 1;
 	}
 
 	public static function sendmsg($phone, $msg)
