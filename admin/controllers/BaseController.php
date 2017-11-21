@@ -22,7 +22,6 @@ class BaseController extends Controller
 	const PAGE_SIZE = 20;
 	protected static $MenuForkId = "summary";
 	protected $admin_id = 0;
-	protected $admin_name = '';
 
 	public function behaviors()
 	{
@@ -154,7 +153,6 @@ class BaseController extends Controller
 			header("location:/site/login");
 			exit;
 		}
-		$this->admin_name = $userInfo['aName'];
 	}
 
 	protected function getHeader($field, $defaultVal = "")
