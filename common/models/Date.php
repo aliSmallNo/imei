@@ -172,7 +172,7 @@ class Date extends ActiveRecord
 			$insert['dStatus'] = self::STATUS_INVITE;
 			$did = self::add($insert);
 			UserTrans::add($myUId, $did, UserTrans::CAT_DATE_NEW, '',
-				self::NEW_DATE_COST, UserTrans::UNIT_GIFT);
+				-self::NEW_DATE_COST, UserTrans::UNIT_GIFT);
 			return $did;
 		} else {
 			return self::edit($d->dId, $insert);
