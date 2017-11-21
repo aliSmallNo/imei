@@ -84,6 +84,9 @@ class Date extends ActiveRecord
 		}
 		$entity->save();
 		Date::toSendMsg($entity->dId);
+		if ($did && in_array($entity->dStatus, [self::STATUS_CANCEL, self::STATUS_PENDING_FAIL])) {
+			UserTrans::remove($entity->dAddedBy, $entity->dId, UserTrans::CAT_DATE_NEW);
+		}
 		return $entity->dId;
 	}
 
@@ -161,7 +164,6 @@ class Date extends ActiveRecord
 				$insert[$f] = $data[$k];
 			}
 		}
-
 		list($uid1, $uid2) = self::sortUId($myUId, $taUId);
 		$d = self::oneInfo($myUId, $taUId);
 		if (!$d) {
@@ -173,14 +175,10 @@ class Date extends ActiveRecord
 			$did = self::add($insert);
 			UserTrans::add($myUId, $did, UserTrans::CAT_DATE_NEW, '',
 				self::NEW_DATE_COST, UserTrans::UNIT_GIFT);
-			return $did;
 		} else {
 			$did = self::edit($d->dId, $insert);
-			if ($did && in_array($insert['dStatus'], [self::STATUS_CANCEL, self::STATUS_PENDING_FAIL])) {
-				UserTrans::remove($myUId, $did, UserTrans::CAT_DATE_NEW);
-			}
-			return $did;
 		}
+		return $did;
 	}
 
 	public static function items($MyUid, $tag, $subtag, $page, $pageSize = 10)
