@@ -41,6 +41,9 @@ class ApiController extends Controller
 	const ICON_OK_HTML = '<i class="fa fa-check-circle gIcon"></i> ';
 	const ICON_ALERT_HTML = '<i class="fa fa-exclamation-circle gIcon"></i> ';
 
+	protected $admin_id = 1;
+	protected $admin_name = '';
+
 	public function behaviors()
 	{
 		return ArrayHelper::merge([
@@ -52,6 +55,13 @@ class ApiController extends Controller
 				],
 			],
 		], parent::behaviors());
+	}
+
+	public function beforeAction($action)
+	{
+		$this->admin_id = Admin::getAdminId();
+		$this->admin_name = Admin::userInfo()['aName'];
+		return parent::beforeAction($action);
 	}
 
 	/**
@@ -102,7 +112,7 @@ class ApiController extends Controller
 			case "del-admin":
 				$result = Admin::checkAccessLevel(Admin::LEVEL_HIGH, true);
 				if ($result) {
-					$ret = Admin::remove($id, Admin::getAdminId());
+					$ret = Admin::remove($id, $this->admin_id);
 				} else {
 					$ret = ["code" => 159, "msg" => "无操作权限！"];
 				}
@@ -183,7 +193,7 @@ class ApiController extends Controller
 				if ($src && $uid) {
 					list($thumb, $figure) = ImageUtil::save2Server($src, true, $top, $left);
 					if ($thumb && $figure) {
-						User::setAvatar($uid, $thumb, $figure, Admin::getAdminId());
+						User::setAvatar($uid, $thumb, $figure, $this->admin_id);
 						return self::renderAPI(0, '设置成功');
 					}
 				}
@@ -339,7 +349,7 @@ class ApiController extends Controller
 						PushUtil::hint('你的个人资料审核通过啦', $uni, 'refresh-profile');
 					} else {
 						$data["aReasons"] = $reason;
-						$data["aAddedBy"] = Admin::getAdminId();
+						$data["aAddedBy"] = $this->admin_id;
 						$aid = UserAudit::add($data);
 						if ($st == User::STATUS_INVALID) {
 
@@ -451,12 +461,12 @@ class ApiController extends Controller
 			case 'send':
 				$serviceId = User::SERVICE_UID;
 				$text = self::postParam("text");
-				$ret = ChatMsg::addChat($serviceId, $id, $text, 0, Admin::getAdminId());
+				$ret = ChatMsg::addChat($serviceId, $id, $text, 0, $this->admin_id);
 				return self::renderAPI(0, '', $ret);
 			case "dsend":
 				$serviceId = self::postParam("did");;
 				$text = self::postParam("text");
-				$ret = ChatMsg::addChat($serviceId, $id, $text, 0, Admin::getAdminId());
+				$ret = ChatMsg::addChat($serviceId, $id, $text, 0, $this->admin_id);
 				WechatUtil::templateMsg(WechatUtil::NOTICE_CHAT,
 					$id,
 					'有人密聊你啦',

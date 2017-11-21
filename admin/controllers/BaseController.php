@@ -8,7 +8,6 @@
 
 namespace admin\controllers;
 
-
 use admin\models\Admin;
 use yii\data\Pagination;
 use yii\filters\Cors;
@@ -22,6 +21,8 @@ class BaseController extends Controller
 	const ICON_ALERT_HTML = '<i class="fa fa-exclamation-circle gIcon"></i> ';
 	const PAGE_SIZE = 20;
 	protected static $MenuForkId = "summary";
+	protected $admin_id = 0;
+	protected $admin_name = '';
 
 	public function behaviors()
 	{
@@ -142,9 +143,8 @@ class BaseController extends Controller
 		if (in_array($pathInfo, $safePaths) || 1) {
 			return true;
 		}
-
-		$adminId = Admin::getAdminId();
-		if (!$adminId) {
+		$this->admin_id = Admin::getAdminId();
+		if (!$this->admin_id) {
 			header("location:/site/login");
 			exit;
 		}
@@ -154,6 +154,7 @@ class BaseController extends Controller
 			header("location:/site/login");
 			exit;
 		}
+		$this->admin_name = $userInfo['aName'];
 	}
 
 	protected function getHeader($field, $defaultVal = "")

@@ -94,7 +94,7 @@ class SiteController extends BaseController
 	{
 		$menus = [];
 		if (!$adminId) {
-			$adminId = Admin::getAdminId();
+			$adminId = $this->admin_id;
 		}
 		if (!$adminId) {
 			header("location:/site/login");
@@ -228,7 +228,7 @@ class SiteController extends BaseController
 				if ($preStatus == User::STATUS_ACTIVE && $curStatus == User::STATUS_PENDING) {
 					WechatUtil::regNotice($id, "refuse");
 				}
-				User::edit($id, $data, Admin::getAdminId());
+				User::edit($id, $data, $this->admin_id);
 				$success = self::ICON_OK_HTML . '修改成功';
 				RedisUtil::init(RedisUtil::KEY_WX_USER, $userInfo['uOpenId'])->delCache();
 			}
@@ -570,7 +570,7 @@ class SiteController extends BaseController
 					$item = $conn->createCommand($sql)->queryOne();
 					if (!$item) {
 						ChatMsg::groupEdit($serviceId, $uid, 9999);
-						ChatMsg::addChat($serviceId, $uid, $content, 0, Admin::getAdminId());
+						ChatMsg::addChat($serviceId, $uid, $content, 0, $this->admin_id);
 						$arr[] = "$count. from:" . $serviceId . " to" . $uid . " \n";
 					}
 					$count++;
@@ -594,7 +594,7 @@ class SiteController extends BaseController
 		$content = self::postParam("content");
 		if ($uid && $content) {
 			Trace::add([
-				"tAddedBy" => Admin::getAdminId(),
+				"tAddedBy" => $this->admin_id,
 				"tAddedOn" => date("Y-m-d H:i:s"),
 				"tPId" => $uid,
 				"tCategory" => Trace::CATEGORY_FOLLOW,
@@ -714,7 +714,7 @@ class SiteController extends BaseController
 	{
 		$getInfo = Yii::$app->request->get();
 		$page = self::getParam("page", 1);
-		list($list, $count) = UserBuzz::wxMessages(Admin::getAdminId(), $page);
+		list($list, $count) = UserBuzz::wxMessages($this->admin_id, $page);
 		$pagination = $pagination = self::pagination($page, $count);
 		return $this->renderPage("wxmsg.tpl",
 			[
@@ -732,7 +732,7 @@ class SiteController extends BaseController
 		$openId = self::getParam("id", "xxx");
 		list($list, $nickname, $lastId) = UserMsg::wechatDetail($openId);
 		if ($lastId) {
-			Mark::markRead($lastId, Admin::getAdminId(), Mark::CATEGORY_WECHAT);
+			Mark::markRead($lastId, $this->admin_id, Mark::CATEGORY_WECHAT);
 		}
 		$regInfo = User::fmtRow(User::find()->where(["uOpenId" => $openId])->asArray()->one());
 		return $this->renderPage('wx-reply.tpl',
@@ -759,7 +759,7 @@ class SiteController extends BaseController
 			$result = UserWechat::sendMsg($openId, $content);
 			if ($result == 0) {
 				UserMsg::edit('', [
-					"mAddedBy" => Admin::getAdminId(),
+					"mAddedBy" => $this->admin_id,
 					"mAddedOn" => date("Y-m-d H:i:s"),
 					"mUId" => $uId,
 					"mCategory" => UserMsg::CATEGORY_WX_MSG,
@@ -1188,7 +1188,7 @@ class SiteController extends BaseController
 					], JSON_UNESCAPED_UNICODE);
 				}
 
-				$insertItem["qAddedBy"] = Admin::getAdminId();
+				$insertItem["qAddedBy"] = $this->admin_id;
 				$insertItem["qTitle"] = $v["title"];
 				$insertItem["qCategory"] = $cat;
 
@@ -1248,7 +1248,7 @@ class SiteController extends BaseController
 				"name" => $name,
 				'pagination' => $pagination,
 				'category' => 'data',
-				'isDebug' => in_array(Admin::getAdminId(), [1002]),
+				'isDebug' => in_array($this->admin_id, [1002]),
 			]);
 	}
 
@@ -1395,9 +1395,9 @@ class SiteController extends BaseController
 			}
 
 			if (!$eId) {
-				$editItem['eAddedBy'] = Admin::getAdminId();
+				$editItem['eAddedBy'] = $this->admin_id;
 			}
-			$editItem['eUpdatedBy'] = Admin::getAdminId();
+			$editItem['eUpdatedBy'] = $this->admin_id;
 			if (!$error) {
 				if ($eId) {
 					$queryId = Event::modify($eId, $editItem);
@@ -1442,7 +1442,7 @@ class SiteController extends BaseController
 		$items = Pin::items();
 		return $this->renderPage('pins.tpl',
 			[
-				'uni' => Admin::getAdminId(),
+				'uni' => $this->admin_id,
 				'ws_url' => AppUtil::wsUrl(),
 				'items' => $items,
 				'category' => 'data',
@@ -1453,7 +1453,7 @@ class SiteController extends BaseController
 
 	public function actionInfo()
 	{
-		AppUtil::logFile([Admin::getAdminId(), AppUtil::IP()], 5, __FUNCTION__, __LINE__);
+		AppUtil::logFile([$this->admin_id, AppUtil::IP()], 5, __FUNCTION__, __LINE__);
 		echo phpinfo();
 	}
 
