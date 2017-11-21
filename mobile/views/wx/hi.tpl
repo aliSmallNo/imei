@@ -13,6 +13,4 @@
 		<a href="/wx/reg0" class="btn-reg"></a>
 	</div>
 </div>
-<script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/hi.js?v=1.2.2" src="/assets/js/require.js"></script>
+<script src="/assets/js/require.js" data-main="/js/hi.js?v=1.2.3"></script>

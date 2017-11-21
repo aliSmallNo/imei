@@ -1,11 +1,12 @@
 require.config({
 	paths: {
+		"jquery": "/assets/js/jquery-3.2.1.min",
 		"layer": "/assets/js/layer_mobile/layer",
 	}
 });
 
-require(["layer"],
-	function (layer) {
+require(['jquery', "layer"],
+	function ($, layer) {
 		"use strict";
 		var kClick = 'click';
 
