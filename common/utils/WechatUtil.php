@@ -1105,7 +1105,7 @@ class WechatUtil
 		$sql = "SELECT u.uName,u.uOpenId,uPhone,uGender,wSubscribe
 			 FROM im_user as u 
 			 JOIN im_user_wechat as w on u.uId = w.wUId
-			 WHERE w.wSubscribe=1 AND u.uPhone='' AND u.uOpenId LIKE 'oYDJew%' 
+			 WHERE w.wSubscribe=1 AND u.uOpenId LIKE 'oYDJew%' 
 			 AND u.uId=131379 ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
