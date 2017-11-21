@@ -21,8 +21,8 @@
 		border-radius: 3px;
 	}
 
-	.color99 {
-		background: #eee;
+	.color99, .color88 {
+		background: #aaa;
 	}
 
 	.color100 {
