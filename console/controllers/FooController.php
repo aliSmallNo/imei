@@ -831,13 +831,13 @@ class FooController extends Controller
 		var_dump($res->upload(false, true));*/
 
 		$conn = AppUtil::db();
-		$sql = "insert into im_img(tUId,tPath,tSaved,tThumb,tFigure) 
+		$sql = "INSERT INTO im_img(tUId,tPath,tSaved,tThumb,tFigure) 
  				VALUES(:uid,:path,:saved,:thumb,:figure)";
 		$cmd = $conn->createCommand($sql);
 		$sql = "SELECT uId,uThumb,uAvatar,uRawData
  				FROM im_user as u
  				WHERE uOpenId not LIKE 'oYDJew%' AND uAvatar!='' AND uRawData!=''
-  				AND not EXISTS(select 1 from im_img i WHERE u.uId=i.tUId)  ";
+  				AND NOT EXISTS(SELECT 1 FROM im_img i WHERE u.uId=i.tUId)  ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
 		foreach ($ret as $row) {
@@ -848,8 +848,8 @@ class FooController extends Controller
 //			$path =  str_replace('_n.', '.', $avatar);
 			$util = COSUtil::init(COSUtil::UPLOAD_URL, $path);
 			if ($util->hasError) continue;
-			$thumb = $util->upload(true, true);
-			$figure = $util->upload(false, true);
+			$thumb = $util->uploadOnly(true, true);
+			$figure = $util->uploadOnly(false, true);
 			$cmd->bindValues([
 				':uid' => $uid,
 				':path' => $path,
@@ -878,8 +878,8 @@ class FooController extends Controller
 				$util = COSUtil::init(COSUtil::UPLOAD_URL, $path);
 				if ($util->hasError) continue;
 			}
-			$thumb = $util->upload(true, true);
-			$figure = $util->upload(false, true);
+			$thumb = $util->uploadOnly(true, true);
+			$figure = $util->uploadOnly(false, true);
 			$cmd->bindValues([
 				':uid' => $uid,
 				':path' => $path,

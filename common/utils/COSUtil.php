@@ -163,7 +163,7 @@ class COSUtil
 	}
 
 
-	public function upload($thumbFlag = false, $squareFlag = false)
+	public function uploadOnly($thumbFlag = false, $squareFlag = false)
 	{
 		$data = [
 			'op' => 'upload',
@@ -211,6 +211,78 @@ class COSUtil
 		$cosUrl = isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
 		$cosUrl = str_replace('http://', 'https://', $cosUrl);
 		return $cosUrl;
+	}
+
+	public function uploadBoth($squareFlag = false, $top = -1, $left = -1)
+	{
+		if ($this->hasError) {
+			return ['', ''];
+		}
+		if ($this->resExtension == "amr") {
+			$fileMP3 = str_replace(".amr", ".mp3", $this->savedPath);
+			exec('/usr/bin/ffmpeg -i ' . $this->savedPath . ' -ab 12.2k -ar 16000 -ac 1 ' . $fileMP3, $out);
+			$ret = ImageUtil::getUrl($fileMP3);
+			//$ret = '/voice/' . $key . '.' . $ext;
+			return [$ret, $ret, $this->savedPath];
+		} else {
+			$thumbData = $figureData = [
+				'op' => 'upload',
+				"insertOnly" => 0
+			];
+			$thumbSize = $thumbWidth = $thumbHeight = 180;
+			$figureSize = $figureWidth = $figureHeight = 640;
+			if ($squareFlag) {
+				$thumbSize = $thumbWidth = $thumbHeight = 180;
+				$figureSize = $figureWidth = $figureHeight = 640;
+			}
+			list($srcWidth, $srcHeight) = getimagesize($this->savedPath);
+			if ($srcWidth > $srcHeight) {
+				$figureWidth = round($figureHeight * $srcWidth / $srcHeight);
+				$thumbWidth = round($thumbHeight * $srcWidth / $srcHeight);
+			} else {
+				$figureHeight = round($figureWidth * $srcHeight / $srcWidth);
+				$thumbHeight = round($thumbWidth * $srcHeight / $srcWidth);
+			}
+			$thumbObj = Image::open($this->savedPath)->zoomCrop($thumbWidth, $thumbHeight, 0xffffff, 'left', 'top');
+			$figureObj = Image::open($this->savedPath)->zoomCrop($figureWidth, $figureHeight, 0xffffff, 'left', 'top');
+			if ($squareFlag) {
+				if ($top >= 0) {
+					$thumbY = round($thumbHeight * $top / 100.0);
+					$figureY = round($figureHeight * $top / 100.0);
+				} else {
+					$thumbY = round(($thumbHeight - $thumbSize) / 2.0);
+					$figureY = round(($figureHeight - $figureSize) / 2.0);
+				}
+				if (2 > $thumbY) $thumbY = 0;
+				if (2 > $figureY) $figureY = 0;
+
+				if ($left >= 0) {
+					$thumbX = round($thumbWidth * $left / 100.0);
+					$figureX = round($figureWidth * $left / 100.0);
+				} else {
+					$thumbX = round(($thumbWidth - $thumbSize) / 2.0);
+					$figureX = round(($figureWidth - $figureSize) / 2.0);
+				}
+				if (2 > $thumbX) $thumbX = 0;
+				if (2 > $figureX) $figureX = 0;
+				$thumbObj = $thumbObj->crop($thumbX, $thumbY, $thumbSize, $thumbSize);
+				$figureObj = $figureObj->crop($figureX, $figureY, $figureSize, $figureSize);
+			}
+			$url = $this->getUrl() . "/t" . $this->resRename;
+			$thumbData['filecontent'] = $thumbObj->get();
+			$thumbData['sha'] = hash('sha1', $thumbData['filecontent']);
+			$ret = $this->curlUpload($url, $thumbData);
+			$ret = json_decode($ret, true);
+			$thumbUrl = isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
+
+			$url = $this->getUrl() . "/n" . $this->resRename;
+			$figureData['filecontent'] = $figureObj->get();
+			$figureData['sha'] = hash('sha1', $figureData['filecontent']);
+			$ret = $this->curlUpload($url, $figureData);
+			$ret = json_decode($ret, true);
+			$figureUrl = isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
+			return [$thumbUrl, $figureUrl, $this->savedPath];
+		}
 	}
 
 	protected function curlUpload($url, $data)

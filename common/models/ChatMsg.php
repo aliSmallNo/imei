@@ -169,7 +169,7 @@ class ChatMsg extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		$ratio = self::RATIO;
-		$costAmt = 10;
+		$costAmt = 20;
 		list($uid1, $uid2) = self::sortUId($senderId, $receiverId);
 		$left = self::chatLeft($senderId, $receiverId, $conn);
 		if ($left < 1) {
