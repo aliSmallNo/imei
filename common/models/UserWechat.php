@@ -230,10 +230,10 @@ class UserWechat extends ActiveRecord
 				"msgtype" => "text",
 				"touser" => $openId,
 				"text" => [
-					"content" => urlencode($msg)
+					"content" => $msg
 				]
 			];
-			$ret = AppUtil::postJSON($url, urldecode(json_encode($postData)));
+			$ret = AppUtil::postJSON($url, json_encode($postData));
 		}
 		$ret = json_decode($ret, true);
 		return $ret['errcode'];
