@@ -1338,8 +1338,4 @@
 		<a href="javascript:;" class="date-close"></a>
 	</div>
 </script>
-<script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script src="/assets/js/mustache.min.js?v=1.2.1"></script>
-<script src="/assets/js/socket.io.slim.js"></script>
-<script src="/assets/js/swiper.jquery.min.js"></script>
-<script data-main="/js/single.js?v=1.1.5.3" src="/assets/js/require.js"></script>
+<script  src="/assets/js/require.js" data-main="/js/single.js?v=1.1.5.4"></script>

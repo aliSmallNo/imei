@@ -5,10 +5,11 @@ require.config({
 	paths: {
 		"jquery": "/assets/js/jquery-3.2.1.min",
 		"layer": "/assets/js/layer_mobile/layer",
+		'mustache': '/assets/js/mustache.min'
 	}
 });
-require(["layer"],
-	function (layer) {
+require(['jquery', 'mustache', "layer"],
+	function ($, Mustache, layer) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -31,30 +32,6 @@ require(["layer"],
 				return false;
 			}
 		});
-
-		$('.btn').on(kClick, function () {
-			// var self = $(this);
-			// if (self.hasClass('signed') || $sls.loading) {
-			// 	return false;
-			// }
-			// $sls.loading = 1;
-			// $.post('/api/user', {
-			// 	tag: 'sign'
-			// }, function (resp) {
-			// 	if (resp.code == 0) {
-			// 		self.addClass('signed');
-			// 		self.html(resp.data.title);
-			// 		layer.open({
-			// 			content: resp.msg,
-			// 			btn: '我知道了'
-			// 		});
-			// 	} else {
-			// 		showMsg(resp.msg);
-			// 	}
-			// 	$sls.loading = 0;
-			// }, 'json');
-		});
-
 
 		var WalletUtil = {
 			page: 1,

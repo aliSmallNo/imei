@@ -1227,35 +1227,16 @@ class WxController extends BaseController
 
 	public function actionLottery()
 	{
-//		$oid = self::getParam('id');
-//		$oid = AppUtil::decrypt($oid);
-//		if (!$oid) {
-//			$oid = 101;
-//			$oid = 102;
-//		}
-//		$gifts = [];
-		//$title = '千寻恋恋-幸运抽奖';
 		$title = '千寻恋恋-签到';
-//		$lotteryInfo = Lottery::getItem($oid);
-//		if ($lotteryInfo) {
-//			$title = $lotteryInfo['oTitle'];
-//			$gifts = $lotteryInfo['gifts'];
-//		}
-
 		$openId = self::$WX_OpenId;
 		$wxInfo = UserWechat::getInfoByOpenId($openId);
 		if (!$wxInfo) {
 			header('location:/wx/index');
 			exit();
 		}
-		$isSign = false;
-		if (UserSign::isSign($wxInfo["uId"])) {
-			//$title = UserSign::TIP_SIGNED;
-			$isSign = true;
-		}
+		$isSign = UserSign::isSign($wxInfo["uId"]);
 		$isMp = $wxInfo["uRole"] == 20 ? 1 : 0;
 		$str = $isMp ? "_mp" : "";
-
 		return self::renderPage('lottery.tpl',
 			[
 				'isSign' => $isSign,
