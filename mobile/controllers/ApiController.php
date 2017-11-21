@@ -2179,6 +2179,10 @@ class ApiController extends Controller
 					}
 					$insert[$v] = $data[$v];
 				}
+				$msg = Date::checkBal($uid);
+				if ($msg) {
+					return self::renderAPI(161, $msg);
+				}
 				if (Date::oneInfo($uid, $sid)) {
 					return self::renderAPI(129, '你们已经约会过了哦~');
 				}

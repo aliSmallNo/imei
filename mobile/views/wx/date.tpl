@@ -341,6 +341,7 @@
 <input type="hidden" id="user_st" value="{{$st}}">
 <input type="hidden" id="user_sid" value="{{$sid}}">
 <input type="hidden" id="user_did" value="{{if isset($d.dId)}}{{$d.dId}}{{/if}}">
+<input type="hidden" id="user_eid" value="{{$eUid}}">
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
@@ -393,7 +394,6 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-<script src="/assets/js/mustache.min.js?v=1.2.1"></script>
-<script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script src="/assets/js/laydate/laydate.js"></script>
-<script data-main="/js/date.js?v=1.1.25" src="/assets/js/require.js"></script>
+<script data-main="/js/date.js?v=1.2.2
+
+" src="/assets/js/require.js"></script>

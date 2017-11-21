@@ -106,6 +106,17 @@ class Date extends ActiveRecord
 		return 0;
 	}
 
+	public static function checkBal($uid)
+	{
+		$costAmt = 50;
+		$stat = UserTrans::getStat($uid, 1);
+		$flower = isset($stat['flower']) ? intval($stat['flower']) : 0;
+		if ($flower < $costAmt || $uid == 131379) {
+			return '你的媒桂花不足' . $costAmt . '，不能发起约会，快去充值再来吧';
+		}
+		return '';
+	}
+
 	public static function oneInfo($myUId, $taUId)
 	{
 		if (!$myUId || !$taUId) {

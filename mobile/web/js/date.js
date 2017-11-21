@@ -1,19 +1,20 @@
 require.config({
 	paths: {
+		'jquery': '/assets/js/jquery-3.2.1.min',
+		'mustache': '/assets/js/mustache.min',
 		"layer": "/assets/js/layer_mobile/layer",
 		"laydate": "/assets/js/laydate/laydate",
 	}
 });
-
-require(["layer"],
-	function (layer) {
+require(['jquery', 'mustache', "layer", 'laydate'],
+	function ($, Mustache, layer, laydate) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
 			wxString: $("#tpl_wx_info").html(),
-			loading: false,
+			eid: $('#user_eid').val(),
+			loading: false
 		};
-
 
 		function showMsg(title, sec) {
 			var delay = sec || 4;
@@ -24,7 +25,6 @@ require(["layer"],
 				time: delay
 			});
 		}
-
 
 		var dateUtil = {
 			tag: '',
@@ -63,11 +63,10 @@ require(["layer"],
 						$(".date-cancel-opt a.active").each(function () {
 							util.reason.push($(this).html());
 						});
-						if (util.reason.length == 0) {
+						if (util.reason.length < 1) {
 							showMsg("选择原因哦");
 							return;
 						}
-						console.log(util.reason);
 						util.submit();
 					} else {
 						if (self.hasClass("active")) {
@@ -137,8 +136,6 @@ require(["layer"],
 			payRole: function () {
 				var util = dateUtil;
 				var amt = parseInt($(".topup-opt a.active").attr("data-amt"));
-				console.log(amt);
-
 				if (!amt || amt < 520) {
 					showMsg("你还没选择送TA的媒瑰花数哦");
 					return;
@@ -151,9 +148,9 @@ require(["layer"],
 					tag: 'pay_rose',
 					amt: amt,
 					sid: util.sid,
-					did: util.did,
+					did: util.did
 				}, function (res) {
-					if (res.code == 0) {
+					if (res.code < 1) {
 						util.refresh();
 					} else {
 						showMsg(res.msg);
@@ -161,7 +158,7 @@ require(["layer"],
 				}, 'json');
 			},
 			refresh: function () {
-				var util = dateUtil;
+				var util = this;
 				location.href = "/wx/date?id=" + util.sid + '&time=' + (new Date()).getTime();
 			},
 			Flowers: function () {
@@ -207,7 +204,6 @@ require(["layer"],
 				if (err) {
 					return;
 				}
-				console.log(data);
 				if (util.loading) {
 					return;
 				}
@@ -219,7 +215,7 @@ require(["layer"],
 					//sid: util.sid,
 				}, function (res) {
 					util.loading = 0;
-					if (res.code == 0) {
+					if (res.code < 1) {
 						util.refresh();
 					} else {
 						showMsg(res.msg);
@@ -239,7 +235,7 @@ require(["layer"],
 							postdata[field] = val;
 						} else {
 							err = 1;
-							showMsg(util.fieldsText[field] + '还没填写');
+							showMsg('请选择' + util.fieldsText[field]);
 							return false;
 						}
 					});
@@ -255,7 +251,7 @@ require(["layer"],
 								postdata[field] = val;
 							} else {
 								err = 1;
-								showMsg(util.fieldsText[field] + '还没填写');
+								showMsg('请填写' + util.fieldsText[field]);
 								return false;
 							}
 						}
@@ -263,7 +259,6 @@ require(["layer"],
 					if (err) {
 						return;
 					}
-					console.log(postdata);
 					util.submit(postdata);
 				} else if (util.role == 'inactive' && util.st == 105) {
 					$("[data-input]").each(function () {
@@ -271,7 +266,6 @@ require(["layer"],
 						var field = self.attr('data-input');
 						var val = self.val();
 						if ($.inArray(field, util.r2fields)) {
-							console.log(field);
 							if (val) {
 								postdata[field] = val;
 							} else {
@@ -284,7 +278,6 @@ require(["layer"],
 					if (err) {
 						return;
 					}
-					console.log(postdata);
 					util.submit(postdata);
 				}
 			},
@@ -299,9 +292,9 @@ require(["layer"],
 					data: JSON.stringify(postdata),
 					st: util.st,
 					sid: util.sid,
-					reason: JSON.stringify(util.reason),
+					reason: JSON.stringify(util.reason)
 				}, function (resp) {
-					if (resp.code == 0) {
+					if (resp.code < 1) {
 						switch (util.tag) {
 							case 'start_date':
 								location.href = '/wx/single#scontacts';
@@ -314,9 +307,18 @@ require(["layer"],
 								location.href = '/wx/single#sme';
 								break;
 						}
+					} else if (resp.code === 161) {
+						layer.open({
+							content: resp.msg,
+							btn: ['马上充值', '算了吧'],
+							yes: function () {
+								location.href = "/wx/sw?id=" + $sls.eid + '#swallet';
+							}
+						});
 					} else {
 						showMsg(resp.msg);
 					}
+					util.loading = 0;
 				}, 'json');
 			},
 			prepay: function ($btn) {
@@ -333,7 +335,7 @@ require(["layer"],
 						did: util.did,
 					},
 					function (resp) {
-						if (resp.code == 0) {
+						if (resp.code < 1) {
 							util.wechatPay(resp.data.prepay);
 						} else {
 							showMsg(resp.msg);
@@ -387,14 +389,13 @@ require(["layer"],
 					tag: util.tag,
 					did: util.did,
 				}, function (resp) {
-					if (resp.code == 0) {
+					if (resp.code < 1) {
 						util.refresh();
 					} else {
 						showMsg(resp.msg);
 					}
 				}, 'json');
-			},
-
+			}
 		};
 		dateUtil.init();
 
@@ -431,9 +432,9 @@ require(["layer"],
 				wx.hideOptionMenu();
 			});
 			laydate.render({
-				elem: '#datetime' //指定元素
-				,type: 'datetime'
-				,theme: '#d4237a'
+				elem: '#datetime',
+				type: 'datetime',
+				theme: '#d4237a'
 			});
 		});
 	});

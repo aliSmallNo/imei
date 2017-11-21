@@ -1815,6 +1815,7 @@ class WxController extends BaseController
 				"id" => $id,
 				"phone" => $TA->uPhone,
 				"TA" => $TA,
+				'eUid' => AppUtil::encrypt($uid),
 				"commentFlag" => $commentFlag,
 			],
 			'terse',
