@@ -956,7 +956,7 @@
 			<img src="{[avatar]}" class="nic">
 			<div class="u-info">
 				<div class="title">
-					<p class="name {[gender]}"><em>{[name]}</em></p>
+					<p class="name"><em>{[name]}</em></p>
 					<p class="addr"><i class="i-mark-pos"></i>{[location]}</p>
 				</div>
 				<h5>{[age]}岁 . {[height]} . {[horos]} . {[job]}</h5>

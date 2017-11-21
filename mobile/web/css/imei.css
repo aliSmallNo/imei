@@ -3424,7 +3424,6 @@ section {
           text-overflow: ellipsis;
           overflow: hidden;
           font-weight: 500;
-          padding-left: 1.6rem;
           position: relative; }
           .m-top-users li .u-info .title .name:before {
             content: "";
