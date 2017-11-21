@@ -52,6 +52,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_CHAT,
 		self::CAT_PRESENT,
 		self::CAT_FANS_DRAW,
+		self::CAT_DATE_NEW,
 	];
 
 	const UNIT_FEN = 'fen';
