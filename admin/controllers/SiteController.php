@@ -74,6 +74,7 @@ class SiteController extends BaseController
 			if ($adminId) {
 				Admin::userInfo($adminId, true);
 				header("location:/site/summary");
+				exit();
 			} else {
 				$tip = '登录失败！账号不存在或者密码不正确';
 			}
@@ -90,18 +91,15 @@ class SiteController extends BaseController
 		exit;
 	}
 
-	public function actionSummary($adminId = "")
+	public function actionSummary()
 	{
 		$menus = [];
-		if (!$adminId) {
-			$adminId = Admin::getAdminId();
-		}
-		if (!$adminId) {
+		$usedMenus = [];
+		$userInfo = Admin::userInfo();
+		if (!$userInfo) {
 			header("location:/site/login");
 			exit();
 		}
-		$usedMenus = [];
-		$userInfo = Admin::userInfo();
 
 		if (isset($userInfo['menus'])) {
 			$allMenus = $userInfo['menus'];
@@ -114,7 +112,7 @@ class SiteController extends BaseController
 					}
 				}
 			}
-			$usedMenus = Menu::oftenMenu($adminId);
+			$usedMenus = Menu::oftenMenu($this->admin_id);
 
 			foreach ($usedMenus as $key => $menu) {
 				if (isset($menuIcon[$menu["url"]])) {
