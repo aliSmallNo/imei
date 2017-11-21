@@ -1099,14 +1099,14 @@ class WechatUtil
 		return $accessToken;
 	}
 
-	public static function summonVisitor()
+	public static function summonVisitor($debug = false)
 	{
 		$conn = AppUtil::db();
 		$sql = "SELECT u.uName,u.uOpenId,uPhone,uGender,wSubscribe
 			 FROM im_user as u 
 			 JOIN im_user_wechat as w on u.uId = w.wUId
 			 WHERE w.wSubscribe=1 AND u.uOpenId LIKE 'oYDJew%' 
-			 AND u.uPhone='' ";
+			 AND uId= 146306 ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
 		foreach ($ret as $row) {
@@ -1114,6 +1114,12 @@ class WechatUtil
 			$openid = $row['uOpenId'];
 			$content = $name . '，有人对你怦然心动了！快去注册并完善你的个人资料吧~👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
 			$cnt += UserWechat::sendMsg($openid, $content);
+			if ($debug && $cnt % 50 == 0) {
+				var_dump($cnt);
+			}
+		}
+		if ($debug) {
+			var_dump($cnt);
 		}
 		return $cnt;
 	}

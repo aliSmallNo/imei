@@ -888,8 +888,8 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		/*$ids = [131119, 130455, 130966, 131044, 130412,
-			131113, 129602, 131110];
+		/*$ids = [130602,130667,130523,129662,130052,130019,129895,129532,
+		129445,128923,129987,129072,132189,130360,128990,128683];
 		foreach ($ids as $id) {
 			echo 'https://wx.meipo100.com/wx/sh?id=' . AppUtil::encrypt($id);
 			echo PHP_EOL;
