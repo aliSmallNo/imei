@@ -1338,4 +1338,4 @@
 		<a href="javascript:;" class="date-close"></a>
 	</div>
 </script>
-<script  src="/assets/js/require.js" data-main="/js/single.js?v=1.1.5.4"></script>
+<script  src="/assets/js/require.js" data-main="/js/single.js?v=1.1.5.5"></script>
