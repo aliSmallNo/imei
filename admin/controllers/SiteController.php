@@ -70,9 +70,9 @@ class SiteController extends BaseController
 		$tip = '';
 		if ($name && $pass) {
 			Admin::logout();
-			$adminId = Admin::login($name, $pass);
-			if ($adminId) {
-				Admin::userInfo($adminId, true);
+			$this->admin_id = Admin::login($name, $pass);
+			if ($this->admin_id) {
+				Admin::userInfo($this->admin_id, true);
 				header("location:/site/summary");
 				exit();
 			} else {
