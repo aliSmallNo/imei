@@ -1101,7 +1101,8 @@ class WxController extends BaseController
 
 		// Rain: 添加或者更新微信用户信息
 		UserWechat::refreshWXInfo($openId);
-		if ($this->user_id && $this->user_subscribe) {
+		$wxInfo = UserWechat::getInfoByOpenId($openId, true);
+		if ($wxInfo && isset($wxInfo['subscribe']) && $wxInfo['subscribe'] == 1) {
 			header('location:/wx/index');
 			exit();
 		}
