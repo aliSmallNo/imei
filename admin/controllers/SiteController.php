@@ -753,7 +753,7 @@ class SiteController extends BaseController
 		$content = self::postParam("content");
 		if ($openId && $content) {
 			$result = UserWechat::sendMsg($openId, $content);
-			if ($result == 0) {
+			if ($result) {
 				UserMsg::edit('', [
 					"mAddedBy" => $this->admin_id,
 					"mAddedOn" => date("Y-m-d H:i:s"),
