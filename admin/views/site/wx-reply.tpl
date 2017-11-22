@@ -37,16 +37,13 @@
 	</h4>
 </div>
 <div class="row">
-	<form class="form-horizontal form" action="/site/reply2wx" method="post">
-		<input type="hidden" name="openId" value="{{$openId}}">
-		<input type="hidden" name="pid" value="{{$pid}}">
-		<div class="form-group">
-			<label class="control-label">我来回答这个问题</label>
-			<textarea class="form-control" name="content" placeholder="写下给微信用户的话，请注意礼貌用语。"></textarea>
-			<div class="btn-divider2"></div>
-			<input type="submit" class="btn btn-primary" value="发送消息">
-		</div>
-	</form>
+	<input type="hidden" id="cOpenId" name="openId" value="{{$openId}}">
+	<div class="form-group">
+		<label class="control-label">我来回答这个问题</label>
+		<textarea class="form-control t-content" name="content" placeholder="写下给微信用户的话，请注意礼貌用语。"></textarea>
+		<div class="btn-divider2"></div>
+		<a class="btn-send btn btn-primary">发送消息</a>
+	</div>
 </div>
 
 <div class="message_area">
@@ -86,6 +83,30 @@
 		title: '所有图片',
 		data: []
 	};
+
+	$(document).on("click", ".btn-send", function () {
+		var txt = $('.t-content').val().trim();
+		if (!txt) {
+			layer.msg('回复内容不能为空！');
+			return;
+		}
+		var openid = $('#cOpenId').val();
+		$.post('/api/buzz',
+			{
+				tag: 'reply',
+				id: openid,
+				text: txt
+			},
+			function (resp) {
+				if (resp.code < 1) {
+					layer.msg(resp.msg);
+					setTimeout(function () {
+						location.reload();
+					}, 360);
+				}
+			}, 'json');
+	});
+
 	$(document).on("click", ".j-img", function () {
 		if (!mPhotos.data.length) {
 			$.each($(".j-img"), function () {

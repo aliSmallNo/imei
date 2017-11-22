@@ -478,6 +478,30 @@ class ApiController extends Controller
 		return self::renderAPI(129, "什么操作也没做啊！");
 	}
 
+	public function actionBuzz(){
+		$tag = strtolower(self::postParam("tag"));
+		switch ($tag){
+			case 'reply':
+				$openId = self::postParam("openId");
+				$uId = User::findOne(["uOpenId" => $openId])->uId;
+				$content = self::postParam("content");
+				if ($openId && $content) {
+					$result = UserWechat::sendMsg($openId, $content);
+					if ($result) {
+						UserMsg::edit('', [
+							"mAddedBy" => $this->admin_id,
+							"mAddedOn" => date("Y-m-d H:i:s"),
+							"mUId" => $uId,
+							"mCategory" => UserMsg::CATEGORY_WX_MSG,
+							"mText" => $content,
+						]);
+					}
+				}
+				return self::renderAPI(0, "发送成功！");
+		}
+		return self::renderAPI(129, "什么操作也没做啊！");
+	}
+
 	// 今日头条推广 官网过来的 用户
 	public function actionSource()
 	{
