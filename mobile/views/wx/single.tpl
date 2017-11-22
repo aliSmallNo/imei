@@ -95,6 +95,7 @@
 				<div class="avatar single">
 					<div class="img {{if $uInfo.pending}}pending{{/if}}" style="background-image: url({{$avatar}})"></div>
 					{{if $uInfo.cert}}<i class="i-cert"></i>{{/if}}
+					{{foreach from=$uInfo.tags item=tag}}<i class="i-tag{{$tag}}"></i>{{/foreach}}
 				</div>
 				<div class="title">
 					<h4>{{$nickname}}</h4>
@@ -956,12 +957,13 @@
 			<img src="{[avatar]}" class="nic">
 			<div class="u-info">
 				<div class="title">
-					<p class="name"><em>{[name]}</em></p>
+					<p class="name">{[#tags]}<i class="i-tag{[.]}"></i>{[/tags]}<em>{[name]}</em></p>
 					<p class="addr"><i class="i-mark-pos"></i>{[location]}</p>
 				</div>
 				<h5>{[age]}岁 . {[height]} . {[horos]} . {[job]}</h5>
 			</div>
 			{[#cert]}<i class="i-cert">已认证</i>{[/cert]}
+			{[#tags]}<i class="i-tag{[.]}"></i>{[/tags]}
 		</a>
 		<div class="mp-info">
 			<div class="advise">{[advise]}</div>
@@ -1338,4 +1340,4 @@
 		<a href="javascript:;" class="date-close"></a>
 	</div>
 </script>
-<script  src="/assets/js/require.js" data-main="/js/single.js?v=1.1.5.5"></script>
+<script  src="/assets/js/require.js" data-main="/js/single.js?v=1.1.5.6"></script>

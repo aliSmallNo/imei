@@ -57,6 +57,11 @@ $brownColor: #6d4c41
 	background: url(../images/ico_cert.png) no-repeat center center
 	background-size: 100% 100%
 
+@mixin marker100
+	display: inline-block
+	background: url(../images/ico_month_member.png) no-repeat center center
+	background-size: 100% 100%
+
 @mixin translucent
 	background-color: rgba(0, 0, 0, .7)
 
@@ -1874,6 +1879,13 @@ section
 				height: 1.8rem
 				right: 1.1rem
 				top: 1.9rem
+			.i-tag100
+				@include marker100
+				position: absolute
+				width: 1.8rem
+				height: 1.8rem
+				left: 1.5rem
+				bottom: 2.1rem
 	.title
 		@include displayFlex-1
 		@include displayFlexVAlign
@@ -3389,6 +3401,11 @@ section
 					@include textTail
 					font-weight: $weightBold
 					position: relative
+					.i-tag100
+						@include marker100
+						width: 1.6rem
+						height: 1.6rem
+						margin-right: .2rem
 					&:before
 						content: ''
 						position: absolute

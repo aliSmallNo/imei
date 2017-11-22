@@ -13,6 +13,7 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
+use common\models\UserTag;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\PushUtil;
@@ -894,7 +895,11 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$server = new swoole_websocket_server("127.0.0.1", 9502);
+		/*$pid = 230624;
+		UserTag::addByPId(UserTag::CAT_MEMBERSHIP, $pid);
+
+		$pid = 230593;
+		UserTag::addByPId(UserTag::CAT_MEMBERSHIP, $pid);*/
 
 		/*$ids = [130602,130667,130523,129662,130052,130019,129895,129532,
 		129445,128923,129987,129072,132189,130360,128990,128683];

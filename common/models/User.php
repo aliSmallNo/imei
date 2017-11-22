@@ -740,7 +740,9 @@ class User extends ActiveRecord
 		list($users) = self::users($criteria, $params);
 		if ($users && count($users)) {
 			$user = $users[0];
-
+			$userId = $user['id'];
+			$tags = UserTag::tags($userId);
+			$user["tags"] = isset($tags[$userId]) ? $tags[$userId] : [];
 			$sql = 'SELECT u.*,n.nNote as comment
  					FROM im_user_net as n 
 					JOIN im_user as u ON n.nUId=u.uId
@@ -803,6 +805,8 @@ class User extends ActiveRecord
 		if (!$uInfo) {
 			return [];
 		}
+		$tags = UserTag::tags($uId);
+		$uInfo["tags"] = isset($tags[$uId]) ? $tags[$uId] : [];
 		$uInfo["albumJson"] = json_encode($uInfo["album"]);
 		$uInfo["album_str"] = implode(',', $uInfo["album"]);
 		$uInfo["gallery4"] = [];
@@ -1303,8 +1307,7 @@ class User extends ActiveRecord
 		return $myFilter;
 	}
 
-	public
-	static function getFilter($openId, $data, $page = 1, $pageSize = 20)
+	public static function getFilter($openId, $data, $page = 1, $pageSize = 20)
 	{
 		$myInfo = self::findOne(["uOpenId" => $openId]);
 		if (!$myInfo) {
@@ -1546,11 +1549,14 @@ class User extends ActiveRecord
 		}
 
 		$result = [];
+		$tags = UserTag::tags($IDs);
 		foreach ($rows as $row) {
 			$data = [];
 			//$data["id"] = $v["uOpenId"];
 			//$data["ids"] = $v["uId"];
+			$user_id = $row["uId"];
 			Hit::add($myId, $row["uId"]);
+			$data["tags"] = isset($tags[$user_id]) ? $tags[$user_id] : [];
 			$data["secretId"] = AppUtil::encrypt($row["uId"]);
 			$data["uni"] = $row["uUniqid"];
 			$data["avatar"] = $row["uAvatar"];
@@ -1615,8 +1621,7 @@ class User extends ActiveRecord
 		];
 	}
 
-	public
-	static function mymp($openId)
+	public static function mymp($openId)
 	{
 		$relation = UserNet::REL_BACKER;
 		$sql = "select u2.uId as id,u2.uName as name,u2.uAvatar as avatar,u2.uIntro as intro

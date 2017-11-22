@@ -1790,6 +1790,15 @@ section {
       height: 1.8rem;
       right: 1.1rem;
       top: 1.9rem; }
+    .u-my-bar .avatar.single .i-tag100 {
+      display: inline-block;
+      background: url(../images/ico_month_member.png) no-repeat center center;
+      background-size: 100% 100%;
+      position: absolute;
+      width: 1.8rem;
+      height: 1.8rem;
+      left: 1.5rem;
+      bottom: 2.1rem; }
   .u-my-bar .title {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
@@ -3425,6 +3434,13 @@ section {
           overflow: hidden;
           font-weight: 500;
           position: relative; }
+          .m-top-users li .u-info .title .name .i-tag100 {
+            display: inline-block;
+            background: url(../images/ico_month_member.png) no-repeat center center;
+            background-size: 100% 100%;
+            width: 1.6rem;
+            height: 1.6rem;
+            margin-right: 0.2rem; }
           .m-top-users li .u-info .title .name:before {
             content: "";
             position: absolute;

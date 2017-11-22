@@ -15,6 +15,7 @@ use common\models\Pay;
 use common\models\RedpacketTrans;
 use common\models\User;
 use common\models\UserMsg;
+use common\models\UserTag;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use WXBizDataCrypt;
@@ -527,6 +528,7 @@ class WechatUtil
 				Date::edit($entity->pRId, ["dStatus" => Date::STATUS_PAY, 'dPayId' => $pid]);
 			} else if ($entity->pCategory == Pay::CAT_MEMBER) {
 				UserTrans::addByPID($pid, UserTrans::CAT_RECHARGE_MEMBER);
+				UserTag::addByPId(UserTag::CAT_MEMBERSHIP, $pid);
 			} else {
 				UserTrans::addByPID($pid);
 			}
