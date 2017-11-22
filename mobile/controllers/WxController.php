@@ -710,10 +710,11 @@ class WxController extends BaseController
 				'url' => 'javascript:;',
 				'tip' => '长按图片识别二维码，添加我们的客服为好友'
 			],
-			/*[
-				'image' => AppUtil::wechatUrl() . "/images/ad/activity_1daylove.jpg",
-				'url' => 'http://mp.weixin.qq.com/s/ZODj8prAWrUkaTdRO3UmeA'
-			],
+			[
+				'image' => AppUtil::wechatUrl() . "/images/ad/12_horos.jpg",
+				'url' => 'https://mp.weixin.qq.com/s?__biz=MzI3NzczMDQwMA==&mid=2247484036&idx=5&sn=e7213e6c5756479b8ee9fdc9c477bef1&chksm=eb60878bdc170e9d7ed7f9e821f5eac769d31b4026623cf3abd52c890cdf6727cce0e17cee18#rd'
+			]
+			/*
 			[
 				'image' => AppUtil::wechatUrl() . "/images/ad/activity_1111.jpg",
 				'url' => 'http://www.hdb.com/party/tq722.html?hdb_pos=manager_info'
