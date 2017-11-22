@@ -32,7 +32,7 @@ class UserTrans extends ActiveRecord
 	const CAT_FANS_DRAW = 170;
 
 	static $catDict = [
-		self::CAT_RECHARGE_MEMBER => "99会员",
+		self::CAT_RECHARGE_MEMBER => "单身会员",
 		self::CAT_RECHARGE => "充值",
 		self::CAT_SIGN => "签到奖励",
 		self::CAT_NEW => "新人奖励",
