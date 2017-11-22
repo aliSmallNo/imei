@@ -482,9 +482,9 @@ class ApiController extends Controller
 		$tag = strtolower(self::postParam("tag"));
 		switch ($tag){
 			case 'reply':
-				$openId = self::postParam("openId");
+				$openId = self::postParam("id");
 				$uId = User::findOne(["uOpenId" => $openId])->uId;
-				$content = self::postParam("content");
+				$content = self::postParam("text");
 				if ($openId && $content) {
 					$result = UserWechat::sendMsg($openId, $content);
 					if ($result) {
