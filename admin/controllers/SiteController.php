@@ -73,8 +73,7 @@ class SiteController extends BaseController
 			$this->admin_id = Admin::login($name, $pass);
 			if ($this->admin_id) {
 				Admin::userInfo($this->admin_id, true);
-				header("location:/site/summary");
-				exit();
+				$this->redirect("/site/summary");
 			} else {
 				$tip = '登录失败！账号不存在或者密码不正确';
 			}
@@ -95,7 +94,6 @@ class SiteController extends BaseController
 	{
 		$menus = [];
 		$usedMenus = [];
-		$this->admin_id = Admin::getAdminId();
 		$userInfo = Admin::userInfo();
 		if (!$userInfo) {
 			header("location:/site/login");
