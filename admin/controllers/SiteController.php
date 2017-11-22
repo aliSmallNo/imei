@@ -95,6 +95,7 @@ class SiteController extends BaseController
 	{
 		$menus = [];
 		$usedMenus = [];
+		$this->admin_id = Admin::getAdminId();
 		$userInfo = Admin::userInfo();
 		if (!$userInfo) {
 			header("location:/site/login");

@@ -894,6 +894,8 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
+		$server = new swoole_websocket_server("127.0.0.1", 9502);
+
 		/*$ids = [130602,130667,130523,129662,130052,130019,129895,129532,
 		129445,128923,129987,129072,132189,130360,128990,128683];
 		foreach ($ids as $id) {
