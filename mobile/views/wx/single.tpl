@@ -229,9 +229,9 @@
 	<div class="m-bottom-pl"></div>
 	<div class="m-bottom-bar">
 		<div class="m-chat-wrap off">
-			<a class="schat-option" data-tag="tohelpchat" style="display: none">助聊</a>
-			<a class="schat-option" data-tag="toblock">拉黑对方</a>
-			<a class="schat-option">取消</a>
+			<a href="javascript:;" class="schat-option" data-tag="tohelpchat" style="display: none">助聊</a>
+			<a href="javascript:;" class="schat-option" data-tag="toblock">拉黑对方</a>
+			<a href="javascript:;" class="schat-option">取消</a>
 		</div>
 		<div class="help-chat off">
 			<div class="help-chat-item">
@@ -253,7 +253,7 @@
 		</div>
 		<div class="icons" style="display: none"><a class="schat-options"></a></div>
 		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120"></div>
-		<div class="action"><a class="btn-chat-send">发送</a></div>
+		<div class="action"><a href="javascript:;" class="btn-chat-send">发送</a></div>
 	</div>
 </section>
 <section id="scontacts" data-title="我的密聊记录">
@@ -288,13 +288,13 @@
 	<div class="single-page profile-page"></div>
 	<div class="m-bottom-bar">
 		<p>
-			<a class="send btn-give">送TA花</a>
+			<a href="javascript:;" class="send btn-give">送TA花</a>
 		</p>
 		<p>
-			<a class="heart btn-like ">心动</a>
+			<a href="javascript:;" class="heart btn-like ">心动</a>
 		</p>
 		<p>
-			<a class="chat btn-chat">密聊TA</a>
+			<a href="javascript:;" class="chat btn-chat">密聊TA</a>
 		</p>
 	</div>
 </section>
@@ -1340,4 +1340,4 @@
 		<a href="javascript:;" class="date-close"></a>
 	</div>
 </script>
-<script  src="/assets/js/require.js" data-main="/js/single.js?v=1.1.5.6"></script>
+<script  src="/assets/js/require.js" data-main="/js/single.js?v=1.1.5.8"></script>

@@ -492,6 +492,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 						$sls.content.html(html).addClass("animate-pop-in");
 						$sls.shade.fadeIn(160);
 					}
+					return false;
 				});
 
 				$(document).on(kClick, ".btn-togive", function () {
@@ -623,6 +624,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 				var util = this;
 				$('.btn-chat-send').on(kClick, function () {
 					util.sent();
+					return false;
 				});
 
 				$(document).on(kClick, ".j-content-wrap", function () {
@@ -654,7 +656,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 				});
 				$(document).on(kClick, ".user-comment", function () {
 					if (util.loading) {
-						return;
+						return false;
 					}
 					util.loading = 1;
 					$.post("/api/chat", {
@@ -670,6 +672,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 							showMsg(resp.msg);
 						}
 					}, "json");
+					return false;
 				});
 				$(document).on("change", ".co-cat-content1", function () {
 					var val = $(this).val();

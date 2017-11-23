@@ -147,6 +147,7 @@ require(["layer"],
 						$sls.content.html(html).addClass("animate-pop-in");
 						$sls.shade.fadeIn(160);
 					}
+					return false;
 				});
 
 				$(document).on(kClick, ".btn-togive", function () {

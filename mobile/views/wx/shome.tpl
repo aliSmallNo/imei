@@ -58,17 +58,17 @@
 	<div style="height: 6rem;"></div>
 	<div class="m-bottom-bar">
 		<p>
-			<a class="send j-act btn-give" data-id="{{$uInfo.encryptId}}">送TA花</a>
+			<a href="javascript:;" class="send j-act btn-give" data-id="{{$uInfo.encryptId}}">送TA花</a>
 		</p>
 		<p>
-			<a class="heart j-act btn-like {{if $uInfo.favorFlag}}favor{{/if}}"
+			<a href="javascript:;" class="heart j-act btn-like {{if $uInfo.favorFlag}}favor{{/if}}"
 				 data-id="{{$uInfo.encryptId}}">{{if $uInfo.favorFlag}}已心动{{else}}心动{{/if}}</a>
 		</p>
 		<p>
-			<a class="chat j-act btn-chat" data-id="{{$uInfo.encryptId}}">密聊TA</a>
+			<a href="javascript:;" class="chat j-act btn-chat" data-id="{{$uInfo.encryptId}}">密聊TA</a>
 		</p>
 		<!--p >
-			<a class="weixin j-act btn-apply" data-id="{{$uInfo.encryptId}}">加微信聊聊</a>
+			<a href="javascript:;" class="weixin j-act btn-apply" data-id="{{$uInfo.encryptId}}">加微信聊聊</a>
 		</p-->
 		<!--div>
 			<a class="btn-recommend">向朋友推荐TA</a>
@@ -83,7 +83,7 @@
 	<div class="m-bottom-pl"></div>
 	<div class="m-bottom-bar">
 		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~"></div>
-		<div class="action"><a class="btn-chat-send">发送</a></div>
+		<div class="action"><a href="javascript:;" class="btn-chat-send">发送</a></div>
 	</div>
 </section>
 <section id="sreport">
@@ -282,4 +282,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/shome.js?v=1.5.1" src="/assets/js/require.js"></script>
+<script data-main="/js/shome.js?v=1.5.2" src="/assets/js/require.js"></script>
