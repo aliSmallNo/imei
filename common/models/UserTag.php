@@ -28,10 +28,10 @@ class UserTag extends ActiveRecord
 		self::CAT_CERTIFIED => '已实名认证',
 		self::CAT_ESTATE => '已认证房产',
 		self::CAT_VEHICLE => '已认证汽车',
-		self::CAT_CHAT_WEEK => '畅聊卡(周)',
-		self::CAT_CHAT_MONTH => '畅聊卡(月)',
-		self::CAT_CHAT_SEASON => '畅聊卡(季)',
-		self::CAT_CHAT_YEAR => '畅聊卡(年)',
+		self::CAT_CHAT_WEEK => '一周畅聊卡',
+		self::CAT_CHAT_MONTH => '月度畅聊卡',
+		self::CAT_CHAT_SEASON => '季度畅聊卡',
+		self::CAT_CHAT_YEAR => '全年畅聊卡',
 	];
 
 	public static function tableName()
