@@ -683,7 +683,7 @@
 	</div>
 </section>
 <div class="nav-foot on">
-	<a href="#slink" class="nav-link" data-tag="slink" style="display: none">
+	<a href="#slink" class="nav-link none" data-tag="slink">
 		看媒婆
 	</a>
 	<a href="#slook" class="nav-invite" data-tag="slook">
