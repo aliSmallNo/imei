@@ -18,7 +18,7 @@ class UserTrans extends ActiveRecord
 	const CAT_RECHARGE_MEMBER = 80;
 	const CAT_CHAT_MONTH = 82;
 	const CAT_CHAT_SEASON = 84;
-	const CAT_CHAT_YEAR = 84;
+	const CAT_CHAT_YEAR = 86;
 	const CAT_RECHARGE_MEET = 90;
 	const CAT_RECHARGE = 100;
 	const CAT_SIGN = 105;
