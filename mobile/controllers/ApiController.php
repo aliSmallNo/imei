@@ -157,13 +157,13 @@ class ApiController extends Controller
 			case 'recharge':
 				$cat = self::postParam('cat');
 				$title = '千寻恋恋-充值';
-				$pay_cat = Pay::CAT_RECHARGE;
 				if (isset(Pay::$WalletDict[$cat])) {
 					$priceInfo = Pay::$WalletDict[$cat];
 				} else {
 					return self::renderAPI(129, '参数错误~');
 				}
 				$amt = $priceInfo['price'];
+				$pay_cat = $priceInfo['cat'];
 				$num = intval($amt * 10.0);
 				$subTitle = '充值' . $num . '媒桂花';
 
