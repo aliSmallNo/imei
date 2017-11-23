@@ -523,7 +523,7 @@ class WechatUtil
 			];
 			Pay::edit($pid, $data);
 			$entity = Pay::findOne(["pId" => $pid]);
-			switch ($entity->pCategory){
+			switch ($entity->pCategory) {
 				case Pay::CAT_MEET:
 					Date::edit($entity->pRId, ["dStatus" => Date::STATUS_PAY, 'dPayId' => $pid]);
 					$transCat = UserTrans::CAT_RECHARGE_MEET;
@@ -1125,13 +1125,13 @@ class WechatUtil
 			 AND u.uPhone='' ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
-		foreach ($ret as $row) {
+		foreach ($ret as $k => $row) {
 			$name = $row['uName'];
 			$openid = $row['uOpenId'];
 			$content = $name . '，有人对你怦然心动了！快去注册并完善你的个人资料吧~👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
 			$cnt += UserWechat::sendMsg($openid, $content);
-			if ($debug && $cnt % 50 == 0) {
-				var_dump($cnt);
+			if ($debug && ($cnt % 50 == 0 || $k % 50 == 0)) {
+				var_dump($cnt . '  ' . $k);
 			}
 		}
 		if ($debug) {
