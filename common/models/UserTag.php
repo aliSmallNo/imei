@@ -24,7 +24,7 @@ class UserTag extends ActiveRecord
 	const CAT_CHAT_YEAR = 184;
 
 	static $CatDict = [
-		self::CAT_MEMBERSHIP => '单身会员',
+		self::CAT_MEMBERSHIP => '单身会员卡',
 		self::CAT_CERTIFIED => '已实名认证',
 		self::CAT_ESTATE => '已认证房产',
 		self::CAT_VEHICLE => '已认证汽车',

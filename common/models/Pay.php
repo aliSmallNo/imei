@@ -35,7 +35,9 @@ class Pay extends ActiveRecord
 		self::CAT_MAKEING_FRIENDS => '交友',
 		self::CAT_REDPACKET => '红包',
 		self::CAT_MEET => '约会',
-		self::CAT_MEMBER => '单身会员',
+		self::CAT_MEMBER => '单身会员卡',
+		self::CAT_CHAT_MONTH => '月度畅聊卡',
+		self::CAT_CHAT_SEASON => '季度畅聊卡',
 	];
 
 	static $WalletDict = [
