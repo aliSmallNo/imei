@@ -29,6 +29,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 			singleTop: 0,
 			heartbeat: $('#sfav'),
 			date: $('#date'),
+			walletEntry: $('.m-wallet-entry'),
 			contionString: '',
 			contionVal: '',
 			chat_id: $('#cChatId').val(),
@@ -212,6 +213,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 			// ChatUtil.toggleTimer(0);
 			RankUtil.reset();
 			FavorUtil.reset();
+			$sls.walletEntry.hide();
 			switch (hashTag) {
 				case 'sranking':
 					RankUtil.page = 1;
@@ -232,6 +234,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 					FootUtil.toggle(1);
 					break;
 				case 'slook':
+					$sls.walletEntry.show();
 					if ($sls.firstLoadFlag) {
 						FilterUtil.loadFilter("", FilterUtil.sUserPage);
 						$sls.firstLoadFlag = 0;
@@ -247,6 +250,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 					FootUtil.toggle(1);
 					break;
 				case 'scontacts':
+					$sls.walletEntry.show();
 					ChatUtil.contacts();
 					ChatUtil.delChatBtn($(".contacts-edit"), "chat");
 					FootUtil.toggle(1);

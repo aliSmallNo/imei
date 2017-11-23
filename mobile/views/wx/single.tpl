@@ -815,6 +815,7 @@
 	<a href="javascript:;">有人对你怦然心动了</a>
 </div>
 <a href="/wx/sw?id={{$encryptId}}#swallet" class="m-wallet-entry"></a>
+
 <input type="hidden" id="cEncryptId" value="{{$encryptId}}">
 <input type="hidden" id="cUNI" value="{{$uni}}">
 <input type="hidden" id="cChatId" value="{{$chatId}}">
