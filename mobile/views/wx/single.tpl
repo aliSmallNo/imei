@@ -696,7 +696,7 @@
 		个人
 	</a>
 </div>
-<div class="app-cork" style="background-color: rgba(0,0,0,0.1)"></div>
+<div class="app-cork"></div>
 <div class="getWechat">
 	<div class="getw-content">
 		<a class="icon-alert icon-close" tag="close"></a>
