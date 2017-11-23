@@ -165,15 +165,15 @@ class ApiController extends Controller
 				$amt = $priceInfo['price'];
 				$pay_cat = $priceInfo['cat'];
 				$num = intval($amt * 10.0);
+				$payFee = intval($amt * 100.0);
 				$subTitle = '充值' . $num . '媒桂花';
 
-				$payId = Pay::prepay($wxInfo['uId'], $num, $amt * 100, $pay_cat);
+				$payId = Pay::prepay($wxInfo['uId'], $num, $payFee, $pay_cat);
 				if (AppUtil::isDev()) {
 					return self::renderAPI(129, '请在服务器测试该功能~');
 				}
 				// Rain: 测试阶段，payFee x元实际支付x分
 //				$payFee = $amt;
-				$payFee = intval($amt * 100);
 				if (AppUtil::isDebugger($wxInfo["uId"])) {
 					$payFee = 1;
 				}
