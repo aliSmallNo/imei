@@ -74,6 +74,8 @@ class UserTrans extends ActiveRecord
 	];
 
 
+
+
 	public static function tableName()
 	{
 		return '{{%user_trans}}';

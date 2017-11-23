@@ -14,38 +14,16 @@
 	</div>
 	<div>
 		<ul class="recharge">
-			<li class="th none">
-				<div class="title">充值项目</div>
-				<div class="action">价格</div>
-			</li>
-			<li class="border-none">
-				<div class="title m-chat-card-m">
-					月度畅聊卡<b>￥39.9</b>
-					<div class="tip">包月密聊，有效期免费畅聊</div>
+			{{foreach from=$prices key=key item=price}}
+			<li class="{{if isset($price.ln) && $price.ln}}{{$price.ln}}{{/if}}">
+				<div class="title row-{{$price.cat}}">
+					{{$price.title}}{{if isset($price.pre_price) && $price.pre_price}}<b>￥{{$price.pre_price}}</b>{{/if}}
+					{{if isset($price.tip) && $price.tip}}
+					<div class="tip">{{$price.tip}}</div>{{/if}}
 				</div>
-				<div class="action"><a href="javascript:;" class="btn-recharge" data-id="9.9" data-cat="chat_month">9.9元</a></div>
-			</li>
-			<li>
-				<div class="title m-chat-card-s">
-					季度畅聊卡<b>￥99.9</b>
-					<div class="tip">包季密聊，有效期免费畅聊</div>
-				</div>
-				<div class="action"><a href="javascript:;" class="btn-recharge" data-id="19.9" data-cat="chat_season">19.9元</a></div>
-			</li>
-			<li class="line"></li>
-			{{foreach from=$prices key=k item=item}}
-			<li {{if $k==0}}class="border-none" {{/if}}>
-				<div class="title m-ico-rose">{{$item.num}} 媒桂花</div>
-				<div class="action"><a href="javascript:;" class="btn-recharge" data-id="{{$item.price}}" data-cat="rose">{{$item.price}}元</a>
-				</div>
+				<div class="action"><a href="javascript:;" class="btn-recharge" data-id="{{$price.price}}" data-cat="{{$key}}">{{$price.price}}元</a></div>
 			</li>
 			{{/foreach}}
-			<li class="line"></li>
-			<li>
-				<div class="title m-ico-member">单身俱乐部会员<b>￥299</b></div>
-				<div class="action"><a href="javascript:;" class="btn-recharge" data-id="99" data-cat="member">99元</a>
-				</div>
-			</li>
 		</ul>
 		<p class="tip-block">媒桂花仅用于打赏，不能提现或退款</p>
 	</div>
@@ -70,4 +48,4 @@
 	</li>
 	{[/items]}
 </script>
-<script src="/assets/js/require.js" data-main="/js/swallet.js?v=1.2.1"></script>
+<script src="/assets/js/require.js" data-main="/js/swallet.js?v=1.2.2"></script>

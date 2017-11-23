@@ -3637,38 +3637,24 @@ section
 			font-size: 1.1rem
 
 .recharge
-	background: #fff
-	padding-left: 1.5rem
-	padding-right: 1.5rem
-	border-bottom: 1px solid $borderColorLight
-	margin-bottom: .5rem
+	padding: 0
+	margin: 0
 	li
-		padding: 1.6rem 0
+		background: #fff
+		padding: 1.5rem
 		@include displayFlex
-		border-top: 1px solid $borderColorLight
+		border-bottom: 1px solid $borderColorLight
 		position: relative
 		&:first-child, &:last-child
 			border-top: none
 		&.line
-			background: $bgColor
-			height: 1.5rem
-			padding: 0
-			margin-left: -1.5rem
-			margin-right: -1.5rem
-
-		//&:before
-		//	content: ''
-		//	position: absolute
-		//	height: 1.5rem
-		//	left: 0
-		//	right: 0
-		//	top: 0
+			margin-bottom: 1rem
 		.title
 			text-align: left
 			@include displayFlex-1
 			@include borderBox
 			position: relative
-			padding-left: 1.8rem
+			padding-left: 3rem
 			b
 				text-decoration: line-through
 				color: $grayFontColorLight
@@ -3679,6 +3665,18 @@ section
 				font-size: 1rem
 				color: $grayFontColorLight
 				font-weight: $weightNormal
+			&.row-100
+				background: url(../images/ico_rose.png) no-repeat .5rem center
+				background-size: 1.6rem 1.6rem
+			&.row-500
+				background: url(../images/ico_month_member.png) no-repeat .5rem center
+				background-size: 1.6rem 1.6rem
+			&.row-600
+				background: url(../images/ico_wallet_month.png) no-repeat left center
+				background-size: 2.57rem 1.54rem
+			&.row-610
+				background: url(../images/ico_wallet_season.png) no-repeat left center
+				background-size: 2.57rem 1.54rem
 		.action
 			text-align: right
 			@include displayFlex-w(9rem)
@@ -3709,25 +3707,6 @@ section
 
 .border-none
 	border: none !important
-
-.m-ico-rose
-	padding-left: 1.8rem
-	background: url(../images/ico_rose.png) no-repeat left center
-	background-size: 1.6rem 1.6rem
-
-.m-ico-member
-	background: url(../images/ico_month_member.png) no-repeat left center
-	background-size: 1.6rem 1.6rem
-
-.m-chat-card-m
-	padding-left: 2.8rem !important
-	background: url(../images/ico_wallet_month.png) no-repeat left center
-	background-size: 2.57rem 1.54rem
-
-.m-chat-card-s
-	padding-left: 2.8rem !important
-	background: url(../images/ico_wallet_season.png) no-repeat left center
-	background-size: 2.57rem 1.54rem
 
 .sgroup-top
 	@at-root .nav

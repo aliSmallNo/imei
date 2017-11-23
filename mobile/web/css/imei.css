@@ -3676,27 +3676,21 @@ section {
       font-size: 1.1rem; }
 
 .recharge {
-  background: #fff;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  border-bottom: 1px solid #EEEFF3;
-  margin-bottom: 0.5rem; }
+  padding: 0;
+  margin: 0; }
   .recharge li {
-    padding: 1.6rem 0;
+    background: #fff;
+    padding: 1.5rem;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    border-top: 1px solid #EEEFF3;
+    border-bottom: 1px solid #EEEFF3;
     position: relative; }
     .recharge li:first-child, .recharge li:last-child {
       border-top: none; }
     .recharge li.line {
-      background: #f3f3f3;
-      height: 1.5rem;
-      padding: 0;
-      margin-left: -1.5rem;
-      margin-right: -1.5rem; }
+      margin-bottom: 1rem; }
     .recharge li .title {
       text-align: left;
       -webkit-box-flex: 1;
@@ -3707,7 +3701,7 @@ section {
       -moz-box-sizing: border-box;
       box-sizing: border-box;
       position: relative;
-      padding-left: 1.8rem; }
+      padding-left: 3rem; }
       .recharge li .title b {
         text-decoration: line-through;
         color: #969494;
@@ -3718,6 +3712,18 @@ section {
         font-size: 1rem;
         color: #969494;
         font-weight: 300; }
+      .recharge li .title.row-100 {
+        background: url(../images/ico_rose.png) no-repeat 0.5rem center;
+        background-size: 1.6rem 1.6rem; }
+      .recharge li .title.row-500 {
+        background: url(../images/ico_month_member.png) no-repeat 0.5rem center;
+        background-size: 1.6rem 1.6rem; }
+      .recharge li .title.row-600 {
+        background: url(../images/ico_wallet_month.png) no-repeat left center;
+        background-size: 2.57rem 1.54rem; }
+      .recharge li .title.row-610 {
+        background: url(../images/ico_wallet_season.png) no-repeat left center;
+        background-size: 2.57rem 1.54rem; }
     .recharge li .action {
       text-align: right;
       -webkit-box-flex: 0 0 9rem;
@@ -3751,25 +3757,6 @@ section {
 
 .border-none {
   border: none !important; }
-
-.m-ico-rose {
-  padding-left: 1.8rem;
-  background: url(../images/ico_rose.png) no-repeat left center;
-  background-size: 1.6rem 1.6rem; }
-
-.m-ico-member {
-  background: url(../images/ico_month_member.png) no-repeat left center;
-  background-size: 1.6rem 1.6rem; }
-
-.m-chat-card-m {
-  padding-left: 2.8rem !important;
-  background: url(../images/ico_wallet_month.png) no-repeat left center;
-  background-size: 2.57rem 1.54rem; }
-
-.m-chat-card-s {
-  padding-left: 2.8rem !important;
-  background: url(../images/ico_wallet_season.png) no-repeat left center;
-  background-size: 2.57rem 1.54rem; }
 
 .nav {
   background: #fbd2e0;

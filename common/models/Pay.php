@@ -38,6 +38,47 @@ class Pay extends ActiveRecord
 		self::CAT_MEMBER => '单身会员',
 	];
 
+	static $WalletDict = [
+		'chat_month' => [
+			'cat' => Pay::CAT_CHAT_MONTH,
+			'title' => '月度畅聊卡',
+			'price' => 9.90,
+			'pre_price' => 39.9,
+			'tip' => '包月密聊，有效期内免费畅聊',
+		],
+		'chat_season' => [
+			'cat' => Pay::CAT_CHAT_SEASON,
+			'title' => '季度畅聊卡',
+			'price' => 19.90,
+			'pre_price' => 99.9,
+			'tip' => '包季密聊，有效期内免费畅聊',
+		],
+		'member' => [
+			'cat' => Pay::CAT_MEMBER,
+			'title' => '单身俱乐部会员卡',
+			'price' => 99,
+			'pre_price' => 299,
+			'tip' => '一年内免费参加所有线下活动',
+			'ln' => 'line'
+		],
+		'rose2' => [
+			'cat' => Pay::CAT_RECHARGE,
+			'title' => '2 媒桂花',
+			'price' => 2,
+		],
+		'rose8' => [
+			'cat' => Pay::CAT_RECHARGE,
+			'title' => '8 媒桂花',
+			'price' => 8,
+		],
+		'rose68' => [
+			'cat' => Pay::CAT_RECHARGE,
+			'title' => '68 媒桂花',
+			'price' => 68,
+		],
+	];
+
+
 	public static function tableName()
 	{
 		return '{{%pay}}';

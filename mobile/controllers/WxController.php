@@ -12,6 +12,7 @@ use common\models\City;
 use common\models\Date;
 use common\models\Log;
 use common\models\LogAction;
+use common\models\Pay;
 use common\models\QuestionGroup;
 use common\models\User;
 use common\models\UserAudit;
@@ -560,17 +561,12 @@ class WxController extends BaseController
 			}
 		}
 
-		$prices = [
-			['num' => 20, 'price' => 2],
-			['num' => 80, 'price' => 8],
-			['num' => 680, 'price' => 68]
-		];
 		$cards = UserTag::chatCards($hid);
 		return self::renderPage("swallet.tpl",
 			[
 				'avatar' => $avatar,
 				'nickname' => $nickname,
-				'prices' => $prices,
+				'prices' => Pay::$WalletDict,
 				'hid' => $hid,
 				'stat' => $stat,
 				'cards' => $cards,

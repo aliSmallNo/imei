@@ -155,20 +155,18 @@ class ApiController extends Controller
 				}
 				return self::renderAPI(0, '暂时不能提现~');
 			case 'recharge':
-				$amt = self::postParam('amt'); // 单位人民币元
 				$cat = self::postParam('cat');
-				$num = intval($amt * 10.0);
 				$title = '千寻恋恋-充值';
-				$catDict = [
-					'member' => [Pay::CAT_MEMBER, '成为单身会员'],
-					'chat_month' => [Pay::CAT_CHAT_MONTH, '月度畅聊卡'],
-					'chat_season' => [Pay::CAT_CHAT_SEASON, '季度畅聊卡'],
-				];
 				$pay_cat = Pay::CAT_RECHARGE;
-				$subTitle = '充值' . $num . '媒桂花';
-				if (isset($catDict[$cat])) {
-					list($pay_cat, $subTitle) = $catDict[$cat];
+				if (isset(Pay::$WalletDict[$cat])) {
+					$priceInfo = Pay::$WalletDict[$cat];
+				} else {
+					return self::renderAPI(129, '参数错误~');
 				}
+				$amt = $priceInfo['price'];
+				$num = intval($amt * 10.0);
+				$subTitle = '充值' . $num . '媒桂花';
+
 				$payId = Pay::prepay($wxInfo['uId'], $num, $amt * 100, $pay_cat);
 				if (AppUtil::isDev()) {
 					return self::renderAPI(129, '请在服务器测试该功能~');
