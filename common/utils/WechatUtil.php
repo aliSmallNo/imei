@@ -523,15 +523,29 @@ class WechatUtil
 			];
 			Pay::edit($pid, $data);
 			$entity = Pay::findOne(["pId" => $pid]);
-			if ($entity->pCategory == Pay::CAT_MEET) {
-				UserTrans::addByPID($pid, UserTrans::CAT_RECHARGE_MEET);
-				Date::edit($entity->pRId, ["dStatus" => Date::STATUS_PAY, 'dPayId' => $pid]);
-			} else if ($entity->pCategory == Pay::CAT_MEMBER) {
-				UserTrans::addByPID($pid, UserTrans::CAT_RECHARGE_MEMBER);
-				UserTag::addByPId(UserTag::CAT_MEMBERSHIP, $pid);
-			} else {
-				UserTrans::addByPID($pid);
+			switch ($entity->pCategory){
+				case Pay::CAT_MEET:
+					Date::edit($entity->pRId, ["dStatus" => Date::STATUS_PAY, 'dPayId' => $pid]);
+					$transCat = UserTrans::CAT_RECHARGE_MEET;
+					break;
+				case Pay::CAT_MEMBER:
+					UserTag::addByPId(UserTag::CAT_MEMBERSHIP, $pid);
+					$transCat = UserTrans::CAT_RECHARGE_MEMBER;
+					break;
+				case Pay::CAT_CHAT_MONTH:
+					UserTag::addByPId(UserTag::CAT_CHAT_MONTH, $pid);
+					$transCat = UserTrans::CAT_CHAT_MONTH;
+					break;
+				case Pay::CAT_CHAT_SEASON:
+					UserTag::addByPId(UserTag::CAT_CHAT_SEASON, $pid);
+					$transCat = UserTrans::CAT_CHAT_SEASON;
+					break;
+				default:
+					$transCat = UserTrans::CAT_RECHARGE;
+					break;
 			}
+			UserTrans::addByPID($pid, $transCat);
+
 		} else {
 			$data = [
 				'pTransRaw' => json_encode($data, JSON_UNESCAPED_UNICODE),

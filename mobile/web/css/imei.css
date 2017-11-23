@@ -3634,55 +3634,46 @@ section {
   font-weight: 500;
   text-align: center; }
 
-.m-ico-rose, .m-ico-member {
-  display: inline-block;
-  position: relative;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  padding-left: 2rem; }
-  .m-ico-rose:before, .m-ico-member:before {
-    content: " ";
-    position: absolute;
-    top: 50%;
-    left: 0;
-    background: url(../images/ico_rose.png) no-repeat center center;
-    background-size: 1.8rem 1.8rem;
-    width: 1.8rem;
-    height: 1.8rem;
-    margin-top: -0.9rem; }
-
-.m-ico-member a {
-  text-decoration: line-through;
-  font-size: 1.2rem;
-  color: #777;
-  font-weight: 200; }
-.m-ico-member:before {
-  background: url(../images/ico_month_member.png) no-repeat center center;
-  background-size: 1.8rem 1.8rem; }
-
 .account-header {
-  height: 12rem;
   background: #f487ac;
-  position: relative; }
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 3rem 4rem 1.5rem 4rem; }
   .account-header a {
     color: #fff;
     position: absolute;
     top: 0;
     right: 0;
-    padding: 1rem;
+    padding: 0.8rem 1rem;
     font-size: 1.2rem; }
-  .account-header div {
-    text-align: center;
-    line-height: 3rem;
-    height: 3rem; }
-    .account-header div.amt {
-      padding-top: 3rem;
+  .account-header .item {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    text-align: center; }
+    .account-header .item div {
+      height: 4.4rem; }
+    .account-header .item .ico-card-182 {
+      background: url(../images/ico_wallet_month.png) no-repeat center center;
+      background-size: 6rem 3.6rem; }
+    .account-header .item .ico-card-183 {
+      background: url(../images/ico_wallet_season.png) no-repeat center center;
+      background-size: 6rem 3.6rem; }
+    .account-header .item .ico-rose {
+      padding-left: 1.6rem;
+      background: url(../images/ico_rose.png) no-repeat left center;
+      background-size: 1.4rem 1.4rem; }
+    .account-header .item .amt {
       font-weight: 500;
-      font-size: 3rem;
+      font-size: 2.8rem;
       color: #fff;
-      line-height: 4rem;
-      height: 4rem; }
+      line-height: 4.3rem; }
+    .account-header .item span {
+      font-size: 1.1rem; }
 
 .recharge {
   background: #fff;
@@ -3711,7 +3702,22 @@ section {
       -webkit-box-flex: 1;
       -webkit-flex: 1;
       -ms-flex: 1;
-      flex: 1; }
+      flex: 1;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      position: relative;
+      padding-left: 1.8rem; }
+      .recharge li .title b {
+        text-decoration: line-through;
+        color: #969494;
+        font-weight: 300;
+        font-size: 1rem;
+        padding-left: 0.3rem; }
+      .recharge li .title .tip {
+        font-size: 1rem;
+        color: #969494;
+        font-weight: 300; }
     .recharge li .action {
       text-align: right;
       -webkit-box-flex: 0 0 9rem;
@@ -3742,6 +3748,28 @@ section {
       border-bottom: none; }
       .recharge li.th > div {
         font-size: 1.2rem; }
+
+.border-none {
+  border: none !important; }
+
+.m-ico-rose {
+  padding-left: 1.8rem;
+  background: url(../images/ico_rose.png) no-repeat left center;
+  background-size: 1.6rem 1.6rem; }
+
+.m-ico-member {
+  background: url(../images/ico_month_member.png) no-repeat left center;
+  background-size: 1.6rem 1.6rem; }
+
+.m-chat-card-m {
+  padding-left: 2.8rem !important;
+  background: url(../images/ico_wallet_month.png) no-repeat left center;
+  background-size: 2.57rem 1.54rem; }
+
+.m-chat-card-s {
+  padding-left: 2.8rem !important;
+  background: url(../images/ico_wallet_season.png) no-repeat left center;
+  background-size: 2.57rem 1.54rem; }
 
 .nav {
   background: #fbd2e0;
@@ -7471,5 +7499,15 @@ ul.co-ul {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1; }
+
+.m-wallet-entry {
+  background: url(../images/ico_wallet_entry.png) no-repeat center center;
+  background-size: cover;
+  display: inline-block;
+  position: fixed;
+  width: 8.65rem;
+  height: 9.1rem;
+  bottom: 5rem;
+  right: 0.5rem; }
 
 /*# sourceMappingURL=imei.css.map */

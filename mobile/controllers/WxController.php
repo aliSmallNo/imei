@@ -20,6 +20,7 @@ use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserSign;
+use common\models\UserTag;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
@@ -561,11 +562,10 @@ class WxController extends BaseController
 
 		$prices = [
 			['num' => 20, 'price' => 2],
-			['num' => 60, 'price' => 6],
 			['num' => 80, 'price' => 8],
-			['num' => 180, 'price' => 18],
 			['num' => 680, 'price' => 68]
 		];
+		$cards = UserTag::chatCards($hid);
 		return self::renderPage("swallet.tpl",
 			[
 				'avatar' => $avatar,
@@ -573,6 +573,7 @@ class WxController extends BaseController
 				'prices' => $prices,
 				'hid' => $hid,
 				'stat' => $stat,
+				'cards' => $cards,
 				"isDebug" => AppUtil::isDebugger($this->user_id)
 			],
 			'imei',

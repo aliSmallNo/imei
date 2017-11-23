@@ -172,6 +172,7 @@ class ChatMsg extends ActiveRecord
 		$costAmt = 20;
 		list($uid1, $uid2) = self::sortUId($senderId, $receiverId);
 		$left = self::chatLeft($senderId, $receiverId, $conn);
+		$hasCard = UserTag::chatCards($senderId, $conn);
 		if ($left < 1) {
 			$stat = UserTrans::getStat($senderId, 1);
 			$flower = isset($stat['flower']) ? intval($stat['flower']) : 0;
@@ -208,7 +209,9 @@ class ChatMsg extends ActiveRecord
 		$gid = $ret['gId'];
 		$gRound = intval($ret['gRound']);
 		if ($costAmt) {
-			UserTrans::add($senderId, $gid, UserTrans::CAT_CHAT, '', $costAmt, UserTrans::UNIT_GIFT);
+			if (!$hasCard) {
+				UserTrans::add($senderId, $gid, UserTrans::CAT_CHAT, '', $costAmt, UserTrans::UNIT_GIFT);
+			}
 			$sql = 'UPDATE im_chat_group SET gRound=9999 WHERE gId=:id';
 			$conn->createCommand($sql)->bindValues([
 				':id' => $gid,

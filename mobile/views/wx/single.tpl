@@ -424,31 +424,6 @@
 	</div>
 	<ul></ul>
 </section>
-<section id="saccount">
-	<div class="account-header">
-		<div class="amt">20</div>
-		<div>
-			<span class="m-ico-rose">媒桂花</span>
-		</div>
-		<a href="#srecords">充值记录 </a>
-	</div>
-	<div>
-		<ul class="recharge">
-			<li class="th">
-				<div class="title">充值项目</div>
-				<div class="action">价格</div>
-			</li>
-			{{foreach from=$prices key=k item=item}}
-			<li>
-				<div class="title m-ico-rose">{{$item.num}} 媒桂花</div>
-				<div class="action"><a href="javascript:;" class="btn-recharge" data-id="{{$item.price}}">{{$item.price}}元</a>
-				</div>
-			</li>
-			{{/foreach}}
-		</ul>
-		<p class="tip-block">媒桂花仅用于打赏，不能提现或退款</p>
-	</div>
-</section>
 <section id="sprofile">
 	<div class="sprofile-top">
 		<div class="nav">
@@ -839,6 +814,7 @@
 <div class="m-notice off">
 	<a href="javascript:;">有人对你怦然心动了</a>
 </div>
+<a href="/wx/sw?id={{$encryptId}}#swallet" class="m-wallet-entry"></a>
 <input type="hidden" id="cEncryptId" value="{{$encryptId}}">
 <input type="hidden" id="cUNI" value="{{$uni}}">
 <input type="hidden" id="cChatId" value="{{$chatId}}">
@@ -1340,4 +1316,4 @@
 		<a href="javascript:;" class="date-close"></a>
 	</div>
 </script>
-<script  src="/assets/js/require.js" data-main="/js/single.js?v=1.1.5.8"></script>
+<script src="/assets/js/require.js" data-main="/js/single.js?v=1.1.5.8"></script>

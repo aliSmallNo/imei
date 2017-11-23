@@ -20,6 +20,9 @@ class Pay extends ActiveRecord
 	const CAT_MEET = 400;
 	const CAT_MEMBER = 500;
 
+	const CAT_CHAT_MONTH = 600;
+	const CAT_CHAT_SEASON = 610;
+
 	const MODE_WXPAY = 100;
 	const MODE_ALIPAY = 102;
 
@@ -63,17 +66,29 @@ class Pay extends ActiveRecord
 		$entity->pRId = $num;
 		$entity->pAmt = $amt;
 		$entity->pMode = $mode;
-		if ($cat == self::CAT_RECHARGE) {
-			$entity->pNote = '充值' . $num . '媒桂花';
-		} else if ($cat == self::CAT_MAKEING_FRIENDS) {
-			$entity->pRId = 20170820;
-			$entity->pNote = '活动费用' . $num;
-		} else if ($cat == self::CAT_REDPACKET) {
-			$entity->pNote = '红包' . $num;
-		} else if ($cat == self::CAT_MEET) {
-			$entity->pNote = '约会平台服务费';
-		} else if ($cat == self::CAT_MEMBER) {
-			$entity->pNote = '单身俱乐部会员';
+		switch ($cat) {
+			case self::CAT_RECHARGE:
+				$entity->pNote = '充值' . $num . '媒桂花';
+				break;
+			case self::CAT_MAKEING_FRIENDS:
+				$entity->pRId = 20170820;
+				$entity->pNote = '活动费用' . $num;
+				break;
+			case self::CAT_REDPACKET:
+				$entity->pNote = '红包' . $num;
+				break;
+			case self::CAT_MEET:
+				$entity->pNote = '约会平台服务费';
+				break;
+			case self::CAT_MEMBER:
+				$entity->pNote = '成为单身会员';
+				break;
+			case self::CAT_CHAT_MONTH:
+				$entity->pNote = '月度畅聊卡';
+				break;
+			case self::CAT_CHAT_SEASON:
+				$entity->pNote = '季度畅聊卡';
+				break;
 		}
 		$entity->save();
 		return $entity->pId;

@@ -1,19 +1,40 @@
 <section id="swallet">
 	<div class="account-header">
-		<div class="amt">{{$stat['flower']}}</div>
-		<div>
-			<span class="m-ico-rose">媒桂花</span>
+		<div class="item">
+			<div class="amt">{{$stat['flower']}}</div>
+			<span class="ico-rose">媒桂花</span>
 		</div>
-		<a href="#srecords">账户记录 ></a>
+		{{foreach from=$cards item=card}}
+		<div class="item">
+			<div class="ico-card-{{$card.cat}}"></div>
+			<span>剩余{{$card.left}}天</span>
+		</div>
+		{{/foreach}}
+		<a href="#srecords" class="nav-right">账户记录 ></a>
 	</div>
 	<div>
 		<ul class="recharge">
-			<li class="th">
+			<li class="th none">
 				<div class="title">充值项目</div>
 				<div class="action">价格</div>
 			</li>
-			{{foreach from=$prices key=k item=item}}
+			<li class="border-none">
+				<div class="title m-chat-card-m">
+					月度畅聊卡<b>￥39.9</b>
+					<div class="tip">包月密聊，有效期免费畅聊</div>
+				</div>
+				<div class="action"><a href="javascript:;" class="btn-recharge" data-id="9.9" data-cat="chat_month">9.9元</a></div>
+			</li>
 			<li>
+				<div class="title m-chat-card-s">
+					季度畅聊卡<b>￥99.9</b>
+					<div class="tip">包季密聊，有效期免费畅聊</div>
+				</div>
+				<div class="action"><a href="javascript:;" class="btn-recharge" data-id="19.9" data-cat="chat_season">19.9元</a></div>
+			</li>
+			<li class="line"></li>
+			{{foreach from=$prices key=k item=item}}
+			<li {{if $k==0}}class="border-none" {{/if}}>
 				<div class="title m-ico-rose">{{$item.num}} 媒桂花</div>
 				<div class="action"><a href="javascript:;" class="btn-recharge" data-id="{{$item.price}}" data-cat="rose">{{$item.price}}元</a>
 				</div>

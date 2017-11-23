@@ -16,6 +16,9 @@ use yii\db\ActiveRecord;
 class UserTrans extends ActiveRecord
 {
 	const CAT_RECHARGE_MEMBER = 80;
+	const CAT_CHAT_MONTH = 82;
+	const CAT_CHAT_SEASON = 84;
+	const CAT_CHAT_YEAR = 84;
 	const CAT_RECHARGE_MEET = 90;
 	const CAT_RECHARGE = 100;
 	const CAT_SIGN = 105;
@@ -33,6 +36,9 @@ class UserTrans extends ActiveRecord
 
 	static $catDict = [
 		self::CAT_RECHARGE_MEMBER => "单身会员",
+		self::CAT_CHAT_MONTH => "月度畅聊卡",
+		self::CAT_CHAT_SEASON => "季度畅聊卡",
+		self::CAT_CHAT_YEAR => "年度畅聊卡",
 		self::CAT_RECHARGE => "充值",
 		self::CAT_SIGN => "签到奖励",
 		self::CAT_NEW => "新人奖励",

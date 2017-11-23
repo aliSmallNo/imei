@@ -3592,31 +3592,6 @@ section
 	font-weight: $weightBold
 	text-align: center
 
-.m-ico-rose, .m-ico-member
-	display: inline-block
-	position: relative
-	@include borderBox
-	padding-left: 2rem
-	&:before
-		content: ' '
-		position: absolute
-		top: 50%
-		left: 0
-		background: url(../images/ico_rose.png) no-repeat center center
-		background-size: 1.8rem 1.8rem
-		width: 1.8rem
-		height: 1.8rem
-		margin-top: -.9rem
-
-.m-ico-member
-	a
-		text-decoration: line-through
-		font-size: 1.2rem
-		color: #777
-		font-weight: 200
-	&:before
-		background: url(../images/ico_month_member.png) no-repeat center center
-		background-size: 1.8rem 1.8rem
 //top: 40%
 //&:after
 //	content: ' '
@@ -3626,29 +3601,40 @@ section
 //	height: 1.5rem
 //	left: -2rem
 //	top: -3.2rem
-
 .account-header
-	height: 12rem
 	background: $mainColorLight
 	position: relative
+	@include displayFlex
+	padding: 3rem 4rem 1.5rem 4rem
 	a
 		color: #fff
 		position: absolute
 		top: 0
 		right: 0
-		padding: 1rem
+		padding: .8rem 1rem
 		font-size: 1.2rem
-	div
+	.item
+		@include displayFlex-1
 		text-align: center
-		line-height: 3rem
-		height: 3rem
-		&.amt
-			padding-top: 3rem
+		div
+			height: 4.4rem
+		.ico-card-182
+			background: url(../images/ico_wallet_month.png) no-repeat center center
+			background-size: 6rem 3.6rem
+		.ico-card-183
+			background: url(../images/ico_wallet_season.png) no-repeat center center
+			background-size: 6rem 3.6rem
+		.ico-rose
+			padding-left: 1.6rem
+			background: url(../images/ico_rose.png) no-repeat left center
+			background-size: 1.4rem 1.4rem
+		.amt
 			font-weight: $weightBold
-			font-size: 3rem
+			font-size: 2.8rem
 			color: #fff
-			line-height: 4rem
-			height: 4rem
+			line-height: 4.3rem
+		span
+			font-size: 1.1rem
 
 .recharge
 	background: #fff
@@ -3680,6 +3666,19 @@ section
 		.title
 			text-align: left
 			@include displayFlex-1
+			@include borderBox
+			position: relative
+			padding-left: 1.8rem
+			b
+				text-decoration: line-through
+				color: $grayFontColorLight
+				font-weight: $weightNormal
+				font-size: 1rem
+				padding-left: .3rem
+			.tip
+				font-size: 1rem
+				color: $grayFontColorLight
+				font-weight: $weightNormal
 		.action
 			text-align: right
 			@include displayFlex-w(9rem)
@@ -3707,6 +3706,28 @@ section
 			border-bottom: none
 			& > div
 				font-size: 1.2rem
+
+.border-none
+	border: none !important
+
+.m-ico-rose
+	padding-left: 1.8rem
+	background: url(../images/ico_rose.png) no-repeat left center
+	background-size: 1.6rem 1.6rem
+
+.m-ico-member
+	background: url(../images/ico_month_member.png) no-repeat left center
+	background-size: 1.6rem 1.6rem
+
+.m-chat-card-m
+	padding-left: 2.8rem !important
+	background: url(../images/ico_wallet_month.png) no-repeat left center
+	background-size: 2.57rem 1.54rem
+
+.m-chat-card-s
+	padding-left: 2.8rem !important
+	background: url(../images/ico_wallet_season.png) no-repeat left center
+	background-size: 2.57rem 1.54rem
 
 .sgroup-top
 	@at-root .nav
@@ -7085,3 +7106,13 @@ ul.co-ul
 
 .flex-1
 	@include displayFlex-1
+
+.m-wallet-entry
+	background: url(../images/ico_wallet_entry.png) no-repeat center center
+	background-size: cover
+	display: inline-block
+	position: fixed
+	width: 8.65rem
+	height: 9.1rem
+	bottom: 5rem
+	right: .5rem
