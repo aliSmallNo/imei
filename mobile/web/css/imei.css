@@ -108,7 +108,7 @@ main {
   z-index: 411;
   text-align: center;
   padding: 23rem 0;
-  background-color: rgba(0, 0, 0, 0.7); }
+  background-color: rgba(0, 0, 0, 0.6); }
 
 .space {
   display: inline-block;
@@ -2761,7 +2761,7 @@ section {
   width: 100%;
   height: 100%;
   display: none;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.6);
   pointer-events: auto;
   z-index: 1000; }
 
