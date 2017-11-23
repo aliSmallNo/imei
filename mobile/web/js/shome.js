@@ -98,7 +98,7 @@ require(["layer"],
 			sending: false,
 			init: function () {
 				var util = this;
-				$(document).on(kClick, ".m-bottom-bar a", function () {
+				$(document).on(kClick, ".m-bottom-bar .j-act", function () {
 					var self = $(this);
 					var sid = self.attr("data-id");
 					if (!sid) {

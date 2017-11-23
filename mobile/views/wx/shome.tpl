@@ -58,17 +58,17 @@
 	<div style="height: 6rem;"></div>
 	<div class="m-bottom-bar">
 		<p>
-			<a class="send btn-give" data-id="{{$uInfo.encryptId}}">送TA花</a>
+			<a class="send j-act btn-give" data-id="{{$uInfo.encryptId}}">送TA花</a>
 		</p>
 		<p>
-			<a class="heart btn-like {{if $uInfo.favorFlag}}favor{{/if}}"
+			<a class="heart j-act btn-like {{if $uInfo.favorFlag}}favor{{/if}}"
 				 data-id="{{$uInfo.encryptId}}">{{if $uInfo.favorFlag}}已心动{{else}}心动{{/if}}</a>
 		</p>
 		<p>
-			<a class="chat btn-chat" data-id="{{$uInfo.encryptId}}">密聊TA</a>
+			<a class="chat j-act btn-chat" data-id="{{$uInfo.encryptId}}">密聊TA</a>
 		</p>
 		<!--p >
-			<a class="weixin btn-apply" data-id="{{$uInfo.encryptId}}">加微信聊聊</a>
+			<a class="weixin j-act btn-apply" data-id="{{$uInfo.encryptId}}">加微信聊聊</a>
 		</p-->
 		<!--div>
 			<a class="btn-recommend">向朋友推荐TA</a>
@@ -217,9 +217,14 @@
 </script>
 <script type="text/template" id="tpl_chat">
 	{[#items]}
-	<li class="{[dir]}">
-		<div class="avatar"><img src="{[avatar]}"></div>
-		<div class="content"><span>{[content]}</span></div>
+	<li class="{[dir]}" data-r="{[readflag]}">
+		<a href="{[url]}" {[#eid]}data-eid="{[.]}"{[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
+		<div class="content read{[readflag]}">
+			<a href="javascript:;" class="j-content-wrap">
+				{[#image]}<img src="{[.]}">{[/image]}
+				{[^image]}{[content]}{[/image]}
+			</a>
+		</div>
 	</li>
 	{[/items]}
 </script>
@@ -277,4 +282,4 @@
 </script>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/shome.js?v=1.5.0" src="/assets/js/require.js"></script>
+<script data-main="/js/shome.js?v=1.5.1" src="/assets/js/require.js"></script>
