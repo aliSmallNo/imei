@@ -1723,4 +1723,14 @@ class WxController extends BaseController
 			'注册单身',
 			'bg-color');
 	}
+
+	public function actionThanks()
+	{
+		return self::renderPage("thanks.tpl",
+			[
+			],
+			'terse',
+			'感恩节馈赠',
+			'bg-thanks');
+	}
 }
