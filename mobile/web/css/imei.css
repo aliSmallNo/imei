@@ -7519,9 +7519,9 @@ ul.co-ul {
   margin: 0 3rem;
   position: relative;
   height: 36rem;
-  height: -moz-calc(79vh);
-  height: -webkit-calc(79vh);
-  height: calc(79vh);
+  height: -moz-calc(80vh);
+  height: -webkit-calc(80vh);
+  height: calc(80vh);
   overflow-x: hidden;
   overflow-y: scroll; }
   .thanks-main .box-env {
@@ -7536,7 +7536,8 @@ ul.co-ul {
     left: 0;
     right: 0;
     top: 0;
-    font-size: 1.5rem; }
+    font-size: 1.4rem;
+    font-weight: 300; }
   .thanks-main .box-back {
     position: absolute;
     background-color: #e1a875;
@@ -7564,7 +7565,7 @@ ul.co-ul {
       font-weight: 400; }
     .thanks-main .box-front h5 {
       font-size: 1.2rem;
-      margin: 0.8rem 0 1.5rem;
+      margin: 0.8rem 0 2rem;
       font-weight: 300;
       font-style: italic; }
     .thanks-main .box-front .btn {
