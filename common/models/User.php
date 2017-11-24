@@ -2169,8 +2169,7 @@ class User extends ActiveRecord
 		// AppUtil::logFile("uid:" . $row["id"] . ' rank: ' . $ranktemp, 5);
 	}
 
-	protected
-	static function fmtStat($items)
+	protected static function fmtStat($items)
 	{
 		if ($items && count($items) > 7) {
 			$amt = array_sum(array_column($items, 'y'));
@@ -2250,8 +2249,7 @@ class User extends ActiveRecord
 		]
 	];
 
-	public
-	static function propStat($beginDate, $endDate, $gender = '')
+	public static function propStat($beginDate, $endDate, $gender = '')
 	{
 
 		$fmtRet = function ($ret, $dict) {
@@ -2277,9 +2275,9 @@ class User extends ActiveRecord
 				}
 			}
 			return [
-				'all' => self::fmtStat($itemAll),
-				'female' => self::fmtStat($itemFemale),
-				'male' => self::fmtStat($itemMale)
+				'all' => array_values($itemAll),
+				'female' => array_values($itemFemale),
+				'male' => array_values($itemMale)
 			];
 		};
 
@@ -2288,25 +2286,27 @@ class User extends ActiveRecord
 			$strCriteria = ' AND uGender=' . $gender;
 		}
 		$role = self::ROLE_SINGLE;
-
+		$conn = AppUtil::db();
 		$sql = "select COUNT(1) as co , IFNULL(uMarital,0) as val, uGender as gender
 				from im_user 
-				where uStatus <8 and uRole=:role AND uGender>9 
+				WHERE uStatus <8 and uRole=:role AND uGender>9 AND uOpenId LIKE 'oYDJew%'
 					and uAddedOn between :sDate and :eDate $strCriteria
 				GROUP by val, uGender ";
-		$ret = AppUtil::db()->createCommand($sql)->bindValues([
+
+		$ret = $conn->createCommand($sql)->bindValues([
 			":role" => $role,
 			":sDate" => $beginDate . ' 00:00:00',
 			":eDate" => $endDate . ' 23:59:00',
 		])->queryAll();
 		$marrayData = $fmtRet($ret, self::$Marital);
+//		var_dump($marrayData);
 
 		$sql = "select COUNT(1) as co ,uIncome as val, uGender as gender
 				from im_user 
-				where uStatus <8 and uRole=:role AND uGender>9 
+				where uStatus <8 and uRole=:role AND uGender>9 AND uOpenId LIKE 'oYDJew%'
 					and uAddedOn between :sDate and :eDate $strCriteria
 				GROUP by uIncome,uGender ";
-		$ret = AppUtil::db()->createCommand($sql)->bindValues([
+		$ret = $conn->createCommand($sql)->bindValues([
 			":role" => $role,
 			":sDate" => $beginDate . ' 00:00:00',
 			":eDate" => $endDate . ' 23:59:00',
@@ -2315,10 +2315,10 @@ class User extends ActiveRecord
 
 		$sql = "select COUNT(1) as co ,uEducation as val, uGender as gender
 				from im_user 
-				where uStatus <8 and uRole=:role AND uGender>9 
+				where uStatus <8 and uRole=:role AND uGender>9 AND uOpenId LIKE 'oYDJew%'
 					and uAddedOn between :sDate and :eDate $strCriteria
 				GROUP by uEducation,uGender ";
-		$ret = AppUtil::db()->createCommand($sql)->bindValues([
+		$ret = $conn->createCommand($sql)->bindValues([
 			":role" => $role,
 			":sDate" => $beginDate . ' 00:00:00',
 			":eDate" => $endDate . ' 23:59:00',
@@ -2328,10 +2328,10 @@ class User extends ActiveRecord
 
 		$sql = "select COUNT(1) as co ,uGender as gender 
 				from im_user 
-				where uStatus < 8 and uRole=:role AND uGender>9
+				where uStatus < 8 and uRole=:role AND uGender>9 AND uOpenId LIKE 'oYDJew%'
 					and uAddedOn between :sDate and :eDate $strCriteria
 				GROUP by uGender";
-		$gender = AppUtil::db()->createCommand($sql)->bindValues([
+		$gender = $conn->createCommand($sql)->bindValues([
 			":role" => $role,
 			":sDate" => $beginDate . ' 00:00:00',
 			":eDate" => $endDate . ' 23:59:00',
@@ -2345,17 +2345,29 @@ class User extends ActiveRecord
 			$genderData[] = $item;
 		}
 
-		$sql = "select COUNT(1) as co ,uHeight as val, uGender as gender
-				from im_user 
-				where uStatus < 8 and uRole=:role AND uGender>9 
-					and uAddedOn between :sDate and :eDate $strCriteria
-				GROUP by uHeight,uGender";
-		$ret = AppUtil::db()->createCommand($sql)->bindValues([
+		$sql = "SELECT COUNT(1) as co , 
+				(case 
+				 when uHeight BETWEEN 100 AND 150 THEN 1
+				 when uHeight BETWEEN 151 AND 155 THEN 2
+				 when uHeight BETWEEN 156 AND 160 THEN 3
+				 when uHeight BETWEEN 161 AND 165 THEN 4
+				 when uHeight BETWEEN 166 AND 170 THEN 5
+				 when uHeight BETWEEN 171 AND 175 THEN 6
+				 when uHeight BETWEEN 176 AND 180 THEN 7
+				 when uHeight BETWEEN 181 AND 185 THEN 8
+				 when uHeight > 185 THEN 9
+				 else 0 end) as val, uGender as gender
+				FROM im_user 
+				WHERE uStatus < 8 AND uRole=:role AND uGender>9 AND uOpenId LIKE 'oYDJew%'
+					AND uAddedOn BETWEEN :sDate AND :eDate $strCriteria
+				GROUP by val,uGender";
+		$ret = $conn->createCommand($sql)->bindValues([
 			":role" => $role,
 			":sDate" => $beginDate . ' 00:00:00',
 			":eDate" => $endDate . ' 23:59:00',
 		])->queryAll();
-		$heightData = $fmtRet($ret, self::$Height);
+		$heightNames = ['其他', '150及以下', '151~155', '156~160', '161~165', '166~170', '171~175', '176~180', '181~185', '186及以上'];
+		$heightData = $fmtRet($ret, $heightNames);
 
 		$sql = 'select count(1) as co,
 				(case when age<=20 THEN 0
@@ -2368,10 +2380,10 @@ class User extends ActiveRecord
 				 else 8 end) as val,
 				 uGender as gender 
 				FROM (select (year(now())- uBirthYear) as age, uGender,uId from im_user 
-						WHERE uStatus < 8 and uRole=:role AND uGender>9 AND uBirthYear>0
+						WHERE uStatus < 8 and uRole=:role AND uGender>9 AND uBirthYear>0 AND uOpenId LIKE \'oYDJew%\'
 							and uAddedOn between :sDate and :eDate) as t
 				 group by val,gender';
-		$ret = AppUtil::db()->createCommand($sql)->bindValues([
+		$ret = $conn->createCommand($sql)->bindValues([
 			":role" => $role,
 			":sDate" => $beginDate . ' 00:00:00',
 			":eDate" => $endDate . ' 23:59:00',
@@ -2382,9 +2394,9 @@ class User extends ActiveRecord
 		$sql = 'select count(DISTINCT aUId) as cnt, DATE_FORMAT(aDate,\'%H\') as hr, uGender as gender
 			 from im_log_action as a  
 			 JOIN im_user as u on u.uId=a.aUId
-			 WHERE u.uGender>9 AND uRole=:role AND aDate BETWEEN :sDate AND :eDate
+			 WHERE u.uGender>9 AND uRole=:role AND aDate BETWEEN :sDate AND :eDate AND uOpenId LIKE \'oYDJew%\'
 			 GROUP BY hr,gender';
-		$ret = AppUtil::db()->createCommand($sql)->bindValues([
+		$ret = $conn->createCommand($sql)->bindValues([
 			":role" => $role,
 			":sDate" => $beginDate . ' 00:00:00',
 			":eDate" => $endDate . ' 23:59:00',
@@ -2416,8 +2428,7 @@ class User extends ActiveRecord
 		];
 	}
 
-	public
-	static function setting($uid, $flag, $setfield)
+	public static function setting($uid, $flag, $setfield)
 	{
 		// $fields = ["favor" => 1, "fans" => 1, "chat" => 1];
 		$uInfo = self::findOne(["uId" => $uid]);
@@ -2436,8 +2447,7 @@ class User extends ActiveRecord
 		return true;
 	}
 
-	public
-	static function muteAlert($uid, $field, $conn = '')
+	public static function muteAlert($uid, $field, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -2454,8 +2464,7 @@ class User extends ActiveRecord
 		/*{"fans":1,"chat":1,"favor":1}*/
 	}
 
-	public
-	static function greetUsers($uid, $conn = '')
+	public static function greetUsers($uid, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -2532,8 +2541,7 @@ class User extends ActiveRecord
 		return array_values($items);
 	}
 
-	public
-	static function hiDummies($page = 1, $resetFlag = false)
+	public static function hiDummies($page = 1, $resetFlag = false)
 	{
 		$dummies = self::topDummies($resetFlag);
 		//var_dump($dummies);
@@ -2550,8 +2558,7 @@ class User extends ActiveRecord
 	}
 
 	// 后台聊天稻草人
-	public
-	static function topDummies($resetFlag = false)
+	public static function topDummies($resetFlag = false)
 	{
 		$redis = RedisUtil::init(RedisUtil::KEY_DUMMY_TOP);
 		$ret = json_decode($redis->getCache(), 1);
