@@ -1726,9 +1726,12 @@ class WxController extends BaseController
 
 	public function actionThanks()
 	{
+		$uInfo = User::findOne(['uId' => $this->user_id]);
+		$day = round((time() - strtotime($uInfo['uAddedOn'])) / 86400);
 		return self::renderPage("thanks.tpl",
 			[
-				'day' => 520
+				'day' => $day,
+				'eid' => $this->user_eid
 			],
 			'terse',
 			'感恩节馈赠',

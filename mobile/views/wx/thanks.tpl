@@ -10,7 +10,7 @@
 	<div class="box-front">
 		<h4>THANKSGIVING DAY</h4>
 		<h5>- 感恩节 -</h5>
-		<a href="javascript:;" class="btn"></a>
+		<a href="/wx/sw?id={{$eid}}#swallet" class="btn"></a>
 	</div>
 </div>
 <div class="env-lb"></div>
