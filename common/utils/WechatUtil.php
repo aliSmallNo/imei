@@ -545,6 +545,12 @@ class WechatUtil
 					break;
 			}
 			UserTrans::addByPID($pid, $transCat);
+			$curDate = date('Ymd');
+			//Rain: 感恩节馈赠
+			if (isset($payInfo['pUId']) && $curDate >= 20171124 && $curDate <= 20171126) {
+				UserTrans::add($payInfo['pUId'], 0, UserTrans::CAT_THANKS_BONUS,
+					'', 88, UserTrans::UNIT_GIFT);
+			}
 
 		} else {
 			$data = [
