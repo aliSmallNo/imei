@@ -7501,7 +7501,7 @@ ul.co-ul {
   background: url(../images/thanks/bg.jpg);
   background-attachment: fixed;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100% 100%;
   overflow: hidden; }
 
 .env-lb {
@@ -7516,7 +7516,7 @@ ul.co-ul {
   height: 14rem; }
 
 .thanks-main {
-  margin: 5rem 2.5rem;
+  margin: 0 3rem;
   position: relative;
   height: 36rem;
   height: -moz-calc(79vh);
@@ -7558,7 +7558,7 @@ ul.co-ul {
     text-align: center;
     color: #fff; }
     .thanks-main .box-front h4 {
-      margin: 7.5rem 0 0;
+      margin: 7rem 0 0;
       font-size: 1.9rem;
       font-family: "Arial Black", Arial;
       font-weight: 400; }
