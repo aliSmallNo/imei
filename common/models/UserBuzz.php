@@ -76,11 +76,6 @@ class UserBuzz extends ActiveRecord
 	public static function handleEvent($postJSON = "")
 	{
 		$resp = $debug = $content = '';
-		/*self::$WelcomeMsg = '欢迎来到「千寻恋恋」' . PHP_EOL . PHP_EOL;
-		self::$WelcomeMsg .= '在这里你可以同时注册两种身份— “单身”和“媒婆”。' . PHP_EOL . PHP_EOL;
-		self::$WelcomeMsg .= '点击底栏“我是媒婆”，帮朋友找对象！' . PHP_EOL;
-		self::$WelcomeMsg .= '点击底栏“我是单身”，为自己找对象！' . PHP_EOL . PHP_EOL;
-		self::$WelcomeMsg .= '这里的单身，均有好友做推荐，让交友变得真实';*/
 
 		self::$WelcomeMsg = '欢迎来到千寻恋恋交友网👏' . PHP_EOL . '
 千寻恋恋交友网是由腾讯众创推出的婚恋交友品牌！
