@@ -7538,6 +7538,23 @@ ul.co-ul {
     top: 0;
     font-size: 1.4rem;
     font-weight: 300; }
+    .thanks-main .box-env b {
+      color: #f60; }
+    .thanks-main .box-env h5 {
+      line-height: 3rem;
+      font-size: 1.4rem;
+      font-weight: 300; }
+    .thanks-main .box-env h4 {
+      margin: 0.5rem 0;
+      line-height: 3rem;
+      font-size: 1.8rem;
+      text-align: center;
+      color: #f60; }
+    .thanks-main .box-env h6 {
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: #969494; }
   .thanks-main .box-back {
     position: absolute;
     background-color: #e1a875;

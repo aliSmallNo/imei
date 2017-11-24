@@ -1728,6 +1728,7 @@ class WxController extends BaseController
 	{
 		return self::renderPage("thanks.tpl",
 			[
+				'day' => 520
 			],
 			'terse',
 			'感恩节馈赠',
