@@ -7531,7 +7531,7 @@ ul.co-ul {
     z-index: 9;
     margin-left: 1rem;
     margin-right: 1rem;
-    padding: 2rem 2.3rem;
+    padding: 1.7rem 2.3rem;
     position: absolute;
     left: 0;
     right: 0;
@@ -7545,7 +7545,7 @@ ul.co-ul {
       font-family: Verdana;
       font-size: 1.6rem; }
     .thanks-main .box-env h5 {
-      line-height: 3rem;
+      line-height: 2.8rem;
       font-size: 1.4rem;
       font-weight: 300; }
     .thanks-main .box-env h4 {
