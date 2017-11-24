@@ -13,7 +13,6 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
-use common\models\UserTag;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\PushUtil;
@@ -788,17 +787,18 @@ class FooController extends Controller
 		$sql = "SELECT uId,uGender 
  				from im_user as u
  				WHERE uGender>9 and uPhone!=''
-  					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'2017-11-17 15:30') ";
+  					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'2017-11-24 16:00') ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
 		$senderId = User::SERVICE_UID;
 		foreach ($ret as $row) {
 			$uid = $row['uId'];
-			$gender = $row['uGender'];
+			/*$gender = $row['uGender'];
 			$content = 'https://wx.meipo100.com/images/ad/for_male_600.jpg';
 			if ($gender == User::GENDER_FEMALE) {
 				$content = 'https://wx.meipo100.com/images/ad/for_female_600.jpg';
-			}
+			}*/
+			$content = "https://wx.meipo100.com/images/thanks/cover.png";
 
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001);
@@ -809,8 +809,10 @@ class FooController extends Controller
 				'TA给你发了一条密聊消息，快去看看吧~',
 				$senderId,
 				$gid);
-
 			$cnt++;
+			if ($cnt && $cnt % 50 == 0) {
+				var_dump($cnt . date('  m-d H:i:s'));
+			}
 		}
 		var_dump($cnt);
 	}

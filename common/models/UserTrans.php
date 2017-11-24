@@ -75,9 +75,6 @@ class UserTrans extends ActiveRecord
 		self::UNIT_FANS => '花粉值',
 	];
 
-
-
-
 	public static function tableName()
 	{
 		return '{{%user_trans}}';
