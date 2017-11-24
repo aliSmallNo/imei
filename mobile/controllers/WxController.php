@@ -1728,6 +1728,9 @@ class WxController extends BaseController
 	{
 		$uInfo = User::findOne(['uId' => $this->user_id]);
 		$day = round((time() - strtotime($uInfo['uAddedOn'])) / 86400);
+		if ($day < 1) {
+			$day = 1;
+		}
 		return self::renderPage("thanks.tpl",
 			[
 				'day' => $day,
