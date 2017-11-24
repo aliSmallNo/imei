@@ -7101,17 +7101,18 @@ ul.co-ul
 	background-attachment: fixed
 	background-repeat: no-repeat
 	background-size: cover
+	overflow: hidden
 
 .env-lb
-	background: url(../images/thanks/leftb.png) no-repeat right top
-	background-size: 20rem 20rem
+	display: inline-block
 	position: fixed
 	left: 0
 	bottom: 0
-	display: inline-block
-	width: 14rem
-	height: 14rem
 	z-index: 39
+	background: url(../images/thanks/leftb.png) no-repeat right top
+	background-size: 20rem 20rem
+	width: 10rem
+	height: 14rem
 
 .thanks-main
 	margin: 5rem 2.5rem
@@ -7120,6 +7121,8 @@ ul.co-ul
 	height: -moz-calc(79vh)
 	height: -webkit-calc(79vh)
 	height: calc(79vh)
+	overflow-x: hidden
+	overflow-y: scroll
 	.box-env
 		background: url(../images/thanks/envelope.png) no-repeat center top
 		background-size: cover
