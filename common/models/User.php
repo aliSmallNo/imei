@@ -231,7 +231,6 @@ class User extends ActiveRecord
 	const STATUS_XCX = 100;
 
 	static $StatusVisible = [
-		self::STATUS_PENDING,
 		self::STATUS_ACTIVE
 	];
 
