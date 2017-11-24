@@ -173,34 +173,51 @@ class UserBuzz extends ActiveRecord
 				break;
 			case "text":
 				$content = trim($postData["Content"]);
-				if ($content) {
-					if ($content == 178) {
-						$resp = self::json_to_xml([
-							'ToUserName' => $fromUsername,
-							'FromUserName' => $toUsername,
-							'CreateTime' => time(),
-							'MsgType' => 'news',
-							'ArticleCount' => 1,
-							'Articles' => [
-								'item' => [
-									'Title' => '→打后照片记得点这里←千万别错过获得50元现金福利>>',
-									'Description' => '盐城本地相亲交友平台，一起来脱单吧！',
-									'PicUrl' => 'https://img.meipo100.com/default/flag_178.jpg?v=1.1.4',
-									'Url' => 'https://wx.meipo100.com/wx/single#slook'
-								]
-							]
-						]);
-					} elseif ($content == 333) {
-						$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
-					}elseif ($content='晚安'){
-						$txt ="当初怎么也没算到，最后说出那句“我们就到这”的人会是我，也是那时候才知道，原来真的爱一个人，会连狠心的话都舍不得让她说。
+				$resp = self::respText($content, $fromUsername, $toUsername);
+				break;
+			default:
+				break;
+		}
+		return [$resp, $debug, $content];
+	}
+
+	private static function respText($content, $fromUsername, $toUsername)
+	{
+		$resp = '';
+		if (!$content) {
+			return $resp;
+		}
+		switch ($content) {
+			case 178:
+				$resp = self::json_to_xml([
+					'ToUserName' => $fromUsername,
+					'FromUserName' => $toUsername,
+					'CreateTime' => time(),
+					'MsgType' => 'news',
+					'ArticleCount' => 1,
+					'Articles' => [
+						'item' => [
+							'Title' => '→打后照片记得点这里←千万别错过获得50元现金福利>>',
+							'Description' => '盐城本地相亲交友平台，一起来脱单吧！',
+							'PicUrl' => 'https://img.meipo100.com/default/flag_178.jpg?v=1.1.4',
+							'Url' => 'https://wx.meipo100.com/wx/single#slook'
+						]
+					]
+				]);
+				break;
+			case 333:
+				$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
+				break;
+			case '晚安':
+				$txt = "当初怎么也没算到，最后说出那句“我们就到这”的人会是我，也是那时候才知道，原来真的爱一个人，会连狠心的话都舍不得让她说。
 
 明明知道你不再喜欢我了，还是想着把最后的告别做得体体面面，坏人就该让我来做。然后，你就安心地逃离了我身边。我呢，坏人一个吧，也许就不配拥有长久的爱情。
 
 晚安，世界和你 🌗";
-						$resp = self::textMsg($fromUsername, $toUsername, $txt);
-					} elseif ($content == '任务') {
-						$txt = "小任务详情：
+				$resp = self::textMsg($fromUsername, $toUsername, $txt);
+				break;
+			case '任务':
+				$txt = "小任务详情：
 1、一段走心的自我介绍；
 2、发3张自己保留好久的照片可以介绍一下意义哦！（照片的形式：自拍、景区、全家福、好友等等）；
 3、猜拳游戏真心话大冒险。赢的要问输的问题，一定要真实发自内心的回答；
@@ -208,45 +225,46 @@ class UserBuzz extends ActiveRecord
 5、每个人发给平台一段对对方的评价，如果有啥不好意思说的想法，可以发送本平台哦，平台会帮您送达给对方；
 6、最后互相道一句晚安，结束一天的cp任务。
 做完记得截图回复千寻恋恋微信公众账号哦！";
-						$resp = self::textMsg($fromUsername, $toUsername, $txt);
-					} elseif ($content == "金秋送礼") {
-						if (!User::findOne(["uOpenId" => $fromUsername])->uStatus) {
-							$contents = "尊敬的千寻恋恋用户，您好，您的手机号还没有登录哦~<a href='https://wx.meipo100.com/wx/hi'>点我登录</a>查看活动。";
-						} else {
-							$contents = "新品iphone8,微媒送好礼。恭喜您获得参加此活动机会，动动手指参与活动吧.....<a href='https://wx.meipo100.com/wx/pin8'>点击了解活动详情</a>。";
-						}
-						$resp = self::textMsg($fromUsername, $toUsername, $contents);
-					} elseif ($content == "中奖") {
-						if (time() >= strtotime("2017-10-15 23:59:59")) {
-							$contents = "中奖用户是 Frankie~";
-						}
-						//elseif ($fromUsername == "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
-						// $contents = "中奖用户是 Frankie~<a href='https://wx.meipo100.com/wx/sh?id=AzxsXTQ9Rjc8NkxnNzo6P0E_QXJjOUNMPEI8UW0'>点击查看TA</a>";
-						//}
-						else {
-							$contents = "还没到开奖时间哦，敬请期待.....<a href='https://wx.meipo100.com/wx/pin8'>点击了解活动详情</a>。";
-						}
-						$resp = self::textMsg($fromUsername, $toUsername, $contents);
-					} else {
-						$conn = AppUtil::db();
-						$sql = 'SELECT count(1) FROM im_user_buzz WHERE bType=:type AND bFrom=:uid AND bDate>:dt ';
-						$ret = $conn->createCommand($sql)->bindValues([
-							':uid' => $fromUsername,
-							':type' => 'text',
-							':dt' => date('Y-m-d H:i:s', time() - 86400 * 2)
-						])->queryScalar();
-						$resp = '';
-						if (!$ret) {
-							// Rain: 说明两天之内曾经聊过，不出现提示了
-							$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
-						}
+				$resp = self::textMsg($fromUsername, $toUsername, $txt);
+				break;
+			case '金秋送礼':
+				if (!User::findOne(["uOpenId" => $fromUsername])->uStatus) {
+					$contents = "尊敬的千寻恋恋用户，您好，您的手机号还没有登录哦~<a href='https://wx.meipo100.com/wx/hi'>点我登录</a>查看活动。";
+				} else {
+					$contents = "新品iphone8,微媒送好礼。恭喜您获得参加此活动机会，动动手指参与活动吧.....<a href='https://wx.meipo100.com/wx/pin8'>点击了解活动详情</a>。";
+				}
+				$resp = self::textMsg($fromUsername, $toUsername, $contents);
+				break;
+			case '中奖':
+				if (time() >= strtotime("2017-10-15 23:59:59")) {
+					$contents = "中奖用户是 Frankie~";
+				}
+				//elseif ($fromUsername == "oYDJew5EFMuyrJdwRrXkIZLU2c58") {
+				// $contents = "中奖用户是 Frankie~<a href='https://wx.meipo100.com/wx/sh?id=AzxsXTQ9Rjc8NkxnNzo6P0E_QXJjOUNMPEI8UW0'>点击查看TA</a>";
+				//}
+				else {
+					$contents = "还没到开奖时间哦，敬请期待.....<a href='https://wx.meipo100.com/wx/pin8'>点击了解活动详情</a>。";
+				}
+				$resp = self::textMsg($fromUsername, $toUsername, $contents);
+				break;
+			default:
+				if ($content) {
+					$conn = AppUtil::db();
+					$sql = 'SELECT count(1) FROM im_user_buzz WHERE bType=:type AND bFrom=:uid AND bDate>:dt ';
+					$ret = $conn->createCommand($sql)->bindValues([
+						':uid' => $fromUsername,
+						':type' => 'text',
+						':dt' => date('Y-m-d H:i:s', time() - 86400 * 2)
+					])->queryScalar();
+					$resp = '';
+					if (!$ret) {
+						// Rain: 说明两天之内曾经聊过，不出现提示了
+						$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
 					}
 				}
 				break;
-			default:
-				break;
 		}
-		return [$resp, $debug, $content];
+		return $resp;
 	}
 
 	private static function welcomeMsg($fromUsername, $toUsername, $category = '', $extension = "")
