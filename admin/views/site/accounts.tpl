@@ -369,7 +369,8 @@
 		font-size: 10px;
 		color: #999;
 		text-align: center;
-		line-height: 18px;
+		line-height: 16px;
+		display: block;
 	}
 </style>
 <div class="row">
@@ -466,6 +467,7 @@
 		<td>
 			<img src="{{$prod.thumb}}" bsrc="{{$prod.avatar}}" width="100%" class="i-av">
 			<div class="uid">{{$prod.id}}</div>
+			<a href="https://wx.meipo100.com/wx/sh?id={{$prod.encryptId}}" class="uid" title="点击右键，拷贝链接，发到微信中，才可以打开">微信个人页</a>
 		</td>
 		<td class="pInfo m-style-{{$prod.style}}">
 			<span class="m-role">{{$prod.role_t}}</span> {{$prod.name}}
