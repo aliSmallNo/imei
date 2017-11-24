@@ -53,7 +53,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_MOMENT => "分享到朋友圈奖励",
 		self::CAT_VOTE => "投票奖励",
 		self::CAT_FANS_DRAW => "花粉值提现",
-		self::CAT_THANKS_BONUS => "感恩节奖励",
+		self::CAT_THANKS_BONUS => "感恩节馈赠",
 	];
 
 	static $CatMinus = [
