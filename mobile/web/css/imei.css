@@ -2789,17 +2789,23 @@ section {
       box-sizing: border-box;
       padding: 0;
       overflow: hidden; }
+      .m-popup-main .m-popup-wrap .m-popup-content .m-popup-close {
+        position: absolute;
+        right: -0.4rem;
+        top: -0.4rem;
+        width: 3.4rem;
+        height: 3.4rem;
+        background: rgba(255, 255, 255, 0.5) url(../images/ico_close_gray.png) no-repeat center center;
+        background-size: 1.9rem 1.9rem;
+        border-radius: 1.7rem; }
+      .m-popup-main .m-popup-wrap .m-popup-content.pic {
+        background: none; }
+        .m-popup-main .m-popup-wrap .m-popup-content.pic .m-popup-close {
+          right: 0;
+          top: 0; }
       .m-popup-main .m-popup-wrap .m-popup-content.height90 {
         height: 95vh;
         overflow: initial; }
-      .m-popup-main .m-popup-wrap .m-popup-content .m-popup-close {
-        position: absolute;
-        right: 0.3rem;
-        top: 0.3rem;
-        width: 3.4rem;
-        height: 3.4rem;
-        background: url(../images/ico_close_gray.png) no-repeat center center;
-        background-size: 1.8rem 1.8rem; }
       .m-popup-main .m-popup-wrap .m-popup-content.no-bg {
         background: none;
         box-shadow: none;
@@ -6619,16 +6625,24 @@ section {
   padding: 1.5rem;
   border-radius: 0.5rem;
   position: relative; }
+  .greeting img {
+    width: 100%;
+    height: auto; }
   .greeting:before {
     content: "";
     position: absolute;
     display: inline-block;
     background: url(../images/logo_wsm.png) no-repeat center center;
     background-size: 100% 100%;
-    width: 6rem;
-    height: 2.4rem;
+    width: 6.8rem;
+    height: 1.8rem;
     left: 1rem;
     top: 1rem; }
+  .greeting.pic {
+    padding: 0;
+    background: transparent; }
+    .greeting.pic:before {
+      display: none; }
   .greeting h4 {
     text-align: center;
     font-size: 2rem;

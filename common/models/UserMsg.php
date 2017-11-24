@@ -37,6 +37,7 @@ class UserMsg extends ActiveRecord
 	const CATEGORY_AUDIT = 180;
 	const CATEGORY_BULLETIN = 186;
 	const CATEGORY_UPGRADE = 188;
+	const CATEGORY_PICTURE = 189;
 	const CATEGORY_SMS_RECALL = 200;
 	const CATEGORY_PRESENT = 210;
 	const CATEGORY_CERT_GRANT = 220;
@@ -61,6 +62,7 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_AUDIT => "审核结果通知",
 		self::CATEGORY_BULLETIN => "最新公告",
 		self::CATEGORY_UPGRADE => "最近更新",
+		self::CATEGORY_PICTURE => "宣传图片",
 		self::CATEGORY_SMS_RECALL => "短信召回老用户",
 		self::CATEGORY_PRESENT => "收到媒桂花",
 		self::CATEGORY_CERT_GRANT => "认证审核成功",
@@ -278,21 +280,23 @@ class UserMsg extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$strCats = implode(',', [self::CATEGORY_BULLETIN, self::CATEGORY_UPGRADE]);
-		$sql = 'SELECT count(a.aId) as cnt, m.mId,m.mUId,m.mText,m.mCategory,m.mAddedOn
+		$strCats = implode(',', [self::CATEGORY_BULLETIN, self::CATEGORY_UPGRADE, self::CATEGORY_PICTURE]);
+		$sql = 'SELECT count(a.aId) as cnt, m.mId,m.mUId,m.mText,m.mCategory, m.mAddedOn,m.mUrl
 				 FROM im_user_msg as m
 				 LEFT JOIN im_log_action as a on m.mUId=a.aKey and a.aUId=:uid
 				 WHERE mStatus=1 and m.mCategory in (' . $strCats . ')
-				 GROUP BY m.mId HAVING cnt<2 ORDER BY m.mAddedOn desc';
+				 GROUP BY m.mId HAVING cnt<3
+				 ORDER BY m.mAddedOn desc';
 		$ret = $conn->createCommand($sql)->bindValues([
 			':uid' => $uid,
-		])->queryAll();
+		])->queryOne();
 		if ($ret) {
-			$row = $ret[0];
-			LogAction::add($uid, $openId, LogAction::ACTION_GREETING, '', $row['mUId']);
+			LogAction::add($uid, $openId, LogAction::ACTION_GREETING, '', $ret['mUId']);
 			return [
-				'title' => self::$catDict[$row['mCategory']],
-				'items' => json_decode($row['mText'], 1)
+				'title' => self::$catDict[$ret['mCategory']],
+				'items' => json_decode($ret['mText'], 1),
+				'url' => $ret['mUrl'],
+				'cat' => ($ret['mCategory'] == self::CATEGORY_PICTURE ? "image" : "text")
 			];
 		}
 

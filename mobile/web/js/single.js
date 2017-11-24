@@ -2250,9 +2250,14 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 
 		var GreetingUtil = {
 			tmp: $('#tpl_greet').html(),
-			content: $.trim($('#ctx_greet').html()),
+			content: $('#ctx_greet').html().trim(),
+			hasPic: false,
 			init: function () {
-
+				var util = this;
+				util.hasPic = (util.content.indexOf('<img') > 0);
+				if (util.hasPic) {
+					$sls.content.addClass('pic');
+				}
 			},
 			show: function () {
 				var util = this;
@@ -2306,7 +2311,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 				var util = this;
 				$sls.main.show();
 				var html = Mustache.render(util.tmp3, {
-					url: "/images/active_greeting.jpg"
+					url: "/images/thanks/cover.png"
 				});
 				$sls.content.html(html).addClass("animate-pop-in height90");
 				$sls.shade.fadeIn(160);
@@ -2494,7 +2499,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 			ChatUtil.init();
 			GreetingUtil.init();
 			alertModel.init();
-			if (Date.parse(new Date()) < Date.parse("2017/11/12")) {
+			if (Date.parse(new Date()) < Date.parse("2017/11/23")) {
 				alertModel.show3('');
 			}
 			MeipoUtil.init();

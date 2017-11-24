@@ -1135,7 +1135,7 @@
 	{{$wxInfoString}}
 </script>
 <script type="text/template" id="ctx_greet">
-	{{if $greeting}}
+	{{if $greeting && $greeting.cat=="text"}}
 	<div class="greeting">
 		<h4>{{$greeting.title}}</h4>
 		{{if $greeting.items|@count==1}}
@@ -1146,6 +1146,15 @@
 			<li>{{$item}}</li>
 			{{/foreach}}
 		</ol>
+		{{/if}}
+		<a href="javascript:;" class="m-popup-close"></a>
+	</div>
+	{{elseif $greeting && $greeting.cat=="image"}}
+	<div class="greeting pic">
+		{{if $greeting.items|@count==1}}
+		<a href="{{$greeting.url}}">
+			<img src="{{$greeting.items[0]}}" alt="">
+		</a>
 		{{/if}}
 		<a href="javascript:;" class="m-popup-close"></a>
 	</div>
@@ -1317,4 +1326,4 @@
 		<a href="javascript:;" class="date-close"></a>
 	</div>
 </script>
-<script src="/assets/js/require.js" data-main="/js/single.js?v=1.2.1.1"></script>
+<script src="/assets/js/require.js" data-main="/js/single.js?v=1.2.2.1"></script>
