@@ -194,7 +194,9 @@ class UserBuzz extends ActiveRecord
 						$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
 					}elseif ($content='晚安'){
 						$txt ="当初怎么也没算到，最后说出那句“我们就到这”的人会是我，也是那时候才知道，原来真的爱一个人，会连狠心的话都舍不得让她说。
+
 明明知道你不再喜欢我了，还是想着把最后的告别做得体体面面，坏人就该让我来做。然后，你就安心地逃离了我身边。我呢，坏人一个吧，也许就不配拥有长久的爱情。
+
 晚安，世界和你🌛";
 						$resp = self::textMsg($fromUsername, $toUsername, $txt);
 					} elseif ($content == '任务') {
