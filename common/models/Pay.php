@@ -65,17 +65,17 @@ class Pay extends ActiveRecord
 		],
 		'rose2' => [
 			'cat' => Pay::CAT_RECHARGE,
-			'title' => '2 媒桂花',
+			'title' => '20 媒桂花',
 			'price' => 2,
 		],
 		'rose8' => [
 			'cat' => Pay::CAT_RECHARGE,
-			'title' => '8 媒桂花',
+			'title' => '80 媒桂花',
 			'price' => 8,
 		],
 		'rose68' => [
 			'cat' => Pay::CAT_RECHARGE,
-			'title' => '68 媒桂花',
+			'title' => '680 媒桂花',
 			'price' => 68,
 		],
 	];
