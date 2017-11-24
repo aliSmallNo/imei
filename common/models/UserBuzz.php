@@ -197,7 +197,7 @@ class UserBuzz extends ActiveRecord
 
 明明知道你不再喜欢我了，还是想着把最后的告别做得体体面面，坏人就该让我来做。然后，你就安心地逃离了我身边。我呢，坏人一个吧，也许就不配拥有长久的爱情。
 
-晚安，世界和你🌛";
+晚安，世界和你 🌗";
 						$resp = self::textMsg($fromUsername, $toUsername, $txt);
 					} elseif ($content == '任务') {
 						$txt = "小任务详情：
