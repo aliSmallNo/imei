@@ -4,7 +4,7 @@ body, html {
   font-size: -moz-calc(100vw / 32);
   font-size: -webkit-calc(100vw / 32);
   font-size: calc(100vw / 32);
-  color: #363438;
+  color: #333;
   font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   height: 100%; }
 
@@ -26,7 +26,7 @@ body, a, div, p {
   font-size: 1.4rem; }
 
 a {
-  color: #363438;
+  color: #333;
   cursor: pointer;
   text-decoration: none; }
   a.disabled, a.disabled:active {
@@ -1483,7 +1483,7 @@ section {
       .match-wrap ul li h4 {
         margin: 0;
         padding: 0;
-        color: #363438;
+        color: #333;
         font-weight: 500;
         text-align: center;
         font-size: 1.4rem;
@@ -1906,7 +1906,7 @@ section {
     .u-my-count a em {
       font-size: 1.7rem;
       font-weight: 500;
-      color: #363438;
+      color: #333;
       display: block;
       line-height: 2.4rem; }
 
@@ -1944,7 +1944,7 @@ section {
       display: block;
       font-size: 1.7rem;
       font-weight: 500;
-      color: #363438; }
+      color: #333; }
 
 .m-discovery-act {
   padding: 0 4rem; }
@@ -2296,7 +2296,7 @@ section {
     .invite-wrap .user .nic img {
       width: 6.5rem;
       height: 6.5rem;
-      background: #363438;
+      background: #333;
       padding: 3px;
       border: #f487ac 1px solid;
       border-radius: 3.6rem; }
@@ -2473,7 +2473,7 @@ section {
     font-size: 2rem;
     font-weight: 500;
     padding-bottom: 1.5rem;
-    color: #363438; }
+    color: #333; }
   .mycard .tip {
     color: #f06292;
     font-size: 1.5rem;
@@ -2745,7 +2745,7 @@ section {
     padding-top: 1rem; }
     .qrcode-wrap .qrcode p {
       font-size: 1.2rem;
-      color: #363438;
+      color: #333;
       line-height: 1.8rem; }
     .qrcode-wrap .qrcode img {
       width: 12rem;
@@ -3118,7 +3118,7 @@ section {
       right: 1rem; }
     .my-condition .conditions .con-title, .my-condition .conditions .con-des {
       font-size: 1.2rem;
-      color: #363438;
+      color: #333;
       position: relative; }
     .my-condition .conditions .con-des {
       color: #007aff;
@@ -7553,7 +7553,7 @@ ul.co-ul {
       text-align: center;
       font-size: 1.1rem;
       font-weight: 300;
-      color: #969494; }
+      color: #6a6572; }
   .thanks-main .box-back {
     position: absolute;
     background-color: #e1a875;
