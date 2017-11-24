@@ -786,6 +786,7 @@ class FooController extends Controller
 		$conn = AppUtil::db();
 		$sql = "SELECT uId,uGender 
  				from im_user as u
+ 				JOIN im_user_wechat as w on w.wUId=u.uId AND w.wSubscribe=1
  				WHERE uGender>9 and uPhone!=''
   					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'2017-11-24 16:00') ";
 		$ret = $conn->createCommand($sql)->queryAll();
