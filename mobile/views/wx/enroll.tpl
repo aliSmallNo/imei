@@ -1,6 +1,6 @@
-<link rel="stylesheet" href="/css/dev.min.css?v=1.1">
+<link rel="stylesheet" href="/css/dev.min.css?v=1.2">
 <div class="m-popup-shade"></div>
-<div style="height: 4rem"></div>
+<div style="height: 5rem"></div>
 <div class="enroll-title">
 	<img src="/images/enroll/word01.png" alt="">
 </div>
