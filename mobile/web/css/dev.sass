@@ -18,7 +18,7 @@
 		margin: 0
 		color: $purpleLight
 		li
-			padding: 1rem .8rem
+			padding: .5rem .8rem
 			@include displayFlex
 			label
 				line-height: 3.6rem
@@ -31,25 +31,23 @@
 				font-size: 1.2rem
 				padding-right: .5rem
 				@include displayFlex-w(5.4rem)
-			input[type="text"]
+			input[type="text"], input[type="number"]
 				@include displayFlex-1
 				border: 0
 				border-radius: .3rem
 				background-color: $purpleLight
 				color: #fff
-				-webkit-appearance: none
-				-moz-appearance: none
-				appearance: none
-				font-size: 1.5rem
+				font-size: 1.4rem
 				height: 3.6rem
 				line-height: 3.6rem
 				padding: 0 .5rem
 				margin: 0
 				min-width: 6rem
+				font-weight: $weightNormal
 			a[data-field]
 				@include displayFlex-1
 				height: 3.6rem
-				line-height: 3.6rem
+				line-height: 3rem
 				border: 0
 				border-radius: .3rem
 				background-color: $purpleLight
@@ -62,6 +60,32 @@
 					@include arrowRight
 					right: 1rem
 					border-color: $purpleBg
+				em
+					color: #fff
+					font-weight: $weightNormal
+					font-size: 1.4rem
+			.j-photo
+				width: 7rem
+				height: 7rem
+				display: inline-block
+				border: 1px dashed #fff
+				position: relative
+				&:before
+					content: ''
+					position: absolute
+					border-bottom: 1px dashed #fff
+					width: 3rem
+					height: 0
+					top: 50%
+					left: 2rem
+				&:after
+					content: ''
+					position: absolute
+					border-left: 1px dashed #fff
+					width: 0
+					height: 3rem
+					left: 50%
+					top: 2rem
 			.j-sms
 				color: #fff
 				background: $purpleAction
@@ -73,6 +97,9 @@
 				margin-left: .5rem
 				&:active
 					background: $purpleLight
+				&.disabled
+					color: $grayFontColorLight
+
 			input[type="radio"]
 				vertical-align: middle
 				width: 2rem

@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/dev.min.css?v=1.5">
+<link rel="stylesheet" href="/css/dev.min.css?v=1.6">
 <div class="m-popup-shade"></div>
 <div style="height: 5rem"></div>
 <div class="enroll-title">
@@ -8,34 +8,38 @@
 	<ul>
 		<li>
 			<em>姓名</em>
-			<input type="text" name="name">
+			<input type="text" data-field="name" autocomplete="off">
 		</li>
 		<li>
 			<em>手机号</em>
-			<input type="text" name="phone">
+			<input type="number" data-field="phone" autocomplete="off" class="input-phone">
 		</li>
 		<li>
 			<em>验证码</em>
-			<input type="text" name="code">
+			<input type="text" data-field="code" autocomplete="off">
 			<a href="javascript:;" class="j-sms">获取验证码</a>
 		</li>
 		<li>
 			<em>性别</em>
-			<label><input type="radio" name="gender" value="11"> 男性</label>
+			<label><input type="radio" name="gender" data-field="gender" value="11"> 男性</label>
 			<span class="space2"></span>
-			<label><input type="radio" name="gender" value="10"> 女性</label>
+			<label><input type="radio" name="gender" data-field="gender" value="10"> 女性</label>
 		</li>
 		<li>
 			<em>婚姻状态</em>
-			<a href="javascript:;" data-field="marital"></a>
+			<a href="javascript:;" class="j-popup" data-field="marital"></a>
 		</li>
 		<li>
 			<em>所在城市</em>
-			<a href="javascript:;" data-field="location"></a>
+			<a href="javascript:;" class="j-location" data-field="location"></a>
 		</li>
 		<li>
 			<em>出生年份</em>
-			<a href="javascript:;" data-field="year"></a>
+			<a href="javascript:;" class="j-popup" data-field="year"></a>
+		</li>
+		<li>
+			<em>上传照片</em>
+			<a href="javascript:;" class="j-photo"></a>
 		</li>
 	</ul>
 	<div style="height: 3rem"></div>
@@ -57,9 +61,9 @@
 	</div>
 </script>
 <script id="maritalTemp" type="text/html">
-	<div class="cells col3 clearfix" data-tag="marital">
+	<div class="cells col1 clearfix" data-tag="marital">
 		{{foreach from=$marital key=key item=y}}
-		<a href="javascript:;" style="width: 33.3%"><em data-key="{{$key}}">{{$y}}</em></a>
+		<a href="javascript:;"><em data-key="{{$key}}">{{$y}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
@@ -107,4 +111,4 @@
 <script>
 	var mProvinces = {{$provinces}};
 </script>
-<script src="/assets/js/require.js" data-main="/js/enroll.js?v=1.3.7"></script>
+<script src="/assets/js/require.js" data-main="/js/enroll.js?v=1.0.1"></script>

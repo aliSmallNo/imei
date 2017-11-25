@@ -1743,6 +1743,12 @@ class WxController extends BaseController
 
 	public function actionEnroll()
 	{
+		$marital = [
+			User::MARITAL_UNMARRIED => "未婚（无婚史）",
+			User::MARITAL_DIVORCE_KID => "离异不带孩",
+			User::MARITAL_DIVORCE_NO_KID => "离异带孩",
+			User::MARITAL_MARRIED => "已婚（请离开吧）"
+		];
 		return self::renderPage("enroll.tpl",
 			[
 				"maxYear" => 1999,
@@ -1750,7 +1756,7 @@ class WxController extends BaseController
 				"years" => User::$Birthyear,
 				"height" => User::$Height,
 				"gender" => User::$Gender,
-				"marital" => User::$Marital,
+				"marital" => $marital,
 				"horos" => User::$Horos,
 			],
 			'terse',

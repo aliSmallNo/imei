@@ -31,8 +31,8 @@ require(["jquery", "mustache", "layer"],
 
 		var SingleUtil = {
 			counting: false,
-			phone: $("input[name=phone]"),
-			btnCode: $(".sedit-code a"),
+			phone: $(".input-phone"),
+			btnCode: $(".j-sms"),
 			timer: "",
 			second: 0,
 			greetingTmp: $('#tpl_greeting_users').html(),
@@ -61,8 +61,9 @@ require(["jquery", "mustache", "layer"],
 			condVal: "",
 			init: function () {
 				var util = this;
-				$(".action-location,.action-homeland").on(kClick, function () {
+				$(".j-location").on(kClick, function () {
 					util.btn = $(this);
+					// util.btn.attr('data-val', '');
 					var html = Mustache.render(util.provinceTmp, {items: mProvinces});
 					if (html) {
 						util.toggle(html);
@@ -74,67 +75,30 @@ require(["jquery", "mustache", "layer"],
 					var text = self.html();
 					var key = self.attr('data-key');
 					var tag = self.attr('data-tag');
-					var pos = '';
 					switch (tag) {
 						case "province":
-							pos = util.btn.attr("data-pos");
-							util.btn.find("." + pos).html('<em data-key="' + key + '">' + text + '</em>');
+							util.btn.html('<em data-key="' + key + '">' + text + '</em>');
 							util.subAddr(key, 'city');
 							break;
 						case "city":
-							pos = util.btn.attr("data-pos");
-							util.btn.find("." + pos).append(' <em data-key="' + key + '">' + text + '</em>');
+							util.btn.append(' <em data-key="' + key + '">' + text + '</em>');
 							util.subAddr(key, 'district');
 							// util.toggle();
 							break;
 						case "district":
-							pos = util.btn.attr("data-pos");
-							util.btn.find("." + pos).append(' <em data-key="' + key + '">' + text + '</em>');
+							util.btn.append(' <em data-key="' + key + '">' + text + '</em>');
 							util.toggle();
 							break;
-						case "age":
-						case "height":
-							if (key == 0) {
-								util.btn.find(".action-val").html('<em data-key="' + key + '">' + text + '</em>');
-								util.toggle();
-								break;
-							}
-							var mOptionObj = self.closest(".m-popup-options");
-							if (!mOptionObj.hasClass("fl")) {
-								util.condVal = key;
-								mOptionObj.find(".start").html(text);
-								util.btn.find(".action-val").html('<em data-key="' + key + '">' + text + '</em>');
-								mOptionObj.removeClass("fl").addClass("fl");
-								mOptionObj.find("a").removeClass("cur");
-								self.addClass("cur");
-							} else {
-								if (parseInt(util.condVal) >= parseInt(key)) {
-									return;
-								}
-								self.addClass("cur");
-								util.condVal = 0;
-								mOptionObj.find(".end").html(text);
-								util.btn.find(".action-val").append('~<em data-key="' + key + '">' + text + '</em>');
-								util.toggle();
-							}
-							break;
-						case "edu":
-						case "income":
-							util.btn.find(".action-val").html('<em data-key="' + key + '">' + text + '</em>');
+						default:
+							util.btn.html('<em data-key="' + key + '">' + text + '</em>');
 							util.toggle();
 							break;
 					}
 					return false;
 				});
-				$(document).on(kClick, ".action-com", function () {
+				$(document).on(kClick, ".j-popup", function () {
 					util.btn = $(this);
 					var field = util.btn.attr("data-field");
-					// if (field == "job") {
-					// 	var html = Mustache.render(util.jobTemp, util.jobVal);
-					// 	util.toggle(html);
-					// } else {
-					// 	util.toggle($("#" + field + "Temp").html());
-					// }
 					util.toggle($("#" + field + "Temp").html());
 				});
 				$(document).on(kClick, ".cells > a", function () {
@@ -143,7 +107,7 @@ require(["jquery", "mustache", "layer"],
 					cells.find("a").removeClass("cur");
 					self.addClass("cur");
 					var tag = self.closest(".cells").attr("data-tag");
-					util.btn.find(".action-val").html(self.html());
+					util.btn.html(self.html());
 					util.toggle();
 					// if (tag == "scope") {
 					// 	var scopeVal = parseInt(self.find("em").attr("data-key"));
@@ -211,21 +175,7 @@ require(["jquery", "mustache", "layer"],
 					}
 					$sls.postData["location"] = JSON.stringify(lItem);
 
-					var hItem = [];
-					$(".action-homeland .homeland em").each(function () {
-						var item = {
-							key: $(this).attr("data-key"),
-							text: $(this).html(),
-						};
-						hItem.push(item);
-					});
-					if (hItem.length < 2) {
-						showMsg("籍贯还没填写哦~");
-						return;
-					}
-					$sls.postData["homeland"] = JSON.stringify(hItem);
-
-					var comFiledsT = {gender: "性别", marital: "婚姻状态", year: "出生年份", height: "身高", sign: "星座"};
+					var comFiledsT = {gender: "性别", marital: "婚姻状态", year: "出生年份"};
 					var err = 0;
 					$(".action-com").each(function () {
 						var self = $(this);
@@ -250,7 +200,7 @@ require(["jquery", "mustache", "layer"],
 					} else {
 						// util.submit();
 						showMsg("还没上传头像哦~");
-						return;
+						return false;
 					}
 
 				});
@@ -299,7 +249,7 @@ require(["jquery", "mustache", "layer"],
 					content: '保存中...'
 				});
 				$.post("/api/user", {
-					tag: "sreglite",
+					tag: "enroll",
 					data: JSON.stringify($sls.postData),
 				}, function (res) {
 					layer.closeAll();
@@ -357,7 +307,7 @@ require(["jquery", "mustache", "layer"],
 				if (util.counting) {
 					return false;
 				}
-				var phone = $.trim(util.phone.val());
+				var phone = util.phone.val().trim();
 				if (!isPhone(phone)) {
 					showMsg('请输入正确的手机号！');
 					util.phone.focus();
@@ -370,7 +320,7 @@ require(["jquery", "mustache", "layer"],
 						phone: phone
 					},
 					function (resp) {
-						if (resp.code == 0) {
+						if (resp.code < 1) {
 							showMsg(resp.msg);
 							util.smsCounting();
 						} else {
@@ -390,7 +340,7 @@ require(["jquery", "mustache", "layer"],
 						util.btnCode.html(util.second + "s后重试");
 					} else {
 						clearInterval(util.timer);
-						util.btnCode.html("发送验证码");
+						util.btnCode.html("获取验证码");
 						util.btnCode.removeClass("disabled");
 						util.counting = 0;
 					}

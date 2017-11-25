@@ -41,6 +41,8 @@ ul {
 
 input, select, textarea, button {
   -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   outline: none; }
 
 main {
