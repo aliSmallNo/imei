@@ -1134,7 +1134,8 @@ class WechatUtil
 		foreach ($ret as $k => $row) {
 			$name = $row['uName'];
 			$openid = $row['uOpenId'];
-			$content = $name . '，有人对你怦然心动了！快去注册并完善你的个人资料吧~👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
+			$content = 'Hi，%s，你的一位微信联系人在［千寻恋恋］上将你设为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
+			$content = sprintf($content, $name);
 			$cnt += UserWechat::sendMsg($openid, $content);
 			if ($debug && ($cnt % 50 == 0 || $k % 50 == 0)) {
 				var_dump($cnt . '  ' . $k);

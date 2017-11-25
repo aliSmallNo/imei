@@ -136,7 +136,27 @@ main {
         background-color: #4966b2;
         font-size: 1.5rem;
         padding-left: 0.5rem;
-        padding-right: 0.5rem; }
+        padding-right: 0.5rem;
+        position: relative;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden; }
+        .enroll-form ul li a[data-field]:after {
+          content: " ";
+          display: inline-block;
+          height: 0.8rem;
+          width: 0.8rem;
+          border-width: 1px 1px 0 0;
+          border-color: #969494;
+          border-style: solid;
+          -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+          transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+          position: absolute;
+          top: 50%;
+          right: 0;
+          margin-top: -0.5rem;
+          right: 1rem;
+          border-color: #0b1636; }
       .enroll-form ul li .j-sms {
         color: #fff;
         background: #284cfa;
@@ -149,6 +169,8 @@ main {
         text-align: center;
         border-radius: 0.5rem;
         margin-left: 0.5rem; }
+        .enroll-form ul li .j-sms:active {
+          background: #4966b2; }
       .enroll-form ul li input[type="radio"] {
         vertical-align: middle;
         width: 2rem;
@@ -171,5 +193,7 @@ main {
     display: block;
     margin-left: 2rem;
     margin-right: 2rem; }
+    .enroll-form .j-next:active {
+      background: #4966b2; }
 
 /*# sourceMappingURL=dev.css.map */

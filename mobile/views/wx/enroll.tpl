@@ -21,9 +21,9 @@
 		</li>
 		<li>
 			<em>性别</em>
-			<label><input type="radio" name="gender" value="11">男性</label>
+			<label><input type="radio" name="gender" value="11"> 男性</label>
 			<span class="space2"></span>
-			<label><input type="radio" name="gender" value="10">女性</label>
+			<label><input type="radio" name="gender" value="10"> 女性</label>
 		</li>
 		<li>
 			<em>婚姻状态</em>

@@ -56,6 +56,12 @@
 				font-size: 1.5rem
 				padding-left: .5rem
 				padding-right: .5rem
+				position: relative
+				@include textTail
+				&:after
+					@include arrowRight
+					right: 1rem
+					border-color: $purpleBg
 			.j-sms
 				color: #fff
 				background: $purpleAction
@@ -65,6 +71,8 @@
 				text-align: center
 				border-radius: .5rem
 				margin-left: .5rem
+				&:active
+					background: $purpleLight
 			input[type="radio"]
 				vertical-align: middle
 				width: 2rem
@@ -87,4 +95,6 @@
 		display: block
 		margin-left: 2rem
 		margin-right: 2rem
+		&:active
+			background: $purpleLight
 
