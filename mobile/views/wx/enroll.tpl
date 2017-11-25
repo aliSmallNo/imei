@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/dev.min.css?v=1.2">
+<link rel="stylesheet" href="/css/dev.min.css?v=1.3">
 <div class="m-popup-shade"></div>
 <div style="height: 5rem"></div>
 <div class="enroll-title">
