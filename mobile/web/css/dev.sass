@@ -1,0 +1,90 @@
+@import "base"
+
+.bg-enroll
+	background: url(../images/enroll/bg01.jpg)
+	background-attachment: fixed
+	background-repeat: no-repeat
+	background-size: 100% 100%
+
+.enroll-title
+	text-align: center
+	img
+		width: 66%
+
+.enroll-form
+	padding: 1rem 1.5rem
+	ul
+		background-color: $purpleBg
+		padding: 1rem 0
+		margin: 0
+		color: $purpleLight
+		li
+			padding: 1rem .8rem
+			@include displayFlex
+			label
+				line-height: 3.2rem
+				color: $purpleAction
+
+
+
+			em
+				line-height: 3.2rem
+				display: inline-block
+				text-align: right
+				font-size: 1.2rem
+				padding-right: .5rem
+				@include displayFlex-w(5.4rem)
+			input[type="text"]
+				@include displayFlex-1
+				border: 0
+				border-radius: .3rem
+				background-color: $purpleLight
+				color: #fff
+				-webkit-appearance: none
+				-moz-appearance: none
+				appearance: none
+				font-size: 1.5rem
+				height: 3.2rem
+				line-height: 3.2rem
+				padding-left: .5rem
+				padding-right: .5rem
+				min-width: 6rem
+			a[data-field]
+				@include displayFlex-1
+				height: 3.2rem
+				line-height: 3.2rem
+				border: 0
+				border-radius: .3rem
+				background-color: $purpleLight
+				font-size: 1.5rem
+				padding-left: .5rem
+				padding-right: .5rem
+			.j-sms
+				color: #fff
+				background: $purpleAction
+				@include displayFlex-w(8rem)
+				font-size: 1.2rem
+				line-height: 3.2rem
+				text-align: center
+				border-radius: .5rem
+				margin-left: .5rem
+			input[type="radio"]
+				vertical-align: middle
+				width: 2rem
+				height: 2rem
+				display: inline-block
+				background: url(../images/sprite_radio.png) no-repeat 0 0
+				background-size: 2rem 4rem
+				&:checked
+					background-position: 0 -2rem
+	.j-next
+		font-size: 1.5rem
+		line-height: 4rem
+		text-align: center
+		border-radius: 2rem
+		color: #fff
+		background: $purpleAction
+		display: block
+		margin-left: 2rem
+		margin-right: 2rem
+

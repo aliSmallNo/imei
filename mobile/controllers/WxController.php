@@ -1740,4 +1740,21 @@ class WxController extends BaseController
 			'感恩节馈赠',
 			'bg-thanks');
 	}
+
+	public function actionEnroll()
+	{
+		return self::renderPage("enroll.tpl",
+			[
+				"maxYear" => 1999,
+				'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
+				"years" => User::$Birthyear,
+				"height" => User::$Height,
+				"gender" => User::$Gender,
+				"marital" => User::$Marital,
+				"horos" => User::$Horos,
+			],
+			'terse',
+			'注册',
+			'bg-enroll');
+	}
 }

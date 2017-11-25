@@ -898,6 +898,7 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
+
 		/*$pid = 230624;
 		UserTag::addByPId(UserTag::CAT_MEMBERSHIP, $pid);
 

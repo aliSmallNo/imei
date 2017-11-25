@@ -52,6 +52,26 @@ main {
 .none {
   display: none !important; }
 
+.clearfix {
+  zoom: 1; }
+  .clearfix:before, .clearfix:after {
+    display: block;
+    line-height: 0;
+    content: ""; }
+  .clearfix:after {
+    clear: both; }
+
+.space {
+  display: inline-block;
+  width: 1rem; }
+
+.space2 {
+  display: inline-block;
+  width: 2rem; }
+
+.center {
+  text-align: center; }
+
 .g-blank {
   width: 0;
   height: 0;
@@ -78,15 +98,6 @@ main {
   background-size: 100% 100%;
   position: relative; }
 
-.clearfix {
-  zoom: 1; }
-  .clearfix:before, .clearfix:after {
-    display: block;
-    line-height: 0;
-    content: ""; }
-  .clearfix:after {
-    clear: both; }
-
 .t-warning {
   font-size: 1.1rem;
   color: #fff;
@@ -109,14 +120,6 @@ main {
   text-align: center;
   padding: 23rem 0;
   background-color: rgba(0, 0, 0, 0.6); }
-
-.space {
-  display: inline-block;
-  width: 1rem; }
-
-.space2 {
-  display: inline-block;
-  width: 2rem; }
 
 .logo240 {
   position: absolute;
@@ -156,9 +159,6 @@ main {
   position: fixed;
   z-index: 399;
   background: #f80; }
-
-.center {
-  text-align: center; }
 
 .m-more {
   height: 4rem;
