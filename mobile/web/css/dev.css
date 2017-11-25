@@ -155,7 +155,10 @@ main {
         height: 2rem;
         display: inline-block;
         background: url(../images/sprite_radio.png) no-repeat 0 0;
-        background-size: 2rem 4rem; }
+        background-size: 2rem 4rem;
+        border: none;
+        margin: 0;
+        padding: 0; }
         .enroll-form ul li input[type="radio"]:checked {
           background-position: 0 -2rem; }
   .enroll-form .j-next {

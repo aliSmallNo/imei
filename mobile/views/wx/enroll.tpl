@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/dev.min.css?v=1.3">
+<link rel="stylesheet" href="/css/dev.min.css?v=1.4">
 <div class="m-popup-shade"></div>
 <div style="height: 5rem"></div>
 <div class="enroll-title">
@@ -40,7 +40,7 @@
 	</ul>
 	<div style="height: 3rem"></div>
 	<a href="javascript:;" class="j-next">下一步</a>
-	<div style="height: 6rem"></div>
+	<div style="height: 5rem"></div>
 </div>
 
 <div class="m-popup-main" style="display: none">
