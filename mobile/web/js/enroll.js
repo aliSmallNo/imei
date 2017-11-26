@@ -36,7 +36,7 @@ require(["jquery", "mustache", "layer"],
 			timer: "",
 			second: 0,
 			greetingTmp: $('#tpl_greeting_users').html(),
-
+			tipAVTmp: $('#tpl_tip_av').html(),
 			step2: $("#step2"),
 			year: "",
 			height: "",
@@ -61,6 +61,9 @@ require(["jquery", "mustache", "layer"],
 			condVal: "",
 			init: function () {
 				var util = this;
+				$(".j-photo").on(kClick, function () {
+					PopupUtil.toggle(util.tipAVTmp);
+				});
 				$(".j-location").on(kClick, function () {
 					util.btn = $(this);
 					// util.btn.attr('data-val', '');
@@ -143,53 +146,64 @@ require(["jquery", "mustache", "layer"],
 					});
 					return false;
 				});
-				$(".sedit-btn-comfirm").on(kClick, function () {
-					var inputFileds = ["name", "phone", "code"];
-					var inputFiledsT = ["呢称", "手机号", "验证码"];
-					for (var i = 0; i < inputFileds.length; i++) {
-						var inputVal = $.trim($("[name=" + inputFileds[i] + "]").val());
-						if (inputFileds[i] == "phone" && !isPhone(inputVal)) {
-							showMsg("手机号格式不正确~");
-							return;
-						}
-						if (!inputVal) {
-							showMsg(inputFiledsT[i] + "还没有填写哦~");
-							return;
-						}
-						if (inputFileds[i] == "name" && !chenkName(inputVal)) {
-							return;
-						}
-						$sls.postData[inputFileds[i]] = inputVal;
-					}
-					var lItem = [];
-					$(".action-location .location em").each(function () {
-						var item = {
-							key: $(this).attr("data-key"),
-							text: $(this).html(),
-						};
-						lItem.push(item);
-					});
-					if (lItem.length < 2) {
-						showMsg("所在城市还没填写哦~");
-						return;
-					}
-					$sls.postData["location"] = JSON.stringify(lItem);
-
-					var comFiledsT = {gender: "性别", marital: "婚姻状态", year: "出生年份"};
+				$(".j-next").on(kClick, function () {
+					$sls.postData.gender = '';
 					var err = 0;
-					$(".action-com").each(function () {
+					$.each($('input[data-field]'), function () {
 						var self = $(this);
-						var field = self.attr("data-field");
-						var Val = self.find("em").attr("data-key");
-						if (!Val) {
-							showMsg(comFiledsT[field] + "还没填写哦~");
-							err = 1;
-							return false;
+						var type = self.attr('type');
+						var field = self.attr('data-field');
+						if (type === 'radio') {
+							if (self.is(':checked')) {
+								$sls.postData[field] = self.val().trim();
+							}
+						} else {
+							var val = self.val().trim();
+							if (!val) {
+								showMsg(self.prev('em').html() + "还没有填写哦~");
+								err = 1;
+								return false;
+							} else if (field === 'phone' && !isPhone(val)) {
+								showMsg("输入的手机号格式不正确~");
+								err = 1;
+								return false;
+							}
+							$sls.postData[field] = val;
 						}
-						$sls.postData[field] = Val;
 					});
 					if (err) {
-						return;
+						return false;
+					}
+					console.log($sls.postData);
+					if (!$sls.postData.gender) {
+						showMsg("性别还没有选择哦~");
+						return false;
+					}
+
+					$.each($('a[data-field]'), function () {
+						var self = $(this);
+						var field = self.attr('data-field');
+						var ems = self.find('em');
+						var len = ems.length;
+						if (len < 1) {
+							showMsg(self.prev('em').html() + "还没有选择哦~");
+							err = 1;
+							return false;
+						} else if (len === 1) {
+							$sls.postData[field] = ems.eq(0).attr('data-key');
+						} else {
+							var values = [];
+							for (var k = 0; k < len; k++) {
+								values.push({
+									key: ems.eq(k).attr("data-key"),
+									text: ems.eq(k).html()
+								});
+							}
+							$sls.postData[field] = JSON.stringify(values);
+						}
+					});
+					if (err) {
+						return false;
 					}
 
 					console.log($sls.postData);
@@ -253,7 +267,7 @@ require(["jquery", "mustache", "layer"],
 					data: JSON.stringify($sls.postData),
 				}, function (res) {
 					layer.closeAll();
-					if (res.code == 0) {
+					if (res.code < 1) {
 						// setTimeout(function () {
 						// 	location.href = "/wx/single";
 						// 	layer.closeAll();
@@ -347,7 +361,6 @@ require(["jquery", "mustache", "layer"],
 				}, 1000);
 			}
 		};
-		SingleUtil.init();
 
 		function uploadImages(localId) {
 			wx.uploadImage({
@@ -397,29 +410,34 @@ require(["jquery", "mustache", "layer"],
 				}
 			}
 		};
-		DrawUtil.init();
 
-		function isPhone(num) {
+		var PopupUtil = {
+			speed: 160,
+			shade: $(".m-popup-shade"),
+			main: $(".m-popup-main"),
+			content: $(".m-popup-content"),
+			toggle: function (html) {
+				var util = this;
+				if (!html || html.length < 10) {
+					util.main.hide();
+					util.shade.fadeOut(util.speed, function () {
+						util.content.html('').removeClass("animate-pop-in")
+					});
+					return false;
+				}
+				util.main.show();
+				util.content.html(html).addClass("animate-pop-in");
+				util.shade.fadeIn(util.speed);
+			}
+		};
+
+		var isPhone = function (num) {
 			var regex = /^1[2-9][0-9]{9}$/;
 			return regex.test(num);
-		}
-
-		function chenkName(name) {
-			if ($.trim(name).length > 7) {
-				showMsg("呢称长度太长了");
-				return false;
-			}
-			var regex = /^[\u4e00-\u9fa5]+$/;
-			showMsg("呢称必须全部是中文汉字");
-			return regex.test(name);
-		}
-
+		};
 
 		function showMsg(title, sec) {
-			var duration = 2;
-			if (sec) {
-				duration = sec;
-			}
+			var duration = sec || 2;
 			layer.open({
 				content: title,
 				skin: 'msg',
@@ -447,10 +465,9 @@ require(["jquery", "mustache", "layer"],
 					}
 				});
 			});
-			//SingleUtil.jobVal = mjob;
+			SingleUtil.init();
 			SingleUtil.jobData();
+			DrawUtil.init();
 			$sls.cork.hide();
-
 		});
-
 	});

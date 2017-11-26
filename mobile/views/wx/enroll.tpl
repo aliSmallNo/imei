@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="/css/dev.min.css?v=1.6">
-<div class="m-popup-shade"></div>
 <div style="height: 5rem"></div>
 <div class="enroll-title">
 	<img src="/images/enroll/word01.png" alt="">
@@ -8,15 +7,15 @@
 	<ul>
 		<li>
 			<em>姓名</em>
-			<input type="text" data-field="name" autocomplete="off">
+			<input type="text" data-field="name" autocomplete="off" maxlength="10">
 		</li>
 		<li>
 			<em>手机号</em>
-			<input type="number" data-field="phone" autocomplete="off" class="input-phone">
+			<input type="number" data-field="phone" autocomplete="off" class="input-phone" maxlength="11">
 		</li>
 		<li>
 			<em>验证码</em>
-			<input type="text" data-field="code" autocomplete="off">
+			<input type="text" data-field="code" autocomplete="off" maxlength="6">
 			<a href="javascript:;" class="j-sms">获取验证码</a>
 		</li>
 		<li>
@@ -38,7 +37,7 @@
 			<a href="javascript:;" class="j-popup" data-field="year"></a>
 		</li>
 		<li>
-			<em>上传照片</em>
+			<em>上传头像</em>
 			<a href="javascript:;" class="j-photo"></a>
 		</li>
 	</ul>
@@ -46,13 +45,56 @@
 	<a href="javascript:;" class="j-next">下一步</a>
 	<div style="height: 5rem"></div>
 </div>
-
+<div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
 		<div class="m-popup-content"></div>
 	</div>
 </div>
-
+<script id="tpl_tip_av" type="text/html">
+	<div class="photo-tip-wrap">
+		<div class="title">上传本人照片，头像居中，五官高清，上半身最佳，例如：</div>
+		<ul class="images clearfix">
+			<li><img src="/faces/face_1.jpg"></li>
+			<li><img src="/faces/face_2.jpg"></li>
+			<li><img src="/faces/face_4.jpg"></li>
+		</ul>
+		<div class="title">我们杜绝不严肃且敷衍的照片，比如:</div>
+		<ul class="images clearfix">
+			<li>
+				<img src="/faces/face_5.jpg">
+				<p>衣冠不整</p>
+			</li>
+			<li>
+				<img src="/faces/face_6.jpg">
+				<p>模糊不清</p>
+			</li>
+			<li>
+				<img src="/faces/face_7.jpg">
+				<p>刻意遮挡</p>
+			</li>
+			<li>
+				<img src="/faces/face_8.jpg">
+				<p>动物风景</p>
+			</li>
+		</ul>
+		<ul class="images clearfix">
+			<li>
+				<img src="/faces/face_9.jpg">
+				<p>明星</p>
+			</li>
+			<li>
+				<img src="/faces/face_10.jpg">
+				<p>合照</p>
+			</li>
+			<li>
+				<img src="/faces/face_11.jpg">
+				<p>丑化恶搞</p>
+			</li>
+		</ul>
+		<a class="m-next btn-select-img">上传头像</a>
+	</div>
+</script>
 <script id="genderTemp" type="text/html">
 	<div class="cells col2 clearfix" data-tag="gender">
 		{{foreach from=$gender key=key item=g}}
