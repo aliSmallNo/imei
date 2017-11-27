@@ -114,8 +114,8 @@ require(["jquery", "mustache", "layer"],
 					layer.open({
 						content: '<div style="text-align: left">' +
 						'恭喜你报名成功，请耐心等待我们联系你或者添加客服微信号咨询报名情况。' +
-						'<div style="text-align: center"><img style="width: 64%" src="../images/qr_zmy.jpg">' +
-						'<br>长按并识别上面的二维码添加客服</div>' +
+						'<a href="javascript:;" style="display: block; text-align: center"><img style="width: 64%" alt="" src="../images/qr_zmy.jpg">' +
+						'<br>长按并识别上面的二维码添加客服</a>' +
 						'</div>',
 						btn: ['我知道了'],
 						yes: function () {
