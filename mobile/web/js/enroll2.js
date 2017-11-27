@@ -109,7 +109,7 @@ require(["jquery", "mustache", "layer"],
 				tag: "enroll2",
 				certs: JSON.stringify($sls.serverId)
 			}, function (resp) {
-				showMsg(resp.msg);
+				layer.closeAll();
 				if (resp.code < 1) {
 					layer.open({
 						content: '<div style="text-align: left">' +
@@ -125,7 +125,6 @@ require(["jquery", "mustache", "layer"],
 				} else {
 					showMsg(resp.msg);
 				}
-				layer.closeAll();
 				$sls.uploadImgFlag = 0;
 			}, "json");
 		};
