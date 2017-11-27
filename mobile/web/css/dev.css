@@ -225,7 +225,8 @@ main {
       background: #4966b2; }
 
 .photo-tip-wrap {
-  padding: 1rem 1rem 6rem 1rem; }
+  padding: 1rem 1rem 6rem 1rem;
+  border-radius: 0.5rem; }
   .photo-tip-wrap .title {
     font-size: 1rem;
     color: #969494;
