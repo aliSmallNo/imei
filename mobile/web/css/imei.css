@@ -6055,7 +6055,10 @@ section {
       .contacts li a .content .bot-t {
         color: #6a6572;
         font-size: 1.2rem;
-        font-weight: 300; }
+        font-weight: 300;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden; }
     .contacts li a .readflag {
       position: absolute;
       width: 1rem;
