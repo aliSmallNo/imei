@@ -169,13 +169,13 @@ function resetLeftMenuScroll() {
 	if ($(window).width() < 700) {
 		return;
 	}
-	var $num = 0;
+	var $num = 20;
 	var sideBar = $('#side-menu');
-	var folderMenus = sideBar.find('a.nav-top-menu');
+	var folderMenus = sideBar.find('.g-menu-folder');
 	var folderHeight = folderMenus.get(0).offsetHeight;
 	$num += folderHeight * folderMenus.length;
 	var maxLen = 10;
-	$.each(sideBar.find('ul.nav-second-level'), function () {
+	$.each(sideBar.find('.nav-second-level'), function () {
 		var len = $(this).find('li').length;
 		if (len > maxLen) {
 			maxLen = len;

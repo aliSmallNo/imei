@@ -60,7 +60,7 @@
 		</a>
 	</li>
 </script>
-<script src="/js/footer.js?v=1.5.5"></script>
+<script src="/js/footer.js?v=1.5.6"></script>
 </body>
 </html>
 {{/if}}
