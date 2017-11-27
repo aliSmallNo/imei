@@ -5,34 +5,23 @@
 </div>
 <div class="enroll-cert">
 	<div class="enroll-cert-wrap">
-		<h4>身份证正面照</h4>
+		{{foreach from=$certs item=item}}
+		<h4>{{$item.title}}</h4>
 		<div class="pic-row">
 			<div class="pic-cell">
-				<a href="javascript:;" class="j-photo" data-tag="zm" localId="">
-					{{if $certFront}}<img src="{{$certFront}}">{{/if}}
+				<a href="javascript:;" class="j-photo" title="{{$item.title}}" data-tag="zm" data-id="{{$item.img}}">
+					{{if $item.img}}<img src="{{$item.img}}">{{/if}}
 				</a>
 			</div>
 			<div class="pic-cell">
 				<div class="pic-cell-img">
-					<img src="/images/cert/cert_3x.png">
+					<img src="{{$item.cite}}">
 				</div>
 			</div>
 		</div>
-		<h4>手持身份证照片</h4>
-		<div class="pic-row">
-			<div class="pic-cell">
-				<a href="javascript:;" class="j-photo" data-tag="sc" localId="">
-					{{if $certHold}}<img src="{{$certHold}}">{{/if}}
-				</a>
-			</div>
-			<div class="pic-cell">
-				<div class="pic-cell-img">
-					<img src="/images/cert/cert_4x.png">
-				</div>
-			</div>
-		</div>
+		{{/foreach}}
 	</div>
-	<div style="height: 2.5rem"></div>
+	<div style="height: 2rem"></div>
 	<a href="javascript:;" class="j-next">完成</a>
 	<div style="height: 5rem"></div>
 </div>
@@ -40,4 +29,4 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-<script src="/assets/js/require.js" data-main="/js/enroll2.js?v=1.2.6"></script>
+<script src="/assets/js/require.js" data-main="/js/enroll2.js?v=1.2.8"></script>

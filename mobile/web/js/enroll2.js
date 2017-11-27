@@ -33,7 +33,7 @@ require(["jquery", "mustache", "layer"],
 					var localIds = res.localIds;
 					if (localIds && localIds.length) {
 						var rid = localIds[0];
-						self.attr("localId", rid).html('<img src="' + rid + '">');
+						self.attr("data-id", rid).html('<img src="' + rid + '">');
 					}
 				}
 			});
@@ -42,44 +42,59 @@ require(["jquery", "mustache", "layer"],
 
 		$(document).on(kClick, ".j-next", function () {
 			$sls.localId = [];
-			$(".c-up-item a").each(function () {
-				var tag = $(this).attr("data-tag");
-				var localId = $(this).attr("localId");
+			var err = 0;
+			$(".j-photo").each(function () {
+				var self = $(this);
+				var tag = self.attr("data-tag");
+				var localId = self.attr("data-id");
+				if (!localId) {
+					showMsg('请上传' + self.attr("title"));
+					err = 1;
+					return false;
+				}
 				if (localId) {
 					$sls.localId.push({id: localId, tag: tag});
 				}
 			});
-			$sls.serverId = [];
-			// alert(JSON.stringify($sls.localId));
-			if (!$sls.localId || $sls.localId.length < 2) {
-				showMsg("上传照片信息不全哦");
-				return;
+			if (err) {
+				return false;
 			}
+			$sls.serverId = [];
 			uploadImages();
+			return false;
 		});
 
-		function uploadImages() {
+		var uploadImages = function () {
 			var temp = $sls.localId.pop();
 			var localId = temp.id;
 			var tag = temp.tag;
-			wx.uploadImage({
-				localId: localId.toString(),
-				isShowProgressTips: 1,
-				success: function (res) {
-					$sls.serverId.push({id: res.serverId, tag: tag});
-					if ($sls.localId.length > 0) {
-						uploadImages();
-					} else {
-						submitItem();
-					}
-				},
-				fail: function () {
-					showMsg("上传照片信息失败！");
+			if (localId.indexOf('http') === 0) {
+				$sls.serverId.push(temp);
+				if ($sls.localId.length > 0) {
+					uploadImages();
+				} else {
+					submitItem();
 				}
-			});
-		}
+			} else {
+				wx.uploadImage({
+					localId: localId.toString(),
+					isShowProgressTips: 1,
+					success: function (res) {
+						$sls.serverId.push({id: res.serverId, tag: tag});
+						if ($sls.localId.length > 0) {
+							uploadImages();
+						} else {
+							submitItem();
+						}
+					},
+					fail: function () {
+						showMsg("上传照片信息失败！");
+					}
+				});
+			}
+		};
 
-		function submitItem() {
+		var submitItem = function () {
 			// alert(JSON.stringify($sls.serverId));return;
 			layer.open({
 				type: 2,
@@ -91,20 +106,20 @@ require(["jquery", "mustache", "layer"],
 			$sls.uploadImgFlag = 1;
 
 			$.post("/api/user", {
-				tag: "certnew",
-				id: JSON.stringify($sls.serverId)
+				tag: "enroll2",
+				certs: JSON.stringify($sls.serverId)
 			}, function (resp) {
 				showMsg(resp.msg);
 				if (resp.code < 1) {
-					location.href = "/wx/single#sme";
+					location.href = "/wx/single#slook";
 				} else {
 					showMsg(resp.msg);
 				}
 				$sls.uploadImgFlag = 0;
 			}, "json");
-		}
+		};
 
-		function showMsg(title, sec) {
+		var showMsg = function (title, sec) {
 			var delay = sec || 3;
 			layer.open({
 				type: 99,
@@ -112,7 +127,7 @@ require(["jquery", "mustache", "layer"],
 				skin: 'msg',
 				time: delay
 			});
-		}
+		};
 
 		$(function () {
 			var wxInfo = JSON.parse($sls.wxString);
@@ -123,6 +138,5 @@ require(["jquery", "mustache", "layer"],
 				wx.hideOptionMenu();
 			});
 			$sls.cork.hide();
-
 		});
 	});

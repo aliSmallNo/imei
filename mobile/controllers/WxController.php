@@ -1785,14 +1785,27 @@ class WxController extends BaseController
 			}
 		}
 		$uService = UserService::init($hid);
+		$certs = [
+			[
+				'title' => '身份证正面照',
+				'tag' => 'zm',
+				'img' => $uService->cert_front,
+				'cite' => '/images/cert/cert_3x.png'
+			],
+			[
+				'title' => '手持身份证照片',
+				'tag' => 'sc',
+				'img' => $uService->cert_hold,
+				'cite' => '/images/cert/cert_4x.png'
+			]
+		];
 		return self::renderPage("enroll2.tpl",
 			[
 				'avatar' => $avatar,
 				'nickname' => $nickname,
 				'hid' => $hid,
 				'stat' => $stat,
-				'certFront' => $uService->cert_front,
-				'certHold' => $uService->cert_hold,
+				'certs' => $certs,
 				'certFlag' => ($uService->hasCert() ? 1 : 0)
 			],
 			'terse',

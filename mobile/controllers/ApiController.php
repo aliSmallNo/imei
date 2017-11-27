@@ -1066,6 +1066,13 @@ class ApiController extends Controller
 				//Rain: 刷新用户cache数据
 				UserWechat::getInfoByOpenId($openId, 1);
 				return self::renderAPI(0, '保存成功啦~');
+			case "enroll2":
+				$certs = json_decode(self::postParam('certs'));
+				if ($certs) {
+					User::editCert($wx_uid, $certs);
+					return self::renderAPI(0, '上传成功', $wx_uid);
+				}
+				break;
 		}
 		return self::renderAPI(129, '操作无效~');
 	}
