@@ -1760,7 +1760,7 @@ class WxController extends BaseController
 				"horos" => User::$Horos,
 			],
 			'terse',
-			'注册',
+			'第一步 注册',
 			'bg-enroll');
 	}
 
@@ -1796,7 +1796,7 @@ class WxController extends BaseController
 				'certFlag' => $certFlag
 			],
 			'terse',
-			'身份认证',
+			'第二步 身份认证',
 			'bg-enroll');
 	}
 }
