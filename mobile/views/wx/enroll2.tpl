@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/dev.min.css?v=2.4">
+<link rel="stylesheet" href="/css/dev.min.css?v=2.5">
 <div style="height: 5rem"></div>
 <div class="enroll-title">
 	<img src="/images/enroll/word02.png" alt="">
@@ -8,9 +8,7 @@
 		<h4>身份证正面照</h4>
 		<div class="pic-row">
 			<div class="pic-cell">
-				<a href="javascript:;" data-tag="zm" localId="">
-					{{if $certFront}}<img src="{{$certFront}}">{{/if}}
-				</a>
+				<a href="javascript:;" data-tag="zm" localId="" {{if $certFront}}style="background-image:url({{$certFront}})"{{/if}}></a>
 			</div>
 			<div class="pic-cell">
 				<div class="pic-cell-img">
@@ -21,9 +19,7 @@
 		<h4>手持身份证照片</h4>
 		<div class="pic-row">
 			<div class="pic-cell">
-				<a href="javascript:;" data-tag="sc" localId="">
-					{{if $certHold}}<img src="{{$certHold}}">{{/if}}
-				</a>
+				<a href="javascript:;" data-tag="sc" localId="" {{if $certHold}}style="background-image:url({{$certHold}})"{{/if}}></a>
 			</div>
 			<div class="pic-cell">
 				<div class="pic-cell-img">
@@ -40,4 +36,4 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-<script src="/assets/js/require.js" data-main="/js/enroll2.js?v=1.2.0"></script>
+<script src="/assets/js/require.js" data-main="/js/enroll2.js?v=1.2.1"></script>
