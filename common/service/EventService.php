@@ -59,16 +59,17 @@ class EventService
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
 		$params[':eid'] = $this->id;
-		$sql = " SELECT cEId,cAddedOn,uId,uOpenId,uName,uPhone,uStatus,uThumb,
+		$sql = " SELECT cEId,cAddedOn,cUpdatedOn,uId,uOpenId,uName,uPhone,uStatus,uThumb,
  				uGender,uBirthYear,uMarital,uLocation,uCertImage
  			FROM im_event_crew as c
  			JOIN im_user as u on u.uId=c.cUId
-			WHERE c.cEId=:eid " . $strCriteria;
+			WHERE c.cEId=:eid " . $strCriteria ."
+			Order by cUpdatedOn desc";
 		$ret = $this->conn->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($ret as $k => $row) {
 			$ret[$k]['thumb'] = ImageUtil::getItemImages($row['uThumb'])[0];
 			$ret[$k]['age'] = date('Y') - $row['uBirthYear'];
-			$ret[$k]['dt'] = AppUtil::prettyDate($row['cAddedOn']);
+			$ret[$k]['dt'] = AppUtil::prettyDate($row['cUpdatedOn']);
 			$ret[$k]['gender'] = ($row['uGender'] == User::GENDER_MALE ? '男性' : '女性');
 			$ret[$k]['marital'] = isset(User::$Marital[$row['uMarital']]) ? User::$Marital[$row['uMarital']] : '';
 			$location = json_decode($row['uLocation'], 1);

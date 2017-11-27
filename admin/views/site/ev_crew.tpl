@@ -30,7 +30,7 @@
 			认证照片
 		</th>
 		<th class="col-sm-2">
-			时间
+			报名时间
 		</th>
 	</tr>
 	</thead>
