@@ -149,7 +149,7 @@ class UserWechat extends ActiveRecord
 		if (AppUtil::isDev()) {
 			$resetFlag = true;
 		}
-		if (!$resetFlag && isset($ret["uUniqid"])) {
+		if (!$resetFlag && isset($ret["uCertStatus"])) {
 			return $ret;
 		}
 		if (strlen($openId) < 20) {
@@ -157,7 +157,7 @@ class UserWechat extends ActiveRecord
 		}
 
 		$fields = ['uId', 'uRole', 'uPhone', 'uName', 'uUniqid', 'uLocation', 'uThumb', 'uAvatar',
-			'uHint', 'uIntro', 'uGender', 'uStatus'];
+			'uHint', 'uIntro', 'uGender', 'uStatus', 'uCertStatus'];
 		if (AppUtil::isDev()) {
 			$ret = UserWechat::findOne(['wOpenId' => $openId]);
 			if ($ret) {

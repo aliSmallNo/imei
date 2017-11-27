@@ -24,6 +24,7 @@ use common\models\UserSign;
 use common\models\UserTag;
 use common\models\UserTrans;
 use common\models\UserWechat;
+use common\service\EventService;
 use common\service\UserService;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
@@ -1744,6 +1745,13 @@ class WxController extends BaseController
 
 	public function actionEnroll()
 	{
+		if ($this->user_id && $this->user_phone && $this->user_cert) {
+			header('location:/wx/enroll3');
+			exit();
+		} elseif ($this->user_id && $this->user_phone && !$this->user_cert) {
+			header('location:/wx/enroll2');
+			exit();
+		}
 		$marital = [
 			User::MARITAL_UNMARRIED => "未婚（无婚史）",
 			User::MARITAL_DIVORCE_KID => "离异不带孩",
@@ -1761,30 +1769,20 @@ class WxController extends BaseController
 				"horos" => User::$Horos,
 			],
 			'terse',
-			'第一步 注册',
+			'注册',
 			'bg-enroll');
 	}
 
 	public function actionEnroll2()
 	{
-		$hid = self::getParam('id');
-		$hid = AppUtil::decrypt($hid);
-		$stat = [];
-		if ($this->user_id) {
-			$avatar = $this->user_avatar;
-			$nickname = $this->user_name;
-		} else {
-			header('location:/wx/error?msg=用户不存在啊~');
+		if ($this->user_id && $this->user_phone && $this->user_cert) {
+			header('location:/wx/enroll3');
+			exit();
+		} elseif (!$this->user_phone) {
+			header('location:/wx/enroll');
 			exit();
 		}
-		if (!$hid) {
-			$hid = $this->user_id;
-			if (!$hid) {
-				header('location:/wx/error?msg=用户不存在啊~');
-				exit();
-			}
-		}
-		$uService = UserService::init($hid);
+		$uService = UserService::init($this->user_id);
 		$certs = [
 			[
 				'title' => '身份证正面照',
@@ -1801,15 +1799,29 @@ class WxController extends BaseController
 		];
 		return self::renderPage("enroll2.tpl",
 			[
-				'avatar' => $avatar,
-				'nickname' => $nickname,
-				'hid' => $hid,
-				'stat' => $stat,
 				'certs' => $certs,
 				'certFlag' => ($uService->hasCert() ? 1 : 0)
 			],
 			'terse',
-			'第二步 身份认证',
+			'身份认证',
+			'bg-enroll');
+	}
+
+	public function actionEnroll3()
+	{
+		if ($this->user_id && $this->user_phone && $this->user_cert) {
+			EventService::init(EventService::EV_PARTY_S01)->addCrew($this->user_id);
+		} elseif (!$this->user_phone) {
+			header('location:/wx/enroll');
+			exit();
+		} elseif (!$this->user_cert) {
+			header('location:/wx/enroll2');
+			exit();
+		}
+		return self::renderPage("enroll3.tpl",
+			[],
+			'terse',
+			'报名成功',
 			'bg-enroll');
 	}
 }

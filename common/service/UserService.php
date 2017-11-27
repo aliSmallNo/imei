@@ -24,7 +24,6 @@ class UserService
 	public $cert_front = '';
 	public $cert_hold = '';
 
-
 	public static function init($uid)
 	{
 		$util = new self();

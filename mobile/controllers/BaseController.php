@@ -35,6 +35,7 @@ class BaseController extends Controller
 	protected $user_hint = '';
 	protected $user_location = '';
 	protected $user_subscribe = 1;
+	protected $user_cert = 0;
 
 	public function beforeAction($action)
 	{
@@ -114,6 +115,7 @@ class BaseController extends Controller
 			$this->user_subscribe = isset($wxUserInfo['subscribe']) ? $wxUserInfo['subscribe'] : 0;
 			$this->user_uni = $wxUserInfo['uUniqid'];
 			$this->user_eid = AppUtil::encrypt($wxUserInfo['uId']);
+			$this->user_cert = ($wxUserInfo['uCertStatus'] == User::CERT_STATUS_PASS ? 1 : 0);
 		}
 
 		$newActionId = $anchor = '';

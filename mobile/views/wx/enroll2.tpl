@@ -22,7 +22,7 @@
 	</div>
 	<div style="height: 2rem"></div>
 	<a href="javascript:;" class="j-next">完成</a>
-	<div style="height: 5rem"></div>
+	<div style="height: 4rem"></div>
 </div>
 <input type="hidden" id="certFlag" value="{{$certFlag}}">
 <script type="text/template" id="tpl_wx_info">
