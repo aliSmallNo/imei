@@ -111,7 +111,17 @@ require(["jquery", "mustache", "layer"],
 			}, function (resp) {
 				showMsg(resp.msg);
 				if (resp.code < 1) {
-					location.href = "/wx/single#slook";
+					layer.open({
+						content: '<div style="text-align: left">' +
+						'恭喜你报名成功，请耐心等待我们联系你或者添加客服微信号咨询报名情况。' +
+						'<div style="text-align: center"><img style="width: 64%" src="../images/qr_zmy.jpg">' +
+						'<br>长按并识别上面的二维码添加客服</div>' +
+						'</div>',
+						btn: ['我知道了'],
+						yes: function () {
+							location.href = "/wx/single#slook";
+						}
+					});
 				} else {
 					showMsg(resp.msg);
 				}
@@ -139,5 +149,6 @@ require(["jquery", "mustache", "layer"],
 				wx.hideOptionMenu();
 			});
 			$sls.cork.hide();
+
 		});
 	});
