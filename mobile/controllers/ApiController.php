@@ -1072,7 +1072,7 @@ class ApiController extends Controller
 				$certs = json_decode(self::postParam('certs'), 1);
 				if ($certs) {
 					User::editCert($wx_uid, $certs);
-					EventService::init(EventService::EV_PARTY_S01)->addCrew($wx_uid, Admin::getAdminId());
+					EventService::init(EventService::EV_PARTY_S01)->addCrew($wx_uid);
 					return self::renderAPI(0, '上传成功', $wx_uid);
 				}
 				break;
