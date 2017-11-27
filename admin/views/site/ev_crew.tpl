@@ -6,7 +6,7 @@
 	}
 </style>
 <div class="row">
-	<h4>"我们趴体吧"报名用户</h4>
+	<h4>"我们派对吧"报名用户</h4>
 </div>
 <div class="row">
 	<form class="form-inline" action="/site/evcrew" method="get">

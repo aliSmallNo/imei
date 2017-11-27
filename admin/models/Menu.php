@@ -4,7 +4,7 @@ namespace admin\models;
 
 class Menu
 {
-	const VERSION = 171127.1;
+	const VERSION = 171127.2;
 
 	public static function keepMenu($uId, $url)
 	{
@@ -194,7 +194,7 @@ class Menu
 						'count' => 'SELECT COUNT(1) as cnt FROM im_date WHERE dStatus = 100'
 					],
 					[
-						"name" => "我们趴体吧",
+						"name" => "我们派对吧",
 						"url" => "/site/evcrew",
 						"revise" => 1,
 						"level" => 820
