@@ -32,6 +32,7 @@ require(["jquery", "mustache", "layer"],
 				success: function (res) {
 					var localIds = res.localIds;
 					if (localIds && localIds.length) {
+						showMsg(localIds[0]);
 						self.css({'background-image': localIds[0]}).attr("localId", localIds[0]);
 					}
 				}
