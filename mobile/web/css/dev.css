@@ -247,5 +247,7 @@ main {
         text-align: center;
         font-size: 1rem;
         color: #6a6572; }
+  .photo-tip-wrap .m-next {
+    border-radius: 0 0 0.3rem 0.3rem; }
 
 /*# sourceMappingURL=dev.css.map */
