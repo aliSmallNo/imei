@@ -224,4 +224,27 @@ main {
     .enroll-form .j-next:active {
       background: #4966b2; }
 
+.photo-tip-wrap {
+  padding: 1rem 1rem 6rem 1rem; }
+  .photo-tip-wrap .title {
+    font-size: 1rem;
+    color: #969494;
+    padding: 1rem 0; }
+  .photo-tip-wrap .images {
+    margin: 0; }
+    .photo-tip-wrap .images li {
+      float: left;
+      width: 5rem;
+      margin-right: 2rem;
+      margin-bottom: 1rem; }
+      .photo-tip-wrap .images li:last-child {
+        margin-right: 0; }
+      .photo-tip-wrap .images li img {
+        width: 6rem;
+        height: 6rem; }
+      .photo-tip-wrap .images li p {
+        text-align: center;
+        font-size: 1rem;
+        color: #6a6572; }
+
 /*# sourceMappingURL=dev.css.map */
