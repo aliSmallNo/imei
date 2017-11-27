@@ -8,6 +8,7 @@
 
 namespace mobile\controllers;
 
+use admin\models\Admin;
 use common\models\ChatMsg;
 use common\models\City;
 use common\models\Date;
@@ -32,6 +33,7 @@ use common\models\UserQR;
 use common\models\UserSign;
 use common\models\UserTrans;
 use common\models\UserWechat;
+use common\service\EventService;
 use common\utils\AppUtil;
 use common\utils\BaiduUtil;
 use common\utils\ImageUtil;
@@ -1067,9 +1069,10 @@ class ApiController extends Controller
 				UserWechat::getInfoByOpenId($openId, 1);
 				return self::renderAPI(0, '保存成功啦~');
 			case "enroll2":
-				$certs = json_decode(self::postParam('certs'),1);
+				$certs = json_decode(self::postParam('certs'), 1);
 				if ($certs) {
 					User::editCert($wx_uid, $certs);
+					EventService::init(EventService::EV_PARTY_S01)->addCrew($wx_uid, Admin::getAdminId());
 					return self::renderAPI(0, '上传成功', $wx_uid);
 				}
 				break;
