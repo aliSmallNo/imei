@@ -167,6 +167,10 @@ main {
         display: inline-block;
         border: 1px dashed #fff;
         position: relative; }
+        .enroll-form ul li .j-photo img {
+          width: 100%;
+          height: 100%;
+          vertical-align: middle; }
         .enroll-form ul li .j-photo:before {
           content: "";
           position: absolute;

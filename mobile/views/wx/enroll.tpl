@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/dev.min.css?v=2.0">
+<link rel="stylesheet" href="/css/dev.min.css?v=2.1">
 <div style="height: 5rem"></div>
 <div class="enroll-title">
 	<img src="/images/enroll/word01.png" alt="">
@@ -41,7 +41,7 @@
 			<a href="javascript:;" class="j-photo"></a>
 		</li>
 	</ul>
-	<div style="height: 3rem"></div>
+	<div style="height: 2.5rem"></div>
 	<a href="javascript:;" class="j-next">下一步</a>
 	<div style="height: 5rem"></div>
 </div>
@@ -92,7 +92,7 @@
 				<p>丑化恶搞</p>
 			</li>
 		</ul>
-		<a class="m-next btn-select-img">上传头像</a>
+		<a href="javascript:;" class="m-next btn-select-img">上传头像</a>
 	</div>
 </script>
 <script id="genderTemp" type="text/html">
