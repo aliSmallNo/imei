@@ -1067,7 +1067,7 @@ class ApiController extends Controller
 				UserWechat::getInfoByOpenId($openId, 1);
 				return self::renderAPI(0, '保存成功啦~');
 			case "enroll2":
-				$certs = json_decode(self::postParam('certs'));
+				$certs = json_decode(self::postParam('certs'),1);
 				if ($certs) {
 					User::editCert($wx_uid, $certs);
 					return self::renderAPI(0, '上传成功', $wx_uid);
