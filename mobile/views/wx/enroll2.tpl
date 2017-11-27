@@ -9,7 +9,7 @@
 		<h4>{{$item.title}}</h4>
 		<div class="pic-row">
 			<div class="pic-cell">
-				<a href="javascript:;" class="j-photo" title="{{$item.title}}" data-tag="zm" data-id="{{$item.img}}">
+				<a href="javascript:;" class="j-photo" title="{{$item.title}}" data-tag="{{$item.tag}}" data-id="{{$item.img}}">
 					{{if $item.img}}<img src="{{$item.img}}">{{/if}}
 				</a>
 			</div>
