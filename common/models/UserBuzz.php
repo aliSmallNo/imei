@@ -84,7 +84,9 @@ class UserBuzz extends ActiveRecord
 【新用户】首日试配，不少于100人
 【首次邀约异性线下见面】费用全免
 【配对成功】更有千元现金大礼包赠送' . PHP_EOL . '
-<a href="https://wx.meipo100.com/wx/single#slook">👉点击立刻在线配对👈</a>';
+<a href="https://wx.meipo100.com/wx/single#slook">👉点击立刻在线配对👈</a>
+
+<a href="https://wx.meipo100.com/wx/enroll">👉我们派对吧报名通道👈</a>';
 		/* "『千寻恋恋』是一个真实婚恋交友平台。在这里你可以有两种身份，媒婆和单身。
 媒婆可以将自己身边好友拉到平台上来帮助他们脱单。
 单身的朋友可以直接注册，在这里寻找心仪的另一半。";*/
