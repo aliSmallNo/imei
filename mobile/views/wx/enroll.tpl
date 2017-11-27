@@ -14,7 +14,7 @@
 		</li>
 		<li>
 			<em>验证码</em>
-			<input type="text" data-field="code" autocomplete="off" maxlength="6">
+			<input type="number" data-field="code" autocomplete="off" maxlength="6">
 			<a href="javascript:;" class="j-sms">获取验证码</a>
 		</li>
 		<li>
