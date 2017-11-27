@@ -153,4 +153,4 @@
 <script>
 	var mProvinces = {{$provinces}};
 </script>
-<script src="/assets/js/require.js" data-main="/js/enroll.js?v=1.1.1"></script>
+<script src="/assets/js/require.js" data-main="/js/enroll.js?v=1.1.2"></script>
