@@ -26,8 +26,6 @@
 	background-size: 100% 100%
 	position: relative
 
-
-
 .t-warning
 	font-size: 1.1rem
 	color: #fff
@@ -50,7 +48,6 @@
 	text-align: center
 	padding: 23rem 0
 	@include translucent
-
 
 .logo240
 	position: absolute
@@ -90,8 +87,6 @@
 	position: fixed
 	z-index: 399
 	background: $tipColor
-
-
 
 .m-more
 	height: 4rem
@@ -6962,3 +6957,210 @@ ul.co-ul
 			background-size: 19.1rem 5rem
 			display: block
 			height: 5rem
+
+.bg-enroll
+	background: $purpleBg url(../images/enroll/bg01.jpg) no-repeat center top
+	//background-attachment: fixed
+	background-size: cover
+
+.enroll-title
+	text-align: center
+	img
+		width: 62%
+
+.enroll-form
+	padding: 0 1.5rem
+	ul
+		background-color: $purpleBg
+		padding: 1rem 0
+		margin: 0
+		color: $purpleLight
+		li
+			padding: .6rem .8rem
+			@include displayFlex
+			label
+				line-height: 3.5rem
+				color: $purpleAction
+
+			em
+				line-height: 3.5rem
+				display: inline-block
+				text-align: right
+				font-size: 1.2rem
+				padding-right: .5rem
+				@include displayFlex-w(5.4rem)
+			input[type="text"], input[type="number"]
+				@include displayFlex-1
+				border: 0
+				border-radius: .3rem
+				background-color: $purpleLight
+				color: #fff
+				font-size: 1.4rem
+				height: 3.5rem
+				line-height: 3.2rem
+				padding: 0 .5rem
+				margin: 0
+				min-width: 6rem
+				font-weight: $weightNormal
+			a[data-field]
+				@include displayFlex-1
+				height: 3.5rem
+				line-height: 3rem
+				border: 0
+				border-radius: .3rem
+				background-color: $purpleLight
+				font-size: 1.5rem
+				padding-left: .5rem
+				padding-right: .5rem
+				position: relative
+				@include textTail
+				&:after
+					@include arrowRight
+					right: 1rem
+					border-color: $purpleBg
+				em
+					color: #fff
+					font-weight: $weightNormal
+					font-size: 1.4rem
+			.j-photo
+				width: 7rem
+				height: 7rem
+				display: inline-block
+				border: 1px dashed #fff
+				position: relative
+				img
+					width: 100%
+					height: 100%
+					vertical-align: middle
+				&:before
+					content: ''
+					position: absolute
+					border-bottom: 1px dashed #fff
+					width: 3rem
+					height: 0
+					top: 50%
+					left: 2rem
+				&:after
+					content: ''
+					position: absolute
+					border-left: 1px dashed #fff
+					width: 0
+					height: 3rem
+					left: 50%
+					top: 2rem
+			.j-sms
+				color: #fff
+				background: $purpleAction
+				@include displayFlex-w(8rem)
+				font-size: 1.2rem
+				line-height: 3.5rem
+				text-align: center
+				border-radius: .5rem
+				margin-left: .5rem
+				&:active
+					background: $purpleLight
+				&.disabled
+					color: $grayFontColorLight
+
+			input[type="radio"]
+				vertical-align: middle
+				width: 2rem
+				height: 2rem
+				display: inline-block
+				background: url(../images/sprite_radio.png) no-repeat 0 0
+				background-size: 2rem 4rem
+				border: none
+				margin: 0
+				padding: 0
+				&:checked
+					background-position: 0 -2rem
+
+.photo-tip-wrap
+	padding: 1rem 1rem 6rem 1rem
+	border-radius: .5rem
+	.title
+		font-size: 1rem
+		color: $grayFontColorLight
+		padding: 1rem 0
+	.images
+		margin: 0
+		li
+			float: left
+			width: 5rem
+			margin-right: 2rem
+			margin-bottom: 1rem
+			&:last-child
+				margin-right: 0
+			img
+				width: 6rem
+				height: 6rem
+			p
+				text-align: center
+				font-size: 1rem
+				color: $grayFontColor
+	.m-next
+		border-radius: 0 0 .5rem .5rem
+
+.enroll-cert
+	padding: 0 1.5rem
+	.enroll-cert-wrap
+		background-color: $purpleBg
+		padding: 1rem 1rem 0
+	h4
+		color: $purpleLight
+		line-height: 2.5rem
+		padding-left: 1rem
+	.pic-row
+		@include displayFlex
+		padding-bottom: 1rem
+		.pic-cell
+			@include displayFlex-1
+			padding: 1rem 1.5rem 1rem 1rem
+			&:last-child
+				padding: 1rem 1rem 1rem 1.5rem
+			img
+				width: 100%
+				height: 100%
+			.pic-cell-img
+				padding: 1rem
+				border: 1px solid #fff
+			a
+				display: inline-block
+				width: 100%
+				padding-bottom: 100%
+				border: 1px dashed #fff
+				position: relative
+				img
+					position: absolute
+				&:before
+					content: ''
+					position: absolute
+					border-bottom: 1px dashed #fff
+					width: 50%
+					height: 0
+					top: 50%
+					left: 25%
+					z-index: 9
+				&:after
+					content: ''
+					position: absolute
+					border-left: 1px dashed #fff
+					width: 0
+					height: 50%
+					left: 50%
+					top: 25%
+					z-index: 9
+
+.enroll-cert, .enroll-form
+	.j-next
+		font-size: 1.5rem
+		line-height: 4rem
+		text-align: center
+		border-radius: 2rem
+		color: #fff
+		background: $purpleAction
+		display: block
+		margin-left: 2rem
+		margin-right: 2rem
+		&:active
+			background: $purpleLight

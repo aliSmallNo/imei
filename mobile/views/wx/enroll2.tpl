@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="/css/dev.min.css?v=2.5">
 <div style="height: 5rem"></div>
 <div class="enroll-title">
 	<img src="/images/enroll/word02.png" alt="">

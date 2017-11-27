@@ -62,7 +62,7 @@ require(["jquery", "mustache", "layer"],
 			$sls.serverId = [];
 			layer.open({
 				type: 2,
-				content: '正在上传中...'
+				content: '正在保存中...'
 			});
 			uploadImages();
 			return false;

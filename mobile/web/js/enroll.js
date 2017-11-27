@@ -195,14 +195,13 @@ require(["jquery", "mustache", "layer"],
 					if (localId) {
 						layer.open({
 							type: 2,
-							content: '保存中...'
+							content: '正在保存中...'
 						});
 						uploadImages(localId);
 					} else {
-						// util.submit();
 						showMsg("还没上传头像哦~");
-						return false;
 					}
+					return false;
 				});
 
 				util.btnCode.on(kClick, function () {
