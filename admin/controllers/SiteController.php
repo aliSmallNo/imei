@@ -26,6 +26,7 @@ use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserTrans;
 use common\models\UserWechat;
+use common\service\EventService;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
@@ -1462,5 +1463,28 @@ class SiteController extends BaseController
 		);
 	}
 
-
+	public function actionEvcrew()
+	{
+		$name = self::getParam('name');
+		$phone = self::getParam('phone');
+		$criteria = $params = [];
+		if ($name) {
+			$criteria[] = "uName like :name ";
+			$params[':name'] = '%' . $name . '%';
+		}
+		if ($phone) {
+			$criteria[] = "uPhone like :phone ";
+			$params[':phone'] = $phone . '%';
+		}
+		$crew = EventService::init(EventService::EV_PARTY_S01)->crew($criteria, $params);
+		return $this->renderPage('ev_crew.tpl',
+			[
+				'category' => 'data',
+				'detailcategory' => "site/evcrew",
+				'crew' => $crew,
+				'name' => $name,
+				'phone' => $phone,
+			]
+		);
+	}
 }
