@@ -8,7 +8,9 @@
 		<h4>身份证正面照</h4>
 		<div class="pic-row">
 			<div class="pic-cell">
-				<a href="javascript:;" data-tag="front" localId=""></a>
+				<a href="javascript:;" data-tag="zm" localId="">
+					{{if $certFront}}<img src="{{$certFront}}">{{/if}}
+				</a>
 			</div>
 			<div class="pic-cell">
 				<div class="pic-cell-img">
@@ -19,7 +21,9 @@
 		<h4>手持身份证照片</h4>
 		<div class="pic-row">
 			<div class="pic-cell">
-				<a href="javascript:;" data-tag="hold" localId=""></a>
+				<a href="javascript:;" data-tag="sc" localId="">
+					{{if $certHold}}<img src="{{$certHold}}">{{/if}}
+				</a>
 			</div>
 			<div class="pic-cell">
 				<div class="pic-cell-img">

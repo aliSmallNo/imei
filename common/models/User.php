@@ -1050,8 +1050,7 @@ class User extends ActiveRecord
 		return true;
 	}
 
-	public
-	static function album($mediaIds, $openId, $f = 'add')
+	public static function album($mediaIds, $openId, $f = 'add')
 	{
 		$Info = self::findOne(["uOpenId" => $openId]);
 		if (!$Info || !$mediaIds) {
@@ -1097,8 +1096,12 @@ class User extends ActiveRecord
 
 	}
 
-	public
-	static function cert($id, $openId)
+	public static function certInfo($id)
+	{
+
+	}
+
+	public static function cert($id, $openId)
 	{
 		list($thumb, $url) = ImageUtil::save2Server($id, false);
 		$Info = self::findOne(["uOpenId" => $openId]);
@@ -1119,8 +1122,7 @@ class User extends ActiveRecord
 		return 0;
 	}
 
-	public
-	static function certnew($ids, $openId)
+	public static function certnew($ids, $openId)
 	{
 		$ids = json_decode($ids, 1);
 		$urls = [];
@@ -1150,8 +1152,7 @@ class User extends ActiveRecord
 		return 0;
 	}
 
-	public
-	static function toCertVerify($id, $flag)
+	public static function toCertVerify($id, $flag)
 	{
 		$Info = self::findOne(["uId" => $id]);
 		if ($flag && $Info) {
@@ -1164,8 +1165,7 @@ class User extends ActiveRecord
 		return 0;
 	}
 
-	public
-	static function getItem($openId)
+	public static function getItem($openId)
 	{
 		$sql = "select n.nUId as mpId,u.*  
 				from im_user as u 
@@ -1195,8 +1195,7 @@ class User extends ActiveRecord
 		return $items;
 	}
 
-	public
-	static function gallery($album)
+	public static function gallery($album)
 	{
 		if (!$album || !is_array($album)) {
 			return [];
@@ -1219,8 +1218,7 @@ class User extends ActiveRecord
 		return $ret;
 	}
 
-	public
-	static function criteria($userInfo)
+	public static function criteria($userInfo)
 	{
 		$myFilter = [];
 		$matchInfo = json_decode($userInfo['uFilter'], 1);

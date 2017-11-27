@@ -24,6 +24,7 @@ use common\models\UserSign;
 use common\models\UserTag;
 use common\models\UserTrans;
 use common\models\UserWechat;
+use common\service\UserService;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 
@@ -1783,17 +1784,16 @@ class WxController extends BaseController
 				exit();
 			}
 		}
-		$userInfo = User::findOne(["uId" => $hid]);
-		$bgImage = ($userInfo && $userInfo->uCertImage) ? $userInfo->uCertImage : "/images/cert_sample.jpg";
-		$certFlag = $userInfo ? (($userInfo->uCertStatus == User::CERT_STATUS_PASS) ? 1 : 0) : 0;
+		$uService = UserService::init($hid);
 		return self::renderPage("enroll2.tpl",
 			[
 				'avatar' => $avatar,
 				'nickname' => $nickname,
 				'hid' => $hid,
 				'stat' => $stat,
-				'bgImage' => $bgImage,
-				'certFlag' => $certFlag
+				'certFront' => $uService->cert_front,
+				'certHold' => $uService->cert_hold,
+				'certFlag' => ($uService->hasCert() ? 1 : 0)
 			],
 			'terse',
 			'第二步 身份认证',
