@@ -193,6 +193,10 @@ require(["jquery", "mustache", "layer"],
 					}
 					var localId = util.jPhoto.attr("localId");
 					if (localId) {
+						layer.open({
+							type: 2,
+							content: '保存中...'
+						});
 						uploadImages(localId);
 					} else {
 						// util.submit();
@@ -227,13 +231,8 @@ require(["jquery", "mustache", "layer"],
 				});
 			},
 			submit: function () {
-				var util = this;
 				$sls.postData.img = $sls.serverId;
 				$sls.postData.coord = $sls.coord.val();
-				layer.open({
-					type: 2,
-					content: '保存中...'
-				});
 				$.post("/api/user", {
 					tag: "enroll",
 					data: JSON.stringify($sls.postData)
@@ -348,7 +347,7 @@ require(["jquery", "mustache", "layer"],
 		var uploadImages = function (localId) {
 			wx.uploadImage({
 				localId: localId.toString(),
-				isShowProgressTips: 1,
+				isShowProgressTips: 0,
 				success: function (res) {
 					$sls.serverId = res.serverId;
 					SingleUtil.submit();
