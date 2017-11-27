@@ -38,10 +38,16 @@ class EventService
 			SELECT :eid,uId,uOpenId,uName,uPhone,:aid FROM im_user 
 			WHERE uId=:uid
 				AND NOT EXISTS(SELECT 1 FROM im_event_crew WHERE cEId=:eid AND cUId=:uid)";
-		$ret = $this->conn->createCommand($sql)->bindValues([
+		$this->conn->createCommand($sql)->bindValues([
 			':uid' => $uid,
 			':eid' => $this->id,
 			':aid' => $admin_id
+		])->execute();
+		$sql = 'UPDATE im_event_crew set cUpdatedOn=now(),cStatus=0,cStatusDate=now() 
+			WHERE cEId=:eid AND cUId=:uid ';
+		$ret = $this->conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':eid' => $this->id
 		])->execute();
 		return $ret;
 	}
