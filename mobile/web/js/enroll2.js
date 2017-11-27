@@ -20,10 +20,10 @@ require(["jquery", "mustache", "layer"],
 		};
 
 		$(document).on(kClick, ".j-photo", function () {
-			if ($sls.certFlag == 1) {
+			/*if ($sls.certFlag == 1) {
 				showMsg("您已通过实名认证~");
-				return;
-			}
+				return false;
+			}*/
 			var self = $(this);
 			wx.chooseImage({
 				count: 1,
@@ -36,6 +36,7 @@ require(["jquery", "mustache", "layer"],
 					}
 				}
 			});
+			return false;
 		});
 
 		$(document).on(kClick, ".j-next", function () {
