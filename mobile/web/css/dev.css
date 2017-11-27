@@ -215,18 +215,6 @@ main {
         padding: 0; }
         .enroll-form ul li input[type="radio"]:checked {
           background-position: 0 -2rem; }
-  .enroll-form .j-next {
-    font-size: 1.5rem;
-    line-height: 4rem;
-    text-align: center;
-    border-radius: 2rem;
-    color: #fff;
-    background: #284cfa;
-    display: block;
-    margin-left: 2rem;
-    margin-right: 2rem; }
-    .enroll-form .j-next:active {
-      background: #4966b2; }
 
 .photo-tip-wrap {
   padding: 1rem 1rem 6rem 1rem;
@@ -253,5 +241,70 @@ main {
         color: #6a6572; }
   .photo-tip-wrap .m-next {
     border-radius: 0 0 0.5rem 0.5rem; }
+
+.enroll-cert {
+  padding: 0 1.5rem; }
+  .enroll-cert .enroll-cert-wrap {
+    background-color: #0b1636;
+    padding: 1rem; }
+  .enroll-cert h4 {
+    color: #4966b2;
+    line-height: 2.5rem;
+    padding-left: 1rem; }
+  .enroll-cert .pic-row {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-bottom: 1rem; }
+    .enroll-cert .pic-row .pic-cell {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      padding: 1rem 1.5rem 1rem 1rem; }
+      .enroll-cert .pic-row .pic-cell:last-child {
+        padding: 1rem 1rem 1rem 1.5rem; }
+      .enroll-cert .pic-row .pic-cell img {
+        width: 100%;
+        height: 100%; }
+      .enroll-cert .pic-row .pic-cell .pic-cell-img {
+        padding: 1rem;
+        border: 1px solid #fff; }
+      .enroll-cert .pic-row .pic-cell a {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        border: 1px dashed #fff;
+        position: relative; }
+        .enroll-cert .pic-row .pic-cell a:before {
+          content: "";
+          position: absolute;
+          border-bottom: 1px dashed #fff;
+          width: 50%;
+          height: 0;
+          top: 50%;
+          left: 25%; }
+        .enroll-cert .pic-row .pic-cell a:after {
+          content: "";
+          position: absolute;
+          border-left: 1px dashed #fff;
+          width: 0;
+          height: 50%;
+          left: 50%;
+          top: 25%; }
+
+.enroll-cert .j-next, .enroll-form .j-next {
+  font-size: 1.5rem;
+  line-height: 4rem;
+  text-align: center;
+  border-radius: 2rem;
+  color: #fff;
+  background: #284cfa;
+  display: block;
+  margin-left: 2rem;
+  margin-right: 2rem; }
+  .enroll-cert .j-next:active, .enroll-form .j-next:active {
+    background: #4966b2; }
 
 /*# sourceMappingURL=dev.css.map */
