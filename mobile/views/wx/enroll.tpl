@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/dev.min.css?v=2.1">
+<link rel="stylesheet" href="/css/dev.min.css?v=2.2">
 <div style="height: 5rem"></div>
 <div class="enroll-title">
 	<img src="/images/enroll/word01.png" alt="">
@@ -153,4 +153,4 @@
 <script>
 	var mProvinces = {{$provinces}};
 </script>
-<script src="/assets/js/require.js" data-main="/js/enroll.js?v=1.0.1"></script>
+<script src="/assets/js/require.js" data-main="/js/enroll.js?v=1.1.1"></script>

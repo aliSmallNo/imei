@@ -33,6 +33,7 @@ require(["jquery", "mustache", "layer"],
 			counting: false,
 			phone: $(".input-phone"),
 			btnCode: $(".j-sms"),
+			jPhoto: $('.j-photo'),
 			timer: "",
 			second: 0,
 			greetingTmp: $('#tpl_greeting_users').html(),
@@ -61,7 +62,7 @@ require(["jquery", "mustache", "layer"],
 			condVal: "",
 			init: function () {
 				var util = this;
-				$(".j-photo").on(kClick, function () {
+				util.jPhoto.on(kClick, function () {
 					PopupUtil.toggle(util.tipAVTmp);
 				});
 				$(".j-location").on(kClick, function () {
@@ -112,14 +113,6 @@ require(["jquery", "mustache", "layer"],
 					var tag = self.closest(".cells").attr("data-tag");
 					util.btn.html(self.html());
 					util.toggle();
-					// if (tag == "scope") {
-					// 	var scopeVal = parseInt(self.find("em").attr("data-key"));
-					// 	util.jobVal = mProfessions[scopeVal];
-					// 	util.jobData();
-					// 	var html = Mustache.render(util.jobTemp, util.jobVal);
-					// 	util.toggle(html);
-					// 	util.btn = $(".action-com[data-field=job]");
-					// }
 					return false;
 				});
 				$(document).on(kClick, ".action-cond", function () {
@@ -128,7 +121,7 @@ require(["jquery", "mustache", "layer"],
 					var html = $("#" + field + "CondTemp").html();
 					util.toggle(html);
 				});
-				$(".btn-select-img").on(kClick, function () {
+				$(document).on(kClick, ".btn-select-img", function () {
 					wx.chooseImage({
 						count: 1,
 						sizeType: ['original', 'compressed'],
@@ -137,10 +130,8 @@ require(["jquery", "mustache", "layer"],
 							var localIds = res.localIds;
 							if (localIds && localIds.length) {
 								var localId = localIds[0];
-								util.avatar.attr("localId", localId);
-								util.avatar.attr("src", localId);
-								util.bgblur.attr("src", localId);
-								DrawUtil.toggle(false);
+								util.jPhoto.html('<img src="' + localId + '" localId="' + localId + '">');
+								PopupUtil.toggle(0);
 							}
 						}
 					});
