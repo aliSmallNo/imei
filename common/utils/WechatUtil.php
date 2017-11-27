@@ -381,32 +381,22 @@ class WechatUtil
 					"url" => $wxUrl . "/wx/single#slook"
 				],
 				[
-					"name" => "个人中心",
+					"name" => "我们派对吧",
 					"sub_button" => [
 						[
 							"type" => "view",
-							"name" => "单身推荐",
-							"url" => $wxUrl . "/wx/single#slook"
+							"name" => "马上报名",
+							"url" => $wxUrl . "/wx/enroll"
 						],
 						[
 							"type" => "view",
-							"name" => "密聊记录",
-							"url" => $wxUrl . "/wx/single#scontacts"
+							"name" => "活动详情",
+							"url" => "http://u5559142.viewer.maka.im/k/IBMHVX0Q?relay_share=true"
 						],
 						[
 							"type" => "view",
-							"name" => "个人中心",
-							"url" => $wxUrl . "/wx/single#sme"
-						],
-						[
-							"type" => "view",
-							"name" => "每日签到",
-							"url" => $wxUrl . "/wx/lottery"
-						],
-						[
-							"type" => "view",
-							"name" => "通知中心",
-							"url" => $wxUrl . "/wx/notice"
+							"name" => "节目解密",
+							"url" => "http://u5559142.viewer.maka.im/k/VRUUTVXB?relay_share=true"
 						]
 					]
 				],
