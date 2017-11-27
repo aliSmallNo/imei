@@ -1763,4 +1763,40 @@ class WxController extends BaseController
 			'注册',
 			'bg-enroll');
 	}
+
+	public function actionEnroll2()
+	{
+		$hid = self::getParam('id');
+		$hid = AppUtil::decrypt($hid);
+		$stat = [];
+		if ($this->user_id) {
+			$avatar = $this->user_avatar;
+			$nickname = $this->user_name;
+		} else {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+		if (!$hid) {
+			$hid = $this->user_id;
+			if (!$hid) {
+				header('location:/wx/error?msg=用户不存在啊~');
+				exit();
+			}
+		}
+		$userInfo = User::findOne(["uId" => $hid]);
+		$bgImage = ($userInfo && $userInfo->uCertImage) ? $userInfo->uCertImage : "/images/cert_sample.jpg";
+		$certFlag = $userInfo ? (($userInfo->uCertStatus == User::CERT_STATUS_PASS) ? 1 : 0) : 0;
+		return self::renderPage("enroll2.tpl",
+			[
+				'avatar' => $avatar,
+				'nickname' => $nickname,
+				'hid' => $hid,
+				'stat' => $stat,
+				'bgImage' => $bgImage,
+				'certFlag' => $certFlag
+			],
+			'terse',
+			'身份认证',
+			'bg-enroll');
+	}
 }

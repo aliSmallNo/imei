@@ -38,7 +38,7 @@
 		</li>
 		<li>
 			<em>上传头像</em>
-			<a href="javascript:;" class="j-photo"></a>
+			<a href="javascript:;" class="j-photo" localId=""></a>
 		</li>
 	</ul>
 	<div style="height: 2.5rem"></div>

@@ -353,14 +353,20 @@ class ApiController extends Controller
 			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
 		}
 		$id = self::postParam('id');
-
+		$wx_info = UserWechat::getInfoByOpenId($openId);
+		$wx_uid = 0;
+		$wx_name = $wx_thumb = '';
+		if ($wx_info) {
+			$wx_uid = $wx_info['uId'];
+			$wx_name = $wx_info['uName'];
+			$wx_thumb = $wx_info['uThumb'];
+		}
 		switch ($tag) {
 			case "security_center":
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				$uid = $wxInfo["uId"];
+				$uid = $wx_uid;
 				$flag = self::postParam("flag");
 				$key = self::postParam("key");
 				$val = self::postParam("val");
@@ -371,8 +377,7 @@ class ApiController extends Controller
 				return self::renderAPI(0, '', ["oid" => $oid]);
 				break;
 			case 'ban':
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				$text = self::postParam("text");
@@ -384,7 +389,7 @@ class ApiController extends Controller
 				}
 				$black = UserNet::findOne([
 					"nUId" => $rptUId,
-					"nSubUId" => $wxInfo['uId'],
+					"nSubUId" => $wx_uid,
 					"nRelation" => UserNet::REL_BLOCK,
 					"nStatus" => UserNet::STATUS_WAIT,
 				]);
@@ -392,21 +397,20 @@ class ApiController extends Controller
 					if ($black) {
 						return self::renderAPI(129, '你已经拉黑TA了哦~');
 					} else {
-						UserNet::add($rptUId, $wxInfo['uId'], UserNet::REL_BLOCK, $note = '');
-						Feedback::addReport($wxInfo['uId'], $rptUId, $reason, $text);
+						UserNet::add($rptUId, $wx_uid, UserNet::REL_BLOCK, $note = '');
+						Feedback::addReport($wx_uid, $rptUId, $reason, $text);
 						return self::renderAPI(0, '你已经成功拉黑TA了哦~');
 					}
 				} else {
-					if (Feedback::findOne(["fUId" => $wxInfo['uId'], "fReportUId" => $rptUId])) {
+					if (Feedback::findOne(["fUId" => $wx_uid, "fReportUId" => $rptUId])) {
 						return self::renderAPI(0, '你曾经举报过TA，请勿重复举报~');
 					}
-					Feedback::addReport($wxInfo['uId'], $rptUId, $reason, $text);
+					Feedback::addReport($wx_uid, $rptUId, $reason, $text);
 				}
 				return self::renderAPI(0, '举报成功了！我们会尽快核查你提供的信息');
 				break;
 			case 'profile':
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				$id = AppUtil::decrypt($id);
@@ -414,7 +418,7 @@ class ApiController extends Controller
 				if (!$uInfo) {
 					return self::renderAPI(129, '用户不存在~');
 				}
-				$uInfo['favored'] = UserNet::hasFavor($wxInfo['uId'], $id) ? 1 : 0;
+				$uInfo['favored'] = UserNet::hasFavor($wx_uid, $id) ? 1 : 0;
 				$comment = UserComment::hasCommentOne($id);
 				$uInfo['commentFlag'] = $comment ? 1 : 0;
 				$uInfo['usercomment'] = $comment;
@@ -438,12 +442,11 @@ class ApiController extends Controller
 			case 'male':
 				$page = self::postParam('page', 1);
 				$uid = self::postParam('uid', 0);
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				if (!$uid) {
-					$uid = $wxInfo['uId'];
+					$uid = $wx_uid;
 				}
 				if ($tag == 'boys' || $tag == 'male') {
 					list($items, $nextPage) = UserNet::male($uid, $page);
@@ -457,12 +460,11 @@ class ApiController extends Controller
 				]);
 			case 'matcher':
 				$page = self::postParam('page', 1);
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				LogAction::add($wxInfo['uId'], $openId, LogAction::ACTION_MATCH_LIST);
-				list($items, $nextPage) = User::topMatcher($wxInfo['uId'], $page);
+				LogAction::add($wx_uid, $openId, LogAction::ACTION_MATCH_LIST);
+				list($items, $nextPage) = User::topMatcher($wx_uid, $page);
 				return self::renderAPI(0, '', [
 					'items' => $items,
 					'nextPage' => $nextPage,
@@ -507,16 +509,15 @@ class ApiController extends Controller
 					return self::renderAPI(129, '输入的验证码不正确或者已经失效');
 				}
 			case 'sign':
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				list($code, $msg) = UserAudit::verify($wxInfo["uId"]);
+				list($code, $msg) = UserAudit::verify($wx_uid);
 				if ($code && $msg) {
 					return self::renderAPI($code, $msg);
 				}
-				LogAction::add($wxInfo['uId'], $openId, LogAction::ACTION_SIGN);
-				list($amt, $unit) = UserSign::sign($wxInfo['uId']);
+				LogAction::add($wx_uid, $openId, LogAction::ACTION_SIGN);
+				list($amt, $unit) = UserSign::sign($wx_uid);
 				if ($amt) {
 					return self::renderAPI(0, '今日签到获得' . $amt . $unit . '奖励，请明天继续~',
 						['title' => UserSign::TIP_SIGNED]);
@@ -525,35 +526,30 @@ class ApiController extends Controller
 				}
 				break;
 			case 'lotsign':
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				if (UserSign::isSign($wxInfo["uId"])) {
+				if (UserSign::isSign($wx_uid)) {
 					return self::renderAPI(129, '已经签过到了哦~');
 				}
-				list($code, $msg) = UserAudit::verify($wxInfo["uId"]);
+				list($code, $msg) = UserAudit::verify($wx_uid);
 				if ($code && $msg) {
 					return self::renderAPI($code, $msg);
 				}
-//				$oid = self::postParam('id');
-//				$oid = AppUtil::decrypt($oid);
-//				$lotteryInfo = Lottery::getItem($oid);
 				$prize = Lottery::prize([0, 6, 7]);
 				$amt = Lottery::$flowerDict[$prize];
-				LogAction::add($wxInfo['uId'], $openId, LogAction::ACTION_SIGN);
-				list($amt, $unit) = UserSign::sign($wxInfo['uId'], $amt);
+				LogAction::add($wx_uid, $openId, LogAction::ACTION_SIGN);
+				list($amt, $unit) = UserSign::sign($wx_uid, $amt);
 				if ($amt) {
 					return self::renderAPI(0, '今日签到获得' . $amt . $unit . ',明天继续~',
 						['title' => "已经<br>签到", 'prize' => $prize]);
 				}
 				break;
 			case "lot2":
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				$uId = $wxInfo["uId"];
+				$uId = $wx_uid;
 				if (UserWechat::findOne(["wOpenId" => $openId])->wSubscribe != 1) {
 					return self::renderAPI(129, '您还没关注千寻恋恋公众号哦~');
 				}
@@ -575,37 +571,36 @@ class ApiController extends Controller
 						"oUId" => $uId,
 						"oOpenId" => $openId,
 						"oAfter" => $p,
-						"oBefore" => $co++,
+						"oBefore" => $co,
 					]);
 				}
 				return self::renderAPI(0, '恭喜您获得' . $prize[$p], $p);
 				break;
 			case 'follow':
 				$uid = self::postParam('uid', 0);
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 
-				list($code, $msg) = UserAudit::verify($wxInfo["uId"]);
+				list($code, $msg) = UserAudit::verify($wx_uid);
 				if ($code && $msg) {
 					return self::renderAPI($code, $msg);
 				}
 
-				if (UserNet::hasBlack($wxInfo["uId"], $uid)) {
+				if (UserNet::hasBlack($wx_uid, $uid)) {
 					return self::renderAPI(129, self::MSG_BLACK);
 				}
 
-				if (UserNet::hasFollowed($uid, $wxInfo['uId'])) {
-					WechatUtil::toNotice($uid, $wxInfo['uId'], "focus", false);
-					UserNet::del($uid, $wxInfo['uId'], UserNet::REL_FOLLOW);
+				if (UserNet::hasFollowed($uid, $wx_uid)) {
+					WechatUtil::toNotice($uid, $wx_uid, "focus", false);
+					UserNet::del($uid, $wx_uid, UserNet::REL_FOLLOW);
 					return self::renderAPI(0, '您已经取消关注TA~', [
 						'title' => '关注TA',
 						'follow' => 0
 					]);
 				} else {
-					WechatUtil::toNotice($uid, $wxInfo['uId'], "focus", true);
-					UserNet::add($uid, $wxInfo['uId'], UserNet::REL_FOLLOW);
+					WechatUtil::toNotice($uid, $wx_uid, "focus", true);
+					UserNet::add($uid, $wx_uid, UserNet::REL_FOLLOW);
 					return self::renderAPI(0, '您已经成功关注了TA~', [
 						'title' => '取消关注',
 						'follow' => 1
@@ -616,17 +611,6 @@ class ApiController extends Controller
 				$data = self::postParam('data');
 				$data = json_decode($data, 1);
 				$data["openId"] = $openId;
-				/*$uInfo = User::findOne(["uOpenId" => $openId]);
-				if ($uInfo && $uInfo->uStatus == User::STATUS_INVALID &&
-					((isset($data["img"]) && $data["img"]) ||
-						(isset($data["intro"]) && $data["intro"]) ||
-						(isset($data["interest"]) && $data["interest"]) ||
-						(isset($data["name"]) && $data["name"]))
-				) {
-					// uAvatar,uName,uInterest,uIntro
-					$data["status"] = User::STATUS_PENDING;
-				}*/
-
 				$data["role"] = ($tag == 'mreg') ? User::ROLE_MATCHER : User::ROLE_SINGLE;
 				$userId = User::reg($data);
 				//Rain: 刷新用户cache数据
@@ -655,6 +639,7 @@ class ApiController extends Controller
 					$data['items'] = User::greetUsers($userId);
 				}
 				return self::renderAPI(0, '保存成功啦~', $data);
+
 			case "sreglite":
 				$data = self::postParam('data');
 				$data = json_decode($data, 1);
@@ -700,7 +685,6 @@ class ApiController extends Controller
 					return self::renderAPI(129, '上传失败', $uId);
 				}
 			case "certnew":
-
 				$uId = User::certnew($id, $openId);
 				if ($uId) {
 					return self::renderAPI(0, '上传成功', $uId);
@@ -717,22 +701,13 @@ class ApiController extends Controller
 				$page = self::postParam("page", 1);
 				$filter = self::postParam("data");
 				$filter = json_decode($filter, 1);
-				if ($filter) {
-					/*foreach ($filter as $k => $val) {
-						if (!$val) {
-							unset($filter[$k]);
-						}
-					}
-					User::edit($openId, ["uFilter" => json_encode($filter, JSON_UNESCAPED_UNICODE)]);*/
-				}
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				LogAction::add($wxInfo['uId'], $openId, LogAction::ACTION_SINGLE_LIST);
+				LogAction::add($wx_uid, $openId, LogAction::ACTION_SINGLE_LIST);
 				$ret = User::getFilter($openId, $filter, $page, 15);
 				if (isset($ret['data']) && count($ret['data']) > 3 && $page == 1) {
-					$u = User::find()->where(["uId" => $wxInfo["uId"]])->asArray()->one();
+					$u = User::find()->where(["uId" => $wx_uid])->asArray()->one();
 					$u = User::fmtRow($u);
 					if ($u["percent"] < 90) {
 						array_splice($ret['data'], 3, 0, [
@@ -769,51 +744,49 @@ class ApiController extends Controller
 				return self::renderAPI(0, '', ["data" => $ret]);
 				break;
 			case "hint": // 心动
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				list($code, $msg) = UserAudit::verify($wxInfo["uId"]);
+				list($code, $msg) = UserAudit::verify($wx_uid);
 				if ($code && $msg) {
 					return self::renderAPI($code, $msg);
 				}
 				$id = self::postParam("id");
 				$f = self::postParam("f");
 
-				if (UserNet::hasBlack($wxInfo["uId"], AppUtil::decrypt($id))) {
+				if (UserNet::hasBlack($wx_uid, AppUtil::decrypt($id))) {
 					return self::renderAPI(129, self::MSG_BLACK);
 				}
-				LogAction::add($wxInfo['uId'], $openId,
+				LogAction::add($wx_uid, $openId,
 					$f == 'yes' ? LogAction::ACTION_FAVOR : LogAction::ACTION_UNFAVOR);
-				UserNet::hint($wxInfo["uId"], $id, $f);
+				UserNet::hint($wx_uid, $id, $f);
 				return self::renderAPI(0, '', ["hint" => 1]);
 			case "wxname":
 				$wname = self::postParam("wname");
 				$ret = UserWechat::replace($openId, ["wWechatId" => $wname]);
 				return self::renderAPI(0, '', $ret);
 			case "payrose":
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				list($code, $msg) = UserAudit::verify($wxInfo["uId"]);
+				list($code, $msg) = UserAudit::verify($wx_uid);
 				if ($code && $msg) {
 					return self::renderAPI($code, $msg);
 				}
 				$num = self::postParam("num");
 				$id = self::postParam("id");
 				$id = AppUtil::decrypt($id);
-				if (UserNet::hasBlack($wxInfo["uId"], $id)) {
+				if (UserNet::hasBlack($wx_uid, $id)) {
 					return self::renderAPI(129, self::MSG_BLACK);
 				}
 				if (UserNet::findOne(["nRelation" => UserNet::REL_LINK,
-					"nSubUId" => $wxInfo["uId"],
+					"nSubUId" => $wx_uid,
 					"nUId" => $id,
 					"nStatus" => UserNet::STATUS_WAIT
 				])) {
 					return self::renderAPI(129, '您已经申请过微信号了哦~');
 				}
-				list($result, $roseAmt) = UserNet::roseAmt($wxInfo["uId"], $id, $num);
+				list($result, $roseAmt) = UserNet::roseAmt($wx_uid, $id, $num);
 				$wechatID = '';
 				if ($result) {
 					UserMsg::recall($id);
@@ -831,23 +804,21 @@ class ApiController extends Controller
 			case "iaddwx":
 			case "heartbeat":
 			case "fav":
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				$subtag = self::postParam("subtag");
 				$page = self::postParam("page", 1);
-				list($ret, $nextpage) = UserNet::items($wxInfo["uId"], $tag, $subtag, $page);
+				list($ret, $nextpage) = UserNet::items($wx_uid, $tag, $subtag, $page);
 				return self::renderAPI(0, '', ["data" => $ret, "nextpage" => $nextpage]);
 			case "wx-process":
 				// 同意/拒绝 添加我微信
 				$pf = self::postParam("pf");
 				$nid = self::postParam("nid");
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				list($code, $msg) = UserAudit::verify($wxInfo["uId"]);
+				list($code, $msg) = UserAudit::verify($wx_uid);
 				if ($code && $msg) {
 					return self::renderAPI($code, $msg);
 				}
@@ -859,16 +830,14 @@ class ApiController extends Controller
 				$ret = UserNet::processWx($nid, $pf);
 				return self::renderAPI(0, "已" . $text, $ret);
 			case 'feedback':
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				$text = self::postParam("text");
-				Feedback::addFeedback($wxInfo['uId'], $text);
+				Feedback::addFeedback($wx_uid, $text);
 				return self::renderAPI(0, '提交成功！感谢您的反馈，感谢您对我们的关注和支持~');
 			case 'report':
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				$text = self::postParam("text");
@@ -877,7 +846,7 @@ class ApiController extends Controller
 
 				$black = UserNet::findOne([
 					"nUId" => $rptUId,
-					"nSubUId" => $wxInfo['uId'],
+					"nSubUId" => $wx_uid,
 					"nRelation" => UserNet::REL_BLOCK,
 					"nStatus" => UserNet::STATUS_WAIT,
 				]);
@@ -885,25 +854,24 @@ class ApiController extends Controller
 					if ($black) {
 						return self::renderAPI(129, '你已经拉黑TA了哦~');
 					} else {
-						UserNet::add($rptUId, $wxInfo['uId'], UserNet::REL_BLOCK, $note = '');
-						Feedback::addReport($wxInfo['uId'], $rptUId, $reason, $text);
+						UserNet::add($rptUId, $wx_uid, UserNet::REL_BLOCK, $note = '');
+						Feedback::addReport($wx_uid, $rptUId, $reason, $text);
 						return self::renderAPI(129, '你已经成功拉黑TA了哦~');
 					}
 				} else {
-					if (Feedback::findOne(["fUId" => $wxInfo['uId'], "fReportUId" => $rptUId])) {
+					if (Feedback::findOne(["fUId" => $wx_uid, "fReportUId" => $rptUId])) {
 						return self::renderAPI(129, '你已经举报过TA了哦~');
 					}
-					Feedback::addReport($wxInfo['uId'], $rptUId, $reason, $text);
+					Feedback::addReport($wx_uid, $rptUId, $reason, $text);
 				}
 				return self::renderAPI(0, '提交成功！感谢您的反馈，我们会尽快处理您反映的问题~');
 			case "blacklist": // 黑名单列表
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				$page = self::postParam("page");
 				if ($page > 1) {
-					list($flist, $nextpage) = UserNet::blacklist($wxInfo["uId"], $page);
+					list($flist, $nextpage) = UserNet::blacklist($wx_uid, $page);
 					return self::renderAPI(0, '', [
 						"items" => $flist,
 						"nextpage" => $nextpage,
@@ -912,8 +880,7 @@ class ApiController extends Controller
 					return self::renderAPI(129, '参数错误~');
 				}
 			case "remove_black": // 移出黑名单
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				$nid = self::postParam("nid");
@@ -927,26 +894,23 @@ class ApiController extends Controller
 					return self::renderAPI(129, '参数错误~');
 				}
 			case 'wxno':
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				$text = self::postParam("text");
 				UserWechat::edit($openId, ['wWechatId' => $text]);
 				return self::renderAPI(0, '保存成功啦~');
 			case "getwxno":
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				$wxNo = UserWechat::findOne(["wOpenId" => $openId])->wWechatId;
 				return self::renderAPI(0, '', ["name" => $wxNo]);
 			case 'link-comment':
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				if ($wxInfo['uId'] == $id) {
+				if ($wx_uid == $id) {
 					return self::renderAPI(129, '不能当自己的媒婆啊~');
 				}
 				$senderInfo = User::user(['uId' => $id]);
@@ -954,24 +918,23 @@ class ApiController extends Controller
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				$text = self::postParam("text");
-				UserNet::edit($wxInfo['uId'], $id, UserNet::REL_BACKER, $text);
+				UserNet::edit($wx_uid, $id, UserNet::REL_BACKER, $text);
 				return self::renderAPI(0, '推荐保存成功啦~');
 			case 'link-backer':
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				if ($wxInfo['uId'] == $id) {
+				if ($wx_uid == $id) {
 					return self::renderAPI(129, '不能当自己的媒婆啊~');
 				}
 				$senderInfo = User::user(['uId' => $id]);
 				if (!$senderInfo) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				$ret = UserNet::add($wxInfo['uId'], $id, UserNet::REL_BACKER);
+				$ret = UserNet::add($wx_uid, $id, UserNet::REL_BACKER);
 				$senderInfo = User::user(['uId' => $id]);
 				if ($ret) {
-					$mpInfo = User::user(['uId' => $wxInfo['uId']]);
+					$mpInfo = User::user(['uId' => $wx_uid]);
 					$mpInfo['comment'] = '';
 					return self::renderAPI(0, '您已经成为' . $senderInfo['name'] . '的媒婆啦~',
 						[
@@ -982,24 +945,23 @@ class ApiController extends Controller
 				return self::renderAPI(0, '下手晚一步啊，' . $senderInfo['name'] . '已经有媒婆了',
 					['sender' => $senderInfo]);
 			case "mpsay":
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				$content = self::postParam("content");
 				$f = self::postParam("f");
 				$subUid = AppUtil::decrypt($id);
 				if ($f == "get") { // 获取媒婆说
-					$entity = UserNet::findOne(['nUId' => $wxInfo["uId"], 'nSubUId' => $subUid, 'nRelation' => UserNet::REL_BACKER, 'nDeletedFlag' => 0]);
+					$entity = UserNet::findOne(['nUId' => $wx_uid, 'nSubUId' => $subUid, 'nRelation' => UserNet::REL_BACKER, 'nDeletedFlag' => 0]);
 					if ($entity) {
 						return self::renderAPI(0, '', $entity->nNote);
 					} else {
 						return self::renderAPI(129, '');
 					}
 				} else { // 修改媒婆说
-					$ret = UserNet::replace($wxInfo["uId"], $subUid, UserNet::REL_BACKER, ["nNote" => $content]);
+					$ret = UserNet::replace($wx_uid, $subUid, UserNet::REL_BACKER, ["nNote" => $content]);
 					if ($ret) {
-						WechatUtil::toNotice($subUid, $wxInfo["uId"], "mysay");
+						WechatUtil::toNotice($subUid, $wx_uid, "mysay");
 						return self::renderAPI(0, '媒婆说编辑成功~');
 					} else {
 						return self::renderAPI(129, '媒婆说编辑失败~');
@@ -1008,15 +970,14 @@ class ApiController extends Controller
 			case "favorlist": // 心动排行榜
 				$page = self::postParam("page");
 				$ranktag = self::postParam("ranktag");
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				if ($page >= 1) {
 					list($flist, $nextpage) = UserNet::favorlist($page, $ranktag);
 					return self::renderAPI(0, '', [
 						"items" => $flist,
-						"mInfo" => UserNet::myfavor($wxInfo["uId"], $ranktag),
+						"mInfo" => UserNet::myfavor($wx_uid, $ranktag),
 						"nextpage" => $nextpage,
 					]);
 				} else {
@@ -1025,16 +986,15 @@ class ApiController extends Controller
 			case "fanslist": // 花粉值排行榜
 				$page = self::postParam("page");
 				$ranktag = self::postParam("ranktag");
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
 				if ($page >= 1) {
 					list($items, $nextpage) = UserTrans::fansRank(0, $ranktag, $page);
-					$mInfo = UserTrans::fansRank($wxInfo["uId"], $ranktag, $page);
+					$mInfo = UserTrans::fansRank($wx_uid, $ranktag, $page);
 					$mInfo['no'] = 0;
-					$mInfo['uname'] = $wxInfo['uName'];
-					$mInfo['avatar'] = $wxInfo['uThumb'];
+					$mInfo['uname'] = $wx_name;
+					$mInfo['avatar'] = $wx_thumb;
 					if ($mInfo && isset($mInfo['id'])) {
 						foreach ($items as $k => $item) {
 							if ($item['id'] == $mInfo['id']) {
@@ -1051,11 +1011,10 @@ class ApiController extends Controller
 					return self::renderAPI(129, '参数错误~');
 				}
 			case "togive": // 送媒桂花
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				list($code, $msg) = UserAudit::verify($wxInfo["uId"]);
+				list($code, $msg) = UserAudit::verify($wx_uid);
 				if ($code && $msg) {
 					return self::renderAPI($code, $msg);
 				}
@@ -1065,18 +1024,13 @@ class ApiController extends Controller
 				if (!$amt || !$himInfo = User::findOne(["uId" => $id])) {
 					return self::renderAPI(129, '参数错误~');
 				}
-				$remainRose = UserTrans::getStat($wxInfo["uId"], 1);
+				$remainRose = UserTrans::getStat($wx_uid, 1);
 				$flower = isset($remainRose['flower']) ? $remainRose['flower'] : 0;
 				if ($flower < $amt) {
 					return self::renderAPI(129, '你的媒桂花只剩' . $flower . '朵了，不足' . $amt . '朵，该充值了哦~');
 				}
-				// 送花
-				/*UserTrans::add($wxInfo["uId"], $id, UserTrans::CAT_PRESENT,
-					UserTrans::$catDict[UserTrans::CAT_PRESENT], $amt, UserTrans::UNIT_GIFT);
-				// 收花粉值
-				UserTrans::add($id, $wxInfo["uId"], UserTrans::CAT_RECEIVE,
-					UserTrans::$catDict[UserTrans::CAT_RECEIVE], $amt, UserTrans::UNIT_FANS);*/
-				$ret = UserNet::addPresent($wxInfo["uId"], $id, $amt, UserTrans::UNIT_GIFT);
+
+				$ret = UserNet::addPresent($wx_uid, $id, $amt, UserTrans::UNIT_GIFT);
 				if (!$ret) {
 					return self::renderAPI(129, '送花失败~');
 				}
@@ -1085,7 +1039,7 @@ class ApiController extends Controller
 					$id,
 					$title = '有人给你送花了',
 					$subTitle = 'TA给你送媒桂花了，快去看看吧~',
-					$wxInfo['uId']);
+					$wx_uid);
 				return self::renderAPI(0, '送花 ' . $amt . '朵 成功~');
 			case "setting":
 				$flag = self::postParam("flag", 0);
@@ -1093,16 +1047,25 @@ class ApiController extends Controller
 				if (!$flag || !$setfield) {
 					return self::renderAPI(129, '参数错误~');
 				}
-				$wxInfo = UserWechat::getInfoByOpenId($openId);
-				if (!$wxInfo) {
+				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				$res = User::setting($wxInfo["uId"], $flag, $setfield);
+				$res = User::setting($wx_uid, $flag, $setfield);
 				if ($res) {
 					return self::renderAPI(0, '');
 				} else {
 					return self::renderAPI(129, '操作失败');
 				}
+				break;
+			case 'enroll':
+				$data = self::postParam('data');
+				$data = json_decode($data, 1);
+				$data["openId"] = $openId;
+				$data["role"] = User::ROLE_SINGLE;
+				User::reg($data);
+				//Rain: 刷新用户cache数据
+				UserWechat::getInfoByOpenId($openId, 1);
+				return self::renderAPI(0, '保存成功啦~');
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

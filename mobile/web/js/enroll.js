@@ -1,6 +1,3 @@
-if (document.location.hash === "" || document.location.hash === "#") {
-	//document.location.hash = "#photo";
-}
 require.config({
 	paths: {
 		"jquery": "/assets/js/jquery-3.2.1.min",
@@ -67,7 +64,6 @@ require(["jquery", "mustache", "layer"],
 				});
 				$(".j-location").on(kClick, function () {
 					util.btn = $(this);
-					// util.btn.attr('data-val', '');
 					var html = Mustache.render(util.provinceTmp, {items: mProvinces});
 					if (html) {
 						util.toggle(html);
@@ -131,7 +127,8 @@ require(["jquery", "mustache", "layer"],
 							var localIds = res.localIds;
 							if (localIds && localIds.length) {
 								var localId = localIds[0];
-								util.jPhoto.html('<img src="' + localId + '" localId="' + localId + '">');
+								util.jPhoto.attr('localId', localId);
+								util.jPhoto.html('<img src="' + localId + '">');
 							}
 						}
 					});
@@ -165,12 +162,10 @@ require(["jquery", "mustache", "layer"],
 					if (err) {
 						return false;
 					}
-					console.log($sls.postData);
 					if (!$sls.postData.gender) {
 						showMsg("性别还没有选择哦~");
 						return false;
 					}
-
 					$.each($('a[data-field]'), function () {
 						var self = $(this);
 						var field = self.attr('data-field');
@@ -196,10 +191,7 @@ require(["jquery", "mustache", "layer"],
 					if (err) {
 						return false;
 					}
-
-					console.log($sls.postData);
-
-					var localId = util.avatar.attr("localId");
+					var localId = util.jPhoto.attr("localId");
 					if (localId) {
 						uploadImages(localId);
 					} else {
@@ -207,7 +199,6 @@ require(["jquery", "mustache", "layer"],
 						showMsg("还没上传头像哦~");
 						return false;
 					}
-
 				});
 
 				util.btnCode.on(kClick, function () {
@@ -224,7 +215,7 @@ require(["jquery", "mustache", "layer"],
 						ids: JSON.stringify(ids)
 					}, function (res) {
 						util.toggle('');
-						if (res.code == 0) {
+						if (res.code < 1) {
 							setTimeout(function () {
 								location.href = "/wx/single#slook";
 							}, 350);
@@ -235,44 +226,24 @@ require(["jquery", "mustache", "layer"],
 					}, "json");
 				});
 			},
-			jobData: function () {
-				var items = [];
-				// for (var k = 0; k < SingleUtil.jobVal.length; k++) {
-				// 	items[items.length] = {
-				// 		key: k,
-				// 		name: SingleUtil.jobVal[k]
-				// 	};
-				// }
-				// SingleUtil.jobVal = {items: items};
-			},
 			submit: function () {
 				var util = this;
-				$sls.postData["img"] = $sls.serverId;
-				$sls.postData["coord"] = $sls.coord.val();
+				$sls.postData.img = $sls.serverId;
+				$sls.postData.coord = $sls.coord.val();
 				layer.open({
 					type: 2,
 					content: '保存中...'
 				});
 				$.post("/api/user", {
 					tag: "enroll",
-					data: JSON.stringify($sls.postData),
+					data: JSON.stringify($sls.postData)
 				}, function (res) {
 					layer.closeAll();
 					if (res.code < 1) {
-						// setTimeout(function () {
-						// 	location.href = "/wx/single";
-						// 	layer.closeAll();
-						// }, 500);
-
-						if (res.data && res.data.items && res.data.items.length) {
-							var html = Mustache.render(util.greetingTmp, res.data);
-							util.toggle(html);
-						} else {
-							setTimeout(function () {
-								location.href = "/wx/single#slook";
-							}, 500);
-							showMsg(res.msg, 3, 11);
-						}
+						setTimeout(function () {
+							location.href = "/wx/enroll2";
+						}, 500);
+						showMsg(res.msg, 3, 11);
 					} else {
 						showMsg(res.msg);
 					}
@@ -297,7 +268,7 @@ require(["jquery", "mustache", "layer"],
 					tag: tag,
 					id: pid
 				}, function (resp) {
-					if (resp.code == 0) {
+					if (resp.code < 1) {
 						var tmp = (tag == 'city' ? util.cityTmp : util.districtTmp);
 						if (resp.data.items && resp.data.items.length) {
 							util.content.html(Mustache.render(tmp, resp.data));
@@ -353,57 +324,9 @@ require(["jquery", "mustache", "layer"],
 			}
 		};
 
-		function uploadImages(localId) {
-			wx.uploadImage({
-				localId: localId.toString(),
-				isShowProgressTips: 1,
-				success: function (res) {
-					$sls.serverId = res.serverId;
-
-					SingleUtil.submit();
-				},
-				fail: function () {
-					$sls.serverId = "";
-					SingleUtil.submit();
-				}
-			});
-		}
-
-		var DrawUtil = {
-			menus: null,
-			menusBg: null,
-			init: function () {
-				var util = this;
-				util.menus = $(".m-draw-wrap");
-				util.menusBg = $(".m-popup-shade");
-				$(".sedit-avart a.photo").on(kClick, function () {
-					util.toggle(util.menus.hasClass("off"));
-				});
-
-				util.menus.on(kClick, function (e) {
-					e.stopPropagation();
-				});
-
-				util.menusBg.on(kClick, function () {
-					util.toggle(false);
-				});
-			},
-			toggle: function (showFlag) {
-				var util = this;
-				if (showFlag) {
-					setTimeout(function () {
-						util.menus.removeClass("off").addClass("on");
-					}, 60);
-					util.menusBg.fadeIn(260);
-				} else {
-					util.menus.removeClass("on").addClass("off");
-					util.menusBg.fadeOut(220);
-				}
-			}
-		};
 
 		var PopupUtil = {
-			speed: 160,
+			speed: 180,
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
@@ -411,8 +334,8 @@ require(["jquery", "mustache", "layer"],
 				var util = this;
 				if (!html || html.length < 10) {
 					util.main.hide();
-					util.shade.fadeOut(util.speed, function () {
-						util.content.html('').removeClass("animate-pop-in")
+					util.shade.fadeOut(util.speed - 60, function () {
+						util.content.html('').removeClass("animate-pop-in");
 					});
 					return false;
 				}
@@ -422,19 +345,34 @@ require(["jquery", "mustache", "layer"],
 			}
 		};
 
+		var uploadImages = function (localId) {
+			wx.uploadImage({
+				localId: localId.toString(),
+				isShowProgressTips: 1,
+				success: function (res) {
+					$sls.serverId = res.serverId;
+					SingleUtil.submit();
+				},
+				fail: function () {
+					$sls.serverId = '';
+					SingleUtil.submit();
+				}
+			});
+		};
+
 		var isPhone = function (num) {
 			var regex = /^1[2-9][0-9]{9}$/;
 			return regex.test(num);
 		};
 
-		function showMsg(title, sec) {
+		var showMsg = function (title, sec) {
 			var duration = sec || 2;
 			layer.open({
 				content: title,
 				skin: 'msg',
 				time: duration
 			});
-		}
+		};
 
 		$(function () {
 			var wxInfo = JSON.parse($sls.wxString);
@@ -451,14 +389,11 @@ require(["jquery", "mustache", "layer"],
 							lat: res.latitude,
 							lng: res.longitude
 						};
-						console.log(bundle);
 						$sls.coord.val(JSON.stringify(bundle));
 					}
 				});
 			});
 			SingleUtil.init();
-			SingleUtil.jobData();
-			DrawUtil.init();
 			$sls.cork.hide();
 		});
 	});
