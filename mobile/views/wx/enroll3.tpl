@@ -5,9 +5,8 @@
 <div class="enroll-cert">
 	<div class="enroll-cert-wrap">
 		<h4>恭喜你报名成功，请耐心等待我们联系你或者添加客服微信号咨询报名情况。</h4>
-		<br>
 		<div style="text-align: center" onclick="javascript:void(0);">
-			<img style="width: 64%" alt="" src="/images/qr_zmy.jpg">
+			<img style="width: 60%" alt="" src="/images/qr_zmy.jpg">
 		</div>
 		<h4 style="text-align: center">长按并识别上面的二维码添加客服</h4>
 		<br>
