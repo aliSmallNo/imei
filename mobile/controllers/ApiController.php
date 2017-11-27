@@ -164,7 +164,7 @@ class ApiController extends Controller
 				}
 				$amt = $priceInfo['price'];
 				$pay_cat = $priceInfo['cat'];
-				$num = intval($amt * 10.0);
+				$num = $priceInfo['num'];
 				$payFee = intval($amt * 100.0);
 				$subTitle = '充值' . $num . '媒桂花';
 

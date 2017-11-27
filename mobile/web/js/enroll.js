@@ -127,11 +127,11 @@ require(["jquery", "mustache", "layer"],
 						sizeType: ['original', 'compressed'],
 						sourceType: ['album', 'camera'],
 						success: function (res) {
+							PopupUtil.toggle(0);
 							var localIds = res.localIds;
 							if (localIds && localIds.length) {
 								var localId = localIds[0];
 								util.jPhoto.html('<img src="' + localId + '" localId="' + localId + '">');
-								PopupUtil.toggle(0);
 							}
 						}
 					});
