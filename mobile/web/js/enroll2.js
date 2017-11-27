@@ -60,6 +60,10 @@ require(["jquery", "mustache", "layer"],
 				return false;
 			}
 			$sls.serverId = [];
+			layer.open({
+				type: 2,
+				content: '正在上传中...'
+			});
 			uploadImages();
 			return false;
 		});
@@ -78,7 +82,7 @@ require(["jquery", "mustache", "layer"],
 			} else {
 				wx.uploadImage({
 					localId: localId.toString(),
-					isShowProgressTips: 1,
+					isShowProgressTips: 0,
 					success: function (res) {
 						$sls.serverId.push({id: res.serverId, tag: tag});
 						if ($sls.localId.length > 0) {
@@ -96,10 +100,6 @@ require(["jquery", "mustache", "layer"],
 
 		var submitItem = function () {
 			// alert(JSON.stringify($sls.serverId));return;
-			layer.open({
-				type: 2,
-				content: '正在上传中...'
-			});
 			if ($sls.uploadImgFlag) {
 				return;
 			}
@@ -115,6 +115,7 @@ require(["jquery", "mustache", "layer"],
 				} else {
 					showMsg(resp.msg);
 				}
+				layer.closeAll();
 				$sls.uploadImgFlag = 0;
 			}, "json");
 		};

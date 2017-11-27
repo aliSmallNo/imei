@@ -29,4 +29,4 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-<script src="/assets/js/require.js" data-main="/js/enroll2.js?v=1.2.8"></script>
+<script src="/assets/js/require.js" data-main="/js/enroll2.js?v=1.3.0"></script>
