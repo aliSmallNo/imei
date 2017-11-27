@@ -33,7 +33,7 @@ require(["jquery", "mustache", "layer"],
 					var localIds = res.localIds;
 					if (localIds && localIds.length) {
 						var rid = localIds[0];
-						self.css({'background-image': 'url(' + rid + ')'}).attr("localId", rid);
+						self.attr("localId", rid).html('<img src="' + rid + '">');
 					}
 				}
 			});

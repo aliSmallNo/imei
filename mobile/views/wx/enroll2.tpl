@@ -8,7 +8,9 @@
 		<h4>身份证正面照</h4>
 		<div class="pic-row">
 			<div class="pic-cell">
-				<a href="javascript:;" class="j-photo" data-tag="zm" localId="" {{if $certFront}}style="background-image:url({{$certFront}})"{{/if}}></a>
+				<a href="javascript:;" class="j-photo" data-tag="zm" localId="">
+					{{if $certFront}}<img src="{{$certFront}}">{{/if}}
+				</a>
 			</div>
 			<div class="pic-cell">
 				<div class="pic-cell-img">
@@ -19,7 +21,9 @@
 		<h4>手持身份证照片</h4>
 		<div class="pic-row">
 			<div class="pic-cell">
-				<a href="javascript:;" class="j-photo" data-tag="sc" localId="" {{if $certHold}}style="background-image:url({{$certHold}})"{{/if}}></a>
+				<a href="javascript:;" class="j-photo" data-tag="sc" localId="">
+					{{if $certHold}}<img src="{{$certHold}}">{{/if}}
+				</a>
 			</div>
 			<div class="pic-cell">
 				<div class="pic-cell-img">
@@ -36,4 +40,4 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-<script src="/assets/js/require.js" data-main="/js/enroll2.js?v=1.2.5"></script>
+<script src="/assets/js/require.js" data-main="/js/enroll2.js?v=1.2.6"></script>
