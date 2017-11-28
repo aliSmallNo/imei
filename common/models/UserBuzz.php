@@ -205,6 +205,11 @@ class UserBuzz extends ActiveRecord
 			case 333:
 				$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
 				break;
+			case '17':
+			case '我要开趴':
+				$txt = '点击链接可直接进入<a href="https://wx.meipo100.com/wx/enroll">我们派对吧</a>快速报名通道';
+				$resp = self::textMsg($fromUsername, $toUsername, $txt);
+				break;
 			case '晚安':
 				$txt = "当初怎么也没算到，最后说出那句“我们就到这”的人会是我，也是那时候才知道，原来真的爱一个人，会连狠心的话都舍不得让她说。
 
