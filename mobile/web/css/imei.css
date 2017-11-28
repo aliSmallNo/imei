@@ -7795,6 +7795,9 @@ ul.co-ul {
     color: #4966b2;
     line-height: 2.5rem;
     padding-left: 1rem; }
+    .enroll-cert h4 .high {
+      font-size: 1.6rem;
+      color: #f24; }
   .enroll-cert .pic-row {
     display: -webkit-box;
     display: -webkit-flex;
