@@ -787,11 +787,12 @@ class FooController extends Controller
 		$conn = AppUtil::db();
 		$dt = date('Y-m-d H:i:s', time() - 3600);
 		$sql = "SELECT uId,uGender 
- 				from im_user as u
+ 				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId AND w.wSubscribe=1
  				WHERE uGender>9 and uPhone!=''
   					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt') ";
 		$ret = $conn->createCommand($sql)->queryAll();
+		var_dump($sql);
 		$cnt = 0;
 		$senderId = User::SERVICE_UID;
 		foreach ($ret as $row) {
@@ -802,7 +803,6 @@ class FooController extends Controller
 				$content = 'https://wx.meipo100.com/images/ad/for_female_600.jpg';
 			}*/
 			$content = "https://wx.meipo100.com/images/ad/prize_magic.jpg";
-
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001);
 			QueueUtil::loadJob('templateMsg',
