@@ -705,18 +705,13 @@ class WxController extends BaseController
 		];
 		$adverts = [
 			[
-				'image' => AppUtil::wechatUrl() . "/images/ad/12_horos.jpg",
-				'url' => 'https://mp.weixin.qq.com/s?__biz=MzI3NzczMDQwMA==&mid=2247484036&idx=5&sn=e7213e6c5756479b8ee9fdc9c477bef1&chksm=eb60878bdc170e9d7ed7f9e821f5eac769d31b4026623cf3abd52c890cdf6727cce0e17cee18#rd'
+				'image' => AppUtil::wechatUrl() . "/images/ad/go_party.jpg",
+				'url' => 'https://wx.meipo100.com/wx/enroll'
 			],
 			[
-				'image' => AppUtil::wechatUrl() . "/images/ad/love_story.jpg",
-				'url' => 'https://mp.weixin.qq.com/s?__biz=MzI3NzczMDQwMA==&mid=2247484036&idx=1&sn=cdbaf025cb043ca53e17fd5293cdb4c0&chksm=eb60878bdc170e9d23d7a46d81245054d730dbcdfea90e58170b4485e97886177c133fb6cfb3#rd'
-			],
-			[
-				'image' => $service,
-				'url' => 'javascript:;',
-				'tip' => '长按图片识别二维码，添加我们的客服为好友'
-			],
+				'image' => AppUtil::wechatUrl() . "/images/ad/hidden_love.jpg",
+				'url' => 'https://mp.weixin.qq.com/s/F7sOYjTURBOgdmFk9r349g'
+			]
 		];
 
 		return self::renderPage("single.tpl", [
