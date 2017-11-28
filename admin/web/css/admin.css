@@ -635,7 +635,7 @@ span.space {
     .user_info .avatar em.light {
       background: #44b549; }
     .user_info .avatar em.gray {
-      background: #ddd; }
+      background: #b8b8b8; }
 
 .message_time {
   float: right;
@@ -686,7 +686,7 @@ span.space {
 .myevent .dropdown-messages b {
   color: #525252; }
 .myevent .dropdown-messages .badge {
-  background-color: #ddd;
+  background-color: #b8b8b8;
   margin-right: 4px;
   font-size: 12px;
   padding: 2px 5px; }
@@ -999,5 +999,56 @@ ul.features {
   font-size: 12px;
   border-radius: 3px;
   padding: 0 3px; }
+
+.m-status-0, .m-status-1, .m-status-2, .m-status-3, .m-status-7, .m-status-8, .m-status-9,
+.m-cert-1, .m-sub-0, .m-sub-1 {
+  color: #fff !important;
+  border-radius: 3px !important;
+  display: inline-block !important;
+  font-size: 10px !important;
+  padding: 0 2px !important;
+  border: none !important;
+  margin: 0 !important; }
+
+.m-status-0, .m-status-3 {
+  background: #b8b8b8; }
+
+.m-status-2 {
+  background: #f80; }
+
+.m-sub-0 {
+  background: #f24; }
+
+.m-status-7, .m-status-8, .m-status-9 {
+  background: #999; }
+
+.m-status-1, .m-cert-1 {
+  background: #44b549; }
+
+.m-cert-1 {
+  background: #2E7D32; }
+
+.m-subst-1, .m-subst-2, .m-subst-3, .m-subst-4 {
+  border-radius: 3px !important;
+  display: inline-block !important;
+  font-size: 10px !important;
+  padding: 0 2px !important;
+  margin: 0 !important; }
+
+.m-subst-1 {
+  color: #44b549 !important;
+  border: 1px solid #44b549 !important; }
+
+.m-subst-2 {
+  color: #428bca !important;
+  border: 1px solid #428bca !important; }
+
+.m-subst-3 {
+  color: #f80 !important;
+  border: 1px solid #f80 !important; }
+
+.m-subst-4 {
+  color: #f24 !important;
+  border: 1px solid #f24 !important; }
 
 /*# sourceMappingURL=admin.css.map */

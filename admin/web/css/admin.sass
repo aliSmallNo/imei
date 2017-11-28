@@ -12,7 +12,7 @@ $grayFontColorDark: #525252
 $okColor: #39f
 $disabledFontColor: #aaa
 $bgColor: #F9F9F9
-$bgColorDark: #ddd
+$bgColorDark: #b8b8b8
 $bgColorDarker: #999
 $weightBold: 500
 $weightNormal: 300
@@ -20,6 +20,8 @@ $tipColor: #f80
 $moneyColor: #f50
 $moneyColorDark: darken($moneyColor, 5%)
 $moneyColorLight: lighten($moneyColor, 5%)
+$redColor: #E53935
+$redColorLight: #f24
 $borderColor: #E4E4E4
 $borderColorLight: #E8E8E8
 $borderColorDark: #C4C4C4
@@ -1106,11 +1108,55 @@ ul.features
 	font-size: 12px
 	border-radius: 3px
 	padding: 0 3px
-//.sidebar
-//	.sidebar-nav
-//		&.navbar-collapse
-//			background-color: #939393
-//.left-menus
-//	li
-//		a
-//			color: #EDEDED
+
+.m-status-0, .m-status-1, .m-status-2, .m-status-3, .m-status-7, .m-status-8, .m-status-9,
+.m-cert-1, .m-sub-0, .m-sub-1
+	color: #fff !important
+	border-radius: 3px !important
+	display: inline-block !important
+	font-size: 10px !important
+	padding: 0 2px !important
+	border: none !important
+	margin: 0 !important
+
+.m-status-0, .m-status-3
+	background: $bgColorDark
+
+.m-status-2
+	background: $tipColor
+
+.m-sub-0
+	background: $redColorLight
+
+.m-status-7, .m-status-8, .m-status-9
+	background: $bgColorDarker
+
+.m-status-1, .m-cert-1
+	background: $mainColorLight
+
+.m-cert-1
+	background: $mainColor
+
+.m-subst-1, .m-subst-2, .m-subst-3, .m-subst-4
+	border-radius: 3px !important
+	display: inline-block !important
+	font-size: 10px !important
+	padding: 0 2px !important
+	margin: 0 !important
+
+.m-subst-1
+	color: $mainColorLight !important
+	border: 1px solid $mainColorLight !important
+
+.m-subst-2
+	color: $primaryColor !important
+	border: 1px solid $primaryColor !important
+
+.m-subst-3
+	color: $tipColor !important
+	border: 1px solid $tipColor !important
+
+.m-subst-4
+	color: $redColorLight !important
+	border: 1px solid $redColorLight !important
+

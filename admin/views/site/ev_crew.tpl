@@ -1,6 +1,6 @@
 {{include file="layouts/header.tpl"}}
 <style>
-	.cert-img{
+	.cert-img {
 		width: 50px;
 		margin-right: 10px;
 	}
@@ -20,7 +20,7 @@
 <table class="table table-striped table-bordered table-hover">
 	<thead>
 	<tr>
-		<th class="col-sm-1">
+		<th style="width: 70px">
 			头像
 		</th>
 		<th class="col-sm-4">
@@ -38,10 +38,12 @@
 	{{foreach from=$crew item=prod}}
 	<tr>
 		<td>
-			<img src="{{$prod.thumb}}" style="width: 70px;height: 70px">
+			<img src="{{$prod.thumb}}" style="width: 60px;height: 60px">
 		</td>
 		<td>
-			{{$prod.uName}}<br>
+			{{$prod.uName}}
+			<span class="m-status-{{$prod.uStatus}}">{{$prod.status}}</span>
+			<span class="m-sub-{{$prod.wSubscribe}}">{{$prod.sub}}</span><br>
 			{{$prod.uPhone}} . {{$prod.gender}} . {{$prod.age}}岁 . {{$prod.marital}}<br>
 			{{$prod.location}}
 		</td>
@@ -122,35 +124,35 @@
 		}, "json")
 	});
 
-  $(document).on("click", ".cert-img", function () {
-	  var self = $(this);
-	  var bSrc = self.attr("src");
-	  if (!bSrc) return false;
-	  var images = [];
-	  $.each(self.closest('td').find('.cert-img'), function () {
-		  images.push({
-			  src: $(this).attr('src')
-		  });
-	  });
-	  var photos = {
-		  title: '大图',
-		  data: images
-	  };
-	  showImages(photos, self.index());
-  });
+	$(document).on("click", ".cert-img", function () {
+		var self = $(this);
+		var bSrc = self.attr("src");
+		if (!bSrc) return false;
+		var images = [];
+		$.each(self.closest('td').find('.cert-img'), function () {
+			images.push({
+				src: $(this).attr('src')
+			});
+		});
+		var photos = {
+			title: '大图',
+			data: images
+		};
+		showImages(photos, self.index());
+	});
 
-  function showImages(imagesJson, idx) {
-	  if (idx) {
-		  imagesJson.start = idx;
-	  }
-	  layer.photos({
-		  photos: imagesJson,
-		  shift: 5,
-		  tab: function (info) {
-			  console.log(info);
-		  }
-	  });
-  }
+	function showImages(imagesJson, idx) {
+		if (idx) {
+			imagesJson.start = idx;
+		}
+		layer.photos({
+			photos: imagesJson,
+			shift: 5,
+			tab: function (info) {
+				console.log(info);
+			}
+		});
+	}
 
 </script>
 

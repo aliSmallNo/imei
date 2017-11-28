@@ -257,8 +257,8 @@ class User extends ActiveRecord
 	const CERT_STATUS_PASS = 2;
 	const CERT_STATUS_FAIL = 9;
 	static $Certstatus = [
-		self::CERT_STATUS_PENDING => "待实名",
-		self::CERT_STATUS_PASS => "已实名",
+		self::CERT_STATUS_PENDING => "待审核",
+		self::CERT_STATUS_PASS => "实名",
 		self::CERT_STATUS_FAIL => "未通过",
 	];
 

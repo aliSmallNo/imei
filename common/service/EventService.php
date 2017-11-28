@@ -61,9 +61,10 @@ class EventService
 		$offset = ($page - 1) * $page_size;
 		$params[':eid'] = $this->id;
 		$sql = " SELECT cEId,cAddedOn,cUpdatedOn,uId,uOpenId,uName,uPhone,uStatus,uThumb,
- 				uGender,uBirthYear,uMarital,uLocation,uCertImage
+ 				uGender,uBirthYear,uMarital,uLocation,uCertImage,IFNULL(w.wSubscribe,0) as wSubscribe
 	            FROM im_event_crew as c
 	            JOIN im_user as u on u.uId=c.cUId
+	            LEFT JOIN im_user_wechat as w on w.wUId=u.uId
 				WHERE c.cEId=:eid " . $strCriteria . "
 				ORDER BY cUpdatedOn DESC
 				LIMIT $offset, $page_size ";
@@ -74,6 +75,8 @@ class EventService
 			$ret[$k]['dt'] = AppUtil::prettyDate($row['cUpdatedOn']);
 			$ret[$k]['gender'] = ($row['uGender'] == User::GENDER_MALE ? '男性' : '女性');
 			$ret[$k]['marital'] = isset(User::$Marital[$row['uMarital']]) ? User::$Marital[$row['uMarital']] : '';
+			$ret[$k]['status'] = isset(User::$Status[$row['uStatus']]) ? User::$Status[$row['uStatus']] : '';
+			$ret[$k]['sub'] = $row['wSubscribe'] ? '' : '未关注';
 			$location = json_decode($row['uLocation'], 1);
 			$ret[$k]['location'] = '';
 			if ($location) {

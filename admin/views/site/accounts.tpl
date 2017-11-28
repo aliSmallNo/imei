@@ -31,17 +31,6 @@
 		font-style: normal;
 	}
 
-	.pInfo span.status-0 {
-		color: #fff;
-		border: 1px solid #a8a8a8;
-		background: #a8a8a8;
-	}
-
-	.pInfo span.subst {
-		border: 1px solid #f61;
-		color: #f50;
-	}
-
 	.m-role {
 		font-size: 12px;
 		line-height: 16px;
@@ -64,36 +53,6 @@
 	.m-style-male .m-role {
 		background: #007aff;
 		color: #fff;
-	}
-
-	.pInfo span.status-1 {
-		color: #fff;
-		border: 1px solid #44b549;
-		background: #44b549;
-	}
-
-	.pInfo span.sub0 {
-		color: #fff;
-		background: #f40;
-		border: 1px solid #f40;
-	}
-
-	.pInfo span.sub1 {
-		display: none;
-		color: #fff;
-		border: 1px solid #44b549;
-		background: #44b549;
-	}
-
-	.pInfo span.status-9 {
-		color: #fff;
-		border: 1px solid #ddd;
-		background: #ddd;
-	}
-
-	.pInfo span.status-10 {
-		color: #fff;
-		border: none;
 	}
 
 	td h5 {
@@ -180,8 +139,8 @@
 
 	.album-item a {
 		position: absolute;
-		top: 0px;
-		right: 0px;
+		top: 0;
+		right: 0;
 		width: 10px;
 		height: 10px;
 		border-radius: 5px;
@@ -359,11 +318,6 @@
 		padding-left: 10px;
 	}
 
-	.user-list .u-info .i-cert {
-		font-size: 12px;
-		color: #969696;
-	}
-
 	.uid {
 		font-weight: 300;
 		font-size: 10px;
@@ -472,10 +426,10 @@
 		<td class="pInfo m-style-{{$prod.style}}">
 			<span class="m-role">{{$prod.role_t}}</span> {{$prod.name}}
 			<em>{{$prod.phone}} {{$prod.wechatid}} {{$prod.location_t}} (籍贯: {{$prod.homeland_t}})</em>
-			<span class="sub{{$prod.subscribe}}">{{if $prod.subscribe}}已关注{{else}}未关注{{/if}}</span>
-			{{if $prod.substatus>1}}<span class="subst">{{$prod.substatus_t}}</span>{{/if}}
-			<span class="status-{{if $prod.note_t}}10 m-dummy{{else}}{{$prod.status}}{{/if}}">{{if $prod.note_t}}{{$prod.note_t}}{{else}}{{$prod.status_t}}{{/if}}</span>
-			<span class="status-1">{{if $prod.certstatus==2}}{{$prod.certstatus_t}}{{/if}}</span>
+			{{if $prod.substatus>1}}<span class="m-subst-{{$prod.substatus}}">{{$prod.substatus_t}}</span>{{/if}}
+			<span class="m-status-{{$prod.status}}">{{$prod.status_t}}</span>
+			{{if $prod.certstatus==2}}<span class="m-cert-1">{{$prod.certstatus_t}}</span>{{/if}}
+			{{if $prod.subscribe<1}}<span class="m-sub-{{$prod.subscribe}}">未关注</span>{{/if}}
 			<div class="perc-wrap">
 				<div class="perc-bar-title">资料完整度 <b>{{$prod.percent}}%</b></div>
 				<div class="perc-bar-wrap"><p class="perc-bar"><em style="width: {{$prod.percent}}%"></em></p></div>
