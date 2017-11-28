@@ -207,7 +207,7 @@ class UserBuzz extends ActiveRecord
 				break;
 			case '17':
 			case '我要开趴':
-				$txt = '点击链接可直接进入<a href="https://wx.meipo100.com/wx/enroll">我们派对吧</a>快速报名通道';
+				$txt = '点击进入<a href="https://wx.meipo100.com/wx/enroll">我们派对吧</a>快速报名通道';
 				$resp = self::textMsg($fromUsername, $toUsername, $txt);
 				break;
 			case '晚安':
