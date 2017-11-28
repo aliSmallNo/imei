@@ -38,20 +38,12 @@ class UserService
 			$util->thumb = ImageUtil::getItemImages($uInfo['uThumb'])[0];
 			$util->avatar = ImageUtil::getItemImages($uInfo['uAvatar'])[0];
 			$util->cert_status = $uInfo['uCertStatus'];
-			if (isset($uInfo['uCertImage']) && $uInfo['uCertImage']) {
-				if (strpos($uInfo['uCertImage'], 'http') === 0) {
-					$util->cert_front = $uInfo['uCertImage'];
-				} else {
-					$images = json_decode($uInfo['uCertImage'], 1);
-					if ($images && count($images) > 0) {
-						foreach ($images as $item) {
-							if ($item['tag'] == 'zm') {
-								$util->cert_front = $item['url'];
-							} elseif ($item['tag'] == 'sc') {
-								$util->cert_hold = $item['url'];
-							}
-						}
-					}
+			$certs = User::getCerts($uInfo['uCertImage']);
+			foreach ($certs as $item) {
+				if ($item['tag'] == 'zm') {
+					$util->cert_front = $item['url'];
+				} elseif ($item['tag'] == 'sc') {
+					$util->cert_hold = $item['url'];
 				}
 			}
 		}

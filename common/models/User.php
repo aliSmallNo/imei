@@ -2619,4 +2619,17 @@ class User extends ActiveRecord
 		return $res;
 	}
 
+	public static function getCerts($certData = '')
+	{
+		if ($certData && strpos($certData, 'http') === 0) {
+			return [
+				[
+					'tag' => 'zm',
+					'url' => $certData
+				]
+			];
+		}
+		$certs = json_decode($certData, 1);
+		return $certs ? $certs : [];
+	}
 }

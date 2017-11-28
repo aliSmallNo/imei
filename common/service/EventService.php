@@ -82,11 +82,7 @@ class EventService
 			if ($location) {
 				$ret[$k]['location'] = implode(' ', array_column($location, 'text'));
 			}
-			$certs = json_decode($row['uCertImage'], 1);
-			$ret[$k]['certs'] = [];
-			if ($certs) {
-				$ret[$k]['certs'] = $certs;
-			}
+			$ret[$k]['certs'] = User::getCerts($row['uCertImage']);
 		}
 		$sql = " SELECT COUNT(1) as cnt
 	            FROM im_event_crew as c
