@@ -1467,6 +1467,7 @@ class SiteController extends BaseController
 	{
 		$name = self::getParam('name');
 		$phone = self::getParam('phone');
+		$page = self::getParam('page', 1);
 		$criteria = $params = [];
 		if ($name) {
 			$criteria[] = "uName like :name ";
@@ -1476,7 +1477,8 @@ class SiteController extends BaseController
 			$criteria[] = "uPhone like :phone ";
 			$params[':phone'] = $phone . '%';
 		}
-		$crew = EventService::init(EventService::EV_PARTY_S01)->crew($criteria, $params);
+		list($crew, $count) = EventService::init(EventService::EV_PARTY_S01)->crew($criteria, $params, $page);
+		$pagination = self::pagination($page, $count, 20);
 		return $this->renderPage('ev_crew.tpl',
 			[
 				'category' => 'data',
@@ -1484,6 +1486,7 @@ class SiteController extends BaseController
 				'crew' => $crew,
 				'name' => $name,
 				'phone' => $phone,
+				'pagination' => $pagination
 			]
 		);
 	}

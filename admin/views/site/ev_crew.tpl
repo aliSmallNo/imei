@@ -58,7 +58,7 @@
 	{{/foreach}}
 	</tbody>
 </table>
-
+{{$pagination}}
 <script>
 	var id = 0, loadflag = 0, postData ={};
 	$("a.modU").click(function () {
@@ -114,13 +114,43 @@
 			data: JSON.stringify(postData)
 		}, function (resp) {
 			loadflag = 0;
-			if (resp.code == 0) {
+			if (resp.code < 1) {
 				location.reload();
 			} else {
 				layer.msg(resp.msg);
 			}
 		}, "json")
-	})
+	});
+
+  $(document).on("click", ".cert-img", function () {
+	  var self = $(this);
+	  var bSrc = self.attr("src");
+	  if (!bSrc) return false;
+	  var images = [];
+	  $.each(self.closest('td').find('.cert-img'), function () {
+		  images.push({
+			  src: $(this).attr('src')
+		  });
+	  });
+	  var photos = {
+		  title: '大图',
+		  data: images
+	  };
+	  showImages(photos, self.index());
+  });
+
+  function showImages(imagesJson, idx) {
+	  if (idx) {
+		  imagesJson.start = idx;
+	  }
+	  layer.photos({
+		  photos: imagesJson,
+		  shift: 5,
+		  tab: function (info) {
+			  console.log(info);
+		  }
+	  });
+  }
 
 </script>
 

@@ -18,7 +18,7 @@ class EventService
 	public $id;
 
 	/**
-	 * @var /yii/db/Connection
+	 * @var \yii\db\Connection
 	 */
 	protected $conn = null;
 	const EV_PARTY_S01 = 18002;
@@ -52,19 +52,21 @@ class EventService
 		return $ret;
 	}
 
-	public function crew($criteria, $params)
+	public function crew($criteria, $params, $page = 1, $page_size = 20)
 	{
 		$strCriteria = '';
 		if ($criteria) {
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
+		$offset = ($page - 1) * $page_size;
 		$params[':eid'] = $this->id;
 		$sql = " SELECT cEId,cAddedOn,cUpdatedOn,uId,uOpenId,uName,uPhone,uStatus,uThumb,
  				uGender,uBirthYear,uMarital,uLocation,uCertImage
- 			FROM im_event_crew as c
- 			JOIN im_user as u on u.uId=c.cUId
-			WHERE c.cEId=:eid " . $strCriteria ."
-			Order by cUpdatedOn desc";
+	            FROM im_event_crew as c
+	            JOIN im_user as u on u.uId=c.cUId
+				WHERE c.cEId=:eid " . $strCriteria . "
+				ORDER BY cUpdatedOn DESC
+				LIMIT $offset, $page_size ";
 		$ret = $this->conn->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($ret as $k => $row) {
 			$ret[$k]['thumb'] = ImageUtil::getItemImages($row['uThumb'])[0];
@@ -83,6 +85,11 @@ class EventService
 				$ret[$k]['certs'] = $certs;
 			}
 		}
-		return $ret;
+		$sql = " SELECT COUNT(1) as cnt
+	            FROM im_event_crew as c
+	            JOIN im_user as u on u.uId=c.cUId
+				WHERE c.cEId=:eid " . $strCriteria;
+		$count = $this->conn->createCommand($sql)->bindValues($params)->queryScalar();
+		return [$ret, $count];
 	}
 }
