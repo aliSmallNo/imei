@@ -534,7 +534,7 @@ class SiteController extends BaseController
 
 		if ($sign && $content && $maleUID && $femaleUID) {
 			$edate = date("Y-m-d H:i:s");
-			$sdate = date("Y-m-d H:i:s", time() - 86400 * 7);
+			$sdate = date("Y-m-d H:i:s", time() - 86400 * 3);
 
 			$conn = AppUtil::db();
 			$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe, w.wWechatId, count(t.tPId) as uco 
