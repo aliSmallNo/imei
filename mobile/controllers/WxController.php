@@ -736,9 +736,9 @@ class WxController extends BaseController
 			'chatId' => $chatId,
 			'chatTitle' => $chatTitle,
 			'reasons' => self::$ReportReasons,
-			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
 			'cats' => UserComment::$commentCats,
 			'catDesFirst' => UserComment::$commentCatsDes[100],
+			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
 			'catDes' => json_encode(UserComment::$commentCatsDes, JSON_UNESCAPED_UNICODE),
 		]);
 	}
@@ -763,7 +763,6 @@ class WxController extends BaseController
 			],
 			'terse');
 	}
-
 
 	public function actionInvite()
 	{

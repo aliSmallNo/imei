@@ -148,7 +148,18 @@ class UserTrans extends ActiveRecord
 		$entity->tCategory = $cat;
 		switch ($payInfo['pCategory']) {
 			case Pay::CAT_RECHARGE:
-				$entity->tAmt = $payInfo['pRId'];
+				$info = self::findOne([
+					'tUId' => $payInfo['pUId'],
+					'tCategory' => $cat,
+					'tDeletedFlag' => 0
+				]);
+				if ($info) {
+					$entity->tAmt = $payInfo['pRId'];
+				} else {
+					//Rain: 首充3倍
+					$entity->tNote = '首充3倍';
+					$entity->tAmt = $payInfo['pRId'] * 3;
+				}
 				$entity->tUnit = self::UNIT_GIFT;
 				break;
 			case Pay::CAT_MEET:
