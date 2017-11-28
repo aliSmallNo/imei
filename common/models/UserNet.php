@@ -791,7 +791,7 @@ class UserNet extends ActiveRecord
 		foreach ($ret as $k => $row) {
 			$ret[$k]['ratio'] = '';
 			if ($row['subscribe']) {
-				$ret[$k]['ratio'] = sprintf('%.1f', 100.0 * $row['reg'] / $row['subscribe']) . '%';
+				$ret[$k]['ratio'] = sprintf('%.1f%%', 100.0 * $row['reg'] / $row['subscribe']);
 			}
 		}
 		return $ret;
