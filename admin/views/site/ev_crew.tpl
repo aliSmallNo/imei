@@ -23,7 +23,7 @@
 		<th class="col-sm-1">
 			头像
 		</th>
-		<th class="col-sm-3">
+		<th class="col-sm-4">
 			信息
 		</th>
 		<th>
