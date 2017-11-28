@@ -1013,13 +1013,13 @@ ul.features {
 .m-status-0, .m-status-3 {
   background: #b8b8b8; }
 
-.m-status-2 {
+.m-status-2, .m-status-8 {
   background: #f80; }
 
 .m-sub-0 {
   background: #f24; }
 
-.m-status-7, .m-status-8, .m-status-9 {
+.m-status-7, .m-status-9 {
   background: #999; }
 
 .m-status-1, .m-cert-1 {

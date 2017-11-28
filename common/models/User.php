@@ -508,14 +508,7 @@ class User extends ActiveRecord
 				}
 				continue;
 			}
-
-			if ($newKey == "note") {
-				if (strpos($item['openid'], 'oYDJew') !== 0) {
-					$item["note_t"] = "稻草人";
-				} else {
-					$item["note_t"] = "";
-				}
-			}
+			$item["straw"] = (isset($item['openid']) && strpos($item['openid'], 'oYDJew') !== 0 ? 1 : 0);
 
 			if ($newKey == "filter") {
 				list($dump, $item["filter_t"]) = User::Filter($row["uFilter"]);

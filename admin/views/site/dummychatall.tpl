@@ -8,9 +8,7 @@
 		font-weight: 300;
 		margin-left: 15px;
 	}
-
 </style>
-
 <div class="row">
 	<div class="col-lg-12">
 		<h4>稻草人代聊<span class="lit-title">(审核通过的 关注状态的 近七天不活跃用户)</span></h4>

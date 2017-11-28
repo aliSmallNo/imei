@@ -427,7 +427,11 @@
 			<span class="m-role">{{$prod.role_t}}</span> {{$prod.name}}
 			<em>{{$prod.phone}} {{$prod.wechatid}} {{$prod.location_t}} (籍贯: {{$prod.homeland_t}})</em>
 			{{if $prod.substatus>1}}<span class="m-subst-{{$prod.substatus}}">{{$prod.substatus_t}}</span>{{/if}}
+			{{if $prod.straw}}
+			<span class="m-status-8">稻草人</span>
+			{{else}}
 			<span class="m-status-{{$prod.status}}">{{$prod.status_t}}</span>
+			{{/if}}
 			{{if $prod.certstatus==2}}<span class="m-cert-1">{{$prod.certstatus_t}}</span>{{/if}}
 			{{if $prod.subscribe<1}}<span class="m-sub-{{$prod.subscribe}}">未关注</span>{{/if}}
 			<div class="perc-wrap">
