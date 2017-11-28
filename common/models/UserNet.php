@@ -761,8 +761,12 @@ class UserNet extends ActiveRecord
 		return $items;
 	}
 
-	public static function netStat($condition = '')
+	public static function netStat($criteria = [], $params = [])
 	{
+		$strCriteria = '';
+		if ($criteria) {
+			$strCriteria = ' AND ' . implode(' AND ', $criteria);
+		}
 		$conn = AppUtil::db();
 		$sql = "select u.uName as `name`,u.uPhone as phone,u.uId as id,u.uThumb as thumb,
 			COUNT(case WHEN n.nRelation=:rel1 then 1 end) as scan,
@@ -774,15 +778,22 @@ class UserNet extends ActiveRecord
 			FROM im_user_net as n 
 			JOIN im_user as u on u.uId=n.nUId 
 			JOIN im_user as u1 on u1.uId =n.nSubUId 
-			JOIN im_user_wechat as w on u1.uOpenId=w.wOpenId $condition
+			JOIN im_user_wechat as w on u1.uOpenId=w.wOpenId 
+			WHERE n.nId>0 $strCriteria
 			GROUP BY n.nUId HAVING scan+subscribe>0 ORDER BY subscribe DESC limit 30";
-
-		$ret = $conn->createCommand($sql)->bindValues([
+		$params = array_merge($params, [
 			":rel1" => self::REL_QR_SCAN,
 			":rel2" => self::REL_QR_SUBSCRIBE,
 			":mp" => self::REL_BACKER,
 			":focus" => self::REL_FOLLOW,
-		])->queryAll();
+		]);
+		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		foreach ($ret as $k => $row) {
+			$ret[$k]['ratio'] = '';
+			if ($row['subscribe']) {
+				$ret[$k]['ratio'] = sprintf('%.1f', 100.0 * $row['reg'] / $row['subscribe']) . '%';
+			}
+		}
 		return $ret;
 	}
 

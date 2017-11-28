@@ -847,11 +847,13 @@ class SiteController extends BaseController
 		$getInfo = Yii::$app->request->get();
 		$sdate = self::getParam("sdate");
 		$edate = self::getParam("edate");
-		$condition = '';
+		$criteria = $params = [];
 		if ($sdate && $edate) {
-			$condition = " WHERE  n.nAddedOn between '$sdate 00:00:00'  and '$edate 23:59:50' ";
+			$criteria[] = "n.nAddedOn between :sdt  and :edt ";
+			$params[':sdt'] = $sdate . ' 00:00:00';
+			$params[':edt'] = $edate . ' 23:59:50';
 		}
-		$scanStat = UserNet::netStat($condition);
+		$scanStat = UserNet::netStat($criteria, $params);
 
 		list($wd, $monday, $sunday) = AppUtil::getWeekInfo();
 		list($md, $firstDay, $endDay) = AppUtil::getMonthInfo();

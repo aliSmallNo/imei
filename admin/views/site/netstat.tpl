@@ -78,14 +78,20 @@
 			<!--th>
 				关注数
 			</th-->
+			<!--th>
+				扫二维码
+			</th-->
 			<th>
-				扫推广二维码
+				关注
 			</th>
 			<th>
-				关注并注册
+				注册
 			</th>
 			<th>
-				取消关注
+				转化率
+			</th>
+			<th>
+				取关
 			</th>
 			<!--th>
 				注册成功
@@ -104,14 +110,17 @@
 					<div class="tip">{{$stat.phone}}</div>
 				</div>
 			</td>
-			<!--td>
-					{{$stat.focus}}
-				</td-->
+			<!--td align="right">
+				{{$stat.scan}}
+			</td-->
 			<td align="right">
 				{{$stat.subscribe}}
 			</td>
 			<td align="right">
 				{{$stat.reg}}
+			</td>
+			<td align="right">
+				{{$stat.ratio}}
 			</td>
 			<td align="right">
 				{{$stat.unsubscribe}}
