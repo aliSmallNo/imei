@@ -1818,4 +1818,13 @@ class WxController extends BaseController
 			'报名成功',
 			'bg-enroll');
 	}
+
+	public function actionPrize()
+	{
+
+		return self::renderPage("prize.tpl",
+			[],
+			'terse',
+			'页面跳转');
+	}
 }
