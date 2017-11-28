@@ -154,7 +154,7 @@ class UserTrans extends ActiveRecord
 					'tCategory' => $cat,
 					'tDeletedFlag' => 0
 				]);
-				if ($info && !AppUtil::isDebugger($user_id)) {
+				if ($info) {
 					$entity->tAmt = $payInfo['pRId'];
 				} else {
 					//Rain: 首充3倍
