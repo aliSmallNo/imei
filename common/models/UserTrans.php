@@ -445,6 +445,7 @@ class UserTrans extends ActiveRecord
 			$item = [
 				'id' => $row['tId'],
 				'title' => $row['tTitle'],
+				'note' => $row['tNote'] ? '(' . $row['tNote'] . ')' : '',
 				'date' => $row['tAddedOn'],
 				'dt' => AppUtil::miniDate($row['tAddedOn']),
 				'prefix' => '',

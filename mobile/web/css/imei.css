@@ -5177,6 +5177,10 @@ section {
         color: #969494;
         font-size: 1.2rem;
         font-weight: 300; }
+      .charges li .title small {
+        color: #969494;
+        font-weight: 300;
+        font-size: 1.2rem; }
     .charges li .content {
       -webkit-box-flex: 1;
       -webkit-flex: 1;

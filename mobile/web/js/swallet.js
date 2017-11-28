@@ -56,7 +56,7 @@ require(['jquery', 'mustache', "layer"],
 				$.post('/api/wallet',
 					{
 						tag: 'recharge',
-						cat: cat,
+						cat: cat
 					},
 					function (resp) {
 						if (resp.code == 0) {

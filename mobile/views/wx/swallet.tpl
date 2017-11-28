@@ -41,7 +41,7 @@
 	{[#items]}
 	<li>
 		<div class="title">
-			<h4>{[title]}</h4>
+			<h4>{[title]} <small>{[note]}</small></h4>
 			<h5>{[dt]}</h5>
 		</div>
 		<div class="content"><em class="{[unit]} amt{[prefix]}">{[prefix]}{[amt]}</em></div>
