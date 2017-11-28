@@ -69,6 +69,16 @@
 </form>
 <div class="row-divider"></div>
 <div class="row">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<i class="fa fa-bar-chart-o fa-fw"></i> 每个时段关注人数统计
+		</div>
+		<div class="panel-body">
+			<div id="sub_times" class="chart-wrapper"></div>
+		</div>
+	</div>
+</div>
+<div class="row">
 	<table class="table table-striped table-bordered">
 		<thead>
 		<tr>
@@ -141,7 +151,9 @@
 		</tbody>
 	</table>
 </div>
+<script src="/js/highcharts/highcharts.js"></script>
 <script>
+	var mTimes ={{$times}};
 	var mBeginDate = $('.beginDate');
 	var mEndDate = $('.endDate');
 	$('.j-scope').click(function () {
@@ -152,5 +164,80 @@
 		mEndDate.val(edate);
 		location.href = "/site/netstat?sdate=" + sdate + "&edate=" + edate;
 	});
+
+	$(function () {
+		console.log(mTimes);
+		initChart('sub_times', '各个时段推广情况');
+
+	});
+
+	function initChart(pid, title) {
+
+		$('#' + pid).highcharts({
+			chart: {
+				type: 'spline',
+				marginTop: 25,
+				title: title
+			},
+			title: {
+				text: null
+			},
+			tooltip: {
+				shared: true,
+				crosshairs: {
+					width: 1,
+					color: '#b8b8b8',
+					dashStyle: 'Solid'
+				}
+			},
+			xAxis: {
+				type: 'category',
+				tickInterval: 1,
+				tickWidth: 0,
+				labels: {
+					rotation: -45,
+					style: {
+						fontSize: '10px'
+					}
+				},
+				gridLineColor: '#e8e8e8',
+				gridLineWidth: 1,
+				gridLineDashStyle: 'ShortDash'
+			},
+			yAxis: {
+				min: 0,
+				title: {
+					text: null
+				},
+				gridLineDashStyle: 'ShortDash'
+			},
+			plotOptions: {
+				series: {
+					marker: {
+						states: {
+							hover: {
+								enabled: true,
+								lineWidthPlus: 1,
+								radiusPlus: 4,
+								//radius: 4,
+								fillColor: '#fff',
+								lineColor: '#b8b8b8',
+								lineWidth: 1
+							}
+						},
+						radius: 1,
+						symbol: 'circle'
+					},
+					lineWidth: 2
+				}
+			},
+			legend: {
+				enabled: true,
+				align: 'center'
+				//verticalAlign:'middle'
+			},
+			series: mTimes
+		});
+	}
 </script>
 {{include file="layouts/footer.tpl"}}

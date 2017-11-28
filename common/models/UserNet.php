@@ -768,7 +768,7 @@ class UserNet extends ActiveRecord
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
 		$conn = AppUtil::db();
-		$sql = "select u.uName as `name`,u.uPhone as phone,u.uId as id,u.uThumb as thumb,
+		$sql = "SELECT u.uName as `name`,u.uPhone as phone,u.uId as id,u.uThumb as thumb, Date_format(u1.uAddedOn, '%H') as hr,
 			COUNT(case WHEN n.nRelation=:rel1 then 1 end) as scan,
 			COUNT(case WHEN n.nRelation=:rel2 then 1 end) as subscribe,
 			COUNT(case WHEN n.nRelation=:rel2 AND IFNULL(w.wSubscribe,0)=0 then 1 end) as unsubscribe,
@@ -780,7 +780,7 @@ class UserNet extends ActiveRecord
 			JOIN im_user as u1 on u1.uId =n.nSubUId 
 			JOIN im_user_wechat as w on u1.uOpenId=w.wOpenId 
 			WHERE n.nId>0 $strCriteria
-			GROUP BY n.nUId HAVING scan+subscribe>0 ORDER BY subscribe DESC limit 30";
+			GROUP BY id,hr HAVING scan+subscribe>0 ORDER BY subscribe DESC";
 		$params = array_merge($params, [
 			":rel1" => self::REL_QR_SCAN,
 			":rel2" => self::REL_QR_SUBSCRIBE,
@@ -788,13 +788,48 @@ class UserNet extends ActiveRecord
 			":focus" => self::REL_FOLLOW,
 		]);
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		$items = $times = $baseData = [];
+		for ($k = 0; $k < 24; $k++) {
+			$baseData[] = [$k . '点', 0];
+		}
+		$fields = ['scan', 'subscribe', 'unsubscribe', 'reg', 'mps', 'focus'];
 		foreach ($ret as $k => $row) {
-			$ret[$k]['ratio'] = '';
-			if ($row['subscribe']) {
-				$ret[$k]['ratio'] = sprintf('%.1f%%', 100.0 * $row['reg'] / $row['subscribe']);
+//			$ret[$k]['ratio'] = '';
+//			if ($row['subscribe']) {
+//				$ret[$k]['ratio'] = sprintf('%.1f%%', 100.0 * $row['reg'] / $row['subscribe']);
+//			}
+			$uid = $row['id'];
+			$name = $row['name'];
+			if (!isset($items[$uid])) {
+				$items[$uid] = $row;
+				if (count(array_keys($times)) < 8 && !isset($times[$uid])) {
+					$times[$uid] = [
+						'name' => $name,
+						'data' => $baseData
+					];
+				}
+				continue;
+			}
+			foreach ($fields as $field) {
+				$items[$uid][$field] += $row[$field];
 			}
 		}
-		return $ret;
+		foreach ($ret as $k => $row) {
+			$hr = intval($row['hr']);
+			$uid = $row['id'];
+			if (isset($times[$uid])) {
+				$times[$uid]['data'][$hr][1] = intval($row['subscribe']);
+			}
+		}
+
+		foreach ($items as $k => $item) {
+			$items[$k]['ratio'] = '';
+			if ($item['subscribe']) {
+				$items[$k]['ratio'] = sprintf('%.1f%%', 100.0 * $item['reg'] / $item['subscribe']);
+			}
+		}
+		$items = array_slice($items, 0, 25);
+		return [array_values($items), array_values($times)];
 	}
 
 	public static function relations($condition, $page, $pageSize = 20)
