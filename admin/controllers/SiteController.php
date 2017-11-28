@@ -853,7 +853,7 @@ class SiteController extends BaseController
 			$params[':sdt'] = $sdate . ' 00:00:00';
 			$params[':edt'] = $edate . ' 23:59:50';
 		}
-		list($stat, $times) = UserNet::netStat($criteria, $params);
+		list($stat, $timesSub, $timesReg) = UserNet::netStat($criteria, $params);
 		list($wd, $monday, $sunday) = AppUtil::getWeekInfo();
 		list($md, $firstDay, $endDay) = AppUtil::getMonthInfo();
 
@@ -862,7 +862,8 @@ class SiteController extends BaseController
 				'getInfo' => $getInfo,
 				'category' => 'data',
 				'scanStat' => $stat,
-				'times' => json_encode($times, JSON_UNESCAPED_UNICODE),
+				'timesSub' => json_encode($timesSub, JSON_UNESCAPED_UNICODE),
+				'timesReg' => json_encode($timesReg, JSON_UNESCAPED_UNICODE),
 				'today' => date('Y-m-d'),
 				'yesterday' => date('Y-m-d', time() - 86400),
 				'monday' => $monday,

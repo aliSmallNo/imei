@@ -71,10 +71,20 @@
 <div class="row">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<i class="fa fa-bar-chart-o fa-fw"></i> 每个时段关注人数统计
+			<i class="fa fa-bar-chart-o fa-fw"></i> 关注用户按时段统计
 		</div>
 		<div class="panel-body">
 			<div id="sub_times" class="chart-wrapper"></div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<i class="fa fa-bar-chart-o fa-fw"></i> 注册用户按时段统计
+		</div>
+		<div class="panel-body">
+			<div id="reg_times" class="chart-wrapper"></div>
 		</div>
 	</div>
 </div>
@@ -153,7 +163,8 @@
 </div>
 <script src="/js/highcharts/highcharts.js"></script>
 <script>
-	var mTimes ={{$times}};
+	var mSubTimes ={{$timesSub}};
+  var mRegTimes ={{$timesReg}};
 	var mBeginDate = $('.beginDate');
 	var mEndDate = $('.endDate');
 	$('.j-scope').click(function () {
@@ -166,18 +177,16 @@
 	});
 
 	$(function () {
-		console.log(mTimes);
-		initChart('sub_times', '各个时段推广情况');
-
+		initChart('sub_times', mSubTimes);
+	  initChart('reg_times', mRegTimes);
 	});
 
-	function initChart(pid, title) {
+	function initChart(pid, chatData) {
 
 		$('#' + pid).highcharts({
 			chart: {
 				type: 'spline',
 				marginTop: 25,
-				title: title
 			},
 			title: {
 				text: null
@@ -236,7 +245,7 @@
 				align: 'center'
 				//verticalAlign:'middle'
 			},
-			series: mTimes
+			series: chatData
 		});
 	}
 </script>

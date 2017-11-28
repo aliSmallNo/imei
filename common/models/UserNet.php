@@ -788,7 +788,7 @@ class UserNet extends ActiveRecord
 			":focus" => self::REL_FOLLOW,
 		]);
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
-		$items = $times = $baseData = [];
+		$items = $timesSub = $timesReg = $baseData = [];
 		for ($k = 0; $k < 24; $k++) {
 			$baseData[] = [$k . '点', 0];
 		}
@@ -802,8 +802,8 @@ class UserNet extends ActiveRecord
 			$name = $row['name'];
 			if (!isset($items[$uid])) {
 				$items[$uid] = $row;
-				if (count(array_keys($times)) < 8 && !isset($times[$uid])) {
-					$times[$uid] = [
+				if (count(array_keys($timesSub)) < 8 && !isset($timesSub[$uid])) {
+					$timesSub[$uid] = $timesReg[$uid] = [
 						'name' => $name,
 						'data' => $baseData
 					];
@@ -817,8 +817,11 @@ class UserNet extends ActiveRecord
 		foreach ($ret as $k => $row) {
 			$hr = intval($row['hr']);
 			$uid = $row['id'];
-			if (isset($times[$uid])) {
-				$times[$uid]['data'][$hr][1] = intval($row['subscribe']);
+			if (isset($timesSub[$uid])) {
+				$timesSub[$uid]['data'][$hr][1] = intval($row['subscribe']);
+			}
+			if (isset($timesReg[$uid])) {
+				$timesReg[$uid]['data'][$hr][1] = intval($row['reg']);
 			}
 		}
 
@@ -829,7 +832,7 @@ class UserNet extends ActiveRecord
 			}
 		}
 		$items = array_slice($items, 0, 25);
-		return [array_values($items), array_values($times)];
+		return [array_values($items), array_values($timesSub), array_values($timesReg)];
 	}
 
 	public static function relations($condition, $page, $pageSize = 20)
