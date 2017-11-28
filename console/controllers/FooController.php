@@ -14,7 +14,6 @@ use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserTrans;
-use common\service\UserService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\PushUtil;
@@ -786,11 +785,12 @@ class FooController extends Controller
 	public function actionMassmsg()
 	{
 		$conn = AppUtil::db();
+		$dt = date('Y-m-d H:i:s', time() - 3600);
 		$sql = "SELECT uId,uGender 
  				from im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId AND w.wSubscribe=1
  				WHERE uGender>9 and uPhone!=''
-  					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'2017-11-24 16:00') ";
+  					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt') ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
 		$senderId = User::SERVICE_UID;
@@ -801,7 +801,7 @@ class FooController extends Controller
 			if ($gender == User::GENDER_FEMALE) {
 				$content = 'https://wx.meipo100.com/images/ad/for_female_600.jpg';
 			}*/
-			$content = "https://wx.meipo100.com/images/thanks/cover.png";
+			$content = "https://wx.meipo100.com/images/ad/prize_magic.jpg";
 
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001);
