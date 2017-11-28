@@ -153,7 +153,7 @@ class QueueUtil
 		return true;
 	}
 
-	protected static function templateMsg($params)
+	public static function templateMsg($params)
 	{
 		WechatUtil::templateMsg(
 			$params['tag'],
