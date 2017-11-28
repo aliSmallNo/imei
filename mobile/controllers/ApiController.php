@@ -357,11 +357,12 @@ class ApiController extends Controller
 		$id = self::postParam('id');
 		$wx_info = UserWechat::getInfoByOpenId($openId);
 		$wx_uid = 0;
-		$wx_name = $wx_thumb = '';
+		$wx_name = $wx_eid = $wx_thumb = '';
 		if ($wx_info) {
 			$wx_uid = $wx_info['uId'];
 			$wx_name = $wx_info['uName'];
 			$wx_thumb = $wx_info['uThumb'];
+			$wx_eid = AppUtil::encrypt($wx_uid);
 		}
 		switch ($tag) {
 			case "security_center":
@@ -727,9 +728,9 @@ class ApiController extends Controller
 					]);
 					array_splice($ret['data'], 1, 0, [
 						[
-							"url" => "javascript:;",
-							"img" => AppUtil::wechatUrl() . "/images/ad/12.jpg"
-						],
+							"url" => "/wx/sw?id=" . $wx_eid . "#swallet",
+							"img" => AppUtil::wechatUrl() . "/images/ad/first_recharge.jpg"
+						]
 					]);
 				}
 				return self::renderAPI(0, '', $ret);
@@ -1963,7 +1964,7 @@ class ApiController extends Controller
 							'gid' => $msgKey
 						],
 						QueueUtil::QUEUE_TUBE_SMS);
-					 
+
 					return self::renderAPI(0, '', [
 						'items' => $ret,
 						'gid' => $ret['gid'],
