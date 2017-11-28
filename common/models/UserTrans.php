@@ -550,4 +550,17 @@ class UserTrans extends ActiveRecord
 		}
 		return [$data, $nextPage];
 	}
+
+	public static function hasRecharge($uid)
+	{
+		$conn = AppUtil::db();
+		$cats = [self::CAT_RECHARGE, self::CAT_RECHARGE_MEMBER,
+			self::CAT_CHAT_YEAR, self::CAT_CHAT_SEASON, self::CAT_CHAT_MONTH];
+		$sql = 'SELECT count(1) FROM im_user_trans 
+ 				WHERE tUId=:uid AND tDeletedFlag=0 AND tCategory in (' . implode(',', $cats) . ')';
+		$cnt = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid
+		])->queryScalar();
+		return $cnt > 0;
+	}
 }

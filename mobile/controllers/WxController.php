@@ -1821,9 +1821,18 @@ class WxController extends BaseController
 
 	public function actionPrize()
 	{
-
+		$second = 3;
+		$in_url = '/wx/sw?id=' . $this->user_eid . '#swallet';
+		if (UserTrans::hasRecharge($this->user_id)) {
+			$out_url = 'https://pan.baidu.com/s/1pKKyGPl';
+			header('location:' . $out_url);
+			exit();
+		}
 		return self::renderPage("prize.tpl",
-			[],
+			[
+				'second' => $second,
+				'in_url' => $in_url
+			],
 			'terse',
 			'页面跳转');
 	}

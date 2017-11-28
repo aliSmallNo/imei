@@ -13,6 +13,7 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
+use common\models\UserTrans;
 use common\service\UserService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
@@ -904,7 +905,7 @@ class FooController extends Controller
 	public function actionRain()
 	{
 
-		$ret = UserService::init(131379);
+		$ret = UserTrans::hasRecharge(131379);
 		var_dump($ret);
 		/*$pid = 230624;
 		UserTag::addByPId(UserTag::CAT_MEMBERSHIP, $pid);

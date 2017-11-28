@@ -7861,5 +7861,12 @@ ul.co-ul {
 .prize-form {
   text-align: center;
   padding-top: 5rem; }
+  .prize-form h4 {
+    line-height: 5rem;
+    font-size: 1.6rem; }
+  .prize-form .counter {
+    color: #007aff;
+    padding-right: 0.2rem;
+    font-size: 1.6rem; }
 
 /*# sourceMappingURL=imei.css.map */
