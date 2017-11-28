@@ -8,7 +8,6 @@
 
 namespace mobile\controllers;
 
-use admin\models\Admin;
 use common\models\ChatMsg;
 use common\models\City;
 use common\models\Date;
@@ -40,6 +39,7 @@ use common\utils\ImageUtil;
 use common\utils\PayUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
+use console\utils\QueueUtil;
 use Yii;
 use yii\web\Controller;
 use yii\web\Response;
@@ -1953,12 +1953,17 @@ class ApiController extends Controller
 					return self::renderAPI(129, '不好意思哦，最多只能聊' . $ret . '句');
 				} else {
 					$msgKey = $ret && isset($ret['gid']) ? intval($ret['gid']) : 0;
-					WechatUtil::templateMsg(WechatUtil::NOTICE_CHAT,
-						$receiverId,
-						'有人密聊你啦',
-						'TA给你发了一条密聊消息，快去看看吧~',
-						$uid,
-						$msgKey);
+					QueueUtil::loadJob('templateMsg',
+						[
+							'tag' => WechatUtil::NOTICE_CHAT,
+							'receiver_uid' => $receiverId,
+							'title' => '有人密聊你啦',
+							'sub_title' => 'TA给你发了一条密聊消息，快去看看吧~',
+							'sender_uid' => $uid,
+							'gid' => $msgKey
+						],
+						QueueUtil::QUEUE_TUBE_SMS);
+					 
 					return self::renderAPI(0, '', [
 						'items' => $ret,
 						'gid' => $ret['gid'],

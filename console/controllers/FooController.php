@@ -803,13 +803,17 @@ class FooController extends Controller
 
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001);
+			QueueUtil::loadJob('templateMsg',
+				[
+					'tag' => WechatUtil::NOTICE_CHAT,
+					'receiver_uid' => $uid,
+					'title' => '有人密聊你啦',
+					'sub_title' => 'TA给你发了一条密聊消息，快去看看吧~',
+					'sender_uid' => $senderId,
+					'gid' => $gid
+				],
+				QueueUtil::QUEUE_TUBE_SMS);
 
-			WechatUtil::templateMsg(WechatUtil::NOTICE_CHAT,
-				$uid,
-				'有人密聊你啦',
-				'TA给你发了一条密聊消息，快去看看吧~',
-				$senderId,
-				$gid);
 			$cnt++;
 			if ($cnt && $cnt % 50 == 0) {
 				var_dump($cnt . date('  m-d H:i:s'));

@@ -28,6 +28,7 @@ use common\utils\ImageUtil;
 use common\utils\PushUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
+use console\utils\QueueUtil;
 use Yii;
 use yii\filters\Cors;
 use yii\helpers\ArrayHelper;
@@ -467,12 +468,16 @@ class ApiController extends Controller
 				$serviceId = self::postParam("did");;
 				$text = self::postParam("text");
 				$ret = ChatMsg::addChat($serviceId, $id, $text, 0, $this->admin_id);
-				WechatUtil::templateMsg(WechatUtil::NOTICE_CHAT,
-					$id,
-					'有人密聊你啦',
-					'TA给你发了一条密聊消息，快去看看吧~',
-					$serviceId,
-					$ret['gid']);
+				QueueUtil::loadJob('templateMsg',
+					[
+						'tag' => WechatUtil::NOTICE_CHAT,
+						'receiver_uid' => $id,
+						'title' => '有人密聊你啦',
+						'sub_title' => 'TA给你发了一条密聊消息，快去看看吧~',
+						'sender_uid' => $serviceId,
+						'gid' => $ret['gid']
+					],
+					QueueUtil::QUEUE_TUBE_SMS);
 				return self::renderAPI(0, '', $ret);
 		}
 		return self::renderAPI(129, "什么操作也没做啊！");

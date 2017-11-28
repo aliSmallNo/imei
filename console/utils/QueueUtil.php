@@ -12,6 +12,7 @@ namespace console\utils;
 use common\models\Pin;
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
+use common\utils\WechatUtil;
 use console\lib\beanstalkSocket;
 use yii\base\Exception;
 
@@ -149,6 +150,20 @@ class QueueUtil
 		$url = sprintf($url, $openId, $openPwd, $appendId, $phone, $msg);
 		$res = file_get_contents($url);
 		self::logFile([$phone, $formatMsg, $res], __FUNCTION__, __LINE__);
+		return true;
+	}
+
+	protected static function templateMsg($params)
+	{
+		WechatUtil::templateMsg(
+			$params['tag'],
+			$params['receiver_uid'],
+			$params['title'],
+			$params['sub_title'],
+			$params['sender_uid'],
+			$params['gid']
+		);
+		self::logFile($params, __FUNCTION__, __LINE__);
 		return true;
 	}
 }

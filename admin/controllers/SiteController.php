@@ -564,11 +564,21 @@ class SiteController extends BaseController
 				$uid = $user["uId"];
 				if ($serviceId && $uid) {
 					list($uid1, $uid2) = ChatMsg::sortUId($serviceId, $uid);
-					$sql = "select * from im_chat_group where gUId1=$uid1 and gUId2=$uid2 ";
+					$sql = "SELECT * FROM im_chat_group WHERE gUId1=$uid1 AND gUId2=$uid2 ";
 					$item = $conn->createCommand($sql)->queryOne();
 					if (!$item) {
 						ChatMsg::groupEdit($serviceId, $uid, 9999);
-						ChatMsg::addChat($serviceId, $uid, $content, 0, $this->admin_id);
+						$info = ChatMsg::addChat($serviceId, $uid, $content, 0, $this->admin_id);
+						QueueUtil::loadJob('templateMsg',
+							[
+								'tag' => WechatUtil::NOTICE_CHAT,
+								'receiver_uid' => $uid,
+								'title' => '有人密聊你啦',
+								'sub_title' => 'TA给你发了一条密聊消息，快去看看吧~',
+								'sender_uid' => $serviceId,
+								'gid' => $info['gid']
+							],
+							QueueUtil::QUEUE_TUBE_SMS);
 						$arr[] = "$count. from:" . $serviceId . " to" . $uid . " \n";
 					}
 					$count++;
