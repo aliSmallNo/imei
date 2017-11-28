@@ -7,4 +7,4 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-<script data-main="/js/prize.js?v=1.1.1" src="/assets/js/require.js"></script>
+<script data-main="/js/prize.js?v=1.1.2" src="/assets/js/require.js"></script>
