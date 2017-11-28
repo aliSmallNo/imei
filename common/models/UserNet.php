@@ -788,10 +788,14 @@ class UserNet extends ActiveRecord
 			":focus" => self::REL_FOLLOW,
 		]);
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
-		$items = $timesSub = $timesReg = $baseData = [];
+		$items = $baseData = [];
 		for ($k = 0; $k < 24; $k++) {
 			$baseData[] = [$k . '点', 0];
 		}
+		$timesSub[1] = $timesReg[1] = [
+			'name' => '合计',
+			'data' => $baseData
+		];
 		$fields = ['scan', 'subscribe', 'unsubscribe', 'reg', 'mps', 'focus'];
 		foreach ($ret as $k => $row) {
 //			$ret[$k]['ratio'] = '';
@@ -802,7 +806,7 @@ class UserNet extends ActiveRecord
 			$name = $row['name'];
 			if (!isset($items[$uid])) {
 				$items[$uid] = $row;
-				if (count(array_keys($timesSub)) < 8 && !isset($timesSub[$uid])) {
+				if (count(array_keys($timesSub)) < 9 && !isset($timesSub[$uid])) {
 					$timesSub[$uid] = $timesReg[$uid] = [
 						'name' => $name,
 						'data' => $baseData
@@ -823,6 +827,8 @@ class UserNet extends ActiveRecord
 			if (isset($timesReg[$uid])) {
 				$timesReg[$uid]['data'][$hr][1] = intval($row['reg']);
 			}
+			$timesSub[1]['data'][$hr][1] += intval($row['subscribe']);
+			$timesReg[1]['data'][$hr][1] += intval($row['reg']);
 		}
 
 		foreach ($items as $k => $item) {
