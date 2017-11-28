@@ -141,19 +141,20 @@ class UserTrans extends ActiveRecord
 		if ($entity) {
 			return false;
 		}
+		$user_id = $payInfo['pUId'];
 		$entity = new self();
 		$entity->tPId = $pid;
-		$entity->tUId = $payInfo['pUId'];
+		$entity->tUId = $user_id;
 		$entity->tTitle = $ptitle;
 		$entity->tCategory = $cat;
 		switch ($payInfo['pCategory']) {
 			case Pay::CAT_RECHARGE:
 				$info = self::findOne([
-					'tUId' => $payInfo['pUId'],
+					'tUId' => $user_id,
 					'tCategory' => $cat,
 					'tDeletedFlag' => 0
 				]);
-				if ($info) {
+				if ($info && !AppUtil::isDebugger($user_id)) {
 					$entity->tAmt = $payInfo['pRId'];
 				} else {
 					//Rain: 首充3倍
