@@ -179,7 +179,7 @@ class ChatMsg extends ActiveRecord
 		if ($left < 1) {
 			$stat = UserTrans::getStat($senderId, 1);
 			$flower = isset($stat['flower']) ? intval($stat['flower']) : 0;
-			if ($flower < $costAmt) {
+			if (!$hasCard && $flower < $costAmt) {
 				return 0;
 			}
 		} else {
