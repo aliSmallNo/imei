@@ -422,6 +422,28 @@ class AppUtil
 		return $ret;
 	}
 
+	public static function dateOnly($strDate = '')
+	{
+		if ($strDate) {
+			$curTime = strtotime($strDate);
+		} else {
+			$curTime = time();
+		}
+		$replaceDates = [
+			date("Y年n月j日") => "今天",
+			date("Y年n月j日", time() - 86400) => "昨天",
+			date("Y年n月j日", time() - 86400 * 2) => "前天",
+
+		];
+		$newDate = date("Y年n月j日", $curTime);
+		if (isset($replaceDates[$newDate])) {
+			return $replaceDates[$newDate];
+		}
+		$thisY = date('Y年');
+		$newDate = str_replace($thisY, '', $newDate);
+		return $newDate;
+	}
+
 	public static function miniDate($strDate = '')
 	{
 		if ($strDate) {

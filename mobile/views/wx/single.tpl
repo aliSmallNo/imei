@@ -1036,6 +1036,7 @@
 </script>
 <script type="text/template" id="tpl_chat">
 	{[#items]}
+	{[#type]}
 	<li class="{[dir]}" data-r="{[readflag]}">
 		<a href="{[url]}" {[#eid]}data-eid="{[.]}"{[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
 		<div class="content read{[readflag]}">
@@ -1045,6 +1046,12 @@
 			</a>
 		</div>
 	</li>
+	{[/type]}
+	{[^type]}
+	<li class="{[dir]}">
+		<span>{[content]}</span>
+	</li>
+	{[/type]}
 	{[/items]}
 </script>
 <script type="text/template" id="tpl_chat_tip">

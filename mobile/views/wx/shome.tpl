@@ -79,6 +79,7 @@
 	<div class="report_wrap">
 		<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
 		<ul class="chats"></ul>
+		<div style="height: 4rem"></div>
 	</div>
 	<div class="m-bottom-pl"></div>
 	<div class="m-bottom-bar">
@@ -217,6 +218,7 @@
 </script>
 <script type="text/template" id="tpl_chat">
 	{[#items]}
+	{[#type]}
 	<li class="{[dir]}" data-r="{[readflag]}">
 		<a href="{[url]}" {[#eid]}data-eid="{[.]}"{[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
 		<div class="content read{[readflag]}">
@@ -226,6 +228,12 @@
 			</a>
 		</div>
 	</li>
+	{[/type]}
+	{[^type]}
+	<li class="{[dir]}">
+		<span>{[content]}</span>
+	</li>
+	{[/type]}
 	{[/items]}
 </script>
 <script type="text/template" id="tpl_chat_topup">
