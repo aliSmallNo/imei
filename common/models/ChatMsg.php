@@ -163,11 +163,14 @@ class ChatMsg extends ActiveRecord
 	 * @param int $giftCount
 	 * @param int $adminId
 	 * @param string $qId 助聊题库qId
+	 * @param \yii\db\Connection $conn
 	 * @return array|bool
 	 */
-	public static function addChat($senderId, $receiverId, $content, $giftCount = 0, $adminId = 0, $qId = '')
+	public static function addChat($senderId, $receiverId, $content, $giftCount = 0, $adminId = 0, $qId = '', $conn = null)
 	{
-		$conn = AppUtil::db();
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
 		$ratio = self::RATIO;
 		$costAmt = 20;
 		list($uid1, $uid2) = self::sortUId($senderId, $receiverId);
@@ -384,7 +387,7 @@ class ChatMsg extends ActiveRecord
 		return $left < 0 ? 0 : $left;
 	}
 
-	public static function groupEdit($uId, $subUId, $giftCount = 0, $conn = '')
+	public static function groupEdit($uId, $subUId, $giftCount = 0, $conn = null)
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
