@@ -36,9 +36,9 @@ class RedisUtil
 	const KEY_SMS_CODE_CNT = 'sms_code_cnt';
 	const KEY_DISTANCE = 'dist';
 	const KEY_CITY_IP = 'city_ip';
+	const KEY_USER_IMAGE = 'user_image';
 	const KEY_USER_STAT = 'user_stat';
 	const KEY_USER_WALLET = 'user_wallet';
-	const KEY_USER_RECORDS = 'user_records';
 	const KEY_WX_MESSAGE = 'wx_message';
 	const KEY_XCX_SESSION_ID = 'xcx_session_id'; //小程序 sessionId
 	const KEY_STAT_TREND = "trend_stat";
@@ -68,9 +68,9 @@ class RedisUtil
 		self::KEY_SMS_CODE_CNT => 86400,
 		self::KEY_DISTANCE => 86400 * 20,
 		self::KEY_CITY_IP => 86400 * 2,
+		self::KEY_USER_IMAGE => 86400,
 		self::KEY_USER_STAT => 86400,
 		self::KEY_USER_WALLET => 3600 * 8,
-		self::KEY_USER_RECORDS => 3600 * 8,
 		self::KEY_XCX_TOKEN => 4800,
 		self::KEY_XCX_SESSION_ID => 3600 * 2,
 		self::KEY_STAT_TREND => 60 * 10,
@@ -121,7 +121,7 @@ class RedisUtil
 				return $ret;
 			case self::KEY_USER_STAT:
 			case self::KEY_USER_WALLET:
-			case self::KEY_USER_RECORDS:
+			case self::KEY_USER_IMAGE:
 				array_shift($keys);
 				$redisKey = implode(self::$Glue, $keys);
 				return $redis->hget(self::FIXED_PREFIX . self::$Glue . $mainKey, $redisKey);
@@ -146,7 +146,7 @@ class RedisUtil
 		switch ($mainKey) {
 			case self::KEY_USER_STAT:
 			case self::KEY_USER_WALLET:
-			case self::KEY_USER_RECORDS:
+			case self::KEY_USER_IMAGE:
 				array_shift($keys);
 				$redisKey = implode(self::$Glue, $keys);
 				$redis->hset(self::FIXED_PREFIX . self::$Glue . $mainKey, $redisKey, $val);

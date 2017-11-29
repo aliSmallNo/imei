@@ -1681,6 +1681,10 @@ class WxController extends BaseController
 	public function actionReg0()
 	{
 		$openId = self::$WX_OpenId;
+		if($this->user_phone){
+			header('location:/wx/reg1');
+			exit();
+		}
 		LogAction::add($this->user_id, $openId, LogAction::ACTION_REG0);
 		return self::renderPage('reg0.tpl',
 			[],

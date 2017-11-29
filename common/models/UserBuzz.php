@@ -205,6 +205,10 @@ class UserBuzz extends ActiveRecord
 			case 333:
 				$resp = self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
 				break;
+			case '注册':
+				$txt = '点击进入<a href="https://wx.meipo100.com/wx/reg0">注册</a>快速通道';
+				$resp = self::textMsg($fromUsername, $toUsername, $txt);
+				break;
 			case '17':
 			case '我要开趴':
 				$txt = '点击进入<a href="https://wx.meipo100.com/wx/enroll">我们派对吧</a>快速报名通道';

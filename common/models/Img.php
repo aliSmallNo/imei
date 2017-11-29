@@ -11,13 +11,13 @@ namespace common\models;
 
 use yii\db\ActiveRecord;
 
-class Image extends ActiveRecord
+class Img extends ActiveRecord
 {
 
 	const CAT_AVATAR = 100;
 	const CAT_ALBUM = 110;
 	const CAT_CERT_FRONT = 120;
-	const CAT_CERT_BACK = 122;
+	const CAT_CERT_HOLD = 122;
 
 	public static function tableName()
 	{

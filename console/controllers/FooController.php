@@ -9,6 +9,7 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
+use common\models\Img;
 use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
@@ -851,7 +852,7 @@ class FooController extends Controller
 				':thumb' => $thumb,
 				':figure' => $figure,
 				':saved' => $util->savedPath,
-				':uni' => \common\models\Image::uniq(),
+				':uni' => Img::uniq(),
 			])->execute();
 			$cnt++;
 			if ($cnt % 50 == 0) {
@@ -904,16 +905,23 @@ class FooController extends Controller
 	public function actionRain()
 	{
 		$conn = AppUtil::db();
-		$cmd = $conn->createCommand('update im_img set tUniq=:uni WHERE  tId=:id');
-		$sql = 'select * from im_img WHERE tUniq=\'\' ';
-		$ret = $conn->createCommand($sql)->queryAll();
-		foreach ($ret as $row) {
-			$cmd->bindValues([
-				':uni' => \common\models\Image::uniq(),
-				':id' => $row['tId'],
+
+		/*$sql = 'insert into im_img(tUId,tCategory) VALUES(:uid,100)';
+		$cmd0 = $conn->createCommand($sql);
+		$sql = 'insert into im_img(tUId,tCategory) SELECT :uid,100 FROM DUAL
+			WHERE NOT EXISTS (SELECT 1 FROM im_img WHERE tUId=131379) ';
+		$cmd1 = $conn->createCommand($sql);
+		for ($k = 1000; $k < 1020; $k++) {
+			$cmd0->bindValues([
+				':uid' => $k
 			])->execute();
-		}
-		var_dump(count($ret));
+			var_dump($k . ' - ' . $conn->getLastInsertID());
+
+			$cmd1->bindValues([
+				':uid' => $k
+			])->execute();
+			var_dump($k . ' - ' . $conn->getLastInsertID());
+		}*/
 
 //		$conn->getLastInsertID();
 //		$ret = UserTrans::hasRecharge(131379);
