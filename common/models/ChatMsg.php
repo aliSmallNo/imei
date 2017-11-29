@@ -340,6 +340,7 @@ class ChatMsg extends ActiveRecord
 			'content' => $content,
 			'addedon' => date('Y-m-d H:i:s'),
 			'dir' => 'right',
+			'type' => self::TYPE_TEXT,
 		];
 		PushUtil::chat('msg', $gid, $infoA['uni'], $params);
 
