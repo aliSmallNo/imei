@@ -489,7 +489,7 @@ class SiteController extends BaseController
 		$userId = self:: getParam("uid");
 
 		ChatMsg::groupEdit($dummyId, $userId, 9999);
-		list($items) = ChatMsg::details($dummyId, $userId);
+		list($items) = ChatMsg::details($dummyId, $userId, 0,true);
 		usort($items, function ($a, $b) {
 			return $a['addedon'] < $b['addedon'];
 		});

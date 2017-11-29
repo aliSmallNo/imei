@@ -429,13 +429,13 @@ class ChatMsg extends ActiveRecord
 		return [$gid, $left];
 	}
 
-	public static function details($uId, $subUId, $lastId = 0)
+	public static function details($uId, $subUId, $lastId = 0, $hideTipFlag = false)
 	{
 		$criteria = ' AND cId> ' . $lastId;
 		$conn = AppUtil::db();
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
-		$sql = 'select u.uThumb as avatar,u.uUniqid as uni, g.gId as gid, g.gRound as round,
-			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy,m.cReadFlag as readflag,
+		$sql = 'select u.uName as `name`,u.uThumb as avatar,u.uUniqid as uni, g.gId as gid, g.gRound as round,
+			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy,a.aName, m.cReadFlag as readflag,
 			 m.cType as `type`,(CASE WHEN u.uOpenId LIKE \'oYDJew%\' THEN 0 ELSE 1 END) as dummy
 			 from im_chat_group as g 
 			 join im_chat_msg as m on g.gId=cGId
@@ -451,7 +451,7 @@ class ChatMsg extends ActiveRecord
 		foreach ($chats as $k => $chat) {
 			$chat['avatar'] = ImageUtil::getItemImages($chat['avatar'])[0];
 			$dt = AppUtil::dateOnly($chat['addedon']);
-			if ($preDT != $dt) {
+			if ($preDT != $dt && !$hideTipFlag) {
 				$items[] = [
 					'dir' => 'center',
 					'content' => $dt,
@@ -459,10 +459,16 @@ class ChatMsg extends ActiveRecord
 				];
 				$preDT = $dt;
 			}
+			if ($hideTipFlag) {
+				$chat['dt'] = AppUtil::prettyDate($chat['addedon']);
+			}
 			$chat['dir'] = ($uId == $chat['cAddedBy'] ? 'right' : 'left');
 			$chat['url'] = 'javascript:;';
 			$chat['eid'] = ($uId == $chat['cAddedBy'] ? '' : AppUtil::encrypt($subUId));
 			unset($chat['cAddedBy'], $chat['round']);
+			if (!$hideTipFlag) {
+				unset($chat['aName'], $chat['name'], $chat['addedon']);
+			}
 			if ($chat['cid'] > $lastId) {
 				$lastId = $chat['cid'];
 			}
