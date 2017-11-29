@@ -7138,34 +7138,40 @@ ul.co-ul {
       color: #777; }
 
 .date-rate {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
   background: #fff;
   border-bottom: 1px solid #eee; }
   .date-rate a {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
     flex: 1;
     position: relative;
-    padding: 0.8rem 0 0.6rem 0;
+    padding: 0.8rem 0;
     margin-bottom: 1.5rem;
     font-size: 1rem;
     text-align: center;
-    border-bottom: 0.12rem solid #bbb; }
+    border-bottom: 0.1rem solid #bbb;
+    display: block; }
     .date-rate a:after {
-      position: absolute;
       content: "";
+      position: absolute;
       background: #bbb;
-      width: 1rem;
-      height: 1rem;
-      border-radius: 1rem;
-      top: 2.1rem;
-      left: 1.8rem;
-      border: 0.2rem solid #fff; }
+      width: 0.8rem;
+      height: 0.8rem;
+      border-radius: 0.5rem;
+      bottom: -0.5rem;
+      left: 50%;
+      border: 0.1rem solid #fff;
+      display: inline-block; }
     .date-rate a.role-inactive:after {
       left: 2.4rem; }
     .date-rate a.on {
       color: #d4237a;
-      border-bottom: #d4237a solid 0.12rem; }
-      .date-rate a.on:before {
-        background: #d4237a; }
+      border-bottom: #d4237a solid 0.1rem; }
       .date-rate a.on:after {
         background: #d4237a; }
 
