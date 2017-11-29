@@ -173,7 +173,7 @@ class UserWechat extends ActiveRecord
 		} else {
 			$ret = WechatUtil::wxInfo($openId, $resetFlag);
 			AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
-			if ($ret && isset($ret["openid"]) && isset($ret["nickname"]) && isset($ret["uId"])) {
+			if ($ret && isset($ret["openid"]) && isset($ret["uId"])) {
 				$uInfo = User::findOne(['uId' => $ret['uId']]);
 				foreach ($fields as $field) {
 					$ret[$field] = isset($uInfo[$field]) ? $uInfo[$field] : '';
