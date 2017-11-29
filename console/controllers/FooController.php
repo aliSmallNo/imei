@@ -903,7 +903,8 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-
+		$conn=AppUtil::db();
+		$conn->getLastInsertID();
 		$ret = UserTrans::hasRecharge(131379);
 		var_dump($ret);
 		/*$pid = 230624;
