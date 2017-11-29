@@ -393,7 +393,6 @@ class UserMsg extends ActiveRecord
 			$cmd->bindValues([
 				':id' => $receiverUId
 			])->execute();
-			AppUtil::logFile([$receiverUId, $senderUId], 5, __FUNCTION__, __LINE__);
 			NoticeUtil::init(WechatUtil::NOTICE_CHAT, $receiverUId, $senderUId)
 				->send([
 					'千寻恋恋每日简报',

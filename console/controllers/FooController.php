@@ -826,7 +826,7 @@ class FooController extends Controller
 	{
 
 		$conn = AppUtil::db();
-		$sql = "INSERT INTO im_img(tUId,tPath,tSaved,tThumb,tFigure,tUniq) 
+		$sql = "INSERT INTO im_img(tUId,tNote,tSaved,tThumb,tFigure,tUniq) 
  				VALUES(:uid,:path,:saved,:thumb,:figure,:uni)";
 		$cmd = $conn->createCommand($sql);
 		$sql = "SELECT uId,uThumb,uAvatar,uRawData
