@@ -1,13 +1,13 @@
 require.config({
 	paths: {
 		'jquery': '/assets/js/jquery-3.2.1.min',
+		'laydate': '/assets/js/laydate/laydate',
 		'mustache': '/assets/js/mustache.min',
-		"layer": "/assets/js/layer_mobile/layer",
-		"laydate": "/assets/js/laydate/laydate",
+		"layer": "/assets/js/layer_mobile/layer"
 	}
 });
-require(['jquery', 'mustache', "layer", 'laydate'],
-	function ($, Mustache, layer, laydate) {
+require(['jquery', 'mustache', 'laydate', 'layer'],
+	function ($, Mustache, laydate, layer) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -431,10 +431,12 @@ require(['jquery', 'mustache', "layer", 'laydate'],
 			wx.ready(function () {
 				wx.hideOptionMenu();
 			});
+
 			laydate.render({
 				elem: '#datetime',
 				type: 'datetime',
 				theme: '#d4237a'
 			});
 		});
+
 	});

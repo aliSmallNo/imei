@@ -122,7 +122,7 @@
 				 class="{{if isset($d['dPayType']) && $d['dPayType']==$uid}}on{{/if}}" data-val="me">我买单</a>
 		</div>
 	</div>
-{{if $st!=100}}
+	{{if $st!=100}}
 	{{if $role=="active" && $st<=105}}
 	{{else}}
 	<div class="date-input date-margintop">
@@ -394,4 +394,4 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-<script data-main="/js/date.js?v=1.2.3" src="/assets/js/require.js"></script>
+<script src="/assets/js/require.js" data-main="/js/date.js?v=1.3.1"></script>
