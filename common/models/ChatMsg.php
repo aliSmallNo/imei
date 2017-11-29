@@ -462,7 +462,7 @@ class ChatMsg extends ActiveRecord
 			$chat['dir'] = ($uId == $chat['cAddedBy'] ? 'right' : 'left');
 			$chat['url'] = 'javascript:;';
 			$chat['eid'] = ($uId == $chat['cAddedBy'] ? '' : AppUtil::encrypt($subUId));
-			unset($chat['cAddedBy'], $chat['round'], $chat['addedon']);
+			unset($chat['cAddedBy'], $chat['round']);
 			if ($chat['cid'] > $lastId) {
 				$lastId = $chat['cid'];
 			}
