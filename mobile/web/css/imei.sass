@@ -6562,13 +6562,14 @@ ul.co-ul
 			position: relative
 			display: inline-block
 			font-size: 1.2rem
-			padding: .2rem 0.5rem
-			border-radius: .5rem
-			background: #f8f8f8
+			border-radius: .3rem
+			background: $bgColor
+			padding-left: .3rem
+			padding-right: .3rem
+			line-height: 1.8rem
 			&.on
 				background: #d4237a
 				color: #fff
-				border: 1px solid #d4237a
 
 .date-input
 	display: flex
@@ -6576,25 +6577,22 @@ ul.co-ul
 	padding: .5rem
 	position: relative
 	&:after
-		position: absolute
-		content: ''
-		width: 1rem
-		height: 1rem
-		border-right: .12rem solid #777
-		border-bottom: .12rem solid #777
-		transform: rotate(-44deg)
-		right: 1rem
-		top: .7rem
+		@include arrowRight
+		right: 1.2rem
 	.date-input-label
 		flex: 0 0 6rem
 		font-size: 1.3rem
 	p
 		text-align: right
 		margin-right: 2rem
+	a
+		@include displayFlex-1
+		font-size: 1.2rem
+		padding: 0 2rem 0 .5rem
 
 .date-input input, .date-input p
+	@include displayFlex-1
 	font-size: 1.2rem
-	flex: 1
 	border: none
 	margin: 0 2rem 0 .5rem
 
@@ -6657,15 +6655,8 @@ ul.co-ul
 	&.hide
 		display: none
 	span
-		position: absolute
-		content: ''
-		width: 1rem
-		height: 1rem
-		border-right: .12rem solid #777
-		border-bottom: .12rem solid #777
-		transform: rotate(-44deg)
-		right: 1rem
-		top: 1.5rem
+		@include arrowRight
+		right: 1.2rem
 	.date-avatar
 		flex: 0 0 3rem
 		width: 3rem
@@ -7185,6 +7176,7 @@ ul.co-ul
 		margin-right: 2rem
 		&:active
 			background: $purpleLight
+
 .prize-form
 	text-align: center
 	padding-top: 5rem

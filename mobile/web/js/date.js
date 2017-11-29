@@ -240,12 +240,12 @@ require(['jquery', 'mustache', 'laydate', 'layer'],
 						}
 					});
 					if (err) {
-						return;
+						return false;
 					}
 					$("[data-input]").each(function () {
 						var self = $(this);
 						var field = self.attr('data-input');
-						var val = self.val();
+						var val = self.val() || self.html();
 						if ($.inArray(field, util.r1fields)) {
 							if (val) {
 								postdata[field] = val;
@@ -256,15 +256,16 @@ require(['jquery', 'mustache', 'laydate', 'layer'],
 							}
 						}
 					});
+					console.log(postdata);
 					if (err) {
-						return;
+						return false;
 					}
 					util.submit(postdata);
 				} else if (util.role == 'inactive' && util.st == 105) {
 					$("[data-input]").each(function () {
 						var self = $(this);
 						var field = self.attr('data-input');
-						var val = self.val();
+						var val = self.val() || self.html();
 						if ($.inArray(field, util.r2fields)) {
 							if (val) {
 								postdata[field] = val;
@@ -275,11 +276,13 @@ require(['jquery', 'mustache', 'laydate', 'layer'],
 							}
 						}
 					});
+					console.log(postdata);
 					if (err) {
-						return;
+						return false;
 					}
 					util.submit(postdata);
 				}
+				return false;
 			},
 			submit: function (postdata) {
 				var util = dateUtil;

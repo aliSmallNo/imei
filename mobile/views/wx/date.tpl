@@ -130,7 +130,7 @@
 		{{if $st>105}}
 		<p>{{if isset($d.dDate)}}{{$d.dDate|date_format:'%Y-%m-%d %H:%M'}}{{/if}}</p>
 		{{else}}
-		<input type="text" id="datetime" tag-edit="{{if $role=="active"}}readonly{{/if}}" data-input="time" value="{{if isset($d.dDate)}}{{$d.dDate}}{{/if}}">
+		<a href="javascript:;" data-input="time" id="datetime">{{if isset($d.dDate)}}{{$d.dDate}}{{/if}}</a>
 		{{/if}}
 	</div>
 	<div class="date-input date-margintop">
@@ -394,4 +394,4 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-<script src="/assets/js/require.js" data-main="/js/date.js?v=1.3.1"></script>
+<script src="/assets/js/require.js" data-main="/js/date.js?v=1.3.2"></script>

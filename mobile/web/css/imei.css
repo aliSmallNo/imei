@@ -7209,13 +7209,14 @@ ul.co-ul {
       position: relative;
       display: inline-block;
       font-size: 1.2rem;
-      padding: 0.2rem 0.5rem;
-      border-radius: 0.5rem;
-      background: #f8f8f8; }
+      border-radius: 0.3rem;
+      background: #f3f3f3;
+      padding-left: 0.3rem;
+      padding-right: 0.3rem;
+      line-height: 1.8rem; }
       .date-item .date-option a.on {
         background: #d4237a;
-        color: #fff;
-        border: 1px solid #d4237a; }
+        color: #fff; }
 
 .date-input {
   display: flex;
@@ -7223,25 +7224,40 @@ ul.co-ul {
   padding: 0.5rem;
   position: relative; }
   .date-input:after {
+    content: " ";
+    display: inline-block;
+    height: 0.8rem;
+    width: 0.8rem;
+    border-width: 1px 1px 0 0;
+    border-color: #969494;
+    border-style: solid;
+    -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
     position: absolute;
-    content: "";
-    width: 1rem;
-    height: 1rem;
-    border-right: 0.12rem solid #777;
-    border-bottom: 0.12rem solid #777;
-    transform: rotate(-44deg);
-    right: 1rem;
-    top: 0.7rem; }
+    top: 50%;
+    right: 0;
+    margin-top: -0.5rem;
+    right: 1.2rem; }
   .date-input .date-input-label {
     flex: 0 0 6rem;
     font-size: 1.3rem; }
   .date-input p {
     text-align: right;
     margin-right: 2rem; }
+  .date-input a {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    font-size: 1.2rem;
+    padding: 0 2rem 0 0.5rem; }
 
 .date-input input, .date-input p {
-  font-size: 1.2rem;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
   flex: 1;
+  font-size: 1.2rem;
   border: none;
   margin: 0 2rem 0 0.5rem; }
 
@@ -7303,15 +7319,20 @@ ul.co-ul {
   .date-tel.hide {
     display: none; }
   .date-tel span {
+    content: " ";
+    display: inline-block;
+    height: 0.8rem;
+    width: 0.8rem;
+    border-width: 1px 1px 0 0;
+    border-color: #969494;
+    border-style: solid;
+    -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
     position: absolute;
-    content: "";
-    width: 1rem;
-    height: 1rem;
-    border-right: 0.12rem solid #777;
-    border-bottom: 0.12rem solid #777;
-    transform: rotate(-44deg);
-    right: 1rem;
-    top: 1.5rem; }
+    top: 50%;
+    right: 0;
+    margin-top: -0.5rem;
+    right: 1.2rem; }
   .date-tel .date-avatar {
     flex: 0 0 3rem;
     width: 3rem;
