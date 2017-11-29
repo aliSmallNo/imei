@@ -7201,15 +7201,23 @@ ul.co-ul {
       text-align: right; }
 
 .date-item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
   background: #fff;
   padding: 0.8rem 0.5rem; }
   .date-item .date-label {
+    -webkit-box-flex: 0 0 6rem;
+    -webkit-flex: 0 0 6rem;
+    -ms-flex: 0 0 6rem;
     flex: 0 0 6rem;
-    font-size: 1.2rem;
-    align-items: center;
     justify-content: center;
-    align-self: center; }
+    align-items: center;
+    align-self: center;
+    font-size: 1.2rem;
+    color: #6a6572;
+    font-weight: 300; }
   .date-item .date-option {
     flex: 1; }
     .date-item .date-option a {
@@ -7226,6 +7234,9 @@ ul.co-ul {
         color: #fff; }
 
 .date-input {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
   background: #fff;
   padding: 0.5rem;
@@ -7246,45 +7257,65 @@ ul.co-ul {
     margin-top: -0.5rem;
     right: 1.2rem; }
   .date-input .date-input-label {
+    -webkit-box-flex: 0 0 6rem;
+    -webkit-flex: 0 0 6rem;
+    -ms-flex: 0 0 6rem;
     flex: 0 0 6rem;
-    font-size: 1.3rem; }
+    font-size: 1.2rem;
+    color: #6a6572;
+    font-weight: 300; }
   .date-input p {
     text-align: right;
-    margin-right: 2rem; }
+    margin-right: 2rem;
+    font-size: 1.4rem; }
   .date-input a {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
     -ms-flex: 1;
     flex: 1;
-    font-size: 1.2rem;
-    padding: 0 2rem 0 0.5rem; }
+    font-size: 1.4rem;
+    padding: 0 2rem 0 0; }
 
 .date-input input, .date-input p {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   border: none;
-  margin: 0 2rem 0 0.5rem; }
+  margin: 0 2rem 0 0; }
 
 .date-textarea {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   background: #fff;
   padding: 1rem 0.5rem; }
   .date-textarea .date-textarea-label {
-    font-size: 1.3rem;
-    margin-bottom: 0.5rem; }
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #6a6572;
+    font-weight: 300;
+    -webkit-box-flex: 0 0 6rem;
+    -webkit-flex: 0 0 6rem;
+    -ms-flex: 0 0 6rem;
+    flex: 0 0 6rem; }
   .date-textarea textarea {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
     display: block;
     width: 30rem;
-    font-size: 1.2rem;
-    border: none; }
+    border: none;
+    font-size: 1.4rem;
+    padding: 0; }
   .date-textarea p {
     display: block;
     width: 30rem;
-    font-size: 1.2rem;
-    border: none;
-    color: #777; }
+    font-size: 1.4rem;
+    border: none; }
 
 .flex-column {
   flex-direction: column; }
