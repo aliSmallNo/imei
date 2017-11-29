@@ -59,6 +59,7 @@ class WxController extends BaseController
 	public function actionIndex()
 	{
 		$url = '/wx/hi';
+		AppUtil::logFile([$this->user_id, $this->user_phone], 5, __FUNCTION__, __LINE__);
 		if ($this->user_id) {
 			LogAction::add($this->user_id, self::$WX_OpenId, LogAction::ACTION_LOGIN);
 			if ($this->user_role == User::ROLE_MATCHER) {
