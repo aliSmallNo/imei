@@ -102,7 +102,6 @@ class BaseController extends Controller
 	protected function checkProfile($openId, $actionId)
 	{
 		$wxUserInfo = UserWechat::getInfoByOpenId($openId);
-		AppUtil::logFile($wxUserInfo, 5, __FUNCTION__, __LINE__);
 		if ($wxUserInfo && isset($wxUserInfo['uRole'])) {
 			$this->user_id = $wxUserInfo['uId'];
 			$this->user_role = $wxUserInfo['uRole'];
