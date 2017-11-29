@@ -7165,6 +7165,7 @@ ul.co-ul {
       border-radius: 0.5rem;
       bottom: -0.5rem;
       left: 50%;
+      margin-left: -0.5rem;
       border: 0.1rem solid #fff;
       display: inline-block; }
     .date-rate a.role-inactive:after {
