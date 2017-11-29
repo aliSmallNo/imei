@@ -309,6 +309,7 @@ class ChatMsg extends ActiveRecord
 			'name' => $infoA['uName'],
 			'avatar' => $infoA['uThumb'],
 			'dir' => 'right',
+			'type' => self::TYPE_TEXT,
 			'ua' => [
 				'id' => $senderId,
 				'name' => $infoA['uName'],
