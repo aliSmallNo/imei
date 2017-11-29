@@ -13,7 +13,6 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
-use common\models\UserTrans;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\PushUtil;
@@ -827,8 +826,8 @@ class FooController extends Controller
 	{
 
 		$conn = AppUtil::db();
-		$sql = "INSERT INTO im_img(tUId,tPath,tSaved,tThumb,tFigure) 
- 				VALUES(:uid,:path,:saved,:thumb,:figure)";
+		$sql = "INSERT INTO im_img(tUId,tPath,tSaved,tThumb,tFigure,tUniq) 
+ 				VALUES(:uid,:path,:saved,:thumb,:figure,:uni)";
 		$cmd = $conn->createCommand($sql);
 		$sql = "SELECT uId,uThumb,uAvatar,uRawData
  				FROM im_user as u
@@ -852,6 +851,7 @@ class FooController extends Controller
 				':thumb' => $thumb,
 				':figure' => $figure,
 				':saved' => $util->savedPath,
+				':uni' => \common\models\Image::uniq(),
 			])->execute();
 			$cnt++;
 			if ($cnt % 50 == 0) {
@@ -903,10 +903,21 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$conn=AppUtil::db();
-		$conn->getLastInsertID();
-		$ret = UserTrans::hasRecharge(131379);
-		var_dump($ret);
+		$conn = AppUtil::db();
+		$cmd = $conn->createCommand('update im_img set tUniq=:uni WHERE  tId=:id');
+		$sql = 'select * from im_img WHERE tUniq=\'\' ';
+		$ret = $conn->createCommand($sql)->queryAll();
+		foreach ($ret as $row) {
+			$cmd->bindValues([
+				':uni' => \common\models\Image::uniq(),
+				':id' => $row['tId'],
+			])->execute();
+		}
+		var_dump(count($ret));
+
+//		$conn->getLastInsertID();
+//		$ret = UserTrans::hasRecharge(131379);
+//		var_dump($ret);
 		/*$pid = 230624;
 		UserTag::addByPId(UserTag::CAT_MEMBERSHIP, $pid);
 

@@ -36,11 +36,17 @@ class Image extends ActiveRecord
 		}
 		$info = new  self();
 		$info->tUId = $uid;
+		$info->tUniq = self::uniq();
 		$info->tCategory = $cat;
 		$info->tSaved = $saved;
 		$info->tThumb = $thumb;
 		$info->tFigure = $figure;
 		$info->save();
+	}
+
+	public static function uniq()
+	{
+		return uniqid(mt_rand(100, 999));
 	}
 
 	public static function del($cat, $thumb)
