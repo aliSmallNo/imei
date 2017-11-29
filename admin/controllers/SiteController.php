@@ -567,8 +567,8 @@ class SiteController extends BaseController
 					$sql = "SELECT * FROM im_chat_group WHERE gUId1=$uid1 AND gUId2=$uid2 ";
 					$item = $conn->createCommand($sql)->queryOne();
 					if (!$item) {
-						ChatMsg::groupEdit($serviceId, $uid, 9999);
-						$info = ChatMsg::addChat($serviceId, $uid, $content, 0, $this->admin_id);
+						ChatMsg::groupEdit($serviceId, $uid, 9999, $conn);
+						$info = ChatMsg::addChat($serviceId, $uid, $content, 0, $this->admin_id, '', $conn);
 						QueueUtil::loadJob('templateMsg',
 							[
 								'tag' => WechatUtil::NOTICE_CHAT,
