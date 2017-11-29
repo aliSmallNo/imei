@@ -3649,7 +3649,7 @@ section {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding: 3rem 4rem 1.5rem 4rem; }
+  padding: 3.5rem 4rem 1.5rem; }
   .account-header a {
     color: #fff;
     position: absolute;
@@ -3688,7 +3688,7 @@ section {
   margin: 0; }
   .recharge li {
     background: #fff;
-    padding: 1.5rem;
+    padding: 1rem 1.5rem;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
