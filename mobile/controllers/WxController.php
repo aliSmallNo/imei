@@ -1663,6 +1663,10 @@ class WxController extends BaseController
 	public function actionHi()
 	{
 		$openId = self::$WX_OpenId;
+		if (!$this->user_phone) {
+			header('location:/wx/single#slook');
+			exit();
+		}
 		LogAction::add($this->user_id, $openId, LogAction::ACTION_HI);
 		$rows = [0, 1, 2, 3];
 		return self::renderPage('hi.tpl',
