@@ -124,10 +124,11 @@ class BaseController extends Controller
 		if (in_array($actionId, $safeActions)) {
 			return;
 		}
-		if (!$wxUserInfo || $this->user_subscribe < 1) {
+		/*if (!$wxUserInfo || $this->user_subscribe < 1) {
 			header("location:/qr.html");
 			exit;
-		} elseif (!$wxUserInfo || !isset($wxUserInfo['uPhone']) || !$wxUserInfo['uPhone'] || !$wxUserInfo['uRole']) {
+		} else */
+		if (!$wxUserInfo || !isset($wxUserInfo['uPhone']) || !$wxUserInfo['uPhone'] || !$wxUserInfo['uRole']) {
 			$newActionId = 'hi'; //'sreglite';
 		} elseif (!$wxUserInfo['uLocation']) {
 			$newActionId = "reg1";
