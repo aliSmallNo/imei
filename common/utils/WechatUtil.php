@@ -381,28 +381,13 @@ class WechatUtil
 					"url" => $wxUrl . "/wx/single#slook"
 				],
 				[
-					"name" => "我们派对吧",
-					"sub_button" => [
-						[
-							"type" => "view",
-							"name" => "马上报名",
-							"url" => $wxUrl . "/wx/enroll"
-						],
-						[
-							"type" => "view",
-							"name" => "活动详情",
-							"url" => "http://u5559142.viewer.maka.im/k/IBMHVX0Q?relay_share=true"
-						],
-						[
-							"type" => "view",
-							"name" => "节目解密",
-							"url" => "http://u5559142.viewer.maka.im/k/VRUUTVXB?relay_share=true"
-						]
-					]
-				],
-				[
 					"name" => "更多",
 					"sub_button" => [
+						[
+							"type" => "view",
+							"name" => "我们派对吧",
+							"url" => $wxUrl . "/wx/enroll"
+						],
 						[
 							"type" => "view",
 							"name" => "测另一半",
