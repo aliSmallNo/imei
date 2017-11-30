@@ -22,7 +22,7 @@
 	background-size: contain
 
 .bg-lottery
-	background: #fdddde url(../images/sign/imei_sign_9.jpeg) no-repeat center center
+	background: #fdddde url(../images/lottery/bg01.jpg) no-repeat center center
 	background-size: 100% 100%
 	position: relative
 
@@ -6021,15 +6021,18 @@ section
 .lottery-gifts
 	margin: 0 auto
 	width: 27rem
-	border: 2px solid $redColor
+	height: 27rem
+	padding: 1.5rem
+	background: url(../images/lottery/bg_table.png) no-repeat center center
+	background-size: cover
 	li
-		width: 9rem
-		height: 9rem
+		width: 8.8rem
+		height: 8.8rem
 		float: left
 		text-align: center
 		position: relative
-		background: $mainColorLighter
-		border: 1px solid $mainColor
+		margin: .1rem
+
 		@include borderBox
 		img
 			display: block
@@ -6043,35 +6046,31 @@ section
 			background: $redColor
 			color: #fff
 			@include borderBox
-			// background: url(../images/lottery/lottery2.jpg) no-repeat top center
+			background: url(../images/lottery/sprite_btn.png) no-repeat
+			background-size: 9rem 27rem
+			background-position: 0 0
 			&:active
+				background-position: 0 -9rem
 				//background-image: url(../images/lottery/lottery1.jpg)
-				background: $mainColorLighter
+				//background: $mainColorLighter
 			//background-size: 100% 100%
 			p
+				display: none
 				font-size: 2.8rem
 				line-height: 4.2rem
 				border: 1px solid #fff
 			&.gray
+				background-position: 0 -18rem
 				p
 					background: #aaa
 					color: #ddd
 		&.unit
-			&:after
-				content: ''
-				display: none
-				width: 100%
-				height: 100%
-				position: absolute
-				left: 0
-				top: 0
-				background: url(../images/lottery/mask.png) no-repeat
-				background-size: 100% 100%
-			&.active:after
-				display: block
-			&.prize:after
-				background: url(../images/lottery/mask_hl.png) no-repeat
-				background-size: 100% 100%
+			background: url(../images/lottery/sprite_brick.png) no-repeat
+			background-size: 8.8rem 17.8rem
+			background-position: 0 0
+			&.active
+				background-position: 0 -8.8rem
+		//&.prize
 
 .greeting
 	text-align: left

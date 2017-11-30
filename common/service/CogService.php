@@ -14,9 +14,9 @@ use common\utils\AppUtil;
 class CogService
 {
 	const CAT_NOTICE_TEXT = 100;
-	const CAT_NOTICE_FIGURE = 102;
+	const CAT_NOTICE_IMAGE = 102;
 	const CAT_HOME_HEADER = 110;
-	const CAT_HOME_FIGURE = 120;
+	const CAT_HOME_IMAGE = 120;
 	const CAT_CHAT_HEADER = 130;
 
 	/**
@@ -52,7 +52,7 @@ class CogService
 	public function notices($page = 1, $pageSize = 20)
 	{
 		return $this->items(
-			['cCategory IN (' . implode(',', [self::CAT_NOTICE_TEXT, self::CAT_NOTICE_FIGURE]) . ')'],
+			['cCategory IN (' . implode(',', [self::CAT_NOTICE_TEXT, self::CAT_NOTICE_IMAGE]) . ')'],
 			[],
 			$page,
 			$pageSize);
@@ -76,7 +76,7 @@ class CogService
 	{
 		return $this->items(
 			['cCategory=:cat AND cStatus=1'],
-			[':cat' => self::CAT_HOME_FIGURE]);
+			[':cat' => self::CAT_HOME_IMAGE]);
 	}
 
 	protected function items($criteria = [], $params = [], $page = 1, $pageSize = 100)
@@ -97,8 +97,8 @@ class CogService
 		$ret = $this->conn->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($ret as $k => $item) {
 			$active = ($item['status'] == 1);
-			if (isset($item['exp'])) {
-				$active = ($item['exp'] > date('Y-m-d'));
+			if (isset($item['exp']) && $item['exp']) {
+				$active = ($item['exp'] >= date('Y-m-d'));
 			}
 			$ret[$k]['content'] = json_decode($item['content'], 1);
 			$ret[$k]['active'] = $active;

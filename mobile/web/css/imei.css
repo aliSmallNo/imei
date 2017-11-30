@@ -96,7 +96,7 @@ main {
   background-size: contain; }
 
 .bg-lottery {
-  background: #fdddde url(../images/sign/imei_sign_9.jpeg) no-repeat center center;
+  background: #fdddde url(../images/lottery/bg01.jpg) no-repeat center center;
   background-size: 100% 100%;
   position: relative; }
 
@@ -6592,15 +6592,17 @@ section {
 .lottery-gifts {
   margin: 0 auto;
   width: 27rem;
-  border: 2px solid #E53935; }
+  height: 27rem;
+  padding: 1.5rem;
+  background: url(../images/lottery/bg_table.png) no-repeat center center;
+  background-size: cover; }
   .lottery-gifts li {
-    width: 9rem;
-    height: 9rem;
+    width: 8.8rem;
+    height: 8.8rem;
     float: left;
     text-align: center;
     position: relative;
-    background: #fbd2e0;
-    border: 1px solid #f06292;
+    margin: 0.1rem;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box; }
@@ -6617,31 +6619,28 @@ section {
       color: #fff;
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
-      box-sizing: border-box; }
+      box-sizing: border-box;
+      background: url(../images/lottery/sprite_btn.png) no-repeat;
+      background-size: 9rem 27rem;
+      background-position: 0 0; }
       .lottery-gifts li a:active {
-        background: #fbd2e0; }
+        background-position: 0 -9rem; }
       .lottery-gifts li a p {
+        display: none;
         font-size: 2.8rem;
         line-height: 4.2rem;
         border: 1px solid #fff; }
-      .lottery-gifts li a.gray p {
-        background: #aaa;
-        color: #ddd; }
-    .lottery-gifts li.unit:after {
-      content: "";
-      display: none;
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      left: 0;
-      top: 0;
-      background: url(../images/lottery/mask.png) no-repeat;
-      background-size: 100% 100%; }
-    .lottery-gifts li.unit.active:after {
-      display: block; }
-    .lottery-gifts li.unit.prize:after {
-      background: url(../images/lottery/mask_hl.png) no-repeat;
-      background-size: 100% 100%; }
+      .lottery-gifts li a.gray {
+        background-position: 0 -18rem; }
+        .lottery-gifts li a.gray p {
+          background: #aaa;
+          color: #ddd; }
+    .lottery-gifts li.unit {
+      background: url(../images/lottery/sprite_brick.png) no-repeat;
+      background-size: 8.8rem 17.8rem;
+      background-position: 0 0; }
+      .lottery-gifts li.unit.active {
+        background-position: 0 -8.8rem; }
 
 .greeting {
   text-align: left;
