@@ -56,9 +56,10 @@
 	}
 
 	td h5 {
-		font-size: 12px;
-		font-weight: 400;
-		margin: 3px 0;
+		font-size: 11px;
+		font-weight: 300;
+		margin: 0;
+		line-height: 16px;
 	}
 
 	.perc-wrap {
@@ -506,6 +507,7 @@
 			{{if $debug}}
 			<a href="javascript:;" class="btn-refresh btn btn-outline btn-warning btn-xs" data-id="{{$prod.id}}">刷新</a>
 			{{/if}}
+			<h5>{{$prod.opname}}</h5>
 			<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 			<h5>创建于{{$prod.addedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 		</td>
