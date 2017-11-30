@@ -4,7 +4,7 @@ namespace admin\models;
 
 class Menu
 {
-	const VERSION = 171127.2;
+	const VERSION = 171130.2;
 
 	public static function keepMenu($uId, $url)
 	{
@@ -80,18 +80,6 @@ class Menu
 		return $forks;
 	}
 
-	public static function menusVer()
-	{
-		/*$redis = RedisUtil::init(RedisUtil::KEY_MENUS_MD5);
-		$ret = $redis->getCache();
-		if (!$ret) {
-			$ret = md5(json_encode(self::menus()));
-			$redis->setCache($ret);
-		}
-		return $ret;*/
-		return 17111801;
-	}
-
 	public static function menus()
 	{
 		return [
@@ -122,20 +110,6 @@ class Menu
 					[
 						"name" => "活动账单",
 						"url" => "/site/events",
-						"revise" => 1,
-						"hidden" => 1,
-						"level" => 820
-					],
-					[
-						"name" => "活动账单(新)",
-						"url" => "/site/crews",
-						"revise" => 1,
-						"hidden" => 1,
-						"level" => 820
-					],
-					[
-						"name" => "添加用户",
-						"url" => "/site/account",
 						"revise" => 1,
 						"hidden" => 1,
 						"level" => 820

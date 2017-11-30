@@ -9,6 +9,7 @@
 namespace admin\controllers;
 
 use admin\models\Admin;
+use common\utils\AppUtil;
 use yii\data\Pagination;
 use yii\filters\Cors;
 use yii\helpers\ArrayHelper;
@@ -139,7 +140,7 @@ class BaseController extends Controller
 	{
 		$safePaths = ["site/login", "site/logout", "site/branch", "site/error", "site/deny"];
 		$pathInfo = self::getRequestUri();
-		if (in_array($pathInfo, $safePaths) || 1) {
+		if (in_array($pathInfo, $safePaths)) {
 			return true;
 		}
 		$this->admin_id = Admin::getAdminId();
@@ -147,6 +148,7 @@ class BaseController extends Controller
 			header("location:/site/login");
 			exit;
 		}
+		AppUtil::logFile($pathInfo,5,__FUNCTION__);
 		Admin::checkPermission($pathInfo);
 		$userInfo = Admin::userInfo();
 		if (!$userInfo) {

@@ -184,6 +184,7 @@ class SiteController extends BaseController
 		$sign = self::postParam("sign");
 		$success = [];
 		$error = [];
+		AppUtil::logFile($this->admin_id, 5, __FUNCTION__, __LINE__);
 		if ($sign) {
 			$data = self::postParam("data");
 			$id = self::postParam("id");
@@ -228,6 +229,7 @@ class SiteController extends BaseController
 					WechatUtil::regNotice($id, "refuse");
 				}
 				User::edit($id, $data, $this->admin_id);
+				AppUtil::logFile($this->admin_id, 5, __FUNCTION__, __LINE__);
 				$success = self::ICON_OK_HTML . '修改成功';
 				RedisUtil::init(RedisUtil::KEY_WX_USER, $userInfo['uOpenId'])->delCache();
 			}
