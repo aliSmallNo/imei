@@ -271,6 +271,7 @@ class UserTrans extends ActiveRecord
 				$ret[$k]['unit'] = self::UNIT_YUAN;
 			}
 			$ret[$k]['unit_name'] = self::$UnitDict[$ret[$k]['unit']];
+			$ret[$k]['prefix'] =  in_array($row['cat'], self::$CatMinus) ? '-' : '';
 		}
 		return $ret;
 	}
@@ -300,6 +301,7 @@ class UserTrans extends ActiveRecord
 		foreach ($result as $k => $row) {
 			$uid = $row["uid"];
 			$tid = $row["tId"];
+			$row['prefix'] = in_array($row['cat'], self::$CatMinus) ? '-' : '';
 			$uIds[] = $uid;
 			$items[$tid] = $row;
 			$unit = $row['unit'];
@@ -307,7 +309,6 @@ class UserTrans extends ActiveRecord
 			if ($unit == self::UNIT_FEN) {
 				$items[$tid]['amt_title'] = round($row['flower'] / 100.0, 2) . '元';
 			}
-
 		}
 		$uIds = array_values(array_unique($uIds));
 

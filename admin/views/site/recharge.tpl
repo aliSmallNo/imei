@@ -42,6 +42,10 @@
 	.total-row ul:first-child {
 		border-left: none;
 	}
+
+	.prefix- {
+		color: #f50 !important;
+	}
 </style>
 <div class="row">
 	<h4>充值账户记录列表</h4>
@@ -71,7 +75,7 @@
 	{{foreach from=$balance item=bal}}
 	<ul class="col-lg-3">
 		{{foreach from=$bal item=item}}
-		<li><em>{{$item.title}}</em><b>{{$item.amt}}{{$item.unit_name}}</b></li>
+		<li><em>{{$item.title}}</em><b class="prefix{{$item.prefix}}">{{$item.amt}}{{$item.unit_name}}</b></li>
 		{{/foreach}}
 	</ul>
 	{{/foreach}}
@@ -123,10 +127,10 @@
 			<td>
 				{{$item.tcat}}
 			</td>
-			<td>
+			<td class="prefix{{$item.prefix}}">
 				{{if $item.amt}}￥{{$item.amt/100|string_format:"%.2f"}}{{/if}}
 			</td>
-			<td>
+			<td class="prefix{{$item.prefix}}">
 				{{$item.amt_title}}
 			</td>
 			<td>
