@@ -6636,7 +6636,7 @@ section {
           background: #aaa;
           color: #ddd; }
     .lottery-gifts li.unit {
-      background: url(../images/lottery/sprite_brick.png?v=1.1) no-repeat;
+      background: url(../images/lottery/sprite_brick.png?v=1.2) no-repeat;
       background-size: 8.8rem 17.8rem;
       background-position: 0 0; }
       .lottery-gifts li.unit.active {
