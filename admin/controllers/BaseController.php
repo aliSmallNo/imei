@@ -148,7 +148,6 @@ class BaseController extends Controller
 			header("location:/site/login");
 			exit;
 		}
-		AppUtil::logFile($pathInfo,5,__FUNCTION__);
 		Admin::checkPermission($pathInfo);
 		$userInfo = Admin::userInfo();
 		if (!$userInfo) {

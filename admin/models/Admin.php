@@ -127,7 +127,6 @@ class Admin extends ActiveRecord
 	{
 		$tempUrl = $actionUrl;
 		$uInfo = self::userInfo();
-		AppUtil::logFile($uInfo ,5,__FUNCTION__);
 
 		if (!$uInfo) {
 			header("location:/site/login");
