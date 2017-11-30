@@ -14,6 +14,7 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
+use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\PushUtil;
@@ -904,8 +905,10 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$conn = AppUtil::db();
+//		$conn = AppUtil::db();
 
+		$ret = UserWechat::refreshWXInfo('oYDJew2lWRwxl_XcmXBAwH1epBcg',true);
+		var_dump($ret);
 		/*$sql = 'insert into im_img(tUId,tCategory) VALUES(:uid,100)';
 		$cmd0 = $conn->createCommand($sql);
 		$sql = 'insert into im_img(tUId,tCategory) SELECT :uid,100 FROM DUAL
