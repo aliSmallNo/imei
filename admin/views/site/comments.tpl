@@ -1,8 +1,8 @@
 {{include file="layouts/header.tpl"}}
 <style>
 	.note {
-		font-size: 14px;
-		font-weight: 400;
+		font-size: 12px;
+		font-weight: 300;
 	}
 
 	.sm {
@@ -13,7 +13,7 @@
 	.note b {
 		padding-left: 2px;
 		padding-right: 2px;
-		font-size: 15px;
+		font-size: 12px;
 		font-weight: 400;
 	}
 
@@ -26,6 +26,18 @@
 	td img {
 		width: 64px;
 		height: 64px;
+	}
+
+	.st-0 {
+		color: #888;
+	}
+
+	.st-1 {
+		color: #44b549;
+	}
+
+	.st-9 {
+		color: #f50;
 	}
 </style>
 <div class="row">
@@ -93,7 +105,7 @@
 				{{if $item.cStatus==0}}
 				<a href="javascript:;" class="operate btn btn-outline btn-primary btn-xs" data-cid="{{$item.cId}}" data-tag="pass">审核通过</a>
 				{{else}}
-				<div class="note">审核时间<br>{{$item.cStatusDate}}</div>
+				<div class="note"><b class="st-{{$item.cStatus}}">{{$item.st}}</b> {{$item.name}}<br>{{$item.cUpdatedOn}}</div>
 				{{/if}}
 			</td>
 		</tr>

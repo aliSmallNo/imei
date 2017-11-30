@@ -18,6 +18,12 @@ class UserComment extends ActiveRecord
 {
 	const ST_PENDING = 0;
 	const ST_PASS = 1;
+	const ST_REMOVED = 9;
+	static $StatusDict = [
+		self::ST_PENDING => '待审核',
+		self::ST_PASS => '审核通过',
+		self::ST_REMOVED => '已删除',
+	];
 
 	static $commentCats = [
 		100 => "照片",
@@ -114,12 +120,13 @@ class UserComment extends ActiveRecord
 			$strCriteria .= ' AND ' . implode(' AND ', $criteria);
 		}
 		$conn = AppUtil::db();
-		$sql = 'select c.*,
+		$sql = 'select c.*,a.aName as `name`,
 			 u1.uName as name1,u1.uPhone as phone1,u1.uThumb as avatar1,u1.uId as id1,
 			 u2.uName as name2,u2.uPhone as phone2,u2.uThumb as avatar2,u2.uId as id2
 			 from im_user_comment as c
 			 JOIN im_user as u1 on u1.uId=c.cUId 
 			 JOIN im_user as u2 on u2.uId=c.cAddedBy 
+			 LEFT JOIN im_admin as a on a.aId=c.cUpdatedBy
 			 WHERE c.cId>0 ' . $strCriteria . '
 			 order by cAddedOn desc ' . $limit;
 
@@ -129,7 +136,7 @@ class UserComment extends ActiveRecord
 			$res[$k]['avatar2'] = ImageUtil::getItemImages($row['avatar2'])[0];
 			$res[$k]['dt'] = AppUtil::prettyDate($row['cAddedOn']);
 			$res[$k]['cat'] = self::$commentCats[$row['cCategory']];
-
+			$res[$k]['st'] = isset(self::$StatusDict[$row['cStatus']]) ? self::$StatusDict[$row['cStatus']] : '';
 		}
 
 		$sql = "select count(cId) from im_user_comment as c

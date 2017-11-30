@@ -33,6 +33,7 @@ class UserTrans extends ActiveRecord
 	const CAT_MOMENT = 150;
 	const CAT_VOTE = 160;
 	const CAT_FANS_DRAW = 170;
+	const CAT_REMOVE_COMMENT = 172;
 	const CAT_THANKS_BONUS = 180;
 
 	static $catDict = [
@@ -53,6 +54,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_MOMENT => "分享到朋友圈奖励",
 		self::CAT_VOTE => "投票奖励",
 		self::CAT_FANS_DRAW => "花粉值提现",
+		self::CAT_REMOVE_COMMENT => "删除评论",
 		self::CAT_THANKS_BONUS => "感恩节馈赠",
 	];
 
@@ -62,6 +64,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_PRESENT,
 		self::CAT_FANS_DRAW,
 		self::CAT_DATE_NEW,
+		self::CAT_REMOVE_COMMENT,
 	];
 
 	const UNIT_FEN = 'fen';

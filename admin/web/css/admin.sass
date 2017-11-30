@@ -1160,3 +1160,25 @@ ul.features
 	color: $redColorLight !important
 	border: 1px solid $redColorLight !important
 
+.m-list
+	margin: 0
+	padding: 0
+	border: 1px solid $borderColor
+	border-radius: 5px
+	list-style: none
+	li
+		border-bottom: 1px solid $borderColor
+		padding: 5px 10px
+		@include displayFlex
+		&:last-child
+			border-bottom: none
+		.content
+			@include displayFlex-1
+			padding-right: 5px
+			h4
+				font-size: 15px
+				font-weight: 500
+		.right
+			font-size: 12px
+			color: $grayFontColor
+			@include displayFlex-w(10rem)

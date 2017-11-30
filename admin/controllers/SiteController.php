@@ -26,6 +26,7 @@ use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserTrans;
 use common\models\UserWechat;
+use common\service\CogService;
 use common\service\EventService;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
@@ -489,7 +490,7 @@ class SiteController extends BaseController
 		$userId = self:: getParam("uid");
 
 		ChatMsg::groupEdit($dummyId, $userId, 9999);
-		list($items) = ChatMsg::details($dummyId, $userId, 0,true);
+		list($items) = ChatMsg::details($dummyId, $userId, 0, true);
 		usort($items, function ($a, $b) {
 			return $a['addedon'] < $b['addedon'];
 		});
@@ -1503,4 +1504,24 @@ class SiteController extends BaseController
 			]
 		);
 	}
+
+	public function actionCog()
+	{
+		$page = self::getParam('page', 1);
+		$service = CogService::init();
+		$notices = $service->notices($page);
+		$homeHeaders = $service->homeHeaders();
+		$homeFigures = $service->homeFigures();
+		$chatHeaders = $service->chatHeaders();
+		return $this->renderPage('cog.tpl',
+			[
+				'homeHeaders' => $homeHeaders,
+				'homeFigures' => $homeFigures,
+				'chatHeaders' => $chatHeaders,
+				'notices' => $notices,
+				'category' => 'data',
+				'detailcategory' => "site/cog",
+			]);
+	}
+
 }
