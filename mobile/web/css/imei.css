@@ -6640,7 +6640,7 @@ section {
       background-size: 8.8rem 17.8rem;
       background-position: 0 0; }
       .lottery-gifts li.unit.active {
-        background-position: 0 -8.8rem; }
+        background-position: 0 bottom; }
 
 .greeting {
   text-align: left;
