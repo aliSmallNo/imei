@@ -2042,8 +2042,7 @@ class User extends ActiveRecord
 		}
 	}
 
-	public
-	static function rankCal($row, $addedOn, $updRankFlag = false, $conn = '')
+	public static function rankCal($row, $addedOn, $updRankFlag = false, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();

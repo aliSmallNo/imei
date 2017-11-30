@@ -92,9 +92,12 @@ class UserWechat extends ActiveRecord
 		}
 		foreach ($fields as $key => $field) {
 			$val = isset($wxInfo[$field]) ? $wxInfo[$field] : '';
-			$entity->$key = $val;
-			if ($key == 'wSubscribeTime' && $val && is_numeric($val)) {
+			if ($key == 'wSubscribe' && strlen($val) == 0) {
+				continue;
+			} elseif ($key == 'wSubscribeTime' && $val && strlen($val) > 5) {
 				$entity->wSubscribeDate = date('Y-m-d H:i:s', $val);
+			} else {
+				$entity->$key = $val;
 			}
 		}
 		$entity->wUId = $uId;
@@ -278,9 +281,11 @@ class UserWechat extends ActiveRecord
 				$openIds = array_merge($openIds, $ids);
 				if (!$next_openid) break;
 			}
-			$sql = 'update im_user_wechat set wSubscribe=0,wSubscribeDate=null,wSubscribeTime=0 WHERE wOpenId LIKE \'oYDJew%\' ';
+			$sql = 'UPDATE im_user_wechat set wSubscribe=0,wSubscribeDate=null,wSubscribeTime=0 
+					WHERE wOpenId LIKE \'oYDJew%\' ';
 			$conn->createCommand($sql)->execute();
-			$sql = 'update im_user_wechat set wSubscribe=1,wUpdatedOn=now() WHERE wOpenId=:id AND wOpenId LIKE \'oYDJew%\' ';
+			$sql = 'UPDATE im_user_wechat set wSubscribe=1,wUpdatedOn=now() 
+					WHERE wOpenId=:id AND wOpenId LIKE \'oYDJew%\' ';
 			$cmdSub = $conn->createCommand($sql);
 			foreach ($openIds as $oid) {
 				$cmdSub->bindValues([
@@ -293,7 +298,6 @@ class UserWechat extends ActiveRecord
 			'unionid' => 'wUnionId',
 			'nickname' => 'wNickname',
 			'headimgurl' => 'wAvatar',
-			'subscribe' => 'wSubscribe',
 			'subscribe_time' => 'wSubscribeTime',
 			'sex' => 'wGender',
 			'city' => 'wCity',
@@ -330,11 +334,10 @@ class UserWechat extends ActiveRecord
 					':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
 					':openid' => $user['openid'],
 					':wSubscribeDate' => '2015-01-01',
-					':wSubscribe' => 0
 				];
 				foreach ($pFields as $k => $field) {
 					$val = isset($user[$k]) ? $user[$k] : '';
-					if (in_array($field, ['wSubscribe', 'wSubscribeTime']) && !$val) {
+					if (in_array($field, ['wSubscribeTime']) && !$val) {
 						$val = 0;
 					}
 					$params[':' . $field] = $val;
