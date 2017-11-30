@@ -335,7 +335,7 @@ class ApiController extends Controller
 						User::edit($id, [
 							'uStatus' => $st,
 							'uSubStatus' => $subSt
-						]);
+						], $this->admin_id);
 					} else {
 						return self::renderAPI(129, '用户不存在');
 					}
@@ -483,9 +483,10 @@ class ApiController extends Controller
 		return self::renderAPI(129, "什么操作也没做啊！");
 	}
 
-	public function actionBuzz(){
+	public function actionBuzz()
+	{
 		$tag = strtolower(self::postParam("tag"));
-		switch ($tag){
+		switch ($tag) {
 			case 'reply':
 				$openId = self::postParam("id");
 				$uId = User::findOne(["uOpenId" => $openId])->uId;
