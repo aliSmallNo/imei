@@ -23,6 +23,7 @@ class CrontabController extends Controller
 		// 120003, 131266, 131379, 134534
 		$conn = AppUtil::db();
 
+		//Rain: 星期天的时候重置一下
 		if (date('w') == 0) {
 			$sql = 'UPDATE im_hit set hCount = ROUND(hCount/10) WHERE hCount>10 AND hId>0';
 			$conn->createCommand($sql)->execute();
