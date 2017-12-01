@@ -363,7 +363,7 @@ class AppUtil
 		return $lst['rst'];
 	}
 
-	public static function postJSON($url, $jsonString = '', $sslFlag = false)
+	public static function postJSON($url, $jsonString = null, $sslFlag = false)
 	{
 		if (!is_array($jsonString)) {
 			$jsonString = json_encode($jsonString, JSON_UNESCAPED_UNICODE);
