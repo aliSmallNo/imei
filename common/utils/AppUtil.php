@@ -365,7 +365,7 @@ class AppUtil
 
 	public static function postJSON($url, $jsonString = null, $sslFlag = false)
 	{
-		if (!is_array($jsonString)) {
+		if (is_array($jsonString)) {
 			$jsonString = json_encode($jsonString, JSON_UNESCAPED_UNICODE);
 		}
 		$ch = curl_init($url);
