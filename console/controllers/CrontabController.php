@@ -23,8 +23,10 @@ class CrontabController extends Controller
 		// 120003, 131266, 131379, 134534
 		$conn = AppUtil::db();
 
-		$sql='UPDATE im_hit set hCount = ROUND(hCount/10) WHERE hCount>10 AND hId>0';
-		$conn->createCommand($sql)->execute();
+		if (date('w') == 0) {
+			$sql = 'UPDATE im_hit set hCount = ROUND(hCount/10) WHERE hCount>10 AND hId>0';
+			$conn->createCommand($sql)->execute();
+		}
 
 		$ret = UserWechat::refreshWXInfo($openId, 0, $conn);
 		var_dump($ret);
