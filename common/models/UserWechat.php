@@ -315,7 +315,7 @@ class UserWechat extends ActiveRecord
 		};
 
 		$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
-		for ($k = 0; $k < 20; $k++) {
+		for ($k = 0; $k < 50; $k++) {
 			list($ids, $next_openid) = $getOpenIds($token, $next_openid);
 			$openIds = array_merge($openIds, $ids);
 			if (!$next_openid) break;
