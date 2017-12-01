@@ -12,6 +12,7 @@ use common\models\Stat;
 use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserWechat;
+use common\utils\AppUtil;
 use yii\console\Controller;
 
 class CrontabController extends Controller
@@ -20,7 +21,12 @@ class CrontabController extends Controller
 	public function actionRefresh($openId = '')
 	{
 		// 120003, 131266, 131379, 134534
-		$ret = UserWechat::refreshWXInfo($openId, 0);
+		$conn = AppUtil::db();
+
+		$sql='UPDATE im_hit set hCount = ROUND(hCount/10) WHERE hCount>10 AND hId>0';
+		$conn->createCommand($sql)->execute();
+
+		$ret = UserWechat::refreshWXInfo($openId, 0, $conn);
 		var_dump($ret);
 	}
 
