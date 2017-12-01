@@ -9,7 +9,6 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\Stat;
-use common\models\User;
 use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserWechat;
@@ -22,6 +21,13 @@ class CrontabController extends Controller
 	{
 		// 120003, 131266, 131379, 134534
 		$ret = UserWechat::refreshWXInfo($openId, 0);
+		var_dump($ret);
+	}
+
+	public function actionRefreshpool($openId = '')
+	{
+		// 120003, 131266, 131379, 134534
+		$ret = UserWechat::refreshPool();
 		var_dump($ret);
 	}
 
