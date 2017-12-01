@@ -4,7 +4,7 @@ namespace admin\models;
 
 class Menu
 {
-	const VERSION = 171130.2;
+	const VERSION = 171201.1;
 
 	public static function keepMenu($uId, $url)
 	{
@@ -209,6 +209,11 @@ class Menu
 						"url" => "/admin/users",
 						"level" => 830,
 						'pjax' => 1
+					],
+					[
+						"name" => "素材列表",
+						"url" => "/admin/media",
+						"level" => 830
 					]
 				]
 			]
