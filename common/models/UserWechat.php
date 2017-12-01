@@ -252,16 +252,16 @@ class UserWechat extends ActiveRecord
 			$url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=';
 			$url .= WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 			$postData = [
-				"msgtype" => $type,
 				"touser" => $openId,
-				"text" => [
+				"msgtype" => $type,
+				$type => [
 					"media_id" => $mediaId
 				]
 			];
 			$ret = AppUtil::postJSON($url, json_encode($postData, JSON_UNESCAPED_UNICODE));
 		}
 		$ret = json_decode($ret, 1);
-		return  $ret;
+		return $ret;
 	}
 
 	public static function refreshWXInfo($openId, $debug = false, $conn = '')
