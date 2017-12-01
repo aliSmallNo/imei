@@ -45,7 +45,7 @@
 						</div>
 						<div class="right">
 							{{$notice.name}}<em>{{$notice.exp}}</em>{{$notice.st}}
-							<br><a href="javascript:;" class="btn-mod" data-url="{{$notice.url}}"
+							<br><a href="javascript:;" class="btn-mod" data-url="{{$notice.url}}" data-cnt="{{$notice.cnt}}"
 										 data-st="{{$notice.status}}" data-exp="{{$notice.exp}}" data-tag="{{$notice.cat}}">编辑</a>
 						</div>
 					</li>
@@ -101,37 +101,43 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">通知标题</label>
 			<div class="col-sm-7">
-				<input class="form-control" required data-tag="title" placeholder="（必填）" value="{[title]}">
+				<input class="form-control" required data-tag="cTitle" placeholder="（必填）" value="{[title]}">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">通知内容</label>
 			<div class="col-sm-7">
-				<textarea class="form-control" required rows="6" data-tag="content" placeholder="（必填）支持换行">{[content]}</textarea>
+				<textarea class="form-control" required rows="6" data-tag="cContent" placeholder="（必填）支持换行">{[content]}</textarea>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">链接地址</label>
 			<div class="col-sm-7">
-				<input class="form-control" data-tag="url" value="{[url]}">
+				<input class="form-control" data-tag="cUrl" value="{[url]}">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">是否有效</label>
 			<div class="col-sm-7">
 				<label class="radio-inline">
-					<input type="radio" name="status" data-tag="status" {[#st]}checked{[/st]} value="1">有效
+					<input type="radio" name="status" data-tag="cStatus" {[#st]}checked{[/st]} value="1">有效
 				</label>
 
 				<label class="radio-inline">
-					<input type="radio" name="status" data-tag="status" {[^st]}checked{[/st]} value="0">失效
+					<input type="radio" name="status" data-tag="cStatus" {[^st]}checked{[/st]} value="0">失效
 				</label>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">过期日期(含)</label>
 			<div class="col-sm-7">
-				<input class="my-date-input form-control" data-tag="exp" value="{[exp]}">
+				<input class="my-date-input form-control" data-tag="cExpiredOn" value="{[exp]}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">显示次数</label>
+			<div class="col-sm-7">
+				<input class="my-date-input form-control" type="number" data-tag="cCount" value="{[cnt]}">
 			</div>
 		</div>
 	</div>
@@ -155,25 +161,31 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">链接地址</label>
 			<div class="col-sm-7">
-				<input class="form-control" required data-tag="url" placeholder="（必填）" value="{[url]}">
+				<input class="form-control" required data-tag="cUrl" placeholder="（必填）" value="{[url]}">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">是否有效</label>
 			<div class="col-sm-7">
 				<label class="radio-inline">
-					<input type="radio" name="status" data-tag="status" {[#st]}checked{[/st]} value="1">有效
+					<input type="radio" name="status" data-tag="cStatus" {[#st]}checked{[/st]} value="1">有效
 				</label>
 
 				<label class="radio-inline">
-					<input type="radio" name="status" data-tag="status" {[^st]}checked{[/st]} value="0">失效
+					<input type="radio" name="status" data-tag="cStatus" {[^st]}checked{[/st]} value="0">失效
 				</label>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">过期日期(含)</label>
 			<div class="col-sm-7">
-				<input class="my-date-input form-control" data-tag="exp" value="{[exp]}">
+				<input class="my-date-input form-control" data-tag="cExpiredOn" value="{[exp]}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">显示次数</label>
+			<div class="col-sm-7">
+				<input class="my-date-input form-control" type="number" data-tag="cCount" value="{[cnt]}">
 			</div>
 		</div>
 	</div>
@@ -191,8 +203,11 @@
 		var modFlag = self.hasClass('btn-mod');
 		var row = self.closest('li');
 		var title = '';
-		var data = {st: 1 };
-		var fields = ['data-url', 'data-st'];
+		var data = {
+			st: 1,
+			cnt: 3
+		};
+		var fields = ['data-url', 'data-st', 'data-cnt'];
 		for (var k = 0; k < fields.length; k++) {
 			var field = fields[k];
 			if (hasAttr(self, field)) {
@@ -231,7 +246,7 @@
 			var required = hasAttr(self, 'required');
 			if (required && !val) {
 				layer.tips("请输入必填项~", self, {
-					tips: [2, '#F90'],
+					tips: [2, '#fa0'],
 					time: 3000
 				});
 				err = 1;
