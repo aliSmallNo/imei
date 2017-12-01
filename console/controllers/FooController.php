@@ -916,13 +916,13 @@ class FooController extends Controller
       "media_id":"MEDIA_ID"
     }
 }*/
-		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
+		$openId = 'oYDJew2lWRwxl_XcmXBAwH1epBcg';
 		$mediaId = 'GfJsRJj-kJwOJMdX7eK9HOvH5CU_2DGImuZKZhJZ6vE';
 		$result = UserWechat::sendMedia($openId, $mediaId);
 		var_dump($result);
 		return;
 
-		$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+		/*$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 		$url = 'https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=%s';
 		$url = sprintf($url, $token);
 		$json = [
@@ -931,7 +931,7 @@ class FooController extends Controller
 			'count' => 20,
 		];
 		$ret = AppUtil::postJSON($url, $json);
-		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
+		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);*/
 
 //		$conn = AppUtil::db();
 
