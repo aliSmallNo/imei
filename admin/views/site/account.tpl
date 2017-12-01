@@ -460,7 +460,7 @@
 			if (req && !val && $sls.role == 10) {
 				self.focus();
 				err.push(field);
-				layer.msg(fieldsText[field] + "还没填写哦~");
+				BpbhdUtil.showMsg(fieldsText[field] + "还没填写哦~");
 				return false;
 			}
 			postData[field] = val;
@@ -471,7 +471,7 @@
 
 		if (!$(".inputFile").val() &&
 			$(".inputFile").closest(".imglist").find("img").length == 0) {
-			layer.msg("还没上传头像哦~");
+			BpbhdUtil.showMsg("还没上传头像哦~");
 		}
 
 		$(".m-loc").each(function () {
@@ -489,7 +489,7 @@
 					});
 				}
 				if ($sls.role == 10 && m < 2 && !opt.val()) {
-					layer.msg(fieldsText[field] + "还没填写哦");
+					BpbhdUtil.showMsg(fieldsText[field] + "还没填写哦");
 					return false;
 				}
 			}
@@ -513,7 +513,7 @@
 		if (items.length > 1) {
 			$(this).closest("li").remove();
 		} else {
-			layer.msg("至少留一张");
+			BpbhdUtil.showMsg("至少留一张");
 		}
 
 	});

@@ -823,8 +823,8 @@
 		var thumb = self.attr("data-thumb");
 		var gender = self.attr("data-gender");
 		if (parseInt(gender) < 10) {
-			layer.msg("用户还没性别哦~");
-			return;
+			BpbhdUtil.showMsg("用户还没性别哦~");
+			return false;
 		}
 		dummyId1 = self.attr("data-id");
 		var items = mDummies[gender];
@@ -838,8 +838,8 @@
 	$(document).on("click", "#btnSaveDu", function () {
 		dummyId2 = $(".dummy-opt.active").attr("data-id");
 		if (!dummyId2) {
-			layer.msg("还没选择稻草人哦~");
-			return;
+			BpbhdUtil.showMsg("还没选择稻草人哦~");
+			return false;
 		}
 		location.href = "/site/bait?uid=" + dummyId1 + "&did=" + dummyId2;
 	});
@@ -857,8 +857,10 @@
 		}, function (resp) {
 			if (resp.code < 1) {
 				location.reload();
+				BpbhdUtil.showMsg(resp.msg, 1);
+			} else {
+				BpbhdUtil.showMsg(resp.msg);
 			}
-			layer.msg(resp.msg);
 		}, "json");
 	});
 
@@ -869,8 +871,10 @@
 		}, function (resp) {
 			if (resp.code < 1) {
 				location.reload();
+				BpbhdUtil.showMsg(resp.msg, 1);
+			} else {
+				BpbhdUtil.showMsg(resp.msg);
 			}
-			layer.msg(resp.msg);
 		}, "json");
 	}
 
@@ -888,8 +892,10 @@
 		}, function (resp) {
 			if (resp.code < 1) {
 				location.reload();
+				BpbhdUtil.showMsg(resp.msg, 1);
+			} else {
+				BpbhdUtil.showMsg(resp.msg);
 			}
-			layer.msg(resp.msg);
 		}, "json");
 	});
 
@@ -1006,12 +1012,12 @@
 				}
 			});
 			if (hasReson) {
-				layer.msg("还没有填写不合规原因哦~");
-				return;
+				BpbhdUtil.showMsg("还没有填写不合规原因哦~");
+				return false;
 			}
 		}
 		if (resonLoad) {
-			return;
+			return false;
 		}
 		resonLoad = 1;
 		$.post("/api/users", {
@@ -1024,8 +1030,10 @@
 			resonLoad = 0;
 			if (resp.code < 1) {
 				location.reload();
+				BpbhdUtil.showMsg(resp.msg, 1);
+			} else {
+				BpbhdUtil.showMsg(resp.msg);
 			}
-			layer.msg(resp.msg);
 		}, "json");
 	});
 
@@ -1118,8 +1126,10 @@
 			resonLoad = 0;
 			if (resp.code < 1) {
 				location.reload();
+				BpbhdUtil.showMsg(resp.msg, 1);
+			} else {
+				BpbhdUtil.showMsg(resp.msg);
 			}
-			layer.msg(resp.msg);
 		}, "json")
 	});
 

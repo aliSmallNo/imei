@@ -96,7 +96,7 @@
 			var obj = $("[data-tag=" + fields[i] + "]");
 			var val = $.trim(obj.val());
 			if (!val) {
-				layer.msg(fieldsAlert[i] + "不能为空哦~");
+				BpbhdUtil.showMsg(fieldsAlert[i] + "不能为空哦~");
 				obj.focus();
 				return;
 			}
@@ -107,7 +107,7 @@
 			var opt = $(this).attr("data-option");
 			var text = $.trim($(this).val());
 			if (!text) {
-				layer.msg("必填项不能为空！");
+				BpbhdUtil.showMsg("必填项不能为空！");
 				err = 1;
 				$(this).focus();
 				return false;
@@ -131,10 +131,10 @@
 			data: JSON.stringify(postData)
 		}, function (resp) {
 			loadflag = 0;
-			if (resp.code == 0) {
+			if (resp.code < 1) {
 				location.reload();
 			} else {
-				layer.msg(resp.msg);
+				BpbhdUtil.showMsg(resp.msg, 0);
 			}
 		}, "json")
 	})

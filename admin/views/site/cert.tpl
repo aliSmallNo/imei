@@ -180,7 +180,7 @@
 			if (resp.code < 1) {
 				location.reload();
 			}
-			layer.msg(resp.msg);
+			BpbhdUtil.showMsg(resp.msg);
 		}, "json");
 	}
 

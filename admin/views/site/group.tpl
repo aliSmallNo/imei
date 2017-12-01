@@ -118,7 +118,7 @@
 		var self = $(this);
 		var chooseFlag = self.attr("data-use") == "used";
 		if (chooseFlag) {
-			layer.msg("该题已选了~");
+			BpbhdUtil.showMsg("该题已选了~");
 			return;
 		}
 		var title = self.find(".title").html();
@@ -142,8 +142,8 @@
 			var id = $(this).attr("tag");
 			ids.push(id);
 		});
-		if (ids.length == 0) {
-			layer.msg("至少要选择一题哦~");
+		if (ids.length < 1) {
+			BpbhdUtil.showMsg("至少要选择一题哦~");
 			return;
 		}
 		$.post("/api/question", {
@@ -152,11 +152,11 @@
 			title: $("[name=gTitle]").val(),
 			ids: JSON.stringify(ids),
 		}, function (resp) {
-			if (resp.code == 0) {
+			if (resp.code < 1) {
 				// location.href = "/site/net"
-				layer.msg(resp.msg);
+				BpbhdUtil.showMsg(resp.msg, 1);
 			} else {
-				layer.msg(resp.msg);
+				BpbhdUtil.showMsg(resp.msg, 0);
 			}
 		}, "json")
 	})

@@ -87,7 +87,7 @@
 	$(document).on("click", ".btn-send", function () {
 		var txt = $('.t-content').val().trim();
 		if (!txt) {
-			layer.msg('回复内容不能为空！');
+			BpbhdUtil.showMsg('回复内容不能为空！');
 			return;
 		}
 		var openid = $('#cOpenId').val();
@@ -99,7 +99,7 @@
 			},
 			function (resp) {
 				if (resp.code < 1) {
-					layer.msg(resp.msg);
+					BpbhdUtil.showMsg(resp.msg, 1);
 					setTimeout(function () {
 						location.reload();
 					}, 360);

@@ -84,7 +84,7 @@
 			$(document).on("click", ".btn-save", function () {
 				var mobiles = $('.mobiles').val().trim();
 				if (!mobiles) {
-					layer.msg('发送失败！没有手机号');
+					BpbhdUtil.showMsg('发送失败！没有手机号');
 					return false;
 				}
 				util.send(mobiles);
@@ -100,7 +100,11 @@
 				media: util.media,
 				mobiles: mobiles
 			}, function (resp) {
-				layer.msg(resp.msg);
+				if (resp.code < 1) {
+					BpbhdUtil.showMsg(resp.msg, 1);
+				} else {
+					BpbhdUtil.showMsg(resp.msg);
+				}
 				util.popup.modal('hide');
 				util.loading = 0;
 			}, 'json');

@@ -293,8 +293,10 @@
 			loading = 0;
 			if (resp.code == 0) {
 				location.reload();
+				BpbhdUtil.showMsg(resp.msg, 1);
+			} else {
+				BpbhdUtil.showMsg(resp.msg, 0);
 			}
-			layer.msg(resp.msg);
 		}, "json");
 	}
 </script>
