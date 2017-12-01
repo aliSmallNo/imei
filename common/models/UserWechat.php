@@ -242,6 +242,28 @@ class UserWechat extends ActiveRecord
 		return $ret['errcode'] == 0 ? 1 : 0;
 	}
 
+	public static function sendMedia($openId, $mediaId, $type = 'image')
+	{
+		$ret = [
+			"errcode" => 1,
+			"errmsg" => "default"
+		];
+		if ($openId && $mediaId) {
+			$url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=';
+			$url .= WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+			$postData = [
+				"msgtype" => $type,
+				"touser" => $openId,
+				"text" => [
+					"media_id" => $mediaId
+				]
+			];
+			$ret = AppUtil::postJSON($url, json_encode($postData, JSON_UNESCAPED_UNICODE));
+		}
+		$ret = json_decode($ret, 1);
+		return $ret['errcode'] == 0 ? 1 : 0;
+	}
+
 	public static function refreshWXInfo($openId, $debug = false, $conn = '')
 	{
 		if (!$conn) {
