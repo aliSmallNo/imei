@@ -905,10 +905,12 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
-		$content='你的一位微信联系人在由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<img src="https://admin.meipo100.com/images/qrcode344.jpg?v=1.1">👈';
-		$result = UserWechat::sendMsg($openId, $content);
-		var_dump($result);
+		$ret =  WechatUtil::getAccessToken('N8JoVKwSNP5irhG2d19w');
+		var_dump($ret);
+//		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
+//		$content='你的一位微信联系人在由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<img src="https://admin.meipo100.com/images/qrcode344.jpg?v=1.1">👈';
+//		$result = UserWechat::sendMsg($openId, $content);
+//		var_dump($result);
 //		$conn = AppUtil::db();
 
 //		$ret = UserWechat::refreshWXInfo('oYDJew2lWRwxl_XcmXBAwH1epBcg',true);
