@@ -4,11 +4,6 @@
 		height: 250px;
 	}
 
-	.col-sm-4, .col-sm-8 {
-		padding-left: 5px;
-		padding-right: 5px;
-	}
-
 	.panel-body {
 		padding: 10px;
 	}
