@@ -5,9 +5,7 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use admin\models\Menu;
-use common\utils\AppUtil;
-use common\utils\ImageUtil;
-use common\utils\RedisUtil;
+use common\utils\WechatUtil;
 
 
 class AdminController extends BaseController
@@ -96,6 +94,18 @@ class AdminController extends BaseController
 				'list' => $list,
 				'menus' => $menus,
 				"name" => $name,
+				'pagination' => $pagination,
+			]);
+	}
+
+	public function actionMedia()
+	{
+		$page = self::getParam("page", 1);
+		list($items,$count) = WechatUtil::getMedia($page);
+		$pagination = self::pagination($page, $count);
+		return $this->renderPage('media.tpl',
+			[
+				'items' => $items,
 				'pagination' => $pagination,
 			]);
 	}

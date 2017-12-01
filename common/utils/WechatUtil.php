@@ -1104,7 +1104,7 @@ class WechatUtil
 		foreach ($ret as $k => $row) {
 			$name = $row['uName'];
 			$openid = $row['uOpenId'];
-			$content='%s，你的一位微信联系人在［千寻恋恋］上将你设置为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
+			$content = '%s，你的一位微信联系人在［千寻恋恋］上将你设置为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
 //			$content = 'Hi，%s，你的一位微信联系人在［千寻恋恋］上将你设为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
 			$content = sprintf($content, $name);
 			$cnt += UserWechat::sendMsg($openid, $content);
@@ -1116,5 +1116,26 @@ class WechatUtil
 			var_dump($cnt);
 		}
 		return $cnt;
+	}
+
+	public static function getMedia($page = 1, $pageSize = 20)
+	{
+		$url = 'https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=';
+		$url .= WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+		$json = [
+			'type' => 'image',
+			'offset' => ($page - 1) * $pageSize,
+			'count' => $pageSize,
+		];
+		$ret = AppUtil::postJSON($url, $json);
+		$ret = json_decode($ret, 1);
+		if ($ret && isset($ret['item'])) {
+			$items = $ret['item'];
+			foreach ($items as $k => $item) {
+				$items[$k]['dt'] = AppUtil::prettyDate(date('Y-m-d H:i:s', $item['update_time']));
+			}
+			return [$items, $ret['total_count']];
+		}
+		return [[], 0];
 	}
 }
