@@ -69,102 +69,102 @@
 </form>
 <div class="row-divider"></div>
 <div class="row">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<i class="fa fa-bar-chart-o fa-fw"></i> 关注用户按时段统计
+	<div class="col-sm-7">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-bar-chart-o fa-fw"></i> 关注用户按时段统计
+			</div>
+			<div class="panel-body">
+				<div id="sub_times" class="chart-wrapper"></div>
+			</div>
 		</div>
-		<div class="panel-body">
-			<div id="sub_times" class="chart-wrapper"></div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-bar-chart-o fa-fw"></i> 注册用户按时段统计
+			</div>
+			<div class="panel-body">
+				<div id="reg_times" class="chart-wrapper"></div>
+			</div>
 		</div>
 	</div>
-</div>
-<div class="row">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<i class="fa fa-bar-chart-o fa-fw"></i> 注册用户按时段统计
-		</div>
-		<div class="panel-body">
-			<div id="reg_times" class="chart-wrapper"></div>
-		</div>
-	</div>
-</div>
-<div class="row">
-	<table class="table table-striped table-bordered">
-		<thead>
-		<tr>
-			<th class="col-lg-4">
-				用户
-			</th>
-			<!--th>
-				关注数
-			</th-->
-			<!--th>
-				扫二维码
-			</th-->
-			<th>
-				关注
-			</th>
-			<th>
-				注册
-			</th>
-			<th>
-				转化率
-			</th>
-			<th>
-				取关
-			</th>
-			<!--th>
-				注册成功
-			</th-->
-		</tr>
-		</thead>
-		<tbody>
-		{{foreach from=$scanStat item=stat}}
-		<tr>
-			<td class="person">
-				<div class="avatar">
-					<img src="{{$stat.thumb}}">
-				</div>
-				<div class="title">
-					<div>{{$stat.name}}</div>
-					<div class="tip">{{$stat.phone}}</div>
-				</div>
-			</td>
-			<!--td align="right">
+	<div class="col-sm-5">
+		<table class="table table-striped table-bordered">
+			<thead>
+			<tr>
+				<th class="col-lg-5">
+					用户
+				</th>
+				<!--th>
+					关注数
+				</th-->
+				<!--th>
+					扫二维码
+				</th-->
+				<th>
+					关注
+				</th>
+				<th>
+					注册
+				</th>
+				<th>
+					转化率
+				</th>
+				<th>
+					取关
+				</th>
+				<!--th>
+					注册成功
+				</th-->
+			</tr>
+			</thead>
+			<tbody>
+			{{foreach from=$scanStat item=stat}}
+			<tr>
+				<td class="person">
+					<div class="avatar">
+						<img src="{{$stat.thumb}}">
+					</div>
+					<div class="title">
+						<div>{{$stat.name}}</div>
+						<div class="tip">{{$stat.phone}}</div>
+					</div>
+				</td>
+				<!--td align="right">
 				{{$stat.scan}}
 			</td-->
-			<td align="right">
-				{{$stat.subscribe}}
-			</td>
-			<td align="right">
-				{{$stat.reg}}
-			</td>
-			<td align="right">
-				{{$stat.ratio}}
-			</td>
-			<td align="right">
-				{{$stat.unsubscribe}}
-			</td>
-			<!--td align="right">
+				<td align="right">
+					{{$stat.subscribe}}
+				</td>
+				<td align="right">
+					{{$stat.reg}}
+				</td>
+				<td align="right">
+					{{$stat.ratio}}
+				</td>
+				<td align="right">
+					{{$stat.unsubscribe}}
+				</td>
+				<!--td align="right">
 					{{$stat.mps}}
 				</td-->
-		</tr>
-		{{/foreach}}
-		<tr>
-			<td colspan="6" class="tip">
-				1.每个人的扫码关注的数；
-				2.每个人关注 并注册的用户；
-				3.每个人注册成功（我们成为XX媒婆的数据）；
-				4.取消关注用户数
-			</td>
-		</tr>
-		</tbody>
-	</table>
+			</tr>
+			{{/foreach}}
+			<tr>
+				<td colspan="6" class="tip">
+					1.每个人的扫码关注的数；
+					2.每个人关注 并注册的用户；
+					3.每个人注册成功（我们成为XX媒婆的数据）；
+					4.取消关注用户数
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
 </div>
 <script src="/js/highcharts/highcharts.js"></script>
 <script>
 	var mSubTimes ={{$timesSub}};
-  var mRegTimes ={{$timesReg}};
+	var mRegTimes ={{$timesReg}};
 	var mBeginDate = $('.beginDate');
 	var mEndDate = $('.endDate');
 	$('.j-scope').click(function () {
@@ -178,7 +178,7 @@
 
 	$(function () {
 		initChart('sub_times', mSubTimes);
-	  initChart('reg_times', mRegTimes);
+		initChart('reg_times', mRegTimes);
 	});
 
 	function initChart(pid, chatData) {
