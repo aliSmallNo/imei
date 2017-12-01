@@ -365,6 +365,9 @@ class AppUtil
 
 	public static function postJSON($url, $jsonString = '', $sslFlag = false)
 	{
+		if (!is_array($jsonString)) {
+			$jsonString = json_encode($jsonString, JSON_UNESCAPED_UNICODE);
+		}
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -974,7 +977,7 @@ class AppUtil
 
 	}
 
-	public static function logFile($msg, $level = 1, $func = "", $line = 0)
+	public static function logFile($msg, $level = 1, $func = '', $line = 0)
 	{
 		if ($level < 2) {
 			return false;

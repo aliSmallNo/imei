@@ -14,7 +14,6 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
-use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\PushUtil;
@@ -916,10 +915,23 @@ class FooController extends Controller
       "media_id":"MEDIA_ID"
     }
 }*/
-		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
+		/*$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
 		$mediaId='MTRtVaxOa9mKgnia1fzIBQOlib1RqSDhHVYfzbWX5M3MWsy3KM1W1ycffxLvN4PoreQH6icc8UIlIhtT6hjDfpPnw/0';
 		$result = UserWechat::sendMedia($openId, $mediaId);
-		var_dump($result);
+		var_dump($result);*/
+
+
+		$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+		$url = 'https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=';
+		$url = sprintf($url, $token);
+		$json = [
+			'type' => 'image',
+			'offset' => 0,
+			'count' => 20,
+		];
+		$ret = AppUtil::postJSON($url, $json);
+		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
+
 //		$conn = AppUtil::db();
 
 //		$ret = UserWechat::refreshWXInfo('oYDJew2lWRwxl_XcmXBAwH1epBcg',true);
