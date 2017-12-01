@@ -1483,6 +1483,10 @@ class SiteController extends BaseController
 	{
 		$name = self::getParam('name');
 		$phone = self::getParam('phone');
+		$location = self::getParam('location');
+		$gender = self::getParam('gender');
+		$age0 = self::getParam('age0');
+		$age1 = self::getParam('age1');
 		$page = self::getParam('page', 1);
 		$criteria = $params = [];
 		if ($name) {
@@ -1493,15 +1497,35 @@ class SiteController extends BaseController
 			$criteria[] = "uPhone like :phone ";
 			$params[':phone'] = $phone . '%';
 		}
+		if ($location) {
+			$criteria[] = " (uLocation like :loc)";
+			$params[':loc'] = '%' . $location . '%';
+		}
+		if ($gender) {
+			$criteria[] = " uGender=:gender";
+			$params[':gender'] = $gender;
+		}
+		if ($age0) {
+			$criteria[] = " uBirthYear <= :y0";
+			$params[':y0'] = date('Y') - $age0;
+		}
+		if ($age1) {
+			$criteria[] = " uBirthYear >= :y1";
+			$params[':y1'] = date('Y') - $age1;
+		}
+
 		list($crew, $count) = EventService::init(EventService::EV_PARTY_S01)->crew($criteria, $params, $page);
 		$pagination = self::pagination($page, $count, 20);
 		return $this->renderPage('ev_crew.tpl',
 			[
 				'category' => 'data',
-				'detailcategory' => "site/evcrew",
 				'crew' => $crew,
+				'age0' => $age0,
+				'age1' => $age1,
+				'gender' => $gender,
 				'name' => $name,
 				'phone' => $phone,
+				'location' => $location,
 				'pagination' => $pagination
 			]
 		);

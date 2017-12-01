@@ -4,6 +4,12 @@
 		width: 50px;
 		margin-right: 10px;
 	}
+
+	.form-inline input.form-control {
+		width: 10em;
+		min-width: 6em !important;
+	}
+
 </style>
 <div class="row">
 	<h4>"我们派对吧"报名用户</h4>
@@ -12,7 +18,15 @@
 	<form class="form-inline" action="/site/evcrew" method="get">
 		<input class="form-control" name="name" placeholder="姓名" value="{{$name}}">
 		<input class="form-control" name="phone" placeholder="电话" value="{{$phone}}">
-		<input type="submit" class="btn btn-primary" value="查询">
+		<input class="form-control" name="location" placeholder="地区" value="{{$location}}">
+		<input class="form-control" name="age0" placeholder="年龄下限" value="{{$age0}}" style="width: 6em;">
+		<input class="form-control" name="age1" placeholder="年龄上限" value="{{$age1}}" style="width: 6em;">
+		<select class="form-control" name="gender">
+			<option value="">-=请选择性别=-</option>
+			<option value="11" {{if 11==$gender}}selected{{/if}}>男性</option>
+			<option value="10" {{if 10==$gender}}selected{{/if}}>女性</option>
+		</select>
+		<button type="submit" class="btn btn-primary">查询</button>
 	</form>
 </div>
 <div class="row-divider"></div>
