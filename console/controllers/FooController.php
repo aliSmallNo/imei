@@ -14,6 +14,7 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
+use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\PushUtil;
@@ -915,11 +916,11 @@ class FooController extends Controller
       "media_id":"MEDIA_ID"
     }
 }*/
-		/*$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
-		$mediaId='MTRtVaxOa9mKgnia1fzIBQOlib1RqSDhHVYfzbWX5M3MWsy3KM1W1ycffxLvN4PoreQH6icc8UIlIhtT6hjDfpPnw/0';
+		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
+		$mediaId = 'GfJsRJj-kJwOJMdX7eK9HDincYOobfLY2rjZHVk0mUo';
 		$result = UserWechat::sendMedia($openId, $mediaId);
-		var_dump($result);*/
-
+		var_dump($result);
+		return;
 
 		$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 		$url = 'https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=%s';
