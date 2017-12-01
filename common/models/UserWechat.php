@@ -261,7 +261,7 @@ class UserWechat extends ActiveRecord
 			$ret = AppUtil::postJSON($url, json_encode($postData, JSON_UNESCAPED_UNICODE));
 		}
 		$ret = json_decode($ret, 1);
-		return $ret['errcode'] == 0 ? 1 : 0;
+		return  $ret;
 	}
 
 	public static function refreshWXInfo($openId, $debug = false, $conn = '')
