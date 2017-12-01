@@ -917,7 +917,7 @@ class FooController extends Controller
     }
 }*/
 		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
-		$mediaId = 'GfJsRJj-kJwOJMdX7eK9HKUpYN5JIzE0LjaSb6kgiM8';
+		$mediaId = 'GfJsRJj-kJwOJMdX7eK9HB2xtqYEbOG8t00iO3MziW8';
 		$result = UserWechat::sendMedia($openId, $mediaId);
 		var_dump($result);
 		return;
