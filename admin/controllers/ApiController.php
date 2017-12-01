@@ -483,6 +483,23 @@ class ApiController extends Controller
 		return self::renderAPI(129, "什么操作也没做啊！");
 	}
 
+	public function actionAdmin()
+	{
+		$tag = strtolower(self::postParam("tag"));
+		switch ($tag) {
+			case 'notice':
+				$mobiles = self::postParam('mobiles');
+				$mobiles = explode("\n", $mobiles);
+				$mediaId = self::postParam('media');
+				if ($mobiles && $mediaId) {
+					$ret = UserWechat::sendMediaByPhone($mobiles, $mediaId);
+					return self::renderAPI(0, "发送成功！", ['count' => $ret]);
+				}
+				break;
+		}
+		return self::renderAPI(129, "什么操作也没做啊！");
+	}
+
 	public function actionBuzz()
 	{
 		$tag = strtolower(self::postParam("tag"));

@@ -1,8 +1,7 @@
 {{include file="layouts/header.tpl"}}
 <style>
 	.img-thumb {
-		max-width: 200px;
-		max-height: 200px;
+		max-height: 120px;
 	}
 </style>
 <div class="row">
@@ -23,20 +22,87 @@
 			<th>
 				时间
 			</th>
+			<th>
+				操作
+			</th>
 		</tr>
 		</thead>
 		<tbody>
 		{{foreach from=$items item=item}}
 		<tr>
 			<td>
-				{{$item.media_id}}
+				<span>{{$item.media_id}}</span>
 			</td>
 			<td><img src="{{$item.url}}" alt="" class="img-thumb"></td>
 			<td>{{$item.dt}}</td>
+			<td data-id="{{$item.media_id}}">
+				<a href="javascript:;" class="btn-send">发模板消息</a>
+			</td>
 		</tr>
 		{{/foreach}}
 		</tbody>
 	</table>
 	{{$pagination}}
 </div>
+<div class="modal" id="modal_wrap" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document" style="width:360px">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">通知内容</h4>
+			</div>
+			<div class="modal-body"></div>
+			<div class="modal-footer" style="overflow: hidden">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary btn-save">确定保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/html" id="tpl_users">
+	<div class="row">
+		<div class="form-group">
+			<label>用户列表（一行一个手机号）</label>
+			<textarea class="form-control mobiles" rows="12"></textarea>
+		</div>
+	</div>
+</script>
+<script>
+	var iPage = {
+		tmp: $("#tpl_users").html(),
+		popup: $("#modal_wrap"),
+		init: function () {
+			var util = this;
+			$(document).on("click", ".btn-send", function () {
+				util.popup.find('.modal-title').html('发模板消息（图片）给用户');
+				util.popup.find('.modal-body').html(util.tmp);
+				util.popup.modal('show');
+			});
+			$(document).on("click", ".btn-save", function () {
+				var self = $(this);
+				var mobiles = $('.mobiles').val().trim();
+				if (!mobiles) {
+					layer.msg('发送失败！没有手机号');
+					return false;
+				}
+				util.send(mobiles, self.closest('td').attr('data-id'));
+				return false;
+			});
+		},
+		send: function (mobiles, mid) {
+			$.post('/api/admin', {
+				tag: 'notice',
+				media: mid,
+				mobiles: mobiles
+			}, function (resp) {
+				layer.msg(resp.msg);
+				util.popup.modal('hide');
+			}, 'json');
+		}
+	};
+
+	$(function () {
+		iPage.init();
+	});
+</script>
 {{include file="layouts/footer.tpl"}}

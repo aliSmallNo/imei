@@ -242,6 +242,29 @@ class UserWechat extends ActiveRecord
 		return $ret['errcode'] == 0 ? 1 : 0;
 	}
 
+	public static function sendMediaByPhone($mobiles, $mediaId, $type = 'image')
+	{
+		if (!$mobiles || !$mediaId) return 0;
+		foreach ($mobiles as $k => $mobile) {
+			if (!$mobile || strlen($mobile) != 11 || !is_numeric($mobile)) {
+				unset($mobiles[$k]);
+			}
+		}
+		$mobiles = array_values($mobiles);
+		if (!$mobiles || !$mediaId) return 0;
+
+		$conn = AppUtil::db();
+		$sql = 'select uId, uOpenId from im_user WHERE uPhone in (' . implode(',', $mobiles) . ')';
+		$ret = $conn->createCommand($sql)->queryAll();
+		$cnt = 0;
+		foreach ($ret as $row) {
+			$openId = $row['uOpenId'];
+			self::sendMedia($openId, $mediaId);
+			$cnt++;
+		}
+		return $cnt;
+	}
+
 	public static function sendMedia($openId, $mediaId, $type = 'image')
 	{
 		$ret = [
