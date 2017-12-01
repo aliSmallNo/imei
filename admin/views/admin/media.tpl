@@ -71,28 +71,30 @@
 	var iPage = {
 		tmp: $("#tpl_users").html(),
 		popup: $("#modal_wrap"),
+		media: '',
 		init: function () {
 			var util = this;
 			$(document).on("click", ".btn-send", function () {
+				util.media = $(this).closest('td').attr('data-id');
 				util.popup.find('.modal-title').html('发模板消息（图片）给用户');
 				util.popup.find('.modal-body').html(util.tmp);
 				util.popup.modal('show');
 			});
 			$(document).on("click", ".btn-save", function () {
-				var self = $(this);
 				var mobiles = $('.mobiles').val().trim();
 				if (!mobiles) {
 					layer.msg('发送失败！没有手机号');
 					return false;
 				}
-				util.send(mobiles, self.closest('td').attr('data-id'));
+				util.send(mobiles);
 				return false;
 			});
 		},
-		send: function (mobiles, mid) {
+		send: function (mobiles) {
+			var util = this;
 			$.post('/api/admin', {
 				tag: 'notice',
-				media: mid,
+				media: util.media,
 				mobiles: mobiles
 			}, function (resp) {
 				layer.msg(resp.msg);
