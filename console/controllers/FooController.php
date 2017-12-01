@@ -922,7 +922,7 @@ class FooController extends Controller
 
 
 		$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
-		$url = 'https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=';
+		$url = 'https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=%s';
 		$url = sprintf($url, $token);
 		$json = [
 			'type' => 'image',
