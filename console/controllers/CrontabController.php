@@ -24,9 +24,8 @@ class CrontabController extends Controller
 		var_dump($ret);
 	}
 
-	public function actionRefreshpool($openId = '')
+	public function actionDaily()
 	{
-		// 120003, 131266, 131379, 134534
 		$ret = UserWechat::refreshPool();
 		var_dump(count($ret));
 	}
