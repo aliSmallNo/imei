@@ -182,6 +182,7 @@ class UserBuzz extends ActiveRecord
 		if (!$content) {
 			return $resp;
 		}
+		$content = strtolower($content);
 		switch ($content) {
 			case 178:
 				$resp = self::json_to_xml([
@@ -213,6 +214,7 @@ class UserBuzz extends ActiveRecord
 				$resp = self::textMsg($fromUsername, $toUsername, $txt);
 				break;
 			case '晚安':
+			case 'good night':
 				$txt = "“这城市总是风很大，孤独的人总是晚回家。外面不像你想象的那么好，风雨都要自己挡。愿每个独自走夜路的你都足够坚强。冬天到了，你要照顾你那嗜好吃香喝辣却脆弱不堪的胃，黑色的头发，和爱笑的眼睛。
 
 愿你梦里有喝不完的酒，醒来后能酩酊大醉地过完这一生。能醉生梦死也能如梦初醒，穷尽一生，也做不完这一场美梦。晚安 🌗";
