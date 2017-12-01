@@ -28,7 +28,7 @@ class CrontabController extends Controller
 	{
 		// 120003, 131266, 131379, 134534
 		$ret = UserWechat::refreshPool();
-		var_dump($ret);
+		var_dump(count($ret));
 	}
 
 	public function actionRecycle()
