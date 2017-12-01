@@ -188,6 +188,5 @@ var BpbhdUtil = {
 
 	$(function () {
 		BpbhdUtil.resetLeftMenuScroll();
-
 	});
 })(jQuery);
