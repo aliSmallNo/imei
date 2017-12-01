@@ -23,17 +23,14 @@
 	}
 
 	.person {
-		display: -webkit-box;
-		display: -webkit-flex;
 		display: -ms-flexbox;
 		display: flex;
 		border: none;
 	}
 
 	.person .avatar {
-		-webkit-flex: 0 0 44px;
-		-ms-flex: 0 0 44px;
-		flex: 0 0 44px;
+		-ms-flex: 0 0 40px;
+		flex: 0 0 40px;
 		text-align: left;
 	}
 
