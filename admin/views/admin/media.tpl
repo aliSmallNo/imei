@@ -72,6 +72,7 @@
 		tmp: $("#tpl_users").html(),
 		popup: $("#modal_wrap"),
 		media: '',
+		loading: 0,
 		init: function () {
 			var util = this;
 			$(document).on("click", ".btn-send", function () {
@@ -92,6 +93,8 @@
 		},
 		send: function (mobiles) {
 			var util = this;
+			if (util.loading) return;
+			util.loading = 1;
 			$.post('/api/admin', {
 				tag: 'notice',
 				media: util.media,
@@ -99,6 +102,7 @@
 			}, function (resp) {
 				layer.msg(resp.msg);
 				util.popup.modal('hide');
+				util.loading = 0;
 			}, 'json');
 		}
 	};
