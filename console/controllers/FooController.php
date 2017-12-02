@@ -906,11 +906,17 @@ class FooController extends Controller
 	public function actionRain()
 	{
 //		$openId = 'oYDJew48Eghqvj-BFT1Ddb9b0Miw';
-		$media = 'GfJsRJj-kJwOJMdX7eK9HCfqRdrTfJzhS_uneE6i6Yk';
+//		$media = 'GfJsRJj-kJwOJMdX7eK9HCfqRdrTfJzhS_uneE6i6Yk';
+		$media = 'GfJsRJj-kJwOJMdX7eK9HLvSqEjb6AGFjhQN59RgLak';
 		$sql = "SELECT u.uId,u.uOpenId,COUNT(t.tId) as cnt
 			 FROM im_user as u 
 			 JOIN im_user_trans as t on t.tUId=u.uId AND t.tCategory=100
 			 GROUP BY u.uId HAVING cnt>0 ORDER BY u.uId";
+		$sql = "SELECT u.uId,u.uOpenId,COUNT(m.cId) as cnt
+			 FROM im_user as u 
+			 JOIN im_chat_msg as m on m.cAddedBy = u.uId 
+			 WHERE u.uOpenId LIKE 'oYDJew%'
+			 GROUP BY u.uId HAVING cnt>10 ORDER BY u.uId; ";
 		$conn = AppUtil::db();
 		$rows = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
