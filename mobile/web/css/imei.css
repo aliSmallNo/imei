@@ -5073,7 +5073,7 @@ section {
       text-align: center;
       color: #fff; }
   .m-bottom-bar .icons {
-    z-index: 99;
+    z-index: 2100;
     -webkit-box-flex: 0 0 5rem;
     -webkit-flex: 0 0 5rem;
     -ms-flex: 0 0 5rem;
