@@ -6,10 +6,10 @@ return [
 		'cache' => [
 			'class' => 'yii\caching\FileCache',
 		],
-		'session' => [
+		/*'session' => [
 			'class' => 'yii\web\DbSession',
 			'sessionTable' => 'im_session',
 			'timeout' => 50
-		],
+		],*/
 	],
 ];
