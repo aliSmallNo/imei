@@ -357,12 +357,14 @@ class ApiController extends Controller
 		$id = self::postParam('id');
 		$wx_info = UserWechat::getInfoByOpenId($openId);
 		$wx_uid = 0;
+		$wx_role = User::ROLE_SINGLE;
 		$wx_name = $wx_eid = $wx_thumb = '';
 		if ($wx_info) {
 			$wx_uid = $wx_info['uId'];
 			$wx_name = $wx_info['uName'];
 			$wx_thumb = $wx_info['uThumb'];
 			$wx_eid = AppUtil::encrypt($wx_uid);
+			$wx_role = $wx_info['uRole'];
 		}
 		switch ($tag) {
 			case "security_center":
@@ -511,23 +513,6 @@ class ApiController extends Controller
 				} else {
 					return self::renderAPI(129, '输入的验证码不正确或者已经失效');
 				}
-			case 'sign':
-				if (!$wx_uid) {
-					return self::renderAPI(129, '用户不存在啊~');
-				}
-				list($code, $msg) = UserAudit::verify($wx_uid);
-				if ($code && $msg) {
-					return self::renderAPI($code, $msg);
-				}
-				LogAction::add($wx_uid, $openId, LogAction::ACTION_SIGN);
-				list($amt, $unit) = UserSign::sign($wx_uid);
-				if ($amt) {
-					return self::renderAPI(0, '今日签到获得' . $amt . $unit . '奖励，请明天继续~',
-						['title' => UserSign::TIP_SIGNED]);
-				} else {
-					return self::renderAPI(129, '您今日已经签到过啦~');
-				}
-				break;
 			case 'lotsign':
 				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
@@ -539,15 +524,18 @@ class ApiController extends Controller
 				if ($code && $msg) {
 					return self::renderAPI($code, $msg);
 				}
-				$prize = Lottery::prize([0, 6, 7]);
-				$amt = Lottery::$flowerDict[$prize];
+				$prizeIndex = Lottery::randomPrize();
+				$prize = ($wx_role == User::ROLE_SINGLE ? Lottery::$SingleBundle[$prizeIndex] : Lottery::$MatcherBundle[$prizeIndex]);
+				$amt = $prize['num'];
+				$unit = $prize['unit'];
 				LogAction::add($wx_uid, $openId, LogAction::ACTION_SIGN);
-				list($amt, $unit) = UserSign::sign($wx_uid, $amt);
+				list($amt, $unitName) = UserSign::sign($wx_uid, $amt, $unit);
 				if ($amt) {
-					return self::renderAPI(0, '今日签到获得' . $amt . $unit . ',明天继续~',
-						['title' => "已经<br>签到", 'prize' => $prize]);
+					$msg = '今日签到获得' . $amt . $unitName . '，明天继续~';
+				} else {
+					$msg = '幸运总是迟到，但绝不会缺席。明天再来';
 				}
-				break;
+				return self::renderAPI(0, $msg, ['title' => "已经<br>签到", 'prize' => $prizeIndex]);
 			case "lot2":
 				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
@@ -1078,7 +1066,7 @@ class ApiController extends Controller
 				}
 				break;
 		}
-		return self::renderAPI(129, '操作无效~');
+		return self::renderAPI(129, '此操作无效~');
 	}
 
 	/*** for 小程序 */
@@ -2402,7 +2390,7 @@ class ApiController extends Controller
 				$lotteryInfo = Lottery::getItem($oid);
 				if ($lotteryInfo) {
 					//$prize = $lotteryInfo['floor'];
-					$prize = Lottery::prize(7);
+					$prize = Lottery::randomPrize();
 				}
 				return self::renderAPI(0, '幸运总是迟到，但绝不会缺席~ 加油啊，努力！', ['prize' => $prize]);
 				break;

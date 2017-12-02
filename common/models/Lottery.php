@@ -12,8 +12,90 @@ use yii\db\ActiveRecord;
 
 class Lottery extends ActiveRecord
 {
-	static $flowerDict = [
-		0 => 1, 1 => 5, 2 => 10, 3 => 15, 4 => 20, 5 => 25, 6 => 30, 7 => 35
+	static $MatcherBundle = [
+		[
+			'num' => 1,
+			'unit' => UserTrans::UNIT_FEN,
+			'image' => '/images/sign/sign_mp_1.jpg'
+		],
+		[
+			'num' => 0,
+			'unit' => UserTrans::UNIT_FEN,
+			'text' => '谢谢参与'
+		],
+		[
+			'num' => 5,
+			'unit' => UserTrans::UNIT_FEN,
+			'image' => '/images/sign/sign_mp_5.jpg'
+		],
+		[
+			'num' => 10,
+			'unit' => UserTrans::UNIT_FEN,
+			'image' => '/images/sign/sign_mp_10.jpg'
+		],
+		[
+			'num' => 15,
+			'unit' => UserTrans::UNIT_FEN,
+			'image' => '/images/sign/sign_mp_15.png'
+		],
+		[
+			'num' => 20,
+			'unit' => UserTrans::UNIT_FEN,
+			'image' => '/images/sign/sign_mp_20.jpg'
+		],
+		[
+			'num' => 25,
+			'unit' => UserTrans::UNIT_FEN,
+			'image' => '/images/sign/sign_mp_25.png'
+		],
+		[
+			'num' => 5,
+			'unit' => UserTrans::UNIT_FEN,
+			'image' => '/images/sign/sign_mp_5.jpg'
+		]
+	];
+
+	static $SingleBundle = [
+		[
+			'num' => 1,
+			'unit' => UserTrans::UNIT_GIFT,
+			'image' => '/images/sign/sign_1.jpg'
+		],
+		[
+			'num' => 0,
+			'unit' => UserTrans::UNIT_GIFT,
+			'text' => '谢谢参与'
+		],
+		[
+			'num' => 5,
+			'unit' => UserTrans::UNIT_GIFT,
+			'image' => '/images/sign/sign_5.jpg'
+		],
+		[
+			'num' => 10,
+			'unit' => UserTrans::UNIT_GIFT,
+			'image' => '/images/sign/sign_10.jpg'
+		],
+		[
+			'num' => 1,
+			'unit' => UserTrans::UNIT_CHAT_DAY3,
+			'image' => '/images/ico_wallet_3.png'
+		],
+		[
+			'num' => 15,
+			'unit' => UserTrans::UNIT_GIFT,
+			'image' => '/images/sign/sign_15.jpg'
+		],
+		[
+			'num' => 5,
+			'unit' => UserTrans::UNIT_GIFT,
+			'image' => '/images/sign/sign_5.jpg'
+		],
+		[
+			'num' => 1,
+			'unit' => UserTrans::UNIT_CHAT_DAY7,
+			'image' => '/images/ico_wallet_7.png'
+		]
 	];
 
 	public static function tableName()
@@ -47,14 +129,23 @@ class Lottery extends ActiveRecord
 		return [];
 	}
 
-	public static function prize($i)
+	public static function randomPrize()
 	{
-		$arr = [0, 1, 2, 3, 4, 5, 6, 7];
-		if (!is_array($i)) {
-			$i = [];
+		$bigPrize = [4, 7];
+		$smallPrize = [0, 1, 2, 3];
+		$arr = [];
+		for ($k = 0; $k < 8; $k++) {
+			$arr[] = $k;
 		}
-		$arr = array_diff($arr, $i);
-		$prize = array_rand($arr);
+		//Rain: 只有在 1300 ~ 1330 之间，有可能抽到大奖
+		if (date('Hi') < 1300 || date('Hi') > 1330) {
+			$arr = array_diff($arr, $bigPrize);
+		}
+		$arr = array_merge($arr, $smallPrize);
+		$arr = array_merge($arr, $smallPrize);
+
+		shuffle($arr);
+		$prize = $arr[mt_rand(0, count($arr) - 1)];
 		return $prize;
 	}
 }

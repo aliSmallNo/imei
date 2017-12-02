@@ -10,6 +10,7 @@ namespace console\controllers;
  */
 use common\models\ChatMsg;
 use common\models\Img;
+use common\models\Lottery;
 use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
@@ -904,9 +905,9 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		var_dump(date('w', time() + 86400 * 2) );
-		/*$ret =  WechatUtil::getAccessToken('N8JoVKwSNP5irhG2d19w');
-		var_dump($ret);*/
+
+		$ret = Lottery::randomPrize();
+		var_dump($ret);
 
 		/*{
     "touser":"OPENID",

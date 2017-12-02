@@ -12,6 +12,7 @@ use common\models\City;
 use common\models\Date;
 use common\models\Log;
 use common\models\LogAction;
+use common\models\Lottery;
 use common\models\Pay;
 use common\models\QuestionGroup;
 use common\models\User;
@@ -1147,10 +1148,22 @@ class WxController extends BaseController
 		$isSign = UserSign::isSign($this->user_id);
 		$isMp = $this->user_role == 20 ? 1 : 0;
 		$str = $isMp ? "_mp" : "";
+		$items = [];
+		$arr = ($this->user_role == User::ROLE_SINGLE ? Lottery::$SingleBundle : Lottery::$MatcherBundle);
+		foreach ($arr as $item) {
+			if (isset($item['image'])) {
+				$cls = in_array($item['unit'], ['chat_3', 'chat_7']) ? 'card' : '';
+				$items[] = '<img src="' . $item['image'] . '" class="' . $cls . '">';
+			} elseif (isset($item['text'])) {
+				$items[] = '<span>' . $item['text'] . '</span>';
+			}
+		}
+
 		return self::renderPage('lottery.tpl',
 			[
 				'isSign' => $isSign,
 				'str' => $str,
+				'items' => $items
 				//'gifts' => $gifts,
 				//'encryptId' => AppUtil::encrypt($oid)
 			],
@@ -1681,7 +1694,7 @@ class WxController extends BaseController
 	public function actionReg0()
 	{
 		$openId = self::$WX_OpenId;
-		if($this->user_phone){
+		if ($this->user_phone) {
 			header('location:/wx/reg1');
 			exit();
 		}

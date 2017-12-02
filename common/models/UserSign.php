@@ -24,7 +24,7 @@ class UserSign extends ActiveRecord
 	public static function add($uid, $reward = 10)
 	{
 		$date = date('Y-m-d');
-		$entity = self::findOne(['sUId' => $uid, 'sDate' => $date]);
+		$entity = self::findOne(['sUId' => $uid, 'sDate' => $date, 'sDeleted' => 0]);
 		if ($entity) {
 			return false;
 		}
@@ -36,10 +36,10 @@ class UserSign extends ActiveRecord
 		return true;
 	}
 
-	public static function sign($uid, $amt = 0)
+	public static function sign($uid, $amt = 0, $unit = '')
 	{
 		$date = date('Y-m-d');
-		$entity = self::findOne(['sUId' => $uid, 'sDate' => $date]);
+		$entity = self::findOne(['sUId' => $uid, 'sDate' => $date, 'sDeleted' => 0]);
 		if ($entity) {
 			return false;
 		}
@@ -51,37 +51,34 @@ class UserSign extends ActiveRecord
 		$ret = [];
 		switch ($role) {
 			case User::ROLE_MATCHER:
-				$amt = $amt ? $amt : rand(1, 5) * 10;
 				$entity = new self();
 				$entity->sUId = $uid;
 				$entity->sDate = $date;
 				$entity->sReward = $amt;
-				$entity->sUnit = UserTrans::UNIT_FEN;
+				$entity->sUnit = $unit;
 				$entity->save();
 				$ret[] = round($amt / 100.0, 2);
 				$ret[] = '元';
-				UserTrans::add($uid, $entity->sId, UserTrans::CAT_SIGN, '签到奖励', $amt, UserTrans::UNIT_FEN);
 				break;
 			default:
-				$amt = $amt ? $amt : rand(5, 35);
 				$entity = new self();
 				$entity->sUId = $uid;
 				$entity->sDate = $date;
 				$entity->sReward = $amt;
-				$entity->sUnit = UserTrans::UNIT_GIFT;
+				$entity->sUnit = $unit;
 				$entity->save();
 				$ret[] = $amt;
-				$ret[] = '媒桂花';
-				UserTrans::add($uid, $entity->sId, UserTrans::CAT_SIGN, '签到奖励', $amt, UserTrans::UNIT_GIFT);
+				$ret[] = isset(UserTrans::$UnitDict [$unit]) ? UserTrans::$UnitDict [$unit] : '';
 				break;
 		}
+		UserTrans::add($uid, $entity->sId, UserTrans::CAT_SIGN, '签到奖励', $amt, $unit);
 		return $ret;
 	}
 
 	public static function isSign($uid)
 	{
 		$date = date('Y-m-d');
-		$entity = self::findOne(['sUId' => $uid, 'sDate' => $date]);
+		$entity = self::findOne(['sUId' => $uid, 'sDate' => $date, 'sDeleted' => 0]);
 		return $entity ? true : false;
 	}
 }

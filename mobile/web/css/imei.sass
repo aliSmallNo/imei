@@ -3363,7 +3363,7 @@ section
 	background: $mainColorLight
 	position: relative
 	@include displayFlex
-	padding: 3.5rem 4rem 1.5rem
+	padding: 3.5rem 3.5rem 1.5rem
 	a
 		color: #fff
 		position: absolute
@@ -3394,7 +3394,7 @@ section
 			background-size: 1.4rem 1.4rem
 		.amt
 			font-weight: $weightBold
-			font-size: 2.2rem
+			font-size: 2rem
 			color: #fff
 			line-height: 4.3rem
 		span
@@ -6044,12 +6044,22 @@ section
 		text-align: center
 		position: relative
 		margin: .1rem
-
 		@include borderBox
+		span
+			font-size: 1.8rem
+			font-weight: $weightBold
+			color: $redColor
+			line-height: 8rem
 		img
 			display: block
 			width: 100%
 			height: 100%
+			&.card
+				position: absolute
+				top: 1.7rem
+				left: 6%
+				width: 88%
+				height: auto
 		a
 			width: 100%
 			height: 100%
