@@ -201,61 +201,6 @@
 		还没有人对他进行评价哦~
 	</ul>
 </section>
-<section id="schat" data-title="密聊中...">
-	<div class="schat-top-bar">
-		<a href="javascript:;" data-tag="helpchat">
-			<img src="/images/top_help_chat.png">
-			<div>助聊</div>
-		</a>
-		<a href="javascript:;" data-tag="date">
-			<img src="/images/top_date.png">
-			<div>帮我约TA</div>
-		</a>
-		<a href="javascript:;" data-tag="toblock">
-			<img src="/images/top_block.png">
-			<div>拉黑TA</div>
-		</a>
-	</div>
-	<a href="javascript:;" class="help-chat-icon help-chat-icon-btn" style="display: none">
-		<div class="img"><img src="/images/ico_help_chat.png"></div>
-		<div class="text">助聊?</div>
-	</a>
-
-	<div class="report_wrap schat-content">
-		<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
-		<ul class="chats"></ul>
-		<a class="user-comment" href="javascript:;" style="display: none">匿名评价TA</a>
-	</div>
-	<div class="m-bottom-pl"></div>
-	<div class="m-bottom-bar">
-		<div class="m-chat-wrap off">
-			<a href="javascript:;" class="schat-option" data-tag="tohelpchat" style="display: none">助聊</a>
-			<a href="javascript:;" class="schat-option" data-tag="toblock">拉黑对方</a>
-			<a href="javascript:;" class="schat-option">取消</a>
-		</div>
-		<div class="help-chat off">
-			<div class="help-chat-item">
-				<a href="javascript:;">秀</a>
-				<a href="javascript:;" help-tag="personal">个人</a>
-				<a href="javascript:;" help-tag="experience">经历</a>
-				<a href="javascript:;" help-tag="family">家庭</a>
-				<a href="javascript:;" help-tag="concept">观念</a>
-				<a href="javascript:;" help-tag="interest">兴趣</a>
-			</div>
-			<div class="help-chat-item">
-				<a href="javascript:;">聊</a>
-				<a href="javascript:;" help-tag="common">共同</a>
-				<a href="javascript:;" help-tag="future">未来</a>
-				<a href="javascript:;" help-tag="privacy">隐私</a>
-				<a href="javascript:;" help-tag="marriage">婚姻</a>
-				<a href="javascript:;">加V</a>
-			</div>
-		</div>
-		<div class="icons" style="display: none"><a class="schat-options"></a></div>
-		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120"></div>
-		<div class="action"><a href="javascript:;" class="btn-chat-send">发送</a></div>
-	</div>
-</section>
 <section id="scontacts" data-title="我的密聊记录">
 	{{if $advert_chat}}
 	<a class="m-service" href="{{$advert_chat.url}}" data-tip="{{$advert_chat.tip}}">
@@ -389,6 +334,50 @@
 			<img src="/images/ico_qrcode.jpg" class="qrcode">
 			<p>长按识别二维码 惊喜等着你</p>
 		</div>
+	</div>
+</section>
+<section id="schat" data-title="密聊中...">
+	<div class="schat-top-bar">
+		<a href="javascript:;" data-tag="helpchat">
+			<img src="/images/top_help_chat.png">
+			<div>助聊</div>
+		</a>
+		<a href="javascript:;" data-tag="date">
+			<img src="/images/top_date.png">
+			<div>帮我约TA</div>
+		</a>
+		<a href="javascript:;" data-tag="toblock">
+			<img src="/images/top_block.png">
+			<div>拉黑TA</div>
+		</a>
+	</div>
+	<div class="report_wrap schat-content">
+		<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
+		<ul class="chats"></ul>
+		<a class="user-comment" href="javascript:;" style="display: none">匿名评价TA</a>
+	</div>
+	<div class="m-bottom-pl"></div>
+	<div class="m-bottom-bar">
+		<div class="help-chat off">
+			<div class="help-chat-item">
+				<a href="javascript:;">秀</a>
+				<a href="javascript:;" help-tag="personal">个人</a>
+				<a href="javascript:;" help-tag="experience">经历</a>
+				<a href="javascript:;" help-tag="family">家庭</a>
+				<a href="javascript:;" help-tag="concept">观念</a>
+				<a href="javascript:;" help-tag="interest">兴趣</a>
+			</div>
+			<div class="help-chat-item">
+				<a href="javascript:;">聊</a>
+				<a href="javascript:;" help-tag="common">共同</a>
+				<a href="javascript:;" help-tag="future">未来</a>
+				<a href="javascript:;" help-tag="privacy">隐私</a>
+				<a href="javascript:;" help-tag="marriage">婚姻</a>
+				<a href="javascript:;">加V</a>
+			</div>
+		</div>
+		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120"></div>
+		<div class="action"><a href="javascript:;" class="btn-chat-send">发送</a></div>
 	</div>
 </section>
 <section id="myMP">
