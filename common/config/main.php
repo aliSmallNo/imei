@@ -9,6 +9,7 @@ return [
 		'session' => [
 			'class' => 'yii\web\DbSession',
 			'sessionTable' => 'im_session',
+			'timeout' => 60
 		],
 	],
 ];

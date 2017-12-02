@@ -104,6 +104,7 @@ class SiteController extends BaseController
 
 		$session = Yii::$app->session;
 		$session['admin_id'] = $this->admin_id;
+		$session['admin_name'] = 'test';
 		if (isset($userInfo['menus'])) {
 			$allMenus = $userInfo['menus'];
 			$menuIcon = [];

@@ -48,25 +48,19 @@ var BpbhdUtil = {
 		if ($(window).width() < 700) {
 			return;
 		}
-		var $num = 0;
 		var sideBar = $('#side-menu');
-		var folderMenus = sideBar.find('a.nav-top-menu');
-		var folderHeight = folderMenus.get(0).offsetHeight;
-		$num += folderHeight * folderMenus.length;
-		var maxLen = 10;
-		$.each(sideBar.find('ul.nav-second-level'), function () {
+		var newHeight = 0;
+		$.each(sideBar.find('.nav-top-menu'), function () {
+			newHeight += this.offsetHeight;
+		});
+		var maxLen = 0;
+		$.each(sideBar.find('.nav-second-level'), function () {
 			var len = $(this).find('li').length;
 			if (len > maxLen) {
 				maxLen = len;
 			}
 		});
-
-		var subHeight = 32;
-		if (sideBar.find('a.cur-sub-nav').length) {
-			subHeight = sideBar.find('a.cur-sub-nav').get(0).offsetHeight;
-		}
-		var newHeight = ($num + subHeight * maxLen);
-		console.log(newHeight);
+		newHeight += maxLen * 32.5 + $('.g-summary').get(0).offsetHeight;
 		$('#treeScroller').css({
 			height: newHeight
 		});
