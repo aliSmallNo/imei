@@ -438,7 +438,7 @@ class UserWechat extends ActiveRecord
 	/**
 	 * 添加小程序（语音红包）用户
 	 * @param $rawData
-	 * @return int
+	 * @return array|mixed
 	 */
 	public static function addXcxUser($rawData)
 	{

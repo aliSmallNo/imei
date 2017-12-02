@@ -21,7 +21,9 @@ class UserTag extends ActiveRecord
 	const CAT_CHAT_WEEK = 181;
 	const CAT_CHAT_MONTH = 182;
 	const CAT_CHAT_SEASON = 183;
-	const CAT_CHAT_YEAR = 184;
+	const CAT_CHAT_YEAR = 186;
+	const CAT_CHAT_DAY7 = 187;
+	const CAT_CHAT_DAY3 = 188;
 
 	static $CatDict = [
 		self::CAT_MEMBERSHIP => '单身会员卡',
@@ -32,6 +34,8 @@ class UserTag extends ActiveRecord
 		self::CAT_CHAT_MONTH => '月度畅聊卡',
 		self::CAT_CHAT_SEASON => '季度畅聊卡',
 		self::CAT_CHAT_YEAR => '全年畅聊卡',
+		self::CAT_CHAT_DAY3 => '三天畅聊卡',
+		self::CAT_CHAT_DAY7 => '七天畅聊卡',
 	];
 
 	public static function tableName()
@@ -45,7 +49,8 @@ class UserTag extends ActiveRecord
 			$conn = AppUtil::db();
 		}
 		$cats = implode(',',
-			[self::CAT_CHAT_WEEK, self::CAT_CHAT_MONTH, self::CAT_CHAT_SEASON, self::CAT_CHAT_YEAR]);
+			[self::CAT_CHAT_WEEK, self::CAT_CHAT_MONTH, self::CAT_CHAT_SEASON,
+				self::CAT_CHAT_YEAR, self::CAT_CHAT_DAY3, self::CAT_CHAT_DAY7]);
 		$sql = "SELECT tCategory as cat,tTitle as title,DATEDIFF(tExpiredOn,now()) as `left`
 			 	FROM im_user_tag 
 			 	WHERE tUId=$uid AND tDeletedFlag=0 AND tStatus=1 
@@ -81,6 +86,12 @@ class UserTag extends ActiveRecord
 			case self::CAT_CHAT_WEEK:
 				$expired = date('Y-m-d 23:59:56', time() + 86400 * 7);
 				break;
+			case self::CAT_CHAT_DAY3:
+				$expired = date('Y-m-d 23:59:56', time() + 86400 * 3);
+				break;
+			case self::CAT_CHAT_DAY7:
+				$expired = date('Y-m-d 23:59:56', time() + 86400 * 7);
+				break;
 			case self::CAT_CHAT_MONTH:
 				$expired = date('Y-m-d 23:59:56', time() + 86400 * 30);
 				break;
@@ -104,8 +115,9 @@ class UserTag extends ActiveRecord
 	}
 
 	/**
-	 * @param $userIds array|mixed
+	 * @param $userIds
 	 * @return array
+	 * @throws \yii\db\Exception
 	 */
 	public static function tags($userIds)
 	{

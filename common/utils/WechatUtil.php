@@ -502,6 +502,14 @@ class WechatUtil
 					UserTag::addByPId(UserTag::CAT_MEMBERSHIP, $pid);
 					$transCat = UserTrans::CAT_RECHARGE_MEMBER;
 					break;
+				case Pay::CAT_CHAT_DAY3:
+					UserTag::addByPId(UserTag::CAT_CHAT_DAY3, $pid);
+					$transCat = UserTrans::CAT_CHAT_DAY3;
+					break;
+				case Pay::CAT_CHAT_DAY7:
+					UserTag::addByPId(UserTag::CAT_CHAT_DAY7, $pid);
+					$transCat = UserTrans::CAT_CHAT_DAY7;
+					break;
 				case Pay::CAT_CHAT_MONTH:
 					UserTag::addByPId(UserTag::CAT_CHAT_MONTH, $pid);
 					$transCat = UserTrans::CAT_CHAT_MONTH;
@@ -514,7 +522,7 @@ class WechatUtil
 					$transCat = UserTrans::CAT_RECHARGE;
 					break;
 			}
-			UserTrans::addByPID($pid, $transCat);
+			UserTrans::addByPId($pid, $transCat);
 			$curDate = date('Ymd');
 			//Rain: 感恩节馈赠
 			if (isset($payInfo['pUId']) && $curDate >= 20171124 && $curDate <= 20171126) {

@@ -21,6 +21,8 @@ class Pay extends ActiveRecord
 	const CAT_MEMBER = 500;
 
 	const CAT_CHAT_MONTH = 600;
+	const CAT_CHAT_DAY3 = 603;
+	const CAT_CHAT_DAY7 = 607;
 	const CAT_CHAT_SEASON = 610;
 
 	const MODE_WXPAY = 100;
@@ -36,17 +38,33 @@ class Pay extends ActiveRecord
 		self::CAT_REDPACKET => '红包',
 		self::CAT_MEET => '约会',
 		self::CAT_MEMBER => '单身会员卡',
+		self::CAT_CHAT_DAY3 => '三天畅聊卡',
+		self::CAT_CHAT_DAY7 => '七天畅聊卡',
 		self::CAT_CHAT_MONTH => '月度畅聊卡',
 		self::CAT_CHAT_SEASON => '季度畅聊卡',
 	];
 
 	static $WalletDict = [
+		'chat_3' => [
+			'cat' => Pay::CAT_CHAT_DAY3,
+			'title' => '三天畅聊卡',
+			'price' => 3.0,
+			'tip' => '三天畅聊，有效期内免费畅聊',
+			'num' => 1
+		],
+		'chat_7' => [
+			'cat' => Pay::CAT_CHAT_DAY7,
+			'title' => '七天畅聊卡',
+			'price' => 7.0,
+			'tip' => '七天畅聊，有效期内免费畅聊',
+			'num' => 1
+		],
 		'chat_month' => [
 			'cat' => Pay::CAT_CHAT_MONTH,
 			'title' => '月度畅聊卡',
 			'price' => 9.90,
 			'pre_price' => 39.9,
-			'tip' => '包月密聊，有效期内免费畅聊',
+			'tip' => '包月畅聊，有效期内免费畅聊',
 			'num' => 1
 		],
 		'chat_season' => [
@@ -54,7 +72,7 @@ class Pay extends ActiveRecord
 			'title' => '季度畅聊卡',
 			'price' => 19.90,
 			'pre_price' => 99.9,
-			'tip' => '包季密聊，有效期内免费畅聊',
+			'tip' => '包季畅聊，有效期内免费畅聊',
 			'num' => 1
 		],
 		'member' => [

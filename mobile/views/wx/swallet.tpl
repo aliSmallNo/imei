@@ -25,7 +25,7 @@
 			</li>
 			{{/foreach}}
 		</ul>
-		<p class="tip-block">媒桂花仅用于打赏，不能提现或退款</p>
+		<p class="tip-block">媒桂花用于赠予、密聊、约会，不能提现或退款</p>
 	</div>
 </section>
 <section id="srecords">

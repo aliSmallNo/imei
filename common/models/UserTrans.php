@@ -19,6 +19,8 @@ class UserTrans extends ActiveRecord
 	const CAT_CHAT_MONTH = 82;
 	const CAT_CHAT_SEASON = 84;
 	const CAT_CHAT_YEAR = 86;
+	const CAT_CHAT_DAY3 = 87;
+	const CAT_CHAT_DAY7 = 88;
 	const CAT_RECHARGE_MEET = 90;
 	const CAT_RECHARGE = 100;
 	const CAT_SIGN = 105;
@@ -38,6 +40,8 @@ class UserTrans extends ActiveRecord
 
 	static $catDict = [
 		self::CAT_RECHARGE_MEMBER => "单身会员",
+		self::CAT_CHAT_DAY3 => "三天畅聊卡",
+		self::CAT_CHAT_DAY7 => "七天畅聊卡",
 		self::CAT_CHAT_MONTH => "月度畅聊卡",
 		self::CAT_CHAT_SEASON => "季度畅聊卡",
 		self::CAT_CHAT_YEAR => "年度畅聊卡",
@@ -133,7 +137,7 @@ class UserTrans extends ActiveRecord
 		return $ret;
 	}
 
-	public static function addByPID($pid, $cat = self::CAT_RECHARGE)
+	public static function addByPId($pid, $cat = self::CAT_RECHARGE)
 	{
 		$payInfo = Pay::findOne(['pId' => $pid]);
 		if (!$payInfo) {
