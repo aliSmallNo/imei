@@ -10,11 +10,11 @@ namespace console\controllers;
  */
 use common\models\ChatMsg;
 use common\models\Img;
-use common\models\Lottery;
 use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
+use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\PushUtil;
@@ -905,8 +905,9 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-
-		$ret = Lottery::randomPrize();
+		$openId = 'oYDJew48Eghqvj-BFT1Ddb9b0Miw';
+		$media = 'GfJsRJj-kJwOJMdX7eK9HLvSqEjb6AGFjhQN59RgLak';
+		$ret = UserWechat::sendMedia($openId, $media);
 		var_dump($ret);
 
 		/*{
