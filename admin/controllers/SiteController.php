@@ -102,6 +102,9 @@ class SiteController extends BaseController
 			exit();
 		}
 
+		$session = Yii::$app->session;
+		$session['admin_id'] = $this->admin_id;
+		var_dump($session->id);
 		if (isset($userInfo['menus'])) {
 			$allMenus = $userInfo['menus'];
 			$menuIcon = [];
@@ -184,7 +187,7 @@ class SiteController extends BaseController
 		$sign = self::postParam("sign");
 		$success = [];
 		$error = [];
-		AppUtil::logFile($this->admin_id, 5, __FUNCTION__, __LINE__);
+
 		if ($sign) {
 			$data = self::postParam("data");
 			$id = self::postParam("id");
@@ -277,6 +280,9 @@ class SiteController extends BaseController
 	 */
 	public function actionAccounts()
 	{
+		$session = Yii::$app->session;
+		$session->set('admin_id', $this->admin_id);
+		var_dump($session->id);
 		$bundle = self::getBundle('page', 'name', 'location', 'phone', 'fonly', 'inactive', 'status', 'sub_status', 'user_type');
 		list($page, $name, $location, $phone, $fonly, $inactive, $status, $sub_status, $user_type) = array_values($bundle);
 		if (!$page) $page = 1;
