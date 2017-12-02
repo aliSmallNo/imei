@@ -905,10 +905,23 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$openId = 'oYDJew48Eghqvj-BFT1Ddb9b0Miw';
-		$media = 'GfJsRJj-kJwOJMdX7eK9HLvSqEjb6AGFjhQN59RgLak';
-		$ret = UserWechat::sendMedia($openId, $media);
-		var_dump($ret);
+//		$openId = 'oYDJew48Eghqvj-BFT1Ddb9b0Miw';
+		$media = 'GfJsRJj-kJwOJMdX7eK9HCfqRdrTfJzhS_uneE6i6Yk';
+		$sql = "SELECT u.uId,u.uOpenId,COUNT(t.tId) as cnt
+			 FROM im_user as u 
+			 JOIN im_user_trans as t on t.tUId=u.uId AND t.tCategory=100
+			 GROUP BY u.uId HAVING cnt>0 ORDER BY u.uId";
+		$conn = AppUtil::db();
+		$rows = $conn->createCommand($sql)->queryAll();
+		$cnt = 0;
+		foreach ($rows as $row) {
+			$openId = $row['uOpenId'];
+			$ret = UserWechat::sendMedia($openId, $media);
+			if ($ret && isset($ret['errcode']) && $ret['errcode'] == 0) {
+				$cnt++;
+			}
+		}
+		var_dump($cnt);
 
 		/*{
     "touser":"OPENID",
