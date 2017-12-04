@@ -140,6 +140,11 @@ class UserNet extends ActiveRecord
 				':dt' => date('Y-m-d'),
 				':nid' => $nid
 			])->execute();
+			AppUtil::logFile($conn->createCommand($sql)->bindValues([
+				':uid' => $uid,
+				':dt' => date('Y-m-d'),
+				':nid' => $nid
+			])->getRawSql(), 5, __FUNCTION__);
 		}
 		return $nid;
 	}
