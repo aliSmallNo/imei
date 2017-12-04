@@ -133,22 +133,13 @@ class UserNet extends ActiveRecord
 			':note' => $note
 		])->execute();
 		$nid = $conn->getLastInsertID();
-		AppUtil::logFile([$nid, $relation], 5, __FUNCTION__, __LINE__);
 		if ($relation == self::REL_QR_MOMENT) {
-			$sql = 'update im_user_sign set sDeleted=1,sNote=:nid WHERE sDeleted=0 AND sUId=:uid AND s.sDate=:dt ';
-			AppUtil::logFile($sql, 5, __FUNCTION__, __LINE__);
-			AppUtil::logFile($conn->createCommand($sql)->bindValues([
-				':uid' => $uid,
-				':dt' => date('Y-m-d'),
-				':nid' => $nid
-			])->getRawSql(), 5, __FUNCTION__, __LINE__);
-
+			$sql = 'update im_user_sign set sDeleted=1,sNote=:nid WHERE sDeleted=0 AND sUId=:uid AND sDate=:dt ';
 			$conn->createCommand($sql)->bindValues([
 				':uid' => $uid,
 				':dt' => date('Y-m-d'),
 				':nid' => $nid
 			])->execute();
-
 		}
 		return $nid;
 	}
