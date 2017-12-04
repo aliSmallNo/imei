@@ -60,7 +60,7 @@
 	</li>
 </script>
 <script src="/assets/lib/My97DatePicker/WdatePicker.js"></script>
-<script src="/js/footer.js?v=1.6.4"></script>
+<script src="/js/footer.js?v=1.6.5"></script>
 </body>
 </html>
 {{/if}}
