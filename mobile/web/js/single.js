@@ -322,49 +322,6 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 			layer.closeAll();
 		}
 
-		var MeipoUtil = {
-			page: 1,
-			loading: false,
-			nomore: $("a[tag=recomend]"),
-			recommendMp: $(".recommendMp"),
-			slinkTemp: $("#slinkTemp").html(),
-			init: function () {
-				$(document).on(kClick, "a[tag=recomend]", function () {
-					if ($(this).attr("fl")) {
-						return;
-					}
-					MeipoUtil.reload();
-				});
-			},
-			reload: function () {
-				var util = this;
-				if (util.loading || util.page < 1) {
-					return;
-				}
-				util.loading = 1;
-				util.nomore.html("拼命加载中...");
-				$.post("/api/user", {
-					tag: "matcher",
-					page: util.page,
-				}, function (resp) {
-					var html = Mustache.render(util.slinkTemp, resp.data);
-					if (util.page == 1) {
-						util.recommendMp.html(html);
-					} else {
-						util.recommendMp.append(html);
-					}
-					util.page = resp.data.nextPage;
-					if (util.page < 1) {
-						util.nomore.html("没有更多了~");
-						util.nomore.attr("fl", 1);
-					} else {
-						util.nomore.html("点击加载更多");
-					}
-					util.loading = 0;
-				}, "json");
-			}
-		};
-
 		$(".nav-foot > a").on(kClick, function () {
 			var self = $(this);
 			self.closest(".nav-foot").find("a").removeClass("active");
@@ -2502,7 +2459,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 			if (Date.parse(new Date()) < Date.parse("2017/11/23")) {
 				alertModel.show3('');
 			}
-			MeipoUtil.init();
+			// MeipoUtil.init();
 			ProfileUtil.init();
 			ResumeUtil.init();
 			ReportUtil.init();
@@ -2510,7 +2467,6 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 			RankUtil.init();
 			FavorUtil.init();
 			AdvertUtil.init();
-			MeipoUtil.init();
 			SwipeUtil.init();
 
 			setTimeout(function () {

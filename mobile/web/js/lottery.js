@@ -1,41 +1,24 @@
-require.config({
-	paths: {
-		'jquery': '/assets/js/jquery-3.2.1.min',
-		'layer': '/assets/js/layer_mobile/layer'
-	}
-});
-
-require(['jquery', 'layer'], function ($, layer) {
+require(['/assets/js/alpha.js'], function (alpha) {
 	"use strict";
-	var kClick = 'click';
-
-	function showMsg(title, sec) {
-		var delay = sec || 4;
-		layer.open({
-			type: 99,
-			content: title,
-			skin: 'msg',
-			time: delay
-		});
-	}
-
 	var LotteryUtil = {
 		index: 1,
 		count: 8,
 		timer: 0,
-		speed: 100,
+		speed: 120,
 		times: 0,
 		cycle: 60,
 		prize: -1,
+		amt: 0,
 		msg: '',
-		title: '',
+		remaining: 0,
 		running: false,
 		oid: $('#cOID').val(),
 		table: $('.lottery-gifts'),
+		go: $('.go-lottery'),
 		init: function () {
 			var util = this;
 			util.table.find(".unit-" + util.index).addClass("active");
-			util.table.find('a').click(function () {
+			util.go.click(function () {
 				util.run();
 				return false;
 			});
@@ -56,27 +39,30 @@ require(['jquery', 'layer'], function ($, layer) {
 				return false;
 			}
 			util.running = true;
-			util.speed = 100;
+			util.speed = 120;
 			util.msg = '';
 			util.prize = -1;
 			util.table.find('.unit').removeClass('prize');
-			//$.post('/api/lottery',
-			$.post('/api/user',
+			$.post('/api/lottery',
 				{
-					//tag: 'draw',
-					tag: 'lotsign',
-					id: util.oid
-				}, function (resp) {
+					tag: 'sign'
+				},
+				function (resp) {
 					util.prize = resp.data.prize;
-					util.title = resp.data.title;
-					if (resp.code == 0) {
-						util.msg = resp.msg;
+					util.remaining = resp.data.remaining;
+					util.msg = resp.msg;
+					if (resp.code < 1) {
 						util.spin();
+					} else if (resp.code > 0 && util.remaining > 0) {
+						alpha.prompt('千寻提示', util.msg, ['马上分享'], function () {
+							location.href = '/wx/mshare';
+						});
 					} else {
-						showMsg(resp.msg);
+						alpha.prompt('千寻提示', util.msg, ['我知道了']);
 					}
+					util.running = false;
+
 				}, 'json');
-			//util.spin();
 		},
 		spin: function () {
 			var util = this;
@@ -89,8 +75,14 @@ require(['jquery', 'layer'], function ($, layer) {
 				util.running = false;
 				util.table.find('.active').addClass('prize');
 				if (util.msg) {
-					showMsg(util.msg);
-					$(".lottery-gifts li a").html('<p>' + util.title + '</p>').addClass('gray');
+					if (util.msg.remaining > 0) {
+						alpha.prompt('千寻提示', util.msg, ['马上分享'], function () {
+							location.href = '/wx/mshare';
+						});
+					} else {
+						alpha.prompt('千寻提示', util.msg, ['我知道了']);
+						util.go.addClass('gray');
+					}
 				}
 			} else {
 				if (util.times < util.cycle) {
@@ -116,6 +108,5 @@ require(['jquery', 'layer'], function ($, layer) {
 
 	$(function () {
 		LotteryUtil.init();
-		$("body").addClass("lot-bg");
 	});
 });

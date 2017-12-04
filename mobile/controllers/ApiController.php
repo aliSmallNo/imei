@@ -513,29 +513,6 @@ class ApiController extends Controller
 				} else {
 					return self::renderAPI(129, '输入的验证码不正确或者已经失效');
 				}
-			case 'lotsign':
-				if (!$wx_uid) {
-					return self::renderAPI(129, '用户不存在啊~');
-				}
-				if (UserSign::isSign($wx_uid)) {
-					return self::renderAPI(129, '已经签过到了哦~');
-				}
-				list($code, $msg) = UserAudit::verify($wx_uid);
-				if ($code && $msg) {
-					return self::renderAPI($code, $msg);
-				}
-				$prizeIndex = Lottery::randomPrize();
-				$prize = ($wx_role == User::ROLE_SINGLE ? Lottery::$SingleBundle[$prizeIndex] : Lottery::$MatcherBundle[$prizeIndex]);
-				$amt = $prize['num'];
-				$unit = $prize['unit'];
-				LogAction::add($wx_uid, $openId, LogAction::ACTION_SIGN);
-				list($amt, $unitName) = UserSign::sign($wx_uid, $amt, $unit);
-				if ($amt) {
-					$msg = '今日签到获得' . $amt . $unitName . '，明天继续~';
-				} else {
-					$msg = '幸运总是迟到，但绝不会缺席。明天再来';
-				}
-				return self::renderAPI(0, $msg, ['title' => "已经<br>签到", 'prize' => $prizeIndex]);
 			case "lot2":
 				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
@@ -2377,11 +2354,19 @@ class ApiController extends Controller
 		if (!$openId) {
 			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
 		}
-		$wxInfo = UserWechat::getInfoByOpenId($openId);
-		if (!$wxInfo) {
+		$wx_info = UserWechat::getInfoByOpenId($openId);
+		$wx_uid = 0;
+		$wx_role = User::ROLE_SINGLE;
+		$wx_name = $wx_eid = $wx_thumb = '';
+		if ($wx_info) {
+			$wx_uid = $wx_info['uId'];
+			$wx_name = $wx_info['uName'];
+			$wx_thumb = $wx_info['uThumb'];
+			$wx_eid = AppUtil::encrypt($wx_uid);
+			$wx_role = $wx_info['uRole'];
+		}else {
 			return self::renderAPI(129, '用户不存在啊~', ['prize' => 4]);
 		}
-		$uid = $wxInfo['uId'];
 		switch ($tag) {
 			case 'draw':
 				$oid = self::postParam('id');
@@ -2393,6 +2378,23 @@ class ApiController extends Controller
 					$prize = Lottery::randomPrize();
 				}
 				return self::renderAPI(0, '幸运总是迟到，但绝不会缺席~ 加油啊，努力！', ['prize' => $prize]);
+				break;
+			case 'sign':
+				list($code, $msg) = UserAudit::verify($wx_uid);
+				if ($code && $msg) {
+					return self::renderAPI($code, $msg);
+				}
+				$prizeIndex = Lottery::randomPrize();
+				$prize = ($wx_role == User::ROLE_SINGLE ? Lottery::$SingleBundle[$prizeIndex] : Lottery::$MatcherBundle[$prizeIndex]);
+				$amt = $prize['num'];
+				$unit = $prize['unit'];
+				LogAction::add($wx_uid, $openId, LogAction::ACTION_SIGN);
+				list($code, $msg, $remaining) = UserSign::sign($wx_uid, $amt, $unit);
+				return self::renderAPI($code, $msg,
+					[
+						'prize' => $prizeIndex,
+						'remaining' => $remaining
+					]);
 				break;
 		}
 		return self::renderAPI(129, '操作无效~', ['prize' => 4]);

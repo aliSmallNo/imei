@@ -13,7 +13,7 @@
 			{{$items[7]}}
 		</li>
 		<li>
-			<a href="#" {{if $isSign}}class="gray"{{/if}}></a>
+			<a href="#" class="go-lottery {{if !$can_sign}}gray{{/if}}"></a>
 		</li>
 		<li class="unit unit-3">
 			{{$items[3]}}
@@ -30,4 +30,4 @@
 	</ul>
 </div>
 <input type="hidden" id="cOID">
-<script src="/assets/js/require.js" data-main="/js/lottery.js?v=1.2.1"></script>
+<script src="/assets/js/require.js" data-main="/js/lottery.js?v=1.2.3"></script>

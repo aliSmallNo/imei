@@ -123,14 +123,25 @@ class UserNet extends ActiveRecord
 
 	public static function addShare($uid, $subUid, $relation, $note = '')
 	{
-		$entity = new self();
-		$entity->nUId = $uid;
-		$entity->nSubUId = $subUid;
-		$entity->nRelation = $relation;
-		$entity->nUpdatedOn = date('Y-m-d H:i:s');
-		$entity->nNote = $note;
-		$entity->save();
-		return $entity->nId;
+		$conn = AppUtil::db();
+		$sql = 'INSERT INTO im_user_net(nUId,nSubUId,nRelation,nUpdatedOn,nNote)
+			VALUES(:uid,:sub_uid,:rel,now(),:note)';
+		$conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':sub_uid' => $subUid,
+			':rel' => $relation,
+			':note' => $note
+		])->execute();
+		$nid = $conn->getLastInsertID();
+		if ($relation == self::REL_QR_MOMENT) {
+			$sql = 'update im_user_sign set sDeleted=1,sNote=:nid WHERE sDeleted=0 AND sUId=:uid AND s.sDate=:dt ';
+			$conn->createCommand($sql)->bindValues([
+				':uid' => $uid,
+				':dt' => date('Y-m-d'),
+				':nid' => $nid
+			])->execute();
+		}
+		return $nid;
 	}
 
 	public static function addLink($uid, $subUid, $note = '')

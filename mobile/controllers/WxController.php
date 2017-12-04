@@ -751,7 +751,8 @@ class WxController extends BaseController
 		$nickname = $this->user_name;
 		$uId = $this->user_id;
 		$title = ($this->user_role == User::ROLE_MATCHER ? '签到有奖励' : '签到送媒桂花');
-		if (UserSign::isSign($uId)) {
+		list($remaining) = UserSign::remaining($uId);
+		if ($remaining) {
 			$title = UserSign::TIP_SIGNED;
 			$isSign = true;
 		}
@@ -1145,7 +1146,7 @@ class WxController extends BaseController
 			header('location:/wx/index');
 			exit();
 		}
-		$isSign = UserSign::isSign($this->user_id);
+		list($remaining) = UserSign::remaining($this->user_id);
 		$isMp = $this->user_role == 20 ? 1 : 0;
 		$str = $isMp ? "_mp" : "";
 		$items = [];
@@ -1161,11 +1162,9 @@ class WxController extends BaseController
 
 		return self::renderPage('lottery.tpl',
 			[
-				'isSign' => $isSign,
+				'can_sign' => ($remaining > 0),
 				'str' => $str,
 				'items' => $items
-				//'gifts' => $gifts,
-				//'encryptId' => AppUtil::encrypt($oid)
 			],
 			'terse',
 			$title,
