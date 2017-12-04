@@ -45,7 +45,7 @@
 						</div>
 						<div class="right">
 							{{$notice.name}}<em>{{$notice.exp}}</em>{{$notice.st}}
-							<br><a href="javascript:;" class="btn-mod" data-url="{{$notice.url}}" data-cnt="{{$notice.cnt}}"
+							<br><a href="javascript:;" class="btn-mod" data-url="{{$notice.url}}" data-cnt="{{$notice.count}}"
 										 data-st="{{$notice.status}}" data-exp="{{$notice.exp}}" data-tag="{{$notice.cat}}">编辑</a>
 						</div>
 					</li>
@@ -101,19 +101,19 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">通知标题</label>
 			<div class="col-sm-7">
-				<input class="form-control" required data-tag="cTitle" placeholder="（必填）" value="{[title]}">
+				<input class="form-control" required data-tag="cRaw:title" placeholder="（必填）" value="{[title]}">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">通知内容</label>
 			<div class="col-sm-7">
-				<textarea class="form-control" required rows="6" data-tag="cContent" placeholder="（必填）支持换行">{[content]}</textarea>
+				<textarea class="form-control" required rows="6" data-tag="cRaw:content" placeholder="（必填）支持换行">{[content]}</textarea>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">链接地址</label>
 			<div class="col-sm-7">
-				<input class="form-control" data-tag="cUrl" value="{[url]}">
+				<input class="form-control" data-tag="cRaw:url" value="{[url]}">
 			</div>
 		</div>
 		<div class="form-group">
@@ -137,7 +137,7 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">显示次数</label>
 			<div class="col-sm-7">
-				<input class="my-date-input form-control" type="number" data-tag="cCount" value="{[cnt]}">
+				<input class="form-control" type="number" data-tag="cRaw:count" value="{[cnt]}">
 			</div>
 		</div>
 	</div>

@@ -24,26 +24,24 @@ class CogService
 	 */
 	protected $conn = null;
 
-	public static function init()
+	public static function init($cn = null)
 	{
 		$util = new self();
-		$util->conn = AppUtil::db();
+		if (!$cn) {
+			$cn = AppUtil::db();
+		}
+		$util->conn = $cn;
 		return $util;
 	}
 
-	public function add($cat, $content, $url, $admin_id = 1, $idx = 1, $count = 0, $expiredOn = '')
+	public function add($cat, $raw, $expiredOn = '', $admin_id = 1)
 	{
-		$sql = "INSERT INTO im_cog(cCategory,cUrl,cCount,cExpiredOn,cContent,cIndex,cAddedBy)
-				VALUES(:cat,:url,:cnt,:exp,:content,:idx,:aid) ";
-		$content = is_array($content) ? json_encode($content, JSON_UNESCAPED_UNICODE) :
-			json_encode([$content], JSON_UNESCAPED_UNICODE);
+		$sql = "INSERT INTO im_cog(cCategory,cRaw,cExpiredOn,cAddedBy,cUpdatedBy) VALUES(:cat,:raw,:exp,:aid,:aid) ";
+		$raw = is_array($raw) ? json_encode($raw, JSON_UNESCAPED_UNICODE) : $raw;
 		$this->conn->createCommand($sql)->bindValues([
 			':cat' => $cat,
-			':url' => $url,
-			':cnt' => $count,
 			':exp' => $expiredOn,
-			':content' => $content,
-			':idx' => $idx,
+			':raw' => $raw,
 			':aid' => $admin_id
 		])->execute();
 		return $this->conn->getLastInsertID();
@@ -89,22 +87,28 @@ class CogService
 		$params = array_merge($params, [
 			':cat' => self::CAT_NOTICE_TEXT
 		]);
-		$sql = 'SELECT cId as id,cCategory as cat,cUrl as url,cCount as cnt,cContent as content,cTitle as title,cIndex as idx,
+		$sql = 'SELECT cId as id,cCategory as cat,cRaw as raw,
 			cStatus as status,cExpiredOn as exp,cAddedOn as addon,cUpdatedOn as editon, a.aName as `name`
  			FROM im_cog as c
  			LEFT JOIN im_admin as a on c.cUpdatedBy=a.aId
- 			WHERE cId>0 ' . $strCriteria . ' ORDER BY cRank, cUpdatedOn DESC ' . $limit;
+ 			WHERE cId>0 ' . $strCriteria . ' ORDER BY cUpdatedOn DESC ' . $limit;
 		$ret = $this->conn->createCommand($sql)->bindValues($params)->queryAll();
+		$items = [];
 		foreach ($ret as $k => $item) {
 			$active = ($item['status'] == 1);
 			if (isset($item['exp']) && $item['exp']) {
 				$active = ($item['exp'] >= date('Y-m-d'));
 			}
-			$ret[$k]['content'] = json_decode($item['content'], 1);
-			$ret[$k]['active'] = $active;
-			$ret[$k]['st'] = $active ? '' : '失效';
-			$ret[$k]['dt'] = AppUtil::prettyDate($item['editon']);
+			$raw = json_decode($item['raw'], 1);
+			$item = array_merge($item, $raw);
+			unset($item['raw']);
+			$item['url'] = (isset($item['url']) ? $item['url'] : '');
+			$item['title'] = (isset($item['title']) ? $item['title'] : '');
+			$item['active'] = $active;
+			$item['st'] = $active ? '' : '失效';
+			$item['dt'] = AppUtil::prettyDate($item['editon']);
+			$items[] = $item;
 		}
-		return $ret;
+		return $items;
 	}
 }

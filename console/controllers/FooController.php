@@ -15,6 +15,7 @@ use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserWechat;
+use common\service\CogService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\PushUtil;
@@ -903,10 +904,9 @@ class FooController extends Controller
 		var_dump($ret);
 	}
 
-	public function actionRain()
+	public function actionMediamsg()
 	{
-//		$openId = 'oYDJew48Eghqvj-BFT1Ddb9b0Miw';
-//		$media = 'GfJsRJj-kJwOJMdX7eK9HCfqRdrTfJzhS_uneE6i6Yk';
+		$conn = AppUtil::db();
 		$media = 'GfJsRJj-kJwOJMdX7eK9HLvSqEjb6AGFjhQN59RgLak';
 		$sql = "SELECT u.uId,u.uOpenId,COUNT(t.tId) as cnt
 			 FROM im_user as u 
@@ -917,7 +917,6 @@ class FooController extends Controller
 			 JOIN im_chat_msg as m on m.cAddedBy = u.uId 
 			 WHERE u.uOpenId LIKE 'oYDJew%'
 			 GROUP BY u.uId HAVING cnt>10 ORDER BY u.uId; ";
-		$conn = AppUtil::db();
 		$rows = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
 		foreach ($rows as $row) {
@@ -928,16 +927,22 @@ class FooController extends Controller
 			}
 		}
 		var_dump($cnt);
+	}
 
-		/*{
-    "touser":"OPENID",
-    "msgtype":"image",
-    "image":
-    {
-      "media_id":"MEDIA_ID"
-    }
-}*/
-
+	public function actionRain()
+	{
+		$conn = AppUtil::db();
+		$service = CogService::init($conn);
+		$sql = "select * from im_cog WHERE cTitle!='' ";
+		$ret = $conn->createCommand($sql)->queryAll();
+		foreach ($ret as $row) {
+			$raw = [
+				'title' => $row['cTitle'],
+				'content' => json_decode($row['cContent'], 1),
+				'count' => intval($row['cCount']),
+			];
+			$service->add(CogService::CAT_NOTICE_TEXT, $raw, $row['cExpiredOn'], 1001);
+		}
 
 		/*$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 		$url = 'https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=%s';
@@ -1006,7 +1011,7 @@ class FooController extends Controller
 		//
 //		User::propStat("2017-07-17","2017-11-08");
 		//print_r(explode(",", ""));
-		print_r(User::fmtRow(User::find()->where(["uId" => 120003])->asArray()->one()));
+		//print_r(User::fmtRow(User::find()->where(["uId" => 120003])->asArray()->one()));
 	}
 
 

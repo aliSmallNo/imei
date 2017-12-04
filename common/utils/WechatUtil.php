@@ -390,19 +390,19 @@ class WechatUtil
 						],
 						[
 							"type" => "view",
-							"name" => "测另一半",
-							"url" => $wxUrl . "/wx/otherpart"
-						],
-						[
-							"type" => "view",
 							"name" => "官方活动",
 							//"url" => $wxUrl . "/wx/event"
 							"url" => $wxUrl . "/wx/mshare"
 						],
 						[
 							"type" => "view",
+							"name" => "关于我们",
+							"url" => "http://u5559142.viewer.maka.im/pcviewer/7MW8WOAJ"
+						],
+						[
+							"type" => "view",
 							"name" => "帮助中心",
-							"url" => $wxUrl . "/wx/help"
+							"url" => $wxUrl . "/wx/splay"
 						]
 					]
 				]
