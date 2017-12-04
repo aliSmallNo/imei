@@ -1,4 +1,4 @@
-define(['/assets/js/jquery-3.2.1.min.js', '/assets/js/layer_mobile/layer.js'],
+define(['jquery', 'layer'],
 	function ($, layer) {
 		"use strict";
 		return {
@@ -10,6 +10,13 @@ define(['/assets/js/jquery-3.2.1.min.js', '/assets/js/layer_mobile/layer.js'],
 			round: function (num, precision) {
 				var div = Math.pow(10, precision);
 				return Math.round(num * div) / div;
+			},
+			clear: function (index) {
+				if (index) {
+					layer.close(index);
+				} else {
+					layer.closeAll();
+				}
 			},
 			toast: function (msg, tag, sec) {
 				var delay = sec || 3;

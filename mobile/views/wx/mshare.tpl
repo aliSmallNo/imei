@@ -5,7 +5,7 @@
 	{{if $preview}}
 	<br>
 	<div class="btn-wrap" style="padding: .5rem 2rem">
-		<a class="btn btn-main btn-share" >马上分享</a>
+		<a class="btn btn-main btn-share">马上分享</a>
 	</div>
 	<div>
 		<a class="btn btn-mshare-rule" style="color: #0272ff;display: none;font-size: 1.2rem">活动规则</a>
@@ -28,5 +28,9 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-<script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script data-main="/js/mshare.js?v=1.1.6" src="/assets/js/require.js"></script>
+<script src="/assets/js/require.js"></script>
+<script>
+	requirejs(['/js/config.js'], function () {
+		requirejs(['/js/mshare.js?v=1.4.0']);
+	});
+</script>

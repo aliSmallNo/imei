@@ -1322,4 +1322,9 @@
 		<a href="javascript:;" class="date-close"></a>
 	</div>
 </script>
-<script src="/assets/js/require.js" data-main="/js/single.js?v=1.2.2.3"></script>
+<script src="/assets/js/require.js"></script>
+<script>
+	requirejs(['/js/config.js'], function () {
+		requirejs(['/js/single.js?v=1.4.0']);
+	});
+</script>

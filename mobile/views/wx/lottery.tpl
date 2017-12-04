@@ -30,4 +30,9 @@
 	</ul>
 </div>
 <input type="hidden" id="cOID">
-<script src="/assets/js/require.js" data-main="/js/lottery.js?v=1.2.3"></script>
+<script src="/assets/js/require.js"></script>
+<script>
+	requirejs(['/js/config.js'], function () {
+		requirejs(['/js/lottery.js?v=1.4.0']);
+	});
+</script>

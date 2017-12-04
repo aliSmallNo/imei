@@ -1,15 +1,8 @@
 if (document.location.hash === "" || document.location.hash === "#") {
 	document.location.hash = "#swallet";
 }
-require.config({
-	paths: {
-		"jquery": "/assets/js/jquery-3.2.1.min",
-		"layer": "/assets/js/layer_mobile/layer",
-		'mustache': '/assets/js/mustache.min'
-	}
-});
-require(['jquery', 'mustache', "layer"],
-	function ($, Mustache, layer) {
+require(['jquery', 'mustache', "alpha"],
+	function ($, Mustache, alpha) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -62,7 +55,7 @@ require(['jquery', 'mustache', "layer"],
 						if (resp.code == 0) {
 							util.wechatPay(resp.data.prepay);
 						} else {
-							showMsg(resp.msg);
+							alpha.toast(resp.msg);
 						}
 						util.paying = 0;
 						util.payBtn.html(amt + '元');
@@ -83,10 +76,10 @@ require(['jquery', 'mustache', "layer"],
 						},
 						function (res) {
 							if (res.err_msg == "get_brand_wcpay_request:ok") {
-								showMsg("您已经微信支付成功！");
+								alpha.toast("您已经微信支付成功！", 1);
 								util.reload();
 							} else {
-								showMsg("您已经取消微信支付！");
+								alpha.toast("您已经取消微信支付！");
 							}
 						}
 					);
@@ -119,7 +112,7 @@ require(['jquery', 'mustache', "layer"],
 						page: util.page
 					},
 					function (resp) {
-						if (resp.code == 0) {
+						if (resp.code < 1) {
 							var html = Mustache.render(util.tmp, resp.data);
 							util.list.html(html);
 							util.noMore.show();
@@ -129,16 +122,6 @@ require(['jquery', 'mustache', "layer"],
 					}, 'json');
 			}
 		};
-
-		function showMsg(title, sec) {
-			var delay = sec || 3;
-			layer.open({
-				type: 99,
-				content: title,
-				skin: 'msg',
-				time: delay
-			});
-		}
 
 		function locationHashChanged() {
 			var hashTag = location.hash;
@@ -167,7 +150,7 @@ require(['jquery', 'mustache', "layer"],
 					}, 0);
 				}).appendTo($("body"));
 			}
-			layer.closeAll();
+			alpha.clear();
 		}
 
 		$(function () {

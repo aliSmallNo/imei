@@ -1,18 +1,8 @@
 if (document.location.hash === "" || document.location.hash === "#") {
 	document.location.hash = "#slook";
 }
-require.config({
-	paths: {
-		"jquery": "/assets/js/jquery-3.2.1.min",
-		"layer": "/assets/js/layer_mobile/layer",
-		'mustache': '/assets/js/mustache.min',
-		'socket': '/assets/js/socket.io.slim',
-		'swiper': '/assets/js/swiper.jquery.min',
-	}
-});
-
-require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
-	function ($, layer, Mustache, io, Swiper) {
+requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
+	function ($, alpha, Mustache, Swiper, io) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -166,7 +156,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 				$(document).on(kClick, '.btn-recharge', function () {
 					var self = $(this);
 					var pri = self.attr('data-id');
-					showMsg(pri);
+					alpha.toast(pri);
 				});
 			}
 		};
@@ -319,7 +309,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 					iFrame.off('load').remove();
 				}, 0);
 			}).appendTo($("body"));
-			layer.closeAll();
+			alpha.clear();
 		}
 
 		$(".nav-foot > a").on(kClick, function () {
@@ -370,7 +360,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 						case "pay":
 							var num = self.closest(".reward-wx-wrap").find(".options a.active").attr("num");
 							if (!num) {
-								showMsg("请先选择打赏的媒瑰花", 3, 12);
+								alpha.toast("请先选择打赏的媒瑰花");
 								return;
 							}
 							if (AlertUtil.payroseF) {
@@ -382,7 +372,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 								num: num,
 								id: $sls.secretId,
 							}, function (resp) {
-								if (resp.code == 0) {
+								if (resp.code < 1) {
 									if (resp.data.result) {
 										$('.m-wxid-input').val(resp.data.wechatID);
 										$(".getWechat").show();
@@ -393,16 +383,16 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 										$(".not-enough-rose").show();
 									}
 								} else {
-									showMsg(resp.msg, 3, 12);
+									alpha.toast(resp.msg);
 								}
 								AlertUtil.payroseF = 0;
 							}, "json");
 							break;
 						case "des":
-							if ($(this).next().css("display") == "none") {
-								$(this).next().show();
+							if (self.next().css("display") == "none") {
+								self.next().show();
 							} else {
-								$(this).next().hide();
+								self.next().hide();
 							}
 							break;
 					}
@@ -469,16 +459,16 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 							amt: amt
 						}, function (resp) {
 							AlertUtil.giveFlag = 0;
-							if (resp.code == 0) {
+							if (resp.code < 1) {
 								$sls.main.hide();
 								$sls.shade.fadeOut(160);
-								showMsg(resp.msg, 3, 11);
+								alpha.toast(resp.msg, 1);
 							} else {
-								showMsg(resp.msg, 3, 12);
+								alpha.toast(resp.msg);
 							}
 						}, "json");
 					} else {
-						showMsg('请先选择媒桂花数量哦~', 3, 12);
+						alpha.toast('请先选择媒桂花数量哦~');
 					}
 
 					return false;
@@ -493,17 +483,17 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 							$sls.cork.hide();
 							break;
 						case "btn-confirm":
-							var wname = $.trim($(".m-wxid-input").val());
+							var wname = $(".m-wxid-input").val().trim();
 							if (!wname) {
-								showMsg("请填写正确的微信号哦~", 3, 12);
+								alpha.toast("请填写正确的微信号哦~");
 								return;
 							}
 							$.post("/api/user", {
 								tag: "wxname",
-								wname: wname,
+								wname: wname
 							}, function (resp) {
 								if (resp.data) {
-									showMsg("已发送给对方，请等待TA的同意", 3, 12);
+									alpha.toast("已发送给对方，请等待TA的同意");
 									setTimeout(function () {
 										self.closest(".getWechat").hide();
 										$sls.cork.hide();
@@ -524,23 +514,22 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 					id: id,
 					f: f
 				}, function (resp) {
-					if (resp.code == 0) {
+					if (resp.code < 1) {
 						if (f == "yes") {
-							showMsg('心动成功~', 3, 11);
+							alpha.toast('心动成功~', 1);
 							obj.addClass("favor");
 							ProfileUtil.toggleFavor(1);
 						} else {
-							showMsg('已取消心动', 3, 12);
+							alpha.toast('已取消心动');
 							obj.removeClass("favor");
 							ProfileUtil.toggleFavor(0);
 						}
 					} else {
-						showMsg(resp.msg, 3, 12);
+						alpha.toast(resp.msg);
 					}
 					AlertUtil.hintFlag = 0;
 				}, "json");
-			},
-
+			}
 		};
 
 		var ChatUtil = {
@@ -605,6 +594,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 						document.body.scrollTop = document.body.scrollHeight;
 					}, 250);
 				});
+
 				$(document).on(kClick, ".contacts a", function () {
 					if (SwipeUtil.editable()) {
 						return false;
@@ -615,6 +605,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 					}
 					return false;
 				});
+
 				$(document).on(kClick, ".user-comment", function () {
 					if (util.loading) {
 						return false;
@@ -622,7 +613,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 					util.loading = 1;
 					$.post("/api/chat", {
 						tag: "commentlist",
-						sid: util.sid,
+						sid: util.sid
 					}, function (resp) {
 						util.loading = 0;
 						if (resp.code < 1) {
@@ -630,11 +621,12 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 							util.commentlist(resp.data);
 							location.href = '#scomment';
 						} else {
-							showMsg(resp.msg);
+							alpha.toast(resp.msg);
 						}
 					}, "json");
 					return false;
 				});
+
 				$(document).on("change", ".co-cat-content1", function () {
 					var val = $(this).val();
 					var datatemp = catDes[val];
@@ -658,25 +650,25 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 					var data = {data: arr};
 					var html = Mustache.render(util.commentItemTemp, data);
 					util.commentItem.html(html);
-
 				});
+
 				$(document).on("change", ".co-cat-content2", function () {
 					var val = $(this).val();
 					util.commentContent.val(val);
 				});
+
 				util.commentBtn.on(kClick, function () {
 					var catVal = util.commentCat1.val();
-					//var cot = $.trim(util.commentContent.val());
 					var cot = '';
 					if (!catVal) {
-						showMsg("评论类型不能为空");
+						alpha.toast("评论类型不能为空");
 						return;
 					}
 					$(".comment-items").find("input:checked").each(function () {
 						cot = cot + ' ' + $(this).val();
 					});
 					if (!cot) {
-						showMsg("评论详细不能为空");
+						alpha.toast("评论详细不能为空");
 						util.commentContent.focus();
 						return;
 					}
@@ -688,7 +680,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 						tag: "comment",
 						sid: util.sid,
 						cat: catVal,
-						cot: $.trim(cot),
+						cot: cot.trim()
 					}, function (resp) {
 						util.loading = 0;
 						if (resp.code < 1) {
@@ -697,9 +689,8 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 							util.commentlist(resp.data);
 							location.href = "#schat";
 						} else {
-							showMsg(resp.msg);
+							alpha.toast(resp.msg);
 						}
-
 					}, "json");
 				});
 
@@ -730,7 +721,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 							if (resp.code < 1) {
 								self.next().find("a").find(".opt").find("input:checked").closest("a").remove();
 							}
-							showMsg(resp.msg);
+							alpha.toast(resp.msg);
 							ChatUtil.delChatBtn(self, "chat");
 						}, "json");
 					}
@@ -804,7 +795,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 							util.toggle(false, util.helpchatMenu);
 							util.sent();
 						} else {
-							showMsg(resp.msg, 3, 12);
+							alpha.toast(resp.msg);
 						}
 					}, "json");
 				});
@@ -815,13 +806,9 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 					var tag = self.attr("data-tag");
 					switch (tag) {
 						case "toblock":
-							// layer.open({
-							// 	content: '您确定要拉黑TA吗？',
-							// 	btn: ['确定', '取消'],
-							// 	yes: function (index) {
-							// 		util.toBlock();
-							// 	}
-							// });
+							/*alpha.prompt('','您确定要拉黑TA吗？',['确定', '取消'],function () {
+								util.toBlock();
+							});*/
 							$sls.main.show();
 							var html = $("#tpl_cancel_reason").html();
 							$sls.content.html(html).addClass("animate-pop-in");
@@ -839,13 +826,9 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 					var tag = self.attr("data-tag");
 					switch (tag) {
 						case "toblock":
-							// layer.open({
-							// 	content: '您确定要拉黑TA吗？',
-							// 	btn: ['确定', '取消'],
-							// 	yes: function (index) {
-							// 		util.toBlock();
-							// 	}
-							// });
+							/*alpha.prompt('','您确定要拉黑TA吗？',['确定', '取消'], function () {
+								util.toBlock();
+							}); */
 							$sls.main.show();
 							var html = $("#tpl_cancel_reason").html();
 							$sls.content.html(html).addClass("animate-pop-in");
@@ -867,7 +850,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 							util.reason.push($(this).html());
 						});
 						if (util.reason.length == 0) {
-							showMsg("选择原因哦");
+							alpha.toast("选择原因哦");
 							return;
 						}
 						util.toBlock();
@@ -930,9 +913,9 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 					if (resp.code == 0) {
 						$sls.main.hide();
 						$sls.shade.fadeOut(160);
-						showMsg(resp.msg, 3, 11);
+						alpha.toast(resp.msg, 1);
 					} else {
-						showMsg(resp.msg, 3, 12);
+						alpha.toast(resp.msg);
 					}
 				}, "json");
 			},
@@ -1017,22 +1000,22 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 							$sls.shade.fadeOut(160);
 							util.showTip(resp.data.gid, resp.data.left);
 						} else {
-							showMsg(resp.msg, 3, 12);
+							alpha.toast(resp.msg);
 						}
 					}, "json");
 				} else {
-					showMsg('请先选择媒桂花数量哦~', 3, 12);
+					alpha.toast('请先选择媒桂花数量哦~');
 				}
 			},
 			sent: function () {
 				var util = this;
 				if (!util.commentFlag) {
-					//showMsg("聊了这么多，觉得ta怎么样呢，快去匿名评价吧~");
+					//alpha.toast("聊了这么多，觉得ta怎么样呢，快去匿名评价吧~");
 					//return false;
 				}
 				var content = util.inputVal ? util.inputVal : util.input.val().trim();
 				if (!content) {
-					showMsg('聊天内容不能为空！', 3, 12);
+					alpha.toast('聊天内容不能为空！');
 					return false;
 				}
 				if (util.helpchatMenu.hasClass("on")) {
@@ -1073,7 +1056,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 					} else if (resp.code == 103) {
 						alertModel.show2('通知', resp.msg, '/wx/cert2');
 					} else {
-						showMsg(resp.msg, 3, 12);
+						alpha.toast(resp.msg);
 					}
 				}, "json");
 			},
@@ -1103,7 +1086,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 					} else if (resp.code == 102) {
 						alertModel.show('通知', '根据国家有关法规要求，婚恋交友平台用户须实名认证。您还没有实名认证，赶快去个人中心实名认证吧', '/wx/cert2');
 					} else {
-						showMsg(resp.msg, 8, 12);
+						alpha.toast(resp.msg, 2, 8);
 					}
 					util.loading = 0;
 				}, "json");
@@ -1131,7 +1114,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 							util.topPL.get(0).scrollIntoView(true);
 						}, 300);
 					} else {
-						showMsg(resp.msg, 3, 12);
+						alpha.toast(resp.msg);
 					}
 					util.loading = 0;
 				}, "json");
@@ -1176,10 +1159,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 							if (util.localIds && util.localIds.length) {
 								util.uploadImgFlag = 1;
 								util.serverIds = [];
-								layer.open({
-									type: 2,
-									content: '正在上传中...'
-								});
+								alpha.loading('正在上传中...');
 								util.wxUploadImages();
 							}
 						}
@@ -1205,23 +1185,18 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 				$(document).on(kClick, ".album-photos a.del", function () {
 					var row = $(this).closest('li');
 					var src = row.find('.has-pic').attr('bsrc');
-					layer.open({
-						title: false,
-						btn: ['删除', '取消'],
-						content: '<p class="msg-content">是否确定要删除这张图片？</p>',
-						yes: function () {
-							util.delImgFlag = 1;
-							$.post("/api/user", {
-								id: src,
-								tag: "album",
-								f: "del"
-							}, function (resp) {
-								util.delImgFlag = 0;
-								row.remove();
-								layer.closeAll();
-								showMsg(resp.msg, 3, (resp.code == 0 ? 11 : 12));
-							}, "json");
-						}
+					alpha.prompt('', '<p class="msg-content">是否确定要删除这张图片？</p>', ['删除', '取消'], function () {
+						util.delImgFlag = 1;
+						$.post("/api/user", {
+							id: src,
+							tag: "album",
+							f: "del"
+						}, function (resp) {
+							util.delImgFlag = 0;
+							row.remove();
+							alpha.clear();
+							alpha.toast(resp.msg, (resp.code == 0 ? 1 : 2));
+						}, "json");
 					});
 				});
 			},
@@ -1288,7 +1263,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 					},
 					fail: function () {
 						/*SmeUtil.serverIds = [];
-						showMsg("上传失败！");
+						alpha.toast("上传失败！");
 						SmeUtil.uploadImgFlag = 0;*/
 					}
 				});
@@ -1301,10 +1276,10 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 				}, function (resp) {
 					if (resp.code == 0) {
 						$("#album .photos").append(Mustache.render(util.albumSingleTmp, resp.data));
-						layer.closeAll();
-						showMsg(resp.msg, 3, 11);
+						alpha.clear();
+						alpha.toast(resp.msg, 1);
 					} else {
-						showMsg(resp.msg, 3, 12);
+						alpha.toast(resp.msg);
 					}
 					util.uploadImgFlag = 0;
 				}, "json");
@@ -1605,13 +1580,13 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 							setTimeout(function () {
 								self.closest("li").remove();
 							}, 500);
-							showMsg(resp.msg, 3, 11);
+							alpha.toast(resp.msg, 1);
 						}
 						if (resp.code == 130) {
 							setTimeout(function () {
 								location.href = "#myWechatNo";
 							}, 1000);
-							showMsg(resp.msg, 3, 12);
+							alpha.toast(resp.msg);
 						}
 					}, "json");
 				});
@@ -1805,9 +1780,9 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 			},
 			submit: function () {
 				var util = this;
-				var txt = $.trim(util.text.val());
+				var txt = util.text.val().trim();
 				if (!txt) {
-					showMsg('详细情况不能为空啊~', 3, 12);
+					alpha.toast('详细情况不能为空啊~');
 					util.text.focus();
 					return false;
 				}
@@ -1821,13 +1796,13 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 						text: txt
 					},
 					function (resp) {
-						layer.closeAll();
+						alpha.clear();
 						if (resp.code == 0) {
 							util.text.val('');
 							util.text.blur();
-							showMsg(resp.msg, 3, 11);
+							alpha.toast(resp.msg, 1);
 						} else {
-							showMsg(resp.msg, 3, 12);
+							alpha.toast(resp.msg);
 						}
 						util.loading = 0;
 					}, 'json');
@@ -1845,21 +1820,21 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 			},
 			submit: function () {
 				var util = this;
-				var wxno = $.trim(util.text.val());
+				var wxno = util.text.val().trim();
 				if (!wxno) {
-					showMsg('请填写真实的微信号', 3, 12);
+					alpha.toast('请填写真实的微信号');
 					util.text.blur();
 					return false;
 				}
 				var reg = /.*[\u4e00-\u9fa5]+.*$/;
 				if (reg.test(wxno)) {
-					showMsg('微信号不能含有中文哦~', 3, 12);
+					alpha.toast('微信号不能含有中文哦~');
 					util.text.blur();
 					return false;
 				}
 				var arr = wxno.split(' ');
 				if (arr.length > 1) {
-					showMsg('微信号不能含有空格哦~', 3, 12);
+					alpha.toast('微信号不能含有空格哦~');
 					util.text.blur();
 					return false;
 				}
@@ -1873,12 +1848,12 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 						text: wxno
 					},
 					function (resp) {
-						layer.closeAll();
+						alpha.clear();
 						if (resp.code == 0) {
 							util.text.blur();
-							showMsg(resp.msg, 3, 11);
+							alpha.toast(resp.msg, 1);
 						} else {
-							showMsg(resp.msg, 3, 12);
+							alpha.toast(resp.msg);
 						}
 						util.loading = 0;
 					}, 'json');
@@ -1956,7 +1931,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 							util.toggleFavor(resp.data.profile.favored);
 							ReportUtil.reload(resp.data.profile.name, resp.data.profile.thumb);
 						} else {
-							showMsg(resp.msg, 3, 12);
+							alpha.toast(resp.msg);
 						}
 						util.loading = 0;
 						util.loaded = 1;
@@ -2001,12 +1976,12 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 					return;
 				}
 				if (!util.reason.val()) {
-					showMsg(util.tip, 3, 12);
+					alpha.toast(util.tip);
 					return false;
 				}
-				var text = $.trim(util.text.val());
+				var text = util.text.val().trim();
 				if (!text) {
-					showMsg("详细信息还没填写哦", 3, 12);
+					alpha.toast("详细信息还没填写哦");
 					return false;
 				}
 				util.loading = 1;
@@ -2023,9 +1998,9 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 							util.text.blur();
 							util.reason.val('');
 							util.sel_text.html(util.tip);
-							showMsg(resp.msg, 3, 11);
+							alpha.toast(resp.msg, 1);
 						} else {
-							showMsg(resp.msg, 3, 12);
+							alpha.toast(resp.msg);
 						}
 						util.loading = 0;
 					}, 'json');
@@ -2065,7 +2040,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 							util.content.html(html);
 							util.av.attr('src', resp.data.resume.avatar);
 						} else {
-							showMsg(resp.msg, 3, 12);
+							alpha.toast(resp.msg);
 						}
 						util.loading = 0;
 					}, 'json');
@@ -2102,7 +2077,7 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 							var html = Mustache.render(util.tmp, resp.data);
 							util.content.html(html);
 						} else {
-							showMsg(resp.msg, 3, 12);
+							alpha.toast(resp.msg);
 						}
 						util.loading = 0;
 					}, 'json');
@@ -2231,7 +2206,6 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 			tmp: $('#ctx_greet_new').html(),
 			tmp2: $('#ctx_greet_new2').html(),
 			tmp3: $('#ctx_greet_new3').html(),
-			//content: $.trim($('#ctx_greet').html()),
 			content: '',
 			init: function () {
 				$(document).on(kClick, ".greet-btn-to a[data-tag=no]", function () {
@@ -2392,25 +2366,6 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 			}
 		};
 
-		function showMsg(msg, sec, tag) {
-			var delay = sec || 3;
-			var ico = '';
-			if (tag && tag === 10) {
-				ico = '<i class="i-msg-ico i-msg-fault"></i>';
-			} else if (tag && tag === 11) {
-				ico = '<i class="i-msg-ico i-msg-success"></i>';
-			} else if (tag && tag === 12) {
-				ico = '<i class="i-msg-ico i-msg-warning"></i>';
-			}
-			var html = '<div class="m-msg-wrap">' + ico + '<p>' + msg + '</p></div>';
-			layer.open({
-				type: 99,
-				content: html,
-				skin: 'msg',
-				time: delay
-			});
-		}
-
 		function pinLocation() {
 			wx.getLocation({
 				type: 'gcj02',
@@ -2476,8 +2431,6 @@ require(['jquery', "layer", 'mustache', 'socket', 'swiper'],
 			setTimeout(function () {
 				pinLocation();
 			}, 800);
-
 			locationHashChanged();
-
 		});
 	});

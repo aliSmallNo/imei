@@ -41,11 +41,18 @@
 	{[#items]}
 	<li>
 		<div class="title">
-			<h4>{[title]} <small>{[note]}</small></h4>
+			<h4>{[title]}
+				<small>{[note]}</small>
+			</h4>
 			<h5>{[dt]}</h5>
 		</div>
 		<div class="content"><em class="{[unit]} amt{[prefix]}">{[prefix]}{[amt]}</em></div>
 	</li>
 	{[/items]}
 </script>
-<script src="/assets/js/require.js" data-main="/js/swallet.js?v=1.2.2"></script>
+<script src="/assets/js/require.js"></script>
+<script>
+	requirejs(['/js/config.js'], function () {
+		requirejs(['/js/swallet.js?v=1.4.0']);
+	});
+</script>
