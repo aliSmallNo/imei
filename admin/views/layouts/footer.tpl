@@ -2,7 +2,6 @@
 {{else}}
 </div>
 <script src="/assets/js/mustache.min.js"></script>
-<script src="/assets/lib/My97DatePicker/WdatePicker.js"></script>
 <script src="/js/sb-admin-2.js"></script>
 <script src="/assets/js/iscroll.js"></script>
 <script src="/assets/js/countUp.js"></script>
@@ -60,7 +59,8 @@
 		</a>
 	</li>
 </script>
-<script src="/js/footer.js?v=1.6.2"></script>
+<script src="/assets/lib/My97DatePicker/WdatePicker.js"></script>
+<script src="/js/footer.js?v=1.6.4"></script>
 </body>
 </html>
 {{/if}}

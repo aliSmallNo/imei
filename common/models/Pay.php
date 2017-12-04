@@ -84,26 +84,26 @@ class Pay extends ActiveRecord
 			'ln' => 'line',
 			'num' => 1
 		],
-		'rose2' => [
-			'cat' => Pay::CAT_RECHARGE,
-			'title' => '20 媒桂花',
-			'price' => 2,
-			'tip' => '首次充值将收获60媒桂花',
-			'num' => 20,
-		],
+//		'rose2' => [
+//			'cat' => Pay::CAT_RECHARGE,
+//			'title' => '20 媒桂花',
+//			'price' => 2,
+//			'tip' => '首次充值将收获60媒桂花',
+//			'num' => 20,
+//		],
 		'rose8' => [
 			'cat' => Pay::CAT_RECHARGE,
-			'title' => '100 媒桂花',
-			'price' => 8,
-			'tip' => '首次充值将收获300媒桂花',
-			'num' => 100,
+			'title' => '60 媒桂花',
+			'price' => 6,
+			'tip' => '首次充值将收获180媒桂花',
+			'num' => 60,
 		],
 		'rose68' => [
 			'cat' => Pay::CAT_RECHARGE,
 			'title' => '800 媒桂花',
 			'price' => 68,
-			'tip' => '首次充值将收获2400媒桂花',
-			'num' => 800,
+			'tip' => '首次充值将收获2100媒桂花',
+			'num' => 700,
 		],
 	];
 
