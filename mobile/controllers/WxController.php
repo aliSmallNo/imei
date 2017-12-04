@@ -706,12 +706,12 @@ class WxController extends BaseController
 		];
 		$adverts = [
 			[
-				'image' => AppUtil::wechatUrl() . "/images/ad/go_party.jpg",
-				'url' => 'https://wx.meipo100.com/wx/enroll'
+				'image' => AppUtil::wechatUrl() . '/images/ad/how2love.jpg',
+				'url' => 'https://mp.weixin.qq.com/s/iGaKFI-RkbGeggl1l_cQCw'
 			],
 			[
-				'image' => AppUtil::wechatUrl() . "/images/ad/hidden_love.jpg",
-				'url' => 'https://mp.weixin.qq.com/s/F7sOYjTURBOgdmFk9r349g'
+				'image' => AppUtil::wechatUrl() . '/images/ad/female_god.jpg',
+				'url' => 'https://mp.weixin.qq.com/s/kMnsWvn1aieYQuQmcf6I7g'
 			]
 		];
 
