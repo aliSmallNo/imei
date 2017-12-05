@@ -77,6 +77,37 @@ main {
   background: url(../images/share/bg.jpg) no-repeat center top;
   background-size: 100% 100%;
   position: relative; }
+  .bg-expand .avatar {
+    text-align: center; }
+    .bg-expand .avatar img {
+      width: 7rem;
+      height: 7rem;
+      border-radius: 3.6rem;
+      border: 2px solid #a6e264; }
+  .bg-expand .qr {
+    text-align: center; }
+    .bg-expand .qr img {
+      width: 14rem; }
+  .bg-expand .big {
+    text-align: center;
+    color: #a6e264;
+    font-size: 2rem;
+    text-shadow: 0 1px 1px black; }
+  .bg-expand .big-w {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 4.5rem;
+    color: #fff; }
+  .bg-expand .board {
+    border: 3px solid #fff;
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 0 2rem;
+    font-size: 1.2rem;
+    color: #fff;
+    line-height: 1.8rem;
+    font-weight: 300; }
   .bg-expand .word {
     text-align: center; }
     .bg-expand .word img {
