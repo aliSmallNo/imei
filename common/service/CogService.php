@@ -116,16 +116,17 @@ class CogService
 		$params = array_merge($params, [
 			':cat' => self::CAT_NOTICE_TEXT
 		]);
-		$sql = 'SELECT cId as id,cCategory as cat,cRaw as raw,
+		$sql = 'SELECT cId as id,cCategory as cat,cRaw as raw,cCount as `count`,
 			cStatus as status, cExpiredOn as exp, cAddedOn as addon, cUpdatedOn as editon, a.aName as `name`
  			FROM im_cog as c
  			LEFT JOIN im_admin as a on c.cUpdatedBy=a.aId
- 			WHERE cId>0 ' . $strCriteria . ' ORDER BY cUpdatedOn DESC ' . $limit;
+ 			WHERE cId>0 ' . $strCriteria . ' ORDER BY cExpiredOn desc, cUpdatedOn DESC ' . $limit;
 		$ret = $this->conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
 		foreach ($ret as $k => $item) {
 			$active = ($item['status'] == 1 && isset($item['exp']) && $item['exp'] >= date('Y-m-d'));
 			$raw = json_decode($item['raw'], 1);
+			unset($raw['count']);
 			$item = array_merge($item, $raw);
 			unset($item['raw']);
 			$item['url'] = (isset($item['url']) ? $item['url'] : '');

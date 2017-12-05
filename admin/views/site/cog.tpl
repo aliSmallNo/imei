@@ -22,14 +22,16 @@
 		background: #0f9d58;
 		display: inline-block;
 		color: #fff;
-		padding: 0 2px;
+		padding: 1px 4px;
+		font-size: 11px;
 	}
 
 	.right em.st-0 {
 		background: #999;
 		display: inline-block;
 		color: #fff;
-		padding: 0 2px;
+		padding: 1px 4px;
+		font-size: 11px;
 	}
 
 </style>
@@ -160,7 +162,7 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">显示次数</label>
 			<div class="col-sm-7">
-				<input class="form-control" type="number" data-tag="cRaw:count" value="{[cnt]}">
+				<input class="form-control" type="number" data-tag="cCount" value="{[cnt]}">
 				<input type="hidden" data-tag="cId" value="{[id]}">
 				<input type="hidden" data-tag="cCategory" value="{[cat]}">
 			</div>
@@ -214,7 +216,7 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">显示次数</label>
 			<div class="col-sm-7">
-				<input class="form-control" type="number" data-tag="cRaw:count" value="{[cnt]}">
+				<input class="form-control" type="number" data-tag="cCount" value="{[cnt]}">
 				<input type="hidden" data-tag="cId" value="{[id]}">
 				<input type="hidden" data-tag="cCategory" value="{[cat]}">
 			</div>
