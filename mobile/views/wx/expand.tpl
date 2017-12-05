@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="/css/dev.min.css">
-<div style="height: 1.3rem"></div>
+<div style="height: 1rem"></div>
 <div class="word">
 	<img src="/images/share/word01.png">
 </div>
