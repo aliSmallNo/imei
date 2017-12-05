@@ -25,6 +25,7 @@ use common\models\UserSign;
 use common\models\UserTag;
 use common\models\UserTrans;
 use common\models\UserWechat;
+use common\service\CogService;
 use common\service\EventService;
 use common\service\UserService;
 use common\utils\AppUtil;
@@ -704,16 +705,11 @@ class WxController extends BaseController
 			'url' => 'javascript:;',
 			'tip' => '长按图片识别二维码，添加我们的客服为好友'
 		];
-		$adverts = [
-			[
-				'image' => AppUtil::wechatUrl() . '/images/ad/how2love.jpg',
-				'url' => 'https://mp.weixin.qq.com/s/iGaKFI-RkbGeggl1l_cQCw'
-			],
-			[
-				'image' => AppUtil::wechatUrl() . '/images/ad/female_god.jpg',
-				'url' => 'https://mp.weixin.qq.com/s/kMnsWvn1aieYQuQmcf6I7g'
-			]
-		];
+		$headers = CogService::init()->homeHeaders(true);
+		foreach ($headers as $k => $header) {
+			$headers[$k]['image'] = $header['content'];
+			unset($headers[$k]['content'], $headers[$k]['id']);
+		}
 
 		return self::renderPage("single.tpl", [
 			'noReadFlag' => $noReadFlag,
@@ -722,7 +718,7 @@ class WxController extends BaseController
 			'uInfo' => $uInfo,
 			'service' => $service,
 			'advert_chat' => $advert_chat,
-			'adverts' => $adverts,
+			'adverts' => $headers,
 			'prices' => $prices,
 			'encryptId' => $encryptId,
 			'hint' => $hint,

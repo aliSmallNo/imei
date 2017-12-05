@@ -1541,11 +1541,13 @@ class SiteController extends BaseController
 		$homeHeaders = $service->homeHeaders();
 		$homeFigures = $service->homeFigures();
 		$chatHeaders = $service->chatHeaders();
+		$miscFigures = $service->miscFigures();
 		return $this->renderPage('cog.tpl',
 			[
 				'homeHeaders' => $homeHeaders,
 				'homeFigures' => $homeFigures,
 				'chatHeaders' => $chatHeaders,
+				'miscFigures' => $miscFigures,
 				'notices' => $notices,
 				'category' => 'data',
 				'detailcategory' => "site/cog",

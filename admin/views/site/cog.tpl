@@ -77,29 +77,90 @@
 </div>
 </div>
 </div>
-	<div class="col-sm-5">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<i class="fa fa-cog fa-fw"></i> 首页页眉插图
-			</div>
-			<div class="panel-body">
-			</div>
-		</div>
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<i class="fa fa-cog fa-fw"></i> 推荐列表插图
-			</div>
-			<div class="panel-body">
-			</div>
-		</div>
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<i class="fa fa-cog fa-fw"></i> 密聊页眉插图
-			</div>
-			<div class="panel-body">
-			</div>
+<div class="col-sm-5">
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<i class="fa fa-cog fa-fw"></i> 首页页眉插图
+		<div class="pull-right">
+			<a href="javascript:;" class="btn-add btn btn-primary btn-xs" data-st="1" data-cat="110">添加图片</a>
 		</div>
 	</div>
+<div class="panel-body">
+<ul class="m-list">
+{{foreach from=$homeHeaders item=item}}
+	<li>
+		<div class="content">
+			<div><img src="{{$item.content}}" alt="" class="notice-img"></div>
+		</div>
+		<div class="right">
+			{{$item.name}}<em>更新于 {{$item.dt}}</em><em class="st-{{$item.active}}">{{$item.st}}</em>
+			<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}" data-cnt="{{$item.count}}"
+			   data-id="{{$item.id}}" data-title="{{$item.title}}"
+			   data-st="{{$item.status}}" data-exp="{{$item.exp}}" data-cat="{{$item.cat}}">编辑</a>
+		</div>
+	</li>
+{{/foreach}}
+</ul>
+</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<i class="fa fa-cog fa-fw"></i> 密聊页眉插图
+		<div class="pull-right">
+			<a href="javascript:;" class="btn-add btn btn-primary btn-xs" data-st="1" data-cat="130">添加图片</a>
+		</div>
+	</div>
+<div class="panel-body">
+<ul class="m-list">
+{{foreach from=$chatHeaders item=item}}
+	<li>
+		<div class="content">
+			<div><img src="{{$item.content}}" alt="" class="notice-img"></div>
+		</div>
+		<div class="right">
+			{{$item.name}}<em>更新于 {{$item.dt}}</em><em class="st-{{$item.active}}">{{$item.st}}</em>
+			<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}" data-cnt="{{$item.count}}"
+			   data-id="{{$item.id}}" data-title="{{$item.title}}"
+			   data-st="{{$item.status}}" data-exp="{{$item.exp}}" data-cat="{{$item.cat}}">编辑</a>
+		</div>
+	</li>
+{{/foreach}}
+</ul>
+</div>
+</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<i class="fa fa-cog fa-fw"></i> 推荐列表插图
+		</div>
+		<div class="panel-body">
+		</div>
+	</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<i class="fa fa-cog fa-fw"></i> 其他插图
+		<div class="pull-right">
+			<a href="javascript:;" class="btn-add btn btn-primary btn-xs" data-st="1" data-cat="180">添加图片</a>
+		</div>
+	</div>
+<div class="panel-body">
+<ul class="m-list">
+{{foreach from=$miscFigures item=item}}
+	<li>
+		<div class="content">
+			<div><img src="{{$item.content}}" alt="" class="notice-img"></div>
+		</div>
+		<div class="right">
+			{{$item.name}}<em>更新于 {{$item.dt}}</em><em class="st-{{$item.active}}">{{$item.st}}</em>
+			<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}" data-cnt="{{$item.count}}"
+			   data-id="{{$item.id}}" data-title="{{$item.title}}"
+			   data-st="{{$item.status}}" data-exp="{{$item.exp}}" data-cat="{{$item.cat}}">编辑</a>
+		</div>
+	</li>
+{{/foreach}}
+</ul>
+</div>
+</div>
+</div>
 </div>
 <div class="modal" id="modalEdit" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
@@ -227,10 +288,58 @@
 		</div>
 	</div>
 </script>
+<script type="text/html" id="tpl_image">
+	<div class="form-horizontal">
+		{[#image]}
+		<div class="form-group">
+			<label class="col-sm-3 control-label"></label>
+			<div class="col-sm-7">
+				<img src="{[image]}" class="notice-img-static">
+				<input type="hidden" data-tag="cRaw:content" value="{[image]}">
+			</div>
+		</div>
+		{[/image]}
+		<div class="form-group">
+			<label class="col-sm-3 control-label">上传图片</label>
+			<div class="col-sm-7">
+				<input class="form-control-static" type="file" name="upload_photo" accept="image/jpg, image/jpeg, image/png">
+				<input type="hidden" data-tag="cCount" value="999">
+				<input type="hidden" data-tag="cExpiredOn" value="2020-01-01">
+				<input type="hidden" data-tag="cId" value="{[id]}">
+				<input type="hidden" data-tag="cCategory" value="{[cat]}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">链接地址</label>
+			<div class="col-sm-7">
+				<input class="form-control" required data-tag="cRaw:url" placeholder="(必填)" value="{[url]}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">是否有效</label>
+			<div class="col-sm-7">
+				<select data-tag="cStatus" class="form-control">
+					{[#st]}
+					<option value="1" selected>有效</option>
+					<option value="0">无效</option>
+					<option value="9">删除</option>
+					{[/st]}
+					{[^st]}
+					<option value="1">有效</option>
+					<option value="0" selected>无效</option>
+					<option value="9">删除</option>
+					{[/st]}
+				</select>
+			</div>
+		</div>
+
+	</div>
+</script>
 <script>
 	var $sls = {
 		100: $('#tpl_notice_text').html(),
 		102: $('#tpl_notice_image').html(),
+		imgTmp: $('#tpl_image').html(),
 		modal: $('#modalEdit'),
 		cat: 0
 	};
@@ -294,7 +403,7 @@
 			case 100:
 				title = '添加文本通知';
 				break;
-			case 102:
+			default:
 				title = '添加图片通知';
 				if (modFlag) {
 					data.image = row.find('img').attr('src');
@@ -305,7 +414,8 @@
 			$sls.modal.find(".modal-title").html(title);
 		}
 		console.log(data);
-		var html = Mustache.render($sls[$sls.cat], data);
+		var tmp = $sls[$sls.cat] ? $sls[$sls.cat] : $sls.imgTmp;
+		var html = Mustache.render(tmp, data);
 		$sls.modal.find(".modal-body").html(html);
 		$sls.modal.modal('show');
 	});

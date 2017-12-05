@@ -18,6 +18,7 @@ class CogService
 	const CAT_HOME_HEADER = 110;
 	const CAT_HOME_IMAGE = 120;
 	const CAT_CHAT_HEADER = 130;
+	const CAT_IMAGE_MISC = 180;
 
 	/**
 	 * @var \yii\db\Connection
@@ -88,22 +89,29 @@ class CogService
 	public function chatHeaders()
 	{
 		return $this->items(
-			['cCategory=:cat AND cStatus=1'],
+			['cCategory=:cat '],
 			[':cat' => self::CAT_CHAT_HEADER]);
 	}
 
-	public function homeHeaders()
+	public function homeHeaders($activeOnly = false)
 	{
 		return $this->items(
-			['cCategory=:cat AND cStatus=1'],
+			['cCategory=:cat ' . ($activeOnly ? ' AND cStatus=1' : '')],
 			[':cat' => self::CAT_HOME_HEADER]);
 	}
 
 	public function homeFigures()
 	{
 		return $this->items(
-			['cCategory=:cat AND cStatus=1'],
+			['cCategory=:cat '],
 			[':cat' => self::CAT_HOME_IMAGE]);
+	}
+
+	public function miscFigures()
+	{
+		return $this->items(
+			['cCategory=:cat'],
+			[':cat' => self::CAT_IMAGE_MISC]);
 	}
 
 	protected function items($criteria = [], $params = [], $page = 1, $pageSize = 100)
@@ -113,9 +121,7 @@ class CogService
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
 		$limit = ' LIMIT ' . ($page - 1) * $pageSize . ',' . $pageSize;
-		$params = array_merge($params, [
-			':cat' => self::CAT_NOTICE_TEXT
-		]);
+
 		$sql = 'SELECT cId as id,cCategory as cat,cRaw as raw,cCount as `count`,
 			cStatus as status, cExpiredOn as exp, cAddedOn as addon, cUpdatedOn as editon, a.aName as `name`
  			FROM im_cog as c
