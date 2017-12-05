@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="/css/dev.min.css?v=1.1.1">
 <div style="height: 1rem"></div>
 {{if $sentFlag}}
 	<div class="avatar">
