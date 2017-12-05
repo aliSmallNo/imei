@@ -932,10 +932,8 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$openId = 'oYDJew_ADcP_9dzb-z_N3N2MPsy4';
-		$media = 'BC5hZfUG6kubwiDqKz2kIGg-t4z8XxW0cW02C87TakFcrnApDnhFHRkREoT-RGFL';
-		$ret = UserWechat::sendMedia($openId, $media, 'video');
-		var_dump($ret);
+		$items = CogService::init()->homeFigures(true);
+		var_dump($items);
 		return;
 
 		$conn = AppUtil::db();

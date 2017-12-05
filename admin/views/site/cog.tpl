@@ -105,6 +105,28 @@
 </div>
 <div class="panel panel-default">
 	<div class="panel-heading">
+		<i class="fa fa-cog fa-fw"></i> 推荐列表插图
+	</div>
+<div class="panel-body">
+<ul class="m-list">
+{{foreach from=$homeFigures item=item}}
+	<li>
+		<div class="content">
+			<div><img src="{{$item.content}}" alt="" class="notice-img"></div>
+		</div>
+		<div class="right">
+			{{$item.name}}<em>更新于 {{$item.dt}}</em><em class="st-{{$item.active}}">{{$item.st}}</em>
+			<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}" data-cnt="{{$item.count}}"
+			   data-id="{{$item.id}}" data-title="{{$item.title}}"
+			   data-st="{{$item.status}}" data-exp="{{$item.exp}}" data-cat="{{$item.cat}}">编辑</a>
+		</div>
+	</li>
+{{/foreach}}
+</ul>
+</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
 		<i class="fa fa-cog fa-fw"></i> 密聊页眉插图
 		<div class="pull-right">
 			<a href="javascript:;" class="btn-add btn btn-primary btn-xs" data-st="1" data-cat="130">添加图片</a>
@@ -128,13 +150,7 @@
 </ul>
 </div>
 </div>
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<i class="fa fa-cog fa-fw"></i> 推荐列表插图
-		</div>
-		<div class="panel-body">
-		</div>
-	</div>
+
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<i class="fa fa-cog fa-fw"></i> 其他插图

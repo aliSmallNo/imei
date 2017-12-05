@@ -32,6 +32,7 @@ use common\models\UserQR;
 use common\models\UserSign;
 use common\models\UserTrans;
 use common\models\UserWechat;
+use common\service\CogService;
 use common\service\EventService;
 use common\utils\AppUtil;
 use common\utils\BaiduUtil;
@@ -675,28 +676,12 @@ class ApiController extends Controller
 				LogAction::add($wx_uid, $openId, LogAction::ACTION_SINGLE_LIST);
 				$ret = User::getFilter($openId, $filter, $page, 15);
 				if (isset($ret['data']) && count($ret['data']) > 3 && $page == 1) {
-					$u = User::find()->where(["uId" => $wx_uid])->asArray()->one();
-					$u = User::fmtRow($u);
-					if ($u["percent"] < 90) {
-						array_splice($ret['data'], 3, 0, [
-							[
-								"url" => "/wx/sedit",
-								"img" => AppUtil::wechatUrl() . "/images/ad/13.jpg",
-							],
-						]);
+					$items = CogService::init()->homeFigures(true);
+					foreach ($items as $k => $item) {
+						$index = $k ? 3 * $k : 1;
+						array_splice($ret['data'], $index, 0,
+							[["url" => $item['url'], "img" => $item['content']]]);
 					}
-					array_splice($ret['data'], 6, 0, [
-						[
-							"url" => "/wx/lottery",
-							"img" => AppUtil::wechatUrl() . "/images/ad/11.jpg"
-						],
-					]);
-					array_splice($ret['data'], 1, 0, [
-						[
-							"url" => "/wx/sw?id=" . $wx_eid . "#swallet",
-							"img" => AppUtil::wechatUrl() . "/images/ad/first_recharge.jpg"
-						]
-					]);
 				}
 				return self::renderAPI(0, '', $ret);
 			case "mymp":
@@ -2364,7 +2349,7 @@ class ApiController extends Controller
 			$wx_thumb = $wx_info['uThumb'];
 			$wx_eid = AppUtil::encrypt($wx_uid);
 			$wx_role = $wx_info['uRole'];
-		}else {
+		} else {
 			return self::renderAPI(129, '用户不存在啊~', ['prize' => 4]);
 		}
 		switch ($tag) {

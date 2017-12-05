@@ -86,32 +86,31 @@ class CogService
 			$pageSize);
 	}
 
-	public function chatHeaders()
+	public function chatHeaders($activeOnly = false)
 	{
-		return $this->items(
-			['cCategory=:cat '],
-			[':cat' => self::CAT_CHAT_HEADER]);
+		return self::figures(self::CAT_CHAT_HEADER, $activeOnly);
 	}
 
 	public function homeHeaders($activeOnly = false)
 	{
+		return self::figures(self::CAT_HOME_HEADER, $activeOnly);
+	}
+
+	public function homeFigures($activeOnly = false)
+	{
+		return self::figures(self::CAT_HOME_IMAGE, $activeOnly);
+	}
+
+	public function miscFigures($activeOnly = false)
+	{
+		return self::figures(self::CAT_IMAGE_MISC, $activeOnly);
+	}
+
+	protected function figures($cat, $activeOnly = false)
+	{
 		return $this->items(
 			['cCategory=:cat ' . ($activeOnly ? ' AND cStatus=1' : '')],
-			[':cat' => self::CAT_HOME_HEADER]);
-	}
-
-	public function homeFigures()
-	{
-		return $this->items(
-			['cCategory=:cat '],
-			[':cat' => self::CAT_HOME_IMAGE]);
-	}
-
-	public function miscFigures()
-	{
-		return $this->items(
-			['cCategory=:cat'],
-			[':cat' => self::CAT_IMAGE_MISC]);
+			[':cat' => $cat]);
 	}
 
 	protected function items($criteria = [], $params = [], $page = 1, $pageSize = 100)
