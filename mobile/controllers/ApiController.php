@@ -679,8 +679,7 @@ class ApiController extends Controller
 					$items = CogService::init()->homeFigures(true);
 					foreach ($items as $k => $item) {
 						$index = $k ? 3 * $k : 1;
-						array_splice($ret['data'], $index, 0,
-							[["url" => $item['url'], "img" => $item['content']]]);
+						array_splice($ret['data'], $index, 0, [["url" => $item['url'], "img" => $item['content']]]);
 					}
 				}
 				return self::renderAPI(0, '', $ret);
