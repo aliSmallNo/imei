@@ -1565,6 +1565,10 @@ section {
   background: url(../images/ico_rose.png) no-repeat center center;
   background-size: 100% 100%; }
 
+.i-mark-share {
+  background: url(../images/ico_mark_share.png) no-repeat center center;
+  background-size: 100% 100%; }
+
 .i-mark-favor {
   background: url(../images/ico_mark_heart.png) no-repeat center center;
   background-size: 100% 100%; }
@@ -3731,6 +3735,9 @@ section {
         font-weight: 300; }
       .recharge li .title.row-100 {
         background: url(../images/ico_rose.png) no-repeat 0.5rem center;
+        background-size: 1.6rem 1.6rem; }
+      .recharge li .title.row-share {
+        background: url(../images/ico_mark_share.png) no-repeat 0.5rem center;
         background-size: 1.6rem 1.6rem; }
       .recharge li .title.row-500 {
         background: url(../images/ico_month_member.png) no-repeat 0.5rem center;

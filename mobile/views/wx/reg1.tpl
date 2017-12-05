@@ -199,35 +199,35 @@
 <script id="genderTemp" type="text/html">
 	<div class="cells col2 clearfix" data-tag="gender">
 		{{foreach from=$gender key=key item=g}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$g}}</em></a>
+			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$g}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="maritalTemp" type="text/html">
 	<div class="cells col1 clearfix" data-tag="marital">
 		{{foreach from=$marital key=key item=y}}
-		<a href="javascript:;"><em data-key="{{$key}}">{{$y}}</em></a>
+			<a href="javascript:;"><em data-key="{{$key}}">{{$y}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="yearTemp" type="text/html">
 	<div class="cells col4 clearfix" data-tag="year">
 		{{foreach from=$years key=key item=y}}
-		<a href="javascript:;" style="width: 25%"><em data-key="{{$key}}">{{$y}}</em></a>
+			<a href="javascript:;" style="width: 25%"><em data-key="{{$key}}">{{$y}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="horosTemp" type="text/html">
 	<div class="cells col2 clearfix" data-tag="horos">
 		{{foreach from=$horos key=key item=h}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$h}}</em></a>
+			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$h}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="heightTemp" type="text/html">
 	<div class="cells col6 clearfix">
 		{{foreach from=$height key=key item=h}}
-		<a href="javascript:;" style="width: 16.6%"><em data-key="{{$key}}">{{$h}}</em></a>
+			<a href="javascript:;" style="width: 16.6%"><em data-key="{{$key}}">{{$h}}</em></a>
 		{{/foreach}}
 	</div>
 </script>

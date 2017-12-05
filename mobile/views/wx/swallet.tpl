@@ -5,25 +5,34 @@
 			<span class="ico-rose">媒桂花</span>
 		</div>
 		{{foreach from=$cards item=card}}
-		<div class="item">
-			<div class="ico-card-{{$card.cat}}"></div>
-			<span>剩余{{$card.left}}天</span>
-		</div>
+			<div class="item">
+				<div class="ico-card-{{$card.cat}}"></div>
+				<span>剩余{{$card.left}}天</span>
+			</div>
 		{{/foreach}}
 		<a href="#srecords" class="nav-right">账户记录 ></a>
 	</div>
 	<div>
 		<ul class="recharge">
 			{{foreach from=$prices key=key item=price}}
-			<li class="{{if isset($price.ln) && $price.ln}}{{$price.ln}}{{/if}}">
-				<div class="title row-{{$price.cat}}">
-					{{$price.title}}{{if isset($price.pre_price) && $price.pre_price}}<b>￥{{$price.pre_price}}</b>{{/if}}
-					{{if isset($price.tip) && $price.tip}}
-					<div class="tip">{{$price.tip}}</div>{{/if}}
-				</div>
-				<div class="action"><a href="javascript:;" class="btn-recharge" data-id="{{$price.price}}" data-cat="{{$key}}">{{$price.price}}元</a></div>
-			</li>
+				<li class="{{if isset($price.ln) && $price.ln}}{{$price.ln}}{{/if}}">
+					<div class="title row-{{$price.cat}}">
+						{{$price.title}}{{if isset($price.pre_price) && $price.pre_price}}<b>
+							￥{{$price.pre_price}}</b>{{/if}}
+						{{if isset($price.tip) && $price.tip}}
+							<div class="tip">{{$price.tip}}</div>{{/if}}
+					</div>
+					<div class="action"><a href="javascript:;" class="btn-recharge" data-id="{{$price.price}}"
+					                       data-cat="{{$key}}">{{$price.price}}元</a></div>
+				</li>
 			{{/foreach}}
+			<!--li>
+				<div class="title row-share">
+					分享收获媒桂花
+					<div class="tip">分享拉新人，注册成功收获媒桂花</div>
+				</div>
+				<div class="action"><a href="javascript:;" class="btn-share" data-id="0" data-cat="share">分享</a></div>
+			</li-->
 		</ul>
 		<p class="tip-block">媒桂花用于赠予、密聊、约会，不能提现或退款</p>
 	</div>

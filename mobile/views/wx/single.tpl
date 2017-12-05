@@ -44,14 +44,14 @@
 		</div>
 	</div>
 	{{if $adverts}}
-	<div class="swiper-container">
-		<div class="swiper-wrapper">
-			{{foreach from=$adverts item=item}}
-			<div class="swiper-slide" data-url="{{$item.url}}"><img src="{{$item.image}}" alt=""></div>
-			{{/foreach}}
+		<div class="swiper-container">
+			<div class="swiper-wrapper">
+				{{foreach from=$adverts item=item}}
+					<div class="swiper-slide" data-url="{{$item.url}}"><img src="{{$item.image}}" alt=""></div>
+				{{/foreach}}
+			</div>
+			<div class="swiper-pagination"></div>
 		</div>
-		<div class="swiper-pagination"></div>
-	</div>
 	{{/if}}
 	<ul class="m-top-users"></ul>
 	<div class="m-more">拼命加载中...</div>
@@ -121,9 +121,10 @@
 			<a href="#date"><span class="title">我的约会</span></i> <i class="i-mark-base i-mark-date"></i></a>
 			<a href="/wx/comments"><span class="title">对我的评论</span></a>
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">我的账户</span> <i class="i-mark-base i-mark-rose"></i></a>
-			<a href="/wx/mshare"><span class="title">分享给朋友</span></a>
-			<a href="/wx/cert2?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}<span
-								class="tip">已认证</span>{{/if}}</a>
+			<a href="/wx/mshare"><span class="title">分享给朋友</span> <i class="i-mark-base i-mark-share"></i></a>
+			<a href="/wx/cert2?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}
+					<span class="tip">已认证</span>
+				{{/if}}</a>
 			<a href="/wx/notice"><span class="title">通知</span>{{if $noReadFlag}}<span class="noReadFlag"></span>{{/if}}</a>
 		</div>
 		<div class="m-rows line-bottom mymp" style="display: none">
@@ -171,7 +172,7 @@
 		<select class="co-cat-content1">
 			<option value="">-请选择-</option>
 			{{foreach from=$cats key=k item=cat}}
-			<option value="{{$k}}">{{$cat}}</option>
+				<option value="{{$k}}">{{$cat}}</option>
 			{{/foreach}}
 		</select>
 		<span></span>
@@ -203,9 +204,9 @@
 </section>
 <section id="scontacts" data-title="我的密聊记录">
 	{{if $advert_chat}}
-	<a class="m-service" href="{{$advert_chat.url}}" data-tip="{{$advert_chat.tip}}">
-		<img src="{{$advert_chat.image}}" alt="">
-	</a>
+		<a class="m-service" href="{{$advert_chat.url}}" data-tip="{{$advert_chat.tip}}">
+			<img src="{{$advert_chat.image}}" alt="">
+		</a>
 	{{/if}}
 	<div class="m-top-pl"></div>
 	<div class="contacts-wrap">
@@ -662,7 +663,7 @@
 			<select class="report-reason">
 				<option value="">请选择举报原因</option>
 				{{foreach from=$reasons item=reason}}
-				<option value="{{$reason}}">{{$reason}}</option>
+					<option value="{{$reason}}">{{$reason}}</option>
 				{{/foreach}}
 			</select>
 		</div>
@@ -821,7 +822,7 @@
 			<div class="end">{[end]}</div>
 		</div>
 		{{foreach from=$height key=key item=h}}
-		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
+			<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
 	</div>
 </script>
@@ -833,21 +834,21 @@
 			<div class="end">{[end]}</div>
 		</div>
 		{{foreach from=$age key=key item=h}}
-		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
+			<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
 	</div>
 </script>
 <script type="text/html" id="incomeTmp">
 	<div class="m-popup-options col3 clearfix" tag="income">
 		{{foreach from=$income key=key item=h}}
-		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
+			<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
 	</div>
 </script>
 <script type="text/html" id="eduTmp">
 	<div class="m-popup-options col3 clearfix" tag="edu">
 		{{foreach from=$edu key=key item=h}}
-		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
+			<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
 	</div>
 </script>
@@ -944,7 +945,6 @@
 				<span>TA还没<b>媒婆</b></span>
 				{[/mpname]}
 				{[/delete]}
-
 				{[#intro]}
 				<span>{[intro]}</span>
 				{[/intro]}
@@ -953,14 +953,15 @@
 				{[/intro]}
 			</div>
 			{[#comment]}
-			<div class="des"><b>“</b>{[.]}<b>”</b></div>{[/comment]}
+			<div class="des"><b>“</b>{[.]}<b>”</b></div>
+			{[/comment]}
 		</div>
 		{[#singleF]}
 		<div class="single-bar">
 			<a href="javascript:;" data-id="{[secretId]}" class="btn btn-give"></a>
 			<a href="javascript:;" data-id="{[secretId]}" class="btn btn-like {[favor]}"></a>
 			<a href="javascript:;" data-id="{[secretId]}" class="btn btn-chat"></a>
-			<a href="javascript:;" data-id="{[secretId]}" class="btn btn-apply" style="display: none"></a>
+			<a href="javascript:;" data-id="{[secretId]}" class="btn btn-apply none"></a>
 		</div>
 		{[/singleF]}
 	</li>
@@ -1027,7 +1028,7 @@
 	{[#items]}
 	{[#type]}
 	<li class="{[dir]}" data-r="{[readflag]}">
-		<a href="{[url]}" {[#eid]}data-eid="{[.]}"{[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
+		<a href="{[url]}" {[#eid]}data-eid="{[.]}" {[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
 		<div class="content read{[readflag]}">
 			<a href="javascript:;" class="j-content-wrap">
 				{[#image]}<img src="{[.]}">{[/image]}
@@ -1132,28 +1133,28 @@
 </script>
 <script type="text/template" id="ctx_greet">
 	{{if $greeting && $greeting.cat=="text"}}
-	<div class="greeting">
-		<h4>{{$greeting.title}}</h4>
-		{{if $greeting.items|@count==1}}
-		<div style="padding-top: 1rem;padding-bottom: 1rem">{{$greeting.items[0]}}</div>
-		{{else}}
-		<ol>
-			{{foreach from=$greeting.items item=item}}
-			<li>{{$item}}</li>
-			{{/foreach}}
-		</ol>
-		{{/if}}
-		<a href="javascript:;" class="m-popup-close"></a>
-	</div>
+		<div class="greeting">
+			<h4>{{$greeting.title}}</h4>
+			{{if $greeting.items|@count==1}}
+				<div style="padding-top: 1rem;padding-bottom: 1rem">{{$greeting.items[0]}}</div>
+			{{else}}
+				<ol>
+					{{foreach from=$greeting.items item=item}}
+						<li>{{$item}}</li>
+					{{/foreach}}
+				</ol>
+			{{/if}}
+			<a href="javascript:;" class="m-popup-close"></a>
+		</div>
 	{{elseif $greeting && $greeting.cat=="image"}}
-	<div class="greeting pic">
-		{{if $greeting.items|@count==1}}
-		<a href="{{$greeting.url}}">
-			<img src="{{$greeting.items[0]}}" alt="">
-		</a>
-		{{/if}}
-		<a href="javascript:;" class="m-popup-close"></a>
-	</div>
+		<div class="greeting pic">
+			{{if $greeting.items|@count==1}}
+				<a href="{{$greeting.url}}">
+					<img src="{{$greeting.items[0]}}" alt="">
+				</a>
+			{{/if}}
+			<a href="javascript:;" class="m-popup-close"></a>
+		</div>
 	{{/if}}
 </script>
 
@@ -1279,8 +1280,8 @@
 	{[/header]}
 	{[^header]}
 	<li {[#first]}class="first" {[/first]}>
-		{[#caption]}<label>{[.]}</label>{[/caption]}
-		<span {[^caption]}class="content-block"{[/caption]}>{[content]}</span>
+	{[#caption]}<label>{[.]}</label>{[/caption]}
+	<span {[^caption]}class="content-block" {[/caption]}>{[content]}</span>
 	</li>
 	{[/header]}
 	{[/items]}

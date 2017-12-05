@@ -1852,4 +1852,15 @@ class WxController extends BaseController
 			'terse',
 			'页面跳转');
 	}
+
+	public function actionExpand()
+	{
+
+		return self::renderPage("expand.tpl",
+			[
+			],
+			'terse',
+			'分享拉新',
+			'bg-expand');
+	}
 }

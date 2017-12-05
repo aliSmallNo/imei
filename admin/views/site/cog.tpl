@@ -40,150 +40,150 @@
 </div>
 <div class="row-divider"></div>
 <div class="row">
-<div class="col-sm-7">
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<i class="fa fa-cog fa-fw"></i> 上线提醒（每日一句）
-		<div class="pull-right">
-			<a href="javascript:;" class="btn-add btn btn-primary btn-xs" data-st="1" data-cat="100">添加文本</a>
-			<a href="javascript:;" class="btn-add btn btn-primary btn-xs" data-st="1" data-cat="102">添加图片</a>
+	<div class="col-sm-7">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-cog fa-fw"></i> 上线提醒（每日一句）
+				<div class="pull-right">
+					<a href="javascript:;" class="btn-add btn btn-primary btn-xs" data-st="1" data-cat="100">添加文本</a>
+					<a href="javascript:;" class="btn-add btn btn-primary btn-xs" data-st="1" data-cat="102">添加图片</a>
+				</div>
+			</div>
+			<div class="panel-body">
+				<ul class="m-list">
+					{{foreach from=$notices item=notice}}
+						<li>
+							<div class="content">
+								{{if $notice.title}}
+									<h4>{{$notice.title}}</h4>
+								{{/if}}
+								{{if $notice.cat==100}}
+									<div class="text">{{$notice.content}}</div>
+								{{else}}
+									<div><img src="{{$notice.content}}" alt="" class="notice-img">
+									</div>
+								{{/if}}
+							</div>
+							<div class="right">
+								{{$notice.name}}<em>更新于 {{$notice.dt}}</em><em>过期于 {{$notice.exp}}</em><em
+												class="st-{{$notice.active}}">{{$notice.st}}</em>
+								<a href="javascript:;" class="btn-mod" data-url="{{$notice.url}}" data-cnt="{{$notice.count}}"
+								   data-id="{{$notice.id}}" data-title="{{$notice.title}}"
+								   data-st="{{$notice.status}}" data-exp="{{$notice.exp}}" data-cat="{{$notice.cat}}">编辑</a>
+							</div>
+						</li>
+					{{/foreach}}
+				</ul>
+			</div>
 		</div>
 	</div>
-<div class="panel-body">
-<ul class="m-list">
-{{foreach from=$notices item=notice}}
-<li>
-<div class="content">
-{{if $notice.title}}
-	<h4>{{$notice.title}}</h4>
-{{/if}}
-{{if $notice.cat==100}}
-	<div class="text">{{$notice.content}}</div>
-{{else}}
-	<div><img src="{{$notice.content}}" alt="" class="notice-img">
-	</div>
-{{/if}}
-</div>
-	<div class="right">
-		{{$notice.name}}<em>更新于 {{$notice.dt}}</em><em>过期于 {{$notice.exp}}</em><em
-		class="st-{{$notice.active}}">{{$notice.st}}</em>
-		<a href="javascript:;" class="btn-mod" data-url="{{$notice.url}}" data-cnt="{{$notice.count}}"
-		   data-id="{{$notice.id}}" data-title="{{$notice.title}}"
-		   data-st="{{$notice.status}}" data-exp="{{$notice.exp}}" data-cat="{{$notice.cat}}">编辑</a>
-	</div>
-</li>
-{{/foreach}}
-</ul>
-</div>
-</div>
-</div>
-<div class="col-sm-5">
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<i class="fa fa-cog fa-fw"></i> 首页页眉插图
-		<div class="pull-right">
-			<a href="javascript:;" class="btn-add btn btn-primary btn-xs" data-st="1" data-cat="110">添加图片</a>
+	<div class="col-sm-5">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-cog fa-fw"></i> 首页页眉插图
+				<div class="pull-right">
+					<a href="javascript:;" class="btn-add btn btn-primary btn-xs" data-st="1" data-cat="110">添加图片</a>
+				</div>
+			</div>
+			<div class="panel-body">
+				<ul class="m-list">
+					{{foreach from=$homeHeaders item=item}}
+						<li>
+							<div class="content">
+								<div><img src="{{$item.content}}" alt="" class="notice-img"></div>
+							</div>
+							<div class="right">
+								{{$item.name}}<em>更新于 {{$item.dt}}</em><em class="st-{{$item.active}}">{{$item.st}}</em>
+								<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}" data-cnt="{{$item.count}}"
+								   data-id="{{$item.id}}" data-title="{{$item.title}}"
+								   data-st="{{$item.status}}" data-exp="{{$item.exp}}" data-cat="{{$item.cat}}">编辑</a>
+							</div>
+						</li>
+					{{/foreach}}
+				</ul>
+			</div>
 		</div>
-	</div>
-<div class="panel-body">
-<ul class="m-list">
-{{foreach from=$homeHeaders item=item}}
-	<li>
-		<div class="content">
-			<div><img src="{{$item.content}}" alt="" class="notice-img"></div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-cog fa-fw"></i> 推荐列表插图
+			</div>
+			<div class="panel-body">
+				<ul class="m-list">
+					{{foreach from=$homeFigures item=item}}
+						<li>
+							<div class="content">
+								<div><img src="{{$item.content}}" alt="" class="notice-img"></div>
+							</div>
+							<div class="right">
+								{{$item.name}}<em>更新于 {{$item.dt}}</em><em class="st-{{$item.active}}">{{$item.st}}</em>
+								<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}" data-cnt="{{$item.count}}"
+								   data-id="{{$item.id}}" data-title="{{$item.title}}"
+								   data-st="{{$item.status}}" data-exp="{{$item.exp}}" data-cat="{{$item.cat}}">编辑</a>
+							</div>
+						</li>
+					{{/foreach}}
+				</ul>
+			</div>
 		</div>
-		<div class="right">
-			{{$item.name}}<em>更新于 {{$item.dt}}</em><em class="st-{{$item.active}}">{{$item.st}}</em>
-			<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}" data-cnt="{{$item.count}}"
-			   data-id="{{$item.id}}" data-title="{{$item.title}}"
-			   data-st="{{$item.status}}" data-exp="{{$item.exp}}" data-cat="{{$item.cat}}">编辑</a>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-cog fa-fw"></i> 密聊页眉插图
+				<div class="pull-right">
+					<a href="javascript:;" class="btn-add btn btn-primary btn-xs" data-st="1" data-cat="130">添加图片</a>
+				</div>
+			</div>
+			<div class="panel-body">
+				<ul class="m-list">
+					{{foreach from=$chatHeaders item=item}}
+						<li>
+							<div class="content">
+								<div><img src="{{$item.content}}" alt="" class="notice-img"></div>
+							</div>
+							<div class="right">
+								{{$item.name}}<em>更新于 {{$item.dt}}</em><em class="st-{{$item.active}}">{{$item.st}}</em>
+								<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}" data-cnt="{{$item.count}}"
+								   data-id="{{$item.id}}" data-title="{{$item.title}}"
+								   data-st="{{$item.status}}" data-exp="{{$item.exp}}" data-cat="{{$item.cat}}">编辑</a>
+							</div>
+						</li>
+					{{/foreach}}
+				</ul>
+			</div>
 		</div>
-	</li>
-{{/foreach}}
-</ul>
-</div>
-</div>
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<i class="fa fa-cog fa-fw"></i> 推荐列表插图
-	</div>
-<div class="panel-body">
-<ul class="m-list">
-{{foreach from=$homeFigures item=item}}
-	<li>
-		<div class="content">
-			<div><img src="{{$item.content}}" alt="" class="notice-img"></div>
-		</div>
-		<div class="right">
-			{{$item.name}}<em>更新于 {{$item.dt}}</em><em class="st-{{$item.active}}">{{$item.st}}</em>
-			<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}" data-cnt="{{$item.count}}"
-			   data-id="{{$item.id}}" data-title="{{$item.title}}"
-			   data-st="{{$item.status}}" data-exp="{{$item.exp}}" data-cat="{{$item.cat}}">编辑</a>
-		</div>
-	</li>
-{{/foreach}}
-</ul>
-</div>
-</div>
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<i class="fa fa-cog fa-fw"></i> 密聊页眉插图
-		<div class="pull-right">
-			<a href="javascript:;" class="btn-add btn btn-primary btn-xs" data-st="1" data-cat="130">添加图片</a>
-		</div>
-	</div>
-<div class="panel-body">
-<ul class="m-list">
-{{foreach from=$chatHeaders item=item}}
-	<li>
-		<div class="content">
-			<div><img src="{{$item.content}}" alt="" class="notice-img"></div>
-		</div>
-		<div class="right">
-			{{$item.name}}<em>更新于 {{$item.dt}}</em><em class="st-{{$item.active}}">{{$item.st}}</em>
-			<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}" data-cnt="{{$item.count}}"
-			   data-id="{{$item.id}}" data-title="{{$item.title}}"
-			   data-st="{{$item.status}}" data-exp="{{$item.exp}}" data-cat="{{$item.cat}}">编辑</a>
-		</div>
-	</li>
-{{/foreach}}
-</ul>
-</div>
-</div>
 
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<i class="fa fa-cog fa-fw"></i> 其他插图
-		<div class="pull-right">
-			<a href="javascript:;" class="btn-add btn btn-primary btn-xs" data-st="1" data-cat="180">添加图片</a>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-cog fa-fw"></i> 其他插图
+				<div class="pull-right">
+					<a href="javascript:;" class="btn-add btn btn-primary btn-xs" data-st="1" data-cat="180">添加图片</a>
+				</div>
+			</div>
+			<div class="panel-body">
+				<ul class="m-list">
+					{{foreach from=$miscFigures item=item}}
+						<li>
+							<div class="content">
+								<div><img src="{{$item.content}}" alt="" class="notice-img"></div>
+							</div>
+							<div class="right">
+								{{$item.name}}<em>更新于 {{$item.dt}}</em><em class="st-{{$item.active}}">{{$item.st}}</em>
+								<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}" data-cnt="{{$item.count}}"
+								   data-id="{{$item.id}}" data-title="{{$item.title}}"
+								   data-st="{{$item.status}}" data-exp="{{$item.exp}}" data-cat="{{$item.cat}}">编辑</a>
+							</div>
+						</li>
+					{{/foreach}}
+				</ul>
+			</div>
 		</div>
 	</div>
-<div class="panel-body">
-<ul class="m-list">
-{{foreach from=$miscFigures item=item}}
-	<li>
-		<div class="content">
-			<div><img src="{{$item.content}}" alt="" class="notice-img"></div>
-		</div>
-		<div class="right">
-			{{$item.name}}<em>更新于 {{$item.dt}}</em><em class="st-{{$item.active}}">{{$item.st}}</em>
-			<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}" data-cnt="{{$item.count}}"
-			   data-id="{{$item.id}}" data-title="{{$item.title}}"
-			   data-st="{{$item.status}}" data-exp="{{$item.exp}}" data-cat="{{$item.cat}}">编辑</a>
-		</div>
-	</li>
-{{/foreach}}
-</ul>
-</div>
-</div>
-</div>
 </div>
 <div class="modal" id="modalEdit" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-					aria-hidden="true">&times;</span></button>
+									aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title"></h4>
 			</div>
 			<div class="modal-body"></div>

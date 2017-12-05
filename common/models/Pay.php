@@ -104,6 +104,7 @@ class Pay extends ActiveRecord
 			'price' => 68,
 			'tip' => '首次充值将收获2100媒桂花',
 			'num' => 700,
+//			'ln' => 'line',
 		],
 	];
 
