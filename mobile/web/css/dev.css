@@ -74,10 +74,11 @@ main {
   text-align: center; }
 
 .bg-expand {
-  background: url(../images/share/bg.jpg);
+  background-image: url(../images/share/bg.jpg);
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: 100% 100%;
+  background-position: center top;
   position: relative; }
   .bg-expand .avatar {
     text-align: center; }
