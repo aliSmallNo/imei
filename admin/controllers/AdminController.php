@@ -108,7 +108,6 @@ class AdminController extends BaseController
 			['key' => 'image', 'title' => '图片'],
 			['key' => 'voice', 'title' => '声音'],
 			['key' => 'video', 'title' => '视频'],
-			['key' => 'news', 'title' => '文章'],
 		];
 		return $this->renderPage('media.tpl',
 			[

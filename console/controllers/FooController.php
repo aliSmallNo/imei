@@ -904,6 +904,7 @@ class FooController extends Controller
 		var_dump($ret);
 	}
 
+
 	public function actionMediamsg()
 	{
 		$conn = AppUtil::db();
@@ -931,6 +932,12 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
+		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
+		$media = 'fxD2gCRCBYw89qNnC3DZx1tapPryKF9XfO2F6qmYLBPhPMR3z9t2RtHRnGIzsk7u';
+		$ret = UserWechat::sendMedia($openId, $media, 'voice');
+		var_dump($ret);
+		return;
+
 		$conn = AppUtil::db();
 		$service = CogService::init($conn);
 		$sql = "select * from im_cog WHERE cTitle!='' ";
