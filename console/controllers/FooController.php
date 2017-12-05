@@ -932,7 +932,7 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
+		$openId = 'oYDJew2lWRwxl_XcmXBAwH1epBcg';
 		$media = 'fxD2gCRCBYw89qNnC3DZx1tapPryKF9XfO2F6qmYLBPhPMR3z9t2RtHRnGIzsk7u';
 		$ret = UserWechat::sendMedia($openId, $media, 'voice');
 		var_dump($ret);
