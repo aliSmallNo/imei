@@ -120,7 +120,7 @@ class CogService
 			cStatus as status, cExpiredOn as exp, cAddedOn as addon, cUpdatedOn as editon, a.aName as `name`
  			FROM im_cog as c
  			LEFT JOIN im_admin as a on c.cUpdatedBy=a.aId
- 			WHERE cId>0 ' . $strCriteria . ' ORDER BY cExpiredOn desc, cUpdatedOn DESC ' . $limit;
+ 			WHERE cStatus<2 ' . $strCriteria . ' ORDER BY cExpiredOn desc, cUpdatedOn DESC ' . $limit;
 		$ret = $this->conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
 		foreach ($ret as $k => $item) {

@@ -145,10 +145,12 @@
 					{[#st]}
 					<option value="1" selected>有效</option>
 					<option value="0">无效</option>
+					<option value="9">删除</option>
 					{[/st]}
 					{[^st]}
 					<option value="1">有效</option>
 					<option value="0" selected>无效</option>
+					<option value="9">删除</option>
 					{[/st]}
 				</select>
 			</div>
