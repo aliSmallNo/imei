@@ -694,10 +694,10 @@ class WxController extends BaseController
 		$noReadFlag = UserMsg::hasUnread($uId, $conn) ? 1 : 0;
 		$audit = UserAudit::invalid($uId, $conn);
 		$greeting = UserMsg::greeting($uId, $openId, $conn);
-		$service = AppUtil::wechatUrl() . "/images/ad/service_female.jpg";
+		$service = "https://bpbhd-10063905.file.myqcloud.com/image/n1712051100397.jpg";
 		$service_sm = "https://bpbhd-10063905.file.myqcloud.com/image/n1712051100395.jpg";
 		if ($uInfo["gender"] == User::GENDER_FEMALE) {
-			$service = AppUtil::wechatUrl() . "/images/ad/service_male.jpg";
+			$service = "https://bpbhd-10063905.file.myqcloud.com/image/n1712051100398.jpg";
 			$service_sm = "https://bpbhd-10063905.file.myqcloud.com/image/n1712051100394.jpg";
 		}
 		$advert_chat = [
