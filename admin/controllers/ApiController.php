@@ -491,9 +491,10 @@ class ApiController extends Controller
 				$mobiles = self::postParam('mobiles');
 				$mobiles = explode("\n", $mobiles);
 				$mediaId = self::postParam('media');
+				$type = self::postParam('type');
 				AppUtil::logFile([$mobiles, $mediaId], 5);
 				if ($mobiles && $mediaId) {
-					$ret = UserWechat::sendMediaByPhone($mobiles, $mediaId);
+					$ret = UserWechat::sendMediaByPhone($mobiles, $mediaId,$type);
 					return self::renderAPI(0, "发送成功！", ['count' => $ret]);
 				}
 				break;

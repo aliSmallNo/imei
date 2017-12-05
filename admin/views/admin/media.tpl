@@ -70,6 +70,7 @@
 		</div>
 	</div>
 </div>
+<input type="hidden" id="cType" value="{{$type}}">
 <script type="text/html" id="tpl_users">
 	<div class="row">
 		<div class="form-group">
@@ -83,6 +84,7 @@
 		tmp: $("#tpl_users").html(),
 		popup: $("#modal_wrap"),
 		media: '',
+		type: $('#cType').val(),
 		loading: 0,
 		init: function () {
 			var util = this;
@@ -108,6 +110,7 @@
 			util.loading = 1;
 			$.post('/api/admin', {
 				tag: 'notice',
+				type: util.type,
 				media: util.media,
 				mobiles: mobiles
 			}, function (resp) {
