@@ -1126,12 +1126,12 @@ class WechatUtil
 		return $cnt;
 	}
 
-	public static function getMedia($page = 1, $pageSize = 20)
+	public static function getMedia($type = 'image', $page = 1, $pageSize = 20)
 	{
 		$url = 'https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=';
 		$url .= WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 		$json = [
-			'type' => 'image',
+			'type' => $type,
 			'offset' => ($page - 1) * $pageSize,
 			'count' => $pageSize,
 		];
@@ -1141,6 +1141,7 @@ class WechatUtil
 			$items = $ret['item'];
 			foreach ($items as $k => $item) {
 				$items[$k]['dt'] = AppUtil::prettyDate(date('Y-m-d H:i:s', $item['update_time']));
+				$items[$k]['url'] = isset($item['url']) ? $item['url'] : '';
 			}
 			return [$items, $ret['total_count']];
 		}

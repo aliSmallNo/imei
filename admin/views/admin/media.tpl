@@ -10,45 +10,56 @@
 
 <div class="row-divider"></div>
 <div class="row">
-	<table class="table table-striped table-bordered table-hover">
-		<thead>
-		<tr>
-			<th>
-				MediaID
-			</th>
-			<th>
-				图片
-			</th>
-			<th>
-				时间
-			</th>
-			<th>
-				操作
-			</th>
-		</tr>
-		</thead>
-		<tbody>
-		{{foreach from=$items item=item}}
-		<tr>
-			<td>
-				<span>{{$item.media_id}}</span>
-			</td>
-			<td><img src="{{$item.url}}" alt="" class="img-thumb"></td>
-			<td>{{$item.dt}}</td>
-			<td data-id="{{$item.media_id}}">
-				<a href="javascript:;" class="btn-send">发模板消息</a>
-			</td>
-		</tr>
-		{{/foreach}}
-		</tbody>
-	</table>
-	{{$pagination}}
+<ul class="nav nav-tabs">
+{{foreach from=$tabs item=tab}}
+	<li class="ng-scope {{if $type == $tab.key}}active{{/if}}">
+	<a href="/admin/media?type={{$tab.key}}" class="ng-binding">{{$tab.title}}</a>
+</li>
+{{/foreach}}
+</ul>
+</div>
+<div class="row-divider"></div>
+<div class="row">
+<table class="table table-striped table-bordered table-hover">
+	<thead>
+	<tr>
+		<th>
+			MediaID
+		</th>
+		<th>
+			图片
+		</th>
+		<th>
+			时间
+		</th>
+		<th>
+			操作
+		</th>
+	</tr>
+	</thead>
+<tbody>
+{{foreach from=$items item=item}}
+<tr>
+	<td>
+		<span>{{$item.media_id}}</span>
+	</td>
+	<td><img src="{{$item.url}}" alt="" class="img-thumb"></td>
+	<td>{{$item.dt}}</td>
+	<td data-id="{{$item.media_id}}">
+		<a href="javascript:;" class="btn-send">发模板消息</a>
+	</td>
+</tr>
+{{/foreach}}
+</tbody>
+</table>
+{{$pagination}}
 </div>
 <div class="modal" id="modal_wrap" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document" style="width:360px">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+					aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title">通知内容</h4>
 			</div>
 			<div class="modal-body"></div>

@@ -101,10 +101,19 @@ class AdminController extends BaseController
 	public function actionMedia()
 	{
 		$page = self::getParam("page", 1);
-		list($items,$count) = WechatUtil::getMedia($page);
+		$type = self::getParam("type", 'image');
+		list($items, $count) = WechatUtil::getMedia($type, $page);
 		$pagination = self::pagination($page, $count);
+		$tabs = [
+			['key' => 'image', 'title' => '图片'],
+			['key' => 'voice', 'title' => '声音'],
+			['key' => 'video', 'title' => '视频'],
+			['key' => 'news', 'title' => '文章'],
+		];
 		return $this->renderPage('media.tpl',
 			[
+				'tabs' => $tabs,
+				'type'=>$type,
 				'items' => $items,
 				'pagination' => $pagination,
 			]);
