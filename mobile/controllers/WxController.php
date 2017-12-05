@@ -695,10 +695,10 @@ class WxController extends BaseController
 		$audit = UserAudit::invalid($uId, $conn);
 		$greeting = UserMsg::greeting($uId, $openId, $conn);
 		$service = AppUtil::wechatUrl() . "/images/ad/service_female.jpg";
-		$service_sm = AppUtil::wechatUrl() . "/images/ad/service_female_sm.jpg";
+		$service_sm = "https://bpbhd-10063905.file.myqcloud.com/image/n1712051100395.jpg";
 		if ($uInfo["gender"] == User::GENDER_FEMALE) {
 			$service = AppUtil::wechatUrl() . "/images/ad/service_male.jpg";
-			$service_sm = AppUtil::wechatUrl() . "/images/ad/service_male_sm.jpg";
+			$service_sm = "https://bpbhd-10063905.file.myqcloud.com/image/n1712051100394.jpg";
 		}
 		$advert_chat = [
 			'image' => $service_sm,
