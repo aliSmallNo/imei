@@ -22,9 +22,19 @@
     background-size: contain
 
 .bg-lottery
-    background: #fdddde url(../images/lottery/bg01.jpg) no-repeat center center
-    background-size: 100% 100%
+    //background: #fdddde url(../images/lottery/bg01.jpg) no-repeat center center
+    //background-size: 100% 100%
     position: relative
+    &:before
+        content: ' '
+        position: fixed
+        z-index: -1
+        top: 0
+        right: 0
+        bottom: 0
+        left: 0
+        background: url(../images/lottery/bg01.jpg) center 0 no-repeat
+        background-size: cover
 
 .t-warning
     font-size: 1.1rem
