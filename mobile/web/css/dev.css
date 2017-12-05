@@ -74,7 +74,7 @@ main {
   text-align: center; }
 
 .bg-expand {
-  background: url(../images/share/bg.jpg) no-repeat center top;
+  background: #000 url(../images/share/bg.jpg) no-repeat center top;
   background-size: 100% 100%;
   position: relative; }
   .bg-expand .avatar {
