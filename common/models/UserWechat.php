@@ -259,7 +259,7 @@ class UserWechat extends ActiveRecord
 		$cnt = 0;
 		foreach ($ret as $row) {
 			$openId = $row['uOpenId'];
-			self::sendMedia($openId, $mediaId);
+			self::sendMedia($openId, $mediaId, $type);
 			$cnt++;
 		}
 		return $cnt;
