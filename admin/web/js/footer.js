@@ -33,6 +33,12 @@ var BpbhdUtil = {
 			time: 2.5 * 1000
 		});
 	},
+	loading: function () {
+		layer.load(2);
+	},
+	clear: function () {
+		layer.closeAll();
+	},
 	popup: function (title, content, w, h) {
 		if (!title) {
 			title = false;

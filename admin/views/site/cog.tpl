@@ -311,6 +311,8 @@
 		if (!data) {
 			return false;
 		}
+
+		BpbhdUtil.loading();
 		var formData = new FormData();
 		formData.append("tag", 'edit');
 		formData.append("data", JSON.stringify(data));
@@ -318,6 +320,7 @@
 		if (photo.length) {
 			formData.append("image", photo[0].files[0]);
 		}
+
 		$.ajax({
 			url: "/api/cog",
 			type: "POST",
@@ -326,6 +329,7 @@
 			processData: false,
 			contentType: false,
 			success: function (resp) {
+				BpbhdUtil.clear();
 				if (resp.code < 1) {
 					BpbhdUtil.showMsg(resp.msg, 1);
 					$sls.modal.modal('hide');

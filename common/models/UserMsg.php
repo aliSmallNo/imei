@@ -288,12 +288,6 @@ class UserMsg extends ActiveRecord
 				 WHERE c.cStatus=1 AND c.cExpiredOn >= DATE_FORMAT(NOW(),'%Y-%m-%d') and c.cCategory in ( $strCats )
 				 GROUP BY c.cId HAVING cnt<c.cCount
 				 ORDER BY c.cUpdatedOn desc";
-		/*$sql = 'SELECT count(a.aId) as cnt, m.mId,m.mUId,m.mText,m.mCategory, m.mAddedOn,m.mUrl
-				 FROM im_user_msg as m
-				 LEFT JOIN im_log_action as a on m.mUId=a.aKey and a.aUId=:uid
-				 WHERE mStatus=1 and m.mCategory in (' . $strCats . ')
-				 GROUP BY m.mId HAVING cnt<5
-				 ORDER BY m.mAddedOn desc';*/
 		$ret = $conn->createCommand($sql)->bindValues([
 			':uid' => $uid,
 		])->queryOne();
