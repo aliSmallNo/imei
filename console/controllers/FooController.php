@@ -787,7 +787,7 @@ class FooController extends Controller
 	public function actionMassmsg()
 	{
 		$conn = AppUtil::db();
-		$dt = date('Y-m-d H:i:s', time() - 3600);
+		$dt = date('Y-m-d H:i:s', time() - 4000);
 		$sql = "SELECT uId,uGender 
  				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId AND w.wSubscribe=1
@@ -803,7 +803,7 @@ class FooController extends Controller
 			if ($gender == User::GENDER_FEMALE) {
 				$content = 'https://wx.meipo100.com/images/ad/for_female_600.jpg';
 			}*/
-			$content = "https://wx.meipo100.com/images/ad/prize_magic.jpg";
+			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1712051178526.jpg";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
 			QueueUtil::loadJob('templateMsg',

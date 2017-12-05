@@ -1855,9 +1855,19 @@ class WxController extends BaseController
 
 	public function actionExpand()
 	{
-
+		$uni = self::getParam('uni');
+		$senderId = 0;
+		$uInfo = User::findOne(['uUniqid' => $uni]);
+		if ($uInfo) {
+			$senderId = $uInfo['uId'];
+		} else {
+			header('location:/wx/error?msg=链接无效！');
+			exit();
+		}
+		$sentFlag = $senderId > 0 ? 1 : 0;
 		return self::renderPage("expand.tpl",
 			[
+				'sentFlag' => $sentFlag
 			],
 			'terse',
 			'分享拉新',
