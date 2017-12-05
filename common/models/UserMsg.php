@@ -5,6 +5,7 @@
 
 namespace common\models;
 
+use common\service\CogService;
 use common\utils\AppUtil;
 use common\utils\NoticeUtil;
 use common\utils\WechatUtil;
@@ -280,23 +281,30 @@ class UserMsg extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$strCats = implode(',', [self::CATEGORY_BULLETIN, self::CATEGORY_UPGRADE, self::CATEGORY_PICTURE]);
-		$sql = 'SELECT count(a.aId) as cnt, m.mId,m.mUId,m.mText,m.mCategory, m.mAddedOn,m.mUrl
+		$strCats = implode(',', [CogService::CAT_NOTICE_TEXT, CogService::CAT_NOTICE_IMAGE]);
+		$sql = "SELECT count(a.aId) as cnt, c.cId as `id`,c.cRaw,c.cCategory, c.cUpdatedOn, c.cStatus,c.cCount
+				 FROM im_cog as c
+				 LEFT JOIN im_log_action as a on c.cId=a.aKey and a.aUId=:uid
+				 WHERE c.cStatus=1 AND c.cExpiredOn >= DATE_FORMAT(NOW(),'%Y-%m-%d') and c.cCategory in ( $strCats )
+				 GROUP BY c.cId HAVING cnt<c.cCount
+				 ORDER BY c.cUpdatedOn desc";
+		/*$sql = 'SELECT count(a.aId) as cnt, m.mId,m.mUId,m.mText,m.mCategory, m.mAddedOn,m.mUrl
 				 FROM im_user_msg as m
 				 LEFT JOIN im_log_action as a on m.mUId=a.aKey and a.aUId=:uid
 				 WHERE mStatus=1 and m.mCategory in (' . $strCats . ')
 				 GROUP BY m.mId HAVING cnt<5
-				 ORDER BY m.mAddedOn desc';
+				 ORDER BY m.mAddedOn desc';*/
 		$ret = $conn->createCommand($sql)->bindValues([
 			':uid' => $uid,
 		])->queryOne();
 		if ($ret) {
-			LogAction::add($uid, $openId, LogAction::ACTION_GREETING, '', $ret['mUId']);
+			LogAction::add($uid, $openId, LogAction::ACTION_GREETING, '', $ret['id']);
+			$raw = json_decode($ret['cRaw'], 1);
 			return [
-				'title' => self::$catDict[$ret['mCategory']],
-				'items' => json_decode($ret['mText'], 1),
-				'url' => $ret['mUrl'],
-				'cat' => ($ret['mCategory'] == self::CATEGORY_PICTURE ? "image" : "text")
+				'title' => isset($raw['title']) ? $raw['title'] : '',
+				'items' => explode("\n", $raw['content']),
+				'url' => isset($raw['url']) ? $raw['url'] : 'javascript:;',
+				'cat' => ($ret['cCategory'] == CogService::CAT_NOTICE_IMAGE ? "image" : "text")
 			];
 		}
 
