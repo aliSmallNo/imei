@@ -31,12 +31,15 @@ class COSUtil
 	private $Secret_Key = 'At5h3sa9zKz8rsSMVqPUMN4L48uHNfNk';
 	private $Host = "sh.file.myqcloud.com";
 
-	public static function init($resType, $resPath)
+	public static function init($resType, $resPath, $ext = '')
 	{
 		$util = new self();
 		$util->resPath = $resPath;
 		$util->resType = $resType;
 		$util->resRename = date('ymd') . (1000001 + RedisUtil::getImageSeq());
+		if ($ext) {
+			$util->resExtension = strtolower($ext);
+		}
 		$util->savedPath = $util->save2Local();
 		$util->hasError = (!$util->savedPath);
 		return $util;
@@ -59,7 +62,9 @@ class COSUtil
 				break;
 			case self::UPLOAD_PATH:
 				if (is_file($this->resPath)) {
-					$this->resExtension = pathinfo($this->resPath, PATHINFO_EXTENSION);
+					if (!$this->resExtension) {
+						$this->resExtension = pathinfo($this->resPath, PATHINFO_EXTENSION);
+					}
 					$this->resRename .= '.' . $this->resExtension;
 					$content = file_get_contents($this->resPath);
 				}
@@ -163,33 +168,37 @@ class COSUtil
 	}
 
 
-	public function uploadOnly($thumbFlag = false, $squareFlag = false)
+	public function uploadOnly($thumbFlag = false, $squareFlag = false, $compressFlag = true)
 	{
 		$data = [
 			'op' => 'upload',
 			"insertOnly" => 0
 		];
 		$srcPath = $this->savedPath;
+		AppUtil::logFile($srcPath, 5, __FUNCTION__, __LINE__);
 		// Rain: 对图片做压缩
 		if ($this->uploadFolder == 'image') {
 			$thumbSide = 200;
 			$defaultSide = 680;
-			$newWidth = 0;
-			$newHeight = 0;
 			list($srcWidth, $srcHeight) = getimagesize($srcPath);
 			if ($thumbFlag && ($srcWidth > $thumbSide || $srcHeight > $thumbSide)) {
 				$newWidth = $thumbSide;
 				$newHeight = $thumbSide;
-			} elseif (($srcWidth > $defaultSide || $srcHeight > $defaultSide)) {
+			} elseif ($compressFlag && ($srcWidth > $defaultSide || $srcHeight > $defaultSide)) {
 				$newWidth = $defaultSide;
 				$newHeight = $defaultSide;
+			} else {
+				$newWidth = $srcWidth;
+				$newHeight = $srcHeight;
 			}
 			if ($newWidth && $newHeight) {
 				if ($squareFlag) {
 					$side = min($newWidth, $newHeight);
 					$data['filecontent'] = Image::open($srcPath)->zoomCrop($side, $side, 0xffffff, 'center', 'center')->get();
-				} else {
+				} elseif ($compressFlag) {
 					$data['filecontent'] = Image::open($srcPath)->cropResize($newWidth, $newHeight)->get();
+				} else {
+					$data['filecontent'] = Image::open($srcPath)->get();
 				}
 				$sha1 = hash('sha1', $data['filecontent']);
 				$data['sha'] = $sha1;

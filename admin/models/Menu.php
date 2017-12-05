@@ -4,7 +4,7 @@ namespace admin\models;
 
 class Menu
 {
-	const VERSION = 171201.1;
+	const VERSION = 171205.1;
 
 	public static function keepMenu($uId, $url)
 	{
@@ -112,6 +112,12 @@ class Menu
 						"url" => "/site/events",
 						"revise" => 1,
 						"hidden" => 1,
+						"level" => 820
+					],
+					[
+						"name" => "通知公告",
+						"url" => "/site/cog",
+						"revise" => 1,
 						"level" => 820
 					],
 					[

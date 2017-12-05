@@ -23,7 +23,9 @@ use common\models\UserComment;
 use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserWechat;
+use common\service\CogService;
 use common\utils\AppUtil;
+use common\utils\COSUtil;
 use common\utils\ImageUtil;
 use common\utils\PushUtil;
 use common\utils\RedisUtil;
@@ -542,6 +544,24 @@ class ApiController extends Controller
 			'oCategory' => Log::CAT_SOURCE,
 			'oAfter' => ['prov' => $p, 'city' => $c, 'phone' => $phone]
 		]);
+	}
+
+	public function actionCog()
+	{
+		$tag = strtolower(self::postParam("tag"));
+		switch ($tag) {
+			case 'edit':
+				$data = json_decode(self::postParam('data'), 1);
+				if (isset($_FILES['image']['tmp_name']) && isset($_FILES['image']['name']) && $_FILES['image']['name']) {
+					$tmp = $_FILES['image']['tmp_name'];
+					$ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+					AppUtil::logFile($_FILES['image'], 5, __FUNCTION__, __LINE__);
+					$data['cRaw']['content'] = COSUtil::init(COSUtil::UPLOAD_PATH, $tmp, $ext)->uploadOnly(false, false, false);
+				}
+				$ret = CogService::init()->edit($data, $this->admin_id);
+				return self::renderAPI(0, $ret ? '保存成功！' : '保存失败！', ['result' => $ret]);
+				break;
+		}
 	}
 
 	public function actionFoo()

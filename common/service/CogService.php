@@ -47,6 +47,35 @@ class CogService
 		return $this->conn->getLastInsertID();
 	}
 
+	public function edit($data, $admin_id = 1)
+	{
+		$cid = isset($data['cId']) && $data['cId'] ? $data['cId'] : 0;
+		unset($data['cId']);
+		$modifyFlag = $cid > 0;
+		$sql = $modifyFlag ? 'update im_cog set ' : 'insert into im_cog (';
+		$sql2 = '';
+		$params = [];
+		foreach ($data as $key => $val) {
+			$params[':' . $key] = is_array($val) ? json_encode($val, JSON_UNESCAPED_UNICODE) : $val;
+			if ($modifyFlag) {
+				$sql .= $key . '=:' . $key . ',';
+			} else {
+				$sql .= $key . ',';
+				$sql2 .= ':' . $key . ',';
+			}
+		}
+		$params[':cUpdatedBy'] = $admin_id;
+		if ($modifyFlag) {
+			$sql .= 'cUpdatedBy=:cUpdatedBy,cUpdatedOn=now() WHERE cId=' . $cid;
+		} else {
+			$sql .= 'cAddedBy,cUpdatedBy) Values(';
+			$sql2 .= ':cUpdatedBy,:cUpdatedBy)';
+			$sql .= $sql2;
+		}
+		$ret = $this->conn->createCommand($sql)->bindValues($params)->execute();
+		return $ret;
+	}
+
 	public function notices($page = 1, $pageSize = 20)
 	{
 		return $this->items(
@@ -88,25 +117,23 @@ class CogService
 			':cat' => self::CAT_NOTICE_TEXT
 		]);
 		$sql = 'SELECT cId as id,cCategory as cat,cRaw as raw,
-			cStatus as status,cExpiredOn as exp,cAddedOn as addon,cUpdatedOn as editon, a.aName as `name`
+			cStatus as status, cExpiredOn as exp, cAddedOn as addon, cUpdatedOn as editon, a.aName as `name`
  			FROM im_cog as c
  			LEFT JOIN im_admin as a on c.cUpdatedBy=a.aId
  			WHERE cId>0 ' . $strCriteria . ' ORDER BY cUpdatedOn DESC ' . $limit;
 		$ret = $this->conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
 		foreach ($ret as $k => $item) {
-			$active = ($item['status'] == 1);
-			if (isset($item['exp']) && $item['exp']) {
-				$active = ($item['exp'] >= date('Y-m-d'));
-			}
+			$active = ($item['status'] == 1 && isset($item['exp']) && $item['exp'] >= date('Y-m-d'));
 			$raw = json_decode($item['raw'], 1);
 			$item = array_merge($item, $raw);
 			unset($item['raw']);
 			$item['url'] = (isset($item['url']) ? $item['url'] : '');
 			$item['title'] = (isset($item['title']) ? $item['title'] : '');
-			$item['active'] = $active;
-			$item['st'] = $active ? '' : '失效';
-			$item['dt'] = AppUtil::prettyDate($item['editon']);
+			$item['content'] = (isset($item['content']) ? $item['content'] : '');
+			$item['active'] = $active ? 1 : 0;
+			$item['st'] = $active ? '有效' : '失效';
+			$item['dt'] = AppUtil::miniDate($item['editon']);
 			$items[] = $item;
 		}
 		return $items;

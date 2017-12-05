@@ -11,12 +11,30 @@
 	}
 
 	.right em {
+		font-style: normal;
+		color: #888;
 		display: block;
+		border-radius: 3px;
+		font-size: 12px;
+	}
+
+	.right em.st-1 {
+		background: #0f9d58;
+		display: inline-block;
+		color: #fff;
+		padding: 0 2px;
+	}
+
+	.right em.st-0 {
+		background: #999;
+		display: inline-block;
+		color: #fff;
+		padding: 0 2px;
 	}
 
 </style>
 <div class="row">
-	<h4>实名用户列表 </h4>
+	<h4>通知公告列表 </h4>
 </div>
 <div class="row-divider"></div>
 <div class="row">
@@ -25,8 +43,8 @@
 	<div class="panel-heading">
 		<i class="fa fa-cog fa-fw"></i> 上线提醒（每日一句）
 		<div class="pull-right">
-			<a href="javascript:;" class="btn-add btn btn-primary btn-xs" data-st="1" data-tag="100">添加文本</a>
-			<a href="javascript:;" class="btn-add btn btn-primary btn-xs" data-st="1" data-tag="102">添加图片</a>
+			<a href="javascript:;" class="btn-add btn btn-primary btn-xs" data-st="1" data-cat="100">添加文本</a>
+			<a href="javascript:;" class="btn-add btn btn-primary btn-xs" data-st="1" data-cat="102">添加图片</a>
 		</div>
 	</div>
 <div class="panel-body">
@@ -38,16 +56,18 @@
 	<h4>{{$notice.title}}</h4>
 {{/if}}
 {{if $notice.cat==100}}
-<div>{{foreach from=$notice.content item=item}}{{$item}}<br>{{/foreach}}</div>
+	<div class="text">{{$notice.content}}</div>
 {{else}}
-<div>{{foreach from=$notice.content item=item}}<img src="{{$item}}" alt="" class="notice-img">{{/foreach}}
-</div>
+	<div><img src="{{$notice.content}}" alt="" class="notice-img">
+	</div>
 {{/if}}
 </div>
 	<div class="right">
-		{{$notice.name}}<em>{{$notice.exp}}</em>{{$notice.st}}
-		<br><a href="javascript:;" class="btn-mod" data-url="{{$notice.url}}" data-cnt="{{$notice.count}}"
-		       data-st="{{$notice.status}}" data-exp="{{$notice.exp}}" data-tag="{{$notice.cat}}">编辑</a>
+		{{$notice.name}}<em>更新于 {{$notice.dt}}</em><em>过期于 {{$notice.exp}}</em><em
+		class="st-{{$notice.active}}">{{$notice.st}}</em>
+		<a href="javascript:;" class="btn-mod" data-url="{{$notice.url}}" data-cnt="{{$notice.count}}"
+		   data-id="{{$notice.id}}" data-title="{{$notice.title}}"
+		   data-st="{{$notice.status}}" data-exp="{{$notice.exp}}" data-cat="{{$notice.cat}}">编辑</a>
 	</div>
 </li>
 {{/foreach}}
@@ -100,14 +120,14 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">通知标题</label>
 			<div class="col-sm-7">
-				<input class="form-control" required data-tag="cRaw:title" placeholder="（必填）" value="{[title]}">
+				<input class="form-control" required data-tag="cRaw:title" placeholder="(必填)" value="{[title]}">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">通知内容</label>
 			<div class="col-sm-7">
 				<textarea class="form-control" required rows="6" data-tag="cRaw:content"
-				          placeholder="（必填）支持换行">{[content]}</textarea>
+				          placeholder="(必填)支持换行">{[content]}</textarea>
 			</div>
 		</div>
 		<div class="form-group">
@@ -134,13 +154,15 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">过期日期(含)</label>
 			<div class="col-sm-7">
-				<input class="my-date-input form-control" data-tag="cExpiredOn" value="{[exp]}">
+				<input class="my-date-input form-control" required data-tag="cExpiredOn" placeholder="(必填)" value="{[exp]}">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">显示次数</label>
 			<div class="col-sm-7">
 				<input class="form-control" type="number" data-tag="cRaw:count" value="{[cnt]}">
+				<input type="hidden" data-tag="cId" value="{[id]}">
+				<input type="hidden" data-tag="cCategory" value="{[cat]}">
 			</div>
 		</div>
 	</div>
@@ -159,13 +181,13 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">上传图片</label>
 			<div class="col-sm-7">
-				<input class="form-control-static" type="file" name="upload_file">
+				<input class="form-control-static" type="file" name="upload_photo" accept="image/jpg, image/jpeg, image/png">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">链接地址</label>
 			<div class="col-sm-7">
-				<input class="form-control" required data-tag="cRaw:url" placeholder="（必填）" value="{[url]}">
+				<input class="form-control" required data-tag="cRaw:url" placeholder="(必填)" value="{[url]}">
 			</div>
 		</div>
 		<div class="form-group">
@@ -186,13 +208,15 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">过期日期(含)</label>
 			<div class="col-sm-7">
-				<input class="my-date-input form-control" data-tag="cExpiredOn" value="{[exp]}">
+				<input class="my-date-input form-control" required data-tag="cExpiredOn" placeholder="(必填)" value="{[exp]}">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">显示次数</label>
 			<div class="col-sm-7">
-				<input class="my-date-input form-control" type="number" data-tag="cRaw:count" value="{[cnt]}">
+				<input class="form-control" type="number" data-tag="cRaw:count" value="{[cnt]}">
+				<input type="hidden" data-tag="cId" value="{[id]}">
+				<input type="hidden" data-tag="cCategory" value="{[cat]}">
 			</div>
 		</div>
 	</div>
@@ -200,40 +224,47 @@
 <script>
 	var $sls = {
 		100: $('#tpl_notice_text').html(),
-		102: $('#tpl_notice_image').html()
+		102: $('#tpl_notice_image').html(),
+		modal: $('#modalEdit'),
+		cat: 0
 	};
-	var mModal = $('#modalEdit');
-
-	// var formData = new FormData();
 
 	function intakeForm() {
-		var data;
+		var data = {};
+		var err = 0;
 		$.each($('.form-horizontal [data-tag]'), function () {
 			var self = $(this);
 			var tags = self.attr('data-tag');
 			tags = tags.split(':');
 			var tag0 = tags[0];
 			var tag1 = (tags.length > 1) ? tags[1] : '';
-			data.required = BpbhdUtil.hasAttr(self, 'required') ? 1 : 0;
+			var required = BpbhdUtil.hasAttr(self, 'required') ? 1 : 0;
 			var type = BpbhdUtil.hasAttr(self, 'type') ? self.attr('type') : '';
-			var val = '';
-			if (type == 'radio' && self.is(':checked')) {
-				val = self.val();
-			} else {
-				val = self.val();
+			var val = self.val().trim();
+			if (required && !val) {
+				BpbhdUtil.showTip(self, '必填项不能留空');
+				err = 1;
+				return false;
 			}
 			if (!tag1) {
 				data[tag0] = val;
 			} else {
-				data[tag0].tag1 = val;
+				if (!data[tag0]) {
+					data[tag0] = {};
+				}
+				data[tag0][tag1] = val;
 			}
-
 		});
+		console.log(data);
+		if (err) {
+			return false;
+		}
+		return data;
 	}
 
 	$(document).on("click", ".btn-add, .btn-mod", function () {
 		var self = $(this);
-		var tag = parseInt(self.attr('data-tag'));
+		$sls.cat = parseInt(self.attr('data-cat'));
 		var modFlag = self.hasClass('btn-mod');
 		var row = self.closest('li');
 		var title = '';
@@ -241,7 +272,7 @@
 			st: 1,
 			cnt: 3
 		};
-		var fields = ['data-url', 'data-st', 'data-cnt'];
+		var fields = ['data-url', 'data-st', 'data-cnt', 'data-id', 'data-cat', 'data-exp', 'data-title'];
 		for (var k = 0; k < fields.length; k++) {
 			var field = fields[k];
 			if (BpbhdUtil.hasAttr(self, field)) {
@@ -252,7 +283,8 @@
 				data[field.substr(5)] = val;
 			}
 		}
-		switch (tag) {
+		data['content'] = row.find('.text').html();
+		switch ($sls.cat) {
 			case 100:
 				title = '添加文本通知';
 				break;
@@ -264,38 +296,45 @@
 				break;
 		}
 		if (title) {
-			mModal.find(".modal-title").html(title);
+			$sls.modal.find(".modal-title").html(title);
 		}
 		console.log(data);
-		var html = Mustache.render($sls[tag], data);
-		mModal.find(".modal-body").html(html);
-		mModal.find(".btn-save").attr('data-tag', tag);
-		mModal.modal('show');
+		var html = Mustache.render($sls[$sls.cat], data);
+		$sls.modal.find(".modal-body").html(html);
+		$sls.modal.modal('show');
 	});
 
-	var validation = function () {
-		var err = 0;
-		$.each($('.form-horizontal input, .form-horizontal textarea'), function () {
-			var self = $(this);
-			var val = self.val().trim();
-			var required = BpbhdUtil.hasAttr(self, 'required');
-			if (required && !val) {
-				layer.tips("请输入必填项~", self, {
-					tips: [2, '#fa0'],
-					time: 3000
-				});
-				err = 1;
-				return false;
-			}
-		});
-		return err === 0;
-	};
-
 	$(document).on("click", ".btn-save", function () {
-		if (!validation()) {
+		var data = intakeForm();
+		if (!data) {
 			return false;
 		}
-
+		var formData = new FormData();
+		formData.append("tag", 'edit');
+		formData.append("data", JSON.stringify(data));
+		var photo = $('input[name="upload_photo"]');
+		if (photo.length) {
+			formData.append("image", photo[0].files[0]);
+		}
+		$.ajax({
+			url: "/api/cog",
+			type: "POST",
+			data: formData,
+			cache: false,
+			processData: false,
+			contentType: false,
+			success: function (resp) {
+				if (resp.code < 1) {
+					BpbhdUtil.showMsg(resp.msg, 1);
+					$sls.modal.modal('hide');
+					setTimeout(function () {
+						location.reload();
+					}, 450);
+				} else {
+					BpbhdUtil.showMsg(resp.msg);
+				}
+			}
+		});
 	});
 </script>
 {{include file="layouts/footer.tpl"}}
