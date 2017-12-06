@@ -41,6 +41,12 @@
 		<a href="javascript:;" class="btn-share">立即分享</a>
 	</div>
 {{/if}}
+<div class="m-popup-shade"></div>
+<div class="m-popup-main" style="display: none">
+	<div class="m-popup-wrap">
+		<div class="m-popup-content no-bg"></div>
+	</div>
+</div>
 <input type="hidden" id="cUNI" value="{{$uni}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
@@ -48,6 +54,6 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/expand.js?v=1.1.2']);
+		requirejs(['/js/expand.js?v=1.1.4']);
 	});
 </script>

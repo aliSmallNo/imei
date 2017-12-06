@@ -1,5 +1,5 @@
-require(['jquery', 'alpha', 'wx'],
-	function ($, alpha, wx) {
+requirejs(['jquery', 'alpha'],
+	function ($, alpha) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
