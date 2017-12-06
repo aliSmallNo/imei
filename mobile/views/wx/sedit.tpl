@@ -83,7 +83,6 @@
 		display: none;
 	}
 </style>
-<link rel="stylesheet" href="/css/dev.min.css">
 <div class="m-popup-shade"></div>
 <div class="nav">
 	<a href="/wx/single#sme">返回</a>
