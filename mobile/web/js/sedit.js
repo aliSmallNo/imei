@@ -1,14 +1,5 @@
-if (document.location.hash === "" || document.location.hash === "#") {
-	//document.location.hash = "#photo";
-}
-require.config({
-	paths: {
-		"jquery": "/assets/js/jquery-3.2.1.min",
-		"layer": "/assets/js/layer_mobile/layer",
-	}
-});
-require(["layer"],
-	function (layer) {
+requirejs(['jquery', 'mustache', 'alpha'],
+	function ($, Mustache, alpha) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -157,8 +148,6 @@ require(["layer"],
 						self.closest(".sedit_mult_wrap").find(".sedit_mult_options").find("a.active").each(function () {
 							html += $(this).html();
 						});
-						console.log(html);
-						console.log(tag);
 						$("[data-field=" + tag + "]").find(".action-val").html(html);
 						util.toggle();
 					} else {
@@ -194,14 +183,13 @@ require(["layer"],
 				});
 				// ["parent","sibling","dwelling","worktype","employer"，"music","book","movie","highschool","university",]
 				$(".sedit-btn-comfirm").on(kClick, function () {
-					var inputFileds = ["name", "highschool", "university", "employer", "music", "book", "movie", "interest", "intro",];
-					var inputFiledsT = ["呢称", "曾读高中名字", "曾读大学名字", "现在单位", "喜欢音乐", "喜欢书籍", "喜欢电影", "兴趣爱好", "自我介绍"];
+					var inputFileds = ["name", "highschool", "employer", "music", "movie", "interest", "intro"];
+					var inputFiledsT = ["呢称", "曾读高中名字", "现在单位", "喜欢音乐", "喜欢电影", "兴趣爱好", "自我介绍"];
 					for (var i = 0; i < inputFileds.length; i++) {
-						var inputVal = $.trim($("[name=" + inputFileds[i] + "]").val());
-						// console.log(inputFiledsT[i] + inputFileds[i] + ":" + inputVal);
+						var inputVal = $("[name=" + inputFileds[i] + "]").val().trim();
 						if (!inputVal) {
-							showMsg(inputFiledsT[i] + ':' + "还没有填写哦~");
-							return;
+							alpha.toast(inputFiledsT[i] + ':' + "还没有填写哦~");
+							return false;
 						}
 						$sls.postData[inputFileds[i]] = inputVal;
 					}
@@ -213,7 +201,11 @@ require(["layer"],
 						};
 						lItem.push(item);
 					});
-					$sls.postData["location"] = JSON.stringify(lItem);
+					if (lItem.length < 3) {
+						alpha.toast("所在城市还没有选择哦~");
+						return false;
+					}
+					$sls.postData.location = JSON.stringify(lItem);
 
 					var hItem = [];
 					$(".action-homeland .homeland em").each(function () {
@@ -223,8 +215,11 @@ require(["layer"],
 						};
 						hItem.push(item);
 					});
-					$sls.postData["homeland"] = JSON.stringify(hItem);
-
+					if (hItem.length < 3) {
+						alpha.toast("你的籍贯还没有选择哦~");
+						return false;
+					}
+					$sls.postData.homeland = JSON.stringify(hItem);
 
 					$(".action-com").each(function () {
 						var self = $(this);
@@ -267,7 +262,6 @@ require(["layer"],
 						}
 					});
 					$sls.postData["filter"] = JSON.stringify(cItem);
-					console.log($sls.postData);
 
 					var localId = util.avatar.attr("localId");
 					if (localId) {
@@ -292,10 +286,7 @@ require(["layer"],
 				$sls.postData["img"] = $sls.serverId;
 				$sls.postData["coord"] = $sls.coord.val();
 				// console.log($sls.postData);return;
-				layer.open({
-					type: 2,
-					content: '保存中...'
-				});
+				alpha.loading('正在保存中...');
 				$.post("/api/user", {
 					tag: "sreg",
 					data: JSON.stringify($sls.postData),
@@ -303,10 +294,10 @@ require(["layer"],
 					if (res.code == 0) {
 						setTimeout(function () {
 							location.href = "/wx/single#sme";
-							layer.closeAll();
+							alpha.clear();
 						}, 500);
 					} else {
-						showMsg(res.msg);
+						alpha.toast(res.msg);
 					}
 				}, "json");
 			},
@@ -329,7 +320,7 @@ require(["layer"],
 					tag: tag,
 					id: pid
 				}, function (resp) {
-					if (resp.code == 0) {
+					if (resp.code < 1) {
 						var tmp = (tag == 'city' ? util.cityTmp : util.districtTmp);
 						if (resp.data.items && resp.data.items.length) {
 							util.content.html(Mustache.render(tmp, resp.data));
@@ -392,19 +383,6 @@ require(["layer"],
 		};
 		DrawUtil.init();
 
-
-		function showMsg(title, sec) {
-			var duration = 2;
-			if (sec) {
-				duration = sec;
-			}
-			layer.open({
-				content: title,
-				skin: 'msg',
-				time: duration
-			});
-		}
-
 		$(function () {
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
@@ -412,7 +390,6 @@ require(["layer"],
 			wx.config(wxInfo);
 			wx.ready(function () {
 				wx.hideOptionMenu();
-
 				wx.getLocation({
 					type: 'wgs84',
 					success: function (res) {
@@ -420,7 +397,6 @@ require(["layer"],
 							lat: res.latitude,
 							lng: res.longitude
 						};
-						console.log(bundle);
 						$sls.coord.val(JSON.stringify(bundle));
 					}
 				});
@@ -428,7 +404,5 @@ require(["layer"],
 			SingleUtil.jobVal = mjob;
 			SingleUtil.jobData();
 			$sls.cork.hide();
-
 		});
-
 	});

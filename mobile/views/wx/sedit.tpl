@@ -66,6 +66,16 @@
 		font-size: 1.2rem;
 	}
 
+	.sedit-textarea input[type="text"] {
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		border: none;
+		width: 100%;
+		background: #fff;
+		font-size: 1.2rem;
+	}
+
 	.action-mult em {
 		display: block;
 	}
@@ -145,20 +155,10 @@
 </div>
 
 <!-- data-field="marital" -->
-<a class="sedit-alert">
+<a class="sedit-alert {{if $uInfo.marital_t}}fixed{{else}}action-com{{/if}}" data-field="marital">
 	<label>婚姻状态</label>
 	<div class="sedit-alert-val action-val">
 		<em data-key="{{$uInfo.marital}}">{{$uInfo.marital_t}}</em>
-	</div>
-</a>
-<a class="sedit-alert action-homeland" data-pos="homeland">
-	<label>你的籍贯</label>
-	<div class="sedit-alert-val homeland">
-		{{if $uInfo.homeland}}
-		{{foreach from=$uInfo.homeland item=item}}
-		<em data-key="{{if isset($item.key)}}{{$item.key}}{{/if}}">{{if isset($item.text)}}{{$item.text}}{{/if}}</em>
-		{{/foreach}}
-		{{/if}}
 	</div>
 </a>
 
@@ -166,13 +166,22 @@
 	<label>所在城市</label>
 	<div class="sedit-alert-val location">
 		{{if $uInfo.location}}
-		{{foreach from=$uInfo.location item=item}}
-		<em data-key="{{if isset($item.key)}}{{$item.key}}{{/if}}">{{if isset($item.text)}}{{$item.text}}{{/if}}</em>
-		{{/foreach}}
+			{{foreach from=$uInfo.location item=item}}
+				<em data-key="{{if isset($item.key)}}{{$item.key}}{{/if}}">{{if isset($item.text)}}{{$item.text}}{{/if}}</em>
+			{{/foreach}}
 		{{/if}}
 	</div>
 </a>
-
+<a class="sedit-alert action-homeland" data-pos="homeland">
+	<label>你的籍贯</label>
+	<div class="sedit-alert-val homeland">
+		{{if $uInfo.homeland}}
+			{{foreach from=$uInfo.homeland item=item}}
+				<em data-key="{{if isset($item.key)}}{{$item.key}}{{/if}}">{{if isset($item.text)}}{{$item.text}}{{/if}}</em>
+			{{/foreach}}
+		{{/if}}
+	</div>
+</a>
 <a class="sedit-alert action-com" data-field="year">
 	<label>出生年份</label>
 	<div class="sedit-alert-val action-val">
@@ -227,13 +236,13 @@
 <a class="sedit-textarea ">
 	<label>曾读高中名字</label>
 	<div class="">
-		<textarea rows="4" name="highschool" placeholder="">{{$uInfo.highschool}}</textarea>
+		<input type="text" name="highschool" value="{{$uInfo.highschool}}" placeholder="有利于匹配到校友哦~">
 	</div>
 </a>
 <a class="sedit-textarea ">
 	<label>曾读大学名字</label>
 	<div class="">
-		<textarea rows="4" name="university" placeholder="">{{$uInfo.university}}</textarea>
+		<input type="text" name="university" value="{{$uInfo.university}}" placeholder="有利于匹配到校友哦~">
 	</div>
 </a>
 
@@ -243,7 +252,7 @@
 	<label>房屋属性</label>
 	<div class="sedit-alert-val action-val">
 		{{foreach from=$uInfo.estate_t key=key item=iteme}}
-		<em data-key="{{$key}}">{{$iteme}}</em>
+			<em data-key="{{$key}}">{{$iteme}}</em>
 		{{/foreach}}
 	</div>
 </a>
@@ -281,7 +290,7 @@
 <a class="sedit-textarea">
 	<label>现在单位</label>
 	<div class="">
-		<textarea rows="3" name="employer" placeholder="不显示给任何第三方">{{$uInfo.employer}}</textarea>
+		<input type="text" name="employer" placeholder="不显示给任何第三方" value="{{$uInfo.employer}}">
 	</div>
 </a>
 <!-- =========== 兴趣爱好 =============== -->
@@ -330,20 +339,20 @@
 </a>
 <a class="sedit-textarea">
 	<label>喜欢音乐</label>
-	<div class="">
-		<textarea rows="3" name="music" placeholder="">{{$uInfo.music}}</textarea>
+	<div>
+		<input type="text" name="music" value="{{$uInfo.music}}">
 	</div>
 </a>
 <a class="sedit-textarea ">
 	<label>喜欢书籍</label>
-	<div class="">
-		<textarea rows="3" name="book" placeholder="">{{$uInfo.book}}</textarea>
+	<div>
+		<input type="text" name="book" value="{{$uInfo.book}}">
 	</div>
 </a>
 <a class="sedit-textarea ">
 	<label>喜欢电影</label>
-	<div class="">
-		<textarea rows="3" name="movie" placeholder="">{{$uInfo.movie}}</textarea>
+	<div>
+		<input type="text" name="movie" value="{{$uInfo.movie}}">
 	</div>
 </a>
 <!-- =========== 婚恋倾向	 =============== -->
@@ -404,7 +413,7 @@
 			<div class="end"></div>
 		</div>
 		{{foreach from=$heightF key=key item=h}}
-		<a href="javascript:;" data-tag="height" data-key="{{$key}}">{{$h}}</a>
+			<a href="javascript:;" data-tag="height" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
 	</div>
 </script>
@@ -416,37 +425,37 @@
 			<div class="end"></div>
 		</div>
 		{{foreach from=$ageF key=key item=h}}
-		<a href="javascript:;" data-tag="age" data-key="{{$key}}">{{$h}}</a>
+			<a href="javascript:;" data-tag="age" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
 	</div>
 </script>
 <script type="text/html" id="cincomeCondTemp">
 	<div class="m-popup-options col3 clearfix" data-tag="income">
 		{{foreach from=$incomeF key=key item=h}}
-		<a href="javascript:;" data-tag="income" data-key="{{$key}}">{{$h}}</a>
+			<a href="javascript:;" data-tag="income" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
 	</div>
 </script>
 <script type="text/html" id="ceduCondTemp">
 	<div class="m-popup-options col3 clearfix" data-tag="edu">
 		{{foreach from=$eduF key=key item=h}}
-		<a href="javascript:;" data-tag="edu" data-key="{{$key}}">{{$h}}</a>
+			<a href="javascript:;" data-tag="edu" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
 	</div>
 </script>
 <!-- consdition end -->
 
 <script id="maritalTemp" type="text/html">
-	<div class="cells col3 clearfix" data-tag="marital">
+	<div class="cells col1 clearfix" data-tag="marital">
 		{{foreach from=$marital key=key item=y}}
-		<a href="javascript:;" style="width: 33.3%"><em data-key="{{$key}}">{{$y}}</em></a>
+			<a href="javascript:;"><em data-key="{{$key}}">{{$y}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="yearTemp" type="text/html">
 	<div class="cells col4 clearfix" data-tag="year">
 		{{foreach from=$years key=key item=y}}
-		<a href="javascript:;" style="width: 25%"><em data-key="{{$key}}">{{$y}}</em></a>
+			<a href="javascript:;" style="width: 25%"><em data-key="{{$key}}">{{$y}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
@@ -454,42 +463,42 @@
 <script id="heightTemp" type="text/html">
 	<div class="cells col6 clearfix">
 		{{foreach from=$height key=key item=h}}
-		<a href="javascript:;" style="width: 16.6%"><em data-key="{{$key}}">{{$h}}</em></a>
+			<a href="javascript:;" style="width: 16.6%"><em data-key="{{$key}}">{{$h}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="incomeTemp" type="text/html">
 	<div class="cells col2 clearfix">
 		{{foreach from=$income key=key item=i}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$i}}</em></a>
+			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$i}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="eduTemp" type="text/html">
 	<div class="cells col3 clearfix">
 		{{foreach from=$edu key=key item=item}}
-		<a href="javascript:;" style="width: 33.3%"><em data-key="{{$key}}">{{$item}}</em></a>
+			<a href="javascript:;" style="width: 33.3%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="signTemp" type="text/html">
 	<div class="cells col2 clearfix">
 		{{foreach from=$sign key=key item=item}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
+			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="weightTemp" type="text/html">
 	<div class="cells col4 clearfix">
 		{{foreach from=$weight key=key item=item}}
-		<a href="javascript:;" style="width: 25%"><em data-key="{{$key}}">{{$item}}</em></a>
+			<a href="javascript:;" style="width: 25%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="houseTemp1111" type="text/html">
 	<div class="cells col2 clearfix">
 		{{foreach from=$house key=key item=item}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
+			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
@@ -498,7 +507,7 @@
 		<h4></h4>
 		<div class="date-cancel-opt sedit_mult_options">
 			{{foreach from=$house key=key item=item}}
-			<a href="javascript:;" style=""><em data-key="{{$key}}">{{$item}}</em></a>
+				<a href="javascript:;" style=""><em data-key="{{$key}}">{{$item}}</em></a>
 			{{/foreach}}
 		</div>
 		<div class="date-cancel">
@@ -509,91 +518,91 @@
 <script id="carTemp" type="text/html">
 	<div class="cells col2 clearfix">
 		{{foreach from=$car key=key item=item}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
+			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="scopeTemp" type="text/html">
 	<div class="cells col2 clearfix" data-tag="scope">
 		{{foreach from=$scope key=key item=item}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
+			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="drinkTemp" type="text/html">
 	<div class="cells col2 clearfix">
 		{{foreach from=$drink key=key item=item}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
+			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="smokeTemp" type="text/html">
 	<div class="cells col2 clearfix">
 		{{foreach from=$smoke key=key item=item}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
+			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="beliefTemp" type="text/html">
 	<div class="cells col2 clearfix">
 		{{foreach from=$belief key=key item=item}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
+			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="workoutTemp" type="text/html">
 	<div class="cells col2 clearfix">
 		{{foreach from=$workout key=key item=item}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
+			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="dietTemp" type="text/html">
 	<div class="cells col2 clearfix">
 		{{foreach from=$diet key=key item=item}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
+			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="restTemp" type="text/html">
 	<div class="cells col2 clearfix">
 		{{foreach from=$rest key=key item=item}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
+			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="petTemp" type="text/html">
 	<div class="cells col2 clearfix">
 		{{foreach from=$pet key=key item=item}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
+			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="worktypeTemp" type="text/html">
 	<div class="cells col2 clearfix">
 		{{foreach from=$worktype key=key item=item}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
+			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="parentTemp" type="text/html">
 	<div class="cells col2 clearfix">
 		{{foreach from=$parent key=key item=item}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
+			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="siblingTemp" type="text/html">
 	<div class="cells col2 clearfix">
 		{{foreach from=$sibling key=key item=item}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
+			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
 <script id="dwellingTemp" type="text/html">
 	<div class="cells col2 clearfix">
 		{{foreach from=$dwelling key=key item=item}}
-		<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
+			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
@@ -607,6 +616,10 @@
 		mProfessions = {{$professions}},
 		mjob = {{$job}};
 </script>
-<script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/sedit.js?v=1.3.3" src="/assets/js/require.js"></script>
+
+<script src="/assets/js/require.js"></script>
+<script>
+	requirejs(['/js/config.js'], function () {
+		requirejs(['/js/sedit.js?v=1.4.4']);
+	});
+</script>
