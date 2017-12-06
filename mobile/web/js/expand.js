@@ -39,7 +39,7 @@ requirejs(['jquery', 'alpha'],
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
-			var linkUrl = "https://wx.meipo100.com/wx/expand?uni=" + $('#uni').val();
+			var linkUrl = "https://wx.meipo100.com/wx/expand?uni=" + $('#cUNI').val();
 			var imgUrl = "https://bpbhd-10063905.file.myqcloud.com/image/n1712061178801.png";
 			var title = '千寻恋恋，本地优秀的单身男女都在这，赶快来相互认识下吧！';
 			var desc = '千寻恋恋，帮助身边的单身青年尽快脱单，推荐身边单身好友注册可以获得奖励哦~';
