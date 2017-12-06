@@ -2795,8 +2795,8 @@ section {
     .m-popup-main .m-popup-wrap .m-popup-content {
       background: #E4E4E4;
       position: relative;
-      left: 1.5rem;
-      width: 29rem;
+      left: 3rem;
+      width: 26rem;
       border-radius: 0.5rem;
       box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.1);
       -webkit-box-sizing: border-box;
@@ -6690,7 +6690,8 @@ section {
   position: relative; }
   .greeting img {
     width: 100%;
-    height: auto; }
+    height: auto;
+    vertical-align: middle; }
   .greeting:before {
     content: "";
     position: absolute;
