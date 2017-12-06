@@ -57,6 +57,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_PRESENT => "赠送媒桂花",
 		self::CAT_RETURN => "拒绝退回",
 		self::CAT_MOMENT => "分享到朋友圈奖励",
+		self::CAT_MOMENT_RECRUIT => "分享拉新奖励",
 		self::CAT_VOTE => "投票奖励",
 		self::CAT_FANS_DRAW => "花粉值提现",
 		self::CAT_REMOVE_COMMENT => "删除评论",
@@ -281,7 +282,7 @@ class UserTrans extends ActiveRecord
 				$ret[$k]['unit'] = self::UNIT_YUAN;
 			}
 			$ret[$k]['unit_name'] = self::$UnitDict[$ret[$k]['unit']];
-			$ret[$k]['prefix'] =  in_array($row['cat'], self::$CatMinus) ? '-' : '';
+			$ret[$k]['prefix'] = in_array($row['cat'], self::$CatMinus) ? '-' : '';
 		}
 		return $ret;
 	}
