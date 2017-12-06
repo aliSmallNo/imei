@@ -523,22 +523,23 @@ class UserTrans extends ActiveRecord
 					':uid' => $uid,
 					':rel' => UserNet::REL_BACKER
 				])->queryScalar();
-
-				$sql = 'INSERT INTO im_user_trans(tCategory,tPId,tUId,tTitle,tAmt,tUnit)
+				if ($backerUId) {
+					$sql = 'INSERT INTO im_user_trans(tCategory,tPId,tUId,tTitle,tAmt,tUnit)
 						SELECT :cat,:uid,:backer,:title,:amt,:unit 
 						FROM dual 
 						WHERE NOT EXISTS(SELECT 1 FROM im_user_trans WHERE tPId=:uid AND tCategory=:cat) ';
-				$ret = $conn->createCommand($sql)->bindValues([
-					':cat' => $category,
-					':uid' => $uid,
-					':backer' => $backerUId,
-					':title' => isset(self::$catDict[$category]) ? self::$catDict[$category] : '',
-					':amt' => $amt,
-					':unit' => $unit,
-				])->execute();
-				if ($ret) {
-					WechatUtil::templateMsg(WechatUtil::NOTICE_REWARD_NEW,
-						$backerUId, '分享拉新奖励媒桂花', $amt . '媒桂花');
+					$ret = $conn->createCommand($sql)->bindValues([
+						':cat' => $category,
+						':uid' => $uid,
+						':backer' => $backerUId,
+						':title' => isset(self::$catDict[$category]) ? self::$catDict[$category] : '',
+						':amt' => $amt,
+						':unit' => $unit,
+					])->execute();
+					if ($ret) {
+						WechatUtil::templateMsg(WechatUtil::NOTICE_REWARD_NEW,
+							$backerUId, '分享拉新奖励媒桂花', $amt . '媒桂花');
+					}
 				}
 				break;
 		}
