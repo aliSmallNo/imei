@@ -54,6 +54,6 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/expand.js?v=1.1.5']);
+		requirejs(['/js/expand.js?v=1.1.6']);
 	});
 </script>

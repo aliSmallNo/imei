@@ -22,6 +22,10 @@ requirejs(['jquery', 'alpha'],
 			}, 2000);
 		});
 
+		$('body').on('touchstart',function () {
+			// do nothing, for link's active
+		});
+
 		function shareLog(tag, note) {
 			$.post("/api/share", {
 				tag: tag,
