@@ -214,6 +214,7 @@ class UserQR extends ActiveRecord
 			$qrName = 'qr' . $qid;
 		}
 		$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+		//api位置：https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1443433542
 		$url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" . $access_token;
 		$jsonData = '{"action_name": "QR_LIMIT_STR_SCENE", "action_info": {"scene": {"scene_str": ' . $qid . '}}}';
 		$ret = AppUtil::postJSON($url, $jsonData);
