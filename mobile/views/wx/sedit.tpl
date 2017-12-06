@@ -74,6 +74,8 @@
 		width: 100%;
 		background: #fff;
 		font-size: 1.2rem;
+		margin: 0;
+		padding: 0;
 	}
 
 	.action-mult em {
