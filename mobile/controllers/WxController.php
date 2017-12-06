@@ -1870,15 +1870,17 @@ class WxController extends BaseController
 			}
 		}
 		$sentFlag = $senderId > 0 ? 1 : 0;
+		$title = $sentFlag ? '千寻恋恋-缘来是你' : '分享千寻恋恋';
+		$sharedUni = $sentFlag ? $uni : $this->user_uni;
 		return self::renderPage("expand.tpl",
 			[
 				'sentFlag' => $sentFlag,
 				'thumb' => $thumb,
 				'qrcode' => $qrcode,
-				'uni' => $uni ? $uni : $this->user_uni
+				'uni' => $sharedUni
 			],
 			'terse',
-			'分享拉新',
+			$title,
 			'bg-expand');
 	}
 }
