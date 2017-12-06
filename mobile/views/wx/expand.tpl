@@ -47,6 +47,7 @@
 		<div class="m-popup-content no-bg"></div>
 	</div>
 </div>
+{{$uni}}
 <input type="hidden" id="cUNI" value="{{$uni}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
