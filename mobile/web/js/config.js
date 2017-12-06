@@ -5,6 +5,7 @@ requirejs.config({
 		mustache: '/assets/js/mustache.min',
 		socket: '/assets/js/socket.io.slim',
 		swiper: '/assets/js/swiper.jquery.min',
-		alpha: '/assets/js/alpha'
+		alpha: '/assets/js/alpha',
+		wx: '/assets/js/jweixin-1.2.0'
 	}
 });

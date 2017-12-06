@@ -1874,7 +1874,8 @@ class WxController extends BaseController
 			[
 				'sentFlag' => $sentFlag,
 				'thumb' => $thumb,
-				'qrcode' => $qrcode
+				'qrcode' => $qrcode,
+				'uni' => $uni
 			],
 			'terse',
 			'分享拉新',

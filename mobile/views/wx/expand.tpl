@@ -41,9 +41,13 @@
 		<a href="javascript:;" class="btn-share">立即分享</a>
 	</div>
 {{/if}}
+<input type="hidden" id="cUNI" value="{{$uni}}">
+<script type="text/template" id="tpl_wx_info">
+	{{$wxInfoString}}
+</script>
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js'], function () {
-		requirejs(['/js/expand.js?v=1.1.0']);
+		requirejs(['/js/expand.js?v=1.1.1']);
 	});
 </script>
