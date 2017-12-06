@@ -1893,11 +1893,12 @@ class WxController extends BaseController
 	{
 		$uni = self::getParam('uni');
 		$senderId = 0;
-		$thumb = $qrcode = '';
+		$thumb = $qrcode = $nickname = '';
 		if ($uni) {
 			$uInfo = User::findOne(['uUniqid' => $uni]);
 			if ($uInfo) {
 				$senderId = $uInfo['uId'];
+				$nickname = $uInfo['uName'];
 				$thumb = ImageUtil::getItemImages($uInfo['uThumb'])[0];
 				$qrcode = UserQR::getQRCode($senderId, UserQR::CATEGORY_SINGLE, $thumb);
 			} else {
@@ -1912,6 +1913,7 @@ class WxController extends BaseController
 			[
 				'sentFlag' => $sentFlag,
 				'thumb' => $thumb,
+				'nickname' => $nickname,
 				'qrcode' => $qrcode,
 				'uni' => $sharedUni
 			],

@@ -33,6 +33,7 @@ class UserTrans extends ActiveRecord
 	const CAT_PRESENT = 128;
 	const CAT_RETURN = 130;
 	const CAT_MOMENT = 150;
+	const CAT_MOMENT_RECRUIT = 153;
 	const CAT_VOTE = 160;
 	const CAT_FANS_DRAW = 170;
 	const CAT_REMOVE_COMMENT = 172;

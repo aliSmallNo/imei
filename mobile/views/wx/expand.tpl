@@ -4,7 +4,7 @@
 		<img src="{{$thumb}}">
 	</div>
 	<h4 class="big">
-		最好的我们<br>
+		{{$nickname}}<br>
 		邀请你加入实名制高端婚恋平台
 	</h4>
 	<div style="height: 2.5rem"></div>
