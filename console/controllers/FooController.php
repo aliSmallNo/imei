@@ -941,7 +941,9 @@ class FooController extends Controller
 		foreach ($ret as $k => $row) {
 			$name = $row['uName'];
 			$openid = $row['uOpenId'];
-			$content = '男女互撩速成课马上开始喽 🔥<a href="https://m.qlchat.com/topic/2000000410463312.htm">点击链接直接进入</a>🔥';
+			$content = '《男女互撩速成课》（语音直播）已经开始喽~~~
+
+🔥<a href="https://m.qlchat.com/topic/2000000410463312.htm">点击链接直接进入</a>🔥';
 			//$content = '%s，你的一位微信联系人在［千寻恋恋］上将你设置为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
 //			$content = 'Hi，%s，你的一位微信联系人在［千寻恋恋］上将你设为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
 //			$content = sprintf($content, $name);

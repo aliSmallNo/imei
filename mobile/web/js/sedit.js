@@ -115,9 +115,7 @@ requirejs(['jquery', 'mustache', 'alpha'],
 					util.btn = $(this);
 					var field = util.btn.attr("data-field");
 					if (field === 'job') {
-						console.log(util.jobVal);
-						var html = Mustache.render(util.jobTemp, util.jobVal);
-						util.toggle(html);
+						util.popup('job', util.jobVal, 3);
 					} else {
 						util.popup(field);
 						//util.toggle($("#" + field + "Temp").html());
@@ -135,30 +133,11 @@ requirejs(['jquery', 'mustache', 'alpha'],
 						var scopeVal = parseInt(self.find("em").attr("data-key"));
 						util.jobVal = mProfessions[scopeVal];
 						util.jobData();
-						// var html = Mustache.render(util.jobTemp, util.jobVal);
 						util.popup('job', util.jobVal, 3);
-
 					}
 					return false;
 				});
-				/*$(document).on(kClick, ".cells > a, .m-cells a", function () {
-					var self = $(this);
-					var cells = self.closest(".cells");
-					cells.find("a").removeClass("cur");
-					self.addClass("cur");
-					var tag = self.closest(".cells").attr("data-tag");
-					util.btn.find(".action-val").html(self.html());
-					util.toggle();
-					if (tag == "scope") {
-						var scopeVal = parseInt(self.find("em").attr("data-key"));
-						util.jobVal = mProfessions[scopeVal];
-						util.jobData();
-						var html = Mustache.render(util.jobTemp, util.jobVal);
-						util.toggle(html);
-						util.btn = $('.action-com[data-field="job"]');
-					}
-					return false;
-				});*/
+
 				$(document).on(kClick, ".sedit_mult_wrap a", function () {
 					var self = $(this);
 					var tag = self.closest(".sedit_mult_wrap").attr("data-tag");

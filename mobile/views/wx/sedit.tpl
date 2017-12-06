@@ -3,9 +3,6 @@
 		background: #fbd6e3 !important;
 	}
 
-	.sedit-avart {
-	}
-
 	.sedit-avart-p {
 		text-align: center;
 		padding: 2rem 0;
@@ -208,7 +205,6 @@
 		<em data-key="{{$uInfo.horos}}">{{$uInfo.horos_t}}</em>
 	</div>
 </a>
-<!-- =========== 个人背景 =============== -->
 <div class="sedit-title">个人背景</div>
 <a class="sedit-alert action-com" data-field="edu">
 	<label>学历</label>
@@ -247,7 +243,6 @@
 	</div>
 </a>
 
-<!-- =========== 工作和资产 =============== -->
 <div class="sedit-title ">工作和资产</div>
 <a class="sedit-alert action-com action-mult" data-field="house">
 	<label>房屋属性</label>
@@ -294,7 +289,6 @@
 		<input type="text" name="employer" placeholder="不显示给任何第三方" value="{{$uInfo.employer}}">
 	</div>
 </a>
-<!-- =========== 兴趣爱好 =============== -->
 <div class="sedit-title">兴趣爱好</div>
 <a class="sedit-alert action-com" data-field="drink">
 	<label>饮酒情况</label>
@@ -356,7 +350,6 @@
 		<input type="text" name="movie" value="{{$uInfo.movie}}">
 	</div>
 </a>
-<!-- =========== 婚恋倾向	 =============== -->
 
 <div class="sedit-title">自我评价</div>
 <div class="sedit-input">
@@ -367,44 +360,13 @@
 	<textarea rows="4" name="interest">{{$uInfo.interest}}</textarea>
 </div>
 
-<!--div class="sedit-title">择偶条件</div>
-<a class="sedit-alert action-cond" data-field="cage">
-	<label>年龄</label>
-	<div class="sedit-alert-val action-val">
-		{{foreach from=$filter.age key=key item=item}}
-		{{if key==1}}~{{/if}}<em data-key="{{$item.key}}">{{$item.name}}</em>
-		{{/foreach}}
-	</div>
-</a>
-<a class="sedit-alert action-cond" data-field="cheight">
-	<label>身高</label>
-	<div class="sedit-alert-val action-val">
-		{{foreach from=$filter.height key=key item=item}}
-		{{if key==1}}~{{/if}}<em data-key="{{$item.key}}">{{$item.name}}</em>
-		{{/foreach}}
-	</div>
-</a>
-<a class="sedit-alert action-cond" data-field="cincome">
-	<label>年薪</label>
-	<div class="sedit-alert-val action-val">
-		<em data-key="{{$filter.income.key}}">{{$filter.income.name}}</em>
-	</div>
-</a>
-<a class="sedit-alert action-cond" data-field="cedu">
-	<label>学历</label>
-	<div class="sedit-alert-val action-val">
-		<em data-key="{{$filter.edu.key}}">{{$filter.edu.name}}</em>
-	</div>
-</a-->
 <div style="height: 8rem"></div>
 <a class="m-next sedit-btn-comfirm">保存</a>
-
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
 		<div class="m-popup-content"></div>
 	</div>
 </div>
-
 <!-- consdition start -->
 <script type="text/html" id="cheightCondTemp">
 	<div class="m-popup-options col3 clearfix">
@@ -441,134 +403,6 @@
 	<div class="m-popup-options col3 clearfix" data-tag="edu">
 		{{foreach from=$eduF key=key item=h}}
 			<a href="javascript:;" data-tag="edu" data-key="{{$key}}">{{$h}}</a>
-		{{/foreach}}
-	</div>
-</script>
-<!-- consdition end -->
-
-
-<script id="signTemp" type="text/html">
-	<div class="cells col2 clearfix">
-		{{foreach from=$sign key=key item=item}}
-			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
-<script id="weightTemp" type="text/html">
-	<div class="cells col4 clearfix">
-		{{foreach from=$weight key=key item=item}}
-			<a href="javascript:;" style="width: 25%"><em data-key="{{$key}}">{{$item}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
-<script id="houseTemp1111" type="text/html">
-	<div class="cells col2 clearfix">
-		{{foreach from=$house key=key item=item}}
-			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
-<script type="text/template" id="houseTemp">
-	<div class="date-wrap sedit_mult_wrap" data-tag="house">
-		<h4></h4>
-		<div class="date-cancel-opt sedit_mult_options">
-			{{foreach from=$house key=key item=item}}
-				<a href="javascript:;" style=""><em data-key="{{$key}}">{{$item}}</em></a>
-			{{/foreach}}
-		</div>
-		<div class="date-cancel">
-			<a href="javascript:;" class="btn-date-cancel sedit_mult_options_btn">确定</a>
-		</div>
-	</div>
-</script>
-<script id="carTemp" type="text/html">
-	<div class="cells col2 clearfix">
-		{{foreach from=$car key=key item=item}}
-			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
-<script id="scopeTemp" type="text/html">
-	<div class="cells col2 clearfix" data-tag="scope">
-		{{foreach from=$scope key=key item=item}}
-			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
-<script id="drinkTemp" type="text/html">
-	<div class="cells col2 clearfix">
-		{{foreach from=$drink key=key item=item}}
-			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
-<script id="smokeTemp" type="text/html">
-	<div class="cells col2 clearfix">
-		{{foreach from=$smoke key=key item=item}}
-			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
-<script id="beliefTemp" type="text/html">
-	<div class="cells col2 clearfix">
-		{{foreach from=$belief key=key item=item}}
-			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
-<script id="workoutTemp" type="text/html">
-	<div class="cells col2 clearfix">
-		{{foreach from=$workout key=key item=item}}
-			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
-<script id="dietTemp" type="text/html">
-	<div class="cells col2 clearfix">
-		{{foreach from=$diet key=key item=item}}
-			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
-<script id="restTemp" type="text/html">
-	<div class="cells col2 clearfix">
-		{{foreach from=$rest key=key item=item}}
-			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
-<script id="petTemp" type="text/html">
-	<div class="cells col2 clearfix">
-		{{foreach from=$pet key=key item=item}}
-			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
-<script id="worktypeTemp" type="text/html">
-	<div class="cells col2 clearfix">
-		{{foreach from=$worktype key=key item=item}}
-			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
-<script id="parentTemp" type="text/html">
-	<div class="cells col2 clearfix">
-		{{foreach from=$parent key=key item=item}}
-			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
-<script id="siblingTemp" type="text/html">
-	<div class="cells col2 clearfix">
-		{{foreach from=$sibling key=key item=item}}
-			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
-<script id="dwellingTemp" type="text/html">
-	<div class="cells col2 clearfix">
-		{{foreach from=$dwelling key=key item=item}}
-			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$item}}</em></a>
 		{{/foreach}}
 	</div>
 </script>
