@@ -47,7 +47,7 @@
 </script>
 <script src="/assets/js/require.js"></script>
 <script>
-	requirejs(['/js/config.js'], function () {
-		requirejs(['/js/expand.js?v=1.1.1']);
+	requirejs(['/js/config.js?v=1.1'], function () {
+		requirejs(['/js/expand.js?v=1.1.2']);
 	});
 </script>
