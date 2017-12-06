@@ -1013,7 +1013,10 @@ class User extends ActiveRecord
 			':uid' => $uid,
 			':single' => self::ROLE_SINGLE
 		])->execute();
-		$ret = UserTrans::addReward($uid, UserTrans::CAT_NEW, $conn);
+		//Rain: 奖励新人66媒桂花
+		UserTrans::addReward($uid, UserTrans::CAT_NEW, $conn);
+		//Rain: 奖励媒婆99媒桂花
+		UserTrans::addReward($uid, UserTrans::CAT_MOMENT_RECRUIT, $conn);
 		QueueUtil::loadJob('regeo', ['id' => $uid]);
 
 		return $uid;
@@ -1981,7 +1984,7 @@ class User extends ActiveRecord
 // 				from im_user_trans
 // 				WHERE tCategory=100 and tUnit='flower'
 // 					and tAddedOn BETWEEN :beginDT and :endDT ";
-		$sql="select Round(SUM(p.pTransAmt/100.0),1) as amt
+		$sql = "select Round(SUM(p.pTransAmt/100.0),1) as amt
 			from im_user_trans as t 
 			join im_pay as p on p.pId=t.tPId
 			where p.pStatus=100 and t.tDeletedFlag=0

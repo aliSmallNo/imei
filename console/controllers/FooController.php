@@ -14,6 +14,7 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
+use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
@@ -931,7 +932,10 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$conn = AppUtil::db();
+		$uid=150540;
+		$ret = UserTrans::addReward($uid, UserTrans::CAT_MOMENT_RECRUIT);
+		var_dump($ret);
+		/*$conn = AppUtil::db();
 		$sql = "SELECT u.uName,u.uOpenId,uPhone,uGender,wSubscribe
 			 FROM im_user as u 
 			 JOIN im_user_wechat as w on u.uId = w.wUId
@@ -952,7 +956,7 @@ class FooController extends Controller
 				var_dump($cnt . '  ' . $k);
 			}
 		}
-		var_dump($cnt);
+		var_dump($cnt);*/
 
 
 		/*$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
