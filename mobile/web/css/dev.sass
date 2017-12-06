@@ -1,0 +1,53 @@
+@import "base"
+
+.m-cells
+    margin: 0
+    padding: 0
+    li
+        padding: .1rem
+        float: left
+        height: 4.3rem
+        @include borderBox
+        background: #fff
+        border-right: 1px solid $borderColorDark
+        border-bottom: 1px solid $borderColorDark
+        &.gray
+            background: $bgColor
+        a
+            display: block
+            height: 100%
+            text-align: center
+            background: transparent
+            color: $fontColor
+            &:active
+                background: $linkColor
+                color: #fff
+            &:before
+                content: ''
+                display: inline-block
+                height: 100%
+                vertical-align: middle
+            em
+                font-size: 1.2rem
+                display: inline-block
+                vertical-align: middle
+                @include textTail
+    &.col1
+        li
+            width: 100%
+    &.col2
+        li
+            width: 50%
+    &.col3
+        li
+            width: 33.3%
+    &.col4
+        li
+            width: 25%
+    &.col5
+        li
+            width: 20%
+    &.col6
+        li
+            width: 16.66%
+

@@ -15,7 +15,6 @@ use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserWechat;
-use common\service\CogService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\PushUtil;
@@ -932,22 +931,27 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$items = CogService::init()->homeFigures(true);
-		var_dump($items);
-		return;
-
 		$conn = AppUtil::db();
-		$service = CogService::init($conn);
-		$sql = "select * from im_cog WHERE cTitle!='' ";
+		$sql = "SELECT u.uName,u.uOpenId,uPhone,uGender,wSubscribe
+			 FROM im_user as u 
+			 JOIN im_user_wechat as w on u.uId = w.wUId
+			 WHERE w.wSubscribe=1 AND u.uOpenId LIKE 'oYDJew%' ";
 		$ret = $conn->createCommand($sql)->queryAll();
-		foreach ($ret as $row) {
-			$raw = [
-				'title' => $row['cTitle'],
-				'content' => json_decode($row['cContent'], 1),
-				'count' => intval($row['cCount']),
-			];
-			$service->add(CogService::CAT_NOTICE_TEXT, $raw, $row['cExpiredOn'], 1001);
+		$cnt = 0;
+		foreach ($ret as $k => $row) {
+			$name = $row['uName'];
+			$openid = $row['uOpenId'];
+			$content = '男女互撩速成课马上开始喽 🔥<a href="https://m.qlchat.com/topic/2000000410463312.htm">点击链接直接进入</a>🔥';
+			//$content = '%s，你的一位微信联系人在［千寻恋恋］上将你设置为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
+//			$content = 'Hi，%s，你的一位微信联系人在［千寻恋恋］上将你设为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
+//			$content = sprintf($content, $name);
+			$cnt += UserWechat::sendMsg($openid, $content);
+			if (($cnt % 50 == 0 || $k % 50 == 0)) {
+				var_dump($cnt . '  ' . $k);
+			}
 		}
+		var_dump($cnt);
+
 
 		/*$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 		$url = 'https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=%s';

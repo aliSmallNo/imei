@@ -86,8 +86,8 @@
 		display: none;
 	}
 </style>
+<link rel="stylesheet" href="/css/dev.min.css">
 <div class="m-popup-shade"></div>
-
 <div class="nav">
 	<a href="/wx/single#sme">返回</a>
 </div>
@@ -156,7 +156,6 @@
 	<input type="text" placeholder="帅哥" value="{{$uInfo.gender_t}}" readonly>
 </div>
 
-<!-- data-field="marital" -->
 <a class="sedit-alert {{if $uInfo.marital_t}}fixed{{else}}action-com{{/if}}" data-field="marital">
 	<label>婚姻状态</label>
 	<div class="sedit-alert-val action-val">
@@ -447,42 +446,7 @@
 </script>
 <!-- consdition end -->
 
-<script id="maritalTemp" type="text/html">
-	<div class="cells col1 clearfix" data-tag="marital">
-		{{foreach from=$marital key=key item=y}}
-			<a href="javascript:;"><em data-key="{{$key}}">{{$y}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
-<script id="yearTemp" type="text/html">
-	<div class="cells col4 clearfix" data-tag="year">
-		{{foreach from=$years key=key item=y}}
-			<a href="javascript:;" style="width: 25%"><em data-key="{{$key}}">{{$y}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
 
-<script id="heightTemp" type="text/html">
-	<div class="cells col6 clearfix">
-		{{foreach from=$height key=key item=h}}
-			<a href="javascript:;" style="width: 16.6%"><em data-key="{{$key}}">{{$h}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
-<script id="incomeTemp" type="text/html">
-	<div class="cells col2 clearfix">
-		{{foreach from=$income key=key item=i}}
-			<a href="javascript:;" style="width: 50%"><em data-key="{{$key}}">{{$i}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
-<script id="eduTemp" type="text/html">
-	<div class="cells col3 clearfix">
-		{{foreach from=$edu key=key item=item}}
-			<a href="javascript:;" style="width: 33.3%"><em data-key="{{$key}}">{{$item}}</em></a>
-		{{/foreach}}
-	</div>
-</script>
 <script id="signTemp" type="text/html">
 	<div class="cells col2 clearfix">
 		{{foreach from=$sign key=key item=item}}
@@ -612,11 +576,13 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
+
 <script>
 	var mProvinces = {{$provinces}},
 		mRoutes = {{$routes}},
 		mProfessions = {{$professions}},
-		mjob = {{$job}};
+		mjob = {{$job}},
+		mBundle ={{$bundle}};
 </script>
 
 <script src="/assets/js/require.js"></script>

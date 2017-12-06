@@ -11,6 +11,9 @@ define(['jquery', 'layer'],
 				var div = Math.pow(10, precision);
 				return Math.round(num * div) / div;
 			},
+			hasAttr: function ($el, name) {
+				return (typeof($el.attr(name)) != "undefined");
+			},
 			clear: function (index) {
 				if (index) {
 					layer.close(index);

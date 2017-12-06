@@ -1,3 +1,125 @@
+body, html {
+  font-size: 10px;
+  font-size: -moz-calc(100vw / 32);
+  font-size: -webkit-calc(100vw / 32);
+  font-size: calc(100vw / 32);
+  color: #333;
+  font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  height: 100%; }
 
+body, html, a, p, ul, div, h4, h5, h6, .main-wrap {
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent; }
+
+body {
+  background-color: #fff; }
+
+body, a, div, p {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size: 1.4rem; }
+
+a {
+  color: #333;
+  cursor: pointer;
+  text-decoration: none; }
+  a.disabled, a.disabled:active {
+    color: #aaa; }
+
+em, i, b {
+  font-weight: normal;
+  font-style: normal; }
+
+ul {
+  list-style: none; }
+
+input, select, textarea, button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none; }
+
+main {
+  position: relative;
+  padding-bottom: 7rem; }
+  main.bg-lighter {
+    background: #fbd2e0; }
+
+.none {
+  display: none !important; }
+
+.clearfix {
+  zoom: 1; }
+  .clearfix:before, .clearfix:after {
+    display: block;
+    line-height: 0;
+    content: ""; }
+  .clearfix:after {
+    clear: both; }
+
+.space {
+  display: inline-block;
+  width: 1rem; }
+
+.space2 {
+  display: inline-block;
+  width: 2rem; }
+
+.center {
+  text-align: center; }
+
+.m-cells {
+  margin: 0;
+  padding: 0; }
+  .m-cells li {
+    padding: 0.1rem;
+    float: left;
+    height: 4.3rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background: #fff;
+    border-right: 1px solid #d4d4d4;
+    border-bottom: 1px solid #d4d4d4; }
+    .m-cells li.gray {
+      background: #f3f3f3; }
+    .m-cells li a {
+      display: block;
+      height: 100%;
+      text-align: center;
+      background: transparent;
+      color: #333; }
+      .m-cells li a:active {
+        background: #007aff;
+        color: #fff; }
+      .m-cells li a:before {
+        content: "";
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle; }
+      .m-cells li a em {
+        font-size: 1.2rem;
+        display: inline-block;
+        vertical-align: middle;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden; }
+  .m-cells.col1 li {
+    width: 100%; }
+  .m-cells.col2 li {
+    width: 50%; }
+  .m-cells.col3 li {
+    width: 33.3%; }
+  .m-cells.col4 li {
+    width: 25%; }
+  .m-cells.col5 li {
+    width: 20%; }
+  .m-cells.col6 li {
+    width: 16.66%; }
 
 /*# sourceMappingURL=dev.css.map */

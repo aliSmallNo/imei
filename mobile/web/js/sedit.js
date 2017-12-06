@@ -114,14 +114,34 @@ requirejs(['jquery', 'mustache', 'alpha'],
 				$(document).on(kClick, ".action-com", function () {
 					util.btn = $(this);
 					var field = util.btn.attr("data-field");
-					if (field == "job") {
+					if (field === 'job') {
+						console.log(util.jobVal);
 						var html = Mustache.render(util.jobTemp, util.jobVal);
 						util.toggle(html);
 					} else {
-						util.toggle($("#" + field + "Temp").html());
+						util.popup(field);
+						//util.toggle($("#" + field + "Temp").html());
 					}
 				});
-				$(document).on(kClick, ".cells > a", function () {
+				$(document).on(kClick, ".m-cells a", function () {
+					var self = $(this);
+					var cells = self.closest(".m-cells");
+					cells.find("a").removeClass("cur");
+					self.addClass("cur");
+					var tag = cells.attr("data-tag");
+					util.btn.find(".action-val").html(self.html());
+					util.toggle();
+					if (tag === "scope") {
+						var scopeVal = parseInt(self.find("em").attr("data-key"));
+						util.jobVal = mProfessions[scopeVal];
+						util.jobData();
+						// var html = Mustache.render(util.jobTemp, util.jobVal);
+						util.popup('job', util.jobVal, 3);
+
+					}
+					return false;
+				});
+				/*$(document).on(kClick, ".cells > a, .m-cells a", function () {
 					var self = $(this);
 					var cells = self.closest(".cells");
 					cells.find("a").removeClass("cur");
@@ -129,17 +149,16 @@ requirejs(['jquery', 'mustache', 'alpha'],
 					var tag = self.closest(".cells").attr("data-tag");
 					util.btn.find(".action-val").html(self.html());
 					util.toggle();
-					console.log("cells > a");
 					if (tag == "scope") {
 						var scopeVal = parseInt(self.find("em").attr("data-key"));
 						util.jobVal = mProfessions[scopeVal];
 						util.jobData();
 						var html = Mustache.render(util.jobTemp, util.jobVal);
 						util.toggle(html);
-						util.btn = $(".action-com[data-field=job]");
+						util.btn = $('.action-com[data-field="job"]');
 					}
 					return false;
-				});
+				});*/
 				$(document).on(kClick, ".sedit_mult_wrap a", function () {
 					var self = $(this);
 					var tag = self.closest(".sedit_mult_wrap").attr("data-tag");
@@ -273,14 +292,12 @@ requirejs(['jquery', 'mustache', 'alpha'],
 				});
 			},
 			jobData: function () {
-				var items = [];
-				for (var k = 0; k < SingleUtil.jobVal.length; k++) {
-					items[items.length] = {
-						key: k,
-						name: SingleUtil.jobVal[k]
-					};
+				var util = this;
+				var items = {};
+				for (var k = 0, len = util.jobVal.length; k < len; k++) {
+					items[k] = SingleUtil.jobVal[k];
 				}
-				SingleUtil.jobVal = {items: items};
+				util.jobVal = items;
 			},
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
@@ -301,17 +318,49 @@ requirejs(['jquery', 'mustache', 'alpha'],
 					}
 				}, "json");
 			},
-			toggle: function (content) {
+			popup: function (field, json, col) {
 				var util = this;
+				if (!json && !col) {
+					var bundle = mBundle[field];
+					if (!bundle) {
+						return false;
+					}
+					json = bundle.data;
+					col = bundle.col;
+				}
+				var html = '<ul class="m-cells col' + col + '" data-tag="' + field + '">';
+				var i = 0, flag = false;
+				for (var k in json) {
+					var tmp = (i % 2 === 0);
+					var cls = ((tmp === flag && col % 2 === 0) || (tmp && col % 2 === 1)) && col > 1 ? ' class="gray" ' : '';
+					html += '<li' + cls + '><a href="javascript:;"  ><em data-key="' + k + '">' + json[k] + '</em></a></li>';
+					i++;
+					if (i % col === 0 && i > 0) {
+						flag = !flag;
+					}
+				}
+				html += '</ul>';
+				util.toggle(html, field !== 'job');
+				util.btn = $('.action-com[data-field="' + field + '"]');
+			},
+			toggle: function (content, animate) {
+				var util = this;
+				var showAnimate = animate || 1;
 				if (content) {
-					util.main.show();
-					util.content.html(content).addClass("animate-pop-in");
-					util.shade.fadeIn(160);
+					if (!util.content.hasClass("animate-pop-in")) {
+						util.main.show();
+						util.content.html(content).addClass("animate-pop-in");
+					}
+					if (showAnimate) {
+						util.shade.fadeIn(160);
+					}
 				} else {
 					util.content.removeClass("animate-pop-in");
 					util.main.hide();
 					util.content.html('');
-					util.shade.fadeOut(100);
+					if (showAnimate) {
+						util.shade.fadeOut(100);
+					}
 				}
 			},
 			subAddr: function (pid, tag) {
@@ -384,6 +433,10 @@ requirejs(['jquery', 'mustache', 'alpha'],
 		DrawUtil.init();
 
 		$(function () {
+			$('body').on('touchstart', function () {
+				// do nothing, for link's active
+			});
+
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage', 'getLocation', 'openLocation'];
