@@ -677,6 +677,7 @@ class SiteController extends BaseController
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
 		$cat = self::getParam("cat");
+		$income = self::getParam("income",0);
 		$st = User::STATUS_ACTIVE;
 		//$criteria[] = " u.uStatus=$st ";
 		$criteria = $params = [];
@@ -691,6 +692,9 @@ class SiteController extends BaseController
 		}
 		if ($cat) {
 			$criteria[] = " t.tCategory =$cat ";
+		}
+		if ($income) {
+			$criteria[] = " p.pStatus=100 AND p.pTransAmt>0 ";
 		}
 		$criteria[] = " t.tCategory in (" . implode(',', array_keys(UserTrans::$catDict)) . ") ";
 
