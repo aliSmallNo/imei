@@ -8073,4 +8073,53 @@ ul.co-ul {
       color: #fdd835;
       line-height: 2.4rem; }
 
+.m-cells {
+  margin: 0;
+  padding: 0; }
+  .m-cells li {
+    padding: 0.1rem;
+    float: left;
+    height: 4.3rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background: #fff;
+    border-right: 1px solid #d4d4d4;
+    border-bottom: 1px solid #d4d4d4; }
+    .m-cells li.gray {
+      background: #f3f3f3; }
+    .m-cells li a {
+      display: block;
+      height: 100%;
+      text-align: center;
+      background: transparent;
+      color: #333; }
+      .m-cells li a:active {
+        background: #007aff;
+        color: #fff; }
+      .m-cells li a:before {
+        content: "";
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle; }
+      .m-cells li a em {
+        font-size: 1.2rem;
+        display: inline-block;
+        vertical-align: middle;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden; }
+  .m-cells.col1 li {
+    width: 100%; }
+  .m-cells.col2 li {
+    width: 50%; }
+  .m-cells.col3 li {
+    width: 33.3%; }
+  .m-cells.col4 li {
+    width: 25%; }
+  .m-cells.col5 li {
+    width: 20%; }
+  .m-cells.col6 li {
+    width: 16.66%; }
+
 /*# sourceMappingURL=imei.css.map */
