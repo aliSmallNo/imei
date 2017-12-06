@@ -1670,11 +1670,11 @@ class WxController extends BaseController
 
 	public function actionHi()
 	{
-		$openId = self::$WX_OpenId;
 		if ($this->user_id && $this->user_phone && $this->user_location) {
 			header('location:/wx/single');
 			exit();
 		}
+		$openId = self::$WX_OpenId;
 //		if ($this->user_phone && $this->user_role > 9) {
 //			header('location:/wx/single#slook');
 //			exit();
@@ -1692,6 +1692,10 @@ class WxController extends BaseController
 
 	public function actionReg0()
 	{
+		if ($this->user_id && $this->user_phone && $this->user_location) {
+			header('location:/wx/single');
+			exit();
+		}
 		$openId = self::$WX_OpenId;
 		if ($this->user_phone) {
 			header('location:/wx/reg1');
@@ -1707,6 +1711,10 @@ class WxController extends BaseController
 
 	public function actionReg1()
 	{
+		if ($this->user_id && $this->user_phone && $this->user_location) {
+			header('location:/wx/single');
+			exit();
+		}
 		$openId = self::$WX_OpenId;
 		LogAction::add($this->user_id, $openId, LogAction::ACTION_REG1);
 		$marital = [
