@@ -31,7 +31,7 @@
 					分享收获媒桂花
 					<div class="tip">分享拉新人，注册成功收获媒桂花</div>
 				</div>
-				<div class="action"><a href="javascript:;" class="btn-share" data-id="0" data-cat="share">分享</a></div>
+				<div class="action"><a href="/wx/expand" class="btn-share" data-id="0" data-cat="share">分享</a></div>
 			</li>
 		</ul>
 		<p class="tip-block">媒桂花用于赠予、密聊、约会，不能提现或退款</p>
