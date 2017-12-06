@@ -1671,6 +1671,10 @@ class WxController extends BaseController
 	public function actionHi()
 	{
 		$openId = self::$WX_OpenId;
+		if ($this->user_id && $this->user_phone && $this->user_location) {
+			header('location:/wx/single');
+			exit();
+		}
 //		if ($this->user_phone && $this->user_role > 9) {
 //			header('location:/wx/single#slook');
 //			exit();
