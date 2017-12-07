@@ -403,18 +403,19 @@
 				<a style="background-image:url(https://img.meipo100.com/2017/84/116424_t.jpg);"></a>
 			</li>
 		</ul>
-		<ul class="favor-nav">
-			<li>
-				<a>心动我的</a>
-			</li>
-			<li>
-				<a>我心动的</a>
-			</li>
-			<li>
-				<a>相互心动的</a>
-			</li>
-		</ul>
 	</div>
+	<ul class="zone-favor-nav">
+		<li>
+			<a>心动我的</a>
+		</li>
+		<li>
+			<a>我心动的</a>
+		</li>
+		<li>
+			<a>相互心动的</a>
+		</li>
+	</ul>
+	<div style="height: 1rem"></div>
 	<ul class="zone-grid">
 		<li><a><i class="i-zone-grid wallet"></i><em>账户</em></em></a></li>
 		<li><a><i class="i-zone-grid sign"></i><em>每日签到</em></a></li>

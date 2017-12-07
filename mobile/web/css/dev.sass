@@ -1,4 +1,25 @@
 @import "base"
+.zone-favor-nav
+    @include displayFlex
+    border-top: 1px solid $borderColor
+    background: #fff
+    li
+        @include displayFlex-1
+        @include borderBox
+        text-align: center
+        height: 4.2rem
+        border-right: 1px solid $borderColor
+        padding: .1rem
+        &:last-child
+            border-right: none
+        a
+            display: block
+            text-align: center
+            height: 100%
+            line-height: 4rem
+            @include borderBox
+            &:active
+                background-color: $borderColor
 
 .zone-grid
     display: flex
@@ -15,6 +36,8 @@
         @include displayFlexVAlign
         @include borderBox
         padding: .1rem
+        &:nth-child(3n+3)
+            border-right: none
         a
             display: block
             background-color: white
