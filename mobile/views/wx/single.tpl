@@ -398,16 +398,17 @@
 			</a>
 		</li>
 		<li>
-			<div class="left">
-				<div class="level">1级</div>
+			<div class="left level">
+				<div class="level-1">01</div>
 			</div>
 			<div class="flex-1">
-
+				<h6>恋爱成就</h6>
+				<p class="percent">
+					<em style="width: 32%"></em>
+					<b>1395</b>
+				</p>
 			</div>
 		</li>
-
-
-
 	</ul>
 	<ul class="zone-album">
 		<li>
