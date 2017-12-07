@@ -49,208 +49,197 @@ $purpleLight: #4966b2
 $purpleAction: #284cfa
 
 @mixin unreadFlag
-	position: absolute
-	width: 1rem
-	height: 1rem
-	border-radius: .5rem
-	background: $redColorLight
+    position: absolute
+    width: 1rem
+    height: 1rem
+    border-radius: .5rem
+    background: $redColorLight
 
 @mixin markerCert
-	display: inline-block
-	background: url(../images/ico_cert.png) no-repeat center center
-	background-size: 100% 100%
+    display: inline-block
+    background: url(../images/ico_cert.png) no-repeat center center
+    background-size: 100% 100%
 
 @mixin marker100
-	display: inline-block
-	background: url(../images/ico_month_member.png) no-repeat center center
-	background-size: 100% 100%
+    display: inline-block
+    background: url(../images/ico_month_member.png) no-repeat center center
+    background-size: 100% 100%
 
 @mixin translucent
-	background-color: rgba(0, 0, 0, .6)
+    background-color: rgba(0, 0, 0, .6)
 
 @mixin borderBox
-	-webkit-box-sizing: border-box
-	-moz-box-sizing: border-box
-	box-sizing: border-box
+    -webkit-box-sizing: border-box
+    -moz-box-sizing: border-box
+    box-sizing: border-box
 
 @mixin lightBottomBorder
-	border-bottom: 1px solid $borderColorLight
+    border-bottom: 1px solid $borderColorLight
 
 @mixin prefixYuan
-	content: "\ffe5"
-	font-size: 1rem
-	color: $moneyColor
+    content: "\ffe5"
+    font-size: 1rem
+    color: $moneyColor
 
 @mixin textTail
-	white-space: nowrap
-	text-overflow: ellipsis
-	overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis
+    overflow: hidden
 
 @mixin arrowRight
-	content: " "
-	display: inline-block
-	height: .8rem
-	width: .8rem
-	border-width: 1px 1px 0 0
-	border-color: $grayFontColorLight
-	border-style: solid
-	-webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
-	transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
-	position: absolute
-	top: 50%
-	right: 0
-	margin-top: -0.5rem
+    content: " "
+    display: inline-block
+    height: .8rem
+    width: .8rem
+    border-width: 1px 1px 0 0
+    border-color: $grayFontColorLight
+    border-style: solid
+    -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
+    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
+    position: absolute
+    top: 50%
+    right: 0
+    margin-top: -0.5rem
 
 @mixin arrowDown
-	content: " "
-	display: inline-block
-	height: .5rem
-	width: .5rem
-	border-width: 0 2px 2px 0
-	border-color: $borderColorDark
-	border-style: solid
-	-webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
-	transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
-	position: absolute
-	top: 50%
-	right: .5rem
-	margin-top: -0.4rem
+    content: " "
+    display: inline-block
+    height: .5rem
+    width: .5rem
+    border-width: 0 2px 2px 0
+    border-color: $borderColorDark
+    border-style: solid
+    -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
+    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
+    position: absolute
+    top: 50%
+    right: .5rem
+    margin-top: -0.4rem
 
 @mixin shadowBottom
-	box-shadow: 0 2px .3rem 0 rgba(0, 0, 0, .1)
+    box-shadow: 0 2px .3rem 0 rgba(0, 0, 0, .1)
 
 @mixin topFixed
-	@include shadowBottom
-	height: 4rem
-	overflow-x: hidden
-	padding-left: 1.5rem
-	padding-right: 1.5rem
-	white-space: nowrap
-	background: #fff
-	text-align: center
-	position: fixed
-	top: 0
-	left: 0
-	right: 0
-	z-index: 110
+    @include shadowBottom
+    height: 4rem
+    overflow-x: hidden
+    padding-left: 1.5rem
+    padding-right: 1.5rem
+    white-space: nowrap
+    background: #fff
+    text-align: center
+    position: fixed
+    top: 0
+    left: 0
+    right: 0
+    z-index: 110
 
 @mixin displayFlex
-	display: -webkit-box
-	display: -webkit-flex
-	display: -ms-flexbox
-	display: flex
+    display: -webkit-box
+    display: -webkit-flex
+    display: -ms-flexbox
+    display: flex
 
 @mixin displayFlex-1
-	-webkit-box-flex: 1
-	-webkit-flex: 1
-	-ms-flex: 1
-	flex: 1
+    -webkit-box-flex: 1
+    -webkit-flex: 1
+    -ms-flex: 1
+    flex: 1
 
 @mixin displayFlex-w($width: 8rem)
-	-webkit-box-flex: 0 0 $width
-	-webkit-flex: 0 0 $width
-	-ms-flex: 0 0 $width
-	flex: 0 0 $width
+    -webkit-box-flex: 0 0 $width
+    -webkit-flex: 0 0 $width
+    -ms-flex: 0 0 $width
+    flex: 0 0 $width
 
 @mixin displayFlexVAlign
-	justify-content: center
-	align-items: center
-	align-self: center
+    justify-content: center
+    align-items: center
+    align-self: center
 
 @mixin ellipsis
-	overflow: hidden
-	white-space: nowrap
-	text-overflow: ellipsis
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis
 
 body, html
-	font-size: 10px
-	font-size: -moz-calc(100vw / 32)
-	font-size: -webkit-calc(100vw / 32)
-	font-size: calc(100vw / 32)
-	//$bgColor
-	color: $fontColor
-	font-family: 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif
-	height: 100%
+    font-size: 10px
+    font-size: -moz-calc(100vw / 32)
+    font-size: -webkit-calc(100vw / 32)
+    font-size: calc(100vw / 32)
+    //$bgColor
+    color: $fontColor
+    font-family: 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif
+    height: 100%
 
-//@media (min-width: 750px) and (max-width: 827px)
-//	body, html
-//		font-size: 11px
-//
-//@media (min-width: 828px) and (max-width: 1023px)
-//	body, html
-//		font-size: 12px
-//
-//@media (min-width: 1024px) and (max-width: 1279px)
-//	body, html
-//		font-size: 13px
-//
-//@media (min-width: 1280px)
-//	body, html
-//		font-size: 14px
+//@media screen and (min-width: 400px)
+//    body, html
+//        font-size: 12px
 
 body, html, a, p, ul, div, h4, h5, h6, .main-wrap
-	margin: 0
-	padding: 0
-	-webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+    margin: 0
+    padding: 0
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
 
 body
-	background-color: #fff
+    background-color: #fff
 
 body, a, div, p
-	-webkit-touch-callout: none
-	-webkit-user-select: none
-	-khtml-user-select: none
-	-moz-user-select: none
-	-ms-user-select: none
-	user-select: none
-	font-size: 1.4rem
+    -webkit-touch-callout: none
+    -webkit-user-select: none
+    -khtml-user-select: none
+    -moz-user-select: none
+    -ms-user-select: none
+    user-select: none
+    font-size: 1.4rem
 
 a
-	color: $fontColor
-	cursor: pointer
-	text-decoration: none
-	&.disabled,
-	&.disabled:active
-		color: $disabledFontColor
+    color: $fontColor
+    cursor: pointer
+    text-decoration: none
+    &.disabled,
+    &.disabled:active
+        color: $disabledFontColor
 
 em, i, b
-	font-weight: normal
-	font-style: normal
+    font-weight: normal
+    font-style: normal
 
 ul
-	list-style: none
+    list-style: none
 
 input, select, textarea, button
-	-webkit-appearance: none
-	-moz-appearance: none
-	appearance: none
-	outline: none
+    -webkit-appearance: none
+    -moz-appearance: none
+    appearance: none
+    outline: none
 
 main
-	position: relative
-	padding-bottom: 7rem
-	&.bg-lighter
-		background: $mainColorLighter
+    position: relative
+    padding-bottom: 7rem
+    &.bg-lighter
+        background: $mainColorLighter
 
 .none
-	display: none !important
+    display: none !important
 
 .clearfix
-	zoom: 1
-	&:before,
-	&:after
-		display: block
-		line-height: 0
-		content: ""
-	&:after
-		clear: both
+    zoom: 1
+    &:before,
+    &:after
+        display: block
+        line-height: 0
+        content: ""
+    &:after
+        clear: both
 
 .space
-	display: inline-block
-	width: 1rem
+    display: inline-block
+    width: 1rem
 
 .space2
-	display: inline-block
-	width: 2rem
+    display: inline-block
+    width: 2rem
+
 .center
-	text-align: center
+    text-align: center
