@@ -14,7 +14,6 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
-use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
@@ -932,9 +931,29 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$uid=150540;
+		$openid = 'oYDJew5UWinXKkgvNwr1Uar-6nIE';
+		$content = '《男女互撩速成课》（语音直播）已经开始喽~~~
+🔥<a href="https://m.qlchat.com/topic/2000000410463312.htm">点击链接直接进入</a>🔥';
+		$cnt = UserWechat::sendMsg($openid, $content);
+		var_dump($cnt);
+		return;
+
+		$conn = AppUtil::db();
+		$sql = "select nUId 
+						 from im_user_net as n 
+						 join im_user as u on u.uId=n.nUId and u.uOpenId like :openid
+						 where nSubUId=:uid and nRelation=:rel and u.uSubstatus!=:st ";
+		$backerUId = $conn->createCommand($sql)->bindValues([
+			':uid' => 150540,
+			':rel' => UserNet::REL_BACKER,
+			':st' => User::SUB_ST_STAFF,
+			':openid' => User::OPENID_PREFIX . '%'
+		])->queryScalar();
+		var_dump($backerUId);
+
+		/*$uid=150540;
 		$ret = UserTrans::addReward($uid, UserTrans::CAT_MOMENT_RECRUIT);
-		var_dump($ret);
+		var_dump($ret);*/
 		/*$conn = AppUtil::db();
 		$sql = "SELECT u.uName,u.uOpenId,uPhone,uGender,wSubscribe
 			 FROM im_user as u 
