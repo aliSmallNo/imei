@@ -391,7 +391,7 @@
 			<div class="left">
 				<div class="avatar" style="background-image: url({{$avatar}})"></div>
 			</div>
-			<a class="flex-1 profile">
+			<a href="/wx/sedit" class="flex-1 profile">
 				<h4><span>{{$nickname}}</span><small>资料完成度</small></h4>
 				<h5>&nbsp;</h5>
 			</a>
