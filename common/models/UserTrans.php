@@ -518,10 +518,15 @@ class UserTrans extends ActiveRecord
 			case self::CAT_MOMENT_RECRUIT:
 				$amt = 99;
 				$unit = self::UNIT_GIFT;
-				$sql = "select nUId from im_user_net where nSubUId=:uid and nRelation=:rel ";
+				$sql = "select nUId 
+						 from im_user_net as n 
+						 join im_user as u on u.uId=n.nUId and u.uOpenId like :openid
+						 where nSubUId=:uid and nRelation=:rel and u.uSubstatus!=:st ";
 				$backerUId = $conn->createCommand($sql)->bindValues([
 					':uid' => $uid,
-					':rel' => UserNet::REL_BACKER
+					':rel' => UserNet::REL_BACKER,
+					':st' => User::SUB_ST_STAFF,
+					':openid' => User::OPENID_PREFIX . '%'
 				])->queryScalar();
 				if ($backerUId) {
 					$sql = 'INSERT INTO im_user_trans(tCategory,tPId,tUId,tTitle,tAmt,tUnit)
