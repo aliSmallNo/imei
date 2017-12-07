@@ -235,8 +235,6 @@ class UserWechat extends ActiveRecord
 			}
 		}
 		if ($openIds && $msg) {
-//			$url = 'https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=';
-//			$url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=';
 			$url .= WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 			$postData = [
 				"msgtype" => "text",
@@ -254,6 +252,35 @@ class UserWechat extends ActiveRecord
 		return $ret['errcode'] == 0 ? 1 : 0;
 	}
 
+	public static function sendMedia($openIds, $mediaId, $type = 'image')
+	{
+		$ret = [
+			"errcode" => 1,
+			"errmsg" => "default"
+		];
+		$url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=';
+		if (is_array($openIds)) {
+			if (count($openIds) > 1) {
+				$url = 'https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=';
+			} elseif (count($openIds) == 1) {
+				$openIds = $openIds[0];
+			}
+		}
+		if ($openIds && $mediaId) {
+			$url .= WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+			$postData = [
+				"touser" => $openIds,
+				"msgtype" => $type,
+				$type => [
+					"media_id" => $mediaId
+				]
+			];
+			$ret = AppUtil::postJSON($url, json_encode($postData, JSON_UNESCAPED_UNICODE));
+		}
+		$ret = json_decode($ret, 1);
+		return $ret;
+	}
+
 	public static function sendMediaByPhone($mobiles, $mediaId, $type = 'image')
 	{
 		if (!$mobiles || !$mediaId) return 0;
@@ -269,40 +296,21 @@ class UserWechat extends ActiveRecord
 		$sql = 'select uId, uOpenId from im_user WHERE uPhone in (' . implode(',', $mobiles) . ')';
 		$ret = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
+		$openIds = [];
 		foreach ($ret as $row) {
-			$openId = $row['uOpenId'];
-			self::sendMedia($openId, $mediaId, $type);
+			$openIds[] = $row['uOpenId'];
 			$cnt++;
 		}
+		self::sendMedia($openIds, $mediaId, $type);
 		return $cnt;
 	}
 
-	public static function sendMedia($openId, $mediaId, $type = 'image')
-	{
-		$ret = [
-			"errcode" => 1,
-			"errmsg" => "default"
-		];
-		if ($openId && $mediaId) {
-			$url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=';
-			$url .= WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
-			$postData = [
-				"touser" => $openId,
-				"msgtype" => $type,
-				$type => [
-					"media_id" => $mediaId
-				]
-			];
-			$ret = AppUtil::postJSON($url, json_encode($postData, JSON_UNESCAPED_UNICODE));
-		}
-		$ret = json_decode($ret, 1);
-		return $ret;
-	}
 
 	/**
 	 * 刷新订阅用户
 	 * @param \yii\db\Connection $conn
 	 * @return array 用户的OpenIds
+	 * @throws \yii\db\Exception
 	 */
 	public static function refreshPool($conn = null)
 	{
