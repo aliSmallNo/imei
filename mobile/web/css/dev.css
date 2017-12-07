@@ -82,10 +82,10 @@ main {
     display: -ms-flexbox;
     display: flex; }
     .zone-top li .left {
-      -webkit-box-flex: 0 0 8rem;
-      -webkit-flex: 0 0 8rem;
-      -ms-flex: 0 0 8rem;
-      flex: 0 0 8rem;
+      -webkit-box-flex: 0 0 7rem;
+      -webkit-flex: 0 0 7rem;
+      -ms-flex: 0 0 7rem;
+      flex: 0 0 7rem;
       text-align: center; }
       .zone-top li .left.level {
         border-right: 1px solid #EEEFF3;
@@ -94,16 +94,16 @@ main {
         align-self: center; }
         .zone-top li .left.level div {
           display: inline-block;
-          width: 5.7rem;
-          height: 2.5rem;
-          line-height: 2.5rem;
+          width: 4.5rem;
+          height: 2rem;
+          line-height: 2rem;
           background-image: url(../images/sprite_lv.png);
-          background-size: 5.7rem 10rem;
+          background-size: 4.5rem 8rem;
           background-repeat: no-repeat;
           color: white;
-          font-size: 1.4rem;
+          font-size: 1.3rem;
           font-family: Verdana;
-          padding-right: 0.8rem;
+          padding-right: 0.4rem;
           text-align: right;
           -webkit-box-sizing: border-box;
           -moz-box-sizing: border-box;
@@ -111,19 +111,19 @@ main {
           .zone-top li .left.level div.level-1 {
             background-position: 0 0rem; }
           .zone-top li .left.level div.level-2 {
-            background-position: 0 -2.5rem; }
+            background-position: 0 -2rem; }
           .zone-top li .left.level div.level-3 {
-            background-position: 0 -5rem; }
+            background-position: 0 -4rem; }
           .zone-top li .left.level div.level-3 {
-            background-position: 0 -7.5rem; }
+            background-position: 0 -6rem; }
       .zone-top li .left .avatar {
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
-        width: 6rem;
-        height: 6rem;
+        width: 5.6rem;
+        height: 5.6rem;
         display: inline-block;
-        border-radius: 3rem;
+        border-radius: 2.8rem;
         overflow: hidden; }
     .zone-top li .flex-1 {
       -webkit-box-flex: 1;
@@ -313,7 +313,7 @@ main {
   .zone-grid li {
     background-color: white;
     flex: 0 0 33.3%;
-    height: 8.3rem;
+    height: 8rem;
     border-right: 1px solid #EEEFF3;
     border-bottom: 1px solid #EEEFF3;
     text-align: center;
@@ -346,30 +346,30 @@ main {
       display: inline-block;
       padding: 0;
       margin: 0;
-      width: 4rem;
-      height: 4rem;
+      width: 3.5rem;
+      height: 3.5rem;
       background-image: url(../images/sprite_me.png);
-      background-size: 4rem 48rem;
+      background-size: 3.5rem 42rem;
       background-repeat: no-repeat; }
-      .zone-grid li .i-zone-grid.wallet {
-        background-position: 0 -24rem; }
       .zone-grid li .i-zone-grid.sign {
         background-position: 0 0rem; }
-      .zone-grid li .i-zone-grid.date {
-        background-position: 0 -28rem; }
-      .zone-grid li .i-zone-grid.cert {
-        background-position: 0 -8rem; }
-      .zone-grid li .i-zone-grid.notice {
-        background-position: 0 -44rem; }
-      .zone-grid li .i-zone-grid.rank {
-        background-position: 0 -16rem; }
-      .zone-grid li .i-zone-grid.comment {
-        background-position: 0 -40rem; }
-      .zone-grid li .i-zone-grid.feedback {
-        background-position: 0 -12rem; }
-      .zone-grid li .i-zone-grid.setting {
-        background-position: 0 -40.5rem; }
       .zone-grid li .i-zone-grid.protocol {
-        background-position: 0 -4rem; }
+        background-position: 0 -3.5rem; }
+      .zone-grid li .i-zone-grid.cert {
+        background-position: 0 -7rem; }
+      .zone-grid li .i-zone-grid.feedback {
+        background-position: 0 -10.5rem; }
+      .zone-grid li .i-zone-grid.rank {
+        background-position: 0 -14rem; }
+      .zone-grid li .i-zone-grid.wallet {
+        background-position: 0 -17.5rem; }
+      .zone-grid li .i-zone-grid.date {
+        background-position: 0 -24.5rem; }
+      .zone-grid li .i-zone-grid.setting {
+        background-position: 0 -31.5rem; }
+      .zone-grid li .i-zone-grid.comment {
+        background-position: 0 -35rem; }
+      .zone-grid li .i-zone-grid.notice {
+        background-position: 0 -38.5rem; }
 
 /*# sourceMappingURL=dev.css.map */

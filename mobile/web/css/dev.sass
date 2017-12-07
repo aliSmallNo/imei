@@ -5,41 +5,41 @@
     li
         @include displayFlex
         .left
-            @include displayFlex-w(8rem)
+            @include displayFlex-w(7rem)
             text-align: center
             &.level
                 border-right: 1px solid $borderColorLight
                 @include displayFlexVAlign
                 div
                     display: inline-block
-                    width: 5.7rem
-                    height: 2.5rem
-                    line-height: 2.5rem
+                    width: 4.5rem
+                    height: 2rem
+                    line-height: 2rem
                     background-image: url(../images/sprite_lv.png)
-                    background-size: 5.7rem 10rem
+                    background-size: 4.5rem 8rem
                     background-repeat: no-repeat
                     color: white
-                    font-size: 1.4rem
+                    font-size: 1.3rem
                     font-family: Verdana
-                    padding-right: .8rem
+                    padding-right: .4rem
                     text-align: right
                     @include borderBox
                     &.level-1
                         background-position: 0 -0rem
                     &.level-2
-                        background-position: 0 -2.5rem
+                        background-position: 0 -2rem
                     &.level-3
-                        background-position: 0 -5rem
+                        background-position: 0 -4rem
                     &.level-3
-                        background-position: 0 -7.5rem
+                        background-position: 0 -6rem
             .avatar
                 background-position: center
                 background-repeat: no-repeat
                 background-size: cover
-                width: 6rem
-                height: 6rem
+                width: 5.6rem
+                height: 5.6rem
                 display: inline-block
-                border-radius: 3rem
+                border-radius: 2.8rem
                 overflow: hidden
         .flex-1
             @include displayFlex-1
@@ -175,7 +175,7 @@
     li
         background-color: white
         flex: 0 0 33.3%
-        height: 8.3rem
+        height: 8rem
         border-right: 1px solid $borderColorLight
         border-bottom: 1px solid $borderColorLight
         text-align: center
@@ -202,31 +202,33 @@
             display: inline-block
             padding: 0
             margin: 0
-            width: 4rem
-            height: 4rem
+            width: 3.5rem
+            height: 3.5rem
             background-image: url(../images/sprite_me.png)
-            background-size: 4rem 48rem
+            background-size: 3.5rem 42rem
             background-repeat: no-repeat
-            &.wallet
-                background-position: 0 -24rem
             &.sign
                 background-position: 0 -0rem
-            &.date
-                background-position: 0 -28rem
-            &.cert
-                background-position: 0 -8rem
-            &.notice
-                background-position: 0 -44rem
-            &.rank
-                background-position: 0 -16rem
-            &.comment
-                background-position: 0 -40rem
-            &.feedback
-                background-position: 0 -12rem
-            &.setting
-                background-position: 0 -40.5rem
             &.protocol
-                background-position: 0 -4rem
+                background-position: 0 -3.5rem
+            &.cert
+                background-position: 0 -7rem
+            &.feedback
+                background-position: 0 -10.5rem
+            &.rank
+                background-position: 0 -14rem
+            &.wallet
+                background-position: 0 -17.5rem
+            &.date
+                background-position: 0 -24.5rem
+            &.setting
+                background-position: 0 -31.5rem
+            &.comment
+                background-position: 0 -35rem
+            &.notice
+                background-position: 0 -38.5rem
+
+
 
 
 
