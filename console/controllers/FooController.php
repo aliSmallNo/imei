@@ -934,7 +934,7 @@ class FooController extends Controller
 		$openid = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
 		$content = '测试测试~~~ 《男女互撩速成课》（语音直播）已经开始喽~~~
 🔥<a href="https://m.qlchat.com/topic/2000000410463312.htm">点击链接直接进入</a>🔥';
-		$cnt = UserWechat::sendMsg($openid, $content);
+		$cnt = UserWechat::sendMsg($openid, $content, true);
 		var_dump($cnt);
 
 		$openids = [

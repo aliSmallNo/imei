@@ -220,7 +220,7 @@ class UserWechat extends ActiveRecord
 		return "";
 	}
 
-	public static function sendMsg($openIds, $msg)
+	public static function sendMsg($openIds, $msg, $debug = false)
 	{
 		$ret = [
 			"errcode" => 1,
@@ -228,7 +228,7 @@ class UserWechat extends ActiveRecord
 		];
 		if (is_array($openIds)) {
 			$url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=';
-		}else{
+		} else {
 			$url = 'https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=';
 		}
 		if ($openIds && $msg) {
@@ -245,6 +245,9 @@ class UserWechat extends ActiveRecord
 			$ret = AppUtil::postJSON($url, json_encode($postData, JSON_UNESCAPED_UNICODE));
 		}
 		$ret = json_decode($ret, 1);
+		if ($debug) {
+			return $ret;
+		}
 		return $ret['errcode'] == 0 ? 1 : 0;
 	}
 
