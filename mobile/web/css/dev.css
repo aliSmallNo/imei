@@ -78,7 +78,6 @@ main {
   flex-flow: row wrap;
   align-content: flex-start; }
   .zone-grid li {
-    box-sizing: border-box;
     background-color: white;
     flex: 0 0 33.3%;
     height: 9rem;
@@ -89,9 +88,53 @@ main {
     justify-content: center;
     align-items: center;
     align-self: center;
-    padding: 0.3rem; }
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0.1rem; }
     .zone-grid li a {
       display: block;
-      padding-top: 5.5rem; }
+      background-color: white;
+      text-align: center;
+      height: 100%;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      padding-top: 1rem; }
+      .zone-grid li a:active {
+        background-color: #E4E4E4; }
+      .zone-grid li a em {
+        display: block;
+        line-height: 1.7rem;
+        font-size: 1.2rem; }
+    .zone-grid li .i-zone-grid {
+      display: inline-block;
+      padding: 0;
+      margin: 0;
+      width: 4.5rem;
+      height: 4.5rem;
+      background-image: url(../images/sprite_me.png);
+      background-size: 4.5rem 54rem;
+      background-repeat: no-repeat; }
+      .zone-grid li .i-zone-grid.wallet {
+        background-position: 0 -27rem; }
+      .zone-grid li .i-zone-grid.sign {
+        background-position: 0 0rem; }
+      .zone-grid li .i-zone-grid.date {
+        background-position: 0 -31.5rem; }
+      .zone-grid li .i-zone-grid.cert {
+        background-position: 0 -9rem; }
+      .zone-grid li .i-zone-grid.notice {
+        background-position: 0 -49.5rem; }
+      .zone-grid li .i-zone-grid.rank {
+        background-position: 0 -18rem; }
+      .zone-grid li .i-zone-grid.comment {
+        background-position: 0 -45rem; }
+      .zone-grid li .i-zone-grid.feedback {
+        background-position: 0 -13.5rem; }
+      .zone-grid li .i-zone-grid.setting {
+        background-position: 0 -40.5rem; }
+      .zone-grid li .i-zone-grid.protocol {
+        background-position: 0 -4.5rem; }
 
 /*# sourceMappingURL=dev.css.map */

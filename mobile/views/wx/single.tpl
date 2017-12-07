@@ -416,16 +416,16 @@
 		</ul>
 	</div>
 	<ul class="zone-grid">
-		<li><a>账户</a></li>
-		<li><a>签到</a></li>
-		<li><a>约会</a></li>
-		<li><a>实名认证</a></li>
-		<li><a>通知</a></li>
-		<li><a>排行榜</a></li>
-		<li><a>评论</a></li>
-		<li><a>意见反馈</a></li>
-		<li><a>设置</a></li>
-		<li><a>用户协议</a></li>
+		<li><a><i class="i-zone-grid wallet"></i><em>账户</em></em></a></li>
+		<li><a><i class="i-zone-grid sign"></i><em>每日签到</em></a></li>
+		<li><a><i class="i-zone-grid date"></i><em>约会</em></a></li>
+		<li><a><i class="i-zone-grid cert"></i><em>实名认证</em></a></li>
+		<li><a><i class="i-zone-grid notice"></i><em>通知</em></a></li>
+		<li><a><i class="i-zone-grid rank"></i><em>排行榜</em></a></li>
+		<li><a><i class="i-zone-grid comment"></i><em>评论</em></a></li>
+		<li><a><i class="i-zone-grid feedback"></i><em>意见反馈</em></a></li>
+		<li><a><i class="i-zone-grid setting"></i><em>设置</em></a></li>
+		<li><a><i class="i-zone-grid protocol"></i><em>用户协议</em></a></li>
 		<li></li>
 		<li></li>
 	</ul>

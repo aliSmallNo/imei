@@ -5,7 +5,6 @@
     flex-flow: row wrap
     align-content: flex-start
     li
-        box-sizing: border-box
         background-color: white
         flex: 0 0 33.3%
         height: 9rem
@@ -14,7 +13,50 @@
         text-align: center
         font-size: 1.2rem
         @include displayFlexVAlign
-        padding: .3rem
+        @include borderBox
+        padding: .1rem
         a
             display: block
-            padding-top: 5.5rem
+            background-color: white
+            text-align: center
+            height: 100%
+            @include borderBox
+            padding-top: 1rem
+            &:active
+                background-color: $borderColor
+            em
+                display: block
+                line-height: 1.7rem
+                font-size: 1.2rem
+        .i-zone-grid
+            display: inline-block
+            padding: 0
+            margin: 0
+            width: 4.5rem
+            height: 4.5rem
+            background-image: url(../images/sprite_me.png)
+            background-size: 4.5rem 54rem
+            background-repeat: no-repeat
+            &.wallet
+                background-position: 0 -27rem
+            &.sign
+                background-position: 0 -0rem
+            &.date
+                background-position: 0 -31.5rem
+            &.cert
+                background-position: 0 -9rem
+            &.notice
+                background-position: 0 -49.5rem
+            &.rank
+                background-position: 0 -18rem
+            &.comment
+                background-position: 0 -45rem
+            &.feedback
+                background-position: 0 -13.5rem
+            &.setting
+                background-position: 0 -40.5rem
+            &.protocol
+                background-position: 0 -4.5rem
+
+
+
