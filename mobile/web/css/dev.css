@@ -73,4 +73,25 @@ main {
 .center {
   text-align: center; }
 
+.zone-grid {
+  display: flex;
+  flex-flow: row wrap;
+  align-content: flex-start; }
+  .zone-grid li {
+    box-sizing: border-box;
+    background-color: white;
+    flex: 0 0 33.3%;
+    height: 9rem;
+    border-right: 1px solid #E4E4E4;
+    border-bottom: 1px solid #E4E4E4;
+    text-align: center;
+    font-size: 1.2rem;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    padding: 0.3rem; }
+    .zone-grid li a {
+      display: block;
+      padding-top: 5.5rem; }
+
 /*# sourceMappingURL=dev.css.map */

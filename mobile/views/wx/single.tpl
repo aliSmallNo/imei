@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/css/dev.min.css">
 <section id="slink" data-title="推荐媒婆">
 	<div class="match-wrap">
 		<h3>推荐媒婆</h3>
@@ -93,7 +94,8 @@
 		<div class="u-my-wrap line-bottom">
 			<div class="u-my-bar">
 				<div class="avatar single">
-					<div class="img {{if $uInfo.pending}}pending{{/if}}" style="background-image: url({{$avatar}})"></div>
+					<div class="img {{if $uInfo.pending}}pending{{/if}}"
+					     style="background-image: url({{$avatar}})"></div>
 					{{if $uInfo.cert}}<i class="i-cert"></i>{{/if}}
 					{{foreach from=$uInfo.tags item=tag}}<i class="i-tag{{$tag}}"></i>{{/foreach}}
 				</div>
@@ -120,12 +122,14 @@
 			<a href="#sfav"><span class="title">心动列表</span> <i class="i-mark-base i-mark-favor"></i></a>
 			<a href="#date"><span class="title">我的约会</span></i> <i class="i-mark-base i-mark-date"></i></a>
 			<a href="/wx/comments"><span class="title">对我的评论</span></a>
-			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">我的账户</span> <i class="i-mark-base i-mark-rose"></i></a>
+			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">我的账户</span> <i
+						class="i-mark-base i-mark-rose"></i></a>
 			<a href="/wx/mshare"><span class="title">分享给朋友</span> <i class="i-mark-base i-mark-share"></i></a>
 			<a href="/wx/cert2?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}
 					<span class="tip">已认证</span>
 				{{/if}}</a>
-			<a href="/wx/notice"><span class="title">通知</span>{{if $noReadFlag}}<span class="noReadFlag"></span>{{/if}}</a>
+			<a href="/wx/notice"><span class="title">通知</span>{{if $noReadFlag}}<span class="noReadFlag"></span>{{/if}}
+			</a>
 		</div>
 		<div class="m-rows line-bottom mymp" style="display: none">
 			<a href="/wx/invite"><span class="title">我的媒婆</span> <span class="tip">{{$mpName}}</span></a>
@@ -380,6 +384,51 @@
 		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120"></div>
 		<div class="action"><a href="javascript:;" class="btn-chat-send">发送</a></div>
 	</div>
+</section>
+<section id="zone">
+	<div class="zone-top">
+		<div class="profile">
+			<div class="left"></div>
+			<div class="flex-1"></div>
+		</div>
+		<div class="level">
+			<div class="left"></div>
+			<div class="flex-1"></div>
+		</div>
+		<ul class="album">
+			<li>
+				<a class="add"></a>
+			</li>
+			<li>
+				<a style="background-image:url(https://img.meipo100.com/2017/84/116424_t.jpg);"></a>
+			</li>
+		</ul>
+		<ul class="favor-nav">
+			<li>
+				<a>心动我的</a>
+			</li>
+			<li>
+				<a>我心动的</a>
+			</li>
+			<li>
+				<a>相互心动的</a>
+			</li>
+		</ul>
+	</div>
+	<ul class="zone-grid">
+		<li><a>账户</a></li>
+		<li><a>签到</a></li>
+		<li><a>约会</a></li>
+		<li><a>实名认证</a></li>
+		<li><a>通知</a></li>
+		<li><a>排行榜</a></li>
+		<li><a>评论</a></li>
+		<li><a>意见反馈</a></li>
+		<li><a>设置</a></li>
+		<li><a>用户协议</a></li>
+		<li></li>
+		<li></li>
+	</ul>
 </section>
 <section id="myMP">
 	<div class="nav">
@@ -1325,7 +1374,10 @@
 </script>
 <script src="/assets/js/require.js"></script>
 <script>
+	if (document.location.hash === "" || document.location.hash === "#") {
+		document.location.hash = "#slook";
+	}
 	requirejs(['/js/config.js'], function () {
-		requirejs(['/js/single.js?v=1.4.0']);
+		requirejs(['/js/single.js?v=1.4.1']);
 	});
 </script>

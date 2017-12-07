@@ -1,6 +1,3 @@
-if (document.location.hash === "" || document.location.hash === "#") {
-	document.location.hash = "#slook";
-}
 requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 	function ($, alpha, Mustache, Swiper, io) {
 		"use strict";
