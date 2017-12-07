@@ -80,6 +80,28 @@
                     content: ''
                     @include arrowRight
                     right: 1.2rem
+                .cards
+                    @include displayFlex
+                    flex-flow: row wrap
+                    align-content: flex-start
+                    min-height: 1.5rem
+                    li
+                        @include displayFlex-w(2.5rem)
+                        height: 1.5rem
+                        margin-right: .4rem
+                        &.card-182
+                            background: url(../images/ico_wallet_month.png) no-repeat center center
+                            background-size: 100% 100%
+                        &.card-183
+                            background: url(../images/ico_wallet_season.png) no-repeat center center
+                            background-size: 100% 100%
+                        &.card-188
+                            background: url(../images/ico_wallet_3.png) no-repeat center center
+                            background-size: 100% 100%
+                        &.card-187
+                            background: url(../images/ico_wallet_7.png) no-repeat center center
+                            background-size: 100% 100%
+
                 h4
                     font-size: 1.6rem
                     @include displayFlex

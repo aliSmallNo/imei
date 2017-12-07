@@ -1141,6 +1141,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 			albums: [],
 			hint: $('#cUserHint'),
 			albumTmp: $('#tpl_album').html(),
+			cardTmp: '{[#cards]}<li class="card-{[cat]}"></li>{[/cards]}',
 			thumbTmp: '<li><a href="javascript:;" class="add"></li>{[#items]}<li><a href="#album" style="background-image:url({[.]});"></a></li>{[/items]}',
 			albumSingleTmp: '{[#items]}<li><a class="has-pic" style="background-image:url({[thumb]});" bsrc="{[figure]}"></a><a href="javascript:;" class="del"></a></li>{[/items]}',
 			init: function () {
@@ -1225,6 +1226,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					tag: "myinfo"
 				}, function (resp) {
 					$(".zone-album").html(Mustache.render(util.thumbTmp, {items: resp.data.img4}));
+					$(".zone-top .cards").html(Mustache.render(util.cardTmp, resp.data));
 					util.albums = resp.data.gallery;
 					$("#album .photos").html(Mustache.render(util.albumTmp, util));
 					$(".zone-top .profile small").html("资料完成度" + resp.data.percent + "%");

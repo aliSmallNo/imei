@@ -393,7 +393,7 @@
 			</div>
 			<a href="/wx/sedit" class="flex-1 profile">
 				<h4><span>{{$nickname}}</span><small>资料完成度</small></h4>
-				<h5>&nbsp;</h5>
+				<ul class="cards"></ul>
 			</a>
 		</li>
 		<li>
@@ -1385,6 +1385,6 @@
 		document.location.hash = "#slook";
 	}
 	requirejs(['/js/config.js'], function () {
-		requirejs(['/js/single.js?v=1.4.4']);
+		requirejs(['/js/single.js?v=1.4.6']);
 	});
 </script>

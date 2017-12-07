@@ -179,6 +179,33 @@ main {
           right: 0;
           margin-top: -0.5rem;
           right: 1.2rem; }
+        .zone-top li .flex-1.profile .cards {
+          display: -webkit-box;
+          display: -webkit-flex;
+          display: -ms-flexbox;
+          display: flex;
+          flex-flow: row wrap;
+          align-content: flex-start;
+          min-height: 1.5rem; }
+          .zone-top li .flex-1.profile .cards li {
+            -webkit-box-flex: 0 0 2.5rem;
+            -webkit-flex: 0 0 2.5rem;
+            -ms-flex: 0 0 2.5rem;
+            flex: 0 0 2.5rem;
+            height: 1.5rem;
+            margin-right: 0.4rem; }
+            .zone-top li .flex-1.profile .cards li.card-182 {
+              background: url(../images/ico_wallet_month.png) no-repeat center center;
+              background-size: 100% 100%; }
+            .zone-top li .flex-1.profile .cards li.card-183 {
+              background: url(../images/ico_wallet_season.png) no-repeat center center;
+              background-size: 100% 100%; }
+            .zone-top li .flex-1.profile .cards li.card-188 {
+              background: url(../images/ico_wallet_3.png) no-repeat center center;
+              background-size: 100% 100%; }
+            .zone-top li .flex-1.profile .cards li.card-187 {
+              background: url(../images/ico_wallet_7.png) no-repeat center center;
+              background-size: 100% 100%; }
         .zone-top li .flex-1.profile h4 {
           font-size: 1.6rem;
           display: -webkit-box;

@@ -30,6 +30,7 @@ use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserSign;
+use common\models\UserTag;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use common\service\CogService;
@@ -664,6 +665,7 @@ class ApiController extends Controller
 			case "myinfo":
 				$info = User::user(['uOpenId' => $openId]);
 				$info = User::shrinkUser($info);
+				$info['cards'] = UserTag::chatCards($info['id']);
 				$info['audit'] = UserAudit::invalid($info['id']);
 				return self::renderAPI(0, '', $info);
 			case "userfilter":
