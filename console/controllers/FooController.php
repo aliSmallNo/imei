@@ -938,21 +938,22 @@ class FooController extends Controller
 		var_dump($cnt);
 
 		$openids = [
-			'oYDJew5EFMuyrJdwRrXkIZLU2c58',
-			'oYDJew8T14--gic8Rg8wGwK-p49Q',
-			'oYDJew1EQH78EmXqrfjCrpAW16R0',
-			'oYDJewxU6LCp3pD4QDC9CzoNX1ak',
-			'oYDJew5LjLdjxziryFdg1WQJrG8M',
-			'oYDJewwpv2PPSMXI5LfAPQAUmYp8',
-			'oYDJew2dMEl0gnDVxIFy74ORWUcs',
-			'oYDJewxmPImb3A7OMSg0TgPS4ezQ',
-			'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc',
-			'oYDJew24N2Sbwm0FvHPdBT8JwI6M',
-			'oYDJew5UWinXKkgvNwr1Uar-6nIE',
-			'oYDJew5RDDIoatj6q6G0GC-IBaq4',
-			'oYDJewxC_Qar-zm7CoDnKS7Y_EgY'
+			'oYDJew5EFMuyrJdwRrXkIZLU2c58'
+			, 'oYDJew8T14--gic8Rg8wGwK-p49Q'
+			, 'oYDJew1EQH78EmXqrfjCrpAW16R0'
+			, 'oYDJewxU6LCp3pD4QDC9CzoNX1ak'
+			, 'oYDJew5LjLdjxziryFdg1WQJrG8M'
+			, 'oYDJewwpv2PPSMXI5LfAPQAUmYp8'
+			, 'oYDJew2dMEl0gnDVxIFy74ORWUcs'
+			, 'oYDJewxmPImb3A7OMSg0TgPS4ezQ'
+			, 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'
+			, 'oYDJew2lWRwxl_XcmXBAwH1epBcg'
+			, 'oYDJew24N2Sbwm0FvHPdBT8JwI6M'
+			, 'oYDJew5UWinXKkgvNwr1Uar-6nIE'
+			, 'oYDJew5RDDIoatj6q6G0GC-IBaq4'
+			, 'oYDJewxC_Qar-zm7CoDnKS7Y_EgY'
 		];
-		//$cnt = UserWechat::sendMsg($openids, $content);
+		$cnt = UserWechat::sendMsg($openids, $content, true);
 		var_dump($cnt);
 
 		return;
