@@ -395,15 +395,16 @@
 			<div class="left"></div>
 			<div class="flex-1"></div>
 		</div>
-		<ul class="album">
-			<li>
-				<a class="add"></a>
-			</li>
-			<li>
-				<a style="background-image:url(https://img.meipo100.com/2017/84/116424_t.jpg);"></a>
-			</li>
-		</ul>
+
 	</div>
+	<ul class="zone-album">
+		<li>
+			<a class="add"></a>
+		</li>
+		<li>
+			<a style="background-image:url(https://img.meipo100.com/2017/84/116424_t.jpg);"></a>
+		</li>
+	</ul>
 	<ul class="zone-favor-nav">
 		<li>
 			<a>心动我的</a>

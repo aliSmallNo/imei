@@ -73,6 +73,32 @@ main {
 .center {
   text-align: center; }
 
+.zone-album {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 0;
+  padding: 1rem 0.6rem;
+  flex-flow: row wrap;
+  align-content: flex-start;
+  background-color: white; }
+  .zone-album li {
+    flex: 0 0 6rem;
+    height: 6rem;
+    padding: 0.6rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; }
+    .zone-album li a {
+      border: 1px solid #f487ac;
+      display: inline-block;
+      width: 4.8rem;
+      height: 4.8rem;
+      border-radius: 0.3rem; }
+      .zone-album li a.add {
+        border: 1px dashed #E4E4E4; }
+
 .zone-favor-nav {
   display: -webkit-box;
   display: -webkit-flex;
@@ -101,7 +127,8 @@ main {
       line-height: 4rem;
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
-      box-sizing: border-box; }
+      box-sizing: border-box;
+      font-size: 1.2rem; }
       .zone-favor-nav li a:active {
         background-color: #E4E4E4; }
 
