@@ -85,7 +85,7 @@
 	</a>
 	<a href="javascript:;" class="btn-comfirm" tag="comfirm">保存</a>
 </section>
-<section id="sme" data-title="个人中心">
+<section id="sme_bak" data-title="个人中心">
 	<div class="useruc">
 		<div class="m-hint" id="cUserHint" {{if !$audit}}style="display:none"{{/if}}>
 			<span><i class="i-mark-warning"></i> {{$audit}}</span>
@@ -385,14 +385,14 @@
 		<div class="action"><a href="javascript:;" class="btn-chat-send">发送</a></div>
 	</div>
 </section>
-<section id="zone">
+<section id="sme">
 	<ul class="zone-top">
 		<li>
 			<div class="left">
 				<div class="avatar" style="background-image: url({{$avatar}})"></div>
 			</div>
 			<a class="flex-1 profile">
-				<h4><span>{{$nickname}}</span><small>资料完成度98%</small></h4>
+				<h4><span>{{$nickname}}</span><small>资料完成度</small></h4>
 				<h5>&nbsp;</h5>
 			</a>
 		</li>
@@ -409,40 +409,30 @@
 			</div>
 		</li>
 	</ul>
-	<ul class="zone-album">
-		<li>
-			<a class="add"></a>
-		</li>
-		<li>
-			<a style="background-image:url(https://img.meipo100.com/2017/84/116424_t.jpg);"></a>
-		</li>
-		<li>
-			<a style="background-image:url(https://img.meipo100.com/2017/84/116425_t.jpg);"></a>
-		</li>
-	</ul>
+	<ul class="zone-album"></ul>
 	<ul class="zone-favor-nav">
 		<li>
-			<a>心动我的</a>
+			<a href="javascript:;">心动我的</a>
 		</li>
 		<li>
-			<a>我心动的</a>
+			<a href="javascript:;">我心动的</a>
 		</li>
 		<li>
-			<a>相互心动的</a>
+			<a href="javascript:;">相互心动的</a>
 		</li>
 	</ul>
 	<div style="height: 1rem"></div>
 	<ul class="zone-grid">
-		<li><a><i class="i-zone-grid wallet"></i><em>账户</em></em></a></li>
-		<li><a><i class="i-zone-grid sign"></i><em>每日签到</em></a></li>
-		<li><a><i class="i-zone-grid date"></i><em>约会</em></a></li>
-		<li><a><i class="i-zone-grid cert"></i><em>实名认证</em></a></li>
-		<li><a><i class="i-zone-grid notice"></i><em>通知</em></a></li>
-		<li><a><i class="i-zone-grid rank"></i><em>排行榜</em></a></li>
-		<li><a><i class="i-zone-grid comment"></i><em>评论</em></a></li>
-		<li><a><i class="i-zone-grid feedback"></i><em>意见反馈</em></a></li>
-		<li><a><i class="i-zone-grid setting"></i><em>设置</em></a></li>
-		<li><a><i class="i-zone-grid protocol"></i><em>用户协议</em></a></li>
+		<li><a href="/wx/sw#swallet"><i class="i-zone-grid wallet"></i><em>账户</em></em></a></li>
+		<li><a href="/wx/lottery"><i class="i-zone-grid sign"></i><em>每日签到</em></a></li>
+		<li><a href="#date"><i class="i-zone-grid date"></i><em>约会</em></a></li>
+		<li><a href="/wx/cert2"><i class="i-zone-grid cert"></i><em>实名认证</em></a></li>
+		<li><a href="/wx/notice"><i class="i-zone-grid notice"></i><em>通知</em></a></li>
+		<li><a href="#sranking"><i class="i-zone-grid rank"></i><em>排行榜</em></a></li>
+		<li><a href="/wx/comments"><i class="i-zone-grid comment"></i><em>评论</em></a></li>
+		<li><a href="#sfeedback"><i class="i-zone-grid feedback"></i><em>意见反馈</em></a></li>
+		<li><a href="/wx/setting"><i class="i-zone-grid setting"></i><em>设置</em></a></li>
+		<li><a href="/wx/agree"><i class="i-zone-grid protocol"></i><em>用户协议</em></a></li>
 		<li></li>
 		<li></li>
 	</ul>
