@@ -41,6 +41,18 @@
                 display: inline-block
                 border-radius: 2.8rem
                 overflow: hidden
+                position: relative
+                &.pending:after
+                    content: '\5ba1\6838\4e2d'
+                    position: absolute
+                    background: rgba(0, 0, 0, .6)
+                    color: #fff
+                    line-height: 2.5rem
+                    font-size: 1.2rem
+                    font-weight: $weightNormal
+                    left: 0
+                    right: 0
+                    bottom: 0
         .flex-1
             @include displayFlex-1
             justify-content: center

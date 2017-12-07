@@ -1231,7 +1231,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					$("#album .photos").html(Mustache.render(util.albumTmp, util));
 					$(".zone-top .profile small").html("资料完成度" + resp.data.percent + "%");
 					var tipHtml = resp.data.hasMp ? "" : "还没有媒婆";
-					var imgWrap = $(".u-my-bar .img");
+					var imgWrap = $(".zone-top .avatar");
 					imgWrap.removeClass('pending');
 					if (resp.data.pending) {
 						imgWrap.addClass('pending');

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 body, html {
   font-size: 10px;
   font-size: -moz-calc(100vw / 32);
@@ -124,7 +125,19 @@ main {
         height: 5.6rem;
         display: inline-block;
         border-radius: 2.8rem;
-        overflow: hidden; }
+        overflow: hidden;
+        position: relative; }
+        .zone-top li .left .avatar.pending:after {
+          content: "审核中";
+          position: absolute;
+          background: rgba(0, 0, 0, 0.6);
+          color: #fff;
+          line-height: 2.5rem;
+          font-size: 1.2rem;
+          font-weight: 300;
+          left: 0;
+          right: 0;
+          bottom: 0; }
     .zone-top li .flex-1 {
       -webkit-box-flex: 1;
       -webkit-flex: 1;
