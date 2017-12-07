@@ -75,7 +75,7 @@ main {
 
 .zone-top {
   background: white;
-  padding-top: 1rem; }
+  padding: 1rem 0.4rem 0; }
   .zone-top li {
     display: -webkit-box;
     display: -webkit-flex;
@@ -189,7 +189,7 @@ main {
   display: -ms-flexbox;
   display: flex;
   margin: 0;
-  padding: 0.3rem 0.6rem 1rem;
+  padding: 0.3rem 0.8rem 1rem;
   flex-flow: row wrap;
   align-content: flex-start;
   background-color: white;
