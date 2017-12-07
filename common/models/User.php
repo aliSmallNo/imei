@@ -136,10 +136,10 @@ class User extends ActiveRecord
 	const MARITAL_MARRIED = 130;
 
 	static $Marital = [
-		self::MARITAL_UNMARRIED => "未婚",
+		self::MARITAL_UNMARRIED => "未婚（无婚史）",
 		self::MARITAL_DIVORCE_KID => "离异不带孩",
 		self::MARITAL_DIVORCE_NO_KID => "离异带孩",
-		self::MARITAL_MARRIED => "已婚",
+		self::MARITAL_MARRIED => "已婚（可帮朋友脱单）",
 	];
 
 	static $EducationFilter = [

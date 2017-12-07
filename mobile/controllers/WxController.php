@@ -1745,7 +1745,7 @@ class WxController extends BaseController
 			User::MARITAL_UNMARRIED => "未婚（无婚史）",
 			User::MARITAL_DIVORCE_NO_KID => "离异带孩",
 			User::MARITAL_DIVORCE_KID => "离异不带孩",
-			User::MARITAL_MARRIED => "已婚（请离开吧）"
+			User::MARITAL_MARRIED => "已婚（可帮朋友脱单）"
 		];
 		$gender = [
 			User::GENDER_FEMALE => "女性",
@@ -1802,7 +1802,7 @@ class WxController extends BaseController
 			User::MARITAL_UNMARRIED => "未婚（无婚史）",
 			User::MARITAL_DIVORCE_KID => "离异不带孩",
 			User::MARITAL_DIVORCE_NO_KID => "离异带孩",
-			User::MARITAL_MARRIED => "已婚（请离开吧）"
+			User::MARITAL_MARRIED => "已婚（可帮朋友脱单）"
 		];
 		return self::renderPage("enroll.tpl",
 			[
