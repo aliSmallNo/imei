@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="/css/dev.min.css">
 <section id="slink" data-title="推荐媒婆">
 	<div class="match-wrap">
 		<h3>推荐媒婆</h3>
