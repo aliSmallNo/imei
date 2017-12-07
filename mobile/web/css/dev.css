@@ -278,8 +278,8 @@ main {
   display: flex;
   border-top: 1px solid #EEEFF3;
   background: #fff;
-  padding-top: 0.2rem;
-  padding-bottom: 0.2rem; }
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem; }
   .zone-favor-nav li {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
@@ -289,7 +289,7 @@ main {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     text-align: center;
-    height: 3.6rem;
+    height: 3.2rem;
     border-right: 1px solid #EEEFF3;
     padding: 0 0.2rem; }
     .zone-favor-nav li:last-child {
@@ -298,7 +298,7 @@ main {
       display: block;
       text-align: center;
       height: 100%;
-      line-height: 3.6rem;
+      line-height: 3.2rem;
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
