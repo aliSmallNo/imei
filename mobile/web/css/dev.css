@@ -137,7 +137,8 @@ main {
       .zone-top li .flex-1 h6 {
         padding-left: 0.6rem;
         font-size: 1.2rem;
-        padding-bottom: 0.4rem; }
+        padding-bottom: 0.4rem;
+        font-weight: 300; }
       .zone-top li .flex-1 .percent {
         background: #EEEFF3;
         height: 0.8rem;
@@ -157,7 +158,8 @@ main {
           right: 1rem;
           top: -1.8rem;
           font-size: 1rem;
-          color: #d15d85; }
+          color: #d15d85;
+          font-weight: 300; }
       .zone-top li .flex-1.profile {
         position: relative;
         display: block; }
@@ -179,9 +181,28 @@ main {
           right: 1.2rem; }
         .zone-top li .flex-1.profile h4 {
           font-size: 1.6rem;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden; }
+          display: -webkit-box;
+          display: -webkit-flex;
+          display: -ms-flexbox;
+          display: flex; }
+          .zone-top li .flex-1.profile h4 span {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden; }
+          .zone-top li .flex-1.profile h4 small {
+            -webkit-box-flex: 0 0 10.5rem;
+            -webkit-flex: 0 0 10.5rem;
+            -ms-flex: 0 0 10.5rem;
+            flex: 0 0 10.5rem;
+            text-align: left;
+            font-size: 1.2rem;
+            line-height: 2.3rem;
+            font-weight: 300;
+            color: #969494; }
 
 .zone-album {
   display: -webkit-box;
@@ -228,7 +249,10 @@ main {
       background-size: cover; }
       .zone-album li a.add {
         border: 1px dashed #E4E4E4;
-        position: relative; }
+        position: relative;
+        background: white; }
+        .zone-album li a.add:active {
+          background: #EEEFF3; }
         .zone-album li a.add:before {
           content: "";
           position: absolute;

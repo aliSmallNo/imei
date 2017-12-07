@@ -389,11 +389,10 @@
 	<ul class="zone-top">
 		<li>
 			<div class="left">
-				<div class="avatar"
-				     style="background-image: url(https://bpbhd-10063905.file.myqcloud.com/image/t1711201155441.jpg)"></div>
+				<div class="avatar" style="background-image: url({{$avatar}})"></div>
 			</div>
 			<a class="flex-1 profile">
-				<h4>{{$nickname}}</h4>
+				<h4><span>{{$nickname}}</span><small>资料完成度98%</small></h4>
 				<h5>&nbsp;</h5>
 			</a>
 		</li>
