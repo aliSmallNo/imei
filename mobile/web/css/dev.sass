@@ -1,4 +1,37 @@
 @import "base"
+.zone-top
+    background: white
+    padding-top: 1rem
+    li
+        @include displayFlex
+        .left
+            @include displayFlex-w(8rem)
+            text-align: center
+            .avatar
+                background-position: center
+                background-repeat: no-repeat
+                background-size: cover
+                width: 6rem
+                height: 6rem
+                display: inline-block
+                border-radius: 3rem
+                overflow: hidden
+        .flex-1
+            @include displayFlex-1
+            justify-content: center
+            align-items: center
+            align-self: center
+            &.profile
+                position: relative
+                display: block
+                &:after
+                    content: ''
+                    @include arrowRight
+                    right: 1.2rem
+                h4
+                    font-size: 1.6rem
+                    @include textTail
+
 .zone-album
     @include displayFlex
     margin: 0
@@ -6,6 +39,11 @@
     flex-flow: row wrap
     align-content: flex-start
     background-color: white
+    position: relative
+    &:after
+        content: ''
+        @include arrowRight
+        right: 1.2rem
     li
         flex: 0 0 6rem
         height: 6rem
@@ -17,8 +55,29 @@
             width: 4.8rem
             height: 4.8rem
             border-radius: .3rem
+            background-position: center
+            background-repeat: no-repeat
+            background-size: cover
             &.add
                 border: 1px dashed $borderColor
+                position: relative
+                &:before
+                    content: ''
+                    position: absolute
+                    left: 50%
+                    top: 1.2rem
+                    height: 2.4rem
+                    width: 1px
+                    background: $borderColor
+                &:after
+                    content: ''
+                    position: absolute
+                    left: 1.2rem
+                    top: 50%
+                    height: 1px
+                    width: 2.4rem
+                    background: $borderColor
+
 .zone-favor-nav
     @include displayFlex
     border-top: 1px solid $borderColor
@@ -29,14 +88,14 @@
         text-align: center
         height: 4.2rem
         border-right: 1px solid $borderColor
-        padding: .1rem
+        padding: .2rem
         &:last-child
             border-right: none
         a
             display: block
             text-align: center
             height: 100%
-            line-height: 4rem
+            line-height: 3.8rem
             @include borderBox
             font-size: 1.2rem
             &:active
@@ -56,7 +115,7 @@
         font-size: 1.2rem
         @include displayFlexVAlign
         @include borderBox
-        padding: .1rem
+        padding: .2rem
         &:nth-child(3n+3)
             border-right: none
         a

@@ -386,23 +386,38 @@
 	</div>
 </section>
 <section id="zone">
-	<div class="zone-top">
-		<div class="profile">
-			<div class="left"></div>
-			<div class="flex-1"></div>
-		</div>
-		<div class="level">
-			<div class="left"></div>
-			<div class="flex-1"></div>
-		</div>
+	<ul class="zone-top">
+		<li>
+			<div class="left">
+				<div class="avatar"
+				     style="background-image: url(https://bpbhd-10063905.file.myqcloud.com/image/t1711201155441.jpg)"></div>
+			</div>
+			<a class="flex-1 profile">
+				<h4>{{$nickname}}</h4>
+				<h5>&nbsp;</h5>
+			</a>
+		</li>
+		<li>
+			<div class="left">
+				<div class="level">1级</div>
+			</div>
+			<div class="flex-1">
 
-	</div>
+			</div>
+		</li>
+
+
+
+	</ul>
 	<ul class="zone-album">
 		<li>
 			<a class="add"></a>
 		</li>
 		<li>
 			<a style="background-image:url(https://img.meipo100.com/2017/84/116424_t.jpg);"></a>
+		</li>
+		<li>
+			<a style="background-image:url(https://img.meipo100.com/2017/84/116425_t.jpg);"></a>
 		</li>
 	</ul>
 	<ul class="zone-favor-nav">
