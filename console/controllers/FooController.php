@@ -931,7 +931,7 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$openid = 'oYDJew5UWinXKkgvNwr1Uar-6nIE';
+		$openid = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
 		$content = '《男女互撩速成课》（语音直播）已经开始喽~~~
 🔥<a href="https://m.qlchat.com/topic/2000000410463312.htm">点击链接直接进入</a>🔥';
 		$cnt = UserWechat::sendMsg($openid, $content);
@@ -952,7 +952,7 @@ class FooController extends Controller
 			'oYDJew5RDDIoatj6q6G0GC-IBaq4',
 			'oYDJewxC_Qar-zm7CoDnKS7Y_EgY'
 		];
-		$cnt = UserWechat::sendMsg($openids, $content);
+		//$cnt = UserWechat::sendMsg($openids, $content);
 		var_dump($cnt);
 
 		return;
