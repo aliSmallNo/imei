@@ -251,15 +251,14 @@ class UserTag extends ActiveRecord
 				':cat' => self::CAT_EXP
 			])->execute();
 			$level = 1;
-			$next = 1000;
 			$title = '';
+			$next = 0;
 			foreach ($dict as $k => $arr) {
-				list($title11, $title10, $limit) = $arr;
-				if ($num > $limit) {
+				list($title11, $title10, $next) = $arr;
+				$title = ($gender == User::GENDER_MALE ? $title11 : $title10);
+				if ($num > $next) {
 					$level = $k > 0 ? $k : 1;
-					$title = ($gender == User::GENDER_MALE ? $title11 : $title10);
 				} else {
-					$next = $limit;
 					break;
 				}
 			}
