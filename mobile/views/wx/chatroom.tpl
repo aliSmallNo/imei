@@ -383,6 +383,7 @@
 
 	.cr-chat-list ul li .r .r-des .r-des-name .time {
 		font-size: .8rem;
+		margin: .5rem 0;
 	}
 
 	.cr-chat-list ul li .r .r-des .r-des-opts {
@@ -430,7 +431,7 @@
 
 	.cr-chat-list ul li .r .r-content {
 		font-size: 1.2rem;
-		margin-top: 1rem;
+		margin-top: .5rem;
 		letter-spacing: .1rem;
 		line-height: 1.8rem;
 	}
