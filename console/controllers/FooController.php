@@ -15,6 +15,7 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
+use common\models\UserTag;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
@@ -948,45 +949,9 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$openid = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
-		$content = '测试测试~~~ 《男女互撩速成课》（语音直播）已经开始喽~~~
-🔥<a href="https://m.qlchat.com/topic/2000000410463312.htm">点击链接直接进入</a>🔥';
-		$cnt = UserWechat::sendMsg($openid, $content, true);
-		var_dump($cnt);
-
-		$openids = [
-			'oYDJew5EFMuyrJdwRrXkIZLU2c58'
-			, 'oYDJew8T14--gic8Rg8wGwK-p49Q'
-			, 'oYDJew1EQH78EmXqrfjCrpAW16R0'
-			, 'oYDJewxU6LCp3pD4QDC9CzoNX1ak'
-			, 'oYDJew5LjLdjxziryFdg1WQJrG8M'
-			, 'oYDJewwpv2PPSMXI5LfAPQAUmYp8'
-			, 'oYDJew2dMEl0gnDVxIFy74ORWUcs'
-			, 'oYDJewxmPImb3A7OMSg0TgPS4ezQ'
-			, 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'
-			, 'oYDJew2lWRwxl_XcmXBAwH1epBcg'
-			, 'oYDJew24N2Sbwm0FvHPdBT8JwI6M'
-			, 'oYDJew5UWinXKkgvNwr1Uar-6nIE'
-			, 'oYDJew5RDDIoatj6q6G0GC-IBaq4'
-			, 'oYDJewxC_Qar-zm7CoDnKS7Y_EgY'
-		];
-		$cnt = UserWechat::sendMsg($openids, $content, true);
-		var_dump($cnt);
-
-		return;
-
-		$conn = AppUtil::db();
-		$sql = "select nUId 
-						 from im_user_net as n 
-						 join im_user as u on u.uId=n.nUId and u.uOpenId like :openid
-						 where nSubUId=:uid and nRelation=:rel and u.uSubstatus!=:st ";
-		$backerUId = $conn->createCommand($sql)->bindValues([
-			':uid' => 150540,
-			':rel' => UserNet::REL_BACKER,
-			':st' => User::SUB_ST_STAFF,
-			':openid' => User::OPENID_PREFIX . '%'
-		])->queryScalar();
-		var_dump($backerUId);
+//		$ret = explode("/",'白马骑士/豪门公主');
+		$ret = UserTag::calcExp();
+		var_dump($ret);
 
 		/*$uid=150540;
 		$ret = UserTrans::addReward($uid, UserTrans::CAT_MOMENT_RECRUIT);
