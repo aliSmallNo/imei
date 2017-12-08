@@ -72,7 +72,7 @@ class UserSign extends ActiveRecord
 				if ($amt) {
 					$msg = '恭喜你获得' . $amt . '朵媒桂花！请到我的账户里查看。';
 				} else {
-					$msg = '不好意思哦，没有获得朵媒桂花~~';
+					$msg = '不好意思哦，没有获得媒桂花~~';
 				}
 				break;
 		}
