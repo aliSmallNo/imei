@@ -19,6 +19,9 @@ class ChatMsg extends ActiveRecord
 {
 	const LIMIT_NUM = 10;
 
+	const DELETED_YES = 1;// 已删除
+	const DELETED_NO = 0;// 未删除
+
 	const NO_READ = 0; // 未读
 	const HAS_READ = 1; // 已读
 
@@ -230,11 +233,12 @@ class ChatMsg extends ActiveRecord
 		$param = [
 			":rid" => $rId,
 			":adminuid" => $adminUId,
+			":del" => self::DELETED_NO,
 			":lastid" => $lastId,
 			":rlastid" => $rlastId,
 		];
 
-		$lastIdStr = " and cId BETWEEN :lastid and :rlastid ";
+		$lastIdStr = " and cId > :lastid and cId <(:rlastid+1) ";
 		if ($isDanmu) {
 			$lastIdStr = "";
 			$limit = " limit 0,3 ";
@@ -246,7 +250,7 @@ class ChatMsg extends ActiveRecord
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
-				where c.cGId=:rid $adminStr $lastIdStr
+				where c.cGId=:rid $adminStr $lastIdStr and c.cDeletedFlag=:del
 				order by cAddedon desc $limit ";
 		$chatlist = $conn->createCommand($sql)->bindValues($param)->queryAll();
 		$res = self::fmtRoomChatData($chatlist, $rId, $adminUId, $uid);
@@ -259,18 +263,18 @@ class ChatMsg extends ActiveRecord
 		$res = [];
 		foreach ($chatlist as $v) {
 			$res[] = [
-				'id' => $v["cId"],
+				'cid' => $v["cId"],
 				'rid' => $rId,
 				'left' => 100,
 				'content' => $v["cContent"],
 				'addedon' => date("m-d H:i", strtotime($v["cAddedOn"])),
-				'isAdmin' => $adminUId == $v["cAddedBy"] ? 1 : 0,
+				'isAdmin' => $adminUId == $uid ? 1 : 0,
 				'type' => self::TYPE_TEXT,
 				'name' => $v['uName'],
 				'avatar' => $v['uThumb'],
 				'uni' => $v['uni'],
-				'senderid' => $uid,
-				'eid' => AppUtil::encrypt($uid),
+				'senderid' => $v['uId'],
+				'eid' => AppUtil::encrypt($v['uId']),
 			];
 		}
 		return $res;
@@ -285,11 +289,12 @@ class ChatMsg extends ActiveRecord
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
-				where c.cGId=:rid and cAddedBy !=:adminuid 
+				where c.cGId=:rid and cAddedBy !=:adminuid and  c.cDeletedFlag=:del
 				order by cAddedon desc $limit ";
 		$chatlist = $conn->createCommand($sql)->bindValues([
 			":rid" => $rId,
 			":adminuid" => $adminUId,
+			":del" => self::DELETED_NO,
 		])->queryAll();
 		$res = self::fmtRoomChatData($chatlist, $rId, $adminUId, $uid);
 		$nextpage = count($res) > $pagesize ? ($page + 1) : 0;

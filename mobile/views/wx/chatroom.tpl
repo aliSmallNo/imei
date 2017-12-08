@@ -71,6 +71,7 @@
 		background: #b0e65c;
 		padding: .5rem;
 		font-size: 1.2rem;
+		display: inline-block;
 	}
 
 	.cr-room ul li .cr-admin-r .cr-admin-r-time {
@@ -102,9 +103,9 @@
 				<img src="{{$avatar}}">
 			</div>
 			<div class="cr-admin-r">
-				<div class="cr-admin-r-title">主持人</div>
+				<div class="cr-admin-r-title">管理员</div>
 				<div class="cr-admin-r-content"><span>恭喜你成功进入千寻恋恋聊天室</span></div>
-				<div class="cr-admin-r-time">12-07 11:26</div>
+				<div class="cr-admin-r-time"> </div>
 			</div>
 		</li>
 
@@ -495,8 +496,9 @@
 				</div>
 				{[#isAdmin]}
 				<a href="javascript:;" class="r-des-opts" data-tag="show-opt"></a>
-				<div class="r-des-opts-des">
+				<div class="r-des-opts-des" data-uid="{[senderid]}" data-rid="{[rid]}" data-cid="{[cid]}">
 					<a href="javascript:;" data-tag="silent">禁言</a>
+					<a href="javascript:;" data-tag="delete">删除</a>
 				</div>
 				{[/isAdmin]}
 			</div>
