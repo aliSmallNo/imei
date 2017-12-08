@@ -57,13 +57,15 @@ require(['jquery', 'swiper', 'alpha'],
 				grabCursor: true,
 				centeredSlides: true,
 				slidesPerView: 'auto',
-				pagination: '.swiper-pagination',
 				coverflowEffect: {
-					rotate: 30,
+					rotate: 40,
 					stretch: 0,
 					depth: 100,
 					modifier: 1,
 					slideShadows: false
+				},
+				pagination: {
+					el: '.swiper-pagination'
 				}
 			});
 		}
@@ -72,7 +74,7 @@ require(['jquery', 'swiper', 'alpha'],
 
 			setTimeout(function () {
 				resetSwiper();
-			}, 240);
+			}, 180);
 
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;

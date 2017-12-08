@@ -2354,17 +2354,22 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 				new Swiper('.swiper-container', {
 					direction: 'horizontal',
 					loop: true,
-					pagination: '.swiper-pagination',
-					autoplay: 6000,
-					speed: 800,
-					onClick: function (swiper) {
-						var slider = $(swiper.slides[swiper.activeIndex]);
-						var url = slider.attr('data-url');
-						if (url.indexOf('http') >= 0) {
-							location.href = url;
-						} else {
-							NoticeUtil.toggle(url);
+					speed: 600,
+					on: {
+						click: function (event) {
+							var url = $(event.target).attr('data-url');
+							if (url.indexOf('http') >= 0) {
+								location.href = url;
+							} else {
+								NoticeUtil.toggle(url);
+							}
 						}
+					},
+					autoplay: {
+						delay: 7000
+					},
+					pagination: {
+						el: '.swiper-pagination'
 					}
 				});
 			}

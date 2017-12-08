@@ -47,7 +47,7 @@
 		<div class="swiper-container">
 			<div class="swiper-wrapper">
 				{{foreach from=$adverts item=item}}
-					<div class="swiper-slide" data-url="{{$item.url}}"><img src="{{$item.image}}" alt=""></div>
+					<div class="swiper-slide"><img src="{{$item.image}}" data-url="{{$item.url}}" alt=""></div>
 				{{/foreach}}
 			</div>
 			<div class="swiper-pagination"></div>
@@ -391,7 +391,9 @@
 				<div class="avatar" style="background-image: url({{$avatar}})"></div>
 			</div>
 			<a href="/wx/sedit" class="flex-1 profile">
-				<h4><span>{{$nickname}}</span><small>资料完成度</small></h4>
+				<h4><span>{{$nickname}}</span>
+					<small>资料完成度</small>
+				</h4>
 				<ul class="cards"></ul>
 			</a>
 		</li>
@@ -1383,7 +1385,7 @@
 	if (document.location.hash === "" || document.location.hash === "#") {
 		document.location.hash = "#slook";
 	}
-	requirejs(['/js/config.js'], function () {
+	requirejs(['/js/config.js?v=1.1'], function () {
 		requirejs(['/js/single.js?v=1.4.7']);
 	});
 </script>
