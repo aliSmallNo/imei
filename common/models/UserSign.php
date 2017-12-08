@@ -69,7 +69,11 @@ class UserSign extends ActiveRecord
 				$entity->sReward = $amt;
 				$entity->sUnit = $unit;
 				$entity->save();
-				$msg = '恭喜你获得' . $amt . '朵媒桂花！请到我的账户里查看。';
+				if ($amt) {
+					$msg = '恭喜你获得' . $amt . '朵媒桂花！请到我的账户里查看。';
+				} else {
+					$msg = '不好意思哦，没有获得朵媒桂花~~';
+				}
 				break;
 		}
 		UserTrans::add($uid, $entity->sId, UserTrans::CAT_SIGN, '签到奖励', $amt, $unit);
