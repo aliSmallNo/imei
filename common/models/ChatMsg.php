@@ -324,7 +324,7 @@ class ChatMsg extends ActiveRecord
 			'senderid' => $senderId,
 			'eid' => AppUtil::encrypt($senderId),
 		];
-		return $info;
+		return [$info, $cId];
 	}
 
 	/**
