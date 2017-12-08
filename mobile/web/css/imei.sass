@@ -3378,7 +3378,7 @@ section
     background: $mainColorLight
     position: relative
     @include displayFlex
-    padding: 3.5rem 3.5rem 1.5rem
+    padding: 3.5rem 3rem 1.5rem
     a
         color: #fff
         position: absolute
@@ -3390,28 +3390,39 @@ section
         @include displayFlex-1
         text-align: center
         div
-            height: 4.4rem
-        .ico-card-182
-            background: url(../images/ico_wallet_month.png) no-repeat center center
-            background-size: 6rem 3.6rem
-        .ico-card-183
-            background: url(../images/ico_wallet_season.png) no-repeat center center
-            background-size: 6rem 3.6rem
+            height: 3.6rem
+            //    background-image: url(../images/sprite_card.png)
+            //    background-size: 2.34rem 6rem
+            //    background-repeat: no-repeat
+            //    &.card-188
+            //        background-position: 0 -0rem
+            //    &.card-187
+            //        background-position: 0 -1.5rem
+            //    &.card-182
+            //        background-position: 0 -3rem
+            //    &.card-183
+            //        background-position: 0 -4.5rem
+        .ico-card-188, .ico-card-187, .ico-card-182, .ico-card-183
+            background-image: url(../images/sprite_card.png)
+            background-size: 5.63rem 14.4rem
+            background-repeat: no-repeat
         .ico-card-188
-            background: url(../images/ico_wallet_3.png) no-repeat center center
-            background-size: 6rem 3.6rem
+            background-position: 0 -0rem
         .ico-card-187
-            background: url(../images/ico_wallet_7.png) no-repeat center center
-            background-size: 6rem 3.6rem
+            background-position: 0 -3.6rem
+        .ico-card-182
+            background-position: 0 -7.2rem
+        .ico-card-183
+            background-position: 0 -10.8rem
         .ico-rose
             padding-left: 1.6rem
             background: url(../images/ico_rose.png) no-repeat left center
             background-size: 1.4rem 1.4rem
         .amt
             font-weight: $weightBold
-            font-size: 2rem
+            font-size: 1.8rem
             color: #fff
-            line-height: 4.3rem
+            line-height: 3.5rem
         span
             font-size: 1.1rem
 
@@ -3453,18 +3464,25 @@ section
             &.row-500
                 background: url(../images/ico_month_member.png) no-repeat .5rem center
                 background-size: 1.6rem 1.6rem
-            &.row-600
-                background: url(../images/ico_wallet_month.png) no-repeat left center
-                background-size: 2.57rem 1.54rem
-            &.row-603
-                background: url(../images/ico_wallet_3.png) no-repeat left center
-                background-size: 2.57rem 1.54rem
-            &.row-607
-                background: url(../images/ico_wallet_7.png) no-repeat left center
-                background-size: 2.57rem 1.54rem
-            &.row-610
-                background: url(../images/ico_wallet_season.png) no-repeat left center
-                background-size: 2.57rem 1.54rem
+            &.row-603:before, &.row-607:before, &.row-610:before, &.row-600:before
+                content: ''
+                display: inline-block
+                width: 2.41rem
+                height: 1.54rem
+                background-image: url(../images/sprite_card.png)
+                background-repeat: no-repeat
+                background-size: 2.41rem 6.16rem
+                position: absolute
+                left: 0
+                top: .9rem
+            &.row-603:before
+                background-position: 0 -0rem
+            &.row-607:before
+                background-position: 0 -1.54rem
+            &.row-610:before
+                background-position: 0 -3.08rem
+            &.row-600:before
+                background-position: 0 -4.62rem
         .action
             text-align: right
             @include displayFlex-w(9rem)
@@ -7477,22 +7495,20 @@ ul.co-ul
                     align-content: flex-start
                     min-height: 1.5rem
                     li
-                        @include displayFlex-w(2.5rem)
+                        @include displayFlex-w(2.34rem)
                         height: 1.5rem
                         margin-right: .4rem
-                        &.card-182
-                            background: url(../images/ico_wallet_month.png) no-repeat center center
-                            background-size: 100% 100%
-                        &.card-183
-                            background: url(../images/ico_wallet_season.png) no-repeat center center
-                            background-size: 100% 100%
+                        background-image: url(../images/sprite_card.png)
+                        background-size: 2.34rem 6rem
+                        background-repeat: no-repeat
                         &.card-188
-                            background: url(../images/ico_wallet_3.png) no-repeat center center
-                            background-size: 100% 100%
+                            background-position: 0 -0rem
                         &.card-187
-                            background: url(../images/ico_wallet_7.png) no-repeat center center
-                            background-size: 100% 100%
-
+                            background-position: 0 -1.5rem
+                        &.card-182
+                            background-position: 0 -3rem
+                        &.card-183
+                            background-position: 0 -4.5rem
                 h4
                     font-size: 1.6rem
                     @include displayFlex

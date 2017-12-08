@@ -402,8 +402,8 @@
 			<div class="flex-1">
 				<h6>恋爱成就</h6>
 				<p class="percent">
-					<em style="width: 32%"></em>
-					<b>1395</b>
+					<em style="width: 1%"></em>
+					<b>1</b>
 				</p>
 			</div>
 		</li>
