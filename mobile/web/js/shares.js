@@ -69,6 +69,11 @@ require(['jquery', 'swiper', 'alpha'],
 		}
 
 		$(function () {
+
+			setTimeout(function () {
+				resetSwiper();
+			}, 240);
+
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
@@ -99,6 +104,5 @@ require(['jquery', 'swiper', 'alpha'],
 					}
 				});
 			});
-			resetSwiper();
 		});
 	});

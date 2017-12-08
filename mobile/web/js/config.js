@@ -1,10 +1,10 @@
 requirejs.config({
 	paths: {
 		jquery: '/assets/js/jquery-3.2.1.min',
+		swiper: '/assets/js/swiper.jquery.min',
 		layer: '/assets/js/layer_mobile/layer',
 		mustache: '/assets/js/mustache.min',
 		socket: '/assets/js/socket.io.slim',
-		swiper: '/assets/js/swiper.jquery.min',
 		alpha: '/assets/js/alpha',
 		wx: '/assets/js/jweixin-1.2.0'
 	}
