@@ -343,7 +343,7 @@
 
 	.cr-chat-list .cr-chat-list-items {
 		list-style: none;
-		max-height: 44rem;
+		max-height: 38rem;
 		overflow-y: auto;
 	}
 
