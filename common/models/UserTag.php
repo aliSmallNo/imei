@@ -224,7 +224,7 @@ class UserTag extends ActiveRecord
 			$items[$uid]['num'] += $row['cnt'];
 		}
 
-		$sql = "select count(gId) as cnt,u.uId,u.uGender
+		$sql = "select count(gId) as cnt,u.uId as uid, u.uGender
 			from im_chat_group as g
 			join im_user as u on u.uId= g.gAddedBy and u.uOpenId like 'oYDJew%' and u.uPhone!=''
 			where gStatus=1 
