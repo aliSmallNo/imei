@@ -31,6 +31,6 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js'], function () {
-		requirejs(['/js/mshare.js?v=1.4.0']);
+		requirejs(['/js/mshare.js?v=1.4.1']);
 	});
 </script>
