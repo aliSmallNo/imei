@@ -23,7 +23,8 @@ require(["jquery", "layer", "mustache"],
 			text: '',
 			loading: 0,
 			lastId: 0,
-			page: 1,
+			page: 2,
+			nomore: $(".cr-no-more"),
 
 			adminUL: $(".cr-room ul"),
 			adminTmp: $("#adminTmp").html(),
@@ -32,7 +33,22 @@ require(["jquery", "layer", "mustache"],
 			chatUL: $(".cr-chat-list-items ul"),
 			chatTmp: $("#chatTmp").html(),
 
+			list: $(".cr-chat-list-items ul"),
+
 		};
+
+		$(".cr-chat-list-items").on("scroll", function () {
+			var lastRow = $sls.list.find('li:last');
+			if (lastRow && eleInScreen(lastRow, 40) && $sls.page > 0) {
+				loadChatlist();
+				console.log(1111111111);
+				//return false;
+			}
+		});
+
+		function eleInScreen($ele, $offset) {
+			return $ele && $ele.length > 0 && $ele.offset().top + $offset < $(window).scrollTop() + $(window).height();
+		}
 
 		$(document).on("focus", ".cr-bot input", function () {
 			showIcon(0);
@@ -84,11 +100,13 @@ require(["jquery", "layer", "mustache"],
 			if ($sls.loading) {
 				return;
 			}
+			$sls.loading = 1;
 			$.post("/api/chatroom", {
 				tag: "sent",
 				text: $sls.text,
 				rid: $sls.rid,
 			}, function (resp) {
+				$sls.loading = 0;
 				if (resp.code == 0) {
 					// adminUL danmuUL chatUL
 					var data, html;
@@ -119,11 +137,13 @@ require(["jquery", "layer", "mustache"],
 			if ($sls.loading) {
 				return;
 			}
+			$sls.loading = 1;
 			$.post("/api/chatroom", {
 				tag: "list",
 				lastid: $sls.lastId,
 				rid: $sls.rid,
 			}, function (resp) {
+				$sls.loading = 0;
 				if (resp.code == 0) {
 					// adminUL danmuUL chatUL
 					$sls.adminUL.append(Mustache.render($sls.adminTmp, {data: resp.data.admin}));
@@ -131,6 +151,31 @@ require(["jquery", "layer", "mustache"],
 					$sls.danmuUL.html(Mustache.render($sls.danmuTmp, {data: resp.data.danmu}));
 					$sls.lastId = resp.data.lastId;
 					$sls.count.html(resp.data.count);
+				} else {
+					showMsg(resp.msg);
+				}
+			}, "json");
+		}
+
+		function loadChatlist() {
+			if ($sls.loading) {
+				return;
+			}
+			$sls.loading = 1;
+			$sls.nomore.html("加载中..");
+			$.post("/api/chatroom", {
+				tag: "chatlist",
+				page: $sls.page,
+				rid: $sls.rid,
+			}, function (resp) {
+				$sls.nomore.html("");
+				$sls.loading = 0;
+				if (resp.code == 0) {
+					$sls.chatUL.append(Mustache.render($sls.chatTmp, {data: resp.data.chat}));
+					$sls.page = resp.data.nextpage;
+					if ($sls.page == 0) {
+						$sls.nomore.html("没有更多了");
+					}
 				} else {
 					showMsg(resp.msg);
 				}
@@ -183,7 +228,7 @@ require(["jquery", "layer", "mustache"],
 			});
 			message();
 			setInterval(function () {
-				message();
+				//message();
 			}, 5000);
 		});
 	});

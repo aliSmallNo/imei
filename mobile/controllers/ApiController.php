@@ -2116,16 +2116,27 @@ class ApiController extends Controller
 				}
 				//LogAction::add($uid, $openId, LogAction::ACTION_CHAT, $subUId);
 				//list($gId, $left) = ChatMsg::groupEdit($uid, $subUId);
-				list($adminChats, $chatItems, $danmuItems, $lastId, $nextpage) = ChatMsg::roomChatDetails($uid, $rid, $lastId);
+				list($adminChats, $chatItems, $danmuItems, $lastId) = ChatMsg::roomChatDetails($uid, $rid, $lastId);
 				return self::renderAPI(0, '', [
 					"admin" => $adminChats,
 					"chat" => $chatItems,
 					"danmu" => $danmuItems,
 					"lastId" => intval($lastId),
-					"nextpage" => $nextpage,
 					'count' => ChatMsg::countRoomChat($rid),
 					'left' => 0,
 					'gid' => 0,
+				]);
+				break;
+			case 'chatlist':
+				$rid = self::postParam('rid');
+				$page = self::postParam('page');
+				if (!$rid) {
+					return self::renderAPI(129, '对话不存在啊~');
+				}
+				list($chatItems, $nextpage) = ChatMsg::chatPageList($rid, $uid, $page);
+				return self::renderAPI(0, '', [
+					"chat" => $chatItems,
+					"nextpage" => $nextpage,
 				]);
 				break;
 		}

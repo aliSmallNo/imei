@@ -89,8 +89,12 @@
 	</div>
 	<div class="cr-guide">
 		<p>聊天指南</p>
-		<p>1.本群是严肃，健康的相亲交友群，严禁各种与本群主题无关的聊骚。</p>
-		<p>1.本群是严肃，健康的相亲交友群，严禁各种与本群主题无关的聊骚。</p>
+		<p>1.本群是严肃，健康的相亲交友群，严禁各种与本群主题无关的聊天。</p>
+		<p>2.不得利用聊天室危害国家安全、泄露国家秘密，不得侵犯国家社会集体的和公民的合法权益，不得利用聊天室制作、复制和传播下列信息
+			捏造或者歪曲事实，散布谣言，扰乱社会秩序的
+			宣扬封建迷信、淫秽、色情、赌博、暴力、凶杀、恐怖、教唆犯罪的
+			公然侮辱他人或者捏造事实诽谤他人的，或者进行其他恶意攻击的
+			进行未经许可商业广告行为的。</p>
 	</div>
 	<ul>
 		<li>
@@ -300,7 +304,7 @@
 				<!-- chatItems -->
 			</ul>
 			<div class="cr-no-more">
-				没有更多了
+
 			</div>
 		</div>
 	</div>
@@ -344,6 +348,8 @@
 	.cr-chat-list .cr-chat-list-items {
 		list-style: none;
 		max-height: 38rem;
+		height: 15rem;
+		overflow-x: hidden;
 		overflow-y: auto;
 	}
 
@@ -505,5 +511,5 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/chatroom.js?v=1.1.4" src="/assets/js/require.js"></script>
+<script data-main="/js/chatroom.js?v=1.1.5" src="/assets/js/require.js"></script>
 
