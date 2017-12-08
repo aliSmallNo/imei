@@ -9,6 +9,7 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
+use common\models\ChatRoom;
 use common\models\Img;
 use common\models\Pin;
 use common\models\User;
@@ -1047,6 +1048,13 @@ class FooController extends Controller
 //		User::propStat("2017-07-17","2017-11-08");
 		//print_r(explode(",", ""));
 		//print_r(User::fmtRow(User::find()->where(["uId" => 120003])->asArray()->one()));
+
+		//$rInfo = ChatMsg::RoomAddChat(101, 120003, "欢迎");print_r($rInfo);
+		list($adminChats, $chatItems, $danmuItems) = ChatMsg::roomInit(101, 120003);
+
+		print_r($adminChats);
+		print_r($chatItems);
+		print_r($danmuItems);
 	}
 
 
