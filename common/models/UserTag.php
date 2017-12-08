@@ -223,6 +223,7 @@ class UserTag extends ActiveRecord
 				':cat' => self::CAT_EXP
 			])->execute();
 			$level = 1;
+			$next = 1000;
 			$title = '';
 			foreach ($dict as $k => $arr) {
 				list($title11, $title10, $limit) = $arr;
@@ -230,11 +231,13 @@ class UserTag extends ActiveRecord
 					$level = $k > 0 ? $k : 1;
 					$title = ($gender == User::GENDER_MALE ? $title11 : $title10);
 				} else {
+					$next = $limit;
 					break;
 				}
 			}
 			$note = [
 				'level' => $level,
+				'next' => $next,
 				'title' => $title,
 				'gender' => $gender
 			];
