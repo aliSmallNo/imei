@@ -11,6 +11,7 @@ namespace console\controllers;
 use common\models\Stat;
 use common\models\UserMsg;
 use common\models\UserNet;
+use common\models\UserTag;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use yii\console\Controller;
@@ -33,6 +34,9 @@ class CrontabController extends Controller
 		var_dump($ret);
 	}
 
+	/**
+	 * @throws \yii\db\Exception
+	 */
 	public function actionPool()
 	{
 		$ret = UserWechat::refreshPool();
@@ -49,6 +53,12 @@ class CrontabController extends Controller
 	{
 //		User::updateRank([], true);
 		Stat::userRank('', true);
+	}
+
+	public function actionExp()
+	{
+//		User::updateRank([], true);
+		UserTag::calcExp();
 	}
 
 	public function actionAlert()

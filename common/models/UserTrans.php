@@ -202,11 +202,9 @@ class UserTrans extends ActiveRecord
 			$params[':id'] = $uid;
 		}
 		$conn = AppUtil::db();
-		$cats = array_keys(self::$catDict);
-		$strPlus = implode(',', array_diff($cats, self::$CatMinus));
 		$strMinus = implode(',', self::$CatMinus);
-		$sql = 'SELECT SUM(case when tCategory in (' . $strPlus . ') then tAmt when tCategory in (' . $strMinus . ') then -tAmt end) as amt,
-				tUnit as unit, tUId as uid 
+		$sql = 'SELECT tUnit as unit, tUId as uid,
+				SUM(case when tCategory in (' . $strMinus . ') then -IFNULL(tAmt,0) else IFNULL(tAmt,0) end) as amt
  				FROM im_user_trans 
  				WHERE tDeletedFlag=0 ' . $strCriteria . ' GROUP BY tUId,tUnit';
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();

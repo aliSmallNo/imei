@@ -39,6 +39,7 @@ class RedisUtil
 	const KEY_USER_IMAGE = 'user_image';
 	const KEY_USER_STAT = 'user_stat';
 	const KEY_USER_WALLET = 'user_wallet';
+	const KEY_USER_EXP = "user_exp";
 	const KEY_WX_MESSAGE = 'wx_message';
 	const KEY_XCX_SESSION_ID = 'xcx_session_id'; //小程序 sessionId
 	const KEY_STAT_TREND = "trend_stat";
@@ -47,7 +48,6 @@ class RedisUtil
 	const KEY_MENUS_MD5 = "key_menus_md5";
 	const KEY_BAIDU_TOKEN = "baidu_token";
 	const KEY_DUMMY_TOP = "dummy_top";
-
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
@@ -71,6 +71,7 @@ class RedisUtil
 		self::KEY_USER_IMAGE => 86400,
 		self::KEY_USER_STAT => 86400,
 		self::KEY_USER_WALLET => 3600 * 8,
+		self::KEY_USER_EXP => 86400,
 		self::KEY_XCX_TOKEN => 4800,
 		self::KEY_XCX_SESSION_ID => 3600 * 2,
 		self::KEY_STAT_TREND => 60 * 10,
@@ -122,6 +123,7 @@ class RedisUtil
 			case self::KEY_USER_STAT:
 			case self::KEY_USER_WALLET:
 			case self::KEY_USER_IMAGE:
+			case self::KEY_USER_EXP:
 				array_shift($keys);
 				$redisKey = implode(self::$Glue, $keys);
 				return $redis->hget(self::FIXED_PREFIX . self::$Glue . $mainKey, $redisKey);
@@ -147,6 +149,7 @@ class RedisUtil
 			case self::KEY_USER_STAT:
 			case self::KEY_USER_WALLET:
 			case self::KEY_USER_IMAGE:
+			case self::KEY_USER_EXP:
 				array_shift($keys);
 				$redisKey = implode(self::$Glue, $keys);
 				$redis->hset(self::FIXED_PREFIX . self::$Glue . $mainKey, $redisKey, $val);

@@ -10,6 +10,7 @@ namespace common\models;
 
 
 use common\utils\AppUtil;
+use common\utils\RedisUtil;
 use yii\db\ActiveRecord;
 
 class UserTag extends ActiveRecord
@@ -41,7 +42,7 @@ class UserTag extends ActiveRecord
 	];
 
 	static $ExpDict = [
-		['初来乍到', '初来乍到', 0, 0], // 0级，占位而已
+		['初来乍到', '初来乍到', 1000, 1000], // 0级，占位而已
 		['初来乍到', '初来乍到', 1000, 1000],
 		['初来乍到', '初来乍到', 2000, 1000],
 		['书生', '名门闺秀', 3200, 1200],
@@ -167,13 +168,48 @@ class UserTag extends ActiveRecord
 		return $tags;
 	}
 
-	public static function calcExp()
+	public static function getExp($uid, $resetFlag = false)
 	{
+		$redis = RedisUtil::init(RedisUtil::KEY_USER_EXP, $uid);
+		$note = json_decode($redis->getCache(), 1);
+		if ($note && !$resetFlag) {
+			return $note;
+		}
 		$conn = AppUtil::db();
+		self::calcExp($uid, $conn);
+		$sql = "select tNote from im_user_tag where tCategory=:cat AND tUId=:uid ";
+		$note = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':cat' => self::CAT_EXP,
+		])->queryScalar();
+		if ($note) {
+			return json_decode($note, 1);
+		}
+		list($title, $title1, $next) = self::$ExpDict[0];
+		return [
+			'num' => 0,
+			'level' => 1,
+			'level_name' => '01',
+			'next' => $next,
+			'title' => $title,
+			'percent' => 0
+		];
+
+	}
+
+	public static function calcExp($uid = 0, $conn = null)
+	{
+		$strCriteria = '';
+		if ($uid) {
+			$strCriteria = ' AND u.uId=' . $uid;
+		}
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
 		$sql = "select u.uId as uid,u.uName,u.uPhone,u.uGender,
 		 count(distinct date_format(a.aDate,'%Y-%m-%d')) as cnt 
 		 from im_log_action as a 
-		 join im_user as u on u.uId=a.aUId and u.uPhone!='' AND u.uGender>9
+		 join im_user as u on u.uId=a.aUId and u.uPhone!='' AND u.uGender>9 $strCriteria
 		 group by u.uId order by cnt ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$items = [];
@@ -188,9 +224,26 @@ class UserTag extends ActiveRecord
 			$items[$uid]['num'] += $row['cnt'];
 		}
 
+		$sql = "select count(gId) as cnt,u.uId as uid, u.uGender
+			from im_chat_group as g
+			join im_user as u on u.uId= g.gAddedBy and u.uOpenId like 'oYDJew%' and u.uPhone!=''
+			where gStatus=1 
+			group by u.uId ";
+		$ret = $conn->createCommand($sql)->queryAll();
+		foreach ($ret as $row) {
+			$uid = $row['uid'];
+			if (!isset($items[$uid])) {
+				$items[$uid] = [
+					'num' => 0,
+					'gender' => $row['uGender']
+				];
+			}
+			$items[$uid]['num'] += $row['cnt'];
+		}
+
 		$sql = "select pUId as uid,u.uGender, sum(pTransAmt)/2 as amt 
  			from im_pay as p 
- 			join im_user as u on u.uId=p.pUId AND u.uGender>9
+ 			join im_user as u on u.uId=p.pUId AND u.uGender>9 $strCriteria
  			where pStatus= " . Pay::STATUS_PAID . "
  			group by pUId order by amt";
 		$ret = $conn->createCommand($sql)->queryAll();
@@ -223,24 +276,27 @@ class UserTag extends ActiveRecord
 				':cat' => self::CAT_EXP
 			])->execute();
 			$level = 1;
-			$next = 1000;
 			$title = '';
+			$next = 0;
 			foreach ($dict as $k => $arr) {
-				list($title11, $title10, $limit) = $arr;
-				if ($num > $limit) {
+				list($title11, $title10, $next) = $arr;
+				$title = ($gender == User::GENDER_MALE ? $title11 : $title10);
+				if ($num > $next) {
 					$level = $k > 0 ? $k : 1;
-					$title = ($gender == User::GENDER_MALE ? $title11 : $title10);
 				} else {
-					$next = $limit;
 					break;
 				}
 			}
 			$note = [
+				'num' => $num,
 				'level' => $level,
+				'level_name' => substr(100 + $level, 1),
 				'next' => $next,
 				'title' => $title,
-				'gender' => $gender
+				'percent' => $next > 0 ? round(100.0 * $num / $next, 1) : 0,
+				//'gender' => $gender,
 			];
+			RedisUtil::init(RedisUtil::KEY_USER_EXP, $uid)->setCache($note);
 			$cmdMod->bindValues([
 				':uid' => $uid,
 				':num' => $num,
