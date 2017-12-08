@@ -193,6 +193,7 @@ require(["jquery", "layer", "mustache"],
 			var self = $(this);
 			var tag = self.attr("data-tag");
 			var btns = self.closest(".r-des").find(".r-des-opts-des");
+			var uid, rid, cid;
 			switch (tag) {
 				case "show-opt":
 					if (btns.css("display") == "none") {
@@ -202,11 +203,43 @@ require(["jquery", "layer", "mustache"],
 						btns.hide();
 					}
 					break;
-				case "silent":
+				case "silent"://禁言
+				case "delete"://删除本条消息
 					btns.hide();
+					uid = self.closest("div").attr("data-uid");
+					rid = self.closest("div").attr("data-rid");
+					cid = self.closest("div").attr("data-cid");
+					adminOPt(tag, uid, rid, cid, self);
 					break;
 			}
 		});
+
+		// 管理员操作群员消息
+		function adminOPt(tag, uid, rid, cid, self) {
+			if ($sls.loading) {
+				return;
+			}
+			$sls.loading = 1;
+			$.post("/api/chatroom", {
+				tag: "adminopt",
+				subtag: tag,
+				uid: uid,
+				rid: rid,
+				cid: cid
+			}, function (resp) {
+				$sls.loading = 0;
+				if (resp.code == 0) {
+					showMsg("操作成功");
+					if (tag == "delete") {
+						self.closest("li").remove();
+					}
+				} else {
+					showMsg(resp.msg);
+				}
+				$sls.loading = 0;
+			}, "json");
+		}
+
 
 		var showMsg = function (title, sec) {
 			var delay = sec || 3;
@@ -228,7 +261,7 @@ require(["jquery", "layer", "mustache"],
 			});
 			message();
 			setInterval(function () {
-				//message();
+				message();
 			}, 5000);
 		});
 	});

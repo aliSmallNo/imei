@@ -9,6 +9,7 @@
 namespace mobile\controllers;
 
 use common\models\ChatMsg;
+use common\models\ChatRoomFella;
 use common\models\City;
 use common\models\Date;
 use common\models\EventCrew;
@@ -2096,6 +2097,9 @@ class ApiController extends Controller
 				if (!$text) {
 					return self::renderAPI(129, '消息不能为空啊~');
 				}
+				if (ChatRoomFella::findOne(["mRId" => $rId, "mUId" => $uid])->mBanFlag) {
+					return self::renderAPI(129, '你被管理员禁言了~');
+				}
 				list($ret, $lastId) = ChatMsg::RoomAddChat($rId, $uid, $text);
 				if ($ret === false) {
 					return self::renderAPI(129, '发送失败~');
@@ -2137,6 +2141,19 @@ class ApiController extends Controller
 				return self::renderAPI(0, '', [
 					"chat" => $chatItems,
 					"nextpage" => $nextpage,
+				]);
+				break;
+			case "adminopt":
+				$subtag = self::postParam('subtag');
+				$oUId = self::postParam('uid');
+				$rid = self::postParam('rid');
+				$cid = self::postParam('cid');
+				if (!$rid || !$oUId) {
+					return self::renderAPI(129, '对话不存在啊~');
+				}
+				ChatRoomFella::adminOPt($subtag, $oUId, $rid, $cid);
+				return self::renderAPI(0, '', [
+					"chat" => '',
 				]);
 				break;
 		}
