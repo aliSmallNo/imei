@@ -59,7 +59,7 @@ require(['jquery', 'swiper', 'alpha'],
 				slidesPerView: 'auto',
 				pagination: '.swiper-pagination',
 				coverflowEffect: {
-					rotate: 60,
+					rotate: 30,
 					stretch: 0,
 					depth: 100,
 					modifier: 1,

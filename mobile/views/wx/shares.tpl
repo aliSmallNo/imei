@@ -1,7 +1,7 @@
 <style>
 	.swiper-container {
 		width: 100%;
-		height: 39rem;
+		height: 40rem;
 	}
 
 	.swiper-slide {
@@ -27,7 +27,7 @@
 		background: #fdd835;
 	}
 </style>
-<div style="height: 2rem"></div>
+<div style="height: 3rem"></div>
 <div class="swiper-container">
 	<div class="swiper-wrapper">
 		<div class="swiper-slide" style="background-image:url(/images/share/share01.jpg)"></div>
@@ -53,6 +53,6 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js'], function () {
-		requirejs(['/js/shares.js?v=1.4.1']);
+		requirejs(['/js/shares.js?v=1.4.3']);
 	});
 </script>
