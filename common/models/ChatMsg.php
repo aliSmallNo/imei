@@ -177,12 +177,12 @@ class ChatMsg extends ActiveRecord
 		list($adminChats, $rlastId) = self::chatItems($rId, $uid, $lastId, 1, 1, 0);
 		$adminChats = array_reverse($adminChats);
 		// 群员消息
-		list($chatItems, $rlastId, $nextpage) = self::chatItems($rId, $uid, $lastId, $page, 0, 1);
+		list($chatItems, $rlastId) = self::chatItems($rId, $uid, $lastId, $page, 0, 1);
 		// 弹幕消息
 		list($danmuItems) = self::chatItems($rId, $uid, $lastId, $page, 0, 0, 1);
 		$danmuItems = array_reverse($danmuItems);
 
-		return [$adminChats, $chatItems, $danmuItems, $rlastId, $nextpage];
+		return [$adminChats, $chatItems, $danmuItems, $rlastId];
 	}
 
 	/**
@@ -225,7 +225,7 @@ class ChatMsg extends ActiveRecord
 		}
 		$limit = "";
 		if ($isFenye) {
-			$limit = " limit " . ($page - 1) * $pagesize . "," . ($pagesize + 1);
+			$limit = " limit " . ($page - 1) * $pagesize . "," . $pagesize;
 		}
 		$param = [
 			":rid" => $rId,
@@ -249,6 +249,13 @@ class ChatMsg extends ActiveRecord
 				where c.cGId=:rid $adminStr $lastIdStr
 				order by cAddedon desc $limit ";
 		$chatlist = $conn->createCommand($sql)->bindValues($param)->queryAll();
+		$res = self::fmtRoomChatData($chatlist, $rId, $adminUId, $uid);
+
+		return [$res, $rlastId];
+	}
+
+	public static function fmtRoomChatData($chatlist, $rId, $adminUId, $uid)
+	{
 		$res = [];
 		foreach ($chatlist as $v) {
 			$res[] = [
@@ -266,12 +273,28 @@ class ChatMsg extends ActiveRecord
 				'eid' => AppUtil::encrypt($uid),
 			];
 		}
-		$nextpage = 0;
-		if ($isFenye) {
-			$nextpage = count($res) > $pagesize ? $page++ : 0;
-			array_pop($res);
-		}
-		return [$res, $rlastId, $nextpage];
+		return $res;
+	}
+
+	public static function chatPageList($rId, $uid, $page = 1, $pagesize = 15)
+	{
+		$conn = AppUtil::db();
+		list($adminUId, $rlastId) = self::getAdminUIdLastId($conn, $rId);
+		$limit = " limit " . ($page - 1) * $pagesize . "," . ($pagesize + 1);
+		$sql = "SELECT c.* ,uName,uThumb,uId,uUniqid as uni
+				from im_chat_room as r 
+				join im_chat_msg as c on r.rId=c.cGId 
+				join im_user as u on u.uId=c.cAddedBy
+				where c.cGId=:rid and cAddedBy !=:adminuid 
+				order by cAddedon desc $limit ";
+		$chatlist = $conn->createCommand($sql)->bindValues([
+			":rid" => $rId,
+			":adminuid" => $adminUId,
+		])->queryAll();
+		$res = self::fmtRoomChatData($chatlist, $rId, $adminUId, $uid);
+		$nextpage = count($res) > $pagesize ? ($page + 1) : 0;
+		array_pop($res);
+		return [$res, $nextpage];
 	}
 
 	/**
