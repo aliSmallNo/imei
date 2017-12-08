@@ -41,7 +41,7 @@ class UserTag extends ActiveRecord
 	];
 
 	static $ExpDict = [
-		['', '', 0, 0], // 0级，占位而已
+		['初来乍到', '初来乍到', 0, 0], // 0级，占位而已
 		['初来乍到', '初来乍到', 1000, 1000],
 		['初来乍到', '初来乍到', 2000, 1000],
 		['书生', '名门闺秀', 3200, 1200],
@@ -222,12 +222,12 @@ class UserTag extends ActiveRecord
 				':num' => $num,
 				':cat' => self::CAT_EXP
 			])->execute();
-			$level = 0;
+			$level = 1;
 			$title = '';
 			foreach ($dict as $k => $arr) {
 				list($title11, $title10, $limit) = $arr;
 				if ($num > $limit) {
-					$level = $k;
+					$level = $k > 0 ? $k : 1;
 					$title = ($gender == User::GENDER_MALE ? $title11 : $title10);
 				} else {
 					break;
