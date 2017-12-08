@@ -176,6 +176,7 @@ class UserTag extends ActiveRecord
 			return $note;
 		}
 		$conn = AppUtil::db();
+		self::calcExp($uid, $conn);
 		$sql = "select tNote from im_user_tag where tCategory=:cat AND tUId=:uid ";
 		$note = $conn->createCommand($sql)->bindValues([
 			':uid' => $uid,
@@ -196,13 +197,19 @@ class UserTag extends ActiveRecord
 
 	}
 
-	public static function calcExp()
+	public static function calcExp($uid = 0, $conn = null)
 	{
-		$conn = AppUtil::db();
+		$strCriteria = '';
+		if ($uid) {
+			$strCriteria = ' AND u.uId=' . $uid;
+		}
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
 		$sql = "select u.uId as uid,u.uName,u.uPhone,u.uGender,
 		 count(distinct date_format(a.aDate,'%Y-%m-%d')) as cnt 
 		 from im_log_action as a 
-		 join im_user as u on u.uId=a.aUId and u.uPhone!='' AND u.uGender>9
+		 join im_user as u on u.uId=a.aUId and u.uPhone!='' AND u.uGender>9 $strCriteria
 		 group by u.uId order by cnt ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$items = [];
@@ -219,7 +226,7 @@ class UserTag extends ActiveRecord
 
 		$sql = "select pUId as uid,u.uGender, sum(pTransAmt)/2 as amt 
  			from im_pay as p 
- 			join im_user as u on u.uId=p.pUId AND u.uGender>9
+ 			join im_user as u on u.uId=p.pUId AND u.uGender>9 $strCriteria
  			where pStatus= " . Pay::STATUS_PAID . "
  			group by pUId order by amt";
 		$ret = $conn->createCommand($sql)->queryAll();

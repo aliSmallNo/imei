@@ -397,7 +397,7 @@
 		</li>
 		<li>
 			<div class="left level">
-				<div class="level-1">{{$expInfo.level}}</div>
+				<div class="level-1">{{$expInfo.level_name}}</div>
 			</div>
 			<div class="flex-1">
 				<h6>{{$expInfo.title}}</h6>
