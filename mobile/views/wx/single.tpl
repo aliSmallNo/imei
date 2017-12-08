@@ -397,13 +397,13 @@
 		</li>
 		<li>
 			<div class="left level">
-				<div class="level-1">01</div>
+				<div class="level-1">{{$expInfo.level}}</div>
 			</div>
 			<div class="flex-1">
-				<h6>恋爱成就</h6>
+				<h6>{{$expInfo.title}}</h6>
 				<p class="percent">
-					<em style="width: 1%"></em>
-					<b>1</b>
+					<em style="width: {{$expInfo.percent}}%"></em>
+					<b>{{$expInfo.num}}</b>
 				</p>
 			</div>
 		</li>

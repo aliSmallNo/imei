@@ -188,6 +188,7 @@ class UserTag extends ActiveRecord
 		return [
 			'num' => 0,
 			'level' => 1,
+			'level_name' => '01',
 			'next' => $next,
 			'title' => $title,
 			'percent' => 0
@@ -265,6 +266,7 @@ class UserTag extends ActiveRecord
 			$note = [
 				'num' => $num,
 				'level' => $level,
+				'level_name' => substr(100 + $level, 1),
 				'next' => $next,
 				'title' => $title,
 				'percent' => $next > 0 ? round(100.0 * $num / $next, 1) : 0,
