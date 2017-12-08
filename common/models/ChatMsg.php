@@ -356,7 +356,7 @@ class ChatMsg extends ActiveRecord
 			'rid' => $rId,
 			'left' => 100,
 			'content' => $content,
-			'addedon' => date('m-d H:i:s'),
+			'addedon' => date('m-d H:i'),
 			'isAdmin' => $adminUId == $senderId ? 1 : 0,
 			'type' => self::TYPE_TEXT,
 			'name' => $ret['uName'],
