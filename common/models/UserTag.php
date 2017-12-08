@@ -228,7 +228,7 @@ class UserTag extends ActiveRecord
 		$sql = "select count(gId) as cnt,u.uId as uid, u.uGender
 			from im_chat_group as g
 			join im_user as u on u.uId= g.gAddedBy and u.uOpenId like 'oYDJew%' and u.uPhone!=''
-			where gStatus=1 
+			where gStatus=1 $strCriteria
 			group by u.uId ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		foreach ($ret as $row) {
