@@ -60,8 +60,8 @@ class EventService
 		}
 		$offset = ($page - 1) * $page_size;
 		$params[':eid'] = $this->id;
-		$sql = " SELECT cEId,cAddedOn,cUpdatedOn,uId,uOpenId,uName,uPhone,uStatus,uThumb,
- 				uGender,uBirthYear,uMarital,uLocation,uCertImage,IFNULL(w.wSubscribe,0) as wSubscribe
+		$sql = " SELECT cEId,cAddedOn,cUpdatedOn,uId,uOpenId,uName,uPhone,uStatus,uThumb,uHeight as height,uCar,uEstate,
+ 				uHoros,uScope,uGender,uBirthYear,uMarital,uLocation,uCertImage,IFNULL(w.wSubscribe,0) as wSubscribe
 	            FROM im_event_crew as c
 	            JOIN im_user as u on u.uId=c.cUId
 	            LEFT JOIN im_user_wechat as w on w.wUId=u.uId
@@ -76,6 +76,10 @@ class EventService
 			$ret[$k]['gender'] = ($row['uGender'] == User::GENDER_MALE ? '男性' : '女性');
 			$ret[$k]['marital'] = isset(User::$Marital[$row['uMarital']]) ? User::$Marital[$row['uMarital']] : '';
 			$ret[$k]['status'] = isset(User::$Status[$row['uStatus']]) ? User::$Status[$row['uStatus']] : '';
+			$ret[$k]['horos'] = isset(User::$Horos[$row['uHoros']]) ? User::$Horos[$row['uHoros']] : '';
+			$ret[$k]['scope'] = isset(User::$Scope[$row['uScope']]) ? User::$Scope[$row['uScope']] : '';
+			$ret[$k]['estate'] = isset(User::$Estate[$row['uEstate']]) ? User::$Estate[$row['uEstate']] : '';
+			$ret[$k]['car'] = isset(User::$Car[$row['uCar']]) ? User::$Car[$row['uCar']] : '';
 			$ret[$k]['sub'] = $row['wSubscribe'] ? '' : '未关注';
 			$location = json_decode($row['uLocation'], 1);
 			$ret[$k]['location'] = '';
