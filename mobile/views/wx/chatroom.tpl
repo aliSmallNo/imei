@@ -117,6 +117,7 @@
 <style>
 	.bg-cr {
 		background: #f8f8f8;
+		position: fixed;
 	}
 
 	.cr-mask {
