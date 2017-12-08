@@ -10,6 +10,7 @@ namespace common\models;
 
 
 use common\utils\AppUtil;
+use common\utils\RedisUtil;
 use yii\db\ActiveRecord;
 
 class UserTag extends ActiveRecord
@@ -41,7 +42,7 @@ class UserTag extends ActiveRecord
 	];
 
 	static $ExpDict = [
-		['初来乍到', '初来乍到', 0, 0], // 0级，占位而已
+		['初来乍到', '初来乍到', 1000, 1000], // 0级，占位而已
 		['初来乍到', '初来乍到', 1000, 1000],
 		['初来乍到', '初来乍到', 2000, 1000],
 		['书生', '名门闺秀', 3200, 1200],
@@ -167,6 +168,33 @@ class UserTag extends ActiveRecord
 		return $tags;
 	}
 
+	public static function getExp($uid, $resetFlag = false)
+	{
+		$redis = RedisUtil::init(RedisUtil::KEY_USER_EXP, $uid);
+		$note = json_decode($redis->getCache(), 1);
+		if ($note && !$resetFlag) {
+			return $note;
+		}
+		$conn = AppUtil::db();
+		$sql = "select tNote from im_user_tag where tCategory=:cat AND tUId=:uid ";
+		$note = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':cat' => self::CAT_EXP,
+		])->queryScalar();
+		if ($note) {
+			return json_decode($note, 1);
+		}
+		list($title, $title1, $next) = self::$ExpDict[0];
+		return [
+			'num' => 0,
+			'level' => 1,
+			'next' => $next,
+			'title' => $title,
+			'percent' => 0
+		];
+
+	}
+
 	public static function calcExp()
 	{
 		$conn = AppUtil::db();
@@ -236,11 +264,14 @@ class UserTag extends ActiveRecord
 				}
 			}
 			$note = [
+				'num' => $num,
 				'level' => $level,
 				'next' => $next,
 				'title' => $title,
-				'gender' => $gender
+				'percent' => $next > 0 ? round(100.0 * $num / $next, 1) : 0,
+				//'gender' => $gender,
 			];
+			RedisUtil::init(RedisUtil::KEY_USER_EXP, $uid)->setCache($note);
 			$cmdMod->bindValues([
 				':uid' => $uid,
 				':num' => $num,

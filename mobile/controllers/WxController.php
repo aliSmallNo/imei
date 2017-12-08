@@ -8,7 +8,6 @@
 
 namespace mobile\controllers;
 
-use common\models\ChatMsg;
 use common\models\ChatRoom;
 use common\models\ChatRoomFella;
 use common\models\City;
@@ -737,9 +736,10 @@ class WxController extends BaseController
 			$headers[$k]['image'] = $header['content'];
 			unset($headers[$k]['content'], $headers[$k]['id']);
 		}
-
+		$expInfo = UserTag::getExp($this->user_id);
 		return self::renderPage("single.tpl", [
 			'noReadFlag' => $noReadFlag,
+			'expInfo' => $expInfo,
 			'nickname' => $nickname,
 			'avatar' => $avatar,
 			'uInfo' => $uInfo,
