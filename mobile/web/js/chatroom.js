@@ -104,6 +104,7 @@ require(["jquery", "layer", "mustache"],
 					}
 					$sls.text = '';
 					$sls.bot.find("input").val('');
+					$sls.lastId = resp.data.lastid;
 				} else {
 					showMsg(resp.msg);
 				}

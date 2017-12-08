@@ -2096,12 +2096,13 @@ class ApiController extends Controller
 				if (!$text) {
 					return self::renderAPI(129, '消息不能为空啊~');
 				}
-				$ret = ChatMsg::RoomAddChat($rId, $uid, $text);
+				list($ret, $lastId) = ChatMsg::RoomAddChat($rId, $uid, $text);
 				if ($ret === false) {
 					return self::renderAPI(129, '发送失败~');
 				} else {
 					return self::renderAPI(0, '', [
 						'items' => $ret,
+						'lastid' => $lastId,
 					]);
 				}
 				break;
