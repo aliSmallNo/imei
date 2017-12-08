@@ -173,7 +173,7 @@ class UserTag extends ActiveRecord
 		$sql = "select u.uId as uid,u.uName,u.uPhone,u.uGender,
 		 count(distinct date_format(a.aDate,'%Y-%m-%d')) as cnt 
 		 from im_log_action as a 
-		 join im_user as u on u.uId=a.aUId and u.uPhone!=''
+		 join im_user as u on u.uId=a.aUId and u.uPhone!='' AND u.uGender>9
 		 group by u.uId order by cnt ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$items = [];
@@ -190,7 +190,7 @@ class UserTag extends ActiveRecord
 
 		$sql = "select pUId as uid,u.uGender, sum(pTransAmt)/2 as amt 
  			from im_pay as p 
- 			join im_user as u on u.uId=p.pUId
+ 			join im_user as u on u.uId=p.pUId AND u.uGender>9
  			where pStatus= " . Pay::STATUS_PAID . "
  			group by pUId order by amt";
 		$ret = $conn->createCommand($sql)->queryAll();
@@ -223,6 +223,7 @@ class UserTag extends ActiveRecord
 				':cat' => self::CAT_EXP
 			])->execute();
 			$level = 1;
+			$next = 1000;
 			$title = '';
 			foreach ($dict as $k => $arr) {
 				list($title11, $title10, $limit) = $arr;
@@ -230,11 +231,13 @@ class UserTag extends ActiveRecord
 					$level = $k > 0 ? $k : 1;
 					$title = ($gender == User::GENDER_MALE ? $title11 : $title10);
 				} else {
+					$next = $limit;
 					break;
 				}
 			}
 			$note = [
 				'level' => $level,
+				'next' => $next,
 				'title' => $title,
 				'gender' => $gender
 			];
