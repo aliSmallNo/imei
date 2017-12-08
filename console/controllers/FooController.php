@@ -929,6 +929,22 @@ class FooController extends Controller
 		var_dump($cnt);
 	}
 
+
+	public function actionFprofile()
+	{
+		$sql = "select uOpenId,uId,uName,uPhone,uMarital,uHeight,uEducation,uBirthYear,w.wSubscribe
+		from im_user as u join im_user_wechat as w on w.wUId=u.uId and w.wSubscribe=1
+		where uPhone!='' and (uMarital=0 or uHeight=0 or uEducation=0 or uBirthYear=0) and uGender>9 and uOpenId like 'oYDJew%' ";
+		$conn = AppUtil::db();
+		$ret = $conn->createCommand($sql)->queryAll();
+		$openIds = array_column($ret, 'uOpenId');
+		$content = '尊敬的千寻恋恋会员，你好，我们发现你的个人资料中可能存在需要完善的信息，如婚史状况，身高，学历，出生年份等。
+希望你能尽快完善自己的个人资料，我们才能为你推荐更匹配的对象哦。
+👉<a href="https://wx.meipo100.com/wx/sedit">点击进入修改</a>👈';
+		$cnt = UserWechat::sendMsg($openIds, $content, true);
+		var_dump($cnt);
+	}
+
 	public function actionRain()
 	{
 		$openid = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
