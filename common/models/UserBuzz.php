@@ -219,7 +219,7 @@ class UserBuzz extends ActiveRecord
 
 爱情的重要特质就是自私和占有。当一个人爱你时，只会把你占为己有，根本不可能拱手相让。所以，说喜欢你而不能在一起的都只是暧昧，说爱你而要离开的都是有小三。
 
-晚安，世界和你 🌗";
+晚安，世界和你 🌙";
 				$resp = self::textMsg($fromUsername, $toUsername, $txt);
 				break;
 			case '任务':
