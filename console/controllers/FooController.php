@@ -951,6 +951,7 @@ class FooController extends Controller
 		$ret = $conn->createCommand($sql)->queryAll();
 
 		$openIds = array_column($ret, 'uOpenId');
+
 		$content = '尊敬的千寻恋恋会员，你好，我们发现你的个人资料中可能存在需要完善的信息，如婚史状况，身高，学历，出生年份等。
 希望你能尽快完善自己的个人资料，我们才能为你推荐更匹配的对象哦。
 👉<a href="https://wx.meipo100.com/wx/sedit">点击进入修改</a>👈';
