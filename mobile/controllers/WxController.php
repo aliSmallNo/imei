@@ -1925,6 +1925,41 @@ class WxController extends BaseController
 			'bg-expand');
 	}
 
+	public function actionShares()
+	{
+		$uni = self::getParam('uni');
+		$senderId = 0;
+		$preview = [];
+		$thumb = $qrcode = $nickname = '';
+		if ($uni) {
+			$uInfo = User::findOne(['uUniqid' => $uni]);
+			if ($uInfo) {
+				$senderId = $uInfo['uId'];
+				$nickname = $uInfo['uName'];
+				$thumb = ImageUtil::getItemImages($uInfo['uThumb'])[0];
+				$qrcode = UserQR::getQRCode($senderId, UserQR::CATEGORY_SINGLE, $thumb);
+			} else {
+				header('location:/wx/error?msg=链接无效！');
+				exit();
+			}
+		}
+		$sentFlag = $senderId > 0 ? 1 : 0;
+		$title = $sentFlag ? '千寻恋恋-缘来是你' : '分享千寻恋恋';
+		$sharedUni = $sentFlag ? $uni : $this->user_uni;
+		return self::renderPage("shares.tpl",
+			[
+				'sentFlag' => $sentFlag,
+				'thumb' => $thumb,
+				'nickname' => $nickname,
+				'qrcode' => $qrcode,
+				'preview' => $preview,
+				'uni' => $sharedUni
+			],
+			'terse',
+			$title,
+			'bg-color');
+	}
+
 	public function actionChatroom()
 	{
 		$rid = 101;

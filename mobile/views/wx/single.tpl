@@ -424,6 +424,7 @@
 	<ul class="zone-grid">
 		<li><a href="/wx/sw#swallet"><i class="i-zone-grid wallet"></i><em>账户</em></em></a></li>
 		<li><a href="/wx/lottery"><i class="i-zone-grid sign"></i><em>每日签到</em></a></li>
+		<li><a href="/wx/shares"><i class="i-zone-grid share"></i><em>分享给朋友</em></em></a></li>
 		<li><a href="#date"><i class="i-zone-grid date"></i><em>约会</em></a></li>
 		<li><a href="/wx/cert2"><i class="i-zone-grid cert"></i><em>实名认证</em></a></li>
 		<li><a href="/wx/notice"><i class="i-zone-grid notice"></i><em>通知</em></a></li>
@@ -432,7 +433,6 @@
 		<li><a href="#sfeedback"><i class="i-zone-grid feedback"></i><em>意见反馈</em></a></li>
 		<li><a href="/wx/setting"><i class="i-zone-grid setting"></i><em>设置</em></a></li>
 		<li><a href="/wx/agree"><i class="i-zone-grid protocol"></i><em>用户协议</em></a></li>
-		<li></li>
 		<li></li>
 	</ul>
 </section>
