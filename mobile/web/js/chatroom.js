@@ -15,6 +15,7 @@ require(["jquery", "layer", "mustache"],
 			bot: $(".cr-bot"),
 			danmu: $(".cr-danmu"),
 			botalert: $(".cr-bot-alert"),
+			count: $(".cr-chat-list-top .count span"),
 
 			rid: $("#cRID").val(),
 			uid: $("#cUID").val(),
@@ -105,6 +106,8 @@ require(["jquery", "layer", "mustache"],
 					$sls.text = '';
 					$sls.bot.find("input").val('');
 					$sls.lastId = resp.data.lastid;
+					$sls.count.html(resp.data.count);
+
 				} else {
 					showMsg(resp.msg);
 				}
@@ -127,6 +130,7 @@ require(["jquery", "layer", "mustache"],
 					$sls.chatUL.prepend(Mustache.render($sls.chatTmp, {data: resp.data.chat}));
 					$sls.danmuUL.html(Mustache.render($sls.danmuTmp, {data: resp.data.danmu}));
 					$sls.lastId = resp.data.lastId;
+					$sls.count.html(resp.data.count);
 				} else {
 					showMsg(resp.msg);
 				}

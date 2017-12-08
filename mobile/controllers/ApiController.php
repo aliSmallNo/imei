@@ -2103,6 +2103,7 @@ class ApiController extends Controller
 					return self::renderAPI(0, '', [
 						'items' => $ret,
 						'lastid' => $lastId,
+						'count' => ChatMsg::countRoomChat($rId),
 					]);
 				}
 				break;
@@ -2122,6 +2123,7 @@ class ApiController extends Controller
 					"danmu" => $danmuItems,
 					"lastId" => intval($lastId),
 					"nextpage" => $nextpage,
+					'count' => ChatMsg::countRoomChat($rid),
 					'left' => 0,
 					'gid' => 0,
 				]);
