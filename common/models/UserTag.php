@@ -224,6 +224,23 @@ class UserTag extends ActiveRecord
 			$items[$uid]['num'] += $row['cnt'];
 		}
 
+		$sql = "select count(gId) as cnt,u.uId,u.uGender
+			from im_chat_group as g
+			join im_user as u on u.uId= g.gAddedBy and u.uOpenId like 'oYDJew%' and u.uPhone!=''
+			where gStatus=1 
+			group by u.uId ";
+		$ret = $conn->createCommand($sql)->queryAll();
+		foreach ($ret as $row) {
+			$uid = $row['uid'];
+			if (!isset($items[$uid])) {
+				$items[$uid] = [
+					'num' => 0,
+					'gender' => $row['uGender']
+				];
+			}
+			$items[$uid]['num'] += $row['cnt'];
+		}
+
 		$sql = "select pUId as uid,u.uGender, sum(pTransAmt)/2 as amt 
  			from im_pay as p 
  			join im_user as u on u.uId=p.pUId AND u.uGender>9 $strCriteria
