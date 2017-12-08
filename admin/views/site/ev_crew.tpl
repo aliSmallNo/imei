@@ -37,7 +37,7 @@
 		<th style="width: 70px">
 			头像
 		</th>
-		<th class="col-sm-4">
+		<th class="col-sm-6">
 			信息
 		</th>
 		<th>
@@ -58,8 +58,8 @@
 			{{$prod.uName}}
 			<span class="m-status-{{$prod.uStatus}}">{{$prod.status}}</span>
 			<span class="m-sub-{{$prod.wSubscribe}}">{{$prod.sub}}</span><br>
-			{{$prod.uPhone}} . {{$prod.gender}} . {{$prod.age}}岁 . {{$prod.marital}}<br>
-			{{$prod.location}}
+			{{$prod.uPhone}} . {{$prod.gender}} . {{$prod.age}}岁 . {{$prod.horos}} . {{$prod.marital}}<br>
+			{{$prod.height}} . {{$prod.scope}} . {{$prod.location}} . {{$prod.car}} . {{$prod.estate}}
 		</td>
 
 		<td>

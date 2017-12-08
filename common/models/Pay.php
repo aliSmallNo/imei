@@ -70,7 +70,7 @@ class Pay extends ActiveRecord
 		'chat_season' => [
 			'cat' => Pay::CAT_CHAT_SEASON,
 			'title' => '季度畅聊卡',
-			'price' => 19.90,
+			'price' => 19.89,
 			'pre_price' => 99.9,
 			'tip' => '包季畅聊，有效期内免费畅聊',
 			'num' => 1

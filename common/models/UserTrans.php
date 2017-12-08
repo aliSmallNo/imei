@@ -33,6 +33,7 @@ class UserTrans extends ActiveRecord
 	const CAT_PRESENT = 128;
 	const CAT_RETURN = 130;
 	const CAT_MOMENT = 150;
+	const CAT_MOMENT_RECRUIT = 153;
 	const CAT_VOTE = 160;
 	const CAT_FANS_DRAW = 170;
 	const CAT_REMOVE_COMMENT = 172;
@@ -56,6 +57,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_PRESENT => "赠送媒桂花",
 		self::CAT_RETURN => "拒绝退回",
 		self::CAT_MOMENT => "分享到朋友圈奖励",
+		self::CAT_MOMENT_RECRUIT => "分享拉新奖励",
 		self::CAT_VOTE => "投票奖励",
 		self::CAT_FANS_DRAW => "花粉值提现",
 		self::CAT_REMOVE_COMMENT => "删除评论",
@@ -268,6 +270,7 @@ class UserTrans extends ActiveRecord
 		$sql = 'SELECT sum(tAmt) as amt,tCategory as cat,tTitle as title,tUnit as unit
  				FROM im_user_trans as t 
  				JOIN im_user as u on t.tUId = u.uId 
+ 				left join im_pay as p on p.pId=t.tPId AND p.pStatus=100
  				WHERE tDeletedFlag=0 ' . $strCriteria . ' group by tCategory,tTitle,tUnit';
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -279,7 +282,7 @@ class UserTrans extends ActiveRecord
 				$ret[$k]['unit'] = self::UNIT_YUAN;
 			}
 			$ret[$k]['unit_name'] = self::$UnitDict[$ret[$k]['unit']];
-			$ret[$k]['prefix'] =  in_array($row['cat'], self::$CatMinus) ? '-' : '';
+			$ret[$k]['prefix'] = in_array($row['cat'], self::$CatMinus) ? '-' : '';
 		}
 		return $ret;
 	}
@@ -303,7 +306,8 @@ class UserTrans extends ActiveRecord
 				t.tId, t.tAmt as flower,tAddedOn as date,t.tTitle as tcat,tUnit as unit,t.tCategory as cat
 				from im_user_trans as t 
 				join im_user as u on u.uId=t.tUId 
-				left join im_pay as p on p.pId=t.tPId $where order by $order limit $limit";
+				left join im_pay as p on p.pId=t.tPId AND p.pStatus=100
+				$where order by $order limit $limit";
 		$result = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$uIds = $items = [];
 		foreach ($result as $k => $row) {
@@ -323,7 +327,8 @@ class UserTrans extends ActiveRecord
 		$sql = "select count(1) as co
 				from im_user_trans as t 
 				join im_user as u on u.uId=t.tUId 
-				left join im_pay as p on p.pId=t.tPId $where ";
+				left join im_pay as p on p.pId=t.tPId AND p.pStatus=100
+				$where ";
 		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
 		$count = $count ? $count : 0;
 
@@ -333,6 +338,7 @@ class UserTrans extends ActiveRecord
 		}
 		$sql = 'SELECT sum(tAmt) as amt,tCategory as cat,tTitle as title,tUnit as unit,t.tUId as uid
  				FROM im_user_trans as t ' . $sql2 . ' group by tCategory,tTitle,tUnit,t.tUId';
+
 		$balances = $conn->createCommand($sql)->queryAll();
 		$details = [];
 
@@ -509,9 +515,42 @@ class UserTrans extends ActiveRecord
 						$uid, '新人奖励媒桂花', $amt . '媒桂花');
 				}
 				break;
+			case self::CAT_MOMENT_RECRUIT:
+				$amt = 99;
+				$unit = self::UNIT_GIFT;
+				$sql = "select nUId 
+						 from im_user_net as n 
+						 join im_user as u on u.uId=n.nUId and u.uOpenId like :openid
+						 where nSubUId=:uid and nRelation=:rel and u.uSubstatus!=:st ";
+				$backerUId = $conn->createCommand($sql)->bindValues([
+					':uid' => $uid,
+					':rel' => UserNet::REL_BACKER,
+					':st' => User::SUB_ST_STAFF,
+					':openid' => User::OPENID_PREFIX . '%'
+				])->queryScalar();
+				if ($backerUId) {
+					$sql = 'INSERT INTO im_user_trans(tCategory,tPId,tUId,tTitle,tAmt,tUnit)
+						SELECT :cat,:uid,:backer,:title,:amt,:unit 
+						FROM dual 
+						WHERE NOT EXISTS(SELECT 1 FROM im_user_trans WHERE tPId=:uid AND tCategory=:cat) ';
+					$ret = $conn->createCommand($sql)->bindValues([
+						':cat' => $category,
+						':uid' => $uid,
+						':backer' => $backerUId,
+						':title' => isset(self::$catDict[$category]) ? self::$catDict[$category] : '',
+						':amt' => $amt,
+						':unit' => $unit,
+					])->execute();
+					if ($ret) {
+						WechatUtil::templateMsg(WechatUtil::NOTICE_REWARD_NEW,
+							$backerUId, '分享拉新奖励媒桂花', $amt . '媒桂花');
+					}
+				}
+				break;
 		}
 		return $ret;
 	}
+
 
 	public static function fansRank($uid, $ranktag = "total", $page = 1, $pageSize = 20)
 	{

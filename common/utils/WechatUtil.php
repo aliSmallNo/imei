@@ -1105,25 +1105,32 @@ class WechatUtil
 		$sql = "SELECT u.uName,u.uOpenId,uPhone,uGender,wSubscribe
 			 FROM im_user as u 
 			 JOIN im_user_wechat as w on u.uId = w.wUId
-			 WHERE w.wSubscribe=1 AND u.uOpenId LIKE 'oYDJew%' 
-			 AND u.uPhone='' ";
+			 WHERE w.wSubscribe=1 AND u.uOpenId LIKE 'oYDJew%' AND u.uPhone='' ";
 		$ret = $conn->createCommand($sql)->queryAll();
+		$openIds = array_column($ret, 'uOpenId');
+		/*
 		$cnt = 0;
-		foreach ($ret as $k => $row) {
-			$name = $row['uName'];
+		 foreach ($ret as $k => $row) {
 			$openid = $row['uOpenId'];
+			$name = $row['uName'];
 			$content = '%s，你的一位微信联系人在［千寻恋恋］上将你设置为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
-//			$content = 'Hi，%s，你的一位微信联系人在［千寻恋恋］上将你设为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
+			$content = 'Hi，%s，你的一位微信联系人在［千寻恋恋］上将你设为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
 			$content = sprintf($content, $name);
-			$cnt += UserWechat::sendMsg($openid, $content);
+			//$cnt += UserWechat::sendMsg($openid, $content);
 			if ($debug && ($cnt % 50 == 0 || $k % 50 == 0)) {
 				var_dump($cnt . '  ' . $k);
 			}
-		}
+			$openIds[] = $openid;
+		}*/
+		$cnt = count($openIds);
 		if ($debug) {
 			var_dump($cnt);
 		}
-		return $cnt;
+		if ($cnt > 1) {
+			$content = '你的一位微信联系人在［千寻恋恋］上将你设置为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
+			$ret = UserWechat::sendMsg($openIds, $content, $debug);
+		}
+		return $ret;
 	}
 
 	public static function getMedia($type = 'image', $page = 1, $pageSize = 20)

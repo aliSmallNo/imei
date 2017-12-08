@@ -1,14 +1,5 @@
-if (document.location.hash === "" || document.location.hash === "#") {
-	//document.location.hash = "#photo";
-}
-require.config({
-	paths: {
-		"jquery": "/assets/js/jquery-3.2.1.min",
-		"layer": "/assets/js/layer_mobile/layer",
-	}
-});
-require(["layer"],
-	function (layer) {
+requirejs(['jquery', 'mustache', 'alpha'],
+	function ($, Mustache, alpha) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -123,32 +114,30 @@ require(["layer"],
 				$(document).on(kClick, ".action-com", function () {
 					util.btn = $(this);
 					var field = util.btn.attr("data-field");
-					if (field == "job") {
-						var html = Mustache.render(util.jobTemp, util.jobVal);
-						util.toggle(html);
+					if (field === 'job') {
+						util.popup('job', util.jobVal, 3);
 					} else {
-						util.toggle($("#" + field + "Temp").html());
+						util.popup(field);
+						//util.toggle($("#" + field + "Temp").html());
 					}
 				});
-				$(document).on(kClick, ".cells > a", function () {
+				$(document).on(kClick, ".m-cells a", function () {
 					var self = $(this);
-					var cells = self.closest(".cells");
+					var cells = self.closest(".m-cells");
 					cells.find("a").removeClass("cur");
 					self.addClass("cur");
-					var tag = self.closest(".cells").attr("data-tag");
+					var tag = cells.attr("data-tag");
 					util.btn.find(".action-val").html(self.html());
 					util.toggle();
-					console.log("cells > a");
-					if (tag == "scope") {
+					if (tag === "scope") {
 						var scopeVal = parseInt(self.find("em").attr("data-key"));
 						util.jobVal = mProfessions[scopeVal];
 						util.jobData();
-						var html = Mustache.render(util.jobTemp, util.jobVal);
-						util.toggle(html);
-						util.btn = $(".action-com[data-field=job]");
+						util.popup('job', util.jobVal, 3);
 					}
 					return false;
 				});
+
 				$(document).on(kClick, ".sedit_mult_wrap a", function () {
 					var self = $(this);
 					var tag = self.closest(".sedit_mult_wrap").attr("data-tag");
@@ -157,8 +146,6 @@ require(["layer"],
 						self.closest(".sedit_mult_wrap").find(".sedit_mult_options").find("a.active").each(function () {
 							html += $(this).html();
 						});
-						console.log(html);
-						console.log(tag);
 						$("[data-field=" + tag + "]").find(".action-val").html(html);
 						util.toggle();
 					} else {
@@ -194,14 +181,13 @@ require(["layer"],
 				});
 				// ["parent","sibling","dwelling","worktype","employer"，"music","book","movie","highschool","university",]
 				$(".sedit-btn-comfirm").on(kClick, function () {
-					var inputFileds = ["name", "highschool", "university", "employer", "music", "book", "movie", "interest", "intro",];
-					var inputFiledsT = ["呢称", "曾读高中名字", "曾读大学名字", "现在单位", "喜欢音乐", "喜欢书籍", "喜欢电影", "兴趣爱好", "自我介绍"];
+					var inputFileds = ["name", "highschool", "employer", "music", "movie", "interest", "intro"];
+					var inputFiledsT = ["呢称", "曾读高中名字", "现在单位", "喜欢音乐", "喜欢电影", "兴趣爱好", "自我介绍"];
 					for (var i = 0; i < inputFileds.length; i++) {
-						var inputVal = $.trim($("[name=" + inputFileds[i] + "]").val());
-						// console.log(inputFiledsT[i] + inputFileds[i] + ":" + inputVal);
+						var inputVal = $("[name=" + inputFileds[i] + "]").val().trim();
 						if (!inputVal) {
-							showMsg(inputFiledsT[i] + ':' + "还没有填写哦~");
-							return;
+							alpha.toast(inputFiledsT[i] + ':' + "还没有填写哦~");
+							return false;
 						}
 						$sls.postData[inputFileds[i]] = inputVal;
 					}
@@ -213,7 +199,11 @@ require(["layer"],
 						};
 						lItem.push(item);
 					});
-					$sls.postData["location"] = JSON.stringify(lItem);
+					if (lItem.length < 3) {
+						alpha.toast("所在城市还没有选择哦~");
+						return false;
+					}
+					$sls.postData.location = JSON.stringify(lItem);
 
 					var hItem = [];
 					$(".action-homeland .homeland em").each(function () {
@@ -223,8 +213,11 @@ require(["layer"],
 						};
 						hItem.push(item);
 					});
-					$sls.postData["homeland"] = JSON.stringify(hItem);
-
+					if (hItem.length < 3) {
+						alpha.toast("你的籍贯还没有选择哦~");
+						return false;
+					}
+					$sls.postData.homeland = JSON.stringify(hItem);
 
 					$(".action-com").each(function () {
 						var self = $(this);
@@ -267,7 +260,6 @@ require(["layer"],
 						}
 					});
 					$sls.postData["filter"] = JSON.stringify(cItem);
-					console.log($sls.postData);
 
 					var localId = util.avatar.attr("localId");
 					if (localId) {
@@ -279,23 +271,18 @@ require(["layer"],
 				});
 			},
 			jobData: function () {
-				var items = [];
-				for (var k = 0; k < SingleUtil.jobVal.length; k++) {
-					items[items.length] = {
-						key: k,
-						name: SingleUtil.jobVal[k]
-					};
+				var util = this;
+				var items = {};
+				for (var k = 0, len = util.jobVal.length; k < len; k++) {
+					items[k] = SingleUtil.jobVal[k];
 				}
-				SingleUtil.jobVal = {items: items};
+				util.jobVal = items;
 			},
 			submit: function () {
 				$sls.postData["img"] = $sls.serverId;
 				$sls.postData["coord"] = $sls.coord.val();
 				// console.log($sls.postData);return;
-				layer.open({
-					type: 2,
-					content: '保存中...'
-				});
+				alpha.loading('正在保存中...');
 				$.post("/api/user", {
 					tag: "sreg",
 					data: JSON.stringify($sls.postData),
@@ -303,24 +290,56 @@ require(["layer"],
 					if (res.code == 0) {
 						setTimeout(function () {
 							location.href = "/wx/single#sme";
-							layer.closeAll();
+							alpha.clear();
 						}, 500);
 					} else {
-						showMsg(res.msg);
+						alpha.toast(res.msg);
 					}
 				}, "json");
 			},
-			toggle: function (content) {
+			popup: function (field, json, col) {
 				var util = this;
+				if (!json && !col) {
+					var bundle = mBundle[field];
+					if (!bundle) {
+						return false;
+					}
+					json = bundle.data;
+					col = bundle.col;
+				}
+				var html = '<ul class="m-cells col' + col + '" data-tag="' + field + '">';
+				var i = 0, flag = false;
+				for (var k in json) {
+					var tmp = (i % 2 === 0);
+					var cls = ((tmp === flag && col % 2 === 0) || (tmp && col % 2 === 1)) && col > 1 ? ' class="gray" ' : '';
+					html += '<li' + cls + '><a href="javascript:;"  ><em data-key="' + k + '">' + json[k] + '</em></a></li>';
+					i++;
+					if (i % col === 0 && i > 0) {
+						flag = !flag;
+					}
+				}
+				html += '</ul>';
+				util.toggle(html, field !== 'job');
+				util.btn = $('.action-com[data-field="' + field + '"]');
+			},
+			toggle: function (content, animate) {
+				var util = this;
+				var showAnimate = animate || 1;
 				if (content) {
-					util.main.show();
-					util.content.html(content).addClass("animate-pop-in");
-					util.shade.fadeIn(160);
+					if (!util.content.hasClass("animate-pop-in")) {
+						util.main.show();
+						util.content.html(content).addClass("animate-pop-in");
+					}
+					if (showAnimate) {
+						util.shade.fadeIn(160);
+					}
 				} else {
 					util.content.removeClass("animate-pop-in");
 					util.main.hide();
 					util.content.html('');
-					util.shade.fadeOut(100);
+					if (showAnimate) {
+						util.shade.fadeOut(100);
+					}
 				}
 			},
 			subAddr: function (pid, tag) {
@@ -329,7 +348,7 @@ require(["layer"],
 					tag: tag,
 					id: pid
 				}, function (resp) {
-					if (resp.code == 0) {
+					if (resp.code < 1) {
 						var tmp = (tag == 'city' ? util.cityTmp : util.districtTmp);
 						if (resp.data.items && resp.data.items.length) {
 							util.content.html(Mustache.render(tmp, resp.data));
@@ -392,27 +411,17 @@ require(["layer"],
 		};
 		DrawUtil.init();
 
-
-		function showMsg(title, sec) {
-			var duration = 2;
-			if (sec) {
-				duration = sec;
-			}
-			layer.open({
-				content: title,
-				skin: 'msg',
-				time: duration
-			});
-		}
-
 		$(function () {
+			$('body').on('touchstart', function () {
+				// do nothing, for link's active
+			});
+
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage', 'getLocation', 'openLocation'];
 			wx.config(wxInfo);
 			wx.ready(function () {
 				wx.hideOptionMenu();
-
 				wx.getLocation({
 					type: 'wgs84',
 					success: function (res) {
@@ -420,7 +429,6 @@ require(["layer"],
 							lat: res.latitude,
 							lng: res.longitude
 						};
-						console.log(bundle);
 						$sls.coord.val(JSON.stringify(bundle));
 					}
 				});
@@ -428,7 +436,5 @@ require(["layer"],
 			SingleUtil.jobVal = mjob;
 			SingleUtil.jobData();
 			$sls.cork.hide();
-
 		});
-
 	});

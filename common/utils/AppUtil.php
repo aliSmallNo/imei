@@ -156,7 +156,7 @@ class AppUtil
 
 	public static function isDebugger($uid)
 	{
-		return in_array($uid, [120003, 131379]);// zp dashixiong
+		return in_array($uid, [120003, 131379, 146306]);// zp dashixiong lizp
 	}
 
 	public static function resDir()

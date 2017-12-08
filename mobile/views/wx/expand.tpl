@@ -4,7 +4,7 @@
 		<img src="{{$thumb}}">
 	</div>
 	<h4 class="big">
-		最好的我们<br>
+		<b style="color: #fff">{{$nickname}}</b><br>
 		邀请你加入实名制高端婚恋平台
 	</h4>
 	<div style="height: 2.5rem"></div>
@@ -54,6 +54,6 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/expand.js?v=1.1.5']);
+		requirejs(['/js/expand.js?v=1.1.6']);
 	});
 </script>

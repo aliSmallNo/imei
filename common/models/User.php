@@ -136,10 +136,10 @@ class User extends ActiveRecord
 	const MARITAL_MARRIED = 130;
 
 	static $Marital = [
-		self::MARITAL_UNMARRIED => "未婚",
+		self::MARITAL_UNMARRIED => "未婚（无婚史）",
 		self::MARITAL_DIVORCE_KID => "离异不带孩",
 		self::MARITAL_DIVORCE_NO_KID => "离异带孩",
-		self::MARITAL_MARRIED => "已婚",
+		self::MARITAL_MARRIED => "已婚（可帮朋友脱单）",
 	];
 
 	static $EducationFilter = [
@@ -1013,7 +1013,10 @@ class User extends ActiveRecord
 			':uid' => $uid,
 			':single' => self::ROLE_SINGLE
 		])->execute();
-		$ret = UserTrans::addReward($uid, UserTrans::CAT_NEW, $conn);
+		//Rain: 奖励新人66媒桂花
+		UserTrans::addReward($uid, UserTrans::CAT_NEW, $conn);
+		//Rain: 奖励媒婆99媒桂花
+		UserTrans::addReward($uid, UserTrans::CAT_MOMENT_RECRUIT, $conn);
 		QueueUtil::loadJob('regeo', ['id' => $uid]);
 
 		return $uid;
@@ -1828,8 +1831,7 @@ class User extends ActiveRecord
 		return [$ret, $titles];
 	}
 
-	public
-	static function searchNet($kw)
+	public static function searchNet($kw)
 	{
 		if (!$kw) {
 			return [];
@@ -1840,8 +1842,7 @@ class User extends ActiveRecord
 		return $res;
 	}
 
-	public
-	static function trendStat($step, $beginDate, $endDate)
+	public static function trendStat($step, $beginDate, $endDate)
 	{
 		$conn = AppUtil::db();
 		$trends['titles'] = date('n.j', strtotime($endDate));
@@ -1979,10 +1980,15 @@ class User extends ActiveRecord
 			$trends['gift'] = intval($res4["gift"]); // 赠送礼物/媒桂花
 		}
 
-		$sql = "select SUM(tAmt/10.0) as amt
- 				from im_user_trans 
- 				WHERE tCategory=100 and tUnit='flower' 
- 					and tAddedOn BETWEEN :beginDT and :endDT ";
+//		$sql = "select SUM(tAmt/10.0) as amt
+// 				from im_user_trans
+// 				WHERE tCategory=100 and tUnit='flower'
+// 					and tAddedOn BETWEEN :beginDT and :endDT ";
+		$sql = "select Round(SUM(p.pTransAmt/100.0),1) as amt
+			from im_user_trans as t 
+			join im_pay as p on p.pId=t.tPId
+			where p.pStatus=100 and t.tDeletedFlag=0
+			and tAddedOn BETWEEN :beginDT and :endDT ";
 		$ret = $conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,

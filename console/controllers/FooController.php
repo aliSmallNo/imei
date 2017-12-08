@@ -16,7 +16,6 @@ use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserWechat;
-use common\service\CogService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\PushUtil;
@@ -931,24 +930,90 @@ class FooController extends Controller
 		var_dump($cnt);
 	}
 
+
+	public function actionFprofile()
+	{
+		$sql = "select uOpenId,uId,uName,uPhone,uMarital,uHeight,uEducation,uBirthYear,w.wSubscribe
+		from im_user as u join im_user_wechat as w on w.wUId=u.uId and w.wSubscribe=1
+		where uPhone!='' and (uMarital=0 or uHeight=0 or uEducation=0 or uBirthYear=0) and uGender>9 and uOpenId like 'oYDJew%' ";
+		$conn = AppUtil::db();
+		$ret = $conn->createCommand($sql)->queryAll();
+		$openIds = array_column($ret, 'uOpenId');
+		$content = '尊敬的千寻恋恋会员，你好，我们发现你的个人资料中可能存在需要完善的信息，如婚史状况，身高，学历，出生年份等。
+希望你能尽快完善自己的个人资料，我们才能为你推荐更匹配的对象哦。
+👉<a href="https://wx.meipo100.com/wx/sedit">点击进入修改</a>👈';
+		$cnt = UserWechat::sendMsg($openIds, $content, true);
+		var_dump($cnt);
+	}
+
 	public function actionRain()
 	{
-		$items = CogService::init()->homeFigures(true);
-		var_dump($items);
+		$openid = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
+		$content = '测试测试~~~ 《男女互撩速成课》（语音直播）已经开始喽~~~
+🔥<a href="https://m.qlchat.com/topic/2000000410463312.htm">点击链接直接进入</a>🔥';
+		$cnt = UserWechat::sendMsg($openid, $content, true);
+		var_dump($cnt);
+
+		$openids = [
+			'oYDJew5EFMuyrJdwRrXkIZLU2c58'
+			, 'oYDJew8T14--gic8Rg8wGwK-p49Q'
+			, 'oYDJew1EQH78EmXqrfjCrpAW16R0'
+			, 'oYDJewxU6LCp3pD4QDC9CzoNX1ak'
+			, 'oYDJew5LjLdjxziryFdg1WQJrG8M'
+			, 'oYDJewwpv2PPSMXI5LfAPQAUmYp8'
+			, 'oYDJew2dMEl0gnDVxIFy74ORWUcs'
+			, 'oYDJewxmPImb3A7OMSg0TgPS4ezQ'
+			, 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'
+			, 'oYDJew2lWRwxl_XcmXBAwH1epBcg'
+			, 'oYDJew24N2Sbwm0FvHPdBT8JwI6M'
+			, 'oYDJew5UWinXKkgvNwr1Uar-6nIE'
+			, 'oYDJew5RDDIoatj6q6G0GC-IBaq4'
+			, 'oYDJewxC_Qar-zm7CoDnKS7Y_EgY'
+		];
+		$cnt = UserWechat::sendMsg($openids, $content, true);
+		var_dump($cnt);
+
 		return;
 
 		$conn = AppUtil::db();
-		$service = CogService::init($conn);
-		$sql = "select * from im_cog WHERE cTitle!='' ";
+		$sql = "select nUId 
+						 from im_user_net as n 
+						 join im_user as u on u.uId=n.nUId and u.uOpenId like :openid
+						 where nSubUId=:uid and nRelation=:rel and u.uSubstatus!=:st ";
+		$backerUId = $conn->createCommand($sql)->bindValues([
+			':uid' => 150540,
+			':rel' => UserNet::REL_BACKER,
+			':st' => User::SUB_ST_STAFF,
+			':openid' => User::OPENID_PREFIX . '%'
+		])->queryScalar();
+		var_dump($backerUId);
+
+		/*$uid=150540;
+		$ret = UserTrans::addReward($uid, UserTrans::CAT_MOMENT_RECRUIT);
+		var_dump($ret);*/
+		/*$conn = AppUtil::db();
+		$sql = "SELECT u.uName,u.uOpenId,uPhone,uGender,wSubscribe
+			 FROM im_user as u 
+			 JOIN im_user_wechat as w on u.uId = w.wUId
+			 WHERE w.wSubscribe=1 AND u.uOpenId LIKE 'oYDJew%' ";
 		$ret = $conn->createCommand($sql)->queryAll();
-		foreach ($ret as $row) {
-			$raw = [
-				'title' => $row['cTitle'],
-				'content' => json_decode($row['cContent'], 1),
-				'count' => intval($row['cCount']),
-			];
-			$service->add(CogService::CAT_NOTICE_TEXT, $raw, $row['cExpiredOn'], 1001);
+		$cnt = 0;
+		foreach ($ret as $k => $row) {
+			$name = $row['uName'];
+			$openid = $row['uOpenId'];
+			$content = '《男女互撩速成课》（语音直播）已经开始喽~~~
+
+🔥<a href="https://m.qlchat.com/topic/2000000410463312.htm">点击链接直接进入</a>🔥';
+			//$content = '%s，你的一位微信联系人在［千寻恋恋］上将你设置为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
+//			$content = 'Hi，%s，你的一位微信联系人在［千寻恋恋］上将你设为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
+//			$content = sprintf($content, $name);
+			$cnt += UserWechat::sendMsg($openid, $content);
+			if (($cnt % 50 == 0 || $k % 50 == 0)) {
+				var_dump($cnt . '  ' . $k);
+			}
 		}
+		var_dump($cnt);*/
+
 
 		/*$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 		$url = 'https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=%s';

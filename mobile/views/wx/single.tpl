@@ -84,7 +84,7 @@
 	</a>
 	<a href="javascript:;" class="btn-comfirm" tag="comfirm">保存</a>
 </section>
-<section id="sme" data-title="个人中心">
+<section id="sme_bak" data-title="个人中心">
 	<div class="useruc">
 		<div class="m-hint" id="cUserHint" {{if !$audit}}style="display:none"{{/if}}>
 			<span><i class="i-mark-warning"></i> {{$audit}}</span>
@@ -93,7 +93,8 @@
 		<div class="u-my-wrap line-bottom">
 			<div class="u-my-bar">
 				<div class="avatar single">
-					<div class="img {{if $uInfo.pending}}pending{{/if}}" style="background-image: url({{$avatar}})"></div>
+					<div class="img {{if $uInfo.pending}}pending{{/if}}"
+					     style="background-image: url({{$avatar}})"></div>
 					{{if $uInfo.cert}}<i class="i-cert"></i>{{/if}}
 					{{foreach from=$uInfo.tags item=tag}}<i class="i-tag{{$tag}}"></i>{{/foreach}}
 				</div>
@@ -120,12 +121,14 @@
 			<a href="#sfav"><span class="title">心动列表</span> <i class="i-mark-base i-mark-favor"></i></a>
 			<a href="#date"><span class="title">我的约会</span></i> <i class="i-mark-base i-mark-date"></i></a>
 			<a href="/wx/comments"><span class="title">对我的评论</span></a>
-			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">我的账户</span> <i class="i-mark-base i-mark-rose"></i></a>
+			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">我的账户</span> <i
+						class="i-mark-base i-mark-rose"></i></a>
 			<a href="/wx/mshare"><span class="title">分享给朋友</span> <i class="i-mark-base i-mark-share"></i></a>
 			<a href="/wx/cert2?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}
 					<span class="tip">已认证</span>
 				{{/if}}</a>
-			<a href="/wx/notice"><span class="title">通知</span>{{if $noReadFlag}}<span class="noReadFlag"></span>{{/if}}</a>
+			<a href="/wx/notice"><span class="title">通知</span>{{if $noReadFlag}}<span class="noReadFlag"></span>{{/if}}
+			</a>
 		</div>
 		<div class="m-rows line-bottom mymp" style="display: none">
 			<a href="/wx/invite"><span class="title">我的媒婆</span> <span class="tip">{{$mpName}}</span></a>
@@ -380,6 +383,58 @@
 		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120"></div>
 		<div class="action"><a href="javascript:;" class="btn-chat-send">发送</a></div>
 	</div>
+</section>
+<section id="sme">
+	<ul class="zone-top">
+		<li>
+			<div class="left">
+				<div class="avatar" style="background-image: url({{$avatar}})"></div>
+			</div>
+			<a href="/wx/sedit" class="flex-1 profile">
+				<h4><span>{{$nickname}}</span><small>资料完成度</small></h4>
+				<ul class="cards"></ul>
+			</a>
+		</li>
+		<li>
+			<div class="left level">
+				<div class="level-1">01</div>
+			</div>
+			<div class="flex-1">
+				<h6>恋爱成就</h6>
+				<p class="percent">
+					<em style="width: 1%"></em>
+					<b>1</b>
+				</p>
+			</div>
+		</li>
+	</ul>
+	<ul class="zone-album"></ul>
+	<ul class="zone-favor-nav">
+		<li>
+			<a href="javascript:;">心动我的</a>
+		</li>
+		<li>
+			<a href="javascript:;">我心动的</a>
+		</li>
+		<li>
+			<a href="javascript:;">相互心动的</a>
+		</li>
+	</ul>
+	<div style="height: 1rem"></div>
+	<ul class="zone-grid">
+		<li><a href="/wx/sw#swallet"><i class="i-zone-grid wallet"></i><em>账户</em></em></a></li>
+		<li><a href="/wx/lottery"><i class="i-zone-grid sign"></i><em>每日签到</em></a></li>
+		<li><a href="#date"><i class="i-zone-grid date"></i><em>约会</em></a></li>
+		<li><a href="/wx/cert2"><i class="i-zone-grid cert"></i><em>实名认证</em></a></li>
+		<li><a href="/wx/notice"><i class="i-zone-grid notice"></i><em>通知</em></a></li>
+		<li><a href="#sranking"><i class="i-zone-grid rank"></i><em>排行榜</em></a></li>
+		<li><a href="/wx/comments"><i class="i-zone-grid comment"></i><em>评论</em></a></li>
+		<li><a href="#sfeedback"><i class="i-zone-grid feedback"></i><em>意见反馈</em></a></li>
+		<li><a href="/wx/setting"><i class="i-zone-grid setting"></i><em>设置</em></a></li>
+		<li><a href="/wx/agree"><i class="i-zone-grid protocol"></i><em>用户协议</em></a></li>
+		<li></li>
+		<li></li>
+	</ul>
 </section>
 <section id="myMP">
 	<div class="nav">
@@ -1325,7 +1380,10 @@
 </script>
 <script src="/assets/js/require.js"></script>
 <script>
+	if (document.location.hash === "" || document.location.hash === "#") {
+		document.location.hash = "#slook";
+	}
 	requirejs(['/js/config.js'], function () {
-		requirejs(['/js/single.js?v=1.4.0']);
+		requirejs(['/js/single.js?v=1.4.7']);
 	});
 </script>

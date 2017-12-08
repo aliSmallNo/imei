@@ -227,8 +227,32 @@ class WxController extends BaseController
 			$job = User::$ProfessionDict[100];
 		}
 
+		$bundle = [
+			'year' => ['data' => User::$Birthyear, 'col' => 4],
+			"height" => ['data' => User::$Height, 'col' => 6],
+			"weight" => ['data' => User::$Weight, 'col' => 3],
+			"income" => ['data' => User::$Income, 'col' => 2],
+			"edu" => ['data' => User::$Education, 'col' => 4],
+			"scope" => ['data' => User::$Scope, 'col' => 3],
+			"house" => ['data' => User::$Estate, 'col' => 2],
+			"car" => ['data' => User::$Car, 'col' => 1],
+			"smoke" => ['data' => User::$Smoke, 'col' => 1],
+			"drink" => ['data' => User::$Alcohol, 'col' => 1],
+			"belief" => ['data' => User::$Belief, 'col' => 2],
+			"workout" => ['data' => User::$Fitness, 'col' => 1],
+			"diet" => ['data' => User::$Diet, 'col' => 1],
+			"rest" => ['data' => User::$Rest, 'col' => 1],
+			"pet" => ['data' => User::$Pet, 'col' => 1],
+			"sign" => ['data' => User::$Horos, 'col' => 2],
+			"marital" => ['data' => User::$Marital, 'col' => 1],
+			"worktype" => ['data' => User::$Worktype, 'col' => 1],
+			"parent" => ['data' => User::$Parent, 'col' => 1],
+			"sibling" => ['data' => User::$Sibling, 'col' => 1],
+			"dwelling" => ['data' => User::$Dwelling, 'col' => 1],
+		];
 		return self::renderPage("sedit.tpl",
 			[
+				'bundle' => json_encode($bundle, JSON_UNESCAPED_UNICODE),
 				'uInfo' => $uInfo,
 				'nickname' => $nickname,
 				'avatar' => $avatar,
@@ -259,11 +283,11 @@ class WxController extends BaseController
 				'incomeF' => User::$IncomeFilter,
 				'eduF' => User::$EducationFilter,
 				"job" => json_encode($job),
-				"filter" => $filter,
 				"worktype" => User::$Worktype,
 				"parent" => User::$Parent,
 				"sibling" => User::$Sibling,
 				"dwelling" => User::$Dwelling,
+				"filter" => $filter,
 			],
 			'terse',
 			'个人资料修改',
@@ -1673,6 +1697,10 @@ class WxController extends BaseController
 
 	public function actionHi()
 	{
+		if ($this->user_id && $this->user_phone && $this->user_location) {
+			header('location:/wx/single');
+			exit();
+		}
 		$openId = self::$WX_OpenId;
 //		if ($this->user_phone && $this->user_role > 9) {
 //			header('location:/wx/single#slook');
@@ -1691,6 +1719,10 @@ class WxController extends BaseController
 
 	public function actionReg0()
 	{
+		if ($this->user_id && $this->user_phone && $this->user_location) {
+			header('location:/wx/single');
+			exit();
+		}
 		$openId = self::$WX_OpenId;
 		if ($this->user_phone) {
 			header('location:/wx/reg1');
@@ -1706,13 +1738,17 @@ class WxController extends BaseController
 
 	public function actionReg1()
 	{
+		if ($this->user_id && $this->user_phone && $this->user_location) {
+			header('location:/wx/single');
+			exit();
+		}
 		$openId = self::$WX_OpenId;
 		LogAction::add($this->user_id, $openId, LogAction::ACTION_REG1);
 		$marital = [
 			User::MARITAL_UNMARRIED => "未婚（无婚史）",
 			User::MARITAL_DIVORCE_NO_KID => "离异带孩",
 			User::MARITAL_DIVORCE_KID => "离异不带孩",
-			User::MARITAL_MARRIED => "已婚（请离开吧）"
+			User::MARITAL_MARRIED => "已婚（可帮朋友脱单）"
 		];
 		$gender = [
 			User::GENDER_FEMALE => "女性",
@@ -1769,7 +1805,7 @@ class WxController extends BaseController
 			User::MARITAL_UNMARRIED => "未婚（无婚史）",
 			User::MARITAL_DIVORCE_KID => "离异不带孩",
 			User::MARITAL_DIVORCE_NO_KID => "离异带孩",
-			User::MARITAL_MARRIED => "已婚（请离开吧）"
+			User::MARITAL_MARRIED => "已婚（可帮朋友脱单）"
 		];
 		return self::renderPage("enroll.tpl",
 			[
@@ -1860,11 +1896,12 @@ class WxController extends BaseController
 	{
 		$uni = self::getParam('uni');
 		$senderId = 0;
-		$thumb = $qrcode = '';
+		$thumb = $qrcode = $nickname = '';
 		if ($uni) {
 			$uInfo = User::findOne(['uUniqid' => $uni]);
 			if ($uInfo) {
 				$senderId = $uInfo['uId'];
+				$nickname = $uInfo['uName'];
 				$thumb = ImageUtil::getItemImages($uInfo['uThumb'])[0];
 				$qrcode = UserQR::getQRCode($senderId, UserQR::CATEGORY_SINGLE, $thumb);
 			} else {
@@ -1879,6 +1916,7 @@ class WxController extends BaseController
 			[
 				'sentFlag' => $sentFlag,
 				'thumb' => $thumb,
+				'nickname' => $nickname,
 				'qrcode' => $qrcode,
 				'uni' => $sharedUni
 			],

@@ -1,6 +1,4 @@
-if (document.location.hash === "" || document.location.hash === "#") {
-	document.location.hash = "#swallet";
-}
+
 require(['jquery', 'mustache', "alpha"],
 	function ($, Mustache, alpha) {
 		"use strict";

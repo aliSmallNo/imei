@@ -1,6 +1,3 @@
-if (document.location.hash === "" || document.location.hash === "#") {
-	document.location.hash = "#slook";
-}
 requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 	function ($, alpha, Mustache, Swiper, io) {
 		"use strict";
@@ -193,6 +190,12 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 			}
 		};
 
+		$(document).on(kClick, '.zone-favor-nav a', function () {
+			var index = $(this).closest('li').index();
+			location.href = '#sfav';
+			$('#sfav .tab a').eq(index).trigger(kClick);
+		});
+
 		function locationHashChanged() {
 			var hashTag = location.hash;
 			hashTag = hashTag.replace("#!", "");
@@ -268,7 +271,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 				case 'addMeWx':
 				case 'IaddWx':
 				case 'sfav':
-					$('#' + hashTag + " .tab a:first").trigger(kClick);
+					//$('#' + hashTag + " .tab a:first").trigger(kClick);
 					FootUtil.toggle(0);
 					break;
 				case 'date':
@@ -1138,7 +1141,8 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 			albums: [],
 			hint: $('#cUserHint'),
 			albumTmp: $('#tpl_album').html(),
-			thumbTmp: '{[#items]}<li><a class="has-pic" style="background-image:url({[.]});"></a></li>{[/items]}',
+			cardTmp: '{[#cards]}<li class="card-{[cat]}"></li>{[/cards]}',
+			thumbTmp: '<li><a href="javascript:;" class="add"></li>{[#items]}<li><a href="#album" style="background-image:url({[.]});"></a></li>{[/items]}',
 			albumSingleTmp: '{[#items]}<li><a class="has-pic" style="background-image:url({[thumb]});" bsrc="{[figure]}"></a><a href="javascript:;" class="del"></a></li>{[/items]}',
 			init: function () {
 				var util = this;
@@ -1221,13 +1225,13 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 				$.post("/api/user", {
 					tag: "myinfo"
 				}, function (resp) {
-					$(".u-my-album .photos").html(Mustache.render(util.thumbTmp, {items: resp.data.img4}));
+					$(".zone-album").html(Mustache.render(util.thumbTmp, {items: resp.data.img4}));
+					$(".zone-top .cards").html(Mustache.render(util.cardTmp, resp.data));
 					util.albums = resp.data.gallery;
 					$("#album .photos").html(Mustache.render(util.albumTmp, util));
-					$(".u-my-album .title").html("相册(" + resp.data.album_cnt + ")");
+					$(".zone-top .profile small").html("资料完成度" + resp.data.percent + "%");
 					var tipHtml = resp.data.hasMp ? "" : "还没有媒婆";
-					$(".u-my-bar .percent span").html(resp.data.percent);
-					var imgWrap = $(".u-my-bar .img");
+					var imgWrap = $(".zone-top .avatar");
 					imgWrap.removeClass('pending');
 					if (resp.data.pending) {
 						imgWrap.addClass('pending');

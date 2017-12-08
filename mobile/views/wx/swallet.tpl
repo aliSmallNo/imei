@@ -61,7 +61,10 @@
 </script>
 <script src="/assets/js/require.js"></script>
 <script>
+	if (document.location.hash === "" || document.location.hash === "#") {
+		document.location.hash = "#swallet";
+	}
 	requirejs(['/js/config.js'], function () {
-		requirejs(['/js/swallet.js?v=1.4.0']);
+		requirejs(['/js/swallet.js?v=1.4.1']);
 	});
 </script>
