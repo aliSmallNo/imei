@@ -81,7 +81,9 @@ require(['jquery', 'alpha'],
 								location.href = '/wx/mshare';
 							});
 						} else {
-							alpha.prompt('千寻提示', util.msg, ['我知道了']);
+							alpha.prompt('千寻提示', util.msg, ['马上分享'], function () {
+								location.href = '/wx/mshare';
+							});
 							util.go.addClass('gray');
 						}
 					}
