@@ -186,6 +186,24 @@ class ChatMsg extends ActiveRecord
 	}
 
 	/**
+	 * @param $rId
+	 * @return false|null|string 聊天室讨论数
+	 */
+	public static function countRoomChat($rId)
+	{
+		$conn = AppUtil::db();
+		list($adminUId, $rlastId) = self::getAdminUIdLastId($conn, $rId);
+		$sql = "SELECT count(*)
+				from im_chat_room as r 
+				join im_chat_msg as c on r.rId=c.cGId 
+				where c.cGId=:rid and cAddedBy !=:adminuid ";
+		return $conn->createCommand($sql)->bindValues([
+			":rid" => $rId,
+			":adminuid" => $adminUId,
+		])->queryScalar();
+	}
+
+	/**
 	 * @param $rId 房间号
 	 * @param $uid 当前用户UID
 	 * @param $lastId
