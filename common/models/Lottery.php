@@ -132,7 +132,7 @@ class Lottery extends ActiveRecord
 	public static function randomPrize()
 	{
 		$bigPrize = [4, 7];
-		$smallPrize = [0, 1, 2, 3];
+		$smallPrize = [0, 2, 3];
 		$arr = [];
 		for ($k = 0; $k < 8; $k++) {
 			$arr[] = $k;
