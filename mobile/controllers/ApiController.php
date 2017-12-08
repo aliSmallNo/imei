@@ -2074,6 +2074,59 @@ class ApiController extends Controller
 		return self::renderAPI(129, '操作无效~');
 	}
 
+	public function actionChatroom()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$openId = self::postParam('openid');
+		if (!$openId) {
+			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		}
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			return self::renderAPI(129, '用户不存在啊~');
+		}
+		$uid = $wxInfo['uId'];
+
+		switch ($tag) {
+			case 'sent':
+				$text = trim(self::postParam('text'));
+				$rId = trim(self::postParam('rid'));
+				if (!$text) {
+					return self::renderAPI(129, '消息不能为空啊~');
+				}
+				$ret = ChatMsg::RoomAddChat($rId, $uid, $text);
+				if ($ret === false) {
+					return self::renderAPI(129, '发送失败~');
+				} else {
+					return self::renderAPI(0, '', [
+						'items' => $ret,
+					]);
+				}
+				break;
+			case 'list':
+
+				$lastId = self::postParam('lastid', 0);
+				$rid = self::postParam('rid');
+				if (!$rid) {
+					return self::renderAPI(129, '对话不存在啊~');
+				}
+				//LogAction::add($uid, $openId, LogAction::ACTION_CHAT, $subUId);
+				//list($gId, $left) = ChatMsg::groupEdit($uid, $subUId);
+				list($adminChats, $chatItems, $danmuItems, $lastId, $nextpage) = ChatMsg::roomChatDetails($uid, $rid, $lastId);
+				return self::renderAPI(0, '', [
+					"admin" => $adminChats,
+					"chat" => $chatItems,
+					"danmu" => $danmuItems,
+					"lastId" => intval($lastId),
+					"nextpage" => $nextpage,
+					'left' => 0,
+					'gid' => 0,
+				]);
+				break;
+		}
+		return self::renderAPI(129, '操作无效~');
+	}
+
 	public function actionDate()
 	{
 		$tag = trim(strtolower(self::postParam('tag')));

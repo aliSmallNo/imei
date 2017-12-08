@@ -156,6 +156,177 @@ class ChatMsg extends ActiveRecord
 		return true;
 	}
 
+	public static function getAdminUIdLastId($conn, $rId)
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$sql = "SELECT rAdminUId,rLastId from im_chat_room where rId=:rid";
+		$room = $conn->createCommand($sql)->bindValues([
+			":rid" => $rId,
+		])->queryOne();
+		if (!$room) {
+			return false;
+		}
+		return [$room["rAdminUId"], $room["rLastId"]];
+	}
+
+	public static function roomChatDetails($uid, $rId, $lastId, $page = 1)
+	{
+		// 管理员消息
+		list($adminChats, $rlastId) = self::chatItems($rId, $uid, $lastId, 1, 1, 0);
+		$adminChats = array_reverse($adminChats);
+		// 群员消息
+		list($chatItems, $rlastId, $nextpage) = self::chatItems($rId, $uid, $lastId, $page, 0, 1);
+		// 弹幕消息
+		list($danmuItems) = self::chatItems($rId, $uid, $lastId, $page, 0, 0, 1);
+		$danmuItems = array_reverse($danmuItems);
+
+		return [$adminChats, $chatItems, $danmuItems, $rlastId, $nextpage];
+	}
+
+	/**
+	 * @param $rId 房间号
+	 * @param $uid 当前用户UID
+	 * @param $lastId
+	 * @param int $isAdmin 是否是管理员
+	 * @param $isFenye 是否分页
+	 * @param $isDanmu 是否是弹幕消息
+	 * @param int $page 页码
+	 * @return array
+	 */
+	public static function chatItems($rId, $uid, $lastId, $page = 1, $isAdmin = 0, $isFenye = 1, $isDanmu = 0)
+	{
+		$conn = AppUtil::db();
+		$pagesize = 15;
+		list($adminUId, $rlastId) = self::getAdminUIdLastId($conn, $rId);
+
+		$adminStr = " and cAddedBy !=:adminuid";
+		if ($isAdmin) {
+			$adminStr = " and cAddedBy =:adminuid";
+		}
+		$limit = "";
+		if ($isFenye) {
+			$limit = " limit " . ($page - 1) * $pagesize . "," . ($pagesize + 1);
+		}
+		$param = [
+			":rid" => $rId,
+			":adminuid" => $adminUId,
+			":lastid" => $lastId,
+			":rlastid" => $rlastId,
+		];
+
+		$lastIdStr = " and cId BETWEEN :lastid and :rlastid ";
+		if ($isDanmu) {
+			$lastIdStr = "";
+			$limit = " limit 0,3 ";
+			unset($param[":lastid"]);
+			unset($param[":rlastid"]);
+		}
+
+		$sql = "SELECT c.* ,uName,uThumb,uId,uUniqid as uni
+				from im_chat_room as r 
+				join im_chat_msg as c on r.rId=c.cGId 
+				join im_user as u on u.uId=c.cAddedBy
+				where c.cGId=:rid $adminStr $lastIdStr
+				order by cAddedon desc $limit ";
+		$chatlist = $conn->createCommand($sql)->bindValues($param)->queryAll();
+		$res = [];
+		foreach ($chatlist as $v) {
+			$res[] = [
+				'id' => $v["cId"],
+				'rid' => $rId,
+				'left' => 100,
+				'content' => $v["cContent"],
+				'addedon' => date("m-d H:i", strtotime($v["cAddedOn"])),
+				'isAdmin' => $adminUId == $v["cAddedBy"] ? 1 : 0,
+				'type' => self::TYPE_TEXT,
+				'name' => $v['uName'],
+				'avatar' => $v['uThumb'],
+				'uni' => $v['uni'],
+				'senderid' => $uid,
+				'eid' => AppUtil::encrypt($uid),
+			];
+		}
+		$nextpage = 0;
+		if ($isFenye) {
+			$nextpage = count($res) > $pagesize ? $page++ : 0;
+			array_pop($res);
+		}
+		return [$res, $rlastId, $nextpage];
+	}
+
+	/**
+	 * @param $rId 群ID
+	 * @param $senderId 发送者UID
+	 * @param $content 发送内容
+	 * @param null $conn
+	 */
+	public static function RoomAddChat($rId, $senderId, $content, $conn = null)
+	{
+		$roomInfo = ChatRoom::one($rId);
+		$adminUId = $roomInfo ? $roomInfo["rAdminUId"] : '';
+		if (!$adminUId) {
+			return false;
+		}
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+
+		$sql = 'SELECT count(1) FROM im_chat_msg WHERE cGId=:rid ';
+		$cnt = $conn->createCommand($sql)->bindValues([
+			':rid' => $rId,
+		])->queryScalar();
+		$cnt = intval($cnt);
+
+		$entity = new self();
+		$entity->cGId = $rId;
+		$entity->cContent = $content;
+		$lower = strtolower($content);
+		/*		if (AppUtil::endWith($lower, '.jpg')
+					|| AppUtil::endWith($lower, '.jpeg')
+					|| AppUtil::endWith($lower, '.png')
+					|| AppUtil::endWith($lower, '.gif')) {
+					$entity->cType = self::TYPE_IMAGE;
+				} elseif (AppUtil::endWith($lower, '.mp3')
+					|| AppUtil::endWith($lower, '.amr')) {
+					$entity->cType = self::TYPE_VOICE;
+				}
+		*/
+		$entity->cAddedBy = $senderId;
+		$entity->save();
+		$cId = $entity->cId;
+
+		$sql = 'UPDATE im_chat_room SET rLastId=:cid
+ 				WHERE rId=:rid ';
+		$conn->createCommand($sql)->bindValues([
+			':cid' => $cId,
+			':rid' => $rId,
+		])->execute();
+
+		$sql = 'SELECT uName,uThumb,uId,uUniqid as uni 
+				FROM im_user WHERE uId =:uid';
+		$ret = $conn->createCommand($sql)->bindValues([
+			":uid" => $senderId
+		])->queryAll();
+		$ret = $ret[0];
+		$info = [
+			'id' => $cId,
+			'rid' => $rId,
+			'left' => 100,
+			'content' => $content,
+			'addedon' => date('m-d H:i:s'),
+			'isAdmin' => $adminUId == $senderId ? 1 : 0,
+			'type' => self::TYPE_TEXT,
+			'name' => $ret['uName'],
+			'avatar' => $ret['uThumb'],
+			'uni' => $ret['uni'],
+			'senderid' => $senderId,
+			'eid' => AppUtil::encrypt($senderId),
+		];
+		return $info;
+	}
+
 	/**
 	 * @param $senderId
 	 * @param $receiverId

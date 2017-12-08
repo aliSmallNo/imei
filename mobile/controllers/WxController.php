@@ -8,6 +8,9 @@
 
 namespace mobile\controllers;
 
+use common\models\ChatMsg;
+use common\models\ChatRoom;
+use common\models\ChatRoomFella;
 use common\models\City;
 use common\models\Date;
 use common\models\Log;
@@ -1883,4 +1886,30 @@ class WxController extends BaseController
 			$title,
 			'bg-expand');
 	}
+
+	public function actionChatroom()
+	{
+		$rid = 101;
+		$roomInfo = ChatRoom::one($rid);
+		$uid = $this->user_id;
+		if (!$uid || !$roomInfo) {
+			header('location:/wx/error');
+			exit();
+		}
+		ChatRoomFella::addone($rid, $uid);
+
+		$adminUId = $roomInfo["rAdminUId"];
+		return self::renderPage("chatroom.tpl",
+			[
+				'rid' => $rid,
+				'uid' => $uid,
+				'roomInfo' => $roomInfo,
+				'avatar' => User::findOne(["uId" => $adminUId])->uThumb,
+				"isadmin" => $adminUId == $uid ? 1 : 0,
+			],
+			'terse',
+			'千寻聊天室',
+			'bg-cr');
+	}
+
 }
