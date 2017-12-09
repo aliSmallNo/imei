@@ -55,11 +55,15 @@ require(['jquery', 'alpha'],
 						if (resp.code < 1) {
 							util.spin();
 						} else if (resp.code > 0 && util.remaining > 0) {
-							alpha.prompt('千寻提示', util.msg, ['马上分享'], function () {
-								location.href = '/wx/shares';
-							});
+							setTimeout(function () {
+								alpha.prompt('千寻提示', util.msg, ['马上分享'], function () {
+									location.href = '/wx/shares';
+								});
+							}, 360);
 						} else {
-							alpha.prompt('千寻提示', util.msg, ['我知道了']);
+							setTimeout(function () {
+								alpha.prompt('千寻提示', util.msg, ['我知道了']);
+							}, 360);
 						}
 						util.running = false;
 
@@ -77,13 +81,17 @@ require(['jquery', 'alpha'],
 					util.table.find('.active').addClass('prize');
 					if (util.msg) {
 						if (util.msg.remaining > 0) {
-							alpha.prompt('千寻提示', util.msg, ['马上分享'], function () {
-								location.href = '/wx/shares';
-							});
+							setTimeout(function () {
+								alpha.prompt('千寻提示', util.msg, ['马上分享'], function () {
+									location.href = '/wx/shares';
+								});
+							}, 360);
 						} else {
-							alpha.prompt('千寻提示', util.msg, ['马上分享'], function () {
-								location.href = '/wx/shares';
-							});
+							setTimeout(function () {
+								alpha.prompt('千寻提示', util.msg, ['马上分享'], function () {
+									location.href = '/wx/shares';
+								});
+							}, 360);
 							util.go.addClass('gray');
 						}
 					}
