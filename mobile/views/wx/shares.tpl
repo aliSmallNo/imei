@@ -31,7 +31,8 @@
 	}
 
 	.big-img {
-		width: 96%;
+		width: 98%;
+		text-align: center;
 	}
 
 	.big-img img {
