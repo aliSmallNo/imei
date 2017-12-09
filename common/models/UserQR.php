@@ -159,8 +159,8 @@ class UserQR extends ActiveRecord
 		$sql = 'update im_user_qr set qStatus=0 WHERE qUId=:uid AND qCategory=:cat';
 		$cmdUpdate = $conn->createCommand($sql);
 
-		$sql = 'INSERT INTO im_user_qr(qUId,qOpenId,qCategory,qMD5,qTitle,qSubTitle,qUrl,qRaw) 
-			SELECT uId,uOpenId,:cat,:md5,:title,:subtitle,:url,:raw FROM im_user WHERE uId=:uid ';
+		$sql = 'INSERT INTO im_user_qr(qUId,qOpenId,qCategory,qMD5, qUrl,qRaw) 
+			SELECT uId,uOpenId,:cat,:md5,:url,:raw FROM im_user WHERE uId=:uid ';
 		$cmdAdd = $conn->createCommand($sql);
 
 		foreach ($backgrounds as $background) {
