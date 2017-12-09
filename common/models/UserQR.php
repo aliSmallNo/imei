@@ -197,6 +197,7 @@ class UserQR extends ActiveRecord
 			$cmdUpdate->bindValues([
 				':uid' => $uid,
 				':cat' => $category,
+				':md5' => $md5,
 			])->execute();
 
 			$cmdAdd->bindValues([
