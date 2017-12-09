@@ -1996,4 +1996,21 @@ class WxController extends BaseController
 			'cr-bg');
 	}
 
+	public function actionChatrooms()
+	{
+		$uid = $this->user_id;
+		if (!$uid ) {
+			header('location:/wx/error');
+			exit();
+		}
+
+		return self::renderPage("chatrooms.tpl",
+			[
+				//'rooms' => $rooms,
+			],
+			'terse',
+			'我的群聊',
+			'');
+	}
+
 }

@@ -114,7 +114,7 @@
 			<td class="members-des">
 				<div>
 					{{foreach from=$item.members item=user}}
-					<span>{{$user.uName}} {{$user.uPhone}}</span> <br>
+					<span>{{$user.uName}} {{$user.uPhone}}</span><br>
 					{{/foreach}}
 				</div>
 			</td>

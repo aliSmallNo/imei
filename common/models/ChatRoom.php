@@ -79,6 +79,7 @@ class ChatRoom extends ActiveRecord
 			$item = self::item($conn, $v["rId"]);
 			$v["count"] = count($item);
 			$v["members"] = $item;
+
 		}
 
 		$sql = "SELECT COUNT(*) from im_chat_room as r 
@@ -101,8 +102,49 @@ class ChatRoom extends ActiveRecord
 		$res = $conn->createCommand($sql)->bindValues([
 			":rid" => $rid,
 		])->queryAll();
+
 		return $res;
 	}
 
+
+	public static function rooms($uid, $page = 1, $pageSize = 15)
+	{
+		$conn = AppUtil::db();
+		$limit = "limit " . ($page - 1) * $pageSize . "," . $pageSize;
+		$sql = "SELECT r.*,count(*) as co from im_chat_room as r 
+				join im_chat_room_fella as m on r.rId=m.mRId
+				where m.mUId=:uid
+				group by r.rId
+				ORDER BY r.rAddedOn desc $limit ";
+		$res = $conn->createCommand($sql)->bindValues([
+			":uid" => $uid,
+		])->queryAll();
+		foreach ($res as &$v) {
+			$item = self::recentChat($conn, $v["rId"]);
+			$v["name"] = $item["rname"];
+			$v["content"] = $item["cContent"];
+			$v["time"] = AppUtil::prettyDate($item["cAddedOn"]);
+		}
+		return $res;
+
+	}
+
+	public static function recentChat($conn, $rid)
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+
+		$sql = "SELECT c.*,uName as rname from im_chat_room as r 
+				join im_chat_msg as c on c.cGId=r.rId 
+				join im_user as u on u.uId =c.cAddedBy
+				where rId =:rid
+				ORDER BY c.cId desc limit 1";
+		$msg = $conn->createCommand($sql)->bindValues([
+			":rid" => $rid,
+		])->queryOne();
+
+		return $msg;
+	}
 
 }
