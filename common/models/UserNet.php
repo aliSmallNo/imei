@@ -779,7 +779,7 @@ class UserNet extends ActiveRecord
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
 		$conn = AppUtil::db();
-		$sql = "SELECT u.uName as `name`,u.uPhone as phone,u.uId as id,u.uThumb as thumb, Date_format(u1.uAddedOn, '%H') as hr,
+		$sql = "SELECT u.uName as `name`,u.uPhone as phone,u.uId as id,u.uThumb as thumb, Date_format(n.nAddedOn, '%H') as hr,
 			COUNT(case WHEN n.nRelation=:rel1 then 1 end) as scan,
 			COUNT(case WHEN n.nRelation=:rel2 then 1 end) as subscribe,
 			COUNT(case WHEN n.nRelation=:rel2 AND IFNULL(w.wSubscribe,0)=0 then 1 end) as unsubscribe,
