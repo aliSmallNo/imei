@@ -166,7 +166,7 @@ class UserQR extends ActiveRecord
 
 		foreach ($backgrounds as $background) {
 			list($bgImage, $qrSize, $offsetX, $offsetY) = $background;
-			$raw = json_encode([$uid, $avatar, $bgImage, $qrSize, $offsetX, $offsetY], JSON_UNESCAPED_UNICODE);
+			$raw = json_encode([$uid, $avatar, $bgImage, $qrSize, $offsetX, $offsetY, AppUtil::scene()], JSON_UNESCAPED_UNICODE);
 			$md5 = md5($raw);
 			$ret = $cmd->bindValues([
 				':uid' => $uid,
@@ -185,7 +185,7 @@ class UserQR extends ActiveRecord
 				$tmpFile = AppUtil::imgDir() . 'qr' . date('ymdHi') . RedisUtil::getImageSeq();
 				$qrFile = self::downloadFile($qrFile, $tmpFile);
 			}
-			list($width, $height, $type) = getimagesize($bgImage);
+			//list($width, $height, $type) = getimagesize($bgImage);
 
 			$saveAs = AppUtil::imgDir() . 'qr' . date('ymdHi') . RedisUtil::getImageSeq() . '.jpg';
 			$mergeImg = Image::open($qrFile)->zoomCrop($qrSize, $qrSize, 0xffffff, 'left', 'top');
@@ -212,7 +212,6 @@ class UserQR extends ActiveRecord
 		}
 		return $qrItems;
 	}
-
 
 	public static function mpShareQR($uid, $avatar = '', $title = '')
 	{
