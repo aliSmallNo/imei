@@ -83,18 +83,14 @@ require(['jquery', 'swiper', 'alpha'],
 					imgUrl: imgUrl,
 					type: '',
 					dataUrl: '',
-					success: function () {
-						shareLog('share', '/wx/shares');
-					}
+					success: shareLog('share', '/wx/shares')
 				};
 			} else {
 				return {
 					title: title,
 					link: linkUrl,
 					imgUrl: imgUrl,
-					success: function () {
-						shareLog('moment', '/wx/shares');
-					}
+					success: shareLog('moment', '/wx/shares')
 				};
 			}
 		}
