@@ -146,10 +146,10 @@ class UserQR extends ActiveRecord
 		}
 		$rootFolder = AppUtil::rootDir();
 		$backgrounds = [
-			[$rootFolder . 'mobile/web/images/share/share01.jpg', 280, 145, 545],
+			[$rootFolder . 'mobile/web/images/share/share01.jpg', 290, 140, 545],
 			[$rootFolder . 'mobile/web/images/share/share02.jpg', 260, 155, 550],
 			[$rootFolder . 'mobile/web/images/share/share03.jpg', 250, 160, 350],
-			[$rootFolder . 'mobile/web/images/share/share04.jpg', 260, 20, 570],
+			[$rootFolder . 'mobile/web/images/share/share04.jpg', 260, 18, 570],
 		];
 		$category = self::CATEGORY_SHARES;
 		$qrItems = [];
