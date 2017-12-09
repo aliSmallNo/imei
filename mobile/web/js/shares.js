@@ -63,22 +63,15 @@ require(['jquery', 'swiper', 'alpha'],
 			});
 		}
 
-		$(function () {
-			$('body').on('touchstart', function () {
-				// Do nothing
-			});
-			var wxInfo = JSON.parse($sls.wxString);
-			wxInfo.debug = false;
-			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
-			wx.config(wxInfo);
+		function shareOptions(type) {
 			var uni = $("#cUNI").val();
 			var idx = $("#cIDX").val();
 			var linkUrl = "https://wx.meipo100.com/wx/shares?uni=" + uni + '&idx=' + idx;
 			var imgUrl = "https://bpbhd-10063905.file.myqcloud.com/image/n1712061178801.png";
 			var title = '千寻恋恋，本地优质的单身男女都在这，赶快来相互认识下吧！';
 			var desc = '千寻恋恋，帮助身边的单身青年尽快脱单，推荐身边单身好友注册可以获得奖励哦~';
-			wx.ready(function () {
-				wx.onMenuShareAppMessage({
+			if (type === 'message') {
+				return {
 					title: title,
 					desc: desc,
 					link: linkUrl,
@@ -88,15 +81,30 @@ require(['jquery', 'swiper', 'alpha'],
 					success: function () {
 						shareLog('share', '/wx/shares');
 					}
-				});
-				wx.onMenuShareTimeline({
+				};
+			} else {
+				return {
 					title: title,
 					link: linkUrl,
 					imgUrl: imgUrl,
 					success: function () {
 						shareLog('moment', '/wx/shares');
 					}
-				});
+				};
+			}
+		}
+
+		$(function () {
+			$('body').on('touchstart', function () {
+				// Do nothing
+			});
+			var wxInfo = JSON.parse($sls.wxString);
+			wxInfo.debug = false;
+			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
+			wx.config(wxInfo);
+			wx.ready(function () {
+				wx.onMenuShareAppMessage(shareOptions('message'));
+				wx.onMenuShareTimeline(shareOptions('timeline'));
 			});
 			resetSwiper();
 

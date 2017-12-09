@@ -34,7 +34,6 @@
 		width: 100%;
 		text-align: center;
 		padding-top: 2rem;
-
 	}
 
 	.big-img img {
@@ -75,6 +74,6 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/shares.js?v=1.4.8']);
+		requirejs(['/js/shares.js?v=1.4.9']);
 	});
 </script>
