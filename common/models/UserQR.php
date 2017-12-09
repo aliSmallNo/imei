@@ -186,7 +186,7 @@ class UserQR extends ActiveRecord
 			}
 			list($width, $height, $type) = getimagesize($bgImage);
 
-			$saveAs = AppUtil::imgDir() . 'qr' . RedisUtil::getImageSeq() . '.jpg';
+			$saveAs = AppUtil::imgDir() . 'qr' . date('ymdHi') . RedisUtil::getImageSeq() . '.jpg';
 			$mergeImg = Image::open($qrFile)->zoomCrop($qrSize, $qrSize, 0xffffff, 'left', 'top');
 			$img = Image::open($bgImage)
 				->merge($mergeImg, 15, $height - $qrSize - 25, $qrSize, $qrSize)
