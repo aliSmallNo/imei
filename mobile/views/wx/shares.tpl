@@ -29,6 +29,9 @@
 		color: #6d4c41;
 		background: #fdd835;
 	}
+	.action a:active{
+		background: #ddd000;
+	}
 
 	.big-img {
 		width: 100%;
