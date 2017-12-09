@@ -47,7 +47,7 @@
 		<div class="swiper-container">
 			<div class="swiper-wrapper">
 				{{foreach from=$adverts item=item}}
-					<div class="swiper-slide" data-url="{{$item.url}}"><img src="{{$item.image}}" alt=""></div>
+					<div class="swiper-slide"><img src="{{$item.image}}" data-url="{{$item.url}}" alt=""></div>
 				{{/foreach}}
 			</div>
 			<div class="swiper-pagination"></div>
@@ -391,7 +391,9 @@
 				<div class="avatar" style="background-image: url({{$avatar}})"></div>
 			</div>
 			<a href="/wx/sedit" class="flex-1 profile">
-				<h4><span>{{$nickname}}</span><small>资料完成度</small></h4>
+				<h4><span>{{$nickname}}</span>
+					<small>资料完成度</small>
+				</h4>
 				<ul class="cards"></ul>
 			</a>
 		</li>
@@ -424,6 +426,7 @@
 	<ul class="zone-grid">
 		<li><a href="/wx/sw#swallet"><i class="i-zone-grid wallet"></i><em>账户</em></em></a></li>
 		<li><a href="/wx/lottery"><i class="i-zone-grid sign"></i><em>每日签到</em></a></li>
+		<li><a href="/wx/shares"><i class="i-zone-grid share"></i><em>分享给朋友</em></em></a></li>
 		<li><a href="#date"><i class="i-zone-grid date"></i><em>约会</em></a></li>
 		<li><a href="/wx/cert2"><i class="i-zone-grid cert"></i><em>实名认证</em></a></li>
 		<li><a href="/wx/notice"><i class="i-zone-grid notice"></i><em>通知</em></a></li>
@@ -432,7 +435,6 @@
 		<li><a href="#sfeedback"><i class="i-zone-grid feedback"></i><em>意见反馈</em></a></li>
 		<li><a href="/wx/setting"><i class="i-zone-grid setting"></i><em>设置</em></a></li>
 		<li><a href="/wx/agree"><i class="i-zone-grid protocol"></i><em>用户协议</em></a></li>
-		<li></li>
 		<li></li>
 	</ul>
 </section>
@@ -1383,7 +1385,7 @@
 	if (document.location.hash === "" || document.location.hash === "#") {
 		document.location.hash = "#slook";
 	}
-	requirejs(['/js/config.js'], function () {
-		requirejs(['/js/single.js?v=1.4.7']);
+	requirejs(['/js/config.js?v=1.1'], function () {
+		requirejs(['/js/single.js?v=1.4.8']);
 	});
 </script>

@@ -15,10 +15,11 @@
 		<link type="image/png" href="/favicon.png?v=1.1.2" rel="icon">
 		<link type="image/png" href="/favicon.png?v=1.1.2" rel="shortcut icon">
 		<link rel="stylesheet" href="/assets/css/layer.min.css?v=1.1.2">
+		<link rel="stylesheet" href="/assets/css/swiper.min.css">
 		<link rel="stylesheet" href="/css/imei.min.css?v=<?= $this->params['ver'] ?>">
 		<script src="/assets/js/jweixin-1.2.0.js"></script>
 	</head>
-	<body class="<?= $this->params['page_body_cls'] ?>">
+	<body class="<?= $this->params['page_body_cls'] ?>" ontouchstart="void(0);">
 	<?= $content ?>
 	</body>
 	</html>

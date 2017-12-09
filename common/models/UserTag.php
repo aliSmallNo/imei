@@ -206,13 +206,14 @@ class UserTag extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
+		$items = [];
+
 		$sql = "select u.uId as uid,u.uName,u.uPhone,u.uGender,
 		 count(distinct date_format(a.aDate,'%Y-%m-%d')) as cnt 
 		 from im_log_action as a 
 		 join im_user as u on u.uId=a.aUId and u.uPhone!='' AND u.uGender>9 $strCriteria
 		 group by u.uId order by cnt ";
 		$ret = $conn->createCommand($sql)->queryAll();
-		$items = [];
 		foreach ($ret as $row) {
 			$uid = $row['uid'];
 			if (!isset($items[$uid])) {
@@ -227,7 +228,7 @@ class UserTag extends ActiveRecord
 		$sql = "select count(gId) as cnt,u.uId as uid, u.uGender
 			from im_chat_group as g
 			join im_user as u on u.uId= g.gAddedBy and u.uOpenId like 'oYDJew%' and u.uPhone!=''
-			where gStatus=1 
+			where gStatus=1 $strCriteria
 			group by u.uId ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		foreach ($ret as $row) {

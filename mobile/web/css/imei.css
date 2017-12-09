@@ -3685,13 +3685,13 @@ section {
       background-size: 5.63rem 14.4rem;
       background-repeat: no-repeat; }
     .account-header .item .ico-card-188 {
-      background-position: 0 0rem; }
+      background-position: center 0rem; }
     .account-header .item .ico-card-187 {
-      background-position: 0 -3.6rem; }
+      background-position: center -3.6rem; }
     .account-header .item .ico-card-182 {
-      background-position: 0 -7.2rem; }
+      background-position: center -7.2rem; }
     .account-header .item .ico-card-183 {
-      background-position: 0 -10.8rem; }
+      background-position: center -10.8rem; }
     .account-header .item .ico-rose {
       padding-left: 1.6rem;
       background: url(../images/ico_rose.png) no-repeat left center;
@@ -8443,33 +8443,35 @@ ul.co-ul {
       margin: 0;
       width: 3.2rem;
       height: 3.2rem;
-      background-image: url(../images/sprite_me.png);
-      background-size: 3.2rem 38.4rem;
+      background-image: url(../images/sprite_me.png?v=1.1);
+      background-size: 3.2rem 41.6rem;
       background-repeat: no-repeat; }
       .zone-grid li .i-zone-grid.sign {
         background-position: 0 0rem; }
-      .zone-grid li .i-zone-grid.protocol {
-        background-position: 0 -3.2rem; }
-      .zone-grid li .i-zone-grid.cert {
-        background-position: 0 -6.4rem; }
-      .zone-grid li .i-zone-grid.feedback {
-        background-position: 0 -9.6rem; }
-      .zone-grid li .i-zone-grid.rank {
-        background-position: 0 -12.8rem; }
-      .zone-grid li .i-zone-grid.wallet {
-        background-position: 0 -16rem; }
       .zone-grid li .i-zone-grid.shop {
-        background-position: 0 -19.2rem; }
-      .zone-grid li .i-zone-grid.date {
-        background-position: 0 -22.4rem; }
-      .zone-grid li .i-zone-grid.bag {
-        background-position: 0 -25.6rem; }
-      .zone-grid li .i-zone-grid.setting {
-        background-position: 0 -28.8rem; }
-      .zone-grid li .i-zone-grid.comment {
-        background-position: 0 -32rem; }
+        background-position: 0 -3.2rem; }
       .zone-grid li .i-zone-grid.notice {
+        background-position: 0 -6.4rem; }
+      .zone-grid li .i-zone-grid.date {
+        background-position: 0 -9.6rem; }
+      .zone-grid li .i-zone-grid.setting {
+        background-position: 0 -12.8rem; }
+      .zone-grid li .i-zone-grid.feedback {
+        background-position: 0 -16rem; }
+      .zone-grid li .i-zone-grid.protocol {
+        background-position: 0 -19.2rem; }
+      .zone-grid li .i-zone-grid.comment {
+        background-position: 0 -22.4rem; }
+      .zone-grid li .i-zone-grid.rank {
+        background-position: 0 -25.6rem; }
+      .zone-grid li .i-zone-grid.bag {
+        background-position: 0 -28.8rem; }
+      .zone-grid li .i-zone-grid.wallet {
+        background-position: 0 -32rem; }
+      .zone-grid li .i-zone-grid.share {
         background-position: 0 -35.2rem; }
+      .zone-grid li .i-zone-grid.cert {
+        background-position: 0 -38.4rem; }
 
 .cr-guide {
   padding: 1rem; }
