@@ -97,7 +97,7 @@
 			</td>
 			<td>
 				<div>群员数: {{$item.count}}</div>
-				<a href="wx.meipo100.com/wx/chatroom?rid={{$item.rId}}" title="点击右键，拷贝链接，发到微信中，才可以打开">{{$item.rTitle}}</a>
+				<a href="https://wx.meipo100.com/wx/chatroom?rid={{$item.rId}}" title="点击右键，拷贝链接，发到微信中，才可以打开">{{$item.rTitle}}</a>
 			</td>
 			<td align="center">
 				<img src="{{$item.uThumb}}">
