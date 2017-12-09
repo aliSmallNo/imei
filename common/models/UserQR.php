@@ -174,7 +174,7 @@ class UserQR extends ActiveRecord
 				':md5' => $md5,
 			])->queryScalar();
 			if ($ret) {
-				$qrItems[] = $ret['qUrl'];
+				$qrItems[] = $ret;
 				continue;
 			}
 
