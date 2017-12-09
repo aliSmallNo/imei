@@ -66,6 +66,9 @@ require(['jquery', 'swiper', 'alpha'],
 		function shareOptions(type) {
 			var uni = $("#cUNI").val();
 			var idx = $("#cIDX").val();
+			if ($sls.sw) {
+				idx = $sls.sw.realIndex;
+			}
 			var linkUrl = "https://wx.meipo100.com/wx/shares?uni=" + uni + '&idx=' + idx;
 			var imgUrl = "https://bpbhd-10063905.file.myqcloud.com/image/n1712061178801.png";
 			var title = '千寻恋恋，本地优质的单身男女都在这，赶快来相互认识下吧！';
