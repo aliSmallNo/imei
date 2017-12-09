@@ -77,6 +77,6 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/shares.js?v=1.5.1']);
+		requirejs(['/js/shares.js?v=1.5.2']);
 	});
 </script>
