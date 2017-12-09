@@ -11,6 +11,7 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use common\models\ChatMsg;
+use common\models\ChatRoom;
 use common\models\City;
 use common\models\Date;
 use common\models\Log;
@@ -560,6 +561,25 @@ class ApiController extends Controller
 				}
 				$ret = CogService::init()->edit($data, $this->admin_id);
 				return self::renderAPI(0, $ret ? '保存成功！' : '保存失败！', ['result' => $ret]);
+				break;
+		}
+	}
+
+	public function actionRoom()
+	{
+		$tag = strtolower(self::postParam("tag"));
+		switch ($tag) {
+			case 'edit':
+				$data = json_decode(self::postParam('data'), 1);
+				if (isset($_FILES['image']['tmp_name']) && isset($_FILES['image']['name']) && $_FILES['image']['name']) {
+					$tmp = $_FILES['image']['tmp_name'];
+					$ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+					$data['logo'] = COSUtil::init(COSUtil::UPLOAD_PATH, $tmp, $ext)->uploadOnly(false, false, false);
+				} else {
+					return self::renderAPI(129, '还没选择logo图');
+				}
+				$ret = ChatRoom::reg($data);
+				return self::renderAPI(0, $ret ? '保存成功！' : '保存失败！', ['result' => $data]);
 				break;
 		}
 	}

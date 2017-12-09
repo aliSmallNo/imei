@@ -37,44 +37,71 @@ class ChatRoom extends ActiveRecord
 		return true;
 	}
 
+	public static function reg($data)
+	{
+		if (!$data) {
+			return false;
+		}
+		$fieldMap = [
+			"logo" => "rLogo",
+			"admin" => "rAdminUId",
+			"title" => "rTitle",
+		];
+		$insertData = [];
+		foreach ($data as $k => $v) {
+			if (isset($fieldMap[$k])) {
+				$insertData[$fieldMap[$k]] = $v;
+			}
+		}
+		return self::add($insertData);
+	}
+
 	public static function one($rId)
 	{
 		$roomInfo = self::find()->where(["rId" => $rId])->asArray()->one();
 		return $roomInfo;
 	}
 
-	public static function items($criteria, $params, $page = 1, $pageSize = 20)
+	public static function items($condition, $params, $page = 1, $pageSize = 20)
 	{
 		$conn = AppUtil::db();
 		$strCriteria = '';
-		if ($criteria) {
-			$strCriteria = ' AND ' . implode(' AND ', $criteria);
+		if ($condition) {
+			$strCriteria = ' AND ' . implode(' AND ', $condition);
 		}
 		$limit = "limit " . ($page - 1) * $pageSize . "," . $pageSize;
-		$sql = "select u.uName,u.uThumb,c.* 
-				from im_event_crew as c 
-				left join im_user as u on u.uOpenId=c.cOpenId
-				where cId >0   
-				ORDER BY cId desc  
-				$limit";
+		$sql = "SELECT r.*,u.uName,u.uThumb,u.uPhone from im_chat_room as r 
+				join im_user as u on r.rAdminUId=u.uId
+				where rId >0 $strCriteria
+				ORDER BY r.rAddedOn desc $limit";
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as &$v) {
-			$note = json_decode($v["cNote"], 1);
-			$gender = isset($note["gender"]) ? $note["gender"] : '';
-			$age = isset($note["birthyear"]) ? $note["birthyear"] : '2017-01-01';
-			$v["gender"] = isset(self::$genderDict[$gender]) ? self::$genderDict[$gender] : "";
-			$v["age"] = date("Y") - date("Y", strtotime($age));
-
+			$item = self::item($conn, $v["rId"]);
+			$v["count"] = count($item);
+			$v["members"] = $item;
 		}
 
-		$sql = "select count(1) as co 
-				from im_event_crew as c 
-				left join im_user as u on u.uOpenId=c.cOpenId 
-				where cId >0 $strCriteria ";
-		$count = $conn->createCommand($sql)->bindValues($params)->queryOne();
-		$count = $count ? $count["co"] : 0;
+		$sql = "SELECT COUNT(*) from im_chat_room as r 
+				join im_user as u on r.rAdminUId=u.uId
+				where rId >0 $strCriteria ";
+		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
 
 		return [$res, $count];
+	}
+
+	public static function item($conn, $rid)
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$sql = "SELECT u.* from im_chat_room as r 
+				join im_chat_room_fella as m on r.rId=m.mRId
+				join im_user as u on u.uId=m.mUId 
+				where rId=:rid";
+		$res = $conn->createCommand($sql)->bindValues([
+			":rid" => $rid,
+		])->queryAll();
+		return $res;
 	}
 
 

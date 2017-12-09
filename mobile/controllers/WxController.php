@@ -1962,7 +1962,10 @@ class WxController extends BaseController
 
 	public function actionChatroom()
 	{
-		$rid = 101;
+		$rid = self::getParam("rid");
+		if (!$rid) {
+			$rid = 101;
+		}
 		$roomInfo = ChatRoom::one($rid);
 		$uid = $this->user_id;
 		if (!$uid || !$roomInfo) {
