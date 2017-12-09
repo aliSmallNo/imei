@@ -14,8 +14,6 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
-use common\models\UserTag;
-use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
@@ -966,6 +964,8 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
+		$ret = UserQR::shares(131379);
+		var_dump($ret);
 //		$ret = explode("/",'白马骑士/豪门公主');
 		/*$ret = UserTag::calcExp();
 		var_dump($ret);*/

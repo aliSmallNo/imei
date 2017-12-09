@@ -134,6 +134,84 @@ class UserQR extends ActiveRecord
 		return $accessUrl;
 	}
 
+	public static function shares($uid, $avatar = '')
+	{
+		$conn = AppUtil::db();
+		if (!$avatar) {
+			$sql = 'select uThumb from im_user WHERE uId=:id ';
+			$avatar = $conn->createCommand($sql)->bindValues([
+				':id' => $uid
+			])->queryScalar();
+		}
+		$rootFolder = AppUtil::rootDir();
+		$backgrounds = [
+			[$rootFolder . 'mobile/web/images/share/share01.jpg', 250, 160, 550],
+			[$rootFolder . 'mobile/web/images/share/share02.jpg', 260, 155, 540],
+			[$rootFolder . 'mobile/web/images/share/share03.jpg', 250, 160, 350],
+			[$rootFolder . 'mobile/web/images/share/share04.jpg', 250, 30, 590],
+		];
+		$category = self::CATEGORY_MATCH_SHARE;
+		$qrItems = [];
+		$sql = 'select * from im_user_qr 
+			WHERE qUId=:uid AND qCategory=:cat AND qMD5=:md5 AND qStatus=1';
+		$cmd = $conn->createCommand($sql);
+
+		$sql = 'update im_user_qr set qStatus=0 WHERE qUId=:uid AND qCategory=:cat';
+		$cmdUpdate = $conn->createCommand($sql);
+
+		$sql = 'INSERT INTO im_user_qr(qUId,qOpenId,qCategory,qMD5,qTitle,qSubTitle,qUrl,qRaw) 
+			SELECT uId,uOpenId,:cat,:md5,:title,:subtitle,:url,:raw FROM im_user WHERE uId=:uid ';
+		$cmdAdd = $conn->createCommand($sql);
+
+		foreach ($backgrounds as $background) {
+			list($bgImage, $qrSize, $offsetX, $offsetY) = $background;
+			$raw = json_encode([$uid, $avatar, $bgImage, $qrSize, $offsetX, $offsetY], JSON_UNESCAPED_UNICODE);
+			$md5 = md5($raw);
+			$ret = $cmd->bindValues([
+				':uid' => $uid,
+				':cat' => $category,
+				':md5' => $md5,
+			])->queryScalar();
+			if ($ret) {
+				$qrItems[] = $ret['qUrl'];
+				continue;
+			}
+
+			$qrFile = self::getQRCode($uid, self::CATEGORY_MATCH, $avatar);
+			if (AppUtil::isDev()) {
+				$qrFile = $rootFolder . 'mobile/web/images/qrmeipo100.jpg';
+			} elseif (strpos($qrFile, 'http') !== false) {
+				$tmpFile = AppUtil::imgDir() . 'qr' . date('ymdHi') . RedisUtil::getImageSeq();
+				$qrFile = self::downloadFile($qrFile, $tmpFile);
+			}
+			list($width, $height, $type) = getimagesize($bgImage);
+
+			$saveAs = AppUtil::imgDir() . 'qr' . RedisUtil::getImageSeq() . '.jpg';
+			$mergeImg = Image::open($qrFile)->zoomCrop($qrSize, $qrSize, 0xffffff, 'left', 'top');
+			$img = Image::open($bgImage)
+				->merge($mergeImg, 15, $height - $qrSize - 25, $qrSize, $qrSize)
+				->save($saveAs);
+			$qUrl = ImageUtil::getUrl($saveAs);
+
+			$cmdUpdate->bindValues([
+				':uid' => $uid,
+				':cat' => $category,
+			])->execute();
+
+			$cmdAdd->bindValues([
+				':uid' => $uid,
+				':cat' => $category,
+				':md5' => $md5,
+				':raw' => $raw,
+				':url' => $qUrl,
+			])->execute();
+
+			$qrItems[] = $qUrl;
+		}
+		return $qrItems;
+	}
+
+
 	public static function mpShareQR($uid, $avatar = '', $title = '')
 	{
 		$conn = AppUtil::db();
