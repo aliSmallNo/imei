@@ -19,7 +19,7 @@
 		<link rel="stylesheet" href="/css/imei.min.css?v=<?= $this->params['ver'] ?>">
 		<script src="/assets/js/jweixin-1.2.0.js"></script>
 	</head>
-	<body class="<?= $this->params['page_body_cls'] ?>" ontouchstart="void(0);">
+	<body class="<?= $this->params['page_body_cls'] ?>">
 	<?= $content ?>
 	</body>
 	</html>

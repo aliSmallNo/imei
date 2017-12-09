@@ -1918,7 +1918,8 @@ class WxController extends BaseController
 				'thumb' => $thumb,
 				'nickname' => $nickname,
 				'qrcode' => $qrcode,
-				'uni' => $sharedUni
+				'uni' => $sharedUni,
+				'uid' => $this->user_id
 			],
 			'terse',
 			$title,
@@ -1928,20 +1929,27 @@ class WxController extends BaseController
 	public function actionShares()
 	{
 		$uni = self::getParam('uni');
+		$idx = self::getParam('idx', 0);
 		$senderId = 0;
-		$preview = [];
-		$thumb = $qrcode = $nickname = '';
+		$qrcode = '';
 		if ($uni) {
 			$uInfo = User::findOne(['uUniqid' => $uni]);
 			if ($uInfo) {
 				$senderId = $uInfo['uId'];
-				$nickname = $uInfo['uName'];
-				$thumb = ImageUtil::getItemImages($uInfo['uThumb'])[0];
-				$qrcode = UserQR::getQRCode($senderId, UserQR::CATEGORY_SINGLE, $thumb);
+				$shares = UserQR::shares($senderId);
+				if (count($shares) - 1 < $idx || $idx < 0) {
+					$idx = 0;
+				}
+				$qrcode = $shares[$idx];
 			} else {
 				header('location:/wx/error?msg=链接无效！');
 				exit();
 			}
+		} elseif ($this->user_id) {
+			$shares = UserQR::shares($this->user_id);
+		} else {
+			header('location:/wx/error?msg=链接无效！');
+			exit();
 		}
 		$sentFlag = $senderId > 0 ? 1 : 0;
 		$title = $sentFlag ? '千寻恋恋-缘来是你' : '分享千寻恋恋';
@@ -1949,11 +1957,11 @@ class WxController extends BaseController
 		return self::renderPage("shares.tpl",
 			[
 				'sentFlag' => $sentFlag,
-				'thumb' => $thumb,
-				'nickname' => $nickname,
 				'qrcode' => $qrcode,
-				'preview' => $preview,
-				'uni' => $sharedUni
+				'shares' => $shares,
+				'uni' => $sharedUni,
+				'idx' => $idx,
+				'uid' => $this->user_id
 			],
 			'terse',
 			$title,

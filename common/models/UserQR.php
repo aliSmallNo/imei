@@ -21,7 +21,7 @@ class UserQR extends ActiveRecord
 	const CATEGORY_SINGLE = 20; //Rain: 拉单身汉
 	const CATEGORY_MATCH = 30; //Rain: 拉媒婆
 	const CATEGORY_MATCH_SHARE = 35; //Rain: 媒婆推广
-	const CATEGORY_SHARES = 36; //Rain: 媒婆推广
+	const CATEGORY_SHARES = 39; //Rain: 媒婆推广
 	const CATEGORY_MARRY = 100; //Rain: 婚礼请帖
 
 	public static function tableName()
@@ -146,14 +146,14 @@ class UserQR extends ActiveRecord
 		}
 		$rootFolder = AppUtil::rootDir();
 		$backgrounds = [
-			[$rootFolder . 'mobile/web/images/share/share01.jpg', 270, 150, 550],
-			[$rootFolder . 'mobile/web/images/share/share02.jpg', 260, 155, 540],
+			[$rootFolder . 'mobile/web/images/share/share01.jpg', 290, 140, 545],
+			[$rootFolder . 'mobile/web/images/share/share02.jpg', 270, 150, 550],
 			[$rootFolder . 'mobile/web/images/share/share03.jpg', 250, 160, 350],
-			[$rootFolder . 'mobile/web/images/share/share04.jpg', 250, 30, 590],
+			[$rootFolder . 'mobile/web/images/share/share04.jpg', 260, 18, 570],
 		];
 		$category = self::CATEGORY_SHARES;
 		$qrItems = [];
-		$sql = 'select * from im_user_qr 
+		$sql = 'select qUrl from im_user_qr 
 			WHERE qUId=:uid AND qCategory=:cat AND qMD5=:md5 AND qStatus=1';
 		$cmd = $conn->createCommand($sql);
 
@@ -166,7 +166,7 @@ class UserQR extends ActiveRecord
 
 		foreach ($backgrounds as $background) {
 			list($bgImage, $qrSize, $offsetX, $offsetY) = $background;
-			$raw = json_encode([$uid, $avatar, $bgImage, $qrSize, $offsetX, $offsetY], JSON_UNESCAPED_UNICODE);
+			$raw = json_encode([$uid, $avatar, $bgImage, $qrSize, $offsetX, $offsetY, AppUtil::scene()], JSON_UNESCAPED_UNICODE);
 			$md5 = md5($raw);
 			$ret = $cmd->bindValues([
 				':uid' => $uid,
@@ -174,7 +174,7 @@ class UserQR extends ActiveRecord
 				':md5' => $md5,
 			])->queryScalar();
 			if ($ret) {
-				$qrItems[] = $ret['qUrl'];
+				$qrItems[] = $ret;
 				continue;
 			}
 
@@ -185,7 +185,7 @@ class UserQR extends ActiveRecord
 				$tmpFile = AppUtil::imgDir() . 'qr' . date('ymdHi') . RedisUtil::getImageSeq();
 				$qrFile = self::downloadFile($qrFile, $tmpFile);
 			}
-			list($width, $height, $type) = getimagesize($bgImage);
+			//list($width, $height, $type) = getimagesize($bgImage);
 
 			$saveAs = AppUtil::imgDir() . 'qr' . date('ymdHi') . RedisUtil::getImageSeq() . '.jpg';
 			$mergeImg = Image::open($qrFile)->zoomCrop($qrSize, $qrSize, 0xffffff, 'left', 'top');
@@ -212,7 +212,6 @@ class UserQR extends ActiveRecord
 		}
 		return $qrItems;
 	}
-
 
 	public static function mpShareQR($uid, $avatar = '', $title = '')
 	{
