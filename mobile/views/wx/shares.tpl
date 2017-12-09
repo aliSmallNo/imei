@@ -33,7 +33,8 @@
 	.big-img {
 		width: 100%;
 		text-align: center;
-		padding-top: 1rem;
+		padding-top: 2rem;
+
 	}
 
 	.big-img img {
