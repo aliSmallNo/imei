@@ -940,25 +940,25 @@ class FooController extends Controller
 		from im_user as u join im_user_wechat as w on w.wUId=u.uId and w.wSubscribe=1
 		where uPhone!='' and (uMarital=0 or uHeight=0 or uEducation=0 or uBirthYear=0) and uGender>9 and uOpenId like 'oYDJew%' ";
 
-		$strCats = implode(",", UserTrans::$CatMinus);
+		/*$strCats = implode(",", UserTrans::$CatMinus);
 		$sql = "select u.uId,u.uName,u.uOpenId,
 			SUM(case when tCategory in ($strCats) then -tAmt else tAmt end) as amt
 			 from im_user_trans as t 
 			 join im_user as u on u.uId=t.tUId and u.uPhone!='' and uOpenId like 'oYDJew%'
 			 join im_user_wechat as w on w.wUId=u.uId and w.wSubscribe=1
 			 where t.tUnit='flower'
-			 group by u.uId having amt<50";
+			 group by u.uId having amt<50";*/
 		$ret = $conn->createCommand($sql)->queryAll();
 
 		$openIds = array_column($ret, 'uOpenId');
 
-		$content = '尊敬的千寻恋恋会员，你好，我们发现你的个人资料中可能存在需要完善的信息，如婚史状况，身高，学历，出生年份等。
-希望你能尽快完善自己的个人资料，我们才能为你推荐更匹配的对象哦。
-👉<a href="https://wx.meipo100.com/wx/sedit">点击进入修改</a>👈';
+		$content = '尊敬的千寻恋恋会员，你好，我们发现你的个人资料不够完整，如婚史状况，身高，学历，出生年份等。
+请尽快完善自己的个人资料，我们将为你推荐更适合你的对象哦。
+👉<a href="https://wx.meipo100.com/wx/sedit">点击进入修改资料</a>👈';
 
-		$content='你好，系统显示你的媒桂花少于50朵
+		/*$content='你好，系统显示你的媒桂花少于50朵
 
-👉<a href="https://wx.meipo100.com/wx/expand">点击去赚取媒桂花</a>👈';
+👉<a href="https://wx.meipo100.com/wx/expand">点击去赚取媒桂花</a>👈';*/
 
 		$cnt = UserWechat::sendMsg($openIds, $content, true);
 		var_dump($cnt);
@@ -967,8 +967,8 @@ class FooController extends Controller
 	public function actionRain()
 	{
 //		$ret = explode("/",'白马骑士/豪门公主');
-		$ret = UserTag::calcExp();
-		var_dump($ret);
+		/*$ret = UserTag::calcExp();
+		var_dump($ret);*/
 
 		/*$uid=150540;
 		$ret = UserTrans::addReward($uid, UserTrans::CAT_MOMENT_RECRUIT);
