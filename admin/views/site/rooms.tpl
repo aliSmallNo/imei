@@ -100,7 +100,7 @@
 				<a href="https://wx.meipo100.com/wx/chatroom?rid={{$item.rId}}" title="点击右键，拷贝链接，发到微信中，才可以打开">{{$item.rTitle}}</a>
 			</td>
 			<td align="center">
-				<img src="{{$item.uThumb}}">
+				<img src="{{$item.uThumb}}" class="i-av" bsrc="{{$item.uThumb}}">
 			</td>
 			<td>
 				{{$item.uName}}<br/>
@@ -108,7 +108,7 @@
 			</td>
 			<td class="members">
 				{{foreach from=$item.members key=key item=user}}
-				{{if $key<10}}<img src="{{$user.uThumb}}">{{/if}}
+				{{if $key<10}}<img src="{{$user.uThumb}}" class="i-av" bsrc="{{$user.uAvatar}}" >{{/if}}
 				{{/foreach}}
 			</td>
 			<td class="members-des">
@@ -137,7 +137,7 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
 									aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title"></h4>
+				<h4 class="modal-title">添加群</h4>
 			</div>
 			<div class="modal-body">
 				<div class="form-horizontal">
@@ -281,6 +281,30 @@
 			}
 		});
 	});
+
+
+  $(document).on("click", ".i-av", function () {
+	  var self = $(this);
+	  var photos = {
+		  title: '头像大图',
+		  data: [{
+			  src: self.attr("bsrc")
+		  }]
+	  };
+	  showImages(photos);
+  });
+  function showImages(imagesJson, idx) {
+	  if (idx) {
+		  imagesJson.start = idx;
+	  }
+	  layer.photos({
+		  photos: imagesJson,
+		  shift: 5,
+		  tab: function (info) {
+			  console.log(info);
+		  }
+	  });
+  }
 
 </script>
 {{include file="layouts/footer.tpl"}}
