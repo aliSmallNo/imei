@@ -56,7 +56,7 @@ require(['jquery', 'alpha'],
 							util.spin();
 						} else if (resp.code > 0 && util.remaining > 0) {
 							alpha.prompt('千寻提示', util.msg, ['马上分享'], function () {
-								location.href = '/wx/mshare';
+								location.href = '/wx/shares';
 							});
 						} else {
 							alpha.prompt('千寻提示', util.msg, ['我知道了']);
@@ -78,11 +78,11 @@ require(['jquery', 'alpha'],
 					if (util.msg) {
 						if (util.msg.remaining > 0) {
 							alpha.prompt('千寻提示', util.msg, ['马上分享'], function () {
-								location.href = '/wx/mshare';
+								location.href = '/wx/shares';
 							});
 						} else {
 							alpha.prompt('千寻提示', util.msg, ['马上分享'], function () {
-								location.href = '/wx/mshare';
+								location.href = '/wx/shares';
 							});
 							util.go.addClass('gray');
 						}
