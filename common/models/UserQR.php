@@ -153,7 +153,7 @@ class UserQR extends ActiveRecord
 		];
 		$category = self::CATEGORY_SHARES;
 		$qrItems = [];
-		$sql = 'select * from im_user_qr 
+		$sql = 'select qUrl from im_user_qr 
 			WHERE qUId=:uid AND qCategory=:cat AND qMD5=:md5 AND qStatus=1';
 		$cmd = $conn->createCommand($sql);
 
