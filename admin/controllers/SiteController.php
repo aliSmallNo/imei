@@ -858,7 +858,7 @@ class SiteController extends BaseController
 		$edate = self::getParam("edate");
 		$criteria = $params = [];
 		if ($sdate && $edate) {
-			$criteria[] = "n.nAddedOn between :sdt  and :edt ";
+			$criteria[] = "n.nAddedOn between :sdt and :edt ";
 			$params[':sdt'] = $sdate . ' 00:00:00';
 			$params[':edt'] = $edate . ' 23:59:50';
 		}
