@@ -69,6 +69,7 @@
 		<div class="m-popup-content no-bg"></div>
 	</div>
 </div>
+<input type="hidden" id="cUID" value="{{$uid}}">
 <input type="hidden" id="cUNI" value="{{$uni}}">
 <input type="hidden" id="cIDX" value="{{$idx}}">
 <script type="text/template" id="tpl_wx_info">
@@ -77,6 +78,6 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/shares.js?v=1.5.4']);
+		requirejs(['/js/shares.js?v=1.5.6']);
 	});
 </script>

@@ -8,6 +8,7 @@ requirejs(['jquery', 'alpha'],
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
+			uid: $('#cUID').val()
 		};
 
 		$('.btn-share').on(kClick, function () {
@@ -22,9 +23,6 @@ requirejs(['jquery', 'alpha'],
 			}, 2000);
 		});
 
-		$('body').on('touchstart',function () {
-			// do nothing, for link's active
-		});
 
 		function shareLog(tag, note) {
 			$.post("/api/share", {
@@ -39,6 +37,9 @@ requirejs(['jquery', 'alpha'],
 		}
 
 		$(function () {
+			$('body').on('touchstart', function () {
+				// do nothing, for link's active
+			});
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];

@@ -29,7 +29,6 @@ require(['jquery', 'swiper', 'alpha'],
 		});
 
 		function shareLog(tag, note) {
-			alpha.toast('分享了哦~', 1);
 			$.post("/api/share", {
 				tag: tag,
 				id: $sls.uid,
@@ -84,14 +83,18 @@ require(['jquery', 'swiper', 'alpha'],
 					imgUrl: imgUrl,
 					type: '',
 					dataUrl: '',
-					success: shareLog('share', '/wx/shares')
+					success: function () {
+						shareLog('share', '/wx/shares');
+					}
 				};
 			} else {
 				return {
 					title: title,
 					link: linkUrl,
 					imgUrl: imgUrl,
-					success: shareLog('moment', '/wx/shares')
+					success: function () {
+						shareLog('moment', '/wx/shares');
+					}
 				};
 			}
 		}

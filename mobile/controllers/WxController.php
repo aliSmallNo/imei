@@ -1918,7 +1918,8 @@ class WxController extends BaseController
 				'thumb' => $thumb,
 				'nickname' => $nickname,
 				'qrcode' => $qrcode,
-				'uni' => $sharedUni
+				'uni' => $sharedUni,
+				'uid' => $this->user_id
 			],
 			'terse',
 			$title,
@@ -1959,7 +1960,8 @@ class WxController extends BaseController
 				'qrcode' => $qrcode,
 				'shares' => $shares,
 				'uni' => $sharedUni,
-				'idx' => $idx
+				'idx' => $idx,
+				'uid' => $this->user_id
 			],
 			'terse',
 			$title,
