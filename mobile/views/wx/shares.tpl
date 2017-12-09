@@ -31,12 +31,13 @@
 	}
 
 	.big-img {
-		width: 98%;
+		width: 100%;
 		text-align: center;
+		padding-top: 1rem;
 	}
 
 	.big-img img {
-		width: 100%;
+		width: 98%;
 	}
 </style>
 {{if $qrcode}}
