@@ -21,6 +21,7 @@ class UserQR extends ActiveRecord
 	const CATEGORY_SINGLE = 20; //Rain: 拉单身汉
 	const CATEGORY_MATCH = 30; //Rain: 拉媒婆
 	const CATEGORY_MATCH_SHARE = 35; //Rain: 媒婆推广
+	const CATEGORY_SHARES = 36; //Rain: 媒婆推广
 	const CATEGORY_MARRY = 100; //Rain: 婚礼请帖
 
 	public static function tableName()
@@ -145,18 +146,18 @@ class UserQR extends ActiveRecord
 		}
 		$rootFolder = AppUtil::rootDir();
 		$backgrounds = [
-			[$rootFolder . 'mobile/web/images/share/share01.jpg', 250, 160, 550],
+			[$rootFolder . 'mobile/web/images/share/share01.jpg', 270, 150, 550],
 			[$rootFolder . 'mobile/web/images/share/share02.jpg', 260, 155, 540],
 			[$rootFolder . 'mobile/web/images/share/share03.jpg', 250, 160, 350],
 			[$rootFolder . 'mobile/web/images/share/share04.jpg', 250, 30, 590],
 		];
-		$category = self::CATEGORY_MATCH_SHARE;
+		$category = self::CATEGORY_SHARES;
 		$qrItems = [];
 		$sql = 'select * from im_user_qr 
 			WHERE qUId=:uid AND qCategory=:cat AND qMD5=:md5 AND qStatus=1';
 		$cmd = $conn->createCommand($sql);
 
-		$sql = 'update im_user_qr set qStatus=0 WHERE qUId=:uid AND qCategory=:cat';
+		$sql = 'update im_user_qr set qStatus=0 WHERE qUId=:uid AND qCategory=:cat AND qMD5=:md5';
 		$cmdUpdate = $conn->createCommand($sql);
 
 		$sql = 'INSERT INTO im_user_qr(qUId,qOpenId,qCategory,qMD5, qUrl,qRaw) 
@@ -189,13 +190,14 @@ class UserQR extends ActiveRecord
 			$saveAs = AppUtil::imgDir() . 'qr' . date('ymdHi') . RedisUtil::getImageSeq() . '.jpg';
 			$mergeImg = Image::open($qrFile)->zoomCrop($qrSize, $qrSize, 0xffffff, 'left', 'top');
 			$img = Image::open($bgImage)
-				->merge($mergeImg, 15, $height - $qrSize - 25, $qrSize, $qrSize)
+				->merge($mergeImg, $offsetX, $offsetY, $qrSize, $qrSize)
 				->save($saveAs);
 			$qUrl = ImageUtil::getUrl($saveAs);
 
 			$cmdUpdate->bindValues([
 				':uid' => $uid,
 				':cat' => $category,
+				':md5' => $md5,
 			])->execute();
 
 			$cmdAdd->bindValues([
