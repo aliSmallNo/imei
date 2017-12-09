@@ -21,7 +21,7 @@ class UserQR extends ActiveRecord
 	const CATEGORY_SINGLE = 20; //Rain: 拉单身汉
 	const CATEGORY_MATCH = 30; //Rain: 拉媒婆
 	const CATEGORY_MATCH_SHARE = 35; //Rain: 媒婆推广
-	const CATEGORY_SHARES = 36; //Rain: 媒婆推广
+	const CATEGORY_SHARES = 39; //Rain: 媒婆推广
 	const CATEGORY_MARRY = 100; //Rain: 婚礼请帖
 
 	public static function tableName()
