@@ -14,7 +14,6 @@ require(['jquery', 'swiper', 'alpha'],
 			dt: $('.input-opt'),
 			star: $('.input-star'),
 			uid: $('#cUID').val(),
-			sw: null
 		};
 
 		$('.btn-share').on(kClick, function () {
@@ -26,7 +25,7 @@ require(['jquery', 'swiper', 'alpha'],
 				$sls.main.hide();
 				$sls.main.find('.share-arrow').remove();
 				$sls.shade.fadeOut(100);
-			}, 2500);
+			}, 2000);
 		});
 
 		function shareLog(tag, note) {
@@ -45,11 +44,17 @@ require(['jquery', 'swiper', 'alpha'],
 			if ($('.swiper-container').length < 1) {
 				return false;
 			}
-			$sls.sw = new Swiper('.swiper-container', {
+			new Swiper('.swiper-container', {
 				effect: 'coverflow',
 				grabCursor: true,
 				centeredSlides: true,
 				slidesPerView: 'auto',
+				on: {
+					slideChangeTransitionEnd: function () {
+						wx.onMenuShareAppMessage(shareOptions('message', this.realIndex));
+						wx.onMenuShareTimeline(shareOptions('timeline', this.realIndex));
+					}
+				},
 				coverflowEffect: {
 					rotate: 40,
 					stretch: 0,
@@ -63,12 +68,9 @@ require(['jquery', 'swiper', 'alpha'],
 			});
 		}
 
-		function shareOptions(type) {
+		function shareOptions(type, index) {
 			var uni = $("#cUNI").val();
-			var idx = $("#cIDX").val();
-			if ($sls.sw) {
-				idx = $sls.sw.realIndex;
-			}
+			var idx = index || $("#cIDX").val();
 			var linkUrl = "https://wx.meipo100.com/wx/shares?uni=" + uni + '&idx=' + idx;
 			var imgUrl = "https://bpbhd-10063905.file.myqcloud.com/image/n1712061178801.png";
 			var title = '千寻恋恋，本地优质的单身男女都在这，赶快来相互认识下吧！';
