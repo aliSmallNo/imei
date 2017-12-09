@@ -1982,7 +1982,7 @@ class WxController extends BaseController
 			],
 			'terse',
 			'千寻聊天室',
-			'bg-cr');
+			'cr-bg');
 	}
 
 }
