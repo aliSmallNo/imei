@@ -966,7 +966,7 @@ class FooController extends Controller
 	{
 		$ret = UserQR::shares(131379);
 		foreach ($ret as $row) {
-			var_dump($row);
+			echo $row;
 		}
 
 //		$ret = explode("/",'白马骑士/豪门公主');
