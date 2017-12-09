@@ -118,7 +118,6 @@ require(["layer"],
 		}
 
 		$(function () {
-			$("body").addClass("bg-color");
 			// FootUtil.init();
 			// SingleUtil.init();
 			var wxInfo = JSON.parse($sls.wxString);

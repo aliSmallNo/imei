@@ -29,21 +29,35 @@
 		color: #6d4c41;
 		background: #fdd835;
 	}
+
+	.big-img {
+		width: 96%;
+	}
+
+	.big-img img {
+		width: 100%;
+	}
 </style>
-<div style="height: 3rem"></div>
-<div class="swiper-container">
-	<div class="swiper-wrapper">
-		{{foreach from=$shares item=share}}
-			<div class="swiper-slide">
-				<img src="{{$share}}" alt="">
-			</div>
-		{{/foreach}}
+{{if $qrcode}}
+	<div class="big-img">
+		<img src="{{$qrcode}}" alt="">
 	</div>
-	<div class="swiper-pagination"></div>
-</div>
-<div class="action">
-	<a href="javascript:;" class="btn-share">立即分享</a>
-</div>
+{{else}}
+	<div style="height: 3rem"></div>
+	<div class="swiper-container">
+		<div class="swiper-wrapper">
+			{{foreach from=$shares item=share}}
+				<div class="swiper-slide">
+					<img src="{{$share}}" alt="">
+				</div>
+			{{/foreach}}
+		</div>
+		<div class="swiper-pagination"></div>
+	</div>
+	<div class="action">
+		<a href="javascript:;" class="btn-share">立即分享</a>
+	</div>
+{{/if}}
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
