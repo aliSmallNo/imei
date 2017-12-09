@@ -2376,7 +2376,7 @@ class ApiController extends Controller
 				$amt = 16;
 				$note = self::postParam('note');
 				$nId = UserNet::addShare($uid, $subUId, UserNet::REL_QR_MOMENT, $note);
-				if ($note == '/wx/mshare' || $note == '/wx/shares') {
+				if ($note == '/wx/mshare') {
 					return self::renderAPI(0, '分享成功！非常感谢你对我们的支持');
 				}
 				$ret = UserTrans::shareReward($uid, $nId, UserTrans::CAT_MOMENT, $amt, UserTrans::UNIT_GIFT);
