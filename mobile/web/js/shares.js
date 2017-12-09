@@ -29,6 +29,7 @@ require(['jquery', 'swiper', 'alpha'],
 		});
 
 		function shareLog(tag, note) {
+			alpha.toast('分享了哦~', 1);
 			$.post("/api/share", {
 				tag: tag,
 				id: $sls.uid,
