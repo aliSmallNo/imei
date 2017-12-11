@@ -982,8 +982,8 @@ class ApiController extends Controller
 				}
 				$remainRose = UserTrans::getStat($wx_uid, 1);
 				$flower = isset($remainRose['flower']) ? $remainRose['flower'] : 0;
-				if ($flower < $amt) {
-					return self::renderAPI(129, '你的媒桂花只剩' . $flower . '朵了，不足' . $amt . '朵，该充值了哦~');
+				if ($flower < $amt || $wx_uid == 131379) {
+					return self::renderAPI(159, '你的媒桂花只剩' . $flower . '朵了，不足' . $amt . '朵，该充值了哦，或者去分享把单身朋友拉进来，赚取媒桂花~');
 				}
 
 				$ret = UserNet::addPresent($wx_uid, $id, $amt, UserTrans::UNIT_GIFT);
