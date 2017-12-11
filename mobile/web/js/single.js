@@ -431,9 +431,10 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					} else if (self.hasClass('btn-chat')) {
 						ChatUtil.sid = self.attr("data-id");
 						ChatUtil.lastId = 0;
-						var schat_title = self.closest("li").find(".u-info").find("p.name").find("em").html();
-						$("#schat").attr("data-title", schat_title);
-						location.href = '#schat';
+						var title = self.closest("li").find(".u-info").find("p.name").find("em").html();
+						$("#schat").attr("data-title", title);
+						ChatUtil.preCheck();
+						// location.href = '#schat';
 					} else if (self.hasClass('btn-give')) {
 						$sls.secretId = self.attr("data-id");
 						$sls.main.show();
@@ -879,6 +880,36 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 						}
 					}
 				});
+			},
+			preCheck: function () {
+				var util = this;
+				$.post("/api/chat", {
+					tag: "pre-check",
+					sid: util.sid
+				}, function (resp) {
+					util.loading = 0;
+					if (resp.code < 1) {
+						location.href = '#schat';
+					} else if (resp.data && resp.data.content) {
+						var actions = resp.data.actions;
+						alpha.prompt(
+							resp.data.title,
+							resp.data.content,
+							resp.data.buttons,
+							function () {
+								if (actions.length > 0) {
+									location.href = actions[0];
+								}
+							},
+							function () {
+								if (actions.length > 1) {
+									location.href = actions[1];
+								}
+							});
+					} else if (resp.msg) {
+						alpha.toast(resp.msg);
+					}
+				}, "json");
 			},
 			chatRoom: function (cid, name) {
 				var util = this;

@@ -34,6 +34,8 @@ class ChatMsg extends ActiveRecord
 	const TYPE_IMAGE = 110;
 	const TYPE_VOICE = 120;
 
+	const CHAT_COST = 20;
+
 	public static function tableName()
 	{
 		return '{{%chat_msg}}';
@@ -72,6 +74,77 @@ class ChatMsg extends ActiveRecord
 		"新人报道，真心交友 ",
 		"我是新人，多多关照"
 	];
+
+	public static function preCheck($senderUId, $receiverUId, $conn = null)
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$sql = 'select * from im_user WHERE uId=:uid';
+		$senderInfo = $conn->createCommand($sql)->bindValues([
+			':uid' => $senderUId
+		])->queryOne();
+		//Rain: 员工用户，直接放行
+		/*if ($senderInfo['uSubStatus'] == User::SUB_ST_STAFF) {
+			return [0, ''];
+		}*/
+		$receiverInfo = $conn->createCommand($sql)->bindValues([
+			':uid' => $receiverUId
+		])->queryOne();
+		if (!$senderInfo) {
+			return [129, '用户不存在'];
+		}
+		$status = $senderInfo['uStatus'];
+
+		if ($status == User::STATUS_VISITOR) {
+			return [129, '权限不足，请先完善你的个人资料'];
+		}
+		if ($status == User::STATUS_PENDING) {
+			return [129, '你的身份信息还在审核中，请稍后重试'];
+		}
+		if (in_array($status, [User::STATUS_INVALID, User::STATUS_PRISON])) {
+			$msg = UserAudit::fault($senderUId, 0, $conn);
+			return [129, $msg];
+		}
+		if (!$receiverInfo) {
+			return [129, '对话用户不存在~'];
+		}
+		if (UserNet::hasBlack($senderUId, $receiverUId)) {
+			return [129, '额，对方已经屏蔽（拉黑）你了'];
+		}
+		$senderGender = $senderInfo['uGender'];
+		$senderCert = $senderInfo['uCertStatus'];
+		if ($senderGender == User::GENDER_MALE && $senderCert != User::CERT_STATUS_PASS) {
+			return [103, [
+				'title' => '',
+				'content' => '对方设置了密聊身份认证要求，要求你进行身份认证，提供安全保障才能继续聊天',
+				'buttons' => ['去实名认证'],
+				'actions' => ['/wx/cert2']
+			]];
+		}
+		$cards = UserTag::chatCards($senderUId);
+		if ($cards && count($cards) > 0) {
+			return [0, ''];
+		}
+		list($uid1, $uid2) = self::sortUId($senderUId, $receiverUId);
+		$sql = "select * from im_chat_group WHERE gUId1=:uid1 AND gUId2=:uid2";
+		$chatInfo = $conn->createCommand($sql)->bindValues([
+			':uid1' => $uid1,
+			':uid2' => $uid2,
+		])->queryOne();
+		if (!$chatInfo) {
+			$statInfo = UserTrans::stat($senderUId);
+			if (!isset($statInfo[UserTrans::UNIT_GIFT]) || intval($statInfo[UserTrans::UNIT_GIFT]) < self::CHAT_COST) {
+				return [103, [
+					'title' => '',
+					'content' => '你的媒桂花不足' . self::CHAT_COST . '朵，暂时不能聊天哦。你可以立即充值或者分享拉新获取媒桂花奖励',
+					'buttons' => ['立即充值', '马上分享'],
+					'actions' => ['/wx/sw#swallet', '/wx/shares']
+				]];
+			}
+		}
+		return [0, ''];
+	}
 
 	/**
 	 * @param int $senderId 发送者ID
@@ -392,7 +465,7 @@ class ChatMsg extends ActiveRecord
 			$conn = AppUtil::db();
 		}
 		$ratio = self::RATIO;
-		$costAmt = 20;
+		$costAmt = self::CHAT_COST;
 		list($uid1, $uid2) = self::sortUId($senderId, $receiverId);
 		$left = self::chatLeft($senderId, $receiverId, $conn);
 		$hasCard = UserTag::chatCards($senderId, $conn);
@@ -605,6 +678,9 @@ class ChatMsg extends ActiveRecord
 			':id2' => $uid2,
 			':uid' => $uId,
 		])->queryOne();
+		if (!$ret) {
+			return 0;
+		}
 		$left = intval($ret['gRound'] - $ret['cnt']);
 		return $left < 0 ? 0 : $left;
 	}

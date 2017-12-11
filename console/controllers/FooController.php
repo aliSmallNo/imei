@@ -966,6 +966,8 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
+		$ret  = ChatMsg::preCheck(131278, 148551);
+		var_dump($ret);
 		/*$openIds = ['oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'];
 		$ret = NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, $openIds)->sendMedia('GfJsRJj-kJwOJMdX7eK9HNWtwC75qKXAYWu_MEYGFPs');
 		var_dump($ret);
