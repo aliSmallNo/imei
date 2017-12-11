@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/assets/css/laydate.min.css">
 <style>
 	.date-bg {
 		background: #f8f8f8;
@@ -277,7 +278,7 @@
 
 {{if $st==100}}
 	<div class="date-btn">
-		<a href="javascript:;" data-tag="to-fail" class="fails">等待系统审核</a>
+		<a href="javascript:;" data-tag="to-fail" class="fails">等待系统审核...</a>
 	</div>
 {{/if}}
 
@@ -289,7 +290,7 @@
 	{{/if}}
 	{{if $st==105}}
 		<div class="date-btn">
-			<a href="javascript:;" data-tag="wait_agree">等待对方同意</a>
+			<a href="javascript:;" data-tag="wait_agree" class="fails">等待对方同意...</a>
 		</div>
 	{{/if}}
 	{{if $st==110}}
@@ -393,9 +394,10 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
+<script src="/assets/js/laydate/laydate.js"></script>
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1.2'], function () {
-		requirejs(['/js/date.js?v=1.1.2']);
+		requirejs(['/js/date.js?v=1.1.4']);
 	});
 </script>

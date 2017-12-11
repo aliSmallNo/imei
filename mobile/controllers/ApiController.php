@@ -2105,7 +2105,7 @@ class ApiController extends Controller
 				$rid = trim(self::postParam('rid'));
 				$page = trim(self::postParam('page'));
 				$lastid = trim(self::postParam('lastid'));
-				list($chatItems, $nextpage) = ChatRoom::historyChatList($rid, $lastid, $page,$uid);
+				list($chatItems, $nextpage) = ChatRoom::historyChatList($rid, $lastid, $page, $uid);
 				return self::renderAPI(0, '', [
 					"chat" => $chatItems,
 					"nextpage" => $nextpage,
@@ -2114,7 +2114,7 @@ class ApiController extends Controller
 			case "current_chat_list":
 				$rid = trim(self::postParam('rid'));
 				$lastid = trim(self::postParam('lastid'));
-				list($chatItems, $rlastId) = ChatRoom::currentChatList($rid, $lastid,$uid);
+				list($chatItems, $rlastId) = ChatRoom::currentChatList($rid, $lastid, $uid);
 				return self::renderAPI(0, '', [
 					"chat" => $chatItems,
 					"lastid" => $rlastId,
@@ -2294,7 +2294,8 @@ class ApiController extends Controller
 					}
 					$insert[$v] = $data[$v];
 				}
-				$insert["st"] = Date::STATUS_PASS;
+				$insert["st"] = Date::STATUS_MEET;
+				//Date::STATUS_PASS;
 				$res = 0;
 				if (Date::oneInfo($uid, $sid)->dStatus == Date::STATUS_PENDING) {
 					$res = Date::reg($uid, $sid, $insert);

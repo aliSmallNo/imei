@@ -1,5 +1,5 @@
-require(['jquery', 'mustache', 'laydate', 'alpha'],
-	function ($, Mustache, laydate, alpha) {
+require(['jquery', 'mustache', 'alpha'],
+	function ($, Mustache, alpha) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -7,7 +7,6 @@ require(['jquery', 'mustache', 'laydate', 'alpha'],
 			eid: $('#user_eid').val(),
 			loading: false
 		};
-
 		var dateUtil = {
 			tag: '',
 			role: $("#user_role").val(),
@@ -16,10 +15,16 @@ require(['jquery', 'mustache', 'laydate', 'alpha'],
 			sid: $("#user_sid").val(),
 			r1fields: ['cat', 'paytype', 'title', 'intro'], //邀请方字段
 			r2fields: ['test100', 'time', 'location'], //被邀请方字段
-			fieldsText: {cat: '约会项目', paytype: '约会预算', title: '约会说明', intro: '自我介绍', time: '约会时间', location: '约会地点'},
+			fieldsText: {
+				cat: '约会项目',
+				paytype: '约会预算',
+				title: '约会说明',
+				intro: '自我介绍',
+				time: '约会时间',
+				location: '约会地点'
+			},
 			paying: 0,
 			payBtn: null,
-
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
 			shade: $(".m-popup-shade"),
