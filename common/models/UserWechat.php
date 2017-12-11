@@ -296,19 +296,15 @@ class UserWechat extends ActiveRecord
 		$conn = AppUtil::db();
 		$sql = 'select uId, uOpenId from im_user WHERE uPhone in (' . implode(',', $mobiles) . ')';
 		$ret = $conn->createCommand($sql)->queryAll();
-		$cnt = 0;
-		$openIds = [];
-		foreach ($ret as $row) {
-			$openIds[] = $row['uOpenId'];
-			$cnt++;
-		}
-		if ($type == 'image') {
-			NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, $openIds)->sendMedia($mediaId);
-		} else {
+		$openIds = array_column($ret, 'uOpenId');
+		AppUtil::logFile([$openIds, $mediaId, $type], 5, __FUNCTION__, __LINE__);
+		if ($type == 'voice') {
 			NoticeUtil::init(NoticeUtil::CAT_VOICE_ONLY, $openIds)->sendMedia($mediaId);
+		} else {
+			NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, $openIds)->sendMedia($mediaId);
 		}
 //		self::sendMedia($openIds, $mediaId, $type);
-		return $cnt;
+		return count($openIds);
 	}
 
 
