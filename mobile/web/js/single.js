@@ -451,28 +451,39 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 
 				$(document).on(kClick, ".btn-togive", function () {
 					if (AlertUtil.giveFlag) {
-						return;
+						return false;
+					}
+					var amt = $('.topup-opt a.active').attr('data-amt');
+					if (!amt) {
+						alpha.toast('请先选择媒桂花数量哦~');
+						return false;
 					}
 					AlertUtil.giveFlag = 1;
-					var amt = $('.topup-opt a.active').attr('data-amt');
-					if (amt) {
-						$.post("/api/user", {
-							tag: "togive",
-							id: $sls.secretId,
-							amt: amt
-						}, function (resp) {
-							AlertUtil.giveFlag = 0;
-							if (resp.code < 1) {
-								$sls.main.hide();
-								$sls.shade.fadeOut(160);
-								alpha.toast(resp.msg, 1);
-							} else {
-								alpha.toast(resp.msg);
-							}
-						}, "json");
-					} else {
-						alpha.toast('请先选择媒桂花数量哦~');
-					}
+
+					$.post("/api/user", {
+						tag: "togive",
+						id: $sls.secretId,
+						amt: amt
+					}, function (resp) {
+						AlertUtil.giveFlag = 0;
+						if (resp.code < 1) {
+							$sls.main.hide();
+							$sls.shade.fadeOut(160);
+							alpha.toast(resp.msg, 1);
+						} else if (resp.code == 159) {
+							alpha.prompt('', resp.msg, ['马上充值', '立即分享'],
+								function () {
+									location.href = '/wx/sw#swallet';
+								},
+								function () {
+									location.href = '/wx/shares';
+								});
+							$sls.main.hide();
+							$sls.shade.fadeOut(160);
+						} else {
+							alpha.toast(resp.msg);
+						}
+					}, "json");
 
 					return false;
 				});
