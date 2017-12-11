@@ -967,7 +967,10 @@ class FooController extends Controller
 	public function actionRain()
 	{
 		$openIds = ['oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'];
-		$ret = NoticeUtil::init(NoticeUtil::CAT_CHAT, $openIds)->sendText();
+		$ret = NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, $openIds)->sendMedia('GfJsRJj-kJwOJMdX7eK9HNWtwC75qKXAYWu_MEYGFPs');
+		var_dump($ret);
+
+		$ret = NoticeUtil::init(NoticeUtil::CAT_VOICE_ONLY, $openIds)->sendMedia('GfJsRJj-kJwOJMdX7eK9HLGoEvWF4fOHzDA-KUCbyqQ');
 		var_dump($ret);
 		/*$ret = UserQR::shares(131379);
 		foreach ($ret as $row) {
