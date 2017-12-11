@@ -13,6 +13,8 @@ require(["jquery", "layer", "mustache"],
 			cork: $(".cr-shade"),
 			wxString: $("#tpl_wx_info").html(),
 			bot: $(".cr-bot"),
+			bottompl: $('.cr-bottom-pl'),
+			toppl: $('.cr-top-pl'),
 			danmu: $(".cr-danmu"),
 			botalert: $(".cr-bot-alert"),
 			count: $(".cr-chat-list-top .count span"),
@@ -125,7 +127,7 @@ require(["jquery", "layer", "mustache"],
 					$sls.bot.find("input").val('');
 					$sls.lastId = resp.data.lastid;
 					$sls.count.html(resp.data.count);
-
+					$sls.bottompl.get(0).scrollIntoView(true);
 				} else {
 					showMsg(resp.msg);
 				}
@@ -151,6 +153,9 @@ require(["jquery", "layer", "mustache"],
 					$sls.danmuUL.html(Mustache.render($sls.danmuTmp, {data: resp.data.danmu}));
 					$sls.lastId = resp.data.lastId;
 					$sls.count.html(resp.data.count);
+					if (resp.data.chat.length > 0) {
+						$sls.toppl.get(0).scrollIntoView(true);
+					}
 				} else {
 					showMsg(resp.msg);
 				}
@@ -193,7 +198,7 @@ require(["jquery", "layer", "mustache"],
 			var self = $(this);
 			var tag = self.attr("data-tag");
 			var btns = self.closest(".r-des").find(".r-des-opts-des");
-			var uid, rid, cid;
+			var uid, rid, cid, ban;
 			switch (tag) {
 				case "show-opt":
 					if (btns.css("display") == "none") {
@@ -209,13 +214,14 @@ require(["jquery", "layer", "mustache"],
 					uid = self.closest("div").attr("data-uid");
 					rid = self.closest("div").attr("data-rid");
 					cid = self.closest("div").attr("data-cid");
-					adminOPt(tag, uid, rid, cid, self);
+					ban = parseInt(self.attr("data-ban"));
+					adminOPt(tag, uid, rid, cid, ban, self);
 					break;
 			}
 		});
 
 		// 管理员操作群员消息
-		function adminOPt(tag, uid, rid, cid, self) {
+		function adminOPt(tag, uid, rid, cid, ban, self) {
 			if ($sls.loading) {
 				return;
 			}
@@ -225,13 +231,25 @@ require(["jquery", "layer", "mustache"],
 				subtag: tag,
 				uid: uid,
 				rid: rid,
-				cid: cid
+				cid: cid,
+				ban: ban
 			}, function (resp) {
 				$sls.loading = 0;
 				if (resp.code == 0) {
 					showMsg("操作成功");
 					if (tag == "delete") {
 						self.closest("li").remove();
+					} else if (tag == "silent") {
+						var lis = self.closest("ul").find(".r-des-opts-des[data-uid=" + uid + "]").closest("li");
+						if (ban) {
+							lis.find(".avatar").removeClass("on");
+							lis.find(".r-des-opts-des").find("a[data-ban]").attr("data-ban", 0);
+							lis.find(".r-des-opts-des").find("a[data-tag=silent]").html("禁言");
+						} else {
+							lis.find(".avatar").removeClass("on").addClass("on");
+							lis.find(".r-des-opts-des").find("a[data-ban]").attr("data-ban", 1);
+							lis.find(".r-des-opts-des").find("a[data-tag=silent]").html("取消禁言");
+						}
 					}
 				} else {
 					showMsg(resp.msg);

@@ -246,10 +246,11 @@ class ChatMsg extends ActiveRecord
 			unset($param[":rlastid"]);
 		}
 
-		$sql = "SELECT c.* ,uName,uThumb,uId,uUniqid as uni
+		$sql = "SELECT c.* ,uName,uThumb,uId,uUniqid as uni,m.mBanFlag
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
+				join im_chat_room_fella as m on m.mUId=c.cAddedBy and m.mRId=:rid
 				where c.cGId=:rid $adminStr $lastIdStr and c.cDeletedFlag=:del
 				order by cAddedon desc $limit ";
 		$chatlist = $conn->createCommand($sql)->bindValues($param)->queryAll();
@@ -274,6 +275,7 @@ class ChatMsg extends ActiveRecord
 				'avatar' => $v['uThumb'],
 				'uni' => $v['uni'],
 				'senderid' => $v['uId'],
+				'ban' => intval($v['mBanFlag']),
 				'eid' => AppUtil::encrypt($v['uId']),
 			];
 		}
@@ -285,10 +287,11 @@ class ChatMsg extends ActiveRecord
 		$conn = AppUtil::db();
 		list($adminUId, $rlastId) = self::getAdminUIdLastId($conn, $rId);
 		$limit = " limit " . ($page - 1) * $pagesize . "," . ($pagesize + 1);
-		$sql = "SELECT c.* ,uName,uThumb,uId,uUniqid as uni
+		$sql = "SELECT c.* ,uName,uThumb,uId,uUniqid as uni,m.mBanFlag
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
+				join im_chat_room_fella as m on m.mUId=c.cAddedBy  and m.mRId=:rid
 				where c.cGId=:rid and cAddedBy !=:adminuid and  c.cDeletedFlag=:del
 				order by cAddedon desc $limit ";
 		$chatlist = $conn->createCommand($sql)->bindValues([
