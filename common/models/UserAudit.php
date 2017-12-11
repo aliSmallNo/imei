@@ -121,7 +121,7 @@ class UserAudit extends ActiveRecord
 		return [0, ''];
 	}
 
-	public static function fault($uid, $adminFlag = 0, $conn = '')
+	public static function fault($uid, $adminFlag = 0, $conn = null)
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();

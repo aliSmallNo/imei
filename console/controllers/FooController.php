@@ -966,6 +966,10 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
+		$ret = AppUtil::decrypt('B0BwYTdASTk_OU5pOTpAPj4-QnJjOUNMPEE7UGs');
+		var_dump($ret);
+		/*$ret  = ChatMsg::preCheck(131278, 148551);
+		var_dump($ret);*/
 		/*$openIds = ['oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'];
 		$ret = NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, $openIds)->sendMedia('GfJsRJj-kJwOJMdX7eK9HNWtwC75qKXAYWu_MEYGFPs');
 		var_dump($ret);
@@ -1017,17 +1021,6 @@ class FooController extends Controller
 		}
 		var_dump($cnt);*/
 
-
-		/*$token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
-		$url = 'https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=%s';
-		$url = sprintf($url, $token);
-		$json = [
-			'type' => 'image',
-			'offset' => 0,
-			'count' => 20,
-		];
-		$ret = AppUtil::postJSON($url, $json);
-		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);*/
 
 //		$conn = AppUtil::db();
 

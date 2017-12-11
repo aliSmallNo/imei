@@ -1845,7 +1845,7 @@ class ApiController extends Controller
 			return self::renderAPI(129, '用户不存在啊~');
 		}
 		$uid = $wxInfo['uId'];
-		if (in_array($tag, ["sent", "list", "read"])) {
+		if (in_array($tag, ["sent", "list", 'read', 'pre-check'])) {
 			list($code, $msg) = UserAudit::verify($wxInfo["uId"]);
 			if ($code && $msg) {
 				return self::renderAPI($code, $msg);
@@ -1863,6 +1863,15 @@ class ApiController extends Controller
 		}*/
 
 		switch ($tag) {
+			case 'pre-check':
+				$receiverId = self::postParam('sid');
+				$receiverId = AppUtil::decrypt($receiverId);
+				AppUtil::logFile([$uid, $receiverId], 5, __FUNCTION__, __LINE__);
+				list($code, $msg) = ChatMsg::preCheck($uid, $receiverId);
+				if (is_array($msg)) {
+					return self::renderAPI($code, '', $msg);
+				}
+				return self::renderAPI($code, $msg);
 			case 'greeting':
 				$ids = self::postParam('ids');
 				$ids = json_decode($ids, 1);
@@ -1878,10 +1887,10 @@ class ApiController extends Controller
 				$receiverId = AppUtil::decrypt($receiverId);
 				$qId = self::postParam('qId'); // 发送的助聊题库ID
 				$qId = AppUtil::decrypt($qId);
+				$text = trim(self::postParam('text'));
 				if (!$receiverId) {
 					return self::renderAPI(129, '对话用户不存在啊~');
 				}
-				$text = trim(self::postParam('text'));
 				if (!$text) {
 					return self::renderAPI(129, '消息不能为空啊~');
 				}
@@ -2204,6 +2213,12 @@ class ApiController extends Controller
 		$fT = ['cat' => '约会项目', 'paytype' => '约会预算', 'title' => '约会说明', 'intro' => '自我介绍', 'time' => '约会时间', 'location' => '约会地点'];
 
 		switch ($tag) {
+			case 'pre-check':
+				list($code, $msg) = Date::preCheck($uid, $sid);
+				if (is_array($msg)) {
+					return self::renderAPI($code, '', $msg);
+				}
+				return self::renderAPI($code, $msg);
 			case 'start_date':
 				$data = self::postParam('data');
 				$data = json_decode($data, 1);
