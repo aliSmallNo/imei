@@ -32,8 +32,10 @@ class NoticeUtil
 	public $keywords = [];
 	public $logText = '';
 
-	const CAT_TEXT = 'text';
-	const CAT_IMAGE = 'image';
+	const CAT_CHAT = 'chat';
+	const CAT_TEXT_ONLY = 'text_only';
+	const CAT_IMAGE_ONLY = 'image_only';
+	const CAT_VOICE_ONLY = 'voice_only';
 
 	public $open_ids = [];
 
@@ -51,7 +53,7 @@ class NoticeUtil
 			return $text;
 		}
 		switch ($this->tag) {
-			case WechatUtil::NOTICE_CHAT:
+			case self::CAT_CHAT:
 				$text = '千寻恋恋里有人密聊你了，快去看看吧!
 
 👉<a href="https://wx.meipo100.com/wx/single#scontacts">点击查看</a>👈';
@@ -106,7 +108,7 @@ class NoticeUtil
 		return [$errCode, $errMsg];
 	}
 
-	public function sendImage($mediaId)
+	public function sendMedia($mediaId)
 	{
 		$ret = [
 			"errcode" => 0,
@@ -135,12 +137,13 @@ class NoticeUtil
 				$openIds = $this->open_ids[0];
 			}
 		}
+		$type = $this->tag == self::CAT_VOICE_ONLY ? 'voice' : 'image';
 		if ($openIds && $mediaId) {
 			$url .= WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 			$postData = [
 				"touser" => $openIds,
-				"msgtype" => 'image',
-				'image' => [
+				"msgtype" => $type,
+				$type => [
 					"media_id" => $mediaId
 				]
 			];

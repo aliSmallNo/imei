@@ -9,6 +9,7 @@
 namespace common\models;
 
 use common\utils\AppUtil;
+use common\utils\NoticeUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
@@ -301,7 +302,12 @@ class UserWechat extends ActiveRecord
 			$openIds[] = $row['uOpenId'];
 			$cnt++;
 		}
-		self::sendMedia($openIds, $mediaId, $type);
+		if ($type == 'image') {
+			NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, $openIds)->sendMedia($mediaId);
+		} else {
+			NoticeUtil::init(NoticeUtil::CAT_VOICE_ONLY, $openIds)->sendMedia($mediaId);
+		}
+//		self::sendMedia($openIds, $mediaId, $type);
 		return $cnt;
 	}
 

@@ -967,7 +967,7 @@ class FooController extends Controller
 	public function actionRain()
 	{
 		$openIds = ['oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'];
-		$ret = NoticeUtil::init(WechatUtil::NOTICE_CHAT, $openIds)->sendText();
+		$ret = NoticeUtil::init(NoticeUtil::CAT_CHAT, $openIds)->sendText();
 		var_dump($ret);
 		/*$ret = UserQR::shares(131379);
 		foreach ($ret as $row) {

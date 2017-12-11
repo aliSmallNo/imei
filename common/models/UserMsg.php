@@ -406,7 +406,7 @@ class UserMsg extends ActiveRecord
 		}
 
 		$openIds = array_column($ret, 'uOpenId');
-		NoticeUtil::init(WechatUtil::NOTICE_CHAT, $openIds)->sendText();
+		NoticeUtil::init(NoticeUtil::CAT_CHAT, $openIds)->sendText();
 		return true;
 	}
 }
