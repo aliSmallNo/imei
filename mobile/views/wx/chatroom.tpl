@@ -101,7 +101,7 @@
 <script type="text/html" id="chatTmp">
 	{[#data]}
 	<li>
-		<div class="avatar {[#ban]}on{[/ban]}">
+		<div class="avatar {[#isAdmin]}{[#ban]}on{[/ban]}{[/isAdmin]}">
 			<img src="{[avatar]}">
 		</div>
 		<div class="r">
