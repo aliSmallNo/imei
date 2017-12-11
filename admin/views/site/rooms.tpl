@@ -3,6 +3,7 @@
 	.members img {
 		width: 30px;
 		height: 30px;
+		margin-top: 5px
 	}
 
 	td a, td span {
@@ -108,7 +109,7 @@
 			</td>
 			<td class="members">
 				{{foreach from=$item.members key=key item=user}}
-				{{if $key<10}}<img src="{{$user.uThumb}}" class="i-av" bsrc="{{$user.uAvatar}}" >{{/if}}
+				{{if $key<9}}<img src="{{$user.uThumb}}" class="i-av" bsrc="{{$user.uAvatar}}" >{{/if}}
 				{{/foreach}}
 			</td>
 			<td class="members-des">
