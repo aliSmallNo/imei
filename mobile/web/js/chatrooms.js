@@ -21,7 +21,7 @@ require(["jquery", "layer", "mustache"],
 			var lastRow = $sls.list.find('li:last');
 			if (lastRow && eleInScreen(lastRow, 40) && $sls.page > 0) {
 				//loadRoomslist();
-				console.log(1111111111);
+				console.log(123);
 			}
 		});
 
@@ -51,7 +51,7 @@ require(["jquery", "layer", "mustache"],
 		$(document).on(kClick, ".cr-rooms a", function () {
 			var self = $(this);
 			var rid = self.attr("data-rid");
-
+			location.href = "/wx/chatroom?rid=" + rid;
 		});
 
 		var showMsg = function (title, sec) {

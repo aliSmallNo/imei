@@ -110,8 +110,8 @@ class ChatRoom extends ActiveRecord
 	public static function rooms($uid, $page = 1, $pageSize = 15)
 	{
 		$conn = AppUtil::db();
-		$limit = "limit " . ($page - 1) * $pageSize . "," . $pageSize;
-		$sql = "SELECT r.*,count(*) as co from im_chat_room as r 
+		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
+		$sql = "SELECT r.* from im_chat_room as r 
 				join im_chat_room_fella as m on r.rId=m.mRId
 				where m.mUId=:uid
 				group by r.rId
@@ -119,32 +119,38 @@ class ChatRoom extends ActiveRecord
 		$res = $conn->createCommand($sql)->bindValues([
 			":uid" => $uid,
 		])->queryAll();
-		foreach ($res as &$v) {
-			$item = self::recentChat($conn, $v["rId"]);
-			$v["name"] = $item["rname"];
-			$v["content"] = $item["cContent"];
-			$v["time"] = AppUtil::prettyDate($item["cAddedOn"]);
-		}
-		return $res;
-
-	}
-
-	public static function recentChat($conn, $rid)
-	{
-		if (!$conn) {
-			$conn = AppUtil::db();
-		}
 
 		$sql = "SELECT c.*,uName as rname from im_chat_room as r 
 				join im_chat_msg as c on c.cGId=r.rId 
 				join im_user as u on u.uId =c.cAddedBy
 				where rId =:rid
 				ORDER BY c.cId desc limit 1";
-		$msg = $conn->createCommand($sql)->bindValues([
-			":rid" => $rid,
-		])->queryOne();
+		$itemCMD = $conn->createCommand($sql);
 
-		return $msg;
+		$sql = "SELECT count(*)
+				from im_chat_room as r 
+				join im_chat_room_fella as m on r.rId=m.mRId
+				where rId=:rid";
+		$countCMD = $conn->createCommand($sql);
+
+		foreach ($res as &$v) {
+			$rid = $v["rId"];
+			$item = $itemCMD->bindValues([
+				":rid" => $rid,
+			])->queryOne();
+			$v["co"] = $countCMD->bindValues(["rid" => $rid])->queryScalar();
+			$v["name"] = $item["rname"];
+			$v["content"] = $item["cContent"];
+			$v["time"] = AppUtil::prettyDate($item["cAddedOn"]);
+		}
+		$nextpage = 0;
+		if (count($res) > $pageSize) {
+			$nextpage = $page++;
+			array_pop($res);
+		}
+		return [$res, $nextpage];
+
 	}
+
 
 }

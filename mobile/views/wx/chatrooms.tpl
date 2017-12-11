@@ -56,7 +56,7 @@
 <script type="text/html" id="roomsTmp">
 	{[#data]}
 	<li>
-		<a href="javascript:;">
+		<a href="javascript:;" data-rid="{[rId]}">
 			<div class="cr-rooms-logo">
 				<img src="{[rLogo]}">
 			</div>
@@ -76,5 +76,5 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/chatrooms.js?v=1.1.6" src="/assets/js/require.js"></script>
+<script data-main="/js/chatrooms.js?v=1.1.7" src="/assets/js/require.js"></script>
 

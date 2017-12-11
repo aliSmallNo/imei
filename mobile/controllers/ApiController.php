@@ -2159,9 +2159,10 @@ class ApiController extends Controller
 				break;
 			case "roomslist":
 				$page = self::postParam("page");
-				$res = ChatRoom::rooms($uid, $page);
+				list($res, $nextpage) = ChatRoom::rooms($uid, $page);
 				return self::renderAPI(0, '', [
 					"rooms" => $res,
+					"nextpage" => $nextpage,
 				]);
 				break;
 		}
