@@ -38,6 +38,9 @@
 		width: 64px;
 		height: 64px;
 	}
+	td{
+		font-size: 12px;
+	}
 
 	.chat-st {
 		color: #ee6e73;

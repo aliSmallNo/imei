@@ -5,6 +5,13 @@
 		height: 60px;
 	}
 
+	td {
+		font-size: 12px;
+	}
+
+	td a {
+		margin: 2px 0;
+	}
 </style>
 <div class="row">
 	<h4>聊天详细 </h4>
@@ -74,9 +81,11 @@
 					{{$item.content}}
 				</td>
 				<td>
-					<a href="javascript:;" data-tag="delete" data-cid="{{$item.cid}}" data-rid="{{$item.rid}}" data-uid="{{$item.senderid}}"
+					<a href="javascript:;" data-tag="delete" data-cid="{{$item.cid}}" data-rid="{{$item.rid}}"
+						 data-uid="{{$item.senderid}}"
 						 class="adminOpt btn btn-outline btn-primary btn-xs">删除</a>
-					<a href="javascript:;" data-tag="silent" data-cid="{{$item.cid}}" data-rid="{{$item.rid}}" data-uid="{{$item.senderid}}"
+					<a href="javascript:;" data-tag="silent" data-cid="{{$item.cid}}" data-rid="{{$item.rid}}"
+						 data-uid="{{$item.senderid}}"
 						 data-ban="{{$item.ban}}"
 						 class="adminOpt btn btn-outline btn-primary btn-xs">{{if $item.ban}}取消禁言{{else}}禁言{{/if}}</a>
 				</td>
@@ -118,7 +127,7 @@
 		var rid = self.attr("data-rid");
 		var ban = self.attr("data-ban");
 		var tag = self.attr("data-tag");
-	  adminOPt(tag, uid, rid, cid, ban)
+		adminOPt(tag, uid, rid, cid, ban)
 	});
 
 	function adminOPt(tag, uid, rid, cid, ban) {
