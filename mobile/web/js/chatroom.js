@@ -43,7 +43,7 @@ require(["jquery", "layer", "mustache"],
 
 
 		$(window).on("scroll", function () {
-			if ($(window).scrollTop() < 40) {
+			if ($(window).scrollTop() == 0) {
 				loadHistoryChatlist();
 				console.log(1234);
 			}
