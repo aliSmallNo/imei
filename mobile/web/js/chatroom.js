@@ -24,9 +24,10 @@ require(["jquery", "layer", "mustache"],
 
 			text: '',
 			loading: 0,
-			lastId: 0,
-			page: 2,
-			nomore: $(".cr-no-more"),
+			lastId: $("#cLASTID").val(),
+			currentlastId: $("#cLASTID").val(),
+			page: 1,
+			nomore: $(".cr-loading-items"),
 
 			adminUL: $(".cr-room ul"),
 			adminTmp: $("#adminTmp").html(),
@@ -35,41 +36,55 @@ require(["jquery", "layer", "mustache"],
 			chatUL: $(".cr-chat-list-items ul"),
 			chatTmp: $("#chatTmp").html(),
 
-			list: $(".cr-chat-list-items ul"),
+			//list: $(".cr-chat-list-items ul"),
+			list: $(".cr-rooms ul"),
 
 		};
 
-		$(".cr-chat-list-items").on("scroll", function () {
+
+		$(window).on("scroll", function () {
+			if ($(window).scrollTop() < 40) {
+				loadHistoryChatlist();
+				console.log(1234);
+			}
+			/*
 			var lastRow = $sls.list.find('li:last');
 			if (lastRow && eleInScreen(lastRow, 40) && $sls.page > 0) {
-				loadChatlist();
+				// loadHistoryChatlist();
 				console.log(1111111111);
 				//return false;
 			}
+			*/
 		});
 
 		function eleInScreen($ele, $offset) {
 			return $ele && $ele.length > 0 && $ele.offset().top + $offset < $(window).scrollTop() + $(window).height();
 		}
 
-		$(document).on("focus", ".cr-bot input", function () {
-			showIcon(0);
-		});
-
-		$(document).on("click", ".cr-mask", function () {
-			showIcon(1);
-		});
+		/*
+				$(document).on("focus", ".cr-bot input", function () {
+					showIcon(0);
+				});
+				$(document).on("click", ".cr-mask", function () {
+					showIcon(1);
+				});
+		*/
 
 		function showIcon(f) {
-			if (f) {
-				$sls.bot.find(".cr-icon").show();
-				$sls.bot.find(".cr-send").hide();
-				$(".cr-mask").hide();
-			} else {
-				$sls.bot.find(".cr-icon").hide();
-				$sls.bot.find(".cr-send").show();
-				$(".cr-mask").show();
-			}
+			$sls.bot.find(".cr-icon").hide();
+			$sls.bot.find(".cr-send").show();
+			return;
+			/*
+						if (f) {
+							$sls.bot.find(".cr-icon").show();
+							$sls.bot.find(".cr-send").hide();
+							$(".cr-mask").hide();
+						} else {
+							$sls.bot.find(".cr-icon").hide();
+							$sls.bot.find(".cr-send").show();
+							$(".cr-mask").show();
+						}
+			*/
 		}
 
 		$(document).on(kClick, ".cr-bot a", function () {
@@ -77,6 +92,7 @@ require(["jquery", "layer", "mustache"],
 			var tag = self.attr("data-tag");
 			console.log(tag);
 			switch (tag) {
+				/*
 				case "danmu":
 					if ($sls.danmu.css("display") == "block") {
 						$sls.danmu.fadeOut();
@@ -91,14 +107,16 @@ require(["jquery", "layer", "mustache"],
 					$sls.botalert.show();
 					showIcon(0);
 					break;
+					*/
 				case "send":
 					$sls.text = $.trim($sls.bot.find("input").val());
-					sendMsg();
+					sendMessage();
 					break;
 			}
 		});
 
-		function sendMsg() {
+
+		function sendMessage() {
 			if ($sls.loading) {
 				return;
 			}
@@ -110,23 +128,13 @@ require(["jquery", "layer", "mustache"],
 			}, function (resp) {
 				$sls.loading = 0;
 				if (resp.code == 0) {
-					// adminUL danmuUL chatUL
 					var data, html;
-					if (resp.data.items.isAdmin) {
-						data = {data: resp.data.items};
-						html = Mustache.render($sls.adminTmp, data);
-						$sls.adminUL.append(html);
-					} else {
-						data = {data: resp.data.items};
-						html = Mustache.render($sls.danmuTmp, data);
-						$sls.danmuUL.find("div:first-child").remove();
-						$sls.danmuUL.append(html);
-						$sls.chatUL.prepend(Mustache.render($sls.chatTmp, {data: resp.data.items}));
-					}
+					html = Mustache.render($sls.adminTmp, {data: resp.data.items});
+					$sls.adminUL.append(html);
+
 					$sls.text = '';
 					$sls.bot.find("input").val('');
-					$sls.lastId = resp.data.lastid;
-					$sls.count.html(resp.data.count);
+					$sls.currentlastId = resp.data.lastid;
 					$sls.bottompl.get(0).scrollIntoView(true);
 				} else {
 					showMsg(resp.msg);
@@ -135,129 +143,216 @@ require(["jquery", "layer", "mustache"],
 			showIcon(1);
 		}
 
-		function message() {
-			if ($sls.loading) {
-				return;
-			}
-			$sls.loading = 1;
-			$.post("/api/chatroom", {
-				tag: "list",
-				lastid: $sls.lastId,
-				rid: $sls.rid,
-			}, function (resp) {
-				$sls.loading = 0;
-				if (resp.code == 0) {
-					// adminUL danmuUL chatUL
-					$sls.adminUL.append(Mustache.render($sls.adminTmp, {data: resp.data.admin}));
-					$sls.chatUL.prepend(Mustache.render($sls.chatTmp, {data: resp.data.chat}));
-					$sls.danmuUL.html(Mustache.render($sls.danmuTmp, {data: resp.data.danmu}));
-					$sls.lastId = resp.data.lastId;
-					$sls.count.html(resp.data.count);
-					if (resp.data.chat.length > 0) {
-						$sls.toppl.get(0).scrollIntoView(true);
-					}
-				} else {
-					showMsg(resp.msg);
-				}
-			}, "json");
-		}
 
-		function loadChatlist() {
-			if ($sls.loading) {
+		function loadHistoryChatlist() {
+			if ($sls.loading || !$sls.page) {
 				return;
 			}
 			$sls.loading = 1;
-			$sls.nomore.html("加载中..");
+			$sls.nomore.show();
 			$.post("/api/chatroom", {
-				tag: "chatlist",
+				tag: "history_chat_list",
 				page: $sls.page,
 				rid: $sls.rid,
+				lastid: $sls.lastId,
 			}, function (resp) {
-				$sls.nomore.html("");
+				$sls.nomore.hide();
 				$sls.loading = 0;
 				if (resp.code == 0) {
-					$sls.chatUL.append(Mustache.render($sls.chatTmp, {data: resp.data.chat}));
-					$sls.page = resp.data.nextpage;
-					if ($sls.page == 0) {
-						$sls.nomore.html("没有更多了");
+					$sls.adminUL.prepend(Mustache.render($sls.adminTmp, {data: resp.data.chat}));
+					if ($sls.page == 1) {
+						$sls.bottompl.get(0).scrollIntoView(true);
 					}
+					$sls.page = resp.data.nextpage;
 				} else {
 					showMsg(resp.msg);
 				}
 			}, "json");
 		}
 
-		$(document).on(kClick, ".cr-chat-list-top a", function () {
-			$sls.cork.hide();
-			$sls.botalert.hide();
-			showIcon(1);
-		});
-
-		$(document).on(kClick, ".r-des a", function () {
-			// .r-des-opts
-			var self = $(this);
-			var tag = self.attr("data-tag");
-			var btns = self.closest(".r-des").find(".r-des-opts-des");
-			var uid, rid, cid, ban;
-			switch (tag) {
-				case "show-opt":
-					if (btns.css("display") == "none") {
-						btns.closest("ul").find(".r-des-opts-des").hide();
-						btns.show();
-					} else {
-						btns.hide();
-					}
-					break;
-				case "silent"://禁言
-				case "delete"://删除本条消息
-					btns.hide();
-					uid = self.closest("div").attr("data-uid");
-					rid = self.closest("div").attr("data-rid");
-					cid = self.closest("div").attr("data-cid");
-					ban = parseInt(self.attr("data-ban"));
-					adminOPt(tag, uid, rid, cid, ban, self);
-					break;
-			}
-		});
-
-		// 管理员操作群员消息
-		function adminOPt(tag, uid, rid, cid, ban, self) {
+		function loadRecentChatlist() {
 			if ($sls.loading) {
 				return;
 			}
 			$sls.loading = 1;
 			$.post("/api/chatroom", {
-				tag: "adminopt",
-				subtag: tag,
-				uid: uid,
-				rid: rid,
-				cid: cid,
-				ban: ban
+				tag: "current_chat_list",
+				rid: $sls.rid,
+				lastid: $sls.currentlastId,
 			}, function (resp) {
 				$sls.loading = 0;
 				if (resp.code == 0) {
-					showMsg("操作成功");
-					if (tag == "delete") {
-						self.closest("li").remove();
-					} else if (tag == "silent") {
-						var lis = self.closest("ul").find(".r-des-opts-des[data-uid=" + uid + "]").closest("li");
-						if (ban) {
-							lis.find(".avatar").removeClass("on");
-							lis.find(".r-des-opts-des").find("a[data-ban]").attr("data-ban", 0);
-							lis.find(".r-des-opts-des").find("a[data-tag=silent]").html("禁言");
-						} else {
-							lis.find(".avatar").removeClass("on").addClass("on");
-							lis.find(".r-des-opts-des").find("a[data-ban]").attr("data-ban", 1);
-							lis.find(".r-des-opts-des").find("a[data-tag=silent]").html("取消禁言");
-						}
-					}
+					$sls.adminUL.append(Mustache.render($sls.adminTmp, {data: resp.data.chat}));
+					$sls.currentlastId = resp.data.lastid;
 				} else {
 					showMsg(resp.msg);
 				}
-				$sls.loading = 0;
 			}, "json");
 		}
 
+
+		/*
+				function sendMsg() {
+					if ($sls.loading) {
+						return;
+					}
+					$sls.loading = 1;
+					$.post("/api/chatroom", {
+						tag: "sent",
+						text: $sls.text,
+						rid: $sls.rid,
+					}, function (resp) {
+						$sls.loading = 0;
+						if (resp.code == 0) {
+							// adminUL danmuUL chatUL
+							var data, html;
+							if (resp.data.items.isAdmin) {
+								data = {data: resp.data.items};
+								html = Mustache.render($sls.adminTmp, data);
+								$sls.adminUL.append(html);
+							} else {
+								data = {data: resp.data.items};
+								html = Mustache.render($sls.danmuTmp, data);
+								$sls.danmuUL.find("div:first-child").remove();
+								$sls.danmuUL.append(html);
+								$sls.chatUL.prepend(Mustache.render($sls.chatTmp, {data: resp.data.items}));
+							}
+							$sls.text = '';
+							$sls.bot.find("input").val('');
+							$sls.lastId = resp.data.lastid;
+							$sls.count.html(resp.data.count);
+							$sls.bottompl.get(0).scrollIntoView(true);
+						} else {
+							showMsg(resp.msg);
+						}
+					}, "json");
+					showIcon(1);
+				}
+
+				function message() {
+					if ($sls.loading) {
+						return;
+					}
+					$sls.loading = 1;
+					$.post("/api/chatroom", {
+						tag: "list",
+						lastid: $sls.lastId,
+						rid: $sls.rid,
+					}, function (resp) {
+						$sls.loading = 0;
+						if (resp.code == 0) {
+							// adminUL danmuUL chatUL
+							$sls.adminUL.append(Mustache.render($sls.adminTmp, {data: resp.data.admin}));
+							$sls.chatUL.prepend(Mustache.render($sls.chatTmp, {data: resp.data.chat}));
+							$sls.danmuUL.html(Mustache.render($sls.danmuTmp, {data: resp.data.danmu}));
+							$sls.lastId = resp.data.lastId;
+							$sls.count.html(resp.data.count);
+							if (resp.data.chat.length > 0) {
+								$sls.toppl.get(0).scrollIntoView(true);
+							}
+						} else {
+							showMsg(resp.msg);
+						}
+					}, "json");
+				}
+
+				function loadChatlist() {
+					if ($sls.loading) {
+						return;
+					}
+					$sls.loading = 1;
+					$sls.nomore.html("加载中..");
+					$.post("/api/chatroom", {
+						tag: "chatlist",
+						page: $sls.page,
+						rid: $sls.rid,
+					}, function (resp) {
+						$sls.nomore.html("");
+						$sls.loading = 0;
+						if (resp.code == 0) {
+							$sls.chatUL.append(Mustache.render($sls.chatTmp, {data: resp.data.chat}));
+							$sls.page = resp.data.nextpage;
+							if ($sls.page == 0) {
+								$sls.nomore.html("没有更多了");
+							}
+						} else {
+							showMsg(resp.msg);
+						}
+					}, "json");
+				}
+
+				$(document).on(kClick, ".cr-chat-list-top a", function () {
+					$sls.cork.hide();
+					$sls.botalert.hide();
+					showIcon(1);
+				});
+
+				// 管理员操作群员
+				$(document).on(kClick, ".r-des a", function () {
+					// .r-des-opts
+					var self = $(this);
+					var tag = self.attr("data-tag");
+					var btns = self.closest(".r-des").find(".r-des-opts-des");
+					var uid, rid, cid, ban;
+					switch (tag) {
+						case "show-opt":
+							if (btns.css("display") == "none") {
+								btns.closest("ul").find(".r-des-opts-des").hide();
+								btns.show();
+							} else {
+								btns.hide();
+							}
+							break;
+						case "silent"://禁言
+						case "delete"://删除本条消息
+							btns.hide();
+							uid = self.closest("div").attr("data-uid");
+							rid = self.closest("div").attr("data-rid");
+							cid = self.closest("div").attr("data-cid");
+							ban = parseInt(self.attr("data-ban"));
+							adminOPt(tag, uid, rid, cid, ban, self);
+							break;
+					}
+				});
+
+				// 管理员操作群员消息
+				function adminOPt(tag, uid, rid, cid, ban, self) {
+					if ($sls.loading) {
+						return;
+					}
+					$sls.loading = 1;
+					$.post("/api/chatroom", {
+						tag: "adminopt",
+						subtag: tag,
+						uid: uid,
+						rid: rid,
+						cid: cid,
+						ban: ban
+					}, function (resp) {
+						$sls.loading = 0;
+						if (resp.code == 0) {
+							showMsg("操作成功");
+							if (tag == "delete") {
+								self.closest("li").remove();
+							} else if (tag == "silent") {
+								var lis = self.closest("ul").find(".r-des-opts-des[data-uid=" + uid + "]").closest("li");
+								if (ban) {
+									lis.find(".avatar").removeClass("on");
+									lis.find(".r-des-opts-des").find("a[data-ban]").attr("data-ban", 0);
+									lis.find(".r-des-opts-des").find("a[data-tag=silent]").html("禁言");
+								} else {
+									lis.find(".avatar").removeClass("on").addClass("on");
+									lis.find(".r-des-opts-des").find("a[data-ban]").attr("data-ban", 1);
+									lis.find(".r-des-opts-des").find("a[data-tag=silent]").html("取消禁言");
+								}
+							}
+						} else {
+							showMsg(resp.msg);
+						}
+						$sls.loading = 0;
+					}, "json");
+				}
+		*/
 
 		var showMsg = function (title, sec) {
 			var delay = sec || 3;
@@ -305,9 +400,11 @@ require(["jquery", "layer", "mustache"],
 				wx.onMenuShareAppMessage(shareOptions('message'));
 				wx.onMenuShareTimeline(shareOptions('timeline'));
 			});
-			message();
+			showIcon(0);
+			// message();
+			loadHistoryChatlist();
 			setInterval(function () {
-				message();
+				// loadRecentChatlist();
 			}, 5000);
 		});
 	});

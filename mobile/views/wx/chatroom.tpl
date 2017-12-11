@@ -7,7 +7,7 @@
 			<span>{{$roomInfo.rTitle}}</span>
 		</div>
 	</div>
-	<div class="cr-guide">
+	<div class="cr-guide" style="display: none">
 		<p>聊天指南</p>
 		<p>1.本群是严肃，健康的相亲交友群，严禁各种与本群主题无关的聊天。</p>
 		<p>2.不得利用聊天室制作、复制和传播下列信息<br>
@@ -15,20 +15,9 @@
 			宣扬封建迷信、淫秽、赌博、暴力的<br>
 			进行未经许可商业广告行为的。</p>
 	</div>
+	<div class="cr-loading-items spinner"></div>
 	<ul>
-		<li>
-			<div class="cr-admin-avatar">
-				<img src="{{$avatar}}">
-			</div>
-			<div class="cr-admin-r">
-				<div class="cr-admin-r-title">管理员</div>
-				<div class="cr-admin-r-content"><span>恭喜你成功进入千寻恋恋聊天室</span></div>
-				<div class="cr-admin-r-time"> </div>
-			</div>
-		</li>
-
 		<!-- adminItems -->
-
 	</ul>
 	<div class="cr-bottom-pl"></div>
 </div>
@@ -42,7 +31,7 @@
 	<a href="javascript:;" class="cr-icon" data-tag="opt"></a>
 	<a href="javascript:;" class="cr-send" data-tag="send">发送</a>
 </div>
-<div class="cr-danmu active">
+<div class="cr-danmu active" style="display: none">
 
 	<!-- danmuItems -->
 
@@ -71,17 +60,29 @@
 <input type="hidden" id="cUNI" value="">
 <input type="hidden" id="cRID" value="{{$rid}}">
 <input type="hidden" id="cUID" value="{{$uid}}">
-
+<input type="hidden" id="cLASTID" value="{{$lastId}}">
+<style>
+	.cr-room ul li.right {
+		direction: rtl;
+	}
+	.cr-room ul li.right .cr-admin-avatar{
+		text-align: right;
+	}
+	.cr-room ul li.right .cr-admin-r{
+		text-align: right;
+		padding-left: 4rem;
+	}
+</style>
 <script type="text/html" id="adminTmp">
 	{[#data]}
-	<li>
-		<div class="cr-admin-avatar">
+	<li class="{[dir]}">
+		<a class="cr-admin-avatar">
 			<img src="{[avatar]}">
-		</div>
+		</a>
 		<div class="cr-admin-r">
-			<div class="cr-admin-r-title">管理员</div>
-			<div class="cr-admin-r-content"><span>{[content]}</span></div>
-			<div class="cr-admin-r-time">{[addedon]}</div>
+			<div class="cr-admin-r-title" style="display: none">{[name]}{[#isAdmin]}(管理员){[/isAdmin]}</div>
+			<div class="cr-admin-r-content" style="margin: .2rem 0"><span>{[content]}</span></div>
+			<div class="cr-admin-r-time" style="display: block;direction: ltr;"><span>{[addedon]}</span></div>
 		</div>
 	</li>
 	{[/data]}

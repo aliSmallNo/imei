@@ -196,7 +196,11 @@ class ChatMsg extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		list($adminUId, $rlastId) = self::getAdminUIdLastId($conn, $rId);
-		$sql="SELECT count(*)
+		$sql = "SELECT count(*)
+				from im_chat_room as r 
+				join im_chat_msg as c on r.rId=c.cGId 
+				where c.cGId=:rid and cAddedBy !=:adminuid and c.cDeletedFlag=:del ";
+		$sql = "SELECT count(*)
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
@@ -271,10 +275,10 @@ class ChatMsg extends ActiveRecord
 			$res[] = [
 				'cid' => $v["cId"],
 				'rid' => $rId,
-				'left' => 100,
+				'dir' => $v["cAddedBy"] == $uid ? "right" : 'left',
 				'content' => $v["cContent"],
 				'addedon' => date("m-d H:i", strtotime($v["cAddedOn"])),
-				'isAdmin' => $adminUId == $uid ? 1 : 0,
+				'isAdmin' => $adminUId == $v["cAddedBy"] ? 1 : 0,
 				'type' => self::TYPE_TEXT,
 				'name' => $v['uName'],
 				'phone' => $v['uPhone'],
@@ -360,25 +364,27 @@ class ChatMsg extends ActiveRecord
 			':rid' => $rId,
 		])->execute();
 
-		$sql = 'SELECT uName,uThumb,uId,uUniqid as uni 
+		$sql = 'SELECT uName,uThumb,uPhone,uId,uUniqid as uni 
 				FROM im_user WHERE uId =:uid';
 		$ret = $conn->createCommand($sql)->bindValues([
 			":uid" => $senderId
 		])->queryAll();
 		$ret = $ret[0];
 		$info = [
-			'id' => $cId,
+			'cid' => $cId,
 			'rid' => $rId,
-			'left' => 100,
+			'dir' => "right",
 			'content' => $content,
 			'addedon' => date('m-d H:i'),
 			'isAdmin' => $adminUId == $senderId ? 1 : 0,
 			'type' => self::TYPE_TEXT,
 			'name' => $ret['uName'],
+			'phone' => $ret['uPhone'],
 			'avatar' => $ret['uThumb'],
 			'uni' => $ret['uni'],
 			'senderid' => $senderId,
 			'eid' => AppUtil::encrypt($senderId),
+			'ban' => ChatRoomFella::BAN_NORMAL,
 		];
 		return [$info, $cId];
 	}
