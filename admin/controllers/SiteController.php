@@ -5,6 +5,7 @@ namespace admin\controllers;
 use admin\models\Admin;
 use admin\models\Menu;
 use common\models\ChatMsg;
+use common\models\ChatRoom;
 use common\models\City;
 use common\models\Date;
 use common\models\Event;
@@ -677,7 +678,7 @@ class SiteController extends BaseController
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
 		$cat = self::getParam("cat");
-		$income = self::getParam("income",0);
+		$income = self::getParam("income", 0);
 		$st = User::STATUS_ACTIVE;
 		//$criteria[] = " u.uStatus=$st ";
 		$criteria = $params = [];
@@ -1556,6 +1557,39 @@ class SiteController extends BaseController
 				'category' => 'data',
 				'detailcategory' => "site/cog",
 			]);
+	}
+
+
+	public function actionRooms()
+	{
+		$getInfo = Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$rname = self::getParam("rname");
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+		$condition = $params = [];
+		if ($rname) {
+			$condition[] = '(r.rTitle like :title )';
+			$params[':title'] = '%' . $rname . '%';
+		}
+		if ($name) {
+			$condition[] = '(u.uName like :name )';
+			$params[':name'] = '%' . $name . '%';
+		}
+		if ($phone) {
+			$condition[] = '(u.uPhone like :phone )';
+			$params[':phone'] = $phone . '%';
+		}
+		list($list, $count) = ChatRoom::items($condition, $params, $page);
+		$pagination = self::pagination($page, $count);
+		return $this->renderPage("rooms.tpl",
+			[
+				'getInfo' => $getInfo,
+				'pagination' => $pagination,
+				'category' => 'data',
+				'list' => $list
+			]
+		);
 	}
 
 }

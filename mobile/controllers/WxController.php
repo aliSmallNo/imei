@@ -1970,7 +1970,10 @@ class WxController extends BaseController
 
 	public function actionChatroom()
 	{
-		$rid = 101;
+		$rid = self::getParam("rid");
+		if (!$rid) {
+			$rid = 101;
+		}
 		$roomInfo = ChatRoom::one($rid);
 		$uid = $this->user_id;
 		if (!$uid || !$roomInfo) {
@@ -1991,6 +1994,23 @@ class WxController extends BaseController
 			'terse',
 			'千寻聊天室',
 			'cr-bg');
+	}
+
+	public function actionChatrooms()
+	{
+		$uid = $this->user_id;
+		if (!$uid ) {
+			header('location:/wx/error');
+			exit();
+		}
+
+		return self::renderPage("chatrooms.tpl",
+			[
+				//'rooms' => $rooms,
+			],
+			'terse',
+			'我的群聊',
+			'');
 	}
 
 }

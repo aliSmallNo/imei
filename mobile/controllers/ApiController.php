@@ -9,6 +9,7 @@
 namespace mobile\controllers;
 
 use common\models\ChatMsg;
+use common\models\ChatRoom;
 use common\models\ChatRoomFella;
 use common\models\City;
 use common\models\Date;
@@ -2154,6 +2155,14 @@ class ApiController extends Controller
 				ChatRoomFella::adminOPt($subtag, $oUId, $rid, $cid);
 				return self::renderAPI(0, '', [
 					"chat" => '',
+				]);
+				break;
+			case "roomslist":
+				$page = self::postParam("page");
+				list($res, $nextpage) = ChatRoom::rooms($uid, $page);
+				return self::renderAPI(0, '', [
+					"rooms" => $res,
+					"nextpage" => $nextpage,
 				]);
 				break;
 		}

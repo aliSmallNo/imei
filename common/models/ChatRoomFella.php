@@ -45,7 +45,7 @@ class ChatRoomFella extends ActiveRecord
 		$conn = AppUtil::db();
 		$sql = "INSERT INTO im_chat_room_fella(mRId,mUId)
 			SELECT :rid,:uid FROM dual
-			WHERE NOT EXISTS(SELECT 1 FROM im_chat_room_fella as m WHERE m.mUId=:uid )";
+			WHERE NOT EXISTS(SELECT 1 FROM im_chat_room_fella as m WHERE m.mUId=:uid and m.mRId=:rid)";
 		$conn->createCommand($sql)->bindValues([
 			":uid" => $uId,
 			":rid" => $rId,
