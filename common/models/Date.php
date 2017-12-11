@@ -102,8 +102,8 @@ class Date extends ActiveRecord
 		list($uid1, $uid2) = self::sortUId($senderUId, $receiverUId);
 		$info = self::findOne(["dUId1" => $uid1, "dUId2" => $uid2,
 			'dStatus' => [self::STATUS_INVITE, self::STATUS_PENDING, self::STATUS_PASS, self::STATUS_PAY, self::STATUS_MEET, self::STATUS_COMMENT]]);
-		if ($info) {
-			return [129, '你们已经约会过了哦~，请勿重复发起约会'];
+		if (!$info) {
+			//return [129, '你们已经约会过了哦~，请勿重复发起约会'];
 		}
 		return [0, ''];
 	}
