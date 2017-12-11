@@ -2196,6 +2196,12 @@ class ApiController extends Controller
 		$fT = ['cat' => '约会项目', 'paytype' => '约会预算', 'title' => '约会说明', 'intro' => '自我介绍', 'time' => '约会时间', 'location' => '约会地点'];
 
 		switch ($tag) {
+			case 'pre-check':
+				list($code, $msg) = Date::preCheck($uid, $sid);
+				if (is_array($msg)) {
+					return self::renderAPI($code, '', $msg);
+				}
+				return self::renderAPI($code, $msg);
 			case 'start_date':
 				$data = self::postParam('data');
 				$data = json_decode($data, 1);
