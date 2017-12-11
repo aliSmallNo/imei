@@ -53,7 +53,7 @@ class ChatRoomFella extends ActiveRecord
 		return true;
 	}
 
-	public static function adminOPt($subtag, $oUId, $rid, $cid)
+	public static function adminOPt($subtag, $oUId, $rid, $cid, $ban = 1)
 	{
 		$conn = AppUtil::db();
 
@@ -64,7 +64,7 @@ class ChatRoomFella extends ActiveRecord
 			case "silent":
 				$sql = "UPDATE im_chat_room_fella set mBanFlag=:ban where mRId=:rid and mUId=:uid;";
 				$conn->createCommand($sql)->bindValues([
-					":ban" => self::BAN_SILENT,
+					":ban" => $ban ? self::BAN_NORMAL : self::BAN_SILENT,
 					":rid" => $rid,
 					":uid" => $oUId,
 				])->execute();
@@ -75,7 +75,7 @@ class ChatRoomFella extends ActiveRecord
 
 	public static function MemberInfo($rId, $uid)
 	{
-		$memberInfo ='';
+		$memberInfo = '';
 	}
 
 

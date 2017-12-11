@@ -31,6 +31,7 @@
 		<!-- adminItems -->
 
 	</ul>
+	<div class="cr-bottom-pl"></div>
 </div>
 
 <div class="cr-bot">
@@ -57,6 +58,7 @@
 			<a href="javascript:;"></a>
 		</div>
 		<div class="cr-chat-list-items">
+			<div class="cr-top-pl"></div>
 			<ul>
 				<!-- chatItems -->
 			</ul>
@@ -66,7 +68,6 @@
 		</div>
 	</div>
 </div>
-
 <input type="hidden" id="ADMINUID" value="{{$roomInfo.rAdminUId}}">
 <input type="hidden" id="cUNI" value="">
 <input type="hidden" id="cRID" value="{{$rid}}">
@@ -101,7 +102,7 @@
 <script type="text/html" id="chatTmp">
 	{[#data]}
 	<li>
-		<div class="avatar">
+		<div class="avatar {[#ban]}on{[/ban]}">
 			<img src="{[avatar]}">
 		</div>
 		<div class="r">
@@ -113,7 +114,7 @@
 				{[#isAdmin]}
 				<a href="javascript:;" class="r-des-opts" data-tag="show-opt"></a>
 				<div class="r-des-opts-des" data-uid="{[senderid]}" data-rid="{[rid]}" data-cid="{[cid]}">
-					<a href="javascript:;" data-tag="silent">禁言</a>
+					<a href="javascript:;" data-tag="silent" data-ban="{[ban]}">{[#ban]}取消禁言{[/ban]}{[^ban]}禁言{[/ban]}</a>
 					<a href="javascript:;" data-tag="delete">删除</a>
 				</div>
 				{[/isAdmin]}
