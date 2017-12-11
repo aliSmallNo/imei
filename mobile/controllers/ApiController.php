@@ -2101,6 +2101,25 @@ class ApiController extends Controller
 		$uid = $wxInfo['uId'];
 
 		switch ($tag) {
+			case "history_chat_list":
+				$rid = trim(self::postParam('rid'));
+				$page = trim(self::postParam('page'));
+				$lastid = trim(self::postParam('lastid'));
+				list($chatItems, $nextpage) = ChatRoom::historyChatList($rid, $lastid, $page,$uid);
+				return self::renderAPI(0, '', [
+					"chat" => $chatItems,
+					"nextpage" => $nextpage,
+				]);
+				break;
+			case "current_chat_list":
+				$rid = trim(self::postParam('rid'));
+				$lastid = trim(self::postParam('lastid'));
+				list($chatItems, $rlastId) = ChatRoom::currentChatList($rid, $lastid,$uid);
+				return self::renderAPI(0, '', [
+					"chat" => $chatItems,
+					"lastid" => $rlastId,
+				]);
+				break;
 			case 'sent':
 				$text = trim(self::postParam('text'));
 				$rId = trim(self::postParam('rid'));
@@ -2137,8 +2156,6 @@ class ApiController extends Controller
 					"danmu" => $danmuItems,
 					"lastId" => intval($lastId),
 					'count' => ChatMsg::countRoomChat($rid),
-					'left' => 0,
-					'gid' => 0,
 				]);
 				break;
 			case 'chatlist':

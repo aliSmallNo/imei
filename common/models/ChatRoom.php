@@ -152,5 +152,52 @@ class ChatRoom extends ActiveRecord
 
 	}
 
+	public static function historyChatList($rId, $lastid, $page = 1, $uid = 120003, $pagesize = 15)
+	{
+		$conn = AppUtil::db();
+		list($adminUId, $rlastId) = ChatMsg::getAdminUIdLastId($conn, $rId);
+		$limit = " limit " . ($page - 1) * $pagesize . "," . ($pagesize + 1);
+		$sql = "SELECT c.* ,uName,uThumb,uPhone,uId,uUniqid as uni,m.mBanFlag
+				from im_chat_room as r 
+				join im_chat_msg as c on r.rId=c.cGId 
+				join im_user as u on u.uId=c.cAddedBy
+				join im_chat_room_fella as m on m.mUId=c.cAddedBy  and m.mRId=:rid
+				where c.cGId=:rid and  c.cDeletedFlag=:del and cId between 0 and :lastid 
+				order by cAddedon desc $limit ";
+		$chatlist = $conn->createCommand($sql)->bindValues([
+			":rid" => $rId,
+			":lastid" => $lastid,
+			":del" => ChatMsg::DELETED_NO,
+		])->queryAll();
+		$res = ChatMsg::fmtRoomChatData($chatlist, $rId, $adminUId, $uid);
+		$nextpage = count($res) > $pagesize ? ($page + 1) : 0;
+		array_pop($res);
+		$res = array_reverse($res);
+		return [$res, $nextpage];
+	}
+
+	public static function currentChatList($rId, $lastid, $uid)
+	{
+		$conn = AppUtil::db();
+		list($adminUId, $rlastId) = ChatMsg::getAdminUIdLastId($conn, $rId);
+		$sql = "SELECT c.* ,uName,uThumb,uPhone,uId,uUniqid as uni,m.mBanFlag
+				from im_chat_room as r 
+				join im_chat_msg as c on r.rId=c.cGId 
+				join im_user as u on u.uId=c.cAddedBy
+				join im_chat_room_fella as m on m.mUId=c.cAddedBy  and m.mRId=:rid
+				where c.cGId=:rid and  c.cDeletedFlag=:del and cId > :lastid and cId<:rlastid 
+				order by cAddedon";
+		$chatlist = $conn->createCommand($sql)->bindValues([
+			":rid" => $rId,
+			":lastid" => $lastid,
+			":rlastid" => $lastid + 1,
+			":del" => ChatMsg::DELETED_NO,
+		])->queryAll();
+		$res = ChatMsg::fmtRoomChatData($chatlist, $rId, $adminUId, $uid);
+		$res = array_reverse($res);
+		return [$res, $rlastId];
+
+	}
+
 
 }
