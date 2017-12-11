@@ -180,9 +180,9 @@ class ChatMsg extends ActiveRecord
 		list($adminChats, $rlastId) = self::chatItems($rId, $uid, $lastId, 1, 1, 0);
 		$adminChats = array_reverse($adminChats);
 		// 群员消息
-		list($chatItems, $rlastId) = self::chatItems($rId, $uid, $lastId, $page, 0, 1);
+		list($chatItems, $rlastId) = self::chatItems($rId, $uid, $lastId, 0, 1);
 		// 弹幕消息
-		list($danmuItems) = self::chatItems($rId, $uid, $lastId, $page, 0, 0, 1);
+		list($danmuItems) = self::chatItems($rId, $uid, $lastId, 0, 0, 1);
 		$danmuItems = array_reverse($danmuItems);
 
 		return [$adminChats, $chatItems, $danmuItems, $rlastId];
@@ -196,14 +196,18 @@ class ChatMsg extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		list($adminUId, $rlastId) = self::getAdminUIdLastId($conn, $rId);
-		$sql = "SELECT count(*)
+		$sql="SELECT count(*)
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
-				where c.cGId=:rid and cAddedBy !=:adminuid ";
+				join im_user as u on u.uId=c.cAddedBy
+				join im_chat_room_fella as m on m.mUId=c.cAddedBy  and m.mRId=:rid
+				where c.cGId=:rid and cAddedBy !=:adminuid and  c.cDeletedFlag=:del ";
 		return $conn->createCommand($sql)->bindValues([
 			":rid" => $rId,
 			":adminuid" => $adminUId,
+			":del" => self::DELETED_NO,
 		])->queryScalar();
+
 	}
 
 	/**
@@ -216,9 +220,10 @@ class ChatMsg extends ActiveRecord
 	 * @param int $page 页码
 	 * @return array
 	 */
-	public static function chatItems($rId, $uid, $lastId, $page = 1, $isAdmin = 0, $isFenye = 1, $isDanmu = 0)
+	public static function chatItems($rId, $uid, $lastId, $isAdmin = 0, $isFenye = 0, $isDanmu = 0)
 	{
 		$conn = AppUtil::db();
+		$page = 1;
 		$pagesize = 15;
 		list($adminUId, $rlastId) = self::getAdminUIdLastId($conn, $rId);
 
@@ -246,7 +251,7 @@ class ChatMsg extends ActiveRecord
 			unset($param[":rlastid"]);
 		}
 
-		$sql = "SELECT c.* ,uName,uThumb,uId,uUniqid as uni,m.mBanFlag
+		$sql = "SELECT c.* ,uName,uThumb,uPhone,uId,uUniqid as uni,m.mBanFlag
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
@@ -272,6 +277,7 @@ class ChatMsg extends ActiveRecord
 				'isAdmin' => $adminUId == $uid ? 1 : 0,
 				'type' => self::TYPE_TEXT,
 				'name' => $v['uName'],
+				'phone' => $v['uPhone'],
 				'avatar' => $v['uThumb'],
 				'uni' => $v['uni'],
 				'senderid' => $v['uId'],
@@ -282,12 +288,12 @@ class ChatMsg extends ActiveRecord
 		return $res;
 	}
 
-	public static function chatPageList($rId, $uid, $page = 1, $pagesize = 15)
+	public static function chatPageList($rId, $page = 1, $uid = 120003, $pagesize = 15)
 	{
 		$conn = AppUtil::db();
 		list($adminUId, $rlastId) = self::getAdminUIdLastId($conn, $rId);
 		$limit = " limit " . ($page - 1) * $pagesize . "," . ($pagesize + 1);
-		$sql = "SELECT c.* ,uName,uThumb,uId,uUniqid as uni,m.mBanFlag
+		$sql = "SELECT c.* ,uName,uThumb,uPhone,uId,uUniqid as uni,m.mBanFlag
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
@@ -302,6 +308,7 @@ class ChatMsg extends ActiveRecord
 		$res = self::fmtRoomChatData($chatlist, $rId, $adminUId, $uid);
 		$nextpage = count($res) > $pagesize ? ($page + 1) : 0;
 		array_pop($res);
+
 		return [$res, $nextpage];
 	}
 

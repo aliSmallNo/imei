@@ -46,91 +46,10 @@
 	}
 </style>
 <div class="row">
-	<h4>群列表
-		<a href="JavaScript:;" class="btn-add btn btn-primary btn-xs">添加群</a>
-	</h4>
+
+
 </div>
-<form action="/site/rooms" class="form-inline">
-	<input class="form-control" placeholder="群名称" name="rname"
-				 value="{{if isset($getInfo['rname'])}}{{$getInfo['rname']}}{{/if}}"/>
-	<input class="form-control" placeholder="群主名称" name="name"
-				 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
-	<input class="form-control" placeholder="群主手机" name="phone"
-				 value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
-	<button class="btn btn-primary">查询</button>
-</form>
-<div class="row-divider"></div>
-<div class="row">
-	<table class="table table-striped table-bordered">
-		<thead>
-		<tr>
-			<th class="col-sm-1">
-				群头像
-			</th>
-			<th class="col-sm-1">
-				群信息
-			</th>
-			<th class="col-sm-1">
-				群主
-			</th>
-			<th class="col-sm-2">
-				群主信息
-			</th>
-			<th class="col-sm-2">
-				群成员
-			</th>
-			<th class="col-sm-3">
-				群成员信息
-			</th>
-			<th>
-				创建时间
-			</th>
-			<th>
-				详情
-			</th>
-		</tr>
-		</thead>
-		<tbody>
-		{{foreach from=$list item=item}}
-		<tr>
-			<td align="center">
-				<img src="{{$item.rLogo}}">
-			</td>
-			<td>
-				<div>群员数: {{$item.count}}</div>
-				<a href="https://wx.meipo100.com/wx/chatroom?rid={{$item.rId}}" title="点击右键，拷贝链接，发到微信中，才可以打开">{{$item.rTitle}}</a>
-			</td>
-			<td align="center">
-				<img src="{{$item.uThumb}}" class="i-av" bsrc="{{$item.uThumb}}">
-			</td>
-			<td>
-				{{$item.uName}}<br/>
-				{{$item.uPhone}}
-			</td>
-			<td class="members">
-				{{foreach from=$item.members key=key item=user}}
-				{{if $key<9}}<img src="{{$user.uThumb}}" class="i-av" bsrc="{{$user.uAvatar}}" >{{/if}}
-				{{/foreach}}
-			</td>
-			<td class="members-des">
-				<div>
-					{{foreach from=$item.members item=user}}
-					<span>{{$user.uName}} {{$user.uPhone}}</span><br>
-					{{/foreach}}
-				</div>
-			</td>
-			<td>
-				{{$item.rAddedOn}}
-			</td>
-			<td>
-				<a href="/site/roomdesc?rid={{$item.rId}}" class="btn btn-outline btn-primary btn-xs">详情</a>
-			</td>
-		</tr>
-		{{/foreach}}
-		</tbody>
-	</table>
-	{{$pagination}}
-</div>
+
 
 <div class="modal" id="modalEdit" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
@@ -274,7 +193,7 @@
 					BpbhdUtil.showMsg(resp.msg, 1);
 					$("#modalEdit").modal('hide');
 					setTimeout(function () {
-						 location.reload();
+						location.reload();
 					}, 450);
 				} else {
 					BpbhdUtil.showMsg(resp.msg);
@@ -284,28 +203,29 @@
 	});
 
 
-  $(document).on("click", ".i-av", function () {
-	  var self = $(this);
-	  var photos = {
-		  title: '头像大图',
-		  data: [{
-			  src: self.attr("bsrc")
-		  }]
-	  };
-	  showImages(photos);
-  });
-  function showImages(imagesJson, idx) {
-	  if (idx) {
-		  imagesJson.start = idx;
-	  }
-	  layer.photos({
-		  photos: imagesJson,
-		  shift: 5,
-		  tab: function (info) {
-			  console.log(info);
-		  }
-	  });
-  }
+	$(document).on("click", ".i-av", function () {
+		var self = $(this);
+		var photos = {
+			title: '头像大图',
+			data: [{
+				src: self.attr("bsrc")
+			}]
+		};
+		showImages(photos);
+	});
+
+	function showImages(imagesJson, idx) {
+		if (idx) {
+			imagesJson.start = idx;
+		}
+		layer.photos({
+			photos: imagesJson,
+			shift: 5,
+			tab: function (info) {
+				console.log(info);
+			}
+		});
+	}
 
 </script>
 {{include file="layouts/footer.tpl"}}

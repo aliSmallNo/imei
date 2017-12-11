@@ -12,6 +12,7 @@ namespace admin\controllers;
 use admin\models\Admin;
 use common\models\ChatMsg;
 use common\models\ChatRoom;
+use common\models\ChatRoomFella;
 use common\models\City;
 use common\models\Date;
 use common\models\Log;
@@ -581,6 +582,20 @@ class ApiController extends Controller
 				}
 				$ret = ChatRoom::reg($data);
 				return self::renderAPI(0, $ret ? '保存成功！' : '保存失败！', ['result' => $data]);
+				break;
+			case "adminopt":
+				$subtag = self::postParam('subtag');
+				$oUId = self::postParam('uid');
+				$rid = self::postParam('rid');
+				$cid = self::postParam('cid');
+				$ban = self::postParam('ban');
+				if (!$rid || !$oUId) {
+					return self::renderAPI(129, '对话不存在啊~');
+				}
+				ChatRoomFella::adminOPt($subtag, $oUId, $rid, $cid, $ban);
+				return self::renderAPI(0, '', [
+					"chat" => '',
+				]);
 				break;
 		}
 	}
