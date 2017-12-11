@@ -297,13 +297,11 @@ class UserWechat extends ActiveRecord
 		$sql = 'select uId, uOpenId from im_user WHERE uPhone in (' . implode(',', $mobiles) . ')';
 		$ret = $conn->createCommand($sql)->queryAll();
 		$openIds = array_column($ret, 'uOpenId');
-		AppUtil::logFile([$openIds, $mediaId, $type], 5, __FUNCTION__, __LINE__);
 		if ($type == 'voice') {
 			$ret = NoticeUtil::init(NoticeUtil::CAT_VOICE_ONLY, $openIds)->sendMedia($mediaId);
 		} else {
 			$ret = NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, $openIds)->sendMedia($mediaId);
 		}
-		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 //		self::sendMedia($openIds, $mediaId, $type);
 		return count($openIds);
 	}
