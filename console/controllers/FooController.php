@@ -17,6 +17,7 @@ use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
+use common\utils\NoticeUtil;
 use common\utils\PushUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
@@ -964,10 +965,13 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = UserQR::shares(131379);
+		$openIds = ['oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'];
+		$ret = NoticeUtil::init(WechatUtil::NOTICE_CHAT, $openIds)->sendText();
+		var_dump($ret);
+		/*$ret = UserQR::shares(131379);
 		foreach ($ret as $row) {
 			echo $row . PHP_EOL;
-		}
+		}*/
 
 //		$ret = explode("/",'白马骑士/豪门公主');
 		/*$ret = UserTag::calcExp();
