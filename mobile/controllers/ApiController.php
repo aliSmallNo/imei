@@ -2203,6 +2203,12 @@ class ApiController extends Controller
 				}
 				return self::renderAPI($code, $msg);
 			case 'start_date':
+				list($code, $msg) = Date::preCheck($uid, $sid);
+				if (is_array($msg)) {
+					return self::renderAPI($code, '', $msg);
+				} elseif ($code > 0) {
+					return self::renderAPI($code, $msg);
+				}
 				$data = self::postParam('data');
 				$data = json_decode($data, 1);
 				$fields = ['cat', 'paytype', 'title', 'intro'];
@@ -2223,13 +2229,13 @@ class ApiController extends Controller
 					}
 					$insert[$v] = $data[$v];
 				}
-				$msg = Date::checkBal($uid);
+				/*$msg = Date::checkBal($uid);
 				if ($msg) {
 					return self::renderAPI(161, $msg);
 				}
 				if (Date::oneInfo($uid, $sid)) {
 					return self::renderAPI(129, '你们已经约会过了哦~');
-				}
+				}*/
 				$res = Date::reg($uid, $sid, $insert);
 				if ($res) {
 					WechatUtil::templateMsg(WechatUtil::NOTICE_DATE,

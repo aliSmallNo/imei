@@ -433,7 +433,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 						ChatUtil.lastId = 0;
 						var title = self.closest("li").find(".u-info").find("p.name").find("em").html();
 						$("#schat").attr("data-title", title);
-						ChatUtil.preCheck();
+						ChatUtil.beforeChat();
 						// location.href = '#schat';
 					} else if (self.hasClass('btn-give')) {
 						$sls.secretId = self.attr("data-id");
@@ -720,7 +720,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 						self.next().find("a").find(".opt").find("input:checked").each(function () {
 							gids.push($(this).val());
 						});
-						if (gids.length == 0) {
+						if (gids.length < 1) {
 							ChatUtil.delChatBtn(self, "chat");
 							return;
 						}
@@ -853,7 +853,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 							util.toggle(util.helpchatMenu.hasClass("off"), util.helpchatMenu);
 							break;
 						case 'date':
-							location.href = '/wx/date?id=' + util.sid;
+							util.beforeDate();
 							break;
 					}
 				});
@@ -864,7 +864,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 						$(".date-cancel-opt a.active").each(function () {
 							util.reason.push($(this).html());
 						});
-						if (util.reason.length == 0) {
+						if (util.reason.length < 1) {
 							alpha.toast("选择原因哦");
 							return;
 						}
@@ -881,7 +881,38 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					}
 				});
 			},
-			preCheck: function () {
+			beforeDate: function () {
+				var util = this;
+				$.post("/api/date", {
+					tag: "pre-check",
+					sid: util.sid
+				}, function (resp) {
+					util.loading = 0;
+					if (resp.code < 1) {
+						// location.href = '#schat';
+						location.href = '/wx/date?id=' + util.sid;
+					} else if (resp.data && resp.data.content) {
+						var actions = resp.data.actions;
+						alpha.prompt(
+							resp.data.title,
+							resp.data.content,
+							resp.data.buttons,
+							function () {
+								if (actions.length > 0) {
+									location.href = actions[0];
+								}
+							},
+							function () {
+								if (actions.length > 1) {
+									location.href = actions[1];
+								}
+							});
+					} else if (resp.msg) {
+						alpha.toast(resp.msg);
+					}
+				}, "json");
+			},
+			beforeChat: function () {
 				var util = this;
 				$.post("/api/chat", {
 					tag: "pre-check",

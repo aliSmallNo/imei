@@ -53,7 +53,7 @@ class Date extends ActiveRecord
 
 	const PAY_TYPE_AA = 1;
 
-	const NEW_DATE_COST = 50;
+	const DATE_COST = 520;
 
 	public static function tableName()
 	{
@@ -103,7 +103,15 @@ class Date extends ActiveRecord
 		$info = self::findOne(["dUId1" => $uid1, "dUId2" => $uid2,
 			'dStatus' => [self::STATUS_INVITE, self::STATUS_PENDING, self::STATUS_PASS, self::STATUS_PAY, self::STATUS_MEET, self::STATUS_COMMENT]]);
 		if (!$info) {
-			//return [129, '你们已经约会过了哦~，请勿重复发起约会'];
+			$statInfo = UserTrans::stat($senderUId);
+			if (!isset($statInfo[UserTrans::UNIT_GIFT]) || intval($statInfo[UserTrans::UNIT_GIFT]) < self::DATE_COST) {
+				return [103, [
+					'title' => '',
+					'content' => '约会需要预付' . self::DATE_COST . '朵媒桂花，你现在的余额不足，暂时不能发起约会哦。你可以立即充值或者分享拉新获取媒桂花奖励',
+					'buttons' => ['立即充值', '马上分享'],
+					'actions' => ['/wx/sw#swallet', '/wx/shares']
+				]];
+			}
 		}
 		return [0, ''];
 	}
@@ -118,17 +126,6 @@ class Date extends ActiveRecord
 			return $d->dId;
 		}
 		return 0;
-	}
-
-	public static function checkBal($uid)
-	{
-		$costAmt = self::NEW_DATE_COST;
-		$stat = UserTrans::getStat($uid, 1);
-		$flower = isset($stat['flower']) ? intval($stat['flower']) : 0;
-		if ($flower < $costAmt) {
-			return '你的媒桂花不足' . $costAmt . '，不能发起约会，快去充值再来吧';
-		}
-		return '';
 	}
 
 	public static function oneInfo($myUId, $taUId)
@@ -185,7 +182,7 @@ class Date extends ActiveRecord
 			$insert['dStatus'] = self::STATUS_INVITE;
 			$did = self::add($insert);
 			UserTrans::add($myUId, $did, UserTrans::CAT_DATE_NEW, '',
-				self::NEW_DATE_COST, UserTrans::UNIT_GIFT);
+				self::DATE_COST, UserTrans::UNIT_GIFT);
 		} else {
 			$did = self::edit($d->dId, $insert);
 		}
@@ -300,7 +297,7 @@ class Date extends ActiveRecord
 				from im_date as d 
 				join im_user as u1 on d.dUId1=u1.uId
 				join im_user as u2 on d.dUId2=u2.uId
-				where dId>0   $condition ";
+				where dId>0 $condition ";
 		$count = $conn->createCommand($sql)->queryScalar();
 
 		return [$res, $count];

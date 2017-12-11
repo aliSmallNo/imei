@@ -1,13 +1,5 @@
-require.config({
-	paths: {
-		'jquery': '/assets/js/jquery-3.2.1.min',
-		'laydate': '/assets/js/laydate/laydate',
-		'mustache': '/assets/js/mustache.min',
-		"layer": "/assets/js/layer_mobile/layer"
-	}
-});
-require(['jquery', 'mustache', 'laydate', 'layer'],
-	function ($, Mustache, laydate, layer) {
+require(['jquery', 'mustache', 'laydate', 'alpha'],
+	function ($, Mustache, laydate, alpha) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -15,16 +7,6 @@ require(['jquery', 'mustache', 'laydate', 'layer'],
 			eid: $('#user_eid').val(),
 			loading: false
 		};
-
-		function showMsg(title, sec) {
-			var delay = sec || 4;
-			layer.open({
-				type: 99,
-				content: title,
-				skin: 'msg',
-				time: delay
-			});
-		}
 
 		var dateUtil = {
 			tag: '',
@@ -64,7 +46,7 @@ require(['jquery', 'mustache', 'laydate', 'layer'],
 							util.reason.push($(this).html());
 						});
 						if (util.reason.length < 1) {
-							showMsg("选择原因哦");
+							alpha.toast("选择原因哦");
 							return;
 						}
 						util.submit();
@@ -137,7 +119,7 @@ require(['jquery', 'mustache', 'laydate', 'layer'],
 				var util = dateUtil;
 				var amt = parseInt($(".topup-opt a.active").attr("data-amt"));
 				if (!amt || amt < 520) {
-					showMsg("你还没选择送TA的媒瑰花数哦");
+					alpha.toast("你还没选择送TA的媒瑰花数哦");
 					return;
 				}
 				if (util.loading) {
@@ -153,7 +135,7 @@ require(['jquery', 'mustache', 'laydate', 'layer'],
 					if (res.code < 1) {
 						util.refresh();
 					} else {
-						showMsg(res.msg);
+						alpha.toast(res.msg);
 					}
 				}, 'json');
 			},
@@ -183,7 +165,7 @@ require(['jquery', 'mustache', 'laydate', 'layer'],
 					if (self.find(".opt-radio").length > 0) {
 						var v1 = self.find(".opt-radio").find("input[type=radio]:checked").val();
 						if (!v1) {
-							showMsg(title + "还没填写");
+							alpha.toast(title + "还没填写");
 							err = 1;
 							return false;
 						}
@@ -191,7 +173,7 @@ require(['jquery', 'mustache', 'laydate', 'layer'],
 					} else if (self.find(".opt-star").length > 0) {
 						var v2 = self.find(".opt-star").find("a.on.choose").attr("data-val");
 						if (!v2) {
-							showMsg(title + "还没填写");
+							alpha.toast(title + "还没填写");
 							err = 1;
 							return false;
 						}
@@ -218,7 +200,7 @@ require(['jquery', 'mustache', 'laydate', 'layer'],
 					if (res.code < 1) {
 						util.refresh();
 					} else {
-						showMsg(res.msg);
+						alpha.toast(res.msg);
 					}
 				}, 'json');
 			},
@@ -235,7 +217,7 @@ require(['jquery', 'mustache', 'laydate', 'layer'],
 							postdata[field] = val;
 						} else {
 							err = 1;
-							showMsg('请选择' + util.fieldsText[field]);
+							alpha.toast('请选择' + util.fieldsText[field]);
 							return false;
 						}
 					});
@@ -251,12 +233,11 @@ require(['jquery', 'mustache', 'laydate', 'layer'],
 								postdata[field] = val;
 							} else {
 								err = 1;
-								showMsg('请填写' + util.fieldsText[field]);
+								alpha.toast('请填写' + util.fieldsText[field]);
 								return false;
 							}
 						}
 					});
-					console.log(postdata);
 					if (err) {
 						return false;
 					}
@@ -271,12 +252,11 @@ require(['jquery', 'mustache', 'laydate', 'layer'],
 								postdata[field] = val;
 							} else {
 								err = 1;
-								showMsg(util.fieldsText[field] + '还没填写');
+								alpha.toast(util.fieldsText[field] + '还没填写');
 								return false;
 							}
 						}
 					});
-					console.log(postdata);
 					if (err) {
 						return false;
 					}
@@ -311,16 +291,24 @@ require(['jquery', 'mustache', 'laydate', 'layer'],
 								location.href = '/wx/single#sme';
 								break;
 						}
-					} else if (resp.code === 161) {
-						layer.open({
-							content: resp.msg,
-							btn: ['马上充值', '算了吧'],
-							yes: function () {
-								location.href = "/wx/sw?id=" + $sls.eid + '#swallet';
-							}
-						});
-					} else {
-						showMsg(resp.msg);
+					} else if (resp.data && resp.data.content) {
+						var actions = resp.data.actions;
+						alpha.prompt(
+							resp.data.title,
+							resp.data.content,
+							resp.data.buttons,
+							function () {
+								if (actions.length > 0) {
+									location.href = actions[0];
+								}
+							},
+							function () {
+								if (actions.length > 1) {
+									location.href = actions[1];
+								}
+							});
+					} else if (resp.msg) {
+						alpha.toast(resp.msg);
 					}
 				}, 'json');
 			},
@@ -341,7 +329,7 @@ require(['jquery', 'mustache', 'laydate', 'layer'],
 						if (resp.code < 1) {
 							util.wechatPay(resp.data.prepay);
 						} else {
-							showMsg(resp.msg);
+							alpha.toast(resp.msg);
 						}
 						util.paying = 0;
 					}, 'json');
@@ -362,10 +350,10 @@ require(['jquery', 'mustache', 'laydate', 'layer'],
 						function (res) {
 							if (res.err_msg == "get_brand_wcpay_request:ok") {
 								util.refresh();
-								showMsg("您已经微信支付成功！");
+								alpha.toast("您已经微信支付成功！");
 							} else {
 								util.payBtn.html('付款平台');
-								showMsg("您已经取消微信支付！");
+								alpha.toast("您已经取消微信支付！");
 							}
 						}
 					);
@@ -395,7 +383,7 @@ require(['jquery', 'mustache', 'laydate', 'layer'],
 					if (resp.code < 1) {
 						util.refresh();
 					} else {
-						showMsg(resp.msg);
+						alpha.toast(resp.msg);
 					}
 				}, 'json');
 			}
