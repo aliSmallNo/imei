@@ -36,17 +36,19 @@ require(["jquery", "layer", "mustache"],
 			chatUL: $(".cr-chat-list-items ul"),
 			chatTmp: $("#chatTmp").html(),
 
-			//list: $(".cr-chat-list-items ul"),
-			list: $(".cr-rooms ul"),
+			list: $(".cr-chat-list-items ul"),
 
 		};
 
 
 		$(window).on("scroll", function () {
+			var firstRow = $sls.adminUL.find('li:first');
+			// console.log(firstRow.length);console.log(firstRow.offset().top);
 			if ($(window).scrollTop() == 0) {
 				loadHistoryChatlist();
-				console.log(1234);
+				return false;
 			}
+
 			/*
 			var lastRow = $sls.list.find('li:last');
 			if (lastRow && eleInScreen(lastRow, 40) && $sls.page > 0) {

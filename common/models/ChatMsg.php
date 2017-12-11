@@ -272,10 +272,6 @@ class ChatMsg extends ActiveRecord
 		$sql = "SELECT count(*)
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
-				where c.cGId=:rid and cAddedBy !=:adminuid and c.cDeletedFlag=:del ";
-		$sql = "SELECT count(*)
-				from im_chat_room as r 
-				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
 				join im_chat_room_fella as m on m.mUId=c.cAddedBy  and m.mRId=:rid
 				where c.cGId=:rid and cAddedBy !=:adminuid and  c.cDeletedFlag=:del ";
