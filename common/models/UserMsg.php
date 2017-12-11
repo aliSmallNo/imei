@@ -378,11 +378,12 @@ class UserMsg extends ActiveRecord
 
 		// Rain: 单独处理chat info
 		//$criteria.=' AND mUId=131379 '; // Rain: for testing
-		$sql = "SELECT count(1) as cnt, mUId as receiverUId,mAddedBy as senderUId, mCategory as cat
-			 FROM im_user_msg
+		$sql = "SELECT count(1) as cnt,u.uOpenId, mUId as receiverUId, mAddedBy as senderUId, mCategory as cat
+			 FROM im_user_msg as m 
+			 JOIN im_user as u on u.uId=m.mUId
 			 WHERE mAddedOn BETWEEN :from AND :to $criteria  
 			 AND mAlertFlag=0 AND mCategory =:cat 
-			 GROUP BY mUId,mCategory
+			 GROUP BY u.uOpenId,mUId,mCategory
 			 ORDER BY mUId,mId";
 		$ret = $conn->createCommand($sql)->bindValues([
 			':from' => date('Y-m-d', time() - 3600 * 12),
@@ -395,13 +396,17 @@ class UserMsg extends ActiveRecord
 			$cmd->bindValues([
 				':id' => $receiverUId
 			])->execute();
-			NoticeUtil::init(WechatUtil::NOTICE_CHAT, $receiverUId, $senderUId)
+
+			/*NoticeUtil::init(WechatUtil::NOTICE_CHAT, $receiverUId, $senderUId)
 				->send([
 					'千寻恋恋每日简报',
 					'有人密聊你了' . $row['cnt'] . '次',
 					date("Y年n月j日 H:i")
-				]);
+				]);*/
 		}
+
+		$openIds = array_column($ret, 'uOpenId');
+		NoticeUtil::init(NoticeUtil::CAT_CHAT, $openIds)->sendText();
 		return true;
 	}
 }

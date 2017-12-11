@@ -32,13 +32,134 @@ class NoticeUtil
 	public $keywords = [];
 	public $logText = '';
 
+	const CAT_CHAT = 'chat';
+	const CAT_TEXT_ONLY = 'text_only';
+	const CAT_IMAGE_ONLY = 'image_only';
+	const CAT_VOICE_ONLY = 'voice_only';
+
+	public $open_ids = [];
+
+	public static function init($tag, $openIds = [])
+	{
+		$util = new self();
+		$util->tag = $tag;
+		$util->open_ids = $openIds;
+		return $util;
+	}
+
+	protected function createText($text = '')
+	{
+		if ($text) {
+			return $text;
+		}
+		switch ($this->tag) {
+			case self::CAT_CHAT:
+				$text = '千寻恋恋里有人密聊你了，快去看看吧!
+
+👉<a href="https://wx.meipo100.com/wx/single#scontacts">点击查看</a>👈';
+				break;
+		}
+		return $text;
+	}
+
+	public function sendText($text = '')
+	{
+		$text = self::createText($text);
+		$errCode = 0;
+		$errMsg = '';
+		if (!$this->open_ids) {
+			$errCode = 1;
+			$errMsg = '接受人为空啊';
+		} elseif (!$text) {
+			$errCode = 1;
+			$errMsg = '发送消息为空';
+		}
+		if ($errCode) {
+			return [$errCode, $errMsg];
+		}
+		$openIds = $this->open_ids;
+		$url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=';
+		if (is_array($this->open_ids)) {
+			if (count($this->open_ids) > 1) {
+				$url = 'https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=';
+			} elseif (count($this->open_ids) == 1) {
+				$openIds = $this->open_ids[0];
+			}
+		}
+		$ret = [];
+		if ($openIds && $text) {
+			$url .= WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+			$postData = [
+				"msgtype" => "text",
+				"touser" => $openIds,
+				"text" => [
+					"content" => $text
+				]
+			];
+			$ret = AppUtil::postJSON($url, json_encode($postData, JSON_UNESCAPED_UNICODE));
+		}
+		$ret = json_decode($ret, 1);
+		if (isset($ret['errcode'])) {
+			$errCode = $ret['errcode'];
+		}
+		if (isset($ret['errmsg'])) {
+			$errMsg = $ret['errmsg'];
+		}
+		return [$errCode, $errMsg];
+	}
+
+	public function sendMedia($mediaId)
+	{
+		$ret = [
+			"errcode" => 0,
+			"errmsg" => ""
+		];
+		if (!$this->open_ids) {
+			$ret = [
+				"errcode" => 1,
+				"errmsg" => "接受人为空"
+			];
+		} elseif (!$mediaId) {
+			$ret = [
+				"errcode" => 1,
+				"errmsg" => "发送的media ID为空"
+			];
+		}
+		if ($ret['errcode'] > 0) {
+			return $ret;
+		}
+		$openIds = $this->open_ids;
+		$url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=';
+		if (is_array($this->open_ids)) {
+			if (count($this->open_ids) > 1) {
+				$url = 'https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=';
+			} elseif (count($this->open_ids) == 1) {
+				$openIds = $this->open_ids[0];
+			}
+		}
+		$type = $this->tag == self::CAT_VOICE_ONLY ? 'voice' : 'image';
+		if ($openIds && $mediaId) {
+			$url .= WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+			$postData = [
+				"touser" => $openIds,
+				"msgtype" => $type,
+				$type => [
+					"media_id" => $mediaId
+				]
+			];
+			$ret = AppUtil::postJSON($url, json_encode($postData, JSON_UNESCAPED_UNICODE));
+		}
+		$ret = json_decode($ret, 1);
+		return $ret;
+	}
+
 	/**
 	 * @param $tag string
 	 * @param $receiverUId int
 	 * @param $senderUId int
 	 * @return NoticeUtil
 	 */
-	public static function init($tag, $receiverUId, $senderUId = 0)
+	public static function init2($tag, $receiverUId, $senderUId = 0)
 	{
 		$util = new self();
 		$util->tag = $tag;

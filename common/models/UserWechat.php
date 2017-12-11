@@ -9,6 +9,7 @@
 namespace common\models;
 
 use common\utils\AppUtil;
+use common\utils\NoticeUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
@@ -295,14 +296,14 @@ class UserWechat extends ActiveRecord
 		$conn = AppUtil::db();
 		$sql = 'select uId, uOpenId from im_user WHERE uPhone in (' . implode(',', $mobiles) . ')';
 		$ret = $conn->createCommand($sql)->queryAll();
-		$cnt = 0;
-		$openIds = [];
-		foreach ($ret as $row) {
-			$openIds[] = $row['uOpenId'];
-			$cnt++;
+		$openIds = array_column($ret, 'uOpenId');
+		if ($type == 'voice') {
+			$ret = NoticeUtil::init(NoticeUtil::CAT_VOICE_ONLY, $openIds)->sendMedia($mediaId);
+		} else {
+			$ret = NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, $openIds)->sendMedia($mediaId);
 		}
-		self::sendMedia($openIds, $mediaId, $type);
-		return $cnt;
+//		self::sendMedia($openIds, $mediaId, $type);
+		return count($openIds);
 	}
 
 
