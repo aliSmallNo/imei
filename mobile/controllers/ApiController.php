@@ -2147,7 +2147,7 @@ class ApiController extends Controller
 				if (!$rid) {
 					return self::renderAPI(129, '对话不存在啊~');
 				}
-				list($chatItems, $nextpage) = ChatMsg::chatPageList($rid, $uid, $page);
+				list($chatItems, $nextpage) = ChatMsg::chatPageList($rid, $page, $uid);
 				return self::renderAPI(0, '', [
 					"chat" => $chatItems,
 					"nextpage" => $nextpage,

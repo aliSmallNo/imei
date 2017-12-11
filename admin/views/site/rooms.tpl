@@ -38,6 +38,9 @@
 		width: 64px;
 		height: 64px;
 	}
+	td{
+		font-size: 12px;
+	}
 
 	.chat-st {
 		color: #ee6e73;
@@ -123,7 +126,7 @@
 				{{$item.rAddedOn}}
 			</td>
 			<td>
-				<a href="/site/roomdes?rid={{$item.rId}}" class="btn btn-outline btn-primary btn-xs">详情</a>
+				<a href="/site/roomdesc?rid={{$item.rId}}" class="btn btn-outline btn-primary btn-xs">详情</a>
 			</td>
 		</tr>
 		{{/foreach}}

@@ -1592,4 +1592,27 @@ class SiteController extends BaseController
 		);
 	}
 
+	public function actionRoomdesc()
+	{
+		$getInfo = Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$rid = self::getParam("rid");
+
+		list($adminChats) = ChatMsg::chatItems($rid, 0, 0, 1, 0);
+		$count = ChatMsg::countRoomChat($rid);
+		list($chatItems) = ChatMsg::chatPageList($rid, $page, 120003, 20);
+
+		$pagination = self::pagination($page, $count);
+		return $this->renderPage("roomdesc.tpl",
+			[
+				'getInfo' => $getInfo,
+				'pagination' => $pagination,
+				'category' => 'data',
+				'adminChats' => $adminChats,
+				'chatItems' => $chatItems,
+				'count' => $count,
+			]
+		);
+	}
+
 }
