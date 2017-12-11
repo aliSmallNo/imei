@@ -966,11 +966,21 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$openIds = ['oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'];
+		/*$openIds = ['oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'];
 		$ret = NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, $openIds)->sendMedia('GfJsRJj-kJwOJMdX7eK9HNWtwC75qKXAYWu_MEYGFPs');
 		var_dump($ret);
 
 		$ret = NoticeUtil::init(NoticeUtil::CAT_VOICE_ONLY, $openIds)->sendMedia('GfJsRJj-kJwOJMdX7eK9HLGoEvWF4fOHzDA-KUCbyqQ');
+		var_dump($ret);*/
+
+		$sql = 'select uId,uOpenId
+  from im_user where uLocation like \'%盐城%\' and uGender=11 and uPhone!=\'\' and uBirthYear between 1984 and 1992;';
+		$conn = AppUtil::db();
+		$ret = $conn->createCommand($sql)->queryAll();
+		$openIds = array_column($ret, 'uOpenId');
+		$text ='《我们派对吧》活动海选投票进行中，赶紧给自己拉拉票，当然偷偷告诉你自己也可以给自己投票哦，票高者就可以参与活动喽。
+<a href="http://mp.weixin.qq.com/s/FsWLLG2XaBwpsyVkvI8Atw">点击链接直接投票</a>';
+		$ret = NoticeUtil::init(NoticeUtil::CAT_TEXT_ONLY, $openIds)->sendText($text);
 		var_dump($ret);
 		/*$ret = UserQR::shares(131379);
 		foreach ($ret as $row) {
