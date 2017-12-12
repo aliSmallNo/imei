@@ -21,14 +21,17 @@ require(["jquery", "alpha", "mustache", 'socket'],
 			adminTmp: $("#tpl_chat").html(),
 		};
 
-		$(document).on(kClick, ".chat-input", function () {
+		$(document).on(focus, ".chat-input", function () {
 			var target = this;
-			/*setTimeOut(function () {
+			/*
+			setTimeOut(function () {
 				$(".input").get(0).scrollIntoView(true);
-			}, 500);*/
-			setTimeout(function () {
-				document.body.scrollTop = document.body.scrollHeight ;
 			}, 500);
+			*/
+
+			/*setTimeout(function () {
+				document.body.scrollTop = document.body.scrollHeight ;
+			}, 500);*/
 		});
 
 		var NoticeUtil = {
