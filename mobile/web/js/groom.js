@@ -1,12 +1,5 @@
-require.config({
-	paths: {
-		"jquery": "/assets/js/jquery-3.2.1.min",
-		"layer": "/assets/js/layer_mobile/layer",
-		"mustache": "/assets/js/mustache.min",
-	}
-});
-require(["jquery", "layer", "mustache"],
-	function ($, layer, mustache) {
+require(["jquery", "alpha", "mustache", 'socket'],
+	function ($, alpha, Mustache, io) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -26,10 +19,46 @@ require(["jquery", "layer", "mustache"],
 
 			adminUL: $("ul.chats"),
 			adminTmp: $("#tpl_chat").html(),
-
-
 		};
 
+		var NoticeUtil = {
+			socket: null,
+			uni: $('#cUNI').val(),
+			rid: $('#cRID').val(),
+			timer: 0,
+			init: function () {
+				var util = this;
+				util.socket = io('https://nd.meipo100.com');
+				util.socket.on('connect', function () {
+					util.socket.emit('house', util.uni);
+				});
+
+				util.socket.on("room", function (resp) {
+					var roomId = resp.rid;
+					if (util.rid != roomId) {
+						return;
+					}
+					switch (resp.tag) {
+						case 'tip':
+							//ChatUtil.showTip(resp.msg);
+							break;
+						case 'msg':
+							loadRecentChatlist();
+							//ChatUtil.messages(resp, 1);
+							break;
+					}
+				});
+			},
+			join: function (gid) {
+				var util = this;
+				util.gid = gid;
+				var params = {
+					gid: util.gid,
+					uid: util.uni
+				};
+				util.socket.emit('join', params);
+			}
+		};
 
 		$(window).on("scroll", function () {
 			var firstRow = $sls.adminUL.find('li:first');
@@ -38,7 +67,6 @@ require(["jquery", "layer", "mustache"],
 				loadHistoryChatlist();
 				return false;
 			}
-
 			/*
 			var lastRow = $sls.adminUL.find('li:last');
 			if (lastRow && eleInScreen(lastRow, 40) && $sls.page > 0) {
@@ -59,7 +87,6 @@ require(["jquery", "layer", "mustache"],
 			sendMessage();
 		});
 
-
 		function sendMessage() {
 			if ($sls.loading) {
 				return;
@@ -71,20 +98,18 @@ require(["jquery", "layer", "mustache"],
 				rid: $sls.rid,
 			}, function (resp) {
 				$sls.loading = 0;
-				if (resp.code == 0) {
-					var html = Mustache.render($sls.adminTmp, {data: resp.data.items});
-					$sls.adminUL.append(html);
-
-					$sls.text = '';
+				if (resp.code < 1) {
+					$sls.text = "";
 					$sls.input.val('');
+					/*var html = Mustache.render($sls.adminTmp, {data: resp.data.items});
+					$sls.adminUL.append(html);
 					$sls.currentlastId = resp.data.lastid;
-					$sls.bottompl.get(0).scrollIntoView(true);
+					$sls.bottompl.get(0).scrollIntoView(true);*/
 				} else {
-					showMsg(resp.msg);
+					alpha.toast(resp.msg);
 				}
 			}, "json");
 		}
-
 
 		function loadHistoryChatlist() {
 			if ($sls.loading || !$sls.page) {
@@ -99,9 +124,8 @@ require(["jquery", "layer", "mustache"],
 				rid: $sls.rid,
 				lastid: $sls.lastId,
 			}, function (resp) {
-				//$sls.loadIcon.hide();
 				$sls.loading = 0;
-				if (resp.code == 0) {
+				if (resp.code < 1) {
 					$sls.adminUL.prepend(Mustache.render($sls.adminTmp, {data: resp.data.chat}));
 					if ($sls.page == 1) {
 						$sls.bottompl.get(0).scrollIntoView(true);
@@ -111,7 +135,7 @@ require(["jquery", "layer", "mustache"],
 						//$sls.more.html("上拉加载更多~");
 					}
 				} else {
-					showMsg(resp.msg);
+					alpha.toast(resp.msg);
 				}
 			}, "json");
 		}
@@ -127,25 +151,14 @@ require(["jquery", "layer", "mustache"],
 				lastid: $sls.currentlastId,
 			}, function (resp) {
 				$sls.loading = 0;
-				if (resp.code == 0) {
+				if (resp.code < 1) {
 					$sls.adminUL.append(Mustache.render($sls.adminTmp, {data: resp.data.chat}));
 					$sls.currentlastId = resp.data.lastid;
 				} else {
-					showMsg(resp.msg);
+					alpha.toast(resp.msg);
 				}
 			}, "json");
 		}
-
-
-		var showMsg = function (title, sec) {
-			var delay = sec || 3;
-			layer.open({
-				type: 99,
-				content: title,
-				skin: 'msg',
-				time: delay
-			});
-		};
 
 		function shareOptions(type) {
 			var linkUrl = "https://wx.meipo100.com/wx/chatroom?rid=" + $sls.rid;
@@ -184,8 +197,9 @@ require(["jquery", "layer", "mustache"],
 				wx.onMenuShareTimeline(shareOptions('timeline'));
 			});
 			loadHistoryChatlist();
-			setInterval(function () {
+			/*setInterval(function () {
 				loadRecentChatlist();
-			}, 5000);
+			}, 5000);*/
+			NoticeUtil.init();
 		});
 	});

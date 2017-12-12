@@ -386,10 +386,11 @@ class ChatMsg extends ActiveRecord
 	}
 
 	/**
-	 * @param $rId 群ID
-	 * @param $senderId 发送者UID
-	 * @param $content 发送内容
-	 * @param null $conn
+	 * @param $rId string 群ID
+	 * @param $senderId string 发送者UID
+	 * @param $content string 发送内容
+	 * @param $conn \yii\db\Connection
+	 * @return array
 	 */
 	public static function RoomAddChat($rId, $senderId, $content, $conn = null)
 	{
@@ -455,6 +456,17 @@ class ChatMsg extends ActiveRecord
 			'eid' => AppUtil::encrypt($senderId),
 			'ban' => ChatRoomFella::BAN_NORMAL,
 		];
+		PushUtil::room('msg', $rId, $senderId, $info);
+
+		$sql = 'SELECT u.uUniqId 
+				FROM im_chat_room_fella as f join im_user as u on u.uId=f.mUId
+ 				WHERE f.mRId=' . $rId;
+		$ids = $conn->createCommand($sql)->queryColumn();
+		$info['dir'] = 'left';
+		$info['eid'] = AppUtil::encrypt($senderId);
+		foreach ($ids as $id) {
+			PushUtil::room('msg', $rId, $id, $info);
+		}
 		return [$info, $cId];
 	}
 
