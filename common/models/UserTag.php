@@ -124,7 +124,7 @@ class UserTag extends ActiveRecord
 					':uid' => $uid,
 					':cat' => self::CAT_CHAT_MONTH,
 				])->queryScalar();
-				if($lastExp){
+				if ($lastExp) {
 					$expired = date('Y-m-d 23:59:56', strtotime($lastExp) + 86400 * 30);
 				}
 				//Rain: 双12活动,买月卡获赠120媒桂花
@@ -148,6 +148,15 @@ class UserTag extends ActiveRecord
 			':addon' => $addon,
 			':exp' => $expired
 		])->execute();
+		AppUtil::logFile($conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':cat' => $cat,
+			':pid' => $pid,
+			':title' => $title,
+			':note' => $note,
+			':addon' => $addon,
+			':exp' => $expired
+		])->getRawSql(), 5, __FUNCTION__, __LINE__);
 		return $ret;
 	}
 
