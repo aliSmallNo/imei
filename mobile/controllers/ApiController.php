@@ -2105,7 +2105,7 @@ class ApiController extends Controller
 				$rid = trim(self::postParam('rid'));
 				$page = trim(self::postParam('page'));
 				$lastid = trim(self::postParam('lastid'));
-				list($chatItems, $nextpage) = ChatRoom::historyChatList($rid, $lastid, $page,$uid);
+				list($chatItems, $nextpage) = ChatRoom::historyChatList($rid, $lastid, $page, $uid);
 				return self::renderAPI(0, '', [
 					"chat" => $chatItems,
 					"nextpage" => $nextpage,
@@ -2114,7 +2114,7 @@ class ApiController extends Controller
 			case "current_chat_list":
 				$rid = trim(self::postParam('rid'));
 				$lastid = trim(self::postParam('lastid'));
-				list($chatItems, $rlastId) = ChatRoom::currentChatList($rid, $lastid,$uid);
+				list($chatItems, $rlastId) = ChatRoom::currentChatList($rid, $lastid, $uid);
 				return self::renderAPI(0, '', [
 					"chat" => $chatItems,
 					"lastid" => $rlastId,
@@ -2220,6 +2220,12 @@ class ApiController extends Controller
 				}
 				return self::renderAPI($code, $msg);
 			case 'start_date':
+				list($code, $msg) = Date::preCheck($uid, $sid);
+				if (is_array($msg)) {
+					return self::renderAPI($code, '', $msg);
+				} elseif ($code > 0) {
+					return self::renderAPI($code, $msg);
+				}
 				$data = self::postParam('data');
 				$data = json_decode($data, 1);
 				$fields = ['cat', 'paytype', 'title', 'intro'];
@@ -2240,13 +2246,13 @@ class ApiController extends Controller
 					}
 					$insert[$v] = $data[$v];
 				}
-				$msg = Date::checkBal($uid);
+				/*$msg = Date::checkBal($uid);
 				if ($msg) {
 					return self::renderAPI(161, $msg);
 				}
 				if (Date::oneInfo($uid, $sid)) {
 					return self::renderAPI(129, '你们已经约会过了哦~');
-				}
+				}*/
 				$res = Date::reg($uid, $sid, $insert);
 				if ($res) {
 					WechatUtil::templateMsg(WechatUtil::NOTICE_DATE,
@@ -2288,7 +2294,8 @@ class ApiController extends Controller
 					}
 					$insert[$v] = $data[$v];
 				}
-				$insert["st"] = Date::STATUS_PASS;
+				$insert["st"] = Date::STATUS_MEET;
+				//Date::STATUS_PASS;
 				$res = 0;
 				if (Date::oneInfo($uid, $sid)->dStatus == Date::STATUS_PENDING) {
 					$res = Date::reg($uid, $sid, $insert);

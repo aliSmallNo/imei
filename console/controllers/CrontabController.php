@@ -26,7 +26,8 @@ class CrontabController extends Controller
 
 		//Rain: 星期天的时候重置一下
 		if (date('w') == 0) {
-			$sql = 'UPDATE im_hit set hCount = ROUND(hCount/10) WHERE hCount>10 AND hId>0';
+			//$sql = 'UPDATE im_hit set hCount = ROUND(hCount/10) WHERE hCount>10 AND hId>0';
+			$sql ='truncate table im_hit';
 			$conn->createCommand($sql)->execute();
 		}
 

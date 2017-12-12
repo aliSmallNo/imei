@@ -714,9 +714,11 @@ class User extends ActiveRecord
 				COUNT(CASE WHEN uPhone!='' AND (uRole=20 or (uRole=10 AND uGender>9)) AND wSubscribe=1 THEN  1 END ) as reg0,
 				COUNT(CASE WHEN wSubscribe=1 THEN  1 END ) as follow
 				FROM im_user as u
-				JOIN im_user_wechat as w on w.wUId=u.uId
+				JOIN im_user_wechat as w on w.wUId=u.uId AND w.wOpenId LIKE :openid
 				WHERE uStatus<8";
-		$result = $conn->createCommand($sql)->queryOne();
+		$result = $conn->createCommand($sql)->bindValues([
+			':openid' => self::OPENID_PREFIX . '%'
+		])->queryOne();
 		return $result;
 	}
 
