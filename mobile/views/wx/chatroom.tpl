@@ -1,3 +1,10 @@
+<style>
+	.cr-room .cr-loading-items {
+		font-size: 1.2rem;
+		text-align: center;
+		padding-top: 1rem;
+	}
+</style>
 <div class="cr-room">
 	<div class="cr-title">
 		<div class="cr-title-logo">
@@ -15,7 +22,8 @@
 			宣扬封建迷信、淫秽、赌博、暴力的<br>
 			进行未经许可商业广告行为的。</p>
 	</div>
-	<div class="cr-loading-items spinner"></div>
+	<div class="spinner"></div>
+	<div class="cr-loading-items"></div>
 	<ul>
 		<!-- adminItems -->
 	</ul>
@@ -65,10 +73,12 @@
 	.cr-room ul li.right {
 		direction: rtl;
 	}
-	.cr-room ul li.right .cr-admin-avatar{
+
+	.cr-room ul li.right .cr-admin-avatar {
 		text-align: right;
 	}
-	.cr-room ul li.right .cr-admin-r{
+
+	.cr-room ul li.right .cr-admin-r {
 		text-align: right;
 		padding-left: 4rem;
 	}
@@ -130,5 +140,5 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/chatroom.js?v=1.1.6" src="/assets/js/require.js"></script>
+<script data-main="/js/chatroom.js?v=1.1.7" src="/assets/js/require.js"></script>
 

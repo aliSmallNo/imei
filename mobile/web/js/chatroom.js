@@ -27,7 +27,8 @@ require(["jquery", "layer", "mustache"],
 			lastId: $("#cLASTID").val(),
 			currentlastId: $("#cLASTID").val(),
 			page: 1,
-			nomore: $(".cr-loading-items"),
+			loadIcon: $(".spinner"),
+			more: $(".cr-loading-items"),
 
 			adminUL: $(".cr-room ul"),
 			adminTmp: $("#adminTmp").html(),
@@ -53,7 +54,7 @@ require(["jquery", "layer", "mustache"],
 			var lastRow = $sls.list.find('li:last');
 			if (lastRow && eleInScreen(lastRow, 40) && $sls.page > 0) {
 				// loadHistoryChatlist();
-				console.log(1111111111);
+				console.log(1234);
 				//return false;
 			}
 			*/
@@ -151,14 +152,15 @@ require(["jquery", "layer", "mustache"],
 				return;
 			}
 			$sls.loading = 1;
-			$sls.nomore.show();
+			$sls.loadIcon.show();
+			$sls.more.html("");
 			$.post("/api/chatroom", {
 				tag: "history_chat_list",
 				page: $sls.page,
 				rid: $sls.rid,
 				lastid: $sls.lastId,
 			}, function (resp) {
-				$sls.nomore.hide();
+				$sls.loadIcon.hide();
 				$sls.loading = 0;
 				if (resp.code == 0) {
 					$sls.adminUL.prepend(Mustache.render($sls.adminTmp, {data: resp.data.chat}));
@@ -166,6 +168,9 @@ require(["jquery", "layer", "mustache"],
 						$sls.bottompl.get(0).scrollIntoView(true);
 					}
 					$sls.page = resp.data.nextpage;
+					if ($sls.page > 0) {
+						$sls.more.html("上拉加载更多~");
+					}
 				} else {
 					showMsg(resp.msg);
 				}
