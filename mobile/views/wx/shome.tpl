@@ -5,8 +5,8 @@
 	</div>
 	<div class="baseinfo">
 		<div class="title">
-			<h4><em>{{$uInfo.name}}</em> <i class="icon female"></i> {{if $uInfo.cert}}<i class="t-warning">实名认证</i>{{/if}}</h4>
-			<h5>{{$uInfo.location_t}}</h5>
+			<h4><em>{{$uInfo.name}}</em> {{if $uInfo.cert}}<i class="t-warning">实名认证</i>{{/if}}</h4>
+			<h5>{{if !$hideFlag}}{{$uInfo.location_t}}{{/if}}</h5>
 		</div>
 		<h6>{{$brief}}</h6>
 	</div>
@@ -25,7 +25,7 @@
 	</a>
 	{{/if}}
 	<div class="single-info">
-		<a href="/wx/sd?id={{$uInfo.encryptId}}">
+		<a href="/wx/sd?id={{$uInfo.encryptId}}&hide={{$hideFlag}}">
 			<span class="title">基本资料</span>
 			<ul class="clearfix">
 

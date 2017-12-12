@@ -497,6 +497,7 @@ class WxController extends BaseController
 	public function actionSh()
 	{
 		$hid = self::getParam('id');
+		$hideFlag = self::getParam('hide', 0);
 		$secretId = $hid;
 		$hid = AppUtil::decrypt($hid);
 		if (!$hid) {
@@ -538,7 +539,8 @@ class WxController extends BaseController
 				'reasons' => self::$ReportReasons,
 				'role' => $this->user_role,
 				'genderName' => $genderName,
-				'isMember' => $isMember
+				'isMember' => $isMember,
+				'hideFlag' => $hideFlag
 			],
 			'terse');
 	}
@@ -546,6 +548,7 @@ class WxController extends BaseController
 	public function actionSd()
 	{
 		$hid = self::getParam('id');
+		$hideFlag = self::getParam('hide', 0);
 		$hid = AppUtil::decrypt($hid);
 		if (!$hid) {
 			header('location:/wx/error?msg=用户不存在啊~');
@@ -566,6 +569,7 @@ class WxController extends BaseController
 		return self::renderPage("sdesInfo.tpl",
 			[
 				'user' => $user,
+				'hideFlag' => $hideFlag
 			],
 			'terse');
 	}

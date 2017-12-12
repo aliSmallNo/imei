@@ -13,4 +13,4 @@
 		<a href="/wx/reg0" class="btn-reg"></a>
 	</div>
 </div>
-<script src="/assets/js/require.js" data-main="/js/hi.js?v=1.2.3"></script>
+<script src="/assets/js/require.js" data-main="/js/hi.js?v=1.3.0"></script>
