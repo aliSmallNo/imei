@@ -205,18 +205,18 @@ class COSUtil
 				AppUtil::logFile($data['sha'], 5, __FUNCTION__, __LINE__);
 			}
 		}
-		if (!isset($data["filecontent"])) {
+		if (!isset($data["sha"])) {
 			if (function_exists('curl_file_create')) {
 				$data['filecontent'] = curl_file_create($srcPath);
 			} else {
 				$data['filecontent'] = '@' . $srcPath;
 			}
-			$sha1 = hash_file('sha1', $srcPath);
-			$data['sha'] = $sha1;
+			$data['sha'] = hash_file('sha1', $srcPath);
 		}
 
 		$url = $this->getUrl() . "/" . ($thumbFlag ? 't' : 'n') . $this->resRename;
 		AppUtil::logFile($url, 5, __FUNCTION__, __LINE__);
+		AppUtil::logFile($data['sha'], 5, __FUNCTION__, __LINE__);
 		$ret = $this->curlUpload($url, $data);
 		$ret = json_decode($ret, true);
 		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
