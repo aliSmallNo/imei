@@ -21,6 +21,13 @@ require(["jquery", "alpha", "mustache", 'socket'],
 			adminTmp: $("#tpl_chat").html(),
 		};
 
+		$(document).on("click", ".chat-input", function () {
+			var target = this;
+			setTimeOut(function () {
+				target.scrollIntoView(true);
+			}, 100);
+		})
+
 		var NoticeUtil = {
 			socket: null,
 			uni: $('#cUNI').val(),
@@ -48,8 +55,7 @@ require(["jquery", "alpha", "mustache", 'socket'],
 							$sls.adminUL.append(html);
 							$sls.currentlastId = resp.items.cid;
 							$sls.bottompl.get(0).scrollIntoView(true);
-							// loadRecentChatlist();
-							//ChatUtil.messages(resp, 1);
+
 							$sls.text = "";
 							$sls.input.val('');
 							break;
@@ -106,10 +112,12 @@ require(["jquery", "alpha", "mustache", 'socket'],
 				if (resp.code < 1) {
 					$sls.text = "";
 					$sls.input.val('');
-					/*var html = Mustache.render($sls.adminTmp, {data: resp.data.items});
+					/*
+					var html = Mustache.render($sls.adminTmp, {data: resp.data.items});
 					$sls.adminUL.append(html);
 					$sls.currentlastId = resp.data.lastid;
-					$sls.bottompl.get(0).scrollIntoView(true);*/
+					$sls.bottompl.get(0).scrollIntoView(true);
+					*/
 				} else {
 					alpha.toast(resp.msg);
 				}
