@@ -26,9 +26,9 @@ require(["jquery", "alpha", "mustache", 'socket'],
 			/*setTimeOut(function () {
 				target.scrollIntoView(true);
 			}, 100);*/
-			setTimeout(function(){
-				document.body.scrollTop = document.body.scrollHeight;
-			},100);
+			setTimeout(function () {
+				document.body.scrollTop = document.body.scrollHeight - 10;
+			}, 100);
 		});
 
 		var NoticeUtil = {
