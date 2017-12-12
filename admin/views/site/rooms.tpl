@@ -112,7 +112,7 @@
 			</td>
 			<td class="members">
 				{{foreach from=$item.members key=key item=user}}
-				{{if $key<9}}<img src="{{$user.uThumb}}" class="i-av" bsrc="{{$user.uAvatar}}" >{{/if}}
+				{{if $key<8}}<img src="{{$user.uThumb}}" class="i-av" bsrc="{{$user.uAvatar}}" >{{/if}}
 				{{/foreach}}
 			</td>
 			<td class="members-des">
