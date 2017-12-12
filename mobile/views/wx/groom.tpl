@@ -1,14 +1,19 @@
 <style>
-	.dlg-top {
-		position: fixed;
-		top: 100px;
-		left: 10%;
+	.schat-content{
+		position: relative;
+	}
+	.chats {
+		width: 100%;
+		height: auto;
+		overflow-y: scroll;
+		-webkit-overflow-scrolling: touch;
 	}
 
-	.dlg-bottom {
-		position: fixed;
-		bottom: 0px;
-		left: 10%;
+	.m-bottom-bar {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		z-index: 99;
 	}
 </style>
 <div class="schat-top-bar">
@@ -24,7 +29,7 @@
 	</div>
 </div>
 
-<div class="report_wrap schat-content">
+<div class="report_wrap schat-content" >
 	<div class="spinner"></div>
 	<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
 	<ul class="chats">
@@ -32,7 +37,8 @@
 	</ul>
 	<div class="m-bottom-pl"></div>
 	<div class="m-bottom-bar">
-		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120" style="-webkit-user-modify: read-write-plaintext-only"></div>
+		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120"
+															style="-webkit-user-modify: read-write-plaintext-only"></div>
 		<div class="action"><a href="javascript:;" class="btn-chat-send">发送</a></div>
 	</div>
 </div>
