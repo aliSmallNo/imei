@@ -1,9 +1,3 @@
-
-<style>
-	.cr-room .cr-loading-items {
-
-	}
-</style>
 <div class="report_wrap schat-content">
 	<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
 	<ul class="chats">
@@ -17,7 +11,7 @@
 </div>
 
 <input type="hidden" id="ADMINUID" value="{{$roomInfo.rAdminUId}}">
-<input type="hidden" id="cUNI" value="">
+<input type="hidden" id="cUNI" value="{{$uni}}">
 <input type="hidden" id="cRID" value="{{$rid}}">
 <input type="hidden" id="cUID" value="{{$uid}}">
 <input type="hidden" id="cLASTID" value="{{$lastId}}">

@@ -47,6 +47,7 @@ class PushUtil
 
 	/**
 	 * @param $tag string
+	 * @param $gid int
 	 * @param $uni string
 	 * @param $info array
 	 */
@@ -59,6 +60,23 @@ class PushUtil
 			'items' => $info
 		];
 		self::pushMsg('chat', $params);
+	}
+
+	/**
+	 * @param $tag string
+	 * @param $room_id int
+	 * @param $uni string
+	 * @param $info array
+	 */
+	public static function room($tag, $room_id, $uni, $info)
+	{
+		$params = [
+			'tag' => $tag,
+			'uni' => $uni,
+			'rid' => $room_id,
+			'items' => $info
+		];
+		self::pushMsg('room', $params);
 	}
 
 	protected static function pushMsg($event, $params, $url = '')
