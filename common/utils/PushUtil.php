@@ -27,7 +27,7 @@ class PushUtil
 		} else {
 			$util->url = AppUtil::wsUrl();
 		}
-		$util->client = new Client(new Version2X($url));
+		$util->client = new Client(new Version2X($util->url));
 		$util->client->initialize();
 		return $util;
 	}
@@ -38,7 +38,7 @@ class PushUtil
 	 * @param $action string
 	 * @param $url string
 	 */
-	public function hint($msg, $uni = '', $action = '', $url = '')
+	public function hint($msg, $uni = '', $action = '')
 	{
 		$params = [
 			'tag' => 'hint',
@@ -46,7 +46,7 @@ class PushUtil
 			'uid' => $uni,
 			'action' => $action
 		];
-		return $this->pushMsg('notice', $params, $url);
+		return $this->pushMsg('notice', $params);
 	}
 
 	/**
