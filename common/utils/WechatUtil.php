@@ -533,13 +533,13 @@ class WechatUtil
 			//Rain: 感恩节馈赠
 			if (isset($payInfo['pUId']) && $curDate >= 20171124 && $curDate <= 20171126) {
 				UserTrans::add($payInfo['pUId'], 0, UserTrans::CAT_THANKS_BONUS,
-					'', 88, UserTrans::UNIT_GIFT);
+					'', 88, UserTrans::UNIT_GIFT, '感恩节馈赠');
 			}
 			//Rain: 双12活动,买月卡获赠120媒桂花
 			if ($entity->pCategory == Pay::CAT_CHAT_MONTH
 				&& date('Y-m-d') >= '2017-12-12' && date('Y-m-d') <= '2017-12-13') {
 				UserTrans::add($payInfo['pUId'], $pid, UserTrans::CAT_FESTIVAL_BONUS,
-					'', 120, UserTrans::UNIT_GIFT,'双十二馈赠');
+					'', 120, UserTrans::UNIT_GIFT, '双十二馈赠');
 			}
 
 		} else {

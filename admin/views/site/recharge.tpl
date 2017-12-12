@@ -124,9 +124,10 @@
 				</td>
 				<td>
 					{{$item.tcat}}
+					<div class="f-tip">{{if $item.subtitle}}({{$item.subtitle}}){{/if}}</div>
 				</td>
 				<td class="prefix{{$item.prefix}}">
-					{{if $item.amt}}￥{{$item.amt/100|string_format:"%.2f"}}{{/if}}
+					{{if $item.amt}}￥{{$item.amt/100.0|string_format:"%.2f"}}{{/if}}
 				</td>
 				<td class="prefix{{$item.prefix}}">
 					{{$item.amt_title}}

@@ -304,7 +304,7 @@ class UserTrans extends ActiveRecord
 
 		$conn = AppUtil::db();
 		$sql = "select u.uId as uid,u.uName as uname, u.uPhone as phone,u.uThumb as avatar,p.pAmt as amt ,
-				t.tId, t.tAmt as flower,tAddedOn as date,t.tTitle as tcat,tUnit as unit,t.tCategory as cat
+				t.tId, t.tAmt as flower,tAddedOn as date,t.tTitle as tcat,t.tNote as subtitle,tUnit as unit,t.tCategory as cat
 				from im_user_trans as t 
 				join im_user as u on u.uId=t.tUId 
 				left join im_pay as p on p.pId=t.tPId AND p.pStatus=100
@@ -335,11 +335,10 @@ class UserTrans extends ActiveRecord
 
 		$sql2 = '';
 		if ($uIds) {
-			$sql2 = ' WHERE tUId in (' . implode(',', $uIds) . ')';
+			$sql2 = ' AND tUId in (' . implode(',', $uIds) . ')';
 		}
 		$sql = 'SELECT sum(tAmt) as amt,tCategory as cat,tTitle as title,tUnit as unit,t.tUId as uid
- 				FROM im_user_trans as t ' . $sql2 . ' group by tCategory,tTitle,tUnit,t.tUId';
-
+ 				FROM im_user_trans as t WHERE t.tDeletedFlag=0 '  . $sql2 . ' group by tCategory,tTitle,tUnit,t.tUId';
 		$balances = $conn->createCommand($sql)->queryAll();
 		$details = [];
 
