@@ -15,6 +15,7 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
+use common\models\UserTag;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
@@ -966,8 +967,10 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = AppUtil::decrypt('B0BwYTdASTk_OU5pOTpAPj4-QnJjOUNMPEE7UGs');
+		$ret = UserTag::calcExp();
 		var_dump($ret);
+		/*$ret = AppUtil::decrypt('B0BwYTdASTk_OU5pOTpAPj4-QnJjOUNMPEE7UGs');
+		var_dump($ret);*/
 		/*$ret  = ChatMsg::preCheck(131278, 148551);
 		var_dump($ret);*/
 		/*$openIds = ['oYDJewx6Uj3xIV_-7ciyyDMLq8Wc'];

@@ -42,25 +42,25 @@ class UserTag extends ActiveRecord
 	];
 
 	static $ExpDict = [
-		['初来乍到', '初来乍到', 1000, 1000], // 0级，占位而已
-		['初来乍到', '初来乍到', 1000, 1000],
-		['初来乍到', '初来乍到', 2000, 1000],
-		['书生', '名门闺秀', 3200, 1200],
-		['书生', '名门闺秀', 4400, 1200],
-		['书生', '名门闺秀', 5600, 1200],
-		['书生', '名门闺秀', 6800, 1200],
-		['白马骑士', '豪门公主', 8300, 1500],
-		['白马骑士', '豪门公主', 9800, 1500],
-		['白马骑士', '豪门公主', 11300, 1500],
-		['白马骑士', '豪门公主', 12800, 1500],
-		['白马骑士', '豪门公主', 14300, 1500],
-		['白马骑士', '豪门公主', 15800, 1500],
-		['天仙', '天仙', 17800, 2000],
-		['天仙', '天仙', 19800, 2000],
-		['天仙', '天仙', 21800, 2000],
-		['天仙', '天仙', 23800, 2000],
-		['天仙', '天仙', 25800, 2000],
-		['天仙', '天仙', 27800, 2000]
+		['初来乍到', '初来乍到', 1000, 'p1', 1000], // 0级，占位而已
+		['初来乍到', '初来乍到', 1000, 'p1', 1000],
+		['初来乍到', '初来乍到', 2000, 'p1', 1000],
+		['书生', '名门闺秀', 3200, 'p2', 1200],
+		['书生', '名门闺秀', 4400, 'p2', 1200],
+		['书生', '名门闺秀', 5600, 'p2', 1200],
+		['书生', '名门闺秀', 6800, 'p2', 1200],
+		['白马骑士', '豪门公主', 8300, 'p3', 1500],
+		['白马骑士', '豪门公主', 9800, 'p3', 1500],
+		['白马骑士', '豪门公主', 11300, 'p3', 1500],
+		['白马骑士', '豪门公主', 12800, 'p3', 1500],
+		['白马骑士', '豪门公主', 14300, 'p3', 1500],
+		['白马骑士', '豪门公主', 15800, 'p3', 1500],
+		['天仙', '天仙', 17800, 'p4', 2000],
+		['天仙', '天仙', 19800, 'p4', 2000],
+		['天仙', '天仙', 21800, 'p4', 2000],
+		['天仙', '天仙', 23800, 'p4', 2000],
+		['天仙', '天仙', 25800, 'p4', 2000],
+		['天仙', '天仙', 27800, 'p4', 2000]
 	];
 
 	public static function tableName()
@@ -76,7 +76,7 @@ class UserTag extends ActiveRecord
 		$cats = implode(',',
 			[self::CAT_CHAT_WEEK, self::CAT_CHAT_MONTH, self::CAT_CHAT_SEASON,
 				self::CAT_CHAT_YEAR, self::CAT_CHAT_DAY3, self::CAT_CHAT_DAY7]);
-		$sql = "SELECT tCategory as cat,tTitle as title,DATEDIFF(tExpiredOn,now()) as `left`
+		$sql = "SELECT tCategory as cat,tTitle as title, DATEDIFF(tExpiredOn,now()) as `left`
 			 	FROM im_user_tag 
 			 	WHERE tUId=$uid AND tDeletedFlag=0 AND tStatus=1 
 			  		AND tExpiredOn > NOW() AND tCategory in ($cats)";
@@ -264,7 +264,7 @@ class UserTag extends ActiveRecord
 			WHERE not EXISTS (SELECT 1 from im_user_tag WHERE tUId=:uid AND tCategory=:cat)";
 		$cmdAdd = $conn->createCommand($sql);
 
-		$sql = "update im_user_tag set tNote=:note,tNum=:num,tStatusDate=now()
+		$sql = "UPDATE im_user_tag SET tNote=:note,tNum=:num,tStatusDate=now()
 			WHERE tUId=:uid AND tCategory=:cat ";
 		$cmdMod = $conn->createCommand($sql);
 		$dict = self::$ExpDict;
@@ -280,7 +280,7 @@ class UserTag extends ActiveRecord
 			$title = '';
 			$next = 0;
 			foreach ($dict as $k => $arr) {
-				list($title11, $title10, $next) = $arr;
+				list($title11, $title10, $next, $pic_level) = $arr;
 				$title = ($gender == User::GENDER_MALE ? $title11 : $title10);
 				if ($num > $next) {
 					$level = $k > 0 ? $k : 1;
@@ -295,6 +295,7 @@ class UserTag extends ActiveRecord
 				'next' => $next,
 				'title' => $title,
 				'percent' => $next > 0 ? round(100.0 * $num / $next, 1) : 0,
+				'pic_level' => $pic_level
 				//'gender' => $gender,
 			];
 			RedisUtil::init(RedisUtil::KEY_USER_EXP, $uid)->setCache($note);
