@@ -967,10 +967,10 @@ class FooController extends Controller
 		$rId = 101;
 		$uid = 131379;
 		$text = '测试在这里哦';
-		echo(microtime());
+		var_dump(microtime());
 		$ret = ChatMsg::roomChat($rId, $uid, $text);
 		var_dump($ret);
-		echo(microtime());
+		var_dump(microtime());
 //		$ret = UserTag::calcExp();
 //		var_dump($ret);
 		/*$ret = AppUtil::decrypt('B0BwYTdASTk_OU5pOTpAPj4-QnJjOUNMPEE7UGs');
