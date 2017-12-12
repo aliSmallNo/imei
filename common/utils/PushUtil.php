@@ -99,6 +99,8 @@ class PushUtil
 
 	protected function pushMsg($event, $params)
 	{
+		var_dump($event);
+		var_dump($params);
 		if ($params && is_array($params)) {
 			$this->client->emit($event, $params);
 		}
