@@ -13,6 +13,7 @@
 </div>
 
 <div class="report_wrap schat-content">
+	<div class="spinner"></div>
 	<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
 	<ul class="chats">
 
@@ -57,7 +58,7 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/groom.js?v=1.2.4']);
+		requirejs(['/js/groom.js?v=1.2.5']);
 	});
 </script>
 
