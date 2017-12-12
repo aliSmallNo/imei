@@ -27,7 +27,7 @@ class PushUtil
 		} else {
 			$util->url = AppUtil::wsUrl();
 		}
-		$util->client = new Client(new Version2X($url));
+		$util->client = new Client(new Version2X($util->url));
 		$util->client->initialize();
 		return $util;
 	}
@@ -99,8 +99,6 @@ class PushUtil
 
 	protected function pushMsg($event, $params)
 	{
-		var_dump($event);
-		var_dump($params);
 		if ($params && is_array($params)) {
 			$this->client->emit($event, $params);
 		}
