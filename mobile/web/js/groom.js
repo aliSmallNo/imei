@@ -38,12 +38,18 @@ require(["jquery", "alpha", "mustache", 'socket'],
 					if (util.rid != roomId) {
 						return;
 					}
+					console.log(resp);
 					switch (resp.tag) {
 						case 'tip':
 							//ChatUtil.showTip(resp.msg);
 							break;
 						case 'msg':
-							loadRecentChatlist();
+							// resp.items.dir = 'right';
+							var html = Mustache.render($sls.adminTmp, {data: resp.items});
+							$sls.adminUL.append(html);
+							$sls.currentlastId = resp.items.cid;
+							$sls.bottompl.get(0).scrollIntoView(true);
+							// loadRecentChatlist();
 							//ChatUtil.messages(resp, 1);
 							break;
 					}
@@ -82,8 +88,7 @@ require(["jquery", "alpha", "mustache", 'socket'],
 		}
 
 		$(document).on(kClick, ".btn-chat-send", function () {
-			var self = $(this);
-			$sls.text = $.trim($sls.input.val());
+			$sls.text = $sls.input.val().trim();
 			sendMessage();
 		});
 
@@ -141,6 +146,7 @@ require(["jquery", "alpha", "mustache", 'socket'],
 		}
 
 		function loadRecentChatlist() {
+			console.log($sls.loading);
 			if ($sls.loading) {
 				return;
 			}

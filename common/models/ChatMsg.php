@@ -456,16 +456,15 @@ class ChatMsg extends ActiveRecord
 			'eid' => AppUtil::encrypt($senderId),
 			'ban' => ChatRoomFella::BAN_NORMAL,
 		];
-		PushUtil::room('msg', $rId, $senderId, $info);
 
-		$sql = 'SELECT u.uUniqId 
+		$sql = 'SELECT u.uUniqId,u.uId 
 				FROM im_chat_room_fella as f join im_user as u on u.uId=f.mUId
  				WHERE f.mRId=' . $rId;
-		$ids = $conn->createCommand($sql)->queryColumn();
-		$info['dir'] = 'left';
-		$info['eid'] = AppUtil::encrypt($senderId);
-		foreach ($ids as $id) {
-			PushUtil::room('msg', $rId, $id, $info);
+		$rows = $conn->createCommand($sql)->queryAll();
+		foreach ($rows as $row) {
+			$userId = $row['uId'];
+			$info['dir'] = $userId == $senderId ? 'right' : 'left';
+			PushUtil::room('msg', $rId, $row['uId'], $info);
 		}
 		return [$info, $cId];
 	}
