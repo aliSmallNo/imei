@@ -25,7 +25,7 @@ require(["jquery", "alpha", "mustache", 'socket'],
 			var target = this;
 			setTimeOut(function () {
 				$(".input").get(0).scrollIntoView(true);
-			}, 100);
+			}, 500);
 			/*setTimeout(function () {
 				document.body.scrollTop = document.body.scrollHeight - 10;
 			}, 100);*/
