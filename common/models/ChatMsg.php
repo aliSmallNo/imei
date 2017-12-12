@@ -444,7 +444,7 @@ class ChatMsg extends ActiveRecord
 			'cnt' => $cnt
 		];
 		if ($debug) {
-			var_dump(date('Y-m-d H:i:s'));
+			var_dump(date('Y-m-d H:i:s') . ' ' . __FUNCTION__ . __LINE__);
 		}
 		$sql = 'SELECT u.uUniqId,u.uId,u.uName,u.uThumb 
 				FROM im_chat_room_fella as f join im_user as u on u.uId=f.mUId
