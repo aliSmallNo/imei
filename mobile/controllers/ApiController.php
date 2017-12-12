@@ -2123,22 +2123,15 @@ class ApiController extends Controller
 			case 'sent':
 				$text = trim(self::postParam('text'));
 				$rId = trim(self::postParam('rid'));
-				if (!$text) {
-					return self::renderAPI(129, '消息不能为空啊~');
+				list($code, $msg, $info) = ChatMsg::roomChat($rId, $uid, $text);
+				if ($code > 0) {
+					return self::renderAPI($code, $msg);
 				}
-				if (ChatRoomFella::findOne(["mRId" => $rId, "mUId" => $uid])->mBanFlag) {
-					return self::renderAPI(129, '你被管理员禁言了~');
-				}
-				list($ret, $lastId) = ChatMsg::RoomAddChat($rId, $uid, $text);
-				if ($ret === false) {
-					return self::renderAPI(129, '发送失败~');
-				} else {
-					return self::renderAPI(0, '', [
-						'items' => $ret,
-						'lastid' => $lastId,
-						'count' => ChatMsg::countRoomChat($rId),
-					]);
-				}
+				return self::renderAPI(0, '', [
+					'items' => $info,
+					'lastid' => $info['cid'],
+					'count' => $info['cnt']
+				]);
 				break;
 			case 'list':
 				$lastId = self::postParam('lastid', 0);
