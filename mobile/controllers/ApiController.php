@@ -2105,7 +2105,7 @@ class ApiController extends Controller
 				$rid = trim(self::postParam('rid'));
 				$page = trim(self::postParam('page'));
 				$lastid = trim(self::postParam('lastid'));
-				list($chatItems, $nextpage) = ChatRoom::historyChatList($rid, $lastid, $page, $uid);
+				list($chatItems, $nextpage) = ChatRoom::historyChatList($rid, $page, $lastid, $uid);
 				return self::renderAPI(0, '', [
 					"chat" => $chatItems,
 					"nextpage" => $nextpage,
