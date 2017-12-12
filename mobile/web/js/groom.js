@@ -35,13 +35,6 @@ require(["jquery", "alpha", "mustache", 'socket'],
 
 		//});
 
-		$('.chat-input').bind('click', function (e) {
-			var $this = $(this);
-			e.preventDefault();
-			setTimeout(function () {
-				$(window).scrollTop($this.offset().top - 10);
-			}, 200);
-		});
 
 		var NoticeUtil = {
 			socket: null,
@@ -70,7 +63,7 @@ require(["jquery", "alpha", "mustache", 'socket'],
 							$sls.adminUL.append(html);
 							$sls.currentlastId = resp.items.cid;
 							$sls.bottompl.get(0).scrollIntoView(true);
-
+							$(".input").get(0).scrollIntoView(true);
 							$sls.text = "";
 							$sls.input.val('');
 							break;
