@@ -217,7 +217,7 @@ class UserBuzz extends ActiveRecord
 			case '晚安':
 			case 'good night':
 				$mediaId = 'GfJsRJj-kJwOJMdX7eK9HJ40UIElbg_8_7dlYygpmEk';
-				NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, [$toUsername])->sendMedia($mediaId);
+				NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, $fromUsername)->sendMedia($mediaId);
 				$resp = '';
 				/*$txt = "在这世上，根本没有因为相爱而必须分手的事。当一个人说出这种话的时候，你大可以去抽他嘴巴，因为这是最卑鄙无耻的借口。
 
