@@ -216,7 +216,7 @@ class COSUtil
 
 		$url = $this->getUrl() . "/" . ($thumbFlag ? 't' : 'n') . $this->resRename;
 		AppUtil::logFile($url, 5, __FUNCTION__, __LINE__);
-		AppUtil::logFile($data['sha'], 5, __FUNCTION__, __LINE__);
+		AppUtil::logFile($data['filecontent'], 5, __FUNCTION__, __LINE__);
 		$ret = $this->curlUpload($url, $data);
 		$ret = json_decode($ret, true);
 		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
