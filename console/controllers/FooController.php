@@ -966,8 +966,9 @@ class FooController extends Controller
 	{
 		$rId = 101;
 		$uid = 131379;
-		$text = '测试在这里哦';
-		var_dump(microtime());
+
+		$text = '测试在这里哦' . microtime();
+		var_dump($text);
 		$ret = ChatMsg::roomChat($rId, $uid, $text);
 		var_dump($ret);
 		var_dump(microtime());
