@@ -23,12 +23,12 @@ require(["jquery", "alpha", "mustache", 'socket'],
 
 		$(document).on(kClick, ".chat-input", function () {
 			var target = this;
-			/*setTimeOut(function () {
-				target.scrollIntoView(true);
-			}, 100);*/
-			setTimeout(function () {
-				document.body.scrollTop = document.body.scrollHeight - 10;
+			setTimeOut(function () {
+				$(".input").get(0).scrollIntoView(true);
 			}, 100);
+			/*setTimeout(function () {
+				document.body.scrollTop = document.body.scrollHeight - 10;
+			}, 100);*/
 		});
 
 		var NoticeUtil = {
