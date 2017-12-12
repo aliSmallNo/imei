@@ -175,7 +175,6 @@ class COSUtil
 			"insertOnly" => 0
 		];
 		$srcPath = $this->savedPath;
-		AppUtil::logFile($srcPath, 5, __FUNCTION__, __LINE__);
 		// Rain: 对图片做压缩
 		if ($this->uploadFolder == 'image') {
 			$thumbSide = 200;
@@ -191,7 +190,6 @@ class COSUtil
 				$newWidth = $srcWidth;
 				$newHeight = $srcHeight;
 			}
-			AppUtil::logFile([$newWidth, $newHeight, $compressFlag], 5, __FUNCTION__, __LINE__);
 			if ($newWidth && $newHeight) {
 				if ($squareFlag) {
 					$side = min($newWidth, $newHeight);
@@ -202,7 +200,6 @@ class COSUtil
 					$data['filecontent'] = Image::open($srcPath)->get();
 				}
 				$data['sha'] = hash('sha1', $data['filecontent']);
-				AppUtil::logFile($data['sha'], 5, __FUNCTION__, __LINE__);
 			}
 		}
 		if (!isset($data["sha"])) {
@@ -215,10 +212,8 @@ class COSUtil
 		}
 
 		$url = $this->getUrl() . "/" . ($thumbFlag ? 't' : 'n') . $this->resRename;
-		AppUtil::logFile($url, 5, __FUNCTION__, __LINE__);
 		$ret = $this->curlUpload($url, $data);
 		$ret = json_decode($ret, true);
-		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 		$cosUrl = isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
 		$cosUrl = str_replace('http://', 'https://', $cosUrl);
 		return $cosUrl;
