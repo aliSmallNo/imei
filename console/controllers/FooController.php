@@ -14,6 +14,7 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
+use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
@@ -964,7 +965,9 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$rId = 101;
+		/*$ret = UserTrans::stat(131379);
+		var_dump($ret);*/
+		/*$rId = 101;
 		$uid = 131379;
 
 		$text = '测试在这里哦' . microtime();
@@ -973,7 +976,7 @@ class FooController extends Controller
 		$ret = ChatMsg::roomChat($rId, $uid, $text, null, true);
 		var_dump($ret);
 		var_dump(microtime());
-		var_dump(date('Y-m-d H:i:s'));
+		var_dump(date('Y-m-d H:i:s'));*/
 //		$ret = UserTag::calcExp();
 //		var_dump($ret);
 		/*$ret = AppUtil::decrypt('B0BwYTdASTk_OU5pOTpAPj4-QnJjOUNMPEE7UGs');

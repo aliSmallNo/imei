@@ -100,6 +100,7 @@ class UserTag extends ActiveRecord
 				SELECT :uid,:cat,:pid,:title,:note,:addon,:addon,:exp FROM dual 
 				WHERE NOT EXISTS(SELECT 1 FROM im_user_tag 
 					WHERE tUId=:uid AND tCategory=:cat AND tPId=:pid AND tDeletedFlag=0)";
+		$cmd = $conn->createCommand($sql);
 		if (!$title) {
 			$title = isset(self::$CatDict[$cat]) ? self::$CatDict[$cat] : '';
 		}
@@ -120,7 +121,7 @@ class UserTag extends ActiveRecord
 			case self::CAT_CHAT_MONTH:
 				$expired = date('Y-m-d 23:59:56', time() + 86400 * 30);
 				$sql = 'SELECT tExpiredOn FROM im_user_tag 
-						WHERE tUId=:uid AND tCategory=:cat AND tStatus=1 AND tExpiredOn>now()';
+						WHERE tUId=:uid AND tCategory=:cat AND tStatus=1 AND tExpiredOn>now() AND tDeletedFlag=0';
 				$lastExp = $conn->createCommand($sql)->bindValues([
 					':uid' => $uid,
 					':cat' => self::CAT_CHAT_MONTH,
@@ -141,16 +142,7 @@ class UserTag extends ActiveRecord
 				$expired = date('Y-m-d 23:59:56', time() + 86400 * 365);
 				break;
 		}
-		AppUtil::logFile($conn->createCommand($sql)->bindValues([
-			':uid' => $uid,
-			':cat' => $cat,
-			':pid' => $pid,
-			':title' => $title,
-			':note' => $note,
-			':addon' => $addon,
-			':exp' => $expired
-		])->getRawSql(), 5, __FUNCTION__, __LINE__);
-		$ret = $conn->createCommand($sql)->bindValues([
+		$ret = $cmd->bindValues([
 			':uid' => $uid,
 			':cat' => $cat,
 			':pid' => $pid,

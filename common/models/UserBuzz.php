@@ -10,6 +10,7 @@ namespace common\models;
 
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
+use common\utils\NoticeUtil;
 use common\utils\RedisUtil;
 use yii\db\ActiveRecord;
 
@@ -215,12 +216,15 @@ class UserBuzz extends ActiveRecord
 				break;
 			case '晚安':
 			case 'good night':
-				$txt = "在这世上，根本没有因为相爱而必须分手的事。当一个人说出这种话的时候，你大可以去抽他嘴巴，因为这是最卑鄙无耻的借口。
+				$mediaId = 'GfJsRJj-kJwOJMdX7eK9HJ40UIElbg_8_7dlYygpmEk';
+				NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, $fromUsername)->sendMedia($mediaId);
+				$resp = '';
+				/*$txt = "在这世上，根本没有因为相爱而必须分手的事。当一个人说出这种话的时候，你大可以去抽他嘴巴，因为这是最卑鄙无耻的借口。
 
 爱情的重要特质就是自私和占有。当一个人爱你时，只会把你占为己有，根本不可能拱手相让。所以，说喜欢你而不能在一起的都只是暧昧，说爱你而要离开的都是有小三。
 
 晚安，世界和你 🌙";
-				$resp = self::textMsg($fromUsername, $toUsername, $txt);
+				$resp = self::textMsg($fromUsername, $toUsername, $txt);*/
 				break;
 			case '任务':
 				$txt = "小任务详情：
