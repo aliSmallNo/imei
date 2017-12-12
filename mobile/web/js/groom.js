@@ -21,14 +21,14 @@ require(["jquery", "alpha", "mustache", 'socket'],
 			adminTmp: $("#tpl_chat").html(),
 		};
 
-		/*$(document).on(kClick, ".chat-input", function () {
+		/*
+		$(document).on(kClick, ".chat-input", function () {
 			var target = this;
 
 			setTimeOut(function () {
 				$(".input").get(0).scrollIntoView(true);
 			}, 200);
-
-		});*/
+		});
 
 		//绑定输入框获取焦点事件
 		$(".m-bottom-bar input").focus(function () {
@@ -45,7 +45,7 @@ require(["jquery", "alpha", "mustache", 'socket'],
 				}
 			});
 		});
-
+		*/
 
 		var NoticeUtil = {
 			socket: null,
