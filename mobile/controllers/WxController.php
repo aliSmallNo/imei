@@ -1747,6 +1747,8 @@ class WxController extends BaseController
 			exit();
 		}
 		$openId = self::$WX_OpenId;
+		$defaultName = $this->user_name;
+		$defaultGender = $this->user_gender;
 		LogAction::add($this->user_id, $openId, LogAction::ACTION_REG1);
 		$marital = [
 			User::MARITAL_UNMARRIED => "未婚（无婚史）",
@@ -1758,6 +1760,12 @@ class WxController extends BaseController
 			User::GENDER_FEMALE => "女性",
 			User::GENDER_MALE => "男性"
 		];
+		if (isset($gender[$defaultGender])) {
+			$defaultGenderName = $gender[$defaultGender];
+		} else {
+			$defaultGenderName = $defaultGender = '';
+		}
+
 		$height = User::$Height;
 		foreach ($height as $key => $v) {
 			if ($key < 140) {
@@ -1773,6 +1781,9 @@ class WxController extends BaseController
 				"height" => $height,
 				"gender" => $gender,
 				"marital" => $marital,
+				'defaultName' => $defaultName,
+				'defaultGender' => $defaultGender,
+				'defaultGenderName' => $defaultGenderName,
 			],
 			'terse',
 			'注册单身',

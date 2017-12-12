@@ -140,12 +140,12 @@
 </div>
 <div class="sedit-input">
 	<label>昵称</label>
-	<input type="text" name="name" placeholder="填写您的昵称" value="">
+	<input type="text" name="name" placeholder="填写您的昵称" value="{{$defaultName}}">
 </div>
 <a class="sedit-alert action-com" data-field="gender">
 	<label>性别</label>
 	<div class="sedit-alert-val action-val">
-		<em data-key=""></em>
+		<em data-key="{{$defaultGender}}">{{$defaultGenderName}}</em>
 	</div>
 </a>
 <a class="sedit-alert action-com" data-field="marital">
