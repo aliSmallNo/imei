@@ -35,10 +35,10 @@ require(["jquery", "alpha", "mustache", 'socket'],
 
 				util.socket.on("room", function (resp) {
 					var roomId = resp.rid;
+					console.log(resp);
 					if (util.rid != roomId) {
 						return;
 					}
-					console.log(resp);
 					switch (resp.tag) {
 						case 'tip':
 							//ChatUtil.showTip(resp.msg);

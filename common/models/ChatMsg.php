@@ -462,9 +462,8 @@ class ChatMsg extends ActiveRecord
  				WHERE f.mRId=' . $rId;
 		$rows = $conn->createCommand($sql)->queryAll();
 		foreach ($rows as $row) {
-			$userId = $row['uId'];
-			$info['dir'] = $userId == $senderId ? 'right' : 'left';
-			PushUtil::room('msg', $rId, $row['uId'], $info);
+			$info['dir'] = $row['uId'] == $senderId ? 'right' : 'left';
+			PushUtil::room('msg', $rId, $row['uUniqId'], $info);
 		}
 		return [$info, $cId];
 	}
