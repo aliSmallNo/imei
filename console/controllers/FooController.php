@@ -744,7 +744,7 @@ class FooController extends Controller
 
 	public function actionHint($msg = '你的个人资料不完整啊~')
 	{
-		PushUtil::hint($msg, '059af5c749741c');
+		PushUtil::init()->hint($msg, '059af5c749741c')->close();
 	}
 
 	public function actionQr($uid = 133519, $ucode = 'fs')

@@ -351,7 +351,7 @@ class ApiController extends Controller
 							'审核结果通知',
 							'审核通过',
 							$id);
-						PushUtil::hint('你的个人资料审核通过啦', $uni, 'refresh-profile');
+						PushUtil::init()->hint('你的个人资料审核通过啦', $uni, 'refresh-profile')->close();
 					} else {
 						$data["aReasons"] = $reason;
 						$data["aAddedBy"] = $this->admin_id;
@@ -371,7 +371,7 @@ class ApiController extends Controller
 								'审核结果通知',
 								trim($str, '；'),
 								$id);
-							PushUtil::hint('你的个人资料需要修改完善', $uni, 'refresh-profile');
+							PushUtil::init()->hint('你的个人资料需要修改完善', $uni, 'refresh-profile')->close();
 						}
 					}
 

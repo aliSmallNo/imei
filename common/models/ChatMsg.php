@@ -393,8 +393,7 @@ class ChatMsg extends ActiveRecord
 		return [$res, $nextpage];
 	}
 
-	public
-	static function roomChat($rId, $senderId, $content, $conn = null, $debug = false)
+	public static function roomChat($rId, $senderId, $content, $conn = null, $debug = false)
 	{
 		$content = trim($content);
 		if (!$content) {
@@ -403,8 +402,10 @@ class ChatMsg extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$sql = "select r.*,m.mBanFlag 
-		 from im_chat_room as r join im_chat_room_fella as m on m.mRId=r.rId 
+		$sql = "select r.*,m.mBanFlag,u.uUniqId,u.uName,u.uThumb
+		 from im_chat_room as r 
+		 join im_chat_room_fella as m on m.mRId=r.rId
+		 join im_user as u on u.uId=m.mUId 
 		 where r.rId=:rid and m.mUId=:uid ";
 		$roomInfo = $conn->createCommand($sql)->bindValues([
 			':rid' => $rId,
@@ -417,6 +418,9 @@ class ChatMsg extends ActiveRecord
 			return [129, '不好意思，你已经被禁言了！', null];
 		}
 		$adminUId = $roomInfo['rAdminUId'];
+		$senderThumb = $roomInfo['uThumb'];
+		$senderName = $roomInfo['uName'];
+		$senderUni = $roomInfo['uUniqId'];
 
 		$sql = 'SELECT count(1) FROM im_chat_msg WHERE cGId=:rid ';
 		$cnt = $conn->createCommand($sql)->bindValues([
@@ -443,6 +447,9 @@ class ChatMsg extends ActiveRecord
 			'cid' => $cId,
 			'rid' => $rId,
 			'dir' => "right",
+			'name' => $senderName,
+			'avatar' => $senderThumb,
+			'uni' => $senderUni,
 			'content' => $content,
 			'addedon' => date('m-d H:i'),
 			'isAdmin' => $adminUId == $senderId ? 1 : 0,
@@ -459,97 +466,13 @@ class ChatMsg extends ActiveRecord
 				FROM im_chat_room_fella as f join im_user as u on u.uId=f.mUId
  				WHERE f.mRId=' . $rId;
 		$rows = $conn->createCommand($sql)->queryAll();
+		$pushUtil = PushUtil::init();
 		foreach ($rows as $row) {
 			$info['dir'] = $row['uId'] == $senderId ? 'right' : 'left';
-			$info['name'] = $row['uName'];
-			$info['avatar'] = $row['uThumb'];
-			$info['uni'] = $row['uUniqId'];
-			PushUtil::room('msg', $rId, $row['uUniqId'], $info);
+			$pushUtil->room('msg', $rId, $row['uUniqId'], $info);
 		}
+		$pushUtil->close();
 		return [0, '', $info];
-	}
-
-	/**
-	 * @param $rId string 群ID
-	 * @param $senderId string 发送者UID
-	 * @param $content string 发送内容
-	 * @param $conn \yii\db\Connection
-	 * @return array
-	 */
-	public
-	static function RoomAddChat($rId, $senderId, $content, $conn = null)
-	{
-		$roomInfo = ChatRoom::one($rId);
-		$adminUId = $roomInfo ? $roomInfo["rAdminUId"] : '';
-		if (!$adminUId) {
-			return false;
-		}
-		if (!$conn) {
-			$conn = AppUtil::db();
-		}
-
-		$sql = 'SELECT count(1) FROM im_chat_msg WHERE cGId=:rid ';
-		$cnt = $conn->createCommand($sql)->bindValues([
-			':rid' => $rId,
-		])->queryScalar();
-		$cnt = intval($cnt);
-
-		$entity = new self();
-		$entity->cGId = $rId;
-		$entity->cContent = $content;
-		$lower = strtolower($content);
-		/*		if (AppUtil::endWith($lower, '.jpg')
-					|| AppUtil::endWith($lower, '.jpeg')
-					|| AppUtil::endWith($lower, '.png')
-					|| AppUtil::endWith($lower, '.gif')) {
-					$entity->cType = self::TYPE_IMAGE;
-				} elseif (AppUtil::endWith($lower, '.mp3')
-					|| AppUtil::endWith($lower, '.amr')) {
-					$entity->cType = self::TYPE_VOICE;
-				}
-		*/
-		$entity->cAddedBy = $senderId;
-		$entity->save();
-		$cId = $entity->cId;
-
-		$sql = 'UPDATE im_chat_room SET rLastId=:cid WHERE rId=:rid ';
-		$conn->createCommand($sql)->bindValues([
-			':cid' => $cId,
-			':rid' => $rId,
-		])->execute();
-
-		$sql = 'SELECT uName,uThumb,uPhone,uId,uUniqid as uni 
-				FROM im_user WHERE uId =:uid';
-		$ret = $conn->createCommand($sql)->bindValues([
-			":uid" => $senderId
-		])->queryAll();
-		$ret = $ret[0];
-		$info = [
-			'cid' => $cId,
-			'rid' => $rId,
-			'dir' => "right",
-			'content' => $content,
-			'addedon' => date('m-d H:i'),
-			'isAdmin' => $adminUId == $senderId ? 1 : 0,
-			'type' => self::TYPE_TEXT,
-			'name' => $ret['uName'],
-			'phone' => $ret['uPhone'],
-			'avatar' => $ret['uThumb'],
-			'uni' => $ret['uni'],
-			'senderid' => $senderId,
-			'eid' => AppUtil::encrypt($senderId),
-			'ban' => ChatRoomFella::BAN_NORMAL,
-		];
-
-		$sql = 'SELECT u.uUniqId,u.uId 
-				FROM im_chat_room_fella as f join im_user as u on u.uId=f.mUId
- 				WHERE f.mRId=' . $rId;
-		$rows = $conn->createCommand($sql)->queryAll();
-		foreach ($rows as $row) {
-			$info['dir'] = $row['uId'] == $senderId ? 'right' : 'left';
-			PushUtil::room('msg', $rId, $row['uUniqId'], $info);
-		}
-		return [$info, $cId];
 	}
 
 	/**
@@ -739,12 +662,14 @@ class ChatMsg extends ActiveRecord
 			'dir' => 'right',
 			'type' => self::TYPE_TEXT,
 		];
-		PushUtil::chat('msg', $gid, $infoA['uni'], $params);
+		$pushUtil = PushUtil::init();
+		$pushUtil->chat('msg', $gid, $infoA['uni'], $params);
 
 		//Rain: push to the receiver
 		$params['dir'] = 'left';
 		$params['eid'] = AppUtil::encrypt($senderId);
-		PushUtil::chat('msg', $gid, $infoB['uni'], $params);
+		$pushUtil->chat('msg', $gid, $infoB['uni'], $params);
+		$pushUtil->close();
 		return $info;
 	}
 

@@ -13,6 +13,24 @@ use ElephantIO\Engine\SocketIO\Version2X;
 
 class PushUtil
 {
+	/**
+	 * @var \ElephantIO\Client
+	 */
+	private $client = null;
+	private $url = '';
+
+	public static function init($url = '')
+	{
+		$util = new self();
+		if ($url) {
+			$util->url = $url;
+		} else {
+			$util->url = AppUtil::wsUrl();
+		}
+		$util->client = new Client(new Version2X($url));
+		$util->client->initialize();
+		return $util;
+	}
 
 	/**
 	 * @param $msg string
@@ -20,7 +38,7 @@ class PushUtil
 	 * @param $action string
 	 * @param $url string
 	 */
-	public static function hint($msg, $uni = '', $action = '', $url = '')
+	public function hint($msg, $uni = '', $action = '', $url = '')
 	{
 		$params = [
 			'tag' => 'hint',
@@ -28,21 +46,21 @@ class PushUtil
 			'uid' => $uni,
 			'action' => $action
 		];
-		self::pushMsg('notice', $params, $url);
+		return $this->pushMsg('notice', $params, $url);
 	}
 
 	/**
 	 * @param $msg array
 	 * @param $uni string
 	 */
-	public static function greet($msg, $uni = '')
+	public function greet($msg, $uni = '')
 	{
 		$params = [
 			'tag' => 'greet',
 			'msg' => $msg,
 			'uid' => $uni
 		];
-		self::pushMsg('notice', $params);
+		return $this->pushMsg('notice', $params);
 	}
 
 	/**
@@ -51,7 +69,7 @@ class PushUtil
 	 * @param $uni string
 	 * @param $info array
 	 */
-	public static function chat($tag, $gid, $uni, $info)
+	public function chat($tag, $gid, $uni, $info)
 	{
 		$params = [
 			'tag' => $tag,
@@ -59,7 +77,7 @@ class PushUtil
 			'gid' => $gid,
 			'items' => $info
 		];
-		self::pushMsg('chat', $params);
+		return $this->pushMsg('chat', $params);
 	}
 
 	/**
@@ -68,7 +86,7 @@ class PushUtil
 	 * @param $uni string
 	 * @param $info array
 	 */
-	public static function room($tag, $room_id, $uni, $info)
+	public function room($tag, $room_id, $uni, $info)
 	{
 		$params = [
 			'tag' => $tag,
@@ -76,20 +94,21 @@ class PushUtil
 			'rid' => $room_id,
 			'items' => $info
 		];
-		self::pushMsg('room', $params);
+		return $this->pushMsg('room', $params);
 	}
 
-	protected static function pushMsg($event, $params, $url = '')
+	protected function pushMsg($event, $params)
 	{
+		if ($params && is_array($params)) {
+			$this->client->emit($event, $params);
+		}
+		return $this->client;
+	}
 
-		if (!is_array($params)) {
-			return false;
+	public function close()
+	{
+		if ($this->client) {
+			$this->client->close();
 		}
-		if (!$url) {
-			$url = AppUtil::wsUrl();
-		}
-		$client = new Client(new Version2X($url));
-		$client->initialize()->emit($event, $params)->close();
-		return true;
 	}
 }
