@@ -175,7 +175,6 @@ class COSUtil
 			"insertOnly" => 0
 		];
 		$srcPath = $this->savedPath;
-		AppUtil::logFile($srcPath, 5, __FUNCTION__, __LINE__);
 		// Rain: 对图片做压缩
 		if ($this->uploadFolder == 'image') {
 			$thumbSide = 200;
@@ -200,24 +199,21 @@ class COSUtil
 				} else {
 					$data['filecontent'] = Image::open($srcPath)->get();
 				}
-				$sha1 = hash('sha1', $data['filecontent']);
-				$data['sha'] = $sha1;
+				$data['sha'] = hash('sha1', $data['filecontent']);
 			}
 		}
-		if (!isset($data["filecontent"])) {
+		if (!isset($data["sha"])) {
 			if (function_exists('curl_file_create')) {
 				$data['filecontent'] = curl_file_create($srcPath);
 			} else {
 				$data['filecontent'] = '@' . $srcPath;
 			}
-			$sha1 = hash_file('sha1', $srcPath);
-			$data['sha'] = $sha1;
+			$data['sha'] = hash_file('sha1', $srcPath);
 		}
 
 		$url = $this->getUrl() . "/" . ($thumbFlag ? 't' : 'n') . $this->resRename;
 		$ret = $this->curlUpload($url, $data);
 		$ret = json_decode($ret, true);
-		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 		$cosUrl = isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
 		$cosUrl = str_replace('http://', 'https://', $cosUrl);
 		return $cosUrl;
@@ -290,7 +286,12 @@ class COSUtil
 			$figureData['sha'] = hash('sha1', $figureData['filecontent']);
 			$ret = $this->curlUpload($url, $figureData);
 			$ret = json_decode($ret, true);
-			$figureUrl = isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
+			if (isset($ret['data']['access_url'])) {
+				$figureUrl = $ret['data']['access_url'];
+			} else {
+				$figureUrl = json_encode($ret);
+				$this->getHeader(true);
+			}
 			return [$thumbUrl, $figureUrl, $this->savedPath];
 		}
 	}
