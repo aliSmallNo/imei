@@ -1,20 +1,5 @@
 <style>
-	.schat-content{
-		position: relative;
-	}
-	.chats {
-		width: 100%;
-		height: auto;
-		overflow-y: scroll;
-		-webkit-overflow-scrolling: touch;
-	}
 
-	.m-bottom-bar {
-		position: absolute;
-		bottom: 0;
-		width: 100%;
-		z-index: 99;
-	}
 </style>
 <div class="schat-top-bar">
 	<div class="cr-room" style="flex: 1;">
