@@ -385,6 +385,79 @@ class ChatMsg extends ActiveRecord
 		return [$res, $nextpage];
 	}
 
+	public static function roomChat($rId, $senderId, $content, $conn = null)
+	{
+		$content = trim($content);
+		if (!$content) {
+			return [129, '聊天内容不能为空！', null];
+		}
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$sql = "select r.*,m.mBanFlag 
+		 from im_chat_room as r join im_chat_room_fella as m on m.mRId=r.rId 
+		 where r.rId=:rid and m.mUId=:uid ";
+		$roomInfo = $conn->createCommand($sql)->bindValues([
+			':rid' => $rId,
+			':uid' => $senderId
+		])->queryOne();
+		if (!$roomInfo) {
+			return [129, '聊天室不存在！', null];
+		}
+		if ($roomInfo['mBanFlag']) {
+			return [129, '不好意思，你已经被禁言了！', null];
+		}
+		$adminUId = $roomInfo['rAdminUId'];
+
+		$sql = 'SELECT count(1) FROM im_chat_msg WHERE cGId=:rid ';
+		$cnt = $conn->createCommand($sql)->bindValues([
+			':rid' => $rId,
+		])->queryScalar();
+		$cnt = intval($cnt);
+
+		$sql = 'insert into im_chat_msg(cGId,cContent,cAddedBy)
+			VALUES(:rid,:content,:uid)';
+		$conn->createCommand($sql)->bindValues([
+			':rid' => $rId,
+			':content' => $content,
+			':uid' => $senderId,
+		])->execute();
+		$cId = $conn->getLastInsertID();
+
+		$sql = 'UPDATE im_chat_room SET rLastId=:cid WHERE rId=:rid ';
+		$conn->createCommand($sql)->bindValues([
+			':cid' => $cId,
+			':rid' => $rId,
+		])->execute();
+
+		$info = [
+			'cid' => $cId,
+			'rid' => $rId,
+			'dir' => "right",
+			'content' => $content,
+			'addedon' => date('m-d H:i'),
+			'isAdmin' => $adminUId == $senderId ? 1 : 0,
+			'type' => self::TYPE_TEXT,
+			'senderid' => $senderId,
+			'eid' => AppUtil::encrypt($senderId),
+			'ban' => ChatRoomFella::BAN_NORMAL,
+			'cnt' => $cnt
+		];
+
+		$sql = 'SELECT u.uUniqId,u.uId,u.uName,u.uThumb 
+				FROM im_chat_room_fella as f join im_user as u on u.uId=f.mUId
+ 				WHERE f.mRId=' . $rId;
+		$rows = $conn->createCommand($sql)->queryAll();
+		foreach ($rows as $row) {
+			$info['dir'] = $row['uId'] == $senderId ? 'right' : 'left';
+			$info['name'] = $row['uName'];
+			$info['avatar'] = $row['uThumb'];
+			$info['uni'] = $row['uUniqId'];
+			PushUtil::room('msg', $rId, $row['uUniqId'], $info);
+		}
+		return [0, '', $info];
+	}
+
 	/**
 	 * @param $rId string 群ID
 	 * @param $senderId string 发送者UID
@@ -427,8 +500,7 @@ class ChatMsg extends ActiveRecord
 		$entity->save();
 		$cId = $entity->cId;
 
-		$sql = 'UPDATE im_chat_room SET rLastId=:cid
- 				WHERE rId=:rid ';
+		$sql = 'UPDATE im_chat_room SET rLastId=:cid WHERE rId=:rid ';
 		$conn->createCommand($sql)->bindValues([
 			':cid' => $cId,
 			':rid' => $rId,
