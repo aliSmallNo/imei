@@ -142,15 +142,6 @@ class UserTag extends ActiveRecord
 				$expired = date('Y-m-d 23:59:56', time() + 86400 * 365);
 				break;
 		}
-		AppUtil::logFile($cmd->bindValues([
-			':uid' => $uid,
-			':cat' => $cat,
-			':pid' => $pid,
-			':title' => $title,
-			':note' => $note,
-			':addon' => $addon,
-			':exp' => $expired
-		])->getRawSql(), 5, __FUNCTION__, __LINE__);
 		$ret = $cmd->bindValues([
 			':uid' => $uid,
 			':cat' => $cat,

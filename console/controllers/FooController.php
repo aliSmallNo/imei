@@ -965,8 +965,8 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = UserTrans::stat(131379);
-		var_dump($ret);
+		/*$ret = UserTrans::stat(131379);
+		var_dump($ret);*/
 		/*$rId = 101;
 		$uid = 131379;
 
