@@ -411,7 +411,7 @@ require(["jquery", "layer", "mustache"],
 			// message();
 			loadHistoryChatlist();
 			setInterval(function () {
-				// loadRecentChatlist();
+				loadRecentChatlist();
 			}, 5000);
 		});
 	});
