@@ -95,7 +95,7 @@ class ChatRoom extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$sql = "SELECT u.* from im_chat_room as r 
+		$sql = "SELECT u.uName,u.uPhone,u.uThumb,u.uAvatar from im_chat_room as r 
 				join im_chat_room_fella as m on r.rId=m.mRId
 				join im_user as u on u.uId=m.mUId 
 				where rId=:rid";
