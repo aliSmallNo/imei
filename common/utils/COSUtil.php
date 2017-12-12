@@ -191,7 +191,7 @@ class COSUtil
 				$newWidth = $srcWidth;
 				$newHeight = $srcHeight;
 			}
-			AppUtil::logFile([$newWidth, $newHeight], 5, __FUNCTION__, __LINE__);
+			AppUtil::logFile([$newWidth, $newHeight, $compressFlag], 5, __FUNCTION__, __LINE__);
 			if ($newWidth && $newHeight) {
 				if ($squareFlag) {
 					$side = min($newWidth, $newHeight);
@@ -201,8 +201,8 @@ class COSUtil
 				} else {
 					$data['filecontent'] = Image::open($srcPath)->get();
 				}
-				$sha1 = hash('sha1', $data['filecontent']);
-				$data['sha'] = $sha1;
+				$data['sha'] = hash('sha1', $data['filecontent']);
+				AppUtil::logFile($data['sha'], 5, __FUNCTION__, __LINE__);
 			}
 		}
 		if (!isset($data["filecontent"])) {
