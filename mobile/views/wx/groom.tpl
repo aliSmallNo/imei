@@ -25,7 +25,7 @@
 </div>
 
 <input type="hidden" id="ADMINUID" value="{{$roomInfo.rAdminUId}}">
-<input type="hidden" id="cUNI" value="">
+<input type="hidden" id="cUNI" value="{{$uni}}">
 <input type="hidden" id="cRID" value="{{$rid}}">
 <input type="hidden" id="cUID" value="{{$uid}}">
 <input type="hidden" id="cLASTID" value="{{$lastId}}">
@@ -54,6 +54,10 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-<script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/groom.js?v=1.1.8" src="/assets/js/require.js"></script>
+<script src="/assets/js/require.js"></script>
+<script>
+	requirejs(['/js/config.js?v=1.1'], function () {
+		requirejs(['/js/groom.js?v=1.2.4']);
+	});
+</script>
 

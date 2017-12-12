@@ -2141,7 +2141,6 @@ class ApiController extends Controller
 				}
 				break;
 			case 'list':
-
 				$lastId = self::postParam('lastid', 0);
 				$rid = self::postParam('rid');
 				if (!$rid) {

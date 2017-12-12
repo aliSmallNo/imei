@@ -1987,8 +1987,10 @@ class WxController extends BaseController
 			[
 				'rid' => $rid,
 				'uid' => $uid,
+				'uni' => $this->user_uni,
 				'roomInfo' => $roomInfo,
-				'avatar' => User::findOne(["uId" => $adminUId])->uThumb,
+				'avatar' => $this->user_avatar,
+				"isadmin" => $adminUId == $uid ? 1 : 0,
 				"lastId" => $roomInfo["rLastId"],
 			],
 			'terse',
@@ -1999,7 +2001,7 @@ class WxController extends BaseController
 	public function actionGrooms()
 	{
 		$uid = $this->user_id;
-		if (!$uid ) {
+		if (!$uid) {
 			header('location:/wx/error');
 			exit();
 		}
