@@ -21,7 +21,7 @@ require(["jquery", "alpha", "mustache", 'socket'],
 			adminTmp: $("#tpl_chat").html(),
 		};
 
-		$(document).on(focus, ".chat-input", function () {
+		$(document).on(kClick, ".chat-input", function () {
 			var target = this;
 			/*
 			setTimeOut(function () {
