@@ -505,13 +505,15 @@ class UserNet extends ActiveRecord
 					$mId);
 				UserMsg::recall($uid);
 				if (date('Y-m-d') >= '2017-12-12' && date('Y-m-d') <= '2017-12-17') {
-					$otherInfo = self::findOne(["nSubUId" => $uid, "nUId" => $mId, 'nRelation' => self::REL_FAVOR, 'nDeletedFlag' => self::DELETE_FLAG_NO]);
-					if ($otherInfo) {
-						/*UserTrans::add($uid, 0, UserTrans::CAT_FESTIVAL_BONUS, '',
+					$pid = $uid + $mId;
+					$relInfo = self::findOne(["nSubUId" => $uid, "nUId" => $mId, 'nRelation' => self::REL_FAVOR, 'nDeletedFlag' => self::DELETE_FLAG_NO]);
+					$transInfo = UserTrans::findOne(["tPId" => $pid, "tCategory" => UserTrans::CAT_FESTIVAL_BONUS, 'tUId' => $uid, 'tDeletedFlag' => 0]);
+					if ($relInfo && !$transInfo) {
+						UserTrans::add($uid, $pid, UserTrans::CAT_FESTIVAL_BONUS, '',
 							8, UserTrans::UNIT_GIFT, '互相心动');
 
-						UserTrans::add($mId, 0, UserTrans::CAT_FESTIVAL_BONUS, '',
-							8, UserTrans::UNIT_GIFT, '互相心动');*/
+						UserTrans::add($mId, $pid, UserTrans::CAT_FESTIVAL_BONUS, '',
+							8, UserTrans::UNIT_GIFT, '互相心动');
 					}
 				}
 				break;
