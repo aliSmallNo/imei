@@ -24,15 +24,14 @@ require(["jquery", "layer", "mustache"],
 			loadIcon: $(".spinner"),
 			more: $(".cr-loading-items"),
 
-			adminUL: $("ul.chats"),
-			adminTmp: $("#tpl_chat").html(),
-
+			UL: $("ul.chats"),
+			Tmp: $("#tpl_chat").html(),
 
 		};
 
 
 		$(window).on("scroll", function () {
-			var firstRow = $sls.adminUL.find('li:first');
+			var firstRow = $sls.UL.find('li:first');
 			// console.log(firstRow.length);console.log(firstRow.offset().top);
 			if ($(window).scrollTop() == 0) {
 				loadHistoryChatlist();
@@ -40,7 +39,7 @@ require(["jquery", "layer", "mustache"],
 			}
 
 			/*
-			var lastRow = $sls.adminUL.find('li:last');
+			var lastRow = $sls.UL.find('li:last');
 			if (lastRow && eleInScreen(lastRow, 40) && $sls.page > 0) {
 				// loadHistoryChatlist();
 				console.log(1234);
@@ -72,8 +71,8 @@ require(["jquery", "layer", "mustache"],
 			}, function (resp) {
 				$sls.loading = 0;
 				if (resp.code == 0) {
-					var html = Mustache.render($sls.adminTmp, {data: resp.data.items});
-					$sls.adminUL.append(html);
+					var html = Mustache.render($sls.Tmp, {data: resp.data.items});
+					$sls.UL.append(html);
 
 					$sls.text = '';
 					$sls.input.val('');
@@ -102,7 +101,7 @@ require(["jquery", "layer", "mustache"],
 				//$sls.loadIcon.hide();
 				$sls.loading = 0;
 				if (resp.code == 0) {
-					$sls.adminUL.prepend(Mustache.render($sls.adminTmp, {data: resp.data.chat}));
+					$sls.UL.prepend(Mustache.render($sls.Tmp, {data: resp.data.chat}));
 					if ($sls.page == 1) {
 						$sls.bottompl.get(0).scrollIntoView(true);
 					}
@@ -128,14 +127,13 @@ require(["jquery", "layer", "mustache"],
 			}, function (resp) {
 				$sls.loading = 0;
 				if (resp.code == 0) {
-					$sls.adminUL.append(Mustache.render($sls.adminTmp, {data: resp.data.chat}));
+					$sls.UL.append(Mustache.render($sls.Tmp, {data: resp.data.chat}));
 					$sls.currentlastId = resp.data.lastid;
 				} else {
 					showMsg(resp.msg);
 				}
 			}, "json");
 		}
-
 
 		var showMsg = function (title, sec) {
 			var delay = sec || 3;
@@ -148,7 +146,7 @@ require(["jquery", "layer", "mustache"],
 		};
 
 		function shareOptions(type) {
-			var linkUrl = "https://wx.meipo100.com/wx/chatroom?rid=" + $sls.rid;
+			var linkUrl = "https://wx.meipo100.com/wx/groom?rid=" + $sls.rid;
 			var imgUrl = "https://bpbhd-10063905.file.myqcloud.com/image/n1712061178801.png";
 			var title = '千寻恋恋，本地优质的单身男女群，赶快进来相互认识下吧！';
 			var desc = '千寻恋恋，帮助身边的单身青年尽快脱单';

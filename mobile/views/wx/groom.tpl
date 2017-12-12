@@ -1,9 +1,20 @@
-
 <style>
 	.cr-room .cr-loading-items {
 
 	}
 </style>
+<div class="schat-top-bar">
+	<div class="cr-room" style="flex: 1;">
+		<div class="cr-title" style="padding: .5rem 1rem">
+			<div class="cr-title-logo">
+				<img src="{{$roomInfo.rLogo}}">
+			</div>
+			<div class="cr-title-des">
+				<span>{{$roomInfo.rTitle}}</span>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="report_wrap schat-content">
 	<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
 	<ul class="chats">

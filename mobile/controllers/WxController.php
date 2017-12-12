@@ -1989,7 +1989,6 @@ class WxController extends BaseController
 				'uid' => $uid,
 				'roomInfo' => $roomInfo,
 				'avatar' => User::findOne(["uId" => $adminUId])->uThumb,
-				"isadmin" => $adminUId == $uid ? 1 : 0,
 				"lastId" => $roomInfo["rLastId"],
 			],
 			'terse',

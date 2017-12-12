@@ -76,5 +76,5 @@
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/grooms.js?v=1.1.7" src="/assets/js/require.js"></script>
+<script data-main="/js/grooms.js?v=1.1.8" src="/assets/js/require.js"></script>
 

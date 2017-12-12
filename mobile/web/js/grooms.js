@@ -51,7 +51,7 @@ require(["jquery", "layer", "mustache"],
 		$(document).on(kClick, ".cr-rooms a", function () {
 			var self = $(this);
 			var rid = self.attr("data-rid");
-			location.href = "/wx/chatroom?rid=" + rid;
+			location.href = "/wx/groom?rid=" + rid;
 		});
 
 		var showMsg = function (title, sec) {
