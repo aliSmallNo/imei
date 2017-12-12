@@ -35,12 +35,12 @@ require(["jquery", "alpha", "mustache", 'socket'],
 		$(".m-bottom-bar input").focus(function () {
 			var input = $(this);
 			setTimeOut(function () {
-				// scrollTo(0, $('body').height() + $(window).scrollTop);
+				window.scrollTo(0, $('body').height() + $(window).scrollTop() + 59);
 			}, 500);
 
-			$(window).scroll(function () {
-				window.scrollTo(0, $('body').height() + $(window).scrollTop() + 59);
-			});
+			/*$(window).scroll(function () {
+
+			});*/
 		});
 
 
