@@ -39,7 +39,7 @@ require(["jquery", "alpha", "mustache", 'socket'],
 			}, 500);
 
 			$(window).scroll(function () {
-				window.scrollTo(0, $('body').height() + $(window).scrollTop());
+				window.scrollTo(0, $('body').height() + $(window).scrollTop() + 59);
 			});
 		});
 
