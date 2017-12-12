@@ -29,23 +29,20 @@ require(["jquery", "alpha", "mustache", 'socket'],
 				$(".input").get(0).scrollIntoView(true);
 			}, 200);
 		});
+*/
 
 		//绑定输入框获取焦点事件
 		$(".m-bottom-bar input").focus(function () {
 			var input = $(this);
-			//在输入框获取焦点后，窗口改变的话，执行事件
-			$(window).resize(function () {
-				//判断当前输入框是否在可视窗口之外（下面）
-				if ($(window).height() - (input.offset().top + input.offset().height - document.body.scrollTop) < 0) {
-					//对话框定位方式改为bottom
-					$(".m-bottom-bar").removeClass("dlg-top").addClass("dlg-bottom");
-				}
-				else {
-					$(".m-bottom-bar").removeClass("dlg-bottom").addClass("dlg-top");
-				}
+			setTimeOut(function () {
+				// scrollTo(0, $('body').height() + $(window).scrollTop);
+			}, 500);
+
+			$(window).scroll(function () {
+				window.scrollTo(0, $('body').height() + $(window).scrollTop());
 			});
 		});
-		*/
+
 
 		var NoticeUtil = {
 			socket: null,
