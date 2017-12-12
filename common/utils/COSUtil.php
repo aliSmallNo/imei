@@ -216,7 +216,6 @@ class COSUtil
 
 		$url = $this->getUrl() . "/" . ($thumbFlag ? 't' : 'n') . $this->resRename;
 		AppUtil::logFile($url, 5, __FUNCTION__, __LINE__);
-		AppUtil::logFile($data['filecontent'], 5, __FUNCTION__, __LINE__);
 		$ret = $this->curlUpload($url, $data);
 		$ret = json_decode($ret, true);
 		AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
@@ -300,7 +299,7 @@ class COSUtil
 	protected function curlUpload($url, $data)
 	{
 		$method = "POST";
-		$header = $this->getHeader();
+		$header = $this->getHeader(true);
 		$curlHandler = curl_init();
 		curl_setopt($curlHandler, CURLOPT_URL, $url);
 		$method = strtoupper($method);
