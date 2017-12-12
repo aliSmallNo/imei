@@ -50,6 +50,8 @@ require(["jquery", "alpha", "mustache", 'socket'],
 							$sls.bottompl.get(0).scrollIntoView(true);
 							// loadRecentChatlist();
 							//ChatUtil.messages(resp, 1);
+							$sls.text = "";
+							$sls.input.val('');
 							break;
 					}
 				});
