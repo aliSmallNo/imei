@@ -38,6 +38,7 @@ class UserTrans extends ActiveRecord
 	const CAT_FANS_DRAW = 170;
 	const CAT_REMOVE_COMMENT = 172;
 	const CAT_THANKS_BONUS = 180;
+	const CAT_FESTIVAL_BONUS = 189;
 
 	static $catDict = [
 		self::CAT_RECHARGE_MEMBER => "单身会员",
@@ -62,6 +63,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_FANS_DRAW => "花粉值提现",
 		self::CAT_REMOVE_COMMENT => "删除评论",
 		self::CAT_THANKS_BONUS => "感恩节馈赠",
+		self::CAT_FESTIVAL_BONUS => "节日馈赠",
 	];
 
 	static $CatMinus = [
