@@ -705,7 +705,7 @@ class SiteController extends BaseController
 		$balance = [];
 		$idx = 0;
 		foreach ($ret as $k => $item) {
-			if ($k > 0 && $k % 5 == 0) {
+			if ($k > 0 && $k % 7 == 0) {
 				$idx++;
 			}
 			if (!isset($balance[$idx])) {
