@@ -970,7 +970,7 @@ class FooController extends Controller
 		$text = '测试在这里哦' . microtime();
 		var_dump($text);
 		var_dump(date('Y-m-d H:i:s'));
-		$ret = ChatMsg::roomChat($rId, $uid, $text);
+		$ret = ChatMsg::roomChat($rId, $uid, $text, null, true);
 		var_dump($ret);
 		var_dump(microtime());
 		var_dump(date('Y-m-d H:i:s'));

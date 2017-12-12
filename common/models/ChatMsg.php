@@ -385,7 +385,7 @@ class ChatMsg extends ActiveRecord
 		return [$res, $nextpage];
 	}
 
-	public static function roomChat($rId, $senderId, $content, $conn = null)
+	public static function roomChat($rId, $senderId, $content, $conn = null, $debug = false)
 	{
 		$content = trim($content);
 		if (!$content) {
@@ -443,7 +443,9 @@ class ChatMsg extends ActiveRecord
 			'ban' => ChatRoomFella::BAN_NORMAL,
 			'cnt' => $cnt
 		];
-
+		if ($debug) {
+			var_dump(date('Y-m-d H:i:s'));
+		}
 		$sql = 'SELECT u.uUniqId,u.uId,u.uName,u.uThumb 
 				FROM im_chat_room_fella as f join im_user as u on u.uId=f.mUId
  				WHERE f.mRId=' . $rId;
