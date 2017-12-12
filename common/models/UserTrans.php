@@ -105,7 +105,7 @@ class UserTrans extends ActiveRecord
 		}
 	}
 
-	public static function add($uid, $pid, $cat, $title, $amt, $unit)
+	public static function add($uid, $pid, $cat, $title, $amt, $unit, $note = '')
 	{
 		$entity = new self();
 		$entity->tUId = $uid;
@@ -117,6 +117,7 @@ class UserTrans extends ActiveRecord
 		$entity->tTitle = $title;
 		$entity->tAmt = $amt;
 		$entity->tUnit = $unit;
+		$entity->tNote = $note;
 		$entity->save();
 		return $entity->tId;
 	}

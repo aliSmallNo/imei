@@ -538,7 +538,8 @@ class WechatUtil
 			//Rain: 双12活动,买月卡获赠120媒桂花
 			if ($entity->pCategory == Pay::CAT_CHAT_MONTH
 				&& date('Y-m-d') >= '2017-12-12' && date('Y-m-d') <= '2017-12-13') {
-				UserTrans::add($payInfo['pUId'], $pid, UserTrans::CAT_FESTIVAL_BONUS, '', 120, UserTrans::UNIT_GIFT);
+				UserTrans::add($payInfo['pUId'], $pid, UserTrans::CAT_FESTIVAL_BONUS,
+					'', 120, UserTrans::UNIT_GIFT,'双十二馈赠');
 			}
 
 		} else {
