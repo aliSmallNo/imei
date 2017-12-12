@@ -21,12 +21,15 @@ require(["jquery", "alpha", "mustache", 'socket'],
 			adminTmp: $("#tpl_chat").html(),
 		};
 
-		$(document).on("click", ".chat-input", function () {
+		$(document).on(kClick, ".chat-input", function () {
 			var target = this;
-			setTimeOut(function () {
+			/*setTimeOut(function () {
 				target.scrollIntoView(true);
-			}, 100);
-		})
+			}, 100);*/
+			setTimeout(function(){
+				document.body.scrollTop = document.body.scrollHeight;
+			},100);
+		});
 
 		var NoticeUtil = {
 			socket: null,
