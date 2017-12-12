@@ -70,7 +70,7 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/groom.js?v=1.1.1']);
+		requirejs(['/js/groom.js?v=1.1.2']);
 	});
 </script>
 
