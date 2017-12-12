@@ -172,7 +172,7 @@ class UserTag extends ActiveRecord
 	{
 		$redis = RedisUtil::init(RedisUtil::KEY_USER_EXP, $uid);
 		$note = json_decode($redis->getCache(), 1);
-		if ($note && !$resetFlag) {
+		if ($note && isset($note['pic_level']) && !$resetFlag) {
 			return $note;
 		}
 		$conn = AppUtil::db();
@@ -185,14 +185,15 @@ class UserTag extends ActiveRecord
 		if ($note) {
 			return json_decode($note, 1);
 		}
-		list($title, $title1, $next) = self::$ExpDict[0];
+		list($title, $title1, $next, $pic_level) = self::$ExpDict[0];
 		return [
 			'num' => 0,
 			'level' => 1,
 			'level_name' => '01',
 			'next' => $next,
 			'title' => $title,
-			'percent' => 0
+			'percent' => 0,
+			'pic_level' => $pic_level
 		];
 
 	}

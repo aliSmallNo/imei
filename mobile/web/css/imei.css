@@ -8164,13 +8164,13 @@ ul.co-ul {
           -webkit-box-sizing: border-box;
           -moz-box-sizing: border-box;
           box-sizing: border-box; }
-          .zone-top li .left.level div.level-1 {
+          .zone-top li .left.level div.level-p1 {
             background-position: 0 0rem; }
-          .zone-top li .left.level div.level-2 {
+          .zone-top li .left.level div.level-p2 {
             background-position: 0 -2rem; }
-          .zone-top li .left.level div.level-3 {
+          .zone-top li .left.level div.level-p3 {
             background-position: 0 -4rem; }
-          .zone-top li .left.level div.level-3 {
+          .zone-top li .left.level div.level-p4 {
             background-position: 0 -6rem; }
       .zone-top li .left .avatar {
         background-position: center;
