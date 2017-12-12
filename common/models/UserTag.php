@@ -127,8 +127,8 @@ class UserTag extends ActiveRecord
 				])->queryScalar();
 				if ($lastExp) {
 					$expired = date('Y-m-d 23:59:56', strtotime($lastExp) + 86400 * 30);
-					$sql = 'UPDATE im_user_tag set tDeletedFlag=1,tDeletedOn=now() WHERE tUId=:uid AND tCategory=:cat';
-					$conn->createCommand($sql)->bindValues([
+					$sql2 = 'UPDATE im_user_tag set tDeletedFlag=1,tDeletedOn=now() WHERE tUId=:uid AND tCategory=:cat';
+					$conn->createCommand($sql2)->bindValues([
 						':uid' => $uid,
 						':cat' => $cat,
 					])->execute();
