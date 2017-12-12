@@ -1,4 +1,16 @@
+<style>
+	.dlg-top {
+		position: fixed;
+		top: 100px;
+		left: 10%;
+	}
 
+	.dlg-bottom {
+		position: fixed;
+		bottom: 0px;
+		left: 10%;
+	}
+</style>
 <div class="schat-top-bar">
 	<div class="cr-room" style="flex: 1;">
 		<div class="cr-title" style="padding: .5rem 1rem">
