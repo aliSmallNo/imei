@@ -141,15 +141,6 @@ class UserTag extends ActiveRecord
 				$expired = date('Y-m-d 23:59:56', time() + 86400 * 365);
 				break;
 		}
-		$ret = $conn->createCommand($sql)->bindValues([
-			':uid' => $uid,
-			':cat' => $cat,
-			':pid' => $pid,
-			':title' => $title,
-			':note' => $note,
-			':addon' => $addon,
-			':exp' => $expired
-		])->execute();
 		AppUtil::logFile($conn->createCommand($sql)->bindValues([
 			':uid' => $uid,
 			':cat' => $cat,
@@ -159,6 +150,16 @@ class UserTag extends ActiveRecord
 			':addon' => $addon,
 			':exp' => $expired
 		])->getRawSql(), 5, __FUNCTION__, __LINE__);
+		$ret = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':cat' => $cat,
+			':pid' => $pid,
+			':title' => $title,
+			':note' => $note,
+			':addon' => $addon,
+			':exp' => $expired
+		])->execute();
+
 		return $ret;
 	}
 
