@@ -96,7 +96,7 @@ class UserTag extends ActiveRecord
 	public static function add($cat, $uid, $pid = 0, $title = '', $note = '', $addon = '')
 	{
 		$conn = AppUtil::db();
-		$sql = "insert into im_user_tag(tUId,tCategory,tPId,tTitle,tNote,tAddedOn,tStatusDate,tExpiredOn)
+		$sql = "INSERT INTO im_user_tag(tUId,tCategory,tPId,tTitle,tNote,tAddedOn,tStatusDate,tExpiredOn)
 				SELECT :uid,:cat,:pid,:title,:note,:addon,:addon,:exp FROM dual 
 				WHERE NOT EXISTS(SELECT 1 FROM im_user_tag 
 					WHERE tUId=:uid AND tCategory=:cat AND tPId=:pid AND tDeletedFlag=0)";
@@ -119,6 +119,14 @@ class UserTag extends ActiveRecord
 				break;
 			case self::CAT_CHAT_MONTH:
 				$expired = date('Y-m-d 23:59:56', time() + 86400 * 30);
+				$sql = 'SELECT tExpiredOn FROM im_user_tag WHERE tUId=:uid AND tCategory=:cat AND tStatus=1 AND tExpiredOn>now()';
+				$lastExp = $conn->createCommand($sql)->bindValues([
+					':uid' => $uid,
+					':cat' => self::CAT_CHAT_MONTH,
+				])->queryScalar();
+				if($lastExp){
+					$expired = date('Y-m-d 23:59:56', strtotime($lastExp) + 86400 * 30);
+				}
 				//Rain: 双12活动,买月卡获赠120媒桂花
 				if (date('Y-m-d') >= '2017-12-12' && date('Y-m-d') <= '2017-12-13') {
 					UserTrans::add($uid, $pid, UserTrans::CAT_FESTIVAL_BONUS, '', 120, UserTrans::UNIT_GIFT);
