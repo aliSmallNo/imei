@@ -17,10 +17,12 @@
 			<div class="left">性别</div>
 			<div class="right">{{$user.gender_t}}</div>
 		</div>
+		{{if !$hideFlag}}
 		<div class="item-des">
 			<div class="left">所在城市</div>
 			<div class="right">{{$user.location_t}}</div>
 		</div>
+		{{/if}}
 		<div class="item-des">
 			<div class="left">出生年</div>
 			<div class="right">{{$user.birthyear_t}}</div>

@@ -4303,32 +4303,27 @@ section {
       width: 10rem;
       height: 10rem;
       border-radius: 10rem; }
-#personalInfo .personalInfo-list {
-  margin-top: 1rem; }
-  #personalInfo .personalInfo-list .title {
-    font-size: 1rem;
-    color: #777;
-    background: #eee;
-    padding: 1rem;
-    border-bottom: 1px solid #ddd; }
-  #personalInfo .personalInfo-list .item-des {
-    display: flex;
-    background: #fff;
-    padding: 1rem;
-    border-bottom: 1px solid #ddd; }
-    #personalInfo .personalInfo-list .item-des .left {
-      flex: 1;
-      font-size: 1.2rem; }
-    #personalInfo .personalInfo-list .item-des .right {
-      flex: 1;
-      text-align: right;
-      font-size: 1.2rem; }
-    #personalInfo .personalInfo-list .item-des .des {
-      flex: 1;
-      font-size: 1rem;
-      color: #777;
-      letter-spacing: 0.05rem;
-      line-height: 2rem; }
+#personalInfo .personalInfo-list .title {
+  font-size: 1rem;
+  color: #777;
+  background: #f3f3f3;
+  padding: 0.8rem 1rem 0.4rem;
+  border-bottom: 1px solid #ddd; }
+#personalInfo .personalInfo-list .item-des {
+  display: flex;
+  background: #fff;
+  padding: 1rem;
+  border-bottom: 1px solid #ddd; }
+  #personalInfo .personalInfo-list .item-des .left {
+    flex: 1;
+    font-size: 1.2rem; }
+  #personalInfo .personalInfo-list .item-des .right {
+    flex: 1;
+    text-align: right;
+    font-size: 1.2rem; }
+  #personalInfo .personalInfo-list .item-des .des {
+    flex: 1;
+    font-size: 1.2rem; }
 
 #album .photos {
   zoom: 1;

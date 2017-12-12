@@ -33,7 +33,7 @@ require(['jquery', "layer"],
 				});
 				$(document).on(kClick, '.j-sh', function () {
 					var self = $(this);
-					location.href = '/wx/sh?id=' + self.attr('data-id');
+					location.href = '/wx/sh?hide=1&id=' + self.attr('data-id');
 					return false;
 				});
 			},
