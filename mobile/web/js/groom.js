@@ -21,17 +21,26 @@ require(["jquery", "alpha", "mustache", 'socket'],
 			adminTmp: $("#tpl_chat").html(),
 		};
 
-		$(document).on(kClick, ".chat-input", function () {
-			var target = this;
-			/*
-			setTimeOut(function () {
-				$(".input").get(0).scrollIntoView(true);
-			}, 500);
-			*/
+		//$(document).on(kClick, ".chat-input", function () {
+		//var target = this;
+		/*
+		setTimeOut(function () {
+			$(".input").get(0).scrollIntoView(true);
+		}, 500);
+		*/
 
-			/*setTimeout(function () {
-				document.body.scrollTop = document.body.scrollHeight ;
-			}, 500);*/
+		/*setTimeout(function () {
+			document.body.scrollTop = document.body.scrollHeight ;
+		}, 500);*/
+
+		//});
+
+		$('.chat-input').bind('click', function (e) {
+			var $this = $(this);
+			e.preventDefault();
+			setTimeout(function () {
+				$(window).scrollTop($this.offset().top - 10);
+			}, 200);
 		});
 
 		var NoticeUtil = {
