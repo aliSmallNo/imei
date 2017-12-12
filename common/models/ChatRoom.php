@@ -152,7 +152,7 @@ class ChatRoom extends ActiveRecord
 
 	}
 
-	public static function historyChatList($rId, $lastid, $page = 1, $uid = 120003, $pagesize = 15)
+	public static function historyChatList($rId, $page = 1, $lastid = 0, $uid = 120003, $pagesize = 20)
 	{
 		$conn = AppUtil::db();
 		list($adminUId, $rlastId) = ChatMsg::getAdminUIdLastId($conn, $rId);
@@ -166,7 +166,7 @@ class ChatRoom extends ActiveRecord
 				order by cAddedon desc $limit ";
 		$chatlist = $conn->createCommand($sql)->bindValues([
 			":rid" => $rId,
-			":lastid" => $lastid,
+			":lastid" => $lastid ? $lastid : $rlastId,
 			":del" => ChatMsg::DELETED_NO,
 		])->queryAll();
 		$res = ChatMsg::fmtRoomChatData($chatlist, $rId, $adminUId, $uid);

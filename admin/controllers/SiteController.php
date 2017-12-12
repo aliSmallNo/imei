@@ -1598,9 +1598,8 @@ class SiteController extends BaseController
 		$page = self::getParam("page", 1);
 		$rid = self::getParam("rid");
 
-		list($adminChats) = ChatMsg::chatItems($rid, 0, 0, 1, 0);
-		$count = ChatMsg::countRoomChat($rid);
-		list($chatItems) = ChatMsg::chatPageList($rid, $page, 120003, 20);
+		$count = ChatMsg::countRoomChat($rid, 1);
+		list($chatItems) = ChatRoom::historyChatList($rid, $page);
 
 		$pagination = self::pagination($page, $count);
 		return $this->renderPage("roomdesc.tpl",
@@ -1608,7 +1607,6 @@ class SiteController extends BaseController
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
 				'category' => 'data',
-				'adminChats' => $adminChats,
 				'chatItems' => $chatItems,
 				'count' => $count,
 			]
