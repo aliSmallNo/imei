@@ -121,7 +121,7 @@ class UserTag extends ActiveRecord
 			case self::CAT_CHAT_MONTH:
 				$expired = date('Y-m-d 23:59:56', time() + 86400 * 30);
 				$sql = 'SELECT tExpiredOn FROM im_user_tag 
-						WHERE tUId=:uid AND tCategory=:cat AND tStatus=1 AND tExpiredOn>now()';
+						WHERE tUId=:uid AND tCategory=:cat AND tStatus=1 AND tExpiredOn>now() AND tDeletedFlag=0';
 				$lastExp = $conn->createCommand($sql)->bindValues([
 					':uid' => $uid,
 					':cat' => self::CAT_CHAT_MONTH,
