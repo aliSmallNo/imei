@@ -1,4 +1,16 @@
+<style>
+	.dlg-top {
+		position: fixed;
+		top: 100px;
+		left: 10%;
+	}
 
+	.dlg-bottom {
+		position: fixed;
+		bottom: 0px;
+		left: 10%;
+	}
+</style>
 <div class="schat-top-bar">
 	<div class="cr-room" style="flex: 1;">
 		<div class="cr-title" style="padding: .5rem 1rem">
@@ -58,7 +70,7 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/groom.js?v=1.3.6']);
+		requirejs(['/js/groom.js?v=1.1.2']);
 	});
 </script>
 
