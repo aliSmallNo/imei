@@ -265,21 +265,26 @@ class ChatMsg extends ActiveRecord
 	 * @param $rId
 	 * @return false|null|string 聊天室讨论数
 	 */
-	public static function countRoomChat($rId)
+	public static function countRoomChat($rId, $countAdmin = 0)
 	{
 		$conn = AppUtil::db();
 		list($adminUId, $rlastId) = self::getAdminUIdLastId($conn, $rId);
+		$param = [
+			":rid" => $rId,
+			":del" => self::DELETED_NO,
+		];
+		$str = "";
+		if (!$countAdmin) {
+			$str = " and cAddedBy !=:adminuid ";
+			$param[":adminuid"] = $adminUId;
+		}
 		$sql = "SELECT count(*)
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
 				join im_chat_room_fella as m on m.mUId=c.cAddedBy  and m.mRId=:rid
-				where c.cGId=:rid and cAddedBy !=:adminuid and  c.cDeletedFlag=:del ";
-		return $conn->createCommand($sql)->bindValues([
-			":rid" => $rId,
-			":adminuid" => $adminUId,
-			":del" => self::DELETED_NO,
-		])->queryScalar();
+				where c.cGId=:rid $str  and  c.cDeletedFlag=:del ";
+		return $conn->createCommand($sql)->bindValues($param)->queryScalar();
 
 	}
 
@@ -293,7 +298,8 @@ class ChatMsg extends ActiveRecord
 	 * @param int $page 页码
 	 * @return array
 	 */
-	public static function chatItems($rId, $uid, $lastId, $isAdmin = 0, $isFenye = 0, $isDanmu = 0)
+	public
+	static function chatItems($rId, $uid, $lastId, $isAdmin = 0, $isFenye = 0, $isDanmu = 0)
 	{
 		$conn = AppUtil::db();
 		$page = 1;
@@ -337,7 +343,8 @@ class ChatMsg extends ActiveRecord
 		return [$res, $rlastId];
 	}
 
-	public static function fmtRoomChatData($chatlist, $rId, $adminUId, $uid)
+	public
+	static function fmtRoomChatData($chatlist, $rId, $adminUId, $uid)
 	{
 		$res = [];
 		foreach ($chatlist as $v) {
@@ -361,7 +368,8 @@ class ChatMsg extends ActiveRecord
 		return $res;
 	}
 
-	public static function chatPageList($rId, $page = 1, $uid = 120003, $pagesize = 15)
+	public
+	static function chatPageList($rId, $page = 1, $uid = 120003, $pagesize = 15)
 	{
 		$conn = AppUtil::db();
 		list($adminUId, $rlastId) = self::getAdminUIdLastId($conn, $rId);
@@ -385,7 +393,8 @@ class ChatMsg extends ActiveRecord
 		return [$res, $nextpage];
 	}
 
-	public static function roomChat($rId, $senderId, $content, $conn = null, $debug = false)
+	public
+	static function roomChat($rId, $senderId, $content, $conn = null, $debug = false)
 	{
 		$content = trim($content);
 		if (!$content) {
@@ -467,7 +476,8 @@ class ChatMsg extends ActiveRecord
 	 * @param $conn \yii\db\Connection
 	 * @return array
 	 */
-	public static function RoomAddChat($rId, $senderId, $content, $conn = null)
+	public
+	static function RoomAddChat($rId, $senderId, $content, $conn = null)
 	{
 		$roomInfo = ChatRoom::one($rId);
 		$adminUId = $roomInfo ? $roomInfo["rAdminUId"] : '';
@@ -552,7 +562,8 @@ class ChatMsg extends ActiveRecord
 	 * @param \yii\db\Connection $conn
 	 * @return array|bool
 	 */
-	public static function addChat($senderId, $receiverId, $content, $giftCount = 0, $adminId = 0, $qId = '', $conn = null)
+	public
+	static function addChat($senderId, $receiverId, $content, $giftCount = 0, $adminId = 0, $qId = '', $conn = null)
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -737,7 +748,8 @@ class ChatMsg extends ActiveRecord
 		return $info;
 	}
 
-	public static function delContacts($gids)
+	public
+	static function delContacts($gids)
 	{
 		if (!$gids || !is_array($gids)) {
 			return 0;
@@ -755,7 +767,8 @@ class ChatMsg extends ActiveRecord
 		return $co;
 	}
 
-	public static function chatLeft($uId, $subUId, $conn = '')
+	public
+	static function chatLeft($uId, $subUId, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -778,7 +791,8 @@ class ChatMsg extends ActiveRecord
 		return $left < 0 ? 0 : $left;
 	}
 
-	public static function groupEdit($uId, $subUId, $giftCount = 0, $conn = null)
+	public
+	static function groupEdit($uId, $subUId, $giftCount = 0, $conn = null)
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -818,7 +832,8 @@ class ChatMsg extends ActiveRecord
 		return [$gid, $left];
 	}
 
-	public static function details($uId, $subUId, $lastId = 0, $hideTipFlag = false)
+	public
+	static function details($uId, $subUId, $lastId = 0, $hideTipFlag = false)
 	{
 		$criteria = ' AND cId> ' . $lastId;
 		$conn = AppUtil::db();
@@ -867,7 +882,8 @@ class ChatMsg extends ActiveRecord
 		return [$items, $lastId];
 	}
 
-	public static function messages($gid, $page = 1, $pageSize = 100)
+	public
+	static function messages($gid, $page = 1, $pageSize = 100)
 	{
 		$limit = ' Limit ' . ($page - 1) * $pageSize . ',' . $pageSize;
 		$conn = AppUtil::db();
@@ -890,7 +906,8 @@ class ChatMsg extends ActiveRecord
 		return $messages;
 	}
 
-	public static function read($uId, $subUId, $conn = '')
+	public
+	static function read($uId, $subUId, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -907,7 +924,8 @@ class ChatMsg extends ActiveRecord
 		])->execute();
 	}
 
-	public static function contacts($uId, $page = 1, $pageSize = 20)
+	public
+	static function contacts($uId, $page = 1, $pageSize = 20)
 	{
 		$conn = AppUtil::db();
 		$limit = ' LIMIT ' . ($page - 1) * $pageSize . ',' . ($pageSize + 1);
@@ -964,7 +982,8 @@ class ChatMsg extends ActiveRecord
 		return [$contacts, $nextPage];
 	}
 
-	public static function items($isDummy = false, $criteria, $params = [], $page = 1, $pageSize = 20)
+	public
+	static function items($isDummy = false, $criteria, $params = [], $page = 1, $pageSize = 20)
 	{
 		$limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
 		$strCriteria = ' (u1.uOpenId like \'oYDJew%\' AND u2.uOpenId like \'oYDJew%\') ';
@@ -1041,7 +1060,8 @@ class ChatMsg extends ActiveRecord
 		return [$res, $count];
 	}
 
-	public static function serviceCnt($ids, $conn = '')
+	public
+	static function serviceCnt($ids, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -1062,7 +1082,8 @@ class ChatMsg extends ActiveRecord
 		return $items;
 	}
 
-	public static function reset()
+	public
+	static function reset()
 	{
 		$conn = AppUtil::db();
 		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound)
@@ -1070,7 +1091,7 @@ class ChatMsg extends ActiveRecord
 			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:uid1 AND g.gUId2=:uid2)';
 		$cmdAdd = $conn->createCommand($sql);
 		/*$sql = 'update im_chat_msg set cGId=(select gId FROM im_chat_group WHERE gUId1=:uid1 AND gUId2=:uid2)
- 				WHERE cSenderId=:sid AND cReceiverId=:rid ';
+				 WHERE cSenderId=:sid AND cReceiverId=:rid ';
 		$cmdUpdate = $conn->createCommand($sql);*/
 		$sql = 'select * from im_chat_msg WHERE cGId=0';
 		$ret = $conn->createCommand($sql)->queryAll();
@@ -1096,13 +1117,13 @@ class ChatMsg extends ActiveRecord
 		$conn->createCommand($sql)->execute();
 
 		/*$sql = 'UPDATE im_chat_group as g
-			 	JOIN im_chat_msg as m on g.gFirstCId = m.cId
-			 	SET g.gAddedBy=m.cSenderId, gAddedOn=m.cAddedOn WHERE g.gAddedBy<2';
+				 JOIN im_chat_msg as m on g.gFirstCId = m.cId
+				 SET g.gAddedBy=m.cSenderId, gAddedOn=m.cAddedOn WHERE g.gAddedBy<2';
 		$conn->createCommand($sql)->execute();
 
-		$sql = 'UPDATE im_chat_group as g 
-			 	JOIN im_chat_msg as m on g.gLastCId = m.cId 
-			 	SET gUpdatedBy=m.cSenderId,gUpdatedOn=m.cAddedOn WHERE g.gUpdatedBy<2';
+		$sql = 'UPDATE im_chat_group as g
+				 JOIN im_chat_msg as m on g.gLastCId = m.cId
+				 SET gUpdatedBy=m.cSenderId,gUpdatedOn=m.cAddedOn WHERE g.gUpdatedBy<2';
 		$conn->createCommand($sql)->execute();
 
 		$sql = 'UPDATE im_chat_msg set cAddedBy=cSenderId WHERE cAddedBy<2 ';
@@ -1115,7 +1136,8 @@ class ChatMsg extends ActiveRecord
 	 * @param $receiverId int female uId
 	 * @return int
 	 */
-	public static function requireCert($uid, $receiverId)
+	public
+	static function requireCert($uid, $receiverId)
 	{
 		$uInfo = User::findOne(["uId" => $uid]);
 		$gender = $uInfo["uGender"];
@@ -1142,7 +1164,8 @@ class ChatMsg extends ActiveRecord
 		return $co;
 	}
 
-	public static function mergeGroup($queryUid1 = 0, $queryUid2 = 0)
+	public
+	static function mergeGroup($queryUid1 = 0, $queryUid2 = 0)
 	{
 		$conn = AppUtil::db();
 		$sql = 'SELECT gId,gUId1,gUId2,gFirstCId,gLastCId,gRound,gTitle,gNote,gStatus,gStatusDate,gUpdatedOn,gUpdatedBy,gAddedOn,gAddedBy

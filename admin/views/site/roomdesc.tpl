@@ -18,39 +18,7 @@
 </div>
 <div class="row-divider"></div>
 <div class="row">
-	<div class="col-sm-5">
-		<table class="table table-striped table-bordered">
-			<thead>
-			<tr>
-				<th class="col-sm-1">
-					头像
-				</th>
-				<th class="col-sm-1">
-					管理员
-				</th>
-				<th>
-					信息
-				</th>
-			</tr>
-			</thead>
-			<tbody>
-			{{foreach from=$adminChats item=item}}
-			<tr>
-				<td align="center" class="center">
-					<img src="{{$item.avatar}}"/>
-				</td>
-				<td>
-					{{$item.name}}<br>{{$item.phone}}<br>{{$item.addedon}}
-				</td>
-				<td>
-					{{$item.content}}
-				</td>
-			</tr>
-			{{/foreach}}
-			</tbody>
-		</table>
-	</div>
-	<div class="col-sm-7">
+	<div class="col-sm-12">
 		<table class="table table-striped table-bordered">
 			<thead>
 			<tr>
@@ -64,6 +32,9 @@
 					信息
 				</th>
 				<th class="col-sm-1">
+					添加时间
+				</th>
+				<th class="col-sm-1">
 					操作
 				</th>
 			</tr>
@@ -75,10 +46,13 @@
 					<img src="{{$item.avatar}}"/>
 				</td>
 				<td>
-					{{$item.name}} <br>{{$item.phone}}<br>{{$item.addedon}}
+					{{$item.name}} <br>{{$item.phone}}
 				</td>
 				<td>
 					{{$item.content}}
+				</td>
+				<td>
+					{{$item.addedon}}
 				</td>
 				<td>
 					<a href="javascript:;" data-tag="delete" data-cid="{{$item.cid}}" data-rid="{{$item.rid}}"
