@@ -1,3 +1,4 @@
+
 <style>
 	.cr-room .cr-loading-items {
 		font-size: 1.2rem;
@@ -5,7 +6,7 @@
 		padding-top: 1rem;
 	}
 </style>
-<div class="cr-room">
+<div class="cr-room" style="display: none">
 	<div class="cr-title">
 		<div class="cr-title-logo">
 			<img src="{{$roomInfo.rLogo}}">
@@ -30,7 +31,7 @@
 	<div class="cr-bottom-pl"></div>
 </div>
 
-<div class="cr-bot">
+<div class="cr-bot" style="display: none">
 	<div class="cr-bot-input">
 		<input type="text" placeholder="来说点什么吧">
 	</div>

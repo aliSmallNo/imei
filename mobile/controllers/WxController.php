@@ -1968,7 +1968,7 @@ class WxController extends BaseController
 			'bg-color');
 	}
 
-	public function actionChatroom()
+	public function actionGroom()
 	{
 		$rid = self::getParam("rid");
 		if (!$rid) {
@@ -1983,7 +1983,7 @@ class WxController extends BaseController
 		ChatRoomFella::addone($rid, $uid);
 
 		$adminUId = $roomInfo["rAdminUId"];
-		return self::renderPage("chatroom.tpl",
+		return self::renderPage("groom.tpl",
 			[
 				'rid' => $rid,
 				'uid' => $uid,
@@ -1997,7 +1997,7 @@ class WxController extends BaseController
 			'cr-bg');
 	}
 
-	public function actionChatrooms()
+	public function actionGrooms()
 	{
 		$uid = $this->user_id;
 		if (!$uid ) {
@@ -2005,7 +2005,7 @@ class WxController extends BaseController
 			exit();
 		}
 
-		return self::renderPage("chatrooms.tpl",
+		return self::renderPage("grooms.tpl",
 			[
 				//'rooms' => $rooms,
 			],
