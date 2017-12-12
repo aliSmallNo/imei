@@ -35,7 +35,6 @@ require(["jquery", "alpha", "mustache", 'socket'],
 
 				util.socket.on("room", function (resp) {
 					var roomId = resp.rid;
-					console.log(resp);
 					if (util.rid != roomId) {
 						return;
 					}

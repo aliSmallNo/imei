@@ -43,7 +43,7 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/groom.js?v=1.2.3']);
+		requirejs(['/js/groom.js?v=1.2.4']);
 	});
 </script>
 
