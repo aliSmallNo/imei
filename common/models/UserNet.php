@@ -507,11 +507,11 @@ class UserNet extends ActiveRecord
 				if (date('Y-m-d') >= '2017-12-12' && date('Y-m-d') <= '2017-12-17') {
 					$otherInfo = self::findOne(["nSubUId" => $uid, "nUId" => $mId, 'nRelation' => self::REL_FAVOR, 'nDeletedFlag' => self::DELETE_FLAG_NO]);
 					if ($otherInfo) {
-						UserTrans::add($uid, 0, UserTrans::CAT_FESTIVAL_BONUS, '',
+						/*UserTrans::add($uid, 0, UserTrans::CAT_FESTIVAL_BONUS, '',
 							8, UserTrans::UNIT_GIFT, '互相心动');
 
 						UserTrans::add($mId, 0, UserTrans::CAT_FESTIVAL_BONUS, '',
-							8, UserTrans::UNIT_GIFT, '互相心动');
+							8, UserTrans::UNIT_GIFT, '互相心动');*/
 					}
 				}
 				break;
