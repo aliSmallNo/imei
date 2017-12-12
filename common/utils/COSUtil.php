@@ -291,7 +291,12 @@ class COSUtil
 			$figureData['sha'] = hash('sha1', $figureData['filecontent']);
 			$ret = $this->curlUpload($url, $figureData);
 			$ret = json_decode($ret, true);
-			$figureUrl = isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
+			if (isset($ret['data']['access_url'])) {
+				$figureUrl = $ret['data']['access_url'];
+			} else {
+				$figureUrl = json_encode($ret);
+				$this->getHeader(true);
+			}
 			return [$thumbUrl, $figureUrl, $this->savedPath];
 		}
 	}
@@ -299,7 +304,7 @@ class COSUtil
 	protected function curlUpload($url, $data)
 	{
 		$method = "POST";
-		$header = $this->getHeader(true);
+		$header = $this->getHeader();
 		$curlHandler = curl_init();
 		curl_setopt($curlHandler, CURLOPT_URL, $url);
 		$method = strtoupper($method);
