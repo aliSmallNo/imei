@@ -9,17 +9,14 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
-use common\models\ChatRoomFella;
 use common\models\Img;
 use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
-use common\models\UserTag;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
-use common\utils\NoticeUtil;
 use common\utils\PushUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
@@ -967,8 +964,15 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = UserTag::calcExp();
+		$rId = 101;
+		$uid = 131379;
+		$text = '测试在这里哦';
+		echo(microtime());
+		$ret = ChatMsg::roomChat($rId, $uid, $text);
 		var_dump($ret);
+		echo(microtime());
+//		$ret = UserTag::calcExp();
+//		var_dump($ret);
 		/*$ret = AppUtil::decrypt('B0BwYTdASTk_OU5pOTpAPj4-QnJjOUNMPEE7UGs');
 		var_dump($ret);*/
 		/*$ret  = ChatMsg::preCheck(131278, 148551);
