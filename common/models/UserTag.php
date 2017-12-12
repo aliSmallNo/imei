@@ -119,17 +119,19 @@ class UserTag extends ActiveRecord
 				break;
 			case self::CAT_CHAT_MONTH:
 				$expired = date('Y-m-d 23:59:56', time() + 86400 * 30);
-				$sql = 'SELECT tExpiredOn FROM im_user_tag WHERE tUId=:uid AND tCategory=:cat AND tStatus=1 AND tExpiredOn>now()';
+				$sql = 'SELECT tExpiredOn FROM im_user_tag 
+						WHERE tUId=:uid AND tCategory=:cat AND tStatus=1 AND tExpiredOn>now()';
 				$lastExp = $conn->createCommand($sql)->bindValues([
 					':uid' => $uid,
 					':cat' => self::CAT_CHAT_MONTH,
 				])->queryScalar();
 				if ($lastExp) {
 					$expired = date('Y-m-d 23:59:56', strtotime($lastExp) + 86400 * 30);
-				}
-				//Rain: 双12活动,买月卡获赠120媒桂花
-				if (date('Y-m-d') >= '2017-12-12' && date('Y-m-d') <= '2017-12-13') {
-					UserTrans::add($uid, $pid, UserTrans::CAT_FESTIVAL_BONUS, '', 120, UserTrans::UNIT_GIFT);
+					$sql = 'UPDATE im_user_tag set tDeletedFlag=1,tDeletedOn=now() WHERE tUId=:uid AND tCategory=:cat';
+					$conn->createCommand($sql)->bindValues([
+						':uid' => $uid,
+						':cat' => $cat,
+					])->execute();
 				}
 				break;
 			case self::CAT_CHAT_SEASON:
@@ -139,15 +141,6 @@ class UserTag extends ActiveRecord
 				$expired = date('Y-m-d 23:59:56', time() + 86400 * 365);
 				break;
 		}
-		$ret = $conn->createCommand($sql)->bindValues([
-			':uid' => $uid,
-			':cat' => $cat,
-			':pid' => $pid,
-			':title' => $title,
-			':note' => $note,
-			':addon' => $addon,
-			':exp' => $expired
-		])->execute();
 		AppUtil::logFile($conn->createCommand($sql)->bindValues([
 			':uid' => $uid,
 			':cat' => $cat,
@@ -157,6 +150,16 @@ class UserTag extends ActiveRecord
 			':addon' => $addon,
 			':exp' => $expired
 		])->getRawSql(), 5, __FUNCTION__, __LINE__);
+		$ret = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':cat' => $cat,
+			':pid' => $pid,
+			':title' => $title,
+			':note' => $note,
+			':addon' => $addon,
+			':exp' => $expired
+		])->execute();
+
 		return $ret;
 	}
 

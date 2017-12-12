@@ -498,7 +498,8 @@ class WechatUtil
 			];
 			Pay::edit($pid, $data);
 			$entity = Pay::findOne(["pId" => $pid]);
-			switch ($entity->pCategory) {
+			$cat = $entity->pCategory;
+			switch ($cat) {
 				case Pay::CAT_MEET:
 					Date::edit($entity->pRId, ["dStatus" => [Date::STATUS_PASS, Date::STATUS_PAY], 'dPayId' => $pid]);
 					$transCat = UserTrans::CAT_RECHARGE_MEET;
@@ -533,6 +534,11 @@ class WechatUtil
 			if (isset($payInfo['pUId']) && $curDate >= 20171124 && $curDate <= 20171126) {
 				UserTrans::add($payInfo['pUId'], 0, UserTrans::CAT_THANKS_BONUS,
 					'', 88, UserTrans::UNIT_GIFT);
+			}
+			//Rain: 双12活动,买月卡获赠120媒桂花
+			if ($entity->pCategory == Pay::CAT_CHAT_MONTH
+				&& date('Y-m-d') >= '2017-12-12' && date('Y-m-d') <= '2017-12-13') {
+				UserTrans::add($payInfo['pUId'], $pid, UserTrans::CAT_FESTIVAL_BONUS, '', 120, UserTrans::UNIT_GIFT);
 			}
 
 		} else {
