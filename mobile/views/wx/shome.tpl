@@ -56,7 +56,7 @@
 	</div>
 	{{if $isMember}}<a href="#sreport" class="report pushblack">举报拉黑</a>{{/if}}
 	<div style="height: 6rem;"></div>
-	<div class="m-bottom-bar">
+	<div class="m-bottom-bar " style="display: {{if $gay}}none{{/if}}">
 		<p>
 			<a href="javascript:;" class="send j-act btn-give" data-id="{{$uInfo.encryptId}}">送TA花</a>
 		</p>
