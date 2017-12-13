@@ -107,16 +107,7 @@
 		<div class="cr-join-member">
 			<h4>全部群成员(<span>0</span>)</h4>
 			<ul>
-				<li><img src="https://bpbhd-10063905.file.myqcloud.com/image/t1711201155436.jpg">
-					<p>兔斯基</p></li>
-				<li><img src="https://bpbhd-10063905.file.myqcloud.com/image/t1711201155436.jpg">
-					<p>兔斯基</p></li>
-				<li><img src="https://bpbhd-10063905.file.myqcloud.com/image/t1711201155436.jpg">
-					<p>兔斯基</p></li>
-				<li><img src="https://bpbhd-10063905.file.myqcloud.com/image/t1711201155436.jpg">
-					<p>兔斯基</p></li>
-				<li><img src="https://bpbhd-10063905.file.myqcloud.com/image/t1711201155436.jpg">
-					<p>兔斯基</p></li>
+
 			</ul>
 		</div>
 		<div class="cr-join-btn">
@@ -141,7 +132,7 @@
 
 	<div class="report_wrap schat-content">
 		<div class="spinner"></div>
-		<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
+		<a href="javascript:;" class="cr-his-more">更多历史消息</a>
 		<ul class="chats">
 
 		</ul>
@@ -153,6 +144,38 @@
 	</div>
 </section>
 <style>
+	.cr-his-more {
+		padding: 1rem;
+		display: block;
+		text-align: center;
+		color: #2e52ff;
+		font-size: 1.2rem;
+		position: relative;
+	}
+
+	.cr-his-more:after {
+		content: '';
+		position: absolute;
+		width: 1rem;
+		height: 1rem;
+		top: .4rem;
+		left: 14rem;
+		border-left: .1rem solid #2e52ff;
+		border-top: .1rem solid #2e52ff;
+		transform: rotate(45deg);
+	}
+	.cr-his-more:before{
+		content: '';
+		position: absolute;
+		width: 1rem;
+		height: 1rem;
+		top: .8rem;
+		left: 14rem;
+		border-left: .1rem solid #2e52ff;
+		border-top: .1rem solid #2e52ff;
+		transform: rotate(45deg);
+	}
+
 	.cr-member a {
 		display: flex;
 		padding: .5rem 1rem;
@@ -172,7 +195,7 @@
 		margin: 1rem;
 	}
 </style>
-<section data-title="群成员(8)" id="members">
+<section data-title="" id="members">
 	<div class="cr-members">
 		<ul>
 
@@ -234,7 +257,7 @@
 	}
 
 	requirejs(['/js/config.js?v=1.2'], function () {
-		requirejs(['/js/groom.js?v=1.1.5']);
+		requirejs(['/js/groom.js?v=1.1.6']);
 	});
 </script>
 

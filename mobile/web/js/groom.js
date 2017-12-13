@@ -43,9 +43,8 @@ require(["jquery", "alpha", "mustache", 'socket'],
 			switch ($sls.hashPage) {
 				case "chat":
 					row = $sls.adminUL.find('li:first');
-					if ($(window).scrollTop() == 0 && $sls.hashPage == "chat") {
+					if ($(window).scrollTop() == 10) {
 						console.log("scroll chat loadHistoryChatlist()");
-						chatUtil.loadHistoryChatlist();
 					}
 					break;
 				case "members":
@@ -111,6 +110,7 @@ require(["jquery", "alpha", "mustache", 'socket'],
 			input: $(".chat-input"),
 			text: '',
 			page: 1,
+			moreHistoryChat: $(".cr-his-more"),
 			init: function () {
 				var util = this;
 				$(document).on(kClick, ".btn-chat-send", function () {
@@ -119,6 +119,9 @@ require(["jquery", "alpha", "mustache", 'socket'],
 				});
 				$(document).on(kClick, "a.cr-title-member", function () {
 					location.href = "#members";
+				});
+				util.moreHistoryChat.on(kClick, function () {
+					util.loadHistoryChatlist();
 				});
 			},
 			sendMessage: function () {
@@ -149,7 +152,7 @@ require(["jquery", "alpha", "mustache", 'socket'],
 				}
 				$sls.loading = 1;
 				$sls.loadIcon.show();
-
+				util.moreHistoryChat.hide();
 				$.post("/api/chatroom", {
 					tag: "history_chat_list",
 					page: util.page,
@@ -160,14 +163,14 @@ require(["jquery", "alpha", "mustache", 'socket'],
 					$sls.loadIcon.hide();
 					if (resp.code < 1) {
 						if (util.page == 1) {
-							$sls.bottompl.get(0).scrollIntoView(true);
 							$sls.adminUL.html(Mustache.render($sls.adminTmp, {data: resp.data.chat}));
+							$sls.bottompl.get(0).scrollIntoView(true);
 						} else {
 							$sls.adminUL.prepend(Mustache.render($sls.adminTmp, {data: resp.data.chat}));
 						}
 						util.page = resp.data.nextpage;
 						if (util.page > 0) {
-							//$sls.more.html("上拉加载更多~");
+							util.moreHistoryChat.show();
 						}
 					} else {
 						alpha.toast(resp.msg);
@@ -275,9 +278,7 @@ require(["jquery", "alpha", "mustache", 'socket'],
 					break;
 				case 'members':
 					memUtil.page = 1;
-					setTimeout(function () {
-						memUtil.memberList();
-					}, 300);
+					memUtil.memberList();
 					break;
 				default:
 					break;
