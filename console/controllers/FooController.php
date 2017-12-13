@@ -962,8 +962,11 @@ class FooController extends Controller
 		/*$content='你好，系统显示你的媒桂花少于50朵
 
 👉<a href="https://wx.meipo100.com/wx/expand">点击去赚取媒桂花</a>👈';*/
-
-		$cnt = UserWechat::sendMsg($openIds, $content, true);
+		$cnt = 0;
+		foreach ($openIds as $openId) {
+			$cnt += UserWechat::sendMsg($openId, $content);
+			sleep(1);
+		}
 		var_dump($cnt);
 	}
 
