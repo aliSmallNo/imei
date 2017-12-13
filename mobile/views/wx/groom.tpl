@@ -145,7 +145,7 @@
 </section>
 <style>
 	.cr-his-more {
-		padding: 1rem;
+		padding: 1.5rem;
 		display: block;
 		text-align: center;
 		color: #2e52ff;
