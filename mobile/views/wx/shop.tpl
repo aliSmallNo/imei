@@ -10,28 +10,22 @@
 	</div>
 	<a class="gift-header">特权礼包</a>
 	<ul class="gift-bags">
-		<li>
-			<a href="javascript:;" style="background-image: url(/images/shop/bag_01.png) ">
-				<div class="title">
-					<h4>新手礼包</h4>
-					<h5><em>9.9</em>元</h5>
-				</div>
-			</a>
-		</li>
-		<li>
-			<a href="javascript:;" style="background-image: url(/images/shop/bag_02.png) ">
-				<div class="title">
-					<h4>超值礼包</h4>
-					<h5><em>19.9</em>元</h5>
-				</div>
-			</a>
-		</li>
+		{{foreach from=$bags item=item}}
+			<li>
+				<a href="javascript:;" style="background-image: url({{$item.image}}) " data-img="{{$item.image}}">
+					<div class="title">
+						<h4>{{$item.name}}</h4>
+						<h5><em>{{$item.price}}</em>{{$item.unit}}</h5>
+					</div>
+				</a>
+			</li>
+		{{/foreach}}
 	</ul>
 	<a class="gift-header">普通礼物</a>
 	<ul class="gift-stuff">
 		{{foreach from=$stuff item=item}}
 			<li>
-				<a href="javascript:;" style="background-image: url({{$item.image}})">
+				<a href="javascript:;" style="background-image: url({{$item.image}})" data-img="{{$item.image}}">
 					<h4>{{$item.name}}</h4>
 					<h5>{{$item.price}}{{$item.unit}}</h5>
 				</a>
@@ -42,7 +36,7 @@
 	<ul class="gift-stuff">
 		{{foreach from=$premium item=item}}
 			<li>
-				<a href="javascript:;" style="background-image: url({{$item.image}})">
+				<a href="javascript:;" style="background-image: url({{$item.image}})" data-img="{{$item.image}}">
 					<h4>{{$item.name}}</h4>
 					<h5>{{$item.price}}{{$item.unit}}</h5>
 				</a>
@@ -56,6 +50,23 @@
 	<div class="spinner none"></div>
 	<div class="no-more none">没有更多了~</div>
 </section>
+<div class="m-popup-shade"></div>
+<div class="m-popup-main" style="display: none">
+	<div class="m-popup-wrap">
+		<div class="m-popup-content"></div>
+	</div>
+</div>
+<div class="m-draw-wrap gift-detail off">
+	<div class="header">兑换礼物</div>
+	<div class="image"></div>
+	<div class="m-num-bar">
+		<a href="javascript:;" class="j-action minus">-</a>
+		<input type="text" class="num">
+		<a href="javascript:;" class="j-action plus">+</a>
+	</div>
+	<a class="btn-next">立即兑换</a>
+</div>
+
 <input type="hidden" id="cUID" value="{{$uid}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}

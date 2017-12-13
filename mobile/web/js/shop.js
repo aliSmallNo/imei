@@ -23,6 +23,46 @@ require(['jquery', 'mustache', "alpha"],
 			}
 		});
 
+		var DrawUtil = {
+			menus: null,
+			menusBg: null,
+			image: null,
+			header: null,
+			init: function () {
+				var util = this;
+				util.menus = $(".m-draw-wrap");
+				util.menusBg = $(".m-popup-shade");
+				util.image = util.menus.find(".image");
+				util.header = util.menus.find(".header");
+				$(document).on(kClick, '.gift-bags a, .gift-stuff a', function () {
+					var self = $(this);
+					util.toggle(util.menus.hasClass("off"));
+					util.image.css('background-image', 'url(' + self.attr('data-img') + ')');
+					util.header.html(self.find('h4').html());
+				});
+
+				util.menus.on(kClick, function (e) {
+					e.stopPropagation();
+				});
+
+				util.menusBg.on(kClick, function () {
+					util.toggle(false);
+				});
+			},
+			toggle: function (showFlag) {
+				var util = this;
+				if (showFlag) {
+					setTimeout(function () {
+						util.menus.removeClass("off").addClass("on");
+					}, 60);
+					util.menusBg.fadeIn(260);
+				} else {
+					util.menus.removeClass("on").addClass("off");
+					util.menusBg.fadeOut(200);
+				}
+			}
+		};
+
 		var WalletUtil = {
 			page: 1,
 			loading: 0,
@@ -120,6 +160,7 @@ require(['jquery', 'mustache', "alpha"],
 			}
 		};
 
+
 		function locationHashChanged() {
 			var hashTag = location.hash;
 			hashTag = hashTag.replace("#!", "");
@@ -150,6 +191,7 @@ require(['jquery', 'mustache', "alpha"],
 			alpha.clear();
 		}
 
+
 		$(function () {
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
@@ -161,6 +203,7 @@ require(['jquery', 'mustache', "alpha"],
 			});
 			locationHashChanged();
 			$sls.cork.hide();
+			DrawUtil.init();
 
 			$(document).on(kClick, '.btn-recharge', function () {
 				var self = $(this);

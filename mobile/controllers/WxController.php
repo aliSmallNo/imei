@@ -2048,6 +2048,10 @@ class WxController extends BaseController
 			$headers[$k]['image'] = $header['content'];
 			unset($headers[$k]['content'], $headers[$k]['id']);
 		}
+		$bags = [
+			['name' => '新手礼包', 'price' => 9.9, 'unit' => '元', 'image' => '/images/shop/bag_xs.png'],
+			['name' => '超值礼包', 'price' => 19.9, 'unit' => '元', 'image' => '/images/shop/bag_cz.png'],
+		];
 		$stuff = [
 			['name' => '气球', 'price' => 1, 'unit' => '媒桂花', 'image' => '/images/shop/stuff_qq.png'],
 			['name' => '口红', 'price' => 2, 'unit' => '媒桂花', 'image' => '/images/shop/stuff_kh.png'],
@@ -2075,7 +2079,8 @@ class WxController extends BaseController
 				'nickname' => $nickname,
 				'headers' => $headers,
 				'stuff' => $stuff,
-				'premium' => $premium
+				'premium' => $premium,
+				'bags' => $bags
 			],
 			'terse',
 			'我的媒桂花',

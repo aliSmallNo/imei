@@ -59,11 +59,11 @@ require(['jquery', 'alpha'],
 								alpha.prompt('千寻提示', util.msg, ['马上分享'], function () {
 									location.href = '/wx/shares';
 								});
-							}, 500);
+							}, 800);
 						} else {
 							setTimeout(function () {
 								alpha.prompt('千寻提示', util.msg, ['我知道了']);
-							}, 500);
+							}, 800);
 						}
 						util.running = false;
 
@@ -85,13 +85,13 @@ require(['jquery', 'alpha'],
 								alpha.prompt('千寻提示', util.msg, ['马上分享'], function () {
 									location.href = '/wx/shares';
 								});
-							}, 500);
+							}, 800);
 						} else {
 							setTimeout(function () {
 								alpha.prompt('千寻提示', util.msg, ['马上分享'], function () {
 									location.href = '/wx/shares';
 								});
-							}, 500);
+							}, 800);
 							util.go.addClass('gray');
 						}
 					}

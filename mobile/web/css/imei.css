@@ -8831,6 +8831,8 @@ ul.co-ul {
     border-bottom: 1px solid #EEEFF3;
     border-right: 1px solid #EEEFF3;
     padding: 0.2rem; }
+    .gift-bags li:nth-child(2n) {
+      border-right: none; }
     .gift-bags li a {
       display: block;
       height: 100%;
@@ -8882,6 +8884,8 @@ ul.co-ul {
     border-bottom: 1px solid #EEEFF3;
     border-right: 1px solid #EEEFF3;
     padding: 0.2rem; }
+    .gift-stuff li:nth-child(4n) {
+      border-right: none; }
     .gift-stuff li a {
       display: block;
       height: 100%;
