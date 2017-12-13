@@ -79,7 +79,9 @@ main {
 .gift-detail .header {
   text-align: center;
   line-height: 4rem;
-  border-bottom: 1px solid #EEEFF3; }
+  border-bottom: 1px solid #EEEFF3;
+  font-weight: 500;
+  font-size: 1.6rem; }
 .gift-detail .image {
   height: 12rem;
   background-position: center center;
