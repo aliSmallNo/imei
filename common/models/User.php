@@ -949,6 +949,7 @@ class User extends ActiveRecord
 			list($thumb, $figure) = ImageUtil::save2Server($avatar, true);
 			$data["thumb"] = $thumb;
 			$data["img"] = $figure;
+			$data["status"] = self::STATUS_PENDING;
 		}
 		//Rain: 如果是在注册页面，则会上传两张相册图片，在编辑页面，则不涉及相册更改
 		if (isset($data["album"])) {
