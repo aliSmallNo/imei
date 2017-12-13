@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/dev.min.css">
+<link rel="stylesheet" href="/css/dev.min.css?v=1.1.2">
 <section id="sec_home">
 	<div class="swiper-container">
 		<div class="swiper-wrapper">
@@ -8,53 +8,47 @@
 		</div>
 		<div class="swiper-pagination"></div>
 	</div>
-	<div class="gift-group">
-		<a class="header">特权礼包</a>
-		<ul class="gift-bags">
+	<a class="gift-header">特权礼包</a>
+	<ul class="gift-bags">
+		<li>
+			<a href="javascript:;" style="background-image: url(/images/shop/bag_01.png) ">
+				<div class="title">
+					<h4>新手礼包</h4>
+					<h5><em>9.9</em>元</h5>
+				</div>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:;" style="background-image: url(/images/shop/bag_02.png) ">
+				<div class="title">
+					<h4>超值礼包</h4>
+					<h5><em>19.9</em>元</h5>
+				</div>
+			</a>
+		</li>
+	</ul>
+	<a class="gift-header">普通礼物</a>
+	<ul class="gift-stuff">
+		{{foreach from=$stuff item=item}}
 			<li>
-				<a href="javascript:;" style="background-image: url(/images/shop/bag_01.png) ">
-					<div class="title">
-						<h4>新手礼包</h4>
-						<h5><em>9.9</em>元</h5>
-					</div>
+				<a href="javascript:;" style="background-image: url({{$item.image}})">
+					<h4>{{$item.name}}</h4>
+					<h5>{{$item.price}}{{$item.unit}}</h5>
 				</a>
 			</li>
+		{{/foreach}}
+	</ul>
+	<a class="gift-header">特权礼物 <em>只限08等级购买</em></a>
+	<ul class="gift-stuff">
+		{{foreach from=$premium item=item}}
 			<li>
-				<a href="javascript:;" style="background-image: url(/images/shop/bag_02.png) ">
-					<div class="title">
-						<h4>超值礼包</h4>
-						<h5><em>19.9</em>元</h5>
-					</div>
+				<a href="javascript:;" style="background-image: url({{$item.image}})">
+					<h4>{{$item.name}}</h4>
+					<h5>{{$item.price}}{{$item.unit}}</h5>
 				</a>
 			</li>
-		</ul>
-	</div>
-	<div class="gift-group">
-		<a class="header">普通礼物</a>
-		<ul class="gift-stuff">
-			{{foreach from=$stuff item=item}}
-				<li>
-					<a href="javascript:;" style="background-image: url({{$item.image}})">
-						<h4>{{$item.name}}</h4>
-						<h5>{{$item.price}}{{$item.unit}}</h5>
-					</a>
-				</li>
-			{{/foreach}}
-		</ul>
-	</div>
-	<div class="gift-group">
-		<a class="header">特权礼物 <em>只限08等级购买</em></a>
-		<ul class="gift-stuff">
-			{{foreach from=$premium item=item}}
-				<li>
-					<a href="javascript:;" style="background-image: url({{$item.image}})">
-						<h4>{{$item.name}}</h4>
-						<h5>{{$item.price}}{{$item.unit}}</h5>
-					</a>
-				</li>
-			{{/foreach}}
-		</ul>
-	</div>
+		{{/foreach}}
+	</ul>
 	<div style="height: 5rem"></div>
 </section>
 <section id="sec_list">

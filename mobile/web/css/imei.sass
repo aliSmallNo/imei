@@ -8,10 +8,28 @@
     display: none
 
 .bg-color
-    background-color: $bgColor
+    position: relative
+    &:before
+        content: ' '
+        position: fixed
+        z-index: -1
+        top: 0
+        right: 0
+        bottom: 0
+        left: 0
+        background-color: $bgColor
 
 .bg-main
-    background-color: $mainColorBg
+    position: relative
+    &:before
+        content: ' '
+        position: fixed
+        z-index: -1
+        top: 0
+        right: 0
+        bottom: 0
+        left: 0
+        background-color: $mainColorBg
 
 .bg-qrcode
     background: url(../images/bg_sqrcode.jpg) no-repeat center center
@@ -7947,6 +7965,7 @@ ul.co-ul
         color: #777
         text-align: center
         padding: 1rem
+
 .cr-join
     .cr-join-logo
         display: flex
@@ -8011,25 +8030,10 @@ ul.co-ul
     font-size: 1.2rem
     position: relative
     &:after
-        content: ''
-        position: absolute
-        width: 1rem
-        height: 1rem
-        top: .4rem
-        left: 14rem
-        border-left: .1rem solid #2e52ff
-        border-top: .1rem solid #2e52ff
-        transform: rotate(45deg)
+        @include arrowtop
     &:before
-        content: ''
-        position: absolute
-        width: 1rem
-        height: 1rem
+        @include arrowtop
         top: .8rem
-        left: 14rem
-        border-left: .1rem solid #2e52ff
-        border-top: .1rem solid #2e52ff
-        transform: rotate(45deg)
 .cr-member
     a
         display: flex
@@ -8044,3 +8048,93 @@ ul.co-ul
         p
             flex: 1
             margin: 1rem
+
+.gift-header
+    margin-top: 1rem
+    font-size: 1.2rem
+    border-bottom: 1px solid $borderColorLight
+    line-height: 2.8rem
+    position: relative
+    padding-left: 1rem
+    background-color: #fff
+    display: block
+    &:active
+        background-color: rgba(240, 240, 240, .5)
+    em
+        color: $grayFontColorLight
+        font-size: 1rem
+        font-weight: $weightNormal
+    &:after
+        @include arrowRight
+        right: 1rem
+
+.gift-bags
+    @include displayFlex
+    flex-flow: row wrap
+    align-content: flex-start
+    background-color: #fff
+    li
+        flex: 0 0 50%
+        @include borderBox
+        height: 13rem
+        background: url(../images/shop/bg_flash.png) no-repeat center bottom
+        background-size: 100% 100%
+        border-bottom: 1px solid $borderColorLight
+        border-right: 1px solid $borderColorLight
+        padding: .2rem
+        a
+            display: block
+            height: 100%
+            background-size: 10rem 10rem
+            background-position: center center
+            background-repeat: no-repeat
+            background-color: transparent
+            &:active
+                background-color: rgba(240, 240, 240, .5)
+            .title
+                padding: .5rem 1rem
+                @include displayFlex
+                h4
+                    font-weight: $weightMiddle
+                    font-size: 1.4rem
+                    @include displayFlex-1
+                h5
+                    font-size: 1rem
+                    text-align: right
+                    font-weight: $weightMiddle
+                    @include displayFlex-w(6rem)
+                    em
+                        font-size: 1.4rem
+                        color: $moneyColor
+
+.gift-stuff
+    @include displayFlex
+    flex-flow: row wrap
+    align-content: flex-start
+    background-color: #fff
+    li
+        flex: 0 0 25%
+        @include borderBox
+        height: 9rem
+        border-bottom: 1px solid $borderColorLight
+        border-right: 1px solid $borderColorLight
+        padding: .2rem
+        a
+            display: block
+            height: 100%
+            background-size: 5.5rem 5.5rem
+            background-position: center bottom
+            background-repeat: no-repeat
+            background-color: transparent
+            &:active
+                background-color: rgba(240, 240, 240, .5)
+        h4
+            font-size: 1.2rem
+            padding-left: 1rem
+            font-weight: $weightNormal
+        h5
+            padding-left: 1rem
+            font-size: 1rem
+            color: $moneyColor
+            font-weight: $weightNormal
+
