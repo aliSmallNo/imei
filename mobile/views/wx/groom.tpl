@@ -239,7 +239,7 @@
 <script type="text/template" id="memTmp">
 	{[#data]}
 	<li class="cr-member">
-		<a href="javascript:;">
+		<a href="/wx/sh?id={[eid]}">
 			<img src="{[uThumb]}">
 			<p>{[uName]}</p>
 		</a>

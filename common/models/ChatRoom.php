@@ -98,7 +98,7 @@ class ChatRoom extends ActiveRecord
 		if ($fenye) {
 			$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
 		}
-		$sql = "SELECT u.uName,u.uPhone,u.uThumb,u.uAvatar from im_chat_room as r 
+		$sql = "SELECT u.uName,u.uPhone,u.uThumb,u.uAvatar,u.uId from im_chat_room as r 
 				join im_chat_room_fella as m on r.rId=m.mRId
 				join im_user as u on u.uId=m.mUId 
 				where rId=:rid 
@@ -106,6 +106,9 @@ class ChatRoom extends ActiveRecord
 		$res = $conn->createCommand($sql)->bindValues([
 			":rid" => $rid,
 		])->queryAll();
+		foreach ($res as &$v) {
+			$v["eid"] = AppUtil::encrypt($v["uId"]);
+		}
 		$nextpage = 0;
 		if ($fenye && count($res) > $pageSize) {
 			$nextpage = $page + 1;
