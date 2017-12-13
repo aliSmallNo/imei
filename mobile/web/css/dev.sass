@@ -1,5 +1,17 @@
 @import "base"
-
+.bg-color
+    //background: #fdddde url(../images/lottery/bg01.jpg) no-repeat center center
+    //background-size: 100% 100%
+    position: relative
+    &:before
+        content: ' '
+        position: fixed
+        z-index: -1
+        top: 0
+        right: 0
+        bottom: 0
+        left: 0
+        background-color: $bgColor
 .gift-header
     margin-top: 1rem
     font-size: 1.2rem
