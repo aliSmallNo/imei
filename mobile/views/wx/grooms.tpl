@@ -45,11 +45,13 @@
 		text-align: center;
 	}
 </style>
-<ul class="cr-rooms">
-	<div class="cr-rooms-none">
-		您还没有群聊~
-	</div>
-</ul>
+<section data-title="我的群聊" id="rooms">
+	<ul class="cr-rooms">
+		<div class="cr-rooms-none">
+			您还没有群聊~
+		</div>
+	</ul>
+</section>
 
 <input type="hidden" id="cUNI" value="">
 
@@ -75,6 +77,13 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-<script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/grooms.js?v=1.1.8" src="/assets/js/require.js"></script>
 
+<script src="/assets/js/require.js"></script>
+<script>
+	if (document.location.hash === "" || document.location.hash === "#") {
+		document.location.hash = "#rooms";
+	}
+	requirejs(['/js/config.js?v=1.1'], function () {
+		requirejs(['/js/grooms.js?v=1.1.6']);
+	});
+</script>

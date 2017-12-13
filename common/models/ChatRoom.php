@@ -76,10 +76,9 @@ class ChatRoom extends ActiveRecord
 				ORDER BY r.rAddedOn desc $limit";
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as &$v) {
-			$item = self::item($conn, $v["rId"]);
+			list($item) = self::item($conn, $v["rId"]);
 			$v["count"] = count($item);
 			$v["members"] = $item;
-
 		}
 
 		$sql = "SELECT COUNT(*) from im_chat_room as r 
@@ -90,20 +89,47 @@ class ChatRoom extends ActiveRecord
 		return [$res, $count];
 	}
 
-	public static function item($conn, $rid)
+	public static function item($conn, $rid, $fenye = 0, $page = 1, $pageSize = 10)
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$sql = "SELECT u.uName,u.uPhone,u.uThumb,u.uAvatar from im_chat_room as r 
+		$limit = "";
+		if ($fenye) {
+			$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
+		}
+		$sql = "SELECT u.uName,u.uPhone,u.uThumb,u.uAvatar,u.uId from im_chat_room as r 
 				join im_chat_room_fella as m on r.rId=m.mRId
 				join im_user as u on u.uId=m.mUId 
-				where rId=:rid";
+				where rId=:rid 
+				order by m.mId asc $limit ";
 		$res = $conn->createCommand($sql)->bindValues([
 			":rid" => $rid,
 		])->queryAll();
+		foreach ($res as &$v) {
+			$v["eid"] = AppUtil::encrypt($v["uId"]);
+		}
+		$nextpage = 0;
+		if ($fenye && count($res) > $pageSize) {
+			$nextpage = $page + 1;
+			array_pop($res);
+		}
+		return [$res, $nextpage];
+	}
 
-		return $res;
+	public static function countMembers($conn, $rid)
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$sql = "SELECT count(*) 
+				from im_chat_room as r 
+				join im_chat_room_fella as m on r.rId=m.mRId
+				join im_user as u on u.uId=m.mUId 
+				where rId=:rid";
+		return $conn->createCommand($sql)->bindValues([
+			":rid" => $rid,
+		])->queryScalar();
 	}
 
 

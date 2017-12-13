@@ -8474,6 +8474,16 @@ ul.co-ul {
     font-size: 1.2rem;
     color: #777; }
 
+.cr-top-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 7;
+  padding: 0.5rem 0;
+  background: #fff;
+  border-bottom: 1px solid #e4e4e4; }
+
 .cr-room .cr-title {
   display: flex;
   background: #fff;
@@ -8489,6 +8499,10 @@ ul.co-ul {
     padding: 0.5rem;
     font-size: 1.5rem;
     font-weight: 800; }
+  .cr-room .cr-title .cr-title-member {
+    flex: 0 0 4rem; }
+    .cr-room .cr-title .cr-title-member img {
+      width: 3rem; }
 .cr-room ul {
   padding: 3rem 1rem 5rem 1rem; }
   .cr-room ul li {
