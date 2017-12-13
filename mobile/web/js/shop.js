@@ -1,10 +1,9 @@
-
 require(['jquery', 'mustache', "alpha"],
 	function ($, Mustache, alpha) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
-			curFrag: "swallet",
+			curFrag: "sec_home",
 			cork: $(".app-cork"),
 			wxString: $("#tpl_wx_info").html(),
 			newIdx: 0,
@@ -152,7 +151,6 @@ require(['jquery', 'mustache', "alpha"],
 		}
 
 		$(function () {
-			$("body").addClass("bg-color");
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
@@ -168,5 +166,6 @@ require(['jquery', 'mustache', "alpha"],
 				var self = $(this);
 				WalletUtil.prepay(self);
 			});
+			alpha.initSwiper();
 		});
 	});

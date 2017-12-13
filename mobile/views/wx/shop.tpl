@@ -1,17 +1,14 @@
 <link rel="stylesheet" href="/css/dev.min.css">
 <section id="sec_home">
-	<div>
-		<ul class="recharge">
-			<li>
-				<div class="title row-share">
-					分享收获媒桂花
-					<div class="tip">分享拉新人，注册成功收获媒桂花</div>
-				</div>
-				<div class="action"><a href="/wx/expand" class="btn-share" data-id="0" data-cat="share">分享</a></div>
-			</li>
-		</ul>
-		<p class="tip-block">媒桂花用于赠予、密聊、约会，不能提现或退款</p>
+	<div class="swiper-container">
+		<div class="swiper-wrapper">
+			{{foreach from=$headers item=item}}
+				<div class="swiper-slide"><img src="{{$item.image}}" data-url="{{$item.url}}" alt=""></div>
+			{{/foreach}}
+		</div>
+		<div class="swiper-pagination"></div>
 	</div>
+
 </section>
 <section id="sec_list">
 	<ul class="charges"></ul>
@@ -38,9 +35,9 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	if (document.location.hash === "" || document.location.hash === "#") {
-		document.location.hash = "#home";
+		document.location.hash = "#sec_home";
 	}
-	requirejs(['/js/config.js'], function () {
+	requirejs(['/js/config.js?v=1.2.1'], function () {
 		requirejs(['/js/shop.js?v=1.4.1']);
 	});
 </script>

@@ -1,8 +1,9 @@
-define(['jquery', 'layer'],
-	function ($, layer) {
+define(['jquery', 'layer', 'swiper'],
+	function ($, layer, Swiper) {
 		"use strict";
 		return {
 			kClick: 'click',
+			swiped: 0,
 			isMobile: function (obj) {
 				var reg = /^1\d{10}$/;
 				return reg.test(obj);
@@ -60,6 +61,35 @@ define(['jquery', 'layer'],
 					options.no = noBlock;
 				}
 				layer.open(options);
+			},
+			initSwiper: function () {
+				var util = this;
+				if (util.swiped || $('.swiper-container .swiper-slide').length < 2) {
+					util.swiped = 1;
+					return false;
+				}
+				util.swiped = 1;
+				new Swiper('.swiper-container', {
+					direction: 'horizontal',
+					loop: true,
+					speed: 600,
+					on: {
+						click: function (event) {
+							var url = $(event.target).attr('data-url');
+							if (url.indexOf('http') >= 0) {
+								location.href = url;
+							} else {
+								util.prompt('', url, ['我知道了']);
+							}
+						}
+					},
+					autoplay: {
+						delay: 7000
+					},
+					pagination: {
+						el: '.swiper-pagination'
+					}
+				});
 			}
 		};
 	});

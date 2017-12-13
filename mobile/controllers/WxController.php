@@ -2039,14 +2039,20 @@ class WxController extends BaseController
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
 		}
-
+		$headers = CogService::init()->homeHeaders(true);
+		foreach ($headers as $k => $header) {
+			$headers[$k]['image'] = $header['content'];
+			unset($headers[$k]['content'], $headers[$k]['id']);
+		}
 		return self::renderPage("shop.tpl",
 			[
 				'uid' => $this->user_id,
 				'avatar' => $avatar,
 				'nickname' => $nickname,
+				'headers' => $headers
 			],
 			'terse',
-			'我的媒桂花');
+			'我的媒桂花',
+			'bg-color');
 	}
 }
