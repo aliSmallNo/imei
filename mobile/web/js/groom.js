@@ -252,6 +252,7 @@ require(["jquery", "alpha", "mustache", 'socket'],
 							util.memUL.append(Mustache.render(util.memTmp, {data: resp.data.members}));
 						}
 						util.page = resp.data.nextpage;
+						$("title").html("群成员(" + resp.data.count + ")");
 					} else {
 						alpha.toast(resp.msg);
 					}

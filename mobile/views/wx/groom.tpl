@@ -235,7 +235,7 @@
 	}
 
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/groom.js?v=1.1.4']);
+		requirejs(['/js/groom.js?v=1.1.5']);
 	});
 </script>
 

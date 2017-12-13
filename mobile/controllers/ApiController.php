@@ -2102,12 +2102,14 @@ class ApiController extends Controller
 
 		switch ($tag) {
 			case "mem_list":
+				$conn = AppUtil::db();
 				$rid = trim(self::postParam('rid'));
 				$page = trim(self::postParam('page'));
-				list($members, $nextpage) = ChatRoom::item('', $rid, 1, $page, 12);
+				list($members, $nextpage) = ChatRoom::item($conn, $rid, 1, $page, 12);
 				return self::renderAPI(0, '', [
 					"members" => $members,
 					"nextpage" => $nextpage,
+					"count" => ChatRoom::countMembers($conn, $rid),
 				]);
 				break;
 			case "join_apply":
