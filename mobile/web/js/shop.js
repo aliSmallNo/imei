@@ -28,6 +28,7 @@ require(['jquery', 'mustache', "alpha"],
 			menusBg: null,
 			image: null,
 			header: null,
+			gid: 0,
 			init: function () {
 				var util = this;
 				util.menus = $(".m-draw-wrap");
@@ -36,6 +37,7 @@ require(['jquery', 'mustache', "alpha"],
 				util.header = util.menus.find(".header");
 				$(document).on(kClick, '.gift-bags a, .gift-stuff a', function () {
 					var self = $(this);
+					util.gid = self.attr('data-id');
 					util.toggle(util.menus.hasClass("off"));
 					util.image.css('background-image', 'url(' + self.attr('data-img') + ')');
 					util.header.html(self.find('h4').html());

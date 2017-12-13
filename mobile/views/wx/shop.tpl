@@ -12,7 +12,8 @@
 	<ul class="gift-bags">
 		{{foreach from=$bags item=item}}
 			<li>
-				<a href="javascript:;" style="background-image: url({{$item.image}}) " data-img="{{$item.image}}">
+				<a href="javascript:;" style="background-image: url({{$item.image}}) "
+				   data-id="{{$item.id}}" data-price="{{$item.price}}" data-img="{{$item.image}}">
 					<div class="title">
 						<h4>{{$item.name}}</h4>
 						<h5><em>{{$item.price}}</em>{{$item.unit}}</h5>
@@ -25,7 +26,8 @@
 	<ul class="gift-stuff">
 		{{foreach from=$stuff item=item}}
 			<li>
-				<a href="javascript:;" style="background-image: url({{$item.image}})" data-img="{{$item.image}}">
+				<a href="javascript:;" style="background-image: url({{$item.image}})"
+				   data-id="{{$item.id}}" data-price="{{$item.price}}" data-img="{{$item.image}}">
 					<h4>{{$item.name}}</h4>
 					<h5>{{$item.price}}{{$item.unit}}</h5>
 				</a>
@@ -36,7 +38,8 @@
 	<ul class="gift-stuff">
 		{{foreach from=$premium item=item}}
 			<li>
-				<a href="javascript:;" style="background-image: url({{$item.image}})" data-img="{{$item.image}}">
+				<a href="javascript:;" style="background-image: url({{$item.image}})"
+				   data-id="{{$item.id}}" data-price="{{$item.price}}" data-img="{{$item.image}}">
 					<h4>{{$item.name}}</h4>
 					<h5>{{$item.price}}{{$item.unit}}</h5>
 				</a>
