@@ -2048,12 +2048,34 @@ class WxController extends BaseController
 			$headers[$k]['image'] = $header['content'];
 			unset($headers[$k]['content'], $headers[$k]['id']);
 		}
+		$stuff = [
+			['name' => '气球', 'price' => 1, 'unit' => '媒桂花', 'image' => '/images/shop/stuff_qq.png'],
+			['name' => '口红', 'price' => 2, 'unit' => '媒桂花', 'image' => '/images/shop/stuff_kh.png'],
+			['name' => '棒棒糖', 'price' => 1, 'unit' => '媒桂花', 'image' => '/images/shop/stuff_bbt.png'],
+			['name' => '抱抱熊', 'price' => 33, 'unit' => '媒桂花', 'image' => '/images/shop/stuff_bbx.png'],
+			['name' => '钻戒', 'price' => 66, 'unit' => '媒桂花', 'image' => '/images/shop/stuff_zj.png'],
+			['name' => '么么哒', 'price' => 66, 'unit' => '媒桂花', 'image' => '/images/shop/stuff_mmd.png'],
+			['name' => '巧克力', 'price' => 299, 'unit' => '媒桂花', 'image' => '/images/shop/stuff_qkl.png'],
+			['name' => '蛋糕', 'price' => 499, 'unit' => '媒桂花', 'image' => '/images/shop/stuff_dg.png'],
+		];
+		$premium = [
+			['name' => '真爱跑车', 'price' => 888, 'unit' => '媒桂花', 'image' => '/images/shop/premium_zapc.png'],
+			['name' => '摩天轮', 'price' => 666, 'unit' => '媒桂花', 'image' => '/images/shop/premium_mtl.png'],
+			['name' => '告白气球', 'price' => 268, 'unit' => '媒桂花', 'image' => '/images/shop/premium_gbqq.png'],
+			['name' => '城堡', 'price' => 2999, 'unit' => '媒桂花', 'image' => '/images/shop/premium_cb.png'],
+			['name' => '浪漫双人游', 'price' => 2999, 'unit' => '媒桂花', 'image' => '/images/shop/premium_lmsry.png'],
+			['name' => '幸福花车', 'price' => 2999, 'unit' => '媒桂花', 'image' => '/images/shop/premium_xfhc.png'],
+			['name' => '游艇', 'price' => 2999, 'unit' => '媒桂花', 'image' => '/images/shop/premium_yt.png'],
+			['name' => '游艇', 'price' => 2999, 'unit' => '媒桂花', 'image' => '/images/shop/premium_yt.png'],
+		];
 		return self::renderPage("shop.tpl",
 			[
 				'uid' => $this->user_id,
 				'avatar' => $avatar,
 				'nickname' => $nickname,
-				'headers' => $headers
+				'headers' => $headers,
+				'stuff' => $stuff,
+				'premium' => $premium
 			],
 			'terse',
 			'我的媒桂花',
