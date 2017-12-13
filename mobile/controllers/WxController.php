@@ -1995,7 +1995,9 @@ class WxController extends BaseController
 			header('location:/wx/error');
 			exit();
 		}
-		ChatRoomFella::addone($rid, $uid);
+		// ChatRoomFella::addone($rid, $uid);
+
+		$memberFlag = ChatRoomFella::checkIsMember($rid, $uid);
 
 		$adminUId = $roomInfo["rAdminUId"];
 		return self::renderPage("groom.tpl",
@@ -2007,6 +2009,7 @@ class WxController extends BaseController
 				'avatar' => $this->user_avatar,
 				"isadmin" => $adminUId == $uid ? 1 : 0,
 				"lastId" => $roomInfo["rLastId"],
+				"memberFlag" => $memberFlag,
 			],
 			'terse',
 			'千寻聊天室',

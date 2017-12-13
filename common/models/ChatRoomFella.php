@@ -46,11 +46,21 @@ class ChatRoomFella extends ActiveRecord
 		$sql = "INSERT INTO im_chat_room_fella(mRId,mUId)
 			SELECT :rid,:uid FROM dual
 			WHERE NOT EXISTS(SELECT 1 FROM im_chat_room_fella as m WHERE m.mUId=:uid and m.mRId=:rid)";
-		$conn->createCommand($sql)->bindValues([
+		$line = $conn->createCommand($sql)->bindValues([
 			":uid" => $uId,
 			":rid" => $rId,
 		])->execute();
-		return true;
+		return $line;
+	}
+
+	public static function checkIsMember($rid, $uid)
+	{
+		$conn = AppUtil::db();
+		$sql = "SELECT count(*) FROM im_chat_room_fella as m WHERE m.mUId=:uid and m.mRId=:rid ";
+		return $conn->createCommand($sql)->bindValues([
+			":uid" => $uid,
+			":rid" => $rid,
+		])->queryScalar();
 	}
 
 	public static function adminOPt($subtag, $oUId, $rid, $cid, $ban = 1)

@@ -2101,6 +2101,39 @@ class ApiController extends Controller
 		$uid = $wxInfo['uId'];
 
 		switch ($tag) {
+			case "mem_list":
+				$rid = trim(self::postParam('rid'));
+				$page = trim(self::postParam('page'));
+				list($members, $nextpage) = ChatRoom::item('', $rid, 1, $page, 12);
+				return self::renderAPI(0, '', [
+					"members" => $members,
+					"nextpage" => $nextpage,
+				]);
+				break;
+			case "join_apply":
+				$rid = trim(self::postParam('rid'));
+				// 加入群聊
+				ChatRoomFella::addone($rid, $uid);
+				return self::renderAPI(0, '', [
+
+				]);
+				break;
+			case "join_init":
+				$rid = trim(self::postParam('rid'));
+				$conn = AppUtil::db();
+				list($members) = ChatRoom::item($conn, $rid, 1);
+				$members = array_slice($members, 0, 5);
+				foreach ($members as &$v) {
+					$name = mb_substr($v["uName"], 0, 3);
+					if (mb_strlen($v["uName"]) > 3) {
+						$v["uName"] = $name . "..";
+					}
+				}
+				return self::renderAPI(0, '', [
+					"members" => $members,
+					"count" => ChatRoom::countMembers($conn, $rid),
+				]);
+				break;
 			case "history_chat_list":
 				$rid = trim(self::postParam('rid'));
 				$page = trim(self::postParam('page'));
