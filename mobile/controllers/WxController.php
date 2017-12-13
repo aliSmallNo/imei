@@ -2030,4 +2030,23 @@ class WxController extends BaseController
 			'');
 	}
 
+	public function actionShop()
+	{
+		if ($this->user_id) {
+			$avatar = $this->user_avatar;
+			$nickname = $this->user_name;
+		} else {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+
+		return self::renderPage("shop.tpl",
+			[
+				'uid' => $this->user_id,
+				'avatar' => $avatar,
+				'nickname' => $nickname,
+			],
+			'terse',
+			'我的媒桂花');
+	}
 }
