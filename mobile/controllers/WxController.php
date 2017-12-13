@@ -518,7 +518,7 @@ class WxController extends BaseController
 		}
 
 		$items = [];
-		$uInfo = User::profile($hid);
+		$uInfo = User::profile($hid);//TA
 		$genderName = $uInfo['gender'] == User::GENDER_MALE ? '男' : '女';
 		$uInfo["favorFlag"] = UserNet::hasFavor($this->user_id, $uInfo["id"]) ? 1 : 0;
 		if (!$isMember) {
@@ -540,7 +540,8 @@ class WxController extends BaseController
 				'role' => $this->user_role,
 				'genderName' => $genderName,
 				'isMember' => $isMember,
-				'hideFlag' => $hideFlag
+				'hideFlag' => $hideFlag,
+				"gay" => $this->user_gender == $uInfo["gender"],
 			],
 			'terse');
 	}
