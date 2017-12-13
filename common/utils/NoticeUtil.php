@@ -43,7 +43,11 @@ class NoticeUtil
 	{
 		$util = new self();
 		$util->tag = $tag;
-		$util->open_ids = $openIds;
+		if (is_array($openIds)) {
+			$util->open_ids = $openIds;
+		} else {
+			$util->open_ids = [$openIds];
+		}
 		return $util;
 	}
 

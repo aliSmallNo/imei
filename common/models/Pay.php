@@ -100,10 +100,10 @@ class Pay extends ActiveRecord
 		],
 		'rose68' => [
 			'cat' => Pay::CAT_RECHARGE,
-			'title' => '800 媒桂花',
-			'price' => 68,
-			'tip' => '首次充值将收获2100媒桂花',
-			'num' => 700,
+			'title' => '500 媒桂花',
+			'price' => 39,
+			'tip' => '首次充值将收获1500媒桂花',
+			'num' => 500,
 			'ln' => 'line',
 		],
 	];

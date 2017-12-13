@@ -404,9 +404,10 @@ class UserMsg extends ActiveRecord
 					date("Y年n月j日 H:i")
 				]);*/
 		}
-
 		$openIds = array_column($ret, 'uOpenId');
-		NoticeUtil::init(NoticeUtil::CAT_CHAT, $openIds)->sendText();
+		foreach ($openIds as $openId) {
+			NoticeUtil::init(NoticeUtil::CAT_CHAT, $openId)->sendText();
+		}
 		return true;
 	}
 }

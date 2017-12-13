@@ -504,6 +504,20 @@ class UserNet extends ActiveRecord
 					'',
 					$mId);
 				UserMsg::recall($uid);
+
+				//Rain: 双十二活动，互相心动，奖励8朵媒桂花
+				if (date('Y-m-d') >= '2017-12-12' && date('Y-m-d') <= '2017-12-17') {
+					$pid = $uid + $mId;
+					$relInfo = self::findOne(["nSubUId" => $uid, "nUId" => $mId, 'nRelation' => self::REL_FAVOR, 'nDeletedFlag' => self::DELETE_FLAG_NO]);
+					$transInfo = UserTrans::findOne(["tPId" => $pid, "tCategory" => UserTrans::CAT_FESTIVAL_BONUS, 'tUId' => $uid, 'tDeletedFlag' => 0]);
+					if ($relInfo && !$transInfo) {
+						UserTrans::add($uid, $pid, UserTrans::CAT_FESTIVAL_BONUS, '',
+							8, UserTrans::UNIT_GIFT, '互相心动');
+
+						UserTrans::add($mId, $pid, UserTrans::CAT_FESTIVAL_BONUS, '',
+							8, UserTrans::UNIT_GIFT, '互相心动');
+					}
+				}
 				break;
 			case "no":
 				$info->nDeletedFlag = self::DELETE_FLAG_YES;
