@@ -17,6 +17,7 @@ use common\models\UserQR;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
+use common\utils\NoticeUtil;
 use common\utils\PushUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
@@ -975,7 +976,8 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-
+		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
+		NoticeUtil::init(NoticeUtil::CAT_CHAT, $openId)->sendText();
 
 		/*$ret = UserTrans::stat(131379);
 		var_dump($ret);*/
