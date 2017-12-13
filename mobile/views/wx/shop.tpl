@@ -49,7 +49,6 @@
 			</li>
 		{{/foreach}}
 	</ul>
-	<div style="height: 5rem"></div>
 </section>
 <section id="sec_list">
 	<ul class="charges"></ul>
