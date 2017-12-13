@@ -23,12 +23,13 @@ require(['jquery', 'mustache', "alpha"],
 			}
 		});
 
-		var DrawUtil = {
+		var DetailUtil = {
 			menus: null,
 			menusBg: null,
 			image: null,
 			header: null,
 			gid: 0,
+			price: 0,
 			init: function () {
 				var util = this;
 				util.menus = $(".m-draw-wrap");
@@ -38,6 +39,7 @@ require(['jquery', 'mustache', "alpha"],
 				$(document).on(kClick, '.gift-bags a, .gift-stuff a', function () {
 					var self = $(this);
 					util.gid = self.attr('data-id');
+					util.price = self.attr('data-price');
 					util.toggle(util.menus.hasClass("off"));
 					util.image.css('background-image', 'url(' + self.attr('data-img') + ')');
 					util.header.html(self.find('h4').html());
@@ -205,7 +207,7 @@ require(['jquery', 'mustache', "alpha"],
 			});
 			locationHashChanged();
 			$sls.cork.hide();
-			DrawUtil.init();
+			DetailUtil.init();
 
 			$(document).on(kClick, '.btn-recharge', function () {
 				var self = $(this);
