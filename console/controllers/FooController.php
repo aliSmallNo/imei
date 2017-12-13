@@ -965,9 +965,9 @@ class FooController extends Controller
 		$cnt = 0;
 		foreach ($openIds as $k => $openId) {
 			$cnt += UserWechat::sendMsg($openId, $content);
-			if ($k % 40 == 0) {
+			if ($k > 0 && $k % 4 == 0) {
 				sleep(2);
-				var_dump($k . '/' . count($openIds) . date('  m-d H:i:s'));
+				var_dump($cnt . ' - ' . $k . '/' . count($openIds) . date('  m-d H:i:s'));
 			}
 		}
 		var_dump($cnt);
