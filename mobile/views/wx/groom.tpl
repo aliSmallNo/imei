@@ -34,7 +34,7 @@
 	}
 
 	.cr-join .cr-join-intro p {
-		font-size: 1rem;
+		font-size: 1.1rem;
 		color: #999;
 		margin-top: 1rem;
 		letter-spacing: .15rem;
@@ -83,7 +83,6 @@
 		font-size: 1.5rem;
 		text-align: center;
 		border-radius: .5rem;
-		font-weight: 200;
 	}
 </style>
 <section data-title="千寻群" id="join">
