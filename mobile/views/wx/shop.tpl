@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/css/dev.min.css">
 <section id="sec_home">
 	<div>
 		<ul class="recharge">
