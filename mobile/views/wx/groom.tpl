@@ -147,8 +147,7 @@
 		</ul>
 		<div class="m-bottom-pl"></div>
 		<div class="m-bottom-bar">
-			<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120"
-																style="-webkit-user-modify: read-write-plaintext-only"></div>
+			<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120"></div>
 			<div class="action"><a href="javascript:;" class="btn-chat-send">发送</a></div>
 		</div>
 	</div>

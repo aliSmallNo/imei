@@ -43,7 +43,8 @@ require(["jquery", "alpha", "mustache", 'socket'],
 			switch ($sls.hashPage) {
 				case "chat":
 					row = $sls.adminUL.find('li:first');
-					if ($(window).scrollTop() == 0) {
+					if ($(window).scrollTop() == 0 && $sls.hashPage == "chat") {
+						console.log("scroll chat loadHistoryChatlist()");
 						chatUtil.loadHistoryChatlist();
 					}
 					break;
@@ -51,7 +52,7 @@ require(["jquery", "alpha", "mustache", 'socket'],
 					row = memUtil.memUL.find('li:last');
 					if (row && eleInScreen(row, 40) && memUtil.page > 0) {
 						memUtil.memberList();
-						console.log(12);
+						console.log("scroll member memberList()");
 					}
 					break;
 			}
@@ -141,7 +142,7 @@ require(["jquery", "alpha", "mustache", 'socket'],
 				}, "json");
 			},
 			loadHistoryChatlist: function () {
-				console.log(1);
+				console.log("loadHistoryChatlist");
 				var util = this;
 				if ($sls.loading || !util.page) {
 					return;
@@ -274,7 +275,9 @@ require(["jquery", "alpha", "mustache", 'socket'],
 					break;
 				case 'members':
 					memUtil.page = 1;
-					memUtil.memberList();
+					setTimeout(function () {
+						memUtil.memberList();
+					}, 300);
 					break;
 				default:
 					break;
