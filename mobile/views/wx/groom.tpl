@@ -1,95 +1,8 @@
-<style>
-	.cr-join .cr-join-logo {
-		display: flex;
-		padding: 1rem 2rem;
-		background: #fff;
-	}
-
-	.cr-join .cr-join-logo .cr-join-logo-l {
-		flex: 0 0 6rem;
-	}
-
-	.cr-join .cr-join-logo .cr-join-logo-l img {
-		height: 5rem;
-		width: 5rem;
-		border-radius: .3rem;
-	}
-
-	.cr-join .cr-join-logo .cr-join-logo-r {
-		flex: 1;
-		font-weight: 800;
-		padding: .5rem 0;
-		font-size: 1.3rem;
-	}
-
-	.cr-join .cr-join-intro {
-		background: #fff;
-		margin-top: 1rem;
-		padding: 1rem 2rem;
-	}
-
-	.cr-join .cr-join-intro h4 {
-		font-size: 1.3rem;
-
-	}
-
-	.cr-join .cr-join-intro p {
-		font-size: 1.1rem;
-		color: #999;
-		margin-top: 1rem;
-		letter-spacing: .15rem;
-	}
-
-	.cr-join .cr-join-member {
-		background: #fff;
-		margin-top: 1rem;
-		padding: 1rem 2rem;
-	}
-
-	.cr-join .cr-join-member h4 {
-		font-size: 1.3rem;
-	}
-
-	.cr-join .cr-join-member ul {
-		margin-top: 1rem;
-	}
-
-	.cr-join .cr-join-member ul li {
-		width: 5rem;
-		display: inline-block;
-	}
-
-	.cr-join .cr-join-member ul li img {
-		width: 4rem;
-		height: 4rem;
-		border-radius: .5rem;
-		margin-left: .5rem;
-	}
-
-	.cr-join .cr-join-member ul li p {
-		text-align: center;
-		font-size: 1rem;
-	}
-
-	.cr-join .cr-join-btn {
-		margin: 2rem;
-	}
-
-	.cr-join .cr-join-btn a {
-		display: block;
-		padding: 1rem;
-		background: #00aa00;
-		color: #fff;
-		font-size: 1.5rem;
-		text-align: center;
-		border-radius: .5rem;
-	}
-</style>
 <section data-title="千寻群" id="join">
 	<div class="cr-join">
 		<div class="cr-join-logo">
 			<div class="cr-join-logo-l">
-				<img src="https://bpbhd-10063905.file.myqcloud.com/image/t1711201155436.jpg">
+				<img src="{{$roomInfo.rLogo}}">
 			</div>
 			<div class="cr-join-logo-r">
 				<span src="">{{$roomInfo.rTitle}}</span>
@@ -142,58 +55,6 @@
 		</div>
 	</div>
 </section>
-<style>
-	.cr-his-more {
-		padding: 1.5rem;
-		display: block;
-		text-align: center;
-		color: #2e52ff;
-		font-size: 1.2rem;
-		position: relative;
-	}
-
-	.cr-his-more:after {
-		content: '';
-		position: absolute;
-		width: 1rem;
-		height: 1rem;
-		top: .4rem;
-		left: 14rem;
-		border-left: .1rem solid #2e52ff;
-		border-top: .1rem solid #2e52ff;
-		transform: rotate(45deg);
-	}
-	.cr-his-more:before{
-		content: '';
-		position: absolute;
-		width: 1rem;
-		height: 1rem;
-		top: .8rem;
-		left: 14rem;
-		border-left: .1rem solid #2e52ff;
-		border-top: .1rem solid #2e52ff;
-		transform: rotate(45deg);
-	}
-
-	.cr-member a {
-		display: flex;
-		padding: .5rem 1rem;
-		border-bottom: .1rem solid #eee;
-		background: #fff;
-	}
-
-	.cr-member a img {
-		flex: 0 0 4rem;
-		width: 4rem;
-		height: 4rem;
-		border-radius: .2rem;
-	}
-
-	.cr-member a p {
-		flex: 1;
-		margin: 1rem;
-	}
-</style>
 <section data-title="" id="members">
 	<div class="cr-members">
 		<ul>
@@ -254,7 +115,6 @@
 	if (document.location.hash === "" || document.location.hash === "#") {
 		document.getElementById("memberFlag").value == 1 ? document.location.hash = "#chat" : document.location.hash = "#join";
 	}
-
 	requirejs(['/js/config.js?v=1.2'], function () {
 		requirejs(['/js/groom.js?v=1.1.6']);
 	});

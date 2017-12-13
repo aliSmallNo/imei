@@ -8781,6 +8781,105 @@ ul.co-ul {
     text-align: center;
     padding: 1rem; }
 
+.cr-join .cr-join-logo {
+  display: flex;
+  padding: 1rem 2rem;
+  background: #fff; }
+  .cr-join .cr-join-logo .cr-join-logo-l {
+    flex: 0 0 6rem; }
+    .cr-join .cr-join-logo .cr-join-logo-l img {
+      height: 5rem;
+      width: 5rem;
+      border-radius: 0.3rem; }
+  .cr-join .cr-join-logo .cr-join-logo-r {
+    flex: 1;
+    font-weight: 800;
+    padding: 0.5rem 0;
+    font-size: 1.3rem; }
+.cr-join .cr-join-intro {
+  background: #fff;
+  margin-top: 1rem;
+  padding: 1rem 2rem; }
+  .cr-join .cr-join-intro h4 {
+    font-size: 1.3rem; }
+  .cr-join .cr-join-intro p {
+    font-size: 1.1rem;
+    color: #999;
+    margin-top: 1rem;
+    letter-spacing: 0.15rem; }
+.cr-join .cr-join-member {
+  background: #fff;
+  margin-top: 1rem;
+  padding: 1rem 2rem; }
+  .cr-join .cr-join-member h4 {
+    font-size: 1.3rem; }
+  .cr-join .cr-join-member ul {
+    margin-top: 1rem; }
+    .cr-join .cr-join-member ul li {
+      width: 5rem;
+      display: inline-block; }
+      .cr-join .cr-join-member ul li img {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 0.5rem;
+        margin-left: 0.5rem; }
+      .cr-join .cr-join-member ul li p {
+        text-align: center;
+        font-size: 1rem; }
+.cr-join .cr-join-btn {
+  margin: 2rem; }
+  .cr-join .cr-join-btn a {
+    display: block;
+    padding: 1rem;
+    background: #00aa00;
+    color: #fff;
+    font-size: 1.5rem;
+    text-align: center;
+    border-radius: 0.5rem; }
+
+.cr-his-more {
+  padding: 1.5rem;
+  display: block;
+  text-align: center;
+  color: #2e52ff;
+  font-size: 1.2rem;
+  position: relative; }
+  .cr-his-more:after {
+    content: "";
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    top: 0.4rem;
+    left: 14rem;
+    border-left: 0.1rem solid #2e52ff;
+    border-top: 0.1rem solid #2e52ff;
+    transform: rotate(45deg); }
+  .cr-his-more:before {
+    content: "";
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    top: 0.4rem;
+    left: 14rem;
+    border-left: 0.1rem solid #2e52ff;
+    border-top: 0.1rem solid #2e52ff;
+    transform: rotate(45deg);
+    top: 0.8rem; }
+
+.cr-member a {
+  display: flex;
+  padding: 0.5rem 1rem;
+  border-bottom: 0.1rem solid #eee;
+  background: #fff; }
+  .cr-member a img {
+    flex: 0 0 4rem;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 0.2rem; }
+  .cr-member a p {
+    flex: 1;
+    margin: 1rem; }
+
 .gift-header {
   margin-top: 1rem;
   font-size: 1.2rem;
