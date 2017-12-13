@@ -234,8 +234,8 @@
 		document.getElementById("memberFlag").value == 1 ? document.location.hash = "#chat" : document.location.hash = "#join";
 	}
 
-	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/groom.js?v=1.1.5']);
+	requirejs(['/js/config.js?v=1.2'], function () {
+		requirejs(['/js/groom.js?v=1.1.6']);
 	});
 </script>
 

@@ -275,7 +275,6 @@ require(["jquery", "alpha", "mustache", 'socket'],
 				case 'members':
 					memUtil.page = 1;
 					memUtil.memberList();
-
 					break;
 				default:
 					break;
