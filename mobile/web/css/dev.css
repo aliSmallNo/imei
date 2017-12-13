@@ -172,6 +172,8 @@ main {
         background-position: center bottom;
         background-repeat: no-repeat;
         background-color: transparent; }
+        .gift-group .gift-stuff li a:active {
+          background-color: rgba(240, 240, 240, 0.4) !important; }
       .gift-group .gift-stuff li h4 {
         font-size: 1.2rem;
         padding-left: 1rem;
@@ -185,6 +187,6 @@ main {
     display: block;
     background-color: transparent; }
     .gift-group a:active {
-      background-color: rgba(240, 240, 240, 0.3) !important; }
+      background-color: rgba(240, 240, 240, 0.4) !important; }
 
 /*# sourceMappingURL=dev.css.map */

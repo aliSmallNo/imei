@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/dev.min.css">
+<link rel="stylesheet" href="/css/dev.min.css?v=1.1.0">
 <section id="sec_home">
 	<div class="swiper-container">
 		<div class="swiper-wrapper">
