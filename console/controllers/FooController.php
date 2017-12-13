@@ -14,7 +14,6 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
-use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
@@ -939,6 +938,9 @@ class FooController extends Controller
 		from im_user as u join im_user_wechat as w on w.wUId=u.uId and w.wSubscribe=1
 		where uPhone!='' and (uMarital=0 or uHeight=0 or uEducation=0 or uBirthYear=0) and uGender>9 and uOpenId like 'oYDJew%' ";
 
+		$sql = "select u.uId,u.uName,u.uPhone,uOpenId
+ 			from im_user as u join im_user_wechat as w on w.wUId=u.uId where uOpenId like 'oYDJew%' and uPhone!='' ";
+
 		/*$strCats = implode(",", UserTrans::$CatMinus);
 		$sql = "select u.uId,u.uName,u.uOpenId,
 			SUM(case when tCategory in ($strCats) then -tAmt else tAmt end) as amt
@@ -955,6 +957,8 @@ class FooController extends Controller
 请尽快完善自己的个人资料，我们将为你推荐更适合你的对象哦。
 👉<a href="https://wx.meipo100.com/wx/sedit">点击进入修改资料</a>👈';
 
+		$content = '🎉双十二活动🎉倒计时，错过就等明年喽，购月度畅聊卡送120朵媒桂花，互相心动送更多
+<a href="https://wx.meipo100.com/wx/sw#swallet">点击链接进入</a>';
 		/*$content='你好，系统显示你的媒桂花少于50朵
 
 👉<a href="https://wx.meipo100.com/wx/expand">点击去赚取媒桂花</a>👈';*/
@@ -965,6 +969,8 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
+
+
 		/*$ret = UserTrans::stat(131379);
 		var_dump($ret);*/
 		/*$rId = 101;
