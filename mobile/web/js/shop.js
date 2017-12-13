@@ -167,5 +167,7 @@ require(['jquery', 'mustache', "alpha"],
 				WalletUtil.prepay(self);
 			});
 			alpha.initSwiper();
+			$('body').on('touchstart', function () {
+			});
 		});
 	});
