@@ -8,6 +8,7 @@
         line-height: 2.8rem
         position: relative
         padding-left: 1rem
+        display: block
         em
             color: $grayFontColorLight
             font-size: 1rem
@@ -29,14 +30,11 @@
             border-right: 1px solid $borderColorLight
             padding: .2rem
             a
-                display: block
+                height: 100%
                 background-size: 10rem 10rem
                 background-position: center center
                 background-repeat: no-repeat
-                height: 100%
                 background-color: transparent
-                &:active
-                    background-color: rgba(240, 240, 240, .3)
                 .title
                     padding: .5rem 1rem
                     @include displayFlex
@@ -45,8 +43,9 @@
                         font-size: 1.4rem
                         @include displayFlex-1
                     h5
-                        font-size: 1.2rem
+                        font-size: 1rem
                         text-align: right
+                        font-weight: $weightMiddle
                         @include displayFlex-w(6rem)
                         em
                             font-size: 1.4rem
@@ -63,14 +62,11 @@
             border-right: 1px solid $borderColorLight
             padding: .2rem
             a
-                display: block
                 height: 100%
                 background-size: 5.5rem 5.5rem
                 background-position: center bottom
                 background-repeat: no-repeat
                 background-color: transparent
-                &:active
-                    background-color: rgba(240, 240, 240, .3)
             h4
                 font-size: 1.2rem
                 padding-left: 1rem
@@ -80,6 +76,11 @@
                 font-size: 1rem
                 color: $moneyColor
                 font-weight: $weightNormal
+    a
+        display: block
+        background-color: transparent
+        &:active
+            background-color: rgba(240, 240, 240, .3) !important
 
 
 

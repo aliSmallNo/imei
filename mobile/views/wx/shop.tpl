@@ -9,7 +9,7 @@
 		<div class="swiper-pagination"></div>
 	</div>
 	<div class="gift-group">
-		<div class="header">特权礼包</div>
+		<a class="header">特权礼包</a>
 		<ul class="gift-bags">
 			<li>
 				<a href="javascript:;" style="background-image: url(/images/shop/bag_01.png) ">
@@ -30,7 +30,7 @@
 		</ul>
 	</div>
 	<div class="gift-group">
-		<div class="header">普通礼物</div>
+		<a class="header">普通礼物</a>
 		<ul class="gift-stuff">
 			{{foreach from=$stuff item=item}}
 				<li>
@@ -43,7 +43,7 @@
 		</ul>
 	</div>
 	<div class="gift-group">
-		<div class="header">特权礼物<em>只限08等级购买</em></div>
+		<a class="header">特权礼物 <em>只限08等级购买</em></a>
 		<ul class="gift-stuff">
 			{{foreach from=$premium item=item}}
 				<li>
