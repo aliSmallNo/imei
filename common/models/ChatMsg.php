@@ -1220,7 +1220,7 @@ class ChatMsg extends ActiveRecord
 				$sql = "select uId,uGender 
 						from im_user as u 
 						join im_user_wechat as w on w.`wUId`=u.uId
-						where uGender in (10,11) and `uMarital` in (100,110,120) and uStatus in (1,2,3) and uAddedOn >:dt and w.`wSubscribe`=1
+						where uGender in (10,11) and `uMarital` in (100,110,120) and uStatus in (1,2,3) and uAddedOn >:dt and w.`wSubscribe`=1 
 						order by uId desc";
 				$Users = $conn->createCommand($sql)->bindValues([
 					':dt' => $dt,
@@ -1232,7 +1232,8 @@ class ChatMsg extends ActiveRecord
 						SUM(case when tCategory in (" . $strMinus . ") then -IFNULL(tAmt,0) else IFNULL(tAmt,0) end) as amt
 						FROM im_user as u
 						join im_user_trans as t on u.uId=t.`tUId`
-						where tDeletedFlag=0 and tUnit='flower'
+						join im_user_wechat as w on w.wUId=u.uId
+						where tDeletedFlag=0 and tUnit='flower' and w.`wSubscribe`=1
 						GROUP BY tUId
 						having amt < 20 ";
 				$Users = $conn->createCommand($sql)->bindValues([
