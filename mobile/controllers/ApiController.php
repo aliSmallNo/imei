@@ -2258,7 +2258,6 @@ class ApiController extends Controller
 				$gInfo = $gInfo[0];
 				$amt = $gInfo["price"] * $num;
 				$unit = $gInfo["unit"];
-
 				$insertData = [
 					"oUId" => $wx_uid, "oGId" => $gid, "oNum" => $num, "oAmount" => $amt, "oStatus" => Order::ST_DEFAULT
 				];
@@ -2268,7 +2267,7 @@ class ApiController extends Controller
 						return self::renderAPI(129, '媒瑰花不足~');
 					}
 					Order::exchange($insertData, $unit);
-					return self::renderAPI(0, '兑换成功，请耐心等待客服联系您');
+					return self::renderAPI(0, '兑换成功~');
 				} else if ($unit == Goods::UNIT_YUAN) {
 					$title = '千寻恋恋 - 商城交易';
 					$payFee = intval($amt * 100.0);

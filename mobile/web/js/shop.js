@@ -186,7 +186,6 @@ require(['jquery', 'mustache', "alpha"],
 			},
 			wechatPay: function (resData) {
 				var util = this;
-
 				function onBridgeReady(resData) {
 					WeixinJSBridge.invoke('getBrandWCPayRequest',
 						{
