@@ -28,21 +28,26 @@ require(['jquery', 'mustache', "alpha"],
 			menusBg: null,
 			image: null,
 			header: null,
+			amount: null,
 			gid: 0,
 			price: 0,
+			unit: '',
 			init: function () {
 				var util = this;
 				util.menus = $(".m-draw-wrap");
 				util.menusBg = $(".m-popup-shade");
 				util.image = util.menus.find(".image");
 				util.header = util.menus.find(".header");
+				util.amount = util.menus.find(".amount");
 				$(document).on(kClick, '.gift-bags a, .gift-stuff a', function () {
 					var self = $(this);
 					util.gid = self.attr('data-id');
 					util.price = self.attr('data-price');
+					util.unit = self.attr('data-unit');
 					util.toggle(util.menus.hasClass("off"));
 					util.image.css('background-image', 'url(' + self.attr('data-img') + ')');
 					util.header.html(self.find('h4').html());
+					util.amount.html('<em>' + util.price + '</em>' + util.unit);
 				});
 
 				util.menus.on(kClick, function (e) {

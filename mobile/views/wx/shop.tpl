@@ -13,7 +13,8 @@
 		{{foreach from=$bags item=item}}
 			<li>
 				<a href="javascript:;" style="background-image: url({{$item.image}}) "
-				   data-id="{{$item.id}}" data-price="{{$item.price}}" data-img="{{$item.image}}">
+				   data-id="{{$item.id}}" data-price="{{$item.price}}" data-unit="{{$item.unit}}"
+				   data-img="{{$item.image}}">
 					<div class="title">
 						<h4>{{$item.name}}</h4>
 						<h5><em>{{$item.price}}</em>{{$item.unit}}</h5>
@@ -27,7 +28,8 @@
 		{{foreach from=$stuff item=item}}
 			<li>
 				<a href="javascript:;" style="background-image: url({{$item.image}})"
-				   data-id="{{$item.id}}" data-price="{{$item.price}}" data-img="{{$item.image}}">
+				   data-id="{{$item.id}}" data-price="{{$item.price}}" data-unit="{{$item.unit}}"
+				   data-img="{{$item.image}}">
 					<h4>{{$item.name}}</h4>
 					<h5>{{$item.price}}{{$item.unit}}</h5>
 				</a>
@@ -39,7 +41,8 @@
 		{{foreach from=$premium item=item}}
 			<li>
 				<a href="javascript:;" style="background-image: url({{$item.image}})"
-				   data-id="{{$item.id}}" data-price="{{$item.price}}" data-img="{{$item.image}}">
+				   data-id="{{$item.id}}" data-price="{{$item.price}}" data-unit="{{$item.unit}}"
+				   data-img="{{$item.image}}">
 					<h4>{{$item.name}}</h4>
 					<h5>{{$item.price}}{{$item.unit}}</h5>
 				</a>
@@ -63,9 +66,12 @@
 	<div class="header">兑换礼物</div>
 	<div class="image"></div>
 	<div class="m-num-bar">
+		<span>数量：</span>
 		<a href="javascript:;" class="j-action minus">-</a>
-		<input type="text" class="num">
+		<input type="text" class="num" value="1">
 		<a href="javascript:;" class="j-action plus">+</a>
+		<span> 总价：</span>
+		<span class="amount">199媒桂花</span>
 	</div>
 	<a class="btn-next">立即兑换</a>
 </div>
