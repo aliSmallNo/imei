@@ -23,6 +23,49 @@ require(['jquery', 'mustache', "alpha"],
 			}
 		});
 
+		var StepperUtil = {
+			stepper: $('.m-stepper'),
+			d_num: null,
+			d_amt: null,
+			d_unit: null,
+			price: 0,
+			amount: 0,
+			gid: 0,
+			init: function () {
+				var util = this;
+				util.d_num = util.stepper.find('.num');
+				util.d_amt = util.stepper.find('.amount');
+				util.d_unit = util.stepper.find('.unit');
+				util.stepper.find('a').on(kClick, function () {
+					//$(document).on(kClick, '.m-stepper a', function () {
+					var self = $(this);
+					var val = util.d_num.val();
+					if (self.hasClass('plus')) {
+						val++;
+					} else if (self.hasClass('minus')) {
+						val--;
+					}
+					if (val < 1) {
+						val = 1;
+					}
+					util.d_num.val(val);
+					util.amount = util.price * val;
+					util.d_amt.html(util.amount);
+				});
+			},
+			reset: function (gid, price, unit) {
+				var util = this;
+				if (util.gid != gid) {
+					util.gid = gid;
+					util.price = price;
+					util.amount = price;
+					util.d_unit.html(unit);
+					util.d_num.val(1);
+					util.d_amt.html(price);
+				}
+			}
+		};
+
 		var DetailUtil = {
 			menus: null,
 			menusBg: null,
@@ -38,7 +81,6 @@ require(['jquery', 'mustache', "alpha"],
 				util.menusBg = $(".m-popup-shade");
 				util.image = util.menus.find(".image");
 				util.header = util.menus.find(".header");
-				util.amount = util.menus.find(".amount");
 				$(document).on(kClick, '.gift-bags a, .gift-stuff a', function () {
 					var self = $(this);
 					util.gid = self.attr('data-id');
@@ -47,7 +89,7 @@ require(['jquery', 'mustache', "alpha"],
 					util.toggle(util.menus.hasClass("off"));
 					util.image.css('background-image', 'url(' + self.attr('data-img') + ')');
 					util.header.html(self.find('h4').html());
-					util.amount.html('<em>' + util.price + '</em>' + util.unit);
+					StepperUtil.reset(util.gid, util.price, util.unit);
 				});
 
 				util.menus.on(kClick, function (e) {
@@ -98,7 +140,7 @@ require(['jquery', 'mustache', "alpha"],
 						cat: cat
 					},
 					function (resp) {
-						if (resp.code == 0) {
+						if (resp.code < 1) {
 							util.wechatPay(resp.data.prepay);
 						} else {
 							alpha.toast(resp.msg);
@@ -187,19 +229,9 @@ require(['jquery', 'mustache', "alpha"],
 			$sls.curFrag = hashTag;
 			// FootUtil.reset();
 			var title = $("#" + hashTag).attr("data-title");
-			if (title) {
-				$(document).attr("title", title);
-				$("title").html(title);
-				var iFrame = $('<iframe src="/blank.html" class="g-blank"></iframe>');
-				iFrame.on('load', function () {
-					setTimeout(function () {
-						iFrame.off('load').remove();
-					}, 0);
-				}).appendTo($("body"));
-			}
+			alpha.setTitle(title);
 			alpha.clear();
 		}
-
 
 		$(function () {
 			window.onhashchange = locationHashChanged;
@@ -212,6 +244,8 @@ require(['jquery', 'mustache', "alpha"],
 			});
 			locationHashChanged();
 			$sls.cork.hide();
+
+			StepperUtil.init();
 			DetailUtil.init();
 
 			$(document).on(kClick, '.btn-recharge', function () {
