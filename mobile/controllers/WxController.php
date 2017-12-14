@@ -2067,4 +2067,37 @@ class WxController extends BaseController
 			'千寻商城',
 			'bg-color');
 	}
+
+	public function actionShopbag()
+	{
+		if ($this->user_id) {
+			$avatar = $this->user_avatar;
+			$nickname = $this->user_name;
+		} else {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+		$headers = CogService::init()->homeHeaders(true);
+		foreach ($headers as $k => $header) {
+			$headers[$k]['image'] = $header['content'];
+			unset($headers[$k]['content'], $headers[$k]['id']);
+		}
+		$gifts= Goods::items(['gCategory' => Goods::CAT_BAG, 'gStatus' => 1]);
+		$receive = [];
+		$prop = [];
+
+		return self::renderPage("shopbag.tpl",
+			[
+				'uid' => $this->user_id,
+				'avatar' => $avatar,
+				'nickname' => $nickname,
+				'headers' => $headers,
+				'gifts' => $gifts,
+				'receive' => $receive,
+				'prop' => $prop
+			],
+			'terse',
+			'千寻商城',
+			'bg-color');
+	}
 }
