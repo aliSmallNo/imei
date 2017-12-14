@@ -966,12 +966,29 @@ class FooController extends Controller
 		$cnt = 0;
 		foreach ($openIds as $k => $openId) {
 			$cnt += UserWechat::sendMsg($openId, $content);
-			if ($k > 0 && $k % 4 == 0) {
+			if ($k > 0 && $k % 5 == 0) {
 				sleep(2);
 				var_dump($cnt . ' - ' . $k . '/' . count($openIds) . date('  m-d H:i:s'));
 			}
 		}
 		var_dump($cnt);
+	}
+
+	public function actionData()
+	{
+		$infoForms = [
+			['title' => '添加客服微信（11-17）', 'date0' => '2017-11-17 00:00', 'date1' => '2017-11-17 23:59'],
+			['title' => '感恩节活动（11-24~11-26）', 'date0' => '2017-11-24 00:00', 'date1' => '2017-11-26 23:59']
+		];
+		$conn = AppUtil::db();
+		$sheets = [];
+		$headers = ['活跃男', '活跃女', '总体活跃人数', '聊天数', '当天充值人数', '当天共充值金额'];
+		foreach ($infoForms as $infoForm) {
+			$title = $infoForm['title'];
+			$date0 = $infoForm['date0'];
+			$date1 = $infoForm['date1'];
+
+		}
 	}
 
 	public function actionRain()
