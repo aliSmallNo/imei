@@ -1202,6 +1202,13 @@ class ChatMsg extends ActiveRecord
 	 */
 	public static function DummyChatGroup($content, $maleUID, $femaleUID, $tag)
 	{
+		if (!$content
+			|| !User::findOne(["uId" => $femaleUID])
+			|| !User::findOne(["uId" => $femaleUID])
+			|| !in_array($tag, ["inactive", "reg", "rose"])
+		) {
+			return false;
+		}
 		$conn = AppUtil::db();
 		$Users = [];
 		switch ($tag) {
