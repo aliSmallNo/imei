@@ -26,10 +26,14 @@
         color: #fff
         &:active
             background-color: $mainColor
-.m-num-bar
+.m-stepper
     text-align: center
     span
         font-size: 1.1rem
+        &.amount
+            color: $moneyColor
+            font-weight: $weightBold
+            padding-right: 1px
     input
         -webkit-appearance: none
         -moz-appearance: none
@@ -45,7 +49,7 @@
         text-align: center
         font-size: 1.4rem
         font-family: Verdana
-    .j-action
+    .j-stepper
         background-color: $borderColorDark
         color: #fff
         font-family: Verdana

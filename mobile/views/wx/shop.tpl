@@ -65,13 +65,14 @@
 <div class="m-draw-wrap gift-detail off">
 	<div class="header">兑换礼物</div>
 	<div class="image"></div>
-	<div class="m-num-bar">
+	<div class="m-stepper">
 		<span>数量:</span>
-		<a href="javascript:;" class="j-action minus">-</a>
-		<input type="text" class="num" value="1">
-		<a href="javascript:;" class="j-action plus">+</a>
+		<a href="javascript:;" class="j-stepper minus">-</a>
+		<input type="number" class="num" value="1">
+		<a href="javascript:;" class="j-stepper plus">+</a>
 		<span> 总价:</span>
-		<span class="amount">199媒桂花</span>
+		<span class="amount">199</span>
+		<span class="unit">媒桂花</span>
 	</div>
 	<a class="btn-next">立即兑换</a>
 </div>
@@ -98,7 +99,7 @@
 	if (document.location.hash === "" || document.location.hash === "#") {
 		document.location.hash = "#sec_home";
 	}
-	requirejs(['/js/config.js?v=1.2.1'], function () {
-		requirejs(['/js/shop.js?v=1.1.1']);
+	requirejs(['/js/config.js?v=1.2.3'], function () {
+		requirejs(['/js/shop.js?v=1.2.3']);
 	});
 </script>

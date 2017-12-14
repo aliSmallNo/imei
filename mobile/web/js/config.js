@@ -6,7 +6,7 @@ requirejs.config({
 		layer: '/assets/js/layer_mobile/layer',
 		mustache: '/assets/js/mustache.min',
 		socket: '/assets/js/socket.io.slim',
-		alpha: '/assets/js/alpha.js?v=1.1.1',
+		alpha: '/assets/js/alpha.js?v=1.1.2',
 		wx: '/assets/js/jweixin-1.2.0'
 	}
 });
