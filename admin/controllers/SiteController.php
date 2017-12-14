@@ -528,68 +528,18 @@ class SiteController extends BaseController
 	public function actionDummychatall()
 	{
 		Admin::staffOnly();
-
 		$sign = self::getParam("sign", 0);
 		$content = self::getParam("content", "");// 发送内容
 		$maleUID = self::getParam("male", "");// 男稻草人uId
 		$femaleUID = self::getParam("female", "");// 女稻草人uId
+		$tag = self::getParam("tag", "");//要发送的用户群
 
 		$allDummys = User::topDummies(); // 所有稻草人
 		$dmales = $allDummys[User::GENDER_MALE];
 		$dfemales = $allDummys[User::GENDER_FEMALE];
 
-		if ($sign && $content && $maleUID && $femaleUID) {
-			$edate = date("Y-m-d H:i:s");
-			$sdate = date("Y-m-d H:i:s", time() - 86400 * 3);
-
-			$conn = AppUtil::db();
-			$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe, w.wWechatId, count(t.tPId) as uco 
-				FROM im_user as u 
-				JOIN im_user_wechat as w on w.wUId=u.uId AND w.wOpenId LIKE 'oYDJew%'
-				LEFT JOIN im_trace as t on u.uId=t.tPId 
-				LEFT JOIN im_log_action as a on a.aUId=u.uId AND a.aCategory in (1000,1002,1004) 
-							AND a.aDate BETWEEN :sdt AND :edt 
-				WHERE uId>0 AND uStatus=1 AND wSubscribe=1 AND a.aUId is null 
-				GROUP BY uId ORDER BY uAddedOn desc ";
-
-			$inactiveUsers = $conn->createCommand($sql)->bindValues([
-				':sdt' => $sdate,
-				':edt' => $edate,
-			])->queryAll();
-			// 审核通过的 关注状态的 近七天不活跃用户
-
-			$count = 1;
-			$arr = [];
-			foreach ($inactiveUsers as $user) {
-				$serviceId = 0;
-				if ($user["uGender"] == User::GENDER_MALE) {
-					$serviceId = $femaleUID;
-				} else if ($user["uGender"] == User::GENDER_FEMALE) {
-					$serviceId = $maleUID;
-				}
-				$uid = $user["uId"];
-				if ($serviceId && $uid) {
-					list($uid1, $uid2) = ChatMsg::sortUId($serviceId, $uid);
-					$sql = "SELECT * FROM im_chat_group WHERE gUId1=$uid1 AND gUId2=$uid2 ";
-					$item = $conn->createCommand($sql)->queryOne();
-					if (!$item) {
-						ChatMsg::groupEdit($serviceId, $uid, 9999, $conn);
-						$info = ChatMsg::addChat($serviceId, $uid, $content, 0, $this->admin_id, '', $conn);
-						QueueUtil::loadJob('templateMsg',
-							[
-								'tag' => WechatUtil::NOTICE_CHAT,
-								'receiver_uid' => $uid,
-								'title' => '有人密聊你啦',
-								'sub_title' => 'TA给你发了一条密聊消息，快去看看吧~',
-								'sender_uid' => $serviceId,
-								'gid' => $info['gid']
-							],
-							QueueUtil::QUEUE_TUBE_SMS);
-						$arr[] = "$count. from:" . $serviceId . " to" . $uid . " \n";
-					}
-					$count++;
-				}
-			}
+		if ($sign && $content && $maleUID && $femaleUID && $tag) {
+			ChatMsg::DummyChatGroup($content, $maleUID, $femaleUID, $tag);
 			header('location:/site/dummychats');
 		}
 		return $this->renderPage('dummychatall.tpl',

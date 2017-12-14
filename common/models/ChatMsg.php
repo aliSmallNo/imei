@@ -9,10 +9,12 @@
 
 namespace common\models;
 
+use admin\models\Admin;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\PushUtil;
 use common\utils\WechatUtil;
+use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
 
 class ChatMsg extends ActiveRecord
@@ -1188,6 +1190,101 @@ class ChatMsg extends ActiveRecord
 			$groupCnt++;
 		}
 		return $groupCnt;
+	}
+
+	/**
+	 * 稻草人群撩
+	 * @param $content 发送内容
+	 * @param $maleUID 代聊女稻草人
+	 * @param $femaleUID 代聊男稻草人
+	 * @param $tag 发送用户群
+	 * @throws \yii\db\Exception
+	 */
+	public static function DummyChatGroup($content, $maleUID, $femaleUID, $tag)
+	{
+		$conn = AppUtil::db();
+		$Users = [];
+		switch ($tag) {
+			// 审核通过的 关注状态的 近七天不活跃用户
+			case "inactive":
+				$edate = date("Y-m-d H:i:s");
+				$sdate = date("Y-m-d H:i:s", time() - 86400 * 3);
+				$sql = "SELECT u.uId,u.uGender, IFNULL(w.wSubscribe,0) as wSubscribe, w.wWechatId, count(t.tPId) as uco 
+				FROM im_user as u 
+				JOIN im_user_wechat as w on w.wUId=u.uId AND w.wOpenId LIKE 'oYDJew%'
+				LEFT JOIN im_trace as t on u.uId=t.tPId 
+				LEFT JOIN im_log_action as a on a.aUId=u.uId AND a.aCategory in (1000,1002,1004) 
+							AND a.aDate BETWEEN :sdt AND :edt 
+				WHERE uId>0 AND uStatus=1 AND wSubscribe=1 AND a.aUId is null 
+				GROUP BY uId ORDER BY uAddedOn desc ";
+				$Users = $conn->createCommand($sql)->bindValues([
+					':sdt' => $sdate,
+					':edt' => $edate,
+				])->queryAll();
+				break;
+			case "reg":// 一周内注册的
+				$dt = date("Y-m-d 00:00:00", time() - 86400 * 7);
+				$sql = "select uId,uGender 
+						from im_user as u 
+						join im_user_wechat as w on w.`wUId`=u.uId
+						where uGender in (10,11) and `uMarital` in (100,110,120) and uStatus in (1,2,3) and uAddedOn >:dt and w.`wSubscribe`=1 
+						order by uId desc";
+				$Users = $conn->createCommand($sql)->bindValues([
+					':dt' => $dt,
+				])->queryAll();
+				break;
+			case "rose":// 媒瑰花少于20朵
+				$strMinus = implode(',', UserTrans::$CatMinus);
+				$sql = "SELECT tUnit as unit, tUId as uid,uId,uGender,
+						SUM(case when tCategory in (" . $strMinus . ") then -IFNULL(tAmt,0) else IFNULL(tAmt,0) end) as amt
+						FROM im_user as u
+						join im_user_trans as t on u.uId=t.`tUId`
+						join im_user_wechat as w on w.wUId=u.uId
+						where tDeletedFlag=0 and tUnit='flower' and w.`wSubscribe`=1
+						GROUP BY tUId
+						having amt < 20 ";
+				$Users = $conn->createCommand($sql)->bindValues([
+
+				])->queryAll();
+				break;
+		}
+
+		$count = 1;
+		foreach ($Users as $user) {
+			$serviceId = 0;
+			if ($user["uGender"] == User::GENDER_MALE) {
+				$serviceId = $femaleUID;
+			} else if ($user["uGender"] == User::GENDER_FEMALE) {
+				$serviceId = $maleUID;
+			}
+			$uid = $user["uId"];
+			if ($serviceId && $uid) {
+				list($uid1, $uid2) = ChatMsg::sortUId($serviceId, $uid);
+				$sql = "SELECT * FROM im_chat_group WHERE gUId1=$uid1 AND gUId2=$uid2 ";
+				$item = $conn->createCommand($sql)->queryOne();
+				if (!$item) {
+					ChatMsg::groupEdit($serviceId, $uid, 9999, $conn);
+					$info = ChatMsg::addChat($serviceId, $uid, $content, 0, Admin::getAdminId(), '', $conn);
+					QueueUtil::loadJob('templateMsg',
+						[
+							'tag' => WechatUtil::NOTICE_CHAT,
+							'receiver_uid' => $uid,
+							'title' => '有人密聊你啦',
+							'sub_title' => 'TA给你发了一条密聊消息，快去看看吧~',
+							'sender_uid' => $serviceId,
+							'gid' => $info['gid']
+						],
+						QueueUtil::QUEUE_TUBE_SMS);
+					// echo "$count. from:" . $serviceId . " to " . $uid . " \n";
+				}
+				$count++;
+			}
+			if ($count > 1) {
+				// break;
+			}
+		}
+
+		return true;
 	}
 
 }
