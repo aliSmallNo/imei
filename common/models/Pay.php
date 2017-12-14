@@ -25,6 +25,8 @@ class Pay extends ActiveRecord
 	const CAT_CHAT_DAY7 = 607;
 	const CAT_CHAT_SEASON = 610;
 
+	const CAT_SHOP = 700;
+
 	const MODE_WXPAY = 100;
 	const MODE_ALIPAY = 102;
 
@@ -42,6 +44,7 @@ class Pay extends ActiveRecord
 		self::CAT_CHAT_DAY7 => '七天畅聊卡',
 		self::CAT_CHAT_MONTH => '月度畅聊卡',
 		self::CAT_CHAT_SEASON => '季度畅聊卡',
+		self::CAT_SHOP => '商城交易',
 	];
 
 	static $WalletDict = [

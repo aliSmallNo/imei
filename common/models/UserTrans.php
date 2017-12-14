@@ -39,6 +39,8 @@ class UserTrans extends ActiveRecord
 	const CAT_REMOVE_COMMENT = 172;
 	const CAT_THANKS_BONUS = 180;
 	const CAT_FESTIVAL_BONUS = 189;
+	const CAT_EXCHANGE_FLOWER = 200;
+	const CAT_EXCHANGE_YUAN = 201;
 
 	static $catDict = [
 		self::CAT_RECHARGE_MEMBER => "单身会员",
@@ -64,6 +66,8 @@ class UserTrans extends ActiveRecord
 		self::CAT_REMOVE_COMMENT => "删除评论",
 		self::CAT_THANKS_BONUS => "感恩节馈赠",
 		self::CAT_FESTIVAL_BONUS => "节日馈赠",
+		self::CAT_EXCHANGE_FLOWER => "商城兑换(花)",
+		self::CAT_EXCHANGE_YUAN => "商城兑换(元)",
 	];
 
 	static $CatMinus = [
@@ -73,6 +77,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_FANS_DRAW,
 		self::CAT_DATE_NEW,
 		self::CAT_REMOVE_COMMENT,
+		self::CAT_EXCHANGE_FLOWER,
 	];
 
 	const UNIT_FEN = 'fen';
@@ -184,6 +189,10 @@ class UserTrans extends ActiveRecord
 				$entity->tUnit = self::UNIT_FEN;
 				break;
 			case Pay::CAT_MEMBER:
+				$entity->tAmt = $payInfo['pAmt'];
+				$entity->tUnit = self::UNIT_FEN;
+				break;
+			case Pay::CAT_SHOP:
 				$entity->tAmt = $payInfo['pAmt'];
 				$entity->tUnit = self::UNIT_FEN;
 				break;
@@ -338,7 +347,7 @@ class UserTrans extends ActiveRecord
 			$sql2 = ' AND tUId in (' . implode(',', $uIds) . ')';
 		}
 		$sql = 'SELECT sum(tAmt) as amt,tCategory as cat,tTitle as title,tUnit as unit,t.tUId as uid
- 				FROM im_user_trans as t WHERE t.tDeletedFlag=0 '  . $sql2 . ' group by tCategory,tTitle,tUnit,t.tUId';
+ 				FROM im_user_trans as t WHERE t.tDeletedFlag=0 ' . $sql2 . ' group by tCategory,tTitle,tUnit,t.tUId';
 		$balances = $conn->createCommand($sql)->queryAll();
 		$details = [];
 

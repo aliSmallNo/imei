@@ -11,6 +11,7 @@ namespace common\utils;
 
 use admin\models\Admin;
 use common\models\Date;
+use common\models\Order;
 use common\models\Pay;
 use common\models\RedpacketTrans;
 use common\models\User;
@@ -523,6 +524,10 @@ class WechatUtil
 				case Pay::CAT_CHAT_SEASON:
 					UserTag::addByPId(UserTag::CAT_CHAT_SEASON, $pid);
 					$transCat = UserTrans::CAT_CHAT_SEASON;
+					break;
+				case PAY::CAT_SHOP:
+					$transCat = UserTrans::CAT_EXCHANGE_YUAN;
+					Order::editByPId($pid);
 					break;
 				default:
 					$transCat = UserTrans::CAT_RECHARGE;

@@ -52,6 +52,32 @@ require(['jquery', 'mustache', "alpha"],
 					util.amount = util.price * val;
 					util.d_amt.html(util.amount);
 				});
+				$(document).on(kClick, 'a.btn-next', function () {
+					util.exchange();
+				});
+			},
+			exchange: function (data) {
+				var util = this;
+				if ($sls.loading) {
+					return;
+				}
+				$sls.loading = 1;
+				$.post("/api/shop", {
+					tag: "exchange",
+					id: DetailUtil.gid,
+					num: util.d_num,
+				}, function (resp) {
+					if (resp.code == 0) {
+						if (util.d_unit == "媒瑰花") {
+							alpha.toast(resp.msg);
+							DetailUtil.toggle(0);
+						} else if (util.d_unit == "元") {
+							WalletUtil.wechatPay(resp.data.prepay);
+						}
+					} else {
+						alpha.toast(resp.msg);
+					}
+				}, "json");
 			},
 			reset: function (gid, price, unit) {
 				var util = this;
@@ -125,7 +151,7 @@ require(['jquery', 'mustache', "alpha"],
 			paying: 0,
 			payBtn: null,
 			prepay: function ($btn) {
-				var util = this;
+				/*var util = this;
 				util.payBtn = $btn;
 				if (util.paying) {
 					return false;
@@ -147,7 +173,7 @@ require(['jquery', 'mustache', "alpha"],
 						}
 						util.paying = 0;
 						util.payBtn.html(amt + '元');
-					}, 'json');
+					}, 'json');*/
 			},
 			wechatPay: function (resData) {
 				var util = this;
@@ -165,10 +191,11 @@ require(['jquery', 'mustache', "alpha"],
 						function (res) {
 							if (res.err_msg == "get_brand_wcpay_request:ok") {
 								alpha.toast("您已经微信支付成功！", 1);
-								util.reload();
+								// util.reload();
 							} else {
 								alpha.toast("您已经取消微信支付！");
 							}
+							DetailUtil.toggle(0);
 						}
 					);
 				}
@@ -250,7 +277,7 @@ require(['jquery', 'mustache', "alpha"],
 
 			$(document).on(kClick, '.btn-recharge', function () {
 				var self = $(this);
-				WalletUtil.prepay(self);
+				// WalletUtil.prepay(self);
 			});
 			alpha.initSwiper();
 			$('body').on('touchstart', function () {

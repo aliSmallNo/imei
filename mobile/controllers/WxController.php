@@ -2064,7 +2064,7 @@ class WxController extends BaseController
 				'bags' => $bags
 			],
 			'terse',
-			'我的媒桂花',
+			'千寻商城',
 			'bg-color');
 	}
 }

@@ -27,6 +27,9 @@ class Goods extends ActiveRecord
 	const ST_ONLINE = 1;
 	const ST_REMOVED = 9;
 
+	const UNIT_FLOWER = "媒瑰花";
+	const UNIT_YUAN = "元";
+
 	public static function tableName()
 	{
 		return '{{%goods}}';
@@ -44,11 +47,10 @@ class Goods extends ActiveRecord
 				$strCriteria .= ' AND ' . $field . ' =:' . $field;
 				$params[':' . $field] = $val;
 			}
-
 		}
 		$conn = AppUtil::db();
 		$limit = ' limit ' . ($page - 1) * $pageSize . ',' . $pageSize;
-		$sql = "select gId as id,gCategory as cat,gName as name,gImage as image,gPrice as price,gUnit as unit
+		$sql = "select gId as id,gCategory as cat,gName as `name`,gImage as image,gPrice as price,gUnit as unit
 		 FROM im_goods 
 		 WHERE gId>0 " . $strCriteria . $limit;
 		return $conn->createCommand($sql)->bindValues($params)->queryAll();
