@@ -96,6 +96,8 @@ main {
   border-radius: 2rem;
   background-color: #f487ac;
   color: #fff; }
+  .gift-detail .btn-next:active {
+    background-color: #f06292; }
 
 .m-num-bar {
   text-align: center; }
