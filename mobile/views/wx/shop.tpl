@@ -99,6 +99,6 @@
 		document.location.hash = "#sec_home";
 	}
 	requirejs(['/js/config.js?v=1.2.1'], function () {
-		requirejs(['/js/shop.js?v=1.1.0']);
+		requirejs(['/js/shop.js?v=1.1.1']);
 	});
 </script>
