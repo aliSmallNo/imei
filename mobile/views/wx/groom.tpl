@@ -100,7 +100,7 @@
 </script>
 <style>
 	.cr-cert {
-		flex: 0 0 4rem;
+		flex: 0 0 6rem;
 	}
 
 	.cr-cert span {
