@@ -27,7 +27,7 @@ class Goods extends ActiveRecord
 	const ST_ONLINE = 1;
 	const ST_REMOVED = 9;
 
-	const UNIT_FLOWER = "媒瑰花";
+	const UNIT_FLOWER = "媒桂花";
 	const UNIT_YUAN = "元";
 
 	public static function tableName()

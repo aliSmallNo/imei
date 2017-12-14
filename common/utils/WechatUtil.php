@@ -527,13 +527,15 @@ class WechatUtil
 					break;
 				case PAY::CAT_SHOP:
 					$transCat = UserTrans::CAT_EXCHANGE_YUAN;
-					Order::editByPId($pid);
 					break;
 				default:
 					$transCat = UserTrans::CAT_RECHARGE;
 					break;
 			}
-			UserTrans::addByPId($pid, $transCat);
+			$tid = UserTrans::addByPId($pid, $transCat);
+			if ($cat == PAY::CAT_SHOP) {
+				Order::editByPId($pid, $tid);
+			}
 			$curDate = date('Ymd');
 			//Rain: 感恩节馈赠
 			if (isset($payInfo['pUId']) && $curDate >= 20171124 && $curDate <= 20171126) {

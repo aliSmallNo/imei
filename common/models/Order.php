@@ -41,7 +41,7 @@ class Order extends ActiveRecord
 		return $entity->oId;
 	}
 
-	public static function editByPId($pid)
+	public static function editByPId($pid, $tid)
 	{
 		$pInfo = Pay::findOne(["pId" => $pid]);
 		if (!$pInfo) {
@@ -49,7 +49,7 @@ class Order extends ActiveRecord
 		}
 		$oid = $pInfo->pRId;
 		$entity = self::findOne(["oId" => $oid]);
-		$entity->oPayId = $pInfo->pId;
+		$entity->oPayId = $tid;
 		$entity->oStatus = self::ST_PAY;
 		$entity->oUpdatedOn = date("Y-m-d H:i:s");
 
@@ -62,11 +62,11 @@ class Order extends ActiveRecord
 		if (!$data) {
 			return false;
 		}
-		$uid = isset($data["oUId"]) ? isset($data["oUId"]) : 0;
-		$amt = isset($data["oAmount"]) ? isset($data["oAmount"]) : 0;
+		$uid = isset($data["oUId"]) ? $data["oUId"] : 0;
+		$amt = isset($data["oAmount"]) ? $data["oAmount"] : 0;
 		if ($unit == Goods::UNIT_FLOWER && $uid && $amt) {
 			$tid = UserTrans::add($uid, 0, UserTrans::CAT_EXCHANGE_FLOWER, '', $amt, UserTrans::UNIT_GIFT, $note = '');
-			$data["ST_DEFAULT"] = self::ST_PAY;
+			$data["oStatus"] = self::ST_PAY;
 			$data["oPayId"] = $tid;
 			return self::add($data);
 		}

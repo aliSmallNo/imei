@@ -9,6 +9,7 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
+use common\models\Goods;
 use common\models\Img;
 use common\models\Pin;
 use common\models\User;
@@ -1127,7 +1128,8 @@ class FooController extends Controller
 
 		//$rInfo = ChatMsg::RoomAddChat(101, 120003, "欢迎");print_r($rInfo);
 
-
+//		$gInfo = Goods::items(["gId" => 6004])[0];
+//		print_r($gInfo);
 	}
 
 

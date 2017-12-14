@@ -2258,16 +2258,17 @@ class ApiController extends Controller
 				$gInfo = $gInfo[0];
 				$amt = $gInfo["price"] * $num;
 				$unit = $gInfo["unit"];
-				$remain = UserTrans::getStat($wx_uid, 1)["flower"];
-				if ($unit == Goods::UNIT_FLOWER && $remain < $amt) {
-					return self::renderAPI(129, '媒瑰花不足~');
-				}
+
 				$insertData = [
 					"oUId" => $wx_uid, "oGId" => $gid, "oNum" => $num, "oAmount" => $amt, "oStatus" => Order::ST_DEFAULT
 				];
 				if ($unit == Goods::UNIT_FLOWER) {
+					$remain = UserTrans::getStat($wx_uid, 1)["flower"];
+					if ($remain < $amt) {
+						return self::renderAPI(129, '媒瑰花不足~');
+					}
 					Order::exchange($insertData, $unit);
-					return self::renderAPI(0, '兑换成功，请耐心等待客户联系您');
+					return self::renderAPI(0, '兑换成功，请耐心等待客服联系您');
 				} else if ($unit == Goods::UNIT_YUAN) {
 					$title = '千寻恋恋 - 商城交易';
 					$payFee = intval($amt * 100.0);
@@ -2289,6 +2290,7 @@ class ApiController extends Controller
 						]);
 					}
 				}
+				return self::renderAPI(129, '参数错误~');
 				break;
 		}
 		return self::renderAPI(129, '操作无效~');
