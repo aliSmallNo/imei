@@ -1109,7 +1109,6 @@ class FooController extends Controller
 
 		//$rInfo = ChatMsg::RoomAddChat(101, 120003, "欢迎");print_r($rInfo);
 
-		ChatMsg::DummyChatGroup("mmmm", 128437, 128442, "rose");
 
 	}
 
