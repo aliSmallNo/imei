@@ -29,6 +29,7 @@ class UserNet extends ActiveRecord
 	const REL_QR_MOMENT = 216;
 	const REL_UNSUBSCRIBE = 250;
 	const REL_SUBSCRIBE = 255;
+	const REL_JOIN_ROOMS = 260;
 
 	static $RelDict = [
 		self::REL_INVITE => '邀请Ta',
@@ -44,6 +45,7 @@ class UserNet extends ActiveRecord
 		self::REL_QR_MOMENT => '分享到朋友圈',
 		self::REL_UNSUBSCRIBE => '取消关注',
 		self::REL_SUBSCRIBE => '关注公众号',
+		self::REL_JOIN_ROOMS => '加入群聊',
 	];
 
 	const DELETE_FLAG_YES = 1;
@@ -961,6 +963,11 @@ class UserNet extends ActiveRecord
 					break;
 				case self::REL_PRESENT:
 					$text = ['赠送', $note];
+					$left = $uInfo;
+					$right = $sInfo;
+					break;
+				case self::REL_JOIN_ROOMS:
+					$text = ["把", self::$RelDict[self::REL_JOIN_ROOMS]];
 					$left = $uInfo;
 					$right = $sInfo;
 					break;

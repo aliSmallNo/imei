@@ -395,9 +395,24 @@ class ChatMsg extends ActiveRecord
 		return [$res, $nextpage];
 	}
 
+	public static function countMsgByUid($uid, $rid, $conn)
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$sql = "select count(*) from im_chat_msg where cGId=:rid and cAddedBy=:uid ";
+		return $conn->createCommand($sql)->bindValues([
+			":rid" => $rid,
+			":uid" => $uid,
+		])->queryScalar();
+	}
+
 	public static function roomChat($rId, $senderId, $content, $conn = null, $debug = false)
 	{
 		$content = trim($content);
+		if (!User::findOne(["uId" => $senderId])->uPhone && self::countMsgByUid($senderId, $rId, $conn) >= 3) {
+			return [128, '还没注册，去注册吧！', null];
+		}
 		if (!$content) {
 			return [129, '聊天内容不能为空！', null];
 		}

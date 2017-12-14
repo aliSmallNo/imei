@@ -1988,6 +1988,8 @@ class WxController extends BaseController
 	public function actionGroom()
 	{
 		$rid = self::getParam("rid");
+		// $lastUID => 谁转发过来的
+		$lastUID = self::getParam("uid");
 		if (!$rid) {
 			$rid = 101;
 		}
@@ -2012,6 +2014,7 @@ class WxController extends BaseController
 				"isadmin" => $adminUId == $uid ? 1 : 0,
 				"lastId" => $roomInfo["rLastId"],
 				"memberFlag" => $memberFlag,
+				"lastUId" => $lastUID,
 			],
 			'terse',
 			'千寻聊天室',
@@ -2082,7 +2085,7 @@ class WxController extends BaseController
 			$headers[$k]['image'] = $header['content'];
 			unset($headers[$k]['content'], $headers[$k]['id']);
 		}
-		$gifts= Goods::items(['gCategory' => Goods::CAT_BAG, 'gStatus' => 1]);
+		$gifts = Goods::items(['gCategory' => Goods::CAT_BAG, 'gStatus' => 1]);
 		$receive = [];
 		$prop = [];
 

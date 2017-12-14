@@ -8813,17 +8813,18 @@ ul.co-ul {
   padding: 1rem 2rem; }
   .cr-join .cr-join-member h4 {
     font-size: 1.3rem; }
-  .cr-join .cr-join-member ul {
-    margin-top: 1rem; }
-    .cr-join .cr-join-member ul li {
+  .cr-join .cr-join-member .ul {
+    margin-top: 1rem;
+    display: block; }
+    .cr-join .cr-join-member .ul li {
       width: 5rem;
       display: inline-block; }
-      .cr-join .cr-join-member ul li img {
+      .cr-join .cr-join-member .ul li img {
         width: 4rem;
         height: 4rem;
         border-radius: 0.5rem;
         margin-left: 0.5rem; }
-      .cr-join .cr-join-member ul li p {
+      .cr-join .cr-join-member .ul li p {
         text-align: center;
         font-size: 1rem; }
 .cr-join .cr-join-btn {

@@ -2117,6 +2117,10 @@ class ApiController extends Controller
 				break;
 			case "join_apply":
 				$rid = trim(self::postParam('rid'));
+				$lastuid = trim(self::postParam('lastuid'));
+				if ($lastuid) {
+					UserNet::add($lastuid, $uid, UserNet::REL_JOIN_ROOMS);
+				}
 				// 加入群聊
 				ChatRoomFella::addone($rid, $uid);
 				return self::renderAPI(0, '', [
