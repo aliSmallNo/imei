@@ -1192,7 +1192,14 @@ class ChatMsg extends ActiveRecord
 		return $groupCnt;
 	}
 
-	// 稻草人群撩
+	/**
+	 * 稻草人群撩
+	 * @param $content 发送内容
+	 * @param $maleUID 代聊女稻草人
+	 * @param $femaleUID 代聊男稻草人
+	 * @param $tag 发送用户群
+	 * @throws \yii\db\Exception
+	 */
 	public static function DummyChatGroup($content, $maleUID, $femaleUID, $tag)
 	{
 		$conn = AppUtil::db();
@@ -1276,6 +1283,8 @@ class ChatMsg extends ActiveRecord
 				// break;
 			}
 		}
+
+		return true;
 	}
 
 }
