@@ -66,11 +66,11 @@
 	<div class="header">兑换礼物</div>
 	<div class="image"></div>
 	<div class="m-num-bar">
-		<span>数量：</span>
+		<span>数量:</span>
 		<a href="javascript:;" class="j-action minus">-</a>
 		<input type="text" class="num" value="1">
 		<a href="javascript:;" class="j-action plus">+</a>
-		<span> 总价：</span>
+		<span> 总价:</span>
 		<span class="amount">199媒桂花</span>
 	</div>
 	<a class="btn-next">立即兑换</a>
