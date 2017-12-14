@@ -2009,9 +2009,13 @@ class User extends ActiveRecord
 		])->queryScalar();
 		$trends['trans'] = intval($res5);
 
-		$sql = "SELECT count(1) as chat  
+		/*$sql = "SELECT count(1) as chat
 				FROM im_chat_group
-				WHERE gFirstCId>0 AND gAddedOn BETWEEN :beginDT AND :endDT ";
+				WHERE gFirstCId>0 AND gAddedOn BETWEEN :beginDT AND :endDT ";*/
+		$sql = " select count(distinct m.cGId) 
+			 from im_chat_msg as m
+			 join im_chat_group as g on g.gId=m.cGId 
+			  where m.cAddedOn between :beginDT and :endDT ";
 		$res6 = $conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
@@ -2020,8 +2024,7 @@ class User extends ActiveRecord
 		return $trends;
 	}
 
-	public
-	static function updateRank($ids = [], $goliveFlag = false, $debug = false)
+	public static function updateRank($ids = [], $goliveFlag = false, $debug = false)
 	{
 		$conn = AppUtil::db();
 		$role = self::ROLE_SINGLE;
