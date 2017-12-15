@@ -82,14 +82,14 @@
 	.chats li .content .name i{}
 	.chats li .content .name i img{
 		width: 2rem;
-		height: 1.35rem;
+		height: 1.28rem;
 	}
 	.chats li .content:after,.chats li.right .content:after {
 		top: 2.5rem;
 	}
 	.chats li .content .name i.lever{
 		display: inline-block;
-		height: 1.35rem;
+		height: 1.28rem;
 		width: 2.5rem;
 		background-image: url(/images/sprite_lv.png);
 		background-size: 3rem 5.5rem;
