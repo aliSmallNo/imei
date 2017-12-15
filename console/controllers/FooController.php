@@ -1469,14 +1469,7 @@ class FooController extends Controller
 		// UserQR::shareRoom(120003,101);
 
 		//echo UserQR::createQR(120003, UserQR::CATEGORY_ROOM, 'room-' . 101, "长按关注-进入房间");
-		$rid = 100;
-		if (strpos("room-101", 'room') !== false) {
-			$rid = substr("room-101", 5);
-			$content = "room";
-			echo $content.PHP_EOL;
-			echo $rid.PHP_EOL;
-		}
-		echo $rid;
+
 
 	}
 

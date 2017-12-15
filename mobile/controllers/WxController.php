@@ -2001,7 +2001,7 @@ class WxController extends BaseController
 		}
 		// ChatRoomFella::addone($rid, $uid);
 
-		$memberFlag = ChatRoomFella::checkIsMember($rid, $uid);
+		$memberFlag = ChatRoomFella::checkIsMember($rid, $uid) && UserWechat::findOne(["wUId" => $uid])->wSubscribe == 1;
 
 		$adminUId = $roomInfo["rAdminUId"];
 		return self::renderPage("groom.tpl",
