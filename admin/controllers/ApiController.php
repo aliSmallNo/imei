@@ -570,7 +570,7 @@ class ApiController extends Controller
 	{
 		$tag = strtolower(self::postParam("tag"));
 		switch ($tag) {
-			case 'edit':
+			case 'edit': // 添加群
 				$data = json_decode(self::postParam('data'), 1);
 				$data["rAddedBy"] = $this->admin_id;
 				if (isset($_FILES['image']['tmp_name']) && isset($_FILES['image']['name']) && $_FILES['image']['name']) {
@@ -583,7 +583,7 @@ class ApiController extends Controller
 				$ret = ChatRoom::reg($data);
 				return self::renderAPI(0, $ret ? '保存成功！' : '保存失败！', ['result' => $data]);
 				break;
-			case "adminopt":
+			case "adminopt": // 聊天室管理员操作: 1.删除 2.禁言
 				$subtag = self::postParam('subtag');
 				$oUId = self::postParam('uid');
 				$rid = self::postParam('rid');

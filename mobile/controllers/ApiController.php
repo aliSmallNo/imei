@@ -2121,8 +2121,6 @@ class ApiController extends Controller
 				if ($lastuid) {
 					UserNet::add($lastuid, $uid, UserNet::REL_JOIN_ROOMS);
 				}
-				// 加入群聊
-				ChatRoomFella::addone($rid, $uid);
 				$lastuid = $lastuid ? $lastuid : 120003;
 				$src = UserQR::createQR($lastuid, UserQR::CATEGORY_ROOM, 'room-' . $rid, "长按关注-进入房间");
 				return self::renderAPI(0, '', [

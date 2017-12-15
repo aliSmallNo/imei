@@ -65,6 +65,7 @@
 <input type="hidden" id="cLASTID" value="{{$lastId}}">
 <input type="hidden" id="memberFlag" value="{{$memberFlag}}">
 <input type="hidden" id="lastUId" value="{{$lastUId}}">
+<input type="hidden" id="subscribe" value="{{$subscribe}}">
 
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
@@ -82,13 +83,14 @@
 	.chats li .content .name i{}
 	.chats li .content .name i img{
 		width: 2rem;
+		height: 1.28rem;
 	}
 	.chats li .content:after,.chats li.right .content:after {
 		top: 2.5rem;
 	}
 	.chats li .content .name i.lever{
 		display: inline-block;
-		height: 1.2rem;
+		height: 1.28rem;
 		width: 2.5rem;
 		background-image: url(/images/sprite_lv.png);
 		background-size: 3rem 5.5rem;
@@ -159,7 +161,7 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	if (document.location.hash === "" || document.location.hash === "#") {
-		document.getElementById("memberFlag").value == 1 ? document.location.hash = "#chat" : document.location.hash = "#join";
+		document.getElementById("subscribe").value == 1 ? document.location.hash = "#chat" : document.location.hash = "#join";
 	}
 	requirejs(['/js/config.js?v=1.2'], function () {
 		requirejs(['/js/groom.js?v=1.2.1']);
