@@ -117,13 +117,8 @@ class UserBuzz extends ActiveRecord
 					}
 					if ($qrInfo) {
 						$content = $qrInfo["qCode"];
-						$rid = "";
-						if (strpos($content, 'room') === true) {
-							$rid = substr($content, 5);
-							$content = "room";
-						}
 						$debug .= $addResult . "**";
-						$resp = self::welcomeMsg($fromUsername, $toUsername, $event, $content, $rid);
+						$resp = self::welcomeMsg($fromUsername, $toUsername, $event, $content);
 					}
 				}
 				break;
@@ -136,7 +131,12 @@ class UserBuzz extends ActiveRecord
 						if ($qrInfo) {
 							$content = $qrInfo["qCode"];
 							self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SUBSCRIBE, $qId);
-							$resp = self::welcomeMsg($fromUsername, $toUsername, $event, $content);
+							$rid = "";
+							if (strpos($content, 'room') === true) {
+								$rid = substr($content, 5);
+								$content = "room";
+							}
+							$resp = self::welcomeMsg($fromUsername, $toUsername, $event, $content, $rid);
 						}
 					}
 				} else {
