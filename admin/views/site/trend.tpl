@@ -116,7 +116,7 @@
 				fields = ["act_favor", "act_chat", "act_gift", 'act_pay'];
 				break;
 			case 'amt':
-				names = ["累计到访", "累计游客", '累计关注', "累计会员", '累计单身男', '累计单身女', '累计媒婆'];
+				names = ["累计游客+授权", "累计游客", '累计关注', "累计会员", '累计单身男', '累计单身女', '累计媒婆'];
 				fields = ["accum_total", "accum_viewer", 'accum_subscribe', "accum_member", 'accum_male', 'accum_female', 'accum_meipo'];
 				break;
 			case 'active':
