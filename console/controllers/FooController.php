@@ -1473,7 +1473,8 @@ class FooController extends Controller
 		if (strpos("room-101", 'room') !== false) {
 			$rid = substr("room-101", 5);
 			$content = "room";
-			echo $content;
+			echo $content.PHP_EOL;
+			echo $rid.PHP_EOL;
 		}
 		echo $rid;
 
