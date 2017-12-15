@@ -117,8 +117,13 @@ class UserBuzz extends ActiveRecord
 					}
 					if ($qrInfo) {
 						$content = $qrInfo["qCode"];
+						$rid = "";
+						if (strpos($content, 'room') === true) {
+							$rid = substr($content, 5);
+							$content = "room";
+						}
 						$debug .= $addResult . "**";
-						$resp = self::welcomeMsg($fromUsername, $toUsername, $event, $content);
+						$resp = self::welcomeMsg($fromUsername, $toUsername, $event, $content, $rid);
 					}
 				}
 				break;
@@ -277,7 +282,7 @@ class UserBuzz extends ActiveRecord
 		return $resp;
 	}
 
-	private static function welcomeMsg($fromUsername, $toUsername, $category = '', $extension = "")
+	private static function welcomeMsg($fromUsername, $toUsername, $category = '', $extension = "", $id = "")
 	{
 		switch ($category) {
 			case "subscribe":
@@ -314,6 +319,16 @@ class UserBuzz extends ActiveRecord
 							]
 						]
 					]);
+				} else if ($extension == 'room') {
+					$rommdes = '欢迎来到千寻恋恋交友网👏' . PHP_EOL . '
+千寻恋恋交友网是由腾讯众创推出的婚恋交友品牌！
+15年诚信婚恋机构，每天撮合成功千对以上，会员均为优质男女！' . PHP_EOL . '
+------------------------------' . PHP_EOL . '
+【新用户】首日试配，不少于100人
+【首次邀约异性线下见面】费用全免
+【配对成功】更有千元现金大礼包赠送' . PHP_EOL . '
+<a href="https://wx.meipo100.com/wx/groom?rid=' . $id . '#chat">👉点击进入房间👈</a>';
+					return self::textMsg($fromUsername, $toUsername, $rommdes);
 				}
 				return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
 			/*return self::json_to_xml([

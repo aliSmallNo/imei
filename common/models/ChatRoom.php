@@ -109,10 +109,8 @@ class ChatRoom extends ActiveRecord
 		])->queryAll();
 		foreach ($res as &$v) {
 			$v["eid"] = AppUtil::encrypt($v["uId"]);
-			$v["cert"] = $v["uCertStatus"] == User::CERT_STATUS_PASS ? 1 : 0;
-			$expInfo = UserTag::getExp($v["uId"]);
-			$v["pic_level"] = isset($expInfo["pic_level"]) ? $expInfo["pic_level"] : 0;
-			$v["pic_name"] = isset($expInfo["pic_name"]) ? $expInfo["pic_name"] : 0;
+			//$v["cert"] = $v["uCertStatus"] == User::CERT_STATUS_PASS ? 1 : 0;
+			//$expInfo = UserTag::getExp($v["uId"]);
 		}
 		$nextpage = 0;
 		if ($fenye && count($res) > $pageSize) {

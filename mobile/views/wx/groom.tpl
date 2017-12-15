@@ -70,12 +70,23 @@
 <input type="hidden" id="memberFlag" value="{{$memberFlag}}">
 <input type="hidden" id="lastUId" value="{{$lastUId}}">
 
+<style>
+	.chats li .content .name {
+		font-size: 1rem;
+		margin-bottom: .2rem;
+	}
+
+	.chats li .content:after,.chats li.right .content:after {
+		top: 2.5rem;
+	}
+</style>
 <script type="text/template" id="tpl_chat">
 	{[#data]}
 	{[#type]}
 	<li class="{[dir]}" data-r="{[readflag]}">
 		<a href="/wx/sh?id={[eid]}" {[#eid]}data-eid="{[.]}" {[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
 		<div class="content read{[readflag]}">
+			<div class="name">{[name]}</div>
 			<a href="javascript:;" class="j-content-wrap">
 				{[#image]}<img src="{[.]}">{[/image]}
 				{[^image]}{[content]}{[/image]}
@@ -98,59 +109,12 @@
 	</li>
 	{[/data]}
 </script>
-<style>
-	.cr-cert {
-		flex: 0 0 6rem;
-	}
-
-	.cr-cert span {
-		background: #2e7d32;
-		color: #fff;
-		font-size: 1rem;
-		padding: .2rem .5rem;
-		border-radius: .2rem;
-	}
-
-	.cr-exp {
-		flex: 0 0 4rem;
-	}
-
-	.cr-exp div {
-		display: inline-block;
-		width: 4.5rem;
-		height: 2rem;
-		line-height: 2rem;
-		background-image: url(/images/sprite_lv.png);
-		background-size: 4.5rem 8rem;
-		background-repeat: no-repeat;
-		color: white;
-		font-size: 1.2rem;
-		font-family: Verdana;
-		padding-right: .4rem;
-		text-align: right;
-		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;
-		box-sizing: border-box;
-	}
-
-	.cr-exp div.level-p1 {
-
-	}
-</style>
 <script type="text/template" id="memTmp">
 	{[#data]}
 	<li class="cr-member">
 		<a href="/wx/sh?id={[eid]}">
 			<img src="{[uThumb]}">
 			<p>{[uName]}</p>
-			{[#cert]}
-			<div class="cr-cert">
-				<span>已认证</span>
-			</div>
-			{[/cert]}
-			<div class="cr-exp">
-				<div class="level-{[pic_level]}">01</div>
-			</div>
 		</a>
 	</li>
 	{[/data]}

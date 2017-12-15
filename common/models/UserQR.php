@@ -23,6 +23,7 @@ class UserQR extends ActiveRecord
 	const CATEGORY_MATCH_SHARE = 35; //Rain: 媒婆推广
 	const CATEGORY_SHARES = 39; //Rain: 媒婆推广
 	const CATEGORY_MARRY = 100; //Rain: 婚礼请帖
+	const CATEGORY_ROOM = 200; //Rain: 房间号
 
 	public static function tableName()
 	{
@@ -91,6 +92,28 @@ class UserQR extends ActiveRecord
 		}
 		$md5 = md5(json_encode([$uid, $category, $thumb], JSON_UNESCAPED_UNICODE));
 		switch ($category) {
+			case self::CATEGORY_ROOM:
+				if (!$code) {
+					$code = 'room';
+				}
+				if (strpos($code, 'room') === false) {
+					$code = 'room-' . $code;
+				}
+				$code = strtolower($code);
+				$qid = self::edit($info['uOpenId'], $category, $code, [
+					'qTitle' => $bottomTitle,
+					'qSubTitle' => $code,
+					'qUId' => $uid,
+					'qMD5' => $md5
+				]);
+				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $qid, $code, $bottomTitle, $thumb);
+				if ($accessUrl) {
+					self::edit($info['uOpenId'], $category, $code, [
+						'qUrl' => $accessUrl,
+						'qRaw' => $originUrl,
+					]);
+				}
+				break;
 			case self::CATEGORY_SALES:
 				if (!$code) {
 					$code = 'meipo100';
@@ -521,6 +544,91 @@ class UserQR extends ActiveRecord
 		$entity = new self();
 		$entity->qUId = $uId;
 		$entity->qCategory = self::CATEGORY_MARRY;
+		$entity->qCode = 'meipo100-marry2';
+		$entity->qMD5 = $md5;
+		$entity->qRaw = $raw;
+		$entity->qUrl = $accessUrl;
+		$entity->save();
+		return $accessUrl;
+	}
+
+	public static function shareRoom($uId, $rid)
+	{
+		$rootFolder = AppUtil::rootDir();
+		$bgFile = $rootFolder . 'mobile/assets/cr_share_room.jpg';
+		$qrFile = UserQR::createQR($uId, UserQR::CATEGORY_ROOM, 'room-' . $rid, "长按关注-进入房间");
+		//echo $qrFile;exit;
+		$raw = json_encode([$uId, $rid, 'room', $qrFile], JSON_UNESCAPED_UNICODE);
+		$md5 = md5($raw);
+		$qrInfo = self::findOne(['qUId' => $uId, 'qCategory' => self::CATEGORY_ROOM, 'qMD5' => $md5]);
+		if ($qrInfo && !AppUtil::isDev()) {
+			return $qrInfo->qUrl;
+		}
+		$mergeFile = $rootFolder . 'common/assets/qr_invitation.jpeg';
+		if ($qrFile && !AppUtil::isDev()) {
+			$mergeFile = $qrFile;
+			if (strpos($qrFile, 'http') !== false) {
+				$mergeFile = ImageUtil::getFilePath($qrFile);
+			}
+		}
+		$mergeSize = 330;
+		$mergeImg = Image::open($mergeFile)->zoomCrop($mergeSize, $mergeSize, 0xffffff, 'center', 'center');
+		$img = Image::open($bgFile)->merge($mergeImg, 20, 860, $mergeSize, $mergeSize);
+
+		$gy = date("Y", strtotime($dt));
+		$gm = date("m", strtotime($dt));
+		$gd = date("d", strtotime($dt));
+		$w = date("w", strtotime($dt));
+		$man = $name1;
+		$woman = $name2;
+		$xing = mb_substr($man, 0, 1);
+		$time = "下午18点18分";
+		$addr = "微媒大道88号";
+		$addrDes = "五洲国际大酒店2楼宴会厅";
+		$from = $xing . "爸爸&" . $xing . "妈妈";
+		$h5Font = $rootFolder . 'common/assets/hkst.ttf';
+
+		$saveAs = 'inv' . RedisUtil::getImageSeq() . '.jpg';
+		$saveAs = AppUtil::imgDir() . $saveAs;
+
+		// $img = Image::open($bgFile);
+		if ($gy) {
+			$img->write($h5Font, $gy, 455, 573, 15, 34, 0x000000, 'center');
+		}
+		if ($gm) {
+			$img->write($h5Font, $gm, 510, 529, 15, 34, 0x000000, 'center');
+		}
+		if ($gd) {
+			$img->write($h5Font, $gd, 550, 500, 15, 34, 0x000000, 'center');
+		}
+		if ($w) {
+			$img->write($h5Font, $w, 640, 441, 15, 34, 0x000000, 'center');
+		}
+		if ($man) {
+			$img->write($h5Font, $man, 470, 636, 15, 34, 0x000000, 'center');
+		}
+		if ($woman) {
+			$img->write($h5Font, $woman, 490, 663, 15, 34, 0x000000, 'center');
+		}
+		if ($time) {
+			$img->write($h5Font, $time, 524, 708, 10, 34, 0x000000, 'center');
+		}
+		if ($addrDes) {
+			$img->write($h5Font, $addrDes, 560, 732, 10, 34, 0x000000, 'center');
+		}
+		if ($addr) {
+			$img->write($h5Font, $addr, 545, 752, 10, 34, 0x000000, 'center');
+		}
+		if ($from) {
+			$img->write($h5Font, $from, 700, 668, 10, 34, 0x000000, 'center');
+		}
+		$img->save($saveAs);
+		$accessUrl = ImageUtil::getUrl($saveAs);
+
+		self::deleteAll(['qUId' => $uId, 'qCategory' => self::CATEGORY_ROOM]);
+		$entity = new self();
+		$entity->qUId = $uId;
+		$entity->qCategory = self::CATEGORY_ROOM;
 		$entity->qCode = 'meipo100-marry2';
 		$entity->qMD5 = $md5;
 		$entity->qRaw = $raw;
