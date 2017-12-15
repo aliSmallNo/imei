@@ -118,7 +118,12 @@ class UserBuzz extends ActiveRecord
 					if ($qrInfo) {
 						$content = $qrInfo["qCode"];
 						$debug .= $addResult . "**";
-						$resp = self::welcomeMsg($fromUsername, $toUsername, $event, $content);
+						$rid = "";
+						if (strpos($content, 'room') !== false) {
+							$rid = substr($content, 5);
+							$content = "room";
+						}
+						$resp = self::welcomeMsg($fromUsername, $toUsername, $event, $content, $rid);
 					}
 				}
 				break;
@@ -131,7 +136,12 @@ class UserBuzz extends ActiveRecord
 						if ($qrInfo) {
 							$content = $qrInfo["qCode"];
 							self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SUBSCRIBE, $qId);
-							$resp = self::welcomeMsg($fromUsername, $toUsername, $event, $content);
+							$rid = "";
+							if (strpos($content, 'room') !== false) {
+								$rid = substr($content, 5);
+								$content = "room";
+							}
+							$resp = self::welcomeMsg($fromUsername, $toUsername, $event, $content, $rid);
 						}
 					}
 				} else {
@@ -277,7 +287,7 @@ class UserBuzz extends ActiveRecord
 		return $resp;
 	}
 
-	private static function welcomeMsg($fromUsername, $toUsername, $category = '', $extension = "")
+	private static function welcomeMsg($fromUsername, $toUsername, $category = '', $extension = "", $id = "")
 	{
 		switch ($category) {
 			case "subscribe":
@@ -314,6 +324,11 @@ class UserBuzz extends ActiveRecord
 							]
 						]
 					]);
+				} else if ($extension == 'room') {
+					$roomInfo = ChatRoom::findOne(["rId" => $id]);
+					$rommdes = '欢迎来到千寻恋恋交友网👏' . PHP_EOL .
+						'<a href="https://wx.meipo100.com/wx/groom?rid=' . $id . '#chat">👉点击进入❝' . $roomInfo->rTitle . '❞房间👈</a>';
+					return self::textMsg($fromUsername, $toUsername, $rommdes);
 				}
 				return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
 			/*return self::json_to_xml([

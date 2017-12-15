@@ -23,6 +23,7 @@ class UserQR extends ActiveRecord
 	const CATEGORY_MATCH_SHARE = 35; //Rain: 媒婆推广
 	const CATEGORY_SHARES = 39; //Rain: 媒婆推广
 	const CATEGORY_MARRY = 100; //Rain: 婚礼请帖
+	const CATEGORY_ROOM = 200; //Rain: 房间号
 
 	public static function tableName()
 	{
@@ -78,7 +79,7 @@ class UserQR extends ActiveRecord
 	public static function createQR($uid, $category, $code = '', $bottomTitle = '微信扫一扫 关注千寻恋恋', $logoFlag = false)
 	{
 		if (AppUtil::isDev()) {
-			return '/images/qrmeipo100.jpg';
+			//return '/images/qrmeipo100.jpg';
 		}
 		$accessUrl = '';
 		$info = User::findOne(['uId' => $uid]);
@@ -91,6 +92,28 @@ class UserQR extends ActiveRecord
 		}
 		$md5 = md5(json_encode([$uid, $category, $thumb], JSON_UNESCAPED_UNICODE));
 		switch ($category) {
+			case self::CATEGORY_ROOM:
+				if (!$code) {
+					$code = 'room-102';
+				}
+				if (strpos($code, 'room') === false) {
+					$code = 'room-' . $code;
+				}
+				$code = strtolower($code);
+				$qid = self::edit($info['uOpenId'], $category, $code, [
+					'qTitle' => $bottomTitle,
+					'qSubTitle' => $code,
+					'qUId' => $uid,
+					'qMD5' => $md5
+				]);
+				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $qid, $code, $bottomTitle, $thumb);
+				if ($accessUrl) {
+					self::edit($info['uOpenId'], $category, $code, [
+						'qUrl' => $accessUrl,
+						'qRaw' => $originUrl,
+					]);
+				}
+				break;
 			case self::CATEGORY_SALES:
 				if (!$code) {
 					$code = 'meipo100';
@@ -528,6 +551,5 @@ class UserQR extends ActiveRecord
 		$entity->save();
 		return $accessUrl;
 	}
-
 
 }

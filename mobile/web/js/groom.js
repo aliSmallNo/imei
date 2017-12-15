@@ -18,6 +18,12 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 
 			adminUL: $("ul.chats"),
 			adminTmp: $("#tpl_chat").html(),
+
+			//$sls.content.html(html).addClass("animate-pop-in");
+			//$sls.shade.fadeIn(160);
+			main: $(".m-popup-main"),
+			content: $(".m-popup-content"),
+			shade: $(".m-popup-shade"),
 		};
 
 		/*
@@ -212,7 +218,11 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 				}, function (resp) {
 					$sls.loading = 0;
 					if (resp.code < 1) {
-						location.href = "#chat";
+						//location.href = "#chat";
+						$sls.main.show();
+						var html = '<img src="' + resp.data.src + '" style="width: 100%">';
+						$sls.content.html(html).addClass("animate-pop-in");
+						$sls.shade.fadeIn(160);
 					} else {
 						alpha.toast(resp.msg);
 					}
@@ -241,11 +251,18 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 
 		var memUtil = {
 			page: 1,
+			eid: '',
 			memUL: $(".cr-members ul"),
 			memTmp: $("#memTmp").html(),
 			init: function () {
 				var util = this;
-
+				$(document).on(kClick, ".cr-member a", function () {
+					var self = $(this);
+					var href = self.attr("href");
+					if (href.length < 15) {
+						alpha.toast("无法查看新用户");
+					}
+				});
 			},
 			memberList: function () {
 				var util = this;
@@ -342,6 +359,7 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 			NoticeUtil.init();
 			chatUtil.init();
 			joinUtil.init();
+			memUtil.init();
 
 			window.onhashchange = locationHashChanged;
 			locationHashChanged();

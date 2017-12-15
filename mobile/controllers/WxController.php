@@ -525,6 +525,11 @@ class WxController extends BaseController
 		if (!$isMember) {
 			$uInfo["encryptId"] = '';
 		}
+		$gay = 1;
+		if (in_array($uInfo["gender"], [User::GENDER_FEMALE, User::GENDER_MALE])
+			&& $this->user_gender != $uInfo["gender"]) {
+			$gay = 0;
+		}
 		return self::renderPage("shome.tpl",
 			[
 				'nickname' => $nickname,
@@ -542,7 +547,7 @@ class WxController extends BaseController
 				'genderName' => $genderName,
 				'isMember' => $isMember,
 				'hideFlag' => $hideFlag,
-				"gay" => $this->user_gender == $uInfo["gender"],
+				"gay" => $gay,
 			],
 			'terse');
 	}
@@ -2001,7 +2006,7 @@ class WxController extends BaseController
 		}
 		// ChatRoomFella::addone($rid, $uid);
 
-		$memberFlag = ChatRoomFella::checkIsMember($rid, $uid);
+		$memberFlag = ChatRoomFella::checkIsMember($rid, $uid) && UserWechat::findOne(["wUId" => $uid])->wSubscribe == 1;
 
 		$adminUId = $roomInfo["rAdminUId"];
 		return self::renderPage("groom.tpl",
@@ -2103,4 +2108,5 @@ class WxController extends BaseController
 			'千寻商城',
 			'bg-color');
 	}
+
 }

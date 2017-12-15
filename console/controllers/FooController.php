@@ -9,14 +9,15 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
+use common\models\ChatRoom;
 use common\models\Img;
 use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
+use common\models\UserTag;
 use common\models\UserTrans;
 use common\models\UserWechat;
-use common\service\TrendService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
@@ -1331,7 +1332,7 @@ class FooController extends Controller
 	{
 		$ret = strtotime('2017-12-03 12:09:04');
 		var_dump($ret);
-		$ret = strtotime(-2 . ' day' , strtotime('2017-12-03 12:09:04'));
+		$ret = strtotime(-2 . ' day', strtotime('2017-12-03 12:09:04'));
 		var_dump($ret);
 		/*$counts = [150, 22, 5];
 		$steps = ['day', 'week', 'month'];
@@ -1487,6 +1488,17 @@ class FooController extends Controller
 
 //		$gInfo = Goods::items(["gId" => 6004])[0];
 //		print_r($gInfo);
+
+		// UserQR::shareRoom(120003,101);
+
+		//echo UserQR::createQR(120003, UserQR::CATEGORY_ROOM, 'room-' . 101, "长按关注-进入房间");
+
+		list($res) = ChatRoom::item(AppUtil::db(), 101);
+		foreach ($res as $v) {
+			$expInfo = UserTag::getExp($v["uId"]);
+			echo "level_name: " . $expInfo['level_name'] . " next: " . $expInfo["next"] . PHP_EOL;
+		}
+
 	}
 
 

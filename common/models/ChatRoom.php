@@ -46,6 +46,8 @@ class ChatRoom extends ActiveRecord
 			"logo" => "rLogo",
 			"admin" => "rAdminUId",
 			"title" => "rTitle",
+			"intro" => "rNote",
+			"limit" => "rLimit",
 		];
 		$insertData = [];
 		foreach ($data as $k => $v) {
@@ -109,10 +111,8 @@ class ChatRoom extends ActiveRecord
 		])->queryAll();
 		foreach ($res as &$v) {
 			$v["eid"] = AppUtil::encrypt($v["uId"]);
-			$v["cert"] = $v["uCertStatus"] == User::CERT_STATUS_PASS ? 1 : 0;
-			$expInfo = UserTag::getExp($v["uId"]);
-			$v["pic_level"] = isset($expInfo["pic_level"]) ? $expInfo["pic_level"] : 0;
-			$v["pic_name"] = isset($expInfo["pic_name"]) ? $expInfo["pic_name"] : 0;
+			//$v["cert"] = $v["uCertStatus"] == User::CERT_STATUS_PASS ? 1 : 0;
+			//$expInfo = UserTag::getExp($v["uId"]);
 		}
 		$nextpage = 0;
 		if ($fenye && count($res) > $pageSize) {
@@ -188,7 +188,7 @@ class ChatRoom extends ActiveRecord
 		$conn = AppUtil::db();
 		list($adminUId, $rlastId) = ChatMsg::getAdminUIdLastId($conn, $rId);
 		$limit = " limit " . ($page - 1) * $pagesize . "," . ($pagesize + 1);
-		$sql = "SELECT c.* ,uName,uThumb,uPhone,uId,uUniqid as uni,m.mBanFlag
+		$sql = "SELECT c.* ,u.*,m.mBanFlag
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
@@ -211,7 +211,7 @@ class ChatRoom extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		list($adminUId, $rlastId) = ChatMsg::getAdminUIdLastId($conn, $rId);
-		$sql = "SELECT c.* ,uName,uThumb,uPhone,uId,uUniqid as uni,m.mBanFlag
+		$sql = "SELECT c.* ,u.*,m.mBanFlag
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
