@@ -18,6 +18,12 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 
 			adminUL: $("ul.chats"),
 			adminTmp: $("#tpl_chat").html(),
+
+			//$sls.content.html(html).addClass("animate-pop-in");
+			//$sls.shade.fadeIn(160);
+			main: $(".m-popup-main"),
+			content: $(".m-popup-content"),
+			shade: $(".m-popup-shade"),
 		};
 
 		/*
@@ -212,7 +218,11 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 				}, function (resp) {
 					$sls.loading = 0;
 					if (resp.code < 1) {
-						location.href = "#chat";
+						//location.href = "#chat";
+						$sls.main.show();
+						var html = '<img sec="' + resp.data.src + '">';
+						$sls.content.html(html).addClass("animate-pop-in");
+						$sls.shade.fadeIn(160);
 					} else {
 						alpha.toast(resp.msg);
 					}

@@ -67,8 +67,15 @@
 <input type="hidden" id="cRID" value="{{$rid}}">
 <input type="hidden" id="cUID" value="{{$uid}}">
 <input type="hidden" id="cLASTID" value="{{$lastId}}">
-<input type="hidden" id="memberFlag" value="{{$memberFlag}}">
+<input type="hidden" id="memberFlag" value="0">
 <input type="hidden" id="lastUId" value="{{$lastUId}}">
+
+<div class="m-popup-shade"></div>
+<div class="m-popup-main" style="display: none">
+	<div class="m-popup-wrap">
+		<div class="m-popup-content"></div>
+	</div>
+</div>
 
 <style>
 	.chats li .content .name {
@@ -128,7 +135,7 @@
 		document.getElementById("memberFlag").value == 1 ? document.location.hash = "#chat" : document.location.hash = "#join";
 	}
 	requirejs(['/js/config.js?v=1.2'], function () {
-		requirejs(['/js/groom.js?v=1.1.6']);
+		requirejs(['/js/groom.js?v=1.1.7']);
 	});
 </script>
 

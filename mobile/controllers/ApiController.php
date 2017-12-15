@@ -2104,6 +2104,13 @@ class ApiController extends Controller
 		$uid = $wxInfo['uId'];
 
 		switch ($tag) {
+			case "src":
+				$rid = self::postParam("rid");
+				$src = UserQR::createQR(120003, UserQR::CATEGORY_ROOM, 'room-' . $rid, "长按关注-进入房间");
+				return self::renderAPI(0, '', [
+					"src" => $src,
+				]);
+				break;
 			case "mem_list":
 				$conn = AppUtil::db();
 				$rid = trim(self::postParam('rid'));
@@ -2123,8 +2130,9 @@ class ApiController extends Controller
 				}
 				// 加入群聊
 				ChatRoomFella::addone($rid, $uid);
+				$src = UserQR::createQR(120003, UserQR::CATEGORY_ROOM, 'room-' . $rid, "长按关注-进入房间");
 				return self::renderAPI(0, '', [
-
+					"src" => $src,
 				]);
 				break;
 			case "join_init":
