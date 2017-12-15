@@ -103,7 +103,7 @@
 	}
 	.chats li .content .name i.lever em{
 		display: inline-block;
-		font-size: .7rem;
+		font-size: .8rem;
 		color: #fff;
 		position: absolute;
 		right: 0;
