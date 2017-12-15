@@ -118,7 +118,11 @@ class UserBuzz extends ActiveRecord
 					if ($qrInfo) {
 						$content = $qrInfo["qCode"];
 						$debug .= $addResult . "**";
-						$resp = self::welcomeMsg($fromUsername, $toUsername, $event, $content);
+						if (strpos($content, 'room') === true) {
+							$rid = substr($content, 5);
+							$content = "room";
+						}
+						$resp = self::welcomeMsg($fromUsername, $toUsername, $event, $content, $rid);
 					}
 				}
 				break;
