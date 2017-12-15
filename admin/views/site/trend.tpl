@@ -91,20 +91,21 @@
 		var items = [], names = [], fields = [];
 		switch (cat) {
 			case 'new':
-				names = ["到访", "游客", "关注", "取关", "转化率", "会员", "媒婆", "帅哥", "美女"];
-				fields = ["reg", "nvisitor", "focus", "todayblur", "focusRate", "newmember", "mps", "male", "female"];
+				names = ["游客+授权", "游客", "关注", "取关", "转化率", "会员", "媒婆", "帅哥", "美女"];
+				fields = ["added_total", "added_viewer", "added_subscribe", "added_unsubscribe",
+					"added_subscribe_ratio", "added_member", "added_meipo", "added_male", "added_female"];
 				break;
 			case 'net':
 				names = ["心动数", "聊天数", "送媒桂花", "充值金额"];
-				fields = ["favor", "chat", "gift", 'recharge'];
+				fields = ["act_favor", "act_chat", "act_gift", 'act_pay'];
 				break;
 			case 'amt':
 				names = ["累计到访", "累计游客", '累计关注', "累计会员", '累计单身男', '累计单身女', '累计媒婆'];
-				fields = ["amt", "visitor", 'follows', "member", 'boys', 'girls', 'meipos'];
+				fields = ["accum_total", "accum_viewer", 'accum_subscribe', "accum_member", 'accum_male', 'accum_female', 'accum_meipo'];
 				break;
 			case 'active':
 				names = ["活跃用户", "活跃度(%)", "活跃男", "活跃女", "活跃媒婆"];
-				fields = ["active", "activeRate", "activemale", "activefemale", "activemp"];
+				fields = ["active_total", "active_ratio", "active_male", "active_female", "active_meipo"];
 				break;
 		}
 		if (names) {

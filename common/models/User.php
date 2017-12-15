@@ -9,6 +9,7 @@
 namespace common\models;
 
 use admin\models\Admin;
+use common\service\TrendService;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
@@ -1635,7 +1636,7 @@ class User extends ActiveRecord
 			$next_page = $page + 1;
 		}
 		//Rain: 不想展示太多页了
-		if ($next_page > 12) {
+		if ($next_page > 15) {
 			$next_page = 0;
 		}
 		return [
@@ -1855,6 +1856,8 @@ class User extends ActiveRecord
 		} elseif ($step == 'month') {
 			$trends['dates'] = date('n月', strtotime($endDate));
 		}
+		$service = TrendService::init($step, $conn)->setDate($beginDate, $endDate);
+
 		$trends["focus"] = 0;
 		$trends["newvisitor"] = 0;
 		$trends["newmember"] = 0;
@@ -1880,14 +1883,14 @@ class User extends ActiveRecord
 		$trends["recharge"] = 0;
 
 		$sql = "SELECT 
-				count(*) as reg,
-				SUM(IFNULL(w.wSubscribe,0)) as focus,
-				SUM(CASE WHEN uStatus=0 THEN 1 END) as nvisitor,
-				SUM(CASE WHEN (u.uRole=20 or (u.uRole=10 AND u.uGender>9)) AND u.uPhone!='' THEN 1 END) as newmember,
-				SUM(CASE WHEN w.wAddedOn BETWEEN :beginDT AND :endDT AND wSubscribe =0 THEN 1 END ) as todayblur,
-				SUM(CASE WHEN u.uRole=10 AND u.uGender=11 AND u.uPhone!='' THEN  1 END ) as male,
-				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 AND u.uPhone!='' THEN  1 END ) as female,
-				SUM(CASE WHEN u.uRole=20 AND u.uPhone!='' THEN  1 END) as mps
+				count(1) as total,
+				COUNT(CASE WHEN w.wSubscribe=1 THEN 1 END) as subscribe,
+				COUNT(CASE WHEN uStatus=0 THEN 1 END) as viewer,
+				COUNT(CASE WHEN (u.uRole=20 or (u.uRole=10 AND u.uGender>9)) AND u.uPhone!='' THEN 1 END) as member,
+				COUNT(CASE WHEN w.wAddedOn BETWEEN :beginDT AND :endDT AND wSubscribe =0 THEN 1 END ) as unsubscribe,
+				COUNT(CASE WHEN u.uRole=10 AND u.uGender=11 AND u.uPhone!='' THEN  1 END ) as male,
+				COUNT(CASE WHEN u.uRole=10 AND u.uGender=10 AND u.uPhone!='' THEN  1 END ) as female,
+				COUNT(CASE WHEN u.uRole=20 AND u.uPhone!='' THEN  1 END) as meipo
 				FROM im_user as u 
 				JOIN im_user_wechat as w on w.wUId=u.uId
 				where u.uStatus<8 AND u.uOpenId LIKE 'oYDJew%' AND u.uAddedOn BETWEEN :beginDT and :endDT ";
@@ -1896,25 +1899,29 @@ class User extends ActiveRecord
 			':endDT' => $endDate,
 		])->queryOne();
 		if ($res) {
-			$trends['focus'] = intval($res["focus"]); // 新增关注
-			$trends['nvisitor'] = intval($res["nvisitor"]); // 新增游客
-			$trends['newmember'] = intval($res["newmember"]); // 新增会员
-			$trends['reg'] = intval($res["reg"]);     // 新增注册
-			$trends['focusRate'] = ($res["reg"] > 0) ? intval(round($res["focus"] / $res["reg"], 2) * 100) : 0;   // 转化率
-			$trends['todayblur'] = intval($res["todayblur"]);   //  新增取消关注
-			$trends['male'] = intval($res["male"]);   //  新增男
-			$trends['female'] = intval($res["female"]);// 新增女
-			$trends['mps'] = intval($res["mps"]);     //  新增媒婆
+			foreach ($res as $field => $num) {
+				$service->add('added_' . $field, $num);
+			}
+
+			$trends['reg'] = intval($res["total"]); // 已关注 + 已授权
+			$trends['focus'] = intval($res["subscribe"]); // 新增关注
+			$trends['nvisitor'] = intval($res["viewer"]); // 新增游客
+			$trends['newmember'] = intval($res["member"]); // 新增会员
+			$trends['focusRate'] = ($res["total"] > 0) ? intval(round($res["subscribe"] / $res["total"], 2) * 100) : 0; // 转化率
+			$trends['todayblur'] = intval($res["unsubscribe"]); // 新增取消关注
+			$trends['male'] = intval($res["male"]); // 新增男
+			$trends['female'] = intval($res["female"]); // 新增女
+			$trends['mps'] = intval($res["meipo"]); // 新增媒婆
 		}
 
 		$sql = "SELECT 
-				COUNT(1) as amt,
-				COUNT(CASE WHEN u.uStatus=0 THEN 1 END) as visitor,
+				COUNT(1) as total,
+				COUNT(CASE WHEN u.uStatus=0 THEN 1 END) as viewer,
 				COUNT(CASE WHEN uPhone!='' AND (uRole=20 or (uRole=10 AND uGender>9)) THEN 1 END) as member,
-				SUM(IFNULL(w.wSubscribe,0)) as follows,
-				SUM(CASE WHEN u.uRole=20 AND uPhone!='' THEN 1 END) as meipos,
-				SUM(CASE WHEN u.uRole=10 AND u.uGender=10 AND uPhone!='' THEN 1 END) as girls,
-				SUM(CASE WHEN u.uRole=10 AND u.uGender=11 AND uPhone!='' THEN 1 END) as boys
+				COUNT(CASE WHEN w.wSubscribe=1 THEN 1 END) as subscribe,
+				COUNT(CASE WHEN u.uRole=20 AND uPhone!='' THEN 1 END) as meipo,
+				COUNT(CASE WHEN u.uRole=10 AND u.uGender=10 AND uPhone!='' THEN 1 END) as female,
+				COUNT(CASE WHEN u.uRole=10 AND u.uGender=11 AND uPhone!='' THEN 1 END) as male
 				FROM im_user as u
 				JOIN im_user_wechat as w on w.wUId=u.uId
 				WHERE uStatus<8 AND uOpenId LIKE 'oYDJew%' AND uAddedOn < :endDT ";
@@ -1922,54 +1929,48 @@ class User extends ActiveRecord
 			':endDT' => $endDate,
 		])->queryOne();
 		if ($res2) {
-			$trends['amt'] = intval($res2["amt"]); //累计用户
+			foreach ($res2 as $field => $num) {
+				$service->add('accum_' . $field, $num);
+			}
+
+			$trends['amt'] = intval($res2["total"]); //累计用户
 			$trends['member'] = intval($res2["member"]); //累计会员
-			$trends['follows'] = intval($res2["follows"]); //累计关注用户
-			$trends['meipos'] = intval($res2["meipos"]);
-			$trends['girls'] = intval($res2["girls"]);
-			$trends['boys'] = intval($res2["boys"]);
-			$trends['visitor'] = intval($res2["visitor"]);
+			$trends['follows'] = intval($res2["subscribe"]); //累计关注用户
+			$trends['meipos'] = intval($res2["meipo"]);
+			$trends['girls'] = intval($res2["female"]);
+			$trends['boys'] = intval($res2["male"]);
+			$trends['visitor'] = intval($res2["viewer"]);
 //			$trends['visitor'] = $trends['amt'] - $trends['member'];
 		}
 
-//		$sql = "select
-//				COUNT(DISTINCT a.aUId) as active,
-//				COUNT(DISTINCT a.aUId and u.uGender=11) as activemale,
-//				COUNT(DISTINCT a.aUId and u.uGender=10) as activefemale,
-//				COUNT(DISTINCT a.aUId and u.uRole=20) as activemp
-//				from im_user as u
-//				join im_log_action as a on u.uId=a.aUId
-//				where  uStatus<8 AND a.aDate BETWEEN :beginDT and :endDT
-//				AND a.aCategory in (1000,1002,1004) ";
-
-		$sql = "select 
-				COUNT(1) as active, 
-				SUM(case when uRole=10 AND uGender=11 then 1 end ) as activemale, 
-				SUM(case when uRole=10 AND uGender=10 then 1 end ) as activefemale, 
-				SUM(case when uRole=20 then 1 end ) as activemp
-				FROM (SELECT DISTINCT uId,uName,uGender,uRole
-					FROM im_user as u 
-					JOIN im_log_action as a on u.uId=a.aUId 
-					WHERE uStatus<8 AND uOpenId LIKE 'oYDJew%' AND a.aCategory in (1000,1002,1004)
-						AND a.aDate BETWEEN :beginDT AND :endDT 
-					GROUP BY aUId) as temp";
+		$sql = "SELECT count(DISTINCT uId) as total,
+			count(DISTINCT(case when u.uRole=10 AND u.uGender=11 then u.uId end)) as male,
+			count(DISTINCT(case when u.uRole=10 AND u.uGender=10 then u.uId end)) as female,
+			count(DISTINCT(case when u.uRole=20 then u.uId end)) as meipo
+			FROM im_user as u 
+			JOIN im_log_action as a on u.uId=a.aUId 
+			WHERE uStatus<8 AND uOpenId LIKE 'oYDJew%' AND a.aCategory in (1000,1002,1004) and u.uPhone!=''
+				AND a.aDate BETWEEN :beginDT AND :endDT ";
 		$res3 = $conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
 		])->queryOne();
 		if ($res3) {
-			$trends['active'] = intval($res3["active"]); //活跃人数
-			$trends['activemale'] = intval($res3["activemale"]); //活跃男
-			$trends['activefemale'] = intval($res3["activefemale"]); //活跃女
-			$trends['activemp'] = intval($res3["activemp"]); //活跃媒婆
-			$trends['activeRate'] = ($res2["member"] > 0) ? intval(round($res3["active"] / $res2["member"], 2) * 100) : 0; // 活跃度
+			foreach ($res3 as $field => $num) {
+				$service->add('active_' . $field, $num);
+			}
+			$trends['active'] = intval($res3["total"]); //活跃人数
+			$trends['activemale'] = intval($res3["male"]); //活跃男
+			$trends['activefemale'] = intval($res3["female"]); //活跃女
+			$trends['activemp'] = intval($res3["meipo"]); //活跃媒婆
+			$trends['activeRate'] = ($res2["member"] > 0) ? intval(round($res3["total"] / $res2["member"], 2) * 100) : 0; // 活跃度
 		}
 
 		$sql = "select 
-				SUM(CASE WHEN  nRelation=150 THEN  1 END ) as favor,
-				SUM(CASE WHEN  nRelation=140 THEN  1 END ) as getwxno,
-				SUM(CASE WHEN  nRelation=140 AND nStatus=2 THEN  1 END) as pass,
-				SUM(CASE WHEN  nRelation=180 THEN  1 END) as gift
+				COUNT(CASE WHEN  nRelation=150 THEN  1 END ) as favor,
+				COUNT(CASE WHEN  nRelation=140 THEN  1 END ) as getwxno,
+				COUNT(CASE WHEN  nRelation=140 AND nStatus=2 THEN  1 END) as pass,
+				COUNT(CASE WHEN  nRelation=180 THEN  1 END) as gift
 				FROM im_user_net
 				WHERE nAddedOn BETWEEN :beginDT and :endDT AND nDeletedFlag=0 ";
 		$res4 = $conn->createCommand($sql)->bindValues([
@@ -1977,6 +1978,9 @@ class User extends ActiveRecord
 			':endDT' => $endDate,
 		])->queryOne();
 		if ($res4) {
+			foreach ($res4 as $field => $num) {
+				$service->add('act_' . $field, $num);
+			}
 			$trends['favor'] = intval($res4["favor"]); // 新增心动
 			$trends['getwxno'] = intval($res4["getwxno"]); // 新增牵线
 			$trends['pass'] = intval($res4["pass"]); // 新增牵线成功
@@ -1987,6 +1991,7 @@ class User extends ActiveRecord
 // 				from im_user_trans
 // 				WHERE tCategory=100 and tUnit='flower'
 // 					and tAddedOn BETWEEN :beginDT and :endDT ";
+
 		$sql = "select Round(SUM(p.pTransAmt/100.0),1) as amt
 			from im_user_trans as t 
 			join im_pay as p on p.pId=t.tPId
@@ -1996,17 +2001,19 @@ class User extends ActiveRecord
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
 		])->queryScalar();
-		if ($ret) {
-			$trends['recharge'] = intval($ret); // 新增心动
-		}
+		$ret = $ret ? $ret : 0;
+		$service->add('act_pay', $ret);
+		$trends['recharge'] = intval($ret); // 新增充值
 
 		$sql = "SELECT SUM(pTransAmt/100) as trans
 				FROM im_pay 
-				where pStatus=100 and pTransDate BETWEEN :beginDT AND :endDT  ";
+				WHERE pStatus=100 and pTransDate BETWEEN :beginDT AND :endDT  ";
 		$res5 = $conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
 		])->queryScalar();
+		$res5 = $res5 ? $res5 : 0;
+		$service->add('act_trans', $res5);
 		$trends['trans'] = intval($res5);
 
 		/*$sql = "SELECT count(1) as chat
@@ -2015,11 +2022,13 @@ class User extends ActiveRecord
 		$sql = " select count(distinct m.cGId) 
 			 from im_chat_msg as m
 			 join im_chat_group as g on g.gId=m.cGId 
-			  where m.cAddedOn between :beginDT and :endDT ";
+			  WHERE m.cAddedOn between :beginDT and :endDT and m.cDeletedFlag=0 ";
 		$res6 = $conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
 		])->queryScalar();
+		$res6 = $res6 ? $res6 : 0;
+		$service->add('act_chat', $res6);
 		$trends['chat'] = intval($res6);
 		return $trends;
 	}

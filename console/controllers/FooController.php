@@ -9,7 +9,6 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
-use common\models\Goods;
 use common\models\Img;
 use common\models\Pin;
 use common\models\User;
@@ -17,10 +16,10 @@ use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserTrans;
 use common\models\UserWechat;
+use common\service\TrendService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
-use common\utils\NoticeUtil;
 use common\utils\PushUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
@@ -1330,8 +1329,31 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
-		NoticeUtil::init(NoticeUtil::CAT_CHAT, $openId)->sendText();
+		$ret = strtotime('2017-12-03 12:09:04');
+		var_dump($ret);
+		$ret = strtotime(-2 . ' day' , strtotime('2017-12-03 12:09:04'));
+		var_dump($ret);
+		/*$counts = [150, 22, 5];
+		$steps = ['day', 'week', 'month'];
+		$service = TrendService::init();
+		foreach ($steps as $idx => $step) {
+			$cnt = $counts[$idx];
+			for ($k = $cnt; $k > -1; $k--) {
+				$dt = date('Y-m-d', strtotime(-$k . " " . $step));
+				$service->stat($step, $dt);
+				var_dump($step . ' ' . $dt . ' - ' . date('H:i:s'));
+				foreach ($ret as $field => $val) {
+					if (!isset($trends[$idx][$field])) {
+						$trends[$idx][$field] = [];
+					}
+					$trends[$idx][$field][] = $val;
+				}
+			}
+		}*/
+
+		/*$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
+
+		NoticeUtil::init(NoticeUtil::CAT_CHAT, $openId)->sendText();*/
 
 		/*$ret = UserTrans::stat(131379);
 		var_dump($ret);*/
