@@ -902,6 +902,7 @@ class SiteController extends BaseController
 				'category' => "data",
 				'today' => date('Y年n月j日', time()),
 				'trends' => json_encode($trends),
+				'date' => $date
 			]);
 	}
 

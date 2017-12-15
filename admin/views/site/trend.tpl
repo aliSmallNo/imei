@@ -9,8 +9,20 @@
 	}
 </style>
 <div class="row">
-	<div class="col-lg-9">
-		<p class="help-block">{{$today}}汇总数据(延迟10分钟左右)</p>
+	<p class="help-block">{{$today}}汇总数据(延迟10分钟左右)</p>
+</div>
+<div class="row">
+	<div class="col-lg-7"></div>
+	<div class="col-lg-2">
+		<div class="input-group custom-search-form">
+			<input type="text" class="my-date-input form-control queryDate" name="queryDate" value="{{$date}}"
+			       placeholder="下单时间">
+			<span class="input-group-btn">
+							<button class="btn btn-default btnQuery" type="button">
+								<span class="glyphicon glyphicon-search" style="color: #999;"></span>
+							</button>
+						</span>
+		</div>
 	</div>
 	<div class="col-lg-3">
 		<div class="btn-group" role="group">
@@ -63,6 +75,7 @@
 
 	var mTrends = $.parseJSON($('#cTrendsTmp').html());
 	var mTrend = null;
+	var mDate = $('.queryDate');
 
 	function initCharts() {
 		initChart('amt-chart', "amt");
@@ -71,12 +84,15 @@
 		initChart('active-chart', "active");
 	}
 
+	$(document).on('click', '.btnQuery', function () {
+		location.href = '/site/trend?dt=' + mDate.val();
+	});
+
 	$(document).on('click', 'button[tag]', function () {
 		var self = $(this);
 		var group = self.closest('div');
 		group.find('button').removeClass('active');
 		self.addClass('active');
-
 		initCharts();
 	});
 

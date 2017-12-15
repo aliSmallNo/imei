@@ -1262,7 +1262,6 @@ class FooController extends Controller
 					'gender' => []
 				];
 
-
 				$sql = "select count(distinct u.uId) as cnt,u.uGender 
 				from im_log_action as a 
 				join im_user as u on u.uId=a.aUId and u.uOpenId like 'oYDJew%' and u.uGender>9 and u.uPhone!=''
