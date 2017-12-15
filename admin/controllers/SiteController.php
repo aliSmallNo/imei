@@ -29,6 +29,7 @@ use common\models\UserTrans;
 use common\models\UserWechat;
 use common\service\CogService;
 use common\service\EventService;
+use common\service\TrendService;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
@@ -893,55 +894,15 @@ class SiteController extends BaseController
 
 	public function actionTrend()
 	{
-		$redis = RedisUtil::init(RedisUtil::KEY_STAT_TREND);
-		$trends = json_decode($redis->getCache(), 1);
-		$reset = self::getParam("reset");
-		if ($reset) {
-			$trends = [];
-		}
-		if (!$trends) {
-			$trends = [];
-			$counts = [30, 12, 12];
-			$steps = ['day', 'week', 'month'];
-			foreach ($steps as $idx => $step) {
-				$cnt = $counts[$idx];
-				for ($k = $cnt; $k > -1; $k--) {
-					$dt = date('Y-m-d', strtotime(-$k . " " . $step));
-					switch ($step) {
-						case 'day':
-							$begin = $dt . ' 00:00:00';
-							$end = $dt . ' 23:59:00';
-							break;
-						case 'week':
-							list($tmp, $begin, $end) = AppUtil::getWeekInfo($dt);
-							$begin .= ' 00:00:00';
-							$end .= ' 23:59:00';
-							break;
-						default:
-							list($tmp, $begin, $end) = AppUtil::getMonthInfo($dt);
-							$begin .= ' 00:00:00';
-							$end .= ' 23:59:00';
-							break;
-					}
-					$ret = User::trendStat($step, $begin, $end);
-					foreach ($ret as $field => $val) {
-						if (!isset($trends[$idx][$field])) {
-							$trends[$idx][$field] = [];
-						}
-						$trends[$idx][$field][] = $val;
-					}
-				}
-			}
-			$redis->setCache(json_encode($trends));
-		}
-
+		$date = self::getParam('dt', date('Y-m-d'));
+		$reset = self::getParam('reset', 0);
+		$trends = TrendService::init()->chartData($date, $reset);
 		return $this->renderPage('trend.tpl',
 			[
 				'category' => "data",
 				'today' => date('Y年n月j日', time()),
 				'trends' => json_encode($trends),
-			]
-		);
+			]);
 	}
 
 	// 留存率 统计

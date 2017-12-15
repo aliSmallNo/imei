@@ -386,11 +386,6 @@ class WechatUtil
 					"sub_button" => [
 						[
 							"type" => "view",
-							"name" => "我们派对吧",
-							"url" => $wxUrl . "/wx/enroll"
-						],
-						[
-							"type" => "view",
 							"name" => "官方活动",
 							//"url" => $wxUrl . "/wx/event"
 							"url" => $wxUrl . "/wx/mshare"
@@ -545,7 +540,7 @@ class WechatUtil
 			//Rain: 双12活动,买月卡获赠120媒桂花
 			if ($entity->pCategory == Pay::CAT_CHAT_MONTH
 				&& date('Y-m-d') >= '2017-12-12' && date('Y-m-d') <= '2017-12-13') {
-				UserTrans::add($payInfo['pUId'], $pid, UserTrans::CAT_FESTIVAL_BONUS,
+				UserTrans::add($payInfo['pUId'], '99' . $pid, UserTrans::CAT_FESTIVAL_BONUS,
 					'', 120, UserTrans::UNIT_GIFT, '双十二馈赠');
 			}
 
