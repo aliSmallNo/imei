@@ -220,7 +220,7 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 					if (resp.code < 1) {
 						//location.href = "#chat";
 						$sls.main.show();
-						var html = '<img sec="' + resp.data.src + '">';
+						var html = '<img src="' + resp.data.src + '" style="width: 100%">';
 						$sls.content.html(html).addClass("animate-pop-in");
 						$sls.shade.fadeIn(160);
 					} else {

@@ -94,7 +94,7 @@ class UserQR extends ActiveRecord
 		switch ($category) {
 			case self::CATEGORY_ROOM:
 				if (!$code) {
-					$code = 'room';
+					$code = 'room-102';
 				}
 				if (strpos($code, 'room') === false) {
 					$code = 'room-' . $code;
