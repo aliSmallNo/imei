@@ -65,6 +65,7 @@
 <input type="hidden" id="cLASTID" value="{{$lastId}}">
 <input type="hidden" id="memberFlag" value="{{$memberFlag}}">
 <input type="hidden" id="lastUId" value="{{$lastUId}}">
+<input type="hidden" id="subscribe" value="{{$subscribe}}">
 
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
@@ -160,7 +161,7 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	if (document.location.hash === "" || document.location.hash === "#") {
-		document.getElementById("memberFlag").value == 1 ? document.location.hash = "#chat" : document.location.hash = "#join";
+		document.getElementById("subscribe").value == 1 ? document.location.hash = "#chat" : document.location.hash = "#join";
 	}
 	requirejs(['/js/config.js?v=1.2'], function () {
 		requirejs(['/js/groom.js?v=1.2.1']);

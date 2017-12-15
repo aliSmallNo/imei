@@ -40,7 +40,7 @@ class ChatRoomFella extends ActiveRecord
 		return true;
 	}
 
-	public static function addone($rId, $uId)
+	public static function addOne($rId, $uId)
 	{
 		$conn = AppUtil::db();
 		$sql = "INSERT INTO im_chat_room_fella(mRId,mUId)

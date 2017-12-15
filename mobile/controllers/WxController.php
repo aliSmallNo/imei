@@ -2004,9 +2004,10 @@ class WxController extends BaseController
 			header('location:/wx/error');
 			exit();
 		}
-		// ChatRoomFella::addone($rid, $uid);
-
-		$memberFlag = ChatRoomFella::checkIsMember($rid, $uid) && UserWechat::findOne(["wUId" => $uid])->wSubscribe == 1;
+		// 加入群聊
+		ChatRoomFella::addOne($rid, $uid);
+		$wSubscribe = UserWechat::findOne(["wUId" => $uid])->wSubscribe;
+		$memberFlag = ChatRoomFella::checkIsMember($rid, $uid) &&  $wSubscribe== 1;
 
 		$adminUId = $roomInfo["rAdminUId"];
 		return self::renderPage("groom.tpl",
@@ -2020,6 +2021,7 @@ class WxController extends BaseController
 				"lastId" => $roomInfo["rLastId"],
 				"memberFlag" => $memberFlag,
 				"lastUId" => $lastUID,
+				"subscribe" => $wSubscribe,
 			],
 			'terse',
 			'千寻聊天室',

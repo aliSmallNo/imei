@@ -10,6 +10,7 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 			rid: $("#cRID").val(),
 			uid: $("#cUID").val(),
 			lastuid: $("#lastUId").val(),
+			subscribe: $("#subscribe").val(),
 			loading: 0,
 			lastId: $("#cLASTID").val(),
 			currentlastId: $("#cLASTID").val(),
@@ -202,7 +203,11 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 			init: function () {
 				var util = this;
 				util.joinBtn.on(kClick, function () {
-					util.ToJoin();
+					if ($sls.subscribe == 1) {
+						location.href = "#chat";
+					} else {
+						util.ToJoin();
+					}
 				});
 			},
 			ToJoin: function () {
