@@ -2103,4 +2103,5 @@ class WxController extends BaseController
 			'千寻商城',
 			'bg-color');
 	}
+
 }

@@ -1466,7 +1466,8 @@ class FooController extends Controller
 //		$gInfo = Goods::items(["gId" => 6004])[0];
 //		print_r($gInfo);
 
-		 UserQR::shareRoom(120003,101);
+		 // UserQR::shareRoom(120003,101);
+		echo UserQR::createQR(120003, UserQR::CATEGORY_ROOM, 'room-' . 101, "长按关注-进入房间");
 	}
 
 
