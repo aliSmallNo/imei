@@ -1472,11 +1472,7 @@ class FooController extends Controller
 
 		//echo UserQR::createQR(120003, UserQR::CATEGORY_ROOM, 'room-' . 101, "长按关注-进入房间");
 
-		list($res) = ChatRoom::item(AppUtil::db(), 101);
-		foreach ($res as $v) {
-			$expInfo = UserTag::getExp($v["uId"]);
-			echo "level_name: " . $expInfo['level_name'] . " next: " . $expInfo["next"] . PHP_EOL;
-		}
+		UserNet::add(143807, 120003, UserNet::REL_JOIN_ROOMS);
 
 	}
 

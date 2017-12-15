@@ -88,7 +88,7 @@
 	}
 	.chats li .content .name i.lever{
 		display: inline-block;
-		height: 1.2rem;
+		height: 1.35rem;
 		width: 2.5rem;
 		background-image: url(/images/sprite_lv.png);
 		background-size: 3rem 5.5rem;
