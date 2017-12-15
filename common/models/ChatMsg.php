@@ -332,7 +332,7 @@ class ChatMsg extends ActiveRecord
 			unset($param[":rlastid"]);
 		}
 
-		$sql = "SELECT c.* ,uName,uThumb,uPhone,uId,uUniqid as uni,m.mBanFlag
+		$sql = "SELECT c.* ,u.*,m.mBanFlag
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
@@ -350,7 +350,10 @@ class ChatMsg extends ActiveRecord
 	{
 		$res = [];
 		foreach ($chatlist as $v) {
+			$expInfo = UserTag::getExp($v["uId"]);
 			$res[] = [
+				'pic_level' => $expInfo["pic_level"],
+				'pic_name' => isset($expInfo["pic_name"]) ? $expInfo["pic_name"] : "01",
 				'cid' => $v["cId"],
 				'rid' => $rId,
 				'dir' => $v["cAddedBy"] == $uid ? "right" : 'left',
@@ -360,8 +363,9 @@ class ChatMsg extends ActiveRecord
 				'type' => self::TYPE_TEXT,
 				'name' => $v['uName'],
 				'phone' => $v['uPhone'],
+				'isMember' => $v['uPhone'] ? 1 : 0,
 				'avatar' => $v['uThumb'],
-				'uni' => $v['uni'],
+				'uni' => $v['uUniqid'],
 				'senderid' => $v['uId'],
 				'ban' => intval($v['mBanFlag']),
 				'eid' => AppUtil::encrypt($v['uId']),
@@ -376,7 +380,7 @@ class ChatMsg extends ActiveRecord
 		$conn = AppUtil::db();
 		list($adminUId, $rlastId) = self::getAdminUIdLastId($conn, $rId);
 		$limit = " limit " . ($page - 1) * $pagesize . "," . ($pagesize + 1);
-		$sql = "SELECT c.* ,uName,uThumb,uPhone,uId,uUniqid as uni,m.mBanFlag
+		$sql = "SELECT c.* ,u.*,m.mBanFlag
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy

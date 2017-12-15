@@ -81,10 +81,33 @@
 	.chats li .content .name {
 		font-size: 1rem;
 		margin-bottom: .2rem;
+		direction: ltr;
 	}
-
+	.chats li .content .name i{}
+	.chats li .content .name i img{
+		width: 2rem;
+	}
 	.chats li .content:after,.chats li.right .content:after {
 		top: 2.5rem;
+	}
+	.chats li .content .name i.lever{
+		display: inline-block;
+		height: 1.2rem;
+		width: 2.5rem;
+		background-image: url(/images/sprite_lv.png);
+		background-size: 3rem 5.5rem;
+		background-repeat: no-repeat;
+		-moz-box-sizing: border-box;
+		background-position: 0 0;
+		position: relative;
+	}
+	.chats li .content .name i.lever em{
+		display: inline-block;
+		font-size: .7rem;
+		color: #fff;
+		position: absolute;
+		right: 0;
+		top: .08rem;
 	}
 </style>
 <script type="text/template" id="tpl_chat">
@@ -93,7 +116,14 @@
 	<li class="{[dir]}" data-r="{[readflag]}">
 		<a href="/wx/sh?id={[eid]}" {[#eid]}data-eid="{[.]}" {[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
 		<div class="content read{[readflag]}">
-			<div class="name">{[name]}</div>
+			<div class="name">
+				{[#isAdmin]}<i><img src="/images/cr_ico_admin.png"></i>{[/isAdmin]}
+				{[#isMember]}<i><img src="/images/cr_ico_member.png"></i>{[/isMember]}
+				{[^isMember]}<i><img src="/images/cr_ico_new.png"></i>{[/isMember]}
+				<i class="lever"><em>{[pic_name]}</em></i>
+
+				<span>{[name]}</span>
+			</div>
 			<a href="javascript:;" class="j-content-wrap">
 				{[#image]}<img src="{[.]}">{[/image]}
 				{[^image]}{[content]}{[/image]}

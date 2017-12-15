@@ -186,7 +186,7 @@ class ChatRoom extends ActiveRecord
 		$conn = AppUtil::db();
 		list($adminUId, $rlastId) = ChatMsg::getAdminUIdLastId($conn, $rId);
 		$limit = " limit " . ($page - 1) * $pagesize . "," . ($pagesize + 1);
-		$sql = "SELECT c.* ,uName,uThumb,uPhone,uId,uUniqid as uni,m.mBanFlag
+		$sql = "SELECT c.* ,u.*,m.mBanFlag
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
@@ -209,7 +209,7 @@ class ChatRoom extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		list($adminUId, $rlastId) = ChatMsg::getAdminUIdLastId($conn, $rId);
-		$sql = "SELECT c.* ,uName,uThumb,uPhone,uId,uUniqid as uni,m.mBanFlag
+		$sql = "SELECT c.* ,u.*,m.mBanFlag
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
