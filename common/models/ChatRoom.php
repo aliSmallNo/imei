@@ -46,6 +46,8 @@ class ChatRoom extends ActiveRecord
 			"logo" => "rLogo",
 			"admin" => "rAdminUId",
 			"title" => "rTitle",
+			"intro" => "rNote",
+			"limit" => "rLimit",
 		];
 		$insertData = [];
 		foreach ($data as $k => $v) {

@@ -155,15 +155,26 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label">群名称</label>
 						<div class="col-sm-7">
-							<input class="form-control" required="" data-tag="title" placeholder="(必填)" value="">
+							<input class="form-control"  data-tag="title" placeholder="(必填)" value="">
 						</div>
 					</div>
-
+					<div class="form-group">
+						<label class="col-sm-3 control-label">群介绍</label>
+						<div class="col-sm-7">
+							<textarea class="form-control"  data-tag="intro" rows="4" maxlength="300"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">群人数上限</label>
+						<div class="col-sm-7">
+							<input class="form-control"  data-tag="limit" placeholder="(必填)" value="" type="number">
+						</div>
+					</div>
 					<div class="form-group">
 						<label class="col-sm-3 control-label">群主</label>
 						<div class="col-sm-7">
 							<div class="form-group input-group" style="margin: 0">
-								<input type="text" class="form-control" name="name" id="searchName" required="" placeholder="(必填)">
+								<input type="text" class="form-control" name="name" id="searchName"  placeholder="(必填)">
 								<span class="input-group-btn">
 									<button class="btn btn-default" type="button">
 										<i class="fa fa-search"></i>
@@ -222,14 +233,12 @@
 
 
 	function intakeForm() {
-		var ft ={title:"群名称",admin:'群主'};
+		var ft ={title:"群名称",admin:'群主',intro:'群介绍',limit:'上限人数'};
 		var data ={}, err = 0;
 		$.each($(".form-horizontal [data-tag]"), function () {
 			var self = $(this);
 			var field = self.attr("data-tag");
 			var val = self.val().trim();
-			console.log(field);
-			console.log(val);
 			if (!val) {
 				err = 1;
 				BpbhdUtil.showMsg(ft[field] + "未填写");
@@ -250,19 +259,23 @@
 			return false;
 		}
 
-		BpbhdUtil.loading();
 		var formData = new FormData();
 		formData.append("tag", 'edit');
 		formData.append("data", JSON.stringify(data));
 		var photo = $('input[name="upload_photo"]');
-		if (photo.length) {
+		if (photo[0].files[0]) {
 			formData.append("image", photo[0].files[0]);
+		}else{
+			BpbhdUtil.showMsg("群logo没选择哦~");
+			return;
 		}
-//		console.log(photo[0].files[0]);
-//		console.log(formData);
-//		console.log(data);
-//		return;
+		// console.log(photo[0].files[0]);
+		// console.log(formData);
+		// console.log(photo.length);
+		// console.log(data);
+		// return;
 
+		BpbhdUtil.loading();
 		$.ajax({
 			url: "/api/room",
 			type: "POST",

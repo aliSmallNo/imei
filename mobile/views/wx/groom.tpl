@@ -123,7 +123,6 @@
 				{[^isMember]}<i><img src="/images/cr_ico_new.png"></i>{[/isMember]}
 				{[/isAdmin]}
 				<i class="lever"><em>{[pic_name]}</em></i>
-
 				<span>{[name]}</span>
 			</div>
 			<a href="javascript:;" class="j-content-wrap">
@@ -151,7 +150,7 @@
 <script type="text/template" id="memTmp">
 	{[#data]}
 	<li class="cr-member">
-		<a href="/wx/sh?id={[eid]}">
+		<a href="{[#uPhone]}/wx/sh?id={[eid]}{[/uPhone]}{[^uPhone]}javascript:;{[/uPhone]}" data-eid="{[eid]}">
 			<img src="{[uThumb]}">
 			<p>{[uName]}</p>
 		</a>

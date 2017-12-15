@@ -525,6 +525,11 @@ class WxController extends BaseController
 		if (!$isMember) {
 			$uInfo["encryptId"] = '';
 		}
+		$gay = 1;
+		if (in_array($uInfo["gender"], [User::GENDER_FEMALE, User::GENDER_MALE])
+			&& $this->user_gender != $uInfo["gender"]) {
+			$gay = 0;
+		}
 		return self::renderPage("shome.tpl",
 			[
 				'nickname' => $nickname,
@@ -542,7 +547,7 @@ class WxController extends BaseController
 				'genderName' => $genderName,
 				'isMember' => $isMember,
 				'hideFlag' => $hideFlag,
-				"gay" => $this->user_gender == $uInfo["gender"],
+				"gay" => $gay,
 			],
 			'terse');
 	}

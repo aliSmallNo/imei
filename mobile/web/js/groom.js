@@ -251,11 +251,18 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 
 		var memUtil = {
 			page: 1,
+			eid: '',
 			memUL: $(".cr-members ul"),
 			memTmp: $("#memTmp").html(),
 			init: function () {
 				var util = this;
-
+				$(document).on(kClick, ".cr-member a", function () {
+					var self = $(this);
+					var href = self.attr("href");
+					if (href.length < 15) {
+						alpha.toast("无法查看新用户");
+					}
+				});
 			},
 			memberList: function () {
 				var util = this;
@@ -352,6 +359,7 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 			NoticeUtil.init();
 			chatUtil.init();
 			joinUtil.init();
+			memUtil.init();
 
 			window.onhashchange = locationHashChanged;
 			locationHashChanged();
