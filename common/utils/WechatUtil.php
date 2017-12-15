@@ -11,6 +11,7 @@ namespace common\utils;
 
 use admin\models\Admin;
 use common\models\Date;
+use common\models\Order;
 use common\models\Pay;
 use common\models\RedpacketTrans;
 use common\models\User;
@@ -524,11 +525,17 @@ class WechatUtil
 					UserTag::addByPId(UserTag::CAT_CHAT_SEASON, $pid);
 					$transCat = UserTrans::CAT_CHAT_SEASON;
 					break;
+				case PAY::CAT_SHOP:
+					$transCat = UserTrans::CAT_EXCHANGE_YUAN;
+					break;
 				default:
 					$transCat = UserTrans::CAT_RECHARGE;
 					break;
 			}
-			UserTrans::addByPId($pid, $transCat);
+			$tid = UserTrans::addByPId($pid, $transCat);
+			if ($cat == PAY::CAT_SHOP) {
+				Order::editByPId($pid, $tid);
+			}
 			$curDate = date('Ymd');
 			//Rain: 感恩节馈赠
 			if (isset($payInfo['pUId']) && $curDate >= 20171124 && $curDate <= 20171126) {

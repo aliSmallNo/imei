@@ -15,9 +15,11 @@ use common\models\City;
 use common\models\Date;
 use common\models\EventCrew;
 use common\models\Feedback;
+use common\models\Goods;
 use common\models\Log;
 use common\models\LogAction;
 use common\models\Lottery;
+use common\models\Order;
 use common\models\Pay;
 use common\models\Pin;
 use common\models\QuestionSea;
@@ -44,6 +46,7 @@ use common\utils\PayUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
+use function Sodium\add;
 use Yii;
 use yii\web\Controller;
 use yii\web\Response;
@@ -2114,6 +2117,10 @@ class ApiController extends Controller
 				break;
 			case "join_apply":
 				$rid = trim(self::postParam('rid'));
+				$lastuid = trim(self::postParam('lastuid'));
+				if ($lastuid) {
+					UserNet::add($lastuid, $uid, UserNet::REL_JOIN_ROOMS);
+				}
 				// 加入群聊
 				ChatRoomFella::addone($rid, $uid);
 				return self::renderAPI(0, '', [
@@ -2218,6 +2225,75 @@ class ApiController extends Controller
 					"rooms" => $res,
 					"nextpage" => $nextpage,
 				]);
+				break;
+		}
+		return self::renderAPI(129, '操作无效~');
+	}
+
+	public function actionShop()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$openId = self::postParam('openid');
+		if (!$openId) {
+			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		}
+		$gid = self::postParam('id');
+		$wx_info = UserWechat::getInfoByOpenId($openId);
+		$wx_uid = 0;
+		$wx_role = User::ROLE_SINGLE;
+		$wx_name = $wx_eid = $wx_thumb = '';
+		if ($wx_info) {
+			$wx_uid = $wx_info['uId'];
+			$wx_name = $wx_info['uName'];
+			$wx_thumb = $wx_info['uThumb'];
+			$wx_eid = AppUtil::encrypt($wx_uid);
+			$wx_role = $wx_info['uRole'];
+		}
+		switch ($tag) {
+			case "exchange":
+				$num = self::postParam("num");
+				if ($num <= 0) {
+					return self::renderAPI(129, '请选择数量~');
+				}
+				$gInfo = Goods::items(["gId" => $gid]);
+				if (!$gInfo) {
+					return self::renderAPI(129, '商品错误~');
+				}
+				$gInfo = $gInfo[0];
+				$amt = $gInfo["price"] * $num;
+				$unit = $gInfo["unit"];
+				$insertData = [
+					"oUId" => $wx_uid, "oGId" => $gid, "oNum" => $num, "oAmount" => $amt, "oStatus" => Order::ST_DEFAULT
+				];
+				if ($unit == Goods::UNIT_FLOWER) {
+					$remain = UserTrans::getStat($wx_uid, 1)["flower"];
+					if ($remain < $amt) {
+						return self::renderAPI(129, '媒瑰花不足~');
+					}
+					Order::exchange($insertData, $unit);
+					return self::renderAPI(0, '兑换成功~');
+				} else if ($unit == Goods::UNIT_YUAN) {
+					$title = '千寻恋恋 - 商城交易';
+					$payFee = intval($amt * 100.0);
+					$subTitle = '商城交易';
+					$oId = Order::add($insertData);
+					$payId = Pay::prepay($wx_uid, $oId, $payFee, PAY::CAT_SHOP);
+					if (AppUtil::isDev()) {
+						return self::renderAPI(129, '请在服务器测试该功能~');
+					}
+					if (AppUtil::isDebugger($wx_uid)) {
+						$payFee = 1;
+					}
+					$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);
+					if ($ret) {
+						return self::renderAPI(0, '', [
+							'prepay' => $ret,
+							'amt' => $amt,
+							'payId' => $payId,
+						]);
+					}
+				}
+				return self::renderAPI(129, '参数错误~');
 				break;
 		}
 		return self::renderAPI(129, '操作无效~');

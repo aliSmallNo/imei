@@ -1,4 +1,4 @@
-require(["jquery", "alpha", "mustache", 'socket'],
+require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 	function ($, alpha, Mustache, io) {
 		"use strict";
 		var kClick = 'click';
@@ -9,6 +9,7 @@ require(["jquery", "alpha", "mustache", 'socket'],
 			toppl: $('.cr-top-pl'),
 			rid: $("#cRID").val(),
 			uid: $("#cUID").val(),
+			lastuid: $("#lastUId").val(),
 			loading: 0,
 			lastId: $("#cLASTID").val(),
 			currentlastId: $("#cLASTID").val(),
@@ -139,6 +140,14 @@ require(["jquery", "alpha", "mustache", 'socket'],
 					if (resp.code < 1) {
 						util.text = "";
 						util.input.val('');
+					} else if (resp.code == 128) {
+						layer.open({
+							content: resp.msg
+							, btn: ['去注册', '暂不']
+							, yes: function (index) {
+								location.href = "/wx/hi";
+							}
+						});
 					} else {
 						alpha.toast(resp.msg);
 					}
@@ -181,7 +190,7 @@ require(["jquery", "alpha", "mustache", 'socket'],
 
 		var joinUtil = {
 			joinCount: $(".cr-join-member h4 span"),
-			joinUL: $(".cr-join-member ul"),
+			joinUL: $(".cr-join-member a.ul"),
 			joinTmp: $("#joinTmp").html(),
 			joinBtn: $(".cr-join-btn a"),
 			init: function () {
@@ -199,6 +208,7 @@ require(["jquery", "alpha", "mustache", 'socket'],
 				$.post("/api/chatroom", {
 					tag: "join_apply",
 					rid: $sls.rid,
+					lastuid: $sls.lastuid,
 				}, function (resp) {
 					$sls.loading = 0;
 					if (resp.code < 1) {
@@ -294,7 +304,7 @@ require(["jquery", "alpha", "mustache", 'socket'],
 		}
 
 		function shareOptions(type) {
-			var linkUrl = "https://wx.meipo100.com/wx/groom?rid=" + $sls.rid;
+			var linkUrl = "https://wx.meipo100.com/wx/groom?rid=" + $sls.rid + "uid=" + $sls.uid;
 			var imgUrl = "https://bpbhd-10063905.file.myqcloud.com/image/n1712061178801.png";
 			var title = '千寻恋恋，本地优质的单身男女群，赶快进来相互认识下吧！';
 			var desc = '千寻恋恋，帮助身边的单身青年尽快脱单';

@@ -32,7 +32,7 @@
 		</select>
 		<select  class="form-control" name="tag">
 			<option value="">-=选择发送用户群=-</option>
-			<option value="inactive">审核通过的 关注状态的 近七天不活跃用户</option>
+			<option value="inactive">审核通过的、关注状态的、近七天不活跃用户</option>
 			<option value="reg">一周内注册用户</option>
 			<option value="rose">媒瑰花少于20朵</option>
 		</select>

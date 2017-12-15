@@ -1988,6 +1988,8 @@ class WxController extends BaseController
 	public function actionGroom()
 	{
 		$rid = self::getParam("rid");
+		// $lastUID => 谁转发过来的
+		$lastUID = self::getParam("uid");
 		if (!$rid) {
 			$rid = 101;
 		}
@@ -2012,6 +2014,7 @@ class WxController extends BaseController
 				"isadmin" => $adminUId == $uid ? 1 : 0,
 				"lastId" => $roomInfo["rLastId"],
 				"memberFlag" => $memberFlag,
+				"lastUId" => $lastUID,
 			],
 			'terse',
 			'千寻聊天室',
@@ -2064,7 +2067,40 @@ class WxController extends BaseController
 				'bags' => $bags
 			],
 			'terse',
-			'我的媒桂花',
+			'千寻商城',
+			'bg-color');
+	}
+
+	public function actionShopbag()
+	{
+		if ($this->user_id) {
+			$avatar = $this->user_avatar;
+			$nickname = $this->user_name;
+		} else {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+		$headers = CogService::init()->homeHeaders(true);
+		foreach ($headers as $k => $header) {
+			$headers[$k]['image'] = $header['content'];
+			unset($headers[$k]['content'], $headers[$k]['id']);
+		}
+		$gifts = Goods::items(['gCategory' => Goods::CAT_BAG, 'gStatus' => 1]);
+		$receive = [];
+		$prop = [];
+
+		return self::renderPage("shopbag.tpl",
+			[
+				'uid' => $this->user_id,
+				'avatar' => $avatar,
+				'nickname' => $nickname,
+				'headers' => $headers,
+				'gifts' => $gifts,
+				'receive' => $receive,
+				'prop' => $prop
+			],
+			'terse',
+			'千寻商城',
 			'bg-color');
 	}
 }

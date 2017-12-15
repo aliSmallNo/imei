@@ -74,7 +74,7 @@
 		<span class="amount">199</span>
 		<span class="unit">媒桂花</span>
 	</div>
-	<a class="btn-next">立即兑换</a>
+	<a href="javascript:;" class="btn-next">立即兑换</a>
 </div>
 
 <input type="hidden" id="cUID" value="{{$uid}}">
@@ -100,6 +100,6 @@
 		document.location.hash = "#sec_home";
 	}
 	requirejs(['/js/config.js?v=1.2.3'], function () {
-		requirejs(['/js/shop.js?v=1.2.3']);
+		requirejs(['/js/shop.js?v=1.2.7']);
 	});
 </script>
