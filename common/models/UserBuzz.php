@@ -118,6 +118,7 @@ class UserBuzz extends ActiveRecord
 					if ($qrInfo) {
 						$content = $qrInfo["qCode"];
 						$debug .= $addResult . "**";
+						$rid = "";
 						if (strpos($content, 'room') === true) {
 							$rid = substr($content, 5);
 							$content = "room";
