@@ -1141,9 +1141,9 @@ class WechatUtil
 			var_dump($cnt);
 		}
 		if ($cnt > 1) {
-			$content = '你好，在么？😁
+			$content = '【微信红包】恭喜发财，大吉大利                                                                                                    
 
-你有一个通讯录好友在‘千寻恋恋’上将你设置为‘暗恋对象’。由于你尚未注册千寻恋恋，特以微信通知。如果你们互相‘暗恋’，系统会为你们自动配对。👉<a href="https://wx.meipo100.com/wx/hi">点击链接</a>👈，作出你的选择。';
+【88888元现金红包最后一天大派送】聊天立即获得现金大红包，先到先得送完为止🎉🎉🎉 👉<a href="https://wx.meipo100.com/wx/hi">点击链接</a>👈';
 			//$content = '你的一位微信联系人在［千寻恋恋］上将你设置为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
 //			$ret = UserWechat::sendMsg($openIds, $content, $debug);
 			$cnt = 0;
