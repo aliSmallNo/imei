@@ -119,7 +119,7 @@ class UserBuzz extends ActiveRecord
 						$content = $qrInfo["qCode"];
 						$debug .= $addResult . "**";
 						$rid = "";
-						if (strpos($content, 'room') === true) {
+						if (strpos($content, 'room') !== false) {
 							$rid = substr($content, 5);
 							$content = "room";
 						}
@@ -137,7 +137,7 @@ class UserBuzz extends ActiveRecord
 							$content = $qrInfo["qCode"];
 							self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SUBSCRIBE, $qId);
 							$rid = "";
-							if (strpos($content, 'room') === true) {
+							if (strpos($content, 'room') !== false) {
 								$rid = substr($content, 5);
 								$content = "room";
 							}
