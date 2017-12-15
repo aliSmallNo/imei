@@ -82,6 +82,7 @@
 	.chats li .content .name i{}
 	.chats li .content .name i img{
 		width: 2rem;
+		height: 1.35rem;
 	}
 	.chats li .content:after,.chats li.right .content:after {
 		top: 2.5rem;
