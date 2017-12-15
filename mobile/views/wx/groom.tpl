@@ -5,16 +5,12 @@
 				<img src="{{$roomInfo.rLogo}}">
 			</div>
 			<div class="cr-join-logo-r">
-				<span src="">{{$roomInfo.rTitle}}</span>
+				<span>{{$roomInfo.rTitle}}</span>
 			</div>
 		</div>
 		<div class="cr-join-intro">
 			<h4>群介绍</h4>
-			<p>1.本群是严肃，健康的相亲交友群，严禁各种与本群主题无关的聊天。<br>
-				2.不得利用聊天室制作、复制和传播下列信息<br>
-				散布谣言，扰乱社会秩序的<br>
-				宣扬封建迷信、淫秽、赌博、暴力的<br>
-				进行未经许可商业广告行为的。</p>
+			<p>{{$roomInfo.rNote}}</p>
 		</div>
 		<div class="cr-join-member">
 			<h4>全部群成员(<span>0</span>)</h4>

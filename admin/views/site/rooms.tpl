@@ -73,16 +73,19 @@
 			<th class="col-sm-1">
 				群信息
 			</th>
+			<th class="col-sm-3">
+				群介绍
+			</th>
 			<th class="col-sm-1">
 				群主
 			</th>
-			<th class="col-sm-2">
+			<th class="col-sm-1">
 				群主信息
 			</th>
 			<th class="col-sm-2">
 				群成员
 			</th>
-			<th class="col-sm-3">
+			<th class="col-sm-2">
 				群成员信息
 			</th>
 			<th>
@@ -100,8 +103,13 @@
 				<img src="{{$item.rLogo}}">
 			</td>
 			<td>
+				<div>群上限: {{$item.rLimit}}人</div>
 				<div>群员数: {{$item.count}}</div>
 				<a href="https://wx.meipo100.com/wx/groom?rid={{$item.rId}}" title="点击右键，拷贝链接，发到微信中，才可以打开">{{$item.rTitle}}</a>
+				<br>
+			</td>
+			<td>
+				<div>{{$item.rNote}}</div>
 			</td>
 			<td align="center">
 				<img src="{{$item.uThumb}}" class="i-av" bsrc="{{$item.uThumb}}">
