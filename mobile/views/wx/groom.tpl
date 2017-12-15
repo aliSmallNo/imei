@@ -118,8 +118,10 @@
 		<div class="content read{[readflag]}">
 			<div class="name">
 				{[#isAdmin]}<i><img src="/images/cr_ico_admin.png"></i>{[/isAdmin]}
+				{[^isAdmin]}
 				{[#isMember]}<i><img src="/images/cr_ico_member.png"></i>{[/isMember]}
 				{[^isMember]}<i><img src="/images/cr_ico_new.png"></i>{[/isMember]}
+				{[/isAdmin]}
 				<i class="lever"><em>{[pic_name]}</em></i>
 
 				<span>{[name]}</span>
