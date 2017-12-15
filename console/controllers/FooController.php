@@ -14,9 +14,11 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
+use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
+use common\utils\ExcelUtil;
 use common\utils\NoticeUtil;
 use common\utils\PushUtil;
 use common\utils\WechatUtil;
@@ -974,21 +976,355 @@ class FooController extends Controller
 		var_dump($cnt);
 	}
 
+	public function actionRecharge()
+	{
+		$conn = AppUtil::db();
+		$sql = "select IFNULL(p.pTransAmt,0) as amt,u.uId,u.uName,u.uPhone,u.uGender,u.uMarital,u.uAddedOn,u.uBirthYear,
+		   t.tAddedOn,t.tUnit,t.tAmt,t.tCategory,t.tTitle,t.tNote
+		  from im_user_trans as t
+		  join im_user as u on u.uId = t.tUId
+		  left join im_pay as p on p.pId=t.tPId and p.pStatus=100
+		   where  t.tDeletedFlag=0  
+		   and exists(select 1 from im_pay as a where a.pUId=u.uId and a.pStatus=100)
+		  order by u.uId,t.tAddedOn";
+		$ret = $conn->createCommand($sql)->queryAll();
+		$data = $uIds = [];
+		$data['title'] = '充值统计';
+		$data['id'] = [];
+		$data['name'] = [];
+		$data['phone'] = [];
+		$data['gender'] = [];
+		$data['marital'] = [];
+		$data['addon'] = [];
+		$data['age'] = [];
+		$data['amt'] = [];
+		$data['pre_amt'] = [];
+		$data['pre_chat'] = [];
+		$data['pre_chat_cg'] = [];
+		$data['pre_chat_bd'] = [];
+		$data['pre_sign'] = [];
+		$data['pre_date'] = [];
+		$data['w0_chat'] = [];
+		$data['w0_chat_cg'] = [];
+		$data['w0_chat_bd'] = [];
+		$data['w0_sign'] = [];
+		$data['w0_date'] = [];
+		$data['w1_chat'] = [];
+		$data['w1_chat_cg'] = [];
+		$data['w1_chat_bd'] = [];
+		$data['w1_sign'] = [];
+		$data['w1_date'] = [];
+		$preAmt = 0;
+		$sql = " select count(distinct m.cGId) as cnt, 
+ count(distinct (case when m.cAddedBy!=:uid then  m.cGId end)) as cg_cnt,
+ count(distinct (case when g.gAddedBy!=:uid then  g.gId end)) as bd_cnt
+ from im_chat_msg as m
+ join im_chat_group as g on g.gId=m.cGId
+ where (g.gUId1 =:uid or g.gUId2 =:uid) AND gAddedOn<:dt ";
+		$cmdChat = $conn->createCommand($sql);
+
+		$sql = " select count(distinct m.cGId) as cnt, 
+ count(distinct (case when m.cAddedBy!=:uid then  m.cGId end)) as cg_cnt,
+ count(distinct (case when g.gAddedBy!=:uid then  g.gId end)) as bd_cnt
+ from im_chat_msg as m
+ join im_chat_group as g on g.gId=m.cGId
+ where (g.gUId1 =:uid or g.gUId2 =:uid) AND gAddedOn BETWEEN :dt0 AND :dt1 ";
+		$cmdChat0 = $conn->createCommand($sql);
+
+		$sql = 'select count(1) as cnt from im_user_sign where sUId=:uid and sTime<:dt';
+		$cmdSign = $conn->createCommand($sql);
+
+		$sql = 'select count(1) as cnt from im_user_sign where sUId=:uid and sTime BETWEEN :dt0 AND :dt1';
+		$cmdSign0 = $conn->createCommand($sql);
+
+		$sql = 'select count(1) as cnt from im_date where (dUId1=:uid or dUId2=:uid) and dDate< :dt ';
+		$cmdDate = $conn->createCommand($sql);
+
+		$sql = 'select count(1) as cnt from im_date where (dUId1=:uid or dUId2=:uid) and dDate BETWEEN :dt0 AND :dt1 ';
+		$cmdDate0 = $conn->createCommand($sql);
+
+		foreach ($ret as $row) {
+			$uid = $row['uId'];
+			$cat = $row['tCategory'];
+			if (!in_array($uid, $uIds)) {
+				/*$users[$uid] = [
+					'id' => $uid,
+					'name' => $row['uName'],
+					'phone' => $row['uPhone'],
+					'gender' => $row['uGender'] == 11 ? '男' : '女',
+					'marital' => User::$Marital[$row['uMarital']],
+					'addon' => $row['uAddedOn'],
+					'age' => date('Y') - $row['uBirthYear'],
+					'items' => []
+				];*/
+				$uIds[] = $uid;
+				$preAmt = 0;
+			}
+
+			if ($row['amt'] > 0) {
+				$data['id'][] = $uid;
+				$data['name'][] = $row['uName'];
+				$data['phone'][] = $row['uPhone'];
+				$data['gender'][] = $row['uGender'] == 11 ? '男' : '女';
+				$data['marital'][] = isset(User::$Marital[$row['uMarital']]) ? User::$Marital[$row['uMarital']] : '';
+				$data['addon'][] = $row['uAddedOn'];
+				$data['age'][] = date('Y') - $row['uBirthYear'];
+				$data['pre_amt'][] = $preAmt;
+				$data['amt'][] = round($row['amt'] / 100.0, 2);
+				$data['dt'][] = $row['tAddedOn'];
+				$chatInfo = $cmdChat->bindValues([
+					':uid' => $uid,
+					':dt' => $row['tAddedOn'],
+				])->queryOne();
+				$data['pre_chat'][] = $chatInfo['cnt'];
+				$data['pre_chat_cg'][] = $chatInfo['cg_cnt'];
+				$data['pre_chat_bd'][] = $chatInfo['bd_cnt'];
+
+				$chatInfo = $cmdChat0->bindValues([
+					':uid' => $uid,
+					':dt0' => date('Y-m-d', strtotime($row['tAddedOn']) - 86400 * 6),
+					':dt1' => date('Y-m-d 23:59', strtotime($row['tAddedOn'])),
+				])->queryOne();
+				$data['w0_chat'][] = $chatInfo['cnt'];
+				$data['w0_chat_cg'][] = $chatInfo['cg_cnt'];
+				$data['w0_chat_bd'][] = $chatInfo['bd_cnt'];
+
+				$chatInfo = $cmdChat0->bindValues([
+					':uid' => $uid,
+					':dt0' => date('Y-m-d 00:00', strtotime($row['tAddedOn'])),
+					':dt1' => date('Y-m-d 23:59', strtotime($row['tAddedOn']) + 86400 * 6),
+				])->queryOne();
+				$data['w1_chat'][] = $chatInfo['cnt'];
+				$data['w1_chat_cg'][] = $chatInfo['cg_cnt'];
+				$data['w1_chat_bd'][] = $chatInfo['bd_cnt'];
+
+				$data['pre_sign'][] = $cmdSign->bindValues([
+					':uid' => $uid,
+					':dt' => $row['tAddedOn'],
+				])->queryScalar();
+
+				$data['w0_sign'][] = $cmdSign0->bindValues([
+					':uid' => $uid,
+					':dt0' => date('Y-m-d', strtotime($row['tAddedOn']) - 86400 * 6),
+					':dt1' => date('Y-m-d 23:59', strtotime($row['tAddedOn'])),
+				])->queryScalar();
+
+				$data['w1_sign'][] = $cmdSign0->bindValues([
+					':uid' => $uid,
+					':dt0' => date('Y-m-d 00:00', strtotime($row['tAddedOn'])),
+					':dt1' => date('Y-m-d 23:59', strtotime($row['tAddedOn']) + 86400 * 6),
+				])->queryScalar();
+
+				$data['pre_date'][] = $cmdDate->bindValues([
+					':uid' => $uid,
+					':dt' => $row['tAddedOn'],
+				])->queryScalar();
+
+				$data['w0_date'][] = $cmdDate0->bindValues([
+					':uid' => $uid,
+					':dt0' => date('Y-m-d', strtotime($row['tAddedOn']) - 86400 * 6),
+					':dt1' => date('Y-m-d 23:59', strtotime($row['tAddedOn'])),
+				])->queryScalar();
+
+				$data['w1_date'][] = $cmdDate0->bindValues([
+					':uid' => $uid,
+					':dt0' => date('Y-m-d 00:00', strtotime($row['tAddedOn'])),
+					':dt1' => date('Y-m-d 23:59', strtotime($row['tAddedOn']) + 86400 * 6),
+				])->queryScalar();
+//				$preAmt = 0;
+			}
+			if ($row['tUnit'] == 'flower') {
+				$preAmt += (in_array($cat, UserTrans::$CatMinus) ? -1 : 1) * $row['tAmt'];
+			}
+		}
+
+		$headers = [
+			['name', '名字', 15],
+			['phone', '手机号', 14],
+			['gender', '性别', 8],
+			['marital', '婚姻状态', 16],
+			['age', '年龄', 8],
+			['addon', '注册日期', 21],
+			['amt', '充值金额', 12],
+			['dt', '充值日期', 21],
+			['pre_amt', '充值前媒桂花数', 12],
+			['pre_chat', '充值前聊天数', 12],
+			['pre_chat_cg', '充值前聊天成功', 12],
+			['pre_chat_bd', '充值前被动聊天', 12],
+			['pre_sign', '充值前签到数', 12],
+			['pre_date', '充值前约会数', 12],
+
+			['w0_chat', '前一周聊天数', 12],
+			['w0_chat_cg', '前一周聊天成功', 12],
+			['w0_chat_bd', '前一周被动聊天', 12],
+			['w0_sign', '前一周签到数', 12],
+			['w0_date', '前一周约会数', 12],
+
+			['w1_chat', '后一周聊天数', 12],
+			['w1_chat_cg', '后一周聊天成功', 12],
+			['w1_chat_bd', '后一周被动聊天', 12],
+			['w1_sign', '前一周签到数', 12],
+			['w1_date', '前一周约会数', 12],
+		];
+
+		$sheets[] = $data;
+		$fileName = AppUtil::catDir(false, 'excel') . '用户充值分析' . date('Y-m-d') . '(B).xlsx';
+		ExcelUtil::make($fileName, $headers, $sheets);
+		var_dump($fileName);
+		/*foreach ($users as $user) {
+			$row = [
+				'name' => $user['name'],
+				'phone' => $user['phone'],
+				'gender' => $user['gender'],
+				'marital' => $user['marital'],
+				'age' => $user['age'],
+				'addon' => $user['addon'],
+				'pre_amt' => 0,
+				'amt' => 0,
+				'dt' => '',
+			];
+			foreach ($user['items'] as $item) {
+				$row['pre_amt'] = $item['']
+			}
+		}*/
+	}
+
 	public function actionData()
 	{
 		$infoForms = [
-			['title' => '添加客服微信（11-17）', 'date0' => '2017-11-17 00:00', 'date1' => '2017-11-17 23:59'],
-			['title' => '感恩节活动（11-24~11-26）', 'date0' => '2017-11-24 00:00', 'date1' => '2017-11-26 23:59']
+			['title' => '添加客服微信 1117', 'date0' => '2017-11-17 00:00', 'date1' => '2017-11-17 23:59'],
+			['title' => '感恩节活动 1124-1126', 'date0' => '2017-11-24 00:00', 'date1' => '2017-11-26 23:59'],
+			['title' => '福利第一波 1128 2000-1129 2400）', 'date0' => '2017-11-28 00:00', 'date1' => '2017-11-29 23:59'],
+			['title' => '恋爱课堂 1205', 'date0' => '2017-12-05 00:00', 'date1' => '2017-12-05 23:59'],
+			['title' => '双12活动 1212 1900-1213 2400', 'date0' => '2017-12-12 00:00', 'date1' => '2017-12-13 23:59'],
+			['title' => '首充3倍', 'date0' => '2017-11-01 00:00', 'date1' => '2018-06-01 23:59'],
 		];
 		$conn = AppUtil::db();
 		$sheets = [];
-		$headers = ['活跃男', '活跃女', '总体活跃人数', '聊天数', '当天充值人数', '当天共充值金额'];
+		$headers = [
+			['active_male', '活跃男', 10],
+			['active_female', '活跃女', 10],
+			['active_cnt', '总体活跃人数', 15],
+			['chat_cnt', '聊天数', 10],
+			['recharge_cnt', '当天充值人数', 15],
+			['recharge_amt', '当天共充值金额', 16],
+			['', '', 10],
+			['phone', '手机号', 13],
+			['name', '用户名', 15],
+			['gender', '性别', 8],
+			['amt', '充值金额', 10],
+		];
 		foreach ($infoForms as $infoForm) {
+
 			$title = $infoForm['title'];
 			$date0 = $infoForm['date0'];
 			$date1 = $infoForm['date1'];
+			if ($title == '首充3倍') {
+				$sheet = [
+					'title' => $title,
+					'phone' => [],
+					'name' => [],
+					'amt' => [],
+					'gender' => []
+				];
+				$sql = "select sum( p.pTransAmt) as amt,u.uId,u.uName,u.uPhone,u.uGender
+				  from im_user_trans as t
+				  join im_user as u on u.uId = t.tUId
+				  join im_pay as p on p.pId=t.tPId and p.pStatus=100
+				  WHERE tNote='首充3倍' and t.tDeletedFlag=0 GROUP BY u.uId ";
+				$ret = $conn->createCommand($sql)->queryAll();
+				$uIds = [];
+				$total = 0;
+				foreach ($ret as $row) {
+					if (!in_array($row['uId'], $uIds)) {
+						$uIds[] = $row['uId'];
+					}
+					$amt = round($row['amt'] / 100.0, 2);
+					$total += $amt;
+					$sheet['phone'][] = $row['uPhone'];
+					$sheet['gender'][] = $row['uGender'] == 10 ? '女' : '男';
+					$sheet['name'][] = $row['uName'];
+					$sheet['amt'][] = $amt;
+				}
+			} else {
+				$sheet = [
+					'title' => $title,
+					'active_cnt' => [],
+					'active_male' => [],
+					'active_female' => [],
+					'chat_cnt' => [],
+					'recharge_cnt' => [],
+					'recharge_amt' => [],
+					'phone' => [],
+					'name' => [],
+					'amt' => [],
+					'gender' => []
+				];
 
+
+				$sql = "select count(distinct u.uId) as cnt,u.uGender 
+				from im_log_action as a 
+				join im_user as u on u.uId=a.aUId and u.uOpenId like 'oYDJew%' and u.uGender>9 and u.uPhone!=''
+				where aDate between :date0 and :date1
+				and a.aCategory=1002 
+				group by u.uGender";
+				$ret = $conn->createCommand($sql)->bindValues([
+					':date0' => $date0,
+					':date1' => $date1
+				])->queryAll();
+				$total = 0;
+				foreach ($ret as $row) {
+					if ($row['uGender'] == 10) {
+						$sheet['active_female'][] = $row['cnt'];
+					} else {
+						$sheet['active_male'][] = $row['cnt'];
+					}
+					$total += $row['cnt'];
+				}
+				$sheet['active_cnt'][] = $total;
+
+				$sql = "select count(distinct m.cGId) 
+				from im_chat_msg as m
+				join im_chat_group as g on g.gId=m.cGId
+				where m.cAddedOn between :date0 and :date1 ";
+				$ret = $conn->createCommand($sql)->bindValues([
+					':date0' => $date0,
+					':date1' => $date1
+				])->queryScalar();
+				if ($ret) {
+					$sheet['chat_cnt'][] = $ret;
+				}
+				$sql = 'select sum( p.pTransAmt) as amt,u.uId,u.uName,u.uPhone,u.uGender
+			  from im_user_trans as t
+			  join im_user as u on u.uId = t.tUId
+			  join im_pay as p on p.pId=t.tPId and p.pStatus=100
+			  where t.tDeletedFlag=0 and tAddedOn between :date0 and :date1
+			  GROUP BY u.uId ';
+				$ret = $conn->createCommand($sql)->bindValues([
+					':date0' => $date0,
+					':date1' => $date1
+				])->queryAll();
+				$uIds = [];
+				$total = 0;
+				foreach ($ret as $row) {
+					if (!in_array($row['uId'], $uIds)) {
+						$uIds[] = $row['uId'];
+					}
+					$amt = round($row['amt'] / 100.0, 2);
+					$total += $amt;
+					$sheet['phone'][] = $row['uPhone'];
+					$sheet['gender'][] = $row['uGender'] == 10 ? '女' : '男';
+					$sheet['name'][] = $row['uName'];
+					$sheet['amt'][] = $amt;
+				}
+				$sheet['recharge_amt'][] = $total;
+				$sheet['recharge_cnt'][] = count($uIds);
+			}
+			$sheets[] = $sheet;
 		}
+		$fileName = AppUtil::catDir(false, 'excel') . '用户充值分析' . date('Y-m-d') . '(A).xlsx';
+		ExcelUtil::make($fileName, $headers, $sheets);
+		var_dump($fileName);
 	}
 
 	public function actionRain()
