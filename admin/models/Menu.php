@@ -185,6 +185,11 @@ class Menu
 						"level" => 820
 					],
 					[
+						"name" => "群列表",
+						"url" => "/site/rooms",
+						"level" => 820
+					],
+					[
 						"name" => "题库题海",
 						"url" => "/site/questions",
 						"revise" => 1,
