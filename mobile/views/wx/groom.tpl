@@ -68,6 +68,7 @@
 <input type="hidden" id="lastUId" value="{{$lastUId}}">
 <input type="hidden" id="lastNAME" value="{{$lastname}}">
 <input type="hidden" id="subscribe" value="{{$subscribe}}">
+<input type="hidden" id="canJoinFlag" value="{{$canJoinFlag}}">
 
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
@@ -172,7 +173,7 @@
 		document.getElementById("memberFlag").value == 1 ? document.location.hash = "#chat" : document.location.hash = "#join";
 	}
 	requirejs(['/js/config.js?v=1.2'], function () {
-		requirejs(['/js/groom.js?v=1.3.2']);
+		requirejs(['/js/groom.js?v=1.3.3']);
 	});
 </script>
 
