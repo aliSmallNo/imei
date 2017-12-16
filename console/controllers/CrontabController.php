@@ -35,16 +35,20 @@ class CrontabController extends Controller
 		$ret = UserWechat::refreshWXInfo($openId, 0, $conn);
 		var_dump($ret);
 
-		$service = TrendService::init(TrendService::CAT_TREND);
+		$serviceTrend = TrendService::init(TrendService::CAT_TREND);
 		$queryDate = date('Y-m-d', time() - 86400 * 2);
-		$service->statTrend('day', $queryDate, true);
-		$service->statTrend('week', $queryDate, true);
-		$service->statTrend('month', $queryDate, true);
+		$serviceTrend->statTrend('day', $queryDate, true);
+		$serviceTrend->statTrend('week', $queryDate, true);
+		$serviceTrend->statTrend('month', $queryDate, true);
 
 		$queryDate = date('Y-m-d', time() - 86400);
-		$service->statTrend('day', $queryDate, true);
-		$service->statTrend('week', $queryDate, true);
-		$service->statTrend('month', $queryDate, true);
+		$serviceTrend->statTrend('day', $queryDate, true);
+		$serviceTrend->statTrend('week', $queryDate, true);
+		$serviceTrend->statTrend('month', $queryDate, true);
+
+		$serviceReuse = TrendService::init(TrendService::CAT_REUSE);
+		$serviceReuse->statReuse('week', $queryDate);
+		$serviceReuse->statReuse('month', $queryDate);
 	}
 
 	/**
