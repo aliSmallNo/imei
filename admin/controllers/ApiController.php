@@ -573,7 +573,8 @@ class ApiController extends Controller
 		switch ($tag) {
 			case 'edit': // 添加群
 				$data = json_decode(self::postParam('data'), 1);
-				$data["rAddedBy"] = $this->admin_id;
+				$data["addby"] = $this->admin_id;
+				$data["cat"] = 100;
 				if (isset($_FILES['image']['tmp_name']) && isset($_FILES['image']['name']) && $_FILES['image']['name']) {
 					$tmp = $_FILES['image']['tmp_name'];
 					$ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);

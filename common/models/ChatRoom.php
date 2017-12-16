@@ -33,6 +33,7 @@ class ChatRoom extends ActiveRecord
 			$entity = self::findOne(["rId" => $rid]);
 		} else {
 			$entity = new self();
+			$entity->rUni = uniqid(mt_rand(10, 99));
 		}
 		foreach ($values as $key => $val) {
 			$entity->$key = $val;
@@ -48,7 +49,9 @@ class ChatRoom extends ActiveRecord
 		}
 		$fieldMap = [
 			"logo" => "rLogo",
+			"cat" => "rCategory",
 			"admin" => "rAdminUId",
+			'addby' => 'rAddedBy',
 			"title" => "rTitle",
 			"intro" => "rNote",
 			"limit" => "rLimit",
@@ -56,9 +59,8 @@ class ChatRoom extends ActiveRecord
 		];
 		$insertData = [];
 		foreach ($data as $k => $v) {
-			if (isset($fieldMap[$k])) {
-				$insertData[$fieldMap[$k]] = $v;
-			}
+			if (!isset($fieldMap[$k])) continue;
+			$insertData[$fieldMap[$k]] = $v;
 		}
 
 		$rid = 0;
