@@ -90,38 +90,35 @@ class TrendService
 		return $this;
 	}
 
-	public function add($step, $field, $num, $type = 'all')
+	public function add($step, $dateName, $beginDate, $endDate, $field, $num, $type = 'all')
 	{
 		self::setStep($step);
 		if ($type) {
 			self::setType($type);
-		}
-		if (!$this->beginDate || !$this->endDate) {
-			return false;
 		}
 
 		$sql = 'DELETE FROM im_trend 
 			WHERE tType=:tType AND tCategory=:tCategory AND tStep=:tStep AND tField=:tField AND tBeginDate=:tBeginDate AND tEndDate=:tEndDate ';
 		$this->conn->createCommand($sql)->bindValues([
 			':tCategory' => $this->category,
-			':tStep' => $this->step,
-			':tType' => $this->type,
+			':tStep' => $step,
+			':tType' => $type,
 			':tField' => $field,
-			':tBeginDate' => $this->beginDate,
-			':tEndDate' => $this->endDate,
+			':tBeginDate' => $beginDate,
+			':tEndDate' => $endDate,
 		])->execute();
 
 		$sql = 'INSERT INTO im_trend(tCategory, tStep, tType, tDateName, tBeginDate, tEndDate, tField, tNum)
 			VALUES(:tCategory, :tStep, :tType, :tDateName, :tBeginDate, :tEndDate, :tField, :tNum)';
 		$this->conn->createCommand($sql)->bindValues([
 			':tCategory' => $this->category,
-			':tStep' => $this->step,
-			':tType' => $this->type,
+			':tStep' => $step,
+			':tType' => $type,
 			':tField' => $field,
 			':tNum' => $num,
-			':tDateName' => $this->dateName,
-			':tBeginDate' => $this->beginDate,
-			':tEndDate' => $this->endDate,
+			':tDateName' => $dateName,
+			':tBeginDate' => $beginDate,
+			':tEndDate' => $endDate,
 		])->execute();
 		return true;
 	}
@@ -296,7 +293,7 @@ class TrendService
 		$res6 = $res6 ? $res6 : 0;
 		$trend['act_chat'] = intval($res6);
 		foreach ($trend as $field => $val) {
-			$this->add($step, $field, $val);
+			$this->add($step, $this->dateName, $this->beginDate, $this->endDate, $field, $val);
 		}
 		$trend['titles'] = $this->dateName;
 		$trend['dates'] = $this->dateName;
@@ -311,6 +308,7 @@ class TrendService
 		$this->setDate($step, $queryDate);
 		$beginDate = $this->beginDate;
 		$endDate = $this->endDate;
+		$dateName = $beginDate . PHP_EOL . $endDate;
 		$data = [];
 		/*$data = [
 			'begin' => $beginDate,
@@ -344,6 +342,7 @@ class TrendService
 		if ($ret) {
 			foreach ($types as $type) {
 				$data[$type]['cnt'] = $ret[$type];
+				self::add($step, $dateName, $beginDate, $endDate, $ret[$type], $type);
 			}
 		}
 		$sql = "SELECT  
@@ -388,13 +387,11 @@ class TrendService
 					$item['per'] = 0;
 				}
 				$data[$type]['items'][] = $item;
+				self::add($step, $dateName, $fromDate, $toDate, $ret[$type], $type);
 			}
 		}
 
-		foreach ($types as $type) {
-			$items = $data[$type]['items'];
-			self::add($step, $field, $val, $type);
-		}
+
 		return $data;
 	}
 

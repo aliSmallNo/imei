@@ -226,15 +226,19 @@ class UserBuzz extends ActiveRecord
 				break;
 			case '晚安':
 			case 'good night':
-				$mediaId = 'GfJsRJj-kJwOJMdX7eK9HJ40UIElbg_8_7dlYygpmEk';
+				/*$mediaId = 'GfJsRJj-kJwOJMdX7eK9HJ40UIElbg_8_7dlYygpmEk';
 				NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, $fromUsername)->sendMedia($mediaId);
-				$resp = '';
-				/*$txt = "在这世上，根本没有因为相爱而必须分手的事。当一个人说出这种话的时候，你大可以去抽他嘴巴，因为这是最卑鄙无耻的借口。
+				$resp = '';*/
+				$txt = "我承认我想结婚了。
 
-爱情的重要特质就是自私和占有。当一个人爱你时，只会把你占为己有，根本不可能拱手相让。所以，说喜欢你而不能在一起的都只是暧昧，说爱你而要离开的都是有小三。
+想和你养一只猫咪和一只大狗；想吃你亲手为我做的午餐；想在你做饭的时候从你身后抱住你。
+
+想每天清晨醒来就能看见你的脸；更想看你熟睡的样子；想在炎热的夏天和你窝在空调房里吃西瓜，想在寒冷的冬天和你裹着毯子相互取暖。
+
+我未来的每个场景，都想有你。
 
 晚安，世界和你 🌙";
-				$resp = self::textMsg($fromUsername, $toUsername, $txt);*/
+				$resp = self::textMsg($fromUsername, $toUsername, $txt);
 				break;
 			case '任务':
 				$txt = "小任务详情：
