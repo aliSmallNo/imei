@@ -14,7 +14,9 @@ use common\utils\RedisUtil;
 
 class TrendService
 {
+	protected $category;
 	protected $step;
+	protected $type;
 	protected $beginDate;
 	protected $endDate;
 	protected $dateName;
@@ -31,9 +33,11 @@ class TrendService
 	 */
 	protected $conn = null;
 
-	public static function init($step = 'day', $conn = null)
+	public static function init($category, $type = 'all', $step = 'day', $conn = null)
 	{
 		$util = new self();
+		$util->category = $category;
+		$util->type = $type;
 		$util->step = $step;
 		if ($conn) {
 			$util->conn = $conn;
@@ -121,7 +125,7 @@ class TrendService
 		$trends = [];
 		$counters = [30, 12, 12];
 		$steps = ['day', 'week', 'month'];
-		$service = TrendService::init();
+		$service = TrendService::init(self::CAT_TREND);
 		foreach ($steps as $idx => $step) {
 			$cnt = $counters[$idx];
 			for ($k = $cnt; $k > -1; $k--) {
