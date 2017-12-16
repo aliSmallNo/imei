@@ -2112,4 +2112,14 @@ class WxController extends BaseController
 			'bg-color');
 	}
 
+	public function actionTrophy()
+	{
+		return self::renderPage("trophy.tpl",
+			[
+				'uid' => $this->user_id,
+			],
+			'terse',
+			'我们的成就',
+			'bg-color');
+	}
 }
