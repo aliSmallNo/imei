@@ -52,6 +52,11 @@ class TrendService
 		$this->step = $step;
 	}
 
+	public function setType($type)
+	{
+		$this->type = $type;
+	}
+
 	public function setDate($step, $beginDate, $endDate = '')
 	{
 		$this->beginDate = $beginDate;
@@ -85,28 +90,33 @@ class TrendService
 		return $this;
 	}
 
-	public function add($field, $num, $type = '')
+	public function add($step, $field, $num, $type = 'all')
 	{
+		self::setStep($step);
 		if ($type) {
-			self::setStep($type);
+			self::setType($type);
 		}
 		if (!$this->beginDate || !$this->endDate) {
 			return false;
 		}
 
 		$sql = 'DELETE FROM im_trend 
-			WHERE tStep=:tStep AND tField=:tField AND tBeginDate=:tBeginDate AND tEndDate=:tEndDate ';
+			WHERE tType=:tType AND tCategory=:tCategory AND tStep=:tStep AND tField=:tField AND tBeginDate=:tBeginDate AND tEndDate=:tEndDate ';
 		$this->conn->createCommand($sql)->bindValues([
+			':tCategory' => $this->category,
 			':tStep' => $this->step,
+			':tType' => $this->type,
 			':tField' => $field,
 			':tBeginDate' => $this->beginDate,
 			':tEndDate' => $this->endDate,
 		])->execute();
 
-		$sql = 'INSERT INTO im_trend(tStep, tDateName, tBeginDate, tEndDate, tField, tNum)
-			VALUES(:tStep, :tDateName, :tBeginDate, :tEndDate, :tField, :tNum)';
+		$sql = 'INSERT INTO im_trend(tCategory, tStep, tType, tDateName, tBeginDate, tEndDate, tField, tNum)
+			VALUES(:tCategory, :tStep, :tType, :tDateName, :tBeginDate, :tEndDate, :tField, :tNum)';
 		$this->conn->createCommand($sql)->bindValues([
+			':tCategory' => $this->category,
 			':tStep' => $this->step,
+			':tType' => $this->type,
 			':tField' => $field,
 			':tNum' => $num,
 			':tDateName' => $this->dateName,
@@ -116,7 +126,7 @@ class TrendService
 		return true;
 	}
 
-	public function chartData($queryDate = '', $resetFlag = false)
+	public function chartTrend($queryDate = '', $resetFlag = false)
 	{
 		$queryTime = time();
 		if ($queryDate) {
@@ -130,7 +140,7 @@ class TrendService
 			$cnt = $counters[$idx];
 			for ($k = $cnt; $k > -1; $k--) {
 				$dt = date('Y-m-d', strtotime(-$k . ' ' . $step, $queryTime));
-				$ret = $service->stat($step, $dt, $resetFlag);
+				$ret = $service->statTrend($step, $dt, $resetFlag);
 				foreach ($ret as $field => $val) {
 					if (!isset($trends[$idx][$field])) {
 						$trends[$idx][$field] = [];
@@ -143,7 +153,7 @@ class TrendService
 
 	}
 
-	public function stat($step, $queryDate, $resetFlag = false)
+	public function statTrend($step, $queryDate, $resetFlag = false)
 	{
 		$redis = RedisUtil::init(RedisUtil::KEY_STAT_TREND, $queryDate, $step);
 		$data = json_decode($redis->getCache(), 1);
@@ -286,7 +296,7 @@ class TrendService
 		$res6 = $res6 ? $res6 : 0;
 		$trend['act_chat'] = intval($res6);
 		foreach ($trend as $field => $val) {
-			$this->add($field, $val);
+			$this->add($step, $field, $val);
 		}
 		$trend['titles'] = $this->dateName;
 		$trend['dates'] = $this->dateName;
@@ -295,12 +305,14 @@ class TrendService
 		return $trend;
 	}
 
-	public function reuse($category, $queryDate)
+	public function statReuse($step, $queryDate)
 	{
-		$this->setDate($category, $queryDate);
+		$this->setStep($step);
+		$this->setDate($step, $queryDate);
 		$beginDate = $this->beginDate;
 		$endDate = $this->endDate;
-		$data = [
+		$data = [];
+		/*$data = [
 			'begin' => $beginDate,
 			'end' => $endDate,
 			'all' => [
@@ -315,8 +327,8 @@ class TrendService
 				'cnt' => 0,
 				'items' => []
 			],
-		];
-		$fields = ['all', 'female', 'male'];
+		];*/
+		$types = ['all', 'male', 'female'];
 		$sql = "SELECT  
 			 count(1) as `all`,
 			 count(case when u.uGender=10 then 1 end) as female,
@@ -330,11 +342,11 @@ class TrendService
 			':endDT' => $endDate . ' 23:59',
 		])->queryOne();
 		if ($ret) {
-			foreach ($fields as $field) {
-				$data[$field]['cnt'] = $ret[$field];
+			foreach ($types as $type) {
+				$data[$type]['cnt'] = $ret[$type];
 			}
 		}
-		$step = ($category == 'week' ? 7 : 28);
+		$offset = ($step == 'week' ? 7 : 28);
 		$sql = "SELECT  
 			 count(DISTINCT u.uId) as `all`,
 			 count(DISTINCT (case when u.uGender=10 then u.uId end)) as female,
@@ -348,9 +360,9 @@ class TrendService
 
 		$lastDay = $endDate;
 		for ($k = 1; $k < 16; $k++) {
-			$fromDate = date('Y-m-d', strtotime($beginDate) + 86400 * $step * $k);
-			$toDate = date('Y-m-d', strtotime($endDate) + 86400 * $step * $k);
-			if ($category == 'month') {
+			$fromDate = date('Y-m-d', strtotime($beginDate) + 86400 * $offset * $k);
+			$toDate = date('Y-m-d', strtotime($endDate) + 86400 * $offset * $k);
+			if ($step == 'month') {
 				list($md, $firstDay, $lastDay) = AppUtil::getMonthInfo(date("Y-m-d", strtotime($lastDay) + 86401 * $k));
 				$fromDate = $firstDay;
 				$toDate = $lastDay;
@@ -364,25 +376,24 @@ class TrendService
 				':to' => $toDate . ' 23:59',
 			])->queryOne();
 
-			foreach ($fields as $field) {
+			foreach ($types as $type) {
 				$item = [
 					'from' => $fromDate,
 					'to' => $toDate,
-					'cnt' => $ret[$field],
+					'cnt' => $ret[$type],
 				];
-				if ($data[$field]['cnt'] > 0) {
-					$item['per'] = round(100.0 * $ret[$field] / $data[$field]['cnt'], 1);
+				if ($data[$type]['cnt'] > 0) {
+					$item['per'] = round(100.0 * $ret[$type] / $data[$type]['cnt'], 1);
 				} else {
 					$item['per'] = 0;
 				}
-				$data[$field]['items'][] = $item;
+				$data[$type]['items'][] = $item;
 			}
 		}
 
-		foreach ($fields as $field) {
-			$items = $data[$field]['items'];
-			$type = 'reuse_' . $category . '_' . $field;
-			self::add($type);
+		foreach ($types as $type) {
+			$items = $data[$type]['items'];
+			self::add($step, $field, $val, $type);
 		}
 		return $data;
 	}

@@ -9,7 +9,6 @@
 namespace common\models;
 
 use admin\models\Admin;
-use common\service\TrendService;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
@@ -1383,8 +1382,7 @@ class User extends ActiveRecord
 
 		$ulocation = json_decode($myInfo->uLocation, 1);
 		if (is_array($ulocation) && count($ulocation) >= 2) {
-			$prov = isset($ulocation[0]) ? $ulocation[0]["text"] : $prov;
-			$city = isset($ulocation[1]) ? $ulocation[1]["text"] : $city;
+			list($prov, $city) = array_column($ulocation, 'text');
 			$country = isset($ulocation[2]) ? $ulocation[2]["text"] : $country;
 		}
 		// 去掉筛选条件啦~
@@ -1518,7 +1516,10 @@ class User extends ActiveRecord
 				}
 			}
 		}
-		$flRank = "(CASE WHEN uLocation like '%$loc%' then 10 else 0 end) as flRank";
+		$flRank = "(CASE WHEN uLocation like '%$prov%' then 10 else 0 end) as flRank";
+		if($city){
+			$flRank = "(CASE WHEN uLocation like '%$prov%' then 10 else 0 end) + (CASE WHEN uLocation like '%$city%' then 5 else 0 end) as flRank";
+		}
 
 		$sql = "SELECT u.*,
  				(CASE WHEN u.uOpenId LIKE 'oYDJew%' THEN IFNULL(h.hCount, 0) ELSE 9999 END) + (CASE WHEN uSubStatus=4 THEN 1 ELSE 99 END) as stickRank,
@@ -1528,10 +1529,10 @@ class User extends ActiveRecord
 				LEFT JOIN im_pin as p on p.pPId=u.uId AND p.pCategory=$pinCat
 				LEFT JOIN im_hit as h on h.hUId=$myId AND h.hSubUId=u.uId
 				WHERE $condition 
-				ORDER BY stickRank,fmRank desc,flRank desc,$ageRank mRank desc limit $limit";
+				ORDER BY flRank desc, stickRank,fmRank desc,$ageRank mRank desc limit $limit";
 
+		AppUtil::logFile($conn->createCommand($sql)->getRawSql(), 5, __FUNCTION__, __LINE__);
 		$ret = $conn->createCommand($sql)->queryAll();
-		//AppUtil::logFile($conn->createCommand($sql)->getRawSql(), 5, __FUNCTION__, __LINE__);
 		$rows = [];
 		$IDs = [0];
 		foreach ($ret as $row) {
