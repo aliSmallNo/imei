@@ -47,6 +47,10 @@
 		font-size: 13px;
 		padding-bottom: 5px;
 	}
+	td a{
+		display: inline-block;
+		margin-top: 3px;
+	}
 </style>
 <div class="row">
 	<h4>群列表
@@ -137,9 +141,9 @@
 				<a href="/site/roomdesc?rid={{$item.rId}}" class="btn btn-outline btn-primary btn-xs">详情</a>
 				<a href="/site/addmember?rid={{$item.rId}}" class="btn btn-outline btn-primary btn-xs">加入稻草人</a>
 				<a href="javascript:;" data-rid="{{$item.rId}}" data-src="{{$item.rLogo}}"
-				data-limit="{{$item.rLimit}}"  data-title="{{$item.rTitle}}"  data-intro="{{$item.rNote}}"  data-adminname="{{$item.uName}}"
-				data-adminuid="{{$item.uId}}"
-				class="RoomEdit btn-outline btn-primary btn-xs">修改群</a>
+				data-limit="{{$item.rLimit}}" data-title="{{$item.rTitle}}"  data-intro="{{$item.rNote}}"
+				 data-adminname="{{$item.uName}}" data-adminuid="{{$item.rAdminUId}}"
+				class="RoomEdit btn btn-outline btn-primary btn-xs">修改群</a>
 			</td>
 		</tr>
 		{{/foreach}}
@@ -212,16 +216,24 @@
 <script>
 	var $sls={
 		rid:0,
+		tag:'',
 		searchFlag:0,
 	};
 	$(document).on("click", ".btn-add", function () {
+		$sls.tag = "add";
 		var self = $(this);
 		$("#modalEdit").modal('show');
 	});
 	$(document).on("click",".RoomEdit",function(){
+		$sls.tag = "edit";
 		var self = $(this);
 		$sls.rid = self.attr("data-rid");
-
+		$("[data-tag=title]").val(self.attr("data-title"));
+		$("[data-tag=limit]").val(self.attr("data-limit"));
+		$("[data-tag=intro]").val(self.attr("data-intro"));
+		var adminname = self.attr("data-adminname");
+		$("[data-tag=admin]").html('<option value='+self.attr("data-adminuid")+'>'+adminname+'</option');
+		$("#searchName").val(adminname);
 		$("#modalEdit").modal('show');
 	});
 
@@ -277,23 +289,28 @@
 	}
 
 	$(document).on("click", ".btn-save", function () {
-		return;
+		console.log($sls.tag);
 		var data = intakeForm();
 		if (!data) {
 			return false;
 		}
-
-		data['rid']= $sls.rid;
+		if($sls.rid){
+			data['rid']= $sls.rid;
+		}
 		var formData = new FormData();
 		formData.append("tag", 'edit');
 		formData.append("data", JSON.stringify(data));
 		var photo = $('input[name="upload_photo"]');
+
 		if (photo[0].files[0]) {
 			formData.append("image", photo[0].files[0]);
-		}else{
-			BpbhdUtil.showMsg("群logo没选择哦~");
-			return;
+		} else {
+			if($sls.tag == 'add'){
+				BpbhdUtil.showMsg("群logo没选择哦~");
+				return;
+			}
 		}
+
 		// console.log(photo[0].files[0]);
 		// console.log(formData);
 		// console.log(photo.length);

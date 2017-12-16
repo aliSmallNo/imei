@@ -578,8 +578,6 @@ class ApiController extends Controller
 					$tmp = $_FILES['image']['tmp_name'];
 					$ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
 					$data['logo'] = COSUtil::init(COSUtil::UPLOAD_PATH, $tmp, $ext)->uploadOnly(false, false, false);
-				} else {
-					return self::renderAPI(129, '还没选择logo图');
 				}
 				$ret = ChatRoom::reg($data);
 				return self::renderAPI(0, $ret ? '保存成功！' : '保存失败！', ['result' => $data]);

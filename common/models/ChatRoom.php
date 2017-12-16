@@ -52,7 +52,7 @@ class ChatRoom extends ActiveRecord
 			"title" => "rTitle",
 			"intro" => "rNote",
 			"limit" => "rLimit",
-			"rId" => "rid",
+			"rid" => "rId",
 		];
 		$insertData = [];
 		foreach ($data as $k => $v) {
@@ -61,10 +61,11 @@ class ChatRoom extends ActiveRecord
 			}
 		}
 
-		if (isset($insertData["rId"]) && $insertData["rId"]) {
+		if (isset($insertData["rId"])) {
 			$rid = $insertData["rId"];
+			unset($insertData["rId"]);
 		}
-		unset($insertData["rId"]);
+
 		return self::edit($rid, $insertData);
 	}
 
