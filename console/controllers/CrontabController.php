@@ -13,6 +13,7 @@ use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserTag;
 use common\models\UserWechat;
+use common\service\TrendService;
 use common\utils\AppUtil;
 use yii\console\Controller;
 
@@ -27,12 +28,23 @@ class CrontabController extends Controller
 		//Rain: 星期天的时候重置一下
 		if (date('w') == 0) {
 			//$sql = 'UPDATE im_hit set hCount = ROUND(hCount/10) WHERE hCount>10 AND hId>0';
-			$sql ='truncate table im_hit';
+			$sql = 'truncate table im_hit';
 			$conn->createCommand($sql)->execute();
 		}
 
 		$ret = UserWechat::refreshWXInfo($openId, 0, $conn);
 		var_dump($ret);
+
+		$service = TrendService::init();
+		$queryDate = date('Y-m-d', time() - 86400 * 2);
+		$service->stat('day', $queryDate, true);
+		$service->stat('week', $queryDate, true);
+		$service->stat('month', $queryDate, true);
+
+		$queryDate = date('Y-m-d', time() - 86400);
+		$service->stat('day', $queryDate, true);
+		$service->stat('week', $queryDate, true);
+		$service->stat('month', $queryDate, true);
 	}
 
 	/**
