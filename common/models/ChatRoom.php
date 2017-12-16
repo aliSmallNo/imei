@@ -72,6 +72,37 @@ class ChatRoom extends ActiveRecord
 		return self::edit($rid, $insertData);
 	}
 
+	public static function getRoom($rid, $uid)
+	{
+		$sql = "select r.*,count(m.mId) as cnt,
+			count(case when m.mUId=:uid then 1 end) as isMember
+			 from im_chat_room as r
+			 left join im_chat_room_fella as m on m.mRId=r.rId
+			 where rId=:id";
+		$conn = AppUtil::db();
+		$ret = $conn->createCommand($sql)->bindValues([
+			':id' => $rid,
+			':uid' => $uid
+		])->queryOne();
+		$ret['backup'] = -1;
+		$sql = " select distinct r.*, count(m.mId) as cnt,
+			count(case when m.mUId=:uid then 1 end) as isMember
+			 from im_chat_room as r
+			 left join im_chat_room_fella as m on m.mRId=r.rId
+			 where r.rCategory=:cat AND rId!=:id
+			 group by r.rId
+			 order by isMember,cnt";
+		$other = $conn->createCommand($sql)->bindValues([
+			':id' => $rid,
+			':uid' => $uid,
+			':cat' => $ret['rCategory']
+		])->queryOne();
+		if ($other) {
+			$ret['backup'] = $other['rId'];
+		}
+		return $ret;
+	}
+
 	public static function one($rId)
 	{
 		$roomInfo = self::find()->where(["rId" => $rId])->asArray()->one();

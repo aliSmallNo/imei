@@ -370,12 +370,12 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 
 			window.onhashchange = locationHashChanged;
 			locationHashChanged();
-
-			if ($("#canJoinFlag").val() == 0) {
-				$sls.main.show();
-				var html = '<div style="padding: 5rem;font-size: 2.5rem;background: #fff;color: #b9b7b7;">该群已满~~</div>';
-				$sls.content.html(html).addClass("animate-pop-in");
-				$sls.shade.fadeIn(160);
+			var otherRoom = $("#other_room").val();
+			if (otherRoom.length > 2) {
+				alpha.prompt('', '此群已满，推荐你加入另外一个群', ['马上赶过去'], function () {
+					location.href = '/wx/groom?rid=' + otherRoom;
+					return false;
+				});
 			}
 		});
 	});

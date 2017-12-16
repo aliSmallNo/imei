@@ -8,7 +8,6 @@
 
 namespace mobile\controllers;
 
-use common\models\ChatMsg;
 use common\models\ChatRoom;
 use common\models\ChatRoomFella;
 use common\models\City;
@@ -1995,26 +1994,30 @@ class WxController extends BaseController
 	{
 		$rid = self::getParam("rid");
 		// $lastUID => 谁转发过来的
-		$lastUID = self::getParam("uid", 144026);// zhangmengyin
+		$lastUID = self::getParam("uid", $this->user_id);// zhangmengyin
 		if (!$rid) {
 			$rid = 101;
 		}
-		$roomInfo = ChatRoom::one($rid);
 		$uid = $this->user_id;
-		if (!$uid || !$roomInfo) {
+		if (!$uid) {
+			header('location:/wx/error');
+			exit();
+		}
+		$roomInfo = ChatRoom::getRoom($rid, $uid);
+		if (!$roomInfo) {
 			header('location:/wx/error');
 			exit();
 		}
 		// 加入群聊
-		$wSubscribe = UserWechat::findOne(["wUId" => $uid])->wSubscribe;
-		$isMember = ChatRoomFella::checkIsMember($rid, $uid);
+		$wSubscribe = $this->user_subscribe;
+		$isMember = $roomInfo['isMember'];
 		$memberFlag = $isMember && $wSubscribe == 1;
-		$count = ChatRoom::countMembers('', $rid);
-		$canJoinFlag = 1;
+		$count = $roomInfo['cnt'];
+		$otherRoom = 0;
 		if (!$isMember && $roomInfo["rLimit"] > $count) {
 			ChatRoomFella::addMember($rid, $uid);
-		} elseif(!$isMember && $roomInfo["rLimit"] <= $count) {
-			$canJoinFlag = 0;
+		} elseif (!$isMember && $roomInfo["rLimit"] <= $count) {
+			$otherRoom = $roomInfo['backup'];
 		}
 		$adminUId = $roomInfo["rAdminUId"];
 		return self::renderPage("groom.tpl",
@@ -2028,9 +2031,9 @@ class WxController extends BaseController
 				"lastId" => $roomInfo["rLastId"],
 				"memberFlag" => $memberFlag,
 				"lastUId" => $lastUID,
-				"lastname" => User::findOne(["uId" => $lastUID])->uName,
+				"lastname" => $this->user_name,
 				"subscribe" => $wSubscribe,
-				"canJoinFlag" => $canJoinFlag,
+				"otherRoom" => $otherRoom,
 			],
 			'terse',
 			'千寻聊天室',
