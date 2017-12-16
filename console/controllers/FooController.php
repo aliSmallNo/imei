@@ -9,7 +9,6 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
-use common\models\ChatRoomFella;
 use common\models\Img;
 use common\models\Pin;
 use common\models\User;
@@ -17,7 +16,6 @@ use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserTrans;
 use common\models\UserWechat;
-use common\service\TrendService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
@@ -1331,8 +1329,10 @@ class FooController extends Controller
 		$ret = $service->reuse('week', date('Y-m-d', time() - 86400 * 31));
 		var_dump(json_encode($ret));*/
 		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
-		$content = 'test message';
-		QueueUtil::loadJob('pushText', ['open_id' => $openId, 'text' => $content], QueueUtil::QUEUE_TUBE_SMS);
+		$content = 'Current time is ' . date('Y-m-d H:i:s');
+		QueueUtil::loadJob('pushText',
+			['open_id' => $openId, 'text' => $content],
+			QueueUtil::QUEUE_TUBE_SMS);
 
 		/*$counts = [150, 22, 5];
 		$steps = ['day', 'week', 'month'];
