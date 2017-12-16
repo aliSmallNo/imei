@@ -1364,7 +1364,6 @@ class User extends ActiveRecord
 		$uRole = User::ROLE_SINGLE;
 
 		$marry = $myInfo->uMarital == self::MARITAL_MARRIED ? self::MARITAL_MARRIED : implode(',', [self::MARITAL_UNMARRIED, self::MARITAL_DIVORCE_KID, self::MARITAL_DIVORCE_NO_KID]);
-		$marry .= ',0';
 		if ($data && isset($data["loc"]) && isset($data["mar"]) && !($data["loc"] == "all" && $data["mar"] == "all")) {
 			$condition = " u.uRole=$uRole AND u.uGender=$gender  AND u.uStatus in (" . implode(',', self::$StatusVisible) . ") ";
 		} else {
