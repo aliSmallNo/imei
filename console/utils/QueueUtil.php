@@ -11,6 +11,7 @@ namespace console\utils;
 
 use common\models\Pin;
 use common\utils\AppUtil;
+use common\utils\NoticeUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\lib\beanstalkSocket;
@@ -28,7 +29,7 @@ class QueueUtil
 		'timeout' => 3000
 	];
 
-	public static function loadJob($methodName, $params = [], $tube = '', $delay = 0)
+	public static function loadJob($methodName, $params = [], $tube = '', $delay = 1)
 	{
 		if (AppUtil::isDev()) {
 			return;
@@ -48,8 +49,8 @@ class QueueUtil
 			];
 			$put = $beanstalk->put(
 				23, // 任务的优先级.
-				$delay,  // 不等待直接放到ready队列中.
-				60, // 处理任务的时间.
+				$delay,  // 等待n秒放到ready队列中.
+				100, // 处理任务的时间.
 				json_encode($message)
 			);
 			if (!$put) {
@@ -163,6 +164,13 @@ class QueueUtil
 			$params['sender_uid'],
 			$params['gid']
 		);
+		self::logFile($params, __FUNCTION__, __LINE__);
+		return true;
+	}
+
+	public static function pushText($params)
+	{
+		NoticeUtil::init(NoticeUtil::CAT_TEXT_ONLY, $params['openids'])->sendText($params['text']);
 		self::logFile($params, __FUNCTION__, __LINE__);
 		return true;
 	}

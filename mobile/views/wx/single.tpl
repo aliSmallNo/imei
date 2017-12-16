@@ -47,7 +47,7 @@
 		<div class="swiper-container">
 			<div class="swiper-wrapper">
 				{{foreach from=$adverts item=item}}
-					<div class="swiper-slide"><img src="{{$item.image}}" data-url="{{$item.url}}" alt=""></div>
+					<a href="javascript:;" data-url="{{$item.url}}" class="swiper-slide"><img src="{{$item.image}}"></a>
 				{{/foreach}}
 			</div>
 			<div class="swiper-pagination"></div>
@@ -1386,6 +1386,6 @@
 		document.location.hash = "#slook";
 	}
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/single.js?v=1.5.3']);
+		requirejs(['/js/single.js?v=1.5.5']);
 	});
 </script>
