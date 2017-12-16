@@ -136,7 +136,10 @@
 			<td>
 				<a href="/site/roomdesc?rid={{$item.rId}}" class="btn btn-outline btn-primary btn-xs">详情</a>
 				<a href="/site/addmember?rid={{$item.rId}}" class="btn btn-outline btn-primary btn-xs">加入稻草人</a>
-				<a href="javascript:;" data-rid="{{$item.rId}}" class="RoomEdit btn-outline btn-primary btn-xs">加入稻草人</a>
+				<a href="javascript:;" data-rid="{{$item.rId}}" data-src="{{$item.rLogo}}"
+				data-limit="{{$item.rLimit}}"  data-title="{{$item.rTitle}}"  data-intro="{{$item.rNote}}"  data-adminname="{{$item.uName}}"
+				data-adminuid="{{$item.uId}}"
+				class="RoomEdit btn-outline btn-primary btn-xs">修改群</a>
 			</td>
 		</tr>
 		{{/foreach}}
@@ -218,6 +221,7 @@
 	$(document).on("click",".RoomEdit",function(){
 		var self = $(this);
 		$sls.rid = self.attr("data-rid");
+
 		$("#modalEdit").modal('show');
 	});
 
@@ -273,6 +277,7 @@
 	}
 
 	$(document).on("click", ".btn-save", function () {
+		return;
 		var data = intakeForm();
 		if (!data) {
 			return false;
