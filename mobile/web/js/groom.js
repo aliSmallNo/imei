@@ -370,5 +370,12 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 
 			window.onhashchange = locationHashChanged;
 			locationHashChanged();
+
+			if ($("#canJoinFlag").val() == 0) {
+				$sls.main.show();
+				var html = '<div style="padding: 5rem;font-size: 2.5rem;background: #fff;color: #b9b7b7;">该群已满~~</div>';
+				$sls.content.html(html).addClass("animate-pop-in");
+				$sls.shade.fadeIn(160);
+			}
 		});
 	});

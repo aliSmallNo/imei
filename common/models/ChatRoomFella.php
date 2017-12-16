@@ -64,7 +64,7 @@ class ChatRoomFella extends ActiveRecord
 				$excute($addOneCMD, $uid, $rId);
 			}
 		} else {
-			$excute($addOneCMD, $uIds, $rId);
+			 $excute($addOneCMD, $uIds, $rId);
 		}
 		return true;
 	}

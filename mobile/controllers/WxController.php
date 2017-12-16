@@ -8,6 +8,7 @@
 
 namespace mobile\controllers;
 
+use common\models\ChatMsg;
 use common\models\ChatRoom;
 use common\models\ChatRoomFella;
 use common\models\City;
@@ -2007,7 +2008,12 @@ class WxController extends BaseController
 		// 加入群聊
 		$wSubscribe = UserWechat::findOne(["wUId" => $uid])->wSubscribe;
 		$memberFlag = ChatRoomFella::checkIsMember($rid, $uid) && $wSubscribe == 1;
-		ChatRoomFella::addMember($rid, $uid);
+		$canJoinFlag = 1;
+		if ($roomInfo["rLimit"] > ChatRoom::countMembers('', $rid)) {
+			ChatRoomFella::addMember($rid, $uid);
+		} else {
+			$canJoinFlag = 0;
+		}
 
 		$adminUId = $roomInfo["rAdminUId"];
 		return self::renderPage("groom.tpl",
@@ -2023,6 +2029,7 @@ class WxController extends BaseController
 				"lastUId" => $lastUID,
 				"lastname" => User::findOne(["uId" => $lastUID])->uName,
 				"subscribe" => $wSubscribe,
+				"canJoinFlag" => $canJoinFlag,
 			],
 			'terse',
 			'千寻聊天室',
