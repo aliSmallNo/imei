@@ -90,7 +90,7 @@ class TrendService
 		return $this;
 	}
 
-	public function add($step, $dateName, $beginDate, $endDate, $field, $num, $type = 'all')
+	public function add($step, $dateName, $beginDate, $endDate, $field, $num, $type = 'all', $note = '')
 	{
 		self::setStep($step);
 		if ($type) {
@@ -108,8 +108,8 @@ class TrendService
 			':tEndDate' => $endDate,
 		])->execute();
 
-		$sql = 'INSERT INTO im_trend(tCategory, tStep, tType, tDateName, tBeginDate, tEndDate, tField, tNum)
-			VALUES(:tCategory, :tStep, :tType, :tDateName, :tBeginDate, :tEndDate, :tField, :tNum)';
+		$sql = 'INSERT INTO im_trend(tCategory, tStep, tType, tDateName, tBeginDate, tEndDate, tField, tNum,tNote)
+			VALUES(:tCategory, :tStep, :tType, :tDateName, :tBeginDate, :tEndDate, :tField, :tNum,:tNote)';
 		$this->conn->createCommand($sql)->bindValues([
 			':tCategory' => $this->category,
 			':tStep' => $step,
@@ -119,6 +119,7 @@ class TrendService
 			':tDateName' => $dateName,
 			':tBeginDate' => $beginDate,
 			':tEndDate' => $endDate,
+			':tNote' => $note,
 		])->execute();
 		return true;
 	}
@@ -310,22 +311,6 @@ class TrendService
 		$endDate = $this->endDate;
 		$dateName = $beginDate . PHP_EOL . $endDate;
 		$data = [];
-		/*$data = [
-			'begin' => $beginDate,
-			'end' => $endDate,
-			'all' => [
-				'cnt' => 0,
-				'items' => []
-			],
-			'female' => [
-				'cnt' => 0,
-				'items' => []
-			],
-			'male' => [
-				'cnt' => 0,
-				'items' => []
-			],
-		];*/
 		$types = ['all', 'male', 'female'];
 		$sql = "SELECT  
 			 COUNT(1) as `all`,
@@ -342,7 +327,7 @@ class TrendService
 		if ($ret) {
 			foreach ($types as $type) {
 				$data[$type]['cnt'] = $ret[$type];
-				self::add($step, $dateName, $beginDate, $endDate, $ret[$type], $type);
+				self::add($step, $dateName, $beginDate, $endDate, 1, $ret[$type], $type);
 			}
 		}
 		$sql = "SELECT  
@@ -387,7 +372,7 @@ class TrendService
 					$item['per'] = 0;
 				}
 				$data[$type]['items'][] = $item;
-				self::add($step, $dateName, $fromDate, $toDate, $ret[$type], $type);
+				self::add($step, $dateName, $fromDate, $toDate, $k + 1, $ret[$type], $type, $item['per']);
 			}
 		}
 

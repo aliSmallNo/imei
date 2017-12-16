@@ -1333,6 +1333,8 @@ class FooController extends Controller
 		var_dump(json_encode($ret));
 		$ret = $service->statReuse('week', date('Y-m-d', time() - 86400 * 14));
 		var_dump(json_encode($ret));
+		$ret = $service->statReuse('week', date('Y-m-d', time() - 86400 * 21));
+		var_dump(json_encode($ret));
 		/*$openId = 'oYDJew48Eghqvj-BFT1Ddb9b0Miw';
 		$content = 'Current time is ' . date('Y-m-d H:i:s');
 		QueueUtil::loadJob('pushText',
