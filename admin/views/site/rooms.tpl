@@ -273,9 +273,6 @@
 	}
 
 	$(document).on("click", ".btn-save", function () {
-		return ;
-		return ;
-		return ;
 		var data = intakeForm();
 		if (!data) {
 			return false;
