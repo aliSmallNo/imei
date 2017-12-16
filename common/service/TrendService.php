@@ -330,9 +330,9 @@ class TrendService
 		];*/
 		$types = ['all', 'male', 'female'];
 		$sql = "SELECT  
-			 count(1) as `all`,
-			 count(case when u.uGender=10 then 1 end) as female,
-			 count(case when u.uGender=11 then 1 end) as male
+			 COUNT(1) as `all`,
+			 COUNT(case when u.uGender=10 then 1 end) as female,
+			 COUNT(case when u.uGender=11 then 1 end) as male
 			 FROM im_user as u
 			 JOIN im_user_wechat as w on u.uId=w.wUId
 			 WHERE uAddedOn BETWEEN :beginDT AND :endDT AND uOpenId LIKE 'oYDJew%'
@@ -346,22 +346,22 @@ class TrendService
 				$data[$type]['cnt'] = $ret[$type];
 			}
 		}
-		$offset = ($step == 'week' ? 7 : 28);
 		$sql = "SELECT  
-			 count(DISTINCT u.uId) as `all`,
-			 count(DISTINCT (case when u.uGender=10 then u.uId end)) as female,
-			 count(DISTINCT (case when u.uGender=11 then u.uId end)) as male
+			 COUNT(DISTINCT u.uId) as `all`,
+			 COUNT(DISTINCT (case when u.uGender=10 then u.uId end)) as female,
+			 COUNT(DISTINCT (case when u.uGender=11 then u.uId end)) as male
 			 FROM im_user as u
 			 JOIN im_user_wechat as w on u.uId=w.wUId
 			 JOIN im_log_action as a on a.aUId=u.uId AND a.aCategory>1000 AND a.aDate BETWEEN :from AND :to
 			 WHERE uAddedOn BETWEEN :beginDT AND :endDT AND uOpenId LIKE 'oYDJew%'
-			 AND uStatus<8 AND uPhone!=''  AND uRole>9 AND uGender in (10,11) ";
+			 	AND uStatus<8 AND uPhone!=''  AND uRole>9 AND uGender in (10,11) ";
 		$cmd = $this->conn->createCommand($sql);
 
 		$lastDay = $endDate;
+		$ratio = ($step == 'week' ? 7 : 28);
 		for ($k = 1; $k < 16; $k++) {
-			$fromDate = date('Y-m-d', strtotime($beginDate) + 86400 * $offset * $k);
-			$toDate = date('Y-m-d', strtotime($endDate) + 86400 * $offset * $k);
+			$fromDate = date('Y-m-d', strtotime($beginDate) + 86400 * $ratio * $k);
+			$toDate = date('Y-m-d', strtotime($endDate) + 86400 * $ratio * $k);
 			if ($step == 'month') {
 				list($md, $firstDay, $lastDay) = AppUtil::getMonthInfo(date("Y-m-d", strtotime($lastDay) + 86401 * $k));
 				$fromDate = $firstDay;
