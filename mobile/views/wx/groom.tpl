@@ -115,12 +115,18 @@
 		<a href="/wx/sh?id={[eid]}" {[#eid]}data-eid="{[.]}" {[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
 		<div class="content read{[readflag]}">
 			<div class="name">
-				{[#isAdmin]}<i><img src="/images/cr_ico_admin.png"></i>{[/isAdmin]}
-				{[^isAdmin]}
-				{[#isMember]}<i><img src="/images/cr_ico_member.png"></i>{[/isMember]}
-				{[^isMember]}<i><img src="/images/cr_ico_new.png"></i>{[/isMember]}
+				{[#isAdmin]}
+					<i><img src="/images/cr_ico_admin.png"></i>
+					<i class="lever"><em>{[pic_name]}</em></i>
 				{[/isAdmin]}
-				<i class="lever"><em>{[pic_name]}</em></i>
+				{[^isAdmin]}
+				{[#isMember]}
+					<i><img src="/images/cr_ico_member.png"></i>
+					<i class="lever"><em>{[pic_name]}</em></i>
+				{[/isMember]}
+				{[^isMember]}
+					<i><img src="/images/cr_ico_new.png"></i>{[/isMember]}
+				{[/isAdmin]}
 				<span>{[name]}</span>
 			</div>
 			<a href="javascript:;" class="j-content-wrap">
