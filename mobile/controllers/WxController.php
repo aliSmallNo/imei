@@ -1994,7 +1994,7 @@ class WxController extends BaseController
 	{
 		$rid = self::getParam("rid");
 		// $lastUID => 谁转发过来的
-		$lastUID = self::getParam("uid");
+		$lastUID = self::getParam("uid", 144026);// zhangmengyin
 		if (!$rid) {
 			$rid = 101;
 		}
@@ -2005,9 +2005,9 @@ class WxController extends BaseController
 			exit();
 		}
 		// 加入群聊
-		ChatRoomFella::addOne($rid, $uid);
+		ChatRoomFella::addMember($rid, $uid);
 		$wSubscribe = UserWechat::findOne(["wUId" => $uid])->wSubscribe;
-		$memberFlag = ChatRoomFella::checkIsMember($rid, $uid) &&  $wSubscribe== 1;
+		$memberFlag = ChatRoomFella::checkIsMember($rid, $uid) && $wSubscribe == 1;
 
 		$adminUId = $roomInfo["rAdminUId"];
 		return self::renderPage("groom.tpl",
@@ -2021,6 +2021,7 @@ class WxController extends BaseController
 				"lastId" => $roomInfo["rLastId"],
 				"memberFlag" => $memberFlag,
 				"lastUId" => $lastUID,
+				"lastname" => User::findOne(["uId" => $lastUID])->uName,
 				"subscribe" => $wSubscribe,
 			],
 			'terse',

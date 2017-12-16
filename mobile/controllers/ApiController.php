@@ -2169,7 +2169,7 @@ class ApiController extends Controller
 			case 'sent':
 				$text = trim(self::postParam('text'));
 				$rId = trim(self::postParam('rid'));
-				list($code, $msg, $info) = ChatMsg::roomChat($rId, $uid, $text);
+				list($code, $msg, $info) = ChatMsg::addRoomChat($rId, $uid, $text);
 				if ($code > 0) {
 					return self::renderAPI($code, $msg);
 				}

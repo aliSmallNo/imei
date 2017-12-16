@@ -1835,13 +1835,17 @@ class User extends ActiveRecord
 		return [$ret, $titles];
 	}
 
-	public static function searchNet($kw)
+	public static function searchNet($kw, $subtag = "all")
 	{
 		if (!$kw) {
 			return [];
 		}
+		$conStr = "";
+		if ($subtag == "dummy") {
+			$conStr=" and uNote='dummy' ";
+		}
 		$sql = "select uId as id,uAvatar as avatar,uName as uname,uPhone as phone 
-			FROM im_user where uName like '%$kw%' ";
+			FROM im_user where uName like '%$kw%' $conStr ";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		return $res;
 	}

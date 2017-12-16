@@ -135,6 +135,7 @@
 			</td>
 			<td>
 				<a href="/site/roomdesc?rid={{$item.rId}}" class="btn btn-outline btn-primary btn-xs">详情</a>
+				<a href="/site/addmember?rid={{$item.rId}}" class="btn btn-outline btn-primary btn-xs">加入稻草人</a>
 			</td>
 		</tr>
 		{{/foreach}}

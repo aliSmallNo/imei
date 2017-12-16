@@ -40,17 +40,33 @@ class ChatRoomFella extends ActiveRecord
 		return true;
 	}
 
-	public static function addOne($rId, $uId)
+	public static function addMember($rId, $uIds, $conn = '')
 	{
-		$conn = AppUtil::db();
+		if (!$conn) {
+			$conn = AppUtil::db();
+		};
+		if (!ChatRoom::findOne(["rId" => $rId]) || !$uIds) {
+			return false;
+		}
 		$sql = "INSERT INTO im_chat_room_fella(mRId,mUId)
 			SELECT :rid,:uid FROM dual
 			WHERE NOT EXISTS(SELECT 1 FROM im_chat_room_fella as m WHERE m.mUId=:uid and m.mRId=:rid)";
-		$line = $conn->createCommand($sql)->bindValues([
-			":uid" => $uId,
-			":rid" => $rId,
-		])->execute();
-		return $line;
+		$addOneCMD = $conn->createCommand($sql);
+
+		$excute = function ($addOneCMD, $uid, $rId) {
+			$addOneCMD->bindValues([
+				":uid" => $uid,
+				":rid" => $rId,
+			])->execute();
+		};
+		if (is_array($uIds)) {
+			foreach ($uIds as $uid) {
+				$excute($addOneCMD, $uid, $rId);
+			}
+		} else {
+			$excute($addOneCMD, $uIds, $rId);
+		}
+		return true;
 	}
 
 	public static function checkIsMember($rid, $uid)

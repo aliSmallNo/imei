@@ -180,7 +180,8 @@ class ApiController extends Controller
 				break;
 			case "searchnet":
 				$kw = self::postParam('keyword');
-				$res = User::searchNet($kw);
+				$subtag = self::postParam('subtag', 'all');
+				$res = User::searchNet($kw, $subtag);
 				return self::renderAPI(0, '', $res);
 				break;
 			case "savemp":
@@ -595,6 +596,20 @@ class ApiController extends Controller
 				ChatRoomFella::adminOPt($subtag, $oUId, $rid, $cid, $ban);
 				return self::renderAPI(0, '', [
 					"chat" => '',
+				]);
+				break;
+			case "addmember":// 群批量拉进稻草人
+				$rid = self::postParam('rid');
+				$uids = json_decode(self::postParam('uids'), 1);
+				$uids = array_unique($uids);
+				$conn = AppUtil::db();
+				$res = ChatRoomFella::addMember($rid, $uids, $conn);
+				foreach ($uids as $uid) {
+					ChatMsg::addRoomChat($rid, $uid, "hi,大家好", $conn);
+				}
+				$code = $res ? 0 : 129;
+				return self::renderAPI($code, '', [
+
 				]);
 				break;
 		}

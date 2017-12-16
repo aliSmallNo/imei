@@ -410,10 +410,11 @@ class ChatMsg extends ActiveRecord
 		])->queryScalar();
 	}
 
-	public static function roomChat($rId, $senderId, $content, $conn = null, $debug = false)
+	public static function addRoomChat($rId, $senderId, $content, $conn = null, $debug = false)
 	{
 		$content = trim($content);
-		if (!User::findOne(["uId" => $senderId])->uPhone && self::countMsgByUid($senderId, $rId, $conn) >= 3) {
+		$uInfo = User::findOne(["uId" => $senderId])->toArray();
+		if ($uInfo["uNote"] != 'dummy' && !$uInfo["uPhone"] && self::countMsgByUid($senderId, $rId, $conn) >= 3) {
 			return [128, '还没注册，去注册吧！', null];
 		}
 		if (!$content) {
