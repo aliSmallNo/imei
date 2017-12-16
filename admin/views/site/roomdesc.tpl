@@ -16,6 +16,15 @@
 <div class="row">
 	<h4>聊天详细 </h4>
 </div>
+<form action="/site/roomdesc" class="form-inline">
+	<input class="form-control" placeholder="用户名" name="name"
+				 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
+	<input class="form-control" placeholder="用户手机" name="phone"
+				 value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
+	<input class="form-control" type="hidden" name="rid"
+				 value="{{if isset($getInfo['rid'])}}{{$getInfo['rid']}}{{/if}}"/>
+	<button class="btn btn-primary">查询</button>
+</form>
 <div class="row-divider"></div>
 <div class="row">
 	<div class="col-sm-12">
@@ -34,7 +43,7 @@
 				<th class="col-sm-1">
 					添加时间
 				</th>
-				<th class="col-sm-1">
+				<th class="col-sm-2">
 					操作
 				</th>
 			</tr>
@@ -62,6 +71,9 @@
 						 data-uid="{{$item.senderid}}"
 						 data-ban="{{$item.ban}}"
 						 class="adminOpt btn btn-outline btn-primary btn-xs">{{if $item.ban}}取消禁言{{else}}禁言{{/if}}</a>
+					<a href="javascript:;" data-tag="chat" data-cid="{{$item.cid}}" data-rid="{{$item.rid}}"
+						 data-uid="{{$item.senderid}}"
+						 class="adminOpt btn btn-outline btn-primary btn-xs">代聊</a>
 				</td>
 			</tr>
 			{{/foreach}}
@@ -101,7 +113,10 @@
 		var rid = self.attr("data-rid");
 		var ban = self.attr("data-ban");
 		var tag = self.attr("data-tag");
-		adminOPt(tag, uid, rid, cid, ban)
+		if($.inArray(tag,["delete","silent"])>=0){
+			console.log(1234);
+			adminOPt(tag, uid, rid, cid, ban)
+		}
 	});
 
 	function adminOPt(tag, uid, rid, cid, ban) {

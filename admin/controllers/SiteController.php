@@ -1509,9 +1509,18 @@ class SiteController extends BaseController
 		$getInfo = Yii::$app->request->get();
 		$page = self::getParam("page", 1);
 		$rid = self::getParam("rid");
-
-		$count = ChatMsg::countRoomChat($rid, 1);
-		list($chatItems) = ChatRoom::historyChatList($rid, $page);
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+		$condition = $params = [];
+		if ($name) {
+			$condition[] = '(u.uName like :name )';
+			$params[':name'] = '%' . $name . '%';
+		}
+		if ($phone) {
+			$condition[] = '(u.uPhone like :phone )';
+			$params[':phone'] = $phone . '%';
+		}
+		list($chatItems, $count) = ChatRoom::roomChatList($rid, $condition, $params, $page);
 
 		$pagination = self::pagination($page, $count);
 		return $this->renderPage("roomdesc.tpl",
@@ -1521,6 +1530,18 @@ class SiteController extends BaseController
 				'category' => 'data',
 				'chatItems' => $chatItems,
 				'count' => $count,
+				'rid' => $rid,
+			]
+		);
+	}
+
+	public function actionAddmember()
+	{
+		$rid = self::getParam("rid");
+		return $this->renderPage("addmember.tpl",
+			[
+				'info' => ChatRoom::findOne(["rId" => $rid])->toArray(),
+				'category' => 'data',
 			]
 		);
 	}

@@ -327,9 +327,9 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 
 		function shareOptions(type) {
 			var linkUrl = "https://wx.meipo100.com/wx/groom?rid=" + $sls.rid + "uid=" + $sls.uid;
-			var imgUrl = "https://bpbhd-10063905.file.myqcloud.com/image/n1712061178801.png";
-			var title = '千寻恋恋，本地优质的单身男女群，赶快进来相互认识下吧！';
-			var desc = '千寻恋恋，帮助身边的单身青年尽快脱单';
+			var imgUrl = "https://wx.meipo100.com/images/cr_room_share.jpeg";
+			var title = '邀请你加入群聊';
+			var desc = '"' + $("#lastNAME").val() + '"' + '邀请你加入群聊' + '"' + $("#RTitle").val().trim() + '"' + '，进入可查看详情';
 			if (type === 'message') {
 				return {
 					title: title,

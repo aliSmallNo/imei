@@ -190,8 +190,41 @@ class ChatRoom extends ActiveRecord
 			array_pop($res);
 		}
 		return [$res, $nextpage];
-
 	}
+
+	public static function roomChatList($rId, $condition, $params, $page = 1, $pagesize = 20)
+	{
+		$conn = AppUtil::db();
+		$params1 = [
+			":rid" => $rId,
+			":del" => ChatMsg::DELETED_NO
+		];
+		$strCriteria = '';
+		if ($condition) {
+			$strCriteria = ' AND ' . implode(' AND ', $condition);
+			$params1 = array_merge($params1, $params);
+		}
+		$limit = " limit " . ($page - 1) * $pagesize . "," . ($pagesize + 1);
+		$sql = "SELECT c.* ,u.*,m.mBanFlag
+				from im_chat_room as r 
+				join im_chat_msg as c on r.rId=c.cGId 
+				join im_user as u on u.uId=c.cAddedBy
+				join im_chat_room_fella as m on m.mUId=c.cAddedBy  and m.mRId=:rid
+				where c.cGId=:rid and  c.cDeletedFlag=:del  $strCriteria
+				order by cAddedon desc $limit ";
+		$chatlist = $conn->createCommand($sql)->bindValues($params1)->queryAll();
+		$chatlist = ChatMsg::fmtRoomChatData($chatlist, $rId, 0, 0);
+		$sql = "select count(1)
+				from im_chat_room as r 
+				join im_chat_msg as c on r.rId=c.cGId 
+				join im_user as u on u.uId=c.cAddedBy
+				join im_chat_room_fella as m on m.mUId=c.cAddedBy  and m.mRId=:rid
+				where c.cGId=:rid and  c.cDeletedFlag=:del  $strCriteria";
+		$count = $conn->createCommand($sql)->bindValues($params1)->queryScalar();
+
+		return [$chatlist, $count];
+	}
+
 
 	public static function historyChatList($rId, $page = 1, $lastid = 0, $uid = 120003, $pagesize = 20)
 	{
@@ -203,12 +236,12 @@ class ChatRoom extends ActiveRecord
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
 				join im_chat_room_fella as m on m.mUId=c.cAddedBy  and m.mRId=:rid
-				where c.cGId=:rid and  c.cDeletedFlag=:del and cId between 0 and :lastid 
+				where c.cGId=:rid and  c.cDeletedFlag=:del and cId between 0 and :lastid
 				order by cAddedon desc $limit ";
 		$chatlist = $conn->createCommand($sql)->bindValues([
 			":rid" => $rId,
 			":lastid" => $lastid ? $lastid : $rlastId,
-			":del" => ChatMsg::DELETED_NO,
+			":del" => ChatMsg::DELETED_NO
 		])->queryAll();
 		$res = ChatMsg::fmtRoomChatData($chatlist, $rId, $adminUId, $uid);
 		$nextpage = count($res) > $pagesize ? ($page + 1) : 0;
