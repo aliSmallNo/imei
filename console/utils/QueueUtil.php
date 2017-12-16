@@ -170,7 +170,7 @@ class QueueUtil
 
 	public static function pushText($params)
 	{
-		NoticeUtil::init(NoticeUtil::CAT_TEXT_ONLY, $params['openids'])->sendText($params['text']);
+		NoticeUtil::init(NoticeUtil::CAT_TEXT_ONLY, $params['open_id'])->sendText($params['text']);
 		self::logFile($params, __FUNCTION__, __LINE__);
 		return true;
 	}

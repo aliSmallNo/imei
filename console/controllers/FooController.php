@@ -1331,7 +1331,7 @@ class FooController extends Controller
 		var_dump(json_encode($ret));*/
 		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
 		$content = 'test message';
-		QueueUtil::loadJob('pushText', ['openIds' => $openId, 'text' => $content], QueueUtil::QUEUE_TUBE);
+		QueueUtil::loadJob('pushText', ['open_id' => $openId, 'text' => $content], QueueUtil::QUEUE_TUBE);
 
 		/*$counts = [150, 22, 5];
 		$steps = ['day', 'week', 'month'];

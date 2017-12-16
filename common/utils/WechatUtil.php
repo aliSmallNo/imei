@@ -1149,7 +1149,7 @@ class WechatUtil
 //			$ret = UserWechat::sendMsg($openIds, $content, $debug);
 //			$cnt = 0;
 			foreach ($openIds as $k => $openId) {
-				QueueUtil::loadJob('pushText', ['openIds' => $openId, 'text' => $content], QueueUtil::QUEUE_TUBE_SMS);
+				QueueUtil::loadJob('pushText', ['open_id' => $openId, 'text' => $content], QueueUtil::QUEUE_TUBE_SMS);
 				/*$cnt += UserWechat::sendMsg($openId, $content);
 				if ($k > 0 && $k % 4 == 0) {
 					sleep(2);
