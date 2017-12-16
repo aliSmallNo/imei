@@ -9,13 +9,11 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
-use common\models\ChatRoom;
 use common\models\Img;
 use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
-use common\models\UserTag;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use common\utils\AppUtil;
@@ -932,7 +930,6 @@ class FooController extends Controller
 		var_dump($cnt);
 	}
 
-
 	public function actionMass()
 	{
 		$conn = AppUtil::db();
@@ -1328,10 +1325,10 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = strtotime('2017-12-03 12:09:04');
-		var_dump($ret);
-		$ret = strtotime(-2 . ' day', strtotime('2017-12-03 12:09:04'));
-		var_dump($ret);
+		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
+		$content = 'test message';
+		QueueUtil::loadJob('pushText', ['openIds' => $openId, 'text' => $content], QueueUtil::QUEUE_TUBE_SMS);
+
 		/*$counts = [150, 22, 5];
 		$steps = ['day', 'week', 'month'];
 		$service = TrendService::init();

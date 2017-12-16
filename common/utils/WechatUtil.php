@@ -1157,7 +1157,7 @@ class WechatUtil
 				}*/
 			}
 		}
-		return $ret;
+		return $cnt;
 	}
 
 	public static function getMedia($type = 'image', $page = 1, $pageSize = 20)
