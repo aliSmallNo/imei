@@ -1330,7 +1330,7 @@ class FooController extends Controller
 		/*$service = TrendService::init('week');
 		$ret = $service->reuse('week', date('Y-m-d', time() - 86400 * 31));
 		var_dump(json_encode($ret));*/
-		$openId = 'oYDJew48Eghqvj-BFT1Ddb9b0Miw';
+		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
 		$content = 'test message';
 		QueueUtil::loadJob('pushText', ['open_id' => $openId, 'text' => $content], QueueUtil::QUEUE_TUBE_SMS);
 
