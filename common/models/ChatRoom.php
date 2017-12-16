@@ -170,9 +170,19 @@ class ChatRoom extends ActiveRecord
 				":rid" => $rid,
 			])->queryOne();
 			$v["co"] = $countCMD->bindValues(["rid" => $rid])->queryScalar();
-			$v["name"] = $item["rname"];
+			$v["rname"] = $item["rname"];
+
+			$v["avatar"] = $v["rLogo"];
+			$v["cid"] = $item["cId"];
+			$v["cnt"] = 0;
 			$v["content"] = $item["cContent"];
-			$v["time"] = AppUtil::prettyDate($item["cAddedOn"]);
+			$v["dt"] = AppUtil::miniDate($item["cAddedOn"]);
+			$v["encryptId"] = '';
+			$v["gid"] = $v["rId"];
+			$v["name"] = $v["rTitle"];
+			$v["readflag"] = 1;
+			$v["uid"] = 0;
+			$v["uni"] = '';
 		}
 		$nextpage = 0;
 		if (count($res) > $pageSize) {

@@ -616,7 +616,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					}
 					var self = $(this);
 					if (self.hasClass("chat")) {
-						util.chatRoom(self.attr('data-id'), self.find(".content").find("em").html());
+						util.chatRoom(self.attr('data-id'), self.find(".content").find("em").html(), self.closest("li").attr("data-gid"));
 					}
 					return false;
 				});
@@ -942,12 +942,16 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					}
 				}, "json");
 			},
-			chatRoom: function (cid, name) {
+			chatRoom: function (cid, name, gid) {
 				var util = this;
 				util.sid = cid;
 				util.lastId = 0;
 				util.section.attr("data-title", name);
-				location.href = '#schat';
+				if (util.sid) {
+					location.href = '#schat';
+				} else {
+					location.href = '/wx/groom?rid=' + gid + '#chat';
+				}
 			},
 			delChatBtn: function (obj, tag) {
 				if (tag == "edit") {

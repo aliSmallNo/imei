@@ -1998,6 +1998,10 @@ class ApiController extends Controller
 			case 'contacts':
 				$page = self::postParam('page', 1);
 				list($items, $nextPage) = ChatMsg::contacts($uid, $page, 40);
+				if ($page == 1) {
+					list($rooms, $npage) = ChatRoom::rooms($uid, $page);
+					$items = array_merge($rooms, $items);
+				}
 				return self::renderAPI(0, '', [
 					'items' => $items,
 					'page' => intval($page),
