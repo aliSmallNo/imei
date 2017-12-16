@@ -53,7 +53,7 @@ class Date extends ActiveRecord
 
 	const PAY_TYPE_AA = 1;
 
-	const DATE_COST = 520;
+	const DATE_COST = 52;
 
 	public static function tableName()
 	{
