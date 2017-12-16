@@ -399,7 +399,7 @@ class WechatUtil
 						[
 							"type" => "view",
 							"name" => "我们的成就",
-							"url" => "https://wx2.sinaimg.cn/mw690/006WtLsDgy1fmcyq916zhj30mu2l1q7z.jpg"
+							"url" => $wxUrl . "/wx/trophy"
 						],
 						[
 							"type" => "view",
