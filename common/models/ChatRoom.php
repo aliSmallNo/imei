@@ -61,6 +61,7 @@ class ChatRoom extends ActiveRecord
 			}
 		}
 
+		$rid = 0;
 		if (isset($insertData["rId"])) {
 			$rid = $insertData["rId"];
 			unset($insertData["rId"]);
