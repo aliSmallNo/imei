@@ -612,6 +612,17 @@ class ApiController extends Controller
 
 				]);
 				break;
+			case "dummysend":
+				$rid = self::postParam('rid');
+				$uid = self::postParam('uid');
+				$text = self::postParam('text');
+				if ($text) {
+					ChatMsg::addRoomChat($rid, $uid, $text);
+				}
+				return self::renderAPI(0, '', [
+
+				]);
+				break;
 		}
 	}
 

@@ -1546,40 +1546,40 @@ class SiteController extends BaseController
 		);
 	}
 
-	public function actionDummychat()
+	public function actionDummyroomchats()
 	{
-		Admin::staffOnly();
-		$dummyId = self:: getParam("did", User::SERVICE_UID);
-		$userId = self:: getParam("uid");
 
-		ChatMsg::groupEdit($dummyId, $userId, 9999);
-		list($items) = ChatMsg::details($dummyId, $userId, 0, true);
+		Admin::staffOnly();
+		$dummyId = self:: getParam("uid", User::SERVICE_UID);
+//		$userId = self:: getParam("rid");
+		$rId = self:: getParam("rid");
+
+		list($items) = ChatMsg::details($dummyId, $rId, 0, true);
+		$condition = $params = [];
+		$page = 1;
+		list($items, $count) = ChatRoom::roomChatList($rId, $condition, $params, $page);
+
 		usort($items, function ($a, $b) {
 			return $a['addedon'] < $b['addedon'];
 		});
-		$uInfo = User::findOne(["uId" => $userId]);
-		if (!$uInfo) {
-			throw new Exception("用户不存在啊~");
+
+		$rInfo = ChatRoom::findOne(["rId" => $rId]);
+		if (!$rInfo) {
+			throw new Exception("房间不存在啊~");
 		}
-		$uInfo = $uInfo->toArray();
-		$dInfo = User::findOne(["uId" => $dummyId]);
-		if (!$dInfo) {
+		$rInfo = $rInfo->toArray();
+		$uInfo = User::findOne(["uId" => $dummyId]);
+		if (!$uInfo) {
 			throw new Exception("稻草人不存在啊~");
 		}
-		$dInfo = $dInfo->toArray();
-		return $this->renderPage('bait.tpl',
+		$uInfo = $uInfo->toArray();
+		return $this->renderPage('dummyroomchats.tpl',
 			[
 				'category' => 'data',
-				'detailcategory' => 'site/dummychats',
+				'detailcategory' => 'site/roomdesc',
 				'list' => $items,
-				"uid" => $userId,
-				"name" => $uInfo['uName'],
-				"avatar" => $uInfo['uThumb'],
-				"phone" => $uInfo['uPhone'],
-				"dname" => $dInfo['uName'],
-				"davatar" => $dInfo['uThumb'],
-				"dphone" => $dInfo['uPhone'],
-				"dId" => $dummyId,
+				"rInfo" => $rInfo,
+				"uInfo" => $uInfo,
 			]);
 	}
 
