@@ -14,24 +14,24 @@ use common\utils\RedisUtil;
 
 class TrendService
 {
-	protected $type;
+	protected $step;
 	protected $beginDate;
 	protected $endDate;
 	protected $dateName;
 
-	const TYPE_DAY = 'day';
-	const TYPE_WEEK = 'week';
-	const TYPE_MONTH = 'month';
+	const STEP_DAY = 'day';
+	const STEP_WEEK = 'week';
+	const STEP_MONTH = 'month';
 
 	/**
 	 * @var \yii\db\Connection
 	 */
 	protected $conn = null;
 
-	public static function init($type = 'day', $conn = null)
+	public static function init($step = 'day', $conn = null)
 	{
 		$util = new self();
-		$util->type = $type;
+		$util->step = $step;
 		if ($conn) {
 			$util->conn = $conn;
 		} else {
@@ -40,17 +40,17 @@ class TrendService
 		return $util;
 	}
 
-	public function setType($type)
+	public function setStep($step)
 	{
-		$this->type = $type;
+		$this->step = $step;
 	}
 
-	public function setDate($type, $beginDate, $endDate = '')
+	public function setDate($step, $beginDate, $endDate = '')
 	{
 		$this->beginDate = $beginDate;
 		$this->endDate = $endDate;
 		if (!$endDate) {
-			switch ($type) {
+			switch ($step) {
 				case 'month':
 					list($day, $this->beginDate, $this->endDate) = AppUtil::getMonthInfo($beginDate);
 					break;
@@ -64,7 +64,7 @@ class TrendService
 		}
 		$this->beginDate = explode(' ', $this->beginDate)[0];
 		$this->endDate = explode(' ', $this->endDate)[0];
-		switch ($type) {
+		switch ($step) {
 			case 'month':
 				$this->dateName = date('n月', strtotime($this->beginDate));
 				break;
@@ -81,25 +81,25 @@ class TrendService
 	public function add($field, $num, $type = '')
 	{
 		if ($type) {
-			self::setType($type);
+			self::setStep($type);
 		}
 		if (!$this->beginDate || !$this->endDate) {
 			return false;
 		}
 
 		$sql = 'DELETE FROM im_trend 
-			WHERE tType=:tType AND tField=:tField AND tBeginDate=:tBeginDate AND tEndDate=:tEndDate ';
+			WHERE tStep=:tStep AND tField=:tField AND tBeginDate=:tBeginDate AND tEndDate=:tEndDate ';
 		$this->conn->createCommand($sql)->bindValues([
-			':tType' => $this->type,
+			':tStep' => $this->step,
 			':tField' => $field,
 			':tBeginDate' => $this->beginDate,
 			':tEndDate' => $this->endDate,
 		])->execute();
 
-		$sql = 'INSERT INTO im_trend(tType, tDateName, tBeginDate, tEndDate, tField, tNum)
-			VALUES(:tType, :tDateName, :tBeginDate, :tEndDate, :tField, :tNum)';
+		$sql = 'INSERT INTO im_trend(tStep, tDateName, tBeginDate, tEndDate, tField, tNum)
+			VALUES(:tStep, :tDateName, :tBeginDate, :tEndDate, :tField, :tNum)';
 		$this->conn->createCommand($sql)->bindValues([
-			':tType' => $this->type,
+			':tStep' => $this->step,
 			':tField' => $field,
 			':tNum' => $num,
 			':tDateName' => $this->dateName,
@@ -144,15 +144,15 @@ class TrendService
 			return $data;
 		}
 		$trend = [];
-		$this->setType($step);
+		$this->setStep($step);
 		$this->setDate($step, $queryDate);
 
 		if ($queryDate < date('Y-m-d') && !$resetFlag) {
 			$sql = 'SELECT tField,tNum 
 					FROM im_trend 
-					WHERE tType=:tType AND tBeginDate=:tBeginDate AND tEndDate=:tEndDate';
+					WHERE tStep=:tStep AND tBeginDate=:tBeginDate AND tEndDate=:tEndDate';
 			$ret = $this->conn->createCommand($sql)->bindValues([
-				':tType' => $step,
+				':tStep' => $step,
 				':tBeginDate' => $this->beginDate,
 				':tEndDate' => $this->endDate,
 			])->queryAll();
