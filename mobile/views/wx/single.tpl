@@ -1116,7 +1116,7 @@
 		<a href="javascript:;" data-id="{[encryptId]}" data-cid="{[cid]}" data-read="{[readflag]}" class="chat a-swipe">
 			<div class="avatar"><img src="{[avatar]}"></div>
 			<div class="content">
-				<div class="top-t"><em>{[name]}</em><i>{[dt]}</i></div>
+				<div class="top-t"><em>{[name]} {[#co]}({[co]}人){[/co]}</em><i>{[dt]}</i></div>
 				<div class="bot-t">{[content]}</div>
 			</div>
 			{[^readflag]}
