@@ -1528,6 +1528,7 @@ class SiteController extends BaseController
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
 				'category' => 'data',
+				'detailcategory' => 'site/rooms',
 				'chatItems' => $chatItems,
 				'count' => $count,
 				'rid' => $rid,
@@ -1542,6 +1543,7 @@ class SiteController extends BaseController
 			[
 				'info' => ChatRoom::findOne(["rId" => $rid])->toArray(),
 				'category' => 'data',
+				'detailcategory' => 'site/rooms',
 			]
 		);
 	}
@@ -1576,7 +1578,7 @@ class SiteController extends BaseController
 		return $this->renderPage('dummyroomchats.tpl',
 			[
 				'category' => 'data',
-				'detailcategory' => 'site/roomdesc',
+				'detailcategory' => 'site/rooms',
 				'list' => $items,
 				"rInfo" => $rInfo,
 				"uInfo" => $uInfo,

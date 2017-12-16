@@ -87,18 +87,23 @@
 				uids.push(uid);
 			}
 		});
-	  console.log(uids);console.log(uids.length);
+		console.log(uids);
+		console.log(uids.length);
 		if (uids.length < 1) {
 			layer.msg("请选择一个用户");
 			return;
 		}
 		// console.log(uids);console.log(uids.length);
-
+		if (searchFlag) {
+			return;
+		}
+		searchFlag = 1;
 		$.post("/api/room", {
 			tag: "addmember",
 			rid: $("#cRID").val().trim(),
 			uids: JSON.stringify(uids)
 		}, function (resp) {
+			searchFlag = 1;
 			if (resp.code == 0) {
 				location.href = "/site/rooms";
 			} else {
