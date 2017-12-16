@@ -16,6 +16,7 @@ use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserTrans;
 use common\models\UserWechat;
+use common\service\TrendService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
@@ -1325,14 +1326,18 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		/*$service = TrendService::init('week');
-		$ret = $service->reuse('week', date('Y-m-d', time() - 86400 * 31));
-		var_dump(json_encode($ret));*/
-		$openId = 'oYDJew48Eghqvj-BFT1Ddb9b0Miw';
+		$service = TrendService::init(TrendService::CAT_REUSE);
+		$ret = $service->statReuse('week', date('Y-m-d'));
+		var_dump(json_encode($ret));
+		$ret = $service->statReuse('week', date('Y-m-d', time() - 86400 * 7));
+		var_dump(json_encode($ret));
+		$ret = $service->statReuse('week', date('Y-m-d', time() - 86400 * 14));
+		var_dump(json_encode($ret));
+		/*$openId = 'oYDJew48Eghqvj-BFT1Ddb9b0Miw';
 		$content = 'Current time is ' . date('Y-m-d H:i:s');
 		QueueUtil::loadJob('pushText',
 			['open_id' => $openId, 'text' => $content],
-			QueueUtil::QUEUE_TUBE_SMS);
+			QueueUtil::QUEUE_TUBE_SMS);*/
 
 		/*$counts = [150, 22, 5];
 		$steps = ['day', 'week', 'month'];

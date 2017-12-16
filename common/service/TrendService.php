@@ -391,7 +391,6 @@ class TrendService
 			}
 		}
 
-
 		return $data;
 	}
 
