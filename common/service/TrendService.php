@@ -344,7 +344,7 @@ class TrendService
 
 		$lastDay = $endDate;
 		$ratio = ($step == 'week' ? 7 : 28);
-		for ($k = 1; $k < 16; $k++) {
+		for ($k = 1; $k < 18; $k++) {
 			$fromDate = date('Y-m-d', strtotime($beginDate) + 86400 * $ratio * $k);
 			$toDate = date('Y-m-d', strtotime($endDate) + 86400 * $ratio * $k);
 			if ($step == 'month') {

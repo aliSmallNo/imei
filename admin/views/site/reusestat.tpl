@@ -124,6 +124,12 @@
 			<th class="percent">
 				16
 			</th>
+			<th class="percent">
+				17
+			</th>
+			<th class="percent">
+				18
+			</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -132,7 +138,7 @@
 				<td class="dt">{{$item.begin}}<br>{{$item.end}}</td>
 				{{foreach from=$item[$cat] key=k item=subItem}}
 					<td class="percent">
-						{{if $k<16}}
+						{{if $k<18}}
 							<a href="javascript:;" class="j-link" data-from="{{$subItem.from}}"
 							   data-to="{{$subItem.to}}">{{$subItem.val}}</a>
 						{{/if}}
