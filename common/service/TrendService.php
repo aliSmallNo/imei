@@ -390,7 +390,7 @@ class TrendService
 		$this->statReuse('week', date('Y-m-d'));
 		$this->statReuse('month', date('Y-m-d'));
 
-		$floor = $step == self::STEP_MONTH ? '2017-06-29' : '2017-07-16';
+		$floor = $step == self::STEP_MONTH ? '2017-06-29' : '2017-07-20';
 		$sql = "select * from im_trend 
 			where tCategory=:cat and tStep=:step and tDateName>:floor 
 			order by tDateName,tType, tField+0";
