@@ -1351,20 +1351,20 @@ class User extends ActiveRecord
 		$ageFrom = $ageTo = 0;
 		if ($gender && $gender == self::GENDER_MALE && $birthYear) {
 			$ageLimit = ' AND u.uBirthYear BETWEEN ' . ($birthYear - 3) . ' AND ' . ($birthYear + 9);
-			$ageFrom = $birthYear - 1;
-			$ageTo = $birthYear + 3;
+			$ageFrom = $birthYear - 3;
+			$ageTo = $birthYear + 8;
 		}
 		if ($gender && $gender == self::GENDER_FEMALE && $birthYear) {
 			$ageLimit = ' AND u.uBirthYear BETWEEN ' . ($birthYear - 9) . ' AND ' . ($birthYear + 2);
-			$ageFrom = $birthYear - 3;
-			$ageTo = $birthYear + 1;
+			$ageFrom = $birthYear - 8;
+			$ageTo = $birthYear + 2;
 		}
 
 		$gender = ($gender == self::GENDER_FEMALE) ? self::GENDER_MALE : self::GENDER_FEMALE;
 		$uRole = User::ROLE_SINGLE;
 
 		$marry = $myInfo->uMarital == self::MARITAL_MARRIED ? self::MARITAL_MARRIED : implode(',', [self::MARITAL_UNMARRIED, self::MARITAL_DIVORCE_KID, self::MARITAL_DIVORCE_NO_KID]);
-
+		$marry .= ',0';
 		if ($data && isset($data["loc"]) && isset($data["mar"]) && !($data["loc"] == "all" && $data["mar"] == "all")) {
 			$condition = " u.uRole=$uRole AND u.uGender=$gender  AND u.uStatus in (" . implode(',', self::$StatusVisible) . ") ";
 		} else {
@@ -1517,7 +1517,7 @@ class User extends ActiveRecord
 			}
 		}
 		$flRank = "(CASE WHEN uLocation like '%$prov%' then 10 else 0 end) as flRank";
-		if($city){
+		if ($city) {
 			$flRank = "(CASE WHEN uLocation like '%$prov%' then 10 else 0 end) + (CASE WHEN uLocation like '%$city%' then 5 else 0 end) as flRank";
 		}
 
@@ -1531,7 +1531,7 @@ class User extends ActiveRecord
 				WHERE $condition 
 				ORDER BY flRank desc, stickRank,fmRank desc,$ageRank mRank desc limit $limit";
 
-		AppUtil::logFile($conn->createCommand($sql)->getRawSql(), 5, __FUNCTION__, __LINE__);
+		//AppUtil::logFile($conn->createCommand($sql)->getRawSql(), 5, __FUNCTION__, __LINE__);
 		$ret = $conn->createCommand($sql)->queryAll();
 		$rows = [];
 		$IDs = [0];
