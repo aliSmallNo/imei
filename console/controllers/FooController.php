@@ -1324,17 +1324,28 @@ class FooController extends Controller
 		var_dump($fileName);
 	}
 
-	public function actionRain()
+	public function actionReuse()
 	{
 		$service = TrendService::init(TrendService::CAT_REUSE);
-		$ret = $service->statReuse('week', date('Y-m-d'));
+		for ($k = 0; $k < 24; $k++) {
+			$service->statReuse('week', date('Y-m-d', time() - 86400 * 7 * $k));
+		}
+		for ($k = 0; $k < 6; $k++) {
+			$service->statReuse('month', date('Y-m-d', time() - 86400 * 31 * $k));
+		}
+	}
+
+	public function actionRain()
+	{
+
+		/*$ret = $service->statReuse('week', date('Y-m-d'));
 		var_dump(json_encode($ret));
 		$ret = $service->statReuse('week', date('Y-m-d', time() - 86400 * 7));
 		var_dump(json_encode($ret));
 		$ret = $service->statReuse('week', date('Y-m-d', time() - 86400 * 14));
 		var_dump(json_encode($ret));
 		$ret = $service->statReuse('week', date('Y-m-d', time() - 86400 * 21));
-		var_dump(json_encode($ret));
+		var_dump(json_encode($ret));*/
 		/*$openId = 'oYDJew48Eghqvj-BFT1Ddb9b0Miw';
 		$content = 'Current time is ' . date('Y-m-d H:i:s');
 		QueueUtil::loadJob('pushText',

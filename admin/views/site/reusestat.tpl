@@ -51,9 +51,6 @@
 <div class="row">
 	<div class="col-lg-7">
 		<h4>留存率
-			{{if $debug==1}}
-			<a href="/site/reusestat?sign=reset" class="opReset btn btn-outline btn-danger btn-xs">重置刷新</a>
-			{{/if}}
 		</h4>
 	</div>
 
@@ -131,21 +128,17 @@
 		</thead>
 		<tbody>
 		{{foreach from=$reuseData item=item}}
-		<tr data-begin="{{$item.begin}}" data-end="{{$item.end}}">
-			<td class="dt">{{$item.begin}}<br>{{$item.end}}</td>
-			<td class="percent">
-				<a href="javascript:;" class="j-link" data-from="{{$item.begin}}" data-to="{{$item.end}}">{{$item[$cat].cnt}}</a>
-			</td>
-			{{foreach from=$item[$cat].items key=k item=subItem}}
-			<td class="percent">
-				{{if $k<15}}
-				<a href="javascript:;" class="j-link" data-from="{{$subItem.from}}" data-to="{{$subItem.to}}">
-					{{$subItem.per|string_format:"%.1f"}}%
-				</a>
-				{{/if}}
-			</td>
-			{{/foreach}}
-		</tr>
+			<tr data-begin="{{$item.begin}}" data-end="{{$item.end}}">
+				<td class="dt">{{$item.begin}}<br>{{$item.end}}</td>
+				{{foreach from=$item[$cat] key=k item=subItem}}
+					<td class="percent">
+						{{if $k<16}}
+							<a href="javascript:;" class="j-link" data-from="{{$subItem.from}}"
+							   data-to="{{$subItem.to}}">{{$subItem.val}}</a>
+						{{/if}}
+					</td>
+				{{/foreach}}
+			</tr>
 		{{/foreach}}
 		</tbody>
 	</table>

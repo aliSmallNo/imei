@@ -326,8 +326,9 @@ class TrendService
 		])->queryOne();
 		if ($ret) {
 			foreach ($types as $type) {
-				$data[$type]['cnt'] = $ret[$type];
-				self::add($step, $dateName, $beginDate, $endDate, 1, $ret[$type], $type);
+				$cnt = isset($ret[$type]) ? $ret[$type] : 0;
+				$data[$type]['cnt'] = $cnt;
+				self::add($step, $dateName, $beginDate, $endDate, 1, $cnt, $type);
 			}
 		}
 		$sql = "SELECT  
@@ -361,21 +362,65 @@ class TrendService
 			])->queryOne();
 
 			foreach ($types as $type) {
+				$cnt = isset($ret[$type]) ? $ret[$type] : 0;
 				$item = [
 					'from' => $fromDate,
 					'to' => $toDate,
-					'cnt' => $ret[$type],
+					'cnt' => $cnt,
 				];
+				$item['per'] = 0;
 				if ($data[$type]['cnt'] > 0) {
-					$item['per'] = round(100.0 * $ret[$type] / $data[$type]['cnt'], 1);
-				} else {
-					$item['per'] = 0;
+					$item['per'] = round(100.0 * $cnt / $data[$type]['cnt'], 1);
 				}
 				$data[$type]['items'][] = $item;
-				self::add($step, $dateName, $fromDate, $toDate, $k + 1, $ret[$type], $type, $item['per']);
+				self::add($step, $dateName, $fromDate, $toDate, $k + 1, $cnt, $type, $item['per']);
 			}
 		}
 
+		return $data;
+	}
+
+	public function chartReuse($step, $resetFlag = false)
+	{
+		$redis = RedisUtil::init(RedisUtil::KEY_STAT_REUSE, $step);
+		$data = json_decode($redis->getCache(), 1);
+		if ($data && !$resetFlag) {
+			return $data;
+		}
+		$this->statReuse('week', date('Y-m-d'));
+		$this->statReuse('month', date('Y-m-d'));
+
+		$floor = $step == self::STEP_MONTH ? '2017-06-29' : '2017-07-16';
+		$sql = "select * from im_trend 
+			where tCategory=:cat and tStep=:step and tDateName>:floor 
+			order by tDateName,tType, tField+0";
+		$ret = $this->conn->createCommand($sql)->bindValues([
+			':cat' => $this->category,
+			':step' => $step,
+			':floor' => $floor
+		])->queryAll();
+		$data = [];
+		foreach ($ret as $row) {
+			$dateName = $row['tDateName'];
+			$type = $row['tType'];
+			if (!isset($data[$dateName])) {
+				list($begin, $end) = explode(PHP_EOL, $dateName);
+				$data[$dateName] = [
+					'begin' => $begin,
+					'end' => $end,
+					'all' => [],
+					'female' => [],
+					'male' => [],
+				];
+			}
+			$data[$dateName][$type][] = [
+				'from' => $row['tBeginDate'],
+				'to' => $row['tEndDate'],
+				'val' => strlen($row['tNote']) ? sprintf('%.1f%%', $row['tNote']) : $row['tNum']
+			];
+		}
+		$data = array_values($data);
+		$redis->setCache($data);
 		return $data;
 	}
 

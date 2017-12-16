@@ -12,7 +12,6 @@ use common\models\Event;
 use common\models\EventCrew;
 use common\models\Feedback;
 use common\models\Log;
-use common\models\LogAction;
 use common\models\Mark;
 use common\models\Pay;
 use common\models\Pin;
@@ -911,9 +910,10 @@ class SiteController extends BaseController
 	{
 		$cat = self::getParam("cat", "all");
 		$scope = self::getParam("scope", "week");
-		$sign = self::getParam("sign");
-		$category = ($scope == 'week' ? LogAction::REUSE_DATA_WEEK : LogAction::REUSE_DATA_MONTH);
-		$reuseData = LogAction::reuseData($category, ($sign == 'reset'));
+		$reset = self::getParam("reset", 0);
+		//$category = ($scope == 'week' ? LogAction::REUSE_DATA_WEEK : LogAction::REUSE_DATA_MONTH);
+		//$reuseData = LogAction::reuseData($category, ($sign == 'reset'));
+		$reuseData = TrendService::init(TrendService::CAT_REUSE)->chartReuse($scope, $reset);
 		return $this->renderPage("reusestat.tpl",
 			[
 				'category' => "data",
