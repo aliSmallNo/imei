@@ -2009,8 +2009,8 @@ class WxController extends BaseController
 		$wSubscribe = UserWechat::findOne(["wUId" => $uid])->wSubscribe;
 		$isMember = ChatRoomFella::checkIsMember($rid, $uid);
 		$memberFlag = $isMember && $wSubscribe == 1;
-		$canJoinFlag = 1;
 		$count = ChatRoom::countMembers('', $rid);
+		$canJoinFlag = 1;
 		if (!$isMember && $roomInfo["rLimit"] > $count) {
 			ChatRoomFella::addMember($rid, $uid);
 		} elseif(!$isMember && $roomInfo["rLimit"] <= $count) {
