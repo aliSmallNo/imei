@@ -3,6 +3,7 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
+			memberFlag: $("#memberFlag").val().trim(),
 			hashPage: '',
 			wxString: $("#tpl_wx_info").html(),
 			bottompl: $('.m-bottom-pl'),
@@ -203,7 +204,7 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 			init: function () {
 				var util = this;
 				util.joinBtn.on(kClick, function () {
-					if ($sls.subscribe == 1) {
+					if ($sls.memberFlag == 1) {
 						location.href = "#chat";
 					} else {
 						util.ToJoin();
