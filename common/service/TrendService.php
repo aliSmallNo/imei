@@ -23,6 +23,9 @@ class TrendService
 	const STEP_WEEK = 'week';
 	const STEP_MONTH = 'month';
 
+	const CAT_TREND = 'trend';
+	const CAT_REUSE = 'reuse';
+
 	/**
 	 * @var \yii\db\Connection
 	 */
