@@ -47,7 +47,7 @@
 		<div class="swiper-container">
 			<div class="swiper-wrapper">
 				{{foreach from=$adverts item=item}}
-					<div class="swiper-slide"><img src="{{$item.image}}" data-url="{{$item.url}}" alt=""></div>
+					<a href="javascript:;" data-url="{{$item.url}}" class="swiper-slide"><img src="{{$item.image}}"></a>
 				{{/foreach}}
 			</div>
 			<div class="swiper-pagination"></div>

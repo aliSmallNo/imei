@@ -2421,13 +2421,14 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 				var util = this;
 				if (util.loaded || $('.swiper-container .swiper-slide').length < 2) {
 					util.loaded = 1;
-					$(document).on(kClick, '.swiper-slide img', function () {
+					$(document).on(kClick, '.swiper-slide', function () {
 						var url = $(this).attr('data-url');
 						if (url.indexOf('http') >= 0) {
 							location.href = url;
 						} else {
 							NoticeUtil.toggle(url);
 						}
+						return false;
 					});
 					return false;
 				}
@@ -2438,12 +2439,13 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					speed: 600,
 					on: {
 						click: function (event) {
-							var url = $(event.target).attr('data-url');
+							var url = $(event.target).closest('.swiper-slide').attr('data-url');
 							if (url.indexOf('http') >= 0) {
 								location.href = url;
 							} else {
 								NoticeUtil.toggle(url);
 							}
+							return false;
 						}
 					},
 					autoplay: {
