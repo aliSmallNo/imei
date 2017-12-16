@@ -1546,4 +1546,41 @@ class SiteController extends BaseController
 		);
 	}
 
+	public function actionDummychat()
+	{
+		Admin::staffOnly();
+		$dummyId = self:: getParam("did", User::SERVICE_UID);
+		$userId = self:: getParam("uid");
+
+		ChatMsg::groupEdit($dummyId, $userId, 9999);
+		list($items) = ChatMsg::details($dummyId, $userId, 0, true);
+		usort($items, function ($a, $b) {
+			return $a['addedon'] < $b['addedon'];
+		});
+		$uInfo = User::findOne(["uId" => $userId]);
+		if (!$uInfo) {
+			throw new Exception("用户不存在啊~");
+		}
+		$uInfo = $uInfo->toArray();
+		$dInfo = User::findOne(["uId" => $dummyId]);
+		if (!$dInfo) {
+			throw new Exception("稻草人不存在啊~");
+		}
+		$dInfo = $dInfo->toArray();
+		return $this->renderPage('bait.tpl',
+			[
+				'category' => 'data',
+				'detailcategory' => 'site/dummychats',
+				'list' => $items,
+				"uid" => $userId,
+				"name" => $uInfo['uName'],
+				"avatar" => $uInfo['uThumb'],
+				"phone" => $uInfo['uPhone'],
+				"dname" => $dInfo['uName'],
+				"davatar" => $dInfo['uThumb'],
+				"dphone" => $dInfo['uPhone'],
+				"dId" => $dummyId,
+			]);
+	}
+
 }

@@ -169,10 +169,10 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	if (document.location.hash === "" || document.location.hash === "#") {
-		document.getElementById("subscribe").value == 1 ? document.location.hash = "#chat" : document.location.hash = "#join";
+		document.getElementById("memberFlag").value == 1 ? document.location.hash = "#chat" : document.location.hash = "#join";
 	}
 	requirejs(['/js/config.js?v=1.2'], function () {
-		requirejs(['/js/groom.js?v=1.2.4']);
+		requirejs(['/js/groom.js?v=1.2.5']);
 	});
 </script>
 
