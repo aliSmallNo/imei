@@ -896,7 +896,7 @@ class SiteController extends BaseController
 	{
 		$date = self::getParam('dt', date('Y-m-d'));
 		$reset = self::getParam('reset', 0);
-		$trends = TrendService::init()->chartData($date, $reset);
+		$trends = TrendService::init(TrendService::CAT_TREND)->chartTrend($date, $reset);
 		return $this->renderPage('trend.tpl',
 			[
 				'category' => "data",
