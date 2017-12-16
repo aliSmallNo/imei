@@ -1328,7 +1328,7 @@ class FooController extends Controller
 		/*$service = TrendService::init('week');
 		$ret = $service->reuse('week', date('Y-m-d', time() - 86400 * 31));
 		var_dump(json_encode($ret));*/
-		$openId = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
+		$openId = 'oYDJew48Eghqvj-BFT1Ddb9b0Miw';
 		$content = 'Current time is ' . date('Y-m-d H:i:s');
 		QueueUtil::loadJob('pushText',
 			['open_id' => $openId, 'text' => $content],
