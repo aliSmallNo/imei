@@ -24,12 +24,16 @@ class ChatRoom extends ActiveRecord
 		return '{{%chat_room}}';
 	}
 
-	public static function add($values = [])
+	public static function edit($rid, $values = [])
 	{
 		if (!$values) {
 			return false;
 		}
-		$entity = new self();
+		if ($rid) {
+			$entity = self::findOne(["rId" => $rid]);
+		} else {
+			$entity = new self();
+		}
 		foreach ($values as $key => $val) {
 			$entity->$key = $val;
 		}
@@ -48,6 +52,7 @@ class ChatRoom extends ActiveRecord
 			"title" => "rTitle",
 			"intro" => "rNote",
 			"limit" => "rLimit",
+			"rId" => "rid",
 		];
 		$insertData = [];
 		foreach ($data as $k => $v) {
@@ -55,7 +60,12 @@ class ChatRoom extends ActiveRecord
 				$insertData[$fieldMap[$k]] = $v;
 			}
 		}
-		return self::add($insertData);
+
+		if (isset($insertData["rId"]) && $insertData["rId"]) {
+			$rid = $insertData["rId"];
+		}
+		unset($insertData["rId"]);
+		return self::edit($rid, $insertData);
 	}
 
 	public static function one($rId)

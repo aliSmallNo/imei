@@ -71,7 +71,7 @@
 						 data-uid="{{$item.senderid}}"
 						 data-ban="{{$item.ban}}"
 						 class="adminOpt btn btn-outline btn-primary btn-xs">{{if $item.ban}}取消禁言{{else}}禁言{{/if}}</a>
-					<a href="/site/dummyroomchats?rid={{$item.rid}}&uid={{$item.senderid}}" data-tag="chat" data-cid="{{$item.cid}}" data-rid="{{$item.rid}}"
+					<a href="/site/dummyroomchats?rid={{$item.rid}}&uid={{$item.uid}}" data-tag="chat" data-cid="{{$item.cid}}" data-rid="{{$item.rid}}"
 						 data-uid="{{$item.senderid}}"
 						 class="adminOpt btn btn-outline btn-primary btn-xs">代聊</a>
 				</td>
