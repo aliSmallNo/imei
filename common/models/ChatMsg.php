@@ -345,8 +345,7 @@ class ChatMsg extends ActiveRecord
 		return [$res, $rlastId];
 	}
 
-	public
-	static function fmtRoomChatData($chatlist, $rId, $adminUId, $uid)
+	public static function fmtRoomChatData($chatlist, $rId, $adminUId, $uid)
 	{
 		$res = [];
 		foreach ($chatlist as $v) {
@@ -486,10 +485,14 @@ class ChatMsg extends ActiveRecord
 		$sql = 'SELECT u.uUniqId,u.uId,u.uName,u.uThumb 
 				FROM im_chat_room_fella as f join im_user as u on u.uId=f.mUId
  				WHERE f.mRId=' . $rId;
+
 		$rows = $conn->createCommand($sql)->queryAll();
 		$pushUtil = PushUtil::init();
 		foreach ($rows as $row) {
+			$expInfo = UserTag::getExp($row['uId'], false, $conn);
 			$info['dir'] = $row['uId'] == $senderId ? 'right' : 'left';
+			$info['pic_level'] = $expInfo["pic_level"];
+			$info['pic_name'] = isset($expInfo["pic_name"]) ? $expInfo["pic_name"] : "01";
 			$pushUtil->room('msg', $rId, $row['uUniqId'], $info);
 		}
 		$pushUtil->close();

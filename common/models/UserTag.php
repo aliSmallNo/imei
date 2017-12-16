@@ -184,14 +184,16 @@ class UserTag extends ActiveRecord
 		return $tags;
 	}
 
-	public static function getExp($uid, $resetFlag = false)
+	public static function getExp($uid, $resetFlag = false, $conn = null)
 	{
 		$redis = RedisUtil::init(RedisUtil::KEY_USER_EXP, $uid);
 		$note = json_decode($redis->getCache(), 1);
 		if ($note && isset($note['pic_level']) && !$resetFlag) {
 			return $note;
 		}
-		$conn = AppUtil::db();
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
 		self::calcExp($uid, $conn);
 		$sql = "select tNote from im_user_tag where tCategory=:cat AND tUId=:uid ";
 		$note = $conn->createCommand($sql)->bindValues([
