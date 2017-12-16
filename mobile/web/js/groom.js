@@ -328,7 +328,7 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 
 		function shareOptions(type) {
 			var linkUrl = "https://wx.meipo100.com/wx/groom?rid=" + $sls.rid + "&uid=" + $sls.uid;
-			var imgUrl = "https://wx.meipo100.com/images/cr_room_share.jpeg";
+			var imgUrl = "https://wx.meipo100.com/images/cr_room_share.jpg?v=1.2." + Date.parse(new Date());
 			var title = '邀请你加入群聊';
 			var desc = '"' + $("#lastNAME").val() + '"' + '邀请你加入群聊' + '"' + $("#RTitle").val().trim() + '"' + '，进入可查看详情';
 			if (type === 'message') {

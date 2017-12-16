@@ -136,6 +136,7 @@
 			<td>
 				<a href="/site/roomdesc?rid={{$item.rId}}" class="btn btn-outline btn-primary btn-xs">详情</a>
 				<a href="/site/addmember?rid={{$item.rId}}" class="btn btn-outline btn-primary btn-xs">加入稻草人</a>
+				<a href="javascript:;" data-rid="{{$item.rId}}" class="RoomEdit btn-outline btn-primary btn-xs">加入稻草人</a>
 			</td>
 		</tr>
 		{{/foreach}}
@@ -206,18 +207,27 @@
 	</div>
 </div>
 <script>
+	var $sls={
+		rid:0,
+		searchFlag:0,
+	};
 	$(document).on("click", ".btn-add", function () {
 		var self = $(this);
 		$("#modalEdit").modal('show');
 	});
-	var searchFlag = 0;
+	$(document).on("click",".RoomEdit",function(){
+		var self = $(this);
+		$sls.rid = self.attr("data-rid");
+		$("#modalEdit").modal('show');
+	});
+
 	$(document).on('input', '#searchName', function () {
 			var self = $(this);
 			var keyWord = self.val();
-			if (searchFlag) {
+			if ($sls.searchFlag) {
 				return;
 			}
-			searchFlag = 1;
+			$sls.searchFlag = 1;
 			layer.load();
 			$.post("/api/user",
 				{
@@ -226,7 +236,7 @@
 				},
 				function (resp) {
 					layer.closeAll();
-					searchFlag = 0;
+					$sls.searchFlag = 0;
 					if (resp.code === 0) {
 						$("[data-tag=admin]").html(Mustache.render('{[#data]}<option value="{[id]}">{[uname]} {[phone]}</option>{[/data]}', resp));
 					}
@@ -263,11 +273,15 @@
 	}
 
 	$(document).on("click", ".btn-save", function () {
+		return ;
+		return ;
+		return ;
 		var data = intakeForm();
 		if (!data) {
 			return false;
 		}
 
+		data['rid']= $sls.rid;
 		var formData = new FormData();
 		formData.append("tag", 'edit');
 		formData.append("data", JSON.stringify(data));
@@ -285,6 +299,10 @@
 		// return;
 
 		BpbhdUtil.loading();
+		if($sls.searchFlag){
+			return;
+		}
+		$sls.searchFlag=1;
 		$.ajax({
 			url: "/api/room",
 			type: "POST",
@@ -294,6 +312,7 @@
 			contentType: false,
 			success: function (resp) {
 				console.log(resp);
+				$sls.searchFlag = 0;
 				BpbhdUtil.clear();
 				if (resp.code < 1) {
 					BpbhdUtil.showMsg(resp.msg, 1);
