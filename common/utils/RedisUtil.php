@@ -44,7 +44,6 @@ class RedisUtil
 	const KEY_XCX_SESSION_ID = 'xcx_session_id'; //小程序 sessionId
 	const KEY_STAT_TREND = "trend_stat";
 	const KEY_STAT_REUSE = "reuse_stat";
-	const KEY_STAT_REUSE_FLAG = "reuse_stat_flag";
 	const KEY_PIN_GEO = "pin_geo";
 	const KEY_MENUS_MD5 = "key_menus_md5";
 	const KEY_BAIDU_TOKEN = "baidu_token";
@@ -77,7 +76,6 @@ class RedisUtil
 		self::KEY_XCX_SESSION_ID => 3600 * 2,
 		self::KEY_STAT_TREND => 60 * 12,
 		self::KEY_STAT_REUSE => 3600 * 6,
-		self::KEY_STAT_REUSE_FLAG => 1800,
 		self::KEY_PIN_GEO => 60 * 10,
 		self::KEY_MENUS_MD5 => 60 * 30,
 		self::KEY_BAIDU_TOKEN => 86400 * 28,
