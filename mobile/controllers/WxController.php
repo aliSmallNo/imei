@@ -2036,7 +2036,7 @@ class WxController extends BaseController
 				"otherRoom" => $otherRoom,
 			],
 			'terse',
-			'千寻聊天室',
+			$roomInfo["rTitle"],
 			'cr-bg');
 	}
 
