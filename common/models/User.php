@@ -1431,6 +1431,7 @@ class User extends ActiveRecord
 		$ret = $conn->createCommand($sql)->queryOne();
 		$myLat = $myLng = '0';
 		$distField = ' 9999 as dist';
+		$distRank = '0 as mRank';
 		if ($ret) {
 			$myLat = $ret['pLat'];
 			$myLng = $ret['pLng'];
@@ -1530,7 +1531,7 @@ class User extends ActiveRecord
 				WHERE $condition 
 				ORDER BY flRank desc, stickRank,fmRank desc,$ageRank mRank desc limit $limit";
 
-		//AppUtil::logFile($conn->createCommand($sql)->getRawSql(), 5, __FUNCTION__, __LINE__);
+		AppUtil::logFile($conn->createCommand($sql)->getRawSql(), 5, __FUNCTION__, __LINE__);
 		$ret = $conn->createCommand($sql)->queryAll();
 		$rows = [];
 		$IDs = [0];
@@ -1842,7 +1843,7 @@ class User extends ActiveRecord
 		}
 		$conStr = "";
 		if ($subtag == "dummy") {
-			$conStr=" and uNote='dummy' ";
+			$conStr = " and uNote='dummy' ";
 		}
 		$sql = "select uId as id,uAvatar as avatar,uName as uname,uPhone as phone 
 			FROM im_user where uName like '%$kw%' $conStr ";
