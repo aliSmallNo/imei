@@ -1531,7 +1531,7 @@ class User extends ActiveRecord
 				WHERE $condition 
 				ORDER BY flRank desc, stickRank,fmRank desc,$ageRank mRank desc limit $limit";
 
-		AppUtil::logFile($conn->createCommand($sql)->getRawSql(), 5, __FUNCTION__, __LINE__);
+		//AppUtil::logFile($conn->createCommand($sql)->getRawSql(), 5, __FUNCTION__, __LINE__);
 		$ret = $conn->createCommand($sql)->queryAll();
 		$rows = [];
 		$IDs = [0];
