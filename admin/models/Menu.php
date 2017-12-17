@@ -4,7 +4,7 @@ namespace admin\models;
 
 class Menu
 {
-	const VERSION = 171205.1;
+	const VERSION = 171217.1;
 
 	public static function keepMenu($uId, $url)
 	{
