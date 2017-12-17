@@ -559,7 +559,8 @@ class ApiController extends Controller
 					$tmp = $_FILES['image']['tmp_name'];
 					$ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
 					AppUtil::logFile($_FILES['image'], 5, __FUNCTION__, __LINE__);
-					$data['cRaw']['content'] = COSUtil::init(COSUtil::UPLOAD_PATH, $tmp, $ext)->uploadOnly(false, false, false);
+					$data['cRaw']['content'] = COSUtil::init(COSUtil::UPLOAD_PATH, $tmp, $ext)
+						->uploadOnly(false, false, false, true);
 				}
 				$ret = CogService::init()->edit($data, $this->admin_id);
 				return self::renderAPI(0, $ret ? '保存成功！' : '保存失败！', ['result' => $ret]);

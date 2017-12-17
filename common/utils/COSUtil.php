@@ -8,7 +8,6 @@
 
 namespace common\utils;
 
-
 use Gregwar\Image\Image;
 
 class COSUtil
@@ -168,7 +167,7 @@ class COSUtil
 	}
 
 
-	public function uploadOnly($thumbFlag = false, $squareFlag = false, $compressFlag = true)
+	public function uploadOnly($thumbFlag = false, $squareFlag = false, $compressFlag = true, $resetFlag = false)
 	{
 		$data = [
 			'op' => 'upload',
@@ -212,14 +211,14 @@ class COSUtil
 		}
 
 		$url = $this->getUrl() . "/" . ($thumbFlag ? 't' : 'n') . $this->resRename;
-		$ret = $this->curlUpload($url, $data);
+		$ret = $this->curlUpload($url, $data, $resetFlag);
 		$ret = json_decode($ret, true);
 		$cosUrl = isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
 		$cosUrl = str_replace('http://', 'https://', $cosUrl);
 		return $cosUrl;
 	}
 
-	public function uploadBoth($squareFlag = false, $top = -1, $left = -1)
+	public function uploadBoth($squareFlag = false, $top = -1, $left = -1, $resetFlag = false)
 	{
 		if ($this->hasError) {
 			return ['', ''];
@@ -277,14 +276,14 @@ class COSUtil
 			$url = $this->getUrl() . "/t" . $this->resRename;
 			$thumbData['filecontent'] = $thumbObj->get();
 			$thumbData['sha'] = hash('sha1', $thumbData['filecontent']);
-			$ret = $this->curlUpload($url, $thumbData);
+			$ret = $this->curlUpload($url, $thumbData, $resetFlag);
 			$ret = json_decode($ret, true);
 			$thumbUrl = isset($ret['data']['access_url']) ? $ret['data']['access_url'] : json_encode($ret);
 
 			$url = $this->getUrl() . "/n" . $this->resRename;
 			$figureData['filecontent'] = $figureObj->get();
 			$figureData['sha'] = hash('sha1', $figureData['filecontent']);
-			$ret = $this->curlUpload($url, $figureData);
+			$ret = $this->curlUpload($url, $figureData, $resetFlag);
 			$ret = json_decode($ret, true);
 			if (isset($ret['data']['access_url'])) {
 				$figureUrl = $ret['data']['access_url'];
@@ -296,10 +295,10 @@ class COSUtil
 		}
 	}
 
-	protected function curlUpload($url, $data)
+	protected function curlUpload($url, $data, $resetFlag = false)
 	{
 		$method = "POST";
-		$header = $this->getHeader();
+		$header = $this->getHeader($resetFlag);
 		$curlHandler = curl_init();
 		curl_setopt($curlHandler, CURLOPT_URL, $url);
 		$method = strtoupper($method);
