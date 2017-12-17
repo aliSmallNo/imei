@@ -64,7 +64,7 @@ class RedisUtil
 		self::KEY_ADMIN_INFO => 86400 * 7,
 		self::KEY_PUB_CODE => 600,
 		self::KEY_CLOUD_COS => 86400,
-		self::KEY_COS_SIGN => 3600 * 20,
+		self::KEY_COS_SIGN => 3600 * 12,
 		self::KEY_SMS_CODE => 60 * 10,
 		self::KEY_SMS_CODE_CNT => 86400,
 		self::KEY_DISTANCE => 86400 * 20,
