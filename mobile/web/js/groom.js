@@ -124,7 +124,12 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 				var util = this;
 				$(document).on(kClick, ".btn-chat-send", function () {
 					util.text = util.input.val().trim();
+					if (!util.text) {
+						alpha.toast('消息不能为空哦~');
+						return false;
+					}
 					util.sendMessage();
+					return false;
 				});
 				$(document).on(kClick, "a.cr-title-member", function () {
 					location.href = "#members";
@@ -149,20 +154,17 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 						util.text = "";
 						util.input.val('');
 					} else if (resp.code == 128) {
-						layer.open({
-							content: resp.msg
-							, btn: ['去注册', '暂不']
-							, yes: function (index) {
+						alpha.prompt('', resp.msg,
+							['马上注册', '残忍拒绝'],
+							function () {
 								location.href = "/wx/hi";
-							}
-						});
+							});
 					} else {
 						alpha.toast(resp.msg);
 					}
 				}, "json");
 			},
 			loadHistoryChatlist: function () {
-				console.log("loadHistoryChatlist");
 				var util = this;
 				if ($sls.loading || !util.page) {
 					return;
