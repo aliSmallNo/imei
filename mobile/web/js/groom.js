@@ -120,6 +120,7 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 			text: '',
 			page: 1,
 			moreHistoryChat: $(".cr-his-more"),
+			sending: 0,
 			init: function () {
 				var util = this;
 				$(document).on(kClick, ".btn-chat-send", function () {
@@ -140,16 +141,16 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 			},
 			sendMessage: function () {
 				var util = this;
-				if ($sls.loading) {
+				if ($sls.sending) {
 					return;
 				}
-				$sls.loading = 1;
+				$sls.sending = 1;
 				$.post("/api/chatroom", {
 					tag: "sent",
 					text: util.text,
 					rid: $sls.rid,
 				}, function (resp) {
-					$sls.loading = 0;
+					$sls.sending = 0;
 					if (resp.code < 1) {
 						util.text = "";
 						util.input.val('');
