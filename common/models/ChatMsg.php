@@ -503,7 +503,7 @@ class ChatMsg extends ActiveRecord
 			$info['receiver'] = $row['uUniqId'];
 			$bundle['items'][] = $info;
 		}
-		QueueUtil::loadJob('chatMsg', $bundle, QueueUtil::QUEUE_TUBE_SMS);
+		QueueUtil::loadJob('chatMsg', $bundle, QueueUtil::QUEUE_TUBE_CHAT, 0);
 		return [0, '', $info];
 	}
 

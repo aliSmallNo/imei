@@ -22,6 +22,7 @@ class QueueUtil
 {
 	const QUEUE_TUBE = 'imei';
 	const QUEUE_TUBE_SMS = 'sms_imei';
+	const QUEUE_TUBE_CHAT = 'chat_imei';
 
 	public static $QueueConfig = [
 		'persistent' => false,
