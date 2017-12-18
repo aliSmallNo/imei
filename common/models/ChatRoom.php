@@ -78,11 +78,12 @@ class ChatRoom extends ActiveRecord
 			count(case when m.mUId=:uid then 1 end) as isMember
 			 from im_chat_room as r
 			 left join im_chat_room_fella as m on m.mRId=r.rId
-			 where rId=:id";
+			 where rId=:id and m.mDeletedFlag=:del";
 		$conn = AppUtil::db();
 		$ret = $conn->createCommand($sql)->bindValues([
 			':id' => $rid,
-			':uid' => $uid
+			':uid' => $uid,
+			':del' => ChatRoomFella::DELETE_NORMAL,
 		])->queryOne();
 		$ret['backup'] = -1;
 		$sql = " select distinct r.*, count(m.mId) as cnt,
@@ -149,10 +150,11 @@ class ChatRoom extends ActiveRecord
 				from im_chat_room as r 
 				join im_chat_room_fella as m on r.rId=m.mRId
 				join im_user as u on u.uId=m.mUId 
-				where rId=:rid 
+				where rId=:rid and m.mDeletedFlag=:del
 				order by m.mId asc $limit ";
 		$res = $conn->createCommand($sql)->bindValues([
 			":rid" => $rid,
+			":del" => ChatRoomFella::DELETE_NORMAL,
 		])->queryAll();
 		foreach ($res as &$v) {
 			$v["eid"] = AppUtil::encrypt($v["uId"]);
@@ -176,9 +178,10 @@ class ChatRoom extends ActiveRecord
 				from im_chat_room as r 
 				join im_chat_room_fella as m on r.rId=m.mRId
 				join im_user as u on u.uId=m.mUId 
-				where rId=:rid";
+				where rId=:rid and m.mDeletedFlag=:del ";
 		return $conn->createCommand($sql)->bindValues([
 			":rid" => $rid,
+			":del" => ChatRoomFella::DELETE_NORMAL,
 		])->queryScalar();
 	}
 
@@ -190,11 +193,12 @@ class ChatRoom extends ActiveRecord
 		$sql = "SELECT r.*,count(cId) as cnt from im_chat_room as r 
 				join im_chat_room_fella as m on r.rId=m.mRId 
 				left join im_chat_msg as c on c.cGId=m.mRId and c.cAddedBy !=:uid and cReadFlag=0
-				where m.mUId=:uid 
+				where m.mUId=:uid and m.mDeletedFlag=:del
 				group by r.rId 
 				ORDER BY r.rAddedOn desc $limit ";
 		$res = $conn->createCommand($sql)->bindValues([
 			":uid" => $uid,
+			":del" => ChatRoomFella::DELETE_NORMAL,
 		])->queryAll();
 
 		$sql = "SELECT c.*,uName as rname from im_chat_room as r 
@@ -250,7 +254,7 @@ class ChatRoom extends ActiveRecord
 			$params1 = array_merge($params1, $params);
 		}
 		$limit = " limit " . ($page - 1) * $pagesize . "," . ($pagesize + 1);
-		$sql = "SELECT c.* ,u.*,m.mBanFlag
+		$sql = "SELECT c.* ,u.*,m.mBanFlag,m.mDeletedFlag as del
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
@@ -276,7 +280,7 @@ class ChatRoom extends ActiveRecord
 		$conn = AppUtil::db();
 		list($adminUId, $rlastId) = ChatMsg::getAdminUIdLastId($conn, $rId);
 		$limit = " limit " . ($page - 1) * $pagesize . "," . ($pagesize + 1);
-		$sql = "SELECT c.* ,u.*,m.mBanFlag
+		$sql = "SELECT c.* ,u.*,m.mBanFlag,m.mDeletedFlag as del
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
@@ -300,7 +304,7 @@ class ChatRoom extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		list($adminUId, $rlastId) = ChatMsg::getAdminUIdLastId($conn, $rId);
-		$sql = "SELECT c.* ,u.*,m.mBanFlag
+		$sql = "SELECT c.* ,u.*,m.mBanFlag,m.mDeletedFlag as del
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy

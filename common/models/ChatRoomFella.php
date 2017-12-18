@@ -9,6 +9,7 @@
 namespace common\models;
 
 
+use admin\models\Admin;
 use common\utils\AppUtil;
 use yii\db\ActiveRecord;
 
@@ -20,6 +21,13 @@ class ChatRoomFella extends ActiveRecord
 	static $banDict = [
 		self::BAN_NORMAL => "正常聊天",
 		self::BAN_SILENT => "禁言",
+	];
+
+	const DELETE_NORMAL = 0;
+	const DELETE_YES = 1;
+	static $delDict = [
+		self::DELETE_NORMAL => "正常",
+		self::DELETE_YES => "已踢",
 	];
 
 	public static function tableName()
@@ -64,7 +72,7 @@ class ChatRoomFella extends ActiveRecord
 				$excute($addOneCMD, $uid, $rId);
 			}
 		} else {
-			 $excute($addOneCMD, $uIds, $rId);
+			$excute($addOneCMD, $uIds, $rId);
 		}
 		return true;
 	}
@@ -79,7 +87,7 @@ class ChatRoomFella extends ActiveRecord
 		])->queryScalar();
 	}
 
-	public static function adminOPt($subtag, $oUId, $rid, $cid, $ban = 1)
+	public static function adminOPt($subtag, $oUId, $rid, $cid, $ban = 1, $del = 1)
 	{
 		$conn = AppUtil::db();
 
@@ -88,11 +96,21 @@ class ChatRoomFella extends ActiveRecord
 				ChatMsg::edit($cid, ["cDeletedFlag" => ChatMsg::DELETED_YES, "cDeletedOn" => date("Y-m-d H:i:s")]);
 				break;
 			case "silent":
-				$sql = "UPDATE im_chat_room_fella set mBanFlag=:ban where mRId=:rid and mUId=:uid;";
+				$sql = "UPDATE im_chat_room_fella set mBanFlag=:ban where mRId=:rid and mUId=:uid";
 				$conn->createCommand($sql)->bindValues([
 					":ban" => $ban ? self::BAN_NORMAL : self::BAN_SILENT,
 					":rid" => $rid,
 					":uid" => $oUId,
+				])->execute();
+				break;
+			case "out":
+				$sql = "UPDATE im_chat_room_fella set mDeletedFlag=:del,mDeletedBy=:deleteby,mDeletedOn=:dt  where mRId=:rid and mUId=:uid";
+				$conn->createCommand($sql)->bindValues([
+					":del" => $del ? self::DELETE_NORMAL : self::DELETE_YES,
+					":rid" => $rid,
+					":uid" => $oUId,
+					":dt" => date("Y-m-d H:i:s"),
+					":deleteby" => Admin::getAdminId(),
 				])->execute();
 				break;
 		}

@@ -381,6 +381,12 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 
 			window.onhashchange = locationHashChanged;
 			locationHashChanged();
+			if ($("#DELETED").val() == 1) {
+				alpha.prompt('', '<div style="text-align: center">你已经被群主移出群聊哦~</div>', ['返回'], function () {
+					location.href = '/wx/single?#scontacts';
+					return false;
+				});
+			}
 			var otherRoom = $("#other_room").val();
 			if (otherRoom.length > 2) {
 				alpha.prompt('', '此群已满，推荐你加入另外一个群', ['马上赶过去'], function () {

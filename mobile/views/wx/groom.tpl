@@ -69,6 +69,7 @@
 <input type="hidden" id="lastNAME" value="{{$lastname}}">
 <input type="hidden" id="subscribe" value="{{$subscribe}}">
 <input type="hidden" id="other_room" value="{{$otherRoom}}">
+<input type="hidden" id="DELETED" value="{{$deleted}}">
 
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
@@ -115,7 +116,8 @@
 	{[#data]}
 	{[#type]}
 	<li class="{[dir]}" data-r="{[readflag]}">
-		<a href="/wx/sh?id={[eid]}" {[#eid]}data-eid="{[.]}" {[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
+		<a href="{[^del]}{[#phone]}/wx/sh?id={[eid]}{[/phone]}{[^phone]}javascript:;{[/phone]}{[/del]}{[#del]}javascript:;{[/del]}"
+			 {[#eid]}data-eid="{[.]}" {[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
 		<div class="content read{[readflag]}">
 			<div class="name">
 				{[#isAdmin]}
@@ -173,7 +175,7 @@
 		document.getElementById("memberFlag").value == 1 ? document.location.hash = "#chat" : document.location.hash = "#join";
 	}
 	requirejs(['/js/config.js?v=1.2'], function () {
-		requirejs(['/js/groom.js?v=1.4.2']);
+		requirejs(['/js/groom.js?v=1.4.3']);
 	});
 </script>
 
