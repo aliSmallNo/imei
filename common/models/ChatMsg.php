@@ -486,11 +486,19 @@ class ChatMsg extends ActiveRecord
 		if ($debug) {
 			var_dump(date('Y-m-d H:i:s') . ' ' . __FUNCTION__ . __LINE__);
 		}
+		$sql = "select uPhone,uId from im_user where uId=" . $senderId;
+		$ret = $conn->createCommand($sql)->queryScalar();
+		$info['isMember'] = 0;
+		if ($ret) {
+			$info['isMember'] = 1;
+		}
 		$bundle = [
 			'tag' => 'msg',
 			'rid' => $rId,
+			'info' => $info,
 			'items' => []
 		];
+
 		$sql = "SELECT u.uId,u.uUniqId,u.uName,u.uThumb,u.uPhone,
 				(CASE WHEN u.uId=$senderId THEN 'right' ELSE 'left' END) as `dir` 
 				FROM im_chat_room_fella as f join im_user as u on u.uId=f.mUId
@@ -498,10 +506,7 @@ class ChatMsg extends ActiveRecord
  				ORDER BY `dir` DESC ";
 		$rows = $conn->createCommand($sql)->queryAll();
 		foreach ($rows as $row) {
-			$info['dir'] = $row['dir'];
-			$info['isMember'] = $row['uPhone'] ? 1 : 0;
-			$info['receiver'] = $row['uUniqId'];
-			$bundle['items'][] = $info;
+			$bundle['items'][] = [$row['uUniqId'], $row['dir']];
 		}
 		QueueUtil::loadJob('chatMsg', $bundle, QueueUtil::QUEUE_TUBE_CHAT, 0);
 		return [0, '', $info];
@@ -517,8 +522,7 @@ class ChatMsg extends ActiveRecord
 	 * @param \yii\db\Connection $conn
 	 * @return array|bool
 	 */
-	public
-	static function addChat($senderId, $receiverId, $content, $giftCount = 0, $adminId = 0, $qId = '', $conn = null)
+	public static function addChat($senderId, $receiverId, $content, $giftCount = 0, $adminId = 0, $qId = '', $conn = null)
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
