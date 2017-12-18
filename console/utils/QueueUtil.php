@@ -179,7 +179,7 @@ class QueueUtil
 	public static function chatMsg($params)
 	{
 		$pushUtil = PushUtil::init();
-		foreach ($params as $info) {
+		foreach ($params['items'] as $info) {
 			$pushUtil->room($params['tag'], $params['rid'], $info['receiver'], $info);
 		}
 		$pushUtil->close();
