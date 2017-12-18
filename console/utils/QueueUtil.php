@@ -56,6 +56,7 @@ class QueueUtil
 				json_encode($message)
 			);
 			if (!$put) {
+				self::logFile($message, __FUNCTION__, __LINE__);
 				throw new Exception('发送失败');
 			}
 			self::logFile($message, __FUNCTION__, __LINE__);
