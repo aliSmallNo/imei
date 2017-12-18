@@ -350,6 +350,10 @@
 			<img src="/images/top_date.png">
 			<div>帮我约TA</div>
 		</a>
+		<a href="javascript:;" data-tag="date">
+			<img src="/images/top_gift.png">
+			<div>送TA礼物</div>
+		</a>
 		<a href="javascript:;" data-tag="toblock">
 			<img src="/images/top_block.png">
 			<div>拉黑TA</div>

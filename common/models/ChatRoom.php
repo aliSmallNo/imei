@@ -187,10 +187,11 @@ class ChatRoom extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
-		$sql = "SELECT r.* from im_chat_room as r 
-				join im_chat_room_fella as m on r.rId=m.mRId
-				where m.mUId=:uid
-				group by r.rId
+		$sql = "SELECT r.*,count(cId) as cnt from im_chat_room as r 
+				join im_chat_room_fella as m on r.rId=m.mRId 
+				left join im_chat_msg as c on c.cGId=m.mRId and c.cAddedBy !=:uid and cReadFlag=0
+				where m.mUId=:uid 
+				group by r.rId 
 				ORDER BY r.rAddedOn desc $limit ";
 		$res = $conn->createCommand($sql)->bindValues([
 			":uid" => $uid,
@@ -219,13 +220,12 @@ class ChatRoom extends ActiveRecord
 
 			$v["avatar"] = $v["rLogo"];
 			$v["cid"] = $item["cId"];
-			$v["cnt"] = 0;
 			$v["content"] = $item["cContent"];
 			$v["dt"] = AppUtil::miniDate($item["cAddedOn"]);
 			$v["encryptId"] = '';
 			$v["gid"] = $v["rId"];
 			$v["name"] = $v["rTitle"];
-			$v["readflag"] = 1;
+			$v["readflag"] = $v["cnt"] > 0 ? 0 : 1;
 			$v["uid"] = 0;
 			$v["uni"] = '';
 		}
@@ -292,6 +292,7 @@ class ChatRoom extends ActiveRecord
 		$nextpage = count($res) > $pagesize ? ($page + 1) : 0;
 		array_pop($res);
 		$res = array_reverse($res);
+		ChatMsg::roomChatRead($uid, $rId, $conn);
 		return [$res, $nextpage];
 	}
 

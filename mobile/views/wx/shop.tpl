@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="/css/dev.min.css?v=1.2.0">
 <section id="sec_home">
-	<div class="swiper-container">
+	<div class="swiper-container" style="height: 10rem">
 		<div class="swiper-wrapper">
 			{{foreach from=$headers item=item}}
-				<div class="swiper-slide"><img src="{{$item.image}}" data-url="{{$item.url}}" alt=""></div>
+				<div class="swiper-slide"><img src="{{$item.image}}" data-url="{{$item.url}}" style="height: 10rem"></div>
 			{{/foreach}}
 		</div>
 		<div class="swiper-pagination"></div>

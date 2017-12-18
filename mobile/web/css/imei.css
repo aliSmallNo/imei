@@ -8940,7 +8940,7 @@ ul.co-ul {
     box-sizing: border-box;
     height: 13rem;
     background: url(../images/shop/bg_flash.png) no-repeat center bottom;
-    background-size: 100% 100%;
+    background-size: 80% 90%;
     border-bottom: 1px solid #EEEFF3;
     border-right: 1px solid #EEEFF3;
     padding: 0.2rem; }
@@ -8949,7 +8949,7 @@ ul.co-ul {
     .gift-bags li a {
       display: block;
       height: 100%;
-      background-size: 10rem 10rem;
+      background-size: 7rem 7rem;
       background-position: center center;
       background-repeat: no-repeat;
       background-color: transparent; }
