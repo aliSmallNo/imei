@@ -179,13 +179,13 @@ class QueueUtil
 
 	public static function chatMsg($params)
 	{
-		self::logFile($params, __FUNCTION__, __LINE__);
+		self::logFile($params, __FUNCTION__, __LINE__, self::QUEUE_TUBE_CHAT);
 		$pushUtil = PushUtil::init();
 		foreach ($params['items'] as $info) {
 			$pushUtil->room($params['tag'], $params['rid'], $info['receiver'], $info);
 		}
 		$pushUtil->close();
-		self::logFile($params, __FUNCTION__, __LINE__);
+		self::logFile($params, __FUNCTION__, __LINE__, self::QUEUE_TUBE_CHAT);
 		return true;
 	}
 }
