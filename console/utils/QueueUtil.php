@@ -184,9 +184,8 @@ class QueueUtil
 		$pushUtil = PushUtil::init();
 		$info = $params['info'];
 		foreach ($params['items'] as $item) {
-			list($uni, $dir) = $item;
-			$info['dir'] = $dir;
-			$pushUtil->room($params['tag'], $params['rid'], $uni, $info);
+			$info['dir'] = 'left';
+			$pushUtil->room($params['tag'], $params['rid'], $item, $info);
 		}
 		$pushUtil->close();
 		self::logFile($params, __FUNCTION__, __LINE__, self::QUEUE_TUBE_CHAT);

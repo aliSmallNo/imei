@@ -499,15 +499,11 @@ class ChatMsg extends ActiveRecord
 			'items' => []
 		];
 
-		$sql = "SELECT u.uId,u.uUniqId,u.uName,u.uThumb,u.uPhone,
-				(CASE WHEN u.uId=$senderId THEN 'right' ELSE 'left' END) as `dir` 
-				FROM im_chat_room_fella as f join im_user as u on u.uId=f.mUId
- 				WHERE f.mRId=$rId 
- 				ORDER BY `dir` DESC ";
-		$rows = $conn->createCommand($sql)->queryAll();
-		foreach ($rows as $row) {
-			$bundle['items'][] = [$row['uUniqId'], $row['dir']];
-		}
+		$sql = "SELECT u.uUniqId,u.uId,u.uName,u.uThumb 
+				FROM im_chat_room_fella as f 
+				join im_user as u on u.uId=f.mUId
+ 				WHERE f.mRId=$rId AND u.uId!=$senderId ";
+		$bundle['items'] = $conn->createCommand($sql)->queryColumn();
 		QueueUtil::loadJob('chatMsg', $bundle, QueueUtil::QUEUE_TUBE_CHAT, 0);
 		return [0, '', $info];
 	}

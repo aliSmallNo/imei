@@ -152,10 +152,16 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 					rid: $sls.rid,
 				}, function (resp) {
 					util.sending = 0;
-					console.log(util.sending);
 					if (resp.code < 1) {
 						util.text = "";
 						util.input.val('');
+						var html = Mustache.render($sls.adminTmp, resp);
+						$sls.adminUL.append(html);
+						$sls.currentlastId = resp.data.cid;
+						$sls.bottompl.get(0).scrollIntoView(true);
+						$(".input").get(0).scrollIntoView(true);
+						chatUtil.text = "";
+						chatUtil.input.val('');
 					} else if (resp.code == 128) {
 						alpha.prompt('', resp.msg,
 							['马上注册', '残忍拒绝'],
