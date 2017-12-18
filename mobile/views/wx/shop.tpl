@@ -9,7 +9,7 @@
 		<div class="swiper-pagination"></div>
 	</div>
 	<a class="gift-header">特权礼包</a>
-	<ul class="gift-bags">
+	<ul class="gift-bags" min-level="1">
 		{{foreach from=$bags item=item}}
 			<li>
 				<a href="javascript:;" style="background-image: url({{$item.image}}) "
@@ -24,7 +24,7 @@
 		{{/foreach}}
 	</ul>
 	<a class="gift-header">普通礼物</a>
-	<ul class="gift-stuff">
+	<ul class="gift-stuff" min-level="1">
 		{{foreach from=$stuff item=item}}
 			<li>
 				<a href="javascript:;" style="background-image: url({{$item.image}})"
@@ -37,7 +37,7 @@
 		{{/foreach}}
 	</ul>
 	<a class="gift-header">特权礼物 <em>只限08等级购买</em></a>
-	<ul class="gift-stuff">
+	<ul class="gift-stuff" min-level="8">
 		{{foreach from=$premium item=item}}
 			<li>
 				<a href="javascript:;" style="background-image: url({{$item.image}})"
@@ -78,6 +78,7 @@
 </div>
 
 <input type="hidden" id="cUID" value="{{$uid}}">
+<input type="hidden" id="cLEVEL" value="{{$level}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
@@ -100,6 +101,6 @@
 		document.location.hash = "#sec_home";
 	}
 	requirejs(['/js/config.js?v=1.2.3'], function () {
-		requirejs(['/js/shop.js?v=1.2.7']);
+		requirejs(['/js/shop.js?v=1.2.8']);
 	});
 </script>
