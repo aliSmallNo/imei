@@ -178,6 +178,7 @@ class QueueUtil
 
 	public static function chatMsg($params)
 	{
+		self::logFile($params, __FUNCTION__, __LINE__);
 		$pushUtil = PushUtil::init();
 		foreach ($params['items'] as $info) {
 			$pushUtil->room($params['tag'], $params['rid'], $info['receiver'], $info);
