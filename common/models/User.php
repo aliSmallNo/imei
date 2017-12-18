@@ -634,7 +634,7 @@ class User extends ActiveRecord
 		$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe,w.wWechatId, count(t.tPId) as uco,a.aName as aOpname
  				  FROM im_user as u 
 				  JOIN im_user_wechat as w on w.wUId=u.uId
-				  left JOIN im_trace as t on u.uId=t.tPId
+				  LEFT JOIN im_trace as t on u.uId=t.tPId
 				  LEFT JOIN im_admin as a on a.aId=u.uUpdatedBy
 				  $inactive1
 				  WHERE uId>0 $strCriteria $inactive2
@@ -648,7 +648,8 @@ class User extends ActiveRecord
 		foreach ($ret as $row) {
 			$items[] = self::fmtRow($row);
 		}
-		$sql = "SELECT count(1) FROM im_user as u
+		$sql = "SELECT count(1) 
+				FROM im_user as u
 				JOIN im_user_wechat as w on w.wUId=u.uId
 				$inactive1
 				WHERE uId>0 $strCriteria $inactive2 ";

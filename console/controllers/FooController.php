@@ -17,6 +17,7 @@ use common\models\UserQR;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use common\service\TrendService;
+use common\service\UserService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
@@ -1337,7 +1338,17 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
+		/*$hid = '059af5c749741c';
+		$ret = AppUtil::decrypt($hid);
+		var_dump($ret);
+		$hid = '5a1bce62e65fd';
+		$ret = AppUtil::decrypt($hid);
+		var_dump($ret);*/
+		$service = UserService::init('059af5c749741c')->info;
+		var_dump($service);
 
+		$service = UserService::init(131379)->info;
+		var_dump($service);
 	}
 
 	public function actionZp()
