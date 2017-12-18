@@ -19,7 +19,7 @@ class PushUtil
 	private $client = null;
 	private $url = '';
 
-	public static function init($url = '', $url2 = '/house')
+	public static function init($url = '', $url2 = '')
 	{
 		$util = new self();
 		if ($url) {
