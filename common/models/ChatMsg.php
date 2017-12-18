@@ -483,22 +483,24 @@ class ChatMsg extends ActiveRecord
 		if ($debug) {
 			var_dump(date('Y-m-d H:i:s') . ' ' . __FUNCTION__ . __LINE__);
 		}
-		$sql = "SELECT u.uId,u.uUniqId,u.uName,u.uThumb,u.uPhone,
+		if (!AppUtil::isDev()) {
+			$sql = "SELECT u.uId,u.uUniqId,u.uName,u.uThumb,u.uPhone,
 				(CASE WHEN u.uId=$senderId THEN 'right' ELSE 'left' END) as `dir` 
 				FROM im_chat_room_fella as f join im_user as u on u.uId=f.mUId
  				WHERE f.mRId=$rId 
  				ORDER BY `dir` DESC ";
-		$rows = $conn->createCommand($sql)->queryAll();
-		$pushUtil = PushUtil::init();
-		foreach ($rows as $row) {
-			$expInfo = UserTag::getExp($row['uId'], false, $conn);
-			$info['dir'] = $row['dir'];
-			$info['pic_level'] = $expInfo["pic_level"];
-			$info['pic_name'] = isset($expInfo["pic_name"]) ? $expInfo["pic_name"] : "01";
-			$info['isMember'] = $row['uPhone'] ? 1 : 0;
-			$pushUtil->room('msg', $rId, $row['uUniqId'], $info);
+			$rows = $conn->createCommand($sql)->queryAll();
+			$pushUtil = PushUtil::init();
+			foreach ($rows as $row) {
+				$expInfo = UserTag::getExp($row['uId'], false, $conn);
+				$info['dir'] = $row['dir'];
+				$info['pic_level'] = $expInfo["pic_level"];
+				$info['pic_name'] = isset($expInfo["pic_name"]) ? $expInfo["pic_name"] : "01";
+				$info['isMember'] = $row['uPhone'] ? 1 : 0;
+				$pushUtil->room('msg', $rId, $row['uUniqId'], $info);
+			}
+			$pushUtil->close();
 		}
-		$pushUtil->close();
 		return [0, '', $info];
 	}
 

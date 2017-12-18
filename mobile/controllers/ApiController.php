@@ -2173,10 +2173,7 @@ class ApiController extends Controller
 				$text = trim(self::postParam('text'));
 				$rId = trim(self::postParam('rid'));
 				list($code, $msg) = ChatMsg::addRoomChat($rId, $uid, $text);
-				if ($code > 0) {
-					return self::renderAPI($code, $msg);
-				}
-				return self::renderAPI(0, $msg);
+				return self::renderAPI($code, $msg);
 			case 'list':
 				$lastId = self::postParam('lastid', 0);
 				$rid = self::postParam('rid');
