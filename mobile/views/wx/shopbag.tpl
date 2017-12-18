@@ -6,24 +6,11 @@
 		<a href="javascript:;" data-tag="prop">功能卡</a>
 	</div>
 	<ul class="bag-content bag-wrapper">
-		<li>
-			<img src="/images/shop/stuff_qq.png">
-			<p> X<span>5</span></p>
-			<div><a href="javascript:;">去赠送</a></div>
-		</li>
-		<li>
-			<img src="/images/shop/stuff_qq.png">
-			<p> X <span>5</span></p>
-			<div><a href="javascript:;">去赠送</a></div>
-		</li>
-		<li>
-			<img src="/images/shop/stuff_qq.png">
-			<p> X <span>5</span></p>
-			<div><a href="javascript:;">去赠送</a></div>
-		</li>
-	</ul>
 
-	<div style="height: 5rem"></div>
+	</ul>
+	<div class="spinner "></div>
+	<div class="no-more font12 " style="display: none">没有更多了~</div>
+
 </section>
 <section id="sec_list">
 	<ul class="charges"></ul>
@@ -46,9 +33,9 @@
 <script type="text/template" id="tpl_order">
 	{[#items]}
 	<li>
-		<img src="{[gImage]}">
+		<div><img src="{[gImage]}"></div>
 		{[#dt]}
-		<p>{[name]}</p>
+		<p>{[gName]}</p>
 		<em>{[dt]}</em>
 		{[/dt]}
 		{[^dt]}
@@ -56,6 +43,7 @@
 		<div><a href="javascript:;">去赠送</a></div>
 		{[/dt]}
 	</li>
+
 	{[/items]}
 </script>
 <script src="/assets/js/require.js"></script>
@@ -64,6 +52,6 @@
 		document.location.hash = "#bag_home";
 	}
 	requirejs(['/js/config.js?v=1.2.3'], function () {
-		requirejs(['/js/shopbag.js?v=1.2.7']);
+		requirejs(['/js/shopbag.js?v=1.2.8']);
 	});
 </script>

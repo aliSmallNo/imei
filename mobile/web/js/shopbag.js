@@ -14,11 +14,11 @@ require(['jquery', 'mustache', "alpha"],
 		}
 
 		$(window).on("scroll", function () {
-			/*var lastRow = WalletUtil.list.find('li').last();
-			if (lastRow && eleInScreen(lastRow) && WalletUtil.page > 0) {
-				//WalletUtil.reload();
+			var lastRow = bagUtil.UL.find('li').last();
+			if (lastRow && eleInScreen(lastRow) && bagUtil.page > 0) {
+				bagUtil.orders();
 				return false;
-			}*/
+			}
 		});
 
 
@@ -27,11 +27,14 @@ require(['jquery', 'mustache', "alpha"],
 			page: 1,
 			UL: $(".bag-wrapper"),
 			Tmp: $("#tpl_order").html(),
+			spinner: $(".spinner"),
+			nomore: $(".no-more"),
 			init: function () {
 				var util = this;
 				$(document).on(kClick, ".bag-top-bar a", function () {
 					var self = $(this);
 					util.page = 1;
+					util.UL.html('');
 					util.tag = self.attr("data-tag");
 					self.closest(".bag-top-bar").find("a").removeClass("on");
 					self.addClass("on");
@@ -45,17 +48,24 @@ require(['jquery', 'mustache', "alpha"],
 					return;
 				}
 				$sls.loading = 1;
+				util.spinner.show();
+				util.nomore.hide();
 				$.post("/api/shop", {
 					tag: "order",
 					subtag: util.tag,
 					page: util.page
 				}, function (resp) {
 					$sls.loading = 0;
+					util.spinner.hide();
 					if (resp.code == 0) {
 						if (util.page == 1) {
-							util.UL.html(Mustache.render(util.Tmp,resp.data));
+							util.UL.html(Mustache.render(util.Tmp, resp.data));
 						} else if (util.page > 1) {
-							util.UL.append(Mustache.render(util.Tmp,resp.data));
+							util.UL.append(Mustache.render(util.Tmp, resp.data));
+						}
+						util.page = resp.data.nextpage;
+						if (util.page == 0) {
+							util.nomore.show();
 						}
 					} else {
 						alpha.toast(resp.msg);

@@ -72,7 +72,7 @@ class Order extends ActiveRecord
 		}
 	}
 
-	public static function QTItems($subtag, $page = 1, $pagesize = 9)
+	public static function QTItems($subtag, $page = 1, $pagesize = 12)
 	{
 		$conn = AppUtil::db();
 		$nextpage = 0;
@@ -90,7 +90,14 @@ class Order extends ActiveRecord
 				])->queryAll();
 				break;
 			case "receive":
-
+				$sql = "select g.*,sum(oNum) as co,oAddedOn as dt from im_order as o 
+						join im_goods as g on o.oGId=g.gId
+						where oStatus=:st 
+						group by oGId 
+						order by oId desc $limit";
+				$ret = $conn->createCommand($sql)->bindValues([
+					":st" => Order::ST_PAY
+				])->queryAll();
 				break;
 			case "prop":
 
