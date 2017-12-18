@@ -19,7 +19,7 @@ class PushUtil
 	private $client = null;
 	private $url = '';
 
-	public static function init($url = '')
+	public static function init($url = '', $url2 = '/house')
 	{
 		$util = new self();
 		if ($url) {
@@ -27,6 +27,7 @@ class PushUtil
 		} else {
 			$util->url = AppUtil::wsUrl();
 		}
+		$util->url .= $url2;
 		$util->client = new Client(new Version2X($util->url));
 		$util->client->initialize();
 		return $util;
@@ -81,10 +82,11 @@ class PushUtil
 	}
 
 	/**
-	 * @param $tag string
-	 * @param $room_id int
-	 * @param $uni string
-	 * @param $info array
+	 * @param $tag
+	 * @param $room_id
+	 * @param $uni
+	 * @param $info
+	 * @return Client
 	 */
 	public function room($tag, $room_id, $uni, $info)
 	{
