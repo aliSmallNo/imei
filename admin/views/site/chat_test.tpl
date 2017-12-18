@@ -36,7 +36,12 @@
 		},
 		send: function (text) {
 			var util = this;
-			util.socket.emit('send', util.rid, util.uni, text);
+			var params = {
+				key: util.rid,
+				senderUId: util.uni,
+				content: text
+			};
+			util.socket.emit('msg', params);
 		}
 	};
 

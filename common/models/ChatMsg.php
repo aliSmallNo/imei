@@ -696,14 +696,13 @@ class ChatMsg extends ActiveRecord
 			'dir' => 'right',
 			'type' => self::TYPE_TEXT,
 		];
-		$pushUtil = PushUtil::init();
-		$pushUtil->chat('msg', $gid, $infoA['uni'], $params);
+		$pushUtil = PushUtil::init('/chatroom')->msg('msg', $gid, $params)->close();
 
 		//Rain: push to the receiver
-		$params['dir'] = 'left';
+		/*$params['dir'] = 'left';
 		$params['eid'] = AppUtil::encrypt($senderId);
 		$pushUtil->chat('msg', $gid, $infoB['uni'], $params);
-		$pushUtil->close();
+		$pushUtil->close();*/
 		return $info;
 	}
 
@@ -733,10 +732,10 @@ class ChatMsg extends ActiveRecord
 			$conn = AppUtil::db();
 		}
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
-		$sql = 'SELECT gId,gRound,count(m.cId) as cnt 
+		$sql = 'SELECT gId,gRound,count(m . cId) as cnt 
 				  FROM im_chat_group as g
- 				  LEFT JOIN im_chat_msg as m on g.gId=m.cGId AND m.cAddedBy=:uid
-				  WHERE g.gUId1=:id1 AND g.gUId2=:id2
+ 				  LEFT JOIN im_chat_msg as m on g . gId = m . cGId AND m . cAddedBy =:uid
+				  WHERE g . gUId1 =:id1 AND g . gUId2 =:id2
 				  GROUP BY gId,gRound';
 		$ret = $conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
@@ -759,23 +758,23 @@ class ChatMsg extends ActiveRecord
 		$ratio = self::RATIO;
 		$amt = intval($giftCount * $ratio);
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
-		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound,gAddedBy)
+		$sql = 'INSERT INTO im_chat_group(gUId1, gUId2, gRound, gAddedBy)
 			SELECT :id1,:id2,0,:uid FROM dual
-			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2)';
+			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g . gUId1 =:id1 AND g . gUId2 =:id2)';
 		$conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,
 			':uid' => $uId,
 		])->execute();
 		if ($amt) {
-			$sql = 'UPDATE im_chat_group set gRound=IFNULL(gRound,0)+' . $amt . ' WHERE gUId1=:id1 AND gUId2=:id2 AND gRound<9999';
+			$sql = 'UPDATE im_chat_group set gRound = IFNULL(gRound, 0) + ' . $amt . ' WHERE gUId1 =:id1 AND gUId2 =:id2 AND gRound < 9999';
 			$conn->createCommand($sql)->bindValues([
 				':id1' => $uid1,
 				':id2' => $uid2,
 			])->execute();
 		}
 
-		$sql = 'SELECT gId FROM im_chat_group WHERE gUId1=:id1 AND gUId2=:id2 ';
+		$sql = 'SELECT gId FROM im_chat_group WHERE gUId1 =:id1 AND gUId2 =:id2 ';
 		$gid = $conn->createCommand($sql)->bindValues([
 			':id1' => $uid1,
 			':id2' => $uid2,
@@ -794,12 +793,12 @@ class ChatMsg extends ActiveRecord
 	public
 	static function details($uId, $subUId, $lastId = 0, $hideTipFlag = false)
 	{
-		$criteria = ' AND cId> ' . $lastId;
+		$criteria = ' AND cId > ' . $lastId;
 		$conn = AppUtil::db();
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
-		$sql = 'select u.uName as `name`,u.uThumb as avatar,u.uUniqid as uni, g.gId as gid, g.gRound as round,
-			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy,a.aName, m.cReadFlag as readflag,
-			 m.cType as `type`,(CASE WHEN u.uOpenId LIKE \'oYDJew%\' THEN 0 ELSE 1 END) as dummy
+		$sql = 'select u . uName as `name`,u . uThumb as avatar,u . uUniqid as uni, g . gId as gid, g . gRound as round,
+			 m . cId as cid, m . cContent as content,m . cAddedOn as addedon,m . cAddedBy,a . aName, m . cReadFlag as readflag,
+			 m . cType as `type`,(CASE WHEN u . uOpenId LIKE \'oYDJew%\' THEN 0 ELSE 1 END) as dummy
 			 from im_chat_group as g 
 			 join im_chat_msg as m on g.gId=cGId
 			 join im_user as u on u.uId=m.cAddedBy

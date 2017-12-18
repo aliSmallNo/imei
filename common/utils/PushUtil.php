@@ -19,7 +19,7 @@ class PushUtil
 	private $client = null;
 	private $url = '';
 
-	public static function init($url = '', $url2 = '')
+	public static function init($suffix = '/house', $url = '')
 	{
 		$util = new self();
 		if ($url) {
@@ -27,17 +27,19 @@ class PushUtil
 		} else {
 			$util->url = AppUtil::wsUrl();
 		}
-		$util->url .= $url2;
+		$util->url .= $suffix;
 		$util->client = new Client(new Version2X($util->url));
+		AppUtil::logFile($util->client, 5);
 		$util->client->initialize();
+		AppUtil::logFile($util->client, 5);
 		return $util;
 	}
 
 	/**
-	 * @param $msg string
-	 * @param $uni string
-	 * @param $action string
-	 * @param $url string
+	 * @param $msg
+	 * @param string $uni
+	 * @param string $action
+	 * @return Client
 	 */
 	public function hint($msg, $uni = '', $action = '')
 	{
@@ -50,25 +52,13 @@ class PushUtil
 		return $this->pushMsg('notice', $params);
 	}
 
-	/**
-	 * @param $msg array
-	 * @param $uni string
-	 */
-	public function greet($msg, $uni = '')
-	{
-		$params = [
-			'tag' => 'greet',
-			'msg' => $msg,
-			'uid' => $uni
-		];
-		return $this->pushMsg('notice', $params);
-	}
 
 	/**
-	 * @param $tag string
-	 * @param $gid int
-	 * @param $uni string
-	 * @param $info array
+	 * @param $tag
+	 * @param $gid
+	 * @param $uni
+	 * @param $info
+	 * @return Client
 	 */
 	public function chat($tag, $gid, $uni, $info)
 	{
@@ -99,8 +89,21 @@ class PushUtil
 		return $this->pushMsg('room', $params);
 	}
 
+	public function msg($tag, $room_id, $info)
+	{
+		$params = [
+			'key' => $room_id,
+			'tag' => $tag,
+			'info' => $info
+		];
+		return $this->pushMsg('msg', $params);
+	}
+
 	protected function pushMsg($event, $params)
 	{
+		AppUtil::logFile($this->client, 5);
+		AppUtil::logFile($event, 5);
+		AppUtil::logFile($params, 5);
 		if ($params && is_array($params)) {
 			$this->client->emit($event, $params);
 		}
