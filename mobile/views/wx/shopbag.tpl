@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="/css/zp.min.css?v=1.2.0">
 <section id="bag_home">
 	<div class="bag-top-bar">
-		<a href="javascript:;" class="on" data-tag="gift">我的礼物</a>
-		<a href="javascript:;" data-tag="receive">我收到的</a>
-		<a href="javascript:;" data-tag="prop">功能卡</a>
+		<a href="javascript:;" class="on" data-tag="gift"><span>我的礼物</span></a>
+		<a href="javascript:;" data-tag="receive"><span>我收到的</span></a>
+		<a href="javascript:;" data-tag="prop" style="display: none"><span>功能卡片</span></a>
 	</div>
 	<ul class="bag-content bag-wrapper">
 
@@ -25,7 +25,6 @@
 	</div>
 </div>
 
-
 <input type="hidden" id="cUID" value="{{$uid}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
@@ -43,7 +42,6 @@
 		<div><a href="javascript:;">去赠送</a></div>
 		{[/dt]}
 	</li>
-
 	{[/items]}
 </script>
 <script src="/assets/js/require.js"></script>

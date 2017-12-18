@@ -8168,16 +8168,19 @@ ul.co-ul
         position: relative
         &:last-child
             border: none
+        span
+            position: relative
         &.on
             color: #d15d84
-            &:after
-                content: ''
-                position: absolute
-                width: 6rem
-                height: .2rem
-                background: #d15d84
-                left: 2.4rem
-                bottom: -.6rem
+            span
+                &:after
+                    content: ''
+                    position: absolute
+                    width: 6rem
+                    height: .2rem
+                    background: #d15d84
+                    left: -.5rem
+                    bottom: -1.6rem
 .bag-content
     overflow: hidden
     li
