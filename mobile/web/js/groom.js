@@ -75,7 +75,7 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 				var util = this;
 				util.socket = io('https://nd.meipo100.com');
 				util.socket.on('connect', function () {
-					util.socket.emit('house', util.uni);
+					util.socket.emit('chatroom', util.uni);
 				});
 
 				util.socket.on("room", function (resp) {
