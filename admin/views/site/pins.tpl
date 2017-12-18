@@ -291,7 +291,7 @@
 		init: function () {
 			var util = this;
 			util.uni = $('#cUNI').val();
-			util.socket = io.connect('https://nd.meipo100.com/house');
+			util.socket = io.connect('https://nd.meipo100.com');
 			util.socket.on('connect', function () {
 				util.socket.emit('house', util.uni);
 			});
