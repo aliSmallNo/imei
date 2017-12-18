@@ -12,6 +12,7 @@ namespace console\utils;
 use common\models\Pin;
 use common\utils\AppUtil;
 use common\utils\NoticeUtil;
+use common\utils\PushUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\lib\beanstalkSocket;
@@ -21,6 +22,7 @@ class QueueUtil
 {
 	const QUEUE_TUBE = 'imei';
 	const QUEUE_TUBE_SMS = 'sms_imei';
+	const QUEUE_TUBE_CHAT = 'chat_imei';
 
 	public static $QueueConfig = [
 		'persistent' => false,
@@ -29,7 +31,7 @@ class QueueUtil
 		'timeout' => 3000
 	];
 
-	public static function loadJob($methodName, $params = [], $tube = '', $delay = 1)
+	public static function loadJob($methodName, $params = [], $tube = '', $delay = 0)
 	{
 		if (AppUtil::isDev()) {
 			return;
@@ -56,15 +58,15 @@ class QueueUtil
 			if (!$put) {
 				throw new Exception('发送失败');
 			}
-			self::logFile($message, __FUNCTION__, __LINE__);
+			self::logFile($message, __FUNCTION__, __LINE__, $tube);
 			$beanstalk->disconnect();
 		} catch (Exception $ex) {
 			$msg = $ex->getMessage();
-			self::logFile($msg, __FUNCTION__, __LINE__);
+			self::logFile($msg, __FUNCTION__, __LINE__, $tube);
 		}
 	}
 
-	public static function logFile($msg, $funcName = '', $line = '')
+	public static function logFile($msg, $funcName = '', $line = '', $tube = '')
 	{
 		if (is_array($msg)) {
 			$msg = json_encode($msg, JSON_UNESCAPED_UNICODE);
@@ -74,7 +76,7 @@ class QueueUtil
 		} else {
 			$msg = 'message: ' . $msg;
 		}
-		$fileName = AppUtil::logDir() . 'queue_' . date('Ymd') . '.log';
+		$fileName = AppUtil::logDir() . 'queue_' . $tube . date('Ymd') . '.log';
 		@file_put_contents($fileName, PHP_EOL . date('Y-m-d H:i:s') . ' ' . $msg . PHP_EOL, FILE_APPEND);
 	}
 
@@ -172,6 +174,19 @@ class QueueUtil
 	{
 		NoticeUtil::init(NoticeUtil::CAT_TEXT_ONLY, $params['open_id'])->sendText($params['text']);
 		self::logFile($params, __FUNCTION__, __LINE__);
+		return true;
+	}
+
+	public static function chatMsg($params)
+	{
+		$pushUtil = PushUtil::init();
+		$info = $params['info'];
+		foreach ($params['items'] as $item) {
+			$info['dir'] = 'left';
+			$pushUtil->room($params['tag'], $params['rid'], $item, $info);
+		}
+		$pushUtil->close();
+		self::logFile($params, __FUNCTION__, __LINE__, self::QUEUE_TUBE_CHAT);
 		return true;
 	}
 }

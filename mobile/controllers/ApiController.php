@@ -689,6 +689,9 @@ class ApiController extends Controller
 					$items = CogService::init()->homeFigures(true);
 					foreach ($items as $k => $item) {
 						$index = $k ? 3 * $k : 1;
+						if ($k == count($items) - 1) {
+							$index = count($ret['data']) - 1;
+						}
 						array_splice($ret['data'], $index, 0, [["url" => $item['url'], "img" => $item['content']]]);
 					}
 				}
@@ -2173,15 +2176,7 @@ class ApiController extends Controller
 				$text = trim(self::postParam('text'));
 				$rId = trim(self::postParam('rid'));
 				list($code, $msg, $info) = ChatMsg::addRoomChat($rId, $uid, $text);
-				if ($code > 0) {
-					return self::renderAPI($code, $msg);
-				}
-				return self::renderAPI(0, '', [
-					'items' => $info,
-					'lastid' => $info['cid'],
-					'count' => $info['cnt']
-				]);
-				break;
+				return self::renderAPI($code, $msg, $info);
 			case 'list':
 				$lastId = self::postParam('lastid', 0);
 				$rid = self::postParam('rid');
