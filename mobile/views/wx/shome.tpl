@@ -5,10 +5,10 @@
 	</div>
 	<div class="baseinfo">
 		<div class="title">
-			<h4><em>{{$uInfo.name}}</em> {{if $uInfo.cert}}<i class="t-warning">实名认证</i>{{/if}}</h4>
+			<h4><em>{{$uInfo.name}}</em></h4>
 			<h5>{{if !$hideFlag}}{{$uInfo.location_t}}{{/if}}</h5>
 		</div>
-		<h6>{{$brief}}</h6>
+		<h6>{{$brief}}{{if $uInfo.is_cert}}<span class="cert"></span>{{/if}}</h6>
 	</div>
 	{{if $uInfo.album}}
 	<a href="javascript:;" class="album-row line-bottom2" album-string='{{$uInfo.albumJson}}'>
