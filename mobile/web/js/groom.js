@@ -141,16 +141,18 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 			},
 			sendMessage: function () {
 				var util = this;
-				if ($sls.sending) {
+				console.log(util.sending);
+				if (util.sending) {
 					return;
 				}
-				$sls.sending = 1;
+				util.sending = 1;
 				$.post("/api/chatroom", {
 					tag: "sent",
 					text: util.text,
 					rid: $sls.rid,
 				}, function (resp) {
-					$sls.sending = 0;
+					util.sending = 0;
+					console.log(util.sending);
 					if (resp.code < 1) {
 						util.text = "";
 						util.input.val('');

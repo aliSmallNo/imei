@@ -2176,12 +2176,7 @@ class ApiController extends Controller
 				if ($code > 0) {
 					return self::renderAPI($code, $msg);
 				}
-				return self::renderAPI(0, '', [
-					'items' => $info,
-					'lastid' => $info['cid'],
-					'count' => $info['cnt']
-				]);
-				break;
+				return self::renderAPI(0, '', $info);
 			case 'list':
 				$lastId = self::postParam('lastid', 0);
 				$rid = self::postParam('rid');
