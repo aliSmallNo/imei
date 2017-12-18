@@ -12,6 +12,7 @@ namespace console\utils;
 use common\models\Pin;
 use common\utils\AppUtil;
 use common\utils\NoticeUtil;
+use common\utils\PushUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\lib\beanstalkSocket;
@@ -171,6 +172,17 @@ class QueueUtil
 	public static function pushText($params)
 	{
 		NoticeUtil::init(NoticeUtil::CAT_TEXT_ONLY, $params['open_id'])->sendText($params['text']);
+		self::logFile($params, __FUNCTION__, __LINE__);
+		return true;
+	}
+
+	public static function chatMsg($params)
+	{
+		$pushUtil = PushUtil::init();
+		foreach ($params as $info) {
+			$pushUtil->room($params['tag'], $params['rid'], $info['receiver'], $info);
+		}
+		$pushUtil->close();
 		self::logFile($params, __FUNCTION__, __LINE__);
 		return true;
 	}
