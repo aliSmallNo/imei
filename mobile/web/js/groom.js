@@ -73,7 +73,7 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 			timer: 0,
 			init: function () {
 				var util = this;
-				util.socket = io('https://nd.meipo100.com/chatroom');
+				util.socket = io('https://nd.meipo100.com');
 				util.socket.on('connect', function () {
 					util.socket.emit('chatroom', util.uni);
 				});
