@@ -2012,6 +2012,11 @@ class WxController extends BaseController
 			header('location:/wx/error');
 			exit();
 		}
+		$deleted = 0;
+		$fella = ChatRoomFella::findOne(["mRId" => $rid, "mUId" => $uid]);
+		if ($fella && $fella->mDeletedFlag == ChatRoomFella::DELETE_YES) {
+			$deleted = 1;
+		}
 		// 加入群聊
 		$wSubscribe = $this->user_subscribe;
 		$isMember = $roomInfo['isMember'];
@@ -2023,6 +2028,7 @@ class WxController extends BaseController
 		} elseif (!$isMember && $roomInfo["rLimit"] <= $count) {
 			$otherRoom = $roomInfo['backup'];
 		}
+
 		$adminUId = $roomInfo["rAdminUId"];
 		return self::renderPage("groom.tpl",
 			[
@@ -2038,6 +2044,7 @@ class WxController extends BaseController
 				"lastname" => $this->user_name,
 				"subscribe" => $wSubscribe,
 				"otherRoom" => $otherRoom,
+				"deleted" => $deleted,
 			],
 			'terse',
 			$roomInfo["rTitle"],

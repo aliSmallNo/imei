@@ -590,10 +590,11 @@ class ApiController extends Controller
 				$rid = self::postParam('rid');
 				$cid = self::postParam('cid');
 				$ban = self::postParam('ban');
+				$del = self::postParam('del');
 				if (!$rid || !$oUId) {
 					return self::renderAPI(129, '对话不存在啊~');
 				}
-				ChatRoomFella::adminOPt($subtag, $oUId, $rid, $cid, $ban);
+				ChatRoomFella::adminOPt($subtag, $oUId, $rid, $cid, $ban,$del);
 				return self::renderAPI(0, '', [
 					"chat" => '',
 				]);

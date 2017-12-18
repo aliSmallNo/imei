@@ -71,6 +71,10 @@
 						 data-uid="{{$item.senderid}}"
 						 data-ban="{{$item.ban}}"
 						 class="adminOpt btn btn-outline btn-primary btn-xs">{{if $item.ban}}取消禁言{{else}}禁言{{/if}}</a>
+					<a href="javascript:;" data-tag="out" data-cid="{{$item.cid}}" data-rid="{{$item.rid}}"
+						 data-uid="{{$item.senderid}}"
+						 data-ban="{{$item.ban}}" data-del="{{$item.del}}"
+						 class="adminOpt btn btn-outline btn-primary btn-xs">{{if $item.del}}取消踢出{{else}}踢出{{/if}}</a>
 					<a href="/site/dummyroomchats?rid={{$item.rid}}&uid={{$item.senderid}}" data-tag="chat" data-cid="{{$item.cid}}" data-rid="{{$item.rid}}"
 						 data-uid="{{$item.senderid}}"
 						 class="adminOpt btn btn-outline btn-primary btn-xs">代聊</a>
@@ -113,13 +117,14 @@
 		var rid = self.attr("data-rid");
 		var ban = self.attr("data-ban");
 		var tag = self.attr("data-tag");
-		if($.inArray(tag,["delete","silent"])>=0){
+		var del = self.attr("data-del");
+		if($.inArray(tag,["delete","silent","out"])>=0){
 			console.log(1234);
 			adminOPt(tag, uid, rid, cid, ban)
 		}
 	});
 
-	function adminOPt(tag, uid, rid, cid, ban) {
+	function adminOPt(tag, uid, rid, cid, ban,del) {
 		if ($sls.loading) {
 			return;
 		}
@@ -130,7 +135,8 @@
 			uid: uid,
 			rid: rid,
 			cid: cid,
-			ban: ban
+			ban: ban,
+			del: del,
 		}, function (resp) {
 			$sls.loading = 0;
 			if (resp.code == 0) {
