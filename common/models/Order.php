@@ -71,4 +71,36 @@ class Order extends ActiveRecord
 			return self::add($data);
 		}
 	}
+
+	public static function QTItems($subtag, $page = 1, $pagesize = 9)
+	{
+		$conn = AppUtil::db();
+		$nextpage = 0;
+		$limit = " limit " . ($page - 1) * $pagesize . ',' . ($pagesize + 1);
+		$ret = [];
+		switch ($subtag) {
+			case "gift":
+				$sql = "select g.*,sum(oNum) as co from im_order as o 
+						join im_goods as g on o.oGId=g.gId
+						where oStatus=:st 
+						group by oGId 
+						order by oId desc $limit";
+				$ret = $conn->createCommand($sql)->bindValues([
+					":st" => Order::ST_PAY
+				])->queryAll();
+				break;
+			case "receive":
+
+				break;
+			case "prop":
+
+				break;
+		}
+		if ($ret) {
+			if (count($ret) > $pagesize) {
+				$nextpage = $page++;
+			}
+		}
+		return [$ret, $nextpage];
+	}
 }

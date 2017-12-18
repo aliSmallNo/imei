@@ -5,15 +5,10 @@
 		<a href="javascript:;" data-tag="receive">我收到的</a>
 		<a href="javascript:;" data-tag="prop">功能卡</a>
 	</div>
-	<ul class="bag-content">
+	<ul class="bag-content bag-wrapper">
 		<li>
 			<img src="/images/shop/stuff_qq.png">
-			<p> X <span>5</span></p>
-			<div><a href="javascript:;">去赠送</a></div>
-		</li>
-		<li>
-			<img src="/images/shop/stuff_qq.png">
-			<p> X <span>5</span></p>
+			<p> X<span>5</span></p>
 			<div><a href="javascript:;">去赠送</a></div>
 		</li>
 		<li>
@@ -48,16 +43,18 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-<script type="text/template" id="tpl_record">
+<script type="text/template" id="tpl_order">
 	{[#items]}
 	<li>
-		<div class="title">
-			<h4>{[title]}
-				<small>{[note]}</small>
-			</h4>
-			<h5>{[dt]}</h5>
-		</div>
-		<div class="content"><em class="{[unit]} amt{[prefix]}">{[prefix]}{[amt]}</em></div>
+		<img src="{[gImage]}">
+		{[#dt]}
+		<p>{[name]}</p>
+		<em>{[dt]}</em>
+		{[/dt]}
+		{[^dt]}
+		<p> X <span>{[co]}</span></p>
+		<div><a href="javascript:;">去赠送</a></div>
+		{[/dt]}
 	</li>
 	{[/items]}
 </script>

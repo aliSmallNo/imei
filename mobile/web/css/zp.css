@@ -105,13 +105,17 @@ main {
   float: left; }
   .bag-content li div img {
     margin: 0 auto;
-    width: 6rem;
-    height: 8rem; }
+    width: 5rem;
+    height: 7rem; }
   .bag-content li p {
-    font-size: 1.5rem;
-    text-align: center; }
-    .bag-content li p span {
-      font-size: 1.5rem; }
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: 300; }
+  .bag-content li em {
+    font-size: 1rem;
+    text-align: center;
+    display: block;
+    color: #777; }
   .bag-content li div {
     padding: 1rem; }
     .bag-content li div a {

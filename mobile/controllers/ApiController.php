@@ -2299,6 +2299,15 @@ class ApiController extends Controller
 				}
 				return self::renderAPI(129, '参数错误~');
 				break;
+			case "order":
+				$subtag = self::postParam("subtag");
+				$page = self::postParam("page");
+				list($ret, $nextpage) = Order::QTItems($subtag, $page);
+				return self::renderAPI(0, '', [
+					'items' => $ret,
+					'nextpage' => $nextpage,
+				]);
+				break;
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

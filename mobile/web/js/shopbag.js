@@ -6,8 +6,6 @@ require(['jquery', 'mustache', "alpha"],
 			curFrag: "bag_home",
 			cork: $(".app-cork"),
 			wxString: $("#tpl_wx_info").html(),
-			newIdx: 0,
-			newsTimer: 0,
 			loading: 0
 		};
 
@@ -25,45 +23,52 @@ require(['jquery', 'mustache', "alpha"],
 
 
 		var bagUtil = {
-			tag: '',
+			tag: 'gift',
+			page: 1,
+			UL: $(".bag-wrapper"),
+			Tmp: $("#tpl_order").html(),
 			init: function () {
 				var util = this;
 				$(document).on(kClick, ".bag-top-bar a", function () {
 					var self = $(this);
+					util.page = 1;
 					util.tag = self.attr("data-tag");
 					self.closest(".bag-top-bar").find("a").removeClass("on");
 					self.addClass("on");
+					util.orders();
 				});
 
 			},
-			exchange: function () {
+			orders: function () {
 				var util = this;
 				if ($sls.loading) {
 					return;
 				}
 				$sls.loading = 1;
 				$.post("/api/shop", {
-					tag: "exchange",
-					id: DetailUtil.gid,
-					num: util.d_num.val()
+					tag: "order",
+					subtag: util.tag,
+					page: util.page
 				}, function (resp) {
 					$sls.loading = 0;
 					if (resp.code == 0) {
-
+						if (util.page == 1) {
+							util.UL.html(Mustache.render(util.Tmp,resp.data));
+						} else if (util.page > 1) {
+							util.UL.append(Mustache.render(util.Tmp,resp.data));
+						}
 					} else {
 						alpha.toast(resp.msg);
 					}
 				}, "json");
 			},
-			reset: function (gid, price, unit) {
+			reset: function () {
 				var util = this;
 
 			}
 		};
 
 		var DetailUtil = {
-			menus: null,
-			menusBg: null,
 			init: function () {
 				var util = this;
 			},
@@ -94,7 +99,7 @@ require(['jquery', 'mustache', "alpha"],
 					break;
 			}
 			if (!hashTag) {
-				hashTag = 'swallet';
+				// hashTag = 'swallet';
 			}
 			$sls.curFrag = hashTag;
 
@@ -116,6 +121,7 @@ require(['jquery', 'mustache', "alpha"],
 			$sls.cork.hide();
 
 			bagUtil.init();
+			bagUtil.orders();
 			DetailUtil.init();
 
 			alpha.initSwiper();
