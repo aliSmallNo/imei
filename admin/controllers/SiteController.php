@@ -1382,6 +1382,20 @@ class SiteController extends BaseController
 		);
 	}
 
+	public function actionChattest()
+	{
+		$this->layout = 'terse';
+		return $this->renderPage('chat_test.tpl',
+			[
+				'uni' => $this->admin_id,
+				'ws_url' => AppUtil::wsUrl(),
+				'category' => 'data',
+				'room_id' => time(),
+				'detailcategory' => "site/userstat",
+			]
+		);
+	}
+
 	public function actionInfo()
 	{
 		AppUtil::logFile([$this->admin_id, AppUtil::IP()], 5, __FUNCTION__, __LINE__);
