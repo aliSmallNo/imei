@@ -1,10 +1,8 @@
 <div id="page-wrapper">
-
-	<ul class="menu_body">
-
-	</ul>
-	<input type="text" id="cText">
-	<a href="javascript:;" class="btn-send">发送</a>
+	<div style="padding: 10px">
+		<input type="text" id="cText">
+		<a href="javascript:;" class="btn-send">发送</a>
+	</div>
 </div>
 <input type="hidden" id="cUNI" value="{{$uni}}">
 <input type="hidden" id="cRoomId" value="{{$room_id}}">
