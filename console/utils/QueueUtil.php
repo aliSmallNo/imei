@@ -66,7 +66,7 @@ class QueueUtil
 		}
 	}
 
-	public static function logFile($msg, $funcName = '', $line = '')
+	public static function logFile($msg, $funcName = '', $line = '', $tube = '')
 	{
 		if (is_array($msg)) {
 			$msg = json_encode($msg, JSON_UNESCAPED_UNICODE);
@@ -76,7 +76,7 @@ class QueueUtil
 		} else {
 			$msg = 'message: ' . $msg;
 		}
-		$fileName = AppUtil::logDir() . 'queue_' . date('Ymd') . '.log';
+		$fileName = AppUtil::logDir() . 'queue_' . $tube . date('Ymd') . '.log';
 		@file_put_contents($fileName, PHP_EOL . date('Y-m-d H:i:s') . ' ' . $msg . PHP_EOL, FILE_APPEND);
 	}
 
