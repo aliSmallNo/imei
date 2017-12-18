@@ -31,7 +31,7 @@ class QueueUtil
 		'timeout' => 3000
 	];
 
-	public static function loadJob($methodName, $params = [], $tube = '', $delay = 1)
+	public static function loadJob($methodName, $params = [], $tube = '', $delay = 0)
 	{
 		if (AppUtil::isDev()) {
 			return;
