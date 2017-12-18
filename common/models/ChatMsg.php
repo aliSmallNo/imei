@@ -415,10 +415,10 @@ class ChatMsg extends ActiveRecord
 		$content = trim($content);
 		$uInfo = User::findOne(["uId" => $senderId])->toArray();
 		if ($uInfo["uNote"] != 'dummy' && !$uInfo["uPhone"] && self::countMsgByUid($senderId, $rId, $conn) >= 3) {
-			return [128, '还没注册，去注册吧！', null];
+			return [128, '还没注册，去注册吧！', []];
 		}
 		if (!$content) {
-			return [129, '聊天内容不能为空！', null];
+			return [129, '聊天内容不能为空！', []];
 		}
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -433,10 +433,10 @@ class ChatMsg extends ActiveRecord
 			':uid' => $senderId
 		])->queryOne();
 		if (!$roomInfo) {
-			return [129, '聊天室不存在！', null];
+			return [129, '聊天室不存在！', []];
 		}
 		if ($roomInfo['mBanFlag']) {
-			return [129, '不好意思，你已经被禁言了！', null];
+			return [129, '不好意思，你已经被禁言了！', []];
 		}
 		$adminUId = $roomInfo['rAdminUId'];
 		$senderThumb = $roomInfo['uThumb'];
