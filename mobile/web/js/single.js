@@ -616,9 +616,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					}
 					var self = $(this);
 					if (self.hasClass("chat")) {
-						var gid = self.closest("li").attr("data-gid");
-						NoticeUtil.join(gid);
-						util.chatRoom(self.attr('data-id'), self.find(".content").find("em").html(), gid);
+						util.chatRoom(self.attr('data-id'), self.find(".content").find("em").html(), self.closest("li").attr("data-gid"));
 					}
 					return false;
 				});
@@ -2333,18 +2331,20 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 		};
 
 		var NoticeUtil = {
-			uni: $('#cUNI').val(),
+			socket: null,
+			uni: 0,
 			timer: 0,
-			roomId: 0,
-			ioChat: null,
 			board: $('.m-notice'),
 			init: function () {
 				var util = this;
-				var ioHouse = io('https://nd.meipo100.com/house');
-				ioHouse.on('connect', function () {
-					ioHouse.emit('house', util.uni);
+				util.uni = $('#cUNI').val();
+				// util.socket = io('https://ws.meipo100.com');
+				util.socket = io('https://nd.meipo100.com');
+				util.socket.on('connect', function () {
+					util.socket.emit('house', util.uni);
 				});
-				ioHouse.on("notice", function (resp) {
+
+				util.socket.on("notice", function (resp) {
 					var msg = resp.msg;
 					if (!msg) {
 						return;
@@ -2359,9 +2359,10 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 							break;
 					}
 				});
-				util.ioChat = io('https://nd.meipo100.com/chatroom');
-				util.ioChat.on("msg", function (resp) {
-					if (util.roomId != resp.key) {
+
+				util.socket.on("chat", function (resp) {
+					var gid = resp.gid;
+					if (ChatUtil.gid != gid) {
 						return;
 					}
 					switch (resp.tag) {
@@ -2383,8 +2384,12 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 			},
 			join: function (gid) {
 				var util = this;
-				util.roomId = gid;
-				util.ioChat.emit('room', util.roomId, util.uni);
+				util.gid = gid;
+				var params = {
+					gid: util.gid,
+					uid: util.uni
+				};
+				util.socket.emit('join', params);
 			},
 			toggle: function (content) {
 				var util = this;
