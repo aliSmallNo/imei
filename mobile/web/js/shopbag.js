@@ -6,8 +6,6 @@ require(['jquery', 'mustache', "alpha"],
 			curFrag: "bag_home",
 			cork: $(".app-cork"),
 			wxString: $("#tpl_wx_info").html(),
-			newIdx: 0,
-			newsTimer: 0,
 			loading: 0
 		};
 
@@ -16,54 +14,71 @@ require(['jquery', 'mustache', "alpha"],
 		}
 
 		$(window).on("scroll", function () {
-			/*var lastRow = WalletUtil.list.find('li').last();
-			if (lastRow && eleInScreen(lastRow) && WalletUtil.page > 0) {
-				//WalletUtil.reload();
+			var lastRow = bagUtil.UL.find('li').last();
+			if (lastRow && eleInScreen(lastRow) && bagUtil.page > 0) {
+				bagUtil.orders();
 				return false;
-			}*/
+			}
 		});
 
 
 		var bagUtil = {
-			tag: '',
+			tag: 'gift',
+			page: 1,
+			UL: $(".bag-wrapper"),
+			Tmp: $("#tpl_order").html(),
+			spinner: $(".spinner"),
+			nomore: $(".no-more"),
 			init: function () {
 				var util = this;
 				$(document).on(kClick, ".bag-top-bar a", function () {
 					var self = $(this);
+					util.page = 1;
+					util.UL.html('');
 					util.tag = self.attr("data-tag");
 					self.closest(".bag-top-bar").find("a").removeClass("on");
 					self.addClass("on");
+					util.orders();
 				});
 
 			},
-			exchange: function () {
+			orders: function () {
 				var util = this;
 				if ($sls.loading) {
 					return;
 				}
 				$sls.loading = 1;
+				util.spinner.show();
+				util.nomore.hide();
 				$.post("/api/shop", {
-					tag: "exchange",
-					id: DetailUtil.gid,
-					num: util.d_num.val()
+					tag: "order",
+					subtag: util.tag,
+					page: util.page
 				}, function (resp) {
 					$sls.loading = 0;
+					util.spinner.hide();
 					if (resp.code == 0) {
-
+						if (util.page == 1) {
+							util.UL.html(Mustache.render(util.Tmp, resp.data));
+						} else if (util.page > 1) {
+							util.UL.append(Mustache.render(util.Tmp, resp.data));
+						}
+						util.page = resp.data.nextpage;
+						if (util.page == 0) {
+							util.nomore.show();
+						}
 					} else {
 						alpha.toast(resp.msg);
 					}
 				}, "json");
 			},
-			reset: function (gid, price, unit) {
+			reset: function () {
 				var util = this;
 
 			}
 		};
 
 		var DetailUtil = {
-			menus: null,
-			menusBg: null,
 			init: function () {
 				var util = this;
 			},
@@ -94,7 +109,7 @@ require(['jquery', 'mustache', "alpha"],
 					break;
 			}
 			if (!hashTag) {
-				hashTag = 'swallet';
+				// hashTag = 'swallet';
 			}
 			$sls.curFrag = hashTag;
 
@@ -116,6 +131,7 @@ require(['jquery', 'mustache', "alpha"],
 			$sls.cork.hide();
 
 			bagUtil.init();
+			bagUtil.orders();
 			DetailUtil.init();
 
 			alpha.initSwiper();

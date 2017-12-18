@@ -5,30 +5,12 @@
 		<a href="javascript:;" data-tag="receive">我收到的</a>
 		<a href="javascript:;" data-tag="prop">功能卡</a>
 	</div>
-	<ul class="bag-content">
-		<li>
-			<img src="/images/shop/stuff_qq.png">
-			<p> X <span>5</span></p>
-			<div><a href="javascript:;">去赠送</a></div>
-		</li>
-		<li>
-			<img src="/images/shop/stuff_qq.png">
-			<p> X <span>5</span></p>
-			<div><a href="javascript:;">去赠送</a></div>
-		</li>
-		<li>
-			<img src="/images/shop/stuff_qq.png">
-			<p> X <span>5</span></p>
-			<div><a href="javascript:;">去赠送</a></div>
-		</li>
-		<li>
-			<img src="/images/shop/stuff_qq.png">
-			<p> X <span>5</span></p>
-			<div><a href="javascript:;">去赠送</a></div>
-		</li>
-	</ul>
+	<ul class="bag-content bag-wrapper">
 
-	<div style="height: 5rem"></div>
+	</ul>
+	<div class="spinner "></div>
+	<div class="no-more font12 " style="display: none">没有更多了~</div>
+
 </section>
 <section id="sec_list">
 	<ul class="charges"></ul>
@@ -48,17 +30,20 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-<script type="text/template" id="tpl_record">
+<script type="text/template" id="tpl_order">
 	{[#items]}
 	<li>
-		<div class="title">
-			<h4>{[title]}
-				<small>{[note]}</small>
-			</h4>
-			<h5>{[dt]}</h5>
-		</div>
-		<div class="content"><em class="{[unit]} amt{[prefix]}">{[prefix]}{[amt]}</em></div>
+		<div><img src="{[gImage]}"></div>
+		{[#dt]}
+		<p>{[gName]}</p>
+		<em>{[dt]}</em>
+		{[/dt]}
+		{[^dt]}
+		<p> X <span>{[co]}</span></p>
+		<div><a href="javascript:;">去赠送</a></div>
+		{[/dt]}
 	</li>
+
 	{[/items]}
 </script>
 <script src="/assets/js/require.js"></script>
@@ -67,6 +52,6 @@
 		document.location.hash = "#bag_home";
 	}
 	requirejs(['/js/config.js?v=1.2.3'], function () {
-		requirejs(['/js/shopbag.js?v=1.2.7']);
+		requirejs(['/js/shopbag.js?v=1.2.8']);
 	});
 </script>
