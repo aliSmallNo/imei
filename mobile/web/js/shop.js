@@ -107,6 +107,7 @@ require(['jquery', 'mustache', "alpha"],
 			image: null,
 			header: null,
 			amount: null,
+			level: 1,
 			gid: 0,
 			price: 0,
 			unit: '',
@@ -118,13 +119,20 @@ require(['jquery', 'mustache', "alpha"],
 				util.header = util.menus.find(".header");
 				$(document).on(kClick, '.gift-bags a, .gift-stuff a', function () {
 					var self = $(this);
-					util.gid = self.attr('data-id');
-					util.price = self.attr('data-price');
-					util.unit = self.attr('data-unit');
-					util.toggle(util.menus.hasClass("off"));
-					util.image.css('background-image', 'url(' + self.attr('data-img') + ')');
-					util.header.html(self.find('h4').html());
-					StepperUtil.reset(util.gid, util.price, util.unit);
+					util.level = self.closest("ul").attr('min-level');
+					console.log(util.level);
+					if (parseInt(util.level) <= $("#cLEVEL").val()) {
+						util.gid = self.attr('data-id');
+						util.price = self.attr('data-price');
+						util.unit = self.attr('data-unit');
+						util.toggle(util.menus.hasClass("off"));
+						util.image.css('background-image', 'url(' + self.attr('data-img') + ')');
+						util.header.html(self.find('h4').html());
+						StepperUtil.reset(util.gid, util.price, util.unit);
+					} else {
+						alpha.toast('您的等级不够~');
+					}
+
 				});
 
 				util.menus.on(kClick, function (e) {
@@ -186,6 +194,7 @@ require(['jquery', 'mustache', "alpha"],
 			},
 			wechatPay: function (resData) {
 				var util = this;
+
 				function onBridgeReady(resData) {
 					WeixinJSBridge.invoke('getBrandWCPayRequest',
 						{

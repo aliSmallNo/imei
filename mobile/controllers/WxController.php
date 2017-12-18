@@ -2066,6 +2066,7 @@ class WxController extends BaseController
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
 		}
+		$expInfo = UserTag::getExp($this->user_id);
 		$headers = CogService::init()->homeHeaders(true);
 		foreach ($headers as $k => $header) {
 			$headers[$k]['image'] = $header['content'];
@@ -2083,7 +2084,8 @@ class WxController extends BaseController
 				'headers' => $headers,
 				'stuff' => $stuff,
 				'premium' => $premium,
-				'bags' => $bags
+				'bags' => $bags,
+				'level' => isset($expInfo["level"]) ? $expInfo["level"] : 1,
 			],
 			'terse',
 			'千寻商城',
