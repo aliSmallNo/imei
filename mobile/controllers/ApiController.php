@@ -690,7 +690,7 @@ class ApiController extends Controller
 					foreach ($items as $k => $item) {
 						$index = $k ? 3 * $k : 1;
 						if ($k == count($items) - 1) {
-							$index = 13;
+							$index = count($ret['data']) - 1;
 						}
 						array_splice($ret['data'], $index, 0, [["url" => $item['url'], "img" => $item['content']]]);
 					}
