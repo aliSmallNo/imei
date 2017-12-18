@@ -1591,7 +1591,7 @@ section {
   background-size: 100% 100%; }
 
 .i-mark-rose {
-  background: url(../images/ico_rose.png) no-repeat center center;
+  background: url(../images/ico_rose.png?v=1.2.3) no-repeat center center;
   background-size: 100% 100%; }
 
 .i-mark-share {
@@ -3267,7 +3267,7 @@ section {
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
         margin-right: 0.6rem; }
         .m-top-users li .single-bar a.btn-give {
-          background: #fff url(../images/ico_rose.png) no-repeat center center;
+          background: #fff url(../images/ico_rose.png?v=1.2.3) no-repeat center center;
           background-size: 20px 20px;
           right: 170px; }
         .m-top-users li .single-bar a.btn-like {
@@ -3715,7 +3715,7 @@ section {
       background-position: center -10.8rem; }
     .account-header .item .ico-rose {
       padding-left: 1.6rem;
-      background: url(../images/ico_rose.png) no-repeat left center;
+      background: url(../images/ico_rose.png?v=1.2.3) no-repeat left center;
       background-size: 1.4rem 1.4rem; }
     .account-header .item .amt {
       font-weight: 500;
@@ -3763,7 +3763,7 @@ section {
         color: #969494;
         font-weight: 300; }
       .recharge li .title.row-100 {
-        background: url(../images/ico_rose.png) no-repeat 0.5rem center;
+        background: url(../images/ico_rose.png?v=1.2.3) no-repeat 0.5rem center;
         background-size: 1.6rem 1.6rem; }
       .recharge li .title.row-share {
         background: url(../images/ico_mark_share.png) no-repeat 0.5rem center;
@@ -5263,7 +5263,7 @@ section {
           .charges li .content em.flower:after {
             position: absolute;
             content: "";
-            background: url(../images/ico_rose.png) no-repeat center center;
+            background: url(../images/ico_rose.png?v=1.2.3) no-repeat center center;
             background-size: 100% 100%;
             width: 1.6rem;
             height: 1.6rem;
@@ -8940,7 +8940,7 @@ ul.co-ul {
     box-sizing: border-box;
     height: 13rem;
     background: url(../images/shop/bg_flash.png) no-repeat center bottom;
-    background-size: 100% 100%;
+    background-size: 80% 90%;
     border-bottom: 1px solid #EEEFF3;
     border-right: 1px solid #EEEFF3;
     padding: 0.2rem; }
@@ -8949,7 +8949,7 @@ ul.co-ul {
     .gift-bags li a {
       display: block;
       height: 100%;
-      background-size: 10rem 10rem;
+      background-size: 7rem 7rem;
       background-position: center center;
       background-repeat: no-repeat;
       background-color: transparent; }

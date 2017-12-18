@@ -350,6 +350,10 @@
 			<img src="/images/top_date.png">
 			<div>帮我约TA</div>
 		</a>
+		<a href="javascript:;" data-tag="date">
+			<img src="/images/top_gift.png">
+			<div>送TA礼物</div>
+		</a>
 		<a href="javascript:;" data-tag="toblock">
 			<img src="/images/top_block.png">
 			<div>拉黑TA</div>
@@ -765,7 +769,7 @@
 	<ul class="options">
 		<li>
 			<a href="javascript:;" num="50" tag="choose">
-				<div class="img"><img src="/images/ico_rose.png"></div>
+				<div class="img"><img src="/images/ico_rose.png?v=1.2.1"></div>
 				<div class="des">
 					<div class="t">x 20<span>朵</span></div>
 					<div class="b">就聊10句</div>
@@ -774,7 +778,7 @@
 		</li>
 		<li>
 			<a href="javascript:;" num="100" tag="choose">
-				<div class="img"><img src="/images/ico_rose.png"></div>
+				<div class="img"><img src="/images/ico_rose.png?v=1.2.1"></div>
 				<div class="des">
 					<div class="t">x 40<span>朵</span></div>
 					<div class="b">聊20句</div>
@@ -796,7 +800,7 @@
 	<ul class="options">
 		<li>
 			<a href="javascript:;" num="50" tag="choose">
-				<div class="img"><img src="/images/ico_rose.png"></div>
+				<div class="img"><img src="/images/ico_rose.png?v=1.2.1"></div>
 				<div class="des">
 					<div class="t">x 50<span>朵</span></div>
 					<div class="b">有一点心动</div>
@@ -805,7 +809,7 @@
 		</li>
 		<li>
 			<a href="javascript:;" num="100" tag="choose">
-				<div class="img"><img src="/images/ico_rose.png"></div>
+				<div class="img"><img src="/images/ico_rose.png?v=1.2.1"></div>
 				<div class="des">
 					<div class="t">x 100<span>朵</span></div>
 					<div class="b">来电了</div>
@@ -814,7 +818,7 @@
 		</li>
 		<li>
 			<a href="javascript:;" num="500" tag="choose">
-				<div class="img"><img src="/images/ico_rose.png"></div>
+				<div class="img"><img src="/images/ico_rose.png?v=1.2.1"></div>
 				<div class="des">
 					<div class="t">x 500<span>朵</span></div>
 					<div class="b">喜欢你</div>
@@ -823,7 +827,7 @@
 		</li>
 		<li>
 			<a href="javascript:;" num="1000" tag="choose">
-				<div class="img"><img src="/images/ico_rose.png"></div>
+				<div class="img"><img src="/images/ico_rose.png?v=1.2.1"></div>
 				<div class="des">
 					<div class="t">x 1000<span>朵</span></div>
 					<div class="b">诚意满满</div>
@@ -1143,7 +1147,7 @@
 		<div class="topup-opt clearfix">
 			{[#items]}
 			<a href="javascript:;" data-amt="{[amt]}">
-				<div class="img"><img src="/images/ico_rose.png"></div>
+				<div class="img"><img src="/images/ico_rose.png?v=1.2.1"></div>
 				<div class="des">
 					<em>x {[amt]}朵</em>
 					<i>聊{[num]}句</i>
@@ -1169,7 +1173,7 @@
 		<div class="topup-opt clearfix">
 			{[#items]}
 			<a href="javascript:;" data-amt="{[amt]}">
-				<div class="img"><img src="/images/ico_rose.png"></div>
+				<div class="img"><img src="/images/ico_rose.png?v=1.2.1"></div>
 				<div class="des">
 					<em>x {[amt]}朵</em>
 				</div>

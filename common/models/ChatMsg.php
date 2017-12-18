@@ -864,6 +864,21 @@ class ChatMsg extends ActiveRecord
 	}
 
 	public
+	static function roomChatRead($uid, $rid, $conn = '')
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$sql = 'update im_chat_msg  
+				set cReadFlag=1,cReadOn=now() 
+				WHERE cReadFlag=0 AND cAddedBy != :uid and cGId=:rid';
+		$conn->createCommand($sql)->bindValues([
+			':rid' => $rid,
+			':uid' => $uid,
+		])->execute();
+	}
+
+	public
 	static function read($uId, $subUId, $conn = '')
 	{
 		if (!$conn) {
