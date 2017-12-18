@@ -1338,7 +1338,6 @@ class FooController extends Controller
 	public function actionRain()
 	{
 
-
 	}
 
 	public function actionZp()
