@@ -56,14 +56,13 @@ class QueueUtil
 				json_encode($message)
 			);
 			if (!$put) {
-				self::logFile($message, __FUNCTION__, __LINE__);
 				throw new Exception('发送失败');
 			}
-			self::logFile($message, __FUNCTION__, __LINE__);
+			self::logFile($message, __FUNCTION__, __LINE__, $tube);
 			$beanstalk->disconnect();
 		} catch (Exception $ex) {
 			$msg = $ex->getMessage();
-			self::logFile($msg, __FUNCTION__, __LINE__);
+			self::logFile($msg, __FUNCTION__, __LINE__, $tube);
 		}
 	}
 
@@ -180,7 +179,6 @@ class QueueUtil
 
 	public static function chatMsg($params)
 	{
-		self::logFile($params, __FUNCTION__, __LINE__, self::QUEUE_TUBE_CHAT);
 		$pushUtil = PushUtil::init();
 		$info = $params['info'];
 		foreach ($params['items'] as $item) {
