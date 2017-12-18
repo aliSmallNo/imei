@@ -14,11 +14,9 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
-use common\models\UserTag;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use common\service\TrendService;
-use common\service\UserService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
@@ -1345,11 +1343,26 @@ class FooController extends Controller
 		$hid = '5a1bce62e65fd';
 		$ret = AppUtil::decrypt($hid);
 		var_dump($ret);*/
-		$service = UserService::init('059af5c749741c')->info;
+		/*$service = UserService::init('059af5c749741c')->info;
 		var_dump($service);
 
 		$service = UserService::init(131379)->info;
-		var_dump($service);
+		var_dump($service);*/
+
+		$conn = AppUtil::db();
+		$sql = "select * from im_user 
+			where uCertStatus=2 and uCertImage not like '%zm%' and uOpenId like 'oYDJew%' and uCertImage like 'http%'";
+		$ret = $conn->createCommand($sql)->queryAll();
+		$sql = "update im_user set uCertImage=:img,uUpdatedOn=now(),uUpdatedBy=1001 WHERE uId=:id ";
+		$cmd = $conn->createCommand($sql);
+		foreach ($ret as $row) {
+			$img = $row['uCertImage'];
+			$images = [['tag' => 'sc', 'url' => $img], ['tag' => 'zm', 'url' => $img]];
+			$cmd->bindValues([
+				':id' => $row['uId'],
+				':img' => json_encode($images, JSON_UNESCAPED_UNICODE)
+			])->execute();
+		}
 	}
 
 	public function actionZp()
