@@ -46,7 +46,6 @@ use common\utils\PayUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
-use function Sodium\add;
 use Yii;
 use yii\web\Controller;
 use yii\web\Response;
@@ -985,7 +984,7 @@ class ApiController extends Controller
 				}
 				$remainRose = UserTrans::getStat($wx_uid, 1);
 				$flower = isset($remainRose['flower']) ? $remainRose['flower'] : 0;
-				if ($flower < $amt || $wx_uid == 131379) {
+				if ($flower < $amt) {
 					return self::renderAPI(159, '你的媒桂花只剩' . $flower . '朵了，不足' . $amt . '朵，该充值了哦，或者去分享把单身朋友拉进来，赚取媒桂花~');
 				}
 
