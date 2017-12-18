@@ -500,8 +500,12 @@ class WxController extends BaseController
 		$hid = self::getParam('id');
 		$hideFlag = self::getParam('hide', 0);
 		$secretId = $hid;
-		$hid = AppUtil::decrypt($hid);
-		if (!$hid) {
+		$decrypt = AppUtil::decrypt($hid);
+		if ($decrypt) {
+			$hid = $decrypt;
+		}
+		$uInfo = UserService::init($hid)->info;
+		if (!$uInfo) {
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
 		}
@@ -519,7 +523,7 @@ class WxController extends BaseController
 		}
 
 		$items = [];
-		$uInfo = User::profile($hid);//TA
+//		$uInfo = User::profile($hid);
 		$genderName = $uInfo['gender'] == User::GENDER_MALE ? '男' : '女';
 		$uInfo["favorFlag"] = UserNet::hasFavor($this->user_id, $uInfo["id"]) ? 1 : 0;
 		if (!$isMember) {

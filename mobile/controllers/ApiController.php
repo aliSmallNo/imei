@@ -39,6 +39,7 @@ use common\models\UserTrans;
 use common\models\UserWechat;
 use common\service\CogService;
 use common\service\EventService;
+use common\service\UserService;
 use common\utils\AppUtil;
 use common\utils\BaiduUtil;
 use common\utils\ImageUtil;
@@ -424,8 +425,11 @@ class ApiController extends Controller
 				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
 				}
-				$id = AppUtil::decrypt($id);
-				$uInfo = User::profile($id);
+				$decrypt = AppUtil::decrypt($id);
+				if ($decrypt) {
+					$id = $decrypt;
+				}
+				$uInfo = UserService::init($id)->info;
 				if (!$uInfo) {
 					return self::renderAPI(129, '用户不存在~');
 				}

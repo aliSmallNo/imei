@@ -4973,7 +4973,17 @@ section {
     color: #6a6572;
     height: 2.6rem;
     line-height: 2.6rem;
-    font-weight: 300; }
+    font-weight: 300;
+    position: relative; }
+    .single-page .baseinfo h6 .cert {
+      display: inline-block;
+      width: 5.6rem;
+      background: url(../images/ico_cert_new.png) no-repeat right center;
+      background-size: 5.4rem 1.8rem; }
+      .single-page .baseinfo h6 .cert:before {
+        content: " ";
+        display: inline-block;
+        width: 100%; }
   .single-page .baseinfo .title {
     height: 2.4rem;
     line-height: 2.4rem;

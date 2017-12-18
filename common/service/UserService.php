@@ -55,7 +55,8 @@ class UserService
 			$util->avatar = ImageUtil::getItemImages($uInfo['uAvatar'])[0];
 			$util->subscribe = $uInfo['wSubscribe'];
 			$util->cert_status = $uInfo['uCertStatus'];
-			$util->info = User::fmtRow($uInfo);
+			$util->info = array_merge(User::fmtRow($uInfo), User::profile($util->id, $util->conn));
+
 			$certs = User::getCerts($uInfo['uCertImage']);
 			foreach ($certs as $item) {
 				if ($item['tag'] == 'zm') {
@@ -64,6 +65,7 @@ class UserService
 					$util->cert_hold = $item['url'];
 				}
 			}
+			$util->info['is_cert'] = $util->hasCert() ? 1 : 0;
 		}
 		return $util;
 	}
@@ -71,6 +73,8 @@ class UserService
 	public function hasCert()
 	{
 		return ($this->cert_status == User::CERT_STATUS_PASS
-			&& $this->cert_front && $this->cert_hold);
+				&& $this->cert_front && $this->cert_hold)
+			|| ($this->cert_status == User::CERT_STATUS_PASS
+				&& strpos($this->open_id, User::OPENID_PREFIX) !== 0);
 	}
 }
