@@ -583,6 +583,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 			menus: $(".m-chat-wrap"),
 			helpchatMenu: $(".help-chat"),
 			menusBg: $(".m-schat-shade"),// m-schat-shade m-popup-shade
+			giftmenus: $(".m-draw-wrap"),
 			timer: 0,
 			reason: [],
 			init: function () {
@@ -782,6 +783,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					if (util.helpchatMenu.hasClass("on")) {
 						util.toggle(false, util.helpchatMenu);
 					}
+					if (util.giftmenus.hasClass("on")) {
+						util.toggle(false, util.giftmenus);
+					}
 				});
 
 				$(document).on(kClick, ".help-chat-icon-btn", function () {
@@ -856,6 +860,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 							break;
 						case 'date':
 							util.beforeDate();
+							break;
+						case 'gift':
+							// util.toggle(util.giftmenus.hasClass("off"),util.giftmenus);
 							break;
 					}
 				});

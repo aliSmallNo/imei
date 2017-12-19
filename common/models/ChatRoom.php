@@ -10,6 +10,7 @@ namespace common\models;
 
 
 use common\utils\AppUtil;
+use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
 
 class ChatRoom extends ActiveRecord
@@ -321,6 +322,23 @@ class ChatRoom extends ActiveRecord
 		$res = array_reverse($res);
 		return [$res, $rlastId];
 
+	}
+
+	public static function PushTempMsg($rid, $uid)
+	{
+		$conn = AppUtil::db();
+		$sql = "select m.mUID
+				from im_chat_room as r
+				left join im_chat_room_fella as m on m.mRId=r.rId
+				where m.mUId!=:uid AND rId = :rid and m.mDeletedFlag=:del";
+		$ret = $conn->createCommand($sql)->bindValues([
+			":rid" => $rid,
+			":uid" => $uid,
+			":del" => ChatRoomFella::DELETE_NORMAL,
+		])->queryAll();
+		foreach ($ret as $to) {
+			WechatUtil::templateMsg(WechatUtil::NOTICE_ROOM_CHAT, $to, '你有群聊消息待查看', '点击下方详情查看吧~', $uid);
+		}
 	}
 
 

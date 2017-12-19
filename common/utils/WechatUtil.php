@@ -48,6 +48,7 @@ class WechatUtil
 	const NOTICE_CERT_GRANT = 'notice_cert_grant';
 	const NOTICE_CERT_DENY = 'notice_cert_deny';
 	const NOTICE_DATE = 'notice_date';
+	const NOTICE_ROOM_CHAT = 'notice_room_chat';
 
 	/**
 	 * @param $sessionKey
@@ -577,10 +578,19 @@ class WechatUtil
 		}
 	}
 
+	/**
+	 * @param $noticeTag
+	 * @param $takerId 对方UID (eg:我的心动对象的UID)
+	 * @param string $title
+	 * @param string $subTitle
+	 * @param int $giverId 当前uid (eg:我的UID)
+	 * @param int $msgKey
+	 * @return int|mixed
+	 */
 	public static function templateMsg($noticeTag, $takerId, $title = '', $subTitle = '', $giverId = 1, $msgKey = 0)
 	{
 		if (AppUtil::isDev()) {
-			return 0;
+			//return 0;
 		}
 		$userInfo = User::findOne(["uId" => $takerId]);
 		if (!$userInfo) {
@@ -649,6 +659,13 @@ class WechatUtil
 					return 0;
 				}
 				$msgCat = UserMsg::CATEGORY_CHAT;
+				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$url = $wxUrl . "/wx/single#scontacts";
+				$keywords['first'] = "hi，$nickname\n";
+				$keywords['remark'] = "\n点击下方详情查看吧~";
+				break;
+			case self::NOTICE_ROOM_CHAT:
+				$msgCat = UserMsg::CATEGORY_ROOM_CHAT;
 				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = $wxUrl . "/wx/single#scontacts";
 				$keywords['first'] = "hi，$nickname\n";
@@ -798,7 +815,7 @@ class WechatUtil
 			$text = isset(UserMsg::$catDict[$msgCat]) ? UserMsg::$catDict[$msgCat] : '';
 		}
 
-		if (in_array($noticeTag, [self::NOTICE_ROUTINE, self::NOTICE_DATE])) {
+		if (in_array($noticeTag, [self::NOTICE_ROUTINE, self::NOTICE_DATE, self::NOTICE_ROOM_CHAT])) {
 			$result = 1;
 		} else {
 			$result = UserMsg::edit(0, [
