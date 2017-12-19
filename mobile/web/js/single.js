@@ -1023,6 +1023,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 			messages: function (data, flag) {
 				var util = this;
 				var html = Mustache.render(util.tmp, data);
+				console.log(html);
 				if (data.lastId < 1) {
 					util.list.html(html);
 				} else {
@@ -1114,7 +1115,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					util.inputVal = "";
 					if (resp.code < 1) {
 						util.messages(resp.data, 1);
-						NoticeUtil.broadcast(resp.data.items);
+						NoticeUtil.broadcast(resp.data);
 						/*if (!util.loading && resp.data.items.id > util.lastId) {
 							util.lastId = resp.data.items.id;
 							var html = Mustache.render(util.tmp, resp.data);
