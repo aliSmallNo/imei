@@ -12,7 +12,6 @@ namespace common\models;
 use admin\models\Admin;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
-use common\utils\PushUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
@@ -651,6 +650,7 @@ class ChatMsg extends ActiveRecord
 		}
 		$left = self::chatLeft($senderId, $receiverId, $conn);
 		$info = [
+			'tag' => 'msg',
 			'id' => $cId,
 			'gid' => $gid,
 			'left' => $left,
@@ -705,8 +705,7 @@ class ChatMsg extends ActiveRecord
 		return $info;
 	}
 
-	public
-	static function delContacts($gids)
+	public static function delContacts($gids)
 	{
 		if (!$gids || !is_array($gids)) {
 			return 0;

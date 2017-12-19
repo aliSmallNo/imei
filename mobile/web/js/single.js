@@ -2368,9 +2368,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 				});
 
 				util.ioChat = io('https://nd.meipo100.com/chatroom');
-				util.ioChat.on("msg", function (resp) {
-					console.log(resp);
-					util.roomId = resp.gid;
+				util.ioChat.on("msg", function (info) {
+					console.log(info);
+					util.roomId = info.gid;
 					if (ChatUtil.gid != util.roomId) {
 						return;
 					}
@@ -2378,7 +2378,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 						case 'tip':
 							ChatUtil.showTip(resp.msg);
 							break;
-						case 'msg':
+						default:
 							ChatUtil.messages(resp, 1);
 							break;
 					}
