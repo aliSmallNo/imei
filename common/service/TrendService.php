@@ -98,14 +98,15 @@ class TrendService
 		}
 
 		$sql = 'DELETE FROM im_trend 
-			WHERE tType=:tType AND tCategory=:tCategory AND tStep=:tStep AND tField=:tField AND tBeginDate=:tBeginDate AND tEndDate=:tEndDate ';
+			WHERE tType=:tType AND tCategory=:tCategory AND tStep=:tStep 
+			 AND tDateName=:tDateName AND tBeginDate=:tBeginDate AND tEndDate=:tEndDate ';
 		$this->conn->createCommand($sql)->bindValues([
 			':tCategory' => $this->category,
 			':tStep' => $step,
 			':tType' => $type,
-			':tField' => $field,
 			':tBeginDate' => $beginDate,
 			':tEndDate' => $endDate,
+			':tDateName' => $dateName,
 		])->execute();
 
 		$sql = 'INSERT INTO im_trend(tCategory, tStep, tType, tDateName, tBeginDate, tEndDate, tField, tNum,tNote)
@@ -342,38 +343,49 @@ class TrendService
 			 	AND uStatus<8 AND uPhone!=''  AND uRole>9 AND uGender in (10,11) ";
 		$cmd = $this->conn->createCommand($sql);
 
-		$lastDay = $endDate;
-		$ratio = ($step == 'week' ? 7 : 28);
-		for ($k = 1; $k < 18; $k++) {
-			$fromDate = date('Y-m-d', strtotime($beginDate) + 86400 * $ratio * $k);
-			$toDate = date('Y-m-d', strtotime($endDate) + 86400 * $ratio * $k);
-			if ($step == 'month') {
-				list($md, $firstDay, $lastDay) = AppUtil::getMonthInfo(date("Y-m-d", strtotime($lastDay) + 86401 * $k));
-				$fromDate = $firstDay;
-				$toDate = $lastDay;
-				$lastDay = $toDate;
-			}
-			if (strtotime($fromDate) > time()) break;
-			$ret = $cmd->bindValues([
-				':beginDT' => $beginDate . ' 00:00',
-				':endDT' => $endDate . ' 23:59',
-				':from' => $fromDate . ' 00:00',
-				':to' => $toDate . ' 23:59',
-			])->queryOne();
+		$sql = 'select distinct tDateName as `name`, tNum
+				 from im_trend where tCategory=:cat and tStep=:step and tField=1
+				  order by tDateName desc';
+		$bases = $this->conn->createCommand($sql)->bindValues([
+			':cat' => self::CAT_REUSE,
+			':step' => $step,
+		])->queryAll();
+		$baseItems = [];
+		foreach ($bases as $base) {
+			$baseItems[$base['name']] = $base['tNum'];
+		}
 
+		$sql = 'select distinct tDateName as `name`, tBeginDate as dt0,tEndDate as dt1,max(tField+0) as field
+				 from im_trend where tCategory=:cat and tStep=:step
+				  group by tDateName
+				  order by tDateName desc';
+		$dates = $this->conn->createCommand($sql)->bindValues([
+			':cat' => self::CAT_REUSE,
+			':step' => $step,
+		])->queryAll();
+		foreach ($dates as $date) {
+			if ($date['dt0'] == $beginDate || $date['field'] > 17) continue;
+			$ret = $cmd->bindValues([
+				':beginDT' => $date['dt0'] . ' 00:00',
+				':endDT' => $date['dt1'] . ' 23:59',
+				':from' => $beginDate . ' 00:00',
+				':to' => $endDate . ' 23:59',
+			])->queryOne();
+			$dateName = $date['name'];
+			$dateCnt = $baseItems[$dateName];
 			foreach ($types as $type) {
 				$cnt = isset($ret[$type]) ? $ret[$type] : 0;
 				$item = [
-					'from' => $fromDate,
-					'to' => $toDate,
+					'from' => $beginDate,
+					'to' => $endDate,
 					'cnt' => $cnt,
 				];
 				$item['per'] = 0;
-				if ($data[$type]['cnt'] > 0) {
-					$item['per'] = round(100.0 * $cnt / $data[$type]['cnt'], 1);
+				if ($dateCnt > 0) {
+					$item['per'] = round(100.0 * $cnt / $dateCnt, 1);
 				}
 				$data[$type]['items'][] = $item;
-				self::add($step, $dateName, $fromDate, $toDate, $k + 1, $cnt, $type, $item['per']);
+				self::add($step, $dateName, $beginDate, $endDate, $date['field'] + 1, $cnt, $type, $item['per']);
 			}
 		}
 
