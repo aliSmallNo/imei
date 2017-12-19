@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="/css/dev.min.css?v=1.2.0">
 <section id="sec_home">
 	<div class="swiper-container" style="height: 10rem">
 		<div class="swiper-wrapper">

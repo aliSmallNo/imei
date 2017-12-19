@@ -384,6 +384,29 @@ class WechatUtil
 					"url" => $wxUrl . "/wx/single#slook"
 				],
 				[
+					"name" => "来群聊",
+					"sub_button" => [
+						[
+							"type" => "view",
+							"name" => "盐城单身群",
+							//"url" => $wxUrl . "/wx/event"
+							"url" => $wxUrl . "/wx/groom?rid=105#chat"
+						],
+						[
+							"type" => "view",
+							"name" => "盐城交友群",
+							//"url" => $wxUrl . "/wx/event"
+							"url" => $wxUrl . "/wx/groom?rid=106#chat"
+						],
+						[
+							"type" => "view",
+							"name" => "江苏约会群",
+							//"url" => $wxUrl . "/wx/event"
+							"url" => $wxUrl . "/wx/groom?rid=108#chat"
+						]
+					]
+				],
+				[
 					"name" => "更多",
 					"sub_button" => [
 						[

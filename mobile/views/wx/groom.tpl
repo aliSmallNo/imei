@@ -1,4 +1,4 @@
-<section data-title="千寻群" id="join">
+<section data-title="千寻群聊" id="join">
 	<div class="cr-join">
 		<div class="cr-join-logo">
 			<div class="cr-join-logo-l">
@@ -37,7 +37,6 @@
 			</a>
 		</div>
 	</div>
-
 	<div class="report_wrap schat-content">
 		<div class="spinner"></div>
 		<a href="javascript:;" class="cr-his-more">更多历史消息</a>
@@ -53,9 +52,7 @@
 </section>
 <section data-title="" id="members">
 	<div class="cr-members">
-		<ul>
-
-		</ul>
+		<ul></ul>
 	</div>
 </section>
 <input type="hidden" id="ADMINUID" value="{{$roomInfo.rAdminUId}}">
@@ -70,67 +67,32 @@
 <input type="hidden" id="subscribe" value="{{$subscribe}}">
 <input type="hidden" id="other_room" value="{{$otherRoom}}">
 <input type="hidden" id="DELETED" value="{{$deleted}}">
-
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
 		<div class="m-popup-content"></div>
 	</div>
 </div>
-
-<style>
-	.chats li .content .name {
-		font-size: 1rem;
-		margin-bottom: .2rem;
-		direction: ltr;
-	}
-	.chats li .content .name i{}
-	.chats li .content .name i img{
-		width: 2rem;
-		height: 1.28rem;
-	}
-	.chats li .content:after,.chats li.right .content:after {
-		top: 2.5rem;
-	}
-	.chats li .content .name i.lever{
-		display: inline-block;
-		height: 1.28rem;
-		width: 2.5rem;
-		background-image: url(/images/sprite_lv.png);
-		background-size: 3rem 5.5rem;
-		background-repeat: no-repeat;
-		-moz-box-sizing: border-box;
-		background-position: 0 0;
-		position: relative;
-	}
-	.chats li .content .name i.lever em{
-		display: inline-block;
-		font-size: .8rem;
-		color: #fff;
-		position: absolute;
-		right: 0;
-		top: .08rem;
-	}
-</style>
 <script type="text/template" id="tpl_chat">
 	{[#data]}
 	{[#type]}
 	<li class="{[dir]}" data-r="{[readflag]}">
 		<a href="{[^del]}{[#phone]}/wx/sh?id={[eid]}{[/phone]}{[^phone]}javascript:;{[/phone]}{[/del]}{[#del]}javascript:;{[/del]}"
-			 {[#eid]}data-eid="{[.]}" {[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
+		   {[#eid]}data-eid="{[.]}" {[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
 		<div class="content read{[readflag]}">
 			<div class="name">
 				{[#isAdmin]}
-					<i><img src="/images/cr_ico_admin.png"></i>
-					<i class="lever"><em>{[pic_name]}</em></i>
+				<i class="u-admin"></i>
+				<i class="lever">{[pic_name]}</i>
 				{[/isAdmin]}
 				{[^isAdmin]}
 				{[#isMember]}
-					<i><img src="/images/cr_ico_member.png"></i>
-					<i class="lever"><em>{[pic_name]}</em></i>
+				<i class="u-member"></i>
+				<i class="lever">{[pic_name]}</i>
 				{[/isMember]}
 				{[^isMember]}
-					<i><img src="/images/cr_ico_new.png"></i>{[/isMember]}
+				<i class="u-new"></i>
+				{[/isMember]}
 				{[/isAdmin]}
 				<span>{[name]}</span>
 			</div>
@@ -175,7 +137,7 @@
 		document.getElementById("memberFlag").value == 1 ? document.location.hash = "#chat" : document.location.hash = "#join";
 	}
 	requirejs(['/js/config.js?v=1.2'], function () {
-		requirejs(['/js/groom.js?v=1.4.8']);
+		requirejs(['/js/groom.js?v=1.4.9']);
 	});
 </script>
 

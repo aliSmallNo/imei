@@ -350,7 +350,7 @@
 			<img src="/images/top_date.png">
 			<div>帮我约TA</div>
 		</a>
-		<a href="javascript:;" data-tag="gift">
+		<a href="javascript:;" data-tag="gift" style="display: none">
 			<img src="/images/top_gift.png">
 			<div>送TA礼物</div>
 		</a>

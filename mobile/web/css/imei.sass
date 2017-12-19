@@ -3443,7 +3443,6 @@ section
 			line-height: 3.5rem
 		span
 			font-size: 1.1rem
-
 .recharge
 	padding: 0
 	margin: 0
@@ -7372,6 +7371,7 @@ ul.co-ul
 				color: $yellowColor
 				line-height: 2.4rem
 
+
 .m-cells
 	margin: 0
 	padding: 0
@@ -7550,7 +7550,6 @@ ul.co-ul
 						line-height: 2.3rem
 						font-weight: $weightNormal
 						color: $grayFontColorLight
-
 .zone-album
 	@include displayFlex
 	margin: 0
@@ -7879,6 +7878,7 @@ ul.co-ul
 				border-radius: 100%
 				align-self: center
 				flex: 0 0 2rem
+
 
 .cr-chat-list
 	background: #fff
@@ -8316,3 +8316,173 @@ ul.co-ul
 				border-radius: 3rem
 				font-size: 1.1rem
 				display: inline-block
+.bag-top-bar
+	display: flex
+	border-bottom: 1px solid #eee
+	background: #fff
+	padding: .5rem 0
+	a
+		flex: 1
+		text-align: center
+		font-size: 1.2rem
+		padding: 1rem 0
+		border-right: 1px solid #eee
+		position: relative
+		&:last-child
+			border: none
+		span
+			position: relative
+		&.on
+			color: #d15d84
+			span
+				&:after
+					content: ''
+					position: absolute
+					width: 6rem
+					height: .2rem
+					background: #d15d84
+					left: -.5rem
+					bottom: -1.6rem
+.bag-content
+	overflow: hidden
+	li
+		width: 33.3%
+		background: #fff
+		margin-bottom: 1rem
+		float: left
+		padding: 1rem 0
+		div
+			padding: .5rem
+			img
+				margin: 0 auto
+				display: block
+				width: 4rem
+				height: 6rem
+			a
+				background: #d15d84
+				color: #fff
+				font-size: 1rem
+				display: block
+				padding: .5rem 0
+				text-align: center
+				border-radius: .5rem
+				margin: 0 1.5rem
+		p
+			font-size: 1.2rem
+			text-align: center
+			font-weight: 300
+		em
+			font-size: .8rem
+			text-align: center
+			display: block
+			color: #777
+			padding: .5rem 0
+.m-draw-wrap
+	&.gift-detail
+		padding: 0
+.gift-detail
+	.header
+		text-align: center
+		line-height: 4rem
+		border-bottom: 1px solid $borderColorLight
+		font-weight: $weightBold
+		font-size: 1.6rem
+	.image
+		height: 12rem
+		background-position: center center
+		background-repeat: no-repeat
+		background-size: 11rem 11rem
+	.btn-next
+		text-align: center
+		display: block
+		height: 4rem
+		line-height: 4rem
+		margin: 1.5rem 3rem
+		border-radius: 2rem
+		background-color: $mainColorLight
+		color: #fff
+		&:active
+			background-color: $mainColor
+
+.m-stepper
+	text-align: center
+	span
+		font-size: 1.1rem
+		&.amount
+			color: $moneyColor
+			font-weight: $weightBold
+			padding-right: 1px
+	input
+		-webkit-appearance: none
+		-moz-appearance: none
+		appearance: none
+		border: 1px solid $borderColor
+		border-radius: 3px
+		height: 2.8rem
+		padding: 0
+		margin: 0
+		width: 4.5rem
+		min-width: 4.5rem
+		vertical-align: middle
+		text-align: center
+		font-size: 1.4rem
+		font-family: Verdana
+	.j-stepper
+		background-color: $borderColorDark
+		color: #fff
+		font-family: Verdana
+		font-size: 2.2rem
+		line-height: 2.8rem
+		font-weight: $weightBold
+		text-align: center
+		display: inline-block
+		width: 2.8rem
+		height: 2.8rem
+		vertical-align: middle
+		border-radius: 3px
+		&:active
+			background-color: $borderColorDarker
+.chats
+	.content
+		&:after
+			top: 2.3rem !important
+		.name
+			font-size: 1rem
+			margin-bottom: .1rem
+			direction: ltr
+			i
+				width: 2.2rem
+				display: inline-block
+				position: relative
+				font-size: 1rem
+				&.u-admin:before, &.u-member:before, &.u-new:before
+					content: ' '
+					display: inline-block
+					width: 2.2rem
+					height: 1rem
+				&.u-admin
+					background: url(../images/cr_ico_admin.png) no-repeat center center
+					background-size: 2.2rem 1.1rem
+				&.u-member
+					background: url(../images/cr_ico_member.png) no-repeat center center
+					background-size: 2.2rem 1.1rem
+				&.u-new
+					background: url(../images/cr_ico_new.png) no-repeat center center
+					background-size: 2.2rem 1.1rem
+				&.lever
+					width: 2.7rem
+					color: #fff
+					text-align: right
+					&:before
+						content: ' '
+						position: absolute
+						display: inline-block
+						width: 2.7rem
+						height: 1.2rem
+						background-image: url(../images/sprite_lv.png)
+						background-size: 2.7rem 4.8rem
+						background-repeat: no-repeat
+						background-position: center 0
+						top: .15rem
+						left: 0
+						z-index: -1

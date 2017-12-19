@@ -2213,7 +2213,7 @@ class ApiController extends Controller
 				$text = trim(self::postParam('text'));
 				$rId = trim(self::postParam('rid'));
 				list($code, $msg, $info) = ChatMsg::addRoomChat($rId, $uid, $text);
-				ChatRoom::PushTempMsg($rId, $uid);
+				//ChatRoom::PushTempMsg($rId, $uid);
 				return self::renderAPI($code, $msg, $info);
 			case 'list':
 				$lastId = self::postParam('lastid', 0);
