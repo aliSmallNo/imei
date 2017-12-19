@@ -373,6 +373,7 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 			if ($("#DELETED").val() == 1) {
 				alpha.prompt('', '<div style="text-align: center">你已经被群主移出群聊哦~</div>', ['返回'], function () {
 					location.href = '/wx/single?#scontacts';
+					return false;
 				});
 			}
 			var otherRoom = $("#other_room").val();

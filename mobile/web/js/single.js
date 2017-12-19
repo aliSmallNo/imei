@@ -862,7 +862,8 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 							util.beforeDate();
 							break;
 						case 'gift':
-							// util.toggle(util.giftmenus.hasClass("off"),util.giftmenus);
+							//util.toggle(util.giftmenus.hasClass("off"), util.giftmenus);
+							//AdvertUtil.giftSwiper();
 							break;
 					}
 				});
@@ -2468,8 +2469,88 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 						el: '.swiper-pagination'
 					}
 				});
-			}
+			},
+			giftSwiper: function () {
+				new Swiper('.g-items-ul', {
+					direction: 'horizontal',
+					loop: true,
+					autoplay: 2000,
+					//如果需要分页器
+					pagination: {
+						el: '.swiper-pagination'
+					}
+				})
+				GiftUtil.loadGifts();
+			},
 		};
+
+		var GiftUtil = {
+			gid: '',    // 商品ID
+			tag: 'normal',
+			UL: $(".g-items-ul .ul"),
+			Tmp: $("#tpl_gifts").html(),
+			count: $(".g-bot-rose .count"),// 剩余媒瑰花数
+			loading: 0,
+			init: function () {
+				var util = this;
+				$(".g-cats a").on(kClick, function () {
+					var self = $(this);
+					util.tag = self.attr("g-level");
+					self.closest(".g-cats").find("a").removeClass("on");
+					self.addClass("on");
+					util.UL.html('');
+					util.loadGifts();
+				});
+				$(document).on(kClick, ".g-items-ul a", function () {
+					var self = $(this);
+					self.closest(".g-items-ul").find("li").removeClass("on");
+					self.closest("li").addClass("on");
+				});
+				$(document).on(kClick, ".g-bot-btn a", function () {
+					var self = $(".g-items-ul").find("li.on");
+					util.gid = self.attr("data-id");
+					util.giveGift();
+				});
+
+			},
+			giveGift: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post('/api/gift',
+					{
+						tag: 'givegift',
+						gid: util.gid,
+						uid: ChatUtil.sid,
+					},
+					function (resp) {
+						util.loading = 0;
+
+						util.count.html(resp.data.stat.flower);
+					}, 'json');
+			},
+			loadGifts: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post('/api/gift',
+					{
+						tag: 'gifts',
+						subtag: util.tag,
+					},
+					function (resp) {
+						util.loading = 0;
+						var html = Mustache.render(util.Tmp, resp.data);
+						util.UL.html(html);
+						util.count.html(resp.data.stat.flower);
+					}, 'json');
+			},
+		};
+		GiftUtil.init();
 
 		function pinLocation() {
 			wx.getLocation({

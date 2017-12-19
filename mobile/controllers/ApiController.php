@@ -354,6 +354,43 @@ class ApiController extends Controller
 		return self::renderAPI(129, '操作无效~');
 	}
 
+	public function actionGift()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$openId = self::postParam('openid');
+		if (!$openId) {
+			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		}
+		$id = self::postParam('id');
+		$wx_info = UserWechat::getInfoByOpenId($openId);
+		$wx_uid = 0;
+		$wx_role = User::ROLE_SINGLE;
+		$wx_name = $wx_eid = $wx_thumb = '';
+		if ($wx_info) {
+			$wx_uid = $wx_info['uId'];
+			$wx_name = $wx_info['uName'];
+			$wx_thumb = $wx_info['uThumb'];
+			$wx_eid = AppUtil::encrypt($wx_uid);
+			$wx_role = $wx_info['uRole'];
+		}
+		switch ($tag) {
+			case "gifts":
+				$subtag = self::postParam("subtag");
+				$ret = Goods::getGiftList($subtag, $wx_uid);
+				$stat = UserTrans::getStat($wx_uid, true);
+				return self::renderAPI(0, '', [
+					"data" => $ret,
+					"stat" => $stat,
+				]);
+				break;
+			case "givegift":
+				$sid = AppUtil::decrypt(self::postParam("uid"));// 对方uid
+
+				break;
+		}
+		return self::renderAPI(129, '操作无效~');
+	}
+
 	public function actionUser()
 	{
 		$tag = trim(strtolower(self::postParam('tag')));
