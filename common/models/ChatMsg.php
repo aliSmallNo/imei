@@ -505,6 +505,7 @@ class ChatMsg extends ActiveRecord
  				WHERE f.mRId=$rId AND u.uId!=$senderId ";
 		$bundle['items'] = $conn->createCommand($sql)->queryColumn();
 		QueueUtil::loadJob('chatMsg', $bundle, QueueUtil::QUEUE_TUBE_CHAT, 0);*/
+
 		return [0, '', $info];
 	}
 
@@ -514,9 +515,10 @@ class ChatMsg extends ActiveRecord
 	 * @param $content
 	 * @param int $giftCount
 	 * @param int $adminId
-	 * @param string $qId 助聊题库qId
+	 * @param string $qId
 	 * @param \yii\db\Connection $conn
 	 * @return array|bool
+	 * @throws \yii\db\Exception
 	 */
 	public static function addChat($senderId, $receiverId, $content, $giftCount = 0, $adminId = 0, $qId = '', $conn = null)
 	{
@@ -607,18 +609,6 @@ class ChatMsg extends ActiveRecord
 		$entity->save();
 		$cId = $entity->cId;
 
-		// 修改对方信息为已读
-		/*
-		$sql = 'update im_chat_msg set cReadFlag=:r,cReadOn=:readon WHERE cGId=:gid AND cAddedBy=:id and cReadFlag=:unread';
-			$conn->createCommand($sql)->bindValues([
-				':r' => self::HAS_READ,
-				':unread' => self::NO_READ,
-				':readon' => date("Y-m-d H:i:s"),
-				':gid' => $gid,
-				':id' => $receiverId
-			])->execute();
-		*/
-
 		$sql = 'UPDATE im_chat_group SET gFirstCId=:cid,gAddedOn=now(),gAddedBy=:uid
  				WHERE gId=:gid AND gFirstCId < 1';
 		$conn->createCommand($sql)->bindValues([
@@ -680,30 +670,6 @@ class ChatMsg extends ActiveRecord
 			],
 		];
 
-		//Rain: push to the sender
-		$params = [
-			'id' => $cId,
-			'lastId' => $cId,
-			'gid' => $gid,
-			'left' => $left,
-			'uid' => $senderId,
-			'name' => $infoA['uName'],
-			'uni' => $infoA['uni'],
-			'eid' => '', // AppUtil::encrypt($senderId),
-			'avatar' => $infoA['uThumb'],
-			'content' => $content,
-			'addedon' => date('Y-m-d H:i:s'),
-			'dir' => 'right',
-			'type' => self::TYPE_TEXT,
-		];
-		/*$pushUtil = PushUtil::init();
-		$pushUtil->chat('msg', $gid, $infoA['uni'], $params);
-
-		//Rain: push to the receiver
-		$params['dir'] = 'left';
-		$params['eid'] = AppUtil::encrypt($senderId);
-		$pushUtil->chat('msg', $gid, $infoB['uni'], $params);
-		$pushUtil->close();*/
 		return $info;
 	}
 
@@ -712,7 +678,7 @@ class ChatMsg extends ActiveRecord
 		if (!$gids || !is_array($gids)) {
 			return 0;
 		}
-		$sql = "update im_chat_group set gStatus=:st,gStatusDate=:dt where gId=:gid ";
+		$sql = "UPDATE im_chat_group SET gStatus=:st,gStatusDate=:dt WHERE gId=:gid ";
 		$del = AppUtil::db()->createCommand($sql);
 		$co = 0;
 		foreach ($gids as $gid) {
