@@ -1114,7 +1114,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					util.inputVal = "";
 					if (resp.code < 1) {
 						util.messages(resp.data, 1);
-						NoticeUtil.broadcast(resp.data);
+						NoticeUtil.broadcast(resp.data.items);
 						/*if (!util.loading && resp.data.items.id > util.lastId) {
 							util.lastId = resp.data.items.id;
 							var html = Mustache.render(util.tmp, resp.data);
@@ -2369,6 +2369,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 
 				util.ioChat = io('https://nd.meipo100.com/chatroom');
 				util.ioChat.on("msg", function (resp) {
+					console.log(resp);
 					util.roomId = resp.gid;
 					if (ChatUtil.gid != util.roomId) {
 						return;
