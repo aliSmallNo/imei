@@ -654,6 +654,7 @@ class ChatMsg extends ActiveRecord
 			'id' => $cId,
 			'gid' => $gid,
 			'left' => $left,
+			'uni' => $infoA['uni'],
 			'content' => $content,
 			'addedon' => date('Y-m-d H:i:s'),
 			'senderid' => $senderId,

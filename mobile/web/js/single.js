@@ -1114,20 +1114,8 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					util.qId = "";
 					util.inputVal = "";
 					if (resp.code < 1) {
-						util.messages(resp.data, 1);
+						//util.messages(resp.data, 1);
 						NoticeUtil.broadcast(resp.data);
-						/*if (!util.loading && resp.data.items.id > util.lastId) {
-							util.lastId = resp.data.items.id;
-							var html = Mustache.render(util.tmp, resp.data);
-							util.list.append(html);
-						}*/
-
-						/*if (!util.loading) {
-							util.toggleTimer(0);
-							util.reload(1);
-						}*/
-
-						// util.showTip(resp.data.gid, resp.data.left);
 
 						util.commentFlag = resp.data.commentFlag;
 						/*setTimeout(function () {
@@ -2380,6 +2368,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 							ChatUtil.showTip(info.msg);
 							break;
 						default:
+							info.items.dir = (info.items.uni === util.uni ? 'right' : 'left');
 							ChatUtil.messages(info, 1);
 							break;
 					}
