@@ -17,12 +17,9 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 			currentlastId: $("#cLASTID").val(),
 			loadIcon: $(".spinner"),
 			more: $(".cr-loading-items"),
-
 			adminUL: $("ul.chats"),
 			adminTmp: $("#tpl_chat").html(),
-
-			//$sls.content.html(html).addClass("animate-pop-in");
-			//$sls.shade.fadeIn(160);
+			input: $('.input'),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
 			shade: $(".m-popup-shade"),
@@ -78,8 +75,6 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 
 				util.ioChat.on("msg", function (resp) {
 					var roomId = resp.rid;
-					console.log(resp);
-
 					if (util.rid != roomId) {
 						return;
 					}
@@ -93,9 +88,7 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 							$sls.adminUL.append(html);
 							$sls.currentlastId = resp.cid;
 							$sls.bottompl.get(0).scrollIntoView(true);
-							$(".input").get(0).scrollIntoView(true);
-							chatUtil.text = "";
-							chatUtil.input.val('');
+							$sls.input.get(0).scrollIntoView(true);
 							break;
 					}
 				});
@@ -157,8 +150,6 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 						$sls.adminUL.append(html);
 						$sls.bottompl.get(0).scrollIntoView(true);
 						$(".input").get(0).scrollIntoView(true);*/
-						chatUtil.text = "";
-						chatUtil.input.val('');
 						NoticeUtil.broadcast(resp.data);
 					} else if (resp.code == 128) {
 						alpha.prompt('', resp.msg,
