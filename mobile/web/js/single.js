@@ -616,7 +616,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					}
 					var self = $(this);
 					if (self.hasClass("chat")) {
-						util.chatRoom(self.attr('data-id'), self.find(".content").find("em").html(), self.closest("li").attr("data-gid"));
+						var gid = self.closest("li").attr("data-gid");
+						NoticeUtil.join(gid);
+						util.chatRoom(self.attr('data-id'), self.find(".content").find("em").html(), gid);
 					}
 					return false;
 				});
@@ -1111,6 +1113,8 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					util.qId = "";
 					util.inputVal = "";
 					if (resp.code < 1) {
+						util.messages(resp.data, 1);
+						NoticeUtil.broadcast(resp.data);
 						/*if (!util.loading && resp.data.items.id > util.lastId) {
 							util.lastId = resp.data.items.id;
 							var html = Mustache.render(util.tmp, resp.data);
@@ -1121,11 +1125,13 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 							util.toggleTimer(0);
 							util.reload(1);
 						}*/
-						util.showTip(resp.data.gid, resp.data.left);
+
+						// util.showTip(resp.data.gid, resp.data.left);
+
 						util.commentFlag = resp.data.commentFlag;
-						setTimeout(function () {
+						/*setTimeout(function () {
 							util.bot.get(0).scrollIntoView(true);
-						}, 300);
+						}, 300);*/
 					} else if (resp.code == 101) {
 						$sls.main.show();
 						var html = Mustache.render(util.shareTmp, {});
@@ -2331,20 +2337,21 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 		};
 
 		var NoticeUtil = {
-			socket: null,
-			uni: 0,
+			ioHouse: null,
+			ioChat: null,
 			timer: 0,
+			roomId: 0,
+			uni: $('#cUNI').val(),
 			board: $('.m-notice'),
 			init: function () {
 				var util = this;
 				util.uni = $('#cUNI').val();
-				// util.socket = io('https://ws.meipo100.com');
-				util.socket = io('https://nd.meipo100.com');
-				util.socket.on('connect', function () {
-					util.socket.emit('house', util.uni);
+				util.ioHouse = io('https://nd.meipo100.com/house');
+				util.ioHouse.on('connect', function () {
+					util.ioHouse.emit('house', util.uni);
 				});
 
-				util.socket.on("notice", function (resp) {
+				util.ioHouse.on("notice", function (resp) {
 					var msg = resp.msg;
 					if (!msg) {
 						return;
@@ -2360,9 +2367,10 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					}
 				});
 
-				util.socket.on("chat", function (resp) {
-					var gid = resp.gid;
-					if (ChatUtil.gid != gid) {
+				util.ioChat = io('https://nd.meipo100.com/chatroom');
+				util.ioChat.on("msg", function (resp) {
+					util.roomId = resp.gid;
+					if (ChatUtil.gid != util.roomId) {
 						return;
 					}
 					switch (resp.tag) {
@@ -2375,22 +2383,24 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					}
 				});
 			},
+			broadcast: function (info) {
+				var util = this;
+				util.ioChat.emit('broadcast', info);
+			},
 			handle: function ($action) {
 				switch ($action) {
 					case 'refresh-profile':
 						SmeUtil.reload();
 						break;
 				}
-			},
+			}
+			,
 			join: function (gid) {
 				var util = this;
-				util.gid = gid;
-				var params = {
-					gid: util.gid,
-					uid: util.uni
-				};
-				util.socket.emit('join', params);
-			},
+				util.roomId = gid;
+				util.ioChat.emit('room', util.roomId, util.uni);
+			}
+			,
 			toggle: function (content) {
 				var util = this;
 				if (content) {
@@ -2529,4 +2539,5 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 			}, 800);
 			locationHashChanged();
 		});
-	});
+	})
+;

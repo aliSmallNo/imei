@@ -694,14 +694,14 @@ class ChatMsg extends ActiveRecord
 			'dir' => 'right',
 			'type' => self::TYPE_TEXT,
 		];
-		$pushUtil = PushUtil::init();
+		/*$pushUtil = PushUtil::init();
 		$pushUtil->chat('msg', $gid, $infoA['uni'], $params);
 
 		//Rain: push to the receiver
 		$params['dir'] = 'left';
 		$params['eid'] = AppUtil::encrypt($senderId);
 		$pushUtil->chat('msg', $gid, $infoB['uni'], $params);
-		$pushUtil->close();
+		$pushUtil->close();*/
 		return $info;
 	}
 
