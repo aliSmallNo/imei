@@ -491,19 +491,19 @@ class ChatMsg extends ActiveRecord
 		if ($ret) {
 			$info['isMember'] = 1;
 		}
-		$bundle = [
+		/*$bundle = [
 			'tag' => 'msg',
 			'rid' => $rId,
 			'info' => $info,
 			'items' => []
 		];
 
-		$sql = "SELECT u.uUniqId,u.uId,u.uName,u.uThumb 
+		$sql = "SELECT u.uUniqId,u.uId,u.uName,u.uThumb
 				FROM im_chat_room_fella as f 
 				join im_user as u on u.uId=f.mUId
  				WHERE f.mRId=$rId AND u.uId!=$senderId ";
 		$bundle['items'] = $conn->createCommand($sql)->queryColumn();
-		QueueUtil::loadJob('chatMsg', $bundle, QueueUtil::QUEUE_TUBE_CHAT, 0);
+		QueueUtil::loadJob('chatMsg', $bundle, QueueUtil::QUEUE_TUBE_CHAT, 0);*/
 		return [0, '', $info];
 	}
 
