@@ -2387,6 +2387,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 			},
 			broadcast: function (info) {
 				var util = this;
+				if (info.items) {
+					info.items.dir = 'left';
+				}
 				util.ioChat.emit('broadcast', info);
 			},
 			handle: function ($action) {
