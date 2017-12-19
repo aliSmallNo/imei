@@ -1023,7 +1023,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 			messages: function (data, flag) {
 				var util = this;
 				var html = Mustache.render(util.tmp, data);
-				console.log(html);
 				if (data.lastId < 1) {
 					util.list.html(html);
 				} else {
@@ -2358,7 +2357,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 
 				util.ioChat = io('https://nd.meipo100.com/chatroom');
 				util.ioChat.on("msg", function (info) {
-					console.log(info);
 					util.roomId = info.gid;
 					if (ChatUtil.gid != util.roomId) {
 						return;
