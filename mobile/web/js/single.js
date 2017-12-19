@@ -2374,12 +2374,12 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					if (ChatUtil.gid != util.roomId) {
 						return;
 					}
-					switch (resp.tag) {
+					switch (info.tag) {
 						case 'tip':
-							ChatUtil.showTip(resp.msg);
+							ChatUtil.showTip(info.msg);
 							break;
 						default:
-							ChatUtil.messages(resp, 1);
+							ChatUtil.messages(info, 1);
 							break;
 					}
 				});
