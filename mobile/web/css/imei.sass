@@ -3409,17 +3409,17 @@ section
         text-align: center
         div
             height: 3.6rem
-            //    background-image: url(../images/sprite_card.png)
-            //    background-size: 2.34rem 6rem
-            //    background-repeat: no-repeat
-            //    &.card-188
-            //        background-position: 0 -0rem
-            //    &.card-187
-            //        background-position: 0 -1.5rem
-            //    &.card-182
-            //        background-position: 0 -3rem
-            //    &.card-183
-            //        background-position: 0 -4.5rem
+        //    background-image: url(../images/sprite_card.png)
+        //    background-size: 2.34rem 6rem
+        //    background-repeat: no-repeat
+        //    &.card-188
+        //        background-position: 0 -0rem
+        //    &.card-187
+        //        background-position: 0 -1.5rem
+        //    &.card-182
+        //        background-position: 0 -3rem
+        //    &.card-183
+        //        background-position: 0 -4.5rem
         .ico-card-188, .ico-card-187, .ico-card-182, .ico-card-183
             background-image: url(../images/sprite_card.png)
             background-size: 5.63rem 14.4rem
@@ -5315,6 +5315,7 @@ section
         outline: none
         text-align: right
         @include textTail
+
 .sedit-alert
     &:after
         @include arrowRight
@@ -5322,6 +5323,7 @@ section
         right: 1rem
     &.fixed:after
         display: none
+
 .sedit-btn
     position: fixed
     left: 0
@@ -7310,7 +7312,7 @@ ul.co-ul
         color: $greenLight
         font-size: 2rem
         text-shadow: 0 1px rgba(0, 0, 0, .6), 1px 0 rgba(0, 0, 0, .6), -1px 0 rgba(0, 0, 0, .6), 0 -1px rgba(0, 0, 0, .6)
-        //0 1px 1px rgba(0, 0, 0, 1)
+    //0 1px 1px rgba(0, 0, 0, 1)
     .big-w
         text-align: center
         font-size: 1.6rem
@@ -7369,6 +7371,7 @@ ul.co-ul
             div
                 color: $yellowColor
                 line-height: 2.4rem
+
 .m-cells
     margin: 0
     padding: 0
@@ -7547,6 +7550,7 @@ ul.co-ul
                         line-height: 2.3rem
                         font-weight: $weightNormal
                         color: $grayFontColorLight
+
 .zone-album
     @include displayFlex
     margin: 0
@@ -7693,6 +7697,7 @@ ul.co-ul
     p
         font-size: 1.2rem
         color: #777
+
 .cr-top-bar
     position: fixed
     left: 0
@@ -7702,6 +7707,7 @@ ul.co-ul
     padding: .5rem 0
     background: #fff
     border-bottom: 1px solid #e4e4e4
+
 .cr-room
     .cr-title
         display: flex
@@ -7748,8 +7754,10 @@ ul.co-ul
                 .cr-admin-r-time
                     font-size: .8rem
                     padding: .5rem
+
 .cr-bg
     background: #f8f8f8
+
 .cr-mask
     position: fixed
     left: 0
@@ -7760,6 +7768,7 @@ ul.co-ul
     background-color: rgba(0, 0, 0, 0)
     pointer-events: auto
     z-index: 11
+
 .cr-shade
     position: fixed
     left: 0
@@ -7770,6 +7779,7 @@ ul.co-ul
     background-color: rgba(0, 0, 0, 0.6)
     pointer-events: auto
     z-index: 20
+
 .cr-bot-alert
     position: fixed
     left: 0
@@ -7777,6 +7787,7 @@ ul.co-ul
     bottom: 0
     z-index: 21
     display: none
+
 .cr-bot
     position: fixed
     left: 0
@@ -7829,6 +7840,7 @@ ul.co-ul
         margin: 0 .5rem 0 .5rem
         border-radius: 2rem
         display: none
+
 .cr-danmu
     position: fixed
     right: 0
@@ -7867,6 +7879,7 @@ ul.co-ul
                 border-radius: 100%
                 align-self: center
                 flex: 0 0 2rem
+
 .cr-chat-list
     background: #fff
     padding-bottom: 4rem
@@ -8034,6 +8047,7 @@ ul.co-ul
             font-size: 1.5rem
             text-align: center
             border-radius: .5rem
+
 .cr-his-more
     padding: 1.5rem
     display: block
@@ -8046,6 +8060,7 @@ ul.co-ul
     &:before
         @include arrowtop
         top: .8rem
+
 .cr-member
     a
         display: flex
@@ -8154,7 +8169,6 @@ ul.co-ul
             color: $moneyColor
             font-weight: $weightNormal
 
-
 .bag-top-bar
     display: flex
     border-bottom: 1px solid #eee
@@ -8182,6 +8196,7 @@ ul.co-ul
                     background: #d15d84
                     left: -.5rem
                     bottom: -1.6rem
+
 .bag-content
     overflow: hidden
     li
@@ -8216,3 +8231,116 @@ ul.co-ul
             display: block
             color: #777
             padding: .5rem 0
+
+.m-draw-wrap
+    &.gift-detail
+        padding: 0
+
+.gift-detail
+    .header
+        text-align: center
+        line-height: 4rem
+        border-bottom: 1px solid $borderColorLight
+        font-weight: $weightBold
+        font-size: 1.6rem
+    .image
+        height: 12rem
+        background-position: center center
+        background-repeat: no-repeat
+        background-size: 11rem 11rem
+    .btn-next
+        text-align: center
+        display: block
+        height: 4rem
+        line-height: 4rem
+        margin: 1.5rem 3rem
+        border-radius: 2rem
+        background-color: $mainColorLight
+        color: #fff
+        &:active
+            background-color: $mainColor
+
+.m-stepper
+    text-align: center
+    span
+        font-size: 1.1rem
+        &.amount
+            color: $moneyColor
+            font-weight: $weightBold
+            padding-right: 1px
+    input
+        -webkit-appearance: none
+        -moz-appearance: none
+        appearance: none
+        border: 1px solid $borderColor
+        border-radius: 3px
+        height: 2.8rem
+        padding: 0
+        margin: 0
+        width: 4.5rem
+        min-width: 4.5rem
+        vertical-align: middle
+        text-align: center
+        font-size: 1.4rem
+        font-family: Verdana
+    .j-stepper
+        background-color: $borderColorDark
+        color: #fff
+        font-family: Verdana
+        font-size: 2.2rem
+        line-height: 2.8rem
+        font-weight: $weightBold
+        text-align: center
+        display: inline-block
+        width: 2.8rem
+        height: 2.8rem
+        vertical-align: middle
+        border-radius: 3px
+        &:active
+            background-color: $borderColorDarker
+
+.chats
+    .content
+        &:after
+            top: 2.3rem !important
+        .name
+            font-size: 1rem
+            margin-bottom: .1rem
+            direction: ltr
+            i
+                width: 2.2rem
+                display: inline-block
+                position: relative
+                font-size: 1rem
+                &.u-admin:before, &.u-member:before, &.u-new:before
+                    content: ' '
+                    display: inline-block
+                    width: 2.2rem
+                    height: 1rem
+
+                &.u-admin
+                    background: url(../images/cr_ico_admin.png) no-repeat center center
+                    background-size: 2.2rem 1.1rem
+                &.u-member
+                    background: url(../images/cr_ico_member.png) no-repeat center center
+                    background-size: 2.2rem 1.1rem
+                &.u-new
+                    background: url(../images/cr_ico_new.png) no-repeat center center
+                    background-size: 2.2rem 1.1rem
+                &.lever
+                    width: 2.7rem
+                    color: #fff
+                    text-align: right
+                    &:before
+                        content: ' '
+                        position: absolute
+                        display: inline-block
+                        width: 2.7rem
+                        height: 1.2rem
+                        background-image: url(../images/sprite_lv.png)
+                        background-size: 2.7rem 4.8rem
+                        background-repeat: no-repeat
+                        background-position: center 0
+                        top: .15rem
+                        left: 0
+                        z-index: -1
