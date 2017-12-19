@@ -17,12 +17,9 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 			currentlastId: $("#cLASTID").val(),
 			loadIcon: $(".spinner"),
 			more: $(".cr-loading-items"),
-
 			adminUL: $("ul.chats"),
 			adminTmp: $("#tpl_chat").html(),
-
-			//$sls.content.html(html).addClass("animate-pop-in");
-			//$sls.shade.fadeIn(160);
+			input: $('.input'),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
 			shade: $(".m-popup-shade"),
@@ -67,18 +64,16 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 		});
 
 		var NoticeUtil = {
-			socket: null,
+			ioChat: null,
 			uni: $('#cUNI').val(),
 			rid: $('#cRID').val(),
 			timer: 0,
 			init: function () {
 				var util = this;
-				util.socket = io('https://nd.meipo100.com');
-				util.socket.on('connect', function () {
-					util.socket.emit('chatroom', util.uni);
-				});
+				util.ioChat = io('https://nd.meipo100.com/chatroom');
+				util.ioChat.emit('room', util.rid, util.uni);
 
-				util.socket.on("room", function (resp) {
+				util.ioChat.on("msg", function (resp) {
 					var roomId = resp.rid;
 					if (util.rid != roomId) {
 						return;
@@ -87,27 +82,23 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 						case 'tip':
 
 							break;
-						case 'msg':
-							// resp.items.dir = 'right';
-							var html = Mustache.render($sls.adminTmp, {data: resp.items});
+						default:
+							resp.dir = (resp.uni == util.uni ? 'right' : 'left');
+							var html = Mustache.render($sls.adminTmp, {data: resp});
 							$sls.adminUL.append(html);
-							$sls.currentlastId = resp.items.cid;
+							$sls.currentlastId = resp.cid;
 							$sls.bottompl.get(0).scrollIntoView(true);
-							$(".input").get(0).scrollIntoView(true);
-							chatUtil.text = "";
-							chatUtil.input.val('');
+							$sls.input.get(0).scrollIntoView(true);
 							break;
 					}
 				});
 			},
-			join: function (gid) {
+			broadcast: function (info) {
 				var util = this;
-				util.gid = gid;
-				var params = {
-					gid: util.gid,
-					uid: util.uni
-				};
-				util.socket.emit('join', params);
+				if (info.dir) {
+					info.dir = 'left';
+				}
+				util.ioChat.emit('broadcast', info);
 			}
 		};
 
@@ -141,7 +132,6 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 			},
 			sendMessage: function () {
 				var util = this;
-				console.log(util.sending);
 				if (util.sending) {
 					return;
 				}
@@ -155,13 +145,12 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 					if (resp.code < 1) {
 						util.text = "";
 						util.input.val('');
-						var html = Mustache.render($sls.adminTmp, resp);
-						$sls.adminUL.append(html);
 						$sls.currentlastId = resp.data.cid;
+						/*var html = Mustache.render($sls.adminTmp, resp);
+						$sls.adminUL.append(html);
 						$sls.bottompl.get(0).scrollIntoView(true);
-						$(".input").get(0).scrollIntoView(true);
-						chatUtil.text = "";
-						chatUtil.input.val('');
+						$(".input").get(0).scrollIntoView(true);*/
+						NoticeUtil.broadcast(resp.data);
 					} else if (resp.code == 128) {
 						alpha.prompt('', resp.msg,
 							['马上注册', '残忍拒绝'],
