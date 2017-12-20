@@ -229,12 +229,12 @@ class ChatRoom extends ActiveRecord
 			$v["uid"] = 0;
 			$v["uni"] = '';
 		}
-		$nextpage = 0;
+		$nextPage = 0;
 		if (count($res) > $pageSize) {
-			$nextpage = $page++;
+			$nextPage = $page + 1;
 			array_pop($res);
 		}
-		return [$res, $nextpage];
+		return [$res, $nextPage];
 	}
 
 	public static function roomChatList($rId, $condition, $params, $page = 1, $pagesize = 20)
@@ -269,7 +269,6 @@ class ChatRoom extends ActiveRecord
 
 		return [$chatlist, $count];
 	}
-
 
 	public static function historyChatList($rId, $page = 1, $lastid = 0, $uid = 120003, $pagesize = 20)
 	{
