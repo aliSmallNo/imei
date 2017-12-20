@@ -88,7 +88,6 @@
 				chatFlag = 0;
 				mContent.val('');
 				if (resp.code < 1) {
-					console.log(resp);
 					NoticeUtil.broadcast(resp.data);
 					//reloadData();
 				}
@@ -104,7 +103,6 @@
 			function (resp) {
 				chatFlag = 0;
 				if (resp.code < 1) {
-					console.log(resp);
 					var html = Mustache.render(mTmp, {
 						items: resp.data,
 						getDummy: function () {
