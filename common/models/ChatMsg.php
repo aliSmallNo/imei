@@ -350,6 +350,7 @@ class ChatMsg extends ActiveRecord
 		foreach ($chatlist as $v) {
 			$expInfo = UserTag::getExp($v["uId"]);
 			$res[] = [
+				'dummy' => (strpos($v['uOpenId'], User::OPENID_PREFIX) === 0 ? 0 : 1),
 				'pic_level' => $expInfo["pic_level"],
 				'pic_name' => isset($expInfo["pic_name"]) ? $expInfo["pic_name"] : "01",
 				'cid' => $v["cId"],

@@ -75,7 +75,7 @@
 						   data-uid="{{$item.senderid}}"
 						   data-ban="{{$item.ban}}" data-del="{{$item.del}}"
 						   class="adminOpt btn btn-outline btn-primary btn-xs">{{if $item.del}}取消踢出{{else}}踢出{{/if}}</a>
-						{{if !$item.phone}}
+						{{if $item.dummy}}
 						<a href="/site/dummyroomchats?rid={{$item.rid}}&uid={{$item.senderid}}" data-tag="chat"
 						   data-cid="{{$item.cid}}" data-rid="{{$item.rid}}"
 						   data-uid="{{$item.senderid}}" class="adminOpt btn btn-outline btn-danger btn-xs">代聊</a>
