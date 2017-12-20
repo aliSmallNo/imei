@@ -144,12 +144,10 @@
 			<td class="pInfo">
 				<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
 			</td>
-			<td>
+			<td data-id="{{$prod.id}}" data-uni="{{$prod.uniqid}}">
 				{{if $prod.certstatus==1}}
-					<a href="javascript:;" class="operate btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}"
-					   tag="pass">审核通过</a>
-					<a href="javascript:;" class="operate btn btn-outline btn-danger btn-xs" cid="{{$prod.id}}"
-					   tag="fail">审核失败</a>
+					<a href="javascript:;" class="operate btn btn-outline btn-primary btn-xs" data-tag="pass">审核通过</a>
+					<a href="javascript:;" class="operate btn btn-outline btn-danger btn-xs" data-tag="fail">审核失败</a>
 				{{else}}
 					<h5>审核于{{$prod.certdate|date_format:'%y-%m-%d %H:%M'}}</h5>
 				{{/if}}
@@ -161,22 +159,25 @@
 {{$pagination}}
 <script>
 	$("a.operate").click(function () {
-		var id = $(this).attr("cid");
-		var tag = $(this).attr("tag");
-		var text = $(this).html();
+		var self = $(this);
+		var cell = self.closest('td');
+		var id = cell.attr("data-id");
+		var uni = cell.attr("data-uni");
+		var tag = self.attr("data-tag");
+		var text = self.html();
 		layer.confirm('您确定实名' + text, {
 			btn: ['确定', '取消'],
 			title: '审核用户'
 		}, function () {
-			toCert(id, tag);
+			toCert(id, uni, tag);
 		}, function () {
 		});
 	});
 
-	function toCert(id, f) {
+	function toCert(id, uni, op) {
 		$.post("/api/user", {
-			tag: "cert",
-			f: f,
+			tag: 'cert',
+			f: op,
 			id: id
 		}, function (resp) {
 			if (resp.code < 1) {
@@ -184,6 +185,11 @@
 				row.find('td.status-cell').html('<span class="status-' + resp.data.status + '">' + resp.data.status_t + '</span>');
 				row.find('td:last').html('<h5>审核于' + resp.data.dt + '</h5>');
 				row.insertBefore($('tbody tr:first'));
+				NoticeUtil.broadcast({
+					tag: 'hint',
+					uni: uni,
+					msg: resp.data.msg
+				});
 				BpbhdUtil.showMsg(resp.msg, 1);
 			} else {
 				BpbhdUtil.showMsg(resp.msg);
@@ -221,5 +227,28 @@
 		});
 	}
 
+	var NoticeUtil = {
+		socket: null,
+		uni: $('#cUNI').val(),
+		timer: 0,
+		board: $('.m-notice'),
+		list: $('.menu_body'),
+		init: function () {
+			var util = this;
+			util.socket = io('https://nd.meipo100.com/house');
+			util.socket.on('connect', function () {
+				util.socket.emit('house', util.uni);
+			});
+
+		},
+		broadcast: function (params) {
+			var util = this;
+			util.socket.emit('broadcast', params);
+		}
+	};
+
+	$(function () {
+		NoticeUtil.init();
+	});
 </script>
 {{include file="layouts/footer.tpl"}}
