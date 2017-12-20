@@ -34,6 +34,7 @@ class ChatMsg extends ActiveRecord
 	const TYPE_TEXT = 100;
 	const TYPE_IMAGE = 110;
 	const TYPE_VOICE = 120;
+	const TYPE_GIFT = 130;
 
 	const CHAT_COST = 20;
 
@@ -604,6 +605,8 @@ class ChatMsg extends ActiveRecord
 		} elseif (AppUtil::endWith($lower, '.mp3')
 			|| AppUtil::endWith($lower, '.amr')) {
 			$entity->cType = self::TYPE_VOICE;
+		} elseif (AppUtil::endWith($lower, "button>")) {
+			$entity->cType = self::TYPE_GIFT;
 		}
 		$entity->cAddedBy = $senderId;
 		if ($adminId) {
@@ -923,6 +926,8 @@ class ChatMsg extends ActiveRecord
 				$contacts[$k]['content'] = '[图片]';
 			} elseif ($contact['cType'] == ChatMsg::TYPE_VOICE) {
 				$contacts[$k]['content'] = '[声音]';
+			} elseif ($contact['cType'] == ChatMsg::TYPE_GIFT) {
+				$contacts[$k]['content'] = '[礼物]';
 			}
 			unset($contacts[$k]['cAddedBy'],
 				$contacts[$k]['cAddedOn'],

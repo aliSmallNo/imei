@@ -605,6 +605,13 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					return false;
 				});
 
+				$(document).on(kClick, ".j-content-wrap button", function () {
+					var self = $(this);
+					event.stopPropagation();
+					location.href = "/wx/shopbag";
+					return false;
+				});
+
 				$(document).on(kClick, ".chat-input", function () {
 					setTimeout(function () {
 						document.body.scrollTop = document.body.scrollHeight;
@@ -862,8 +869,10 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 							util.beforeDate();
 							break;
 						case 'gift':
-							util.toggle(util.giftmenus.hasClass("off"), util.giftmenus);
-							AdvertUtil.giftSwiper();
+							if ($("#cUID").val() == 120003) {
+								util.toggle(util.giftmenus.hasClass("off"), util.giftmenus);
+								AdvertUtil.giftSwiper();
+							}
 							break;
 					}
 				});
@@ -2509,9 +2518,12 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 				$(document).on(kClick, ".g-bot-btn a", function () {
 					var self = $(".g-items-ul").find("li.on");
 					util.gid = self.attr("data-id");
+					if (!util.gid) {
+						alpha.toast("请先选择礼物");
+						return;
+					}
 					util.giveGift();
 				});
-
 			},
 			giveGift: function () {
 				var util = this;

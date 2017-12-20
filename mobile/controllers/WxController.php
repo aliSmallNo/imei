@@ -753,6 +753,7 @@ class WxController extends BaseController
 		}
 		$expInfo = UserTag::getExp($this->user_id);
 		return self::renderPage("single.tpl", [
+			'uId' => $uId,
 			'noReadFlag' => $noReadFlag,
 			'expInfo' => $expInfo,
 			'nickname' => $nickname,

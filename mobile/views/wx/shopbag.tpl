@@ -34,12 +34,13 @@
 	<li>
 		<div><img src="{[gImage]}"></div>
 		{[#dt]}
-		<p>{[gName]}</p>
-		<em>{[dt]}</em>
+		<p> X <span>{[co]}</span></p>
+		<em>{[gName]}</em>
 		{[/dt]}
 		{[^dt]}
 		<p> X <span>{[co]}</span></p>
-		<div><a href="javascript:;">去赠送</a></div>
+		<em>{[gName]}</em>
+		<div style="display: none"><a href="javascript:;">去赠送</a></div>
 		{[/dt]}
 	</li>
 	{[/items]}

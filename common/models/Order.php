@@ -83,7 +83,7 @@ class Order extends ActiveRecord
 	 * @return array
 	 * @throws \yii\db\Exception
 	 */
-	public static function QTItems($subtag, $page = 1, $pagesize = 12)
+	public static function QTItems($uid,$subtag, $page = 1, $pagesize = 12)
 	{
 		$conn = AppUtil::db();
 		$nextpage = 0;
@@ -91,23 +91,25 @@ class Order extends ActiveRecord
 		$ret = [];
 		switch ($subtag) {
 			case "gift":
-				$sql = "select g.*,sum(oNum) as co from im_order as o 
+				$sql = "select g.*,sum(case when oStatus=2 then oNum when oStatus=3 then -oNum end) as co from im_order as o 
 						join im_goods as g on o.oGId=g.gId
-						where oStatus=:st 
+						where oUId=:uid 
 						group by oGId 
+						having co>0 
 						order by oId desc $limit";
 				$ret = $conn->createCommand($sql)->bindValues([
-					":st" => Order::ST_PAY
+					":uid" => $uid
 				])->queryAll();
 				break;
 			case "receive":
-				$sql = "select g.*,sum(oNum) as co,oAddedOn as dt from im_order as o 
+				$sql = "select g.*,sum(case when oStatus=9 then oNum  end) as co,oAddedOn as dt from im_order as o 
 						join im_goods as g on o.oGId=g.gId
-						where oStatus=:st 
+						where oUId=:uid  
 						group by oGId 
-						order by oId desc $limit";
+						having co>0
+						order by gPrice asc $limit";
 				$ret = $conn->createCommand($sql)->bindValues([
-					":st" => Order::ST_PAY
+					":uid" => $uid
 				])->queryAll();
 				break;
 			case "prop":
@@ -170,7 +172,7 @@ class Order extends ActiveRecord
 				break;
 		}
 
-		$msg = '<a href="/wx/shopbag">' . $gInfo["name"] . '</a>';
+		$msg = '<button href="/wx/shopbag">' . $gInfo["name"] . '</button>';
 		ChatMsg::addChat($wx_uid, $sid, $msg);
 		return [0, '赠送成功~'];
 	}
