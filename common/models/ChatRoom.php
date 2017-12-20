@@ -10,7 +10,6 @@ namespace common\models;
 
 
 use common\utils\AppUtil;
-use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
 
 class ChatRoom extends ActiveRecord
@@ -190,43 +189,39 @@ class ChatRoom extends ActiveRecord
 	public static function rooms($uid, $page = 1, $pageSize = 15)
 	{
 		$conn = AppUtil::db();
-		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
-		$sql = "SELECT r.*,count(cId) as cnt from im_chat_room as r 
-				join im_chat_room_fella as m on r.rId=m.mRId 
-				left join im_chat_msg as c on c.cGId=m.mRId and c.cAddedBy !=:uid and cReadFlag=0
-				where m.mUId=:uid and m.mDeletedFlag=:del
-				group by r.rId 
-				ORDER BY r.rAddedOn desc $limit ";
+		$limit = " limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
+		$sql = " SELECT r.*,count(m.mUId) as co,c.cId,c.cContent,c.cAddedBy,c.cAddedOn,u.uId,u.uName
+			 from im_chat_room as r 
+			 join im_chat_room_fella as m on r.rId=m.mRId and m.mDeletedFlag=0 
+			 join (select distinct mRId from im_chat_room_fella as f where f.mUId = :uid) as t on t.mRId=r.rId
+			 left join im_chat_msg as c on c.cGId=r.rId and c.cId=r.rLastId
+			 left join im_user as u on u.uId=c.cAddedBy
+			 group by r.rId order by c.cAddedOn desc " . $limit;
 		$res = $conn->createCommand($sql)->bindValues([
-			":uid" => $uid,
-			":del" => ChatRoomFella::DELETE_NORMAL,
+			':uid' => $uid
 		])->queryAll();
 
-		$sql = "SELECT c.*,uName as rname from im_chat_room as r 
-				join im_chat_msg as c on c.cGId=r.rId 
-				join im_user as u on u.uId =c.cAddedBy
-				where rId =:rid
-				ORDER BY c.cId desc limit 1";
-		$itemCMD = $conn->createCommand($sql);
-
-		$sql = "SELECT count(*)
-				from im_chat_room as r 
-				join im_chat_room_fella as m on r.rId=m.mRId
-				where rId=:rid";
-		$countCMD = $conn->createCommand($sql);
+		$sql = " select m.cGId , count(m.cId) as cnt
+			 from  im_chat_msg as m  
+			 join im_chat_msg_flag as f on f.fRId=m.cGId and f.fUId=:uid and m.cId > f.fCId
+			 where m.cGId<9999
+			 group by m.cGId";
+		$unread = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid
+		])->queryAll();
+		$unreadRoom = [];
+		foreach ($unread as $row) {
+			$unreadRoom[$row['cGId']] = $row['cnt'];
+		}
 
 		foreach ($res as &$v) {
 			$rid = $v["rId"];
-			$item = $itemCMD->bindValues([
-				":rid" => $rid,
-			])->queryOne();
-			$v["co"] = $countCMD->bindValues(["rid" => $rid])->queryScalar();
-			$v["rname"] = $item["rname"];
-
+			$v["rname"] = $v['rTitle'];
 			$v["avatar"] = $v["rLogo"];
-			$v["cid"] = $item["cId"];
-			$v["content"] = $item["cContent"];
-			$v["dt"] = AppUtil::miniDate($item["cAddedOn"]);
+			$v["cid"] = $v['cId'];
+			$v["cnt"] = isset($unreadRoom[$rid]) ? $unreadRoom[$rid] : 0;
+			$v["content"] = $v['cContent'];
+			$v["dt"] = AppUtil::miniDate($v['cAddedOn']);
 			$v["encryptId"] = '';
 			$v["gid"] = $v["rId"];
 			$v["name"] = $v["rTitle"];
@@ -234,15 +229,15 @@ class ChatRoom extends ActiveRecord
 			$v["uid"] = 0;
 			$v["uni"] = '';
 		}
-		$nextpage = 0;
+		$nextPage = 0;
 		if (count($res) > $pageSize) {
-			$nextpage = $page++;
+			$nextPage = $page + 1;
 			array_pop($res);
 		}
-		return [$res, $nextpage];
+		return [$res, $nextPage];
 	}
 
-	public static function roomChatList($rId, $condition, $params, $page = 1, $pagesize = 20)
+	public static function roomChatList($rId, $condition, $params, $page = 1, $pagesize = 30)
 	{
 		$conn = AppUtil::db();
 		$params1 = [
@@ -274,7 +269,6 @@ class ChatRoom extends ActiveRecord
 
 		return [$chatlist, $count];
 	}
-
 
 	public static function historyChatList($rId, $page = 1, $lastid = 0, $uid = 120003, $pagesize = 20)
 	{
@@ -323,24 +317,5 @@ class ChatRoom extends ActiveRecord
 		return [$res, $rlastId];
 
 	}
-
-	public static function PushTempMsg($rid, $uid)
-	{
-		$conn = AppUtil::db();
-		$sql = "select m.mUID
-				from im_chat_room as r
-				left join im_chat_room_fella as m on m.mRId=r.rId
-				where m.mUId!=:uid AND rId = :rid and m.mDeletedFlag=:del";
-		$IDs = $conn->createCommand($sql)->bindValues([
-			":rid" => $rid,
-			":uid" => $uid,
-			":del" => ChatRoomFella::DELETE_NORMAL,
-		])->queryColumn();
-		foreach ($IDs as $id) {
-			WechatUtil::templateMsg(WechatUtil::NOTICE_ROOM_CHAT, $id,
-				'你有群聊消息待查看', '点击下方详情查看吧~', $uid);
-		}
-	}
-
 
 }

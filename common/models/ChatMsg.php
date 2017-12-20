@@ -353,13 +353,15 @@ class ChatMsg extends ActiveRecord
 		foreach ($chatlist as $v) {
 			$expInfo = UserTag::getExp($v["uId"]);
 			$res[] = [
+				'dummy' => (strpos($v['uOpenId'], User::OPENID_PREFIX) === 0 ? 0 : 1),
 				'pic_level' => $expInfo["pic_level"],
 				'pic_name' => isset($expInfo["pic_name"]) ? $expInfo["pic_name"] : "01",
 				'cid' => $v["cId"],
 				'rid' => $rId,
 				'dir' => $v["cAddedBy"] == $uid ? "right" : 'left',
 				'content' => $v["cContent"],
-				'addedon' => date("m-d H:i", strtotime($v["cAddedOn"])),
+				'addedon' => AppUtil::prettyDate($v["cAddedOn"]),
+				'dt' => AppUtil::prettyDate($v["cAddedOn"]),
 				'isAdmin' => $adminUId == $v["cAddedBy"] ? 1 : 0,
 				'type' => self::TYPE_TEXT,
 				'name' => $v['uName'],
@@ -417,7 +419,8 @@ class ChatMsg extends ActiveRecord
 	{
 		$content = trim($content);
 		$uInfo = User::findOne(["uId" => $senderId])->toArray();
-		if ($uInfo["uNote"] != 'dummy' && !$uInfo["uPhone"] && self::countMsgByUid($senderId, $rId, $conn) >= 3) {
+		if (strpos($uInfo["uOpenId"], User::OPENID_PREFIX) === 0
+			&& !$uInfo["uPhone"] && self::countMsgByUid($senderId, $rId, $conn) >= 3) {
 			return [128, '还没注册，去注册吧！', []];
 		}
 		if (!$content) {
@@ -651,6 +654,7 @@ class ChatMsg extends ActiveRecord
 			'uni' => $infoA['uni'],
 			'content' => $content,
 			'addedon' => date('Y-m-d H:i:s'),
+			'dt' => AppUtil::miniDate(date('Y-m-d H:i:s')),
 			'senderid' => $senderId,
 			'receiverid' => $receiverId,
 			'name' => $infoA['uName'],
@@ -718,8 +722,7 @@ class ChatMsg extends ActiveRecord
 		return $left < 0 ? 0 : $left;
 	}
 
-	public
-	static function groupEdit($uId, $subUId, $giftCount = 0, $conn = null)
+	public static function groupEdit($uId, $subUId, $giftCount = 0, $conn = null)
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -759,8 +762,7 @@ class ChatMsg extends ActiveRecord
 		return [$gid, $left];
 	}
 
-	public
-	static function details($uId, $subUId, $lastId = 0, $hideTipFlag = false)
+	public static function details($uId, $subUId, $lastId = 0, $hideTipFlag = false)
 	{
 		$criteria = ' AND cId> ' . $lastId;
 		$conn = AppUtil::db();
@@ -833,23 +835,30 @@ class ChatMsg extends ActiveRecord
 		return $messages;
 	}
 
-	public
-	static function roomChatRead($uid, $rid, $conn = '')
+	public static function roomChatRead($uid, $rid, $conn = null)
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$sql = 'update im_chat_msg  
-				set cReadFlag=1,cReadOn=now() 
-				WHERE cReadFlag=0 AND cAddedBy != :uid and cGId=:rid';
+		$sql = "delete from im_chat_msg_flag WHERE fRId=:rid AND fUId=:uid";
 		$conn->createCommand($sql)->bindValues([
-			':rid' => $rid,
 			':uid' => $uid,
+			':rid' => $rid,
 		])->execute();
+
+		$sql = " insert into im_chat_msg_flag(fRId,fCId,fUId)
+ 			select rId,rLastId,:uid 
+ 			from im_chat_room as r 
+ 			where rId=:rid
+ 			and not exists(select 1 from im_chat_msg_flag as f where f.fRId=r.rId and r.rLastId=f.fCId and fUId=:uid)";
+		$conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':rid' => $rid,
+		])->execute();
+
 	}
 
-	public
-	static function read($uId, $subUId, $conn = '')
+	public static function read($uId, $subUId, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -866,8 +875,7 @@ class ChatMsg extends ActiveRecord
 		])->execute();
 	}
 
-	public
-	static function contacts($uId, $page = 1, $pageSize = 20)
+	public static function contacts($uId, $page = 1, $pageSize = 20)
 	{
 		$conn = AppUtil::db();
 		$limit = ' LIMIT ' . ($page - 1) * $pageSize . ',' . ($pageSize + 1);
@@ -924,8 +932,7 @@ class ChatMsg extends ActiveRecord
 		return [$contacts, $nextPage];
 	}
 
-	public
-	static function items($isDummy = false, $criteria, $params = [], $page = 1, $pageSize = 20)
+	public static function items($isDummy = false, $criteria, $params = [], $page = 1, $pageSize = 20)
 	{
 		$limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
 		$strCriteria = ' (u1.uOpenId like \'oYDJew%\' AND u2.uOpenId like \'oYDJew%\') ';
@@ -1002,8 +1009,7 @@ class ChatMsg extends ActiveRecord
 		return [$res, $count];
 	}
 
-	public
-	static function serviceCnt($ids, $conn = '')
+	public static function serviceCnt($ids, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -1024,8 +1030,7 @@ class ChatMsg extends ActiveRecord
 		return $items;
 	}
 
-	public
-	static function reset()
+	public static function reset()
 	{
 		$conn = AppUtil::db();
 		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound)
@@ -1208,11 +1213,11 @@ class ChatMsg extends ActiveRecord
 	}
 
 	/**
-	 * 稻草人群撩
-	 * @param $content 发送内容
-	 * @param $maleUID 代聊女稻草人
-	 * @param $femaleUID 代聊男稻草人
-	 * @param $tag 发送用户群
+	 * @param $content
+	 * @param $maleUID
+	 * @param $femaleUID
+	 * @param $tag
+	 * @return bool
 	 * @throws \yii\db\Exception
 	 */
 	public static function DummyChatGroup($content, $maleUID, $femaleUID, $tag)

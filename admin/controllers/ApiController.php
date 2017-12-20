@@ -464,13 +464,18 @@ class ApiController extends Controller
 		$tag = strtolower(self::postParam("tag"));
 		$id = self::postParam("id");
 		switch ($tag) {
+			case 'list':
+				$dummyId = self::postParam("did");
+				$userId = self::postParam("uid");
+				list($ret) = ChatMsg::details($dummyId, $userId, 0, true);
+				return self::renderAPI(0, '', $ret);
 			case 'send':
 				$serviceId = User::SERVICE_UID;
 				$text = self::postParam("text");
 				$ret = ChatMsg::addChat($serviceId, $id, $text, 0, $this->admin_id);
 				return self::renderAPI(0, '', $ret);
-			case "dsend":
-				$serviceId = self::postParam("did");;
+			case 'dsend':
+				$serviceId = self::postParam("did");
 				$text = self::postParam("text");
 				$ret = ChatMsg::addChat($serviceId, $id, $text, 0, $this->admin_id);
 				QueueUtil::loadJob('templateMsg',
@@ -483,7 +488,10 @@ class ApiController extends Controller
 						'gid' => $ret['gid']
 					],
 					QueueUtil::QUEUE_TUBE_SMS);
-				return self::renderAPI(0, '', $ret);
+				return self::renderAPI(0, '', [
+					'gid' => $ret['gid'],
+					'items' => $ret
+				]);
 		}
 		return self::renderAPI(129, "什么操作也没做啊！");
 	}
@@ -572,6 +580,12 @@ class ApiController extends Controller
 	{
 		$tag = strtolower(self::postParam("tag"));
 		switch ($tag) {
+			case 'list':
+				$rId = self::postParam('rid');
+				$page = self::postParam('page', 1);
+				$pageSize = self::postParam('page', 30);
+				list($items) = ChatRoom::roomChatList($rId, [], [], $page, $pageSize);
+				return self::renderAPI(0, '', $items);
 			case 'edit': // 添加群
 				$data = json_decode(self::postParam('data'), 1);
 				$data["addby"] = $this->admin_id;
@@ -594,7 +608,7 @@ class ApiController extends Controller
 				if (!$rid || !$oUId) {
 					return self::renderAPI(129, '对话不存在啊~');
 				}
-				ChatRoomFella::adminOPt($subtag, $oUId, $rid, $cid, $ban,$del);
+				ChatRoomFella::adminOPt($subtag, $oUId, $rid, $cid, $ban, $del);
 				return self::renderAPI(0, '', [
 					"chat" => '',
 				]);
@@ -618,13 +632,11 @@ class ApiController extends Controller
 				$uid = self::postParam('uid');
 				$text = self::postParam('text');
 				if ($text) {
-					ChatMsg::addRoomChat($rid, $uid, $text);
+					list($code, $msg, $info) = ChatMsg::addRoomChat($rid, $uid, $text);
+					return self::renderAPI($code, $msg, $info);
 				}
-				return self::renderAPI(0, '', [
-
-				]);
-				break;
 		}
+		return self::renderAPI(129, '操作无效');
 	}
 
 	public function actionFoo()

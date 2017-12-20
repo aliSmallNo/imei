@@ -494,7 +494,7 @@ class SiteController extends BaseController
 		$dummyId = self:: getParam("did", User::SERVICE_UID);
 		$userId = self:: getParam("uid");
 
-		ChatMsg::groupEdit($dummyId, $userId, 9999);
+		list($roomId) = ChatMsg::groupEdit($dummyId, $userId, 9999);
 		list($items) = ChatMsg::details($dummyId, $userId, 0, true);
 		usort($items, function ($a, $b) {
 			return $a['addedon'] < $b['addedon'];
@@ -513,6 +513,7 @@ class SiteController extends BaseController
 			[
 				'category' => 'data',
 				'detailcategory' => 'site/dummychats',
+				'roomId' => $roomId,
 				'list' => $items,
 				"uid" => $userId,
 				"name" => $uInfo['uName'],
@@ -522,6 +523,7 @@ class SiteController extends BaseController
 				"davatar" => $dInfo['uThumb'],
 				"dphone" => $dInfo['uPhone'],
 				"dId" => $dummyId,
+				'admin_id' => $this->admin_id
 			]);
 	}
 
@@ -1522,7 +1524,7 @@ class SiteController extends BaseController
 	{
 		$getInfo = Yii::$app->request->get();
 		$page = self::getParam("page", 1);
-		$rid = self::getParam("rid");
+		$roomId = self::getParam("rid");
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
 		$condition = $params = [];
@@ -1534,8 +1536,7 @@ class SiteController extends BaseController
 			$condition[] = '(u.uPhone like :phone )';
 			$params[':phone'] = $phone . '%';
 		}
-		list($chatItems, $count) = ChatRoom::roomChatList($rid, $condition, $params, $page);
-
+		list($chatItems, $count) = ChatRoom::roomChatList($roomId, $condition, $params, $page);
 		$pagination = self::pagination($page, $count);
 		return $this->renderPage("roomdesc.tpl",
 			[
@@ -1545,7 +1546,7 @@ class SiteController extends BaseController
 				'detailcategory' => 'site/rooms',
 				'chatItems' => $chatItems,
 				'count' => $count,
-				'rid' => $rid,
+				'roomId' => $roomId,
 			]
 		);
 	}
@@ -1564,20 +1565,9 @@ class SiteController extends BaseController
 
 	public function actionDummyroomchats()
 	{
-
 		Admin::staffOnly();
 		$dummyId = self:: getParam("uid", User::SERVICE_UID);
-//		$userId = self:: getParam("rid");
 		$rId = self:: getParam("rid");
-
-		list($items) = ChatMsg::details($dummyId, $rId, 0, true);
-		$condition = $params = [];
-		$page = 1;
-		list($items, $count) = ChatRoom::roomChatList($rId, $condition, $params, $page);
-
-		usort($items, function ($a, $b) {
-			return $a['addedon'] < $b['addedon'];
-		});
 
 		$rInfo = ChatRoom::findOne(["rId" => $rId]);
 		if (!$rInfo) {
@@ -1593,9 +1583,10 @@ class SiteController extends BaseController
 			[
 				'category' => 'data',
 				'detailcategory' => 'site/rooms',
-				'list' => $items,
 				"rInfo" => $rInfo,
 				"uInfo" => $uInfo,
+				'roomId' => $rId,
+				'admin_id' => $this->admin_id
 			]);
 	}
 

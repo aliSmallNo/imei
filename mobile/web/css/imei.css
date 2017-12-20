@@ -6137,7 +6137,12 @@ section {
       height: 1rem;
       border-radius: 0.5rem;
       background: #f24;
-      left: 3.2rem;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 0.8rem;
+      width: 0.8rem;
+      left: 3.3rem;
       top: 0.3rem;
       font-size: 0.8rem;
       font-weight: 500;
@@ -6145,9 +6150,8 @@ section {
       color: #fdd835;
       text-align: center;
       display: inline-block;
-      width: auto;
-      padding-left: 0.3rem;
-      padding-right: 0.3rem; }
+      padding-left: 0.2rem;
+      padding-right: 0.2rem; }
   .contacts li .action {
     position: absolute;
     right: 0;
