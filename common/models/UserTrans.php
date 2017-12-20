@@ -41,7 +41,7 @@ class UserTrans extends ActiveRecord
 	const CAT_FESTIVAL_BONUS = 189;
 	const CAT_EXCHANGE_FLOWER = 200;
 	const CAT_EXCHANGE_YUAN = 201;
-	const CAT_RECEIVED_GIFT = 202;
+	const CAT_EXCHANGE_CHAT = 202;
 
 	static $catDict = [
 		self::CAT_RECHARGE_MEMBER => "单身会员",
@@ -69,7 +69,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_FESTIVAL_BONUS => "节日馈赠",
 		self::CAT_EXCHANGE_FLOWER => "商城兑换",
 		self::CAT_EXCHANGE_YUAN => "商城交易",
-		self::CAT_RECEIVED_GIFT => "收到礼物",
+		self::CAT_EXCHANGE_CHAT => "聊天赠送礼物",
 	];
 
 	static $CatMinus = [
@@ -80,6 +80,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_DATE_NEW,
 		self::CAT_REMOVE_COMMENT,
 		self::CAT_EXCHANGE_FLOWER,
+		self::CAT_EXCHANGE_CHAT,
 	];
 
 	const UNIT_FEN = 'fen';

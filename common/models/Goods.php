@@ -80,11 +80,13 @@ class Goods extends ActiveRecord
 				break;
 			case "bag":
 				$sql = "select gId as id,gCategory as cat,gName as `name`,gImage as image,gPrice as price,gUnit as unit
+						,sum(case when oStatus=2 then oNum when oStatus=3 then -oNum end) as co
 						FROM im_goods as g join im_order as o on o.`oGId`=g.gId 
-						where o.oStatus=:st and oUId=:uid and g.gCategory in (110,120)";
+						where oUId=:uid and g.gCategory in (110,120) 
+						group by oGId
+						having co>0 ";
 				$res = $conn->createCommand($sql)->bindValues([
 					":uid" => $uid,
-					":st" => Order::ST_PAY,
 				])->queryAll();
 				break;
 		}
