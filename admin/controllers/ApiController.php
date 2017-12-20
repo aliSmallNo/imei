@@ -29,7 +29,6 @@ use common\service\CogService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ImageUtil;
-use common\utils\PushUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
@@ -336,6 +335,7 @@ class ApiController extends Controller
 				$st = self::postParam("st", 0);
 				$subSt = self::postParam("sst", 1);
 				$reason = self::postParam("reason");
+				$broadcast = [];
 				if ($subSt) {
 					$f = $st == User::STATUS_ACTIVE;
 					$data = [
@@ -359,7 +359,13 @@ class ApiController extends Controller
 							'审核结果通知',
 							'审核通过',
 							$id);
-						PushUtil::init()->hint('你的个人资料审核通过啦', $uni, 'refresh-profile')->close();
+						$broadcast = [
+							'tag' => 'hint',
+							'uni' => $uni,
+							'msg' => '你的个人资料审核通过啦',
+							'action' => 'refresh-profile'
+						];
+						//PushUtil::init()->hint('你的个人资料审核通过啦', $uni, 'refresh-profile')->close();
 					} else {
 						$data["aReasons"] = $reason;
 						$data["aAddedBy"] = $this->admin_id;
@@ -379,11 +385,20 @@ class ApiController extends Controller
 								'审核结果通知',
 								trim($str, '；'),
 								$id);
-							PushUtil::init()->hint('你的个人资料需要修改完善', $uni, 'refresh-profile')->close();
+							$broadcast = [
+								'tag' => 'hint',
+								'uni' => $uni,
+								'msg' => '你的个人资料不完整，需要修改完善',
+								'action' => 'refresh-profile'
+							];
+							//PushUtil::init()->hint('你的个人资料需要修改完善', $uni, 'refresh-profile')->close();
 						}
 					}
 
-					return self::renderAPI(0, '操作成功', $aid);
+					return self::renderAPI(0, '操作成功', [
+						'broadcast' => $broadcast,
+						'aid' => $aid
+					]);
 				} else {
 					return self::renderAPI(129, '参数错误');
 				}
