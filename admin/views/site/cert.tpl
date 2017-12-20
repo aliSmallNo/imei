@@ -189,7 +189,8 @@
 				NoticeUtil.broadcast({
 					tag: 'hint',
 					uni: uni,
-					msg: resp.data.msg
+					msg: resp.data.msg,
+					action: 'refresh-profile'
 				});
 				BpbhdUtil.showMsg(resp.msg, 1);
 			} else {
