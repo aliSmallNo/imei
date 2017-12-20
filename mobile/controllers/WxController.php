@@ -2132,7 +2132,7 @@ class WxController extends BaseController
 				'prop' => $prop
 			],
 			'terse',
-			'千寻商城',
+			'我的背包',
 			'bg-color');
 	}
 
