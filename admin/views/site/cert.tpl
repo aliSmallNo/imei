@@ -157,6 +157,7 @@
 	</tbody>
 </table>
 {{$pagination}}
+<script src="/assets/js/socket.io.js"></script>
 <script>
 	$("a.operate").click(function () {
 		var self = $(this);
