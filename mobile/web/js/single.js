@@ -2373,6 +2373,11 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 				});
 
 				util.ioChat = io('https://nd.meipo100.com/chatroom');
+				util.ioHouse.on('reconnect', function () {
+					if (util.roomId && util.uni) {
+						util.ioChat.emit('room', util.roomId, util.uni);
+					}
+				});
 				util.ioChat.on("msg", function (info) {
 					util.roomId = info.gid;
 					if (ChatUtil.gid != util.roomId) {

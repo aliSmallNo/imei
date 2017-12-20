@@ -14,6 +14,11 @@
 		border-top: 1px solid #E4E4E4;
 	}
 
+	.menu_body2 {
+		margin: 0;
+		padding-left: 26px;
+	}
+
 	.rightBox {
 		display: block;
 		position: fixed;
@@ -25,14 +30,16 @@
 	}
 
 	.menu_body {
+		padding: 0 0 0 26px;
 		margin: 0;
-		padding: 0;
 		background-color: #fff;
+		list-style: decimal;
 	}
 
 	.menu_body li {
-		display: flex;
-		padding: 3px 16px 3px 3px;
+		position: relative;
+		padding: 4px 2px;
+		margin: 0;
 		border-bottom: 1px solid #E8E8E8;
 		cursor: pointer;
 	}
@@ -45,9 +52,13 @@
 	}
 
 	.menu_body li .avatar {
-		flex: 0 0 40px;
+		display: inline-block;
+		width: 40px;
 		text-align: center;
 		align-self: center;
+		position: absolute;
+		top: 4px;
+		left: 2px;
 	}
 
 	.menu_body li .avatar img {
@@ -56,6 +67,28 @@
 		vertical-align: middle;
 		border-radius: 4px;
 		/*border: 1px solid #E8E8E8;*/
+	}
+
+	.menu_body li .content {
+		font-size: 12px;
+		justify-content: center;
+		align-items: center;
+		align-self: center;
+		padding-left: 44px;
+	}
+
+	.menu_body li .content .name {
+		text-align: left;
+	}
+
+	.menu_body li .content b {
+		font-weight: 400;
+	}
+
+	.menu_body li .content .dt {
+		font-size: 10px;
+		color: #999;
+		text-align: right;
 	}
 
 	img.female {
@@ -68,29 +101,6 @@
 
 	img.mei {
 		border: 2px solid #51c332;
-	}
-
-	.menu_body li {
-		position: relative;
-	}
-
-	.menu_body li .content {
-		flex: 1;
-		font-size: 12px;
-		justify-content: center;
-		align-items: center;
-		align-self: center;
-		padding-left: 4px;
-	}
-
-	.menu_body li .content b {
-		font-weight: 400;
-	}
-
-	.menu_body li .content .dt {
-		font-size: 10px;
-		color: #999;
-		text-align: right;
 	}
 
 	.av-sm {
@@ -184,18 +194,19 @@
 			<label>女士<i class="i-mark-female"></i></label>
 			<label>媒婆<i class="i-mark-mei"></i></label>
 		</div>
-		<ul class="menu_body">
+		<ol class="menu_body">
 			{{foreach from=$items key=k item=user}}
-			<li class="" data-lat="{{$user.lat}}" data-lng="{{$user.lng}}" data-idx="{{$k+1}}" data-uni="{{$user.uni}}">
-				<div class="seq">{{$k+1}}.</div>
-				<div class="avatar"><img src="{{$user.thumb}}" alt="" class="{{$user.mark}}" data-mark="{{$user.mark}}"></div>
-				<div class="content">
-					<div class="name"><b>{{$user.phone}}</b> {{$user.name}}</div>
-					<div class="dt">{{$user.dt}}</div>
-				</div>
-			</li>
+				<li class="" data-lat="{{$user.lat}}" data-lng="{{$user.lng}}" data-idx="{{$k+1}}"
+				    data-uni="{{$user.uni}}">
+					<div class="avatar"><img src="{{$user.thumb}}" alt="" class="{{$user.mark}}"
+					                         data-mark="{{$user.mark}}"></div>
+					<div class="content">
+						<div class="name"><b>{{$user.phone}}</b> {{$user.name}}</div>
+						<div class="dt">{{$user.dt}}</div>
+					</div>
+				</li>
 			{{/foreach}}
-		</ul>
+		</ol>
 	</div>
 	<div id="mapContainer" class="rightBox"></div>
 </div>
@@ -228,7 +239,7 @@
 		}
 	});
 
-	var Markers ={};
+	var Markers = {};
 
 	function switchMarkers(isShow, items) {
 		var links = items;
@@ -284,48 +295,62 @@
 
 	var NoticeUtil = {
 		socket: null,
-		uni: 0,
+		uni: $('#cUNI').val(),
 		timer: 0,
 		board: $('.m-notice'),
 		list: $('.menu_body'),
 		init: function () {
 			var util = this;
-			util.uni = $('#cUNI').val();
-			util.socket = io.connect('https://nd.meipo100.com');
+			util.socket = io('https://nd.meipo100.com/house');
 			util.socket.on('connect', function () {
 				util.socket.emit('house', util.uni);
 			});
 
-			util.socket.on("waveup", function (resp) {
-				// console.log(resp);
-				util.list.find('li').removeClass('online');
-				$.each(resp.house, function () {
-					var id = this;
-					$('li[data-uni=' + id + ']').addClass('online');
-				});
-				if (resp.uid) {
-					var row = $('li[data-uni=' + resp.uid + ']');
-					if (row.length) {
-						row.insertBefore('.menu_body li:first');
-					}
-					util.upgrade(resp.uid, 'waveup');
+			util.socket.on("buzz", function (resp) {
+				switch (resp.tag) {
+					case 'login':
+						if (!resp.uid) {
+							return false;
+						}
+						var row = $('li[data-uni=' + resp.uid + ']');
+						if (row.length) {
+							row.addClass('online').insertBefore('.menu_body li:first');
+							util.upgrade(resp.uid, resp.tag);
+						}
+						break;
+					case 'logout':
+						if (!resp.uid) {
+							return false;
+						}
+						var row = $('li[data-uni=' + resp.uid + ']');
+						if (row.length) {
+							row.removeClass('online');
+						}
+						util.upgrade(resp.uid, resp.tag);
+						break;
+					case 'users':
+						$.each(resp.users, function () {
+							var id = this;
+							var row = $('li[data-uni=' + id + ']');
+							if (row.length) {
+								row.addClass('online').insertBefore('.menu_body li:first');
+							}
+						});
+						break;
 				}
 			});
-
-			util.socket.on("wavedown", function (resp) {
-				// console.log(resp);
-				if (resp.uid) {
-					$('li[data-uni=' + resp.uid + ']').removeClass('online');
-					util.upgrade(resp.uid, 'wavedown');
-				}
-			});
+		},
+		users: function () {
+			var util = this;
+			util.socket.emit('users');
+			console.log('users sent');
 		},
 		upgrade: function (uid, tag) {
 			$.post('/api/user', {
 				tag: tag,
 				id: uid
 			}, function (resp) {
-				if (resp.code == 0) {
+				if (resp.code < 1) {
 					$('li[data-uni=' + uid + '] .dt').html(resp.data.dt);
 				}
 			}, 'json');
@@ -335,6 +360,10 @@
 	$(function () {
 		switchMarkers(1);
 		NoticeUtil.init();
+
+		setTimeout(function () {
+			NoticeUtil.users();
+		}, 3200);
 	});
 
 </script>

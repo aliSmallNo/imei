@@ -51,6 +51,11 @@
 		display: inline-block;
 		margin-top: 3px;
 	}
+	.tips{
+		font-size: 10px;
+		color: #aaa;
+		line-height: 16px;
+	}
 </style>
 <div class="row">
 	<h4>群列表
@@ -105,6 +110,7 @@
 		<tr>
 			<td align="center">
 				<img src="{{$item.rLogo}}">
+				<div class="tips">{{$item.rId}}</div>
 			</td>
 			<td>
 				<div>群上限: {{$item.rLimit}}人</div>

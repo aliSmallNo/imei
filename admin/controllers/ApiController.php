@@ -225,13 +225,13 @@ class ApiController extends Controller
 					return self::renderAPI(129, '用户不存在~');
 				}
 				break;
-			case 'waveup':
-			case 'wavedown':
+			case 'login':
+			case 'logout':
 				$uInfo = User::findOne(['uUniqid' => $id]);
 				if ($uInfo) {
 					$openId = $uInfo['uOpenId'];
 					LogAction::add($uInfo['uId'], $openId,
-						$tag == 'waveup' ? LogAction::ACTION_ONLINE : LogAction::ACTION_OFFLINE);
+						$tag == 'login' ? LogAction::ACTION_ONLINE : LogAction::ACTION_OFFLINE);
 					User::logDate($uInfo['uId']);
 					return self::renderAPI(0, '刷新成功~', ['dt' => AppUtil::prettyDate()]);
 				} else {

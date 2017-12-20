@@ -71,8 +71,12 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 			init: function () {
 				var util = this;
 				util.ioChat = io('https://nd.meipo100.com/chatroom');
-				util.ioChat.emit('room', util.rid, util.uni);
-
+				util.ioChat.on('connect', function () {
+					util.ioChat.emit('room', util.rid, util.uni);
+				});
+				util.ioChat.on('reconnect', function () {
+					util.ioChat.emit('room', util.rid, util.uni);
+				});
 				util.ioChat.on("msg", function (resp) {
 					var roomId = resp.rid;
 					if (util.rid != roomId) {
