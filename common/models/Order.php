@@ -128,7 +128,7 @@ class Order extends ActiveRecord
 	{
 		$gInfo = Goods::items(["gId" => $gid]);
 		if (!$gInfo) {
-			return [129, '商品错误~'];
+			return [129, '商品错误~', ''];
 		}
 		$num = 1;
 		$gInfo = $gInfo[0];
@@ -154,14 +154,14 @@ class Order extends ActiveRecord
 				$sql = "select sum(case when oStatus=2 then oNum when oStatus=3 then -oNum end) as co from im_order where oGId=:gid";
 				$co = $conn->createCommand($sql)->bindValues([":gid" => $gid])->queryScalar();
 				if ($co <= 0) {
-					return [129, '商品数错误~'];
+					return [129, '商品数错误~', ''];
 				}
 				$giveTo($sid, $wx_uid, $insertData);
 				break;
 			case "normal":
 				$flower = UserTrans::getStat($wx_uid, true)["flower"];
 				if ($flower < $amt) {
-					return [128, '您的账户媒瑰花数量不足~'];
+					return [128, '您的账户媒瑰花数量不足~', ''];
 				}
 				$tid = UserTrans::add($wx_uid, 0, UserTrans::CAT_EXCHANGE_CHAT, '', $amt, UserTrans::UNIT_GIFT, $note = '');
 				$insertData["oStatus"] = self::ST_PAY;
@@ -172,12 +172,12 @@ class Order extends ActiveRecord
 				break;
 			case "vip":
 				// $expInfo = UserTag::getExp($v["uId"]);
-				return [129, '您的等级不够~'];
+				return [129, '您的等级不够~', ''];
 				break;
 		}
 
 		$msg = '<button href="/wx/shopbag">' . $gInfo["name"] . '</button>';
-		ChatMsg::addChat($wx_uid, $sid, $msg);
-		return [0, '赠送成功~'];
+		$info = ChatMsg::addChat($wx_uid, $sid, $msg);
+		return [0, '赠送成功~', $info];
 	}
 }

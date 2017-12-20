@@ -2267,9 +2267,10 @@ class ApiController extends Controller
 				$gid = self::postParam("gid");// 对方uid
 				$subtag = self::postParam("subtag");
 
-				list($code, $msg) = Order::giveGift($subtag, $sid, $gid, $wx_uid);
+				list($code, $msg, $data) = Order::giveGift($subtag, $sid, $gid, $wx_uid);
 				return self::renderAPI($code, $msg, [
-					"stat" => UserTrans::getStat($wx_uid, true)
+					"stat" => UserTrans::getStat($wx_uid, true),
+					"items" => $data,
 				]);
 				break;
 		}
