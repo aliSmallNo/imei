@@ -870,6 +870,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 							break;
 						case 'gift':
 							if ($("#cUID").val() == 120003) {
+								GiftUtil.resetGifts();
 								util.toggle(util.giftmenus.hasClass("off"), util.giftmenus);
 								AdvertUtil.giftSwiper();
 							}
@@ -2552,6 +2553,11 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 							alpha.toast(resp.msg);
 						}
 					}, 'json');
+			},
+			resetGifts: function () {
+
+				$(".g-cats a[g-level=normal]").trigger(kClick);
+
 			},
 			loadGifts: function () {
 				var util = this;
