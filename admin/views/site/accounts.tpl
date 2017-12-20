@@ -1054,7 +1054,7 @@
 					NoticeUtil.broadcast(resp.data.broadcast);
 					setTimeout(function () {
 						location.reload();
-					}, 1000);
+					}, 800);
 				} else {
 					location.reload();
 				}
