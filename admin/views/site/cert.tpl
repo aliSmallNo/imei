@@ -157,6 +157,7 @@
 	</tbody>
 </table>
 {{$pagination}}
+<script src="/assets/js/socket.io.js"></script>
 <script>
 	$("a.operate").click(function () {
 		var self = $(this);
@@ -188,7 +189,8 @@
 				NoticeUtil.broadcast({
 					tag: 'hint',
 					uni: uni,
-					msg: resp.data.msg
+					msg: resp.data.msg,
+					action: 'refresh-profile'
 				});
 				BpbhdUtil.showMsg(resp.msg, 1);
 			} else {

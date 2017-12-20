@@ -8311,6 +8311,17 @@ ul.co-ul {
               background-position: 0 -3rem; }
             .zone-top li .flex-1.profile .cards li.card-182 {
               background-position: 0 -4.5rem; }
+            .zone-top li .flex-1.profile .cards li.card-cert {
+              -webkit-box-flex: 0 0 4.6rem;
+              -webkit-flex: 0 0 4.6rem;
+              -ms-flex: 0 0 4.6rem;
+              flex: 0 0 4.6rem;
+              height: 1.5rem;
+              margin-right: 0;
+              background-image: url(../images/ico_cert_new.png);
+              background-size: 4.5rem 1.5rem;
+              background-repeat: no-repeat;
+              background-position: center center; }
         .zone-top li .flex-1.profile h4 {
           font-size: 1.6rem;
           display: -webkit-box;

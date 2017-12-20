@@ -675,6 +675,9 @@ class ApiController extends Controller
 				$info = User::user(['uOpenId' => $openId]);
 				$info = User::shrinkUser($info);
 				$info['cards'] = UserTag::chatCards($info['id']);
+				if ($info['cert']) {
+					$info['cards'][] = ['cat' => 'cert'];
+				}
 				$info['audit'] = UserAudit::invalid($info['id']);
 				return self::renderAPI(0, '', $info);
 			case "userfilter":

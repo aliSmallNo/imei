@@ -137,7 +137,7 @@ class ApiController extends Controller
 				if ($result) {
 					$status = ($flag == 'pass' ? User::CERT_STATUS_PASS : User::CERT_STATUS_FAIL);
 					$status_t = User::$Certstatus[$status];
-					$msg = ($flag == 'pass' ? '你的实名认证成功' : '你的实名认证未成功，请重试');
+					$msg = ($flag == 'pass' ? '恭喜你，实名认证成功啦~' : '实名认证未通过，请重新上传身份证照片');
 					return self::renderAPI(0, '操作成功！',
 						[
 							'msg' => $msg,

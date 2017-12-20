@@ -2409,14 +2409,12 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						SmeUtil.reload();
 						break;
 				}
-			}
-			,
+			},
 			join: function (gid) {
 				var util = this;
 				util.roomId = gid;
 				util.ioChat.emit('room', util.roomId, util.uni);
-			}
-			,
+			},
 			toggle: function (content) {
 				var util = this;
 				if (content) {
@@ -2427,7 +2425,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					}
 					util.timer = setTimeout(function () {
 						util.board.removeClass('on').addClass('off');
-					}, 3500);
+					}, 4000);
 				} else {
 					util.board.html('');
 					util.board.removeClass('on').addClass('off');
