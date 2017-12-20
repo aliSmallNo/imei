@@ -357,7 +357,7 @@ class ChatMsg extends ActiveRecord
 				'rid' => $rId,
 				'dir' => $v["cAddedBy"] == $uid ? "right" : 'left',
 				'content' => $v["cContent"],
-				'addedon' => AppUtil::miniDate($v["cAddedOn"]),
+				'addedon' => AppUtil::prettyDate($v["cAddedOn"]),
 				'dt' => AppUtil::prettyDate($v["cAddedOn"]),
 				'isAdmin' => $adminUId == $v["cAddedBy"] ? 1 : 0,
 				'type' => self::TYPE_TEXT,

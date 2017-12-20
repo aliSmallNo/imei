@@ -1,8 +1,8 @@
 {{include file="layouts/header.tpl"}}
 <style>
 	.center img {
-		width: 60px;
-		height: 60px;
+		width: 50px;
+		height: 50px;
 	}
 
 	td {
@@ -34,16 +34,16 @@
 				<th class="col-sm-1">
 					头像
 				</th>
-				<th class="col-sm-1">
+				<th class="col-sm-2">
 					群员
 				</th>
 				<th>
-					信息
+					消息
 				</th>
 				<th class="col-sm-1">
 					添加时间
 				</th>
-				<th class="col-sm-2">
+				<th class="col-sm-3">
 					操作
 				</th>
 			</tr>
@@ -52,7 +52,7 @@
 			{{foreach from=$chatItems item=item}}
 				<tr>
 					<td align="center" class="center">
-						<img src="{{$item.avatar}}"/>
+						<img src="{{$item.avatar}}" alt="">
 					</td>
 					<td>
 						{{$item.name}} <br>{{$item.phone}}
