@@ -648,6 +648,7 @@ class ChatMsg extends ActiveRecord
 			'uni' => $infoA['uni'],
 			'content' => $content,
 			'addedon' => date('Y-m-d H:i:s'),
+			'dt'=> AppUtil::miniDate(date('Y-m-d H:i:s')),
 			'senderid' => $senderId,
 			'receiverid' => $receiverId,
 			'name' => $infoA['uName'],
@@ -715,8 +716,7 @@ class ChatMsg extends ActiveRecord
 		return $left < 0 ? 0 : $left;
 	}
 
-	public
-	static function groupEdit($uId, $subUId, $giftCount = 0, $conn = null)
+	public static function groupEdit($uId, $subUId, $giftCount = 0, $conn = null)
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -756,8 +756,7 @@ class ChatMsg extends ActiveRecord
 		return [$gid, $left];
 	}
 
-	public
-	static function details($uId, $subUId, $lastId = 0, $hideTipFlag = false)
+	public static function details($uId, $subUId, $lastId = 0, $hideTipFlag = false)
 	{
 		$criteria = ' AND cId> ' . $lastId;
 		$conn = AppUtil::db();

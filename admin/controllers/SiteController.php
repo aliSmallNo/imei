@@ -494,7 +494,7 @@ class SiteController extends BaseController
 		$dummyId = self:: getParam("did", User::SERVICE_UID);
 		$userId = self:: getParam("uid");
 
-		ChatMsg::groupEdit($dummyId, $userId, 9999);
+		list($roomId) = ChatMsg::groupEdit($dummyId, $userId, 9999);
 		list($items) = ChatMsg::details($dummyId, $userId, 0, true);
 		usort($items, function ($a, $b) {
 			return $a['addedon'] < $b['addedon'];
@@ -513,6 +513,7 @@ class SiteController extends BaseController
 			[
 				'category' => 'data',
 				'detailcategory' => 'site/dummychats',
+				'roomId' => $roomId,
 				'list' => $items,
 				"uid" => $userId,
 				"name" => $uInfo['uName'],
@@ -522,6 +523,7 @@ class SiteController extends BaseController
 				"davatar" => $dInfo['uThumb'],
 				"dphone" => $dInfo['uPhone'],
 				"dId" => $dummyId,
+				'admin_id' => $this->admin_id
 			]);
 	}
 
