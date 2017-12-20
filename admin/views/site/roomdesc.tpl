@@ -12,9 +12,16 @@
 	td a {
 		margin: 2px 0;
 	}
+	h4 span{
+		font-size: 12px;
+	}
 </style>
 <div class="row">
-	<h4>聊天详细 </h4>
+	<h4>聊天详细
+		<span> ( 会员: {{$stat.member}}</span>
+	 <span>新人: {{$stat.xin}}</span>
+	 <span>稻草人: {{$stat.dummy}} ) </span>
+	</h4>
 </div>
 <form action="/site/roomdesc" class="form-inline">
 	<input class="form-control" placeholder="用户名" name="name"
@@ -33,6 +40,9 @@
 			<tr>
 				<th class="col-sm-1">
 					头像
+				</th>
+				<th class="col-sm-1">
+					身份
 				</th>
 				<th class="col-sm-2">
 					群员
@@ -53,6 +63,12 @@
 				<tr>
 					<td align="center" class="center">
 						<img src="{{$item.avatar}}" alt="">
+					</td>
+					<td>
+						<span class="m-status-2">{{if $item.isAdmin}}管理员{{/if}}</span>
+						<span class="m-status-1">{{if !$item.isMember}}新人{{/if}}</span>
+						<span class="m-status-2">{{$item.pic_name}}</span>
+						<span class="m-status-2">{{if $item.dummy}}稻草人{{/if}}</span>
 					</td>
 					<td>
 						{{$item.name}} <br>{{$item.phone}}
@@ -122,7 +138,7 @@
 		var del = self.attr("data-del");
 		if ($.inArray(tag, ["delete", "silent", "out"]) >= 0) {
 			console.log(1234);
-			adminOPt(tag, uid, rid, cid, ban)
+			adminOPt(tag, uid, rid, cid, ban,del)
 		}
 	});
 
@@ -143,8 +159,9 @@
 			$sls.loading = 0;
 			if (resp.code == 0) {
 				BpbhdUtil.showMsg("操作成功");
+				console.log(del);
 				setTimeout(function () {
-					location.reload();
+					//location.reload();
 				}, 500)
 			} else {
 				BpbhdUtil.showMsg(resp.msg);
