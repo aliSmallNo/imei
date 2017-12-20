@@ -927,8 +927,7 @@ class ChatMsg extends ActiveRecord
 		return [$contacts, $nextPage];
 	}
 
-	public
-	static function items($isDummy = false, $criteria, $params = [], $page = 1, $pageSize = 20)
+	public static function items($isDummy = false, $criteria, $params = [], $page = 1, $pageSize = 20)
 	{
 		$limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
 		$strCriteria = ' (u1.uOpenId like \'oYDJew%\' AND u2.uOpenId like \'oYDJew%\') ';
@@ -1005,8 +1004,7 @@ class ChatMsg extends ActiveRecord
 		return [$res, $count];
 	}
 
-	public
-	static function serviceCnt($ids, $conn = '')
+	public static function serviceCnt($ids, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -1027,8 +1025,7 @@ class ChatMsg extends ActiveRecord
 		return $items;
 	}
 
-	public
-	static function reset()
+	public static function reset()
 	{
 		$conn = AppUtil::db();
 		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound)
@@ -1211,11 +1208,11 @@ class ChatMsg extends ActiveRecord
 	}
 
 	/**
-	 * 稻草人群撩
-	 * @param $content 发送内容
-	 * @param $maleUID 代聊女稻草人
-	 * @param $femaleUID 代聊男稻草人
-	 * @param $tag 发送用户群
+	 * @param $content
+	 * @param $maleUID
+	 * @param $femaleUID
+	 * @param $tag
+	 * @return bool
 	 * @throws \yii\db\Exception
 	 */
 	public static function DummyChatGroup($content, $maleUID, $femaleUID, $tag)

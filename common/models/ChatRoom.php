@@ -216,21 +216,12 @@ class ChatRoom extends ActiveRecord
 
 		foreach ($res as &$v) {
 			$rid = $v["rId"];
-			/*$item = $itemCMD->bindValues([
-				":rid" => $rid,
-			])->queryOne();*/
-			//$v["co"] = $v["co"];
-			//$countCMD->bindValues(["rid" => $rid])->queryScalar();
 			$v["rname"] = $v['rTitle'];
-			//$item["rname"];
 			$v["avatar"] = $v["rLogo"];
 			$v["cid"] = $v['cId'];
 			$v["cnt"] = isset($unreadRoom[$rid]) ? $unreadRoom[$rid] : 0;
-			//$item["cId"];
 			$v["content"] = $v['cContent'];
-			//$item["cContent"];
 			$v["dt"] = AppUtil::miniDate($v['cAddedOn']);
-			//AppUtil::miniDate($item["cAddedOn"]);
 			$v["encryptId"] = '';
 			$v["gid"] = $v["rId"];
 			$v["name"] = $v["rTitle"];
@@ -238,8 +229,6 @@ class ChatRoom extends ActiveRecord
 			$v["uid"] = 0;
 			$v["uni"] = '';
 		}
-		$IDs = array_column($res, 'rId');
-
 		$nextpage = 0;
 		if (count($res) > $pageSize) {
 			$nextpage = $page++;
