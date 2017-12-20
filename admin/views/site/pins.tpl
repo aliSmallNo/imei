@@ -297,8 +297,28 @@
 				util.socket.emit('house', util.uni);
 			});
 
-			util.socket.on("msg", function (resp) {
+			util.socket.on("buzz", function (resp) {
 				switch (resp.tag) {
+					case 'login':
+						if (!resp.uid) {
+							return false;
+						}
+						var row = $('li[data-uni=' + resp.uid + ']');
+						if (row.length) {
+							row.addClass('online').insertBefore('.menu_body li:first');
+							util.upgrade(resp.uid, 'waveup');
+						}
+						break;
+					case 'logout':
+						if (!resp.uid) {
+							return false;
+						}
+						var row = $('li[data-uni=' + resp.uid + ']');
+						if (row.length) {
+							row.removeClass('online');
+						}
+						util.upgrade(resp.uid, 'wavedown');
+						break;
 					case 'users':
 						$.each(resp.users, function () {
 							var id = this;
@@ -309,30 +329,6 @@
 						});
 						break;
 				}
-			});
-
-			util.socket.on("waveup", function (resp) {
-				// console.log(resp);
-				if (!resp.uid) {
-					return false;
-				}
-				var row = $('li[data-uni=' + resp.uid + ']');
-				if (row.length) {
-					row.addClass('online').insertBefore('.menu_body li:first');
-					util.upgrade(resp.uid, 'waveup');
-				}
-			});
-
-			util.socket.on("wavedown", function (resp) {
-				// console.log(resp);
-				if (!resp.uid) {
-					return false;
-				}
-				var row = $('li[data-uni=' + resp.uid + ']');
-				if (row.length) {
-					row.removeClass('online');
-				}
-				util.upgrade(resp.uid, 'wavedown');
 			});
 		},
 		users: function () {
@@ -345,7 +341,7 @@
 				tag: tag,
 				id: uid
 			}, function (resp) {
-				if (resp.code == 0) {
+				if (resp.code < 1) {
 					$('li[data-uni=' + uid + '] .dt').html(resp.data.dt);
 				}
 			}, 'json');
