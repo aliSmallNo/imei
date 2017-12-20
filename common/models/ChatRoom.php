@@ -189,43 +189,30 @@ class ChatRoom extends ActiveRecord
 	public static function rooms($uid, $page = 1, $pageSize = 15)
 	{
 		$conn = AppUtil::db();
-		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
-
-
-		$sql = "SELECT r.*,count(cId) as cnt from im_chat_room as r 
-				join im_chat_room_fella as m on r.rId=m.mRId 
-				left join im_chat_msg as c on c.cGId=m.mRId and c.cAddedBy !=:uid and cReadFlag=0
-				where m.mUId=:uid and m.mDeletedFlag=:del
-				group by r.rId 
-				ORDER BY r.rAddedOn desc $limit ";
-		$res = $conn->createCommand($sql)->bindValues([
-			":uid" => $uid,
-			":del" => ChatRoomFella::DELETE_NORMAL,
-		])->queryAll();
-
-		$sql = "SELECT c.*,uName as rname from im_chat_room as r 
-				join im_chat_msg as c on c.cGId=r.rId 
-				join im_user as u on u.uId =c.cAddedBy
-				where rId =:rid
-				ORDER BY c.cId desc limit 1";
-		$itemCMD = $conn->createCommand($sql);
-
-		$sql = "SELECT count(*)
-				from im_chat_room as r 
-				join im_chat_room_fella as m on r.rId=m.mRId
-				where rId=:rid";
-		$countCMD = $conn->createCommand($sql);
-
+		$limit = " limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
 		$sql = " SELECT r.*,count(m.mUId) as co,c.cId,c.cContent,c.cAddedBy,c.cAddedOn,u.uId,u.uName
 			 from im_chat_room as r 
 			 join im_chat_room_fella as m on r.rId=m.mRId and m.mDeletedFlag=0 
 			 join (select distinct mRId from im_chat_room_fella as f where f.mUId = :uid) as t on t.mRId=r.rId
 			 left join im_chat_msg as c on c.cGId=r.rId and c.cId=r.rLastId
 			 left join im_user as u on u.uId=c.cAddedBy
-			 group by r.rId order by c.cAddedOn desc ";
+			 group by r.rId order by c.cAddedOn desc " . $limit;
 		$res = $conn->createCommand($sql)->bindValues([
 			':uid' => $uid
 		])->queryAll();
+
+		$sql = " select m.cGId , count(m.cId) as cnt
+			 from  im_chat_msg as m  
+			 join im_chat_msg_flag as f on f.fRId=m.cGId and f.fUId=:uid and m.cId > f.fCId
+			 where m.cGId<9999
+			 group by m.cGId";
+		$unread = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid
+		])->queryAll();
+		$unreadRoom = [];
+		foreach ($unread as $row) {
+			$unreadRoom[$row['cGId']] = $row['cnt'];
+		}
 
 		foreach ($res as &$v) {
 			$rid = $v["rId"];
@@ -238,7 +225,7 @@ class ChatRoom extends ActiveRecord
 			//$item["rname"];
 			$v["avatar"] = $v["rLogo"];
 			$v["cid"] = $v['cId'];
-			$v["cnt"] = 0;
+			$v["cnt"] = isset($unreadRoom[$rid]) ? $unreadRoom[$rid] : 0;
 			//$item["cId"];
 			$v["content"] = $v['cContent'];
 			//$item["cContent"];

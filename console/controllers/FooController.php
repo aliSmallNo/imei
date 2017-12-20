@@ -800,11 +800,6 @@ class FooController extends Controller
 		$senderId = User::SERVICE_UID;
 		foreach ($ret as $row) {
 			$uid = $row['uId'];
-			/*$gender = $row['uGender'];
-			$content = 'https://wx.meipo100.com/images/ad/for_male_600.jpg';
-			if ($gender == User::GENDER_FEMALE) {
-				$content = 'https://wx.meipo100.com/images/ad/for_female_600.jpg';
-			}*/
 			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1712201184811.jpg";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
