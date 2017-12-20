@@ -258,7 +258,6 @@
 <section id="comments" data-title="评论">
 	<ul class="comments-items co-ul"></ul>
 </section>
-
 <section id="addMeWx">
 	<div class="nav">
 		<a href="#sme">返回</a>
@@ -388,7 +387,6 @@
 		<div class="action"><a href="javascript:;" class="btn-chat-send">发送</a></div>
 	</div>
 </section>
-
 <div class="m-draw-wrap gift-detail off" style="padding: 0">
 	<div class="pop-up">
 		<div class="g-cats">
@@ -396,7 +394,7 @@
 			<a href="javascript:;" class="on" g-level="normal">普通礼物</a>
 			<a href="javascript:;" g-level="vip">特权礼物</a>
 		</div>
-		<div class="g-items-ul">
+		<div class="g-items-ul ">
 			<div class="swiper-wrapper ul" style="min-height: 21rem">
 
 			</div>
@@ -1434,6 +1432,6 @@
 		document.location.hash = "#slook";
 	}
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/single.js?v=1.8.2']);
+		requirejs(['/js/single.js?v=1.8.3']);
 	});
 </script>

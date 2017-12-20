@@ -869,7 +869,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 							util.beforeDate();
 							break;
 						case 'gift':
-							if ($.inArray(parseInt($("#cUID").val()), [120003, 143807]) >= 0) {
+							if ($.inArray(parseInt($("#cUID").val()), [120003]) >= 0) {
 								GiftUtil.resetGifts();
 								util.toggle(util.giftmenus.hasClass("off"), util.giftmenus);
 								AdvertUtil.giftSwiper();
@@ -2488,8 +2488,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				new Swiper('.g-items-ul', {
 					direction: 'horizontal',
 					loop: true,
-					autoplay: 2000,
-					//如果需要分页器
 					pagination: {
 						el: '.swiper-pagination'
 					}
@@ -2590,6 +2588,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					function (resp) {
 						util.loading = 0;
 						var html = Mustache.render(util.Tmp, resp.data);
+						console.log(html);
 						util.UL.html(html);
 						util.count.html(resp.data.stat.flower);
 					}, 'json');
