@@ -18,11 +18,11 @@
 </div>
 <form action="/site/roomdesc" class="form-inline">
 	<input class="form-control" placeholder="用户名" name="name"
-				 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
+	       value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
 	<input class="form-control" placeholder="用户手机" name="phone"
-				 value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
+	       value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
 	<input class="form-control" type="hidden" name="rid"
-				 value="{{if isset($getInfo['rid'])}}{{$getInfo['rid']}}{{/if}}"/>
+	       value="{{if isset($getInfo['rid'])}}{{$getInfo['rid']}}{{/if}}"/>
 	<button class="btn btn-primary">查询</button>
 </form>
 <div class="row-divider"></div>
@@ -50,36 +50,38 @@
 			</thead>
 			<tbody>
 			{{foreach from=$chatItems item=item}}
-			<tr>
-				<td align="center" class="center">
-					<img src="{{$item.avatar}}"/>
-				</td>
-				<td>
-					{{$item.name}} <br>{{$item.phone}}
-				</td>
-				<td>
-					{{$item.content}}
-				</td>
-				<td>
-					{{$item.addedon}}
-				</td>
-				<td>
-					<a href="javascript:;" data-tag="delete" data-cid="{{$item.cid}}" data-rid="{{$item.rid}}"
-						 data-uid="{{$item.senderid}}"
-						 class="adminOpt btn btn-outline btn-primary btn-xs">删除</a>
-					<a href="javascript:;" data-tag="silent" data-cid="{{$item.cid}}" data-rid="{{$item.rid}}"
-						 data-uid="{{$item.senderid}}"
-						 data-ban="{{$item.ban}}"
-						 class="adminOpt btn btn-outline btn-primary btn-xs">{{if $item.ban}}取消禁言{{else}}禁言{{/if}}</a>
-					<a href="javascript:;" data-tag="out" data-cid="{{$item.cid}}" data-rid="{{$item.rid}}"
-						 data-uid="{{$item.senderid}}"
-						 data-ban="{{$item.ban}}" data-del="{{$item.del}}"
-						 class="adminOpt btn btn-outline btn-primary btn-xs">{{if $item.del}}取消踢出{{else}}踢出{{/if}}</a>
-					<a href="/site/dummyroomchats?rid={{$item.rid}}&uid={{$item.senderid}}" data-tag="chat" data-cid="{{$item.cid}}" data-rid="{{$item.rid}}"
-						 data-uid="{{$item.senderid}}"
-						 class="adminOpt btn btn-outline btn-primary btn-xs">代聊</a>
-				</td>
-			</tr>
+				<tr>
+					<td align="center" class="center">
+						<img src="{{$item.avatar}}"/>
+					</td>
+					<td>
+						{{$item.name}} <br>{{$item.phone}}
+					</td>
+					<td>
+						{{$item.content}}
+					</td>
+					<td>
+						{{$item.addedon}}
+					</td>
+					<td>
+						<a href="javascript:;" data-tag="delete" data-cid="{{$item.cid}}" data-rid="{{$item.rid}}"
+						   data-uid="{{$item.senderid}}"
+						   class="adminOpt btn btn-outline btn-primary btn-xs">删除</a>
+						<a href="javascript:;" data-tag="silent" data-cid="{{$item.cid}}" data-rid="{{$item.rid}}"
+						   data-uid="{{$item.senderid}}"
+						   data-ban="{{$item.ban}}"
+						   class="adminOpt btn btn-outline btn-primary btn-xs">{{if $item.ban}}取消禁言{{else}}禁言{{/if}}</a>
+						<a href="javascript:;" data-tag="out" data-cid="{{$item.cid}}" data-rid="{{$item.rid}}"
+						   data-uid="{{$item.senderid}}"
+						   data-ban="{{$item.ban}}" data-del="{{$item.del}}"
+						   class="adminOpt btn btn-outline btn-primary btn-xs">{{if $item.del}}取消踢出{{else}}踢出{{/if}}</a>
+						{{if !$item.phone}}
+						<a href="/site/dummyroomchats?rid={{$item.rid}}&uid={{$item.senderid}}" data-tag="chat"
+						   data-cid="{{$item.cid}}" data-rid="{{$item.rid}}"
+						   data-uid="{{$item.senderid}}" class="adminOpt btn btn-outline btn-danger btn-xs">代聊</a>
+						{{/if}}
+					</td>
+				</tr>
 			{{/foreach}}
 			</tbody>
 		</table>
@@ -93,7 +95,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-									aria-hidden="true">&times;</span></button>
+							aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title"></h4>
 			</div>
 			<div class="modal-body"></div>
@@ -118,13 +120,13 @@
 		var ban = self.attr("data-ban");
 		var tag = self.attr("data-tag");
 		var del = self.attr("data-del");
-		if($.inArray(tag,["delete","silent","out"])>=0){
+		if ($.inArray(tag, ["delete", "silent", "out"]) >= 0) {
 			console.log(1234);
 			adminOPt(tag, uid, rid, cid, ban)
 		}
 	});
 
-	function adminOPt(tag, uid, rid, cid, ban,del) {
+	function adminOPt(tag, uid, rid, cid, ban, del) {
 		if ($sls.loading) {
 			return;
 		}

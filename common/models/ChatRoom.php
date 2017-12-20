@@ -237,7 +237,7 @@ class ChatRoom extends ActiveRecord
 		return [$res, $nextPage];
 	}
 
-	public static function roomChatList($rId, $condition, $params, $page = 1, $pagesize = 20)
+	public static function roomChatList($rId, $condition, $params, $page = 1, $pagesize = 30)
 	{
 		$conn = AppUtil::db();
 		$params1 = [
