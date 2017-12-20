@@ -306,7 +306,7 @@
 						var row = $('li[data-uni=' + resp.uid + ']');
 						if (row.length) {
 							row.addClass('online').insertBefore('.menu_body li:first');
-							util.upgrade(resp.uid, 'waveup');
+							util.upgrade(resp.uid, resp.tag);
 						}
 						break;
 					case 'logout':
@@ -317,7 +317,7 @@
 						if (row.length) {
 							row.removeClass('online');
 						}
-						util.upgrade(resp.uid, 'wavedown');
+						util.upgrade(resp.uid, resp.tag);
 						break;
 					case 'users':
 						$.each(resp.users, function () {
