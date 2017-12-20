@@ -16,12 +16,15 @@ class Order extends ActiveRecord
 {
 	const ST_DEFAULT = 1;
 	const ST_PAY = 2;
+	const ST_GIVE = 3;
+	const ST_RECEIVE = 9;
 	static $CatDict = [
 		self::ST_DEFAULT => "未支付",
 		self::ST_PAY => "已支付",
+		self::ST_GIVE => "已赠送",
+		self::ST_RECEIVE => "已收到",
 	];
 
-	const ST_REMOVED = 9;
 
 	public static function tableName()
 	{
@@ -72,6 +75,14 @@ class Order extends ActiveRecord
 		}
 	}
 
+	/**
+	 * 我的背包(我收到的礼物 我的背包里礼物 我的功能卡)
+	 * @param $subtag
+	 * @param int $page
+	 * @param int $pagesize
+	 * @return array
+	 * @throws \yii\db\Exception
+	 */
 	public static function QTItems($subtag, $page = 1, $pagesize = 12)
 	{
 		$conn = AppUtil::db();
@@ -109,5 +120,58 @@ class Order extends ActiveRecord
 			}
 		}
 		return [$ret, $nextpage];
+	}
+
+	public static function giveGift($subtag, $sid, $gid, $wx_uid)
+	{
+		$gInfo = Goods::items(["gId" => $gid]);
+		if (!$gInfo) {
+			return [129, '商品错误~'];
+		}
+		$num = 1;
+		$gInfo = $gInfo[0];
+		$amt = $gInfo["price"] * $num;
+		$unit = $gInfo["unit"];
+		$insertData = [
+			"oUId" => $wx_uid, "oGId" => $gid, "oNum" => $num, "oAmount" => $amt
+		];
+
+		$giveTo = function ($sid, $wx_uid, $insertData) {
+			$insertData["oStatus"] = Order::ST_GIVE;
+			$insertData["oPayId"] = $sid;
+			Order::add($insertData);// 送出
+
+			$insertData["oUId"] = $sid;
+			$insertData["oPayId"] = $wx_uid;
+			$insertData["oStatus"] = Order::ST_RECEIVE;
+			Order::add($insertData);// 得到
+		};
+
+		$conn = AppUtil::db();
+		switch ($subtag) {
+			case "bag":
+				$sql = "select sum(case when oStatus=2 then oNum when oStatus=3 then -oNum end) as co from im_order where oGId=:gid";
+				$co = $conn->createCommand($sql)->bindValues([":gid" => $gid])->queryScalar();
+				if ($co <= 0) {
+					return [129, '商品数错误~'];
+				}
+				$giveTo($sid, $wx_uid, $insertData);
+				break;
+			case "normal":
+				$tid = UserTrans::add($wx_uid, 0, UserTrans::CAT_EXCHANGE_CHAT, '', $amt, UserTrans::UNIT_GIFT, $note = '');
+				$insertData["oStatus"] = self::ST_PAY;
+				$insertData["oPayId"] = $tid;
+				Order::add($insertData);// 购买
+
+				$giveTo($sid, $wx_uid, $insertData);
+				break;
+			case "vip":
+				return [129, '您的等级不够~'];
+				break;
+		}
+
+		$msg = '<a href="/wx/shopbag">' . $gInfo["name"] . '</a>';
+		ChatMsg::addChat($wx_uid, $sid, $msg);
+		return [0, '赠送成功~'];
 	}
 }

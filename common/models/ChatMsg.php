@@ -37,6 +37,9 @@ class ChatMsg extends ActiveRecord
 
 	const CHAT_COST = 20;
 
+	const GIVE_GIFT_CONTENT = '送给你一个神秘礼物，快去我的背包查看吧~';
+
+
 	public static function tableName()
 	{
 		return '{{%chat_msg}}';

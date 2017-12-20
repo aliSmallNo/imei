@@ -862,8 +862,8 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 							util.beforeDate();
 							break;
 						case 'gift':
-							//util.toggle(util.giftmenus.hasClass("off"), util.giftmenus);
-							//AdvertUtil.giftSwiper();
+							util.toggle(util.giftmenus.hasClass("off"), util.giftmenus);
+							AdvertUtil.giftSwiper();
 							break;
 					}
 				});
@@ -2522,13 +2522,18 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 				$.post('/api/gift',
 					{
 						tag: 'givegift',
+						subtag: util.tag,
 						gid: util.gid,
 						uid: ChatUtil.sid,
 					},
 					function (resp) {
 						util.loading = 0;
-
-						util.count.html(resp.data.stat.flower);
+						if (resp.code == 0) {
+							ChatUtil.toggle(ChatUtil.giftmenus.hasClass("off"), ChatUtil.giftmenus);
+							util.count.html(resp.data.stat.flower);
+						} else {
+							alpha.toast(resp.msg);
+						}
 					}, 'json');
 			},
 			loadGifts: function () {
