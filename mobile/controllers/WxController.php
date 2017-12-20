@@ -753,6 +753,7 @@ class WxController extends BaseController
 		}
 		$expInfo = UserTag::getExp($this->user_id);
 		return self::renderPage("single.tpl", [
+			'uId' => $uId,
 			'noReadFlag' => $noReadFlag,
 			'expInfo' => $expInfo,
 			'nickname' => $nickname,
@@ -2131,7 +2132,7 @@ class WxController extends BaseController
 				'prop' => $prop
 			],
 			'terse',
-			'千寻商城',
+			'我的背包',
 			'bg-color');
 	}
 

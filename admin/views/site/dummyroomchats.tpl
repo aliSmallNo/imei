@@ -40,7 +40,9 @@
 </div>
 <div class="message_area">
 	<h5>密聊记录</h5>
-	<ul class="message_list" id="listContainer"></ul>
+	<ul class="message_list" id="listContainer">
+
+	</ul>
 </div>
 <div class="row-divider">&nbsp;</div>
 

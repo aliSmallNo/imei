@@ -2344,7 +2344,7 @@ class ApiController extends Controller
 			case "order":
 				$subtag = self::postParam("subtag");
 				$page = self::postParam("page");
-				list($ret, $nextpage) = Order::QTItems($subtag, $page);
+				list($ret, $nextpage) = Order::QTItems($wx_uid, $subtag, $page);
 				return self::renderAPI(0, '', [
 					'items' => $ret,
 					'nextpage' => $nextpage,

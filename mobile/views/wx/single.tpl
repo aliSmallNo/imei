@@ -350,7 +350,7 @@
 			<img src="/images/top_date.png">
 			<div>帮我约TA</div>
 		</a>
-		<a href="javascript:;" data-tag="gift" style="display: none">
+		<a href="javascript:;" data-tag="gift">
 			<img src="/images/top_gift.png">
 			<div>送TA礼物</div>
 		</a>
@@ -898,6 +898,7 @@
 <input type="hidden" id="cUNI" value="{{$uni}}">
 <input type="hidden" id="cChatId" value="{{$chatId}}">
 <input type="hidden" id="cChatTitle" value="{{$chatTitle}}">
+<input type="hidden" id="cUID" value="{{$uId}}">
 <script>
 	var mProvinces = {{$provinces}};
 	var catDes = {{$catDes}};
@@ -1120,7 +1121,7 @@
 		<div class="content read{[readflag]}">
 			<a href="javascript:;" class="j-content-wrap">
 				{[#image]}<img src="{[.]}">{[/image]}
-				{[^image]}{[content]}{[/image]}
+				{[^image]}{[&content]}{[/image]}
 			</a>
 		</div>
 	</li>
@@ -1418,7 +1419,8 @@
 		<li href="javascript:;" data-id="{[id]}" data-price="{[price]}" data-unit="{[unit]}">
 			<a href="javascript:;">
 				<div><img src="{[image]}" alt=""></div>
-				<p><span>{[price]}</span><img src="/images/ico_rose_yellow.png" alt=""></p>
+				{[#bagFlag]}<p><span>X {[co]}</span></p>{[/bagFlag]}
+				{[^bagFlag]}<p><span>{[price]}</span><img src="/images/ico_rose_yellow.png" alt=""></p>{[/bagFlag]}
 				<h5>{[name]}</h5>
 			</a>
 		</li>
@@ -1432,6 +1434,6 @@
 		document.location.hash = "#slook";
 	}
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/single.js?v=1.7.6']);
+		requirejs(['/js/single.js?v=1.7.9']);
 	});
 </script>
