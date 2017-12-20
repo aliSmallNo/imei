@@ -171,6 +171,7 @@ class Order extends ActiveRecord
 				$giveTo($sid, $wx_uid, $insertData);
 				break;
 			case "vip":
+				// $expInfo = UserTag::getExp($v["uId"]);
 				return [129, '您的等级不够~'];
 				break;
 		}
