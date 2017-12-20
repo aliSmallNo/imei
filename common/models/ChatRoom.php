@@ -319,4 +319,17 @@ class ChatRoom extends ActiveRecord
 
 	}
 
+	public static function roomStat($roomId)
+	{
+		$conn = AppUtil::db();
+		$sql = "select 
+			sum(case when uPhone then 1 end) as member,
+			sum(case when uPhone=0 then 1 end) as xin,
+			sum(case when uNote='dummy' then 1 end) as dummy
+			from `im_chat_room_fella` as m
+			join im_user as u on u.uId=m.mUId 
+			where mRId=$roomId";
+		return  $conn->createCommand($sql)->queryOne();
+	}
+
 }
