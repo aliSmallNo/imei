@@ -1,5 +1,5 @@
-requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
-	function ($, alpha, Mustache, Swiper, io) {
+requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
+	function ($, alpha, Mustache, Swiper, io, layer) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -2520,6 +2520,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 					var self = $(this);
 					self.closest(".g-items-ul").find("li").removeClass("on");
 					self.closest("li").addClass("on");
+					if (util.tag != 'bag') {
+						util.price = self.closest("li").attr("data-price");
+					}
 				});
 				$(document).on(kClick, ".g-bot-btn a", function () {
 					var self = $(".g-items-ul").find("li.on");
@@ -2528,7 +2531,21 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 						alpha.toast("请先选择礼物");
 						return;
 					}
+					if (util.tag != 'bag' && util.price > util.count.html().trim()) {
+						util.notMoreRose();
+						return;
+					}
 					util.giveGift();
+				});
+			},
+			notMoreRose: function () {
+				layer.open({
+					content: '您的媒瑰花数量不足~'
+					, btn: ['去充媒瑰花', '不要']
+					, yes: function (index) {
+						location.href = "/wx/sw";
+						layer.close(index);
+					}
 				});
 			},
 			giveGift: function () {
@@ -2549,6 +2566,8 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket'],
 						if (resp.code == 0) {
 							ChatUtil.toggle(ChatUtil.giftmenus.hasClass("off"), ChatUtil.giftmenus);
 							util.count.html(resp.data.stat.flower);
+						} else if (resp.code == 128) {
+							util.notMoreRose();
 						} else {
 							alpha.toast(resp.msg);
 						}
