@@ -415,7 +415,7 @@ class ChatMsg extends ActiveRecord
 	{
 		$content = trim($content);
 		$uInfo = User::findOne(["uId" => $senderId])->toArray();
-		if (strpos($uInfo["uOpenId"], User::OPENID_PREFIX) !== 0 && !$uInfo["uPhone"] && self::countMsgByUid($senderId, $rId, $conn) >= 3) {
+		if (strpos($uInfo["uOpenId"], User::OPENID_PREFIX) === 0 && !$uInfo["uPhone"] && self::countMsgByUid($senderId, $rId, $conn) >= 3) {
 			return [128, '还没注册，去注册吧！', []];
 		}
 		if (!$content) {
