@@ -869,7 +869,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 							util.beforeDate();
 							break;
 						case 'gift':
-							if ($("#cUID").val() == 120003) {
+							if ($.inArray(parseInt($("#cUID").val()), [120003, 143807]) >= 0) {
 								GiftUtil.resetGifts();
 								util.toggle(util.giftmenus.hasClass("off"), util.giftmenus);
 								AdvertUtil.giftSwiper();
@@ -2396,6 +2396,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				});
 			},
 			broadcast: function (info) {
+				console.log('broadcast');
 				var util = this;
 				if (info.items) {
 					info.items.dir = 'left';
@@ -2566,6 +2567,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						if (resp.code == 0) {
 							ChatUtil.toggle(ChatUtil.giftmenus.hasClass("off"), ChatUtil.giftmenus);
 							util.count.html(resp.data.stat.flower);
+							NoticeUtil.broadcast(resp.data);
 						} else if (resp.code == 128) {
 							util.notMoreRose();
 						} else {
@@ -2574,9 +2576,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					}, 'json');
 			},
 			resetGifts: function () {
-
 				$(".g-cats a[g-level=normal]").trigger(kClick);
-
 			},
 			loadGifts: function () {
 				var util = this;
