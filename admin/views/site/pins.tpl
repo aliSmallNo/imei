@@ -186,14 +186,16 @@
 		</div>
 		<ul class="menu_body">
 			{{foreach from=$items key=k item=user}}
-			<li class="" data-lat="{{$user.lat}}" data-lng="{{$user.lng}}" data-idx="{{$k+1}}" data-uni="{{$user.uni}}">
-				<div class="seq">{{$k+1}}.</div>
-				<div class="avatar"><img src="{{$user.thumb}}" alt="" class="{{$user.mark}}" data-mark="{{$user.mark}}"></div>
-				<div class="content">
-					<div class="name"><b>{{$user.phone}}</b> {{$user.name}}</div>
-					<div class="dt">{{$user.dt}}</div>
-				</div>
-			</li>
+				<li class="" data-lat="{{$user.lat}}" data-lng="{{$user.lng}}" data-idx="{{$k+1}}"
+				    data-uni="{{$user.uni}}">
+					<div class="seq">{{$k+1}}.</div>
+					<div class="avatar"><img src="{{$user.thumb}}" alt="" class="{{$user.mark}}"
+					                         data-mark="{{$user.mark}}"></div>
+					<div class="content">
+						<div class="name"><b>{{$user.phone}}</b> {{$user.name}}</div>
+						<div class="dt">{{$user.dt}}</div>
+					</div>
+				</li>
 			{{/foreach}}
 		</ul>
 	</div>
@@ -228,7 +230,7 @@
 		}
 	});
 
-	var Markers ={};
+	var Markers = {};
 
 	function switchMarkers(isShow, items) {
 		var links = items;
@@ -284,41 +286,59 @@
 
 	var NoticeUtil = {
 		socket: null,
-		uni: 0,
+		uni: $('#cUNI').val(),
 		timer: 0,
 		board: $('.m-notice'),
 		list: $('.menu_body'),
 		init: function () {
 			var util = this;
-			util.uni = $('#cUNI').val();
-			util.socket = io.connect('https://nd.meipo100.com');
+			util.socket = io('https://nd.meipo100.com/house');
 			util.socket.on('connect', function () {
 				util.socket.emit('house', util.uni);
 			});
 
+			util.socket.on("msg", function (resp) {
+				switch (resp.tag) {
+					case 'users':
+						$.each(resp.users, function () {
+							var id = this;
+							var row = $('li[data-uni=' + id + ']');
+							if (row.length) {
+								row.addClass('online').insertBefore('.menu_body li:first');
+							}
+						});
+						break;
+				}
+			});
+
 			util.socket.on("waveup", function (resp) {
 				// console.log(resp);
-				util.list.find('li').removeClass('online');
-				$.each(resp.house, function () {
-					var id = this;
-					$('li[data-uni=' + id + ']').addClass('online');
-				});
-				if (resp.uid) {
-					var row = $('li[data-uni=' + resp.uid + ']');
-					if (row.length) {
-						row.insertBefore('.menu_body li:first');
-					}
+				if (!resp.uid) {
+					return false;
+				}
+				var row = $('li[data-uni=' + resp.uid + ']');
+				if (row.length) {
+					row.addClass('online').insertBefore('.menu_body li:first');
 					util.upgrade(resp.uid, 'waveup');
 				}
 			});
 
 			util.socket.on("wavedown", function (resp) {
 				// console.log(resp);
-				if (resp.uid) {
-					$('li[data-uni=' + resp.uid + ']').removeClass('online');
-					util.upgrade(resp.uid, 'wavedown');
+				if (!resp.uid) {
+					return false;
 				}
+				var row = $('li[data-uni=' + resp.uid + ']');
+				if (row.length) {
+					row.removeClass('online');
+				}
+				util.upgrade(resp.uid, 'wavedown');
 			});
+		},
+		users: function () {
+			var util = this;
+			util.socket.emit('users');
+			console.log('users sent');
 		},
 		upgrade: function (uid, tag) {
 			$.post('/api/user', {
@@ -335,6 +355,10 @@
 	$(function () {
 		switchMarkers(1);
 		NoticeUtil.init();
+
+		setTimeout(function () {
+			NoticeUtil.users();
+		}, 3600);
 	});
 
 </script>
