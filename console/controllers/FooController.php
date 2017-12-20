@@ -805,7 +805,7 @@ class FooController extends Controller
 			if ($gender == User::GENDER_FEMALE) {
 				$content = 'https://wx.meipo100.com/images/ad/for_female_600.jpg';
 			}*/
-			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1712051178526.jpg";
+			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1712201184811.jpg";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
 			QueueUtil::loadJob('templateMsg',
