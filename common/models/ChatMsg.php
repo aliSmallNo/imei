@@ -374,6 +374,7 @@ class ChatMsg extends ActiveRecord
 				'ban' => intval($v['mBanFlag']),
 				'del' => isset($v['del']) ? intval($v['del']) : 0,
 				'eid' => AppUtil::encrypt($v['uId']),
+				'aName' => $v['aName']
 			];
 		}
 		return $res;
@@ -416,7 +417,7 @@ class ChatMsg extends ActiveRecord
 		])->queryScalar();
 	}
 
-	public static function addRoomChat($rId, $senderId, $content, $conn = null, $debug = false)
+	public static function addRoomChat($rId, $senderId, $content, $admin_id = 0, $conn = null, $debug = false)
 	{
 		$content = trim($content);
 		$uInfo = User::findOne(["uId" => $senderId])->toArray();
@@ -456,12 +457,13 @@ class ChatMsg extends ActiveRecord
 		])->queryScalar();
 		$cnt = intval($cnt);
 
-		$sql = 'insert into im_chat_msg(cGId,cContent,cAddedBy)
-			VALUES(:rid,:content,:uid)';
+		$sql = 'insert into im_chat_msg(cGId,cContent,cAddedBy,cAdminId)
+			VALUES(:rid,:content,:uid,:aid)';
 		$conn->createCommand($sql)->bindValues([
 			':rid' => $rId,
 			':content' => $content,
 			':uid' => $senderId,
+			':aid' => $admin_id,
 		])->execute();
 		$cId = $conn->getLastInsertID();
 

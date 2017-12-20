@@ -642,7 +642,7 @@ class ApiController extends Controller
 				$conn = AppUtil::db();
 				$res = ChatRoomFella::addMember($rid, $uids, $conn);
 				foreach ($uids as $uid) {
-					ChatMsg::addRoomChat($rid, $uid, "hi,大家好", $conn);
+					ChatMsg::addRoomChat($rid, $uid, "hi,大家好", $this->admin_id, $conn);
 				}
 				$code = $res ? 0 : 129;
 				return self::renderAPI($code, '', [
@@ -653,8 +653,9 @@ class ApiController extends Controller
 				$rid = self::postParam('rid');
 				$uid = self::postParam('uid');
 				$text = self::postParam('text');
+
 				if ($text) {
-					list($code, $msg, $info) = ChatMsg::addRoomChat($rid, $uid, $text);
+					list($code, $msg, $info) = ChatMsg::addRoomChat($rid, $uid, $text, $this->admin_id);
 					return self::renderAPI($code, $msg, $info);
 				}
 		}

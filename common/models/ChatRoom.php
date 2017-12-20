@@ -250,11 +250,12 @@ class ChatRoom extends ActiveRecord
 			$params1 = array_merge($params1, $params);
 		}
 		$limit = " limit " . ($page - 1) * $pagesize . "," . ($pagesize + 1);
-		$sql = "SELECT c.* ,u.*,m.mBanFlag,m.mDeletedFlag as del
+		$sql = "SELECT c.* ,u.*,m.mBanFlag,m.mDeletedFlag as del,a.aName
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
 				join im_chat_room_fella as m on m.mUId=c.cAddedBy  and m.mRId=:rid
+				left join im_admin as a on a.aId=c.cAdminId
 				where c.cGId=:rid and  c.cDeletedFlag=:del  $strCriteria
 				order by cAddedon desc $limit ";
 		$chatlist = $conn->createCommand($sql)->bindValues($params1)->queryAll();
