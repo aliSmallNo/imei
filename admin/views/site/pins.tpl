@@ -355,13 +355,15 @@
 	};
 
 	$(function () {
-		switchMarkers(1);
 
 		NoticeUtil.init();
 
 		setTimeout(function () {
 			NoticeUtil.users();
 		}, 4000);
+
+		switchMarkers(1);
+
 	});
 
 </script>
