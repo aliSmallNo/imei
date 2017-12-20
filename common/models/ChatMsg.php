@@ -830,23 +830,30 @@ class ChatMsg extends ActiveRecord
 		return $messages;
 	}
 
-	public
-	static function roomChatRead($uid, $rid, $conn = '')
+	public static function roomChatRead($uid, $rid, $conn = null)
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$sql = 'update im_chat_msg  
-				set cReadFlag=1,cReadOn=now() 
-				WHERE cReadFlag=0 AND cAddedBy != :uid and cGId=:rid';
+		$sql = "delete from im_chat_msg_flag WHERE fRId=:rid AND fUId=:uid";
 		$conn->createCommand($sql)->bindValues([
-			':rid' => $rid,
 			':uid' => $uid,
+			':rid' => $rid,
 		])->execute();
+
+		$sql = " insert into im_chat_msg_flag(fRId,fCId,fUId)
+ 			select rId,rLastId,:uid 
+ 			from im_chat_room as r 
+ 			where rId=:rid
+ 			and not exists(select 1 from im_chat_msg_flag as f where f.fRId=r.rId and r.rLastId=f.fCId and fUId=:uid)";
+		$conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':rid' => $rid,
+		])->execute();
+
 	}
 
-	public
-	static function read($uId, $subUId, $conn = '')
+	public static function read($uId, $subUId, $conn = '')
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -863,8 +870,7 @@ class ChatMsg extends ActiveRecord
 		])->execute();
 	}
 
-	public
-	static function contacts($uId, $page = 1, $pageSize = 20)
+	public static function contacts($uId, $page = 1, $pageSize = 20)
 	{
 		$conn = AppUtil::db();
 		$limit = ' LIMIT ' . ($page - 1) * $pageSize . ',' . ($pageSize + 1);

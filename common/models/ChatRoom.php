@@ -10,7 +10,6 @@ namespace common\models;
 
 
 use common\utils\AppUtil;
-use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
 
 class ChatRoom extends ActiveRecord
@@ -191,6 +190,8 @@ class ChatRoom extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		$limit = "limit " . ($page - 1) * $pageSize . "," . ($pageSize + 1);
+
+
 		$sql = "SELECT r.*,count(cId) as cnt from im_chat_room as r 
 				join im_chat_room_fella as m on r.rId=m.mRId 
 				left join im_chat_msg as c on c.cGId=m.mRId and c.cAddedBy !=:uid and cReadFlag=0
@@ -215,18 +216,34 @@ class ChatRoom extends ActiveRecord
 				where rId=:rid";
 		$countCMD = $conn->createCommand($sql);
 
+		$sql = " SELECT r.*,count(m.mUId) as co,c.cId,c.cContent,c.cAddedBy,c.cAddedOn,u.uId,u.uName
+			 from im_chat_room as r 
+			 join im_chat_room_fella as m on r.rId=m.mRId and m.mDeletedFlag=0 
+			 join (select distinct mRId from im_chat_room_fella as f where f.mUId = :uid) as t on t.mRId=r.rId
+			 left join im_chat_msg as c on c.cGId=r.rId and c.cId=r.rLastId
+			 left join im_user as u on u.uId=c.cAddedBy
+			 group by r.rId order by c.cAddedOn desc ";
+		$res = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid
+		])->queryAll();
+
 		foreach ($res as &$v) {
 			$rid = $v["rId"];
-			$item = $itemCMD->bindValues([
+			/*$item = $itemCMD->bindValues([
 				":rid" => $rid,
-			])->queryOne();
-			$v["co"] = $countCMD->bindValues(["rid" => $rid])->queryScalar();
-			$v["rname"] = $item["rname"];
-
+			])->queryOne();*/
+			//$v["co"] = $v["co"];
+			//$countCMD->bindValues(["rid" => $rid])->queryScalar();
+			$v["rname"] = $v['rTitle'];
+			//$item["rname"];
 			$v["avatar"] = $v["rLogo"];
-			$v["cid"] = $item["cId"];
-			$v["content"] = $item["cContent"];
-			$v["dt"] = AppUtil::miniDate($item["cAddedOn"]);
+			$v["cid"] = $v['cId'];
+			$v["cnt"] = 0;
+			//$item["cId"];
+			$v["content"] = $v['cContent'];
+			//$item["cContent"];
+			$v["dt"] = AppUtil::miniDate($v['cAddedOn']);
+			//AppUtil::miniDate($item["cAddedOn"]);
 			$v["encryptId"] = '';
 			$v["gid"] = $v["rId"];
 			$v["name"] = $v["rTitle"];
@@ -234,6 +251,8 @@ class ChatRoom extends ActiveRecord
 			$v["uid"] = 0;
 			$v["uni"] = '';
 		}
+		$IDs = array_column($res, 'rId');
+
 		$nextpage = 0;
 		if (count($res) > $pageSize) {
 			$nextpage = $page++;
@@ -323,24 +342,5 @@ class ChatRoom extends ActiveRecord
 		return [$res, $rlastId];
 
 	}
-
-	public static function PushTempMsg($rid, $uid)
-	{
-		$conn = AppUtil::db();
-		$sql = "select m.mUID
-				from im_chat_room as r
-				left join im_chat_room_fella as m on m.mRId=r.rId
-				where m.mUId!=:uid AND rId = :rid and m.mDeletedFlag=:del";
-		$IDs = $conn->createCommand($sql)->bindValues([
-			":rid" => $rid,
-			":uid" => $uid,
-			":del" => ChatRoomFella::DELETE_NORMAL,
-		])->queryColumn();
-		foreach ($IDs as $id) {
-			WechatUtil::templateMsg(WechatUtil::NOTICE_ROOM_CHAT, $id,
-				'你有群聊消息待查看', '点击下方详情查看吧~', $uid);
-		}
-	}
-
 
 }
