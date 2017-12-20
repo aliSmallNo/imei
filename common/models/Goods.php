@@ -56,4 +56,43 @@ class Goods extends ActiveRecord
 		return $conn->createCommand($sql)->bindValues($params)->queryAll();
 
 	}
+
+	public static function getGiftList($subtag, $uid)
+	{
+		$ret = [];
+		$conn = AppUtil::db();
+		$sql = "select gId as id,gCategory as cat,gName as `name`,gImage as image,gPrice as price,gUnit as unit
+				 FROM im_goods 
+				 WHERE gId>0 and gCategory=:cat and gStatus=:st";
+		$CMD = $conn->createCommand($sql);
+		switch ($subtag) {
+			case "normal":
+				$res = $CMD->bindValues([
+					':cat' => Goods::CAT_STUFF,
+					':st' => 1,
+				])->queryAll();
+				break;
+			case "vip":
+				$res = $CMD->bindValues([
+					':cat' => Goods::CAT_PREMIUM,
+					':st' => 1,
+				])->queryAll();
+				break;
+			case "bag":
+				$sql = "select gId as id,gCategory as cat,gName as `name`,gImage as image,gPrice as price,gUnit as unit
+						FROM im_goods as g join im_order as o on o.`oGId`=g.gId 
+						where o.oStatus=:st and oUId=:uid and g.gCategory in (110,120)";
+				$res = $conn->createCommand($sql)->bindValues([
+					":uid" => $uid,
+					":st" => Order::ST_PAY,
+				])->queryAll();
+				break;
+		}
+		if ($res) {
+			foreach ($res as $k => $v) {
+				$ret[floor($k / 8)]["items"][] = $v;
+			}
+		}
+		return $ret;
+	}
 }

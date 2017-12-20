@@ -9080,6 +9080,149 @@ ul.co-ul {
       color: #777;
       padding: 0.5rem 0; }
 
+.pop-up {
+  background: rgba(7, 7, 10, 0.85); }
+  .pop-up .g-cats {
+    display: flex;
+    color: #fff;
+    font-size: 1.2rem;
+    text-align: center;
+    border-bottom: 1px solid #616161; }
+    .pop-up .g-cats a {
+      flex: 0 0 25%;
+      font-size: 1rem;
+      color: #fff;
+      padding: 1rem 0;
+      position: relative; }
+      .pop-up .g-cats a.on {
+        color: #eb4064; }
+      .pop-up .g-cats a:after {
+        content: "";
+        position: absolute;
+        width: 0.1rem;
+        height: 1rem;
+        background: #616161;
+        right: 0;
+        top: 1.2rem; }
+      .pop-up .g-cats a:last-child:after {
+        width: 0; }
+  .pop-up .g-items-ul ul {
+    overflow: hidden;
+    flex-shrink: 0;
+    width: 100%; }
+    .pop-up .g-items-ul ul li {
+      width: 25%;
+      float: left; }
+      .pop-up .g-items-ul ul li.on {
+        background: url("../images/ico_gift_choose.png") no-repeat center center;
+        background-size: 100% 100%; }
+      .pop-up .g-items-ul ul li a {
+        display: block;
+        padding: 0.5rem;
+        border-right: 1px solid #616161;
+        border-bottom: 1px solid #616161; }
+        .pop-up .g-items-ul ul li a div img {
+          width: 5rem;
+          height: 5rem;
+          display: block;
+          margin: 0 auto; }
+        .pop-up .g-items-ul ul li a p {
+          text-align: center;
+          padding: 0.5rem; }
+          .pop-up .g-items-ul ul li a p span {
+            font-size: 1.2rem;
+            color: #eee100; }
+          .pop-up .g-items-ul ul li a p img {
+            width: 1.5rem;
+            height: 1.5rem;
+            position: relative;
+            top: 0.2rem; }
+        .pop-up .g-items-ul ul li a h5 {
+          font-size: 0.8rem;
+          text-align: center;
+          color: rgba(255, 255, 255, 0.7); }
+  .pop-up .g-bot-items {
+    display: flex;
+    padding: 1rem; }
+    .pop-up .g-bot-items .g-bot-rose {
+      flex: 1;
+      color: #eee100;
+      font-size: 1rem; }
+      .pop-up .g-bot-items .g-bot-rose img {
+        width: 1.5rem;
+        height: 1.5rem;
+        position: relative;
+        top: 0.3rem; }
+    .pop-up .g-bot-items .g-bot-btn a {
+      color: #fff;
+      background: #eb4064;
+      padding: 0.5rem 2rem;
+      border-radius: 3rem;
+      font-size: 1.1rem;
+      display: inline-block; }
+
+.bag-top-bar {
+  display: flex;
+  border-bottom: 1px solid #eee;
+  background: #fff;
+  padding: 0.5rem 0; }
+  .bag-top-bar a {
+    flex: 1;
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 1rem 0;
+    border-right: 1px solid #eee;
+    position: relative; }
+    .bag-top-bar a:last-child {
+      border: none; }
+    .bag-top-bar a span {
+      position: relative; }
+    .bag-top-bar a.on {
+      color: #d15d84; }
+      .bag-top-bar a.on span:after {
+        content: "";
+        position: absolute;
+        width: 6rem;
+        height: 0.2rem;
+        background: #d15d84;
+        left: -0.5rem;
+        bottom: -1.6rem; }
+
+.bag-content {
+  overflow: hidden; }
+  .bag-content li {
+    width: 33.3%;
+    background: #fff;
+    margin-bottom: 1rem;
+    float: left;
+    padding: 1rem 0; }
+    .bag-content li div {
+      padding: 0.5rem; }
+      .bag-content li div img {
+        margin: 0 auto;
+        display: block;
+        width: 4rem;
+        height: 6rem; }
+      .bag-content li div a {
+        background: #d15d84;
+        color: #fff;
+        font-size: 1rem;
+        display: block;
+        padding: 0.5rem 0;
+        text-align: center;
+        border-radius: 0.5rem;
+        margin: 0 1.5rem; }
+    .bag-content li p {
+      font-size: 1.2rem;
+      text-align: center;
+      font-weight: 300; }
+    .bag-content li em {
+      font-size: 0.8rem;
+      text-align: center;
+      display: block;
+      color: #777;
+      padding: 0.5rem 0; }
+
 .m-draw-wrap.gift-detail {
   padding: 0; }
 

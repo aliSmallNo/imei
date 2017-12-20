@@ -2028,7 +2028,6 @@ class WxController extends BaseController
 		} elseif (!$isMember && $roomInfo["rLimit"] <= $count) {
 			$otherRoom = $roomInfo['backup'];
 		}
-
 		$adminUId = $roomInfo["rAdminUId"];
 		return self::renderPage("groom.tpl",
 			[

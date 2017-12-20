@@ -69,6 +69,10 @@ class ChatRoomFella extends ActiveRecord
 		};
 		if (is_array($uIds)) {
 			foreach ($uIds as $uid) {
+				$roomInfo = ChatRoom::getRoom($rId, $uid);
+				if ($roomInfo["cnt"] + 1 > $roomInfo["rLimit"]) {
+					break;
+				}
 				$excute($addOneCMD, $uid, $rId);
 			}
 		} else {

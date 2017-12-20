@@ -613,7 +613,7 @@ class ApiController extends Controller
 
 				]);
 				break;
-			case "dummysend":
+			case "dummysend": // 代聊发送消息
 				$rid = self::postParam('rid');
 				$uid = self::postParam('uid');
 				$text = self::postParam('text');

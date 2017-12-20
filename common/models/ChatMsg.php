@@ -366,7 +366,7 @@ class ChatMsg extends ActiveRecord
 				'uni' => $v['uUniqid'],
 				'senderid' => $v['uId'],
 				'ban' => intval($v['mBanFlag']),
-				'del' => isset($v['del']) ? $v['del'] : 0,
+				'del' => isset($v['del']) ? intval($v['del']) : 0,
 				'eid' => AppUtil::encrypt($v['uId']),
 			];
 		}

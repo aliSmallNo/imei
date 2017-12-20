@@ -350,7 +350,7 @@
 			<img src="/images/top_date.png">
 			<div>帮我约TA</div>
 		</a>
-		<a href="javascript:;" data-tag="gift">
+		<a href="javascript:;" data-tag="gift" style="display: none">
 			<img src="/images/top_gift.png">
 			<div>送TA礼物</div>
 		</a>
@@ -389,9 +389,29 @@
 	</div>
 </section>
 
-<div class="m-draw-wrap gift-detail off">
+<div class="m-draw-wrap gift-detail off" style="padding: 0">
 	<div class="pop-up">
+		<div class="g-cats">
+			<a href="javascript:;" g-level="bag">我的背包</a>
+			<a href="javascript:;" class="on" g-level="normal">普通礼物</a>
+			<a href="javascript:;" g-level="vip">特权礼物</a>
+		</div>
+		<div class="g-items-ul">
+			<div class="swiper-wrapper ul" style="min-height: 21rem">
 
+			</div>
+			<div class="swiper-pagination"></div>
+		</div>
+		<div class="g-bot-items">
+			<div class="g-bot-rose">
+				<span>充值&nbsp;&nbsp;&nbsp;</span>
+				<span class="count">0</span>
+				<span><img src="/images/ico_rose_yellow.png" alt=""></span>
+			</div>
+			<div class="g-bot-btn">
+				<a href="javascript:;">赠送</a>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -1391,12 +1411,27 @@
 		<a href="javascript:;" class="date-close"></a>
 	</div>
 </script>
+<script type="text/template" id="tpl_gifts">
+	{[#data]}
+	<ul>
+		{[#items]}
+		<li href="javascript:;" data-id="{[id]}" data-price="{[price]}" data-unit="{[unit]}">
+			<a href="javascript:;">
+				<div><img src="{[image]}" alt=""></div>
+				<p><span>{[price]}</span><img src="/images/ico_rose_yellow.png" alt=""></p>
+				<h5>{[name]}</h5>
+			</a>
+		</li>
+		{[/items]}
+	</ul>
+	{[/data]}
+</script>
 <script src="/assets/js/require.js"></script>
 <script>
 	if (document.location.hash === "" || document.location.hash === "#") {
 		document.location.hash = "#slook";
 	}
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/single.js?v=1.7.4']);
+		requirejs(['/js/single.js?v=1.7.5']);
 	});
 </script>
