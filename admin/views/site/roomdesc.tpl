@@ -18,9 +18,9 @@
 </style>
 <div class="row">
 	<h4>聊天详细
-		<span> ( 会员: {{$stat.member}}</span>
-	 <span>新人: {{$stat.xin}}</span>
-	 <span>稻草人: {{$stat.dummy}} ) </span>
+		<span> ( 会员: {{if $stat.member}}{{$stat.member}}{{else}}0{{/if}}</span>
+	 <span>新人: {{if $stat.xin}}{{$stat.xin}}{{else}}0{{/if}}</span>
+	 <span>稻草人: {{if $stat.dummy}}{{$stat.dummy}}{{else}}0{{/if}} ) </span>
 	</h4>
 </div>
 <form action="/site/roomdesc" class="form-inline">
