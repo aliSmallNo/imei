@@ -226,10 +226,10 @@ class UserBuzz extends ActiveRecord
 				break;
 			case '晚安':
 			case 'good night':
-				/*$mediaId = 'GfJsRJj-kJwOJMdX7eK9HJ40UIElbg_8_7dlYygpmEk';
+				$mediaId = 'GfJsRJj-kJwOJMdX7eK9HCZX6j-ZGWE8ZJ-oD5QdIyA';
 				NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, $fromUsername)->sendMedia($mediaId);
-				$resp = '';*/
-				$txt = "我承认我想结婚了。
+				$resp = '';
+				/*$txt = "我承认我想结婚了。
 
 想和你养一只猫咪和一只大狗；想吃你亲手为我做的午餐；想在你做饭的时候从你身后抱住你。
 
@@ -238,7 +238,7 @@ class UserBuzz extends ActiveRecord
 我未来的每个场景，都想有你。
 
 晚安，世界和你 🌙";
-				$resp = self::textMsg($fromUsername, $toUsername, $txt);
+				$resp = self::textMsg($fromUsername, $toUsername, $txt);*/
 				break;
 			case '任务':
 				$txt = "小任务详情：
