@@ -352,13 +352,13 @@
 		<select class="form-control" name="sub_status">
 			<option value="">-=请选择=-</option>
 			{{foreach from=$subStatus key=k item=item}}
-			<option value="{{$k}}" {{if $k==$sub_status}}selected{{/if}}>{{$item}}</option>
+				<option value="{{$k}}" {{if $k==$sub_status}}selected{{/if}}>{{$item}}</option>
 			{{/foreach}}
 		</select>
 		<select class="form-control" name="user_type">
 			<option value="">-=所有用户=-</option>
 			{{foreach from=$userTypes key=k item=item}}
-			<option value="{{$k}}" {{if $k==$userType}}selected{{/if}}>{{$item}}</option>
+				<option value="{{$k}}" {{if $k==$userType}}selected{{/if}}>{{$item}}</option>
 			{{/foreach}}
 		</select>
 		<button class="btn btn-primary">查询</button>
@@ -374,24 +374,24 @@
 	</form>
 </div>
 {{if $criteriaNote}}
-<div class="row">
-	<div class="col-lg-7">
-		<div class=" alert alert-success alert-dismissable">
-			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">清除</button>
-			搜索{{$criteriaNote}}，结果如下
+	<div class="row">
+		<div class="col-lg-7">
+			<div class=" alert alert-success alert-dismissable">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">清除</button>
+				搜索{{$criteriaNote}}，结果如下
+			</div>
 		</div>
 	</div>
-</div>
 {{/if}}
 <div class="row">
 	<ul class="nav nav-tabs">
 		{{foreach from=$partHeader key=key item=prod}}
-		<li class="ng-scope {{if $status == $key}}active{{/if}}">
-			<a href="/site/accounts?status={{$key}}{{$suffix}}"
-				 class="ng-binding">
-				{{$prod}} {{if $partCount[$key]}}<span class="badge">{{$partCount[$key]}}</span>{{/if}}
-			</a>
-		</li>
+			<li class="ng-scope {{if $status == $key}}active{{/if}}">
+				<a href="/site/accounts?status={{$key}}{{$suffix}}"
+				   class="ng-binding">
+					{{$prod}} {{if $partCount[$key]}}<span class="badge">{{$partCount[$key]}}</span>{{/if}}
+				</a>
+			</li>
 		{{/foreach}}
 	</ul>
 </div>
@@ -418,100 +418,104 @@
 	</thead>
 	<tbody>
 	{{foreach from=$list item=prod}}
-	<tr data-id="{{$prod.id}}">
-		<td>
-			<img src="{{$prod.thumb}}" bsrc="{{$prod.avatar}}" width="100%" class="i-av">
-			<div class="uid">{{$prod.id}}</div>
-			<a href="https://wx.meipo100.com/wx/sh?id={{$prod.encryptId}}" class="uid" title="点击右键，拷贝链接，发到微信中，才可以打开">微信个人页</a>
-		</td>
-		<td class="pInfo m-style-{{$prod.style}}">
-			<span class="m-role">{{$prod.role_t}}</span> {{$prod.name}}
-			<em>{{$prod.phone}} {{$prod.wechatid}} {{$prod.location_t}} (籍贯: {{$prod.homeland_t}})</em>
-			{{if $prod.substatus>1}}<span class="m-subst-{{$prod.substatus}}">{{$prod.substatus_t}}</span>{{/if}}
-			{{if $prod.straw}}
-			<span class="m-status-8">稻草人</span>
-			{{else}}
-			<span class="m-status-{{$prod.status}}">{{$prod.status_t}}</span>
-			{{/if}}
-			{{if $prod.certstatus==2}}<span class="m-cert-1">{{$prod.certstatus_t}}</span>{{/if}}
-			{{if $prod.subscribe<1}}<span class="m-sub-{{$prod.subscribe}}">未关注</span>{{/if}}
-			<div class="perc-wrap">
-				<div class="perc-bar-title">资料完整度 <b>{{$prod.percent}}%</b></div>
-				<div class="perc-bar-wrap"><p class="perc-bar"><em style="width: {{$prod.percent}}%"></em></p></div>
-			</div>
-			<span>{{$prod.marital_t}}</span>
-			<span>{{$prod.gender_t}}</span>
-			<span>{{$prod.age}}</span>
-			<span>{{$prod.horos_t}}</span>
-			<span>{{$prod.height_t}}</span>
-			<span>{{$prod.weight_t}}</span>
-			<span>{{$prod.education_t}}</span>
-			<span>{{$prod.scope_t}}</span>
-			<span>{{$prod.profession_t}}</span>
-			<span>{{$prod.income_t}}</span>
-			<span>{{$prod.estate_txt}}</span>
-			<span>{{$prod.car_t}}</span>
-			<span>{{$prod.smoke_t}}</span>
-			<span>{{$prod.alcohol_t}}</span>
-			<span>{{$prod.diet_t}}</span>
-			<span>{{$prod.rest_t}}</span>
-			<span>{{$prod.fitness_t}}</span>
-			<span>{{$prod.belief_t}}</span>
-			<span>{{$prod.pet_t}}</span>
-			<span>{{$prod.intro}}</span>
-			<span>{{$prod.interest}}</span>
+		<tr data-id="{{$prod.id}}">
+			<td>
+				<img src="{{$prod.thumb}}" bsrc="{{$prod.avatar}}" width="100%" class="i-av">
+				<div class="uid">{{$prod.id}}</div>
+				<a href="https://wx.meipo100.com/wx/sh?id={{$prod.encryptId}}" class="uid"
+				   title="点击右键，拷贝链接，发到微信中，才可以打开">微信个人页</a>
+			</td>
+			<td class="pInfo m-style-{{$prod.style}}">
+				<span class="m-role">{{$prod.role_t}}</span> {{$prod.name}}
+				<em>{{$prod.phone}} {{$prod.wechatid}} {{$prod.location_t}} (籍贯: {{$prod.homeland_t}})</em>
+				{{if $prod.substatus>1}}<span class="m-subst-{{$prod.substatus}}">{{$prod.substatus_t}}</span>{{/if}}
+				{{if $prod.straw}}
+					<span class="m-status-8">稻草人</span>
+				{{else}}
+					<span class="m-status-{{$prod.status}}">{{$prod.status_t}}</span>
+				{{/if}}
+				{{if $prod.certstatus==2}}<span class="m-cert-1">{{$prod.certstatus_t}}</span>{{/if}}
+				{{if $prod.subscribe<1}}<span class="m-sub-{{$prod.subscribe}}">未关注</span>{{/if}}
+				<div class="perc-wrap">
+					<div class="perc-bar-title">资料完整度 <b>{{$prod.percent}}%</b></div>
+					<div class="perc-bar-wrap"><p class="perc-bar"><em style="width: {{$prod.percent}}%"></em></p></div>
+				</div>
+				<span>{{$prod.marital_t}}</span>
+				<span>{{$prod.gender_t}}</span>
+				<span>{{$prod.age}}</span>
+				<span>{{$prod.horos_t}}</span>
+				<span>{{$prod.height_t}}</span>
+				<span>{{$prod.weight_t}}</span>
+				<span>{{$prod.education_t}}</span>
+				<span>{{$prod.scope_t}}</span>
+				<span>{{$prod.profession_t}}</span>
+				<span>{{$prod.income_t}}</span>
+				<span>{{$prod.estate_txt}}</span>
+				<span>{{$prod.car_t}}</span>
+				<span>{{$prod.smoke_t}}</span>
+				<span>{{$prod.alcohol_t}}</span>
+				<span>{{$prod.diet_t}}</span>
+				<span>{{$prod.rest_t}}</span>
+				<span>{{$prod.fitness_t}}</span>
+				<span>{{$prod.belief_t}}</span>
+				<span>{{$prod.pet_t}}</span>
+				<span>{{$prod.intro}}</span>
+				<span>{{$prod.interest}}</span>
 
-			<span>{{$prod.parent_t}}</span>
-			<span>{{$prod.sibling_t}}</span>
-			<span>{{$prod.dwelling_t}}</span>
-			<span>{{$prod.worktype_t}}</span>
-			<span>{{$prod.employer}}</span>
-			<span>{{$prod.music}}</span>
-			<span>{{$prod.book}}</span>
-			<span>{{$prod.movie}}</span>
-			<span>{{$prod.highschool}}</span>
-			<span>{{$prod.university}}</span>
-			<br>
-			{{if $prod.status==2}}
-			<em>{{$prod.reason}}</em>
-			{{/if}}
-			<div class="s-gray">{{$prod.logdate|date_format:"上次操作于%Y-%m-%d %H:%M"}}</div>
-		</td>
-		<td data-images='{{$prod.showImages}}'>
-			{{if $prod.album}}
-			{{foreach from=$prod.album key=k item=img}}
-			<span class="album-item">
+				<span>{{$prod.parent_t}}</span>
+				<span>{{$prod.sibling_t}}</span>
+				<span>{{$prod.dwelling_t}}</span>
+				<span>{{$prod.worktype_t}}</span>
+				<span>{{$prod.employer}}</span>
+				<span>{{$prod.music}}</span>
+				<span>{{$prod.book}}</span>
+				<span>{{$prod.movie}}</span>
+				<span>{{$prod.highschool}}</span>
+				<span>{{$prod.university}}</span>
+				<br>
+				{{if $prod.status==2}}
+					<em>{{$prod.reason}}</em>
+				{{/if}}
+				<div class="s-gray">{{$prod.logdate|date_format:"上次操作于%Y-%m-%d %H:%M"}}</div>
+			</td>
+			<td data-images='{{$prod.showImages}}'>
+				{{if $prod.album}}
+					{{foreach from=$prod.album key=k item=img}}
+						<span class="album-item">
 					<img src="{{$img}}" alt="" data-idx="{{$k}}">
 					<a href="javascript:;" data-id="{{$img}}"></a>
 				</span>
-			{{/foreach}}
-			{{/if}}
-		</td>
-		<!--td class="pInfo">
+					{{/foreach}}
+				{{/if}}
+			</td>
+			<!--td class="pInfo">
 				{{foreach from=$prod.filter_t item=item}}
 				<span>{{$item}}</span>
 				{{/foreach}}
 			</td-->
-		<td data-oid="{{$prod.openid}}" data-name="{{$prod.name}}" data-phone="{{$prod.phone}}" data-thumb="{{$prod.thumb}}">
-			<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改信息</a>
-			<a href="javascript:;" class="check btn btn-outline btn-primary btn-xs" data-id="{{$prod.id}}"
-				 data-st="{{$prod.status}}" data-sst="{{$prod.substatus}}" data-reasons="">审核用户</a>
-			<div class="btn-divider"></div>
-			<!--a href="/site/follow?id={{$prod.id}}" class="follow btn btn-outline btn-success btn-xs">跟进详情{{if $prod.co>0}}
+			<td data-oid="{{$prod.openid}}" data-name="{{$prod.name}}" data-phone="{{$prod.phone}}"
+			    data-thumb="{{$prod.thumb}}">
+				<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}">修改信息</a>
+				<a href="javascript:;" class="check btn btn-outline btn-primary btn-xs" data-id="{{$prod.id}}"
+				   data-st="{{$prod.status}}" data-sst="{{$prod.substatus}}" data-reasons="">审核用户</a>
+				<div class="btn-divider"></div>
+				<!--a href="/site/follow?id={{$prod.id}}" class="follow btn btn-outline btn-success btn-xs">跟进详情{{if $prod.co>0}}
 				({{$prod.co}}){{/if}}</a-->
-			<a href="javascript:;" class="bait btn btn-outline btn-danger btn-xs" data-gender="{{$prod.gender}}"
-				 data-id="{{$prod.id}}" data-name="{{$prod.name}}" data-thumb="{{$prod.thumb}}">稻草人聊</a>
-			<a href="/site/bait?uid={{$prod.id}}" class="follow btn btn-outline btn-danger btn-xs">客服聊TA{{if $prod.mco>0}}({{$prod.mco}}){{/if}}</a>
-			<div class="btn-divider"></div>
-			<a href="javascript:;" class="btn-list btn btn-outline btn-warning btn-xs">推荐列表</a>
-			{{if $debug}}
-			<a href="javascript:;" class="btn-refresh btn btn-outline btn-warning btn-xs" data-id="{{$prod.id}}">刷新</a>
-			{{/if}}
-			<h5>{{$prod.opname}}</h5>
-			<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
-			<h5>创建于{{$prod.addedon|date_format:'%y-%m-%d %H:%M'}}</h5>
-		</td>
-	</tr>
+				<a href="javascript:;" class="bait btn btn-outline btn-danger btn-xs" data-gender="{{$prod.gender}}"
+				   data-id="{{$prod.id}}" data-name="{{$prod.name}}" data-thumb="{{$prod.thumb}}">稻草人聊</a>
+				<a href="/site/bait?uid={{$prod.id}}"
+				   class="follow btn btn-outline btn-danger btn-xs">客服聊TA{{if $prod.mco>0}}({{$prod.mco}}){{/if}}</a>
+				<div class="btn-divider"></div>
+				<a href="javascript:;" class="btn-list btn btn-outline btn-warning btn-xs">推荐列表</a>
+				{{if $debug}}
+					<a href="javascript:;" class="btn-refresh btn btn-outline btn-warning btn-xs"
+					   data-id="{{$prod.id}}">刷新</a>
+				{{/if}}
+				<h5>{{$prod.opname}}</h5>
+				<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
+				<h5>创建于{{$prod.addedon|date_format:'%y-%m-%d %H:%M'}}</h5>
+			</td>
+		</tr>
 	{{/foreach}}
 	</tbody>
 </table>
@@ -520,7 +524,8 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+				</button>
 				<h4 class="modal-title">审核用户</h4>
 			</div>
 			<div class="modal-body">
@@ -529,7 +534,9 @@
 						<label class="col-sm-3 control-label">特殊身份:</label>
 						<div class="col-sm-9">
 							{{foreach from=$subStatus key=key item=item}}
-							<label class="radio-inline"><input class="sub-status-opt" type="radio" name="sub-status-opt" {{$key}} value="{{$key}}">{{$item}}</label>
+								<label class="radio-inline"><input class="sub-status-opt" type="radio"
+								                                   name="sub-status-opt" {{$key}}
+								                                   value="{{$key}}">{{$item}}</label>
 							{{/foreach}}
 						</div>
 					</div>
@@ -537,7 +544,9 @@
 						<label class="col-sm-3 control-label">用户状态:</label>
 						<div class="col-sm-9">
 							{{foreach from=$partHeader key=key item=item}}
-							<label class="radio-inline"><input class="status-opt" type="radio" name="status-opt" {{$key}} value="{{$key}}">{{$item}}</label>
+								<label class="radio-inline"><input class="status-opt" type="radio"
+								                                   name="status-opt" {{$key}} value="{{$key}}">{{$item}}
+								</label>
 							{{/foreach}}
 						</div>
 					</div>
@@ -545,10 +554,12 @@
 						<label class="col-sm-3 control-label">不合规原因:</label>
 						<div class="col-sm-8">
 							<div class="input-group">
-								<input type="text" class="form-control" name="reasons" data-tag="avatar" placeholder="头像不合规原因">
+								<input type="text" class="form-control" name="reasons" data-tag="avatar"
+								       placeholder="头像不合规原因">
 								<div class="input-group-btn">
 									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-													aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span></button>
+									        aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span>
+									</button>
 									<ul class="dropdown-menu dropdown-menu-right">
 										<li><a href="javascript:;">请上传本人正脸照片</a></li>
 										<li><a href="javascript:;">请上传清晰可辨正脸照片</a></li>
@@ -558,10 +569,12 @@
 								</div>
 							</div>
 							<div class="input-group">
-								<input type="text" class="form-control" name="reasons" data-tag="nickname" placeholder="昵称不合规原因">
+								<input type="text" class="form-control" name="reasons" data-tag="nickname"
+								       placeholder="昵称不合规原因">
 								<div class="input-group-btn">
 									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-													aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span></button>
+									        aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span>
+									</button>
 									<ul class="dropdown-menu dropdown-menu-right">
 										<li><a href="javascript:;">有广告嫌疑</a></li>
 										<li><a href="javascript:;">冒用他人身份</a></li>
@@ -573,10 +586,12 @@
 								</div>
 							</div>
 							<div class="input-group">
-								<input type="text" class="form-control" name="reasons" data-tag="intro" placeholder="个人简介不合规原因">
+								<input type="text" class="form-control" name="reasons" data-tag="intro"
+								       placeholder="个人简介不合规原因">
 								<div class="input-group-btn">
 									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-													aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span></button>
+									        aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span>
+									</button>
 									<ul class="dropdown-menu dropdown-menu-right">
 										<li><a href="javascript:;">宣扬低俗文化</a></li>
 										<li><a href="javascript:;">违反法律法规</a></li>
@@ -585,10 +600,12 @@
 								</div>
 							</div>
 							<div class="input-group">
-								<input type="text" class="form-control" name="reasons" data-tag="interest" placeholder="个人兴趣不合规原因">
+								<input type="text" class="form-control" name="reasons" data-tag="interest"
+								       placeholder="个人兴趣不合规原因">
 								<div class="input-group-btn">
 									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-													aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span></button>
+									        aria-haspopup="true" aria-expanded="false">选择 <span class="caret"></span>
+									</button>
 									<ul class="dropdown-menu dropdown-menu-right">
 										<li><a href="javascript:;">宣扬低俗文化</a></li>
 										<li><a href="javascript:;">违反法律法规</a></li>
@@ -611,7 +628,8 @@
 	<div class="modal-dialog" role="document" style="width: 276px;">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+				</button>
 				<h4 class="modal-title">设置用户头像</h4>
 			</div>
 			<div class="modal-body av-wrap">
@@ -629,7 +647,8 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+				</button>
 				<h4 class="modal-title">选择稻草人与TA聊天</h4>
 			</div>
 			<div class="modal-body"></div>
@@ -644,7 +663,8 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+				</button>
 				<h4 class="modal-title">通知内容</h4>
 			</div>
 			<div class="modal-body"></div>
@@ -659,7 +679,8 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+				</button>
 				<h4 class="modal-title users-name">Ta的推荐列表</h4>
 			</div>
 			<div class="modal-body">
@@ -681,8 +702,10 @@
 				{[uName]}
 				<small>{[age]}岁</small>
 				<br>
-				<small>所在地：</small>{[location]}<br>
-				<small>籍贯：</small>{[homeland]}
+				<small>所在地：</small>
+				{[location]}<br>
+				<small>籍贯：</small>
+				{[homeland]}
 			</div>
 			<span></span>
 		</div>
@@ -716,6 +739,7 @@
 <script>
 	var mDummies ={{$dummies}};
 </script>
+<script src="/assets/js/socket.io.js"></script>
 <script>
 	var loading = 0;
 	var mPageIndex = 1;
@@ -828,7 +852,7 @@
 		}
 		dummyId1 = self.attr("data-id");
 		var items = mDummies[gender];
-		items ={items:items};
+		items = {items: items};
 		console.log(items);
 		var Vhtml = Mustache.render($("#dummyChatTemp").html(), items);
 		$("#DummyModal .modal-body").html(Vhtml);
@@ -963,10 +987,7 @@
 		});
 	}
 
-	var reasonsWrap = $(".reasons-wrap"),
-		hasReson = 1,
-		resonLoad = 0,
-		uid;
+	var reasonsWrap = $(".reasons-wrap"), hasReson = 1, resonLoad = 0, uid;
 
 	$(document).on("click", ".reasons-wrap li", function () {
 		var self = $(this);
@@ -1029,7 +1050,14 @@
 		}, function (resp) {
 			resonLoad = 0;
 			if (resp.code < 1) {
-				location.reload();
+				if (resp.data.broadcast) {
+					NoticeUtil.broadcast(resp.data.broadcast);
+					setTimeout(function () {
+						location.reload();
+					}, 1000);
+				} else {
+					location.reload();
+				}
 				BpbhdUtil.showMsg(resp.msg, 1);
 			} else {
 				BpbhdUtil.showMsg(resp.msg);
@@ -1062,7 +1090,7 @@
 		if (height >= width) {
 			mDialog.css('width', '276px');
 		} else {
-			var h = parseInt(244.0 * width / height) + mAvMargin * 2;
+			var h = parseFloat(244.0 * width / height) + mAvMargin * 2;
 			mDialog.css('width', h + 'px');
 		}
 		mAvBorder.css({
@@ -1133,5 +1161,28 @@
 		}, "json")
 	});
 
+	var NoticeUtil = {
+		socket: null,
+		uni: $('#cUNI').val(),
+		timer: 0,
+		board: $('.m-notice'),
+		list: $('.menu_body'),
+		init: function () {
+			var util = this;
+			util.socket = io('https://nd.meipo100.com/house');
+			util.socket.on('connect', function () {
+				util.socket.emit('house', util.uni);
+			});
+
+		},
+		broadcast: function (params) {
+			var util = this;
+			util.socket.emit('broadcast', params);
+		}
+	};
+
+	$(function () {
+		NoticeUtil.init();
+	});
 </script>
 {{include file="layouts/footer.tpl"}}
