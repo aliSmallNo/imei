@@ -81,7 +81,7 @@
 		<select name="status" class="form-control">
 			<option value="">实名状态</option>
 			{{foreach from=$statusT key=key item=item}}
-			<option value="{{$key}}" {{if $status!="" && $status==$key}}selected{{/if}}>{{$item}}</option>
+				<option value="{{$key}}" {{if $status!="" && $status==$key}}selected{{/if}}>{{$item}}</option>
 			{{/foreach}}
 		</select>
 		<input class="form-control" name="name" placeholder="名字" type="text" value="{{$name}}">
@@ -115,44 +115,46 @@
 	</thead>
 	<tbody>
 	{{foreach from=$list item=prod}}
-	<tr data-id="{{$prod.id}}">
-		<td>
-			<img src="{{$prod.thumb}}" bsrc="{{$prod.avatar}}" width="100%" class="i-img">
-		</td>
-		<td class="pInfo">
-			<span class="role{{$prod.role}}">{{$prod.role_t}}</span> {{$prod.name}}
-			<em>{{$prod.phone}} {{$prod.location_t}}</em>
-			{{if $prod.dummy}}<span class="m-dummy">稻草人</span>{{/if}}
-			<br>
-			<span>{{$prod.age}}</span>
-			<span>{{$prod.gender_t}}</span>
-			<span>{{$prod.height_t}}</span>
-			<span>{{$prod.weight_t}}</span>
-		</td>
-		<td class="pInfo">
-			<span class="status-{{$prod.certstatus}}">{{$prod.certstatus_t}}</span>
-		</td>
-		<td class="pInfo">
-			{{if isset($prod.certs)}}
-			{{foreach from=$prod.certs item=img }}
-			<img src="{{$img.url}}?v=1.1.1" bsrc="{{$img.url}}?v=1.1.1" class="i-img">
-			{{/foreach}}
-			{{else}}
-			<img src="{{$prod.certimage}}?v=1.1.1" bsrc="{{$prod.cert_big}}?v=1.1.1" class="i-img">
-			{{/if}}
-		</td>
-		<td class="pInfo">
-			<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
-		</td>
-		<td>
-			{{if $prod.certstatus==1}}
-			<a href="javascript:;" class="operate btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}" tag="pass">审核通过</a>
-			<a href="javascript:;" class="operate btn btn-outline btn-danger btn-xs" cid="{{$prod.id}}" tag="fail">审核失败</a>
-			{{else}}
-			<h5>审核于{{$prod.certdate|date_format:'%y-%m-%d %H:%M'}}</h5>
-			{{/if}}
-		</td>
-	</tr>
+		<tr data-id="{{$prod.id}}">
+			<td>
+				<img src="{{$prod.thumb}}" bsrc="{{$prod.avatar}}" width="100%" class="i-img">
+			</td>
+			<td class="pInfo">
+				<span class="role{{$prod.role}}">{{$prod.role_t}}</span> {{$prod.name}}
+				<em>{{$prod.phone}} {{$prod.location_t}}</em>
+				{{if $prod.dummy}}<span class="m-dummy">稻草人</span>{{/if}}
+				<br>
+				<span>{{$prod.age}}</span>
+				<span>{{$prod.gender_t}}</span>
+				<span>{{$prod.height_t}}</span>
+				<span>{{$prod.weight_t}}</span>
+			</td>
+			<td class="pInfo status-cell">
+				<span class="status-{{$prod.certstatus}}">{{$prod.certstatus_t}}</span>
+			</td>
+			<td class="pInfo">
+				{{if isset($prod.certs)}}
+					{{foreach from=$prod.certs item=img }}
+						<img src="{{$img.url}}?v=1.1.1" bsrc="{{$img.url}}?v=1.1.1" class="i-img">
+					{{/foreach}}
+				{{else}}
+					<img src="{{$prod.certimage}}?v=1.1.1" bsrc="{{$prod.cert_big}}?v=1.1.1" class="i-img">
+				{{/if}}
+			</td>
+			<td class="pInfo">
+				<h5>更新于{{$prod.updatedon|date_format:'%y-%m-%d %H:%M'}}</h5>
+			</td>
+			<td>
+				{{if $prod.certstatus==1}}
+					<a href="javascript:;" class="operate btn btn-outline btn-primary btn-xs" cid="{{$prod.id}}"
+					   tag="pass">审核通过</a>
+					<a href="javascript:;" class="operate btn btn-outline btn-danger btn-xs" cid="{{$prod.id}}"
+					   tag="fail">审核失败</a>
+				{{else}}
+					<h5>审核于{{$prod.certdate|date_format:'%y-%m-%d %H:%M'}}</h5>
+				{{/if}}
+			</td>
+		</tr>
 	{{/foreach}}
 	</tbody>
 </table>
@@ -178,9 +180,14 @@
 			id: id
 		}, function (resp) {
 			if (resp.code < 1) {
-				location.reload();
+				var row = $('tr[data-id="' + id + '"]');
+				row.find('td.status-cell').html('<span class="status-' + resp.data.status + '">' + resp.data.status_t + '</span>');
+				row.find('td:last').html('<h5>审核于' + resp.data.dt + '</h5>');
+				row.insertBefore($('tbody tr:first'));
+				BpbhdUtil.showMsg(resp.msg, 1);
+			} else {
+				BpbhdUtil.showMsg(resp.msg);
 			}
-			BpbhdUtil.showMsg(resp.msg);
 		}, "json");
 	}
 
@@ -213,5 +220,6 @@
 			}
 		});
 	}
+
 </script>
 {{include file="layouts/footer.tpl"}}

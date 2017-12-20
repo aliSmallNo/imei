@@ -135,11 +135,16 @@ class ApiController extends Controller
 				$flag = self::postParam("f");
 				$result = User::toCertVerify($id, $flag);
 				if ($result) {
-					$ret = ["code" => 0, "msg" => "操作成功！"];
-				} else {
-					$ret = ["code" => 0, "msg" => "操作失败！"];
+					$status = ($flag == 'pass' ? User::CERT_STATUS_PASS : User::CERT_STATUS_FAIL);
+					$status_t = User::$Certstatus[$status];
+					return self::renderAPI(0, '操作成功！',
+						[
+							'status' => $status,
+							'status_t' => $status_t,
+							'dt' => date('y-m-d H:i')
+						]);
 				}
-				break;
+				return self::renderAPI(129, '操作失败！');
 			case "comment":
 				$flag = self::postParam("f");
 				$result = UserComment::commentVerify($id, $flag);

@@ -1,4 +1,4 @@
-<script src="//webapi.amap.com/maps?v=1.3&key=ec9efaff78c90c42b5996b542b899f2d&plugin=AMap.ToolBar"></script>
+<script src="https://webapi.amap.com/maps?v=1.3&key=ec9efaff78c90c42b5996b542b899f2d&plugin=AMap.ToolBar"></script>
 <style>
 
 	.leftBox {
@@ -12,11 +12,6 @@
 		overflow-x: hidden;
 		overflow-y: auto;
 		border-top: 1px solid #E4E4E4;
-	}
-
-	.menu_body2 {
-		margin: 0;
-		padding-left: 26px;
 	}
 
 	.rightBox {
@@ -196,10 +191,10 @@
 		</div>
 		<ol class="menu_body">
 			{{foreach from=$items key=k item=user}}
-				<li class="" data-lat="{{$user.lat}}" data-lng="{{$user.lng}}" data-idx="{{$k+1}}"
-				    data-uni="{{$user.uni}}">
-					<div class="avatar"><img src="{{$user.thumb}}" alt="" class="{{$user.mark}}"
-					                         data-mark="{{$user.mark}}"></div>
+				<li data-lat="{{$user.lat}}" data-lng="{{$user.lng}}" data-idx="{{$k+1}}" data-uni="{{$user.uni}}">
+					<div class="avatar">
+						<img src="{{$user.thumb}}" alt="" class="{{$user.mark}}" data-mark="{{$user.mark}}">
+					</div>
 					<div class="content">
 						<div class="name"><b>{{$user.phone}}</b> {{$user.name}}</div>
 						<div class="dt">{{$user.dt}}</div>
@@ -213,25 +208,17 @@
 <input type="hidden" id="cUNI" value="{{$uni}}">
 <script src="/assets/js/socket.io.js"></script>
 <script>
-	var mLevel = 13;
-	var map = new AMap.Map("mapContainer", {
-		resizeEnable: true,
-		center: [120.320353, 32.845766],
-		zoom: mLevel
-	});
-	var toolBar = new AMap.ToolBar({
-		visible: true
-	});
-	map.addControl(toolBar);
+	var mLevel = 13, mMap;
 
 	var maxzIndex = 100;
+
 	$(".menu_body li").on('click', function () {
 		var self = $(this);
 		var lat = self.attr('data-lat');
 		var lng = self.attr('data-lng');
 		var lnglat = lng + '-' + lat;
 		var coordsArr = lnglat.split('-');
-		map.setZoomAndCenter(mLevel, coordsArr);
+		mMap.setZoomAndCenter(mLevel, coordsArr);
 		if (Markers[lnglat]) {
 			maxzIndex++;
 			Markers[lnglat].setzIndex(maxzIndex);
@@ -242,6 +229,16 @@
 	var Markers = {};
 
 	function switchMarkers(isShow, items) {
+		mMap = new AMap.Map("mapContainer", {
+			resizeEnable: true,
+			center: [120.320353, 32.845766],
+			zoom: mLevel
+		});
+		var toolBar = new AMap.ToolBar({
+			visible: true
+		});
+		mMap.addControl(toolBar);
+
 		var links = items;
 		if (!links) {
 			links = $('.menu_body li');
@@ -249,7 +246,7 @@
 		$.each(links, function () {
 			switchSingleMarker(isShow, $(this));
 		});
-		map.setFitView();
+		mMap.setFitView();
 	}
 
 	function switchSingleMarker(isShow, link) {
@@ -274,7 +271,7 @@
 			div.className = 'av-sm ' + mark;
 			div.innerHTML = '<img src="' + src + '"><span>' + link.attr('data-idx') + '</span>';
 			marker = new AMap.Marker({
-				map: map,
+				map: mMap,
 				icon: "http://webapi.amap.com/images/marker_sprite.png",
 				position: [lng, lat],
 				topWhenClick: true,
@@ -358,12 +355,15 @@
 	};
 
 	$(function () {
-		switchMarkers(1);
+
 		NoticeUtil.init();
 
 		setTimeout(function () {
 			NoticeUtil.users();
-		}, 3200);
+		}, 4000);
+
+		switchMarkers(1);
+
 	});
 
 </script>
