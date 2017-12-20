@@ -3,7 +3,7 @@
 	<div class="bag-top-bar">
 		<a href="javascript:;" class="on" data-tag="gift"><span>我的礼物</span></a>
 		<a href="javascript:;" data-tag="receive"><span>我收到的</span></a>
-		<a href="javascript:;" data-tag="prop" style="display: none"><span>功能卡片</span></a>
+		<a href="javascript:;" data-tag="sent"><span>我送出的</span></a>
 	</div>
 	<ul class="bag-content bag-wrapper">
 
@@ -33,15 +33,9 @@
 	{[#items]}
 	<li>
 		<div><img src="{[gImage]}"></div>
-		{[#dt]}
-		<p> X <span>{[co]}</span></p>
-		<em>{[gName]}</em>
-		{[/dt]}
-		{[^dt]}
 		<p> X <span>{[co]}</span></p>
 		<em>{[gName]}</em>
 		<div style="display: none"><a href="javascript:;">去赠送</a></div>
-		{[/dt]}
 	</li>
 	{[/items]}
 </script>

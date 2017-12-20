@@ -112,8 +112,16 @@ class Order extends ActiveRecord
 					":uid" => $uid
 				])->queryAll();
 				break;
-			case "prop":
-
+			case "sent":
+				$sql = "select g.*,sum(case when oStatus=3 then oNum  end) as co,oAddedOn as dt from im_order as o 
+						join im_goods as g on o.oGId=g.gId
+						where oUId=:uid  
+						group by oGId 
+						having co>0
+						order by gPrice asc $limit";
+				$ret = $conn->createCommand($sql)->bindValues([
+					":uid" => $uid
+				])->queryAll();
 				break;
 		}
 		if ($ret) {
@@ -176,7 +184,7 @@ class Order extends ActiveRecord
 				break;
 		}
 
-		$msg = '<button href="/wx/shopbag">' ."礼物: ". $gInfo["name"] . '</button>';
+		$msg = '<button href="/wx/shopbag">' . "礼物: " . $gInfo["name"] . '</button>';
 		$info = ChatMsg::addChat($wx_uid, $sid, $msg);
 		return [0, '赠送成功~', $info];
 	}
