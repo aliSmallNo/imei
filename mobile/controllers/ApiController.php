@@ -2271,6 +2271,7 @@ class ApiController extends Controller
 				return self::renderAPI($code, $msg, [
 					"stat" => UserTrans::getStat($wx_uid, true),
 					"items" => $data,
+					'gid' => $data['gid'],
 				]);
 				break;
 		}
