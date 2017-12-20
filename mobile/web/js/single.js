@@ -2356,16 +2356,16 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				util.ioHouse.on('connect', function () {
 					util.ioHouse.emit('house', util.uni);
 				});
-
-				util.ioHouse.on("notice", function (resp) {
-					var msg = resp.msg;
-					if (!msg) {
+				util.ioHouse.on("buzz", function (resp) {
+					if (!resp.uni || !resp.msg || !resp.tag || resp.uni != util.uni) {
 						return;
 					}
 					switch (resp.tag) {
 						case 'hint':
-							util.toggle(msg);
-							util.handle(resp.action);
+							util.toggle(resp.msg);
+							if (resp.action) {
+								util.handle(resp.action);
+							}
 							break;
 						case 'greet':
 							GreetingUtil.show();
