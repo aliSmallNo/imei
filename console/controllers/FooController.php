@@ -1330,8 +1330,47 @@ class FooController extends Controller
 		}
 	}
 
+	public function actionTrend()
+	{
+		$serviceTrend = TrendService::init(TrendService::CAT_TREND);
+		$startTime = strtotime('2017-07-17 12:34');
+		$curTime = time();
+		$step = 'day';
+		for ($k = 0; $k < 300; $k++) {
+			$queryTime = strtotime('+' . $k . ' ' . $step, $startTime);
+			if ($queryTime > $curTime) {
+				break;
+			}
+			$serviceTrend->statTrend($step, date('Y-m-d', $queryTime), true);
+		}
+
+		$step = 'week';
+		for ($k = 0; $k < 50; $k++) {
+			$queryTime = strtotime('+' . $k . ' ' . $step, $startTime);
+			if ($queryTime > $curTime) {
+				break;
+			}
+			$serviceTrend->statTrend($step, date('Y-m-d', $queryTime), true);
+		}
+
+		$step = 'month';
+		for ($k = 0; $k < 12; $k++) {
+			$queryTime = strtotime('+' . $k . ' ' . $step, $startTime);
+			if ($queryTime > $curTime) {
+				break;
+			}
+			$serviceTrend->statTrend($step, date('Y-m-d', $queryTime), true);
+		}
+
+
+	}
+
 	public function actionRain()
 	{
+		$ret = strtotime('+1 week', strtotime('2017-07-17 12:34'));
+		var_dump($ret);
+		$ret = date('Y-m-d H:i', $ret);
+		var_dump($ret);
 		/*$hid = '059af5c749741c';
 		$ret = AppUtil::decrypt($hid);
 		var_dump($ret);
@@ -1344,7 +1383,7 @@ class FooController extends Controller
 		$service = UserService::init(131379)->info;
 		var_dump($service);*/
 
-		$conn = AppUtil::db();
+		/*$conn = AppUtil::db();
 		$sql = "select * from im_user 
 			where uCertStatus=2 and uCertImage not like '%zm%' and uOpenId like 'oYDJew%' and uCertImage like 'http%'";
 		$ret = $conn->createCommand($sql)->queryAll();
@@ -1357,7 +1396,7 @@ class FooController extends Controller
 				':id' => $row['uId'],
 				':img' => json_encode($images, JSON_UNESCAPED_UNICODE)
 			])->execute();
-		}
+		}*/
 	}
 
 	public function actionZp()
