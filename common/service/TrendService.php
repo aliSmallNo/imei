@@ -296,16 +296,32 @@ class TrendService
 		return $trend;
 	}
 
-	public function statReuse($step, $queryDate)
+	public function statReuse($step, $queryDate, $stepNumber = -1)
 	{
 		$this->setStep($step);
 		$this->setDate($step, $queryDate);
 		$beginDate = $this->beginDate;
+		if ($beginDate > date('Y-m-d')) {
+			return false;
+		}
 		$endDate = $this->endDate;
 		$dateName = $beginDate . PHP_EOL . $endDate;
-		$data = [];
+		$baseItems = [];
 		$types = ['all', 'male', 'female'];
-		$sql = "SELECT  
+
+		$sql = "select * from im_trend WHERE tCategory=:cat AND tDateName=:name AND tStep=:step AND tBeginDate=:dt0 AND tField=0";
+		$ret = $this->conn->createCommand($sql)->bindValues([
+			':cat' => $this->category,
+			':name' => $dateName,
+			':step' => $step,
+			':dt0' => $this->beginDate
+		])->queryAll();
+		if ($ret) {
+			foreach ($ret as $row) {
+				$baseItems[$row['tType']] = $row['tNum'];
+			}
+		} else {
+			$sql = "SELECT  
 			 COUNT(1) as `all`,
 			 COUNT(case when u.uGender=10 then 1 end) as female,
 			 COUNT(case when u.uGender=11 then 1 end) as male
@@ -313,17 +329,28 @@ class TrendService
 			 JOIN im_user_wechat as w on u.uId=w.wUId
 			 WHERE uAddedOn BETWEEN :beginDT AND :endDT AND uOpenId LIKE 'oYDJew%'
 			 	AND uStatus<8 AND uPhone!=''  AND uRole>9 AND uGender in (10,11) ";
-		$ret = $this->conn->createCommand($sql)->bindValues([
-			':beginDT' => $beginDate . ' 00:00',
-			':endDT' => $endDate . ' 23:59',
-		])->queryOne();
-		if ($ret) {
+			$ret = $this->conn->createCommand($sql)->bindValues([
+				':beginDT' => $beginDate . ' 00:00',
+				':endDT' => $endDate . ' 23:59',
+			])->queryOne();
 			foreach ($types as $type) {
 				$cnt = isset($ret[$type]) ? $ret[$type] : 0;
-				$data[$type]['cnt'] = $cnt;
+				$baseItems[$type]['cnt'] = $cnt;
 				self::add($step, $dateName, $beginDate, $endDate, 1, $cnt, $type);
 			}
 		}
+
+		if ($stepNumber < 0) {
+			if ($step == 'week') {
+				list($d, $from, $to) = AppUtil::getWeekInfo();
+			} else {
+				list($d, $from, $to) = AppUtil::getMonthInfo();
+			}
+		} else {
+			$from = strtotime('+' . $stepNumber . ' ' . $step, strtotime($this->beginDate));
+			$to = strtotime('+' . $stepNumber . ' ' . $step, strtotime($this->endDate));
+		}
+
 		$sql = "SELECT  
 			 COUNT(DISTINCT u.uId) as `all`,
 			 COUNT(DISTINCT (case when u.uGender=10 then u.uId end)) as female,
@@ -334,54 +361,20 @@ class TrendService
 			 WHERE uAddedOn BETWEEN :beginDT AND :endDT AND uOpenId LIKE 'oYDJew%'
 			 	AND uStatus<8 AND uPhone!=''  AND uRole>9 AND uGender in (10,11) ";
 		$cmd = $this->conn->createCommand($sql);
-
-		$sql = 'select distinct tDateName as `name`, tNum
-				 from im_trend where tCategory=:cat and tStep=:step and tField=1
-				  order by tDateName desc';
-		$bases = $this->conn->createCommand($sql)->bindValues([
-			':cat' => self::CAT_REUSE,
-			':step' => $step,
-		])->queryAll();
-		$baseItems = [];
-		foreach ($bases as $base) {
-			$baseItems[$base['name']] = $base['tNum'];
-		}
-
-		$sql = 'select distinct tDateName as `name`, tBeginDate as dt0,tEndDate as dt1,max(tField+0) as field
-				 from im_trend where tCategory=:cat and tStep=:step
-				  group by tDateName
-				  order by tDateName desc';
-		$dates = $this->conn->createCommand($sql)->bindValues([
-			':cat' => self::CAT_REUSE,
-			':step' => $step,
-		])->queryAll();
-		foreach ($dates as $date) {
-			if ($date['dt0'] == $beginDate || $date['field'] > 17) continue;
-			$ret = $cmd->bindValues([
-				':beginDT' => $date['dt0'] . ' 00:00',
-				':endDT' => $date['dt1'] . ' 23:59',
-				':from' => $beginDate . ' 00:00',
-				':to' => $endDate . ' 23:59',
-			])->queryOne();
-			$dateName = $date['name'];
-			$dateCnt = $baseItems[$dateName];
+		$ret = $cmd->bindValues([
+			':beginDT' => $this->beginDate . ' 00:00',
+			':endDT' => $this->endDate . ' 23:59',
+			':from' => $from . ' 00:00',
+			':to' => $to . ' 23:59',
+		])->queryOne();
+		if ($ret) {
 			foreach ($types as $type) {
-				$cnt = isset($ret[$type]) ? $ret[$type] : 0;
-				$item = [
-					'from' => $beginDate,
-					'to' => $endDate,
-					'cnt' => $cnt,
-				];
-				$item['per'] = 0;
-				if ($dateCnt > 0) {
-					$item['per'] = round(100.0 * $cnt / $dateCnt, 1);
-				}
-				$data[$type]['items'][] = $item;
-				self::add($step, $dateName, $beginDate, $endDate, $date['field'] + 1, $cnt, $type, $item['per']);
+				$cnt = $ret[$type];
+				$per = isset($baseItems[$type]) && $baseItems[$type] ? round($cnt * 100.0 / $baseItems[$type], 1) : 0;
+				self::add($step, $dateName, $beginDate, $endDate, $stepNumber + 1, $cnt, $type, $per);
 			}
 		}
-
-		return $data;
+		return true;
 	}
 
 	public function chartReuse($step, $resetFlag = false)
@@ -397,7 +390,7 @@ class TrendService
 		$floor = $step == self::STEP_MONTH ? '2017-06-29' : '2017-07-20';
 		$sql = "select * from im_trend 
 			where tCategory=:cat and tStep=:step and tDateName>:floor 
-			order by tDateName,tType, tField+0";
+			order by tDateName,tType, tBeginDate";
 		$ret = $this->conn->createCommand($sql)->bindValues([
 			':cat' => $this->category,
 			':step' => $step,
