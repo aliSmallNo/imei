@@ -20,7 +20,7 @@ class BaseController extends Controller
 	const ICON_OK_HTML = '<i class="fa fa-check-circle gIcon"></i> ';
 	const ICON_ALERT_HTML = '<i class="fa fa-exclamation-circle gIcon"></i> ';
 	const COOKIE_OPENID = "wx-openid";
-	const CSS_VERSION = '1.2.8.3';
+	const CSS_VERSION = '1.2.8.4';
 	static $WX_OpenId = "";
 
 	protected $user_id = 0;

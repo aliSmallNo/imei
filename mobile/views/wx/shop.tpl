@@ -1,36 +1,4 @@
-<style>
-	.gift-bags h3 {
-		color: #ff5965;
-		text-align: center;
-		margin: 0;
-		font-size: 1.2rem;
-		padding: .8rem 0;
-	}
 
-	.gift-bags strong {
-		font-size: .8rem;
-		text-align: center;
-		display: block;
-		color: #fff;
-		padding-top: 1.5rem
-	}
-
-	.gift-bags i {
-		font-size: 2rem;
-		text-align: center;
-		display: block;
-		color: #fff;
-	}
-
-	.gift-bags p {
-		color: #fff;
-		text-align: center;
-	}
-
-	.gift-bags p em {
-		color: #fff;
-	}
-</style>
 <section id="sec_home">
 	<div class="swiper-container" style="height: 10rem">
 		<div class="swiper-wrapper">
@@ -149,34 +117,7 @@
 	</li>
 	{[/items]}
 </script>
-<style>
-	.m-draw-wrap .image ul {
-		overflow: hidden;
-		padding: 1rem 0;
-	}
 
-	.m-draw-wrap .image ul li {
-		float: left;
-		width: 20%;
-		list-style: none;
-	}
-
-	.m-draw-wrap .image ul li .img {
-		width: 100%;
-	}
-
-	.m-draw-wrap .image ul li .img img {
-		width: 100%;
-		height: 6rem;
-		display: block;
-		margin: 0 auto;
-	}
-
-	.m-draw-wrap .image ul li p {
-		font-size: 1.2rem;
-		text-align: center;
-	}
-</style>
 <script type="text/template" id="tpl_list">
 	{[#glist]}
 	<li data-num="{[num]}">
@@ -193,6 +134,6 @@
 		document.location.hash = "#sec_home";
 	}
 	requirejs(['/js/config.js?v=1.2.3'], function () {
-		requirejs(['/js/shop.js?v=1.2.9']);
+		requirejs(['/js/shop.js?v=1.2.10']);
 	});
 </script>

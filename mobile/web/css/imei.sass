@@ -1136,6 +1136,8 @@ section
 	background: #fff
 	padding: 1rem 1rem 6rem 1rem
 	z-index: 1001
+	&.gift-detail
+		padding: 0
 	&.on
 		-webkit-transform: translateY(0) translateZ(0)
 		-moz-transform: translateY(0) translateZ(0)
@@ -1164,6 +1166,24 @@ section
 				text-align: center
 				font-size: 1rem
 				color: $grayFontColor
+	.image
+		ul
+			overflow: hidden
+			padding: 1rem 0
+			li
+				float: left
+				width: 20%
+				list-style: none
+				.img
+					width: 100%
+					img
+						width: 100%
+						height: 6rem
+						display: block
+						margin: 0 auto
+				p
+					font-size: 1.2rem
+					text-align: center
 	.m-next
 		position: absolute
 
@@ -8151,6 +8171,28 @@ ul.co-ul
 					em
 						font-size: 1.4rem
 						color: $moneyColor
+		h3
+			color: #ff5965
+			text-align: center
+			margin: 0
+			font-size: 1.2rem
+			padding: .8rem 0
+		strong
+			font-size: .8rem
+			text-align: center
+			display: block
+			color: #fff
+			padding-top: 1.5rem
+		i
+			font-size: 2rem
+			text-align: center
+			display: block
+			color: #fff
+		p
+			color: #fff
+			text-align: center
+			em
+				color: #fff
 
 .gift-stuff
 	@include displayFlex
@@ -8364,9 +8406,6 @@ ul.co-ul
 					left: -.5rem
 					bottom: -1.6rem
 
-.m-draw-wrap
-	&.gift-detail
-		padding: 0
 
 .gift-detail
 	.header

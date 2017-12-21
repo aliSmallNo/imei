@@ -1286,6 +1286,8 @@ section {
   background: #fff;
   padding: 1rem 1rem 6rem 1rem;
   z-index: 1001; }
+  .m-draw-wrap.gift-detail {
+    padding: 0; }
   .m-draw-wrap.on {
     -webkit-transform: translateY(0) translateZ(0);
     -moz-transform: translateY(0) translateZ(0);
@@ -1314,6 +1316,23 @@ section {
         text-align: center;
         font-size: 1rem;
         color: #6a6572; }
+  .m-draw-wrap .image ul {
+    overflow: hidden;
+    padding: 1rem 0; }
+    .m-draw-wrap .image ul li {
+      float: left;
+      width: 20%;
+      list-style: none; }
+      .m-draw-wrap .image ul li .img {
+        width: 100%; }
+        .m-draw-wrap .image ul li .img img {
+          width: 100%;
+          height: 6rem;
+          display: block;
+          margin: 0 auto; }
+      .m-draw-wrap .image ul li p {
+        font-size: 1.2rem;
+        text-align: center; }
   .m-draw-wrap .m-next {
     position: absolute; }
 
@@ -8999,6 +9018,28 @@ ul.co-ul {
           .gift-bags li a .title h5 em {
             font-size: 1.4rem;
             color: #f60; }
+    .gift-bags li h3 {
+      color: #ff5965;
+      text-align: center;
+      margin: 0;
+      font-size: 1.2rem;
+      padding: 0.8rem 0; }
+    .gift-bags li strong {
+      font-size: 0.8rem;
+      text-align: center;
+      display: block;
+      color: #fff;
+      padding-top: 1.5rem; }
+    .gift-bags li i {
+      font-size: 2rem;
+      text-align: center;
+      display: block;
+      color: #fff; }
+    .gift-bags li p {
+      color: #fff;
+      text-align: center; }
+      .gift-bags li p em {
+        color: #fff; }
 
 .gift-stuff {
   display: -webkit-box;
@@ -9210,9 +9251,6 @@ ul.co-ul {
         background: #d15d84;
         left: -0.5rem;
         bottom: -1.6rem; }
-
-.m-draw-wrap.gift-detail {
-  padding: 0; }
 
 .gift-detail .header {
   text-align: center;
