@@ -364,7 +364,7 @@
 		<button class="btn btn-primary">查询</button>
 		<a href="/site/pins" class="btn btn-primary" target="_blank">地图分布</a>
 		<div class="stat-item">
-			<span><b>到访</b>{{$stat.amt}}</span>
+			<span><b>用户+授权</b>{{$stat.amt}}</span>
 			<span><b>已关注</b><em>{{$stat.follow}}</em></span>
 			<span><b>已注册</b><em>{{$stat.reg0}}</em> / {{$stat.reg}}</span>
 			<span><b>媒婆</b><em>{{$stat.mp0}}</em> / {{$stat.mp}}</span>

@@ -107,7 +107,7 @@
 		var items = [], names = [], fields = [];
 		switch (cat) {
 			case 'new':
-				names = ["游客+授权", "游客", "关注", "取关", "转化率", "会员", "媒婆", "帅哥", "美女"];
+				names = ["用户+授权", "游客", "关注", "取关", "转化率", "会员", "媒婆", "帅哥", "美女"];
 				fields = ["added_total", "added_viewer", "added_subscribe", "added_unsubscribe",
 					"added_subscribe_ratio", "added_member", "added_meipo", "added_male", "added_female"];
 				break;
@@ -116,7 +116,7 @@
 				fields = ["act_favor", "act_chat", "act_gift", 'act_pay'];
 				break;
 			case 'amt':
-				names = ["累计游客+授权", "累计游客", '累计关注', "累计会员", '累计单身男', '累计单身女', '累计媒婆'];
+				names = ["累计用户+授权", "累计游客", '累计关注', "累计会员", '累计单身男', '累计单身女', '累计媒婆'];
 				fields = ["accum_total", "accum_viewer", 'accum_subscribe', "accum_member", 'accum_male', 'accum_female', 'accum_meipo'];
 				break;
 			case 'active':
