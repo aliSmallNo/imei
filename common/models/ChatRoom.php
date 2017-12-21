@@ -264,8 +264,9 @@ class ChatRoom extends ActiveRecord
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId 
 				join im_user as u on u.uId=c.cAddedBy
-				join im_chat_room_fella as m on m.mUId=c.cAddedBy  and m.mRId=:rid
-				where c.cGId=:rid and  c.cDeletedFlag=:del  $strCriteria";
+				join im_chat_room_fella as m on m.mUId=c.cAddedBy and m.mRId=:rid
+				left join im_admin as a on a.aId=c.cAdminId
+				where c.cGId=:rid and c.cDeletedFlag=:del  $strCriteria";
 		$count = $conn->createCommand($sql)->bindValues($params1)->queryScalar();
 
 		return [$chatlist, $count];

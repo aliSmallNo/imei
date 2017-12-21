@@ -1545,7 +1545,7 @@ class SiteController extends BaseController
 		}
 		list($chatItems, $count) = ChatRoom::roomChatList($roomId, $condition, $params, $page);
 		$stat = ChatRoom::roomStat($roomId);
-		$pagination = self::pagination($page, $count);
+		$pagination = self::pagination($page, $count, 30);
 		return $this->renderPage("roomdesc.tpl",
 			[
 				'getInfo' => $getInfo,
