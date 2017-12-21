@@ -1,4 +1,126 @@
 @import "base"
+$bgSanta: #dcf0f9
+$bgSantaRed: #dd0419
+.bg-santa
+    position: relative
+    &:before
+        content: ' '
+        position: fixed
+        z-index: -1
+        top: 0
+        right: 0
+        bottom: 0
+        left: 0
+        background-color: $bgSanta
 
+.santa-header
+    background: url(../images/santa/bg_header0.jpg) no-repeat center top
+    background-size: 100% 100%
+    padding-top: 100%
+    position: relative
+    .props
+        position: absolute
+        left: 2.5rem
+        right: 2.5rem
+        bottom: 2rem
+        padding: 0
+        margin: 0
+        li
+            float: left
+            width: 20%
+            text-align: center
+            h4
+                font-size: 1rem
+                line-height: 1.6rem
+            a
+                width: 90%
+                height: 2rem
+                text-align: center
+                color: #fff
+                font-size: 1rem
+                background-color: $bgSantaRed
+                padding: .2rem .4rem
+                border-radius: .3rem
+            .prop
+                height: 4rem
+                &.prop-sugar
+                    background: url(../images/santa/prop_sugar.png) no-repeat center center
+                    background-size: 4rem 4rem
+                &.prop-hat
+                    background: url(../images/santa/prop_hat.png) no-repeat center center
+                    background-size: 4rem 4rem
+                &.prop-sock
+                    background: url(../images/santa/prop_sock.png) no-repeat center center
+                    background-size: 4rem 4rem
+                &.prop-olaf
+                    background: url(../images/santa/prop_olaf.png) no-repeat center center
+                    background-size: 4rem 4rem
+                &.prop-tree
+                    background: url(../images/santa/prop_tree.png) no-repeat center center
+                    background-size: 4rem 4rem
 
+.santa-body
+    padding: 0 1rem
+    .bg-title
+        background: url(../images/santa/bg_header1.png) no-repeat center top
+        background-size: 100% 100%
+        padding-top: 35%
+    .bg-tail
+        background: url(../images/santa/bg_bottom0.png) no-repeat center top
+        background-size: 100% 100%
+        padding-top: 20%
+    .content
+        background-image: url(../images/santa/bg_padding.png)
+        background-repeat: repeat-y
+        background-size: 30rem 1.4rem
+    .bags
+        margin: 0
+        padding: 0 2.5rem
+        & > li
+            &:after
+                content: ''
+                background: url(../images/santa/spliter.png) no-repeat center center
+                background-size: 100% .1rem
+                display: block
+                height: 1.5rem
+        .bag-wrap
+            @include displayFlex
+            .bag
+                @include displayFlex-w(9rem)
+                height: 9rem
+                &.bag-yuand
+                    background: url(../images/santa/bag_yuand.png) no-repeat center top
+                    background-size: 100% 100%
+                &.bag-shengd
+                    background: url(../images/santa/bag_shengd.png) no-repeat center top
+                    background-size: 100% 100%
+                &.bag-lianl
+                    background: url(../images/santa/bag_lianl.png) no-repeat center top
+                    background-size: 100% 100%
 
+            .desc
+                @include displayFlex-1
+
+.santa-footer
+    background: url(../images/santa/bg_bottom1.png) no-repeat center top
+    background-size: 100% 100%
+    padding-top: 62.5%
+    position: relative
+    .content
+        position: absolute
+        bottom: -1rem
+        left: 1.2rem
+        right: 1.2rem
+        h4
+            font-weight: $weightBold
+            font-size: 1.3rem
+        ol
+            margin: 0
+            padding: 0 0 0 1.5rem
+            font-size: 1rem
+            font-weight: $weightMiddle
+            b
+                color: $bgSantaRed
+.santa-footer-padding
+    height: 4rem
+    background: #ecf2f8

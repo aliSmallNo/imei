@@ -76,4 +76,136 @@ main {
 .font12 {
   font-size: 1.2rem; }
 
+.bg-santa {
+  position: relative; }
+  .bg-santa:before {
+    content: " ";
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #dcf0f9; }
+
+.santa-header {
+  background: url(../images/santa/bg_header0.jpg) no-repeat center top;
+  background-size: 100% 100%;
+  padding-top: 100%;
+  position: relative; }
+  .santa-header .props {
+    position: absolute;
+    left: 2.5rem;
+    right: 2.5rem;
+    bottom: 2rem;
+    padding: 0;
+    margin: 0; }
+    .santa-header .props li {
+      float: left;
+      width: 20%;
+      text-align: center; }
+      .santa-header .props li h4 {
+        font-size: 1rem;
+        line-height: 1.6rem; }
+      .santa-header .props li a {
+        width: 90%;
+        height: 2rem;
+        text-align: center;
+        color: #fff;
+        font-size: 1rem;
+        background-color: #dd0419;
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.3rem; }
+      .santa-header .props li .prop {
+        height: 4rem; }
+        .santa-header .props li .prop.prop-sugar {
+          background: url(../images/santa/prop_sugar.png) no-repeat center center;
+          background-size: 4rem 4rem; }
+        .santa-header .props li .prop.prop-hat {
+          background: url(../images/santa/prop_hat.png) no-repeat center center;
+          background-size: 4rem 4rem; }
+        .santa-header .props li .prop.prop-sock {
+          background: url(../images/santa/prop_sock.png) no-repeat center center;
+          background-size: 4rem 4rem; }
+        .santa-header .props li .prop.prop-olaf {
+          background: url(../images/santa/prop_olaf.png) no-repeat center center;
+          background-size: 4rem 4rem; }
+        .santa-header .props li .prop.prop-tree {
+          background: url(../images/santa/prop_tree.png) no-repeat center center;
+          background-size: 4rem 4rem; }
+
+.santa-body {
+  padding: 0 1rem; }
+  .santa-body .bg-title {
+    background: url(../images/santa/bg_header1.png) no-repeat center top;
+    background-size: 100% 100%;
+    padding-top: 35%; }
+  .santa-body .bg-tail {
+    background: url(../images/santa/bg_bottom0.png) no-repeat center top;
+    background-size: 100% 100%;
+    padding-top: 20%; }
+  .santa-body .content {
+    background-image: url(../images/santa/bg_padding.png);
+    background-repeat: repeat-y;
+    background-size: 30rem 1.4rem; }
+  .santa-body .bags {
+    margin: 0;
+    padding: 0 2.5rem; }
+    .santa-body .bags > li:after {
+      content: "";
+      background: url(../images/santa/spliter.png) no-repeat center center;
+      background-size: 100% 0.1rem;
+      display: block;
+      height: 1.5rem; }
+    .santa-body .bags .bag-wrap {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex; }
+      .santa-body .bags .bag-wrap .bag {
+        -webkit-box-flex: 0 0 9rem;
+        -webkit-flex: 0 0 9rem;
+        -ms-flex: 0 0 9rem;
+        flex: 0 0 9rem;
+        height: 9rem; }
+        .santa-body .bags .bag-wrap .bag.bag-yuand {
+          background: url(../images/santa/bag_yuand.png) no-repeat center top;
+          background-size: 100% 100%; }
+        .santa-body .bags .bag-wrap .bag.bag-shengd {
+          background: url(../images/santa/bag_shengd.png) no-repeat center top;
+          background-size: 100% 100%; }
+        .santa-body .bags .bag-wrap .bag.bag-lianl {
+          background: url(../images/santa/bag_lianl.png) no-repeat center top;
+          background-size: 100% 100%; }
+      .santa-body .bags .bag-wrap .desc {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1; }
+
+.santa-footer {
+  background: url(../images/santa/bg_bottom1.png) no-repeat center top;
+  background-size: 100% 100%;
+  padding-top: 62.5%;
+  position: relative; }
+  .santa-footer .content {
+    position: absolute;
+    bottom: -1rem;
+    left: 1.2rem;
+    right: 1.2rem; }
+    .santa-footer .content h4 {
+      font-weight: 500;
+      font-size: 1.3rem; }
+    .santa-footer .content ol {
+      margin: 0;
+      padding: 0 0 0 1.5rem;
+      font-size: 1rem;
+      font-weight: 400; }
+      .santa-footer .content ol b {
+        color: #dd0419; }
+
+.santa-footer-padding {
+  height: 4rem;
+  background: #ecf2f8; }
+
 /*# sourceMappingURL=dev.css.map */
