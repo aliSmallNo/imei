@@ -96,21 +96,12 @@ class TrendService
 		if ($type) {
 			self::setType($type);
 		}
+		$MD5 = md5(json_encode([$this->category, $step, $type, $dateName, $beginDate, $endDate, $field]));
+		$sql = 'DELETE FROM im_trend WHERE tMD5=:md5';
+		$this->conn->createCommand($sql)->bindValues([':md5' => $MD5])->execute();
 
-		$sql = 'DELETE FROM im_trend 
-			WHERE tType=:tType AND tCategory=:tCategory AND tStep=:tStep 
-			 AND tDateName=:tDateName AND tBeginDate=:tBeginDate AND tEndDate=:tEndDate ';
-		$this->conn->createCommand($sql)->bindValues([
-			':tCategory' => $this->category,
-			':tStep' => $step,
-			':tType' => $type,
-			':tBeginDate' => $beginDate,
-			':tEndDate' => $endDate,
-			':tDateName' => $dateName,
-		])->execute();
-
-		$sql = 'INSERT INTO im_trend(tCategory, tStep, tType, tDateName, tBeginDate, tEndDate, tField, tNum,tNote)
-			VALUES(:tCategory, :tStep, :tType, :tDateName, :tBeginDate, :tEndDate, :tField, :tNum,:tNote)';
+		$sql = 'INSERT INTO im_trend(tCategory, tStep, tType, tDateName, tBeginDate, tEndDate, tField, tNum,tNote,tMD5)
+			VALUES(:tCategory, :tStep, :tType, :tDateName, :tBeginDate, :tEndDate, :tField, :tNum,:tNote,:md5)';
 		$this->conn->createCommand($sql)->bindValues([
 			':tCategory' => $this->category,
 			':tStep' => $step,
@@ -121,6 +112,7 @@ class TrendService
 			':tBeginDate' => $beginDate,
 			':tEndDate' => $endDate,
 			':tNote' => $note,
+			':md5' => $MD5
 		])->execute();
 		return true;
 	}
