@@ -1467,7 +1467,6 @@ class FooController extends Controller
 		])->execute();*/
 
 		// print_r(Goods::items(["gId" => '6019,6020']));
-		Order::editByPId(230981, 235384);
 
 	}
 

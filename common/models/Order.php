@@ -116,7 +116,7 @@ class Order extends ActiveRecord
 			case "gift":
 				$sql = "select g.*,sum(case when oStatus=2 then oNum when oStatus=3 then -oNum end) as co from im_order as o 
 						join im_goods as g on o.oGId=g.gId
-						where oUId=:uid 
+						where oUId=:uid and gCategory in (110,120)
 						group by oGId 
 						having co>0 
 						order by oId desc $limit";
@@ -127,7 +127,7 @@ class Order extends ActiveRecord
 			case "receive":
 				$sql = "select g.*,sum(case when oStatus=9 then oNum  end) as co,oAddedOn as dt from im_order as o 
 						join im_goods as g on o.oGId=g.gId
-						where oUId=:uid  
+						where oUId=:uid  and gCategory in (110,120)
 						group by oGId 
 						having co>0
 						order by gPrice asc $limit";
@@ -138,7 +138,7 @@ class Order extends ActiveRecord
 			case "sent":
 				$sql = "select g.*,sum(case when oStatus=3 then oNum  end) as co,oAddedOn as dt from im_order as o 
 						join im_goods as g on o.oGId=g.gId
-						where oUId=:uid  
+						where oUId=:uid  and gCategory in (110,120)
 						group by oGId 
 						having co>0
 						order by gPrice asc $limit";
