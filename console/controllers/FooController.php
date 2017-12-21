@@ -1323,16 +1323,72 @@ class FooController extends Controller
 	public function actionReuse()
 	{
 		$service = TrendService::init(TrendService::CAT_REUSE);
-		for ($k = 0; $k < 24; $k++) {
-			$service->statReuse('week', date('Y-m-d', time() - 86400 * 7 * $k));
+		$startTime = strtotime('2017-06-29 12:34');
+		$curTime = time();
+		$step = 'week';
+		for ($k = 0; $k < 50; $k++) {
+			$queryTime = strtotime('+' . $k . ' ' . $step, $startTime);
+			if ($queryTime > $curTime) {
+				break;
+			}
+			for ($seq = 1; $seq < 20; $seq++) {
+				$service->statReuse($step, date('Y-m-d', $queryTime), $seq);
+			}
 		}
-		for ($k = 0; $k < 6; $k++) {
-			$service->statReuse('month', date('Y-m-d', time() - 86400 * 31 * $k));
+
+		$step = 'month';
+		for ($k = 0; $k < 12; $k++) {
+			$queryTime = strtotime('+' . $k . ' ' . $step, $startTime);
+			if ($queryTime > $curTime) {
+				break;
+			}
+			for ($seq = 1; $seq < 20; $seq++) {
+				$service->statReuse($step, date('Y-m-d', $queryTime), $seq);
+			}
 		}
+
+	}
+
+	public function actionTrend()
+	{
+		$serviceTrend = TrendService::init(TrendService::CAT_TREND);
+		$startTime = strtotime('2017-07-17 12:34');
+		$curTime = time();
+		$step = 'day';
+		for ($k = 0; $k < 300; $k++) {
+			$queryTime = strtotime('+' . $k . ' ' . $step, $startTime);
+			if ($queryTime > $curTime) {
+				break;
+			}
+			$serviceTrend->statTrend($step, date('Y-m-d', $queryTime), true);
+		}
+
+		$step = 'week';
+		for ($k = 0; $k < 50; $k++) {
+			$queryTime = strtotime('+' . $k . ' ' . $step, $startTime);
+			if ($queryTime > $curTime) {
+				break;
+			}
+			$serviceTrend->statTrend($step, date('Y-m-d', $queryTime), true);
+		}
+
+		$step = 'month';
+		for ($k = 0; $k < 12; $k++) {
+			$queryTime = strtotime('+' . $k . ' ' . $step, $startTime);
+			if ($queryTime > $curTime) {
+				break;
+			}
+			$serviceTrend->statTrend($step, date('Y-m-d', $queryTime), true);
+		}
+
 	}
 
 	public function actionRain()
 	{
+		$ret = strtotime('+1 week', strtotime('2017-07-17 12:34'));
+		var_dump($ret);
+		$ret = date('Y-m-d H:i', $ret);
+		var_dump($ret);
 		/*$hid = '059af5c749741c';
 		$ret = AppUtil::decrypt($hid);
 		var_dump($ret);
@@ -1345,7 +1401,7 @@ class FooController extends Controller
 		$service = UserService::init(131379)->info;
 		var_dump($service);*/
 
-		$conn = AppUtil::db();
+		/*$conn = AppUtil::db();
 		$sql = "select * from im_user 
 			where uCertStatus=2 and uCertImage not like '%zm%' and uOpenId like 'oYDJew%' and uCertImage like 'http%'";
 		$ret = $conn->createCommand($sql)->queryAll();
@@ -1358,7 +1414,7 @@ class FooController extends Controller
 				':id' => $row['uId'],
 				':img' => json_encode($images, JSON_UNESCAPED_UNICODE)
 			])->execute();
-		}
+		}*/
 	}
 
 	public function actionZp()
