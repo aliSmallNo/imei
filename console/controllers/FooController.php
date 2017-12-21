@@ -1362,7 +1362,6 @@ class FooController extends Controller
 			$serviceTrend->statTrend($step, date('Y-m-d', $queryTime), true);
 		}
 
-
 	}
 
 	public function actionRain()
