@@ -11,6 +11,7 @@ namespace console\controllers;
 use common\models\ChatMsg;
 use common\models\Goods;
 use common\models\Img;
+use common\models\Order;
 use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
@@ -1465,7 +1466,8 @@ class FooController extends Controller
 			], JSON_UNESCAPED_UNICODE)
 		])->execute();*/
 
-		 // print_r(Goods::items(["gId" => '6019,6020']));
+		// print_r(Goods::items(["gId" => '6019,6020']));
+		Order::editByPId(230981, 235384);
 
 	}
 
