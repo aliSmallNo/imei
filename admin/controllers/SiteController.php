@@ -895,11 +895,6 @@ class SiteController extends BaseController
 
 	public function actionTrend()
 	{
-		if (!AppUtil::isDev()) {
-			return $this->renderPage('err500.tpl', [
-				'category' => "data"
-			]);
-		}
 
 		$date = self::getParam('dt', date('Y-m-d'));
 		$reset = self::getParam('reset', 0);
