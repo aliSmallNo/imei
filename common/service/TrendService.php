@@ -296,16 +296,29 @@ class TrendService
 		return $trend;
 	}
 
-	public function statReuse($step, $queryDate, $stepNumber = -1)
+	public function statReuse($step, $queryDate, $stepNumber = 0)
 	{
 		$this->setStep($step);
 		$this->setDate($step, $queryDate);
 		$beginDate = $this->beginDate;
-		if ($beginDate > date('Y-m-d')) {
-			return false;
-		}
 		$endDate = $this->endDate;
 		$dateName = $beginDate . PHP_EOL . $endDate;
+
+		if ($stepNumber == 0) {
+			if ($step == 'week') {
+				list($d, $from, $to) = AppUtil::getWeekInfo();
+			} else {
+				list($d, $from, $to) = AppUtil::getMonthInfo();
+			}
+		} else {
+			$from = date('Y-m-d', strtotime('+' . $stepNumber . ' ' . $step, strtotime($this->beginDate)));
+			$to = date('Y-m-d', strtotime('+' . $stepNumber . ' ' . $step, strtotime($this->endDate)));
+		}
+
+		if ($from > date('Y-m-d')) {
+			return false;
+		}
+
 		$baseItems = [];
 		$types = ['all', 'male', 'female'];
 
@@ -335,20 +348,9 @@ class TrendService
 			])->queryOne();
 			foreach ($types as $type) {
 				$cnt = isset($ret[$type]) ? $ret[$type] : 0;
-				$baseItems[$type]['cnt'] = $cnt;
-				self::add($step, $dateName, $beginDate, $endDate, 1, $cnt, $type);
+				$baseItems[$type] = $cnt;
+				self::add($step, $dateName, $beginDate, $endDate, 0, $cnt, $type);
 			}
-		}
-
-		if ($stepNumber < 0) {
-			if ($step == 'week') {
-				list($d, $from, $to) = AppUtil::getWeekInfo();
-			} else {
-				list($d, $from, $to) = AppUtil::getMonthInfo();
-			}
-		} else {
-			$from = strtotime('+' . $stepNumber . ' ' . $step, strtotime($this->beginDate));
-			$to = strtotime('+' . $stepNumber . ' ' . $step, strtotime($this->endDate));
 		}
 
 		$sql = "SELECT  
@@ -370,8 +372,13 @@ class TrendService
 		if ($ret) {
 			foreach ($types as $type) {
 				$cnt = $ret[$type];
-				$per = isset($baseItems[$type]) && $baseItems[$type] ? round($cnt * 100.0 / $baseItems[$type], 1) : 0;
-				self::add($step, $dateName, $beginDate, $endDate, $stepNumber + 1, $cnt, $type, $per);
+				$per = '';
+				$field = 0;
+				if ($from > $this->beginDate) {
+					$field = 1;
+					$per = isset($baseItems[$type]) && $baseItems[$type] ? round($cnt * 100.0 / $baseItems[$type], 1) : 0;
+				}
+				self::add($step, $dateName, $from, $to, $field, $cnt, $type, $per);
 			}
 		}
 		return true;
@@ -387,7 +394,7 @@ class TrendService
 		$this->statReuse('week', date('Y-m-d'));
 		$this->statReuse('month', date('Y-m-d'));
 
-		$floor = $step == self::STEP_MONTH ? '2017-06-29' : '2017-07-20';
+		$floor = $step == self::STEP_MONTH ? '2017-06-29' : '2017-07-16';
 		$sql = "select * from im_trend 
 			where tCategory=:cat and tStep=:step and tDateName>:floor 
 			order by tDateName,tType, tBeginDate";

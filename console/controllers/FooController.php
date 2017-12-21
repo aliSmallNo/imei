@@ -1322,7 +1322,7 @@ class FooController extends Controller
 	public function actionReuse()
 	{
 		$service = TrendService::init(TrendService::CAT_REUSE);
-		$startTime = strtotime('2017-07-17 12:34');
+		$startTime = strtotime('2017-06-29 12:34');
 		$curTime = time();
 		$step = 'week';
 		for ($k = 0; $k < 50; $k++) {
@@ -1330,7 +1330,7 @@ class FooController extends Controller
 			if ($queryTime > $curTime) {
 				break;
 			}
-			for ($seq = 0; $seq < 20; $seq++) {
+			for ($seq = 1; $seq < 20; $seq++) {
 				$service->statReuse($step, date('Y-m-d', $queryTime), $seq);
 			}
 		}
@@ -1341,7 +1341,7 @@ class FooController extends Controller
 			if ($queryTime > $curTime) {
 				break;
 			}
-			for ($seq = 0; $seq < 20; $seq++) {
+			for ($seq = 1; $seq < 20; $seq++) {
 				$service->statReuse($step, date('Y-m-d', $queryTime), $seq);
 			}
 		}
