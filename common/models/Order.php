@@ -55,8 +55,29 @@ class Order extends ActiveRecord
 		$entity->oPayId = $tid;
 		$entity->oStatus = self::ST_PAY;
 		$entity->oUpdatedOn = date("Y-m-d H:i:s");
-
 		$entity->save();
+
+		// 处理礼包内的商品
+		$uid = $entity->oUId;
+		$gInfo = Goods::findOne(["gId" => $entity->oGId])->toArray();
+		if ($gInfo["gDesc"]) {
+			$desc = json_decode($gInfo["gDesc"], 1);
+			// 礼包商品
+			if (isset($desc["glsit"]) && $desc["glsit"]) {
+				foreach ($desc["glsit"] as $g) {
+					Order::add(["oUId" => $uid, "oGId" => $g["gid"], "oNum" => $g["num"], "oAmount" => 0, "oStatus" => self::ST_PAY, "oNote" => $oid]);
+				}
+			}
+			// 礼包卡(目前只有月卡赠送)
+			if (isset($desc["klsit"]) && $desc["klsit"]) {
+				foreach ($desc["klsit"] as $k) {
+					if ($k["cat"] == "chat_month") {
+						UserTag::addByPId(UserTag::CAT_CHAT_MONTH, $pid);
+					}
+				}
+			}
+		}
+
 		return $entity->oId;
 	}
 

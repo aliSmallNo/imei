@@ -38,6 +38,10 @@ class Goods extends ActiveRecord
 	public static function items($criteria, $page = 1, $pageSize = 20)
 	{
 		$strCriteria = '';
+		if (isset($criteria['gId'])) {
+			$strCriteria .= ' and ' . ' gId in (' . $criteria['gId'] . ') ';
+			unset($criteria['gId']);
+		}
 		$params = [];
 		foreach ($criteria as $field => $val) {
 			if ($field == 'gName') {
@@ -50,11 +54,18 @@ class Goods extends ActiveRecord
 		}
 		$conn = AppUtil::db();
 		$limit = ' limit ' . ($page - 1) * $pageSize . ',' . $pageSize;
-		$sql = "select gId as id,gCategory as cat,gName as `name`,gImage as image,gPrice as price,gUnit as unit
+		$sql = "select gId as id,gCategory as cat,gName as `name`,gImage as image,gPrice as price,gUnit as unit,gDesc as `desc`
 		 FROM im_goods 
 		 WHERE gId>0 " . $strCriteria . $limit;
-		return $conn->createCommand($sql)->bindValues($params)->queryAll();
-
+		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		foreach ($res as &$v) {
+			$v["subtitle"] = '';
+			$des = json_decode($v['desc'], 1);
+			if ($des && isset($des["subtitle"])) {
+				$v["subtitle"] = $des["subtitle"];
+			}
+		}
+		return $res;
 	}
 
 	public static function getGiftList($subtag, $uid)

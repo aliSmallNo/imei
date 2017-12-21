@@ -1,8 +1,41 @@
+<style>
+	.gift-bags h3 {
+		color: #ff5965;
+		text-align: center;
+		margin: 0;
+		font-size: 1.2rem;
+		padding: .8rem 0;
+	}
+
+	.gift-bags strong {
+		font-size: .8rem;
+		text-align: center;
+		display: block;
+		color: #fff;
+		padding-top: 1.5rem
+	}
+
+	.gift-bags i {
+		font-size: 2rem;
+		text-align: center;
+		display: block;
+		color: #fff;
+	}
+
+	.gift-bags p {
+		color: #fff;
+		text-align: center;
+	}
+
+	.gift-bags p em {
+		color: #fff;
+	}
+</style>
 <section id="sec_home">
 	<div class="swiper-container" style="height: 10rem">
 		<div class="swiper-wrapper">
 			{{foreach from=$headers item=item}}
-				<div class="swiper-slide"><img src="{{$item.image}}" data-url="{{$item.url}}" style="height: 10rem"></div>
+			<div class="swiper-slide"><img src="{{$item.image}}" data-url="{{$item.url}}" style="height: 10rem"></div>
 			{{/foreach}}
 		</div>
 		<div class="swiper-pagination"></div>
@@ -10,42 +43,59 @@
 	<a class="gift-header">特权礼包</a>
 	<ul class="gift-bags" min-level="1">
 		{{foreach from=$bags item=item}}
-			<li>
-				<a href="javascript:;" style="background-image: url({{$item.image}}) "
-				   data-id="{{$item.id}}" data-price="{{$item.price}}" data-unit="{{$item.unit}}"
-				   data-img="{{$item.image}}">
-					<div class="title">
-						<h4>{{$item.name}}</h4>
-						<h5><em>{{$item.price}}</em>{{$item.unit}}</h5>
-					</div>
-				</a>
-			</li>
+		<li style="background: url({{$item.image}});background-size: 80% 90%;background-position: center center;background-repeat: no-repeat ">
+			<a href="javascript:;" data-id="{{$item.id}}" data-price="{{$item.price}}" data-unit="{{$item.unit}}"
+				 data-des='{{$item.desc}}'
+			<div class="title">
+				<h3>{{$item.name}}</h3>
+				<strong>{{$item.subtitle}}</strong>
+				<i> = </i>
+				<p><em>{{$item.price}}</em>{{$item.unit}}</p>
+			</div>
+			</a>
+		</li>
 		{{/foreach}}
+
+		{{if 0}}
+		{{foreach from=$bags item=item}}
+		<li style="display:none;background: url(/images/shop/bg_flash.png);background-size: 80% 90%;background-position: center center;background-repeat: no-repeat ">
+			<a href="javascript:;" style="background-image: url({{$item.image}}) "
+				 data-id="{{$item.id}}" data-price="{{$item.price}}" data-unit="{{$item.unit}}"
+				 data-img="{{$item.image}}">
+				<div class="title">
+					<h4>{{$item.name}}</h4>
+					<h5><em>{{$item.price}}</em>{{$item.unit}}</h5>
+				</div>
+			</a>
+		</li>
+		{{/foreach}}
+		{{/if}}
+
 	</ul>
 	<a class="gift-header">普通礼物</a>
 	<ul class="gift-stuff" min-level="1">
 		{{foreach from=$stuff item=item}}
-			<li>
-				<a href="javascript:;" style="background-image: url({{$item.image}})"
-				   data-id="{{$item.id}}" data-price="{{$item.price}}" data-unit="{{$item.unit}}"
-				   data-img="{{$item.image}}">
-					<h4>{{$item.name}}</h4>
-					<h5>{{$item.price}}{{$item.unit}}</h5>
-				</a>
-			</li>
+		<li>
+			<a href="javascript:;" style="background-image: url({{$item.image}})"
+				 data-id="{{$item.id}}" data-price="{{$item.price}}" data-unit="{{$item.unit}}"
+				 data-img="{{$item.image}}">
+				<h4>{{$item.name}}</h4>
+				<h5>{{$item.price}}{{$item.unit}}</h5>
+			</a>
+		</li>
 		{{/foreach}}
 	</ul>
 	<a class="gift-header">特权礼物 <em>只限08等级购买</em></a>
 	<ul class="gift-stuff" min-level="8">
 		{{foreach from=$premium item=item}}
-			<li>
-				<a href="javascript:;" style="background-image: url({{$item.image}})"
-				   data-id="{{$item.id}}" data-price="{{$item.price}}" data-unit="{{$item.unit}}"
-				   data-img="{{$item.image}}">
-					<h4>{{$item.name}}</h4>
-					<h5>{{$item.price}}{{$item.unit}}</h5>
-				</a>
-			</li>
+		<li>
+			<a href="javascript:;" style="background-image: url({{$item.image}})"
+				 data-id="{{$item.id}}" data-price="{{$item.price}}" data-unit="{{$item.unit}}"
+				 data-img="{{$item.image}}">
+				<h4>{{$item.name}}</h4>
+				<h5>{{$item.price}}{{$item.unit}}</h5>
+			</a>
+		</li>
 		{{/foreach}}
 	</ul>
 	<div style="height: 5rem"></div>
@@ -61,9 +111,14 @@
 		<div class="m-popup-content"></div>
 	</div>
 </div>
+
 <div class="m-draw-wrap gift-detail off">
 	<div class="header">兑换礼物</div>
-	<div class="image"></div>
+	<div class="image">
+		<ul>
+
+		</ul>
+	</div>
 	<div class="m-stepper">
 		<span>数量:</span>
 		<a href="javascript:;" class="j-stepper minus">-</a>
@@ -94,12 +149,50 @@
 	</li>
 	{[/items]}
 </script>
+<style>
+	.m-draw-wrap .image ul {
+		overflow: hidden;
+		padding: 1rem 0;
+	}
+
+	.m-draw-wrap .image ul li {
+		float: left;
+		width: 20%;
+		list-style: none;
+	}
+
+	.m-draw-wrap .image ul li .img {
+		width: 100%;
+	}
+
+	.m-draw-wrap .image ul li .img img {
+		width: 100%;
+		height: 6rem;
+		display: block;
+		margin: 0 auto;
+	}
+
+	.m-draw-wrap .image ul li p {
+		font-size: 1.2rem;
+		text-align: center;
+	}
+</style>
+<script type="text/template" id="tpl_list">
+	{[#glist]}
+	<li data-num="{[num]}">
+		<div class="img">
+			<img src="{[img]}">
+		</div>
+		<p class="content">X <span>{[num]}</span></p>
+	</li>
+	{[/glist]}
+</script>
 <script src="/assets/js/require.js"></script>
 <script>
 	if (document.location.hash === "" || document.location.hash === "#") {
 		document.location.hash = "#sec_home";
 	}
 	requirejs(['/js/config.js?v=1.2.3'], function () {
-		requirejs(['/js/shop.js?v=1.2.8']);
+		requirejs(['/js/shop.js?v=1.2.9']);
 	});
 </script>
