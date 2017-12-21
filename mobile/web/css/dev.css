@@ -150,6 +150,24 @@ main {
     background-size: 30rem 1.4rem; }
   .santa-body .bags {
     padding: 1rem 2.5rem 0; }
+    .santa-body .bags > li a {
+      height: 5rem;
+      display: block; }
+      .santa-body .bags > li a.btn-yuand {
+        background: url(../images/santa/bag_yuand_btn.png);
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 90% 3rem; }
+      .santa-body .bags > li a.btn-shengd {
+        background: url(../images/santa/bag_sehngd_btn.png);
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 90% 3rem; }
+      .santa-body .bags > li a.btn-lianl {
+        background: url(../images/santa/bag_lianl_btn.png);
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 90% 3rem; }
     .santa-body .bags > li:after {
       content: "";
       background: url(../images/santa/spliter.png) no-repeat center center;

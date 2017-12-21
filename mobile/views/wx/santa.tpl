@@ -52,11 +52,10 @@
 				<div class="bag-wrap">
 					<div class="bag bag-shengd"></div>
 					<ol class="desc">
-						<li>集满12个圣诞糖果</li>
-						<li>集满12个圣诞帽子</li>
+						<li>集满6个圣诞糖果</li>
+						<li>集满6个圣诞帽子</li>
 						<li>集满1个圣诞袜子</li>
 						<li>集满1个圣诞雪人</li>
-						<li>集满1个圣诞树</li>
 					</ol>
 				</div>
 				<a href="javascript:;" class="btn-shengd"></a>
@@ -65,11 +64,10 @@
 				<div class="bag-wrap">
 					<div class="bag bag-lianl"></div>
 					<ol class="desc">
-						<li>集满12个圣诞糖果</li>
-						<li>集满12个圣诞帽子</li>
+						<li>集满3个圣诞糖果</li>
+						<li>集满3个圣诞帽子</li>
 						<li>集满1个圣诞袜子</li>
 						<li>集满1个圣诞雪人</li>
-						<li>集满1个圣诞树</li>
 					</ol>
 				</div>
 				<a href="javascript:;" class="btn-lianl"></a>
