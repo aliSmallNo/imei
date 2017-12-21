@@ -28,6 +28,7 @@
 		</li>
 	</ul>
 </div>
+<div style="height: 2rem"></div>
 <div class="santa-body">
 	<div class="bg-title">
 

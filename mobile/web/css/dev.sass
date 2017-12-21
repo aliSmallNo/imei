@@ -74,20 +74,21 @@ $bgSantaRed: #dd0419
         background-repeat: repeat-y
         background-size: 30rem 1.4rem
     .bags
-        margin: 0
-        padding: 0 2.5rem
+        padding: 1rem 2.5rem 0
         & > li
             &:after
                 content: ''
                 background: url(../images/santa/spliter.png) no-repeat center center
-                background-size: 100% .1rem
+                background-size: 100% 1px
                 display: block
-                height: 1.5rem
+                height: 3rem
         .bag-wrap
             @include displayFlex
+            color: #fff
+            font-size: 1.1rem
             .bag
-                @include displayFlex-w(9rem)
-                height: 9rem
+                @include displayFlex-w(11rem)
+                height: 11rem
                 &.bag-yuand
                     background: url(../images/santa/bag_yuand.png) no-repeat center top
                     background-size: 100% 100%
@@ -100,6 +101,7 @@ $bgSantaRed: #dd0419
 
             .desc
                 @include displayFlex-1
+                @include displayFlexVAlign
 
 .santa-footer
     background: url(../images/santa/bg_bottom1.png) no-repeat center top
