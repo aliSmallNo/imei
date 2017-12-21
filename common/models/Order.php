@@ -55,8 +55,31 @@ class Order extends ActiveRecord
 		$entity->oPayId = $tid;
 		$entity->oStatus = self::ST_PAY;
 		$entity->oUpdatedOn = date("Y-m-d H:i:s");
-
 		$entity->save();
+
+		// 处理礼包内的商品
+		$uid = $entity->oUId;
+		$oNum = $entity->oNum;
+		$gInfo = Goods::findOne(["gId" => $entity->oGId])->toArray();
+		if ($gInfo["gDesc"]) {
+			$desc = json_decode($gInfo["gDesc"], 1);
+			// 礼包商品
+			if (isset($desc["glist"]) && $desc["glist"]) {
+				foreach ($desc["glist"] as $g) {
+					Order::add(["oUId" => $uid, "oGId" => $g["gid"], "oNum" => $g["num"] * $oNum, "oAmount" => 0, "oStatus" => self::ST_PAY, "oNote" => $oid]);
+				}
+			}
+			// 礼包卡(目前只有月卡赠送)
+			if (isset($desc["klist"]) && $desc["klist"]) {
+				foreach ($desc["klist"] as $k) {
+					if ($k["cat"] == "chat_month") {
+						for ($i = 0; $i < $oNum; $i++) {
+							UserTag::addByPId(UserTag::CAT_CHAT_MONTH, $pid);
+						}
+					}
+				}
+			}
+		}
 		return $entity->oId;
 	}
 
@@ -93,7 +116,7 @@ class Order extends ActiveRecord
 			case "gift":
 				$sql = "select g.*,sum(case when oStatus=2 then oNum when oStatus=3 then -oNum end) as co from im_order as o 
 						join im_goods as g on o.oGId=g.gId
-						where oUId=:uid 
+						where oUId=:uid and gCategory in (110,120)
 						group by oGId 
 						having co>0 
 						order by oId desc $limit";
@@ -104,7 +127,7 @@ class Order extends ActiveRecord
 			case "receive":
 				$sql = "select g.*,sum(case when oStatus=9 then oNum  end) as co,oAddedOn as dt from im_order as o 
 						join im_goods as g on o.oGId=g.gId
-						where oUId=:uid  
+						where oUId=:uid  and gCategory in (110,120)
 						group by oGId 
 						having co>0
 						order by gPrice asc $limit";
@@ -115,7 +138,7 @@ class Order extends ActiveRecord
 			case "sent":
 				$sql = "select g.*,sum(case when oStatus=3 then oNum  end) as co,oAddedOn as dt from im_order as o 
 						join im_goods as g on o.oGId=g.gId
-						where oUId=:uid  
+						where oUId=:uid  and gCategory in (110,120)
 						group by oGId 
 						having co>0
 						order by gPrice asc $limit";

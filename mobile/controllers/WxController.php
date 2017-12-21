@@ -2046,9 +2046,11 @@ class WxController extends BaseController
 			$headers[$k]['image'] = $header['content'];
 			unset($headers[$k]['content'], $headers[$k]['id']);
 		}
-		$bags = Goods::items(['gCategory' => Goods::CAT_BAG, 'gStatus' => 1]);
+		// $bags = Goods::items(['gCategory' => Goods::CAT_BAG, 'gStatus' => 1]);
 		$stuff = Goods::items(['gCategory' => Goods::CAT_STUFF, 'gStatus' => 1]);
 		$premium = Goods::items(['gCategory' => Goods::CAT_PREMIUM, 'gStatus' => 1]);
+
+		$bags = Goods::items(['gCategory' => Goods::CAT_BAG, 'gStatus' => 1, 'gId' => "6019,6020"]);
 
 		return self::renderPage("shop.tpl",
 			[

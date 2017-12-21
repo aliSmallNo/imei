@@ -9,7 +9,9 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
+use common\models\Goods;
 use common\models\Img;
+use common\models\Order;
 use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
@@ -1447,6 +1449,24 @@ class FooController extends Controller
 
 		//$expInfo = UserTag::getExp(120003);print_r($expInfo);
 
+		/*$sql = "update im_goods set gDesc=:des where gId=6020";
+		AppUtil::db()->createCommand($sql)->bindValues([
+			":des" => json_encode([
+				'subtitle' => '月度畅聊卡+价值100元的礼物',
+				'glist' => [
+					['gid' => 6003, 'num' => 15, 'name' => '气球', 'img' => '/images/shop/stuff_qq.png'],
+					['gid' => 6004, 'num' => 15, 'name' => '口红', 'img' => '/images/shop/stuff_kh.png'],
+					['gid' => 6006, 'num' => 5, 'name' => '抱抱熊', 'img' => '/images/shop/stuff_bbx.png'],
+					['gid' => 6008, 'num' => 5, 'name' => '么么哒', 'img' => '/images/shop/stuff_mmd.png'],
+					['gid' => 6009, 'num' => 10, 'name' => '巧克力', 'img' => '/images/shop/stuff_qkl.png'],
+				],
+				'klist' => [
+					['cat' => 'chat_month', 'num' => 1],
+				]
+			], JSON_UNESCAPED_UNICODE)
+		])->execute();*/
+
+		// print_r(Goods::items(["gId" => '6019,6020']));
 
 	}
 
