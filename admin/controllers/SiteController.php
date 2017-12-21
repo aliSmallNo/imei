@@ -916,10 +916,7 @@ class SiteController extends BaseController
 	// 留存率 统计
 	public function actionReusestat()
 	{
-		if (!AppUtil::isDev()) {
-			return $this->renderPage('err500.tpl',
-				['category' => "data"]);
-		}
+
 		$cat = self::getParam("cat", "all");
 		$scope = self::getParam("scope", "week");
 		$reset = self::getParam("reset", 0);
