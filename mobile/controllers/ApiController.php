@@ -2585,17 +2585,20 @@ class ApiController extends Controller
 		if ($subUId && !is_numeric($subUId)) {
 			$subUId = AppUtil::decrypt($subUId);
 		}
+		// 双旦活动
+		$note = self::postParam('note');
+		if (in_array($tag, ['share', 'moment'])
+			&& in_array($note, ['/wx/shares', '/wx/santa'])
+			&& strtotime("2018-01-06 23:59:50") > time()
+			&& strtotime("2017-12-22 00:00:00") < time()) {
+			$key = $note == "/wx/shares" ? Log::SANTA_SOCK : Log::SANTA_OLAF;
+			Log::addSanta($wxInfo["uId"], $key);
+		}
+
 		switch ($tag) {
 			case 'share':
 				$note = self::postParam('note');
 				$nId = UserNet::addShare($uid, $subUId, UserNet::REL_QR_SHARE, $note);
-				// 双旦活动
-				if (in_array($note, ['/wx/shares', '/wx/santa'])
-					&& strtotime("2018-01-06 23:59:50") > time()
-					&& strtotime("2017-12-22 00:00:00") < time()) {
-					$key = $note == "/wx/shares" ? Log::SANTA_SOCK : Log::SANTA_OLAF;
-					Log::addSanta($wxInfo["uId"], $key);
-				}
 				break;
 			case 'moment':
 				$amt = 16;

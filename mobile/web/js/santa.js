@@ -87,9 +87,7 @@ require(['jquery', 'mustache', "alpha"],
 			}, "json");
 		}
 
-		function shareOptions(type, index) {
-			var uni = $("#cUNI").val();
-			var idx = index || $("#cIDX").val();
+		function shareOptions(type) {
 			var linkUrl = "https://wx.meipo100.com/wx/santa";
 			var imgUrl = "https://img.meipo100.com/2017/1225/185307_t.jpg";
 			var title = '千寻恋恋，元旦圣诞并肩作战，快来看看吧！';
