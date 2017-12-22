@@ -39,6 +39,20 @@ require(['jquery', 'mustache', "alpha"],
 
 				});
 
+				$(".santa-alert .btn a").on(kClick, function () {
+					if (!util.url) {
+						var html = '<i class="share-arrow">点击菜单分享</i>';
+						$sls.main.show();
+						$sls.main.append(html);
+						$sls.shade.fadeIn(160);
+						setTimeout(function () {
+							$sls.main.hide();
+							$sls.main.find('.share-arrow').remove();
+							$sls.shade.fadeOut(100);
+						}, 4000);
+					}
+				});
+
 				$(".bags a").on(kClick, function () {
 					alpha.toast("您的礼物还没收齐哦~");
 				});
