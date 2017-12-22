@@ -484,7 +484,7 @@ class ImageUtil
 			$thumb = self::getUrl($fileThumb);
 			Image::open($fileName)->zoomCrop($figureWidth, $figureHeight, 0xffffff, 'center', 'center')->save($fileNormal);
 			$figure = self::getUrl($fileNormal);
-			unlink($tmpName);
+			 unlink($tmpName);
 			$result[] = [$thumb, $figure];
 		}
 		return $result;
