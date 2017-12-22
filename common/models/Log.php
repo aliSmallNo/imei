@@ -25,6 +25,13 @@ class Log extends ActiveRecord
 	const SPREAD_LOT2 = 520;//抽奖活动
 	const SPREAD_RED = 600;//口令红包
 
+	const CAT_SANTA = 5000; // 双旦活动
+	const SANTA_SUGAR = 100; //糖果
+	const SANTA_HAT = 200;  //帽子
+	const SANTA_SOCK = 300; //袜子
+	const SANTA_OLAF = 400; //雪人
+	const SANTA_TREE = 500; //圣诞树
+
 
 	const SC_SHIELD = 100;
 	const SC_NOCERT_DES = 200;
@@ -183,4 +190,44 @@ class Log extends ActiveRecord
 		return $res + $init;
 	}
 
+
+	public static function santaStat($uid)
+	{
+		$conn = AppUtil::db();
+		$sql = "select 
+				ifnull(sum(case when oKey=100 then 1 end),0) as sugar,
+				ifnull(sum(case when oKey=200 then 1 end),0) as hat,
+				ifnull(sum(case when oKey=300 then 1 end),0) as sock,
+				ifnull(sum(case when oKey=400 then 1 end),0) as olaf,
+				ifnull(sum(case when oKey=500 then 1 end),0) as tree
+				from im_log where oCategory=5000 and oUId=120003";
+		return $conn->createCommand($sql)->bindValues([
+			":uid" => $uid,
+			":cat" => self::CAT_SANTA,
+		])->queryOne();
+
+	}
+
+	public static function addSanta($uid, $key)
+	{
+		$conn = AppUtil::db();
+		$sql = "select oId from im_log as l where l.oCategory=:cat and l.oUId=:uid and l.oKey=:k 
+				and DATE_FORMAT(l.oDate,'%Y-%c-%d')=DATE_FORMAT(now(),'%Y-%c-%d')";
+		$l = $conn->createCommand($sql)->bindValues([
+			':cat' => self::CAT_SANTA,
+			':k' => $key,
+			':uid' => $uid
+		])->queryOne();
+		if ($l) {
+			return 0;
+		}
+
+		$sql = "insert into im_log (oCategory,oKey,oUId,oBefore) values (:cat,:k,:uid,1)";
+		return $conn->createCommand($sql)->bindValues([
+			':cat' => self::CAT_SANTA,
+			':k' => $key,
+			':uid' => $uid
+		])->execute();
+
+	}
 }

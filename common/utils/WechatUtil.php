@@ -11,6 +11,7 @@ namespace common\utils;
 
 use admin\models\Admin;
 use common\models\Date;
+use common\models\Log;
 use common\models\Order;
 use common\models\Pay;
 use common\models\RedpacketTrans;
@@ -520,6 +521,10 @@ class WechatUtil
 			Pay::edit($pid, $data);
 			$entity = Pay::findOne(["pId" => $pid]);
 			$cat = $entity->pCategory;
+			// 双旦活动
+			if (strtotime("2018-01-06 23:59:50") > time() && strtotime("2017-12-23 00:00:00") < time()) {
+				Log::addSanta($entity->pUId, Log::SANTA_TREE);
+			}
 			switch ($cat) {
 				case Pay::CAT_MEET:
 					Date::edit($entity->pRId, ["dStatus" => [Date::STATUS_PASS, Date::STATUS_PAY], 'dPayId' => $pid]);

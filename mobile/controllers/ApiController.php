@@ -1919,6 +1919,12 @@ class ApiController extends Controller
 				/*if ($wxInfo["uId"] == '131379') {
 					return self::renderAPI(101, '想要更多密聊机会，请先捐媒桂花吧~');
 				}*/
+				// 双旦活动
+				if (strtotime("2018-01-06 23:59:50") > time()
+					&& strtotime("2017-12-23 00:00:00") < time()) {
+					Log::addSanta($wxInfo["uId"], Log::SANTA_HAT);
+				}
+
 				$ret = ChatMsg::addChat($uid, $receiverId, $text, 0, 0, $qId);
 				//ChatMsg::add($uid, $receiverId, $text);
 				if ($ret === false) {
@@ -2583,6 +2589,13 @@ class ApiController extends Controller
 			case 'share':
 				$note = self::postParam('note');
 				$nId = UserNet::addShare($uid, $subUId, UserNet::REL_QR_SHARE, $note);
+				// 双旦活动
+				if (in_array($note, ['/wx/shares', '/wx/santa'])
+					&& strtotime("2018-01-06 23:59:50") > time()
+					&& strtotime("2017-12-23 00:00:00") < time()) {
+					$key = $note == "/wx/share" ? Log::SANTA_SOCK : Log::SANTA_OLAF;
+					Log::addSanta($wxInfo["uId"], $key);
+				}
 				break;
 			case 'moment':
 				$amt = 16;
@@ -2665,6 +2678,11 @@ class ApiController extends Controller
 				list($code, $msg) = UserAudit::verify($wx_uid);
 				if ($code && $msg) {
 					return self::renderAPI($code, $msg);
+				}
+				// 双旦活动
+				if (strtotime("2018-01-06 23:59:50") > time()
+					&& strtotime("2017-12-22 00:00:00") < time()) {
+					Log::addSanta($wx_uid, Log::SANTA_SUGAR);
 				}
 				$prizeIndex = Lottery::randomPrize();
 				$prize = ($wx_role == User::ROLE_SINGLE ? Lottery::$SingleBundle[$prizeIndex] : Lottery::$MatcherBundle[$prizeIndex]);

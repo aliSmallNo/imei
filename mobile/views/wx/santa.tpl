@@ -3,27 +3,27 @@
 	<ul class="props clearfix">
 		<li data-text="每日签到可获得" data-btn-text="去签到" data-url="/wx/lottery">
 			<div class="prop prop-sugar"></div>
-			<h4>10个</h4>
+			<h4>{{$stat.sugar}}个</h4>
 			<a href="javascript:;">去收集</a>
 		</li>
 		<li data-text="每日主动发起聊天后获得" data-btn-text="去聊天" data-url="/wx/single#slook">
 			<div class="prop prop-hat"></div>
-			<h4>10个</h4>
+			<h4>{{$stat.hat}}个</h4>
 			<a href="javascript:;">去收集</a>
 		</li>
 		<li data-text="分享好友后可获得" data-btn-text="去分享" data-url="/wx/shares">
 			<div class="prop prop-sock"></div>
-			<h4>10个</h4>
+			<h4>{{$stat.sock}}个</h4>
 			<a href="javascript:;">去收集</a>
 		</li>
 		<li data-text="分享到朋友圈后可获得" data-btn-text="去分享" data-url="">
 			<div class="prop prop-olaf"></div>
-			<h4>10个</h4>
+			<h4>{{$stat.olaf}}个</h4>
 			<a href="javascript:;">去收集</a>
 		</li>
 		<li data-text="充值任意金额可获得" data-btn-text="去充值" data-url="/wx/sw">
 			<div class="prop prop-tree"></div>
-			<h4>10个</h4>
+			<h4>{{$stat.tree}}个</h4>
 			<a href="javascript:;">去收集</a>
 		</li>
 	</ul>

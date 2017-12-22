@@ -2112,10 +2112,14 @@ class WxController extends BaseController
 			'bg-color');
 	}
 
-	public function actionSanta(){
+	public function actionSanta()
+	{
+
+		$stat = Log::santaStat($this->user_id);
 		return self::renderPage("santa.tpl",
 			[
 				'uid' => $this->user_id,
+				'stat' => $stat,
 			],
 			'terse',
 			'双旦大活动',
