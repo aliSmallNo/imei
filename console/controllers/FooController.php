@@ -795,14 +795,15 @@ class FooController extends Controller
 		$sql = "SELECT uId,uGender 
  				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId AND w.wSubscribe=1
- 				WHERE uGender>9 and uPhone!=''
+ 				WHERE uGender>9 and uPhone!='' 
   					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt') ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
 		$senderId = User::SERVICE_UID;
 		foreach ($ret as $row) {
 			$uid = $row['uId'];
-			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1712201184811.jpg";
+			//$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1712201184811.jpg";
+			$content = "https://img.meipo100.com/2017/1227/185235_n.jpeg";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
 			QueueUtil::loadJob('templateMsg',
