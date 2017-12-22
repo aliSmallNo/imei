@@ -165,7 +165,7 @@
 </script>
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/santa.js?v=1.8.3']);
+		requirejs(['/js/santa.js?v=1.8.4']);
 	});
 </script>
 
