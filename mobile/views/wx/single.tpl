@@ -56,6 +56,60 @@
 	<ul class="m-top-users"></ul>
 	<div class="m-more">拼命加载中...</div>
 </section>
+<style>
+.m-top-users li .bg_santa{
+	  position: absolute;
+    background: url(/images/santa/ico_santa.png) no-repeat center center;
+    background-size: 100% 100%;
+    width: 100%;
+    height: 35rem;
+    left: -.3rem;
+    right: 0;
+    top: -3rem;
+    z-index: 100;
+}
+.m-top-users li .single-bar {
+    z-index: 101;
+}
+.nav-foot a.nav-invite:after {
+    background: url(/images/santa/ico_foot_invite.png?v=1.1.1) no-repeat center center;
+    background-size: 100% 100%;
+}
+.nav-foot a.nav-invite.active:after {
+    background: url(/images/santa/ico_foot_invite_hl.png?v=1.1.1) no-repeat center center;
+    background-size: 100% 100%;
+}
+.nav-foot a.nav-chat:after {
+    background: url(/images/santa/ico_foot_chat.png?v=1.1.1) no-repeat center center;
+    background-size: 100% 100%;
+}
+.nav-foot a.nav-chat.active:after {
+    background: url(/images/santa/ico_foot_chat_hl.png?v=1.1.1) no-repeat center center;
+    background-size: 100% 100%;
+}
+.nav-foot a.nav-me:after {
+    background: url(/images/santa/ico_foot_me.png?v=1.1.1) no-repeat center center;
+    background-size: 100% 100%;
+}
+.nav-foot a.nav-me.active:after {
+    background: url(/images/santa/ico_foot_me_hl.png?v=1.1.1) no-repeat center center;
+    background-size: 100% 100%;
+}
+.nav-foot{
+	background: url(/images/santa/ico_foot_bg_santa_.jpg?v=1.1.1) no-repeat center center;
+    background-size: 100% 100%;
+}
+.nav-foot a:before{
+	  position: absolute;
+    left: 4.1rem;
+    bottom: 1.5rem;
+    width: 2rem;
+    height: .08rem;
+    background: rgba(0,0,0,.1);
+    content: '';
+    box-shadow: 0px 0px 11px #000;
+}
+</style>
 <section id="matchCondition" data-title="筛选条件">
 	<div class="nav">
 		<a href="#slook">返回</a>
@@ -1003,6 +1057,7 @@
 	</li>
 	{[/data]}
 </script>
+
 <script type="text/html" id="tpl_user">
 	{[#data]}
 	{[^secretId]}
@@ -1059,6 +1114,7 @@
 			<a href="javascript:;" data-id="{[secretId]}" class="btn btn-apply none"></a>
 		</div>
 		{[/singleF]}
+		<span class="bg_santa"></span>
 	</li>
 	{[/secretId]}
 	{[/data]}
