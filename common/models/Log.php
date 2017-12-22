@@ -200,7 +200,7 @@ class Log extends ActiveRecord
 				ifnull(sum(case when oKey=300 then 1 end),0) as sock,
 				ifnull(sum(case when oKey=400 then 1 end),0) as olaf,
 				ifnull(sum(case when oKey=500 then 1 end),0) as tree
-				from im_log where oCategory=5000 and oUId=120003";
+				from im_log where oCategory=5000 and oUId=:uid";
 		return $conn->createCommand($sql)->bindValues([
 			":uid" => $uid,
 			":cat" => self::CAT_SANTA,
