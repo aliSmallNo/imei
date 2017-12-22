@@ -41,8 +41,8 @@
 					<ol class="desc">
 						<li>集满12个圣诞糖果</li>
 						<li>集满12个圣诞帽子</li>
-						<li>集满1个圣诞袜子</li>
-						<li>集满1个圣诞雪人</li>
+						<li>集满3个圣诞袜子</li>
+						<li>集满3个圣诞雪人</li>
 						<li>集满1个圣诞树</li>
 					</ol>
 				</div>
@@ -91,7 +91,43 @@
 	</div>
 </div>
 <div class="santa-footer-padding"></div>
+<div class="m-popup-shade"></div>
+<style>
+	.santa-alert {
+		background: url(/images/santa/bg_popup_prop.png) no-repeat center center;
+		height: 35rem;
+		background-size: 100% 35rem;
+		position: relative;
+	}
+
+	.santa-alert .btn-close {
+		position: absolute;
+		height: 3rem;
+		width: 3rem;
+		background: url(/images/santa/btn_close.png) no-repeat center center;
+		background-size: 100% 100%;
+		right: 0;
+		top: 0;
+		opacity: .7
+	}
+
+</style>
+<div class="m-popup-main" style="display: none">
+	<div class="m-popup-wrap">
+		<div class="m-popup-content" style="background: transparent;width: 25rem;left: 3.5rem;">
+			<div class="santa-alert">
+				<a href="javascript:;" class="btn-close"></a>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="/assets/js/require.js"></script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
+</script>
+<script>
+	requirejs(['/js/config.js?v=1.1'], function () {
+		requirejs(['/js/santa.js?v=1.8.3']);
+	});
 </script>
 

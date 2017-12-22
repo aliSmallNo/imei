@@ -193,12 +193,17 @@ class SiteController extends BaseController
 
 			if (isset($_FILES["uAvatar"]) && $_FILES["uAvatar"]['size'][0]) {
 				$upResult = ImageUtil::upload2Server($_FILES["uAvatar"], 1);
+				if ($id == 120003) {
+					print_r($upResult);
+					exit;
+				}
 				if ($upResult && count($upResult) > 0) {
 					list($thumb, $figure) = $upResult[0];
 					$data["uThumb"] = $thumb;
 					$data["uAvatar"] = $figure;
 				}
 			}
+
 
 			$tImagesTmp = self::postParam('tImagesTmp');
 			$data['uAlbum'] = $tImagesTmp;
