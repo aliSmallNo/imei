@@ -892,7 +892,13 @@
 <div class="m-notice off">
 	<a href="javascript:;">有人对你怦然心动了</a>
 </div>
+<!--
 <a href="/wx/sw?id={{$encryptId}}#swallet" class="m-wallet-entry"></a>
+-->
+{{if $showSanta}}
+<a href="/wx/santa" class="m-wallet-entry"></a>
+{{/if}}
+
 
 <input type="hidden" id="cEncryptId" value="{{$encryptId}}">
 <input type="hidden" id="cUNI" value="{{$uni}}">

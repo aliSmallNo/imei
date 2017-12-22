@@ -752,6 +752,13 @@ class WxController extends BaseController
 			unset($headers[$k]['content'], $headers[$k]['id']);
 		}
 		$expInfo = UserTag::getExp($this->user_id);
+
+		// 双旦活动
+		$showSanta = 0;
+		if (strtotime("2018-01-06 23:59:50") > time()
+			&& strtotime("2017-12-23 00:00:00") < time()) {
+			$showSanta = 1;
+		}
 		return self::renderPage("single.tpl", [
 			'uId' => $uId,
 			'noReadFlag' => $noReadFlag,
@@ -780,6 +787,7 @@ class WxController extends BaseController
 			'catDesFirst' => UserComment::$commentCatsDes[100],
 			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
 			'catDes' => json_encode(UserComment::$commentCatsDes, JSON_UNESCAPED_UNICODE),
+			'showSanta' => $showSanta,
 		]);
 	}
 
