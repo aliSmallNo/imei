@@ -795,8 +795,8 @@ class FooController extends Controller
 		$sql = "SELECT uId,uGender 
  				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId AND w.wSubscribe=1
- 				WHERE uGender>9 and uPhone!='' 
-  					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt') ";
+ 				WHERE uGender>9 and uPhone!=''  and uId>=141248
+  					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt') order by uId ASC ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
 		$senderId = User::SERVICE_UID;
@@ -821,6 +821,7 @@ class FooController extends Controller
 			if ($cnt && $cnt % 50 == 0) {
 				var_dump($cnt . date('  m-d H:i:s'));
 			}
+			echo date('  m-d H:i:s') . ' ' . $uid . PHP_EOL;
 		}
 		var_dump($cnt);
 	}
