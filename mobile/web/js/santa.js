@@ -13,16 +13,34 @@ require(['jquery', 'mustache', "alpha"],
 		};
 
 		var SantaUtil = {
-			gid: 0,
+			image: $(".santa-alert .image"),
+			text: $(".santa-alert .text"),
+			btntext: $(".santa-alert .btn"),
+			url: '',
 			init: function () {
 				var util = this;
 
 				$(".props a").on(kClick, function () {
+					var li = $(this).closest("li");
+					var url = li.attr('data-url');
+					var text = li.attr('data-text');
+					var btntext = li.attr('data-btn-text');
+					var img = li.find("div").css("background-image").replace('url(', '').replace(')', '');
+					console.log(img);
+					console.log(url);
+					console.log(text);
+					console.log(btntext);
+					util.image.find("img").attr("src", img);
+					util.text.html(text);
+					util.btntext.find('a').html(btntext);
+					util.btntext.find('a').attr('href', url);
+					util.url = url;
 					util.toggle(1);
 				});
 				$(".santa-alert .btn-close").on(kClick, function () {
 					util.toggle(0);
 				});
+
 			},
 			exchange: function () {
 				var util = this;

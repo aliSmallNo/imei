@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/css/dev.min.css">
 <div class="santa-header">
 	<ul class="props clearfix">
-		<li data-text="每日签到可获得" data-btn-text="去签到" data-url="/wx/sign">
+		<li data-text="每日签到可获得" data-btn-text="去签到" data-url="/wx/lottery">
 			<div class="prop prop-sugar"></div>
 			<h4>10个</h4>
 			<a href="javascript:;">去收集</a>
@@ -11,17 +11,17 @@
 			<h4>10个</h4>
 			<a href="javascript:;">去收集</a>
 		</li>
-		<li data-text="分享好友后可获得" data-btn-text="去分享" data-url="/wx/share">
+		<li data-text="分享好友后可获得" data-btn-text="去分享" data-url="/wx/shares">
 			<div class="prop prop-sock"></div>
 			<h4>10个</h4>
 			<a href="javascript:;">去收集</a>
 		</li>
-		<li data-text="每日主动发起聊天后获得" data-btn-text="去聊天" data-url="/wx/sign">
+		<li data-text="分享到朋友圈后可获得" data-btn-text="去分享" data-url="">
 			<div class="prop prop-olaf"></div>
 			<h4>10个</h4>
 			<a href="javascript:;">去收集</a>
 		</li>
-		<li data-text="每日主动发起聊天后获得" data-btn-text="去聊天" data-url="/wx/sign">
+		<li data-text="充值任意金额可获得" data-btn-text="去充值" data-url="/wx/sw">
 			<div class="prop prop-tree"></div>
 			<h4>10个</h4>
 			<a href="javascript:;">去收集</a>
@@ -126,11 +126,12 @@
 		font-size: 1.1rem;
 		text-align: center;
 	}
+
 	.santa-alert .btn {
 		height: 15rem;
 	}
 
-	.santa-alert .btn a{
+	.santa-alert .btn a {
 		background: url(../images/santa/btn01.png) no-repeat center center;
 		background-size: 60% 4.5rem;
 		display: block;
