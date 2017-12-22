@@ -1921,7 +1921,7 @@ class ApiController extends Controller
 				}*/
 				// 双旦活动
 				if (strtotime("2018-01-06 23:59:50") > time()
-					&& strtotime("2017-12-23 00:00:00") < time()) {
+					&& strtotime("2017-12-22 00:00:00") < time()) {
 					Log::addSanta($wxInfo["uId"], Log::SANTA_HAT);
 				}
 
@@ -2592,7 +2592,7 @@ class ApiController extends Controller
 				// 双旦活动
 				if (in_array($note, ['/wx/shares', '/wx/santa'])
 					&& strtotime("2018-01-06 23:59:50") > time()
-					&& strtotime("2017-12-23 00:00:00") < time()) {
+					&& strtotime("2017-12-22 00:00:00") < time()) {
 					$key = $note == "/wx/share" ? Log::SANTA_SOCK : Log::SANTA_OLAF;
 					Log::addSanta($wxInfo["uId"], $key);
 				}
