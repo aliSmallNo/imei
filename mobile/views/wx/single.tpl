@@ -454,6 +454,8 @@
 	<div style="height: 1rem"></div>
 	<ul class="zone-grid">
 		<li><a href="/wx/sw#swallet"><i class="i-zone-grid wallet"></i><em>账户</em></em></a></li>
+		<li><a href="/wx/shop"><i class="i-zone-grid shop"></i><em>商城</em></em></a></li>
+		<li><a href="/wx/shopbag"><i class="i-zone-grid bag"></i><em>背包</em></em></a></li>
 		<li><a href="/wx/lottery"><i class="i-zone-grid sign"></i><em>每日签到</em></a></li>
 		<li><a href="/wx/shares"><i class="i-zone-grid share"></i><em>分享给朋友</em></em></a></li>
 		<li><a href="#date"><i class="i-zone-grid date"></i><em>约会</em></a></li>
@@ -1432,6 +1434,6 @@
 		document.location.hash = "#slook";
 	}
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/single.js?v=1.8.3']);
+		requirejs(['/js/single.js?v=1.8.4']);
 	});
 </script>

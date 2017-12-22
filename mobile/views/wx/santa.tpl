@@ -1,27 +1,27 @@
 <link rel="stylesheet" href="/css/dev.min.css">
 <div class="santa-header">
 	<ul class="props clearfix">
-		<li>
+		<li data-text="每日签到可获得" data-btn-text="去签到" data-url="/wx/sign">
 			<div class="prop prop-sugar"></div>
 			<h4>10个</h4>
 			<a href="javascript:;">去收集</a>
 		</li>
-		<li>
+		<li data-text="每日主动发起聊天后获得" data-btn-text="去聊天" data-url="/wx/single#slook">
 			<div class="prop prop-hat"></div>
 			<h4>10个</h4>
 			<a href="javascript:;">去收集</a>
 		</li>
-		<li>
+		<li data-text="分享好友后可获得" data-btn-text="去分享" data-url="/wx/share">
 			<div class="prop prop-sock"></div>
 			<h4>10个</h4>
 			<a href="javascript:;">去收集</a>
 		</li>
-		<li>
+		<li data-text="每日主动发起聊天后获得" data-btn-text="去聊天" data-url="/wx/sign">
 			<div class="prop prop-olaf"></div>
 			<h4>10个</h4>
 			<a href="javascript:;">去收集</a>
 		</li>
-		<li>
+		<li data-text="每日主动发起聊天后获得" data-btn-text="去聊天" data-url="/wx/sign">
 			<div class="prop prop-tree"></div>
 			<h4>10个</h4>
 			<a href="javascript:;">去收集</a>
@@ -111,11 +111,48 @@
 		opacity: .7
 	}
 
+	.santa-alert .image {
+		height: 8rem;
+		padding-top: 10rem;
+	}
+
+	.santa-alert .image img {
+		height: 8rem;
+		width: 8rem;
+	}
+
+	.santa-alert .text {
+		color: #fff;
+		font-size: 1.1rem;
+		text-align: center;
+	}
+	.santa-alert .btn {
+		height: 15rem;
+	}
+
+	.santa-alert .btn a{
+		background: url(../images/santa/btn01.png) no-repeat center center;
+		background-size: 60% 4.5rem;
+		display: block;
+		height: 15rem;
+		color: #e74542;
+		line-height: 15rem;
+		font-size: 1.8rem;
+	}
+
+
 </style>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
 		<div class="m-popup-content" style="background: transparent;width: 25rem;left: 3.5rem;">
 			<div class="santa-alert">
+				<div class="image">
+					<img src="/images/santa/prop_hat.png">
+				</div>
+				<div class="text">每日主动发起聊天后获得</div>
+				<div class="btn">
+					<a href="javascript:;">发起聊天</a>
+				</div>
 				<a href="javascript:;" class="btn-close"></a>
 			</div>
 		</div>

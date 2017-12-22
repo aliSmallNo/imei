@@ -869,7 +869,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 							util.beforeDate();
 							break;
 						case 'gift':
-							if ($.inArray(parseInt($("#cUID").val()), [120003]) >= 0) {
+							if ($.inArray(parseInt($("#cUID").val()), [120003]) >= 0 || 1) {
 								GiftUtil.resetGifts();
 								util.toggle(util.giftmenus.hasClass("off"), util.giftmenus);
 								AdvertUtil.giftSwiper();
