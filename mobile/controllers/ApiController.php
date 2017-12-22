@@ -2593,7 +2593,7 @@ class ApiController extends Controller
 				if (in_array($note, ['/wx/shares', '/wx/santa'])
 					&& strtotime("2018-01-06 23:59:50") > time()
 					&& strtotime("2017-12-22 00:00:00") < time()) {
-					$key = $note == "/wx/share" ? Log::SANTA_SOCK : Log::SANTA_OLAF;
+					$key = $note == "/wx/shares" ? Log::SANTA_SOCK : Log::SANTA_OLAF;
 					Log::addSanta($wxInfo["uId"], $key);
 				}
 				break;
