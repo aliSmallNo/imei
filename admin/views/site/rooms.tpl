@@ -237,6 +237,7 @@
 				if (resp.code < 1) {
 					location.reload();
 				}
+				alpha.showMsg(resp.msg);
 			}, 'json');
 	});
 
