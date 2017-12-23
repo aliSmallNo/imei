@@ -1072,6 +1072,7 @@
 	<li>
 		<a href="javascript:;" data-eid="{[secretId]}" class="head j-profile">
 			<img src="{[avatar]}" class="nic">
+			<span class="bg_santa"></span>
 			<div class="u-info">
 				<div class="title">
 					<p class="name">{[#tags]}<i class="i-tag{[.]}"></i>{[/tags]}<em>{[name]}</em></p>
@@ -1114,7 +1115,6 @@
 			<a href="javascript:;" data-id="{[secretId]}" class="btn btn-apply none"></a>
 		</div>
 		{[/singleF]}
-		<span class="bg_santa"></span>
 	</li>
 	{[/secretId]}
 	{[/data]}
