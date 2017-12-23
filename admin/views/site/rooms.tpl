@@ -228,7 +228,7 @@
 	$(document).on("click", ".roomAvatar", function () {
 		var self = $(this);
 		var rid = self.attr("data-rid");
-		alpha.loading();
+		BpbhdUtil.loading();
 		$.post('/api/room',
 			{
 				tag: 'avatar',
@@ -237,7 +237,7 @@
 				if (resp.code < 1) {
 					location.reload();
 				}
-				alpha.showMsg(resp.msg);
+				BpbhdUtil.showMsg(resp.msg);
 			}, 'json');
 	});
 
