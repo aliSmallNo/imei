@@ -1070,9 +1070,9 @@
 	{[/secretId]}
 	{[#secretId]}
 	<li>
-		<a href="javascript:;" data-eid="{[secretId]}" class="head j-profile">
-			<img src="{[avatar]}" class="nic">
-			<span class="bg_santa"></span>
+		<a href="javascript:;" data-eid="{[secretId]}" class="head j-profile" style="background-image: url({[avatar]}) ">
+			{[#cert]}<i class="i-cert">已认证</i>{[/cert]}
+			{[#tags]}<i class="i-tag{[.]}"></i>{[/tags]}
 			<div class="u-info">
 				<div class="title">
 					<p class="name">{[#tags]}<i class="i-tag{[.]}"></i>{[/tags]}<em>{[name]}</em></p>
@@ -1080,9 +1080,8 @@
 				</div>
 				<h5>{[age]}岁 . {[height]} . {[horos]} . {[job]}</h5>
 			</div>
-			{[#cert]}<i class="i-cert">已认证</i>{[/cert]}
-			{[#tags]}<i class="i-tag{[.]}"></i>{[/tags]}
 		</a>
+
 		<div class="mp-info">
 			<div class="advise">{[advise]}</div>
 			<div class="mp">
