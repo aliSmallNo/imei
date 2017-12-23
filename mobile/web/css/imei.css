@@ -446,7 +446,9 @@ section {
   transition: 0.4s all ease;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
-  backface-visibility: hidden; }
+  backface-visibility: hidden;
+  background: url(../images/santa/ico_foot_bg_santa_.jpg?v=1.1.1) no-repeat center center;
+  background-size: 100% 100%; }
   .nav-foot.on {
     -webkit-transform: translateY(0) translateZ(0);
     -moz-transform: translateY(0) translateZ(0);
@@ -467,6 +469,15 @@ section {
     text-align: center;
     font-weight: 300;
     position: relative; }
+    .nav-foot a:before {
+      position: absolute;
+      left: 4.1rem;
+      bottom: 1.5rem;
+      width: 2rem;
+      height: 0.08rem;
+      background: rgba(0, 0, 0, 0.1);
+      content: "";
+      box-shadow: 0px 0px 11px #000; }
     .nav-foot a.active {
       font-weight: 500;
       color: #F06292; }
@@ -481,32 +492,32 @@ section {
     .nav-foot a.nav-link:after {
       background: url(../images/ico_foot/ico_foot_link.png?v=1.1.1) no-repeat center center;
       background-size: 100% 100%; }
+    .nav-foot a.nav-link.active:after {
+      background: url(../images/ico_foot/ico_foot_link_hl.png?v=1.1.1) no-repeat center center;
+      background-size: 100% 100%; }
+    .nav-foot a.nav-invite:after {
+      background: url(../images/santa/ico_foot_invite.png?v=1.1.1) no-repeat center center;
+      background-size: 100% 100%; }
+    .nav-foot a.nav-invite.active:after {
+      background: url(../images/santa/ico_foot_invite_hl.png?v=1.1.1) no-repeat center center;
+      background-size: 100% 100%; }
+    .nav-foot a.nav-chat:after {
+      background: url(../images/santa/ico_foot_chat.png?v=1.1.1) no-repeat center center;
+      background-size: 100% 100%; }
+    .nav-foot a.nav-chat.active:after {
+      background: url(../images/santa/ico_foot_chat_hl.png?v=1.1.1) no-repeat center center;
+      background-size: 100% 100%; }
+    .nav-foot a.nav-me:after {
+      background: url(../images/santa/ico_foot_me.png?v=1.1.1) no-repeat center center;
+      background-size: 100% 100%; }
+    .nav-foot a.nav-me.active:after {
+      background: url(../images/santa/ico_foot_me_hl.png?v=1.1.1) no-repeat center center;
+      background-size: 100% 100%; }
     .nav-foot a.nav-group:after {
       background: url(../images/ico_foot/ico_foot_group.png?v=1.1.1) no-repeat center center;
       background-size: 100% 100%; }
-    .nav-foot a.nav-invite:after {
-      background: url(../images/ico_foot/ico_foot_invite.png?v=1.1.1) no-repeat center center;
-      background-size: 100% 100%; }
-    .nav-foot a.nav-me:after {
-      background: url(../images/ico_foot/ico_foot_me.png?v=1.1.1) no-repeat center center;
-      background-size: 100% 100%; }
-    .nav-foot a.nav-chat:after {
-      background: url(../images/ico_foot/ico_foot_chat.png?v=1.1.1) no-repeat center center;
-      background-size: 100% 100%; }
-    .nav-foot a.nav-link.active:after {
-      background: url(../images/ico_foot//ico_foot_link_hl.png?v=1.1.1) no-repeat center center;
-      background-size: 100% 100%; }
     .nav-foot a.nav-group.active:after {
       background: url(../images/ico_foot/ico_foot_group_hl.png?v=1.1.1) no-repeat center center;
-      background-size: 100% 100%; }
-    .nav-foot a.nav-invite.active:after {
-      background: url(../images/ico_foot/ico_foot_invite_hl.png?v=1.1.1) no-repeat center center;
-      background-size: 100% 100%; }
-    .nav-foot a.nav-me.active:after {
-      background: url(../images/ico_foot/ico_foot_me_hl.png?v=1.1.1) no-repeat center center;
-      background-size: 100% 100%; }
-    .nav-foot a.nav-chat.active:after {
-      background: url(../images/ico_foot/ico_foot_chat_hl.png?v=1.1.1) no-repeat center center;
       background-size: 100% 100%; }
 
 .tip-color {
