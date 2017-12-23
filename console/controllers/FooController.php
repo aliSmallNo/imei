@@ -822,7 +822,7 @@ class FooController extends Controller
 			if ($cnt && $cnt % 50 == 0) {
 				var_dump($cnt . date('  m-d H:i:s'));
 			}
-			echo date('  m-d H:i:s') . ' ' . $uid . PHP_EOL;
+			//echo date('  m-d H:i:s') . ' ' . $uid . PHP_EOL;
 		}
 		var_dump($cnt);
 	}
