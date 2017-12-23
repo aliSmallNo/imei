@@ -610,6 +610,9 @@ class ApiController extends Controller
 				return self::renderAPI(0, '', $items);
 			case 'avatar':
 				$rId = self::postParam('rid');
+				if(AppUtil::isDev()){
+					return self::renderAPI(0, '发布到服务后使用！');
+				}
 				ChatRoom::roomAvatar($rId);
 				return self::renderAPI(0, '保存成功！');
 			case 'edit': // 添加群

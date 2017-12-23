@@ -228,6 +228,7 @@
 	$(document).on("click", ".roomAvatar", function () {
 		var self = $(this);
 		var rid = self.attr("data-rid");
+		alpha.loading();
 		$.post('/api/room',
 			{
 				tag: 'avatar',
