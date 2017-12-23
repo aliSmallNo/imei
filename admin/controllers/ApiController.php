@@ -608,6 +608,10 @@ class ApiController extends Controller
 				$pageSize = self::postParam('page', 30);
 				list($items) = ChatRoom::roomChatList($rId, [], [], $page, $pageSize);
 				return self::renderAPI(0, '', $items);
+			case 'avatar':
+				$rId = self::postParam('rid');
+				ChatRoom::roomAvatar($rId);
+				return self::renderAPI(0, '保存成功！');
 			case 'edit': // 添加群
 				$data = json_decode(self::postParam('data'), 1);
 				$data["addby"] = $this->admin_id;

@@ -484,7 +484,7 @@ class ImageUtil
 			$thumb = self::getUrl($fileThumb);
 			Image::open($fileName)->zoomCrop($figureWidth, $figureHeight, 0xffffff, 'center', 'center')->save($fileNormal);
 			$figure = self::getUrl($fileNormal);
-			 unlink($tmpName);
+			unlink($tmpName);
 			$result[] = [$thumb, $figure];
 		}
 		return $result;
@@ -626,4 +626,119 @@ class ImageUtil
 		Image::open($saveThumb)->rotate($angle)->save($saveThumb);
 		return true;
 	}
+
+	public static function multiAvatar($avatars)
+	{
+		$bgColor = 0xeeeeee;
+		$bgSize = 240;
+		$padding = 2;
+		$imgSize = 120;
+		$cnt = count($avatars);
+		if ($cnt > 4) {
+			$imgSize = 80;
+		}
+		$back = Image::create($bgSize, $bgSize)->fill($bgColor);
+		$merges = $downloadFiles = [];
+		$dir = AppUtil::imgDir();
+		foreach ($avatars as $avatar) {
+			$downloadFile = self::downloadFile($avatar, $dir . 'a_' . RedisUtil::getImageSeq());
+			$downloadFiles[] = $downloadFile;
+			$tmp = Image::open($downloadFile)->zoomCrop($imgSize - $padding * 2, $imgSize - $padding * 2, $bgColor, 'center', 'center');
+			$merges[] = Image::create($imgSize, $imgSize)->merge($tmp, $padding, $padding,
+				$imgSize - $padding * 2, $imgSize - $padding * 2)->fill($bgColor);
+		}
+		$index = 0;
+		switch ($cnt) {
+			case 2:
+				$back->merge($merges[$index++], 0, ($bgSize - $imgSize) / 2)
+					->merge($merges[$index++], $imgSize, ($bgSize - $imgSize) / 2);
+				break;
+			case 3:
+				$back->merge($merges[$index++], ($bgSize - $imgSize) / 2, 0)
+					->merge($merges[$index++], 0, $imgSize)
+					->merge($merges[$index++], $imgSize, $imgSize);
+				break;
+			case 4:
+				$back->merge($merges[$index++], 0, 0)
+					->merge($merges[$index++], $imgSize, 0)
+					->merge($merges[$index++], 0, $imgSize)
+					->merge($merges[$index++], $imgSize, $imgSize);
+				break;
+			case 5:
+				$back->merge($merges[$index++], ($bgSize - $imgSize * 2) / 2, ($bgSize - $imgSize * 2) / 2)
+					->merge($merges[$index++], ($bgSize + $imgSize * 2) / 2, ($bgSize - $imgSize * 2) / 2)
+					->merge($merges[$index++], 0, ($bgSize + $imgSize * 2) / 2)
+					->merge($merges[$index++], $imgSize, ($bgSize + $imgSize * 2) / 2)
+					->merge($merges[$index++], $imgSize * 2, ($bgSize + $imgSize * 2) / 2);
+				break;
+			case 6:
+				$back->merge($merges[$index++], 0, ($bgSize - $imgSize * 2) / 2)
+					->merge($merges[$index++], $imgSize, ($bgSize - $imgSize * 2) / 2)
+					->merge($merges[$index++], $imgSize * 2, ($bgSize - $imgSize * 2) / 2)
+					->merge($merges[$index++], 0, ($bgSize + $imgSize * 2) / 2)
+					->merge($merges[$index++], $imgSize, ($bgSize + $imgSize * 2) / 2)
+					->merge($merges[$index++], $imgSize * 2, ($bgSize + $imgSize * 2) / 2);
+				break;
+			case 7:
+				$back->merge($merges[$index++], $imgSize, 0)
+					->merge($merges[$index++], 0, $imgSize)
+					->merge($merges[$index++], $imgSize, $imgSize)
+					->merge($merges[$index++], $imgSize * 2, $imgSize)
+					->merge($merges[$index++], 0, $imgSize * 2)
+					->merge($merges[$index++], $imgSize, $imgSize * 2)
+					->merge($merges[$index++], $imgSize * 2, $imgSize * 2);
+				break;
+			case 8:
+				$back->merge($merges[$index++], $imgSize / 2, 0)
+					->merge($merges[$index++], $imgSize / 2 + $imgSize, 0)
+					->merge($merges[$index++], 0, $imgSize)
+					->merge($merges[$index++], $imgSize, $imgSize)
+					->merge($merges[$index++], $imgSize * 2, $imgSize)
+					->merge($merges[$index++], 0, $imgSize * 2)
+					->merge($merges[$index++], $imgSize, $imgSize * 2)
+					->merge($merges[$index++], $imgSize * 2, $imgSize * 2);
+				break;
+			case 9:
+				$back->merge($merges[$index++], 0, 0)
+					->merge($merges[$index++], $imgSize, 0)
+					->merge($merges[$index++], $imgSize * 2, 0)
+					->merge($merges[$index++], 0, $imgSize)
+					->merge($merges[$index++], $imgSize, $imgSize)
+					->merge($merges[$index++], $imgSize * 2, $imgSize)
+					->merge($merges[$index++], 0, $imgSize * 2)
+					->merge($merges[$index++], $imgSize, $imgSize * 2)
+					->merge($merges[$index++], $imgSize * 2, $imgSize * 2);
+				break;
+		}
+		$saveAs = $dir . 'm' . RedisUtil::getImageSeq() . '.jpg';
+		$padding++;
+		Image::create($bgSize + $padding * 2, $bgSize + $padding * 2)
+			->merge($back, $padding, $padding, $bgSize, $bgSize)
+			->fill($bgColor)->save($saveAs, 'jpg', 85);
+		foreach ($downloadFiles as $file) {
+			unlink($file);
+		}
+		return $saveAs;
+
+	}
+
+	protected static function downloadFile($url, $saveAs)
+	{
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_POST, 0);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$file_content = curl_exec($ch);
+		$httpInfo = curl_getinfo($ch);
+		curl_close($ch);
+		$contentType = $httpInfo["content_type"];
+		$contentType = strtolower($contentType);
+		$ext = AppUtil::getExtName($contentType);
+
+		$downloaded_file = fopen($saveAs . '.' . $ext, 'w');
+		fwrite($downloaded_file, $file_content);
+		fclose($downloaded_file);
+		return $saveAs . '.' . $ext;
+	}
+
 }

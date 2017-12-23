@@ -9,6 +9,7 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
+use common\models\ChatRoom;
 use common\models\Goods;
 use common\models\Img;
 use common\models\Log;
@@ -1389,10 +1390,21 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = strtotime('+1 week', strtotime('2017-07-17 12:34'));
+		$ret = ChatRoom::roomAvatar(101);
+		var_dump($ret);
+
+		$ret = ChatRoom::roomAvatar(103);
+		var_dump($ret);
+
+		$ret = ChatRoom::roomAvatar(104);
+		var_dump($ret);
+
+		$ret = ChatRoom::roomAvatar(105);
+		var_dump($ret);
+		/*$ret = strtotime('+1 week', strtotime('2017-07-17 12:34'));
 		var_dump($ret);
 		$ret = date('Y-m-d H:i', $ret);
-		var_dump($ret);
+		var_dump($ret);*/
 		/*$hid = '059af5c749741c';
 		$ret = AppUtil::decrypt($hid);
 		var_dump($ret);
