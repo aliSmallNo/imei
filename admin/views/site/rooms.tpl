@@ -14,11 +14,11 @@
 	.members-des div {
 		padding: 1px 10px;
 		min-height: 50px;
-		max-height: 80px;
+		max-height: 100px;
 		overflow-y: auto;
 		overflow-x: hidden;
-		border: 1px solid #777;
-		border-radius: 5px;
+		border: 1px solid #ddd;
+		border-radius: 3px;
 	}
 
 	.note b {
@@ -60,6 +60,13 @@
 		color: #aaa;
 		line-height: 16px;
 	}
+	.av-sm{
+		width: 25px;
+		height: 25px;
+		vertical-align: middle;
+		border-radius: 3px;
+		border: 1px solid #E4E4E4;
+	}
 </style>
 <div class="row">
 	<h4>群列表
@@ -83,14 +90,14 @@
 			<th>
 				群头像
 			</th>
-			<th class="col-sm-5">
+			<th class="col-sm-4">
 				群信息
+			</th>
+			<th class="col-sm-3">
+				最近更新
 			</th>
 			<th>
 				群主
-			</th>
-			<th>
-				群成员
 			</th>
 			<th>
 				群成员
@@ -116,15 +123,16 @@
 					<div>{{$item.rNote}}</div>
 					创建于{{$item.rAddedOn}}
 				</td>
+				<td>
+					<img src="{{$item.lthumb}}" class="av-sm"> <b>{{$item.lname}}</b>
+					<br>{{$item.lcontent}}
+					<br>{{$item.laddon}}
+				</td>
 				<td align="center">
 					<img src="{{$item.uThumb}}" class="i-av" bsrc="{{$item.uThumb}}">
 					<div>{{$item.uName}} {{$item.uPhone}}</div>
 				</td>
-				<td class="members">
-					{{foreach from=$item.members key=key item=user}}
-						{{if $key<8}}<img src="{{$user.uThumb}}" class="i-av" bsrc="{{$user.uAvatar}}" >{{/if}}
-					{{/foreach}}
-				</td>
+
 				<td class="members-des">
 					<div>
 						{{foreach from=$item.members item=user}}

@@ -120,16 +120,20 @@ class ChatRoom extends ActiveRecord
 			$strCriteria = ' AND ' . implode(' AND ', $condition);
 		}
 		$limit = "limit " . ($page - 1) * $pageSize . "," . $pageSize;
-		$sql = "SELECT r.*,u.uName,u.uThumb,u.uPhone 
+		$sql = "SELECT r.*,u.uName,u.uThumb,u.uPhone ,
+				u2.uThumb as lthumb, u2.uName as lname,m.cAddedOn as laddon,m.cContent as lcontent
 				from im_chat_room as r 
-				join im_user as u on r.rAdminUId=u.uId
+			    join im_user as u on r.rAdminUId=u.uId
+				left join im_chat_msg as m on m.cId = r.rLastId
+				left join im_user as u2 on u2.uId=m.cAddedBy
 				where rStatus=1 $strCriteria
-				ORDER BY r.rAddedOn desc $limit";
+				ORDER BY laddon desc $limit";
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as &$v) {
 			list($item) = self::item($conn, $v["rId"]);
 			$v["count"] = count($item);
 			$v["members"] = $item;
+			$v["laddon"] = AppUtil::prettyDate($v['laddon']);
 		}
 
 		$sql = "SELECT COUNT(*) from im_chat_room as r 
