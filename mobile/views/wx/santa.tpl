@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/dev.min.css">
+<link rel="stylesheet" href="/css/dev.min.css?v=1.1.1">
 <div class="santa-header">
 	<ul class="props clearfix">
 		<li data-text="每日签到可获得" data-btn-text="去签到" data-url="/wx/lottery">
@@ -16,7 +16,7 @@
 			<h4>{{$stat.sock}}个</h4>
 			<a href="javascript:;">去收集</a>
 		</li>
-		<li data-text="本页面分享到朋友圈后可获得" data-btn-text="去分享" data-url="">
+		<li data-text="本页面分享到朋友圈后可获得" data-btn-text="去分享" data-url="/wx/shares">
 			<div class="prop prop-olaf"></div>
 			<h4>{{$stat.olaf}}个</h4>
 			<a href="javascript:;">去收集</a>

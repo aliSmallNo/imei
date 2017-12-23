@@ -256,14 +256,16 @@ main {
     text-align: center;
     font-weight: 400; }
   .santa-alert .btn {
-    height: 15rem; }
+    position: absolute;
+    bottom: 4rem;
+    left: 0;
+    right: 0; }
     .santa-alert .btn a {
-      background: url(../images/santa/btn01.png) no-repeat center center;
+      background: url(../images/santa/btn01.png) no-repeat center bottom;
       background-size: 60% 4.5rem;
       display: block;
-      height: 15rem;
       color: #dd0419;
-      line-height: 15rem;
+      line-height: 5.1rem;
       font-size: 1.8rem; }
 
 /*# sourceMappingURL=dev.css.map */
