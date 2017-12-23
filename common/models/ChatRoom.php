@@ -355,6 +355,15 @@ class ChatRoom extends ActiveRecord
 			}
 			$bundle[$gender][] = $row['uThumb'];
 		}
+		//Rain: 让无性别的排序在最后出现
+		if (isset($bundle[1])) {
+			$bundle[11] = array_merge($bundle[11], $bundle[1]);
+			unset($bundle[1]);
+		}
+		if (isset($bundle[0])) {
+			$bundle[11] = array_merge($bundle[11], $bundle[0]);
+			unset($bundle[0]);
+		}
 		$avatars = [];
 		for ($k = 0; $k < 9; $k++) {
 			foreach ($bundle as $gender => $items) {
@@ -368,7 +377,7 @@ class ChatRoom extends ActiveRecord
 		$savedPath = ImageUtil::multiAvatar($avatars);
 		if (is_file($savedPath)) {
 			$url = COSUtil::init(COSUtil::UPLOAD_PATH, $savedPath)->uploadOnly();
-			$sql='update im_chat_room set rLogo=:url WHERE rId=:rid ';
+			$sql = 'update im_chat_room set rLogo=:url WHERE rId=:rid ';
 			$conn->createCommand($sql)->bindValues([
 				':rid' => $roomId,
 				':url' => $url
