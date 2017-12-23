@@ -361,6 +361,9 @@ section
 	-webkit-backface-visibility: hidden
 	-moz-backface-visibility: hidden
 	backface-visibility: hidden
+
+	background: url(../images/santa/ico_foot_bg_santa_.jpg?v=1.1.1) no-repeat center center
+	background-size: 100% 100%
 	&.on
 		-webkit-transform: translateY(0) translateZ(0)
 		-moz-transform: translateY(0) translateZ(0)
@@ -378,6 +381,15 @@ section
 		text-align: center
 		font-weight: $weightNormal
 		position: relative
+		&:before
+			position: absolute
+			left: 4.1rem
+			bottom: 1.5rem
+			width: 2rem
+			height: .08rem
+			background: rgba(0,0,0,.1)
+			content: ''
+			box-shadow: 0px 0px 11px #000
 		&.active
 			font-weight: $weightBold
 			color: #F06292
@@ -400,33 +412,40 @@ section
 		&.nav-link:after
 			background: url(../images/ico_foot/ico_foot_link.png?v=1.1.1) no-repeat center center
 			background-size: 100% 100%
-		&.nav-group:after
-			background: url(../images/ico_foot/ico_foot_group.png?v=1.1.1) no-repeat center center
+		&.nav-link.active:after
+			background: url(../images/ico_foot/ico_foot_link_hl.png?v=1.1.1) no-repeat center center
 			background-size: 100% 100%
 		&.nav-invite:after
-			background: url(../images/ico_foot/ico_foot_invite.png?v=1.1.1) no-repeat center center
+			//background: url(../images/ico_foot/ico_foot_invite.png?v=1.1.1) no-repeat center center
+			background: url(../images/santa/ico_foot_invite.png?v=1.1.1) no-repeat center center
 			background-size: 100% 100%
-		&.nav-me:after
-			background: url(../images/ico_foot/ico_foot_me.png?v=1.1.1) no-repeat center center
+		&.nav-invite.active:after
+			//background: url(../images/ico_foot/ico_foot_invite_hl.png?v=1.1.1) no-repeat center center
+			background: url(../images/santa/ico_foot_invite_hl.png?v=1.1.1) no-repeat center center
 			background-size: 100% 100%
 		&.nav-chat:after
-			background: url(../images/ico_foot/ico_foot_chat.png?v=1.1.1) no-repeat center center
+			//background: url(../images/ico_foot/ico_foot_chat.png?v=1.1.1) no-repeat center center
+			background: url(../images/santa/ico_foot_chat.png?v=1.1.1) no-repeat center center
 			background-size: 100% 100%
-		&.nav-link.active:after
-			background: url(../images/ico_foot//ico_foot_link_hl.png?v=1.1.1) no-repeat center center
+		&.nav-chat.active:after
+			//background: url(../images/ico_foot/ico_foot_chat_hl.png?v=1.1.1) no-repeat center center
+			background: url(../images/santa/ico_foot_chat_hl.png?v=1.1.1) no-repeat center center
+			background-size: 100% 100%
+		&.nav-me:after
+			//background: url(../images/ico_foot/ico_foot_me.png?v=1.1.1) no-repeat center center
+			background: url(../images/santa/ico_foot_me.png?v=1.1.1) no-repeat center center
+			background-size: 100% 100%
+		&.nav-me.active:after
+			//background: url(../images/ico_foot/ico_foot_me_hl.png?v=1.1.1) no-repeat center center
+			background: url(../images/santa/ico_foot_me_hl.png?v=1.1.1) no-repeat center center
+			background-size: 100% 100%
+		&.nav-group:after
+			background: url(../images/ico_foot/ico_foot_group.png?v=1.1.1) no-repeat center center
 			background-size: 100% 100%
 		&.nav-group.active:after
 			background: url(../images/ico_foot/ico_foot_group_hl.png?v=1.1.1) no-repeat center center
 			background-size: 100% 100%
-		&.nav-invite.active:after
-			background: url(../images/ico_foot/ico_foot_invite_hl.png?v=1.1.1) no-repeat center center
-			background-size: 100% 100%
-		&.nav-me.active:after
-			background: url(../images/ico_foot/ico_foot_me_hl.png?v=1.1.1) no-repeat center center
-			background-size: 100% 100%
-		&.nav-chat.active:after
-			background: url(../images/ico_foot/ico_foot_chat_hl.png?v=1.1.1) no-repeat center center
-			background-size: 100% 100%
+
 
 .tip-color
 	color: $tipColor
