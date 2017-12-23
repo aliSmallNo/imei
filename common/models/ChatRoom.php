@@ -118,9 +118,10 @@ class ChatRoom extends ActiveRecord
 			$strCriteria = ' AND ' . implode(' AND ', $condition);
 		}
 		$limit = "limit " . ($page - 1) * $pageSize . "," . $pageSize;
-		$sql = "SELECT r.*,u.uName,u.uThumb,u.uPhone from im_chat_room as r 
+		$sql = "SELECT r.*,u.uName,u.uThumb,u.uPhone 
+				from im_chat_room as r 
 				join im_user as u on r.rAdminUId=u.uId
-				where rId >0 $strCriteria
+				where rStatus=1 $strCriteria
 				ORDER BY r.rAddedOn desc $limit";
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as &$v) {
@@ -131,7 +132,7 @@ class ChatRoom extends ActiveRecord
 
 		$sql = "SELECT COUNT(*) from im_chat_room as r 
 				join im_user as u on r.rAdminUId=u.uId
-				where rId >0 $strCriteria ";
+				where rStatus=1 $strCriteria ";
 		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
 
 		return [$res, $count];
@@ -196,13 +197,14 @@ class ChatRoom extends ActiveRecord
 			 join (select distinct mRId from im_chat_room_fella as f where f.mUId = :uid) as t on t.mRId=r.rId
 			 left join im_chat_msg as c on c.cGId=r.rId and c.cId=r.rLastId
 			 left join im_user as u on u.uId=c.cAddedBy
+			 WHERE r.rStatus=1
 			 group by r.rId order by c.cAddedOn desc " . $limit;
 		$res = $conn->createCommand($sql)->bindValues([
 			':uid' => $uid
 		])->queryAll();
 
-		$sql = " select m.cGId , count(m.cId) as cnt
-			 from  im_chat_msg as m  
+		$sql = "select m.cGId , count(m.cId) as cnt
+			 from im_chat_msg as m  
 			 join im_chat_msg_flag as f on f.fRId=m.cGId and f.fUId=:uid and m.cId > f.fCId
 			 where m.cGId<9999
 			 group by m.cGId";
