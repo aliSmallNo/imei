@@ -250,9 +250,9 @@ main {
       width: 8rem;
       vertical-align: middle; }
   .santa-alert .text {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     color: #fff;
-    font-size: 1.2em;
+    font-size: 1.4rem;
     text-align: center;
     font-weight: 400; }
   .santa-alert .btn {
