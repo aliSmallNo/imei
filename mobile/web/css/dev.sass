@@ -74,9 +74,10 @@ $bgSantaRed: #dd0419
         background-repeat: repeat-y
         background-size: 30rem 1.4rem
     .bags
-        padding: 1rem 2.5rem 0
+        padding: 1rem 3rem 0
         & > li
             a
+                margin-top: 1rem
                 height: 5rem
                 display: block
                 &.btn-yuand
@@ -93,14 +94,16 @@ $bgSantaRed: #dd0419
                 background: url(../images/santa/spliter.png) no-repeat center center
                 background-size: 100% 1px
                 display: block
-                height: 3rem
+                height: 2.4rem
+            &:last-child:after
+                display: none
         .bag-wrap
             @include displayFlex
             color: #fff
             font-size: 1.1rem
             .bag
-                @include displayFlex-w(11rem)
-                height: 11rem
+                @include displayFlex-w(10rem)
+                height: 10rem
                 &.bag-yuand
                     background: url(../images/santa/bag_yuand.png) no-repeat center top
                     background-size: 100% 100%
@@ -112,6 +115,7 @@ $bgSantaRed: #dd0419
                     background-size: 100% 100%
 
             .desc
+                padding-left: 4rem
                 @include displayFlex-1
                 @include displayFlexVAlign
 
@@ -138,3 +142,40 @@ $bgSantaRed: #dd0419
 .santa-footer-padding
     height: 4rem
     background: #ecf2f8
+.santa-alert
+    background: url(../images/santa/bg_popup_prop.png) no-repeat center center
+    height: 35rem
+    background-size: 100% 35rem
+    position: relative
+    .btn-close
+        position: absolute
+        height: 3rem
+        width: 3rem
+        background: url(../images/santa/btn_close.png) no-repeat center center
+        background-size: 100% 100%
+        right: 0
+        top: 0
+        opacity: .7
+    .image
+        height: 8rem
+        padding-top: 11rem
+        img
+            height: 8rem
+            width: 8rem
+            vertical-align: middle
+    .text
+        margin-top: 1rem
+        color: #fff
+        font-size: 1.2em
+        text-align: center
+        font-weight: $weightMiddle
+    .btn
+        height: 15rem
+        a
+            background: url(../images/santa/btn01.png) no-repeat center center
+            background-size: 60% 4.5rem
+            display: block
+            height: 15rem
+            color: $bgSantaRed
+            line-height: 15rem
+            font-size: 1.8rem

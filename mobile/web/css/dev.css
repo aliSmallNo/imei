@@ -149,8 +149,9 @@ main {
     background-repeat: repeat-y;
     background-size: 30rem 1.4rem; }
   .santa-body .bags {
-    padding: 1rem 2.5rem 0; }
+    padding: 1rem 3rem 0; }
     .santa-body .bags > li a {
+      margin-top: 1rem;
       height: 5rem;
       display: block; }
       .santa-body .bags > li a.btn-yuand {
@@ -167,7 +168,9 @@ main {
       background: url(../images/santa/spliter.png) no-repeat center center;
       background-size: 100% 1px;
       display: block;
-      height: 3rem; }
+      height: 2.4rem; }
+    .santa-body .bags > li:last-child:after {
+      display: none; }
     .santa-body .bags .bag-wrap {
       display: -webkit-box;
       display: -webkit-flex;
@@ -176,11 +179,11 @@ main {
       color: #fff;
       font-size: 1.1rem; }
       .santa-body .bags .bag-wrap .bag {
-        -webkit-box-flex: 0 0 11rem;
-        -webkit-flex: 0 0 11rem;
-        -ms-flex: 0 0 11rem;
-        flex: 0 0 11rem;
-        height: 11rem; }
+        -webkit-box-flex: 0 0 10rem;
+        -webkit-flex: 0 0 10rem;
+        -ms-flex: 0 0 10rem;
+        flex: 0 0 10rem;
+        height: 10rem; }
         .santa-body .bags .bag-wrap .bag.bag-yuand {
           background: url(../images/santa/bag_yuand.png) no-repeat center top;
           background-size: 100% 100%; }
@@ -191,6 +194,7 @@ main {
           background: url(../images/santa/bag_lianl.png) no-repeat center top;
           background-size: 100% 100%; }
       .santa-body .bags .bag-wrap .desc {
+        padding-left: 4rem;
         -webkit-box-flex: 1;
         -webkit-flex: 1;
         -ms-flex: 1;
@@ -223,5 +227,43 @@ main {
 .santa-footer-padding {
   height: 4rem;
   background: #ecf2f8; }
+
+.santa-alert {
+  background: url(../images/santa/bg_popup_prop.png) no-repeat center center;
+  height: 35rem;
+  background-size: 100% 35rem;
+  position: relative; }
+  .santa-alert .btn-close {
+    position: absolute;
+    height: 3rem;
+    width: 3rem;
+    background: url(../images/santa/btn_close.png) no-repeat center center;
+    background-size: 100% 100%;
+    right: 0;
+    top: 0;
+    opacity: 0.7; }
+  .santa-alert .image {
+    height: 8rem;
+    padding-top: 11rem; }
+    .santa-alert .image img {
+      height: 8rem;
+      width: 8rem;
+      vertical-align: middle; }
+  .santa-alert .text {
+    margin-top: 1rem;
+    color: #fff;
+    font-size: 1.2em;
+    text-align: center;
+    font-weight: 400; }
+  .santa-alert .btn {
+    height: 15rem; }
+    .santa-alert .btn a {
+      background: url(../images/santa/btn01.png) no-repeat center center;
+      background-size: 60% 4.5rem;
+      display: block;
+      height: 15rem;
+      color: #dd0419;
+      line-height: 15rem;
+      font-size: 1.8rem; }
 
 /*# sourceMappingURL=dev.css.map */

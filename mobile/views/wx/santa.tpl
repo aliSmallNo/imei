@@ -30,9 +30,7 @@
 </div>
 <div style="height: 2rem"></div>
 <div class="santa-body">
-	<div class="bg-title">
-
-	</div>
+	<div class="bg-title"></div>
 	<div class="content">
 		<ul class="bags">
 			<li>
@@ -74,11 +72,8 @@
 			</li>
 		</ul>
 	</div>
-	<div class="bg-tail">
-
-	</div>
+	<div class="bg-tail"></div>
 </div>
-
 <div class="santa-footer">
 	<div class="content">
 		<h4>活动规则</h4>
@@ -92,57 +87,6 @@
 </div>
 <div class="santa-footer-padding"></div>
 <div class="m-popup-shade"></div>
-<style>
-	.santa-alert {
-		background: url(/images/santa/bg_popup_prop.png) no-repeat center center;
-		height: 35rem;
-		background-size: 100% 35rem;
-		position: relative;
-	}
-
-	.santa-alert .btn-close {
-		position: absolute;
-		height: 3rem;
-		width: 3rem;
-		background: url(/images/santa/btn_close.png) no-repeat center center;
-		background-size: 100% 100%;
-		right: 0;
-		top: 0;
-		opacity: .7
-	}
-
-	.santa-alert .image {
-		height: 8rem;
-		padding-top: 10rem;
-	}
-
-	.santa-alert .image img {
-		height: 8rem;
-		width: 8rem;
-	}
-
-	.santa-alert .text {
-		color: #fff;
-		font-size: 1.1rem;
-		text-align: center;
-	}
-
-	.santa-alert .btn {
-		height: 15rem;
-	}
-
-	.santa-alert .btn a {
-		background: url(../images/santa/btn01.png) no-repeat center center;
-		background-size: 60% 4.5rem;
-		display: block;
-		height: 15rem;
-		color: #e74542;
-		line-height: 15rem;
-		font-size: 1.8rem;
-	}
-
-
-</style>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
 		<div class="m-popup-content" style="background: transparent;width: 25rem;left: 3.5rem;">
