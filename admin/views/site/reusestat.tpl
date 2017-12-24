@@ -138,10 +138,8 @@
 				<td class="dt">{{$item.begin}}<br>{{$item.end}}</td>
 				{{foreach from=$item[$cat] key=k item=subItem}}
 					<td class="percent">
-						{{if $k<18}}
-							<a href="javascript:;" class="j-link" data-from="{{$subItem.from}}"
-							   data-to="{{$subItem.to}}">{{$subItem.val}}</a>
-						{{/if}}
+						<a href="javascript:;" class="j-link" data-from="{{$subItem.from}}"
+						   data-to="{{$subItem.to}}">{{$subItem.val}}</a>
 					</td>
 				{{/foreach}}
 			</tr>
