@@ -190,7 +190,7 @@ class UserWechat extends ActiveRecord
 	{
 		$ret = WechatUtil::wxInfoByCode($code, $renewFlag);
 		if ($ret && isset($ret["openid"])) {
-			$ret = self::getInfoByOpenId($ret["openid"]);
+			$ret = self::getInfoByOpenId($ret["openid"], $renewFlag);
 			return $ret;
 		}
 		return 0;

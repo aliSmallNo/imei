@@ -58,11 +58,11 @@ class BaseController extends Controller
 			header("location:/wxerr.html");
 			exit;
 		}
-
+		$currentUrl = Yii::$app->request->getAbsoluteUrl();
 		self::$WX_OpenId = AppUtil::getCookie(self::COOKIE_OPENID);
 		$wxCode = self::getParam("code");
 		if (strlen($wxCode) >= 20) {
-			$wxUserInfo = UserWechat::getInfoByCode($wxCode);
+			$wxUserInfo = UserWechat::getInfoByCode($wxCode, true);
 			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
 				self::$WX_OpenId = $wxUserInfo["openid"];
 				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, $duration);
@@ -77,7 +77,6 @@ class BaseController extends Controller
 				/*$logMsg = [self::$WX_OpenId, json_encode($wxUserInfo)];
 				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
 				header("location:/qr.html");*/
-				$currentUrl = Yii::$app->request->getAbsoluteUrl();
 				$newUrl = WechatUtil::getRedirectUrl($currentUrl);
 				header("location:" . $newUrl);
 				exit;
@@ -88,7 +87,6 @@ class BaseController extends Controller
 				self::checkProfile(self::$WX_OpenId, $actionId);
 			}
 		} elseif (strlen(self::$WX_OpenId) < 20 && strlen($wxCode) < 20) {
-			$currentUrl = Yii::$app->request->getAbsoluteUrl();
 			$newUrl = WechatUtil::getRedirectUrl($currentUrl);
 			//$userPhone = AppUtil::getCookie("user_phone");
 			//AppUtil::logFile([$currentUrl, $userPhone, $newUrl], 5, __FUNCTION__, __LINE__);
