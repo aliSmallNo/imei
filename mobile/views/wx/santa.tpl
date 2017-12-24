@@ -109,7 +109,7 @@
 </script>
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/santa.js?v=1.8.5']);
+		requirejs(['/js/santa.js?v=1.8.6']);
 	});
 </script>
 

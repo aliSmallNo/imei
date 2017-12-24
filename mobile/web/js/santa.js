@@ -26,6 +26,7 @@ require(['jquery', 'mustache', "alpha"],
 					var text = li.attr('data-text');
 					var btntext = li.attr('data-btn-text');
 					var img = li.find("div").css("background-image").replace('url(', '').replace(')', '');
+					img = img.replace(/"/g, '');
 					// console.log(img);console.log(url);console.log(text);console.log(btntext);
 					util.image.find("img").attr("src", img);
 					util.text.html(text);
