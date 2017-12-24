@@ -78,7 +78,7 @@ class BaseController extends Controller
 				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
 				header("location:/qr.html");*/
 				$currentUrl = Yii::$app->request->getAbsoluteUrl();
-				$newUrl = WechatUtil::getRedirectUrl(UserWechat::CATEGORY_MALL, $currentUrl);
+				$newUrl = WechatUtil::getRedirectUrl($currentUrl);
 				header("location:" . $newUrl);
 				exit;
 			}
@@ -89,7 +89,7 @@ class BaseController extends Controller
 			}
 		} elseif (strlen(self::$WX_OpenId) < 20 && strlen($wxCode) < 20) {
 			$currentUrl = Yii::$app->request->getAbsoluteUrl();
-			$newUrl = WechatUtil::getRedirectUrl(UserWechat::CATEGORY_MALL, $currentUrl);
+			$newUrl = WechatUtil::getRedirectUrl($currentUrl);
 			//$userPhone = AppUtil::getCookie("user_phone");
 			//AppUtil::logFile([$currentUrl, $userPhone, $newUrl], 5, __FUNCTION__, __LINE__);
 			//self::redirect($newUrl);

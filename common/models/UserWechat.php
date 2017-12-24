@@ -38,11 +38,6 @@ class UserWechat extends ActiveRecord
 		"wRemark" => "remark",
 	];
 
-	const CATEGORY_ONE = "one";
-	const CATEGORY_TRADE = "trade";
-	const CATEGORY_MALL = "mall";
-
-
 	public static function tableName()
 	{
 		return '{{%user_wechat}}';
