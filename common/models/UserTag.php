@@ -89,6 +89,9 @@ class UserTag extends ActiveRecord
 		$info = Pay::findOne(['pId' => $pid]);
 		if ($info) {
 			return self::add($cat, $info->pUId, $info->pId, $title, $note, $info->pTransDate);
+		} else if ($pid == 'santa') {
+			$info = Order::findOne(["oId" => $note]);
+			return self::add($cat, $info->oUId, $info->oId, $title, 'santa', '');
 		}
 		return false;
 	}

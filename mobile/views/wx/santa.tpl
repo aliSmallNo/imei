@@ -16,7 +16,7 @@
 			<h4>{{$stat.sock}}个</h4>
 			<a href="javascript:;">去收集</a>
 		</li>
-		<li data-text="本页面分享到朋友圈后可获得" data-btn-text="去分享" data-url="/wx/shares">
+		<li data-text="分享到朋友圈后可获得" data-btn-text="去分享" data-url="javascript:;">
 			<div class="prop prop-olaf"></div>
 			<h4>{{$stat.olaf}}个</h4>
 			<a href="javascript:;">去收集</a>
@@ -44,7 +44,7 @@
 						<li>集满1个圣诞树</li>
 					</ol>
 				</div>
-				<a href="javascript:;" class="btn-yuand"></a>
+				<a href="javascript:;" class="btn-yuand" data-gid='{{$bags[0]["id"]}}' data-desc='{{$bags[0]["desc"]}}'></a>
 			</li>
 			<li>
 				<div class="bag-wrap">
@@ -56,7 +56,7 @@
 						<li>集满1个圣诞雪人</li>
 					</ol>
 				</div>
-				<a href="javascript:;" class="btn-shengd"></a>
+				<a href="javascript:;" class="btn-shengd" data-gid='{{$bags[1]["id"]}}' data-desc='{{$bags[1]["desc"]}}'></a>
 			</li>
 			<li>
 				<div class="bag-wrap">
@@ -68,7 +68,7 @@
 						<li>集满1个圣诞雪人</li>
 					</ol>
 				</div>
-				<a href="javascript:;" class="btn-lianl"></a>
+				<a href="javascript:;" class="btn-lianl" data-gid='{{$bags[2]["id"]}}' data-desc='{{$bags[2]["desc"]}}'></a>
 			</li>
 		</ul>
 	</div>
@@ -91,12 +91,8 @@
 	<div class="m-popup-wrap">
 		<div class="m-popup-content" style="background: transparent;width: 25rem;left: 3.5rem;">
 			<div class="santa-alert">
-				<div class="image">
-					<img src="/images/santa/prop_hat.png">
-				</div>
-				<div class="text">每日主动发起聊天后获得</div>
-				<div class="btn">
-					<a href="javascript:;">发起聊天</a>
+				<div class="content" style="min-height: 34rem;text-align: center">
+
 				</div>
 				<a href="javascript:;" class="btn-close"></a>
 			</div>
@@ -106,6 +102,29 @@
 <script src="/assets/js/require.js"></script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
+</script>
+<script type="text/html" id="tpl_tool">
+	<div class="image">
+		<img src="/images/santa/prop_hat.png">
+	</div>
+	<div class="text">每日主动发起聊天后获得</div>
+	<div class="btn">
+		<a href="javascript:;" data-tag="tool">发起聊天</a>
+	</div>
+</script>
+<script type="text/html" id="tpl_bag">
+	<ul>
+		{[#data]}
+		<li>
+			<div class="bag_img"><img src="{[img]}" alt=""></div>
+			<p>X<span>{[num]}</span></p>
+			<p class="name">{[name]}</p>
+		</li>
+		{[/data]}
+	</ul>
+	<div class="btn">
+		<a href="javascript:;" data-tag="bag">确定</a>
+	</div>
 </script>
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {

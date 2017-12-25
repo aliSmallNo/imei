@@ -1464,19 +1464,23 @@ class FooController extends Controller
 
 		//$expInfo = UserTag::getExp(120003);print_r($expInfo);
 
-		/*$sql = "update im_goods set gDesc=:des where gId=6020";
+		/*$sql = "update im_goods set gDesc=:des where gId=6021";
 		AppUtil::db()->createCommand($sql)->bindValues([
 			":des" => json_encode([
-				'subtitle' => '月度畅聊卡+价值100元的礼物',
+				'subtitle' => '月度畅聊卡+礼包',
 				'glist' => [
-					['gid' => 6003, 'num' => 15, 'name' => '气球', 'img' => '/images/shop/stuff_qq.png'],
-					['gid' => 6004, 'num' => 15, 'name' => '口红', 'img' => '/images/shop/stuff_kh.png'],
-					['gid' => 6006, 'num' => 5, 'name' => '抱抱熊', 'img' => '/images/shop/stuff_bbx.png'],
-					['gid' => 6008, 'num' => 5, 'name' => '么么哒', 'img' => '/images/shop/stuff_mmd.png'],
-					['gid' => 6009, 'num' => 10, 'name' => '巧克力', 'img' => '/images/shop/stuff_qkl.png'],
+					['gid' => 6003, 'num' => 20, 'name' => '气球', 'img' => '/images/shop/stuff_qq.png'],
+					//['gid' => 6004, 'num' => 15, 'name' => '口红', 'img' => '/images/shop/stuff_kh.png'],
+					['gid' => 6006, 'num' => 3, 'name' => '抱抱熊', 'img' => '/images/shop/stuff_bbx.png'],
+					//['gid' => 6008, 'num' => 5, 'name' => '么么哒', 'img' => '/images/shop/stuff_mmd.png'],
+					//['gid' => 6009, 'num' => 10, 'name' => '巧克力', 'img' => '/images/shop/stuff_qkl.png'],
+					//['gid' => 6013, 'num' => 1, 'name' => '告白气球', 'img' => '/images/shop/premium_gbqq.png'],
+					['gid' => 6017, 'num' => 1, 'name' => '游艇', 'img' => '/images/shop/premium_yt.png'],
 				],
 				'klist' => [
-					['cat' => 'chat_month', 'num' => 1],
+					//['cat' => 'chat_3', 'num' => 1,'name'=>'三天畅聊卡','img'=>'/images/ico_wallet_3.png'],
+					//['cat' => 'chat_7', 'num' => 1,'name'=>'七天畅聊卡','img'=>'/images/ico_wallet_7.png'],
+					['cat' => 'chat_month', 'num' => 1,'name'=>'月度畅聊卡','img'=>'/images/ico_wallet_mounth.png'],
 				]
 			], JSON_UNESCAPED_UNICODE)
 		])->execute();*/
@@ -1487,9 +1491,12 @@ class FooController extends Controller
 		echo time() . PHP_EOL;
 		var_dump(strtotime("2018-01-06 23:59:50") > time());*/
 
-		 //echo Log::addSanta(120003, 100);
+		//echo Log::addSanta(120003, 100);
 
 		// stuff_dumplings.png
+
+		// $res = Order::santaExchange(6023, 120003);
+
 
 	}
 

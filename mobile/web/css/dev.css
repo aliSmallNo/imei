@@ -242,30 +242,49 @@ main {
     right: 0;
     top: 0;
     opacity: 0.7; }
-  .santa-alert .image {
-    height: 8rem;
-    padding-top: 11rem; }
-    .santa-alert .image img {
-      height: 8rem;
-      width: 8rem;
-      vertical-align: middle; }
-  .santa-alert .text {
-    margin-top: 1.5rem;
-    color: #fff;
-    font-size: 1.4rem;
+  .santa-alert .content {
     text-align: center;
-    font-weight: 400; }
-  .santa-alert .btn {
-    position: absolute;
-    bottom: 4rem;
-    left: 0;
-    right: 0; }
-    .santa-alert .btn a {
-      background: url(../images/santa/btn01.png) no-repeat center bottom;
-      background-size: 60% 4.5rem;
-      display: block;
-      color: #dd0419;
-      line-height: 5.1rem;
-      font-size: 1.8rem; }
+    min-height: 34rem; }
+    .santa-alert .content .image {
+      height: 8rem;
+      padding-top: 11rem; }
+      .santa-alert .content .image img {
+        height: 8rem;
+        width: 8rem;
+        vertical-align: middle; }
+    .santa-alert .content .text {
+      margin-top: 1.5rem;
+      color: #fff;
+      font-size: 1.4rem;
+      text-align: center;
+      font-weight: 400; }
+    .santa-alert .content .btn {
+      position: absolute;
+      bottom: 4rem;
+      left: 0;
+      right: 0; }
+      .santa-alert .content .btn a {
+        background: url(../images/santa/btn01.png) no-repeat center bottom;
+        background-size: 60% 4.5rem;
+        display: block;
+        color: #dd0419;
+        line-height: 5.1rem;
+        font-size: 1.8rem; }
+    .santa-alert .content ul {
+      display: inline-block;
+      margin-top: 12rem; }
+      .santa-alert .content ul li {
+        display: inline-block;
+        width: 5rem; }
+        .santa-alert .content ul li .bag_img {
+          margin: 1rem 0; }
+          .santa-alert .content ul li .bag_img img {
+            width: 4rem;
+            height: 4rem; }
+        .santa-alert .content ul li p {
+          font-size: 1rem;
+          color: #fff; }
+          .santa-alert .content ul li p.name {
+            font-size: 0.8rem; }
 
 /*# sourceMappingURL=dev.css.map */

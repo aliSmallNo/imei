@@ -63,25 +63,42 @@ class Order extends ActiveRecord
 		$gInfo = Goods::findOne(["gId" => $entity->oGId])->toArray();
 		if ($gInfo["gDesc"]) {
 			$desc = json_decode($gInfo["gDesc"], 1);
-			// 礼包商品
-			if (isset($desc["glist"]) && $desc["glist"]) {
-				foreach ($desc["glist"] as $g) {
-					Order::add(["oUId" => $uid, "oGId" => $g["gid"], "oNum" => $g["num"] * $oNum, "oAmount" => 0, "oStatus" => self::ST_PAY, "oNote" => $oid]);
-				}
+			self::addByDesc($desc, $uid, $oNum, $pid, $oid);
+		}
+		return $entity->oId;
+	}
+
+	public static function addByDesc($desc, $uid, $oNum = 1, $pid = 0, $oid = 0)
+	{
+		// 礼包商品
+		if (isset($desc["glist"]) && $desc["glist"]) {
+			foreach ($desc["glist"] as $g) {
+				Order::add(["oUId" => $uid, "oGId" => $g["gid"], "oNum" => $g["num"] * $oNum, "oAmount" => 0, "oStatus" => self::ST_PAY, "oNote" => $oid]);
 			}
-			// 礼包卡(目前只有月卡赠送)
-			if (isset($desc["klist"]) && $desc["klist"]) {
-				foreach ($desc["klist"] as $k) {
-					if ($k["cat"] == "chat_month") {
-						for ($i = 0; $i < $oNum; $i++) {
-							UserTag::addByPId(UserTag::CAT_CHAT_MONTH, $pid);
-						}
+		}
+		// 礼包卡(目前只有月卡，三天卡，七天卡赠送)
+		if (isset($desc["klist"]) && $desc["klist"]) {
+			foreach ($desc["klist"] as $k) {
+				if ($k["cat"] == "chat_month") {
+					for ($i = 0; $i < $oNum; $i++) {
+						UserTag::addByPId(UserTag::CAT_CHAT_MONTH, $pid, '', $oid);
+					}
+				}
+				if ($k["cat"] == "chat_3") {
+					for ($i = 0; $i < $oNum; $i++) {
+						UserTag::addByPId(UserTag::CAT_CHAT_DAY3, $pid, '', $oid);
+					}
+				}
+				if ($k["cat"] == "chat_7") {
+					for ($i = 0; $i < $oNum; $i++) {
+						UserTag::addByPId(UserTag::CAT_CHAT_DAY7, $pid, '', $oid);
 					}
 				}
 			}
 		}
-		return $entity->oId;
+		return true;
 	}
+
 
 	public static function exchange($data, $unit)
 	{
@@ -99,7 +116,7 @@ class Order extends ActiveRecord
 	}
 
 	/**
-	 * 我的背包(我收到的礼物 我的背包里礼物 我的功能卡)
+	 * 我的背包(我收到的礼物 我的背包里礼物 我送出去的礼物)
 	 * @param $subtag
 	 * @param int $page
 	 * @param int $pagesize
@@ -210,5 +227,55 @@ class Order extends ActiveRecord
 		$msg = '<button href="/wx/shopbag">' . "礼物: " . $gInfo["name"] . '</button>';
 		$info = ChatMsg::addChat($wx_uid, $sid, $msg);
 		return [0, '赠送成功~', $info];
+	}
+
+	public static function santaExchange($gid, $uid)
+	{
+		$sugar = Log::SANTA_SUGAR;
+		$hat = Log::SANTA_HAT;
+		$sock = Log::SANTA_SOCK;
+		$olaf = Log::SANTA_OLAF;
+		$tree = Log::SANTA_TREE;
+		$sj = [
+			6021 => [$sugar => 12, $hat => 12, $sock => 3, $olaf => 3, $tree => 1],
+			6022 => [$sugar => 6, $hat => 6, $sock => 1, $olaf => 1, $tree => 0],
+			6023 => [$sugar => 3, $hat => 3, $sock => 1, $olaf => 1, $tree => 0],
+		];
+		$gInfo = Goods::items(['gCategory' => Goods::CAT_BAG, 'gStatus' => 1, 'gId' => $gid])[0];
+		if (!$gInfo) {
+			return [129, '商品不存在~', ''];
+		}
+		$desc = json_decode($gInfo["desc"], 1);
+		if (!$desc) {
+			return [129, '订单错误~', ''];
+		}
+		// 是否兑换过
+		if (Order::findOne(["oGId" => $gid, "oUId" => $uid])) {
+			return [129, '您已经兑换过了~', ''];
+		}
+		// 是否集齐
+		$stat = Log::santaStat($uid);
+		// 测试 $stat = ['sugar' => 5, 'hat' => 12, 'sock' => 3, 'olaf' => 3, 'tree' => 0];$gid = 6022;
+		if ($stat["sugar"] < $sj[$gid][$sugar]
+			|| $stat["hat"] < $sj[$gid][$hat]
+			|| $stat["sock"] < $sj[$gid][$sock]
+			|| $stat["olaf"] < $sj[$gid][$olaf]
+			|| ($gid == 6021 && $stat["tree"] < $sj[$gid][$tree])
+		) {
+			return [129, '还没集齐哦~', ''];
+		}
+
+		// 添加
+		$oid = Order::add(["oUId" => $uid, "oGId" => $gid, "oNum" => 1, "oAmount" => 0, "oStatus" => self::ST_PAY]);
+		self::addByDesc($desc, $uid, 1, 'santa', $oid);
+
+		// 扣除道具
+		foreach ($sj[$gid] as $k => $co) {
+			if ($co == 0) {
+				continue;
+			}
+			Log::add(['oUId' => $uid, 'oKey' => $k, 'oCategory' => Log::CAT_SANTA, 'oBefore' => -$co, 'oAfter' => $oid]);
+		}
+		return [0, "兑换成功", ''];
 	}
 }

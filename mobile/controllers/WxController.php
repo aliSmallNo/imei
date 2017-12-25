@@ -607,11 +607,14 @@ class WxController extends BaseController
 		}
 
 		$cards = UserTag::chatCards($hid);
+		$prices = Pay::$WalletDict;
+		unset($prices["chat_3"]);
+		unset($prices["chat_7"]);
 		return self::renderPage("swallet.tpl",
 			[
 				'avatar' => $avatar,
 				'nickname' => $nickname,
-				'prices' => Pay::$WalletDict,
+				'prices' => $prices,
 				'hid' => $hid,
 				'stat' => $stat,
 				'cards' => $cards,
@@ -2060,6 +2063,7 @@ class WxController extends BaseController
 
 		$bags = Goods::items(['gCategory' => Goods::CAT_BAG, 'gStatus' => 1, 'gId' => "6019,6020"]);
 
+
 		return self::renderPage("shop.tpl",
 			[
 				'uid' => $this->user_id,
@@ -2124,9 +2128,11 @@ class WxController extends BaseController
 	{
 
 		$stat = Log::santaStat($this->user_id);
+		$bags = Goods::items(['gCategory' => Goods::CAT_BAG, 'gStatus' => 1, 'gId' => "6021,6022,6023"]);
 		return self::renderPage("santa.tpl",
 			[
 				'uid' => $this->user_id,
+				'bags' => $bags,
 				'stat' => $stat,
 			],
 			'terse',

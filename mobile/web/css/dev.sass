@@ -156,28 +156,47 @@ $bgSantaRed: #dd0419
         right: 0
         top: 0
         opacity: .7
-    .image
-        height: 8rem
-        padding-top: 11rem
-        img
-            height: 8rem
-            width: 8rem
-            vertical-align: middle
-    .text
-        margin-top: 1.5rem
-        color: #fff
-        font-size: 1.4rem
+    .content
         text-align: center
-        font-weight: $weightMiddle
-    .btn
-        position: absolute
-        bottom: 4rem
-        left: 0
-        right: 0
-        a
-            background: url(../images/santa/btn01.png) no-repeat center bottom
-            background-size: 60% 4.5rem
-            display: block
-            color: $bgSantaRed
-            line-height: 5.1rem
-            font-size: 1.8rem
+        min-height: 34rem
+        .image
+            height: 8rem
+            padding-top: 11rem
+            img
+                height: 8rem
+                width: 8rem
+                vertical-align: middle
+        .text
+            margin-top: 1.5rem
+            color: #fff
+            font-size: 1.4rem
+            text-align: center
+            font-weight: $weightMiddle
+        .btn
+            position: absolute
+            bottom: 4rem
+            left: 0
+            right: 0
+            a
+                background: url(../images/santa/btn01.png) no-repeat center bottom
+                background-size: 60% 4.5rem
+                display: block
+                color: $bgSantaRed
+                line-height: 5.1rem
+                font-size: 1.8rem
+        ul
+            display: inline-block
+            margin-top: 12rem
+            li
+                display: inline-block
+                width: 5rem
+                .bag_img
+                    margin: 1rem 0
+                    img
+                        width: 4rem
+                        height: 4rem
+                p
+                    font-size: 1rem
+                    color: #fff
+                    &.name
+                        font-size: .8rem

@@ -2588,7 +2588,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					function (resp) {
 						util.loading = 0;
 						var html = Mustache.render(util.Tmp, resp.data);
-						console.log(html);
 						util.UL.html(html);
 						util.count.html(resp.data.stat.flower);
 					}, 'json');

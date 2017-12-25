@@ -195,11 +195,11 @@ class Log extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		$sql = "select 
-				ifnull(sum(case when oKey=100 then 1 end),0) as sugar,
-				ifnull(sum(case when oKey=200 then 1 end),0) as hat,
-				ifnull(sum(case when oKey=300 then 1 end),0) as sock,
-				ifnull(sum(case when oKey=400 then 1 end),0) as olaf,
-				ifnull(sum(case when oKey=500 then 1 end),0) as tree
+				ifnull(sum(case when oKey=100 then oBefore end),0) as sugar,
+				ifnull(sum(case when oKey=200 then oBefore end),0) as hat,
+				ifnull(sum(case when oKey=300 then oBefore end),0) as sock,
+				ifnull(sum(case when oKey=400 then oBefore end),0) as olaf,
+				ifnull(sum(case when oKey=500 then oBefore end),0) as tree
 				from im_log where oCategory=:cat and oUId=:uid";
 		return $conn->createCommand($sql)->bindValues([
 			":uid" => $uid,
