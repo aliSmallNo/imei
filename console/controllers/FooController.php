@@ -807,7 +807,10 @@ class FooController extends Controller
 		foreach ($ret as $row) {
 			$uid = $row['uId'];
 			//$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1712201184811.jpg";
-			$content = '<button href="https://mp.weixin.qq.com/s/1q2ak1MmrQGUhKHyZaJcEg">我好想和你一起过圣诞节喔</button>';
+			$content = [
+				'text' => '我好想和你一起过圣诞节喔~',
+				'url' => "https://mp.weixin.qq.com/s/1q2ak1MmrQGUhKHyZaJcEg"
+			];
 			//"https://bpbhd-10063905.file.myqcloud.com/image/n1712251186113.jpeg";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);

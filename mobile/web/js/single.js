@@ -595,14 +595,13 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 
 				$(document).on(kClick, ".j-content-wrap", function () {
 					var url = $(this).find('img').attr('src');
-					if (!url) {
+					if (url) {
+						wx.previewImage({
+							current: url,
+							urls: [url]
+						});
 						return false;
 					}
-					wx.previewImage({
-						current: url,
-						urls: [url]
-					});
-					return false;
 				});
 
 				$(document).on(kClick, ".j-content-wrap button", function () {
