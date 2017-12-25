@@ -767,6 +767,74 @@ class ChatMsg extends ActiveRecord
 		return [$gid, $left];
 	}
 
+	public static function session($uId, $subUId, $lastId = 0, $hideTipFlag = false)
+	{
+		$criteria = ' AND cId> ' . $lastId;
+		$conn = AppUtil::db();
+		list($uid1, $uid2) = self::sortUId($uId, $subUId);
+		$sql = 'select u.uId as id,u.uName as `name`,u.uThumb as avatar,u.uUniqid as uni, g.gId as gid, g.gRound as round,
+			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy, 
+			 IFNULL(a.aName,\'\') as aName, m.cReadFlag as readflag, m.cType as `type`,
+			 (CASE WHEN u.uOpenId LIKE \'oYDJew%\' THEN 0 ELSE 1 END) as dummy
+			 from im_chat_group as g 
+			 join im_chat_msg as m on g.gId=cGId
+			 join im_user as u on u.uId=m.cAddedBy
+			 left join im_admin as a on a.aId=m.cAdminId
+			 WHERE g.gUId1=:id1 AND g.gUId2=:id2 ' . $criteria . ' order by m.cAddedOn ';
+		$chats = $conn->createCommand($sql)->bindValues([
+			':id1' => $uid1,
+			':id2' => $uid2,
+		])->queryAll();
+		$messages = $users = [];
+		$preDT = '';
+		$rid = $lastId = 0;
+		foreach ($chats as $chat) {
+			$uni = $chat['uni'];
+			$chatUid = $chat['id'];
+			if (!$rid) {
+				$rid = $chat['gid'];
+			}
+			if (!isset($users[$chatUid])) {
+				$users[$chatUid] = [
+					'uni' => $uni,
+					'name' => $chat['name'],
+					'avatar' => $chat['avatar'],
+					'dummy' => $chat['dummy'],
+					'admin' => $hideTipFlag ? $chat['aName'] : ''
+				];
+			}
+			$dt = AppUtil::dateOnly($chat['addedon']);
+			if ($preDT != $dt && !$hideTipFlag) {
+				$messages[] = [
+					'dir' => 'center',
+					'content' => $dt,
+					'type' => ''
+				];
+				$preDT = $dt;
+			}
+			if ($hideTipFlag) {
+				$chat['dt'] = AppUtil::prettyDate($chat['addedon']);
+			}
+			$messages[] = [
+				'dir' => ($uId == $chat['cAddedBy'] ? 'right' : 'left'),
+				'content' => $chat['content'],
+				'type' => $chat['type'],
+				'dt' => AppUtil::prettyDate($chat['addedon']),
+				'uid' => $chatUid
+			];
+			if ($chat['cid'] > $lastId) {
+				$lastId = $chat['cid'];
+			}
+		}
+		ChatMsg::read($uId, $subUId, $conn);
+		return [
+			'rid' => $rid,
+			'items' => $messages,
+			'users' => $users,
+			'lastId' => $lastId
+		];
+	}
+
 	public static function details($uId, $subUId, $lastId = 0, $hideTipFlag = false)
 	{
 		$criteria = ' AND cId> ' . $lastId;
@@ -816,8 +884,7 @@ class ChatMsg extends ActiveRecord
 		return [$items, $lastId];
 	}
 
-	public
-	static function messages($gid, $page = 1, $pageSize = 100)
+	public static function messages($gid, $page = 1, $pageSize = 100)
 	{
 		$limit = ' Limit ' . ($page - 1) * $pageSize . ',' . $pageSize;
 		$conn = AppUtil::db();

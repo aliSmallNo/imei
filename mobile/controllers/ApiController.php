@@ -1984,6 +1984,21 @@ class ApiController extends Controller
 					return self::renderAPI(129, '此助聊问题已经全部问过了哦~');
 				}
 				break;
+			case 'messages':
+				$lastId = self::postParam('last', 0);
+				$subUId = self::postParam('id');
+				$subUId = AppUtil::decrypt($subUId);
+				if (!$subUId) {
+					return self::renderAPI(129, '对话用户不存在啊~');
+				}
+				LogAction::add($uid, $openId, LogAction::ACTION_CHAT, $subUId);
+				list($gId, $left) = ChatMsg::groupEdit($uid, $subUId);
+				$session = ChatMsg::session($uid, $subUId, $lastId);
+				$session['gid'] = $gId;
+				$session['left'] = $left;
+				$session['commentFlag'] = UserComment::hasComment($subUId, $uid);
+				return self::renderAPI(0, '', $session);
+				break;
 			case 'list':
 
 				$lastId = self::postParam('last', 0);
