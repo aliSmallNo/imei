@@ -545,8 +545,8 @@ class ChatMsg extends ActiveRecord
 		}
 		$URL = '';
 		if (is_array($content)) {
-			$content = isset($content['text']) ? $content['text'] : '';
 			$URL = isset($content['url']) ? $content['url'] : '';
+			$content = isset($content['text']) ? $content['text'] : '';
 		}
 		$ratio = self::RATIO;
 		$costAmt = self::CHAT_COST;
