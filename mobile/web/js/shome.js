@@ -1,25 +1,20 @@
-require.config({
-	paths: {
-		"jquery": "/assets/js/jquery-3.2.1.min",
-		"layer": "/assets/js/layer_mobile/layer",
-	}
-});
-require(["layer"],
-	function (layer) {
+requirejs(['jquery', 'alpha', 'mustache', 'socket'],
+	function ($, alpha, Mustache, io) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
 			curFrag: "slink",
-			cork: $(".app-cork"),
-			wxString: $("#tpl_wx_info").html(),
 			newIdx: 0,
 			newsTimer: 0,
 			loading: 0,
+			cork: $(".app-cork"),
+			wxString: $("#tpl_wx_info").html(),
 			mainPage: $('.main-page'),
 			shID: $('#cUID').val(),
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
+
 		};
 
 		var ReportUtil = {
@@ -37,7 +32,6 @@ require(["layer"],
 				util.reason.on('change', function () {
 					var self = $(this);
 					var text = self.val();
-					console.log(text);
 					if (!text) {
 						text = util.tip;
 					}
@@ -48,7 +42,7 @@ require(["layer"],
 				var util = this;
 				var tReason = $.trim(util.reason.val());
 				if (!tReason) {
-					showMsg(util.tip);
+					alpha.toast(util.tip);
 					util.reason.focus();
 					return false;
 				}
@@ -64,15 +58,15 @@ require(["layer"],
 						text: $.trim(util.text.val())
 					},
 					function (resp) {
-						layer.closeAll();
-						if (resp.code == 0) {
+						alpha.clear();
+						if (resp.code < 1) {
 							util.text.val('');
 							util.text.blur();
 							util.reason.val('');
 							util.sel_text.html(util.tip);
-							showMsg(resp.msg, 3);
+							alpha.toast(resp.msg, 1);
 						} else {
-							showMsg(resp.msg);
+							alpha.toast(resp.msg);
 						}
 						util.loading = 0;
 					}, 'json');
@@ -102,14 +96,12 @@ require(["layer"],
 					var self = $(this);
 					var sid = self.attr("data-id");
 					if (!sid) {
-						layer.open({
-							content: '<p class="msg-content">你还没有注册呢，注册并完善个人资料后才能使用这个功能</p>',
-							btn: ['马上注册', '再逛逛'],
-							title: false,
-							yes: function () {
+						alpha.prompt('',
+							'<p class="msg-content">你还没有注册呢，注册并完善个人资料后才能使用这个功能</p>',
+							['马上注册', '再逛逛'],
+							function () {
 								location.href = '/wx/reg0';
-							}
-						});
+							});
 						return false;
 					}
 					if (self.hasClass('btn-like')) {
@@ -163,14 +155,14 @@ require(["layer"],
 							amt: amt
 						}, function (resp) {
 							alertUlit.sending = 0;
-							if (resp.code == 0) {
+							if (resp.code < 1) {
 								$sls.main.hide();
 								$sls.shade.fadeOut(160);
 							}
-							showMsg(resp.msg);
+							alpha.toast(resp.msg);
 						}, "json");
 					} else {
-						showMsg('请先点选媒桂花数量吧~');
+						alpha.toast('请先点选媒桂花数量吧~');
 					}
 					return false;
 				});
@@ -191,7 +183,7 @@ require(["layer"],
 						case "pay":
 							var num = self.closest(".pay-mp").find(".options a.active").attr("num");
 							if (!num) {
-								showMsg("请先选择打赏的媒瑰花");
+								alpha.toast("请先选择打赏的媒瑰花");
 								return;
 							}
 							if (alertUlit.payroseF) {
@@ -203,7 +195,7 @@ require(["layer"],
 								num: num,
 								id: alertUlit.secretId,
 							}, function (resp) {
-								if (resp.code == 0) {
+								if (resp.code < 1) {
 									if (resp.data.result) {
 										$('.m-wxid-input').val(resp.data.wechatID);
 										$(".getWechat").show();
@@ -214,16 +206,16 @@ require(["layer"],
 										$(".not-enough-rose").show();
 									}
 								} else {
-									showMsg(resp.msg);
+									alpha.toast(resp.msg);
 								}
 								alertUlit.payroseF = 0;
 							}, "json");
 							break;
 						case "des":
-							if ($(this).next().css("display") == "none") {
-								$(this).next().show();
+							if (self.next().css("display") == "none") {
+								self.next().show();
 							} else {
-								$(this).next().hide();
+								self.next().hide();
 							}
 							break;
 					}
@@ -254,7 +246,7 @@ require(["layer"],
 						case "btn-confirm":
 							var wname = $.trim($(".m-wxid-input").val());
 							if (!wname) {
-								showMsg("请填写正确的微信号哦~");
+								alpha.toast("请填写正确的微信号哦~");
 								return;
 							}
 							$.post("/api/user", {
@@ -262,7 +254,7 @@ require(["layer"],
 								wname: wname,
 							}, function (resp) {
 								if (resp.data) {
-									showMsg("已发送给对方，请等待TA的同意");
+									alpha.toast("已发送给对方，请等待TA的同意");
 									setTimeout(function () {
 										self.closest(".getWechat").hide();
 										alertUlit.cork.hide();
@@ -285,11 +277,11 @@ require(["layer"],
 				}, function (resp) {
 					if (resp.data) {
 						if (f == "yes") {
-							showMsg('心动成功~');
+							alpha.toast('心动成功~');
 							obj.addClass("favor");
 							obj.html("已心动");
 						} else {
-							showMsg('已取消心动');
+							alpha.toast('已取消心动');
 							obj.removeClass("favor");
 							obj.html("心动");
 						}
@@ -305,11 +297,11 @@ require(["layer"],
 			lastId: 0,
 			loading: 0,
 			list: $('.chats'),
-			tmp: $('#tpl_chat').html(),
 			topupTmp: $('#tpl_chat_topup').html(),
 			topTip: $('#schat .chat-tip'),
 			input: $('.chat-input'),
 			bot: $('#schat .m-bottom-pl'),
+			tmp: $('#tpl_chat').html(),
 			init: function () {
 				var util = this;
 				$('.btn-chat-send').on(kClick, function () {
@@ -350,27 +342,6 @@ require(["layer"],
 					self.addClass('active');
 				});
 			},
-			toggleTimer: function ($flag) {
-				var util = this;
-				if ($flag) {
-					util.timer = setInterval(function () {
-						util.reload(0);
-					}, 5000);
-				} else {
-					clearInterval(util.timer);
-					util.timer = 0;
-				}
-			},
-			showTip: function (gid, left) {
-				var util = this;
-				// util.topTip.html('文明聊天，请注意礼貌用语~');
-				//util.topTip.html('发起密聊将会被扣除10朵媒桂花，即可无限畅聊<br>如果对方一直无回复，5天后退回媒桂花');
-				/*if (left) {
-					util.topTip.html('还可以密聊<b>' + left + '</b>句哦，要抓住机会哦~');
-				} else {
-					util.topTip.html('想要更多密聊机会，请先<a href="javascript:;" data-id="' + gid + '" class="btn-chat-topup">捐媒桂花</a>吧~');
-				}*/
-			},
 			topup: function () {
 				var util = this;
 				if (util.loading) {
@@ -385,16 +356,15 @@ require(["layer"],
 						amt: amt
 					}, function (resp) {
 						util.loading = 0;
-						if (resp.code == 0) {
+						if (resp.code < 1) {
 							$sls.main.hide();
 							$sls.shade.fadeOut(160);
-							util.showTip(resp.data.gid, resp.data.left);
 						} else {
-							showMsg(resp.msg);
+							alpha.toast(resp.msg);
 						}
 					}, "json");
 				} else {
-					showMsg('请先选择媒桂花数量哦~');
+					alpha.toast('请先选择媒桂花数量哦~');
 				}
 
 			},
@@ -402,7 +372,7 @@ require(["layer"],
 				var util = this;
 				var content = $.trim(util.input.val());
 				if (!content) {
-					showMsg('聊天内容不能为空！');
+					alpha.toast('聊天内容不能为空！');
 					return false;
 				}
 				$.post("/api/chat", {
@@ -410,20 +380,16 @@ require(["layer"],
 					id: util.sid,
 					text: content
 				}, function (resp) {
-					if (resp.code == 0) {
-						/*var html = Mustache.render(util.tmp, resp.data);
-						util.list.append(html);*/
+					if (resp.code < 1) {
 						if (!util.loading) {
-							util.toggleTimer(0);
 							util.reload(1);
 						}
 						util.input.val('');
-						util.showTip(resp.data.gid, resp.data.left);
 						setTimeout(function () {
 							util.bot.get(0).scrollIntoView(true);
 						}, 300);
 					} else {
-						showMsg(resp.msg);
+						alpha.toast(resp.msg);
 					}
 				}, "json");
 			},
@@ -442,46 +408,86 @@ require(["layer"],
 					id: util.sid,
 					last: util.lastId
 				}, function (resp) {
-					if (resp.code == 0) {
-						var html = Mustache.render(util.tmp, resp.data);
-						if (resp.data.lastId < 1) {
-							util.list.html(html);
-						} else {
-							util.list.append(html);
-						}
-						util.showTip(resp.data.gid, resp.data.left);
-						util.lastId = resp.data.lastId;
-						if (scrollFlag) {
-							setTimeout(function () {
-								util.bot.get(0).scrollIntoView(true);
-							}, 300);
-						}
-						if (util.timer == 0) {
-							util.toggleTimer(1);
-						}
+					if (resp.code < 1) {
+						util.messages(resp.data, scrollFlag);
 					} else {
-						showMsg(resp.msg);
+						alpha.toast(resp.msg);
 					}
 					util.loading = 0;
 				}, "json");
 			},
+			messages: function (data, scrollFlag) {
+				var util = this;
+				if (!util.lastId) {
+					return;
+				}
+				var flag = scrollFlag || 1;
+				var html = Mustache.render(util.tmp, data);
+				if (data.lastId < 1) {
+					util.list.html(html);
+				} else {
+					util.list.append(html);
+				}
+				util.lastId = data.lastId;
+				if (flag) {
+					setTimeout(function () {
+						util.bot.get(0).scrollIntoView(true);
+					}, 300);
+				}
+			}
 		};
 
-		function showMsg(title, sec) {
-			var delay = sec || 3;
-			layer.open({
-				type: 99,
-				content: title,
-				skin: 'msg',
-				time: delay
-			});
-		}
+		var NoticeUtil = {
+			ioChat: null,
+			uni: $('#cUNI').val(),
+			rid: 0,
+			timer: 0,
+			init: function (msgBlock) {
+				var util = this;
+				util.ioChat = io('https://nd.meipo100.com/chatroom');
+				util.ioChat.on('connect', function () {
+					util.join();
+				});
+				util.ioChat.on('reconnect', function () {
+					util.join();
+				});
+				util.ioChat.on("msg", function (resp) {
+					var roomId = resp.rid;
+					if (util.rid && util.rid != roomId) {
+						return;
+					}
+					switch (resp.tag) {
+						case 'tip':
+
+							break;
+						default:
+							resp.dir = (resp.uni == util.uni ? 'right' : 'left');
+							if (msgBlock) {
+								msgBlock(resp);
+							}
+							break;
+					}
+				});
+			},
+			join: function () {
+				var util = this;
+				if (util.rid && util.uni) {
+					util.ioChat.emit('room', util.rid, util.uni);
+				}
+			},
+			broadcast: function (info) {
+				var util = this;
+				if (info.dir) {
+					info.dir = 'left';
+				}
+				util.ioChat.emit('broadcast', info);
+			}
+		};
 
 		function locationHashChanged() {
 			var hashTag = location.hash;
 			hashTag = hashTag.replace("#!", "");
 			hashTag = hashTag.replace("#", "");
-			ChatUtil.toggleTimer(0);
 			switch (hashTag) {
 				case 'sreport':
 					$sls.mainPage.hide();
@@ -512,7 +518,7 @@ require(["layer"],
 					iFrame.off('load').remove();
 				}, 0);
 			}).appendTo($("body"));
-			layer.closeAll();
+			alpha.clear();
 		}
 
 		function shareLog(tag, note) {
@@ -521,8 +527,8 @@ require(["layer"],
 				id: $sls.shID,
 				note: note
 			}, function (resp) {
-				if (resp.code == 0 && resp.msg) {
-					showMsg(resp.msg);
+				if (resp.code < 1 && resp.msg) {
+					alpha.toast(resp.msg);
 				}
 			}, "json");
 		}
@@ -560,5 +566,8 @@ require(["layer"],
 			locationHashChanged();
 			ReportUtil.init();
 			ChatUtil.init();
+			NoticeUtil.init(function (resp) {
+				ChatUtil.messages(resp);
+			});
 		});
 	});

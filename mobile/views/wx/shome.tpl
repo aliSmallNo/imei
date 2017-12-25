@@ -195,6 +195,7 @@
 </div>
 
 <input type="hidden" id="cUID" value="{{$hid}}">
+<input type="hidden" id="cUNI" value="{{$huni}}">
 <input type="hidden" id="secretId" value="{{$secretId}}">
 <input type="hidden" id="avatarID" value="{{$uInfo.avatar}}">
 <script type="text/template" id="tpl_wx_info">
@@ -288,6 +289,9 @@
 <script>
 	var mItems = {{$items}};
 </script>
-<script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/shome.js?v=1.5.2" src="/assets/js/require.js"></script>
+<script src="/assets/js/require.js"></script>
+<script>
+	requirejs(['/js/config.js?v=1.1.3'], function () {
+		requirejs(['/js/shome.js?v=1.5.4']);
+	});
+</script>

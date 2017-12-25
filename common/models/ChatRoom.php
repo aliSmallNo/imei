@@ -399,12 +399,17 @@ class ChatRoom extends ActiveRecord
 			 from im_chat_msg as m  
 			 join im_chat_msg_flag as f on f.fRId=m.cGId   and m.cId > f.fCId
 			 join im_user as u on u.uId= f.fUId and u.uOpenId like 'oYDJew%'
-			 where m.cGId<9999 group by u.uId,u.uOpenId having cnt>0 ";
+			 where m.cGId<9999 and f.fAlertOn is NULL  
+			 group by u.uId,u.uOpenId having cnt>0 ";
 		$ret = $conn->createCommand($sql)->queryAll();
 
 		foreach ($ret as $row) {
-			/*$uid = $row['uId'];
+			$uid = $row['uId'];
 			$rid = $row['gid'];
+			$sql = "update im_chat_msg_flag set fAlertOn=NOW() WHERE fRId in ($rid) AND fUId=$uid ";
+			$conn->createCommand($sql)->execute();
+
+			/*
 
 			$sql = "delete from im_chat_msg_flag WHERE fRId in ($rid) AND fUId=$uid ";
 			$conn->createCommand($sql)->execute();

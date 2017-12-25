@@ -48,6 +48,7 @@ class RedisUtil
 	const KEY_MENUS_MD5 = "key_menus_md5";
 	const KEY_BAIDU_TOKEN = "baidu_token";
 	const KEY_DUMMY_TOP = "dummy_top";
+	const KEY_ROOM_ALERT = "room_alert";
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
@@ -80,15 +81,16 @@ class RedisUtil
 		self::KEY_MENUS_MD5 => 60 * 30,
 		self::KEY_BAIDU_TOKEN => 86400 * 28,
 		self::KEY_DUMMY_TOP => 60 * 30,
+		self::KEY_ROOM_ALERT => 60 * 10,
 	];
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';
-	private static $IdOrder = "order-id"; // 订单序列号
-	private static $IdUser = "user-id"; //用户序列号
-	private static $IdDefault = "default-id"; //默认序列号
-	private static $IdCoupon = "coupon-id"; //代金券序列号
-	private static $IdDetail = "detail-id"; //订单详情序列号
-	private static $IdImage = "image-id"; //图片序列号
+	private static $IdOrder = "order-id";       //订单序列号
+	private static $IdUser = "user-id";         //用户序列号
+	private static $IdDefault = "default-id";   //默认序列号
+	private static $IdCoupon = "coupon-id";     //代金券序列号
+	private static $IdDetail = "detail-id";     //订单详情序列号
+	private static $IdImage = "image-id";       //图片序列号
 
 	/**
 	 * @return \yii\redis\Connection
