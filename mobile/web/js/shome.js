@@ -423,8 +423,15 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 				}
 				util.lastId = data.lastId;
 				if (flag) {
+					/*var top = util.list[0].scrollHeight - document.body.offsetHeight;
+					console.log(top);
+					util.list.scrollTop(top);*/
+					/*var top = util.list[0].scrollHeight - document.body.offsetHeight;
+					util.list.scrollTop(top);*/
+					// $("body").animate({scrollTop: '800px'}, 500);
+
 					setTimeout(function () {
-						util.bot.get(0).scrollIntoView(true);
+						util.bot[0].scrollIntoView(true);
 					}, 300);
 				}
 			}
@@ -562,7 +569,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 			ReportUtil.init();
 			ChatUtil.init();
 			NoticeUtil.init(function (resp) {
-				ChatUtil.messages(resp);
+				ChatUtil.messages(resp, 1);
 			});
 		});
 	});
