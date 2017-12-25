@@ -1924,7 +1924,6 @@ class ApiController extends Controller
 					&& strtotime("2017-12-23 00:00:00") < time()) {
 					Log::addSanta($wxInfo["uId"], Log::SANTA_HAT);
 				}
-
 				$ret = ChatMsg::addChat($uid, $receiverId, $text, 0, 0, $qId);
 				//ChatMsg::add($uid, $receiverId, $text);
 				if ($ret === false) {

@@ -211,7 +211,7 @@ class Log extends ActiveRecord
 	public static function addSanta($uid, $key)
 	{
 		$conn = AppUtil::db();
-		$sql = "select oId from im_log as l where l.oCategory=:cat and l.oUId=:uid and l.oKey=:k 
+		$sql = "select oId from im_log as l where l.oCategory=:cat and l.oUId=:uid and l.oKey=:k and oBefore>0
 				and DATE_FORMAT(l.oDate,'%Y-%c-%d')=DATE_FORMAT(now(),'%Y-%c-%d')";
 		$l = $conn->createCommand($sql)->bindValues([
 			':cat' => self::CAT_SANTA,
