@@ -22,6 +22,7 @@ use common\service\TrendService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
+use common\utils\NoticeUtil;
 use common\utils\PushUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
@@ -1397,7 +1398,8 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = ChatRoom::roomAvatar(101);
+		NoticeUtil::init(NoticeUtil::CAT_CHAT, 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc')->sendText();
+		/*$ret = ChatRoom::roomAvatar(101);
 		var_dump($ret);
 
 		$ret = ChatRoom::roomAvatar(103);
@@ -1407,7 +1409,7 @@ class FooController extends Controller
 		var_dump($ret);
 
 		$ret = ChatRoom::roomAvatar(105);
-		var_dump($ret);
+		var_dump($ret);*/
 		/*$ret = strtotime('+1 week', strtotime('2017-07-17 12:34'));
 		var_dump($ret);
 		$ret = date('Y-m-d H:i', $ret);
