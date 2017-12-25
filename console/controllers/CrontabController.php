@@ -83,5 +83,7 @@ class CrontabController extends Controller
 	{
 		UserMsg::routineAlert();
 		ChatRoom::roomAlert();
+
 	}
+
 }

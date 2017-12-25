@@ -79,7 +79,7 @@
 	<div class="report_wrap">
 		<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
 		<ul class="chats"></ul>
-		<div style="height: 4rem"></div>
+		<div style="height: 5rem"></div>
 	</div>
 	<div class="m-bottom-pl"></div>
 	<div class="m-bottom-bar">
@@ -195,6 +195,7 @@
 </div>
 
 <input type="hidden" id="cUID" value="{{$hid}}">
+<input type="hidden" id="cUNI" value="{{$huni}}">
 <input type="hidden" id="secretId" value="{{$secretId}}">
 <input type="hidden" id="avatarID" value="{{$uInfo.avatar}}">
 <script type="text/template" id="tpl_wx_info">
@@ -288,6 +289,9 @@
 <script>
 	var mItems = {{$items}};
 </script>
-<script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/shome.js?v=1.5.2" src="/assets/js/require.js"></script>
+<script src="/assets/js/require.js"></script>
+<script>
+	requirejs(['/js/config.js?v=1.1.3'], function () {
+		requirejs(['/js/shome.js?v=1.6.2']);
+	});
+</script>

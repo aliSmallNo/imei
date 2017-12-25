@@ -499,6 +499,7 @@ class WxController extends BaseController
 	{
 		$hid = self::getParam('id');
 		$hideFlag = self::getParam('hide', 0);
+		$huni = '';
 		$secretId = $hid;
 		$decrypt = AppUtil::decrypt($hid);
 		if ($decrypt) {
@@ -509,6 +510,7 @@ class WxController extends BaseController
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
 		}
+		$huni = $uInfo['uniqid'];
 		$prefer = 'male';
 		$isMember = false;
 		if ($this->user_id) {
@@ -542,6 +544,7 @@ class WxController extends BaseController
 				'homeUrl' => ($role == User::ROLE_SINGLE) ? self::URL_SINGLE : self::URL_MATCH,
 				'prefer' => $prefer,
 				'hid' => $hid,
+				'huni' => $huni,
 				'secretId' => $secretId,
 				'baseInfo' => $uInfo['baseInfo'],
 				'brief' => $uInfo['brief'],

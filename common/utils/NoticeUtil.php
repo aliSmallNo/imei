@@ -52,7 +52,7 @@ class NoticeUtil
 		return $util;
 	}
 
-	protected function createText($text = '')
+	public function createText($text = '')
 	{
 		if ($text) {
 			return $text;
