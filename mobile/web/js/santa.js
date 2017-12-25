@@ -51,6 +51,7 @@ require(['jquery', 'mustache', "alpha"],
 							$sls.main.find('.share-arrow').remove();
 							$sls.shade.fadeOut(100);
 						}, 4000);
+
 					}
 				});
 

@@ -2528,7 +2528,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						alpha.toast("请先选择礼物");
 						return;
 					}
-					if (util.tag != 'bag' && util.price > util.count.html().trim()) {
+					if (util.tag != 'bag' && parseInt(util.price) > parseInt(util.count.html().trim())) {
 						util.notMoreRose();
 						return;
 					}
