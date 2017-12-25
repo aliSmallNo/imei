@@ -798,9 +798,11 @@ class FooController extends Controller
  				WHERE uGender>9 and uPhone!='' 
   					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt') order by uId ASC ";
 		$ret = $conn->createCommand($sql)->queryAll();
-		$ret[] = [
-			'uId' => 131379,
-			'uGender' => 11,
+		$ret = [
+			[
+				'uId' => 131379,
+				'uGender' => 11,
+			]
 		];
 		$cnt = 0;
 		$senderId = User::SERVICE_UID;
