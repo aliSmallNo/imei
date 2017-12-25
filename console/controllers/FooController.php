@@ -10,10 +10,8 @@ namespace console\controllers;
  */
 use common\models\ChatMsg;
 use common\models\ChatRoom;
-use common\models\Goods;
 use common\models\Img;
 use common\models\Log;
-use common\models\Order;
 use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
@@ -800,12 +798,17 @@ class FooController extends Controller
  				WHERE uGender>9 and uPhone!='' 
   					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt') order by uId ASC ";
 		$ret = $conn->createCommand($sql)->queryAll();
+		$ret[] = [
+			'uId' => 131379,
+			'uGender' => 11,
+		];
 		$cnt = 0;
 		$senderId = User::SERVICE_UID;
 		foreach ($ret as $row) {
 			$uid = $row['uId'];
 			//$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1712201184811.jpg";
-			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1712251186113.jpeg";
+			$content ='我好想和你一起过圣诞节喔 <a href="https://mp.weixin.qq.com/s/1q2ak1MmrQGUhKHyZaJcEg">点击查看详情</a>';
+				//"https://bpbhd-10063905.file.myqcloud.com/image/n1712251186113.jpeg";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
 			QueueUtil::loadJob('templateMsg',
