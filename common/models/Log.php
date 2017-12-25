@@ -191,20 +191,31 @@ class Log extends ActiveRecord
 	}
 
 
-	public static function santaStat($uid)
+	public static function santaStat($uid, $countExchange = 0)
 	{
 		$conn = AppUtil::db();
-		$sql = "select 
+		$str = "";
+		if ($uid) {
+			$str .= " and oUId=$uid ";
+		}
+		if ($countExchange) {
+			// 不计算兑换的
+			$str .= " and oBefore>0 ";
+		}
+		$sql = "select uId,uName,uPhone,
 				ifnull(sum(case when oKey=100 then oBefore end),0) as sugar,
 				ifnull(sum(case when oKey=200 then oBefore end),0) as hat,
 				ifnull(sum(case when oKey=300 then oBefore end),0) as sock,
 				ifnull(sum(case when oKey=400 then oBefore end),0) as olaf,
 				ifnull(sum(case when oKey=500 then oBefore end),0) as tree
-				from im_log where oCategory=:cat and oUId=:uid";
-		return $conn->createCommand($sql)->bindValues([
-			":uid" => $uid,
-			":cat" => self::CAT_SANTA,
-		])->queryOne();
+				from im_log as o 
+				join im_user as u on u.uId=o.oUId
+				where oCategory=5000 and oDate between '2017-12-23 00:00' and '2018-01-06 23:59' $str group by oUId";
+		$res = $conn->createCommand($sql)->queryAll();
+		if ($uid) {
+			return $res[0];
+		}
+		return $res;
 
 	}
 

@@ -91,7 +91,7 @@
 	<div class="m-popup-wrap">
 		<div class="m-popup-content" style="background: transparent;width: 25rem;left: 3.5rem;">
 			<div class="santa-alert">
-				<div class="content" style="min-height: 34rem;text-align: center">
+				<div class="content">
 
 				</div>
 				<a href="javascript:;" class="btn-close"></a>
