@@ -792,12 +792,12 @@ class FooController extends Controller
 	{
 		$conn = AppUtil::db();
 		$dt = date('Y-m-d H:i:s', time() - 4000);
-		$sql = "SELECT uId,uGender 
+		/*$sql = "SELECT uId,uGender
  				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId AND w.wSubscribe=1
  				WHERE uGender>9 and uPhone!='' 
   					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt') order by uId ASC ";
-		$ret = $conn->createCommand($sql)->queryAll();
+		$ret = $conn->createCommand($sql)->queryAll();*/
 		$ret[] = [
 			'uId' => 131379,
 			'uGender' => 11,
