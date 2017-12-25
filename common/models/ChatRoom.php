@@ -402,30 +402,21 @@ class ChatRoom extends ActiveRecord
 			 where m.cGId<9999 group by u.uId,u.uOpenId having cnt>0 ";
 		$ret = $conn->createCommand($sql)->queryAll();
 
-		$sql = "delete from im_chat_msg_flag WHERE fRId in (:rid) AND fUId=:uid";
-		$cmdDel = $conn->createCommand($sql);
-
-		$sql = " insert into im_chat_msg_flag(fRId,fCId,fUId)
- 			select rId,rLastId,:uid
- 			from im_chat_room as r
- 			where rId in (:rid)
- 			and not exists(select 1 from im_chat_msg_flag as f where f.fRId=r.rId and r.rLastId=f.fCId and fUId=:uid)";
-		$cmdAdd = $conn->createCommand($sql);
-
 		foreach ($ret as $row) {
 			$uid = $row['uId'];
 			$rid = $row['gid'];
 			$open_id = $row['uOpenId'];
 
-			$cmdDel->bindValues([
-				':uid' => $uid,
-				':rid' => $rid
-			])->execute();
+			$sql = "delete from im_chat_msg_flag WHERE fRId in ($rid) AND fUId=$uid ";
+			$conn->createCommand($sql)->execute();
 
-			$cmdAdd->bindValues([
-				':uid' => $uid,
-				':rid' => $rid
-			])->execute();
+			$sql = " insert into im_chat_msg_flag(fRId,fCId,fUId)
+ 			select rId,rLastId,$uid
+ 			from im_chat_room as r
+ 			where rId in ($rid)
+ 			and not exists(select 1 from im_chat_msg_flag as f where f.fRId=r.rId and r.rLastId=f.fCId and fUId=$uid )";
+			$conn->createCommand($sql)->execute();
+
 			NoticeUtil::init(NoticeUtil::CAT_ROOM, $open_id)->sendText();
 			AppUtil::logFile([NoticeUtil::CAT_ROOM, $open_id], 5, __FUNCTION__, __LINE__);
 		}
