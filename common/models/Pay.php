@@ -48,7 +48,7 @@ class Pay extends ActiveRecord
 	];
 
 	static $WalletDict = [
-		/*'chat_3' => [
+		'chat_3' => [
 			'cat' => Pay::CAT_CHAT_DAY3,
 			'title' => '三天畅聊卡',
 			'price' => 3.0,
@@ -61,7 +61,7 @@ class Pay extends ActiveRecord
 			'price' => 7.0,
 			'tip' => '七天畅聊，有效期内免费畅聊',
 			'num' => 1
-		],*/
+		],
 		'chat_month' => [
 			'cat' => Pay::CAT_CHAT_MONTH,
 			'title' => '月度畅聊卡',

@@ -195,11 +195,11 @@ class Log extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		$sql = "select 
-				ifnull(sum(case when oKey=100 then 1 end),0) as sugar,
-				ifnull(sum(case when oKey=200 then 1 end),0) as hat,
-				ifnull(sum(case when oKey=300 then 1 end),0) as sock,
-				ifnull(sum(case when oKey=400 then 1 end),0) as olaf,
-				ifnull(sum(case when oKey=500 then 1 end),0) as tree
+				ifnull(sum(case when oKey=100 then oBefore end),0) as sugar,
+				ifnull(sum(case when oKey=200 then oBefore end),0) as hat,
+				ifnull(sum(case when oKey=300 then oBefore end),0) as sock,
+				ifnull(sum(case when oKey=400 then oBefore end),0) as olaf,
+				ifnull(sum(case when oKey=500 then oBefore end),0) as tree
 				from im_log where oCategory=:cat and oUId=:uid";
 		return $conn->createCommand($sql)->bindValues([
 			":uid" => $uid,
@@ -211,7 +211,7 @@ class Log extends ActiveRecord
 	public static function addSanta($uid, $key)
 	{
 		$conn = AppUtil::db();
-		$sql = "select oId from im_log as l where l.oCategory=:cat and l.oUId=:uid and l.oKey=:k 
+		$sql = "select oId from im_log as l where l.oCategory=:cat and l.oUId=:uid and l.oKey=:k and oBefore>0
 				and DATE_FORMAT(l.oDate,'%Y-%c-%d')=DATE_FORMAT(now(),'%Y-%c-%d')";
 		$l = $conn->createCommand($sql)->bindValues([
 			':cat' => self::CAT_SANTA,

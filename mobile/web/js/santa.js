@@ -9,29 +9,31 @@ require(['jquery', 'mustache', "alpha"],
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
-
 		};
 
 		var SantaUtil = {
-			image: $(".santa-alert .image"),
-			text: $(".santa-alert .text"),
-			btntext: $(".santa-alert .btn"),
+			alert: $(".santa-alert"),
+			content: $(".santa-alert .content"),
 			url: '',
+			gid: '',
+			desc: '',
 			init: function () {
 				var util = this;
 
 				$(".props a").on(kClick, function () {
+					util.content.html($("#tpl_tool").html());
 					var li = $(this).closest("li");
 					var url = li.attr('data-url');
 					var text = li.attr('data-text');
 					var btntext = li.attr('data-btn-text');
 					var img = li.find("div").css("background-image").replace('url(', '').replace(')', '');
 					img = img.replace(/"/g, '');
-					// console.log(img);console.log(url);console.log(text);console.log(btntext);
-					util.image.find("img").attr("src", img);
-					util.text.html(text);
-					util.btntext.find('a').html(btntext);
-					util.btntext.find('a').attr('href', url);
+					$(".santa-alert .image").find("img").attr("src", img);
+					util.alert.css('background-image', 'url(/images/santa/bg_popup_prop.png)');
+					$(".santa-alert .text").html(text);
+					var btntexts = $(".santa-alert .btn");
+					btntexts.find('a').html(btntext);
+					btntexts.find('a').attr('href', url);
 					util.url = url;
 					util.toggle(1);
 				});
@@ -40,8 +42,11 @@ require(['jquery', 'mustache', "alpha"],
 
 				});
 
-				$(".santa-alert .btn a").on(kClick, function () {
-					if (!util.url) {
+				$(document).on(kClick, "a[data-tag]", function () {
+					var self = $(this);
+					var tag = self.attr("data-tag");
+					// console.log(util.gid);
+					if (tag == "tool" && util.url == "javascript:;") {
 						var html = '<i class="share-arrow">点击菜单分享</i>';
 						$sls.main.show();
 						$sls.main.append(html);
@@ -51,12 +56,20 @@ require(['jquery', 'mustache', "alpha"],
 							$sls.main.find('.share-arrow').remove();
 							$sls.shade.fadeOut(100);
 						}, 4000);
-
+					} else if (tag == "bag") {
+						util.exchange();
 					}
+
 				});
 
 				$(".bags a").on(kClick, function () {
-					alpha.toast("您的礼物还没收齐哦~");
+					var self = $(this);
+					util.gid = self.attr("data-gid");
+					util.desc = JSON.parse(self.attr("data-desc"));
+					util.content.html(Mustache.render($("#tpl_bag").html(), {data: util.desc.glist.concat(util.desc.klist)}));
+					util.alert.css("background-image", "url(/images/santa/bg_popup_bag.png)");
+					util.toggle(1);
+					// alpha.toast("您的礼物还没收齐哦~");
 				});
 
 			},
@@ -65,16 +78,15 @@ require(['jquery', 'mustache', "alpha"],
 				if ($sls.loading) {
 					return;
 				}
+				console.log(util.gid);
 				$sls.loading = 1;
 				$.post("/api/shop", {
-					tag: "exchange",
+					tag: "santa_exchange",
+					gid: util.gid
 				}, function (resp) {
 					$sls.loading = 0;
-					if (resp.code == 0) {
-
-					} else {
-						alpha.toast(resp.msg);
-					}
+					alpha.toast(resp.msg);
+					util.toggle(0);
 				}, "json");
 			},
 			toggle: function (f) {
@@ -90,11 +102,10 @@ require(['jquery', 'mustache', "alpha"],
 		};
 		SantaUtil.init();
 
-
 		function shareLog(tag, note) {
 			$.post("/api/share", {
 				tag: tag,
-				id: $sls.uid,
+				id: '',
 				note: note
 			}, function (resp) {
 				if (resp.code < 1 && resp.msg) {

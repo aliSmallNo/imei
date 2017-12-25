@@ -1924,7 +1924,6 @@ class ApiController extends Controller
 					&& strtotime("2017-12-23 00:00:00") < time()) {
 					Log::addSanta($wxInfo["uId"], Log::SANTA_HAT);
 				}
-
 				$ret = ChatMsg::addChat($uid, $receiverId, $text, 0, 0, $qId);
 				//ChatMsg::add($uid, $receiverId, $text);
 				if ($ret === false) {
@@ -2376,6 +2375,12 @@ class ApiController extends Controller
 					'nextpage' => $nextpage,
 				]);
 				break;
+			case "santa_exchange":
+				$gid = self::postParam("gid");
+				list($code, $msg) = Order::santaExchange($gid, $wx_uid);
+				return self::renderAPI($code, $msg, [
+				]);
+				break;
 		}
 		return self::renderAPI(129, '操作无效~');
 	}
@@ -2602,19 +2607,27 @@ class ApiController extends Controller
 		}
 
 		switch ($tag) {
-			case 'share':
+			case 'share'://  分享到朋友
 				$note = self::postParam('note');
 				$nId = UserNet::addShare($uid, $subUId, UserNet::REL_QR_SHARE, $note);
 				break;
-			case 'moment':
+			case 'moment':// 分享到朋友圈
 				$amt = 16;
 				$note = self::postParam('note');
+				if (!$subUId) {
+					$subUId = 120003;
+				}
 				$nId = UserNet::addShare($uid, $subUId, UserNet::REL_QR_MOMENT, $note);
 				// 双旦活动
 				if (in_array($note, ['/wx/shares', '/wx/santa'])
 					&& strtotime("2018-01-06 23:59:50") > time()
 					&& strtotime("2017-12-23 00:00:00") < time()) {
-					$key = $note == "/wx/shares" ? Log::SANTA_SOCK : Log::SANTA_OLAF;
+					// $key = $note == '/wx/shares' ? Log::SANTA_SOCK : Log::SANTA_OLAF;
+					if ($note == '/wx/shares') {
+						$key = Log::SANTA_SOCK;
+					} elseif ($note == "/wx/santa") {
+						$key = Log::SANTA_OLAF;
+					}
 					Log::addSanta($wxInfo["uId"], $key);
 				}
 				if ($note == '/wx/mshare') {
