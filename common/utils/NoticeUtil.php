@@ -59,12 +59,14 @@ class NoticeUtil
 		}
 		switch ($this->tag) {
 			case self::CAT_CHAT:
-				$text = '<a href="https://wx.meipo100.com/wx/single#scontacts">千寻恋恋里有人密聊你了，快去看看吧!
-👉点击查看详情👈</a>';
+				$text = '千寻恋恋里有人密聊你了，快去看看吧!
+
+👉<a href="https://wx.meipo100.com/wx/single#scontacts">点击查看详情</a>👈';
 				break;
 			case self::CAT_ROOM:
-				$text = '<a href="https://wx.meipo100.com/wx/single#scontacts">千寻恋恋群聊里有人说话了，快去看看吧!
-👉点击查看详情👈</a>';
+				$text = '千寻恋恋群聊里有人说话了，快去看看吧!
+
+👉<a href="https://wx.meipo100.com/wx/single#scontacts">点击查看详情</a>👈';
 				break;
 		}
 		return $text;
