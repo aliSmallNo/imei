@@ -411,7 +411,6 @@ class ChatRoom extends ActiveRecord
 			$conn->createCommand($sql)->execute();
 
 			/*
-
 			$sql = "delete from im_chat_msg_flag WHERE fRId in ($rid) AND fUId=$uid ";
 			$conn->createCommand($sql)->execute();
 

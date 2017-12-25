@@ -381,13 +381,8 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 					text: content
 				}, function (resp) {
 					if (resp.code < 1) {
-						if (!util.loading) {
-							util.reload(1);
-						}
 						util.input.val('');
-						setTimeout(function () {
-							util.bot.get(0).scrollIntoView(true);
-						}, 300);
+						NoticeUtil.broadcast(resp.data);
 					} else {
 						alpha.toast(resp.msg);
 					}
@@ -408,8 +403,8 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 					id: util.sid,
 					last: util.lastId
 				}, function (resp) {
-					console.log(resp);
 					if (resp.code < 1) {
+						NoticeUtil.join(resp.data.gid);
 						util.messages(resp.data, scrollFlag);
 					} else {
 						alpha.toast(resp.msg);
@@ -439,7 +434,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 			ioChat: null,
 			uni: $('#cUNI').val(),
 			rid: 0,
-			timer: 0,
 			init: function (msgBlock) {
 				var util = this;
 				util.ioChat = io('https://nd.meipo100.com/chatroom');
@@ -450,7 +444,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 					util.join();
 				});
 				util.ioChat.on("msg", function (resp) {
-					var roomId = resp.rid;
+					var roomId = resp.gid;
 					if (util.rid && util.rid != roomId) {
 						return;
 					}
@@ -467,8 +461,11 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 					}
 				});
 			},
-			join: function () {
+			join: function (room_id) {
 				var util = this;
+				if (room_id) {
+					util.rid = room_id;
+				}
 				if (util.rid && util.uni) {
 					util.ioChat.emit('room', util.rid, util.uni);
 				}
