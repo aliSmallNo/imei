@@ -222,6 +222,13 @@ class Log extends ActiveRecord
 			return 0;
 		}
 
+		$sql = "select count(1) as co from im_log 
+				where oKey=$key and oUId =$uid and oCategory=5000 and oDate between '2017-12-23' and '2018-01-06 23:59' and oBefore>0";
+		$co = $conn->createCommand($sql)->queryScalar();
+		if (in_array($key, [self::SANTA_SOCK, self::SANTA_OLAF]) && $co >= 3) {
+			return 0;
+		}
+
 		$sql = "insert into im_log (oCategory,oKey,oUId,oBefore) values (:cat,:k,:uid,1)";
 		return $conn->createCommand($sql)->bindValues([
 			':cat' => self::CAT_SANTA,
