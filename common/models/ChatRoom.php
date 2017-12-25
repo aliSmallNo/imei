@@ -403,9 +403,8 @@ class ChatRoom extends ActiveRecord
 		$ret = $conn->createCommand($sql)->queryAll();
 
 		foreach ($ret as $row) {
-			$uid = $row['uId'];
+			/*$uid = $row['uId'];
 			$rid = $row['gid'];
-			$open_id = $row['uOpenId'];
 
 			$sql = "delete from im_chat_msg_flag WHERE fRId in ($rid) AND fUId=$uid ";
 			$conn->createCommand($sql)->execute();
@@ -415,10 +414,10 @@ class ChatRoom extends ActiveRecord
  			from im_chat_room as r
  			where rId in ($rid)
  			and not exists(select 1 from im_chat_msg_flag as f where f.fRId=r.rId and r.rLastId=f.fCId and fUId=$uid )";
-			$conn->createCommand($sql)->execute();
-
+			$conn->createCommand($sql)->execute();*/
+			$open_id = $row['uOpenId'];
 			NoticeUtil::init(NoticeUtil::CAT_ROOM, $open_id)->sendText();
-			AppUtil::logFile([NoticeUtil::CAT_ROOM, $open_id], 5, __FUNCTION__, __LINE__);
+			//AppUtil::logFile([NoticeUtil::CAT_ROOM, $open_id], 5, __FUNCTION__, __LINE__);
 		}
 	}
 }
