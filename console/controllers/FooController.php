@@ -791,7 +791,7 @@ class FooController extends Controller
 	public function actionMassmsg()
 	{
 		$conn = AppUtil::db();
-		$dt = date('Y-m-d H:i:s', time() - 4000);
+		$dt = date('Y-m-d H:i:s', time() - 300);
 		$sql = "SELECT uId,uGender
  				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId AND w.wSubscribe=1
