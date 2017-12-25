@@ -13,6 +13,7 @@ use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ImageUtil;
 use common\utils\NoticeUtil;
+use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
 
 class ChatRoom extends ActiveRecord
@@ -421,7 +422,10 @@ class ChatRoom extends ActiveRecord
  			and not exists(select 1 from im_chat_msg_flag as f where f.fRId=r.rId and r.rLastId=f.fCId and fUId=$uid )";
 			$conn->createCommand($sql)->execute();*/
 			$open_id = $row['uOpenId'];
-			NoticeUtil::init(NoticeUtil::CAT_ROOM, $open_id)->sendText();
+			$content = NoticeUtil::init(NoticeUtil::CAT_ROOM, $open_id)->createText();
+			QueueUtil::loadJob('pushText',
+				['open_id' => $open_id, 'text' => $content],
+				QueueUtil::QUEUE_TUBE_SMS,1);
 			//AppUtil::logFile([NoticeUtil::CAT_ROOM, $open_id], 5, __FUNCTION__, __LINE__);
 		}
 	}
