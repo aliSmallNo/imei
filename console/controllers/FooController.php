@@ -791,28 +791,27 @@ class FooController extends Controller
 	public function actionMassmsg()
 	{
 		$conn = AppUtil::db();
-		$dt = date('Y-m-d H:i:s', time() - 180);
+		$dt = date('Y-m-d H:i:s', time() - 4000);
 		$sql = "SELECT uId,uGender
  				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId AND w.wSubscribe=1
  				WHERE uGender>9 and uPhone!='' 
   					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt') order by uId ASC ";
 		$ret = $conn->createCommand($sql)->queryAll();
-		$ret = [
+		/*$ret = [
 			[
 				'uId' => 131379,
 				'uGender' => 11,
 			]
-		];
+		];*/
 		$cnt = 0;
 		$senderId = User::SERVICE_UID;
 		foreach ($ret as $row) {
 			$uid = $row['uId'];
-			$content = "hello 晚安";
-			/*$content = [
+			$content = [
 				'text' => '我好想和你一起过圣诞节喔~',
 				'url' => "https://mp.weixin.qq.com/s/1q2ak1MmrQGUhKHyZaJcEg"
-			];*/
+			];
 			//"https://bpbhd-10063905.file.myqcloud.com/image/n1712251186113.jpeg";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
