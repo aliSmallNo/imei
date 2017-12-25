@@ -40,9 +40,7 @@
 	<div class="report_wrap schat-content">
 		<div class="spinner"></div>
 		<a href="javascript:;" class="cr-his-more">更多历史消息</a>
-		<ul class="chats">
-
-		</ul>
+		<ul class="chats room-messages"></ul>
 		<div class="m-bottom-pl"></div>
 		<div class="m-bottom-bar">
 			<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~" maxlength="120"></div>

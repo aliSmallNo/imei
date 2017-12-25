@@ -9329,36 +9329,36 @@ ul.co-ul {
     .m-stepper .j-stepper:active {
       background-color: #b8b8b8; }
 
-.chats .content:after {
-  top: 2.3rem !important; }
-.chats .content .name {
+.room-messages .content:after {
+  top: 2.2rem !important; }
+.room-messages .content .name {
   font-size: 1rem;
   margin-bottom: 0.1rem;
   direction: ltr; }
-  .chats .content .name i {
+  .room-messages .content .name i {
     width: 2.2rem;
     display: inline-block;
     position: relative;
     font-size: 1rem; }
-    .chats .content .name i.u-admin:before, .chats .content .name i.u-member:before, .chats .content .name i.u-new:before {
+    .room-messages .content .name i.u-admin:before, .room-messages .content .name i.u-member:before, .room-messages .content .name i.u-new:before {
       content: " ";
       display: inline-block;
       width: 2.2rem;
       height: 1rem; }
-    .chats .content .name i.u-admin {
+    .room-messages .content .name i.u-admin {
       background: url(../images/cr_ico_admin.png) no-repeat center center;
       background-size: 2.2rem 1.1rem; }
-    .chats .content .name i.u-member {
+    .room-messages .content .name i.u-member {
       background: url(../images/cr_ico_member.png) no-repeat center center;
       background-size: 2.2rem 1.1rem; }
-    .chats .content .name i.u-new {
+    .room-messages .content .name i.u-new {
       background: url(../images/cr_ico_new.png) no-repeat center center;
       background-size: 2.2rem 1.1rem; }
-    .chats .content .name i.lever {
+    .room-messages .content .name i.lever {
       width: 2.7rem;
       color: #fff;
       text-align: right; }
-      .chats .content .name i.lever:before {
+      .room-messages .content .name i.lever:before {
         content: " ";
         position: absolute;
         display: inline-block;
