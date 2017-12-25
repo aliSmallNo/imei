@@ -519,9 +519,9 @@ class ChatMsg extends ActiveRecord
 	}
 
 	/**
-	 * @param $senderId
-	 * @param $receiverId
-	 * @param $content
+	 * @param int $senderId
+	 * @param int $receiverId
+	 * @param array|string $content
 	 * @param int $giftCount
 	 * @param int $adminId
 	 * @param string $qId
@@ -529,10 +529,16 @@ class ChatMsg extends ActiveRecord
 	 * @return array|bool
 	 * @throws \yii\db\Exception
 	 */
-	public static function addChat($senderId, $receiverId, $content, $giftCount = 0, $adminId = 0, $qId = '', $conn = null)
+	public static function addChat($senderId, $receiverId, $content,
+	                               $giftCount = 0, $adminId = 0, $qId = '', $conn = null)
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
+		}
+		$URL = '';
+		if (is_array($content)) {
+			$content = isset($content['text']) ? $content['text'] : '';
+			$URL = isset($content['url']) ? $content['url'] : '';
 		}
 		$ratio = self::RATIO;
 		$costAmt = self::CHAT_COST;
@@ -598,6 +604,7 @@ class ChatMsg extends ActiveRecord
 		$entity = new self();
 		$entity->cGId = $gid;
 		$entity->cContent = $content;
+		$entity->cUrl = $URL;
 		$lower = strtolower($content);
 		if (AppUtil::endWith($lower, '.jpg')
 			|| AppUtil::endWith($lower, '.jpeg')

@@ -356,7 +356,7 @@
 		</a>
 		<a href="javascript:;" data-tag="toblock">
 			<img src="/images/top_block.png">
-			<div>拉黑TA</div>
+			<div>不合适</div>
 		</a>
 	</div>
 	<div class="report_wrap schat-content">
