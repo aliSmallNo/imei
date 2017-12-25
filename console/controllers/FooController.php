@@ -805,7 +805,7 @@ class FooController extends Controller
 		foreach ($ret as $row) {
 			$uid = $row['uId'];
 			//$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1712201184811.jpg";
-			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1712231185483.jpg";
+			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1712251186113.jpeg";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
 			QueueUtil::loadJob('templateMsg',
