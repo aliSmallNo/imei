@@ -59,7 +59,6 @@ require(['jquery', 'mustache', "alpha"],
 					} else if (tag == "bag") {
 						util.exchange();
 					}
-
 				});
 
 				$(".bags a").on(kClick, function () {
