@@ -67,13 +67,14 @@
 					<td>
 						<span class="m-status-2">{{if $item.isAdmin}}管理员{{/if}}</span>
 						<span class="m-status-1">{{if !$item.isMember}}新人{{/if}}</span>
-						<span class="m-status-2">{{$item.pic_name}}</span>
+						<span class="m-status-2">LV{{$item.pic_name}}</span>
 						<span class="m-status-2">{{if $item.dummy}}稻草人{{/if}}</span>
 					</td>
 					<td>
 						{{$item.name}} <br>{{$item.phone}}
 					</td>
 					<td>
+						{{if $item.aName}}({{$item.aName}})<br>{{/if}}
 						{{$item.content}}
 					</td>
 					<td>

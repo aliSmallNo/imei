@@ -44,14 +44,14 @@
 		</div>
 	</div>
 	{{if $adverts}}
-	<div class="swiper-container">
-		<div class="swiper-wrapper">
-			{{foreach from=$adverts item=item}}
-			<a href="javascript:;" data-url="{{$item.url}}" class="swiper-slide"><img src="{{$item.image}}"></a>
-			{{/foreach}}
+		<div class="swiper-container">
+			<div class="swiper-wrapper">
+				{{foreach from=$adverts item=item}}
+					<a href="javascript:;" data-url="{{$item.url}}" class="swiper-slide"><img src="{{$item.image}}"></a>
+				{{/foreach}}
+			</div>
+			<div class="swiper-pagination"></div>
 		</div>
-		<div class="swiper-pagination"></div>
-	</div>
 	{{/if}}
 	<ul class="m-top-users"></ul>
 	<div class="m-more">拼命加载中...</div>
@@ -95,7 +95,7 @@
 			<div class="u-my-bar">
 				<div class="avatar single">
 					<div class="img {{if $uInfo.pending}}pending{{/if}}"
-							 style="background-image: url({{$avatar}})"></div>
+					     style="background-image: url({{$avatar}})"></div>
 					{{if $uInfo.cert}}<i class="i-cert"></i>{{/if}}
 					{{foreach from=$uInfo.tags item=tag}}<i class="i-tag{{$tag}}"></i>{{/foreach}}
 				</div>
@@ -123,10 +123,10 @@
 			<a href="#date"><span class="title">我的约会</span></i> <i class="i-mark-base i-mark-date"></i></a>
 			<a href="/wx/comments"><span class="title">对我的评论</span></a>
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">我的账户</span> <i
-								class="i-mark-base i-mark-rose"></i></a>
+						class="i-mark-base i-mark-rose"></i></a>
 			<a href="/wx/mshare"><span class="title">分享给朋友</span> <i class="i-mark-base i-mark-share"></i></a>
 			<a href="/wx/cert2?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}
-				<span class="tip">已认证</span>
+					<span class="tip">已认证</span>
 				{{/if}}</a>
 			<a href="/wx/notice"><span class="title">通知</span>{{if $noReadFlag}}<span class="noReadFlag"></span>{{/if}}
 			</a>
@@ -176,7 +176,7 @@
 		<select class="co-cat-content1">
 			<option value="">-请选择-</option>
 			{{foreach from=$cats key=k item=cat}}
-			<option value="{{$k}}">{{$cat}}</option>
+				<option value="{{$k}}">{{$cat}}</option>
 			{{/foreach}}
 		</select>
 		<span></span>
@@ -208,9 +208,9 @@
 </section>
 <section id="scontacts" data-title="我的密聊记录">
 	{{if $advert_chat}}
-	<a class="m-service" href="{{$advert_chat.url}}" data-tip="{{$advert_chat.tip}}">
-		<img src="{{$advert_chat.image}}" alt="">
-	</a>
+		<a class="m-service" href="{{$advert_chat.url}}" data-tip="{{$advert_chat.tip}}">
+			<img src="{{$advert_chat.image}}" alt="">
+		</a>
 	{{/if}}
 	<div class="m-top-pl"></div>
 	<div class="contacts-wrap">
@@ -752,7 +752,7 @@
 			<select class="report-reason">
 				<option value="">请选择举报原因</option>
 				{{foreach from=$reasons item=reason}}
-				<option value="{{$reason}}">{{$reason}}</option>
+					<option value="{{$reason}}">{{$reason}}</option>
 				{{/foreach}}
 			</select>
 		</div>
@@ -762,18 +762,10 @@
 	</div>
 </section>
 <div class="nav-foot on">
-	<a href="#slink" class="nav-link none" data-tag="slink">
-		看媒婆
-	</a>
-	<a href="#slook" class="nav-invite" data-tag="slook">
-		千寻
-	</a>
-	<a href="#scontacts" class="nav-chat" data-tag="scontacts">
-		密聊
-	</a>
-	<a href="#sme" class="nav-me" data-tag="sme">
-		个人
-	</a>
+	<a href="#slink" class="nav-link none" data-tag="slink">看媒婆</a>
+	<a href="#slook" class="nav-invite" data-tag="slook">千寻</a>
+	<a href="#scontacts" class="nav-chat" data-tag="scontacts">密聊</a>
+	<a href="#sme" class="nav-me" data-tag="sme">个人</a>
 </div>
 <div class="app-cork"></div>
 <div class="getWechat">
@@ -897,7 +889,7 @@
 <a href="/wx/sw?id={{$encryptId}}#swallet" class="m-wallet-entry"></a>
 -->
 {{if $showSanta}}
-<a href="/wx/santa" class="m-wallet-entry"></a>
+	<a href="/wx/santa" class="m-wallet-entry"></a>
 {{/if}}
 
 
@@ -918,7 +910,7 @@
 			<div class="end">{[end]}</div>
 		</div>
 		{{foreach from=$height key=key item=h}}
-		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
+			<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
 	</div>
 </script>
@@ -930,21 +922,21 @@
 			<div class="end">{[end]}</div>
 		</div>
 		{{foreach from=$age key=key item=h}}
-		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
+			<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
 	</div>
 </script>
 <script type="text/html" id="incomeTmp">
 	<div class="m-popup-options col3 clearfix" tag="income">
 		{{foreach from=$income key=key item=h}}
-		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
+			<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
 	</div>
 </script>
 <script type="text/html" id="eduTmp">
 	<div class="m-popup-options col3 clearfix" tag="edu">
 		{{foreach from=$edu key=key item=h}}
-		<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
+			<a href="javascript:;" data-key="{{$key}}">{{$h}}</a>
 		{{/foreach}}
 	</div>
 </script>
@@ -1017,7 +1009,8 @@
 	{[/secretId]}
 	{[#secretId]}
 	<li>
-		<a href="javascript:;" data-eid="{[secretId]}" class="head j-profile" style="background-image: url({[avatar]}) ">
+		<a href="javascript:;" data-eid="{[secretId]}" class="head j-profile"
+		   style="background-image: url({[avatar]}) ">
 			{[#cert]}<i class="i-cert">已认证</i>{[/cert]}
 			{[#tags]}<i class="i-tag{[.]}"></i>{[/tags]}
 			<div class="u-info">
@@ -1377,8 +1370,8 @@
 	{[/header]}
 	{[^header]}
 	<li {[#first]}class="first" {[/first]}>
-		{[#caption]}<label>{[.]}</label>{[/caption]}
-		<span {[^caption]}class="content-block" {[/caption]}>{[content]}</span>
+	{[#caption]}<label>{[.]}</label>{[/caption]}
+	<span {[^caption]}class="content-block" {[/caption]}>{[content]}</span>
 	</li>
 	{[/header]}
 	{[/items]}

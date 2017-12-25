@@ -20,7 +20,7 @@ class BaseController extends Controller
 	const ICON_OK_HTML = '<i class="fa fa-check-circle gIcon"></i> ';
 	const ICON_ALERT_HTML = '<i class="fa fa-exclamation-circle gIcon"></i> ';
 	const COOKIE_OPENID = "wx-openid";
-	const CSS_VERSION = '1.2.8.9';
+	const CSS_VERSION = '1.2.9.0';
 	static $WX_OpenId = "";
 
 	protected $user_id = 0;
@@ -40,6 +40,7 @@ class BaseController extends Controller
 	public function beforeAction($action)
 	{
 		$actionId = $action->id;
+		$duration = 3600 * 51;
 		$safeActions = ['error', 'err', 'help', 'pub-share', 'shake'];
 		if (in_array($actionId, $safeActions)) {
 			return parent::beforeAction($action);
@@ -47,7 +48,7 @@ class BaseController extends Controller
 
 		if (self::isLocalhost()) {
 			self::$WX_OpenId = Yii::$app->params['openid'];
-			AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
+			AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, $duration);
 			self::checkProfile(self::$WX_OpenId, $actionId);
 			//echo self::$WX_OpenId;exit;
 
@@ -57,15 +58,14 @@ class BaseController extends Controller
 			header("location:/wxerr.html");
 			exit;
 		}
-
+		$currentUrl = Yii::$app->request->getAbsoluteUrl();
 		self::$WX_OpenId = AppUtil::getCookie(self::COOKIE_OPENID);
 		$wxCode = self::getParam("code");
-
 		if (strlen($wxCode) >= 20) {
-			$wxUserInfo = UserWechat::getInfoByCode($wxCode);
+			$wxUserInfo = UserWechat::getInfoByCode($wxCode, true);
 			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
 				self::$WX_OpenId = $wxUserInfo["openid"];
-				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
+				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, $duration);
 				// AppUtil::logFile(self::$WX_OpenId, 5, __FUNCTION__, __LINE__);
 				// Rain: 发现如果action不执行完毕，getCookie获取不到刚刚赋值的cookie值
 				self::checkProfile(self::$WX_OpenId, $actionId);
@@ -77,19 +77,17 @@ class BaseController extends Controller
 				/*$logMsg = [self::$WX_OpenId, json_encode($wxUserInfo)];
 				AppUtil::logFile(implode("; ", $logMsg), 5, __FUNCTION__, __LINE__);
 				header("location:/qr.html");*/
-				$currentUrl = Yii::$app->request->getAbsoluteUrl();
-				$newUrl = WechatUtil::getRedirectUrl(UserWechat::CATEGORY_MALL, $currentUrl);
+				$newUrl = WechatUtil::getRedirectUrl($currentUrl);
 				header("location:" . $newUrl);
 				exit;
 			}
 			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
 				self::$WX_OpenId = $wxUserInfo["openid"];
-				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, 3600 * 40);
+				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, $duration);
 				self::checkProfile(self::$WX_OpenId, $actionId);
 			}
 		} elseif (strlen(self::$WX_OpenId) < 20 && strlen($wxCode) < 20) {
-			$currentUrl = Yii::$app->request->getAbsoluteUrl();
-			$newUrl = WechatUtil::getRedirectUrl(UserWechat::CATEGORY_MALL, $currentUrl);
+			$newUrl = WechatUtil::getRedirectUrl($currentUrl);
 			//$userPhone = AppUtil::getCookie("user_phone");
 			//AppUtil::logFile([$currentUrl, $userPhone, $newUrl], 5, __FUNCTION__, __LINE__);
 			//self::redirect($newUrl);

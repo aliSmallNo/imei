@@ -252,24 +252,18 @@ class WechatUtil
 		return 0;
 	}
 
-	public static function getRedirectUrl($category = "one", $strUrl = "")
+	public static function getRedirectUrl($strUrl)
 	{
 		$url = AppUtil::wechatUrl();
-		if ($strUrl) {
-			if (strpos($strUrl, "http") === false) {
-				$url = trim($url, "/") . "/" . trim($strUrl, "/");
-			} else {
-				$url = $strUrl;
-			}
+		if (strpos($strUrl, "http") === false) {
+			$url = trim($url, "/") . "/" . trim($strUrl, "/");
 		} else {
-			switch ($category) {
-				default:
-					$url .= "/wx/login";
-					break;
-			}
+			$url = $strUrl;
 		}
+
 		$wxAppId = \WxPayConfig::APPID;
-		return sprintf("https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=resign#wechat_redirect",
+		return sprintf("https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s"
+			. "&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=resign#wechat_redirect",
 			$wxAppId, urlencode($url));
 	}
 

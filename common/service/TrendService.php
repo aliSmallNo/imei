@@ -417,6 +417,7 @@ class TrendService
 					'male' => [],
 				];
 			}
+			if (count($data[$dateName][$type]) >= 18) continue;
 			$data[$dateName][$type][] = [
 				'from' => $row['tBeginDate'],
 				'to' => $row['tEndDate'],

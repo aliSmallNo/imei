@@ -1638,7 +1638,7 @@ class User extends ActiveRecord
 			$next_page = $page + 1;
 		}
 		//Rain: 不想展示太多页了
-		if ($next_page > 15) {
+		if ($next_page > 16) {
 			$next_page = 0;
 		}
 		return [

@@ -10,6 +10,8 @@ namespace common\models;
 
 
 use common\utils\AppUtil;
+use common\utils\COSUtil;
+use common\utils\ImageUtil;
 use yii\db\ActiveRecord;
 
 class ChatRoom extends ActiveRecord
@@ -118,16 +120,20 @@ class ChatRoom extends ActiveRecord
 			$strCriteria = ' AND ' . implode(' AND ', $condition);
 		}
 		$limit = "limit " . ($page - 1) * $pageSize . "," . $pageSize;
-		$sql = "SELECT r.*,u.uName,u.uThumb,u.uPhone 
+		$sql = "SELECT r.*,u.uName,u.uThumb,u.uPhone ,
+				u2.uThumb as lthumb, u2.uName as lname,m.cAddedOn as laddon,m.cContent as lcontent
 				from im_chat_room as r 
-				join im_user as u on r.rAdminUId=u.uId
+			    join im_user as u on r.rAdminUId=u.uId
+				left join im_chat_msg as m on m.cId = r.rLastId
+				left join im_user as u2 on u2.uId=m.cAddedBy
 				where rStatus=1 $strCriteria
-				ORDER BY r.rAddedOn desc $limit";
+				ORDER BY laddon desc $limit";
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as &$v) {
 			list($item) = self::item($conn, $v["rId"]);
 			$v["count"] = count($item);
 			$v["members"] = $item;
+			$v["laddon"] = AppUtil::prettyDate($v['laddon']);
 		}
 
 		$sql = "SELECT COUNT(*) from im_chat_room as r 
@@ -332,7 +338,57 @@ class ChatRoom extends ActiveRecord
 			from `im_chat_room_fella` as m
 			join im_user as u on u.uId=m.mUId 
 			where mRId=$roomId";
-		return  $conn->createCommand($sql)->queryOne();
+		return $conn->createCommand($sql)->queryOne();
+	}
+
+	public static function roomAvatar($roomId)
+	{
+		$conn = AppUtil::db();
+		$sql = "select r.rId,u.uId,u.uName,u.uGender,f.mAddedOn,u.uThumb
+			 from im_chat_room as r 
+			 join im_chat_room_fella as f on r.rId=f.mRId
+			 join im_user as u on u.uId=f.mUId
+			 WHERE r.rStatus=1 AND mRId=$roomId
+			 ORDER BY r.rId,f.mAddedOn ";
+		$ret = $conn->createCommand($sql)->queryAll();
+		$bundle = [];
+		foreach ($ret as $row) {
+			$gender = $row['uGender'];
+			if (!isset($bundle[$gender])) {
+				$bundle[$gender] = [];
+			}
+			$bundle[$gender][] = $row['uThumb'];
+		}
+		//Rain: 让无性别的排序在最后出现
+		if (isset($bundle[1])) {
+			$bundle[11] = array_merge($bundle[11], $bundle[1]);
+			unset($bundle[1]);
+		}
+		if (isset($bundle[0])) {
+			$bundle[11] = array_merge($bundle[11], $bundle[0]);
+			unset($bundle[0]);
+		}
+		$avatars = [];
+		for ($k = 0; $k < 9; $k++) {
+			foreach ($bundle as $gender => $items) {
+				if (!$items) continue;
+				if (count($avatars) >= 9) break;
+				shuffle($bundle[$gender]);
+				$avatars[] = array_shift($bundle[$gender]);
+			}
+			if (count($avatars) >= 9) break;
+		}
+		$savedPath = ImageUtil::multiAvatar($avatars);
+		if (is_file($savedPath)) {
+			$url = COSUtil::init(COSUtil::UPLOAD_PATH, $savedPath)->uploadOnly();
+			$sql = 'update im_chat_room set rLogo=:url WHERE rId=:rid ';
+			$conn->createCommand($sql)->bindValues([
+				':rid' => $roomId,
+				':url' => $url
+			])->execute();
+			return $url;
+		}
+		return '';
 	}
 
 }

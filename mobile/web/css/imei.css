@@ -432,15 +432,12 @@ section {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  background-color: rgba(252, 252, 252, 0.95);
   border-top: 1px solid #d8d8d8;
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 119;
-  border-top-left-radius: 2.4rem;
-  border-top-right-radius: 2.4rem;
   -webkit-transition: 0.4s all ease;
   -moz-transition: 0.4s all ease;
   transition: 0.4s all ease;
@@ -470,17 +467,21 @@ section {
     font-weight: 300;
     position: relative; }
     .nav-foot a:before {
+      display: none;
       position: absolute;
-      left: 4.1rem;
-      bottom: 1.5rem;
+      left: 50%;
+      bottom: 1.6rem;
       width: 2rem;
-      height: 0.08rem;
-      background: rgba(0, 0, 0, 0.1);
+      height: 1px;
+      margin-left: -1rem;
+      background: rgba(255, 255, 0, 0.4);
       content: "";
-      box-shadow: 0px 0px 11px #000; }
+      box-shadow: 0 0 15px #ff0; }
     .nav-foot a.active {
       font-weight: 500;
       color: #F06292; }
+      .nav-foot a.active:before {
+        display: inline-block; }
     .nav-foot a:after {
       position: absolute;
       top: 0.5rem;
@@ -3268,7 +3269,8 @@ section {
       display: block; }
 
 .m-top-users {
-  min-height: 16rem; }
+  min-height: 16rem;
+  overflow: hidden; }
   .m-top-users li {
     background: #fff;
     margin-bottom: 1rem;

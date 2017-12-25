@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/dev.min.css?v=1.1.1">
+<link rel="stylesheet" href="/css/dev.min.css?v=1.2.1">
 <div class="santa-header">
 	<ul class="props clearfix">
 		<li data-text="每日签到可获得" data-btn-text="去签到" data-url="/wx/lottery">
@@ -109,7 +109,7 @@
 </script>
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/santa.js?v=1.8.5']);
+		requirejs(['/js/santa.js?v=1.8.6']);
 	});
 </script>
 

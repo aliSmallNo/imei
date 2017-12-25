@@ -38,11 +38,6 @@ class UserWechat extends ActiveRecord
 		"wRemark" => "remark",
 	];
 
-	const CATEGORY_ONE = "one";
-	const CATEGORY_TRADE = "trade";
-	const CATEGORY_MALL = "mall";
-
-
 	public static function tableName()
 	{
 		return '{{%user_wechat}}';
@@ -195,7 +190,7 @@ class UserWechat extends ActiveRecord
 	{
 		$ret = WechatUtil::wxInfoByCode($code, $renewFlag);
 		if ($ret && isset($ret["openid"])) {
-			$ret = self::getInfoByOpenId($ret["openid"]);
+			$ret = self::getInfoByOpenId($ret["openid"], $renewFlag);
 			return $ret;
 		}
 		return 0;
