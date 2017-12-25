@@ -33,6 +33,7 @@ class NoticeUtil
 	public $logText = '';
 
 	const CAT_CHAT = 'chat';
+	const CAT_ROOM = 'chat';
 	const CAT_TEXT_ONLY = 'text_only';
 	const CAT_IMAGE_ONLY = 'image_only';
 	const CAT_VOICE_ONLY = 'voice_only';
@@ -60,7 +61,12 @@ class NoticeUtil
 			case self::CAT_CHAT:
 				$text = '千寻恋恋里有人密聊你了，快去看看吧!
 
-👉<a href="https://wx.meipo100.com/wx/single#scontacts">点击查看</a>👈';
+👉<a href="https://wx.meipo100.com/wx/single#scontacts">点击查看详情</a>👈';
+				break;
+			case self::CAT_ROOM:
+				$text = '千寻恋恋群聊里有人说话了，快去看看吧!
+
+👉<a href="https://wx.meipo100.com/wx/single#scontacts">点击查看详情</a>👈';
 				break;
 		}
 		return $text;

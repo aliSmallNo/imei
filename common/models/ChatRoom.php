@@ -12,6 +12,7 @@ namespace common\models;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ImageUtil;
+use common\utils\NoticeUtil;
 use yii\db\ActiveRecord;
 
 class ChatRoom extends ActiveRecord
@@ -391,4 +392,42 @@ class ChatRoom extends ActiveRecord
 		return '';
 	}
 
+	public static function roomAlert()
+	{
+		$conn = AppUtil::db();
+		$sql = "select u.uId,u.uOpenId, GROUP_CONCAT(distinct m.cGId) as gid, count(m.cId) as cnt
+			 from im_chat_msg as m  
+			 join im_chat_msg_flag as f on f.fRId=m.cGId   and m.cId > f.fCId
+			 join im_user as u on u.uId= f.fUId and u.uOpenId like 'oYDJew%'
+			 where m.cGId<9999 group by u.uId,u.uOpenId having cnt>0 ";
+		$ret = $conn->createCommand($sql)->queryAll();
+
+		$sql = "delete from im_chat_msg_flag WHERE fRId in (:rid) AND fUId=:uid";
+		$cmdDel = $conn->createCommand($sql);
+
+		$sql = " insert into im_chat_msg_flag(fRId,fCId,fUId)
+ 			select rId,rLastId,:uid
+ 			from im_chat_room as r
+ 			where rId in (:rid)
+ 			and not exists(select 1 from im_chat_msg_flag as f where f.fRId=r.rId and r.rLastId=f.fCId and fUId=:uid)";
+		$cmdAdd = $conn->createCommand($sql);
+
+		foreach ($ret as $row) {
+			$uid = $row['uId'];
+			$rid = $row['gid'];
+			$open_id = $row['uOpenId'];
+
+			$cmdDel->bindValues([
+				':uid' => $uid,
+				':rid' => $rid
+			])->execute();
+
+			$cmdAdd->bindValues([
+				':uid' => $uid,
+				':rid' => $rid
+			])->execute();
+
+			NoticeUtil::init(NoticeUtil::CAT_ROOM, $open_id)->sendText();
+		}
+	}
 }
