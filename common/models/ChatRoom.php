@@ -426,8 +426,8 @@ class ChatRoom extends ActiveRecord
 				':uid' => $uid,
 				':rid' => $rid
 			])->execute();
-
 			NoticeUtil::init(NoticeUtil::CAT_ROOM, $open_id)->sendText();
+			AppUtil::logFile([NoticeUtil::CAT_ROOM, $open_id], 5, __FUNCTION__, __LINE__);
 		}
 	}
 }

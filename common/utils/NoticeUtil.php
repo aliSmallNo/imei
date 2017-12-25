@@ -33,7 +33,7 @@ class NoticeUtil
 	public $logText = '';
 
 	const CAT_CHAT = 'chat';
-	const CAT_ROOM = 'chat';
+	const CAT_ROOM = 'room';
 	const CAT_TEXT_ONLY = 'text_only';
 	const CAT_IMAGE_ONLY = 'image_only';
 	const CAT_VOICE_ONLY = 'voice_only';
