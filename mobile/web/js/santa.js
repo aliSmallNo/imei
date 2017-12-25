@@ -9,7 +9,6 @@ require(['jquery', 'mustache', "alpha"],
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
-
 		};
 
 		var SantaUtil = {
@@ -103,11 +102,10 @@ require(['jquery', 'mustache', "alpha"],
 		};
 		SantaUtil.init();
 
-
 		function shareLog(tag, note) {
 			$.post("/api/share", {
 				tag: tag,
-				id: $sls.uid,
+				id: '',
 				note: note
 			}, function (resp) {
 				if (resp.code < 1 && resp.msg) {

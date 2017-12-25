@@ -2599,6 +2599,9 @@ class ApiController extends Controller
 			case 'moment':// 分享到朋友圈
 				$amt = 16;
 				$note = self::postParam('note');
+				if (!$subUId) {
+					$subUId = 120003;
+				}
 				$nId = UserNet::addShare($uid, $subUId, UserNet::REL_QR_MOMENT, $note);
 				// 双旦活动
 				if (in_array($note, ['/wx/shares', '/wx/santa'])
