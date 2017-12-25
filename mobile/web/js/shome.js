@@ -432,7 +432,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 
 					setTimeout(function () {
 						util.bot[0].scrollIntoView(true);
-					}, 300);
+					}, 150);
 				}
 			}
 		};
