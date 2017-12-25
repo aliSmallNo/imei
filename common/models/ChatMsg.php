@@ -35,6 +35,14 @@ class ChatMsg extends ActiveRecord
 	const TYPE_IMAGE = 110;
 	const TYPE_VOICE = 120;
 	const TYPE_GIFT = 130;
+	const TYPE_LINK = 140;
+
+	static $SpecialDict = [
+		self::TYPE_IMAGE => '[图片]',
+		self::TYPE_VOICE => '[声音]',
+		self::TYPE_GIFT => '[礼物]',
+		self::TYPE_LINK => '[链接]',
+	];
 
 	const CHAT_COST = 20;
 
@@ -616,6 +624,8 @@ class ChatMsg extends ActiveRecord
 			$entity->cType = self::TYPE_VOICE;
 		} elseif (AppUtil::endWith($lower, "button>")) {
 			$entity->cType = self::TYPE_GIFT;
+		} elseif ($URL) {
+			$entity->cType = self::TYPE_LINK;
 		}
 		$entity->cAddedBy = $senderId;
 		if ($adminId) {
@@ -849,7 +859,7 @@ class ChatMsg extends ActiveRecord
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
 		$sql = 'select u.uName as `name`,u.uThumb as avatar,u.uUniqid as uni, g.gId as gid, g.gRound as round,
 			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy,a.aName, m.cReadFlag as readflag,
-			 m.cType as `type`,(CASE WHEN u.uOpenId LIKE \'oYDJew%\' THEN 0 ELSE 1 END) as dummy
+			 m.cType as `type`,m.cUrl as url,(CASE WHEN u.uOpenId LIKE \'oYDJew%\' THEN 0 ELSE 1 END) as dummy
 			 from im_chat_group as g 
 			 join im_chat_msg as m on g.gId=cGId
 			 join im_user as u on u.uId=m.cAddedBy
@@ -876,7 +886,9 @@ class ChatMsg extends ActiveRecord
 				$chat['dt'] = AppUtil::prettyDate($chat['addedon']);
 			}
 			$chat['dir'] = ($uId == $chat['cAddedBy'] ? 'right' : 'left');
-			$chat['url'] = 'javascript:;';
+			if (!$chat['url']) {
+				$chat['url'] = 'javascript:;';
+			}
 			$chat['eid'] = ($uId == $chat['cAddedBy'] ? '' : AppUtil::encrypt($subUId));
 			unset($chat['cAddedBy'], $chat['round']);
 			if (!$hideTipFlag) {
@@ -998,12 +1010,9 @@ class ChatMsg extends ActiveRecord
 			$contacts[$k]['dt'] = AppUtil::miniDate($contact['cAddedOn']);
 			$contacts[$k]['encryptId'] = AppUtil::encrypt($contact['uid']);
 			$contacts[$k]['avatar'] = ImageUtil::getItemImages($contact['avatar'])[0];
-			if ($contact['cType'] == ChatMsg::TYPE_IMAGE) {
-				$contacts[$k]['content'] = '[图片]';
-			} elseif ($contact['cType'] == ChatMsg::TYPE_VOICE) {
-				$contacts[$k]['content'] = '[声音]';
-			} elseif ($contact['cType'] == ChatMsg::TYPE_GIFT) {
-				$contacts[$k]['content'] = '[礼物]';
+			$type = $contact['cType'];
+			if (isset(self::$SpecialDict[$type])) {
+				$contacts[$k]['content'] = self::$SpecialDict[$type];
 			}
 			unset($contacts[$k]['cAddedBy'],
 				$contacts[$k]['cAddedOn'],
@@ -1047,10 +1056,8 @@ class ChatMsg extends ActiveRecord
 			$res[$k]['avatar2'] = ImageUtil::getItemImages($row['avatar2'])[0];
 			$res[$k]['dt'] = AppUtil::prettyDate($row['cAddedOn']);
 			$res[$k]['st'] = $row['gStatus'];
-			if ($row['cType'] == ChatMsg::TYPE_IMAGE) {
-				$res[$k]['content'] = '[图片]';
-			} elseif ($row['cType'] == ChatMsg::TYPE_VOICE) {
-				$res[$k]['content'] = '[声音]';
+			if (isset(self::$SpecialDict[$row['cType']])) {
+				$res[$k]['content'] = self::$SpecialDict[$row['cType']];
 			}
 			if ($row['gAddedBy'] == $row['gUId2']) {
 				list($id, $name, $phone, $avatar, $cnt, $uni, $dummy) = [$row['id1'], $row['name1'], $row['phone1'],

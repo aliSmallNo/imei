@@ -1963,7 +1963,14 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			init: function () {
 				var util = this;
 				$(document).on(kClick, '.j-profile', function () {
-					var eid = $(this).attr('data-eid');
+					var self = $(this);
+					var href = self.attr('href');
+					console.log(href);
+					if (href.indexOf('http') === 0) {
+						location.href = href;
+						return false;
+					}
+					var eid = self.attr('data-eid');
 					if (!eid) {
 						return false;
 					}
