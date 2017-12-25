@@ -408,6 +408,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 					id: util.sid,
 					last: util.lastId
 				}, function (resp) {
+					console.log(resp);
 					if (resp.code < 1) {
 						util.messages(resp.data, scrollFlag);
 					} else {
@@ -418,9 +419,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 			},
 			messages: function (data, scrollFlag) {
 				var util = this;
-				if (!util.lastId) {
-					return;
-				}
 				var flag = scrollFlag || 1;
 				var html = Mustache.render(util.tmp, data);
 				if (data.lastId < 1) {
