@@ -312,7 +312,8 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 					var target = this;
 					setTimeout(function () {
 						//$('.m-bottom-bar').css('bottom', 0);
-						target.scrollIntoView(true);
+						//target.scrollIntoView(true);
+						util.bot[0].scrollIntoView(false);
 					}, 200);
 				});
 
