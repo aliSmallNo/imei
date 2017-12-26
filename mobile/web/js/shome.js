@@ -314,7 +314,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 						$('.m-bottom-bar').css('bottom', 0);
 						//target.scrollIntoView(true);
 						// util.bot[0].scrollIntoView(false);
-					}, 300);
+					}, 100);
 				});
 
 				util.input.on('blur', function () {
