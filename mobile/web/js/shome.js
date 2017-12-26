@@ -311,15 +311,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 				});
 
 				$('.btn-chat-more').on(kClick, function () {
-					var bot = parseFloat(util.bar.css('bottom'));
-					setTimeout(function () {
-						if (bot >= 0) {
-							util.bar.css('bottom', '-14.8rem');
-						} else {
-							util.bar.css('bottom', 0);
-						}
-					}, 100);
-
+					util.toggleBar();
 				});
 
 				util.input.on('focus', function () {
@@ -366,6 +358,17 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 					self.closest('div').find('a').removeClass('active');
 					self.addClass('active');
 				});
+			},
+			toggleBar: function () {
+				var util = this;
+				var bot = parseFloat(util.bar.css('bottom'));
+				setTimeout(function () {
+					if (bot >= 0) {
+						util.bar.css('bottom', '-14.8rem');
+					} else {
+						util.bar.css('bottom', 0);
+					}
+				}, 100);
 			},
 			topup: function () {
 				var util = this;
