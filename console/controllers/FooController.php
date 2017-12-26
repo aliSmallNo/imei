@@ -1359,7 +1359,6 @@ class FooController extends Controller
 				$service->statReuse($step, date('Y-m-d', $queryTime), $seq);
 			}
 		}
-
 	}
 
 	public function actionTrend()
@@ -1398,7 +1397,10 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		NoticeUtil::init(NoticeUtil::CAT_CHAT, 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc')->sendText();
+		$service = TrendService::init(TrendService::CAT_REUSE);
+		$service->reuseRoutine('week');
+		$service->reuseRoutine('month');
+//		NoticeUtil::init(NoticeUtil::CAT_CHAT, 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc')->sendText();
 		/*$ret = ChatRoom::roomAvatar(101);
 		var_dump($ret);
 
