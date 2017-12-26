@@ -26,6 +26,7 @@ class QuestionSea extends ActiveRecord
 	const CAT_CONCEPT = 560;
 	const CAT_COMMON = 570;
 	const CAT_PERSONAL = 580;
+	const CAT_TRUTH = 600;
 
 	static $catDict = [
 		self::CAT_QUESTION => "选择题",
@@ -40,6 +41,7 @@ class QuestionSea extends ActiveRecord
 		self::CAT_CONCEPT => "观念题",//
 		self::CAT_COMMON => "共同题",//
 		self::CAT_PERSONAL => "个人题",//
+		self::CAT_TRUTH => "真心话",//
 	];
 
 
