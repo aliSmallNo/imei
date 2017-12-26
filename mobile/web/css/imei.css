@@ -489,43 +489,35 @@ section {
       .nav-foot a.active:before {
         display: inline-block; }
     .nav-foot a:after {
+      content: "";
       position: absolute;
       top: 0.5rem;
       width: 2.4rem;
       height: 2.4rem;
       left: 50%;
       margin-left: -1.3rem;
-      content: ""; }
-    .nav-foot a.nav-link:after {
-      background: url(../images/ico_foot/ico_foot_link.png?v=1.1.1) no-repeat center center;
-      background-size: 100% 100%; }
-    .nav-foot a.nav-link.active:after {
-      background: url(../images/ico_foot/ico_foot_link_hl.png?v=1.1.1) no-repeat center center;
-      background-size: 100% 100%; }
-    .nav-foot a.nav-invite:after {
-      background: url(../images/santa/ico_foot_invite.png?v=1.1.1) no-repeat center center;
-      background-size: 100% 100%; }
-    .nav-foot a.nav-invite.active:after {
-      background: url(../images/santa/ico_foot_invite_hl.png?v=1.1.1) no-repeat center center;
-      background-size: 100% 100%; }
+      background-image: url(../images/ico_foot/sprite_foot.png);
+      background-size: 2.4rem 24rem; }
     .nav-foot a.nav-chat:after {
-      background: url(../images/santa/ico_foot_chat.png?v=1.1.1) no-repeat center center;
-      background-size: 100% 100%; }
+      background-position: 0 -2.4rem; }
     .nav-foot a.nav-chat.active:after {
-      background: url(../images/santa/ico_foot_chat_hl.png?v=1.1.1) no-repeat center center;
-      background-size: 100% 100%; }
-    .nav-foot a.nav-me:after {
-      background: url(../images/santa/ico_foot_me.png?v=1.1.1) no-repeat center center;
-      background-size: 100% 100%; }
-    .nav-foot a.nav-me.active:after {
-      background: url(../images/santa/ico_foot_me_hl.png?v=1.1.1) no-repeat center center;
-      background-size: 100% 100%; }
+      background-position: 0 0; }
     .nav-foot a.nav-group:after {
-      background: url(../images/ico_foot/ico_foot_group.png?v=1.1.1) no-repeat center center;
-      background-size: 100% 100%; }
+      background-position: 0 -7.2rem; }
     .nav-foot a.nav-group.active:after {
-      background: url(../images/ico_foot/ico_foot_group_hl.png?v=1.1.1) no-repeat center center;
-      background-size: 100% 100%; }
+      background-position: 0 -4.8rem; }
+    .nav-foot a.nav-invite:after {
+      background-position: 0 -12rem; }
+    .nav-foot a.nav-invite.active:after {
+      background-position: 0 -9.6rem; }
+    .nav-foot a.nav-link:after {
+      background-position: 0 -16.8rem; }
+    .nav-foot a.nav-link.active:after {
+      background-position: 0 -14.4rem; }
+    .nav-foot a.nav-me:after {
+      background-position: 0 -21.6rem; }
+    .nav-foot a.nav-me.active:after {
+      background-position: 0 -19.2rem; }
 
 .tip-color {
   color: #f80; }
