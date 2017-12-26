@@ -1,2 +1,29 @@
 @import "base"
 
+.page-chat-container
+    @include displayFlex
+    flex-direction: column
+    .page-chat-main
+        @include displayFlex-1
+    .page-chat-footer
+        @include displayFlex-w(4.4rem)
+
+    .action-wrap
+        @include displayFlex
+        .input
+            @include displayFlex-1
+            input
+                width: 100%
+                outline: 0
+                height: 4rem
+                line-height: 2.5rem
+                font-size: 1.4rem
+                -webkit-appearance: none
+                -moz-appearance: none
+                appearance: none
+                border: none
+        .action
+            @include displayFlex-w(8rem)
+            @include displayFlexVAlign
+            text-align: center
+            font-size: 1.6rem

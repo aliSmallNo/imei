@@ -46,9 +46,13 @@ input, select, textarea, button {
 
 main {
   position: relative;
-  padding-bottom: 7rem; }
+  padding-bottom: 7rem;
+  height: 100%; }
   main.bg-lighter {
     background: #fbd2e0; }
+
+section {
+  height: 100%; }
 
 .none {
   display: none !important; }

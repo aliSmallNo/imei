@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/css/dev.min.css?v=1.2.2">
 <div class="single-page main-page">
 	<div class="head">
 		<img src="{{$uInfo.avatar}}" class="avatar">
@@ -11,18 +12,18 @@
 		<h6>{{$brief}}{{if $uInfo.is_cert}}<span class="cert"></span>{{/if}}</h6>
 	</div>
 	{{if $uInfo.album}}
-	<a href="javascript:;" class="album-row line-bottom2" album-string='{{$uInfo.albumJson}}'>
-		<ul class="photos">
-			<li class="title">
-				相册({{$uInfo.album_cnt}})
-			</li>
-			{{foreach from=$uInfo.album item=item name=foo}}
-			{{if $smarty.foreach.foo.index <3}}
-			<li style="background-image: url({{$item}})"></li>
-			{{/if}}
-			{{/foreach}}
-		</ul>
-	</a>
+		<a href="javascript:;" class="album-row line-bottom2" album-string='{{$uInfo.albumJson}}'>
+			<ul class="photos">
+				<li class="title">
+					相册({{$uInfo.album_cnt}})
+				</li>
+				{{foreach from=$uInfo.album item=item name=foo}}
+					{{if $smarty.foreach.foo.index <3}}
+						<li style="background-image: url({{$item}})"></li>
+					{{/if}}
+				{{/foreach}}
+			</ul>
+		</a>
 	{{/if}}
 	<div class="single-info">
 		<a href="/wx/sd?id={{$uInfo.encryptId}}&hide={{$hideFlag}}">
@@ -30,7 +31,7 @@
 			<ul class="clearfix">
 
 				{{foreach from=$baseInfo item=item}}
-				<li>{{$item}}</li>
+					<li>{{$item}}</li>
 				{{/foreach}}
 			</ul>
 		</a>
@@ -62,7 +63,7 @@
 		</p>
 		<p>
 			<a href="javascript:;" class="heart j-act btn-like {{if $uInfo.favorFlag}}favor{{/if}}"
-				 data-id="{{$uInfo.encryptId}}">{{if $uInfo.favorFlag}}已心动{{else}}心动{{/if}}</a>
+			   data-id="{{$uInfo.encryptId}}">{{if $uInfo.favorFlag}}已心动{{else}}心动{{/if}}</a>
 		</p>
 		<p>
 			<a href="javascript:;" class="chat j-act btn-chat" data-id="{{$uInfo.encryptId}}">密聊TA</a>
@@ -76,15 +77,19 @@
 	</div>
 </div>
 <section id="schat" data-title="密聊中...">
-	<div class="report_wrap">
-		<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
-		<ul class="chats"></ul>
-		<div style="height: 5rem"></div>
-	</div>
-	<div class="m-bottom-pl"></div>
-	<div class="m-bottom-bar">
-		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~"></div>
-		<div class="action"><a href="javascript:;" class="btn-chat-send">发送</a></div>
+	<div class="page-chat-container">
+		<div class="page-chat-main">
+			<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
+			<ul class="chats"></ul>
+			<div style="height: 5rem"></div>
+			<div class="m-bottom-pl"></div>
+		</div>
+		<div class="page-chat-footer">
+			<div class="action-wrap">
+				<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~"></div>
+				<div class="action"><a href="javascript:;" class="btn-chat-send">发送</a></div>
+			</div>
+		</div>
 	</div>
 </section>
 <section id="sreport">
@@ -96,7 +101,7 @@
 			<select class="report-reason">
 				<option value="">请选择举报原因</option>
 				{{foreach from=$reasons item=reason}}
-				<option value="{{$reason}}">{{$reason}}</option>
+					<option value="{{$reason}}">{{$reason}}</option>
 				{{/foreach}}
 			</select>
 		</div>
@@ -221,7 +226,7 @@
 	{[#items]}
 	{[#type]}
 	<li class="{[dir]}" data-r="{[readflag]}">
-		<a href="{[url]}" {[#eid]}data-eid="{[.]}"{[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
+		<a href="{[url]}" {[#eid]}data-eid="{[.]}" {[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
 		<div class="content read{[readflag]}">
 			<a href="javascript:;" class="j-content-wrap">
 				{[#image]}<img src="{[.]}">{[/image]}
