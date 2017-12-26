@@ -22,6 +22,7 @@ use common\service\TrendService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
+use common\utils\NoticeUtil;
 use common\utils\PushUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
@@ -791,23 +792,27 @@ class FooController extends Controller
 	public function actionMassmsg()
 	{
 		$conn = AppUtil::db();
-		$dt = date('Y-m-d H:i:s', time() - 4000);
-		$sql = "SELECT uId,uGender 
+		$dt = date('Y-m-d H:i:s', time() - 300);
+		$sql = "SELECT uId,uGender
  				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId AND w.wSubscribe=1
  				WHERE uGender>9 and uPhone!='' 
   					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt') order by uId ASC ";
 		$ret = $conn->createCommand($sql)->queryAll();
-		$ret[] = [
-			'uId' => 131379,
-			'uGender' => 11,
-		];
+		/*$ret = [
+			[
+				'uId' => 131379,
+				'uGender' => 11,
+			]
+		];*/
 		$cnt = 0;
 		$senderId = User::SERVICE_UID;
 		foreach ($ret as $row) {
 			$uid = $row['uId'];
-			//$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1712201184811.jpg";
-			$content = '<button href="https://mp.weixin.qq.com/s/1q2ak1MmrQGUhKHyZaJcEg">我好想和你一起过圣诞节喔</button>';
+			$content = [
+				'text' => '我好想和你一起过圣诞节喔~',
+				'url' => "https://mp.weixin.qq.com/s/1q2ak1MmrQGUhKHyZaJcEg"
+			];
 			//"https://bpbhd-10063905.file.myqcloud.com/image/n1712251186113.jpeg";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
@@ -1393,7 +1398,8 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = ChatRoom::roomAvatar(101);
+		NoticeUtil::init(NoticeUtil::CAT_CHAT, 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc')->sendText();
+		/*$ret = ChatRoom::roomAvatar(101);
 		var_dump($ret);
 
 		$ret = ChatRoom::roomAvatar(103);
@@ -1403,7 +1409,7 @@ class FooController extends Controller
 		var_dump($ret);
 
 		$ret = ChatRoom::roomAvatar(105);
-		var_dump($ret);
+		var_dump($ret);*/
 		/*$ret = strtotime('+1 week', strtotime('2017-07-17 12:34'));
 		var_dump($ret);
 		$ret = date('Y-m-d H:i', $ret);

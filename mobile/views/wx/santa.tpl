@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/dev.min.css?v=1.2.1">
+
 <div class="santa-header">
 	<ul class="props clearfix">
 		<li data-text="每日签到可获得" data-btn-text="去签到" data-url="/wx/lottery">

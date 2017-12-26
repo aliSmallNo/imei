@@ -47,9 +47,13 @@ input, select, textarea, button {
 
 main {
   position: relative;
-  padding-bottom: 7rem; }
+  padding-bottom: 7rem;
+  height: 100%; }
   main.bg-lighter {
     background: #fbd2e0; }
+
+section {
+  height: 100%; }
 
 .none {
   display: none !important; }
@@ -6342,8 +6346,10 @@ section {
       border-radius: 0.4rem;
       padding: 0.8rem;
       display: inline-block; }
+      .chats li .content a.type-140 {
+        color: #007aff; }
       .chats li .content a button {
-        color: #284cfa;
+        color: #007aff;
         background: transparent;
         border: none;
         padding: 0;

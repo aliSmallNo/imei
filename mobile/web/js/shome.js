@@ -308,10 +308,11 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 					util.sent();
 				});
 
-				$(document).on(kClick, ".chat-input", function () {
+				$(document).on('focus', ".chat-input", function () {
 					setTimeout(function () {
-						document.body.scrollTop = document.body.scrollHeight;
-					}, 250);
+						// self.scrollIntoView(true);
+						util.bot[0].scrollIntoView(true);
+					}, 180);
 				});
 
 				$(document).on(kClick, ".btn-chat-topup", function () {
