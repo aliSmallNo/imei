@@ -314,13 +314,13 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 						$('.m-bottom-bar').css('bottom', 0);
 						//target.scrollIntoView(true);
 						// util.bot[0].scrollIntoView(false);
-					}, 200);
+					}, 300);
 				});
 
 				util.input.on('blur', function () {
 					setTimeout(function () {
 						$('.m-bottom-bar').css('bottom', 0);
-					}, 200);
+					}, 100);
 				});
 
 				$(document).on(kClick, ".btn-chat-topup", function () {
