@@ -2457,7 +2457,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					util.loaded = 1;
 					$(document).on(kClick, '.swiper-slide', function () {
 						var url = $(this).attr('data-url');
-						if (url.indexOf('http') >= 0) {
+						if (url && url.indexOf('http') >= 0) {
 							location.href = url;
 						} else {
 							NoticeUtil.toggle(url);
@@ -2467,14 +2467,14 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					return false;
 				}
 				util.loaded = 1;
-				new Swiper('.swiper-container', {
+				new Swiper('.swiper-container1', {
 					direction: 'horizontal',
 					loop: true,
 					speed: 600,
 					on: {
 						click: function (event) {
 							var url = $(event.target).closest('.swiper-slide').attr('data-url');
-							if (url.indexOf('http') >= 0) {
+							if (url && url.indexOf('http') >= 0) {
 								location.href = url;
 							} else {
 								NoticeUtil.toggle(url);
@@ -2486,18 +2486,19 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						delay: 7000
 					},
 					pagination: {
-						el: '.swiper-pagination'
+						el: '.swiper-pagination1'
 					}
 				});
 			},
 			giftSwiper: function () {
-				new Swiper('.swiper-container', {
+				new Swiper('.swiper-container2', {
 					direction: 'horizontal',
 					loop: true,
+					speed: 600,
 					pagination: {
-						el: '.swiper-pagination'
+						el: '.swiper-pagination2'
 					}
-				})
+				});
 				GiftUtil.loadGifts();
 			},
 		};

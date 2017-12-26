@@ -13,6 +13,7 @@ use common\models\ChatRoom;
 use common\models\Img;
 use common\models\Log;
 use common\models\Pin;
+use common\models\QuestionSea;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
@@ -1507,6 +1508,31 @@ class FooController extends Controller
 		// $res = Order::santaExchange(6023, 120003);
 
 		//echo Log::addSanta(120003, 400);
+
+		$sql = "insert into im_question_sea (qCategory,qRank,qTitle,qOptions) values (600,99,:title,:opt); ";
+		$cmd = AppUtil::db()->createCommand($sql);
+		$dir = __DIR__ . "/../ti.log";
+		$ti = file_get_contents($dir);
+		$ti = str_replace("自由回答", "", $ti);
+		$arr = explode("\n", $ti);
+		foreach ($arr as $k => &$v) {
+			$v = trim($v);
+			$v = preg_replace("/\s+/", ' ', $v);
+			$v = explode(" ", $v);
+			if (isset($v[1]) && $v[1]) {
+				$v[1] = explode(";", $v[1]);
+			} else {
+				$v[1] = ["自由回答"];
+			}
+			if ($k > 0) {
+				//break;
+			}
+			$cmd->bindValues([
+				":title" => $v[0],
+				":opt" => json_encode($v[1], JSON_UNESCAPED_UNICODE),
+			])->execute();
+		}
+		print_r($arr);
 
 	}
 

@@ -44,13 +44,13 @@
 		</div>
 	</div>
 	{{if $adverts}}
-		<div class="swiper-container">
+		<div class="swiper-container swiper-container1">
 			<div class="swiper-wrapper">
 				{{foreach from=$adverts item=item}}
 					<a href="javascript:;" data-url="{{$item.url}}" class="swiper-slide"><img src="{{$item.image}}"></a>
 				{{/foreach}}
 			</div>
-			<div class="swiper-pagination"></div>
+			<div class="swiper-pagination swiper-pagination1"></div>
 		</div>
 	{{/if}}
 	<ul class="m-top-users"></ul>
@@ -395,11 +395,11 @@
 			<a href="javascript:;" class="on" g-level="normal">普通礼物</a>
 			<a href="javascript:;" g-level="vip">特权礼物</a>
 		</div>
-		<div class="g-items-ul swiper-container" style="height: 100%">
+		<div class="g-items-ul swiper-container swiper-container2" style="height: 100%">
 			<div class="swiper-wrapper ul" style="min-height: 21rem">
 
 			</div>
-			<div class="swiper-pagination"></div>
+			<div class="swiper-pagination swiper-pagination2"></div>
 		</div>
 		<div class="g-bot-items">
 			<div class="g-bot-rose">
