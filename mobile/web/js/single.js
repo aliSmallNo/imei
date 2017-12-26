@@ -531,12 +531,12 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				}, function (resp) {
 					if (resp.code < 1) {
 						if (f == "yes") {
-							alpha.toast('心动成功~', 1);
-							obj.addClass("favor");
+							// alpha.toast('心动成功~', 1);
+							obj.addClass("favor").addClass('heart-beat');
 							ProfileUtil.toggleFavor(1);
 						} else {
-							alpha.toast('已取消心动');
-							obj.removeClass("favor");
+							// alpha.toast('已取消心动');
+							obj.removeClass("favor").removeClass('heart-beat');
 							ProfileUtil.toggleFavor(0);
 						}
 					} else {
@@ -2003,10 +2003,10 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			toggleFavor: function (flag) {
 				var util = this;
 				if (flag) {
-					util.favor.html('已心动');
+					// util.favor.html('已心动');
 					util.favor.addClass('favor');
 				} else {
-					util.favor.html('心动TA');
+					// util.favor.html('心动TA');
 					util.favor.removeClass('favor');
 				}
 			},
