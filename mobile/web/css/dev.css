@@ -80,10 +80,6 @@ section {
 .font12 {
   font-size: 1.2rem; }
 
-.m-bottom-bar {
-  transform: translate3d(0, 0, 0);
-  -webkit-transform: translate3d(0, 0, 0); }
-
 .page-chat-container {
   display: -webkit-box;
   display: -webkit-flex;

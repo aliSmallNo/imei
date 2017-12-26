@@ -308,19 +308,16 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 					util.sent();
 				});
 
-				$(document).on('focus', ".chat-input", function () {
-					// self.scrollIntoView(true);
-					//util.bot[0].scrollIntoView(true);
-					$('.m-bottom-bar').css({
-						'bottom': '3.8rem'
-					});
+				util.input.on('focus', function () {
+					setTimeout(function () {
+						$('.m-bottom-bar').css('bottom', '3.8rem');
+					}, 200);
 				});
-				$(document).on('blur', ".chat-input", function () {
-					// self.scrollIntoView(true);
-					//util.bot[0].scrollIntoView(true);
-					$('.m-bottom-bar').css({
-						'bottom': '0'
-					});
+
+				util.input.on('blur', function () {
+					setTimeout(function () {
+						$('.m-bottom-bar').css('bottom', 0);
+					}, 200);
 				});
 
 				$(document).on(kClick, ".btn-chat-topup", function () {
