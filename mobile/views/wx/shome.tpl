@@ -77,21 +77,45 @@
 	</div>
 </div>
 <section id="schat" data-title="密聊中...">
-	<div class="page-chat-container">
-		<div class="page-chat-main">
-			<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
-			<ul class="chats"></ul>
-			<div style="height: 5rem"></div>
-			<div class="m-bottom-pl"></div>
+	<div class="chat-main">
+		<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
+		<ul class="chats"></ul>
+		<div style="height: 5rem"></div>
+	</div>
+	<div class="m-bottom-pl"></div>
+	<div class="m-chat-bar">
+		<div class="m-chat-bar-top">
+			<button class="btn-chat-truth"></button>
+			<input class="chat-input" placeholder="在这输入，注意文明礼貌哦~">
+			<button class="btn-chat-send">发送</button>
+			<button class="btn-chat-more"></button>
 		</div>
-		<div class="m-chat-bar page-chat-footer">
-			<div class="m-chat-bar-top">
-				<button class="btn-chat-truth"></button>
-				<input class="chat-input" placeholder="在这输入，注意文明礼貌哦~">
-				<button class="btn-chat-send">发送</button>
-				<button class="btn-chat-more"></button>
-			</div>
-		</div>
+		<ul class="m-chat-bar-list ">
+			<li>
+				<a href="javascript:;"><i class="truth"></i></a>
+				<h5>真心话</h5>
+			</li>
+			<li>
+				<a href="javascript:;"><i class="date"></i></a>
+				<h5>约会</h5>
+			</li>
+			<li>
+				<a href="javascript:;"><i class="gift"></i></a>
+				<h5>送礼物</h5>
+			</li>
+			<li>
+				<a href="javascript:;"><i class="wechat"></i></a>
+				<h5>索要微信</h5>
+			</li>
+			<li>
+				<a href="javascript:;"><i class="setting"></i></a>
+				<h5>设置</h5>
+			</li>
+			<li>
+				<a href="javascript:;"><i class="dislike"></i></a>
+				<h5>拉黑</h5>
+			</li>
+		</ul>
 	</div>
 </section>
 <section id="sreport">
@@ -299,6 +323,6 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1.3'], function () {
-		requirejs(['/js/shome.js?v=1.8.3']);
+		requirejs(['/js/shome.js?v=1.8.4']);
 	});
 </script>

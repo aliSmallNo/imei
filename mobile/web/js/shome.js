@@ -302,11 +302,24 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 			input: $('.chat-input'),
 			bot: $('#schat .m-bottom-pl'),
 			tmp: $('#tpl_chat').html(),
+			bar: $('.m-chat-bar'),
 			timerInput: 0,
 			init: function () {
 				var util = this;
 				$('.btn-chat-send').on(kClick, function () {
 					util.sent();
+				});
+
+				$('.btn-chat-more').on(kClick, function () {
+					var bot = parseFloat(util.bar.css('bottom'));
+					setTimeout(function () {
+						if (bot >= 0) {
+							util.bar.css('bottom', '-14.8rem');
+						} else {
+							util.bar.css('bottom', 0);
+						}
+					}, 100);
+
 				});
 
 				util.input.on('focus', function () {
