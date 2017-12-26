@@ -134,7 +134,7 @@ class UserAudit extends ActiveRecord
 			":valid" => self::VALID_FAIL,
 		])->queryOne();
 
-		$str = $adminFlag ? "" : "系统提示：";
+		$prefix = $adminFlag ? "" : "系统提示：";
 		$reasons = json_decode($res["aReasons"], 1);
 		$text = [];
 		if ($res && $reasons) {
@@ -144,6 +144,9 @@ class UserAudit extends ActiveRecord
 				$text[] = $title . "不合规，" . $reason["text"];
 			}
 		}
-		return $str . implode('<br>', $text);
+		if ($text) {
+			return $prefix . implode('<br>', $text);
+		}
+		return '';
 	}
 }
