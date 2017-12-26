@@ -359,11 +359,14 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 					self.addClass('active');
 				});
 			},
-			toggleBar: function () {
+			toggleBar: function (expandFlag) {
 				var util = this;
-				var bot = parseFloat(util.bar.css('bottom'));
+				if (expandFlag === undefined) {
+					var bot = parseFloat(util.bar.css('bottom'));
+					expandFlag = (bot < 0);
+				}
 				setTimeout(function () {
-					if (bot >= 0) {
+					if (!expandFlag) {
 						util.bar.css('bottom', '-14.8rem');
 					} else {
 						util.bar.css('bottom', 0);
@@ -403,6 +406,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 					alpha.toast('聊天内容不能为空！');
 					return false;
 				}
+				util.toggleBar(0);
 				$.post("/api/chat", {
 					tag: "sent",
 					id: util.sid,
