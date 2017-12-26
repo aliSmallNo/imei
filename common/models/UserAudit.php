@@ -127,7 +127,7 @@ class UserAudit extends ActiveRecord
 			$conn = AppUtil::db();
 		}
 		$sql = "select * from im_user_audit
-				where aUId=:uid and aUStatus=:status and aValid=:valid order by aId desc limit 1";
+				where aUId=:uid and aUStatus=:status and aValid=:valid order by aId desc ";
 		$res = $conn->createCommand($sql)->bindValues([
 			":uid" => $uid,
 			":status" => User::STATUS_INVALID,
