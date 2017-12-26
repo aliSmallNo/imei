@@ -281,7 +281,9 @@ section {
 
 section {
   position: relative;
-  display: none; }
+  display: none;
+  padding-bottom: 5rem;
+  height: initial; }
   section:target {
     display: block; }
   section .fixed-top {
