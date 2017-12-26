@@ -313,7 +313,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 					util.timerInput = setInterval(function () {
 						//$('.m-bottom-bar').css('bottom', 0);
 						//target.scrollIntoView(true);
-						util.bot[0].scrollIntoView();
+						util.bot[0].scrollIntoView(false);
 					}, 200);
 				});
 
