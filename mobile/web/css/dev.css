@@ -84,6 +84,9 @@ section {
   line-height: 1px;
   height: 1px; }
 
+#schat {
+  padding: 0 !important; }
+
 .page-chat-container {
   display: -webkit-box;
   display: -webkit-flex;
