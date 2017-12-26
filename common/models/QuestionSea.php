@@ -67,6 +67,8 @@ class QuestionSea extends ActiveRecord
 
 	];
 
+	static $label = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+
 	public static function tableName()
 	{
 		return '{{%question_sea}}';
@@ -123,11 +125,10 @@ class QuestionSea extends ActiveRecord
 		$data["mult"] = strlen($raw["answer"]) > 1 ? 1 : 0;
 
 		$options = json_decode($data["qOptions"], 1);
-		$label = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 		if ($options) {
 			foreach ($options as $k => $v) {
 				$opts[] = [
-					"opt" => $label[$k],
+					"opt" => self::$label[$k],
 					"text" => $v,
 				];
 			}
