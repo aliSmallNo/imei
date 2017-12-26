@@ -1506,7 +1506,7 @@ class FooController extends Controller
 
 		// $res = Order::santaExchange(6023, 120003);
 
-		echo Log::addSanta(120003, 400);
+		//echo Log::addSanta(120003, 400);
 
 	}
 

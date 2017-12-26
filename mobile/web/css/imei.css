@@ -3379,7 +3379,6 @@ section {
       .m-top-users li .head:after {
         content: "";
         position: absolute;
-        background: url(../images/santa/ico_santa.png) no-repeat center center;
         background-size: 100% 100%;
         left: -0.3rem;
         right: -0.3rem;
