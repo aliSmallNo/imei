@@ -41,6 +41,7 @@ class QuestionSea extends ActiveRecord
 		self::CAT_CONCEPT => "观念题",//
 		self::CAT_COMMON => "共同题",//
 		self::CAT_PERSONAL => "个人题",//
+
 		self::CAT_TRUTH => "真心话",//
 	];
 
@@ -115,11 +116,23 @@ class QuestionSea extends ActiveRecord
 
 	public static function fmt($data)
 	{
-		$options = json_decode($data["qRaw"], 1);
+		$raw = json_decode($data["qRaw"], 1);
 		$data["cat"] = self::$catDict[$data["qCategory"]];
-		$data["answer"] = $options["answer"];
-		$data["options"] = $options["options"];
-		$data["mult"] = strlen($options["answer"]) > 1 ? 1 : 0;
+		$data["answer"] = $raw["answer"];
+		$data["options"] = $raw["options"];
+		$data["mult"] = strlen($raw["answer"]) > 1 ? 1 : 0;
+
+		$options = json_decode($data["qOptions"], 1);
+		$label = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+		if ($options) {
+			foreach ($options as $k => $v) {
+				$opts[] = [
+					"opt" => $label[$k],
+					"text" => $v,
+				];
+			}
+			$data["options"] = $opts;
+		}
 		return $data;
 	}
 
