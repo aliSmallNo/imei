@@ -2003,10 +2003,10 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			toggleFavor: function (flag) {
 				var util = this;
 				if (flag) {
-					// util.favor.html('已心动');
+					util.favor.html('已心动');
 					util.favor.addClass('favor');
 				} else {
-					// util.favor.html('心动TA');
+					util.favor.html('心动TA');
 					util.favor.removeClass('favor');
 				}
 			},
