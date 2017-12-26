@@ -309,9 +309,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 				});
 
 				$(document).on('focus', ".chat-input", function () {
-					var self = this;
 					setTimeout(function () {
-						self.scrollIntoView(true);
+						// self.scrollIntoView(true);
+						util.bot[0].scrollIntoView(true);
 					}, 180);
 				});
 
