@@ -312,16 +312,14 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 					// self.scrollIntoView(true);
 					//util.bot[0].scrollIntoView(true);
 					$('.m-bottom-bar').css({
-						'transform': 'translate3d(0, 250px, 0)',
-						'-webkit-transform': 'translate3d(0, 250px, 0)'
+						'bottom': '25rem'
 					});
 				});
 				$(document).on('blur', ".chat-input", function () {
 					// self.scrollIntoView(true);
 					//util.bot[0].scrollIntoView(true);
 					$('.m-bottom-bar').css({
-						'transform': 'translate3d(0, 0, 0)',
-						'-webkit-transform': 'translate3d(0, 0, 0)'
+						'bottom': '0'
 					});
 				});
 
