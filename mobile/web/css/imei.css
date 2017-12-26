@@ -102,6 +102,24 @@ section {
 .heart-beat {
   -webkit-animation-name: kf_heart_beat; }
 
+.m-defect {
+  background-color: #fff59d;
+  padding: 1rem 1rem 1rem 2.5rem;
+  color: #f80;
+  font-size: 1.2rem;
+  font-weight: 300;
+  position: relative; }
+  .m-defect:before {
+    content: "";
+    position: absolute;
+    display: block;
+    left: 0.5rem;
+    top: 1.2rem;
+    background: url(../images/ico_mark_speaker.png) no-repeat center center;
+    background-size: 100% 100%;
+    width: 1.7rem;
+    height: 1.2rem; }
+
 .g-blank {
   width: 0;
   height: 0;

@@ -1,5 +1,21 @@
 @import "base"
-
+.m-defect
+    background-color: $hintColor
+    padding: 1rem 1rem 1rem 2.5rem
+    color: $tipColor
+    font-size: 1.2rem
+    font-weight: $weightNormal
+    position: relative
+    &:before
+        content: ''
+        position: absolute
+        display: block
+        left: .5rem
+        top: 1.2rem
+        background: url(../images/ico_mark_speaker.png) no-repeat center center
+        background-size: 100% 100%
+        width: 1.7rem
+        height: 1.2rem
 .g-blank
     width: 0
     height: 0

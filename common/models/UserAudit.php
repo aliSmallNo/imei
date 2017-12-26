@@ -134,7 +134,7 @@ class UserAudit extends ActiveRecord
 			":valid" => self::VALID_FAIL,
 		])->queryOne();
 
-		$str = $adminFlag ? "" : "系统提示您: ";
+		$str = $adminFlag ? "" : "系统提示：";
 		$reasons = json_decode($res["aReasons"], 1);
 		$text = [];
 		if ($res && $reasons) {
