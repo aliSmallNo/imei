@@ -2491,7 +2491,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				});
 			},
 			giftSwiper: function () {
-				new Swiper('.g-items-ul', {
+				new Swiper('.swiper-container', {
 					direction: 'horizontal',
 					loop: true,
 					pagination: {

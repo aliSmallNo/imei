@@ -210,11 +210,8 @@ class Log extends ActiveRecord
 				ifnull(sum(case when oKey=500 then oBefore end),0) as tree
 				from im_log as o 
 				join im_user as u on u.uId=o.oUId
-				where oCategory=5000 and oDate between '2017-12-23 00:00' and '2018-01-06 23:59' $str group by oUId";
-		$res = $conn->createCommand($sql)->queryAll();
-		if ($uid) {
-			return $res[0];
-		}
+				where oCategory=5000 and oDate between '2017-12-23 00:00' and '2018-01-06 23:59' $str ";
+		$res = $conn->createCommand($sql)->queryOne();
 		return $res;
 
 	}

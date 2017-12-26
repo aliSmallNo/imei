@@ -395,7 +395,7 @@
 			<a href="javascript:;" class="on" g-level="normal">普通礼物</a>
 			<a href="javascript:;" g-level="vip">特权礼物</a>
 		</div>
-		<div class="g-items-ul ">
+		<div class="g-items-ul swiper-container" style="height: 100%">
 			<div class="swiper-wrapper ul" style="min-height: 21rem">
 
 			</div>
@@ -1415,7 +1415,7 @@
 </script>
 <script type="text/template" id="tpl_gifts">
 	{[#data]}
-	<ul>
+	<ul class="swiper-slide">
 		{[#items]}
 		<li href="javascript:;" data-id="{[id]}" data-price="{[price]}" data-unit="{[unit]}">
 			<a href="javascript:;">
