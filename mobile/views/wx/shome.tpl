@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/dev.min.css?v=1.2.4">
+<link rel="stylesheet" href="/css/dev.min.css?v=1.2.6">
 <div class="single-page main-page">
 	<div class="head">
 		<img src="{{$uInfo.avatar}}" class="avatar">
@@ -91,32 +91,6 @@
 				<button class="btn-chat-send">发送</button>
 				<button class="btn-chat-more"></button>
 			</div>
-			<ul class="m-chat-bar-list none">
-				<li>
-					<a href="javascript:;" class="truth"></a>
-					<h5>真心话</h5>
-				</li>
-				<li>
-					<a href="javascript:;" class="date"></a>
-					<h5>约会</h5>
-				</li>
-				<li>
-					<a href="javascript:;" class="gift"></a>
-					<h5>送礼物</h5>
-				</li>
-				<li>
-					<a href="javascript:;" class="wechat"></a>
-					<h5>索要微信</h5>
-				</li>
-				<li>
-					<a href="javascript:;" class="setting"></a>
-					<h5>设置</h5>
-				</li>
-				<li>
-					<a href="javascript:;" class="dislike"></a>
-					<h5>拉黑</h5>
-				</li>
-			</ul>
 		</div>
 	</div>
 </section>
