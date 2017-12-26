@@ -309,15 +309,17 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 				});
 
 				util.input.on('focus', function () {
+					var target = this;
 					setTimeout(function () {
-						$('.m-bottom-bar').css('bottom', 0);
-					}, 210);
+						//$('.m-bottom-bar').css('bottom', 0);
+						target.scrollIntoView(true);
+					}, 200);
 				});
 
 				util.input.on('blur', function () {
 					setTimeout(function () {
 						$('.m-bottom-bar').css('bottom', 0);
-					}, 210);
+					}, 200);
 				});
 
 				$(document).on(kClick, ".btn-chat-topup", function () {

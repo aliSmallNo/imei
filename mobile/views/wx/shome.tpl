@@ -293,6 +293,6 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1.3'], function () {
-		requirejs(['/js/shome.js?v=1.7.3']);
+		requirejs(['/js/shome.js?v=1.7.4']);
 	});
 </script>
