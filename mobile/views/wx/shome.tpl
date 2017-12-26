@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/dev.min.css?v=1.2.2">
+<link rel="stylesheet" href="/css/dev.min.css?v=1.2.3">
 <div class="single-page main-page">
 	<div class="head">
 		<img src="{{$uInfo.avatar}}" class="avatar">
