@@ -227,6 +227,7 @@ require(['jquery', 'mustache', "alpha"],
 							if (res.err_msg == "get_brand_wcpay_request:ok") {
 								alpha.toast("您已经微信支付成功！", 1);
 								// util.reload();
+								DetailUtil.toggle(false);
 							} else {
 								alpha.toast("您已经取消微信支付！");
 							}
