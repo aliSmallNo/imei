@@ -312,7 +312,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 					// self.scrollIntoView(true);
 					//util.bot[0].scrollIntoView(true);
 					$('.m-bottom-bar').css({
-						'bottom': '25rem'
+						'bottom': '5rem'
 					});
 				});
 				$(document).on('blur', ".chat-input", function () {
