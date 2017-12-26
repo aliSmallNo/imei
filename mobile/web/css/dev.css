@@ -210,7 +210,8 @@ section {
         .m-chat-bar-list li a i.wechat {
           background-position: 0 -15rem; }
     .m-chat-bar-list li h5 {
-      font-size: 1rem; }
+      font-size: 1rem;
+      font-weight: 300; }
 
 #schat {
   padding: 0 !important; }
