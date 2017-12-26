@@ -80,6 +80,10 @@ section {
 .font12 {
   font-size: 1.2rem; }
 
+.m-bottom-pl {
+  line-height: 1px;
+  height: 1px; }
+
 .page-chat-container {
   display: -webkit-box;
   display: -webkit-flex;

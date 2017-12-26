@@ -311,9 +311,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 
 				util.input.on('focus', function () {
 					util.timerInput = setInterval(function () {
-						$('.m-bottom-bar').css('bottom', 0);
+						//$('.m-bottom-bar').css('bottom', 0);
 						//target.scrollIntoView(true);
-						// util.bot[0].scrollIntoView(false);
+						util.bot[0].scrollIntoView();
 					}, 200);
 				});
 
