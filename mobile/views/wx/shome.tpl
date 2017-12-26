@@ -77,19 +77,15 @@
 	</div>
 </div>
 <section id="schat" data-title="密聊中...">
-	<div class="page-chat-container">
-		<div class="page-chat-main">
-			<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
-			<ul class="chats"></ul>
-			<div style="height: 5rem"></div>
-			<div class="m-bottom-pl"></div>
-		</div>
-		<div class="page-chat-footer">
-			<div class="action-wrap">
-				<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~"></div>
-				<div class="action"><a href="javascript:;" class="btn-chat-send">发送</a></div>
-			</div>
-		</div>
+	<div class="report_wrap">
+		<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
+		<ul class="chats"></ul>
+		<div style="height: 5rem"></div>
+	</div>
+	<div class="m-bottom-pl"></div>
+	<div class="m-bottom-bar">
+		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~"></div>
+		<div class="action"><a href="javascript:;" class="btn-chat-send">发送</a></div>
 	</div>
 </section>
 <section id="sreport">
@@ -297,6 +293,6 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1.3'], function () {
-		requirejs(['/js/shome.js?v=1.6.5']);
+		requirejs(['/js/shome.js?v=1.6.6']);
 	});
 </script>

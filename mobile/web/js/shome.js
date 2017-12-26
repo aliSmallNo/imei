@@ -311,7 +311,11 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 				$(document).on('focus', ".chat-input", function () {
 					setTimeout(function () {
 						// self.scrollIntoView(true);
-						util.bot[0].scrollIntoView(true);
+						//util.bot[0].scrollIntoView(true);
+						$('.m-bottom-bar').css({
+							'transform': 'translate3d(0, 200px, 0)',
+							'-webkit-transform': 'translate3d(0, 200px, 0)'
+						});
 					}, 180);
 				});
 
