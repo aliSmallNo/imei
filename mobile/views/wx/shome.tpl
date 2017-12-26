@@ -77,15 +77,47 @@
 	</div>
 </div>
 <section id="schat" data-title="密聊中...">
-	<div class="report_wrap">
-		<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
-		<ul class="chats"></ul>
-		<div style="height: 5rem"></div>
-	</div>
-	<div class="m-bottom-pl"></div>
-	<div class="m-bottom-bar">
-		<div class="input"><input class="chat-input" placeholder="在这输入，注意文明礼貌哦~"></div>
-		<div class="action"><a href="javascript:;" class="btn-chat-send">发送</a></div>
+	<div class="page-chat-container">
+		<div class="page-chat-main">
+			<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
+			<ul class="chats"></ul>
+			<div style="height: 5rem"></div>
+			<div class="m-bottom-pl"></div>
+		</div>
+		<div class="m-chat-bar page-chat-footer">
+			<div class="m-chat-bar-top">
+				<button class="btn-chat-truth"></button>
+				<input class="chat-input" placeholder="在这输入，注意文明礼貌哦~">
+				<button class="btn-chat-send">发送</button>
+				<button class="btn-chat-more"></button>
+			</div>
+			<ul class="m-chat-bar-list none">
+				<li>
+					<a href="javascript:;" class="truth"></a>
+					<h5>真心话</h5>
+				</li>
+				<li>
+					<a href="javascript:;" class="date"></a>
+					<h5>约会</h5>
+				</li>
+				<li>
+					<a href="javascript:;" class="gift"></a>
+					<h5>送礼物</h5>
+				</li>
+				<li>
+					<a href="javascript:;" class="wechat"></a>
+					<h5>索要微信</h5>
+				</li>
+				<li>
+					<a href="javascript:;" class="setting"></a>
+					<h5>设置</h5>
+				</li>
+				<li>
+					<a href="javascript:;" class="dislike"></a>
+					<h5>拉黑</h5>
+				</li>
+			</ul>
+		</div>
 	</div>
 </section>
 <section id="sreport">

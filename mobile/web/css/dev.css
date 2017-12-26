@@ -98,6 +98,8 @@ section {
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch; }
+    .page-chat-container .page-chat-main .chats {
+      height: 100%; }
   .page-chat-container .page-chat-footer {
     -webkit-box-flex: 0 0 4.4rem;
     -webkit-flex: 0 0 4.4rem;

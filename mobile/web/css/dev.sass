@@ -3,6 +3,10 @@
     line-height: 1px
     height: 1px
 
+.m-chat-bar
+    //position: fixed
+
+
 .page-chat-container
     @include displayFlex
     flex-direction: column
@@ -11,6 +15,8 @@
         overflow-x: hidden
         overflow-y: auto
         -webkit-overflow-scrolling: touch
+        .chats
+            height: 100%
     .page-chat-footer
         @include displayFlex-w(4.4rem)
 
