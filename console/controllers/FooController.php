@@ -1460,7 +1460,6 @@ class FooController extends Controller
 
 //		 echo AppUtil::encrypt(143696) . "\n";
 
-		//
 //		User::propStat("2017-07-17","2017-11-08");
 		//print_r(explode(",", ""));
 		//print_r(User::fmtRow(User::find()->where(["uId" => 120003])->asArray()->one()));
@@ -1511,7 +1510,7 @@ class FooController extends Controller
 
 		//echo Log::addSanta(120003, 400);
 
-		$sql = "insert into im_question_sea (qCategory,qRank,qTitle,qOptions) values (600,99,:title,:opt); ";
+		/* $sql = "insert into im_question_sea (qCategory,qRank,qTitle,qOptions) values (600,99,:title,:opt); ";
 		$cmd = AppUtil::db()->createCommand($sql);
 		$dir = __DIR__ . "/../ti.log";
 		$ti = file_get_contents($dir);
@@ -1534,7 +1533,7 @@ class FooController extends Controller
 				":opt" => json_encode($v[1], JSON_UNESCAPED_UNICODE),
 			])->execute();
 		}
-		print_r($arr);
+		print_r($arr); */
 
 	}
 
