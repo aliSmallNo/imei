@@ -429,9 +429,24 @@ class TrendService
 		return $data;
 	}
 
+	public function reuseRoutine($step)
+	{
+		$conn = $this->conn;
+		$sql = "select distinct tDateName as `name` from im_trend where tCategory=:cat and tStep=:step ";
+		$ret = $conn->createCommand($sql)->bindValues([
+			':cat' => $this->category,
+			':step' => $step
+		])->queryAll();
+		foreach ($ret as $row) {
+			$name = $row['name'];
+			list($dt0, $dt1) = explode("\n", $name);
+			$this->statReuse($step, $dt0);
+		}
+	}
+
 	public function reuseDetail($category, $begin, $end, $from, $to)
 	{
-		$conn = AppUtil::db();
+		$conn = $this->conn;
 		switch ($category) {
 			case 'male':
 				$criteria = ' AND uGender in (11)';

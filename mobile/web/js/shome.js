@@ -302,6 +302,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 			input: $('.chat-input'),
 			bot: $('#schat .m-bottom-pl'),
 			tmp: $('#tpl_chat').html(),
+			timerInput: 0,
 			init: function () {
 				var util = this;
 				$('.btn-chat-send').on(kClick, function () {
@@ -309,18 +310,20 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 				});
 
 				util.input.on('focus', function () {
-					var target = this;
-					setTimeout(function () {
+					util.timerInput = setInterval(function () {
 						$('.m-bottom-bar').css('bottom', 0);
 						//target.scrollIntoView(true);
-						// util.bot[0].scrollIntoView(false);
+						//util.bot[0].scrollIntoView(false);
 					}, 200);
 				});
 
 				util.input.on('blur', function () {
-					setTimeout(function () {
+					if (util.timerInput) {
+						clearInterval(util.timerInput);
+					}
+					/*setTimeout(function () {
 						$('.m-bottom-bar').css('bottom', 0);
-					}, 100);
+					}, 100);*/
 				});
 
 				$(document).on(kClick, ".btn-chat-topup", function () {

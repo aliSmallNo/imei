@@ -408,49 +408,35 @@ section
         //	background: #fff
         //	content: ''
         &:after
+            content: ''
             position: absolute
             top: .5rem
             width: 2.4rem
             height: 2.4rem
             left: 50%
             margin-left: -1.3rem
-            content: ''
-        &.nav-link:after
-            background: url(../images/ico_foot/ico_foot_link.png?v=1.1.1) no-repeat center center
-            background-size: 100% 100%
-        &.nav-link.active:after
-            background: url(../images/ico_foot/ico_foot_link_hl.png?v=1.1.1) no-repeat center center
-            background-size: 100% 100%
-        &.nav-invite:after
-            //background: url(../images/ico_foot/ico_foot_invite.png?v=1.1.1) no-repeat center center
-            background: url(../images/santa/ico_foot_invite.png?v=1.1.1) no-repeat center center
-            background-size: 100% 100%
-        &.nav-invite.active:after
-            //background: url(../images/ico_foot/ico_foot_invite_hl.png?v=1.1.1) no-repeat center center
-            background: url(../images/santa/ico_foot_invite_hl.png?v=1.1.1) no-repeat center center
-            background-size: 100% 100%
+            background-image: url(../images/ico_foot/sprite_foot.png)
+            background-size: 2.4rem 24rem
         &.nav-chat:after
-            //background: url(../images/ico_foot/ico_foot_chat.png?v=1.1.1) no-repeat center center
-            background: url(../images/santa/ico_foot_chat.png?v=1.1.1) no-repeat center center
-            background-size: 100% 100%
+            background-position: 0 -2.4rem
         &.nav-chat.active:after
-            //background: url(../images/ico_foot/ico_foot_chat_hl.png?v=1.1.1) no-repeat center center
-            background: url(../images/santa/ico_foot_chat_hl.png?v=1.1.1) no-repeat center center
-            background-size: 100% 100%
-        &.nav-me:after
-            //background: url(../images/ico_foot/ico_foot_me.png?v=1.1.1) no-repeat center center
-            background: url(../images/santa/ico_foot_me.png?v=1.1.1) no-repeat center center
-            background-size: 100% 100%
-        &.nav-me.active:after
-            //background: url(../images/ico_foot/ico_foot_me_hl.png?v=1.1.1) no-repeat center center
-            background: url(../images/santa/ico_foot_me_hl.png?v=1.1.1) no-repeat center center
-            background-size: 100% 100%
+            background-position: 0 0
         &.nav-group:after
-            background: url(../images/ico_foot/ico_foot_group.png?v=1.1.1) no-repeat center center
-            background-size: 100% 100%
+            background-position: 0 -7.2rem
         &.nav-group.active:after
-            background: url(../images/ico_foot/ico_foot_group_hl.png?v=1.1.1) no-repeat center center
-            background-size: 100% 100%
+            background-position: 0 -4.8rem
+        &.nav-invite:after
+            background-position: 0 -12rem
+        &.nav-invite.active:after
+            background-position: 0 -9.6rem
+        &.nav-link:after
+            background-position: 0 -16.8rem
+        &.nav-link.active:after
+            background-position: 0 -14.4rem
+        &.nav-me:after
+            background-position: 0 -21.6rem
+        &.nav-me.active:after
+            background-position: 0 -19.2rem
 
 .tip-color
     color: $tipColor

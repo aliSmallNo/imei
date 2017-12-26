@@ -1,4 +1,13 @@
 @import "base"
+.m-bottom-pl
+    line-height: 1px
+    height: 1px
+
+.m-chat-bar
+    //position: fixed
+
+#schat
+    padding: 0 !important
 
 .page-chat-container
     @include displayFlex
@@ -8,6 +17,9 @@
         overflow-x: hidden
         overflow-y: auto
         -webkit-overflow-scrolling: touch
+        .chats
+            height: 100%
+            max-height: 40rem
     .page-chat-footer
         @include displayFlex-w(4.4rem)
 

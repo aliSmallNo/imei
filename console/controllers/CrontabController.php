@@ -47,9 +47,9 @@ class CrontabController extends Controller
 		$serviceTrend->statTrend('week', $queryDate, true);
 		$serviceTrend->statTrend('month', $queryDate, true);
 
-		$serviceReuse = TrendService::init(TrendService::CAT_REUSE);
-		$serviceReuse->statReuse('week', $queryDate);
-		$serviceReuse->statReuse('month', $queryDate);
+		$service = TrendService::init(TrendService::CAT_REUSE);
+		$service->reuseRoutine('week');
+		$service->reuseRoutine('month');
 	}
 
 	/**
