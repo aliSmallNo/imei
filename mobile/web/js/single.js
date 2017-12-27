@@ -1974,6 +1974,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					if (!eid) {
 						return false;
 					}
+					resetShare(eid);
 					util.eid = eid;
 					util.loaded = 0;
 					util.clear();
@@ -2492,7 +2493,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					}
 				});
 				GiftUtil.loadGifts();
-			},
+			}
 		};
 
 		var GiftUtil = {
@@ -2590,7 +2591,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						util.UL.html(html);
 						util.count.html(resp.data.stat.flower);
 					}, 'json');
-			},
+			}
 		};
 		GiftUtil.init();
 
@@ -2620,6 +2621,47 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			});
 		}
 
+		function shareLog(tag, note) {
+			$.post("/api/share", {
+				tag: tag,
+				id: $sls.uid,
+				note: note
+			}, function (resp) {
+				if (resp.code < 1 && resp.msg) {
+					alpha.toast(resp.msg, 1);
+				}
+			}, "json");
+		}
+
+		function resetShare(sid) {
+			var linkUrl = "https://wx.meipo100.com/wx/single";
+			if (sid) {
+				linkUrl = "https://wx.meipo100.com/wx/sh?id=" + sid;
+			}
+			var imgUrl = "https://bpbhd-10063905.file.myqcloud.com/image/n1712061178801.png";
+			var title = '千寻恋恋，本地优质的单身男女都在这里，赶快来相互认识下吧！';
+			var desc = '千寻恋恋，帮助身边的单身青年尽快脱单，推荐身边单身好友注册可以获得奖励哦~';
+			wx.onMenuShareAppMessage({
+				title: title,
+				desc: desc,
+				link: linkUrl,
+				imgUrl: imgUrl,
+				type: '',
+				dataUrl: '',
+				success: function () {
+					shareLog('share', '/wx/single');
+				}
+			});
+			wx.onMenuShareTimeline({
+				title: title,
+				link: linkUrl,
+				imgUrl: imgUrl,
+				success: function () {
+					shareLog('moment', '/wx/single');
+				}
+			});
+		}
+
 		$(function () {
 			$("body").addClass("bg-color");
 			FootUtil.init();
@@ -2627,10 +2669,12 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			window.onhashchange = locationHashChanged;
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
-			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage', 'getLocation'];
+			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage',
+				'getLocation', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
 				wx.hideOptionMenu();
+				resetShare();
 			});
 			$sls.cork.hide();
 			NoticeUtil.init();
