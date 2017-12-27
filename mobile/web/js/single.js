@@ -2634,15 +2634,16 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 		}
 
 		function resetShare(sid, img) {
+			var title = '千寻恋恋，本地优质的单身男女都在这里，赶快来相互认识下吧！';
 			var linkUrl = "https://wx.meipo100.com/wx/single";
 			var imgUrl = "https://bpbhd-10063905.file.myqcloud.com/image/n1712061178801.png";
+			var desc = '千寻恋恋，帮助身边的单身青年尽快脱单，推荐身边单身好友注册可以获得奖励哦~';
 
 			if (sid) {
 				linkUrl = "https://wx.meipo100.com/wx/sh?id=" + sid;
 				imgUrl = img;
+				desc = '千寻恋恋推荐TA给你，你也可以推荐身边单身好友给我们哦~';
 			}
-			var title = '千寻恋恋，本地优质的单身男女都在这里，赶快来相互认识下吧！';
-			var desc = '千寻恋恋，帮助身边的单身青年尽快脱单，推荐身边单身好友注册可以获得奖励哦~';
 			wx.onMenuShareAppMessage({
 				title: title,
 				desc: desc,
