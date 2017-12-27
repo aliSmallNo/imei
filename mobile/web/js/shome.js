@@ -293,9 +293,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 		alertUlit.init();
 
 		var ChatUtil = {
-			sid: '',
 			lastId: 0,
 			loading: 0,
+			sid: $('#secretId').val(),
 			list: $('.chats'),
 			topupTmp: $('#tpl_chat_topup').html(),
 			topTip: $('#schat .chat-tip'),
@@ -420,7 +420,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 				// 最下边的功能选项
 				$(document).on(kClick, ".m-chat-bar-list a", function () {
 					var tag = $(this).find("i").attr("class");
-					console.log(tag);
 					switch (tag) {
 						case "truth":
 							util.htag = "truth";
@@ -438,7 +437,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 						case "wechat":
 							break;
 						case "setting":
-							location.href = "/wx/setting"
+							location.href = "/wx/setting";
 							break;
 						case "dislike":
 							$sls.main.show();
