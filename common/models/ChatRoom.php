@@ -396,10 +396,17 @@ class ChatRoom extends ActiveRecord
 	public static function roomAlert()
 	{
 		$conn = AppUtil::db();
-		$sql = "select u.uId,u.uOpenId, GROUP_CONCAT(distinct r.rId) as gid
+		/*$sql = "select u.uId,u.uOpenId, GROUP_CONCAT(distinct r.rId) as gid
 			 from im_chat_room as r  
 			 join im_chat_msg_flag as f on f.fRId=r.rId AND r.rLastId > f.fCId AND f.fAlertOn is NULL
 			 join im_user as u on u.uId= f.fUId and u.uOpenId like 'oYDJew%'
+			 group by u.uId,u.uOpenId 
+			 having gid!='' ";*/
+		$sql="select u.uId,u.uOpenId, GROUP_CONCAT(distinct r.rId) as gid
+			 from im_chat_room as r
+			 join im_chat_room_fella as g on r.rId=g.mRId
+			 join im_user as u on u.uId=g.mUId and u.uOpenId like 'oYDJew%' and g.mDeletedFlag=0
+			 join im_chat_msg_flag as f on u.uId= f.fUId and f.fRId=r.rId AND r.rLastId > f.fCId AND f.fAlertOn is NULL
 			 group by u.uId,u.uOpenId 
 			 having gid!='' ";
 		$ret = $conn->createCommand($sql)->queryAll();
