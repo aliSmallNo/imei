@@ -1036,6 +1036,9 @@ class AppUtil
 
 	public static function encrypt($string)
 	{
+		if ($string == "") {
+			return "";
+		}
 		//return self::crypt($string, "E", self::$SecretKey);
 		return self::tiriEncode($string);
 	}
