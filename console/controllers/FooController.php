@@ -965,7 +965,7 @@ class FooController extends Controller
 
 		$openIds = array_column($ret, 'uOpenId');
 
-		$content = '福利来啦！晚6点免费微课，点击立刻报名
+		$content = '🎉🎉福利来啦！晚6点免费微课，点击立刻报名
 打招呼技巧，让你一句话收到对方的回复
 👉<a href="https://m.qlchat.com/topic/2000000530303588.htm?shareKey=ed23936e3d30048eb312e3b83b15c8d6">点击进入 或 猛戳这里</a>👈';
 

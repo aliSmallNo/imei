@@ -37,9 +37,6 @@
 </style>
 <div class="row">
 	<h4>通知公告列表
-		<small>
-			{{if $debug}}<a href="javascript:;" class="btn-push btn btn-primary btn-xs">推送消息</a>{{/if}}
-		</small>
 	</h4>
 </div>
 <div class="row-divider"></div>

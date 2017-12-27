@@ -177,6 +177,20 @@ class QueueUtil
 		return true;
 	}
 
+	public static function pushMsg($params)
+	{
+		$tag = $params['tag'];
+		$open_id = $params['open_id'];
+		$content = $params['content'];
+		if ($tag == NoticeUtil::CAT_TEXT_ONLY) {
+			NoticeUtil::init($tag, $open_id)->sendText($content);
+		} else {
+			NoticeUtil::init($tag, $open_id)->sendMedia($content);
+		}
+		self::logFile($params, __FUNCTION__, __LINE__);
+		return true;
+	}
+
 	public static function chatMsg($params)
 	{
 		$pushUtil = PushUtil::init();

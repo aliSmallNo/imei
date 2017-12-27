@@ -12,6 +12,7 @@ use common\utils\AppUtil;
 use common\utils\NoticeUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
+use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
 
 require_once __DIR__ . '/../lib/WxPay/WxPay.Api.php';
@@ -275,6 +276,55 @@ class UserWechat extends ActiveRecord
 		}
 		$ret = json_decode($ret, 1);
 		return $ret;
+	}
+
+
+	public static function sendMsgByGroup($userGroup, $msgType, $content)
+	{
+		$conn = AppUtil::db();
+		$sql = 'select u.uId, u.uOpenId
+ 			from im_user as u 
+ 			join im_user_wechat as w on w.wUId=u.uId 
+ 			where uOpenId like \'oYDJew%\' and uPhone!=\'\' ';
+		switch ($userGroup) {
+			case 'dev':
+				$sql .= ' AND uId in (131379,120003) ';
+				break;
+			case 'staff':
+				$sql .= ' AND uSubStatus=' . User::SUB_ST_STAFF;
+				break;
+			case 'female':
+				$sql .= ' AND uGender=10 ';
+				break;
+			case 'male':
+				$sql .= ' AND uGender=11 ';
+				break;
+			default:
+				$sql .= ' AND uGender > 9 ';
+				break;
+		}
+		$ret = $conn->createCommand($sql)->queryAll();
+		$openIds = array_column($ret, 'uOpenId');
+		$params = [
+			'tag' => NoticeUtil::CAT_TEXT_ONLY,
+			'content' => $content,
+		];
+		foreach ($openIds as $openId) {
+			$params['open_id'] = $openId;
+			switch ($msgType) {
+				case 'voice':
+					$params['tag'] = NoticeUtil::CAT_VOICE_ONLY;
+					break;
+				case 'image':
+					$params['tag'] = NoticeUtil::CAT_IMAGE_ONLY;
+					break;
+				case 'text':
+					$params['tag'] = NoticeUtil::CAT_TEXT_ONLY;
+					break;
+			}
+			QueueUtil::loadJob('pushMsg', $params, QueueUtil::QUEUE_TUBE_SMS, 1);
+		}
+		return count($openIds);
 	}
 
 	public static function sendMediaByPhone($mobiles, $mediaId, $type = 'image')

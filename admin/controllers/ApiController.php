@@ -523,13 +523,13 @@ class ApiController extends Controller
 		$tag = strtolower(self::postParam("tag"));
 		switch ($tag) {
 			case 'notice':
-				$mobiles = self::postParam('mobiles');
-				$mobiles = explode("\n", $mobiles);
-				$mediaId = self::postParam('media');
+				/*$mobiles = self::postParam('mobiles');
+				$mobiles = explode("\n", $mobiles);*/
+				$group = self::postParam('group');
+				$content = self::postParam('content');
 				$type = self::postParam('type');
-				AppUtil::logFile([$mobiles, $mediaId], 5);
-				if ($mobiles && $mediaId) {
-					$ret = UserWechat::sendMediaByPhone($mobiles, $mediaId, $type);
+				if ($content) {
+					$ret = UserWechat::sendMsgByGroup($group, $type, $content);
 					return self::renderAPI(0, "发送成功！", ['count' => $ret]);
 				}
 				break;
@@ -610,7 +610,7 @@ class ApiController extends Controller
 				return self::renderAPI(0, '', $items);
 			case 'avatar':
 				$rId = self::postParam('rid');
-				if(AppUtil::isDev()){
+				if (AppUtil::isDev()) {
 					return self::renderAPI(0, '发布到服务后使用！');
 				}
 				ChatRoom::roomAvatar($rId);
