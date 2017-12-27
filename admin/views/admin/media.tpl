@@ -119,7 +119,7 @@
 				util.media = $(this).closest('td').attr('data-id');
 				util.type = 'image';
 				util.popup.find('.modal-title').html('推送图片消息');
-				util.popup.find('.modal-body').html(util.tmp);
+				util.popup.find('.modal-body').html(util.textTmp);
 				$('.group-text').hide();
 				util.popup.modal('show');
 			});
