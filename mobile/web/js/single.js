@@ -2673,7 +2673,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				'getLocation', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
-				wx.hideOptionMenu();
+				//wx.hideOptionMenu();
 				resetShare();
 			});
 			$sls.cork.hide();
