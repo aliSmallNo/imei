@@ -4,7 +4,7 @@ namespace admin\models;
 
 class Menu
 {
-	const VERSION = 171217.1;
+	const VERSION = 171227.6;
 
 	public static function keepMenu($uId, $url)
 	{
@@ -80,46 +80,30 @@ class Menu
 		return $forks;
 	}
 
+	public static function getForkId($searchUrl)
+	{
+		$menus = self::menus();
+		foreach ($menus as $menu) {
+			$forkId = $menu['id'];
+			foreach ($menu['items'] as $item) {
+				$url = trim($item['url'] . '?', '/');
+				if (strpos($url, $searchUrl . '?') === 0) {
+					return $forkId;
+				}
+			}
+		}
+		return '';
+	}
+
 	public static function menus()
 	{
 		return [
 			[
-				"name" => "数据统计",
-				"id" => "data",
-				"icon" => "fa-cloud",
+				"name" => "用户管理",
+				"id" => "account",
+				"icon" => "fa-users",
 				"staff" => 1,
 				"items" => [
-					[
-						"name" => "留存率",
-						"url" => "/site/reusestat",
-						"revise" => 1,
-						"level" => 820
-					],
-					[
-						"name" => "多点统计",
-						"url" => "/site/trend",
-						"revise" => 1,
-						"level" => 820
-					],
-					[
-						"name" => "用户分析",
-						"url" => "/site/userstat",
-						"revise" => 1,
-						"level" => 820
-					],
-					[
-						"name" => "活动账单",
-						"url" => "/site/events",
-						"revise" => 1,
-						"hidden" => 1,
-						"level" => 820
-					],
-					[
-						"name" => "通知公告",
-						"url" => "/site/cog",
-						"revise" => 1,
-						"level" => 820
-					],
 					[
 						"name" => "用户列表",
 						"url" => "/site/accounts",
@@ -133,11 +117,6 @@ class Menu
 					[
 						"name" => "用户操作",
 						"url" => "/site/net",
-						"level" => 820
-					],
-					[
-						"name" => "推广统计",
-						"url" => "/site/netstat",
 						"level" => 820
 					],
 					[
@@ -174,12 +153,6 @@ class Menu
 						'count' => 'SELECT COUNT(1) as cnt FROM im_date WHERE dStatus = 100'
 					],
 					[
-						"name" => "我们派对吧",
-						"url" => "/site/evcrew",
-						"revise" => 1,
-						"level" => 820
-					],
-					[
 						"name" => "公众号消息",
 						"url" => "/site/wxmsg",
 						"level" => 820
@@ -189,6 +162,52 @@ class Menu
 						"url" => "/site/rooms",
 						"level" => 820
 					],
+					[
+						"name" => "通知公告",
+						"url" => "/site/cog",
+						"revise" => 1,
+						"level" => 820
+					],
+					[
+						"name" => "推广统计",
+						"url" => "/site/netstat",
+						"level" => 820
+					]
+				]
+			],
+			[
+				"name" => "数据统计",
+				"id" => "analysis",
+				"icon" => "fa-bar-chart",
+				"staff" => 1,
+				"items" => [
+					[
+						"name" => "留存率",
+						"url" => "/site/reusestat",
+						"revise" => 1,
+						"level" => 820
+					],
+					[
+						"name" => "多点统计",
+						"url" => "/site/trend",
+						"revise" => 1,
+						"level" => 820
+					],
+					[
+						"name" => "用户分析",
+						"url" => "/site/userstat",
+						"revise" => 1,
+						"level" => 820
+					]
+
+				]
+			],
+			[
+				"name" => "组织活动",
+				"id" => "event",
+				"icon" => "fa-calendar",
+				"staff" => 1,
+				"items" => [
 					[
 						"name" => "题库题海",
 						"url" => "/site/questions",
@@ -200,13 +219,26 @@ class Menu
 						"url" => "/site/groups",
 						"revise" => 1,
 						"level" => 820
+					],
+					[
+						"name" => "活动账单",
+						"url" => "/site/events",
+						"revise" => 1,
+						"hidden" => 1,
+						"level" => 820
+					],
+					[
+						"name" => "我们派对吧",
+						"url" => "/site/evcrew",
+						"revise" => 1,
+						"level" => 820
 					]
 				]
 			],
 			[
-				"name" => "后台设置",
+				"name" => "系统设置",
 				"id" => "admin",
-				"icon" => "fa-key",
+				"icon" => "fa-sitemap",
 				"items" => [
 					[
 						"name" => "添加用户",

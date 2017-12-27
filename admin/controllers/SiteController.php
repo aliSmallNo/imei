@@ -273,15 +273,9 @@ class SiteController extends BaseController
 				'success' => $success,
 				'error' => $error,
 				'openid' => $userInfo['uOpenId'],
-				'detailcategory' => 'site/accounts',
-				'category' => 'data',
 			]);
 	}
 
-	public function actionMassmsg()
-	{
-
-	}
 
 	/**
 	 * 用户列表
@@ -440,7 +434,6 @@ class SiteController extends BaseController
 				'fonly' => $fonly,
 				'inactive' => $inactive,
 				'pagination' => $pagination,
-				'category' => 'data',
 				'criteriaNote' => $criteriaNote,
 				'userType' => $user_type,
 				'userTypes' => $userTypes,
@@ -461,8 +454,6 @@ class SiteController extends BaseController
 		list($list) = Trace::items($uid);
 		return $this->renderPage('follow.tpl',
 			[
-				'category' => 'data',
-				'detailcategory' => 'site/accounts',
 				'list' => $list,
 				"uid" => $uid,
 				"name" => $uInfo->uName,
@@ -492,7 +483,6 @@ class SiteController extends BaseController
 			[
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
-				'category' => 'data',
 				'list' => $list
 			]
 		);
@@ -521,8 +511,6 @@ class SiteController extends BaseController
 		$dInfo = $dInfo->toArray();
 		return $this->renderPage('bait.tpl',
 			[
-				'category' => 'data',
-				'detailcategory' => 'site/dummychats',
 				'roomId' => $roomId,
 				'list' => $items,
 				"uid" => $userId,
@@ -556,8 +544,6 @@ class SiteController extends BaseController
 		}
 		return $this->renderPage('dummychatall.tpl',
 			[
-				'category' => 'data',
-				'detailcategory' => 'site/dummychats',
 				'dmales' => $dmales,
 				'dfemales' => $dfemales,
 
@@ -628,7 +614,6 @@ class SiteController extends BaseController
 				"name" => $name,
 				"phone" => $phone,
 				'pagination' => $pagination,
-				'category' => 'data',
 				"statusT" => User::$Certstatus,
 			]);
 	}
@@ -684,7 +669,6 @@ class SiteController extends BaseController
 				'getInfo' => $getInfo,
 				'items' => $items,
 				'pagination' => $pagination,
-				'category' => 'data',
 				'catDict' => UserTrans::$catDict,
 			]
 		);
@@ -700,7 +684,6 @@ class SiteController extends BaseController
 			[
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
-				'category' => 'data',
 				'list' => $list,
 			]
 		);
@@ -717,8 +700,6 @@ class SiteController extends BaseController
 		$regInfo = User::fmtRow(User::find()->where(["uOpenId" => $openId])->asArray()->one());
 		return $this->renderPage('wx-reply.tpl',
 			[
-				'category' => 'data',
-				'detailcategory' => 'site/wxmsg',
 				'list' => $list,
 				"pid" => $lastId,
 				"nickName" => $nickname,
@@ -774,7 +755,6 @@ class SiteController extends BaseController
 			[
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
-				'category' => 'data',
 				'list' => $list,
 				'relations' => UserNet::$RelDict,
 			]
@@ -807,7 +787,6 @@ class SiteController extends BaseController
 			[
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
-				'category' => 'data',
 				'list' => $list,
 				'relations' => Date::$statusDict,
 			]
@@ -832,7 +811,6 @@ class SiteController extends BaseController
 		return $this->renderPage("netstat.tpl",
 			[
 				'getInfo' => $getInfo,
-				'category' => 'data',
 				'scanStat' => $stat,
 				'timesSub' => json_encode($timesSub, JSON_UNESCAPED_UNICODE),
 				'timesReg' => json_encode($timesReg, JSON_UNESCAPED_UNICODE),
@@ -855,8 +833,6 @@ class SiteController extends BaseController
 		return $this->renderPage("searchnet.tpl",
 			[
 				'info' => $info,
-				'category' => 'data',
-				'detailcategory' => 'site/net',
 				'relations' => UserNet::$RelDict,
 			]);
 	}
@@ -896,7 +872,6 @@ class SiteController extends BaseController
 			[
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
-				'category' => 'data',
 				'list' => $list,
 				'cats' => Feedback::$stDict,
 			]
@@ -911,7 +886,6 @@ class SiteController extends BaseController
 		$trends = TrendService::init(TrendService::CAT_TREND)->chartTrend($date, $reset);
 		return $this->renderPage('trend.tpl',
 			[
-				'category' => "data",
 				'today' => date('Y年n月j日', time()),
 				'trends' => json_encode($trends),
 				'date' => $date
@@ -930,7 +904,6 @@ class SiteController extends BaseController
 		$reuseData = TrendService::init(TrendService::CAT_REUSE)->chartReuse($scope, $reset);
 		return $this->renderPage("reusestat.tpl",
 			[
-				'category' => "data",
 				'reuseData' => $reuseData,
 				'cat' => $cat,
 				'scope' => $scope,
@@ -959,7 +932,6 @@ class SiteController extends BaseController
 			[
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
-				'category' => 'data',
 				'list' => $list
 			]
 		);
@@ -987,7 +959,6 @@ class SiteController extends BaseController
 			[
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
-				'category' => 'data',
 				'list' => $list
 			]
 		);
@@ -1005,8 +976,6 @@ class SiteController extends BaseController
 		});
 		return $this->renderPage("chatdes.tpl",
 			[
-				'category' => 'data',
-				'detailcategory' => 'site/chat',
 				'list' => $list,
 			]
 		);
@@ -1034,7 +1003,6 @@ class SiteController extends BaseController
 
 		return $this->renderPage('userstat.tpl',
 			[
-				'category' => "data",
 				'today' => date('Y-m-d'),
 				'yesterday' => date('Y-m-d', time() - 86400),
 				'monday' => $monday,
@@ -1075,7 +1043,6 @@ class SiteController extends BaseController
 				'list' => $list,
 				"name" => $name,
 				'pagination' => $pagination,
-				'category' => 'data',
 				'cats' => QuestionSea::$catDict,
 				"cat" => $cat,
 			]);
@@ -1156,8 +1123,6 @@ class SiteController extends BaseController
 				'success' => $success,
 				'error' => $error,
 				'cats' => QuestionSea::$catDict,
-				'detailcategory' => 'site/questions',
-				'category' => 'data',
 			]);
 	}
 
@@ -1168,8 +1133,6 @@ class SiteController extends BaseController
 		return $this->renderPage('group.tpl',
 			[
 				'catDict' => $catDict,
-				'category' => 'data',
-				'detailcategory' => 'site/questions',
 			]);
 	}
 
@@ -1192,7 +1155,6 @@ class SiteController extends BaseController
 				'list' => $list,
 				"name" => $name,
 				'pagination' => $pagination,
-				'category' => 'data',
 				'isDebug' => in_array($this->admin_id, [1002]),
 			]);
 	}
@@ -1204,8 +1166,6 @@ class SiteController extends BaseController
 		$voteStat = QuestionGroup::voteStat($gid);
 		return $this->renderPage('vote.tpl',
 			[
-				'category' => 'data',
-				'detailcategory' => "site/groups",
 				'voteStat' => $voteStat
 			]);
 	}
@@ -1228,7 +1188,6 @@ class SiteController extends BaseController
 
 		return $this->renderPage('answers.tpl',
 			[
-				'category' => 'data',
 				"name" => $name,
 				'pagination' => $pagination,
 				'list' => $list,
@@ -1254,7 +1213,6 @@ class SiteController extends BaseController
 				'list' => $list,
 				"name" => $name,
 				'pagination' => $pagination,
-				'category' => 'data',
 			]);
 	}
 
@@ -1278,7 +1236,6 @@ class SiteController extends BaseController
 				'list' => $list,
 				"name" => $name,
 				'pagination' => $pagination,
-				'category' => 'data',
 			]);
 	}
 
@@ -1369,8 +1326,6 @@ class SiteController extends BaseController
 
 		return $this->renderPage('event.tpl',
 			[
-				//'getInfo' => $getInfo,
-				'detailcategory' => "site/events",
 				'entity' => $editItem,
 				"queryId" => $queryId,
 				"specs" => $specs,
@@ -1390,8 +1345,6 @@ class SiteController extends BaseController
 				'uni' => $this->admin_id,
 				'ws_url' => AppUtil::wsUrl(),
 				'items' => $items,
-				'category' => 'data',
-				'detailcategory' => "site/userstat",
 			]
 		);
 	}
@@ -1403,9 +1356,7 @@ class SiteController extends BaseController
 			[
 				'uni' => $this->admin_id,
 				'ws_url' => AppUtil::wsUrl(),
-				'category' => 'data',
 				'room_id' => time(),
-				'detailcategory' => "site/userstat",
 			]
 		);
 	}
@@ -1420,8 +1371,6 @@ class SiteController extends BaseController
 	{
 		return $this->renderPage('ws.tpl',
 			[
-				'category' => 'data',
-				'detailcategory' => "site/userstat",
 			]
 		);
 	}
@@ -1465,7 +1414,6 @@ class SiteController extends BaseController
 		$pagination = self::pagination($page, $count, 20);
 		return $this->renderPage('ev_crew.tpl',
 			[
-				'category' => 'data',
 				'crew' => $crew,
 				'age0' => $age0,
 				'age1' => $age1,
@@ -1494,8 +1442,6 @@ class SiteController extends BaseController
 				'chatHeaders' => $chatHeaders,
 				'miscFigures' => $miscFigures,
 				'notices' => $notices,
-				'category' => 'data',
-				'detailcategory' => "site/cog",
 			]);
 	}
 
@@ -1526,7 +1472,6 @@ class SiteController extends BaseController
 			[
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
-				'category' => 'data',
 				'list' => $list
 			]
 		);
@@ -1555,8 +1500,6 @@ class SiteController extends BaseController
 			[
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
-				'category' => 'data',
-				'detailcategory' => 'site/rooms',
 				'chatItems' => $chatItems,
 				'count' => $count,
 				'roomId' => $roomId,
@@ -1571,8 +1514,6 @@ class SiteController extends BaseController
 		return $this->renderPage("addmember.tpl",
 			[
 				'info' => ChatRoom::findOne(["rId" => $rid])->toArray(),
-				'category' => 'data',
-				'detailcategory' => 'site/rooms',
 			]
 		);
 	}
@@ -1595,8 +1536,6 @@ class SiteController extends BaseController
 		$uInfo = $uInfo->toArray();
 		return $this->renderPage('dummyroomchats.tpl',
 			[
-				'category' => 'data',
-				'detailcategory' => 'site/rooms',
 				"rInfo" => $rInfo,
 				"uInfo" => $uInfo,
 				'roomId' => $rId,

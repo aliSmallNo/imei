@@ -9,7 +9,7 @@
 namespace admin\controllers;
 
 use admin\models\Admin;
-use common\utils\AppUtil;
+use admin\models\Menu;
 use yii\data\Pagination;
 use yii\filters\Cors;
 use yii\helpers\ArrayHelper;
@@ -21,7 +21,8 @@ class BaseController extends Controller
 	const ICON_OK_HTML = '<i class="fa fa-check-circle gIcon"></i> ';
 	const ICON_ALERT_HTML = '<i class="fa fa-exclamation-circle gIcon"></i> ';
 	const PAGE_SIZE = 20;
-	protected static $MenuForkId = "summary";
+
+	protected $menu_fork_id = '';
 	protected $admin_id = 0;
 
 	public function behaviors()
@@ -41,33 +42,9 @@ class BaseController extends Controller
 	{
 		self::checkPermission();
 		$controllerId = $action->controller->id;
-		self::$MenuForkId = $controllerId;
-		switch ($controllerId) {
-			case "notice":
-				self::$MenuForkId = "users";
-				break;
-			case "mail":
-				self::$MenuForkId = "summary";
-				break;
-		}
+		$this->menu_fork_id = Menu::getForkId($controllerId . '/' . $action->id);
 		return parent::beforeAction($action);
 	}
-
-	/*public function beforeAction($action)
-	{
-		self::checkPermission();
-		$controllerId = $action->controller->id;
-		self::$MenuForkId = $controllerId;
-		switch ($controllerId) {
-			case "notice":
-				self::$MenuForkId = "userlist";
-				break;
-			case "mail":
-				self::$MenuForkId = "summary";
-				break;
-		}
-		return parent::beforeAction($action);
-	}*/
 
 	public function renderPage($view, $params = [], $guestFlag = false)
 	{
@@ -106,7 +83,7 @@ class BaseController extends Controller
 		$params["gIconOK"] = self::ICON_OK_HTML;
 		$params["gIconAlert"] = self::ICON_ALERT_HTML;
 
-		$params["left_tree_fork_id"] = isset($params["category"]) ? $params["category"] : self::$MenuForkId;
+		$params["left_tree_fork_id"] = isset($params["category"]) ? $params["category"] : $this->menu_fork_id;
 		$params["left_tree_node_id"] = isset($params["detailcategory"]) ? $params["detailcategory"] : self::getRequestUri();
 
 		$params["category"] = $params["left_tree_fork_id"];
