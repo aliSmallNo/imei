@@ -2340,15 +2340,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				});
 				$sls.content.html(html).addClass("animate-pop-in");
 				$sls.shade.fadeIn(160);
-			},
-			show3: function (url) {
-				var util = this;
-				$sls.main.show();
-				var html = Mustache.render(util.tmp3, {
-					url: "/images/thanks/cover.png"
-				});
-				$sls.content.html(html).addClass("animate-pop-in height90");
-				$sls.shade.fadeIn(160);
 			}
 		};
 
@@ -2651,9 +2642,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			ChatUtil.init();
 			GreetingUtil.init();
 			alertModel.init();
-			if (Date.parse(new Date()) < Date.parse("2017/11/23")) {
-				alertModel.show3('');
-			}
 			// MeipoUtil.init();
 			ProfileUtil.init();
 			ResumeUtil.init();
