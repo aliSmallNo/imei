@@ -1438,4 +1438,40 @@ class ChatMsg extends ActiveRecord
 		return true;
 	}
 
+	// 最近的一条真心话问题有没有回答
+	public static function isAnswer($uid, $receiverId)
+	{
+		$conn = AppUtil::db();
+		list($uid1, $uid2) = self::sortUId($uid, $receiverId);
+		$sql = "select m.* from 
+				im_chat_group as g
+				join im_chat_msg as m  on m.cGId=g.gId
+				join `im_question_sea` as q on q.qId=m.cNote and q.qCategory=:cat and m.cMark=:mark
+				where g.`gUId1`= :uid1 and g.gUId2= :uid2 order by cId desc limit 1 ";
+		$c = $conn->createCommand($sql)->bindValues([
+			":uid1" => $uid1,
+			":uid2" => $uid2,
+			":cat" => QuestionSea::CAT_TRUTH,
+			":mark" => self::MARK_SHOW_OPTIONS,
+		])->queryOne();
+		if (!$c) {
+			return true;
+		}
+		$gid = $c["cGId"];
+		$qid = $c["cNote"];
+		$cid = $c["cId"];
+		$q = QuestionSea::findOne(["qId" => $qid, "qCategory" => QuestionSea::CAT_TRUTH])->toArray();
+		if (!$q) {
+			return true;
+		}
+		$option = json_decode($q["qOptions"], 1);
+		$str = "";
+		if (count($option) > 1) {
+			$str = " and cNote=$qid and cMark=0 ";
+		}
+
+		$sql = "select count(*) from im_chat_msg where cId>$cid and cGId=$gid and cAddedBy=$receiverId $str";
+		return $conn->createCommand($sql)->queryScalar();
+
+	}
 }
