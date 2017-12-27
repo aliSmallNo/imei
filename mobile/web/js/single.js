@@ -207,6 +207,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			RankUtil.reset();
 			FavorUtil.reset();
 			$sls.walletEntry.hide();
+			resetShare();
 			switch (hashTag) {
 				case 'sranking':
 					RankUtil.page = 1;
