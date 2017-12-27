@@ -1,5 +1,5 @@
-requirejs(['jquery', 'alpha', 'mustache', 'socket'],
-	function ($, alpha, Mustache, io) {
+requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
+	function ($, alpha, Mustache, io, layer, Swiper) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -11,10 +11,10 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 			wxString: $("#tpl_wx_info").html(),
 			mainPage: $('.main-page'),
 			shID: $('#cUID').val(),
+
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
-
 		};
 
 		var ReportUtil = {
@@ -304,21 +304,32 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 			tmp: $('#tpl_chat').html(),
 			bar: $('.m-chat-bar'),
 			timerInput: 0,
+			qid: '',
+			answerText: '',
+			reason: [],
+			giftmenus: $(".m-draw-wrap"),
+			menusBg: $(".m-schat-shade"),
 			init: function () {
 				var util = this;
+				// 点击发送按钮 发送消息
 				$('.btn-chat-send').on(kClick, function () {
 					util.sent();
 				});
-
+				// 点击 + 按钮 展开功能选项
 				$('.btn-chat-more').on(kClick, function () {
 					util.toggleBar();
+				});
+				// 点击"真心话"快捷按钮
+				$('.btn-chat-truth').on(kClick, function () {
+					util.htag = "truth";
+					util.helpchat();
 				});
 
 				util.input.on('focus', function () {
 					util.timerInput = setInterval(function () {
 						$('.m-bottom-bar').css('bottom', 0);
-						//target.scrollIntoView(true);
-						//util.bot[0].scrollIntoView(false);
+						// target.scrollIntoView(true);
+						// util.bot[0].scrollIntoView(false);
 					}, 200);
 				});
 
@@ -358,6 +369,97 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 					self.closest('div').find('a').removeClass('active');
 					self.addClass('active');
 				});
+
+				// 点击阴影 关闭打开窗口
+				util.menusBg.on(kClick, function () {
+					// if (util.menus.hasClass("on")) {
+					// 	util.toggle(false, util.menus);
+					// }
+					// if (util.helpchatMenu.hasClass("on")) {
+					// 	util.toggle(false, util.helpchatMenu);
+					// }
+					if (util.giftmenus.hasClass("on")) {
+						util.toggle(false, util.giftmenus);
+					}
+				});
+
+				// 点击发送真心话题选项
+				$(document).on(kClick, ".chats li .content a.opt", function () {
+					var self = $(this);
+					util.answerText = self.html().trim();
+					util.qid = self.closest("dl").attr("data-qid");
+					util.answerflag = 1;
+					util.sent();
+				});
+
+				// 拉黑对方
+				$(document).on(kClick, ".date-wrap a", function () {
+					var self = $(this);
+					if (self.hasClass('btn-date-cancel')) {
+						util.reason = [];
+						$(".date-cancel-opt a.active").each(function () {
+							util.reason.push($(this).html());
+						});
+						if (util.reason.length < 1) {
+							alpha.toast("选择原因哦");
+							return;
+						}
+						util.toBlock();
+					} else if (self.hasClass("date-close")) {
+						$sls.main.hide();
+						$sls.shade.fadeOut(160);
+					} else {
+						if (self.hasClass("active")) {
+							self.removeClass("active");
+						} else {
+							self.addClass("active");
+						}
+					}
+				});
+
+				// 最下边的功能选项
+				$(document).on(kClick, ".m-chat-bar-list a", function () {
+					var tag = $(this).find("i").attr("class");
+					console.log(tag);
+					switch (tag) {
+						case "truth":
+							util.htag = "truth";
+							util.helpchat();
+							break;
+						case "date":
+							location.href = "/wx/date?id=" + util.sid;
+							break;
+						case "gift":
+							GiftUtil.resetGifts();
+							util.toggle(util.giftmenus.hasClass("off"), util.giftmenus);
+							// GiftUtil.loadGifts();
+							AdvertUtil.giftSwiper();
+							break;
+						case "wechat":
+							break;
+						case "setting":
+							location.href = "/wx/setting"
+							break;
+						case "dislike":
+							$sls.main.show();
+							var html = $("#tpl_cancel_reason").html();
+							$sls.content.html(html).addClass("animate-pop-in");
+							$sls.shade.fadeIn(160);
+							break;
+					}
+				});
+			},
+			toggle: function (showFlag, obj) {
+				var util = this;
+				if (showFlag) {
+					setTimeout(function () {
+						obj.removeClass("off").addClass("on");
+					}, 60);
+					util.menusBg.fadeIn(260);
+				} else {
+					obj.removeClass("on").addClass("off");
+					util.menusBg.fadeOut(220);
+				}
 			},
 			toggleBar: function (expandFlag) {
 				var util = this;
@@ -403,22 +505,63 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 				var util = this;
 				var content = $.trim(util.input.val());
 				if (!content) {
+					content = util.answerText;
+				}
+				if ($sls.loading) {
+					return;
+				}
+				if (!content) {
 					alpha.toast('聊天内容不能为空！');
 					return false;
 				}
 				util.toggleBar(0);
+				$sls.loading = 1;
 				$.post("/api/chat", {
 					tag: "sent",
 					id: util.sid,
-					text: content
+					text: content,
+					qId: util.qid,
+					answerflag: util.answerflag,
 				}, function (resp) {
+					$sls.loading = 0;
 					if (resp.code < 1) {
-						util.input.val('');
+						util.reset();
+						util.toggleBar(0);
 						NoticeUtil.broadcast(resp.data);
 					} else {
 						alpha.toast(resp.msg);
 					}
 				}, "json");
+			},
+			helpchat: function () {
+				var util = this;
+				if ($sls.loading) {
+					return;
+				}
+				$sls.loading = 1;
+				$.post("/api/chat", {
+					tag: "helpchat",
+					htag: util.htag,
+					id: util.sid,
+				}, function (resp) {
+					$sls.loading = 0;
+					if (resp.code == 0) {
+						util.answerText = resp.data.title;
+						util.qid = resp.data.id;
+						// util.toggle(false, util.helpchatMenu);
+						util.sent();
+					} else {
+						alpha.toast(resp.msg);
+					}
+				}, "json");
+			},
+			reset: function () {
+				var util = this;
+				util.input.val('');
+				util.answerText = '';
+				util.answerflag = '';
+				util.qid = '';
+				util.htag = '';
 			},
 			reload: function (scrollFlag) {
 				var util = this;
@@ -461,13 +604,194 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket'],
 					/*var top = util.list[0].scrollHeight - document.body.offsetHeight;
 					util.list.scrollTop(top);*/
 					// $("body").animate({scrollTop: '800px'}, 500);
-
 					setTimeout(function () {
 						util.bot[0].scrollIntoView(true);
 					}, 150);
 				}
-			}
+			},
+			toBlock: function () {
+				var util = this;
+				if ($sls.loading) {
+					return;
+				}
+				$sls.loading = 1;
+				$.post("/api/chat", {
+					tag: "toblock",
+					sid: util.sid,
+					reason: JSON.stringify(util.reason),
+				}, function (resp) {
+					$sls.loading = 0;
+					if (resp.code == 0) {
+						$sls.main.hide();
+						$sls.shade.fadeOut(160);
+						alpha.toast(resp.msg, 1);
+					} else {
+						alpha.toast(resp.msg);
+					}
+				}, "json");
+			},
 		};
+
+		var AdvertUtil = {
+			loaded: 0,
+			init: function () {
+				/*$(document).on(kClick, '.j-url', function () {
+					var url = $(this).attr('data-url');
+					if (url.indexOf('http') >= 0) {
+						location.href = url;
+					} else {
+						NoticeUtil.toggle(url);
+					}
+				});*/
+			},
+			/*initSwiper: function () {
+				var util = this;
+				if (util.loaded || $('.swiper-container .swiper-slide').length < 2) {
+					util.loaded = 1;
+					$(document).on(kClick, '.swiper-slide', function () {
+						var url = $(this).attr('data-url');
+						if (url && url.indexOf('http') >= 0) {
+							location.href = url;
+						} else {
+							NoticeUtil.toggle(url);
+						}
+						return false;
+					});
+					return false;
+				}
+				util.loaded = 1;
+				new Swiper('.swiper-container1', {
+					direction: 'horizontal',
+					loop: true,
+					speed: 600,
+					on: {
+						click: function (event) {
+							var url = $(event.target).closest('.swiper-slide').attr('data-url');
+							if (url && url.indexOf('http') >= 0) {
+								location.href = url;
+							} else {
+								NoticeUtil.toggle(url);
+							}
+							return false;
+						}
+					},
+					autoplay: {
+						delay: 7000
+					},
+					pagination: {
+						el: '.swiper-pagination1'
+					}
+				});
+			},*/
+			giftSwiper: function () {
+				new Swiper('.swiper-container2', {
+					direction: 'horizontal',
+					loop: true,
+					pagination: {
+						el: '.swiper-pagination2'
+					}
+				});
+			},
+		};
+
+		var GiftUtil = {
+			gid: '',    // 商品ID
+			tag: 'normal',
+			UL: $(".g-items-ul .ul"),
+			Tmp: $("#tpl_gifts").html(),
+			count: $(".g-bot-rose .count"),// 剩余媒瑰花数
+			loading: 0,
+			init: function () {
+				var util = this;
+				$(".g-cats a").on(kClick, function () {
+					var self = $(this);
+					util.tag = self.attr("g-level");
+					self.closest(".g-cats").find("a").removeClass("on");
+					self.addClass("on");
+					util.UL.html('');
+					util.loadGifts();
+				});
+				$(document).on(kClick, ".g-items-ul a", function () {
+					var self = $(this);
+					self.closest(".g-items-ul").find("li").removeClass("on");
+					self.closest("li").addClass("on");
+					if (util.tag != 'bag') {
+						util.price = self.closest("li").attr("data-price");
+					}
+				});
+				$(document).on(kClick, ".g-bot-btn a", function () {
+					var self = $(".g-items-ul").find("li.on");
+					util.gid = self.attr("data-id");
+					if (!util.gid) {
+						alpha.toast("请先选择礼物");
+						return;
+					}
+					if (util.tag != 'bag' && parseInt(util.price) > parseInt(util.count.html().trim())) {
+						util.notMoreRose();
+						return;
+					}
+					util.giveGift();
+				});
+			},
+			notMoreRose: function () {
+				layer.open({
+					content: '您的媒瑰花数量不足~'
+					, btn: ['去充媒瑰花', '不要']
+					, yes: function (index) {
+						location.href = "/wx/sw";
+						layer.close(index);
+					}
+				});
+			},
+			giveGift: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post('/api/gift',
+					{
+						tag: 'givegift',
+						subtag: util.tag,
+						gid: util.gid,
+						uid: ChatUtil.sid,
+					},
+					function (resp) {
+						util.loading = 0;
+						if (resp.code == 0) {
+							ChatUtil.toggle(ChatUtil.giftmenus.hasClass("off"), ChatUtil.giftmenus);
+							util.count.html(resp.data.stat.flower);
+							NoticeUtil.broadcast(resp.data);
+						} else if (resp.code == 128) {
+							util.notMoreRose();
+						} else {
+							alpha.toast(resp.msg);
+						}
+					}, 'json');
+			},
+			resetGifts: function () {
+				$(".g-cats a[g-level=normal]").trigger(kClick);
+			},
+			loadGifts: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post('/api/gift',
+					{
+						tag: 'gifts',
+						subtag: util.tag,
+					},
+					function (resp) {
+						util.loading = 0;
+						var html = Mustache.render(util.Tmp, resp.data);
+						util.UL.html(html);
+						util.count.html(resp.data.stat.flower);
+					}, 'json');
+			},
+		};
+		GiftUtil.init();
 
 		var NoticeUtil = {
 			ioChat: null,

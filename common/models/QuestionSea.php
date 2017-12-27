@@ -189,20 +189,33 @@ class QuestionSea extends ActiveRecord
 		$rankStr = implode(",", $rank);
 		$conStr = "and qRank in ($rankStr)";
 
-		$res = self::findOneQestion($senderId, $receiverId, $cat, $conStr);
+		list($uid1, $uid2) = ChatMsg::sortUId($senderId, $receiverId);
+
+		$res = self::findOneQestion($uid1, $uid2, $cat, $conStr);
 
 		if ($res) {
 			return ["id" => AppUtil::encrypt($res["qId"]), "title" => $res["qTitle"]];
 		} else {
+			$sql = 'SELECT gId,gRound FROM im_chat_group as g 
+				WHERE g.gUId1=:id1 AND g.gUId2=:id2';
+			$ret = $conn->createCommand($sql)->bindValues([
+				':id1' => $uid1,
+				':id2' => $uid2,
+			])->queryOne();
+			$gid = $ret['gId'];
+
 			// 清空 为$cat的 cNote
 			$sql = "select GROUP_CONCAT(qId) as qIds from im_question_sea where qCategory=$cat GROUP BY qCategory";
-			$ids = $conn->createCommand($sql)->queryOne()["qIds"];
+			$ids = $conn->createCommand($sql)->queryScalar();
 			$sql = "select GROUP_CONCAT(cId) as cIds from im_chat_msg 
-					where cNote in ($ids)
-					GROUP BY cGId";
-			$cIds = $conn->createCommand($sql)->queryOne()["cIds"];
-			$sql = " update im_chat_msg set cNote='' where cId in ($cIds) ";
-			$conn->createCommand($sql)->execute();
+					where cNote in ($ids) and cGId=$gid 
+					group by cGId ";
+			$cIds = $conn->createCommand($sql)->queryScalar();
+
+			if ($cat != self::CAT_TRUTH) {
+				$sql = " update im_chat_msg set cNote='' where cId in ($cIds) ";
+				$conn->createCommand($sql)->execute();
+			}
 
 			$res = self::findOneQestion($senderId, $receiverId, $cat, $conStr);
 			if ($res) {
@@ -213,39 +226,25 @@ class QuestionSea extends ActiveRecord
 		}
 	}
 
-	public static function findOneQestion($senderId, $receiverId, $cat, $conStr)
+	public static function findOneQestion($uid1, $uid2, $cat, $conStr)
 	{
 		$conn = AppUtil::db();
-		if ($qIds = self::sendQIds($senderId, $receiverId)) {
+
+		$sql = "select GROUP_CONCAT(cNote) as qIds from im_chat_group as g
+				left join im_chat_msg as c on c.cGId=g.gId 
+				where gUId1=:uid1 and gUId2=:uid2 and cNote GROUP BY cGId";
+		$qIds = $conn->createCommand($sql)->bindValues([
+			":uid1" => $uid1,
+			":uid2" => $uid2,
+		])->queryScalar();
+
+		if ($qIds) {
 			$conStr .= " and qId not in ($qIds) ";
 		}
 		$sql = " select * from im_question_sea where qCategory=$cat $conStr ORDER by qRank asc limit 1";
 		$res = $conn->createCommand($sql)->queryOne();
 		return $res;
-	}
 
-	/**
-	 * @param $senderId
-	 * @param $receiverId
-	 * @return string 发送过的qId
-	 */
-	public static function sendQIds($senderId, $receiverId)
-	{
-		$conn = AppUtil::db();
-		list($uid1, $uid2) = ChatMsg::sortUId($senderId, $receiverId);
-		$sql = "select GROUP_CONCAT(cNote) as qIds from im_chat_group as g
-				left join im_chat_msg as c on c.cGId=g.gId 
-				where gUId1=:uid1 and gUId2=:uid2 and cNote GROUP BY cGId";
-		$ret = $conn->createCommand($sql)->bindValues([
-			":uid1" => $uid1,
-			":uid2" => $uid2,
-		])->queryOne();
-
-		$qIds = "";
-		if ($ret && $ret["qIds"]) {
-			$qIds = $ret["qIds"];
-		}
-		return $qIds;
 	}
 
 }

@@ -853,9 +853,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					var tag = self.attr("data-tag");
 					switch (tag) {
 						case "toblock":
-							/*alpha.prompt('','您确定要拉黑TA吗？',['确定', '取消'], function () {
-								util.toBlock();
-							}); */
 							$sls.main.show();
 							var html = $("#tpl_cancel_reason").html();
 							$sls.content.html(html).addClass("animate-pop-in");

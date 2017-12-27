@@ -498,6 +498,8 @@ class WxController extends BaseController
 	public function actionSh()
 	{
 		$hid = self::getParam('id');
+		$hid = AppUtil::encrypt(143807);
+
 		$hideFlag = self::getParam('hide', 0);
 		$huni = '';
 		$secretId = $hid;

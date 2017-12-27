@@ -1901,6 +1901,7 @@ class ApiController extends Controller
 				$qId = self::postParam('qId'); // 发送的助聊题库ID
 				$qId = AppUtil::decrypt($qId);
 				$text = trim(self::postParam('text'));
+				$answerflag = self::postParam('answerflag');
 				if (!$receiverId) {
 					return self::renderAPI(129, '对话用户不存在啊~');
 				}
@@ -1924,7 +1925,7 @@ class ApiController extends Controller
 					&& strtotime("2017-12-23 00:00:00") < time()) {
 					Log::addSanta($wxInfo["uId"], Log::SANTA_HAT);
 				}
-				$ret = ChatMsg::addChat($uid, $receiverId, $text, 0, 0, $qId);
+				$ret = ChatMsg::addChat($uid, $receiverId, $text, 0, 0, $qId, '', $answerflag);
 				//ChatMsg::add($uid, $receiverId, $text);
 				if ($ret === false) {
 					return self::renderAPI(129, '发送失败~');
@@ -1966,6 +1967,7 @@ class ApiController extends Controller
 					"future" => QuestionSea::CAT_FUTURE,
 					"privacy" => QuestionSea::CAT_PRIVACY,
 					"marriage" => QuestionSea::CAT_MARRIAGE,
+					"truth" => QuestionSea::CAT_TRUTH,
 				];
 				$cat = isset($tagDict[$htag]) ? $tagDict[$htag] : 0;
 				if (!$cat) {

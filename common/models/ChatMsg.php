@@ -49,6 +49,9 @@ class ChatMsg extends ActiveRecord
 	const GIVE_GIFT_CONTENT = '送给你一个神秘礼物，快去我的背包查看吧~';
 
 
+	const MARK_HIDE_OPTIONS = 0;
+	const MARK_SHOW_OPTIONS = 1;
+
 	public static function tableName()
 	{
 		return '{{%chat_msg}}';
@@ -538,7 +541,7 @@ class ChatMsg extends ActiveRecord
 	 * @throws \yii\db\Exception
 	 */
 	public static function addChat($senderId, $receiverId, $contentBundle,
-	                               $giftCount = 0, $adminId = 0, $qId = '', $conn = null)
+	                               $giftCount = 0, $adminId = 0, $qId = '', $conn = null, $isAnswer = false)
 	{
 		if (!$conn) {
 			$conn = AppUtil::db();
@@ -633,8 +636,19 @@ class ChatMsg extends ActiveRecord
 		if ($adminId) {
 			$entity->cAdminId = $adminId;
 		}
+		$options = "";
+		$qInfo = "";
+		$shortcat = "";
 		if ($qId) {
 			$entity->cNote = $qId;
+			if ($isAnswer) {
+				$entity->cMark = self::MARK_HIDE_OPTIONS;
+			} else {
+				$entity->cMark = self::MARK_SHOW_OPTIONS;
+				$qInfo = QuestionSea::fmt(QuestionSea::findOne(["qId" => $qId])->toArray());
+				$shortcat = mb_substr($qInfo["cat"], 0, 1);
+				$options = $qInfo["options"];
+			}
 		}
 		$entity->save();
 		$cId = $entity->cId;
@@ -673,6 +687,10 @@ class ChatMsg extends ActiveRecord
 		$info = [
 			'tag' => 'msg',
 			'id' => $cId,
+			'qid' => AppUtil::encrypt($qId),
+			'options' => $options,
+			'shortcat' => $shortcat,
+			'ansFlag' => intval($isAnswer),
 			'gid' => $gid,
 			'left' => $left,
 			'uni' => $infoA['uni'],
@@ -860,10 +878,10 @@ class ChatMsg extends ActiveRecord
 		$conn = AppUtil::db();
 		list($uid1, $uid2) = self::sortUId($uId, $subUId);
 		$sql = 'select u.uName as `name`,u.uThumb as avatar,u.uUniqid as uni, g.gId as gid, g.gRound as round,
-			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy,a.aName, m.cReadFlag as readflag,
+			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy,m.cNote as qid,m.cMark as mark,a.aName, m.cReadFlag as readflag,
 			 m.cType as `type`,m.cUrl as url,(CASE WHEN u.uOpenId LIKE \'oYDJew%\' THEN 0 ELSE 1 END) as dummy
 			 from im_chat_group as g 
-			 join im_chat_msg as m on g.gId=cGId
+			 join im_chat_msg as m on g.gId=m.cGId
 			 join im_user as u on u.uId=m.cAddedBy
 			 left join im_admin as a on a.aId=m.cAdminId
 			 WHERE g.gUId1=:id1 AND g.gUId2=:id2 ' . $criteria . ' order by m.cAddedOn ';
@@ -899,7 +917,23 @@ class ChatMsg extends ActiveRecord
 			if ($chat['cid'] > $lastId) {
 				$lastId = $chat['cid'];
 			}
+			$chat["options"] = "";
+			//$chat["qdes"] = "";
+			$chat["ansFlag"] = 0;
+			if ($chat["qid"]) {
+				$qInfo = QuestionSea::fmt(QuestionSea::findOne(["qId" => $chat["qid"]])->toArray());
+				if ($chat["mark"] == self::MARK_SHOW_OPTIONS) {
+					$chat["ansFlag"] = 0;
+					$chat["options"] = $qInfo["options"];
+					$chat["shortcat"] = mb_substr($qInfo["cat"], 0, 1);
+				} else {
+					$chat["ansFlag"] = 1;
+				}
+
+				$chat["qid"] = AppUtil::encrypt($chat["qid"]);
+			}
 			$items[] = $chat;
+
 		}
 		ChatMsg::read($uId, $subUId, $conn);
 		return [$items, $lastId];

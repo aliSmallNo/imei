@@ -1535,6 +1535,8 @@ class FooController extends Controller
 		}
 		print_r($arr); */
 
+		echo AppUtil::decrypt("CDlpWjA5QjI3MkdiMjM0ODI7a1wyO0Q0OTRJZA");
+
 	}
 
 
