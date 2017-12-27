@@ -7,6 +7,6 @@ requirejs.config({
 		mustache: '/assets/js/mustache.min',
 		socket: '/assets/js/socket.io.slim',
 		alpha: '/assets/js/alpha.js?v=1.1.2',
-		wx: '/assets/js/jweixin-1.2.0'
+		wx: 'https://res.wx.qq.com/open/js/jweixin-1.2.0.js'
 	}
 });

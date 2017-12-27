@@ -269,7 +269,7 @@ class WxController extends BaseController
 				'eduF' => User::$EducationFilter,
 				"job" => json_encode($job),
 				"filter" => $filter,
-				'defect'=> $defect
+				'defect' => $defect
 			],
 			'terse',
 			'个人资料修改',
@@ -481,7 +481,7 @@ class WxController extends BaseController
 	{
 		$hid = self::getParam('id');
 		$hideFlag = self::getParam('hide', 0);
-		$huni = '';
+		$huni = $hname = '';
 		$secretId = $hid;
 		$decrypt = AppUtil::decrypt($hid);
 		if ($decrypt) {
@@ -492,6 +492,7 @@ class WxController extends BaseController
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
 		}
+		$hname = $uInfo['name'];
 		$huni = $uInfo['uniqid'];
 		$prefer = 'male';
 		$isMember = false;
@@ -527,6 +528,7 @@ class WxController extends BaseController
 				'prefer' => $prefer,
 				'hid' => $hid,
 				'huni' => $huni,
+				'hname' => $hname,
 				'secretId' => $secretId,
 				'baseInfo' => $uInfo['baseInfo'],
 				'brief' => $uInfo['brief'],

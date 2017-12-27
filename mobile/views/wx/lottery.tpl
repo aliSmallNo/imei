@@ -30,9 +30,12 @@
 	</ul>
 </div>
 <input type="hidden" id="cOID">
+<script type="text/template" id="tpl_wx_info">
+	{{$wxInfoString}}
+</script>
 <script src="/assets/js/require.js"></script>
 <script>
-	requirejs(['/js/config.js'], function () {
-		requirejs(['/js/lottery.js?v=1.4.6']);
+	requirejs(['/js/config.js?v=1.1.5'], function () {
+		requirejs(['/js/lottery.js?v=1.4.7']);
 	});
 </script>
