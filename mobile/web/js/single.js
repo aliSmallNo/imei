@@ -531,12 +531,12 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				}, function (resp) {
 					if (resp.code < 1) {
 						if (f == "yes") {
-							alpha.toast('心动成功~', 1);
-							obj.addClass("favor");
+							// alpha.toast('心动成功~', 1);
+							obj.addClass("favor").addClass('heart-beat');
 							ProfileUtil.toggleFavor(1);
 						} else {
-							alpha.toast('已取消心动');
-							obj.removeClass("favor");
+							// alpha.toast('已取消心动');
+							obj.removeClass("favor").removeClass('heart-beat');
 							ProfileUtil.toggleFavor(0);
 						}
 					} else {
@@ -1314,7 +1314,11 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					$(".zone-top .cards").html(Mustache.render(util.cardTmp, resp.data));
 					util.albums = resp.data.gallery;
 					$("#album .photos").html(Mustache.render(util.albumTmp, util));
-					$(".zone-top .profile small").html("资料完成度" + resp.data.percent + "%");
+					var profileTip = "资料完成度" + resp.data.percent + "%";
+					if (resp.data.audit) {
+						profileTip += '<i class="i-mark-warning"></i>';
+					}
+					$(".zone-top .profile small").html(profileTip);
 					var tipHtml = resp.data.hasMp ? "" : "还没有媒婆";
 					var imgWrap = $(".zone-top .avatar");
 					imgWrap.removeClass('pending');
@@ -2333,15 +2337,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				});
 				$sls.content.html(html).addClass("animate-pop-in");
 				$sls.shade.fadeIn(160);
-			},
-			show3: function (url) {
-				var util = this;
-				$sls.main.show();
-				var html = Mustache.render(util.tmp3, {
-					url: "/images/thanks/cover.png"
-				});
-				$sls.content.html(html).addClass("animate-pop-in height90");
-				$sls.shade.fadeIn(160);
 			}
 		};
 
@@ -2644,9 +2639,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			ChatUtil.init();
 			GreetingUtil.init();
 			alertModel.init();
-			if (Date.parse(new Date()) < Date.parse("2017/11/23")) {
-				alertModel.show3('');
-			}
 			// MeipoUtil.init();
 			ProfileUtil.init();
 			ResumeUtil.init();

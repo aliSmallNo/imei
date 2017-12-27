@@ -76,7 +76,7 @@
 		</div-->
 	</div>
 </div>
-<section id="schat" data-title="密聊中...">
+<section id="schat" data-title="{{$hname}}">
 	<div class="report_wrap">
 		<p class="title chat-tip">不要在对话中轻易给对方微信号，以防被恶意骚扰~</p>
 		<ul class="chats"></ul>

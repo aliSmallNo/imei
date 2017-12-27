@@ -36,7 +36,8 @@
 
 </style>
 <div class="row">
-	<h4>通知公告列表 </h4>
+	<h4>通知公告列表
+	</h4>
 </div>
 <div class="row-divider"></div>
 <div class="row">
@@ -66,10 +67,12 @@
 							</div>
 							<div class="right">
 								{{$notice.name}}<em>更新于 {{$notice.dt}}</em><em>过期于 {{$notice.exp}}</em><em
-												class="st-{{$notice.active}}">{{$notice.st}}</em>
-								<a href="javascript:;" class="btn-mod" data-url="{{$notice.url}}" data-cnt="{{$notice.count}}"
+										class="st-{{$notice.active}}">{{$notice.st}}</em>
+								<a href="javascript:;" class="btn-mod" data-url="{{$notice.url}}"
+								   data-cnt="{{$notice.count}}"
 								   data-id="{{$notice.id}}" data-title="{{$notice.title}}"
-								   data-st="{{$notice.status}}" data-exp="{{$notice.exp}}" data-cat="{{$notice.cat}}">编辑</a>
+								   data-st="{{$notice.status}}" data-exp="{{$notice.exp}}"
+								   data-cat="{{$notice.cat}}">编辑</a>
 							</div>
 						</li>
 					{{/foreach}}
@@ -94,7 +97,8 @@
 							</div>
 							<div class="right">
 								{{$item.name}}<em>更新于 {{$item.dt}}</em><em class="st-{{$item.active}}">{{$item.st}}</em>
-								<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}" data-cnt="{{$item.count}}"
+								<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}"
+								   data-cnt="{{$item.count}}"
 								   data-id="{{$item.id}}" data-title="{{$item.title}}"
 								   data-st="{{$item.status}}" data-exp="{{$item.exp}}" data-cat="{{$item.cat}}">编辑</a>
 							</div>
@@ -116,7 +120,8 @@
 							</div>
 							<div class="right">
 								{{$item.name}}<em>更新于 {{$item.dt}}</em><em class="st-{{$item.active}}">{{$item.st}}</em>
-								<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}" data-cnt="{{$item.count}}"
+								<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}"
+								   data-cnt="{{$item.count}}"
 								   data-id="{{$item.id}}" data-title="{{$item.title}}"
 								   data-st="{{$item.status}}" data-exp="{{$item.exp}}" data-cat="{{$item.cat}}">编辑</a>
 							</div>
@@ -141,7 +146,8 @@
 							</div>
 							<div class="right">
 								{{$item.name}}<em>更新于 {{$item.dt}}</em><em class="st-{{$item.active}}">{{$item.st}}</em>
-								<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}" data-cnt="{{$item.count}}"
+								<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}"
+								   data-cnt="{{$item.count}}"
 								   data-id="{{$item.id}}" data-title="{{$item.title}}"
 								   data-st="{{$item.status}}" data-exp="{{$item.exp}}" data-cat="{{$item.cat}}">编辑</a>
 							</div>
@@ -167,7 +173,8 @@
 							</div>
 							<div class="right">
 								{{$item.name}}<em>更新于 {{$item.dt}}</em><em class="st-{{$item.active}}">{{$item.st}}</em>
-								<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}" data-cnt="{{$item.count}}"
+								<a href="javascript:;" class="btn-mod" data-url="{{$item.url}}"
+								   data-cnt="{{$item.count}}"
 								   data-id="{{$item.id}}" data-title="{{$item.title}}"
 								   data-st="{{$item.status}}" data-exp="{{$item.exp}}" data-cat="{{$item.cat}}">编辑</a>
 							</div>
@@ -183,7 +190,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-									aria-hidden="true">&times;</span></button>
+							aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title"></h4>
 			</div>
 			<div class="modal-body"></div>
@@ -194,6 +201,27 @@
 		</div>
 	</div>
 </div>
+<script type="text/html" id="tpl_notice_push">
+	<div class="form-horizontal">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">通知用户</label>
+			<div class="col-sm-7">
+				<select class="opt-users">
+					<option value="all">关注用户（All）</option>
+					<option value="male">关注用户（男）</option>
+					<option value="female">关注用户（女）</option>
+					<option value="staff">员工用户</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">通知内容</label>
+			<div class="col-sm-7">
+				<textarea class="form-control" rows="4" placeholder="(必填)"></textarea>
+			</div>
+		</div>
+	</div>
+</script>
 <script type="text/html" id="tpl_notice_text">
 	<div class="form-horizontal">
 		<div class="form-group">
@@ -235,7 +263,8 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">过期日期(含)</label>
 			<div class="col-sm-7">
-				<input class="my-date-input form-control" required data-tag="cExpiredOn" placeholder="(必填)" value="{[exp]}">
+				<input class="my-date-input form-control" required data-tag="cExpiredOn" placeholder="(必填)"
+				       value="{[exp]}">
 			</div>
 		</div>
 		<div class="form-group">
@@ -262,7 +291,8 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">上传图片</label>
 			<div class="col-sm-7">
-				<input class="form-control-static" type="file" name="upload_photo" accept="image/jpg, image/jpeg, image/png">
+				<input class="form-control-static" type="file" name="upload_photo"
+				       accept="image/jpg, image/jpeg, image/png">
 			</div>
 		</div>
 		<div class="form-group">
@@ -291,7 +321,8 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">过期日期(含)</label>
 			<div class="col-sm-7">
-				<input class="my-date-input form-control" required data-tag="cExpiredOn" placeholder="(必填)" value="{[exp]}">
+				<input class="my-date-input form-control" required data-tag="cExpiredOn" placeholder="(必填)"
+				       value="{[exp]}">
 			</div>
 		</div>
 		<div class="form-group">
@@ -318,7 +349,8 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">上传图片</label>
 			<div class="col-sm-7">
-				<input class="form-control-static" type="file" name="upload_photo" accept="image/jpg, image/jpeg, image/png">
+				<input class="form-control-static" type="file" name="upload_photo"
+				       accept="image/jpg, image/jpeg, image/png">
 				<input type="hidden" data-tag="cCount" value="999">
 				<input type="hidden" data-tag="cExpiredOn" value="2020-01-01">
 				<input type="hidden" data-tag="cId" value="{[id]}">

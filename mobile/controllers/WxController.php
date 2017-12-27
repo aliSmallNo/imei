@@ -250,6 +250,7 @@ class WxController extends BaseController
 			"sibling" => ['data' => User::$Sibling, 'col' => 1],
 			"dwelling" => ['data' => User::$Dwelling, 'col' => 1],
 		];
+		$defect = UserAudit::fault($this->user_id);
 		return self::renderPage("sedit.tpl",
 			[
 				'bundle' => json_encode($bundle, JSON_UNESCAPED_UNICODE),
@@ -258,24 +259,8 @@ class WxController extends BaseController
 				'avatar' => $avatar,
 				"maxYear" => 1999,
 				'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
-				"years" => User::$Birthyear,
-				"height" => User::$Height,
-				"weight" => User::$Weight,
-				"income" => User::$Income,
-				"edu" => User::$Education,
-				"scope" => User::$Scope,
-				"house" => User::$Estate,
-				"car" => User::$Car,
-				"smoke" => User::$Smoke,
-				"drink" => User::$Alcohol,
-				"belief" => User::$Belief,
-				"workout" => User::$Fitness,
-				"diet" => User::$Diet,
-				"rest" => User::$Rest,
-				"pet" => User::$Pet,
-				"sign" => User::$Horos,
-				"marital" => User::$Marital,
 				'routes' => json_encode($routes),
+				"scope" => User::$Scope,
 				'professions' => json_encode(User::$ProfessionDict),
 				'locInfo' => $locInfo,
 				'heightF' => User::$HeightFilter,
@@ -283,11 +268,8 @@ class WxController extends BaseController
 				'incomeF' => User::$IncomeFilter,
 				'eduF' => User::$EducationFilter,
 				"job" => json_encode($job),
-				"worktype" => User::$Worktype,
-				"parent" => User::$Parent,
-				"sibling" => User::$Sibling,
-				"dwelling" => User::$Dwelling,
 				"filter" => $filter,
+				'defect' => $defect
 			],
 			'terse',
 			'个人资料修改',
@@ -501,7 +483,7 @@ class WxController extends BaseController
 		$hid = AppUtil::encrypt(143807);
 
 		$hideFlag = self::getParam('hide', 0);
-		$huni = '';
+		$huni = $hname = '';
 		$secretId = $hid;
 		$decrypt = AppUtil::decrypt($hid);
 		if ($decrypt) {
@@ -512,6 +494,7 @@ class WxController extends BaseController
 			header('location:/wx/error?msg=用户不存在啊~');
 			exit();
 		}
+		$hname = $uInfo['name'];
 		$huni = $uInfo['uniqid'];
 		$prefer = 'male';
 		$isMember = false;
@@ -547,6 +530,7 @@ class WxController extends BaseController
 				'prefer' => $prefer,
 				'hid' => $hid,
 				'huni' => $huni,
+				'hname' => $hname,
 				'secretId' => $secretId,
 				'baseInfo' => $uInfo['baseInfo'],
 				'brief' => $uInfo['brief'],

@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/css/dev.min.css">
 <style>
 	.m-popup-options a.cur {
 		background: #fbd6e3 !important;
@@ -82,11 +83,17 @@
 	.sedit_hide {
 		display: none;
 	}
+
 </style>
 <div class="m-popup-shade"></div>
 <div class="nav">
 	<a href="/wx/single#sme">返回</a>
 </div>
+{{if $defect}}
+	<div class="m-defect">
+		{{$defect}}
+	</div>
+{{/if}}
 <div class="sedit-avart">
 	<img src="{{$avatar}}" class="bg-blur">
 	<div class="sedit-avart-p">
