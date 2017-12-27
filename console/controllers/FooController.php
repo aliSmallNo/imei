@@ -15,6 +15,7 @@ use common\models\Log;
 use common\models\Pin;
 use common\models\QuestionSea;
 use common\models\User;
+use common\models\UserAudit;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserTrans;
@@ -1398,9 +1399,13 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$service = TrendService::init(TrendService::CAT_REUSE);
-		$service->reuseRoutine('week');
-		$service->reuseRoutine('month');
+		$uId = 131379;
+		$ret = UserAudit::invalid($uId);
+		var_dump($ret);
+
+		$uId = 152901;
+		$ret = UserAudit::invalid($uId);
+		var_dump($ret);
 //		NoticeUtil::init(NoticeUtil::CAT_CHAT, 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc')->sendText();
 		/*$ret = ChatRoom::roomAvatar(101);
 		var_dump($ret);

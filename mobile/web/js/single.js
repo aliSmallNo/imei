@@ -1317,7 +1317,11 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					$(".zone-top .cards").html(Mustache.render(util.cardTmp, resp.data));
 					util.albums = resp.data.gallery;
 					$("#album .photos").html(Mustache.render(util.albumTmp, util));
-					$(".zone-top .profile small").html("资料完成度" + resp.data.percent + "%");
+					var profileTip = "资料完成度" + resp.data.percent + "%";
+					if (resp.data.audit) {
+						profileTip += '<i class="i-mark-warning"></i>';
+					}
+					$(".zone-top .profile small").html(profileTip);
 					var tipHtml = resp.data.hasMp ? "" : "还没有媒婆";
 					var imgWrap = $(".zone-top .avatar");
 					imgWrap.removeClass('pending');

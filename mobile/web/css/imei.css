@@ -8416,7 +8416,14 @@ ul.co-ul {
             font-size: 1.2rem;
             line-height: 2.3rem;
             font-weight: 300;
-            color: #969494; }
+            color: #969494;
+            position: relative; }
+            .zone-top li .flex-1.profile h4 small i {
+              position: absolute;
+              bottom: -1rem;
+              right: 2rem;
+              width: 1.4rem;
+              height: 1.4rem; }
 
 .zone-album {
   display: -webkit-box;
