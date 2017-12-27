@@ -6403,24 +6403,28 @@ section {
         font-size: 1rem; }
         .chats li .content a span.ans {
           background: #1b83f4; }
-    .chats li .content dl dd {
+    .chats li .content dl {
+      border: 0.5rem solid #eee;
+      max-width: 15rem;
       margin: 0; }
-      .chats li .content dl dd a.opt {
-        display: block;
+      .chats li .content dl dd {
+        margin: 0; }
+        .chats li .content dl dd a.opt {
+          display: block;
+          text-align: center;
+          background: #fff;
+          border: 0.2rem solid #eee;
+          font-size: 1.2rem; }
+      .chats li .content dl.tip {
         text-align: center;
-        background: #fff;
-        border: 0.2rem solid #eee;
-        font-size: 1.2rem; }
-    .chats li .content dl.tip {
-      text-align: center;
-      display: block; }
-      .chats li .content dl.tip em {
-        background: #d4d4d4;
-        color: #fff;
-        font-size: 1rem;
-        border-radius: 0.3rem;
-        padding: 0.3rem 0.6rem;
-        font-weight: 300; }
+        display: block; }
+        .chats li .content dl.tip em {
+          background: #d4d4d4;
+          color: #fff;
+          font-size: 1rem;
+          border-radius: 0.3rem;
+          padding: 0.3rem 0.6rem;
+          font-weight: 300; }
   .chats li.right {
     direction: rtl; }
     .chats li.right .avatar {
