@@ -2643,6 +2643,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			if (sid) {
 				linkUrl = "https://wx.meipo100.com/wx/sh?id=" + sid;
 				imgUrl = img;
+				title = '千寻恋恋里的优质单身，快来看看吧！';
 				desc = '千寻恋恋推荐TA给你，你也可以推荐身边单身好友给我们哦~';
 			}
 			wx.onMenuShareAppMessage({
