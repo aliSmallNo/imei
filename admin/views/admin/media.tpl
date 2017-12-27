@@ -160,7 +160,9 @@
 					BpbhdUtil.showMsg(resp.msg);
 				}
 				util.popup.modal('hide');
-				util.loading = 0;
+				setTimeout(function () {
+					util.loading = 0;
+				}, 800);
 			}, 'json');
 		}
 	};
