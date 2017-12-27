@@ -100,7 +100,7 @@
 		<div class="form-group group-text">
 			<label class="col-sm-3 control-label">通知内容</label>
 			<div class="col-sm-8">
-				<textarea class="form-control push-text" rows="5" placeholder="(必填)"></textarea>
+				<textarea class="form-control push-text" rows="6" placeholder="(必填)"></textarea>
 			</div>
 		</div>
 	</div>
