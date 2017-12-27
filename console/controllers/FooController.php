@@ -1540,7 +1540,9 @@ class FooController extends Controller
 		}
 		print_r($arr); */
 
-		echo AppUtil::decrypt("CDlpWjA5QjI3MkdiMjM0ODI7a1wyO0Q0OTRJZA");
+		//echo AppUtil::decrypt("CDlpWjA5QjI3MkdiMjM0ODI7a1wyO0Q0OTRJZA");
+
+		echo ChatMsg::isAnswer(120003, 143807);
 
 	}
 

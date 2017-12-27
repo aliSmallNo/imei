@@ -1978,6 +1978,10 @@ class ApiController extends Controller
 				if (!$receiverId) {
 					return self::renderAPI(129, '对话用户不存在啊~');
 				}
+				//判断对方有没有回答
+				if ($cat == QuestionSea::CAT_TRUTH && !ChatMsg::isAnswer($uid, $receiverId)) {
+					return self::renderAPI(129, '对方还没有回答你的问题哦~');
+				}
 				$resp = QuestionSea::randQuestion($uid, $receiverId, $cat, $wxInfo["uGender"]);
 				if ($resp) {
 					return self::renderAPI(0, '', $resp);
