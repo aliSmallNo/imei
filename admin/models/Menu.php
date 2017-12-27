@@ -4,7 +4,7 @@ namespace admin\models;
 
 class Menu
 {
-	const VERSION = 171227.6;
+	const VERSION = 171228.1;
 
 	public static function keepMenu($uId, $url)
 	{
@@ -99,6 +99,33 @@ class Menu
 	{
 		return [
 			[
+				"name" => "数据统计",
+				"id" => "analysis",
+				"icon" => "fa-bar-chart",
+				"staff" => 1,
+				"items" => [
+					[
+						"name" => "留存率",
+						"url" => "/site/reusestat",
+						"revise" => 1,
+						"level" => 820
+					],
+					[
+						"name" => "多点统计",
+						"url" => "/site/trend",
+						"revise" => 1,
+						"level" => 820
+					],
+					[
+						"name" => "用户分析",
+						"url" => "/site/userstat",
+						"revise" => 1,
+						"level" => 820
+					]
+
+				]
+			],
+			[
 				"name" => "用户管理",
 				"id" => "account",
 				"icon" => "fa-users",
@@ -173,33 +200,6 @@ class Menu
 						"url" => "/site/netstat",
 						"level" => 820
 					]
-				]
-			],
-			[
-				"name" => "数据统计",
-				"id" => "analysis",
-				"icon" => "fa-bar-chart",
-				"staff" => 1,
-				"items" => [
-					[
-						"name" => "留存率",
-						"url" => "/site/reusestat",
-						"revise" => 1,
-						"level" => 820
-					],
-					[
-						"name" => "多点统计",
-						"url" => "/site/trend",
-						"revise" => 1,
-						"level" => 820
-					],
-					[
-						"name" => "用户分析",
-						"url" => "/site/userstat",
-						"revise" => 1,
-						"level" => 820
-					]
-
 				]
 			],
 			[
