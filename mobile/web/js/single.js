@@ -1974,7 +1974,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					if (!eid) {
 						return false;
 					}
-					resetShare(eid);
 					util.eid = eid;
 					util.loaded = 0;
 					util.clear();
@@ -2027,6 +2026,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					},
 					function (resp) {
 						if (resp.code < 1) {
+							resetShare(util.eid, resp.data.profile.thumb);
 							var html = Mustache.render(util.tmp, resp.data);
 							util.content.html(html);
 							util.toggleFavor(resp.data.profile.favored);
@@ -2633,12 +2633,14 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			}, "json");
 		}
 
-		function resetShare(sid) {
+		function resetShare(sid, img) {
 			var linkUrl = "https://wx.meipo100.com/wx/single";
+			var imgUrl = "https://bpbhd-10063905.file.myqcloud.com/image/n1712061178801.png";
+
 			if (sid) {
 				linkUrl = "https://wx.meipo100.com/wx/sh?id=" + sid;
+				imgUrl = img;
 			}
-			var imgUrl = "https://bpbhd-10063905.file.myqcloud.com/image/n1712061178801.png";
 			var title = '千寻恋恋，本地优质的单身男女都在这里，赶快来相互认识下吧！';
 			var desc = '千寻恋恋，帮助身边的单身青年尽快脱单，推荐身边单身好友注册可以获得奖励哦~';
 			wx.onMenuShareAppMessage({
