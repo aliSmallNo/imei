@@ -521,7 +521,8 @@ class SiteController extends BaseController
 				"davatar" => $dInfo['uThumb'],
 				"dphone" => $dInfo['uPhone'],
 				"dId" => $dummyId,
-				'admin_id' => $this->admin_id
+				'admin_id' => $this->admin_id,
+				'base_url' => 'site/dummychats'
 			]);
 	}
 
@@ -704,7 +705,8 @@ class SiteController extends BaseController
 				"pid" => $lastId,
 				"nickName" => $nickname,
 				"openId" => $openId,
-				"regInfo" => $regInfo
+				"regInfo" => $regInfo,
+				'base_url' => 'site/wxmsg'
 			]);
 	}
 
@@ -977,6 +979,7 @@ class SiteController extends BaseController
 		return $this->renderPage("chatdes.tpl",
 			[
 				'list' => $list,
+				'base_url' => 'site/chat'
 			]
 		);
 	}
@@ -1166,7 +1169,8 @@ class SiteController extends BaseController
 		$voteStat = QuestionGroup::voteStat($gid);
 		return $this->renderPage('vote.tpl',
 			[
-				'voteStat' => $voteStat
+				'voteStat' => $voteStat,
+				'base_url' => 'site/groups'
 			]);
 	}
 
@@ -1504,6 +1508,7 @@ class SiteController extends BaseController
 				'count' => $count,
 				'roomId' => $roomId,
 				'stat' => $stat,
+				'base_url' => 'site/rooms'
 			]
 		);
 	}
@@ -1539,7 +1544,8 @@ class SiteController extends BaseController
 				"rInfo" => $rInfo,
 				"uInfo" => $uInfo,
 				'roomId' => $rId,
-				'admin_id' => $this->admin_id
+				'admin_id' => $this->admin_id,
+				'base_url' => 'site/rooms'
 			]);
 	}
 

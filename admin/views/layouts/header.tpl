@@ -79,13 +79,13 @@
 				<ul class="nav left-menus" id="side-menu">
 					<li class="g-menu-folder">
 						<a href="/site/summary"
-						   class="g-summary left-menu-group {{if $category == "summary"}}active{{/if}}">
+						   class="g-summary left-menu-group {{if $cur_tree_fork_id == "summary"}}active{{/if}}">
 							<i class="fa fa-dashboard fa-fw"></i> 账户概览
 						</a>
 						{{foreach from=$adminInfo.menus item=menu}}
 						{{if $menu.items && $menu.items|@count>0}}
-					<li class="g-menu-folder {{$menu.id}} {{if $category == $menu.id}}active bgw{{/if}}">
-						<a href="javascript:;" class="nav-top-menu {{if $category == $menu.id}}cur{{/if}}">
+					<li class="g-menu-folder {{$menu.id}} {{if $cur_tree_fork_id == $menu.id}}active bgw{{/if}}">
+						<a href="javascript:;" class="nav-top-menu {{if $cur_tree_fork_id == $menu.id}}cur{{/if}}">
 							<i class="fa {{$menu.icon}} fa-fw"></i>
 							{{$menu.name}}
 							<span class="fa arrow"></span>

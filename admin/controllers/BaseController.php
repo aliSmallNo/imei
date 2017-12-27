@@ -83,22 +83,23 @@ class BaseController extends Controller
 		$params["gIconOK"] = self::ICON_OK_HTML;
 		$params["gIconAlert"] = self::ICON_ALERT_HTML;
 
-		$params["left_tree_fork_id"] = isset($params["category"]) ? $params["category"] : $this->menu_fork_id;
-		$params["left_tree_node_id"] = isset($params["detailcategory"]) ? $params["detailcategory"] : self::getRequestUri();
-
-		$params["category"] = $params["left_tree_fork_id"];
-		$params["detailcategory"] = $params["left_tree_node_id"];
+		$cur_tree_node_id = isset($params["base_url"]) ? $params["base_url"] : self::getRequestUri();
+		$cur_tree_fork_id = Menu::getForkId($cur_tree_node_id);
+		if (isset($params["category"])) {
+			$cur_tree_fork_id = $params["category"];
+		}
+		$params["cur_tree_fork_id"] = $cur_tree_fork_id;
 		if (isset($params["adminInfo"]["menus"]) && $params["adminInfo"]["menus"]) {
 			$menus = $params["adminInfo"]["menus"];
 			foreach ($menus as $key => $menu) {
-				$menu["cls"] = ($menu["id"] == $params["category"]) ? "active cur-nav" : "";
-				$menu["cls2"] = ($menu["id"] == $params["category"]) ? "in" : "";
-				$menu["flag"] = ($menu["id"] == $params["category"]) ? 1 : 0;
+				$menu["cls"] = ($menu["id"] == $cur_tree_fork_id) ? "active cur-nav" : "";
+				$menu["cls2"] = ($menu["id"] == $cur_tree_fork_id) ? "in" : "";
+				$menu["flag"] = ($menu["id"] == $cur_tree_fork_id) ? 1 : 0;
 				$menus[$key] = $menu;
 				foreach ($menu["items"] as $k => $subMenu) {
-					$subMenu["cls"] = ($subMenu["flag"] == $params["detailcategory"]) ? "active" : "";
-					$subMenu["cls2"] = ($subMenu["flag"] == $params["detailcategory"]) ? "cur-sub-nav" : "";
-					$subMenu["icon"] = ($subMenu["flag"] == $params["detailcategory"]) ? ' <i class="fa fa-arrow-right"></i> ' : '';
+					$subMenu["cls"] = ($subMenu["flag"] == $cur_tree_node_id) ? "active" : "";
+					$subMenu["cls2"] = ($subMenu["flag"] == $cur_tree_node_id) ? "cur-sub-nav" : "";
+					$subMenu["icon"] = ($subMenu["flag"] == $cur_tree_node_id) ? ' <i class="fa fa-arrow-right"></i> ' : '';
 					if (isset($subMenu["count"])) {
 						$cnt = Admin::getCount($subMenu["count"]);
 						if ($cnt) {

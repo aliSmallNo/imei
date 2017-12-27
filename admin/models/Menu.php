@@ -4,7 +4,7 @@ namespace admin\models;
 
 class Menu
 {
-	const VERSION = 171228.1;
+	const VERSION = 171228.2;
 
 	public static function keepMenu($uId, $url)
 	{
@@ -83,11 +83,12 @@ class Menu
 	public static function getForkId($searchUrl)
 	{
 		$menus = self::menus();
+		$needle = trim($searchUrl . '?', '/');
 		foreach ($menus as $menu) {
 			$forkId = $menu['id'];
 			foreach ($menu['items'] as $item) {
 				$url = trim($item['url'] . '?', '/');
-				if (strpos($url, $searchUrl . '?') === 0) {
+				if (strpos($url, $needle) === 0) {
 					return $forkId;
 				}
 			}
