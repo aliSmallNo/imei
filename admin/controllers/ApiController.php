@@ -26,6 +26,7 @@ use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserWechat;
 use common\service\CogService;
+use common\service\SessionService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ImageUtil;
@@ -467,6 +468,8 @@ class ApiController extends Controller
 		switch ($tag) {
 			case "stat":
 				$ret = User::propStat($beginDate, $endDate);
+				$beginDate = date('Y-m-d', strtotime($endDate) - 86400 * 30);
+				$ret['session'] = SessionService::init()->chartData($beginDate, $endDate);
 				return self::renderAPI(0, '', $ret);
 			case 'reuse_detail':
 				$begin = self::postParam("begin");

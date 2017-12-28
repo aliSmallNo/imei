@@ -49,6 +49,7 @@ class RedisUtil
 	const KEY_BAIDU_TOKEN = "baidu_token";
 	const KEY_DUMMY_TOP = "dummy_top";
 	const KEY_ROOM_ALERT = "room_alert";
+	const KEY_SESSION_CHART = "session_chart";
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
@@ -82,6 +83,7 @@ class RedisUtil
 		self::KEY_BAIDU_TOKEN => 86400 * 28,
 		self::KEY_DUMMY_TOP => 60 * 30,
 		self::KEY_ROOM_ALERT => 60 * 10,
+		self::KEY_SESSION_CHART => 60 * 12,
 	];
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';

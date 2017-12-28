@@ -8,7 +8,6 @@
 
 namespace common\service;
 
-
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
 
@@ -27,6 +26,7 @@ class TrendService
 
 	const CAT_TREND = 'trend';
 	const CAT_REUSE = 'reuse';
+	const CAT_SESSION = 'session';
 
 	/**
 	 * @var \yii\db\Connection

@@ -60,11 +60,21 @@
 	<div class="col-sm-8">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<i class="fa fa-bar-chart-o fa-fw"></i> 每个时段操作人数统计
+				<i class="fa fa-bar-chart-o fa-fw"></i> 每个时段活跃统计
 			</div>
 			<div class="panel-body">
 				<div id="chart_times" class="chart-wrapper"></div>
 			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<i class="fa fa-bar-chart-o fa-fw"></i> 在线时长统计（秒）
+		</div>
+		<div class="panel-body">
+			<div id="chart_session" class="chart-wrapper"></div>
 		</div>
 	</div>
 </div>
@@ -130,7 +140,6 @@
 		}, function (resp) {
 			layer.closeAll();
 			if (resp.code == 0) {
-				// console.log(resp.data);
 				initPie(resp.data.mar.all, "chart_marry", '全员婚姻');
 				initPie(resp.data.mar.male, "chart_marry_m", '男生婚姻');
 				initPie(resp.data.mar.female, "chart_marry_f", '女生婚姻');
@@ -147,7 +156,9 @@
 				initPie(resp.data.edu.male, "chart_edu_m", '男生学历');
 				initPie(resp.data.edu.female, "chart_edu_f", '女生学历');
 				initPie(resp.data.gender, "chart_gender", '');
-				initChart(resp.data.times, "chart_times", '');
+				initChart(resp.data.times, "chart_times", ['男生', '女生']);
+				initChart(resp.data.session, "chart_session", ['男生', '女生']);
+				console.log(resp.data);
 			} else {
 				layer.msg(resp.msg);
 			}
@@ -202,20 +213,22 @@
 		});
 	}
 
-	function initChart(data, pid, title) {
-		var dates = [], mainData = [], subData = [];
-		for (var k = 0; k < data.length; k++) {
-			dates[k] = data[k]['date'];
-			mainData.push([
-				data[k]['date'],
-				data[k]['男生']
-			]);
-			subData.push([
-				data[k]['date'],
-				data[k]['女生']
-			]);
+	function initChart(data, pid, groups) {
+		var seriesData = [];
+		for (var k = 0; k < groups.length; k++) {
+			var groupName = groups[k];
+			var groupData = [];
+			for (var m = 0; m < data.length; m++) {
+				groupData.push([
+					data[m]['date'],
+					data[m][groupName]
+				]);
+			}
+			seriesData.push({
+				name: groupName,
+				data: groupData
+			});
 		}
-
 		$('#' + pid).highcharts({
 			chart: {
 				type: 'spline',
@@ -224,7 +237,7 @@
 			title: {
 				text: null
 			},
-			colors: ['#f06292', '#1976D2'],
+			colors: ['#1976D2', '#f06292', '#51c332'],
 			tooltip: {
 				shared: true,
 				crosshairs: {
@@ -279,16 +292,7 @@
 				align: 'center'
 				//verticalAlign:'middle'
 			},
-			series: [
-				{
-					name: '女生',
-					data: subData
-				},
-				{
-					name: '男生',
-					data: mainData,
-				}
-			]
+			series: seriesData
 		});
 	}
 
