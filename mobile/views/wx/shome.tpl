@@ -275,17 +275,7 @@
 	</a>
 	{[/items]}
 </script>
-<style>
-/*	dd {
-		margin: 0;
-	}
-	.chats li.right .content dd a{
-		display: block;
-		text-align: center;
-		background: #fff;
-		border: .2rem solid #eee;
-	}*/
-</style>
+
 <script type="text/template" id="tpl_chat">
 	{[#items]}
 	{[#qid]}
@@ -421,6 +411,6 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1.3'], function () {
-		requirejs(['/js/shome.js?v=1.9.0']);
+		requirejs(['/js/shome.js?v=1.9.1']);
 	});
 </script>

@@ -796,10 +796,16 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 
 		var NoticeUtil = {
 			ioChat: null,
+			ioHouse: null,
 			uni: $('#cUNI').val(),
 			rid: 0,
 			init: function (msgBlock) {
 				var util = this;
+				util.ioHouse = io('https://nd.meipo100.com/house');
+				util.ioHouse.on('connect', function () {
+					util.ioHouse.emit('house', util.uni);
+				});
+
 				util.ioChat = io('https://nd.meipo100.com/chatroom');
 				util.ioChat.on('connect', function () {
 					util.join();
