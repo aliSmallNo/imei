@@ -504,7 +504,9 @@
 		<li><a href="/wx/setting"><i class="i-zone-grid setting"></i><em>设置</em></a></li>
 		<li><a href="/wx/agree"><i class="i-zone-grid protocol"></i><em>用户协议</em></a></li>
 		<li></li>
+		<li></li>
 	</ul>
+	<div style="height: 3rem"></div>
 </section>
 <section id="myMP">
 	<div class="nav">
@@ -1494,6 +1496,6 @@
 		document.location.hash = "#slook";
 	}
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/single.js?v=1.10.1']);
+		requirejs(['/js/single.js?v=1.10.3']);
 	});
 </script>
