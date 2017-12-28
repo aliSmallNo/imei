@@ -934,6 +934,7 @@ class ChatMsg extends ActiveRecord
 
 				$chat["qid"] = AppUtil::encrypt($chat["qid"]);
 			}
+			$chat["qid"] = intval($chat["qid"]);
 			$items[] = $chat;
 
 		}

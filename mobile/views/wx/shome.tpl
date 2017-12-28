@@ -103,7 +103,7 @@
 				<a href="javascript:;"><i class="gift"></i></a>
 				<h5>送礼物</h5>
 			</li>
-			<li style="display: none">
+			<li>
 				<a href="javascript:;"><i class="wechat"></i></a>
 				<h5>索要微信</h5>
 			</li>
