@@ -920,7 +920,6 @@ class ChatMsg extends ActiveRecord
 				$lastId = $chat['cid'];
 			}
 			$chat["options"] = "";
-			//$chat["qdes"] = "";
 			$chat["ansFlag"] = 0;
 			//if ($chat["qid"] && $chat["qid"] != self::NOTE_GREETING) {
 			if (intval($chat["qid"])) {
