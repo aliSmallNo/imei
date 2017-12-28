@@ -1171,6 +1171,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 							util.toggleTimer(1);
 						}*/
 						util.gid = resp.data.gid;
+						NoticeUtil.join(util.gid);
 
 					} else if (resp.code == 102) {
 						alertModel.show('通知', '根据国家有关法规要求，婚恋交友平台用户须实名认证。您还没有实名认证，赶快去个人中心实名认证吧', '/wx/cert2');
