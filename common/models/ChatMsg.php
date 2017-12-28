@@ -52,6 +52,8 @@ class ChatMsg extends ActiveRecord
 	const MARK_HIDE_OPTIONS = 0;
 	const MARK_SHOW_OPTIONS = 1;
 
+	const NOTE_GREETING = "greeting";
+
 	public static function tableName()
 	{
 		return '{{%chat_msg}}';
@@ -221,7 +223,7 @@ class ChatMsg extends ActiveRecord
 			$entity->cGId = $gid;
 			$entity->cContent = $content;
 			$entity->cAddedBy = $senderId;
-			$entity->cNote = 'greeting';
+			$entity->cNote = self::NOTE_GREETING;
 			$entity->save();
 			$cId = $entity->cId;
 
@@ -920,7 +922,7 @@ class ChatMsg extends ActiveRecord
 			$chat["options"] = "";
 			//$chat["qdes"] = "";
 			$chat["ansFlag"] = 0;
-			if ($chat["qid"]) {
+			if ($chat["qid"] && $chat["qid"] != self::NOTE_GREETING) {
 				$qInfo = QuestionSea::fmt(QuestionSea::findOne(["qId" => $chat["qid"]])->toArray());
 				if ($chat["mark"] == self::MARK_SHOW_OPTIONS) {
 					$chat["ansFlag"] = 0;
@@ -1467,9 +1469,9 @@ class ChatMsg extends ActiveRecord
 		$option = json_decode($q["qOptions"], 1);
 		$str = "";
 		if (count($option) > 1) {
+			// 不是自由回答加上如下条件判断对方有没有回答
 			$str = " and cNote=$qid and cMark=0 ";
 		}
-
 		$sql = "select count(*) from im_chat_msg where cId>$cid and cGId=$gid and cAddedBy=$receiverId $str";
 		return $conn->createCommand($sql)->queryScalar();
 
