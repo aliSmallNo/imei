@@ -6415,6 +6415,8 @@ section {
           background: #fff;
           border: 0.2rem solid #eee;
           font-size: 1.2rem; }
+          .chats li .content dl dd a.opt:before {
+            content: ""; }
       .chats li .content dl.tip {
         text-align: center;
         display: block; }

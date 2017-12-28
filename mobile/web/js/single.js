@@ -1299,10 +1299,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						/*if (util.timer == 0) {
 							util.toggleTimer(1);
 						}*/
-						// util.gid = resp.data.gid;
-
-						//NoticeUtil.join(resp.data.gid);
-						//util.messages(resp.data, scrollFlag);
 						util.gid = resp.data.gid;
 						NoticeUtil.join(util.gid);
 
