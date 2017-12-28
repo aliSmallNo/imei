@@ -922,7 +922,8 @@ class ChatMsg extends ActiveRecord
 			$chat["options"] = "";
 			//$chat["qdes"] = "";
 			$chat["ansFlag"] = 0;
-			if ($chat["qid"] && $chat["qid"] != self::NOTE_GREETING) {
+			//if ($chat["qid"] && $chat["qid"] != self::NOTE_GREETING) {
+			if (intval($chat["qid"])) {
 				$qInfo = QuestionSea::fmt(QuestionSea::findOne(["qId" => $chat["qid"]])->toArray());
 				if ($chat["mark"] == self::MARK_SHOW_OPTIONS) {
 					$chat["ansFlag"] = 0;

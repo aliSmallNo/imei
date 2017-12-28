@@ -1542,7 +1542,8 @@ class FooController extends Controller
 
 		//echo AppUtil::decrypt("CDlpWjA5QjI3MkdiMjM0ODI7a1wyO0Q0OTRJZA");
 
-		echo ChatMsg::isAnswer(146306, 143807);
+		//echo ChatMsg::isAnswer(146306, 143807);
+
 
 	}
 
