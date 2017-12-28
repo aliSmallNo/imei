@@ -624,6 +624,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 						$sls.main.hide();
 						$sls.shade.fadeOut(160);
 						alpha.toast(resp.msg, 1);
+						util.toggleBar(0);
 					} else {
 						alpha.toast(resp.msg);
 					}
@@ -761,6 +762,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 							ChatUtil.toggle(ChatUtil.giftmenus.hasClass("off"), ChatUtil.giftmenus);
 							util.count.html(resp.data.stat.flower);
 							NoticeUtil.broadcast(resp.data);
+							ChatUtil.toggleBar(0);
 						} else if (resp.code == 128) {
 							util.notMoreRose();
 						} else {
