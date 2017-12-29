@@ -9849,23 +9849,25 @@ ul.co-ul {
     font-size: 1.4rem;
     padding-top: 1.5rem; }
   .request_wechat .request_wechat_des {
-    padding: 2rem 2.5rem; }
+    padding: 3rem 4.5rem; }
     .request_wechat .request_wechat_des input {
       border: none;
-      border-bottom: 1px solid #777;
+      border-bottom: 1px solid #d9d9d9;
       width: 100%;
       height: 2rem;
-      font-size: 1.5rem; }
+      font-size: 1.2rem;
+      text-align: center; }
     .request_wechat .request_wechat_des p {
-      font-size: 1.2rem; }
+      font-size: 1.2rem;
+      letter-spacing: 0.1rem; }
   .request_wechat .request_wechat_btn {
     display: flex;
-    border-top: 1px solid #eee; }
+    border-top: 1px solid #d9d9d9; }
     .request_wechat .request_wechat_btn a {
       flex: 1;
       padding: 1rem;
       font-size: 1.3rem; }
       .request_wechat .request_wechat_btn a:first-child {
-        border-right: 1px solid #eee; }
+        border-right: 1px solid #d9d9d9; }
 
 /*# sourceMappingURL=imei.css.map */

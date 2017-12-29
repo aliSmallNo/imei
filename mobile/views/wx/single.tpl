@@ -1494,8 +1494,8 @@
 	<div class="request_wechat">
 		<h4>先填写您的微信号</h4>
 		<div class="request_wechat_des">
-			<input type="text">
-			<p>送她66朵媒瑰花增加索要微信号的概率，送TA失败媒瑰花全部退回，是否赠送？</p>
+			<input type="text" placeholder="填写您的微信号">
+			<p></p>
 		</div>
 		<div class="request_wechat_btn">
 			<a href="javascript:;" class="cancel">取消</a>

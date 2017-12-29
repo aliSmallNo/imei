@@ -760,8 +760,7 @@ class UserNet extends ActiveRecord
 		}
 		// 打赏给 $id
 		$nid = UserNet::addLink($id, $myId);
-		UserTrans::add($myId, $nid, UserTrans::CAT_REWARD,
-			UserTrans::$catDict[UserTrans::CAT_REWARD], $num, UserTrans::UNIT_GIFT);
+		UserTrans::add($myId, $nid, UserTrans::CAT_REWARD, UserTrans::$catDict[UserTrans::CAT_REWARD], $num, UserTrans::UNIT_GIFT);
 		WechatUtil::toNotice($id, $myId, "wxNo");
 		return [1, $amt];
 	}
