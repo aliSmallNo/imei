@@ -11,12 +11,12 @@
 			<h4>{{$stat.hat}}个</h4>
 			<a href="javascript:;">去收集</a>
 		</li>
-		<li data-text="分享好友后可获得" data-btn-text="去分享" data-url="/wx/shares">
+		<li data-text="分享到朋友圈后可获得" data-btn-text="去分享" data-url="/wx/shares">
 			<div class="prop prop-sock"></div>
 			<h4>{{$stat.sock}}个</h4>
 			<a href="javascript:;">去收集</a>
 		</li>
-		<li data-text="分享到朋友圈后可获得" data-btn-text="去分享" data-url="javascript:;">
+		<li data-text="本页分享到朋友圈后可获得" data-btn-text="去分享" data-url="javascript:;">
 			<div class="prop prop-olaf"></div>
 			<h4>{{$stat.olaf}}个</h4>
 			<a href="javascript:;">去收集</a>
