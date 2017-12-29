@@ -740,7 +740,10 @@ class ApiController extends Controller
 				$sid = AppUtil::decrypt($sid);
 				$subtag = self::postParam("subtag");
 				list($code, $msg, $data) = ChatMsg::ProcessWechat($wx_uid, $sid, $subtag);
-				return self::renderAPI($code, $msg);
+				return self::renderAPI($code, $msg, [
+					'items' => $data,
+					'gid' => $data['gid'],
+				]);
 				break;
 			case "payrose":
 				if (!$wx_uid) {

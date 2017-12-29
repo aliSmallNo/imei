@@ -224,7 +224,7 @@ class Order extends ActiveRecord
 				break;
 		}
 
-		$msg = '<button href="/wx/shopbag">' . "礼物: " . $gInfo["name"] . '</button>';
+		$msg = '<button data-tag="shopbag">' . "礼物: " . $gInfo["name"] . '</button>';
 		$info = ChatMsg::addChat($wx_uid, $sid, $msg);
 		return [0, '赠送成功~', $info];
 	}

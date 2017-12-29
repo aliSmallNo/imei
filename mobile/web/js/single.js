@@ -559,7 +559,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			init: function () {
 				var util = this;
 				$(document).on(kClick, ".request_wechat_btn .cancel", function () {
-					if (util.tag = "agree_request") {
+					if (util.tag == "agree_request") {
 						util.tag = "refuse_request";
 						util.process();
 					} else {
@@ -575,7 +575,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 							break;
 						case "give_rose":
 						case "agree_request":
-							util.process_wechat();
+							util.process();
 							break;
 					}
 				});
@@ -626,6 +626,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						if (resp.code == 0) {
 							util.hideAlert();
 							util.reset();
+							NoticeUtil.broadcast(resp.data);
 						} else {
 							alpha.toast(resp.msg);
 						}
@@ -633,6 +634,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				}, "json");
 			},
 			reset: function () {
+				var util = this;
+				util.isGiveWechat = 0;
+				util.tag = "request_wechat_no";
 
 			},
 			wxname: function () {
@@ -817,7 +821,21 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				$(document).on(kClick, ".j-content-wrap button", function () {
 					var self = $(this);
 					event.stopPropagation();
-					location.href = "/wx/shopbag";
+					var tag = self.attr("data-tag");
+					if (tag == "wxname") {
+						var request_uid = parseInt(self.attr("data-uid"));
+						getWechatUtil.isGiveWechat = request_uid == parseInt($("#cUID").val()) ? 0 : 1;
+						if (!getWechatUtil.isGiveWechat) {
+							return false;
+						} else {
+							getWechatUtil.tag = "request_wechat_no";
+							getWechatUtil.alert();
+						}
+					} else {
+						location.href = "/wx/shopbag";
+					}
+
+
 					return false;
 				});
 
