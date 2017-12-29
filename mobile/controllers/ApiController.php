@@ -57,8 +57,6 @@ class ApiController extends Controller
 	public $layout = false;
 	const COOKIE_OPENID = "wx-openid";
 
-	const MSG_BLACK = "对方已经屏蔽（拉黑）你了";
-
 	public function actionBuzz()
 	{
 		$signature = self::getParam("signature");
@@ -567,7 +565,7 @@ class ApiController extends Controller
 				}
 
 				if (UserNet::hasBlack($wx_uid, $uid)) {
-					return self::renderAPI(129, self::MSG_BLACK);
+					return self::renderAPI(129, AppUtil::MSG_BLACK);
 				}
 
 				if (UserNet::hasFollowed($uid, $wx_uid)) {
@@ -724,7 +722,7 @@ class ApiController extends Controller
 				$f = self::postParam("f");
 
 				if (UserNet::hasBlack($wx_uid, AppUtil::decrypt($id))) {
-					return self::renderAPI(129, self::MSG_BLACK);
+					return self::renderAPI(129, AppUtil::MSG_BLACK);
 				}
 				LogAction::add($wx_uid, $openId,
 					$f == 'yes' ? LogAction::ACTION_FAVOR : LogAction::ACTION_UNFAVOR);
@@ -734,6 +732,16 @@ class ApiController extends Controller
 				$wname = self::postParam("wname");
 				$ret = UserWechat::replace($openId, ["wWechatId" => $wname]);
 				return self::renderAPI(0, '', $ret);
+			case "process_wechat":
+				if (!$wx_uid) {
+					return self::renderAPI(129, '用户不存在啊~');
+				}
+				$sid = self::postParam("sid");
+				$sid = AppUtil::decrypt($sid);
+				$subtag = self::postParam("subtag");
+				list($code, $msg, $data) = ChatMsg::ProcessWechat($wx_uid, $sid, $subtag);
+				return self::renderAPI($code, $msg);
+				break;
 			case "payrose":
 				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
@@ -746,7 +754,7 @@ class ApiController extends Controller
 				$id = self::postParam("id");
 				$id = AppUtil::decrypt($id);
 				if (UserNet::hasBlack($wx_uid, $id)) {
-					return self::renderAPI(129, self::MSG_BLACK);
+					return self::renderAPI(129, AppUtil::MSG_BLACK);
 				}
 				if (UserNet::findOne(["nRelation" => UserNet::REL_LINK,
 					"nSubUId" => $wx_uid,
@@ -1909,7 +1917,7 @@ class ApiController extends Controller
 					return self::renderAPI(129, '消息不能为空啊~');
 				}
 				if (UserNet::hasBlack($uid, $receiverId)) {
-					return self::renderAPI(129, self::MSG_BLACK);
+					return self::renderAPI(129, AppUtil::MSG_BLACK);
 				}
 				if (ChatMsg::requireCert($uid, $receiverId)) {
 					return self::renderAPI(103, '对方设置了密聊身份认证要求，要求你进行身份认证，提供安全保障才能继续聊天，你是否继续聊天？');

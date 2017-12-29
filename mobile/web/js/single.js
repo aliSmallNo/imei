@@ -548,6 +548,128 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			}
 		};
 
+		var getWechatUtil = {
+			tag: 'request_wechat_no',
+			ptext: [
+				{title: '请先填写您的微信号', p: '', btns: ["取消", "确定"]},
+				{title: '提示', p: '送TA媒瑰花增加索要微信号的概率，索要失败全部退回，是否赠送？', btns: ["取消", "66朵媒瑰花"]},
+				{title: '提示', p: '对方向您索要微信号，并赠送您66朵媒瑰花,您是否同意?', btns: ["委婉拒绝", "同意"]}
+			],
+			isGiveWechat: 0,
+			init: function () {
+				var util = this;
+				$(document).on(kClick, ".request_wechat_btn .cancel", function () {
+					if (util.tag = "agree_request") {
+						util.tag = "refuse_request";
+						util.process();
+					} else {
+						util.hideAlert();
+					}
+				});
+				$(document).on(kClick, ".request_wechat_btn .comfirm", function () {
+					switch (util.tag) {
+						case "request_wechat_no":
+							util.wxname();
+							break;
+						case "give_wechat_no":
+							break;
+						case "give_rose":
+						case "agree_request":
+							util.process_wechat();
+							break;
+					}
+				});
+			},
+			hideAlert: function () {
+				$sls.main.hide();
+				$sls.shade.fadeOut();
+			},
+			alert: function () {
+				var util = this;
+				var t;
+				var input = $(".request_wechat_des input");
+				console.log(util.tag);
+				switch (util.tag) {
+					case "request_wechat_no":
+						$sls.main.show();
+						var html = $("#tpl_request_wechat").html();
+						$sls.content.html(html).addClass("animate-pop-in");
+						$sls.shade.fadeIn(160);
+						break;
+					case "give_wechat_no":
+						break;
+					case "give_rose":
+						t = util.ptext[1];
+						input.hide();
+						util.changeTag(t);
+						break;
+					case "agree_request":
+						t = util.ptext[2];
+						input.hide();
+						util.changeTag(t);
+						break;
+				}
+			},
+			process: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post("/api/user", {
+					tag: "process_wechat",
+					subtag: util.tag,
+					sid: ChatUtil.sid,
+				}, function (resp) {
+					util.loading = 0;
+					if (resp.data) {
+						if (resp.code == 0) {
+							util.hideAlert();
+							util.reset();
+						} else {
+							alpha.toast(resp.msg);
+						}
+					}
+				}, "json");
+			},
+			reset: function () {
+
+			},
+			wxname: function () {
+				var util = this;
+				var wname = $(".request_wechat_des input").val().trim();
+				if (!wname) {
+					alpha.toast("请填写正确的微信号哦~");
+					return;
+				}
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post("/api/user", {
+					tag: "wxname",
+					wname: wname
+				}, function (resp) {
+					util.loading = 0;
+					if (resp.code == 0) {
+						util.tag = util.isGiveWechat ? "agree_request" : "give_rose";
+						util.alert();
+					} else {
+						alpha.toast(resp.msg);
+					}
+				}, "json");
+			},
+			changeTag: function (t) {
+				$(".request_wechat h4").html(t.title);
+				$(".request_wechat_des p").html(t.p);
+				$(".request_wechat_btn a:first-child").html(t.btns[0]);
+				$(".request_wechat_btn a:last-child").html(t.btns[1]);
+			},
+
+
+		};
+		getWechatUtil.init();
+
 		var ChatUtil = {
 			commentFlag: 0,
 			leftCount: 0,
@@ -654,6 +776,8 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 							AdvertUtil.giftSwiper();
 							break;
 						case "wechat":
+							getWechatUtil.tag = "request_wechat_no";
+							// getWechatUtil.alert();
 							break;
 						case "setting":
 							location.href = "/wx/setting";

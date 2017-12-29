@@ -39,6 +39,9 @@ class AppUtil
 	private static $SMS_SIGN = '千寻恋恋';
 	private static $SMS_TMP_ID = 9179;
 
+	const MSG_BLACK = "对方已经屏蔽（拉黑）你了";
+	const MSG_NO_MORE_FLOWER = "媒瑰花数量不足哦~";
+
 	static $otherPartDict = [
 		"female" => [
 			[

@@ -241,7 +241,7 @@ class QuestionSea extends ActiveRecord
 		if ($qIds) {
 			$conStr .= " and qId not in ($qIds) ";
 		}
-		$sql = " select * from im_question_sea where qCategory=$cat $conStr ORDER by qRank asc limit 1";
+		$sql = " select * from im_question_sea where qCategory=$cat $conStr order by rand() asc limit 1";
 		$res = $conn->createCommand($sql)->queryOne();
 		return $res;
 

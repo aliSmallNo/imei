@@ -36,12 +36,14 @@ class ChatMsg extends ActiveRecord
 	const TYPE_VOICE = 120;
 	const TYPE_GIFT = 130;
 	const TYPE_LINK = 140;
+	const TYPE_SYS = 150;
 
 	static $SpecialDict = [
 		self::TYPE_IMAGE => '[图片]',
 		self::TYPE_VOICE => '[声音]',
 		self::TYPE_GIFT => '[礼物]',
 		self::TYPE_LINK => '[链接]',
+		self::TYPE_SYS => '[系统消息]',
 	];
 
 	const CHAT_COST = 20;
@@ -53,6 +55,8 @@ class ChatMsg extends ActiveRecord
 	const MARK_SHOW_OPTIONS = 1;
 
 	const NOTE_GREETING = "greeting";
+
+	const PAY_REQUEST_WECHAT_NO = 66;
 
 	public static function tableName()
 	{
@@ -552,6 +556,7 @@ class ChatMsg extends ActiveRecord
 		if (is_array($contentBundle)) {
 			$URL = isset($contentBundle['url']) ? $contentBundle['url'] : '';
 			$content = isset($contentBundle['text']) ? $contentBundle['text'] : '';
+			$tag = isset($contentBundle['tag']) ? $contentBundle['tag'] : '';
 		} else {
 			$content = $contentBundle;
 		}
@@ -633,6 +638,8 @@ class ChatMsg extends ActiveRecord
 			$entity->cType = self::TYPE_GIFT;
 		} elseif ($URL) {
 			$entity->cType = self::TYPE_LINK;
+		} elseif ($tag == "sys") {
+			$entity->cType = self::TYPE_SYS;
 		}
 		$entity->cAddedBy = $senderId;
 		if ($adminId) {
@@ -1477,6 +1484,46 @@ class ChatMsg extends ActiveRecord
 		return $conn->createCommand($sql)->queryScalar();
 	}
 
+	/**
+	 * 处理 索要微信号
+	 * @param $uid
+	 * @param $sid
+	 * @param $subtag
+	 * @return array
+	 */
+	public static function ProcessWechat($uid, $sid, $subtag)
+	{
+		$conn = AppUtil::db();
+		// list($uid1, $uid2) = self::sortUId($uid, $sid);
+		switch ($subtag) {
+			case "give_rose":
+				// 送花
+				list($code, $msg) = UserAudit::verify($uid);
+				if ($code && $msg) {
+					return [$code, $msg, ""];
+				}
+				if (UserNet::hasBlack($uid, $sid)) {
+					return [129, AppUtil::MSG_BLACK, ""];
+				}
+				if (UserNet::findOne(["nRelation" => UserNet::REL_LINK, "nSubUId" => $uid, "nUId" => $sid, "nStatus" => UserNet::STATUS_WAIT])) {
+					return [129, '您已经申请过微信号了哦~'];
+				}
+				list($result, $roseAmt) = UserNet::roseAmt($uid, $sid, ChatMsg::PAY_REQUEST_WECHAT_NO);
+				if ($result == 0) {
+					return [129, AppUtil::MSG_NO_MORE_FLOWER, ""];
+				}
+				// 添加消息
+				$sysMessage = "【系统消息】" . "XXX" . "发起了索要微信号功能，并赠送66朵玫瑰花，点击输入微信号给对方吧！";
+				$res = ChatMsg::addChat($uid, $sid, ["tag" => "sys", "content" => $sysMessage]);
+
+				break;
+			case "agree_request":
+				break;
+			case "refuse_request":
+				break;
+		}
+	}
+
 	public static function showGuide($uid, $openId, $key)
 	{
 		$sql = "SELECT count(a.aId) as cnt
@@ -1491,5 +1538,6 @@ class ChatMsg extends ActiveRecord
 		LogAction::add($uid, $openId, LogAction::ACTION_GREETING, '', $key);
 
 		return ($ret && $ret > 0) ? 0 : 1;
+
 	}
 }
