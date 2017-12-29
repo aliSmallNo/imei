@@ -9843,4 +9843,24 @@ ul.co-ul {
       text-align: center;
       font-size: 1.6rem; }
 
+.guide-truth {
+  display: block;
+  padding-top: 65%;
+  background: url(../images/chat/guide_truth.png) no-repeat center center;
+  background-size: 100% 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0; }
+
+.guide-more {
+  display: block;
+  padding-top: 65%;
+  background: url(../images/chat/guide_more.png) no-repeat center center;
+  background-size: 100% 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 7.5rem; }
+
 /*# sourceMappingURL=imei.css.map */

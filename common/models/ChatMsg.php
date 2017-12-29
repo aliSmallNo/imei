@@ -1478,7 +1478,7 @@ class ChatMsg extends ActiveRecord
 
 	}
 
-	public static function hasGuide($uid, $openId, $key)
+	public static function showGuide($uid, $openId, $key)
 	{
 		$sql = "SELECT count(a.aId) as cnt
 			  FROM im_log_action as a 
@@ -1491,6 +1491,6 @@ class ChatMsg extends ActiveRecord
 
 		LogAction::add($uid, $openId, LogAction::ACTION_GREETING, '', $key);
 
-		return ($ret && $ret > 0);
+		return ($ret && $ret > 0) ? 0 : 1;
 	}
 }

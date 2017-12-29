@@ -392,6 +392,21 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 					util.sent();
 				});
 
+				$(document).on(kClick, '.j-guide', function () {
+					var self = $(this);
+					if (self.hasClass('guide-truth')) {
+						util.toggleBar(1);
+						var html = '<a class="j-guide guide-more" href="javascript:;"></a>';
+						$sls.main.html(html);
+					} else {
+						setTimeout(function () {
+							$sls.main.hide();
+							$sls.main.html('');
+							$sls.shade.fadeOut(100);
+						}, 100);
+					}
+				});
+
 				// 拉黑对方
 				$(document).on(kClick, ".date-wrap a", function () {
 					var self = $(this);
@@ -544,7 +559,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 					id: util.sid,
 				}, function (resp) {
 					$sls.loading = 0;
-					if (resp.code == 0) {
+					if (resp.code < 1) {
 						util.answerText = resp.data.title;
 						util.qid = resp.data.id;
 						// util.toggle(false, util.helpchatMenu);
@@ -580,7 +595,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 					if (resp.code < 1) {
 						NoticeUtil.join(resp.data.gid);
 						util.messages(resp.data, scrollFlag);
-						if (!resp.data.guide_flag) {
+						if (resp.data.show_guide) {
 							util.showGuide();
 						}
 					} else {
@@ -590,7 +605,10 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 				}, "json");
 			},
 			showGuide: function () {
-
+				var html = '<a class="j-guide guide-truth" href="javascript:;"></a>';
+				$sls.main.html(html);
+				$sls.main.show();
+				$sls.shade.fadeIn(160);
 			},
 			messages: function (data, scrollFlag) {
 				var util = this;

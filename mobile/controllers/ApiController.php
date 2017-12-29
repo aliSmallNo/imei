@@ -2022,14 +2022,14 @@ class ApiController extends Controller
 				}
 				// 是否评价一次TA
 				$commentFlag = UserComment::hasComment($subUId, $uid);
-				$guide_flag = ChatMsg::hasGuide($uid, $openId, 99);
+				$show_guide = ChatMsg::showGuide($uid, $openId, 99);
 				return self::renderAPI(0, '', [
 					'items' => $items,
 					'lastId' => intval($lastId),
 					'left' => $left,
 					'gid' => $gId,
 					'commentFlag' => $commentFlag,
-					'guide_flag' => $guide_flag
+					'show_guide' => $show_guide
 				]);
 				break;
 			case 'contacts':

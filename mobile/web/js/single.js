@@ -977,6 +977,22 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						}
 					}
 				});
+
+
+				$(document).on(kClick, '.j-guide', function () {
+					var self = $(this);
+					if (self.hasClass('guide-truth')) {
+						util.toggleBar(1);
+						var html = '<a class="j-guide guide-more" href="javascript:;"></a>';
+						$sls.main.html(html);
+					} else {
+						setTimeout(function () {
+							$sls.main.hide();
+							$sls.main.html('');
+							$sls.shade.fadeOut(100);
+						}, 100);
+					}
+				});
 			},
 			helpchat: function () {
 				var util = this;
@@ -990,7 +1006,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					id: util.sid,
 				}, function (resp) {
 					util.loading = 0;
-					if (resp.code == 0) {
+					if (resp.code < 1) {
 						util.inputVal = resp.data.title;
 						util.qId = resp.data.id;
 						util.toggle(false, util.helpchatMenu);
@@ -1299,9 +1315,11 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						/*if (util.timer == 0) {
 							util.toggleTimer(1);
 						}*/
+						if (resp.data.show_guide) {
+							util.showGuide();
+						}
 						util.gid = resp.data.gid;
 						NoticeUtil.join(util.gid);
-
 					} else if (resp.code == 102) {
 						alertModel.show('通知', '根据国家有关法规要求，婚恋交友平台用户须实名认证。您还没有实名认证，赶快去个人中心实名认证吧', '/wx/cert2');
 					} else {
@@ -1309,6 +1327,12 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					}
 					util.loading = 0;
 				}, "json");
+			},
+			showGuide: function () {
+				var html = '<a class="j-guide guide-truth" href="javascript:;"></a>';
+				$sls.main.html(html);
+				$sls.main.show();
+				$sls.shade.fadeIn(160);
 			},
 			contacts: function () {
 				var util = this;
