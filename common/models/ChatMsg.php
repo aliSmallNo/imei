@@ -552,7 +552,7 @@ class ChatMsg extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$URL = $content = '';
+		$URL = $tag = $content = '';
 		if (is_array($contentBundle)) {
 			$URL = isset($contentBundle['url']) ? $contentBundle['url'] : '';
 			$content = isset($contentBundle['text']) ? $contentBundle['text'] : '';
@@ -1482,7 +1482,6 @@ class ChatMsg extends ActiveRecord
 		}
 		$sql = "select count(*) from im_chat_msg where cId>$cid and cGId=$gid and cAddedBy=$receiverId $str";
 		return $conn->createCommand($sql)->queryScalar();
-
 	}
 
 	/**
