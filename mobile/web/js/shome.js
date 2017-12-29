@@ -580,11 +580,17 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 					if (resp.code < 1) {
 						NoticeUtil.join(resp.data.gid);
 						util.messages(resp.data, scrollFlag);
+						if (!resp.data.guide_flag) {
+							util.showGuide();
+						}
 					} else {
 						alpha.toast(resp.msg);
 					}
 					util.loading = 0;
 				}, "json");
+			},
+			showGuide: function () {
+
 			},
 			messages: function (data, scrollFlag) {
 				var util = this;

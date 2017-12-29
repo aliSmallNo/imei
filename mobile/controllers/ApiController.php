@@ -2005,7 +2005,6 @@ class ApiController extends Controller
 				return self::renderAPI(0, '', $session);
 				break;
 			case 'list':
-
 				$lastId = self::postParam('last', 0);
 				$subUId = self::postParam('id');
 				$subUId = AppUtil::decrypt($subUId);
@@ -2023,12 +2022,14 @@ class ApiController extends Controller
 				}
 				// 是否评价一次TA
 				$commentFlag = UserComment::hasComment($subUId, $uid);
+				$guide_flag = ChatMsg::hasGuide($uid, $openId, 99);
 				return self::renderAPI(0, '', [
 					'items' => $items,
 					'lastId' => intval($lastId),
 					'left' => $left,
 					'gid' => $gId,
-					'commentFlag' => $commentFlag
+					'commentFlag' => $commentFlag,
+					'guide_flag' => $guide_flag
 				]);
 				break;
 			case 'contacts':

@@ -1477,4 +1477,20 @@ class ChatMsg extends ActiveRecord
 		return $conn->createCommand($sql)->queryScalar();
 
 	}
+
+	public static function hasGuide($uid, $openId, $key)
+	{
+		$sql = "SELECT count(a.aId) as cnt
+			  FROM im_log_action as a 
+			  WHERE a.aKey=:key and a.aUId=:uid ";
+		$conn = AppUtil::db();
+		$ret = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':key' => $key,
+		])->queryScalar();
+
+		LogAction::add($uid, $openId, LogAction::ACTION_GREETING, '', $key);
+
+		return ($ret && $ret > 0);
+	}
 }

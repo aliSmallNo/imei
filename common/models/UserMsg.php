@@ -288,7 +288,7 @@ class UserMsg extends ActiveRecord
 				 FROM im_cog as c
 				 LEFT JOIN im_log_action as a on c.cId=a.aKey and a.aUId=:uid
 				 WHERE c.cStatus=1 AND c.cExpiredOn >= DATE_FORMAT(NOW(),'%Y-%m-%d') and c.cCategory in ( $strCats )
-				 GROUP BY c.cId HAVING cnt<c.cCount
+				 GROUP BY c.cId HAVING cnt < c.cCount
 				 ORDER BY c.cUpdatedOn desc";
 		$ret = $conn->createCommand($sql)->bindValues([
 			':uid' => $uid,
