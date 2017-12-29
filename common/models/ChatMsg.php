@@ -1485,7 +1485,6 @@ class ChatMsg extends ActiveRecord
 
 	}
 
-<<<<<<< HEAD
 	/**
 	 * 处理 索要微信号
 	 * @param $uid
@@ -1524,7 +1523,8 @@ class ChatMsg extends ActiveRecord
 			case "refuse_request":
 				break;
 		}
-=======
+	}
+
 	public static function showGuide($uid, $openId, $key)
 	{
 		$sql = "SELECT count(a.aId) as cnt
@@ -1539,6 +1539,6 @@ class ChatMsg extends ActiveRecord
 		LogAction::add($uid, $openId, LogAction::ACTION_GREETING, '', $key);
 
 		return ($ret && $ret > 0) ? 0 : 1;
->>>>>>> 764c2257966f6519200ff72f4599d69647d7d665
+
 	}
 }
