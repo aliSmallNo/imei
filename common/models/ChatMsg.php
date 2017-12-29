@@ -1475,7 +1475,6 @@ class ChatMsg extends ActiveRecord
 		}
 		$sql = "select count(*) from im_chat_msg where cId>$cid and cGId=$gid and cAddedBy=$receiverId $str";
 		return $conn->createCommand($sql)->queryScalar();
-
 	}
 
 	public static function showGuide($uid, $openId, $key)
