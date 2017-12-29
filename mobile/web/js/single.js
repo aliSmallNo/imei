@@ -548,6 +548,32 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			}
 		};
 
+		var getWechatUtil = {
+			tag: 'request_wechat_no',
+			init: function () {
+
+			},
+			alert: function () {
+				var util = this;
+				switch (util.tag) {
+					case "request_wechat_no":
+						$sls.main.show();
+						var html = $("#tpl_request_wechat").html();
+						$sls.content.html(html).addClass("animate-pop-in");
+						$sls.shade.fadeIn(160);
+						break;
+					case "give_wechat_no":
+						break;
+					case "give_rose":
+						break;
+					case "agree_request":
+						break;
+				}
+			},
+
+		};
+		getWechatUtil.init();
+
 		var ChatUtil = {
 			commentFlag: 0,
 			leftCount: 0,
@@ -654,6 +680,8 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 							AdvertUtil.giftSwiper();
 							break;
 						case "wechat":
+							getWechatUtil.tag = "request_wechat_no";
+							getWechatUtil.alert();
 							break;
 						case "setting":
 							location.href = "/wx/setting";

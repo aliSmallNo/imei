@@ -1490,6 +1490,19 @@
 	</ul>
 	{[/data]}
 </script>
+<script type="text/template" id="tpl_request_wechat">
+	<div class="request_wechat">
+		<h4>先填写您的微信号</h4>
+		<div class="request_wechat_des">
+			<input type="text">
+			<p>送她66朵媒瑰花增加索要微信号的概率，送TA失败媒瑰花全部退回，是否赠送？</p>
+		</div>
+		<div class="request_wechat_btn">
+			<a href="javascript:;" class="cancel">取消</a>
+			<a href="javascript:;" class="comfirm">确定</a>
+		</div>
+	</div>
+</script>
 <script src="/assets/js/require.js"></script>
 <script>
 	if (document.location.hash === "" || document.location.hash === "#") {
