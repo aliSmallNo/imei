@@ -552,7 +552,7 @@ class ChatMsg extends ActiveRecord
 		if (!$conn) {
 			$conn = AppUtil::db();
 		}
-		$URL = $content = '';
+		$URL = $tag = $content = '';
 		if (is_array($contentBundle)) {
 			$URL = isset($contentBundle['url']) ? $contentBundle['url'] : '';
 			$content = isset($contentBundle['text']) ? $contentBundle['text'] : '';
