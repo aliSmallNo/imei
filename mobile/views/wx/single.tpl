@@ -341,7 +341,7 @@
 	</div>
 </section>
 <section id="schat" data-title="密聊中...">
-	<div class="schat-top-bar">
+	<div class="schat-top-bar" style="display: none">
 		<a href="javascript:;" data-tag="helpchat">
 			<img src="/images/top_help_chat.png">
 			<div>助聊</div>
@@ -365,7 +365,43 @@
 		<a class="user-comment" href="javascript:;" style="display: none">匿名评价TA</a>
 	</div>
 	<div class="m-bottom-pl"></div>
-	<div class="m-bottom-bar">
+	<div class="m-chat-bar">
+		<div class="m-chat-bar-top">
+			<button class="btn-chat-truth"></button>
+			<input class="chat-input" placeholder="在这输入，注意文明礼貌哦~">
+			<button class="btn-chat-send">发送</button>
+			<button class="btn-chat-more"></button>
+		</div>
+		<ul class="m-chat-bar-list">
+			<li>
+				<a href="javascript:;"><i class="truth"></i></a>
+				<h5>真心话</h5>
+			</li>
+			<li>
+				<a href="javascript:;"><i class="date"></i></a>
+				<h5>约会</h5>
+			</li>
+			<li>
+				<a href="javascript:;"><i class="gift"></i></a>
+				<h5>送礼物</h5>
+			</li>
+			<li>
+				<a href="javascript:;"><i class="wechat"></i></a>
+				<h5>索要微信</h5>
+			</li>
+			<li>
+				<a href="javascript:;"><i class="setting"></i></a>
+				<h5>设置</h5>
+			</li>
+			<li>
+				<a href="javascript:;"><i class="dislike"></i></a>
+				<h5>拉黑</h5>
+			</li>
+		</ul>
+	</div>
+
+	<!-- 2017-12-28 隐藏 -->
+	<div class="m-bottom-bar" style="display: none">
 		<div class="help-chat off">
 			<div class="help-chat-item">
 				<a href="javascript:;">秀</a>
@@ -1118,13 +1154,35 @@
 </script>
 <script type="text/template" id="tpl_chat">
 	{[#items]}
+	{[#qid]}
+	<li class="{[dir]}" data-r="{[readflag]}">
+		<a href="{[url]}" {[#eid]}data-eid="{[.]}" {[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
+		<div class="content read{[readflag]}">
+			<a href="javascript:;" class="j-content-wrap">
+				{[&content]}
+				{[^ansFlag]}<span>{[shortcat]}</span>{[/ansFlag]}
+				{[#ansFlag]}<span class="ans">答</span>{[/ansFlag]}
+			</a>
+			{[^ansFlag]}
+			<dl data-qid="{[qid]}">
+				{[#options]}
+				<dd><a href="javascript:;" class="opt">{[text]}</a></dd>
+				{[/options]}
+			</dl>
+			{[/ansFlag]}
+		</div>
+	</li>
+	{[/qid]}
+	{[^qid]}
 	{[#type]}
 	<li class="{[dir]}" data-r="{[readflag]}">
-		<a href="javascript:;" {[#eid]}data-eid="{[.]}" {[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
+		<a href="{[url]}" {[#eid]}data-eid="{[.]}" {[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
 		<div class="content read{[readflag]}">
-			<a href="{[url]}" class="j-content-wrap type-{[type]}">
+			<a href="javascript:;" class="j-content-wrap">
 				{[#image]}<img src="{[.]}">{[/image]}
-				{[^image]}{[&content]}{[/image]}
+				{[^image]}
+				{[&content]}
+				{[/image]}
 			</a>
 		</div>
 	</li>
@@ -1134,6 +1192,7 @@
 		<span>{[content]}</span>
 	</li>
 	{[/type]}
+	{[/qid]}
 	{[/items]}
 </script>
 <script type="text/template" id="tpl_chat_tip">
@@ -1437,6 +1496,6 @@
 		document.location.hash = "#slook";
 	}
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/single.js?v=1.10.2']);
+		requirejs(['/js/single.js?v=1.10.3']);
 	});
 </script>

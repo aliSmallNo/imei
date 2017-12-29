@@ -587,12 +587,97 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			giftmenus: $(".m-draw-wrap"),
 			timer: 0,
 			reason: [],
+
+			bar: $('.m-chat-bar'),
+			timerInput: 0,
+			answerText: '',
+			answerflag: 0,
+			htag: '',
+
 			init: function () {
 				var util = this;
+
+				// 点击发送按钮 发送消息
 				$('.btn-chat-send').on(kClick, function () {
 					util.sent();
-					return false;
 				});
+				// 点击 + 按钮 展开功能选项
+				$('.btn-chat-more').on(kClick, function () {
+					util.toggleBar();
+				});
+				// 点击"真心话"快捷按钮
+				$('.btn-chat-truth').on(kClick, function () {
+					util.htag = "truth";
+					util.helpchat();
+				});
+
+				util.input.on('focus', function () {
+					util.timerInput = setInterval(function () {
+						$('.m-bottom-bar').css('bottom', 0);
+						// target.scrollIntoView(true);
+						// util.bot[0].scrollIntoView(false);
+					}, 200);
+				});
+
+				util.input.on('blur', function () {
+					if (util.timerInput) {
+						clearInterval(util.timerInput);
+					}
+					/*setTimeout(function () {
+						$('.m-bottom-bar').css('bottom', 0);
+					}, 100);*/
+				});
+
+				// 点击发送真心话题选项
+				$(document).on(kClick, ".chats li .content a.opt", function () {
+					var self = $(this);
+					util.inputVal = self.html().trim();
+					util.qId = self.closest("dl").attr("data-qid");
+					util.answerflag = 1;
+					util.sent();
+				});
+				// 最下边的功能选项
+				$(document).on(kClick, ".m-chat-bar-list a", function () {
+					var tag = $(this).find("i").attr("class");
+					switch (tag) {
+						case "truth":
+							util.htag = "truth";
+							util.helpchat();
+							break;
+						case "date":
+							location.href = "/wx/date?id=" + util.sid;
+							break;
+						case "gift":
+							GiftUtil.resetGifts();
+							util.toggle(util.giftmenus.hasClass("off"), util.giftmenus);
+							// GiftUtil.loadGifts();
+							AdvertUtil.giftSwiper();
+							break;
+						case "wechat":
+							break;
+						case "setting":
+							location.href = "/wx/setting";
+							break;
+						case "dislike":
+							$sls.main.show();
+							var html = $("#tpl_cancel_reason").html();
+							$sls.content.html(html).addClass("animate-pop-in");
+							$sls.shade.fadeIn(160);
+							break;
+					}
+				});
+
+
+				/*$('.btn-chat-send').on(kClick, function () {
+					util.sent();
+					return false;
+				});*/
+				$(document).on(kClick, ".chat-input", function () {
+					setTimeout(function () {
+						document.body.scrollTop = document.body.scrollHeight;
+					}, 250);
+				});
+
 
 				$(document).on(kClick, ".j-content-wrap", function () {
 					var url = $(this).find('img').attr('src');
@@ -610,12 +695,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					event.stopPropagation();
 					location.href = "/wx/shopbag";
 					return false;
-				});
-
-				$(document).on(kClick, ".chat-input", function () {
-					setTimeout(function () {
-						document.body.scrollTop = document.body.scrollHeight;
-					}, 250);
 				});
 
 				$(document).on(kClick, ".contacts a", function () {
@@ -802,18 +881,19 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				$(document).on(kClick, ".help-chat-item a", function () {
 					// util.toggle(false, util.helpchatMenu);
 					var self = $(this);
-					var htag = self.attr("help-tag");
-					if (!htag) {
+					util.htag = self.attr("help-tag");
+					if (!util.htag) {
 						return;
 					}
-					var util = ChatUtil;
+					util.helpchat();
+					/*var util = ChatUtil;
 					if (util.loading) {
 						return;
 					}
 					util.loading = 1;
 					$.post("/api/chat", {
 						tag: "helpchat",
-						htag: htag,
+						htag: util.htag,
 						id: util.sid,
 					}, function (resp) {
 						util.loading = 0;
@@ -825,7 +905,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						} else {
 							alpha.toast(resp.msg);
 						}
-					}, "json");
+					}, "json");*/
 				});
 
 				$(document).on(kClick, ".schat-option", function () {
@@ -897,6 +977,50 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						}
 					}
 				});
+			},
+			helpchat: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post("/api/chat", {
+					tag: "helpchat",
+					htag: util.htag,
+					id: util.sid,
+				}, function (resp) {
+					util.loading = 0;
+					if (resp.code == 0) {
+						util.inputVal = resp.data.title;
+						util.qId = resp.data.id;
+						util.toggle(false, util.helpchatMenu);
+						util.sent();
+					} else {
+						alpha.toast(resp.msg);
+					}
+				}, "json");
+			},
+			reset: function () {
+				var util = this;
+				util.input.val('');
+				util.inputVal = '';
+				util.answerflag = '';
+				util.qId = '';
+				util.htag = '';
+			},
+			toggleBar: function (expandFlag) {
+				var util = this;
+				if (expandFlag === undefined) {
+					var bot = parseFloat(util.bar.css('bottom'));
+					expandFlag = (bot < 0);
+				}
+				setTimeout(function () {
+					if (!expandFlag) {
+						util.bar.css('bottom', '-14.8rem');
+					} else {
+						util.bar.css('bottom', 0);
+					}
+				}, 100);
 			},
 			beforeDate: function () {
 				var util = this;
@@ -1115,6 +1239,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					alpha.toast('聊天内容不能为空！');
 					return false;
 				}
+
 				if (util.helpchatMenu.hasClass("on")) {
 					util.toggle(false, util.helpchatMenu);
 				}
@@ -1124,14 +1249,18 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					id: util.sid,
 					text: content,
 					qId: util.qId,
+					answerflag: util.answerflag,
 				}, function (resp) {
 					util.qId = "";
 					util.inputVal = "";
 					if (resp.code < 1) {
 						//util.messages(resp.data, 1);
-						NoticeUtil.broadcast(resp.data);
+						util.reset();
+						util.toggleBar(0);
 
+						NoticeUtil.broadcast(resp.data);
 						util.commentFlag = resp.data.commentFlag;
+
 						/*setTimeout(function () {
 							util.bot.get(0).scrollIntoView(true);
 						}, 300);*/
@@ -2343,6 +2472,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			}
 		};
 
+
 		var NoticeUtil = {
 			ioHouse: null,
 			ioChat: null,
@@ -2375,6 +2505,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				});
 
 				util.ioChat = io('https://nd.meipo100.com/chatroom');
+
 				util.ioHouse.on('reconnect', function () {
 					if (util.roomId && util.uni) {
 						util.ioChat.emit('room', util.roomId, util.uni);
