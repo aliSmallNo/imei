@@ -9,13 +9,9 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
-use common\models\ChatRoom;
 use common\models\Img;
-use common\models\Log;
 use common\models\Pin;
-use common\models\QuestionSea;
 use common\models\User;
-use common\models\UserAudit;
 use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserTrans;
@@ -24,7 +20,6 @@ use common\service\TrendService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
-use common\utils\NoticeUtil;
 use common\utils\PushUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
@@ -1399,7 +1394,8 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		var_dump(__CLASS__);
+		$ret = User::recommendUsers(131379);
+		var_dump($ret);
 		/*$uId = 131379;
 		$ret = UserAudit::invalid($uId);
 		var_dump($ret);

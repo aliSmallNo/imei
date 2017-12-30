@@ -2588,15 +2588,41 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				if (util.hasPic) {
 					$sls.content.addClass('pic');
 				}
+				$(document).on(kClick, '.btn-recommend-users', function () {
+					var ids = [];
+					$.each($('.recommend-users li'), function () {
+						ids[ids.length] = $(this).attr('data-id');
+					});
+					$.post("/api/chat", {
+						tag: "greeting",
+						ids: JSON.stringify(ids)
+					}, function (res) {
+					}, "json");
+					util.hide();
+				});
 			},
 			show: function () {
 				var util = this;
+				var strJson = $('#tpl_recommend_users').html().trim();
+				if (strJson) {
+					$sls.main.show();
+					$sls.content.html(strJson).addClass("animate-pop-in");
+					$sls.shade.fadeIn(160);
+					$('#tpl_recommend_users').html('');
+					return false;
+				}
+
 				if (util.content.length < 10) {
 					return false;
 				}
 				$sls.main.show();
 				$sls.content.html(util.content).addClass("animate-pop-in");
 				$sls.shade.fadeIn(160);
+			},
+			hide: function () {
+				$sls.main.hide();
+				$sls.content.html('').removeClass("animate-pop-in");
+				$sls.shade.fadeOut(160);
 			}
 		};
 

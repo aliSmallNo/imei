@@ -2473,4 +2473,102 @@ class User extends ActiveRecord
 		return $certs ? $certs : [];
 	}
 
+	public static function recommendUsers($uid, $conn = null)
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$key = 101;
+		$sql = "SELECT count(a.aId) as cnt
+			  FROM im_log_action as a 
+			  WHERE a.aKey=:key and a.aUId=:uid ";
+		$ret = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':key' => $key,
+		])->queryScalar();
+		if ($ret) {
+			return [];
+		}
+
+		$sql = 'select uId, uGender, uBirthYear, uHoros, uLocation, uOpenId from im_user where uId=:uid';
+		$userInfo = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid
+		])->queryOne();
+		if (!$userInfo['uGender'] || !$userInfo['uBirthYear'] || !$userInfo['uHoros']) {
+			return [];
+		}
+		LogAction::add($uid, $userInfo['uOpenId'], LogAction::ACTION_GREETING, '', $key);
+
+		$province = $city = '';
+		$location = json_decode($userInfo['uLocation'], 1);
+		if ($location && count($location) > 1) {
+			list($province, $city) = array_column($location, 'text');
+		}
+		$findGender = $userInfo['uGender'] == self::GENDER_MALE ? self::GENDER_FEMALE : self::GENDER_MALE;
+		if ($findGender == self::GENDER_FEMALE) {
+			//return [];
+		}
+		$y0 = $userInfo['uBirthYear'];
+		$y1 = $userInfo['uBirthYear'] + 4;
+		$criteriaYear = ' AND uStatus=1 AND uBirthYear between ' . $userInfo['uBirthYear'] . ' AND ' . ($userInfo['uBirthYear'] + 6);
+		if ($findGender == self::GENDER_MALE) {
+			$y0 = $userInfo['uBirthYear'] - 4;
+			$y1 = $userInfo['uBirthYear'];
+			$criteriaYear = ' AND uStatus=1 AND uBirthYear between ' . ($userInfo['uBirthYear'] - 6) . ' AND ' . $userInfo['uBirthYear'];
+		}
+		$sql = "select uId as id,uName,uThumb as thumb,'age' as cat  
+			from im_user where uGender=:gender and uOpenId like 'oYDJew%' and uPhone!='' 
+			and uBirthYear between :y0 and :y1 $criteriaYear 
+			limit 20";
+		$users = $conn->createCommand($sql)->bindValues([
+			':gender' => $findGender,
+			':y0' => $y0,
+			':y1' => $y1,
+		])->queryAll();
+
+		$sql = "select uId as id,uName,uThumb as thumb,'horos' as cat  
+			from im_user where uGender=:gender and uOpenId like 'oYDJew%' and uPhone!='' 
+			and uHoros =:horo $criteriaYear
+			limit 20";
+		$ret = $conn->createCommand($sql)->bindValues([
+			':gender' => $findGender,
+			':horo' => $userInfo['uHoros']
+		])->queryAll();
+		$users = array_merge($users, $ret);
+
+		$sql = "select uId as id,uName,uThumb as thumb,'location' as cat  
+			from im_user where uGender=:gender and uOpenId like 'oYDJew%' and uPhone!='' 
+			and uLocation like :prov and uLocation like :city $criteriaYear
+			limit 20";
+		$ret = $conn->createCommand($sql)->bindValues([
+			':gender' => $findGender,
+			':prov' => '%' . $province . '%',
+			':city' => '%' . $city . '%',
+		])->queryAll();
+		$users = array_merge($users, $ret);
+
+		$ta = $findGender == self::GENDER_MALE ? '他' : '她';
+		$captions = [
+			'location' => $ta . '跟你一个地区的哦',
+			'horos' => $ta . '的星座跟你很配哦',
+			'age' => $ta . '的年龄跟你匹配哦',
+		];
+		foreach ($users as $k => $user) {
+			$users[$k]['title'] = $captions[$user['cat']];
+		}
+		shuffle($users);
+		$items = $ids = [];
+		foreach ($users as $user) {
+			if (in_array($user['id'], $ids)) {
+				continue;
+			}
+			$items[] = $user;
+			$ids[] = $user['id'];
+			if (count($items) == 6) {
+				break;
+			}
+		}
+//		$users = array_slice($users, 0, 6);
+		return $items;
+	}
 }

@@ -1503,12 +1503,29 @@
 		</div>
 	</div>
 </script>
+<script type="text/template" id="tpl_recommend_users">
+	{{if $recommendUsers}}
+		<div class="recommend-users-wrap">
+			<ul class="recommend-users">
+				{{foreach from=$recommendUsers item=user}}
+					<li data-id="{{$user.id}}">
+						<img src="{{$user.thumb}}">
+						<div>{{$user.title}}</div>
+					</li>
+				{{/foreach}}
+			</ul>
+			<div class="action">
+				<a href="javascript:;" class="btn-recommend-users">认识一下</a>
+			</div>
+		</div>
+	{{/if}}
+</script>
 <script src="/assets/js/require.js"></script>
 <script>
 	if (document.location.hash === "" || document.location.hash === "#") {
 		document.location.hash = "#slook";
 	}
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/single.js?v=1.10.4']);
+		requirejs(['/js/single.js?v=1.10.5']);
 	});
 </script>

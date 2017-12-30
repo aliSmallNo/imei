@@ -8968,4 +8968,70 @@ ul.co-ul
 	right: 0
 	bottom: 7.5rem
 
+.recommend-users-wrap
+	padding: 1rem 1rem 5.5rem
+	text-align: center
+	background: url(../images/ad/av_back.jpg) no-repeat center center
+	background-size: cover
+	position: relative
+
+	&:before
+		content: ''
+		background: rgba(255, 255, 255, 0.85)
+		top: 0
+		left: 0
+		right: 0
+		bottom: 0
+		width: 100%
+		height: 100%
+		position: absolute
+		z-index: 0
+	.recommend-users
+		@include displayFlex
+		flex-flow: row wrap
+		align-content: flex-start
+		li
+			@include displayFlex-w(50%)
+			text-align: center
+			position: relative
+			img
+				width: 10rem
+				height: 10rem
+				border-radius: 5rem
+				vertical-align: middle
+			div
+				text-align: center
+				color: $mainColorLight
+				font-size: 1.2rem
+				line-height: 2.5rem
+				margin-bottom: .5rem
+			&:after
+				content: ''
+				display: inline-block
+				width: 2.6rem
+				height: 2.6rem
+				background: url(../images/ad/av_checked.png) no-repeat center center
+				background-size: 100% 100%
+				position: absolute
+				bottom: 2.8rem
+				right: 2rem
+	.action
+		position: absolute
+		z-index: 19
+		display: block
+		left: 0
+		right: 0
+		bottom: 1rem
+	.btn-recommend-users
+		color: $mainColorLight
+		border: 1px solid $borderColorDark
+		border-radius: 3px
+		display: inline-block
+		line-height: 4rem
+		width: 14rem
+		font-weight: $weightBold
+		font-size: 1.4rem
+		background: #fff
+		&:active
+			background: $bgColor
 

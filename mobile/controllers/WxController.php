@@ -751,6 +751,7 @@ class WxController extends BaseController
 			&& strtotime("2017-12-23 00:00:00") < time()) {
 			$showSanta = 1;
 		}
+		$recommendUsers = User::recommendUsers($this->user_id);
 		return self::renderPage("single.tpl", [
 			'uId' => $uId,
 			'noReadFlag' => $noReadFlag,
@@ -780,6 +781,7 @@ class WxController extends BaseController
 			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
 			'catDes' => json_encode(UserComment::$commentCatsDes, JSON_UNESCAPED_UNICODE),
 			'showSanta' => $showSanta,
+			'recommendUsers' => $recommendUsers
 		]);
 	}
 
