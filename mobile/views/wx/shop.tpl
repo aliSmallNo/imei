@@ -11,7 +11,7 @@
 	<a class="gift-header">特权礼包</a>
 	<ul class="gift-bags" min-level="1">
 		{{foreach from=$bags item=item}}
-		<li style="background: url({{$item.image}});background-size: 80% 90%;background-position: center center;background-repeat: no-repeat ">
+		<li style="background-image: url({{$item.image}}); ">
 			<a href="javascript:;" data-id="{{$item.id}}" data-price="{{$item.price}}" data-unit="{{$item.unit}}"
 				 data-des='{{$item.desc}}'
 			<div class="title">
@@ -127,6 +127,14 @@
 		<p class="content">X <span>{[num]}</span></p>
 	</li>
 	{[/glist]}
+	{[#klist]}
+	<li data-num="{[num]}">
+		<div class="img img-card">
+			<img src="{[img]}">
+		</div>
+		<p class="content">X <span>{[num]}</span></p>
+	</li>
+	{[/klist]}
 </script>
 <script src="/assets/js/require.js"></script>
 <script>
