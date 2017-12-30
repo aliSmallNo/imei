@@ -1899,9 +1899,9 @@ class ApiController extends Controller
 			case 'greeting':
 				$ids = self::postParam('ids');
 				$ids = json_decode($ids, 1);
-
+				$content = self::postParam('text');
 				if ($ids) {
-					ChatMsg::greeting($uid, $ids);
+					ChatMsg::greeting($uid, $ids, $content);
 					ChatMsg::greeting(User::SERVICE_UID, [$uid], '你好，我是千寻恋恋小助手，你有任何问题都可以跟我说啊！');
 				}
 				return self::renderAPI(0, '打招呼成功！', 1);
