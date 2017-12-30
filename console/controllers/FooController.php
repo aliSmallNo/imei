@@ -806,11 +806,11 @@ class FooController extends Controller
 		$senderId = User::SERVICE_UID;
 		foreach ($ret as $row) {
 			$uid = $row['uId'];
-			$content = [
+			/*$content = [
 				'text' => '我好想和你一起过圣诞节喔~',
 				'url' => "https://mp.weixin.qq.com/s/1q2ak1MmrQGUhKHyZaJcEg"
-			];
-			//"https://bpbhd-10063905.file.myqcloud.com/image/n1712251186113.jpeg";
+			];*/
+			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1712301186824.jpg";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
 			QueueUtil::loadJob('templateMsg',
