@@ -951,7 +951,8 @@ class WechatUtil
 				$keyword2Val = "有人" . $keyword1Val . "你了，快去看看吧！";
 				break;
 			case "wxNo":
-				$url = $urlPrefix . "/wx/single#addMeWx";
+				// $url = $urlPrefix . "/wx/single#addMeWx";
+				$url = "javascript:;";
 				$cat = UserMsg::CATEGORY_REQ_WX;
 				$keyword1Val = UserMsg::$catDict[$cat];
 				$keyword2Val = "有人" . $keyword1Val . "了，快去看看吧！";
@@ -993,7 +994,7 @@ class WechatUtil
 				"keyword1" => ["color" => "#0D47A1", "value" => $keyword1Val],
 				"keyword2" => ["color" => "#f06292", "value" => $keyword2Val],
 				"keyword3" => ["color" => "#333333", "value" => date("Y年n月j日 H:i")],
-				"remark" => ["color" => "#555555", "value" => "\n 点击下方详情查看吧~~"],
+				"remark" => ["color" => "#555555", "value" => "\n 赶快去聊天记录里查看吧~~"],
 			]
 		];
 
