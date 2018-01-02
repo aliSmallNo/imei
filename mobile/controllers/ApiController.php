@@ -730,6 +730,11 @@ class ApiController extends Controller
 				return self::renderAPI(0, '', ["hint" => 1]);
 			case "wxname":
 				$wname = self::postParam("wname");
+				$subtag = self::postParam("subtag");
+				if ($subtag == "getwxname") {
+					$wxname = UserWechat::findOne(["wUId" => $wx_uid])->wWechatId;
+					return self::renderAPI(0, '', $wxname);
+				}
 				$ret = UserWechat::replace($openId, ["wWechatId" => $wname]);
 				return self::renderAPI(0, '', $ret);
 			case "process_wechat":
@@ -742,7 +747,7 @@ class ApiController extends Controller
 				list($code, $msg, $data) = ChatMsg::ProcessWechat($wx_uid, $sid, $subtag);
 				return self::renderAPI($code, $msg, [
 					'items' => $data,
-					'gid' => $data['gid'],
+					'gid' => isset($data['gid']) ? $data['gid'] : 0,
 				]);
 				break;
 			case "payrose":

@@ -36,12 +36,14 @@ class ChatMsg extends ActiveRecord
 	const TYPE_VOICE = 120;
 	const TYPE_GIFT = 130;
 	const TYPE_LINK = 140;
+	const TYPE_SYS_NOTICE = 150;
 
 	static $SpecialDict = [
 		self::TYPE_IMAGE => '[图片]',
 		self::TYPE_VOICE => '[声音]',
 		self::TYPE_GIFT => '[礼物]',
 		self::TYPE_LINK => '[链接]',
+		self::TYPE_SYS_NOTICE => '[系统消息]',
 	];
 
 	const CHAT_COST = 20;
@@ -631,6 +633,8 @@ class ChatMsg extends ActiveRecord
 		} elseif (AppUtil::endWith($lower, '.mp3')
 			|| AppUtil::endWith($lower, '.amr')) {
 			$entity->cType = self::TYPE_VOICE;
+		} elseif (mb_strpos($content, "系统提示") !== false) {
+			$entity->cType = self::TYPE_SYS_NOTICE;
 		} elseif (AppUtil::endWith($lower, "button>")) {
 			$entity->cType = self::TYPE_GIFT;
 		} elseif ($URL) {
@@ -1490,8 +1494,7 @@ class ChatMsg extends ActiveRecord
 	{
 		// 原来的加微信方法 UserNet::processWx();
 
-		$conn = AppUtil::db();
-		// list($uid1, $uid2) = self::sortUId($uid, $sid);
+		$res = "";
 		switch ($subtag) {
 			case "give_rose":
 				// 送花
@@ -1510,27 +1513,44 @@ class ChatMsg extends ActiveRecord
 					return [129, AppUtil::MSG_NO_MORE_FLOWER, ""];
 				}
 				// 添加消息
-				$sysMessage = "【系统提示】" . "XXX" . "发起了索要微信号功能，并赠送66朵玫瑰花，点击输入微信号给对方吧！";
+				$uname = User::findOne(["uId" => $uid])->uName;
+				$sysMessage = "【系统提示】 '" . $uname . "' 发起了索要微信号功能，并赠送66朵玫瑰花，点击输入微信号给对方吧！";
 				$res = ChatMsg::addChat($uid, $sid, '<button data-tag="wxname" data-uid="' . $uid . '">' . $sysMessage . '</button>');
 				return [0, '', $res];
 				break;
 			case "agree_request":
 				// 修改 user_net 牵线为同意
-				UserNet::edit(["nRelation" => UserNet::REL_LINK, "nSubUId" => $sid, "nUId" => $uid, "nStatus" => UserNet::STATUS_PASS]);
-				// 发送一条系统消息
-				$wxname = UserWechat::findOne(["wUId" => $uid])["wWechatId"];
-				$sysMessage = "【系统提示】微信号是" . $wxname;
-				$res = ChatMsg::addChat($uid, $sid, $sysMessage);
-				return [0, '', $res];
+				$entity = UserNet::findOne(["nRelation" => UserNet::REL_LINK, "nSubUId" => $sid, "nUId" => $uid, "nStatus" => UserNet::STATUS_WAIT]);
+				if ($entity) {
+					UserTrans::add($uid, $entity->nId, UserTrans::CAT_RECEIVE, UserTrans::$catDict[UserTrans::CAT_RECEIVE],
+						self::PAY_REQUEST_WECHAT_NO, UserTrans::UNIT_FANS);
+					$entity->nStatus = UserNet::STATUS_PASS;
+					$entity->save();
+
+					// 发送一条系统消息
+					$wxname = UserWechat::findOne(["wUId" => $uid])["wWechatId"];
+					$sysMessage = "【系统提示】微信号是" . $wxname;
+					$res = ChatMsg::addChat($uid, $sid, $sysMessage);
+					return [0, '', $res];
+				} else {
+					return [129, '您已经同意了哦~', ''];
+				}
 				break;
 			case "refuse_request":
-				UserNet::edit(["nRelation" => UserNet::REL_LINK, "nSubUId" => $sid, "nUId" => $uid, "nStatus" => UserNet::STATUS_FAIL]);
-				$nInfo = UserNet::findOne(["nRelation" => UserNet::REL_LINK, "nSubUId" => $sid, "nUId" => $uid, "nStatus" => UserNet::STATUS_WAIT]);
-				UserTrans::add($sid, $nInfo["nId"], UserTrans::CAT_RETURN);
-				$uname = User::findOne(["uId" => $uid])["uName"];
-				$sysMessage = '【系统提示】' . $uname . "委婉拒绝了您的请求，媒瑰花已退回，请到账户查看";
-				$res = ChatMsg::addChat($uid, $sid, $sysMessage);
-				return [0, '', $res];
+				$entity = UserNet::findOne(["nRelation" => UserNet::REL_LINK, "nSubUId" => $sid, "nUId" => $uid, "nStatus" => UserNet::STATUS_WAIT]);
+				if ($entity) {
+					UserTrans::add($sid, $entity->nId, UserTrans::CAT_RETURN, UserTrans::$catDict[UserTrans::CAT_RETURN],
+						self::PAY_REQUEST_WECHAT_NO, UserTrans::UNIT_GIFT);
+					$entity->nStatus = UserNet::STATUS_FAIL;
+					$entity->save();
+
+					$uname = User::findOne(["uId" => $uid])["uName"];
+					$sysMessage = '【系统提示】 "' . $uname . '" 委婉拒绝了您的请求，媒瑰花已退回，请到账户查看';
+					$res = ChatMsg::addChat($uid, $sid, $sysMessage);
+					return [0, '', $res];
+				} else {
+					return [129, '您已经拒绝了对方了哦~', ''];
+				}
 				break;
 		}
 	}

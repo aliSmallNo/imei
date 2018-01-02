@@ -556,6 +556,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				{title: '提示', p: '对方向您索要微信号，并赠送您66朵媒瑰花,您是否同意?', btns: ["委婉拒绝", "同意"]}
 			],
 			isGiveWechat: 0,
+
 			init: function () {
 				var util = this;
 				$(document).on(kClick, ".request_wechat_btn .cancel", function () {
@@ -595,6 +596,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						var html = $("#tpl_request_wechat").html();
 						$sls.content.html(html).addClass("animate-pop-in");
 						$sls.shade.fadeIn(160);
+						util.getwxname();
 						break;
 					case "give_wechat_no":
 						break;
@@ -625,11 +627,11 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					if (resp.data) {
 						if (resp.code == 0) {
 							util.hideAlert();
-							util.reset();
 							NoticeUtil.broadcast(resp.data);
 						} else {
 							alpha.toast(resp.msg);
 						}
+						util.reset();
 					}
 				}, "json");
 			},
@@ -637,7 +639,25 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				var util = this;
 				util.isGiveWechat = 0;
 				util.tag = "request_wechat_no";
-
+				util.hideAlert();
+			},
+			getwxname: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post("/api/user", {
+					tag: "wxname",
+					subtag: "getwxname",
+				}, function (resp) {
+					util.loading = 0;
+					if (resp.code == 0) {
+						$(".request_wechat_des input").val(resp.data);
+					} else {
+						alpha.toast(resp.msg);
+					}
+				}, "json");
 			},
 			wxname: function () {
 				var util = this;
@@ -652,9 +672,11 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				util.loading = 1;
 				$.post("/api/user", {
 					tag: "wxname",
-					wname: wname
+					wname: wname,
+					subtag: util.nametag,
 				}, function (resp) {
 					util.loading = 0;
+					util.nametag = "";
 					if (resp.code == 0) {
 						util.tag = util.isGiveWechat ? "agree_request" : "give_rose";
 						util.alert();
@@ -780,8 +802,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 							AdvertUtil.giftSwiper();
 							break;
 						case "wechat":
+							getWechatUtil.isGiveWechat = 0;
 							getWechatUtil.tag = "request_wechat_no";
-							// getWechatUtil.alert();
+							getWechatUtil.alert();
 							break;
 						case "setting":
 							location.href = "/wx/setting";

@@ -6391,6 +6391,8 @@ section {
         padding: 0;
         margin: 0;
         font-size: 1.5rem; }
+      .chats li .content a button[data-uid] {
+        color: #333; }
       .chats li .content a img {
         width: 100%;
         vertical-align: middle; }
