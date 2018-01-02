@@ -936,6 +936,7 @@ class WechatUtil
 
 		$urlPrefix = AppUtil::wechatUrl();
 		$url = $urlPrefix . "/wx/sh?id=" . $secretId;
+		$remark = "\n 点击下方详情查看吧~~";
 		switch ($tag) {
 			case "favor":
 				if (User::muteAlert($uId, User::ALERT_FAVOR)) {
@@ -956,6 +957,7 @@ class WechatUtil
 				$cat = UserMsg::CATEGORY_REQ_WX;
 				$keyword1Val = UserMsg::$catDict[$cat];
 				$keyword2Val = "有人" . $keyword1Val . "了，快去看看吧！";
+				$remark = "赶快去我的密聊中看看吧~";
 				break;
 			case "wx-reply":
 				$url = $urlPrefix . "/wx/single#IaddWx";
@@ -994,7 +996,7 @@ class WechatUtil
 				"keyword1" => ["color" => "#0D47A1", "value" => $keyword1Val],
 				"keyword2" => ["color" => "#f06292", "value" => $keyword2Val],
 				"keyword3" => ["color" => "#333333", "value" => date("Y年n月j日 H:i")],
-				"remark" => ["color" => "#555555", "value" => "\n 点击下方详情查看吧~~"],
+				"remark" => ["color" => "#555555", "value" => $remark],
 			]
 		];
 
