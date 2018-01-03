@@ -170,8 +170,8 @@ section {
       content: "";
       right: 45%;
       top: -0.6rem;
-      border-right: 0.5rem solid #f06292;
-      border-left: 0.5rem solid #f06292;
+      border-right: 0.5rem solid transparent;
+      border-left: 0.5rem solid transparent;
       border-bottom: 0.6rem solid #fff; }
 
 .sw_pages {
