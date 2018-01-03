@@ -128,9 +128,9 @@
 	<div class="sw_cash_items">
 		<p>可提现余额: 2018元</p>
 		<ul>
-			<li><a href="javascript:;">10元</a></li>
-			<li  class="active"><a href="javascript:;">30元</a></li>
-			<li><a href="javascript:;">50元</a></li>
+			{{foreach from=$cash item=item}}
+			<li  class="{{$item.cls}}"><a href="javascript:;">{{$item.amt}}元</a></li>
+			{{/foreach}}
 		</ul>
 		<div class="sw_cash_btn_comfirm">
 			<a href="javascript:;">立即提现</a>

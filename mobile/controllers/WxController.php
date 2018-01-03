@@ -2174,6 +2174,12 @@ class WxController extends BaseController
 			["title" => "收到普通礼物（不限）", "num" => 1, "des" => "第一次收到普通礼物后，即可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "领取", "url" => ""],
 			["title" => "收到特权礼物（不限）", "num" => 2, "des" => "第一次收到特权礼物后，即可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "领取", "url" => ""],
 		];
+
+		$cash = [
+			["amt" => 10, "cls" => "active"], ["amt" => 30, "cls" => ""], ["amt" => 50, "cls" => ""], ["amt" => 80, "cls" => ""],
+		];
+		unset($cash[3]);
+
 		return self::renderPage("sw.tpl",
 			[
 				'avatar' => $avatar,
@@ -2186,6 +2192,7 @@ class WxController extends BaseController
 				'newTask' => $newTask,
 				'everyTask' => $everyTask,
 				'hardTask' => $hardTask,
+				'cash' => $cash,
 
 
 			],

@@ -169,7 +169,7 @@ section {
       position: absolute;
       content: "";
       right: 45%;
-      top: -0.6rem;
+      top: -0.5rem;
       border-right: 0.5rem solid transparent;
       border-left: 0.5rem solid transparent;
       border-bottom: 0.6rem solid #fff; }
