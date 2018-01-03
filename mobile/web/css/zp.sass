@@ -1,1 +1,242 @@
 @import "base"
+.bg-sw
+	background: #fff
+.sw_bar
+	@include displayFlex
+	background: $mainColor
+	li
+		@include displayFlex-1
+		position: relative
+		padding: 2rem 1.5rem
+		&:after
+			position: absolute
+			content: ' '
+			width: 1px
+			height: 4rem
+			background: #eee
+			right: 0
+			top: 2.8rem
+		&:last-child
+			&:after
+				width: 0
+		a
+			display: block
+			text-align: center
+			position: relative
+
+			img
+				@include img23
+			p
+				color: #fff
+				font-size: 1rem
+				padding: .2rem
+.sw_bar_text
+	@include displayFlex
+	background: $white
+	div
+		@include displayFlex-1
+		text-align: center
+		padding: 1rem
+		font-size: 1.2rem
+		position: relative
+		&:after
+			position: absolute
+			content: ' '
+			width: 1px
+			height: 2rem
+			background: #eee
+			right: 0
+			top: .7rem
+		&:last-child
+			&:after
+				width: 0
+		&:before
+			position: absolute
+			content: ""
+			right: 45%
+			top: -.6rem
+			border-right: .5rem solid #f06292
+			border-left: .5rem solid #f06292
+			border-bottom: .6rem solid #fff
+.sw_pages
+	margin-top: 1rem
+	ul
+		li
+			@include displayFlex
+			background: $white
+			.img
+				flex: 0 0 5rem
+				img
+					width: 2.8rem
+					height: 2.8rem
+					display: block
+					margin: .4rem auto
+					@include displayFlexVAlign
+			a
+				font-size: 1.2rem
+				@include displayFlex-1
+				position: relative
+				line-height: 3.6rem
+				border-bottom: 1px solid #eee
+				padding: 0 .5rem
+				&:after
+					@include arrowRight
+					right: 1rem
+.sw_task_cash
+	background: url(../images/sw/task_cash_amt.jpg) no-repeat center center
+	background-size: 100% 100%
+	padding-top: 40%
+	position: relative
+	.sw_task_cash_des
+		position: absolute
+		top: 1.5rem
+		left: 10rem
+		h5
+			font-size: 1.6rem
+			letter-spacing: .3rem
+			color: $white
+		p
+			font-size: 2rem
+			color: $mainColor
+			text-align: center
+			margin-top: 1rem
+			span
+				font-size: 1.2rem
+				color: $white
+.sw_task_total
+	@include displayFlex
+	background: #fff
+	div
+		@include displayFlex-1
+		text-align: center
+		padding: .5rem 0
+		position: relative
+		&:after
+			position: absolute
+			content: ' '
+			width: 1px
+			height: 4rem
+			background: #eee
+			right: 0
+			top: 1rem
+		&:last-child
+			&:after
+				width: 0
+		p
+			font-size: 1.3rem
+			line-height: 2.5rem
+			&:last-child
+				color: #ee7641
+.sw_task_title
+	background: #f2f0f1
+	color: $mainColor
+	font-size: 1.2rem
+	padding: .5rem 1.5rem
+.sw_task_item
+	border-bottom: 1px solid #eee
+	.sw_task_item_btn
+		@include displayFlex
+		background: #fff
+		height: 3.5rem
+		line-height: 3.5rem
+		font-size: 1.2rem
+		padding: 0 1.5rem
+		position: relative
+		&:after
+			@include arrowDown
+			right: 1rem
+		h5
+			@include displayFlex-1
+			font-size: 1.2rem
+		div
+			flex: 0 0 8rem
+			text-align: right
+			padding: 0 1rem
+			position: relative
+			font-size: initial
+			em
+				display: inline-block
+				line-height: 3.5rem
+				position: relative
+				top: -1.2rem
+				color: #ee7641
+			img
+				@include img23
+				display: inline-block
+				margin: .6rem auto
+	.sw_task_item_des
+		padding: 1rem 1.5rem
+		background: #fff
+		display: none
+		p
+			@include displayFlex-1
+			font-size: 1.1rem
+			color: #777
+		.btn
+			flex: 0 0 8rem
+			@include displayFlexVAlign
+			text-align: right
+			a
+				text-align: center
+				color: #fff
+				background: $mainColor
+				padding: .3rem 1rem .4rem 1rem
+				border-radius: 1rem
+				display: inline-block
+				font-size: 1.1rem
+	&.active
+		.sw_task_item_btn
+			&:after
+				@include arrowUp
+				transform: rotate(-135deg)
+				right: 1rem
+				top: 60%
+		.sw_task_item_des
+			@include displayFlex
+
+.sw_cash_items
+	padding: 1rem
+	background: $white
+	margin-bottom: 1rem
+	p
+		font-size: 1.3rem
+	ul
+		@include displayFlex
+		padding: 1.5rem 0
+		li
+			@include displayFlex-1
+			background: url(../images/sw/sw_cash_choose.png) no-repeat center center
+			background-size: 9rem 6rem
+			position: relative
+			height: 7rem
+			a
+				position: absolute
+				font-size: 1.3rem
+				color: $white
+				width: 100%
+				height: 100%
+				line-height: 7rem
+				text-align: center
+			&.active
+				background: url(../images/sw/sw_cash_choosed.png) no-repeat center center
+				background-size: 9rem 6rem
+	.sw_cash_btn_comfirm
+		a
+			background: #e15f8c
+			color: $white
+			border-radius: 2rem
+			display: block
+			padding: .8rem 0
+			font-size: 1.3rem
+			text-align: center
+			margin: 0 2rem
+
+
+
+
+
+
+
+
+
+

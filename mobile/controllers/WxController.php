@@ -2130,4 +2130,67 @@ class WxController extends BaseController
 			'双旦大活动',
 			'bg-santa');
 	}
+
+	public function actionSwallet()
+	{
+		$hid = self::getParam('id');
+		$hid = AppUtil::decrypt($hid);
+		if ($this->user_id) {
+			$avatar = $this->user_avatar;
+			$nickname = $this->user_name;
+			$stat = UserTrans::getStat($this->user_id, true);
+		} else {
+			header('location:/wx/error?msg=用户不存在啊~');
+			exit();
+		}
+		if (!$hid) {
+			$hid = $this->user_id;
+			if (!$hid) {
+				header('location:/wx/error?msg=用户不存在啊~');
+				exit();
+			}
+		}
+		$cards = UserTag::chatCards($hid);
+		$prices = Pay::$WalletDict;
+		unset($prices["chat_3"]);
+		unset($prices["chat_7"]);
+
+		$newTask = [
+			["title" => "注册首次登陆", "num" => 1, "des" => "关注公众号首次登陆进入平台后，奖励2元现金红包。分享后直接到我的任务列表可查看获得的奖金", "utext" => "去登陆", "url" => ""],
+			["title" => "完善个人资料达到80%", "num" => 2, "des" => "完善资料达到80%后，即可领取2元现金红包。完成后直接到我的任务列表可查看获得的奖励", "utext" => "去完善", "url" => ""],
+			["title" => "完善身份认证", "num" => 1, "des" => "完成身份认证后，即可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去认证", "url" => ""],
+		];
+		$everyTask = [
+			["title" => "每日聊天(3次）领红包", "num" => 2, "des" => "每日主动发起聊天3次即可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去聊天", "url" => ""],
+			["title" => "每天回应一次对话", "num" => 1, "des" => "每日回复一次聊天一次即可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去聊天", "url" => ""],
+			["title" => "秀红包金额", "num" => 5, "des" => "每日分享自己所或得的现金即可领取5元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去分享", "url" => ""],
+			["title" => "当天收到一个礼物", "num" => 1, "des" => "每日可以从聊天中获得一个礼物即可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去领取", "url" => ""],
+			["title" => "签到", "num" => 1, "des" => "每日签到成功后即可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去签到", "url" => ""],
+			["title" => "成功邀请", "num" => 5, "des" => "每日成功邀请一位好友注册成功即可领取5元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去邀请", "url" => ""],
+		];
+		$hardTask = [
+			["title" => "完成1次线下约会", "num" => 3, "des" => "向心动异性发起约会，成功线下约会并向客服提交约会凭证，即可领取3元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "发起约会", "url" => ""],
+			["title" => "赠送礼物累计（10人）", "num" => 10, "des" => "累计向10位异性赠送礼物后，即可领取10元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去赠送", "url" => ""],
+			["title" => "收到普通礼物（不限）", "num" => 1, "des" => "第一次收到普通礼物后，即可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "领取", "url" => ""],
+			["title" => "收到特权礼物（不限）", "num" => 2, "des" => "第一次收到特权礼物后，即可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "领取", "url" => ""],
+		];
+		return self::renderPage("sw.tpl",
+			[
+				'avatar' => $avatar,
+				'nickname' => $nickname,
+				'prices' => $prices,
+				'hid' => $hid,
+				'stat' => $stat,
+				'cards' => $cards,
+				"isDebug" => AppUtil::isDebugger($this->user_id),
+				'newTask' => $newTask,
+				'everyTask' => $everyTask,
+				'hardTask' => $hardTask,
+
+
+			],
+			'terse',
+			'账户',
+			"bg-sw");
+	}
 }
