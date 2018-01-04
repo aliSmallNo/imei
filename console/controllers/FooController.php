@@ -1544,10 +1544,8 @@ class FooController extends Controller
 
 		//echo ChatMsg::isAnswer(146306, 143807);
 
-		list($code, $msg, $ret) = ChatMsg::ProcessWechat(143807, 120003, "refuse_request");
-		echo $code . PHP_EOL;
-		echo $msg . PHP_EOL;
-		print_r($ret);
+		$stat = UserTrans::getStat(143807, true);
+		print_r($stat);
 
 	}
 

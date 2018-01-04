@@ -373,6 +373,12 @@ class ApiController extends Controller
 			$wx_role = $wx_info['uRole'];
 		}
 		switch ($tag) {
+			case "add_coin":
+				$uid = $wx_uid;
+				UserTrans::add($uid, 0, UserTrans::CAT_COIN_DEFAULT,
+					UserTrans::$catDict[UserTrans::CAT_COIN_DEFAULT], 100, UserTrans::UNIT_COIN);
+				return self::renderAPI(0, '成功领取千寻币');
+				break;
 			case "security_center":
 				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');

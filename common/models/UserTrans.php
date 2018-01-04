@@ -43,6 +43,8 @@ class UserTrans extends ActiveRecord
 	const CAT_EXCHANGE_YUAN = 201;
 	const CAT_EXCHANGE_CHAT = 202;
 
+	const CAT_COIN_DEFAULT = 600;
+
 	static $catDict = [
 		self::CAT_RECHARGE_MEMBER => "单身会员",
 		self::CAT_CHAT_DAY3 => "三天畅聊卡",
@@ -70,6 +72,8 @@ class UserTrans extends ActiveRecord
 		self::CAT_EXCHANGE_FLOWER => "商城兑换",
 		self::CAT_EXCHANGE_YUAN => "商城交易",
 		self::CAT_EXCHANGE_CHAT => "聊天赠送礼物",
+		self::CAT_COIN_DEFAULT => "系统赠送千寻币",
+
 	];
 
 	static $CatMinus = [
@@ -83,6 +87,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_EXCHANGE_CHAT,
 	];
 
+	const UNIT_COIN = 'coin';
 	const UNIT_FEN = 'fen';
 	const UNIT_YUAN = 'yuan';
 	const UNIT_GIFT = 'flower';
@@ -90,6 +95,7 @@ class UserTrans extends ActiveRecord
 	const UNIT_CHAT_DAY3 = 'chat_3';
 	const UNIT_CHAT_DAY7 = 'chat_7';
 	static $UnitDict = [
+		self::UNIT_COIN => '千寻币',
 		self::UNIT_FEN => '分',
 		self::UNIT_YUAN => '元',
 		self::UNIT_GIFT => '媒桂花',
@@ -231,6 +237,7 @@ class UserTrans extends ActiveRecord
 					self::UNIT_FEN => 0,
 					self::UNIT_YUAN => 0,
 					self::UNIT_GIFT => 0,
+					self::UNIT_COIN => 0,
 					'expire' => time() + 3600 * 8
 				];
 			}
@@ -255,6 +262,7 @@ class UserTrans extends ActiveRecord
 					self::UNIT_FEN => 0,
 					self::UNIT_YUAN => 0,
 					self::UNIT_GIFT => 0,
+					self::UNIT_COIN => 0,
 					'expire' => time() + 3600 * 8
 				];
 				$redis->setCache($ret);
