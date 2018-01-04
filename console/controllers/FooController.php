@@ -20,6 +20,7 @@ use common\service\TrendService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
+use common\utils\NoticeUtil;
 use common\utils\PushUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
@@ -951,7 +952,7 @@ class FooController extends Controller
 		/*$strCats = implode(",", UserTrans::$CatMinus);
 		$sql = "select u.uId,u.uName,u.uOpenId,
 			SUM(case when tCategory in ($strCats) then -tAmt else tAmt end) as amt
-			 from im_user_trans as t 
+			 from im_user_trans as t
 			 join im_user as u on u.uId=t.tUId and u.uPhone!='' and uOpenId like 'oYDJew%'
 			 join im_user_wechat as w on w.wUId=u.uId and w.wSubscribe=1
 			 where t.tUnit='flower'
@@ -1394,7 +1395,9 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = User::recommendUsers(131379);
+		$open_id = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
+		$content = 'test msg';
+		$ret = NoticeUtil::init(NoticeUtil::CAT_TEXT_ONLY, $open_id)->sendText($content);
 		var_dump($ret);
 		/*$uId = 131379;
 		$ret = UserAudit::invalid($uId);
@@ -1432,7 +1435,7 @@ class FooController extends Controller
 		var_dump($service);*/
 
 		/*$conn = AppUtil::db();
-		$sql = "select * from im_user 
+		$sql = "select * from im_user
 			where uCertStatus=2 and uCertImage not like '%zm%' and uOpenId like 'oYDJew%' and uCertImage like 'http%'";
 		$ret = $conn->createCommand($sql)->queryAll();
 		$sql = "update im_user set uCertImage=:img,uUpdatedOn=now(),uUpdatedBy=1001 WHERE uId=:id ";
