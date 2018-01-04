@@ -72,8 +72,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_EXCHANGE_FLOWER => "商城兑换",
 		self::CAT_EXCHANGE_YUAN => "商城交易",
 		self::CAT_EXCHANGE_CHAT => "聊天赠送礼物",
-		self::CAT_COIN_DEFAULT => "系统赠送千寻币",
-
+		self::CAT_COIN_DEFAULT => "奖励千寻币",
 	];
 
 	static $CatMinus = [
