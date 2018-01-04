@@ -936,6 +936,7 @@
 <input type="hidden" id="cChatId" value="{{$chatId}}">
 <input type="hidden" id="cChatTitle" value="{{$chatTitle}}">
 <input type="hidden" id="cUID" value="{{$uId}}">
+<input type="hidden" id="cCoinFlag" value="{{$coinFlag}}">
 <script>
 	var mProvinces = {{$provinces}};
 	var catDes = {{$catDes}};
@@ -1526,6 +1527,6 @@
 		document.location.hash = "#slook";
 	}
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/single.js?v=1.10.7']);
+		requirejs(['/js/single.js?v=1.10.8']);
 	});
 </script>

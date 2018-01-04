@@ -2571,4 +2571,24 @@ class User extends ActiveRecord
 //		$users = array_slice($users, 0, 6);
 		return $items;
 	}
+
+	public static function coinReward($uid, $open_id, $conn = null)
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$key = 103;
+		$sql = "SELECT count(a.aId) as cnt
+			  FROM im_log_action as a 
+			  WHERE a.aKey=:key and a.aUId=:uid ";
+		$ret = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':key' => $key,
+		])->queryScalar();
+		if ($ret) {
+			return false;
+		}
+		LogAction::add($uid, $open_id , LogAction::ACTION_GREETING, '', $key);
+		return true;
+	}
 }

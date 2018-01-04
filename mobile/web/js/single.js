@@ -2643,6 +2643,14 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				$sls.content.html(util.content).addClass("animate-pop-in");
 				$sls.shade.fadeIn(160);
 			},
+			showCoin: function () {
+				var strJson = '';
+				return false;
+				$sls.main.show();
+				$sls.content.html(strJson).addClass("animate-pop-in");
+				$sls.shade.fadeIn(160);
+				$('#cCoinFlag').val(0);
+			},
 			hide: function () {
 				$sls.main.hide();
 				$sls.content.html('').removeClass("animate-pop-in");
@@ -3047,8 +3055,13 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			SwipeUtil.init();
 
 			setTimeout(function () {
-				GreetingUtil.show();
-			}, 500);
+				var coinFlag = $('#cCoinFlag').val();
+				if (coinFlag == 1) {
+					GreetingUtil.showCoin();
+				} else {
+					GreetingUtil.show();
+				}
+			}, 600);
 
 			setTimeout(function () {
 				pinLocation();

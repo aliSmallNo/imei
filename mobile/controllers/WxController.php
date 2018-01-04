@@ -752,6 +752,7 @@ class WxController extends BaseController
 			$showSanta = 1;
 		}
 		$recommendUsers = User::recommendUsers($this->user_id);
+		$coinFlag = User::coinReward($this->user_id, $openId);
 		return self::renderPage("single.tpl", [
 			'uId' => $uId,
 			'noReadFlag' => $noReadFlag,
@@ -781,7 +782,8 @@ class WxController extends BaseController
 			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
 			'catDes' => json_encode(UserComment::$commentCatsDes, JSON_UNESCAPED_UNICODE),
 			'showSanta' => $showSanta,
-			'recommendUsers' => $recommendUsers
+			'recommendUsers' => $recommendUsers,
+			'coinFlag' => $coinFlag ? 1 : 0
 		]);
 	}
 
