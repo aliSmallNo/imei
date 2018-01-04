@@ -2177,8 +2177,10 @@ class WxController extends BaseController
 
 		$cash = [
 			["amt" => 10, "cls" => "active"], ["amt" => 30, "cls" => ""], ["amt" => 50, "cls" => ""], ["amt" => 80, "cls" => ""],
+			["amt" => 120, "cls" => "active"], ["amt" => 180, "cls" => ""], ["amt" => 240, "cls" => ""], ["amt" => 300, "cls" => ""],
 		];
-		unset($cash[3]);
+		$offet = 0;
+		$cash = array_slice($cash, $offet, 3);
 
 		return self::renderPage("sw.tpl",
 			[
@@ -2199,5 +2201,34 @@ class WxController extends BaseController
 			'terse',
 			'账户',
 			"bg-sw");
+	}
+
+	public function actionShare28()
+	{
+		$list = [
+			["k" => 1, "dir" => "right", "num" => 4, "p" => 2, "cls" => "active"],
+			["k" => 2, "dir" => "right", "num" => 6, "p" => 2, "cls" => ""],
+			["k" => 3, "dir" => "bottom", "num" => 10, "p" => 3, "cls" => ""],
+			["k" => 6, "dir" => "bottom", "num" => 26, "p" => 5, "cls" => ""],
+			["k" => 5, "dir" => "left", "num" => 18, "p" => 5, "cls" => ""],
+			["k" => 4, "dir" => "left", "num" => 12, "p" => 3, "cls" => ""],
+			["k" => 7, "dir" => "right", "num" => 68, "p" => 10, "cls" => ""],
+			["k" => 8, "dir" => "right", "num" => 158, "p" => 30, "cls" => ""],
+			["k" => 9, "dir" => "bottom", "num" => 368, "p" => 60, "cls" => ""],
+			["k" => 12, "dir" => "bottom", "num" => 2488, "p" => 300, "cls" => ""],
+			["k" => 11, "dir" => "left", "num" => 1588, "p" => 200, "cls" => ""],
+			["k" => 10, "dir" => "left", "num" => 778, "p" => 100, "cls" => ""],
+			["k" => 13, "dir" => "right", "num" => 3588, "p" => 400, "cls" => "li50"],
+			["k" => 14, "dir" => "bottom", "num" => 6588, "p" => 700, "cls" => "li50"],
+			["k" => 15, "dir" => "end", "num" => 12888, "p" => 999, "cls" => "li100"],
+		];
+		return self::renderPage("share28.tpl",
+			[
+				'uid' => $this->user_id,
+				"list" => $list,
+			],
+			'terse',
+			'红包大派送',
+			'bg-red');
 	}
 }

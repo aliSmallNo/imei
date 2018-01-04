@@ -26,7 +26,7 @@
 	<div class="sw_bar_text">
 		<div>充值</div>
 		<div>提现</div>
-		<div>卡片</div>
+		<div>续费</div>
 	</div>
 	<div class="sw_pages">
 		<ul>
@@ -137,6 +137,7 @@
 		</div>
 	</div>
 	<div>
+		<h5 class="sw_exchange_cash">平台兑换红包: <span>2018</span>元</h5>
 		<ul class="recharge">
 			{{foreach from=$prices key=key item=price}}
 			<li class="{{if isset($price.ln) && $price.ln}}{{$price.ln}}{{/if}}">
