@@ -9966,4 +9966,22 @@ ul.co-ul {
     .recommend-users-wrap .btn-recommend-users:active {
       background: #f3f3f3; }
 
+.redpacket-wrap .redpacket {
+  display: inline-block;
+  width: 22rem;
+  height: 30.45rem;
+  background-image: url(../images/ad/redpacket10.png);
+  background-size: 22rem 60.9rem;
+  background-repeat: no-repeat; }
+  .redpacket-wrap .redpacket.close {
+    background-position: 0 0; }
+  .redpacket-wrap .redpacket.open {
+    background-position: 0 -30.45rem; }
+
+.m-popup-main .m-popup-wrap .m-popup-content.redpacket-wrap {
+  width: 22rem;
+  left: 50%;
+  margin-left: -11rem;
+  background: transparent; }
+
 /*# sourceMappingURL=imei.css.map */

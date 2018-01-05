@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/css/dev.min.css">
 <section id="slink" data-title="推荐媒婆">
 	<div class="match-wrap">
 		<h3>推荐媒婆</h3>
@@ -1527,6 +1528,6 @@
 		document.location.hash = "#slook";
 	}
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/single.js?v=1.10.8']);
+		requirejs(['/js/single.js?v=1.10.9']);
 	});
 </script>

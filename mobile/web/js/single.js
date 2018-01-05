@@ -2644,12 +2644,23 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				$sls.shade.fadeIn(160);
 			},
 			showCoin: function () {
-				var strJson = '';
-				return false;
+				var util = this;
+				var strJson = '<div class="greeting pic">' +
+					'<a href="javascript:;" class="redpacket close"></a>' +
+					'<a href="javascript:;" class="m-popup-close"></a></div>';
 				$sls.main.show();
-				$sls.content.html(strJson).addClass("animate-pop-in");
+				$sls.content.html(strJson).addClass("redpacket-wrap").addClass("animate-pop-in");
 				$sls.shade.fadeIn(160);
 				$('#cCoinFlag').val(0);
+				$('a.redpacket').on(kClick, function () {
+					var self = $(this);
+					if(self.hasClass('close')){
+						self.removeClass('close').addClass('open');
+					}else{
+						$sls.content.removeClass("redpacket-wrap");
+						util.hide();
+					}
+				});
 			},
 			hide: function () {
 				$sls.main.hide();
@@ -3056,7 +3067,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 
 			setTimeout(function () {
 				var coinFlag = $('#cCoinFlag').val();
-				if (coinFlag == 1) {
+				if (coinFlag == 1 && 0) {
 					GreetingUtil.showCoin();
 				} else {
 					GreetingUtil.show();
@@ -3068,5 +3079,4 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			}, 800);
 			locationHashChanged();
 		});
-	})
-;
+	});
