@@ -1395,9 +1395,7 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$open_id = 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc';
-		$content = 'test msg';
-		$ret = NoticeUtil::init(NoticeUtil::CAT_TEXT_ONLY, $open_id)->sendText($content);
+		$ret = UserQR::getQRCode(131379, UserQR::CATEGORY_RED_103);
 		var_dump($ret);
 		/*$uId = 131379;
 		$ret = UserAudit::invalid($uId);

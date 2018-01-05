@@ -23,6 +23,7 @@ class UserQR extends ActiveRecord
 	const CATEGORY_MATCH_SHARE = 35; //Rain: 媒婆推广
 	const CATEGORY_SHARES = 39; //Rain: 媒婆推广
 	const CATEGORY_MARRY = 100; //Rain: 婚礼请帖
+	const CATEGORY_RED_103 = 103; //Rain: 分享红包103
 	const CATEGORY_ROOM = 200; //Rain: 房间号
 
 	public static function tableName()
@@ -139,6 +140,26 @@ class UserQR extends ActiveRecord
 				break;
 			case self::CATEGORY_SINGLE:
 			case self::CATEGORY_MATCH:
+				$qid = self::edit($info['uOpenId'], $category, $code, [
+					'qTitle' => $bottomTitle,
+					'qSubTitle' => $code,
+					'qUId' => $uid,
+					'qMD5' => $md5
+				]);
+
+				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $qid, $code, $bottomTitle, $thumb);
+				if ($accessUrl) {
+					self::edit($info['uOpenId'], $category, $code, [
+						'qUrl' => $accessUrl,
+						'qRaw' => $originUrl,
+					]);
+				}
+				break;
+			default:
+				if (!$code) {
+					$code = 'code-' . $category;
+				}
+				$code = strtolower($code);
 				$qid = self::edit($info['uOpenId'], $category, $code, [
 					'qTitle' => $bottomTitle,
 					'qSubTitle' => $code,
@@ -341,7 +362,7 @@ class UserQR extends ActiveRecord
 				$img->write($fontPath, $bottomTitle, $width / 2, $height - 8, 14, 0, 0x000000, 'center');
 			}
 			if ($topTitle) {
-				$img->write($fontPath, $topTitle, $width / 2, 20, 11, 0, 0x444444, 'center');
+				$img->write($fontPath, $topTitle, $width / 2, 20, 11, 0, 0x777777, 'center');
 			}
 			$img->save($saveAs);
 			$accessUrl = ImageUtil::getUrl($saveAs);
