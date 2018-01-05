@@ -159,7 +159,7 @@ class UserQR extends ActiveRecord
 				break;
 			default:
 				if (!$code) {
-					$code = 'cate-' . $category;
+					$code = 'category-' . $category;
 				}
 				$code = strtolower($code);
 				$qid = self::edit($info['uOpenId'], $category, $code, [
@@ -364,7 +364,7 @@ class UserQR extends ActiveRecord
 				$img->write($fontPath, $bottomTitle, $width / 2, $height - 8, 14, 0, 0x000000, 'center');
 			}
 			if ($topTitle) {
-				$img->write($fontPath, $topTitle, $width / 2, 20, 11, 0, 0x999999, 'center');
+				$img->write($fontPath, $topTitle, $width / 2, 20, 11, 0, 0xaaaaaa, 'center');
 			}
 			$img->save($saveAs);
 			$accessUrl = ImageUtil::getUrl($saveAs);
