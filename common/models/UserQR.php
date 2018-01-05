@@ -67,12 +67,14 @@ class UserQR extends ActiveRecord
 		return 0;
 	}
 
-	public static function getQRCode($uid, $category, $avatar = '')
+	public static function getQRCode($uid, $category, $avatar = '', $resetFlag = false)
 	{
-		$md5 = md5(json_encode([$uid, $category, $avatar], JSON_UNESCAPED_UNICODE));
-		$qrInfo = self::findOne(['qUId' => $uid, 'qCategory' => $category, 'qMD5' => $md5]);
-		if ($qrInfo && isset($qrInfo['qUrl']) && $qrInfo['qUrl']) {
-			return $qrInfo['qUrl'];
+		if (!$resetFlag) {
+			$md5 = md5(json_encode([$uid, $category, $avatar], JSON_UNESCAPED_UNICODE));
+			$qrInfo = self::findOne(['qUId' => $uid, 'qCategory' => $category, 'qMD5' => $md5]);
+			if ($qrInfo && isset($qrInfo['qUrl']) && $qrInfo['qUrl']) {
+				return $qrInfo['qUrl'];
+			}
 		}
 		return self::createQR($uid, $category, '');
 	}

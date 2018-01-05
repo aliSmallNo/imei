@@ -1395,7 +1395,8 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = UserQR::getQRCode(131379, UserQR::CATEGORY_RED_103);
+		$ret = UserQR::getQRCode(131379, UserQR::CATEGORY_RED_103,
+			'https://img.meipo100.com/2017/1130/174483165512_t.jpg', true);
 		var_dump($ret);
 		/*$uId = 131379;
 		$ret = UserAudit::invalid($uId);
