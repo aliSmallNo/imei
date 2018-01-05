@@ -113,6 +113,28 @@ section {
     left: 0;
     background-color: #eb3b40; }
 
+.share103-qr {
+  background: url(../images/201801/bg_after.jpg) no-repeat center center;
+  background-size: cover;
+  padding-top: 151%;
+  position: relative; }
+  .share103-qr .title {
+    position: absolute;
+    top: 37%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #fff;
+    display: block; }
+    .share103-qr .title .top {
+      font-size: 2.2rem; }
+    .share103-qr .title .qrcode {
+      padding-top: 4rem;
+      text-align: center; }
+      .share103-qr .title .qrcode img {
+        width: 8rem;
+        height: 8rem; }
+
 .share103-wrap {
   background: url(../images/201801/bg_before.jpg) no-repeat center center;
   background-size: cover;
@@ -138,7 +160,7 @@ section {
       color: #886a44;
       font-size: 1.5rem; }
     .share103-wrap .title .action {
-      padding: 1.5rem 5rem; }
+      padding: 1.2rem 5rem; }
       .share103-wrap .title .action a {
         background: url(../images/201801/bg_btn.png) no-repeat center center;
         display: block;

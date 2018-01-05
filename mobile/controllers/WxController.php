@@ -2228,12 +2228,24 @@ class WxController extends BaseController
 
 	public function actionShare103()
 	{
+		$uni = self::getParam('id');
+		$uService = UserService::init($uni);
+		$qrCode = '';
+		if ($uService->info) {
+			$qrCode = UserQR::getQRCode($uService->id, UserQR::CATEGORY_SALES);
+		} else {
+			$uni = $this->user_uni;
+		}
+
 		return self::renderPage("share103.php",
 			[
-				'uni' => $this->user_uni,
+				'uni' => $uni,
+				'uid' => $this->user_id,
+				'qrCode' => $qrCode,
+				'wxUrl' => AppUtil::wechatUrl()
 			],
 			'terse',
 			'分享领红包',
-			'bg-103');
+			$qrCode ? 'bg-color' : 'bg-103');
 	}
 }
