@@ -118,7 +118,6 @@ require(['jquery', 'mustache', "alpha"],
 			});
 			locationHashChanged();
 			$sls.cork.hide();
-			shareLog('moment', '/wx/share28');
 		});
 
 	});
