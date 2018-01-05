@@ -155,6 +155,26 @@ class UserQR extends ActiveRecord
 					]);
 				}
 				break;
+			default:
+				if (!$code) {
+					$code = 'code-' . $category;
+				}
+				$code = strtolower($code);
+				$qid = self::edit($info['uOpenId'], $category, $code, [
+					'qTitle' => $bottomTitle,
+					'qSubTitle' => $code,
+					'qUId' => $uid,
+					'qMD5' => $md5
+				]);
+
+				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $qid, $code, $bottomTitle, $thumb);
+				if ($accessUrl) {
+					self::edit($info['uOpenId'], $category, $code, [
+						'qUrl' => $accessUrl,
+						'qRaw' => $originUrl,
+					]);
+				}
+				break;
 		}
 		return $accessUrl;
 	}
@@ -342,7 +362,7 @@ class UserQR extends ActiveRecord
 				$img->write($fontPath, $bottomTitle, $width / 2, $height - 8, 14, 0, 0x000000, 'center');
 			}
 			if ($topTitle) {
-				$img->write($fontPath, $topTitle, $width / 2, 20, 11, 0, 0x444444, 'center');
+				$img->write($fontPath, $topTitle, $width / 2, 20, 11, 0, 0x777777, 'center');
 			}
 			$img->save($saveAs);
 			$accessUrl = ImageUtil::getUrl($saveAs);
