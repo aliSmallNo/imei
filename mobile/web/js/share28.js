@@ -31,7 +31,7 @@ require(['jquery', 'mustache', "alpha"],
 		function shareLog(tag, note) {
 			$.post("/api/share", {
 				tag: tag,
-				id: $("SUID").val().trim(),
+				id: $("#SUID").val().trim(),
 				note: note
 			}, function (resp) {
 				if (resp.code < 1 && resp.msg) {
@@ -41,10 +41,9 @@ require(['jquery', 'mustache', "alpha"],
 		}
 
 		function shareOptions(type) {
-			var linkUrl = "https://wx.meipo100.com/wx/share28?id=" + $("UID").val().trim();
-			//var linkUrl = "https://wx.meipo100.com/wx/share28#shared";
-			//var imgUrl = "http://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9kAjI4qtbk53T8asCFeEV3uNKfCGII9yU14AKJdu6CRhpVagibPP5187Ql6zmddBQr48mqcd8VxfOQ/0?wx_fmt=jpeg";
-			var imgUrl = "https://bpbhd-10063905.file.myqcloud.com/image/n1712061178801.png";
+			var linkUrl = "https://wx.meipo100.com/wx/share28#shared?id=" + $("#UID").val().trim();
+			var imgUrl = "http://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9kAjI4qtbk53T8asCFeEV3uNKfCGII9yU14AKJdu6CRhpVagibPP5187Ql6zmddBQr48mqcd8VxfOQ/0?wx_fmt=jpeg";
+
 			var title = '千寻恋恋，28888现金红包大派送，快来来抢吧！';
 			var desc = '';
 			if (type === 'message') {

@@ -98,7 +98,7 @@
 		document.location.hash = "#share";
 	}
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/share28.js?v=1.1.3']);
+		requirejs(['/js/share28.js?v=1.1.4']);
 	});
 </script>
 
