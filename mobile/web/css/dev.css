@@ -114,7 +114,7 @@ section {
     background-color: #eb3b40; }
 
 .share103-qr {
-  margin: 1rem 0 0;
+  margin: 1.5rem 0 0;
   background: url(../images/201801/bg_after.jpg) no-repeat center center;
   background-size: cover;
   padding-top: 151%;
@@ -130,11 +130,11 @@ section {
     .share103-qr .title .top {
       font-size: 2.2rem; }
     .share103-qr .title .qrcode {
-      padding-top: 5rem;
+      padding-top: 4rem;
       text-align: center; }
       .share103-qr .title .qrcode img {
-        width: 17rem;
-        height: 17rem; }
+        width: 18rem;
+        height: 18rem; }
 
 .share103-wrap {
   background: url(../images/201801/bg_before.jpg) no-repeat center center;
