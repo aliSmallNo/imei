@@ -2225,4 +2225,15 @@ class WxController extends BaseController
 			'红包大派送',
 			'bg-red');
 	}
+
+	public function actionShare103()
+	{
+		return self::renderPage("share103.php",
+			[
+				'uni' => $this->user_uni,
+			],
+			'terse',
+			'分享领红包',
+			'bg-103');
+	}
 }
