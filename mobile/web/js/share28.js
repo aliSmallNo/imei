@@ -42,7 +42,8 @@ require(['jquery', 'mustache', "alpha"],
 
 		function shareOptions(type) {
 			var linkUrl = "https://wx.meipo100.com/wx/share28#shared?id=" + $("UID").val().trim();
-			var imgUrl = "http://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9kAjI4qtbk53T8asCFeEV3uNKfCGII9yU14AKJdu6CRhpVagibPP5187Ql6zmddBQr48mqcd8VxfOQ/0?wx_fmt=jpeg";
+			//var imgUrl = "http://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9kAjI4qtbk53T8asCFeEV3uNKfCGII9yU14AKJdu6CRhpVagibPP5187Ql6zmddBQr48mqcd8VxfOQ/0?wx_fmt=jpeg";
+			var imgUrl = "https://bpbhd-10063905.file.myqcloud.com/image/n1712061178801.png";
 			var title = '千寻恋恋，28888现金红包大派送，快来来抢吧！';
 			var desc = '';
 			if (type === 'message') {
