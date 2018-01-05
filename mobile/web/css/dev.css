@@ -114,6 +114,7 @@ section {
     background-color: #eb3b40; }
 
 .share103-qr {
+  margin: 1rem 0 0;
   background: url(../images/201801/bg_after.jpg) no-repeat center center;
   background-size: cover;
   padding-top: 151%;
@@ -129,7 +130,7 @@ section {
     .share103-qr .title .top {
       font-size: 2.2rem; }
     .share103-qr .title .qrcode {
-      padding-top: 4rem;
+      padding-top: 5rem;
       text-align: center; }
       .share103-qr .title .qrcode img {
         width: 17rem;

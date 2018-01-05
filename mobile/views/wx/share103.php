@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/dev.min.css?v=1.3.4">
+<link rel="stylesheet" href="/css/dev.min.css?v=1.3.5">
 <?php if ($qrCode) { ?>
 	<div class="share103-qr">
 		<div class="title">
