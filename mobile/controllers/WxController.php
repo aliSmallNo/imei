@@ -2165,10 +2165,10 @@ class WxController extends BaseController
 		$everyTask = [
 			["title" => "每日聊天(3次）领红包", "num" => 2, "des" => "每日主动发起聊天3次即可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去聊天", "url" => ""],
 			["title" => "每天回应一次对话", "num" => 1, "des" => "每日回复一次聊天一次即可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去聊天", "url" => ""],
-			["title" => "秀红包金额", "num" => 5, "des" => "每日分享自己所或得的现金即可领取5元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去分享", "url" => ""],
+			["title" => "秀红包金额", "num" => 2, "des" => "每日分享自己所或得的现金即可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去分享", "url" => ""],
 			["title" => "当天收到一个礼物", "num" => 1, "des" => "每日可以从聊天中获得一个礼物即可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去领取", "url" => ""],
 			["title" => "签到", "num" => 1, "des" => "每日签到成功后即可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去签到", "url" => ""],
-			["title" => "成功邀请", "num" => 5, "des" => "每日成功邀请一位好友注册成功即可领取5元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去邀请", "url" => ""],
+			["title" => "成功邀请", "num" => 2, "des" => "每日成功邀请一位好友注册成功即可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去邀请", "url" => ""],
 		];
 		$hardTask = [
 			["title" => "完成1次线下约会", "num" => 3, "des" => "向心动异性发起约会，成功线下约会并向客服提交约会凭证，即可领取3元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "发起约会", "url" => ""],
@@ -2207,31 +2207,19 @@ class WxController extends BaseController
 
 	public function actionShare28()
 	{
-		$list = [
-			["k" => 1, "dir" => "right", "num" => 4, "p" => 2, "cls" => "active"],
-			["k" => 2, "dir" => "right", "num" => 6, "p" => 2, "cls" => ""],
-			["k" => 3, "dir" => "bottom", "num" => 10, "p" => 3, "cls" => ""],
-			["k" => 6, "dir" => "bottom", "num" => 26, "p" => 5, "cls" => ""],
-			["k" => 5, "dir" => "left", "num" => 18, "p" => 5, "cls" => ""],
-			["k" => 4, "dir" => "left", "num" => 12, "p" => 3, "cls" => ""],
-			["k" => 7, "dir" => "right", "num" => 68, "p" => 10, "cls" => ""],
-			["k" => 8, "dir" => "right", "num" => 158, "p" => 30, "cls" => ""],
-			["k" => 9, "dir" => "bottom", "num" => 368, "p" => 60, "cls" => ""],
-			["k" => 12, "dir" => "bottom", "num" => 2488, "p" => 300, "cls" => ""],
-			["k" => 11, "dir" => "left", "num" => 1588, "p" => 200, "cls" => ""],
-			["k" => 10, "dir" => "left", "num" => 778, "p" => 100, "cls" => ""],
-			["k" => 13, "dir" => "right", "num" => 3588, "p" => 400, "cls" => "li50"],
-			["k" => 14, "dir" => "bottom", "num" => 6588, "p" => 700, "cls" => "li50"],
-			["k" => 15, "dir" => "end", "num" => 12888, "p" => 999, "cls" => "li100"],
-		];
 		$sid = self::getParam("id");
-		$sid = $sid ? $sid : $this->user_id;
-		$url = UserQR::getQRCode($sid, UserQR::CATEGORY_SALES);
+		$url = UserQR::getQRCode(($sid ? $sid : $this->user_id), UserQR::CATEGORY_SALES);
+
+		list($ret, $list) = UserNet::s28ShareStat($this->user_id);
+
 		return self::renderPage("share28.tpl",
 			[
 				'uid' => $this->user_id,
 				"list" => $list,
+				"ret" => $ret,
 				"url" => $url,
+				"sid" => $sid,
+				"shareflag" => $sid ? 1 : 0,
 			],
 			'terse',
 			'红包大派送',

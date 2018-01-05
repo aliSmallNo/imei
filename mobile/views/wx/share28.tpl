@@ -3,24 +3,24 @@
 	<div class="s28_content">
 		<div class="s28_content_items">
 			<ul class="s28_share_stat">
-				<li><h5>10</h5>
+				<li><h5>{{$ret.share}}</h5>
 					<p>分享次数</p></li>
-				<li><h5>8</h5>
+				<li><h5>{{$ret.reg}}</h5>
 					<p>邀请成功</p></li>
-				<li><h5>45</h5>
+				<li><h5>{{$ret.money}}</h5>
 					<p>预计奖励</p></li>
 			</ul>
 			<div class="s28_line">
 				<div class="s28_line_head">
-					<p>本梯次奖励：<span>6</span>元</p>
+					<p>本梯次奖励：<span>{{$ret.curr_money}}</span>元</p>
 				</div>
 				<div class="s28_line_repeat">
 					<div class="s28_line_level">
-						<div class="s28_line_level_title">正在第一梯队：6元</div>
-						<p class="s28_line_perc_bar"><em style="width: 50%"></em></p>
+						<div class="s28_line_level_title">正在第{{$ret.curr_level}}梯队：{{$ret.curr_money}}元</div>
+						<p class="s28_line_perc_bar"><em style="width: {{$ret.curr_percent}}%"></em></p>
 						<div class="s28_line_level_ico">
 							<img src="/images/s28/s28_lever_count.png">
-							<p>1/2</p>
+							<p>{{$ret.curr_p}}/{{$ret.curr_total}}</p>
 						</div>
 					</div>
 					<ul class="s28_line_list">
@@ -40,7 +40,7 @@
 
 			<div class="s28_bottom">
 				<div class="s28_share_btn">
-					<a href="javascript:;">立即分享得现金</a>
+					<a href="javascript:;" class="btn-share">立即分享得现金</a>
 				</div>
 				<p class="s28_bottom_tip">每天连续来分享，福利奖励会更高</p>
 			</div>
@@ -50,13 +50,14 @@
 <section id="shared">
 	<div class="s28_shared_content">
 		<div class="s28_shared_des">
-			<div class="s28_shared_red">
+			<a href="javascript:;" class="s28_shared_red">
 
-			</div>
+			</a>
 			<div class="s28_shared_qr">
 				<div class="img"><img src="{{$url}}"></div>
 				<div class="img"><img src="/images/s28/s28_finger_mark.png"></div>
 			</div>
+			<div class="s28_shared_tip">长按识别二维码</div>
 		</div>
 	</div>
 </section>
@@ -71,6 +72,9 @@
 		</div>
 	</div>
 </div>
+<input type="hidden" value="{{$shareflag}}" id="shareflag">
+<input type="hidden" value="{{$sid}}" id="SUID">
+<input type="hidden" value="{{$uid}}" id="UID">
 <script src="/assets/js/require.js"></script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
@@ -92,10 +96,11 @@
 </script>
 <script>
 	if (document.location.hash === "" || document.location.hash === "#") {
-		document.location.hash = "#share";
+		document.getElementById("shareflag").value == 1 ? document.location.hash = "#shared" : document.location.hash = "#share"
+
 	}
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/share28.js?v=1.8.7']);
+		requirejs(['/js/share28.js?v=1.1.5']);
 	});
 </script>
 

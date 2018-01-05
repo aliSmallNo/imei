@@ -1,6 +1,7 @@
 @import "base"
 .bg-sw
 	background: #fff
+
 .sw_bar
 	@include displayFlex
 	background: $mainColor
@@ -30,6 +31,7 @@
 				color: #fff
 				font-size: 1rem
 				padding: .2rem
+
 .sw_bar_text
 	@include displayFlex
 	background: $white
@@ -58,6 +60,7 @@
 			border-right: .5rem solid transparent
 			border-left: .5rem solid transparent
 			border-bottom: .6rem solid #fff
+
 .sw_pages
 	margin-top: 1rem
 	ul
@@ -82,6 +85,7 @@
 				&:after
 					@include arrowRight
 					right: 1rem
+
 .sw_task_cash
 	background: url(../images/sw/task_cash_amt.jpg) no-repeat center center
 	background-size: 100% 100%
@@ -103,6 +107,7 @@
 			span
 				font-size: 1.2rem
 				color: $white
+
 .sw_task_total
 	@include displayFlex
 	background: #fff
@@ -127,11 +132,13 @@
 			line-height: 2.5rem
 			&:last-child
 				color: #ee7641
+
 .sw_task_title
 	background: #f2f0f1
 	color: $mainColor
 	font-size: 1.2rem
 	padding: .5rem 1.5rem
+
 .sw_task_item
 	border-bottom: 1px solid #eee
 	.sw_task_item_btn
@@ -230,13 +237,12 @@
 			font-size: 1.3rem
 			text-align: center
 			margin: 0 2rem
+
 .sw_exchange_cash
 	background: #fff
 	border-bottom: 1px solid #eee
 	padding: 1rem 1.5rem
 	font-size: 1.3rem
-
-
 
 .s28_content
 	background: url(../images/s28/s28_bg.jpg) no-repeat center center
@@ -458,11 +464,11 @@
 .s28_shared_content
 	background: url(../images/s28/s28_bg_shared.jpg) no-repeat center center
 	background-size: 100% 100%
-	height: 100vh
+	padding-top: 195%
 	position: relative
 	.s28_shared_des
 		position: absolute
-		bottom: 3rem
+		bottom: 6rem
 		left: 0
 		right: 0
 		.s28_shared_red
@@ -470,16 +476,25 @@
 			background-size: 60% 100%
 			padding-top: 60%
 			margin-bottom: 1rem
+			display: block
+			&.active
+				background: url(../images/s28/s28_red_packet_open.png) no-repeat center center
+				background-size: 60% 100%
 		.s28_shared_qr
 			@include displayFlex
 			margin: 2rem 3rem
 			.img
 				@include displayFlex-1
 				img
-					margin:  0 auto
+					margin: 0 auto
 					display: block
 					width: 9rem
 					height: 9rem
+		.s28_shared_tip
+			font-size: 2rem
+			color: $white
+			text-align: center
+			display: none
 
 
 

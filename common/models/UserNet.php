@@ -60,6 +60,24 @@ class UserNet extends ActiveRecord
 		self::STATUS_PASS => "已通过",
 	];
 
+	static $s28Items = [
+		["k" => 1, "dir" => "right", "num" => 4, "p" => 2, "cls" => ""],
+		["k" => 2, "dir" => "right", "num" => 6, "p" => 2, "cls" => ""],
+		["k" => 3, "dir" => "bottom", "num" => 10, "p" => 3, "cls" => ""],
+		["k" => 4, "dir" => "left", "num" => 12, "p" => 3, "cls" => ""],
+		["k" => 5, "dir" => "left", "num" => 18, "p" => 5, "cls" => ""],
+		["k" => 6, "dir" => "bottom", "num" => 26, "p" => 5, "cls" => ""],
+		["k" => 7, "dir" => "right", "num" => 68, "p" => 10, "cls" => ""],
+		["k" => 8, "dir" => "right", "num" => 158, "p" => 30, "cls" => ""],
+		["k" => 9, "dir" => "bottom", "num" => 368, "p" => 60, "cls" => ""],
+		["k" => 10, "dir" => "left", "num" => 778, "p" => 100, "cls" => ""],
+		["k" => 11, "dir" => "left", "num" => 1588, "p" => 200, "cls" => ""],
+		["k" => 12, "dir" => "bottom", "num" => 2488, "p" => 300, "cls" => ""],
+		["k" => 13, "dir" => "right", "num" => 3588, "p" => 400, "cls" => "li50"],
+		["k" => 14, "dir" => "bottom", "num" => 6588, "p" => 700, "cls" => "li50"],
+		["k" => 15, "dir" => "end", "num" => 12888, "p" => 999, "cls" => "li100"],
+	];
+
 	public static function tableName()
 	{
 		return '{{%user_net}}';
@@ -866,6 +884,78 @@ class UserNet extends ActiveRecord
 		}
 		$items = array_slice($items, 0, 25);
 		return [array_values($items), array_values($timesSub), array_values($timesReg)];
+	}
+
+	public static function s28ShareStat($uid)
+	{
+		$conn = AppUtil::db();
+		$share_m = self::REL_QR_MOMENT;
+		$share_f = self::REL_QR_SHARE;
+		$share_q = self::REL_QR_SUBSCRIBE;
+		$startTime = "2018-01-06 00:00:00";
+		$sql = "select
+				COUNT(case when nRelation in ($share_m,$share_f) and nNote=:note then 1 end) as share,
+				COUNT(case WHEN n.nRelation=$share_q AND u.uPhone!='' AND u.uRole>9 then 1 end) as reg 
+ 				from im_user_net as n 
+ 				join im_user as u on u.uId=n.nUId
+				where nUId=:uid and nAddedOn > :stime 
+				group by nUId";
+		$res = $conn->createCommand($sql)->bindValues([
+			":note" => '/wx/share28',
+			":uid" => $uid,
+			":stime" => $startTime,
+		])->queryOne();
+		$ret = [
+			"share" => 0,
+			"reg" => 0,
+			"money" => 0,
+			"curr_money" => 0,
+			"curr_lever" => 1,
+			"curr_percent" => 0,
+			"curr_p" => 1,
+			"curr_total" => 2,
+		];
+		if ($res) {
+			$ret["reg"] = $res["reg"];
+		}
+		$reg = $ret["reg"];
+
+		$s28Items = UserNet::$s28Items;
+		$amt = 0;
+		foreach ($s28Items as &$v) {
+			$amt += $v["p"];
+			$ret["money"] += $v["num"];
+			// echo $reg.'='.$amt.PHP_EOL;
+			if ($reg >= $amt) {
+
+			} else {
+				$v["cls"] = $v["cls"] . " active";
+				$ret["curr_money"] = $v["num"];
+				$ret["curr_level"] = $v["k"];
+				$ret["curr_percent"] = floor(($reg + $v["p"] - $amt) / $v["p"] * 100);
+				$ret["curr_p"] = $reg + $v["p"] - $amt;
+				$ret["curr_total"] = $v["p"];
+				$ret["money"] -= $v["num"];
+				break;
+			}
+		}
+
+//		foreach ($s28Items as $k => $v) {
+//			$ks = $k + 1;
+//			if ($ks % 6 == 4) {
+//				$temp6n = $s28Items[$k + 2];
+//				$s28Items[$k + 2] = $s28Items[$k];
+//				$s28Items[$k] = $temp6n;
+//			}
+//		}
+		$temp6 = $s28Items[5];
+		$temp12 = $s28Items[11];
+		$s28Items[5] = $s28Items[3];
+		$s28Items[11] = $s28Items[9];
+		$s28Items[3] = $temp6;
+		$s28Items[9] = $temp12;
+		//print_r($s28Items);
+		return [$ret, $s28Items];
 	}
 
 	public static function relations($condition, $page, $pageSize = 20)
