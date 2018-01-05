@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/dev.min.css">
+<link rel="stylesheet" href="/css/dev.min.css?v=1.3.1">
 <div class="share103-wrap">
 	<div class="title">
 		<div class="top">恭喜你获得10元千寻币</div>
