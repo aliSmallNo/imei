@@ -1,50 +1,65 @@
 <link rel="stylesheet" href="/css/zp.min.css">
-<div class="s28_content">
-	<div class="s28_content_items">
-		<ul class="s28_share_stat">
-			<li><h5>10</h5>
-				<p>分享次数</p></li>
-			<li><h5>8</h5>
-				<p>邀请成功</p></li>
-			<li><h5>45</h5>
-				<p>预计奖励</p></li>
-		</ul>
-		<div class="s28_line">
-			<div class="s28_line_head">
-				<p>本梯次奖励：<span>6</span>元</p>
-			</div>
-			<div class="s28_line_repeat">
-				<div class="s28_line_level">
-					<div class="s28_line_level_title">正在第一梯队：6元</div>
-					<p class="s28_line_perc_bar"><em style="width: 50%"></em></p>
-					<div class="s28_line_level_ico">
-						<img src="/images/s28/s28_lever_count.png">
-						<p>1/2</p>
-					</div>
+<section id="share">
+	<div class="s28_content">
+		<div class="s28_content_items">
+			<ul class="s28_share_stat">
+				<li><h5>10</h5>
+					<p>分享次数</p></li>
+				<li><h5>8</h5>
+					<p>邀请成功</p></li>
+				<li><h5>45</h5>
+					<p>预计奖励</p></li>
+			</ul>
+			<div class="s28_line">
+				<div class="s28_line_head">
+					<p>本梯次奖励：<span>6</span>元</p>
 				</div>
-				<ul class="s28_line_list">
-					{{foreach from=$list item=item}}
-					<li class="{{$item.cls}}">
-						<div class="{{$item.dir}}">
-							<h5>{{$item.num}}元</h5>
-							<p>邀请{{$item.p}}人</p>
-							<span>{{$item.k}}</span>
+				<div class="s28_line_repeat">
+					<div class="s28_line_level">
+						<div class="s28_line_level_title">正在第一梯队：6元</div>
+						<p class="s28_line_perc_bar"><em style="width: 50%"></em></p>
+						<div class="s28_line_level_ico">
+							<img src="/images/s28/s28_lever_count.png">
+							<p>1/2</p>
 						</div>
-					</li>
-					{{/foreach}}
-				</ul>
+					</div>
+					<ul class="s28_line_list">
+						{{foreach from=$list item=item}}
+						<li class="{{$item.cls}}">
+							<div class="{{$item.dir}}">
+								<h5>{{$item.num}}元</h5>
+								<p>邀请{{$item.p}}人</p>
+								<span>{{$item.k}}</span>
+							</div>
+						</li>
+						{{/foreach}}
+					</ul>
+				</div>
+				<div class="s28_line_footer"></div>
 			</div>
-			<div class="s28_line_footer"></div>
-		</div>
 
-		<div class="s28_bottom">
-			<div class="s28_share_btn">
-				<a href="javascript:;">立即分享得现金</a>
+			<div class="s28_bottom">
+				<div class="s28_share_btn">
+					<a href="javascript:;">立即分享得现金</a>
+				</div>
+				<p class="s28_bottom_tip">每天连续来分享，福利奖励会更高</p>
 			</div>
-			<p class="s28_bottom_tip">每天连续来分享，福利奖励会更高</p>
 		</div>
 	</div>
-</div>
+</section>
+<section id="shared">
+	<div class="s28_shared_content">
+		<div class="s28_shared_des">
+			<div class="s28_shared_red">
+
+			</div>
+			<div class="s28_shared_qr">
+				<div class="img"><img src="{{$url}}"></div>
+				<div class="img"><img src="/images/s28/s28_finger_mark.png"></div>
+			</div>
+		</div>
+	</div>
+</section>
 
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
@@ -76,6 +91,9 @@
 	</div>
 </script>
 <script>
+	if (document.location.hash === "" || document.location.hash === "#") {
+		document.location.hash = "#share";
+	}
 	requirejs(['/js/config.js?v=1.1'], function () {
 		requirejs(['/js/share28.js?v=1.8.7']);
 	});

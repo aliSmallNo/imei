@@ -2224,10 +2224,14 @@ class WxController extends BaseController
 			["k" => 14, "dir" => "bottom", "num" => 6588, "p" => 700, "cls" => "li50"],
 			["k" => 15, "dir" => "end", "num" => 12888, "p" => 999, "cls" => "li100"],
 		];
+		$sid = self::getParam("id");
+		$sid = $sid ? $sid : $this->user_id;
+		$url = UserQR::getQRCode($sid, UserQR::CATEGORY_SALES);
 		return self::renderPage("share28.tpl",
 			[
 				'uid' => $this->user_id,
 				"list" => $list,
+				"url" => $url,
 			],
 			'terse',
 			'红包大派送',
