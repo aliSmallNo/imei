@@ -2639,6 +2639,12 @@ class ApiController extends Controller
 			case 'share'://  分享到朋友
 				$note = self::postParam('note');
 				$nId = UserNet::addShare($uid, $subUId, UserNet::REL_QR_SHARE, $note);
+				if ($note == '/wx/share28') {
+					list($data)=UserNet::s28ShareStat($uid);
+					return self::renderAPI(0, '分享成功！', [
+						"data" => $data,
+					]);
+				}
 				break;
 			case 'moment':// 分享到朋友圈
 				$amt = 16;
@@ -2661,6 +2667,12 @@ class ApiController extends Controller
 				}
 				if ($note == '/wx/mshare') {
 					return self::renderAPI(0, '分享成功！非常感谢你对我们的支持');
+				}
+				if ($note == '/wx/share28') {
+					list($data)=UserNet::s28ShareStat($uid);
+					return self::renderAPI(0, '分享成功！', [
+						"data" => $data,
+					]);
 				}
 				$ret = UserTrans::shareReward($uid, $nId, UserTrans::CAT_MOMENT, $amt, UserTrans::UNIT_GIFT);
 				if ($ret) {

@@ -36,6 +36,11 @@ require(['jquery', 'mustache', "alpha"],
 			}, function (resp) {
 				if (resp.code < 1 && resp.msg) {
 					alpha.toast(resp.msg, 1);
+					var obj = $(".s28_share_stat");
+					var stat = resp.data.data;
+					obj.find("h5:eq(0)").html(stat.share);
+					obj.find("h5:eq(1)").html(stat.reg);
+					obj.find("h5:eq(2)").html(stat.money);
 				}
 			}, "json");
 		}
@@ -44,7 +49,7 @@ require(['jquery', 'mustache', "alpha"],
 			var linkUrl = "https://wx.meipo100.com/wx/share28?id=" + $("#UID").val().trim();
 			var imgUrl = "http://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9kAjI4qtbk53T8asCFeEV3uNKfCGII9yU14AKJdu6CRhpVagibPP5187Ql6zmddBQr48mqcd8VxfOQ/0?wx_fmt=jpeg";
 
-			var title = '千寻恋恋，28888现金红包大派送，快来来抢吧！';
+			var title = '千寻恋恋，28888现金大派送，快来来抢吧！';
 			var desc = '';
 			if (type === 'message') {
 				return {
@@ -113,6 +118,7 @@ require(['jquery', 'mustache', "alpha"],
 			});
 			locationHashChanged();
 			$sls.cork.hide();
+			shareLog('moment', '/wx/share28');
 		});
 
 	});

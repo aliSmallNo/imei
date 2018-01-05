@@ -100,7 +100,7 @@
 
 	}
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/share28.js?v=1.1.5']);
+		requirejs(['/js/share28.js?v=1.1.6']);
 	});
 </script>
 
