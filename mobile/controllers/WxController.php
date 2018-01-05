@@ -2220,6 +2220,7 @@ class WxController extends BaseController
 				"ret" => $ret,
 				"url" => $url,
 				"sid" => $sid,
+				"uid" => $this->user_id,
 			],
 			'terse',
 			'红包大派送',

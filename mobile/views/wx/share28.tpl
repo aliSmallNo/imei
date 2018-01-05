@@ -73,6 +73,7 @@
 	</div>
 </div>
 <input type="hidden" value="{{$sid}}" id="SUID">
+<input type="hidden" value="{{$uid}}" id="UID">
 <script src="/assets/js/require.js"></script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
