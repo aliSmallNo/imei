@@ -101,4 +101,51 @@ section {
 .heart-beat {
   -webkit-animation-name: kf_heart_beat; }
 
+.bg-103 {
+  position: relative; }
+  .bg-103:before {
+    content: " ";
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #eb3b40; }
+
+.share103-wrap {
+  background: url(../images/201801/bg_before.jpg) no-repeat center center;
+  background-size: cover;
+  padding-top: 161%;
+  position: relative; }
+  .share103-wrap .title {
+    position: absolute;
+    top: 3.5rem;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #eb3b40;
+    display: block; }
+    .share103-wrap .title .top {
+      font-size: 1.5rem;
+      padding-bottom: 1rem; }
+    .share103-wrap .title .big {
+      font-size: 10rem;
+      font-weight: 500; }
+      .share103-wrap .title .big em {
+        font-size: 4rem; }
+    .share103-wrap .title .tip {
+      color: #886a44;
+      font-size: 1.5rem; }
+    .share103-wrap .title .action {
+      padding: 1.5rem 5rem; }
+      .share103-wrap .title .action a {
+        background: url(../images/201801/bg_btn.png) no-repeat center center;
+        display: block;
+        height: 4.2rem;
+        background-size: 100% 100%;
+        color: #eb3b40;
+        font-size: 1.6rem;
+        line-height: 4rem; }
+
 /*# sourceMappingURL=dev.css.map */
