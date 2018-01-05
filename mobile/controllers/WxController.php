@@ -2232,7 +2232,7 @@ class WxController extends BaseController
 		$uService = UserService::init($uni);
 		$qrCode = '';
 		if ($uService->info) {
-			$qrCode = UserQR::getQRCode($uService->id, UserQR::CATEGORY_REDPACKET_103);
+			$qrCode = UserQR::getQRCode($uService->id, UserQR::CATEGORY_RED_103);
 		} else {
 			$uni = $this->user_uni;
 		}
