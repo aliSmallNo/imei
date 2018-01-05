@@ -920,17 +920,13 @@ class UserNet extends ActiveRecord
 			$ret["share"] = $res["share"];
 		}
 		$reg = $ret["reg"];
-
 		$s28Items = UserNet::$s28Items;
 		$amt = 0;
-		foreach ($s28Items as &$v) {
+		foreach ($s28Items as $k => $v) {
 			$amt += $v["p"];
 			$ret["money"] += $v["num"];
-			// echo $reg.'='.$amt.PHP_EOL;
-			if ($reg >= $amt) {
-
-			} else {
-				$v["cls"] = $v["cls"] . " active";
+			if ($reg < $amt) {
+				$s28Items[$k]["cls"] = $v["cls"] . " active";
 				$ret["curr_money"] = $v["num"];
 				$ret["curr_level"] = $v["k"];
 				$ret["curr_percent"] = floor(($reg + $v["p"] - $amt) / $v["p"] * 100);
@@ -941,21 +937,15 @@ class UserNet extends ActiveRecord
 			}
 		}
 
-//		foreach ($s28Items as $k => $v) {
-//			$ks = $k + 1;
-//			if ($ks % 6 == 4) {
-//				$temp6n = $s28Items[$k + 2];
-//				$s28Items[$k + 2] = $s28Items[$k];
-//				$s28Items[$k] = $temp6n;
-//			}
-//		}
-		$temp6 = $s28Items[5];
-		$temp12 = $s28Items[11];
-		$s28Items[5] = $s28Items[3];
-		$s28Items[11] = $s28Items[9];
-		$s28Items[3] = $temp6;
-		$s28Items[9] = $temp12;
-		//print_r($s28Items);
+		foreach ($s28Items as $k => $val) {
+			$ks = $k + 1;
+			if ($ks % 6 == 4) {
+				$temp6n = $s28Items[$k + 2];
+				$s28Items[$k + 2] = $s28Items[$k];
+				$s28Items[$k] = $temp6n;
+			}
+		}
+
 		return [$ret, $s28Items];
 	}
 

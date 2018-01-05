@@ -8,7 +8,7 @@
 				<li><h5>{{$ret.reg}}</h5>
 					<p>邀请成功</p></li>
 				<li><h5>{{$ret.money}}</h5>
-					<p>预计奖励</p></li>
+					<p>累计奖励</p></li>
 			</ul>
 			<div class="s28_line">
 				<div class="s28_line_head">
@@ -96,7 +96,7 @@
 </script>
 <script>
 	if (document.location.hash === "" || document.location.hash === "#") {
-		document.getElementById("shareflag").value == 1 ? document.location.hash = "#shared" : document.location.hash = "#share"
+		parseInt(document.getElementById("shareflag").value) ? document.location.hash = "#shared" : document.location.hash = "#share"
 
 	}
 	requirejs(['/js/config.js?v=1.1'], function () {
