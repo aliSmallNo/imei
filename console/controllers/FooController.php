@@ -1547,6 +1547,8 @@ class FooController extends Controller
 		//$stat = UserTrans::getStat(143807, true);
 		//print_r($stat);
 
+		UserNet::s28ShareStat(120003);
+
 	}
 
 

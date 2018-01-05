@@ -11,11 +11,27 @@ require(['jquery', 'mustache', "alpha"],
 			content: $(".m-popup-content"),
 		};
 
+		$(document).on(kClick, ".s28_shared_red", function () {
+			$(this).removeClass("active").addClass("active");
+		});
+
+		$('.btn-share').on(kClick, function () {
+			var html = '<i class="share-arrow">点击菜单分享</i>';
+			$sls.main.show();
+			$sls.main.append(html);
+			$sls.shade.fadeIn(160);
+			setTimeout(function () {
+				$sls.main.hide();
+				$sls.main.find('.share-arrow').remove();
+				$sls.shade.fadeOut(100);
+			}, 2000);
+		});
+
 
 		function shareLog(tag, note) {
 			$.post("/api/share", {
 				tag: tag,
-				id: '',
+				id: $("SUID").val().trim(),
 				note: note
 			}, function (resp) {
 				if (resp.code < 1 && resp.msg) {
@@ -25,8 +41,8 @@ require(['jquery', 'mustache', "alpha"],
 		}
 
 		function shareOptions(type) {
-			var linkUrl = "https://wx.meipo100.com/wx/share28";
-			var imgUrl = "https://img.meipo100.com/2017/1225/185307_t.jpg";
+			var linkUrl = "https://wx.meipo100.com/wx/share28#shared";
+			var imgUrl = "http://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9kAjI4qtbk53T8asCFeEV3uNKfCGII9yU14AKJdu6CRhpVagibPP5187Ql6zmddBQr48mqcd8VxfOQ/0?wx_fmt=jpeg";
 			var title = '千寻恋恋，元旦圣诞并肩作战，快来看看吧！';
 			var desc = '';
 			if (type === 'message') {

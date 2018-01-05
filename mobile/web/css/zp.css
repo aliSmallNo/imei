@@ -646,18 +646,22 @@ section {
 .s28_shared_content {
   background: url(../images/s28/s28_bg_shared.jpg) no-repeat center center;
   background-size: 100% 100%;
-  height: 100vh;
+  padding-top: 195%;
   position: relative; }
   .s28_shared_content .s28_shared_des {
     position: absolute;
-    bottom: 3rem;
+    bottom: 6rem;
     left: 0;
     right: 0; }
     .s28_shared_content .s28_shared_des .s28_shared_red {
       background: url(../images/s28/s28_red_packet.png) no-repeat center center;
       background-size: 60% 100%;
       padding-top: 60%;
-      margin-bottom: 1rem; }
+      margin-bottom: 1rem;
+      display: block; }
+      .s28_shared_content .s28_shared_des .s28_shared_red.active {
+        background: url(../images/s28/s28_red_packet_open.png) no-repeat center center;
+        background-size: 60% 100%; }
     .s28_shared_content .s28_shared_des .s28_shared_qr {
       display: -webkit-box;
       display: -webkit-flex;
@@ -674,5 +678,10 @@ section {
           display: block;
           width: 9rem;
           height: 9rem; }
+    .s28_shared_content .s28_shared_des .s28_shared_tip {
+      font-size: 2rem;
+      color: #fff;
+      text-align: center;
+      display: none; }
 
 /*# sourceMappingURL=zp.css.map */
