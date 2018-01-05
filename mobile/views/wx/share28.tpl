@@ -72,6 +72,7 @@
 		</div>
 	</div>
 </div>
+<input type="hidden" value="{{$shareflag}}" id="shareflag">
 <input type="hidden" value="{{$sid}}" id="SUID">
 <input type="hidden" value="{{$uid}}" id="UID">
 <script src="/assets/js/require.js"></script>
@@ -95,10 +96,11 @@
 </script>
 <script>
 	if (document.location.hash === "" || document.location.hash === "#") {
-		document.location.hash = "#share";
+		document.getElementById("shareflag").value == 1 ? document.location.hash = "#shared" : document.location.hash = "#share"
+
 	}
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/share28.js?v=1.1.4']);
+		requirejs(['/js/share28.js?v=1.1.5']);
 	});
 </script>
 

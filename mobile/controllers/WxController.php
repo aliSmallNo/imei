@@ -2208,8 +2208,7 @@ class WxController extends BaseController
 	public function actionShare28()
 	{
 		$sid = self::getParam("id");
-		$sid = $sid ? $sid : $this->user_id;
-		$url = UserQR::getQRCode($sid, UserQR::CATEGORY_SALES);
+		$url = UserQR::getQRCode(($sid ? $sid : $this->user_id), UserQR::CATEGORY_SALES);
 
 		list($ret, $list) = UserNet::s28ShareStat($this->user_id);
 
@@ -2220,6 +2219,7 @@ class WxController extends BaseController
 				"ret" => $ret,
 				"url" => $url,
 				"sid" => $sid,
+				"shareflag" => $sid ? 1 : 0,
 			],
 			'terse',
 			'红包大派送',
