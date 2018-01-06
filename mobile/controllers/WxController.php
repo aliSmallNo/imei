@@ -2119,7 +2119,6 @@ class WxController extends BaseController
 
 	public function actionSanta()
 	{
-
 		$stat = Log::santaStat($this->user_id);
 		$bags = Goods::items(['gCategory' => Goods::CAT_BAG, 'gStatus' => 1, 'gId' => "6021,6022,6023"]);
 		return self::renderPage("santa.tpl",
@@ -2240,7 +2239,6 @@ class WxController extends BaseController
 			'bg-red');
 	}
 
-
 	public function actionShare106()
 	{
 		$uni = self::getParam('id');
@@ -2268,7 +2266,6 @@ class WxController extends BaseController
 			'分享领红包',
 			$qrCode ? 'bg-color' : 'bg-103');
 	}
-
 
 	public function actionShare103()
 	{
