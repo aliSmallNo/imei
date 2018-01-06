@@ -377,6 +377,9 @@ class UserTrans extends ActiveRecord
 			if ($unit == self::UNIT_FEN) {
 				$items[$tid]['amt_title'] = round($row['flower'] / 100.0, 2) . '元';
 			}
+			if ($unit == self::UNIT_COIN_FEN) {
+				$items[$tid]['amt_title'] = round($row['flower'] / 100.0, 2) . '千寻币';
+			}
 		}
 		$uIds = array_values(array_unique($uIds));
 
