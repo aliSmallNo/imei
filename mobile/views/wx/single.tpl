@@ -507,7 +507,7 @@
 		<li></li>
 		<li></li>
 	</ul>
-	<div style="height: 3rem"></div>
+	<div style="height: 6rem"></div>
 </section>
 <section id="myMP">
 	<div class="nav">
