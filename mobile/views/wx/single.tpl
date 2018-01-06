@@ -491,7 +491,7 @@
 	</ul>
 	<div style="height: 1rem"></div>
 	<ul class="zone-grid">
-		<li><a href="/wx/sw#swallet"><i class="i-zone-grid wallet"></i><em>账户</em></em></a></li>
+		<li><a href="/wx/swallet"><i class="i-zone-grid wallet"></i><em>账户</em></em></a></li>
 		<li><a href="/wx/shop"><i class="i-zone-grid shop"></i><em>商城</em></em></a></li>
 		<li><a href="/wx/shopbag"><i class="i-zone-grid bag"></i><em>背包</em></em></a></li>
 		<li><a href="/wx/lottery"><i class="i-zone-grid sign"></i><em>每日签到</em></a></li>

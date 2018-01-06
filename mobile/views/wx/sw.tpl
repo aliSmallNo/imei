@@ -25,7 +25,7 @@
 	</ul>
 	<div class="sw_bar_text">
 		<div>充值</div>
-		<div>提现</div>
+		<div>花呗</div>
 		<div>续费</div>
 	</div>
 	<div class="sw_pages">
