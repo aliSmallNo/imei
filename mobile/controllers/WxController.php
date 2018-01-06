@@ -2226,6 +2226,36 @@ class WxController extends BaseController
 			'bg-red');
 	}
 
+
+	public function actionShare106()
+	{
+		$uni = self::getParam('id');
+		$uService = UserService::init($uni);
+		$uid = $this->user_id;
+		if ($uService->info) {
+			$qrCode = UserQR::getQRCode($uService->id, UserQR::CATEGORY_RED_103);
+			$uid = $uService->id;
+		} else {
+			$uni = $this->user_uni;
+			$qrCode = UserQR::getQRCode($uid, UserQR::CATEGORY_RED_103);
+		}
+
+		$money = 10;
+
+		return self::renderPage("share106.tpl",
+			[
+				'uni' => $uni,
+				'uid' => $this->user_id,
+				'qrCode' => $qrCode,
+				'money' => $money,
+				'wxUrl' => AppUtil::wechatUrl()
+			],
+			'terse',
+			'分享领红包',
+			$qrCode ? 'bg-color' : 'bg-103');
+	}
+
+
 	public function actionShare103()
 	{
 		$uni = self::getParam('id');

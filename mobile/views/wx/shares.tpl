@@ -69,6 +69,7 @@
 		<div class="m-popup-content no-bg"></div>
 	</div>
 </div>
+
 <input type="hidden" id="cUID" value="{{$uid}}">
 <input type="hidden" id="cUNI" value="{{$uni}}">
 <input type="hidden" id="cIDX" value="{{$idx}}">

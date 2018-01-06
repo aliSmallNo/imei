@@ -78,7 +78,11 @@ require(['jquery', 'mustache', "alpha"],
 				case "card":
 				case "swallet":
 				case "task":
+				case "rule":
 					location.href = "#" + page;
+					break;
+				case "share":
+					location.href = "/wx/share106";
 					break;
 
 			}

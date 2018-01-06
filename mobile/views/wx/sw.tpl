@@ -125,7 +125,7 @@
 
 </section>
 <section id="cash">
-	<div class="sw_cash_items">
+	<div class="sw_cash_items" style="display: none">
 		<p>可提现余额: <span>18</span>元</p>
 		<ul>
 			{{foreach from=$cash item=item}}
@@ -137,7 +137,7 @@
 		</div>
 	</div>
 	<div>
-		<h5 class="sw_exchange_cash">千寻币: <span></span></h5>
+		<h5 class="sw_exchange_cash">平台兑换红包: <span>100</span>元</h5>
 		<ul class="recharge">
 			{{foreach from=$prices key=key item=price}}
 			<li class="{{if isset($price.ln) && $price.ln}}{{$price.ln}}{{/if}}">
@@ -177,6 +177,7 @@
 
 	</div>
 	<div>
+		<h5 class="sw_exchange_cash">平台兑换红包: <span>100</span>元</h5>
 		<ul class="recharge">
 			{{foreach from=$prices key=key item=price}}
 			<li class="{{if isset($price.ln) && $price.ln}}{{$price.ln}}{{/if}}">
@@ -202,6 +203,39 @@
 		<p class="tip-block">媒桂花用于赠予、密聊、约会，不能提现或退款</p>
 	</div>
 </section>
+<section id="rule">
+	<div class="sw_rule">
+		<h4>可提现现金</h4>
+		<p>可提现现金为用户做任务得来的基础红包金额。你
+			可以进入“我的”-“账户”-“现金”中查看您可提现
+			的现金。并将其提现到微信。</p>
+
+		<h4>千寻币（平台兑换红包）</h4>
+		<p>
+			平台兑换红包为活动或着特殊任务中获得。平台简
+			称千寻币只限制用于平台内商品的购买。如：媒桂
+			花、月度畅聊卡与商城内的礼物等待。平台兑换红
+			包每次均已红包形式发放。</p>
+
+		<h4>提现规则</h4>
+		<p>
+			平台可提现红包为您做任务积累10元及可立即提现
+			到微信红包。由于微信近期的提现规则调整。您需
+			先添加客服微信：meipo1001。向客服提供您账户
+			余额截图，待客服审核完毕后将在24小时内发红包
+			给您。</p>
+
+		<h4>任务奖励</h4>
+		<p>任务分为新手任务和日常任务两种形式。新手任务
+			任务只能完成一次，日常任务可重复完成，但每日
+			有一定的次数限制，每天凌晨05:00次数将会充值。
+			关于任务的详细介绍与对应奖励，可以进入“我的”
+			-“任务”中查看。</p>
+	</div>
+</section>
+
+
+
 <section id="swallet">
 	<div class="account-header">
 		<div class="item">
@@ -217,6 +251,7 @@
 		<a href="#srecords" class="nav-right">账户记录 ></a>
 	</div>
 	<div>
+		<h5 class="sw_exchange_cash">平台兑换红包: <span>100</span>元</h5>
 		<ul class="recharge">
 			{{foreach from=$prices key=key item=price}}
 			<li class="{{if isset($price.ln) && $price.ln}}{{$price.ln}}{{/if}}">

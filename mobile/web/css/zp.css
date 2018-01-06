@@ -424,6 +424,21 @@ section {
   padding: 1rem 1.5rem;
   font-size: 1.3rem; }
 
+.sw_rule {
+  padding: 2.5rem 1.5rem;
+  height: 106%;
+  background: #fff; }
+  .sw_rule h4 {
+    font-size: 1.8rem; }
+  .sw_rule p {
+    font-size: 1.2rem;
+    padding: 0.5rem 0 2rem 0;
+    color: #777;
+    letter-spacing: 0.1rem; }
+
+.sw_share {
+  padding: 1rem; }
+
 .s28_content {
   background: url(../images/s28/s28_bg.jpg) no-repeat center center;
   background-size: 100% 100%;
@@ -683,5 +698,42 @@ section {
       color: #fff;
       text-align: center;
       display: none; }
+
+.share106-qr {
+  background: url(../images/201801/bg_after.jpg) no-repeat center center;
+  background-size: cover;
+  padding-top: 151%;
+  position: relative; }
+  .share106-qr .title {
+    position: absolute;
+    top: 37%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #fff;
+    display: block; }
+    .share106-qr .title .top {
+      font-size: 2.2rem; }
+    .share106-qr .title .qrcode {
+      padding-top: 4rem;
+      text-align: center; }
+      .share106-qr .title .qrcode img {
+        width: 18rem;
+        height: 18rem; }
+
+.share106_action {
+  padding: 1rem 3rem; }
+  .share106_action a {
+    font-weight: 500;
+    font-size: 1.6rem;
+    height: 4rem;
+    line-height: 4rem;
+    border-radius: 2rem;
+    display: block;
+    text-align: center;
+    color: #6d4c41;
+    background: #fdd835; }
+    .share106_action a:active {
+      background: #ddd000; }
 
 /*# sourceMappingURL=zp.css.map */
