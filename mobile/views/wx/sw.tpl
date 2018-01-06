@@ -270,6 +270,6 @@
 		document.location.hash = "#index";
 	}
 	requirejs(['/js/config.js'], function () {
-		requirejs(['/js/sw.js?v=1.4.2']);
+		requirejs(['/js/sw.js?v=1.4.3']);
 	});
 </script>
