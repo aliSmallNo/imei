@@ -23,11 +23,52 @@ require(['jquery', 'mustache', "alpha"],
 			}
 		});
 
-		$(document).on(kClick, ".sw_cash_items a", function () {
-			var self = $(this);
-			self.closest("ul").find("li").removeClass("active");
-			self.closest("li").addClass("active");
-		});
+		// 提现
+		var cashUtil = {
+			num: parseInt($(".sw_cash_items").find("ul").find("li.active").attr("data-num")),
+			cash: parseInt($(".sw_cash_items").find("p:eq(0)").find("span").html()),
+			init: function () {
+				var util = this;
+				$(document).on(kClick, ".sw_cash_items ul a", function () {
+					var self = $(this);
+					self.closest("ul").find("li").removeClass("active");
+					self.closest("li").addClass("active");
+					util.num = parseInt(self.closest("ul").find("li.active").attr("data-num"));
+				});
+				$(document).on(kClick, ".sw_cash_btn_comfirm a", function () {
+					var self = $(this);
+					console.log(util.cash);
+					console.log(util.num);
+					if (util.num < 10) {
+						alpha.toast("还没选择要提现金额~");
+						return;
+					}
+					if (util.cash < util.num) {
+						alpha.toast("可提现金额不足~");
+						return;
+					}
+					util.tocash();
+				});
+			},
+			tocash: function () {
+				var util = this;
+				if ($sls.loading) {
+					return;
+				}
+				$sls.loading = 1;
+				$.post("/wx/wallet", {
+					tag: "tocash",
+					num: util.num,
+				}, function (resp) {
+					$sls.loading = 0;
+					if (resp.code == 0) {
+
+					}
+					alpha.toast(resp.msg);
+				}, "json");
+			},
+		};
+		cashUtil.init();
 
 		$(document).on(kClick, "a[data-page]", function () {
 			var self = $(this);
@@ -42,14 +83,21 @@ require(['jquery', 'mustache', "alpha"],
 
 			}
 		});
-		$(document).on(kClick, ".sw_task_item .sw_task_item_btn", function () {
-			var self = $(this).closest(".sw_task_item");
-			if (self.hasClass("active")) {
-				self.removeClass("active");
-			} else {
-				self.addClass("active");
-			}
-		});
+
+		// 任务页
+		var taskUtil = {
+			init: function () {
+				$(document).on(kClick, ".sw_task_item .sw_task_item_btn", function () {
+					var self = $(this).closest(".sw_task_item");
+					if (self.hasClass("active")) {
+						self.removeClass("active");
+					} else {
+						self.addClass("active");
+					}
+				});
+			},
+		};
+		taskUtil.init();
 
 		var WalletUtil = {
 			page: 1,

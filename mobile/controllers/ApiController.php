@@ -161,6 +161,17 @@ class ApiController extends Controller
 					return self::renderAPI(129, '余额不足50元，暂时不能提现~');
 				}
 				return self::renderAPI(0, '暂时不能提现~');
+			case "tocash":
+				$amount = intval(self::postParam("num")) * 100;
+				if ($amount < 1000) {
+					 return self::renderAPI(129, '最低提现金额是10元！');
+				}
+				if (AppUtil::isDev()) {
+					return self::renderAPI(129, '请在服务器测试该功能~');
+				}
+				list($code, $msg) = PayUtil::withDrawForS28($openId, $amount);
+				return self::renderAPI($code, $msg);
+				break;
 			case 'recharge':
 				$cat = self::postParam('cat');
 				$title = '千寻恋恋-充值';
@@ -1803,6 +1814,7 @@ class ApiController extends Controller
 				 * $nickname = '赵武';   // 用户的昵称
 				 * $amount = 100;          // 金额，单位分
 				 * $ret = PayUtil::withdraw($openId, $tradeNo, $nickname, $amount);
+				 *
 				 */
 				$xcxopenid = self::postParam("xcxopenid");
 				if (!$uid || !$xcxopenid) {
@@ -2640,7 +2652,7 @@ class ApiController extends Controller
 				$note = self::postParam('note');
 				$nId = UserNet::addShare($uid, $subUId, UserNet::REL_QR_SHARE, $note);
 				if ($note == '/wx/share28') {
-					list($data)=UserNet::s28ShareStat($uid);
+					list($data) = UserNet::s28ShareStat($uid);
 					return self::renderAPI(0, '分享成功！', [
 						"data" => $data,
 					]);
@@ -2669,7 +2681,7 @@ class ApiController extends Controller
 					return self::renderAPI(0, '分享成功！非常感谢你对我们的支持');
 				}
 				if ($note == '/wx/share28') {
-					list($data)=UserNet::s28ShareStat($uid);
+					list($data) = UserNet::s28ShareStat($uid);
 					return self::renderAPI(0, '分享成功！', [
 						"data" => $data,
 					]);

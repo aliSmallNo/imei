@@ -21,6 +21,7 @@ use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
 use common\utils\NoticeUtil;
+use common\utils\PayUtil;
 use common\utils\PushUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
@@ -1545,7 +1546,10 @@ class FooController extends Controller
 		//$stat = UserTrans::getStat(143807, true);
 		//print_r($stat);
 
-		UserNet::s28ShareStat(120003);
+		//UserNet::s28ShareStat(120003);
+
+		//list($code, $msg) = PayUtil::withDrawForS28('oYDJew5EFMuyrJdwRrXkIZLU2c58', 100);echo $msg . PHP_EOL;
+
 
 
 	}
