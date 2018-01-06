@@ -4,14 +4,14 @@
 		<li>
 			<a href="javascript:;" data-page="swallet">
 				<img src="/images/sw/fl.png" alt="">
-				<p>1999</p>
+				<p>{{$stat['flower']}}</p>
 				<p>媒瑰花</p>
 			</a>
 		</li>
 		<li>
 			<a href="javascript:;" data-page="cash">
 				<img src="/images/sw/cash.png" alt="">
-				<p>{{$money}}</p>
+				<p>{{$stat.coin_y}}</p>
 				<p>现金</p>
 			</a>
 		</li>
@@ -126,7 +126,7 @@
 </section>
 <section id="cash">
 	<div class="sw_cash_items" style="display: none">
-		<p>可提现余额: <span>{{$money}}</span>元</p>
+		<p>可提现余额: <span>{{$stat.coin_y}}</span>元</p>
 		<ul>
 			{{foreach from=$cash item=item}}
 			<li  class="{{$item.cls}}" data-num="{{$item.amt}}"><a href="javascript:;">{{$item.amt}}元</a></li>
@@ -137,7 +137,7 @@
 		</div>
 	</div>
 	<div>
-		<h5 class="sw_exchange_cash">平台兑换红包: <span>{{$money}}</span>元</h5>
+		<h5 class="sw_exchange_cash">平台兑换红包: <span>{{$stat.coin_y}}</span>元</h5>
 		<ul class="recharge">
 			{{foreach from=$prices key=key item=price}}
 			<li class="{{if isset($price.ln) && $price.ln}}{{$price.ln}}{{/if}}">
@@ -176,7 +176,7 @@
 		{{/foreach}}
 	</div>
 	<div>
-		<h5 class="sw_exchange_cash">平台兑换红包: <span>{{$money}}</span>元</h5>
+		<h5 class="sw_exchange_cash">平台兑换红包: <span>{{$stat.coin_y}}</span>元</h5>
 		<ul class="recharge">
 			{{foreach from=$prices key=key item=price}}
 			<li class="{{if isset($price.ln) && $price.ln}}{{$price.ln}}{{/if}}">
@@ -205,31 +205,13 @@
 <section id="rule">
 	<div class="sw_rule">
 		<h4>可提现现金</h4>
-		<p>可提现现金为用户做任务得来的基础红包金额。你
-			可以进入“我的”-“账户”-“现金”中查看您可提现
-			的现金。并将其提现到微信。</p>
-
+		<p>可提现现金为用户做任务得来的基础红包金额。你可以进入“我的”-“账户”-“现金”中查看您可提现的现金。并将其提现到微信。</p>
 		<h4>千寻币（平台兑换红包）</h4>
-		<p>
-			平台兑换红包为活动或着特殊任务中获得。平台简
-			称千寻币只限制用于平台内商品的购买。如：媒桂
-			花、月度畅聊卡与商城内的礼物等待。平台兑换红
-			包每次均已红包形式发放。</p>
-
+		<p>平台兑换红包为活动或着特殊任务中获得。平台简称千寻币只限制用于平台内商品的购买。如：媒桂花、月度畅聊卡与商城内的礼物等待。平台兑换红包每次均已红包形式发放。</p>
 		<h4>提现规则</h4>
-		<p>
-			平台可提现红包为您做任务积累10元及可立即提现
-			到微信红包。由于微信近期的提现规则调整。您需
-			先添加客服微信：meipo1001。向客服提供您账户
-			余额截图，待客服审核完毕后将在24小时内发红包
-			给您。</p>
-
+		<p>平台可提现红包为您做任务积累10元及可立即提现到微信红包。由于微信近期的提现规则调整。您需先添加客服微信：meipo1001。向客服提供您账户余额截图，待客服审核完毕后将在24小时内发红包给您。</p>
 		<h4>任务奖励</h4>
-		<p>任务分为新手任务和日常任务两种形式。新手任务
-			任务只能完成一次，日常任务可重复完成，但每日
-			有一定的次数限制，每天凌晨05:00次数将会充值。
-			关于任务的详细介绍与对应奖励，可以进入“我的”
-			-“任务”中查看。</p>
+		<p>任务分为新手任务和日常任务两种形式。新手任务任务只能完成一次，日常任务可重复完成，但每日有一定的次数限制，每天凌晨05:00次数将会充值。关于任务的详细介绍与对应奖励，可以进入“我的”-“任务”中查看。</p>
 	</div>
 </section>
 
@@ -249,7 +231,7 @@
 		<a href="#srecords" class="nav-right">账户记录 ></a>
 	</div>
 	<div>
-		<h5 class="sw_exchange_cash">平台兑换红包: <span>{{$money}}</span>元</h5>
+		<h5 class="sw_exchange_cash">平台兑换红包: <span>{{$stat.coin_y}}</span>元</h5>
 		<ul class="recharge">
 			{{foreach from=$prices key=key item=price}}
 			<li class="{{if isset($price.ln) && $price.ln}}{{$price.ln}}{{/if}}">
