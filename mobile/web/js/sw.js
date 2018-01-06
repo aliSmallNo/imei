@@ -56,7 +56,7 @@ require(['jquery', 'mustache', "alpha"],
 					return;
 				}
 				$sls.loading = 1;
-				$.post("/wx/wallet", {
+				$.post("/api/wallet", {
 					tag: "tocash",
 					num: util.num,
 				}, function (resp) {
