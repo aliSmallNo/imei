@@ -45,85 +45,7 @@
 		</ul>
 	</div>
 </section>
-<section id="task">
-	<div class="sw_task_cash">
-		<div class="sw_task_cash_des">
-			<h5>今日获得现金</h5>
-			<p>0.00 <span>元</span></p>
-		</div>
-	</div>
-	<div class="sw_task_total">
-		<div>
-			<p>累计邀请人数</p>
-			<p>0</p>
-		</div>
-		<div>
-			<p>累计可提现红包</p>
-			<p>0.00</p>
-		</div>
-	</div>
-	<div class="sw_task_title">
-		新手任务
-	</div>
-	{{foreach from=$newTask item=item}}
-	<div class="sw_task_item">
-		<a href="javascript:;" class="sw_task_item_btn active">
-			<h5>{{$item.title}}</h5>
-			<div>
-				<em>+{{$item.num}}</em>
-				<img src="/images/sw/red_task.png">
-			</div>
-		</a>
-		<div class="sw_task_item_des">
-			<p>{{$item.des}}</p>
-			<div class="btn">
-				<a href="javascript:;">{{$item.utext}}</a>
-			</div>
-		</div>
-	</div>
-	{{/foreach}}
-	<div class="sw_task_title">
-		日常任务
-	</div>
-	{{foreach from=$everyTask item=item}}
-	<div class="sw_task_item">
-		<a href="javascript:;" class="sw_task_item_btn active">
-			<h5>{{$item.title}}</h5>
-			<div>
-				<em>+{{$item.num}}</em>
-				<img src="/images/sw/red_task.png">
-			</div>
-		</a>
-		<div class="sw_task_item_des">
-			<p>{{$item.des}}</p>
-			<div class="btn">
-				<a href="javascript:;">{{$item.utext}}</a>
-			</div>
-		</div>
-	</div>
-	{{/foreach}}
-	<div class="sw_task_title">
-		挑战任务
-	</div>
-	{{foreach from=$hardTask item=item}}
-	<div class="sw_task_item">
-		<a href="javascript:;" class="sw_task_item_btn active">
-			<h5>{{$item.title}}</h5>
-			<div>
-				<em>+{{$item.num}}</em>
-				<img src="/images/sw/red_task.png">
-			</div>
-		</a>
-		<div class="sw_task_item_des">
-			<p>{{$item.des}}</p>
-			<div class="btn">
-				<a href="javascript:;">{{$item.utext}}</a>
-			</div>
-		</div>
-	</div>
-	{{/foreach}}
 
-</section>
 <section id="cash">
 	<div class="sw_cash_items" style="display: none">
 		<p>可提现余额: <span>{{$stat.coin_y}}</span>元</p>
@@ -214,7 +136,6 @@
 		<p>任务分为新手任务和日常任务两种形式。新手任务任务只能完成一次，日常任务可重复完成，但每日有一定的次数限制，每天凌晨05:00次数将会充值。关于任务的详细介绍与对应奖励，可以进入“我的”-“任务”中查看。</p>
 	</div>
 </section>
-
 
 <section id="swallet">
 	<div class="account-header">

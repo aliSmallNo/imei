@@ -2157,6 +2157,36 @@ class WxController extends BaseController
 		unset($prices["chat_3"]);
 		unset($prices["chat_7"]);
 
+		$cash = [
+			["amt" => 10, "cls" => "active"], ["amt" => 30, "cls" => ""], ["amt" => 50, "cls" => ""], ["amt" => 80, "cls" => ""],
+			["amt" => 120, "cls" => "active"], ["amt" => 180, "cls" => ""], ["amt" => 240, "cls" => ""], ["amt" => 300, "cls" => ""],
+		];
+		$offet = 0;
+		$cash = array_slice($cash, $offet, 3);
+
+		// 千寻币
+		$money = 0;
+
+		return self::renderPage("sw.tpl",
+			[
+				'avatar' => $avatar,
+				'nickname' => $nickname,
+				'prices' => $prices,
+				'hid' => $hid,
+				'stat' => $stat,
+				'cards' => $cards,
+				"isDebug" => AppUtil::isDebugger($this->user_id),
+				'cash' => $cash,
+				'money' => $money,
+			],
+			'terse',
+			'账户',
+			"bg-sw");
+	}
+
+	public function actionTask()
+	{
+		$uid = $this->user_id;
 		$newTask = [
 			["title" => "注册首次登陆", "num" => 1, "des" => "关注公众号首次登陆进入平台后，奖励2元现金红包。分享后直接到我的任务列表可查看获得的奖金", "utext" => "去登陆", "url" => ""],
 			["title" => "完善个人资料达到80%", "num" => 2, "des" => "完善资料达到80%后，即可领取2元现金红包。完成后直接到我的任务列表可查看获得的奖励", "utext" => "去完善", "url" => ""],
@@ -2177,36 +2207,16 @@ class WxController extends BaseController
 			["title" => "收到特权礼物（不限）", "num" => 2, "des" => "第一次收到特权礼物后，即可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "领取", "url" => ""],
 		];
 
-		$cash = [
-			["amt" => 10, "cls" => "active"], ["amt" => 30, "cls" => ""], ["amt" => 50, "cls" => ""], ["amt" => 80, "cls" => ""],
-			["amt" => 120, "cls" => "active"], ["amt" => 180, "cls" => ""], ["amt" => 240, "cls" => ""], ["amt" => 300, "cls" => ""],
-		];
-		$offet = 0;
-		$cash = array_slice($cash, $offet, 3);
-
-		// 千寻币
-		$money = 0;
-
-		return self::renderPage("sw.tpl",
+		return self::renderPage("task.tpl",
 			[
-				'avatar' => $avatar,
-				'nickname' => $nickname,
-				'prices' => $prices,
-				'hid' => $hid,
-				'stat' => $stat,
-				'cards' => $cards,
-				"isDebug" => AppUtil::isDebugger($this->user_id),
+				'uid' => $this->user_id,
 				'newTask' => $newTask,
 				'everyTask' => $everyTask,
 				'hardTask' => $hardTask,
-				'cash' => $cash,
-				'money' => $money,
-
-
 			],
 			'terse',
-			'账户',
-			"bg-sw");
+			'任务',
+			 'bg-103');
 	}
 
 	public function actionShare28()

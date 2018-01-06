@@ -77,9 +77,11 @@ require(['jquery', 'mustache', "alpha"],
 				case "cash":
 				case "card":
 				case "swallet":
-				case "task":
 				case "rule":
 					location.href = "#" + page;
+					break;
+				case "task":
+					location.href = "/wx/task";
 					break;
 				case "share":
 					location.href = "/wx/share106";
@@ -87,21 +89,6 @@ require(['jquery', 'mustache', "alpha"],
 
 			}
 		});
-
-		// 任务页
-		var taskUtil = {
-			init: function () {
-				$(document).on(kClick, ".sw_task_item .sw_task_item_btn", function () {
-					var self = $(this).closest(".sw_task_item");
-					if (self.hasClass("active")) {
-						self.removeClass("active");
-					} else {
-						self.addClass("active");
-					}
-				});
-			},
-		};
-		taskUtil.init();
 
 		var WalletUtil = {
 			page: 1,
