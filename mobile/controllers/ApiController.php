@@ -2640,7 +2640,7 @@ class ApiController extends Controller
 				$note = self::postParam('note');
 				$nId = UserNet::addShare($uid, $subUId, UserNet::REL_QR_SHARE, $note);
 				if ($note == '/wx/share28') {
-					list($data)=UserNet::s28ShareStat($uid);
+					list($data) = UserNet::s28ShareStat($uid);
 					return self::renderAPI(0, '分享成功！', [
 						"data" => $data,
 					]);
@@ -2665,11 +2665,15 @@ class ApiController extends Controller
 					}
 					Log::addSanta($wxInfo["uId"], $key);
 				}
+				if ($note == '/wx/share103') {
+					$ret = UserTrans::shareRewardOnce($uid, 103, UserTrans::CAT_MOMENT_RED, 1000, UserTrans::UNIT_COIN);
+					return self::renderAPI(0, '分享成功！非常感谢你对我们的支持');
+				}
 				if ($note == '/wx/mshare') {
 					return self::renderAPI(0, '分享成功！非常感谢你对我们的支持');
 				}
 				if ($note == '/wx/share28') {
-					list($data)=UserNet::s28ShareStat($uid);
+					list($data) = UserNet::s28ShareStat($uid);
 					return self::renderAPI(0, '分享成功！', [
 						"data" => $data,
 					]);
