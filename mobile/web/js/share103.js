@@ -67,10 +67,10 @@ require(["jquery", "alpha"],
 		}
 
 		function resetMenuShare() {
-			var thumb = $sls.nic.find("img").attr('src');
+			var thumb = 'https://bpbhd-10063905.file.myqcloud.com/image/n1801051187989.png';
 			var link = $sls.wxUrl + '/wx/share103?id=' + $sls.uni;
-			var title = '我在东台做媒婆，帮助周边好友脱单，还能赚点零花钱';
-			var desc = '一起来千寻恋恋做媒婆吧，帮助身边的单身青年脱单';
+			var title = '我在千寻恋恋找朋友，还能赚点零花钱';
+			var desc = '一起来千寻恋恋吧，还能帮助身边的单身朋友脱单';
 			wx.onMenuShareTimeline({
 				title: title,
 				link: link,

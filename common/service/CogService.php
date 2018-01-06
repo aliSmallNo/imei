@@ -103,14 +103,16 @@ class CogService
 
 	public function miscFigures($activeOnly = false)
 	{
-		return self::figures(self::CAT_IMAGE_MISC, $activeOnly);
+		return self::figures(self::CAT_IMAGE_MISC, $activeOnly, 1, 20);
 	}
 
-	protected function figures($cat, $activeOnly = false)
+	protected function figures($cat, $activeOnly = false, $page = 1, $pageSize = 100)
 	{
 		return $this->items(
 			['cCategory=:cat ' . ($activeOnly ? ' AND cStatus=1' : '')],
-			[':cat' => $cat]);
+			[':cat' => $cat],
+			$page,
+			$pageSize);
 	}
 
 	protected function items($criteria = [], $params = [], $page = 1, $pageSize = 100)

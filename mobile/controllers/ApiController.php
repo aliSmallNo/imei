@@ -2677,6 +2677,10 @@ class ApiController extends Controller
 					}
 					Log::addSanta($wxInfo["uId"], $key);
 				}
+				if ($note == '/wx/share103') {
+					$ret = UserTrans::shareRewardOnce($uid, 103, UserTrans::CAT_MOMENT_RED, 1000, UserTrans::UNIT_COIN);
+					return self::renderAPI(0, '分享成功！非常感谢你对我们的支持');
+				}
 				if ($note == '/wx/mshare') {
 					return self::renderAPI(0, '分享成功！非常感谢你对我们的支持');
 				}

@@ -34,6 +34,7 @@ class UserTrans extends ActiveRecord
 	const CAT_RETURN = 130;
 	const CAT_MOMENT = 150;
 	const CAT_MOMENT_RECRUIT = 153;
+	const CAT_MOMENT_RED = 155;
 	const CAT_VOTE = 160;
 	const CAT_FANS_DRAW = 170;
 	const CAT_REMOVE_COMMENT = 172;
@@ -64,6 +65,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_RETURN => "拒绝退回",
 		self::CAT_MOMENT => "分享到朋友圈奖励",
 		self::CAT_MOMENT_RECRUIT => "分享拉新奖励",
+		self::CAT_MOMENT_RED => "分享奖励红包",
 		self::CAT_VOTE => "投票奖励",
 		self::CAT_FANS_DRAW => "花粉值提现",
 		self::CAT_REMOVE_COMMENT => "删除评论",
@@ -133,6 +135,27 @@ class UserTrans extends ActiveRecord
 		$entity->tNote = $note;
 		$entity->save();
 		return $entity->tId;
+	}
+
+	public static function shareRewardOnce($uid, $pid, $cat, $amt, $unit, $title = '')
+	{
+		$sql = 'INSERT INTO im_user_trans(tUId,tPId,tCategory,tTitle,tAmt,tUnit)
+				SELECT :uid,:pid,:cat,:title,:amt,:unit FROM dual
+				WHERE NOT EXISTS (SELECT 1 FROM im_user_trans 
+						WHERE tUId=:uid AND tPId=:pid AND tCategory=:cat)';
+		$conn = AppUtil::db();
+		if (!$title) {
+			$title = isset(self::$catDict[$cat]) ? self::$catDict[$cat] : '';
+		}
+		$ret = $conn->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':pid' => $pid,
+			':cat' => $cat,
+			':amt' => $amt,
+			':unit' => $unit,
+			':title' => $title
+		])->execute();
+		return $ret;
 	}
 
 	public static function shareReward($uid, $pid, $cat, $amt, $unit, $title = '')

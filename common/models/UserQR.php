@@ -67,12 +67,14 @@ class UserQR extends ActiveRecord
 		return 0;
 	}
 
-	public static function getQRCode($uid, $category, $avatar = '')
+	public static function getQRCode($uid, $category, $avatar = '', $resetFlag = false)
 	{
-		$md5 = md5(json_encode([$uid, $category, $avatar], JSON_UNESCAPED_UNICODE));
-		$qrInfo = self::findOne(['qUId' => $uid, 'qCategory' => $category, 'qMD5' => $md5]);
-		if ($qrInfo && isset($qrInfo['qUrl']) && $qrInfo['qUrl']) {
-			return $qrInfo['qUrl'];
+		if (!$resetFlag) {
+			$md5 = md5(json_encode([$uid, $category, $avatar], JSON_UNESCAPED_UNICODE));
+			$qrInfo = self::findOne(['qUId' => $uid, 'qCategory' => $category, 'qMD5' => $md5]);
+			if ($qrInfo && isset($qrInfo['qUrl']) && $qrInfo['qUrl']) {
+				return $qrInfo['qUrl'];
+			}
 		}
 		return self::createQR($uid, $category, '');
 	}
@@ -157,7 +159,7 @@ class UserQR extends ActiveRecord
 				break;
 			default:
 				if (!$code) {
-					$code = 'code-' . $category;
+					$code = 'category-' . $category;
 				}
 				$code = strtolower($code);
 				$qid = self::edit($info['uOpenId'], $category, $code, [
@@ -167,7 +169,7 @@ class UserQR extends ActiveRecord
 					'qMD5' => $md5
 				]);
 
-				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $qid, $code, $bottomTitle, $thumb);
+				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $qid, '', '', $thumb);
 				if ($accessUrl) {
 					self::edit($info['uOpenId'], $category, $code, [
 						'qUrl' => $accessUrl,
@@ -362,7 +364,7 @@ class UserQR extends ActiveRecord
 				$img->write($fontPath, $bottomTitle, $width / 2, $height - 8, 14, 0, 0x000000, 'center');
 			}
 			if ($topTitle) {
-				$img->write($fontPath, $topTitle, $width / 2, 20, 11, 0, 0x777777, 'center');
+				$img->write($fontPath, $topTitle, $width / 2, 20, 11, 0, 0xbbbbbb, 'center');
 			}
 			$img->save($saveAs);
 			$accessUrl = ImageUtil::getUrl($saveAs);
