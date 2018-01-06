@@ -169,7 +169,7 @@ class UserQR extends ActiveRecord
 					'qMD5' => $md5
 				]);
 
-				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $qid, $code, $bottomTitle, $thumb);
+				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $qid, '', '', $thumb);
 				if ($accessUrl) {
 					self::edit($info['uOpenId'], $category, $code, [
 						'qUrl' => $accessUrl,
