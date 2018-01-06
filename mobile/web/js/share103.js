@@ -61,7 +61,7 @@ require(["jquery", "alpha"],
 				note: note
 			}, function (resp) {
 				if (resp.code < 1 && resp.msg) {
-					alpha.toast(resp.msg);
+					alpha.toast(resp.msg, 1);
 				}
 			}, "json");
 		}

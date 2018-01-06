@@ -373,12 +373,6 @@ class ApiController extends Controller
 			$wx_role = $wx_info['uRole'];
 		}
 		switch ($tag) {
-			case "add_coin":
-				$uid = $wx_uid;
-				UserTrans::add($uid, 0, UserTrans::CAT_COIN_DEFAULT,
-					UserTrans::$catDict[UserTrans::CAT_COIN_DEFAULT], 100, UserTrans::UNIT_COIN);
-				return self::renderAPI(0, '成功领取千寻币');
-				break;
 			case "security_center":
 				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
@@ -2666,7 +2660,7 @@ class ApiController extends Controller
 					Log::addSanta($wxInfo["uId"], $key);
 				}
 				if ($note == '/wx/share103') {
-					$ret = UserTrans::shareRewardOnce($uid, 103, UserTrans::CAT_MOMENT_RED, 1000, UserTrans::UNIT_COIN);
+					$ret = UserTrans::shareRewardOnce($uid, 103, UserTrans::CAT_MOMENT_RED, 1000, UserTrans::UNIT_COIN_FEN);
 					return self::renderAPI(0, '分享成功！非常感谢你对我们的支持');
 				}
 				if ($note == '/wx/mshare') {

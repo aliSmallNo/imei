@@ -88,7 +88,8 @@ class UserTrans extends ActiveRecord
 		self::CAT_EXCHANGE_CHAT,
 	];
 
-	const UNIT_COIN = 'coin';
+	const UNIT_COIN_FEN = 'coin_f';
+	const UNIT_COIN_YUAN = 'coin_y';
 	const UNIT_FEN = 'fen';
 	const UNIT_YUAN = 'yuan';
 	const UNIT_GIFT = 'flower';
@@ -96,7 +97,8 @@ class UserTrans extends ActiveRecord
 	const UNIT_CHAT_DAY3 = 'chat_3';
 	const UNIT_CHAT_DAY7 = 'chat_7';
 	static $UnitDict = [
-		self::UNIT_COIN => '千寻币',
+		self::UNIT_COIN_FEN => '千寻币',
+		self::UNIT_COIN_YUAN => '千寻币',
 		self::UNIT_FEN => '分',
 		self::UNIT_YUAN => '元',
 		self::UNIT_GIFT => '媒桂花',
@@ -259,17 +261,24 @@ class UserTrans extends ActiveRecord
 					self::UNIT_FEN => 0,
 					self::UNIT_YUAN => 0,
 					self::UNIT_GIFT => 0,
-					self::UNIT_COIN => 0,
+					self::UNIT_COIN_FEN => 0,
 					'expire' => time() + 3600 * 8
 				];
 			}
 			$unit = $row['unit'];
 			$amt = $row['amt'];
-			if ($unit == self::UNIT_FEN) {
-				$items[$userId][$unit] = $amt;
-				$items[$userId][self::UNIT_YUAN] = round($amt / 100.0, 2);
-			} else {
-				$items[$userId][$unit] = $amt;
+			switch ($unit) {
+				case self::UNIT_FEN:
+					$items[$userId][$unit] = $amt;
+					$items[$userId][self::UNIT_YUAN] = round($amt / 100.0, 2);
+					break;
+				case self::UNIT_COIN_FEN:
+					$items[$userId][$unit] = $amt;
+					$items[$userId][self::UNIT_COIN_YUAN] = round($amt / 100.0, 2);
+					break;
+				default:
+					$items[$userId][$unit] = $amt;
+					break;
 			}
 		}
 		foreach ($items as $key => $item) {
@@ -284,7 +293,7 @@ class UserTrans extends ActiveRecord
 					self::UNIT_FEN => 0,
 					self::UNIT_YUAN => 0,
 					self::UNIT_GIFT => 0,
-					self::UNIT_COIN => 0,
+					self::UNIT_COIN_FEN => 0,
 					'expire' => time() + 3600 * 8
 				];
 				$redis->setCache($ret);
@@ -323,6 +332,10 @@ class UserTrans extends ActiveRecord
 			if ($row['unit'] == self::UNIT_FEN) {
 				$ret[$k]['amt'] = sprintf('%.2f', $row['amt'] / 100.0);
 				$ret[$k]['unit'] = self::UNIT_YUAN;
+			}
+			if ($row['unit'] == self::UNIT_COIN_FEN) {
+				$ret[$k]['amt'] = sprintf('%.2f', $row['amt'] / 100.0);
+				$ret[$k]['unit'] = self::UNIT_COIN_YUAN;
 			}
 			$ret[$k]['unit_name'] = self::$UnitDict[$ret[$k]['unit']];
 			$ret[$k]['prefix'] = in_array($row['cat'], self::$CatMinus) ? '-' : '';
@@ -402,26 +415,41 @@ class UserTrans extends ActiveRecord
 				$details[$uid] = $bal;
 			}
 			$unit = $balance['unit'];
-			if ($unit == self::UNIT_GIFT) {
-				if (in_array($cat, self::$CatMinus)) {
-					$details[$uid]['bal']['amt'] -= $balance['amt'];
-				} else {
-					$details[$uid]['bal']['amt'] += $balance['amt'];
-				}
-			} elseif ($unit == self::UNIT_FEN) {
-				$balance['amt'] = sprintf('%.2f', $balance['amt'] / 100.0);
-				$unit = self::UNIT_YUAN;
-				if (in_array($cat, self::$CatMinus)) {
-					$details[$uid]['bal']['amt2'] -= $balance['amt'];
-				} else {
-					$details[$uid]['bal']['amt2'] += $balance['amt'];
-				}
-			} elseif ($unit == self::UNIT_FANS) {
-				if (in_array($cat, self::$CatMinus)) {
-					$details[$uid]['bal']['amt3'] -= $balance['amt'];
-				} else {
-					$details[$uid]['bal']['amt3'] += $balance['amt'];
-				}
+			switch ($unit) {
+				case self::UNIT_GIFT:
+					if (in_array($cat, self::$CatMinus)) {
+						$details[$uid]['bal']['amt'] -= $balance['amt'];
+					} else {
+						$details[$uid]['bal']['amt'] += $balance['amt'];
+					}
+					break;
+				case self::UNIT_FEN:
+					$balance['amt'] = sprintf('%.2f', $balance['amt'] / 100.0);
+					$unit = self::UNIT_YUAN;
+					if (in_array($cat, self::$CatMinus)) {
+						$details[$uid]['bal']['amt2'] -= $balance['amt'];
+					} else {
+						$details[$uid]['bal']['amt2'] += $balance['amt'];
+					}
+					break;
+				case self::UNIT_COIN_FEN:
+					$balance['amt'] = sprintf('%.2f', $balance['amt'] / 100.0);
+					$unit = self::UNIT_COIN_YUAN;
+					if (in_array($cat, self::$CatMinus)) {
+						$details[$uid]['bal']['amt2'] -= $balance['amt'];
+					} else {
+						$details[$uid]['bal']['amt2'] += $balance['amt'];
+					}
+					break;
+				case self::UNIT_FANS:
+					if (in_array($cat, self::$CatMinus)) {
+						$details[$uid]['bal']['amt3'] -= $balance['amt'];
+					} else {
+						$details[$uid]['bal']['amt3'] += $balance['amt'];
+					}
+					break;
+				default:
+					break;
 			}
 			$balance['unit_name'] = self::$UnitDict[$unit];
 			$balance['unit'] = $unit;
@@ -518,8 +546,15 @@ class UserTrans extends ActiveRecord
 			}
 			if ($unit == self::UNIT_FEN) {
 				$item['amt'] = sprintf('%.2f', $item['amt'] / 100.00);
-				$item['unit'] = 'yuan';
-				$item['unit_name'] = '元';
+				$item['unit'] = self::UNIT_YUAN;
+				$item['unit_name'] = isset(self::$UnitDict[$item['unit']]) ? self::$UnitDict[$item['unit']] : '';
+				$item['date_part'] = date('n月j日', strtotime($row['tAddedOn']));
+				$item['time'] = date('H:i:s', strtotime($row['tAddedOn']));
+			}
+			if ($unit == self::UNIT_COIN_FEN) {
+				$item['amt'] = sprintf('%.2f', $item['amt'] / 100.00);
+				$item['unit'] = self::UNIT_COIN_YUAN;
+				$item['unit_name'] = isset(self::$UnitDict[$item['unit']]) ? self::$UnitDict[$item['unit']] : '';
 				$item['date_part'] = date('n月j日', strtotime($row['tAddedOn']));
 				$item['time'] = date('H:i:s', strtotime($row['tAddedOn']));
 			}
