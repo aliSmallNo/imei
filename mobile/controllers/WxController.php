@@ -2184,6 +2184,9 @@ class WxController extends BaseController
 		$offet = 0;
 		$cash = array_slice($cash, $offet, 3);
 
+		// 千寻币
+		$money = 0;
+
 		return self::renderPage("sw.tpl",
 			[
 				'avatar' => $avatar,
@@ -2197,6 +2200,7 @@ class WxController extends BaseController
 				'everyTask' => $everyTask,
 				'hardTask' => $hardTask,
 				'cash' => $cash,
+				'money' => $money,
 
 
 			],

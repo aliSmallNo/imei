@@ -11,14 +11,14 @@
 		<li>
 			<a href="javascript:;" data-page="cash">
 				<img src="/images/sw/cash.png" alt="">
-				<p>201.8</p>
+				<p>{{$money}}</p>
 				<p>现金</p>
 			</a>
 		</li>
 		<li>
 			<a href="javascript:;" data-page="card">
 				<img src="/images/sw/card.png" alt="">
-				<p>2018天</p>
+				<p>&nbsp;&nbsp;&nbsp;</p>
 				<p>畅聊卡</p>
 			</a>
 		</li>
@@ -34,7 +34,7 @@
 				<div class="img"><img src="/images/sw/cash_rule.png"></div>
 				<a href="javascript:;" data-page="rule">提现规则</a>
 			</li>
-			<li>
+			<li style="display: none">
 				<div class="img"><img src="/images/sw/cash_task.png"></div>
 				<a href="javascript:;" data-page="task">做任务赚赏金</a>
 			</li>
@@ -49,17 +49,17 @@
 	<div class="sw_task_cash">
 		<div class="sw_task_cash_des">
 			<h5>今日获得现金</h5>
-			<p>9.78 <span>元</span></p>
+			<p>0.00 <span>元</span></p>
 		</div>
 	</div>
 	<div class="sw_task_total">
 		<div>
 			<p>累计邀请人数</p>
-			<p>3</p>
+			<p>0</p>
 		</div>
 		<div>
 			<p>累计可提现红包</p>
-			<p>201.8</p>
+			<p>0.00</p>
 		</div>
 	</div>
 	<div class="sw_task_title">
@@ -126,7 +126,7 @@
 </section>
 <section id="cash">
 	<div class="sw_cash_items" style="display: none">
-		<p>可提现余额: <span>18</span>元</p>
+		<p>可提现余额: <span>{{$money}}</span>元</p>
 		<ul>
 			{{foreach from=$cash item=item}}
 			<li  class="{{$item.cls}}" data-num="{{$item.amt}}"><a href="javascript:;">{{$item.amt}}元</a></li>
@@ -137,7 +137,7 @@
 		</div>
 	</div>
 	<div>
-		<h5 class="sw_exchange_cash">平台兑换红包: <span>100</span>元</h5>
+		<h5 class="sw_exchange_cash">平台兑换红包: <span>{{$money}}</span>元</h5>
 		<ul class="recharge">
 			{{foreach from=$prices key=key item=price}}
 			<li class="{{if isset($price.ln) && $price.ln}}{{$price.ln}}{{/if}}">
@@ -174,10 +174,9 @@
 			<span>剩余{{$card.left}}天</span>
 		</div>
 		{{/foreach}}
-
 	</div>
 	<div>
-		<h5 class="sw_exchange_cash">平台兑换红包: <span>100</span>元</h5>
+		<h5 class="sw_exchange_cash">平台兑换红包: <span>{{$money}}</span>元</h5>
 		<ul class="recharge">
 			{{foreach from=$prices key=key item=price}}
 			<li class="{{if isset($price.ln) && $price.ln}}{{$price.ln}}{{/if}}">
@@ -235,7 +234,6 @@
 </section>
 
 
-
 <section id="swallet">
 	<div class="account-header">
 		<div class="item">
@@ -251,7 +249,7 @@
 		<a href="#srecords" class="nav-right">账户记录 ></a>
 	</div>
 	<div>
-		<h5 class="sw_exchange_cash">平台兑换红包: <span>100</span>元</h5>
+		<h5 class="sw_exchange_cash">平台兑换红包: <span>{{$money}}</span>元</h5>
 		<ul class="recharge">
 			{{foreach from=$prices key=key item=price}}
 			<li class="{{if isset($price.ln) && $price.ln}}{{$price.ln}}{{/if}}">
