@@ -164,7 +164,11 @@ class ApiController extends Controller
 			case "tocash":
 				$amount = intval(self::postParam("num")) * 100;
 				if ($amount < 1000) {
-					 return self::renderAPI(129, '最低提现金额是10元！');
+					return self::renderAPI(129, '最低提现金额是10元！');
+				}
+				list($ret) = UserNet::s28ShareStat($wxInfo['uId']);
+				if ($ret["money"] * 100 < $amount) {
+					return self::renderAPI(129, '可提现余额不足！');
 				}
 				if (AppUtil::isDev()) {
 					return self::renderAPI(129, '请在服务器测试该功能~');
