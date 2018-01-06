@@ -137,7 +137,7 @@
 		</div>
 	</div>
 	<div>
-		<h5 class="sw_exchange_cash">千寻币: <span>{{$stat.coin}}</span></h5>
+		<h5 class="sw_exchange_cash">千寻币: <span></span></h5>
 		<ul class="recharge">
 			{{foreach from=$prices key=key item=price}}
 			<li class="{{if isset($price.ln) && $price.ln}}{{$price.ln}}{{/if}}">
