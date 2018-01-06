@@ -226,19 +226,20 @@ class UserBuzz extends ActiveRecord
 				break;
 			case '晚安':
 			case 'good night':
-				$mediaId = 'GfJsRJj-kJwOJMdX7eK9HCZX6j-ZGWE8ZJ-oD5QdIyA';
+			case 'night':
+				/*$mediaId = 'GfJsRJj-kJwOJMdX7eK9HCZX6j-ZGWE8ZJ-oD5QdIyA';
 				NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, $fromUsername)->sendMedia($mediaId);
-				$resp = '';
-				/*$txt = "我承认我想结婚了。
+				$resp = '';*/
+				$txt = "近几天我们的城市终于来了初雪，想把初雪分享给你，就找到了你。已经过去很久了，给你发的消息，打扰到你了吗。夜里醒来好几次，手机亮起又关上，生怕错过你的消息。
 
-想和你养一只猫咪和一只大狗；想吃你亲手为我做的午餐；想在你做饭的时候从你身后抱住你。
+可现在我明白了，没有就是没有了，再见就是再也不见。无论故事多铭心，结局多刻骨，心里有多舍不得，终究你不再爱我了。
 
-想每天清晨醒来就能看见你的脸；更想看你熟睡的样子；想在炎热的夏天和你窝在空调房里吃西瓜，想在寒冷的冬天和你裹着毯子相互取暖。
+真正的分手都是轻轻的关上门，不会告诉你我走了
 
-我未来的每个场景，都想有你。
+这或许就如剧中所说：至尊宝只有离开紫霞，才会成长，变成孙悟空吧。
 
 晚安，世界和你 🌙";
-				$resp = self::textMsg($fromUsername, $toUsername, $txt);*/
+				$resp = self::textMsg($fromUsername, $toUsername, $txt);
 				break;
 			case '任务':
 				$txt = "小任务详情：
