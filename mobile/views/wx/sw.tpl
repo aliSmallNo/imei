@@ -126,10 +126,10 @@
 </section>
 <section id="cash">
 	<div class="sw_cash_items">
-		<p>可提现余额: 2018元</p>
+		<p>可提现余额: <span>18</span>元</p>
 		<ul>
 			{{foreach from=$cash item=item}}
-			<li  class="{{$item.cls}}"><a href="javascript:;">{{$item.amt}}元</a></li>
+			<li  class="{{$item.cls}}" data-num="{{$item.amt}}"><a href="javascript:;">{{$item.amt}}元</a></li>
 			{{/foreach}}
 		</ul>
 		<div class="sw_cash_btn_comfirm">
@@ -270,6 +270,6 @@
 		document.location.hash = "#index";
 	}
 	requirejs(['/js/config.js'], function () {
-		requirejs(['/js/sw.js?v=1.4.1']);
+		requirejs(['/js/sw.js?v=1.4.2']);
 	});
 </script>
