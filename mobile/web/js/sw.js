@@ -90,7 +90,6 @@ require(['jquery', 'mustache', "alpha"],
 				case "share":
 					location.href = "/wx/share106";
 					break;
-
 			}
 		});
 
@@ -109,8 +108,7 @@ require(['jquery', 'mustache', "alpha"],
 			pay_amt: 0,
 			pay_coin: 0,
 			deduct: parseFloat($(".sw_exchange_cash").find("span").html().trim()),
-			//pay_subtitle: $(".sw_pay_alert").find("h4").find("p"),
-			userCoinFlag: 0,
+			userCoinFlag: 1,
 			init: function () {
 				var util = this;
 				$(document).on(kClick, '.btn-recharge', function () {
@@ -137,9 +135,19 @@ require(['jquery', 'mustache', "alpha"],
 						$sls.main.hide();
 						$sls.shade.fadeOut(160);
 					} else {
-						// util.prepay();
+						util.prepay();
 					}
 				});
+			},
+			toggle: function (html) {
+				if (html) {
+					$sls.main.show();
+					$sls.content.html(html).addClass("animate-pop-in");
+					$sls.shade.fadeIn(160);
+				} else {
+					$sls.main.hide();
+					$sls.shade.fadeOut(160);
+				}
 			},
 			isUseCoin: function ($btn) {
 				var util = this;
@@ -147,10 +155,8 @@ require(['jquery', 'mustache', "alpha"],
 				util.amt = parseFloat(util.payBtn.attr('data-id'));
 				util.cat = util.payBtn.attr('data-cat');
 
-				$sls.main.show();
 				var html = $("#tpl_request_wechat").html();
-				$sls.content.html(html).addClass("animate-pop-in");
-				$sls.shade.fadeIn(160);
+				util.toggle(html);
 
 				$(".sw_pay_alert").find("h4").find("p").html($btn.attr("data-title"));
 				util.countPay();
@@ -179,14 +185,11 @@ require(['jquery', 'mustache', "alpha"],
 			},
 			prepay: function () {
 				var util = this;
-				//util.payBtn = $btn;
 				if (util.paying) {
 					return false;
 				}
 				util.paying = 1;
 				util.payBtn.html('充值中...');
-				//util.amt = util.payBtn.attr('data-id');
-				//util.cat = util.payBtn.attr('data-cat');
 				$.post('/api/wallet',
 					{
 						tag: 'recharge',
@@ -195,7 +198,12 @@ require(['jquery', 'mustache', "alpha"],
 					},
 					function (resp) {
 						if (resp.code == 0) {
-							util.wechatPay(resp.data.prepay);
+							if (resp.data.prepay) {
+								util.wechatPay(resp.data.prepay);
+							} else {
+								alpha.toast("支付成功~");
+								util.toggle("");
+							}
 						} else {
 							alpha.toast(resp.msg);
 						}
@@ -220,9 +228,11 @@ require(['jquery', 'mustache', "alpha"],
 						function (res) {
 							if (res.err_msg == "get_brand_wcpay_request:ok") {
 								alpha.toast("您已经微信支付成功！", 1);
+								util.toggle("");
 								util.reload();
 							} else {
 								alpha.toast("您已经取消微信支付！");
+								util.toggle("");
 							}
 						}
 					);
@@ -238,8 +248,7 @@ require(['jquery', 'mustache', "alpha"],
 				} else {
 					onBridgeReady(resData);
 				}
-			}
-			,
+			},
 			reload: function () {
 				var util = this;
 				if (util.loading) {

@@ -125,7 +125,7 @@ class Pay extends ActiveRecord
 	 * @param int $mode 支付方式
 	 * @return integer
 	 */
-	public static function prepay($uid, $num, $amt, $cat = '', $mode = 0)
+	public static function prepay($uid, $num, $amt, $cat = '', $mode = 0, $pOtherAmt = 0)
 	{
 		if (!$cat) {
 			$cat = self::CAT_RECHARGE;
@@ -140,6 +140,7 @@ class Pay extends ActiveRecord
 		$entity->pRId = $num;
 		$entity->pAmt = $amt;
 		$entity->pMode = $mode;
+		$entity->pOtherAmt = $pOtherAmt;
 		switch ($cat) {
 			case self::CAT_RECHARGE:
 				$entity->pNote = '充值' . $num . '媒桂花';

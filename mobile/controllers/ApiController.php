@@ -190,21 +190,41 @@ class ApiController extends Controller
 				$pay_cat = $priceInfo['cat'];
 				$num = $priceInfo['num'];
 				$payFee = intval($amt * 100.0);
-				if ($userCoinFlag && AppUtil::isDebugger($wxInfo["uId"])) {
+				$coin = 0;
+				if ($userCoinFlag) {
 					$stat = UserTrans::stat($wxInfo["uId"]);
-					$payTemp = $payFee - $stat["coin_y"] * 100;
-					$payFee = $payTemp > 0 ? $payTemp : 0;
+					if ($payFee > $stat["coin_f"]) {
+						$payFee = $payFee - $stat["coin_f"];
+						$coin = $stat["coin_f"];
+					} else {
+						$coin = $payFee;
+						$payFee = 0;
+					}
 				}
 				$subTitle = '充值' . $num . '媒桂花';
+				$payId = Pay::prepay($wxInfo['uId'], $num, $payFee, $pay_cat, 0, $coin);
 
-				$payId = Pay::prepay($wxInfo['uId'], $num, $payFee, $pay_cat);
+				if ($payFee == 0) {
+					WechatUtil::afterPaid([
+						"out_trade_no" => $payId,
+						'transaction_id' => time(),
+						'cash_fee' => 0,
+						'note' => '千寻币代缴',
+					], true);
+					return self::renderAPI(0, '', [
+						'prepay' => '',
+						'amt' => $coin,
+						'payId' => $payId,
+					]);
+				}
+
 				if (AppUtil::isDev()) {
 					return self::renderAPI(129, '请在服务器测试该功能~');
 				}
 				// Rain: 测试阶段，payFee x元实际支付x分
-//				$payFee = $amt;
+				// $payFee = $amt;
 				if (AppUtil::isDebugger($wxInfo["uId"])) {
-					$payFee = $payFee > 1 ? 1 : $payFee;
+					$payFee = 1;
 				}
 				$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);
 				if ($ret) {
