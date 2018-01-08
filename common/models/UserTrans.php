@@ -189,6 +189,7 @@ class UserTrans extends ActiveRecord
 	public static function addByPId($pid, $cat = self::CAT_RECHARGE)
 	{
 		$payInfo = Pay::findOne(['pId' => $pid]);
+
 		if (!$payInfo) {
 			return false;
 		}
@@ -205,15 +206,8 @@ class UserTrans extends ActiveRecord
 		$entity->tCategory = $cat;
 		if (AppUtil::isDebugger($user_id)) {
 			// 扣除千寻币
-			$pcat = $payInfo["pCategory"];
-			$price = 0;
-			foreach (Pay::$WalletDict as $v) {
-				if ($v["cat"] == $pcat) {
-					$price = $v["price"];
-				}
-			}
-			if ($price && $price * 100 > $payInfo["pAmt"]) {
-				$coin = $price * 100 - $payInfo["pAmt"];
+			$coin = $payInfo['pOtherAmt'];
+			if ($coin) {
 				UserTrans::add($user_id, $pid, UserTrans::CAT_EXCHANGE_FLOWER, UserTrans::TITLE_COIN, $coin, UserTrans::UNIT_COIN_FEN);
 			}
 		}
@@ -232,9 +226,7 @@ class UserTrans extends ActiveRecord
 					$entity->tAmt = $payInfo['pRId'];
 				} else {
 					// 扣除千寻币 无首充3倍
-					if (($payInfo['pRId'] == 60 && $payInfo['pAmt'] == 6 * 100)
-						|| ($payInfo['pRId'] == 500 && $payInfo['pAmt'] == 39 * 100)
-					) {
+					if ($payInfo['pOtherAmt'] == 0) {
 						//Rain: 首充3倍
 						$entity->tNote = '首充3倍';
 						$entity->tAmt = $payInfo['pRId'] * 3;

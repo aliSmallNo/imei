@@ -190,14 +190,21 @@ class ApiController extends Controller
 				$pay_cat = $priceInfo['cat'];
 				$num = $priceInfo['num'];
 				$payFee = intval($amt * 100.0);
+				$coin = 0;
 				if ($userCoinFlag && AppUtil::isDebugger($wxInfo["uId"])) {
 					$stat = UserTrans::stat($wxInfo["uId"]);
-					$payTemp = $payFee - $stat["coin_y"] * 100;
-					$payFee = $payTemp > 0 ? $payTemp : 0;
+					$payTemp = $payFee - $stat["coin_y"];
+					if ($payTemp > 0) {
+						$payFee = $payTemp;
+						$coin = $stat["coin_y"];
+					} else {
+						$payFee = 0;
+						$coin = $payFee;
+					}
 				}
 				$subTitle = '充值' . $num . '媒桂花';
 
-				$payId = Pay::prepay($wxInfo['uId'], $num, $payFee, $pay_cat);
+				$payId = Pay::prepay($wxInfo['uId'], $num, $payFee, $pay_cat, 0, $coin);
 				if (AppUtil::isDev()) {
 					return self::renderAPI(129, '请在服务器测试该功能~');
 				}
