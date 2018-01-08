@@ -51,7 +51,7 @@
 		<p>可提现余额: <span>{{$stat.coin_y}}</span>元</p>
 		<ul>
 			{{foreach from=$cash item=item}}
-			<li  class="{{$item.cls}}" data-num="{{$item.amt}}"><a href="javascript:;">{{$item.amt}}元</a></li>
+			<li class="{{$item.cls}}" data-num="{{$item.amt}}"><a href="javascript:;">{{$item.amt}}元</a></li>
 			{{/foreach}}
 		</ul>
 		<div class="sw_cash_btn_comfirm">
@@ -70,7 +70,7 @@
 					<div class="tip">{{$price.tip}}</div>{{/if}}
 				</div>
 				<div class="action"><a href="javascript:;" class="btn-recharge" data-id="{{$price.price}}"
-															 data-cat="{{$key}}">{{$price.price}}元</a></div>
+															 data-cat="{{$key}}"  data-title="{{$price.title}}">{{$price.price}}元</a></div>
 			</li>
 			{{/foreach}}
 			<li>
@@ -105,10 +105,11 @@
 				<div class="title row-{{$price.cat}}">
 					{{$price.title}}
 					{{if isset($price.pre_price) && $price.pre_price}}<b>￥{{$price.pre_price}}</b>{{/if}}
-					{{if isset($price.tip) && $price.tip}}<div class="tip">{{$price.tip}}</div>{{/if}}
+					{{if isset($price.tip) && $price.tip}}
+					<div class="tip">{{$price.tip}}</div>{{/if}}
 				</div>
 				<div class="action">
-					<a href="javascript:;" class="btn-recharge" data-id="{{$price.price}}" data-cat="{{$key}}">{{$price.price}}
+					<a href="javascript:;" class="btn-recharge" data-id="{{$price.price}}" data-cat="{{$key}}" data-title="{{$price.title}}">{{$price.price}}
 						元</a>
 				</div>
 			</li>
@@ -159,10 +160,11 @@
 				<div class="title row-{{$price.cat}}">
 					{{$price.title}}
 					{{if isset($price.pre_price) && $price.pre_price}}<b>￥{{$price.pre_price}}</b>{{/if}}
-					{{if isset($price.tip) && $price.tip}}<div class="tip">{{$price.tip}}</div>{{/if}}
+					{{if isset($price.tip) && $price.tip}}
+					<div class="tip">{{$price.tip}}</div>{{/if}}
 				</div>
 				<div class="action">
-					<a href="javascript:;" class="btn-recharge" data-id="{{$price.price}}" data-cat="{{$key}}">{{$price.price}}
+					<a href="javascript:;" class="btn-recharge" data-id="{{$price.price}}" data-cat="{{$key}}"  data-title="{{$price.title}}">{{$price.price}}
 						元</a>
 				</div>
 			</li>
@@ -184,6 +186,30 @@
 	<div class="no-more" style="display: none;">没有更多了~</div>
 </section>
 <input type="hidden" id="cUID" value="{{$hid}}">
+
+<div class="m-popup-shade"></div>
+<div class="m-popup-main" style="display: none">
+	<div class="m-popup-wrap">
+		<div class="m-popup-content"></div>
+	</div>
+</div>
+<script type="text/template" id="tpl_request_wechat">
+	<div class="sw_pay_alert">
+		<h4>支付
+			<p>60朵媒瑰花</p>
+		</h4>
+		<div class="sw_pay_alert_des">
+			<h3>￥ <span>19.23</span></h3>
+			<a href="javascript:;"><span class="active">千寻币支付 <em></em>元</span></a>
+			<h5>提示: 首冲使用千寻币媒瑰花不会翻三倍哦~</h5>
+		</div>
+		<div class="sw_pay_alert_btn">
+			<a href="javascript:;" class="cancel">取消</a>
+			<a href="javascript:;" class="comfirm">确定</a>
+		</div>
+	</div>
+</script>
+
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>

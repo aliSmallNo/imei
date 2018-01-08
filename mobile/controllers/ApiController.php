@@ -178,6 +178,8 @@ class ApiController extends Controller
 				break;
 			case 'recharge':
 				$cat = self::postParam('cat');
+				// $userCoinFlag => 1:使用千寻币  0:不使用千寻币
+				$userCoinFlag = self::postParam('user_coin', 1);
 				$title = '千寻恋恋-充值';
 				if (isset(Pay::$WalletDict[$cat])) {
 					$priceInfo = Pay::$WalletDict[$cat];
@@ -188,6 +190,11 @@ class ApiController extends Controller
 				$pay_cat = $priceInfo['cat'];
 				$num = $priceInfo['num'];
 				$payFee = intval($amt * 100.0);
+				if ($userCoinFlag && AppUtil::isDebugger($wxInfo["uId"])) {
+					$stat = UserTrans::stat($wxInfo["uId"]);
+					$payTemp = $payFee - $stat["coin_y"] * 100;
+					$payFee = $payTemp > 0 ? $payTemp : 0;
+				}
 				$subTitle = '充值' . $num . '媒桂花';
 
 				$payId = Pay::prepay($wxInfo['uId'], $num, $payFee, $pay_cat);
@@ -197,7 +204,7 @@ class ApiController extends Controller
 				// Rain: 测试阶段，payFee x元实际支付x分
 //				$payFee = $amt;
 				if (AppUtil::isDebugger($wxInfo["uId"])) {
-					$payFee = 1;
+					$payFee = $payFee > 1 ? 1 : $payFee;
 				}
 				$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);
 				if ($ret) {
@@ -2991,7 +2998,7 @@ class ApiController extends Controller
 		if ($ret > 1) {
 			return AppUtil::data_to_xml($data);
 		}
-		//支付成功
+		// 支付成功
 		WechatUtil::afterPaid($rData, ($rData['result_code'] == 'SUCCESS'));
 		return AppUtil::data_to_xml($data);
 	}
