@@ -137,7 +137,7 @@ require(['jquery', 'mustache', "alpha"],
 						$sls.main.hide();
 						$sls.shade.fadeOut(160);
 					} else {
-						// util.prepay();
+						util.prepay();
 					}
 				});
 			},
