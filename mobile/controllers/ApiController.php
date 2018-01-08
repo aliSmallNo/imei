@@ -202,11 +202,22 @@ class ApiController extends Controller
 					}
 				}
 				$subTitle = '充值' . $num . '媒桂花';
-				if ($payFee == 0) {
-					$payFee = 1;
-					$coin = $coin - 1;
-				}
 				$payId = Pay::prepay($wxInfo['uId'], $num, $payFee, $pay_cat, 0, $coin);
+
+				if ($payFee == 0) {
+					WechatUtil::afterPaid([
+						"out_trade_no" => $payId,
+						'transaction_id' => time(),
+						'cash_fee' => 0,
+						'note' => '千寻币代缴',
+					], true);
+					return self::renderAPI(0, '', [
+						'prepay' => '',
+						'amt' => $coin,
+						'payId' => $payId,
+					]);
+				}
+
 				if (AppUtil::isDev()) {
 					return self::renderAPI(129, '请在服务器测试该功能~');
 				}

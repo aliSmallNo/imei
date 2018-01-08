@@ -221,10 +221,7 @@ class UserTrans extends ActiveRecord
 					'tCategory' => $cat,
 					'tDeletedFlag' => 0
 				]);
-				if (AppUtil::isDebugger($payInfo['pUId'])) {
-					// Debugger 测试
-					$info = [];
-				}
+
 				if ($info) {
 					$entity->tAmt = $payInfo['pRId'];
 				} else {
