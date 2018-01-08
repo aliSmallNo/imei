@@ -281,6 +281,7 @@ class UserTrans extends ActiveRecord
 					self::UNIT_YUAN => 0,
 					self::UNIT_GIFT => 0,
 					self::UNIT_COIN_FEN => 0,
+					self::UNIT_COIN_YUAN => 0,
 					'expire' => time() + 3600 * 8
 				];
 			}
@@ -313,6 +314,7 @@ class UserTrans extends ActiveRecord
 					self::UNIT_YUAN => 0,
 					self::UNIT_GIFT => 0,
 					self::UNIT_COIN_FEN => 0,
+					self::UNIT_COIN_YUAN => 0,
 					'expire' => time() + 3600 * 8
 				];
 				$redis->setCache($ret);
