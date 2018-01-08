@@ -2619,7 +2619,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					$.post("/api/chat", {
 						tag: "greeting",
 						ids: JSON.stringify(ids),
-						text: '今日选秀中，我最中意你！'
+						text: ''
 					}, function (res) {
 					}, "json");
 					util.hide();

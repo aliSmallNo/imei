@@ -1922,6 +1922,27 @@ class ApiController extends Controller
 				$ids = json_decode($ids, 1);
 				$content = self::postParam('text');
 				if ($ids) {
+					if (!$content) {
+						$contents = [
+							'你做过最疯狂的事情是什么？',
+							'你跟陌生人要过联系方式吗？',
+							'当你牵对方的手时，对方的手很冰凉，你会怎么做？',
+							'跟你告白的人你拒绝了，但拒绝后发现你是喜欢他的，你后悔了，那你要怎么办？',
+							'你会跟你的另一半坦白你的情史吗？',
+							'你觉得你身边真的有什么事都可以分享的人吗？',
+							'你喜欢的人不喜欢你怎么办？',
+							'洗澡洗到一半没水了怎么办？',
+							'你有几段恋情？',
+							'第一次看的小说是什么类型？',
+							'父亲节有送礼物给爸爸吗？',
+							'介意你的对象跟前任有联系吗？',
+							'你觉得当男人比女人更辛苦还是更享受？',
+							'你希望进入恋人的朋友圈吗？',
+							'你觉得对方体重有多重要？'
+						];
+						shuffle($contents);
+						$content = $contents[0];
+					}
 					ChatMsg::greeting($uid, $ids, $content);
 					ChatMsg::greeting(User::SERVICE_UID, [$uid], '你好，我是千寻恋恋小助手，你有任何问题都可以跟我说啊！');
 				}
