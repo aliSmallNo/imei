@@ -110,7 +110,7 @@ require(['jquery', 'mustache', "alpha"],
 			pay_coin: 0,
 			deduct: parseFloat($(".sw_exchange_cash").find("span").html().trim()),
 			//pay_subtitle: $(".sw_pay_alert").find("h4").find("p"),
-			userCoinFlag: 0,
+			userCoinFlag: 1,
 			init: function () {
 				var util = this;
 				$(document).on(kClick, '.btn-recharge', function () {
