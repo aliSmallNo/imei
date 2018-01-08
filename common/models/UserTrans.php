@@ -107,6 +107,8 @@ class UserTrans extends ActiveRecord
 		self::UNIT_CHAT_DAY7 => '七天畅聊卡',
 	];
 
+	const TITLE_COIN = "消费千寻币";
+
 	public static function tableName()
 	{
 		return '{{%user_trans}}';
@@ -201,6 +203,20 @@ class UserTrans extends ActiveRecord
 		$entity->tUId = $user_id;
 		$entity->tTitle = $ptitle;
 		$entity->tCategory = $cat;
+		if (AppUtil::isDebugger($user_id)) {
+			// 扣除千寻币
+			$pcat = $payInfo["pCategory"];
+			$price = 0;
+			foreach (Pay::$WalletDict as $v) {
+				if ($v["cat"] == $pcat) {
+					$price = $v["price"];
+				}
+			}
+			if ($price && $price * 100 > $payInfo["pAmt"]) {
+				$coin = $price * 100 - $payInfo["pAmt"];
+				UserTrans::add($user_id, $pid, UserTrans::CAT_EXCHANGE_FLOWER, UserTrans::TITLE_COIN, $coin, UserTrans::UNIT_COIN_FEN);
+			}
+		}
 		switch ($payInfo['pCategory']) {
 			case Pay::CAT_RECHARGE:
 				$info = self::findOne([
@@ -208,12 +224,24 @@ class UserTrans extends ActiveRecord
 					'tCategory' => $cat,
 					'tDeletedFlag' => 0
 				]);
+				if (AppUtil::isDebugger($payInfo['pUId'])) {
+					// Debugger 测试
+					$info = [];
+				}
 				if ($info) {
 					$entity->tAmt = $payInfo['pRId'];
 				} else {
-					//Rain: 首充3倍
-					$entity->tNote = '首充3倍';
-					$entity->tAmt = $payInfo['pRId'] * 3;
+					// 扣除千寻币 无首充3倍
+					if (($payInfo['pRId'] == 60 && $payInfo['pAmt'] == 6 * 100)
+						|| ($payInfo['pRId'] == 500 && $payInfo['pAmt'] == 39 * 100)
+					) {
+						//Rain: 首充3倍
+						$entity->tNote = '首充3倍';
+						$entity->tAmt = $payInfo['pRId'] * 3;
+					} else {
+						$entity->tNote = '首充使用千寻币';
+						$entity->tAmt = $payInfo['pRId'];
+					}
 				}
 				$entity->tUnit = self::UNIT_GIFT;
 				break;

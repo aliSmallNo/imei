@@ -8,7 +8,11 @@ require(['jquery', 'mustache', "alpha"],
 			wxString: $("#tpl_wx_info").html(),
 			newIdx: 0,
 			newsTimer: 0,
-			loading: 0
+			loading: 0,
+
+			shade: $(".m-popup-shade"),
+			main: $(".m-popup-main"),
+			content: $(".m-popup-content"),
 		};
 
 		function eleInScreen($ele) {
@@ -100,20 +104,94 @@ require(['jquery', 'mustache', "alpha"],
 			noMore: $('#srecords .no-more'),
 			paying: 0,
 			payBtn: null,
-			prepay: function ($btn) {
+			amt: 0,
+			cat: 0,
+			pay_amt: 0,
+			pay_coin: 0,
+			deduct: parseFloat($(".sw_exchange_cash").find("span").html().trim()),
+			//pay_subtitle: $(".sw_pay_alert").find("h4").find("p"),
+			userCoinFlag: 0,
+			init: function () {
+				var util = this;
+				$(document).on(kClick, '.btn-recharge', function () {
+					var self = $(this);
+					//WalletUtil.prepay(self);
+					util.isUseCoin(self);
+				});
+
+				$(document).on(kClick, '.sw_pay_alert_des a', function () {
+					var self = $(this).find("span");
+					if (self.hasClass("active")) {
+						self.removeClass("active");
+						util.userCoinFlag = 0;
+					} else {
+						self.addClass("active");
+						util.userCoinFlag = 1;
+					}
+					util.countPay();
+				});
+
+				$(document).on(kClick, '.sw_pay_alert_btn a', function () {
+					var self = $(this);
+					if (self.hasClass("cancel")) {
+						$sls.main.hide();
+						$sls.shade.fadeOut(160);
+					} else {
+						util.prepay();
+					}
+				});
+			},
+			isUseCoin: function ($btn) {
 				var util = this;
 				util.payBtn = $btn;
+				util.amt = parseFloat(util.payBtn.attr('data-id'));
+				util.cat = util.payBtn.attr('data-cat');
+
+				$sls.main.show();
+				var html = $("#tpl_request_wechat").html();
+				$sls.content.html(html).addClass("animate-pop-in");
+				$sls.shade.fadeIn(160);
+
+				$(".sw_pay_alert").find("h4").find("p").html($btn.attr("data-title"));
+				util.countPay();
+			},
+			countPay: function () {
+				var util = this;
+				var pay_coin_em_obj = $(".sw_pay_alert_des").find("a").find("span");
+				var pay_amt_obj = $(".sw_pay_alert_des").find("h3").find("span");
+				var pay_coin_span_obj = $(".sw_pay_alert_des").find("a").find("em");
+				if (pay_coin_em_obj.hasClass("active")) {
+					if (util.amt >= util.deduct) {
+						util.pay_coin = util.deduct;
+						util.pay_amt = util.amt - util.deduct;
+					} else {
+						util.pay_coin = util.amt;
+						util.pay_amt = 0;
+					}
+					pay_amt_obj.html(util.pay_amt.toFixed(2));
+					pay_coin_span_obj.html(util.pay_coin.toFixed(2));
+				} else {
+					util.pay_amt = util.amt;
+					util.pay_coin = 0;
+					pay_amt_obj.html(util.pay_amt.toFixed(2));
+					pay_coin_span_obj.html(util.pay_coin.toFixed(2));
+				}
+			},
+			prepay: function () {
+				var util = this;
+				//util.payBtn = $btn;
 				if (util.paying) {
 					return false;
 				}
 				util.paying = 1;
 				util.payBtn.html('充值中...');
-				var amt = util.payBtn.attr('data-id');
-				var cat = util.payBtn.attr('data-cat');
+				//util.amt = util.payBtn.attr('data-id');
+				//util.cat = util.payBtn.attr('data-cat');
 				$.post('/api/wallet',
 					{
 						tag: 'recharge',
-						cat: cat
+						cat: util.cat,
+						user_coin: util.userCoinFlag,
 					},
 					function (resp) {
 						if (resp.code == 0) {
@@ -122,7 +200,8 @@ require(['jquery', 'mustache', "alpha"],
 							alpha.toast(resp.msg);
 						}
 						util.paying = 0;
-						util.payBtn.html(amt + '元');
+						util.payBtn.html(util.amt + '元');
+
 					}, 'json');
 			},
 			wechatPay: function (resData) {
@@ -159,7 +238,8 @@ require(['jquery', 'mustache', "alpha"],
 				} else {
 					onBridgeReady(resData);
 				}
-			},
+			}
+			,
 			reload: function () {
 				var util = this;
 				if (util.loading) {
@@ -186,6 +266,7 @@ require(['jquery', 'mustache', "alpha"],
 					}, 'json');
 			}
 		};
+		WalletUtil.init();
 
 		function locationHashChanged() {
 			var hashTag = location.hash;
@@ -233,9 +314,5 @@ require(['jquery', 'mustache', "alpha"],
 			locationHashChanged();
 			$sls.cork.hide();
 
-			$(document).on(kClick, '.btn-recharge', function () {
-				var self = $(this);
-				WalletUtil.prepay(self);
-			});
 		});
 	});

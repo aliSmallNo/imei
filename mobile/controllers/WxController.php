@@ -2163,8 +2163,6 @@ class WxController extends BaseController
 		$offet = 0;
 		$cash = array_slice($cash, $offet, 3);
 
-		// 千寻币
-		$money = 0;
 
 		return self::renderPage("sw.tpl",
 			[
@@ -2176,7 +2174,6 @@ class WxController extends BaseController
 				'cards' => $cards,
 				"isDebug" => AppUtil::isDebugger($this->user_id),
 				'cash' => $cash,
-				'money' => $money,
 			],
 			'terse',
 			'账户',

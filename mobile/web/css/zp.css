@@ -736,4 +736,59 @@ section {
     .share106_action a:active {
       background: #ddd000; }
 
+.sw_pay_alert {
+  background: #fff; }
+  .sw_pay_alert h4 {
+    padding-top: 2rem;
+    font-size: 2rem; }
+    .sw_pay_alert h4 p {
+      font-size: 1.2rem;
+      line-height: 2rem; }
+  .sw_pay_alert .sw_pay_alert_des {
+    padding: 2rem 0 3rem; }
+    .sw_pay_alert .sw_pay_alert_des h3 {
+      font-size: 3rem;
+      margin: 0; }
+    .sw_pay_alert .sw_pay_alert_des a {
+      display: block;
+      padding: 1rem 0 0.5rem; }
+      .sw_pay_alert .sw_pay_alert_des a span {
+        font-size: 1.3rem;
+        position: relative; }
+        .sw_pay_alert .sw_pay_alert_des a span em {
+          color: #f06292; }
+        .sw_pay_alert .sw_pay_alert_des a span:before {
+          position: absolute;
+          content: "";
+          width: 2rem;
+          height: 2rem;
+          background: url(../images/sw/ico_pay_coin.png) no-repeat center center;
+          background-size: 100% 100%;
+          left: -2rem;
+          top: -0.2rem; }
+        .sw_pay_alert .sw_pay_alert_des a span:after {
+          position: absolute;
+          content: "";
+          width: 4rem;
+          height: 4rem;
+          background: url(../images/sw/ico_pay_coin_choose.png) no-repeat center center;
+          background-size: 100% 100%;
+          right: -3.5rem;
+          top: -1rem; }
+        .sw_pay_alert .sw_pay_alert_des a span.active:after {
+          background: url(../images/sw/ico_pay_coin_choosed.png) no-repeat center center;
+          background-size: 100% 100%; }
+    .sw_pay_alert .sw_pay_alert_des h5 {
+      color: #777;
+      font-size: 1rem; }
+  .sw_pay_alert .sw_pay_alert_btn {
+    display: flex;
+    border-top: 1px solid #d9d9d9; }
+    .sw_pay_alert .sw_pay_alert_btn a {
+      flex: 1;
+      padding: 1rem;
+      font-size: 1.3rem; }
+      .sw_pay_alert .sw_pay_alert_btn a:first-child {
+        border-right: 1px solid #d9d9d9; }
+
 /*# sourceMappingURL=zp.css.map */
