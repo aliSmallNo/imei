@@ -205,14 +205,16 @@ class ApiController extends Controller
 
 				$payId = Pay::prepay($wxInfo['uId'], $num, $payFee, $pay_cat, 0, $coin);
 				if (AppUtil::isDev()) {
-					return self::renderAPI(129, '请在服务器测试该功能~');
+					// return self::renderAPI(129, '请在服务器测试该功能~');
 				}
 				// Rain: 测试阶段，payFee x元实际支付x分
 				// $payFee = $amt;
 				if (AppUtil::isDebugger($wxInfo["uId"])) {
 					$payFee = $payFee > 0 ? 1 : $payFee;
 				}
-
+				if ($payFee == 0) {
+					$payFee = 1;
+				}
 				$ret = WechatUtil::jsPrepay($payId, $openId, $payFee, $title, $subTitle);
 				if ($ret) {
 					return self::renderAPI(0, '', [
