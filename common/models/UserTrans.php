@@ -108,6 +108,8 @@ class UserTrans extends ActiveRecord
 	];
 
 	const TITLE_COIN = "消费千寻币";
+	const NOTE_COIN = "使用千寻币";
+	const NOTE_3TIMES = "首充3倍";
 
 	public static function tableName()
 	{
@@ -209,6 +211,7 @@ class UserTrans extends ActiveRecord
 			$coin = $payInfo['pOtherAmt'];
 			if ($coin) {
 				UserTrans::add($user_id, $pid, UserTrans::CAT_EXCHANGE_FLOWER, UserTrans::TITLE_COIN, $coin, UserTrans::UNIT_COIN_FEN);
+				$entity->tNote = self::NOTE_COIN;
 			}
 		}
 		switch ($payInfo['pCategory']) {
@@ -228,10 +231,10 @@ class UserTrans extends ActiveRecord
 					// 扣除千寻币 无首充3倍
 					if ($payInfo['pOtherAmt'] == 0) {
 						//Rain: 首充3倍
-						$entity->tNote = '首充3倍';
+						$entity->tNote = self::NOTE_3TIMES;
 						$entity->tAmt = $payInfo['pRId'] * 3;
 					} else {
-						$entity->tNote = '首充使用千寻币';
+						$entity->tNote = self::NOTE_COIN;
 						$entity->tAmt = $payInfo['pRId'];
 					}
 				}
