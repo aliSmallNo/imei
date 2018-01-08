@@ -1570,7 +1570,6 @@ class FooController extends Controller
 
 		// UserTrans::add(120003, 201865, UserTrans::CAT_EXCHANGE_FLOWER, UserTrans::TITLE_COIN, 100, UserTrans::UNIT_COIN_FEN);
 
-		$tid = UserTrans::addByPId(231101, 100);
 
 	}
 

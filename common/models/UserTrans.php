@@ -206,13 +206,12 @@ class UserTrans extends ActiveRecord
 		$entity->tUId = $user_id;
 		$entity->tTitle = $ptitle;
 		$entity->tCategory = $cat;
-		if (AppUtil::isDebugger($user_id)) {
-			// 扣除千寻币
-			$coin = $payInfo['pOtherAmt'];
-			if ($coin) {
-				UserTrans::add($user_id, $pid, UserTrans::CAT_EXCHANGE_FLOWER, UserTrans::TITLE_COIN, $coin, UserTrans::UNIT_COIN_FEN);
-				$entity->tNote = self::NOTE_COIN;
-			}
+
+		// 扣除千寻币
+		$coin = $payInfo['pOtherAmt'];
+		if ($coin) {
+			UserTrans::add($user_id, $pid, UserTrans::CAT_EXCHANGE_FLOWER, UserTrans::TITLE_COIN, $coin, UserTrans::UNIT_COIN_FEN);
+			$entity->tNote = self::NOTE_COIN;
 		}
 		switch ($payInfo['pCategory']) {
 			case Pay::CAT_RECHARGE:

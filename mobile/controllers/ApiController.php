@@ -191,7 +191,7 @@ class ApiController extends Controller
 				$num = $priceInfo['num'];
 				$payFee = intval($amt * 100.0);
 				$coin = 0;
-				if ($userCoinFlag && AppUtil::isDebugger($wxInfo["uId"])) {
+				if ($userCoinFlag) {
 					$stat = UserTrans::stat($wxInfo["uId"]);
 					if ($payFee > $stat["coin_f"]) {
 						$payFee = $payFee - $stat["coin_f"];
