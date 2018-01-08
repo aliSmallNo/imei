@@ -169,11 +169,12 @@ class ChatMsg extends ActiveRecord
 	}
 
 	/**
-	 * @param int $senderId 发送者ID
-	 * @param array $ids 接收者IDs
-	 * @param string $content 发送内容
-	 * @param /yii/db/connection $conn
+	 * @param $senderId
+	 * @param $ids
+	 * @param string $content
+	 * @param null $conn
 	 * @return bool
+	 * @throws \yii\db\Exception
 	 */
 	public static function greeting($senderId, $ids, $content = '', $conn = null)
 	{
@@ -526,7 +527,7 @@ class ChatMsg extends ActiveRecord
 		];
 
 		$sql = "SELECT u.uUniqId,u.uId,u.uName,u.uThumb
-				FROM im_chat_room_fella as f 
+				FROM im_chat_room_fella as f
 				join im_user as u on u.uId=f.mUId
  				WHERE f.mRId=$rId AND u.uId!=$senderId ";
 		$bundle['items'] = $conn->createCommand($sql)->queryColumn();

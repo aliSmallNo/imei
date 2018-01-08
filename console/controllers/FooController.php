@@ -20,8 +20,6 @@ use common\service\TrendService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
-use common\utils\NoticeUtil;
-use common\utils\PayUtil;
 use common\utils\PushUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
@@ -1396,9 +1394,29 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = UserQR::getQRCode(131379, UserQR::CATEGORY_RED_103,
+		$contents = [
+			'你做过最疯狂的事情是什么？',
+			'你跟陌生人要过联系方式吗？',
+			'当你牵对方的手时，对方的手很冰凉，你会怎么做？',
+			'跟你告白的人你拒绝了，但拒绝后发现你是喜欢他的，你后悔了，那你要怎么办？',
+			'你会跟你的另一半坦白你的情史吗？',
+			'你觉得你身边真的有什么事都可以分享的人吗？',
+			'你喜欢的人不喜欢你怎么办？',
+			'洗澡洗到一半没水了怎么办？',
+			'你有几段恋情？',
+			'第一次看的小说是什么类型？',
+			'父亲节有送礼物给爸爸吗？',
+			'介意你的对象跟前任有联系吗？',
+			'你觉得当男人比女人更辛苦还是更享受？',
+			'你希望进入恋人的朋友圈吗？',
+			'你觉得对方体重有多重要？'
+		];
+		shuffle($contents);
+		var_dump($contents[0]);
+
+		/*$ret = UserQR::getQRCode(131379, UserQR::CATEGORY_RED_103,
 			'https://img.meipo100.com/2017/1130/174483165512_t.jpg', true);
-		var_dump($ret);
+		var_dump($ret);*/
 		/*$uId = 131379;
 		$ret = UserAudit::invalid($uId);
 		var_dump($ret);
