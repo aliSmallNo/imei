@@ -415,6 +415,11 @@ class ApiController extends Controller
 			$wx_role = $wx_info['uRole'];
 		}
 		switch ($tag) {
+			case "task":
+				$key = self::postParam("key");
+				list($code, $msg, $data) = UserTrans::addTaskRedpaket($key, $wx_uid);
+				return self::renderAPI($code, $msg, $data);
+				break;
 			case "security_center":
 				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');
@@ -2825,7 +2830,9 @@ class ApiController extends Controller
 				return self::renderAPI($code, $msg,
 					[
 						'prize' => $prizeIndex,
-						'remaining' => $remaining
+						'remaining' => $remaining,
+						"taskflag" => UserTrans::taskCondition(UserTrans::COIN_SIGN, $wx_uid),
+						"key" => UserTrans::COIN_SIGN,
 					]);
 				break;
 		}

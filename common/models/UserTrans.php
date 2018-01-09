@@ -740,6 +740,7 @@ class UserTrans extends ActiveRecord
 		self::COIN_CHAT_3TIMES => "发起聊天3次",
 		self::COIN_CHAT_REPLY => "回复一次聊天",
 		self::COIN_SHOW_COIN => "秀红包金额",
+		self::COIN_RECEIVE_GIFT => "收到礼物",
 		self::COIN_SIGN => "签到",
 		self::COIN_SHARE_REG => "成功邀请",
 
@@ -829,5 +830,253 @@ class UserTrans extends ActiveRecord
 
 		return [$newTask, $everyTask, $hardTask];
 
+	}
+
+	/**
+	 * @param $key
+	 * @param $uid
+	 * @return bool
+	 * @throws \yii\db\Exception
+	 * 判断是否符合完成任务的条件
+	 */
+	public static function taskCondition($key, $uid)
+	{
+		$u = User::fmtRow(User::findOne(["uId" => $uid])->toArray());
+		$conn = AppUtil::db();
+		$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid ";
+		$cmd1 = $conn->createCommand($sql);
+		$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid and DATE_FORMAT(tAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
+		$cmd2 = $conn->createCommand($sql);
+		switch ($key) {
+			// one times task
+			case self::COIN_REG:
+				if (date("Y-m-d", strtotime($u["addedon"])) == date("Y-m-d")
+					&& $u["phone"] != ''
+					&& $cmd1->bindValues([":uid" => $uid, ":pid" => $key,])->queryScalar() == 0
+				) {
+					return true;
+				}
+				break;
+			case self::COIN_PERCENT80:
+				if ($u["percent"] >= 80
+					&& date("Y-m-d", strtotime($u["addedon"])) == date("Y-m-d")
+					&& $cmd1->bindValues([":uid" => $uid, ":pid" => $key,])->queryScalar() == 0
+				) {
+					return true;
+				}
+				break;
+			case self::COIN_CERT:
+				if ($u["certstatus"] == User::CERT_STATUS_PASS
+					&& date("Y-m-d", strtotime($u["addedon"])) == date("Y-m-d")
+					&& $cmd1->bindValues([":uid" => $uid, ":pid" => $key,])->queryScalar() == 0
+				) {
+					return true;
+				}
+				break;
+			// everyday task
+			case self::COIN_CHAT_3TIMES:
+				$sql = "select count(1) as co from im_chat_group where `gAddedBy`=:uid and DATE_FORMAT(gAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
+				if ($cmd2->bindValues([":uid" => $uid, ":pid" => $key,])->queryScalar() == 0
+					&& $conn->createCommand($sql)->bindValues([":uid" => $uid])->queryScalar() >= 3
+				) {
+					return true;
+				}
+				break;
+			case self::COIN_CHAT_REPLY:
+				$sql = "select count(1) as co from im_chat_msg where `cAddedBy`=:uid and DATE_FORMAT(cAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
+				if ($cmd2->bindValues([":uid" => $uid, ":pid" => $key,])->queryScalar() == 0
+					&& $conn->createCommand($sql)->bindValues([":uid" => $uid])->queryScalar()
+				) {
+					return true;
+				}
+				break;
+			case self::COIN_SHOW_COIN:
+				$moment = UserNet::REL_QR_MOMENT;
+				$share = UserNet::REL_QR_SHARE;
+				$sql = "select count(1) as co from `im_user_net` 
+						where nUId=:uid and nNote='/wx/share106' and nRelation in ($moment,$share) 
+						and DATE_FORMAT(nAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
+				if ($cmd2->bindValues([":uid" => $uid, ":pid" => $key,])->queryScalar() == 0
+					&& $conn->createCommand($sql)->bindValues([":uid" => $uid])->queryScalar()
+				) {
+					return true;
+				}
+				break;
+			case self::COIN_RECEIVE_GIFT:
+				$sql = "select count(1) as co from 
+						im_order as o join im_goods as g on g.gId=o.oGId
+						where oUId=:uid and oStatus=:st and g.`gCategory`=:cat  and DATE_FORMAT(oAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
+				if ($cmd2->bindValues([":uid" => $uid, ":pid" => $key,])->queryScalar() == 0
+					&& $conn->createCommand($sql)->bindValues([":uid" => $uid, ":st" => Order::ST_RECEIVE, ":cat" => Goods::CAT_STUFF])->queryScalar()
+				) {
+					return true;
+				}
+				break;
+			case self::COIN_SIGN:
+				$sql = "select count(1) as co from im_user_sign where sUId=:uid and DATE_FORMAT(sTime, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
+				if ($cmd2->bindValues([":uid" => $uid, ":pid" => $key,])->queryScalar() == 0
+					&& $conn->createCommand($sql)->bindValues([":uid" => $uid])->queryScalar()
+				) {
+					return true;
+				}
+				break;
+			case self::COIN_SHARE_REG:
+				$sql = "select * from im_user_net as n
+						join im_user as u on u.uId=n.`nSubUId` and uPhone!=''
+						where nUId=:uid and  DATE_FORMAT(nAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and nRelation=:rel";
+				if ($cmd2->bindValues([":uid" => $uid, ":pid" => $key,])->queryScalar() == 0
+					&& $conn->createCommand($sql)->bindValues([":uid" => $uid, ":rel" => UserNet::REL_QR_SUBSCRIBE])->queryScalar()
+				) {
+					return true;
+				}
+				break;
+			// hard task
+			case self::COIN_DATE_COMPLETE:
+				$sql = "select count(1) from im_user_trans where tUId=:uid and tCategory=:cat and DATE_FORMAT(tAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
+				if (!$cmd2->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar()
+					&& $conn->createCommand($sql)->bindValues([":uid" => $uid, ":cat" => self::CAT_DATE_NEW])->queryScalar()) {
+					return true;
+				}
+				break;
+			case self::COIN_PRESENT_10PEOPLE:
+				$sql = " select count(DISTINCT `oPayId`) as co from im_order where oUId=:uid and oStatus=:st and DATE_FORMAT(oAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
+				if (!$cmd2->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar()
+					&& $conn->createCommand($sql)->bindValues([":uid" => $uid, ":st" => Order::ST_GIVE])->queryScalar() > 9
+				) {
+					return true;
+				}
+				break;
+			case self::COIN_RECEIVE_NORMAL_GIFT:
+				$sql = "select count(1) as co from 
+						im_order as o join im_goods as g on g.gId=o.oGId
+						where oUId=:uid and oStatus=:st and g.`gCategory`=:cat  and DATE_FORMAT(oAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
+				if (!$cmd2->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar()
+					&& $conn->createCommand($sql)->bindValues([":uid" => $uid, ":st" => Order::ST_RECEIVE, ":cat" => Goods::CAT_STUFF])->queryScalar()
+				) {
+					return true;
+				}
+				break;
+			case self::COIN_RECEIVE_VIP_GIFT:
+				$sql = "select count(1) as co from 
+						im_order as o join im_goods as g on g.gId=o.oGId
+						where oUId=120003 and oStatus=9 and g.`gCategory`=110  and DATE_FORMAT(oAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
+				if (!$cmd2->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar()
+					&& $conn->createCommand($sql)->bindValues([":uid" => $uid, ":st" => Order::ST_RECEIVE, ":cat" => Goods::CAT_PREMIUM])->queryScalar()
+				) {
+					return true;
+				}
+				break;
+		}
+		return false;
+	}
+
+	public static function addTaskRedpaket($key, $uid)
+	{
+		if (!$key || !$uid) {
+			return [129, "参数错误", ''];
+		}
+		$amt = 0;
+		switch ($key) {
+			// one times task
+			case self::COIN_REG:
+				if (self::taskCondition($key, $uid)) {
+					$amt = 200;
+				} else {
+					return [129, "已过期", ''];
+				}
+				break;
+			case self::COIN_PERCENT80:
+				if (self::taskCondition($key, $uid)) {
+					$amt = random_int(150, 200);
+				} else {
+					return [129, "未完成", ''];
+				}
+				break;
+			case self::COIN_CERT:
+				if (self::taskCondition($key, $uid)) {
+					$amt = 100;
+				} else {
+					return [129, "未完成", ''];
+				}
+				break;
+			// everyday task
+			case self::COIN_CHAT_3TIMES:
+				if (self::taskCondition($key, $uid)) {
+					$amt = random_int(20, 30);
+				} else {
+					return [129, "已领取", ''];
+				}
+				break;
+			case self::COIN_CHAT_REPLY:
+				if (self::taskCondition($key, $uid)) {
+					$amt = random_int(20, 50);
+				} else {
+					return [129, "已领取", ''];
+				}
+				break;
+			case self::COIN_SHOW_COIN:
+				if (self::taskCondition($key, $uid)) {
+					$amt = random_int(30, 50);
+				} else {
+					return [129, "已领取", ''];
+				}
+				break;
+			case self::COIN_RECEIVE_GIFT:
+				if (self::taskCondition($key, $uid)) {
+					$amt = random_int(3, 5);
+				} else {
+					return [129, "已领取", ''];
+				}
+				break;
+			case self::COIN_SIGN:
+				if (self::taskCondition($key, $uid)) {
+					$amt = random_int(30, 100);
+				} else {
+					return [129, "已领取", ''];
+				}
+				break;
+			case self::COIN_SHARE_REG:
+				if (self::taskCondition($key, $uid)) {
+					$amt = 99;
+				} else {
+					return [129, "已领取", ''];
+				}
+				break;
+			// hard task
+			case self::COIN_DATE_COMPLETE:
+				if (self::taskCondition($key, $uid)) {
+					$amt = random_int(100, 200);
+				} else {
+					return [129, "未完成", ''];
+				}
+				break;
+			case self::COIN_PRESENT_10PEOPLE:
+				if (self::taskCondition($key, $uid)) {
+					$amt = random_int(100, 200);
+				} else {
+					return [129, "未完成", ''];
+				}
+				break;
+			case self::COIN_RECEIVE_NORMAL_GIFT:
+				if (self::taskCondition($key, $uid)) {
+					$amt = random_int(3, 5);
+				} else {
+					return [129, "未完成", ''];
+				}
+				break;
+			case self::COIN_RECEIVE_VIP_GIFT:
+				if (self::taskCondition($key, $uid)) {
+					$amt = random_int(130, 150);
+				} else {
+					return [129, "未完成", ''];
+				}
+				break;
+		}
+
+		if ($amt && in_array($key, [self::COIN_SIGN])) {
+			self::add($uid, $key, self::CAT_COIN_DEFAULT, self::$catDict[self::CAT_COIN_DEFAULT], $amt, self::UNIT_COIN_FEN);
+		}
+
+		return [0, "ok", ["amt" => sprintf("%.2f", $amt / 100)]];
 	}
 }

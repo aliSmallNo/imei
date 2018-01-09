@@ -1562,7 +1562,7 @@ class FooController extends Controller
 
 		//echo ChatMsg::isAnswer(146306, 143807);
 
-		  //$stat = UserTrans::getStat(143807, true);print_r($stat);
+		//$stat = UserTrans::getStat(143807, true);print_r($stat);
 
 
 		//UserNet::s28ShareStat(120003);
@@ -1571,7 +1571,15 @@ class FooController extends Controller
 
 		// UserTrans::add(120003, 201865, UserTrans::CAT_EXCHANGE_FLOWER, UserTrans::TITLE_COIN, 100, UserTrans::UNIT_COIN_FEN);
 
-		UserNet::taskStat(120003);
+		// UserTrans::taskStat(120003);
+
+		$cats = UserTrans::$taskDict;
+		$cats = array_keys($cats);
+		foreach ($cats as $key) {
+			$res = UserTrans::taskCondition($key, 120003);
+			echo intval($res) . '=>' . $key . PHP_EOL;
+		}
+
 	}
 
 

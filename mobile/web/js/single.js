@@ -2605,6 +2605,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			tmp: $('#tpl_greet').html(),
 			content: $('#ctx_greet').html().trim(),
 			hasPic: false,
+			taskData: {data: {key: 10}},
 			init: function () {
 				var util = this;
 				util.hasPic = (util.content.indexOf('<img') > 0);
@@ -2645,18 +2646,32 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			},
 			showCoin: function () {
 				var util = this;
-				var strJson = '<div class="greeting pic">' +
-					'<a href="javascript:;" class="redpacket close"></a></div>';
+				var strJson = Mustache.render($("#taskTmp").html(), util.taskData);
 				$sls.main.show();
-				$sls.content.html(strJson).addClass("redpacket-wrap").addClass("animate-pop-in");
+				$sls.content.html(strJson).addClass("redpacket-wrap animate-pop-in");
 				$sls.shade.fadeIn(160);
 				$('#cCoinFlag').val(0);
 				$('a.redpacket').on(kClick, function () {
 					var self = $(this);
-					if(self.hasClass('close')){
-						self.removeClass('close').addClass('open');
-					}else{
+					if (self.hasClass('close')) {
+						var key = self.attr("data-key");
+						$.post("/api/user", {
+							tag: "task",
+							key: key,
+						}, function (resp) {
+							if (resp.code == 0) {
+								self.closest("div").find("div").find("span").html(resp.data.amt);
+								self.removeClass('close').addClass('open');
+								self.closest("div").find("div").show();
+							} else {
+								alpha.toast(resp.msg);
+								$sls.content.removeClass("redpacket-wrap");
+								util.hide();
+							}
+						}, "json");
+					} else {
 						$sls.content.removeClass("redpacket-wrap");
+						self.closest("div").find("div").hide();
 						util.hide();
 					}
 				});
@@ -3066,7 +3081,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 
 			setTimeout(function () {
 				var coinFlag = $('#cCoinFlag').val();
-				if (coinFlag == 1 && 0) {
+				if (coinFlag == 0 && 0) {
 					GreetingUtil.showCoin();
 				} else {
 					GreetingUtil.show();

@@ -29,13 +29,29 @@
 		</li>
 	</ul>
 </div>
+<div class="m-popup-shade"></div>
+<div class="m-popup-main" style="display: none">
+	<div class="m-popup-wrap">
+		<div class="m-popup-content"></div>
+	</div>
+</div>
 <input type="hidden" id="cOID">
+<script type="text/html" id="taskTmp">
+	{[#data]}
+	<div class="greeting pic">
+		<a href="javascript:;" class="redpacket close" data-key="{[key]}"></a>
+		<div class="redpacket_amt">
+			<span>1.2</span>
+			元
+		</div>
+	</div>
+	{[/data]}
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1.5'], function () {
-		requirejs(['/js/lottery.js?v=1.4.7']);
+		requirejs(['/js/lottery.js?v=1.4.8']);
 	});
 </script>

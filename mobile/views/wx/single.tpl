@@ -942,6 +942,17 @@
 	var mProvinces = {{$provinces}};
 	var catDes = {{$catDes}};
 </script>
+<script type="text/html" id="taskTmp">
+{[#data]}
+	<div class="greeting pic">
+		<a href="javascript:;" class="redpacket close" data-key="{[key]}"></a>
+		<div class="redpacket_amt">
+			<span>1.2</span>
+			元
+		</div>
+	</div>
+{[/data]}
+</script>
 <script type="text/html" id="heightTmp">
 	<div class="m-popup-options col3 clearfix" tag="height">
 		<div class="m-popup-options-top">
@@ -1528,6 +1539,6 @@
 		document.location.hash = "#slook";
 	}
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/single.js?v=1.11.1']);
+		requirejs(['/js/single.js?v=1.11.2']);
 	});
 </script>

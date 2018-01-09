@@ -9970,13 +9970,24 @@ ul.co-ul {
   display: inline-block;
   width: 22rem;
   height: 30.45rem;
-  background-image: url(../images/ad/redpacket10.png);
-  background-size: 22rem 60.9rem;
   background-repeat: no-repeat; }
   .redpacket-wrap .redpacket.close {
-    background-position: 0 0; }
+    background-image: url(../images/ad/redpacket12.png);
+    background-size: 100% 100%; }
   .redpacket-wrap .redpacket.open {
-    background-position: 0 -30.45rem; }
+    background-image: url(../images/ad/redpacket13.png);
+    background-size: 100% 100%; }
+.redpacket-wrap .redpacket_amt {
+  display: none;
+  position: absolute;
+  color: #fff;
+  top: 4rem;
+  font-size: 2rem;
+  left: 0;
+  right: 0;
+  text-align: center; }
+  .redpacket-wrap .redpacket_amt span {
+    font-size: 3rem; }
 
 .m-popup-main .m-popup-wrap .m-popup-content.redpacket-wrap {
   width: 22rem;
