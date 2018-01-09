@@ -2646,8 +2646,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			showCoin: function () {
 				var util = this;
 				var strJson = '<div class="greeting pic">' +
-					'<a href="javascript:;" class="redpacket close"></a>' +
-					'<a href="javascript:;" class="m-popup-close"></a></div>';
+					'<a href="javascript:;" class="redpacket close"></a></div>';
 				$sls.main.show();
 				$sls.content.html(strJson).addClass("redpacket-wrap").addClass("animate-pop-in");
 				$sls.shade.fadeIn(160);
