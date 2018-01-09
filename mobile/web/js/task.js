@@ -37,6 +37,13 @@ require(["jquery", "alpha"],
 				$sls.shade.fadeOut(100);
 			}, 2500);
 		});
+
+		$(document).on(kClick, '.btn > a', function () {
+			var self = $(this);
+			var key = self.attr('data-key');
+
+		});
+
 /*
 		$(document).on(kClick, '.m-popup-options > a', function () {
 			var self = $(this);

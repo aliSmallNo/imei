@@ -353,6 +353,9 @@ section {
         border-radius: 1rem;
         display: inline-block;
         font-size: 1.1rem; }
+        .sw_task_item .sw_task_item_des .btn a.fail {
+          color: #777;
+          background: #eee; }
   .sw_task_item.active .sw_task_item_btn:after {
     content: " ";
     display: inline-block;

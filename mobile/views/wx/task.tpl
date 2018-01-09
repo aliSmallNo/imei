@@ -32,7 +32,7 @@
 		<div class="sw_task_item_des">
 			<p>{{$item.des}}</p>
 			<div class="btn">
-				<a href="javascript:;">{{$item.utext}}</a>
+				<a href="{{$item.url}}" data-key="{{$item.key}}"  class="{{$item.cls}}">{{$item.utext}}</a>
 			</div>
 		</div>
 	</div>
@@ -52,7 +52,7 @@
 		<div class="sw_task_item_des">
 			<p>{{$item.des}}</p>
 			<div class="btn">
-				<a href="javascript:;">{{$item.utext}}</a>
+				<a href="{{$item.url}}"  data-key="{{$item.key}}"  class="{{$item.cls}}">{{$item.utext}}</a>
 			</div>
 		</div>
 	</div>
@@ -72,7 +72,7 @@
 		<div class="sw_task_item_des">
 			<p>{{$item.des}}</p>
 			<div class="btn">
-				<a href="javascript:;">{{$item.utext}}</a>
+				<a href="{{$item.url}}"  data-key="{{$item.key}}" class="{{$item.cls}}">{{$item.utext}}</a>
 			</div>
 		</div>
 	</div>

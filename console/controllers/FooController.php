@@ -1562,7 +1562,7 @@ class FooController extends Controller
 
 		//echo ChatMsg::isAnswer(146306, 143807);
 
-		  $stat = UserTrans::getStat(143807, true);print_r($stat);
+		  //$stat = UserTrans::getStat(143807, true);print_r($stat);
 
 
 		//UserNet::s28ShareStat(120003);
@@ -1571,7 +1571,7 @@ class FooController extends Controller
 
 		// UserTrans::add(120003, 201865, UserTrans::CAT_EXCHANGE_FLOWER, UserTrans::TITLE_COIN, 100, UserTrans::UNIT_COIN_FEN);
 
-
+		UserNet::taskStat(120003);
 	}
 
 
