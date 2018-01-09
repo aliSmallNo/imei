@@ -82,7 +82,12 @@ class UserBuzz extends ActiveRecord
 
 这里有你想聊天的人，有想了解的故事
 世界上有好多错过，但我不希望是你和我
-<a href="https://wx.meipo100.com/wx/single#slook">👉点击注册来遇见我👈</a>';
+
+<a href="https://wx.meipo100.com/wx/single#slook">👉点击注册来遇见我👈</a>
+<a href="https://wx.meipo100.com/wx/single#slook">👉点击注册来遇见我👈</a>
+<a href="https://wx.meipo100.com/wx/single#slook">👉点击注册来遇见我👈</a>
+
+很高兴认识你';
 
 		/* "『千寻恋恋』是一个真实婚恋交友平台。在这里你可以有两种身份，媒婆和单身。
 媒婆可以将自己身边好友拉到平台上来帮助他们脱单。
