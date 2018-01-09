@@ -84,7 +84,9 @@ class UserBuzz extends ActiveRecord
 世界上有好多错过，但我不希望是你和我
 
 <a href="https://wx.meipo100.com/wx/single#slook">👉点击注册来遇见我👈</a>
+
 <a href="https://wx.meipo100.com/wx/single#slook">👉点击注册来遇见我👈</a>
+
 <a href="https://wx.meipo100.com/wx/single#slook">👉点击注册来遇见我👈</a>
 
 很高兴认识你';
