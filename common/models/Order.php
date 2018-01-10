@@ -220,7 +220,7 @@ class Order extends ActiveRecord
 				break;
 			case "vip":
 				// $expInfo = UserTag::getExp($v["uId"]);
-				return [129, '您的等级不够~', ''];
+				return [129, '您的等级不够~', ["gid" => 0]];
 				break;
 		}
 

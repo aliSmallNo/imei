@@ -1,5 +1,5 @@
-requirejs(['jquery', 'alpha', 'mustache'],
-	function ($, alpha, Mustache) {
+requirejs(['jquery', 'alpha'],
+	function ($, alpha) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -24,6 +24,7 @@ requirejs(['jquery', 'alpha', 'mustache'],
 			oid: $('#cOID').val(),
 			table: $('.lottery-gifts'),
 			go: $('.go-lottery'),
+			taskData: {data: {key: 10}},
 			init: function () {
 				var util = this;
 				util.table.find(".unit-" + util.index).addClass("active");
@@ -63,10 +64,9 @@ requirejs(['jquery', 'alpha', 'mustache'],
 						if (resp.code < 1) {
 							util.spin();
 							util.taskflag = resp.data.taskflag;
-							GreetingUtil.taskData.data.key = resp.data.key;
-							console.log(util.taskflag);
-							console.log(GreetingUtil.taskData);
-						} else if (resp.code > 0 && util.remaining > 0) {
+							util.taskData.data.key = resp.data.key;
+						}
+						else if (resp.code > 0 && util.remaining > 0) {
 							setTimeout(function () {
 								alpha.prompt('千寻提示', util.msg, ['马上分享'], function () {
 									location.href = '/wx/shares';
@@ -96,7 +96,7 @@ requirejs(['jquery', 'alpha', 'mustache'],
 						if (util.msg.remaining > 0) {
 							if (util.taskflag) {
 								setTimeout(function () {
-									GreetingUtil.showCoin();
+									alpha.showCoin(util.taskData);
 								}, 800);
 							} else {
 								setTimeout(function () {
@@ -108,7 +108,7 @@ requirejs(['jquery', 'alpha', 'mustache'],
 						} else {
 							if (util.taskflag) {
 								setTimeout(function () {
-									GreetingUtil.showCoin();
+									alpha.showCoin(util.taskData);
 								}, 800);
 							} else {
 								setTimeout(function () {
@@ -143,53 +143,8 @@ requirejs(['jquery', 'alpha', 'mustache'],
 			}
 		};
 
-		var GreetingUtil = {
-			taskData: {data: {key: 10}},
-			init: function () {
-				var util = this;
-			},
-			showCoin: function () {
-				var util = this;
-				var strJson = Mustache.render($("#taskTmp").html(), util.taskData);
-				$sls.main.show();
-				$sls.content.html(strJson).addClass("redpacket-wrap animate-pop-in");
-				$sls.shade.fadeIn(160);
-				$('#cCoinFlag').val(0);
-				$('a.redpacket').on(kClick, function () {
-					var self = $(this);
-					if (self.hasClass('close')) {
-						var key = self.attr("data-key");
-						$.post("/api/user", {
-							tag: "task",
-							key: key,
-						}, function (resp) {
-							if (resp.code == 0) {
-								self.closest("div").find("div").find("span").html(resp.data.amt);
-								self.removeClass('close').addClass('open');
-								self.closest("div").find("div").show();
-							} else {
-								alpha.toast(resp.msg);
-								$sls.content.removeClass("redpacket-wrap");
-								util.hide();
-							}
-						}, "json");
-					} else {
-						$sls.content.removeClass("redpacket-wrap");
-						self.closest("div").find("div").hide();
-						util.hide();
-					}
-				});
-			},
-			hide: function () {
-				$sls.main.hide();
-				$sls.content.html('').removeClass("animate-pop-in");
-				$sls.shade.fadeOut(160);
-			}
-		};
-
 		$(function () {
 			LotteryUtil.init();
-			GreetingUtil.init();
 
 		});
 	});

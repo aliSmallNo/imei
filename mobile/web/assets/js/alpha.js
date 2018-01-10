@@ -1,5 +1,5 @@
-define(['jquery', 'layer', 'swiper'],
-	function ($, layer, Swiper) {
+define(['jquery', 'layer', 'swiper', 'mustache'],
+	function ($, layer, Swiper, Mustache) {
 		"use strict";
 		return {
 			kClick: 'click',
@@ -104,6 +104,44 @@ define(['jquery', 'layer', 'swiper'],
 					}
 				});
 				return false;
+			},
+			showCoin: function (taskData) {
+				var util = this;
+				var temp = '{[#data]}<div class="greeting pic"><a href="javascript:;" class="redpacket close" data-key="{[key]}"></a><div class="redpacket_amt"><span>1.2</span>元</div></div>{[/data]}';
+				var strJson = Mustache.render(temp, taskData);
+				$(".m-popup-main").show();
+				$(".m-popup-content").html(strJson).addClass("redpacket-wrap animate-pop-in");
+				$(".m-popup-shade").fadeIn(160);
+				$('#cCoinFlag').val(0);
+				$('a.redpacket').on("click", function () {
+					var self = $(this);
+					if (self.hasClass('close')) {
+						var key = self.attr("data-key");
+						$.post("/api/user", {
+							tag: "task",
+							key: key,
+						}, function (resp) {
+							if (resp.code == 0) {
+								self.closest("div").find("div").find("span").html(resp.data.amt);
+								self.removeClass('close').addClass('open');
+								self.closest("div").find("div").show();
+							} else {
+								util.toast(resp.msg);
+								$(".m-popup-content").removeClass("redpacket-wrap");
+								util.hide();
+							}
+						}, "json");
+					} else {
+						$(".m-popup-content").removeClass("redpacket-wrap");
+						self.closest("div").find("div").hide();
+						util.hide();
+					}
+				});
+			},
+			hide: function () {
+				$(".m-popup-main").hide();
+				$(".m-popup-content").html('').removeClass("animate-pop-in");
+				$(".m-popup-shade").fadeOut(160);
 			}
 		};
 	});

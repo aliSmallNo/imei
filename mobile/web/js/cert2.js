@@ -1,11 +1,6 @@
-require.config({
-	paths: {
-		"jquery": "/assets/js/jquery-3.2.1.min",
-		"layer": "/assets/js/layer_mobile/layer",
-	}
-});
-require(["layer"],
-	function (layer) {
+
+requirejs(["jquery", "layer", "alpha"],
+	function ($, layer, alpha) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -109,64 +104,26 @@ require(["layer"],
 			}, "json");
 		}
 
-		//////////////////////////////////////////////////
-	/*	$(document).on(kClick, "a.choose-img", function () {
-			if ($sls.certFlag == 1) {
-				showMsg("您已通过实名认证~");
+
+		function taskOfCert() {
+			var util = $sls;
+			if (util.uploadImgFlag) {
 				return;
 			}
-			wx.chooseImage({
-				count: 1,
-				sizeType: ['original', 'compressed'],
-				sourceType: ['album', 'camera'],
-				success: function (res) {
-					var localIds = res.localIds;
-					if (localIds && localIds.length) {
-						$sls.localId = localIds[0];
-						// wxUploadImages();
-					}
-				}
-			});
-		});
-
-		function wxUploadImages() {
-			if ($sls.uploadImgFlag) {
-				return;
-			}
-			layer.open({
-				type: 2,
-				content: '正在上传中...'
-			});
-			$sls.uploadImgFlag = 1;
-			wx.uploadImage({
-				localId: $sls.localId.toString(),
-				isShowProgressTips: 0,
-				success: function (res) {
-					$sls.serverId = res.serverId;
-					uploadImage();
-				},
-				fail: function () {
-					$sls.serverId = "";
-					showMsg("上传失败！");
-					$sls.uploadImgFlag = 0;
-				}
-			});
-		}
-
-		function uploadImage() {
+			util.uploadImgFlag = 1;
 			$.post("/api/user", {
-				tag: "cert",
-				id: $sls.serverId
+				tag: "task_cert",
 			}, function (resp) {
-				showMsg(resp.msg);
-				if (resp.code == 0) {
-					location.href = "/wx/single#sme";
+				util.uploadImgFlag = 0;
+				if (resp.code < 1) {
+					if (resp.data.taskflag) {
+						alpha.showCoin({data: {key: resp.data.key}});
+					}
 				} else {
-					showMsg(resp.msg);
+					alpha.toast(resp.msg);
 				}
-				$sls.uploadImgFlag = 0;
 			}, "json");
-		}*/
+		}
 
 		function showMsg(title, sec) {
 			var delay = sec || 3;
@@ -187,6 +144,6 @@ require(["layer"],
 				wx.hideOptionMenu();
 			});
 			$sls.cork.hide();
-
+			taskOfCert();
 		});
 	});

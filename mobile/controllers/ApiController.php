@@ -646,6 +646,9 @@ class ApiController extends Controller
 				if ($tag == 'sreg' && $userId) {
 					$data['items'] = User::greetUsers($userId);
 				}
+				// 任务红包
+				$data['taskflag'] = UserTrans::taskCondition(UserTrans::COIN_PERCENT80, $wx_uid);
+				$data['key'] = UserTrans::COIN_PERCENT80;
 				return self::renderAPI(0, '保存成功啦~', $data);
 			case 'reg1':
 				$data = self::postParam('data');
@@ -708,6 +711,13 @@ class ApiController extends Controller
 				} else {
 					return self::renderAPI(129, '上传失败', $uId);
 				}
+			case "task_cert":
+				// 任务红包
+				return self::renderAPI(0, '', [
+					"taskflag" => UserTrans::taskCondition(UserTrans::COIN_CERT, $wx_uid),
+					"key" => UserTrans::COIN_CERT,
+				]);
+				break;
 			case "certnew":
 				$uId = User::certnew($id, $openId);
 				if ($uId) {
@@ -1940,6 +1950,22 @@ class ApiController extends Controller
 		}*/
 
 		switch ($tag) {
+			case "task_receive_gift":
+				// 任务红包
+				$coinCat = UserTrans::COIN_RECEIVE_GIFT;
+				$taskflag = false;
+				foreach ([UserTrans::COIN_RECEIVE_GIFT, UserTrans::COIN_RECEIVE_NORMAL_GIFT, UserTrans::COIN_RECEIVE_VIP_GIFT, UserTrans::COIN_PRESENT_10PEOPLE] as $v) {
+					$taskflag = UserTrans::taskCondition($v, $uid);
+					if ($taskflag) {
+						$coinCat = $v;
+						break;
+					}
+				}
+				return self::renderAPI(0, '', [
+					"taskflag" => $taskflag,
+					"key" => $coinCat,
+				]);
+				break;
 			case 'pre-check':
 				$receiverId = self::postParam('sid');
 				$receiverId = AppUtil::decrypt($receiverId);
@@ -2031,11 +2057,23 @@ class ApiController extends Controller
 						],
 						QueueUtil::QUEUE_TUBE_SMS);
 
+					// 任务红包
+					$coinCat = UserTrans::COIN_CHAT_REPLY;
+					$taskflag = false;
+					foreach ([UserTrans::COIN_CHAT_REPLY, UserTrans::COIN_CHAT_3TIMES] as $v) {
+						$taskflag = UserTrans::taskCondition($v, $uid);
+						if ($taskflag) {
+							$coinCat = $v;
+							break;
+						}
+					}
 					return self::renderAPI(0, '', [
 						'items' => $ret,
 						'gid' => $ret['gid'],
 						'left' => $ret['left'],
 						'commentFlag' => UserComment::hasComment($receiverId, $uid),// 是否评价一次TA
+						"taskflag" => $taskflag,
+						"key" => $coinCat,
 					]);
 				}
 				break;
@@ -2708,6 +2746,15 @@ class ApiController extends Controller
 						"data" => $data,
 					]);
 				}
+				// 红包任务
+				if (in_array($note, ['/wx/shares', '/wx/share106'])) {
+					$coinCat = $note == '/wx/shares' ? UserTrans::COIN_SHARE_REG : UserTrans::COIN_SHOW_COIN;
+					$taskflag = UserTrans::taskCondition($coinCat, $uid);
+					return self::renderAPI(0, '', [
+						"taskflag" => $taskflag,
+						"key" => $coinCat,
+					]);
+				}
 				break;
 			case 'moment':// 分享到朋友圈
 				$amt = 16;
@@ -2742,6 +2789,15 @@ class ApiController extends Controller
 					]);
 				}
 				$ret = UserTrans::shareReward($uid, $nId, UserTrans::CAT_MOMENT, $amt, UserTrans::UNIT_GIFT);
+				// 红包任务
+				if (in_array($note, ['/wx/shares', '/wx/share106'])) {
+					$coinCat = $note == '/wx/shares' ? UserTrans::COIN_SHARE_REG : UserTrans::COIN_SHOW_COIN;
+					$taskflag = UserTrans::taskCondition($coinCat, $uid);
+					return self::renderAPI(0, '', [
+						"taskflag" => $taskflag,
+						"key" => $coinCat,
+					]);
+				}
 				if ($ret) {
 					return self::renderAPI(0, '分享到朋友圈奖励' . $amt . '朵媒桂花，谢谢你哦~');
 				} else {
@@ -2831,6 +2887,7 @@ class ApiController extends Controller
 					[
 						'prize' => $prizeIndex,
 						'remaining' => $remaining,
+						// 红包任务
 						"taskflag" => UserTrans::taskCondition(UserTrans::COIN_SIGN, $wx_uid),
 						"key" => UserTrans::COIN_SIGN,
 					]);

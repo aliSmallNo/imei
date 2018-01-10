@@ -101,9 +101,20 @@
 	</div>
 </div>
 <input type="hidden" id="certFlag" value="{{$certFlag}}">
+
+<div class="m-popup-shade"></div>
+<div class="m-popup-main" style="display: none">
+	<div class="m-popup-wrap">
+		<div class="m-popup-content"></div>
+	</div>
+</div>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-<script src="/assets/js/jquery-3.2.1.min.js"></script>
-<script src="/assets/js/mustache.min.js"></script>
-<script data-main="/js/cert2.js?v=1.1.8" src="/assets/js/require.js"></script>
+
+<script src="/assets/js/require.js"></script>
+<script>
+	requirejs(['/js/config.js?v=1.1.5'], function () {
+		requirejs(['/js/cert2.js?v=1.4.9']);
+	});
+</script>

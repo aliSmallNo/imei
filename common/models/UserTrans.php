@@ -716,7 +716,6 @@ class UserTrans extends ActiveRecord
 		return $cnt > 0;
 	}
 
-
 	const COIN_REG = 10;
 	const COIN_PERCENT80 = 12;
 	const COIN_CERT = 14;
@@ -959,7 +958,7 @@ class UserTrans extends ActiveRecord
 			case self::COIN_RECEIVE_VIP_GIFT:
 				$sql = "select count(1) as co from 
 						im_order as o join im_goods as g on g.gId=o.oGId
-						where oUId=120003 and oStatus=9 and g.`gCategory`=110  and DATE_FORMAT(oAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
+						where oUId=:uid and oStatus=:st and g.`gCategory`=:cat  and DATE_FORMAT(oAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
 				if (!$cmd2->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar()
 					&& $conn->createCommand($sql)->bindValues([":uid" => $uid, ":st" => Order::ST_RECEIVE, ":cat" => Goods::CAT_PREMIUM])->queryScalar()
 				) {
@@ -1073,7 +1072,11 @@ class UserTrans extends ActiveRecord
 				break;
 		}
 
-		if ($amt && in_array($key, [self::COIN_SIGN])) {
+		if ($amt && in_array($key, [
+				self::COIN_SIGN, self::COIN_SHARE_REG, self::COIN_SHOW_COIN, self::COIN_CHAT_REPLY, self::COIN_CHAT_3TIMES,
+				self::COIN_RECEIVE_GIFT, self::COIN_RECEIVE_NORMAL_GIFT, self::COIN_RECEIVE_VIP_GIFT, self::COIN_PRESENT_10PEOPLE,
+				self::COIN_CERT, self::COIN_PERCENT80,self::COIN_REG
+			])) {
 			self::add($uid, $key, self::CAT_COIN_DEFAULT, self::$catDict[self::CAT_COIN_DEFAULT], $amt, self::UNIT_COIN_FEN);
 		}
 

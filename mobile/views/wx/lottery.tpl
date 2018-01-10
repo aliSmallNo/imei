@@ -52,6 +52,6 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1.5'], function () {
-		requirejs(['/js/lottery.js?v=1.4.8']);
+		requirejs(['/js/lottery.js?v=1.4.9']);
 	});
 </script>

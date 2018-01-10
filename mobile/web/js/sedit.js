@@ -199,7 +199,7 @@ requirejs(['jquery', 'mustache', 'alpha'],
 						};
 						lItem.push(item);
 					});
-					if (lItem.length < 3) {
+					if (lItem.length < 2) {
 						alpha.toast("所在城市还没有选择哦~");
 						return false;
 					}
@@ -288,10 +288,15 @@ requirejs(['jquery', 'mustache', 'alpha'],
 					data: JSON.stringify($sls.postData),
 				}, function (res) {
 					if (res.code == 0) {
-						setTimeout(function () {
-							location.href = "/wx/single#sme";
+						if (res.data.taskflag || 1) {
 							alpha.clear();
-						}, 500);
+							alpha.showCoin({data: {key: res.data.key}});
+						} else {
+							setTimeout(function () {
+								location.href = "/wx/single#sme";
+								alpha.clear();
+							}, 500);
+						}
 					} else {
 						alpha.toast(res.msg);
 					}

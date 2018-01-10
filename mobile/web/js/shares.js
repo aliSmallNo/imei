@@ -37,6 +37,9 @@ require(['jquery', 'swiper', 'alpha'],
 				if (resp.code < 1 && resp.msg) {
 					alpha.toast(resp.msg, 1);
 				}
+				if (resp.data.taskflag) {
+					alpha.showCoin({data: {key: resp.data.key}});
+				}
 			}, "json");
 		}
 
@@ -112,6 +115,5 @@ require(['jquery', 'swiper', 'alpha'],
 				wx.onMenuShareTimeline(shareOptions('timeline'));
 			});
 			resetSwiper();
-
 		});
 	});

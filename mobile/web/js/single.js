@@ -855,9 +855,13 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 							getWechatUtil.alert();
 						}
 					} else {
-						location.href = "/wx/shopbag";
+						if (self.closest("li").hasClass("left")) {
+							// 查询任务完成情况
+							util.taskOfReceiveGift();
+						} else {
+							location.href = "/wx/shopbag";
+						}
 					}
-
 
 					return false;
 				});
@@ -1143,7 +1147,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					}
 				});
 
-
 				$(document).on(kClick, '.j-guide', function () {
 					var self = $(this);
 					if (self.hasClass('guide-truth')) {
@@ -1158,6 +1161,26 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						}, 100);
 					}
 				});
+			},
+			taskOfReceiveGift: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post("/api/chat", {
+					tag: "task_receive_gift",
+					id: util.sid,
+				}, function (resp) {
+					util.loading = 0;
+					if (resp.code < 1) {
+						if (resp.data.taskflag) {
+							alpha.showCoin({data: {key: resp.data.key}});
+						}
+					} else {
+						alpha.toast(resp.msg);
+					}
+				}, "json");
 			},
 			helpchat: function () {
 				var util = this;
@@ -1445,6 +1468,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						/*setTimeout(function () {
 							util.bot.get(0).scrollIntoView(true);
 						}, 300);*/
+						if (resp.data.taskflag) {
+							alpha.showCoin({data: {key: resp.data.key}});
+						}
 					} else if (resp.code == 101) {
 						$sls.main.show();
 						var html = Mustache.render(util.shareTmp, {});
@@ -3080,9 +3106,10 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			SwipeUtil.init();
 
 			setTimeout(function () {
-				var coinFlag = $('#cCoinFlag').val();
-				if (coinFlag == 0 && 0) {
-					GreetingUtil.showCoin();
+				var coinFlag = $('#ctaskFlag').val();
+				if (coinFlag) {
+					var taskKey = parseInt($("#ctaskKey").val());
+					alpha.showCoin({data: {key: taskKey}});
 				} else {
 					GreetingUtil.show();
 				}

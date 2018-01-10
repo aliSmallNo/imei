@@ -96,6 +96,5 @@ require(["layer"],
 				wx.hideOptionMenu();
 			});
 			$sls.cork.hide();
-
 		});
 	});
