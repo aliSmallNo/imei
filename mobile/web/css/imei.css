@@ -8602,7 +8602,7 @@ ul.co-ul {
         right: 0;
         top: 0;
         font-size: 0.8rem;
-        padding: 0.15rem 0.8rem;
+        padding: 0.1rem 0.5rem;
         background: #f34b4a;
         color: #fff;
         border-radius: 1rem; }
@@ -8634,13 +8634,13 @@ ul.co-ul {
         .zone-grid li a .i-zone-grid.rank {
           background-position: 0 -25.6rem; }
         .zone-grid li a .i-zone-grid.bag {
-          background-position: 0 -28.8rem; }
+          background-position: 0 -28.7rem; }
         .zone-grid li a .i-zone-grid.wallet {
-          background-position: 0 -32rem; }
+          background-position: 0 -31.9rem; }
         .zone-grid li a .i-zone-grid.share {
           background-position: 0 -35.2rem; }
         .zone-grid li a .i-zone-grid.cert {
-          background-position: 0 -38.4rem; }
+          background-position: 0 -38.3rem; }
         .zone-grid li a .i-zone-grid.task {
           background-position: 0 -41.6rem; }
 
