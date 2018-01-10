@@ -8576,7 +8576,8 @@ ul.co-ul {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    padding: 0.2rem; }
+    padding: 0.2rem;
+    position: relative; }
     .zone-grid li:nth-child(3n+3) {
       border-right: none; }
     .zone-grid li a {
@@ -8587,48 +8588,61 @@ ul.co-ul {
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
-      padding-top: 0.8rem; }
+      padding-top: 0.8rem;
+      position: relative; }
       .zone-grid li a:active {
         background-color: #EEEFF3; }
       .zone-grid li a em {
         display: block;
         line-height: 1.7rem;
         font-size: 1.2rem; }
-    .zone-grid li .i-zone-grid {
-      display: inline-block;
-      padding: 0;
-      margin: 0;
-      width: 3.2rem;
-      height: 3.2rem;
-      background-image: url(../images/sprite_me.png?v=1.1);
-      background-size: 3.2rem 41.6rem;
-      background-repeat: no-repeat; }
-      .zone-grid li .i-zone-grid.sign {
-        background-position: 0 0rem; }
-      .zone-grid li .i-zone-grid.shop {
-        background-position: 0 -3.2rem; }
-      .zone-grid li .i-zone-grid.notice {
-        background-position: 0 -6.4rem; }
-      .zone-grid li .i-zone-grid.date {
-        background-position: 0 -9.6rem; }
-      .zone-grid li .i-zone-grid.setting {
-        background-position: 0 -12.8rem; }
-      .zone-grid li .i-zone-grid.feedback {
-        background-position: 0 -16rem; }
-      .zone-grid li .i-zone-grid.protocol {
-        background-position: 0 -19.2rem; }
-      .zone-grid li .i-zone-grid.comment {
-        background-position: 0 -22.4rem; }
-      .zone-grid li .i-zone-grid.rank {
-        background-position: 0 -25.6rem; }
-      .zone-grid li .i-zone-grid.bag {
-        background-position: 0 -28.8rem; }
-      .zone-grid li .i-zone-grid.wallet {
-        background-position: 0 -32rem; }
-      .zone-grid li .i-zone-grid.share {
-        background-position: 0 -35.2rem; }
-      .zone-grid li .i-zone-grid.cert {
-        background-position: 0 -38.4rem; }
+      .zone-grid li a.yj:after {
+        position: absolute;
+        content: "有奖";
+        right: 0;
+        top: 0;
+        font-size: 0.8rem;
+        padding: 0.15rem 0.8rem;
+        background: #f34b4a;
+        color: #fff;
+        border-radius: 1rem; }
+      .zone-grid li a .i-zone-grid {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+        width: 3.2rem;
+        height: 3.2rem;
+        background-image: url(../images/sprite_me_2.png?v=1.1);
+        background-size: 3.2rem 44.8rem;
+        background-repeat: no-repeat; }
+        .zone-grid li a .i-zone-grid.sign {
+          background-position: 0 0rem; }
+        .zone-grid li a .i-zone-grid.shop {
+          background-position: 0 -3.2rem; }
+        .zone-grid li a .i-zone-grid.notice {
+          background-position: 0 -6.4rem; }
+        .zone-grid li a .i-zone-grid.date {
+          background-position: 0 -9.6rem; }
+        .zone-grid li a .i-zone-grid.setting {
+          background-position: 0 -12.8rem; }
+        .zone-grid li a .i-zone-grid.feedback {
+          background-position: 0 -16rem; }
+        .zone-grid li a .i-zone-grid.protocol {
+          background-position: 0 -19.2rem; }
+        .zone-grid li a .i-zone-grid.comment {
+          background-position: 0 -22.4rem; }
+        .zone-grid li a .i-zone-grid.rank {
+          background-position: 0 -25.6rem; }
+        .zone-grid li a .i-zone-grid.bag {
+          background-position: 0 -28.8rem; }
+        .zone-grid li a .i-zone-grid.wallet {
+          background-position: 0 -32rem; }
+        .zone-grid li a .i-zone-grid.share {
+          background-position: 0 -35.2rem; }
+        .zone-grid li a .i-zone-grid.cert {
+          background-position: 0 -38.4rem; }
+        .zone-grid li a .i-zone-grid.task {
+          background-position: 0 -41.6rem; }
 
 .cr-guide {
   padding: 1rem; }

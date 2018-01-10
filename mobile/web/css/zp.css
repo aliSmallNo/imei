@@ -338,7 +338,8 @@ section {
       -ms-flex: 1;
       flex: 1;
       font-size: 1.1rem;
-      color: #777; }
+      color: #777;
+      letter-spacing: 0.1rem; }
     .sw_task_item .sw_task_item_des .btn {
       flex: 0 0 8rem;
       justify-content: center;

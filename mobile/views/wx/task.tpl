@@ -37,6 +37,30 @@
 		</div>
 	</div>
 	{{/foreach}}
+
+
+	<div class="sw_task_title" style="display: none">
+		最新活动
+	</div>
+	{{foreach from=$currTask item=item}}
+	<div class="sw_task_item"  style="display: none">
+		<a href="javascript:;" class="sw_task_item_btn active">
+			<h5>{{$item.title}}</h5>
+			<div>
+				<em>+{{$item.num}}</em>
+				<img src="/images/sw/red_task.png">
+			</div>
+		</a>
+		<div class="sw_task_item_des">
+			<p>{{$item.des}}</p>
+			<div class="btn">
+				<a href="{{$item.url}}"  data-key="{{$item.key}}" class="{{$item.cls}}">{{$item.utext}}</a>
+			</div>
+		</div>
+	</div>
+	{{/foreach}}
+
+
 	<div class="sw_task_title">
 		日常任务
 	</div>
@@ -57,6 +81,7 @@
 		</div>
 	</div>
 	{{/foreach}}
+
 	<div class="sw_task_title">
 		挑战任务
 	</div>

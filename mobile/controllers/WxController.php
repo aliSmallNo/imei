@@ -2189,12 +2189,13 @@ class WxController extends BaseController
 	{
 		$uid = $this->user_id;
 
-		list($newTask, $everyTask, $hardTask, $amount) = UserTrans::taskStat($uid);
+		list($newTask, $currTask,$everyTask, $hardTask, $amount) = UserTrans::taskStat($uid);
 
 		return self::renderPage("task.tpl",
 			[
 				'uid' => $this->user_id,
 				'newTask' => $newTask,
+				'currTask' => $currTask,
 				'everyTask' => $everyTask,
 				'hardTask' => $hardTask,
 				'amount' => $amount / 100,

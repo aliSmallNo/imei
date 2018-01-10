@@ -726,6 +726,7 @@ class UserTrans extends ActiveRecord
 	const COIN_RECEIVE_GIFT = 22;
 	const COIN_SIGN = 24;
 	const COIN_SHARE_REG = 26;
+	const COIN_SHARE28 = 27;
 
 	const COIN_DATE_COMPLETE = 28;
 	const COIN_PRESENT_10PEOPLE = 30;
@@ -742,6 +743,7 @@ class UserTrans extends ActiveRecord
 		self::COIN_RECEIVE_GIFT => "收到礼物",
 		self::COIN_SIGN => "签到",
 		self::COIN_SHARE_REG => "成功邀请",
+		self::COIN_SHARE28 => "28888现金红包",
 
 		self::COIN_DATE_COMPLETE => "完成一次线下约会",
 		self::COIN_PRESENT_10PEOPLE => "赠送礼物累计10人",
@@ -786,6 +788,10 @@ class UserTrans extends ActiveRecord
 			}
 		}
 
+		$currTask = [
+			["key" => self::COIN_SHARE28, "cls" => "", "title" => "28888现金红包", "num" => 28888, "des" => "【28888元现金大派送】活动火爆进行中！28888元现金红包统统免费领回家！", "utext" => "去完成", "url" => "/wx/share28"],
+		];
+
 		$everyTask = [
 			["key" => self::COIN_CHAT_3TIMES, "cls" => "", "title" => "每日发起聊天(3次）领红包", "num" => 2, "des" => "每日主动发起聊天3次最多可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#slook"],
 			["key" => self::COIN_CHAT_REPLY, "cls" => "", "title" => "每天回应一次对话", "num" => 1, "des" => "每日回复一次聊天一次最多可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
@@ -817,7 +823,7 @@ class UserTrans extends ActiveRecord
 		$sql = "select sum(tAmt) as amt from im_user_trans where tCategory=:cat and tUId=:uid and DATE_FORMAT(tAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
 		$amount = $conn->createCommand($sql)->bindValues([":uid" => $uid, ":cat" => self::CAT_COIN_DEFAULT])->queryScalar();
 
-		return [$newTask, $everyTask, $hardTask, $amount];
+		return [$newTask, $currTask, $everyTask, $hardTask, $amount];
 
 	}
 
