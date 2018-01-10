@@ -1576,7 +1576,7 @@ class FooController extends Controller
 		$cats = UserTrans::$taskDict;
 		$cats = array_keys($cats);
 		foreach ($cats as $key) {
-			$res = UserTrans::taskCondition($key, 146306);
+			$res = UserTrans::taskCondition($key, 143807);
 			echo intval($res) . '=>' . $key . PHP_EOL;
 		}
 
