@@ -65,6 +65,7 @@ requirejs(['jquery', 'alpha'],
 							util.spin();
 							util.taskflag = resp.data.taskflag;
 							util.taskData.data.key = resp.data.key;
+
 						}
 						else if (resp.code > 0 && util.remaining > 0) {
 							setTimeout(function () {
