@@ -858,7 +858,6 @@ class UserTrans extends ActiveRecord
 				break;
 			case self::COIN_PERCENT80:
 				if ($u["percent"] >= 80
-					&& date("Y-m-d", strtotime($u["addedon"])) == date("Y-m-d")
 					&& $cmd1->bindValues([":uid" => $uid, ":pid" => $key,])->queryScalar() == 0
 				) {
 					return true;
@@ -866,7 +865,6 @@ class UserTrans extends ActiveRecord
 				break;
 			case self::COIN_CERT:
 				if ($u["certstatus"] == User::CERT_STATUS_PASS
-					&& date("Y-m-d", strtotime($u["addedon"])) == date("Y-m-d")
 					&& $cmd1->bindValues([":uid" => $uid, ":pid" => $key,])->queryScalar() == 0
 				) {
 					return true;
@@ -931,15 +929,15 @@ class UserTrans extends ActiveRecord
 				break;
 			// hard task
 			case self::COIN_DATE_COMPLETE:
-				$sql = "select count(1) from im_user_trans where tUId=:uid and tCategory=:cat and DATE_FORMAT(tAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
-				if (!$cmd2->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar()
+				$sql = "select count(1) from im_user_trans where tUId=:uid and tCategory=:cat  ";
+				if (!$cmd1->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar()
 					&& $conn->createCommand($sql)->bindValues([":uid" => $uid, ":cat" => self::CAT_DATE_NEW])->queryScalar()) {
 					return true;
 				}
 				break;
 			case self::COIN_PRESENT_10PEOPLE:
-				$sql = " select count(DISTINCT `oPayId`) as co from im_order where oUId=:uid and oStatus=:st and DATE_FORMAT(oAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
-				if (!$cmd2->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar()
+				$sql = " select count(DISTINCT `oPayId`) as co from im_order where oUId=:uid and oStatus=:st ";
+				if (!$cmd1->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar()
 					&& $conn->createCommand($sql)->bindValues([":uid" => $uid, ":st" => Order::ST_GIVE])->queryScalar() > 9
 				) {
 					return true;
@@ -948,8 +946,8 @@ class UserTrans extends ActiveRecord
 			case self::COIN_RECEIVE_NORMAL_GIFT:
 				$sql = "select count(1) as co from 
 						im_order as o join im_goods as g on g.gId=o.oGId
-						where oUId=:uid and oStatus=:st and g.`gCategory`=:cat  and DATE_FORMAT(oAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
-				if (!$cmd2->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar()
+						where oUId=:uid and oStatus=:st and g.`gCategory`=:cat  ";
+				if (!$cmd1->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar()
 					&& $conn->createCommand($sql)->bindValues([":uid" => $uid, ":st" => Order::ST_RECEIVE, ":cat" => Goods::CAT_STUFF])->queryScalar()
 				) {
 					return true;
@@ -958,8 +956,8 @@ class UserTrans extends ActiveRecord
 			case self::COIN_RECEIVE_VIP_GIFT:
 				$sql = "select count(1) as co from 
 						im_order as o join im_goods as g on g.gId=o.oGId
-						where oUId=:uid and oStatus=:st and g.`gCategory`=:cat  and DATE_FORMAT(oAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
-				if (!$cmd2->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar()
+						where oUId=:uid and oStatus=:st and g.`gCategory`=:cat  ";
+				if (!$cmd1->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar()
 					&& $conn->createCommand($sql)->bindValues([":uid" => $uid, ":st" => Order::ST_RECEIVE, ":cat" => Goods::CAT_PREMIUM])->queryScalar()
 				) {
 					return true;
