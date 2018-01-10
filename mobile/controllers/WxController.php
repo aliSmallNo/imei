@@ -2202,7 +2202,7 @@ class WxController extends BaseController
 			],
 			'terse',
 			'任务',
-			'bg-103');
+			'');
 	}
 
 	public function actionShare28()
