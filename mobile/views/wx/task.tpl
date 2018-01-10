@@ -4,10 +4,10 @@
 	<div class="sw_task_cash">
 		<div class="sw_task_cash_des">
 			<h5>今日获得现金</h5>
-			<p>0.00 <span>元</span></p>
+			<p>{{$amount}} <span>元</span></p>
 		</div>
 	</div>
-	<div class="sw_task_total">
+	<div class="sw_task_total" style="display: none">
 		<div>
 			<p>累计邀请人数</p>
 			<p>0</p>

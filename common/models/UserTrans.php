@@ -754,9 +754,9 @@ class UserTrans extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		$newTask = [
-			["key" => self::COIN_REG, "cls" => "", "title" => "注册首次登陆", "num" => 1, "des" => "关注公众号首次登陆进入平台后，奖励2元现金红包。分享后直接到我的任务列表可查看获得的奖金", "utext" => "去登陆", "url" => "/wx/single"],
-			["key" => self::COIN_PERCENT80, "cls" => "", "title" => "完善个人资料达到80%", "num" => 2, "des" => "完善资料达到80%后，即可领取2元现金红包。完成后直接到我的任务列表可查看获得的奖励", "utext" => "去完善", "url" => "/wx/sedit"],
-			["key" => self::COIN_REG, "cls" => "", "title" => "完善身份认证", "num" => 1, "des" => "完成身份认证后，即可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去认证", "url" => "/wx/cert2"],
+			["key" => self::COIN_REG, "cls" => "", "title" => "注册首次登陆", "num" => 1, "des" => "关注公众号首次登陆进入平台后，最多奖励2元现金红包。分享后直接到我的任务列表可查看获得的奖金", "utext" => "去登陆", "url" => "/wx/single"],
+			["key" => self::COIN_PERCENT80, "cls" => "", "title" => "完善个人资料达到80%", "num" => 2, "des" => "完善资料达到80%后，最多可领取2元现金红包。完成后直接到我的任务列表可查看获得的奖励", "utext" => "去完善", "url" => "/wx/sedit"],
+			["key" => self::COIN_CERT, "cls" => "", "title" => "完善身份认证", "num" => 1, "des" => "完成身份认证后，最多可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去认证", "url" => "/wx/cert2"],
 		];
 		$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid ";
 		$cmd = $conn->createCommand($sql);
@@ -764,70 +764,60 @@ class UserTrans extends ActiveRecord
 		$st1 = function ($d, $k, $t, $c, $u) {
 			$d[$k]["utext"] = $t;
 			$d[$k]["cls"] = $c;
-			$d[$k]["url"] = $u;
+			if ($u) {
+				$d[$k]["url"] = $u;
+			}
+			return $d;
 		};
 		if (date("Y-m-d", strtotime($u["addedon"])) == date("Y-m-d")) {
-			$st1($newTask, 0, '领取', '', 'javascript:;');
+			$newTask = $st1($newTask, 0, '去领取', '', '');
+		} elseif (strtotime(date("Y-m-d 23:59:50", strtotime($u["addedon"]))) < time()) {
+			$newTask = $st1($newTask, 0, '已过期', 'fail', 'javascript:;');
 		}
 		if ($u["percent"] >= 80) {
-			$st1($newTask, 0, '领取', '', 'javascript:;');
+			$newTask = $st1($newTask, 1, '去领取', '', '');
 		}
 		if ($u["certstatus"] == User::CERT_STATUS_PASS) {
-			$st1($newTask, 0, '领取', '', 'javascript:;');
+			$newTask = $st1($newTask, 2, '去领取', '', '');
 		}
 		foreach ($newTask as $k => $v) {
 			if ($cmd->bindValues([":uid" => $uid, ":pid" => $v["key"]])->queryScalar()) {
-				$st1($newTask, $k, '已领取', 'fail', 'javascript:;');
+				$newTask = $st1($newTask, $k, '已领取', 'fail', 'javascript:;');
 			}
 		}
 
 		$everyTask = [
-			["key" => self::COIN_CHAT_3TIMES, "cls" => "", "title" => "每日发起聊天(3次）领红包", "num" => 2, "des" => "每日主动发起聊天3次即可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#slook"],
-			["key" => self::COIN_CHAT_REPLY, "cls" => "", "title" => "每天回应一次对话", "num" => 1, "des" => "每日回复一次聊天一次即可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
-			["key" => self::COIN_SHOW_COIN, "cls" => "", "title" => "秀红包金额", "num" => 2, "des" => "每日分享自己所或得的现金即可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/share106"],
-			["key" => self::COIN_SIGN, "cls" => "", "title" => "当天收到一个礼物", "num" => 1, "des" => "每日可以从聊天中获得一个礼物即可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
-			["key" => self::COIN_REG, "cls" => "", "title" => "签到", "num" => 1, "des" => "每日签到成功后即可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/lottery"],
-			["key" => self::COIN_SHARE_REG, "cls" => "", "title" => "成功邀请", "num" => 2, "des" => "每日成功邀请一位好友注册成功即可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/shares"],
+			["key" => self::COIN_CHAT_3TIMES, "cls" => "", "title" => "每日发起聊天(3次）领红包", "num" => 2, "des" => "每日主动发起聊天3次最多可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#slook"],
+			["key" => self::COIN_CHAT_REPLY, "cls" => "", "title" => "每天回应一次对话", "num" => 1, "des" => "每日回复一次聊天一次最多可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
+			["key" => self::COIN_SHOW_COIN, "cls" => "", "title" => "秀红包金额", "num" => 2, "des" => "每日分享自己所或得的现金最多可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/share106"],
+			["key" => self::COIN_RECEIVE_GIFT, "cls" => "", "title" => "当天收到一个礼物", "num" => 1, "des" => "每日可以从聊天中获得一个礼物最多可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
+			["key" => self::COIN_SIGN, "cls" => "", "title" => "签到", "num" => 1, "des" => "每日签到成功后最多可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/lottery"],
+			["key" => self::COIN_SHARE_REG, "cls" => "", "title" => "成功邀请", "num" => 2, "des" => "每日成功邀请一位好友注册成功最多可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/shares"],
 		];
 		$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid and DATE_FORMAT(tAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
 		$cmd = $conn->createCommand($sql);
 		foreach ($everyTask as $k => $v) {
 			if ($cmd->bindValues([":uid" => $uid, ":pid" => $v["key"]])->queryScalar()) {
-				$st1($everyTask, $k, '已领取', 'fail', 'javascript:;');
+				$everyTask = $st1($everyTask, $k, '已领取', 'fail', 'javascript:;');
 			}
 		}
 
 		$hardTask = [
-			["key" => self::COIN_DATE_COMPLETE, "cls" => "", "title" => "完成1次线下约会", "num" => 3, "des" => "向心动异性发起约会，成功线下约会并向客服提交约会凭证，即可领取3元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
-			["key" => self::COIN_PRESENT_10PEOPLE, "cls" => "", "title" => "赠送礼物累计（10人）", "num" => 10, "des" => "累计向10位异性赠送礼物后，即可领取10元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
-			["key" => self::COIN_RECEIVE_NORMAL_GIFT, "cls" => "", "title" => "收到普通礼物（不限）", "num" => 1, "des" => "第一次收到普通礼物后，即可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
-			["key" => self::COIN_RECEIVE_VIP_GIFT, "cls" => "fail", "title" => "收到特权礼物（不限）", "num" => 2, "des" => "第一次收到特权礼物后，即可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
+			["key" => self::COIN_DATE_COMPLETE, "cls" => "", "title" => "完成1次线下约会", "num" => 3, "des" => "向心动异性发起约会，成功线下约会并向客服提交约会凭证，可领取3元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
+			["key" => self::COIN_PRESENT_10PEOPLE, "cls" => "", "title" => "赠送礼物累计（10人）", "num" => 10, "des" => "累计向10位异性赠送礼物后，最多可领取10元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
+			["key" => self::COIN_RECEIVE_NORMAL_GIFT, "cls" => "", "title" => "收到普通礼物（不限）", "num" => 1, "des" => "第一次收到普通礼物后，最多可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
+			["key" => self::COIN_RECEIVE_VIP_GIFT, "cls" => "", "title" => "收到特权礼物（不限）", "num" => 2, "des" => "第一次收到特权礼物后，最多可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
 		];
-		$sql = "select 
-				count(case when oStatus=:give then 1 end) as gift,
-				count(case when oStatus=:receive and gCategory=:cat1 then 1 end ) as normal,
-				count(case when oStatus=:receive and gCategory=:cat2 then 1 end ) as vip
-				from im_order as o 
-				join im_goods as g on g.gId=o.oGId 
-				where oUId=:uid and DATE_FORMAT(oAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
-		$res = $conn->createCommand($sql)->bindValues([
-			":uid" => $uid,
-			":give" => Order::ST_GIVE,
-			":receive" => Order::ST_RECEIVE,
-			":cat1" => Goods::CAT_STUFF,
-			":cat2" => Goods::CAT_PREMIUM,
-		])->queryOne();
-		if ($res["gift"] > 9) {
-			$st1($everyTask, 1, '已领取', 'fail', 'javascript:;');
-		}
-		if ($res["normal"] > 0) {
-			$st1($everyTask, 2, '已领取', 'fail', 'javascript:;');
-		}
-		if ($res["vip"] > 0) {
-			$st1($everyTask, 3, '已领取', 'fail', 'javascript:;');
+		foreach ($hardTask as $k => $v) {
+			if ($cmd->bindValues([":uid" => $uid, ":pid" => $v["key"]])->queryScalar()) {
+				$hardTask = $st1($hardTask, $k, '已领取', 'fail', 'javascript:;');
+			}
 		}
 
-		return [$newTask, $everyTask, $hardTask];
+		$sql = "select sum(tAmt) as amt from im_user_trans where tCategory=:cat and tUId=:uid and DATE_FORMAT(tAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
+		$amount = $conn->createCommand($sql)->bindValues([":uid" => $uid, ":cat" => self::CAT_COIN_DEFAULT])->queryScalar();
+
+		return [$newTask, $everyTask, $hardTask, $amount];
 
 	}
 
@@ -851,7 +841,7 @@ class UserTrans extends ActiveRecord
 			case self::COIN_REG:
 				if (date("Y-m-d", strtotime($u["addedon"])) == date("Y-m-d")
 					&& $u["phone"] != ''
-					&& $cmd1->bindValues([":uid" => $uid, ":pid" => $key,])->queryScalar() == 0
+					&& $cmd1->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar() == 0
 				) {
 					return true;
 				}
@@ -1073,7 +1063,7 @@ class UserTrans extends ActiveRecord
 		if ($amt && in_array($key, [
 				self::COIN_SIGN, self::COIN_SHARE_REG, self::COIN_SHOW_COIN, self::COIN_CHAT_REPLY, self::COIN_CHAT_3TIMES,
 				self::COIN_RECEIVE_GIFT, self::COIN_RECEIVE_NORMAL_GIFT, self::COIN_RECEIVE_VIP_GIFT, self::COIN_PRESENT_10PEOPLE,
-				self::COIN_CERT, self::COIN_PERCENT80,self::COIN_REG
+				self::COIN_CERT, self::COIN_PERCENT80, self::COIN_REG
 			])) {
 			self::add($uid, $key, self::CAT_COIN_DEFAULT, self::$catDict[self::CAT_COIN_DEFAULT], $amt, self::UNIT_COIN_FEN);
 		}

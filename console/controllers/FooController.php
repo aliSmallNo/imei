@@ -1573,12 +1573,15 @@ class FooController extends Controller
 
 		// UserTrans::taskStat(120003);
 
-		$cats = UserTrans::$taskDict;
+		/*$cats = UserTrans::$taskDict;
 		$cats = array_keys($cats);
 		foreach ($cats as $key) {
 			$res = UserTrans::taskCondition($key, 120003);
 			echo intval($res) . '=>' . $key . PHP_EOL;
-		}
+		}*/
+
+		list($n, $e, $h) = UserTrans::taskStat(120003);
+		print_r($h);
 
 	}
 
