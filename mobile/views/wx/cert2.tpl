@@ -114,7 +114,7 @@
 
 <script src="/assets/js/require.js"></script>
 <script>
-	requirejs(['/js/config.js?v=1.1.5'], function () {
+	requirejs(['/js/config.js?v=1.1.6'], function () {
 		requirejs(['/js/cert2.js?v=1.4.10']);
 	});
 </script>
