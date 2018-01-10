@@ -1539,7 +1539,7 @@
 	if (document.location.hash === "" || document.location.hash === "#") {
 		document.location.hash = "#slook";
 	}
-	requirejs(['/js/config.js?v=1.1.1'], function () {
+	requirejs(['/js/config.js?v=1.3.0'], function () {
 		requirejs(['/js/single.js?v=1.11.5']);
 	});
 </script>
