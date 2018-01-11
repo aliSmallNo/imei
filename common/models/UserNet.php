@@ -892,7 +892,7 @@ class UserNet extends ActiveRecord
 		$share_m = self::REL_QR_MOMENT;
 		$share_f = self::REL_QR_SHARE;
 		$share_q = self::REL_QR_SUBSCRIBE;
-		$startTime = "2018-01-05 00:00:00";
+		$startTime = "2018-01-11 00:00:00";
 		$sql = "select
 				COUNT(case when nRelation in ($share_m,$share_f) and nNote=:note then 1 end) as share,
 				COUNT(case WHEN n.nRelation=$share_q AND u.uPhone!='' AND u.uRole>9 then 1 end) as reg 

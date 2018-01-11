@@ -28,7 +28,7 @@
 </script>
 <script src="/assets/js/require.js"></script>
 <script>
-	requirejs(['/js/config.js?v=1.2.4'], function () {
+	requirejs(['/js/config.js?v=1.2.5'], function () {
 		requirejs(['/js/share106.js?v=1.2.4']);
 	});
 </script>
