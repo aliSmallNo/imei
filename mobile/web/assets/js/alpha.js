@@ -160,7 +160,7 @@ define(['jquery', 'layer', 'swiper', 'mustache'],
 					key: key
 				}, function (resp) {
 					util.loadflag = 0;
-					if (resp.code < 1 && resp.taskflag || 1) {
+					if (resp.code < 1 && resp.taskflag) {
 						util.showCoin({data: {key: key}});
 					}
 				}, "json");
