@@ -1580,8 +1580,11 @@ class FooController extends Controller
 			echo intval($res) . '=>' . $key . PHP_EOL;
 		}*/
 
-		list($n, $e, $h) = UserTrans::taskStat(120003);
-		print_r($h);
+		//list($n, $e, $h) = UserTrans::taskStat(120003);print_r($h);
+
+		//list($ret) = UserNet::s28ShareStat(120003);print_r($ret);
+		//var_dump(UserTrans::taskCondition(280, 120003));
+
 
 	}
 

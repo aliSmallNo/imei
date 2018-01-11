@@ -415,10 +415,29 @@ class ApiController extends Controller
 			$wx_role = $wx_info['uRole'];
 		}
 		switch ($tag) {
-			case "task":
+			case "task_add_award":
+				// alpha.js use
 				$key = self::postParam("key");
 				list($code, $msg, $data) = UserTrans::addTaskRedpaket($key, $wx_uid);
 				return self::renderAPI($code, $msg, $data);
+				break;
+			case "task_show_award":
+				// 任务红包
+				// alpha.js use
+				$key = self::postParam("key");
+				$keys = array_keys(UserTrans::$taskDict);
+				if (!in_array($key, $keys)) {
+					return self::renderAPI(129, '参数错误', [
+						"taskflag" => false,
+						"key" => $key,
+					]);
+				}
+				$taskflag = 0;
+				$taskflag = UserTrans::taskCondition($key, $wx_uid);
+				return self::renderAPI(0, '', [
+					"taskflag" => $taskflag,
+					"key" => $key,
+				]);
 				break;
 			case "security_center":
 				if (!$wx_uid) {
@@ -646,9 +665,7 @@ class ApiController extends Controller
 				if ($tag == 'sreg' && $userId) {
 					$data['items'] = User::greetUsers($userId);
 				}
-				// 任务红包
-				$data['taskflag'] = UserTrans::taskCondition(UserTrans::COIN_PERCENT80, $wx_uid);
-				$data['key'] = UserTrans::COIN_PERCENT80;
+
 				return self::renderAPI(0, '保存成功啦~', $data);
 			case 'reg1':
 				$data = self::postParam('data');
@@ -711,13 +728,6 @@ class ApiController extends Controller
 				} else {
 					return self::renderAPI(129, '上传失败', $uId);
 				}
-			case "task_cert":
-				// 任务红包
-				return self::renderAPI(0, '', [
-					"taskflag" => UserTrans::taskCondition(UserTrans::COIN_CERT, $wx_uid),
-					"key" => UserTrans::COIN_CERT,
-				]);
-				break;
 			case "certnew":
 				$uId = User::certnew($id, $openId);
 				if ($uId) {
@@ -2746,15 +2756,15 @@ class ApiController extends Controller
 						"data" => $data,
 					]);
 				}
-				// 红包任务
-				if (in_array($note, ['/wx/shares', '/wx/share106'])) {
+				// 任务红包
+				/*if (in_array($note, ['/wx/shares', '/wx/share106'])) {
 					$coinCat = $note == '/wx/shares' ? UserTrans::COIN_SHARE_REG : UserTrans::COIN_SHOW_COIN;
 					$taskflag = UserTrans::taskCondition($coinCat, $uid);
 					return self::renderAPI(0, '', [
 						"taskflag" => $taskflag,
 						"key" => $coinCat,
 					]);
-				}
+				}*/
 				break;
 			case 'moment':// 分享到朋友圈
 				$amt = 16;
@@ -2790,14 +2800,14 @@ class ApiController extends Controller
 				}
 				$ret = UserTrans::shareReward($uid, $nId, UserTrans::CAT_MOMENT, $amt, UserTrans::UNIT_GIFT);
 				// 红包任务
-				if (in_array($note, ['/wx/shares', '/wx/share106'])) {
+				/*if (in_array($note, ['/wx/shares', '/wx/share106'])) {
 					$coinCat = $note == '/wx/shares' ? UserTrans::COIN_SHARE_REG : UserTrans::COIN_SHOW_COIN;
 					$taskflag = UserTrans::taskCondition($coinCat, $uid);
 					return self::renderAPI(0, '', [
 						"taskflag" => $taskflag,
 						"key" => $coinCat,
 					]);
-				}
+				}*/
 				if ($ret) {
 					return self::renderAPI(0, '分享到朋友圈奖励' . $amt . '朵媒桂花，谢谢你哦~');
 				} else {

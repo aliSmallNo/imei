@@ -63,12 +63,8 @@ require(["jquery", "alpha"],
 				if (resp.code < 1 && resp.msg) {
 					alpha.toast(resp.msg, 1);
 				}
-				if (resp.data.taskflag) {
-					alpha.showCoin({data: {key: resp.data.key}});
-				}
 			}, "json");
 		}
-		shareLog('moment', '/wx/share106');
 
 		function resetMenuShare() {
 			var thumb = 'https://bpbhd-10063905.file.myqcloud.com/image/n1801051187989.png';
@@ -116,5 +112,6 @@ require(["jquery", "alpha"],
 				resetMenuShare();
 			});
 			$sls.cork.hide();
+			alpha.task(20);
 		});
 	});

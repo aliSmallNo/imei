@@ -288,15 +288,10 @@ requirejs(['jquery', 'mustache', 'alpha'],
 					data: JSON.stringify($sls.postData),
 				}, function (res) {
 					if (res.code == 0) {
-						if (res.data.taskflag || 1) {
+						setTimeout(function () {
+							location.href = "/wx/single#sme";
 							alpha.clear();
-							alpha.showCoin({data: {key: res.data.key}});
-						} else {
-							setTimeout(function () {
-								location.href = "/wx/single#sme";
-								alpha.clear();
-							}, 500);
-						}
+						}, 500);
 					} else {
 						alpha.toast(res.msg);
 					}
@@ -441,5 +436,7 @@ requirejs(['jquery', 'mustache', 'alpha'],
 			SingleUtil.jobVal = mjob;
 			SingleUtil.jobData();
 			$sls.cork.hide();
+
+			alpha.task(12);
 		});
 	});

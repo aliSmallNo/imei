@@ -104,27 +104,6 @@ requirejs(["jquery", "layer", "alpha"],
 			}, "json");
 		}
 
-
-		function taskOfCert() {
-			var util = $sls;
-			if (util.uploadImgFlag) {
-				return;
-			}
-			util.uploadImgFlag = 1;
-			$.post("/api/user", {
-				tag: "task_cert",
-			}, function (resp) {
-				util.uploadImgFlag = 0;
-				if (resp.code < 1) {
-					if (resp.data.taskflag) {
-						alpha.showCoin({data: {key: resp.data.key}});
-					}
-				} else {
-					alpha.toast(resp.msg);
-				}
-			}, "json");
-		}
-
 		function showMsg(title, sec) {
 			var delay = sec || 3;
 			layer.open({
@@ -144,6 +123,6 @@ requirejs(["jquery", "layer", "alpha"],
 				wx.hideOptionMenu();
 			});
 			$sls.cork.hide();
-			taskOfCert();
+			alpha.task(14);
 		});
 	});

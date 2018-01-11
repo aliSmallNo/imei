@@ -65,7 +65,7 @@
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
-		<div class="m-popup-content" style="background: transparent;width: 25rem;left: 3.5rem;">
+		<div class="m-popup-content">
 			<div class="s28-alert">
 
 			</div>
@@ -99,8 +99,8 @@
 		parseInt(document.getElementById("shareflag").value) ? document.location.hash = "#shared" : document.location.hash = "#share"
 
 	}
-	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/share28.js?v=1.1.9']);
+	requirejs(['/js/config.js?v=1.1.2'], function () {
+		requirejs(['/js/share28.js?v=1.1.10']);
 	});
 </script>
 

@@ -27,7 +27,6 @@ require(['jquery', 'mustache', "alpha"],
 			}, 2000);
 		});
 
-
 		function shareLog(tag, note) {
 			$.post("/api/share", {
 				tag: tag,
@@ -118,6 +117,7 @@ require(['jquery', 'mustache', "alpha"],
 			});
 			locationHashChanged();
 			$sls.cork.hide();
+			alpha.task(280);
 		});
 
 	});

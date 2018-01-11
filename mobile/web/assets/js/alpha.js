@@ -4,6 +4,7 @@ define(['jquery', 'layer', 'swiper', 'mustache'],
 		return {
 			kClick: 'click',
 			swiped: 0,
+			loadflag: 0,
 			isMobile: function (obj) {
 				var reg = /^1\d{10}$/;
 				return reg.test(obj);
@@ -117,10 +118,15 @@ define(['jquery', 'layer', 'swiper', 'mustache'],
 					var self = $(this);
 					if (self.hasClass('close')) {
 						var key = self.attr("data-key");
+						if (util.loadflag) {
+							return false;
+						}
+						util.loadflag = 1;
 						$.post("/api/user", {
-							tag: "task",
+							tag: "task_add_award",
 							key: key,
 						}, function (resp) {
+							util.loadflag = 0;
 							if (resp.code == 0) {
 								self.closest("div").find("div").find("span").html(resp.data.amt);
 								self.removeClass('close').addClass('open');
@@ -142,6 +148,22 @@ define(['jquery', 'layer', 'swiper', 'mustache'],
 				$(".m-popup-main").hide();
 				$(".m-popup-content").html('').removeClass("animate-pop-in");
 				$(".m-popup-shade").fadeOut(160);
+			},
+			task: function (key) {
+				var util = this;
+				if (util.loadflag) {
+					return false;
+				}
+				util.loadflag = 1;
+				$.post("/api/user", {
+					tag: "task_show_award",
+					key: key
+				}, function (resp) {
+					util.loadflag = 0;
+					if (resp.code < 1 && resp.taskflag || 1) {
+						util.showCoin({data: {key: key}});
+					}
+				}, "json");
 			}
 		};
 	});

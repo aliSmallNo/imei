@@ -909,6 +909,7 @@ class UserNet extends ActiveRecord
 			"share" => 0,
 			"reg" => 0,
 			"money" => 0,
+			"pre_money" => 0,
 			"curr_money" => 0,
 			"curr_lever" => 1,
 			"curr_percent" => 0,
@@ -921,12 +922,13 @@ class UserNet extends ActiveRecord
 		}
 		$reg = $ret["reg"];
 		$s28Items = UserNet::$s28Items;
-		$amt = 0;
+		$amt = $s28ActiveKey = 0;
 		foreach ($s28Items as $k => $v) {
 			$amt += $v["p"];
 			$ret["money"] += $v["num"];
 			if ($reg < $amt) {
 				$s28Items[$k]["cls"] = $v["cls"] . " active";
+				$ret["pre_money"] = isset($s28Items[$k - 1]) ? $s28Items[$k - 1]["num"] : 0;
 				$ret["curr_money"] = $v["num"];
 				$ret["curr_level"] = $v["k"];
 				$ret["curr_percent"] = floor(($reg + $v["p"] - $amt) / $v["p"] * 100);

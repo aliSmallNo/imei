@@ -39,11 +39,11 @@
 	{{/foreach}}
 
 
-	<div class="sw_task_title" style="display: none">
+	<div class="sw_task_title" style="">
 		最新活动
 	</div>
 	{{foreach from=$currTask item=item}}
-	<div class="sw_task_item"  style="display: none">
+	<div class="sw_task_item"  style="">
 		<a href="javascript:;" class="sw_task_item_btn active">
 			<h5>{{$item.title}}</h5>
 			<div>

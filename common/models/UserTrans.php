@@ -726,12 +726,14 @@ class UserTrans extends ActiveRecord
 	const COIN_RECEIVE_GIFT = 22;
 	const COIN_SIGN = 24;
 	const COIN_SHARE_REG = 26;
-	const COIN_SHARE28 = 27;
 
 	const COIN_DATE_COMPLETE = 28;
 	const COIN_PRESENT_10PEOPLE = 30;
 	const COIN_RECEIVE_NORMAL_GIFT = 32;
 	const COIN_RECEIVE_VIP_GIFT = 34;
+
+	const COIN_SHARE28 = 280;
+
 	static $taskDict = [
 		self::COIN_REG => "首次注册登录",
 		self::COIN_PERCENT80 => "完成资料达80%",
@@ -743,6 +745,7 @@ class UserTrans extends ActiveRecord
 		self::COIN_RECEIVE_GIFT => "收到礼物",
 		self::COIN_SIGN => "签到",
 		self::COIN_SHARE_REG => "成功邀请",
+
 		self::COIN_SHARE28 => "28888现金红包",
 
 		self::COIN_DATE_COMPLETE => "完成一次线下约会",
@@ -959,6 +962,16 @@ class UserTrans extends ActiveRecord
 					return true;
 				}
 				break;
+			case self::COIN_SHARE28:
+				list($ret) = UserNet::s28ShareStat($uid);
+				$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid and tAmt=:amt ";
+				$amt = $ret["pre_money"];
+				if ($amt
+					&& !$conn->createCommand($sql)->bindValues([":uid" => $uid, ":pid" => $key, ":amt" => $amt])->queryScalar()
+				) {
+					return $amt;
+				}
+				break;
 		}
 		return false;
 	}
@@ -1060,6 +1073,13 @@ class UserTrans extends ActiveRecord
 			case self::COIN_RECEIVE_VIP_GIFT:
 				if (self::taskCondition($key, $uid)) {
 					$amt = random_int(130, 150);
+				} else {
+					return [129, "未完成", ''];
+				}
+				break;
+			case self::COIN_SHARE28:
+				if ($addAmt = self::taskCondition($key, $uid)) {
+					$amt = $addAmt * 100;
 				} else {
 					return [129, "未完成", ''];
 				}
