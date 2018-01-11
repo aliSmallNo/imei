@@ -7,7 +7,7 @@
 			<p>{{$amount}} <span>元</span></p>
 		</div>
 	</div>
-	<div class="sw_task_total">
+	<div class="sw_task_total" style="display: none">
 		<div>
 			<p>累计邀请人数</p>
 			<p>0</p>
