@@ -7,7 +7,7 @@
 			<p>{{$amount}} <span>元</span></p>
 		</div>
 	</div>
-	<div class="sw_task_total" style="display: none">
+	<div class="sw_task_total">
 		<div>
 			<p>累计邀请人数</p>
 			<p>0</p>
@@ -17,11 +17,11 @@
 			<p>0.00</p>
 		</div>
 	</div>
-	<div class="sw_task_title">
+	<div class="sw_task_title {{$newTaskShowFlag}}">
 		新手任务
 	</div>
 	{{foreach from=$newTask item=item}}
-	<div class="sw_task_item">
+	<div class="sw_task_item {{$newTaskShowFlag}}" >
 		<a href="javascript:;" class="sw_task_item_btn active">
 			<h5>{{$item.title}}</h5>
 			<div>
