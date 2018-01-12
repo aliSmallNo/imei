@@ -735,23 +735,23 @@ class UserTrans extends ActiveRecord
 	const COIN_SHARE28 = 280;
 
 	static $taskDict = [
-		self::COIN_REG => "首次注册登录",
-		self::COIN_PERCENT80 => "完成资料达80%",
-		self::COIN_CERT => "实名认证",
+		self::COIN_REG => "COIN_REG",//首次注册登录
+		self::COIN_PERCENT80 => "COIN_PERCENT80",//完成资料达80
+		self::COIN_CERT => "COIN_CERT",//实名认证
 
-		self::COIN_CHAT_3TIMES => "发起聊天3次",
-		self::COIN_CHAT_REPLY => "回复一次聊天",
-		self::COIN_SHOW_COIN => "秀红包金额",
-		self::COIN_RECEIVE_GIFT => "收到礼物",
-		self::COIN_SIGN => "签到",
-		self::COIN_SHARE_REG => "成功邀请",
+		self::COIN_CHAT_3TIMES => "COIN_CHAT_3TIMES",//发起聊天3次
+		self::COIN_CHAT_REPLY => "COIN_CHAT_REPLY",//回复一次聊天
+		self::COIN_SHOW_COIN => "COIN_SHOW_COIN",//秀红包金额
+		self::COIN_RECEIVE_GIFT => "COIN_RECEIVE_GIFT",//收到礼物
+		self::COIN_SIGN => "COIN_SIGN",//签到
+		self::COIN_SHARE_REG => "COIN_SHARE_REG",//成功邀请
 
-		self::COIN_SHARE28 => "28888现金红包",
+		self::COIN_SHARE28 => "COIN_SHARE28",//28888现金红包
 
-		self::COIN_DATE_COMPLETE => "完成一次线下约会",
-		self::COIN_PRESENT_10PEOPLE => "赠送礼物累计10人",
-		self::COIN_RECEIVE_NORMAL_GIFT => "收到普通礼物",
-		self::COIN_RECEIVE_VIP_GIFT => "收到特权礼物",
+		self::COIN_DATE_COMPLETE => "COIN_DATE_COMPLETE",//完成一次线下约会
+		self::COIN_PRESENT_10PEOPLE => "COIN_PRESENT_10PEOPLE",//赠送礼物累计10人
+		self::COIN_RECEIVE_NORMAL_GIFT => "COIN_RECEIVE_NORMAL_GIFT",//收到普通礼物
+		self::COIN_RECEIVE_VIP_GIFT => "COIN_RECEIVE_VIP_GIFT",//收到特权礼物
 
 	];
 
@@ -824,9 +824,16 @@ class UserTrans extends ActiveRecord
 		}
 
 		$sql = "select sum(tAmt) as amt from im_user_trans where tCategory=:cat and tUId=:uid and DATE_FORMAT(tAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
-		$amount = $conn->createCommand($sql)->bindValues([":uid" => $uid, ":cat" => self::CAT_COIN_DEFAULT])->queryScalar();
+		$data["today_amount"] = $conn->createCommand($sql)->bindValues([":uid" => $uid, ":cat" => self::CAT_COIN_DEFAULT])->queryScalar() / 100;
 
-		return [$newTask, $currTask, $everyTask, $hardTask, $amount];
+		$sql = "select sum(case when tCategory=:cat then tAmt when tCategory=:cat2 and tUnit=:unit then -tAmt end ) as amt from im_user_trans where  tUId=:uid ";
+		$data["total_amount"] = $conn->createCommand($sql)->bindValues([":uid" => $uid, ":cat" => self::CAT_COIN_DEFAULT,
+				":cat2" => self::CAT_EXCHANGE_FLOWER, ":unit" => self::UNIT_COIN_FEN])->queryScalar() / 100;
+
+		list($res) = UserNet::s28ShareStat($uid);
+		$data["s28_reg"] = $res["reg"];
+
+		return [$newTask, $currTask, $everyTask, $hardTask, $data];
 
 	}
 
@@ -1104,50 +1111,33 @@ class UserTrans extends ActiveRecord
 		if ($criteria) {
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
+
+		$string = '';
+		$params3 = [];
+		foreach (UserTrans::$taskDict as $k => $v) {
+			$amtName = strtolower(substr($v, 5)) . '_amt';
+			$countName = strtolower(substr($v, 5)) . '_count';
+			$string .= "SUM(case WHEN tCategory=:cat and t.tPId=:pid$k then t.tAmt end) as $amtName,
+			count(case WHEN tCategory=:cat and  t.tPId=:pid$k then 1 end) as $countName,";
+			$params3[":pid" . $k] = $k;
+		}
+		$string = trim($string, ",") . ",";
+
 		$conn = AppUtil::db();
-		$sql = "SELECT u.uName as `name`,u.uPhone as phone,u.uId as id,u.uThumb as thumb, 
+		$sql = "SELECT u.uName as `name`,u.uPhone as phone,u.uId as id,u.uThumb as thumb,
 			Date_format(t.tAddedOn, '%H') as hr,
-			SUM(case WHEN tCategory=:cat and t.tPId=:pid8 then t.tAmt end) as chat_reg_amt,
-			count(case WHEN tCategory=:cat and  t.tPId=:pid8 then 1 end) as chat_reg_count,
-			SUM(case WHEN tCategory=:cat and t.tPId=:pid9 then t.tAmt end) as chat_percent80_amt,
-			count(case WHEN tCategory=:cat and  t.tPId=:pid9 then 1 end) as chat_percent80_count,
-			SUM(case WHEN tCategory=:cat and t.tPId=:pid10 then t.tAmt end) as chat_cert_amt,
-			count(case WHEN tCategory=:cat and  t.tPId=:pid10 then 1 end) as chat_cert_count,
-			SUM(case WHEN tCategory=:cat and t.tPId=:pid1 then t.tAmt end) as chat_3times_amt,
-			count(case WHEN tCategory=:cat and  t.tPId=:pid1 then 1 end) as chat_3times_count,
-			SUM(case WHEN tCategory=:cat and  t.tPId=:pid2 then t.tAmt end) as chat_replay_amt,
-			count(case WHEN tCategory=:cat and  t.tPId=:pid2 then 1 end) as chat_replay_count,
-			SUM(case WHEN tCategory=:cat and  t.tPId=:pid3 then t.tAmt end) as show_coin_amt,
-			count(case WHEN tCategory=:cat and  t.tPId=:pid3 then 1 end) as show_coin_count,
-			SUM(case WHEN tCategory=:cat and  t.tPId=:pid4 then t.tAmt end) as receive_gift_amt,
-			count(case WHEN tCategory=:cat and  t.tPId=:pid4 then 1 end) as receive_gift_count,
-			SUM(case WHEN tCategory=:cat and  t.tPId=:pid5 then t.tAmt end) as sign_amt,
-			count(case WHEN tCategory=:cat and  t.tPId=:pid5 then 1 end) as sign_count,
-			SUM(case WHEN tCategory=:cat and  t.tPId=:pid6 then t.tAmt end) as share_reg_amt,
-			count(case WHEN tCategory=:cat and  t.tPId=:pid6 then 1 end) as share_reg_count,
-			SUM(case WHEN tCategory=:cat and  t.tPId=:pid7 then t.tAmt end) as share28_amt,
-			count(case WHEN tCategory=:cat and  t.tPId=:pid7 then 1 end) as share28_count,
+			$string
 			SUM(case WHEN tCategory=:cat  then t.tAmt end) as amt,
 			SUM(case WHEN tCategory=:cat1 and t.tUnit=:unit  then t.tAmt end) as reduce
 			FROM im_user_trans as t 
 			JOIN im_user as u on u.uId=t.tUId 
 			WHERE t.tId>0 $strCriteria
-			GROUP BY tUId Having amt>0 ORDER BY amt DESC $limit ";
+			GROUP BY tUId Having amt>0 ORDER BY amt DESC $limit";
 		$params2 = array_merge($params, [
-			":pid1" => self::COIN_CHAT_3TIMES,
-			":pid2" => self::COIN_CHAT_REPLY,
-			":pid3" => self::COIN_SHOW_COIN,
-			":pid4" => self::COIN_RECEIVE_GIFT,
-			":pid5" => self::COIN_SIGN,
-			":pid6" => self::COIN_SHARE_REG,
-			":pid7" => self::COIN_SHARE28,
-			":pid8" => self::COIN_REG,
-			":pid9" => self::COIN_PERCENT80,
-			":pid10" => self::COIN_CERT,
 			":cat" => self::CAT_COIN_DEFAULT,
 			":cat1" => self::CAT_EXCHANGE_FLOWER,
 			":unit" => self::UNIT_COIN_FEN,
-		]);
+		], $params3);
 		$ret = $conn->createCommand($sql)->bindValues($params2)->queryAll();
 		foreach ($ret as $k => $v) {
 			list($res) = UserNet::s28ShareStat($v["id"]);

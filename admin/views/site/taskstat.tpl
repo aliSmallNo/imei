@@ -121,17 +121,16 @@
 					</div>
 
 				</td>
-				<td class="col-sm-1 tip">数量￥{{$stat.chat_reg_amt/100}} <br> 次数: {{$stat.chat_reg_count}}</td>
-				<td class="col-sm-1 tip">数量￥{{$stat.chat_percent80_amt/100}} <br>次数:  {{$stat.chat_percent80_count}}</td>
-				<td class="col-sm-1 tip">数量￥{{$stat.chat_cert_amt/100}} <br>次数:  {{$stat.chat_cert_count}}</td>
-
+				<td class="col-sm-1 tip">数量￥{{$stat.reg_amt/100}} <br> 次数: {{$stat.reg_count}}</td>
+				<td class="col-sm-1 tip">数量￥{{$stat.percent80_amt/100}} <br>次数:  {{$stat.percent80_count}}</td>
+				<td class="col-sm-1 tip">数量￥{{$stat.cert_amt/100}} <br>次数:  {{$stat.cert_count}}</td>
 				<td class="col-sm-1 tip">数量￥{{$stat.chat_3times_amt/100}} <br>次数:  {{$stat.chat_3times_count}}</td>
-				<td class="col-sm-1 tip">数量￥{{$stat.chat_replay_amt/100}} <br>次数:  {{$stat.chat_replay_count}}</td>
+				<td class="col-sm-1 tip">数量￥{{$stat.chat_reply_amt/100}} <br>次数:  {{$stat.chat_reply_count}}</td>
 				<td class="col-sm-1 tip">数量￥{{$stat.show_coin_amt/100}} <br>次数:  {{$stat.show_coin_count}}</td>
 				<td class="col-sm-1 tip">数量￥{{$stat.receive_gift_amt/100}} <br>次数:  {{$stat.receive_gift_count}}</td>
 				<td class="col-sm-1 tip">数量￥{{$stat.sign_amt/100}} <br>次数:  {{$stat.sign_count}}</td>
 				<td class="col-sm-1 tip">数量￥{{$stat.share_reg_amt/100}} <br>次数:  {{$stat.share_reg_count}}</td>
-				<td class="col-sm-1 tip">数量￥{{$stat.share28_amt}} <br>次数: {{$stat.share28_count}} <br>分享数:{{$stat.s28_share}}<br>注册数:{{$stat.s28_reg}}</td>
+				<td class="col-sm-1 tip">数量￥{{$stat.share28_amt/100}} <br>次数: {{$stat.share28_count}} <br>分享数:{{$stat.s28_share}}<br>注册数:{{$stat.s28_reg}}</td>
 
 			{{/foreach}}
 			</tbody>

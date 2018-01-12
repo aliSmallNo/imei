@@ -246,7 +246,7 @@ section {
   display: -ms-flexbox;
   display: flex;
   background: #fff; }
-  .sw_task_total div {
+  .sw_task_total a {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
     -ms-flex: 1;
@@ -254,7 +254,7 @@ section {
     text-align: center;
     padding: 0.5rem 0;
     position: relative; }
-    .sw_task_total div:after {
+    .sw_task_total a:after {
       position: absolute;
       content: " ";
       width: 1px;
@@ -262,12 +262,12 @@ section {
       background: #eee;
       right: 0;
       top: 1rem; }
-    .sw_task_total div:last-child:after {
+    .sw_task_total a:last-child:after {
       width: 0; }
-    .sw_task_total div p {
+    .sw_task_total a p {
       font-size: 1.3rem;
       line-height: 2.5rem; }
-      .sw_task_total div p:last-child {
+      .sw_task_total a p:last-child {
         color: #ee7641; }
 
 .sw_task_title {

@@ -2168,7 +2168,6 @@ class WxController extends BaseController
 		$offet = 0;
 		$cash = array_slice($cash, $offet, 3);
 
-
 		return self::renderPage("sw.tpl",
 			[
 				'avatar' => $avatar,
@@ -2189,7 +2188,7 @@ class WxController extends BaseController
 	{
 		$uid = $this->user_id;
 
-		list($newTask, $currTask, $everyTask, $hardTask, $amount) = UserTrans::taskStat($uid);
+		list($newTask, $currTask, $everyTask, $hardTask, $data) = UserTrans::taskStat($uid);
 		$newTaskShowFlag = 'none';
 		foreach ($newTask as $v) {
 			if (!$v["cls"]) {
@@ -2204,7 +2203,7 @@ class WxController extends BaseController
 				'currTask' => $currTask,
 				'everyTask' => $everyTask,
 				'hardTask' => $hardTask,
-				'amount' => $amount / 100,
+				'data' => $data,
 				'newTaskShowFlag' => $newTaskShowFlag,
 			],
 			'terse',

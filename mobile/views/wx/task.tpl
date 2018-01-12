@@ -1,21 +1,21 @@
 
-<link rel="stylesheet" href="/css/zp.min.css?v=1.3.6">
+<link rel="stylesheet" href="/css/zp.min.css?v=1.3.7">
 
 	<div class="sw_task_cash">
 		<div class="sw_task_cash_des">
 			<h5>今日获得现金</h5>
-			<p>{{$amount}} <span>元</span></p>
+			<p>{{$data.today_amount}} <span>元</span></p>
 		</div>
 	</div>
-	<div class="sw_task_total" style="display: none">
-		<div>
+	<div class="sw_task_total">
+		<a  href="/wx/share28">
 			<p>累计邀请人数</p>
-			<p>0</p>
-		</div>
-		<div>
-			<p>累计可提现红包</p>
-			<p>0.00</p>
-		</div>
+			<p>{{$data.s28_reg}}</p>
+		</a>
+		<a href="/wx/swallet">
+			<p>累计红包</p>
+			<p>{{$data.total_amount}}</p>
+		</a>
 	</div>
 	<div class="sw_task_title {{$newTaskShowFlag}}">
 		新手任务
