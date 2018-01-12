@@ -68,6 +68,12 @@ span.label {
 @media (min-width: 768px) {
   #page-wrapper {
     padding: 60px 30px 50px 200px; } }
+@media (max-width: 420px) {
+  .navbar-top-links {
+    display: none !important; }
+
+  .sidebar {
+    margin-top: 60px !important; } }
 .navbar-top-links {
   margin-right: 0; }
   .navbar-top-links li {

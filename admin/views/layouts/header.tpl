@@ -1,15 +1,5 @@
 {{if isset($pjax) && $pjax}}
 {{else}}
-<style>
-		@media screen and (max-width: 420px) {
-    .navbar-top-links {
-        display: none !important;
-    }
-    .sidebar{
-   			margin-top: 60px !important;
-    }
-}
-</style>
 	<nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
