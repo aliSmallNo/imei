@@ -8,7 +8,7 @@
 		</div>
 		<div class="swiper-pagination"></div>
 	</div>
-	<a class="gift-header">特权礼包</a>
+	<a class="gift-header">活动礼包</a>
 	<ul class="gift-bags" min-level="1">
 		{{foreach from=$bags item=item}}
 		<li style="background-image: url({{$item.image}}); ">

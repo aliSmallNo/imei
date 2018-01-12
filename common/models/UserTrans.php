@@ -1096,7 +1096,7 @@ class UserTrans extends ActiveRecord
 		if ($amt && in_array($key, [
 				self::COIN_SIGN, self::COIN_SHARE_REG, self::COIN_SHOW_COIN, self::COIN_CHAT_REPLY, self::COIN_CHAT_3TIMES,
 				self::COIN_RECEIVE_GIFT, self::COIN_RECEIVE_NORMAL_GIFT, self::COIN_RECEIVE_VIP_GIFT, self::COIN_PRESENT_10PEOPLE,
-				self::COIN_CERT, self::COIN_PERCENT80, self::COIN_REG
+				self::COIN_CERT, self::COIN_PERCENT80, self::COIN_REG,self::COIN_SHARE28
 			])) {
 			self::add($uid, $key, self::CAT_COIN_DEFAULT, self::$catDict[self::CAT_COIN_DEFAULT], $amt, self::UNIT_COIN_FEN);
 		}

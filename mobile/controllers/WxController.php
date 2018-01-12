@@ -2245,7 +2245,8 @@ class WxController extends BaseController
 			$qrCode = UserQR::getQRCode($uid, UserQR::CATEGORY_RED_103);
 		}
 
-		$money = 10;
+		$stat = UserTrans::getStat($this->user_id, true);
+		$money = $stat["coin_y"];
 
 		return self::renderPage("share106.tpl",
 			[
