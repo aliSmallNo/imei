@@ -1,7 +1,7 @@
 {{if isset($pjax) && $pjax}}
 {{else}}
 <style>
-		@media screen and (max-width: 400px) {
+		@media screen and (max-width: 420px) {
     .navbar-top-links {
         display: none !important;
     }
