@@ -38,7 +38,6 @@
 	</div>
 	{{/foreach}}
 
-
 	<div class="sw_task_title" style="">
 		最新活动
 	</div>

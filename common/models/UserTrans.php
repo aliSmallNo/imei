@@ -1096,4 +1096,72 @@ class UserTrans extends ActiveRecord
 
 		return [0, "ok", ["amt" => sprintf("%.2f", $amt / 100)]];
 	}
+
+	public static function taskAdminStat($criteria = [], $params = [], $page = 1, $pageSize = 20)
+	{
+		$limit = " limit " . ($page - 1) * $pageSize . " , " . $pageSize;
+		$strCriteria = ' ';
+		if ($criteria) {
+			$strCriteria = ' AND ' . implode(' AND ', $criteria);
+		}
+		$conn = AppUtil::db();
+		$sql = "SELECT u.uName as `name`,u.uPhone as phone,u.uId as id,u.uThumb as thumb, 
+			Date_format(t.tAddedOn, '%H') as hr,
+			SUM(case WHEN tCategory=:cat and t.tPId=:pid8 then t.tAmt end) as chat_reg_amt,
+			count(case WHEN tCategory=:cat and  t.tPId=:pid8 then 1 end) as chat_reg_count,
+			SUM(case WHEN tCategory=:cat and t.tPId=:pid9 then t.tAmt end) as chat_percent80_amt,
+			count(case WHEN tCategory=:cat and  t.tPId=:pid9 then 1 end) as chat_percent80_count,
+			SUM(case WHEN tCategory=:cat and t.tPId=:pid10 then t.tAmt end) as chat_cert_amt,
+			count(case WHEN tCategory=:cat and  t.tPId=:pid10 then 1 end) as chat_cert_count,
+			SUM(case WHEN tCategory=:cat and t.tPId=:pid1 then t.tAmt end) as chat_3times_amt,
+			count(case WHEN tCategory=:cat and  t.tPId=:pid1 then 1 end) as chat_3times_count,
+			SUM(case WHEN tCategory=:cat and  t.tPId=:pid2 then t.tAmt end) as chat_replay_amt,
+			count(case WHEN tCategory=:cat and  t.tPId=:pid2 then 1 end) as chat_replay_count,
+			SUM(case WHEN tCategory=:cat and  t.tPId=:pid3 then t.tAmt end) as show_coin_amt,
+			count(case WHEN tCategory=:cat and  t.tPId=:pid3 then 1 end) as show_coin_count,
+			SUM(case WHEN tCategory=:cat and  t.tPId=:pid4 then t.tAmt end) as receive_gift_amt,
+			count(case WHEN tCategory=:cat and  t.tPId=:pid4 then 1 end) as receive_gift_count,
+			SUM(case WHEN tCategory=:cat and  t.tPId=:pid5 then t.tAmt end) as sign_amt,
+			count(case WHEN tCategory=:cat and  t.tPId=:pid5 then 1 end) as sign_count,
+			SUM(case WHEN tCategory=:cat and  t.tPId=:pid6 then t.tAmt end) as share_reg_amt,
+			count(case WHEN tCategory=:cat and  t.tPId=:pid6 then 1 end) as share_reg_count,
+			SUM(case WHEN tCategory=:cat and  t.tPId=:pid7 then t.tAmt end) as share28_amt,
+			count(case WHEN tCategory=:cat and  t.tPId=:pid7 then 1 end) as share28_count,
+			SUM(case WHEN tCategory=:cat  then t.tAmt end) as amt,
+			SUM(case WHEN tCategory=:cat1 and t.tUnit=:unit  then t.tAmt end) as reduce
+			FROM im_user_trans as t 
+			JOIN im_user as u on u.uId=t.tUId 
+			WHERE t.tId>0 $strCriteria
+			GROUP BY tUId Having amt>0 ORDER BY amt DESC $limit ";
+		$params2 = array_merge($params, [
+			":pid1" => self::COIN_CHAT_3TIMES,
+			":pid2" => self::COIN_CHAT_REPLY,
+			":pid3" => self::COIN_SHOW_COIN,
+			":pid4" => self::COIN_RECEIVE_GIFT,
+			":pid5" => self::COIN_SIGN,
+			":pid6" => self::COIN_SHARE_REG,
+			":pid7" => self::COIN_SHARE28,
+			":pid8" => self::COIN_REG,
+			":pid9" => self::COIN_PERCENT80,
+			":pid10" => self::COIN_CERT,
+			":cat" => self::CAT_COIN_DEFAULT,
+			":cat1" => self::CAT_EXCHANGE_FLOWER,
+			":unit" => self::UNIT_COIN_FEN,
+		]);
+		$ret = $conn->createCommand($sql)->bindValues($params2)->queryAll();
+		foreach ($ret as $k => $v) {
+			list($res) = UserNet::s28ShareStat($v["id"]);
+			$ret[$k]["s28_share"] = $res["share"];
+			$ret[$k]["s28_reg"] = $res["reg"];
+			$ret[$k]["share28_amt"] = $v["share28_amt"] ? $v["share28_amt"] : 0;
+		}
+
+		$sql = "SELECT count(1) FROM (
+				select SUM(case WHEN tCategory=600  then t.tAmt end) as amt FROM im_user_trans as t 
+				JOIN im_user as u on u.uId=t.tUId WHERE t.tId>0 $strCriteria GROUP BY tUId Having amt>0 ) as temp";
+
+		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
+
+		return [$ret, $count];
+	}
 }

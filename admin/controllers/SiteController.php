@@ -825,6 +825,40 @@ class SiteController extends BaseController
 			]);
 	}
 
+	public function actionTaskstat()
+	{
+		$getInfo = Yii::$app->request->get();
+		$sdate = self::getParam("sdate");
+		$edate = self::getParam("edate");
+		$page = self::getParam("page", 1);
+		$criteria = $params = [];
+		if ($sdate && $edate) {
+			$criteria[] = "t.tAddedOn between :sdt and :edt ";
+			$params[':sdt'] = $sdate . ' 00:00:00';
+			$params[':edt'] = $edate . ' 23:59:50';
+		}
+
+		list($stat, $count) = UserTrans::taskAdminStat($criteria, $params, $page);
+		list($wd, $monday, $sunday) = AppUtil::getWeekInfo();
+		list($md, $firstDay, $endDay) = AppUtil::getMonthInfo();
+		$pagination = self::pagination($page, $count);
+
+		return $this->renderPage("taskstat.tpl",
+			[
+				'getInfo' => $getInfo,
+				'scanStat' => $stat,
+				//'timesSub' => json_encode($timesSub, JSON_UNESCAPED_UNICODE),
+				//'timesReg' => json_encode($timesReg, JSON_UNESCAPED_UNICODE),
+				'today' => date('Y-m-d'),
+				'yesterday' => date('Y-m-d', time() - 86400),
+				'monday' => $monday,
+				'sunday' => $sunday,
+				'firstDay' => $firstDay,
+				'endDay' => $endDay,
+				'pagination' => $pagination,
+			]);
+	}
+
 	public function actionSearchnet()
 	{
 		$id = self::getParam("id");

@@ -193,6 +193,7 @@ class ApiController extends Controller
 				$coin = 0;
 				if ($userCoinFlag) {
 					$stat = UserTrans::stat($wxInfo["uId"]);
+
 					if ($payFee > $stat["coin_f"]) {
 						$payFee = $payFee - $stat["coin_f"];
 						$coin = $stat["coin_f"];

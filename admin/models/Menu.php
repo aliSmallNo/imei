@@ -200,6 +200,12 @@ class Menu
 						"name" => "推广统计",
 						"url" => "/site/netstat",
 						"level" => 820
+					],
+					[
+						"name" => "任务统计",
+						"url" => "/site/taskstat",
+						"revise" => 1,
+						"level" => 820
 					]
 				]
 			],
