@@ -1068,7 +1068,7 @@
 			<div class="u-info">
 				<div class="title">
 					<p class="name">{[#tags]}<i class="i-tag{[.]}"></i>{[/tags]}<em>{[name]}</em></p>
-					<p class="addr"><i class="i-mark-pos"></i>{[location]}</p>
+					<p class="addr"><i class="i-mark-pos"></i>{[location_s]}</p>
 				</div>
 				<h5>{[age]}岁 . {[height]} . {[horos]} . {[job]}</h5>
 			</div>

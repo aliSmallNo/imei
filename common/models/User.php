@@ -1626,6 +1626,7 @@ class User extends ActiveRecord
 			$data["job"] = isset(User::$Scope[$row["uScope"]]) ? User::$Scope[$row["uScope"]] : "无行业";
 			$data["intro"] = $row["uIntro"];
 			$location = json_decode($row["uLocation"], 1);
+			$data["location_s"] = isset($location[0]) ? $location[0]["text"] : '';
 			$location = $location ? implode(' ', array_column($location, 'text')) : '';
 			$data["location"] = $location;
 			$data["hintclass"] = $row["hid"] ? "icon-loved" : "icon-love";
@@ -2588,7 +2589,7 @@ class User extends ActiveRecord
 		if ($ret) {
 			return false;
 		}
-		LogAction::add($uid, $open_id , LogAction::ACTION_GREETING, '', $key);
+		LogAction::add($uid, $open_id, LogAction::ACTION_GREETING, '', $key);
 		return true;
 	}
 }
