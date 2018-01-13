@@ -927,8 +927,8 @@
 <!--
 <a href="/wx/sw?id={{$encryptId}}#swallet" class="m-wallet-entry"></a>
 -->
-{{if $showSanta}}
-	<a href="/wx/santa" class="m-wallet-entry"></a>
+{{if $showTask}}
+	<a href="/wx/task" class="m-wallet-entry"></a>
 {{/if}}
 
 

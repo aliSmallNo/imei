@@ -746,11 +746,13 @@ class WxController extends BaseController
 		$expInfo = UserTag::getExp($this->user_id);
 
 		// 双旦活动
-		$showSanta = 0;
+		$showTask = 0;
 		if (strtotime("2018-01-06 23:59:50") > time()
 			&& strtotime("2017-12-23 00:00:00") < time()) {
-			$showSanta = 1;
+			$showTask = 1;
 		}
+		$showTask = 1;
+
 		$recommendUsers = User::recommendUsers($this->user_id);
 		// $coinFlag = User::coinReward($this->user_id, $openId);
 		$taskflag = UserTrans::taskCondition(UserTrans::COIN_REG, $this->user_id);
@@ -784,7 +786,7 @@ class WxController extends BaseController
 			'catDesFirst' => UserComment::$commentCatsDes[100],
 			'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
 			'catDes' => json_encode(UserComment::$commentCatsDes, JSON_UNESCAPED_UNICODE),
-			'showSanta' => $showSanta,
+			'showTask' => $showTask,
 			'recommendUsers' => $recommendUsers,
 			'taskFlag' => $taskflag,
 			'taskKey' => $taskKey,

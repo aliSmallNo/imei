@@ -7776,12 +7776,12 @@ ul.co-ul {
   flex: 1; }
 
 .m-wallet-entry {
-  background: url(../images/ico_santa_entry.png) no-repeat center center;
+  background: url(../images/ico_task_entry.png) no-repeat center center;
   background-size: 100% 100%;
   display: inline-block;
   position: fixed;
-  width: 11.65rem;
-  height: 6.1rem;
+  width: 9rem;
+  height: 7rem;
   bottom: 5rem;
   right: 0.5rem; }
 
