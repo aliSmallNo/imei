@@ -231,13 +231,18 @@ class UserBuzz extends ActiveRecord
 				/*$mediaId = 'GfJsRJj-kJwOJMdX7eK9HCZX6j-ZGWE8ZJ-oD5QdIyA';
 				NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, $fromUsername)->sendMedia($mediaId);
 				$resp = '';*/
-				$txt = "近几天我们的城市终于来了初雪，想把初雪分享给你，就找到了你。已经过去很久了，给你发的消息，打扰到你了吗。夜里醒来好几次，手机亮起又关上，生怕错过你的消息。
+				$txt = "原来喜欢一个人的第一感觉是自卑。
+不敢给你发消息，
+不敢告诉你有多喜欢你，
+不敢告诉你，
+我想你。
 
-可现在我明白了，没有就是没有了，再见就是再也不见。无论故事多铭心，结局多刻骨，心里有多舍不得，终究你不再爱我了。
-
-真正的分手都是轻轻的关上门，不会告诉你我走了
-
-这或许就如剧中所说：至尊宝只有离开紫霞，才会成长，变成孙悟空吧。
+有时给你发了消息，
+你一直没有回我，
+我就会删了那个对话框。
+因为，
+总觉得看到那个对话框，
+就好像看见了自己的卑微和讨好。
 
 晚安，世界和你 🌙";
 				$resp = self::textMsg($fromUsername, $toUsername, $txt);
