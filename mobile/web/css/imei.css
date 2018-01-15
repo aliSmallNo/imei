@@ -6187,10 +6187,10 @@ section {
           text-overflow: ellipsis;
           overflow: hidden; }
         .contacts li a .content .top-t i {
-          -webkit-box-flex: 0 0 6.5rem;
-          -webkit-flex: 0 0 6.5rem;
-          -ms-flex: 0 0 6.5rem;
-          flex: 0 0 6.5rem;
+          -webkit-box-flex: 0 0 8rem;
+          -webkit-flex: 0 0 8rem;
+          -ms-flex: 0 0 8rem;
+          flex: 0 0 8rem;
           text-align: right;
           font-size: 1rem;
           color: #969494;
