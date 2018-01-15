@@ -735,23 +735,23 @@ class UserTrans extends ActiveRecord
 	const COIN_SHARE28 = 280;
 
 	static $taskDict = [
-		self::COIN_REG => "COIN_REG",//首次注册登录
-		self::COIN_PERCENT80 => "COIN_PERCENT80",//完成资料达80
-		self::COIN_CERT => "COIN_CERT",//实名认证
+		self::COIN_REG => "COIN_REG",               //首次注册登录
+		self::COIN_PERCENT80 => "COIN_PERCENT80",   //完成资料达80
+		self::COIN_CERT => "COIN_CERT",             //实名认证
 
-		self::COIN_CHAT_3TIMES => "COIN_CHAT_3TIMES",//发起聊天3次
-		self::COIN_CHAT_REPLY => "COIN_CHAT_REPLY",//回复一次聊天
-		self::COIN_SHOW_COIN => "COIN_SHOW_COIN",//秀红包金额
-		self::COIN_RECEIVE_GIFT => "COIN_RECEIVE_GIFT",//收到礼物
-		self::COIN_SIGN => "COIN_SIGN",//签到
-		self::COIN_SHARE_REG => "COIN_SHARE_REG",//成功邀请
+		self::COIN_CHAT_3TIMES => "COIN_CHAT_3TIMES",   //发起聊天3次
+		self::COIN_CHAT_REPLY => "COIN_CHAT_REPLY",     //回复一次聊天
+		self::COIN_SHOW_COIN => "COIN_SHOW_COIN",       //秀红包金额
+		self::COIN_RECEIVE_GIFT => "COIN_RECEIVE_GIFT", //收到礼物
+		self::COIN_SIGN => "COIN_SIGN",                 //签到
+		self::COIN_SHARE_REG => "COIN_SHARE_REG",       //成功邀请
 
-		self::COIN_SHARE28 => "COIN_SHARE28",//28888现金红包
+		self::COIN_SHARE28 => "COIN_SHARE28",           //28888现金红包
 
-		self::COIN_DATE_COMPLETE => "COIN_DATE_COMPLETE",//完成一次线下约会
-		self::COIN_PRESENT_10PEOPLE => "COIN_PRESENT_10PEOPLE",//赠送礼物累计10人
-		self::COIN_RECEIVE_NORMAL_GIFT => "COIN_RECEIVE_NORMAL_GIFT",//收到普通礼物
-		self::COIN_RECEIVE_VIP_GIFT => "COIN_RECEIVE_VIP_GIFT",//收到特权礼物
+		self::COIN_DATE_COMPLETE => "COIN_DATE_COMPLETE",               //完成一次线下约会
+		self::COIN_PRESENT_10PEOPLE => "COIN_PRESENT_10PEOPLE",         //赠送礼物累计10人
+		self::COIN_RECEIVE_NORMAL_GIFT => "COIN_RECEIVE_NORMAL_GIFT",   //收到普通礼物
+		self::COIN_RECEIVE_VIP_GIFT => "COIN_RECEIVE_VIP_GIFT",         //收到特权礼物
 
 	];
 
@@ -989,6 +989,22 @@ class UserTrans extends ActiveRecord
 			return [129, "参数错误", ''];
 		}
 		$amt = 0;
+
+		$calculateAmt = function ($num, $every) {
+			if ($num < 100) {
+				return $num;
+			}
+			$arr = [];
+			for ($i = 1; $i < 9; $i++) {
+				$arr[] = $every;
+			}
+			for ($i = 1; $i < 21; $i++) {
+				$arr[] = 5 * $i;
+			}
+			shuffle($arr);
+			$index = random_int(0, 27);
+			return $arr[$index];
+		};
 		switch ($key) {
 			// one times task
 			case self::COIN_REG:
@@ -1000,7 +1016,8 @@ class UserTrans extends ActiveRecord
 				break;
 			case self::COIN_PERCENT80:
 				if (self::taskCondition($key, $uid)) {
-					$amt = random_int(150, 200);
+					//$amt = random_int(150, 200);
+					$amt = $calculateAmt(200, 150);
 				} else {
 					return [129, "未完成", ''];
 				}
@@ -1043,7 +1060,8 @@ class UserTrans extends ActiveRecord
 				break;
 			case self::COIN_SIGN:
 				if (self::taskCondition($key, $uid)) {
-					$amt = random_int(30, 100);
+					//$amt = random_int(30, 100);
+					$amt = $calculateAmt(100, 30);
 				} else {
 					return [129, "已领取", ''];
 				}
@@ -1058,14 +1076,16 @@ class UserTrans extends ActiveRecord
 			// hard task
 			case self::COIN_DATE_COMPLETE:
 				if (self::taskCondition($key, $uid)) {
-					$amt = random_int(100, 200);
+					$amt = $calculateAmt(200, 100);
+					//$amt = random_int(100, 200);
 				} else {
 					return [129, "未完成", ''];
 				}
 				break;
 			case self::COIN_PRESENT_10PEOPLE:
 				if (self::taskCondition($key, $uid)) {
-					$amt = random_int(100, 200);
+					//$amt = random_int(100, 200);
+					$amt = $calculateAmt(200, 100);
 				} else {
 					return [129, "未完成", ''];
 				}
@@ -1079,7 +1099,8 @@ class UserTrans extends ActiveRecord
 				break;
 			case self::COIN_RECEIVE_VIP_GIFT:
 				if (self::taskCondition($key, $uid)) {
-					$amt = random_int(130, 150);
+					//$amt = random_int(130, 150);
+					$amt = $calculateAmt(200, 130);
 				} else {
 					return [129, "未完成", ''];
 				}
@@ -1093,16 +1114,18 @@ class UserTrans extends ActiveRecord
 				break;
 		}
 
+
 		if ($amt && in_array($key, [
 				self::COIN_SIGN, self::COIN_SHARE_REG, self::COIN_SHOW_COIN, self::COIN_CHAT_REPLY, self::COIN_CHAT_3TIMES,
 				self::COIN_RECEIVE_GIFT, self::COIN_RECEIVE_NORMAL_GIFT, self::COIN_RECEIVE_VIP_GIFT, self::COIN_PRESENT_10PEOPLE,
-				self::COIN_CERT, self::COIN_PERCENT80, self::COIN_REG,self::COIN_SHARE28
+				self::COIN_CERT, self::COIN_PERCENT80, self::COIN_REG, self::COIN_SHARE28
 			])) {
 			self::add($uid, $key, self::CAT_COIN_DEFAULT, self::$catDict[self::CAT_COIN_DEFAULT], $amt, self::UNIT_COIN_FEN);
 		}
 
 		return [0, "ok", ["amt" => sprintf("%.2f", $amt / 100)]];
 	}
+
 
 	public static function taskAdminStat($criteria = [], $params = [], $page = 1, $pageSize = 20)
 	{

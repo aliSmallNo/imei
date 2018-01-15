@@ -1585,7 +1585,6 @@ class FooController extends Controller
 		//list($ret) = UserNet::s28ShareStat(120003);print_r($ret);
 		//var_dump(UserTrans::taskCondition(280, 120003));
 
-
 	}
 
 
