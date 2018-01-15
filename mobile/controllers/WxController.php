@@ -745,7 +745,7 @@ class WxController extends BaseController
 		}
 		$expInfo = UserTag::getExp($this->user_id);
 
-		// 双旦活动
+		// 右下角悬浮小图
 		$showTask = 0;
 		if (strtotime("2018-01-06 23:59:50") > time()
 			&& strtotime("2017-12-23 00:00:00") < time()) {
