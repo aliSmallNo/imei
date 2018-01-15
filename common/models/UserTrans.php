@@ -999,7 +999,7 @@ class UserTrans extends ActiveRecord
 				$arr[] = $every;
 			}
 			for ($i = 1; $i < 21; $i++) {
-				$arr[] = 5 * $i;
+				$arr[] = floor($num / 20) * $i;
 			}
 			shuffle($arr);
 			$index = random_int(0, 27);
