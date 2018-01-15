@@ -631,11 +631,11 @@ class User extends ActiveRecord
 		}
 
 		$conn = AppUtil::db();
-		$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe,w.wWechatId, count(t.tPId) as uco,a.aName as aOpname
+		$sql = "SELECT u.*, IFNULL(w.wSubscribe,0) as wSubscribe,w.wWechatId, count(t.tPId) as uco,m.aName as aOpname
  				  FROM im_user as u 
 				  JOIN im_user_wechat as w on w.wUId=u.uId
 				  LEFT JOIN im_trace as t on u.uId=t.tPId
-				  LEFT JOIN im_admin as a on a.aId=u.uUpdatedBy
+				  LEFT JOIN im_admin as m on m.aId=u.uUpdatedBy
 				  $inactive1
 				  WHERE uId>0 $strCriteria $inactive2
 				  group by uId
