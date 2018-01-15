@@ -226,6 +226,7 @@ class ChatRoom extends ActiveRecord
 
 		foreach ($res as &$v) {
 			$rid = $v["rId"];
+			$v['time'] = strtotime($v['cAddedOn']);
 			$v["rname"] = $v['rTitle'];
 			$v["avatar"] = $v["rLogo"];
 			$v["cid"] = $v['cId'];
@@ -397,10 +398,10 @@ class ChatRoom extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		/*$sql = "select u.uId,u.uOpenId, GROUP_CONCAT(distinct r.rId) as gid
-			 from im_chat_room as r  
+			 from im_chat_room as r
 			 join im_chat_msg_flag as f on f.fRId=r.rId AND r.rLastId > f.fCId AND f.fAlertOn is NULL
 			 join im_user as u on u.uId= f.fUId and u.uOpenId like 'oYDJew%'
-			 group by u.uId,u.uOpenId 
+			 group by u.uId,u.uOpenId
 			 having gid!='' ";*/
 		$sql="select u.uId,u.uOpenId, GROUP_CONCAT(distinct r.rId) as gid
 			 from im_chat_room as r

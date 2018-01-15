@@ -2172,6 +2172,9 @@ class ApiController extends Controller
 				if ($page == 1) {
 					list($rooms, $npage) = ChatRoom::rooms($uid, $page);
 					$items = array_merge($rooms, $items);
+					usort($items, function ($a, $b) {
+						return $a['time'] < $b['time'];
+					});
 				}
 				return self::renderAPI(0, '', [
 					'items' => $items,

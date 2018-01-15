@@ -1060,6 +1060,7 @@ class ChatMsg extends ActiveRecord
 			if (isset(self::$SpecialDict[$type])) {
 				$contacts[$k]['content'] = self::$SpecialDict[$type];
 			}
+			$contacts[$k]['time'] = strtotime($contact['cAddedOn']);
 			unset($contacts[$k]['cAddedBy'],
 				$contacts[$k]['cAddedOn'],
 				$contacts[$k]['cReadFlag'],
