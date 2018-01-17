@@ -130,6 +130,7 @@ require(['jquery', 'mustache', "alpha"],
 				});
 
 				$(document).on(kClick, '.sw_pay_alert_btn a', function () {
+					console.log(util.userCoinFlag);
 					var self = $(this);
 					if (self.hasClass("cancel")) {
 						$sls.main.hide();

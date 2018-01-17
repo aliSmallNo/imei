@@ -748,8 +748,10 @@ class ApiController extends Controller
 					array_unshift($info['cards'], ['cat' => 'cert']);
 				}
 				$expire = UserTag::hasCard($wx_uid, UserTag::CAT_MEMBER_VIP);
-				if (1) {
+				if ($expire) {
 					// 会员VIP
+					array_unshift($info['cards'], ["cat" => "vip"]);
+				} else {
 					array_unshift($info['cards'], ["cat" => "normal"]);
 				}
 				$info['audit'] = UserAudit::invalid($info['id']);

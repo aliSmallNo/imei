@@ -2169,9 +2169,6 @@ class WxController extends BaseController
 		$prices = Pay::$WalletDict;
 		unset($prices["chat_3"]);
 		unset($prices["chat_7"]);
-		if ($this->user_id !== 120003) {
-			unset($prices["vip_member"]);
-		}
 
 		$cash = [
 			["amt" => 10, "cls" => "active"], ["amt" => 30, "cls" => ""], ["amt" => 50, "cls" => ""], ["amt" => 80, "cls" => ""],
@@ -2306,7 +2303,6 @@ class WxController extends BaseController
 		if ($expire) {
 			$vipFlag = 1;
 		}
-
 
 		$cls = "";
 		if (Order::hasGetMouthGift($this->user_id)) {

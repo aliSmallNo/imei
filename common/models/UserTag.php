@@ -369,7 +369,6 @@ class UserTag extends ActiveRecord
 	 */
 	public static function hasCard($uid, $cat)
 	{
-		return true;
 
 		$cardInfo = self::findOne(["tUId" => $uid, "tCategory" => $cat, "tDeletedFlag" => 0]);
 		if (!$cardInfo) {
@@ -377,7 +376,7 @@ class UserTag extends ActiveRecord
 		}
 		$expire = $cardInfo->tExpiredOn;
 
-		//return strtotime($expire) > time() ? $expire : "";
-		return date("Y-m-d", time() + 86400);
+		return strtotime($expire) > time() ? $expire : "";
+
 	}
 }
