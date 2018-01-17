@@ -2535,6 +2535,9 @@ class ApiController extends Controller
 				break;
 			case "every_mouth_gift":
 				$gid = self::postParam("gid");
+				if (!UserTag::hasCard($wx_uid, UserTag::CAT_MEMBER_VIP)) {
+					return self::renderAPI(129, '您还不是VIP会员哦~', []);
+				}
 				if (Order::hasGetMouthGift($wx_uid)) {
 					return self::renderAPI(129, '您已经领过了~', []);
 				}
