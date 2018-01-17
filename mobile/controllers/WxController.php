@@ -2285,4 +2285,25 @@ class WxController extends BaseController
 			'分享领红包',
 			$qrCode ? 'bg-color' : 'bg-103');
 	}
+
+
+	// 会员
+	public function actionVip()
+	{
+
+		$uid = $this->user_id;
+		$vipFlag = 1;
+
+		return self::renderPage("vip.tpl",
+			[
+				'uid' => $this->user_id,
+				'name' => $this->user_name,
+				'avatar' => $this->user_avatar,
+				'wxUrl' => AppUtil::wechatUrl(),
+				"vipFlag" => $vipFlag,
+			],
+			'terse',
+			'会员',
+			'');
+	}
 }

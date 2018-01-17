@@ -610,5 +610,194 @@
 
 
 
+.vip_top
+	margin: 1rem
+	.vip_top_1
+		background: url(../images/vip/vip_paid.png) no-repeat center center
+		background-size: 100% 100%
+		height: 16rem
+		position: relative
+		.vip_info
+			@include displayFlex
+			padding: 3rem 2rem
+			.img
+				flex: 0 0 8rem
+				position: relative
+				img
+					width: 6rem
+					height: 6rem
+					border: .15rem solid #fff
+					border-radius: 6rem
+				&:after
+					position: absolute
+					content: ''
+					width: 6rem
+					height: 1.8rem
+					background: url(../images/vip/ico_avatar_mark.png) no-repeat center center
+					background-size: 100% 100%
+					bottom: 0
+					left: 0
+			.other
+				flex: 1
+				color: #fff
+				padding: .4rem 0
+				h5
+					font-size: 1.3rem
+					font-weight: 300
+					padding: .5rem 0
+					letter-spacing: .1rem
+				p
+					font-size: 1.1rem
+					letter-spacing: .1rem
+		.vip_price
+			@include displayFlex
+			position: absolute
+			bottom: 1.2rem
+			left: 1rem
+			right: 1rem
+			color: #ff6702
+			.t
+				@include displayFlex-1
+				font-size: 1.2rem
+				letter-spacing: .1rem
+			.btn
+				text-align: right
+				@include displayFlex-1
+				a
+					font-size: 1.1rem
+					padding: .3rem 1.3rem
+					background: #ff6702
+					color: #fff
+					border-radius: .5rem
+					letter-spacing: .2rem
+	.vip_top_2
+		background: url(../images/vip/vip_pay.png) no-repeat center center
+		background-size: 100% 100%
+		height: 16rem
+		position: relative
+		.vip_price
+			@include displayFlex
+			position: absolute
+			bottom: 1.2rem
+			left: 1rem
+			right: 1rem
+			color: #ff6702
+			.t
+				@include displayFlex-1
+				font-size: 1.2rem
+				letter-spacing: .1rem
+			.btn
+				text-align: right
+				@include displayFlex-1
+				a
+					font-size: 1.1rem
+					padding: .3rem 1.3rem
+					background: #ff6702
+					color: #fff
+					border-radius: .5rem
+					letter-spacing: .2rem
+.vip_content
+	.vip_content_title
+		color: #b9b9b9
+		height: 3rem
+		line-height: 3rem
+		border-bottom: 1px solid #eee
+		border-top: 1px solid #eee
+		font-size: 1.1rem
+		padding: 0 1rem
+		letter-spacing: .1rem
+	.vip_progress_bar
+		@include displayFlex
+		padding: .5rem 1rem
+		border-bottom: 1px solid #eee
+		p
+			flex: 0 0 8rem
+			font-size: 1.2rem
+			@include displayFlexVAlign
+			font-weight: 500
+			letter-spacing: .1rem
+		.bar
+			flex: 1
+			.bar_vip
+				background: #ff6702
+				color: #fff
+				font-size: .8rem
+				letter-spacing: .1rem
+				padding: .3rem .5rem
+				width: 18rem
+				border-top-right-radius: .3rem
+				border-bottom-right-radius: .3rem
+			.bar_normal
+				background: #d0d0d0
+				color: #fff
+				font-size: .8rem
+				letter-spacing: .1rem
+				padding: .3rem .5rem
+				width: 6rem
+				border-top-right-radius: .3rem
+				border-bottom-right-radius: .3rem
+@mixin vip_privilege_ico
 
+.vip_privilege
+	display: flex
+	flex-flow: row wrap
+	align-content: flex-start
+	li
+		flex: 0 0 33.3%
+		position: relative
+		padding: 7rem 0 .5rem
+		font-size: .9rem
+		letter-spacing: .1rem
+		text-align: center
+		&:after
+			position: absolute
+			content: ''
+			width: 5rem
+			height: 5rem
+			bottom: 2.5rem
+			left: 3rem
+		&.vip_li_1
+			&:after
+				background: url(../images/vip/ico_8_multi.png) no-repeat center center
+				background-size: 100% 100%
+		&.vip_li_2
+			&:after
+				background: url(../images/vip/ico_vip_info.png) no-repeat center center
+				background-size: 100% 100%
+		&.vip_li_3
+			&:after
+				background: url(../images/vip/ico_vip_mark.png) no-repeat center center
+				background-size: 100% 100%
+		&.vip_li_4
+			&:after
+				background: url(../images/vip/ico_vip_gift.png) no-repeat center center
+				background-size: 100% 100%
+		&.vip_li_5
+			&:after
+				background: url(../images/vip/ico_vip_wechat.png) no-repeat center center
+				background-size: 100% 100%
+		&.vip_li_6
+			&:after
+				background: url(../images/vip/ico_vip_more.png) no-repeat center center
+				background-size: 100% 100%
+		&.vip_li_7
+			&:after
+				background: url(../images/vip/ico_vip_favor.png) no-repeat center center
+				background-size: 100% 100%
+		&.vip_li_8
+			&:after
+				background: url(../images/vip/ico_vip_exp.png) no-repeat center center
+				background-size: 100% 100%
+.vip_mouth_gift
+	margin: 2rem 0
+	a
+		display: block
+		background: #ff6702
+		margin: 0 3rem
+		padding: .8rem 0
+		color: #fff
+		font-size: 1.2rem
+		letter-spacing: .2rem
+		text-align: center
+		border-radius: 5rem
 
