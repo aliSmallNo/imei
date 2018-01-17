@@ -14,40 +14,105 @@ require(["jquery", "alpha"],
 			loading: 0
 		};
 
-		$('.btn-share').on(kClick, function () {
-			var html = '<i class="share-arrow">点击菜单分享</i>';
-			$sls.main.show();
-			$sls.main.append(html);
-			$sls.shade.fadeIn(160);
-			setTimeout(function () {
-				$sls.main.hide();
-				$sls.main.find('.share-arrow').remove();
-				$sls.shade.fadeOut(100);
-			}, 2500);
-		});
-
-		$(document).on(kClick, '.m-popup-options > a', function () {
+		$(document).on(kClick, ".vip_mouth_gift a.btn", function () {
 			var self = $(this);
-			var cid = self.attr('data-id');
-			$sls.dl.attr('data-id', cid);
-			$sls.dl.html(self.html());
-			// toggle();
-			// resetMenuShare();
+			if (self.hasClass("fail")) {
+				return;
+			}
+
+			if ($sls.loading) {
+				return false;
+			}
+			$sls.loading = 1;
+			$.post('/api/shop',
+				{
+					tag: 'every_mouth_gift',
+					gid: 6024,
+				},
+				function (resp) {
+					$sls.loading = 0;
+					if (resp.code == 0) {
+						self.addClass("fail");
+					}
+					alpha.toast(resp.msg);
+
+				}, 'json');
 		});
 
-		function toggle(content) {
-			var util = $sls;
-			if (content) {
-				util.main.show();
-				util.content.html(content).addClass("animate-pop-in");
-				util.shade.fadeIn(160);
-			} else {
-				util.content.removeClass("animate-pop-in");
-				util.main.hide();
-				util.content.html('');
-				util.shade.fadeOut(100);
-			}
-		}
+
+		var WalletUtil = {
+			paying: 0,
+			payBtn: null,
+			init: function () {
+				var util = this;
+				$(document).on(kClick, '.btn-recharge', function () {
+					var self = $(this);
+					WalletUtil.prepay(self);
+				});
+			},
+			prepay: function () {
+				var util = this;
+				if (util.paying) {
+					return false;
+				}
+				util.paying = 1;
+				util.payBtn.html('充值中...');
+				$.post('/api/wallet',
+					{
+						tag: 'recharge',
+						cat: 'vip_member',
+					},
+					function (resp) {
+						if (resp.code == 0) {
+							if (resp.data.prepay) {
+								util.wechatPay(resp.data.prepay);
+							}
+						} else {
+							alpha.toast(resp.msg);
+						}
+						util.paying = 0;
+
+					}, 'json');
+			},
+			wechatPay: function (resData) {
+				var util = this;
+
+				function onBridgeReady(resData) {
+					WeixinJSBridge.invoke('getBrandWCPayRequest',
+						{
+							"appId": resData.appId,
+							"timeStamp": resData.timeStamp,
+							"nonceStr": resData.nonceStr,
+							"package": resData.package,
+							"signType": resData.signType,
+							"paySign": resData.paySign
+						},
+						function (res) {
+							if (res.err_msg == "get_brand_wcpay_request:ok") {
+								alpha.toast("您已经微信支付成功！", 1);
+								//util.toggle("");
+								location.href = "/wx/vip";
+							} else {
+								alpha.toast("您已经取消微信支付！");
+								//util.toggle("");
+							}
+						}
+					);
+				}
+
+				if (typeof(WeixinJSBridge) == "undefined") {
+					if (document.addEventListener) {
+						document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+					} else if (document.attachEvent) {
+						document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+						document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+					}
+				} else {
+					onBridgeReady(resData);
+				}
+			},
+		};
+		WalletUtil.init();
 
 		function shareLog(tag, note) {
 			$.post("/api/share", {

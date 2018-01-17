@@ -842,7 +842,7 @@ class User extends ActiveRecord
 		return $uInfo;
 	}
 
-	public static function resume($uId, $conn = '')
+	public static function resume($uId, $wx_uid, $conn = '')
 	{
 		$uInfo = self::profile($uId, $conn);
 		if (!$uInfo) {
@@ -878,19 +878,38 @@ class User extends ActiveRecord
 			['content' => '兴趣爱好', 'header' => 1],
 			['content' => 'interest'],
 		];
+		$index = 100;
+		$normal = $vip = [];
 		foreach ($items as $k => $item) {
 			$content = $item['content'];
-			if (isset($uInfo[$content])) {
-				$items[$k]['content'] = $uInfo[$content];
+			if ($content == "个人小档案") {
+				$index = $k;
 			}
+			if (isset($uInfo[$content]) && $k < $index) {
+				$items[$k]['content'] = $uInfo[$content];
+				$normal[] = $items[$k];
+			} else if (isset($items[$k]["header"]) && $items[$k]["header"] == 1 && $k < $index) {
+				$normal[] = $items[$k];
+			}
+			if (isset($uInfo[$content]) && $k >= $index) {
+				$items[$k]['content'] = $uInfo[$content];
+				$vip[] = $items[$k];
+			} else if (isset($items[$k]["header"]) && $items[$k]["header"] == 1 && $k >= $index) {
+				$vip[] = $items[$k];
+			}
+
 			if ($k > 0 && isset($items[$k - 1]['header']) && $items[$k - 1]['header']) {
 				$items[$k]['first'] = 1;
 			}
 		}
+
 		return [
-			'items' => $items,
+			'normal' => $normal,
+			'vip' => $vip,
 			'avatar' => $uInfo['avatar'],
-			'thumb' => $uInfo['thumb']
+			'thumb' => $uInfo['thumb'],
+			'name' => $uInfo['name'],
+			"showOtherFields" => self::hideFields($wx_uid),
 		];
 	}
 
@@ -2591,5 +2610,33 @@ class User extends ActiveRecord
 		}
 		LogAction::add($uid, $open_id, LogAction::ACTION_GREETING, '', $key);
 		return true;
+	}
+
+	/**
+	 * 单身详细页面 对等显示字段(如果是VIP 全部显示)
+	 * @param $uid
+	 * @return int
+	 */
+	public static function hideFields($uid)
+	{
+		$flag = 1;
+
+		// 如果是会员VIP 直接返回 true
+		if (UserTag::hasCard($uid, UserTag::CAT_MEMBER_VIP)) {
+			return 1;
+		}
+
+		//对等显示字段
+		$showFields = ["profession_t", "weight_t", "scope_t", "income_t", "estate_txt", "car_t", "belief_t", "pet_t", "diet_t", "fitness_t", "book", "music", "movie"];
+		$uInfo = User::fmtRow(User::findOne(["uId" => $uid])->toArray());
+		foreach ($showFields as $v) {
+			if (!$uInfo[$v]) {
+				$flag = 0;
+				break;
+			}
+		}
+
+		return $flag;
+
 	}
 }

@@ -278,4 +278,16 @@ class Order extends ActiveRecord
 		}
 		return [0, "兑换成功", ''];
 	}
+
+	public static function hasGetMouthGift($uid, $gid = 6024)
+	{
+		$dt = date("Y-m");
+		$sql = "select count(1) from im_order where oUId=:uid and oGId=:gid and oAddedOn like '%$dt%'  ";
+		$co = AppUtil::db()->createCommand($sql)->bindValues([
+			":uid" => $uid,
+			":gid" => $gid,
+		])->queryScalar();
+
+		return $co;
+	}
 }

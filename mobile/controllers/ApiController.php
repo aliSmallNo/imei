@@ -179,7 +179,7 @@ class ApiController extends Controller
 			case 'recharge':
 				$cat = self::postParam('cat');
 				// $userCoinFlag => 1:使用千寻币  0:不使用千寻币
-				$userCoinFlag = self::postParam('user_coin', 1);
+				$userCoinFlag = self::postParam('user_coin', 0);
 				$title = '千寻恋恋-充值';
 				if (isset(Pay::$WalletDict[$cat])) {
 					$priceInfo = Pay::$WalletDict[$cat];
@@ -202,7 +202,8 @@ class ApiController extends Controller
 						$payFee = 0;
 					}
 				}
-				$subTitle = '充值' . $num . '媒桂花';
+				// $subTitle = '充值' . $num . '媒桂花';
+				$subTitle = $priceInfo['title'];
 				$payId = Pay::prepay($wxInfo['uId'], $num, $payFee, $pay_cat, 0, $coin);
 
 				if ($payFee == 0) {
@@ -503,13 +504,15 @@ class ApiController extends Controller
 				$comment = UserComment::hasCommentOne($id);
 				$uInfo['commentFlag'] = $comment ? 1 : 0;
 				$uInfo['usercomment'] = $comment;
+				$uInfo['showOtherFields'] = User::hideFields($wx_uid);
+
 				return self::renderAPI(0, '', [
 					'profile' => $uInfo
 				]);
 				break;
 			case 'resume':
 				$id = AppUtil::decrypt($id);
-				$uInfo = User::resume($id);
+				$uInfo = User::resume($id, $wx_uid);
 				if (!$uInfo) {
 					return self::renderAPI(129, '用户不存在~');
 				}
@@ -742,7 +745,12 @@ class ApiController extends Controller
 				$info = User::shrinkUser($info);
 				$info['cards'] = UserTag::chatCards($info['id']);
 				if ($info['cert']) {
-					$info['cards'][] = ['cat' => 'cert'];
+					array_unshift($info['cards'], ['cat' => 'cert']);
+				}
+				$expire = UserTag::hasCard($wx_uid, UserTag::CAT_MEMBER_VIP);
+				if (1) {
+					// 会员VIP
+					array_unshift($info['cards'], ["cat" => "normal"]);
 				}
 				$info['audit'] = UserAudit::invalid($info['id']);
 				return self::renderAPI(0, '', $info);
@@ -2524,6 +2532,21 @@ class ApiController extends Controller
 				list($code, $msg) = Order::santaExchange($gid, $wx_uid);
 				return self::renderAPI($code, $msg, [
 				]);
+				break;
+			case "every_mouth_gift":
+				$gid = self::postParam("gid");
+				if (Order::hasGetMouthGift($wx_uid)) {
+					return self::renderAPI(129, '您已经领过了~', []);
+				}
+				$gInfo = Goods::items(['gCategory' => Goods::CAT_BAG, 'gStatus' => 1, 'gId' => $gid])[0];
+				if (!$gInfo) {
+					return self::renderAPI(129, '商品不存在~', []);
+				}
+				$desc = json_decode($gInfo["desc"], 1);
+
+				$oid = Order::add(["oUId" => $wx_uid, "oGId" => $gid, "oNum" => 1, "oAmount" => 0, "oStatus" => Order::ST_PAY]);
+				Order::addByDesc($desc, $wx_uid, 1, 'santa', $oid);
+				return self::renderAPI(0, 'ok', []);
 				break;
 		}
 		return self::renderAPI(129, '操作无效~');

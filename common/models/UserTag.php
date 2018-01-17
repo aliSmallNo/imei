@@ -26,6 +26,7 @@ class UserTag extends ActiveRecord
 	const CAT_CHAT_DAY7 = 187;
 	const CAT_CHAT_DAY3 = 188;
 	const CAT_EXP = 200;
+	const CAT_MEMBER_VIP = 300;
 
 	static $CatDict = [
 		self::CAT_MEMBERSHIP => '单身会员卡',
@@ -39,6 +40,7 @@ class UserTag extends ActiveRecord
 		self::CAT_CHAT_DAY3 => '三天畅聊卡',
 		self::CAT_CHAT_DAY7 => '七天畅聊卡',
 		self::CAT_EXP => '恋爱成就',
+		self::CAT_MEMBER_VIP => 'VIP会员',
 	];
 
 	static $ExpDict = [
@@ -111,6 +113,30 @@ class UserTag extends ActiveRecord
 			$addon = date('Y-m-d H:i:s');
 		}
 		$expired = date('Y-m-d H:i:s');
+
+		$last = function ($conn, $uid, $cat) {
+			if ($cat == self::CAT_CHAT_MONTH) {
+				$seconds = 86400 * 30;
+			} elseif ($cat == self::CAT_MEMBER_VIP) {
+				$seconds = 86400 * 365;
+			}
+			$expired = date('Y-m-d 23:59:56', time() + $seconds);
+			$sql = 'SELECT tExpiredOn FROM im_user_tag 
+						WHERE tUId=:uid AND tCategory=:cat AND tStatus=1 AND tExpiredOn>now() AND tDeletedFlag=0';
+			$lastExp = $conn->createCommand($sql)->bindValues([
+				':uid' => $uid,
+				':cat' => $cat,
+			])->queryScalar();
+			if ($lastExp) {
+				$expired = date('Y-m-d 23:59:56', strtotime($lastExp) + $seconds);
+				$sql = 'UPDATE im_user_tag set tDeletedFlag=1,tDeletedOn=now() WHERE tUId=:uid AND tCategory=:cat';
+				$conn->createCommand($sql)->bindValues([
+					':uid' => $uid,
+					':cat' => $cat,
+				])->execute();
+			}
+			return $expired;
+		};
 		switch ($cat) {
 			case self::CAT_CHAT_WEEK:
 				$expired = date('Y-m-d 23:59:56', time() + 86400 * 7);
@@ -122,8 +148,8 @@ class UserTag extends ActiveRecord
 				$expired = date('Y-m-d 23:59:56', time() + 86400 * 7);
 				break;
 			case self::CAT_CHAT_MONTH:
-				$expired = date('Y-m-d 23:59:56', time() + 86400 * 30);
-				$sql = 'SELECT tExpiredOn FROM im_user_tag 
+				/*$expired = date('Y-m-d 23:59:56', time() + 86400 * 30);
+				$sql = 'SELECT tExpiredOn FROM im_user_tag
 						WHERE tUId=:uid AND tCategory=:cat AND tStatus=1 AND tExpiredOn>now() AND tDeletedFlag=0';
 				$lastExp = $conn->createCommand($sql)->bindValues([
 					':uid' => $uid,
@@ -136,13 +162,17 @@ class UserTag extends ActiveRecord
 						':uid' => $uid,
 						':cat' => $cat,
 					])->execute();
-				}
+				}*/
+				$expired = $last($conn, $uid, $cat);
 				break;
 			case self::CAT_CHAT_SEASON:
 				$expired = date('Y-m-d 23:59:56', time() + 86400 * 90);
 				break;
 			case self::CAT_CHAT_YEAR:
 				$expired = date('Y-m-d 23:59:56', time() + 86400 * 365);
+				break;
+			case self::CAT_MEMBER_VIP:
+				$expired = $last($conn, $uid, $cat);
 				break;
 		}
 		$ret = $cmd->bindValues([
@@ -329,5 +359,23 @@ class UserTag extends ActiveRecord
 			])->execute();
 		}
 		return count($items);
+	}
+
+	/**
+	 * 是否有 $cat 卡
+	 * @param $uid
+	 * @param $cat
+	 * @return bool
+	 */
+	public static function hasCard($uid, $cat)
+	{
+		$cardInfo = self::findOne(["tUId" => $uid, "tCategory" => $cat, "tDeletedFlag" => 0]);
+		if (!$cardInfo) {
+			return false;
+		}
+		$expire = $cardInfo->tExpiredOn;
+
+		//return strtotime($expire) > time() ? $expire : "";
+		return date("Y-m-d", time() + 86400);
 	}
 }

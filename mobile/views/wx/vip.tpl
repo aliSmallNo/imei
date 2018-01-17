@@ -1,4 +1,3 @@
-
 <link rel="stylesheet" href="/css/zp.min.css?v=1.3.6">
 
 <div class="vip_top">
@@ -7,20 +6,20 @@
 		<div class="vip_info">
 			<div class="img"><img src="{{$avatar}}"></div>
 			<div class="other">
-				<h5>{{$name}}尼古拉斯 赵四</h5>
-				<p>会员到期日：2018-06-06</p>
+				<h5>{{$name}}</h5>
+				<p>会员到期日：{{$expire}}</p>
 			</div>
 		</div>
 		<div class="vip_price">
 			<div class="t">限时特价VIP: 99元/年</div>
-			<div class="btn"><a href="javascript:;">续费</a></div>
+			<div class="btn"><a href="javascript:;" class="btn-recharge">续费</a></div>
 		</div>
 	</div>
 	{{else}}
 	<div class="vip_top_2">
 		<div class="vip_price">
 			<div class="t">限时特价VIP: 99元/年</div>
-			<div class="btn"><a href="javascript:;">开通</a></div>
+			<div class="btn"><a href="javascript:;" class="btn-recharge">开通</a></div>
 		</div>
 	</div>
 	{{/if}}
@@ -55,7 +54,7 @@
 		<li class="vip_li_8">新功能优先体验</li>
 	</ul>
 	<div class="vip_mouth_gift">
-		<a href="javascript:;">领取每月礼物</a>
+		<a href="javascript:;" class="btn {{$cls}}">{{if $cls}}已领取{{else}}领取每月礼物{{/if}}</a>
 	</div>
 </div>
 

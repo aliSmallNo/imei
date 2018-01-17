@@ -16,6 +16,7 @@ use common\models\Goods;
 use common\models\Log;
 use common\models\LogAction;
 use common\models\Lottery;
+use common\models\Order;
 use common\models\Pay;
 use common\models\QuestionGroup;
 use common\models\User;
@@ -2162,6 +2163,9 @@ class WxController extends BaseController
 		$prices = Pay::$WalletDict;
 		unset($prices["chat_3"]);
 		unset($prices["chat_7"]);
+		if ($this->user_id !== 120003) {
+			unset($prices["vip_member"]);
+		}
 
 		$cash = [
 			["amt" => 10, "cls" => "active"], ["amt" => 30, "cls" => ""], ["amt" => 50, "cls" => ""], ["amt" => 80, "cls" => ""],
@@ -2287,12 +2291,20 @@ class WxController extends BaseController
 	}
 
 
-	// 会员
+	// vip 会员
 	public function actionVip()
 	{
-
 		$uid = $this->user_id;
-		$vipFlag = 1;
+		$vipFlag = 0;
+		$expire = UserTag::hasCard($uid, UserTag::CAT_MEMBER_VIP);
+		if ($expire) {
+			$vipFlag = 1;
+		}
+
+		$cls = "";
+		if (Order::hasGetMouthGift($this->user_id)) {
+			$cls = "fail";
+		}
 
 		return self::renderPage("vip.tpl",
 			[
@@ -2301,6 +2313,8 @@ class WxController extends BaseController
 				'avatar' => $this->user_avatar,
 				'wxUrl' => AppUtil::wechatUrl(),
 				"vipFlag" => $vipFlag,
+				"cls" => $cls,
+				"expire" => date("Y-m-d", strtotime($expire)),
 			],
 			'terse',
 			'会员',

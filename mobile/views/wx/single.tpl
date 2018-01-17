@@ -1400,12 +1400,18 @@
 		<a href="#sinfo">
 			<span class="title">基本资料</span>
 			<ul class="clearfix">
+				{[#showOtherFields]}
 				{[#baseInfo]}
 				<li>{[.]}</li>
 				{[/baseInfo]}
+				{[/showOtherFields]}
+				{[^showOtherFields]}
+				&nbsp;&nbsp;
+				{[/showOtherFields]}
 			</ul>
 		</a>
 	</div>
+	{[#showOtherFields]}
 	{[#mp_name]}
 	<div class="hnwords none">
 		<div class="hninfo">
@@ -1432,12 +1438,23 @@
 		<span class="words">{[usercomment]}</span>
 	</a>
 	{[/commentFlag]}
+	{[/showOtherFields]}
+	{[^showOtherFields]}
+	<div class="vip_hide_fields">
+		<p>[<span>{[name]}</span>]已隐藏受教育情况，家庭情况，爱情规划等35项高级资料</p>
+		<a href="/wx/sedit" class="vip_sedit">完善个人资料</a>
+		<div class="vip_hide_des">完善个人资料即可查看对方全部资料</div>
+		<a href="/wx/vip" class="vip_vip">升级为VIP会员</a>
+		<div class="vip_hide_des">VIP会员可以直接查看对方高级资料</div>
+	</div>
+	{[/showOtherFields]}
 	{[/profile]}
 	<a href="#sreport" class="report btn-report">举报拉黑</a>
+	<div class="hight_5rem"></div>
 </script>
 
 <script type="text/template" id="tpl_sinfo">
-	{[#items]}
+	{[#normal]}
 	{[#header]}
 	<li class="no-caption">
 		{[content]}
@@ -1449,7 +1466,34 @@
 	<span {[^caption]}class="content-block" {[/caption]}>{[content]}</span>
 	</li>
 	{[/header]}
-	{[/items]}
+	{[/normal]}
+
+	{[#showOtherFields]}
+	{[#vip]}
+	{[#header]}
+	<li class="no-caption">
+		{[content]}
+	</li>
+	{[/header]}
+	{[^header]}
+	<li {[#first]}class="first" {[/first]}>
+	{[#caption]}<label>{[.]}</label>{[/caption]}
+	<span {[^caption]}class="content-block" {[/caption]}>{[content]}</span>
+	</li>
+	{[/header]}
+	{[/vip]}
+	{[/showOtherFields]}
+
+	{[^showOtherFields]}
+	<div class="vip_hide_fields">
+		<p>[<span>{[name]}</span>]已隐藏受教育情况，家庭情况，爱情规划等35项高级资料</p>
+		<a href="/wx/sedit" class="vip_sedit">完善个人资料</a>
+		<div class="vip_hide_des">完善个人资料即可查看对方全部资料</div>
+		<a href="/wx/vip" class="vip_vip">升级为VIP会员</a>
+		<div class="vip_hide_des">VIP会员可以直接查看对方高级资料</div>
+	</div>
+	{[/showOtherFields]}
+
 </script>
 <script type="text/template" id="comment-list-temp">
 	{[#data]}
@@ -1540,6 +1584,6 @@
 		document.location.hash = "#slook";
 	}
 	requirejs(['/js/config.js?v=1.3.0'], function () {
-		requirejs(['/js/single.js?v=1.11.5']);
+		requirejs(['/js/single.js?v=1.11.6']);
 	});
 </script>

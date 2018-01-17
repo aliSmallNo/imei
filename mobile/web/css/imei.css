@@ -3862,6 +3862,17 @@ section {
         background-position: 0 -3.08rem; }
       .recharge li .title.row-600:before {
         background-position: 0 -4.62rem; }
+      .recharge li .title.row-550:before {
+        content: "";
+        display: inline-block;
+        width: 2.41rem;
+        height: 2rem;
+        background-image: url(../images/vip/ico_vip.png);
+        background-repeat: no-repeat;
+        background-size: 2rem 2rem;
+        position: absolute;
+        left: 0;
+        top: 0.9rem; }
     .recharge li .action {
       text-align: right;
       -webkit-box-flex: 0 0 9rem;
@@ -8414,13 +8425,35 @@ ul.co-ul {
             .zone-top li .flex-1.profile .cards li.card-182 {
               background-position: 0 -4.5rem; }
             .zone-top li .flex-1.profile .cards li.card-cert {
+              -webkit-box-flex: 0 0 5.6rem;
+              -webkit-flex: 0 0 5.6rem;
+              -ms-flex: 0 0 5.6rem;
+              flex: 0 0 5.6rem;
+              height: 1.5rem;
+              margin-right: 0;
+              background-image: url(../images/ico_cert_new_hl.png);
+              background-size: 4.5rem 1.5rem;
+              background-repeat: no-repeat;
+              background-position: center center; }
+            .zone-top li .flex-1.profile .cards li.card-vip {
               -webkit-box-flex: 0 0 4.6rem;
               -webkit-flex: 0 0 4.6rem;
               -ms-flex: 0 0 4.6rem;
               flex: 0 0 4.6rem;
               height: 1.5rem;
               margin-right: 0;
-              background-image: url(../images/ico_cert_new.png);
+              background-image: url(../images/ico_sme_vip_paid.png);
+              background-size: 4.5rem 1.5rem;
+              background-repeat: no-repeat;
+              background-position: center center; }
+            .zone-top li .flex-1.profile .cards li.card-normal {
+              -webkit-box-flex: 0 0 4.6rem;
+              -webkit-flex: 0 0 4.6rem;
+              -ms-flex: 0 0 4.6rem;
+              flex: 0 0 4.6rem;
+              height: 1.5rem;
+              margin-right: 0;
+              background-image: url(../images/ico_sme_vip_pay.png);
               background-size: 4.5rem 1.5rem;
               background-repeat: no-repeat;
               background-position: center center; }
@@ -10078,5 +10111,39 @@ ul.co-ul {
         color: #eb3b40;
         font-size: 1.6rem;
         line-height: 4rem; }
+
+.hight_5rem {
+  height: 5rem; }
+
+.vip_hide_fields {
+  padding: 2rem 1rem;
+  background: #fff; }
+  .vip_hide_fields p {
+    font-size: 1.2rem;
+    letter-spacing: 0.1rem;
+    text-align: center;
+    line-height: 2rem;
+    margin: 0 2rem; }
+    .vip_hide_fields p span {
+      color: #f06292; }
+  .vip_hide_fields a {
+    display: block;
+    padding: 0.8rem 0;
+    text-align: center;
+    font-size: 1.2rem;
+    border-radius: 0.5rem;
+    margin: 1rem 2rem 0.5rem; }
+    .vip_hide_fields a.vip_sedit {
+      background: #E91E63;
+      color: #fff; }
+    .vip_hide_fields a.vip_vip {
+      background: #fff;
+      color: #f06292;
+      border: 1px solid #f06292; }
+  .vip_hide_fields .vip_hide_des {
+    font-size: 1rem;
+    text-align: center;
+    color: #777;
+    letter-spacing: 0.1rem; }
 
 /*# sourceMappingURL=imei.css.map */

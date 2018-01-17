@@ -521,9 +521,14 @@ class WechatUtil
 					UserTag::addByPId(UserTag::CAT_CHAT_SEASON, $pid);
 					$transCat = UserTrans::CAT_CHAT_SEASON;
 					break;
+				case PAY::CAT_MEMBER_VIP:
+					UserTag::addByPId(UserTag::CAT_MEMBER_VIP, $pid);
+					$transCat = UserTrans::CAT_MEMBER_VIP;
+					break;
 				case PAY::CAT_SHOP:
 					$transCat = UserTrans::CAT_EXCHANGE_YUAN;
 					break;
+
 				default:
 					$transCat = UserTrans::CAT_RECHARGE;
 					break;

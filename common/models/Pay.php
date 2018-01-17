@@ -19,6 +19,7 @@ class Pay extends ActiveRecord
 	const CAT_REDPACKET = 300;
 	const CAT_MEET = 400;
 	const CAT_MEMBER = 500;
+	const CAT_MEMBER_VIP = 550;
 
 	const CAT_CHAT_MONTH = 600;
 	const CAT_CHAT_DAY3 = 603;
@@ -40,6 +41,7 @@ class Pay extends ActiveRecord
 		self::CAT_REDPACKET => '红包',
 		self::CAT_MEET => '约会',
 		self::CAT_MEMBER => '单身会员卡',
+		self::CAT_MEMBER_VIP => 'VIP会员卡',
 		self::CAT_CHAT_DAY3 => '三天畅聊卡',
 		self::CAT_CHAT_DAY7 => '七天畅聊卡',
 		self::CAT_CHAT_MONTH => '月度畅聊卡',
@@ -78,15 +80,25 @@ class Pay extends ActiveRecord
 			'tip' => '包季畅聊，有效期内免费畅聊',
 			'num' => 1
 		],
-		'member' => [
-			'cat' => Pay::CAT_MEMBER,
-			'title' => '单身俱乐部会员卡',
+//		'member' => [
+//			'cat' => Pay::CAT_MEMBER,
+//			'title' => '单身俱乐部会员卡',
+//			'price' => 99,
+//			'pre_price' => 299,
+//			'tip' => '半年内免费参加4次线下活动',
+//			'ln' => 'line',
+//			'num' => 1
+//		],
+		'vip_member' => [
+			'cat' => Pay::CAT_MEMBER_VIP,
+			'title' => 'VIP会员卡',
 			'price' => 99,
 			'pre_price' => 299,
-			'tip' => '半年内免费参加4次线下活动',
+			'tip' => 'VIP会员特权',
 			'ln' => 'line',
 			'num' => 1
 		],
+
 //		'rose2' => [
 //			'cat' => Pay::CAT_RECHARGE,
 //			'title' => '20 媒桂花',

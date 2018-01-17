@@ -1006,5 +1006,7 @@ section {
     letter-spacing: 0.2rem;
     text-align: center;
     border-radius: 5rem; }
+    .vip_mouth_gift a.fail {
+      background: #c9c9c9; }
 
 /*# sourceMappingURL=zp.css.map */
