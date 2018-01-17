@@ -831,7 +831,6 @@ section {
         padding: 0.4rem 0; }
         .vip_top .vip_top_1 .vip_info .other h5 {
           font-size: 1.3rem;
-          font-weight: 300;
           padding: 0.5rem 0;
           letter-spacing: 0.1rem; }
         .vip_top .vip_top_1 .vip_info .other p {
@@ -904,7 +903,7 @@ section {
           letter-spacing: 0.2rem; }
 
 .vip_content {
-  padding-bottom: 2rem; }
+  padding-bottom: 1rem; }
   .vip_content .vip_content_title {
     color: #b9b9b9;
     height: 3rem;
