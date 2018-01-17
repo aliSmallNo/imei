@@ -759,6 +759,11 @@ class WxController extends BaseController
 		$taskflag = UserTrans::taskCondition(UserTrans::COIN_REG, $this->user_id);
 		$taskKey = UserTrans::COIN_REG;
 
+		$vipFlag = 0;// VIP 会员
+		if (UserTag::hasCard($this->user_id, UserTag::CAT_MEMBER_VIP)) {
+			$vipFlag = 1;
+		}
+
 		return self::renderPage("single.tpl", [
 			'uId' => $uId,
 			'noReadFlag' => $noReadFlag,
@@ -791,6 +796,7 @@ class WxController extends BaseController
 			'recommendUsers' => $recommendUsers,
 			'taskFlag' => $taskflag,
 			'taskKey' => $taskKey,
+			'vipFlag' => $vipFlag,
 
 		]);
 	}
@@ -2300,6 +2306,7 @@ class WxController extends BaseController
 		if ($expire) {
 			$vipFlag = 1;
 		}
+
 
 		$cls = "";
 		if (Order::hasGetMouthGift($this->user_id)) {

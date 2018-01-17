@@ -369,6 +369,8 @@ class UserTag extends ActiveRecord
 	 */
 	public static function hasCard($uid, $cat)
 	{
+		return true;
+
 		$cardInfo = self::findOne(["tUId" => $uid, "tCategory" => $cat, "tDeletedFlag" => 0]);
 		if (!$cardInfo) {
 			return false;

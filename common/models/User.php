@@ -2623,7 +2623,7 @@ class User extends ActiveRecord
 
 		// 如果是会员VIP 直接返回 true
 		if (UserTag::hasCard($uid, UserTag::CAT_MEMBER_VIP)) {
-			return 1;
+			return $flag;
 		}
 
 		//对等显示字段
