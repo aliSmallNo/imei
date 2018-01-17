@@ -50,7 +50,7 @@
 		<li class="vip_li_4">VIP专属礼物</li>
 		<li class="vip_li_5">5名异性微信号</li>
 		<li class="vip_li_6">尊享高级筛选</li>
-		<li class="vip_li_7">免费心动留言</li>
+		<li class="vip_li_7">免费查看心动</li>
 		<li class="vip_li_8">新功能优先体验</li>
 	</ul>
 	<div class="vip_mouth_gift">
@@ -71,7 +71,7 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.2.5'], function () {
-		requirejs(['/js/vip.js?v=1.2.4']);
+		requirejs(['/js/vip.js?v=1.2.5']);
 	});
 </script>
 

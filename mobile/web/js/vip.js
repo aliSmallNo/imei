@@ -47,7 +47,7 @@ require(["jquery", "alpha"],
 				var util = this;
 				$(document).on(kClick, '.btn-recharge', function () {
 					var self = $(this);
-					WalletUtil.prepay(self);
+					WalletUtil.prepay();
 				});
 			},
 			prepay: function () {
@@ -56,7 +56,6 @@ require(["jquery", "alpha"],
 					return false;
 				}
 				util.paying = 1;
-				util.payBtn.html('充值中...');
 				$.post('/api/wallet',
 					{
 						tag: 'recharge',
