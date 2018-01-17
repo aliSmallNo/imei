@@ -903,50 +903,54 @@ section {
           border-radius: 0.5rem;
           letter-spacing: 0.2rem; }
 
-.vip_content .vip_content_title {
-  color: #b9b9b9;
-  height: 3rem;
-  line-height: 3rem;
-  border-bottom: 1px solid #eee;
-  border-top: 1px solid #eee;
-  font-size: 1.1rem;
-  padding: 0 1rem;
-  letter-spacing: 0.1rem; }
-.vip_content .vip_progress_bar {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 0.5rem 1rem;
-  border-bottom: 1px solid #eee; }
-  .vip_content .vip_progress_bar p {
-    flex: 0 0 8rem;
-    font-size: 1.2rem;
-    justify-content: center;
-    align-items: center;
-    align-self: center;
-    font-weight: 500;
+.vip_content {
+  padding-bottom: 2rem; }
+  .vip_content .vip_content_title {
+    color: #b9b9b9;
+    height: 3rem;
+    line-height: 3rem;
+    border-bottom: 1px solid #eee;
+    border-top: 1px solid #eee;
+    font-size: 1.1rem;
+    padding: 0 1rem;
     letter-spacing: 0.1rem; }
-  .vip_content .vip_progress_bar .bar {
-    flex: 1; }
-    .vip_content .vip_progress_bar .bar .bar_vip {
-      background: #ff6702;
-      color: #fff;
-      font-size: 0.8rem;
-      letter-spacing: 0.1rem;
-      padding: 0.3rem 0.5rem;
-      width: 18rem;
-      border-top-right-radius: 0.3rem;
-      border-bottom-right-radius: 0.3rem; }
-    .vip_content .vip_progress_bar .bar .bar_normal {
-      background: #d0d0d0;
-      color: #fff;
-      font-size: 0.8rem;
-      letter-spacing: 0.1rem;
-      padding: 0.3rem 0.5rem;
-      width: 6rem;
-      border-top-right-radius: 0.3rem;
-      border-bottom-right-radius: 0.3rem; }
+    .vip_content .vip_content_title.vip_b_top_none {
+      border-top: none; }
+  .vip_content .vip_progress_bar {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #eee; }
+    .vip_content .vip_progress_bar p {
+      flex: 0 0 8rem;
+      font-size: 1.2rem;
+      justify-content: center;
+      align-items: center;
+      align-self: center;
+      font-weight: 500;
+      letter-spacing: 0.1rem; }
+    .vip_content .vip_progress_bar .bar {
+      flex: 1; }
+      .vip_content .vip_progress_bar .bar .bar_vip {
+        background: #ff6702;
+        color: #fff;
+        font-size: 0.8rem;
+        letter-spacing: 0.1rem;
+        padding: 0.3rem 0.5rem;
+        width: 18rem;
+        border-top-right-radius: 0.3rem;
+        border-bottom-right-radius: 0.3rem; }
+      .vip_content .vip_progress_bar .bar .bar_normal {
+        background: #d0d0d0;
+        color: #fff;
+        font-size: 0.8rem;
+        letter-spacing: 0.1rem;
+        padding: 0.3rem 0.5rem;
+        width: 6rem;
+        border-top-right-radius: 0.3rem;
+        border-bottom-right-radius: 0.3rem; }
 
 .vip_privilege {
   display: flex;

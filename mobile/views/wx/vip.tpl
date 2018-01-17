@@ -43,7 +43,7 @@
 		</div>
 	</div>
 
-	<div class="vip_content_title">会员特权</div>
+	<div class="vip_content_title vip_b_top_none">会员特权</div>
 	<ul class="vip_privilege">
 		<li class="vip_li_1">八倍显示特权</li>
 		<li class="vip_li_2">查看高级资料</li>
