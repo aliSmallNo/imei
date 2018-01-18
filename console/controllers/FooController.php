@@ -1592,6 +1592,8 @@ class FooController extends Controller
 
 		//UserTag::add(UserTag::CAT_MEMBER_VIP, 120003, 0);
 
+		User::hideFields(143807);
+
 	}
 
 

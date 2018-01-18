@@ -2634,6 +2634,7 @@ class User extends ActiveRecord
 				$flag = 0;
 				break;
 			}
+			// echo $v . ' : ' . $uInfo[$v] . PHP_EOL;
 		}
 
 		return $flag;

@@ -181,8 +181,8 @@ requirejs(['jquery', 'mustache', 'alpha'],
 				});
 				// ["parent","sibling","dwelling","worktype","employer"，"music","book","movie","highschool","university",]
 				$(".sedit-btn-comfirm").on(kClick, function () {
-					var inputFileds = ["name", "highschool", "employer", "music", "movie", "interest", "intro"];
-					var inputFiledsT = ["呢称", "曾读高中名字", "现在单位", "喜欢音乐", "喜欢电影", "兴趣爱好", "自我介绍"];
+					var inputFileds = ["name", "highschool", "employer", "book", "music", "movie", "interest", "intro"];
+					var inputFiledsT = ["呢称", "曾读高中名字", "现在单位", "喜欢书籍", "喜欢音乐", "喜欢电影", "兴趣爱好", "自我介绍"];
 					for (var i = 0; i < inputFileds.length; i++) {
 						var inputVal = $("[name=" + inputFileds[i] + "]").val().trim();
 						if (!inputVal) {
