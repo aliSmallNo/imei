@@ -73,7 +73,7 @@ require(["jquery", "alpha"],
 			//var desc = '一起来千寻恋恋吧，还能帮助身边的单身朋友脱单';
 
 			var title = '好火呀！每天聊聊天就可以赚钱，还可以提现！';
-			var desc = '在千寻每天找美女聊聊天就可以赚钱，攒够十块就能提现。推荐给你用用，哈哈～';
+			var desc = '在千寻每天找美女帅哥聊聊天就可以赚钱，攒够十块就能提现。推荐给你用用，哈哈～';
 			wx.onMenuShareTimeline({
 				title: title,
 				link: link,
