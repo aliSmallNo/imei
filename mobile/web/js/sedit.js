@@ -181,16 +181,28 @@ requirejs(['jquery', 'mustache', 'alpha'],
 				});
 				// ["parent","sibling","dwelling","worktype","employer"，"music","book","movie","highschool","university",]
 				$(".sedit-btn-comfirm").on(kClick, function () {
-					var inputFileds = ["name", "highschool", "employer", "book", "music", "movie", "interest", "intro"];
-					var inputFiledsT = ["呢称", "曾读高中名字", "现在单位", "喜欢书籍", "喜欢音乐", "喜欢电影", "兴趣爱好", "自我介绍"];
-					for (var i = 0; i < inputFileds.length; i++) {
-						var inputVal = $("[name=" + inputFileds[i] + "]").val().trim();
-						if (!inputVal) {
-							alpha.toast(inputFiledsT[i] + ':' + "还没有填写哦~");
+					var inputFields = [
+						{field: 'name', title: '昵称', required: 1},
+						{field: 'highschool', title: '曾读高中名字', required: 0},
+						{field: 'university', title: '曾读大学名字', required: 0},
+						{field: 'employer', title: '现在单位', required: 1},
+						{field: 'book', title: '喜欢书籍', required: 1},
+						{field: 'music', title: '喜欢音乐', required: 1},
+						{field: 'movie', title: '喜欢电影', required: 1},
+						{field: 'interest', title: '兴趣爱好', required: 1},
+						{field: 'intro', title: '自我介绍', required: 1},
+					];
+					$.each(inputFields, function () {
+						var field = this.field;
+						var title = this.title;
+						var required = this.required;
+						var inputVal = $("[name=" + field + "]").val().trim();
+						if (!inputVal && required) {
+							alpha.toast(title + ' 还没有填写哦~');
 							return false;
 						}
-						$sls.postData[inputFileds[i]] = inputVal;
-					}
+						$sls.postData[field] = inputVal;
+					});
 					var lItem = [];
 					$(".action-location .location em").each(function () {
 						var item = {
