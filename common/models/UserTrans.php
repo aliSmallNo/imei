@@ -976,8 +976,9 @@ class UserTrans extends ActiveRecord
 				list($ret) = UserNet::s28ShareStat($uid);
 				$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid and tAmt=:amt ";
 				$amt = $ret["pre_money"];
+
 				if ($amt
-					&& !$conn->createCommand($sql)->bindValues([":uid" => $uid, ":pid" => $key, ":amt" => $amt])->queryScalar()
+					&& !$conn->createCommand($sql)->bindValues([":uid" => $uid, ":pid" => $key, ":amt" => $amt * 100])->queryScalar()
 				) {
 					return $amt;
 				}
@@ -1116,7 +1117,6 @@ class UserTrans extends ActiveRecord
 				}
 				break;
 		}
-
 
 		if ($amt && in_array($key, [
 				self::COIN_SIGN, self::COIN_SHARE_REG, self::COIN_SHOW_COIN, self::COIN_CHAT_REPLY, self::COIN_CHAT_3TIMES,

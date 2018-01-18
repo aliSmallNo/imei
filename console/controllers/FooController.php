@@ -1587,12 +1587,16 @@ class FooController extends Controller
 		//list($n, $e, $h) = UserTrans::taskStat(120003);print_r($h);
 
 		//list($ret) = UserNet::s28ShareStat(120003);print_r($ret);
+
 		//var_dump(UserTrans::taskCondition(280, 120003));
 
 		//UserTag::add(UserTag::CAT_MEMBER_VIP, 120003, 0);
 
 		// User::hideFields(143807);
+
 		//UserNet::items(120003, 'fav', 'fav-both',1);
+
+		// UserTrans::addTaskRedpaket(280, 120003) . PHP_EOL;
 
 	}
 

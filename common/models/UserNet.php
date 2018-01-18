@@ -929,6 +929,9 @@ class UserNet extends ActiveRecord
 			$ret["share"] = $res["share"];
 		}
 		$reg = $ret["reg"];
+		if ($uid == 120003) {
+
+		}
 		$s28Items = UserNet::$s28Items;
 		$amt = $s28ActiveKey = 0;
 		foreach ($s28Items as $k => $v) {
