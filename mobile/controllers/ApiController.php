@@ -747,6 +747,7 @@ class ApiController extends Controller
 				if ($info['cert']) {
 					array_unshift($info['cards'], ['cat' => 'cert']);
 				}
+
 				$expire = UserTag::hasCard($wx_uid, UserTag::CAT_MEMBER_VIP);
 				if ($expire) {
 					// 会员VIP

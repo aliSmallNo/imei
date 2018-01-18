@@ -493,6 +493,7 @@ class User extends ActiveRecord
 				}
 				continue;
 			} else if (in_array($newKey, ["estate"])) {
+				$item[$newKey] = $val;
 				$newKey = ucfirst($newKey);
 				$item[strtolower($newKey) . '_t'] = [];
 				$item[strtolower($newKey) . '_txt'] = "";
@@ -580,7 +581,6 @@ class User extends ActiveRecord
 		}
 		return ceil($percent * 100.00 / count($fields));
 	}
-
 
 	public static function insertPercent()
 	{
