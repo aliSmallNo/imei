@@ -428,6 +428,6 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1.1'], function () {
-		requirejs(['/js/sedit.js?v=1.4.5']);
+		requirejs(['/js/sedit.js?v=1.4.6']);
 	});
 </script>
