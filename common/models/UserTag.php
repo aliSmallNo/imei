@@ -14,6 +14,7 @@ use common\utils\RedisUtil;
 use yii\db\ActiveRecord;
 
 class UserTag extends ActiveRecord
+
 {
 	const CAT_MEMBERSHIP = 100;
 	const CAT_CERTIFIED = 110;
@@ -167,6 +168,9 @@ class UserTag extends ActiveRecord
 				break;
 			case self::CAT_CHAT_SEASON:
 				$expired = date('Y-m-d 23:59:56', time() + 86400 * 90);
+				break;
+			case self::CAT_MEMBERSHIP:
+				$expired = date('Y-m-d 23:59:56', time() + 86400 * 365);
 				break;
 			case self::CAT_CHAT_YEAR:
 				$expired = date('Y-m-d 23:59:56', time() + 86400 * 365);
