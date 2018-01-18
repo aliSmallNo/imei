@@ -8692,6 +8692,16 @@ ul.co-ul {
         background: #f34b4a;
         color: #fff;
         border-radius: 1rem; }
+      .zone-grid li a.zhe4:after {
+        position: absolute;
+        content: "4折";
+        right: 0.8rem;
+        top: 0.25rem;
+        font-size: 0.8rem;
+        padding: 0.1rem 0.5rem;
+        background: #f34b4a;
+        color: #fff;
+        border-radius: 1rem; }
       .zone-grid li a .i-zone-grid {
         display: inline-block;
         padding: 0;
@@ -8729,6 +8739,11 @@ ul.co-ul {
           background-position: 0 -38.3rem; }
         .zone-grid li a .i-zone-grid.task {
           background-position: 0 -41.6rem; }
+        .zone-grid li a .i-zone-grid.vip {
+          background-image: url(../images/vip/ico_vip_main_color.png?v=1.1);
+          background-size: 85% 85%;
+          position: relative;
+          top: -0.2rem; }
 
 .cr-guide {
   padding: 1rem; }
