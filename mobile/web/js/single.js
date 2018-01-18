@@ -25,7 +25,8 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			sprofileF: 0,
 			smeFlag: 0,
 			secretId: '',
-			swiperFlag: 0
+			swiperFlag: 0,
+			vipFlag: parseInt($("#cVIPFLAG").val()),
 		};
 
 		$(window).on("scroll", function () {
@@ -1745,7 +1746,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					} else if (self.attr("data-tag")) {
 						var ul = self.closest("ul");
 						var level = ul.attr("data-level");
-						if (level == "vip" && parseInt($("#cVIPFLAG").val()) != 1) {
+						if (level == "vip" && $sls.vipFlag != 1) {
 							// alpha.toast("你还没开通VIP会员，无法进行此筛选~");
 							alpha.prompt('提示', '你还没开通VIP会员，无法进行此筛选，是否去开通VIP会员?', ["去开通", "取消"], function () {
 								location.href = "/wx/vip";
@@ -1992,6 +1993,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			listMore: $("#sfav .m-more"),
 			spinner: $("#sfav .spinner"),
 			tmp: $("#wechats").html(),
+			tmp2: $("#tmp_vip_favor").html(),
 			init: function () {
 				var util = this;
 				$("#sfav .tab a").on(kClick, function () {
@@ -2003,7 +2005,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					util.tabObj.find("a").removeClass('active');
 					self.addClass("active");
 					util.page = 1;
-					util.tabObj.next().html('');
+					$("#sfav .plist").html("");
 					util.reload();
 				});
 
@@ -2051,16 +2053,23 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						page: util.page,
 					},
 					function (resp) {
-						var html = Mustache.render(util.tmp, resp.data);
+						var html = "";
+						var f =$sls.vipFlag == 1 || ($sls.vipFlag == 0 && util.subtag == "fav-ta");
 						if (util.page == 1) {
-							util.list.html(html);
+							if (f) {
+								html = Mustache.render(util.tmp, resp.data);
+								util.list.html(html);
+							} else {
+								html = Mustache.render(util.tmp2, resp.data);
+								util.list.html(html);
+							}
 						} else {
 							util.list.append(html);
 						}
 						util.tabFlag = 0;
-						util.page = resp.data.nextpage;
 						util.spinner.hide();
-						if (util.page < 1) {
+						util.page = resp.data.nextpage;
+						if (util.page < 1 && f ) {
 							util.listMore.show();
 						}
 					}, "json");

@@ -4229,6 +4229,7 @@ section
 			background: $mainColorLight
 
 .plist
+	position: relative
 	li
 		background: #fff
 		padding: 1rem 2rem
@@ -4288,7 +4289,50 @@ section
 				&:after
 					width: 0
 					height: 0
+	.vip_favor_default
+		padding: 8rem 3rem
+		.vip_favor_default_imgs
+			@include displayFlex
+			padding: 1.5rem 0
+			div
+				@include displayFlex-1
+				img
+					width: 7rem
+					height: 7rem
+					display: block
+					margin: 0 auto
+		p
+			font-size: 1.1rem
+			text-align: center
+			letter-spacing: .1rem
+			padding: .2rem 0
+			font-weight: 300
+			span
+				color: $mainColor
 
+	.vip_favor_default_btn
+		position: fixed
+		bottom: 0
+		left: 0
+		right: 0
+		a
+			display: block
+			font-size: 1.1rem
+			color: #fff
+			padding: 1.2rem 0
+			background: $mainColor
+			text-align: center
+			position: relative
+			letter-spacing: .1rem
+			&:after
+				position: absolute
+				content: ''
+				width: 2rem
+				height: 2rem
+				background: url(../images/vip/ico_vip_yellow.png) no-repeat center center
+				background-size: 100% 100%
+				left: 8rem
+				top: .75rem
 .m-wxid
 	color: $mainColor
 	font-size: 1rem

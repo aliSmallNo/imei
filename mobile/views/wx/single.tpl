@@ -301,7 +301,9 @@
 		<a href="javascript:;" data-tag="fav-both">相互心动的</a>
 	</div>
 	<div style="height: 3.8rem"></div>
-	<ul class="plist"></ul>
+	<ul class="plist">
+
+	</ul>
 	<div class="spinner" style="display: none"></div>
 	<div class="m-more" style="display: none">没有更多了~</div>
 </section>
@@ -1019,6 +1021,18 @@
 	</li>
 	{[/data]}
 </script>
+<script type="text/html" id="tmp_vip_favor">
+<div class="vip_favor_default">
+	<div class="vip_favor_default_imgs">
+		{[#dummys]}<div><img src="{[thumb]}"></div>{[/dummys]}
+	</div>
+	<p>过去有<span>{[count_water]}</span>个异性心动过你</p>
+	<p>其中有<span>{[count_actual]}</span>个跟你很配哦~</p>
+</div>
+<div class="vip_favor_default_btn">
+	<a href="/wx/vip">开通尊贵VIP可查看</a>
+</div>
+</script>
 <script type="text/html" id="tmp_date">
 	{[#data]}
 	<li>
@@ -1585,6 +1599,6 @@
 		document.location.hash = "#slook";
 	}
 	requirejs(['/js/config.js?v=1.3.0'], function () {
-		requirejs(['/js/single.js?v=1.11.13']);
+		requirejs(['/js/single.js?v=1.11.14']);
 	});
 </script>

@@ -409,12 +409,14 @@ class ApiController extends Controller
 		$wx_uid = 0;
 		$wx_role = User::ROLE_SINGLE;
 		$wx_name = $wx_eid = $wx_thumb = '';
+		$wx_gender = User::GENDER_MALE;
 		if ($wx_info) {
 			$wx_uid = $wx_info['uId'];
 			$wx_name = $wx_info['uName'];
 			$wx_thumb = $wx_info['uThumb'];
 			$wx_eid = AppUtil::encrypt($wx_uid);
 			$wx_role = $wx_info['uRole'];
+			$wx_gender = $wx_info['uGender'];
 		}
 		switch ($tag) {
 			case "task_add_award":
@@ -873,8 +875,23 @@ class ApiController extends Controller
 				}
 				$subtag = self::postParam("subtag");
 				$page = self::postParam("page", 1);
-				list($ret, $nextpage) = UserNet::items($wx_uid, $tag, $subtag, $page);
-				return self::renderAPI(0, '', ["data" => $ret, "nextpage" => $nextpage]);
+				list($ret, $nextpage, $co) = UserNet::items($wx_uid, $tag, $subtag, $page);
+				$gender = $wx_gender == User::GENDER_MALE ? User::GENDER_FEMALE : User::GENDER_MALE;
+				// 随机三个稻草人撩非VIP用户
+				$sql = "select uAvatar as avatar,uThumb as thumb,uName as `name` from im_user where uNote='dummy' and uGender=$gender order by rand() LIMIT 3";
+				$dummys = AppUtil::db()->createCommand($sql)->queryAll();
+				if ($subtag == "fav-ta") {
+				} elseif ($subtag == "fav-both") {
+				}
+				$count = 999 + $co * 2;
+				return self::renderAPI(0, '', [
+					"data" => $ret,
+					"dummys" => $dummys,
+					"count_water" => $count,
+					"count_actual" => $co,
+					"dummys" => $dummys,
+					"nextpage" => $nextpage
+				]);
 			case "wx-process":
 				// 同意/拒绝 添加我微信
 				$pf = self::postParam("pf");

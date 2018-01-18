@@ -4567,75 +4567,126 @@ section {
       height: 2px;
       background: #f487ac; }
 
-.plist li {
-  background: #fff;
-  padding: 1rem 2rem;
-  border-bottom: 1px solid #eee; }
-  .plist li a {
-    display: flex;
-    position: relative; }
-    .plist li a:after {
-      content: " ";
-      display: inline-block;
-      height: 0.8rem;
-      width: 0.8rem;
-      border-width: 1px 1px 0 0;
-      border-color: #969494;
-      border-style: solid;
-      -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
-      transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+.plist {
+  position: relative; }
+  .plist li {
+    background: #fff;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #eee; }
+    .plist li a {
+      display: flex;
+      position: relative; }
+      .plist li a:after {
+        content: " ";
+        display: inline-block;
+        height: 0.8rem;
+        width: 0.8rem;
+        border-width: 1px 1px 0 0;
+        border-color: #969494;
+        border-style: solid;
+        -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+        transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+        position: absolute;
+        top: 50%;
+        right: 0;
+        margin-top: -0.5rem; }
+      .plist li a .plist-l {
+        flex: 0 0 6rem;
+        text-align: center; }
+        .plist li a .plist-l img {
+          width: 6rem;
+          height: 6rem;
+          border-radius: 6rem; }
+      .plist li a .plist-r {
+        flex: 1;
+        padding: 0.5rem 1rem; }
+        .plist li a .plist-r p {
+          font-size: 1.3rem; }
+        .plist li a .plist-r i {
+          font-size: 1rem;
+          color: #aaa; }
+    .plist li .wx-process {
       position: absolute;
-      top: 50%;
-      right: 0;
-      margin-top: -0.5rem; }
-    .plist li a .plist-l {
-      flex: 0 0 6rem;
-      text-align: center; }
-      .plist li a .plist-l img {
-        width: 6rem;
-        height: 6rem;
-        border-radius: 6rem; }
-    .plist li a .plist-r {
-      flex: 1;
-      padding: 0.5rem 1rem; }
-      .plist li a .plist-r p {
-        font-size: 1.3rem; }
-      .plist li a .plist-r i {
+      right: 2rem;
+      top: 0.2rem; }
+      .plist li .wx-process button {
+        background: #5cb85c;
+        border: none;
         font-size: 1rem;
-        color: #aaa; }
-  .plist li .wx-process {
-    position: absolute;
-    right: 2rem;
-    top: 0.2rem; }
-    .plist li .wx-process button {
-      background: #5cb85c;
-      border: none;
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 0.2rem;
+        display: inline-block; }
+      .plist li .wx-process button.refuse {
+        background: #f80; }
+  .plist .plist-default {
+    padding: 10rem 1rem; }
+    .plist .plist-default .img {
+      text-align: center; }
+      .plist .plist-default .img img {
+        width: 7rem;
+        height: 7rem; }
+    .plist .plist-default p {
       font-size: 1rem;
+      color: #aaa;
+      text-align: center;
+      padding-top: 2rem; }
+      .plist .plist-default p a {
+        font-size: 1.2rem;
+        color: #f781ab;
+        display: initial; }
+        .plist .plist-default p a:after {
+          width: 0;
+          height: 0; }
+  .plist .vip_favor_default {
+    padding: 8rem 3rem; }
+    .plist .vip_favor_default .vip_favor_default_imgs {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      padding: 1.5rem 0; }
+      .plist .vip_favor_default .vip_favor_default_imgs div {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1; }
+        .plist .vip_favor_default .vip_favor_default_imgs div img {
+          width: 7rem;
+          height: 7rem;
+          display: block;
+          margin: 0 auto; }
+    .plist .vip_favor_default p {
+      font-size: 1.1rem;
+      text-align: center;
+      letter-spacing: 0.1rem;
+      padding: 0.2rem 0;
+      font-weight: 300; }
+      .plist .vip_favor_default p span {
+        color: #f06292; }
+  .plist .vip_favor_default_btn {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0; }
+    .plist .vip_favor_default_btn a {
+      display: block;
+      font-size: 1.1rem;
       color: #fff;
-      padding: 0.5rem 1rem;
-      border-radius: 0.2rem;
-      display: inline-block; }
-    .plist li .wx-process button.refuse {
-      background: #f80; }
-.plist .plist-default {
-  padding: 10rem 1rem; }
-  .plist .plist-default .img {
-    text-align: center; }
-    .plist .plist-default .img img {
-      width: 7rem;
-      height: 7rem; }
-  .plist .plist-default p {
-    font-size: 1rem;
-    color: #aaa;
-    text-align: center;
-    padding-top: 2rem; }
-    .plist .plist-default p a {
-      font-size: 1.2rem;
-      color: #f781ab;
-      display: initial; }
-      .plist .plist-default p a:after {
-        width: 0;
-        height: 0; }
+      padding: 1.2rem 0;
+      background: #f06292;
+      text-align: center;
+      position: relative;
+      letter-spacing: 0.1rem; }
+      .plist .vip_favor_default_btn a:after {
+        position: absolute;
+        content: "";
+        width: 2rem;
+        height: 2rem;
+        background: url(../images/vip/ico_vip_yellow.png) no-repeat center center;
+        background-size: 100% 100%;
+        left: 8rem;
+        top: 0.75rem; }
 
 .m-wxid {
   color: #f06292;

@@ -558,11 +558,15 @@ class UserNet extends ActiveRecord
 		$orderBy = " order by n.nAddedOn desc ";
 		$conn = AppUtil::db();
 		$ret = [];
-		$sql = "";
+		$sql = $sql2 = "";
 		switch ($tag) {
 			case "heartbeat":
 			case "fav":
 				$nRelation = self::REL_FAVOR;
+				$sql2 = "select count(1) 
+							from im_user as u 
+							join im_user_net  as n on n.nSubUId=u.uId and nRelation=$nRelation and n.nDeletedFlag=$deleteflag
+							where n.nUId=$MyUid ";
 
 				if ($subtag == "fav-me") {
 					$sql = "select u.*,n.nId as uNid 
@@ -616,6 +620,10 @@ class UserNet extends ActiveRecord
 				break;
 		}
 		$ret = $conn->createCommand($sql)->queryAll();
+		$co = 0;
+		if ($sql2) {
+			$co = $conn->createCommand($sql2)->queryScalar();
+		}
 		$nextpage = 0;
 		if (count($ret) > $pageSize) {
 			array_pop($ret);
@@ -663,7 +671,7 @@ class UserNet extends ActiveRecord
 			$items[] = $item;
 		}
 
-		return [$items, $nextpage];
+		return [$items, $nextpage, $co];
 
 	}
 

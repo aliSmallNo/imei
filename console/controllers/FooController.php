@@ -1500,7 +1500,6 @@ class FooController extends Controller
 		//$expInfo = UserTag::getExp(120003);print_r($expInfo);
 
 
-
 		/*$sql = "update im_goods set gDesc=:des where gId=6024";
 		// insert into im_goods (`gCategory`,gName,gPrice,gUnit) values (100,'VIP会员月度礼包',0,'元');
 		AppUtil::db()->createCommand($sql)->bindValues([
@@ -1592,7 +1591,8 @@ class FooController extends Controller
 
 		//UserTag::add(UserTag::CAT_MEMBER_VIP, 120003, 0);
 
-		User::hideFields(143807);
+		// User::hideFields(143807);
+		//UserNet::items(120003, 'fav', 'fav-both',1);
 
 	}
 
