@@ -1585,6 +1585,6 @@
 		document.location.hash = "#slook";
 	}
 	requirejs(['/js/config.js?v=1.3.0'], function () {
-		requirejs(['/js/single.js?v=1.11.10']);
+		requirejs(['/js/single.js?v=1.11.11']);
 	});
 </script>
