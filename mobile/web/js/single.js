@@ -1738,14 +1738,21 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						if (item.hasClass("show")) {
 							self.closest(".user_filter").find(".user_filter_item").removeClass("show");
 							$sls.shade.fadeOut();
-							//item.removeClass("show");
 						} else {
 							self.closest(".user_filter").find(".user_filter_item").addClass("show");
-							//item.addClass("show");
 							$sls.shade.fadeIn();
 						}
 					} else if (self.attr("data-tag")) {
 						var ul = self.closest("ul");
+						var level = ul.attr("data-level");
+						if (level == "vip" && parseInt($("#cVIPFLAG").val()) != 1) {
+							// alpha.toast("你还没开通VIP会员，无法进行此筛选~");
+							alpha.prompt('提示', '你还没开通VIP会员，无法进行此筛选，是否去开通VIP会员?', ["去开通", "取消"], function () {
+								location.href = "/wx/vip";
+							}, "");
+							return false;
+						}
+
 						ul.find("a[data-tag]").removeClass("active");
 						self.addClass("active");
 						var ftext = self.html();

@@ -3287,6 +3287,8 @@ section {
           font-size: 1.2rem;
           display: inline-block;
           position: relative; }
+          .user_filter .user_filter_item ul li a.fail {
+            opacity: 0.5; }
           .user_filter .user_filter_item ul li a.user_filter_btn {
             position: absolute;
             right: 0;

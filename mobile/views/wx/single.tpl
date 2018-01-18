@@ -15,7 +15,7 @@
 	<div class="user_filter" style="">
 		<div href="javascript:;" class="user_filter_item">
 			<a href="javascript:;" class="user_filter_title">全部地区</a>
-			<ul>
+			<ul data-level="nomal">
 				<li><a href="javascript:;" data-cat="l" data-tag="all">全部地区</a></li>
 				<li><a href="javascript:;" data-cat="l" data-tag="province">本省</a></li>
 				<li><a href="javascript:;" data-cat="l" data-tag="county">本县市</a></li>
@@ -26,20 +26,20 @@
 		</div>
 		<div href="javascript:;" class="user_filter_item">
 			<a href="javascript:;" class="user_filter_title">全部状态</a>
-			<ul>
-				<li><a href="javascript:;" data-cat="m" data-tag="all">全部状态</a></li>
-				<li><a href="javascript:;" data-cat="m" data-tag="100">未婚</a></li>
-				<li><a href="javascript:;" data-cat="m" data-tag="110">离异带孩</a></li>
-				<li><a href="javascript:;" data-cat="m" data-tag="120">离异不带孩</a></li>
+			<ul data-level="vip">
+				<li><a href="javascript:;" data-cat="m" data-tag="all" class="{{if !$vipFlag}}fail{{/if}}">全部状态</a></li>
+				<li><a href="javascript:;" data-cat="m" data-tag="100" class="{{if !$vipFlag}}fail{{/if}}">未婚</a></li>
+				<li><a href="javascript:;" data-cat="m" data-tag="110" class="{{if !$vipFlag}}fail{{/if}}">离异带孩</a></li>
+				<li><a href="javascript:;" data-cat="m" data-tag="120" class="{{if !$vipFlag}}fail{{/if}}">离异不带孩</a></li>
 			</ul>
 		</div>
 		<div href="javascript:;" class="user_filter_item">
 			<a href="javascript:;" class="user_filter_title">全部年龄</a>
-			<ul>
-				<li><a href="javascript:;" data-cat="age" data-tag="all">全部年龄</a></li>
-				<li><a href="javascript:;" data-cat="age" data-tag="1">年龄从高到低</a></li>
-				<li><a href="javascript:;" data-cat="age" data-tag="2">年龄从低到高</a></li>
-				<li><a href="javascript:;" data-cat="age" data-tag="3">同龄人</a></li>
+			<ul data-level="vip">
+				<li><a href="javascript:;" data-cat="age" data-tag="all" class="{{if !$vipFlag}}fail{{/if}}">全部年龄</a></li>
+				<li><a href="javascript:;" data-cat="age" data-tag="1" class="{{if !$vipFlag}}fail{{/if}}">年龄从高到低</a></li>
+				<li><a href="javascript:;" data-cat="age" data-tag="2" class="{{if !$vipFlag}}fail{{/if}}">年龄从低到高</a></li>
+				<li><a href="javascript:;" data-cat="age" data-tag="3" class="{{if !$vipFlag}}fail{{/if}}">同龄人</a></li>
 				<li><a href="javascript:;" data-cat="m" class="user_filter_btn">确定</a></li>
 			</ul>
 		</div>
@@ -939,6 +939,7 @@
 <input type="hidden" id="cUID" value="{{$uId}}">
 <input type="hidden" id="ctaskFlag" value="{{$taskFlag}}">
 <input type="hidden" id="ctaskKey" value="{{$taskKey}}">
+<input type="hidden" id="cVIPFLAG" value="{{$vipFlag}}">
 <script>
 	var mProvinces = {{$provinces}};
 	var catDes = {{$catDes}};
