@@ -133,7 +133,8 @@ class ApiController extends Controller
 				break;
 			case "cert":
 				$flag = self::postParam("f");
-				$result = User::toCertVerify($id, $flag);
+				$note = self::postParam('note');
+				$result = User::toCertVerify($id, $flag, $note);
 				if ($result) {
 					$status = ($flag == 'pass' ? User::CERT_STATUS_PASS : User::CERT_STATUS_FAIL);
 					$status_t = User::$Certstatus[$status];
@@ -143,6 +144,7 @@ class ApiController extends Controller
 							'msg' => $msg,
 							'status' => $status,
 							'status_t' => $status_t,
+							'note' => $note,
 							'dt' => date('y-m-d H:i')
 						]);
 				}

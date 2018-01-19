@@ -1201,7 +1201,7 @@ class User extends ActiveRecord
 		return 0;
 	}
 
-	public static function toCertVerify($id, $flag)
+	public static function toCertVerify($id, $flag, $note = '')
 	{
 		$Info = self::findOne(["uId" => $id]);
 		if ($flag && $Info) {
@@ -1209,6 +1209,7 @@ class User extends ActiveRecord
 			return self::edit($id, [
 				"uCertStatus" => ($flag == "pass") ? User::CERT_STATUS_PASS : User::CERT_STATUS_FAIL,
 				"uCertDate" => date("Y-m-d H:i:s"),
+				"uCertNote" => $note,
 			], Admin::getAdminId());
 		}
 		return 0;

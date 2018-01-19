@@ -68,6 +68,9 @@
 	<a href="javascript:;" class="c-btn-submit">提交</a>
 </div>
 <div class="c-content">
+	{{if $certNote && !$certFlag}}
+		<div class="tip-block" style="padding: 8px 5px">系统提示你：实名审核失败。{{$certNote}}</div>
+	{{/if}}
 	<div class="c-titles">
 		<h3>为什么要实名认证</h3>
 		<p>作为一个真实、严肃的婚恋俱乐部，我们要求用户必须完成身份认证。对于已结婚为目的的用户，我们希望创建一个无酒托，婚托的环境。</p>

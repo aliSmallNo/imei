@@ -670,7 +670,7 @@ class WxController extends BaseController
 			}
 		}
 		$userInfo = User::findOne(["uId" => $hid]);
-
+		$certNote = isset($userInfo->uCertNote) ? $userInfo->uCertNote : '';
 		return self::renderPage("cert2.tpl",
 			[
 				'avatar' => $avatar,
@@ -678,7 +678,8 @@ class WxController extends BaseController
 				'hid' => $hid,
 				'stat' => $stat,
 				'bgImage' => ($userInfo && $userInfo->uCertImage) ? $userInfo->uCertImage : "/images/cert_sample.jpg",
-				'certFlag' => $userInfo ? (($userInfo->uCertStatus == User::CERT_STATUS_PASS) ? 1 : 0) : 0
+				'certFlag' => $userInfo ? (($userInfo->uCertStatus == User::CERT_STATUS_PASS) ? 1 : 0) : 0,
+				'certNote' => $certNote
 			],
 			'terse',
 			'身份认证');

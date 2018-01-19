@@ -147,7 +147,7 @@
 			<td data-id="{{$prod.id}}" data-uni="{{$prod.uniqid}}">
 				{{if $prod.certstatus==1}}
 					<a href="javascript:;" class="operate btn btn-outline btn-primary btn-xs" data-tag="pass">审核通过</a>
-					<a href="javascript:;" class="operate btn btn-outline btn-danger btn-xs" data-tag="fail">审核失败</a>
+					<a href="javascript:;" class="opFailed btn btn-outline btn-danger btn-xs">审核失败</a>
 				{{else}}
 					<h5>审核于{{$prod.certdate|date_format:'%y-%m-%d %H:%M'}}</h5>
 				{{/if}}
@@ -157,46 +157,97 @@
 	</tbody>
 </table>
 {{$pagination}}
+<div class="modal" id="modal_wrap" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document" style="width:420px">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+							aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">通知内容</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="form-group">
+						<label>审核失败原因</label>
+						<textarea class="form-control t-reason" placeholder="不少于5个字" rows="5"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer" style="overflow: hidden">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary btn-save">确定保存</button>
+			</div>
+		</div>
+	</div>
+</div>
 <script src="/assets/js/socket.io.js"></script>
 <script>
+	var mPopup = $('#modal_wrap');
+	var mCertData = {
+		tag: 'cert',
+		id: 0,
+		uni: '',
+		f: '',
+		note: ''
+	};
+	$('.btn-save').click(function () {
+		var reason = $('.t-reason').val().trim();
+		if (reason.length < 5) {
+			BpbhdUtil.showMsg('请输入审核失败原因，至少5个字以上');
+			return false;
+		}
+		mCertData['note'] = reason;
+		toCert(mCertData);
+	});
+
+	$('.opFailed').click(function () {
+		var self = $(this);
+		var cell = self.closest('td');
+		mCertData['id'] = cell.attr("data-id");
+		mCertData['uni'] = cell.attr("data-uni");
+		mCertData['f'] = 'fail';
+		mCertData['note'] = '';
+		mPopup.modal('show');
+	});
+
 	$("a.operate").click(function () {
 		var self = $(this);
 		var cell = self.closest('td');
-		var id = cell.attr("data-id");
-		var uni = cell.attr("data-uni");
-		var tag = self.attr("data-tag");
+		mCertData['id'] = cell.attr("data-id");
+		mCertData['uni'] = cell.attr("data-uni");
+		mCertData['f'] = 'pass';
+		mCertData['note'] = '';
 		var text = self.html();
 		layer.confirm('您确定实名' + text, {
 			btn: ['确定', '取消'],
 			title: '审核用户'
 		}, function () {
-			toCert(id, uni, tag);
+			toCert(mCertData);
 		}, function () {
 		});
 	});
 
-	function toCert(id, uni, op) {
-		$.post("/api/user", {
-			tag: 'cert',
-			f: op,
-			id: id
-		}, function (resp) {
-			if (resp.code < 1) {
-				var row = $('tr[data-id="' + id + '"]');
-				row.find('td.status-cell').html('<span class="status-' + resp.data.status + '">' + resp.data.status_t + '</span>');
-				row.find('td:last').html('<h5>审核于' + resp.data.dt + '</h5>');
-				row.insertBefore($('tbody tr:first'));
-				NoticeUtil.broadcast({
-					tag: 'hint',
-					uni: uni,
-					msg: resp.data.msg,
-					action: 'refresh-profile'
-				});
-				BpbhdUtil.showMsg(resp.msg, 1);
-			} else {
-				BpbhdUtil.showMsg(resp.msg);
-			}
-		}, "json");
+	function toCert(postData) {
+		$.post("/api/user",
+			postData,
+			function (resp) {
+				if (resp.code < 1) {
+					var row = $('tr[data-id="' + postData['id'] + '"]');
+					row.find('td.status-cell').html('<span class="status-' + resp.data.status + '">' + resp.data.status_t + '</span>');
+					row.find('td:last').html('<h5>审核于' + resp.data.dt + '</h5><span class="text-danger">' + resp.data.note + '</span>');
+					row.insertBefore($('tbody tr:first'));
+					NoticeUtil.broadcast({
+						tag: 'hint',
+						uni: postData['uni'],
+						msg: resp.data.msg,
+						action: 'refresh-profile'
+					});
+					BpbhdUtil.showMsg(resp.msg, 1);
+				} else {
+					BpbhdUtil.showMsg(resp.msg);
+				}
+				mPopup.modal('hide');
+			}, "json");
 	}
 
 	$(document).on("click", ".i-img", function () {
