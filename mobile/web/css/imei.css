@@ -58,6 +58,9 @@ section {
 .none {
   display: none !important; }
 
+.hide {
+  visibility: hidden !important; }
+
 .clearfix {
   zoom: 1; }
   .clearfix:before, .clearfix:after {

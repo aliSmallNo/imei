@@ -65,7 +65,9 @@
 </style>
 <div class="nav">
 	<a href="/wx/single#sme">返回</a>
-	<a href="javascript:;" class="c-btn-submit">提交</a>
+
+	<a href="javascript:;" class="c-btn-submit {{if $certFlag}}hide{{/if}}">提交</a>
+
 </div>
 <div class="c-content">
 	{{if $certNote && !$certFlag}}
@@ -77,31 +79,36 @@
 		<h3>关于隐私安全</h3>
 		<p>您上传的任何身份证照片等资料，仅供人工审核使用他人无法看到，此外我们会对照片进行安全处理，敬请放心。</p>
 	</div>
-	<div class="c-up">
-		<div class="c-up-item">
-			<h5>身份证正面照</h5>
-			<a href="javascript:;" data-tag="zm" localId="">
-				<img src="/images/cert/cert_1x.png">
-			</a>
+	{{if $certFlag}}
+		<div class="tip-block" style="padding: 12px 6px; font-size: 16px;text-align: center">
+			你已经实名认证啦~
 		</div>
-		<div class="c-up-item">
-			<h5>手持身份证照片</h5>
-			<a href="javascript:;" data-tag="sc" localId="">
-				<img src="/images/cert/cert_2x.png">
-			</a>
+	{{else}}
+		<div class="c-up">
+			<div class="c-up-item">
+				<h5>身份证正面照</h5>
+				<a href="javascript:;" data-tag="zm" localId="">
+					<img src="/images/cert/cert_1x.png">
+				</a>
+			</div>
+			<div class="c-up-item">
+				<h5>手持身份证照片</h5>
+				<a href="javascript:;" data-tag="sc" localId="">
+					<img src="/images/cert/cert_2x.png">
+				</a>
+			</div>
 		</div>
-	</div>
-
-	<div class="c-up">
-		<div class="c-up-item">
-			<h5>身份证示例</h5>
-			<img src="/images/cert/cert_3x.png">
+		<div class="c-up">
+			<div class="c-up-item">
+				<h5>身份证示例</h5>
+				<img src="/images/cert/cert_3x.png">
+			</div>
+			<div class="c-up-item">
+				<h5>手持身份证示例</h5>
+				<img src="/images/cert/cert_4x.png">
+			</div>
 		</div>
-		<div class="c-up-item">
-			<h5>手持身份证示例</h5>
-			<img src="/images/cert/cert_4x.png">
-		</div>
-	</div>
+	{{/if}}
 </div>
 <input type="hidden" id="certFlag" value="{{$certFlag}}">
 
