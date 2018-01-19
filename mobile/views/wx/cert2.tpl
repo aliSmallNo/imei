@@ -80,7 +80,7 @@
 		<p>您上传的任何身份证照片等资料，仅供人工审核使用他人无法看到，此外我们会对照片进行安全处理，敬请放心。</p>
 	</div>
 	{{if $certFlag}}
-		<div class="tip-block" style="padding: 12px 6px; font-size: 16px;text-align: center">
+		<div class="tip-block" style="padding: 12px 6px; font-size: 1.8rem; font-weight: 500; text-align: center">
 			你已经实名认证啦~
 		</div>
 	{{else}}
