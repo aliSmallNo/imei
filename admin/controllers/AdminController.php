@@ -112,9 +112,41 @@ class AdminController extends BaseController
 		return $this->renderPage('media.tpl',
 			[
 				'tabs' => $tabs,
-				'type'=>$type,
+				'type' => $type,
 				'items' => $items,
 				'pagination' => $pagination,
+			]);
+	}
+
+	public function actionCalcList()
+	{
+		$items = [];
+		$preLeft = 0;
+		for ($k = 1; $k < 9999; $k++) {
+			$left = mt_rand(2, 20);
+			if ($left == $preLeft) {
+				$left = mt_rand(2, 20);
+			}
+			$preLeft = $left;
+			$op = mt_rand(0, 1) ? '+' : '-';
+			$right = ($op == '+' ? mt_rand(0, 20 - $left) : mt_rand(0, $left));
+			if ($right < 1) {
+				$right = ($op == '+' ? mt_rand(0, 20 - $left) : mt_rand(0, $left));
+			}
+			$key = $left . $op . $right;
+			$items[$key] = [
+				'left' => $left,
+				'op' => $op,
+				'right' => $right,
+			];
+			if (count($items) >= 50) {
+				break;
+			}
+		}
+		$items = array_values($items);
+		return $this->renderPage('calc-list.tpl',
+			[
+				'items' => $items,
 			]);
 	}
 

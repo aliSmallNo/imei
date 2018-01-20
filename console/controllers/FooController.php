@@ -14,7 +14,6 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
-use common\models\UserTag;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use common\service\TrendService;
@@ -1391,6 +1390,37 @@ class FooController extends Controller
 			$serviceTrend->statTrend($step, date('Y-m-d', $queryTime), true);
 		}
 
+	}
+
+
+	public function actionCalc()
+	{
+		$items = [];
+		$preLeft = 0;
+		for ($k = 1; $k < 9999; $k++) {
+			$left = mt_rand(2, 20);
+			if ($left == $preLeft) {
+				$left = mt_rand(2, 20);
+			}
+			$preLeft = $left;
+			$op = mt_rand(0, 1) ? '+' : '-';
+			$right = ($op == '+' ? mt_rand(0, 20 - $left) : mt_rand(0, $left));
+			$key = $left . $op . $right;
+			$items[$key] = [
+				'left' => $left,
+				'op' => $op,
+				'right' => $right,
+			];
+			if (count($items) >= 50) {
+				break;
+			}
+		}
+		$k = 1;
+		foreach ($items as $item) {
+			echo '(' . $k . ') ' . $item['left'] . $item['op'] . $item['right'] . '=' . PHP_EOL;
+			$k++;
+		}
+		return array_values($items);
 	}
 
 	public function actionRain()
