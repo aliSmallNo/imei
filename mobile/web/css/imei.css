@@ -105,6 +105,112 @@ section {
 .heart-beat {
   -webkit-animation-name: kf_heart_beat; }
 
+body, html {
+  font-size: 10px;
+  font-size: -moz-calc(100vw / 32);
+  font-size: -webkit-calc(100vw / 32);
+  font-size: calc(100vw / 32);
+  color: #333;
+  font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  height: 100%; }
+
+body, html, a, p, ul, div, h4, h5, h6, .main-wrap {
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent; }
+
+body {
+  background-color: #fff; }
+
+body, a, div, p {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size: 1.4rem; }
+
+a {
+  color: #333;
+  cursor: pointer;
+  text-decoration: none; }
+  a.disabled, a.disabled:active {
+    color: #aaa; }
+
+em, i, b {
+  font-weight: normal;
+  font-style: normal; }
+
+ul {
+  list-style: none; }
+
+input, select, textarea, button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none; }
+
+main {
+  position: relative;
+  padding-bottom: 7rem;
+  height: 100%; }
+  main.bg-lighter {
+    background: #fbd2e0; }
+
+section {
+  height: 100%; }
+
+.none {
+  display: none !important; }
+
+.hide {
+  visibility: hidden !important; }
+
+.clearfix {
+  zoom: 1; }
+  .clearfix:before, .clearfix:after {
+    display: block;
+    line-height: 0;
+    content: ""; }
+  .clearfix:after {
+    clear: both; }
+
+.space {
+  display: inline-block;
+  width: 1rem; }
+
+.space2 {
+  display: inline-block;
+  width: 2rem; }
+
+.center {
+  text-align: center; }
+
+.font12 {
+  font-size: 1.2rem; }
+
+@-webkit-keyframes kf_heart_beat {
+  0% {
+    -webkit-transform: scale(1);
+    -webkit-transform-origin: 50% 65%; }
+  10% {
+    -webkit-transform: scale(0.8);
+    -webkit-transform-origin: 50% 65%; }
+  50% {
+    -webkit-transform: scale(1.2);
+    -webkit-transform-origin: 50% 65%; }
+  100% {
+    -webkit-transform: scale(1);
+    -webkit-transform-origin: 50% 65%; } }
+.heart-beat {
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-duration: 0.32s;
+  -webkit-animation-fill-mode: both; }
+
+.heart-beat {
+  -webkit-animation-name: kf_heart_beat; }
+
 .m-defect {
   background-color: #fff59d;
   padding: 1rem 1rem 1rem 2.5rem;
