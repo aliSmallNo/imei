@@ -93,7 +93,7 @@
 		{{foreach from=$cards item=card}}
 		<div class="item">
 			<div class="ico-card-{{$card.cat}}"></div>
-			<span>剩余{{$card.left}}天</span>
+			<span>{{if $card.left}}剩余{{$card.left}}天{{else}}没有更多{{/if}}</span>
 		</div>
 		{{/foreach}}
 	</div>

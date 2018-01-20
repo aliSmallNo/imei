@@ -2167,6 +2167,9 @@ class WxController extends BaseController
 			}
 		}
 		$cards = UserTag::chatCards($hid);
+		if (!$cards) {
+			$cards[] = ["cat" => 0, "left" => 0];
+		}
 		$prices = Pay::$WalletDict;
 		unset($prices["chat_3"]);
 		unset($prices["chat_7"]);

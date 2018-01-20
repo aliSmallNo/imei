@@ -3896,6 +3896,12 @@ section {
       background-position: center -7.2rem; }
     .account-header .item .ico-card-182 {
       background-position: center -10.8rem; }
+    .account-header .item .ico-card-300 {
+      background: url(../images/vip/ico_vip_yellow.png?v=1.2.3) no-repeat center center;
+      background-size: 4rem 90%; }
+    .account-header .item .ico-card-0 {
+      background: url(../images/ico_default_card.png?v=1.2.3) no-repeat center center;
+      background-size: 4rem 100%; }
     .account-header .item .ico-rose {
       padding-left: 1.6rem;
       background: url(../images/ico_rose.png?v=1.2.3) no-repeat left center;

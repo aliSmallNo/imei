@@ -77,7 +77,7 @@ class UserTag extends ActiveRecord
 			$conn = AppUtil::db();
 		}
 		$cats = implode(',',
-			[self::CAT_CHAT_WEEK, self::CAT_CHAT_MONTH, self::CAT_CHAT_SEASON,
+			[self::CAT_MEMBER_VIP, self::CAT_CHAT_WEEK, self::CAT_CHAT_MONTH, self::CAT_CHAT_SEASON,
 				self::CAT_CHAT_YEAR, self::CAT_CHAT_DAY3, self::CAT_CHAT_DAY7]);
 		$sql = "SELECT tCategory as cat,tTitle as title, DATEDIFF(tExpiredOn,now()) as `left`
 			 	FROM im_user_tag 
