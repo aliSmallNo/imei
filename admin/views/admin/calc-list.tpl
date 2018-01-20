@@ -15,6 +15,7 @@
 	ul li span.seq {
 		width: 40px;
 		font-size: 14px;
+		font-weight: 300;
 	}
 
 	ul li span.left,
@@ -33,7 +34,7 @@
 	ul li span.res {
 		width: 70px;
 		border-bottom: 1px solid #777;
-		height: 30px;
+		height: 28px;
 	}
 
 	.sub-title, .title {
