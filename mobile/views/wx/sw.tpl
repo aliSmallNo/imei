@@ -34,7 +34,7 @@
 				<div class="img"><img src="/images/sw/cash_rule.png"></div>
 				<a href="javascript:;" data-page="rule">提现规则</a>
 			</li>
-			<li style="display: none">
+			<li >
 				<div class="img"><img src="/images/sw/cash_task.png"></div>
 				<a href="javascript:;" data-page="task">做任务赚赏金</a>
 			</li>
@@ -47,7 +47,7 @@
 </section>
 
 <section id="cash">
-	<div class="sw_cash_items" style="display: none">
+	<div class="sw_cash_items">
 		<p>可提现余额: <span>{{$stat.coin_y}}</span>元</p>
 		<ul>
 			{{foreach from=$cash item=item}}
@@ -232,6 +232,6 @@
 		document.location.hash = "#index";
 	}
 	requirejs(['/js/config.js'], function () {
-		requirejs(['/js/sw.js?v=1.4.3']);
+		requirejs(['/js/sw.js?v=1.4.4']);
 	});
 </script>

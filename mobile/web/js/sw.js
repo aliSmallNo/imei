@@ -30,7 +30,7 @@ require(['jquery', 'mustache', "alpha"],
 		// 提现
 		var cashUtil = {
 			num: parseInt($(".sw_cash_items").find("ul").find("li.active").attr("data-num")),
-			cash: parseInt($(".sw_cash_items").find("p:eq(0)").find("span").html()),
+			cash: parseFloat($(".sw_cash_items").find("p:eq(0)").find("span").html()),
 			init: function () {
 				var util = this;
 				$(document).on(kClick, ".sw_cash_items ul a", function () {
@@ -41,8 +41,7 @@ require(['jquery', 'mustache', "alpha"],
 				});
 				$(document).on(kClick, ".sw_cash_btn_comfirm a", function () {
 					var self = $(this);
-					console.log(util.cash);
-					console.log(util.num);
+					// console.log(util.cash);console.log(util.num);
 					if (util.num < 10) {
 						alpha.toast("还没选择要提现金额~");
 						return;
@@ -51,7 +50,11 @@ require(['jquery', 'mustache', "alpha"],
 						alpha.toast("可提现金额不足~");
 						return;
 					}
-					util.tocash();
+					alpha.prompt('提示', '您需要添加先添加微信客服号领取，微信号：meipo1001', ['我知道了'], function () {
+						alpha.clear();
+					});
+
+					//util.tocash();
 				});
 			},
 			tocash: function () {
@@ -113,7 +116,7 @@ require(['jquery', 'mustache', "alpha"],
 				var util = this;
 				$(document).on(kClick, '.btn-recharge', function () {
 					var self = $(this);
-					//WalletUtil.prepay(self);
+					// WalletUtil.prepay(self);
 					util.isUseCoin(self);
 				});
 
@@ -130,7 +133,7 @@ require(['jquery', 'mustache', "alpha"],
 				});
 
 				$(document).on(kClick, '.sw_pay_alert_btn a', function () {
-					console.log(util.userCoinFlag);
+					// console.log(util.userCoinFlag);
 					var self = $(this);
 					if (self.hasClass("cancel")) {
 						$sls.main.hide();
@@ -160,6 +163,7 @@ require(['jquery', 'mustache', "alpha"],
 				util.toggle(html);
 
 				$(".sw_pay_alert").find("h4").find("p").html($btn.attr("data-title"));
+
 				util.countPay();
 			},
 			countPay: function () {
@@ -184,6 +188,19 @@ require(['jquery', 'mustache', "alpha"],
 					pay_coin_span_obj.html(util.pay_coin.toFixed(2));
 				}
 			},
+			resetLeftCoin: function () {
+				var util = this;
+				if (util.userCoinFlag == 1) {
+					var remain = (util.deduct - util.amt).toFixed(2);
+					console.log('amt:' + util.amt)
+					console.log('deduce:' + util.deduct)
+					console.log('reamin:' + remain)
+					$(".sw_cash_items").find("p").find("span").html(remain);
+					$(".sw_exchange_cash").find("span").html(remain);
+					util.deduct = remain;
+
+				}
+			},
 			prepay: function () {
 				var util = this;
 				if (util.paying) {
@@ -203,6 +220,7 @@ require(['jquery', 'mustache', "alpha"],
 								util.wechatPay(resp.data.prepay);
 							} else {
 								alpha.toast("支付成功~");
+								util.resetLeftCoin();
 								util.toggle("");
 							}
 						} else {
@@ -230,6 +248,7 @@ require(['jquery', 'mustache', "alpha"],
 							if (res.err_msg == "get_brand_wcpay_request:ok") {
 								alpha.toast("您已经微信支付成功！", 1);
 								util.toggle("");
+								util.resetLeftCoin();
 								util.reload();
 							} else {
 								alpha.toast("您已经取消微信支付！");
