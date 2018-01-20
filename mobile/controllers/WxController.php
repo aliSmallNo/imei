@@ -2201,9 +2201,7 @@ class WxController extends BaseController
 	{
 		$uid = $this->user_id;
 
-		list($newTask, $currTask, $everyTask, $hardTask, $data) = UserTrans::ta
-
-		skStat($uid);
+		list($newTask, $currTask, $everyTask, $hardTask, $data) = UserTrans::taskStat($uid);
 		$newTaskShowFlag = 'none';
 		foreach ($newTask as $v) {
 			if (!$v["cls"]) {
