@@ -816,7 +816,7 @@ class UserTrans extends ActiveRecord
 
 		$hardTask = [
 			["key" => self::COIN_DATE_COMPLETE, "cls" => "", "title" => "完成1次线下约会", "num" => 3, "des" => "向心动异性发起约会，成功线下约会并向客服提交约会凭证，可领取3元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
-			//["key" => self::COIN_PRESENT_10PEOPLE, "cls" => "", "title" => "赠送礼物累计（10人）", "num" => 10, "des" => "累计向10位异性赠送礼物后，最多可领取10元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
+			["key" => self::COIN_PRESENT_10PEOPLE, "cls" => "", "title" => "赠送礼物累计（10人）", "num" => 10, "des" => "累计向10位异性赠送礼物后，最多可领取10元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
 			["key" => self::COIN_RECEIVE_NORMAL_GIFT, "cls" => "", "title" => "收到普通礼物（不限）", "num" => 1, "des" => "第一次收到普通礼物后，最多可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
 			["key" => self::COIN_RECEIVE_VIP_GIFT, "cls" => "", "title" => "收到特权礼物（不限）", "num" => 2, "des" => "第一次收到特权礼物后，最多可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
 		];
