@@ -1392,37 +1392,6 @@ class FooController extends Controller
 
 	}
 
-
-	public function actionCalc()
-	{
-		$items = [];
-		$preLeft = 0;
-		for ($k = 1; $k < 9999; $k++) {
-			$left = mt_rand(2, 20);
-			if ($left == $preLeft) {
-				$left = mt_rand(2, 20);
-			}
-			$preLeft = $left;
-			$op = mt_rand(0, 1) ? '+' : '-';
-			$right = ($op == '+' ? mt_rand(0, 20 - $left) : mt_rand(0, $left));
-			$key = $left . $op . $right;
-			$items[$key] = [
-				'left' => $left,
-				'op' => $op,
-				'right' => $right,
-			];
-			if (count($items) >= 50) {
-				break;
-			}
-		}
-		$k = 1;
-		foreach ($items as $item) {
-			echo '(' . $k . ') ' . $item['left'] . $item['op'] . $item['right'] . '=' . PHP_EOL;
-			$k++;
-		}
-		return array_values($items);
-	}
-
 	public function actionRain()
 	{
 		$contents = [
