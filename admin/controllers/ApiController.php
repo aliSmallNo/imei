@@ -24,6 +24,7 @@ use common\models\UserAudit;
 use common\models\UserComment;
 use common\models\UserMsg;
 use common\models\UserNet;
+use common\models\UserTrans;
 use common\models\UserWechat;
 use common\service\CogService;
 use common\service\SessionService;
@@ -78,6 +79,39 @@ class ApiController extends Controller
 		$id = self::postParam("id");
 		$ret = ["code" => 159, "msg" => self::ICON_ALERT_HTML . "无操作！"];
 		switch ($tag) {
+			case "mod_user_trans":
+				$data = self::postParam("data");
+				$data = json_decode($data, 1);
+				if (!isset($data["phone"]) || !AppUtil::checkPhone($data["phone"])) {
+					$ret = ["code" => 129, "msg" => "手机号填写错误"];
+					break;
+				}
+				$u = User::findOne(["uPhone" => $data["phone"]]);
+				if (!$u) {
+					$ret = ["code" => 129, "msg" => "用户不存在"];
+					break;
+				}
+				$uid = $u->uId;
+				$cat = isset($data["cat"]) ? $data["cat"] : 0;
+				$amt = isset($data["amt"]) ? $data["amt"] : 0;
+				if (!$amt
+					|| $amt < 0
+					|| !in_array($cat, [UserTrans::CAT_COIN_WITHDRAW, UserTrans::CAT_NEW])
+				) {
+					$ret = ["code" => 129, "msg" => "参数错误"];
+					break;
+				}
+				$unit = '';
+				if ($cat == UserTrans::CAT_COIN_WITHDRAW) {
+					$unit = UserTrans::UNIT_COIN_FEN;
+				} elseif ($cat == UserTrans::CAT_NEW) {
+					$unit = UserTrans::UNIT_GIFT;
+				}
+				if ($unit) {
+					UserTrans::add($uid, 0, $cat, UserTrans::$catDict[$cat], $amt, $unit);
+					$ret = ["code" => 0, "msg" => "操作成功~"];
+				}
+				break;
 			case "sys_notice":
 				$msg = self::postParam("msg");
 				UserMsg::edit(0, [

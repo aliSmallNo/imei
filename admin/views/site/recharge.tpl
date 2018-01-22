@@ -48,7 +48,9 @@
 	}
 </style>
 <div class="row">
-	<h4>充值账户记录列表</h4>
+	<h4>充值账户记录列表
+	<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs">修改账户</a>
+	</h4>
 </div>
 <form action="/site/recharges" class="form-inline">
 	<input class="form-control" placeholder="用户名称" name="name"
@@ -143,4 +145,93 @@
 	</table>
 	{{$pagination}}
 </div>
+<div class="modal fade" id="modModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+									aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">操作</h4>
+			</div>
+			<div class="modal-body" style="overflow:hidden">
+				<div class="col-sm-12 form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-2 control-label">用户手机号:</label>
+						<div class="col-sm-9">
+							<input data-field="phone" required class="form-control" value="" placeholder="(必填)">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">数量:</label>
+						<div class="col-sm-9">
+							<input data-field="amt" required class="form-control" value="" placeholder="(必填)">
+							<p style="font-size: 12px;color: red">如果是提现，单位是分</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">类型:</label>
+						<div class="col-sm-4">
+							<select class="form-control" data-field="cat">
+								<option value="650">提现</option>
+								<option value="108">新人奖励</option>
+							</select>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" data-tag="cat-chat" id="btnSave">确定保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$("a.modU").click(function () {
+		var self = $(this);
+
+		$("#modModal").modal("show")
+	});
+
+	var loadflag = 0;
+	$(document).on("click", "#btnSave", function () {
+		var err=0;
+		var postData = {};
+		$("[data-field]").each(function () {
+					var field = $(this).attr("data-field");
+					var text = parseInt($.trim($(this).val()));
+					if (!text) {
+						console.log(field+' ' +text);
+						layer.msg("必填项不能为空！");
+						err = 1;
+						$(this).focus();
+						return false;
+					}
+					postData[field] = text;
+				});
+		if (err) {
+			return false;
+		}
+		console.log(postData);
+
+		if (loadflag) {
+			return;
+		}
+		loadflag = 1;
+		$.post("/api/user", {
+			tag: "mod_user_trans",
+			data: JSON.stringify(postData),
+		}, function (resp) {
+			loadflag = 0;
+			if (resp.code == 0) {
+				location.reload();
+			} else {
+				layer.msg(resp.msg);
+			}
+		}, "json");
+
+	})
+
+</script>
 {{include file="layouts/footer.tpl"}}

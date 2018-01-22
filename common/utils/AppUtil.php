@@ -254,7 +254,6 @@ class AppUtil
 
 	public static function checkPhone($mobile)
 	{
-
 		if (preg_match("/^1[2-9][0-9]{9}$/", $mobile)) {
 			return true;
 		}
