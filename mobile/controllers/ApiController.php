@@ -2199,6 +2199,13 @@ class ApiController extends Controller
 				list($items, $nextPage) = ChatMsg::contacts($uid, $page, 40);
 				if ($page == 1) {
 					list($rooms, $npage) = ChatRoom::rooms($uid, $page);
+					$fields = ['cAddedBy', 'cAddedOn', 'rAddedBy', 'rAddedOn', 'rStatus', 'cContent',
+						'rAdminUId', 'rCategory', 'rLimit', 'rStatusDate', 'rTitle', 'rUni'];
+					foreach ($rooms as $k => $room) {
+						foreach ($fields as $field) {
+							unset($rooms[$k][$field]);
+						}
+					}
 					$items = array_merge($rooms, $items);
 					usort($items, function ($a, $b) {
 						return $a['time'] < $b['time'];
