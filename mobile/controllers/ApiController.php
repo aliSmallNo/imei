@@ -509,7 +509,7 @@ class ApiController extends Controller
 				$uInfo['showOtherFields'] = User::hideFields($wx_uid);
 
 				$shuX = User::$Shux;
-				if (UserTag::hasCard($wx_uid, UserTag::CAT_MEMBER_VIP)) {
+				if (!UserTag::hasCard($wx_uid, UserTag::CAT_MEMBER_VIP)) {
 					$uInfo["age"] = $shuX[$uInfo["birthyear"] % 12];
 				}
 
