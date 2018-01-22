@@ -1993,7 +1993,7 @@ class ApiController extends Controller
 				// 任务红包
 				$coinCat = UserTrans::COIN_RECEIVE_GIFT;
 				$taskflag = false;
-				foreach ([UserTrans::COIN_RECEIVE_GIFT, UserTrans::COIN_RECEIVE_NORMAL_GIFT, UserTrans::COIN_RECEIVE_VIP_GIFT, UserTrans::COIN_PRESENT_10PEOPLE] as $v) {
+				foreach ([UserTrans::COIN_RECEIVE_GIFT, UserTrans::COIN_RECEIVE_NORMAL_GIFT, UserTrans::COIN_RECEIVE_VIP_GIFT] as $v) {
 					$taskflag = UserTrans::taskCondition($v, $uid);
 					if ($taskflag) {
 						$coinCat = $v;
@@ -2467,6 +2467,7 @@ class ApiController extends Controller
 					"stat" => UserTrans::getStat($wx_uid, true),
 					"items" => $data,
 					'gid' => $data['gid'],
+
 				]);
 				break;
 		}

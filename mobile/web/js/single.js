@@ -2988,6 +2988,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 							ChatUtil.toggle(ChatUtil.giftmenus.hasClass("off"), ChatUtil.giftmenus);
 							util.count.html(resp.data.stat.flower);
 							NoticeUtil.broadcast(resp.data);
+							alpha.task(30)
 						} else if (resp.code == 128) {
 							util.notMoreRose();
 						} else {

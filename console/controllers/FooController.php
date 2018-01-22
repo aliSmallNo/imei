@@ -1587,7 +1587,7 @@ class FooController extends Controller
 
 		//list($ret) = UserNet::s28ShareStat(120003);print_r($ret);
 
-		//var_dump(UserTrans::taskCondition(280, 120003));
+		var_dump(UserTrans::taskCondition(30, 120003));
 
 		//UserTag::add(UserTag::CAT_MEMBER_VIP, 120003, 0);
 
