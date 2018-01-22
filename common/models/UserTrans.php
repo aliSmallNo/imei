@@ -47,6 +47,7 @@ class UserTrans extends ActiveRecord
 	const CAT_EXCHANGE_CHAT = 202;
 
 	const CAT_COIN_DEFAULT = 600;
+	const CAT_COIN_WITHDRAW = 650;
 
 	static $catDict = [
 		self::CAT_RECHARGE_MEMBER => "单身会员",
@@ -78,6 +79,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_EXCHANGE_YUAN => "商城交易",
 		self::CAT_EXCHANGE_CHAT => "聊天赠送礼物",
 		self::CAT_COIN_DEFAULT => "奖励千寻币",
+		self::CAT_COIN_WITHDRAW => "千寻币提现",
 	];
 
 	static $CatMinus = [
@@ -89,6 +91,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_REMOVE_COMMENT,
 		self::CAT_EXCHANGE_FLOWER,
 		self::CAT_EXCHANGE_CHAT,
+		self::CAT_COIN_WITHDRAW,
 	];
 
 	const UNIT_COIN_FEN = 'coin_f';
@@ -390,6 +393,7 @@ class UserTrans extends ActiveRecord
 				$where order by $order limit $limit";
 		$result = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$uIds = $items = [];
+
 		foreach ($result as $k => $row) {
 			$uid = $row["uid"];
 			$tid = $row["tId"];
@@ -437,6 +441,8 @@ class UserTrans extends ActiveRecord
 						'amt2' => 0,
 						'unit_name3' => '花粉值',
 						'amt3' => 0,
+						'unit_name4' => '千寻币',
+						'amt4' => 0,
 					]
 				];
 				$details[$uid] = $bal;
@@ -462,10 +468,15 @@ class UserTrans extends ActiveRecord
 				case self::UNIT_COIN_FEN:
 					$balance['amt'] = sprintf('%.2f', $balance['amt'] / 100.0);
 					$unit = self::UNIT_COIN_YUAN;
-					if (in_array($cat, self::$CatMinus)) {
+					/*if (in_array($cat, self::$CatMinus)) {
 						$details[$uid]['bal']['amt2'] -= $balance['amt'];
 					} else {
 						$details[$uid]['bal']['amt2'] += $balance['amt'];
+					}*/
+					if (in_array($cat, self::$CatMinus)) {
+						$details[$uid]['bal']['amt4'] -= $balance['amt'];
+					} else {
+						$details[$uid]['bal']['amt4'] += $balance['amt'];
 					}
 					break;
 				case self::UNIT_FANS:

@@ -905,9 +905,9 @@ class UserNet extends ActiveRecord
 				COUNT(case when nRelation in ($share_m,$share_f) and nNote=:note then 1 end) as share,
 				COUNT(case WHEN n.nRelation=$share_q AND u.uPhone!='' AND u.uRole>9 then 1 end) as reg 
  				from im_user_net as n 
- 				join im_user as u on u.uId=n.nUId
+ 				join im_user as u on u.uId=n.nSubUId
 				where nUId=:uid and nAddedOn > :stime 
-				group by nUId";
+				group by nUId ";
 		$res = $conn->createCommand($sql)->bindValues([
 			":note" => '/wx/share28',
 			":uid" => $uid,

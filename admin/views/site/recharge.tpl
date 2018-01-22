@@ -115,6 +115,8 @@
 							{{$detail.title}}: {{$detail.amt}}{{$detail.unit_name}}
 							{{if $detail.amt2}}+{{$detail.amt2}}{{$detail.unit_name2}}{{/if}}
 							{{if $detail.amt3}}+{{$detail.amt3}}{{$detail.unit_name3}}{{/if}}
+							{{if $detail.amt4}}+{{$detail.amt4}}{{$detail.unit_name4}}{{/if}}
+
 							<br>
 						{{else}}
 							{{$detail.title}}: {{$detail.amt}}{{$detail.unit_name}}
