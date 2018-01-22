@@ -1636,7 +1636,16 @@ class User extends ActiveRecord
 			$data["advise"] = trim($advise, ', ');
 			$data["name"] = $row["uName"];
 			$data["gender"] = $row["uGender"] == 10 ? "female" : "male";
-			$data["age"] = date("Y") - $row["uBirthYear"];
+
+			if (UserTag::hasCard($myId, UserTag::CAT_MEMBER_VIP)) {
+				$data["age"] = date("Y") - $row["uBirthYear"] . '岁';
+			} else {
+				$shuX = [
+					1 => "酉鸡", 2 => "戌狗", 3 => "亥猪", 4 => "子鼠", 5 => "丑牛", 6 => "寅虎",
+					7 => "卯兔", 8 => "辰龙", 9 => "巳蛇", 10 => "午马", 11 => "未羊", 0 => "申猴",
+				];
+				$data["age"] = $shuX[$row["uBirthYear"] % 12];
+			}
 			//$data["height"] = isset(User::$Height[$row["uHeight"]]) ? User::$Height[$row["uHeight"]] : "无身高";
 			$data["height"] = $row["uHeight"] . "cm";
 			$data["horos"] = isset(User::$Horos[$row["uHoros"]]) ? User::$Horos[$row["uHoros"]] : "无星座";

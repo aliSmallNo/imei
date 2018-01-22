@@ -1589,7 +1589,7 @@ class FooController extends Controller
 
 		//var_dump(UserTrans::taskCondition(30, 120003));
 
-		print_r(UserTrans::getStat(120003, true));
+		//print_r(UserTrans::getStat(120003, true));
 
 
 		//UserTag::add(UserTag::CAT_MEMBER_VIP, 120003, 0);
@@ -1599,6 +1599,9 @@ class FooController extends Controller
 		//UserNet::items(120003, 'fav', 'fav-both',1);
 
 		// UserTrans::addTaskRedpaket(280, 120003) . PHP_EOL;
+
+
+
 
 	}
 
