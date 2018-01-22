@@ -228,10 +228,10 @@ class UserBuzz extends ActiveRecord
 			case '晚安':
 			case 'good night':
 			case 'night':
-				/*$mediaId = 'GfJsRJj-kJwOJMdX7eK9HCZX6j-ZGWE8ZJ-oD5QdIyA';
+				$mediaId = 'GfJsRJj-kJwOJMdX7eK9HOJdRYnMa6EgIStxjt3qY1o';
 				NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, $fromUsername)->sendMedia($mediaId);
-				$resp = '';*/
-				$txt = "原来喜欢一个人的第一感觉是自卑。
+				$resp = '';
+				/*$txt = "原来喜欢一个人的第一感觉是自卑。
 不敢给你发消息，
 不敢告诉你有多喜欢你，
 不敢告诉你，
@@ -245,7 +245,7 @@ class UserBuzz extends ActiveRecord
 就好像看见了自己的卑微和讨好。
 
 晚安，世界和你 🌙";
-				$resp = self::textMsg($fromUsername, $toUsername, $txt);
+				$resp = self::textMsg($fromUsername, $toUsername, $txt);*/
 				break;
 			case '任务':
 				$txt = "小任务详情：
