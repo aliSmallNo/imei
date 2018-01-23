@@ -830,12 +830,23 @@ class SiteController extends BaseController
 		$getInfo = Yii::$app->request->get();
 		$sdate = self::getParam("sdate");
 		$edate = self::getParam("edate");
+		$phone = self::getParam("phone");
+		$name = self::getParam("name");
+		$name = str_replace("''", "", $name);
 		$page = self::getParam("page", 1);
 		$criteria = $params = [];
 		if ($sdate && $edate) {
 			$criteria[] = "t.tAddedOn between :sdt and :edt ";
 			$params[':sdt'] = $sdate . ' 00:00:00';
 			$params[':edt'] = $edate . ' 23:59:50';
+		}
+		if ($phone && AppUtil::checkPhone($phone)) {
+			$criteria[] = "u.uPhone=:phone ";
+			$params[':phone'] = $phone;
+		}
+		if ($name) {
+			$criteria[] = "u.uName like :name ";
+			$params[':name'] = '%' . $name . '%';
 		}
 
 		list($stat, $count) = UserTrans::taskAdminStat($criteria, $params, $page);
@@ -847,8 +858,6 @@ class SiteController extends BaseController
 			[
 				'getInfo' => $getInfo,
 				'scanStat' => $stat,
-				//'timesSub' => json_encode($timesSub, JSON_UNESCAPED_UNICODE),
-				//'timesReg' => json_encode($timesReg, JSON_UNESCAPED_UNICODE),
 				'today' => date('Y-m-d'),
 				'yesterday' => date('Y-m-d', time() - 86400),
 				'monday' => $monday,
