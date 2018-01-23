@@ -1011,7 +1011,7 @@ class UserTrans extends ActiveRecord
 				return $num;
 			}
 			$arr = [];
-			for ($i = 1; $i < 9; $i++) {
+			for ($i = 1; $i < 31; $i++) {
 				$arr[] = $every;
 			}
 			for ($i = 1; $i < 21; $i++) {
