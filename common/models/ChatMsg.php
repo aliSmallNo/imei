@@ -773,6 +773,34 @@ class ChatMsg extends ActiveRecord
 		return $left < 0 ? 0 : $left;
 	}
 
+	public static function groupInfo($uId, $gId, $conn = null)
+	{
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$sql = 'SELECT gId,gUId1,gUId2 FROM im_chat_group WHERE gId=:id and (gUid1=:uid or gUId2=:uid)';
+		$info = $conn->createCommand($sql)->bindValues([
+			':id' => $gId,
+			':uid' => $uId
+		])->queryOne();
+		if (!$info) {
+			return [0, 0];
+		}
+		$subUId = $info['gUId1'];
+		if ($subUId == $uId) {
+			$subUId = $info['gUId2'];
+		}
+
+		$sql = "UPDATE im_chat_group SET gStatus=:st WHERE gId=:gid";
+		$conn->createCommand($sql)->bindValues([
+			':gid' => $gId,
+			':st' => self::ST_ACTIVE
+		])->execute();
+
+		$left = self::chatLeft($uId, $subUId, $conn);
+		return [$subUId, $left];
+	}
+
 	public static function groupEdit($uId, $subUId, $giftCount = 0, $conn = null)
 	{
 		if (!$conn) {
