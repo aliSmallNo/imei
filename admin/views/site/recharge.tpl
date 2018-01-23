@@ -47,9 +47,12 @@
 		color: #f50 !important;
 	}
 </style>
+
+
+
 <div class="row">
 	<h4>充值账户记录列表
-	<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs">修改账户</a>
+	{{if $isDebugger}}<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs">修改账户</a>{{/if}}
 	</h4>
 </div>
 <form action="/site/recharges" class="form-inline">

@@ -63,6 +63,10 @@
 	至
 	<input class="form-control endDate my-date-input" placeholder="截止时间" name="edate"
 				 value="{{if isset($getInfo['edate'])}}{{$getInfo['edate']}}{{/if}}">
+<input class="form-control" placeholder="用户名" name="name"
+				 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}">
+<input class="form-control" placeholder="手机号" name="phone"
+				 value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}">
 	<button class="btn btn-primary">查询</button>
 	<span class="space"></span>
 	<a href="javascript:;" class="j-scope" data-from="{{$today}}" data-to="{{$today}}">今天</a>
@@ -117,7 +121,10 @@
 						<div>{{$stat.name}} ({{$stat.id}})</div>
 						<div class="tip">{{$stat.phone}}</div>
 						<div class="tip">累计: <span class="co1">￥{{$stat.amt/100|string_format:'%.2f'}}</span></div>
+						<div class="tip">任务累计: <span class="co1">￥{{$stat.task/100|string_format:'%.2f'}}</span></div>
+						<div class="tip">分享奖励红包: <span class="co1">￥{{$stat.share/100|string_format:'%.2f'}}</span></div>
 						<div class="tip">消费: <span class="co2">￥{{$stat.reduce/100}}</span></div>
+						<div class="tip">提现: <span class="co2">￥{{$stat.cash/100}}</span></div>
 					</div>
 
 				</td>

@@ -1011,7 +1011,7 @@ class UserTrans extends ActiveRecord
 				return $num;
 			}
 			$arr = [];
-			for ($i = 1; $i < 9; $i++) {
+			for ($i = 1; $i < 31; $i++) {
 				$arr[] = $every;
 			}
 			for ($i = 1; $i < 21; $i++) {
@@ -1165,8 +1165,11 @@ class UserTrans extends ActiveRecord
 		$sql = "SELECT u.uName as `name`,u.uPhone as phone,u.uId as id,u.uThumb as thumb,
 			Date_format(t.tAddedOn, '%H') as hr,
 			$string
-			SUM(case WHEN tCategory=:cat  then t.tAmt end) as amt,
-			SUM(case WHEN tCategory=:cat1 and t.tUnit=:unit  then t.tAmt end) as reduce
+			SUM(case WHEN tCategory=:cat or tCategory=:cat2  then t.tAmt end) as amt,
+			SUM(case WHEN tCategory=:cat  then t.tAmt end) as task,
+			SUM(case WHEN tCategory=:cat2  then t.tAmt end) as share,
+			SUM(case WHEN tCategory=:cat1 and t.tUnit=:unit  then t.tAmt end) as reduce,
+			SUM(case WHEN tCategory=:cat3 and t.tUnit=:unit  then t.tAmt end) as cash
 			FROM im_user_trans as t 
 			JOIN im_user as u on u.uId=t.tUId 
 			WHERE t.tId>0 $strCriteria
@@ -1174,6 +1177,8 @@ class UserTrans extends ActiveRecord
 		$params2 = array_merge($params, [
 			":cat" => self::CAT_COIN_DEFAULT,
 			":cat1" => self::CAT_EXCHANGE_FLOWER,
+			":cat2" => self::CAT_MOMENT_RED,
+			":cat3" => self::CAT_COIN_WITHDRAW,
 			":unit" => self::UNIT_COIN_FEN,
 		], $params3);
 		$ret = $conn->createCommand($sql)->bindValues($params2)->queryAll();
