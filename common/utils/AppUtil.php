@@ -162,6 +162,11 @@ class AppUtil
 		return in_array($uid, [120003, 131379, 146306]);// zp dashixiong lizp
 	}
 
+	public static function isAccountDebugger($uid)
+	{
+		return in_array($uid, [1001, 1002, 1014]);// zp dashixiong zmy
+	}
+
 	public static function resDir()
 	{
 		return self::getParam('folders', 'res');

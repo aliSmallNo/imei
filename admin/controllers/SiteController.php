@@ -671,6 +671,7 @@ class SiteController extends BaseController
 				'items' => $items,
 				'pagination' => $pagination,
 				'catDict' => UserTrans::$catDict,
+				'isDebugger' => AppUtil::isAccountDebugger(Admin::getAdminId()),
 			]
 		);
 	}
