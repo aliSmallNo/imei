@@ -783,6 +783,15 @@ class ApiController extends Controller
 						array_splice($ret['data'], $index, 0,
 							[["url" => $item['url'], "img" => $item['content'], 'uni' => 100 + $k]]);
 					}
+
+					$headers = CogService::init()->homeHeaders(true);
+					foreach ($headers as $k => $header) {
+						$headers[$k]['image'] = $header['content'];
+						$headers[$k]['key'] = 100 + $k;
+						unset($headers[$k]['content'], $headers[$k]['id'], $headers[$k]['name'], $headers[$k]['cat'],
+							$headers[$k]['addon'], $headers[$k]['editon'], $headers[$k]['st'], $headers[$k]['exp']);
+					}
+					$ret['headers'] = $headers;
 				}
 				return self::renderAPI(0, '', $ret);
 			case "mymp":
