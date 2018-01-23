@@ -2520,7 +2520,7 @@ class ApiController extends Controller
 				if ($unit == Goods::UNIT_FLOWER) {
 					$remain = UserTrans::getStat($wx_uid, 1)["flower"];
 					if ($remain < $amt) {
-						return self::renderAPI(129, '媒瑰花不足~');
+						return self::renderAPI(129, '媒桂花不足~');
 					}
 					Order::exchange($insertData, $unit);
 					return self::renderAPI(0, '兑换成功~');
@@ -2768,7 +2768,7 @@ class ApiController extends Controller
 			case "pay_rose":
 				$amt = self::postParam("amt");
 				if ($amt < 520) {
-					return self::renderAPI(129, '你还没选择要送她的媒瑰花数~');
+					return self::renderAPI(129, '你还没选择要送她的媒桂花数~');
 				}
 				$remainRose = UserTrans::getStat($wxInfo["uId"], 1);
 				$flower = isset($remainRose['flower']) ? $remainRose['flower'] : 0;
@@ -3078,7 +3078,7 @@ class ApiController extends Controller
 					]);
 					$amt = 10;
 					UserTrans::add($uid, 0, UserTrans::CAT_VOTE, '投票奖励', $amt, UserTrans::UNIT_GIFT);
-					return self::renderAPI(0, '投票成功,奖励' . $amt . '朵媒瑰花！');
+					return self::renderAPI(0, '投票成功,奖励' . $amt . '朵媒桂花！');
 				}
 				break;
 		}

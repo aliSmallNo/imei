@@ -296,7 +296,7 @@
 	{{if $st==110}}
 		<div class="date-btn flex-column ">
 			<a href="javascript:;" class="date-rule date-pay-rule" data-rule-tag="data_rule_rose">查看付款平台规则</a>
-			<a href="javascript:;" data-tag="date_pay">送TA媒瑰花</a>
+			<a href="javascript:;" data-tag="date_pay">送TA媒桂花</a>
 		</div>
 	{{/if}}
 {{/if}}
@@ -332,7 +332,7 @@
 	{{/if}}
 	{{if $st==110}}
 		<div class="date-btn">
-			<a href="javascript:;" data-tag="wait">等待对方送你媒瑰花</a>
+			<a href="javascript:;" data-tag="wait">等待对方送你媒桂花</a>
 		</div>
 	{{/if}}
 {{/if}}

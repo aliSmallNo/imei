@@ -31,7 +31,7 @@ class Date extends ActiveRecord
 		self::STATUS_INVITE => '发出邀请',
 		self::STATUS_PENDING => '审核通过',
 		self::STATUS_PASS => '对方同意',
-//		self::STATUS_PAY => '送媒瑰花',
+//		self::STATUS_PAY => '送媒桂花',
 		self::STATUS_MEET => '线下见面',
 		self::STATUS_COMMENT => '评价对方',
 	];

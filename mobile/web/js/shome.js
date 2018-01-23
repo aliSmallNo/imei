@@ -183,7 +183,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 						case "pay":
 							var num = self.closest(".pay-mp").find(".options a.active").attr("num");
 							if (!num) {
-								alpha.toast("请先选择打赏的媒瑰花");
+								alpha.toast("请先选择打赏的媒桂花");
 								return;
 							}
 							if (alertUlit.payroseF) {
@@ -723,7 +723,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 			tag: 'normal',
 			UL: $(".g-items-ul .ul"),
 			Tmp: $("#tpl_gifts").html(),
-			count: $(".g-bot-rose .count"),// 剩余媒瑰花数
+			count: $(".g-bot-rose .count"),// 剩余媒桂花数
 			loading: 0,
 			init: function () {
 				var util = this;
@@ -759,8 +759,8 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 			},
 			notMoreRose: function () {
 				layer.open({
-					content: '您的媒瑰花数量不足~'
-					, btn: ['去充媒瑰花', '不要']
+					content: '您的媒桂花数量不足~'
+					, btn: ['去充媒桂花', '不要']
 					, yes: function (index) {
 						location.href = "/wx/sw";
 						layer.close(index);

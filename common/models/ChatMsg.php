@@ -1395,7 +1395,7 @@ class ChatMsg extends ActiveRecord
 					':dt' => $dt,
 				])->queryAll();
 				break;
-			case "rose":// 媒瑰花少于20朵
+			case "rose":// 媒桂花少于20朵
 				$strMinus = implode(',', UserTrans::$CatMinus);
 				$sql = "SELECT tUnit as unit, tUId as uid,uId,uGender,
 						SUM(case when tCategory in (" . $strMinus . ") then -IFNULL(tAmt,0) else IFNULL(tAmt,0) end) as amt
@@ -1547,7 +1547,7 @@ class ChatMsg extends ActiveRecord
 					$entity->save();
 
 					$uname = User::findOne(["uId" => $uid])["uName"];
-					$sysMessage = '【系统提示】 "' . $uname . '" 委婉拒绝了您的请求，媒瑰花已退回，请到账户查看';
+					$sysMessage = '【系统提示】 "' . $uname . '" 委婉拒绝了您的请求，媒桂花已退回，请到账户查看';
 					$res = ChatMsg::addChat($uid, $sid, $sysMessage);
 					return [0, '', $res];
 				} else {

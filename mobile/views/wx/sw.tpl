@@ -5,7 +5,7 @@
 			<a href="javascript:;" data-page="swallet">
 				<img src="/images/sw/fl.png" alt="">
 				<p>{{$stat['flower']}}</p>
-				<p>媒瑰花</p>
+				<p>媒桂花</p>
 			</a>
 		</li>
 		<li>
@@ -196,12 +196,12 @@
 <script type="text/template" id="tpl_request_wechat">
 	<div class="sw_pay_alert">
 		<h4>支付
-			<p>60朵媒瑰花</p>
+			<p>60朵媒桂花</p>
 		</h4>
 		<div class="sw_pay_alert_des">
 			<h3>￥ <span>19.23</span></h3>
 			<a href="javascript:;"><span class="active">千寻币支付 <em></em>元</span></a>
-			<h5>提示: 首冲使用千寻币媒瑰花不会翻三倍哦~</h5>
+			<h5>提示: 首冲使用千寻币媒桂花不会翻三倍哦~</h5>
 		</div>
 		<div class="sw_pay_alert_btn">
 			<a href="javascript:;" class="cancel">取消</a>

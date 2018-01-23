@@ -1941,7 +1941,7 @@ class User extends ActiveRecord
 		$B += intval($cnt * 2.0);
 
 
-		// "购买系数(V）V=V1*100+V2+V3/5+V4"	充值行为V1:金额*5 每日签到V2:次数*1 账户余额V3:媒瑰花数/5 待定V4,赠送媒桂花B3:次数*2
+		// "购买系数(V）V=V1*100+V2+V3/5+V4"	充值行为V1:金额*5 每日签到V2:次数*1 账户余额V3:媒桂花数/5 待定V4,赠送媒桂花B3:次数*2
 		$sql = "select
 					SUM(CASE WHEN tCategory in (127,128) and tAddedOn  BETWEEN :sTime  AND :eTime THEN 5 END ) as present,
 					SUM(CASE WHEN tCategory=100 and tAddedOn  BETWEEN :sTime  AND :eTime THEN 100 END ) as recharge,

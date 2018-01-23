@@ -365,7 +365,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						case "pay":
 							var num = self.closest(".reward-wx-wrap").find(".options a.active").attr("num");
 							if (!num) {
-								alpha.toast("请先选择打赏的媒瑰花");
+								alpha.toast("请先选择打赏的媒桂花");
 								return;
 							}
 							if (AlertUtil.payroseF) {
@@ -553,8 +553,8 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			tag: 'request_wechat_no',
 			ptext: [
 				{title: '请先填写您的微信号', p: '', btns: ["取消", "确定"]},
-				{title: '提示', p: '送TA媒瑰花增加索要微信号的概率，索要失败全部退回，是否赠送？', btns: ["取消", "66朵媒瑰花"]},
-				{title: '提示', p: '对方向您索要微信号，并赠送您66朵媒瑰花,您是否同意?', btns: ["委婉拒绝", "同意"]}
+				{title: '提示', p: '送TA媒桂花增加索要微信号的概率，索要失败全部退回，是否赠送？', btns: ["取消", "66朵媒桂花"]},
+				{title: '提示', p: '对方向您索要微信号，并赠送您66朵媒桂花,您是否同意?', btns: ["委婉拒绝", "同意"]}
 			],
 			isGiveWechat: 0,
 
@@ -2925,7 +2925,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			tag: 'normal',
 			UL: $(".g-items-ul .ul"),
 			Tmp: $("#tpl_gifts").html(),
-			count: $(".g-bot-rose .count"),// 剩余媒瑰花数
+			count: $(".g-bot-rose .count"),// 剩余媒桂花数
 			loading: 0,
 			init: function () {
 				var util = this;
@@ -2961,8 +2961,8 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			},
 			notMoreRose: function () {
 				layer.open({
-					content: '您的媒瑰花数量不足~'
-					, btn: ['去充媒瑰花', '不要']
+					content: '您的媒桂花数量不足~'
+					, btn: ['去充媒桂花', '不要']
 					, yes: function (index) {
 						location.href = "/wx/sw";
 						layer.close(index);

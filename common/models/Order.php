@@ -209,7 +209,7 @@ class Order extends ActiveRecord
 			case "normal":
 				$flower = UserTrans::getStat($wx_uid, true)["flower"];
 				if ($flower < $amt) {
-					return [128, '您的账户媒瑰花数量不足~', ''];
+					return [128, '您的账户媒桂花数量不足~', ''];
 				}
 				$tid = UserTrans::add($wx_uid, 0, UserTrans::CAT_EXCHANGE_CHAT, '', $amt, UserTrans::UNIT_GIFT, $note = '');
 				$insertData["oStatus"] = self::ST_PAY;

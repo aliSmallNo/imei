@@ -951,7 +951,7 @@ class WechatUtil
 				$url = $urlPrefix . "/wx/sw";
 				$cat = UserMsg::CATEGORY_RETURN_ROSE;
 				$keyword1Val = UserMsg::$catDict[$cat];
-				$keyword2Val = "有媒瑰花退回，快去看看吧！";
+				$keyword2Val = "有媒桂花退回，快去看看吧！";
 				break;
 			case "mysay":
 				$url = $urlPrefix . "/wx/sh";

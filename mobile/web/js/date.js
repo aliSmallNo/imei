@@ -124,7 +124,7 @@ require(['jquery', 'mustache', 'alpha'],
 				var util = dateUtil;
 				var amt = parseInt($(".topup-opt a.active").attr("data-amt"));
 				if (!amt || amt < 520) {
-					alpha.toast("你还没选择送TA的媒瑰花数哦");
+					alpha.toast("你还没选择送TA的媒桂花数哦");
 					return;
 				}
 				if (util.loading) {
@@ -401,13 +401,13 @@ require(['jquery', 'mustache', 'alpha'],
 			var content = '';
 			switch (catRule) {
 				case 'data_rule_rose':
-					content = "<p style='text-align: left;font-size: 1.2rem'>1. 对方同意线下见面，平台要求为此次撮合打赏不少于520朵媒瑰花</p>" +
-						"<p style='text-align: left;font-size: 1.2rem'>2. 媒瑰花一次性扣除，一律不予退还。约会成功(双方互评)后对方可获得同等数目的花粉值</p>" +
+					content = "<p style='text-align: left;font-size: 1.2rem'>1. 对方同意线下见面，平台要求为此次撮合打赏不少于520朵媒桂花</p>" +
+						"<p style='text-align: left;font-size: 1.2rem'>2. 媒桂花一次性扣除，一律不予退还。约会成功(双方互评)后对方可获得同等数目的花粉值</p>" +
 						"<p style='text-align: left;font-size: 1.2rem'>3. 用户送对方花默认同意此规则。</p>" +
 						"<p style='text-align: left;font-size: 1.2rem'>4. 本活动解释权归千寻恋恋所有。</p>";
 					break;
 				case 'data_rule_agree':
-					content = "<p style='text-align: left;font-size: 1.2rem'>1. 邀请方花费不少于520朵媒瑰花约你，点击代表您同意见面。</p>" +
+					content = "<p style='text-align: left;font-size: 1.2rem'>1. 邀请方花费不少于520朵媒桂花约你，点击代表您同意见面。</p>" +
 						"<p style='text-align: left;font-size: 1.2rem'>2. 平台会在你们现在见面结束，双方互评完成送您同等数目的花粉值。</p>" +
 						"<p style='text-align: left;font-size: 1.2rem'>3. 本活动解释权归千寻恋恋所有。</p>";
 					break;
