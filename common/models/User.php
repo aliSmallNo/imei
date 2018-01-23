@@ -66,6 +66,10 @@ class User extends ActiveRecord
 		1992 => 1992, 1993 => 1993, 1994 => 1994, 1995 => 1995,
 		1996 => 1996, 1997 => 1997, 1998 => 1998, 1999 => 1999
 	];
+	static $Shux = [
+		1 => "酉鸡", 2 => "戌狗", 3 => "亥猪", 4 => "子鼠", 5 => "丑牛", 6 => "寅虎",
+		7 => "卯兔", 8 => "辰龙", 9 => "巳蛇", 10 => "午马", 11 => "未羊", 0 => "申猴",
+	];
 	static $AgeFilter = [
 		0 => "年龄不限",
 		16 => "16岁", 18 => "18岁", 20 => "20岁", 22 => "22岁", 24 => "24岁", 26 => "26岁", 28 => "28岁", 30 => "30岁",
@@ -886,11 +890,21 @@ class User extends ActiveRecord
 				$index = $k;
 			}
 			if (isset($uInfo[$content]) && $k < $index) {
-				$items[$k]['content'] = $uInfo[$content];
-				$normal[] = $items[$k];
+
+				if (!UserTag::hasCard($wx_uid, UserTag::CAT_MEMBER_VIP)
+					&& $content == "birthyear") {
+					$items[$k]['content'] = User::$Shux[$uInfo[$content] % 12];
+					$items[$k]['caption'] = "属相";
+					$normal[] = $items[$k];
+				} else {
+					$items[$k]['content'] = $uInfo[$content];
+					$normal[] = $items[$k];
+				}
+
 			} else if (isset($items[$k]["header"]) && $items[$k]["header"] == 1 && $k < $index) {
 				$normal[] = $items[$k];
 			}
+
 			if (isset($uInfo[$content]) && $k >= $index) {
 				$items[$k]['content'] = $uInfo[$content];
 				$vip[] = $items[$k];
@@ -1640,10 +1654,7 @@ class User extends ActiveRecord
 			if (UserTag::hasCard($myId, UserTag::CAT_MEMBER_VIP)) {
 				$data["age"] = date("Y") - $row["uBirthYear"] . '岁';
 			} else {
-				$shuX = [
-					1 => "酉鸡", 2 => "戌狗", 3 => "亥猪", 4 => "子鼠", 5 => "丑牛", 6 => "寅虎",
-					7 => "卯兔", 8 => "辰龙", 9 => "巳蛇", 10 => "午马", 11 => "未羊", 0 => "申猴",
-				];
+				$shuX = User::$Shux;
 				$data["age"] = $shuX[$row["uBirthYear"] % 12];
 			}
 			//$data["height"] = isset(User::$Height[$row["uHeight"]]) ? User::$Height[$row["uHeight"]] : "无身高";
