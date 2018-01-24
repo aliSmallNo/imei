@@ -860,7 +860,6 @@ class UserTrans extends ActiveRecord
 	 */
 	public static function taskCondition($key, $uid)
 	{
-
 		$startTime = '2018-01-02 00:00:00';
 		$u = User::fmtRow(User::findOne(["uId" => $uid])->toArray());
 
@@ -1177,7 +1176,7 @@ class UserTrans extends ActiveRecord
 			SUM(case WHEN tCategory=:cat3 and t.tUnit=:unit  then t.tAmt end) as cash
 			FROM im_user_trans as t 
 			JOIN im_user as u on u.uId=t.tUId 
-			WHERE t.tId>0 $strCriteria
+			WHERE t.tId>0 and tDeletedFlag=0 $strCriteria
 			GROUP BY tUId Having amt>0 ORDER BY amt DESC $limit";
 		$params2 = array_merge($params, [
 			":cat" => self::CAT_COIN_DEFAULT,
@@ -1196,7 +1195,7 @@ class UserTrans extends ActiveRecord
 
 		$sql = "SELECT count(1) FROM (
 				select SUM(case WHEN tCategory=600  then t.tAmt end) as amt FROM im_user_trans as t 
-				JOIN im_user as u on u.uId=t.tUId WHERE t.tId>0 $strCriteria GROUP BY tUId Having amt>0 ) as temp";
+				JOIN im_user as u on u.uId=t.tUId WHERE t.tId>0 and tDeletedFlag=0 $strCriteria GROUP BY tUId Having amt>0 ) as temp";
 
 		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
 
