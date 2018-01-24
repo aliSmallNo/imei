@@ -234,7 +234,7 @@ class ChatRoom extends ActiveRecord
 			$v["content"] = $v['cContent'];
 			$v["dt"] = AppUtil::miniDate($v['cAddedOn']);
 			$v["encryptId"] = '';
-			$v["gid"] = $v["rId"];
+			$v["gid"] = intval($v["rId"]);
 			$v["name"] = $v["rTitle"];
 			$v["readflag"] = $v["cnt"] > 0 ? 0 : 1;
 			$v["uid"] = 0;
@@ -290,7 +290,7 @@ class ChatRoom extends ActiveRecord
 		$limit = " limit " . ($page - 1) * $pagesize . "," . ($pagesize + 1);
 		$sql = "SELECT c.* ,u.*,m.mBanFlag,m.mDeletedFlag as del
 				from im_chat_room as r 
-				join im_chat_msg as c on r.rId=c.cGId 
+				join im_chat_msg as c on r.rId=c.cGId AND c.cDeletedFlag =0
 				join im_user as u on u.uId=c.cAddedBy
 				join im_chat_room_fella as m on m.mUId=c.cAddedBy  and m.mRId=:rid
 				where c.cGId=:rid and  c.cDeletedFlag=:del and cId between 0 and :lastid
@@ -403,7 +403,7 @@ class ChatRoom extends ActiveRecord
 			 join im_user as u on u.uId= f.fUId and u.uOpenId like 'oYDJew%'
 			 group by u.uId,u.uOpenId
 			 having gid!='' ";*/
-		$sql="select u.uId,u.uOpenId, GROUP_CONCAT(distinct r.rId) as gid
+		$sql = "select u.uId,u.uOpenId, GROUP_CONCAT(distinct r.rId) as gid
 			 from im_chat_room as r
 			 join im_chat_room_fella as g on r.rId=g.mRId
 			 join im_user as u on u.uId=g.mUId and u.uOpenId like 'oYDJew%' and g.mDeletedFlag=0
