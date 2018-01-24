@@ -924,7 +924,7 @@ class ChatMsg extends ActiveRecord
 			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy,m.cNote as qid,m.cMark as mark,a.aName, m.cReadFlag as readflag,
 			 m.cType as `type`,m.cUrl as url,(CASE WHEN u.uOpenId LIKE \'oYDJew%\' THEN 0 ELSE 1 END) as dummy
 			 from im_chat_group as g 
-			 join im_chat_msg as m on g.gId=m.cGId
+			 join im_chat_msg as m on g.gId=m.cGId AND m.cDeletedFlag=0
 			 join im_user as u on u.uId=m.cAddedBy
 			 left join im_admin as a on a.aId=m.cAdminId
 			 WHERE g.gId=:id ' . $criteria . ' ORDER BY m.cId desc LIMIT 0,' . $pageSize;
