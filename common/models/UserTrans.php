@@ -860,8 +860,13 @@ class UserTrans extends ActiveRecord
 	 */
 	public static function taskCondition($key, $uid)
 	{
+
 		$startTime = '2018-01-02 00:00:00';
 		$u = User::fmtRow(User::findOne(["uId" => $uid])->toArray());
+
+		if ($u["status"] != User::STATUS_ACTIVE) {
+			return false;
+		}
 		$conn = AppUtil::db();
 		$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid ";
 		$cmd1 = $conn->createCommand($sql);
