@@ -909,6 +909,98 @@ class ChatMsg extends ActiveRecord
 		];
 	}
 
+	public static function chatDetail($gId, $uId, $lastId = 0, $direction = 'down', $hideTipFlag = false, $pageSize = 50)
+	{
+		$criteria = '';
+		if ($lastId) {
+			if ($direction == 'down') {
+				$criteria = ' AND cId > ' . $lastId;
+			} else {
+				$criteria = ' AND cId < ' . $lastId;
+			}
+		}
+		$conn = AppUtil::db();
+		$sql = 'select u.uName as `name`,u.uThumb as avatar,u.uUniqid as uni, g.gId as gid, g.gRound as round,g.gUId1,g.gUId2,
+			 m.cId as cid, m.cContent as content,m.cAddedOn as addedon,m.cAddedBy,m.cNote as qid,m.cMark as mark,a.aName, m.cReadFlag as readflag,
+			 m.cType as `type`,m.cUrl as url,(CASE WHEN u.uOpenId LIKE \'oYDJew%\' THEN 0 ELSE 1 END) as dummy
+			 from im_chat_group as g 
+			 join im_chat_msg as m on g.gId=m.cGId
+			 join im_user as u on u.uId=m.cAddedBy
+			 left join im_admin as a on a.aId=m.cAdminId
+			 WHERE g.gId=:id ' . $criteria . ' ORDER BY m.cId desc LIMIT 0,' . $pageSize;
+		$chats = $conn->createCommand($sql)->bindValues([
+			':id' => $gId,
+		])->queryAll();
+
+		$items = [];
+		$preDT = $subUId = '';
+		foreach ($chats as $k => $chat) {
+			if (!$subUId && $chat['gUId1'] == $uId) {
+				$subUId = $chat['gUId2'];
+			} elseif (!$subUId && $chat['gUId2'] == $uId) {
+				$subUId = $chat['gUId1'];
+			}
+			$chat['type'] = intval($chat['type']);
+			$chat['cid'] = intval($chat['cid']);
+			$chat['avatar'] = ImageUtil::getItemImages($chat['avatar'])[0];
+			$dt = AppUtil::dateOnly($chat['addedon']);
+			if ($preDT != $dt && !$hideTipFlag) {
+				if ($preDT) {
+					$items[] = [
+						'dir' => 'center',
+						'content' => $preDT,
+						'type' => 0
+					];
+				}
+				$preDT = $dt;
+				if ($k > $pageSize - 5) {
+					break;
+				}
+			}
+			if ($hideTipFlag) {
+				$chat['dt'] = AppUtil::prettyDate($chat['addedon']);
+			}
+			$chat['dir'] = ($uId == $chat['cAddedBy'] ? 'right' : 'left');
+			if (!$chat['url']) {
+				$chat['url'] = 'javascript:;';
+			}
+			$chat['eid'] = ($uId == $chat['cAddedBy'] ? '' : AppUtil::encrypt($chat['cAddedBy']));
+			unset($chat['cAddedBy'], $chat['round']);
+			if (!$hideTipFlag) {
+				unset($chat['aName'], $chat['name'], $chat['addedon']);
+			}
+			if ($chat['cid'] > $lastId) {
+				$lastId = $chat['cid'];
+			}
+			$chat["options"] = "";
+			$chat["ansFlag"] = 0;
+			$chat["qid"] = intval($chat["qid"]);
+			//if ($chat["qid"] && $chat["qid"] != self::NOTE_GREETING) {
+			if ($chat["qid"]) {
+				$qInfo = QuestionSea::fmt(QuestionSea::findOne(["qId" => $chat["qid"]])->toArray());
+				if ($chat["mark"] == self::MARK_SHOW_OPTIONS) {
+					$chat["ansFlag"] = 0;
+					$chat["options"] = $qInfo["options"];
+					$chat["shortcat"] = mb_substr($qInfo["cat"], 0, 1);
+				} else {
+					$chat["ansFlag"] = 1;
+				}
+				$chat["qid"] = AppUtil::encrypt($chat["qid"]);
+			}
+			$items[] = $chat;
+		}
+		$items = array_reverse($items);
+		$sql = 'update im_chat_msg as m 
+				join im_chat_group as g on g.gId=m.cGId and g.gId=:id
+				set cReadFlag=1,cReadOn=now() 
+				WHERE cReadFlag=0 AND cAddedBy=:uid';
+		$conn->createCommand($sql)->bindValues([
+			':id' => $gId,
+			':uid' => $subUId
+		])->execute();
+		return [$items, $lastId];
+	}
+
 	public static function details($uId, $subUId, $lastId = 0, $hideTipFlag = false)
 	{
 		$criteria = ' AND cId> ' . $lastId;

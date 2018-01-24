@@ -2004,6 +2004,44 @@ class ApiController extends Controller
 		}*/
 
 		switch ($tag) {
+			case 'chat-detail':
+				$lastId = self::postParam('last', 0);
+				$dir = self::postParam('dir', 'down');
+				$gId = self::postParam('gid', 0);
+				$left = 0;
+				if ($gId) {
+					list($subUId, $left) = ChatMsg::groupInfo($uid, $gId);
+				} else {
+					$subUId = self::postParam('id');
+					$subUId = AppUtil::decrypt($subUId);
+				}
+				if (!$subUId) {
+					return self::renderAPI(129, '对话用户不存在啊~');
+				}
+				LogAction::add($uid, $openId, LogAction::ACTION_CHAT, $subUId);
+				if (!$gId) {
+					list($gId, $left) = ChatMsg::groupEdit($uid, $subUId);
+				}
+				list($items, $lastId) = ChatMsg::chatDetail($gId, $uid, $lastId, $dir);
+				foreach ($items as $k => $item) {
+					$items[$k]['image'] = '';
+					if ($item['type'] == ChatMsg::TYPE_IMAGE) {
+						$items[$k]['image'] = $item['content'];
+					}
+				}
+				// 是否评价一次TA
+				$commentFlag = UserComment::hasComment($subUId, $uid);
+				$show_guide = ChatMsg::showGuide($uid, $openId, 99);
+				return self::renderAPI(0, '', [
+					'items' => $items,
+					'dir' => $dir,
+					'lastId' => intval($lastId),
+					'left' => $left,
+					'gid' => $gId,
+					'commentFlag' => $commentFlag,
+					'show_guide' => $show_guide
+				]);
+				break;
 			case "task_receive_gift":
 				// 任务红包
 				$coinCat = UserTrans::COIN_RECEIVE_GIFT;
