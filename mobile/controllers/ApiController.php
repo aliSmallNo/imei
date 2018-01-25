@@ -2038,6 +2038,7 @@ class ApiController extends Controller
 					'lastId' => intval($lastId),
 					'left' => $left,
 					'gid' => $gId,
+					'subuid' => AppUtil::encrypt($subUId),
 					'commentFlag' => $commentFlag,
 					'show_guide' => $show_guide
 				]);
