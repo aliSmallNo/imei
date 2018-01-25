@@ -1601,7 +1601,7 @@ class FooController extends Controller
 
 		// UserTrans::addTaskRedpaket(280, 120003) . PHP_EOL;
 
-		UserTrans::taskCondition(10, 136055);
+		//UserTrans::taskCondition(10, 136055);
 
 
 	}

@@ -148,7 +148,7 @@ class UserMsg extends ActiveRecord
 			array_pop($ret);
 			$nextPage = $page + 1;
 		}
-		foreach ($ret as &$v) {
+		foreach ($ret as $k => &$v) {
 			$v["secretId"] = AppUtil::encrypt($v["uId"]);
 			switch ($v["mCategory"]) {
 				case self::CATEGORY_FAVOR:
@@ -204,6 +204,7 @@ class UserMsg extends ActiveRecord
 
 			$v["dt"] = AppUtil::prettyDate($v["mAddedOn"]);
 			$v["readflag"] = intval($v["mReadFlag"]);
+			$v["key"] = $k;
 		}
 		return [$ret, $nextPage];
 	}
