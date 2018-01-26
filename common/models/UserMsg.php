@@ -204,7 +204,7 @@ class UserMsg extends ActiveRecord
 
 			$v["dt"] = AppUtil::prettyDate($v["mAddedOn"]);
 			$v["readflag"] = intval($v["mReadFlag"]);
-			$v["key"] = $k;
+			$v["key"] = $page . ":" . $k;
 		}
 		return [$ret, $nextPage];
 	}
