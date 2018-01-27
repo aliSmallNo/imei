@@ -788,7 +788,7 @@ class User extends ActiveRecord
 		}
 		$fields = ['password', 'phone', 'location', 'album', 'province', 'city', 'certimage', 'certdate', 'logdate',
 			'rank', 'rankdate', 'ranktmp', 'addedon', 'updatedon', 'subscribe', 'wechatid', 'weight', 'weight_t', 'marital',
-			'income', 'homeland', 'pet', 'diet', 'scope', 'role', 'smoke', 'setting', 'mp_encrypt_id', 'horos', 'hint',
+			'income', 'homeland', 'pet', 'diet', 'scope', 'role', 'smoke', 'mp_encrypt_id', 'horos', 'hint',
 			'alcohol', 'belief', 'car', 'education', 'estate', 'fitness', 'height', 'invitedby', 'rest', 'profession', 'openid'];
 		foreach ($fields as $field) {
 			unset($uInfo[$field]);
