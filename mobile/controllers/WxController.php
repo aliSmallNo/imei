@@ -2327,4 +2327,20 @@ class WxController extends BaseController
 			'会员',
 			'');
 	}
+
+	public function actionZone()
+	{
+		$uid = $this->user_id;
+
+		return self::renderPage("zone.tpl",
+			[
+				'uid' => $this->user_id,
+				'name' => $this->user_name,
+				'avatar' => $this->user_avatar,
+				'wxUrl' => AppUtil::wechatUrl(),
+			],
+			'terse',
+			'动态',
+			'');
+	}
 }

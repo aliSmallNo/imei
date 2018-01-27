@@ -52,565 +52,257 @@ $bgSanta: #dcf0f9
 $bgSantaRed: #dd0419
 
 @mixin img23
-    width: 2.3rem
-    height: 2.3rem
-    margin: 0 auto
+	width: 2.3rem
+	height: 2.3rem
+	margin: 0 auto
 
 @mixin arrowtop
-    content: ''
-    position: absolute
-    width: 1rem
-    height: 1rem
-    top: .4rem
-    left: 14rem
-    border-left: .1rem solid #2e52ff
-    border-top: .1rem solid #2e52ff
-    transform: rotate(45deg)
+	content: ''
+	position: absolute
+	width: 1rem
+	height: 1rem
+	top: .4rem
+	left: 14rem
+	border-left: .1rem solid #2e52ff
+	border-top: .1rem solid #2e52ff
+	transform: rotate(45deg)
 
 @mixin unreadFlag
-    position: absolute
-    width: 1rem
-    height: 1rem
-    border-radius: .5rem
-    background: $redColorLight
+	position: absolute
+	width: 1rem
+	height: 1rem
+	border-radius: .5rem
+	background: $redColorLight
 
 @mixin markerCert
-    display: inline-block
-    background: url(../images/ico_cert.png) no-repeat center center
-    background-size: 100% 100%
+	display: inline-block
+	background: url(../images/ico_cert.png) no-repeat center center
+	background-size: 100% 100%
 
 @mixin marker100
-    display: inline-block
-    background: url(../images/ico_month_member.png) no-repeat center center
-    background-size: 100% 100%
+	display: inline-block
+	background: url(../images/ico_month_member.png) no-repeat center center
+	background-size: 100% 100%
 
 @mixin translucent
-    background-color: rgba(0, 0, 0, .6)
+	background-color: rgba(0, 0, 0, .6)
 
 @mixin borderBox
-    -webkit-box-sizing: border-box
-    -moz-box-sizing: border-box
-    box-sizing: border-box
+	-webkit-box-sizing: border-box
+	-moz-box-sizing: border-box
+	box-sizing: border-box
 
 @mixin lightBottomBorder
-    border-bottom: 1px solid $borderColorLight
+	border-bottom: 1px solid $borderColorLight
 
 @mixin prefixYuan
-    content: "\ffe5"
-    font-size: 1rem
-    color: $moneyColor
+	content: "\ffe5"
+	font-size: 1rem
+	color: $moneyColor
 
 @mixin textTail
-    white-space: nowrap
-    text-overflow: ellipsis
-    overflow: hidden
+	white-space: nowrap
+	text-overflow: ellipsis
+	overflow: hidden
 
 @mixin arrowRight
-    content: " "
-    display: inline-block
-    height: .8rem
-    width: .8rem
-    border-width: 1px 1px 0 0
-    border-color: $grayFontColorLight
-    border-style: solid
-    -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
-    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
-    position: absolute
-    top: 50%
-    right: 0
-    margin-top: -0.5rem
+	content: " "
+	display: inline-block
+	height: .8rem
+	width: .8rem
+	border-width: 1px 1px 0 0
+	border-color: $grayFontColorLight
+	border-style: solid
+	-webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
+	transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
+	position: absolute
+	top: 50%
+	right: 0
+	margin-top: -0.5rem
 
 @mixin arrowDown
-    content: " "
-    display: inline-block
-    height: .5rem
-    width: .5rem
-    border-width: 0 2px 2px 0
-    border-color: $borderColorDark
-    border-style: solid
-    -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
-    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
-    position: absolute
-    top: 50%
-    right: .5rem
-    margin-top: -0.4rem
+	content: " "
+	display: inline-block
+	height: .5rem
+	width: .5rem
+	border-width: 0 2px 2px 0
+	border-color: $borderColorDark
+	border-style: solid
+	-webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
+	transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
+	position: absolute
+	top: 50%
+	right: .5rem
+	margin-top: -0.4rem
 
 @mixin arrowUp
-    content: " "
-    display: inline-block
-    height: .5rem
-    width: .5rem
-    border-width: 0 2px 2px 0
-    border-color: $borderColorDark
-    border-style: solid
-    -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
-    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
-    position: absolute
-    top: 50%
-    right: .5rem
-    margin-top: -0.4rem
+	content: " "
+	display: inline-block
+	height: .5rem
+	width: .5rem
+	border-width: 0 2px 2px 0
+	border-color: $borderColorDark
+	border-style: solid
+	-webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
+	transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
+	position: absolute
+	top: 50%
+	right: .5rem
+	margin-top: -0.4rem
 
 @mixin shadowBottom
-    box-shadow: 0 2px .3rem 0 rgba(0, 0, 0, .1)
+	box-shadow: 0 2px .3rem 0 rgba(0, 0, 0, .1)
 
 @mixin topFixed
-    @include shadowBottom
-    height: 4rem
-    overflow-x: hidden
-    padding-left: 1.5rem
-    padding-right: 1.5rem
-    white-space: nowrap
-    background: #fff
-    text-align: center
-    position: fixed
-    top: 0
-    left: 0
-    right: 0
-    z-index: 110
+	@include shadowBottom
+	height: 4rem
+	overflow-x: hidden
+	padding-left: 1.5rem
+	padding-right: 1.5rem
+	white-space: nowrap
+	background: #fff
+	text-align: center
+	position: fixed
+	top: 0
+	left: 0
+	right: 0
+	z-index: 110
 
 @mixin displayFlex
-    display: -webkit-box
-    display: -webkit-flex
-    display: -ms-flexbox
-    display: flex
+	display: -webkit-box
+	display: -webkit-flex
+	display: -ms-flexbox
+	display: flex
 
 @mixin displayFlex-1
-    -webkit-box-flex: 1
-    -webkit-flex: 1
-    -ms-flex: 1
-    flex: 1
+	-webkit-box-flex: 1
+	-webkit-flex: 1
+	-ms-flex: 1
+	flex: 1
 
 @mixin displayFlex-w($width: 8rem)
-    -webkit-box-flex: 0 0 $width
-    -webkit-flex: 0 0 $width
-    -ms-flex: 0 0 $width
-    flex: 0 0 $width
+	-webkit-box-flex: 0 0 $width
+	-webkit-flex: 0 0 $width
+	-ms-flex: 0 0 $width
+	flex: 0 0 $width
 
 @mixin displayFlexVAlign
-    justify-content: center
-    align-items: center
-    align-self: center
+	justify-content: center
+	align-items: center
+	align-self: center
 
 @mixin ellipsis
-    overflow: hidden
-    white-space: nowrap
-    text-overflow: ellipsis
+	overflow: hidden
+	white-space: nowrap
+	text-overflow: ellipsis
 
 body, html
-    font-size: 10px
-    font-size: -moz-calc(100vw / 32)
-    font-size: -webkit-calc(100vw / 32)
-    font-size: calc(100vw / 32)
-    //$bgColor
-    color: $fontColor
-    font-family: 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif
-    height: 100%
+	font-size: 10px
+	font-size: -moz-calc(100vw / 32)
+	font-size: -webkit-calc(100vw / 32)
+	font-size: calc(100vw / 32)
+	//$bgColor
+	color: $fontColor
+	font-family: 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif
+	height: 100%
 
 body, html, a, p, ul, div, h4, h5, h6, .main-wrap
-    margin: 0
-    padding: 0
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+	margin: 0
+	padding: 0
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0)
 
 body
-    background-color: #fff
+	background-color: #fff
 
 body, a, div, p
-    -webkit-touch-callout: none
-    -webkit-user-select: none
-    -khtml-user-select: none
-    -moz-user-select: none
-    -ms-user-select: none
-    user-select: none
-    font-size: 1.4rem
+	-webkit-touch-callout: none
+	-webkit-user-select: none
+	-khtml-user-select: none
+	-moz-user-select: none
+	-ms-user-select: none
+	user-select: none
+	font-size: 1.4rem
 
 a
-    color: $fontColor
-    cursor: pointer
-    text-decoration: none
-    &.disabled,
-    &.disabled:active
-        color: $disabledFontColor
+	color: $fontColor
+	cursor: pointer
+	text-decoration: none
+	&.disabled,
+	&.disabled:active
+		color: $disabledFontColor
 
 em, i, b
-    font-weight: normal
-    font-style: normal
+	font-weight: normal
+	font-style: normal
 
 ul
-    list-style: none
+	list-style: none
 
 input, select, textarea, button
-    -webkit-appearance: none
-    -moz-appearance: none
-    appearance: none
-    outline: none
+	-webkit-appearance: none
+	-moz-appearance: none
+	appearance: none
+	outline: none
 
 main
-    position: relative
-    padding-bottom: 7rem
-    height: 100%
-    &.bg-lighter
-        background: $mainColorLighter
+	position: relative
+	padding-bottom: 7rem
+	height: 100%
+	&.bg-lighter
+		background: $mainColorLighter
 
 section
-    height: 100%
+	height: 100%
 
 .none
-    display: none !important
+	display: none !important
 
 .hide
-    visibility: hidden !important
+	visibility: hidden !important
 
 .clearfix
-    zoom: 1
-    &:before,
-    &:after
-        display: block
-        line-height: 0
-        content: ""
-    &:after
-        clear: both
+	zoom: 1
+	&:before,
+	&:after
+		display: block
+		line-height: 0
+		content: ""
+	&:after
+		clear: both
 
 .space
-    display: inline-block
-    width: 1rem
+	display: inline-block
+	width: 1rem
 
 .space2
-    display: inline-block
-    width: 2rem
+	display: inline-block
+	width: 2rem
 
 .center
-    text-align: center
+	text-align: center
 
 .font12
-    font-size: 1.2rem
+	font-size: 1.2rem
 
 @-webkit-keyframes kf_heart_beat
-    0%
-        -webkit-transform: scale(1)
-        -webkit-transform-origin: 50% 65%
-    10%
-        -webkit-transform: scale(.8)
-        -webkit-transform-origin: 50% 65%
-    50%
-        -webkit-transform: scale(1.2)
-        -webkit-transform-origin: 50% 65%
-    100%
-        -webkit-transform: scale(1.0)
-        -webkit-transform-origin: 50% 65%
+	0%
+		-webkit-transform: scale(1)
+		-webkit-transform-origin: 50% 65%
+	10%
+		-webkit-transform: scale(.8)
+		-webkit-transform-origin: 50% 65%
+	50%
+		-webkit-transform: scale(1.2)
+		-webkit-transform-origin: 50% 65%
+	100%
+		-webkit-transform: scale(1.0)
+		-webkit-transform-origin: 50% 65%
 
 .heart-beat
-    -webkit-animation-timing-function: linear
-    -webkit-animation-duration: .32s
-    -webkit-animation-fill-mode: both
+	-webkit-animation-timing-function: linear
+	-webkit-animation-duration: .32s
+	-webkit-animation-fill-mode: both
 
 .heart-beat
-    -webkit-animation-name: kf_heart_beat
-
-$mainColor: #f06292
-//#feb7ac
-$mainColorLight: lighten($mainColor, 8%)
-$mainColorLighter: lighten($mainColor, 24%)
-$mainColorDark: darken($mainColor, 6%)
-$mainColorBg: #fce4ec
-$white: #fff
-$fontColor: #333
-$grayFontColorLighter: #b8b8b8
-$grayFontColorLight: #969494
-$grayFontColor: #6a6572
-$grayFontColorDark: #525252
-$disabledFontColor: #aaa
-$bgColor: #f3f3f3
-$weightBold: 500
-$weightMiddle: 400
-$weightNormal: 300
-$adviseColor: #00a79b
-$greenColor: #51c332
-$greenLight: #a6e264
-$yellowColor: #fdd835
-$yellowColorDark: darken($yellowColor, 10%)
-$rewardColor: #f9cd9a
-$hintColor: #fff59d
-$greetingBg: #fce4ec
-$rewardColorLight: lighten($rewardColor, 6%)
-$tipColor: #f80
-$moneyColor: #f60
-$moneyColorLight: lighten($moneyColor, 5%)
-$moneyColorDark: darken($moneyColor, 10%)
-$redColor: #E53935
-$redColorLight: #f24
-$moneyColorDark: darken($moneyColor, 5%)
-$borderColor: #E4E4E4
-$borderColorLight: #EEEFF3
-$borderColorDark: #d4d4d4
-$borderColorDarker: #b8b8b8
-$borderColorFooter: #d4d4d4
-$chatColor: #1296db
-$linkColor: #007aff
-$linkColorLight: lighten($linkColor, 15%)
-$linkColorDark: darken($linkColor, 6%)
-$actionColor: #877575
-$actionColorLight: lighten($actionColor, 12%)
-//#c93
-$actionColorDark: #5d4037
-$brownColor: #6d4c41
-$purpleBg: #0b1636
-$purpleLight: #4966b2
-$purpleAction: #284cfa
-$bgSanta: #dcf0f9
-$bgSantaRed: #dd0419
-
-@mixin img23
-    width: 2.3rem
-    height: 2.3rem
-    margin: 0 auto
-
-@mixin arrowtop
-    content: ''
-    position: absolute
-    width: 1rem
-    height: 1rem
-    top: .4rem
-    left: 14rem
-    border-left: .1rem solid #2e52ff
-    border-top: .1rem solid #2e52ff
-    transform: rotate(45deg)
-
-@mixin unreadFlag
-    position: absolute
-    width: 1rem
-    height: 1rem
-    border-radius: .5rem
-    background: $redColorLight
-
-@mixin markerCert
-    display: inline-block
-    background: url(../images/ico_cert.png) no-repeat center center
-    background-size: 100% 100%
-
-@mixin marker100
-    display: inline-block
-    background: url(../images/ico_month_member.png) no-repeat center center
-    background-size: 100% 100%
-
-@mixin translucent
-    background-color: rgba(0, 0, 0, .6)
-
-@mixin borderBox
-    -webkit-box-sizing: border-box
-    -moz-box-sizing: border-box
-    box-sizing: border-box
-
-@mixin lightBottomBorder
-    border-bottom: 1px solid $borderColorLight
-
-@mixin prefixYuan
-    content: "\ffe5"
-    font-size: 1rem
-    color: $moneyColor
-
-@mixin textTail
-    white-space: nowrap
-    text-overflow: ellipsis
-    overflow: hidden
-
-@mixin arrowRight
-    content: " "
-    display: inline-block
-    height: .8rem
-    width: .8rem
-    border-width: 1px 1px 0 0
-    border-color: $grayFontColorLight
-    border-style: solid
-    -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
-    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
-    position: absolute
-    top: 50%
-    right: 0
-    margin-top: -0.5rem
-
-@mixin arrowDown
-    content: " "
-    display: inline-block
-    height: .5rem
-    width: .5rem
-    border-width: 0 2px 2px 0
-    border-color: $borderColorDark
-    border-style: solid
-    -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
-    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
-    position: absolute
-    top: 50%
-    right: .5rem
-    margin-top: -0.4rem
-
-@mixin arrowUp
-    content: " "
-    display: inline-block
-    height: .5rem
-    width: .5rem
-    border-width: 0 2px 2px 0
-    border-color: $borderColorDark
-    border-style: solid
-    -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
-    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
-    position: absolute
-    top: 50%
-    right: .5rem
-    margin-top: -0.4rem
-
-@mixin shadowBottom
-    box-shadow: 0 2px .3rem 0 rgba(0, 0, 0, .1)
-
-@mixin topFixed
-    @include shadowBottom
-    height: 4rem
-    overflow-x: hidden
-    padding-left: 1.5rem
-    padding-right: 1.5rem
-    white-space: nowrap
-    background: #fff
-    text-align: center
-    position: fixed
-    top: 0
-    left: 0
-    right: 0
-    z-index: 110
-
-@mixin displayFlex
-    display: -webkit-box
-    display: -webkit-flex
-    display: -ms-flexbox
-    display: flex
-
-@mixin displayFlex-1
-    -webkit-box-flex: 1
-    -webkit-flex: 1
-    -ms-flex: 1
-    flex: 1
-
-@mixin displayFlex-w($width: 8rem)
-    -webkit-box-flex: 0 0 $width
-    -webkit-flex: 0 0 $width
-    -ms-flex: 0 0 $width
-    flex: 0 0 $width
-
-@mixin displayFlexVAlign
-    justify-content: center
-    align-items: center
-    align-self: center
-
-@mixin ellipsis
-    overflow: hidden
-    white-space: nowrap
-    text-overflow: ellipsis
-
-body, html
-    font-size: 10px
-    font-size: -moz-calc(100vw / 32)
-    font-size: -webkit-calc(100vw / 32)
-    font-size: calc(100vw / 32)
-    //$bgColor
-    color: $fontColor
-    font-family: 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif
-    height: 100%
-
-body, html, a, p, ul, div, h4, h5, h6, .main-wrap
-    margin: 0
-    padding: 0
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
-
-body
-    background-color: #fff
-
-body, a, div, p
-    -webkit-touch-callout: none
-    -webkit-user-select: none
-    -khtml-user-select: none
-    -moz-user-select: none
-    -ms-user-select: none
-    user-select: none
-    font-size: 1.4rem
-
-a
-    color: $fontColor
-    cursor: pointer
-    text-decoration: none
-    &.disabled,
-    &.disabled:active
-        color: $disabledFontColor
-
-em, i, b
-    font-weight: normal
-    font-style: normal
-
-ul
-    list-style: none
-
-input, select, textarea, button
-    -webkit-appearance: none
-    -moz-appearance: none
-    appearance: none
-    outline: none
-
-main
-    position: relative
-    padding-bottom: 7rem
-    height: 100%
-    &.bg-lighter
-        background: $mainColorLighter
-
-section
-    height: 100%
-
-.none
-    display: none !important
-
-.hide
-    visibility: hidden !important
-
-.clearfix
-    zoom: 1
-    &:before,
-    &:after
-        display: block
-        line-height: 0
-        content: ""
-    &:after
-        clear: both
-
-.space
-    display: inline-block
-    width: 1rem
-
-.space2
-    display: inline-block
-    width: 2rem
-
-.center
-    text-align: center
-
-.font12
-    font-size: 1.2rem
-
-@-webkit-keyframes kf_heart_beat
-    0%
-        -webkit-transform: scale(1)
-        -webkit-transform-origin: 50% 65%
-    10%
-        -webkit-transform: scale(.8)
-        -webkit-transform-origin: 50% 65%
-    50%
-        -webkit-transform: scale(1.2)
-        -webkit-transform-origin: 50% 65%
-    100%
-        -webkit-transform: scale(1.0)
-        -webkit-transform-origin: 50% 65%
-
-.heart-beat
-    -webkit-animation-timing-function: linear
-    -webkit-animation-duration: .32s
-    -webkit-animation-fill-mode: both
-
-.heart-beat
-    -webkit-animation-name: kf_heart_beat
+	-webkit-animation-name: kf_heart_beat
 
