@@ -228,24 +228,14 @@ class UserBuzz extends ActiveRecord
 			case '晚安':
 			case 'good night':
 			case 'night':
-				$mediaId = 'GfJsRJj-kJwOJMdX7eK9HOJdRYnMa6EgIStxjt3qY1o';
+				/*$mediaId = 'GfJsRJj-kJwOJMdX7eK9HOJdRYnMa6EgIStxjt3qY1o';
 				NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, $fromUsername)->sendMedia($mediaId);
-				$resp = '';
-				/*$txt = "原来喜欢一个人的第一感觉是自卑。
-不敢给你发消息，
-不敢告诉你有多喜欢你，
-不敢告诉你，
-我想你。
+				$resp = '';*/
+				$txt = "我曾经看过一段话，大致意思是：没有人每天闲得没事儿会一直关注你的一举一动和你的生活，没人真的那么在意你的伪装或者坚强。我们都不是演员，别以为会有那么多观众。没有人那么在意你每天穿了什么说了什么，过分在意的是你，而不是别人。
 
-有时给你发了消息，
-你一直没有回我，
-我就会删了那个对话框。
-因为，
-总觉得看到那个对话框，
-就好像看见了自己的卑微和讨好。
-
-晚安，世界和你 🌙";
-				$resp = self::textMsg($fromUsername, $toUsername, $txt);*/
+用自己喜欢的方式过一生，淡然而努力。
+要记得，相比让别人喜欢你，更重要的是，你自己喜欢你自己。晚安 🌙";
+				$resp = self::textMsg($fromUsername, $toUsername, $txt);
 				break;
 			case '任务':
 				$txt = "小任务详情：
