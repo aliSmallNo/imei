@@ -376,6 +376,68 @@
 	</div>
 </section>
 
+<section id="zone_search_topic">
+	<div class="zone_container_search_topic">
+		<div class="zone_container_search">
+			<div class="input">
+				<input type="text" placeholder="#爱情、美食、阅读">
+				<a href="javascript:;">取消</a>
+			</div>
+		</div>
+		<ul class="zone_container_topic_items">
+			<li>
+				<div class="avatar"><img src="/images/cr_room_share.jpg" alt=""></div>
+				<div class="content">
+					<div class="title">#世界辣么大#</div>
+					<div class="about">#世界辣么大,找个人来陪，来千寻恋恋#</div>
+					<div class="marks">
+						<i><span>27</span><em>内容</em></i>
+						<i><span>27</span><em>参与</em></i>
+						<i><span>27</span><em>浏览</em></i>
+					</div>
+				</div>
+			</li>
+			<li class="recommend">
+				<div class="avatar"><img src="/images/cr_room_share.jpg" alt=""></div>
+				<div class="content">
+					<div class="title">#世界辣么大#</div>
+					<div class="about">#世界辣么大,找个人来陪，来千寻恋恋#</div>
+					<div class="marks">
+						<i><span>27</span><em>内容</em></i>
+						<i><span>27</span><em>参与</em></i>
+						<i><span>27</span><em>浏览</em></i>
+					</div>
+				</div>
+			</li>
+			<li>
+				<div class="avatar"><img src="/images/cr_room_share.jpg" alt=""></div>
+				<div class="content">
+					<div class="title">#世界辣么大#</div>
+					<div class="about">#世界辣么大,找个人来陪，来千寻恋恋#</div>
+					<div class="marks">
+						<i><span>27</span><em>内容</em></i>
+						<i><span>27</span><em>参与</em></i>
+						<i><span>27</span><em>浏览</em></i>
+					</div>
+				</div>
+			</li>
+			<li>
+				<div class="avatar"><img src="/images/cr_room_share.jpg" alt=""></div>
+				<div class="content">
+					<div class="title">#世界辣么大#</div>
+					<div class="about">#世界辣么大,找个人来陪，来千寻恋恋#</div>
+					<div class="marks">
+						<i><span>27</span><em>内容</em></i>
+						<i><span>27</span><em>参与</em></i>
+						<i><span>27</span><em>浏览</em></i>
+					</div>
+				</div>
+			</li>
+
+		</ul>
+	</div>
+</section>
+
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">

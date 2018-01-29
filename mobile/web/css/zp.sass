@@ -106,7 +106,7 @@
 					@include img_W(3rem)
 	.zone_container_item_mid
 		.zone_container_item_title
-			@include fontStyle(1.2rem, $fontColor, .1rem)
+			@include fontStyle(1.2rem, $fontColor, 0)
 			@include textTail
 			line-height: 1.8rem
 			margin-bottom: .4rem
@@ -459,6 +459,72 @@
 						top: .1rem
 
 
+.zone_container_search_topic
+	.zone_container_search
+		padding: 1rem
+		border-bottom: 1px solid #eee
+		.input
+			position: relative
+			@include displayFlex
+			input
+				@include displayFlex-1
+				border: 1px solid #ddd
+				@include fontStyle(1.2rem,$fontColor,0)
+				padding: .5rem 1rem .5rem 3rem
+				border-radius: 2rem
+			&:before
+				content: ''
+				position: absolute
+				width: 1.2rem
+				height: 1.2rem
+				left: 1rem
+				top: 0.9rem
+				background: url(../images/zone/ico_search.png) no-repeat center center
+				background-size: 100% 100%
+			a
+				@include displayFlex-w(4rem)
+				@include fontStyle(1.2rem,$fontColor,0)
+				display: block
+				line-height: 3rem
+				text-align: center
+	.zone_container_topic_items
+		li
+			@include displayFlex
+			padding: .8rem 1rem
+			border-bottom: 1px solid #eee
+			position: relative
+			&.recommend
+				&:after
+					position: absolute
+					content: ''
+					right: 1rem
+					width: 2rem
+					height: 2rem
+					top: 0
+					background: url(../images/zone/ico_recommend.png) no-repeat center center
+					background-size: 100% 100%
+			.avatar
+				@include displayFlex-w(7rem)
+				img
+					@include imgBlock_W(6rem)
+					border-radius: .5rem
+			.content
+				.title
+					@include fontStyle(1.3rem,$fontColor,0)
+					line-height: 2rem
+				.about
+					@include fontStyle(1.15rem,#a9a9a9,0)
+					@include textTail
+				.marks
+					line-height: 2rem
+					i
+						display: inline-block
+						width: 6rem
+						@include fontStyle(1rem,#a9a9a9,0)
+						span
+							color: $mainColor
+						em
+							margin-left: .2rem
 
 
 
