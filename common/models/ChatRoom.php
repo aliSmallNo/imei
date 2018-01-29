@@ -288,24 +288,25 @@ class ChatRoom extends ActiveRecord
 		$conn = AppUtil::db();
 		list($adminUId, $rlastId) = ChatMsg::getAdminUIdLastId($conn, $rId);
 		$limit = " limit " . ($page - 1) * $pagesize . "," . ($pagesize + 1);
-		$sql = "SELECT c.* ,u.*,m.mBanFlag,m.mDeletedFlag as del
+		$sql = "SELECT c.* ,u.*,m.mBanFlag,m.mDeletedFlag as del,rLogo as logo
 				from im_chat_room as r 
 				join im_chat_msg as c on r.rId=c.cGId AND c.cDeletedFlag =0
 				join im_user as u on u.uId=c.cAddedBy
 				join im_chat_room_fella as m on m.mUId=c.cAddedBy  and m.mRId=:rid
 				where c.cGId=:rid and  c.cDeletedFlag=:del and cId between 0 and :lastid
 				order by cAddedon desc $limit ";
-		$chatlist = $conn->createCommand($sql)->bindValues([
+		$chats = $conn->createCommand($sql)->bindValues([
 			":rid" => $rId,
 			":lastid" => $lastid ? $lastid : $rlastId,
 			":del" => ChatMsg::DELETED_NO
 		])->queryAll();
-		$res = ChatMsg::fmtRoomChatData($chatlist, $rId, $adminUId, $uid);
+		$logo = ($chats && count($chats)) ? $chats[0]['logo'] : '';
+		$res = ChatMsg::fmtRoomChatData($chats, $rId, $adminUId, $uid);
 		$nextpage = count($res) > $pagesize ? ($page + 1) : 0;
 		array_pop($res);
 		$res = array_reverse($res);
 		ChatMsg::roomChatRead($uid, $rId, $conn);
-		return [$res, $nextpage];
+		return [$res, $nextpage, $logo];
 	}
 
 	public static function currentChatList($rId, $lastid, $uid)
