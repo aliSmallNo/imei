@@ -3,13 +3,231 @@
 .zone_container
 	.zone_container_top
 		background: #fff
-
+		border-bottom: 1rem solid #eee
 		.zone_container_top_bar
 			@include displayFlex
+			padding: 0 6rem
+			text-align: center
+			border-bottom: 1px solid #eee
+			@include borderBox
 			li
 				@include displayFlex-1
 				@include displayFlexVAlign
+				a
+					@include fontStyle(1.2rem, #aeaeae)
+					display: block
+					padding: 1.2rem 0
+					position: relative
+					&.active
+						color: $mainColor
+						&:after
+							@include line_W(2rem, .18rem, $mainColor)
 		.zone_container_top_topic
+			padding: 1rem
 			.zone_container_topic_title
+				text-align: center
+				padding-bottom: .6rem
+				span
+					@include fontStyle(1.3rem)
+					position: relative
+					&:before
+						@include line_W(2.5rem, .1rem, #d9d9d9)
+						left: -3.5rem
+						top: 50%
+					&:after
+						@include line_W(2.5rem, .1rem, #d9d9d9)
+						left: initial
+						right: -3.5rem
+						top: 55%
 			ul
+				@include displayFlex
+				flex-direction: row
+				flex-wrap: wrap
+				align-content: flex-start
+				li
+					@include displayFlex-w(50%)
+					text-align: center
+					position: relative
+					@include fontStyle(1.2rem)
+					a
+						display: block
+						padding: 1rem 0
+						@include fontStyle(1rem)
+					&:nth-child(2n+1)
+						&:before
+							@include line_W(.05rem, 2rem, #d9d9d9)
+							left: initial
+							right: 0
+							bottom: 20%
+					&:after
+						@include line_W(13rem, .1rem, #d9d9d9)
+						left: 7%
+						bottom: 0
+					&:nth-last-child(2), &:nth-last-child(1)
+						&:after
+							background: #fff
+	.zone_container_items
+		.zone_container_item
+			border-bottom: solid #eee 1rem
+			padding: 1rem 1rem 0 1rem
+			.zone_container_item_top
+				@include displayFlex
+				.img
+					@include displayFlex-w(7rem)
+					img
+						@include img_W(5rem)
+						border-radius: 5rem
+						display: block
+						@include displayFlexVAlign
+						border: solid #f856a2 .1rem
+				.about
+					@include displayFlex-1
+					padding: .7rem 0
+					.name
+						h5
+							@include fontStyle(1.4rem)
+							display: inline-block
+						img
+							@include img_W(1rem)
+					.pos
+						padding: .3rem 0
+						h5
+							display: inline-block
+							@include fontStyle(1rem, #bebcbd)
+						img
+							@include img_W(.9rem)
+						span
+							@include fontStyle(1rem, #bebcbd, 0)
+				.opt
+					a
+						@include displayFlex-w(4rem)
+						display: block
+						img
+							@include img_W(3rem)
+			.zone_container_item_mid
+				.zone_container_item_title
+					@include fontStyle(1.2rem, $fontColor, .1rem)
+					@include textTail
+					line-height: 1.8rem
+					margin-bottom: .4rem
+					span
+						@include fontStyle(1.2rem, $mainColor, .1rem)
+				.zone_container_item_cat_text
+					@include fontStyle(1.1rem, #666, 0)
+					line-height: 1.7rem
+					a
+						display: inline-block
+						@include fontStyle(1.1rem, $mainColor, .1rem)
+						margin-left: 1rem
+				.zone_container_item_cat_article
+					background: #eaeaea
+					@include displayFlex
+					padding: .5rem
+					.avatar
+						@include displayFlex-w(5rem)
+						img
+							@include img_W(4rem)
+							display: block
+							@include displayFlexVAlign
+					.des
+						@include displayFlex-1
+						h5
+							@include fontStyle(1.2rem, $fontColor, .1rem)
+						p
+							@include fontStyle(1rem, $fontColor, .1rem)
+				.zone_container_item_cat_imgs
+					@include displayFlex
+					flex-direction: row
+					flex-wrap: wrap
+					align-content: flex-start
+					div
+						@include displayFlex-w(10rem)
+						img
+							@include img_W(9.7rem)
+							-webkit-border-radius: .2rem
+							-moz-border-radius: .2rem
+							border-radius: .2rem
+					&.img_2
+						div
+							@include displayFlex-w(15rem)
+							img
+								@include img_W(14rem)
+								-webkit-border-radius: .2rem
+								-moz-border-radius: .2rem
+								border-radius: .2rem
+					&.img_1
+						div
+							@include displayFlex-w(30rem)
+							img
+								@include img_W(29rem)
+								-webkit-border-radius: .2rem
+								-moz-border-radius: .2rem
+								border-radius: .2rem
+				.zone_container_item_cat_voice
+					@include backgroundImg('../images/zone/ico_bg_voice.png')
+					@include displayFlex
+					padding: .8rem
+					position: relative
+					.avatar
+						@include displayFlex-w(5rem)
+						img
+							@include img_W(4rem)
+							display: block
+							@include displayFlexVAlign
+					.fill
+						@include displayFlex-1
+					.voice
+						@include displayFlex-w(5rem)
+						&.pause
+							@include backgroundImg('../images/zone/ico_voice_pause.png')
+							background-size: 52% 60%
+						&.play
+							@include backgroundImg('../images/zone/ico_voice_play.png')
+							background-size: 52% 60%
+					span
+						position: absolute
+						@include fontStyle(.8rem, #fff,0)
+						right: 2rem
+						top: .2rem
+			.zone_container_item_bot
+				@include displayFlex
+				a
+					display: block
+					@include displayFlex-1
+					text-align: center
+					padding: 1rem 0
+					span
+						@include fontStyle(1rem, #bebcbd, .1rem)
+						position: relative
+						&.view
+							&:before
+								@include icoStyle(1rem, '../images/zone/ico_view.png')
+								left: -1.5rem
+								top: 0
+						&.rose
+							&:before
+								@include icoStyle(1rem, '../images/zone/ico_rose.png')
+								left: -1.5rem
+								top: 0
+							&.active
+								&:before
+									@include icoStyle(1rem, '../images/zone/ico_rosed.png')
+						&.zan
+							&:before
+								@include icoStyle(1rem, '../images/zone/ico_zan.png')
+								left: -1.5rem
+								top: 0
+							&.active
+								&:before
+									@include icoStyle(1rem, '../images/zone/ico_zaned.png')
+						&.comment
+							&:before
+								@include icoStyle(1rem, '../images/zone/ico_comment.png')
+								left: -1.5rem
+								top: 0
+
+
+
+
+
 

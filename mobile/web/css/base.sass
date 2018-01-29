@@ -56,6 +56,43 @@ $bgSantaRed: #dd0419
 	height: 2.3rem
 	margin: 0 auto
 
+@mixin backgroundImg($url:'')
+	background: url($url) no-repeat center center
+	background-size: 100% 100%
+
+@mixin icoStyle($width:2rem,$url:'')
+	position: absolute
+	content: ''
+	width: $width
+	height: $width
+	background: url($url) no-repeat center center
+	background-size: 100% 100%
+
+@mixin fontStyle($size:1.2rem,$color:$fontColor,$spacing:.1rem)
+	font-size: $size
+	color: $color
+	letter-spacing: $spacing
+
+@mixin img_W($width:3rem)
+	width: $width
+	height: $width
+
+@mixin imgBlock_W($width:3rem)
+	width: $width
+	height: $width
+	display: block
+	margin: 0 auto
+
+@mixin line_W($width:2rem,$height:.18rem,$color:$mainColor)
+	content: ''
+	position: absolute
+	bottom: 0
+	left: 28%
+	width: $width
+	height: $height
+	border-radius: $height
+	background: $color
+
 @mixin arrowtop
 	content: ''
 	position: absolute
