@@ -309,6 +309,43 @@ class ChatRoom extends ActiveRecord
 		return [$res, $nextpage, $logo];
 	}
 
+	public static function chatDetail($rId, $direction = 'down', $lastId = 0, $uid = 120003, $pagesize = 20)
+	{
+		$conn = AppUtil::db();
+		$sql = "SELECT rAdminUId,rLastId,rTitle,rLogo from im_chat_room where rId=:rid";
+		$roomInfo = $conn->createCommand($sql)->bindValues([
+			":rid" => $rId,
+		])->queryOne();
+		$adminUId = $roomInfo['rAdminUId'];
+		$rlastId = $roomInfo['rLastId'];
+		$logo = $roomInfo['rLogo'];
+		$title = $roomInfo['rTitle'];
+		$criteria = '';
+		if ($lastId) {
+			if ($direction == 'down') {
+				$criteria = ' AND cId > ' . $lastId;
+			} else {
+				$criteria = ' AND cId < ' . $lastId;
+			}
+		}
+		$sql = "SELECT c.* ,u.uId,u.uName,u.uAvatar,u.uThumb,u.uPhone,u.uOpenId,u.uPhone,u.uUniqid,
+				m.mBanFlag,m.mDeletedFlag as del
+				from im_chat_msg as c 
+				join im_user as u on u.uId=c.cAddedBy
+				join im_chat_room_fella as m on m.mUId=c.cAddedBy  and m.mRId=:rid
+				where c.cGId=:rid and  c.cDeletedFlag=0 $criteria
+				order by c.cId desc LIMIT " . $pagesize;
+		$chats = $conn->createCommand($sql)->bindValues([
+			":rid" => $rId
+		])->queryAll();
+		$res = ChatMsg::fmtRoomChatData($chats, $rId, $adminUId, $uid);
+		array_pop($res);
+		$res = array_reverse($res);
+		ChatMsg::roomChatRead($uid, $rId, $conn);
+		return [$res, $title, $logo];
+	}
+
+
 	public static function currentChatList($rId, $lastid, $uid)
 	{
 		$conn = AppUtil::db();

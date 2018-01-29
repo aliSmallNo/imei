@@ -2429,6 +2429,17 @@ class ApiController extends Controller
 					'logo' => $logo
 				]);
 				break;
+			case 'chatroom-detail':
+				$rid = trim(self::postParam('rid'));
+				$direction = trim(self::postParam('dir'));
+				$last = trim(self::postParam('last'));
+				list($chatItems, $title, $logo) = ChatRoom::chatDetail($rid, $direction, $last, $uid);
+				return self::renderAPI(0, '', [
+					"chat" => $chatItems,
+					'logo' => $logo,
+					'title' => $title
+				]);
+				break;
 			case "current_chat_list":
 				$rid = trim(self::postParam('rid'));
 				$lastid = trim(self::postParam('lastid'));
