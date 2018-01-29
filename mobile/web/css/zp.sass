@@ -1,231 +1,462 @@
 @import "base"
 
-.zone_container
-	.zone_container_top
-		background: #fff
-		border-bottom: 1rem solid #eee
-		.zone_container_top_bar
-			@include displayFlex
-			padding: 0 6rem
+//.zone_container
+.zone_container_top
+	background: #fff
+	border-bottom: 1rem solid #eee
+	.zone_container_top_bar
+		@include displayFlex
+		padding: 0 6rem
+		text-align: center
+		border-bottom: 1px solid #eee
+		@include borderBox
+		li
+			@include displayFlex-1
+			@include displayFlexVAlign
+			a
+				@include fontStyle(1.2rem, #aeaeae)
+				display: block
+				padding: 1.2rem 0
+				position: relative
+				&.active
+					color: $mainColor
+					&:after
+						@include line_W(2rem, .18rem, $mainColor)
+	.zone_container_top_topic
+		padding: 1rem
+		.zone_container_topic_title
 			text-align: center
-			border-bottom: 1px solid #eee
-			@include borderBox
+			padding-bottom: .6rem
+			span
+				@include fontStyle(1.3rem)
+				position: relative
+				&:before
+					@include line_W(2.5rem, .1rem, #d9d9d9)
+					left: -3.5rem
+					top: 50%
+				&:after
+					@include line_W(2.5rem, .1rem, #d9d9d9)
+					left: initial
+					right: -3.5rem
+					top: 55%
+		ul
+			@include displayFlex
+			flex-direction: row
+			flex-wrap: wrap
+			align-content: flex-start
 			li
-				@include displayFlex-1
-				@include displayFlexVAlign
-				a
-					@include fontStyle(1.2rem, #aeaeae)
-					display: block
-					padding: 1.2rem 0
-					position: relative
-					&.active
-						color: $mainColor
-						&:after
-							@include line_W(2rem, .18rem, $mainColor)
-		.zone_container_top_topic
-			padding: 1rem
-			.zone_container_topic_title
+				@include displayFlex-w(50%)
 				text-align: center
-				padding-bottom: .6rem
+				position: relative
+				@include fontStyle(1.2rem)
+				a
+					display: block
+					padding: 1rem 0
+					@include fontStyle(1rem)
+				&:nth-child(2n+1)
+					&:before
+						@include line_W(.05rem, 2rem, #d9d9d9)
+						left: initial
+						right: 0
+						bottom: 20%
+				&:after
+					@include line_W(13rem, .1rem, #d9d9d9)
+					left: 7%
+					bottom: 0
+				&:nth-last-child(2), &:nth-last-child(1)
+					&:after
+						background: #fff
+//.zone_container_items
+.zone_container_item
+	border-bottom: solid #eee 1rem
+	padding: 1rem 1rem 0 1rem
+	.zone_container_item_top
+		@include displayFlex
+		.img
+			@include displayFlex-w(7rem)
+			img
+				@include img_W(5rem)
+				border-radius: 5rem
+				display: block
+				@include displayFlexVAlign
+				border: solid #f856a2 .1rem
+		.about
+			@include displayFlex-1
+			padding: .7rem 0
+			.name
+				h5
+					@include fontStyle(1.4rem)
+					display: inline-block
+				img
+					@include img_W(1rem)
+			.pos
+				padding: .3rem 0
+				h5
+					display: inline-block
+					@include fontStyle(1rem, #bebcbd)
+				img
+					@include img_W(.9rem)
 				span
-					@include fontStyle(1.3rem)
+					@include fontStyle(1rem, #bebcbd, 0)
+		.opt
+			a
+				@include displayFlex-w(4rem)
+				display: block
+				img
+					@include img_W(3rem)
+	.zone_container_item_mid
+		.zone_container_item_title
+			@include fontStyle(1.2rem, $fontColor, .1rem)
+			@include textTail
+			line-height: 1.8rem
+			margin-bottom: .4rem
+			span
+				@include fontStyle(1.2rem, $mainColor, .1rem)
+		.zone_container_item_cat_text
+			@include fontStyle(1.1rem, #666, 0)
+			line-height: 1.7rem
+			a
+				display: inline-block
+				@include fontStyle(1.1rem, $mainColor, .1rem)
+				margin-left: 1rem
+		.zone_container_item_cat_article
+			background: #eaeaea
+			@include displayFlex
+			padding: .5rem
+			.avatar
+				@include displayFlex-w(5rem)
+				img
+					@include img_W(4rem)
+					display: block
+					@include displayFlexVAlign
+			.des
+				@include displayFlex-1
+				h5
+					@include fontStyle(1.2rem, $fontColor, .1rem)
+				p
+					@include fontStyle(1rem, $fontColor, .1rem)
+		.zone_container_item_cat_imgs
+			@include displayFlex
+			flex-direction: row
+			flex-wrap: wrap
+			align-content: flex-start
+			div
+				@include displayFlex-w(10rem)
+				img
+					@include img_W(9.7rem)
+					-webkit-border-radius: .2rem
+					-moz-border-radius: .2rem
+					border-radius: .2rem
+			&.img_2
+				div
+					@include displayFlex-w(15rem)
+					img
+						@include img_W(14rem)
+						-webkit-border-radius: .2rem
+						-moz-border-radius: .2rem
+						border-radius: .2rem
+			&.img_1
+				div
+					@include displayFlex-w(30rem)
+					img
+						@include img_W(29rem)
+						-webkit-border-radius: .2rem
+						-moz-border-radius: .2rem
+						border-radius: .2rem
+		.zone_container_item_cat_voice
+			@include backgroundImg('../images/zone/ico_bg_voice.png')
+			@include displayFlex
+			padding: .8rem
+			position: relative
+			.avatar
+				@include displayFlex-w(5rem)
+				img
+					@include img_W(4rem)
+					display: block
+					@include displayFlexVAlign
+			.fill
+				@include displayFlex-1
+			.voice
+				@include displayFlex-w(5rem)
+				&.pause
+					@include backgroundImg('../images/zone/ico_voice_pause.png')
+					background-size: 52% 60%
+				&.play
+					@include backgroundImg('../images/zone/ico_voice_play.png')
+					background-size: 52% 60%
+			span
+				position: absolute
+				@include fontStyle(.8rem, #fff,0)
+				right: 2rem
+				top: .2rem
+	.zone_container_item_bot
+		@include displayFlex
+		a
+			display: block
+			@include displayFlex-1
+			text-align: center
+			padding: 1rem 0
+			span
+				@include fontStyle(1rem, #bebcbd, .1rem)
+				position: relative
+				&.view
+					&:before
+						@include icoStyle(1rem, '../images/zone/ico_view.png')
+						left: -1.5rem
+						top: 0
+				&.rose
+					&:before
+						@include icoStyle(1rem, '../images/zone/ico_rose.png')
+						left: -1.5rem
+						top: 0
+					&.active
+						&:before
+							@include icoStyle(1rem, '../images/zone/ico_rosed.png')
+				&.zan
+					&:before
+						@include icoStyle(1rem, '../images/zone/ico_zan.png')
+						left: -1.5rem
+						top: 0
+					&.active
+						&:before
+							@include icoStyle(1rem, '../images/zone/ico_zaned.png')
+				&.comment
+					&:before
+						@include icoStyle(1rem, '../images/zone/ico_comment.png')
+						left: -1.5rem
+						top: 0
+
+
+.zone_container_item_opts
+	.zone_container_item_opt
+		@include displayFlex
+		border-bottom: .1rem solid #eee
+		.img
+			@include displayFlex-w(12.5%)
+			padding: 1rem 0
+			@include displayFlex
+			img
+				@include imgBlock_W(3rem)
+				border-radius: 3rem
+				@include displayFlexVAlign
+				&.first
+					width: 1.5rem
+					height: 2rem
+			a
+				display: block
+				@include fontStyle(.8rem,#fff,0)
+				background: $mainColor
+				width: 3rem
+				height: 3rem
+				border-radius: 3rem
+				text-align: center
+				line-height: 3rem
+
+
+.zone_container_item_comments
+	.zone_container_item_comment
+		display: block
+		@include displayFlex
+		padding: 1rem
+		border-bottom: .1rem solid #eee
+		.avatar
+			@include displayFlex-w(5rem)
+			img
+				@include imgBlock_W(4rem)
+				border-radius: 4rem
+		.content
+			@include displayFlex-1
+			div
+				@include fontStyle(1.2rem,$fontColor)
+				padding: .5rem 0
+			p.cat_text
+				display: block
+				@include fontStyle(.8rem,#525252)
+			p.cat_voice
+				padding: .5rem 0
+				a
+					width: 10rem
+					height: 2.4rem
+					border: 1px solid #cecece
+					display: block
+					margin-left: 1rem
+					border-radius: .5rem
 					position: relative
 					&:before
-						@include line_W(2.5rem, .1rem, #d9d9d9)
-						left: -3.5rem
-						top: 50%
-					&:after
-						@include line_W(2.5rem, .1rem, #d9d9d9)
-						left: initial
-						right: -3.5rem
-						top: 55%
-			ul
-				@include displayFlex
-				flex-direction: row
-				flex-wrap: wrap
-				align-content: flex-start
-				li
-					@include displayFlex-w(50%)
-					text-align: center
-					position: relative
-					@include fontStyle(1.2rem)
-					a
-						display: block
-						padding: 1rem 0
-						@include fontStyle(1rem)
-					&:nth-child(2n+1)
-						&:before
-							@include line_W(.05rem, 2rem, #d9d9d9)
-							left: initial
-							right: 0
-							bottom: 20%
-					&:after
-						@include line_W(13rem, .1rem, #d9d9d9)
-						left: 7%
-						bottom: 0
-					&:nth-last-child(2), &:nth-last-child(1)
-						&:after
-							background: #fff
-	.zone_container_items
-		.zone_container_item
-			border-bottom: solid #eee 1rem
-			padding: 1rem 1rem 0 1rem
-			.zone_container_item_top
-				@include displayFlex
-				.img
-					@include displayFlex-w(7rem)
-					img
-						@include img_W(5rem)
-						border-radius: 5rem
-						display: block
-						@include displayFlexVAlign
-						border: solid #f856a2 .1rem
-				.about
-					@include displayFlex-1
-					padding: .7rem 0
-					.name
-						h5
-							@include fontStyle(1.4rem)
-							display: inline-block
-						img
-							@include img_W(1rem)
-					.pos
-						padding: .3rem 0
-						h5
-							display: inline-block
-							@include fontStyle(1rem, #bebcbd)
-						img
-							@include img_W(.9rem)
-						span
-							@include fontStyle(1rem, #bebcbd, 0)
-				.opt
-					a
-						@include displayFlex-w(4rem)
-						display: block
-						img
-							@include img_W(3rem)
-			.zone_container_item_mid
-				.zone_container_item_title
-					@include fontStyle(1.2rem, $fontColor, .1rem)
-					@include textTail
-					line-height: 1.8rem
-					margin-bottom: .4rem
-					span
-						@include fontStyle(1.2rem, $mainColor, .1rem)
-				.zone_container_item_cat_text
-					@include fontStyle(1.1rem, #666, 0)
-					line-height: 1.7rem
-					a
-						display: inline-block
-						@include fontStyle(1.1rem, $mainColor, .1rem)
-						margin-left: 1rem
-				.zone_container_item_cat_article
-					background: #eaeaea
-					@include displayFlex
-					padding: .5rem
-					.avatar
-						@include displayFlex-w(5rem)
-						img
-							@include img_W(4rem)
-							display: block
-							@include displayFlexVAlign
-					.des
-						@include displayFlex-1
-						h5
-							@include fontStyle(1.2rem, $fontColor, .1rem)
-						p
-							@include fontStyle(1rem, $fontColor, .1rem)
-				.zone_container_item_cat_imgs
-					@include displayFlex
-					flex-direction: row
-					flex-wrap: wrap
-					align-content: flex-start
-					div
-						@include displayFlex-w(10rem)
-						img
-							@include img_W(9.7rem)
-							-webkit-border-radius: .2rem
-							-moz-border-radius: .2rem
-							border-radius: .2rem
-					&.img_2
-						div
-							@include displayFlex-w(15rem)
-							img
-								@include img_W(14rem)
-								-webkit-border-radius: .2rem
-								-moz-border-radius: .2rem
-								border-radius: .2rem
-					&.img_1
-						div
-							@include displayFlex-w(30rem)
-							img
-								@include img_W(29rem)
-								-webkit-border-radius: .2rem
-								-moz-border-radius: .2rem
-								border-radius: .2rem
-				.zone_container_item_cat_voice
-					@include backgroundImg('../images/zone/ico_bg_voice.png')
-					@include displayFlex
-					padding: .8rem
-					position: relative
-					.avatar
-						@include displayFlex-w(5rem)
-						img
-							@include img_W(4rem)
-							display: block
-							@include displayFlexVAlign
-					.fill
-						@include displayFlex-1
-					.voice
-						@include displayFlex-w(5rem)
-						&.pause
-							@include backgroundImg('../images/zone/ico_voice_pause.png')
-							background-size: 52% 60%
-						&.play
-							@include backgroundImg('../images/zone/ico_voice_play.png')
-							background-size: 52% 60%
+						content: ""
+						height: .5rem
+						width: .5rem
+						position: absolute
+						background: #fff
+						border-width: 0 0 1px 1px
+						border-color: #cecece
+						border-style: solid
+						-webkit-transform: matrix(0.71,0.71,-0.71,0.71,0,0)
+						transform: matrix(0.71,0.71,-0.71,0.71,0,0)
+						top: 32%
+						left: -0.36rem
 					span
 						position: absolute
-						@include fontStyle(.8rem, #fff,0)
-						right: 2rem
-						top: .2rem
-			.zone_container_item_bot
-				@include displayFlex
+						right: -2.4rem
+						top: 25%
+						@include fontStyle(1rem,#989898,0)
+				a.pause
+					background: url('../images/zone/ico_voice_pause_gray.png') no-repeat left center
+					background-size: 1.5rem 1.5rem
+					background-position: 10% 50%
+				a.play
+					background: url('../images/zone/ico_voice_play_gray.gif') no-repeat left center
+					background-size: 1.5rem 1.5rem
+					background-position: 10% 50%
+		.time
+			@include displayFlex-w(6rem)
+			@include fontStyle(.8rem,#bfbdbe)
+			text-align: center
+.zone_container_item_comments_btns
+	position: fixed
+	left: 0
+	right: 0
+	bottom: 0
+	background: #fff
+	.zone_container_item_comments_inputs
+		@include displayFlex
+		border-top: 1px solid #eee
+		border-bottom: 1px solid #eee
+		padding: .5rem 0
+		.voice_entry
+			@include displayFlex-w(4.5rem)
+			a
+				display: block
+				border-right: 1px solid #eee
+				img
+					@include imgBlock_W(3rem)
+		.inputs_input
+			@include displayFlex-1
+			input
+				border: none
+				display: block
+				width: 90%
+				height: 3rem
+				line-height: 3rem
+				color: #777
+				font-size: 1.2rem
+				padding: 0 1rem
+		.inputs_btn
+			@include displayFlex-w(8rem)
+			a
+				display: block
+				text-align: center
+				background: $mainColor
+				@include fontStyle(1.2rem,#fff)
+				height: 100%
+				width: 7rem
+				line-height: 3rem
+				border-radius: .5rem
+	.zone_container_item_comments_vbtns
+		display: none
+		&.active
+			display: block
+		.vbtn_pause
+			p
+				@include fontStyle(1.2rem,$fontColor)
+				text-align: center
+				padding: 1.5rem 0
+				span
+					position: relative
+					&.active
+						&:before
+							content: ""
+							position: absolute
+							bottom: .1rem
+							left: -7rem
+							width: 6rem
+							height: 1.5rem
+							background: url(../images/zone/ico_recording.gif) no-repeat center center
+							background-size: 100% 100%
+						&:after
+							content: ""
+							position: absolute
+							bottom: .1rem
+							right: -7rem
+							width: 6rem
+							height: 1.5rem
+							background: url(../images/zone/ico_recording.gif) no-repeat center center
+							background-size: 100% 100%
+
+			div
+				width: 6.5rem
+				height: 6.5rem
+				margin: 2rem auto
+				display: flex
+				border-radius: 100%
+				border: 1px solid #c5c3c4
 				a
 					display: block
-					@include displayFlex-1
-					text-align: center
-					padding: 1rem 0
-					span
-						@include fontStyle(1rem, #bebcbd, .1rem)
-						position: relative
-						&.view
-							&:before
-								@include icoStyle(1rem, '../images/zone/ico_view.png')
-								left: -1.5rem
-								top: 0
-						&.rose
-							&:before
-								@include icoStyle(1rem, '../images/zone/ico_rose.png')
-								left: -1.5rem
-								top: 0
-							&.active
-								&:before
-									@include icoStyle(1rem, '../images/zone/ico_rosed.png')
-						&.zan
-							&:before
-								@include icoStyle(1rem, '../images/zone/ico_zan.png')
-								left: -1.5rem
-								top: 0
-							&.active
-								&:before
-									@include icoStyle(1rem, '../images/zone/ico_zaned.png')
-						&.comment
-							&:before
-								@include icoStyle(1rem, '../images/zone/ico_comment.png')
-								left: -1.5rem
-								top: 0
+					width: 5rem
+					height: 5rem
+					background: $mainColor
+					border: 1px solid #eee
+					margin: 0 auto
+					@include displayFlexVAlign
+					&.play
+						border-radius: 5rem
+					&.pause
+						width: 3rem
+						height: 3rem
+						border-radius: .5rem
 
+.zone_container_add_msg
+	.msg_ipts
+		padding: 1rem
+		border-bottom: 1px solid #eee
+		textarea
+			border: none
+			width: 100%
+			@include fontStyle(1.1rem,$fontColor)
+		ul
+			padding: 1rem 0
+			@include displayFlex
+			flex-wrap: wrap
+			flex-direction: row
+			li
+				position: relative
+				width: 25%
+				height: 7rem
+				a
+					width: 6rem
+					height: 6rem
+					display: inline-block
+					border: 1px solid #f2f0f1
+					position: relative
+					&:after
+						@include line_W(4rem,1px,#ddd)
+						bottom: 3rem
+						left: 15%
+					&:before
+						@include line_W(1px,4rem,#ddd)
+						left: 3rem
+						bottom: 15%
+
+	.msg_tags
+		ul
+			@include displayFlex
+			padding: 1rem
+			li
+				@include displayFlex-1
+				&:last-child
+					text-align: right
+				a
+					@include fontStyle(1rem,#333)
+					width: 6rem
+					padding: .4rem 1rem
+					border-radius: 2rem
+					background: #f2f0f1
+					border: 1px solid #dfdfdf
+					img
+						@include img_W(.9rem)
+						padding-right: .5rem
+						position: relative
+						top: .1rem
 
 
 
