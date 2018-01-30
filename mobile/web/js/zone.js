@@ -140,7 +140,7 @@ require(["jquery", "alpha", "mustache"],
 
 				$(document).on(kClick, ".zone_container_add_msg_btn a", function () {
 					var util = this;
-
+					alert(util.localIds.length);
 					if (util.localIds && util.localIds.length) {
 						util.loadingflag = 1;
 						util.serverIds = [];
@@ -162,6 +162,7 @@ require(["jquery", "alpha", "mustache"],
 					success: function (res) {
 						util.serverIds.push(res.serverId);
 						if (util.localIds.length < 1) {
+							alert(JSON.stringify(util.serverIds));
 							util.uploadImages();
 						} else {
 							util.wxUploadImages();
