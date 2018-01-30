@@ -3108,6 +3108,49 @@ class ApiController extends Controller
 		return self::renderAPI(129, '操作无效~');
 	}
 
+	public function actionZone()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$openId = self::postParam('openid');
+		if (!$openId) {
+			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		}
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			return self::renderAPI(129, '用户不存在啊~', ['prize' => 4]);
+		}
+		$uid = $wxInfo['uId'];
+		switch ($tag) {
+			case "add_zone_msg":
+				$cat = self::postParam('cat');
+				$ids = self::postParam('id');
+				$f = self::postParam('f', 'add');
+				$text = ($f == "add" ? "添加" : '删除');
+				//$items = User::album($id, $openId, $f);
+
+				$mediaIds = json_decode($ids, 1);
+				$mediaIds = array_reverse($mediaIds);
+				foreach ($mediaIds as $mediaId) {
+					list($thumb, $url) = ImageUtil::save2Server($mediaId);
+					$imageItems[] = [
+						'thumb' => $thumb,
+						'figure' => $url
+					];
+				}
+				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode($imageItems, JSON_UNESCAPED_UNICODE));
+
+
+				if (!$imageItems && $f == "add") {
+					return self::renderAPI(129, $text . '失败');
+				}
+				return self::renderAPI(0, $text . '成功', [
+					'items' => $imageItems,
+				]);
+				break;
+		}
+		return self::renderAPI(129, '操作无效~');
+	}
+
 	public function actionQuestions()
 	{
 		$tag = trim(strtolower(self::postParam('tag')));
