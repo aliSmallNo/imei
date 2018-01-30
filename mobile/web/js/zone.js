@@ -134,9 +134,9 @@ require(["jquery", "alpha", "mustache"],
 							}
 							ul.find("li .choose-img").closest("li").remove();
 							ul.append(html + chooseImgStr);
+							alert(JSON.stringify(util.localIds));
 						}
 					});
-					alert(JSON.stringify(util.localIds));
 				});
 			},
 			wxUploadImages: function () {
