@@ -3146,6 +3146,15 @@ class ApiController extends Controller
 					'items' => $imageItems,
 				]);
 				break;
+			case "add_zone_voice":
+				$media_id = self::postParam('id');
+				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode($media_id, JSON_UNESCAPED_UNICODE));
+				list($thumb, $url) = ImageUtil::save2Server($media_id);
+				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode([$thumb, $url], JSON_UNESCAPED_UNICODE));
+				return self::renderAPI(0, '上传语音成功', [
+
+				]);
+				break;
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

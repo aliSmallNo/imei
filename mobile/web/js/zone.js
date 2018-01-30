@@ -84,13 +84,17 @@ require(["jquery", "alpha", "mustache"],
 							break;
 						case "send":
 							console.log('send');
+							if (!util.voice_localId) {
+								return;
+							}
 							//上传语音接口
 							wx.uploadVoice({
 								localId: util.voice_localId,            // 需要上传的音频的本地ID，由stopRecord接口获得
 								isShowProgressTips: 1,                  // 默认为1，显示进度提示
 								success: function (res) {
-									var serverId = res.serverId;        // 返回音频的服务器端ID
-									alert(serverId);
+									util.voice_serverId = res.serverId;        // 返回音频的服务器端ID
+									alert(util.voice_serverId);
+									util.uploadVoiceToService();
 								}
 							});
 							break;
@@ -106,6 +110,7 @@ require(["jquery", "alpha", "mustache"],
 					// 录音时间超过一分钟没有停止的时候会执行 complete 回调
 					complete: function (res) {
 						util.voice_localId = res.localId;
+						// util.changeRecord($("[page_comments=voice]"));
 						alert(util.voice_localId);
 					}
 				});
@@ -136,6 +141,22 @@ require(["jquery", "alpha", "mustache"],
 					span.removeClass("active");
 					span.html('点击录音');
 				}
+			},
+			uploadVoiceToService: function () {
+				var util = this;
+				$.post("/api/zone", {
+					tag: "add_zone_voice",
+					id: util.voice_serverId,
+				}, function (resp) {
+					if (resp.code == 0) {
+
+						alpha.clear();
+						alpha.toast(resp.msg, 1);
+					} else {
+						alpha.toast(resp.msg);
+					}
+					util.loadingflag = 0;
+				}, "json");
 			},
 		};
 		pageCommentsUtil.init();
