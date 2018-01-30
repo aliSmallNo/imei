@@ -123,6 +123,7 @@ require(["jquery", "alpha", "mustache"],
 							alert(JSON.stringify(util.localIds));
 							var tmp = '{[#data]}<li><img src="{[.]}" alt=""></li>{[/data]}';
 							var html = Mustache.render(tmp, util.localIds);
+							alert(html);
 							$(".msg_ipts ul").find("li .choose-img").closest("li").remove();
 							$(".msg_ipts ul").append(html + '<li><a href="javascript:;" class="choose-img"></a></li>');
 						}
