@@ -123,17 +123,17 @@ require(["jquery", "alpha", "mustache"],
 						sourceType: ['album', 'camera'],
 						success: function (res) {
 							util.localIds = util.localIds.concat(res.localIds);
-							// alert(JSON.stringify(util.localIds));
+							alert(JSON.stringify(util.localIds));
 							var tmp = '{[#data]}<li><img src="{[.]}" alt=""></li>{[/data]}';
 							var html = Mustache.render(tmp, {data: util.localIds});
 							alert(html);
+							alert(JSON.stringify(util.localIds));
 							alert(len + parseInt(util.localIds.length));
 							if (len + parseInt(util.localIds.length) < 6) {
 								chooseImgStr = '<li><a href="javascript:;" class="choose-img"></a></li>'
 							}
 							ul.find("li .choose-img").closest("li").remove();
 							ul.append(html + chooseImgStr);
-							alert(JSON.stringify(util.localIds));
 						}
 					});
 				});
