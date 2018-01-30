@@ -1715,7 +1715,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					id: JSON.stringify(util.serverIds)
 				}, function (resp) {
 					if (resp.code == 0) {
-						$("#album .photos").append(Mustache.render(util.albumSingleTmp, resp.data));
+						//$("#album .photos").append(Mustache.render(util.albumSingleTmp, resp.data));
 						alpha.clear();
 						alpha.toast(resp.msg, 1);
 					} else {

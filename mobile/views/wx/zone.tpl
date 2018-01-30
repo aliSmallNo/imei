@@ -417,6 +417,7 @@
 				<li><a href="javascript:;" class="add_tag">#添加话题</a></li>
 			</ul>
 		</div>
+		<div class="zone_container_add_msg_btn"><a href="javascript:;">提交</a></div>
 	</div>
 </section>
 

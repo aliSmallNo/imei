@@ -811,6 +811,19 @@ section {
         padding-right: 0.5rem;
         position: relative;
         top: 0.1rem; }
+.zone_container_add_msg .zone_container_add_msg_btn {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0; }
+  .zone_container_add_msg .zone_container_add_msg_btn a {
+    display: block;
+    font-size: 1.2rem;
+    color: #fff;
+    letter-spacing: 0.3rem;
+    padding: 1rem 0;
+    background: #f06292;
+    text-align: center; }
 
 .zone_container_search_topic .zone_container_search {
   padding: 1rem;

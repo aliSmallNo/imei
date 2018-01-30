@@ -107,6 +107,7 @@ require(["jquery", "alpha", "mustache"],
 		var pageAddUtil = {
 			loadingflag: 0,
 			localIds: [],
+			serverIds: [],
 			init: function () {
 				var util = this;
 				// 添加图片
@@ -117,7 +118,7 @@ require(["jquery", "alpha", "mustache"],
 					var ul = $(".msg_ipts ul");
 					var len = parseInt(ul.find('img').length);
 					var chooseImgStr = '';
-					alert(len);
+					// alert(len);
 					wx.chooseImage({
 						count: 6 - len,
 						sizeType: ['original', 'compressed'],
@@ -126,7 +127,7 @@ require(["jquery", "alpha", "mustache"],
 							util.localIds = util.localIds.concat(res.localIds);
 							var tmp = '{[#data]}<li><img src="{[.]}" alt=""></li>{[/data]}';
 							var html = Mustache.render(tmp, {data: res.localIds});
-							alert(html);
+							//alert(html);
 							alert(JSON.stringify(util.localIds));
 							if (len + parseInt(util.localIds.length) < 6) {
 								chooseImgStr = '<li><a href="javascript:;" class="choose-img"></a></li>'
@@ -136,17 +137,20 @@ require(["jquery", "alpha", "mustache"],
 						}
 					});
 				});
+
+				$(document).on(kClick, ".zone_container_add_msg_btn a", function () {
+					var util = this;
+
+					if (util.localIds && util.localIds.length) {
+						util.loadingflag = 1;
+						util.serverIds = [];
+						alpha.loading('正在上传中...');
+						util.wxUploadImages();
+					}
+				});
 			},
 			wxUploadImages: function () {
 				var util = this;
-
-				if (util.localIds && util.localIds.length) {
-					util.uploadImgFlag = 1;
-					util.serverIds = [];
-					alpha.loading('正在上传中...');
-					util.wxUploadImages();
-				}
-
 				if (util.localIds.length < 1 && util.serverIds.length) {
 					util.uploadImages();
 					return;
@@ -166,26 +170,26 @@ require(["jquery", "alpha", "mustache"],
 					fail: function () {
 						/*SmeUtil.serverIds = [];
 						alpha.toast("上传失败！");
-						SmeUtil.uploadImgFlag = 0;*/
+						SmeUtil.loadingflag = 0;*/
 					}
 				});
 			},
-			// uploadImages: function () {
-			// 	var util = this;
-			// 	$.post("/api/user", {
-			// 		tag: "album",
-			// 		id: JSON.stringify(util.serverIds)
-			// 	}, function (resp) {
-			// 		if (resp.code == 0) {
-			// 			$("#album .photos").append(Mustache.render(util.albumSingleTmp, resp.data));
-			// 			alpha.clear();
-			// 			alpha.toast(resp.msg, 1);
-			// 		} else {
-			// 			alpha.toast(resp.msg);
-			// 		}
-			// 		util.uploadImgFlag = 0;
-			// 	}, "json");
-			// }
+			uploadImages: function () {
+				var util = this;
+				$.post("/api/user", {
+					tag: "album",
+					id: JSON.stringify(util.serverIds)
+				}, function (resp) {
+					if (resp.code == 0) {
+						// $("#album .photos").append(Mustache.render(util.albumSingleTmp, resp.data));
+						alpha.clear();
+						alpha.toast(resp.msg, 1);
+					} else {
+						alpha.toast(resp.msg);
+					}
+					util.loadingflag = 0;
+				}, "json");
+			}
 		};
 		pageAddUtil.init();
 
