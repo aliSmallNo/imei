@@ -780,6 +780,9 @@ section {
           background: #ddd;
           left: 3rem;
           bottom: 15%; }
+      .zone_container_add_msg .msg_ipts ul li img {
+        width: 6rem;
+        height: 6rem; }
 .zone_container_add_msg .msg_tags ul {
   display: -webkit-box;
   display: -webkit-flex;
