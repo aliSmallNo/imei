@@ -128,7 +128,6 @@ require(["jquery", "alpha", "mustache"],
 							var html = Mustache.render(tmp, {data: util.localIds});
 							alert(html);
 							alert(len + parseInt(util.localIds.length));
-							var chooseImgStr = '';
 							if (len + parseInt(util.localIds.length) < 6) {
 								chooseImgStr = '<li><a href="javascript:;" class="choose-img"></a></li>'
 							}
