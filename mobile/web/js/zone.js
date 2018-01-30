@@ -113,9 +113,12 @@ require(["jquery", "alpha", "mustache"],
 					if (util.loadingflag) {
 						return false;
 					}
-					console.log('choose-img');
+					var ul = $(".msg_ipts ul");
+					var len = parseInt(ul.find('img').length);
+					var chooseImgStr = '';
+					alert(len);
 					wx.chooseImage({
-						count: 3,
+						count: 6 - len,
 						sizeType: ['original', 'compressed'],
 						sourceType: ['album', 'camera'],
 						success: function (res) {
@@ -124,8 +127,13 @@ require(["jquery", "alpha", "mustache"],
 							var tmp = '{[#data]}<li><img src="{[.]}" alt=""></li>{[/data]}';
 							var html = Mustache.render(tmp, {data: util.localIds});
 							alert(html);
-							$(".msg_ipts ul").find("li .choose-img").closest("li").remove();
-							$(".msg_ipts ul").append(html + '<li><a href="javascript:;" class="choose-img"></a></li>');
+							alert(len + parseInt(util.localIds.length));
+							var chooseImgStr = '';
+							if (len + parseInt(util.localIds.length) < 6) {
+								chooseImgStr = '<li><a href="javascript:;" class="choose-img"></a></li>'
+							}
+							ul.find("li .choose-img").closest("li").remove();
+							ul.append(html + chooseImgStr);
 						}
 					});
 				});
