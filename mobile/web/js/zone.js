@@ -116,18 +116,18 @@ require(["jquery", "alpha", "mustache"],
 					var ul = $(".msg_ipts ul");
 					var len = parseInt(ul.find('img').length);
 					var chooseImgStr = '';
-					alert(len);
+					//alert(len);
 					wx.chooseImage({
 						count: 6 - len,
 						sizeType: ['original', 'compressed'],
 						sourceType: ['album', 'camera'],
 						success: function (res) {
-							util.localIds = res.localIds;
-							alert(JSON.stringify(util.localIds));
+							util.localIds = util.localIds.concat(res.localIds);
+							// alert(JSON.stringify(util.localIds));
 							var tmp = '{[#data]}<li><img src="{[.]}" alt=""></li>{[/data]}';
 							var html = Mustache.render(tmp, {data: util.localIds});
-							alert(html);
-							alert(len + parseInt(util.localIds.length));
+							// alert(html);
+							// alert(len + parseInt(util.localIds.length));
 							var chooseImgStr = '';
 							if (len + parseInt(util.localIds.length) < 6) {
 								chooseImgStr = '<li><a href="javascript:;" class="choose-img"></a></li>'
@@ -136,6 +136,7 @@ require(["jquery", "alpha", "mustache"],
 							ul.append(html + chooseImgStr);
 						}
 					});
+					alert(JSON.stringify(util.localIds));
 				});
 			},
 			wxUploadImages: function () {
