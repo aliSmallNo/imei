@@ -176,8 +176,8 @@ require(["jquery", "alpha", "mustache"],
 			},
 			uploadImages: function () {
 				var util = this;
-				$.post("/api/user", {
-					tag: "album",
+				$.post("/api/zone", {
+					tag: "add_zone_msg",
 					id: JSON.stringify(util.serverIds)
 				}, function (resp) {
 					if (resp.code == 0) {

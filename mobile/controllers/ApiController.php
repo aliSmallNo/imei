@@ -3139,7 +3139,6 @@ class ApiController extends Controller
 				}
 				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode($imageItems, JSON_UNESCAPED_UNICODE));
 
-
 				if (!$imageItems && $f == "add") {
 					return self::renderAPI(129, $text . '失败');
 				}
