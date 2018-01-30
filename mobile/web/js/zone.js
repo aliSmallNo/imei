@@ -139,7 +139,6 @@ require(["jquery", "alpha", "mustache"],
 				});
 
 				$(document).on(kClick, ".zone_container_add_msg_btn a", function () {
-					var util = this;
 					alert(util.localIds.length);
 					if (util.localIds && util.localIds.length) {
 						util.loadingflag = 1;
