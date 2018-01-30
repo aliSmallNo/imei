@@ -393,7 +393,7 @@
 			</div>
 			<div class="zone_container_item_comments_vbtns">
 				<div class="vbtn_pause">
-					<p><span class="active">点击录音</span></p>
+					<p><span class="">点击录音</span></p>
 					<div><a href="javascript:;" class="play" page_comments="voice"></a></div>
 				</div>
 			</div>

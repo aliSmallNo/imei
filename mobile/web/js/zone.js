@@ -65,6 +65,8 @@ require(["jquery", "alpha", "mustache"],
 		pageItemsUtil.init();
 
 		var pageCommentsUtil = {
+			voice_localId: '',
+			voice_serverId: '',
 			init: function () {
 				var util = this;
 				$(document).on(kClick, "[page_comments]", function () {
@@ -81,21 +83,55 @@ require(["jquery", "alpha", "mustache"],
 							}
 							break;
 						case "send":
+							console.log('send');
+							//上传语音接口
+							wx.uploadVoice({
+								localId: util.voice_localId,            // 需要上传的音频的本地ID，由stopRecord接口获得
+								isShowProgressTips: 1,                  // 默认为1，显示进度提示
+								success: function (res) {
+									var serverId = res.serverId;        // 返回音频的服务器端ID
+									alert(serverId);
+								}
+							});
 							break;
 						case "voice":
+							util.voice_localId = '';
 							util.changeRecord(self);
 							break;
 					}
 				});
+
+
+				wx.onVoiceRecordEnd({
+					// 录音时间超过一分钟没有停止的时候会执行 complete 回调
+					complete: function (res) {
+						util.voice_localId = res.localId;
+						alert(util.voice_localId);
+					}
+				});
+
 			},
 			changeRecord: function ($btn) {
+				console.log('changeRecord function');
+				var util = this;
 				var f = $btn.hasClass("play");
 				var span = $btn.closest(".vbtn_pause").find("p span");
 				if (f) {
+					console.log('start record');
+					//开始录音接口
+					wx.startRecord();
 					$btn.removeClass("play").addClass("pause");
 					span.addClass("active");
 					span.html('01:23');
 				} else {
+					console.log('stop record');
+					//停止录音接口
+					wx.stopRecord({
+						success: function (res) {
+							util.voice_localId = res.localId;
+							alert(util.voice_localId);
+						}
+					});
 					$btn.removeClass("pause").addClass("play");
 					span.removeClass("active");
 					span.html('点击录音');
@@ -293,7 +329,9 @@ require(["jquery", "alpha", "mustache"],
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			window.onhashchange = locationHashChanged;
-			wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage',
+			wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems',
+				'chooseImage', 'previewImage', 'uploadImage',
+				"startRecord", "stopRecord", "onVoiceRecordEnd", "uploadVoice",
 				'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
