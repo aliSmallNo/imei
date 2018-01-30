@@ -15,6 +15,55 @@ require(["jquery", "alpha"],
 			loading: 0
 		};
 
+		var pageItemsUtil = {
+			init: function () {
+				var util = this;
+				$(document).on(kClick, "[items_tag]", function () {
+					var self = $(this);
+					var tag = self.attr("items_tag");
+					switch (tag) {
+						case 'opt':
+							alpha.toast('opt');
+							break;
+						case 'all':
+							alpha.toast('show all');
+							break;
+						case 'view':
+							alpha.toast('view');
+							break;
+						case 'rose':
+							alpha.toast('rose');
+							break;
+						case 'zan':
+							alpha.toast('zan');
+							break;
+						case 'comment':
+							location.href = "#zone_item";
+							alpha.toast('comment');
+							break;
+					}
+				});
+
+				$(document).on(kClick, "[items_bar]", function () {
+					var self = $(this);
+					var tag = self.attr("items_bar");
+					self.closest("ul").find("a").removeClass("active");
+					self.addClass("active");
+					alpha.toast(tag);
+				});
+
+				$(document).on(kClick, ".zone_container_top_topic a", function () {
+					var self = $(this);
+					var topic_id = self.attr("data_topic_id");
+					if (topic_id) {
+						location.href = "#zone_topic";
+					}
+
+				});
+			},
+		};
+		pageItemsUtil.init();
+
 		var pageCommentsUtil = {
 			init: function () {
 				var util = this;
