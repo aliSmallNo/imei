@@ -31,11 +31,11 @@
 				@include fontStyle(1.3rem)
 				position: relative
 				&:before
-					@include line_W(2.5rem, .1rem, #d9d9d9)
+					@include line_W(2.5rem, 1px, #d9d9d9)
 					left: -3.5rem
 					top: 50%
 				&:after
-					@include line_W(2.5rem, .1rem, #d9d9d9)
+					@include line_W(2.5rem, 1px, #d9d9d9)
 					left: initial
 					right: -3.5rem
 					top: 55%
@@ -266,10 +266,10 @@
 			@include displayFlex-1
 			div
 				@include fontStyle(1.2rem, $fontColor)
-				padding: .5rem 0
+				padding-bottom: .5rem
 			p.cat_text
 				display: block
-				@include fontStyle(.8rem, #525252)
+				@include fontStyle(1.1rem, #525252)
 			p.cat_voice
 				padding: .5rem 0
 				a

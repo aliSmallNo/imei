@@ -407,7 +407,7 @@
 		<div class="msg_ipts">
 			<textarea placeholder="此时此刻，你想与大家分享点什么..." rows="6"></textarea>
 			<ul>
-				<li><a href="javascript:;" class="add_img"></a></li>
+				<li><a href="javascript:;" class="choose-img"></a></li>
 			</ul>
 		</div>
 		<div class="msg_tags">
@@ -582,7 +582,6 @@
 				</div>
 			</div>
 		</div>
-
 
 	</div>
 

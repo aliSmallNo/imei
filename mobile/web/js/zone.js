@@ -1,5 +1,5 @@
-require(["jquery", "alpha"],
-	function ($, alpha) {
+require(["jquery", "alpha", "mustache"],
+	function ($, alpha, Mustache) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -104,6 +104,79 @@ require(["jquery", "alpha"],
 		};
 		pageCommentsUtil.init();
 
+		var pageAddUtil = {
+			loadingflag: 0,
+			init: function () {
+				var util = this;
+				// 添加图片
+				$(document).on(kClick, "a.choose-img", function () {
+					if (util.loadingflag) {
+						return false;
+					}
+					console.log('choose-img');
+					wx.chooseImage({
+						count: 3,
+						sizeType: ['original', 'compressed'],
+						sourceType: ['album', 'camera'],
+						success: function (res) {
+							util.localIds = res.localIds;
+							alert(JSON.stringify(util.localIds));
+						}
+					});
+				});
+			},
+			wxUploadImages: function () {
+				var util = this;
+
+				if (util.localIds && util.localIds.length) {
+					util.uploadImgFlag = 1;
+					util.serverIds = [];
+					alpha.loading('正在上传中...');
+					util.wxUploadImages();
+				}
+
+				if (util.localIds.length < 1 && util.serverIds.length) {
+					util.uploadImages();
+					return;
+				}
+				var localId = util.localIds.pop();
+				wx.uploadImage({
+					localId: localId,
+					isShowProgressTips: 0,
+					success: function (res) {
+						util.serverIds.push(res.serverId);
+						if (util.localIds.length < 1) {
+							util.uploadImages();
+						} else {
+							util.wxUploadImages();
+						}
+					},
+					fail: function () {
+						/*SmeUtil.serverIds = [];
+						alpha.toast("上传失败！");
+						SmeUtil.uploadImgFlag = 0;*/
+					}
+				});
+			},
+			// uploadImages: function () {
+			// 	var util = this;
+			// 	$.post("/api/user", {
+			// 		tag: "album",
+			// 		id: JSON.stringify(util.serverIds)
+			// 	}, function (resp) {
+			// 		if (resp.code == 0) {
+			// 			$("#album .photos").append(Mustache.render(util.albumSingleTmp, resp.data));
+			// 			alpha.clear();
+			// 			alpha.toast(resp.msg, 1);
+			// 		} else {
+			// 			alpha.toast(resp.msg);
+			// 		}
+			// 		util.uploadImgFlag = 0;
+			// 	}, "json");
+			// }
+		};
+		pageAddUtil.init();
+
 		$(document).on(kClick, ".vip_mouth_gift a.btn", function () {
 			var self = $(this);
 			if (self.hasClass("fail")) {
@@ -204,7 +277,8 @@ require(["jquery", "alpha"],
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			window.onhashchange = locationHashChanged;
-			wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
+			wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems', 'chooseImage', 'previewImage', 'uploadImage',
+				'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
 				wx.hideMenuItems({
