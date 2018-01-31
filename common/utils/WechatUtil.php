@@ -574,7 +574,6 @@ class WechatUtil
 		if (AppUtil::isDev()) {
 			//return 0;
 		}
-		AppUtil::logFile([$noticeTag, $takerId, $title], 5, __FUNCTION__, __LINE__);
 		$userInfo = User::findOne(["uId" => $takerId]);
 		if (!$userInfo) {
 			return 0;
@@ -582,7 +581,6 @@ class WechatUtil
 		$openId = $userInfo['uOpenId'];
 		$nickname = $userInfo['uName'];
 		$encryptId = AppUtil::encrypt($takerId);
-		AppUtil::logFile([$openId, $nickname, $encryptId], 5, __FUNCTION__, __LINE__);
 		$keywords = [
 			'first' => '',
 			'keyword1' => $title,
@@ -799,13 +797,11 @@ class WechatUtil
 			];
 
 		}
-		AppUtil::logFile($bodyInfo, 5, __FUNCTION__, __LINE__);
 		$routineNotices = [self::NOTICE_FAVOR, self::NOTICE_CHAT, self::NOTICE_PRESENT];
 		if (!in_array($noticeTag, $routineNotices)) {
 			$access_token = self::getAccessToken(self::ACCESS_CODE);
 			$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
 			AppUtil::postJSON($url, json_encode($bodyInfo));
-			AppUtil::logFile($bodyInfo, 5, __FUNCTION__, __LINE__);
 		}
 		if (!$text) {
 			$text = isset(UserMsg::$catDict[$msgCat]) ? UserMsg::$catDict[$msgCat] : '';
@@ -1156,8 +1152,8 @@ class WechatUtil
 	public static function summonViewer($debug = false, $cat = 'template')
 	{
 		$conn = AppUtil::db();
-		$criteria = " AND uOpenId='oYDJew48Eghqvj-BFT1Ddb9b0Miw' ";
-//		$criteria = '';
+//		$criteria = " AND uOpenId='oYDJew48Eghqvj-BFT1Ddb9b0Miw' ";
+		$criteria = '';
 		$sql = "SELECT u.uId,u.uName,u.uOpenId,uPhone,uGender,wSubscribe
 			 FROM im_user as u 
 			 JOIN im_user_wechat as w on u.uId = w.wUId
@@ -1167,18 +1163,6 @@ class WechatUtil
 		if ($cat == 'template') {
 			$userIds = array_column($ret, 'uId');
 			$senderId = User::SERVICE_UID;
-			/*$userId = 131379;
-			QueueUtil::loadJob('templateMsg',
-				[
-					'tag' => WechatUtil::NOTICE_SUMMON,
-					'receiver_uid' => $userId,
-					'title' => '有人对你怦然心动啦',
-					'sub_title' => '你的一位微信联系人对你怦然心动啦，快去看看吧~~',
-					'sender_uid' => $senderId,
-					'gid' => 0
-				],
-				QueueUtil::QUEUE_TUBE_SMS);*/
-
 
 			foreach ($userIds as $userId) {
 				QueueUtil::loadJob('templateMsg',
