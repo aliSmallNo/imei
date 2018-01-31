@@ -1156,7 +1156,7 @@ class WechatUtil
 	public static function summonViewer($debug = false, $cat = 'template')
 	{
 		$conn = AppUtil::db();
-		$criteria = " AND uOpenId='oYDJew3AfJB7ZbB08yIfC5pUtdhs' ";
+		$criteria = " AND uOpenId='oYDJew48Eghqvj-BFT1Ddb9b0Miw' ";
 //		$criteria = '';
 		$sql = "SELECT u.uId,u.uName,u.uOpenId,uPhone,uGender,wSubscribe
 			 FROM im_user as u 
@@ -1167,7 +1167,7 @@ class WechatUtil
 		if ($cat == 'template') {
 			$userIds = array_column($ret, 'uId');
 			$senderId = User::SERVICE_UID;
-			$userId = 131379;
+			/*$userId = 131379;
 			QueueUtil::loadJob('templateMsg',
 				[
 					'tag' => WechatUtil::NOTICE_SUMMON,
@@ -1177,7 +1177,7 @@ class WechatUtil
 					'sender_uid' => $senderId,
 					'gid' => 0
 				],
-				QueueUtil::QUEUE_TUBE_SMS);
+				QueueUtil::QUEUE_TUBE_SMS);*/
 
 
 			foreach ($userIds as $userId) {
