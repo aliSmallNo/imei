@@ -797,6 +797,7 @@ class WechatUtil
 			];
 
 		}
+		AppUtil::logFile($bodyInfo, 5, __FUNCTION__, __LINE__);
 		$routineNotices = [self::NOTICE_FAVOR, self::NOTICE_CHAT, self::NOTICE_PRESENT];
 		if (!in_array($noticeTag, $routineNotices)) {
 			$access_token = self::getAccessToken(self::ACCESS_CODE);
