@@ -44,6 +44,7 @@ class WechatUtil
 	const NOTICE_AUDIT = 'notice_audit';
 	const NOTICE_PRESENT = 'notice_present';
 	const NOTICE_FAVOR = 'notice_favor';
+	const NOTICE_SUMMON = 'notice_summon';
 	const NOTICE_ROUTINE = 'notice_routine';
 	const NOTICE_MAKE_FRIRENDS = 'notice_firends';
 	const NOTICE_CERT_GRANT = 'notice_cert_grant';
@@ -673,6 +674,15 @@ class WechatUtil
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				$text = "个人信息审核不通过，" . $subTitle;
 				break;
+			case self::NOTICE_SUMMON:
+				$msgCat = UserMsg::CATEGORY_FAVOR;
+				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$url = $wxUrl . "/wx/single";
+				$keywords['first'] = "hi，$nickname\n";
+				$keywords['keyword1'] = '有人为你怦然心动了，快去看看吧';
+				$keywords['keyword2'] = '千寻恋恋祝你今天好运又开心啊';
+				$keywords['remark'] = "\n点击下方详情查看吧~";
+				break;
 			case self::NOTICE_PRESENT:
 				if (User::muteAlert($takerId, User::ALERT_PRESENT)) {
 					return 0;
@@ -697,6 +707,7 @@ class WechatUtil
 				$keywords['keyword2'] = '千寻恋恋祝你今天好运又开心啊';
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
+
 			case self::NOTICE_ROUTINE:
 				if (User::muteAlert($takerId, User::ALERT_FAVOR)
 					&& User::muteAlert($takerId, User::ALERT_PRESENT)
@@ -1138,14 +1149,33 @@ class WechatUtil
 		return $accessToken;
 	}
 
-	public static function summonViewer($debug = false)
+	public static function summonViewer($debug = false, $cat = 'template')
 	{
 		$conn = AppUtil::db();
-		$sql = "SELECT u.uName,u.uOpenId,uPhone,uGender,wSubscribe
+		$sql = "SELECT u.uId,u.uName,u.uOpenId,uPhone,uGender,wSubscribe
 			 FROM im_user as u 
 			 JOIN im_user_wechat as w on u.uId = w.wUId
 			 WHERE w.wSubscribe=1 AND u.uOpenId LIKE 'oYDJew%' AND u.uPhone='' ";
 		$ret = $conn->createCommand($sql)->queryAll();
+		if ($cat == 'template') {
+			$userIds = array_column($ret, 'uId');
+			$senderId = User::SERVICE_UID;
+			foreach ($userIds as $userId) {
+				QueueUtil::loadJob('templateMsg',
+					[
+						'tag' => WechatUtil::NOTICE_SUMMON,
+						'receiver_uid' => $userId,
+						'title' => '有人对你怦然心动啦',
+						'sub_title' => '你的一位微信联系人对你怦然心动啦，快去看看吧~~',
+						'sender_uid' => $senderId,
+						'gid' => 0
+					],
+					QueueUtil::QUEUE_TUBE_SMS);
+			}
+			return count($userIds);
+		}
+
+
 		$openIds = array_column($ret, 'uOpenId');
 		/*
 		$cnt = 0;
@@ -1179,6 +1209,8 @@ class WechatUtil
 						'text' => $content
 					],
 					QueueUtil::QUEUE_TUBE_SMS);
+
+
 				/*$cnt += UserWechat::sendMsg($openId, $content);
 				if ($k > 0 && $k % 4 == 0) {
 					sleep(2);
