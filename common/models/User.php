@@ -1781,7 +1781,7 @@ class User extends ActiveRecord
 		} else {
 			$redis->setCache($smsLimit + 1);
 		}
-		$code = rand(100000, 999999);
+		$code = mt_rand(100000, 999999);
 		$minutes = 10;
 
 		AppUtil::sendTXSMS($phone, AppUtil::SMS_NORMAL, ["params" => [strval($code), strval($minutes)]]);
