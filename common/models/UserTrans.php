@@ -1201,4 +1201,21 @@ class UserTrans extends ActiveRecord
 
 		return [$ret, $count];
 	}
+
+	/**
+	 * @param $uid
+	 * @param int $amt 提现数量
+	 * @return false|null|string
+	 * @throws \yii\db\Exception
+	 */
+	public static function IsWithDraw($uid, $amt = 200)
+	{
+		$sql = "select count(1) from `im_user_trans` 
+				where `tCategory`=:cat and tUId=:uid and tAmt=:amt and DATE_FORMAT(tAddedOn,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d')";
+		return AppUtil::db()->createCommand($sql)->bindValues([
+			":cat" => self::CAT_COIN_WITHDRAW,
+			":uid" => $uid,
+			":amt" => $amt,
+		])->queryScalar();
+	}
 }

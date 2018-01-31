@@ -2179,9 +2179,15 @@ class WxController extends BaseController
 		unset($prices["chat_7"]);
 
 		$cash = [
-			["amt" => 10, "cls" => "active"], ["amt" => 30, "cls" => ""], ["amt" => 50, "cls" => ""], ["amt" => 80, "cls" => ""],
+			["amt" => 2, "cls" => ""], ["amt" => 10, "cls" => ""], ["amt" => 30, "cls" => ""], ["amt" => 50, "cls" => ""], ["amt" => 80, "cls" => ""],
 			["amt" => 120, "cls" => "active"], ["amt" => 180, "cls" => ""], ["amt" => 240, "cls" => ""], ["amt" => 300, "cls" => ""],
 		];
+		// 今天是否提现了2元
+		if (UserTrans::IsWithDraw($this->user_id, 200) > 0) {
+			array_shift($cash);
+			array_values($cash);
+		}
+		$cash[0]["cls"] = "active";
 		$offet = 0;
 		$cash = array_slice($cash, $offet, 3);
 
