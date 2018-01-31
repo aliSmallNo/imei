@@ -410,6 +410,7 @@ section {
       -ms-flex: 1;
       flex: 1; }
     .zone_container_item .zone_container_item_mid .zone_container_item_cat_voice .voice {
+      display: block;
       -webkit-box-flex: 0 0 5rem;
       -webkit-flex: 0 0 5rem;
       -ms-flex: 0 0 5rem;
@@ -740,7 +741,7 @@ section {
     font-size: 1.1rem;
     color: #333;
     letter-spacing: 0.1rem; }
-  .zone_container_add_msg .msg_ipts ul {
+  .zone_container_add_msg .msg_ipts ul.add_cat_img {
     padding: 1rem 0;
     display: -webkit-box;
     display: -webkit-flex;
@@ -748,17 +749,17 @@ section {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row; }
-    .zone_container_add_msg .msg_ipts ul li {
+    .zone_container_add_msg .msg_ipts ul.add_cat_img li {
       position: relative;
       width: 25%;
       height: 7rem; }
-      .zone_container_add_msg .msg_ipts ul li a {
+      .zone_container_add_msg .msg_ipts ul.add_cat_img li a {
         width: 6rem;
         height: 6rem;
         display: inline-block;
         border: 1px solid #f2f0f1;
         position: relative; }
-        .zone_container_add_msg .msg_ipts ul li a:after {
+        .zone_container_add_msg .msg_ipts ul.add_cat_img li a:after {
           content: "";
           position: absolute;
           bottom: 0;
@@ -769,7 +770,7 @@ section {
           background: #ddd;
           bottom: 3rem;
           left: 15%; }
-        .zone_container_add_msg .msg_ipts ul li a:before {
+        .zone_container_add_msg .msg_ipts ul.add_cat_img li a:before {
           content: "";
           position: absolute;
           bottom: 0;
@@ -780,9 +781,55 @@ section {
           background: #ddd;
           left: 3rem;
           bottom: 15%; }
-      .zone_container_add_msg .msg_ipts ul li img {
+      .zone_container_add_msg .msg_ipts ul.add_cat_img li img {
         width: 6rem;
         height: 6rem; }
+  .zone_container_add_msg .msg_ipts ul.add_cat_voice .zone_container_item_cat_voice {
+    background: url("../images/zone/ico_bg_voice.png") no-repeat center center;
+    background-size: 100% 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 0.8rem;
+    position: relative; }
+    .zone_container_add_msg .msg_ipts ul.add_cat_voice .zone_container_item_cat_voice .avatar {
+      -webkit-box-flex: 0 0 5rem;
+      -webkit-flex: 0 0 5rem;
+      -ms-flex: 0 0 5rem;
+      flex: 0 0 5rem; }
+      .zone_container_add_msg .msg_ipts ul.add_cat_voice .zone_container_item_cat_voice .avatar img {
+        width: 4rem;
+        height: 4rem;
+        display: block;
+        justify-content: center;
+        align-items: center;
+        align-self: center; }
+    .zone_container_add_msg .msg_ipts ul.add_cat_voice .zone_container_item_cat_voice .fill {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1; }
+    .zone_container_add_msg .msg_ipts ul.add_cat_voice .zone_container_item_cat_voice .voice {
+      -webkit-box-flex: 0 0 5rem;
+      -webkit-flex: 0 0 5rem;
+      -ms-flex: 0 0 5rem;
+      flex: 0 0 5rem; }
+      .zone_container_add_msg .msg_ipts ul.add_cat_voice .zone_container_item_cat_voice .voice.pause {
+        background: url("../images/zone/ico_voice_pause.png") no-repeat center center;
+        background-size: 100% 100%;
+        background-size: 52% 60%; }
+      .zone_container_add_msg .msg_ipts ul.add_cat_voice .zone_container_item_cat_voice .voice.play {
+        background: url("../images/zone/ico_voice_play.png") no-repeat center center;
+        background-size: 100% 100%;
+        background-size: 52% 60%; }
+    .zone_container_add_msg .msg_ipts ul.add_cat_voice .zone_container_item_cat_voice span {
+      position: absolute;
+      font-size: 0.8rem;
+      color: #fff;
+      letter-spacing: 0;
+      right: 2rem;
+      top: 0.2rem; }
 .zone_container_add_msg .msg_tags ul {
   display: -webkit-box;
   display: -webkit-flex;
@@ -824,6 +871,58 @@ section {
     padding: 1rem 0;
     background: #f06292;
     text-align: center; }
+.zone_container_add_msg .zone_container_add_msg_record {
+  border-top: 1px solid #eee;
+  padding: 0; }
+  .zone_container_add_msg .zone_container_add_msg_record .vbtn_pause p {
+    font-size: 1.2rem;
+    color: #333;
+    letter-spacing: 0.1rem;
+    text-align: center;
+    padding: 1.5rem 0; }
+    .zone_container_add_msg .zone_container_add_msg_record .vbtn_pause p span {
+      position: relative; }
+      .zone_container_add_msg .zone_container_add_msg_record .vbtn_pause p span.active:before {
+        content: "";
+        position: absolute;
+        bottom: 0.1rem;
+        left: -7rem;
+        width: 6rem;
+        height: 1.5rem;
+        background: url(../images/zone/ico_recording.gif) no-repeat center center;
+        background-size: 100% 100%; }
+      .zone_container_add_msg .zone_container_add_msg_record .vbtn_pause p span.active:after {
+        content: "";
+        position: absolute;
+        bottom: 0.1rem;
+        right: -7rem;
+        width: 6rem;
+        height: 1.5rem;
+        background: url(../images/zone/ico_recording.gif) no-repeat center center;
+        background-size: 100% 100%; }
+  .zone_container_add_msg .zone_container_add_msg_record .vbtn_pause div {
+    width: 6.5rem;
+    height: 6.5rem;
+    margin: 2rem auto;
+    display: flex;
+    border-radius: 100%;
+    border: 1px solid #c5c3c4; }
+    .zone_container_add_msg .zone_container_add_msg_record .vbtn_pause div a {
+      display: block;
+      width: 5rem;
+      height: 5rem;
+      background: #f06292;
+      border: 1px solid #eee;
+      margin: 0 auto;
+      justify-content: center;
+      align-items: center;
+      align-self: center; }
+      .zone_container_add_msg .zone_container_add_msg_record .vbtn_pause div a.play {
+        border-radius: 5rem; }
+      .zone_container_add_msg .zone_container_add_msg_record .vbtn_pause div a.pause {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 0.5rem; }
 
 .zone_container_search_topic .zone_container_search {
   padding: 1rem;
@@ -1025,5 +1124,11 @@ section {
         background-size: 100% 100%;
         left: -2.4rem;
         top: -0.2rem; }
+
+.zone_alert_add_msg li a {
+  display: block;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  background: #fff; }
 
 /*# sourceMappingURL=zp.css.map */
