@@ -574,6 +574,7 @@ class WechatUtil
 		if (AppUtil::isDev()) {
 			//return 0;
 		}
+		AppUtil::logFile([$noticeTag, $takerId, $title], 5, __FUNCTION__, __LINE__);
 		$userInfo = User::findOne(["uId" => $takerId]);
 		if (!$userInfo) {
 			return 0;
