@@ -1138,14 +1138,33 @@ class WechatUtil
 		return $accessToken;
 	}
 
-	public static function summonViewer($debug = false)
+	public static function summonViewer($debug = false, $cat = 'template')
 	{
 		$conn = AppUtil::db();
-		$sql = "SELECT u.uName,u.uOpenId,uPhone,uGender,wSubscribe
+		$sql = "SELECT u.uId,u.uName,u.uOpenId,uPhone,uGender,wSubscribe
 			 FROM im_user as u 
 			 JOIN im_user_wechat as w on u.uId = w.wUId
 			 WHERE w.wSubscribe=1 AND u.uOpenId LIKE 'oYDJew%' AND u.uPhone='' ";
 		$ret = $conn->createCommand($sql)->queryAll();
+		if ($cat == 'template') {
+			$userIds = array_column($ret, 'uId');
+			$senderId = User::SERVICE_UID;
+			foreach ($userIds as $userId) {
+				QueueUtil::loadJob('templateMsg',
+					[
+						'tag' => WechatUtil::NOTICE_CHAT,
+						'receiver_uid' => $userId,
+						'title' => '有人对你怦然心动啦',
+						'sub_title' => '你的一位微信联系人对你怦然心动啦，快去看看吧~~',
+						'sender_uid' => $senderId,
+						'gid' => 0
+					],
+					QueueUtil::QUEUE_TUBE_SMS);
+			}
+			return;
+		}
+
+
 		$openIds = array_column($ret, 'uOpenId');
 		/*
 		$cnt = 0;
@@ -1179,6 +1198,8 @@ class WechatUtil
 						'text' => $content
 					],
 					QueueUtil::QUEUE_TUBE_SMS);
+
+
 				/*$cnt += UserWechat::sendMsg($openId, $content);
 				if ($k > 0 && $k % 4 == 0) {
 					sleep(2);

@@ -795,6 +795,11 @@ class FooController extends Controller
  				JOIN im_user_wechat as w on w.wUId=u.uId 
  				WHERE uGender>9 and uPhone!='' 
   					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt') order by uId ASC ";
+//		$sql = "SELECT uId,uGender
+// 				FROM im_user as u
+// 				JOIN im_user_wechat as w on w.wUId=u.uId
+// 				WHERE uPhone=''
+//  					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt') order by uId ASC ";
 		// AND w.wSubscribe=1
 		$ret = $conn->createCommand($sql)->queryAll();
 		/*$ret = [
