@@ -1695,7 +1695,8 @@ class WxController extends BaseController
 
 	public function actionHi()
 	{
-		if ($this->user_id && $this->user_phone && $this->user_location) {
+		if ($this->user_id && $this->user_phone && $this->user_location
+			&& !AppUtil::isDebugger($this->user_id)) {
 			header('location:/wx/single');
 			exit();
 		}
@@ -1717,12 +1718,14 @@ class WxController extends BaseController
 
 	public function actionReg0()
 	{
-		if ($this->user_id && $this->user_phone && $this->user_location) {
+		if ($this->user_id && $this->user_phone && $this->user_location
+			&& !AppUtil::isDebugger($this->user_id)) {
 			header('location:/wx/single');
 			exit();
 		}
 		$openId = self::$WX_OpenId;
-		if ($this->user_phone) {
+		if ($this->user_phone
+			&& !AppUtil::isDebugger($this->user_id)) {
 			header('location:/wx/reg1');
 			exit();
 		}
@@ -1736,7 +1739,8 @@ class WxController extends BaseController
 
 	public function actionReg1()
 	{
-		if ($this->user_id && $this->user_phone && $this->user_location) {
+		if ($this->user_id && $this->user_phone && $this->user_location
+			&& !AppUtil::isDebugger($this->user_id)) {
 			header('location:/wx/single');
 			exit();
 		}
