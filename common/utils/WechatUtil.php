@@ -1156,7 +1156,7 @@ class WechatUtil
 	public static function summonViewer($debug = false, $cat = 'template')
 	{
 		$conn = AppUtil::db();
-		$criteria = " AND uOpenId='oYDJewx6Uj3xIV_-7ciyyDMLq8Wc' ";
+		$criteria = " AND uOpenId='oYDJew3AfJB7ZbB08yIfC5pUtdhs' ";
 //		$criteria = '';
 		$sql = "SELECT u.uId,u.uName,u.uOpenId,uPhone,uGender,wSubscribe
 			 FROM im_user as u 
@@ -1167,6 +1167,19 @@ class WechatUtil
 		if ($cat == 'template') {
 			$userIds = array_column($ret, 'uId');
 			$senderId = User::SERVICE_UID;
+			$userId = 131379;
+			QueueUtil::loadJob('templateMsg',
+				[
+					'tag' => WechatUtil::NOTICE_SUMMON,
+					'receiver_uid' => $userId,
+					'title' => '有人对你怦然心动啦',
+					'sub_title' => '你的一位微信联系人对你怦然心动啦，快去看看吧~~',
+					'sender_uid' => $senderId,
+					'gid' => 0
+				],
+				QueueUtil::QUEUE_TUBE_SMS);
+
+
 			foreach ($userIds as $userId) {
 				QueueUtil::loadJob('templateMsg',
 					[
