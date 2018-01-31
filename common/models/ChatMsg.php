@@ -97,6 +97,64 @@ class ChatMsg extends ActiveRecord
 		"我是新人，多多关照"
 	];
 
+	public static function beforeChat($senderUId, $receiverUId, $conn = null)
+	{
+
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$sql = 'select uId,uStatus,uGender,uCertStatus from im_user WHERE uId=:uid';
+		$cmdSelect = $conn->createCommand($sql);
+		$senderInfo = $cmdSelect->bindValues([':uid' => $senderUId])->queryOne();
+		//Rain: 员工用户，直接放行
+		/*if ($senderInfo['uSubStatus'] == User::SUB_ST_STAFF) {
+			return [0, ''];
+		}*/
+		$receiverInfo = $cmdSelect->bindValues([':uid' => $receiverUId])->queryOne();
+		if (!$senderInfo) {
+			return [129, '用户不存在'];
+		}
+		$status = $senderInfo['uStatus'];
+		switch ($status) {
+			case User::STATUS_VISITOR:
+				return [129, '权限不足，请先完善你的个人资料'];
+			case User::STATUS_PENDING:
+				return [129, '你的身份信息还在审核中，请稍后重试'];
+			case User::STATUS_INVALID:
+			case User::STATUS_PRISON:
+				$msg = UserAudit::fault($senderUId, 0, $conn);
+				return [129, $msg];
+			default:
+				break;
+		}
+
+		if (!$receiverInfo) {
+			return [129, '对话用户不存在~'];
+		}
+		if (UserNet::hasBlack($senderUId, $receiverUId)) {
+			return [129, '额，对方已经屏蔽（拉黑）你了'];
+		}
+
+		$cards = UserTag::chatCards($senderUId);
+		if (!$cards || count($cards) < 1) {
+			$senderGender = $senderInfo['uGender'];
+			$senderCert = $senderInfo['uCertStatus'];
+			if ($senderGender == User::GENDER_MALE && $senderCert != User::CERT_STATUS_PASS) {
+				return [103, [
+					'title' => '',
+					'content' => '对方设置了密聊身份认证要求，要求你进行身份认证，提供安全保障才能继续聊天',
+					'actions' => [
+						'text' => '去实名认证',
+						'url' => '/wx/cert2',
+					]
+				]];
+			}
+		}
+		list($gId) = self::groupEdit($senderUId, $receiverUId);
+		return [0, $gId];
+
+	}
+
 	public static function preCheck($senderUId, $receiverUId, $conn = null)
 	{
 		if (!$conn) {

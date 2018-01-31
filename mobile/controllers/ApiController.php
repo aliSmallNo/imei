@@ -2068,6 +2068,16 @@ class ApiController extends Controller
 					return self::renderAPI($code, '', $msg);
 				}
 				return self::renderAPI($code, $msg);
+
+			case 'before-chat':
+				$receiverId = self::postParam('sid');
+				$receiverId = AppUtil::decrypt($receiverId);
+				AppUtil::logFile([$uid, $receiverId], 5, __FUNCTION__, __LINE__);
+				list($code, $msg) = ChatMsg::beforeChat($uid, $receiverId);
+				if (is_array($msg)) {
+					return self::renderAPI($code, '', $msg);
+				}
+				return self::renderAPI($code, $msg);
 			case 'greeting':
 				$ids = self::postParam('ids');
 				$ids = json_decode($ids, 1);
