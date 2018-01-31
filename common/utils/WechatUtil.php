@@ -1156,7 +1156,7 @@ class WechatUtil
 	public static function summonViewer($debug = false, $cat = 'template')
 	{
 		$conn = AppUtil::db();
-		$criteria = " AND uOpenId='oYDJew3AfJB7ZbB08yIfC5pUtdhs' ";
+		$criteria = " AND uOpenId='oYDJewx6Uj3xIV_-7ciyyDMLq8Wc' ";
 //		$criteria = '';
 		$sql = "SELECT u.uId,u.uName,u.uOpenId,uPhone,uGender,wSubscribe
 			 FROM im_user as u 
