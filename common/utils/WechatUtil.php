@@ -1170,7 +1170,7 @@ class WechatUtil
 						'tag' => WechatUtil::NOTICE_SUMMON,
 						'receiver_uid' => $userId,
 						'title' => '有人对你怦然心动啦',
-						'sub_title' => '你的一位微信联系人对你怦然心动啦，快去看看吧~~',
+						'sub_title' => '有一位你的微信好友对你怦然心动啦，快去看看吧~',
 						'sender_uid' => $senderId,
 						'gid' => 0
 					],
