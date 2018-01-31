@@ -33,6 +33,7 @@ class LogAction extends ActiveRecord
 	const ACTION_GREETING = 1044;
 	const ACTION_ONLINE = 1090;
 	const ACTION_OFFLINE = 1093;
+	const ACTION_ZONE_ADD_MSG = 1100;
 
 	static $actionDict = [
 		self::ACTION_LOGIN => "登录",
@@ -50,7 +51,8 @@ class LogAction extends ActiveRecord
 		self::ACTION_CHAT => "进入聊天",
 		self::ACTION_GREETING => "浏览公告栏/更新提醒",
 		self::ACTION_ONLINE => "上线",
-		self::ACTION_OFFLINE => "下线"
+		self::ACTION_OFFLINE => "下线",
+		self::ACTION_ZONE_ADD_MSG => "动态添加",
 	];
 
 	const REUSE_DATA_WEEK = 73;

@@ -31,11 +31,11 @@
 				@include fontStyle(1.3rem)
 				position: relative
 				&:before
-					@include line_W(2.5rem, .1rem, #d9d9d9)
+					@include line_W(2.5rem, 1px, #d9d9d9)
 					left: -3.5rem
 					top: 50%
 				&:after
-					@include line_W(2.5rem, .1rem, #d9d9d9)
+					@include line_W(2.5rem, 1px, #d9d9d9)
 					left: initial
 					right: -3.5rem
 					top: 55%
@@ -186,7 +186,7 @@
 					background-size: 52% 60%
 			span
 				position: absolute
-				@include fontStyle(.8rem, #fff,0)
+				@include fontStyle(.8rem, #fff, 0)
 				right: 2rem
 				top: .2rem
 	.zone_container_item_bot
@@ -201,31 +201,30 @@
 				position: relative
 				&.view
 					&:before
-						@include icoStyle(1rem, '../images/zone/ico_view.png')
+						@include icoStyle(1rem, 1rem, '../images/zone/ico_view.png')
 						left: -1.5rem
 						top: 0
 				&.rose
 					&:before
-						@include icoStyle(1rem, '../images/zone/ico_rose.png')
+						@include icoStyle(1rem, 1rem, '../images/zone/ico_rose.png')
 						left: -1.5rem
 						top: 0
 					&.active
 						&:before
-							@include icoStyle(1rem, '../images/zone/ico_rosed.png')
+							@include icoStyle(1rem, 1rem, '../images/zone/ico_rosed.png')
 				&.zan
 					&:before
-						@include icoStyle(1rem, '../images/zone/ico_zan.png')
+						@include icoStyle(1rem, 1rem, '../images/zone/ico_zan.png')
 						left: -1.5rem
 						top: 0
 					&.active
 						&:before
-							@include icoStyle(1rem, '../images/zone/ico_zaned.png')
+							@include icoStyle(1rem, 1rem, '../images/zone/ico_zaned.png')
 				&.comment
 					&:before
-						@include icoStyle(1rem, '../images/zone/ico_comment.png')
+						@include icoStyle(1rem, 1rem, '../images/zone/ico_comment.png')
 						left: -1.5rem
 						top: 0
-
 
 .zone_container_item_opts
 	.zone_container_item_opt
@@ -244,14 +243,13 @@
 					height: 2rem
 			a
 				display: block
-				@include fontStyle(.8rem,#fff,0)
+				@include fontStyle(.8rem, #fff, 0)
 				background: $mainColor
 				width: 3rem
 				height: 3rem
 				border-radius: 3rem
 				text-align: center
 				line-height: 3rem
-
 
 .zone_container_item_comments
 	.zone_container_item_comment
@@ -267,11 +265,11 @@
 		.content
 			@include displayFlex-1
 			div
-				@include fontStyle(1.2rem,$fontColor)
-				padding: .5rem 0
+				@include fontStyle(1.2rem, $fontColor)
+				padding-bottom: .5rem
 			p.cat_text
 				display: block
-				@include fontStyle(.8rem,#525252)
+				@include fontStyle(1.1rem, #525252)
 			p.cat_voice
 				padding: .5rem 0
 				a
@@ -291,15 +289,15 @@
 						border-width: 0 0 1px 1px
 						border-color: #cecece
 						border-style: solid
-						-webkit-transform: matrix(0.71,0.71,-0.71,0.71,0,0)
-						transform: matrix(0.71,0.71,-0.71,0.71,0,0)
+						-webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
+						transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0)
 						top: 32%
 						left: -0.36rem
 					span
 						position: absolute
 						right: -2.4rem
 						top: 25%
-						@include fontStyle(1rem,#989898,0)
+						@include fontStyle(1rem, #989898, 0)
 				a.pause
 					background: url('../images/zone/ico_voice_pause_gray.png') no-repeat left center
 					background-size: 1.5rem 1.5rem
@@ -310,8 +308,9 @@
 					background-position: 10% 50%
 		.time
 			@include displayFlex-w(6rem)
-			@include fontStyle(.8rem,#bfbdbe)
+			@include fontStyle(.8rem, #bfbdbe)
 			text-align: center
+
 .zone_container_item_comments_btns
 	position: fixed
 	left: 0
@@ -347,7 +346,7 @@
 				display: block
 				text-align: center
 				background: $mainColor
-				@include fontStyle(1.2rem,#fff)
+				@include fontStyle(1.2rem, #fff)
 				height: 100%
 				width: 7rem
 				line-height: 3rem
@@ -358,7 +357,7 @@
 			display: block
 		.vbtn_pause
 			p
-				@include fontStyle(1.2rem,$fontColor)
+				@include fontStyle(1.2rem, $fontColor)
 				text-align: center
 				padding: 1.5rem 0
 				span
@@ -412,7 +411,7 @@
 		textarea
 			border: none
 			width: 100%
-			@include fontStyle(1.1rem,$fontColor)
+			@include fontStyle(1.1rem, $fontColor)
 		ul
 			padding: 1rem 0
 			@include displayFlex
@@ -429,13 +428,16 @@
 					border: 1px solid #f2f0f1
 					position: relative
 					&:after
-						@include line_W(4rem,1px,#ddd)
+						@include line_W(4rem, 1px, #ddd)
 						bottom: 3rem
 						left: 15%
 					&:before
-						@include line_W(1px,4rem,#ddd)
+						@include line_W(1px, 4rem, #ddd)
 						left: 3rem
 						bottom: 15%
+				img
+					width: 6rem
+					height: 6rem
 
 	.msg_tags
 		ul
@@ -446,7 +448,7 @@
 				&:last-child
 					text-align: right
 				a
-					@include fontStyle(1rem,#333)
+					@include fontStyle(1rem, #333)
 					width: 6rem
 					padding: .4rem 1rem
 					border-radius: 2rem
@@ -457,7 +459,17 @@
 						padding-right: .5rem
 						position: relative
 						top: .1rem
-
+	.zone_container_add_msg_btn
+		position: fixed
+		left: 0
+		right: 0
+		bottom: 0
+		a
+			display: block
+			@include fontStyle(1.2rem, #fff, .3rem)
+			padding: 1rem 0
+			background: $mainColor
+			text-align: center
 
 .zone_container_search_topic
 	.zone_container_search
@@ -469,7 +481,7 @@
 			input
 				@include displayFlex-1
 				border: 1px solid #ddd
-				@include fontStyle(1.2rem,$fontColor,0)
+				@include fontStyle(1.2rem, $fontColor, 0)
 				padding: .5rem 1rem .5rem 3rem
 				border-radius: 2rem
 			&:before
@@ -478,14 +490,14 @@
 				width: 1.2rem
 				height: 1.2rem
 				left: 1rem
-				top: 0.9rem
+				top: 0.7rem
 				background: url(../images/zone/ico_search.png) no-repeat center center
 				background-size: 100% 100%
 			a
 				@include displayFlex-w(4rem)
-				@include fontStyle(1.2rem,$fontColor,0)
+				@include fontStyle(1.2rem, $fontColor, 0)
 				display: block
-				line-height: 3rem
+				line-height: 2.5rem
 				text-align: center
 	.zone_container_topic_items
 		li
@@ -510,21 +522,100 @@
 					border-radius: .5rem
 			.content
 				.title
-					@include fontStyle(1.3rem,$fontColor,0)
+					@include fontStyle(1.3rem, $fontColor, 0)
 					line-height: 2rem
 				.about
-					@include fontStyle(1.15rem,#a9a9a9,0)
+					@include fontStyle(1.15rem, #a9a9a9, 0)
 					@include textTail
 				.marks
 					line-height: 2rem
 					i
 						display: inline-block
 						width: 6rem
-						@include fontStyle(1rem,#a9a9a9,0)
+						@include fontStyle(1rem, #a9a9a9, 0)
 						span
 							color: $mainColor
 						em
 							margin-left: .2rem
+
+.zone_container_topic_all
+	.zone_container_topic_all_top
+		position: relative
+		overflow: hidden
+		.bg_blur
+			position: absolute
+			top: 0
+			left: 0
+			width: 36rem
+			height: 36rem
+			margin-left: -2rem
+			margin-top: -6rem
+			-webkit-filter: blur(6px)
+			-ms-filter: blur(6px)
+			filter: blur(6px)
+			z-index: 0
+		.zone_container_topic_all_top_about
+			position: relative
+			text-align: center
+			padding: 3rem 0
+			.img
+				position: relative
+				z-index: 3
+				width: 8rem
+				height: 8rem
+				margin: .5rem auto
+				display: inline-block
+				img
+					@include imgBlock_W(100%)
+					border-radius: 100%
+				span
+					display: none
+				&.recommend
+					&:before
+						@include icoStyle(8rem, 2.4rem, '../images/zone/ico_topic_recommend.png')
+						left: 0
+						bottom: -.5rem
+					span
+						display: block
+						position: absolute
+						@include fontStyle(1rem, #fff, .3rem)
+						bottom: .2rem
+						left: 0
+						right: 0
+						text-align: center
+			h5
+				@include fontStyle(1.3rem, #fff)
+				line-height: 3rem
+			p
+				@include fontStyle(1.1rem, #fff, 0)
+	.zone_container_topic_all_stat
+		@include displayFlex
+		border-bottom: 1rem solid #eee
+		padding: 1rem
+		li
+			@include displayFlex-1
+			text-align: center
+			border-right: 1px solid #eee
+			&:last-child
+				border: none
+			h5
+				@include fontStyle(1.3rem, $fontColor)
+			p
+				@include fontStyle(1.1rem, #a9a9a9)
+				margin-top: .8rem
+	.zone_container_topic_all_add
+		border-bottom: 1rem solid #eee
+		a
+			padding: 1rem
+			display: block
+			@include fontStyle(1.2rem, #a9a9a9)
+			text-align: center
+			span
+				position: relative
+				&:before
+					@include icoStyle(2rem, 2rem, '../images/zone/ico_topic_add.png')
+					left: -2.4rem
+					top: -.2rem
 
 
 

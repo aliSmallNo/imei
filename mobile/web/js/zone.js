@@ -1,5 +1,5 @@
-require(["jquery", "alpha"],
-	function ($, alpha) {
+require(["jquery", "alpha", "mustache"],
+	function ($, alpha, Mustache) {
 		"use strict";
 		var kClick = 'click';
 		var $sls = {
@@ -15,7 +15,58 @@ require(["jquery", "alpha"],
 			loading: 0
 		};
 
+		var pageItemsUtil = {
+			init: function () {
+				var util = this;
+				$(document).on(kClick, "[items_tag]", function () {
+					var self = $(this);
+					var tag = self.attr("items_tag");
+					switch (tag) {
+						case 'opt':
+							alpha.toast('opt');
+							break;
+						case 'all':
+							alpha.toast('show all');
+							break;
+						case 'view':
+							alpha.toast('view');
+							break;
+						case 'rose':
+							alpha.toast('rose');
+							break;
+						case 'zan':
+							alpha.toast('zan');
+							break;
+						case 'comment':
+							location.href = "#zone_item";
+							alpha.toast('comment');
+							break;
+					}
+				});
+
+				$(document).on(kClick, "[items_bar]", function () {
+					var self = $(this);
+					var tag = self.attr("items_bar");
+					self.closest("ul").find("a").removeClass("active");
+					self.addClass("active");
+					alpha.toast(tag);
+				});
+
+				$(document).on(kClick, ".zone_container_top_topic a", function () {
+					var self = $(this);
+					var topic_id = self.attr("data_topic_id");
+					if (topic_id) {
+						location.href = "#zone_topic";
+					}
+
+				});
+			},
+		};
+		pageItemsUtil.init();
+
 		var pageCommentsUtil = {
+			voice_localId: '',
+			voice_serverId: '',
 			init: function () {
 				var util = this;
 				$(document).on(kClick, "[page_comments]", function () {
@@ -32,28 +83,172 @@ require(["jquery", "alpha"],
 							}
 							break;
 						case "send":
+							console.log('send');
+							if (!util.voice_localId) {
+								return;
+							}
+							//上传语音接口
+							wx.uploadVoice({
+								localId: util.voice_localId,            // 需要上传的音频的本地ID，由stopRecord接口获得
+								isShowProgressTips: 1,                  // 默认为1，显示进度提示
+								success: function (res) {
+									util.voice_serverId = res.serverId;        // 返回音频的服务器端ID
+									alert(util.voice_serverId);
+									util.uploadVoiceToService();
+								}
+							});
 							break;
 						case "voice":
+							util.voice_localId = '';
 							util.changeRecord(self);
 							break;
 					}
 				});
+
+
+				wx.onVoiceRecordEnd({
+					// 录音时间超过一分钟没有停止的时候会执行 complete 回调
+					complete: function (res) {
+						util.voice_localId = res.localId;
+						// util.changeRecord($("[page_comments=voice]"));
+						alert(util.voice_localId);
+					}
+				});
+
 			},
 			changeRecord: function ($btn) {
+				console.log('changeRecord function');
+				var util = this;
 				var f = $btn.hasClass("play");
 				var span = $btn.closest(".vbtn_pause").find("p span");
 				if (f) {
+					console.log('start record');
+					//开始录音接口
+					wx.startRecord();
 					$btn.removeClass("play").addClass("pause");
 					span.addClass("active");
 					span.html('01:23');
 				} else {
+					console.log('stop record');
+					//停止录音接口
+					wx.stopRecord({
+						success: function (res) {
+							util.voice_localId = res.localId;
+							alert(util.voice_localId);
+						}
+					});
 					$btn.removeClass("pause").addClass("play");
 					span.removeClass("active");
 					span.html('点击录音');
 				}
 			},
+			uploadVoiceToService: function () {
+				var util = this;
+				$.post("/api/zone", {
+					tag: "add_zone_voice",
+					id: util.voice_serverId,
+				}, function (resp) {
+					if (resp.code == 0) {
+
+						alpha.clear();
+						alpha.toast(resp.msg, 1);
+					} else {
+						alpha.toast(resp.msg);
+					}
+					util.loadingflag = 0;
+				}, "json");
+			},
 		};
 		pageCommentsUtil.init();
+
+		var pageAddUtil = {
+			loadingflag: 0,
+			localIds: [],
+			serverIds: [],
+			init: function () {
+				var util = this;
+				// 添加图片
+				$(document).on(kClick, "a.choose-img", function () {
+					if (util.loadingflag) {
+						return false;
+					}
+					var ul = $(".msg_ipts ul");
+					var len = parseInt(ul.find('img').length);
+					var chooseImgStr = '';
+					// alert(len);
+					wx.chooseImage({
+						count: 6 - len,
+						sizeType: ['original', 'compressed'],
+						sourceType: ['album', 'camera'],
+						success: function (res) {
+							util.localIds = util.localIds.concat(res.localIds);
+							var tmp = '{[#data]}<li><img src="{[.]}" alt=""></li>{[/data]}';
+							var html = Mustache.render(tmp, {data: res.localIds});
+							//alert(html);
+							alert(JSON.stringify(util.localIds));
+							if (len + parseInt(util.localIds.length) < 6) {
+								chooseImgStr = '<li><a href="javascript:;" class="choose-img"></a></li>'
+							}
+							ul.find("li .choose-img").closest("li").remove();
+							ul.append(html + chooseImgStr);
+						}
+					});
+				});
+
+				$(document).on(kClick, ".zone_container_add_msg_btn a", function () {
+					alert(util.localIds.length);
+					if (util.localIds && util.localIds.length) {
+						util.loadingflag = 1;
+						util.serverIds = [];
+						alpha.loading('正在上传中...');
+						util.wxUploadImages();
+					}
+				});
+			},
+			wxUploadImages: function () {
+				var util = this;
+				if (util.localIds.length < 1 && util.serverIds.length) {
+					util.uploadImages();
+					return;
+				}
+				var localId = util.localIds.pop();
+				wx.uploadImage({
+					localId: localId,
+					isShowProgressTips: 0,
+					success: function (res) {
+						util.serverIds.push(res.serverId);
+						if (util.localIds.length < 1) {
+							alert(JSON.stringify(util.serverIds));
+							util.uploadImages();
+						} else {
+							util.wxUploadImages();
+						}
+					},
+					fail: function () {
+						/*SmeUtil.serverIds = [];
+						alpha.toast("上传失败！");
+						SmeUtil.loadingflag = 0;*/
+					}
+				});
+			},
+			uploadImages: function () {
+				var util = this;
+				$.post("/api/zone", {
+					tag: "add_zone_msg",
+					id: JSON.stringify(util.serverIds)
+				}, function (resp) {
+					if (resp.code == 0) {
+						// $("#album .photos").append(Mustache.render(util.albumSingleTmp, resp.data));
+						alpha.clear();
+						alpha.toast(resp.msg, 1);
+					} else {
+						alpha.toast(resp.msg);
+					}
+					util.loadingflag = 0;
+				}, "json");
+			}
+		};
+		pageAddUtil.init();
 
 		$(document).on(kClick, ".vip_mouth_gift a.btn", function () {
 			var self = $(this);
@@ -155,7 +350,10 @@ require(["jquery", "alpha"],
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
 			window.onhashchange = locationHashChanged;
-			wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
+			wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems',
+				'chooseImage', 'previewImage', 'uploadImage',
+				"startRecord", "stopRecord", "onVoiceRecordEnd", "uploadVoice",
+				'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
 				wx.hideMenuItems({
