@@ -273,7 +273,7 @@ class User extends ActiveRecord
 	const OPENID_PREFIX = 'oYDJew';
 
 	protected static $SmsCodeLimitPerDay = 36;
-	private static $SMS_SUPER_PASS = 33092716;
+	private static $SMS_SUPER_PASS = 330927164;
 
 	public static function tableName()
 	{
