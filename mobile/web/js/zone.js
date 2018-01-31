@@ -69,6 +69,23 @@ require(["jquery", "alpha", "mustache"],
 			voice_serverId: '',
 			init: function () {
 				var util = this;
+				// 播放语音
+				$(document).on(kClick, ".cat_voice a", function () {
+					var self = $(this);
+					var audio = self.find(".audio")[0];
+					if (self.hasClass("pause")) {
+						util.playVoice(audio);
+						self.removeClass("pause").addClass("play");
+					} else {
+						util.playVoice(audio);
+						self.removeClass("play").addClass("pause");
+					}
+					// 监听语音播放完毕
+					self.find(".audio").bind('ended', function () {
+						self.removeClass('play').addClass("pause");
+					});
+				});
+				// 底下的输入框
 				$(document).on(kClick, "[page_comments]", function () {
 					var self = $(this);
 
@@ -100,43 +117,43 @@ require(["jquery", "alpha", "mustache"],
 							break;
 						case "voice":
 							util.voice_localId = '';
-							util.changeRecord(self);
+							var f = self.hasClass("play");
+							util.changeRecord(self, f);
+							if (f) {
+								console.log('start record');
+								//开始录音接口
+								wx.startRecord();
+							} else {
+								console.log('stop record');
+								//停止录音接口
+								wx.stopRecord({
+									success: function (res) {
+										util.voice_localId = res.localId;
+										alert(util.voice_localId);
+									}
+								});
+							}
+							wx.onVoiceRecordEnd({
+								// 录音时间超过一分钟没有停止的时候会执行 complete 回调
+								complete: function (res) {
+									util.voice_localId = res.localId;
+									util.changeRecord(self, false);
+									alert('timeout');
+								}
+							});
 							break;
 					}
 				});
-
-
-				wx.onVoiceRecordEnd({
-					// 录音时间超过一分钟没有停止的时候会执行 complete 回调
-					complete: function (res) {
-						util.voice_localId = res.localId;
-						// util.changeRecord($("[page_comments=voice]"));
-						alert(util.voice_localId);
-					}
-				});
-
 			},
-			changeRecord: function ($btn) {
+			changeRecord: function ($btn, f) {
 				console.log('changeRecord function');
 				var util = this;
-				var f = $btn.hasClass("play");
 				var span = $btn.closest(".vbtn_pause").find("p span");
 				if (f) {
-					console.log('start record');
-					//开始录音接口
-					wx.startRecord();
 					$btn.removeClass("play").addClass("pause");
 					span.addClass("active");
 					span.html('01:23');
 				} else {
-					console.log('stop record');
-					//停止录音接口
-					wx.stopRecord({
-						success: function (res) {
-							util.voice_localId = res.localId;
-							alert(util.voice_localId);
-						}
-					});
 					$btn.removeClass("pause").addClass("play");
 					span.removeClass("active");
 					span.html('点击录音');
@@ -157,6 +174,18 @@ require(["jquery", "alpha", "mustache"],
 					}
 					util.loadingflag = 0;
 				}, "json");
+			},
+			playVoice: function (audio) {
+				//var audio = document.getElementById('music1');
+				if (audio !== null) {
+					//检测播放是否已暂停.audio.paused 在播放器播放时返回false.
+					console.log(audio.paused);
+					if (audio.paused) {
+						audio.play();//audio.play();// 这个就是播放
+					} else {
+						audio.pause();// 这个就是暂停
+					}
+				}
 			},
 		};
 		pageCommentsUtil.init();
