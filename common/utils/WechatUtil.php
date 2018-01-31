@@ -581,6 +581,7 @@ class WechatUtil
 		$openId = $userInfo['uOpenId'];
 		$nickname = $userInfo['uName'];
 		$encryptId = AppUtil::encrypt($takerId);
+		AppUtil::logFile([$openId, $nickname, $encryptId], 5, __FUNCTION__, __LINE__);
 		$keywords = [
 			'first' => '',
 			'keyword1' => $title,
