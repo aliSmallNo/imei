@@ -811,7 +811,7 @@ class FooController extends Controller
 				'text' => '我好想和你一起过圣诞节喔~',
 				'url' => "https://mp.weixin.qq.com/s/1q2ak1MmrQGUhKHyZaJcEg"
 			];*/
-			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1801221191412.png";
+			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1801311194953.jpeg";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
 			QueueUtil::loadJob('templateMsg',
@@ -1395,25 +1395,7 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$contents = [
-			'你做过最疯狂的事情是什么？',
-			'你跟陌生人要过联系方式吗？',
-			'当你牵对方的手时，对方的手很冰凉，你会怎么做？',
-			'跟你告白的人你拒绝了，但拒绝后发现你是喜欢他的，你后悔了，那你要怎么办？',
-			'你会跟你的另一半坦白你的情史吗？',
-			'你觉得你身边真的有什么事都可以分享的人吗？',
-			'你喜欢的人不喜欢你怎么办？',
-			'洗澡洗到一半没水了怎么办？',
-			'你有几段恋情？',
-			'第一次看的小说是什么类型？',
-			'父亲节有送礼物给爸爸吗？',
-			'介意你的对象跟前任有联系吗？',
-			'你觉得当男人比女人更辛苦还是更享受？',
-			'你希望进入恋人的朋友圈吗？',
-			'你觉得对方体重有多重要？'
-		];
-		shuffle($contents);
-		var_dump($contents[0]);
+		var_dump(json_encode(UserTrans::$CatMinus));
 
 		/*$ret = UserQR::getQRCode(131379, UserQR::CATEGORY_RED_103,
 			'https://img.meipo100.com/2017/1130/174483165512_t.jpg', true);
@@ -1607,7 +1589,7 @@ class FooController extends Controller
 		$res = User::fmtRow(User::findOne(['uId' => 120003])->toArray());
 		// print_r($res);
 		$res = User::user(['uOpenId' => 'oYDJew5EFMuyrJdwRrXkIZLU2c58']);
-		 print_r($res);
+		print_r($res);
 		echo $res["setting"];
 	}
 
