@@ -382,7 +382,7 @@ require(["jquery", "alpha", "mustache"],
 				// 播放本地语音
 				$(document).on(kClick, ".add_cat_voice a", function () {
 					var self = $(this);
-					var f = self.hasClass("play");
+					var f = self.hasClass("pause");
 					if (f) {
 						alert("playVoice");
 						// 播放语音接口
