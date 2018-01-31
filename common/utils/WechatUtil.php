@@ -802,6 +802,7 @@ class WechatUtil
 			$access_token = self::getAccessToken(self::ACCESS_CODE);
 			$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
 			AppUtil::postJSON($url, json_encode($bodyInfo));
+			AppUtil::logFile($bodyInfo, 5, __FUNCTION__, __LINE__);
 		}
 		if (!$text) {
 			$text = isset(UserMsg::$catDict[$msgCat]) ? UserMsg::$catDict[$msgCat] : '';
