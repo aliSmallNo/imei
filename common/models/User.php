@@ -1786,7 +1786,7 @@ class User extends ActiveRecord
 
 		AppUtil::sendTXSMS($phone, AppUtil::SMS_NORMAL, ["params" => [strval($code), strval($minutes)]]);
 		RedisUtil::init(RedisUtil::KEY_SMS_CODE, $phone)->setCache($code);
-		return ['code' => 0, 'msg' => '验证码已发送到手机【' . $phone . '】<br>请注意查收手机短信'];
+		return ['code' => 0, 'msg' => '验证码已发送到手机 ' . $phone . ' 请注意查收手机短信'];
 	}
 
 	public
