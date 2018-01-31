@@ -42,7 +42,7 @@ require(['jquery', 'mustache', "alpha"],
 				$(document).on(kClick, ".sw_cash_btn_comfirm a", function () {
 					var self = $(this);
 					// console.log(util.cash);console.log(util.num);
-					if (util.num < 10) {
+					if (util.num < 2) {
 						alpha.toast("还没选择要提现金额~");
 						return;
 					}
