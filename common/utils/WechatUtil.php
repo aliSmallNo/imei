@@ -1152,10 +1152,13 @@ class WechatUtil
 	public static function summonViewer($debug = false, $cat = 'template')
 	{
 		$conn = AppUtil::db();
+		$criteria = " AND uOpenId='oYDJew48Eghqvj-BFT1Ddb9b0Miw' ";
+//		$criteria = '';
 		$sql = "SELECT u.uId,u.uName,u.uOpenId,uPhone,uGender,wSubscribe
 			 FROM im_user as u 
 			 JOIN im_user_wechat as w on u.uId = w.wUId
-			 WHERE w.wSubscribe=1 AND u.uOpenId LIKE 'oYDJew%' AND u.uPhone='' ";
+			 WHERE w.wSubscribe=1 AND u.uOpenId LIKE 'oYDJew%' AND u.uPhone='' "
+			. $criteria;
 		$ret = $conn->createCommand($sql)->queryAll();
 		if ($cat == 'template') {
 			$userIds = array_column($ret, 'uId');
