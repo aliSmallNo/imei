@@ -389,21 +389,21 @@ require(["jquery", "alpha", "mustache"],
 						wx.playVoice({
 							localId: recordUtil.voice_localId // 需要播放的音频的本地ID，由stopRecord接口获得
 						});
-						self.removeClass("play").addClass("pause");
+						self.removeClass("pause").addClass("play");
 					} else {
 						alert(" pauseVoice");
 						// 暂停播放接口
 						wx.pauseVoice({
 							localId: recordUtil.voice_localId // 需要暂停的音频的本地ID，由stopRecord接口获得
 						});
-						self.removeClass("pause").addClass("play");
+						self.removeClass("play").addClass("pause");
 					}
 					//监听语音播放完毕接口
 					wx.onVoicePlayEnd({
 						success: function (res) {
 							// var localId = res.localId; // 返回音频的本地ID
 							alert("onVoicePlayEnd");
-							self.removeClass("pause").addClass("play");
+							self.removeClass("play").addClass("pause");
 						}
 					});
 
