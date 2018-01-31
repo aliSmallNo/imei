@@ -16,8 +16,14 @@ require(["jquery", "alpha", "mustache"],
 		};
 
 		var pageItemsUtil = {
+			zone_id: '',        //动态ID
+			zone_items_tag: 'all', //bar tag
+			page: 1,
+			loadingflag: 0,
 			init: function () {
 				var util = this;
+
+				// 点击单个动态中所有按钮
 				$(document).on(kClick, "[items_tag]", function () {
 					var self = $(this);
 					var tag = self.attr("items_tag");
@@ -29,37 +35,95 @@ require(["jquery", "alpha", "mustache"],
 							alpha.toast('show all');
 							break;
 						case 'view':
-							alpha.toast('view');
+							// alpha.toast('view');
 							break;
 						case 'rose':
-							alpha.toast('rose');
-							break;
 						case 'zan':
 							alpha.toast('zan');
+							util.Zan_Rose(tag, self);
 							break;
 						case 'comment':
-							location.href = "#zone_item";
+							util.toComment();
 							alpha.toast('comment');
 							break;
 					}
 				});
-
+				// 点击顶部导航条
 				$(document).on(kClick, "[items_bar]", function () {
 					var self = $(this);
-					var tag = self.attr("items_bar");
+					util.zone_items_tag = self.attr("items_bar");
 					self.closest("ul").find("a").removeClass("active");
 					self.addClass("active");
-					alpha.toast(tag);
+					alpha.toast(util.zone_items_tag);
+					util.zone_items();
 				});
-
+				// 点击话题选择项
 				$(document).on(kClick, ".zone_container_top_topic a", function () {
 					var self = $(this);
 					var topic_id = self.attr("data_topic_id");
 					if (topic_id) {
 						location.href = "#zone_topic";
 					}
-
 				});
+			},
+			// 拉取评论页信息
+			toComment: function () {
+				var util = this;
+				if (util.loadingflag) {
+					return;
+				}
+				util.loadingflag = 1;
+				$.post("/api/zone", {
+					tag: "comment_info",
+					id: util.zone_id,
+				}, function (resp) {
+					if (resp.code == 0) {
+						alpha.clear();
+						location.href = "#zone_item";
+					} else {
+						alpha.toast(resp.msg);
+					}
+					util.loadingflag = 0;
+				}, "json");
+			},
+			Zan_Rose: function (tag, $btn) {
+				var util = this;
+				if (util.loadingflag) {
+					return;
+				}
+				util.loadingflag = 1;
+				$.post("/api/zone", {
+					tag: "zan_rose",
+					id: util.zone_id,
+				}, function (resp) {
+					if (resp.code == 0) {
+						alpha.clear();
+						$btn.find("span").addClass("active");
+					} else {
+						alpha.toast(resp.msg);
+					}
+					util.loadingflag = 0;
+				}, "json");
+			},
+			zone_items: function () {
+				var util = this;
+				if (util.loadingflag) {
+					return;
+				}
+				util.loadingflag = 1;
+				$.post("/api/zone", {
+					tag: "zone_items",
+					subtag: util.zone_items_tag,
+					page: util.page,
+				}, function (resp) {
+					if (resp.code == 0) {
+						alpha.clear();
+
+					} else {
+						alpha.toast(resp.msg);
+					}
+					util.loadingflag = 0;
+				}, "json");
 			},
 		};
 		pageItemsUtil.init();
@@ -68,9 +132,11 @@ require(["jquery", "alpha", "mustache"],
 			voice_localId: '',
 			voice_serverId: '',
 			int: '',
+			comment_text: '',
+			inputObj: null,
 			init: function () {
 				var util = this;
-				// 播放语音
+				// 播放评论内容：语音
 				$(document).on(kClick, ".cat_voice a", function () {
 					var self = $(this);
 					var audio = self.find(".audio")[0];
@@ -91,30 +157,38 @@ require(["jquery", "alpha", "mustache"],
 					var self = $(this);
 					var tag = self.attr("page_comments");
 					switch (tag) {
+						// 点击'麦克风'图标
 						case "entry":
-							var obj = $(".zone_container_item_comments_vbtns");
-							if (obj.hasClass("active")) {
-								obj.removeClass("active");
-							} else {
-								obj.addClass("active");
-							}
+							util.entryChange();
 							break;
+						// 点击发送
 						case "send":
 							console.log('send');
-							if (!util.voice_localId) {
+							util.inputObj = self.closest(".zone_container_item_comments_inputs").find(".inputs_input input");
+							var text = util.inputObj.val();
+							util.comment_text = $.trim(text);
+							if (util.loadingflag) {
 								return;
 							}
-							//上传语音接口
-							wx.uploadVoice({
-								localId: util.voice_localId,            // 需要上传的音频的本地ID，由stopRecord接口获得
-								isShowProgressTips: 1,                  // 默认为1，显示进度提示
-								success: function (res) {
-									util.voice_serverId = res.serverId;        // 返回音频的服务器端ID
-									alert(util.voice_serverId);
-									util.uploadVoiceToService();
-								}
-							});
+							if (util.voice_localId) {
+								util.loadingflag = 1;
+								//上传语音接口
+								wx.uploadVoice({
+									localId: util.voice_localId,            // 需要上传的音频的本地ID，由stopRecord接口获得
+									isShowProgressTips: 1,                  // 默认为1，显示进度提示
+									success: function (res) {
+										util.voice_serverId = res.serverId;        // 返回音频的服务器端ID
+										alert(util.voice_serverId);
+										util.submitComment();
+									}
+								});
+							} else if (text) {
+								util.loadingflag = 1;
+
+							}
+
 							break;
+						// 点击录音按钮
 						case "voice":
 							util.voice_localId = '';
 							var f = self.hasClass("play");
@@ -145,6 +219,16 @@ require(["jquery", "alpha", "mustache"],
 					}
 				});
 			},
+			// 点击'麦克风'图标
+			entryChange: function () {
+				var obj = $(".zone_container_item_comments_vbtns");
+				if (obj.hasClass("active")) {
+					obj.removeClass("active");
+				} else {
+					obj.addClass("active");
+				}
+			},
+			// 点击'录音/暂停录音'图标，后改变样式
 			changeRecord: function ($btn, f) {
 				console.log('changeRecord function');
 				var util = this;
@@ -161,6 +245,7 @@ require(["jquery", "alpha", "mustache"],
 					clearInterval(util.int);
 				}
 			},
+			// 计时器
 			clock: function (span) {
 				var util = this;
 				span.html('00' + '\'\'');
@@ -172,24 +257,35 @@ require(["jquery", "alpha", "mustache"],
 					}
 					span.html(second + '\'\'');
 				}, 1000);
-
 			},
-			uploadVoiceToService: function () {
+			// 提交评论内容
+			submitComment: function () {
 				var util = this;
 				$.post("/api/zone", {
-					tag: "add_zone_voice",
+					tag: "add_comment",
 					id: util.voice_serverId,
+					text: util.comment_text,
 				}, function (resp) {
 					if (resp.code == 0) {
-
 						alpha.clear();
 						alpha.toast(resp.msg, 1);
+						util.reset();
 					} else {
 						alpha.toast(resp.msg);
 					}
 					util.loadingflag = 0;
 				}, "json");
 			},
+			// 重置
+			reset: function () {
+				var util = this;
+				util.voice_localId = '';
+				util.voice_serverId = '';
+				util.int = '';
+				util.comment_text = '';
+				util.inputObj.val('');
+			},
+			// 播放/暂停 <audio src="..."></audio>
 			playVoice: function (audio) {
 				//var audio = document.getElementById('music1');
 				if (audio !== null) {

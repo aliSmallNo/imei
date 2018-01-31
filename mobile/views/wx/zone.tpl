@@ -375,7 +375,7 @@
 					<div class="name">尼古拉斯赵四</div>
 					<p class="cat_voice">
 						<a href="javascript:;" class="pause" style="width: 6rem">
-							<span>20″</span>
+							<span>20''</span>
 							<audio src="https://img.meipo100.com/voice/2018/120/194838185102.mp3" class="audio">您的浏览器不支持 audio 标签。</audio>
 						</a>
 					</p>
@@ -608,4 +608,5 @@
 		requirejs(['/js/zone.js?v=1.2.6']);
 	});
 </script>
+
 

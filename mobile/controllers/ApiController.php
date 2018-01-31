@@ -3131,6 +3131,15 @@ class ApiController extends Controller
 		}
 		$uid = $wxInfo['uId'];
 		switch ($tag) {
+			case "zone_items":
+				$subtag = self::postParam('subtag');
+				$page = self::postParam('page', 1);
+
+				return self::renderAPI(0, 'ok', [
+					'data' => [],
+					'nextpage' => 1
+				]);
+				break;
 			case "add_zone_msg":
 				$cat = self::postParam('cat');
 				$ids = self::postParam('id');
@@ -3156,12 +3165,30 @@ class ApiController extends Controller
 					'items' => $imageItems,
 				]);
 				break;
-			case "add_zone_voice":
+			case "add_comment":
 				$media_id = self::postParam('id');
+				$comment_text = self::postParam('text');
 				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode($media_id, JSON_UNESCAPED_UNICODE));
 				list($thumb, $url) = ImageUtil::save2Server($media_id);
-				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode([$thumb, $url], JSON_UNESCAPED_UNICODE));
+				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode([$thumb, $url, $comment_text], JSON_UNESCAPED_UNICODE));
 				return self::renderAPI(0, '上传语音成功', [
+
+				]);
+				break;
+			case "comment_info":
+				$zone_id = self::postParam('id');
+
+				return self::renderAPI(0, '', [
+					'zone_info' => [],
+					'zan_list' => [],
+					'rose_list' => [],
+					'comment_list' => [],
+				]);
+				break;
+			case "zan_rose":// 点赞，送花
+				$zone_id = self::postParam('id');
+
+				return self::renderAPI(0, '', [
 
 				]);
 				break;
