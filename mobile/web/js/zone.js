@@ -492,7 +492,7 @@ require(["jquery", "alpha", "mustache"],
 				var util = this;
 				$.post("/api/zone", {
 					tag: "add_zone_msg",
-					img_ids: JSON.stringify(util.img_serverIds),
+					//img_ids: JSON.stringify(util.img_serverIds),
 					cat: util.cat,
 					text: util.text,
 					voice_id: recordUtil.voice_serverId,
