@@ -51,42 +51,6 @@
 						1月20日，皇姑区一家饭店内，吃完饭要结账的冯先生发现挂在椅子上衣服内的手包不翼而飞。调取饭店的监控后发现，手包被后桌一名女子偷走了。“手包里虽然有现金，可现金不是最重要的，里面的银行卡和身份证才重要！银行卡里有20多名农民工140万元工资，他们都盼着这笔钱回家！而补办新卡需要身份证，补办身份证又要一个月，都补办回来了恐怕要2月底了！”冯先生说
 						<a href="javascript:;" items_tag="all">【查看全部】</a>
 					</div>
-					<div class="zone_container_item_cat_article">
-						<a href="javascript:;" class="avatar"><img
-											src="/images/cr_room_share.jpg" alt=""></a>
-						<div class="des">
-							<h5>男子结账时手包被偷 银行卡有140万...</h5>
-							<p>男子结账时手包被偷 银行卡有140万农民工半年工钱男子结账时手包被偷 银行卡有140万农...</p>
-						</div>
-					</div>
-					<div class="zone_container_item_cat_imgs">
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-					</div>
-
-					<div class="zone_container_item_cat_imgs img_2">
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-					</div>
-
-					<div class="zone_container_item_cat_imgs img_1">
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-					</div>
-
-					<div class="zone_container_item_cat_voice">
-						<div class="avatar"><img src="/images/cr_room_share.jpg" alt="">
-						</div>
-						<div class="fill">&nbsp;</div>
-						<div class="voice pause"></div>
-						<span>01:28</span>
-					</div>
 				</div>
 
 				<div class="zone_container_item_bot">
@@ -284,7 +248,7 @@
 						<div class="avatar"><img src="/images/cr_room_share.jpg" alt="">
 						</div>
 						<div class="fill">&nbsp;</div>
-						<div class="voice pause"></div>
+						<a href="javascript:; class=" voice pause"></a>
 						<span>01:28</span>
 					</div>
 				</div>
@@ -376,7 +340,8 @@
 					<p class="cat_voice">
 						<a href="javascript:;" class="pause" style="width: 6rem">
 							<span>20''</span>
-							<audio src="https://img.meipo100.com/voice/2018/120/194838185102.mp3" class="audio">您的浏览器不支持 audio 标签。</audio>
+							<audio src="https://img.meipo100.com/voice/2018/120/194838185102.mp3" class="audio">您的浏览器不支持 audio 标签。
+							</audio>
 						</a>
 					</p>
 
@@ -406,9 +371,21 @@
 <section id="zone_add_msg">
 	<div class="zone_container_add_msg">
 		<div class="msg_ipts">
-			<textarea placeholder="此时此刻，你想与大家分享点什么..." rows="6"></textarea>
-			<ul>
+			<textarea placeholder="此时此刻，你想与大家分享点什么..." rows="12"></textarea>
+			<ul class="add_cat_img" add_cat="image">
 				<li><a href="javascript:;" class="choose-img"></a></li>
+				<li><a href="javascript:;" class="choose-img"></a></li>
+				<li><a href="javascript:;" class="choose-img"></a></li>
+				<li><a href="javascript:;" class="choose-img"></a></li>
+			</ul>
+			<ul class="add_cat_voice" add_cat="voice">
+				<div class="zone_container_item_cat_voice">
+					<div class="avatar"><img src="/images/cr_room_share.jpg" alt="">
+					</div>
+					<div class="fill">&nbsp;</div>
+					<a href="javascript:;" class="voice pause " data_flag="add"></a>
+					<span>01:28</span>
+				</div>
 			</ul>
 		</div>
 		<div class="msg_tags">
@@ -419,6 +396,12 @@
 			</ul>
 		</div>
 		<div class="zone_container_add_msg_btn"><a href="javascript:;">提交</a></div>
+		<div class="zone_container_add_msg_record m-draw-wrap off">
+			<div class="vbtn_pause add_vbtn_pause">
+				<p><span class="">点击录音</span></p>
+				<div><a href="javascript:;" class="play"></a></div>
+			</div>
+		</div>
 	</div>
 </section>
 
@@ -590,12 +573,24 @@
 </section>
 
 <div class="m-popup-shade"></div>
-<div class="m-popup-main" style="display: none">
+<div class="m-popup-main" style="display: none;">
 	<div class="m-popup-wrap">
-		<div class="m-popup-content no-bg"></div>
+		<div class="m-popup-content animate-pop-in">
+
+		</div>
 	</div>
 </div>
+
+
 <input type="hidden" id="cWXUrl" value="{{$wxUrl}}">
+
+<script type="text/template" id="tpl_add_msg_cat">
+	<ul class="zone_alert_add_msg">
+		<li><a href="javascript:;" add_cat="text">文字</a></li>
+		<li><a href="javascript:;" add_cat="image">图文</a></li>
+		<li><a href="javascript:;" add_cat="voice">语音</a></li>
+	</ul>
+</script>
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>

@@ -140,17 +140,7 @@ require(["jquery", "alpha", "mustache"],
 				$(document).on(kClick, ".cat_voice a", function () {
 					var self = $(this);
 					var audio = self.find(".audio")[0];
-					if (self.hasClass("pause")) {
-						util.playVoice(audio);
-						self.removeClass("pause").addClass("play");
-					} else {
-						util.playVoice(audio);
-						self.removeClass("play").addClass("pause");
-					}
-					// 监听语音播放完毕
-					self.find(".audio").bind('ended', function () {
-						self.removeClass('play').addClass("pause");
-					});
+					recordUtil.playPauseVoice(self, audio);
 				});
 				// 底下的输入框
 				$(document).on(kClick, "[page_comments]", function () {
@@ -170,54 +160,57 @@ require(["jquery", "alpha", "mustache"],
 							if (util.loadingflag) {
 								return;
 							}
-							if (util.voice_localId) {
+							if (recordUtil.voice_localId) {
 								util.loadingflag = 1;
 								//上传语音接口
 								wx.uploadVoice({
-									localId: util.voice_localId,            // 需要上传的音频的本地ID，由stopRecord接口获得
-									isShowProgressTips: 1,                  // 默认为1，显示进度提示
+									localId: recordUtil.voice_localId,                // 需要上传的音频的本地ID，由stopRecord接口获得
+									isShowProgressTips: 1,                            // 默认为1，显示进度提示
 									success: function (res) {
-										util.voice_serverId = res.serverId;        // 返回音频的服务器端ID
-										alert(util.voice_serverId);
+										recordUtil.voice_serverId = res.serverId;        // 返回音频的服务器端ID
+										alert(recordUtil.voice_serverId);
 										util.submitComment();
 									}
 								});
 							} else if (text) {
 								util.loadingflag = 1;
-
 							}
-
 							break;
 						// 点击录音按钮
 						case "voice":
 							util.voice_localId = '';
 							var f = self.hasClass("play");
-							util.changeRecord(self, f);
-							if (f) {
-								console.log('start record');
-								//开始录音接口
-								wx.startRecord();
-							} else {
-								console.log('stop record');
-								//停止录音接口
-								wx.stopRecord({
-									success: function (res) {
-										util.voice_localId = res.localId;
-										alert(util.voice_localId);
-									}
-								});
-							}
-							wx.onVoiceRecordEnd({
-								// 录音时间超过一分钟没有停止的时候会执行 complete 回调
-								complete: function (res) {
-									util.voice_localId = res.localId;
-									util.changeRecord(self, false);
-									alert('timeout');
-								}
-							});
+							recordUtil.changeRecord(self, f);
+							recordUtil.recording(self, f);
 							break;
 					}
 				});
+			},
+
+			// 提交评论内容
+			submitComment: function () {
+				var util = this;
+				$.post("/api/zone", {
+					tag: "add_comment",
+					id: recordUtil.voice_serverId,
+					text: util.comment_text,
+				}, function (resp) {
+					if (resp.code == 0) {
+						alpha.clear();
+						alpha.toast(resp.msg, 1);
+						util.reset();
+					} else {
+						alpha.toast(resp.msg);
+					}
+					util.loadingflag = 0;
+				}, "json");
+			},
+			// 重置
+			reset: function () {
+				var util = this;
+				recordUtil.reset();
+				util.comment_text = '';
+				util.inputObj.val('');
 			},
 			// 点击'麦克风'图标
 			entryChange: function () {
@@ -228,6 +221,41 @@ require(["jquery", "alpha", "mustache"],
 					obj.addClass("active");
 				}
 			},
+		};
+		pageCommentsUtil.init();
+
+		var recordUtil = {
+			voice_localId: '',
+			voice_serverId: '',
+			int: '',
+			init: function () {
+
+			},
+			recording: function (self, f) {
+				var util = this;
+				if (f) {
+					console.log('start record');
+					// 开始录音接口
+					wx.startRecord();
+				} else {
+					console.log('stop record');
+					// 停止录音接口
+					wx.stopRecord({
+						success: function (res) {
+							util.voice_localId = res.localId;
+							alert(util.voice_localId);
+						}
+					});
+				}
+				wx.onVoiceRecordEnd({
+					// 录音时间超过一分钟没有停止的时候会执行 complete 回调
+					complete: function (res) {
+						util.voice_localId = res.localId;
+						util.changeRecord(self, false);
+						alert('timeout');
+					}
+				});
+			},
 			// 点击'录音/暂停录音'图标，后改变样式
 			changeRecord: function ($btn, f) {
 				console.log('changeRecord function');
@@ -236,7 +264,6 @@ require(["jquery", "alpha", "mustache"],
 				if (f) {
 					$btn.removeClass("play").addClass("pause");
 					span.addClass("active");
-					// span.html('01:23');
 					util.clock(span);
 				} else {
 					$btn.removeClass("pause").addClass("play");
@@ -258,32 +285,25 @@ require(["jquery", "alpha", "mustache"],
 					span.html(second + '\'\'');
 				}, 1000);
 			},
-			// 提交评论内容
-			submitComment: function () {
-				var util = this;
-				$.post("/api/zone", {
-					tag: "add_comment",
-					id: util.voice_serverId,
-					text: util.comment_text,
-				}, function (resp) {
-					if (resp.code == 0) {
-						alpha.clear();
-						alpha.toast(resp.msg, 1);
-						util.reset();
-					} else {
-						alpha.toast(resp.msg);
-					}
-					util.loadingflag = 0;
-				}, "json");
-			},
-			// 重置
 			reset: function () {
 				var util = this;
 				util.voice_localId = '';
 				util.voice_serverId = '';
 				util.int = '';
-				util.comment_text = '';
-				util.inputObj.val('');
+			},
+			// 播放/暂停
+			playPauseVoice: function (self, audio) {
+				if (self.hasClass("pause")) {
+					recordUtil.playVoice(audio);
+					self.removeClass("pause").addClass("play");
+				} else {
+					recordUtil.playVoice(audio);
+					self.removeClass("play").addClass("pause");
+				}
+				// 监听语音播放完毕
+				self.find(".audio").bind('ended', function () {
+					self.removeClass('play').addClass("pause");
+				});
 			},
 			// 播放/暂停 <audio src="..."></audio>
 			playVoice: function (audio) {
@@ -299,7 +319,6 @@ require(["jquery", "alpha", "mustache"],
 				}
 			},
 		};
-		pageCommentsUtil.init();
 
 		var pageAddUtil = {
 			loadingflag: 0,
@@ -336,6 +355,8 @@ require(["jquery", "alpha", "mustache"],
 				});
 
 				$(document).on(kClick, ".zone_container_add_msg_btn a", function () {
+
+					return;
 					alert(util.localIds.length);
 					if (util.localIds && util.localIds.length) {
 						util.loadingflag = 1;
@@ -344,6 +365,68 @@ require(["jquery", "alpha", "mustache"],
 						util.wxUploadImages();
 					}
 				});
+
+				$(document).on(kClick, ".zone_alert_add_msg a", function () {
+					var self = $(this);
+					var cat = self.attr("add_cat");
+					console.log(cat);
+					alertToggle(0, '');
+					if (cat == "image") {
+						$(".zone_container_add_msg ul[add_cat=" + cat + "]").css("display", "flex");
+					} else if (cat == "voice") {
+						// $(".zone_container_add_msg ul[add_cat=" + cat + "]").show();
+						$(".m-draw-wrap").removeClass("off").addClass("on");
+					}
+				});
+
+				// 播放本地语音
+				$(document).on(kClick, ".add_cat_voice a", function () {
+					var self = $(this);
+					var f = self.hasClass("pause");
+					if (f) {
+						alert("playVoice");
+						// 播放语音接口
+						wx.playVoice({
+							localId: recordUtil.voice_localId // 需要播放的音频的本地ID，由stopRecord接口获得
+						});
+						self.removeClass("pause").addClass("play");
+					} else {
+						alert(" pauseVoice");
+						// 暂停播放接口
+						wx.pauseVoice({
+							localId: recordUtil.voice_localId // 需要暂停的音频的本地ID，由stopRecord接口获得
+						});
+						self.removeClass("play").addClass("pause");
+					}
+					//监听语音播放完毕接口
+					wx.onVoicePlayEnd({
+						success: function (res) {
+							// var localId = res.localId; // 返回音频的本地ID
+							alert("onVoicePlayEnd");
+							self.removeClass("play").addClass("pause");
+						}
+					});
+
+					//停止播放接口
+					// wx.stopVoice({
+					// 	localId: recordUtil.voice_localId // 需要停止的音频的本地ID，由stopRecord接口获得
+					// });
+
+				});
+
+				$(document).on(kClick, ".add_vbtn_pause a", function () {
+					var self = $(this);
+					var f = self.hasClass("play");
+					recordUtil.changeRecord(self, f);
+					recordUtil.recording(self, f);
+					if (!f) {
+						self.closest(".m-draw-wrap").removeClass("on").addClass("off");
+						setTimeout(function () {
+							$(".zone_container_add_msg ul[add_cat=voice]").show();
+						}, 300);
+					}
+				});
+
 			},
 			wxUploadImages: function () {
 				var util = this;
@@ -386,7 +469,12 @@ require(["jquery", "alpha", "mustache"],
 					}
 					util.loadingflag = 0;
 				}, "json");
-			}
+			},
+			reset: function () {
+				var util = this;
+				recordUtil.reset();
+
+			},
 		};
 		pageAddUtil.init();
 
@@ -453,6 +541,17 @@ require(["jquery", "alpha", "mustache"],
 			});
 		}
 
+		function alertToggle(f, html) {
+			if (f) {
+				$sls.main.show();
+				$sls.content.html(html).addClass("animate-pop-in");
+				$sls.shade.fadeIn(160);
+			} else {
+				$sls.main.hide();
+				$sls.shade.fadeOut(160);
+			}
+		}
+
 		function locationHashChanged() {
 			var hashTag = location.hash;
 			hashTag = hashTag.replace("#!", "");
@@ -461,8 +560,13 @@ require(["jquery", "alpha", "mustache"],
 				case 'zone_item':
 
 					break;
-				case 'zone_items':
-
+				case 'zone_item':
+					pageCommentsUtil.reset();
+					break;
+				case "zone_add_msg":
+					$(".zone_container_add_msg ul[add_cat]").hide();
+					var html = $("#tpl_add_msg_cat").html();
+					alertToggle(1, html);
 					break;
 				default:
 					break;
@@ -493,6 +597,7 @@ require(["jquery", "alpha", "mustache"],
 			wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems',
 				'chooseImage', 'previewImage', 'uploadImage',
 				"startRecord", "stopRecord", "onVoiceRecordEnd", "uploadVoice",
+				"playVoice", "pauseVoice", "onVoicePlayEnd",
 				'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
