@@ -501,6 +501,7 @@ require(["jquery", "alpha", "mustache"],
 						// $("#album .photos").append(Mustache.render(util.albumSingleTmp, resp.data));
 						alpha.clear();
 						alpha.toast(resp.msg, 1);
+						util.reset();
 					} else {
 						alpha.toast(resp.msg);
 					}

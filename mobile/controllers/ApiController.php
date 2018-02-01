@@ -3146,6 +3146,13 @@ class ApiController extends Controller
 				$img_ids = self::postParam('img_ids');
 				$voice_id = self::postParam('voice_id');
 
+				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode([
+					"cat" => $cat,
+					"text" => $text,
+					"img_ids" => $img_ids,
+					"voice_id" => $voice_id,
+				], JSON_UNESCAPED_UNICODE));
+
 				$mediaIds = json_decode($img_ids, 1);
 				$mediaIds = array_reverse($mediaIds);
 				foreach ($mediaIds as $mediaId) {

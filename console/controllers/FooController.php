@@ -1591,11 +1591,9 @@ class FooController extends Controller
 		//UserTrans::taskCondition(10, 136055);
 
 
-		$res = User::fmtRow(User::findOne(['uId' => 120003])->toArray());
-		// print_r($res);
-		$res = User::user(['uOpenId' => 'oYDJew5EFMuyrJdwRrXkIZLU2c58']);
-		print_r($res);
-		echo $res["setting"];
+		$mediaIds = json_decode("[]", 1);
+		$mediaIds = array_reverse($mediaIds);
+		print_r($mediaIds);
 	}
 
 
