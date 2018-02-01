@@ -410,6 +410,8 @@ require(["jquery", "alpha", "mustache"],
 						textObj.focus();
 						return;
 					}
+					util.submitItem();
+					return;
 					switch (util.cat) {
 						case "text":
 							util.submitItem();
@@ -492,19 +494,17 @@ require(["jquery", "alpha", "mustache"],
 			submitItem: function () {
 				alert("submitItem function ");
 				var util = this;
-				alert(util.cat);
-				alert(util.text);
-				alert(recordUtil.voice_serverId);
-				alert(JSON.stringify(util.img_serverIds));
-				var data = {
+				alert('1:');
+				alert('voice:' + recordUtil.voice_serverId);
+				alert('imgid:' + JSON.stringify(util.img_serverIds));
+				alert('2:');
+				$.post("/api/zone", {
 					tag: "add_zone_msg",
 					img_ids: JSON.stringify(util.img_serverIds),
 					cat: util.cat,
 					text: util.text,
 					voice_id: recordUtil.voice_serverId,
-				};
-
-				$.post("/api/zone", data, function (resp) {
+				}, function (resp) {
 					if (resp.code == 0) {
 						// $("#album .photos").append(Mustache.render(util.albumSingleTmp, resp.data));
 						alpha.clear();
