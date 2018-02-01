@@ -154,15 +154,16 @@ require(["jquery", "alpha", "mustache"],
 							if (recordUtil.voice_localId) {
 								util.loadingflag = 1;
 								//上传语音接口
-								wx.uploadVoice({
-									localId: recordUtil.voice_localId,                // 需要上传的音频的本地ID，由stopRecord接口获得
-									isShowProgressTips: 1,                            // 默认为1，显示进度提示
-									success: function (res) {
-										recordUtil.voice_serverId = res.serverId;        // 返回音频的服务器端ID
-										alert(recordUtil.voice_serverId);
-										util.submitComment();
-									}
-								});
+								// wx.uploadVoice({
+								// 	localId: recordUtil.voice_localId,                // 需要上传的音频的本地ID，由stopRecord接口获得
+								// 	isShowProgressTips: 1,                            // 默认为1，显示进度提示
+								// 	success: function (res) {
+								// 		recordUtil.voice_serverId = res.serverId;        // 返回音频的服务器端ID
+								// 		alert(recordUtil.voice_serverId);
+								// 		//util.submitComment();
+								// 	}
+								// });
+								recordUtil.uploadRecord(util.submitComment);
 							} else if (text) {
 								util.loadingflag = 1;
 							}
@@ -262,7 +263,6 @@ require(["jquery", "alpha", "mustache"],
 					}
 
 				});
-
 			},
 			recording: function (self, f) {
 				var util = this;
@@ -286,6 +286,20 @@ require(["jquery", "alpha", "mustache"],
 						util.voice_localId = res.localId;
 						util.changeRecord(self, false);
 						alert('timeout');
+					}
+				});
+			},
+			uploadRecord: function (callback) {
+				//上传语音接口
+				wx.uploadVoice({
+					localId: recordUtil.voice_localId,                // 需要上传的音频的本地ID，由stopRecord接口获得
+					isShowProgressTips: 1,                            // 默认为1，显示进度提示
+					success: function (res) {
+						recordUtil.voice_serverId = res.serverId;     // 返回音频的服务器端ID
+						alert(recordUtil.voice_serverId);
+						if (typeof callback == "function") {
+							callback();
+						}
 					}
 				});
 			},
@@ -356,8 +370,10 @@ require(["jquery", "alpha", "mustache"],
 
 		var pageAddUtil = {
 			loadingflag: 0,
-			localIds: [],
-			serverIds: [],
+			img_localIds: [],
+			img_serverIds: [],
+			cat: '',
+			text: '',
 			init: function () {
 				var util = this;
 				// 添加图片
@@ -374,13 +390,13 @@ require(["jquery", "alpha", "mustache"],
 						sizeType: ['original', 'compressed'],
 						sourceType: ['album', 'camera'],
 						success: function (res) {
-							util.localIds = util.localIds.concat(res.localIds);
+							util.img_localIds = util.img_localIds.concat(res.localIds);
 							var tmp = '{[#data]}<li><img src="{[.]}" alt=""></li>{[/data]}';
 							var html = Mustache.render(tmp, {data: res.localIds});
 							//alert(html);
-							alert(JSON.stringify(util.localIds));
-							if (len + parseInt(util.localIds.length) < 6) {
-								chooseImgStr = '<li><a href="javascript:;" class="choose-img"></a></li>'
+							alert(JSON.stringify(util.img_localIds));
+							if (len + parseInt(util.img_localIds.length) < 6) {
+								chooseImgStr = '<li><a href="javascript:;" class="choose-img"></a></li>';
 							}
 							ul.find("li .choose-img").closest("li").remove();
 							ul.append(html + chooseImgStr);
@@ -389,14 +405,37 @@ require(["jquery", "alpha", "mustache"],
 				});
 
 				$(document).on(kClick, ".zone_container_add_msg_btn a", function () {
-
-					return;
-					alert(util.localIds.length);
-					if (util.localIds && util.localIds.length) {
-						util.loadingflag = 1;
-						util.serverIds = [];
-						alpha.loading('正在上传中...');
-						util.wxUploadImages();
+					var textObj = $(".msg_ipts textarea");
+					util.text = $.trim(textObj.val());
+					if (!util.text) {
+						alpha.toast("请填写内容~");
+						textObj.focus();
+						return;
+					}
+					switch (util.cat) {
+						case "text":
+							break;
+						case "image":
+							alert(util.img_localIds.length);
+							if (util.img_localIds && util.img_localIds.length) {
+								util.loadingflag = 1;
+								util.img_serverIds = [];
+								alpha.loading('正在上传中...');
+								util.wxUploadImages();
+							} else {
+								alpha.toast("请先选择要上传的图片~");
+								return;
+							}
+							break;
+						case "voice":
+							if (recordUtil.voice_localId) {
+								util.loadingflag = 1;
+								recordUtil.uploadRecord(util.submitItem);
+							} else {
+								alpha.toast("录音失败，请退出重试~");
+								return;
+							}
+							break;
 					}
 				});
 
@@ -404,11 +443,11 @@ require(["jquery", "alpha", "mustache"],
 					var self = $(this);
 					var cat = self.attr("add_cat");
 					console.log(cat);
+					util.cat = cat;
 					alertToggle(0, '');
 					if (cat == "image") {
 						$(".zone_container_add_msg ul[add_cat=" + cat + "]").css("display", "flex");
 					} else if (cat == "voice") {
-						// $(".zone_container_add_msg ul[add_cat=" + cat + "]").show();
 						$(".m-draw-wrap").removeClass("off").addClass("on");
 					}
 				});
@@ -428,35 +467,36 @@ require(["jquery", "alpha", "mustache"],
 			},
 			wxUploadImages: function () {
 				var util = this;
-				if (util.localIds.length < 1 && util.serverIds.length) {
-					util.uploadImages();
+				if (util.img_localIds.length < 1 && util.img_serverIds.length) {
+					util.submitItem();
 					return;
 				}
-				var localId = util.localIds.pop();
+				var localId = util.img_localIds.pop();
 				wx.uploadImage({
 					localId: localId,
 					isShowProgressTips: 0,
 					success: function (res) {
-						util.serverIds.push(res.serverId);
-						if (util.localIds.length < 1) {
-							alert(JSON.stringify(util.serverIds));
-							util.uploadImages();
+						util.img_serverIds.push(res.serverId);
+						if (util.img_localIds.length < 1) {
+							alert(JSON.stringify(util.img_serverIds));
+							util.submitItem();
 						} else {
 							util.wxUploadImages();
 						}
 					},
 					fail: function () {
-						/*SmeUtil.serverIds = [];
 						alpha.toast("上传失败！");
-						SmeUtil.loadingflag = 0;*/
 					}
 				});
 			},
-			uploadImages: function () {
+			submitItem: function () {
 				var util = this;
 				$.post("/api/zone", {
 					tag: "add_zone_msg",
-					id: JSON.stringify(util.serverIds)
+					img_ids: JSON.stringify(util.img_serverIds),
+					cat: util.cat,
+					text: util.text,
+					voice_id: recordUtil.voice_serverId,
 				}, function (resp) {
 					if (resp.code == 0) {
 						// $("#album .photos").append(Mustache.render(util.albumSingleTmp, resp.data));
@@ -484,6 +524,7 @@ require(["jquery", "alpha", "mustache"],
 				$sls.main.hide();
 				$sls.shade.fadeOut(160);
 			}
+
 		}
 
 		function locationHashChanged() {
@@ -502,6 +543,7 @@ require(["jquery", "alpha", "mustache"],
 					var html = $("#tpl_add_msg_cat").html();
 					alertToggle(1, html);
 					break;
+
 				default:
 					break;
 			}

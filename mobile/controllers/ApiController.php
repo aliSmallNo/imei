@@ -3142,12 +3142,11 @@ class ApiController extends Controller
 				break;
 			case "add_zone_msg":
 				$cat = self::postParam('cat');
-				$ids = self::postParam('id');
-				$f = self::postParam('f', 'add');
-				$text = ($f == "add" ? "添加" : '删除');
-				//$items = User::album($id, $openId, $f);
+				$text = self::postParam('text');
+				$img_ids = self::postParam('img_ids');
+				$voice_id = self::postParam('voice_id');
 
-				$mediaIds = json_decode($ids, 1);
+				$mediaIds = json_decode($img_ids, 1);
 				$mediaIds = array_reverse($mediaIds);
 				foreach ($mediaIds as $mediaId) {
 					list($thumb, $url) = ImageUtil::save2Server($mediaId);
@@ -3156,12 +3155,18 @@ class ApiController extends Controller
 						'figure' => $url
 					];
 				}
+
+				list($voiceUrl) = ImageUtil::save2Server($voice_id);
+				$imageItems["voice_url"] = $voiceUrl;
+				$imageItems["text"] = $text;
+				$imageItems["cat"] = $cat;
+
 				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode($imageItems, JSON_UNESCAPED_UNICODE));
 
-				if (!$imageItems && $f == "add") {
-					return self::renderAPI(129, $text . '失败');
+				if (!$imageItems) {
+					return self::renderAPI(129, '失败');
 				}
-				return self::renderAPI(0, $text . '成功', [
+				return self::renderAPI(0, '成功', [
 					'items' => $imageItems,
 				]);
 				break;
