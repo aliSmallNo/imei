@@ -297,9 +297,7 @@ require(["jquery", "alpha", "mustache"],
 					success: function (res) {
 						recordUtil.voice_serverId = res.serverId;     // 返回音频的服务器端ID
 						alert(recordUtil.voice_serverId);
-						if (typeof callback == "function") {
-							callback();
-						}
+						typeof callback == "function" && callback();
 					}
 				});
 			},
