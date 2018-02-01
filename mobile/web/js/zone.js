@@ -500,7 +500,10 @@ require(["jquery", "alpha", "mustache"],
 					text: util.text,
 					voice_id: recordUtil.voice_serverId,
 				};
-				alert(JSON.stringify(data));
+				alert(data.cat);
+				alert(data.text);
+				alert(data.voice_id);
+				alert(data.img_ids);
 				$.post("/api/zone", data, function (resp) {
 					if (resp.code == 0) {
 						// $("#album .photos").append(Mustache.render(util.albumSingleTmp, resp.data));
