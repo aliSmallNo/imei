@@ -410,8 +410,6 @@ require(["jquery", "alpha", "mustache"],
 						textObj.focus();
 						return;
 					}
-					util.submitItem();
-					return;
 					switch (util.cat) {
 						case "text":
 							util.submitItem();
