@@ -432,7 +432,17 @@ require(["jquery", "alpha", "mustache"],
 							if (recordUtil.voice_localId) {
 								util.loadingflag = 1;
 								alpha.loading('正在上传中...');
-								recordUtil.uploadRecord(util.submitItem);
+								//recordUtil.uploadRecord(util.submitItem);
+								//上传语音接口
+								wx.uploadVoice({
+									localId: recordUtil.voice_localId,                // 需要上传的音频的本地ID，由stopRecord接口获得
+									isShowProgressTips: 1,                            // 默认为1，显示进度提示
+									success: function (res) {
+										recordUtil.voice_serverId = res.serverId;        // 返回音频的服务器端ID
+										alert(recordUtil.voice_serverId);
+										util.submitItem();
+									}
+								});
 							} else {
 								alpha.toast("录音失败，请退出重试~");
 								return;
