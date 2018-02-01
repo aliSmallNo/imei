@@ -492,7 +492,10 @@ require(["jquery", "alpha", "mustache"],
 			submitItem: function () {
 				alert("submitItem function ");
 				var util = this;
-
+				alert(util.cat);
+				alert(util.text);
+				alert(recordUtil.voice_serverId);
+				alert(JSON.stringify(util.img_serverIds));
 				var data = {
 					tag: "add_zone_msg",
 					img_ids: JSON.stringify(util.img_serverIds),
@@ -500,10 +503,7 @@ require(["jquery", "alpha", "mustache"],
 					text: util.text,
 					voice_id: recordUtil.voice_serverId,
 				};
-				alert(data.cat);
-				alert(data.text);
-				alert(data.voice_id);
-				alert(data.img_ids);
+
 				$.post("/api/zone", data, function (resp) {
 					if (resp.code == 0) {
 						// $("#album .photos").append(Mustache.render(util.albumSingleTmp, resp.data));
