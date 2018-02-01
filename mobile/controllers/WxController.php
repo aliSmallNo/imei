@@ -2353,4 +2353,20 @@ class WxController extends BaseController
 			'动态',
 			'');
 	}
+
+	public function actionEveryredpacket()
+	{
+		$uid = $this->user_id;
+
+		return self::renderPage("everyredpacket.tpl",
+			[
+				'uid' => $this->user_id,
+				'name' => $this->user_name,
+				'avatar' => $this->user_avatar,
+				'wxUrl' => AppUtil::wechatUrl(),
+			],
+			'terse',
+			'每日红包',
+			'');
+	}
 }

@@ -432,6 +432,7 @@ require(["jquery", "alpha", "mustache"],
 							if (recordUtil.voice_localId) {
 								util.loadingflag = 1;
 								alpha.loading('正在上传中...');
+								// ????????????????
 								//recordUtil.uploadRecord(util.submitItem);
 								//上传语音接口
 								wx.uploadVoice({
@@ -504,10 +505,6 @@ require(["jquery", "alpha", "mustache"],
 			submitItem: function () {
 				alert("submitItem function ");
 				var util = this;
-				alert('1:');
-				alert('voice:' + recordUtil.voice_serverId);
-				alert('imgid:' + util.img_serverIds.length > 0 ? JSON.stringify(util.img_serverIds) : '');
-				alert('2:');
 				$.post("/api/zone", {
 					tag: "add_zone_msg",
 					img_ids: JSON.stringify(util.img_serverIds),

@@ -705,3 +705,190 @@
 			border-bottom: 1px solid #eee
 			background: #fff
 
+.ev_container
+	.ev_container_top
+		position: relative
+		@include backgroundImg('../images/ev/ev_bg.jpg')
+		padding: 2rem 0 4rem
+		.ev_container_top_grab
+			display: none
+			h5
+				@include fontStyle(1.8rem, #f9ab00)
+				text-align: center
+				line-height: 2rem
+			p
+				@include fontStyle(1.2rem, #f58b03, 0)
+				text-align: center
+			h4
+				@include fontStyle(2rem, #ffcb01)
+				text-align: center
+				line-height: 4rem
+			.grab
+				display: block
+				img
+					@include imgBlock_W(10rem)
+		.ev_container_top_grabed
+			h5
+				@include fontStyle(1.2rem, #fff)
+				text-align: center
+				line-height: 3rem
+			p
+				@include fontStyle(2rem, #fff, 0)
+				text-align: center
+			.grabed, .avatar
+				display: block
+				img
+					@include imgBlock_W(7rem)
+					border-radius: 7rem
+		.ev_top_alert
+			position: absolute
+			width: 8rem
+			height: 3rem
+			line-height: 3rem
+			display: inline-block
+			bottom: 1rem
+			background: #ff004e
+			@include fontStyle(1.2rem, #ffcc00)
+			text-align: center
+			&.ipacket
+				left: 0
+				border-bottom-right-radius: 3rem
+				border-top-right-radius: 3rem
+			&.rule
+				right: 0
+				border-left: 3rem
+				border-bottom-left-radius: 3rem
+				border-top-left-radius: 3rem
+	.ev_container_content
+		background: #fff7da
+		.ev_container_share
+			@include displayFlex
+			padding: 1rem
+			div
+				@include displayFlex-1
+				text-align: center
+				a
+					display: inline-block
+					width: 12rem
+					height: 3rem
+					line-height: 3rem
+					border-radius: .5rem
+					@include fontStyle(1.2rem, #fff)
+					position: relative
+					&[ev_opt=share]
+						background: #2ed60d
+						&:before
+							position: absolute
+							content: ''
+							@include icoStyle(2rem, 2rem, '../images/ev/ev_ico_share.png')
+							top: .4rem
+							left: .5rem
+
+					&[ev_opt=more]
+						background: #f53365
+						color: #fdcd01
+						&:before
+							position: absolute
+							content: ''
+							@include icoStyle(1.6rem, 1.6rem, '../images/ev/ev_ico_redpacket.png')
+							top: .7rem
+							left: .3rem
+		ul
+			li
+				padding: 1rem
+				margin-bottom: .5rem
+				@include displayFlex
+				background: #fff
+				.avatar
+					@include displayFlex-w(6rem)
+					img
+						@include img_W(5rem)
+						border-radius: 5rem
+				.des
+					@include displayFlex-1
+					h5
+						@include fontStyle(1.3rem, $fontColor)
+						line-height: 3rem
+					p
+						@include fontStyle(1rem, #ddd, 0)
+				.chat
+					@include displayFlex-w(6rem)
+					text-align: center
+					span
+						padding-top: 2.7rem
+						position: relative
+						display: inline-block
+						@include fontStyle(.8rem, #f53463, 0)
+						&:before
+							@include icoStyle(2rem, 2rem, '../images/ev/ev_ico_chat.png')
+							top: .7rem
+							left: .7rem
+	.ev_container_footer
+		text-align: center
+		@include fontStyle(1rem, #f53463, 0)
+		padding: 1rem
+		a
+			@include fontStyle(1rem, #f53463, 0)
+			display: inline-block
+			text-decoration: underline
+
+.ev_tmp_alert
+	background: #e85951
+	padding: 2rem
+	.ev_tmp_qr
+		.qr
+			img
+				@include img_W(20rem)
+		p
+			@include fontStyle(1.2rem, #fff)
+			line-height: 4rem
+	.ev_tmp_rule
+		.rule
+			height: 30rem
+			overflow-x: hidden
+			overflow-y: auto
+			h4
+				text-align: center
+				@include fontStyle(1.4rem, #fff)
+				line-height: 4rem
+			p
+				text-align: left
+				@include fontStyle(1.1rem, #fefdf9)
+				text-indent: 1.5rem
+				line-height: 2rem
+		.btn
+			margin-top: 2rem
+			a
+				display: block
+				margin: 0 1rem
+				background: #eee116
+				@include fontStyle(1.2rem, #e85951)
+				padding: .5rem 0
+				border-radius: .5rem
+	.ev_tmp_grab
+		.avatar
+			img
+				@include img_W(8rem)
+				border-radius: 100%
+		p
+			@include fontStyle(1.1rem, #fff)
+		h3
+			@include fontStyle(2rem, #fff)
+			font-weight: 300
+		.btn
+			margin-top: 2rem
+			a
+				display: block
+				margin: 0 1rem
+				background: #eee116
+				@include fontStyle(1.2rem, #e85951)
+				padding: .5rem 0
+				border-radius: .5rem
+
+
+
+
+
+
+
+
