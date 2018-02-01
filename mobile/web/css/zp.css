@@ -219,8 +219,8 @@ section {
           bottom: 0;
           left: 28%;
           width: 13rem;
-          height: 0.1rem;
-          border-radius: 0.1rem;
+          height: 1px;
+          border-radius: 1px;
           background: #d9d9d9;
           left: 7%;
           bottom: 0; }
