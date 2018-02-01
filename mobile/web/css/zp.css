@@ -811,6 +811,7 @@ section {
       -ms-flex: 1;
       flex: 1; }
     .zone_container_add_msg .msg_ipts ul.add_cat_voice .zone_container_item_cat_voice .voice {
+      display: block;
       -webkit-box-flex: 0 0 5rem;
       -webkit-flex: 0 0 5rem;
       -ms-flex: 0 0 5rem;

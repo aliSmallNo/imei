@@ -129,19 +129,10 @@ require(["jquery", "alpha", "mustache"],
 		pageItemsUtil.init();
 
 		var pageCommentsUtil = {
-			voice_localId: '',
-			voice_serverId: '',
-			int: '',
 			comment_text: '',
 			inputObj: null,
 			init: function () {
 				var util = this;
-				// 播放评论内容：语音
-				$(document).on(kClick, ".cat_voice a", function () {
-					var self = $(this);
-					var audio = self.find(".audio")[0];
-					recordUtil.playPauseVoice(self, audio);
-				});
 				// 底下的输入框
 				$(document).on(kClick, "[page_comments]", function () {
 					var self = $(this);
@@ -229,6 +220,48 @@ require(["jquery", "alpha", "mustache"],
 			voice_serverId: '',
 			int: '',
 			init: function () {
+				var util = this;
+				// 播放语音
+				$(document).on(kClick, ".playVoiceElement", function () {
+					var self = $(this);
+					var tag = self.attr("pvl");
+					console.log(tag);
+					switch (tag) {
+						case "add":
+							var f = self.hasClass("pause");
+							if (f) {
+								alert("playVoice");
+								// 播放语音接口
+								wx.playVoice({
+									localId: recordUtil.voice_localId // 需要播放的音频的本地ID，由stopRecord接口获得
+								});
+								self.removeClass("pause").addClass("play");
+							} else {
+								alert(" pauseVoice");
+								// 暂停播放接口
+								wx.pauseVoice({
+									localId: recordUtil.voice_localId // 需要暂停的音频的本地ID，由stopRecord接口获得
+								});
+								self.removeClass("play").addClass("pause");
+							}
+							//监听语音播放完毕接口
+							wx.onVoicePlayEnd({
+								success: function (res) {
+									// var localId = res.localId; // 返回音频的本地ID
+									alert("onVoicePlayEnd");
+									self.removeClass("play").addClass("pause");
+								}
+							});
+							break;
+						case "items":
+						case "comment":
+							var audio = self.find("audio")[0];
+							util.playPauseVoice(self, audio);
+							break;
+
+					}
+
+				});
 
 			},
 			recording: function (self, f) {
@@ -301,7 +334,7 @@ require(["jquery", "alpha", "mustache"],
 					self.removeClass("play").addClass("pause");
 				}
 				// 监听语音播放完毕
-				self.find(".audio").bind('ended', function () {
+				self.find("audio").bind('ended', function () {
 					self.removeClass('play').addClass("pause");
 				});
 			},
@@ -319,6 +352,7 @@ require(["jquery", "alpha", "mustache"],
 				}
 			},
 		};
+		recordUtil.init();
 
 		var pageAddUtil = {
 			loadingflag: 0,
@@ -379,41 +413,6 @@ require(["jquery", "alpha", "mustache"],
 					}
 				});
 
-				// 播放本地语音
-				$(document).on(kClick, ".add_cat_voice a", function () {
-					var self = $(this);
-					var f = self.hasClass("pause");
-					if (f) {
-						alert("playVoice");
-						// 播放语音接口
-						wx.playVoice({
-							localId: recordUtil.voice_localId // 需要播放的音频的本地ID，由stopRecord接口获得
-						});
-						self.removeClass("pause").addClass("play");
-					} else {
-						alert(" pauseVoice");
-						// 暂停播放接口
-						wx.pauseVoice({
-							localId: recordUtil.voice_localId // 需要暂停的音频的本地ID，由stopRecord接口获得
-						});
-						self.removeClass("play").addClass("pause");
-					}
-					//监听语音播放完毕接口
-					wx.onVoicePlayEnd({
-						success: function (res) {
-							// var localId = res.localId; // 返回音频的本地ID
-							alert("onVoicePlayEnd");
-							self.removeClass("play").addClass("pause");
-						}
-					});
-
-					//停止播放接口
-					// wx.stopVoice({
-					// 	localId: recordUtil.voice_localId // 需要停止的音频的本地ID，由stopRecord接口获得
-					// });
-
-				});
-
 				$(document).on(kClick, ".add_vbtn_pause a", function () {
 					var self = $(this);
 					var f = self.hasClass("play");
@@ -426,7 +425,6 @@ require(["jquery", "alpha", "mustache"],
 						}, 300);
 					}
 				});
-
 			},
 			wxUploadImages: function () {
 				var util = this;
@@ -473,73 +471,9 @@ require(["jquery", "alpha", "mustache"],
 			reset: function () {
 				var util = this;
 				recordUtil.reset();
-
 			},
 		};
 		pageAddUtil.init();
-
-		$(document).on(kClick, ".vip_mouth_gift a.btn", function () {
-			var self = $(this);
-			if (self.hasClass("fail")) {
-				return;
-			}
-
-			if ($sls.loading) {
-				return false;
-			}
-			$sls.loading = 1;
-			$.post('/api/shop',
-				{
-					tag: 'every_mouth_gift',
-					gid: 6024,
-				},
-				function (resp) {
-					$sls.loading = 0;
-					if (resp.code == 0) {
-						self.addClass("fail");
-					}
-					alpha.toast(resp.msg);
-
-				}, 'json');
-		});
-
-		function shareLog(tag, note) {
-			$.post("/api/share", {
-				tag: tag,
-				id: $sls.uid,
-				note: note
-			}, function (resp) {
-				if (resp.code < 1 && resp.msg) {
-					alpha.toast(resp.msg, 1);
-				}
-			}, "json");
-		}
-
-		function resetMenuShare() {
-			var thumb = 'https://bpbhd-10063905.file.myqcloud.com/image/n1801051187989.png';
-			var link = $sls.wxUrl + '/wx/zone?id=' + $sls.uni;
-			var title = '我在千寻恋恋找朋友，还能赚点零花钱';
-			var desc = '一起来千寻恋恋吧，还能帮助身边的单身朋友脱单';
-			wx.onMenuShareTimeline({
-				title: title,
-				link: link,
-				imgUrl: thumb,
-				success: function () {
-					shareLog('moment', '/wx/zone');
-				}
-			});
-			wx.onMenuShareAppMessage({
-				title: title,
-				desc: desc,
-				link: link,
-				imgUrl: thumb,
-				type: '',
-				dataUrl: '',
-				success: function () {
-					shareLog('share', '/wx/zone');
-				}
-			});
-		}
 
 		function alertToggle(f, html) {
 			if (f) {
@@ -557,7 +491,7 @@ require(["jquery", "alpha", "mustache"],
 			hashTag = hashTag.replace("#!", "");
 			hashTag = hashTag.replace("#", "");
 			switch (hashTag) {
-				case 'zone_item':
+				case 'zone_items':
 
 					break;
 				case 'zone_item':

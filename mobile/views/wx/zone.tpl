@@ -248,7 +248,9 @@
 						<div class="avatar"><img src="/images/cr_room_share.jpg" alt="">
 						</div>
 						<div class="fill">&nbsp;</div>
-						<a href="javascript:; class=" voice pause"></a>
+						<a href="javascript:;" class="voice pause playVoiceElement" pvl="items">
+							<audio src="https://img.meipo100.com/voice/2018/130/194953112138.mp3"></audio>
+						</a>
 						<span>01:28</span>
 					</div>
 				</div>
@@ -338,9 +340,9 @@
 				<div class="content">
 					<div class="name">尼古拉斯赵四</div>
 					<p class="cat_voice">
-						<a href="javascript:;" class="pause" style="width: 6rem">
+						<a href="javascript:;" class="pause playVoiceElement" pvl="comment"  style="width: 6rem">
 							<span>20''</span>
-							<audio src="https://img.meipo100.com/voice/2018/120/194838185102.mp3" class="audio">您的浏览器不支持 audio 标签。
+							<audio src="https://img.meipo100.com/voice/2018/120/194838185102.mp3">您的浏览器不支持 audio 标签。
 							</audio>
 						</a>
 					</p>
@@ -383,7 +385,7 @@
 					<div class="avatar"><img src="/images/cr_room_share.jpg" alt="">
 					</div>
 					<div class="fill">&nbsp;</div>
-					<a href="javascript:;" class="voice pause " data_flag="add"></a>
+					<a href="javascript:;" class="voice pause playVoiceElement" pvl="add" ></a>
 					<span>01:28</span>
 				</div>
 			</ul>
