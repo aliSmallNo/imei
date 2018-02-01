@@ -154,18 +154,19 @@ require(["jquery", "alpha", "mustache"],
 							if (recordUtil.voice_localId) {
 								util.loadingflag = 1;
 								//上传语音接口
-								// wx.uploadVoice({
-								// 	localId: recordUtil.voice_localId,                // 需要上传的音频的本地ID，由stopRecord接口获得
-								// 	isShowProgressTips: 1,                            // 默认为1，显示进度提示
-								// 	success: function (res) {
-								// 		recordUtil.voice_serverId = res.serverId;        // 返回音频的服务器端ID
-								// 		alert(recordUtil.voice_serverId);
-								// 		//util.submitComment();
-								// 	}
-								// });
-								recordUtil.uploadRecord(util.submitComment);
+								wx.uploadVoice({
+									localId: recordUtil.voice_localId,                // 需要上传的音频的本地ID，由stopRecord接口获得
+									isShowProgressTips: 1,                            // 默认为1，显示进度提示
+									success: function (res) {
+										recordUtil.voice_serverId = res.serverId;        // 返回音频的服务器端ID
+										alert(recordUtil.voice_serverId);
+										util.submitComment();
+									}
+								});
+								//recordUtil.uploadRecord(util.submitComment);
 							} else if (text) {
 								util.loadingflag = 1;
+								util.submitComment();
 							}
 							break;
 						// 点击录音按钮
@@ -403,6 +404,7 @@ require(["jquery", "alpha", "mustache"],
 				});
 
 				$(document).on(kClick, ".zone_container_add_msg_btn a", function () {
+
 					var textObj = $(".msg_ipts textarea");
 					util.text = $.trim(textObj.val());
 					if (!util.text) {
