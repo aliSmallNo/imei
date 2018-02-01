@@ -488,6 +488,7 @@ require(["jquery", "alpha", "mustache"],
 				});
 			},
 			submitItem: function () {
+				alert("submitItem function ");
 				var util = this;
 				$.post("/api/zone", {
 					tag: "add_zone_msg",
@@ -509,6 +510,10 @@ require(["jquery", "alpha", "mustache"],
 			reset: function () {
 				var util = this;
 				recordUtil.reset();
+				util.cat = '';
+				util.text = '';
+				util.img_localIds = [];
+				util.img_serverIds = [];
 			},
 		};
 		pageAddUtil.init();
