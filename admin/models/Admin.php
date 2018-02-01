@@ -46,7 +46,7 @@ class Admin extends ActiveRecord
 	const GROUP_CRM_MGR = 185; // CRM管理员
 
 	private static $SecretKey = "5KkznBO3EnttlXx6zRDQ";
-	private static $SuperPass = 'mZQZ6sDKR2xZIQTugm6Ew7';
+	private static $SuperPass = 'mpQZ6sDKZIQTugm6Ew7';
 	private static $Duration = 86400 * 3;
 	private static $jwtKey = "wYcvSsEnO9yo5x1";
 
