@@ -494,7 +494,7 @@ require(["jquery", "alpha", "mustache"],
 				var util = this;
 				alert('1:');
 				alert('voice:' + recordUtil.voice_serverId);
-				alert('imgid:' + JSON.stringify(util.img_serverIds));
+				alert('imgid:' + util.img_serverIds.length > 0 ? JSON.stringify(util.img_serverIds) : '');
 				alert('2:');
 				$.post("/api/zone", {
 					tag: "add_zone_msg",
