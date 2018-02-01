@@ -412,6 +412,7 @@ require(["jquery", "alpha", "mustache"],
 					}
 					switch (util.cat) {
 						case "text":
+							util.submitItem();
 							break;
 						case "image":
 							alert(util.img_localIds.length);
@@ -428,6 +429,7 @@ require(["jquery", "alpha", "mustache"],
 						case "voice":
 							if (recordUtil.voice_localId) {
 								util.loadingflag = 1;
+								alpha.loading('正在上传中...');
 								recordUtil.uploadRecord(util.submitItem);
 							} else {
 								alpha.toast("录音失败，请退出重试~");
@@ -492,7 +494,7 @@ require(["jquery", "alpha", "mustache"],
 				var util = this;
 				$.post("/api/zone", {
 					tag: "add_zone_msg",
-					//img_ids: JSON.stringify(util.img_serverIds),
+					img_ids: JSON.stringify(util.img_serverIds),
 					cat: util.cat,
 					text: util.text,
 					voice_id: recordUtil.voice_serverId,
