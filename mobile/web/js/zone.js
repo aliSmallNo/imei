@@ -491,14 +491,16 @@ require(["jquery", "alpha", "mustache"],
 			},
 			submitItem: function () {
 				alert("submitItem function ");
-				var util = this;
-				$.post("/api/zone", {
+				var data = {
 					tag: "add_zone_msg",
 					img_ids: JSON.stringify(util.img_serverIds),
 					cat: util.cat,
 					text: util.text,
 					voice_id: recordUtil.voice_serverId,
-				}, function (resp) {
+				};
+				alert(JSON.stringify(data));
+				var util = this;
+				$.post("/api/zone", data, function (resp) {
 					if (resp.code == 0) {
 						// $("#album .photos").append(Mustache.render(util.albumSingleTmp, resp.data));
 						alpha.clear();
