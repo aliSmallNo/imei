@@ -19,6 +19,7 @@ use common\models\Goods;
 use common\models\Log;
 use common\models\LogAction;
 use common\models\Lottery;
+use common\models\Moment;
 use common\models\Order;
 use common\models\Pay;
 use common\models\Pin;
@@ -3153,28 +3154,44 @@ class ApiController extends Controller
 					"voice_id" => $voice_id,
 				], JSON_UNESCAPED_UNICODE));
 
-				$mediaIds = json_decode($img_ids, 1);
-				$mediaIds = array_reverse($mediaIds);
-				foreach ($mediaIds as $mediaId) {
-					list($thumb, $url) = ImageUtil::save2Server($mediaId);
-					$imageItems[] = [
-						'thumb' => $thumb,
-						'figure' => $url
-					];
+
+				$insert["mUId"] = $wxInfo["uId"];
+				$insert["mContent"] = ['titile' => '', 'url' => [], 'subtext' => '',];
+				switch ($cat) {
+					case "text":
+						$insert["mCategory"] = Moment::CAT_TEXT;
+						$insert["mContent"]["titile"] = $text;
+						break;
+					case "image":
+						$mediaIds = json_decode($img_ids, 1);
+						$mediaIds = array_reverse($mediaIds);
+						$imageItems = [];
+						foreach ($mediaIds as $mediaId) {
+							list($thumb, $url) = ImageUtil::save2Server($mediaId);
+							$imageItems[] = $url;
+						}
+						$insert["mCategory"] = Moment::CAT_IMG;
+						$insert["mContent"]["titile"] = $text;
+						$insert["mContent"]["url"] = $imageItems;
+						break;
+					case "voice":
+						list($voiceUrl) = ImageUtil::save2Server($voice_id);
+						$insert["mCategory"] = Moment::CAT_VOICE;
+						$insert["mContent"]["titile"] = $text;
+						$insert["mContent"]["url"] = [$voiceUrl];
+						break;
 				}
+				$insert["mContent"] = $insert["mContent"] = json_encode($insert["mContent"], JSON_UNESCAPED_UNICODE);
 
-				list($voiceUrl) = ImageUtil::save2Server($voice_id);
-				$imageItems["voice_url"] = $voiceUrl;
-				$imageItems["text"] = $text;
-				$imageItems["cat"] = $cat;
+				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode($insert, JSON_UNESCAPED_UNICODE));
 
-				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode($imageItems, JSON_UNESCAPED_UNICODE));
+				$res = Moment::add($insert);
 
-				if (!$imageItems) {
+				if (!$res) {
 					return self::renderAPI(129, '失败');
 				}
 				return self::renderAPI(0, '成功', [
-					'items' => $imageItems,
+					'items' => '',
 				]);
 				break;
 			case "add_comment":
