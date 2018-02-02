@@ -30,19 +30,32 @@ class MomentSub extends ActiveRecord
 		return '{{%moment_sub}}';
 	}
 
-	public static function add($uid, $subUid)
+	public static function add($data)
 	{
-		$info = self::findOne(['hUId' => $uid, 'hSubUId' => $subUid]);
-		if ($info) {
-			$info->hCount += 1;
-		} else {
-			$info = new self();
-			$info->hUId = $uid;
-			$info->hSubUId = $subUid;
-			$info->hCount = 1;
+		$entity = new self();
+		foreach ($data as $k => $v) {
+			$entity->$k = $v;
 		}
-		$info->hUpdatedOn = date('Y-m-d H:i:s');
-		$info->save();
-		return true;
+		$entity->save();
+		return $entity->sId;
 	}
+
+	public static function BeforeAdd($data)
+	{
+		if (!isset($data["cat"])
+			|| !in_array($data["cat"], [self::CAT_VIEW, self::CAT_ROSE, self::CAT_ZAN, self::CAT_COMMENT])) {
+			return 0;
+		}
+		$insert = [];
+		if ($data["cat"] == self::CAT_COMMENT) {
+			$insert["sContent"] = $data["content"];
+		}
+		$insert["sCategory"] = $data["cat"];
+		$insert["sUId"] = $data["uid"];
+		$insert["sMId"] = $data["mid"];
+
+		return self::add($insert);
+	}
+
+
 }

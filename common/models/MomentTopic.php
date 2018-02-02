@@ -20,19 +20,13 @@ class MomentTopic extends ActiveRecord
 		return '{{%moment_topic}}';
 	}
 
-	public static function add($uid, $subUid)
+	public static function add($data)
 	{
-		$info = self::findOne(['hUId' => $uid, 'hSubUId' => $subUid]);
-		if ($info) {
-			$info->hCount += 1;
-		} else {
-			$info = new self();
-			$info->hUId = $uid;
-			$info->hSubUId = $subUid;
-			$info->hCount = 1;
+		$entity = new self();
+		foreach ($data as $k => $v) {
+			$entity->$k = $v;
 		}
-		$info->hUpdatedOn = date('Y-m-d H:i:s');
-		$info->save();
+		$entity->save();
 		return true;
 	}
 }

@@ -17,17 +17,28 @@ require(["jquery", "alpha", "mustache"],
 
 		var pageItemsUtil = {
 			zone_id: '',        //动态ID
-			zone_items_tag: 'all', //bar tag
+			zone_bar_tag: 'all', //bar tag
+			opt_subtag: '',
 			page: 1,
 			loadingflag: 0,
+			itemsUL: $(".zone_container_items"),
+			itemsTmp: $("#tpl_items").html(),
+
+			itemUL: $("#zone_item_top"),
+			itemTmp: '',
+			zanUL: $("#zone_item_zan"),
+			roseUL: $("#zone_item_rose"),
+			roseTmp: '{[#data]}<div class="img"><img src="{[uThumb]}" alt=""></div>{[/data]}',
+			commentUL: $("#zone_item_comment"),
+			commentTmp: $("#tpl_comment_item").html(),
 			init: function () {
 				var util = this;
-
 				// 点击单个动态中所有按钮
 				$(document).on(kClick, "[items_tag]", function () {
 					var self = $(this);
-					var tag = self.attr("items_tag");
-					switch (tag) {
+					util.opt_subtag = self.attr("items_tag");
+
+					switch (util.opt_subtag) {
 						case 'opt':
 							alpha.toast('opt');
 							break;
@@ -40,21 +51,21 @@ require(["jquery", "alpha", "mustache"],
 						case 'rose':
 						case 'zan':
 							alpha.toast('zan');
-							util.Zan_Rose(tag, self);
+							util.zone_id = self.closest("li").attr("data_mid");
+							util.Zan_Rose(self);
 							break;
 						case 'comment':
-							util.toComment();
-							alpha.toast('comment');
+							util.zone_id = self.closest("li").attr("data_mid");
+							location.href = "#zone_item";
 							break;
 					}
 				});
 				// 点击顶部导航条
 				$(document).on(kClick, "[items_bar]", function () {
 					var self = $(this);
-					util.zone_items_tag = self.attr("items_bar");
+					util.zone_bar_tag = self.attr("items_bar");
 					self.closest("ul").find("a").removeClass("active");
 					self.addClass("active");
-					alpha.toast(util.zone_items_tag);
 					util.zone_items();
 				});
 				// 点击话题选择项
@@ -78,15 +89,20 @@ require(["jquery", "alpha", "mustache"],
 					id: util.zone_id,
 				}, function (resp) {
 					if (resp.code == 0) {
-						alpha.clear();
-						location.href = "#zone_item";
+						var more = '<div class="img"><a href="javascript:;">+10</a></div>';
+						var rose_first = '<div class="img"><img src="/images/zone/ico_rose.png" alt="" class="first"></div>';
+						var zan_first = '<div class="img"><img src="/images/zone/ico_zan.png" alt="" class="first"></div>';
+						util.itemUL.html(Mustache.render(util.itemsTmp, {data: resp.data.zone_info}));
+						util.roseUL.html(rose_first + Mustache.render(util.roseTmp, {data: resp.data.rose_list}));
+						util.zanUL.html(zan_first + Mustache.render(util.roseTmp, {data: resp.data.zan_list}) + more);
+						util.commentUL.html(Mustache.render(util.commentTmp, {data: resp.data.comment_list}));
 					} else {
 						alpha.toast(resp.msg);
 					}
 					util.loadingflag = 0;
 				}, "json");
 			},
-			Zan_Rose: function (tag, $btn) {
+			Zan_Rose: function ($btn) {
 				var util = this;
 				if (util.loadingflag) {
 					return;
@@ -94,11 +110,13 @@ require(["jquery", "alpha", "mustache"],
 				util.loadingflag = 1;
 				$.post("/api/zone", {
 					tag: "zan_rose",
+					subtag: util.opt_subtag,
 					id: util.zone_id,
 				}, function (resp) {
 					if (resp.code == 0) {
 						alpha.clear();
 						$btn.find("span").addClass("active");
+						$btn.find("span").html(parseInt($btn.find("span").html()) + 1);
 					} else {
 						alpha.toast(resp.msg);
 					}
@@ -113,12 +131,16 @@ require(["jquery", "alpha", "mustache"],
 				util.loadingflag = 1;
 				$.post("/api/zone", {
 					tag: "zone_items",
-					subtag: util.zone_items_tag,
+					subtag: util.zone_bar_tag,
 					page: util.page,
 				}, function (resp) {
 					if (resp.code == 0) {
 						alpha.clear();
-
+						if (util.page == 1) {
+							util.itemsUL.html(Mustache.render(util.itemsTmp, resp.data));
+						} else {
+							util.itemsUL.append(Mustache.render(util.itemsTmp, resp.data));
+						}
 					} else {
 						alpha.toast(resp.msg);
 					}
@@ -187,10 +209,12 @@ require(["jquery", "alpha", "mustache"],
 					tag: "add_comment",
 					id: recordUtil.voice_serverId,
 					text: util.comment_text,
+					mid: pageItemsUtil.zone_id,
 				}, function (resp) {
 					if (resp.code == 0) {
 						alpha.clear();
-						alpha.toast(resp.msg, 1);
+						//
+						pageItemsUtil.commentUL.prepend(Mustache.render(pageItemsUtil.commentTmp, resp.data));
 						util.reset();
 					} else {
 						alpha.toast(resp.msg);
@@ -552,10 +576,11 @@ require(["jquery", "alpha", "mustache"],
 			hashTag = hashTag.replace("#", "");
 			switch (hashTag) {
 				case 'zone_items':
-
+					pageItemsUtil.zone_items();
 					break;
 				case 'zone_item':
-					pageCommentsUtil.reset();
+					// pageCommentsUtil.reset();
+					pageItemsUtil.toComment();
 					break;
 				case "zone_add_msg":
 					$(".zone_container_add_msg ul[add_cat]").hide();
