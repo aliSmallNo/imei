@@ -562,7 +562,7 @@ class WechatUtil
 
 	/**
 	 * @param $noticeTag
-	 * @param $takerId 对方UID (eg:我的心动对象的UID)
+	 * @param int $takerId 对方UID (eg:我的心动对象的UID)
 	 * @param string $title
 	 * @param string $subTitle
 	 * @param int $giverId 当前uid (eg:我的UID)
