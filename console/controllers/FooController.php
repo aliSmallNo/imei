@@ -24,6 +24,7 @@ use common\service\TrendService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
+use common\utils\NoticeUtil;
 use common\utils\PushUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
@@ -1404,10 +1405,17 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		WechatUtil::templateMsg(WechatUtil::NOTICE_ROUTINE,
+		/*WechatUtil::templateMsg(WechatUtil::NOTICE_ROUTINE,
 			131379,
 			'千寻恋恋每日简报',
-			'测试测试1122');
+			'测试测试1122');*/
+
+		NoticeUtil::init2(WechatUtil::NOTICE_CHAT, 131379, 120003)
+			->send([
+				'有人密聊你了1次',
+				date("Y年n月j日 H:i")
+			]);
+
 		//var_dump(json_encode(UserTrans::$CatMinus));
 //		$ret = City::locationData();
 //		var_dump($ret);
