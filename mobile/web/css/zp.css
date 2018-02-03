@@ -1385,5 +1385,25 @@ section {
       letter-spacing: 0.1rem;
       padding: 0.5rem 0;
       border-radius: 0.5rem; }
+  .ev_tmp_alert .ev_tmp_not_enough h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+    color: #fff;
+    letter-spacing: 0.3rem; }
+  .ev_tmp_alert .ev_tmp_not_enough p {
+    font-size: 1.1rem;
+    color: #fff;
+    letter-spacing: 0.1rem; }
+  .ev_tmp_alert .ev_tmp_not_enough .btn {
+    margin-top: 2rem; }
+    .ev_tmp_alert .ev_tmp_not_enough .btn a {
+      display: block;
+      margin: 0 1rem;
+      background: #eee116;
+      font-size: 1.2rem;
+      color: #e85951;
+      letter-spacing: 0.1rem;
+      padding: 0.5rem 0;
+      border-radius: 0.5rem; }
 
 /*# sourceMappingURL=zp.css.map */

@@ -30,7 +30,7 @@ require(["jquery", "alpha", "mustache"],
 				case "withdraw":
 					var amt = parseFloat($(".ev_container_top_grabed p span").html());
 					if (amt < 1) {
-						alpha.toast("最低提现金额是1元");
+						alertToggle(1, $("#tpl_not_enough").html());
 					} else {
 						alertToggle(1, Mustache.render($("#tpl_qr").html(), {text: '长按二维码关注公众号即可到我的账户提现'}));
 					}

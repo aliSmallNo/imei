@@ -91,6 +91,18 @@
 		</div>
 	</div>
 </script>
+<script type="text/template" id="tpl_not_enough">
+	<div class="ev_tmp_alert">
+		<div class="ev_tmp_not_enough">
+			<h3>提示</h3>
+			<p>提现金额必须大于1元</p>
+			<p>分享到朋友圈，可获再次领取红包机会</p>
+			<div class="btn">
+				<a href="javascript:;">我知道了</a>
+			</div>
+		</div>
+	</div>
+</script>
 <script type="text/template" id="tpl_rule">
 	<div class="ev_tmp_alert">
 		<div class="ev_tmp_rule">
