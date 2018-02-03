@@ -36,6 +36,7 @@ require(["jquery", "alpha", "mustache"],
 					}
 					break;
 				case "ipacket":
+					refresh(0);
 					break;
 				case "rule":
 					alertToggle(1, $("#tpl_rule").html());
@@ -106,7 +107,6 @@ require(["jquery", "alpha", "mustache"],
 				$(".ev_container_top_grab").show();
 				$(".ev_container_top_grabed").hide();
 			} else {
-
 				$(".ev_container_top_grab").hide();
 				$(".ev_container_top_grabed").show();
 			}
