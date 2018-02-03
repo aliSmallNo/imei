@@ -376,7 +376,8 @@ class UserMsg extends ActiveRecord
 			WechatUtil::templateMsg(WechatUtil::NOTICE_ROUTINE,
 				$uid,
 				'千寻恋恋每日简报',
-				implode('；', $titles));
+				implode('；', $titles)
+			);
 		}
 
 		// Rain: 单独处理chat info
@@ -388,11 +389,12 @@ class UserMsg extends ActiveRecord
 			 AND mAlertFlag=0 AND mCategory =:cat 
 			 GROUP BY u.uOpenId,mUId,mCategory
 			 ORDER BY mUId,mId";
-		$ret = $conn->createCommand($sql)->bindValues([
+		$cmd = $conn->createCommand($sql)->bindValues([
 			':from' => date('Y-m-d', time() - 3600 * 12),
 			':to' => date('Y-m-d 23:59'),
 			':cat' => self::CATEGORY_CHAT
-		])->queryAll();
+		]);
+		$ret = $cmd->queryAll();
 		foreach ($ret as $row) {
 			$receiverUId = $row['receiverUId'];
 			$senderUId = $row['senderUId'];

@@ -295,7 +295,11 @@ class NoticeUtil
 				$util->remark = "\n点击下方详情查看吧~";
 				break;
 			case WechatUtil::NOTICE_MAKE_FRIRENDS: //相亲交友活动支付通知 /wx/toparty
-				$payInfo = Pay::findOne(["pUId" => $receiverUId, "pCategory" => Pay::CAT_MAKEING_FRIENDS, "pStatus" => Pay::MODE_WXPAY]);
+				$payInfo = Pay::findOne([
+					"pUId" => $receiverUId,
+					"pCategory" => Pay::CAT_MAKEING_FRIENDS,
+					"pStatus" => Pay::MODE_WXPAY
+				]);
 				if (!$payInfo) {
 					return $util;
 				}
