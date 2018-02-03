@@ -364,6 +364,9 @@ class ApiController extends Controller
 	public function actionGenie()
 	{
 		$tag = trim(strtolower(self::getParam('tag')));
+		if(!$tag){
+			$tag = trim(strtolower(self::postParam('tag')));
+		}
 		$key = self::getParam('key');
 		switch ($tag) {
 			case 'wx-token':
@@ -375,7 +378,7 @@ class ApiController extends Controller
 			case 'wx-code':
 				$wxCode = self::postParam('code');
 				if (!$wxCode || strlen($wxCode) < 10) {
-					return self::renderAPI(129, '操作无效');
+					return self::renderAPI(129, '参数不足，操作失败');
 				}
 				$info = UserWechat::getInfoByCode($wxCode, true);
 				return self::renderAPI(0, '',
@@ -388,7 +391,7 @@ class ApiController extends Controller
 			default:
 				break;
 		}
-		return self::renderAPI(129);
+		return self::renderAPI(129, '操作无效~');
 	}
 
 	public function actionLocation()
