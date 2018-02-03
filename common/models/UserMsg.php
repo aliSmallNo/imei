@@ -402,7 +402,6 @@ class UserMsg extends ActiveRecord
 
 			NoticeUtil::init2(WechatUtil::NOTICE_CHAT, $receiverUId, $senderUId)
 				->send([
-					'千寻恋恋每日简报',
 					'有人密聊你了' . $row['cnt'] . '次',
 					date("Y年n月j日 H:i")
 				]);

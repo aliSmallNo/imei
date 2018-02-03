@@ -192,6 +192,7 @@ class NoticeUtil
 
 		$encryptReceiverId = AppUtil::encrypt($receiverUId);
 		$util->url = AppUtil::wechatUrl();
+		$normTmpId = '7JsaLhnbxPprdROufN7QulRN7C-PwLJlHbrQ83WqtGw';
 		switch ($tag) {
 			case WechatUtil::NOTICE_REWARD_NEW:
 				$util->template_id = 'ZJVqVttar_9v9azyjydZzFiR8hF7pq-BpY_XBbugJDM';
@@ -223,7 +224,8 @@ class NoticeUtil
 					return $util;
 				}
 				$util->msg_cat = UserMsg::CATEGORY_CHAT;
-				$util->template_id = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$util->template_id = $normTmpId;
+					//"YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				//$util->url .= "/wx/single?chat_id=$encryptSenderId&chat_title=". urlencode($util->sender_name)  ."#scontacts";
 				$util->url .= "/wx/single#scontacts";
 				$util->first = "hi，$util->receiver_name\n";
