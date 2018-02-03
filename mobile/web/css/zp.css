@@ -1163,25 +1163,27 @@ section {
         height: 10rem;
         display: block;
         margin: 0 auto; }
-  .ev_container .ev_container_top .ev_container_top_grabed h5 {
-    font-size: 1.2rem;
-    color: #fff;
-    letter-spacing: 0.1rem;
-    text-align: center;
-    line-height: 3rem; }
-  .ev_container .ev_container_top .ev_container_top_grabed p {
-    font-size: 2rem;
-    color: #fff;
-    letter-spacing: 0;
-    text-align: center; }
-  .ev_container .ev_container_top .ev_container_top_grabed .grabed, .ev_container .ev_container_top .ev_container_top_grabed .avatar {
-    display: block; }
-    .ev_container .ev_container_top .ev_container_top_grabed .grabed img, .ev_container .ev_container_top .ev_container_top_grabed .avatar img {
-      width: 7rem;
-      height: 7rem;
-      display: block;
-      margin: 0 auto;
-      border-radius: 7rem; }
+  .ev_container .ev_container_top .ev_container_top_grabed {
+    display: none; }
+    .ev_container .ev_container_top .ev_container_top_grabed h5 {
+      font-size: 1.2rem;
+      color: #fff;
+      letter-spacing: 0.1rem;
+      text-align: center;
+      line-height: 3rem; }
+    .ev_container .ev_container_top .ev_container_top_grabed p {
+      font-size: 2rem;
+      color: #fff;
+      letter-spacing: 0;
+      text-align: center; }
+    .ev_container .ev_container_top .ev_container_top_grabed .grabed, .ev_container .ev_container_top .ev_container_top_grabed .avatar {
+      display: block; }
+      .ev_container .ev_container_top .ev_container_top_grabed .grabed img, .ev_container .ev_container_top .ev_container_top_grabed .avatar img {
+        width: 7rem;
+        height: 7rem;
+        display: block;
+        margin: 0 auto;
+        border-radius: 7rem; }
   .ev_container .ev_container_top .ev_top_alert {
     position: absolute;
     width: 8rem;
@@ -1330,7 +1332,7 @@ section {
     font-size: 1.2rem;
     color: #fff;
     letter-spacing: 0.1rem;
-    line-height: 4rem; }
+    margin-top: 1rem; }
   .ev_tmp_alert .ev_tmp_rule .rule {
     height: 30rem;
     overflow-x: hidden;

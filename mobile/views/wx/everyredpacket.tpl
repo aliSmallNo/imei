@@ -9,12 +9,12 @@
 			<a href="javascript:;" data-tag="grab" class="grab"><img src="/images/ev/ev_btn_grab.png" alt=""></a>
 		</div>
 		<div class="ev_container_top_grabed">
-			<div class="avatar"><img src="/images/cr_room_share.jpg" alt=""></div>
-			<h5>里古拉斯赵四</h5>
-			<p>0.98元</p>
+			<div class="avatar"><img src="{{$avatar}}" alt=""></div>
+			<h5>{{$name}}</h5>
+			<p><span>0.00</span>元</p>
 			<a href="javascript:;" data-tag="withdraw" class="grabed"><img src="/images/ev/ev_btn_withdraw.png" alt=""></a>
 		</div>
-		<a href="javascript:;" data-tag="ipacket" class="ev_top_alert ipacket">我的红包</a>
+		<a href="javascript:;" data-tag="ipacket" class="ev_top_alert ipacket" style="display: none">我的红包</a>
 		<a href="javascript:;" data-tag="rule" class="ev_top_alert rule">红包规则</a>
 	</div>
 
@@ -24,38 +24,8 @@
 			<div><a href="javascript:;" data-tag="more" ev_opt="more">获取更多现金</a></div>
 		</div>
 		<ul>
-			<li>
-				<div class="avatar"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="des">
-					<h5>威猛小老虎</h5>
-					<p>26岁|160cm|处女座|5000~6000</p>
-				</div>
-				<a href="javascript:;" data-tag="chat" class="chat"><span>和TA聊天</span></a>
-			</li>
-			<li>
-				<div class="avatar"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="des">
-					<h5>威猛小老虎</h5>
-					<p>26岁|160cm|处女座|5000~6000</p>
-				</div>
-				<a href="javascript:;" class="chat"><span>和TA聊天</span></a>
-			</li>
-			<li>
-				<div class="avatar"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="des">
-					<h5>威猛小老虎</h5>
-					<p>26岁|160cm|处女座|5000~6000</p>
-				</div>
-				<a href="javascript:;" class="chat"><span>和TA聊天</span></a>
-			</li>
-			<li>
-				<div class="avatar"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="des">
-					<h5>威猛小老虎</h5>
-					<p>26岁|160cm|处女座|5000~6000</p>
-				</div>
-				<a href="javascript:;" class="chat"><span>和TA聊天</span></a>
-			</li>
+
+
 		</ul>
 		<div class="ev_container_footer">
 			<a href="javascript:;" data-tag="reg">点击注册</a>
@@ -77,20 +47,32 @@
 
 <input type="hidden" id="cWXUrl" value="{{$wxUrl}}">
 
+<script type="text/template" id="tpl_init">
+	{[#data]}
+	<li>
+		<div class="avatar"><img src="{[thumb]}" alt=""></div>
+		<div class="des">
+			<h5>{[name]}</h5>
+			<p>{[age]}|{[height_t]}|{[horos_t]}|{[income_t]}</p>
+		</div>
+		<a href="javascript:;" data-tag="chat" class="chat"><span>和TA聊天</span></a>
+	</li>
+	{[/data]}
+</script>
 <script type="text/template" id="tpl_qr">
 	<div class="ev_tmp_alert">
 		<div class="ev_tmp_qr">
-			<div class="qr"><img src="/images/ev/ev_qr.jpg" alt=""></div>
-			<p>长按二维码关注公众号即可到我的账户</p>
+			<div class="qr"><img src="/images/ev/ev_ico_qr.jpg" alt=""></div>
+			<p>{[text]}</p>
 		</div>
 	</div>
 </script>
 <script type="text/template" id="tpl_grab">
 	<div class="ev_tmp_alert">
 		<div class="ev_tmp_grab">
-			<div class="avatar"><img src="/images/cr_room_share.jpg" alt=""></div>
-			<p>尼古拉斯赵四</p>
-			<h3>成功获得0.36元</h3>
+			<div class="avatar"><img src="{{$avatar}}" alt=""></div>
+			<p>{{$name}}</p>
+			<h3>成功获得{[amt]}元</h3>
 			<div class="btn">
 				<a href="javascript:;">立即提现</a>
 			</div>
@@ -100,8 +82,8 @@
 <script type="text/template" id="tpl_more">
 	<div class="ev_tmp_alert">
 		<div class="ev_tmp_grab">
-			<div class="avatar"><img src="/images/cr_room_share.jpg" alt=""></div>
-			<p>尼古拉斯赵四</p>
+			<div class="avatar"><img src="{{$avatar}}" alt=""></div>
+			<p>{{$name}}</p>
 			<h3>分享好友即可再领取一次红包</h3>
 			<div class="btn">
 				<a href="javascript:;">立即分享</a>
@@ -114,18 +96,31 @@
 		<div class="ev_tmp_rule">
 			<div class="rule">
 				<h4>本活动截止于2018年2月22日</h4>
-				<p>特朗普在其上任后的首次国情咨文演讲中提出将推出基于价值的签证系统，有媒体称，这对于与全球人才竞争的中国技术人才来说或将是个大大的优势。</p>
-				<p>据《南华早报》报道，特朗普在演讲中称计划终止美国签证抽奖和连锁移民，签证抽奖随机分发绿卡，不考虑任何技能、价值或美国人民的安全，如今是时候让美国朝着建立基于价值的移民系统发展，这个系统将接收那些有技能、愿意工作、愿意奉献美国社会、热爱和尊重美国的人们。</p>
-				<p>此外特朗普还认为该是时候结束连锁移民系统，因其能让跟一个移民有远亲关系的无数人通过审核。特朗普说：“在新规划中，我们将只通过直系亲属，包括配偶和孩子。这项改革非常有必要，不仅对我们的经济有好处，对我们的安全和未来也是有益的。”</p>
-				<p>特朗普在其上任后的首次国情咨文演讲中提出将推出基于价值的签证系统，有媒体称，这对于与全球人才竞争的中国技术人才来说或将是个大大的优势。</p>
-				<p>据《南华早报》报道，特朗普在演讲中称计划终止美国签证抽奖和连锁移民，签证抽奖随机分发绿卡，不考虑任何技能、价值或美国人民的安全，如今是时候让美国朝着建立基于价值的移民系统发展，这个系统将接收那些有技能、愿意工作、愿意奉献美国社会、热爱和尊重美国的人们。</p>
-				<p>此外特朗普还认为该是时候结束连锁移民系统，因其能让跟一个移民有远亲关系的无数人通过审核。特朗普说：“在新规划中，我们将只通过直系亲属，包括配偶和孩子。这项改革非常有必要，不仅对我们的经济有好处，对我们的安全和未来也是有益的。”</p>
-				<p>特朗普在其上任后的首次国情咨文演讲中提出将推出基于价值的签证系统，有媒体称，这对于与全球人才竞争的中国技术人才来说或将是个大大的优势。</p>
-				<p>据《南华早报》报道，特朗普在演讲中称计划终止美国签证抽奖和连锁移民，签证抽奖随机分发绿卡，不考虑任何技能、价值或美国人民的安全，如今是时候让美国朝着建立基于价值的移民系统发展，这个系统将接收那些有技能、愿意工作、愿意奉献美国社会、热爱和尊重美国的人们。</p>
-				<p>此外特朗普还认为该是时候结束连锁移民系统，因其能让跟一个移民有远亲关系的无数人通过审核。特朗普说：“在新规划中，我们将只通过直系亲属，包括配偶和孩子。这项改革非常有必要，不仅对我们的经济有好处，对我们的安全和未来也是有益的。”</p>
-				<p>特朗普在其上任后的首次国情咨文演讲中提出将推出基于价值的签证系统，有媒体称，这对于与全球人才竞争的中国技术人才来说或将是个大大的优势。</p>
-				<p>据《南华早报》报道，特朗普在演讲中称计划终止美国签证抽奖和连锁移民，签证抽奖随机分发绿卡，不考虑任何技能、价值或美国人民的安全，如今是时候让美国朝着建立基于价值的移民系统发展，这个系统将接收那些有技能、愿意工作、愿意奉献美国社会、热爱和尊重美国的人们。</p>
-				<p>此外特朗普还认为该是时候结束连锁移民系统，因其能让跟一个移民有远亲关系的无数人通过审核。特朗普说：“在新规划中，我们将只通过直系亲属，包括配偶和孩子。这项改革非常有必要，不仅对我们的经济有好处，对我们的安全和未来也是有益的。”</p>
+				<p>须知：根据微信企业公众号平台规定，
+					微信红包没次发放只能发放1-200，因
+					此手气不佳者抢到0.1-0.99的提现提示
+					不成功，每人每天只可提现2次，请珍惜
+					提现次数。</p>
+				<p>1.分享到微信群和好友参与分钱；</p>
+				<p>2.由于微信限制微信红包提现额度最小
+					为1元；</p>
+				<p>3.每人每日都可登陆进行抢红包：</p>
+				<p>4.活动期间，在法律允许范围内，千寻
+					恋恋有权对本活动规则进行变动或调整，
+					相关变动或调整会公布在活动首页；</p>
+				<p>5.如有发现通过网络攻击或者系统刷取
+					等不正当方式欺诈参与活动者进行谋取利
+					益行为（包括但不限制于作弊，机刷，恶
+					意套取红包等），影响正常用户公平参与
+					的情况下，千寻恋恋取消该用户的获得成
+					功及活动资格；如遭遇自然，系统故障等
+					不可抗因素导致活动无法正常进行时，千
+					寻恋恋有权终止活动；</p>
+				<p>6.千寻恋恋不会以任何形式和名义索取
+					您的银行卡号，密码等信息，如有其他疑
+					问情联系客服：meipo1001；</p>
+				<p>7.在法律允许的范围内，千寻恋恋拥有
+					本次活动最终解释权；</p>
 			</div>
 			<div class="btn">
 				<a href="javascript:;">立即抢红包提现赚钱</a>
@@ -133,6 +128,7 @@
 		</div>
 	</div>
 </script>
+<input type="hidden" id="LASTUID" value="{{$lastid}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>

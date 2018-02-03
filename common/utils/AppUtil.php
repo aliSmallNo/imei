@@ -476,38 +476,33 @@ class AppUtil
 		return $newDate;
 	}
 
-	public static function prettyDateByH($strDate = '')
+	public static function prettyPastDate($strDate = '')
 	{
 		if ($strDate) {
 			$curTime = strtotime($strDate);
 		} else {
 			$curTime = time();
 		}
-		$replaceDates = [
-			date("Y-m-d", time() - 2 * 86400) => "前天",
-			date("Y-m-d", time() - 86400) => "昨天",
-			date("Y-m-d") => "小时前",
-			date("Y-m-d H") => "分钟前",
-			date("Y-m-d H-i") => "刚刚",
-			date("Y-m-d", time() + 86400) => "明天",
-			date("Y-m-d", time() + 86400 * 2) => "后天",
-		];
-		$newDate = date("Y-m-d H:i", $curTime);
-		foreach ($replaceDates as $key => $val) {
-			if (date("Y-m-d", $curTime) == $key) {
-				$newDate = $val . " " . date("H:i", $curTime);
-			}
-			if (date("Y-m-d", $curTime) == $key) {
-				$newDate = (date("H", time()) - date("H", $curTime)) . $val;
-			}
-			if (date("Y-m-d H", $curTime) == $key) {
-				$newDate = (date("i", time()) - date("i", $curTime)) . $val;
-			}
-			if (date("Y-m-d H-i", $curTime) == $key) {
-				$newDate = $val;
-			}
+		$diff = time() - $curTime;
+		$diffYear = floor($diff / (365 * 24 * 3600));
+		$diffMouth = floor($diff / (30 * 24 * 3600));
+		$diffDay = floor($diff / (24 * 3600));
+		$diffHou = floor($diff / 3600);
+		$diffMin = floor($diff / 60);
+		if ($diffYear) {
+			$newDate = $diffYear . "年前";
+		} elseif ($diffMouth) {
+			$newDate = $diffMouth . "月前";
+		} elseif ($diffDay) {
+			$newDate = $diffDay . "天前";
+		} elseif ($diffHou) {
+			$newDate = $diffHou . "小时前";
+		} elseif ($diffMin) {
+			$newDate = $diffMin . "分钟前";
+		} else {
+			$newDate = "刚刚";
 		}
-		return $newDate;
+		return trim($newDate);
 	}
 
 	public static function prettyDate($strDate = '')

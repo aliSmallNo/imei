@@ -2357,9 +2357,11 @@ class WxController extends BaseController
 	public function actionEveryredpacket()
 	{
 		$uid = $this->user_id;
+		$lastid = self::getParam("id");
 
 		return self::renderPage("everyredpacket.tpl",
 			[
+				'lastid' => $lastid,
 				'uid' => $this->user_id,
 				'name' => $this->user_name,
 				'avatar' => $this->user_avatar,

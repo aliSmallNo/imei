@@ -427,6 +427,38 @@ class ApiController extends Controller
 			$wx_gender = $wx_info['uGender'];
 		}
 		switch ($tag) {
+			case "grab_everyredpacket":
+				list($code, $msg, $data) = Log::everyGrabAmt($wx_uid);
+				return self::renderAPI($code, $msg, $data);
+				break;
+			case "init_everyredpacket":
+				$lastid = self::postParam("lastid");
+
+				$female = [130019, 156467, 156220, 147797, 133190, 157135, 133158, 148876, 136202, 156703];
+				$male = [157135, 133158, 148876, 136202, 156703, 130019, 156467, 156220, 147797, 133190];
+				$fids = array_rand($female, 3);
+				$arr = [];
+				foreach ($fids as $id) {
+					$arr[] = $female[$id];
+				}
+				$mids = array_rand($male, 3);
+				foreach ($mids as $id) {
+					$arr[] = $male[$id];
+				}
+				list($res) = User::users([" u.uId in (" . trim(implode(',', $arr), ',') . " )"], [], 1);
+				shuffle($res);
+
+				list($leftTime) = Log::ableGrabEveryRedPacket($wx_uid);
+
+				Log::addEveryTimes($wx_uid, $lastid);
+
+				return self::renderAPI(0, 'ok', [
+					'data' => $res,
+					'hasGrab' => intval($leftTime),
+					'sum' => Log::statSum($wx_uid) / 100,
+					'leftAmt' => Log::everySumLeft(),
+				]);
+				break;
 			case "task_add_award":
 				// alpha.js use
 				$key = self::postParam("key");
