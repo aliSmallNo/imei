@@ -320,6 +320,8 @@ class Log extends ActiveRecord
 		if ($hasClick) {
 			return 0;
 		}
+		$insert["oUId"] = $lastid;
+		$insert["oAfter"] = $wx_uid;
 		return self::add($insert);
 	}
 
@@ -339,6 +341,6 @@ class Log extends ActiveRecord
 			":key" => self::EVERY_MONEY,
 		])->queryScalar();
 
-		return (1000 * 10000 * 100-111111111 - $grabAmt - 12345 * $times) / 100;
+		return (1000 * 10000 * 100 - 111111111 - $grabAmt - 12345 * $times) / 100;
 	}
 }
