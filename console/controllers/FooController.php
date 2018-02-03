@@ -9,6 +9,7 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
+use common\models\City;
 use common\models\Img;
 use common\models\Pin;
 use common\models\User;
@@ -1400,8 +1401,10 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		var_dump(json_encode(UserTrans::$CatMinus));
-
+		//var_dump(json_encode(UserTrans::$CatMinus));
+		$ret = City::locationData();
+//		var_dump($ret);
+		AppUtil::logFile($ret, 5, __FUNCTION__);
 		/*$ret = UserQR::getQRCode(131379, UserQR::CATEGORY_RED_103,
 			'https://img.meipo100.com/2017/1130/174483165512_t.jpg', true);
 		var_dump($ret);*/

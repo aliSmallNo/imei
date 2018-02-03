@@ -591,6 +591,7 @@ class WechatUtil
 		$wxUrl = AppUtil::wechatUrl();
 		$msgCat = 0;
 		$text = '';
+		$normTmpId = '7JsaLhnbxPprdROufN7QulRN7C-PwLJlHbrQ83WqtGw';
 		switch ($noticeTag) {
 			case self::NOTICE_REWARD_NEW:
 				$templateId = 'ZJVqVttar_9v9azyjydZzFiR8hF7pq-BpY_XBbugJDM';
@@ -641,9 +642,10 @@ class WechatUtil
 					return 0;
 				}
 				$msgCat = UserMsg::CATEGORY_CHAT;
-				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$templateId = $normTmpId;
 				$url = $wxUrl . "/wx/single#scontacts";
 				$keywords['first'] = "hi，$nickname\n";
+				$keywords['keyword2'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_ROOM_CHAT:
@@ -714,11 +716,12 @@ class WechatUtil
 					&& User::muteAlert($takerId, User::ALERT_CHAT)) {
 					return 0;
 				}
-				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$templateId = $normTmpId;
+					//"YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = $wxUrl . "/wx/notice";
 				$keywords['first'] = "hi，$nickname\n";
-				$keywords['keyword1'] = $title;
-				$keywords['keyword2'] = $subTitle;
+				$keywords['keyword1'] = $subTitle;
+				$keywords['keyword2'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_DATE:

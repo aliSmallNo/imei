@@ -347,6 +347,12 @@ class ApiController extends Controller
 				return self::renderAPI(0, '', [
 					'token' => $ret,
 				]);
+			case 'reg-opt':
+				$ret = User::profileOptions();
+				return self::renderAPI(0, '', [
+					'token' => $ret,
+				]);
+				break;
 			default:
 				break;
 		}
