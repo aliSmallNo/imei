@@ -395,6 +395,7 @@ class UserMsg extends ActiveRecord
 			':cat' => self::CATEGORY_CHAT
 		]);
 		$ret = $cmd->queryAll();
+		AppUtil::logFile($cmd->getRawSql(), 5, __FUNCTION__, __LINE__);
 		foreach ($ret as $row) {
 			$receiverUId = $row['receiverUId'];
 			$senderUId = $row['senderUId'];
