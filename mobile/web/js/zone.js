@@ -213,7 +213,6 @@ require(["jquery", "alpha", "mustache"],
 				}, function (resp) {
 					if (resp.code == 0) {
 						alpha.clear();
-						//
 						pageItemsUtil.commentUL.prepend(Mustache.render(pageItemsUtil.commentTmp, resp.data));
 						util.reset();
 					} else {

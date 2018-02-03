@@ -26,6 +26,12 @@ class Moment extends ActiveRecord
 		self::CAT_ARTICLE => "文章",
 	];
 
+	const TOP_ARTICLE = 100;
+	const TOP_SYS_NOTICE = 200;
+	static $topDict = [
+		self::TOP_ARTICLE => "千寻文章",
+		self::TOP_SYS_NOTICE => "系统消息",
+	];
 
 	public static function tableName()
 	{
@@ -56,7 +62,7 @@ class Moment extends ActiveRecord
 		}
 
 		$limit = "limit " . ($page - 1) * ($pagesize + 1) . ',' . $pagesize;
-		$sql = "select m.*,uName,uThumb,uLocation,
+		$sql = "select m.*,uName,uThumb,uLocation,tTitle,
 				SUM(case when sCategory=100  then 1 else 0 end) as `view`,
 				SUM(case when sCategory=100  and sUId=$uid then 1 else 0 end) as `viewf`,
 				SUM(case when sCategory=110  then 1 else 0 end) as `rose`,
@@ -92,7 +98,14 @@ class Moment extends ActiveRecord
 			'article_url' => '',
 			'img_co' => 0,
 			'short_text' => '',
+			'dt' => AppUtil::prettyPastDate($row["mAddedOn"]),
 		];
+		// 话题
+		if ($row["tTitle"]) {
+			$arr['topic_title'] = $row["tTitle"];
+		} elseif ($row["mTop"] == self::TOP_ARTICLE) {
+			$arr['topic_title'] = self::$topDict[self::TOP_ARTICLE];
+		}
 
 		$content = json_decode($row["mContent"], 1);
 		foreach ($content as $k2 => $v2) {
@@ -151,10 +164,10 @@ class Moment extends ActiveRecord
 		$ret = $cmd->bindValues([":mid" => $mid, ":cat" => $cat])->queryAll();
 		if (in_array($cat, [MomentSub::CAT_ROSE, MomentSub::CAT_ZAN])) {
 			$ret = array_slice($ret, 0, 6);
-		} elseif ($cat == MomentSub::CAT_COMMENT) {
-			foreach ($ret as $k => $v) {
-				$ret[$k]["isVoice"] = strpos($v["sContent"], "http") !== false ? 1 : 0;
-			}
+		}
+		foreach ($ret as $k => $v) {
+			$ret[$k]["isVoice"] = strpos($v["sContent"], "http") !== false ? 1 : 0;
+			$ret[$k]["dt"] = AppUtil::prettyPastDate($v["sAddedOn"]);
 		}
 		return $ret;
 

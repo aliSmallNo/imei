@@ -32,6 +32,10 @@ class Log extends ActiveRecord
 	const SANTA_OLAF = 400; //雪人
 	const SANTA_TREE = 500; //圣诞树
 
+	const CAT_EVERYDAY_REDPACKET = 6000;// 每日红包推广: wxController::actionEveryredpacket()
+	const EVERY_TIMES = 100;
+	const EVERY_MONEY = 200;
+
 
 	const SC_SHIELD = 100;
 	const SC_NOCERT_DES = 200;
@@ -73,7 +77,6 @@ class Log extends ActiveRecord
 
 		self::SC_HIDE_NO => '我希望隐身一段时间,先隐身一段时间，不想被人撩',
 		self::SC_HIDE_YES => '我希望隐身一段时间,找到对象了，处不好再来',
-
 	];
 
 	public static function tableName()
@@ -244,5 +247,98 @@ class Log extends ActiveRecord
 			':uid' => $uid
 		])->execute();
 
+	}
+
+	public static function ableGrabEveryRedPacket($uid)
+	{
+		$grabTimes = self::everyTimesByCat($uid, self::EVERY_MONEY);    // 领取红包次数
+		$hasTimes = self::everyTimesByCat($uid, self::EVERY_TIMES);     // 可以获取红包次数
+		$leftTime = $hasTimes + 1 - $grabTimes;
+		return [$leftTime, $grabTimes, $hasTimes];
+	}
+
+	public static function everyTimesByCat($uid, $key)
+	{
+		$sql = "select count(1) from im_log where oCategory=:cat and oUId=:uid and oKey=:key ";
+		$cmd = AppUtil::db()->createCommand($sql);
+		return $cmd->bindValues([
+			":cat" => self::CAT_EVERYDAY_REDPACKET,
+			":uid" => $uid,
+			":key" => $key,
+		])->queryScalar();
+	}
+
+	public static function everyGrabAmt($uid)
+	{
+		list($leftTime, $grabTimes, $hasTimes) = self::ableGrabEveryRedPacket($uid);
+		if ($leftTime < 1) {
+			return [129, " you have no more times~", ''];
+		}
+		if ($grabTimes == 0) {
+			$amt = random_int(10, 50);
+		} else {
+			$amt = random_int(2, 6);
+		}
+		self::add([
+			"oCategory" => self::CAT_EVERYDAY_REDPACKET,
+			"oKey" => self::EVERY_MONEY,
+			'oBefore' => $amt,
+			'oUId' => $uid,
+		]);
+		return [0, '', [
+			'amt' => $amt / 100,
+			'left' => intval($leftTime - 1),
+			'sum' => self::statSum($uid) / 100,
+			'leftAmt' => Log::everySumLeft(),
+		]];
+	}
+
+	public static function statSum($uid)
+	{
+		$sql = "select sum(oBefore) from im_log where oCategory=:cat and oUId=:uid and oKey=:key ";
+		return AppUtil::db()->createCommand($sql)->bindValues([
+			":cat" => self::CAT_EVERYDAY_REDPACKET,
+			":uid" => $uid,
+			":key" => self::EVERY_MONEY,
+		])->queryScalar();
+	}
+
+	public static function addEveryTimes($wx_uid, $lastid)
+	{
+		if (!$lastid || $wx_uid == $lastid) {
+			return 0;
+		}
+
+		$insert = [
+			"oCategory" => self::CAT_EVERYDAY_REDPACKET,
+			"oKey" => self::EVERY_TIMES,
+			"oUId" => $wx_uid,
+			"oBefore" => 1,
+			"oAfter" => $lastid,
+		];
+		$hasClick = self::findOne($insert);
+		if ($hasClick) {
+			return 0;
+		}
+		return self::add($insert);
+	}
+
+	public static function everySumLeft()
+	{
+		$conn = AppUtil::db();
+		$sql = "select count(1) from im_log where oCategory=:cat and oKey=:key and DATE_FORMAT(oDate,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d')";
+		$cmd = $conn->createCommand($sql);
+		$times = $cmd->bindValues([
+			":cat" => self::CAT_EVERYDAY_REDPACKET,
+			":key" => self::EVERY_TIMES,
+		])->queryScalar();
+
+		$sql = "select sum(oBefore) from im_log where oCategory=:cat and oKey=:key and DATE_FORMAT(oDate,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d')";
+		$grabAmt = $cmd->bindValues([
+			":cat" => self::CAT_EVERYDAY_REDPACKET,
+			":key" => self::EVERY_MONEY,
+		])->queryScalar();
+
+		return (1000 * 10000 * 100-111111111 - $grabAmt - 12345 * $times) / 100;
 	}
 }

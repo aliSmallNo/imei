@@ -302,7 +302,7 @@
 			<p class="cat_text">{[sContent]}</p>
 			{[/isVoice]}
 		</div>
-		<div class="time">1小时前</div>
+		<div class="time">{[dt]}</div>
 	</li>
 	{[/data]}
 </script>
@@ -317,7 +317,7 @@
 					<img src="/images/zone/ico_female.png" alt="">
 				</div>
 				<div class="pos">
-					<h5>1小时前&nbsp;</h5>
+					<h5>{[dt]}&nbsp;</h5>
 					<img src="/images/zone/ico_position.png" alt="">
 					<span>{[location]}</span>
 				</div>
@@ -329,7 +329,7 @@
 
 		<div class="zone_container_item_mid">
 			<div class="zone_container_item_title">
-				<span>[官方通知]</span>
+				<span>{[#topic_title]}[{[topic_title]}]{[/topic_title]}</span>
 				{[short_title]}
 			</div>
 			{[#flag100]}

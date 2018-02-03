@@ -1611,7 +1611,7 @@ class FooController extends Controller
 
 		// list($res) = Moment::wechatItems([], [], 1);print_r($res);
 
-		echo AppUtil::prettyDateByH("2018-02-03 10:11");
+
 	}
 
 

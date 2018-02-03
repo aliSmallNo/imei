@@ -7,6 +7,7 @@ require(["jquery", "alpha", "mustache"],
 			wxString: $("#tpl_wx_info").html(),
 			wxUrl: $('#cWXUrl').val(),
 			curFrag: '',
+			lastuid: $("#LASTUID").val(),
 
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
@@ -23,10 +24,15 @@ require(["jquery", "alpha", "mustache"],
 			var tag = self.attr("data-tag");
 			switch (tag) {
 				case "grab":
-					alertToggle(1, $("#tpl_grab").html());
+					grab();
 					break;
 				case "withdraw":
-					alertToggle(1, $("#tpl_qr").html());
+					var amt = parseFloat($(".ev_container_top_grabed p span").html());
+					if (amt < 1) {
+						alpha.toast("最低提现金额是1元");
+					} else {
+						alertToggle(1, Mustache.render($("#tpl_qr").html(), {text: '长按二维码关注公众号即可到我的账户提现'}));
+					}
 					break;
 				case "ipacket":
 					break;
@@ -34,16 +40,34 @@ require(["jquery", "alpha", "mustache"],
 					alertToggle(1, $("#tpl_rule").html());
 					break;
 				case "share":
-					break;
-				case "more":
 					alertToggle(1, $("#tpl_more").html());
 					break;
+				case "more":
+					alertToggle(1, Mustache.render($("#tpl_qr").html(), {text: '长按二维码关注公众号即可获取更多现金'}));
+					break;
 				case "chat":
+					alertToggle(1, Mustache.render($("#tpl_qr").html(), {text: '长按二维码关注公众号注册即可与TA聊天'}));
 					break;
 				case "reg":
+					alertToggle(1, Mustache.render($("#tpl_qr").html(), {text: '长按二维码关注公众号即可注册'}));
 					break;
 			}
 		});
+
+		function grab() {
+			if ($sls.loading) {
+				return;
+			}
+			$sls.loading = 1;
+			$.post("/api/user", {
+				tag: 'grab_everyredpacket',
+			}, function (resp) {
+				$(".ev_container_top_grabed p span").html(resp.data.sum)
+				$(".ev_container_top_grab h4 span").html(resp.data.leftAmt);
+				refresh(resp.data.left);
+				alertToggle(1, Mustache.render($("#tpl_grab").html(), resp.data));
+			}, "json");
+		}
 
 
 		function alertToggle(f, html) {
@@ -56,6 +80,39 @@ require(["jquery", "alpha", "mustache"],
 				$sls.shade.fadeOut(160);
 			}
 		}
+
+		function initData() {
+			if ($sls.loading) {
+				return;
+			}
+			$sls.loading = 1;
+			$.post("/api/user", {
+				tag: 'init_everyredpacket',
+				lastid: $sls.lastuid,
+			}, function (resp) {
+				$sls.loading = 0;
+				$(".ev_container_top_grabed p span").html(resp.data.sum);
+				$(".ev_container_top_grab h4 span").html(resp.data.leftAmt);
+
+				refresh(resp.data.hasGrab);
+				var html = Mustache.render($("#tpl_init").html(), resp.data);
+				$(".ev_container_content ul").html(html);
+			}, "json");
+		}
+
+		function refresh(f) {
+			if (f) {
+				$(".ev_container_top_grab").show();
+				$(".ev_container_top_grabed").hide();
+			} else {
+
+				$(".ev_container_top_grab").hide();
+				$(".ev_container_top_grabed").show();
+			}
+
+		}
+
+		initData();
 
 		function locationHashChanged() {
 			var hashTag = location.hash;
