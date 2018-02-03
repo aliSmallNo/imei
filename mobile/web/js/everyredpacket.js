@@ -8,6 +8,7 @@ require(["jquery", "alpha", "mustache"],
 			wxUrl: $('#cWXUrl').val(),
 			curFrag: '',
 			lastuid: $("#LASTUID").val(),
+			uid: $("#UID").val(),
 
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
@@ -114,7 +115,7 @@ require(["jquery", "alpha", "mustache"],
 
 		function resetMenuShare() {
 			var thumb = 'http://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9nKXslmu59cJyaHJCqiaVWaXXJxQuPCXJOsO9SwBPhGWl0GZ8D2SrTdIuKt93876kmBfSbGS8mMHwQ/0?wx_fmt=jpeg';
-			var link = $sls.wxUrl + '/wx/everyredpacket?id=' + $sls.lastuid;
+			var link = $sls.wxUrl + '/wx/everyredpacket?id=' + $sls.uid;
 
 			var title = '好火呀！天天来赚钱，还可以提现！';
 			var desc = '天天来赚钱，攒够1块就能提现。推荐给你用用，哈哈～';

@@ -129,6 +129,7 @@
 	</div>
 </script>
 <input type="hidden" id="LASTUID" value="{{$lastid}}">
+<input type="hidden" id="UID" value="{{$uid}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
