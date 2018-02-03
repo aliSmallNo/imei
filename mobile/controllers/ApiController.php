@@ -364,6 +364,9 @@ class ApiController extends Controller
 	public function actionGenie()
 	{
 		$tag = trim(strtolower(self::getParam('tag')));
+		if(!$tag){
+			$tag = trim(strtolower(self::postParam('tag')));
+		}
 		$key = self::getParam('key');
 		switch ($tag) {
 			case 'wx-token':
