@@ -344,7 +344,9 @@ class ChatMsg extends ActiveRecord
 
 	/**
 	 * @param $rId
-	 * @return false|null|string 聊天室讨论数
+	 * @param int $countAdmin
+	 * @return false|null|string
+	 * @throws \yii\db\Exception
 	 */
 	public static function countRoomChat($rId, $countAdmin = 0)
 	{
@@ -379,8 +381,7 @@ class ChatMsg extends ActiveRecord
 	 * @param int $page 页码
 	 * @return array
 	 */
-	public
-	static function chatItems($rId, $uid, $lastId, $isAdmin = 0, $isFenye = 0, $isDanmu = 0)
+	public static function chatItems($rId, $uid, $lastId, $isAdmin = 0, $isFenye = 0, $isDanmu = 0)
 	{
 		$conn = AppUtil::db();
 		$page = 1;
@@ -455,8 +456,7 @@ class ChatMsg extends ActiveRecord
 		return $res;
 	}
 
-	public
-	static function chatPageList($rId, $page = 1, $uid = 120003, $pagesize = 15)
+	public static function chatPageList($rId, $page = 1, $uid = 120003, $pagesize = 15)
 	{
 		$conn = AppUtil::db();
 		list($adminUId, $rlastId) = self::getAdminUIdLastId($conn, $rId);

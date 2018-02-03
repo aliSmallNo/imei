@@ -225,7 +225,7 @@ class NoticeUtil
 				}
 				$util->msg_cat = UserMsg::CATEGORY_CHAT;
 				$util->template_id = $normTmpId;
-					//"YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				//"YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				//$util->url .= "/wx/single?chat_id=$encryptSenderId&chat_title=". urlencode($util->sender_name)  ."#scontacts";
 				$util->url .= "/wx/single#scontacts";
 				$util->first = "hi，$util->receiver_name\n";
@@ -243,7 +243,8 @@ class NoticeUtil
 				break;
 			case WechatUtil::NOTICE_AUDIT:
 				$util->msg_cat = UserMsg::CATEGORY_AUDIT;
-				$util->template_id = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$util->template_id = $normTmpId;
+				// "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$util->url .= "/wx/sedit";
 				$util->first = "hi，$util->receiver_name\n";
 				$util->keywords[] = "个人信息审核不通过";
@@ -254,7 +255,8 @@ class NoticeUtil
 					return $util;
 				}
 				$util->msg_cat = UserMsg::CATEGORY_PRESENT;
-				$util->template_id = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$util->template_id = $normTmpId;
+				// "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$util->url .= "/wx/notice";
 				$util->first = "hi，$util->receiver_name\n";
 				$util->remark = "\n点击下方详情查看吧~";
@@ -264,7 +266,8 @@ class NoticeUtil
 					return $util;
 				}
 				$util->msg_cat = UserMsg::CATEGORY_FAVOR;
-				$util->template_id = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$util->template_id = $normTmpId;
+				//"YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$util->url .= "/wx/single#heartbeat";
 				$util->first = "hi，$util->receiver_name\n";
 				$util->keywords[] = '有人为你怦然心动了，快去看看吧';
@@ -277,13 +280,15 @@ class NoticeUtil
 					&& User::muteAlert($receiverUId, User::ALERT_CHAT)) {
 					return $util;
 				}
-				$util->template_id = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$util->template_id = $normTmpId;
+				//"YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$util->url .= "/wx/notice";
 				$util->first = "hi，$util->receiver_name\n";
 				$util->remark = "\n点击下方详情查看吧~";
 				break;
 			case WechatUtil::NOTICE_DATE:
-				$util->template_id = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$util->template_id = $normTmpId;
+				//"YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$util->url .= "/wx/date?id=" . $encryptSenderId;
 				$util->first = "hi，$util->receiver_name\n";
 				$util->keywords[] = "平台用户" . $util->sender_name . "邀请线下见面";
