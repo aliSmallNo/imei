@@ -22,8 +22,8 @@
 
 		<ul class="zone_container_items">
 
-
 		</ul>
+		<div class="spinner"></div>
 
 
 	</div>
@@ -32,41 +32,7 @@
 <section id="zone_item">
 	<div class="zone_container_item_des">
 		<div id="zone_item_top">
-			<div class="zone_container_item">
-				<div class="zone_container_item_top">
-					<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
-					<div class="about">
-						<div class="name">
-							<h5>千寻恋恋</h5>
-							<img src="/images/zone/ico_female.png" alt="">
-						</div>
-						<div class="pos">
-							<h5>1小时前&nbsp;</h5>
-							<img src="/images/zone/ico_position.png" alt="">
-							<span>位置保密</span>
-						</div>
-					</div>
-					<div class="opt">
-						<a href="javascript:;"><img src="/images/zone/ico_opt.png" alt=""></a>
-					</div>
-				</div>
-				<div class="zone_container_item_mid">
-					<div class="zone_container_item_title">
-						<span>[官方通知]</span>
-						男子结账时手包被偷 银行卡有140万农民工半年工钱男子结账时手包被偷 银行卡有140万农民工半年工钱
-					</div>
-					<div class="zone_container_item_cat_text">
-						1月20日，皇姑区一家饭店内，吃完饭要结账的冯先生发现挂在椅子上衣服内的手包不翼而飞。调取饭店的监控后发现，手包被后桌一名女子偷走了。“手包里虽然有现金，可现金不是最重要的，里面的银行卡和身份证才重要！银行卡里有20多名农民工140万元工资，他们都盼着这笔钱回家！而补办新卡需要身份证，补办身份证又要一个月，都补办回来了恐怕要2月底了！”冯先生说
-						<a href="javascript:;">【查看全部】</a>
-					</div>
-				</div>
-				<div class="zone_container_item_bot">
-					<a href="javascript:;"><span class="view">66</span></a>
-					<a href="javascript:;"><span class="rose">66</span></a>
-					<a href="javascript:;"><span class="zan">66</span></a>
-					<a href="javascript:;"><span class="comment">66</span></a>
-				</div>
-			</div>
+			<div class="spinner"></div>
 		</div>
 
 
@@ -80,14 +46,7 @@
 		</div>
 
 		<ul class="zone_container_item_comments" id="zone_item_comment">
-			<li class="zone_container_item_comment">
-				<div class="avatar"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="content">
-					<div class="name">尼古拉斯赵四</div>
-					<p class="cat_text">写的什么这是？写的什么这是？写的什么这是？写的什么这是？写的什么这是？写的什么这是？</p>
-				</div>
-				<div class="time">1小时前</div>
-			</li>
+
 
 		</ul>
 
