@@ -9,6 +9,7 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
+use common\models\City;
 use common\models\Img;
 use common\models\Moment;
 use common\models\MomentSub;
@@ -1403,8 +1404,14 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		var_dump(json_encode(UserTrans::$CatMinus));
-
+		WechatUtil::templateMsg(WechatUtil::NOTICE_ROUTINE,
+			131379,
+			'千寻恋恋每日简报',
+			'测试测试1122');
+		//var_dump(json_encode(UserTrans::$CatMinus));
+//		$ret = City::locationData();
+//		var_dump($ret);
+//		AppUtil::logFile($ret, 5, __FUNCTION__);
 		/*$ret = UserQR::getQRCode(131379, UserQR::CATEGORY_RED_103,
 			'https://img.meipo100.com/2017/1130/174483165512_t.jpg', true);
 		var_dump($ret);*/
@@ -1417,12 +1424,6 @@ class FooController extends Controller
 		var_dump($ret);*/
 //		NoticeUtil::init(NoticeUtil::CAT_CHAT, 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc')->sendText();
 		/*$ret = ChatRoom::roomAvatar(101);
-		var_dump($ret);
-
-		$ret = ChatRoom::roomAvatar(103);
-		var_dump($ret);
-
-		$ret = ChatRoom::roomAvatar(104);
 		var_dump($ret);
 
 		$ret = ChatRoom::roomAvatar(105);
@@ -1443,20 +1444,6 @@ class FooController extends Controller
 		$service = UserService::init(131379)->info;
 		var_dump($service);*/
 
-		/*$conn = AppUtil::db();
-		$sql = "select * from im_user
-			where uCertStatus=2 and uCertImage not like '%zm%' and uOpenId like 'oYDJew%' and uCertImage like 'http%'";
-		$ret = $conn->createCommand($sql)->queryAll();
-		$sql = "update im_user set uCertImage=:img,uUpdatedOn=now(),uUpdatedBy=1001 WHERE uId=:id ";
-		$cmd = $conn->createCommand($sql);
-		foreach ($ret as $row) {
-			$img = $row['uCertImage'];
-			$images = [['tag' => 'sc', 'url' => $img], ['tag' => 'zm', 'url' => $img]];
-			$cmd->bindValues([
-				':id' => $row['uId'],
-				':img' => json_encode($images, JSON_UNESCAPED_UNICODE)
-			])->execute();
-		}*/
 	}
 
 	public function actionZp()

@@ -280,6 +280,32 @@ class User extends ActiveRecord
 		return '{{%user}}';
 	}
 
+
+	public static function profileOptions($liteOnly = true)
+	{
+		$allSet = [
+			'gender' => ['title' => '性别', 'options' => self::$Gender],
+			'marital' => ['title' => '婚姻状况', 'options' => self::$Marital],
+			'yob' => ['title' => '出生年份', 'options' => self::$Birthyear],
+			'zodiac' => ['title' => '星座', 'options' => self::$Horos],
+			'height' => ['title' => '身高', 'options' => self::$Height],
+		];
+		foreach ($allSet as $k => $set) {
+			$allSet[$k]['items'] = [];
+			foreach ($set['options'] as $key => $label) {
+				if ($k == 'height') {
+					$label .= 'cm';
+				}
+				$allSet[$k]['items'][] = [
+					'value' => $key,
+					'label' => $label,
+				];
+			}
+			unset($allSet[$k]['options']);
+		}
+		return $allSet;
+	}
+
 	public static function add($data, $adminId = 1)
 	{
 		if (!$data) {
@@ -1710,14 +1736,12 @@ class User extends ActiveRecord
 		return "";
 	}
 
-	public
-	static function topSingle($uid, $page, $pageSize)
+	public static function topSingle($uid, $page, $pageSize)
 	{
 
 	}
 
-	public
-	static function topMatcher($uid, $page = 1, $pageSize = 20)
+	public static function topMatcher($uid, $page = 1, $pageSize = 20)
 	{
 //		$uInfo = self::user(['uId' => $uid]);
 		$status = User::STATUS_DELETE;

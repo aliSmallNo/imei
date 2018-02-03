@@ -13,6 +13,53 @@ use common\utils\RedisUtil;
 
 class City
 {
+	public static function locationData()
+	{
+		$conn = AppUtil::db();
+		$sql = 'SELECT cPKey,cKey,cName,cNickname,cSort,cProvinceId,cCityId,cDistrictId 
+				from im_address_city order by cSort';
+		$ret = $conn->createCommand($sql)->queryAll();
+		//$items = array_values($items);
+		$items = [];
+		foreach ($ret as $row) {
+			$prov = $row['cProvinceId'];
+			$city = $row['cCityId'];
+			$district = $row['cDistrictId'];
+			$pkey = isset($row['cPKey']) ? $row['cPKey'] : '';
+			$key = $row['cKey'];
+			$label = (isset($row['cNickname']) && $row['cNickname'] ? $row['cNickname'] : $row['cName']);
+			if (!isset($items[$prov])) {
+				$items[$prov] = ['value' => $key, 'label' => $label, 'children' => []];
+			}
+			if ($city && !isset($items[$prov]['children'][$city])) {
+				$items[$prov]['children'][$city] = ['value' => $key, 'label' => $label, 'children' => []];
+			}
+			if ($district && !isset($items[$prov]['children'][$city]['children'][$district])) {
+				$items[$prov]['children'][$city]['children'][$district] = ['value' => $key, 'label' => $label, 'children' => []];
+			}
+		}
+		$data = [];
+		foreach ($items as $prov) {
+			$newProv = ['value' => $prov['value'], 'label' => $prov['label'], 'children' => []];
+			if (isset($prov['children'])) {
+				foreach ($prov['children'] as $city) {
+					$newCity = ['value' => $city['value'], 'label' => $city['label'], 'children' => []];
+					if (isset($city['children'])) {
+						foreach ($city['children'] as $district) {
+							$newCity['children'][] = ['value' => $district['value'], 'label' => $district['label'], 'children' => []];
+						}
+					}
+					$newProv['children'][] = $newCity;
+				}
+			}
+			$data[] = $newProv;
+		}
+		/*usort($items, function ($a, $b) {
+			return iconv('UTF-8', 'GBK//IGNORE', $a['name']) > iconv('UTF-8', 'GBK//IGNORE', $b['name']);
+		});*/
+		return $data;
+	}
+
 	public static function provinces()
 	{
 		$redis = RedisUtil::init(RedisUtil::KEY_PROVINCES);
