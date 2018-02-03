@@ -19,6 +19,8 @@ use common\models\Goods;
 use common\models\Log;
 use common\models\LogAction;
 use common\models\Lottery;
+use common\models\Moment;
+use common\models\MomentSub;
 use common\models\Order;
 use common\models\Pay;
 use common\models\Pin;
@@ -3140,60 +3142,136 @@ class ApiController extends Controller
 			case "zone_items":
 				$subtag = self::postParam('subtag');
 				$page = self::postParam('page', 1);
+				$param = $cri = [];
+				if ($subtag == "favor") {
 
+				} elseif ($subtag == "all") {
+
+				} elseif ($subtag == "voice") {
+					$cri[] = "mCategory=:cat";
+					$param[":cat"] = Moment::CAT_VOICE;
+				} elseif ($subtag == "topic") {
+					$cri[] = "mTopic>:topic";
+					$param[":topic"] = 0;
+				}
+
+				list($data, $nextpage) = Moment::wechatItems($uid, $cri, $param, $page);
 				return self::renderAPI(0, 'ok', [
-					'data' => [],
-					'nextpage' => 1
+					'data' => $data,
+					'nextpage' => $nextpage,
 				]);
 				break;
 			case "add_zone_msg":
 				$cat = self::postParam('cat');
-				$ids = self::postParam('id');
-				$f = self::postParam('f', 'add');
-				$text = ($f == "add" ? "添加" : '删除');
-				//$items = User::album($id, $openId, $f);
+				$text = self::postParam('text');
+				$img_ids = self::postParam('img_ids');
+				$voice_id = self::postParam('voice_id');
 
-				$mediaIds = json_decode($ids, 1);
-				$mediaIds = array_reverse($mediaIds);
-				foreach ($mediaIds as $mediaId) {
-					list($thumb, $url) = ImageUtil::save2Server($mediaId);
-					$imageItems[] = [
-						'thumb' => $thumb,
-						'figure' => $url
-					];
-				}
-				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode($imageItems, JSON_UNESCAPED_UNICODE));
+				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode([
+					"cat" => $cat,
+					"text" => $text,
+					"img_ids" => $img_ids,
+					"voice_id" => $voice_id,
+				], JSON_UNESCAPED_UNICODE));
 
-				if (!$imageItems && $f == "add") {
-					return self::renderAPI(129, $text . '失败');
+
+				$insert["mUId"] = $wxInfo["uId"];
+				$insert["mContent"] = ['title' => '', 'url' => [], 'article_url' => '', 'subtext' => '',];
+				switch ($cat) {
+					case "text":
+						$insert["mCategory"] = Moment::CAT_TEXT;
+						$insert["mContent"]["title"] = $text;
+						break;
+					case "image":
+						$mediaIds = json_decode($img_ids, 1);
+						$mediaIds = array_reverse($mediaIds);
+						$imageItems = [];
+						foreach ($mediaIds as $mediaId) {
+							list($thumb, $url) = ImageUtil::save2Server($mediaId);
+							$imageItems[] = $url;
+						}
+						$insert["mCategory"] = Moment::CAT_IMG;
+						$insert["mContent"]["title"] = $text;
+						$insert["mContent"]["url"] = $imageItems;
+						break;
+					case "voice":
+						list($voiceUrl) = ImageUtil::save2Server($voice_id);
+						$insert["mCategory"] = Moment::CAT_VOICE;
+						$insert["mContent"]["title"] = $text;
+						$insert["mContent"]["url"] = [$voiceUrl];
+						break;
 				}
-				return self::renderAPI(0, $text . '成功', [
-					'items' => $imageItems,
+				$insert["mContent"] = $insert["mContent"] = json_encode($insert["mContent"], JSON_UNESCAPED_UNICODE);
+
+				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode($insert, JSON_UNESCAPED_UNICODE));
+
+				$res = Moment::add($insert);
+
+				if (!$res) {
+					return self::renderAPI(129, '失败');
+				}
+				return self::renderAPI(0, '成功', [
+					'items' => '',
 				]);
 				break;
 			case "add_comment":
 				$media_id = self::postParam('id');
 				$comment_text = self::postParam('text');
-				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode($media_id, JSON_UNESCAPED_UNICODE));
-				list($thumb, $url) = ImageUtil::save2Server($media_id);
-				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode([$thumb, $url, $comment_text], JSON_UNESCAPED_UNICODE));
+				$mid = self::postParam('mid');
+				if (!$mid) {
+					return self::renderAPI(129, '参数错误');
+				}
+				if ($media_id) {
+					list($comment_text) = ImageUtil::save2Server($media_id);
+				}
+				if (!$comment_text) {
+					return self::renderAPI(129, '参数错误');
+				}
+				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode([$comment_text], JSON_UNESCAPED_UNICODE));
+				$cat = MomentSub::CAT_COMMENT;
+				$sid = MomentSub::BeforeAdd([
+					"cat" => $cat,
+					"uid" => $uid,
+					"mid" => $mid,
+					"content" => $comment_text,
+				]);
+				if (!$sid) {
+					return self::renderAPI(129, '评论失败');
+				}
 				return self::renderAPI(0, '上传语音成功', [
-
+					"data" => Moment::itemByCat(AppUtil::db(), $mid, $cat, $sid),
 				]);
 				break;
 			case "comment_info":
 				$zone_id = self::postParam('id');
-
+				if (!$zone_id) {
+					return self::renderAPI(129, '参数错误');
+				}
+				list($zone_info, $rose_list, $zan_list, $comment_list) = Moment::wechatItem($uid, $zone_id);
 				return self::renderAPI(0, '', [
-					'zone_info' => [],
-					'zan_list' => [],
-					'rose_list' => [],
-					'comment_list' => [],
+					'zone_info' => $zone_info,
+					'zan_list' => $zan_list,
+					'rose_list' => $rose_list,
+					'comment_list' => $comment_list,
 				]);
 				break;
 			case "zan_rose":// 点赞，送花
 				$zone_id = self::postParam('id');
+				$subtag = self::postParam('subtag');
+				$cat = "";
+				if ($subtag == "rose") {
+					$cat = MomentSub::CAT_ROSE;
+				} elseif ($subtag == "zan") {
+					$cat = MomentSub::CAT_ZAN;
+				}
+				if (!$zone_id || !$subtag || !$cat) {
+					return self::renderAPI(129, '参数错误');
+				}
+				if (MomentSub::findOne(["sUId" => $uid, "sMId" => $zone_id, "sCategory" => $cat])) {
+					return self::renderAPI(129, '请勿重复操作~');
+				}
 
+				MomentSub::BeforeAdd(["cat" => $cat, "uid" => $uid, "mid" => $zone_id,]);
 				return self::renderAPI(0, '', [
 
 				]);

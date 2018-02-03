@@ -1,6 +1,5 @@
 <link rel="stylesheet" href="/css/zp.min.css?v=1.3.6">
 
-
 <section id="zone_items">
 	<div class="zone_container">
 		<div class="zone_container_top">
@@ -21,246 +20,10 @@
 			</div>
 		</div>
 
-		<div class="zone_container_items">
+		<ul class="zone_container_items">
 
-			<div class="zone_container_item">
-				<div class="zone_container_item_top">
-					<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
-					<div class="about">
-						<div class="name">
-							<h5>千寻恋恋</h5>
-							<img src="/images/zone/ico_female.png" alt="">
-						</div>
-						<div class="pos">
-							<h5>1小时前&nbsp;</h5>
-							<img src="/images/zone/ico_position.png" alt="">
-							<span>位置保密</span>
-						</div>
-					</div>
-					<div class="opt">
-						<a href="javascript:;" items_tag="opt"><img src="/images/zone/ico_opt.png" alt=""></a>
-					</div>
-				</div>
 
-				<div class="zone_container_item_mid">
-					<div class="zone_container_item_title">
-						<span>[官方通知]</span>
-						男子结账时手包被偷 银行卡有140万农民工半年工钱男子结账时手包被偷 银行卡有140万农民工半年工钱
-					</div>
-					<div class="zone_container_item_cat_text">
-						1月20日，皇姑区一家饭店内，吃完饭要结账的冯先生发现挂在椅子上衣服内的手包不翼而飞。调取饭店的监控后发现，手包被后桌一名女子偷走了。“手包里虽然有现金，可现金不是最重要的，里面的银行卡和身份证才重要！银行卡里有20多名农民工140万元工资，他们都盼着这笔钱回家！而补办新卡需要身份证，补办身份证又要一个月，都补办回来了恐怕要2月底了！”冯先生说
-						<a href="javascript:;" items_tag="all">【查看全部】</a>
-					</div>
-				</div>
-
-				<div class="zone_container_item_bot">
-					<a href="javascript:;" items_tag="view"><span class="view">66</span></a>
-					<a href="javascript:;" items_tag="rose"><span class="rose">66</span></a>
-					<a href="javascript:;" items_tag="zan"><span class="zan">66</span></a>
-					<a href="javascript:;" items_tag="comment"><span class="comment">66</span></a>
-				</div>
-
-			</div>
-
-			<div class="zone_container_item">
-				<div class="zone_container_item_top">
-					<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
-					<div class="about">
-						<div class="name">
-							<h5>千寻恋恋</h5>
-							<img src="/images/zone/ico_female.png" alt="">
-						</div>
-						<div class="pos">
-							<h5>1小时前&nbsp;</h5>
-							<img src="/images/zone/ico_position.png" alt="">
-							<span>位置保密</span>
-						</div>
-					</div>
-					<div class="opt">
-						<a href="javascript:;"><img src="/images/zone/ico_opt.png" alt=""></a>
-					</div>
-				</div>
-				<div class="zone_container_item_mid">
-					<div class="zone_container_item_title">
-						<span>[官方通知]</span>
-						男子结账时手包被偷 银行卡有140万农民工半年工钱男子结账时手包被偷 银行卡有140万农民工半年工钱
-					</div>
-
-					<div class="zone_container_item_cat_article">
-						<a href="javascript:;" class="avatar"><img
-											src="/images/cr_room_share.jpg" alt=""></a>
-						<div class="des">
-							<h5>男子结账时手包被偷 银行卡有140万...</h5>
-							<p>男子结账时手包被偷 银行卡有140万农民工半年工钱男子结账时手包被偷 银行卡有140万农...</p>
-						</div>
-					</div>
-
-				</div>
-				<div class="zone_container_item_bot">
-					<a href="javascript:;"><span class="view">66</span></a>
-					<a href="javascript:;"><span class="rose active">66</span></a>
-					<a href="javascript:;"><span class="zan active">66</span></a>
-					<a href="javascript:;"><span class="comment">66</span></a>
-				</div>
-			</div>
-
-			<div class="zone_container_item">
-				<div class="zone_container_item_top">
-					<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
-					<div class="about">
-						<div class="name">
-							<h5>千寻恋恋</h5>
-							<img src="/images/zone/ico_female.png" alt="">
-						</div>
-						<div class="pos">
-							<h5>1小时前&nbsp;</h5>
-							<img src="/images/zone/ico_position.png" alt="">
-							<span>位置保密</span>
-						</div>
-					</div>
-					<div class="opt">
-						<a href="javascript:;"><img src="/images/zone/ico_opt.png" alt=""></a>
-					</div>
-				</div>
-				<div class="zone_container_item_mid">
-					<div class="zone_container_item_title">
-						<span>[官方通知]</span>
-						男子结账时手包被偷 银行卡有140万农民工半年工钱男子结账时手包被偷 银行卡有140万农民工半年工钱
-					</div>
-
-					<div class="zone_container_item_cat_imgs">
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-					</div>
-				</div>
-				<div class="zone_container_item_bot">
-					<a href="javascript:;"><span class="view">66</span></a>
-					<a href="javascript:;"><span class="rose active">66</span></a>
-					<a href="javascript:;"><span class="zan active">66</span></a>
-					<a href="javascript:;"><span class="comment">66</span></a>
-				</div>
-			</div>
-
-			<div class="zone_container_item">
-				<div class="zone_container_item_top">
-					<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
-					<div class="about">
-						<div class="name">
-							<h5>千寻恋恋</h5>
-							<img src="/images/zone/ico_female.png" alt="">
-						</div>
-						<div class="pos">
-							<h5>1小时前&nbsp;</h5>
-							<img src="/images/zone/ico_position.png" alt="">
-							<span>位置保密</span>
-						</div>
-					</div>
-					<div class="opt">
-						<a href="javascript:;"><img src="/images/zone/ico_opt.png" alt=""></a>
-					</div>
-				</div>
-				<div class="zone_container_item_mid">
-					<div class="zone_container_item_title">
-						<span>[官方通知]</span>
-						男子结账时手包被偷 银行卡有140万农民工半年工钱男子结账时手包被偷 银行卡有140万农民工半年工钱
-					</div>
-					<div class="zone_container_item_cat_imgs img_2">
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-
-					</div>
-				</div>
-				<div class="zone_container_item_bot">
-					<a href="javascript:;"><span class="view">66</span></a>
-					<a href="javascript:;"><span class="rose active">66</span></a>
-					<a href="javascript:;"><span class="zan active">66</span></a>
-					<a href="javascript:;"><span class="comment">66</span></a>
-				</div>
-			</div>
-
-			<div class="zone_container_item">
-				<div class="zone_container_item_top">
-					<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
-					<div class="about">
-						<div class="name">
-							<h5>千寻恋恋</h5>
-							<img src="/images/zone/ico_female.png" alt="">
-						</div>
-						<div class="pos">
-							<h5>1小时前&nbsp;</h5>
-							<img src="/images/zone/ico_position.png" alt="">
-							<span>位置保密</span>
-						</div>
-					</div>
-					<div class="opt">
-						<a href="javascript:;"><img src="/images/zone/ico_opt.png" alt=""></a>
-					</div>
-				</div>
-				<div class="zone_container_item_mid">
-					<div class="zone_container_item_title">
-						<span>[官方通知]</span>
-						男子结账时手包被偷 银行卡有140万农民工半年工钱男子结账时手包被偷 银行卡有140万农民工半年工钱
-					</div>
-					<div class="zone_container_item_cat_imgs img_1">
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-
-					</div>
-				</div>
-				<div class="zone_container_item_bot">
-					<a href="javascript:;"><span class="view">66</span></a>
-					<a href="javascript:;"><span class="rose active">66</span></a>
-					<a href="javascript:;"><span class="zan active">66</span></a>
-					<a href="javascript:;"><span class="comment">66</span></a>
-				</div>
-			</div>
-
-			<div class="zone_container_item">
-				<div class="zone_container_item_top">
-					<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
-					<div class="about">
-						<div class="name">
-							<h5>千寻恋恋</h5>
-							<img src="/images/zone/ico_female.png" alt="">
-						</div>
-						<div class="pos">
-							<h5>1小时前&nbsp;</h5>
-							<img src="/images/zone/ico_position.png" alt="">
-							<span>位置保密</span>
-						</div>
-					</div>
-					<div class="opt">
-						<a href="javascript:;"><img src="/images/zone/ico_opt.png" alt=""></a>
-					</div>
-				</div>
-				<div class="zone_container_item_mid">
-					<div class="zone_container_item_title">
-						<span>[官方通知]</span>
-						男子结账时手包被偷 银行卡有140万农民工半年工钱男子结账时手包被偷 银行卡有140万农民工半年工钱
-					</div>
-					<div class="zone_container_item_cat_voice">
-						<div class="avatar"><img src="/images/cr_room_share.jpg" alt="">
-						</div>
-						<div class="fill">&nbsp;</div>
-						<a href="javascript:; class=" voice pause"></a>
-						<span>01:28</span>
-					</div>
-				</div>
-				<div class="zone_container_item_bot">
-					<a href="javascript:;"><span class="view">66</span></a>
-					<a href="javascript:;"><span class="rose active">66</span></a>
-					<a href="javascript:;"><span class="zan active">66</span></a>
-					<a href="javascript:;"><span class="comment">66</span></a>
-				</div>
-			</div>
-
-		</div>
+		</ul>
 
 
 	</div>
@@ -268,63 +31,55 @@
 
 <section id="zone_item">
 	<div class="zone_container_item_des">
-		<div class="zone_container_item">
-			<div class="zone_container_item_top">
-				<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="about">
-					<div class="name">
-						<h5>千寻恋恋</h5>
-						<img src="/images/zone/ico_female.png" alt="">
+		<div id="zone_item_top">
+			<div class="zone_container_item">
+				<div class="zone_container_item_top">
+					<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
+					<div class="about">
+						<div class="name">
+							<h5>千寻恋恋</h5>
+							<img src="/images/zone/ico_female.png" alt="">
+						</div>
+						<div class="pos">
+							<h5>1小时前&nbsp;</h5>
+							<img src="/images/zone/ico_position.png" alt="">
+							<span>位置保密</span>
+						</div>
 					</div>
-					<div class="pos">
-						<h5>1小时前&nbsp;</h5>
-						<img src="/images/zone/ico_position.png" alt="">
-						<span>位置保密</span>
+					<div class="opt">
+						<a href="javascript:;"><img src="/images/zone/ico_opt.png" alt=""></a>
 					</div>
 				</div>
-				<div class="opt">
-					<a href="javascript:;"><img src="/images/zone/ico_opt.png" alt=""></a>
+				<div class="zone_container_item_mid">
+					<div class="zone_container_item_title">
+						<span>[官方通知]</span>
+						男子结账时手包被偷 银行卡有140万农民工半年工钱男子结账时手包被偷 银行卡有140万农民工半年工钱
+					</div>
+					<div class="zone_container_item_cat_text">
+						1月20日，皇姑区一家饭店内，吃完饭要结账的冯先生发现挂在椅子上衣服内的手包不翼而飞。调取饭店的监控后发现，手包被后桌一名女子偷走了。“手包里虽然有现金，可现金不是最重要的，里面的银行卡和身份证才重要！银行卡里有20多名农民工140万元工资，他们都盼着这笔钱回家！而补办新卡需要身份证，补办身份证又要一个月，都补办回来了恐怕要2月底了！”冯先生说
+						<a href="javascript:;">【查看全部】</a>
+					</div>
 				</div>
-			</div>
-			<div class="zone_container_item_mid">
-				<div class="zone_container_item_title">
-					<span>[官方通知]</span>
-					男子结账时手包被偷 银行卡有140万农民工半年工钱男子结账时手包被偷 银行卡有140万农民工半年工钱
+				<div class="zone_container_item_bot">
+					<a href="javascript:;"><span class="view">66</span></a>
+					<a href="javascript:;"><span class="rose">66</span></a>
+					<a href="javascript:;"><span class="zan">66</span></a>
+					<a href="javascript:;"><span class="comment">66</span></a>
 				</div>
-				<div class="zone_container_item_cat_text">
-					1月20日，皇姑区一家饭店内，吃完饭要结账的冯先生发现挂在椅子上衣服内的手包不翼而飞。调取饭店的监控后发现，手包被后桌一名女子偷走了。“手包里虽然有现金，可现金不是最重要的，里面的银行卡和身份证才重要！银行卡里有20多名农民工140万元工资，他们都盼着这笔钱回家！而补办新卡需要身份证，补办身份证又要一个月，都补办回来了恐怕要2月底了！”冯先生说
-					<a href="javascript:;">【查看全部】</a>
-				</div>
-			</div>
-			<div class="zone_container_item_bot">
-				<a href="javascript:;"><span class="view">66</span></a>
-				<a href="javascript:;"><span class="rose">66</span></a>
-				<a href="javascript:;"><span class="zan">66</span></a>
-				<a href="javascript:;"><span class="comment">66</span></a>
 			</div>
 		</div>
+
 
 		<div class="zone_container_item_opts">
-			<div class="zone_container_item_opt">
-				<div class="img"><img src="/images/zone/ico_rose.png" alt="" class="first"></div>
-				<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
+			<div class="zone_container_item_opt" id="zone_item_rose">
 
 			</div>
-			<div class="zone_container_item_opt">
-				<div class="img"><img src="/images/zone/ico_zan.png" alt="" class="first"></div>
-				<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="img"><a href="javascript:;">+10</a></div>
+			<div class="zone_container_item_opt"  id="zone_item_zan">
+
 			</div>
 		</div>
 
-		<ul class="zone_container_item_comments">
+		<ul class="zone_container_item_comments" id="zone_item_comment">
 			<li class="zone_container_item_comment">
 				<div class="avatar"><img src="/images/cr_room_share.jpg" alt=""></div>
 				<div class="content">
@@ -333,21 +88,7 @@
 				</div>
 				<div class="time">1小时前</div>
 			</li>
-			<li class="zone_container_item_comment">
-				<div class="avatar"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="content">
-					<div class="name">尼古拉斯赵四</div>
-					<p class="cat_voice">
-						<a href="javascript:;" class="pause" style="width: 6rem">
-							<span>20''</span>
-							<audio src="https://img.meipo100.com/voice/2018/120/194838185102.mp3" class="audio">您的浏览器不支持 audio 标签。
-							</audio>
-						</a>
-					</p>
 
-				</div>
-				<div class="time">1小时前</div>
-			</li>
 		</ul>
 
 		<div class="zone_container_item_comments_btns">
@@ -383,7 +124,7 @@
 					<div class="avatar"><img src="/images/cr_room_share.jpg" alt="">
 					</div>
 					<div class="fill">&nbsp;</div>
-					<a href="javascript:;" class="voice pause " data_flag="add"></a>
+					<a href="javascript:;" class="voice pause playVoiceElement" pvl="add"></a>
 					<span>01:28</span>
 				</div>
 			</ul>
@@ -583,7 +324,100 @@
 
 
 <input type="hidden" id="cWXUrl" value="{{$wxUrl}}">
+<script type="text/template" id="tpl_comment_item">
+	{[#data]}
+	<li class="zone_container_item_comment">
+		<div class="avatar"><img src="{[uThumb]}" alt=""></div>
+		<div class="content">
+			<div class="name">{[uName]}</div>
+			{[#isVoice]}
+			<p class="cat_voice">
+				<a href="javascript:;" class="pause playVoiceElement" pvl="comment" style="width: 6rem">
+					<span>20''</span>
+					<audio src="{[sContent]}">您的浏览器不支持 audio 标签。
+					</audio>
+				</a>
+			</p>
+			{[/isVoice]}
+			{[^isVoice]}
+			<p class="cat_text">{[sContent]}</p>
+			{[/isVoice]}
+		</div>
+		<div class="time">1小时前</div>
+	</li>
+	{[/data]}
+</script>
+<script type="text/template" id="tpl_items">
+	{[#data]}
+	<li class="zone_container_item" data_mid="{[mId]}">
+		<div class="zone_container_item_top">
+			<div class="img"><img src="{[uThumb]}" alt=""></div>
+			<div class="about">
+				<div class="name">
+					<h5>千寻恋恋</h5>
+					<img src="/images/zone/ico_female.png" alt="">
+				</div>
+				<div class="pos">
+					<h5>1小时前&nbsp;</h5>
+					<img src="/images/zone/ico_position.png" alt="">
+					<span>{[location]}</span>
+				</div>
+			</div>
+			<div class="opt">
+				<a href="javascript:;" items_tag="opt"><img src="/images/zone/ico_opt.png" alt=""></a>
+			</div>
+		</div>
 
+		<div class="zone_container_item_mid">
+			<div class="zone_container_item_title">
+				<span>[官方通知]</span>
+				{[short_title]}
+			</div>
+			{[#flag100]}
+			<div class="zone_container_item_cat_text">
+				{[short_text]}
+				<a href="javascript:;" items_tag="all">【查看全部】</a>
+			</div>
+			{[/flag100]}
+			{[#flag110]}
+			<div class="zone_container_item_cat_imgs img_{[img_co]}">
+				{[#url]}
+				<div><img src="{[.]}" alt=""></div>
+				{[/url]}
+			</div>
+			{[/flag110]}
+			{[#flag120]}
+			<div class="zone_container_item_cat_voice">
+				<div class="avatar"><img src="/images/cr_room_share.jpg" alt="">
+				</div>
+				<div class="fill">&nbsp;</div>
+				<a href="javascript:;" class="voice pause playVoiceElement" pvl="items">
+					<audio src="{[src]}"></audio>
+				</a>
+				<span></span>
+			</div>
+			{[/flag120]}
+			{[#flag130]}
+			<div class="zone_container_item_cat_article">
+				<a href="{[article_url]}" class="avatar"><img src="{[src]}" alt=""></a>
+				<div class="des">
+					<h5>{[short_title]}</h5>
+					<p>{[short_subtext]}</p>
+				</div>
+			</div>
+			{[/flag130]}
+		</div>
+
+		<div class="zone_container_item_bot">
+			<a href="javascript:;" items_tag="view"><span class="view">{[view]}</span></a>
+			<a href="javascript:;" items_tag="rose"><span class="rose {[#rosef]}active{[/rosef]}">{[rose]}</span></a>
+			<a href="javascript:;" items_tag="zan"><span class="zan {[#zanf]}active{[/zanf]}">{[zan]}</span></a>
+			<a href="javascript:;" items_tag="comment"><span class="comment">{[comment]}</span></a>
+		</div>
+
+	</li>
+	{[/data]}
+</script>
 <script type="text/template" id="tpl_add_msg_cat">
 	<ul class="zone_alert_add_msg">
 		<li><a href="javascript:;" add_cat="text">文字</a></li>

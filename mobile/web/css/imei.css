@@ -36,7 +36,7 @@ em, i, b {
   font-weight: normal;
   font-style: normal; }
 
-ul {
+ul, li {
   list-style: none; }
 
 input, select, textarea, button {

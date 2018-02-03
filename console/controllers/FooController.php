@@ -11,6 +11,9 @@ namespace console\controllers;
 use common\models\ChatMsg;
 use common\models\City;
 use common\models\Img;
+use common\models\Moment;
+use common\models\MomentSub;
+use common\models\MomentTopic;
 use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
@@ -1593,12 +1596,29 @@ class FooController extends Controller
 
 		//UserTrans::taskCondition(10, 136055);
 
+//		MomentTopic::add([
+//			"tTitle" => "单身求单走",
+//			"tImage" => "https://bpbhd-10063905.file.myqcloud.com/image/t1711201155327.jpg",
+//			"tNote" => json_encode([
+//				"view" => 1023,
+//				"content" => 875,
+//				"join" => 234,
+//			], JSON_UNESCAPED_UNICODE),
+//		]);
 
-		$res = User::fmtRow(User::findOne(['uId' => 120003])->toArray());
-		// print_r($res);
-		$res = User::user(['uOpenId' => 'oYDJew5EFMuyrJdwRrXkIZLU2c58']);
-		print_r($res);
-		echo $res["setting"];
+		/*$uids = [120003, 133491, 130790, 129893, 143807];
+		$mids = [1, 2, 3, 4, 5];
+		$cats = [100, 110, 120];
+		for ($i = 0; $i < 20; $i++) {
+			MomentSub::add([
+				"sUId" => $uids[array_rand($uids, 1)],
+				"sMId" => $mids[array_rand($mids, 1)],
+				"sCategory" => $cats[array_rand($cats, 1)],
+			]);
+		}*/
+
+		// list($res) = Moment::wechatItems([], [], 1);print_r($res);
+
 	}
 
 
