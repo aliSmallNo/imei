@@ -1408,6 +1408,15 @@ class FooController extends Controller
 			131379,
 			'千寻恋恋每日简报',
 			'测试测试1122');
+
+		WechatUtil::templateMsg(WechatUtil::NOTICE_CHAT,
+			131379,
+			'有人密聊你啦',
+			'TA给你发了一条密聊消息，快去看看吧~',
+			120003,
+			12792
+		);
+
 		//var_dump(json_encode(UserTrans::$CatMinus));
 //		$ret = City::locationData();
 //		var_dump($ret);
