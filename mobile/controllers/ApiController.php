@@ -21,6 +21,7 @@ use common\models\LogAction;
 use common\models\Lottery;
 use common\models\Moment;
 use common\models\MomentSub;
+use common\models\MomentTopic;
 use common\models\Order;
 use common\models\Pay;
 use common\models\Pin;
@@ -364,7 +365,7 @@ class ApiController extends Controller
 	public function actionGenie()
 	{
 		$tag = trim(strtolower(self::getParam('tag')));
-		if(!$tag){
+		if (!$tag) {
 			$tag = trim(strtolower(self::postParam('tag')));
 		}
 		$key = self::getParam('key');
@@ -3202,9 +3203,10 @@ class ApiController extends Controller
 					$cri[] = "mTopic>:topic";
 					$param[":topic"] = 0;
 				}
-
+				$hotTopic = MomentTopic::hotTopic();
 				list($data, $nextpage) = Moment::wechatItems($uid, $cri, $param, $page);
 				return self::renderAPI(0, 'ok', [
+					'hotTopic' => $hotTopic,
 					'data' => $data,
 					'nextpage' => $nextpage,
 				]);
@@ -3322,6 +3324,18 @@ class ApiController extends Controller
 				MomentSub::BeforeAdd(["cat" => $cat, "uid" => $uid, "mid" => $zone_id,]);
 				return self::renderAPI(0, '', [
 
+				]);
+				break;
+			case "init_topic":
+				$topic_id = self::postParam('id');
+				if (!$topic_id) {
+					return self::renderAPI(129, '参数错误~');
+				}
+				list($list, $nextpage, $topicInfo) = MomentTopic::items($topic_id, $uid);
+				return self::renderAPI(0, '', [
+					'data' => $list,
+					'nextpage' => $nextpage,
+					'topicInfo' => $topicInfo,
 				]);
 				break;
 		}

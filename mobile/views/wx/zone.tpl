@@ -12,10 +12,7 @@
 			<div class="zone_container_top_topic">
 				<div class="zone_container_topic_title"><span>热门话题</span></div>
 				<ul>
-					<li><a href="javascript:;" data_topic_id="1">#但是我骚啊#</a></li>
-					<li><a href="javascript:;" data_topic_id="1">#素颜我最美#</a></li>
-					<li><a href="javascript:;" data_topic_id="1">#悄悄话#</a></li>
-					<li><a href="#zone_search_topic">更多话题</a></li>
+
 				</ul>
 			</div>
 		</div>
@@ -193,80 +190,9 @@
 		</ul>
 		<div class="zone_container_topic_all_add"><a href="#zone_add_msg"><span>发布内容</span></a></div>
 
-		<div>
-			<div class="zone_container_item">
-				<div class="zone_container_item_top">
-					<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
-					<div class="about">
-						<div class="name">
-							<h5>千寻恋恋</h5>
-							<img src="/images/zone/ico_female.png" alt="">
-						</div>
-						<div class="pos">
-							<h5>1小时前&nbsp;</h5>
-							<img src="/images/zone/ico_position.png" alt="">
-							<span>位置保密</span>
-						</div>
-					</div>
-					<div class="opt">
-						<a href="javascript:;"><img src="/images/zone/ico_opt.png" alt=""></a>
-					</div>
-				</div>
-				<div class="zone_container_item_mid">
-					<div class="zone_container_item_title">
-						<span>#单身求带走#</span>
-						男子结账时手包被偷 银行卡有140万农民工半年工钱男子结账时手包被偷 银行卡有140万农民工半年工钱
-					</div>
-					<div class="zone_container_item_cat_imgs img_2">
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
+		<ul id="topic_join_content">
 
-					</div>
-				</div>
-				<div class="zone_container_item_bot">
-					<a href="javascript:;"><span class="view">66</span></a>
-					<a href="javascript:;"><span class="rose active">66</span></a>
-					<a href="javascript:;"><span class="zan active">66</span></a>
-					<a href="javascript:;"><span class="comment">66</span></a>
-				</div>
-			</div>
-			<div class="zone_container_item">
-				<div class="zone_container_item_top">
-					<div class="img"><img src="/images/cr_room_share.jpg" alt=""></div>
-					<div class="about">
-						<div class="name">
-							<h5>千寻恋恋</h5>
-							<img src="/images/zone/ico_female.png" alt="">
-						</div>
-						<div class="pos">
-							<h5>1小时前&nbsp;</h5>
-							<img src="/images/zone/ico_position.png" alt="">
-							<span>位置保密</span>
-						</div>
-					</div>
-					<div class="opt">
-						<a href="javascript:;"><img src="/images/zone/ico_opt.png" alt=""></a>
-					</div>
-				</div>
-				<div class="zone_container_item_mid">
-					<div class="zone_container_item_title">
-						<span>#单身求带走#</span>
-						男子结账时手包被偷 银行卡有140万农民工半年工钱男子结账时手包被偷 银行卡有140万农民工半年工钱
-					</div>
-					<div class="zone_container_item_cat_imgs img_2">
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-						<div><img src="/images/cr_room_share.jpg" alt=""></div>
-
-					</div>
-				</div>
-				<div class="zone_container_item_bot">
-					<a href="javascript:;"><span class="view">66</span></a>
-					<a href="javascript:;"><span class="rose active">66</span></a>
-					<a href="javascript:;"><span class="zan active">66</span></a>
-					<a href="javascript:;"><span class="comment">66</span></a>
-				</div>
-			</div>
-		</div>
+		</ul>
 
 	</div>
 
@@ -283,6 +209,12 @@
 
 
 <input type="hidden" id="cWXUrl" value="{{$wxUrl}}">
+
+
+<script type="text/template" id="tpl_hot_topic">
+	{[#hotTopic]}<li><a href="javascript:;" data_topic_id="{[tId]}">#{[tTitle]}#</a></li>{[/hotTopic]}
+</script>
+
 <script type="text/template" id="tpl_comment_item">
 	{[#data]}
 	<li class="zone_container_item_comment">
