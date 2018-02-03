@@ -8,6 +8,7 @@ require(["jquery", "alpha", "mustache"],
 			wxUrl: $('#cWXUrl').val(),
 			curFrag: '',
 			lastuid: $("#LASTUID").val(),
+			uid: $("#UID").val(),
 
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
@@ -112,49 +113,42 @@ require(["jquery", "alpha", "mustache"],
 
 		}
 
-		initData();
+		function resetMenuShare() {
+			var thumb = 'http://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9nKXslmu59cJyaHJCqiaVWaXXJxQuPCXJOsO9SwBPhGWl0GZ8D2SrTdIuKt93876kmBfSbGS8mMHwQ/0?wx_fmt=jpeg';
+			var link = $sls.wxUrl + '/wx/everyredpacket?id=' + $sls.uid;
 
-		function locationHashChanged() {
-			var hashTag = location.hash;
-			hashTag = hashTag.replace("#!", "");
-			hashTag = hashTag.replace("#", "");
-			switch (hashTag) {
-				case 'zone_items':
-
-					break;
-				default:
-					break;
-			}
-			if (!hashTag) {
-				hashTag = 'index';
-			}
-			$sls.curFrag = hashTag;
-
-			var title = $("#" + hashTag).attr("data-title");
-			if (title) {
-				$(document).attr("title", title);
-				$("title").html(title);
-				var iFrame = $('<iframe src="/blank.html" class="g-blank"></iframe>');
-				iFrame.on('load', function () {
-					setTimeout(function () {
-						iFrame.off('load').remove();
-					}, 0);
-				}).appendTo($("body"));
-			}
-			alpha.clear();
+			var title = '好火呀！天天来赚钱，还可以提现！';
+			var desc = '天天来赚钱，攒够1块就能提现。推荐给你用用，哈哈～';
+			wx.onMenuShareTimeline({
+				title: title,
+				link: link,
+				imgUrl: thumb,
+				success: function () {
+					// shareLog('moment', '/wx/share106');
+				}
+			});
+			wx.onMenuShareAppMessage({
+				title: title,
+				desc: desc,
+				link: link,
+				imgUrl: thumb,
+				type: '',
+				dataUrl: '',
+				success: function () {
+					// shareLog('share', '/wx/share106');
+				}
+			});
 		}
 
 		$(function () {
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
-			window.onhashchange = locationHashChanged;
-			wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems',
-				'onMenuShareTimeline', 'onMenuShareAppMessage'];
+			wxInfo.jsApiList = ['checkJsApi', 'hideOptionMenu', 'hideMenuItems', 'onMenuShareTimeline', 'onMenuShareAppMessage'];
 			wx.config(wxInfo);
 			wx.ready(function () {
 				wx.hideMenuItems({
 					menuList: [
-						'menuItem:copyUrl',
+						//'menuItem:copyUrl',
 						'menuItem:openWithQQBrowser',
 						'menuItem:openWithSafari',
 						'menuItem:share:qq',
@@ -163,8 +157,9 @@ require(["jquery", "alpha", "mustache"],
 						'menuItem:share:facebook'
 					]
 				});
+				resetMenuShare();
 			});
 			$sls.cork.hide();
-			locationHashChanged();
+			initData();
 		});
 	});
