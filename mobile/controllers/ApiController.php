@@ -372,6 +372,19 @@ class ApiController extends Controller
 				return self::renderAPI(0, '', [
 					'token' => $ret,
 				]);
+			case 'wx-code':
+				$wxCode = self::postParam('code');
+				if (!$wxCode || strlen($wxCode) < 10) {
+					return self::renderAPI(129, '操作无效');
+				}
+				$info = UserWechat::getInfoByCode($wxCode, true);
+				return self::renderAPI(0, '',
+					[
+						'openid' => isset($info['openid']) ? $info['openid'] : '',
+						'uni' => isset($info['uUniqid']) ? $info['uUniqid'] : '',
+						'status' => isset($info['uStatus']) ? $info['uStatus'] : '',
+						'role' => isset($info['uRole']) ? $info['uRole'] : User::ROLE_SINGLE,
+					]);
 			default:
 				break;
 		}
