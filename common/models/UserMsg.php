@@ -389,12 +389,13 @@ class UserMsg extends ActiveRecord
 			 AND mAlertFlag=0 AND mCategory =:cat 
 			 GROUP BY u.uOpenId,mUId,mCategory
 			 ORDER BY mUId,mId";
-		$cmd = $conn->createCommand($sql)->bindValues([
+		$cmd2 = $conn->createCommand($sql)->bindValues([
 			':from' => date('Y-m-d', time() - 3600 * 12),
 			':to' => date('Y-m-d 23:59'),
 			':cat' => self::CATEGORY_CHAT
 		]);
-		$ret = $cmd->queryAll();
+		$ret = $cmd2->queryAll();
+		//AppUtil::logFile($cmd2->getRawSql(), 5, __FUNCTION__, __LINE__);
 		foreach ($ret as $row) {
 			$receiverUId = $row['receiverUId'];
 			$senderUId = $row['senderUId'];
