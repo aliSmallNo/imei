@@ -113,7 +113,7 @@ require(["jquery", "alpha", "mustache"],
 		}
 
 		function resetMenuShare() {
-			var thumb = 'https://bpbhd-10063905.file.myqcloud.com/image/n1801051187989.png';
+			var thumb = 'http://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9nKXslmu59cJyaHJCqiaVWaXXJxQuPCXJOsO9SwBPhGWl0GZ8D2SrTdIuKt93876kmBfSbGS8mMHwQ/0?wx_fmt=jpeg';
 			var link = $sls.wxUrl + '/wx/everyredpacket?id=' + $sls.lastuid;
 
 			var title = '好火呀！天天来赚钱，还可以提现！';
