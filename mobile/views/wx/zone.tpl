@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/zp.min.css?v=1.3.6">
+<link rel="stylesheet" href="/css/zp.min.css?v=1.3.7">
 
 <section id="zone_items">
 	<div class="zone_container">
