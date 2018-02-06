@@ -1410,19 +1410,24 @@ class FooController extends Controller
 			'千寻恋恋每日简报',
 			'测试测试1122');*/
 
-
-
-
-		QueueUtil::loadJob('templateMsg',
+		/*QueueUtil::loadJob('templateMsg',
 			[
 				'tag' => WechatUtil::NOTICE_SUMMON,
 				'receiver_uid' => 131379,
 				'title' => '有一位你的微信好友对你怦然心动啦，快去看看吧~',
-				'sub_title' => '',
+				'sub_title' => '有一位你的微信好友对你怦然心动啦，快去看看吧~',
 				'sender_uid' => 120000,
 				'gid' => 0
 			],
-			QueueUtil::QUEUE_TUBE_SMS);
+			QueueUtil::QUEUE_TUBE_SMS);*/
+
+		WechatUtil::templateMsg(WechatUtil::NOTICE_SUMMON,
+			131379,
+			'有一位你的微信好友对你怦然心动啦，快去看看吧~',
+			'有一位你的微信好友对你怦然心动啦，快去看看吧~',
+			120000,
+			0
+		);
 
 		//var_dump(json_encode(UserTrans::$CatMinus));
 //		$ret = City::locationData();
