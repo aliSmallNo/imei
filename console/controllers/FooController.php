@@ -1625,6 +1625,9 @@ class FooController extends Controller
 		// list($res) = Moment::wechatItems([], [], 1);print_r($res);
 
 
+		$cri = [" tTitle like :title ", " tId=:tid"];
+		$cri = "and " . implode(" and ", $cri);
+		echo $cri;
 	}
 
 

@@ -3343,6 +3343,13 @@ class ApiController extends Controller
 					'topicInfo' => $topicInfo,
 				]);
 				break;
+			case "search_topic":
+				$searchVal = self::postParam('val');
+				$res = MomentTopic::searchTopic([" tTitle like :title "], [":title" => '%' . $searchVal . '%']);
+				return self::renderAPI(0, '', [
+					'data' => $res,
+				]);
+				break;
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

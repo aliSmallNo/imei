@@ -31,6 +31,19 @@ class MomentTopic extends ActiveRecord
 		return true;
 	}
 
+	public static function searchTopic($cri, $param)
+	{
+		$conn = AppUtil::db();
+		$cri = "and " . implode(" and ", $cri);
+		$sql = "select * from im_moment_topic where tId >0 $cri order by tId desc limit 10";
+		$ret = $conn->createCommand($sql)->bindValues($param)->queryAll();
+		foreach ($ret as $k => $v) {
+			$other = self::fmt($v);
+			$ret[$k] = array_merge($v, $other);
+		}
+		return $ret;
+	}
+
 	public static function hotTopic()
 	{
 		$conn = AppUtil::db();
@@ -40,7 +53,6 @@ class MomentTopic extends ActiveRecord
 			$other = self::fmt($v);
 			$ret[$k] = array_merge($v, $other);
 		}
-
 		return $ret;
 	}
 

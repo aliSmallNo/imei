@@ -20,7 +20,7 @@
 		<ul class="zone_container_items">
 
 		</ul>
-		<div class="spinner"></div>
+		<div class="spinner zone_container_items_spinner"></div>
 
 
 	</div>
@@ -29,7 +29,7 @@
 <section id="zone_item">
 	<div class="zone_container_item_des">
 		<div id="zone_item_top">
-			<div class="spinner"></div>
+
 		</div>
 
 
@@ -44,8 +44,8 @@
 
 		<ul class="zone_container_item_comments" id="zone_item_comment">
 
-
 		</ul>
+		<div class="spinner zone_container_item_comments_spinner"></div>
 
 		<div class="zone_container_item_comments_btns">
 			<div class="zone_container_item_comments_inputs">
@@ -108,55 +108,8 @@
 				<a href="javascript:;">取消</a>
 			</div>
 		</div>
-		<ul class="zone_container_topic_items">
-			<li>
-				<div class="avatar"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="content">
-					<div class="title">#世界辣么大#</div>
-					<div class="about">#世界辣么大,找个人来陪，来千寻恋恋#</div>
-					<div class="marks">
-						<i><span>27</span><em>内容</em></i>
-						<i><span>27</span><em>参与</em></i>
-						<i><span>27</span><em>浏览</em></i>
-					</div>
-				</div>
-			</li>
-			<li class="recommend">
-				<div class="avatar"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="content">
-					<div class="title">#世界辣么大#</div>
-					<div class="about">#世界辣么大,找个人来陪，来千寻恋恋#</div>
-					<div class="marks">
-						<i><span>27</span><em>内容</em></i>
-						<i><span>27</span><em>参与</em></i>
-						<i><span>27</span><em>浏览</em></i>
-					</div>
-				</div>
-			</li>
-			<li>
-				<div class="avatar"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="content">
-					<div class="title">#世界辣么大#</div>
-					<div class="about">#世界辣么大,找个人来陪，来千寻恋恋#</div>
-					<div class="marks">
-						<i><span>27</span><em>内容</em></i>
-						<i><span>27</span><em>参与</em></i>
-						<i><span>27</span><em>浏览</em></i>
-					</div>
-				</div>
-			</li>
-			<li>
-				<div class="avatar"><img src="/images/cr_room_share.jpg" alt=""></div>
-				<div class="content">
-					<div class="title">#世界辣么大#</div>
-					<div class="about">#世界辣么大,找个人来陪，来千寻恋恋#</div>
-					<div class="marks">
-						<i><span>27</span><em>内容</em></i>
-						<i><span>27</span><em>参与</em></i>
-						<i><span>27</span><em>浏览</em></i>
-					</div>
-				</div>
-			</li>
+		<ul class="zone_container_topic_items" id="zone_container_topic_search">
+
 
 		</ul>
 	</div>
@@ -175,7 +128,7 @@
 		<ul id="topic_join_content">
 
 		</ul>
-
+		<div class="spinner topic_join_content_spinner"></div>
 	</div>
 
 </section>
@@ -190,6 +143,24 @@
 </div>
 <input type="hidden" id="cWXUrl" value="{{$wxUrl}}">
 
+<script type="text/html" id="tpl_topic_search">
+	{[#data]}
+	<li class="recommend">
+		<a href="javascript:;" data_tid="{[tId]}">
+			<div class="avatar"><img src="{[tImage]}" alt=""></div>
+			<div class="content">
+				<div class="title">#{[tTitle]}#</div>
+				<div class="about">#世界辣么大,找个人来陪，来千寻恋恋#</div>
+				<div class="marks">
+					<i><span>{[content]}</span><em>内容</em></i>
+					<i><span>{[join]}</span><em>参与</em></i>
+					<i><span>{[view]}</span><em>浏览</em></i>
+				</div>
+			</div>
+		</a>
+	</li>
+	{[/data]}
+</script>
 <script type="text/html" id="tpl_topic_des_avatar">
 	{[#topicInfo]}
 	<img src="{[tImage]}" alt="" class="bg_blur">
@@ -224,7 +195,7 @@
 			{[#isVoice]}
 			<p class="cat_voice">
 				<a href="javascript:;" class="pause playVoiceElement" pvl="comment" style="width: 6rem">
-					<span>20''</span>
+					<span></span>
 					<audio src="{[sContent]}">您的浏览器不支持 audio 标签。
 					</audio>
 				</a>

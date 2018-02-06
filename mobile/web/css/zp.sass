@@ -253,7 +253,7 @@
 				line-height: 3rem
 
 .zone_container_item_comments
-	padding-bottom: 5rem
+	padding-bottom: 8rem
 	.zone_container_item_comment
 		display: block
 		@include displayFlex
@@ -582,42 +582,43 @@
 				text-align: center
 	.zone_container_topic_items
 		li
-			@include displayFlex
-			padding: .8rem 1rem
-			border-bottom: 1px solid #eee
-			position: relative
-			&.recommend
-				&:after
-					position: absolute
-					content: ''
-					right: 1rem
-					width: 2rem
-					height: 2rem
-					top: 0
-					background: url(../images/zone/ico_recommend.png) no-repeat center center
-					background-size: 100% 100%
-			.avatar
-				@include displayFlex-w(7rem)
-				img
-					@include imgBlock_W(6rem)
-					border-radius: .5rem
-			.content
-				.title
-					@include fontStyle(1.3rem, $fontColor, 0)
-					line-height: 2rem
-				.about
-					@include fontStyle(1.15rem, #a9a9a9, 0)
-					@include textTail
-				.marks
-					line-height: 2rem
-					i
-						display: inline-block
-						width: 6rem
-						@include fontStyle(1rem, #a9a9a9, 0)
-						span
-							color: $mainColor
-						em
-							margin-left: .2rem
+			a
+				@include displayFlex
+				padding: .8rem 1rem
+				border-bottom: 1px solid #eee
+				position: relative
+				&.recommend
+					&:after
+						position: absolute
+						content: ''
+						right: 1rem
+						width: 2rem
+						height: 2rem
+						top: 0
+						background: url(../images/zone/ico_recommend.png) no-repeat center center
+						background-size: 100% 100%
+				.avatar
+					@include displayFlex-w(7rem)
+					img
+						@include imgBlock_W(6rem)
+						border-radius: .5rem
+				.content
+					.title
+						@include fontStyle(1.3rem, $fontColor, 0)
+						line-height: 2rem
+					.about
+						@include fontStyle(1.15rem, #a9a9a9, 0)
+						@include textTail
+					.marks
+						line-height: 2rem
+						i
+							display: inline-block
+							width: 6rem
+							@include fontStyle(1rem, #a9a9a9, 0)
+							span
+								color: $mainColor
+							em
+								margin-left: .2rem
 
 .zone_container_topic_all
 	.zone_container_topic_all_top

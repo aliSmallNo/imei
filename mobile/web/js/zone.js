@@ -55,6 +55,8 @@ require(["jquery", "alpha", "mustache"],
 			hotTopicTmp: $("#tpl_hot_topic").html(),
 			hotTopicUL: $(".zone_container_top_topic ul"),
 
+			loading: $(".zone_container_items_spinner"),
+
 			init: function () {
 				var util = this;
 				// 点击单个动态中所有按钮
@@ -137,6 +139,7 @@ require(["jquery", "alpha", "mustache"],
 					return;
 				}
 				util.loadingflag = 1;
+				util.loading.show();
 				$.post("/api/zone", {
 					tag: "zone_items",
 					subtag: util.zone_bar_tag,
@@ -155,6 +158,7 @@ require(["jquery", "alpha", "mustache"],
 						alpha.toast(resp.msg);
 					}
 					util.loadingflag = 0;
+					util.loading.hide();
 				}, "json");
 			},
 			reset: function () {
@@ -168,6 +172,7 @@ require(["jquery", "alpha", "mustache"],
 			comment_text: '',
 			inputObj: null,
 			loadingflag: 0,
+			loading: $(".zone_container_item_comments_spinner"),
 
 			comment_page: 1,
 			itemUL: $("#zone_item_top"),
@@ -267,6 +272,7 @@ require(["jquery", "alpha", "mustache"],
 					return;
 				}
 				util.loadingflag = 1;
+				util.loading.show();
 				$.post("/api/zone", {
 					tag: "comment_info",
 					id: pageItemsUtil.zone_id,
@@ -274,7 +280,8 @@ require(["jquery", "alpha", "mustache"],
 				}, function (resp) {
 					if (resp.code == 0) {
 						if (util.comment_page == 1) {
-							var more = '<div class="img"><a href="javascript:;">+10</a></div>';
+							//var more = '<div class="img"><a href="javascript:;">+10</a></div>';
+							var more = '';
 							var rose_first = '<div class="img"><img src="/images/zone/ico_rose.png" alt="" class="first"></div>';
 							var zan_first = '<div class="img"><img src="/images/zone/ico_zan.png" alt="" class="first"></div>';
 							util.itemUL.html(Mustache.render(pageItemsUtil.itemsTmp, {data: resp.data.zone_info}));
@@ -289,6 +296,7 @@ require(["jquery", "alpha", "mustache"],
 						alpha.toast(resp.msg);
 					}
 					util.loadingflag = 0;
+					util.loading.hide();
 				}, "json");
 			},
 		};
@@ -618,14 +626,48 @@ require(["jquery", "alpha", "mustache"],
 		var topicUtil = {
 			topic_id: 0,
 			loading: 0,
+			load: $(".topic_join_content_spinner"),
 			page: 1,
 			UL: $("#topic_join_content"),
 			avatarUL: $("#topic_des_avatar"),
 			avatarTmp: $("#tpl_topic_des_avatar").html(),
 			statUL: $("#topic_des_stat"),
 			statTmp: $("#tpl_topic_des_stat").html(),
-			init: function () {
 
+			searchUL: $("#zone_container_topic_search"),
+			searchTmp: $("#tpl_topic_search").html(),
+			searchVal: '',
+			init: function () {
+				var util = this;
+				$(document).on("input", ".zone_container_search input", function () {
+					util.searchVal = $(this).val();
+					var reg = /^[\u4e00-\u9fa5]+$/i;
+					if (util.searchVal && reg.test(util.searchVal)) {
+						util.searchTopic();
+					}
+				});
+				$(document).on(kClick, ".zone_container_topic_items a", function () {
+					util.topic_id = $(this).attr("data_tid");
+					location.href = "#zone_topic";
+				});
+			},
+			searchTopic: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post("/api/zone", {
+					tag: 'search_topic',
+					val: util.searchVal,
+				}, function (resp) {
+					if (resp.code == 0) {
+						util.searchUL.html(Mustache.render(util.searchTmp, resp.data));
+					} else {
+						alpha.toast(resp.msg);
+					}
+					util.loading = 0;
+				}, "json");
 			},
 			reload: function () {
 				var util = this;
@@ -633,18 +675,26 @@ require(["jquery", "alpha", "mustache"],
 					return;
 				}
 				util.loading = 1;
+				util.load.show();
 				$.post("/api/zone", {
 					tag: 'init_topic',
 					id: util.topic_id,
+					page: util.page,
 				}, function (resp) {
 					if (resp.code == 0) {
-						util.UL.html(Mustache.render(pageItemsUtil.itemsTmp, resp.data));
-						util.avatarUL.html(Mustache.render(util.avatarTmp, resp.data));
-						util.statUL.html(Mustache.render(util.statTmp, resp.data));
+						if (util.page == 1) {
+							util.UL.html(Mustache.render(pageItemsUtil.itemsTmp, resp.data));
+							util.avatarUL.html(Mustache.render(util.avatarTmp, resp.data));
+							util.statUL.html(Mustache.render(util.statTmp, resp.data));
+						} else {
+							util.UL.append(Mustache.render(pageItemsUtil.itemsTmp, resp.data));
+						}
+						util.page = resp.data.nextpage;
 					} else {
 						alpha.toast(resp.msg);
 					}
 					util.loading = 0;
+					util.load.hide();
 				}, "json");
 			},
 		};
@@ -668,9 +718,11 @@ require(["jquery", "alpha", "mustache"],
 			switch (hashTag) {
 				case 'zone_items':
 					topicUtil.topic_id = 0;
+					pageItemsUtil.reset();
 					pageItemsUtil.zone_items();
 					break;
 				case 'zone_item':
+					pageCommentsUtil.comment_page = 1;
 					pageCommentsUtil.toComment();
 					break;
 				case "zone_add_msg":
@@ -679,6 +731,7 @@ require(["jquery", "alpha", "mustache"],
 					alertToggle(1, html);
 					break;
 				case "zone_topic":
+					topicUtil.page = 1;
 					topicUtil.reload();
 					break;
 				default:
