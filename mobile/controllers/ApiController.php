@@ -389,6 +389,9 @@ class ApiController extends Controller
 						'status' => isset($info['uStatus']) ? $info['uStatus'] : '',
 						'role' => isset($info['uRole']) ? $info['uRole'] : User::ROLE_SINGLE,
 					]);
+			case 'wx-config':
+				return self::renderAPI(0, '',
+					['sign' => WechatUtil::getSignature()]);
 			default:
 				break;
 		}
