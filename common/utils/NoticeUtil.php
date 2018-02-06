@@ -192,7 +192,8 @@ class NoticeUtil
 
 		$encryptReceiverId = AppUtil::encrypt($receiverUId);
 		$util->url = AppUtil::wechatUrl();
-		$normTmpId = '7JsaLhnbxPprdROufN7QulRN7C-PwLJlHbrQ83WqtGw';
+//		$normTmpId = '7JsaLhnbxPprdROufN7QulRN7C-PwLJlHbrQ83WqtGw';
+		$normTmpId = 'acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw';
 		switch ($tag) {
 			case WechatUtil::NOTICE_REWARD_NEW:
 				$util->template_id = 'ZJVqVttar_9v9azyjydZzFiR8hF7pq-BpY_XBbugJDM';

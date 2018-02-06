@@ -591,7 +591,8 @@ class WechatUtil
 		$wxUrl = AppUtil::wechatUrl();
 		$msgCat = 0;
 		$text = '';
-		$normTmpId = '7JsaLhnbxPprdROufN7QulRN7C-PwLJlHbrQ83WqtGw';
+//		$normTmpId = '7JsaLhnbxPprdROufN7QulRN7C-PwLJlHbrQ83WqtGw';
+		$normTmpId = 'acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw';
 		switch ($noticeTag) {
 			case self::NOTICE_REWARD_NEW:
 				$templateId = 'ZJVqVttar_9v9azyjydZzFiR8hF7pq-BpY_XBbugJDM';
