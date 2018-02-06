@@ -271,9 +271,9 @@
 			</div>
 			{[/flag100]}
 			{[#flag110]}
-			<div class="zone_container_item_cat_imgs img_{[img_co]}">
+			<div class="zone_container_item_cat_imgs img_{[img_co]}" data_urls='{[jsonUrl]}'>
 				{[#url]}
-				<div><img src="{[.]}" alt=""></div>
+				<a href="javascript:;" data_url="{[.]}" items_tag="preview"><img src="{[.]}" alt=""></a>
 				{[/url]}
 			</div>
 			{[/flag110]}

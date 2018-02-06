@@ -64,13 +64,21 @@ require(["jquery", "alpha", "mustache"],
 
 					switch (util.opt_subtag) {
 						case 'opt':
-							alpha.toast('opt');
+
 							break;
 						case 'all':
-							alpha.toast('show all');
+							break;
+						case 'preview':
+							var curr = self.attr("data_url");
+							var urls = JSON.parse(self.closest("div").attr("data_urls"));
+
+							wx.previewImage({
+								current: curr, // 当前显示图片的http链接
+								urls: urls // 需要预览的图片http链接列表
+							});
 							break;
 						case 'view':
-							// alpha.toast('view');
+
 							break;
 						case 'rose':
 						case 'zan':
@@ -224,6 +232,7 @@ require(["jquery", "alpha", "mustache"],
 						alpha.clear();
 						util.commentUL.prepend(Mustache.render(util.commentTmp, resp.data));
 						util.reset();
+						$(".zone_container_item_comments_vbtns").removeClass("active");
 					} else {
 						alpha.toast(resp.msg);
 					}

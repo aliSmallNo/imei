@@ -104,6 +104,7 @@ class Moment extends ActiveRecord
 			'article_url' => '',
 			'img_co' => 0,
 			'short_text' => '',
+			'jsonUrl' => '',
 			'dt' => AppUtil::prettyPastDate($row["mAddedOn"]),
 		];
 		// 话题
@@ -123,6 +124,7 @@ class Moment extends ActiveRecord
 		} elseif ($row['mCategory'] == self::CAT_IMG) {
 			// 样式：img_{[img_co]}
 			$arr['img_co'] = count($arr["url"]);
+			$arr['jsonUrl'] = json_encode($arr["url"]);
 		}
 
 		$arr['short_title'] = mb_strlen($arr['title']) > 15 ? mb_substr($arr["title"], 0, 15) . "..." : $arr['title'];
