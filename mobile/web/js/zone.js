@@ -15,6 +15,34 @@ require(["jquery", "alpha", "mustache"],
 			loading: 0
 		};
 
+		$(window).on("scroll", function () {
+			var lastRow;
+			var sh = $(window).scrollTop();
+			if ($sls.curFrag == 'zone_items' && sh > 0) {
+				lastRow = pageItemsUtil.itemsUL.find('li:last');
+				if (lastRow && eleInScreen(lastRow, 150) && pageItemsUtil.page > 0) {
+					pageItemsUtil.zone_items();
+					return false;
+				}
+			} else if ($sls.curFrag == 'zone_topic' && sh > 0) {
+				lastRow = topicUtil.UL.find('li:last');
+				if (lastRow && eleInScreen(lastRow, 150) && topicUtil.page > 0) {
+					topicUtil.reload();
+					return false;
+				}
+			} else if ($sls.curFrag == 'zone_item' && sh > 0) {
+				lastRow = pageCommentsUtil.commentUL.find('li:last');
+				if (lastRow && eleInScreen(lastRow, 150) && pageCommentsUtil.comment_page > 0) {
+					pageCommentsUtil.toComment();
+					return false;
+				}
+			}
+		});
+
+		function eleInScreen($ele, $offset) {
+			return $ele && $ele.length > 0 && $ele.offset().top + $offset < $(window).scrollTop() + $(window).height();
+		}
+
 		var pageItemsUtil = {
 			zone_id: '',        //动态ID
 			zone_bar_tag: 'all', //bar tag
@@ -27,13 +55,6 @@ require(["jquery", "alpha", "mustache"],
 			hotTopicTmp: $("#tpl_hot_topic").html(),
 			hotTopicUL: $(".zone_container_top_topic ul"),
 
-			itemUL: $("#zone_item_top"),
-			itemTmp: '',
-			zanUL: $("#zone_item_zan"),
-			roseUL: $("#zone_item_rose"),
-			roseTmp: '{[#data]}<div class="img"><img src="{[uThumb]}" alt=""></div>{[/data]}',
-			commentUL: $("#zone_item_comment"),
-			commentTmp: $("#tpl_comment_item").html(),
 			init: function () {
 				var util = this;
 				// 点击单个动态中所有按钮
@@ -80,31 +101,7 @@ require(["jquery", "alpha", "mustache"],
 					}
 				});
 			},
-			// 拉取评论页信息
-			toComment: function () {
-				var util = this;
-				if (util.loadingflag) {
-					return;
-				}
-				util.loadingflag = 1;
-				$.post("/api/zone", {
-					tag: "comment_info",
-					id: util.zone_id,
-				}, function (resp) {
-					if (resp.code == 0) {
-						var more = '<div class="img"><a href="javascript:;">+10</a></div>';
-						var rose_first = '<div class="img"><img src="/images/zone/ico_rose.png" alt="" class="first"></div>';
-						var zan_first = '<div class="img"><img src="/images/zone/ico_zan.png" alt="" class="first"></div>';
-						util.itemUL.html(Mustache.render(util.itemsTmp, {data: resp.data.zone_info}));
-						util.roseUL.html(rose_first + Mustache.render(util.roseTmp, {data: resp.data.rose_list}));
-						util.zanUL.html(zan_first + Mustache.render(util.roseTmp, {data: resp.data.zan_list}) + more);
-						util.commentUL.html(Mustache.render(util.commentTmp, {data: resp.data.comment_list}));
-					} else {
-						alpha.toast(resp.msg);
-					}
-					util.loadingflag = 0;
-				}, "json");
-			},
+
 			Zan_Rose: function ($btn) {
 				var util = this;
 				if (util.loadingflag) {
@@ -152,11 +149,19 @@ require(["jquery", "alpha", "mustache"],
 				}, "json");
 			},
 		};
-		pageItemsUtil.init();
 
 		var pageCommentsUtil = {
 			comment_text: '',
 			inputObj: null,
+			loadingflag: 0,
+
+			comment_page: 1,
+			itemUL: $("#zone_item_top"),
+			zanUL: $("#zone_item_zan"),
+			roseUL: $("#zone_item_rose"),
+			roseTmp: '{[#data]}<div class="img"><img src="{[uThumb]}" alt=""></div>{[/data]}',
+			commentUL: $("#zone_item_comment"),
+			commentTmp: $("#tpl_comment_item").html(),
 			init: function () {
 				var util = this;
 				// 底下的输入框
@@ -174,11 +179,7 @@ require(["jquery", "alpha", "mustache"],
 							util.inputObj = self.closest(".zone_container_item_comments_inputs").find(".inputs_input input");
 							var text = util.inputObj.val();
 							util.comment_text = $.trim(text);
-							if (util.loadingflag) {
-								return;
-							}
 							if (recordUtil.voice_localId) {
-								util.loadingflag = 1;
 								//上传语音接口
 								wx.uploadVoice({
 									localId: recordUtil.voice_localId,                // 需要上传的音频的本地ID，由stopRecord接口获得
@@ -191,7 +192,6 @@ require(["jquery", "alpha", "mustache"],
 								});
 								//recordUtil.uploadRecord(util.submitComment);
 							} else if (text) {
-								util.loadingflag = 1;
 								util.submitComment();
 							}
 							break;
@@ -209,6 +209,10 @@ require(["jquery", "alpha", "mustache"],
 			// 提交评论内容
 			submitComment: function () {
 				var util = this;
+				if (util.loadingflag) {
+					return;
+				}
+				util.loadingflag = 1;
 				$.post("/api/zone", {
 					tag: "add_comment",
 					id: recordUtil.voice_serverId,
@@ -217,7 +221,7 @@ require(["jquery", "alpha", "mustache"],
 				}, function (resp) {
 					if (resp.code == 0) {
 						alpha.clear();
-						pageItemsUtil.commentUL.prepend(Mustache.render(pageItemsUtil.commentTmp, resp.data));
+						pageItemsUtil.commentUL.prepend(Mustache.render(util.commentTmp, resp.data));
 						util.reset();
 					} else {
 						alpha.toast(resp.msg);
@@ -241,8 +245,38 @@ require(["jquery", "alpha", "mustache"],
 					obj.addClass("active");
 				}
 			},
+			// 拉取评论页信息
+			toComment: function () {
+				var util = this;
+				if (util.loadingflag) {
+					return;
+				}
+				util.loadingflag = 1;
+				$.post("/api/zone", {
+					tag: "comment_info",
+					id: pageItemsUtil.zone_id,
+					page: util.comment_page,
+				}, function (resp) {
+					if (resp.code == 0) {
+						if (util.comment_page == 1) {
+							var more = '<div class="img"><a href="javascript:;">+10</a></div>';
+							var rose_first = '<div class="img"><img src="/images/zone/ico_rose.png" alt="" class="first"></div>';
+							var zan_first = '<div class="img"><img src="/images/zone/ico_zan.png" alt="" class="first"></div>';
+							util.itemUL.html(Mustache.render(pageItemsUtil.itemsTmp, {data: resp.data.zone_info}));
+							util.roseUL.html(rose_first + Mustache.render(util.roseTmp, {data: resp.data.rose_list}));
+							util.zanUL.html(zan_first + Mustache.render(util.roseTmp, {data: resp.data.zan_list}) + more);
+							util.commentUL.html(Mustache.render(util.commentTmp, {data: resp.data.comment_list}));
+						} else {
+							util.commentUL.append(Mustache.render(util.commentTmp, {data: resp.data.comment_list}));
+						}
+						util.comment_page = resp.data.nextpage;
+					} else {
+						alpha.toast(resp.msg);
+					}
+					util.loadingflag = 0;
+				}, "json");
+			},
 		};
-		pageCommentsUtil.init();
 
 		var recordUtil = {
 			voice_localId: '',
@@ -392,7 +426,6 @@ require(["jquery", "alpha", "mustache"],
 				}
 			},
 		};
-		recordUtil.init();
 
 		var pageAddUtil = {
 			loadingflag: 0,
@@ -566,7 +599,6 @@ require(["jquery", "alpha", "mustache"],
 				// topicUtil.topic_id = 0; // 如果是话题页进入添加，需reset topic_id
 			},
 		};
-		pageAddUtil.init();
 
 		var topicUtil = {
 			topic_id: 0,
@@ -624,8 +656,7 @@ require(["jquery", "alpha", "mustache"],
 					pageItemsUtil.zone_items();
 					break;
 				case 'zone_item':
-					// pageCommentsUtil.reset();
-					pageItemsUtil.toComment();
+					pageCommentsUtil.toComment();
 					break;
 				case "zone_add_msg":
 					$(".zone_container_add_msg ul[add_cat]").hide();
@@ -682,5 +713,10 @@ require(["jquery", "alpha", "mustache"],
 			});
 			$sls.cork.hide();
 			locationHashChanged();
+			pageItemsUtil.init();
+			pageCommentsUtil.init();
+			recordUtil.init();
+			pageAddUtil.init();
+			topicUtil.init();
 		});
 	});

@@ -3193,6 +3193,7 @@ class ApiController extends Controller
 				$page = self::postParam('page', 1);
 				$param = $cri = [];
 				if ($subtag == "favor") {
+					$param["favorFlag"] = 1;
 
 				} elseif ($subtag == "all") {
 
@@ -3296,12 +3297,14 @@ class ApiController extends Controller
 				break;
 			case "comment_info":
 				$zone_id = self::postParam('id');
+				$page = self::postParam('page');
 				if (!$zone_id) {
 					return self::renderAPI(129, '参数错误');
 				}
-				list($zone_info, $rose_list, $zan_list, $comment_list) = Moment::wechatItem($uid, $zone_id);
+				list($zone_info, $nextpage, $rose_list, $zan_list, $comment_list) = Moment::wechatItem($uid, $zone_id, $page);
 				return self::renderAPI(0, '', [
 					'zone_info' => $zone_info,
+					'nextpage' => $nextpage,
 					'zan_list' => $zan_list,
 					'rose_list' => $rose_list,
 					'comment_list' => $comment_list,

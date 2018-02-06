@@ -56,9 +56,14 @@ class Moment extends ActiveRecord
 	public static function wechatItems($uid, $cri, $param, $page = 1, $pagesize = 10)
 	{
 		$conn = AppUtil::db();
-		$str = "";
+		$str = $favor = "";
 		if ($cri) {
 			$str .= ' and ' . implode(" ", $cri);
+		}
+		$relation = UserNet::REL_FAVOR;
+		if (isset($param["favorFlag"]) && $param["favorFlag"]) {
+			$favor = " join im_user_net as n on n.nUId=m.mUId and nSubUId=$uid and nRelation=$relation ";
+			unset($param["favorFlag"]);
 		}
 
 		$limit = "limit " . ($page - 1) * ($pagesize + 1) . ',' . $pagesize;
@@ -75,6 +80,7 @@ class Moment extends ActiveRecord
 				left join im_moment_sub as s on m.mId=s.sMId 
 				left join im_moment_topic as t on t.tId=m.mTopic 
 				left join im_user as u on u.uId=m.mUId 
+				$favor
 				where mDeletedFlag=0 $str
 				group by mId order by mTop desc,mId desc  $limit ";
 		$ret = $conn->createCommand($sql)->bindValues($param)->queryAll();
@@ -136,16 +142,16 @@ class Moment extends ActiveRecord
 
 	}
 
-	public static function wechatItem($uid, $mid)
+	public static function wechatItem($uid, $mid, $page = 1)
 	{
-		list($res) = self::wechatItems($uid, ["mId=:mid"], [":mid" => $mid]);
+		list($res, $nextpage) = self::wechatItems($uid, ["mId=:mid"], [":mid" => $mid], $page);
 
 		$conn = AppUtil::db();
 		$rose = self::itemByCat($conn, $mid, MomentSub::CAT_ROSE);
 		$zan = self::itemByCat($conn, $mid, MomentSub::CAT_ZAN);
 		$comment = self::itemByCat($conn, $mid, MomentSub::CAT_COMMENT);
 
-		return [$res, $rose, $zan, $comment];
+		return [$res, $nextpage, $rose, $zan, $comment];
 	}
 
 	public static function itemByCat($conn, $mid, $cat, $sid = 0)
