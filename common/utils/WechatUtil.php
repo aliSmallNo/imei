@@ -678,7 +678,8 @@ class WechatUtil
 				break;
 			case self::NOTICE_SUMMON:
 				$msgCat = UserMsg::CATEGORY_FAVOR;
-				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$templateId = $normTmpId;
+					//"YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = $wxUrl . "/wx/single";
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['keyword1'] = '有人为你怦然心动了，快去看看吧';
@@ -1162,6 +1163,7 @@ class WechatUtil
 			 JOIN im_user_wechat as w on u.uId = w.wUId
 			 WHERE w.wSubscribe=1 AND u.uOpenId LIKE 'oYDJew%' AND u.uPhone='' "
 			. $criteria;
+
 		$ret = $conn->createCommand($sql)->queryAll();
 		if ($cat == 'template') {
 			$userIds = array_column($ret, 'uId');
