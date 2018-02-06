@@ -677,7 +677,7 @@ class WechatUtil
 				$text = "个人信息审核不通过，" . $subTitle;
 				break;
 			case self::NOTICE_SUMMON:
-				$msgCat = 0;
+				$msgCat = UserMsg::CATEGORY_SUMMON;
 				//UserMsg::CATEGORY_FAVOR;
 				$templateId = $normTmpId;
 				//"YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";

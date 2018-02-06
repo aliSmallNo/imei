@@ -46,6 +46,7 @@ class UserMsg extends ActiveRecord
 	const CATEGORY_CERT_DENY = 222;
 	//const CATEGORY_ROUTINE = 250;
 	const CATEGORY_FRIRENDS = 260;
+	const CATEGORY_SUMMON = 270;
 
 	static $catDict = [
 		self::CATEGORY_ADMIN_PASS => "审核通过",
@@ -71,6 +72,7 @@ class UserMsg extends ActiveRecord
 		self::CATEGORY_CERT_GRANT => "认证审核成功",
 		self::CATEGORY_CERT_DENY => "认证审核失败",
 		self::CATEGORY_FRIRENDS => "交友活动",
+		self::CATEGORY_SUMMON => "唤醒",
 
 	];
 
