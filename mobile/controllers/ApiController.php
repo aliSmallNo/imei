@@ -3216,16 +3216,18 @@ class ApiController extends Controller
 				$text = self::postParam('text');
 				$img_ids = self::postParam('img_ids');
 				$voice_id = self::postParam('voice_id');
-
+				$topic_id = self::postParam('topic_id');
 				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode([
 					"cat" => $cat,
 					"text" => $text,
 					"img_ids" => $img_ids,
 					"voice_id" => $voice_id,
+					"topic_id" => $topic_id,
 				], JSON_UNESCAPED_UNICODE));
 
 
 				$insert["mUId"] = $wxInfo["uId"];
+				$insert["mTopic"] = $topic_id ? intval($topic_id) : 0;
 				$insert["mContent"] = ['title' => '', 'url' => [], 'article_url' => '', 'subtext' => '',];
 				switch ($cat) {
 					case "text":

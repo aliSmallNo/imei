@@ -74,8 +74,8 @@ require(["jquery", "alpha", "mustache"],
 				// 点击话题选择项
 				$(document).on(kClick, ".zone_container_top_topic a", function () {
 					var self = $(this);
-					var topic_id = self.attr("data_topic_id");
-					if (topic_id) {
+					topicUtil.topic_id = self.attr("data_topic_id");
+					if (topicUtil.topic_id) {
 						location.href = "#zone_topic";
 					}
 				});
@@ -538,12 +538,18 @@ require(["jquery", "alpha", "mustache"],
 					cat: util.cat,
 					text: util.text,
 					voice_id: recordUtil.voice_serverId,
+					topic_id: topicUtil.topic_id,
 				}, function (resp) {
 					if (resp.code == 0) {
 						// $("#album .photos").append(Mustache.render(util.albumSingleTmp, resp.data));
 						alpha.clear();
 						alpha.toast(resp.msg, 1);
 						util.reset();
+						if (topicUtil.topic_id) {
+							location.href = "#zone_topic";
+						} else {
+							location.href = "#zone_items";
+						}
 					} else {
 						alpha.toast(resp.msg);
 					}
@@ -557,15 +563,20 @@ require(["jquery", "alpha", "mustache"],
 				util.text = '';
 				util.img_localIds = [];
 				util.img_serverIds = [];
+				// topicUtil.topic_id = 0; // 如果是话题页进入添加，需reset topic_id
 			},
 		};
 		pageAddUtil.init();
 
 		var topicUtil = {
-			topic_id: 1,
+			topic_id: 0,
 			loading: 0,
 			page: 1,
 			UL: $("#topic_join_content"),
+			avatarUL: $("#topic_des_avatar"),
+			avatarTmp: $("#tpl_topic_des_avatar").html(),
+			statUL: $("#topic_des_stat"),
+			statTmp: $("#tpl_topic_des_stat").html(),
 			init: function () {
 
 			},
@@ -581,10 +592,12 @@ require(["jquery", "alpha", "mustache"],
 				}, function (resp) {
 					if (resp.code == 0) {
 						util.UL.html(Mustache.render(pageItemsUtil.itemsTmp, resp.data));
-
+						util.avatarUL.html(Mustache.render(util.avatarTmp, resp.data));
+						util.statUL.html(Mustache.render(util.statTmp, resp.data));
 					} else {
-
+						alpha.toast(resp.msg);
 					}
+					util.loading = 0;
 				}, "json");
 			},
 		};
@@ -607,6 +620,7 @@ require(["jquery", "alpha", "mustache"],
 			hashTag = hashTag.replace("#", "");
 			switch (hashTag) {
 				case 'zone_items':
+					topicUtil.topic_id = 0;
 					pageItemsUtil.zone_items();
 					break;
 				case 'zone_item':

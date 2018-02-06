@@ -37,7 +37,7 @@
 			<div class="zone_container_item_opt" id="zone_item_rose">
 
 			</div>
-			<div class="zone_container_item_opt"  id="zone_item_zan">
+			<div class="zone_container_item_opt" id="zone_item_zan">
 
 			</div>
 		</div>
@@ -166,27 +166,11 @@
 
 <section id="zone_topic">
 	<div class="zone_container_topic_all">
-		<div class="zone_container_topic_all_top">
-			<img src="/images/cr_room_share.jpg" alt="" class="bg_blur">
-			<div class="zone_container_topic_all_top_about">
-				<div class="img recommend"><img src="/images/cr_room_share.jpg" alt=""><span>推荐</span></div>
-				<h5>#单身求带走#</h5>
-				<p>世界那么大，找个人来陪，来个永久伴</p>
-			</div>
+		<div class="zone_container_topic_all_top" id="topic_des_avatar">
+
 		</div>
-		<ul class="zone_container_topic_all_stat">
-			<li>
-				<h5>3022</h5>
-				<p>内容</p>
-			</li>
-			<li>
-				<h5>3022</h5>
-				<p>参与</p>
-			</li>
-			<li>
-				<h5>3022</h5>
-				<p>浏览</p>
-			</li>
+		<ul class="zone_container_topic_all_stat" id="topic_des_stat">
+
 		</ul>
 		<div class="zone_container_topic_all_add"><a href="#zone_add_msg"><span>发布内容</span></a></div>
 
@@ -206,15 +190,33 @@
 		</div>
 	</div>
 </div>
-
-
 <input type="hidden" id="cWXUrl" value="{{$wxUrl}}">
 
-
-<script type="text/template" id="tpl_hot_topic">
-	{[#hotTopic]}<li><a href="javascript:;" data_topic_id="{[tId]}">#{[tTitle]}#</a></li>{[/hotTopic]}
+<script type="text/html" id="tpl_topic_des_avatar">
+	{[#topicInfo]}
+	<img src="{[tImage]}" alt="" class="bg_blur">
+	<div class="zone_container_topic_all_top_about">
+		<div class="img {[otherTagCls]}"><img src="{[tImage]}" alt=""><span>{[otherTagText]}</span></div>
+		<h5>#{[tTitle]}#</h5>
+		<p>世界那么大，找个人来陪，来个永久伴</p>
+	</div>
+	{[/topicInfo]}
+</script>
+<script type="text/html" id="tpl_topic_des_stat">
+	{[#topicInfo]}
+	<li><h5>{[content]}</h5>
+		<p>内容</p></li>
+	<li><h5>{[view]}</h5>
+		<p>浏览</p></li>
+	<li><h5>{[join]}</h5>
+		<p>参与</p></li>
+	{[/topicInfo]}
 </script>
 
+<script type="text/template" id="tpl_hot_topic">
+	{[#hotTopic]}
+	<li><a href="javascript:;" data_topic_id="{[tId]}">#{[tTitle]}#</a></li>{[/hotTopic]}
+</script>
 <script type="text/template" id="tpl_comment_item">
 	{[#data]}
 	<li class="zone_container_item_comment">

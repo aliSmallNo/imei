@@ -47,13 +47,31 @@ class MomentTopic extends ActiveRecord
 	public static function fmt($row)
 	{
 		$arr = [
+			"note" => [
+				["view" => 0, "viewText" => "浏览"],
+				["content" => 0, "contentText" => "内容"],
+				["join" => 0, "joinText" => "参与"],
+			],
 			"view" => 0,
 			"content" => 0,
 			"join" => 0,
+			"otherTag" => 1,
+			"otherTagCls" => 'recommend',
+			"otherTagText" => '推荐',
 		];
 		$note = json_decode($row["tNote"], 1);
+
 		foreach ($note as $k => $v) {
 			$arr[$k] = isset($note[$k]) ? $v : 0;
+			if ($k == "view") {
+				$arr["note"][0]["view"] = $arr[$k];
+			}
+			if ($k == "content") {
+				$arr["note"][1]["content"] = $arr[$k];
+			}
+			if ($k == "join") {
+				$arr["note"][2]["join"] = $arr[$k];
+			}
 		}
 
 		return $arr;
@@ -64,7 +82,7 @@ class MomentTopic extends ActiveRecord
 		list($list, $nextpage) = Moment::wechatItems($uid, [" t.tId=:tid "], [':tid' => $topic_id], $page = 1);
 
 		$topicInfo = self::findOne(["tId" => $topic_id])->toArray();
-		$topicInfo = self::fmt($topicInfo);
+		$topicInfo = array_merge($topicInfo, self::fmt($topicInfo));
 
 		return [$list, $nextpage, $topicInfo];
 
