@@ -14,7 +14,7 @@
 			<p><span>0.00</span>元</p>
 			<a href="javascript:;" data-tag="withdraw" class="grabed"><img src="/images/ev/ev_btn_withdraw.png" alt=""></a>
 		</div>
-		<a href="javascript:;" data-tag="ipacket" class="ev_top_alert ipacket" style="display: none">我的红包</a>
+		<a href="javascript:;" data-tag="ipacket" class="ev_top_alert ipacket">我的红包</a>
 		<a href="javascript:;" data-tag="rule" class="ev_top_alert rule">红包规则</a>
 	</div>
 

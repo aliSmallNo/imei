@@ -1596,15 +1596,15 @@ class FooController extends Controller
 
 		//UserTrans::taskCondition(10, 136055);
 
-//		MomentTopic::add([
-//			"tTitle" => "单身求单走",
-//			"tImage" => "https://bpbhd-10063905.file.myqcloud.com/image/t1711201155327.jpg",
-//			"tNote" => json_encode([
-//				"view" => 1023,
-//				"content" => 875,
-//				"join" => 234,
-//			], JSON_UNESCAPED_UNICODE),
-//		]);
+		/*MomentTopic::add([
+			"tTitle" => "悄悄话",
+			"tImage" => "https://bpbhd-10063905.file.myqcloud.com/image/t1711201155327.jpg",
+			"tNote" => json_encode([
+				"view" => 22,
+				"content" => 99,
+				"join" => 44,
+			], JSON_UNESCAPED_UNICODE),
+		]);*/
 
 		/*$uids = [120003, 133491, 130790, 129893, 143807];
 		$mids = [1, 2, 3, 4, 5];

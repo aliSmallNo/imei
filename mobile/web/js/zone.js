@@ -24,6 +24,9 @@ require(["jquery", "alpha", "mustache"],
 			itemsUL: $(".zone_container_items"),
 			itemsTmp: $("#tpl_items").html(),
 
+			hotTopicTmp: $("#tpl_hot_topic").html(),
+			hotTopicUL: $(".zone_container_top_topic ul"),
+
 			itemUL: $("#zone_item_top"),
 			itemTmp: '',
 			zanUL: $("#zone_item_zan"),
@@ -138,6 +141,7 @@ require(["jquery", "alpha", "mustache"],
 						alpha.clear();
 						if (util.page == 1) {
 							util.itemsUL.html(Mustache.render(util.itemsTmp, resp.data));
+							util.hotTopicUL.html(Mustache.render(util.hotTopicTmp, resp.data) + '<li><a href="#zone_search_topic">更多话题</a></li>');
 						} else {
 							util.itemsUL.append(Mustache.render(util.itemsTmp, resp.data));
 						}
@@ -557,6 +561,34 @@ require(["jquery", "alpha", "mustache"],
 		};
 		pageAddUtil.init();
 
+		var topicUtil = {
+			topic_id: 1,
+			loading: 0,
+			page: 1,
+			UL: $("#topic_join_content"),
+			init: function () {
+
+			},
+			reload: function () {
+				var util = this;
+				if (util.loading || util.page == 0) {
+					return;
+				}
+				util.loading = 1;
+				$.post("/api/zone", {
+					tag: 'init_topic',
+					id: util.topic_id,
+				}, function (resp) {
+					if (resp.code == 0) {
+						util.UL.html(Mustache.render(pageItemsUtil.itemsTmp, resp.data));
+
+					} else {
+
+					}
+				}, "json");
+			},
+		};
+
 		function alertToggle(f, html) {
 			if (f) {
 				$sls.main.show();
@@ -586,7 +618,9 @@ require(["jquery", "alpha", "mustache"],
 					var html = $("#tpl_add_msg_cat").html();
 					alertToggle(1, html);
 					break;
-
+				case "zone_topic":
+					topicUtil.reload();
+					break;
 				default:
 					break;
 			}
