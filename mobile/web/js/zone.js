@@ -71,7 +71,6 @@ require(["jquery", "alpha", "mustache"],
 						case 'preview':
 							var curr = self.attr("data_url");
 							var urls = JSON.parse(self.closest("div").attr("data_urls"));
-
 							wx.previewImage({
 								current: curr, // 当前显示图片的http链接
 								urls: urls // 需要预览的图片http链接列表
@@ -98,6 +97,7 @@ require(["jquery", "alpha", "mustache"],
 					util.zone_bar_tag = self.attr("items_bar");
 					self.closest("ul").find("a").removeClass("active");
 					self.addClass("active");
+					util.reset();
 					util.zone_items();
 				});
 				// 点击话题选择项
@@ -157,6 +157,11 @@ require(["jquery", "alpha", "mustache"],
 					util.loadingflag = 0;
 				}, "json");
 			},
+			reset: function () {
+				var util = this;
+				util.itemsUL.html('');
+				util.page = 1;
+			}
 		};
 
 		var pageCommentsUtil = {
