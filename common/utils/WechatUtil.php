@@ -677,13 +677,14 @@ class WechatUtil
 				$text = "个人信息审核不通过，" . $subTitle;
 				break;
 			case self::NOTICE_SUMMON:
-				$msgCat = UserMsg::CATEGORY_FAVOR;
+				$msgCat = 0;
+				//UserMsg::CATEGORY_FAVOR;
 				$templateId = $normTmpId;
-					//"YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				//"YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = $wxUrl . "/wx/single";
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['keyword1'] = '有人为你怦然心动了，快去看看吧';
-				$keywords['keyword2'] = '千寻恋恋祝你今天好运又开心啊';
+				$keywords['keyword2'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_PRESENT:
@@ -718,7 +719,7 @@ class WechatUtil
 					return 0;
 				}
 				$templateId = $normTmpId;
-					//"YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				//"YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = $wxUrl . "/wx/notice";
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['keyword1'] = $subTitle;
