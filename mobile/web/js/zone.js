@@ -142,6 +142,7 @@ require(["jquery", "alpha", "mustache"],
 						} else {
 							util.itemsUL.append(Mustache.render(util.itemsTmp, resp.data));
 						}
+						util.page = resp.data.nextpage;
 					} else {
 						alpha.toast(resp.msg);
 					}
@@ -186,7 +187,7 @@ require(["jquery", "alpha", "mustache"],
 									isShowProgressTips: 1,                            // 默认为1，显示进度提示
 									success: function (res) {
 										recordUtil.voice_serverId = res.serverId;        // 返回音频的服务器端ID
-										alert(recordUtil.voice_serverId);
+										// alert(recordUtil.voice_serverId);
 										util.submitComment();
 									}
 								});
@@ -221,7 +222,7 @@ require(["jquery", "alpha", "mustache"],
 				}, function (resp) {
 					if (resp.code == 0) {
 						alpha.clear();
-						pageItemsUtil.commentUL.prepend(Mustache.render(util.commentTmp, resp.data));
+						util.commentUL.prepend(Mustache.render(util.commentTmp, resp.data));
 						util.reset();
 					} else {
 						alpha.toast(resp.msg);
@@ -293,14 +294,14 @@ require(["jquery", "alpha", "mustache"],
 						case "add":
 							var f = self.hasClass("pause");
 							if (f) {
-								alert("playVoice");
+								// alert("playVoice");
 								// 播放语音接口
 								wx.playVoice({
 									localId: recordUtil.voice_localId // 需要播放的音频的本地ID，由stopRecord接口获得
 								});
 								self.removeClass("pause").addClass("play");
 							} else {
-								alert(" pauseVoice");
+								// alert(" pauseVoice");
 								// 暂停播放接口
 								wx.pauseVoice({
 									localId: recordUtil.voice_localId // 需要暂停的音频的本地ID，由stopRecord接口获得
@@ -311,7 +312,7 @@ require(["jquery", "alpha", "mustache"],
 							wx.onVoicePlayEnd({
 								success: function (res) {
 									// var localId = res.localId; // 返回音频的本地ID
-									alert("onVoicePlayEnd");
+									// alert("onVoicePlayEnd");
 									self.removeClass("play").addClass("pause");
 								}
 							});
@@ -338,7 +339,7 @@ require(["jquery", "alpha", "mustache"],
 					wx.stopRecord({
 						success: function (res) {
 							util.voice_localId = res.localId;
-							alert(util.voice_localId);
+							// alert(util.voice_localId);
 						}
 					});
 				}
@@ -347,7 +348,7 @@ require(["jquery", "alpha", "mustache"],
 					complete: function (res) {
 						util.voice_localId = res.localId;
 						util.changeRecord(self, false);
-						alert('timeout');
+						// alert('timeout');
 					}
 				});
 			},
@@ -358,7 +359,7 @@ require(["jquery", "alpha", "mustache"],
 					isShowProgressTips: 1,                            // 默认为1，显示进度提示
 					success: function (res) {
 						recordUtil.voice_serverId = res.serverId;     // 返回音频的服务器端ID
-						alert(recordUtil.voice_serverId);
+						// alert(recordUtil.voice_serverId);
 						typeof callback == "function" && callback();
 					}
 				});
@@ -452,8 +453,8 @@ require(["jquery", "alpha", "mustache"],
 							util.img_localIds = util.img_localIds.concat(res.localIds);
 							var tmp = '{[#data]}<li><img src="{[.]}" alt=""></li>{[/data]}';
 							var html = Mustache.render(tmp, {data: res.localIds});
-							//alert(html);
-							alert(JSON.stringify(util.img_localIds));
+							// alert(html);
+							// alert(JSON.stringify(util.img_localIds));
 							if (len + parseInt(util.img_localIds.length) < 6) {
 								chooseImgStr = '<li><a href="javascript:;" class="choose-img"></a></li>';
 							}
@@ -477,7 +478,7 @@ require(["jquery", "alpha", "mustache"],
 							util.submitItem();
 							break;
 						case "image":
-							alert(util.img_localIds.length);
+							// alert(util.img_localIds.length);
 							if (util.img_localIds && util.img_localIds.length) {
 								util.loadingflag = 1;
 								util.img_serverIds = [];
@@ -500,7 +501,7 @@ require(["jquery", "alpha", "mustache"],
 									isShowProgressTips: 1,                            // 默认为1，显示进度提示
 									success: function (res) {
 										recordUtil.voice_serverId = res.serverId;        // 返回音频的服务器端ID
-										alert(recordUtil.voice_serverId);
+										// alert(recordUtil.voice_serverId);
 										util.submitItem();
 									}
 								});
@@ -551,7 +552,7 @@ require(["jquery", "alpha", "mustache"],
 					success: function (res) {
 						util.img_serverIds.push(res.serverId);
 						if (util.img_localIds.length < 1) {
-							alert(JSON.stringify(util.img_serverIds));
+							// alert(JSON.stringify(util.img_serverIds));
 							util.submitItem();
 						} else {
 							util.wxUploadImages();
@@ -563,7 +564,7 @@ require(["jquery", "alpha", "mustache"],
 				});
 			},
 			submitItem: function () {
-				alert("submitItem function ");
+				// alert("submitItem function ");
 				var util = this;
 				$.post("/api/zone", {
 					tag: "add_zone_msg",

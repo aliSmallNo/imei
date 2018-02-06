@@ -71,9 +71,6 @@
 			<textarea placeholder="此时此刻，你想与大家分享点什么..." rows="12"></textarea>
 			<ul class="add_cat_img" add_cat="image">
 				<li><a href="javascript:;" class="choose-img"></a></li>
-				<li><a href="javascript:;" class="choose-img"></a></li>
-				<li><a href="javascript:;" class="choose-img"></a></li>
-				<li><a href="javascript:;" class="choose-img"></a></li>
 			</ul>
 			<ul class="add_cat_voice" add_cat="voice">
 				<div class="zone_container_item_cat_voice">
@@ -81,13 +78,14 @@
 					</div>
 					<div class="fill">&nbsp;</div>
 					<a href="javascript:;" class="voice pause playVoiceElement" pvl="add"></a>
-					<span>01:28</span>
+					<span></span>
 				</div>
 			</ul>
 		</div>
 		<div class="msg_tags">
 			<ul>
-				<li><a href="javascript:;" class="add_tag"><img src="/images/zone/ico_position.png" alt=""><span>江苏</span></a>
+				<li>
+					<a href="javascript:;" class="add_tag"><img src="/images/zone/ico_position.png" alt=""><span>江苏</span></a>
 				</li>
 				<li><a href="javascript:;" class="add_tag">#添加话题</a></li>
 			</ul>
