@@ -651,9 +651,11 @@ class WechatUtil
 				break;
 			case self::NOTICE_ROOM_CHAT:
 				$msgCat = UserMsg::CATEGORY_ROOM_CHAT;
-				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				$templateId = $normTmpId;
+				//"YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = $wxUrl . "/wx/single#scontacts";
 				$keywords['first'] = "hi，$nickname\n";
+				$keywords['keyword2'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_AUDIT_PASS:

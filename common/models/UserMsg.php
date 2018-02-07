@@ -401,15 +401,17 @@ class UserMsg extends ActiveRecord
 		foreach ($ret as $row) {
 			$receiverUId = $row['receiverUId'];
 			$senderUId = $row['senderUId'];
+			$openId = $row['uOpenId'];
 			$cmd->bindValues([
 				':id' => $receiverUId
 			])->execute();
 
-			NoticeUtil::init2(WechatUtil::NOTICE_CHAT, $receiverUId, $senderUId)
+			/*NoticeUtil::init2(WechatUtil::NOTICE_CHAT, $receiverUId, $senderUId)
 				->send([
 					'有人密聊你了' . $row['cnt'] . '次',
 					date("Y年n月j日 H:i")
-				]);
+				]);*/
+			NoticeUtil::init(NoticeUtil::CAT_CHAT, $openId)->sendText();
 		}
 		/*$openIds = array_column($ret, 'uOpenId');
 		foreach ($openIds as $openId) {
