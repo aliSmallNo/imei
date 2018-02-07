@@ -821,7 +821,7 @@ class FooController extends Controller
 				'text' => '我好想和你一起过圣诞节喔~',
 				'url' => "https://mp.weixin.qq.com/s/1q2ak1MmrQGUhKHyZaJcEg"
 			];*/
-			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1801311194953.jpeg";
+			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1802071197727.jpeg";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
 			QueueUtil::loadJob('templateMsg',
@@ -1410,24 +1410,26 @@ class FooController extends Controller
 			'千寻恋恋每日简报',
 			'测试测试1122');*/
 
-		/*QueueUtil::loadJob('templateMsg',
+
+
+		QueueUtil::loadJob('templateMsg',
 			[
-				'tag' => WechatUtil::NOTICE_SUMMON,
+				'tag' => WechatUtil::NOTICE_CHAT,
 				'receiver_uid' => 131379,
-				'title' => '有一位你的微信好友对你怦然心动啦，快去看看吧~',
-				'sub_title' => '有一位你的微信好友对你怦然心动啦，快去看看吧~',
+				'title' => '有人密聊你啦',
+				'sub_title' => 'TA给你发了一条密聊消息，快去看看吧~',
 				'sender_uid' => 120000,
 				'gid' => 0
 			],
-			QueueUtil::QUEUE_TUBE_SMS);*/
+			QueueUtil::QUEUE_TUBE_SMS);
 
-		WechatUtil::templateMsg(WechatUtil::NOTICE_SUMMON,
+		/*WechatUtil::templateMsg(WechatUtil::NOTICE_SUMMON,
 			131379,
 			'有一位你的微信好友对你怦然心动啦，快去看看吧~',
 			'有一位你的微信好友对你怦然心动啦，快去看看吧~',
 			120000,
 			0
-		);
+		);*/
 
 		//var_dump(json_encode(UserTrans::$CatMinus));
 //		$ret = City::locationData();
