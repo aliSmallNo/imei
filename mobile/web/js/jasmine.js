@@ -104,8 +104,8 @@ require(["jquery", "alpha", "mustache"],
 				$sls.loading = 0;
 				$(".ev_container_top_grabed p span").html(resp.data.sum);
 				$(".ev_container_top_grab h4 span").html(resp.data.leftAmt);
-
 				refresh(resp.data.hasGrab);
+				$(".ev_container_content ul").html(Mustache.render($("#tpl_init").html(), resp.data));
 			}, "json");
 		}
 

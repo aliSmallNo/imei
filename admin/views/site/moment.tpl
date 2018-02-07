@@ -125,7 +125,7 @@
 					<div>{{$item.location}}</div>
 				</td>
 				<td>
-					<b><span class="topic">{{if isset($item.topic_title)}}{{$item.topic_title}}{{/if}}</span>{{$item.short_title}}</b>
+					<b><span class="topic">{{if isset($item.topic_title)}}#{{$item.topic_title}}#{{/if}}</span>{{$item.short_title}}</b>
 					{{if $item.mCategory==100}}
 						<div class="cat_text" show="short" data_short_text="{{$item.short_text}}" data_text="{{$item.title}}"><text>{{$item.short_text}}</text><a>查看全部</a></div>
 					{{/if}}
@@ -155,7 +155,6 @@
 				<td>
 					<a href="/site/momentdesc?mid={{$item.mId}}" class="btn btn-outline btn-primary btn-xs">详情</a>
 					<a href="javascript:;" data-mid="{{$item.mId}}" class="RoomEdit btn btn-outline btn-primary btn-xs">修改动态</a>
-
 				</td>
 			</tr>
 		{{/foreach}}
@@ -170,52 +169,21 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
 							aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">添加群</h4>
+				<h4 class="modal-title">添加动态</h4>
 			</div>
 			<div class="modal-body">
 				<div class="form-horizontal">
 					<div class="form-group">
-						<label class="col-sm-3 control-label">群logo</label>
+						<label class="col-sm-3 control-label">类别</label>
 						<div class="col-sm-7">
-							<input class="form-control-static" type="file" name="upload_photo"
-							       accept="image/jpg, image/jpeg, image/png">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label">群名称</label>
-						<div class="col-sm-7">
-							<input class="form-control" data-tag="title" placeholder="(必填)" value="">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label">群介绍</label>
-						<div class="col-sm-7">
-							<textarea class="form-control" data-tag="intro" rows="4" maxlength="300"></textarea>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label">群人数上限</label>
-						<div class="col-sm-7">
-							<input class="form-control" data-tag="limit" placeholder="(必填)" value="" type="number">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label">群主</label>
-						<div class="col-sm-7">
-							<div class="form-group input-group" style="margin: 0">
-								<input type="text" class="form-control" name="name" id="searchName" placeholder="(必填)">
-								<span class="input-group-btn">
-									<button class="btn btn-default" type="button">
-										<i class="fa fa-search"></i>
-									</button>
-								</span>
-							</div>
-							<select data-tag="admin" class="form-control" style="margin-top: 10px;">
-								<option value=""></option>
+							<select data-tag="cat" class="form-control" style="margin-top: 10px;">
+								<option value="">-=请选择=-</option>
+							{{foreach from=$catDict key=key item=item}}
+								<option value="{{$key}}">{{$item}}</option>
+							{{/foreach}}
 							</select>
 						</div>
 					</div>
-
 				</div>
 			</div>
 			<div class="modal-footer" style="overflow: hidden">
@@ -263,6 +231,13 @@
 		});
 	}
 
+	$(document).on("change","[data-tag=cat]",function(){
+		var cat=$(this).val();
+		console.log(cat);
+		// $("[data-tag=cat]").val(cat);
+		$(".modal-body .form-horizontal").html($("#cat"+cat).html())
+	});
+
 
 	var $sls = {
 		rid: 0,
@@ -275,36 +250,36 @@
 		$("#modalEdit").modal('show');
 	});
 
-	$(document).on("click", ".roomAvatar", function () {
-		var self = $(this);
-		var rid = self.attr("data-rid");
-		BpbhdUtil.loading();
-		$.post('/api/room',
-			{
-				tag: 'avatar',
-				rid: rid
-			}, function (resp) {
-				if (resp.code < 1) {
-					location.reload();
-				}
-				BpbhdUtil.showMsg(resp.msg);
-			}, 'json');
-	});
+	// $(document).on("click", ".roomAvatar", function () {
+	// 	var self = $(this);
+	// 	var rid = self.attr("data-rid");
+	// 	BpbhdUtil.loading();
+	// 	$.post('/api/room',
+	// 		{
+	// 			tag: 'avatar',
+	// 			rid: rid
+	// 		}, function (resp) {
+	// 			if (resp.code < 1) {
+	// 				location.reload();
+	// 			}
+	// 			BpbhdUtil.showMsg(resp.msg);
+	// 		}, 'json');
+	// });
 
 	$(document).on("click", ".RoomEdit", function () {
 		$sls.tag = "edit";
-		var self = $(this);
-		$sls.rid = self.attr("data-rid");
-		$("[data-tag=title]").val(self.attr("data-title"));
-		$("[data-tag=limit]").val(self.attr("data-limit"));
-		$("[data-tag=intro]").val(self.attr("data-intro"));
-		var adminname = self.attr("data-adminname");
-		$("[data-tag=admin]").html('<option value=' + self.attr("data-adminuid") + '>' + adminname + '</option');
-		$("#searchName").val(adminname);
-		$("#modalEdit").modal('show');
+		// var self = $(this);
+		// $sls.rid = self.attr("data-rid");
+		// $("[data-tag=title]").val(self.attr("data-title"));
+		// $("[data-tag=limit]").val(self.attr("data-limit"));
+		// $("[data-tag=intro]").val(self.attr("data-intro"));
+		// var adminname = self.attr("data-adminname");
+		// $("[data-tag=admin]").html('<option value=' + self.attr("data-adminuid") + '>' + adminname + '</option');
+		// $(".searchName").val(adminname);
+		// $("#modalEdit").modal('show');
 	});
 
-	$(document).on('input', '#searchName', function () {
+	$(document).on('input', '.searchName', function () {
 			var self = $(this);
 			var keyWord = self.val();
 			if ($sls.searchFlag) {
@@ -321,7 +296,8 @@
 					layer.closeAll();
 					$sls.searchFlag = 0;
 					if (resp.code === 0) {
-						$("[data-tag=admin]").html(Mustache.render('{[#data]}<option value="{[id]}">{[uname]} {[phone]}</option>{[/data]}', resp));
+						var html = Mustache.render('{[#data]}<option value="{[id]}">{[uname]} {[phone]}</option>{[/data]}', resp);
+						self.closest(".col-sm-7").find("[data-tag=admin]").html(html);
 					}
 				}, "json");
 
@@ -425,18 +401,235 @@
 		showImages(photos);
 	});
 
-	function showImages(imagesJson, idx) {
-		if (idx) {
-			imagesJson.start = idx;
-		}
-		layer.photos({
-			photos: imagesJson,
-			shift: 5,
-			tab: function (info) {
-				console.log(info);
-			}
-		});
-	}
 
 </script>
+
+<script type="text/html" id="cat100">
+	<div class="form-group">
+		<label class="col-sm-3 control-label">类别</label>
+		<div class="col-sm-7">
+			<select data-tag="cat" class="form-control" style="margin-top: 10px;">
+				<option value="">-=请选择=-</option>
+			{{foreach from=$catDict key=key item=item}}
+				<option value="{{$key}}"  {{if $key==100}}selected{{/if}}>{{$item}}</option>
+			{{/foreach}}
+			</select>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-3 control-label">文本标题</label>
+		<div class="col-sm-7">
+			<input class="form-control" data-tag="text_title" placeholder="(必填)" value="">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">文本内容</label>
+		<div class="col-sm-7">
+			<textarea class="form-control" data-tag="text_intro" rows="4" maxlength="300"></textarea>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">话题</label>
+		<div class="col-sm-7">
+			<select data-tag="topic" class="form-control" style="margin-top: 10px;">
+				<option value="-200">系统消息</option>
+				<option value="-100">千寻文章</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">编辑用户</label>
+		<div class="col-sm-7">
+			<div class="form-group input-group" style="margin: 0">
+				<input type="text" class="form-control searchName" name="edit_name" placeholder="(必填)">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button">
+						<i class="fa fa-search"></i>
+					</button>
+				</span>
+			</div>
+			<select data-tag="admin" class="form-control" style="margin-top: 10px;">
+				<option value=""></option>
+			</select>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="cat110">
+	<div class="form-group">
+		<label class="col-sm-3 control-label">类别</label>
+		<div class="col-sm-7">
+			<select data-tag="cat" class="form-control" style="margin-top: 10px;">
+				<option value="">-=请选择=-</option>
+			{{foreach from=$catDict key=key item=item}}
+				<option value="{{$key}}" {{if $key==110}}selected{{/if}}>{{$item}}</option>
+			{{/foreach}}
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">多图</label>
+		<div class="col-sm-7">
+			<input class="form-control-static" type="file" name="img_multi"
+						 accept="image/jpg, image/jpeg, image/png" multiple >
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">图片标题标题</label>
+		<div class="col-sm-7">
+			<input class="form-control" data-tag="img_title" placeholder="(必填)" value="">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">话题</label>
+		<div class="col-sm-7">
+			<select data-tag="topic" class="form-control" style="margin-top: 10px;">
+				<option value="-200">系统消息</option>
+				<option value="-100">千寻文章</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">用户</label>
+		<div class="col-sm-7">
+			<div class="form-group input-group" style="margin: 0">
+				<input type="text" class="form-control searchName" name="edit_name" placeholder="(必填)">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button">
+						<i class="fa fa-search"></i>
+					</button>
+				</span>
+			</div>
+			<select data-tag="admin" class="form-control" style="margin-top: 10px;">
+				<option value=""></option>
+			</select>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="cat120">
+	<div class="form-group">
+		<label class="col-sm-3 control-label">类别</label>
+		<div class="col-sm-7">
+			<select data-tag="cat" class="form-control" style="margin-top: 10px;">
+				<option value="">-=请选择=-</option>
+			{{foreach from=$catDict key=key item=item}}
+				<option value="{{$key}}"  {{if $key==120}}selected{{/if}}>{{$item}}</option>
+			{{/foreach}}
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">音频标题</label>
+		<div class="col-sm-7">
+			<input class="form-control" data-tag="article_title" placeholder="(必填)" value="">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">音频链接</label>
+		<div class="col-sm-7">
+			<textarea class="form-control" data-tag="article_src" rows="4"></textarea>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">话题</label>
+		<div class="col-sm-7">
+			<select data-tag="topic" class="form-control" style="margin-top: 10px;">
+
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">用户</label>
+		<div class="col-sm-7">
+			<div class="form-group input-group" style="margin: 0">
+				<input type="text" class="form-control searchName" name="edit_name"  placeholder="(必填)">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button">
+						<i class="fa fa-search"></i>
+					</button>
+				</span>
+			</div>
+			<select data-tag="admin" class="form-control" style="margin-top: 10px;">
+				<option value=""></option>
+			</select>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="cat130">
+	<div class="form-group">
+		<label class="col-sm-3 control-label">类别</label>
+		<div class="col-sm-7">
+			<select data-tag="cat" class="form-control" style="margin-top: 10px;">
+				<option value="">-=请选择=-</option>
+			{{foreach from=$catDict key=key item=item}}
+				<option value="{{$key}}" {{if $key==130}}selected{{/if}}>{{$item}}</option>
+			{{/foreach}}
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">封面图</label>
+		<div class="col-sm-7">
+			<input class="form-control-static" type="file" name="article_cover"
+						 accept="image/jpg, image/jpeg, image/png">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">文章标题</label>
+		<div class="col-sm-7">
+			<input class="form-control" data-tag="article_title" placeholder="(必填)" value="">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">文章介绍</label>
+		<div class="col-sm-7">
+			<textarea class="form-control" data-tag="article_intro" rows="4" maxlength="300"></textarea>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">文章链接</label>
+		<div class="col-sm-7">
+			<textarea class="form-control" data-tag="article_src" rows="4"></textarea>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">话题</label>
+		<div class="col-sm-7">
+			<select data-tag="topic" class="form-control" style="margin-top: 10px;">
+				<option value="-200">系统消息</option>
+				<option value="-100">千寻文章</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">编辑用户</label>
+		<div class="col-sm-7">
+			<div class="form-group input-group" style="margin: 0">
+				<input type="text" class="form-control searchName" name="edit_name" placeholder="(必填)">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button">
+						<i class="fa fa-search"></i>
+					</button>
+				</span>
+			</div>
+			<select data-tag="admin" class="form-control" style="margin-top: 10px;">
+				<option value=""></option>
+			</select>
+		</div>
+	</div>
+</script>
+
 {{include file="layouts/footer.tpl"}}

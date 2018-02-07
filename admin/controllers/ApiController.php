@@ -17,6 +17,7 @@ use common\models\City;
 use common\models\Date;
 use common\models\Log;
 use common\models\LogAction;
+use common\models\Moment;
 use common\models\QuestionGroup;
 use common\models\QuestionSea;
 use common\models\User;
@@ -704,6 +705,27 @@ class ApiController extends Controller
 					list($code, $msg, $info) = ChatMsg::addRoomChat($rid, $uid, $text, $this->admin_id);
 					return self::renderAPI($code, $msg, $info);
 				}
+		}
+		return self::renderAPI(129, '操作无效');
+	}
+
+	public function actionMoment()
+	{
+		$tag = strtolower(self::postParam("tag"));
+		switch ($tag) {
+			case 'edit':
+				$data = json_decode(self::postParam('data'), 1);
+				$data["addby"] = $this->admin_id;
+				$data["cat"] = 100;
+				if (isset($_FILES['image']['tmp_name']) && isset($_FILES['image']['name']) && $_FILES['image']['name']) {
+					$tmp = $_FILES['image']['tmp_name'];
+					$ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+					$data['logo'] = COSUtil::init(COSUtil::UPLOAD_PATH, $tmp, $ext)->uploadOnly(false, false, false);
+				}
+				$ret = '';
+				//$ret = Moment::add($data);
+				return self::renderAPI(0, $ret ? '保存成功！' : '保存失败！', ['result' => $data]);
+				break;
 		}
 		return self::renderAPI(129, '操作无效');
 	}

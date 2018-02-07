@@ -26,8 +26,8 @@ class Moment extends ActiveRecord
 		self::CAT_ARTICLE => "文章",
 	];
 
-	const TOP_ARTICLE = 100;
-	const TOP_SYS_NOTICE = 200;
+	const TOP_ARTICLE = -100;
+	const TOP_SYS_NOTICE = -200;
 	static $topDict = [
 		self::TOP_ARTICLE => "千寻文章",
 		self::TOP_SYS_NOTICE => "系统消息",
@@ -87,7 +87,7 @@ EEE;
 				left join im_user as u on u.uId=m.mUId 
 				$favor
 				where mDeletedFlag=0 $str
-				group by mId order by mTop desc,mId desc  $limit ";
+				group by mId order by mTop asc,mId desc  $limit ";
 		$ret = $conn->createCommand($sql)->bindValues($param)->queryAll();
 
 		foreach ($ret as $k => $v) {

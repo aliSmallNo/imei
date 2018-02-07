@@ -99,6 +99,139 @@ class AppUtil
 		],
 	];
 
+
+	static $Jasmine = [
+		[
+			"avatar" => "http://moli2017.oss-cn-zhangjiakou.aliyuncs.com//file/15171504827068dd9334a-f8ea-44f4-9cb0-9e6ce9612711.jpg?x-oss-process=image/resize,w_70,limit_0",
+			"text" => "这天一冷就情不自禁的想...",
+			"src" => "http://file.xsawe.top/file/android_151791337951137ed9e87-31eb-4128-a232-32842b1c254e.mp3",
+		],
+		[
+			"avatar" => "http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/iOS_1516113156874D0CA9BD7-E288-44ED-8716-F19AD2107095.jpg?x-oss-process=image/resize,w_70,limit_0",
+			"text" => "一饭恩情，就该千米奉送，滴水之恩，就该涌泉相报……",
+			"src" => "http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/iOS_151790991065952965534-920F-47EE-9C3C-31450AC2817E.m4a",
+		],
+		[
+			"avatar" => "http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/iOS_151628484742643B482E7-339A-49DA-8553-AE266520AA4E.jpg?x-oss-process=image/resize,w_70,limit_0",
+			"text" => "昨天看到邻居家小孩在那玩，突然觉得小孩好可爱，想生小孩。请问我是想结婚了吗？",
+			"src" => "http://file.xsawe.top/file/iOS_1517541550504D4FA19B0-0529-4B4A-8580-2EBC82387097.m4a",
+		],
+		[
+			"avatar" => "http://moli2017.oss-cn-zhangjiakou.aliyuncs.com//file/1517207123893ac156726-62cd-48d2-a563-dff3fe7f0b3d.jpg?x-oss-process=image/resize,w_70,limit_0",
+			"text" => "卫生间里给孩子洗澡呢，公公穿个大裤衩进来了...",
+			"src" => "http://file.xsawe.top/file/android_1517905125128eabbecfb-bcd2-4439-b1ef-7b5b3aa068da.mp3",
+		],
+		[
+			"avatar" => "http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/iOS_1517234365404844091AA-23A2-44FB-8811-E4865859D137.jpg?x-oss-process=image/resize,w_70,limit_0",
+			"text" => "我出差一个月，老公竟然和四十岁的保姆啪啪啪，还有了孩子",
+			"src" => "http://file.xsawe.top/file/iOS_1517900024911574EB0D8-267D-4FA9-A4EA-4C4B4C6DD00B.m4a",
+		],
+		[
+			"avatar" => "http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/iOS_1516113156874D0CA9BD7-E288-44ED-8716-F19AD2107095.jpg?x-oss-process=image/resize,w_70,limit_0",
+			"text" => "一饭恩情，就该千米奉送，滴水之恩，就该涌泉相报……",
+			"src" => " http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/iOS_151790991065952965534-920F-47EE-9C3C-31450AC2817E.m4a",
+		],
+	];
+
+	static $JasminOther=<<<EEE
+28岁未婚女，将来只能嫁给二婚男吗？
+http://file.xsawe.top//file/15133043333409c1092b9-08f8-4451-b7c7-d56ffe9d1eb7.jpg?x-oss-process=image/resize,w_70,limit_0
+http://file.xsawe.top/file/android_15179904086857b7953f6-1b40-4637-9c19-46562a75779a.mp3 
+婆婆打算把佳佳的嫁妆给大姑子做陪嫁，佳佳不愿意，男朋友说佳佳小气，佳佳该怎么办？
+http://file.xsawe.top//file/15133043333409c1092b9-08f8-4451-b7c7-d56ffe9d1eb7.jpg?x-oss-process=image/resize,w_70,limit_0
+http://file.xsawe.top/file/android_1517990809237f469bcfc-0b89-4d10-855a-00ed14414246.mp3  
+大家请帮忙
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/iOS_15179036686439979BFBB-0005-4F1F-BD72-5A580E5E82EB.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/iOS_15179908180710F451176-F1C2-4ABA-83FF-8F520535F76B.m4a  
+无聊哈哈哈 
+http://thirdapp0.qlogo.cn/qzopenapp/9ac0f34f3caf9f84682b646accc3e72c8482b1b72a0e500c8a4100ac1f06dbfc/50?x-oss-process=image/resize,w_70,limit_0 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/android_1512999961901ec505193-e5b7-415d-b1dd-793c8914c9ca.mp3
+  如果男方在女方怀孕期间出轨，女方要不要离婚！
+ http://file.xsawe.top//file/1511528431717c148ffcc-0e4f-4e60-a970-2d7c68ddd676.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/android_15124425451022b442d67-233b-492e-b695-a3958f42b89a.mp3  
+我一个朋友喝醉就喜欢找我诉苦有时候不知道怎么回答他的问题你们说怎么办
+http://file.xsawe.top//file/1512039256524d842d412-1482-4e45-a9c1-e7e36b22ee65.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/android_151524806542680b74a46-7025-46d3-b0d8-3ff0834d7fff.mp3  
+过年回家的票你们开抢了吗
+ http://file.xsawe.top//file/1514217136605ec9df880-bf5c-49ec-a665-538f01f5d9f1.jpg?x-oss-process=image/resize,w_70,limit_0
+ http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/android_1515568045538f1066458-2e6d-4154-9d43-7b149617b5c1.mp3  
+发现公公出轨，我该不该说
+ http://file.xsawe.top//file/1515291500810e3d1493a-b533-4d13-bdd5-dbbbaba90d8f.jpg?x-oss-process=image/resize,w_70,limit_0
+ http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/android_151564149445925381c83-c77b-457c-be02-743b514ea790.mp3  
+老公后妈生的女儿，要跟老公争房产
+ http://moli2017.oss-cn-zhangjiakou.aliyuncs.com//file/15160747011062a9e3480-bebb-4597-b12c-1de140c01e17.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/android_151618376633781f148ab-5ff6-4bad-a7be-5f4767915941.mp3  
+今天休息，等下准备和老公去爬山。锻炼了身体还增进了感情 
+http://file.xsawe.top//file/15089717492625e742e64-9318-4eff-bcb4-2795d1543a21.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://file.xsawe.top/file/android_15164033307380d8d68d4-dffe-4173-8e40-0a2322cac73b.mp3  
+老师跟学生发生了性关系！ 
+http://file.xsawe.top//file/15145527443877ed36cef-aecf-461b-bf2e-2f3732e2887e.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/iOS_15152274435846A5B65D1-9639-407A-9193-AA4D037BC8C3.m4a  
+冬天爱冻手的朋友可以试试这个方法
+ http://moli2017.oss-cn-zhangjiakou.aliyuncs.com//file/15171459920628ec1e235-184f-4be1-813f-93ac1f0984fe.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://file.xsawe.top/file/android_15174618278418516b420-0804-43ce-9ad2-7cfd91bce9e0.mp3  
+我老公的伙计玩游戏太迷了，今天一起去喝喜酒他一直抱着手机打游戏，走路都在玩，到现在还没女朋 友
+http://file.xsawe.top//file/15145527443877ed36cef-aecf-461b-bf2e-2f3732e2887e.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://file.xsawe.top/file/android_1517154811430adb6022c-22c6-4a60-91c4-d5c5b63b7561.mp3  
+愿无岁月可回头，且以深情共白首
+ http://file.xsawe.top//file/1507964263856ce908df6-b4c1-4968-a579-144737b9510b.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://file.xsawe.top/file/android_151745196281342ee25ac-1363-44dc-ab45-4d455dad298c.mp3  
+如果一个女人对自己的老公冷漠了！那么她是彻彻底底的对这个男人失望了！
+ http://moli2017.oss-cn-zhangjiakou.aliyuncs.com//file/15162267498205d61e200-c767-4401-a569-be23028fa570.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://file.xsawe.top/file/android_15164100441490df983a1-d2db-4b46-afa8-83a187f5be58.mp3  
+最近前男友频繁发信息给我 让我不知所措了 想起对我的伤害 我不想复合 可是我心里又还放不下 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/iOS_1517039101167E3C0F504-EFB0-4E4B-99B1-5C79A3E3EC4A.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/iOS_1517356990829064A171E-85D6-48D9-B4FA-4FBE30614169.m4a
+  第一次给男朋友口，完事儿了他整个人都。。。。 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com//file/1517203395663fa365769-6240-4420-99bb-9fdcc8fc74b2.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://file.xsawe.top/file/android_15175860095689f5571b0-3c28-42fb-ba88-4a8c4e761b24.mp3  
+约男票看电影，他有事不去，到场后，我六排七座，他六排八座，旁边六排九座一个女生🙃 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com//file/1517038828460cf947646-9d57-466a-8f52-5090eac39f12.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://file.xsawe.top/file/android_151765719925174204c96-57a8-4856-81d8-a81b96820582.mp3  
+离婚后两人会成为朋友吗
+ http://file.xsawe.top//file/15094592077542bf50e4a-9445-4d29-ab09-e549512fc01b.jpg?x-oss-process=image/resize,w_70,limit_0
+ http://file.xsawe.top/file/android_1517745939116b4b5a5c8-27f4-450b-a9b3-6f0410e34b49.mp3  
+相亲后男方什么表现说明有戏？感觉自己相亲都相出心病了。 
+http://file.xsawe.top//file/1513811841574155d207e-0ec7-42b0-92a6-6228f0758bbd.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://file.xsawe.top/file/android_1517924844290ed913315-2982-431b-a4b2-8a742093eb51.mp3  
+我在海南穿着短袖，你们现在穿着什么呢？ 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com//file/1517642150569250b5bad-831d-4d4a-bcab-b05ddeda80ea.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://file.xsawe.top/file/android_151784126964317238774-3ffd-4941-9dc8-5d98ec0f6e67.mp3  
+男朋友经常因为一些无聊的事不停找我闺蜜，我该不该和他分手？还是因为我太小心眼儿了？
+ http://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJbSPetaEBiaoaZDOhTXbXic0n04FrMianAJdLxIiaibhF6dtbibuM3WbllNIjeCclu8cZxzQ14DAdqQEMw/0?x-oss-process=image/resize,w_70,limit_0 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/android_1515805252417e44e971d-c10b-40bc-858a-ed5bd45b5430.mp3  
+老公在微信上约妹子，我该怎么办😣 
+http://file.xsawe.top//file/15145527443877ed36cef-aecf-461b-bf2e-2f3732e2887e.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/android_15160737891416d744b1a-3671-4e6b-968d-ee29cc6e1c5b.mp3  
+一个女人怀孕了之后不仅你不可以再家休息还要上班你觉得还有必要继续生孩子吗？
+ http://file.xsawe.top//file/151158287204499c24c60-dba0-44a4-a805-e11b1c8ac7ec.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/android_1515991657056d57c1595-b2b3-4993-9965-68d10e1b4f81.mp3  
+妻子意外身故，才发现给自己带了绿帽子，报案找奸夫！！！ 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com//file/15170556414536a287a77-b548-48d7-8465-048d0aff9bf0.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://file.xsawe.top/file/android_151766997688990a6b4a3-388c-4079-8659-0ca0ce8eee93.mp3  
+献血到底好不好？对身体没有伤害吧！ 
+http://file.xsawe.top//file/15078726234119fc77d1e-2907-4941-b047-29a378828c0e.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/android_151035393461926f39b1f-351c-4283-9937-6039b41b2f3c.mp3  
+婆婆是个手机控，我该不该继续把孩子交给她带？ 
+http://file.xsawe.top//file/1509980504930bec193da-b941-4bde-91e4-9803cf6d5bb2.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://file.xsawe.top/file/android_1516844267868166f6939-09eb-433b-b892-3f8778d6f48c.mp3  
+以前生米煮成熟饭，女的就是你的人了，现在就算把生米蹦成爆米花都不管用了！！ 
+http://file.xsawe.top//file/1515512112082d0838e7a-c389-4fde-a985-a1776912e769.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://file.xsawe.top/file/android_1517058327227487a1a5c-be88-476c-a657-649fb7f3c7ca.mp3  
+本来开开心心去打炮 炮友居然偷我500块钱？ 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com//file/1517107321950aa872a3f-aecc-4481-8307-259d0a68a3db.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://file.xsawe.top/file/android_15175707022477095d236-39fd-4b85-8200-4f6ec859426c.mp3  
+老公出差三天两夜回来，发现吻痕，说是男人掐的，当我脑残 
+http://file.xsawe.top/user/user_3895.jpeg?x-oss-process=image/resize,w_70,limit_0 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com//file/1517985529448edd9197e-f9fe-4199-8760-e8893845994b.mp3  
+我的好姐妹这样我该怎么办 
+http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/user/userboy_01.png?x-oss-process=image/resize,w_70,limit_0 
+http://file.xsawe.top/file/android_1517878891097a8e82317-96ff-4865-bb9c-cc985599f65d.mp3  
+班里有个女生明显整容了 我怎么就不能说说了？ 
+http://file.xsawe.top/file/iOS_15178862976802A578F19-E1A5-48C2-8FB4-7964F1CAE4BB.jpg?x-oss-process=image/resize,w_70,limit_0 
+http://file.xsawe.top/file/iOS_1517890941055378FED94-4EF7-4F40-AD8C-67E847324E29.m4a
+EEE;
+
 	/**
 	 * @return \yii\db\Connection
 	 */
