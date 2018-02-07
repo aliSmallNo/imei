@@ -2365,7 +2365,7 @@ class User extends ActiveRecord
 		} else {
 			$set = [];
 		}
-		$set[$setfield] = $flag == "true" ? 1 : 0;
+		$set[$setfield] = $flag ? 1 : 0;
 		$uInfo->uSetting = json_encode($set);
 		$uInfo->save();
 		return true;
