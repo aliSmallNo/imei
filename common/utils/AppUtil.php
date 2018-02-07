@@ -99,7 +99,6 @@ class AppUtil
 		],
 	];
 
-
 	static $Jasmine = [
 		[
 			"avatar" => "http://moli2017.oss-cn-zhangjiakou.aliyuncs.com//file/15171504827068dd9334a-f8ea-44f4-9cb0-9e6ce9612711.jpg?x-oss-process=image/resize,w_70,limit_0",
@@ -133,13 +132,23 @@ class AppUtil
 		],
 	];
 
-	static $JasminOther=<<<EEE
-28岁未婚女，将来只能嫁给二婚男吗？
-http://file.xsawe.top//file/15133043333409c1092b9-08f8-4451-b7c7-d56ffe9d1eb7.jpg?x-oss-process=image/resize,w_70,limit_0
-http://file.xsawe.top/file/android_15179904086857b7953f6-1b40-4637-9c19-46562a75779a.mp3 
-婆婆打算把佳佳的嫁妆给大姑子做陪嫁，佳佳不愿意，男朋友说佳佳小气，佳佳该怎么办？
-http://file.xsawe.top//file/15133043333409c1092b9-08f8-4451-b7c7-d56ffe9d1eb7.jpg?x-oss-process=image/resize,w_70,limit_0
-http://file.xsawe.top/file/android_1517990809237f469bcfc-0b89-4d10-855a-00ed14414246.mp3  
+
+
+	static $JasminOther=[
+		[
+			"avatar" => "http://file.xsawe.top//file/15133043333409c1092b9-08f8-4451-b7c7-d56ffe9d1eb7.jpg?x-oss-process=image/resize,w_70,limit_0",
+			"text" => "28岁未婚女，将来只能嫁给二婚男吗？",
+			"src" => " http://file.xsawe.top/file/android_15179904086857b7953f6-1b40-4637-9c19-46562a75779a.mp3 ",
+		],
+		[
+			"avatar" => "http://file.xsawe.top//file/15133043333409c1092b9-08f8-4451-b7c7-d56ffe9d1eb7.jpg?x-oss-process=image/resize,w_70,limit_0",
+			"text" => "婆婆打算把佳佳的嫁妆给大姑子做陪嫁，佳佳不愿意，男朋友说佳佳小气，佳佳该怎么办？",
+			"src" => "http://file.xsawe.top/file/android_1517990809237f469bcfc-0b89-4d10-855a-00ed14414246.mp3  ",
+		],
+
+	];
+
+	static $JasminOther2=<<<EEE
 大家请帮忙
 http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/iOS_15179036686439979BFBB-0005-4F1F-BD72-5A580E5E82EB.jpg?x-oss-process=image/resize,w_70,limit_0 
 http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/iOS_15179908180710F451176-F1C2-4ABA-83FF-8F520535F76B.m4a  

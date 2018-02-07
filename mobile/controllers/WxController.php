@@ -2377,6 +2377,30 @@ class WxController extends BaseController
 		$uid = $this->user_id;
 		$lastid = self::getParam("id");
 
+		$arr = explode("\n", AppUtil::$JasminOther2);
+		$arr1 = [];
+		foreach ($arr as $k => $v) {
+			$y = floor($k / 3);
+			if ($k % 3 == 0) {
+				$arr1[$y]["text"] = (string)$arr[$k];
+			}
+			if ($k % 3 == 1) {
+				$arr1[$y]["avatar"] = (string)$arr[$k];
+			}
+			if ($k % 3 == 2) {
+				$arr1[$y]["src"] = (string)$arr[$k];
+			}
+		}
+
+		$d = array_merge(AppUtil::$Jasmine, AppUtil::$JasminOther);
+		//$d = AppUtil::$Jasmine;
+		$fids = array_rand($d, 6);
+		$arr = [];
+		foreach ($fids as $id) {
+			$arr[] = $d[$id];
+		}
+		shuffle($arr);
+
 		return self::renderPage("jasmine.tpl",
 			[
 				'lastid' => $lastid,
@@ -2384,6 +2408,7 @@ class WxController extends BaseController
 				'name' => $this->user_name,
 				'avatar' => $this->user_avatar,
 				'wxUrl' => AppUtil::wechatUrl(),
+				"data" => $arr,
 			],
 			'terse',
 			'每日红包',

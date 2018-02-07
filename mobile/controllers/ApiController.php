@@ -480,34 +480,13 @@ class ApiController extends Controller
 				]);
 				break;
 			case "init_jasmine":
-				$arr = explode("\n", AppUtil::$JasminOther);
-				$arr1 = [];
-				foreach ($arr as $k => $v) {
-					$y = floor($k / 3);
-					if ($k % 3 == 0) {
-						$arr1[$y]["text"] = $arr[$k];
-					}
-					if ($k % 3 == 1) {
-						$arr1[$y]["avatar"] = $arr[$k];
-					}
-					if ($k % 3 == 2) {
-						$arr1[$y]["src"] = $arr[$k];
-					}
-				}
 
-				$d = array_merge(AppUtil::$Jasmine, $arr1);
-				$fids = array_rand($d, 5);
-				$arr = [];
-				foreach ($fids as $id) {
-					$arr[] = $d[$id];
-				}
-				shuffle($arr);
 				$left = 10000000 - (date("H") * 3600 + date("i") * 60 + date("s")) * 99;
 				return self::renderAPI(0, 'ok', [
 					'hasGrab' => intval(Log::jasmineAdd($wx_uid)),
 					'sum' => 2,
 					'leftAmt' => $left,
-					'data' => $arr,
+					//'data' => $arr,
 				]);
 				break;
 			case "grab_jasmine":

@@ -24,7 +24,19 @@
 			<div><a href="javascript:;" data-tag="more" ev_opt="more">获取更多现金</a></div>
 		</div>
 		<ul>
-
+			{{foreach from=$data item=item}}
+			<li class="jasmine_member_item">
+				<div class="avatar"><img src="{{$item.avatar}}" alt="">
+				</div>
+				<div class="fill">
+					<p>{{$item.text}}</p>
+				</div>
+				<a href="javascript:;" class="voice pause playVoiceElement" pvl="items">
+					<audio src="{{$item.src}}"></audio>
+				</a>
+				<span>03:05</span>
+			</li>
+			{{/foreach}}
 		</ul>
 		<div class="ev_container_footer">
 			<a href="javascript:;" data-tag="reg">点击注册</a>
