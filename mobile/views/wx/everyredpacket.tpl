@@ -147,11 +147,9 @@
 </script>
 <script src="/assets/js/require.js"></script>
 <script>
-	// if (document.location.hash === "" || document.location.hash === "#") {
-	// 	document.location.hash = "#zone_items";
-	// }
+
 	requirejs(['/js/config.js?v=1.2.5'], function () {
-		requirejs(['/js/everyredpacket.js?v=1.2.6']);
+		requirejs(['/js/everyredpacket.js?v=1.2.7']);
 	});
 </script>
 
