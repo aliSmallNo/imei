@@ -34,6 +34,7 @@ class NoticeUtil
 
 	const CAT_CHAT = 'chat';
 	const CAT_ROOM = 'room';
+	const CAT_IGNORE = 'ignore';
 	const CAT_TEXT_ONLY = 'text_only';
 	const CAT_IMAGE_ONLY = 'image_only';
 	const CAT_VOICE_ONLY = 'voice_only';
@@ -67,6 +68,11 @@ class NoticeUtil
 				$text = '千寻恋恋群聊里有人说话了，快去看看吧!
 
 👉<a href="https://wx.meipo100.com/wx/single#scontacts">点击查看详情</a>👈';
+				break;
+			default:
+				$text = '千寻恋恋里有新的通知啦!
+
+👉<a href="https://wx.meipo100.com/wx/notice">点击查看详情</a>👈';
 				break;
 		}
 		return $text;

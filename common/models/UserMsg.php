@@ -8,7 +8,6 @@ namespace common\models;
 use common\service\CogService;
 use common\utils\AppUtil;
 use common\utils\NoticeUtil;
-use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
 
@@ -330,8 +329,9 @@ class UserMsg extends ActiveRecord
 		if ($uIds) {
 			$criteria = ' AND mUId in (' . implode(',', $uIds) . ')';
 		}
-		$sql = 'SELECT count(1) as cnt, mUId,mCategory
-			 FROM im_user_msg
+		$sql = 'SELECT count(1) as cnt, mUId, mCategory, u.uOpenId
+			 FROM im_user_msg as m
+			 JOIN im_user as u on u.uId=m.mUId
 			 WHERE mAddedOn BETWEEN :from AND :to ' . $criteria . '
 			 AND mAlertFlag=0 AND mCategory in (' . $cats . ')
 			 GROUP BY mUId,mCategory
@@ -341,9 +341,11 @@ class UserMsg extends ActiveRecord
 			':to' => date('Y-m-d 23:59'),
 		])->queryAll();
 		$items = [];
+		$uidMap = [];
 		foreach ($ret as $row) {
 			$uid = $row['mUId'];
 			$cnt = $row['cnt'];
+			$uidMap[$uid] = $row['uOpenId'];
 			if (!isset($items[$uid])) {
 				$items[$uid] = [];
 			}
@@ -364,22 +366,28 @@ class UserMsg extends ActiveRecord
 			if ($title) {
 				$items[$uid][] = [
 					'title' => $title,
-					'cnt' => $cnt
+					'cnt' => $cnt,
 				];
 			}
 		}
-		$sql = 'update im_user_msg set mAlertFlag = 1, mAlertDate=now() WHERE mUId=:id AND mAlertFlag=0';
+		$sql = 'UPDATE im_user_msg set mAlertFlag = 1, mAlertDate=now() 
+			WHERE mUId=:id AND mAlertFlag=0';
 		$cmd = $conn->createCommand($sql);
 		foreach ($items as $uid => $item) {
 			$cmd->bindValues([
 				':id' => $uid
 			])->execute();
 			$titles = array_column($item, 'title');
-			WechatUtil::templateMsg(WechatUtil::NOTICE_ROUTINE,
+			$text = implode('；', $titles);
+			/*WechatUtil::templateMsg(WechatUtil::NOTICE_ROUTINE,
 				$uid,
 				'千寻恋恋每日简报',
-				implode('；', $titles)
-			);
+				$text
+			);*/
+			$openId = isset($uidMap[$uid]) ? $uidMap[$uid] : '';
+			if ($openId) {
+				NoticeUtil::init(NoticeUtil::CAT_IGNORE, $openId)->sendText($text);
+			}
 		}
 
 		// Rain: 单独处理chat info
