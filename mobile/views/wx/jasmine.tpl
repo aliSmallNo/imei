@@ -32,7 +32,7 @@
 					<p>{{$item.text}}</p>
 				</div>
 				<a href="javascript:;" class="voice pause playVoiceElement" pvl="items">
-					<audio src="{{$item.src}}"></audio>
+					<audio src="{{$item.src}}" preload="none"></audio>
 				</a>
 				<span>03:05</span>
 			</li>
