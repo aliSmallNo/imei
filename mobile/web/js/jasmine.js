@@ -32,7 +32,7 @@ require(["jquery", "alpha", "mustache"],
 					if (amt < 1) {
 						alertToggle(1, $("#tpl_not_enough").html());
 					} else {
-						alertToggle(1, Mustache.render($("#tpl_qr").html(), {text: '长按二维码关注公众号即可到我的账户提现'}));
+						alertToggle(1, Mustache.render($("#tpl_qr").html(), {text: '长按扫描二维码注册下载即可立即提现到微信红包'}));
 					}
 					break;
 				case "ipacket":
@@ -45,6 +45,7 @@ require(["jquery", "alpha", "mustache"],
 					var html = '<i class="share-arrow">点击菜单分享</i>';
 					$sls.main.show();
 					$sls.main.append(html);
+					$sls.content.html('');
 					$sls.shade.fadeIn(160);
 					setTimeout(function () {
 						$sls.main.hide();
@@ -135,6 +136,7 @@ require(["jquery", "alpha", "mustache"],
 			// 监听语音播放完毕
 			self.find("audio").bind('ended', function () {
 				self.removeClass('play').addClass("pause");
+				alertToggle(1, Mustache.render($("#tpl_qr").html(), {text: '长按扫描二维码倾听更多人的心情'}));
 			});
 		});
 

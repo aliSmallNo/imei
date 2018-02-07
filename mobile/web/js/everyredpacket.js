@@ -144,6 +144,7 @@ require(["jquery", "alpha", "mustache"],
 			var html = '<i class="share-arrow">点击菜单分享</i>';
 			$sls.main.show();
 			$sls.main.append(html);
+			$sls.content.html('');
 			$sls.shade.fadeIn(160);
 			setTimeout(function () {
 				$sls.main.hide();

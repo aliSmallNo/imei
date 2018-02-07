@@ -38,6 +38,10 @@
 		width: 64px;
 		height: 64px;
 	}
+	td img.small{
+		width: 32px;
+		height: 32px;
+	}
 
 	td {
 		font-size: 12px;
@@ -126,7 +130,7 @@
 						<div class="cat_text" show="short" data_short_text="{{$item.short_text}}" data_text="{{$item.title}}"><text>{{$item.short_text}}</text><a>查看全部</a></div>
 					{{/if}}
 					{{if $item.mCategory==110}}
-					<div data-images='{{$item.showImages}}'>{{foreach from=$item.url key=key item=img}}	<span class="album-item"><img src="{{$img}}" alt="" data-idx="{{$key}}"></span>{{/foreach}}</div>
+					<div data-images='{{$item.showImages}}'>{{foreach from=$item.url key=key item=img}}	<span class="album-item"><img src="{{$img}}" class="small" data-idx="{{$key}}"></span>{{/foreach}}</div>
 					{{/if}}
 					{{if $item.mCategory==120}}
 						<audio src="{{$item.src}}" controls></audio>
