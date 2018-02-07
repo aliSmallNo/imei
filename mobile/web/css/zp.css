@@ -1258,59 +1258,112 @@ section {
             background-size: 100% 100%;
             top: 0.7rem;
             left: 0.3rem; }
-  .ev_container .ev_container_content ul li {
-    padding: 1rem;
-    margin-bottom: 0.5rem;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    background: #fff; }
-    .ev_container .ev_container_content ul li .avatar {
-      -webkit-box-flex: 0 0 6rem;
-      -webkit-flex: 0 0 6rem;
-      -ms-flex: 0 0 6rem;
-      flex: 0 0 6rem; }
-      .ev_container .ev_container_content ul li .avatar img {
-        width: 5rem;
-        height: 5rem;
-        border-radius: 5rem; }
-    .ev_container .ev_container_content ul li .des {
-      -webkit-box-flex: 1;
-      -webkit-flex: 1;
-      -ms-flex: 1;
-      flex: 1; }
-      .ev_container .ev_container_content ul li .des h5 {
-        font-size: 1.3rem;
-        color: #333;
-        letter-spacing: 0.1rem;
-        line-height: 3rem; }
-      .ev_container .ev_container_content ul li .des p {
-        font-size: 1rem;
-        color: #ddd;
-        letter-spacing: 0; }
-    .ev_container .ev_container_content ul li .chat {
-      -webkit-box-flex: 0 0 6rem;
-      -webkit-flex: 0 0 6rem;
-      -ms-flex: 0 0 6rem;
-      flex: 0 0 6rem;
-      text-align: center; }
-      .ev_container .ev_container_content ul li .chat span {
-        padding-top: 2.7rem;
-        position: relative;
-        display: inline-block;
-        font-size: 0.8rem;
-        color: #f53463;
-        letter-spacing: 0; }
-        .ev_container .ev_container_content ul li .chat span:before {
-          position: absolute;
-          content: "";
-          width: 2rem;
-          height: 2rem;
-          background: url("../images/ev/ev_ico_chat.png") no-repeat center center;
+  .ev_container .ev_container_content ul {
+    padding: 0 1rem; }
+    .ev_container .ev_container_content ul li {
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      background: #fff; }
+      .ev_container .ev_container_content ul li .avatar {
+        -webkit-box-flex: 0 0 6rem;
+        -webkit-flex: 0 0 6rem;
+        -ms-flex: 0 0 6rem;
+        flex: 0 0 6rem; }
+        .ev_container .ev_container_content ul li .avatar img {
+          width: 5rem;
+          height: 5rem;
+          border-radius: 5rem; }
+      .ev_container .ev_container_content ul li .des {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1; }
+        .ev_container .ev_container_content ul li .des h5 {
+          font-size: 1.3rem;
+          color: #333;
+          letter-spacing: 0.1rem;
+          line-height: 3rem; }
+        .ev_container .ev_container_content ul li .des p {
+          font-size: 1rem;
+          color: #ddd;
+          letter-spacing: 0; }
+      .ev_container .ev_container_content ul li .chat {
+        -webkit-box-flex: 0 0 6rem;
+        -webkit-flex: 0 0 6rem;
+        -ms-flex: 0 0 6rem;
+        flex: 0 0 6rem;
+        text-align: center; }
+        .ev_container .ev_container_content ul li .chat span {
+          padding-top: 2.7rem;
+          position: relative;
+          display: inline-block;
+          font-size: 0.8rem;
+          color: #f53463;
+          letter-spacing: 0; }
+          .ev_container .ev_container_content ul li .chat span:before {
+            position: absolute;
+            content: "";
+            width: 2rem;
+            height: 2rem;
+            background: url("../images/ev/ev_ico_chat.png") no-repeat center center;
+            background-size: 100% 100%;
+            top: 0.7rem;
+            left: 0.7rem; }
+    .ev_container .ev_container_content ul li.jasmine_member_item {
+      background: url("../images/jasmine_bg.png") no-repeat center center;
+      background-size: 100% 100%;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      padding: 0.8rem;
+      position: relative; }
+      .ev_container .ev_container_content ul li.jasmine_member_item .avatar {
+        -webkit-box-flex: 0 0 5rem;
+        -webkit-flex: 0 0 5rem;
+        -ms-flex: 0 0 5rem;
+        flex: 0 0 5rem; }
+        .ev_container .ev_container_content ul li.jasmine_member_item .avatar img {
+          width: 4rem;
+          height: 4rem;
+          display: block;
+          justify-content: center;
+          align-items: center;
+          align-self: center; }
+      .ev_container .ev_container_content ul li.jasmine_member_item .fill {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1; }
+        .ev_container .ev_container_content ul li.jasmine_member_item .fill p {
+          font-size: 1.1rem;
+          color: #fff;
+          letter-spacing: 0.1rem; }
+      .ev_container .ev_container_content ul li.jasmine_member_item .voice {
+        display: block;
+        -webkit-box-flex: 0 0 5rem;
+        -webkit-flex: 0 0 5rem;
+        -ms-flex: 0 0 5rem;
+        flex: 0 0 5rem; }
+        .ev_container .ev_container_content ul li.jasmine_member_item .voice.pause {
+          background: url("../images/zone/ico_voice_pause.png") no-repeat center center;
           background-size: 100% 100%;
-          top: 0.7rem;
-          left: 0.7rem; }
+          background-size: 52% 60%; }
+        .ev_container .ev_container_content ul li.jasmine_member_item .voice.play {
+          background: url("../images/zone/ico_voice_play.png") no-repeat center center;
+          background-size: 100% 100%;
+          background-size: 52% 60%; }
+      .ev_container .ev_container_content ul li.jasmine_member_item span {
+        position: absolute;
+        font-size: 0.8rem;
+        color: #fff;
+        letter-spacing: 0;
+        right: 2rem;
+        top: 0.2rem; }
 .ev_container .ev_container_footer {
   text-align: center;
   font-size: 1rem;

@@ -797,6 +797,7 @@
 							top: .7rem
 							left: .3rem
 		ul
+			padding: 0 1rem
 			li
 				padding: 1rem
 				margin-bottom: .5rem
@@ -826,6 +827,35 @@
 							@include icoStyle(2rem, 2rem, '../images/ev/ev_ico_chat.png')
 							top: .7rem
 							left: .7rem
+			li.jasmine_member_item
+				@include backgroundImg('../images/jasmine_bg.png')
+				@include displayFlex
+				padding: .8rem
+				position: relative
+				.avatar
+					@include displayFlex-w(5rem)
+					img
+						@include img_W(4rem)
+						display: block
+						@include displayFlexVAlign
+				.fill
+					@include displayFlex-1
+					p
+						@include fontStyle(1.1rem, #fff)
+				.voice
+					display: block
+					@include displayFlex-w(5rem)
+					&.pause
+						@include backgroundImg('../images/zone/ico_voice_pause.png')
+						background-size: 52% 60%
+					&.play
+						@include backgroundImg('../images/zone/ico_voice_play.png')
+						background-size: 52% 60%
+				span
+					position: absolute
+					@include fontStyle(.8rem, #fff, 0)
+					right: 2rem
+					top: .2rem
 	.ev_container_footer
 		text-align: center
 		@include fontStyle(1rem, #f53463, 0)
@@ -890,9 +920,9 @@
 	.ev_tmp_not_enough
 		h3
 			margin: 0 0 1rem 0
-			@include fontStyle(1.2rem,#fff,.3rem)
+			@include fontStyle(1.2rem, #fff, .3rem)
 		p
-			@include fontStyle(1.1rem,#fff,.1rem)
+			@include fontStyle(1.1rem, #fff, .1rem)
 		.btn
 			margin-top: 2rem
 			a
