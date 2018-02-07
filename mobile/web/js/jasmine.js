@@ -140,18 +140,6 @@ require(["jquery", "alpha", "mustache"],
 			});
 		}
 
-		$(document).on(kClick, ".btn-share", function () {
-			var html = '<i class="share-arrow">点击菜单分享</i>';
-			$sls.main.show();
-			$sls.main.append(html);
-			$sls.shade.fadeIn(160);
-			setTimeout(function () {
-				$sls.main.hide();
-				$sls.main.find('.share-arrow').remove();
-				$sls.shade.fadeOut(100);
-			}, 2500);
-		});
-
 		$(function () {
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;

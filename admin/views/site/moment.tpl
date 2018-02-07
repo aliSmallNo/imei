@@ -72,8 +72,8 @@
 	}
 </style>
 <div class="row">
-	<h4>群列表
-		<a href="JavaScript:;" class="btn-add btn btn-primary btn-xs">添加群</a>
+	<h4>动态列表
+		<a href="JavaScript:;" class="btn-add btn btn-primary btn-xs">添加动态</a>
 	</h4>
 </div>
 <form action="/site/moment" class="form-inline">
@@ -97,13 +97,13 @@
 				信息
 			</th>
 			<th class="col-sm-3">
-				最近更新
+				内容
 			</th>
 			<th>
-				群主
+				操作
 			</th>
 			<th>
-				群成员
+				时间
 			</th>
 			<th>
 				详情
@@ -123,34 +123,35 @@
 				<td>
 					<b><span class="topic">{{if isset($item.topic_title)}}{{$item.topic_title}}{{/if}}</span>{{$item.short_title}}</b>
 					{{if $item.mCategory==100}}
-						<div class="cat_text">{{$item.short_text}}</div>
+						<div class="cat_text" show="short" data_short_text="{{$item.short_text}}" data_text="{{$item.title}}"><text>{{$item.short_text}}</text><a>查看全部</a></div>
 					{{/if}}
 					{{if $item.mCategory==110}}
-					<div>{{foreach from=$item.url item=img}}<img src="{{$img}}" alt="" data_json='{{$item.jsonUrl}}'>{{/foreach}}</div>
+					<div data-images='{{$item.showImages}}'>{{foreach from=$item.url key=key item=img}}	<span class="album-item"><img src="{{$img}}" alt="" data-idx="{{$key}}"></span>{{/foreach}}</div>
 					{{/if}}
 					{{if $item.mCategory==120}}
-
+						<audio src="{{$item.src}}" controls></audio>
 					{{/if}}
 					{{if $item.mCategory==130}}
-
+					<a href="{{$item.article_url[0]}}">{{$item.short_title}}</a>
 					{{/if}}
 				</td>
 				<td align="center">
-					<img src="" class="i-av" bsrc="">
+					<div>
+					<span>浏览:{{$item.view}}</span>
+					<span>送花:{{$item.rose}}</span>
+					<span>点赞:{{$item.zan}}</span>
+					<span>评论:{{$item.comment}}</span>
+					</div>
 				</td>
 
-				<td class="members-des">
-
+				<td>
+					{{$item.mAddedOn}}
+					<div>{{$item.dt}}</div>
 				</td>
 				<td>
-					<a href="/site/roomdesc?rid={{$item.mId}}" class="btn btn-outline btn-primary btn-xs">详情</a>
-					<a href="/site/addmember?rid={{$item.mId}}" class="btn btn-outline btn-primary btn-xs">加入稻草人</a>
-					<a href="javascript:;" data-rid="{{$item.mId}}" data-src="{{$item.mId}}"
-					   data-limit="{{$item.mId}}" data-title="" data-intro="{{$item.mId}}"
-					   data-adminname="{{$item.uName}}" data-adminuid="{{$item.mId}}"
-					   class="RoomEdit btn btn-outline btn-primary btn-xs">修改群</a>
-						<a href="javascript:;" data-mid="{{$item.mId}}"
-						   class="roomAvatar btn btn-outline btn-danger btn-xs">生成群头像</a>
+					<a href="/site/momentdesc?mid={{$item.mId}}" class="btn btn-outline btn-primary btn-xs">详情</a>
+					<a href="javascript:;" data-mid="{{$item.mId}}" class="RoomEdit btn btn-outline btn-primary btn-xs">修改动态</a>
+
 				</td>
 			</tr>
 		{{/foreach}}
@@ -221,6 +222,44 @@
 	</div>
 </div>
 <script>
+
+	$(document).on("click",".cat_text a",function(){
+		var self = $(this);
+		var div=self.closest("div");
+		var show=div.attr("show")
+		if(show=="short"){
+			div.attr("show","all")
+			div.find("text").html(div.attr("data_text"))
+			div.find("a").html("收起")
+		}else{
+			div.attr("show","short")
+			div.find("text").html(div.attr("data_short_text"))
+			div.find("a").html("查看全部")
+		}
+	});
+
+	$(document).on("click", ".album-item img", function () {
+		var self = $(this);
+		var images = self.closest("div").attr("data-images");
+		var idx = self.attr('data-idx');
+		var photos = JSON.parse(images);
+		photos.title = '个人相册';
+		showImages(photos, idx)
+	});
+	function showImages(imagesJson, idx) {
+		if (idx) {
+			imagesJson.start = idx;
+		}
+		layer.photos({
+			photos: imagesJson,
+			shift: 5,
+			tab: function (info) {
+				console.log(info);
+			}
+		});
+	}
+
+
 	var $sls = {
 		rid: 0,
 		tag: '',

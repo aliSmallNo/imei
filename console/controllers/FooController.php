@@ -1631,8 +1631,14 @@ class FooController extends Controller
 			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2)';
 		*/
 
-		list($list) = Moment::wechatItems('', [], [], 1, 20);
-		print_r($list);
+
+		/*$arr = [
+			"title" => "会聊天的人，一开口就赢了",
+			"article_url" => ["https://mp.weixin.qq.com/s?__biz=MzI3NzczMDQwMA==&mid=2247484385&idx=4&sn=5304e5deeab1ed9dc128b2e6110f1d73&chksm=eb6086eedc170ff8f197d3ec26dda132364392b70d2203676582193dbedb32f713f51ca9fccc&mpshare=1&scene=1&srcid=0207WpPJnbi68HRpCGK4tZPV&key=e10261c30ede7ba3d6844e0b5fb99219d6ca0a38b3c578785bd781d0eb1205c9edb5129ff97608fa569ed2e6d9e5c1b766a8cdfbbcb1f649fabd16230be14aafa1f5dad1119b1cc21fb720a71e71bcc2&ascene=0&uin=MTQxMzc2MDE1&devicetype=iMac+MacBookPro12%2C1+OSX+OSX+10.11.6+build(15G31)&version=12020110&nettype=WIFI&lang=zh_CN&fontScale=100&pass_ticket=JI%2BdX2qmOpTFQX6WaXCaB%2BefSdeXEJnC9zA%2FKVDJbT8%3D"],
+			"subtext" => "世界那么大，你来了，就好",
+			"url" => [],
+		];
+		echo json_encode($arr,JSON_UNESCAPED_UNICODE);*/
 	}
 
 

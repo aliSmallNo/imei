@@ -20,7 +20,7 @@
 
 	<div class="ev_container_content">
 		<div class="ev_container_share">
-			<div><a href="javascript:;" data-tag="share" ev_opt="share">再次领取红包</a></div>
+			<div><a href="javascript:;" data-tag="share" ev_opt="share">分享给好友</a></div>
 			<div><a href="javascript:;" data-tag="more" ev_opt="more">获取更多现金</a></div>
 		</div>
 		<ul>
@@ -86,7 +86,7 @@
 			<p>{{$name}}</p>
 			<h3>分享好友即可再领取一次红包</h3>
 			<div class="btn">
-				<a href="javascript:;" class="btn-share">立即分享</a>
+				<a href="javascript:;">立即分享</a>
 			</div>
 		</div>
 	</div>
@@ -98,7 +98,7 @@
 			<p>提现金额必须大于1元</p>
 			<p>分享到朋友圈，可获再次领取红包机会</p>
 			<div class="btn">
-				<a href="javascript:;" class="btn-share">分享</a>
+				<a href="javascript:;">我知道了</a>
 			</div>
 		</div>
 	</div>
@@ -123,7 +123,7 @@
 		</div>
 	</div>
 </script>
-<input type="hidden" id="LASTUID" value="{{$lastid}}">
+<input type="hidden" id="LASTUID" value="">
 <input type="hidden" id="UID" value="{{$uid}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}

@@ -482,9 +482,9 @@
 				{{if $prod.album}}
 					{{foreach from=$prod.album key=k item=img}}
 						<span class="album-item">
-					<img src="{{$img}}" alt="" data-idx="{{$k}}">
-					<a href="javascript:;" data-id="{{$img}}"></a>
-				</span>
+							<img src="{{$img}}" alt="" data-idx="{{$k}}">
+							<a href="javascript:;" data-id="{{$img}}"></a>
+						</span>
 					{{/foreach}}
 				{{/if}}
 			</td>

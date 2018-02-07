@@ -2371,4 +2371,23 @@ class WxController extends BaseController
 			'每日红包',
 			'');
 	}
+
+	public function actionJasmine()
+	{
+		$uid = $this->user_id;
+		$lastid = self::getParam("id");
+
+		return self::renderPage("jasmine.tpl",
+			[
+				'lastid' => $lastid,
+				'uid' => $this->user_id,
+				'name' => $this->user_name,
+				'avatar' => $this->user_avatar,
+				'wxUrl' => AppUtil::wechatUrl(),
+			],
+			'terse',
+			'每日红包',
+			'');
+	}
+
 }
