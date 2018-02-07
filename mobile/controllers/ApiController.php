@@ -882,7 +882,7 @@ class ApiController extends Controller
 							$index = count($ret['data']) - 1;
 						}
 						array_splice($ret['data'], $index, 0,
-							[["url" => $item['url'], "img" => $item['content'], 'uni' => 100 + $k]]);
+							[["url" => $item['url'], "img" => $item['content'], 'uni' => 'i' . (100 + $k)]]);
 					}
 
 					$headers = CogService::init()->homeHeaders(true);
@@ -1241,7 +1241,7 @@ class ApiController extends Controller
 			case "setting":
 				$flag = self::postParam("flag", 0);
 				$setfield = self::postParam("set", 0);
-				if (!$flag || !$setfield) {
+				if (!strlen($flag) || !$setfield) {
 					return self::renderAPI(129, '参数错误~');
 				}
 				if (!$wx_uid) {
