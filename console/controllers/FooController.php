@@ -1625,9 +1625,14 @@ class FooController extends Controller
 		// list($res) = Moment::wechatItems([], [], 1);print_r($res);
 
 
-		$cri = [" tTitle like :title ", " tId=:tid"];
-		$cri = "and " . implode(" and ", $cri);
-		echo $cri;
+		/*
+		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound,gAddedBy)
+			SELECT :id1,:id2,9999,:uid FROM dual
+			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2)';
+		*/
+
+		list($list) = Moment::wechatItems('', [], [], 1, 20);
+		print_r($list);
 	}
 
 

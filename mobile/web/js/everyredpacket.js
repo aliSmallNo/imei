@@ -148,7 +148,7 @@ require(["jquery", "alpha", "mustache"],
 			wx.ready(function () {
 				wx.hideMenuItems({
 					menuList: [
-						'menuItem:copyUrl',
+						//'menuItem:copyUrl',
 						'menuItem:openWithQQBrowser',
 						'menuItem:openWithSafari',
 						'menuItem:share:qq',

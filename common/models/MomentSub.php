@@ -9,6 +9,7 @@
 namespace common\models;
 
 
+use common\utils\AppUtil;
 use yii\db\ActiveRecord;
 
 class MomentSub extends ActiveRecord
@@ -57,5 +58,21 @@ class MomentSub extends ActiveRecord
 		return self::add($insert);
 	}
 
+
+	public static function increaseView($mid, $uid)
+	{
+		if (!$mid || !$uid) {
+			return 0;
+		}
+		$sql = "INSERT INTO im_moment_sub(sMId,sUId,sCategory)
+				SELECT :mid,:uid,:cat FROM dual 
+				WHERE NOT EXISTS(SELECT 1 FROM im_moment_sub as s WHERE s.sMId=:mid AND s.sUId=:uid and s.sCategory=:cat )";
+		AppUtil::db()->createCommand($sql)->bindValues([
+			":uid" => $uid,
+			":mid" => $mid,
+			":cat" => MomentSub::CAT_VIEW,
+		])->execute();
+
+	}
 
 }

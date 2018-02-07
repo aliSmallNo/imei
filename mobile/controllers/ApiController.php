@@ -3304,6 +3304,9 @@ class ApiController extends Controller
 				if (!$zone_id) {
 					return self::renderAPI(129, '参数错误');
 				}
+				if ($page == 1) {
+					MomentSub::increaseView($zone_id, $uid);
+				}
 				list($zone_info, $nextpage, $rose_list, $zan_list, $comment_list) = Moment::wechatItem($uid, $zone_id, $page);
 				return self::renderAPI(0, '', [
 					'zone_info' => $zone_info,
@@ -3336,10 +3339,11 @@ class ApiController extends Controller
 				break;
 			case "init_topic":
 				$topic_id = self::postParam('id');
+				$page = self::postParam('page');
 				if (!$topic_id) {
 					return self::renderAPI(129, '参数错误~');
 				}
-				list($list, $nextpage, $topicInfo) = MomentTopic::items($topic_id, $uid);
+				list($list, $nextpage, $topicInfo) = MomentTopic::items($topic_id, $uid, $page);
 				return self::renderAPI(0, '', [
 					'data' => $list,
 					'nextpage' => $nextpage,

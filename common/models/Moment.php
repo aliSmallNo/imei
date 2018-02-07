@@ -56,7 +56,7 @@ class Moment extends ActiveRecord
 	public static function wechatItems($uid, $cri, $param, $page = 1, $pagesize = 10)
 	{
 		$conn = AppUtil::db();
-		$str = $favor = "";
+		$str = $favor = $optstr = "";
 		if ($cri) {
 			$str .= ' and ' . implode(" ", $cri);
 		}
@@ -65,17 +65,22 @@ class Moment extends ActiveRecord
 			$favor = " join im_user_net as n on n.nUId=m.mUId and nSubUId=$uid and nRelation=$relation ";
 			unset($param["favorFlag"]);
 		}
+		if ($uid) {
+			$optstr = <<<EEE
+SUM(case when sCategory=100  and sUId=$uid then 1 else 0 end) as `viewf`,
+SUM(case when sCategory=110  and sUId=$uid then 1 else 0 end) as `rosef`,
+SUM(case when sCategory=120  and sUId=$uid then 1 else 0 end) as `zanf`,
+SUM(case when sCategory=130  and sUId=$uid then 1 else 0 end) as `commentf`,
+EEE;
+		}
 
 		$limit = "limit " . ($page - 1) * ($pagesize + 1) . ',' . $pagesize;
 		$sql = "select m.*,uName,uThumb,uLocation,tTitle,
+				$optstr
 				SUM(case when sCategory=100  then 1 else 0 end) as `view`,
-				SUM(case when sCategory=100  and sUId=$uid then 1 else 0 end) as `viewf`,
 				SUM(case when sCategory=110  then 1 else 0 end) as `rose`,
-				SUM(case when sCategory=110  and sUId=$uid then 1 else 0 end) as `rosef`,
 				SUM(case when sCategory=120  then 1 else 0 end) as `zan`,
-				SUM(case when sCategory=120  and sUId=$uid then 1 else 0 end) as `zanf`,
-				SUM(case when sCategory=130  then 1 else 0 end) as `comment`,
-				SUM(case when sCategory=130  and sUId=$uid then 1 else 0 end) as `commentf`
+				SUM(case when sCategory=130  then 1 else 0 end) as `comment`
 				from im_moment as m 
 				left join im_moment_sub as s on m.mId=s.sMId 
 				left join im_moment_topic as t on t.tId=m.mTopic 
@@ -95,6 +100,21 @@ class Moment extends ActiveRecord
 			array_pop($ret);
 		}
 		return [$ret, $nextpage];
+	}
+
+	public static function count($cri, $param)
+	{
+		$str = "";
+		if ($cri) {
+			$str .= ' and ' . implode(" ", $cri);
+		}
+		$sql = "select count(DISTINCT mId)
+				from im_moment as m 
+				left join im_moment_sub as s on m.mId=s.sMId 
+				left join im_moment_topic as t on t.tId=m.mTopic 
+				left join im_user as u on u.uId=m.mUId 
+				where mDeletedFlag=0 $str ";
+		return AppUtil::db()->createCommand($sql)->bindValues($param)->queryScalar();
 	}
 
 	public static function fmt($row)
@@ -137,7 +157,7 @@ class Moment extends ActiveRecord
 
 		$inf = ['view', "viewf", "rose", "rosef", "zan", "zanf", "comment", "commentf"];
 		foreach ($inf as $v3) {
-			$arr[$v3] = intval($row[$v3]);
+			$arr[$v3] = isset($row[$v3]) ? intval($row[$v3]) : 0;
 		}
 
 		return $arr;
@@ -179,6 +199,29 @@ class Moment extends ActiveRecord
 		}
 		return $ret;
 
+	}
+
+	public static function topicStat($tag, $tid)
+	{
+		$conn = AppUtil::db();
+		$param = [];
+		switch ($tag) {
+			case "content":
+				$sql = "select count(1) from im_moment where mTopic=:tid and mDeletedFlag=0 ";
+				$param[":tid"] = $tid;
+				break;
+			case "join":
+				$sql = "select count(1) from im_moment as m join `im_moment_sub` as s on s.`sMId`=m.mId where mTopic=:tid and sCategory!=:cat";
+				$param[":tid"] = $tid;
+				$param[":cat"] = MomentSub::CAT_VIEW;
+				break;
+			case "view":
+				$sql = "select count(1) from im_moment as m join `im_moment_sub` as s on s.`sMId`=m.mId where mTopic=:tid and sCategory=:cat ";
+				$param[":tid"] = $tid;
+				$param[":cat"] = MomentSub::CAT_VIEW;
+				break;
+		}
+		return $conn->createCommand($sql)->bindValues($param)->queryScalar();
 	}
 
 

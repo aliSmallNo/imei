@@ -13,6 +13,7 @@ use common\models\EventCrew;
 use common\models\Feedback;
 use common\models\Log;
 use common\models\Mark;
+use common\models\Moment;
 use common\models\Pay;
 use common\models\Pin;
 use common\models\QuestionGroup;
@@ -1591,6 +1592,39 @@ class SiteController extends BaseController
 				'admin_id' => $this->admin_id,
 				'base_url' => 'site/rooms'
 			]);
+	}
+
+	public function actionMoment()
+	{
+		$getInfo = Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$rname = self::getParam("rname");
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+		$condition = $params = [];
+		if ($rname) {
+			$condition[] = '(r.rTitle like :title )';
+			$params[':title'] = '%' . $rname . '%';
+		}
+		if ($name) {
+			$condition[] = '(u.uName like :name )';
+			$params[':name'] = '%' . $name . '%';
+		}
+		if ($phone) {
+			$condition[] = '(u.uPhone like :phone )';
+			$params[':phone'] = $phone . '%';
+		}
+		list($list) = Moment::wechatItems('', $condition, $params, $page, 20);
+
+		$count = Moment::count($condition, $params);
+		$pagination = self::pagination($page, $count);
+		return $this->renderPage("moment.tpl",
+			[
+				'getInfo' => $getInfo,
+				'pagination' => $pagination,
+				'list' => $list
+			]
+		);
 	}
 
 }
