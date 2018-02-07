@@ -479,6 +479,24 @@ class ApiController extends Controller
 					'leftAmt' => Log::everySumLeft(),
 				]);
 				break;
+			case "init_jasmine":
+				$left = 10000000 - (date("H") * 3600 + date("i") * 60 + date("s")) * 99;
+				return self::renderAPI(0, 'ok', [
+					'hasGrab' => intval(Log::jasmineAdd($wx_uid)),
+					'sum' => 2,
+					'leftAmt' => $left,
+				]);
+				break;
+			case "grab_jasmine":
+				Log::jasmineAdd($wx_uid);
+				$left = 10000000 - (date("H") * 3600 + date("i") * 60 + date("s")) * 99;
+				return self::renderAPI(0, '', [
+					'amt' => 2,
+					'left' => 0,
+					'sum' => 2,
+					'leftAmt' => $left,
+				]);
+				break;
 			case "task_add_award":
 				// alpha.js use
 				$key = self::postParam("key");

@@ -393,8 +393,8 @@ class SiteController extends BaseController
 				$dataImg[] = [
 					"alt" => "个人相册",
 					"pid" => $v['id'],
-					"src" => $v1, // 原图地址
-					"thumb" => $v1 // 缩略图地址
+					"src" => $v1,   // 原图地址
+					"thumb" => $v1  // 缩略图地址
 				];
 			}
 			$v['mco'] = 0;
@@ -1615,6 +1615,25 @@ class SiteController extends BaseController
 			$params[':phone'] = $phone . '%';
 		}
 		list($list) = Moment::wechatItems('', $condition, $params, $page, 20);
+		foreach ($list as &$v) {
+			$dataImg = [];
+			foreach ($v["url"] as $v1) {
+				$dataImg[] = [
+					"alt" => "图片",
+					"pid" => $v['mId'],
+					"src" => $v1,   // 原图地址
+					"thumb" => $v1  // 缩略图地址
+				];
+			}
+
+			$v["showImages"] = json_encode([
+				"title" => "show",
+				"id" => "10001",
+				"start" => 0,
+				"data" => $dataImg,
+			]);
+
+		}
 
 		$count = Moment::count($condition, $params);
 		$pagination = self::pagination($page, $count);

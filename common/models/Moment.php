@@ -148,7 +148,7 @@ EEE;
 		}
 
 		$arr['short_title'] = mb_strlen($arr['title']) > 15 ? mb_substr($arr["title"], 0, 15) . "..." : $arr['title'];
-		$arr['short_text'] = mb_strlen($arr['title']) > 200 ? mb_substr($arr["title"], 0, 200) . "..." : $arr['title'];
+		$arr['short_text'] = mb_strlen($arr['title']) > 20 ? mb_substr($arr["title"], 0, 20) . "..." : $arr['title'];
 		$arr['short_subtext'] = mb_strlen($arr['subtext']) > 200 ? mb_substr($arr["subtext"], 0, 200) . "..." : $arr['subtext'];
 
 		$location = json_decode($row["uLocation"], 1);

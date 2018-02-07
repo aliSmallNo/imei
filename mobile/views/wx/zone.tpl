@@ -261,7 +261,7 @@
 			{[/flag120]}
 			{[#flag130]}
 			<div class="zone_container_item_cat_article">
-				<a href="{[article_url]}" class="avatar"><img src="{[src]}" alt=""></a>
+				<a href="{[#article_url]}{[.]}{[/article_url]}" class="avatar"><img src="{[src]}" alt=""></a>
 				<div class="des">
 					<h5>{[short_title]}</h5>
 					<p>{[short_subtext]}</p>

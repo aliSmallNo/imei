@@ -36,6 +36,8 @@ class Log extends ActiveRecord
 	const EVERY_TIMES = 100;
 	const EVERY_MONEY = 200;
 
+	const CAT_JASMINE = 7000;// 茉莉推广
+	const JASMINE_DEFAULT = 100;
 
 	const SC_SHIELD = 100;
 	const SC_NOCERT_DES = 200;
@@ -342,5 +344,18 @@ class Log extends ActiveRecord
 		])->queryScalar();
 
 		return (1000 * 10000 * 100 - 111111111 - $grabAmt - 12345 * $times) / 100;
+	}
+
+	public static function jasmineAdd($uid)
+	{
+		$insert = [
+			"oUId" => $uid,
+			"oCategory" => self::CAT_JASMINE,
+			"oKey" => self::JASMINE_DEFAULT,
+		];
+		if (self::findOne($insert)) {
+			return 0;
+		}
+		return self::add($insert);
 	}
 }

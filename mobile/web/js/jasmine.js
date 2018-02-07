@@ -32,7 +32,7 @@ require(["jquery", "alpha", "mustache"],
 					if (amt < 1) {
 						alertToggle(1, $("#tpl_not_enough").html());
 					} else {
-						alertToggle(1, Mustache.render($("#tpl_qr").html(), {text: '长按二维码关注公众号即可到我的账户提现'}));
+						alertToggle(1, Mustache.render($("#tpl_qr").html(), {text: '长按扫描二维码注册下载即可立即提现到微信红包'}));
 					}
 					break;
 				case "ipacket":
@@ -42,7 +42,16 @@ require(["jquery", "alpha", "mustache"],
 					alertToggle(1, $("#tpl_rule").html());
 					break;
 				case "share":
-					alertToggle(1, $("#tpl_more").html());
+					var html = '<i class="share-arrow">点击菜单分享</i>';
+					$sls.main.show();
+					$sls.main.append(html);
+					$sls.content.html('');
+					$sls.shade.fadeIn(160);
+					setTimeout(function () {
+						$sls.main.hide();
+						$sls.main.find('.share-arrow').remove();
+						$sls.shade.fadeOut(100);
+					}, 2500);
 					break;
 				case "more":
 					alertToggle(1, Mustache.render($("#tpl_qr").html(), {text: '长按二维码关注公众号即可获取更多现金'}));
@@ -62,9 +71,9 @@ require(["jquery", "alpha", "mustache"],
 			}
 			$sls.loading = 1;
 			$.post("/api/user", {
-				tag: 'grab_everyredpacket',
+				tag: 'grab_jasmine',
 			}, function (resp) {
-				$(".ev_container_top_grabed p span").html(resp.data.sum)
+				$(".ev_container_top_grabed p span").html(resp.data.sum);
 				$(".ev_container_top_grab h4 span").html(resp.data.leftAmt);
 				refresh(resp.data.left);
 				alertToggle(1, Mustache.render($("#tpl_grab").html(), resp.data));
@@ -89,7 +98,7 @@ require(["jquery", "alpha", "mustache"],
 			}
 			$sls.loading = 1;
 			$.post("/api/user", {
-				tag: 'init_everyredpacket',
+				tag: 'init_jasmine',
 				lastid: $sls.lastuid,
 			}, function (resp) {
 				$sls.loading = 0;
@@ -97,10 +106,9 @@ require(["jquery", "alpha", "mustache"],
 				$(".ev_container_top_grab h4 span").html(resp.data.leftAmt);
 
 				refresh(resp.data.hasGrab);
-				var html = Mustache.render($("#tpl_init").html(), resp.data);
-				$(".ev_container_content ul").html(html);
 			}, "json");
 		}
+
 
 		function refresh(f) {
 			if (f) {
@@ -113,9 +121,40 @@ require(["jquery", "alpha", "mustache"],
 
 		}
 
+		// 播放语音
+		$(document).on(kClick, ".playVoiceElement", function () {
+			var self = $(this);
+			var audio = self.find("audio")[0];
+
+			if (self.hasClass("pause")) {
+				playVoice(audio);
+				self.removeClass("pause").addClass("play");
+			} else {
+				playVoice(audio);
+				self.removeClass("play").addClass("pause");
+			}
+			// 监听语音播放完毕
+			self.find("audio").bind('ended', function () {
+				self.removeClass('play').addClass("pause");
+				alertToggle(1, Mustache.render($("#tpl_qr").html(), {text: '长按扫描二维码倾听更多人的心情'}));
+			});
+		});
+
+		function playVoice(audio) {
+			if (audio !== null) {
+				//检测播放是否已暂停.audio.paused 在播放器播放时返回false.
+				console.log(audio.paused);
+				if (audio.paused) {
+					audio.play();//audio.play();// 这个就是播放
+				} else {
+					audio.pause();// 这个就是暂停
+				}
+			}
+		}
+
 		function resetMenuShare() {
 			var thumb = 'http://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9nKXslmu59cJyaHJCqiaVWaXXJxQuPCXJOsO9SwBPhGWl0GZ8D2SrTdIuKt93876kmBfSbGS8mMHwQ/0?wx_fmt=jpeg';
-			var link = $sls.wxUrl + '/wx/everyredpacket?id=' + $sls.uid;
+			var link = $sls.wxUrl + '/wx/jasmine?id=';
 
 			var title = '好火呀！天天来赚钱，还可以提现！';
 			var desc = '天天来赚钱，攒够1块就能提现。推荐给你用用，哈哈～';
@@ -139,19 +178,6 @@ require(["jquery", "alpha", "mustache"],
 				}
 			});
 		}
-
-		$(document).on(kClick, ".btn-share", function () {
-			var html = '<i class="share-arrow">点击菜单分享</i>';
-			$sls.main.show();
-			$sls.main.append(html);
-			$sls.content.html('');
-			$sls.shade.fadeIn(160);
-			setTimeout(function () {
-				$sls.main.hide();
-				$sls.main.find('.share-arrow').remove();
-				$sls.shade.fadeOut(100);
-			}, 2500);
-		});
 
 		$(function () {
 			var wxInfo = JSON.parse($sls.wxString);
