@@ -761,13 +761,14 @@ class ApiController extends Controller
 						$insert["mContent"] = json_decode($minfo['mContent'], 1);
 						break;
 				}
+
 				foreach ($ft[$cat] as $k => $v) {
-					$i = isset($insert["mContent"][$v]) ? $data[$k] : '';
 					if (isset($insert["mContent"][$v])) {
 						$insert["mContent"][$v] = $data[$k];
 					}
 				}
 
+				$insert["mContent"] = json_encode($insert["mContent"], JSON_UNESCAPED_UNICODE);
 				$insert["mCategory"] = $cat;
 				$insert["mTopic"] = $data['topic'];
 				$insert["mUId"] = $data['uid'];
@@ -777,13 +778,14 @@ class ApiController extends Controller
 					$insert["mTop"] = Moment::TOP_ARTICLE;
 				}
 
-				// $ret = Moment::adminEdit($mid, $insert);
+				 $ret = Moment::adminEdit($mid, $insert);
 
 				return self::renderAPI(0, '', [
 					'result' => $data,
 					'image' => $_FILES,
 					'images' => $images,
 					'insert' => $insert,
+					'$mid' => $mid,
 				]);
 				break;
 		}

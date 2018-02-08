@@ -3257,7 +3257,8 @@ class ApiController extends Controller
 				switch ($cat) {
 					case "text":
 						$insert["mCategory"] = Moment::CAT_TEXT;
-						$insert["mContent"]["title"] = $text;
+						$insert["mContent"]["title"] = mb_substr($text, 0, 10);
+						$insert["mContent"]["subtext"] = $text;
 						break;
 					case "image":
 						$mediaIds = json_decode($img_ids, 1);
@@ -3275,6 +3276,7 @@ class ApiController extends Controller
 						list($voiceUrl) = ImageUtil::save2Server($voice_id);
 						$insert["mCategory"] = Moment::CAT_VOICE;
 						$insert["mContent"]["title"] = $text;
+						$insert["mContent"]["url"] = ['https://bpbhd-10063905.file.myqcloud.com/image/t1711201155449.jpg'];
 						$insert["mContent"]["other_url"] = $voiceUrl;
 						break;
 				}

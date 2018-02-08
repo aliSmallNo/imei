@@ -250,11 +250,11 @@
 			{[/flag110]}
 			{[#flag120]}
 			<div class="zone_container_item_cat_voice">
-				<div class="avatar"><img src="/images/cr_room_share.jpg" alt="">
+				<div class="avatar"><img src="{[url]}" alt="">
 				</div>
 				<div class="fill">&nbsp;</div>
 				<a href="javascript:;" class="voice pause playVoiceElement" pvl="items">
-					<audio src="{[src]}"></audio>
+					<audio src="{[other_url]}"></audio>
 				</a>
 				<span></span>
 			</div>
