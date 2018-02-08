@@ -146,7 +146,7 @@
 <script>
 
 	requirejs(['/js/config.js?v=1.2.5'], function () {
-		requirejs(['/js/jasmine.js?v=1.2.7']);
+		requirejs(['/js/jasmine.js?v=1.2.8']);
 	});
 </script>
 
