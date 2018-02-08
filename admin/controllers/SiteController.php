@@ -1637,9 +1637,7 @@ class SiteController extends BaseController
 				"start" => 0,
 				"data" => $dataImg,
 			]);
-
 		}
-
 		$count = Moment::count($condition, $params);
 		$pagination = self::pagination($page, $count);
 		return $this->renderPage("moment.tpl",

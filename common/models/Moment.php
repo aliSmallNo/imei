@@ -185,38 +185,41 @@ EEE;
 
 	public static function wechatItem($uid, $mid, $page = 1)
 	{
-		list($res, $nextpage) = self::wechatItems($uid, ["mId=:mid"], [":mid" => $mid], $page);
-
+		list($res) = self::wechatItems($uid, ["mId=:mid"], [":mid" => $mid]);
+		$nextpage = 0;
 		$conn = AppUtil::db();
-		$rose = self::itemByCat($conn, $mid, MomentSub::CAT_ROSE);
-		$zan = self::itemByCat($conn, $mid, MomentSub::CAT_ZAN);
-		$comment = self::itemByCat($conn, $mid, MomentSub::CAT_COMMENT);
+		list($rose) = self::itemByCat($page, $mid, MomentSub::CAT_ROSE);
+		list($zan) = self::itemByCat($page, $mid, MomentSub::CAT_ZAN);
+		list($comment, $nextpage) = self::itemByCat($page, $mid, MomentSub::CAT_COMMENT);
 
 		return [$res, $nextpage, $rose, $zan, $comment];
 	}
 
-	public static function itemByCat($conn, $mid, $cat, $sid = 0)
+	public static function itemByCat($page, $mid, $cat, $sid = 0, $limit = 6)
 	{
 		$str = "";
 		if ($sid) {
 			$str = " and sId=$sid ";
 		}
+		$pagesize = 10;
+		$limit = " limit " . ($page - 1) . "," . ($pagesize + 1);
 		$sql = "select uName,uThumb,s.*
 				from im_moment as m 
 				left join im_moment_sub as s on m.mId=s.sMId
 				left join im_user as u on u.uId=s.sUId
 				where mDeletedFlag=0 and mId=:mid and `sCategory`=:cat $str
-				order by sId desc ";
-		$cmd = $conn->createCommand($sql);
+				order by sId desc $limit ";
+		$cmd = AppUtil::db()->createCommand($sql);
 		$ret = $cmd->bindValues([":mid" => $mid, ":cat" => $cat])->queryAll();
-		if (in_array($cat, [MomentSub::CAT_ROSE, MomentSub::CAT_ZAN])) {
+		if ($limit && in_array($cat, [MomentSub::CAT_ROSE, MomentSub::CAT_ZAN])) {
 			$ret = array_slice($ret, 0, 6);
 		}
 		foreach ($ret as $k => $v) {
 			$ret[$k]["isVoice"] = strpos($v["sContent"], "http") !== false ? 1 : 0;
 			$ret[$k]["dt"] = AppUtil::prettyPastDate($v["sAddedOn"]);
 		}
-		return $ret;
+		$nextpage = count($ret) > $pagesize ? $page + 1 : 0;
+		return [$ret, $nextpage];
 
 	}
 

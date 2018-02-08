@@ -74,6 +74,30 @@
 	.topic{
 		color: #f06292;
 	}
+	.api_opt{
+		display: flex;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee
+	}
+	.api_opt .avatar{
+		width: 20%;
+	}
+	.api_opt .avatar img {
+		width: 50px;
+		height: 50px;
+		margin: 0 auto;
+	}
+	.api_opt h4{
+    width: 20%;
+    line-height: 25px;
+    margin: 0;
+    font-size: 12px;
+	}
+	.api_opt p{
+    width: 50%;
+    line-height: 25px;
+	}
 </style>
 <div class="row">
 	<h4>动态列表
@@ -147,11 +171,11 @@
 					{{/if}}
 				</td>
 				<td>
-					<div>
-					<span>浏览:{{$item.view}}</span>
-					<span>送花:{{$item.rose}}</span>
-					<span>点赞:{{$item.zan}}</span>
-					<span>评论:{{$item.comment}}</span>
+					<div data-mid="{{$item.mId}}">
+						<a opt-cat="view">浏览:{{$item.view}}</a>
+						<a opt-cat="rose">送花:{{$item.rose}}</a>
+						<a opt-cat="zan">点赞:{{$item.zan}}</a>
+						<a opt-cat="comment">评论:{{$item.comment}}</a>
 					</div>
 				</td>
 
@@ -160,7 +184,6 @@
 					<div>{{$item.dt}}</div>
 				</td>
 				<td>
-					<a href="/site/momentdesc?mid={{$item.mId}}" class="btn btn-outline btn-primary btn-xs">详情</a>
 					<a href="javascript:;" data-mid="{{$item.mId}}" data-cat="{{$item.mCategory}}" data-uid="{{$item.mUId}}" data-name="{{$item.uName}}"
 						data-content='{{$item.mContent}}' data-topic="{{if isset($item.topic_title)}}{{$item.topic_title}}{{/if}}" data-tid="{{$item.mTopic}}"
 					class="MomentEdit btn btn-outline btn-primary btn-xs">修改动态</a>
@@ -170,6 +193,27 @@
 		</tbody>
 	</table>
 	{{$pagination}}
+</div>
+
+<div class="modal" id="userOPT" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+							aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">操作</h4>
+			</div>
+			<div class="modal-body" >
+				<table class="table table-striped table-bordered">
+					<ul></ul>
+				</table>
+			</div>
+			<div class="modal-footer" style="overflow: hidden">
+				<button class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button class="btn btn-primary " style="display: none">确定保存</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="modal" id="modalEdit" tabindex="-1" role="dialog">
@@ -193,6 +237,43 @@
 	</div>
 </div>
 <script>
+
+	var $sls = {
+		rid: 0,
+		tag: '',
+		searchFlag: 0,
+		mid: '',
+		opt_tag: '',
+		page: 1,
+	};
+
+	$(document).on("click","[opt-cat]",function(){
+		var self = $(this);
+		$sls.mid = self.closest("div").attr('data-mid');
+		$sls.opt_tag = self.attr('opt-cat');
+		$sls.page = 1;
+		loadOPT();
+	});
+	function loadOPT(){
+		if($sls.searchFlag){
+			return;
+		}
+		$sls.searchFlag=1;
+		$.post("/api/moment",{
+			tag:"user_opt",
+			subtag: $sls.opt_tag,
+			page: $sls.page,
+			mid: $sls.mid,
+		},function(resp){
+			if($sls.page==1){
+				$("#userOPT .modal-body ul").html(Mustache.render($("#tmp_opt").html(),resp.data));
+			} else {
+				$("#userOPT .modal-body ul").append(Mustache.render($("#tmp_opt").html(),resp.data));
+			}
+			$("#userOPT").modal('show');
+			$sls.searchFlag=0;
+		},"json");
+	}
 
 	$(document).on("click",".cat_text a",function(){
 		var self = $(this);
@@ -237,13 +318,6 @@
 		$(".modal-body .form-horizontal").html($("#cat"+cat).html())
 	});
 
-
-	var $sls = {
-		rid: 0,
-		tag: '',
-		searchFlag: 0,
-		mid: '',
-	};
 	$(document).on("click", ".btn-add", function () {
 		$sls.tag = "add";
 		$(".form-horizontal").html($("#init_add").html());
@@ -687,5 +761,20 @@
 		</div>
 	</div>
 </script>
-
+<script type="text/html" id="tmp_opt">
+{[#data]}
+	<li class="api_opt">
+		<div class="avatar"><img src="{[uThumb]}" alt=""></div>
+		<h4>{[uName]}</h4>
+		<p>
+		{[#isVoice]}
+			<audio src="{[sContent]}" controls></audio>
+		{[/isVoice]}
+		{[^isVoice]}
+			{[sContent]}
+		{[/isVoice]}
+		</p>
+	</li>
+{[/data]}
+</script>
 {{include file="layouts/footer.tpl"}}

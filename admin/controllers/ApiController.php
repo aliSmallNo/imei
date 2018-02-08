@@ -18,6 +18,7 @@ use common\models\Date;
 use common\models\Log;
 use common\models\LogAction;
 use common\models\Moment;
+use common\models\MomentSub;
 use common\models\MomentTopic;
 use common\models\QuestionGroup;
 use common\models\QuestionSea;
@@ -790,7 +791,32 @@ class ApiController extends Controller
 					'image' => $_FILES,
 					'images' => $images,
 					'insert' => $insert,
-					'$mid' => $mid,
+					'mid' => $mid,
+				]);
+				break;
+			case "user_opt":
+				$mid = self::postParam('mid');
+				$subtag = self::postParam('subtag');
+				$page = self::postParam('page', 1);
+
+				$conn = AppUtil::db();
+				switch ($subtag) {
+					case "view":
+						list($data, $nextpage) = Moment::itemByCat($page, $mid, MomentSub::CAT_VIEW);
+						break;
+					case "rose":
+						list($data, $nextpage) = Moment::itemByCat($page, $mid, MomentSub::CAT_ROSE);
+						break;
+					case "zan":
+						list($data, $nextpage) = Moment::itemByCat($page, $mid, MomentSub::CAT_ZAN);
+						break;
+					case "comment":
+						list($data, $nextpage) = Moment::itemByCat($page, $mid, MomentSub::CAT_COMMENT);
+						break;
+				}
+				return self::renderAPI(0, '', [
+					'data' => $data,
+					'nextpage' => $nextpage,
 				]);
 				break;
 		}
