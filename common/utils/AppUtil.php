@@ -99,6 +99,7 @@ class AppUtil
 		],
 	];
 
+
 	static $Jasmine = [
 		[
 			"avatar" => "http://moli2017.oss-cn-zhangjiakou.aliyuncs.com//file/15171504827068dd9334a-f8ea-44f4-9cb0-9e6ce9612711.jpg?x-oss-process=image/resize,w_70,limit_0",
@@ -131,7 +132,6 @@ class AppUtil
 			"src" => " http://moli2017.oss-cn-zhangjiakou.aliyuncs.com/file/iOS_151790991065952965534-920F-47EE-9C3C-31450AC2817E.m4a",
 		],
 	];
-
 
 	static $JasminOther = [
 		[

@@ -121,6 +121,18 @@ require(["jquery", "alpha", "mustache"],
 
 		}
 
+		$(".jasmine_member_item").each(function (v) {
+			var li = $(this);
+			var t = li.find("audio")[0].duration;
+			// console.log(t);
+			if (t) {
+				li.find("span").text(transTime(t));
+			} else {
+				li.find("span").text(transTime(0));
+			}
+		});
+
+
 		// 播放语音
 		$(document).on(kClick, ".playVoiceElement", function () {
 			var self = $(this);
@@ -139,6 +151,24 @@ require(["jquery", "alpha", "mustache"],
 				alertToggle(1, Mustache.render($("#tpl_qr").html(), {text: '长按扫描二维码倾听更多人的心情'}));
 			});
 		});
+
+		//转换音频时长显示
+		function transTime(time) {
+			var duration = parseInt(time);
+			var minute = parseInt(duration / 60);
+			var sec = duration % 60 + '';
+			var isM0 = ':';
+			if (minute == 0) {
+				minute = '00';
+			} else if (minute < 10) {
+				minute = '0' + minute;
+			}
+			if (sec.length == 1) {
+				sec = '0' + sec;
+			}
+			return minute + isM0 + sec;
+		}
+
 
 		function playVoice(audio) {
 			if (audio !== null) {

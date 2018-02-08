@@ -481,6 +481,7 @@ class ApiController extends Controller
 				break;
 			case "init_jasmine":
 
+
 				$left = 10000000 - (date("H") * 3600 + date("i") * 60 + date("s")) * 99;
 				return self::renderAPI(0, 'ok', [
 					'hasGrab' => intval(Log::jasmineAdd($wx_uid)),
