@@ -221,11 +221,11 @@ requirejs(['jquery', 'mustache', 'alpha'],
 					$(".action-homeland .homeland em").each(function () {
 						var item = {
 							key: $(this).attr("data-key"),
-							text: $(this).html(),
+							text: $(this).html()
 						};
 						hItem.push(item);
 					});
-					if (hItem.length < 3) {
+					if (hItem.length < 2) {
 						alpha.toast("你的籍贯还没有选择哦~");
 						return false;
 					}
