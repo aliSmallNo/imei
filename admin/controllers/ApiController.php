@@ -768,17 +768,22 @@ class ApiController extends Controller
 					}
 				}
 
+				if ($cat == Moment::CAT_VOICE) {
+					$insert["mContent"]['url'] = ['https://bpbhd-10063905.file.myqcloud.com/image/t1711201155449.jpg'];
+				}
+
 				$insert["mContent"] = json_encode($insert["mContent"], JSON_UNESCAPED_UNICODE);
 				$insert["mCategory"] = $cat;
 				$insert["mTopic"] = $data['topic'];
 				$insert["mUId"] = $data['uid'];
+
 				if ($topic == MomentTopic::TOPIC_SYS) {
 					$insert["mTop"] = Moment::TOP_SYS;
 				} elseif ($topic == MomentTopic::TOPIC_ARTICLE) {
 					$insert["mTop"] = Moment::TOP_ARTICLE;
 				}
 
-				 $ret = Moment::adminEdit($mid, $insert);
+				$ret = Moment::adminEdit($mid, $insert);
 
 				return self::renderAPI(0, '', [
 					'result' => $data,

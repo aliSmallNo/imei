@@ -81,12 +81,19 @@
 	</h4>
 </div>
 <form action="/site/moment" class="form-inline">
-	<input class="form-control" placeholder="群名称" name="rname"
-	       value="{{if isset($getInfo['rname'])}}{{$getInfo['rname']}}{{/if}}"/>
-	<input class="form-control" placeholder="群主名称" name="name"
+	<input class="form-control" placeholder="标题" name="title"
+	       value="{{if isset($getInfo['title'])}}{{$getInfo['title']}}{{/if}}"/>
+	<input class="form-control" placeholder="用户" name="name"
 	       value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
-	<input class="form-control" placeholder="群主手机" name="phone"
+	<input class="form-control" placeholder="用户手机" name="phone"
 	       value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
+
+	<select name="cat" class="form-control">
+		<option value="">-=请选择类型=-</option>
+	{{foreach from=$catDict key=key item=item}}
+		<option value="{{$key}}"  {{if isset($getInfo['cat']) && $getInfo['cat']==$key }}selected{{/if}}>{{$item}}</option>
+	{{/foreach}}
+	</select>
 	<button class="btn btn-primary">查询</button>
 </form>
 <div class="row-divider"></div>
@@ -136,7 +143,7 @@
 						<audio src="{{$item.other_url}}" controls></audio>
 					{{/if}}
 					{{if $item.mCategory==130}}
-					<a href="{{$item.other_url}}">{{$item.short_title}}</a>
+					<a href="{{$item.other_url}}" target="_blank">{{$item.short_title}}</a>
 					{{/if}}
 				</td>
 				<td>
@@ -175,17 +182,7 @@
 			</div>
 			<div class="modal-body">
 				<div class="form-horizontal">
-					<div class="form-group">
-						<label class="col-sm-3 control-label">类别</label>
-						<div class="col-sm-7">
-							<select data-tag="cat" class="form-control" style="margin-top: 10px;">
-								<option value="">-=请选择=-</option>
-							{{foreach from=$catDict key=key item=item}}
-								<option value="{{$key}}">{{$item}}</option>
-							{{/foreach}}
-							</select>
-						</div>
-					</div>
+
 				</div>
 			</div>
 			<div class="modal-footer" style="overflow: hidden">
@@ -249,6 +246,8 @@
 	};
 	$(document).on("click", ".btn-add", function () {
 		$sls.tag = "add";
+		$(".form-horizontal").html($("#init_add").html());
+
 		$("#modalEdit").modal('show');
 	});
 
@@ -408,7 +407,7 @@
 					BpbhdUtil.showMsg(resp.msg, 1);
 					$("#modalEdit").modal('hide');
 					setTimeout(function () {
-						// location.reload();
+						location.reload();
 					}, 450);
 				} else {
 					BpbhdUtil.showMsg(resp.msg);
@@ -603,6 +602,19 @@
 	</div>
 </script>
 
+<script type="text/html" id="init_add">
+<div class="form-group">
+	<label class="col-sm-3 control-label">类别</label>
+	<div class="col-sm-7">
+		<select data-tag="cat" class="form-control" style="margin-top: 10px;">
+			<option value="">-=请选择=-</option>
+		{{foreach from=$catDict key=key item=item}}
+			<option value="{{$key}}" >{{$item}}</option>
+		{{/foreach}}
+		</select>
+	</div>
+</div>
+</script>
 <script type="text/html" id="cat130">
 	<div class="form-group">
 		<label class="col-sm-3 control-label">类别</label>

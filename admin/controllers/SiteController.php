@@ -1598,13 +1598,14 @@ class SiteController extends BaseController
 	{
 		$getInfo = Yii::$app->request->get();
 		$page = self::getParam("page", 1);
-		$rname = self::getParam("rname");
+		$title = self::getParam("title");
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
+		$cat = self::getParam("cat");
 		$condition = $params = [];
-		if ($rname) {
-			$condition[] = '(r.rTitle like :title )';
-			$params[':title'] = '%' . $rname . '%';
+		if ($title) {
+			$condition[] = '(m.mContent like :title )';
+			$params[':title'] = '%' . $title . '%';
 		}
 		if ($name) {
 			$condition[] = '(u.uName like :name )';
@@ -1613,6 +1614,10 @@ class SiteController extends BaseController
 		if ($phone) {
 			$condition[] = '(u.uPhone like :phone )';
 			$params[':phone'] = $phone . '%';
+		}
+		if ($cat) {
+			$condition[] = '(m.mCategory = :cat )';
+			$params[':cat'] = $cat;
 		}
 		list($list) = Moment::wechatItems('', $condition, $params, $page, 20);
 		foreach ($list as &$v) {

@@ -80,12 +80,17 @@ class Moment extends ActiveRecord
 			unset($param["favorFlag"]);
 		}
 		if ($uid) {
+			// 前台
 			$optstr = <<<EEE
 SUM(case when sCategory=100  and sUId=$uid then 1 else 0 end) as `viewf`,
 SUM(case when sCategory=110  and sUId=$uid then 1 else 0 end) as `rosef`,
 SUM(case when sCategory=120  and sUId=$uid then 1 else 0 end) as `zanf`,
 SUM(case when sCategory=130  and sUId=$uid then 1 else 0 end) as `commentf`,
 EEE;
+			$order = " order by mTop desc,mId desc ";
+		} else {
+			// 后台
+			$order = " order by mId desc ";
 		}
 
 		$limit = "limit " . ($page - 1) * ($pagesize + 1) . ',' . $pagesize;
@@ -101,7 +106,7 @@ EEE;
 				left join im_user as u on u.uId=m.mUId 
 				$favor
 				where mDeletedFlag=0 $str
-				group by mId order by mTop desc,mId desc  $limit ";
+				group by mId $order  $limit ";
 		$ret = $conn->createCommand($sql)->bindValues($param)->queryAll();
 
 		foreach ($ret as $k => $v) {
