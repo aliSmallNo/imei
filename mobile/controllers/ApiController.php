@@ -3253,7 +3253,7 @@ class ApiController extends Controller
 
 				$insert["mUId"] = $wxInfo["uId"];
 				$insert["mTopic"] = $topic_id ? intval($topic_id) : 0;
-				$insert["mContent"] = ['title' => '', 'url' => [], 'article_url' => '', 'subtext' => '',];
+				$insert["mContent"] = ['title' => '', 'url' => [], 'other_url' => '', 'subtext' => '',];
 				switch ($cat) {
 					case "text":
 						$insert["mCategory"] = Moment::CAT_TEXT;
@@ -3275,7 +3275,7 @@ class ApiController extends Controller
 						list($voiceUrl) = ImageUtil::save2Server($voice_id);
 						$insert["mCategory"] = Moment::CAT_VOICE;
 						$insert["mContent"]["title"] = $text;
-						$insert["mContent"]["url"] = [$voiceUrl];
+						$insert["mContent"]["other_url"] = $voiceUrl;
 						break;
 				}
 				$insert["mContent"] = $insert["mContent"] = json_encode($insert["mContent"], JSON_UNESCAPED_UNICODE);

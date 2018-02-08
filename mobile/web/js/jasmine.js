@@ -28,12 +28,14 @@ require(["jquery", "alpha", "mustache"],
 					grab();
 					break;
 				case "withdraw":
-					var amt = parseFloat($(".ev_container_top_grabed p span").html());
+					location.href="http://www.5d2c9.cn/newmoli/views/wap/enrollApp/enrollApp_19.html?inviteUuid=12364095&flag=1";
+
+					/*var amt = parseFloat($(".ev_container_top_grabed p span").html());
 					if (amt < 1) {
 						alertToggle(1, $("#tpl_not_enough").html());
 					} else {
 						alertToggle(1, Mustache.render($("#tpl_qr").html(), {text: '长按扫描二维码注册下载即可立即提现到微信红包'}));
-					}
+					}*/
 					break;
 				case "ipacket":
 					refresh(0);

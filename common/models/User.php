@@ -1907,12 +1907,22 @@ class User extends ActiveRecord
 		if (!$kw) {
 			return [];
 		}
+		$kw = str_replace("'", "", $kw);
 		$conStr = "";
-		if ($subtag == "dummy") {
-			$conStr = " and uNote='dummy' ";
+		switch ($subtag) {
+			case "all":
+				$sql = "select uId as id,uAvatar as avatar,uName as uname,uPhone as phone 
+						FROM im_user where uName like '%$kw%' $conStr limit 10 ";
+				break;
+			case "dummy":
+				$conStr = " and uNote='dummy' ";
+				$sql = "select uId as id,uAvatar as avatar,uName as uname,uPhone as phone 
+						FROM im_user where uName like '%$kw%' $conStr limit 10 ";
+				break;
+			case "topic":
+				$sql = "select * from im_moment_topic where tTitle like '%$kw%' limit 10 ";
+				break;
 		}
-		$sql = "select uId as id,uAvatar as avatar,uName as uname,uPhone as phone 
-			FROM im_user where uName like '%$kw%' $conStr ";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		return $res;
 	}

@@ -33,6 +33,9 @@ class Moment extends ActiveRecord
 		self::TOP_SYS_NOTICE => "系统消息",
 	];
 
+	const TOP_SYS = 1000;
+	const TOP_ATICLE = 100;
+
 	public static function tableName()
 	{
 		return '{{%moment}}';
@@ -48,9 +51,20 @@ class Moment extends ActiveRecord
 		return true;
 	}
 
-	public static function wechatMomentAnd()
+	public static function adminEdit($mid, $insert)
 	{
-
+		if ($mid) {
+			$entity = self::findOne(["mId" => $mid]);
+			if (!$entity) {
+				return 0;
+			}
+			foreach ($insert as $k => $v) {
+				$entity->$k = $v;
+			}
+			return $entity->save();
+		} else {
+			return self::add($insert);
+		}
 	}
 
 	public static function wechatItems($uid, $cri, $param, $page = 1, $pagesize = 10)
@@ -87,7 +101,7 @@ EEE;
 				left join im_user as u on u.uId=m.mUId 
 				$favor
 				where mDeletedFlag=0 $str
-				group by mId order by mTop asc,mId desc  $limit ";
+				group by mId order by mTop desc,mId desc  $limit ";
 		$ret = $conn->createCommand($sql)->bindValues($param)->queryAll();
 
 		foreach ($ret as $k => $v) {
@@ -121,7 +135,7 @@ EEE;
 	{
 		$arr = [
 			'flag' . $row["mCategory"] => 1,
-			'article_url' => '',
+			'other_url' => '',
 			'img_co' => 0,
 			'short_text' => '',
 			'jsonUrl' => '',

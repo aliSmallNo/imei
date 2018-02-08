@@ -18,6 +18,7 @@ use common\models\Date;
 use common\models\Log;
 use common\models\LogAction;
 use common\models\Moment;
+use common\models\MomentTopic;
 use common\models\QuestionGroup;
 use common\models\QuestionSea;
 use common\models\User;
@@ -709,22 +710,81 @@ class ApiController extends Controller
 		return self::renderAPI(129, '操作无效');
 	}
 
+
 	public function actionMoment()
 	{
 		$tag = strtolower(self::postParam("tag"));
 		switch ($tag) {
 			case 'edit':
 				$data = json_decode(self::postParam('data'), 1);
-				$data["addby"] = $this->admin_id;
-				$data["cat"] = 100;
-				if (isset($_FILES['image']['tmp_name']) && isset($_FILES['image']['name']) && $_FILES['image']['name']) {
-					$tmp = $_FILES['image']['tmp_name'];
-					$ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-					$data['logo'] = COSUtil::init(COSUtil::UPLOAD_PATH, $tmp, $ext)->uploadOnly(false, false, false);
+				$cat = isset($data["cat"]) ? $data["cat"] : '';
+				$topic = isset($data["topic"]) ? $data["topic"] : '';
+				$uid = isset($data["uid"]) ? $data["uid"] : '';
+				$sign = isset($data["sign"]) ? $data["sign"] : '';
+				$mid = isset($data["mid"]) ? $data["mid"] : '';
+
+				if (!in_array($cat, array_keys(Moment::$catDict))) {
+					return self::renderAPI(129, 'param cat missing');
 				}
-				$ret = '';
-				//$ret = Moment::add($data);
-				return self::renderAPI(0, $ret ? '保存成功！' : '保存失败！', ['result' => $data]);
+				if (!$topic || !$uid) {
+					return self::renderAPI(129, 'param topic or uid missing ');
+				}
+				$minfo = Moment::findOne(["mId" => $mid]);
+				if ($sign == "edit" && !$minfo) {
+					return self::renderAPI(129, 'param mid missing ');
+				}
+
+				$images = [];
+				if (isset($_FILES['image']['name']) && $_FILES['image']['name']) {
+					foreach ($_FILES['image']['name'] as $k => $v) {
+						$tmp = $_FILES['image']['tmp_name'][$k];
+						$ext = pathinfo($_FILES['image']['name'][$k], PATHINFO_EXTENSION);
+						$images[] = COSUtil::init(COSUtil::UPLOAD_PATH, $tmp, $ext)->uploadOnly(false, false, false);
+					}
+				}
+				$ft = [
+					100 => ['cat' => 'mCategory', 'text_title' => 'title', 'text_intro' => 'subtext', 'topic' => 'mTopic', 'uid' => 'mUId'],
+					110 => ['cat' => 'mCategory', 'img_title' => 'title', 'topic' => 'mTopic', 'uid' => 'mUId'],
+					120 => ['cat' => 'mCategory', 'voice_title' => 'title', 'voice_src' => 'other_url', 'topic' => 'mTopic', 'uid' => '用户'],
+					130 => ['cat' => 'mCategory', 'article_title' => 'title', 'article_intro' => 'subtext', 'article_src' => 'other_url', 'topic' => 'mTopic', 'uid' => 'mUId']
+				];
+
+				switch ($sign) {
+					case "add":
+						$insert["mContent"] = ['title' => '', 'url' => [], 'other_url' => '', 'subtext' => '',];
+						if ($images) {
+							$insert["mContent"]['url'] = count($images) > 9 ? array_slice($images, 0, 9) : $images;
+						}
+						break;
+					case "edit":
+						$minfo = $minfo->toArray();
+						$insert["mContent"] = json_decode($minfo['mContent'], 1);
+						break;
+				}
+				foreach ($ft[$cat] as $k => $v) {
+					$i = isset($insert["mContent"][$v]) ? $data[$k] : '';
+					if (isset($insert["mContent"][$v])) {
+						$insert["mContent"][$v] = $data[$k];
+					}
+				}
+
+				$insert["mCategory"] = $cat;
+				$insert["mTopic"] = $data['topic'];
+				$insert["mUId"] = $data['uid'];
+				if ($topic == MomentTopic::TOPIC_SYS) {
+					$insert["mTop"] = Moment::TOP_SYS;
+				} elseif ($topic == MomentTopic::TOPIC_ARTICLE) {
+					$insert["mTop"] = Moment::TOP_ARTICLE;
+				}
+
+				// $ret = Moment::adminEdit($mid, $insert);
+
+				return self::renderAPI(0, '', [
+					'result' => $data,
+					'image' => $_FILES,
+					'images' => $images,
+					'insert' => $insert,
+				]);
 				break;
 		}
 		return self::renderAPI(129, '操作无效');

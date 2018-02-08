@@ -133,13 +133,13 @@
 					<div data-images='{{$item.showImages}}'>{{foreach from=$item.url key=key item=img}}	<span class="album-item"><img src="{{$img}}" class="small" data-idx="{{$key}}"></span>{{/foreach}}</div>
 					{{/if}}
 					{{if $item.mCategory==120}}
-						<audio src="{{$item.src}}" controls></audio>
+						<audio src="{{$item.other_url}}" controls></audio>
 					{{/if}}
 					{{if $item.mCategory==130}}
-					<a href="{{$item.article_url[0]}}">{{$item.short_title}}</a>
+					<a href="{{$item.other_url}}">{{$item.short_title}}</a>
 					{{/if}}
 				</td>
-				<td align="center">
+				<td>
 					<div>
 					<span>浏览:{{$item.view}}</span>
 					<span>送花:{{$item.rose}}</span>
@@ -154,7 +154,9 @@
 				</td>
 				<td>
 					<a href="/site/momentdesc?mid={{$item.mId}}" class="btn btn-outline btn-primary btn-xs">详情</a>
-					<a href="javascript:;" data-mid="{{$item.mId}}" class="RoomEdit btn btn-outline btn-primary btn-xs">修改动态</a>
+					<a href="javascript:;" data-mid="{{$item.mId}}" data-cat="{{$item.mCategory}}" data-uid="{{$item.mUId}}" data-name="{{$item.uName}}"
+						data-content='{{$item.mContent}}' data-topic="{{if isset($item.topic_title)}}{{$item.topic_title}}{{/if}}" data-tid="{{$item.mTopic}}"
+					class="MomentEdit btn btn-outline btn-primary btn-xs">修改动态</a>
 				</td>
 			</tr>
 		{{/foreach}}
@@ -234,7 +236,7 @@
 	$(document).on("change","[data-tag=cat]",function(){
 		var cat=$(this).val();
 		console.log(cat);
-		// $("[data-tag=cat]").val(cat);
+		$sls.cat = cat;
 		$(".modal-body .form-horizontal").html($("#cat"+cat).html())
 	});
 
@@ -243,44 +245,55 @@
 		rid: 0,
 		tag: '',
 		searchFlag: 0,
+		mid: '',
 	};
 	$(document).on("click", ".btn-add", function () {
 		$sls.tag = "add";
-		var self = $(this);
 		$("#modalEdit").modal('show');
 	});
 
-	// $(document).on("click", ".roomAvatar", function () {
-	// 	var self = $(this);
-	// 	var rid = self.attr("data-rid");
-	// 	BpbhdUtil.loading();
-	// 	$.post('/api/room',
-	// 		{
-	// 			tag: 'avatar',
-	// 			rid: rid
-	// 		}, function (resp) {
-	// 			if (resp.code < 1) {
-	// 				location.reload();
-	// 			}
-	// 			BpbhdUtil.showMsg(resp.msg);
-	// 		}, 'json');
-	// });
-
-	$(document).on("click", ".RoomEdit", function () {
+	$(document).on("click", ".MomentEdit", function () {
+		var self = $(this);
 		$sls.tag = "edit";
-		// var self = $(this);
-		// $sls.rid = self.attr("data-rid");
-		// $("[data-tag=title]").val(self.attr("data-title"));
-		// $("[data-tag=limit]").val(self.attr("data-limit"));
-		// $("[data-tag=intro]").val(self.attr("data-intro"));
-		// var adminname = self.attr("data-adminname");
-		// $("[data-tag=admin]").html('<option value=' + self.attr("data-adminuid") + '>' + adminname + '</option');
-		// $(".searchName").val(adminname);
-		// $("#modalEdit").modal('show');
+		$sls.mid = self.attr("data-mid");
+		var name=self.attr("data-name");
+		var cat=self.attr("data-cat");
+		var uid=self.attr("data-uid");
+		var tid=self.attr("data-tid");
+		var topic=self.attr("data-topic");
+		var content=self.attr("data-content");
+		content=JSON.parse(content);
+		console.log(content);
+
+		$(".form-horizontal").html($("#cat"+cat).html());
+		$(".form-horizontal [data-tag=uid]").html('<option value="'+ uid +'">' + name +'</option');
+		$(".form-horizontal [data-tag=topic]").html('<option value="'+ tid +'">' + topic +'</option');
+
+		switch (cat){
+			case "100":
+				$(".form-horizontal [data-tag=text_title]").val(content.title);
+				$(".form-horizontal [data-tag=text_intro]").val(content.subtext);
+				break;
+			case "110":
+				$(".form-horizontal [data-tag=img_title]").val(content.title);
+				break;
+			case "120":
+				$(".form-horizontal [data-tag=voice_title]").val(content.title);
+				$(".form-horizontal [data-tag=voice_src]").val(content.other_url);
+				break;
+			case "130":
+				$(".form-horizontal [data-tag=article_title]").val(content.title);
+				$(".form-horizontal [data-tag=article_intro]").val(content.subtext);
+				$(".form-horizontal [data-tag=article_src]").val(content.other_url);
+				break;
+		}
+
+		$("#modalEdit").modal('show');
 	});
 
-	$(document).on('input', '.searchName', function () {
+	$(document).on('input', '.searchName,.searchTopic', function () {
 			var self = $(this);
+			var subtag = self.attr('subtag');
 			var keyWord = self.val();
 			if ($sls.searchFlag) {
 				return;
@@ -290,14 +303,21 @@
 			$.post("/api/user",
 				{
 					tag: "searchnet",
-					keyword: keyWord
+					keyword: keyWord,
+					subtag: subtag,
 				},
 				function (resp) {
 					layer.closeAll();
 					$sls.searchFlag = 0;
 					if (resp.code === 0) {
-						var html = Mustache.render('{[#data]}<option value="{[id]}">{[uname]} {[phone]}</option>{[/data]}', resp);
-						self.closest(".col-sm-7").find("[data-tag=admin]").html(html);
+						var html='';
+						if(subtag=='topic'){
+							html = Mustache.render('{[#data]}<option value="{[tId]}">{[tTitle]}</option>{[/data]}', resp)
+							self.closest(".col-sm-7").find("[data-tag=topic]").html(html);
+						} else {
+							html = Mustache.render('{[#data]}<option value="{[id]}">{[uname]} {[phone]}</option>{[/data]}', resp)
+							self.closest(".col-sm-7").find("[data-tag=uid]").html(html);
+						}
 					}
 				}, "json");
 
@@ -311,7 +331,12 @@
 
 
 	function intakeForm() {
-		var ft = {title: "群名称", admin: '群主', intro: '群介绍', limit: '上限人数'};
+		var ft = {
+			cat100:{cat:'类别',text_title:'文本标题',text_intro:'文本内容',topic:'话题',uid:'用户'},
+			cat110:{cat:'类别',img_title:'图片标题',topic:'话题',uid:'用户'},
+			cat120:{cat:'类别',voice_title:'音频标题',voice_src:'音频链接',topic:'话题',uid:'用户'},
+			cat130:{cat:'类别',article_title:'文章标题',article_intro:'文章介绍',article_src:'文章链接',topic:'话题',uid:'用户'}
+		};
 		var data = {}, err = 0;
 		$.each($(".form-horizontal [data-tag]"), function () {
 			var self = $(this);
@@ -319,7 +344,7 @@
 			var val = self.val().trim();
 			if (!val) {
 				err = 1;
-				BpbhdUtil.showMsg(ft[field] + "未填写");
+				BpbhdUtil.showMsg(ft['cat'+ $sls.cat][field] + "未填写");
 				return false;
 			}
 			data[field] = val;
@@ -329,36 +354,39 @@
 		} else {
 			return data;
 		}
+		
 	}
 
 	$(document).on("click", ".btn-save", function () {
-		console.log($sls.tag);
 		var data = intakeForm();
+		data['sign'] = $sls.tag;
+		data['mid'] = $sls.mid;
+		console.log(data);
 		if (!data) {
 			return false;
 		}
-		if ($sls.rid) {
-			data['rid'] = $sls.rid;
-		}
+
 		var formData = new FormData();
 		formData.append("tag", 'edit');
 		formData.append("data", JSON.stringify(data));
-		var photo = $('input[name="upload_photo"]');
 
-		if (photo[0].files[0]) {
-			formData.append("image", photo[0].files[0]);
-		} else {
-			if ($sls.tag == 'add') {
-				BpbhdUtil.showMsg("群logo没选择哦~");
-				return;
-			}
+		var photo;
+		switch ($sls.cat){
+			case "110":
+			case "130":
+				photo= $('input[name=photo]')[0].files;
+				if (photo) {
+					for (var i = 0; i < photo.length; i++) {
+						formData.append('image[]', photo[i]);
+				 }
+				} else {
+					BpbhdUtil.showMsg('图片还没上传');
+					return ;
+				}
+				console.log(photo[0]);
+				console.log(photo);
+				break;
 		}
-
-		// console.log(photo[0].files[0]);
-		// console.log(formData);
-		// console.log(photo.length);
-		// console.log(data);
-		// return;
 
 		BpbhdUtil.loading();
 		if ($sls.searchFlag) {
@@ -366,7 +394,7 @@
 		}
 		$sls.searchFlag = 1;
 		$.ajax({
-			url: "/api/room",
+			url: "/api/moment",
 			type: "POST",
 			data: formData,
 			cache: false,
@@ -380,7 +408,7 @@
 					BpbhdUtil.showMsg(resp.msg, 1);
 					$("#modalEdit").modal('hide');
 					setTimeout(function () {
-						location.reload();
+						// location.reload();
 					}, 450);
 				} else {
 					BpbhdUtil.showMsg(resp.msg);
@@ -388,19 +416,6 @@
 			}
 		});
 	});
-
-
-	$(document).on("click", ".i-av", function () {
-		var self = $(this);
-		var photos = {
-			title: '头像大图',
-			data: [{
-				src: self.attr("bsrc")
-			}]
-		};
-		showImages(photos);
-	});
-
 
 </script>
 
@@ -420,7 +435,7 @@
 	<div class="form-group">
 		<label class="col-sm-3 control-label">文本标题</label>
 		<div class="col-sm-7">
-			<input class="form-control" data-tag="text_title" placeholder="(必填)" value="">
+			<textarea class="form-control" data-tag="text_title" rows="4" maxlength="300"></textarea>
 		</div>
 	</div>
 	<div class="form-group">
@@ -433,9 +448,16 @@
 	<div class="form-group">
 		<label class="col-sm-3 control-label">话题</label>
 		<div class="col-sm-7">
+			<div class="form-group input-group" style="margin: 0">
+				<input type="text" class="form-control searchTopic" subtag="topic" name="edit_name"  placeholder="(必填)">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button">
+						<i class="fa fa-search"></i>
+					</button>
+				</span>
+			</div>
 			<select data-tag="topic" class="form-control" style="margin-top: 10px;">
-				<option value="-200">系统消息</option>
-				<option value="-100">千寻文章</option>
+				<option value=""></option>
 			</select>
 		</div>
 	</div>
@@ -444,14 +466,14 @@
 		<label class="col-sm-3 control-label">编辑用户</label>
 		<div class="col-sm-7">
 			<div class="form-group input-group" style="margin: 0">
-				<input type="text" class="form-control searchName" name="edit_name" placeholder="(必填)">
+				<input type="text" class="form-control searchName" subtag="all" name="edit_name" placeholder="(必填)">
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="button">
 						<i class="fa fa-search"></i>
 					</button>
 				</span>
 			</div>
-			<select data-tag="admin" class="form-control" style="margin-top: 10px;">
+			<select data-tag="uid" class="form-control" style="margin-top: 10px;">
 				<option value=""></option>
 			</select>
 		</div>
@@ -474,23 +496,30 @@
 	<div class="form-group">
 		<label class="col-sm-3 control-label">多图</label>
 		<div class="col-sm-7">
-			<input class="form-control-static" type="file" name="img_multi"
+			<input class="form-control-static" type="file" name="photo"
 						 accept="image/jpg, image/jpeg, image/png" multiple >
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="col-sm-3 control-label">图片标题标题</label>
+		<label class="col-sm-3 control-label">图片标题</label>
 		<div class="col-sm-7">
-			<input class="form-control" data-tag="img_title" placeholder="(必填)" value="">
+			<textarea class="form-control" data-tag="img_title" rows="4"></textarea>
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label class="col-sm-3 control-label">话题</label>
 		<div class="col-sm-7">
+			<div class="form-group input-group" style="margin: 0">
+				<input type="text" class="form-control searchTopic" subtag="topic" name="edit_name"  placeholder="(必填)">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button">
+						<i class="fa fa-search"></i>
+					</button>
+				</span>
+			</div>
 			<select data-tag="topic" class="form-control" style="margin-top: 10px;">
-				<option value="-200">系统消息</option>
-				<option value="-100">千寻文章</option>
+				<option value=""></option>
 			</select>
 		</div>
 	</div>
@@ -499,14 +528,14 @@
 		<label class="col-sm-3 control-label">用户</label>
 		<div class="col-sm-7">
 			<div class="form-group input-group" style="margin: 0">
-				<input type="text" class="form-control searchName" name="edit_name" placeholder="(必填)">
+				<input type="text" class="form-control searchName" subtag="all" name="edit_name" placeholder="(必填)">
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="button">
 						<i class="fa fa-search"></i>
 					</button>
 				</span>
 			</div>
-			<select data-tag="admin" class="form-control" style="margin-top: 10px;">
+			<select data-tag="uid" class="form-control" style="margin-top: 10px;">
 				<option value=""></option>
 			</select>
 		</div>
@@ -529,21 +558,29 @@
 	<div class="form-group">
 		<label class="col-sm-3 control-label">音频标题</label>
 		<div class="col-sm-7">
-			<input class="form-control" data-tag="article_title" placeholder="(必填)" value="">
+			<input class="form-control" data-tag="voice_title" placeholder="(必填)" value="">
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-3 control-label">音频链接</label>
 		<div class="col-sm-7">
-			<textarea class="form-control" data-tag="article_src" rows="4"></textarea>
+			<textarea class="form-control" data-tag="voice_src" rows="4"></textarea>
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label class="col-sm-3 control-label">话题</label>
 		<div class="col-sm-7">
+			<div class="form-group input-group" style="margin: 0">
+				<input type="text" class="form-control searchTopic" subtag="topic" name="edit_name"  placeholder="(必填)">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button">
+						<i class="fa fa-search"></i>
+					</button>
+				</span>
+			</div>
 			<select data-tag="topic" class="form-control" style="margin-top: 10px;">
-
+				<option value=""></option>
 			</select>
 		</div>
 	</div>
@@ -552,14 +589,14 @@
 		<label class="col-sm-3 control-label">用户</label>
 		<div class="col-sm-7">
 			<div class="form-group input-group" style="margin: 0">
-				<input type="text" class="form-control searchName" name="edit_name"  placeholder="(必填)">
+				<input type="text" class="form-control searchName" subtag="all" name="edit_name"  placeholder="(必填)">
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="button">
 						<i class="fa fa-search"></i>
 					</button>
 				</span>
 			</div>
-			<select data-tag="admin" class="form-control" style="margin-top: 10px;">
+			<select data-tag="uid" class="form-control" style="margin-top: 10px;">
 				<option value=""></option>
 			</select>
 		</div>
@@ -581,7 +618,7 @@
 	<div class="form-group">
 		<label class="col-sm-3 control-label">封面图</label>
 		<div class="col-sm-7">
-			<input class="form-control-static" type="file" name="article_cover"
+			<input class="form-control-static" type="file" name="photo"
 						 accept="image/jpg, image/jpeg, image/png">
 		</div>
 	</div>
@@ -607,25 +644,32 @@
 	<div class="form-group">
 		<label class="col-sm-3 control-label">话题</label>
 		<div class="col-sm-7">
-			<select data-tag="topic" class="form-control" style="margin-top: 10px;">
-				<option value="-200">系统消息</option>
-				<option value="-100">千寻文章</option>
-			</select>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-sm-3 control-label">编辑用户</label>
-		<div class="col-sm-7">
 			<div class="form-group input-group" style="margin: 0">
-				<input type="text" class="form-control searchName" name="edit_name" placeholder="(必填)">
+				<input type="text" class="form-control searchTopic" subtag="topic" name="edit_name"  placeholder="(必填)">
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="button">
 						<i class="fa fa-search"></i>
 					</button>
 				</span>
 			</div>
-			<select data-tag="admin" class="form-control" style="margin-top: 10px;">
+			<select data-tag="topic" class="form-control" style="margin-top: 10px;">
+				<option value=""></option>
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">用户</label>
+		<div class="col-sm-7">
+			<div class="form-group input-group" style="margin: 0">
+				<input type="text" class="form-control searchName" subtag="all" name="edit_name" placeholder="(必填)">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button">
+						<i class="fa fa-search"></i>
+					</button>
+				</span>
+			</div>
+			<select data-tag="uid" class="form-control" style="margin-top: 10px;">
 				<option value=""></option>
 			</select>
 		</div>

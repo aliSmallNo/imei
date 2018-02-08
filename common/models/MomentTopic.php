@@ -15,6 +15,8 @@ use yii\db\ActiveRecord;
 class MomentTopic extends ActiveRecord
 {
 
+	const TOPIC_ARTICLE = 10000;
+	const TOPIC_SYS = 10001;
 
 	public static function tableName()
 	{

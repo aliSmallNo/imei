@@ -1411,7 +1411,6 @@ class FooController extends Controller
 			'测试测试1122');*/
 
 
-
 		QueueUtil::loadJob('templateMsg',
 			[
 				'tag' => WechatUtil::NOTICE_CHAT,
@@ -1636,11 +1635,26 @@ class FooController extends Controller
 
 		/*$arr = [
 			"title" => "会聊天的人，一开口就赢了",
-			"article_url" => ["https://mp.weixin.qq.com/s?__biz=MzI3NzczMDQwMA==&mid=2247484385&idx=4&sn=5304e5deeab1ed9dc128b2e6110f1d73&chksm=eb6086eedc170ff8f197d3ec26dda132364392b70d2203676582193dbedb32f713f51ca9fccc&mpshare=1&scene=1&srcid=0207WpPJnbi68HRpCGK4tZPV&key=e10261c30ede7ba3d6844e0b5fb99219d6ca0a38b3c578785bd781d0eb1205c9edb5129ff97608fa569ed2e6d9e5c1b766a8cdfbbcb1f649fabd16230be14aafa1f5dad1119b1cc21fb720a71e71bcc2&ascene=0&uin=MTQxMzc2MDE1&devicetype=iMac+MacBookPro12%2C1+OSX+OSX+10.11.6+build(15G31)&version=12020110&nettype=WIFI&lang=zh_CN&fontScale=100&pass_ticket=JI%2BdX2qmOpTFQX6WaXCaB%2BefSdeXEJnC9zA%2FKVDJbT8%3D"],
+			"other_url" => ["https://mp.weixin.qq.com/s?__biz=MzI3NzczMDQwMA==&mid=2247484385&idx=4&sn=5304e5deeab1ed9dc128b2e6110f1d73&chksm=ebf8f197d3ec26dda132364392b70d2203676582193dbedb32f713f51ca9fccc&mpshare=1&scene=1&srcid=0207WpPJnbi68HRpCGK4tZPV&key=e10261c30ede7ba3d6844e0b5fb99219d6ca0a38b3c578785bd781d0eb1205c9edb5129ff97608fa569ed2e6d9e5c1b766a8cdfbbcb1f649fabd16230be14aafa1f5dad1119b1cc21fb720a71e71bcc2&ascene=0&uin=MTQxMzc2MDE1&devicetype=iMac+MacBookPro12%2C1+OSX+OSX+10.11.6+build(15G31)&version=12020110&nettype=WIFI&lang=zh_CN&fontScale=100&pass_ticket=JI%2BdX2qmOpTFQX6WaXCaB%2BefSdeXEJnC9zA%2FKVDJbT8%3D"],
 			"subtext" => "世界那么大，你来了，就好",
-			"url" => [],
+			"url" => ['https://bpbhd-10063905.file.myqcloud.com/image/t1711201155449.jpg'],
 		];
 		echo json_encode($arr,JSON_UNESCAPED_UNICODE);*/
+
+		/*$conn = AppUtil::db();
+		$sql = "select * from im_moment where mCategory in (120) ";
+		$res = $conn->createCommand($sql)->queryAll();
+		$sql2 = "update im_moment set mContent=:content where mId=:mid";
+		$cmd = $conn->createCommand($sql2);
+		foreach ($res as $v) {
+			$content = json_decode($v["mContent"], 1);
+			$content["other_url"] = $content["url"][0];
+			$content["url"] = ['https://bpbhd-10063905.file.myqcloud.com/image/t1711201155449.jpg'];
+			$cmd->bindValues([
+				":content" => json_encode($content, JSON_UNESCAPED_UNICODE),
+				":mid" => $v['mId'],
+			])->execute();
+		}*/
 
 
 	}
