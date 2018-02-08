@@ -2378,19 +2378,13 @@ class WxController extends BaseController
 		$lastid = self::getParam("id");
 
 		$arr = [];
-		//$d = array_merge(AppUtil::$Jasmine, AppUtil::$JasminOther);
-		$d = AppUtil::$Jasmine;
-		$fids = array_rand($d, 5);
+		$data = AppUtil::$Jasmine;
+		$fids = array_rand($data, 5);
 		$arr = [];
 		foreach ($fids as $id) {
-			$arr[] = $d[$id];
+			$arr[] = $data[$id];
 		}
 		shuffle($arr);
-		foreach ($arr as &$v) {
-			$v["avatar"] = trim($v["avatar"], '\n');
-			$v["text"] = trim($v["text"], '\n');
-			$v["src"] = trim($v["src"], '\n');
-		}
 
 		return self::renderPage("jasmine.tpl",
 			[
