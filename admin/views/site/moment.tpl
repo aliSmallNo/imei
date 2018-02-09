@@ -55,7 +55,6 @@
 
 	td a {
 		display: inline-block;
-		margin-top: 3px;
 		font-weight: 500;
 	}
 
@@ -169,7 +168,9 @@
 				<td>
 					<b><span class="topic">{{if isset($item.topic_title)}}#{{$item.topic_title}}#{{/if}}</span>{{$item.short_title}}</b>
 					{{if $item.mCategory==100}}
-						<div class="cat_text" show="short" data_short_text="{{$item.short_subtext}}" data_text="{{$item.subtext}}"><text>{{$item.short_subtext}}</text><a>查看全部</a></div>
+						<div class="cat_text" show="short" data_short_text="{{$item.short_subtext}}" data_text="{{$item.subtext}}">
+						<text>{{$item.short_subtext}}</text>
+						{{if $item.showAllFlag}}<a>查看全部</a></div>{{/if}}
 					{{/if}}
 					{{if $item.mCategory==110}}
 					<div data-images='{{$item.showImages}}'>{{foreach from=$item.url key=key item=img}}	<span class="album-item"><img src="{{$img}}" class="small" data-idx="{{$key}}"></span>{{/foreach}}</div>

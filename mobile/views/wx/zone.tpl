@@ -250,7 +250,7 @@
 			{[#flag100]}
 			<div class="zone_container_item_cat_text" cat_flag="short" cat_subtext="{[subtext]}" cat_sub_short_text="{[short_subtext]}">
 				{[short_subtext]}
-				<a href="javascript:;" items_tag="all">【查看全部】</a>
+				{[#showAllFlag]}<a href="javascript:;" items_tag="all">【查看全部】</a>{[/showAllFlag]}
 			</div>
 			{[/flag100]}
 			{[#flag110]}

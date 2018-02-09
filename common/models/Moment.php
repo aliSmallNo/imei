@@ -169,7 +169,9 @@ EEE;
 
 		$arr['short_title'] = mb_strlen($arr['title']) > 15 ? mb_substr($arr["title"], 0, 15) . "..." : $arr['title'];
 		// $arr['short_text'] = mb_strlen($arr['title']) > 100 ? mb_substr($arr["title"], 0, 100) . "..." : $arr['title'];
-		$arr['short_subtext'] = mb_strlen($arr['subtext']) > 60 ? mb_substr($arr["subtext"], 0, 60) . "..." : $arr['subtext'];
+		$fl = mb_strlen($arr['subtext']) > 60;
+		$arr['short_subtext'] = $fl ? mb_substr($arr["subtext"], 0, 60) . "..." : $arr['subtext'];
+		$arr['showAllFlag'] = intval($fl);
 
 		$location = json_decode($row["uLocation"], 1);
 		$arr["location"] = isset($location[2]) ? $location[2]["text"] :

@@ -3317,8 +3317,9 @@ class ApiController extends Controller
 				if (!$sid) {
 					return self::renderAPI(129, '评论失败');
 				}
+				list($data) = Moment::itemByCat(1, $mid, $cat, $sid);
 				return self::renderAPI(0, '上传语音成功', [
-					"data" => Moment::itemByCat(1, $mid, $cat, $sid),
+					"data" => $data,
 				]);
 				break;
 			case "comment_info":

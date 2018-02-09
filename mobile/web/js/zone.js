@@ -92,7 +92,6 @@ require(["jquery", "alpha", "mustache"],
 							break;
 						case 'rose':
 						case 'zan':
-							alpha.toast('zan');
 							util.zone_id = self.closest("li").attr("data_mid");
 							util.Zan_Rose(self);
 							break;
