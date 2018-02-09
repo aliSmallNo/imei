@@ -1023,7 +1023,9 @@ class UserTrans extends ActiveRecord
 			}
 			shuffle($arr);
 			$index = random_int(0, 27);
+
 			return $arr[$index];
+
 		};
 		switch ($key) {
 			// one times task
@@ -1132,6 +1134,11 @@ class UserTrans extends ActiveRecord
 					return [129, "未完成", ''];
 				}
 				break;
+		}
+
+		$stat = UserTrans::stat($uid);
+		if ($stat["coin_f"] > 1000) {
+			$amt = ceil($amt / 3);
 		}
 
 		if ($amt && in_array($key, [

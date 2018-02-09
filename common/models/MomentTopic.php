@@ -83,5 +83,31 @@ class MomentTopic extends ActiveRecord
 
 	}
 
+	public static function topiclist($cri, $param, $page = 1, $pagesize)
+	{
+		$str = '';
+		if ($cri) {
+			$str .= ' and ' . implode(" ", $cri);
+		}
+
+		$limit = "limit " . ($page - 1) * ($pagesize + 1);
+		$conn = AppUtil::db();
+		$sql = "select t.*,
+				count(1) as content,
+				sum(case when s.sCategory=:cat_view then 1 else 0 end ) as `view`, 
+				sum(case when s.sCategory=:cat_rose then 1 else 0 end ) as rose, 
+				sum(case when s.sCategory=:cat_zan then 1 else 0 end ) as zan, 
+				sum(case when s.sCategory=:cat_comment then 1 else 0 end ) as comment 
+				from im_moment_topic as t 
+				join im_moment as m on m.mTopic = t.tId
+				join im_moment_sub as s on s.sMId = m.mId 
+				where tDeletedFlag = 0   
+				group by tId order by tAddedOn desc $limit ";
+		$res = $conn->createCommand($sql)->bindValues($param)->queryAll();
+
+
+
+	}
+
 
 }

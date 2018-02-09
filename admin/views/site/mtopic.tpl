@@ -111,24 +111,14 @@
 	}
 </style>
 <div class="row">
-	<h4>动态列表
-		<a href="JavaScript:;" class="btn-add btn btn-primary btn-xs">添加动态</a>
+	<h4>话题列表
+		<a href="JavaScript:;" class="btn-add btn btn-primary btn-xs">添加话题</a>
 	</h4>
 </div>
 <form action="/site/moment" class="form-inline">
-	<input class="form-control" placeholder="标题" name="title"
+	<input class="form-control" placeholder="话题标题" name="title"
 	       value="{{if isset($getInfo['title'])}}{{$getInfo['title']}}{{/if}}"/>
-	<input class="form-control" placeholder="用户" name="name"
-	       value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
-	<input class="form-control" placeholder="用户手机" name="phone"
-	       value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
 
-	<select name="cat" class="form-control">
-		<option value="">-=请选择类型=-</option>
-	{{foreach from=$catDict key=key item=item}}
-		<option value="{{$key}}"  {{if isset($getInfo['cat']) && $getInfo['cat']==$key }}selected{{/if}}>{{$item}}</option>
-	{{/foreach}}
-	</select>
 	<button class="btn btn-primary">查询</button>
 </form>
 <div class="row-divider"></div>
@@ -137,16 +127,16 @@
 		<thead>
 		<tr>
 			<th>
-				用户
+				封面
 			</th>
 			<th class="col-sm-1">
-				信息
+				标题
 			</th>
-			<th class="col-sm-4">
-				内容
+			<th class="col-sm-1">
+				简介
 			</th>
 			<th>
-				操作
+				相关
 			</th>
 			<th>
 				时间
@@ -160,43 +150,23 @@
 		{{foreach from=$list item=item}}
 			<tr>
 				<td align="center">
-					<img src="{{$item.uThumb}}">
+					<img src="{{$item.tImage}}">
 				</td>
 				<td>
-					{{$item.uName}}
-					<div>{{$item.location}}</div>
+					{{$item.tTitle}}
 				</td>
 				<td>
-					<b><span class="topic">{{if isset($item.topic_title)}}#{{$item.topic_title}}#{{/if}}</span>{{$item.short_title}}</b>
-					{{if $item.mCategory==100}}
-						<div class="cat_text" show="short" data_short_text="{{$item.short_text}}" data_text="{{$item.subtext}}"><text>{{$item.short_text}}</text><a>查看全部</a></div>
-					{{/if}}
-					{{if $item.mCategory==110}}
-					<div data-images='{{$item.showImages}}'>{{foreach from=$item.url key=key item=img}}	<span class="album-item"><img src="{{$img}}" class="small" data-idx="{{$key}}"></span>{{/foreach}}</div>
-					{{/if}}
-					{{if $item.mCategory==120}}
-						<audio src="{{$item.other_url}}" controls></audio>
-					{{/if}}
-					{{if $item.mCategory==130}}
-					<a href="{{$item.other_url}}" target="_blank">{{$item.short_title}}</a>
-					{{/if}}
+					{[$item.tNote]}
 				</td>
 				<td>
-					<div data-mid="{{$item.mId}}">
-						<a opt-cat="view">浏览:{{$item.view}}</a>
-						<a opt-cat="rose">送花:{{$item.rose}}</a>
-						<a opt-cat="zan">点赞:{{$item.zan}}</a>
-						<a opt-cat="comment">评论:{{$item.comment}}</a>
-					</div>
-				</td>
 
+				</td>
 				<td>
-					{{$item.mAddedOn}}
+					{{$item.tAddedOn}}
 					<div>{{$item.dt}}</div>
 				</td>
 				<td>
-					<a href="javascript:;" data-mid="{{$item.mId}}" data-cat="{{$item.mCategory}}" data-uid="{{$item.mUId}}" data-name="{{$item.uName}}"
-						data-content='{{$item.mContent}}' data-topic="{{if isset($item.topic_title)}}{{$item.topic_title}}{{/if}}" data-tid="{{$item.mTopic}}"
+					<a href="javascript:;" data-tid="{{$item.tId}}"
 					class="MomentEdit btn btn-outline btn-primary btn-xs">修改动态</a>
 				</td>
 			</tr>

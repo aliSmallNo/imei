@@ -14,6 +14,7 @@ use common\models\Feedback;
 use common\models\Log;
 use common\models\Mark;
 use common\models\Moment;
+use common\models\MomentTopic;
 use common\models\Pay;
 use common\models\Pin;
 use common\models\QuestionGroup;
@@ -1641,6 +1642,45 @@ class SiteController extends BaseController
 		$count = Moment::count($condition, $params);
 		$pagination = self::pagination($page, $count);
 		return $this->renderPage("moment.tpl",
+			[
+				'getInfo' => $getInfo,
+				'pagination' => $pagination,
+				'list' => $list,
+				'catDict' => Moment::$catDict,
+			]
+		);
+	}
+
+	public function actionMtopic()
+	{
+		$getInfo = Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$title = self::getParam("title");
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+		$cat = self::getParam("cat");
+		$condition = $params = [];
+		if ($title) {
+			$condition[] = '(m.mContent like :title )';
+			$params[':title'] = '%' . $title . '%';
+		}
+		if ($name) {
+			$condition[] = '(u.uName like :name )';
+			$params[':name'] = '%' . $name . '%';
+		}
+		if ($phone) {
+			$condition[] = '(u.uPhone like :phone )';
+			$params[':phone'] = $phone . '%';
+		}
+		if ($cat) {
+			$condition[] = '(m.mCategory = :cat )';
+			$params[':cat'] = $cat;
+		}
+		list($list) = MomentTopic::wechatItems('', $condition, $params, $page, 20);
+
+		$count = Moment::count($condition, $params);
+		$pagination = self::pagination($page, $count);
+		return $this->renderPage("mtopic.tpl",
 			[
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
