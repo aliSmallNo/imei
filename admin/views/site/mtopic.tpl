@@ -350,7 +350,8 @@
 			for (var i = 0; i < photo.length; i++) {
 				formData.append('image[]', photo[i]);
 		 }
-		} else {
+		}
+		if(!photo && $sls.tag == "edit") {
 			BpbhdUtil.showMsg('图片还没上传');
 			return ;
 		}
