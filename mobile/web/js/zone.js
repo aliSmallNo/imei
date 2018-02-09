@@ -472,7 +472,7 @@ require(["jquery", "alpha", "mustache"],
 					if (util.loadingflag) {
 						return false;
 					}
-					var ul = $(".msg_ipts ul");
+					var ul = $(".msg_ipts ul.add_cat_img");
 					var len = parseInt(ul.find('img').length);
 					var chooseImgStr = '';
 					// alert(len);
