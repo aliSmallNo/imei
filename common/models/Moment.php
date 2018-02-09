@@ -93,7 +93,7 @@ EEE;
 		}
 
 		$limit = "limit " . ($page - 1) * ($pagesize + 1) . ',' . $pagesize;
-		$sql = "select m.*,uName,uThumb,uLocation,tTitle,
+		$sql = "select m.*,uName,uThumb,uLocation,tTitle,uBirthYear,uGender,
 				$optstr
 				SUM(case when sCategory=100  then 1 else 0 end) as `view`,
 				SUM(case when sCategory=110  then 1 else 0 end) as `rose`,
@@ -144,6 +144,8 @@ EEE;
 			'short_text' => '',
 			'jsonUrl' => '',
 			'dt' => AppUtil::prettyPastDate($row["mAddedOn"]),
+			'isMale' => 1,
+			'age' => '保密',
 		];
 		// 话题
 		if ($row["tTitle"]) {
@@ -172,6 +174,9 @@ EEE;
 		$location = json_decode($row["uLocation"], 1);
 		$arr["location"] = isset($location[2]) ? $location[2]["text"] :
 			(isset($location[1]) ? $location[1]["text"] : (isset($location[0]) ? $location[0]["text"] : '位置保密'));
+		$arr['isMale'] = $row['uGender'] == User::GENDER_MALE ? 1 : 0;
+		$arr['age'] = date("Y") - $row['uBirthYear'];
+
 
 		$inf = ['view', "viewf", "rose", "rosef", "zan", "zanf", "comment", "commentf"];
 		foreach ($inf as $v3) {

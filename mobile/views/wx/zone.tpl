@@ -216,8 +216,15 @@
 			<div class="img"><img src="{[uThumb]}" alt=""></div>
 			<div class="about">
 				<div class="name">
-					<h5>千寻恋恋</h5>
+					<h5>{[uName]}</h5>
+					{[#isMale]}
+					<img src="/images/zone/ico_male.png" alt="">
+					<span class="male">{[age]}</span>
+					{[/isMale]}
+					{[^isMale]}
 					<img src="/images/zone/ico_female.png" alt="">
+					<span class="female">{[age]}</span>
+					{[/isMale]}
 				</div>
 				<div class="pos">
 					<h5>{[dt]}&nbsp;</h5>

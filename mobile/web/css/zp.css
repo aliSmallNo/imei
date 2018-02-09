@@ -263,6 +263,12 @@ section {
       .zone_container_item .zone_container_item_top .about .name img {
         width: 1rem;
         height: 1rem; }
+      .zone_container_item .zone_container_item_top .about .name span {
+        font-size: 1rem; }
+        .zone_container_item .zone_container_item_top .about .name span.male {
+          color: #acd0fb; }
+        .zone_container_item .zone_container_item_top .about .name span.female {
+          color: #fea2d7; }
       .zone_container_item .zone_container_item_top .about .pos {
         padding: 0.3rem 0; }
         .zone_container_item .zone_container_item_top .about .pos h5 {
