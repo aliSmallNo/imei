@@ -631,6 +631,7 @@ require(["jquery", "alpha", "mustache"],
 				util.text = '';
 				util.img_localIds = [];
 				util.img_serverIds = [];
+				$(".zone_container_add_msg .msg_ipts textarea").val('');
 				// topicUtil.topic_id = 0; // 如果是话题页进入添加，需reset topic_id
 			},
 		};
