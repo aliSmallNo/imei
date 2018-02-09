@@ -459,7 +459,7 @@
 			case "110":
 			case "130":
 				photo= $('input[name=photo]')[0].files;
-				if (photo) {
+				if (photo[0]) {
 					for (var i = 0; i < photo.length; i++) {
 						formData.append('image[]', photo[i]);
 				 }
@@ -491,14 +491,14 @@
 				if (resp.code < 1) {
 					BpbhdUtil.showMsg(resp.msg, 1);
 					$("#modalEdit").modal('hide');
+					$sls.mid = '';
+					$sls.tag = '';
 					setTimeout(function () {
 						location.reload();
 					}, 450);
 				} else {
 					BpbhdUtil.showMsg(resp.msg);
 				}
-				$sls.mid = '';
-				$sls.tag = '';
 			}
 		});
 	});

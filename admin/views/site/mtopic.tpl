@@ -346,12 +346,12 @@
 		formData.append("data", JSON.stringify(data));
 
 		var photo= $('input[name=photo]')[0].files;
-		if (photo) {
+		if (photo[0]) {
 			for (var i = 0; i < photo.length; i++) {
 				formData.append('image[]', photo[i]);
 		 }
 		}
-		if(!photo && $sls.tag == "edit") {
+		if(!photo[0] && $sls.tag == "add") {
 			BpbhdUtil.showMsg('图片还没上传');
 			return ;
 		}
@@ -375,14 +375,14 @@
 				if (resp.code < 1) {
 					BpbhdUtil.showMsg(resp.msg, 1);
 					$("#modalEdit").modal('hide');
+					$sls.tag='';
+					$sls.tid='';
 					setTimeout(function () {
 						 location.reload();
 					}, 450);
 				} else {
 					BpbhdUtil.showMsg(resp.msg);
 				}
-				$sls.tag='';
-				$sls.tid='';
 			}
 		});
 	});
