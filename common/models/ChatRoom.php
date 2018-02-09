@@ -214,7 +214,7 @@ class ChatRoom extends ActiveRecord
 		$sql = "select m.cGId , count(m.cId) as cnt
 			 from im_chat_msg as m  
 			 join im_chat_msg_flag as f on f.fRId=m.cGId and f.fUId=:uid and m.cId > f.fCId
-			 where m.cGId<9999
+			 where m.cGId<9999 and m.cAddedBy!=:uid
 			 group by m.cGId";
 		$unread = $conn->createCommand($sql)->bindValues([
 			':uid' => $uid
