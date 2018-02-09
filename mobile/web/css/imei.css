@@ -10542,7 +10542,17 @@ ul.co-ul {
     padding: 0.8rem 0;
     font-size: 1.3rem;
     text-align: center;
-    margin: 0 2rem; }
+    margin: 0 2rem;
+    position: relative; }
+    .sw_cash_items .sw_cash_btn_comfirm a.spring_festival {
+      padding: 0.8rem 0 1.5rem 0; }
+      .sw_cash_items .sw_cash_btn_comfirm a.spring_festival:after {
+        content: "暂时关闭";
+        position: absolute;
+        left: 43%;
+        bottom: 0.3rem;
+        font-size: 0.8rem;
+        color: #eee; }
 
 .sw_exchange_cash {
   background: #fff;

@@ -54,8 +54,8 @@
 			<li class="{{$item.cls}}" data-num="{{$item.amt}}"><a href="javascript:;">{{$item.amt}}元</a></li>
 			{{/foreach}}
 		</ul>
-		<div class="sw_cash_btn_comfirm">
-			<a href="javascript:;">立即提现</a>
+		<div class="sw_cash_btn_comfirm ">
+			<a href="javascript:;" class="{{if $spring_festival}}spring_festival{{/if}}">立即提现</a>
 		</div>
 	</div>
 	<div>

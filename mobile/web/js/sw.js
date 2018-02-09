@@ -50,9 +50,15 @@ require(['jquery', 'mustache', "alpha"],
 						alpha.toast("可提现金额不足~");
 						return;
 					}
-					alpha.prompt('提示', '您需要添加先添加微信客服号领取，微信号：meipo1001', ['我知道了'], function () {
-						alpha.clear();
-					});
+					if (self.hasClass("spring_festival")) {
+						alpha.prompt('提示', '春节即将来临，千寻小妹也要回家过年，至此本平台任务提现功能将在2018-02-10 ~ 2018-02-22 暂时关闭，请合理安排提现时间，带来不便敬请谅解。', ['我知道了'], function () {
+							alpha.clear();
+						});
+					} else {
+						alpha.prompt('提示', '您需要添加先添加微信客服号领取，微信号：meipo1001', ['我知道了'], function () {
+							alpha.clear();
+						});
+					}
 
 					//util.tocash();
 				});

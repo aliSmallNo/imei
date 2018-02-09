@@ -2191,6 +2191,12 @@ class WxController extends BaseController
 		$offet = 0;
 		$cash = array_slice($cash, $offet, 3);
 
+		$spring_festival = 0;
+		if (strtotime("2018-02-10 00:00:00") > time()
+			&& strtotime("2018-02-22 23:59:00") < time()) {
+			$spring_festival = 1;
+		}
+
 		return self::renderPage("sw.tpl",
 			[
 				'avatar' => $avatar,
@@ -2201,6 +2207,7 @@ class WxController extends BaseController
 				'cards' => $cards,
 				"isDebug" => AppUtil::isDebugger($this->user_id),
 				'cash' => $cash,
+				'spring_festival' => $spring_festival,
 			],
 			'terse',
 			'账户',
