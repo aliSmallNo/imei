@@ -115,7 +115,7 @@
 		<a href="JavaScript:;" class="btn-add btn btn-primary btn-xs">添加话题</a>
 	</h4>
 </div>
-<form action="/site/moment" class="form-inline">
+<form action="/site/mtopic" class="form-inline">
 	<input class="form-control" placeholder="话题标题" name="title"
 	       value="{{if isset($getInfo['title'])}}{{$getInfo['title']}}{{/if}}"/>
 
@@ -126,13 +126,13 @@
 	<table class="table table-striped table-bordered">
 		<thead>
 		<tr>
-			<th>
+			<th class="col-sm-1">
 				封面
 			</th>
 			<th class="col-sm-1">
 				标题
 			</th>
-			<th class="col-sm-1">
+			<th class="col-sm-3">
 				简介
 			</th>
 			<th>
@@ -149,25 +149,26 @@
 		<tbody>
 		{{foreach from=$list item=item}}
 			<tr>
-				<td align="center">
+				<td>
 					<img src="{{$item.tImage}}">
 				</td>
 				<td>
 					{{$item.tTitle}}
 				</td>
 				<td>
-					{[$item.tNote]}
+					{{$item.tNote}}
 				</td>
 				<td>
-
+				<a>浏览: {{$item.view}}</a>
+				<a>内容: {{$item.content}}</a>
+				<a>参与: {{$item.zan + $item.rose + $item.comment}}</a>
 				</td>
 				<td>
 					{{$item.tAddedOn}}
-					<div>{{$item.dt}}</div>
 				</td>
 				<td>
-					<a href="javascript:;" data-tid="{{$item.tId}}"
-					class="MomentEdit btn btn-outline btn-primary btn-xs">修改动态</a>
+					<a href="javascript:;" data-tid="{{$item.tId}}" data-note="{{$item.tNote}}" data-title="{{$item.tTitle}}"
+					class="MomentEdit btn btn-outline btn-primary btn-xs">修改</a>
 				</td>
 			</tr>
 		{{/foreach}}
@@ -203,10 +204,29 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
 							aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">添加动态</h4>
+				<h4 class="modal-title">话题</h4>
 			</div>
 			<div class="modal-body">
 				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">封面</label>
+						<div class="col-sm-7">
+							<input class="form-control-static" type="file" name="photo"
+										 accept="image/jpg, image/jpeg, image/png">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">标题</label>
+						<div class="col-sm-7">
+							<input class="form-control" data-tag="topic_title" placeholder="(必填)" value="">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">介绍</label>
+						<div class="col-sm-7">
+							<textarea class="form-control" data-tag="topic_note" rows="4" maxlength="300"></textarea>
+						</div>
+					</div>
 
 				</div>
 			</div>
@@ -220,177 +240,78 @@
 <script>
 
 	var $sls = {
-		rid: 0,
 		tag: '',
 		searchFlag: 0,
-		mid: '',
+		tid: '',
 		opt_tag: '',
 		page: 1,
 	};
 
-	$(document).on("click","[opt-cat]",function(){
-		var self = $(this);
-		$sls.mid = self.closest("div").attr('data-mid');
-		$sls.opt_tag = self.attr('opt-cat');
-		$sls.page = 1;
-		loadOPT();
-	});
-	function loadOPT(){
-		if($sls.searchFlag){
-			return;
-		}
-		$sls.searchFlag=1;
-		$.post("/api/moment",{
-			tag:"user_opt",
-			subtag: $sls.opt_tag,
-			page: $sls.page,
-			mid: $sls.mid,
-		},function(resp){
-			if($sls.page==1){
-				$("#userOPT .modal-body ul").html(Mustache.render($("#tmp_opt").html(),resp.data));
-			} else {
-				$("#userOPT .modal-body ul").append(Mustache.render($("#tmp_opt").html(),resp.data));
-			}
-			$("#userOPT").modal('show');
-			$sls.searchFlag=0;
-		},"json");
-	}
+	// $(document).on("click","[opt-cat]",function(){
+	// 	var self = $(this);
+	// 	$sls.mid = self.closest("div").attr('data-mid');
+	// 	$sls.opt_tag = self.attr('opt-cat');
+	// 	$sls.page = 1;
+	// 	loadOPT();
+	// });
+	// function loadOPT(){
+	// 	if($sls.searchFlag){
+	// 		return;
+	// 	}
+	// 	$sls.searchFlag=1;
+	// 	$.post("/api/moment",{
+	// 		tag:"user_opt",
+	// 		subtag: $sls.opt_tag,
+	// 		page: $sls.page,
+	// 		mid: $sls.mid,
+	// 	},function(resp){
+	// 		if($sls.page==1){
+	// 			$("#userOPT .modal-body ul").html(Mustache.render($("#tmp_opt").html(),resp.data));
+	// 		} else {
+	// 			$("#userOPT .modal-body ul").append(Mustache.render($("#tmp_opt").html(),resp.data));
+	// 		}
+	// 		$("#userOPT").modal('show');
+	// 		$sls.searchFlag=0;
+	// 	},"json");
+	// }
+	//
+	// $(document).on("click",".cat_text a",function(){
+	// 	var self = $(this);
+	// 	var div=self.closest("div");
+	// 	var show=div.attr("show")
+	// 	if(show=="short"){
+	// 		div.attr("show","all")
+	// 		div.find("text").html(div.attr("data_text"))
+	// 		div.find("a").html("收起")
+	// 	} else {
+	// 		div.attr("show","short")
+	// 		div.find("text").html(div.attr("data_short_text"))
+	// 		div.find("a").html("查看全部")
+	// 	}
+	// });
 
-	$(document).on("click",".cat_text a",function(){
-		var self = $(this);
-		var div=self.closest("div");
-		var show=div.attr("show")
-		if(show=="short"){
-			div.attr("show","all")
-			div.find("text").html(div.attr("data_text"))
-			div.find("a").html("收起")
-		}else{
-			div.attr("show","short")
-			div.find("text").html(div.attr("data_short_text"))
-			div.find("a").html("查看全部")
-		}
-	});
-
-	$(document).on("click", ".album-item img", function () {
-		var self = $(this);
-		var images = self.closest("div").attr("data-images");
-		var idx = self.attr('data-idx');
-		var photos = JSON.parse(images);
-		photos.title = '个人相册';
-		showImages(photos, idx)
-	});
-	function showImages(imagesJson, idx) {
-		if (idx) {
-			imagesJson.start = idx;
-		}
-		layer.photos({
-			photos: imagesJson,
-			shift: 5,
-			tab: function (info) {
-				console.log(info);
-			}
-		});
-	}
-
-	$(document).on("change","[data-tag=cat]",function(){
-		var cat=$(this).val();
-		console.log(cat);
-		$sls.cat = cat;
-		$(".modal-body .form-horizontal").html($("#cat"+cat).html())
-	});
 
 	$(document).on("click", ".btn-add", function () {
 		$sls.tag = "add";
-		$(".form-horizontal").html($("#init_add").html());
-
+		$(".form-horizontal [data-tag]").val('');
 		$("#modalEdit").modal('show');
 	});
 
 	$(document).on("click", ".MomentEdit", function () {
 		var self = $(this);
 		$sls.tag = "edit";
-		$sls.mid = self.attr("data-mid");
-		var name=self.attr("data-name");
-		var cat=self.attr("data-cat");
-		var uid=self.attr("data-uid");
-		var tid=self.attr("data-tid");
-		var topic=self.attr("data-topic");
-		var content=self.attr("data-content");
-		content=JSON.parse(content);
-		console.log(content);
+		$sls.tid = self.attr("data-tid");
+		var title = self.attr("data-title");
+		var note = self.attr("data-note");
 
-		$(".form-horizontal").html($("#cat"+cat).html());
-		$(".form-horizontal [data-tag=uid]").html('<option value="'+ uid +'">' + name +'</option');
-		$(".form-horizontal [data-tag=topic]").html('<option value="'+ tid +'">' + topic +'</option');
-
-		switch (cat){
-			case "100":
-				$(".form-horizontal [data-tag=text_title]").val(content.title);
-				$(".form-horizontal [data-tag=text_intro]").val(content.subtext);
-				break;
-			case "110":
-				$(".form-horizontal [data-tag=img_title]").val(content.title);
-				break;
-			case "120":
-				$(".form-horizontal [data-tag=voice_title]").val(content.title);
-				$(".form-horizontal [data-tag=voice_src]").val(content.other_url);
-				break;
-			case "130":
-				$(".form-horizontal [data-tag=article_title]").val(content.title);
-				$(".form-horizontal [data-tag=article_intro]").val(content.subtext);
-				$(".form-horizontal [data-tag=article_src]").val(content.other_url);
-				break;
-		}
+		$(".form-horizontal [data-tag=topic_title]").val(title);
+		$(".form-horizontal [data-tag=topic_note]").val(note);
 
 		$("#modalEdit").modal('show');
 	});
 
-	$(document).on('input', '.searchName,.searchTopic', function () {
-			var self = $(this);
-			var subtag = self.attr('subtag');
-			var keyWord = self.val();
-			if ($sls.searchFlag) {
-				return;
-			}
-			$sls.searchFlag = 1;
-			layer.load();
-			$.post("/api/user",
-				{
-					tag: "searchnet",
-					keyword: keyWord,
-					subtag: subtag,
-				},
-				function (resp) {
-					layer.closeAll();
-					$sls.searchFlag = 0;
-					if (resp.code === 0) {
-						var html='';
-						if(subtag=='topic'){
-							html = Mustache.render('{[#data]}<option value="{[tId]}">{[tTitle]}</option>{[/data]}', resp)
-							self.closest(".col-sm-7").find("[data-tag=topic]").html(html);
-						} else {
-							html = Mustache.render('{[#data]}<option value="{[id]}">{[uname]} {[phone]}</option>{[/data]}', resp)
-							self.closest(".col-sm-7").find("[data-tag=uid]").html(html);
-						}
-					}
-				}, "json");
-
-			/*
-			var reg = /^[\u4e00-\u9fa5]+$/i;
-			if (reg.test(keyWord)) {
-			}
-			*/
-		}
-	);
-
-
 	function intakeForm() {
-		var ft = {
-			cat100:{cat:'类别',text_title:'文本标题',text_intro:'文本内容',topic:'话题',uid:'用户'},
-			cat110:{cat:'类别',img_title:'图片标题',topic:'话题',uid:'用户'},
-			cat120:{cat:'类别',voice_title:'音频标题',voice_src:'音频链接',topic:'话题',uid:'用户'},
-			cat130:{cat:'类别',article_title:'文章标题',article_intro:'文章介绍',article_src:'文章链接',topic:'话题',uid:'用户'}
-		};
+		var ft = {topic_title:'标题',topic_note:'介绍'};
 		var data = {}, err = 0;
 		$.each($(".form-horizontal [data-tag]"), function () {
 			var self = $(this);
@@ -398,7 +319,7 @@
 			var val = self.val().trim();
 			if (!val) {
 				err = 1;
-				BpbhdUtil.showMsg(ft['cat'+ $sls.cat][field] + "未填写");
+				BpbhdUtil.showMsg(ft[field] + "未填写");
 				return false;
 			}
 			data[field] = val;
@@ -414,32 +335,24 @@
 	$(document).on("click", ".btn-save", function () {
 		var data = intakeForm();
 		data['sign'] = $sls.tag;
-		data['mid'] = $sls.mid;
+		data['tid'] = $sls.tid;
 		console.log(data);
 		if (!data) {
 			return false;
 		}
 
 		var formData = new FormData();
-		formData.append("tag", 'edit');
+		formData.append("tag", 'topic_edit');
 		formData.append("data", JSON.stringify(data));
 
-		var photo;
-		switch ($sls.cat){
-			case "110":
-			case "130":
-				photo= $('input[name=photo]')[0].files;
-				if (photo) {
-					for (var i = 0; i < photo.length; i++) {
-						formData.append('image[]', photo[i]);
-				 }
-				} else {
-					BpbhdUtil.showMsg('图片还没上传');
-					return ;
-				}
-				console.log(photo[0]);
-				console.log(photo);
-				break;
+		var photo= $('input[name=photo]')[0].files;
+		if (photo) {
+			for (var i = 0; i < photo.length; i++) {
+				formData.append('image[]', photo[i]);
+		 }
+		} else {
+			BpbhdUtil.showMsg('图片还没上传');
+			return ;
 		}
 
 		BpbhdUtil.loading();
@@ -462,286 +375,19 @@
 					BpbhdUtil.showMsg(resp.msg, 1);
 					$("#modalEdit").modal('hide');
 					setTimeout(function () {
-						location.reload();
+						// location.reload();
 					}, 450);
 				} else {
 					BpbhdUtil.showMsg(resp.msg);
 				}
+				$sls.tag='';
+				$sls.tid='';
 			}
 		});
 	});
 
 </script>
 
-<script type="text/html" id="cat100">
-	<div class="form-group">
-		<label class="col-sm-3 control-label">类别</label>
-		<div class="col-sm-7">
-			<select data-tag="cat" class="form-control" style="margin-top: 10px;">
-				<option value="">-=请选择=-</option>
-			{{foreach from=$catDict key=key item=item}}
-				<option value="{{$key}}"  {{if $key==100}}selected{{/if}}>{{$item}}</option>
-			{{/foreach}}
-			</select>
-		</div>
-	</div>
-	
-	<div class="form-group">
-		<label class="col-sm-3 control-label">文本标题</label>
-		<div class="col-sm-7">
-			<textarea class="form-control" data-tag="text_title" rows="4" maxlength="300"></textarea>
-		</div>
-	</div>
-	<div class="form-group">
-		<label class="col-sm-3 control-label">文本内容</label>
-		<div class="col-sm-7">
-			<textarea class="form-control" data-tag="text_intro" rows="4" maxlength="300"></textarea>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-sm-3 control-label">话题</label>
-		<div class="col-sm-7">
-			<div class="form-group input-group" style="margin: 0">
-				<input type="text" class="form-control searchTopic" subtag="topic" name="edit_name"  placeholder="(必填)">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button">
-						<i class="fa fa-search"></i>
-					</button>
-				</span>
-			</div>
-			<select data-tag="topic" class="form-control" style="margin-top: 10px;">
-				<option value=""></option>
-			</select>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-sm-3 control-label">编辑用户</label>
-		<div class="col-sm-7">
-			<div class="form-group input-group" style="margin: 0">
-				<input type="text" class="form-control searchName" subtag="all" name="edit_name" placeholder="(必填)">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button">
-						<i class="fa fa-search"></i>
-					</button>
-				</span>
-			</div>
-			<select data-tag="uid" class="form-control" style="margin-top: 10px;">
-				<option value=""></option>
-			</select>
-		</div>
-	</div>
-</script>
-
-<script type="text/html" id="cat110">
-	<div class="form-group">
-		<label class="col-sm-3 control-label">类别</label>
-		<div class="col-sm-7">
-			<select data-tag="cat" class="form-control" style="margin-top: 10px;">
-				<option value="">-=请选择=-</option>
-			{{foreach from=$catDict key=key item=item}}
-				<option value="{{$key}}" {{if $key==110}}selected{{/if}}>{{$item}}</option>
-			{{/foreach}}
-			</select>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-sm-3 control-label">多图</label>
-		<div class="col-sm-7">
-			<input class="form-control-static" type="file" name="photo"
-						 accept="image/jpg, image/jpeg, image/png" multiple >
-		</div>
-	</div>
-	<div class="form-group">
-		<label class="col-sm-3 control-label">图片标题</label>
-		<div class="col-sm-7">
-			<textarea class="form-control" data-tag="img_title" rows="4"></textarea>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-sm-3 control-label">话题</label>
-		<div class="col-sm-7">
-			<div class="form-group input-group" style="margin: 0">
-				<input type="text" class="form-control searchTopic" subtag="topic" name="edit_name"  placeholder="(必填)">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button">
-						<i class="fa fa-search"></i>
-					</button>
-				</span>
-			</div>
-			<select data-tag="topic" class="form-control" style="margin-top: 10px;">
-				<option value=""></option>
-			</select>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-sm-3 control-label">用户</label>
-		<div class="col-sm-7">
-			<div class="form-group input-group" style="margin: 0">
-				<input type="text" class="form-control searchName" subtag="all" name="edit_name" placeholder="(必填)">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button">
-						<i class="fa fa-search"></i>
-					</button>
-				</span>
-			</div>
-			<select data-tag="uid" class="form-control" style="margin-top: 10px;">
-				<option value=""></option>
-			</select>
-		</div>
-	</div>
-</script>
-
-<script type="text/html" id="cat120">
-	<div class="form-group">
-		<label class="col-sm-3 control-label">类别</label>
-		<div class="col-sm-7">
-			<select data-tag="cat" class="form-control" style="margin-top: 10px;">
-				<option value="">-=请选择=-</option>
-			{{foreach from=$catDict key=key item=item}}
-				<option value="{{$key}}"  {{if $key==120}}selected{{/if}}>{{$item}}</option>
-			{{/foreach}}
-			</select>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-sm-3 control-label">音频标题</label>
-		<div class="col-sm-7">
-			<input class="form-control" data-tag="voice_title" placeholder="(必填)" value="">
-		</div>
-	</div>
-	<div class="form-group">
-		<label class="col-sm-3 control-label">音频链接</label>
-		<div class="col-sm-7">
-			<textarea class="form-control" data-tag="voice_src" rows="4"></textarea>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-sm-3 control-label">话题</label>
-		<div class="col-sm-7">
-			<div class="form-group input-group" style="margin: 0">
-				<input type="text" class="form-control searchTopic" subtag="topic" name="edit_name"  placeholder="(必填)">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button">
-						<i class="fa fa-search"></i>
-					</button>
-				</span>
-			</div>
-			<select data-tag="topic" class="form-control" style="margin-top: 10px;">
-				<option value=""></option>
-			</select>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-sm-3 control-label">用户</label>
-		<div class="col-sm-7">
-			<div class="form-group input-group" style="margin: 0">
-				<input type="text" class="form-control searchName" subtag="all" name="edit_name"  placeholder="(必填)">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button">
-						<i class="fa fa-search"></i>
-					</button>
-				</span>
-			</div>
-			<select data-tag="uid" class="form-control" style="margin-top: 10px;">
-				<option value=""></option>
-			</select>
-		</div>
-	</div>
-</script>
-
-<script type="text/html" id="init_add">
-<div class="form-group">
-	<label class="col-sm-3 control-label">类别</label>
-	<div class="col-sm-7">
-		<select data-tag="cat" class="form-control" style="margin-top: 10px;">
-			<option value="">-=请选择=-</option>
-		{{foreach from=$catDict key=key item=item}}
-			<option value="{{$key}}" >{{$item}}</option>
-		{{/foreach}}
-		</select>
-	</div>
-</div>
-</script>
-<script type="text/html" id="cat130">
-	<div class="form-group">
-		<label class="col-sm-3 control-label">类别</label>
-		<div class="col-sm-7">
-			<select data-tag="cat" class="form-control" style="margin-top: 10px;">
-				<option value="">-=请选择=-</option>
-			{{foreach from=$catDict key=key item=item}}
-				<option value="{{$key}}" {{if $key==130}}selected{{/if}}>{{$item}}</option>
-			{{/foreach}}
-			</select>
-		</div>
-	</div>
-	<div class="form-group">
-		<label class="col-sm-3 control-label">封面图</label>
-		<div class="col-sm-7">
-			<input class="form-control-static" type="file" name="photo"
-						 accept="image/jpg, image/jpeg, image/png">
-		</div>
-	</div>
-	<div class="form-group">
-		<label class="col-sm-3 control-label">文章标题</label>
-		<div class="col-sm-7">
-			<input class="form-control" data-tag="article_title" placeholder="(必填)" value="">
-		</div>
-	</div>
-	<div class="form-group">
-		<label class="col-sm-3 control-label">文章介绍</label>
-		<div class="col-sm-7">
-			<textarea class="form-control" data-tag="article_intro" rows="4" maxlength="300"></textarea>
-		</div>
-	</div>
-	<div class="form-group">
-		<label class="col-sm-3 control-label">文章链接</label>
-		<div class="col-sm-7">
-			<textarea class="form-control" data-tag="article_src" rows="4"></textarea>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-sm-3 control-label">话题</label>
-		<div class="col-sm-7">
-			<div class="form-group input-group" style="margin: 0">
-				<input type="text" class="form-control searchTopic" subtag="topic" name="edit_name"  placeholder="(必填)">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button">
-						<i class="fa fa-search"></i>
-					</button>
-				</span>
-			</div>
-			<select data-tag="topic" class="form-control" style="margin-top: 10px;">
-				<option value=""></option>
-			</select>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="col-sm-3 control-label">用户</label>
-		<div class="col-sm-7">
-			<div class="form-group input-group" style="margin: 0">
-				<input type="text" class="form-control searchName" subtag="all" name="edit_name" placeholder="(必填)">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button">
-						<i class="fa fa-search"></i>
-					</button>
-				</span>
-			</div>
-			<select data-tag="uid" class="form-control" style="margin-top: 10px;">
-				<option value=""></option>
-			</select>
-		</div>
-	</div>
-</script>
 <script type="text/html" id="tmp_opt">
 {[#data]}
 	<li class="api_opt">
@@ -762,4 +408,5 @@
 	</li>
 {[/data]}
 </script>
+
 {{include file="layouts/footer.tpl"}}

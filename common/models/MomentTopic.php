@@ -33,6 +33,21 @@ class MomentTopic extends ActiveRecord
 		return true;
 	}
 
+	public static function adminEdit($id, $insert)
+	{
+		if ($id) {
+			$entity = self::findOne(["tId" => $id]);
+			if (!$entity) {
+				return 0;
+			}
+			foreach ($insert as $k => $v) {
+				$entity->$k = $v;
+			}
+			return $entity->save();
+		}
+		return 0;
+	}
+
 	public static function searchTopic($cri, $param)
 	{
 		$conn = AppUtil::db();
@@ -90,22 +105,44 @@ class MomentTopic extends ActiveRecord
 			$str .= ' and ' . implode(" ", $cri);
 		}
 
-		$limit = "limit " . ($page - 1) * ($pagesize + 1);
+		$limit = "limit " . ($page - 1) * $pagesize . ',' . ($pagesize + 1);
 		$conn = AppUtil::db();
 		$sql = "select t.*,
-				count(1) as content,
+				count(DISTINCT mId) as content,
 				sum(case when s.sCategory=:cat_view then 1 else 0 end ) as `view`, 
 				sum(case when s.sCategory=:cat_rose then 1 else 0 end ) as rose, 
 				sum(case when s.sCategory=:cat_zan then 1 else 0 end ) as zan, 
-				sum(case when s.sCategory=:cat_comment then 1 else 0 end ) as comment 
+				sum(case when s.sCategory=:cat_comment then 1 else 0 end ) as `comment` 
+				from im_moment_topic as t 
+				left join im_moment as m on m.mTopic = t.tId
+				left join im_moment_sub as s on s.sMId = m.mId 
+				where tDeletedFlag = 0   $str
+				group by tId order by tAddedOn desc $limit ";
+		$res = $conn->createCommand($sql)->bindValues(array_merge($param, [
+			":cat_view" => MomentSub::CAT_VIEW,
+			":cat_rose" => MomentSub::CAT_ROSE,
+			":cat_zan" => MomentSub::CAT_ZAN,
+			":cat_comment" => MomentSub::CAT_COMMENT,
+		]))->queryAll();
+
+		$nextpage = count($res) > $pagesize ? $page + 1 : 0;
+
+		return [$res, $nextpage];
+	}
+
+	public static function count($cri, $param)
+	{
+		$str = '';
+		if ($cri) {
+			$str .= ' and ' . implode(" ", $cri);
+		}
+		$conn = AppUtil::db();
+		$sql = "select count(DISTINCT tId)
 				from im_moment_topic as t 
 				join im_moment as m on m.mTopic = t.tId
 				join im_moment_sub as s on s.sMId = m.mId 
-				where tDeletedFlag = 0   
-				group by tId order by tAddedOn desc $limit ";
-		$res = $conn->createCommand($sql)->bindValues($param)->queryAll();
-
-
+				where tDeletedFlag = 0   $str ";
+		return $conn->createCommand($sql)->bindValues($param)->queryScalar();
 
 	}
 

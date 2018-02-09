@@ -451,7 +451,7 @@
 		}
 
 		var formData = new FormData();
-		formData.append("tag", 'edit');
+		formData.append("tag", 'moment_edit');
 		formData.append("data", JSON.stringify(data));
 
 		var photo;
@@ -497,6 +497,8 @@
 				} else {
 					BpbhdUtil.showMsg(resp.msg);
 				}
+				$sls.mid = '';
+				$sls.tag = '';
 			}
 		});
 	});

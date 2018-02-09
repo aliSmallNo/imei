@@ -297,6 +297,7 @@ class ApiController extends Controller
 	protected function renderAPI($code, $msg = '', $data = [])
 	{
 		Yii::$app->response->format = Response::FORMAT_JSON;
+
 		return [
 			'code' => $code,
 			'msg' => $msg,
@@ -716,7 +717,7 @@ class ApiController extends Controller
 	{
 		$tag = strtolower(self::postParam("tag"));
 		switch ($tag) {
-			case 'edit':
+			case 'moment_edit':
 				$data = json_decode(self::postParam('data'), 1);
 				$cat = isset($data["cat"]) ? $data["cat"] : '';
 				$topic = isset($data["topic"]) ? $data["topic"] : '';
@@ -784,7 +785,12 @@ class ApiController extends Controller
 					$insert["mTop"] = Moment::TOP_ARTICLE;
 				}
 
-				$ret = Moment::adminEdit($mid, $insert);
+
+				if ($sign == 'add') {
+					$ret = Moment::add($insert);
+				} elseif ($sign == 'edit') {
+					$ret = Moment::adminEdit($mid, $insert);
+				}
 
 				return self::renderAPI(0, '', [
 					'result' => $data,
@@ -817,6 +823,49 @@ class ApiController extends Controller
 				return self::renderAPI(0, '', [
 					'data' => $data,
 					'nextpage' => $nextpage,
+				]);
+				break;
+			case "topic_edit":
+				$data = json_decode(self::postParam('data'), 1);
+				$note = isset($data["topic_note"]) ? $data["topic_note"] : '';
+				$title = isset($data["topic_title"]) ? $data["topic_title"] : '';
+				$sign = isset($data["sign"]) ? $data["sign"] : '';
+				$tid = isset($data["tid"]) ? $data["tid"] : '';
+
+
+				if (!$sign || !$title || !$note) {
+					return self::renderAPI(129, 'param sign or note or title missing ');
+				}
+				$tinfo = MomentTopic::findOne(["tId" => $tid]);
+				if ($sign == "edit" && !$tinfo) {
+					return self::renderAPI(129, 'param tid missing ');
+				}
+
+				$images = [];
+				if (isset($_FILES['image']['name']) && $_FILES['image']['name']) {
+					foreach ($_FILES['image']['name'] as $k => $v) {
+						$tmp = $_FILES['image']['tmp_name'][$k];
+						$ext = pathinfo($_FILES['image']['name'][$k], PATHINFO_EXTENSION);
+						$images[] = COSUtil::init(COSUtil::UPLOAD_PATH, $tmp, $ext)->uploadOnly(false, false, false);
+					}
+				}
+				$insert = ["tTitle" => $title, "tNote" => $note];
+
+				if (!$images && $sign == 'add') {
+					return self::renderAPI(129, 'param photo missing ');
+				} elseif ($images) {
+					$insert["tImage"] = $images[0];
+				}
+
+				if ($sign == 'add') {
+					MomentTopic::add($insert);
+				} elseif ($sign = 'edit') {
+					MomentTopic::adminEdit($tid, $insert);
+				}
+				return self::renderAPI(0, 'ok', [
+					"insert" => $insert,
+					"data" => $data,
+					"image" => $images,
 				]);
 				break;
 		}

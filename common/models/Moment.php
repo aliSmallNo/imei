@@ -62,9 +62,8 @@ class Moment extends ActiveRecord
 				$entity->$k = $v;
 			}
 			return $entity->save();
-		} else {
-			return self::add($insert);
 		}
+		return 0;
 	}
 
 	public static function wechatItems($uid, $cri, $param, $page = 1, $pagesize = 10)
