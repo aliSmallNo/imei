@@ -8,6 +8,7 @@ namespace common\models;
 use common\service\CogService;
 use common\utils\AppUtil;
 use common\utils\NoticeUtil;
+use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
 
@@ -379,15 +380,15 @@ class UserMsg extends ActiveRecord
 			])->execute();
 			$titles = array_column($item, 'title');
 			$text = implode('；', $titles);
-			/*WechatUtil::templateMsg(WechatUtil::NOTICE_ROUTINE,
+			WechatUtil::templateMsg(WechatUtil::NOTICE_ROUTINE,
 				$uid,
 				'千寻恋恋每日简报',
 				$text
-			);*/
-			$openId = isset($uidMap[$uid]) ? $uidMap[$uid] : '';
+			);
+			/*$openId = isset($uidMap[$uid]) ? $uidMap[$uid] : '';
 			if ($openId) {
 				NoticeUtil::init(NoticeUtil::CAT_IGNORE, $openId)->sendText($text);
-			}
+			}*/
 		}
 
 		// Rain: 单独处理chat info
@@ -409,17 +410,17 @@ class UserMsg extends ActiveRecord
 		foreach ($ret as $row) {
 			$receiverUId = $row['receiverUId'];
 			$senderUId = $row['senderUId'];
-			$openId = $row['uOpenId'];
 			$cmd->bindValues([
 				':id' => $receiverUId
 			])->execute();
 
-			/*NoticeUtil::init2(WechatUtil::NOTICE_CHAT, $receiverUId, $senderUId)
+			NoticeUtil::init2(WechatUtil::NOTICE_CHAT, $receiverUId, $senderUId)
 				->send([
 					'有人密聊你了' . $row['cnt'] . '次',
 					date("Y年n月j日 H:i")
-				]);*/
-			NoticeUtil::init(NoticeUtil::CAT_CHAT, $openId)->sendText();
+				]);
+			/*$openId = $row['uOpenId'];
+			NoticeUtil::init(NoticeUtil::CAT_CHAT, $openId)->sendText();*/
 		}
 		/*$openIds = array_column($ret, 'uOpenId');
 		foreach ($openIds as $openId) {
