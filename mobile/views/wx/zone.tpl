@@ -64,22 +64,27 @@
 	</div>
 
 </section>
-
+<script type="text/html" id="tmp_add_cat_image">
+	<li><a href="javascript:;" class="choose-img"></a></li>
+</script>
+<script type="text/html" id="tmp_add_cat_voice">
+	<div class="zone_container_item_cat_voice">
+		<div class="avatar"><img src="/images/cr_room_share.jpg" alt="">
+		</div>
+		<div class="fill">&nbsp;</div>
+		<a href="javascript:;" class="voice pause playVoiceElement" pvl="add"></a>
+		<span></span>
+	</div>
+</script>
 <section id="zone_add_msg">
 	<div class="zone_container_add_msg">
 		<div class="msg_ipts">
 			<textarea placeholder="此时此刻，你想与大家分享点什么..." rows="12"></textarea>
 			<ul class="add_cat_img" add_cat="image">
-				<li><a href="javascript:;" class="choose-img"></a></li>
+
 			</ul>
 			<ul class="add_cat_voice" add_cat="voice">
-				<div class="zone_container_item_cat_voice">
-					<div class="avatar"><img src="/images/cr_room_share.jpg" alt="">
-					</div>
-					<div class="fill">&nbsp;</div>
-					<a href="javascript:;" class="voice pause playVoiceElement" pvl="add"></a>
-					<span></span>
-				</div>
+
 			</ul>
 		</div>
 		<div class="msg_tags">
@@ -303,7 +308,7 @@
 		document.location.hash = "#zone_items";
 	}
 	requirejs(['/js/config.js?v=1.2.5'], function () {
-		requirejs(['/js/zone.js?v=1.2.6']);
+		requirejs(['/js/zone.js?v=1.2.7']);
 	});
 </script>
 

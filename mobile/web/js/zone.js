@@ -73,10 +73,10 @@ require(["jquery", "alpha", "mustache"],
 							var fl = div.attr('cat_flag');
 							if (fl == 'short') {
 								div.html(div.attr('cat_subtext') + '<a href="javascript:;" items_tag="all">【收起】</a>');
-								div.attr('cat_flag','');
+								div.attr('cat_flag', '');
 							} else {
 								div.html(div.attr('cat_sub_short_text') + '<a href="javascript:;" items_tag="all">【查看全部】</a>');
-								div.attr('cat_flag','short');
+								div.attr('cat_flag', 'short');
 							}
 							break;
 						case 'preview':
@@ -496,7 +496,6 @@ require(["jquery", "alpha", "mustache"],
 				});
 
 				$(document).on(kClick, ".zone_container_add_msg_btn a", function () {
-
 					var textObj = $(".msg_ipts textarea");
 					util.text = $.trim(textObj.val());
 					if (!util.text) {
@@ -551,10 +550,13 @@ require(["jquery", "alpha", "mustache"],
 					util.cat = cat;
 					alertToggle(0, '');
 					if (cat == "image") {
-						$(".zone_container_add_msg ul[add_cat=" + cat + "]").css("display", "flex");
+						// $(".zone_container_add_msg ul[add_cat=" + cat + "]").css("display", "flex");
+						console.log($("#tmp_add_cat_" + cat).html());
+						$(".zone_container_add_msg ul[add_cat=image]").html($("#tmp_add_cat_" + cat).html());
 					} else if (cat == "voice") {
 						$(".m-draw-wrap").removeClass("off").addClass("on");
 					}
+
 				});
 
 				$(document).on(kClick, ".add_vbtn_pause a", function () {
@@ -565,7 +567,8 @@ require(["jquery", "alpha", "mustache"],
 					if (!f) {
 						self.closest(".m-draw-wrap").removeClass("on").addClass("off");
 						setTimeout(function () {
-							$(".zone_container_add_msg ul[add_cat=voice]").show();
+							// $(".zone_container_add_msg ul[add_cat=voice]").show();
+							$(".zone_container_add_msg ul[add_cat=voice]").html($("#tmp_add_cat_voice").html());
 						}, 300);
 					}
 				});
@@ -735,7 +738,8 @@ require(["jquery", "alpha", "mustache"],
 					pageCommentsUtil.toComment();
 					break;
 				case "zone_add_msg":
-					$(".zone_container_add_msg ul[add_cat]").hide();
+					//$(".zone_container_add_msg ul[add_cat]").hide();
+					$(".zone_container_add_msg ul[add_cat]").html('');
 					var html = $("#tpl_add_msg_cat").html();
 					alertToggle(1, html);
 					break;
