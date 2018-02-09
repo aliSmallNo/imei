@@ -69,6 +69,15 @@ require(["jquery", "alpha", "mustache"],
 
 							break;
 						case 'all':
+							var div = self.closest("div");
+							var fl = div.attr('cat_flag');
+							if (fl == 'short') {
+								div.html(div.attr('cat_subtext') + '<a href="javascript:;" items_tag="all">【收起】</a>');
+								div.attr('cat_flag','');
+							} else {
+								div.html(div.attr('cat_sub_short_text') + '<a href="javascript:;" items_tag="all">【查看全部】</a>');
+								div.attr('cat_flag','short');
+							}
 							break;
 						case 'preview':
 							var curr = self.attr("data_url");

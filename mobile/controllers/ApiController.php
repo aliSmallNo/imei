@@ -3282,7 +3282,7 @@ class ApiController extends Controller
 				}
 				$insert["mContent"] = $insert["mContent"] = json_encode($insert["mContent"], JSON_UNESCAPED_UNICODE);
 
-				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode($insert, JSON_UNESCAPED_UNICODE));
+				// LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode($insert, JSON_UNESCAPED_UNICODE));
 
 				$res = Moment::add($insert);
 

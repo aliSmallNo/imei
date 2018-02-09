@@ -233,11 +233,11 @@
 		<div class="zone_container_item_mid">
 			<div class="zone_container_item_title">
 				<span>{[#topic_title]}[{[topic_title]}]{[/topic_title]}</span>
-				{[short_title]}
+				{[title]}
 			</div>
 			{[#flag100]}
-			<div class="zone_container_item_cat_text">
-				{[short_text]}
+			<div class="zone_container_item_cat_text" cat_flag="short" cat_subtext="{[subtext]}" cat_sub_short_text="{[short_subtext]}">
+				{[short_subtext]}
 				<a href="javascript:;" items_tag="all">【查看全部】</a>
 			</div>
 			{[/flag100]}
