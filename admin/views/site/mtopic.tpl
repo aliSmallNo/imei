@@ -375,7 +375,7 @@
 					BpbhdUtil.showMsg(resp.msg, 1);
 					$("#modalEdit").modal('hide');
 					setTimeout(function () {
-						// location.reload();
+						 location.reload();
 					}, 450);
 				} else {
 					BpbhdUtil.showMsg(resp.msg);
