@@ -1656,6 +1656,8 @@ class FooController extends Controller
 			])->execute();
 		}*/
 
+		$hasSendCount = 0;
+		$leftSendCount = 15 - $hasSendCount;
 
 
 	}
