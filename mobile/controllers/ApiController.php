@@ -389,7 +389,7 @@ class ApiController extends Controller
 					'role' => isset($info['uRole']) ? $info['uRole'] : User::ROLE_SINGLE,
 					'gender' => isset($info['uGender']) ? $info['uGender'] : User::GENDER_MALE,
 				];
-				//AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
+				AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 				return self::renderAPI(0, '', $ret);
 			case 'wx-profile':
 				$openId = self::postParam('openid');
@@ -404,7 +404,7 @@ class ApiController extends Controller
 					'role' => isset($info['uRole']) ? $info['uRole'] : User::ROLE_SINGLE,
 					'gender' => isset($info['uGender']) ? $info['uGender'] : User::GENDER_MALE,
 				];
-				//AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
+				AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 				return self::renderAPI(0, '', $ret);
 			case 'wx-config':
 				return self::renderAPI(0, '',
