@@ -2192,8 +2192,8 @@ class WxController extends BaseController
 		$cash = array_slice($cash, $offet, 3);
 
 		$spring_festival = 0;
-		if (strtotime("2018-02-10 00:00:00") > time()
-			&& strtotime("2018-02-22 23:59:00") < time()) {
+		if (strtotime("2018-02-10 00:00:00") < time()
+			&& strtotime("2018-02-22 23:59:00") > time()) {
 			$spring_festival = 1;
 		}
 

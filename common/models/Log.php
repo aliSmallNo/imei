@@ -39,6 +39,10 @@ class Log extends ActiveRecord
 	const CAT_JASMINE = 7000;// 茉莉推广
 	const JASMINE_DEFAULT = 100;
 
+	const CAT_SPRING_FESTIVAL = 8000; // 春节红包
+	const SF_GRAB = 100;// 抢的
+	const SF_SEND = 200;// 发的
+
 	const SC_SHIELD = 100;
 	const SC_NOCERT_DES = 200;
 	const SC_NOCERT_CHAT = 210;
@@ -357,5 +361,32 @@ class Log extends ActiveRecord
 			return 0;
 		}
 		return self::add($insert);
+	}
+
+	public static function springRedpacket($tag, $uid)
+	{
+		$conn = AppUtil::db();
+		$cat = self::CAT_SPRING_FESTIVAL;
+		$key1 = self::SF_GRAB;
+		$key2 = self::SF_SEND;
+		switch ($tag) {
+			case "grab":
+				$sql = "select count(1) as co from im_log where oCategory=:cat  and oKey=:k and oUId=:uid and DATE_FORMAT(oDate, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
+				$count = $conn->createCommand($sql)->bindValues([":uid" => $uid, ':cat' => $cat, ':k' => $key1])->queryScalar();
+				return $count < 5;
+				break;
+			case "send":
+				$sql = "select count(1) as co,sum(oBefore) as amt from im_log where oCategory=:cat  and oKey=:k and oUId=:uid and DATE_FORMAT(oDate, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
+				$res = $conn->createCommand($sql)->bindValues([":uid" => $uid, ':cat' => $cat, ':k' => $key2])->queryOne();
+				if ($res) {
+					//if ($res['co'] > 15 || $res['amt'] > 200) {
+					//	return false;
+					//}
+				}
+				return true;
+				break;
+		}
+
+
 	}
 }
