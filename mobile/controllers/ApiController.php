@@ -382,28 +382,30 @@ class ApiController extends Controller
 					return self::renderAPI(129, '参数不足，操作失败');
 				}
 				$info = UserWechat::getInfoByCode($wxCode, true);
-				return self::renderAPI(0, '',
-					[
-						'openid' => isset($info['openid']) ? $info['openid'] : '',
-						'uni' => isset($info['uUniqid']) ? $info['uUniqid'] : '',
-						'status' => isset($info['uStatus']) ? $info['uStatus'] : '',
-						'role' => isset($info['uRole']) ? $info['uRole'] : User::ROLE_SINGLE,
-						'gender' => isset($info['uGender']) ? $info['uGender'] : User::GENDER_MALE,
-					]);
+				$ret = [
+					'openid' => isset($info['openid']) ? $info['openid'] : '',
+					'uni' => isset($info['uUniqid']) ? $info['uUniqid'] : '',
+					'status' => isset($info['uStatus']) ? $info['uStatus'] : '',
+					'role' => isset($info['uRole']) ? $info['uRole'] : User::ROLE_SINGLE,
+					'gender' => isset($info['uGender']) ? $info['uGender'] : User::GENDER_MALE,
+				];
+				AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
+				return self::renderAPI(0, '', $ret);
 			case 'wx-profile':
 				$openId = self::postParam('openid');
 				if (!$openId) {
 					$openId = AppUtil::getCookie(self::COOKIE_OPENID);
 				}
 				$info = UserWechat::getInfoByOpenId($openId);
-				return self::renderAPI(0, '',
-					[
-						'openid' => isset($info['openid']) ? $info['openid'] : '',
-						'uni' => isset($info['uUniqid']) ? $info['uUniqid'] : '',
-						'status' => isset($info['uStatus']) ? $info['uStatus'] : '',
-						'role' => isset($info['uRole']) ? $info['uRole'] : User::ROLE_SINGLE,
-						'gender' => isset($info['uGender']) ? $info['uGender'] : User::GENDER_MALE,
-					]);
+				$ret = [
+					'openid' => isset($info['openid']) ? $info['openid'] : '',
+					'uni' => isset($info['uUniqid']) ? $info['uUniqid'] : '',
+					'status' => isset($info['uStatus']) ? $info['uStatus'] : '',
+					'role' => isset($info['uRole']) ? $info['uRole'] : User::ROLE_SINGLE,
+					'gender' => isset($info['uGender']) ? $info['uGender'] : User::GENDER_MALE,
+				];
+				AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
+				return self::renderAPI(0, '', $ret);
 			case 'wx-config':
 				return self::renderAPI(0, '',
 					['sign' => WechatUtil::getSignature()]);
