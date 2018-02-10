@@ -388,6 +388,21 @@ class ApiController extends Controller
 						'uni' => isset($info['uUniqid']) ? $info['uUniqid'] : '',
 						'status' => isset($info['uStatus']) ? $info['uStatus'] : '',
 						'role' => isset($info['uRole']) ? $info['uRole'] : User::ROLE_SINGLE,
+						'gender' => isset($info['uGender']) ? $info['uGender'] : User::GENDER_MALE,
+					]);
+			case 'wx-profile':
+				$openId = self::postParam('openid');
+				if (!$openId) {
+					$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+				}
+				$info = UserWechat::getInfoByOpenId($openId);
+				return self::renderAPI(0, '',
+					[
+						'openid' => isset($info['openid']) ? $info['openid'] : '',
+						'uni' => isset($info['uUniqid']) ? $info['uUniqid'] : '',
+						'status' => isset($info['uStatus']) ? $info['uStatus'] : '',
+						'role' => isset($info['uRole']) ? $info['uRole'] : User::ROLE_SINGLE,
+						'gender' => isset($info['uGender']) ? $info['uGender'] : User::GENDER_MALE,
 					]);
 			case 'wx-config':
 				return self::renderAPI(0, '',
