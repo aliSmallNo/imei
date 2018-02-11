@@ -448,6 +448,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						});
 						$sls.content.html(html).addClass("animate-pop-in");
 						$sls.shade.fadeIn(160);
+					} else if (self.hasClass('btn-redpacket')) {
+						GreetingUtil.sid = self.attr('data-id');
+						GreetingUtil.springFestivalRedpacket();
 					}
 					return false;
 				});
@@ -2054,7 +2057,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					},
 					function (resp) {
 						var html = "";
-						var f =$sls.vipFlag == 1 || ($sls.vipFlag == 0 && util.subtag == "fav-ta");
+						var f = $sls.vipFlag == 1 || ($sls.vipFlag == 0 && util.subtag == "fav-ta");
 						if (util.page == 1) {
 							if (f) {
 								html = Mustache.render(util.tmp, resp.data);
@@ -2069,7 +2072,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						util.tabFlag = 0;
 						util.spinner.hide();
 						util.page = resp.data.nextpage;
-						if (util.page < 1 && f ) {
+						if (util.page < 1 && f) {
 							util.listMore.show();
 						}
 					}, "json");
@@ -2648,6 +2651,8 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			content: $('#ctx_greet').html().trim(),
 			hasPic: false,
 			taskData: {data: {key: 10}},
+			loadflag: 0,
+			sid: '',
 			init: function () {
 				var util = this;
 				util.hasPic = (util.content.indexOf('<img') > 0);
@@ -2697,11 +2702,11 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					var self = $(this);
 					if (self.hasClass('close')) {
 						var key = self.attr("data-key");
-						$.post("/api/user", {
-							tag: "task",
-							key: key,
+						$.post("/api/temp", {
+							tag: "spring_festival_grab",
+							sid: util.sid,
 						}, function (resp) {
-							if (resp.code == 0) {
+							if (resp.code == 0 && parseFloat(resp.data.amt) > 0) {
 								self.closest("div").find("div").find("span").html(resp.data.amt);
 								self.removeClass('close').addClass('open');
 								self.closest("div").find("div").show();
@@ -2722,7 +2727,27 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				$sls.main.hide();
 				$sls.content.html('').removeClass("animate-pop-in");
 				$sls.shade.fadeOut(160);
-			}
+			},
+			springFestivalRedpacket: function () {
+				var util = this;
+				if (util.loadflag) {
+					return;
+				}
+				util.loadflag = 1;
+				$.post("/api/temp", {
+					tag: "spring_festival_validate",
+					sid: util.sid,
+				}, function (resp) {
+					if (resp.code == 0) {
+						util.showCoin();
+					} else {
+						alpha.prompt('提示', resp.msg, ['我知道了'], function () {
+							alpha.clear();
+						});
+					}
+					util.loadflag = 0;
+				}, "json");
+			},
 		};
 
 		var alertModel = {

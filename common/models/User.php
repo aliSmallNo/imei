@@ -1698,6 +1698,13 @@ class User extends ActiveRecord
 			$data["hintclass"] = $row["hid"] ? "icon-loved" : "icon-love";
 			$data["favor"] = $row["hid"] ? 'favor' : '';
 			$data["singleF"] = $isSingle;
+
+			$data["springFestivalRedPacket"] = 0;
+			$time = time();
+			if ($time > strtotime("2018-02-15 00:00:00") && $time < strtotime("2018-02-23 00:00:00")) {
+				$data["springFestivalRedPacket"] = 1;
+			}
+
 			$result[] = $data;
 		}
 		$next_page = 0;

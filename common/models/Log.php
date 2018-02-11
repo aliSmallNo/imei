@@ -10,6 +10,7 @@ namespace common\models;
 
 
 use common\utils\AppUtil;
+use common\utils\RedisUtil;
 use yii\db\ActiveRecord;
 
 class Log extends ActiveRecord
@@ -40,8 +41,11 @@ class Log extends ActiveRecord
 	const JASMINE_DEFAULT = 100;
 
 	const CAT_SPRING_FESTIVAL = 8000; // 春节红包
-	const SF_GRAB = 100;// 抢的
-	const SF_SEND = 200;// 发的
+	const SF_KEY_REDPACKET = 100;    // 红包
+	const SF_KEY_RANDOM = 300;    // 每天的随机红包
+	const SF_GRAB_LIMIT = 5;    //每天抢红包上限次数
+	const SF_SEND_LIMIT = 15;   //每天发红包上限次数
+	const SF_SEND_MAX = 200;    //每天发送总千寻币数
 
 	const SC_SHIELD = 100;
 	const SC_NOCERT_DES = 200;
@@ -100,7 +104,7 @@ class Log extends ActiveRecord
 			$logger->$key = is_array($val) ? json_encode($val, JSON_UNESCAPED_UNICODE) : $val;
 		}
 		$logger->save();
-		return true;
+		return $logger->oId;
 	}
 
 	public static function sCenterEdit($uid, $flag, $key, $val)
@@ -363,30 +367,72 @@ class Log extends ActiveRecord
 		return self::add($insert);
 	}
 
-	public static function springRedpacket($tag, $uid)
+	public static function springRedpacket($conn, $sendUId, $receiveUId = '')
 	{
-		$conn = AppUtil::db();
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
 		$cat = self::CAT_SPRING_FESTIVAL;
-		$key1 = self::SF_GRAB;
-		$key2 = self::SF_SEND;
-		switch ($tag) {
-			case "grab":
-				$sql = "select count(1) as co from im_log where oCategory=:cat  and oKey=:k and oUId=:uid and DATE_FORMAT(oDate, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
-				$count = $conn->createCommand($sql)->bindValues([":uid" => $uid, ':cat' => $cat, ':k' => $key1])->queryScalar();
-				return $count < 5;
-				break;
-			case "send":
-				$sql = "select count(1) as co,sum(oBefore) as amt from im_log where oCategory=:cat  and oKey=:k and oUId=:uid and DATE_FORMAT(oDate, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
-				$res = $conn->createCommand($sql)->bindValues([":uid" => $uid, ':cat' => $cat, ':k' => $key2])->queryOne();
-				if ($res) {
-					//if ($res['co'] > 15 || $res['amt'] > 200) {
-					//	return false;
-					//}
-				}
-				return true;
-				break;
+		$key = self::SF_KEY_REDPACKET;
+
+		$str = '';
+		if ($receiveUId) {
+			$str .= " and oAfter=$receiveUId ";
+		}
+		if ($sendUId) {
+			$str .= " and oUId=$sendUId ";
+		}
+		$sql = "select count(1) as co,sum(oBefore) as amt from im_log where oCategory=:cat $str and oKey=:k and DATE_FORMAT(oDate, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
+		$res = $conn->createCommand($sql)->bindValues([':cat' => $cat, ':k' => $key])->queryOne();
+		if ($res) {
+			return [$res['co'], $res['amt']];
+		} else {
+			return [0, 0];
 		}
 
+	}
 
+	public static function calculateSendAmt($receivUid, $sendUid)
+	{
+		$conn = AppUtil::db();
+		if (self::springRedpacket($conn, $sendUid, $receivUid)[0]) {
+			return 0;
+		}
+		list($hasSendCount, $hasSendSum) = Log::springRedpacket($conn, $sendUid);
+		if ($hasSendSum >= self::SF_SEND_MAX || $hasSendCount >= self::SF_SEND_LIMIT) {
+			return 0;
+		}
+
+		$left = UserTrans::stat($sendUid)[UserTrans::UNIT_COIN_FEN];
+
+		$param = [":cat" => self::CAT_SPRING_FESTIVAL, ":k" => self::SF_KEY_RANDOM, ":uid" => $sendUid];
+		$sql = "select oAfter from im_log where oCategory=:cat and oKey=:k and oUId=:uid and DATE_FORMAT(oDate, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') ";
+		$randomstr = $conn->createCommand($sql)->bindValues($param)->queryScalar();
+
+		if ($hasSendCount == 0 && $left >= 15) {
+			$arr = AppUtil::randnum(self::SF_SEND_MAX / 100, 15, .01);
+			foreach ($arr as $k => $v) {
+				$arr[$k] = round($v, 2);
+			}
+			if (!$randomstr) {
+				$param[":after"] = json_encode($arr);
+				$sql = "insert into im_log (oCategory,oKey,oUId,oAfter) values (:cat,:k,:uid,:after) ";
+				$conn->createCommand($sql)->bindValues($param)->execute();
+				$randomstr = json_encode($arr);
+			}
+		}
+
+		$randomArr = json_decode($randomstr, 1);
+		$amt = $randomArr[$hasSendCount];
+
+		if ($amt > 0 && $left > $amt * 100) {
+			$oid = Log::add(["oCategory" => self::CAT_SPRING_FESTIVAL, "oKey" => self::SF_KEY_REDPACKET,
+				"oUId" => $sendUid, "oAfter" => $receivUid, "oBefore" => $amt * 100]);
+
+			 UserTrans::add($sendUid, $oid, UserTrans::CAT_COIN_SPRING_F_SEND, UserTrans::$catDict[UserTrans::CAT_COIN_SPRING_F_SEND], $amt * 100, UserTrans::UNIT_COIN_FEN);
+			 UserTrans::add($receivUid, $oid, UserTrans::CAT_COIN_SPRING_F_RECEIVE, UserTrans::$catDict[UserTrans::CAT_COIN_SPRING_F_RECEIVE], $amt * 100, UserTrans::UNIT_COIN_FEN);
+		}
+
+		return $amt;
 	}
 }

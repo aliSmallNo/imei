@@ -1119,6 +1119,7 @@
 			<a href="javascript:;" data-id="{[secretId]}" class="btn btn-like {[favor]}"></a>
 			<a href="javascript:;" data-id="{[secretId]}" class="btn btn-chat"></a>
 			<a href="javascript:;" data-id="{[secretId]}" class="btn btn-apply none"></a>
+			{[#springFestivalRedPacket]}<a href="javascript:;" data-id="{[secretId]}" class="btn btn-redpacket"></a>{[/springFestivalRedPacket]}
 		</div>
 		{[/singleF]}
 	</li>

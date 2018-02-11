@@ -3366,6 +3366,10 @@ section {
           background: #fff url(../images/ico_wechat.png) no-repeat center center;
           background-size: 28px 28px;
           right: 15px; }
+        .m-top-users li .single-bar a.btn-redpacket {
+          background: #fff url(../images/ico_spring_festival.png) no-repeat center center;
+          background-size: 28px 28px;
+          right: 15px; }
     .m-top-users li .rcmd {
       position: relative; }
       .m-top-users li .rcmd img {

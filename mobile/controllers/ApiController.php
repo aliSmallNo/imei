@@ -3400,6 +3400,62 @@ class ApiController extends Controller
 		return self::renderAPI(129, '操作无效~');
 	}
 
+	public function actionTemp()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$openId = self::postParam('openid');
+		if (!$openId) {
+			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
+		}
+		$wxInfo = UserWechat::getInfoByOpenId($openId);
+		if (!$wxInfo) {
+			return self::renderAPI(129, '用户不存在啊~');
+		}
+		$uid = $wxInfo['uId'];
+		switch ($tag) {
+			case 'spring_festival_validate':
+				$sid = AppUtil::decrypt(self::postParam('sid'));
+				if(!$sid){
+					return self::renderAPI(129, 'param error！');
+				}
+				$stat = UserTrans::stat($uid);
+				$stat2 = UserTrans::stat($sid);
+				$conn = AppUtil::db();
+				if ($stat[UserTrans::UNIT_COIN_FEN] < Log::SF_SEND_MAX) {
+					return self::renderAPI(129, '您的余额不足2元，不可以抢TA的红包哦，快去做任务挣钱吧！');
+				}
+				if ($stat2[UserTrans::UNIT_COIN_FEN] <= 15) {
+					return self::renderAPI(129, 'TA的余额不足，不可以抢TA的红包哦，换个人吧！');
+				}
+				if (Log::springRedpacket($conn, $sid, $uid)[0]) {
+					return self::renderAPI(129, '您已经领过TA的红包了哦~');
+				}
+				if (Log::springRedpacket($conn, '', $uid)[0] >= Log::SF_GRAB_LIMIT) {
+					return self::renderAPI(129, '您今天领红包次数已经用完了哦，明天再来吧~~~');
+				}
+				list($co, $sum) = Log::springRedpacket($conn, $sid);
+				if ($co >= Log::SF_SEND_MAX || $sum >= Log::SF_SEND_MAX) {
+					return self::renderAPI(129, 'TA今天的红包已经被抢完了~');
+				}
+
+				return self::renderAPI(0, 'ok', [
+
+				]);
+				break;
+			case "spring_festival_grab":
+				$sid = AppUtil::decrypt(self::postParam('sid'));
+				if(!$sid){
+					return self::renderAPI(129, 'param error！');
+				}
+				$amt = Log::calculateSendAmt($uid, $sid);
+				return self::renderAPI(0, '', [
+					"amt" => $amt,
+				]);
+				break;
+		}
+		return self::renderAPI(129, '操作无效~');
+	}
+
 	public function actionQuestions()
 	{
 		$tag = trim(strtolower(self::postParam('tag')));

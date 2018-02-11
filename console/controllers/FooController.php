@@ -11,6 +11,7 @@ namespace console\controllers;
 use common\models\ChatMsg;
 use common\models\City;
 use common\models\Img;
+use common\models\Log;
 use common\models\Moment;
 use common\models\MomentSub;
 use common\models\MomentTopic;
@@ -1656,8 +1657,17 @@ class FooController extends Controller
 			])->execute();
 		}*/
 
-		$hasSendCount = 0;
-		$leftSendCount = 15 - $hasSendCount;
+		// echo Log::springRedpacket('', '',143807)[0];
+
+		// Log::calculateSendAmt(143807, 120003);
+
+		// list($hasSendCount, $hasSendSum) = Log::springRedpacket('', 120003);echo $hasSendCount;
+
+		/*$uids = [132607, 132601, 132553, 132554, 132550, 132519, 132509, 132510, 132511, 132497,
+			132498, 132493, 132487, 132477, 132471];
+		foreach ($uids as $uid) {
+			Log::calculateSendAmt($uid, 120003);
+		}*/
 
 
 	}

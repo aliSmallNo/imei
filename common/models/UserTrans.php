@@ -48,6 +48,8 @@ class UserTrans extends ActiveRecord
 
 	const CAT_COIN_DEFAULT = 600;
 	const CAT_COIN_WITHDRAW = 650;
+	const CAT_COIN_SPRING_F_SEND = 660;
+	const CAT_COIN_SPRING_F_RECEIVE = 670;
 
 	static $catDict = [
 		self::CAT_RECHARGE_MEMBER => "单身会员",
@@ -80,6 +82,8 @@ class UserTrans extends ActiveRecord
 		self::CAT_EXCHANGE_CHAT => "聊天赠送礼物",
 		self::CAT_COIN_DEFAULT => "奖励千寻币",
 		self::CAT_COIN_WITHDRAW => "千寻币提现",
+		self::CAT_COIN_SPRING_F_SEND => "发红包",
+		self::CAT_COIN_SPRING_F_RECEIVE => "收红包",
 	];
 
 	static $CatMinus = [
@@ -92,6 +96,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_EXCHANGE_FLOWER,
 		self::CAT_EXCHANGE_CHAT,
 		self::CAT_COIN_WITHDRAW,
+		self::CAT_COIN_SPRING_F_SEND,
 	];
 
 	const UNIT_COIN_FEN = 'coin_f';

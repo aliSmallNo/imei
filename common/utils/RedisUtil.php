@@ -84,6 +84,7 @@ class RedisUtil
 		self::KEY_DUMMY_TOP => 60 * 30,
 		self::KEY_ROOM_ALERT => 60 * 10,
 		self::KEY_SESSION_CHART => 60 * 12,
+
 	];
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';
