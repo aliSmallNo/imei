@@ -9,12 +9,7 @@ namespace console\controllers;
  * Time: 2:11 PM
  */
 use common\models\ChatMsg;
-use common\models\City;
 use common\models\Img;
-use common\models\Log;
-use common\models\Moment;
-use common\models\MomentSub;
-use common\models\MomentTopic;
 use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
@@ -25,7 +20,6 @@ use common\service\TrendService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
-use common\utils\NoticeUtil;
 use common\utils\PushUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
@@ -756,13 +750,13 @@ class FooController extends Controller
 		PushUtil::init()->hint($msg, '059af5c749741c')->close();
 	}
 
-	public function actionQr($uid = 133519, $ucode = 'fs')
+	public function actionQr($uid = 133519, $ucode = 'fs', $ceil = 160)
 	{
 		if (!$ucode || !$uid) {
 			echo '参数不全: ./yii foo/qr 133519 "fs" ';
 			return;
 		}
-		for ($k = 131; $k < 140; $k++) {
+		for ($k = $ceil - 9; $k < $ceil; $k++) {
 			$url = UserQR::createQR($uid,
 				UserQR::CATEGORY_SALES,
 				$ucode . substr($k, 1),
