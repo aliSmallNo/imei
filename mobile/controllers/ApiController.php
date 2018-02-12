@@ -3096,7 +3096,7 @@ class ApiController extends Controller
 						'gender' => $gender
 					];
 					$md5 = md5(json_encode($factors));
-					UserQR::createDiagnosis($md5);
+					UserQR::createDiagnosis($md5, $name);
 					return self::renderAPI(0, '', ['id' => $md5]);
 				}
 				break;

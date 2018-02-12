@@ -1400,7 +1400,14 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		$ret = UserQR::createDiagnosis('李泽鹏', 'male');
+		$factors['key'] = [
+			'key' => 'diagnosis',
+			'tag' => '180214',
+			'name' => '李泽鹏',
+			'gender' => 'male'
+		];
+		$md5 = md5(json_encode($factors));
+		$ret = UserQR::createDiagnosis($md5, '李泽鹏');
 		var_dump($ret);
 		/*WechatUtil::templateMsg(WechatUtil::NOTICE_ROUTINE,
 			131379,

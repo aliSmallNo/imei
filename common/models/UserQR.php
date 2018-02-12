@@ -575,7 +575,7 @@ class UserQR extends ActiveRecord
 		return $accessUrl;
 	}
 
-	public static function createDiagnosis($md5 )
+	public static function createDiagnosis($md5, $name = '')
 	{
 		$rootFolder = AppUtil::rootDir();
 		$redis = RedisUtil::init(RedisUtil::KEY_DIAGNOSIS, $md5);
@@ -588,7 +588,7 @@ class UserQR extends ActiveRecord
 			['专一', "三生三世十里桃花\n十里桃花不及你"],
 			['克制', "喜欢是放肆\n爱是克制"],
 			['收敛', "你的娃儿子在\n你还在外边浪吗"],
-			['珍惜', "有近在眼前的缘分\n就不要错过它"],
+			['珍惜', "有近在眼前的缘分\n就不要错过TA"],
 			['温暖', "一房 两人 三餐 四季"],
 			['社交', "世界这么大\n你还不出去看看吗"],
 			['减肥', "瘦下来的你一定很好看"],
@@ -596,7 +596,7 @@ class UserQR extends ActiveRecord
 			['相亲', "给别人机会\n就是给自己机会"],
 		];
 		shuffle($results);
-		$result = array_merge(['@' . $name], $results[0]);
+		$result = array_merge([($name ? '@' . $name : ''), '情人节脱单关键词'], $results[0]);
 
 		$width = 300;
 		$height = 300;
@@ -608,14 +608,15 @@ class UserQR extends ActiveRecord
 		$saveAs = AppUtil::imgDir() . $saveAs;
 
 		$lines = [
-			['size' => 18, 'y' => 0.15],
-			['size' => 50, 'y' => 0.52],
-			['size' => 22, 'y' => 0.8]
+			['size' => 15, 'y' => 0.15],
+			['size' => 15, 'y' => 0.25],
+			['size' => 50, 'y' => 0.55],
+			['size' => 22, 'y' => 0.78]
 		];
 		// $img = Image::open($bgFile);
 		foreach ($lines as $k => $line) {
 			$y = $height * $line['y'];
-			$img->write($k ? $h5Font : $nameFont,
+			$img->write($k > 1 ? $h5Font : $nameFont,
 				$result[$k], $width / 2, $y, $line['size'], 0, 0xFFFFFF, 'center');
 		}
 		$img->save($saveAs, 'png');
