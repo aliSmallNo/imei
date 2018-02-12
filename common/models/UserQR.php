@@ -23,6 +23,7 @@ class UserQR extends ActiveRecord
 	const CATEGORY_MATCH_SHARE = 35; //Rain: 媒婆推广
 	const CATEGORY_SHARES = 39; //Rain: 媒婆推广
 	const CATEGORY_MARRY = 100; //Rain: 婚礼请帖
+	const CATEGORY_180214 = 101; //Rain: 婚礼请帖
 	const CATEGORY_RED_103 = 103; //Rain: 分享红包103
 	const CATEGORY_ROOM = 200; //Rain: 房间号
 
@@ -623,6 +624,14 @@ class UserQR extends ActiveRecord
 		$accessUrl = ImageUtil::getUrl($saveAs);
 		$redis->setCache($accessUrl);
 
+		$entity = new self();
+		$entity->qUId = 144026;
+		$entity->qCategory = self::CATEGORY_180214;
+		$entity->qCode = 'meipo100-180214';
+		$entity->qMD5 = $md5;
+		$entity->qRaw = '';
+		$entity->qUrl = $accessUrl;
+		$entity->save();
 		return $accessUrl;
 	}
 
