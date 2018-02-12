@@ -598,8 +598,8 @@ class UserQR extends ActiveRecord
 		shuffle($results);
 		$result = array_merge([($name ? '@' . $name : ''), '情人节脱单关键词'], $results[0]);
 
-		$width = 300;
-		$height = 300;
+		$width = 440;
+		$height = 360;
 		$img = Image::create($width, $height)->fill(0xb7681d);
 
 		$h5Font = $rootFolder . 'common/assets/fzmwt.ttf';
@@ -608,10 +608,10 @@ class UserQR extends ActiveRecord
 		$saveAs = AppUtil::imgDir() . $saveAs;
 
 		$lines = [
-			['size' => 15, 'y' => 0.15],
-			['size' => 15, 'y' => 0.25],
-			['size' => 50, 'y' => 0.55],
-			['size' => 22, 'y' => 0.78]
+			['size' => 22, 'y' => 0.14],
+			['size' => 22, 'y' => 0.25],
+			['size' => 60, 'y' => 0.54],
+			['size' => 30, 'y' => 0.78]
 		];
 		// $img = Image::open($bgFile);
 		foreach ($lines as $k => $line) {
