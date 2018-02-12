@@ -624,14 +624,14 @@ class UserQR extends ActiveRecord
 		$accessUrl = ImageUtil::getUrl($saveAs);
 		$redis->setCache($accessUrl);
 
-		$entity = new self();
+		/*$entity = new self();
 		$entity->qUId = 144026;
 		$entity->qCategory = self::CATEGORY_180214;
-		$entity->qCode = 'meipo100-180214';
+		$entity->qCode = 'meipo100-zmy58';
 		$entity->qMD5 = $md5;
 		$entity->qRaw = '';
 		$entity->qUrl = $accessUrl;
-		$entity->save();
+		$entity->save();*/
 		return $accessUrl;
 	}
 
