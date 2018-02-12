@@ -384,6 +384,11 @@ class WechatUtil
 					"sub_button" => [
 						[
 							"type" => "view",
+							"name" => "千寻诊所",
+							"url" => $wxUrl . "/m2/vd"
+						],
+						[
+							"type" => "view",
 							"name" => "官方活动",
 							//"url" => $wxUrl . "/wx/event"
 							"url" => $wxUrl . "/wx/mshare"
