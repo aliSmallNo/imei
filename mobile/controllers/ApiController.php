@@ -356,6 +356,7 @@ class ApiController extends Controller
 					'token' => $ret,
 				]);
 				break;
+
 			default:
 				break;
 		}
@@ -409,6 +410,25 @@ class ApiController extends Controller
 			case 'wx-config':
 				return self::renderAPI(0, '',
 					['sign' => WechatUtil::getSignature()]);
+			case '180214':
+				$name = self::postParam('name');
+				$gender = self::postParam('gender');
+				$md5 = self::postParam('id');
+				if ($md5) {
+					$url = UserQR::createDiagnosis($md5);
+					return self::renderAPI(0, '', ['url' => $url]);
+				} elseif ($name && $gender) {
+					$factors['key'] = [
+						'key' => 'diagnosis',
+						'tag' => $tag,
+						'name' => $name,
+						'gender' => $gender
+					];
+					$md5 = md5(json_encode($factors));
+					UserQR::createDiagnosis($md5, $name);
+					return self::renderAPI(0, '', ['id' => $md5]);
+				}
+				break;
 			default:
 				break;
 		}
@@ -3081,25 +3101,7 @@ class ApiController extends Controller
 					return self::renderAPI(129, '您还没关注千寻恋恋公众号哦~');
 				}
 				break;
-			case '180214':
-				$name = self::postParam('name');
-				$gender = self::postParam('gender');
-				$md5 = self::postParam('id');
-				if ($md5) {
-					$url = UserQR::createDiagnosis($md5);
-					return self::renderAPI(0, '', ['url' => $url]);
-				} elseif ($name && $gender) {
-					$factors['key'] = [
-						'key' => 'diagnosis',
-						'tag' => $tag,
-						'name' => $name,
-						'gender' => $gender
-					];
-					$md5 = md5(json_encode($factors));
-					UserQR::createDiagnosis($md5, $name);
-					return self::renderAPI(0, '', ['id' => $md5]);
-				}
-				break;
+
 			default:
 				break;
 		}
