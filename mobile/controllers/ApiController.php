@@ -3081,6 +3081,27 @@ class ApiController extends Controller
 					return self::renderAPI(129, '您还没关注千寻恋恋公众号哦~');
 				}
 				break;
+			case '180214':
+				$name = self::postParam('name');
+				$gender = self::postParam('gender');
+				$md5 = self::postParam('id');
+				if ($md5) {
+					$url = UserQR::createDiagnosis($md5);
+					return self::renderAPI(0, '', ['url' => $url]);
+				} elseif ($name && $gender) {
+					$factors['key'] = [
+						'key' => 'diagnosis',
+						'tag' => $tag,
+						'name' => $name,
+						'gender' => $gender
+					];
+					$md5 = md5(json_encode($factors));
+					UserQR::createDiagnosis($md5);
+					return self::renderAPI(0, '', ['id' => $md5]);
+				}
+				break;
+			default:
+				break;
 		}
 		return self::renderAPI(129, '操作无效~');
 	}
@@ -3417,7 +3438,7 @@ class ApiController extends Controller
 		switch ($tag) {
 			case 'spring_festival_validate':
 				$sid = AppUtil::decrypt(self::postParam('sid'));
-				if(!$sid){
+				if (!$sid) {
 					return self::renderAPI(129, 'param error！');
 				}
 				$stat = UserTrans::stat($uid);
@@ -3446,7 +3467,7 @@ class ApiController extends Controller
 				break;
 			case "spring_festival_grab":
 				$sid = AppUtil::decrypt(self::postParam('sid'));
-				if(!$sid){
+				if (!$sid) {
 					return self::renderAPI(129, 'param error！');
 				}
 				$amt = Log::calculateSendAmt($uid, $sid);

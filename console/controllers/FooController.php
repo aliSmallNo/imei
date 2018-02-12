@@ -1400,13 +1400,15 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
+		$ret = UserQR::createDiagnosis('李泽鹏', 'male');
+		var_dump($ret);
 		/*WechatUtil::templateMsg(WechatUtil::NOTICE_ROUTINE,
 			131379,
 			'千寻恋恋每日简报',
 			'测试测试1122');*/
 
 
-		QueueUtil::loadJob('templateMsg',
+		/*QueueUtil::loadJob('templateMsg',
 			[
 				'tag' => WechatUtil::NOTICE_CHAT,
 				'receiver_uid' => 131379,
@@ -1415,7 +1417,7 @@ class FooController extends Controller
 				'sender_uid' => 120000,
 				'gid' => 0
 			],
-			QueueUtil::QUEUE_TUBE_SMS);
+			QueueUtil::QUEUE_TUBE_SMS);*/
 
 		/*WechatUtil::templateMsg(WechatUtil::NOTICE_SUMMON,
 			131379,

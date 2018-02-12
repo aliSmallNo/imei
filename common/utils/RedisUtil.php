@@ -50,6 +50,7 @@ class RedisUtil
 	const KEY_DUMMY_TOP = "dummy_top";
 	const KEY_ROOM_ALERT = "room_alert";
 	const KEY_SESSION_CHART = "session_chart";
+	const KEY_DIAGNOSIS = "diagnosis";
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
@@ -84,7 +85,7 @@ class RedisUtil
 		self::KEY_DUMMY_TOP => 60 * 30,
 		self::KEY_ROOM_ALERT => 60 * 10,
 		self::KEY_SESSION_CHART => 60 * 12,
-
+		self::KEY_DIAGNOSIS => 86400 * 60,
 	];
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';
