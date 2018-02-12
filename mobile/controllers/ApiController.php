@@ -408,8 +408,9 @@ class ApiController extends Controller
 				AppUtil::logFile($ret, 5, __FUNCTION__, __LINE__);
 				return self::renderAPI(0, '', $ret);
 			case 'wx-config':
-				return self::renderAPI(0, '',
-					['sign' => WechatUtil::getSignature()]);
+				$url = self::postParam('url');
+				$sign = WechatUtil::getSignature($url);
+				return self::renderAPI(0, '', ['sign' => $sign]);
 			case '180214':
 				$name = self::postParam('name');
 				$gender = self::postParam('gender');
