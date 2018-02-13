@@ -120,7 +120,7 @@ class AdminController extends BaseController
 
 	public function actionCalcList()
 	{
-		$items = [];we
+		$items = [];
 		$preLeft = 0;
 		for ($k = 1; $k < 9999; $k++) {
 			$left = mt_rand(2, 20);
