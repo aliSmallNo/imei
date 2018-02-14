@@ -381,7 +381,7 @@ class WechatUtil
 				],
 				[
 					"type" => "view",
-					"name" => "脱单秘籍",
+					"name" => "脱单秘籍🔥",
 					"url" => $wxUrl . "/m2/vd"
 				],
 				[
