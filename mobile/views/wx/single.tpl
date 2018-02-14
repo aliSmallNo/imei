@@ -1209,7 +1209,7 @@
 		<a href="{[url]}" {[#eid]}data-eid="{[.]}" {[/eid]} class="avatar j-profile"><img src="{[avatar]}"></a>
 		<div class="content read{[readflag]}">
 			<a href="javascript:;" class="j-content-wrap">
-				{[#image]}<img src="{[.]}">{[/image]}
+				{[#image]}<i class="img" bsrc="{[.]}" style="background-image: url({[.]})"/>{[/image]}
 				{[^image]}
 				{[&content]}
 				{[/image]}
@@ -1600,6 +1600,6 @@
 		document.location.hash = "#slook";
 	}
 	requirejs(['/js/config.js?v=1.3.0'], function () {
-		requirejs(['/js/single.js?v=1.11.16']);
+		requirejs(['/js/single.js?v=1.12.0']);
 	});
 </script>

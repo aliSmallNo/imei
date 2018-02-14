@@ -835,7 +835,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 
 
 				$(document).on(kClick, ".j-content-wrap", function () {
-					var url = $(this).find('img').attr('src');
+					var url = $(this).find('i').attr('bsrc');
 					if (url) {
 						wx.previewImage({
 							current: url,

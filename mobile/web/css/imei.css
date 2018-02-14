@@ -6459,6 +6459,13 @@ section {
       border-radius: 0.4rem;
       padding: 0.8rem;
       display: inline-block; }
+      .chats li .content a .img {
+        width: 16rem;
+        padding-top: 100%;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        display: inline-block; }
       .chats li .content a.type-140 {
         color: #007aff; }
       .chats li .content a button {
