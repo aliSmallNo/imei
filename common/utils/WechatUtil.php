@@ -380,13 +380,13 @@ class WechatUtil
 					"url" => $wxUrl . "/wx/single#slook"
 				],
 				[
+					"type" => "view",
+					"name" => "脱单秘籍",
+					"url" => $wxUrl . "/m2/vd"
+				],
+				[
 					"name" => "更多",
 					"sub_button" => [
-						[
-							"type" => "view",
-							"name" => "千寻诊所",
-							"url" => $wxUrl . "/m2/vd"
-						],
 						[
 							"type" => "view",
 							"name" => "官方活动",
