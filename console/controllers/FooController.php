@@ -789,12 +789,13 @@ class FooController extends Controller
 	public function actionMassmsg()
 	{
 		$conn = AppUtil::db();
-		$dt = date('Y-m-d H:i:s', time() - 300);
+		$dt = date('Y-m-d H:i:s', time() - 1200);
 		$sql = "SELECT uId,uGender
  				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId 
  				WHERE uGender>9 and uPhone!='' 
-  					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt') order by uId ASC ";
+  				  AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt')
+  				  ORDER BY uId ASC ";
 //		$sql = "SELECT uId,uGender
 // 				FROM im_user as u
 // 				JOIN im_user_wechat as w on w.wUId=u.uId
