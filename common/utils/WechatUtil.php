@@ -376,7 +376,7 @@ class WechatUtil
 			"button" => [
 				[
 					"type" => "view",
-					"name" => "找对象",
+					"name" => "找对象💘",
 					"url" => $wxUrl . "/wx/single#slook"
 				],
 				[
