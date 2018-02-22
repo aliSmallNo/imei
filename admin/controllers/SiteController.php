@@ -1631,7 +1631,6 @@ class SiteController extends BaseController
 					"thumb" => $v1  // 缩略图地址
 				];
 			}
-
 			$v["showImages"] = json_encode([
 				"title" => "show",
 				"id" => "10001",

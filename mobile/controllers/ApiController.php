@@ -3317,7 +3317,8 @@ class ApiController extends Controller
 						list($voiceUrl) = ImageUtil::save2Server($voice_id);
 						$insert["mCategory"] = Moment::CAT_VOICE;
 						$insert["mContent"]["title"] = $text;
-						$insert["mContent"]["url"] = ['https://bpbhd-10063905.file.myqcloud.com/image/t1711201155449.jpg'];
+						//$insert["mContent"]["url"] = ['https://bpbhd-10063905.file.myqcloud.com/image/t1711201155449.jpg'];
+						$insert["mContent"]["url"] = [$wxInfo['uThumb']];
 						$insert["mContent"]["other_url"] = $voiceUrl;
 						break;
 				}
