@@ -50,7 +50,10 @@ class MomentSub extends ActiveRecord
 		$insert = [];
 		if ($data["cat"] == self::CAT_COMMENT) {
 			$insert["sContent"] = $data["content"];
+		} elseif ($data['cat'] == self::CAT_ROSE) {
+			UserTrans::add($data["uid"], $data["mid"], UserTrans::CAT_PRESENT, UserTrans::$catDict[UserTrans::CAT_PRESENT], 1, UserTrans::UNIT_GIFT);
 		}
+
 		$insert["sCategory"] = $data["cat"];
 		$insert["sUId"] = $data["uid"];
 		$insert["sMId"] = $data["mid"];
