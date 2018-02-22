@@ -72,6 +72,7 @@
 	}
 	td audio{
 		width: 70%;
+		display: block;
 	}
 	.topic{
 		color: #f06292;
