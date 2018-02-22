@@ -5,54 +5,62 @@
 		color: #666;
 		font-weight: 300;
 	}
-
 	.uname {
 		font-size: 12px;
 		font-weight: 400;
 	}
 
-	.total-row {
+	.prefix- {
+		color: #f50 !important;
 	}
 
-	.total-row ul {
+	.bals {
 		margin: 0;
-		padding: 0 8px;
+		padding: 0;
 		list-style: none;
-		border-left: 1px solid #d4d4d4;
-	}
-
-	.total-row li {
 		display: flex;
+		flex-flow: row wrap;
+		align-content: flex-start;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
 	}
 
-	.total-row li em {
+	.bals li {
+		flex: 0 0 25%;
+		display: flex;
+		position: relative;
+		padding: 3px 8px;
+	}
+
+	.bals li:after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 8px;
+		right: 8px;
+		border-bottom: 1px dotted #c8c8c8;
+	}
+
+	.bals li em {
 		font-style: normal;
-		flex: 0 0 120px;
+		flex: 0 0 140px;
 		font-weight: 400;
 	}
 
-	.total-row li b {
+	.bals li b {
 		font-style: normal;
 		font-weight: 400;
 		flex: 1;
 		text-align: right;
 		color: #848484;
 	}
-
-	.total-row ul:first-child {
-		border-left: none;
-	}
-
-	.prefix- {
-		color: #f50 !important;
-	}
 </style>
-
 
 
 <div class="row">
 	<h4>充值账户记录列表
-	{{if $isDebugger}}<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs">修改账户</a>{{/if}}
+		{{if $isDebugger}}<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs">修改账户</a>{{/if}}
 	</h4>
 </div>
 <form action="/site/recharges" class="form-inline">
@@ -72,15 +80,12 @@
 	<button class="btn btn-primary">查询</button>
 </form>
 <div class="row-divider"></div>
-<div class="row total-row">
-	{{foreach from=$balance item=bal}}
-		<ul class="col-lg-3">
-			{{foreach from=$bal item=item}}
-				<li><em>{{$item.title}}</em><b class="prefix{{$item.prefix}}">{{$item.amt}}{{$item.unit_name}}</b></li>
-			{{/foreach}}
-		</ul>
+<ul class="bals">
+	{{foreach from=$bals item=bal}}
+		<li><em>{{$bal.title}}</em><b class="prefix{{$bal.prefix}}">{{$bal.amt}}{{$bal.unit_name}}</b></li>
 	{{/foreach}}
-</div>
+</ul>
+
 <div class="row-divider"></div>
 <div class="row">
 	<table class="table table-striped table-bordered">
@@ -121,7 +126,6 @@
 							{{if $detail.amt2}}+{{$detail.amt2}}{{$detail.unit_name2}}{{/if}}
 							{{if $detail.amt3}}+{{$detail.amt3}}{{$detail.unit_name3}}{{/if}}
 							{{if $detail.amt4}}+{{$detail.amt4}}{{$detail.unit_name4}}{{/if}}
-
 							<br>
 						{{else}}
 							{{$detail.title}}: {{$detail.amt}}{{$detail.unit_name}}
@@ -153,7 +157,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-									aria-hidden="true">&times;</span></button>
+							aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title">操作</h4>
 			</div>
 			<div class="modal-body" style="overflow:hidden">
@@ -199,20 +203,20 @@
 
 	var loadflag = 0;
 	$(document).on("click", "#btnSave", function () {
-		var err=0;
+		var err = 0;
 		var postData = {};
 		$("[data-field]").each(function () {
-					var field = $(this).attr("data-field");
-					var text = parseInt($.trim($(this).val()));
-					if (!text) {
-						console.log(field+' ' +text);
-						layer.msg("必填项不能为空！");
-						err = 1;
-						$(this).focus();
-						return false;
-					}
-					postData[field] = text;
-				});
+			var field = $(this).attr("data-field");
+			var text = parseInt($.trim($(this).val()));
+			if (!text) {
+				console.log(field + ' ' + text);
+				layer.msg("必填项不能为空！");
+				err = 1;
+				$(this).focus();
+				return false;
+			}
+			postData[field] = text;
+		});
 		if (err) {
 			return false;
 		}

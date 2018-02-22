@@ -650,25 +650,13 @@ class SiteController extends BaseController
 		$criteria[] = " t.tCategory in (" . implode(',', array_keys(UserTrans::$catDict)) . ") ";
 
 		list($items, $count) = UserTrans::recharges($criteria, $params, $page);
+		$pagination = self::pagination($page, $count);
 
-		$ret = UserTrans::balance($criteria, $params);
-		$balance = [];
-		$idx = 0;
-		foreach ($ret as $k => $item) {
-			if ($k > 0 && $k % 8 == 0) {
-				$idx++;
-			}
-			if (!isset($balance[$idx])) {
-				$balance[$idx] = [];
-			}
-			$balance[$idx][] = $item;
-		}
-//		var_dump($balance);
-//		exit();
-		$pagination = $pagination = self::pagination($page, $count);
+		$balance = UserTrans::balance($criteria, $params);
+
 		return $this->renderPage("recharge.tpl",
 			[
-				'balance' => $balance,
+				'bals' => $balance,
 				'getInfo' => $getInfo,
 				'items' => $items,
 				'pagination' => $pagination,
