@@ -16,7 +16,7 @@
 
 	.bals {
 		margin: 0;
-		padding: 0;
+		padding: 20px 0 25px;
 		list-style: none;
 		display: flex;
 		flex-flow: row wrap;
@@ -53,7 +53,7 @@
 		font-weight: 400;
 		flex: 1;
 		text-align: right;
-		color: #848484;
+		color: #838383;
 	}
 </style>
 
@@ -79,14 +79,11 @@
 	              {{if isset($getInfo['income']) && $getInfo['income']}}checked{{/if}}> 只看收入</label>
 	<button class="btn btn-primary">查询</button>
 </form>
-<div class="row-divider"></div>
-<ul class="bals">
+<ul class="bals clearfix">
 	{{foreach from=$bals item=bal}}
 		<li><em>{{$bal.title}}</em><b class="prefix{{$bal.prefix}}">{{$bal.amt}}{{$bal.unit_name}}</b></li>
 	{{/foreach}}
 </ul>
-
-<div class="row-divider"></div>
 <div class="row">
 	<table class="table table-striped table-bordered">
 		<thead>
