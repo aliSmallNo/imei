@@ -741,6 +741,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			reason: [],
 
 			bar: $('.m-chat-bar'),
+			more: $('.m-chat-bar-list'),
 			timerInput: 0,
 			answerText: '',
 			answerflag: 0,
@@ -763,22 +764,15 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					util.helpchat();
 				});
 
-				util.input.on('focus', function () {
-					util.timerInput = setInterval(function () {
-						$('.m-bottom-bar').css('bottom', 0);
-						// target.scrollIntoView(true);
-						// util.bot[0].scrollIntoView(false);
-					}, 200);
-				});
+				/*util.input.on('focus', function () {
+					util.more.removeClass('none').addClass('none');
+				});*/
 
-				util.input.on('blur', function () {
+				/*util.input.on('blur', function () {
 					if (util.timerInput) {
 						clearInterval(util.timerInput);
 					}
-					/*setTimeout(function () {
-						$('.m-bottom-bar').css('bottom', 0);
-					}, 100);*/
-				});
+				});*/
 
 				// 点击发送真心话题选项
 				$(document).on(kClick, ".chats li .content a.opt", function () {
@@ -1219,16 +1213,15 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			toggleBar: function (expandFlag) {
 				var util = this;
 				if (expandFlag === undefined) {
-					var bot = parseFloat(util.bar.css('bottom'));
-					expandFlag = (bot < 0);
+					expandFlag = util.more.hasClass('none');
 				}
 				setTimeout(function () {
-					if (!expandFlag) {
-						util.bar.css('bottom', '-14.8rem');
+					if (expandFlag) {
+						util.more.removeClass('none');
 					} else {
-						util.bar.css('bottom', 0);
+						util.more.addClass('none');
 					}
-				}, 100);
+				}, 150);
 			},
 			beforeDate: function () {
 				var util = this;

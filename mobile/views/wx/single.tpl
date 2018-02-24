@@ -375,7 +375,7 @@
 			<button class="btn-chat-send">发送</button>
 			<button class="btn-chat-more"></button>
 		</div>
-		<ul class="m-chat-bar-list">
+		<ul class="m-chat-bar-list none">
 			<li>
 				<a href="javascript:;"><i class="truth"></i></a>
 				<h5>真心话</h5>
@@ -1600,6 +1600,6 @@
 		document.location.hash = "#slook";
 	}
 	requirejs(['/js/config.js?v=1.3.0'], function () {
-		requirejs(['/js/single.js?v=1.12.0']);
+		requirejs(['/js/single.js?v=1.12.1']);
 	});
 </script>

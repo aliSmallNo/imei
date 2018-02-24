@@ -9801,12 +9801,7 @@ ul.co-ul {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: -14.8rem;
-  -webkit-transition: 0.3s linear top;
-  -moz-transition: 0.3s linear top;
-  -ms-transition: 0.3s linear top;
-  -o-transition: 0.3s linear top;
-  transition: 0.3s linear top; }
+  bottom: 0; }
 
 .m-chat-bar-top {
   display: -webkit-box;
