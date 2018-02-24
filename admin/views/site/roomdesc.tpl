@@ -71,7 +71,7 @@
 						<span class="m-status-2">{{if $item.dummy}}稻草人{{/if}}</span>
 					</td>
 					<td>
-						{{$item.name}} <br>{{$item.phone}}
+						{{$item.name}} <br>{{if isset($item.phone)}}{{$item.phone}}{{/if}}
 					</td>
 					<td>
 						{{if $item.aName}}({{$item.aName}})<br>{{/if}}

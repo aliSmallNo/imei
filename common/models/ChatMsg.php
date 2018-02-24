@@ -443,6 +443,7 @@ class ChatMsg extends ActiveRecord
 				'isAdmin' => $adminUId == $v["cAddedBy"] ? 1 : 0,
 				'type' => self::TYPE_TEXT,
 				'name' => $v['uName'],
+				'phone' => isset($v['uPhone']) ? $v['uPhone'] : '',
 				'isMember' => $v['uPhone'] ? 1 : 0,
 				'avatar' => $v['uThumb'],
 				'uni' => $v['uUniqid'],
@@ -450,7 +451,7 @@ class ChatMsg extends ActiveRecord
 				'ban' => intval($v['mBanFlag']),
 				'eid' => AppUtil::encrypt($v['uId']),
 				'del' => isset($v['del']) ? intval($v['del']) : 0,
-				'aName' => isset($v['aName']) ? $v['aName'] : ''
+				'aName' => isset($v['aName']) ? $v['aName'] : '',
 			];
 		}
 		return $res;
