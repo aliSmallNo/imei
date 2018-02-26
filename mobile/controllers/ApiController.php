@@ -1293,6 +1293,99 @@ class ApiController extends Controller
 		return self::renderAPI(129, '此操作无效~');
 	}
 
+
+	public function actionQuiz()
+	{
+		$tag = self::postParam('tag');
+		$openid = self::postParam('openid');
+		$uid = self::postParam('uid');
+		switch ($tag) {
+			case "code":
+				$code = self::postParam("code");
+				$data = WechatUtil::getXcxSessionKey($code);
+				$data = json_decode($data, 1);
+				/* 成功返回
+					$data = [
+						"session_key" => "dzwrkrMzko64Tw8pqomccg==",
+						"expires_in" => 7200,
+						"openid" => "ouvPv0Cz6rb-QB_i9oYwHZWjGtv8"
+					];
+					失败返回
+					$data = [
+						"errcode"=> 40029,
+	                    "errmsg"=> "invalid code"
+					];
+				*/
+				if (isset($data["session_key"])) {
+					$session_key = $data["session_key"];
+					$openid = $data["openid"];
+
+					RedisUtil::init(RedisUtil::KEY_XCX_SESSION_ID, $openid)->setCache($session_key);
+					return self::renderAPI(0, 'success', ["openid" => $openid]);
+				} else {
+					return self::renderAPI(129, 'fail', ["openid" => '']);
+				}
+				break;
+			case "unionid":
+				$XcxOpneid = self::postParam("openid");
+				$sessionKey = RedisUtil::init(RedisUtil::KEY_XCX_SESSION_ID, $XcxOpneid)->getCache();
+				$encryptedData = self::postParam("data");
+				$iv = self::postParam("iv");
+				$rawData = WechatUtil::decrytyUserInfo($sessionKey, $encryptedData, $iv);
+				$rawData = json_decode($rawData, 1);
+				/*
+				$rawData = [
+					"avatarUrl" => "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83erYj33xpRelu6CprCu7QYhUiawoZOe77iaCa7g8w53v0EM0TdMCz6ib5vDsKCljQQKY9fqb8GUppq2Tw/0",
+					"city" => "Changping",
+					"country" => "China",
+					"gender" => 1,
+					"language" => "zh_CN",
+					"nickName" => "周攀",
+					"openId" => "ouvPv0Cz6rb-QB_i9oYwHZWjGtv8",
+					"province" => "Beijing",
+					"unionId" => "oWYqJwY-TP-JEiDuew4onndg1n_0",
+					"watermark" =>
+						[
+							"timestamp" => 1500011102,
+							"appid" => "wx1aa5e80d0066c1d7"
+						]
+				];
+				*/
+				$data["xcxopenid"] = $XcxOpneid;
+				$XcxOpneid = (isset($rawData["openId"]) && $rawData["openId"]) ? $rawData["openId"] : '';
+				$info = UserWechat::findOne(["wXcxId" => $XcxOpneid]);
+
+				$newLog = [
+					"oCategory" => "qfc",
+					"oKey" => 'qfc',
+					"oAfter" => [
+						"index" => __LINE__,
+						'data' => $rawData,
+					],
+				];
+				Log::add($newLog);
+
+				if ($info) {
+
+				} else if (!$info && $rawData) {
+					$info = UserWechat::addXcxUser($rawData);
+					$data["xcxopenid"] = $rawData["openId"];
+				}
+				$userinfo = [];
+				if ($info) {
+					$userinfo["avatar"] = $info["wAvatar"];
+					$userinfo["name"] = $info["wNickName"];
+					$userinfo["gender"] = $info["wGender"];
+					$userinfo["uid"] = $info["wUId"];
+					$userinfo["xcxopenid"] = $info["wXcxId"];
+				}
+				$data["userinfo"] = $userinfo;
+				break;
+
+		}
+		return self::renderAPI(129, '无操作');
+	}
+
 	/*** for 小程序 */
 	public function actionDict()
 	{
