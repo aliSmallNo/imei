@@ -2383,19 +2383,13 @@ class ApiController extends Controller
 						}
 					}
 
-					$pubContent = [
+					//Rain: 推送消息给Redis订阅者
+					$pubData = $ret;
+					$pubData['room_id'] = $ret['gid'];
+					RedisUtil::publish([
 						'tag' => 'message',
-						'data' => [
-							'room_id' => $ret['gid'],
-							'items' => $ret,
-							'gid' => $ret['gid'],
-							'left' => $ret['left'],
-							'commentFlag' => UserComment::hasComment($receiverId, $uid),// 是否评价一次TA
-							"taskflag" => $taskflag,
-							"key" => $coinCat,
-						]
-					];
-					RedisUtil::publish($pubContent);
+						'data' => $pubData
+					]);
 
 					return self::renderAPI(0, '', [
 						'items' => $ret,
