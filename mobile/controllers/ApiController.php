@@ -2684,6 +2684,14 @@ class ApiController extends Controller
 				$text = trim(self::postParam('text'));
 				$rId = trim(self::postParam('rid'));
 				list($code, $msg, $info) = ChatMsg::addRoomChat($rId, $uid, $text);
+
+				//Rain: 推送消息给Redis订阅者
+				$pubData = $info;
+				$pubData['room_id'] = $rId;
+				RedisUtil::publish([
+					'tag' => 'message',
+					'data' => $pubData
+				]);
 				return self::renderAPI($code, $msg, $info);
 			case 'list':
 				$lastId = self::postParam('lastid', 0);
