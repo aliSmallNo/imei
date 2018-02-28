@@ -17,6 +17,8 @@ class RedisUtil
 	private static $Glue = ":";
 
 	const FIXED_PREFIX = "imei";
+	const CHANNEL_CHAT = 'imei:channel:chat';
+
 	const KEY_PROVINCES = 'provinces';
 	const KEY_CITIES = 'cities';
 	const KEY_CITY = 'city';
@@ -182,6 +184,24 @@ class RedisUtil
 		array_unshift($keys, self::FIXED_PREFIX);
 		$ret = implode(self::$Glue, $keys);
 		return $ret;
+	}
+
+	public static function publish($data, $channel = '', $redis = null)
+	{
+		if (!$data) {
+			return false;
+		}
+		if (!$redis) {
+			$redis = self::redis();
+		}
+		if (is_array($data)) {
+			$data = json_encode($data);
+		}
+		if (!$channel) {
+			$channel = self::CHANNEL_CHAT;
+		}
+		$redis->publish($channel, $data);
+		return true;
 	}
 
 	public static function getImageSeq($redis = "")

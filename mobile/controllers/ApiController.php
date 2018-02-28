@@ -2382,6 +2382,21 @@ class ApiController extends Controller
 							break;
 						}
 					}
+
+					$pubContent = [
+						'tag' => 'message',
+						'data' => [
+							'room_id' => $ret['gid'],
+							'items' => $ret,
+							'gid' => $ret['gid'],
+							'left' => $ret['left'],
+							'commentFlag' => UserComment::hasComment($receiverId, $uid),// 是否评价一次TA
+							"taskflag" => $taskflag,
+							"key" => $coinCat,
+						]
+					];
+					RedisUtil::publish($pubContent);
+
 					return self::renderAPI(0, '', [
 						'items' => $ret,
 						'gid' => $ret['gid'],
