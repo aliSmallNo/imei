@@ -555,7 +555,6 @@ class ApiController extends Controller
 						"key" => $key,
 					]);
 				}
-				$taskflag = 0;
 				$taskflag = UserTrans::taskCondition($key, $wx_uid);
 				return self::renderAPI(0, '', [
 					"taskflag" => $taskflag,

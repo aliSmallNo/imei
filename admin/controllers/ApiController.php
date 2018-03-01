@@ -176,6 +176,15 @@ class ApiController extends Controller
 					$status = ($flag == 'pass' ? User::CERT_STATUS_PASS : User::CERT_STATUS_FAIL);
 					$status_t = User::$Certstatus[$status];
 					$msg = ($flag == 'pass' ? '恭喜你，实名认证成功啦~' : '实名认证未通过，请重新上传身份证照片');
+					RedisUtil::publish([
+						"tag" => "broadcast",
+						"data" => [
+							"tag" => 'hint',
+							"action" => 'refresh-profile',
+							"uni" => self::postParam('uni'),
+							"msg" => $msg,
+						]
+					], RedisUtil::CHANNEL_BROADCAST);
 					return self::renderAPI(0, '操作成功！',
 						[
 							'msg' => $msg,

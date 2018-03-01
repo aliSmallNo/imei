@@ -292,7 +292,6 @@
 			util.socket.on('connect', function () {
 				util.socket.emit('house', util.uni);
 			});
-
 		},
 		broadcast: function (params) {
 			var util = this;

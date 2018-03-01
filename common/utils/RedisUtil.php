@@ -17,7 +17,9 @@ class RedisUtil
 	private static $Glue = ":";
 
 	const FIXED_PREFIX = "imei";
-	const CHANNEL_CHAT = 'imei:channel:chat';
+	const CHANNEL_BUZZ = 'imei:channel:buzz';
+	const CHANNEL_BROADCAST = 'imei:channel:broadcast';
+	const CHANNEL_REACT = 'imei:channel:react';
 
 	const KEY_PROVINCES = 'provinces';
 	const KEY_CITIES = 'cities';
@@ -186,10 +188,16 @@ class RedisUtil
 		return $ret;
 	}
 
+	/**
+	 * @param array $data
+	 * @param string $channel
+	 * @param \yii\redis\Connection $redis
+	 * @return bool
+	 */
 	public static function publish($data, $channel = '', $redis = null)
 	{
 		if (!$data) {
-			return false;
+			return 0;
 		}
 		if (!$redis) {
 			$redis = self::redis();
@@ -198,10 +206,14 @@ class RedisUtil
 			$data = json_encode($data);
 		}
 		if (!$channel) {
-			$channel = self::CHANNEL_CHAT;
+			$channel = self::CHANNEL_REACT;
 		}
-		$redis->publish($channel, $data);
-		return true;
+		$ret = $redis->publish($channel, $data);
+		if (!$ret) {
+			sleep(2);
+			$ret = $redis->publish($channel, $data);
+		}
+		return $ret;
 	}
 
 	public static function getImageSeq($redis = "")
