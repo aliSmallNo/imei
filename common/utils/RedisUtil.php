@@ -189,29 +189,31 @@ class RedisUtil
 	}
 
 	/**
-	 * @param array $data
 	 * @param string $channel
-	 * @param \yii\redis\Connection $redis
+	 * @param string $to
+	 * @param string $tag
+	 * @param array $data
 	 * @return bool
 	 */
-	public static function publish($data, $channel = '', $redis = null)
+	public static function publish($channel, $to, $tag, $data)
 	{
 		if (!$data) {
 			return 0;
 		}
-		if (!$redis) {
-			$redis = self::redis();
-		}
-		if (is_array($data)) {
-			$data = json_encode($data);
-		}
+		$bundle = [
+			'to' => $to,
+			'tag' => $tag,
+			'data' => $data
+		];
+
+		$redis = self::redis();
 		if (!$channel) {
 			$channel = self::CHANNEL_REACT;
 		}
-		$ret = $redis->publish($channel, $data);
+		$ret = $redis->publish($channel, $bundle);
 		if (!$ret) {
 			sleep(2);
-			$ret = $redis->publish($channel, $data);
+			$ret = $redis->publish($channel, $bundle);
 		}
 		return $ret;
 	}

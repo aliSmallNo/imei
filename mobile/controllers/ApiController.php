@@ -2385,10 +2385,11 @@ class ApiController extends Controller
 					//Rain: 推送消息给Redis订阅者
 					$pubData = $ret;
 					$pubData['room_id'] = $ret['gid'];
-					RedisUtil::publish([
-						'tag' => 'message',
-						'data' => $pubData
-					]);
+					RedisUtil::publish(
+						RedisUtil::CHANNEL_REACT,
+						'room',
+						'message',
+						$pubData);
 
 					return self::renderAPI(0, '', [
 						'items' => $ret,
@@ -2687,10 +2688,11 @@ class ApiController extends Controller
 				//Rain: 推送消息给Redis订阅者
 				$pubData = $info;
 				$pubData['room_id'] = $rId;
-				RedisUtil::publish([
-					'tag' => 'message',
-					'data' => $pubData
-				]);
+				RedisUtil::publish(
+					RedisUtil::CHANNEL_REACT,
+					'room',
+					'message',
+					$pubData);
 				return self::renderAPI($code, $msg, $info);
 			case 'list':
 				$lastId = self::postParam('lastid', 0);
