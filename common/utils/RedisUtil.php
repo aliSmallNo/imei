@@ -200,16 +200,13 @@ class RedisUtil
 		if (!$data) {
 			return 0;
 		}
-		$bundle = [
+		$bundle = json_encode([
 			'to' => $to,
 			'tag' => $tag,
 			'data' => $data
-		];
+		]);
 
 		$redis = self::redis();
-		if (!$channel) {
-			$channel = self::CHANNEL_REACT;
-		}
 		$ret = $redis->publish($channel, $bundle);
 		if (!$ret) {
 			sleep(2);
