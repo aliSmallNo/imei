@@ -185,6 +185,7 @@ class ApiController extends Controller
 							"msg" => $msg,
 						]
 					], RedisUtil::CHANNEL_BROADCAST);
+
 					return self::renderAPI(0, '操作成功！',
 						[
 							'msg' => $msg,

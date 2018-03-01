@@ -17,9 +17,9 @@ class RedisUtil
 	private static $Glue = ":";
 
 	const FIXED_PREFIX = "imei";
-	const CHANNEL_BUZZ = 'imei:channel:buzz';
-	const CHANNEL_BROADCAST = 'imei:channel:broadcast';
+
 	const CHANNEL_REACT = 'imei:channel:react';
+	const CHANNEL_BROADCAST = 'imei:channel:broadcast';
 
 	const KEY_PROVINCES = 'provinces';
 	const KEY_CITIES = 'cities';
