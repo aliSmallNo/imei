@@ -302,14 +302,14 @@
 			util.socket.on('connect', function () {
 				util.socket.emit('house', util.uni);
 			});
-
+			var row;
 			util.socket.on("buzz", function (resp) {
 				switch (resp.tag) {
 					case 'login':
 						if (!resp.uid) {
 							return false;
 						}
-						var row = $('li[data-uni=' + resp.uid + ']');
+						row = $('li[data-uni=' + resp.uid + ']');
 						if (row.length) {
 							row.addClass('online').insertBefore('.menu_body li:first');
 							util.upgrade(resp.uid, resp.tag);
@@ -319,7 +319,7 @@
 						if (!resp.uid) {
 							return false;
 						}
-						var row = $('li[data-uni=' + resp.uid + ']');
+						row = $('li[data-uni=' + resp.uid + ']');
 						if (row.length) {
 							row.removeClass('online');
 						}

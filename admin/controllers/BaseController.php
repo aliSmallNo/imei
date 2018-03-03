@@ -83,7 +83,7 @@ class BaseController extends Controller
 		$params["gIconOK"] = self::ICON_OK_HTML;
 		$params["gIconAlert"] = self::ICON_ALERT_HTML;
 
-		$cur_tree_node_id = isset($params["base_url"]) ? $params["base_url"] : self::getRequestUri();
+		$cur_tree_node_id = $params["base_url"] ?? self::getRequestUri();
 		$cur_tree_fork_id = Menu::getForkId($cur_tree_node_id);
 		if (isset($params["category"])) {
 			$cur_tree_fork_id = $params["category"];
@@ -140,26 +140,27 @@ class BaseController extends Controller
 		return $headers->has($field) ? trim($headers->get($field)) : $defaultVal;
 	}
 
-	protected function getParam($field, $defaultVal = "")
-	{
-		$getInfo = \Yii::$app->request->get();
-		return isset($getInfo[$field]) ? trim($getInfo[$field]) : $defaultVal;
-	}
 
 	protected function getBundle(...$fields)
 	{
 		$getInfo = \Yii::$app->request->get();
 		$ret = [];
 		foreach ($fields as $field) {
-			$ret[$field] = isset($getInfo[$field]) ? trim($getInfo[$field]) : '';
+			$ret[$field] = $getInfo[$field] ?? '';
 		}
 		return $ret;
+	}
+
+	protected function getParam($field, $defaultVal = "")
+	{
+		$getInfo = \Yii::$app->request->get();
+		return $getInfo[$field] ?? $defaultVal;
 	}
 
 	protected function postParam($field, $defaultVal = "")
 	{
 		$postInfo = \Yii::$app->request->post();
-		return isset($postInfo[$field]) ? $postInfo[$field] : $defaultVal;
+		return $postInfo[$field] ?? $defaultVal;
 	}
 
 	protected function getRequestUri()
