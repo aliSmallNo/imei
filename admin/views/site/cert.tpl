@@ -280,7 +280,7 @@
 		});
 	}
 
-	var NoticeUtil = {
+/*	var NoticeUtil = {
 		socket: null,
 		uni: $('#cUNI').val(),
 		timer: 0,
@@ -301,6 +301,6 @@
 
 	$(function () {
 		NoticeUtil.init();
-	});
+	});*/
 </script>
 {{include file="layouts/footer.tpl"}}
