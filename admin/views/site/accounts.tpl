@@ -1050,15 +1050,6 @@
 		}, function (resp) {
 			resonLoad = 0;
 			if (resp.code < 1) {
-				/*if (resp.data.broadcast) {
-					/!*NoticeUtil.broadcast(resp.data.broadcast);
-					setTimeout(function () {
-						location.reload();
-					}, 800);*!/
-					location.reload();
-				} else {
-					location.reload();
-				}*/
 				location.reload();
 				BpbhdUtil.showMsg(resp.msg, 1);
 			} else {
@@ -1163,28 +1154,5 @@
 		}, "json")
 	});
 
-	/*var NoticeUtil = {
-		socket: null,
-		uni: $('#cUNI').val(),
-		timer: 0,
-		board: $('.m-notice'),
-		list: $('.menu_body'),
-		init: function () {
-			var util = this;
-			util.socket = io('https://nd.meipo100.com/house');
-			util.socket.on('connect', function () {
-				util.socket.emit('house', util.uni);
-			});
-
-		},
-		broadcast: function (params) {
-			var util = this;
-			util.socket.emit('broadcast', params);
-		}
-	};
-
-	$(function () {
-		NoticeUtil.init();
-	});*/
 </script>
 {{include file="layouts/footer.tpl"}}
