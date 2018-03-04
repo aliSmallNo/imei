@@ -236,12 +236,12 @@
 					row.find('td.status-cell').html('<span class="status-' + resp.data.status + '">' + resp.data.status_t + '</span>');
 					row.find('td:last').html('<h5>审核于' + resp.data.dt + '</h5><span class="text-danger">' + resp.data.note + '</span>');
 					row.insertBefore($('tbody tr:first'));
-					NoticeUtil.broadcast({
+					/*NoticeUtil.broadcast({
 						tag: 'hint',
 						uni: postData['uni'],
 						msg: resp.data.msg,
 						action: 'refresh-profile'
-					});
+					});*/
 					BpbhdUtil.showMsg(resp.msg, 1);
 				} else {
 					BpbhdUtil.showMsg(resp.msg);

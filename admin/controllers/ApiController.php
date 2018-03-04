@@ -179,7 +179,7 @@ class ApiController extends Controller
 					RedisUtil::publish(
 						RedisUtil::CHANNEL_BROADCAST,
 						'house',
-						'broadcast',
+						'buzz',
 						[
 							"tag" => 'hint',
 							"action" => 'refresh-profile',
