@@ -110,7 +110,7 @@ class BaseController extends Controller
 			$this->user_avatar = $wxUserInfo['Avatar'];
 			$this->user_hint = $wxUserInfo['uHint'];
 			$this->user_location = json_decode($wxUserInfo['uLocation'], 1);
-			$this->user_subscribe = isset($wxUserInfo['subscribe']) ? $wxUserInfo['subscribe'] : 0;
+			$this->user_subscribe = $wxUserInfo['subscribe'] ?? 0;
 			$this->user_uni = $wxUserInfo['uUniqid'];
 			$this->user_eid = AppUtil::encrypt($wxUserInfo['uId']);
 			$this->user_cert = ($wxUserInfo['uCertStatus'] == User::CERT_STATUS_PASS ? 1 : 0);
@@ -118,7 +118,7 @@ class BaseController extends Controller
 
 		$newActionId = $anchor = '';
 		$safeActions = ['share', 'invite', "pin8", "otherpart", 'vote', 'voted', 'trophy',
-			'reg0', 'sh', 'enroll', 'enroll2', 'expand', 'shares', 'groom', 'share28', 'share106','everyredpacket','jasmine'];
+			'reg0', 'sh', 'enroll', 'enroll2', 'expand', 'shares', 'groom', 'share28', 'share106', 'everyredpacket', 'jasmine'];
 		if (in_array($actionId, $safeActions)) {
 			return;
 		}
@@ -197,13 +197,13 @@ class BaseController extends Controller
 	protected function getParam($field, $defaultVal = "")
 	{
 		$getInfo = \Yii::$app->request->get();
-		return isset($getInfo[$field]) ? trim($getInfo[$field]) : $defaultVal;
+		return $getInfo[$field] ?? $defaultVal;
 	}
 
 	protected function postParam($field, $defaultVal = "")
 	{
 		$postInfo = \Yii::$app->request->post();
-		return isset($postInfo[$field]) ? trim($postInfo[$field]) : $defaultVal;
+		return $postInfo[$field] ?? $defaultVal;
 	}
 
 }
