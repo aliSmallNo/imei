@@ -90,8 +90,6 @@
 				chatFlag = 0;
 				mContent.val('');
 				if (resp.code < 1) {
-					//NoticeUtil.broadcast(resp.data);
-					//reloadData();
 				}
 			}, 'json');
 	});
@@ -122,41 +120,8 @@
 			}, 'json');
 	}
 
-	/*var NoticeUtil = {
-		ioChat: null,
-		timer: 0,
-		roomId: 0,
-		uni: $('#cUNI').val(),
-		board: $('.m-notice'),
-		init: function () {
-			var util = this;
-			util.uni = $('#cAdminId').val();
-
-			util.ioChat = io('https://nd.meipo100.com/chatroom');
-			util.ioChat.on("msg", function (info) {
-				if (info.rid == util.roomId) {
-					reloadData();
-				}
-			});
-		},
-		broadcast: function (info) {
-			var util = this;
-			if (info.items) {
-				info.items.dir = 'left';
-			}
-			util.ioChat.emit('broadcast', info);
-		},
-		join: function (gid) {
-			var util = this;
-			util.roomId = gid;
-			util.ioChat.emit('room', util.roomId, util.uni);
-		}
-	};*/
-
 	$(function () {
 		reloadData();
-		/*NoticeUtil.init();
-		NoticeUtil.join(mRoomId);*/
 	});
 </script>
 {{include file="layouts/footer.tpl"}}
