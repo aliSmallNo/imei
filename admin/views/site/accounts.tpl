@@ -1050,14 +1050,16 @@
 		}, function (resp) {
 			resonLoad = 0;
 			if (resp.code < 1) {
-				if (resp.data.broadcast) {
-					NoticeUtil.broadcast(resp.data.broadcast);
+				/*if (resp.data.broadcast) {
+					/!*NoticeUtil.broadcast(resp.data.broadcast);
 					setTimeout(function () {
 						location.reload();
-					}, 800);
+					}, 800);*!/
+					location.reload();
 				} else {
 					location.reload();
-				}
+				}*/
+				location.reload();
 				BpbhdUtil.showMsg(resp.msg, 1);
 			} else {
 				BpbhdUtil.showMsg(resp.msg);
@@ -1161,7 +1163,7 @@
 		}, "json")
 	});
 
-	var NoticeUtil = {
+	/*var NoticeUtil = {
 		socket: null,
 		uni: $('#cUNI').val(),
 		timer: 0,
@@ -1183,6 +1185,6 @@
 
 	$(function () {
 		NoticeUtil.init();
-	});
+	});*/
 </script>
 {{include file="layouts/footer.tpl"}}
