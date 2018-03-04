@@ -88,7 +88,7 @@
 				chatFlag = 0;
 				mContent.val('');
 				if (resp.code < 1) {
-					NoticeUtil.broadcast(resp.data);
+					//NoticeUtil.broadcast(resp.data);
 					//reloadData();
 				}
 			}, 'json');
@@ -121,7 +121,7 @@
 			}, 'json');
 	}
 
-	var NoticeUtil = {
+	/*var NoticeUtil = {
 		ioChat: null,
 		timer: 0,
 		roomId: 0,
@@ -150,12 +150,12 @@
 			util.roomId = gid;
 			util.ioChat.emit('room', util.roomId, util.uni);
 		}
-	};
+	};*/
 
 	$(function () {
 		reloadData();
-		NoticeUtil.init();
-		NoticeUtil.join(mRoomId);
+		/*NoticeUtil.init();
+		NoticeUtil.join(mRoomId);*/
 	});
 </script>
 {{include file="layouts/footer.tpl"}}

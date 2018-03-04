@@ -567,6 +567,12 @@ class ApiController extends Controller
 						'gid' => $ret['gid']
 					],
 					QueueUtil::QUEUE_TUBE_SMS);
+				RedisUtil::publish(RedisUtil::CHANNEL_BROADCAST, 'room', 'msg',
+					[
+						'gid' => $ret['gid'],
+						'room_id' => $ret['gid'],
+						'items' => $ret
+					]);
 				return self::renderAPI(0, '', [
 					'gid' => $ret['gid'],
 					'items' => $ret
@@ -720,6 +726,9 @@ class ApiController extends Controller
 
 				if ($text) {
 					list($code, $msg, $info) = ChatMsg::addRoomChat($rid, $uid, $text, $this->admin_id);
+					$info['room_id'] = $rid;
+					RedisUtil::publish(RedisUtil::CHANNEL_BROADCAST,
+						'room', 'msg', $info);
 					return self::renderAPI($code, $msg, $info);
 				}
 		}
