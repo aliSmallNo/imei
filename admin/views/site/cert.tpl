@@ -236,12 +236,6 @@
 					row.find('td.status-cell').html('<span class="status-' + resp.data.status + '">' + resp.data.status_t + '</span>');
 					row.find('td:last').html('<h5>审核于' + resp.data.dt + '</h5><span class="text-danger">' + resp.data.note + '</span>');
 					row.insertBefore($('tbody tr:first'));
-					/*NoticeUtil.broadcast({
-						tag: 'hint',
-						uni: postData['uni'],
-						msg: resp.data.msg,
-						action: 'refresh-profile'
-					});*/
 					BpbhdUtil.showMsg(resp.msg, 1);
 				} else {
 					BpbhdUtil.showMsg(resp.msg);
@@ -280,27 +274,5 @@
 		});
 	}
 
-/*	var NoticeUtil = {
-		socket: null,
-		uni: $('#cUNI').val(),
-		timer: 0,
-		board: $('.m-notice'),
-		list: $('.menu_body'),
-		init: function () {
-			var util = this;
-			util.socket = io('https://nd.meipo100.com/house');
-			util.socket.on('connect', function () {
-				util.socket.emit('house', util.uni);
-			});
-		},
-		broadcast: function (params) {
-			var util = this;
-			util.socket.emit('broadcast', params);
-		}
-	};
-
-	$(function () {
-		NoticeUtil.init();
-	});*/
 </script>
 {{include file="layouts/footer.tpl"}}
