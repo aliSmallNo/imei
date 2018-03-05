@@ -959,9 +959,18 @@ class ApiController extends Controller
 				$sid = AppUtil::decrypt($sid);
 				$subtag = self::postParam("subtag");
 				list($code, $msg, $data) = ChatMsg::ProcessWechat($wx_uid, $sid, $subtag);
+				$gID = $data['gid'] ?? 0;
+				RedisUtil::publish(RedisUtil::CHANNEL_BROADCAST,
+					'room',
+					'msg',
+					[
+						'items' => $data,
+						'gid' => $gID,
+						'room_id' => $gID
+					]);
 				return self::renderAPI($code, $msg, [
 					'items' => $data,
-					'gid' => isset($data['gid']) ? $data['gid'] : 0,
+					'gid' => $gID,
 				]);
 				break;
 			case "payrose":

@@ -631,7 +631,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					if (resp.data) {
 						if (resp.code < 1) {
 							util.hideAlert();
-							NoticeUtil.broadcast(resp.data);
 						} else {
 							alpha.toast(resp.msg);
 						}
@@ -1454,31 +1453,34 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				}, function (resp) {
 					util.qId = "";
 					util.inputVal = "";
-					if (resp.code < 1) {
-						//util.messages(resp.data, 1);
-						util.reset();
-						util.toggleBar(0);
-
-						//NoticeUtil.broadcast(resp.data);
-						util.commentFlag = resp.data.commentFlag;
-
-						/*setTimeout(function () {
-							util.bot.get(0).scrollIntoView(true);
-						}, 300);*/
-						if (resp.data.taskflag) {
-							alpha.showCoin({data: {key: resp.data.key}});
-						}
-					} else if (resp.code == 101) {
-						$sls.main.show();
-						var html = Mustache.render(util.shareTmp, {});
-						$sls.content.html(html).addClass("animate-pop-in");
-						$sls.shade.fadeIn(160);
-					} else if (resp.code == 102) {
-						alertModel.show('通知', '根据国家有关法规要求，婚恋交友平台用户须实名认证。您还没有实名认证，赶快去个人中心实名认证吧', '/wx/cert2');
-					} else if (resp.code == 103) {
-						alertModel.show2('通知', resp.msg, '/wx/cert2');
-					} else {
-						alpha.toast(resp.msg);
+					switch (resp.code) {
+						case 0:
+							util.reset();
+							util.toggleBar(0);
+							util.commentFlag = resp.data.commentFlag;
+							if (resp.data.taskflag) {
+								alpha.showCoin({data: {key: resp.data.key}});
+							}
+							break;
+						case 101:
+							$sls.main.show();
+							var html = Mustache.render(util.shareTmp, {});
+							$sls.content.html(html).addClass("animate-pop-in");
+							$sls.shade.fadeIn(160);
+							break;
+						case 102:
+							alertModel.show('通知',
+								'根据国家有关法规要求，婚恋交友平台用户须实名认证。您还没有实名认证，赶快去个人中心实名认证吧',
+								'/wx/cert2');
+							break;
+						case 103:
+							alertModel.show2('通知',
+								resp.msg,
+								'/wx/cert2');
+							break;
+						default:
+							alpha.toast(resp.msg);
+							break;
 					}
 				}, "json");
 			},
@@ -2836,14 +2838,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					}
 				});
 			},
-			broadcast: function (info) {
-				console.log('broadcast');
-				var util = this;
-				if (info.items) {
-					info.items.dir = 'left';
-				}
-				util.ioChat.emit('broadcast', info);
-			},
 			handle: function ($action) {
 				switch ($action) {
 					case 'refresh-profile':
@@ -3005,7 +2999,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						if (resp.code == 0) {
 							ChatUtil.toggle(ChatUtil.giftmenus.hasClass("off"), ChatUtil.giftmenus);
 							util.count.html(resp.data.stat.flower);
-							//NoticeUtil.broadcast(resp.data);
 							alpha.task(30)
 						} else if (resp.code == 128) {
 							util.notMoreRose();
