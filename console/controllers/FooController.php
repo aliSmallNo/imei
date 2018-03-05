@@ -14,6 +14,7 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
+use common\models\UserTag;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use common\service\TrendService;
@@ -1665,6 +1666,9 @@ class FooController extends Controller
 			Log::calculateSendAmt($uid, 120003);
 		}*/
 
+
+		// 添加月度畅聊卡
+		// UserTag::add(UserTag::CAT_CHAT_MONTH,120003);
 
 	}
 

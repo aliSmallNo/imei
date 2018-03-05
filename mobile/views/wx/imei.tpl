@@ -1,5 +1,5 @@
 <div class="form sms-form">
-	<div class="row">
+	<div class="row phone">
 		<label>
 			<span>手机号</span>
 		</label>
