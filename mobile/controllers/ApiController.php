@@ -2390,6 +2390,11 @@ class ApiController extends Controller
 						'room',
 						'message',
 						$pubData);
+					RedisUtil::publish(
+						RedisUtil::CHANNEL_BROADCAST,
+						'room',
+						'msg',
+						$pubData);
 
 					return self::renderAPI(0, '', [
 						'items' => $ret,
@@ -2774,7 +2779,7 @@ class ApiController extends Controller
 			$wx_role = $wx_info['uRole'];
 		}
 		switch ($tag) {
-			case "gifts":// 礼物列表(cat: 背包礼物，普通礼物，特殊礼物)
+			case "gifts": // 礼物列表(cat: 背包礼物，普通礼物，特殊礼物)
 				$subtag = self::postParam("subtag");
 				$ret = Goods::getGiftList($subtag, $wx_uid);
 				$stat = UserTrans::getStat($wx_uid, true);
@@ -2783,12 +2788,20 @@ class ApiController extends Controller
 					"stat" => $stat,
 				]);
 				break;
-			case "givegift":// 送礼物
+			case "givegift": // 送礼物
 				$sid = AppUtil::decrypt(self::postParam("uid"));// 对方uid
 				$gid = self::postParam("gid");// 对方uid
 				$subtag = self::postParam("subtag");
 
 				list($code, $msg, $data) = Order::giveGift($subtag, $sid, $gid, $wx_uid);
+				RedisUtil::publish(RedisUtil::CHANNEL_BROADCAST, 'room', 'msg',
+					[
+						"stat" => UserTrans::getStat($wx_uid, true),
+						"items" => $data,
+						'gid' => $data['gid'],
+						'room_id' => $data['gid'],
+					]);
+
 				return self::renderAPI($code, $msg, [
 					"stat" => UserTrans::getStat($wx_uid, true),
 					"items" => $data,

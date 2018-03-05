@@ -96,13 +96,6 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 							break;
 					}
 				});
-			},
-			broadcast: function (info) {
-				var util = this;
-				if (info.dir) {
-					info.dir = 'left';
-				}
-				util.ioChat.emit('broadcast', info);
 			}
 		};
 
@@ -154,7 +147,6 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 						$sls.adminUL.append(html);
 						$sls.bottompl.get(0).scrollIntoView(true);
 						$(".input").get(0).scrollIntoView(true);*/
-						// NoticeUtil.broadcast(resp.data);
 					} else if (resp.code == 128) {
 						alpha.prompt('', resp.msg,
 							['马上注册', '残忍拒绝'],
