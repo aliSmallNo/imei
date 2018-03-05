@@ -242,6 +242,7 @@ require(["layer"],
 		}
 
 		function isPhone(num) {
+			console.log(num);
 			var regex = /^1[2-9][0-9]{9}$/;
 			return regex.test(num);
 		}

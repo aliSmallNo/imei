@@ -401,7 +401,6 @@ class AppUtil
 		return $folder . '/';
 	}
 
-
 	protected static function getParam($key, $subKey = '')
 	{
 		if ($subKey) {
@@ -430,7 +429,6 @@ class AppUtil
 
 	public static function wechatUrl()
 	{
-//		return Yii::$app->params['wechatUrl'];
 		return self::getParam('hosts', 'wx');
 	}
 
@@ -1292,6 +1290,11 @@ class AppUtil
 		return self::base64URLEncode($ret);
 	}
 
+	protected static function base64URLEncode($data)
+	{
+		return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+	}
+
 	protected static function tiriDecode($str)
 	{
 		if ($str == '') {
@@ -1317,11 +1320,6 @@ class AppUtil
 			return substr($ret, $saltLen, $end - $saltLen);
 		}
 		return "";
-	}
-
-	protected static function base64URLEncode($data)
-	{
-		return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
 	}
 
 	protected static function base64URLDecode($data)
