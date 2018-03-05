@@ -861,13 +861,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 				if (util.rid && util.uni) {
 					util.ioChat.emit('room', util.rid, util.uni);
 				}
-			},
-			broadcast: function (info) {
-				var util = this;
-				if (info.dir) {
-					info.dir = 'left';
-				}
-				util.ioChat.emit('broadcast', info);
 			}
 		};
 
