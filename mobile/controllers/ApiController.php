@@ -2394,7 +2394,15 @@ class ApiController extends Controller
 						RedisUtil::CHANNEL_BROADCAST,
 						'room',
 						'msg',
-						$pubData);
+						[
+							'room_id' => $ret['gid'],
+							'items' => $ret,
+							'gid' => $ret['gid'],
+							'left' => $ret['left'],
+							'commentFlag' => UserComment::hasComment($receiverId, $uid),// 是否评价一次TA
+							"taskflag" => $taskflag,
+							"key" => $coinCat,
+						]);
 
 					return self::renderAPI(0, '', [
 						'items' => $ret,
