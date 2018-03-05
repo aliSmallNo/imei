@@ -13,7 +13,7 @@
 			{{$items[7]}}
 		</li>
 		<li>
-			<a href="#" class="go-lottery {{if !$can_sign}}gray{{/if}}"></a>
+			<a href="javascript:;" class="go-lottery {{if !$can_sign}}gray{{/if}}"></a>
 		</li>
 		<li class="unit unit-3">
 			{{$items[3]}}

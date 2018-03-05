@@ -535,13 +535,12 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 					id: util.sid,
 					text: content,
 					qId: util.qid,
-					answerflag: util.answerflag,
+					answerflag: util.answerflag
 				}, function (resp) {
 					$sls.loading = 0;
 					if (resp.code < 1) {
 						util.reset();
 						util.toggleBar(0);
-						NoticeUtil.broadcast(resp.data);
 					} else {
 						alpha.toast(resp.msg);
 					}
@@ -759,9 +758,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 			},
 			notMoreRose: function () {
 				layer.open({
-					content: '您的媒桂花数量不足~'
-					, btn: ['去充媒桂花', '不要']
-					, yes: function (index) {
+					content: '您的媒桂花数量不足~',
+					btn: ['去充媒桂花', '不要'],
+					yes: function (index) {
 						location.href = "/wx/sw";
 						layer.close(index);
 					}
@@ -778,14 +777,13 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 						tag: 'givegift',
 						subtag: util.tag,
 						gid: util.gid,
-						uid: ChatUtil.sid,
+						uid: ChatUtil.sid
 					},
 					function (resp) {
 						util.loading = 0;
-						if (resp.code == 0) {
+						if (resp.code < 1) {
 							ChatUtil.toggle(ChatUtil.giftmenus.hasClass("off"), ChatUtil.giftmenus);
 							util.count.html(resp.data.stat.flower);
-							NoticeUtil.broadcast(resp.data);
 							ChatUtil.toggleBar(0);
 						} else if (resp.code == 128) {
 							util.notMoreRose();
@@ -863,13 +861,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 				if (util.rid && util.uni) {
 					util.ioChat.emit('room', util.rid, util.uni);
 				}
-			},
-			broadcast: function (info) {
-				var util = this;
-				if (info.dir) {
-					info.dir = 'left';
-				}
-				util.ioChat.emit('broadcast', info);
 			}
 		};
 

@@ -17,6 +17,10 @@ class RedisUtil
 	private static $Glue = ":";
 
 	const FIXED_PREFIX = "imei";
+
+	const CHANNEL_REACT = 'imei:channel:react';
+	const CHANNEL_BROADCAST = 'imei:channel:broadcast';
+
 	const KEY_PROVINCES = 'provinces';
 	const KEY_CITIES = 'cities';
 	const KEY_CITY = 'city';
@@ -181,6 +185,33 @@ class RedisUtil
 		$keys = $this->keys;
 		array_unshift($keys, self::FIXED_PREFIX);
 		$ret = implode(self::$Glue, $keys);
+		return $ret;
+	}
+
+	/**
+	 * @param string $channel
+	 * @param string $to
+	 * @param string $tag
+	 * @param array $data
+	 * @return bool
+	 */
+	public static function publish($channel, $to, $tag, $data)
+	{
+		if (!$data) {
+			return 0;
+		}
+		$bundle = json_encode([
+			'to' => $to,
+			'tag' => $tag,
+			'data' => $data
+		]);
+
+		$redis = self::redis();
+		$ret = $redis->publish($channel, $bundle);
+		if (!$ret) {
+			sleep(2);
+			$ret = $redis->publish($channel, $bundle);
+		}
 		return $ret;
 	}
 

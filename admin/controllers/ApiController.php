@@ -176,6 +176,17 @@ class ApiController extends Controller
 					$status = ($flag == 'pass' ? User::CERT_STATUS_PASS : User::CERT_STATUS_FAIL);
 					$status_t = User::$Certstatus[$status];
 					$msg = ($flag == 'pass' ? '恭喜你，实名认证成功啦~' : '实名认证未通过，请重新上传身份证照片');
+					RedisUtil::publish(
+						RedisUtil::CHANNEL_BROADCAST,
+						'house',
+						'buzz',
+						[
+							"tag" => 'hint',
+							"action" => 'refresh-profile',
+							"uni" => self::postParam('uni'),
+							"msg" => $msg,
+						]);
+
 					return self::renderAPI(0, '操作成功！',
 						[
 							'msg' => $msg,
@@ -436,10 +447,14 @@ class ApiController extends Controller
 						}
 					}
 
-					return self::renderAPI(0, '操作成功', [
-						'broadcast' => $broadcast,
-						'aid' => $aid
-					]);
+					RedisUtil::publish(RedisUtil::CHANNEL_BROADCAST,
+						'house', 'buzz', $broadcast);
+
+					return self::renderAPI(0, '操作成功',
+						[
+							'broadcast' => $broadcast,
+							'aid' => $aid
+						]);
 				} else {
 					return self::renderAPI(129, '参数错误');
 				}
@@ -553,6 +568,12 @@ class ApiController extends Controller
 						'gid' => $ret['gid']
 					],
 					QueueUtil::QUEUE_TUBE_SMS);
+				RedisUtil::publish(RedisUtil::CHANNEL_BROADCAST, 'room', 'msg',
+					[
+						'gid' => $ret['gid'],
+						'room_id' => $ret['gid'],
+						'items' => $ret
+					]);
 				return self::renderAPI(0, '', [
 					'gid' => $ret['gid'],
 					'items' => $ret
@@ -706,6 +727,9 @@ class ApiController extends Controller
 
 				if ($text) {
 					list($code, $msg, $info) = ChatMsg::addRoomChat($rid, $uid, $text, $this->admin_id);
+					$info['room_id'] = $rid;
+					RedisUtil::publish(RedisUtil::CHANNEL_BROADCAST,
+						'room', 'msg', $info);
 					return self::renderAPI($code, $msg, $info);
 				}
 		}

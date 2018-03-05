@@ -209,7 +209,6 @@
 <script src="/assets/js/socket.io.js"></script>
 <script>
 	var mLevel = 13, mMap;
-
 	var maxzIndex = 100;
 
 	$(".menu_body li").on('click', function () {
@@ -292,8 +291,8 @@
 
 	var NoticeUtil = {
 		socket: null,
-		uni: $('#cUNI').val(),
 		timer: 0,
+		uni: $('#cUNI').val(),
 		board: $('.m-notice'),
 		list: $('.menu_body'),
 		init: function () {
@@ -302,14 +301,14 @@
 			util.socket.on('connect', function () {
 				util.socket.emit('house', util.uni);
 			});
-
+			var row;
 			util.socket.on("buzz", function (resp) {
 				switch (resp.tag) {
 					case 'login':
 						if (!resp.uid) {
 							return false;
 						}
-						var row = $('li[data-uni=' + resp.uid + ']');
+						row = $('li[data-uni=' + resp.uid + ']');
 						if (row.length) {
 							row.addClass('online').insertBefore('.menu_body li:first');
 							util.upgrade(resp.uid, resp.tag);
@@ -319,7 +318,7 @@
 						if (!resp.uid) {
 							return false;
 						}
-						var row = $('li[data-uni=' + resp.uid + ']');
+						row = $('li[data-uni=' + resp.uid + ']');
 						if (row.length) {
 							row.removeClass('online');
 						}
@@ -337,11 +336,6 @@
 				}
 			});
 		},
-		users: function () {
-			var util = this;
-			util.socket.emit('users');
-			console.log('users sent');
-		},
 		upgrade: function (uid, tag) {
 			$.post('/api/user', {
 				tag: tag,
@@ -357,10 +351,6 @@
 	$(function () {
 
 		NoticeUtil.init();
-
-		setTimeout(function () {
-			NoticeUtil.users();
-		}, 4000);
 
 		switchMarkers(1);
 

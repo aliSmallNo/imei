@@ -88,8 +88,6 @@
 				chatFlag = 0;
 				mContent.val('');
 				if (resp.code < 1) {
-					NoticeUtil.broadcast(resp.data);
-					//reloadData();
 				}
 			}, 'json');
 	});
@@ -137,13 +135,6 @@
 					reloadData();
 				}
 			});
-		},
-		broadcast: function (info) {
-			var util = this;
-			if (info.items) {
-				info.items.dir = 'left';
-			}
-			util.ioChat.emit('broadcast', info);
 		},
 		join: function (gid) {
 			var util = this;

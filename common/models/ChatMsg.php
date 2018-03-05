@@ -641,15 +641,7 @@ class ChatMsg extends ActiveRecord
 			':id2' => $uid2,
 			':uid' => $senderId,
 		])->execute();
-		if ($giftCount) {
-			$amt = intval($giftCount * $ratio);
-			$sql = 'UPDATE im_chat_group set gRound=IFNULL(gRound,0)+' . $amt
-				. ' WHERE g.gUId1=:id1 AND g.gUId2=:id2';
-			$conn->createCommand($sql)->bindValues([
-				':id1' => $uid1,
-				':id2' => $uid2,
-			])->execute();
-		}
+
 		$sql = 'SELECT gId,gRound FROM im_chat_group as g 
 				WHERE g.gUId1=:id1 AND g.gUId2=:id2';
 		$ret = $conn->createCommand($sql)->bindValues([
@@ -658,6 +650,16 @@ class ChatMsg extends ActiveRecord
 		])->queryOne();
 		$gid = $ret['gId'];
 		$gRound = intval($ret['gRound']);
+
+		if ($giftCount) {
+			$amt = intval($giftCount * $ratio);
+			$sql = 'UPDATE im_chat_group set gRound=IFNULL(gRound,0)+' . $amt
+				. ' WHERE g.gId=:id';
+			$conn->createCommand($sql)->bindValues([
+				':id' => $gid
+			])->execute();
+		}
+
 		if ($costAmt) {
 			if (!$hasCard) {
 				UserTrans::add($senderId, $gid, UserTrans::CAT_CHAT, '', $costAmt, UserTrans::UNIT_GIFT);

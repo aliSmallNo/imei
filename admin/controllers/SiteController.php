@@ -981,6 +981,7 @@ class SiteController extends BaseController
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
 		$condition = $params = [];
+		$condition[] = "cStatus<9";
 		if ($name) {
 			$condition[] = '(u1.uName like :name or u2.uName like :name)';
 			$params[':name'] = '%' . $name . '%';
