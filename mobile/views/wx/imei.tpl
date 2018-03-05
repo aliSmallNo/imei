@@ -1,11 +1,11 @@
 <div class="form sms-form">
-	<div class="row phone">
+	<div class="row reg_phone_zp">
 		<label>
 			<span>手机号</span>
 		</label>
 		<input type="number" placeholder="请输入您的手机号码" class="group phone">
 	</div>
-	<div class="row">
+	<div class="row reg_phone_zp">
 		<label>
 			<span>验证码</span>
 		</label>
@@ -14,7 +14,7 @@
 			<a href="javascript:;" class="btn-code line">发送验证码</a>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row reg_phone_zp">
 		<label>
 			<span>选择性别</span>
 		</label>

@@ -1131,6 +1131,9 @@ section {
     line-height: 3rem;
     margin-bottom: 3rem;
     text-align: center; }
+    .sms-form .row.reg_phone_zp {
+      margin-left: 0;
+      margin-right: 0; }
   .sms-form .action {
     text-align: center;
     padding-right: 4.5rem;
