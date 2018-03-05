@@ -450,10 +450,11 @@ class ApiController extends Controller
 					RedisUtil::publish(RedisUtil::CHANNEL_BROADCAST,
 						'house', 'buzz', $broadcast);
 
-					return self::renderAPI(0, '操作成功', [
-						'broadcast' => $broadcast,
-						'aid' => $aid
-					]);
+					return self::renderAPI(0, '操作成功',
+						[
+							'broadcast' => $broadcast,
+							'aid' => $aid
+						]);
 				} else {
 					return self::renderAPI(129, '参数错误');
 				}

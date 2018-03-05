@@ -2811,7 +2811,9 @@ class ApiController extends Controller
 				$subtag = self::postParam("subtag");
 
 				list($code, $msg, $data) = Order::giveGift($subtag, $sid, $gid, $wx_uid);
-				RedisUtil::publish(RedisUtil::CHANNEL_BROADCAST, 'room', 'msg',
+				RedisUtil::publish(RedisUtil::CHANNEL_BROADCAST,
+					'room',
+					'msg',
 					[
 						"stat" => UserTrans::getStat($wx_uid, true),
 						"items" => $data,
