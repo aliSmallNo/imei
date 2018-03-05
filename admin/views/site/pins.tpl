@@ -292,8 +292,8 @@
 
 	var NoticeUtil = {
 		socket: null,
-		uni: $('#cUNI').val(),
 		timer: 0,
+		uni: $('#cUNI').val(),
 		board: $('.m-notice'),
 		list: $('.menu_body'),
 		init: function () {
@@ -337,11 +337,11 @@
 				}
 			});
 		},
-		users: function () {
+		/*users: function () {
 			var util = this;
 			util.socket.emit('users');
 			console.log('users sent');
-		},
+		},*/
 		upgrade: function (uid, tag) {
 			$.post('/api/user', {
 				tag: tag,
@@ -358,9 +358,9 @@
 
 		NoticeUtil.init();
 
-		setTimeout(function () {
+		/*setTimeout(function () {
 			NoticeUtil.users();
-		}, 4000);
+		}, 4000);*/
 
 		switchMarkers(1);
 
