@@ -209,7 +209,6 @@
 <script src="/assets/js/socket.io.js"></script>
 <script>
 	var mLevel = 13, mMap;
-
 	var maxzIndex = 100;
 
 	$(".menu_body li").on('click', function () {
@@ -337,11 +336,6 @@
 				}
 			});
 		},
-		/*users: function () {
-			var util = this;
-			util.socket.emit('users');
-			console.log('users sent');
-		},*/
 		upgrade: function (uid, tag) {
 			$.post('/api/user', {
 				tag: tag,
@@ -357,10 +351,6 @@
 	$(function () {
 
 		NoticeUtil.init();
-
-		/*setTimeout(function () {
-			NoticeUtil.users();
-		}, 4000);*/
 
 		switchMarkers(1);
 
