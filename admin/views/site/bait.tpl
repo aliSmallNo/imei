@@ -119,8 +119,34 @@
 			}, 'json');
 	}
 
+	var NoticeUtil = {
+		ioChat: null,
+		timer: 0,
+		roomId: 0,
+		uni: $('#cUNI').val(),
+		board: $('.m-notice'),
+		init: function () {
+			var util = this;
+			util.uni = $('#cAdminId').val();
+
+			util.ioChat = io('https://nd.meipo100.com/chatroom');
+			util.ioChat.on("msg", function (info) {
+				if (info.gid == util.roomId) {
+					reloadData();
+				}
+			});
+		},
+		join: function (gid) {
+			var util = this;
+			util.roomId = gid;
+			util.ioChat.emit('room', util.roomId, util.uni);
+		}
+	};
+
 	$(function () {
 		reloadData();
+		NoticeUtil.init();
+		NoticeUtil.join(mRoomId);
 	});
 </script>
 {{include file="layouts/footer.tpl"}}
