@@ -2693,6 +2693,11 @@ class ApiController extends Controller
 					'room',
 					'message',
 					$pubData);
+				RedisUtil::publish(
+					RedisUtil::CHANNEL_BROADCAST,
+					'room',
+					'msg',
+					$pubData);
 				return self::renderAPI($code, $msg, $info);
 			case 'list':
 				$lastId = self::postParam('lastid', 0);

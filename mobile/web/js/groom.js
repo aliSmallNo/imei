@@ -154,7 +154,7 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 						$sls.adminUL.append(html);
 						$sls.bottompl.get(0).scrollIntoView(true);
 						$(".input").get(0).scrollIntoView(true);*/
-						NoticeUtil.broadcast(resp.data);
+						// NoticeUtil.broadcast(resp.data);
 					} else if (resp.code == 128) {
 						alpha.prompt('', resp.msg,
 							['马上注册', '残忍拒绝'],
@@ -224,13 +224,13 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 				$.post("/api/chatroom", {
 					tag: "join_apply",
 					rid: $sls.rid,
-					lastuid: $sls.lastuid,
+					lastuid: $sls.lastuid
 				}, function (resp) {
 					$sls.loading = 0;
 					if (resp.code < 1) {
 						//location.href = "#chat";
 						$sls.main.show();
-						var html = '<img src="' + resp.data.src + '" style="width: 100%">';
+						var html = '<img src="' + resp.data.src + '" style="width: 100%"/>';
 						$sls.content.html(html).addClass("animate-pop-in");
 						$sls.shade.fadeIn(160);
 					} else {
@@ -246,7 +246,7 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 				$sls.loading = 1;
 				$.post("/api/chatroom", {
 					tag: "join_init",
-					rid: $sls.rid,
+					rid: $sls.rid
 				}, function (resp) {
 					$sls.loading = 0;
 					if (resp.code < 1) {
@@ -298,7 +298,7 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 						alpha.toast(resp.msg);
 					}
 				}, "json");
-			},
+			}
 		};
 
 		function locationHashChanged() {
