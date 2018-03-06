@@ -1670,6 +1670,9 @@ class FooController extends Controller
 		// 添加月度畅聊卡
 		// UserTag::add(UserTag::CAT_CHAT_MONTH,120003);
 
+		$data = UserTrans::stat('163447');
+		print_r($data);
+
 	}
 
 

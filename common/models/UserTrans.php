@@ -51,6 +51,12 @@ class UserTrans extends ActiveRecord
 	const CAT_COIN_SPRING_F_SEND = 660;
 	const CAT_COIN_SPRING_F_RECEIVE = 670;
 
+	static $notShowPayAmt = [
+		self::CAT_MOMENT,
+		self::CAT_RECEIVE,
+		self::CAT_PRESENT,
+	];
+
 	static $catDict = [
 		self::CAT_RECHARGE_MEMBER => "单身会员",
 		self::CAT_CHAT_DAY3 => "三天畅聊卡",
@@ -413,7 +419,12 @@ class UserTrans extends ActiveRecord
 			if ($unit == self::UNIT_COIN_FEN) {
 				$items[$tid]['amt_title'] = round($row['flower'] / 100.0, 2) . '千寻币';
 			}
+			// BUG 很多别的id(非pId)存在tPId
+			if (in_array($row['cat'], self::$notShowPayAmt)) {
+				$items[$tid]['amt'] = 0;
+			}
 		}
+
 		$uIds = array_values(array_unique($uIds));
 
 		$sql = "select count(1) as co
