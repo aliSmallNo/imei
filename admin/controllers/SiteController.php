@@ -920,9 +920,9 @@ class SiteController extends BaseController
 
 		$date = self::getParam('dt', date('Y-m-d'));
 		$reset = self::getParam('reset', 0);
-		if (AppUtil::isAccountDebugger(Admin::getAdminId())) {
-			$reset = 1;
-		}
+//		if (AppUtil::isAccountDebugger(Admin::getAdminId())) {
+//			 $reset = 1;
+//		}
 		$trends = TrendService::init(TrendService::CAT_TREND)->chartTrend($date, $reset);
 		return $this->renderPage('trend.tpl',
 			[
