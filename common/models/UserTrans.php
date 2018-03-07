@@ -58,7 +58,6 @@ class UserTrans extends ActiveRecord
 	];
 
 	static $ShowPayAmt = [
-		 self::CAT_EXCHANGE_FLOWER,
 		 self::CAT_EXCHANGE_YUAN,
 
 		self::CAT_RECHARGE_MEMBER,
