@@ -645,7 +645,8 @@ class SiteController extends BaseController
 			$criteria[] = " t.tCategory =$cat ";
 		}
 		if ($income) {
-			$criteria[] = " p.pStatus=100 AND p.pTransAmt>0 ";
+			$str = " and t.tCategory in " . "(" . implode(',', UserTrans::$ShowPayAmt) . ")";
+			$criteria[] = " p.pStatus=100 AND p.pTransAmt>0 " . $str;
 		}
 		$criteria[] = " t.tCategory in (" . implode(',', array_keys(UserTrans::$catDict)) . ") ";
 
@@ -919,6 +920,9 @@ class SiteController extends BaseController
 
 		$date = self::getParam('dt', date('Y-m-d'));
 		$reset = self::getParam('reset', 0);
+		if (AppUtil::isAccountDebugger(Admin::getAdminId())) {
+			$reset = 1;
+		}
 		$trends = TrendService::init(TrendService::CAT_TREND)->chartTrend($date, $reset);
 		return $this->renderPage('trend.tpl',
 			[

@@ -8,6 +8,7 @@ namespace console\controllers;
  * Date: 11/5/2017
  * Time: 2:11 PM
  */
+use admin\models\Admin;
 use common\models\ChatMsg;
 use common\models\Img;
 use common\models\Pin;
@@ -1670,8 +1671,9 @@ class FooController extends Controller
 		// 添加月度畅聊卡
 		// UserTag::add(UserTag::CAT_CHAT_MONTH,120003);
 
-		$data = UserTrans::stat('163447');
-		print_r($data);
+		$jwt = 'BT5uXzU-SDg9N0xogilocGwqQjk4OTs1K3JrfixEO0A9Oz0_PEI8RTgvcoV9L0g_Q0A-Q0hIRz9JjUl5akFKU0NIQ1hz';
+		$decoded = json_decode(AppUtil::decrypt($jwt), 1);
+		print_r($decoded);
 
 	}
 
