@@ -8,6 +8,7 @@
 
 namespace common\service;
 
+use common\models\UserTrans;
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
 
@@ -254,11 +255,21 @@ class TrendService
 			}
 		}
 
-		$sql = "select Round(SUM(p.pTransAmt/100.0),1) as amt
+
+		/*$sql = "select Round(SUM(p.pTransAmt/100.0),1) as amt
 			from im_user_trans as t 
 			join im_pay as p on p.pId=t.tPId
-			where p.pStatus=100 and t.tDeletedFlag=0
-			and tAddedOn BETWEEN :beginDT and :endDT ";
+			where p.pStatus=100 and t.tDeletedFlag=0 
+			and tAddedOn BETWEEN :beginDT and :endDT  ";
+		$ret = $this->conn->createCommand($sql)->bindValues([
+			':beginDT' => $beginDate,
+			':endDT' => $endDate,
+		])->queryScalar();
+		$ret = $ret ? $ret : 0;
+		$trend['act_pay'] = intval($ret); // 新增充值*/
+
+		$sql = "select Round(SUM(pTransAmt/100.0),1) as amt
+			from im_pay where pStatus=100 and pTransDate BETWEEN :beginDT and :endDT ";
 		$ret = $this->conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
