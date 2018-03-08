@@ -11,7 +11,7 @@ body, html {
 body, html, a, p, ul, div, h4, h5, h6, .main-wrap {
   margin: 0;
   padding: 0;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
+  -webkit-tap-highlight-color: transparent; }
 
 body {
   background-color: #fff; }
@@ -8840,7 +8840,7 @@ ul.co-ul {
   width: 100%;
   height: 100%;
   display: none;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: transparent;
   pointer-events: auto;
   z-index: 11; }
 

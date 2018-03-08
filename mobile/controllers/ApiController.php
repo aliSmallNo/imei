@@ -2413,14 +2413,15 @@ class ApiController extends Controller
 							"key" => $coinCat,
 						]);
 
-					return self::renderAPI(0, '', [
-						'items' => $ret,
-						'gid' => $ret['gid'],
-						'left' => $ret['left'],
-						'commentFlag' => UserComment::hasComment($receiverId, $uid),// 是否评价一次TA
-						"taskflag" => $taskflag,
-						"key" => $coinCat,
-					]);
+					return self::renderAPI(0, '',
+						[
+							'items' => $ret,
+							'gid' => $ret['gid'],
+							'left' => $ret['left'],
+							'commentFlag' => UserComment::hasComment($receiverId, $uid),// 是否评价一次TA
+							"taskflag" => $taskflag,
+							"key" => $coinCat,
+						]);
 				}
 				break;
 			case "helpchat":
