@@ -2408,4 +2408,11 @@ class WxController extends BaseController
 			'');
 	}
 
+
+	public function actionBt()
+	{
+		$openid = self::$WX_OpenId;
+		header("location:https://bt.meipo100.com/wx/bt?openid=" . $openid);
+		exit;
+	}
 }
