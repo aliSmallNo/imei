@@ -1671,9 +1671,8 @@ class FooController extends Controller
 		// 添加月度畅聊卡
 		// UserTag::add(UserTag::CAT_CHAT_MONTH,120003);
 
-		$jwt = 'BT5uXzU-SDg9N0xogilocGwqQjk4OTs1K3JrfixEO0A9Oz0_PEI8RTgvcoV9L0g_Q0A-Q0hIRz9JjUl5akFKU0NIQ1hz';
-		$decoded = json_decode(AppUtil::decrypt($jwt), 1);
-		print_r($decoded);
+		$seconds = time() - strtotime("2017-11-29 14:32:00");
+		echo floor($seconds/86400);
 
 	}
 
