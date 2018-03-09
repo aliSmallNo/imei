@@ -78,7 +78,7 @@ class UserBuzz extends ActiveRecord
 	{
 		$resp = $debug = $content = '';
 
-		self::$WelcomeMsg ='hi，世界辣么大，你来了就好
+		self::$WelcomeMsg = 'hi，世界辣么大，你来了就好
 
 这里有你想聊天的人，有想了解的故事
 世界上有好多错过，但我不希望是你和我
@@ -102,6 +102,8 @@ class UserBuzz extends ActiveRecord
 		$msgType = isset($postData["MsgType"]) ? strtolower($postData["MsgType"]) : "";
 		$event = isset($postData["Event"]) ? strtolower($postData["Event"]) : "";
 		$eventKey = isset($postData["EventKey"]) && is_string($postData["EventKey"]) ? strtolower($postData["EventKey"]) : "";
+
+		LogAction::add(120003, $wxOpenId, LogAction::ACTION_LOGIN, $postData);
 
 		$fromUsername = isset($postData["FromUserName"]) ? $postData["FromUserName"] : '';
 		$toUsername = isset($postData["ToUserName"]) ? $postData["ToUserName"] : '';
