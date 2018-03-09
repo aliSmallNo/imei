@@ -92,6 +92,17 @@ class UserBuzz extends ActiveRecord
 单身的朋友可以直接注册，在这里寻找心仪的另一半。";*/
 
 		$postData = json_decode($postJSON, 1);
+		/**
+		{
+		"ToUserName":"gh_8078ffa2171a",
+		"FromUserName":"oYDJew2WZL_XLtlHFQzYViVG_nvo",
+		"CreateTime":"1520580527",
+		"MsgType":"event",
+		"Event":"subscribe",
+		"EventKey":"qrscene_19623",
+		"Ticket":"gQEr8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySWF5ZzU1d09kdTMxMDAwMHcwN3EAAgRZVvBZAwQAAAAA"
+		}
+		 */
 
 		if (!$postData || !isset($postData["FromUserName"])) {
 			return $resp;
@@ -103,7 +114,7 @@ class UserBuzz extends ActiveRecord
 		$event = isset($postData["Event"]) ? strtolower($postData["Event"]) : "";
 		$eventKey = isset($postData["EventKey"]) && is_string($postData["EventKey"]) ? strtolower($postData["EventKey"]) : "";
 
-		LogAction::add(120003, $wxOpenId, LogAction::ACTION_LOGIN, $postData);
+		LogAction::add(120003, $wxOpenId, LogAction::ACTION_TEST_TEMP, $postData);
 
 		$fromUsername = isset($postData["FromUserName"]) ? $postData["FromUserName"] : '';
 		$toUsername = isset($postData["ToUserName"]) ? $postData["ToUserName"] : '';

@@ -14,6 +14,7 @@ use yii\db\ActiveRecord;
 
 class LogAction extends ActiveRecord
 {
+	const ACTION_TEST_TEMP = 999;
 	const ACTION_LOGIN = 1000;
 	const ACTION_SINGLE = 1002;
 	const ACTION_MATCH = 1004;
