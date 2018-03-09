@@ -95,12 +95,12 @@ class UserBuzz extends ActiveRecord
 		/**
 		{
 		"ToUserName":"gh_8078ffa2171a",
-		"FromUserName":"oYDJew2WZL_XLtlHFQzYViVG_nvo",
-		"CreateTime":"1520580527",
+		"FromUserName":"oYDJew5EFMuyrJdwRrXkIZLU2c58",
+		"CreateTime":"1520581247",
 		"MsgType":"event",
-		"Event":"subscribe",
-		"EventKey":"qrscene_19623",
-		"Ticket":"gQEr8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySWF5ZzU1d09kdTMxMDAwMHcwN3EAAgRZVvBZAwQAAAAA"
+		"Event":"SCAN",
+		"EventKey":"17221",
+		"Ticket":"gQEB8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydmtaSTRld09kdTMxMDAwMHcwN1gAAgQnG3dZAwQAAAAA"
 		}
 		 */
 
@@ -113,8 +113,6 @@ class UserBuzz extends ActiveRecord
 		$msgType = isset($postData["MsgType"]) ? strtolower($postData["MsgType"]) : "";
 		$event = isset($postData["Event"]) ? strtolower($postData["Event"]) : "";
 		$eventKey = isset($postData["EventKey"]) && is_string($postData["EventKey"]) ? strtolower($postData["EventKey"]) : "";
-
-		LogAction::add('120000', $wxOpenId, LogAction::ACTION_TEST_TEMP, $postData);
 
 		$fromUsername = isset($postData["FromUserName"]) ? $postData["FromUserName"] : '';
 		$toUsername = isset($postData["ToUserName"]) ? $postData["ToUserName"] : '';
