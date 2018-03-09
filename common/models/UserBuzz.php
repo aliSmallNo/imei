@@ -114,7 +114,7 @@ class UserBuzz extends ActiveRecord
 		$event = isset($postData["Event"]) ? strtolower($postData["Event"]) : "";
 		$eventKey = isset($postData["EventKey"]) && is_string($postData["EventKey"]) ? strtolower($postData["EventKey"]) : "";
 
-		LogAction::add(120003, $wxOpenId, LogAction::ACTION_TEST_TEMP, $postData);
+		LogAction::add('', $wxOpenId, LogAction::ACTION_TEST_TEMP, $postData);
 
 		$fromUsername = isset($postData["FromUserName"]) ? $postData["FromUserName"] : '';
 		$toUsername = isset($postData["ToUserName"]) ? $postData["ToUserName"] : '';
