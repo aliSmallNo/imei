@@ -727,31 +727,27 @@ require(["jquery", "alpha", "mustache"],
 			var hashTag = location.hash;
 			hashTag = hashTag.replace("#!", "");
 			hashTag = hashTag.replace("#", "");
+			resetAddMessage();
 			switch (hashTag) {
 				case 'zone_items':
-					alertToggle(0, '');
 					topicUtil.topic_id = 0;
 					pageItemsUtil.reset();
 					pageItemsUtil.zone_items();
 					break;
 				case 'zone_item':
-					alertToggle(0, '');
 					pageCommentsUtil.comment_page = 1;
 					pageCommentsUtil.toComment();
 					break;
 				case "zone_add_msg":
-					//$(".zone_container_add_msg ul[add_cat]").hide();
-					$(".zone_container_add_msg ul[add_cat]").html('');
+					// $(".zone_container_add_msg ul[add_cat]").html('');
 					var html = $("#tpl_add_msg_cat").html();
 					alertToggle(1, html);
 					break;
 				case "zone_topic":
-					alertToggle(0, '');
 					topicUtil.page = 1;
 					topicUtil.reload();
 					break;
 				case "zone_search_topic":
-					alertToggle(0, '');
 					break;
 				default:
 					break;
@@ -773,6 +769,14 @@ require(["jquery", "alpha", "mustache"],
 				}).appendTo($("body"));
 			}
 			alpha.clear();
+		}
+
+		function resetAddMessage() {
+			alertToggle(0, '');
+			$(".zone_container_add_msg ul[add_cat]").html('');
+			$(".m-draw-wrap").removeClass("on").addClass("off");
+			$(".zone_container_add_msg ul[add_cat=image]").html('');
+			$(".zone_container_add_msg textarea").val('');
 		}
 
 		$(function () {
