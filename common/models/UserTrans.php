@@ -920,6 +920,10 @@ class UserTrans extends ActiveRecord
 		}
 		$gender = $u['gender'];
 
+		if (in_array($key, [self::COIN_CHAT_10_COUNT, self::COIN_CHAT_50_COUNT, self::COIN_HINT]) && $uid != 143807) {
+			return false;
+		}
+
 		$conn = AppUtil::db();
 		$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid ";
 		$cmd1 = $conn->createCommand($sql);
