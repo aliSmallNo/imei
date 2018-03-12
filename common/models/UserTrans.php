@@ -1219,7 +1219,7 @@ class UserTrans extends ActiveRecord
 			// self::add($uid, $key, self::CAT_COIN_DEFAULT, self::$catDict[self::CAT_COIN_DEFAULT], $amt, self::UNIT_COIN_FEN);
 			$otherid = 0;
 			if ($key == self::COIN_CHAT_REPLY) {
-				$otherid = $sid;
+				list($otherid) = ChatMsg::groupEdit($uid, $sid);
 			}
 			$sql = "insert into im_user_trans (tCategory,tPId,tUId,tTitle,tAmt,tUnit,tOtherId) VALUES (:cat,:pid,:uid,:title,:amt,:unit,:otherid) ";
 			AppUtil::db()->createCommand($sql)->bindValues([

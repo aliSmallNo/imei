@@ -1679,7 +1679,16 @@ class FooController extends Controller
 		// echo AppUtil::decrypt('BT5uXzU-SDg9N0xoODs6Pzg_QXFiOUJLO0A7UGs');
 
 		// 143807
-		var_dump(UserTrans::taskCondition(UserTrans::COIN_CHAT_REPLY, 143807, 156703));
+		// var_dump(UserTrans::taskCondition(UserTrans::COIN_CHAT_REPLY, 143807, 156703));
+
+		foreach ([UserTrans::COIN_CHAT_REPLY, UserTrans::COIN_CHAT_3TIMES] as $v) {
+			$taskflag = UserTrans::taskCondition($v, 143807, 131379);
+			if ($taskflag) {
+				//$coinCat = $v;
+				echo $v;
+				//break;
+			}
+		}
 
 
 	}
