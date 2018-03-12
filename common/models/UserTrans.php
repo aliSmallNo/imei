@@ -953,9 +953,6 @@ class UserTrans extends ActiveRecord
 					}
 				} else if ($gender == User::GENDER_FEMALE) {
 					// 女生：奖励0.2元（上限20人,超过不奖励）
-					if ($uid != 143807) {
-						return false;
-					}
 					if (!User::findOne(['uId' => $sid])) {
 						return false;
 					}
