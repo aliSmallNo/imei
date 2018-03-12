@@ -963,7 +963,7 @@ class UserTrans extends ActiveRecord
 						&& !$conn->createCommand($sql)->bindValues([
 							":uid" => $uid, ':eid' => $sid, ":cat" => self::CAT_COIN_DEFAULT, ':pid' => self::COIN_CHAT_REPLY
 						])->queryScalar()) {
-
+						return false;
 						return true;
 					}
 				}
