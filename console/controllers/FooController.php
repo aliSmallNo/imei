@@ -1681,12 +1681,12 @@ class FooController extends Controller
 		// 143807
 		// var_dump(UserTrans::taskCondition(UserTrans::COIN_CHAT_REPLY, 143807, 156703));
 
-		foreach ([UserTrans::COIN_CHAT_REPLY, UserTrans::COIN_CHAT_3TIMES] as $v) {
+		foreach ([UserTrans::COIN_CHAT_REPLY, UserTrans::COIN_CHAT_3TIMES, UserTrans::COIN_CHAT_10_COUNT, UserTrans::COIN_CHAT_50_COUNT] as $v) {
 			$taskflag = UserTrans::taskCondition($v, 143807, 120003);
 			if ($taskflag) {
-				//$coinCat = $v;
-				echo $v;
-				//break;
+				$coinCat = $v;
+				echo $coinCat;
+				break;
 			}
 		}
 

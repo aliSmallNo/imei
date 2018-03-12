@@ -989,7 +989,7 @@ class UserTrans extends ActiveRecord
 				}
 				$chatCount = $key == self::COIN_CHAT_10_COUNT ? 10 : 50;
 				list($gid) = ChatMsg::groupEdit($uid, $sid);
-				$sql = "select count(1) as co from im_chat_msg where `gAddedBy`=:uid and cGId=:gid and DATE_FORMAT(gAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
+				$sql = "select count(1) as co from im_chat_msg where `cAddedBy`=:uid and cGId=:gid and DATE_FORMAT(cAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
 				if ($cmd2->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar() == 0
 					&& $conn->createCommand($sql)->bindValues([":uid" => $uid, ':gid' => $gid])->queryScalar() >= $chatCount
 				) {
