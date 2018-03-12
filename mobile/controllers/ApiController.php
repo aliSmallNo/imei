@@ -2387,7 +2387,7 @@ class ApiController extends Controller
 					// 任务红包
 					$coinCat = UserTrans::COIN_CHAT_REPLY;
 					$taskflag = false;
-					foreach ([UserTrans::COIN_CHAT_REPLY, UserTrans::COIN_CHAT_3TIMES] as $v) {
+					foreach ([UserTrans::COIN_CHAT_REPLY, UserTrans::COIN_CHAT_3TIMES, UserTrans::COIN_CHAT_10_COUNT, UserTrans::COIN_CHAT_50_COUNT] as $v) {
 						$taskflag = UserTrans::taskCondition($v, $uid, $receiverId);
 						if ($taskflag) {
 							$coinCat = $v;

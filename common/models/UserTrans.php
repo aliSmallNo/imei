@@ -776,8 +776,9 @@ class UserTrans extends ActiveRecord
 	const COIN_RECEIVE_NORMAL_GIFT = 32;
 	const COIN_RECEIVE_VIP_GIFT = 34;
 
-	const COIN_CHAT_10JU = 40;
-	const COIN_HINT = 10;
+	const COIN_CHAT_10_COUNT = 40;
+	const COIN_CHAT_50_COUNT = 45;
+	const COIN_HINT = 50;
 
 	const COIN_SHARE28 = 280;
 
@@ -792,6 +793,10 @@ class UserTrans extends ActiveRecord
 		self::COIN_RECEIVE_GIFT => "COIN_RECEIVE_GIFT", //收到礼物
 		self::COIN_SIGN => "COIN_SIGN",                 //签到
 		self::COIN_SHARE_REG => "COIN_SHARE_REG",       //成功邀请
+		self::COIN_HINT => "COIN_HINT",                 //心动
+		self::COIN_CHAT_10_COUNT => "COIN_CHAT_10_COUNT",       //单人聊10句
+		self::COIN_CHAT_50_COUNT => "COIN_CHAT_50_COUNT",       //单人聊50句
+
 
 		self::COIN_SHARE28 => "COIN_SHARE28",           //28888现金红包
 
@@ -904,6 +909,10 @@ class UserTrans extends ActiveRecord
 		}
 		$gender = $u['gender'];
 
+		if (in_array($key, [self::COIN_CHAT_10_COUNT, self::COIN_CHAT_50_COUNT, self::COIN_HINT]) && $uid != 143807) {
+			return false;
+		}
+
 		$conn = AppUtil::db();
 		$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid ";
 		$cmd1 = $conn->createCommand($sql);
@@ -972,6 +981,31 @@ class UserTrans extends ActiveRecord
 					}
 				}
 
+				break;
+			case self::COIN_CHAT_10_COUNT:
+			case self::COIN_CHAT_50_COUNT:
+				if ($gender == User::GENDER_MALE || !User::findOne(['uId' => $sid])) {
+					return false;
+				}
+				$chatCount = $key == self::COIN_CHAT_10_COUNT ? 10 : 50;
+				list($gid) = ChatMsg::groupEdit($uid, $sid);
+				$sql = "select count(1) as co from im_chat_msg where `gAddedBy`=:uid and cGId=:gid and DATE_FORMAT(gAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
+				if ($cmd2->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar() == 0
+					&& $conn->createCommand($sql)->bindValues([":uid" => $uid, ':gid' => $gid])->queryScalar() >= $chatCount
+				) {
+					return true;
+				}
+				break;
+			case self::COIN_HINT:
+				if ($gender == User::GENDER_MALE || !User::findOne(['uId' => $sid])) {
+					return false;
+				}
+				$sql = "select count(1) from im_user_net where nRelation=:rel and nSubUId=:uid and nUId=:sid";
+				if ($cmd2->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar() == 0
+					&& $conn->createCommand($sql)->bindValues([":uid" => $uid, ':rel' => UserNet::REL_FAVOR, ':sid' => $sid])->queryScalar() == 0
+				) {
+					return true;
+				}
 				break;
 			case self::COIN_SHOW_COIN:
 				$moment = UserNet::REL_QR_MOMENT;
@@ -1070,6 +1104,7 @@ class UserTrans extends ActiveRecord
 			return [129, "参数错误", ''];
 		}
 		$amt = 0;
+		$gender = User::findOne(['uId' => $uid])->uGender;
 
 		$calculateAmt = function ($num, $every) {
 			if ($num < 100) {
@@ -1122,7 +1157,6 @@ class UserTrans extends ActiveRecord
 				break;
 			case self::COIN_CHAT_REPLY:
 				if (self::taskCondition($key, $uid, $sid)) {
-					$gender = User::findOne(['uId' => $uid])->uGender;
 					if ($gender == User::GENDER_MALE) {
 						$amt = random_int(20, 50);
 					} else if ($gender == User::GENDER_FEMALE) {
@@ -1132,6 +1166,17 @@ class UserTrans extends ActiveRecord
 
 				} else {
 					return [129, "已领取", ''];
+				}
+				break;
+			case self::COIN_CHAT_10_COUNT:
+			case self::COIN_CHAT_50_COUNT:
+				if ($gender == User::GENDER_FEMALE) {
+					$amt = $key == self::COIN_CHAT_10_COUNT ? 100 : 300;
+				}
+				break;
+			case self::COIN_HINT:
+				if ($gender == User::GENDER_FEMALE) {
+					$amt = 10;
 				}
 				break;
 			case self::COIN_SHOW_COIN:
@@ -1212,7 +1257,7 @@ class UserTrans extends ActiveRecord
 		if ($amt && in_array($key, [
 				self::COIN_SIGN, self::COIN_SHARE_REG, self::COIN_SHOW_COIN, self::COIN_CHAT_REPLY, self::COIN_CHAT_3TIMES,
 				self::COIN_RECEIVE_GIFT, self::COIN_RECEIVE_NORMAL_GIFT, self::COIN_RECEIVE_VIP_GIFT, self::COIN_PRESENT_10PEOPLE,
-				self::COIN_CERT, self::COIN_PERCENT80, self::COIN_REG, self::COIN_SHARE28
+				self::COIN_CERT, self::COIN_PERCENT80, self::COIN_REG, self::COIN_SHARE28, self::COIN_CHAT_50_COUNT, self::COIN_CHAT_10_COUNT
 			])) {
 			// self::add($uid, $key, self::CAT_COIN_DEFAULT, self::$catDict[self::CAT_COIN_DEFAULT], $amt, self::UNIT_COIN_FEN);
 			$otherid = 0;
