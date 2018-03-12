@@ -875,7 +875,7 @@ class UserTrans extends ActiveRecord
 				$everyTask = $st1($everyTask, $k, '已领取', 'fail', 'javascript:;');
 			}
 		}
-		$everyTask = array_merge($everyTask, $everytask_female);
+		// $everyTask = array_merge($everyTask, $everytask_female);
 
 		$hardTask = [
 			["key" => self::COIN_DATE_COMPLETE, "cls" => "", "title" => "完成1次线下约会", "num" => 3, "des" => "向心动异性发起约会，成功线下约会并向客服提交约会凭证，可领取3元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
@@ -995,6 +995,7 @@ class UserTrans extends ActiveRecord
 				break;
 			case self::COIN_CHAT_10_COUNT:
 			case self::COIN_CHAT_50_COUNT:
+				return false;
 				if ($gender == User::GENDER_MALE || !User::findOne(['uId' => $sid])) {
 					return false;
 				}
@@ -1265,7 +1266,7 @@ class UserTrans extends ActiveRecord
 		}
 
 		$stat = UserTrans::stat($uid);
-		if ($stat["coin_f"] > 1000) {
+		if ($stat["coin_f"] > 1000 && !in_array($key, [self::COIN_CHAT_10_COUNT, self::COIN_CHAT_50_COUNT])) {
 			$amt = ceil($amt / 3);
 		}
 
@@ -1276,7 +1277,7 @@ class UserTrans extends ActiveRecord
 			])) {
 			// self::add($uid, $key, self::CAT_COIN_DEFAULT, self::$catDict[self::CAT_COIN_DEFAULT], $amt, self::UNIT_COIN_FEN);
 			$otherid = 0;
-			if ($key == self::COIN_CHAT_REPLY) {
+			if (in_array($key, [self::COIN_CHAT_REPLY, self::COIN_CHAT_10_COUNT, self::COIN_CHAT_50_COUNT])) {
 				list($otherid) = ChatMsg::groupEdit($uid, $sid);
 			}
 			$sql = "insert into im_user_trans (tCategory,tPId,tUId,tTitle,tAmt,tUnit,tOtherId) VALUES (:cat,:pid,:uid,:title,:amt,:unit,:otherid) ";
