@@ -1681,14 +1681,23 @@ class FooController extends Controller
 		// 143807
 		// var_dump(UserTrans::taskCondition(UserTrans::COIN_CHAT_REPLY, 143807, 156703));
 
-		foreach ([UserTrans::COIN_CHAT_REPLY, UserTrans::COIN_CHAT_3TIMES, UserTrans::COIN_CHAT_10_COUNT, UserTrans::COIN_CHAT_50_COUNT] as $v) {
+		/*list($gid) = ChatMsg::groupEdit(143807, 131379);
+		$sql = "select count(1) as co from im_chat_msg where `cAddedBy`=143807 and cGId=$gid
+				and DATE_FORMAT(cAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
+		echo AppUtil::db()->createCommand($sql)->queryScalar();*/
+
+		/*foreach ([UserTrans::COIN_CHAT_REPLY, UserTrans::COIN_CHAT_3TIMES, UserTrans::COIN_CHAT_10_COUNT, UserTrans::COIN_CHAT_50_COUNT] as $v) {
 			$taskflag = UserTrans::taskCondition($v, 143807, 120003);
 			if ($taskflag) {
 				$coinCat = $v;
 				echo $coinCat;
 				break;
 			}
-		}
+		}*/
+
+		list($gid) = ChatMsg::groupEdit(143807, 131379);
+		echo $gid . PHP_EOL;
+		var_dump(UserTrans::taskCondition(40, 143807, 131379));
 
 
 	}

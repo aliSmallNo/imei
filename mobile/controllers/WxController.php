@@ -2218,6 +2218,7 @@ class WxController extends BaseController
 	public function actionTask()
 	{
 		$uid = $this->user_id;
+		$gender = $this->user_gender;
 
 		list($newTask, $currTask, $everyTask, $hardTask, $data) = UserTrans::taskStat($uid);
 		$newTaskShowFlag = 'none';

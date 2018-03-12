@@ -821,6 +821,7 @@ class UserTrans extends ActiveRecord
 		$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid ";
 		$cmd = $conn->createCommand($sql);
 		$u = User::fmtRow(User::findOne(["uId" => $uid])->toArray());
+		$gender = $u['gender'];
 		$st1 = function ($d, $k, $t, $c, $u) {
 			$d[$k]["utext"] = $t;
 			$d[$k]["cls"] = $c;
@@ -850,9 +851,18 @@ class UserTrans extends ActiveRecord
 			["key" => self::COIN_SHARE28, "cls" => "", "title" => "28888现金红包", "num" => 28888, "des" => "【28888元现金大派送】活动火爆进行中！28888元现金红包统统免费领回家！", "utext" => "去完成", "url" => "/wx/share28"],
 		];
 
+		$replay = "每日回复一次聊天一次最多可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励";
+		$everytask_female = [];
+		if ($gender == User::GENDER_FEMALE) {
+			$replay = "每日回复一次聊天0.2元(上限20人)。完成后直接到我的任务列表查看获得的奖励";
+			$everytask_female = [
+				["key" => self::COIN_CHAT_10_COUNT, "cls" => "", "title" => "回复聊天数量10句", "num" => 1, "des" => "每日回复单个异性聊天数量10句，领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
+				["key" => self::COIN_CHAT_50_COUNT, "cls" => "", "title" => "回复聊天数量50句", "num" => 3, "des" => "每日回复单个异性聊天数量50句，可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
+			];
+		}
 		$everyTask = [
 			["key" => self::COIN_CHAT_3TIMES, "cls" => "", "title" => "每日发起聊天(3次）领红包", "num" => 2, "des" => "每日主动发起聊天3次最多可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#slook"],
-			["key" => self::COIN_CHAT_REPLY, "cls" => "", "title" => "每天回应一次对话", "num" => 1, "des" => "每日回复一次聊天一次最多可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
+			["key" => self::COIN_CHAT_REPLY, "cls" => "", "title" => "每天回应一次对话", "num" => 1, "des" => $replay, "utext" => "去完成", "url" => "/wx/single#scontacts"],
 			["key" => self::COIN_SHOW_COIN, "cls" => "", "title" => "秀红包金额", "num" => 2, "des" => "每日分享自己所或得的现金最多可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/share106"],
 			["key" => self::COIN_RECEIVE_GIFT, "cls" => "", "title" => "当天收到一个礼物", "num" => 1, "des" => "每日可以从聊天中获得一个礼物最多可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
 			["key" => self::COIN_SIGN, "cls" => "", "title" => "签到", "num" => 1, "des" => "每日签到成功后最多可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/lottery"],
@@ -865,6 +875,7 @@ class UserTrans extends ActiveRecord
 				$everyTask = $st1($everyTask, $k, '已领取', 'fail', 'javascript:;');
 			}
 		}
+		$everyTask = array_merge($everyTask, $everytask_female);
 
 		$hardTask = [
 			["key" => self::COIN_DATE_COMPLETE, "cls" => "", "title" => "完成1次线下约会", "num" => 3, "des" => "向心动异性发起约会，成功线下约会并向客服提交约会凭证，可领取3元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
@@ -908,10 +919,6 @@ class UserTrans extends ActiveRecord
 			return false;
 		}
 		$gender = $u['gender'];
-
-		if (in_array($key, [self::COIN_CHAT_10_COUNT, self::COIN_CHAT_50_COUNT, self::COIN_HINT]) && $uid != 143807) {
-			return false;
-		}
 
 		$conn = AppUtil::db();
 		$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid ";
@@ -989,8 +996,12 @@ class UserTrans extends ActiveRecord
 				}
 				$chatCount = $key == self::COIN_CHAT_10_COUNT ? 10 : 50;
 				list($gid) = ChatMsg::groupEdit($uid, $sid);
+
+				$sql1 = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid and tOtherId=:gid 
+						  and DATE_FORMAT(tAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
+
 				$sql = "select count(1) as co from im_chat_msg where `cAddedBy`=:uid and cGId=:gid and DATE_FORMAT(cAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
-				if ($cmd2->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar() == 0
+				if ($conn->createCommand($sql1)->bindValues([":uid" => $uid, ":pid" => $key, ":gid" => $gid])->queryScalar() == 0
 					&& $conn->createCommand($sql)->bindValues([":uid" => $uid, ':gid' => $gid])->queryScalar() >= $chatCount
 				) {
 					return true;
