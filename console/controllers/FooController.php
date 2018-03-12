@@ -1671,8 +1671,9 @@ class FooController extends Controller
 		// 添加月度畅聊卡
 		// UserTag::add(UserTag::CAT_CHAT_MONTH,120003);
 
-		$seconds = time() - strtotime("2017-11-29 14:32:00");
-		echo floor($seconds/86400);
+		//$seconds = time() - strtotime("2017-11-29 14:32:00");
+		//echo floor($seconds/86400);
+
 
 	}
 

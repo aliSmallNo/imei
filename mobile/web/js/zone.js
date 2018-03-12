@@ -729,11 +729,13 @@ require(["jquery", "alpha", "mustache"],
 			hashTag = hashTag.replace("#", "");
 			switch (hashTag) {
 				case 'zone_items':
+					alertToggle(0, '');
 					topicUtil.topic_id = 0;
 					pageItemsUtil.reset();
 					pageItemsUtil.zone_items();
 					break;
 				case 'zone_item':
+					alertToggle(0, '');
 					pageCommentsUtil.comment_page = 1;
 					pageCommentsUtil.toComment();
 					break;
@@ -744,8 +746,12 @@ require(["jquery", "alpha", "mustache"],
 					alertToggle(1, html);
 					break;
 				case "zone_topic":
+					alertToggle(0, '');
 					topicUtil.page = 1;
 					topicUtil.reload();
+					break;
+				case "zone_search_topic":
+					alertToggle(0, '');
 					break;
 				default:
 					break;

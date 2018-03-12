@@ -1130,7 +1130,7 @@ class WechatUtil
 
 
 	/**
-	 * 获取小程序 accessToken
+	 * 获取小程序accessToken
 	 * @param bool $reset
 	 * @param string $code
 	 * @return mixed|string

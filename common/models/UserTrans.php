@@ -58,7 +58,7 @@ class UserTrans extends ActiveRecord
 	];
 
 	static $ShowPayAmt = [
-		 self::CAT_EXCHANGE_YUAN,
+		self::CAT_EXCHANGE_YUAN,
 
 		self::CAT_RECHARGE_MEMBER,
 		self::CAT_CHAT_DAY3,
@@ -776,6 +776,9 @@ class UserTrans extends ActiveRecord
 	const COIN_RECEIVE_NORMAL_GIFT = 32;
 	const COIN_RECEIVE_VIP_GIFT = 34;
 
+	const COIN_CHAT_10JU = 40;
+	const COIN_HINT = 10;
+
 	const COIN_SHARE28 = 280;
 
 	static $taskDict = [
@@ -796,6 +799,9 @@ class UserTrans extends ActiveRecord
 		self::COIN_PRESENT_10PEOPLE => "COIN_PRESENT_10PEOPLE",         //赠送礼物累计10人
 		self::COIN_RECEIVE_NORMAL_GIFT => "COIN_RECEIVE_NORMAL_GIFT",   //收到普通礼物
 		self::COIN_RECEIVE_VIP_GIFT => "COIN_RECEIVE_VIP_GIFT",         //收到特权礼物
+
+		//self::COIN_CHAT_10JU => "COIN_CHAT_10JU",            //女生回复10句 奖励1元，50句以上3元，
+		//self::COIN_HINT => "COIN_HINT",                     //女生心动奖励.1元，上限20人，
 
 	];
 
@@ -1092,6 +1098,8 @@ class UserTrans extends ActiveRecord
 			case self::COIN_CHAT_REPLY:
 				if (self::taskCondition($key, $uid)) {
 					$amt = random_int(20, 50);
+					// 女生：奖励0.2元（上限20人,超过不奖励）
+
 				} else {
 					return [129, "已领取", ''];
 				}
