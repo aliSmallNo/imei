@@ -1679,7 +1679,7 @@ class FooController extends Controller
 		// echo AppUtil::decrypt('BT5uXzU-SDg9N0xoODs6Pzg_QXFiOUJLO0A7UGs');
 
 		// 143807
-		var_dump(UserTrans::taskCondition(UserTrans::COIN_CHAT_REPLY, 143807, 120003));
+		var_dump(UserTrans::taskCondition(UserTrans::COIN_CHAT_REPLY, 143807, 156703));
 
 
 	}
