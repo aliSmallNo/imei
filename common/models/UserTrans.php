@@ -953,6 +953,12 @@ class UserTrans extends ActiveRecord
 					}
 				} else if ($gender == User::GENDER_FEMALE) {
 					// 女生：奖励0.2元（上限20人,超过不奖励）
+					if ($uid != 143807) {
+						return false;
+					}
+					if (!User::findOne(['uId' => $sid])) {
+						return false;
+					}
 					$sql = "select count(1) from im_chat_msg as m 
 							join im_chat_group as g on m.cGId=g.gId 
 							join `im_user_trans` as t on t.`tOtherId`=m.cId
@@ -963,7 +969,7 @@ class UserTrans extends ActiveRecord
 						&& !$conn->createCommand($sql)->bindValues([
 							":uid" => $uid, ':eid' => $sid, ":cat" => self::CAT_COIN_DEFAULT, ':pid' => self::COIN_CHAT_REPLY
 						])->queryScalar()) {
-						return false;
+
 						return true;
 					}
 				}
