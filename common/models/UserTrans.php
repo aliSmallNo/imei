@@ -963,7 +963,7 @@ class UserTrans extends ActiveRecord
 						&& !$conn->createCommand($sql)->bindValues([
 							":uid" => $uid, ':eid' => $sid, ":cat" => self::CAT_COIN_DEFAULT, ':pid' => self::COIN_CHAT_REPLY
 						])->queryScalar()) {
-						return false;
+
 						return true;
 					}
 				}
@@ -1210,7 +1210,16 @@ class UserTrans extends ActiveRecord
 				self::COIN_RECEIVE_GIFT, self::COIN_RECEIVE_NORMAL_GIFT, self::COIN_RECEIVE_VIP_GIFT, self::COIN_PRESENT_10PEOPLE,
 				self::COIN_CERT, self::COIN_PERCENT80, self::COIN_REG, self::COIN_SHARE28
 			])) {
-			self::add($uid, $key, self::CAT_COIN_DEFAULT, self::$catDict[self::CAT_COIN_DEFAULT], $amt, self::UNIT_COIN_FEN);
+			// self::add($uid, $key, self::CAT_COIN_DEFAULT, self::$catDict[self::CAT_COIN_DEFAULT], $amt, self::UNIT_COIN_FEN);
+			$otherid = 0;
+			if ($key == self::COIN_CHAT_REPLY) {
+				$otherid = $sid;
+			}
+			$sql = "insert into im_user_trans (tCategory,tPId,tUId,tTitle,tAmt,tUnit,tOtherId) VALUES (:cat,:pid,:uid,:title,:amt,:unit,:otherid) ";
+			AppUtil::db()->createCommand($sql)->bindValues([
+				":cat" => self::CAT_COIN_DEFAULT, ':pid' => $key, ':uid' => $uid, ':title' => self::$catDict[self::CAT_COIN_DEFAULT],
+				':amt' => $amt, ':unit' => self::UNIT_COIN_FEN, ':otherid' => $otherid
+			])->execute();
 		}
 
 		return [0, "ok", ["amt" => sprintf("%.2f", $amt / 100)]];
