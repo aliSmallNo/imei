@@ -959,15 +959,16 @@ class UserTrans extends ActiveRecord
 					if (!User::findOne(['uId' => $sid])) {
 						return false;
 					}
+					list($gid) = ChatMsg::groupEdit($uid, $sid);
 					$sql = "select count(1) from im_chat_msg as m 
 							join im_chat_group as g on m.cGId=g.gId 
-							join `im_user_trans` as t on t.`tOtherId`=m.cId
-							where (`cAddedBy`=:uid and gUId2=:eid or `cAddedBy`=:eid and gUId2=:uid)
-							and tCategory=:cat and tPId=:pid  
-							and DATE_FORMAT(cAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')  ";
+							join `im_user_trans` as t on t.`tOtherId`=g.gId 
+							where `cAddedBy`=:uid and g.gId=:gid 
+							and tCategory=:cat and tPId=:pid 
+							and DATE_FORMAT(cAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
 					if ($awardCount < 20
 						&& !$conn->createCommand($sql)->bindValues([
-							":uid" => $uid, ':eid' => $sid, ":cat" => self::CAT_COIN_DEFAULT, ':pid' => self::COIN_CHAT_REPLY
+							":uid" => $uid, ':gid' => $gid, ":cat" => self::CAT_COIN_DEFAULT, ':pid' => self::COIN_CHAT_REPLY
 						])->queryScalar()) {
 
 						return true;
