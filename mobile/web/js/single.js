@@ -1431,8 +1431,8 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			sent: function () {
 				var util = this;
 				if (!util.commentFlag) {
-					//alpha.toast("聊了这么多，觉得ta怎么样呢，快去匿名评价吧~");
-					//return false;
+					// alpha.toast("聊了这么多，觉得ta怎么样呢，快去匿名评价吧~");
+					// return false;
 				}
 				var content = util.inputVal ? util.inputVal : util.input.val().trim();
 				if (!content) {
@@ -1459,7 +1459,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 							util.toggleBar(0);
 							util.commentFlag = resp.data.commentFlag;
 							if (resp.data.taskflag) {
-								alpha.showCoin({data: {key: resp.data.key}});
+								alpha.showCoin({data: {key: resp.data.key}}, util.sid);
 							}
 							break;
 						case 101:

@@ -100,7 +100,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_EXCHANGE_FLOWER => "商城兑换",
 		self::CAT_EXCHANGE_YUAN => "商城交易",
 		self::CAT_EXCHANGE_CHAT => "聊天赠送礼物",
-		self::CAT_COIN_DEFAULT => "奖励千寻币",
+		self::CAT_COIN_DEFAULT => "奖励千寻币",// 做任务奖励
 		self::CAT_COIN_WITHDRAW => "千寻币提现",
 		self::CAT_COIN_SPRING_F_SEND => "发红包",
 		self::CAT_COIN_SPRING_F_RECEIVE => "收红包",
@@ -894,7 +894,7 @@ class UserTrans extends ActiveRecord
 	 * @throws \yii\db\Exception
 	 * 判断是否符合完成任务的条件
 	 */
-	public static function taskCondition($key, $uid)
+	public static function taskCondition($key, $uid, $sid = 0)
 	{
 		$startTime = '2018-01-02 00:00:00';
 		$u = User::fmtRow(User::findOne(["uId" => $uid])->toArray());
@@ -902,6 +902,8 @@ class UserTrans extends ActiveRecord
 		if ($u["status"] != User::STATUS_ACTIVE) {
 			return false;
 		}
+		$gender = $u['gender'];
+
 		$conn = AppUtil::db();
 		$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid ";
 		$cmd1 = $conn->createCommand($sql);
@@ -941,12 +943,30 @@ class UserTrans extends ActiveRecord
 				}
 				break;
 			case self::COIN_CHAT_REPLY:
-				$sql = "select count(1) as co from im_chat_msg where `cAddedBy`=:uid and DATE_FORMAT(cAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
-				if ($cmd2->bindValues([":uid" => $uid, ":pid" => $key,])->queryScalar() == 0
-					&& $conn->createCommand($sql)->bindValues([":uid" => $uid])->queryScalar()
-				) {
-					return true;
+				$awardCount = $cmd2->bindValues([":uid" => $uid, ":pid" => $key,])->queryScalar();
+				if ($gender == User::GENDER_MALE) {
+					$sql = "select count(1) as co from im_chat_msg where `cAddedBy`=:uid and DATE_FORMAT(cAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
+					if ($awardCount == 0
+						&& $conn->createCommand($sql)->bindValues([":uid" => $uid])->queryScalar()
+					) {
+						return true;
+					}
+				} else if ($gender == User::GENDER_FEMALE) {
+					// 女生：奖励0.2元（上限20人,超过不奖励）
+					$sql = "select count(1) from im_chat_msg as m 
+							join im_chat_group as g on m.cGId=g.gId 
+							join `im_user_trans` as t on t.`tOtherId`=m.cId
+							where (`cAddedBy`=:uid and gUId2=:eid or `cAddedBy`=:eid and gUId2=:uid)
+							and tCategory=:cat and tPId=:pid  
+							and DATE_FORMAT(cAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')  ";
+					if ($awardCount < 20
+						&& !$conn->createCommand($sql)->bindValues([
+							":uid" => $uid, ':eid' => $sid, ":cat" => self::CAT_COIN_DEFAULT, ':pid' => self::COIN_CHAT_REPLY
+						])->queryScalar()) {
+						return true;
+					}
 				}
+
 				break;
 			case self::COIN_SHOW_COIN:
 				$moment = UserNet::REL_QR_MOMENT;
@@ -1039,7 +1059,7 @@ class UserTrans extends ActiveRecord
 		return false;
 	}
 
-	public static function addTaskRedpaket($key, $uid)
+	public static function addTaskRedpaket($key, $uid, $sid = 0)
 	{
 		if (!$key || !$uid) {
 			return [129, "参数错误", ''];
@@ -1096,9 +1116,14 @@ class UserTrans extends ActiveRecord
 				}
 				break;
 			case self::COIN_CHAT_REPLY:
-				if (self::taskCondition($key, $uid)) {
-					$amt = random_int(20, 50);
-					// 女生：奖励0.2元（上限20人,超过不奖励）
+				if (self::taskCondition($key, $uid, $sid)) {
+					$gender = User::findOne(['uId' => $uid])->uGender;
+					if ($gender == User::GENDER_MALE) {
+						$amt = random_int(20, 50);
+					} else if ($gender == User::GENDER_FEMALE) {
+						// 女生：奖励0.2元（上限20人,超过不奖励）
+						$amt = 20;
+					}
 
 				} else {
 					return [129, "已领取", ''];

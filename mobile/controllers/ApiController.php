@@ -541,7 +541,8 @@ class ApiController extends Controller
 			case "task_add_award":
 				// alpha.js use
 				$key = self::postParam("key");
-				list($code, $msg, $data) = UserTrans::addTaskRedpaket($key, $wx_uid);
+				$sid = AppUtil::decrypt(self::postParam("sid"));
+				list($code, $msg, $data) = UserTrans::addTaskRedpaket($key, $wx_uid, $sid);
 				return self::renderAPI($code, $msg, $data);
 				break;
 			case "task_show_award":

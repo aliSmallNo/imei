@@ -1661,18 +1661,25 @@ class FooController extends Controller
 
 		// list($hasSendCount, $hasSendSum) = Log::springRedpacket('', 120003);echo $hasSendCount;
 
-		/*$uids = [132607, 132601, 132553, 132554, 132550, 132519, 132509, 132510, 132511, 132497,
+		/*
+		$uids = [132607, 132601, 132553, 132554, 132550, 132519, 132509, 132510, 132511, 132497,
 			132498, 132493, 132487, 132477, 132471];
 		foreach ($uids as $uid) {
 			Log::calculateSendAmt($uid, 120003);
-		}*/
-
+		}
+		*/
 
 		// 添加月度畅聊卡
 		// UserTag::add(UserTag::CAT_CHAT_MONTH,120003);
 
 		//$seconds = time() - strtotime("2017-11-29 14:32:00");
 		//echo floor($seconds/86400);
+
+
+		// echo AppUtil::decrypt('BT5uXzU-SDg9N0xoODs6Pzg_QXFiOUJLO0A7UGs');
+
+		// 143807
+		var_dump(UserTrans::taskCondition(UserTrans::COIN_CHAT_REPLY, 143807, 120003));
 
 
 	}

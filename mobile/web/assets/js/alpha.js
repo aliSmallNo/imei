@@ -106,7 +106,7 @@ define(['jquery', 'layer', 'swiper', 'mustache'],
 				});
 				return false;
 			},
-			showCoin: function (taskData) {
+			showCoin: function (taskData, sid) {
 				var util = this;
 				var temp = '{[#data]}<div class="greeting pic"><a href="javascript:;" class="redpacket close" data-key="{[key]}"></a><div class="redpacket_amt"><span>1.2</span>元</div></div>{[/data]}';
 				var strJson = Mustache.render(temp, taskData);
@@ -125,6 +125,7 @@ define(['jquery', 'layer', 'swiper', 'mustache'],
 						$.post("/api/user", {
 							tag: "task_add_award",
 							key: key,
+							sid: sid,
 						}, function (resp) {
 							util.loadflag = 0;
 							if (resp.code == 0) {
