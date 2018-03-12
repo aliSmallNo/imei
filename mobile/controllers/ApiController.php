@@ -2388,7 +2388,7 @@ class ApiController extends Controller
 					$coinCat = UserTrans::COIN_CHAT_REPLY;
 					$taskflag = false;
 					foreach ([UserTrans::COIN_CHAT_REPLY, UserTrans::COIN_CHAT_3TIMES] as $v) {
-						$taskflag = UserTrans::taskCondition($v, $uid);
+						$taskflag = UserTrans::taskCondition($v, $uid, $receiverId);
 						if ($taskflag) {
 							$coinCat = $v;
 							break;
@@ -2416,6 +2416,7 @@ class ApiController extends Controller
 							"taskflag" => $taskflag,
 							"key" => $coinCat,
 						]);
+
 
 					return self::renderAPI(0, '',
 						[
