@@ -795,7 +795,7 @@ class UserTrans extends ActiveRecord
 		self::COIN_SHARE_REG => "COIN_SHARE_REG",       //成功邀请
 		self::COIN_HINT => "COIN_HINT",                 //心动 女生心动奖励.1元，上限20人，
 		self::COIN_CHAT_10_COUNT => "COIN_CHAT_10_COUNT",       //单人聊10句 女生回复10句 奖励1元
-		self::COIN_CHAT_50_COUNT => "COIN_CHAT_50_COUNT",       //单人聊50句 女生回复10句，50句以上3元
+		self::COIN_CHAT_50_COUNT => "COIN_CHAT_50_COUNT",       //单人聊50句 女生回复10句，50句以上2元
 
 
 		self::COIN_SHARE28 => "COIN_SHARE28",           //28888现金红包
@@ -855,7 +855,7 @@ class UserTrans extends ActiveRecord
 			$replay = "每日回复一次聊天0.2元(上限20人)。完成后直接到我的任务列表查看获得的奖励";
 			$everytask_female = [
 				["key" => self::COIN_CHAT_10_COUNT, "cls" => "", "title" => "回复聊天数量10句", "num" => 1, "des" => "每日回复单个异性聊天数量10句，领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
-				["key" => self::COIN_CHAT_50_COUNT, "cls" => "", "title" => "回复聊天数量50句", "num" => 3, "des" => "每日回复单个异性聊天数量50句，可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
+				["key" => self::COIN_CHAT_50_COUNT, "cls" => "", "title" => "回复聊天数量50句", "num" => 2, "des" => "每日回复单个异性聊天数量50句，可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
 			];
 		}
 		$everyTask = [
@@ -1195,7 +1195,7 @@ class UserTrans extends ActiveRecord
 			case self::COIN_CHAT_10_COUNT:
 			case self::COIN_CHAT_50_COUNT:
 				if ($gender == User::GENDER_FEMALE) {
-					$amt = $key == self::COIN_CHAT_10_COUNT ? 100 : 300;
+					$amt = $key == self::COIN_CHAT_10_COUNT ? 100 : 200;
 				}
 				break;
 			case self::COIN_HINT:
