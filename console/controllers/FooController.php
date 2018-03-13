@@ -8,7 +8,6 @@ namespace console\controllers;
  * Date: 11/5/2017
  * Time: 2:11 PM
  */
-use admin\models\Admin;
 use common\models\ChatMsg;
 use common\models\Img;
 use common\models\Moment;
@@ -16,7 +15,6 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
-use common\models\UserTag;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use common\service\TrendService;
@@ -1404,67 +1402,10 @@ class FooController extends Controller
 
 	public function actionRain()
 	{
-		echo \Yii::getVersion();
-		/*WechatUtil::templateMsg(WechatUtil::NOTICE_ROUTINE,
-			131379,
-			'千寻恋恋每日简报',
-			'测试测试1122');*/
-
-
-		/*QueueUtil::loadJob('templateMsg',
-			[
-				'tag' => WechatUtil::NOTICE_CHAT,
-				'receiver_uid' => 131379,
-				'title' => '有人密聊你啦',
-				'sub_title' => 'TA给你发了一条密聊消息，快去看看吧~',
-				'sender_uid' => 120000,
-				'gid' => 0
-			],
-			QueueUtil::QUEUE_TUBE_SMS);*/
-
-		/*WechatUtil::templateMsg(WechatUtil::NOTICE_SUMMON,
-			131379,
-			'有一位你的微信好友对你怦然心动啦，快去看看吧~',
-			'有一位你的微信好友对你怦然心动啦，快去看看吧~',
-			120000,
-			0
-		);*/
-
-		//var_dump(json_encode(UserTrans::$CatMinus));
-//		$ret = City::locationData();
-//		var_dump($ret);
-//		AppUtil::logFile($ret, 5, __FUNCTION__);
-		/*$ret = UserQR::getQRCode(131379, UserQR::CATEGORY_RED_103,
-			'https://img.meipo100.com/2017/1130/174483165512_t.jpg', true);
-		var_dump($ret);*/
-		/*$uId = 131379;
-		$ret = UserAudit::invalid($uId);
+		$json = ['title' => '来找茬'];
+		$ret = json_encode($json);
+		$ret = urlencode('来找茬');
 		var_dump($ret);
-
-		$uId = 152901;
-		$ret = UserAudit::invalid($uId);
-		var_dump($ret);*/
-//		NoticeUtil::init(NoticeUtil::CAT_CHAT, 'oYDJewx6Uj3xIV_-7ciyyDMLq8Wc')->sendText();
-		/*$ret = ChatRoom::roomAvatar(101);
-		var_dump($ret);
-
-		$ret = ChatRoom::roomAvatar(105);
-		var_dump($ret);*/
-		/*$ret = strtotime('+1 week', strtotime('2017-07-17 12:34'));
-		var_dump($ret);
-		$ret = date('Y-m-d H:i', $ret);
-		var_dump($ret);*/
-		/*$hid = '059af5c749741c';
-		$ret = AppUtil::decrypt($hid);
-		var_dump($ret);
-		$hid = '5a1bce62e65fd';
-		$ret = AppUtil::decrypt($hid);
-		var_dump($ret);*/
-		/*$service = UserService::init('059af5c749741c')->info;
-		var_dump($service);
-
-		$service = UserService::init(131379)->info;
-		var_dump($service);*/
 
 	}
 

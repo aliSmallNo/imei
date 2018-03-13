@@ -380,9 +380,9 @@ class WechatUtil
 					"url" => $wxUrl . "/wx/single#slook"
 				],
 				[
-					"type" => "view",
-					"name" => "脱单秘籍🔥",
-					"url" => $wxUrl . "/m2/vd"
+					"type" => "click",
+					"name" => "来加薪🎁",
+					"key" => "EV_REWARD"
 				],
 				[
 					"name" => "更多",
