@@ -524,7 +524,8 @@ class SiteController extends BaseController
 				"dphone" => $dInfo['uPhone'],
 				"dId" => $dummyId,
 				'admin_id' => $this->admin_id,
-				'base_url' => 'site/dummychats'
+				'base_url' => 'site/dummychats',
+				'wsUrl' => AppUtil::wsUrl()
 			]);
 	}
 
@@ -1386,7 +1387,7 @@ class SiteController extends BaseController
 		return $this->renderPage('pins.tpl',
 			[
 				'uni' => $this->admin_id,
-				'ws_url' => AppUtil::wsUrl(),
+				'wsUrl' => AppUtil::wsUrl(),
 				'items' => $items,
 			]
 		);
@@ -1398,7 +1399,7 @@ class SiteController extends BaseController
 		return $this->renderPage('chat_test.tpl',
 			[
 				'uni' => $this->admin_id,
-				'ws_url' => AppUtil::wsUrl(),
+				'wsUrl' => AppUtil::wsUrl(),
 				'room_id' => time(),
 			]
 		);

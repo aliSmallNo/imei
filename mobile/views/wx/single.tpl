@@ -943,6 +943,7 @@
 <input type="hidden" id="ctaskFlag" value="{{$taskFlag}}">
 <input type="hidden" id="ctaskKey" value="{{$taskKey}}">
 <input type="hidden" id="cVIPFLAG" value="{{$vipFlag}}">
+<input type="hidden" id="cWSUrl" value="{{$wsUrl}}">
 <script>
 	var mProvinces = {{$provinces}};
 	var catDes = {{$catDes}};
@@ -1601,6 +1602,6 @@
 		document.location.hash = "#slook";
 	}
 	requirejs(['/js/config.js?v=1.3.1'], function () {
-		requirejs(['/js/single.js?v=1.12.6']);
+		requirejs(['/js/single.js?v=1.12.8']);
 	});
 </script>

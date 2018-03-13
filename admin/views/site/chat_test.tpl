@@ -4,8 +4,9 @@
 		<a href="javascript:;" class="btn-send">发送</a>
 	</div>
 </div>
-<input type="hidden" id="cUNI" value="{{$uni}}">
-<input type="hidden" id="cRoomId" value="{{$room_id}}">
+<input type="hidden" id="cUNI" value="{{$uni}}"/>
+<input type="hidden" id="cRoomId" value="{{$room_id}}"/>
+<input type="hidden" id="cWSUrl" value="{{$wsUrl}}"/>
 <script src="/assets/js/socket.io.js"></script>
 <script>
 	var NoticeUtil = {
@@ -15,10 +16,11 @@
 		board: $('.m-notice'),
 		list: $('.menu_body'),
 		rid: $('#cRoomId').val(),
+		url: $('#cWSUrl').val(),
 		init: function () {
 			var util = this;
 			util.uni = $('#cUNI').val();
-			util.socket = io.connect('https://nd.meipo100.com/chatroom');
+			util.socket = io.connect(util.url + '/chatroom');
 			util.socket.on('connect', function () {
 				util.socket.emit('room', util.rid, util.uni);
 			});

@@ -64,13 +64,14 @@ require(["jquery", "alpha", "mustache", 'socket', 'layer'],
 		});
 
 		var NoticeUtil = {
+			timer: 0,
 			ioChat: null,
 			uni: $('#cUNI').val(),
 			rid: $('#cRID').val(),
-			timer: 0,
+			url: $('#cWSUrl').val(),
 			init: function () {
 				var util = this;
-				util.ioChat = io('https://nd.meipo100.com/chatroom');
+				util.ioChat = io(util.url + '/chatroom');
 				util.ioChat.on('connect', function () {
 					util.ioChat.emit('room', util.rid, util.uni);
 				});

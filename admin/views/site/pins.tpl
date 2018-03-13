@@ -205,7 +205,8 @@
 	</div>
 	<div id="mapContainer" class="rightBox"></div>
 </div>
-<input type="hidden" id="cUNI" value="{{$uni}}">
+<input type="hidden" id="cUNI" value="{{$uni}}"/>
+<input type="hidden" id="cWSUrl" value="{{$wsUrl}}"/>
 <script src="/assets/js/socket.io.js"></script>
 <script>
 	var mLevel = 13, mMap;
@@ -295,9 +296,10 @@
 		uni: $('#cUNI').val(),
 		board: $('.m-notice'),
 		list: $('.menu_body'),
+		url: $('#cWSUrl').val(),
 		init: function () {
 			var util = this;
-			util.socket = io('https://nd.meipo100.com/house');
+			util.socket = io(util.url + '/house');
 			util.socket.on('connect', function () {
 				util.socket.emit('house', util.uni);
 			});
@@ -351,7 +353,6 @@
 	$(function () {
 
 		NoticeUtil.init();
-
 		switchMarkers(1);
 
 	});

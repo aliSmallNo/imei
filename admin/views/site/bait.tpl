@@ -45,6 +45,7 @@
 </div>
 <input type="hidden" id="cRoomId" value="{{$roomId}}">
 <input type="hidden" id="cAdminId" value="{{$admin_id}}">
+<input type="hidden" id="cWSUrl" value="{{$wsUrl}}">
 <div class="row-divider">&nbsp;</div>
 <script type="text/html" id="tpl_message">
 	{[#items]}
@@ -125,11 +126,11 @@
 		roomId: 0,
 		uni: $('#cUNI').val(),
 		board: $('.m-notice'),
+		url: $('#cWSUrl').val(),
 		init: function () {
 			var util = this;
 			util.uni = $('#cAdminId').val();
-
-			util.ioChat = io('https://nd.meipo100.com/chatroom');
+			util.ioChat = io(util.url + '/chatroom');
 			util.ioChat.on("msg", function (info) {
 				if (info.gid == util.roomId) {
 					reloadData();
