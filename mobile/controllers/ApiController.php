@@ -2377,10 +2377,9 @@ class ApiController extends Controller
 						// ChatMsg::addChat($receiverId, $uid, $text);
 						QueueUtil::loadJob("addChat", [
 							"uid" => $receiverId,
-							"receiverUId" => $uid,
+							"receive" => $uid,
 							"text" => $text,
-						], QueueUtil::QUEUE_TUBE_SMS, 10);
-
+						], QueueUtil::QUEUE_TUBE_SMS, 1);
 					}
 
 					$msgKey = $ret && isset($ret['gid']) ? intval($ret['gid']) : 0;

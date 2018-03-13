@@ -81,6 +81,14 @@ class QueueUtil
 		@file_put_contents($fileName, PHP_EOL . date('Y-m-d H:i:s') . ' ' . $msg . PHP_EOL, FILE_APPEND);
 	}
 
+
+	public static function addChat($params)
+	{
+		ChatMsg::addChat($params['uid'], $params['receive'], $params['text']);
+		self::logFile($params, __FUNCTION__, __LINE__);
+		return true;
+	}
+
 	public static function sendSMS($params)
 	{
 		self::smsMessage($params['phone'], $params['msg'],
@@ -89,13 +97,6 @@ class QueueUtil
 		return true;
 	}
 
-	public static function addChat($params)
-	{
-
-		ChatMsg::addChat($params['uid'], $params['receiverUId'], $params['text']);
-		self::logFile($params, __FUNCTION__, __LINE__);
-		return true;
-	}
 
 	/**
 	 * 发送短信信息
