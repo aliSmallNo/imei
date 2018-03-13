@@ -976,17 +976,28 @@ class UserTrans extends ActiveRecord
 					if (!User::findOne(['uId' => $sid])) {
 						return false;
 					}
+
 					list($gid) = ChatMsg::groupEdit($uid, $sid);
-					$sql = "select count(1) from im_chat_msg as m 
-							join im_chat_group as g on m.cGId=g.gId 
+					// echo ' gid: ' . $gid . PHP_EOL;
+					$sql = "select count(1) from  im_chat_group as g 
 							join `im_user_trans` as t on t.`tOtherId`=g.gId 
-							where `cAddedBy`=:uid and g.gId=:gid 
+							where `tUId`=:uid and g.gId=:gid 
 							and tCategory=:cat and tPId=:pid 
-							and DATE_FORMAT(cAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
-					if ($awardCount < 20
-						&& !$conn->createCommand($sql)->bindValues([
-							":uid" => $uid, ':gid' => $gid, ":cat" => self::CAT_COIN_DEFAULT, ':pid' => self::COIN_CHAT_REPLY
-						])->queryScalar()) {
+							and DATE_FORMAT(tAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
+					$awardRecord = $conn->createCommand($sql)->bindValues([
+						":uid" => $uid, ':gid' => $gid, ":cat" => self::CAT_COIN_DEFAULT, ':pid' => self::COIN_CHAT_REPLY
+					])->queryScalar();
+
+					$sql = "select count(1) from im_chat_msg as c
+						join im_chat_group as g on g.gId=c.cGId
+						where cAddedBy=:uid and gId=:gid and DATE_FORMAT(cAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
+					$chatCount = $conn->createCommand($sql)->bindValues([
+						":uid" => $uid, ':gid' => $gid
+					])->queryScalar();
+
+					if ($awardCount < 20    //上限20人
+						&& !$awardRecord    //此人无奖励记录
+						&& $chatCount > 0) {//此人有聊天记录
 						return true;
 					}
 				}
