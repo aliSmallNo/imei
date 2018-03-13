@@ -9,6 +9,7 @@
 
 namespace console\utils;
 
+use common\models\ChatMsg;
 use common\models\Pin;
 use common\utils\AppUtil;
 use common\utils\NoticeUtil;
@@ -85,6 +86,13 @@ class QueueUtil
 		self::smsMessage($params['phone'], $params['msg'],
 			isset($params['rnd']) ? $params['rnd'] : rand(101, 109),
 			isset($params['type']) ? $params['type'] : 'sale');
+		return true;
+	}
+
+	public static function addChat($params)
+	{
+		ChatMsg::addChat($params['uid'], $params['receiverUId'], $params['text']);
+		self::logFile($params, __FUNCTION__, __LINE__);
 		return true;
 	}
 

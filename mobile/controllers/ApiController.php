@@ -2374,7 +2374,13 @@ class ApiController extends Controller
 					if (User::isDummy($receiverId) && isset(ChatMsg::$DummyAutoReplay[$text])) {
 						$replaylist = ChatMsg::$DummyAutoReplay[$text];
 						$text = $replaylist[random_int(0, (count($replaylist) - 1))];
-						ChatMsg::addChat($receiverId, $uid, $text);
+						// ChatMsg::addChat($receiverId, $uid, $text);
+						QueueUtil::loadJob("addChat", [
+							"uid" => $receiverId,
+							"receiverUId" => $uid,
+							"text" => $text,
+						], '', 30);
+
 					}
 
 					$msgKey = $ret && isset($ret['gid']) ? intval($ret['gid']) : 0;
