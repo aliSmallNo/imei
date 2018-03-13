@@ -93,15 +93,15 @@ class UserBuzz extends ActiveRecord
 
 		$postData = json_decode($postJSON, 1);
 		/**
-		{
-		"ToUserName":"gh_8078ffa2171a",
-		"FromUserName":"oYDJew5EFMuyrJdwRrXkIZLU2c58",
-		"CreateTime":"1520581247",
-		"MsgType":"event",
-		"Event":"SCAN",
-		"EventKey":"17221",
-		"Ticket":"gQEB8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydmtaSTRld09kdTMxMDAwMHcwN1gAAgQnG3dZAwQAAAAA"
-		}
+		 * {
+		 * "ToUserName":"gh_8078ffa2171a",
+		 * "FromUserName":"oYDJew5EFMuyrJdwRrXkIZLU2c58",
+		 * "CreateTime":"1520581247",
+		 * "MsgType":"event",
+		 * "Event":"SCAN",
+		 * "EventKey":"17221",
+		 * "Ticket":"gQEB8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydmtaSTRld09kdTMxMDAwMHcwN1gAAgQnG3dZAwQAAAAA"
+		 * }
 		 */
 
 		if (!$postData || !isset($postData["FromUserName"])) {
@@ -110,14 +110,24 @@ class UserBuzz extends ActiveRecord
 
 		$wxOpenId = $postData["FromUserName"];
 		$wxInfo = UserWechat::getInfoByOpenId($wxOpenId);
-		$msgType = isset($postData["MsgType"]) ? strtolower($postData["MsgType"]) : "";
-		$event = isset($postData["Event"]) ? strtolower($postData["Event"]) : "";
-		$eventKey = isset($postData["EventKey"]) && is_string($postData["EventKey"]) ? strtolower($postData["EventKey"]) : "";
-
-		$fromUsername = isset($postData["FromUserName"]) ? $postData["FromUserName"] : '';
-		$toUsername = isset($postData["ToUserName"]) ? $postData["ToUserName"] : '';
+		$msgType = $postData["MsgType"] ?? '';
+		$event = strtolower($postData["Event"] ?? '');
+		$eventKey = strtolower($postData["EventKey"] ?? '');
+		$fromUsername = $postData["FromUserName"] ?? '';
+		$toUsername = $postData["ToUserName"] ?? '';
 
 		switch ($event) {
+			case 'click':
+				switch ($eventKey) {
+					case 'ev_reward':
+						$mediaId = 'GfJsRJj-kJwOJMdX7eK9HLI2DrdGCsRD6mzH6Y2c_uk';
+						NoticeUtil::init(NoticeUtil::CAT_IMAGE_ONLY, $fromUsername)->sendMedia($mediaId);
+						$resp = '';
+						break;
+					default:
+						break;
+				}
+				break;
 			case "scan":
 				$debug .= $event . "**";
 				if ($eventKey && is_numeric($eventKey)) {
@@ -178,13 +188,13 @@ class UserBuzz extends ActiveRecord
 		}
 		switch ($msgType) {
 			case "image":
-				$mediaId = isset($postData["MediaId"]) ? $postData["MediaId"] : "";
+				$mediaId = $postData["MediaId"] ?? '';
 				if ($mediaId) {
 					list($thumb, $debug) = ImageUtil::save2Server($mediaId, false);
 				}
 				break;
 			case "voice":
-				$mediaId = isset($postData["MediaId"]) ? $postData["MediaId"] : "";
+				$mediaId = $postData["MediaId"] ?? '';
 				if ($mediaId) {
 					list($debug) = ImageUtil::save2Server($mediaId);
 				}
