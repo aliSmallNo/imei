@@ -814,10 +814,12 @@ class FooController extends Controller
 		$senderId = User::SERVICE_UID;
 		foreach ($ret as $row) {
 			$uid = $row['uId'];
-			/*$content = [
+			/*
+			$content = [
 				'text' => '我好想和你一起过圣诞节喔~',
 				'url' => "https://mp.weixin.qq.com/s/1q2ak1MmrQGUhKHyZaJcEg"
-			];*/
+			];
+			*/
 			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1803071208870.png";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
@@ -1646,7 +1648,14 @@ class FooController extends Controller
 		//list($data, $nextpage) = Moment::wechatItems(120003, [], [], 2);
 
 
-		echo AppUtil::logDir();
+		QueueUtil::loadJob("addChat",
+			[
+				"uid" => 120003,
+				"receive" => 143807,
+				"text" => 'hello',
+			], QueueUtil::QUEUE_TUBE_SMS, 1);
+
+
 	}
 
 
