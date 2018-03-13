@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/zp.min.css?v=1.3.7">
+<link rel="stylesheet" href="/css/zp.min.css?v=1.3.8">
 
 <section id="zone_items">
 	<div class="zone_container">
@@ -138,6 +138,8 @@
 
 </section>
 
+<div  class="add_one_moment"><a href="javascript:;"></a></div>
+
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none;">
 	<div class="m-popup-wrap">
@@ -248,7 +250,8 @@
 				{[title]}
 			</div>
 			{[#flag100]}
-			<div class="zone_container_item_cat_text" cat_flag="short" cat_subtext="{[subtext]}" cat_sub_short_text="{[short_subtext]}">
+			<div class="zone_container_item_cat_text" cat_flag="short" cat_subtext="{[subtext]}"
+					 cat_sub_short_text="{[short_subtext]}">
 				{[short_subtext]}
 				{[#showAllFlag]}<a href="javascript:;" items_tag="all">【查看全部】</a>{[/showAllFlag]}
 			</div>
@@ -308,7 +311,7 @@
 		document.location.hash = "#zone_items";
 	}
 	requirejs(['/js/config.js?v=1.2.5'], function () {
-		requirejs(['/js/zone.js?v=1.2.4']);
+		requirejs(['/js/zone.js?v=1.2.6']);
 	});
 </script>
 

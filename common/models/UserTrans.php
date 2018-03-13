@@ -793,9 +793,9 @@ class UserTrans extends ActiveRecord
 		self::COIN_RECEIVE_GIFT => "COIN_RECEIVE_GIFT", //收到礼物
 		self::COIN_SIGN => "COIN_SIGN",                 //签到
 		self::COIN_SHARE_REG => "COIN_SHARE_REG",       //成功邀请
-		self::COIN_HINT => "COIN_HINT",                 //心动
-		self::COIN_CHAT_10_COUNT => "COIN_CHAT_10_COUNT",       //单人聊10句
-		self::COIN_CHAT_50_COUNT => "COIN_CHAT_50_COUNT",       //单人聊50句
+		self::COIN_HINT => "COIN_HINT",                 //心动 女生心动奖励.1元，上限20人，
+		self::COIN_CHAT_10_COUNT => "COIN_CHAT_10_COUNT",       //单人聊10句 女生回复10句 奖励1元
+		self::COIN_CHAT_50_COUNT => "COIN_CHAT_50_COUNT",       //单人聊50句 女生回复10句，50句以上2元
 
 
 		self::COIN_SHARE28 => "COIN_SHARE28",           //28888现金红包
@@ -805,8 +805,6 @@ class UserTrans extends ActiveRecord
 		self::COIN_RECEIVE_NORMAL_GIFT => "COIN_RECEIVE_NORMAL_GIFT",   //收到普通礼物
 		self::COIN_RECEIVE_VIP_GIFT => "COIN_RECEIVE_VIP_GIFT",         //收到特权礼物
 
-		//self::COIN_CHAT_10JU => "COIN_CHAT_10JU",            //女生回复10句 奖励1元，50句以上3元，
-		//self::COIN_HINT => "COIN_HINT",                     //女生心动奖励.1元，上限20人，
 
 	];
 
@@ -857,7 +855,7 @@ class UserTrans extends ActiveRecord
 			$replay = "每日回复一次聊天0.2元(上限20人)。完成后直接到我的任务列表查看获得的奖励";
 			$everytask_female = [
 				["key" => self::COIN_CHAT_10_COUNT, "cls" => "", "title" => "回复聊天数量10句", "num" => 1, "des" => "每日回复单个异性聊天数量10句，领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
-				["key" => self::COIN_CHAT_50_COUNT, "cls" => "", "title" => "回复聊天数量50句", "num" => 3, "des" => "每日回复单个异性聊天数量50句，可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
+				["key" => self::COIN_CHAT_50_COUNT, "cls" => "", "title" => "回复聊天数量50句", "num" => 2, "des" => "每日回复单个异性聊天数量50句，可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
 			];
 		}
 		$everyTask = [
@@ -875,7 +873,7 @@ class UserTrans extends ActiveRecord
 				$everyTask = $st1($everyTask, $k, '已领取', 'fail', 'javascript:;');
 			}
 		}
-		// $everyTask = array_merge($everyTask, $everytask_female);
+		 $everyTask = array_merge($everyTask, $everytask_female);
 
 		$hardTask = [
 			["key" => self::COIN_DATE_COMPLETE, "cls" => "", "title" => "完成1次线下约会", "num" => 3, "des" => "向心动异性发起约会，成功线下约会并向客服提交约会凭证，可领取3元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
@@ -921,7 +919,7 @@ class UserTrans extends ActiveRecord
 		$gender = $u['gender'];
 
 		if (in_array($key, [self::COIN_CHAT_10_COUNT, self::COIN_CHAT_50_COUNT, self::COIN_HINT]) && $uid != 143807) {
-			return false;
+			// return false;
 		}
 
 		$conn = AppUtil::db();
@@ -1197,7 +1195,7 @@ class UserTrans extends ActiveRecord
 			case self::COIN_CHAT_10_COUNT:
 			case self::COIN_CHAT_50_COUNT:
 				if ($gender == User::GENDER_FEMALE) {
-					$amt = $key == self::COIN_CHAT_10_COUNT ? 100 : 300;
+					$amt = $key == self::COIN_CHAT_10_COUNT ? 100 : 200;
 				}
 				break;
 			case self::COIN_HINT:

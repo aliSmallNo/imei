@@ -92,7 +92,7 @@ EEE;
 			$order = " order by mId desc ";
 		}
 
-		$limit = "limit " . ($page - 1) * ($pagesize + 1) . ',' . $pagesize;
+		$limit = "limit " . ($page - 1) * $pagesize . ',' . ($pagesize + 1);
 		$sql = "select m.*,uName,uThumb,uLocation,tTitle,uBirthYear,uGender,
 				$optstr
 				SUM(case when sCategory=100  then 1 else 0 end) as `view`,
@@ -107,6 +107,9 @@ EEE;
 				where mDeletedFlag=0 $str
 				group by mId $order  $limit ";
 		$ret = $conn->createCommand($sql)->bindValues($param)->queryAll();
+
+		// echo $conn->createCommand($sql)->bindValues($param)->getRawSql();
+
 
 		foreach ($ret as $k => $v) {
 			$ret[$k] = array_merge($v, self::fmt($v));
