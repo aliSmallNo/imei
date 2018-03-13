@@ -729,6 +729,7 @@ require(["jquery", "alpha", "mustache"],
 			resetAddMessage();
 			switch (hashTag) {
 				case 'zone_items':
+					$(".add_one_moment").show();
 					topicUtil.topic_id = 0;
 					pageItemsUtil.reset();
 					pageItemsUtil.zone_items();
@@ -776,7 +777,12 @@ require(["jquery", "alpha", "mustache"],
 			$(".m-draw-wrap").removeClass("on").addClass("off");
 			$(".zone_container_add_msg ul[add_cat=image]").html('');
 			$(".zone_container_add_msg textarea").val('');
+			$(".add_one_moment").hide();
 		}
+
+		$(document).on("click", ".add_one_moment a", function () {
+			location.href = "#zone_add_msg";
+		});
 
 		$(function () {
 			var wxInfo = JSON.parse($sls.wxString);
