@@ -2379,7 +2379,7 @@ class ApiController extends Controller
 							"uid" => $receiverId,
 							"receiverUId" => $uid,
 							"text" => $text,
-						], '', 30);
+						], QueueUtil::QUEUE_TUBE_SMS, 10);
 
 					}
 

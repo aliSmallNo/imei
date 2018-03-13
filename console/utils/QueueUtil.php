@@ -91,6 +91,7 @@ class QueueUtil
 
 	public static function addChat($params)
 	{
+
 		ChatMsg::addChat($params['uid'], $params['receiverUId'], $params['text']);
 		self::logFile($params, __FUNCTION__, __LINE__);
 		return true;
