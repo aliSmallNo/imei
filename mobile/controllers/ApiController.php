@@ -542,9 +542,7 @@ class ApiController extends Controller
 				// alpha.js use
 				$key = self::postParam("key");
 				$sid = AppUtil::decrypt(self::postParam("sid"));
-				LogAction::add($wx_uid, $openId, LogAction::ACTION_TEST_TEMP, [
-					"sid" => $sid, 'key' => $key
-				]);
+
 				list($code, $msg, $data) = UserTrans::addTaskRedpaket($key, $wx_uid, $sid);
 				return self::renderAPI($code, $msg, $data);
 				break;

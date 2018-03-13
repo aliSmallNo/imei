@@ -597,7 +597,6 @@ require(["jquery", "alpha", "mustache"],
 				});
 			},
 			submitItem: function () {
-				// alert("submitItem function ");
 				var util = this;
 				$.post("/api/zone", {
 					tag: "add_zone_msg",

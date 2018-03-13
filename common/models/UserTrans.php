@@ -987,7 +987,6 @@ class UserTrans extends ActiveRecord
 						&& !$conn->createCommand($sql)->bindValues([
 							":uid" => $uid, ':gid' => $gid, ":cat" => self::CAT_COIN_DEFAULT, ':pid' => self::COIN_CHAT_REPLY
 						])->queryScalar()) {
-
 						return true;
 					}
 				}
@@ -995,7 +994,7 @@ class UserTrans extends ActiveRecord
 				break;
 			case self::COIN_CHAT_10_COUNT:
 			case self::COIN_CHAT_50_COUNT:
-				return false;
+
 				if ($gender == User::GENDER_MALE || !User::findOne(['uId' => $sid])) {
 					return false;
 				}
@@ -1266,7 +1265,7 @@ class UserTrans extends ActiveRecord
 		}
 
 		$stat = UserTrans::stat($uid);
-		if ($stat["coin_f"] > 1000 && !in_array($key, [self::COIN_CHAT_10_COUNT, self::COIN_CHAT_50_COUNT])) {
+		if ($stat["coin_f"] > 1000 && !in_array($key, [self::COIN_CHAT_REPLY, self::COIN_CHAT_10_COUNT, self::COIN_CHAT_50_COUNT])) {
 			$amt = ceil($amt / 3);
 		}
 
