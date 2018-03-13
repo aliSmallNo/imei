@@ -18,7 +18,7 @@ require(["jquery", "alpha", "mustache"],
 		$(window).on("scroll", function () {
 			var lastRow;
 			var sh = $(window).scrollTop();
-			if ($sls.curFrag == 'zone_items' && sh > 0) {
+			if ($sls.curFrag == 'zone_items' && sh > 0 && pageItemsUtil.page > 0) {
 				lastRow = pageItemsUtil.itemsUL.find('li:last');
 				if (lastRow && eleInScreen(lastRow, 150) && pageItemsUtil.page > 0) {
 					pageItemsUtil.zone_items();

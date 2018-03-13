@@ -311,7 +311,7 @@
 		document.location.hash = "#zone_items";
 	}
 	requirejs(['/js/config.js?v=1.2.5'], function () {
-		requirejs(['/js/zone.js?v=1.2.5']);
+		requirejs(['/js/zone.js?v=1.2.6']);
 	});
 </script>
 

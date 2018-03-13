@@ -11,6 +11,7 @@ namespace console\controllers;
 use admin\models\Admin;
 use common\models\ChatMsg;
 use common\models\Img;
+use common\models\Moment;
 use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
@@ -1686,18 +1687,21 @@ class FooController extends Controller
 				and DATE_FORMAT(cAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
 		echo AppUtil::db()->createCommand($sql)->queryScalar();*/
 
-		foreach ([UserTrans::COIN_CHAT_REPLY, UserTrans::COIN_CHAT_3TIMES, UserTrans::COIN_CHAT_10_COUNT, UserTrans::COIN_CHAT_50_COUNT] as $v) {
+		/*foreach ([UserTrans::COIN_CHAT_REPLY, UserTrans::COIN_CHAT_3TIMES, UserTrans::COIN_CHAT_10_COUNT, UserTrans::COIN_CHAT_50_COUNT] as $v) {
 			$taskflag = UserTrans::taskCondition($v, 143807, 131379);
 			if ($taskflag) {
 				$coinCat = $v;
 				echo $coinCat;
 				break;
 			}
-		}
+		}*/
 
 		/*list($gid) = ChatMsg::groupEdit(143807, 131379);
 		echo $gid . PHP_EOL;
 		var_dump(UserTrans::taskCondition(40, 143807, 131379));*/
+
+		list($data, $nextpage) = Moment::wechatItems(120003, [], [], 2);
+		list($data, $nextpage) = Moment::wechatItems(120003, [], [], 2);
 
 
 	}
