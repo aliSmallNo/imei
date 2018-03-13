@@ -135,7 +135,10 @@ class UserBuzz extends ActiveRecord
 					$debug .= $wxOpenId . "**" . $qrInfo["qOpenId"] . "**" . $qrInfo["qCategory"] . "**" . $qrInfo["qCode"];
 					$addResult = "";
 					if (strlen($wxOpenId) > 6) {
-						$addResult = self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SCAN, $eventKey);
+						$addResult = self::addRel(
+							$qrInfo["qOpenId"],
+							$wxOpenId,
+							UserNet::REL_QR_SCAN, $eventKey);
 					}
 					if ($qrInfo) {
 						$content = $qrInfo["qCode"];
