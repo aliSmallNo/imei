@@ -542,6 +542,7 @@ class WxController extends BaseController
 				'isMember' => $isMember,
 				'hideFlag' => $hideFlag,
 				"gay" => $gay,
+				'wsUrl' => AppUtil::wsUrl()
 			],
 			'terse');
 	}
@@ -670,7 +671,7 @@ class WxController extends BaseController
 			}
 		}
 		$userInfo = User::findOne(["uId" => $hid]);
-		$certNote = isset($userInfo->uCertNote) ? $userInfo->uCertNote : '';
+		$certNote = $userInfo->uCertNote ?? '';
 		return self::renderPage("cert2.tpl",
 			[
 				'avatar' => $avatar,
@@ -798,7 +799,7 @@ class WxController extends BaseController
 			'taskFlag' => $taskflag,
 			'taskKey' => $taskKey,
 			'vipFlag' => $vipFlag,
-
+			'wsUrl' => AppUtil::wsUrl()
 		]);
 	}
 
@@ -1541,7 +1542,7 @@ class WxController extends BaseController
 				"oBefore" => $name . '-' . $gender])) {
 				$item = json_decode($log["oAfter"], 1);
 			} else {
-				$items = isset(AppUtil::$otherPartDict[$gender]) ? AppUtil::$otherPartDict[$gender] : [];
+				$items = AppUtil::$otherPartDict[$gender] ?? [];
 				if ($items) {
 					$item = $items[array_rand($items, 1)];
 					Log::add([
@@ -2031,6 +2032,7 @@ class WxController extends BaseController
 				"subscribe" => $wSubscribe,
 				"otherRoom" => $otherRoom,
 				"deleted" => $deleted,
+				'wsUrl' => AppUtil::wsUrl()
 			],
 			'terse',
 			$roomInfo["rTitle"],
@@ -2085,7 +2087,7 @@ class WxController extends BaseController
 				'stuff' => $stuff,
 				'premium' => $premium,
 				'bags' => $bags,
-				'level' => isset($expInfo["level"]) ? $expInfo["level"] : 1,
+				'level' => $expInfo["level"] ?? 1,
 			],
 			'terse',
 			'千寻商城',

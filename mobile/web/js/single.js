@@ -2791,10 +2791,11 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			roomId: 0,
 			uni: $('#cUNI').val(),
 			board: $('.m-notice'),
+			url: $('#cWSUrl').val(),
 			init: function () {
 				var util = this;
 				util.uni = $('#cUNI').val();
-				util.ioHouse = io('https://nd.meipo100.com/house');
+				util.ioHouse = io(util.url + '/house');
 				util.ioHouse.on('connect', function () {
 					util.ioHouse.emit('house', util.uni);
 				});
@@ -2815,7 +2816,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					}
 				});
 
-				util.ioChat = io('https://nd.meipo100.com/chatroom');
+				util.ioChat = io(util.url + '/chatroom');
 
 				util.ioHouse.on('reconnect', function () {
 					if (util.roomId && util.uni) {
@@ -2825,7 +2826,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				util.ioChat.on("msg", function (info) {
 					util.roomId = info.gid;
 					if (ChatUtil.gid != util.roomId) {
-						return;
+						return false;
 					}
 					switch (info.tag) {
 						case 'tip':

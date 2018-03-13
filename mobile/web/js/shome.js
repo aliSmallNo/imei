@@ -309,6 +309,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 			reason: [],
 			giftmenus: $(".m-draw-wrap"),
 			menusBg: $(".m-schat-shade"),
+			more: $('.m-chat-bar-list'),
 			init: function () {
 				var util = this;
 				// 点击发送按钮 发送消息
@@ -325,13 +326,13 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 					util.helpchat();
 				});
 
-				util.input.on('focus', function () {
+				/*util.input.on('focus', function () {
 					util.timerInput = setInterval(function () {
 						$('.m-bottom-bar').css('bottom', 0);
 						// target.scrollIntoView(true);
 						// util.bot[0].scrollIntoView(false);
 					}, 200);
-				});
+				});*/
 
 				util.input.on('blur', function () {
 					if (util.timerInput) {
@@ -478,14 +479,13 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 			toggleBar: function (expandFlag) {
 				var util = this;
 				if (expandFlag === undefined) {
-					var bot = parseFloat(util.bar.css('bottom'));
-					expandFlag = (bot < 0);
+					expandFlag = util.more.hasClass('none');
 				}
 				setTimeout(function () {
-					if (!expandFlag) {
-						util.bar.css('bottom', '-14.8rem');
+					if (expandFlag) {
+						util.more.removeClass('none');
 					} else {
-						util.bar.css('bottom', 0);
+						util.more.addClass('none');
 					}
 				}, 100);
 			},
@@ -714,7 +714,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 						el: '.swiper-pagination2'
 					}
 				});
-			},
+			}
 		};
 
 		var GiftUtil = {
@@ -812,7 +812,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 						util.UL.html(html);
 						util.count.html(resp.data.stat.flower);
 					}, 'json');
-			},
+			}
 		};
 		GiftUtil.init();
 
@@ -821,14 +821,15 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 			ioHouse: null,
 			uni: $('#cUNI').val(),
 			rid: 0,
+			url: $('#cWSUrl').val(),
 			init: function (msgBlock) {
 				var util = this;
-				util.ioHouse = io('https://nd.meipo100.com/house');
+				util.ioHouse = io(util.url + '/house');
 				util.ioHouse.on('connect', function () {
 					util.ioHouse.emit('house', util.uni);
 				});
 
-				util.ioChat = io('https://nd.meipo100.com/chatroom');
+				util.ioChat = io(util.url + '/chatroom');
 				util.ioChat.on('connect', function () {
 					util.join();
 				});
@@ -837,15 +838,15 @@ requirejs(['jquery', 'alpha', 'mustache', 'socket', 'layer', 'swiper'],
 				});
 				util.ioChat.on("msg", function (resp) {
 					var roomId = resp.gid;
-					if (util.rid && util.rid != roomId) {
-						return;
+					if (util.rid != roomId) {
+						return false;
 					}
 					switch (resp.tag) {
 						case 'tip':
 
 							break;
 						default:
-							resp.dir = (resp.uni == util.uni ? 'right' : 'left');
+							resp.items.dir = (resp.items.uni == util.uni ? 'left' : 'right');
 							if (msgBlock) {
 								msgBlock(resp);
 							}

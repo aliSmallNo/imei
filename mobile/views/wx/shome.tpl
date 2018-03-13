@@ -12,18 +12,18 @@
 		<h6>{{$brief}}{{if $uInfo.is_cert}}<span class="cert"></span>{{/if}}</h6>
 	</div>
 	{{if $uInfo.album}}
-	<a href="javascript:;" class="album-row line-bottom2" album-string='{{$uInfo.albumJson}}'>
-		<ul class="photos">
-			<li class="title">
-				相册({{$uInfo.album_cnt}})
-			</li>
-			{{foreach from=$uInfo.album item=item name=foo}}
-			{{if $smarty.foreach.foo.index <3}}
-			<li style="background-image: url({{$item}})"></li>
-			{{/if}}
-			{{/foreach}}
-		</ul>
-	</a>
+		<a href="javascript:;" class="album-row line-bottom2" album-string='{{$uInfo.albumJson}}'>
+			<ul class="photos">
+				<li class="title">
+					相册({{$uInfo.album_cnt}})
+				</li>
+				{{foreach from=$uInfo.album item=item name=foo}}
+					{{if $smarty.foreach.foo.index <3}}
+						<li style="background-image: url({{$item}})"></li>
+					{{/if}}
+				{{/foreach}}
+			</ul>
+		</a>
 	{{/if}}
 	<div class="single-info">
 		<a href="/wx/sd?id={{$uInfo.encryptId}}&hide={{$hideFlag}}">
@@ -31,7 +31,7 @@
 			<ul class="clearfix">
 
 				{{foreach from=$baseInfo item=item}}
-				<li>{{$item}}</li>
+					<li>{{$item}}</li>
 				{{/foreach}}
 			</ul>
 		</a>
@@ -63,7 +63,7 @@
 		</p>
 		<p>
 			<a href="javascript:;" class="heart j-act btn-like {{if $uInfo.favorFlag}}favor{{/if}}"
-				 data-id="{{$uInfo.encryptId}}">{{if $uInfo.favorFlag}}已心动{{else}}心动{{/if}}</a>
+			   data-id="{{$uInfo.encryptId}}">{{if $uInfo.favorFlag}}已心动{{else}}心动{{/if}}</a>
 		</p>
 		<p>
 			<a href="javascript:;" class="chat j-act btn-chat" data-id="{{$uInfo.encryptId}}">密聊TA</a>
@@ -90,7 +90,7 @@
 			<button class="btn-chat-send">发送</button>
 			<button class="btn-chat-more"></button>
 		</div>
-		<ul class="m-chat-bar-list">
+		<ul class="m-chat-bar-list none">
 			<li>
 				<a href="javascript:;"><i class="truth"></i></a>
 				<h5>真心话</h5>
@@ -127,7 +127,7 @@
 			<select class="report-reason">
 				<option value="">请选择举报原因</option>
 				{{foreach from=$reasons item=reason}}
-				<option value="{{$reason}}">{{$reason}}</option>
+					<option value="{{$reason}}">{{$reason}}</option>
 				{{/foreach}}
 			</select>
 		</div>
@@ -233,7 +233,8 @@
 			<a href="javascript:;" class="on" g-level="normal">普通礼物</a>
 			<a href="javascript:;" g-level="vip">特权礼物</a>
 		</div>
-		<div class="g-items-ul swiper-container swiper-container2 swiper-container-horizontal swiper-container-ios" style="height: 100%">
+		<div class="g-items-ul swiper-container swiper-container2 swiper-container-horizontal swiper-container-ios"
+		     style="height: 100%">
 			<div class="swiper-wrapper ul" style="min-height: 21rem">
 
 			</div>
@@ -256,6 +257,7 @@
 <input type="hidden" id="cUNI" value="{{$huni}}">
 <input type="hidden" id="secretId" value="{{$secretId}}">
 <input type="hidden" id="avatarID" value="{{$uInfo.avatar}}">
+<input type="hidden" id="cWSUrl" value="{{$wsUrl}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
@@ -411,6 +413,6 @@
 <script src="/assets/js/require.js"></script>
 <script>
 	requirejs(['/js/config.js?v=1.1.3'], function () {
-		requirejs(['/js/shome.js?v=1.9.5']);
+		requirejs(['/js/shome.js?v=1.10.1']);
 	});
 </script>

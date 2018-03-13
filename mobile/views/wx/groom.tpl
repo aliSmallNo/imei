@@ -65,6 +65,7 @@
 <input type="hidden" id="subscribe" value="{{$subscribe}}">
 <input type="hidden" id="other_room" value="{{$otherRoom}}">
 <input type="hidden" id="DELETED" value="{{$deleted}}">
+<input type="hidden" id="cWSUrl" value="{{$wsUrl}}">
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
@@ -135,7 +136,7 @@
 		document.getElementById("memberFlag").value == 1 ? document.location.hash = "#chat" : document.location.hash = "#join";
 	}
 	requirejs(['/js/config.js?v=1.2'], function () {
-		requirejs(['/js/groom.js?v=1.5.6']);
+		requirejs(['/js/groom.js?v=1.6.0']);
 	});
 </script>
 
