@@ -501,6 +501,16 @@ class User extends ActiveRecord
 		return $notes;
 	}
 
+	public static function isDummy($uid)
+	{
+		$item = self::findOne(["uId" => $uid]);
+		if ($item) {
+			$item = self::fmtRow($item->toArray());
+			return $item["straw"];
+		}
+		return 0;
+	}
+
 	public static function fmtRow($row)
 	{
 		$keys = array_keys($row);

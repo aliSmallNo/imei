@@ -806,7 +806,6 @@
 	<a href="#slink" class="nav-link none" data-tag="slink">看媒婆</a>
 	<a href="#slook" class="nav-invite" data-tag="slook">千寻</a>
 	<a href="#scontacts" class="nav-chat" data-tag="scontacts">密聊</a>
-	<a href="/wx/zone" class="nav-zone" data-tag="zone">动态</a>
 	<a href="#sme" class="nav-me" data-tag="sme">个人</a>
 </div>
 <div class="app-cork"></div>

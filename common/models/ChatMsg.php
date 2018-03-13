@@ -58,6 +58,17 @@ class ChatMsg extends ActiveRecord
 
 	const PAY_REQUEST_WECHAT_NO = 66;
 
+	static $DummyAutoReplay = [
+		"你好" => ["你好哇", "还好", "嗯", "哈喽"],
+		"干嘛呢" => ["待着", "躺着", "上班", "没啥事", "逛街", "搬砖"],
+		"上班呢吗" => ["嗯呐，你呢", "没有", "休息"],
+		"哈喽" => ["哈喽", "你好", "hi", "不哈喽"],
+		"在么" => ["在", "你是谁", "头像是你吗"],
+		"交个朋友吧" => ["可以啊", "为什么", "好啊"],
+		"忙啥呢" => ["上班", "没忙", "你呢"],
+		"微信" => ["先了解一下吧", "你发吧，回头加你", "我得确定你是好人，在加"],
+	];
+
 	public static function tableName()
 	{
 		return '{{%chat_msg}}';
@@ -96,6 +107,7 @@ class ChatMsg extends ActiveRecord
 		"新人报道，真心交友 ",
 		"我是新人，多多关照"
 	];
+
 
 	public static function beforeChat($senderUId, $receiverUId, $conn = null)
 	{
