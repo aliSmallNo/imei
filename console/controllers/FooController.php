@@ -1650,8 +1650,8 @@ class FooController extends Controller
 			[
 				"uid" => 120003,
 				"receive" => 143807,
-				"text" => 'jj',
-			], QueueUtil::QUEUE_TUBE_SMS);
+				"text" => 'ssss',
+			], QueueUtil::QUEUE_TUBE_SMS, 15);
 	}
 
 
