@@ -1637,14 +1637,21 @@ class FooController extends Controller
 			}
 		}*/
 
+
 		/*list($gid) = ChatMsg::groupEdit(143807, 131379);
 		echo $gid . PHP_EOL;
 		var_dump(UserTrans::taskCondition(40, 143807, 131379));*/
 
-		list($data, $nextpage) = Moment::wechatItems(120003, [], [], 2);
-		list($data, $nextpage) = Moment::wechatItems(120003, [], [], 2);
+		//list($data, $nextpage) = Moment::wechatItems(120003, [], [], 2);
+		//list($data, $nextpage) = Moment::wechatItems(120003, [], [], 2);
 
 
+		QueueUtil::loadJob("addChat",
+			[
+				"uid" => 120003,
+				"receive" => 143807,
+				"text" => 'jj',
+			], QueueUtil::QUEUE_TUBE_SMS);
 	}
 
 

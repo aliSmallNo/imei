@@ -2370,6 +2370,19 @@ class ApiController extends Controller
 				} elseif (is_numeric($ret)) {
 					return self::renderAPI(129, '不好意思哦，最多只能聊' . $ret . '句');
 				} else {
+					// 稻草人自动回复 2018-03-13
+					if (User::isDummy($receiverId) && isset(ChatMsg::$DummyAutoReplay[$text])) {
+						$replaylist = ChatMsg::$DummyAutoReplay[$text];
+						$text = $replaylist[random_int(0, (count($replaylist) - 1))];
+						// ChatMsg::addChat($receiverId, $uid, $text);
+						QueueUtil::loadJob("addChat",
+							[
+								"uid" => $receiverId,
+								"receive" => $uid,
+								"text" => $text,
+							], QueueUtil::QUEUE_TUBE_SMS, 1);
+					}
+
 					$msgKey = $ret && isset($ret['gid']) ? intval($ret['gid']) : 0;
 					QueueUtil::loadJob('templateMsg',
 						[
@@ -2414,8 +2427,6 @@ class ApiController extends Controller
 							"taskflag" => $taskflag,
 							"key" => $coinCat,
 						]);
-
-
 					return self::renderAPI(0, '',
 						[
 							'items' => $ret,
