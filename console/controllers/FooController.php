@@ -1412,7 +1412,7 @@ class FooController extends Controller
 				"uid" => 120000,
 				"receive" => 131379,
 				"text" => 'tester ',
-			], QueueUtil::QUEUE_TUBE_CHAT, 15);
+			], QueueUtil::QUEUE_TUBE_CHAT);
 	}
 
 	public function actionZp()
