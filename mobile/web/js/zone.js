@@ -553,7 +553,7 @@ require(["jquery", "alpha", "mustache"],
 						console.log($("#tmp_add_cat_" + cat).html());
 						$(".zone_container_add_msg ul[add_cat=image]").html($("#tmp_add_cat_" + cat).html());
 					} else if (cat == "voice") {
-						$(".m-draw-wrap").removeClass("off").addClass("on");
+						$(".zone_container_add_msg_record.m-draw-wrap").removeClass("off").addClass("on");
 					}
 
 				});

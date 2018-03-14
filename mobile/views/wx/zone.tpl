@@ -24,6 +24,7 @@
 
 
 	</div>
+
 </section>
 
 <section id="zone_item">
@@ -64,18 +65,7 @@
 	</div>
 
 </section>
-<script type="text/html" id="tmp_add_cat_image">
-	<li><a href="javascript:;" class="choose-img"></a></li>
-</script>
-<script type="text/html" id="tmp_add_cat_voice">
-	<div class="zone_container_item_cat_voice">
-		<div class="avatar"><img src="/images/cr_room_share.jpg" alt="">
-		</div>
-		<div class="fill">&nbsp;</div>
-		<a href="javascript:;" class="voice pause playVoiceElement" pvl="add"></a>
-		<span></span>
-	</div>
-</script>
+
 <section id="zone_add_msg">
 	<div class="zone_container_add_msg">
 		<div class="msg_ipts">
@@ -149,6 +139,19 @@
 	</div>
 </div>
 <input type="hidden" id="cWXUrl" value="{{$wxUrl}}">
+
+<script type="text/html" id="tmp_add_cat_image">
+	<li><a href="javascript:;" class="choose-img"></a></li>
+</script>
+<script type="text/html" id="tmp_add_cat_voice">
+	<div class="zone_container_item_cat_voice">
+		<div class="avatar"><img src="/images/cr_room_share.jpg" alt="">
+		</div>
+		<div class="fill">&nbsp;</div>
+		<a href="javascript:;" class="voice pause playVoiceElement" pvl="add"></a>
+		<span></span>
+	</div>
+</script>
 
 <script type="text/html" id="tpl_topic_search">
 	{[#data]}
@@ -302,6 +305,7 @@
 		<li><a href="javascript:;" add_cat="voice">语音</a></li>
 	</ul>
 </script>
+
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
