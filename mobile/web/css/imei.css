@@ -11,7 +11,7 @@ body, html {
 body, html, a, p, ul, div, h4, h5, h6, .main-wrap {
   margin: 0;
   padding: 0;
-  -webkit-tap-highlight-color: transparent; }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
 
 body {
   background-color: #fff; }
@@ -560,6 +560,12 @@ section {
       background-position: 0 -21.6rem; }
     .nav-foot a.nav-me.active:after {
       background-position: 0 -19.2rem; }
+    .nav-foot a.nav-zone:after {
+      background-image: url(../images/ico_foot/ico_zone.png);
+      background-size: 2.4rem 2.4rem; }
+    .nav-foot a.nav-zone.active:after {
+      background-image: url(../images/ico_foot/ico_zone_hl.png);
+      background-size: 2.4rem 2.4rem; }
 
 .tip-color {
   color: #f80; }
@@ -8840,7 +8846,7 @@ ul.co-ul {
   width: 100%;
   height: 100%;
   display: none;
-  background-color: transparent;
+  background-color: rgba(0, 0, 0, 0);
   pointer-events: auto;
   z-index: 11; }
 
