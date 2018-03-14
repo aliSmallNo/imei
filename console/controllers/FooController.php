@@ -1409,8 +1409,8 @@ class FooController extends Controller
 			[
 				"uid" => 120000,
 				"receive" => 131379,
-				"text" => 'tester ',
-			], QueueUtil::QUEUE_TUBE_CHAT, 15);
+				"text" => 'delay test ~~~ ',
+			], QueueUtil::QUEUE_TUBE_CHAT, 30);
 	}
 
 	public function actionZp()
