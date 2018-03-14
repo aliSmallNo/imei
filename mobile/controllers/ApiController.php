@@ -2380,7 +2380,7 @@ class ApiController extends Controller
 								"uid" => $receiverId,
 								"receive" => $uid,
 								"text" => $text,
-							], QueueUtil::QUEUE_TUBE_SMS, random_int(10,20));
+							], QueueUtil::QUEUE_TUBE_SMS, random_int(30,60));
 					}
 
 					$msgKey = $ret && isset($ret['gid']) ? intval($ret['gid']) : 0;
