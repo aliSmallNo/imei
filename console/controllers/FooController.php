@@ -10,7 +10,6 @@ namespace console\controllers;
  */
 use common\models\ChatMsg;
 use common\models\Img;
-use common\models\Moment;
 use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
@@ -1406,13 +1405,12 @@ class FooController extends Controller
 		$ret = json_encode($json);
 		$ret = urlencode('来找茬');
 		var_dump($ret);*/
-
 		QueueUtil::loadJob("addChat",
 			[
 				"uid" => 120000,
 				"receive" => 131379,
-				"text" => 'tester ',
-			], QueueUtil::QUEUE_TUBE_CHAT);
+				"text" => 'delay test ~~~ ',
+			], QueueUtil::QUEUE_TUBE_CHAT, 30);
 	}
 
 	public function actionZp()
