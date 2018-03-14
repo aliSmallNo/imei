@@ -767,7 +767,7 @@ class WxController extends BaseController
 		}
 
 		$isdebug = 0;
-		if (in_array($this->user_id, [120003,])) {
+		if (in_array($this->user_id, [120003,146306])) {
 			$isdebug = 1;
 		}
 

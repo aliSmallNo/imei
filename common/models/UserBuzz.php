@@ -245,8 +245,8 @@ class UserBuzz extends ActiveRecord
 				$resp = self::textMsg($fromUsername, $toUsername, $txt);
 				break;
 			case '17':
-			case '我要开趴':
-				$txt = '点击进入<a href="https://wx.meipo100.com/wx/enroll">我们派对吧</a>快速报名通道';
+			case '早餐':
+				$txt='给大家争取了一个福利，免费包邮无限制送福利啦，雀巢奶粉送你营养早餐套装🍽。 请点链接打开页面，滑动至页面中部，点击<a href="https://915.im/OrO7AR">立即领取试用装</a>';
 				$resp = self::textMsg($fromUsername, $toUsername, $txt);
 				break;
 			case '晚安':
