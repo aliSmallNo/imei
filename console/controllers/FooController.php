@@ -1654,7 +1654,7 @@ class FooController extends Controller
 			[
 				"uid" => 120003,
 				"receive" => 143807,
-				"text" => 'ssss',
+				"text" => 'tttt',
 			], QueueUtil::QUEUE_TUBE_CHAT, 15);
 
 	}
