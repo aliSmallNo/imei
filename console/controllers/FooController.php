@@ -1406,13 +1406,14 @@ class FooController extends Controller
 		$ret = json_encode($json);
 		$ret = urlencode('来找茬');
 		var_dump($ret);*/
-
+		ChatMsg::addChat(120000 , 131379, 'begin -- test');
 		QueueUtil::loadJob("addChat",
 			[
 				"uid" => 120000,
 				"receive" => 131379,
 				"text" => 'tester ',
 			], QueueUtil::QUEUE_TUBE_CHAT);
+		ChatMsg::addChat(120000 , 131379, 'end -- test');
 	}
 
 	public function actionZp()
