@@ -108,6 +108,8 @@
 				<th>秀红包金额：</th>
 				<th>收到礼物：</th>
 				<th>签到：</th>
+				<th>10次回复：</th>
+				<th>50次回复：</th>
 				<th>成功邀请：</th>
 				<th>28888活动：</th>
 			</tr>
@@ -136,6 +138,8 @@
 				<td class="col-sm-1 tip">数量￥{{$stat.show_coin_amt/100}} <br>次数:  {{$stat.show_coin_count}}</td>
 				<td class="col-sm-1 tip">数量￥{{$stat.receive_gift_amt/100}} <br>次数:  {{$stat.receive_gift_count}}</td>
 				<td class="col-sm-1 tip">数量￥{{$stat.sign_amt/100}} <br>次数:  {{$stat.sign_count}}</td>
+				<td class="col-sm-1 tip">数量￥{{$stat.chat_10_count_amt/100}} <br>次数:  {{$stat.chat_10_count_count}}</td>
+				<td class="col-sm-1 tip">数量￥{{$stat.chat_50_count_amt/100}} <br>次数:  {{$stat.chat_50_count_count}}</td>
 				<td class="col-sm-1 tip">数量￥{{$stat.share_reg_amt/100}} <br>次数:  {{$stat.share_reg_count}}</td>
 				<td class="col-sm-1 tip">数量￥{{$stat.share28_amt/100}} <br>次数: {{$stat.share28_count}} <br>分享数:{{$stat.s28_share}}<br>注册数:{{$stat.s28_reg}}</td>
 
