@@ -561,11 +561,11 @@ section {
     .nav-foot a.nav-me.active:after {
       background-position: 0 -19.2rem; }
     .nav-foot a.nav-zone:after {
-      background-image: url(../images/ico_foot/ico_zone.png);
-      background-size: 2.4rem 2.4rem; }
+      background: url(../images/ico_foot/ico_zone.png) no-repeat center center;
+      background-size: 2.2rem 2.2rem; }
     .nav-foot a.nav-zone.active:after {
-      background-image: url(../images/ico_foot/ico_zone_hl.png);
-      background-size: 2.4rem 2.4rem; }
+      background: url(../images/ico_foot/ico_zone_hl.png) no-repeat center center;
+      background-size: 2.2rem 2.2rem; }
 
 .tip-color {
   color: #f80; }
