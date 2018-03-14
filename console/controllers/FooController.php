@@ -1409,7 +1409,7 @@ class FooController extends Controller
 
 		QueueUtil::loadJob("addChat",
 			[
-				"uid" => 120003,
+				"uid" => 120000,
 				"receive" => 131379,
 				"text" => 'tester ',
 			], QueueUtil::QUEUE_TUBE_CHAT, 15);
