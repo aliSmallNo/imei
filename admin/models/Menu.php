@@ -239,6 +239,18 @@ class Menu
 						"url" => "/site/evcrew",
 						"revise" => 1,
 						"level" => 820
+					],
+					[
+						"name" => "动态列表",
+						"url" => "/site/moment",
+						"revise" => 1,
+						"level" => 820
+					],
+					[
+						"name" => "话题列表",
+						"url" => "/site/mtopic",
+						"revise" => 1,
+						"level" => 820
 					]
 				]
 			],
