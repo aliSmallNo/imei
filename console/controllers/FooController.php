@@ -1649,7 +1649,7 @@ class FooController extends Controller
 		//list($data, $nextpage) = Moment::wechatItems(120003, [], [], 2);
 		//list($data, $nextpage) = Moment::wechatItems(120003, [], [], 2);
 
-
+		echo uniqid('', true);
 
 	}
 

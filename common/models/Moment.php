@@ -15,6 +15,8 @@ use yii\db\ActiveRecord;
 class Moment extends ActiveRecord
 {
 
+	static $startTime = "2018-03-15 15:00:00";
+
 	const CAT_TEXT = 100;
 	const CAT_IMG = 110;
 	const CAT_VOICE = 120;
@@ -69,7 +71,10 @@ class Moment extends ActiveRecord
 	public static function wechatItems($uid, $cri, $param, $page = 1, $pagesize = 10)
 	{
 		$conn = AppUtil::db();
+		$startTime = self::$startTime;
+
 		$str = $favor = $optstr = "";
+		$str = "  and m.mAddedOn>'$startTime' ";
 		if ($cri) {
 			$str .= ' and ' . implode(" ", $cri);
 		}
@@ -87,6 +92,7 @@ SUM(case when sCategory=120  and sUId=$uid then 1 else 0 end) as `zanf`,
 SUM(case when sCategory=130  and sUId=$uid then 1 else 0 end) as `commentf`,
 EEE;
 			$order = " order by mTop desc,mId desc ";
+
 		} else {
 			// 后台
 			$order = " order by mId desc ";
@@ -104,7 +110,7 @@ EEE;
 				left join im_moment_topic as t on t.tId=m.mTopic 
 				left join im_user as u on u.uId=m.mUId 
 				$favor
-				where mDeletedFlag=0 $str
+				where mDeletedFlag=0 $str 
 				group by mId $order  $limit ";
 		$ret = $conn->createCommand($sql)->bindValues($param)->queryAll();
 
@@ -126,6 +132,8 @@ EEE;
 	public static function count($cri, $param)
 	{
 		$str = "";
+		$startTime = self::$startTime;
+		$str = "  and m.mAddedOn>'$startTime' ";
 		if ($cri) {
 			$str .= ' and ' . implode(" ", $cri);
 		}
@@ -235,6 +243,7 @@ EEE;
 	public static function topicStat($tag, $tid)
 	{
 		$conn = AppUtil::db();
+		$startTime = self::$startTime;
 		$param = [];
 		switch ($tag) {
 			case "content":
@@ -252,6 +261,8 @@ EEE;
 				$param[":cat"] = MomentSub::CAT_VIEW;
 				break;
 		}
+		$sql .= " and mAddedOn > '$startTime' ";
+
 		return $conn->createCommand($sql)->bindValues($param)->queryScalar();
 	}
 

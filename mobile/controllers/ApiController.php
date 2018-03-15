@@ -3454,7 +3454,6 @@ class ApiController extends Controller
 					"topic_id" => $topic_id,
 				], JSON_UNESCAPED_UNICODE));
 
-
 				$insert["mUId"] = $wxInfo["uId"];
 				$insert["mTopic"] = $topic_id ? intval($topic_id) : 0;
 				$insert["mContent"] = ['title' => '', 'url' => [], 'other_url' => '', 'subtext' => '',];
