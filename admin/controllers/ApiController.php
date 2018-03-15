@@ -777,6 +777,7 @@ class ApiController extends Controller
 
 				switch ($sign) {
 					case "add":
+						$insert['mAddedBy'] = Admin::getAdminId();
 						$insert['mStatus'] = Moment::ST_ACTIVE;
 						$insert["mContent"] = ['title' => '', 'url' => [], 'other_url' => '', 'subtext' => '',];
 						if ($images) {

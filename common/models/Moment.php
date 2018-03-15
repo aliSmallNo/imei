@@ -82,6 +82,7 @@ class Moment extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		$startTime = self::$startTime;
+		$status_active = self::ST_ACTIVE;
 
 		$str = $favor = $optstr = "";
 		$str = "  and m.mAddedOn>'$startTime' ";
@@ -102,7 +103,7 @@ SUM(case when sCategory=120  and sUId=$uid then 1 else 0 end) as `zanf`,
 SUM(case when sCategory=130  and sUId=$uid then 1 else 0 end) as `commentf`,
 EEE;
 			$order = " order by mTop desc,mId desc ";
-
+			// $str .= " and mStatus = $status_active ";
 		} else {
 			// 后台
 			$order = " order by mId desc ";

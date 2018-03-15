@@ -1163,7 +1163,7 @@
 				</div>
 			</div>
 			<div class="opt">
-				<a href="javascript:;" items_tag="opt"><img src="/images/zone/ico_opt.png" alt=""></a>
+				<a href="javascript:;" items_tag="opt" style="display: none"><img src="/images/zone/ico_opt.png" alt=""></a>
 			</div>
 		</div>
 
