@@ -3393,9 +3393,31 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 							var audio = self.find("audio")[0];
 							util.playPauseVoice(self, audio);
 							break;
-
 					}
+				});
+			},
+			pauseVoices: function () {
+				var util = this;
+				$(".playVoiceElement").each(function () {
+					var self = $(this);
 
+					var tag = self.attr("pvl");
+					console.log(tag);
+					switch (tag) {
+						case "add":
+							wx.pauseVoice({
+								localId: recordUtil.voice_localId // 需要暂停的音频的本地ID，由stopRecord接口获得
+							});
+							self.removeClass("play").addClass("pause");
+							break;
+						case "items":
+						case "comment":
+							var audio = self.find("audio")[0];
+							if (!self.hasClass("pause")) {
+								util.playPauseVoice(self, audio);
+							}
+							break;
+					}
 				});
 			},
 			recording: function (self, f) {
@@ -3770,11 +3792,15 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			$(".zone_container_add_msg ul[add_cat=image]").html('');
 			$(".zone_container_add_msg textarea").val('');
 			$(".add_one_moment").hide();
+			// 关闭正在播放的语音
+			recordUtil.pauseVoices();
+
 		}
 
 		$(document).on("click", ".add_one_moment a", function () {
 			location.href = "#zone_add_msg";
 		});
+
 		/***** zone end ******/
 
 		function pinLocation() {
