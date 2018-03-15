@@ -1650,12 +1650,7 @@ class FooController extends Controller
 		//list($data, $nextpage) = Moment::wechatItems(120003, [], [], 2);
 
 
-		QueueUtil::loadJob("addChat",
-			[
-				"uid" => 120003,
-				"receive" => 143807,
-				"text" => 'tttt',
-			], QueueUtil::QUEUE_TUBE_CHAT, random_int(10,20));
+		var_dump(WechatUtil::createWechatMenus());
 
 	}
 
