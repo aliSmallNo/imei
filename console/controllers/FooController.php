@@ -1650,7 +1650,6 @@ class FooController extends Controller
 		//list($data, $nextpage) = Moment::wechatItems(120003, [], [], 2);
 
 
-		var_dump(WechatUtil::createWechatMenus());
 
 	}
 

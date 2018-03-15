@@ -809,7 +809,6 @@ class ApiController extends Controller
 					$insert["mTop"] = Moment::TOP_ARTICLE;
 				}
 
-
 				if ($sign == 'add') {
 					$ret = Moment::add($insert);
 				} elseif ($sign == 'edit') {
