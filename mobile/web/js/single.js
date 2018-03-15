@@ -3556,6 +3556,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 							}
 							ul.find("li .choose-img").closest("li").remove();
 							ul.append(html + chooseImgStr);
+						},
+						fail: function () {
+
 						}
 					});
 				});

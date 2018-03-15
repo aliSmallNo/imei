@@ -41,10 +41,12 @@ class Moment extends ActiveRecord
 
 	const ST_ACTIVE = 1;
 	const ST_PENDING = 2;
+	const ST_FAIL = 3;
 	const ST_DELETE = 9;
 	static $stDict = [
 		self::ST_ACTIVE => "已通过",
 		self::ST_PENDING => "待审核",
+		self::ST_FAIL => "未通过",
 		self::ST_DELETE => "已删除",
 	];
 
@@ -83,6 +85,7 @@ class Moment extends ActiveRecord
 		$conn = AppUtil::db();
 		$startTime = self::$startTime;
 		$status_active = self::ST_ACTIVE;
+		$status_pending = self::ST_PENDING;
 
 		$str = $favor = $optstr = "";
 		$str = "  and m.mAddedOn>'$startTime' ";
@@ -103,7 +106,7 @@ SUM(case when sCategory=120  and sUId=$uid then 1 else 0 end) as `zanf`,
 SUM(case when sCategory=130  and sUId=$uid then 1 else 0 end) as `commentf`,
 EEE;
 			$order = " order by mTop desc,mId desc ";
-			// $str .= " and mStatus = $status_active ";
+			$str .= " and mStatus in ( $status_active ,$status_pending) ";
 		} else {
 			// 后台
 			$order = " order by mId desc ";
