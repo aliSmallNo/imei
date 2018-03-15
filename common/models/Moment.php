@@ -38,6 +38,16 @@ class Moment extends ActiveRecord
 	const TOP_SYS = 1000;
 	const TOP_ATICLE = 100;
 
+
+	const ST_ACTIVE = 1;
+	const ST_PENDING = 2;
+	const ST_DELETE = 9;
+	static $stDict = [
+		self::ST_ACTIVE => "已通过",
+		self::ST_PENDING => "待审核",
+		self::ST_DELETE => "已删除",
+	];
+
 	public static function tableName()
 	{
 		return '{{%moment}}';

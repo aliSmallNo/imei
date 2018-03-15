@@ -2380,7 +2380,7 @@ class ApiController extends Controller
 								"uid" => $receiverId,
 								"receive" => $uid,
 								"text" => $text,
-							], QueueUtil::QUEUE_TUBE_SMS, random_int(30,60));
+							], QueueUtil::QUEUE_TUBE_SMS, random_int(30, 60));
 					}
 
 					$msgKey = $ret && isset($ret['gid']) ? intval($ret['gid']) : 0;
@@ -3485,8 +3485,9 @@ class ApiController extends Controller
 						break;
 				}
 				$insert["mContent"] = $insert["mContent"] = json_encode($insert["mContent"], JSON_UNESCAPED_UNICODE);
-
+				$insert['mStatus'] = Moment::ST_PENDING;
 				// LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode($insert, JSON_UNESCAPED_UNICODE));
+
 
 				$res = Moment::add($insert);
 
