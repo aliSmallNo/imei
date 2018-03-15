@@ -5,6 +5,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 		var $sls = {
 			mainPage: $('main'),
 			curFrag: "slink",
+			user_id: parseInt($("#cUID").val()),
 			footer: $(".mav-foot"),
 			mobile: $("#cur_mobile").val(),
 			cork: $(".app-cork"),
@@ -3546,8 +3547,10 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 							util.img_localIds = util.img_localIds.concat(res.localIds);
 							var tmp = '{[#data]}<li><img src="{[.]}" alt=""></li>{[/data]}';
 							var html = Mustache.render(tmp, {data: res.localIds});
-							// alert(html);
-							// alert(JSON.stringify(util.img_localIds));
+							if ($sls.user_id == 143807) {
+								alert(html);
+								alert(JSON.stringify(util.img_localIds));
+							}
 							if (len + parseInt(util.img_localIds.length) < 6) {
 								chooseImgStr = '<li><a href="javascript:;" class="choose-img"></a></li>';
 							}
