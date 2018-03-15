@@ -3538,12 +3538,18 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					var ul = $(".msg_ipts ul.add_cat_img");
 					var len = parseInt(ul.find('img').length);
 					var chooseImgStr = '';
-					// alert(len);
+
+					if ($sls.user_id == 143807) {
+						alert(len);
+					}
 					wx.chooseImage({
 						count: 6 - len,
 						sizeType: ['original', 'compressed'],
 						sourceType: ['album', 'camera'],
 						success: function (res) {
+							if ($sls.user_id == 143807) {
+								alert(JSON.stringify(res.localIds));
+							}
 							util.img_localIds = util.img_localIds.concat(res.localIds);
 							var tmp = '{[#data]}<li><img src="{[.]}" alt=""></li>{[/data]}';
 							var html = Mustache.render(tmp, {data: res.localIds});
@@ -3556,9 +3562,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 							}
 							ul.find("li .choose-img").closest("li").remove();
 							ul.append(html + chooseImgStr);
-						},
-						fail: function () {
-
 						}
 					});
 				});
