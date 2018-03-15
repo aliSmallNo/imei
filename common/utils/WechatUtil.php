@@ -385,14 +385,15 @@ class WechatUtil
 					"key" => "EV_REWARD"
 				],
 				[
-					"name" => "免费早餐🍵",
+					//"name" => "免费早餐🍵",
+					"name" => "官方活动",
 					"sub_button" => [
-						[
-							"type" => "view",
-							"name" => "免费早餐",
-							//"url" => $wxUrl . "/wx/event"
-							"url" => "https://915.im/OrO7AR"
-						],
+//						[
+//							"type" => "view",
+//							"name" => "免费早餐",
+//							"url" => $wxUrl . "/wx/event"
+//							"url" => "https://915.im/OrO7AR"
+//						],
 						[
 							"type" => "view",
 							"name" => "官方活动",
