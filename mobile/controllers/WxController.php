@@ -767,9 +767,10 @@ class WxController extends BaseController
 		}
 
 		$isdebug = 0;
-		if (in_array($this->user_id, [120003,146306])) {
+		if (in_array($this->user_id, [120003, 146306])) {
 			// $isdebug = 1;
 		}
+		$isdebug = 1;
 
 		return self::renderPage("single.tpl", [
 			'uId' => $uId,
