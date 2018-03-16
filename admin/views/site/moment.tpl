@@ -578,7 +578,7 @@
 		<label class="col-sm-3 control-label">编辑用户</label>
 		<div class="col-sm-7">
 			<div class="form-group input-group" style="margin: 0">
-				<input type="text" class="form-control searchName" subtag="all" name="edit_name" placeholder="(必填)">
+				<input type="text" class="form-control searchName" subtag="dummy" name="edit_name" placeholder="(必填)">
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="button">
 						<i class="fa fa-search"></i>

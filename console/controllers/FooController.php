@@ -1653,7 +1653,7 @@ class FooController extends Controller
 		// echo uniqid('', true);
 
 
-		var_dump(RedisUtil::subscribe());
+		// var_dump(RedisUtil::subscribe());
 
 	}
 

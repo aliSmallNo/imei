@@ -218,8 +218,8 @@ class RedisUtil
 
 	public static function subscribe()
 	{
-		 $redis = self::redis();
-		 return $redis->subscribe('message');
+		$redis = self::redis();
+		return $redis->subscribe(self::CHANNEL_BROADCAST);
 	}
 
 	public static function getImageSeq($redis = "")
