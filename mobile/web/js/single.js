@@ -1474,7 +1474,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			hint: $('#cUserHint'),
 			albumTmp: $('#tpl_album').html(),
 			cardTmp: '{[#cards]}<li class="card-{[cat]}"></li>{[/cards]}',
-			thumbTmp: '<li><a href="javascript:;" class="add"></li>{[#items]}<li><a href="#album" style="background-image:url({[.]});"></a></li>{[/items]}',
+			thumbTmp: '<li><a href="#album" class="add"></li>{[#items]}<li><a href="#album" style="background-image:url({[.]});"></a></li>{[/items]}',
 			albumSingleTmp: '{[#items]}<li><a class="has-pic" style="background-image:url({[thumb]});" bsrc="{[figure]}"></a><a href="javascript:;" class="del"></a></li>{[/items]}',
 			init: function () {
 				var util = this;
@@ -1482,7 +1482,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					util.editToggle(!util.editable);
 				});
 
-				$(document).on(kClick, "a.choose-img", function () {
+				$(document).on(kClick, ".album-photos a.choose-img", function () {
 					if (util.delImgFlag || util.editable) {
 						return false;
 					}
@@ -2699,9 +2699,11 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				util.uni = $('#cUNI').val();
 				util.ioHouse = io(util.url + '/house');
 				util.ioHouse.on('connect', function () {
+					console.log('ioHouse connect');
 					util.ioHouse.emit('house', util.uni);
 				});
 				util.ioHouse.on("buzz", function (resp) {
+					console.log('ioHouse buzz');
 					if (!resp.uni || !resp.msg || !resp.tag || resp.uni != util.uni) {
 						return;
 					}
@@ -2721,11 +2723,13 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				util.ioChat = io(util.url + '/chatroom');
 
 				util.ioHouse.on('reconnect', function () {
+					console.log('ioHouse reconnect');
 					if (util.roomId && util.uni) {
 						util.ioChat.emit('room', util.roomId, util.uni);
 					}
 				});
 				util.ioChat.on("msg", function (info) {
+					console.log('ioChat msg');
 					util.roomId = info.gid;
 					if (ChatUtil.gid != util.roomId) {
 						return false;
@@ -3531,7 +3535,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			init: function () {
 				var util = this;
 				// 添加图片
-				$(document).on(kClick, "a.choose-img", function () {
+				$(document).on(kClick, ".zone_container_add_msg a.choose-img", function () {
 					if (util.loadingflag) {
 						return false;
 					}
@@ -3539,9 +3543,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					var len = parseInt(ul.find('img').length);
 					var chooseImgStr = '';
 
-					if ($sls.user_id == 143807) {
-						alert(len);
-					}
 					wx.chooseImage({
 						count: 6 - len,
 						sizeType: ['original', 'compressed'],
