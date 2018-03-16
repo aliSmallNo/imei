@@ -1646,6 +1646,7 @@ class SiteController extends BaseController
 				'pagination' => $pagination,
 				'list' => $list,
 				'catDict' => Moment::$catDict,
+				'stDict' => Moment::$stDict,
 			]
 		);
 	}

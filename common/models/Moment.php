@@ -171,6 +171,7 @@ EEE;
 			'dt' => AppUtil::prettyPastDate($row["mAddedOn"]),
 			'isMale' => 1,
 			'age' => '保密',
+			'status_t' => self::$stDict[$row['mStatus']],
 		];
 		// 话题
 		if ($row["tTitle"]) {

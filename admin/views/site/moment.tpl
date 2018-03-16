@@ -160,6 +160,9 @@
 				操作
 			</th>
 			<th>
+				状态
+			</th>
+			<th>
 				时间
 			</th>
 			<th>
@@ -204,7 +207,9 @@
 						<a opt-cat="comment">评论:{{$item.comment}}</a>
 					</div>
 				</td>
-
+				<td>
+					<a class="m-status-{{$item.mStatus}}">{{$item.status_t}}</a><br>
+				</td>
 				<td>
 					{{$item.mAddedOn}}
 					<div>{{$item.dt}}</div>
@@ -215,6 +220,14 @@
 						 data-content='{{$item.mContent}}' data-topic="{{if isset($item.topic_title)}}{{$item.topic_title}}{{/if}}"
 						 data-tid="{{$item.mTopic}}"
 						 class="MomentEdit btn btn-outline btn-primary btn-xs">修改动态</a>
+
+					{{if $item.mStatus==2}}
+						<div style="margin-top: 5px">
+							<a href="javascript:;" class="operate btn btn-outline btn-primary btn-xs" data-mid="{{$item.mId}}" data-tag="pass">审核通过</a>
+							<a href="javascript:;" class="operate btn btn-outline btn-danger btn-xs" data-mid="{{$item.mId}}" data-tag="fail">审核失败</a>
+						</div>
+					{{/if}}
+
 				</td>
 			</tr>
 		{{/foreach}}
@@ -528,6 +541,33 @@
 			}
 		});
 	});
+
+	$("a.operate").click(function () {
+		var self = $(this);
+		var mid = self.attr('data-mid');
+		var tag = self.attr('data-tag');
+		var text = self.html();
+		layer.confirm('您确定' + text, {
+			btn: ['确定', '取消'],
+			title: '审核用户'
+		}, function () {
+			toCert({mid: mid, tag: 'moment_audit', subtag: tag});
+		}, function () {
+		});
+	});
+
+	function toCert(postData) {
+		$.post("/api/moment",
+			postData,
+			function (resp) {
+				if (resp.code < 1) {
+					BpbhdUtil.showMsg(resp.msg, 1);
+					location.reload();
+				} else {
+					BpbhdUtil.showMsg(resp.msg);
+				}
+			}, "json");
+	}
 
 </script>
 
