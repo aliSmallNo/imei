@@ -21,6 +21,7 @@ use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
 use common\utils\PushUtil;
+use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -1649,7 +1650,10 @@ class FooController extends Controller
 		//list($data, $nextpage) = Moment::wechatItems(120003, [], [], 2);
 		//list($data, $nextpage) = Moment::wechatItems(120003, [], [], 2);
 
-		echo uniqid('', true);
+		// echo uniqid('', true);
+
+
+		var_dump(RedisUtil::subscribe());
 
 	}
 

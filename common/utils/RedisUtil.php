@@ -215,6 +215,13 @@ class RedisUtil
 		return $ret;
 	}
 
+
+	public static function subscribe()
+	{
+		 $redis = self::redis();
+		 return $redis->subscribe('message');
+	}
+
 	public static function getImageSeq($redis = "")
 	{
 		return self::getSequenceKeys(self::$IdImage, $redis);
