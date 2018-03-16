@@ -3549,14 +3549,14 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						sourceType: ['album', 'camera'],
 						success: function (res) {
 							if ($sls.user_id == 143807) {
-								alert(JSON.stringify(res.localIds));
+								//alert(JSON.stringify(res.localIds));
 							}
 							util.img_localIds = util.img_localIds.concat(res.localIds);
 							var tmp = '{[#data]}<li><img src="{[.]}" alt=""></li>{[/data]}';
 							var html = Mustache.render(tmp, {data: res.localIds});
 							if ($sls.user_id == 143807) {
-								alert(html);
-								alert(JSON.stringify(util.img_localIds));
+								//alert(html);
+								//alert(JSON.stringify(util.img_localIds));
 							}
 							if (len + parseInt(util.img_localIds.length) < 6) {
 								chooseImgStr = '<li><a href="javascript:;" class="choose-img"></a></li>';
@@ -3937,6 +3937,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					GreetingUtil.show();
 				}
 			}, 600);
+
 
 			setTimeout(function () {
 				pinLocation();

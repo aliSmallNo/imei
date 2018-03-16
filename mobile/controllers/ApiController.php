@@ -544,6 +544,7 @@ class ApiController extends Controller
 				$sid = AppUtil::decrypt(self::postParam("sid"));
 
 				list($code, $msg, $data) = UserTrans::addTaskRedpaket($key, $wx_uid, $sid);
+
 				return self::renderAPI($code, $msg, $data);
 				break;
 			case "task_show_award":

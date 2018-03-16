@@ -766,11 +766,6 @@ class WxController extends BaseController
 			$vipFlag = 1;
 		}
 
-		$isdebug = 0;
-		if (in_array($this->user_id, [120003, 146306])) {
-			// $isdebug = 1;
-		}
-		$isdebug = 1;
 
 		return self::renderPage("single.tpl", [
 			'uId' => $uId,
@@ -805,7 +800,6 @@ class WxController extends BaseController
 			'taskFlag' => $taskflag,
 			'taskKey' => $taskKey,
 			'vipFlag' => $vipFlag,
-			'isdebug' => $isdebug,
 			'wsUrl' => AppUtil::wsUrl()
 		]);
 	}
