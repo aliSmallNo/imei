@@ -826,12 +826,12 @@ class ApiController extends Controller
 				]);
 				break;
 			case "moment_audit":
-				$subtag = self::postParam("subtag");
+				$st = self::postParam("st");
 				$mid = self::postParam("mid");
-				if (!Moment::findOne(["mId" => $mid]) || !in_array($subtag, ["pass", "fail"])) {
+				if (!Moment::findOne(["mId" => $mid]) || !in_array($st, array_keys(Moment::$stDict))) {
 					return self::renderAPI(129, '参数错误');
 				}
-				Moment::adminEdit($mid, ["mStatus" => $subtag == "pass" ? Moment::ST_ACTIVE : Moment::ST_FAIL]);
+				Moment::adminEdit($mid, ["mStatus" => $st]);
 				return self::renderAPI(0, '操作成功');
 				break;
 			case "user_opt":

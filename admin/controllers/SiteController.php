@@ -1603,6 +1603,7 @@ class SiteController extends BaseController
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
 		$cat = self::getParam("cat");
+		$st = self::getParam("st");
 		$condition = $params = [];
 		if ($title) {
 			$condition[] = '(m.mContent like :title )';
@@ -1619,6 +1620,10 @@ class SiteController extends BaseController
 		if ($cat) {
 			$condition[] = '(m.mCategory = :cat )';
 			$params[':cat'] = $cat;
+		}
+		if ($st) {
+			$condition[] = '(m.mStatus = :st )';
+			$params[':st'] = $st;
 		}
 		list($list) = Moment::wechatItems('', $condition, $params, $page, 20);
 		foreach ($list as &$v) {

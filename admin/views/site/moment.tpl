@@ -140,6 +140,12 @@
 			<option value="{{$key}}" {{if isset($getInfo['cat']) && $getInfo['cat']==$key }}selected{{/if}}>{{$item}}</option>
 		{{/foreach}}
 	</select>
+	<select name="st" class="form-control">
+		<option value="">-=请选择状态=-</option>
+		{{foreach from=$stDict key=key item=item}}
+			<option value="{{$key}}" {{if isset($getInfo['st']) && $getInfo['st']==$key }}selected{{/if}}>{{$item}}</option>
+		{{/foreach}}
+	</select>
 	<button class="btn btn-primary">查询</button>
 </form>
 <div class="row-divider"></div>
@@ -221,12 +227,10 @@
 						 data-tid="{{$item.mTopic}}"
 						 class="MomentEdit btn btn-outline btn-primary btn-xs">修改动态</a>
 
-					{{if $item.mStatus==2}}
-						<div style="margin-top: 5px">
-							<a href="javascript:;" class="operate btn btn-outline btn-primary btn-xs" data-mid="{{$item.mId}}" data-tag="pass">审核通过</a>
-							<a href="javascript:;" class="operate btn btn-outline btn-danger btn-xs" data-mid="{{$item.mId}}" data-tag="fail">审核失败</a>
-						</div>
-					{{/if}}
+					<div style="margin-top: 5px">
+						<a href="javascript:;" class="operate btn btn-outline btn-danger btn-xs" data-mid="{{$item.mId}}"
+							 data-st="{{$item.mStatus}}">修改状态</a>
+					</div>
 
 				</td>
 			</tr>
@@ -362,15 +366,19 @@
 	});
 
 	$(document).on("click", ".btn-add", function () {
-		$sls.tag = "add";
+		resetModal("添加动态", 'add');
 		$(".form-horizontal").html($("#init_add").html());
-
 		$("#modalEdit").modal('show');
 	});
 
+	function resetModal(title, tag) {
+		$("#modalEdit").find(".modal-title").html(title);
+		$sls.tag = tag;
+	}
+
 	$(document).on("click", ".MomentEdit", function () {
 		var self = $(this);
-		$sls.tag = "edit";
+		resetModal("修改动态", 'edit');
 		$sls.mid = self.attr("data-mid");
 		var name = self.attr("data-name");
 		var cat = self.attr("data-cat");
@@ -408,42 +416,41 @@
 	});
 
 	$(document).on('input', '.searchName,.searchTopic', function () {
-			var self = $(this);
-			var subtag = self.attr('subtag');
-			var keyWord = self.val();
-			if ($sls.searchFlag) {
-				return;
-			}
-			$sls.searchFlag = 1;
-			layer.load();
-			$.post("/api/user",
-				{
-					tag: "searchnet",
-					keyword: keyWord,
-					subtag: subtag,
-				},
-				function (resp) {
-					layer.closeAll();
-					$sls.searchFlag = 0;
-					if (resp.code === 0) {
-						var html = '';
-						if (subtag == 'topic') {
-							html = Mustache.render('{[#data]}<option value="{[tId]}">{[tTitle]}</option>{[/data]}', resp)
-							self.closest(".col-sm-7").find("[data-tag=topic]").html(html);
-						} else {
-							html = Mustache.render('{[#data]}<option value="{[id]}">{[uname]} {[phone]}</option>{[/data]}', resp)
-							self.closest(".col-sm-7").find("[data-tag=uid]").html(html);
-						}
-					}
-				}, "json");
-
-			/*
-			var reg = /^[\u4e00-\u9fa5]+$/i;
-			if (reg.test(keyWord)) {
-			}
-			*/
+		var self = $(this);
+		var subtag = self.attr('subtag');
+		var keyWord = self.val();
+		if ($sls.searchFlag) {
+			return;
 		}
-	);
+		$sls.searchFlag = 1;
+		layer.load();
+		$.post("/api/user",
+			{
+				tag: "searchnet",
+				keyword: keyWord,
+				subtag: subtag,
+			},
+			function (resp) {
+				layer.closeAll();
+				$sls.searchFlag = 0;
+				if (resp.code === 0) {
+					var html = '';
+					if (subtag == 'topic') {
+						html = Mustache.render('{[#data]}<option value="{[tId]}">{[tTitle]}</option>{[/data]}', resp)
+						self.closest(".col-sm-7").find("[data-tag=topic]").html(html);
+					} else {
+						html = Mustache.render('{[#data]}<option value="{[id]}">{[uname]} {[phone]}</option>{[/data]}', resp)
+						self.closest(".col-sm-7").find("[data-tag=uid]").html(html);
+					}
+				}
+			}, "json");
+
+		/*
+		var reg = /^[\u4e00-\u9fa5]+$/i;
+		if (reg.test(keyWord)) {
+		}
+		*/
+	});
 
 
 	function intakeForm() {
@@ -480,7 +487,7 @@
 
 	}
 
-	$(document).on("click", ".btn-save", function () {
+	function edit_moment() {
 		var data = intakeForm();
 		data['sign'] = $sls.tag;
 		data['mid'] = $sls.mid;
@@ -540,32 +547,57 @@
 				}
 			}
 		});
+	}
+
+	$(document).on("click", ".btn-save", function () {
+		switch ($sls.tag) {
+			case "add":
+			case "edit":
+				edit_moment();
+				break;
+			case "edit_status":
+				edit_status();
+				break;
+		}
 	});
 
 	$("a.operate").click(function () {
 		var self = $(this);
-		var mid = self.attr('data-mid');
-		var tag = self.attr('data-tag');
-		var text = self.html();
-		layer.confirm('您确定' + text, {
-			btn: ['确定', '取消'],
-			title: '审核用户'
-		}, function () {
-			toCert({mid: mid, tag: 'moment_audit', subtag: tag});
-		}, function () {
-		});
+		resetModal("修改状态", 'edit_status');
+		$sls.mid = self.attr('data-mid');
+		var st = self.attr('data-st');
+		$(".form-horizontal").html($("#tmp_status").html());
+		$(".edit-status").val(st);
+		$("#modalEdit").modal('show');
 	});
 
-	function toCert(postData) {
+	function edit_status() {
+		var st = $(".edit-status").val();
+		if (!st) {
+			BpbhdUtil.showMsg('状态还没选择哦', 1);
+			return;
+		}
+		var postData = {
+			tag: 'moment_audit',
+			mid: $sls.mid,
+			st: st,
+		};
+		if ($sls.searchFlag) {
+			return;
+		}
+		$sls.searchFlag = 1;
 		$.post("/api/moment",
 			postData,
 			function (resp) {
 				if (resp.code < 1) {
+					$sls.mid = '';
+					$sls.tag = '';
 					BpbhdUtil.showMsg(resp.msg, 1);
 					location.reload();
 				} else {
 					BpbhdUtil.showMsg(resp.msg);
 				}
+
 			}, "json");
 	}
 
@@ -859,5 +891,19 @@
 		</div>
 	</li>
 	{[/data]}
+</script>
+<script type="text/html" id="tmp_status">
+	<div class="form-group">
+		<label class="col-sm-3 control-label">状态</label>
+		<div class="col-sm-7">
+			<select class="form-control edit-status">
+				<option value="">-=请选择状态=-</option>
+				{{foreach from=$stDict key=key item=item}}
+					<option value="{{$key}}"
+									{{if isset($getInfo['st']) && $getInfo['st']==$key }}selected{{/if}}>{{$item}}</option>
+				{{/foreach}}
+			</select>
+		</div>
+	</div>
 </script>
 {{include file="layouts/footer.tpl"}}

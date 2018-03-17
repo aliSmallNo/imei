@@ -766,7 +766,6 @@ class WxController extends BaseController
 			$vipFlag = 1;
 		}
 
-
 		return self::renderPage("single.tpl", [
 			'uId' => $uId,
 			'noReadFlag' => $noReadFlag,
