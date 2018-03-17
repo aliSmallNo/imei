@@ -5,6 +5,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 		var $sls = {
 			mainPage: $('main'),
 			curFrag: "slink",
+			user_id: parseInt($("#cUID").val()),
 			footer: $(".mav-foot"),
 			mobile: $("#cur_mobile").val(),
 			cork: $(".app-cork"),
@@ -1473,7 +1474,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			hint: $('#cUserHint'),
 			albumTmp: $('#tpl_album').html(),
 			cardTmp: '{[#cards]}<li class="card-{[cat]}"></li>{[/cards]}',
-			thumbTmp: '<li><a href="javascript:;" class="add"></li>{[#items]}<li><a href="#album" style="background-image:url({[.]});"></a></li>{[/items]}',
+			thumbTmp: '<li><a href="#album" class="add"></li>{[#items]}<li><a href="#album" style="background-image:url({[.]});"></a></li>{[/items]}',
 			albumSingleTmp: '{[#items]}<li><a class="has-pic" style="background-image:url({[thumb]});" bsrc="{[figure]}"></a><a href="javascript:;" class="del"></a></li>{[/items]}',
 			init: function () {
 				var util = this;
@@ -1481,7 +1482,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					util.editToggle(!util.editable);
 				});
 
-				$(document).on(kClick, "a.choose-img", function () {
+				$(document).on(kClick, ".album-photos a.choose-img", function () {
 					if (util.delImgFlag || util.editable) {
 						return false;
 					}
@@ -2698,9 +2699,11 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				util.uni = $('#cUNI').val();
 				util.ioHouse = io(util.url + '/house');
 				util.ioHouse.on('connect', function () {
+					console.log('ioHouse connect');
 					util.ioHouse.emit('house', util.uni);
 				});
 				util.ioHouse.on("buzz", function (resp) {
+					console.log('ioHouse buzz');
 					if (!resp.uni || !resp.msg || !resp.tag || resp.uni != util.uni) {
 						return;
 					}
@@ -2720,11 +2723,13 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				util.ioChat = io(util.url + '/chatroom');
 
 				util.ioHouse.on('reconnect', function () {
+					console.log('ioHouse reconnect');
 					if (util.roomId && util.uni) {
 						util.ioChat.emit('room', util.roomId, util.uni);
 					}
 				});
 				util.ioChat.on("msg", function (info) {
+					console.log('ioChat msg');
 					util.roomId = info.gid;
 					if (ChatUtil.gid != util.roomId) {
 						return false;
@@ -3393,9 +3398,31 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 							var audio = self.find("audio")[0];
 							util.playPauseVoice(self, audio);
 							break;
-
 					}
+				});
+			},
+			pauseVoices: function () {
+				var util = this;
+				$(".playVoiceElement").each(function () {
+					var self = $(this);
 
+					var tag = self.attr("pvl");
+					console.log(tag);
+					switch (tag) {
+						case "add":
+							wx.pauseVoice({
+								localId: recordUtil.voice_localId // 需要暂停的音频的本地ID，由stopRecord接口获得
+							});
+							self.removeClass("play").addClass("pause");
+							break;
+						case "items":
+						case "comment":
+							var audio = self.find("audio")[0];
+							if (!self.hasClass("pause")) {
+								util.playPauseVoice(self, audio);
+							}
+							break;
+					}
 				});
 			},
 			recording: function (self, f) {
@@ -3508,24 +3535,29 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			init: function () {
 				var util = this;
 				// 添加图片
-				$(document).on(kClick, "a.choose-img", function () {
+				$(document).on(kClick, ".zone_container_add_msg a.choose-img", function () {
 					if (util.loadingflag) {
 						return false;
 					}
 					var ul = $(".msg_ipts ul.add_cat_img");
 					var len = parseInt(ul.find('img').length);
 					var chooseImgStr = '';
-					// alert(len);
+
 					wx.chooseImage({
 						count: 6 - len,
 						sizeType: ['original', 'compressed'],
 						sourceType: ['album', 'camera'],
 						success: function (res) {
+							if ($sls.user_id == 143807) {
+								//alert(JSON.stringify(res.localIds));
+							}
 							util.img_localIds = util.img_localIds.concat(res.localIds);
 							var tmp = '{[#data]}<li><img src="{[.]}" alt=""></li>{[/data]}';
 							var html = Mustache.render(tmp, {data: res.localIds});
-							// alert(html);
-							// alert(JSON.stringify(util.img_localIds));
+							if ($sls.user_id == 143807) {
+								//alert(html);
+								//alert(JSON.stringify(util.img_localIds));
+							}
 							if (len + parseInt(util.img_localIds.length) < 6) {
 								chooseImgStr = '<li><a href="javascript:;" class="choose-img"></a></li>';
 							}
@@ -3770,11 +3802,15 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			$(".zone_container_add_msg ul[add_cat=image]").html('');
 			$(".zone_container_add_msg textarea").val('');
 			$(".add_one_moment").hide();
+			// 关闭正在播放的语音
+			recordUtil.pauseVoices();
+
 		}
 
 		$(document).on("click", ".add_one_moment a", function () {
 			location.href = "#zone_add_msg";
 		});
+
 		/***** zone end ******/
 
 		function pinLocation() {
@@ -3901,6 +3937,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					GreetingUtil.show();
 				}
 			}, 600);
+
 
 			setTimeout(function () {
 				pinLocation();

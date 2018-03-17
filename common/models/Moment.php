@@ -15,6 +15,8 @@ use yii\db\ActiveRecord;
 class Moment extends ActiveRecord
 {
 
+	static $startTime = "2018-03-15 15:00:00";
+
 	const CAT_TEXT = 100;
 	const CAT_IMG = 110;
 	const CAT_VOICE = 120;
@@ -26,8 +28,8 @@ class Moment extends ActiveRecord
 		self::CAT_ARTICLE => "文章",
 	];
 
-	const TOP_ARTICLE = -100;
-	const TOP_SYS_NOTICE = -200;
+	const TOP_ARTICLE = 100;
+	const TOP_SYS_NOTICE = 200;
 	static $topDict = [
 		self::TOP_ARTICLE => "千寻文章",
 		self::TOP_SYS_NOTICE => "系统消息",
@@ -35,6 +37,18 @@ class Moment extends ActiveRecord
 
 	const TOP_SYS = 1000;
 	const TOP_ATICLE = 100;
+
+
+	const ST_ACTIVE = 1;
+	const ST_PENDING = 2;
+	const ST_FAIL = 3;
+	const ST_DELETE = 9;
+	static $stDict = [
+		self::ST_ACTIVE => "已通过",
+		self::ST_PENDING => "待审核",
+		self::ST_FAIL => "未通过",
+		self::ST_DELETE => "已删除",
+	];
 
 	public static function tableName()
 	{
@@ -69,7 +83,12 @@ class Moment extends ActiveRecord
 	public static function wechatItems($uid, $cri, $param, $page = 1, $pagesize = 10)
 	{
 		$conn = AppUtil::db();
+		$startTime = self::$startTime;
+		$status_active = self::ST_ACTIVE;
+		$status_pending = self::ST_PENDING;
+
 		$str = $favor = $optstr = "";
+		$str = "  and m.mAddedOn>'$startTime' ";
 		if ($cri) {
 			$str .= ' and ' . implode(" ", $cri);
 		}
@@ -87,6 +106,7 @@ SUM(case when sCategory=120  and sUId=$uid then 1 else 0 end) as `zanf`,
 SUM(case when sCategory=130  and sUId=$uid then 1 else 0 end) as `commentf`,
 EEE;
 			$order = " order by mTop desc,mId desc ";
+			$str .= " and mStatus in ( $status_active ,$status_pending) ";
 		} else {
 			// 后台
 			$order = " order by mId desc ";
@@ -104,7 +124,7 @@ EEE;
 				left join im_moment_topic as t on t.tId=m.mTopic 
 				left join im_user as u on u.uId=m.mUId 
 				$favor
-				where mDeletedFlag=0 $str
+				where mDeletedFlag=0 $str 
 				group by mId $order  $limit ";
 		$ret = $conn->createCommand($sql)->bindValues($param)->queryAll();
 
@@ -126,6 +146,8 @@ EEE;
 	public static function count($cri, $param)
 	{
 		$str = "";
+		$startTime = self::$startTime;
+		$str = "  and m.mAddedOn>'$startTime' ";
 		if ($cri) {
 			$str .= ' and ' . implode(" ", $cri);
 		}
@@ -149,6 +171,7 @@ EEE;
 			'dt' => AppUtil::prettyPastDate($row["mAddedOn"]),
 			'isMale' => 1,
 			'age' => '保密',
+			'status_t' => self::$stDict[$row['mStatus']],
 		];
 		// 话题
 		if ($row["tTitle"]) {
@@ -235,6 +258,7 @@ EEE;
 	public static function topicStat($tag, $tid)
 	{
 		$conn = AppUtil::db();
+		$startTime = self::$startTime;
 		$param = [];
 		switch ($tag) {
 			case "content":
@@ -252,6 +276,8 @@ EEE;
 				$param[":cat"] = MomentSub::CAT_VIEW;
 				break;
 		}
+		$sql .= " and mAddedOn > '$startTime' ";
+
 		return $conn->createCommand($sql)->bindValues($param)->queryScalar();
 	}
 

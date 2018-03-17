@@ -544,6 +544,7 @@ class ApiController extends Controller
 				$sid = AppUtil::decrypt(self::postParam("sid"));
 
 				list($code, $msg, $data) = UserTrans::addTaskRedpaket($key, $wx_uid, $sid);
+
 				return self::renderAPI($code, $msg, $data);
 				break;
 			case "task_show_award":
@@ -2380,7 +2381,7 @@ class ApiController extends Controller
 								"uid" => $receiverId,
 								"receive" => $uid,
 								"text" => $text,
-							], QueueUtil::QUEUE_TUBE_SMS, random_int(30,60));
+							], QueueUtil::QUEUE_TUBE_SMS, random_int(30, 60));
 					}
 
 					$msgKey = $ret && isset($ret['gid']) ? intval($ret['gid']) : 0;
@@ -3454,7 +3455,6 @@ class ApiController extends Controller
 					"topic_id" => $topic_id,
 				], JSON_UNESCAPED_UNICODE));
 
-
 				$insert["mUId"] = $wxInfo["uId"];
 				$insert["mTopic"] = $topic_id ? intval($topic_id) : 0;
 				$insert["mContent"] = ['title' => '', 'url' => [], 'other_url' => '', 'subtext' => '',];
@@ -3486,8 +3486,10 @@ class ApiController extends Controller
 						break;
 				}
 				$insert["mContent"] = $insert["mContent"] = json_encode($insert["mContent"], JSON_UNESCAPED_UNICODE);
-
+				$insert['mStatus'] = Moment::ST_PENDING;
+				$insert['mAddedBy'] = $uid;
 				// LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode($insert, JSON_UNESCAPED_UNICODE));
+
 
 				$res = Moment::add($insert);
 

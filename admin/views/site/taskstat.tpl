@@ -47,26 +47,35 @@
 		flex: 1
 		padding-left: 10px;
 	}
-	.co1{
+
+	.co1 {
 		color: #00bd1b;
 	}
-	.co2{
+
+	.co2 {
 		color: #f80;
 	}
 </style>
 <div class="row">
 	<h4>任务统计</h4>
 </div>
+gender
 <form action="/site/taskstat" class="form-inline">
 	<input class="form-control beginDate my-date-input" placeholder="开始时间" name="sdate"
 				 value="{{if isset($getInfo['sdate'])}}{{$getInfo['sdate']}}{{/if}}">
 	至
 	<input class="form-control endDate my-date-input" placeholder="截止时间" name="edate"
 				 value="{{if isset($getInfo['edate'])}}{{$getInfo['edate']}}{{/if}}">
-<input class="form-control" placeholder="用户名" name="name"
+	<input class="form-control" placeholder="用户名" name="name"
 				 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}">
-<input class="form-control" placeholder="手机号" name="phone"
+	<input class="form-control" placeholder="手机号" name="phone"
 				 value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}">
+	<select name="gender" class="form-control">
+		<option value="">-=性别=-</option>
+		{{foreach from=$gender item=item key=key}}
+		<option value="{{$key}}" {{if isset($getInfo['gender']) && $getInfo['gender']==$key}}selected{{/if}}>{{$item}}</option>
+		{{/foreach}}
+	</select>
 	<button class="btn btn-primary">查询</button>
 	<span class="space"></span>
 	<a href="javascript:;" class="j-scope" data-from="{{$today}}" data-to="{{$today}}">今天</a>
@@ -131,19 +140,20 @@
 
 				</td>
 				<td class="col-sm-1 tip">数量￥{{$stat.reg_amt/100}} <br> 次数: {{$stat.reg_count}}</td>
-				<td class="col-sm-1 tip">数量￥{{$stat.percent80_amt/100}} <br>次数:  {{$stat.percent80_count}}</td>
-				<td class="col-sm-1 tip">数量￥{{$stat.cert_amt/100}} <br>次数:  {{$stat.cert_count}}</td>
-				<td class="col-sm-1 tip">数量￥{{$stat.chat_3times_amt/100}} <br>次数:  {{$stat.chat_3times_count}}</td>
-				<td class="col-sm-1 tip">数量￥{{$stat.chat_reply_amt/100}} <br>次数:  {{$stat.chat_reply_count}}</td>
-				<td class="col-sm-1 tip">数量￥{{$stat.show_coin_amt/100}} <br>次数:  {{$stat.show_coin_count}}</td>
-				<td class="col-sm-1 tip">数量￥{{$stat.receive_gift_amt/100}} <br>次数:  {{$stat.receive_gift_count}}</td>
-				<td class="col-sm-1 tip">数量￥{{$stat.sign_amt/100}} <br>次数:  {{$stat.sign_count}}</td>
-				<td class="col-sm-1 tip">数量￥{{$stat.chat_10_count_amt/100}} <br>次数:  {{$stat.chat_10_count_count}}</td>
-				<td class="col-sm-1 tip">数量￥{{$stat.chat_50_count_amt/100}} <br>次数:  {{$stat.chat_50_count_count}}</td>
-				<td class="col-sm-1 tip">数量￥{{$stat.share_reg_amt/100}} <br>次数:  {{$stat.share_reg_count}}</td>
-				<td class="col-sm-1 tip">数量￥{{$stat.share28_amt/100}} <br>次数: {{$stat.share28_count}} <br>分享数:{{$stat.s28_share}}<br>注册数:{{$stat.s28_reg}}</td>
+				<td class="col-sm-1 tip">数量￥{{$stat.percent80_amt/100}} <br>次数: {{$stat.percent80_count}}</td>
+				<td class="col-sm-1 tip">数量￥{{$stat.cert_amt/100}} <br>次数: {{$stat.cert_count}}</td>
+				<td class="col-sm-1 tip">数量￥{{$stat.chat_3times_amt/100}} <br>次数: {{$stat.chat_3times_count}}</td>
+				<td class="col-sm-1 tip">数量￥{{$stat.chat_reply_amt/100}} <br>次数: {{$stat.chat_reply_count}}</td>
+				<td class="col-sm-1 tip">数量￥{{$stat.show_coin_amt/100}} <br>次数: {{$stat.show_coin_count}}</td>
+				<td class="col-sm-1 tip">数量￥{{$stat.receive_gift_amt/100}} <br>次数: {{$stat.receive_gift_count}}</td>
+				<td class="col-sm-1 tip">数量￥{{$stat.sign_amt/100}} <br>次数: {{$stat.sign_count}}</td>
+				<td class="col-sm-1 tip">数量￥{{$stat.chat_10_count_amt/100}} <br>次数: {{$stat.chat_10_count_count}}</td>
+				<td class="col-sm-1 tip">数量￥{{$stat.chat_50_count_amt/100}} <br>次数: {{$stat.chat_50_count_count}}</td>
+				<td class="col-sm-1 tip">数量￥{{$stat.share_reg_amt/100}} <br>次数: {{$stat.share_reg_count}}</td>
+				<td class="col-sm-1 tip">数量￥{{$stat.share28_amt/100}} <br>次数: {{$stat.share28_count}}
+					<br>分享数:{{$stat.s28_share}}<br>注册数:{{$stat.s28_reg}}</td>
 
-			{{/foreach}}
+				{{/foreach}}
 			</tbody>
 		</table>
 		{{$pagination}}

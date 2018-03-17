@@ -21,6 +21,7 @@ use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
 use common\utils\PushUtil;
+use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
@@ -1649,13 +1650,10 @@ class FooController extends Controller
 		//list($data, $nextpage) = Moment::wechatItems(120003, [], [], 2);
 		//list($data, $nextpage) = Moment::wechatItems(120003, [], [], 2);
 
+		// echo uniqid('', true);
 
-		QueueUtil::loadJob("addChat",
-			[
-				"uid" => 120003,
-				"receive" => 143807,
-				"text" => 'tttt',
-			], QueueUtil::QUEUE_TUBE_CHAT, random_int(10,20));
+
+		// var_dump(RedisUtil::subscribe());
 
 	}
 

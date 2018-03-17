@@ -777,6 +777,8 @@ class ApiController extends Controller
 
 				switch ($sign) {
 					case "add":
+						$insert['mAddedBy'] = Admin::getAdminId();
+						$insert['mStatus'] = Moment::ST_ACTIVE;
 						$insert["mContent"] = ['title' => '', 'url' => [], 'other_url' => '', 'subtext' => '',];
 						if ($images) {
 							$insert["mContent"]['url'] = count($images) > 9 ? array_slice($images, 0, 9) : $images;
@@ -809,7 +811,6 @@ class ApiController extends Controller
 					$insert["mTop"] = Moment::TOP_ARTICLE;
 				}
 
-
 				if ($sign == 'add') {
 					$ret = Moment::add($insert);
 				} elseif ($sign == 'edit') {
@@ -823,6 +824,15 @@ class ApiController extends Controller
 					'insert' => $insert,
 					'mid' => $mid,
 				]);
+				break;
+			case "moment_audit":
+				$st = self::postParam("st");
+				$mid = self::postParam("mid");
+				if (!Moment::findOne(["mId" => $mid]) || !in_array($st, array_keys(Moment::$stDict))) {
+					return self::renderAPI(129, '参数错误');
+				}
+				Moment::adminEdit($mid, ["mStatus" => $st]);
+				return self::renderAPI(0, '操作成功');
 				break;
 			case "user_opt":
 				$mid = self::postParam('mid');

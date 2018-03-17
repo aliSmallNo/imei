@@ -108,7 +108,7 @@ define(['jquery', 'layer', 'swiper', 'mustache'],
 			},
 			showCoin: function (taskData, sid) {
 				var util = this;
-				var temp = '{[#data]}<div class="greeting pic"><a href="javascript:;" class="redpacket close" data-key="{[key]}"></a><div class="redpacket_amt"><span>1.2</span>元</div></div>{[/data]}';
+				var temp = '{[#data]}<div class="greeting pic"><a href="javascript:;" class="redpacket close" data-key="{[key]}"></a><div class="redpacket_amt"><span>0.01</span>元</div><a class="btn" href="/wx/swallet#cash"></a></div>{[/data]}';
 				var strJson = Mustache.render(temp, taskData);
 				$(".m-popup-main").show();
 				$(".m-popup-content").html(strJson).addClass("redpacket-wrap animate-pop-in");
@@ -131,7 +131,7 @@ define(['jquery', 'layer', 'swiper', 'mustache'],
 							if (resp.code == 0) {
 								self.closest("div").find("div").find("span").html(resp.data.amt);
 								self.removeClass('close').addClass('open');
-								self.closest("div").find("div").show();
+								self.closest("div").find("div,a.btn").show();
 							} else {
 								util.toast(resp.msg);
 								$(".m-popup-content").removeClass("redpacket-wrap");

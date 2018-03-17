@@ -825,6 +825,7 @@ class SiteController extends BaseController
 		$edate = self::getParam("edate");
 		$phone = self::getParam("phone");
 		$name = self::getParam("name");
+		$gender = self::getParam("gender", 0);
 		$name = str_replace("''", "", $name);
 		$page = self::getParam("page", 1);
 		$criteria = $params = [];
@@ -840,6 +841,10 @@ class SiteController extends BaseController
 		if ($name) {
 			$criteria[] = "u.uName like :name ";
 			$params[':name'] = '%' . $name . '%';
+		}
+		if ($gender) {
+			$criteria[] = "u.uGender=:gen ";
+			$params[':gen'] = $gender;
 		}
 
 		list($stat, $count) = UserTrans::taskAdminStat($criteria, $params, $page);
@@ -857,6 +862,7 @@ class SiteController extends BaseController
 				'sunday' => $sunday,
 				'firstDay' => $firstDay,
 				'endDay' => $endDay,
+				'gender' => User::$Gender,
 				'pagination' => $pagination,
 			]);
 	}
@@ -1597,6 +1603,7 @@ class SiteController extends BaseController
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
 		$cat = self::getParam("cat");
+		$st = self::getParam("st");
 		$condition = $params = [];
 		if ($title) {
 			$condition[] = '(m.mContent like :title )';
@@ -1613,6 +1620,10 @@ class SiteController extends BaseController
 		if ($cat) {
 			$condition[] = '(m.mCategory = :cat )';
 			$params[':cat'] = $cat;
+		}
+		if ($st) {
+			$condition[] = '(m.mStatus = :st )';
+			$params[':st'] = $st;
 		}
 		list($list) = Moment::wechatItems('', $condition, $params, $page, 20);
 		foreach ($list as &$v) {
@@ -1640,6 +1651,7 @@ class SiteController extends BaseController
 				'pagination' => $pagination,
 				'list' => $list,
 				'catDict' => Moment::$catDict,
+				'stDict' => Moment::$stDict,
 			]
 		);
 	}

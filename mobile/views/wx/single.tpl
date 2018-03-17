@@ -807,9 +807,7 @@
 	<a href="#slink" class="nav-link none" data-tag="slink">看媒婆</a>
 	<a href="#slook" class="nav-invite" data-tag="slook">千寻</a>
 	<a href="#scontacts" class="nav-chat" data-tag="scontacts">密聊</a>
-	{{if $isdebug}}
 	<a href="#zone_items" class="nav-zone" data-tag="zone">动态</a>
-	{{/if}}
 	<a href="#sme" class="nav-me" data-tag="sme">个人</a>
 </div>
 <div class="app-cork"></div>
@@ -1163,7 +1161,7 @@
 				</div>
 			</div>
 			<div class="opt">
-				<a href="javascript:;" items_tag="opt"><img src="/images/zone/ico_opt.png" alt=""></a>
+				<a href="javascript:;" items_tag="opt" style="display: none"><img src="/images/zone/ico_opt.png" alt=""></a>
 			</div>
 		</div>
 
@@ -1894,7 +1892,7 @@
 	if (document.location.hash === "" || document.location.hash === "#") {
 		document.location.hash = "#slook";
 	}
-	requirejs(['/js/config.js?v=1.3.1'], function () {
-		requirejs(['/js/single.js?v=1.12.9']);
+	requirejs(['/js/config.js?v=1.3.2'], function () {
+		requirejs(['/js/single.js?v=1.12.14']);
 	});
 </script>
