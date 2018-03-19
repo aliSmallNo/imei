@@ -9,6 +9,7 @@ require(['jquery', 'mustache', "alpha"],
 			newIdx: 0,
 			newsTimer: 0,
 			loading: 0,
+			closeTime: $("#cCLOSETIME").val(),
 
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
@@ -51,7 +52,10 @@ require(['jquery', 'mustache', "alpha"],
 						return;
 					}
 					if (self.hasClass("spring_festival")) {
-						alpha.prompt('提示', '春节即将来临，千寻小妹也要回家过年，至此本平台任务提现功能将在2018-02-10 ~ 2018-02-22 暂时关闭，请合理安排提现时间，带来不便敬请谅解。', ['我知道了'], function () {
+						/*alpha.prompt('提示', '春节即将来临，千寻小妹也要回家过年，至此本平台任务提现功能将在2018-02-10 ~ 2018-02-22 暂时关闭，请合理安排提现时间，带来不便敬请谅解。', ['我知道了'], function () {
+							alpha.clear();
+						});*/
+						alpha.prompt('提示', '由于您的违规操作，至此本平台任务提现功能将在'+$sls.closeTime+' 暂时关闭，带来不便敬请谅解。', ['我知道了'], function () {
 							alpha.clear();
 						});
 					} else {

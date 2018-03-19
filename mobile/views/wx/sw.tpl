@@ -186,6 +186,7 @@
 	<div class="no-more" style="display: none;">没有更多了~</div>
 </section>
 <input type="hidden" id="cUID" value="{{$hid}}">
+<input type="hidden" id="cCLOSETIME" value="{{$close_time}}">
 
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
@@ -232,6 +233,6 @@
 		document.location.hash = "#index";
 	}
 	requirejs(['/js/config.js'], function () {
-		requirejs(['/js/sw.js?v=1.4.5']);
+		requirejs(['/js/sw.js?v=1.4.6']);
 	});
 </script>

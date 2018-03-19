@@ -887,18 +887,23 @@ class UserTrans extends ActiveRecord
 			}
 		}
 
-		$sql = "select sum(tAmt) as amt from im_user_trans where tCategory=:cat and tUId=:uid and DATE_FORMAT(tAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
-		$data["today_amount"] = $conn->createCommand($sql)->bindValues([":uid" => $uid, ":cat" => self::CAT_COIN_DEFAULT])->queryScalar() / 100;
+		$data["today_amount"] = self::today_amt($conn, $uid);
 
-		$sql = "select sum(case when tCategory=:cat then tAmt when tCategory=:cat2 and tUnit=:unit then -tAmt end ) as amt from im_user_trans where  tUId=:uid ";
-		$data["total_amount"] = $conn->createCommand($sql)->bindValues([":uid" => $uid, ":cat" => self::CAT_COIN_DEFAULT,
+		$sql = "select sum(case when tCategory=:cat then tAmt when tCategory=:cat2 and tUnit=:unit then -tAmt end ) as amt from im_user_trans where  tUId=:uid and tDeletedFlag=0 ";
+		$data["total_amount"] = $conn->createCommand($sql)->bindValues([
+				":uid" => $uid, ":cat" => self::CAT_COIN_DEFAULT,
 				":cat2" => self::CAT_EXCHANGE_FLOWER, ":unit" => self::UNIT_COIN_FEN])->queryScalar() / 100;
 
 		list($res) = UserNet::s28ShareStat($uid);
 		$data["s28_reg"] = $res["reg"];
 
 		return [$newTask, $currTask, $everyTask, $hardTask, $data];
+	}
 
+	public static function today_amt($conn, $uid)
+	{
+		$sql = "select sum(tAmt) as amt from im_user_trans where tCategory=:cat and tUId=:uid and tDeletedFlag=0 and DATE_FORMAT(tAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
+		return $conn->createCommand($sql)->bindValues([":uid" => $uid, ":cat" => self::CAT_COIN_DEFAULT])->queryScalar() / 100;
 	}
 
 	/**
@@ -923,6 +928,12 @@ class UserTrans extends ActiveRecord
 		}
 
 		$conn = AppUtil::db();
+
+		// 今天累计任务50元，停止任务
+		if (self::today_amt($conn, $uid) >= 50) {
+			return false;
+		}
+
 		$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid ";
 		$cmd1 = $conn->createCommand($sql);
 		$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid and DATE_FORMAT(tAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
@@ -1111,7 +1122,6 @@ class UserTrans extends ActiveRecord
 				if (!$uid == 164881) {
 					return false;
 				}
-				return false;
 				list($ret) = UserNet::s28ShareStat($uid);
 				$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid and tAmt=:amt ";
 				$amt = $ret["pre_money"];
@@ -1278,7 +1288,7 @@ class UserTrans extends ActiveRecord
 		}
 
 		$stat = UserTrans::stat($uid);
-		if ($stat["coin_f"] > 1000 && !in_array($key, [self::COIN_CHAT_REPLY, self::COIN_CHAT_10_COUNT, self::COIN_CHAT_50_COUNT])) {
+		if ($stat["coin_f"] > 1000 && !in_array($key, [self::COIN_SHARE28, self::COIN_CHAT_REPLY, self::COIN_CHAT_10_COUNT, self::COIN_CHAT_50_COUNT])) {
 			$amt = ceil($amt / 3);
 		}
 
@@ -1292,6 +1302,11 @@ class UserTrans extends ActiveRecord
 			if (in_array($key, [self::COIN_CHAT_REPLY, self::COIN_CHAT_10_COUNT, self::COIN_CHAT_50_COUNT])) {
 				list($otherid) = ChatMsg::groupEdit($uid, $sid);
 			}
+			//  share28任务核查，待改进!!
+			if ($key == self::COIN_SHARE28 && !in_array($amt / 100, array_column(UserNet::$s28Items, "num"))) {
+				return [129, "error", ["amt" => sprintf("%.2f", 0 / 100)]];
+			}
+
 			$sql = "insert into im_user_trans (tCategory,tPId,tUId,tTitle,tAmt,tUnit,tOtherId) VALUES (:cat,:pid,:uid,:title,:amt,:unit,:otherid) ";
 			AppUtil::db()->createCommand($sql)->bindValues([
 				":cat" => self::CAT_COIN_DEFAULT, ':pid' => $key, ':uid' => $uid, ':title' => self::$catDict[self::CAT_COIN_DEFAULT],

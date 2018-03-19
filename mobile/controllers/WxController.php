@@ -2199,7 +2199,12 @@ class WxController extends BaseController
 			&& strtotime("2018-02-22 23:59:00") > time()) {
 			$spring_festival = 1;
 		}
-
+		$close_time = '';
+		if (in_array($this->user_id, [164881, 152052])
+			&& (strtotime("2018-03-19 00:00:00") < time() && strtotime("2018-03-22 23:59:00") > time())) {
+			$close_time = '2018-03-19 ~ 2018-03-22';
+			$spring_festival = 1;
+		}
 		return self::renderPage("sw.tpl",
 			[
 				'avatar' => $avatar,
@@ -2210,6 +2215,7 @@ class WxController extends BaseController
 				'cards' => $cards,
 				"isDebug" => AppUtil::isDebugger($this->user_id),
 				'cash' => $cash,
+				'close_time' => $close_time,
 				'spring_festival' => $spring_festival,
 			],
 			'terse',
