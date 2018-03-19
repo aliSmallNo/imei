@@ -1653,8 +1653,7 @@ class FooController extends Controller
 		// echo uniqid('', true);
 
 
-		// var_dump(RedisUtil::subscribe());
-
+		UserTrans::taskCondition(UserTrans::COIN_SHARE28, 164881);
 	}
 
 

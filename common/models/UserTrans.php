@@ -1111,6 +1111,7 @@ class UserTrans extends ActiveRecord
 				if (!$uid == 164881) {
 					return false;
 				}
+				return false;
 				list($ret) = UserNet::s28ShareStat($uid);
 				$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid and tAmt=:amt ";
 				$amt = $ret["pre_money"];
