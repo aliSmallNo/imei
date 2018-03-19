@@ -889,10 +889,16 @@ class UserTrans extends ActiveRecord
 
 		$data["today_amount"] = self::today_amt($conn, $uid);
 
-		$sql = "select sum(case when tCategory=:cat then tAmt when tCategory=:cat2 and tUnit=:unit then -tAmt end ) as amt from im_user_trans where  tUId=:uid and tDeletedFlag=0 ";
+		/*$sql = "select sum(case when tCategory=:cat then tAmt when tCategory=:cat2 and tUnit=:unit then -tAmt end ) as amt from im_user_trans where  tUId=:uid and tDeletedFlag=0 ";
 		$data["total_amount"] = $conn->createCommand($sql)->bindValues([
 				":uid" => $uid, ":cat" => self::CAT_COIN_DEFAULT,
-				":cat2" => self::CAT_EXCHANGE_FLOWER, ":unit" => self::UNIT_COIN_FEN])->queryScalar() / 100;
+				":cat2" => self::CAT_EXCHANGE_FLOWER, ":unit" => self::UNIT_COIN_FEN])->queryScalar() / 100;*/
+
+		$sql = "select sum(case when tCategory=:cat then tAmt  end ) as amt from im_user_trans where  tUId=:uid and tDeletedFlag=0 ";
+		$data["total_amount"] = $conn->createCommand($sql)->bindValues([
+				":uid" => $uid,
+				":cat" => self::CAT_COIN_DEFAULT
+			])->queryScalar() / 100;
 
 		list($res) = UserNet::s28ShareStat($uid);
 		$data["s28_reg"] = $res["reg"];
