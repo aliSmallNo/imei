@@ -1,38 +1,64 @@
 {{include file="layouts/header.tpl"}}
 <style>
-	.members img {
-		width: 30px;
-		height: 30px;
-		margin-top: 5px
-	}
 
 	td a, td span {
 		font-size: 12px;
 		font-weight: 300;
 	}
 
-	.members-des div {
-		padding: 1px 10px;
-		min-height: 50px;
-		max-height: 100px;
-		overflow-y: auto;
-		overflow-x: hidden;
-		border: 1px solid #ddd;
-		border-radius: 3px;
-	}
+	/*
 
-	.note b {
-		padding-left: 2px;
-		padding-right: 2px;
-		font-size: 15px;
-		font-weight: 400;
-	}
+		.members img {
+			width: 30px;
+			height: 30px;
+			margin-top: 5px
+		}
 
-	.note i {
-		font-size: 13px;
-		font-weight: 300;
-		font-style: normal;
-	}
+		.members-des div {
+			padding: 1px 10px;
+			min-height: 50px;
+			max-height: 100px;
+			overflow-y: auto;
+			overflow-x: hidden;
+			border: 1px solid #ddd;
+			border-radius: 3px;
+		}
+
+		.note b {
+			padding-left: 2px;
+			padding-right: 2px;
+			font-size: 15px;
+			font-weight: 400;
+		}
+
+		.note i {
+			font-size: 13px;
+			font-weight: 300;
+			font-style: normal;
+		}
+
+			.chat-st {
+			color: #ee6e73;
+			font-size: 13px;
+			padding-bottom: 5px;
+		}
+
+
+		.tips {
+			font-size: 10px;
+			color: #aaa;
+			line-height: 16px;
+		}
+
+		.av-sm {
+			width: 25px;
+			height: 25px;
+			vertical-align: middle;
+			border-radius: 3px;
+			border: 1px solid #E4E4E4;
+		}
+
+		*/
 
 	td img {
 		width: 64px;
@@ -48,29 +74,9 @@
 		font-size: 12px;
 	}
 
-	.chat-st {
-		color: #ee6e73;
-		font-size: 13px;
-		padding-bottom: 5px;
-	}
-
 	td a {
 		display: inline-block;
 		font-weight: 500;
-	}
-
-	.tips {
-		font-size: 10px;
-		color: #aaa;
-		line-height: 16px;
-	}
-
-	.av-sm {
-		width: 25px;
-		height: 25px;
-		vertical-align: middle;
-		border-radius: 3px;
-		border: 1px solid #E4E4E4;
 	}
 
 	td audio {
@@ -195,8 +201,11 @@
 						{{if $item.showAllFlag}}<a>查看全部</a></div>{{/if}}
 					{{/if}}
 					{{if $item.mCategory==110}}
-						<div data-images='{{$item.showImages}}'>{{foreach from=$item.url key=key item=img}}  <span
-											class="album-item"><img src="{{$img}}" class="small" data-idx="{{$key}}"></span>{{/foreach}}</div>
+						<div data-images='{{$item.showImages}}'>
+							{{foreach from=$item.url key=key item=img}}
+								<span class="album-item"><img src="{{$img}}" class="small" data-idx="{{$key}}"></span>
+							{{/foreach}}
+						</div>
 					{{/if}}
 					{{if $item.mCategory==120}}
 						<audio src="{{$item.other_url}}" controls></audio>
@@ -226,12 +235,10 @@
 						 data-content='{{$item.mContent}}' data-topic="{{if isset($item.topic_title)}}{{$item.topic_title}}{{/if}}"
 						 data-tid="{{$item.mTopic}}"
 						 class="MomentEdit btn btn-outline btn-primary btn-xs">修改动态</a>
-
 					<div style="margin-top: 5px">
 						<a href="javascript:;" class="operate btn btn-outline btn-danger btn-xs" data-mid="{{$item.mId}}"
 							 data-st="{{$item.mStatus}}">修改状态</a>
 					</div>
-
 				</td>
 			</tr>
 		{{/foreach}}
@@ -597,7 +604,6 @@
 				} else {
 					BpbhdUtil.showMsg(resp.msg);
 				}
-
 			}, "json");
 	}
 

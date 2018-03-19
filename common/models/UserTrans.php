@@ -873,7 +873,7 @@ class UserTrans extends ActiveRecord
 				$everyTask = $st1($everyTask, $k, '已领取', 'fail', 'javascript:;');
 			}
 		}
-		 $everyTask = array_merge($everyTask, $everytask_female);
+		$everyTask = array_merge($everyTask, $everytask_female);
 
 		$hardTask = [
 			["key" => self::COIN_DATE_COMPLETE, "cls" => "", "title" => "完成1次线下约会", "num" => 3, "des" => "向心动异性发起约会，成功线下约会并向客服提交约会凭证，可领取3元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
@@ -1108,6 +1108,9 @@ class UserTrans extends ActiveRecord
 				}
 				break;
 			case self::COIN_SHARE28:
+				if (!$uid == 164881) {
+					return false;
+				}
 				list($ret) = UserNet::s28ShareStat($uid);
 				$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid and tAmt=:amt ";
 				$amt = $ret["pre_money"];
