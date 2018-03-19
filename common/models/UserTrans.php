@@ -1119,12 +1119,34 @@ class UserTrans extends ActiveRecord
 				}
 				break;
 			case self::COIN_SHARE28:
-				if (!$uid == 164881) {
-					return false;
-				}
+
 				list($ret) = UserNet::s28ShareStat($uid);
 				$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid and tAmt=:amt ";
 				$amt = $ret["pre_money"];
+				if (!in_array($amt, array_column(UserNet::$s28Items, "num"))) {
+					echo 1;
+					return false;
+				}
+				$s28_map = array_combine(array_column(UserNet::$s28Items, "k"), array_column(UserNet::$s28Items, "num"));
+				$sqlCountByKey = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid and tAmt=:amt";
+				$sqlCountByKeyCMD = $conn->createCommand($sqlCountByKey);
+				$preCount = 0;
+				foreach ($s28_map as $k => $v) {
+					if ($amt > $v) {
+						$countAmount = $sqlCountByKeyCMD->bindValues([":uid" => $uid, ":pid" => $key, ":amt" => $amt * 100])->queryScalar();
+						if ($countAmount != 1) {
+							return false;
+						}
+					}
+					if ($amt == $v) {
+						$preCount = $k - 1;
+					}
+				}
+				$sqlCountTaskS28 = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid ";
+				if ($conn->createCommand($sqlCountTaskS28)->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar() != $preCount) {
+					return false;
+				}
+
 
 				if ($amt
 					&& !$conn->createCommand($sql)->bindValues([":uid" => $uid, ":pid" => $key, ":amt" => $amt * 100])->queryScalar()
@@ -1133,6 +1155,7 @@ class UserTrans extends ActiveRecord
 				}
 				break;
 		}
+
 		return false;
 	}
 
@@ -1301,10 +1324,6 @@ class UserTrans extends ActiveRecord
 			$otherid = 0;
 			if (in_array($key, [self::COIN_CHAT_REPLY, self::COIN_CHAT_10_COUNT, self::COIN_CHAT_50_COUNT])) {
 				list($otherid) = ChatMsg::groupEdit($uid, $sid);
-			}
-			//  share28任务核查，待改进!!
-			if ($key == self::COIN_SHARE28 && !in_array($amt / 100, array_column(UserNet::$s28Items, "num"))) {
-				return [129, "error", ["amt" => sprintf("%.2f", 0 / 100)]];
 			}
 
 			$sql = "insert into im_user_trans (tCategory,tPId,tUId,tTitle,tAmt,tUnit,tOtherId) VALUES (:cat,:pid,:uid,:title,:amt,:unit,:otherid) ";
