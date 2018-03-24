@@ -1663,7 +1663,9 @@ class FooController extends Controller
 		// print_r(UserTrans::stat(152052));
 		// print_r(UserTrans::getStat(164881,1));
 
-		var_dump(UserTrans::taskCondition(UserTrans::COIN_ADD_MOMENT_COMMENT, 120003));
+		//var_dump(UserTrans::taskCondition(UserTrans::COIN_ADD_MOMENT_COMMENT, 120003));
+
+		var_dump(WechatUtil::createWechatMenus());
 
 
 	}
