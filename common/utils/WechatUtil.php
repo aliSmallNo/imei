@@ -379,14 +379,20 @@ class WechatUtil
 					"name" => "找对象💘",
 					"url" => $wxUrl . "/wx/single#slook"
 				],
+//				[
+//					"type" => "click",
+//					"name" => "来加薪🎁",
+//					"key" => "EV_REWARD"
+//				],
 				[
-					"type" => "click",
-					"name" => "来加薪🎁",
-					"key" => "EV_REWARD"
+					"type" => "view",
+					"name" => "官方活动",
+					//"url" => $wxUrl . "/wx/event"
+					"url" => $wxUrl . "/wx/mshare"
 				],
 				[
 					//"name" => "免费早餐🍵",
-					"name" => "官方活动",
+					"name" => "关于我们",
 					"sub_button" => [
 //						[
 //							"type" => "view",
@@ -394,12 +400,12 @@ class WechatUtil
 //							"url" => $wxUrl . "/wx/event"
 //							"url" => "https://915.im/OrO7AR"
 //						],
-						[
-							"type" => "view",
-							"name" => "官方活动",
-							//"url" => $wxUrl . "/wx/event"
-							"url" => $wxUrl . "/wx/mshare"
-						],
+//						[
+//							"type" => "view",
+//							"name" => "官方活动",
+//							//"url" => $wxUrl . "/wx/event"
+//							"url" => $wxUrl . "/wx/mshare"
+//						],
 						[
 							"type" => "view",
 							"name" => "关于我们",

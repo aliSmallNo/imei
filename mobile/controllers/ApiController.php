@@ -2416,7 +2416,7 @@ class ApiController extends Controller
 						'message',
 						$pubData);
 					RedisUtil::publish(
-						RedisUtil::CHANNEL_BROADCAST,
+						RedisUtil::CHANNEL_BROADCAST,//SUBSCRIBE: imei:channel:broadcast
 						'room',
 						'msg',
 						[

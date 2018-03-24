@@ -1656,12 +1656,15 @@ class FooController extends Controller
 		// 2 =>164881
 
 
-		 var_dump(UserTrans::taskCondition(UserTrans::COIN_SHARE28, 164881));
+		//var_dump(UserTrans::taskCondition(UserTrans::COIN_SHARE28, 164881));
 
 		// print_r(array_column(UserNet::$s28Items, "num"));
 
 		// print_r(UserTrans::stat(152052));
 		// print_r(UserTrans::getStat(164881,1));
+
+		var_dump(UserTrans::taskCondition(UserTrans::COIN_ADD_MOMENT_COMMENT, 120003));
+
 
 	}
 
