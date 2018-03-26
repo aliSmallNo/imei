@@ -28,6 +28,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			secretId: '',
 			swiperFlag: 0,
 			vipFlag: parseInt($("#cVIPFLAG").val()),
+			zone_items_first: 1,
 		};
 
 		$(window).on("scroll", function () {
@@ -3045,6 +3046,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					$(".add_one_moment").show();
 					topicUtil.topic_id = 0;
 					pageItemsUtil.reset();
+					if ($sls.zone_items_first) {
+
+					}
 					pageItemsUtil.zone_items();
 					alpha.task(60);
 					break;
@@ -3209,6 +3213,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 							util.itemsUL.append(Mustache.render(util.itemsTmp, resp.data));
 						}
 						util.page = resp.data.nextpage;
+						$sls.zone_items_first = 0;
 					} else {
 						alpha.toast(resp.msg);
 					}
