@@ -3513,7 +3513,7 @@ class ApiController extends Controller
 				if (!$comment_text) {
 					return self::renderAPI(129, '参数错误');
 				}
-				LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode([$comment_text], JSON_UNESCAPED_UNICODE));
+				// LogAction::add($uid, $openId, LogAction::ACTION_ZONE_ADD_MSG, json_encode([$comment_text], JSON_UNESCAPED_UNICODE));
 				$cat = MomentSub::CAT_COMMENT;
 				$sid = MomentSub::BeforeAdd([
 					"cat" => $cat,
@@ -3525,8 +3525,11 @@ class ApiController extends Controller
 					return self::renderAPI(129, '评论失败');
 				}
 				list($data) = Moment::itemByCat(1, $mid, $cat, $sid);
-				return self::renderAPI(0, '上传语音成功', [
+				$mid = $data[0]['sMId'];
+				return self::renderAPI(0, 'ok~', [
 					"data" => $data,
+					"mid" => AppUtil::encrypt($mid),
+					"add_comment_f" => UserTrans::taskCondition(UserTrans::COIN_ADD_MOMENT_COMMENT, $uid, $mid),
 				]);
 				break;
 			case "comment_info":

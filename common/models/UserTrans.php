@@ -862,6 +862,10 @@ class UserTrans extends ActiveRecord
 				["key" => self::COIN_CHAT_50_COUNT, "cls" => "", "title" => "回复聊天数量50句", "num" => 2, "des" => "每日回复单个异性聊天数量50句，可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
 			];
 		}
+		$everytask_moment = [
+			["key" => self::COIN_ADD_MOMENT, "cls" => "", "title" => "添加动态", "num" => 1, "des" => "每日添加动态并且审核通过，可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#zone_items"],
+			["key" => self::COIN_ADD_MOMENT_COMMENT, "cls" => "", "title" => "添加动态评论", "num" => 0.2, "des" => "每日添加动态评论，可领取0.2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#zone_items"],
+		];
 		$everyTask = [
 			["key" => self::COIN_CHAT_3TIMES, "cls" => "", "title" => "每日发起聊天(3次）领红包", "num" => 2, "des" => "每日主动发起聊天3次最多可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#slook"],
 			["key" => self::COIN_CHAT_REPLY, "cls" => "", "title" => "每天回应一次对话", "num" => 1, "des" => $replay, "utext" => "去完成", "url" => "/wx/single#scontacts"],
@@ -877,7 +881,7 @@ class UserTrans extends ActiveRecord
 				$everyTask = $st1($everyTask, $k, '已领取', 'fail', 'javascript:;');
 			}
 		}
-		$everyTask = array_merge($everyTask, $everytask_female);
+		$everyTask = array_merge($everyTask, $everytask_female, $everytask_moment);
 
 		$hardTask = [
 			["key" => self::COIN_DATE_COMPLETE, "cls" => "", "title" => "完成1次线下约会", "num" => 3, "des" => "向心动异性发起约会，成功线下约会并向客服提交约会凭证，可领取3元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
@@ -1135,28 +1139,39 @@ class UserTrans extends ActiveRecord
 				$add_moment_count = $conn->createCommand($sql)->bindValues([":uid" => $uid, ":st" => Moment::ST_ACTIVE])->queryScalar();
 				// 领取次数 < 3
 				$get_moment_count = $cmd2->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar();
+				// 最近的一条动态
+				$hasGet = $max_mId = 0;
+				$max_mId = Moment::maxMId($conn, $uid);
+				if ($max_mId) {
+					$sql = "select count(1) FROM im_user_trans where tUId=:uid and tPId=:pid and tOtherId=:oid and DATE_FORMAT(tAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
+					$hasGet = $conn->createCommand($sql)->bindValues([":uid" => $uid, ":pid" => $key, ":oid" => $max_mId])->queryScalar();
+				}
 				if ($get_moment_count < 3
+					&& $hasGet == 0
 					&& $get_moment_count < $add_moment_count
 				) {
 					return true;
 				}
 				break;
 			case self::COIN_ADD_MOMENT_COMMENT:
-				$sql = "select count(1) as co from 
-						im_moment_sub where sUId=:uid and sCategory=:cat and DATE_FORMAT(sAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') ";
+				if (!$sid) {
+					return false;
+				}
+				//$sql = "select count(1) as co from
+				//		im_moment_sub where sUId=:uid and sCategory=:cat and DATE_FORMAT(sAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') ";
 				// 评论条数
-				$add_comment_count = $conn->createCommand($sql)->bindValues([":uid" => $uid, ":cat" => MomentSub::CAT_COMMENT])->queryScalar();
+				//$add_comment_count = $conn->createCommand($sql)->bindValues([":uid" => $uid, ":cat" => MomentSub::CAT_COMMENT])->queryScalar();
+
 				// 领取次数 < 20
 				$get_comment_count = $cmd2->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar();
 				$sql = "select count(1) as co from 
 						im_user_trans where tUId=:uid and tPId=:pid and tOtherId=:sid and DATE_FORMAT(tAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
-				// $sid 评论ID
+				// $sid => 动态ID
 				$this_comment_count = $conn->createCommand($sql)->bindValues([":uid" => $uid, ":pid" => $key, ":sid" => $sid])->queryScalar();
 				if ($get_comment_count < 20
 					&& $this_comment_count == 0
-					&& $get_comment_count < $add_comment_count
 				) {
-					return false;
+					return true;
 				}
 				break;
 			case self::COIN_SHARE28:
@@ -1199,6 +1214,7 @@ class UserTrans extends ActiveRecord
 
 		return false;
 	}
+
 
 	public static function addTaskRedpaket($key, $uid, $sid = 0)
 	{
@@ -1357,7 +1373,7 @@ class UserTrans extends ActiveRecord
 				}
 				break;
 			case self::COIN_ADD_MOMENT_COMMENT:
-				// $sid => comment_id
+				// $sid => moment_id
 				if (self::taskCondition($key, $uid, $sid)) {
 					$amt = 20;
 				} else {
@@ -1367,21 +1383,25 @@ class UserTrans extends ActiveRecord
 		}
 
 		$stat = UserTrans::stat($uid);
-		if ($stat["coin_f"] > 1000 && !in_array($key, [self::COIN_SHARE28, self::COIN_CHAT_REPLY, self::COIN_CHAT_10_COUNT, self::COIN_CHAT_50_COUNT])) {
+		if ($stat["coin_f"] > 1000 && !in_array($key, [self::COIN_ADD_MOMENT_COMMENT, self::COIN_ADD_MOMENT, self::COIN_SHARE28, self::COIN_CHAT_REPLY, self::COIN_CHAT_10_COUNT, self::COIN_CHAT_50_COUNT])) {
 			$amt = ceil($amt / 3);
 		}
 
 		if ($amt && in_array($key, [
 				self::COIN_SIGN, self::COIN_SHARE_REG, self::COIN_SHOW_COIN, self::COIN_CHAT_REPLY, self::COIN_CHAT_3TIMES,
 				self::COIN_RECEIVE_GIFT, self::COIN_RECEIVE_NORMAL_GIFT, self::COIN_RECEIVE_VIP_GIFT, self::COIN_PRESENT_10PEOPLE,
-				self::COIN_CERT, self::COIN_PERCENT80, self::COIN_REG, self::COIN_SHARE28, self::COIN_CHAT_50_COUNT, self::COIN_CHAT_10_COUNT
+				self::COIN_CERT, self::COIN_PERCENT80, self::COIN_REG, self::COIN_SHARE28, self::COIN_CHAT_50_COUNT, self::COIN_CHAT_10_COUNT,
+				self::COIN_ADD_MOMENT, self::COIN_ADD_MOMENT_COMMENT
 			])) {
 			// self::add($uid, $key, self::CAT_COIN_DEFAULT, self::$catDict[self::CAT_COIN_DEFAULT], $amt, self::UNIT_COIN_FEN);
 			$otherid = 0;
 			if (in_array($key, [self::COIN_CHAT_REPLY, self::COIN_CHAT_10_COUNT, self::COIN_CHAT_50_COUNT])) {
 				list($otherid) = ChatMsg::groupEdit($uid, $sid);
 			}
-			if (in_array($key, [self::COIN_ADD_MOMENT, self::COIN_ADD_MOMENT_COMMENT])) {
+			if ($key == self::COIN_ADD_MOMENT) {
+				$otherid = Moment::maxMId(AppUtil::db(), $uid);
+			}
+			if ($key == self::COIN_ADD_MOMENT_COMMENT) {
 				$otherid = $sid;
 			}
 

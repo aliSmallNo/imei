@@ -1652,8 +1652,8 @@ class FooController extends Controller
 
 		// echo uniqid('', true);
 
-		// 1.34 =>152052
-		// 2 =>164881
+		// 1.34 => 152052
+		// 2 => 164881
 
 
 		//var_dump(UserTrans::taskCondition(UserTrans::COIN_SHARE28, 164881));
@@ -1665,7 +1665,6 @@ class FooController extends Controller
 
 		//var_dump(UserTrans::taskCondition(UserTrans::COIN_ADD_MOMENT_COMMENT, 120003));
 
-		var_dump(WechatUtil::createWechatMenus());
 
 
 	}

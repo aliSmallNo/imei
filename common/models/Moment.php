@@ -281,5 +281,15 @@ EEE;
 		return $conn->createCommand($sql)->bindValues($param)->queryScalar();
 	}
 
+	/**
+	 * 审核通过的最近一条动态
+	 */
+	public static function maxMId($conn, $uid)
+	{
+		$sql = "select max(mId) from im_moment where mUId=:uid and mStatus=:st and DATE_FORMAT(mAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') ";
+		$max_mId = $conn->createCommand($sql)->bindValues([":uid" => $uid, ":st" => Moment::ST_ACTIVE])->queryScalar();
+		return $max_mId ? $max_mId : 0;
+	}
+
 
 }

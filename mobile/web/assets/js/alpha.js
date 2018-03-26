@@ -152,6 +152,7 @@ define(['jquery', 'layer', 'swiper', 'mustache'],
 			},
 			task: function (key) {
 				var util = this;
+				console.log('alpha.js 155');
 				if (util.loadflag) {
 					return false;
 				}

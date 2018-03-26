@@ -3046,6 +3046,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					topicUtil.topic_id = 0;
 					pageItemsUtil.reset();
 					pageItemsUtil.zone_items();
+					alpha.task(60);
 					break;
 				case 'zone_item':
 					FootUtil.toggle(0);
@@ -3297,6 +3298,10 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						util.commentUL.prepend(Mustache.render(util.commentTmp, resp.data));
 						util.reset();
 						$(".zone_container_item_comments_vbtns").removeClass("active");
+						console.log(resp.data.add_comment_f);
+						if (resp.data.add_comment_f) {
+							alpha.showCoin({data: {key: 62}}, resp.data.mid);
+						}
 					} else {
 						alpha.toast(resp.msg);
 					}
