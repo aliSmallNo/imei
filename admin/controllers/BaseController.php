@@ -118,6 +118,7 @@ class BaseController extends Controller
 	{
 		$safePaths = ["site/login", "site/logout", "site/branch", "site/error", "site/deny"];
 		$pathInfo = self::getRequestUri();
+
 		if (in_array($pathInfo, $safePaths)) {
 			return true;
 		}

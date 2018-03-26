@@ -255,6 +255,20 @@ class Menu
 				]
 			],
 			[
+				"name" => "第三方统计",
+				"id" => "other_stat",
+				"icon" => "fa-bar-chart",
+				"staff" => 0,
+				"items" => [
+					[
+						"name" => "推广统计",
+						"url" => "/site/otherstat",
+						"revise" => 1,
+						"level" => 810
+					],
+				]
+			],
+			[
 				"name" => "系统设置",
 				"id" => "admin",
 				"icon" => "fa-sitemap",

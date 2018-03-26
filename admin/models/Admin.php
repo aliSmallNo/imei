@@ -132,6 +132,7 @@ class Admin extends ActiveRecord
 			header("location:/site/login");
 			exit;
 		}
+
 		if (isset($uInfo['menusExcl']) && in_array($tempUrl, $uInfo['menusExcl'])) {
 			header("location:/site/deny");
 			exit;
@@ -165,19 +166,22 @@ class Admin extends ActiveRecord
 		}
 		$uid = $adminId ? $adminId : self::getAdminId();
 		$redis = RedisUtil::init(RedisUtil::KEY_ADMIN_INFO, $uid);
-		$info = json_decode($redis->getCache(), 1);
+		//$info = json_decode($redis->getCache(), 1);
 		$menuVer = Menu::VERSION;
-		if (!isset($info['menu_ver']) || $info['menu_ver'] != $menuVer) {
-			$userObj = self::findOne(['aId' => $uid, "aStatus" => 1]);
-			if ($userObj) {
-				$info = $userObj->toArray();
-				$info = self::privileges($info);
-				$info['menu_ver'] = $menuVer;
-				$redis->setCache($info);
-			} else {
-				return [];
-			}
+		//if (!isset($info['menu_ver']) || $info['menu_ver'] != $menuVer) {
+
+		//}
+
+		$userObj = self::findOne(['aId' => $uid, "aStatus" => 1]);
+		if ($userObj) {
+			$info = $userObj->toArray();
+			$info = self::privileges($info);
+			$info['menu_ver'] = $menuVer;
+			$redis->setCache($info);
+		} else {
+			return [];
 		}
+
 		self::$userInfo = $info;
 		return $info;
 	}

@@ -26,6 +26,7 @@ use common\models\UserBuzz;
 use common\models\UserComment;
 use common\models\UserMsg;
 use common\models\UserNet;
+use common\models\UserQR;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use common\service\CogService;
@@ -799,6 +800,7 @@ class SiteController extends BaseController
 			$params[':sdt'] = $sdate . ' 00:00:00';
 			$params[':edt'] = $edate . ' 23:59:50';
 		}
+
 		list($stat, $timesSub, $timesReg) = UserNet::netStat($criteria, $params);
 		list($wd, $monday, $sunday) = AppUtil::getWeekInfo();
 		list($md, $firstDay, $endDay) = AppUtil::getMonthInfo();
@@ -815,6 +817,65 @@ class SiteController extends BaseController
 				'sunday' => $sunday,
 				'firstDay' => $firstDay,
 				'endDay' => $endDay,
+			]);
+	}
+
+	public function actionOtherstat()
+	{
+		$getInfo = Yii::$app->request->get();
+		$sdate = self::getParam("sdate");
+		$edate = self::getParam("edate");
+		$adminInfo = Admin::userInfo(Admin::getAdminId(), 1);
+		$phone = $adminInfo['aPhone'];
+		// print_r($adminInfo);exit;
+		$uInfo = User::findOne(["uPhone" => $phone]);
+		if (!AppUtil::checkPhone($phone) || !$uInfo) {
+			header("location:/site/deny");
+			exit;
+		}
+		$criteria = $params = [];
+		if ($sdate && $edate) {
+			$criteria[] = "n.nAddedOn between :sdt and :edt ";
+			$params[':sdt'] = $sdate . ' 00:00:00';
+			$params[':edt'] = $edate . ' 23:59:50';
+		}
+		if ($phone) {
+			$criteria[] = "u.uPhone=:phone ";
+			$params[':phone'] = $phone;
+		}
+		list($stat, $timesSub, $timesReg) = UserNet::netStat($criteria, $params);
+		list($wd, $monday, $sunday) = AppUtil::getWeekInfo();
+		list($md, $firstDay, $endDay) = AppUtil::getMonthInfo();
+
+		$shares = UserQR::shares($uInfo->uId);
+		foreach ($shares as $k => $v1) {
+			$dataImg[] = [
+				"alt" => "我的二维码",
+				"pid" => $k,
+				"src" => $v1,   // 原图地址
+				"thumb" => $v1  // 缩略图地址
+			];
+		}
+		$qrImages = json_encode([
+			"title" => "show",
+			"id" => "10001",
+			"start" => 0,
+			"data" => $dataImg,
+		]);
+
+		return $this->renderPage("otherstat.tpl",
+			[
+				'getInfo' => $getInfo,
+				'scanStat' => $stat,
+				'timesSub' => json_encode($timesSub, JSON_UNESCAPED_UNICODE),
+				'timesReg' => json_encode($timesReg, JSON_UNESCAPED_UNICODE),
+				'today' => date('Y-m-d'),
+				'yesterday' => date('Y-m-d', time() - 86400),
+				'monday' => $monday,
+				'sunday' => $sunday,
+				'firstDay' => $firstDay,
+				'endDay' => $endDay,
+				'qrImages' => $qrImages,
 			]);
 	}
 
