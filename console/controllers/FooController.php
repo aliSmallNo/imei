@@ -1665,23 +1665,18 @@ class FooController extends Controller
 
 		//var_dump(UserTrans::taskCondition(UserTrans::COIN_ADD_MOMENT_COMMENT, 120003));
 
-		$cat_text = "点赞";
-		$params = [
-			'tag' => WechatUtil::NOTICE_MOMENT_OPT,
-			'receiver_uid' => 120003,
-			'title' => '有人给你的动态' . $cat_text . '啦',
-			'sub_title' => 'TA给你给你的动态' . $cat_text . '了，快去看看吧~',
-			'sender_uid' => 120001,
-			'gid' => ''
-		];
-		echo WechatUtil::templateMsg(
-			$params['tag'],
-			$params['receiver_uid'],
-			$params['title'],
-			$params['sub_title'],
-			$params['sender_uid'],
-			$params['gid']
-		);
+		$cat_text = "测试";
+
+		QueueUtil::loadJob('templateMsg',
+			[
+				'tag' => WechatUtil::NOTICE_MOMENT_OPT,
+				'receiver_uid' => 120003,
+				'title' => '有人给你的动态' . $cat_text . '啦',
+				'sub_title' => 'TA给你给你的动态' . $cat_text . '了，快去看看吧~',
+				'sender_uid' => 120001,
+				'gid' => ''
+			],
+			QueueUtil::QUEUE_TUBE_SMS);
 
 	}
 
