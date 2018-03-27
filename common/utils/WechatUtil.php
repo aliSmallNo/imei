@@ -51,6 +51,7 @@ class WechatUtil
 	const NOTICE_CERT_DENY = 'notice_cert_deny';
 	const NOTICE_DATE = 'notice_date';
 	const NOTICE_ROOM_CHAT = 'notice_room_chat';
+	const NOTICE_MOMENT_OPT = 'notice_moment_opt';
 
 	/**
 	 * @param $sessionKey
@@ -667,6 +668,14 @@ class WechatUtil
 				$keywords['keyword2'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
+			case self::NOTICE_MOMENT_OPT:
+				$msgCat = 0;
+				$templateId = $normTmpId;
+				$url = $wxUrl . "/wx/single#zone_items";
+				$keywords['first'] = "hi，$nickname\n";
+				$keywords['keyword2'] = date("Y年n月j日 H:i");
+				$keywords['remark'] = "\n点击下方详情查看吧~";
+				break;
 			case self::NOTICE_ROOM_CHAT:
 				$msgCat = UserMsg::CATEGORY_ROOM_CHAT;
 				$templateId = $normTmpId;
@@ -821,7 +830,6 @@ class WechatUtil
 					"remark" => ["color" => "#000000", "value" => $keywords['remark']],
 				]
 			];
-
 		}
 		$routineNotices = [self::NOTICE_FAVOR, self::NOTICE_CHAT, self::NOTICE_PRESENT];
 		if (!in_array($noticeTag, $routineNotices)) {
@@ -833,7 +841,7 @@ class WechatUtil
 			$text = isset(UserMsg::$catDict[$msgCat]) ? UserMsg::$catDict[$msgCat] : '';
 		}
 
-		if (in_array($noticeTag, [self::NOTICE_ROUTINE, self::NOTICE_DATE, self::NOTICE_ROOM_CHAT])) {
+		if (in_array($noticeTag, [self::NOTICE_MOMENT_OPT, self::NOTICE_ROUTINE, self::NOTICE_DATE, self::NOTICE_ROOM_CHAT])) {
 			$result = 1;
 		} else {
 			$result = UserMsg::edit(0, [

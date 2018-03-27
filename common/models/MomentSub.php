@@ -10,6 +10,8 @@ namespace common\models;
 
 
 use common\utils\AppUtil;
+use common\utils\WechatUtil;
+use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
 
 class MomentSub extends ActiveRecord
@@ -48,15 +50,33 @@ class MomentSub extends ActiveRecord
 			return 0;
 		}
 		$insert = [];
+		$cat_text = "点赞";
 		if ($data["cat"] == self::CAT_COMMENT) {
 			$insert["sContent"] = $data["content"];
+			$cat_text = "评论";
 		} elseif ($data['cat'] == self::CAT_ROSE) {
+			$cat_text = "送花";
 			UserTrans::add($data["uid"], $data["mid"], UserTrans::CAT_PRESENT, UserTrans::$catDict[UserTrans::CAT_PRESENT], 1, UserTrans::UNIT_GIFT);
 		}
 
 		$insert["sCategory"] = $data["cat"];
 		$insert["sUId"] = $data["uid"];
 		$insert["sMId"] = $data["mid"];
+
+
+		$receiverId = Moment::findOne(["mId" => $data["mid"]])->mUId;
+		QueueUtil::loadJob('templateMsg',
+			[
+				'tag' => WechatUtil::NOTICE_MOMENT_OPT,
+				'receiver_uid' => $receiverId,
+				'title' => '有人给你的动态' . $cat_text . '啦',
+				'sub_title' => 'TA给你给你的动态' . $cat_text . '了，快去看看吧~',
+				'sender_uid' => $data["uid"],
+				'gid' => ''
+			],
+			QueueUtil::QUEUE_TUBE_SMS);
+
+
 
 		return self::add($insert);
 	}

@@ -542,9 +542,7 @@ class ApiController extends Controller
 				// alpha.js use
 				$key = self::postParam("key");
 				$sid = AppUtil::decrypt(self::postParam("sid"));
-
 				list($code, $msg, $data) = UserTrans::addTaskRedpaket($key, $wx_uid, $sid);
-
 				return self::renderAPI($code, $msg, $data);
 				break;
 			case "task_show_award":
@@ -3567,6 +3565,7 @@ class ApiController extends Controller
 				}
 
 				MomentSub::BeforeAdd(["cat" => $cat, "uid" => $uid, "mid" => $zone_id,]);
+
 				return self::renderAPI(0, '', [
 
 				]);
