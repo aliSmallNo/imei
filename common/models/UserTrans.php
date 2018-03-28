@@ -943,8 +943,8 @@ class UserTrans extends ActiveRecord
 
 		$conn = AppUtil::db();
 
-		// 今天累计任务50元，停止任务
-		if (self::today_amt($conn, $uid) >= 50) {
+		// 今天累计任务10元，停止任务
+		if (self::today_amt($conn, $uid) >= 5) {
 			return false;
 		}
 
@@ -995,7 +995,7 @@ class UserTrans extends ActiveRecord
 						return true;
 					}
 				} else if ($gender == User::GENDER_FEMALE) {
-					// 女生：奖励0.2元（上限20人,超过不奖励）
+					// 女生：（上限20人,超过不奖励）
 					if (!User::findOne(['uId' => $sid])) {
 						return false;
 					}
@@ -1029,7 +1029,7 @@ class UserTrans extends ActiveRecord
 			case self::COIN_CHAT_10_COUNT:
 			case self::COIN_CHAT_50_COUNT:
 
-				if ($gender == User::GENDER_MALE || !User::findOne(['uId' => $sid])) {
+				if ($key == self::COIN_CHAT_10_COUNT || $gender == User::GENDER_MALE || !User::findOne(['uId' => $sid])) {
 					return false;
 				}
 				$chatCount = $key == self::COIN_CHAT_10_COUNT ? 10 : 50;
@@ -1157,11 +1157,6 @@ class UserTrans extends ActiveRecord
 				if (!$sid) {
 					return false;
 				}
-				//$sql = "select count(1) as co from
-				//		im_moment_sub where sUId=:uid and sCategory=:cat and DATE_FORMAT(sAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') ";
-				// 评论条数
-				//$add_comment_count = $conn->createCommand($sql)->bindValues([":uid" => $uid, ":cat" => MomentSub::CAT_COMMENT])->queryScalar();
-
 				// 领取次数 < 20
 				$get_comment_count = $cmd2->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar();
 				$sql = "select count(1) as co from 
@@ -1276,12 +1271,11 @@ class UserTrans extends ActiveRecord
 			case self::COIN_CHAT_REPLY:
 				if (self::taskCondition($key, $uid, $sid)) {
 					if ($gender == User::GENDER_MALE) {
-						$amt = random_int(20, 50);
+						$amt = random_int(2, 15);
 					} else if ($gender == User::GENDER_FEMALE) {
 						// 女生：奖励0.2元（上限20人,超过不奖励）
-						$amt = 20;
+						$amt = random_int(2, 15);
 					}
-
 				} else {
 					return [129, "已领取", ''];
 				}
@@ -1289,7 +1283,7 @@ class UserTrans extends ActiveRecord
 			case self::COIN_CHAT_10_COUNT:
 			case self::COIN_CHAT_50_COUNT:
 				if ($gender == User::GENDER_FEMALE) {
-					$amt = $key == self::COIN_CHAT_10_COUNT ? 100 : 200;
+					$amt = $key == self::COIN_CHAT_10_COUNT ? 1 : 100;
 				}
 				break;
 			case self::COIN_HINT:
@@ -1367,7 +1361,7 @@ class UserTrans extends ActiveRecord
 				break;
 			case self::COIN_ADD_MOMENT:
 				if (self::taskCondition($key, $uid)) {
-					$amt = 100;
+					$amt = random_int(20, 30);
 				} else {
 					return [129, "未完成", ''];
 				}
@@ -1375,7 +1369,7 @@ class UserTrans extends ActiveRecord
 			case self::COIN_ADD_MOMENT_COMMENT:
 				// $sid => moment_id
 				if (self::taskCondition($key, $uid, $sid)) {
-					$amt = 20;
+					$amt = random_int(3, 10);
 				} else {
 					return [129, "未完成", ''];
 				}
