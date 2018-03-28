@@ -1159,8 +1159,7 @@ class UserTrans extends ActiveRecord
 				}
 				// 领取次数 < 20
 				$get_comment_count = $cmd2->bindValues([":uid" => $uid, ":pid" => $key])->queryScalar();
-				$sql = "select count(1) as co from 
-						im_user_trans where tUId=:uid and tPId=:pid and tOtherId=:sid and DATE_FORMAT(tAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
+				$sql = "select count(1) as co from im_user_trans where tUId=:uid and tPId=:pid and tOtherId=:sid ";
 				// $sid => 动态ID
 				$this_comment_count = $conn->createCommand($sql)->bindValues([":uid" => $uid, ":pid" => $key, ":sid" => $sid])->queryScalar();
 				if ($get_comment_count < 20
