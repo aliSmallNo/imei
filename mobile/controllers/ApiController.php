@@ -3542,7 +3542,7 @@ class ApiController extends Controller
 				list($zone_info, $nextpage, $rose_list, $zan_list, $comment_list) = Moment::wechatItem($uid, $zone_id, $page);
 				return self::renderAPI(0, '', [
 					'zone_info' => $zone_info,
-					'nextpage' => 0,
+					'nextpage' => $nextpage,
 					'zan_list' => $zan_list,
 					'rose_list' => $rose_list,
 					'comment_list' => $comment_list,

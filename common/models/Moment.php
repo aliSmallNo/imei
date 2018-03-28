@@ -234,7 +234,7 @@ EEE;
 			$str = " and sId=$sid ";
 		}
 		$pagesize = 10;
-		$limit = " limit " . ($page - 1) . "," . ($pagesize + 1);
+		$limit = " limit " . ($page - 1) * $pagesize . "," . ($pagesize + 1);
 		$sql = "select uName,uThumb,s.*
 				from im_moment as m 
 				left join im_moment_sub as s on m.mId=s.sMId
