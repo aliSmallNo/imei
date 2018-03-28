@@ -1281,4 +1281,15 @@ class WechatUtil
 		}
 		return [[], 0];
 	}
+
+	public static function uploadImg($imgUrl)
+	{
+		$TOKEN = self::getAccessToken(self::ACCESS_CODE);
+		echo $TOKEN.PHP_EOL;
+		$URL = 'http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=' . $TOKEN . '&type=image';
+		$data = array('media' => '@' . $imgUrl);
+		$result = AppUtil::postJSON($URL, $data);
+		$data = @json_decode($result, true);
+		return $data;
+	}
 }
