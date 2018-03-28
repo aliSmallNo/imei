@@ -858,13 +858,13 @@ class UserTrans extends ActiveRecord
 		if ($gender == User::GENDER_FEMALE) {
 			$replay = "每日回复一次聊天0.2元(上限20人)。完成后直接到我的任务列表查看获得的奖励";
 			$everytask_female = [
-				["key" => self::COIN_CHAT_10_COUNT, "cls" => "", "title" => "回复聊天数量10句", "num" => 1, "des" => "每日回复单个异性聊天数量10句，领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
-				["key" => self::COIN_CHAT_50_COUNT, "cls" => "", "title" => "回复聊天数量50句", "num" => 2, "des" => "每日回复单个异性聊天数量50句，可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
+				//["key" => self::COIN_CHAT_10_COUNT, "cls" => "", "title" => "回复聊天数量10句", "num" => 1, "des" => "每日回复单个异性聊天数量10句，领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
+				["key" => self::COIN_CHAT_50_COUNT, "cls" => "", "title" => "回复聊天数量50句", "num" => 2, "des" => "每日回复单个异性聊天数量50句，可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#scontacts"],
 			];
 		}
 		$everytask_moment = [
-			["key" => self::COIN_ADD_MOMENT, "cls" => "", "title" => "添加动态", "num" => 1, "des" => "每日添加动态并且审核通过，可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#zone_items"],
-			["key" => self::COIN_ADD_MOMENT_COMMENT, "cls" => "", "title" => "添加动态评论", "num" => 0.2, "des" => "每日添加动态评论，可领取0.2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#zone_items"],
+			["key" => self::COIN_ADD_MOMENT, "cls" => "", "title" => "添加动态", "num" => 1, "des" => "每日添加动态并且审核通过，最多可领取1元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#zone_items"],
+			["key" => self::COIN_ADD_MOMENT_COMMENT, "cls" => "", "title" => "添加动态评论", "num" => 0.2, "des" => "每日添加动态评论，最多可领取0.2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#zone_items"],
 		];
 		$everyTask = [
 			["key" => self::COIN_CHAT_3TIMES, "cls" => "", "title" => "每日发起聊天(3次）领红包", "num" => 2, "des" => "每日主动发起聊天3次最多可领取2元现金红包。完成后直接到我的任务列表查看获得的奖励", "utext" => "去完成", "url" => "/wx/single#slook"],
