@@ -377,6 +377,7 @@ class SiteController extends BaseController
 				break;
 		}
 
+
 		list($list, $count) = User::users($criteria, $params, $page, 20, false, $inactive);
 
 		$uids = array_column($list, 'id');

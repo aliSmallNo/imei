@@ -368,8 +368,6 @@ class AppUtil
 
 	public static function rootDir()
 	{
-		//		return __DIR__ . '/../../';
-		//return getcwd().'/';
 		return self::getParam('folders', 'root');
 	}
 
@@ -576,6 +574,34 @@ class AppUtil
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 		}
+		$ret = curl_exec($ch);
+		curl_close($ch);
+		return $ret;
+	}
+
+	public static function postWxSource($api, $file_url)
+	{
+		// https://www.jianshu.com/p/a7cbca4bef76
+		// curl模拟上传文件发现了一个很重要的问题
+		// PHP5.5以下是支持@+文件这种方式上传文件
+		// PHP5.5以上是支持 new \CURLFile(文件) 这种方式上传文件
+
+		$ch = curl_init($api);
+		if (class_exists("\CURLFile")) {
+			curl_setopt($ch, CURLOPT_SAFE_UPLOAD, TRUE);
+			$data = ["media" => new \CURLFile($file_url)];
+		} else {
+			if (defined("CURLOPT_SAFE_UPLOAD")) {
+				curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
+			}
+			$data = ["media" => "@" . realpath($file_url)];
+		}
+		curl_setopt($ch, CURLOPT_URL, $api);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_USERAGENT, '');
+
 		$ret = curl_exec($ch);
 		curl_close($ch);
 		return $ret;

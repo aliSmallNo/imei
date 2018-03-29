@@ -698,11 +698,19 @@ class WechatUtil
 				break;
 			case self::NOTICE_AUDIT:
 				$msgCat = UserMsg::CATEGORY_AUDIT;
-				$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
+				/*$templateId = "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = $wxUrl . "/wx/sedit";
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['keyword1'] = "个人信息审核不通过";
-				$keywords['keyword2'] = $subTitle;
+				$keywords['keyword2'] = $subTitle;*/
+
+				$templateId = "_J4oGSruJmxopotrtLCGzixGrAOSvGu_mo7i698nL7s";
+				$url = $wxUrl . "/wx/sedit";
+				$keywords['first'] = "hi，$nickname\n";
+				$keywords['keyword1'] = substr($userInfo["uPhone"], 0, 3) . '****' . substr($userInfo["uPhone"], 7, 4);
+				$keywords['keyword2'] = date("Y年n月j日 H:i");
+				$keywords['keyword3'] = "个人信息审核不通过\n" . $subTitle;
+
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				$text = "个人信息审核不通过，" . $subTitle;
 				break;
@@ -1282,14 +1290,26 @@ class WechatUtil
 		return [[], 0];
 	}
 
-	public static function uploadImg($imgUrl)
+	/**
+	 * 新增素材
+	 * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738726 临时素材
+	 * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444738729 永久素材
+	 * 测试临时素材: curl -F media=@/Users/b_tt/Documents/tesla/img/imei/2018/329/100008173656.jpg "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE"
+	 * @param $imgUrl
+	 * @param bool $is_forever 临时素材/永久素材
+	 * @return mixed
+	 */
+	public static function uploadImageToWechat($imgUrl, $is_forever = false)
 	{
+		$imgUrl = ImageUtil::downImage($imgUrl);
 		$TOKEN = self::getAccessToken(self::ACCESS_CODE);
-		echo $TOKEN.PHP_EOL;
 		$URL = 'http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=' . $TOKEN . '&type=image';
-		$data = array('media' => '@' . $imgUrl);
-		$result = AppUtil::postJSON($URL, $data);
+		if ($is_forever) {
+			$URL = 'https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=' . $TOKEN . '&type=image';
+		}
+		$result = AppUtil::postWxSource($URL, $imgUrl);
 		$data = @json_decode($result, true);
+		unlink($imgUrl);
 		return $data;
 	}
 }

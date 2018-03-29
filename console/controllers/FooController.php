@@ -20,6 +20,7 @@ use common\service\TrendService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
+use common\utils\ImageUtil;
 use common\utils\PushUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
@@ -1417,259 +1418,37 @@ class FooController extends Controller
 	public function actionZp()
 	{
 
-//		UserMsg::edit(0, [
-//			"mText" => json_encode(["每日一句:千寻恋恋新功能上线，增加筛选功能，更精准的找到她（他）。"], JSON_UNESCAPED_UNICODE),
-//			"mCategory" => UserMsg::CATEGORY_UPGRADE,
-//			"mUId" => RedisUtil::getIntSeq(),
-//		]);
-
-//		echo (ChatMsg::Cert(120003, 143807));
-
-//		$res = Log::sCenterItems(120003);
-
-//		 echo AppUtil::encrypt(143696) . "\n";
-
-//		User::propStat("2017-07-17","2017-11-08");
-		//print_r(explode(",", ""));
-		//print_r(User::fmtRow(User::find()->where(["uId" => 120003])->asArray()->one()));
-
-		//$rInfo = ChatMsg::RoomAddChat(101, 120003, "欢迎");print_r($rInfo);
-
-//		$gInfo = Goods::items(["gId" => 6004])[0];
-//		print_r($gInfo);
-
-		// UserQR::shareRoom(120003,101);
-
-		//echo UserQR::createQR(120003, UserQR::CATEGORY_ROOM, 'room-' . 101, "长按关注-进入房间");
-
-		//$expInfo = UserTag::getExp(120003);print_r($expInfo);
-
-
-		/*$sql = "update im_goods set gDesc=:des where gId=6024";
-		// insert into im_goods (`gCategory`,gName,gPrice,gUnit) values (100,'VIP会员月度礼包',0,'元');
-		AppUtil::db()->createCommand($sql)->bindValues([
-			":des" => json_encode([
-				'subtitle' => 'VIP会员月度礼包',
-				'glist' => [
-					['gid' => 6003, 'num' => 10, 'name' => '气球', 'img' => '/images/shop/stuff_qq.png'],
-					['gid' => 6004, 'num' => 10, 'name' => '口红', 'img' => '/images/shop/stuff_kh.png'],
-					//['gid' => 6006, 'num' => 3, 'name' => '抱抱熊', 'img' => '/images/shop/stuff_bbx.png'],
-					['gid' => 6007, 'num' => 10, 'name' => '钻戒', 'img' => '/images/shop/stuff_zj.png'],
-					//['gid' => 6008, 'num' => 5, 'name' => '么么哒', 'img' => '/images/shop/stuff_mmd.png'],
-					//['gid' => 6009, 'num' => 10, 'name' => '巧克力', 'img' => '/images/shop/stuff_qkl.png'],
-					//['gid' => 6013, 'num' => 1, 'name' => '告白气球', 'img' => '/images/shop/premium_gbqq.png'],
-					//['gid' => 6017, 'num' => 1, 'name' => '游艇', 'img' => '/images/shop/premium_yt.png'],
-				],
-				'klist' => [
-					//['cat' => 'chat_3', 'num' => 1,'name'=>'三天畅聊卡','img'=>'/images/ico_wallet_3.png'],
-					//['cat' => 'chat_7', 'num' => 1,'name'=>'七天畅聊卡','img'=>'/images/ico_wallet_7.png'],
-					//['cat' => 'chat_month', 'num' => 1,'name'=>'月度畅聊卡','img'=>'/images/ico_wallet_mounth.png'],
-				]
-			], JSON_UNESCAPED_UNICODE)
-		])->execute();*/
-
-		// print_r(Goods::items(["gId" => '6019,6020']));
-
-		/*echo strtotime("2018-01-06 23:59:50") . PHP_EOL;
-		echo time() . PHP_EOL;
-		var_dump(strtotime("2018-01-06 23:59:50") > time());*/
-
-		//echo Log::addSanta(120003, 100);
-
-		// stuff_dumplings.png
-
-		// $res = Order::santaExchange(6023, 120003);
-
-		//echo Log::addSanta(120003, 400);
-
-		/* $sql = "insert into im_question_sea (qCategory,qRank,qTitle,qOptions) values (600,99,:title,:opt); ";
-		$cmd = AppUtil::db()->createCommand($sql);
-		$dir = __DIR__ . "/../ti.log";
-		$ti = file_get_contents($dir);
-		$ti = str_replace("自由回答", "", $ti);
-		$arr = explode("\n", $ti);
-		foreach ($arr as $k => &$v) {
-			$v = trim($v);
-			$v = preg_replace("/\s+/", ' ', $v);
-			$v = explode(" ", $v);
-			if (isset($v[1]) && $v[1]) {
-				$v[1] = explode(";", $v[1]);
-			} else {
-				$v[1] = ["自由回答"];
-			}
-			if ($k > 0) {
-				//break;
-			}
-			$cmd->bindValues([
-				":title" => $v[0],
-				":opt" => json_encode($v[1], JSON_UNESCAPED_UNICODE),
-			])->execute();
-		}
-		print_r($arr); */
-
-		//echo AppUtil::decrypt("CDlpWjA5QjI3MkdiMjM0ODI7a1wyO0Q0OTRJZA");
-
-		//echo ChatMsg::isAnswer(146306, 143807);
-
-		//$stat = UserTrans::getStat(143807, true);print_r($stat);
-
-
-		//UserNet::s28ShareStat(120003);
-
-		//list($code, $msg) = PayUtil::withDrawForS28('oYDJew5EFMuyrJdwRrXkIZLU2c58', 100);echo $msg . PHP_EOL;
-
-		// UserTrans::add(120003, 201865, UserTrans::CAT_EXCHANGE_FLOWER, UserTrans::TITLE_COIN, 100, UserTrans::UNIT_COIN_FEN);
-
-		// UserTrans::taskStat(120003);
-
-		/*$cats = UserTrans::$taskDict;
-		$cats = array_keys($cats);
-		foreach ($cats as $key) {
-			$res = UserTrans::taskCondition($key, 120003);
-			echo intval($res) . '=>' . $key . PHP_EOL;
-		}*/
-
-		//list($n, $e, $h) = UserTrans::taskStat(120003);print_r($h);
-
-		//list($ret) = UserNet::s28ShareStat(120003);print_r($ret);
-
-		//var_dump(UserTrans::taskCondition(30, 120003));
-
-		//print_r(UserTrans::getStat(120003, true));
-
-
-		//UserTag::add(UserTag::CAT_MEMBER_VIP, 120003, 0);
-
-		// User::hideFields(143807);
-
-		//UserNet::items(120003, 'fav', 'fav-both',1);
-
-		// UserTrans::addTaskRedpaket(280, 120003) . PHP_EOL;
-
-		//UserTrans::taskCondition(10, 136055);
-
-		/*MomentTopic::add([
-			"tTitle" => "悄悄话",
-			"tImage" => "https://bpbhd-10063905.file.myqcloud.com/image/t1711201155327.jpg",
-			"tNote" => json_encode([
-				"view" => 22,
-				"content" => 99,
-				"join" => 44,
-			], JSON_UNESCAPED_UNICODE),
-		]);*/
-
-		/*$uids = [120003, 133491, 130790, 129893, 143807];
-		$mids = [1, 2, 3, 4, 5];
-		$cats = [100, 110, 120];
-		for ($i = 0; $i < 20; $i++) {
-			MomentSub::add([
-				"sUId" => $uids[array_rand($uids, 1)],
-				"sMId" => $mids[array_rand($mids, 1)],
-				"sCategory" => $cats[array_rand($cats, 1)],
-			]);
-		}*/
-
-		// list($res) = Moment::wechatItems([], [], 1);print_r($res);
-
-
 		/*
 		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound,gAddedBy)
 			SELECT :id1,:id2,9999,:uid FROM dual
 			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2)';
 		*/
 
-
-		/*$arr = [
-			"title" => "会聊天的人，一开口就赢了",
-			"other_url" => ["https://mp.weixin.qq.com/s?__biz=MzI3NzczMDQwMA==&mid=2247484385&idx=4&sn=5304e5deeab1ed9dc128b2e6110f1d73&chksm=ebf8f197d3ec26dda132364392b70d2203676582193dbedb32f713f51ca9fccc&mpshare=1&scene=1&srcid=0207WpPJnbi68HRpCGK4tZPV&key=e10261c30ede7ba3d6844e0b5fb99219d6ca0a38b3c578785bd781d0eb1205c9edb5129ff97608fa569ed2e6d9e5c1b766a8cdfbbcb1f649fabd16230be14aafa1f5dad1119b1cc21fb720a71e71bcc2&ascene=0&uin=MTQxMzc2MDE1&devicetype=iMac+MacBookPro12%2C1+OSX+OSX+10.11.6+build(15G31)&version=12020110&nettype=WIFI&lang=zh_CN&fontScale=100&pass_ticket=JI%2BdX2qmOpTFQX6WaXCaB%2BefSdeXEJnC9zA%2FKVDJbT8%3D"],
-			"subtext" => "世界那么大，你来了，就好",
-			"url" => ['https://bpbhd-10063905.file.myqcloud.com/image/t1711201155449.jpg'],
-		];
-		echo json_encode($arr,JSON_UNESCAPED_UNICODE);*/
-
-		/*$conn = AppUtil::db();
-		$sql = "select * from im_moment where mCategory in (120) ";
-		$res = $conn->createCommand($sql)->queryAll();
-		$sql2 = "update im_moment set mContent=:content where mId=:mid";
-		$cmd = $conn->createCommand($sql2);
-		foreach ($res as $v) {
-			$content = json_decode($v["mContent"], 1);
-			$content["other_url"] = $content["url"][0];
-			$content["url"] = ['https://bpbhd-10063905.file.myqcloud.com/image/t1711201155449.jpg'];
-			$cmd->bindValues([
-				":content" => json_encode($content, JSON_UNESCAPED_UNICODE),
-				":mid" => $v['mId'],
-			])->execute();
-		}*/
-
-		// echo Log::springRedpacket('', '',143807)[0];
-
-		// Log::calculateSendAmt(143807, 120003);
-
-		// list($hasSendCount, $hasSendSum) = Log::springRedpacket('', 120003);echo $hasSendCount;
-
-		/*
-		$uids = [132607, 132601, 132553, 132554, 132550, 132519, 132509, 132510, 132511, 132497,
-			132498, 132493, 132487, 132477, 132471];
-		foreach ($uids as $uid) {
-			Log::calculateSendAmt($uid, 120003);
-		}
-		*/
-
 		// 添加月度畅聊卡
 		// UserTag::add(UserTag::CAT_CHAT_MONTH,120003);
 
-		//$seconds = time() - strtotime("2017-11-29 14:32:00");
-		//echo floor($seconds/86400);
-
-
-		// echo AppUtil::decrypt('BT5uXzU-SDg9N0xoODs6Pzg_QXFiOUJLO0A7UGs');
-
-		// 143807
-		// var_dump(UserTrans::taskCondition(UserTrans::COIN_CHAT_REPLY, 143807, 156703));
-
-		/*list($gid) = ChatMsg::groupEdit(143807, 131379);
-		$sql = "select count(1) as co from im_chat_msg where `cAddedBy`=143807 and cGId=$gid
-				and DATE_FORMAT(cAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
-		echo AppUtil::db()->createCommand($sql)->queryScalar();*/
-
-		/*foreach ([UserTrans::COIN_CHAT_REPLY, UserTrans::COIN_CHAT_3TIMES, UserTrans::COIN_CHAT_10_COUNT, UserTrans::COIN_CHAT_50_COUNT] as $v) {
-			$taskflag = UserTrans::taskCondition($v, 143807, 131379);
-			if ($taskflag) {
-				$coinCat = $v;
-				echo $coinCat;
-				break;
-			}
-		}*/
-
-
-		/*list($gid) = ChatMsg::groupEdit(143807, 131379);
-		echo $gid . PHP_EOL;
-		var_dump(UserTrans::taskCondition(40, 143807, 131379));*/
-
-		//list($data, $nextpage) = Moment::wechatItems(120003, [], [], 2);
-		//list($data, $nextpage) = Moment::wechatItems(120003, [], [], 2);
-
-		// echo uniqid('', true);
-
-		// 1.34 => 152052
-		// 2 => 164881
-
-
-		//var_dump(UserTrans::taskCondition(UserTrans::COIN_SHARE28, 164881));
-
-		// print_r(array_column(UserNet::$s28Items, "num"));
-
-		// print_r(UserTrans::stat(152052));
-		// print_r(UserTrans::getStat(164881,1));
-
-		//var_dump(UserTrans::taskCondition(UserTrans::COIN_ADD_MOMENT_COMMENT, 120003));
-
 		// 新增临时素材
-		$url = "https://img.meipo100.com/2018/327/218223134104.jpg";
-		var_dump(WechatUtil::uploadImg($url));
+		//$imgUrl = "https://img.meipo100.com/2018/327/218223134104.jpg";
+		//$imgUrl = "http://localhost.image:8080/2018/325/inv100004.jpg";
+		//var_dump(WechatUtil::uploadImageToWechat($imgUrl));
 
 
+		$sql = "select uId from im_user where uStatus=2 order by `uUpdatedOn` desc,uAddedOn desc limit 300";
+		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		foreach ($res as $k => $v) {
+			WechatUtil::templateMsg(WechatUtil::NOTICE_AUDIT,
+				$v['uId'],
+				'审核结果通知',
+				trim("您的头像不合规，头像必须是本人清晰、真实的正脸照片"),
+				$v['uId']);
+			echo $k . ':' . $v['uId'] . PHP_EOL;
+		}
+
+		WechatUtil::templateMsg(WechatUtil::NOTICE_AUDIT,
+			120003,
+			'审核结果通知',
+			trim("您的头像不合规，头像必须是本人清晰、真实的正脸照片~ end"),
+			120003);
 
 	}
 

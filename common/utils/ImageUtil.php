@@ -741,4 +741,10 @@ class ImageUtil
 		return $saveAs . '.' . $ext;
 	}
 
+	public static function downImage($url)
+	{
+		$saveAs = AppUtil::imgDir().$key = RedisUtil::getImageSeq() . date('His');
+		return self::downloadFile($url, $saveAs);
+	}
+
 }

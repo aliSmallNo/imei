@@ -680,9 +680,7 @@ class User extends ActiveRecord
 				  WHERE uId>0 $strCriteria $inactive2
 				  group by uId
 				  $orderBy Limit $offset, $pageSize";
-		if ($inactive) {
-			// echo $sql;exit;
-		}
+
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$items = [];
 		foreach ($ret as $row) {
