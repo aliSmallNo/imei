@@ -26,6 +26,7 @@ class UserQR extends ActiveRecord
 	const CATEGORY_180214 = 101; //Rain: 婚礼请帖
 	const CATEGORY_RED_103 = 103; //Rain: 分享红包103
 	const CATEGORY_ROOM = 200; //Rain: 房间号
+	const CATEGORY_AIR_TICKET = 300; // 机票
 
 	public static function tableName()
 	{
@@ -575,6 +576,56 @@ class UserQR extends ActiveRecord
 		$entity->save();
 		return $accessUrl;
 	}
+
+	public static function createAiricket($uId, $from, $to, $name)
+	{
+		$rootFolder = AppUtil::rootDir();
+		$bgFile = $rootFolder . 'mobile/web/images/air/bg_air.jpeg';
+
+		$qrFile = $rootFolder . 'mobile/web/images/air/air_qr.jpeg';
+		$raw = json_encode([$from, $to, $name, $qrFile], JSON_UNESCAPED_UNICODE);
+		$md5 = md5($raw);
+		$qrInfo = self::findOne(['qUId' => $uId, 'qCategory' => self::CATEGORY_AIR_TICKET, 'qMD5' => $md5]);
+		if ($qrInfo && !AppUtil::isDev()) {
+			return $qrInfo->qUrl;
+		}
+		$mergeSize = 130;
+		$mergeImg = Image::open($qrFile)->zoomCrop($mergeSize, $mergeSize, 0xffffff, 'center', 'center');
+		$img = Image::open($bgFile)->merge($mergeImg, 620, 380, $mergeSize, $mergeSize);
+
+		$h5Font = $rootFolder . 'common/assets/simhei.ttf';
+		if ($from) {
+			$img->write($h5Font, $from, 135, 230, 13, 0, 0x8b8380, 'left');
+		}
+		if ($to) {
+			$img->write($h5Font, $to, 290, 230, 13, 0, 0x8b8380, 'left');
+		}
+		if ($name) {
+			$img->write($h5Font, $name, 100, 180, 16, 0, 0x8b8380, 'left');
+			$img->write($h5Font, $name, 620, 190, 16, 0, 0x8b8380, 'left');
+		}
+
+		$img->write($h5Font, "扫描二维码", 630, 532, 14, 0, 0xfedd80, 'left');
+		$img->write($h5Font, "获取机票", 640, 552, 14, 0, 0xfedd80, 'left');
+
+		$saveAs = 'inv' . RedisUtil::getImageSeq() . '.jpg';
+		$saveAs = AppUtil::imgDir() . $saveAs;
+		$img->save($saveAs);
+		$accessUrl = ImageUtil::getUrl($saveAs);
+
+		self::deleteAll(['qUId' => $uId, 'qCategory' => self::CATEGORY_AIR_TICKET]);
+		$entity = new self();
+		$entity->qUId = $uId;
+		$entity->qCategory = self::CATEGORY_AIR_TICKET;
+		$entity->qCode = 'meipo100-air-ticket';
+		$entity->qMD5 = $md5;
+		$entity->qRaw = $raw;
+		$entity->qUrl = $accessUrl;
+		$entity->save();
+
+		return $accessUrl;
+	}
+
 
 	public static function createDiagnosis($md5, $name = '')
 	{

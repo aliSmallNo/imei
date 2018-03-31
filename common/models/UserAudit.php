@@ -111,7 +111,7 @@ class UserAudit extends ActiveRecord
 			return [129, '权限不足，请先完善你的个人资料'];
 		}
 		if ($status == User::STATUS_PENDING) {
-			return [129, '你的身份信息还在审核中，请稍后重试'];
+			// return [129, '你的身份信息还在审核中，请稍后重试'];// 2018-03-31
 		}
 		if (in_array($status, [User::STATUS_INVALID, User::STATUS_PRISON])) {
 			$msg = self::fault($uid, 0, $conn);

@@ -21,6 +21,7 @@ use common\utils\AppUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
 use common\utils\ImageUtil;
+use common\utils\Pinyin;
 use common\utils\PushUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
@@ -1432,23 +1433,21 @@ class FooController extends Controller
 		//$imgUrl = "http://localhost.image:8080/2018/325/inv100004.jpg";
 		//var_dump(WechatUtil::uploadImageToWechat($imgUrl));
 
+		// echo UserQR::createInvitationForMarry(120003, 'sdssf', "sdddf", '');exit;
 
-		$sql = "select uId from im_user where uStatus=2 order by `uUpdatedOn` desc,uAddedOn desc limit 300";
-		$res = AppUtil::db()->createCommand($sql)->queryAll();
-		foreach ($res as $k => $v) {
-			WechatUtil::templateMsg(WechatUtil::NOTICE_AUDIT,
-				$v['uId'],
-				'审核结果通知',
-				trim("您的头像不合规，头像必须是本人清晰、真实的正脸照片"),
-				$v['uId']);
-			echo $k . ':' . $v['uId'] . PHP_EOL;
-		}
+		$name = "的发的发生的";
+		$first_name = mb_substr($name, 0, 1);
+		$last_name = mb_substr($name, 1);
+		$name = strtoupper(Pinyin::encode($first_name, "all")) . '/' . strtoupper(Pinyin::encode($last_name, "all"));
+		$name = str_replace(" ", "", $name);
+		// echo $name;exit;
 
-		WechatUtil::templateMsg(WechatUtil::NOTICE_AUDIT,
-			120003,
-			'审核结果通知',
-			trim("您的头像不合规，头像必须是本人清晰、真实的正脸照片~ end"),
-			120003);
+		$from = "北京";
+		$to = "发送";
+		$uId = 120003;
+
+		echo  UserQR::createAiricket($uId, $from, $to, $name);
+
 
 	}
 
