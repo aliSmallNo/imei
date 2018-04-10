@@ -13,7 +13,6 @@ use admin\controllers\BaseController;
 use admin\models\Admin;
 use common\models\CRMClient;
 use common\models\CRMTrack;
-use common\tools\ImageOpt;
 use common\utils\ImageUtil;
 
 class CrmController extends BaseController
@@ -77,26 +76,26 @@ class CrmController extends BaseController
 		$isAssigner = Admin::isAssigner();
 		$tabs = [
 			"my" => [
-				"title" => "我的客户",
+				"title" => "我的严选师",
 				"count" => $counters["mine"]
 			],
 			"sea" => [
-				"title" => "公海客户",
+				"title" => "公海严选师",
 				"count" => $counters["sea"]
 			]
 		];
 		if ($isAssigner) {
 			$tabs = [
 				"my" => [
-					"title" => "我的客户",
+					"title" => "我的严选师",
 					"count" => $counters["mine"]
 				],
 				"sea" => [
-					"title" => "公海客户",
+					"title" => "公海严选师",
 					"count" => $counters["sea"]
 				],
 				"all" => [
-					"title" => "全部客户",
+					"title" => "全部严选师",
 					"count" => $counters["cnt"]
 				],
 			];
