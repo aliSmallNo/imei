@@ -944,7 +944,7 @@ class ApiController extends Controller
 					"prov" => trim(self::postParam("prov")),
 					"city" => trim(self::postParam("city")),
 					"addr" => trim(self::postParam("addr")),
-					"category" => trim(self::postParam("cFlag")) ? CRMClient::CATEGORY_ADVERT : CRMClient::CATEGORY_MALL,
+					"category" => trim(self::postParam("cFlag")) ? CRMClient::CATEGORY_ADVERT : CRMClient::CATEGORY_YANXUAN,
 					"bd" => trim(self::postParam("bd")),
 					"src" => self::postParam("src", CRMClient::SRC_WEBSITE),
 				], $id, $adminId);
@@ -987,7 +987,7 @@ class ApiController extends Controller
 		$endDate = self::postParam("endDate", date("Y-m-d"));
 		$id = self::postParam("id");
 		$cFalg = self::postParam("cFalg");
-		$category = CRMClient::CATEGORY_MALL;
+		$category = CRMClient::CATEGORY_YANXUAN;
 		if ($cFalg) {
 			$category = CRMClient::CATEGORY_ADVERT;
 		}
@@ -1033,7 +1033,7 @@ class ApiController extends Controller
 		$id = self::postParam("id");
 		$cFalg = self::postParam("cFalg");
 		$status = self::postParam("status");
-		$category = CRMClient::CATEGORY_MALL;
+		$category = CRMClient::CATEGORY_YANXUAN;
 		if ($cFalg) {
 			$category = CRMClient::CATEGORY_ADVERT;
 		}

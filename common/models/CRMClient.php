@@ -15,8 +15,8 @@ use yii\db\ActiveRecord;
 
 class CRMClient extends ActiveRecord
 {
-	const CATEGORY_MALL = 100;   // 到家严选
-	const CATEGORY_ADVERT = 110; // 广告商客户
+	const CATEGORY_YANXUAN = 100;   // 到家严选
+	const CATEGORY_ADVERT = 110;    // 广告商客户
 
 	const STATUS_DISLIKE = 100;
 	const STATUS_FRESH = 110;
@@ -177,7 +177,7 @@ class CRMClient extends ActiveRecord
 			$item = self::findOne(["cId" => $id]);
 		} else {
 			$item->cAddedBy = $adminId;
-			$item->cNote = json_encode($params);
+			$item->cNote = json_encode($params, JSON_UNESCAPED_UNICODE);
 			$item->cStatus = self::STATUS_DISLIKE;
 			$addFlag = true;
 		}
@@ -209,7 +209,7 @@ class CRMClient extends ActiveRecord
 		if ($addFlag) {
 			CRMTrack::add($item->cId, [
 				"status" => self::STATUS_FRESH,
-				"note" => $adminId > 0 ? "添加新的客户线索" : "位置来源"
+				"note" => $adminId > 0 ? "添加新的客户线索" : "未知来源"
 			], $adminId);
 		}
 
@@ -369,7 +369,7 @@ class CRMClient extends ActiveRecord
 		];
 		$orderBy = isset($sorts[$sort]) ? $sorts[$sort] : $sorts["dd"];
 		$conn = AppUtil::db();
-		$category = self::CATEGORY_MALL;
+		$category = self::CATEGORY_YANXUAN;
 
 		if ($cFlag) {
 			$category = self::CATEGORY_ADVERT;

@@ -32,7 +32,7 @@ class CrmController extends BaseController
 		$bdassign = self::getParam("bdassign");
 		$perSize = 20;
 
-		$criteria = [" cCategory=" . CRMClient::CATEGORY_MALL];
+		$criteria = [" cCategory=" . CRMClient::CATEGORY_YANXUAN];
 		$params = [];
 		$urlParams = [];
 		$alert = [];
@@ -168,7 +168,7 @@ class CrmController extends BaseController
 				"cat" => $cat,
 				"tabs" => $tabs,
 				"staff" => Admin::getStaffs(),
-				"bds" => Admin::getBDs(CRMClient::CATEGORY_MALL),
+				"bds" => Admin::getBDs(CRMClient::CATEGORY_YANXUAN),
 				"bdassign" => $bdassign,
 				"sources" => $sources,
 				"bdDefault" => $bdDefault,
@@ -236,7 +236,7 @@ class CrmController extends BaseController
 	public function actionStat()
 	{
 		Admin::staffOnly();
-		$staff = Admin::getBDs(CRMClient::CATEGORY_MALL);
+		$staff = Admin::getBDs(CRMClient::CATEGORY_YANXUAN);
 		return $this->renderPage('stat.tpl',
 			[
 				"beginDate" => date("Y-m-d", time() - 15 * 86400),
