@@ -1,4 +1,4 @@
-{{include file="headbar/2.1/header.tpl"}}
+{{include file="layouts/header.tpl"}}
 <style>
 	.chart-wrapper {
 		height: 360px;
@@ -14,103 +14,101 @@
 	}
 </style>
 
-<div id="page-wrapper">
-	<div class="row">
-		<div class="col-lg-2">
-			<h4>CRM跟进统计</h4>
-		</div>
-		<div class="col-lg-10">
-			<div class="row form-inline">
-				<input type="text" class="my-date-input form-control beginDate" name="beginDate" value="{{$beginDate}}"
-							 placeholder="开始时间">
-				<label class="control-label  ">至</label>
-				<input type="text" class="my-date-input form-control endDate" name="endDate" value="{{$endDate}}"
-							 placeholder="结束时间">
-				<select class="form-control bdassign" name="bdassign">
-					<option value="">请选择BD</option>
-					{{foreach from=$staff item=bd}}
+<div class="row">
+	<div class="col-lg-2">
+		<h4>CRM跟进统计</h4>
+	</div>
+	<div class="col-lg-10">
+		<div class="row form-inline">
+			<input type="text" class="my-date-input form-control beginDate" name="beginDate" value="{{$beginDate}}"
+						 placeholder="开始时间">
+			<label class="control-label  ">至</label>
+			<input type="text" class="my-date-input form-control endDate" name="endDate" value="{{$endDate}}"
+						 placeholder="结束时间">
+			<select class="form-control bdassign" name="bdassign">
+				<option value="">请选择BD</option>
+				{{foreach from=$staff item=bd}}
 					<option value="{{$bd.id}}">{{$bd.name}}</option>
-					{{/foreach}}
-				</select>
-				<button class="btn btn-primary btnQuery">查询</button>
-			</div>
+				{{/foreach}}
+			</select>
+			<button class="btn btn-primary btnQuery">查询</button>
 		</div>
 	</div>
-	<div class="row-divider"></div>
-	<div class="row">
-		<div class="col-lg-6">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-bar-chart-o fa-fw"></i> 跟进记录统计
-
-				</div>
-				<div class="panel-body">
-					<div id="track-chart" class="chart-wrapper"></div>
-				</div>
-			</div>
-
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-bar-chart-o fa-fw"></i> 新线索开发
-
-				</div>
-				<div class="panel-body">
-					<div id="new-chart" class="chart-wrapper"></div>
-				</div>
-			</div>
-
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-bar-chart-o fa-fw"></i> 跟进状态饼图
-					<select name="clue" id="clues">
-						<option value="0">-全部状态-</option>
-						<option value="100">无兴趣/失败</option>
-						<option value="110">新增线索</option>
-						<option value="120">初次见面沟通</option>
-						<option value="140">多次沟通(低意向)</option>
-						<option value="150">多次沟通(高意向)</option>
-						<option value="160">实地考察</option>
-						<option value="180">签订协议</option>
-						<option value="200">已经完款</option>
-					</select>
-				</div>
-				<div class="panel-body">
-					<div id="src-chart" class="chart-wrapper"></div>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-6">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-bar-chart-o fa-fw"></i> 漏斗图
-
-				</div>
-				<div class="panel-body">
-					<div id="funnel-chart" class="chart-wrapper"></div>
-				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-bar-chart-o fa-fw"></i> CRM分布
-
-				</div>
-				<div class="panel-body">
-					<div id="client-chart" class="chart-wrapper"></div>
-				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-bar-chart-o fa-fw"></i> 跟进状态甜甜圈
-
-				</div>
-				<div class="panel-body">
-					<div id="donut-chart" class="chart-wrapper"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row-divider2"></div>
 </div>
+<div class="row-divider"></div>
+<div class="row">
+	<div class="col-lg-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-bar-chart-o fa-fw"></i> 跟进记录统计
+
+			</div>
+			<div class="panel-body">
+				<div id="track-chart" class="chart-wrapper"></div>
+			</div>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-bar-chart-o fa-fw"></i> 新线索开发
+
+			</div>
+			<div class="panel-body">
+				<div id="new-chart" class="chart-wrapper"></div>
+			</div>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-bar-chart-o fa-fw"></i> 跟进状态饼图
+				<select name="clue" id="clues">
+					<option value="0">-全部状态-</option>
+					<option value="100">无兴趣/失败</option>
+					<option value="110">新增线索</option>
+					<option value="120">初次见面沟通</option>
+					<option value="140">多次沟通(低意向)</option>
+					<option value="150">多次沟通(高意向)</option>
+					<option value="160">实地考察</option>
+					<option value="180">签订协议</option>
+					<option value="200">已经完款</option>
+				</select>
+			</div>
+			<div class="panel-body">
+				<div id="src-chart" class="chart-wrapper"></div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-bar-chart-o fa-fw"></i> 漏斗图
+
+			</div>
+			<div class="panel-body">
+				<div id="funnel-chart" class="chart-wrapper"></div>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-bar-chart-o fa-fw"></i> CRM分布
+
+			</div>
+			<div class="panel-body">
+				<div id="client-chart" class="chart-wrapper"></div>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-bar-chart-o fa-fw"></i> 跟进状态甜甜圈
+
+			</div>
+			<div class="panel-body">
+				<div id="donut-chart" class="chart-wrapper"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row-divider2"></div>
 <script src="/js/highcharts/highcharts.js"></script>
 <script src="/js/highcharts/funnel.js"></script>
 <script>
@@ -132,7 +130,7 @@
 		mChartNew.html("");
 		mChartClient.html("");
 		layer.load();
-		$.post("/api/crm/chart", {
+		$.post("/api/chart", {
 			tag: "stat",
 			beginDate: mBeginDate.val(),
 			endDate: mEndDate.val(),
@@ -165,9 +163,9 @@
 	}
 
 	function reloadClueData() {
-		mChartSrc.html('')
-		layer.load()
-		$.post("/api/crm/clue", {
+		mChartSrc.html('');
+		layer.load();
+		$.post("/api/clue", {
 			tag: "stat",
 			beginDate: mBeginDate.val(),
 			endDate: mEndDate.val(),
@@ -193,7 +191,7 @@
 	}
 
 	function initFunnel(cData, pid) {
-//		setTheme();
+//	setTheme();
 		var colors = [];
 		for (var k in cData) {
 			var item = cData[k];
@@ -498,4 +496,4 @@
 	});
 </script>
 
-{{include file="headbar/2.1/footer.tpl"}}
+{{include file="layouts/footer.tpl"}}

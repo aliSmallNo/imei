@@ -9,6 +9,7 @@
 namespace common\models;
 
 
+use admin\models\Admin;
 use common\utils\AppUtil;
 use yii\db\ActiveRecord;
 
@@ -619,7 +620,7 @@ class CRMClient extends ActiveRecord
 		$staffLevel = Admin::LEVEL_STAFF;
 		$sql = "select a.aId, a.aName as title,c.cStatus,COUNT(1) as cnt 
  			from im_crm_client as c 
- 			join im_admin as a on a.aId=c.cBDAssign and a.aAccessLevel>=$staffLevel AND cCategory=$category and c.cDeletedFlag=0
+ 			join im_admin as a on a.aId=c.cBDAssign and a.aLevel>=$staffLevel AND cCategory=$category and c.cDeletedFlag=0
  			 	and c.cAddedDate BETWEEN '$beginDate' and '$endDate 23:59' $strCriteria
  			group by a.aName,c.cStatus";
 		if (!$conn) {
