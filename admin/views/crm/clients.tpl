@@ -85,7 +85,7 @@
 	}
 </style>
 <div class="row">
-	<h4>客户线索
+	<h4>严选师线索
 	</h4>
 </div>
 <div class="row">
@@ -93,9 +93,9 @@
 		<input name="cat" type="hidden" value="{{$cat}}">
 		<input class="my-date-input form-control" name="dt1" placeholder="注册日期 From" type="text" value="{{$dt1}}">
 		<input class="my-date-input form-control" name="dt2" placeholder="注册日期 To" type="text" value="{{$dt2}}">
-		<input class="form-control" name="prov" placeholder="客户省市" type="text" value="{{$prov}}">
-		<input class="form-control" name="name" placeholder="客户姓名" type="text" value="{{$name}}">
-		<input class="form-control" name="phone" placeholder="客户手机号" type="text" value="{{$phone}}">
+		<input class="form-control" name="prov" placeholder="严选师省市" type="text" value="{{$prov}}">
+		<input class="form-control" name="name" placeholder="严选师姓名" type="text" value="{{$name}}">
+		<input class="form-control" name="phone" placeholder="严选师手机号" type="text" value="{{$phone}}">
 		<select class="form-control" name="bdassign">
 			<option value="">请选择BD</option>
 			{{foreach from=$bds item=bd}}
@@ -139,7 +139,7 @@
 				姓名/手机/微信
 			</th>
 			<th class="col-lg-3">
-				客户自述
+				严选师自述
 			</th>
 			<th>
 				BD负责人
@@ -233,7 +233,7 @@
 <script type="text/html" id="tpl_change">
 	<div class="form-horizontal">
 		<div class="form-group">
-			<label class="col-sm-4 control-label">客户/电话:</label>
+			<label class="col-sm-4 control-label">严选师/电话:</label>
 			<div class="col-sm-7 form-control-static">
 				<span class="client_name"></span> <span class="client_phone"></span>
 			</div>
@@ -272,7 +272,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-4 control-label">客户来源:</label>
+			<label class="col-sm-4 control-label">严选师来源:</label>
 			<div class="col-sm-7">
 				<select class="form-control clue_src">
 					{{foreach from=$sources key=k item=source}}
@@ -282,7 +282,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-4 control-label">客户姓名:</label>
+			<label class="col-sm-4 control-label">严选师姓名:</label>
 			<div class="col-sm-7">
 				<input type="text" class="form-control clue_name">
 			</div>
@@ -316,7 +316,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-4 control-label">客户自述:</label>
+			<label class="col-sm-4 control-label">严选师自述:</label>
 			<div class="col-sm-7">
 				<textarea class="form-control clue_note"></textarea>
 			</div>
@@ -336,9 +336,9 @@
 	$(document).on('click', '#btnRemove', function () {
 		var self = $(this);
 		var cid = self.attr('cid');
-		layer.confirm('是否确定要删除这个客户线索？', {
+		layer.confirm('是否确定要删除这个严选师线索？', {
 			btn: ['确定', '取消'],
-			title: '删除客户线索'
+			title: '删除严选师线索'
 		}, function () {
 			removeClient(cid);
 		}, function () {
@@ -389,7 +389,7 @@
 				};
 				console.log(postData);
 				if (!postData["name"] || !postData["phone"]) {
-					layer.msg("客户姓名和联系电话不能为空！");
+					layer.msg("严选师姓名和联系电话不能为空！");
 					return;
 				}
 				url = '/api/client';
@@ -438,7 +438,7 @@
 		}
 		var vHtml = $('#cClueTmp').html();
 		$('div.modal-body').html(vHtml);
-		$('#myModalLabel').html('修改客户线索');
+		$('#myModalLabel').html('修改严选师线索');
 		$('#btnSaveMod').attr({
 			tag: "edit",
 			cid: cid
@@ -476,7 +476,7 @@
 		}
 		var vHtml = $('#tpl_change').html();
 		$('div.modal-body').html(vHtml);
-		$('#myModalLabel').html('转客户给他人');
+		$('#myModalLabel').html('转严选师给他人');
 		$('#btnSaveMod').attr({
 			tag: "change",
 			cid: cid
