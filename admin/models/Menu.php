@@ -100,6 +100,26 @@ class Menu
 	{
 		return [
 			[
+				"name" => "CRM",
+				"id" => "crm",
+				"icon" => "fa-users",
+				"staff" => 1,
+				"items" => [
+					[
+						"name" => "客户线索",
+						"url" => "/crm/clients",
+						"revise" => 1,
+						"level" => 820
+					],
+					[
+						"name" => "跟进统计",
+						"url" => "/crm/stat",
+						"revise" => 1,
+						"level" => 820
+					],
+				]
+			],
+			[
 				"name" => "数据统计",
 				"id" => "analysis",
 				"icon" => "fa-bar-chart",

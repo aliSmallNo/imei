@@ -41,6 +41,7 @@ class BaseController extends Controller
 	public function beforeAction($action)
 	{
 		self::checkPermission();
+		$this->admin_id = Admin::getAdminId();
 		$controllerId = $action->controller->id;
 		$this->menu_fork_id = Menu::getForkId($controllerId . '/' . $action->id);
 		return parent::beforeAction($action);

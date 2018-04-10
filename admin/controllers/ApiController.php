@@ -14,6 +14,8 @@ use common\models\ChatMsg;
 use common\models\ChatRoom;
 use common\models\ChatRoomFella;
 use common\models\City;
+use common\models\CRMClient;
+use common\models\CRMTrack;
 use common\models\Date;
 use common\models\Log;
 use common\models\LogAction;
@@ -52,6 +54,8 @@ class ApiController extends Controller
 
 	protected $admin_id = 1;
 	protected $admin_name = '';
+
+	const CODE_MESSAGE = 159;
 
 	public function behaviors()
 	{
@@ -904,6 +908,161 @@ class ApiController extends Controller
 				break;
 		}
 		return self::renderAPI(129, '操作无效');
+	}
+
+
+	public function actionClient()
+	{
+		$tag = self::postParam("tag");
+		$tag = strtolower($tag);
+		$id = self::postParam("id");
+		$adminId = Admin::getAdminId();
+		switch ($tag) {
+			case "user-client":
+				if ($id) {
+					list($code, $msg) = CRMClient::addFromUser($id, $adminId);
+					return self::renderAPI($code, $msg);
+				}
+				break;
+			case "grab":
+				list($code, $msg) = CRMClient::grab($id, $adminId);
+				return self::renderAPI($code, ($code == 0 ? self::ICON_OK_HTML : self::ICON_ALERT_HTML) . $msg);
+			case "remove":
+				CRMClient::del($id, $adminId);
+				return self::renderAPI(0, "删除成功！");
+			case "edit":
+				$phone = trim(self::postParam("phone"));
+				$msg = CRMClient::validity($phone);
+				if (!$id && $msg) {
+					return self::renderAPI(self::CODE_MESSAGE, "添加失败！" . $msg);
+				}
+				CRMClient::edit([
+					"name" => trim(self::postParam("name")),
+					"phone" => trim(self::postParam("phone")),
+					"wechat" => trim(self::postParam("wechat")),
+					"note" => trim(self::postParam("note")),
+					"prov" => trim(self::postParam("prov")),
+					"city" => trim(self::postParam("city")),
+					"addr" => trim(self::postParam("addr")),
+					"category" => trim(self::postParam("cFlag")) ? CRMClient::CATEGORY_ADVERT : CRMClient::CATEGORY_MALL,
+					"bd" => trim(self::postParam("bd")),
+					"src" => self::postParam("src", CRMClient::SRC_WEBSITE),
+				], $id, $adminId);
+				return self::renderAPI(0, "客户线索保存成功！");
+			case 'change':
+				$bdID = trim(self::postParam("bd"));
+				CRMClient::edit([
+					"bd" => $bdID,
+				], $id, $adminId);
+				$bdInfo = Admin::findOne(['aId' => $bdID])->toArray();
+				$note = '';
+				if ($bdInfo) {
+					$note = '转移给' . $bdInfo['aName'];
+				} elseif ($bdID < 1) {
+					$note = '扔到公海里了';
+				}
+				CRMTrack::add($id, [
+					"status" => trim(self::postParam("status", 0)),
+					"note" => $note
+				], $adminId);
+				return self::renderAPI(0, "客户转移成功！");
+			case "track":
+				CRMTrack::add($id, [
+					"status" => trim(self::postParam("status")),
+					"note" => trim(self::postParam("note")),
+				], $adminId);
+				return self::renderAPI(0, "添加跟进状态描述成功！");
+			case "del":
+				CRMTrack::del($id, $adminId);
+				return self::renderAPI(0, "删除成功！");
+		}
+		return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
+	}
+
+	public function actionChart()
+	{
+		$tag = self::postParam("tag");
+		$tag = strtolower($tag);
+		$beginDate = self::postParam("beginDate", date("Y-m-01"));
+		$endDate = self::postParam("endDate", date("Y-m-d"));
+		$id = self::postParam("id");
+		$cFalg = self::postParam("cFalg");
+		$category = CRMClient::CATEGORY_MALL;
+		if ($cFalg) {
+			$category = CRMClient::CATEGORY_ADVERT;
+		}
+		switch ($tag) {
+			case "stat":
+				$conn = AppUtil::db();
+				$funnelStat = CRMClient::funnelStat($category, $beginDate, $endDate, $id, $conn);
+				$srcStat = CRMClient::sourceStat($category, $beginDate, $endDate, $id, $conn);
+				list($clientSeries, $clientTitles) = CRMClient::clientStat($beginDate, $endDate, $category, $id, $conn);
+				list($donutInner, $donutOuter) = CRMClient::statusDonut($category, $beginDate, $endDate, $id, $conn);
+				$ret = [
+					"funnel" => $funnelStat,
+					"series" => $clientSeries,
+					"titles" => $clientTitles,
+					"sources" => $srcStat,//线索
+					"inners" => $donutInner,
+					"outers" => $donutOuter
+				];
+				if ($id) {
+					$trackStat = CRMTrack::trackStatDetail($category, $beginDate, $endDate, $id, $conn);
+					$newClientStat = CRMClient::newClientStatDetail($category, $beginDate, $endDate, $id, $conn);
+					$ret["track_titles"] = array_keys($trackStat);
+					$ret["new_titles"] = array_keys($newClientStat);
+					$ret["track"] = array_values($trackStat);
+					$ret["new"] = array_values($newClientStat);
+				} else {
+					$trackStat = CRMTrack::trackStat($category, $beginDate, $endDate, $id, $conn);
+					$newClientStat = CRMClient::newClientStat($category, $beginDate, $endDate, $id, $conn);
+					$ret["track"] = $trackStat;
+					$ret["new"] = $newClientStat;
+				}
+				return self::renderAPI(0, "", $ret);
+		}
+		return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
+	}
+
+	public function actionClue()
+	{
+		$tag = self::postParam("tag");
+		$tag = strtolower($tag);
+		$beginDate = self::postParam("beginDate", date("Y-m-01"));
+		$endDate = self::postParam("endDate", date("Y-m-d"));
+		$id = self::postParam("id");
+		$cFalg = self::postParam("cFalg");
+		$status = self::postParam("status");
+		$category = CRMClient::CATEGORY_MALL;
+		if ($cFalg) {
+			$category = CRMClient::CATEGORY_ADVERT;
+		}
+		switch ($tag) {
+			case "stat":
+				$conn = \Yii::$app->db;
+				$srcStat = CRMClient::sourceStat($category, $beginDate, $endDate, $id, $conn, $status);
+				$ret = [
+					"sources" => $srcStat,//线索
+				];
+				if (!$srcStat) {
+					return self::renderAPI(self::CODE_MESSAGE, "无数据", $ret);
+				}
+				return self::renderAPI(0, "", $ret);
+		}
+		return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
+	}
+
+	public function actionVisit()
+	{
+		$beginDate = self::postParam("sDate");
+		$endDate = self::postParam("eDate");
+		$constr = '';
+		if ($beginDate && $endDate) {
+			$constr = " and  tAddedDate>'$beginDate 00:00:00' and tAddedDate<'$endDate 23:59:59' ";
+		}
+
+		$aId = Admin::getAdminId();
+		return CRMTrack::visit($aId, $constr);
 	}
 
 	public function actionFoo()

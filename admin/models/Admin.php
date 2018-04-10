@@ -356,6 +356,14 @@ class Admin extends ActiveRecord
 		return self::isGroupUser($adminId, self::GROUP_DEBUG);
 	}
 
+	public static function isAssigner($adminId = "")
+	{
+		if (!$adminId) {
+			$adminId = self::getAdminId();
+		}
+		return in_array($adminId, [1001, 1002, 1006, 1017]);
+	}
+
 	public static function staffOnly()
 	{
 		if (!self::isStaff()) {
@@ -400,6 +408,56 @@ class Admin extends ActiveRecord
 			$result[$key]['levelDesc'] = self::$accessLevels[$result[$key]['aLevel']];
 		}
 		return is_array($result) ? $result : [];
+	}
+
+
+	public static function getStaffs()
+	{
+		$staffLevel = self::LEVEL_STAFF;
+		$st = self::STATUS_ACTIVE;
+		$sql = "SELECT aId as id, aName as `name`, aLoginId as loginId from im_admin where aLevel>=$staffLevel and aStatus=$st order by aName";
+		$conn = AppUtil::db();
+		$result = $conn->createCommand($sql)->queryAll();
+		usort($result, function ($a, $b) {
+			return iconv('UTF-8', 'GBK//IGNORE', $a['name']) > iconv('UTF-8', 'GBK//IGNORE', $b['name']);
+		});
+		return array_values($result);
+	}
+
+	public static function getBDs($category)
+	{
+		$st = self::STATUS_ACTIVE;
+		$sql = "select DISTINCT a.aName as name, a.aId as id 
+				from im_crm_client c join im_admin as a on c.cBDAssign=a.aId and c.cDeletedFlag=0 and cCategory=$category 
+				where a.aStatus=$st ";
+		$conn = AppUtil::db();
+		$result = $conn->createCommand($sql)->queryAll();
+		usort($result, function ($a, $b) {
+			return iconv('UTF-8', 'GBK//IGNORE', $a['name']) > iconv('UTF-8', 'GBK//IGNORE', $b['name']);
+		});
+		return array_values($result);
+	}
+
+	public static function adminInfo($adminId)
+	{
+		$redisKey = generalId::getAdminInfo($adminId);
+		// admin-info
+		$redis = objInstance::getRedisIns();
+		$data = $redis->get($redisKey);
+
+		$data = json_decode($data, 1);
+		if ($data) {
+			return $data;
+		}
+		$conn = AppUtil::db();
+		$sql = 'select * from hd_admin WHERE aId=:id ';
+		$ret = $conn->createCommand($sql)->bindValues([':id' => $adminId])->queryOne();
+		if ($ret) {
+			$redis->set($redisKey, json_encode($ret));
+			$redis->expire($redisKey, 3600 * 8);
+			return $ret;
+		}
+		return [];
 	}
 
 }

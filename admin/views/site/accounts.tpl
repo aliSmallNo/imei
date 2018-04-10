@@ -328,6 +328,7 @@
 		display: block;
 	}
 </style>
+
 <div class="row">
 	<h4>用户列表
 		<a href="javascript:;" class="addSysNotice btn btn-primary btn-xs hide" target="_blank">添加通知消息</a>
