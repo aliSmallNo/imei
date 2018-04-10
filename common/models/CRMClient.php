@@ -159,13 +159,13 @@ class CRMClient extends ActiveRecord
 
 	public static function validity($phone)
 	{
-		if (!$phone || !AppUtil::checkPhone($phone)) {
+		/*if (!$phone || !AppUtil::checkPhone($phone)) {
 			return "手机号码格式不正确";
 		}
 		$ret = self::findOne(["cPhone" => $phone]);
 		if ($ret) {
 			return "手机号已经存在了，请勿重复添加";
-		}
+		}*/
 		return "";
 	}
 

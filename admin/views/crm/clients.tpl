@@ -388,8 +388,8 @@
 					id: self.attr("cid")
 				};
 				console.log(postData);
-				if (!postData["name"] || !postData["phone"]) {
-					layer.msg("严选师姓名和联系电话不能为空！");
+				if (!postData["name"] || !postData["wechat"]) {
+					layer.msg("严选师姓名和微信号不能为空！");
 					return;
 				}
 				url = '/api/client';
