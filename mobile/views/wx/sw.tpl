@@ -233,6 +233,6 @@
 		document.location.hash = "#index";
 	}
 	requirejs(['/js/config.js'], function () {
-		requirejs(['/js/sw.js?v=1.4.6']);
+		requirejs(['/js/sw.js?v=1.4.8']);
 	});
 </script>

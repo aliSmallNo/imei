@@ -43,6 +43,11 @@ require(['jquery', 'mustache', "alpha"],
 				$(document).on(kClick, ".sw_cash_btn_comfirm a", function () {
 					var self = $(this);
 					// console.log(util.cash);console.log(util.num);
+					alpha.prompt('提示', '由于系统故障，现暂停提现，如提现请随时关注平台通知，敬请谅解！', ['我知道了'], function () {
+						alpha.clear();
+					});
+					return;
+
 					if (util.num < 2) {
 						alpha.toast("还没选择要提现金额~");
 						return;
@@ -55,7 +60,7 @@ require(['jquery', 'mustache', "alpha"],
 						/*alpha.prompt('提示', '春节即将来临，千寻小妹也要回家过年，至此本平台任务提现功能将在2018-02-10 ~ 2018-02-22 暂时关闭，请合理安排提现时间，带来不便敬请谅解。', ['我知道了'], function () {
 							alpha.clear();
 						});*/
-						alpha.prompt('提示', '由于您的违规操作，至此本平台任务提现功能将在'+$sls.closeTime+' 暂时关闭，带来不便敬请谅解。', ['我知道了'], function () {
+						alpha.prompt('提示', '由于您的违规操作，至此本平台任务提现功能将在' + $sls.closeTime + ' 暂时关闭，带来不便敬请谅解。', ['我知道了'], function () {
 							alpha.clear();
 						});
 					} else {
