@@ -1,5 +1,6 @@
 body, html {
-	font-family: 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	/*font-family: 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
+	font-family: 'Microsoft YaHei';
 }
 
 body, html, a, p, ul, div, h4, h5, h6 {
