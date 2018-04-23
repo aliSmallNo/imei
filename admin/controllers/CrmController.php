@@ -70,7 +70,7 @@ class CrmController extends BaseController
 			$criteria[] = " cBDAssign=" . $bdassign;
 			$urlParams[] = "bdassign=" . $bdassign;
 			$uInfo = Admin::findOne(["aId" => $bdassign]);
-			$alert[] = "【" . $uInfo["aNote"] . "】";
+			$alert[] = "【" . $uInfo["aName"] . "】";
 		}
 		$counters = CRMClient::counts($this->admin_id, $criteria, $params);
 		$isAssigner = Admin::isAssigner();
