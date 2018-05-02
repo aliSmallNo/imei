@@ -166,7 +166,7 @@
 					{{$prod.cName}}
 					<div><i class="c-ic fa fa-phone-square"></i> {{$prod.cPhone}}</div>
 					<div><i class="c-ic fa fa-wechat"></i> {{$prod.cWechat}}</div>
-					<div>性别:{{$prod.genderText}};年龄:{{$prod.cAge}};职业:{{$prod.cJob}};</div>
+					<div>性别:{{$prod.genderText}};年龄:{{$prod.ageText}};职业:{{$prod.cJob}};</div>
 				</td>
 				<td>
 					{{if $prod.cIntro}}{{$prod.cIntro}}{{else}}<span class="text-muted">（无）</span>{{/if}}
@@ -313,7 +313,12 @@
 		<div class="form-group">
 			<label class="col-sm-4 control-label">严选师年龄:</label>
 			<div class="col-sm-7">
-				<input type="text" class="form-control clue_age">
+				<select class="form-control clue_age">
+					<option value="">-=请选择=-</option>
+					{{foreach from=$ageMap item=age key=key}}
+						<option value="{{$key}}">{{$age}}</option>
+					{{/foreach}}
+				</select>
 			</div>
 		</div>
 		<div class="form-group">

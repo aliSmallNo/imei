@@ -178,6 +178,7 @@ class CrmController extends BaseController
 				"sIcon" => $sIcon,
 				"dNext" => $dNext,
 				"dIcon" => $dIcon,
+				"ageMap" => CRMClient::$ageMap,
 			]);
 
 	}
@@ -230,7 +231,6 @@ class CrmController extends BaseController
 				"adminId" => $this->admin_id
 			]);
 	}
-
 
 
 	public function actionStat()

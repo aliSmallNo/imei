@@ -34,6 +34,19 @@ class CRMClient extends ActiveRecord
 		self::GENDER_MALE => '男'
 	];
 
+	const AGE_LESS_20 = 20;
+	const AGE_20_30 = 25;
+	const AGE_30_40 = 35;
+	const AGE_40_50 = 45;
+	const AGE_MORE_50 = 50;
+	static $ageMap = [
+		self::AGE_LESS_20 => '小于20岁',
+		self::AGE_20_30 => '20岁~30岁',
+		self::AGE_30_40 => '30岁~40岁',
+		self::AGE_40_50 => '40岁~50岁',
+		self::AGE_MORE_50 => '50岁以上',
+	];
+
 	static $StatusMap = [
 		self::STATUS_DISLIKE => "无兴趣/失败",
 		self::STATUS_FRESH => "新增线索",
@@ -432,6 +445,7 @@ class CRMClient extends ActiveRecord
 			}
 			$row["statusText"] = self::$StatusMap[$row["status"]];
 			$row["genderText"] = self::$genderMap[$row["cGender"]] ?? '';
+			$row["ageText"] = self::$ageMap[$row["cAge"]] ?? '';
 			$row["percent"] = $row["status"] - 100;
 			//$row["addedDate"] = Utils::prettyDateTime($row["cAddedDate"]);
 			$row["addedDate"] = AppUtil::prettyDateTime($row["cAddedDate"]);
