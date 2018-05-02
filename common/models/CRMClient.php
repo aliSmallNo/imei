@@ -27,6 +27,13 @@ class CRMClient extends ActiveRecord
 	const STATUS_CONTRACT = 180;
 	const STATUS_PAID = 200;
 
+	const GENDER_FEMALE = 10;
+	const GENDER_MALE = 11;
+	static $genderMap = [
+		self::GENDER_FEMALE => '女',
+		self::GENDER_MALE => '男'
+	];
+
 	static $StatusMap = [
 		self::STATUS_DISLIKE => "无兴趣/失败",
 		self::STATUS_FRESH => "新增线索",
@@ -192,6 +199,9 @@ class CRMClient extends ActiveRecord
 			"note" => "cIntro",
 			"bd" => "cBDAssign",
 			"src" => "cSource",
+			"gender" => "cGender",
+			"age" => "cAge",
+			"job" => "cJob",
 		];
 		foreach ($params as $key => $val) {
 			if (isset($fieldMap[$key])) {
@@ -387,6 +397,9 @@ class CRMClient extends ActiveRecord
 		$sql = "select IFNULL(a.aName,'') as bdName,
 				c.cId,
 				c.cName,
+				c.cAge,
+				c.cGender,
+				c.cJob,
 				c.cPhone,
 				c.cWechat,
 				c.cEmail,
@@ -418,6 +431,7 @@ class CRMClient extends ActiveRecord
 				$row["status"] = self::STATUS_DISLIKE;
 			}
 			$row["statusText"] = self::$StatusMap[$row["status"]];
+			$row["genderText"] = self::$genderMap[$row["cGender"]] ?? '';
 			$row["percent"] = $row["status"] - 100;
 			//$row["addedDate"] = Utils::prettyDateTime($row["cAddedDate"]);
 			$row["addedDate"] = AppUtil::prettyDateTime($row["cAddedDate"]);

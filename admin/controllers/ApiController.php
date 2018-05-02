@@ -944,11 +944,28 @@ class ApiController extends Controller
 					"prov" => trim(self::postParam("prov")),
 					"city" => trim(self::postParam("city")),
 					"addr" => trim(self::postParam("addr")),
+					"age" => intval(trim(self::postParam("age"))),
+					"gender" => trim(self::postParam("gender")),
+					"job" => trim(self::postParam("job")),
 					"category" => trim(self::postParam("cFlag")) ? CRMClient::CATEGORY_ADVERT : CRMClient::CATEGORY_YANXUAN,
 					"bd" => trim(self::postParam("bd")),
 					"src" => self::postParam("src", CRMClient::SRC_WEBSITE),
 				], $id, $adminId);
-				return self::renderAPI(0, "客户线索保存成功！");
+				return self::renderAPI(0, "客户线索保存成功！", [[
+					"name" => trim(self::postParam("name")),
+					"phone" => trim(self::postParam("phone")),
+					"wechat" => trim(self::postParam("wechat")),
+					"note" => trim(self::postParam("note")),
+					"prov" => trim(self::postParam("prov")),
+					"city" => trim(self::postParam("city")),
+					"addr" => trim(self::postParam("addr")),
+					"age" => intval(trim(self::postParam("age"))),
+					"gender" => trim(self::postParam("gender")),
+					"job" => trim(self::postParam("job")),
+					"category" => trim(self::postParam("cFlag")) ? CRMClient::CATEGORY_ADVERT : CRMClient::CATEGORY_YANXUAN,
+					"bd" => trim(self::postParam("bd")),
+					"src" => self::postParam("src", CRMClient::SRC_WEBSITE),
+				], $id, $adminId]);
 			case 'change':
 				$bdID = trim(self::postParam("bd"));
 				CRMClient::edit([

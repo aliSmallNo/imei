@@ -166,6 +166,7 @@
 					{{$prod.cName}}
 					<div><i class="c-ic fa fa-phone-square"></i> {{$prod.cPhone}}</div>
 					<div><i class="c-ic fa fa-wechat"></i> {{$prod.cWechat}}</div>
+					<div>性别:{{$prod.genderText}};年龄:{{$prod.cAge}};职业:{{$prod.cJob}};</div>
 				</td>
 				<td>
 					{{if $prod.cIntro}}{{$prod.cIntro}}{{else}}<span class="text-muted">（无）</span>{{/if}}
@@ -300,6 +301,28 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<label class="col-sm-4 control-label">严选师性别:</label>
+			<div class="col-sm-7">
+				<select class="form-control clue_gender">
+					<option value="">-=请选择=-</option>
+					<option value="10">女</option>
+					<option value="11">男</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-4 control-label">严选师年龄:</label>
+			<div class="col-sm-7">
+				<input type="text" class="form-control clue_age">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-4 control-label">严选师职业:</label>
+			<div class="col-sm-7">
+				<input type="text" class="form-control clue_job">
+			</div>
+		</div>
+		<div class="form-group">
 			<label class="col-sm-4 control-label">所属省份:</label>
 			<div class="col-sm-7">
 				<select class="form-control clue_province">
@@ -383,6 +406,9 @@
 					prov: $.trim($('.clue_province').val()),
 					city: $.trim($('.clue_city').val()),
 					note: $.trim($('.clue_note').val()),
+					age: $.trim($('.clue_age').val()),
+					gender: $.trim($('.clue_gender').val()),
+					job: $.trim($('.clue_job').val()),
 					bd: $('.clue_bd').val(),
 					src: $('.clue_src').val(),
 					id: self.attr("cid")
@@ -433,6 +459,7 @@
 				break;
 			}
 		}
+		console.log(client);
 		if (!client) {
 			return;
 		}
@@ -456,6 +483,9 @@
 		$('.clue_bd').val(client.cBDAssign);
 		$('.clue_src').val(client.cSource);
 		$('.clue_province').val(client.cProvince);
+		$('.clue_age').val(client.cAge);
+		$('.clue_gender').val(client.cGender);
+		$('.clue_job').val(client.cJob);
 		updateArea(client.cProvince);
 		$('.clue_city').val(client.cCity);
 	});
