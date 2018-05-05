@@ -1435,7 +1435,7 @@ class FooController extends Controller
 
 		// echo UserQR::createInvitationForMarry(120003, 'sdssf', "sdddf", '');exit;
 
-		$name = "的发的发生的";
+		/*$name = "的发的发生的";
 		$first_name = mb_substr($name, 0, 1);
 		$last_name = mb_substr($name, 1);
 		$name = strtoupper(Pinyin::encode($first_name, "all")) . '/' . strtoupper(Pinyin::encode($last_name, "all"));
@@ -1446,7 +1446,9 @@ class FooController extends Controller
 		$to = "发送";
 		$uId = 120003;
 
-		echo  UserQR::createAiricket($uId, $from, $to, $name);
+		echo  UserQR::createAiricket($uId, $from, $to, $name);*/
+
+		var_dump(WechatUtil::createWechatMenus());
 
 
 	}

@@ -385,11 +385,18 @@ class WechatUtil
 //					"name" => "来加薪🎁",
 //					"key" => "EV_REWARD"
 //				],
+//				[
+//					"type" => "view",
+//					"name" => "官方活动",
+//					//"url" => $wxUrl . "/wx/event"
+//					"url" => $wxUrl . "/wx/mshare"
+//				],
 				[
-					"type" => "view",
-					"name" => "官方活动",
-					//"url" => $wxUrl . "/wx/event"
-					"url" => $wxUrl . "/wx/mshare"
+					"type" => "miniprogram",
+					"name" => "日签",
+					"url" => "http://mp.weixin.qq.com",
+					"appid" => "wx1aa5e80d0066c1d7",
+					"pagepath" => "pages/index/index"
 				],
 				[
 					//"name" => "免费早餐🍵",
