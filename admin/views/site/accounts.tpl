@@ -400,6 +400,9 @@
 <table class="table table-striped table-bordered table-hover">
 	<thead>
 	<tr>
+		<th>
+			选择
+		</th>
 		<th class="col-sm-1">
 			头像
 		</th>
@@ -420,6 +423,9 @@
 	<tbody>
 	{{foreach from=$list item=prod}}
 		<tr data-id="{{$prod.id}}">
+			<td>
+				<input type="checkbox" class="checkbox_choose">
+			</td>
 			<td>
 				<img src="{{$prod.thumb}}" bsrc="{{$prod.avatar}}" width="100%" class="i-av">
 				<div class="uid">{{$prod.id}}</div>
@@ -518,9 +524,11 @@
 			</td>
 		</tr>
 	{{/foreach}}
+
 	</tbody>
 </table>
 {{$pagination}}
+
 <div class="modal" id="modModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
