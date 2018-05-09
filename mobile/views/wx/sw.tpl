@@ -152,6 +152,8 @@
 		{{/foreach}}
 		<a href="#srecords" class="nav-right">账户记录 ></a>
 	</div>
+
+
 	<div>
 		<h5 class="sw_exchange_cash">平台兑换红包: <span>{{$stat.coin_y}}</span>元</h5>
 		<ul class="recharge">
