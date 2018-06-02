@@ -8,9 +8,9 @@
 
 namespace common\utils;
 
-require_once __DIR__ . "/../lib/YZSignClient.php";
-require_once __DIR__ . "/../lib/YZGetTokenClient.php";
-require_once __DIR__ . '/../lib/YZTokenClient.php';
+require_once __DIR__ . "/../lib/youzan/lib/YZSignClient.php";
+require_once __DIR__ . "/../lib/youzan/lib/YZGetTokenClient.php";
+require_once __DIR__ . '/../lib/youzan/lib/YZTokenClient.php';
 
 use YZSignClient;
 use YZGetTokenClient;
