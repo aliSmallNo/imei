@@ -1417,6 +1417,14 @@ class FooController extends Controller
 			], QueueUtil::QUEUE_TUBE_CHAT, 30);
 	}
 
+	public function actionYz()
+	{
+		// $token = YouzanUtil::getAccessToken();
+
+		//获取当前店铺分销员列表，需申请高级权限方可调用。
+		YouzanUtil::getData();
+	}
+
 	public function actionZp()
 	{
 
@@ -1460,7 +1468,6 @@ class FooController extends Controller
 		])->execute();
 		var_dump($ret);*/
 
-		echo YouzanUtil::getAccessToken();
 
 	}
 

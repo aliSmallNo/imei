@@ -44,6 +44,7 @@ class YouzanUtil
 
 	/**
 	 * @return mixed
+	 * https://www.youzanyun.com/docs/guide/3399/3414
 	 */
 	private static function getToken()
 	{
@@ -86,6 +87,20 @@ class YouzanUtil
 		return $accessToken;
 	}
 
+	public static function getData()
+	{
+		$client = new YZTokenClient(self::getAccessToken());
+		//$url = 'https://open.youzan.com/api/oauthentry/youzan.salesman.accounts/3.0.0/get';
+		$method = 'youzan.salesman.accounts.get'; //要调用的api名称
+		$my_params = [
+			'page_no' => '1',
+			'page_size' => '20',
+		];
+		$my_files = [];
+
+		print_r($client->post($method, self::API_VERSION, $my_params, $my_files));
+	}
+
 	// SignDemo
 	private function sign()
 	{
@@ -96,20 +111,6 @@ class YouzanUtil
 		$client = new YZSignClient(self::APPID, self::APPSECRET);
 		$ret = $client->post($method, self::API_VERSION, $my_params);
 		return $ret;
-	}
-
-	public function token()
-	{
-		$token = self::getToken(self::TYPE);//请填入商家授权后获取的access_token
-		$client = new YZTokenClient($token);
-
-		$method = 'youzan.item.get';//要调用的api名称
-
-		$my_params = [
-			'item_id' => '888888',
-		];
-
-		$client->post($method, self::API_VERSION, $my_params);
 	}
 
 
