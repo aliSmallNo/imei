@@ -127,7 +127,7 @@ class Menu
 				"items" => [
 					[
 						"name" => "分销员",
-						"url" => "/yz/saleman",
+						"url" => "/yz/salesman",
 						"revise" => 1,
 						"level" => 820
 					],
