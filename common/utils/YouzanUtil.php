@@ -20,7 +20,7 @@ class YouzanUtil
 {
 
 	//请填入你有赞店铺ID
-	const APPId = '';
+	const APPId = 40552639;
 	//要调用的api版本号
 	const API_VERSION = '3.0.0';
 	// 自用型应用
