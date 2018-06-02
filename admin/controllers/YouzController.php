@@ -19,7 +19,6 @@ class YouzController extends BaseController
 	public function actionSalesman()
 	{
 		// https://www.youzanyun.com/apilist/detail/group_ump/salesman/youzan.salesman.accounts.get
-
 		Admin::staffOnly();
 		$page = self::getParam("page", 1);
 
