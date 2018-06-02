@@ -61,7 +61,7 @@
 					{{$item.fans_id}}
 				</td>
 				<td>
-					{{$item.createdAt}}
+					{{$item.created_at}}
 				</td>
 			</tr>
 		{{/foreach}}
