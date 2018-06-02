@@ -1460,7 +1460,7 @@ class FooController extends Controller
 		])->execute();
 		var_dump($ret);*/
 
-		echo YouzanUtil::getAccessToken(1);
+		echo YouzanUtil::getAccessToken();
 
 	}
 

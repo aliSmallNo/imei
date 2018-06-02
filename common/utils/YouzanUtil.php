@@ -52,8 +52,21 @@ class YouzanUtil
 			"kdt_id" => self::APPId,
 		];
 		$ret = $token->get_token(self::TYPE, $keys);
-		print_r($ret);
 		return $ret['access_token'] ?? '';
+		$ret = [
+			// 成功返回
+			'success' => [
+				'access_token' => '91e22b82a76e390ca66474a46002d729',
+				'expires_in' => '604800',
+				'scope' => 'storage points reviews multi_store salesman pay_qrcode item user trade_advanced trade item_category logistics coupon_advanced shop coupon crm_advanced trade_virtual retail_goods',
+			],
+			// 失败返回
+			'error' => [
+				'error_description' => '缺少参数kdt_id',
+				'error' => 41000,
+			]
+		];
+
 	}
 
 	public static function getAccessToken($reset = false)
