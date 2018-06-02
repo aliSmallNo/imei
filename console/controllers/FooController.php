@@ -25,6 +25,7 @@ use common\utils\Pinyin;
 use common\utils\PushUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
+use common\utils\YouzanUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
 use yii\console\Controller;
@@ -1448,8 +1449,18 @@ class FooController extends Controller
 
 		echo  UserQR::createAiricket($uId, $from, $to, $name);*/
 
-		var_dump(WechatUtil::createWechatMenus());
+		// var_dump(WechatUtil::createWechatMenus());
 
+
+		// 修改所有的待审核=>通过
+		/*$sql = "update im_user set uStatus=:st1 where uStatus=:st2";
+		$ret = AppUtil::db()->createCommand($sql)->bindValues([
+			":st1" => User::STATUS_ACTIVE,
+			":st2" => User::STATUS_PENDING,
+		])->execute();
+		var_dump($ret);*/
+
+		echo YouzanUtil::getAccessToken();
 
 	}
 

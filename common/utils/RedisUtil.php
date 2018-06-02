@@ -55,6 +55,7 @@ class RedisUtil
 	const KEY_ROOM_ALERT = "room_alert";
 	const KEY_SESSION_CHART = "session_chart";
 	const KEY_DIAGNOSIS = "diagnosis";
+	const KEY_YOUZAN_TOKEN = "youzan_token";
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
@@ -90,6 +91,7 @@ class RedisUtil
 		self::KEY_ROOM_ALERT => 60 * 10,
 		self::KEY_SESSION_CHART => 60 * 12,
 		self::KEY_DIAGNOSIS => 86400 * 60,
+		self::KEY_YOUZAN_TOKEN => 86400 * 7,
 	];
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';

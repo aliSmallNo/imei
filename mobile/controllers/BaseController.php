@@ -42,6 +42,8 @@ class BaseController extends Controller
 		$actionId = $action->id;
 		$duration = 3600 * 51;
 		$safeActions = ['error', 'err', 'help', 'pub-share', 'shake'];
+
+		//echo 123;print_r($action);exit;
 		if (in_array($actionId, $safeActions)) {
 			return parent::beforeAction($action);
 		}
@@ -60,6 +62,7 @@ class BaseController extends Controller
 		}
 		$currentUrl = Yii::$app->request->getAbsoluteUrl();
 		self::$WX_OpenId = AppUtil::getCookie(self::COOKIE_OPENID);
+
 		$wxCode = self::getParam("code");
 		if (strlen($wxCode) >= 20) {
 			$wxUserInfo = UserWechat::getInfoByCode($wxCode, true);
