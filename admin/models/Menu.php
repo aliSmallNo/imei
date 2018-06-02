@@ -120,6 +120,20 @@ class Menu
 				]
 			],
 			[
+				"name" => "有赞数据",
+				"id" => "youzan",
+				"icon" => "fa-bar-chart",
+				"staff" => 1,
+				"items" => [
+					[
+						"name" => "分销员",
+						"url" => "/yz/saleman",
+						"revise" => 1,
+						"level" => 820
+					],
+				]
+			],
+			[
 				"name" => "数据统计",
 				"id" => "analysis",
 				"icon" => "fa-bar-chart",

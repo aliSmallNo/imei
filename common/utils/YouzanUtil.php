@@ -87,18 +87,11 @@ class YouzanUtil
 		return $accessToken;
 	}
 
-	public static function getData()
+	public static function getData($method,$params)
 	{
 		$client = new YZTokenClient(self::getAccessToken());
-		//$url = 'https://open.youzan.com/api/oauthentry/youzan.salesman.accounts/3.0.0/get';
-		$method = 'youzan.salesman.accounts.get'; //要调用的api名称
-		$my_params = [
-			'page_no' => '1',
-			'page_size' => '20',
-		];
 		$my_files = [];
-
-		print_r($client->post($method, self::API_VERSION, $my_params, $my_files));
+		return $client->post($method, self::API_VERSION, $params, $my_files);
 	}
 
 	// SignDemo
