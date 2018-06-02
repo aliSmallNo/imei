@@ -33,7 +33,7 @@ class YouzController extends BaseController
 		$items = [];
 		$res = YouzanUtil::getData($method, $params);
 		if (isset($res['response'])) {
-			$count = $res['response']['totalResults'];
+			$count = $res['response']['total_results'];
 			$items = $res['response']['accounts'];
 		}
 		$pagination = self::pagination($page, $count);
