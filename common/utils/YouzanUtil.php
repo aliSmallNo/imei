@@ -52,6 +52,7 @@ class YouzanUtil
 			"kdt_id" => self::APPId,
 		];
 		$ret = $token->get_token(self::TYPE, $keys);
+		print_r($ret);
 		return $ret['access_token'] ?? '';
 	}
 
