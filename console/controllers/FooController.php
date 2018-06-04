@@ -1433,9 +1433,9 @@ class FooController extends Controller
 
 		// 根据关注时间段批量查询微信粉丝用户信息
 		$conn = AppUtil::db();
-		$sql = "insert into im_yz_user (uId,uOpenId,uRawData)
-				SELECT :uid,:openid,:raw FROM dual
-				WHERE NOT EXISTS(SELECT 1 FROM im_yz_user as u WHERE u.uId=:uid ) ";
+		$sql = "insert into im_yz_user (uYZUId,uOpenId,uRawData)
+				SELECT :yz_uid,:openid,:raw FROM dual
+				WHERE NOT EXISTS(SELECT 1 FROM im_yz_user as u WHERE u.uYZUId=:yz_uid ) ";
 		$insertCMD = $conn->createCommand($sql);
 
 		$method = 'youzan.users.weixin.followers.info.search';
@@ -1457,7 +1457,7 @@ class FooController extends Controller
 				$openid = $v['weixin_open_id'];
 				$raw = json_encode($v, JSON_UNESCAPED_UNICODE);
 				$insertCMD->bindValues([
-					':uid' => $uid,
+					':yz_uid' => $uid,
 					':openid' => $openid,
 					':raw' => $raw,
 				])->execute();
