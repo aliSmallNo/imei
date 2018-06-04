@@ -1436,7 +1436,7 @@ class FooController extends Controller
 		$params = [
 			'page_no' => 1,
 			'page_size' => 10,
-			'start_follow' => '2018-03-26',
+			'start_follow' => '2018-04-14',
 			'end_follow' => '2018-04-15',
 			'fields' => 'points,trade,level',
 		];
