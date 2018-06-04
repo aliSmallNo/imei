@@ -1448,7 +1448,8 @@ class FooController extends Controller
 		];
 		$ret = YouzanUtil::getData($method, $params);
 
-		$results = isset($ret['response']) ?? 0;
+		$results = $ret['response'] ?? 0;
+		print_r($results);
 		if ($results && $results['total_results'] > 0) {
 			$users = $results['users'];
 			foreach ($users as $v) {
