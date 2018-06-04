@@ -1421,8 +1421,24 @@ class FooController extends Controller
 	{
 		// $token = YouzanUtil::getAccessToken();
 
-		//获取当前店铺分销员列表，需申请高级权限方可调用。
-		YouzanUtil::getData();
+		/*//获取当前店铺分销员列表，需申请高级权限方可调用。
+		$method = 'youzan.salesman.accounts.get';
+		$params = [
+			'page_no' => 1,
+			'page_size' => 20,
+		];
+		YouzanUtil::getData($method, $params);
+		*/
+
+
+		// 根据关注时间段批量查询微信粉丝用户信息
+		$method = 'youzan.users.weixin.followers.info.search';
+		$params = [
+			'page_no' => 1,
+			'page_size' => 10,
+		];
+		print_r(YouzanUtil::getData($method, $params));
+
 	}
 
 	public function actionZp()

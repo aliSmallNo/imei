@@ -42,7 +42,6 @@ class YouzController extends BaseController
 				'pagination' => $pagination,
 				'items' => $items,
 			]);
-
 	}
 
 	public function actionDetail()
