@@ -1436,6 +1436,9 @@ class FooController extends Controller
 		$params = [
 			'page_no' => 1,
 			'page_size' => 10,
+			'start_follow' => '2018-03-26',
+			'end_follow' => '2018-04-15',
+			'fields' => 'points,trade,level',
 		];
 		print_r(YouzanUtil::getData($method, $params));
 
