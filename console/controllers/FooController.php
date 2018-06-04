@@ -1468,6 +1468,8 @@ class FooController extends Controller
 		])->execute();
 		var_dump($ret);*/
 
+		var_dump(WechatUtil::createWechatMenus());
+
 
 	}
 
