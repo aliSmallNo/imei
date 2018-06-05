@@ -1445,7 +1445,7 @@ class FooController extends Controller
 		$et = '2018-06-05 23:59:59';
 		$page = 1;
 		$page_size = 20;
-		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
+		$days = floor((strtotime($et) - strtotime($st)) / 86400);
 
 		for ($d = 0; $d < $days; $d++) {
 			$stime = date('Y-m-d', strtotime($st) + $d * 86400);
