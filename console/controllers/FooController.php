@@ -1450,31 +1450,29 @@ class FooController extends Controller
 		for ($d = 0; $d < $days; $d++) {
 			$stime = date('Y-m-d', strtotime($st) + $d * 86400);
 			$etime = date('Y-m-d', strtotime($st) + ($d + 1) * 86400);
-			echo "stime:" . $stime . ' == etime:' . $etime . PHP_EOL;
-		}
-		exit;
-		$results = self::getTZUser($stime, $etime, $page, $page_size);
-		if ($results && $results['total_results'] > 0) {
-			$total_results = $results['total_results'];
-			$page_count = ceil($total_results / $page_size);
 
-			for ($i = 0; $i < $page_count; $i++) {
-				$users = self::getTZUser($stime, $etime, ($i + 1), $page_size)['users'];
-				foreach ($users as $v) {
-					$uid = $v['user_id'];
-					$insert = [];
-					foreach (YzUser::$fieldMap as $key => $val) {
-						if (isset($v[$key])) {
-							$insert[$val] = $v[$key];
+			$results = self::getTZUser($stime, $etime, $page, $page_size);
+			if ($results && $results['total_results'] > 0) {
+				$total_results = $results['total_results'];
+				$page_count = ceil($total_results / $page_size);
+
+				for ($i = 0; $i < $page_count; $i++) {
+					$users = self::getTZUser($stime, $etime, ($i + 1), $page_size)['users'];
+					foreach ($users as $v) {
+						$uid = $v['user_id'];
+						$insert = [];
+						foreach (YzUser::$fieldMap as $key => $val) {
+							if (isset($v[$key])) {
+								$insert[$val] = $v[$key];
+							}
 						}
+						$insert['uRawData'] = json_encode($v, JSON_UNESCAPED_UNICODE);
+						// echo $uid;print_r($insert);exit;
+						YzUser::edit($uid, $insert);
 					}
-					$insert['uRawData'] = json_encode($v, JSON_UNESCAPED_UNICODE);
-					// echo $uid;print_r($insert);exit;
-					YzUser::edit($uid, $insert);
 				}
 			}
 		}
-
 	}
 
 	public function getTZUser($stime, $etime, $page, $page_size)
