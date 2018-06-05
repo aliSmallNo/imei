@@ -1462,6 +1462,9 @@ class FooController extends Controller
 						}
 					}
 					$insert['uRawData'] = json_encode($v, JSON_UNESCAPED_UNICODE);
+					echo $uid;
+					print_r($insert);
+					exit;
 					YzUser::edit($uid, $insert);
 				}
 			}
