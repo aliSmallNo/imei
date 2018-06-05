@@ -1498,6 +1498,7 @@ class FooController extends Controller
 		$results = $ret['response'] ?? 0;
 
 		AppUtil::logFile($results, 5, __FUNCTION__, __LINE__);
+		echo "stime:" . $stime . ' == etime:' . $etime . ' == ' . 'page:' . $page . ' == ' . 'pagesize:' . $page_size;
 
 		return $results;
 
