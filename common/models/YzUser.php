@@ -132,8 +132,8 @@ class YzUser extends ActiveRecord
 			//获取当前店铺分销员列表，需申请高级权限方可调用。
 			$method = 'youzan.salesman.accounts.get';
 			$params = [
-				'page_no' => 20,
-				'page_size' => $page,
+				'page_no' => $page,
+				'page_size' => 20,
 			];
 			echo 'page:' . $page . PHP_EOL;
 

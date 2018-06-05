@@ -22,7 +22,7 @@ class YouzController extends BaseController
 		Admin::staffOnly();
 		$page = self::getParam("page", 1);
 
-		$method = 'youzan.salesman.accounts.get'; //要调用的api名称
+		$method = 'youzan.salesman.accounts.get';
 		$params = [
 			'page_no' => $page,
 			'page_size' => 20,
