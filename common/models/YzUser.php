@@ -163,6 +163,12 @@ class YzUser extends ActiveRecord
 							'uSeller' => $v['seller'] ?? '',
 						];
 						$fansId = $v['fans_id'];
+						if ($fansId == 5654628178) {
+							print_r($v);
+							echo PHP_EOL;
+							print_r($insert);
+							exit;
+						}
 						if (self::findOne(['uYZUId' => $fansId])) {
 							self::edit($fansId, $insert);
 						}
