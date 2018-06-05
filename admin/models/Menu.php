@@ -131,6 +131,12 @@ class Menu
 						"revise" => 1,
 						"level" => 820
 					],
+					[
+						"name" => "分销员(旧)",
+						"url" => "/youz/sman",
+						"revise" => 1,
+						"level" => 820
+					],
 				]
 			],
 			[

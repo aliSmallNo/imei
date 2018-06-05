@@ -196,4 +196,36 @@ class YzUser extends ActiveRecord
 	}
 
 
+	public static function items($criteria, $params, $page = 1, $pageSize = 20)
+	{
+		$conn = AppUtil::db();
+		$limit = ($page - 1) * $pageSize . "," . $pageSize;
+		$criteria = implode(" and ", $criteria);
+
+		$sql = "select 
+				u1.*,u2.uAvatar as favatar,u2.uName as fname,u2.uPhone as fphone
+				from im_yz_user as u1
+				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone
+				where u1.uType=:type $criteria
+				order by u1.`uCreateOn` desc $limit";
+
+		$res = $conn->createCommand($sql)->bindValues(array_merge([
+			':type' => self::TYPE_YXS,
+		], $params))->queryAll();
+
+
+		$sql = "select 
+				count(*)
+				from im_yz_user as u1
+				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone
+				where u1.uType=:type $criteria ";
+		$count = $conn->createCommand($sql)->bindValues(array_merge([
+			':type' => self::TYPE_YXS,
+		], $params))->queryScalar();
+
+		return [$res, $count];
+
+	}
+
+
 }

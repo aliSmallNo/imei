@@ -644,6 +644,7 @@ class SiteController extends BaseController
 			$criteria[] = " u.uPhone like :phone ";
 			$params[':phone'] = trim($phone) . '%';
 		}
+
 		if ($cat) {
 			$criteria[] = " t.tCategory =$cat ";
 		}

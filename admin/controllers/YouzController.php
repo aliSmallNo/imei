@@ -11,6 +11,7 @@ namespace admin\controllers;
 
 use admin\controllers\BaseController;
 use admin\models\Admin;
+use common\models\YzUser;
 use common\utils\YouzanUtil;
 
 class YouzController extends BaseController
@@ -44,66 +45,35 @@ class YouzController extends BaseController
 			]);
 	}
 
-	public function actionDetail()
+	public function actionSman()
 	{
 		Admin::staffOnly();
-		$cid = self::getParam("id", 0);
-		$postId = self::postParam("cid");
-		if ($postId) {
-			$cid = $postId;
-			$images = [];
-			$uploads = $_FILES["images"];
-			if ($uploads && isset($uploads["tmp_name"]) && isset($uploads["error"])) {
-				foreach ($uploads["tmp_name"] as $key => $file) {
-					if ($uploads["error"][$key] == UPLOAD_ERR_OK) {
-						$upName = $uploads["name"][$key];
-						$fileExt = strtolower(pathinfo($upName, PATHINFO_EXTENSION));
-						$images[] = ImageUtil::upload2Cloud($file, "", ($fileExt ? $fileExt : ""), 800);
-						unlink($file);
-					}
-				}
-			}
-			CRMTrack::add($postId, [
-				"status" => trim(self::postParam("status")),
-				"note" => trim(self::postParam("note")),
-				"image" => json_encode($images),
-			], $this->admin_id);
+		$getInfo = \Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
 
+		$criteria = $params = [];
+
+		if ($name) {
+			$criteria[] = " u.uName like :name ";
+			$params[':name'] = '%' . trim($name) . '%';
 		}
-		list($items, $client) = CRMTrack::tracks($cid);
-		$options = CRMClient::$StatusMap;
-		foreach ($options as $key => $option) {
-			$options[$key] = ($key - 100) . "% " . $option;
+		if ($phone) {
+			$criteria[] = " u.uPhone like :phone ";
+			$params[':phone'] = trim($phone) . '%';
 		}
-		$isAssigner = Admin::isAssigner();
-		if (!$isAssigner && !$client["bd"] && !in_array(Admin::getAdminId(), [])) {
-			$len = strlen($client["phone"]);
-			if ($len > 4) {
-				$client["phone"] = substr($client["phone"], 0, $len - 4) . "****";
-			}
-		}
-		return $this->renderPage('detail.tpl',
+
+		list($items, $count) = YzUser::items($criteria, $params, $page);
+
+		$pagination = self::pagination($page, $count);
+		return $this->renderPage('sman.tpl',
 			[
-				'detailcategory' => "crm/clients",
+				'page' => $page,
+				'pagination' => $pagination,
 				'items' => $items,
-				'client' => $client,
-				"cid" => $cid,
-				"options" => $options,
-				"adminId" => $this->admin_id
+				'getInfo' => $getInfo,
 			]);
 	}
 
-
-	public function actionStat()
-	{
-		Admin::staffOnly();
-		$staff = Admin::getBDs(CRMClient::CATEGORY_YANXUAN);
-		return $this->renderPage('stat.tpl',
-			[
-				"beginDate" => date("Y-m-d", time() - 15 * 86400),
-				"endDate" => date("Y-m-d"),
-				"staff" => $staff,
-				"colors" => json_encode(array_values(CRMClient::$StatusColors))
-			]);
-	}
 }
