@@ -207,6 +207,7 @@ class YzUser extends ActiveRecord
 				from im_yz_user as u1
 				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone
 				where u1.uType=:type $criteria
+				group by u1.uId
 				order by u1.`uCreateOn` desc $limit";
 
 		$res = $conn->createCommand($sql)->bindValues(array_merge([
@@ -218,7 +219,7 @@ class YzUser extends ActiveRecord
 				count(*)
 				from im_yz_user as u1
 				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone
-				where u1.uType=:type $criteria ";
+				where u1.uType=:type $criteria group by u1.uId ";
 		$count = $conn->createCommand($sql)->bindValues(array_merge([
 			':type' => self::TYPE_YXS,
 		], $params))->queryScalar();
