@@ -125,5 +125,73 @@ class YzUser extends ActiveRecord
 
 	}
 
+	public static function getSalesManList()
+	{
+
+		$getSales = function ($page) {
+			//获取当前店铺分销员列表，需申请高级权限方可调用。
+			$method = 'youzan.salesman.accounts.get';
+			$params = [
+				'page_no' => 20,
+				'page_size' => $page,
+			];
+			echo 'page:' . $page . PHP_EOL;
+
+			$res = YouzanUtil::getData($method, $params);
+			if (isset($res['response'])) {
+				$total_results = $res['response']['total_results'];
+				if ($total_results) {
+					return [$res['response']['accounts'], $total_results];
+				}
+			}
+			return 0;
+		};
+
+		$res = $getSales(1);
+		if ($res) {
+			$total_results = $res[1];
+			$pages = ceil($total_results / 20);
+			for ($p = 1; $p <= $pages; $p++) {
+				$ret = $getSales($p);
+				if ($ret) {
+					$ret = $ret[0];
+					foreach ($ret as $k => $v) {
+						$insert = [
+							'uFromPhone' => $v['from_buyer_mobile'] ?? '',
+							'uPhone' => $v['mobile'] ?? '',
+							'uCreateOn' => $v['created_at'] ?? '',
+							'uSeller' => $v['seller'] ?? '',
+						];
+						$fansId = $v['fans_id'];
+						if (self::findOne(['uYZUId' => $fansId])) {
+							self::edit($fansId, $insert);
+						}
+					}
+				}
+			}
+		}
+
+		$resStyle = [
+			'response' => [
+				'accounts' => [
+					[
+						'seller' => '3JS1xT',
+						'from_buyer_mobile' => 15206373307,
+						'money' => 1.90,
+						'mobile' => 15153782763,
+						'nickname' => '鸿运当头',
+						'created_at' => '2018-06-04 18:00:35',
+						'order_num' => 1,
+						'fans_id' => 5650058353,
+					],
+					// .....
+				],
+				'total_results' => 730,
+			]
+		];
+
+
+	}
+
 
 }
