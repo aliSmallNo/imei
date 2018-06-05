@@ -1498,8 +1498,6 @@ class FooController extends Controller
 		$results = $ret['response'] ?? 0;
 
 		AppUtil::logFile($results, 5, __FUNCTION__, __LINE__);
-		Log::add(["oCategory" => Log::CAT_YOUZAN_USER,
-			"oBefore" => $results]);
 
 		return $results;
 
