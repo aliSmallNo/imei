@@ -56,7 +56,7 @@ class YzUser extends ActiveRecord
 			$entity = new self();
 		}
 		foreach ($data as $k => $v) {
-			$entity->$k = $v;
+			$entity->$k = is_array($v) ? json_encode($v, JSON_UNESCAPED_UNICODE) : $v;
 		}
 		$entity->save();
 		return true;
