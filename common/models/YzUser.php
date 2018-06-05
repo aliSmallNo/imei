@@ -199,7 +199,7 @@ class YzUser extends ActiveRecord
 	public static function items($criteria, $params, $page = 1, $pageSize = 20)
 	{
 		$conn = AppUtil::db();
-		$limit = ($page - 1) * $pageSize . "," . $pageSize;
+		$limit = 'limit '.($page - 1) * $pageSize . "," . $pageSize;
 		$criteria = implode(" and ", $criteria);
 
 		$sql = "select 
