@@ -15,13 +15,11 @@ use yii\db\ActiveRecord;
 
 class YzUser extends ActiveRecord
 {
-	const ST_PENDING = 0;
-	const ST_PASS = 1;
-	const ST_REMOVED = 9;
+	const TYPE_DEFAULT = 1;
+	const TYPE_YXS = 3;
 	static $StatusDict = [
-		self::ST_PENDING => '待审核',
-		self::ST_PASS => '审核通过',
-		self::ST_REMOVED => '已删除',
+		self::TYPE_DEFAULT => '普通',
+		self::TYPE_YXS => '严选师',
 	];
 
 	static $fieldMap = [
@@ -161,6 +159,7 @@ class YzUser extends ActiveRecord
 							'uPhone' => $v['mobile'] ?? '',
 							'uCreateOn' => $v['created_at'] ?? '',
 							'uSeller' => $v['seller'] ?? '',
+							'uType' => self::TYPE_YXS,
 						];
 						$fansId = $v['fans_id'];
 						if (self::findOne(['uYZUId' => $fansId])) {
