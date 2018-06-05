@@ -1422,10 +1422,9 @@ class FooController extends Controller
 	public function actionYz()
 	{
 		// $token = YouzanUtil::getAccessToken();
-		YzUser::getSalesManList();
 
 		// 根据指定时间段批量查询微信粉丝用户信息
-		// YzUser::getUserBySETime();
+		YzUser::getUserBySETime();
 
 
 	}
