@@ -17,6 +17,7 @@ use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserTrans;
 use common\models\UserWechat;
+use common\models\YzUser;
 use common\service\TrendService;
 use common\utils\AppUtil;
 use common\utils\COSUtil;
@@ -1433,11 +1434,11 @@ class FooController extends Controller
 
 
 		// 根据关注时间段批量查询微信粉丝用户信息
-		$conn = AppUtil::db();
+		/*$conn = AppUtil::db();
 		$sql = "insert into im_yz_user (uYZUId,uOpenId,uRawData)
 				SELECT :yz_uid,:openid,:raw FROM dual
 				WHERE NOT EXISTS(SELECT 1 FROM im_yz_user as u WHERE u.uYZUId=:yz_uid ) ";
-		$insertCMD = $conn->createCommand($sql);
+		$insertCMD = $conn->createCommand($sql);*/
 
 
 		$stime = '2018-06-03';
@@ -1454,33 +1455,17 @@ class FooController extends Controller
 				$users = self::getTZUser($stime, $etime, ($i + 1), $page_size)['users'];
 				foreach ($users as $v) {
 					$uid = $v['user_id'];
-					$openid = $v['weixin_open_id'];
-					$raw = json_encode($v, JSON_UNESCAPED_UNICODE);
-					$insertCMD->bindValues([
-						':yz_uid' => $uid,
-						':openid' => $openid,
-						':raw' => $raw,
-					])->execute();
+					$insert = [];
+					foreach (YzUser::$fieldMap as $key => $val) {
+						if (isset($data[$key])) {
+							$insert[$val] = $v[$key];
+						}
+					}
+					$insert['uRawData'] = json_encode($v, JSON_UNESCAPED_UNICODE);
+					YzUser::edit($uid, $insert);
 				}
 			}
 		}
-
-		$fieldMap = [
-			'country' => 'uCountry',
-			'province' => 'uProvince',
-			'city' => 'uCity',
-			'is_follow' => 'uFollow',
-			'sex' => 'uSex',
-			'avatar' => 'uAvatar',
-			'nick' => 'uName',
-			'follow_time' => 'uFollowTime',
-			'user_id' => 'uYZUId',
-			'weixin_open_id' => 'uOpenId',
-			'points' => 'uPoint',
-			'level_info' => 'uLevel',
-			'traded_num' => 'uTradeNum',
-			'trade_money' => 'uTradeMoney',
-		];
 
 	}
 
