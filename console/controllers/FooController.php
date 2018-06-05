@@ -1426,7 +1426,7 @@ class FooController extends Controller
 		//获取当前店铺分销员列表，需申请高级权限方可调用。
 		$method = 'youzan.salesman.accounts.get';
 		$params = [
-			'page_no' => 1,
+			'page_no' => 10,
 			'page_size' => 5,
 		];
 		$res = YouzanUtil::getData($method, $params);
