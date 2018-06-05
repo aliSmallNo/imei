@@ -5,15 +5,7 @@
 </div>
 <div class="row">
 	<form action="/youz/sman" method="get" class="form-inline">
-		<div class="form-group">
-			<select class="form-control" name="cat">
-				<option value="">行为类型</option>
-				{{foreach from=$cats key=key item=item}}
-				<option value="{{$key}}"
-								{{if isset($getInfo["cat"]) && $getInfo["cat"]==$key}}selected{{/if}}>{{$item}}</option>
-				{{/foreach}}
-			</select>
-		</div>
+
 		<div class="form-group">
 			<input class="form-control" placeholder="严选师名称" type="text" name="name"
 						 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
