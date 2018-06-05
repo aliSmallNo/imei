@@ -1457,12 +1457,11 @@ class FooController extends Controller
 					$uid = $v['user_id'];
 					$insert = [];
 					foreach (YzUser::$fieldMap as $key => $val) {
-						if (isset($data[$key])) {
+						if (isset($v[$key])) {
 							$insert[$val] = $v[$key];
 						}
 					}
 					$insert['uRawData'] = json_encode($v, JSON_UNESCAPED_UNICODE);
-					print_r($insert);exit;
 					YzUser::edit($uid, $insert);
 				}
 			}
