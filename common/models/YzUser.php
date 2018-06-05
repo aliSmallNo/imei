@@ -219,7 +219,7 @@ class YzUser extends ActiveRecord
 				count(DISTINCT u1.uId)
 				from im_yz_user as u1
 				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone
-				where u1.uType=:type $criteria group by u1.uId ";
+				where u1.uType=:type $criteria  ";
 		$count = $conn->createCommand($sql)->bindValues(array_merge([
 			':type' => self::TYPE_YXS,
 		], $params))->queryScalar();
