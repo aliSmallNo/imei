@@ -10,6 +10,7 @@ namespace console\controllers;
  */
 use common\models\ChatMsg;
 use common\models\Img;
+use common\models\Log;
 use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
@@ -1438,31 +1439,69 @@ class FooController extends Controller
 				WHERE NOT EXISTS(SELECT 1 FROM im_yz_user as u WHERE u.uYZUId=:yz_uid ) ";
 		$insertCMD = $conn->createCommand($sql);
 
+
+		$stime = '2018-06-03';
+		$etime = '2018-06-04';
+		$page = 1;
+		$page_size = 20;
+
+		$results = self::getTZUser($stime, $etime, $page, $page_size);
+		if ($results && $results['total_results'] > 0) {
+			$total_results = $results['total_results'];
+			$page_count = ceil($total_results / $page_size);
+
+			for ($i = 0; $i < $page_count; $i++) {
+				$users = self::getTZUser($stime, $etime, ($i + 1), $page_size)['users'];
+				foreach ($users as $v) {
+					$uid = $v['user_id'];
+					$openid = $v['weixin_open_id'];
+					$raw = json_encode($v, JSON_UNESCAPED_UNICODE);
+					$insertCMD->bindValues([
+						':yz_uid' => $uid,
+						':openid' => $openid,
+						':raw' => $raw,
+					])->execute();
+				}
+			}
+		}
+
+		$fieldMap = [
+			'country' => 'uCountry',
+			'province' => 'uProvince',
+			'city' => 'uCity',
+			'is_follow' => 'uFollow',
+			'sex' => 'uSex',
+			'avatar' => 'uAvatar',
+			'nick' => 'uName',
+			'follow_time' => 'uFollowTime',
+			'user_id' => 'uYZUId',
+			'weixin_open_id' => 'uOpenId',
+			'points' => 'uPoint',
+			'level_info' => 'uLevel',
+			'traded_num' => 'uTradeNum',
+			'trade_money' => 'uTradeMoney',
+		];
+
+	}
+
+	public function getTZUser($stime, $etime, $page, $page_size)
+	{
 		$method = 'youzan.users.weixin.followers.info.search';
 		$params = [
-			'page_no' => 1,
-			'page_size' => 10,
-			'start_follow' => '2018-04-14',
-			'end_follow' => '2018-04-15',
+			'page_no' => $page,
+			'page_size' => $page_size,
+			'start_follow' => $stime,
+			'end_follow' => $etime,
 			'fields' => 'points,trade,level',
 		];
 		$ret = YouzanUtil::getData($method, $params);
-
 		$results = $ret['response'] ?? 0;
-		print_r($results);
-		if ($results && $results['total_results'] > 0) {
-			$users = $results['users'];
-			foreach ($users as $v) {
-				$uid = $v['user_id'];
-				$openid = $v['weixin_open_id'];
-				$raw = json_encode($v, JSON_UNESCAPED_UNICODE);
-				$insertCMD->bindValues([
-					':yz_uid' => $uid,
-					':openid' => $openid,
-					':raw' => $raw,
-				])->execute();
-			}
-		}
+
+		AppUtil::logFile($results, 5, __FUNCTION__, __LINE__);
+		Log::add(["oCategory" => Log::CAT_YOUZAN_USER,
+			"oBefore" => $results]);
+
+		return $results;
 
 	}
 

@@ -67,6 +67,7 @@ class Log extends ActiveRecord
 	const SC_HIDE_NO = 600;
 	const SC_HIDE_YES = 610;
 
+
 	static $securityCenter = [
 		self::SC_SHIELD => '屏蔽平台熟悉人',
 		self::SC_NOCERT_DES => '未认证的用户,不能看我的详细信息',
@@ -88,6 +89,8 @@ class Log extends ActiveRecord
 		self::SC_HIDE_NO => '我希望隐身一段时间,先隐身一段时间，不想被人撩',
 		self::SC_HIDE_YES => '我希望隐身一段时间,找到对象了，处不好再来',
 	];
+
+	const CAT_YOUZAN_USER = 8001; // 拉取有赞用户
 
 	public static function tableName()
 	{
