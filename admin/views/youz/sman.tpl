@@ -53,7 +53,7 @@
 		</tr>
 		</thead>
 		<tbody>
-		{{foreach from=$list item=item}}
+		{{foreach from=$items item=item}}
 		<tr>
 			<td align="center">
 					<span>
