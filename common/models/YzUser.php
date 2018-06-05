@@ -102,6 +102,9 @@ class YzUser extends ActiveRecord
 				}
 			}
 		}
+
+		// 更新信息
+		self::getSalesManList();
 	}
 
 	public function getTZUser($stime, $etime, $page, $page_size)
