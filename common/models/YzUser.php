@@ -216,7 +216,7 @@ class YzUser extends ActiveRecord
 
 
 		$sql = "select 
-				count(*)
+				count(DISTINCT u1.uId)
 				from im_yz_user as u1
 				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone
 				where u1.uType=:type $criteria group by u1.uId ";
