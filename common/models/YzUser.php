@@ -205,7 +205,7 @@ class YzUser extends ActiveRecord
 							'uType' => self::TYPE_YXS,
 						];
 						$fansId = $v['fans_id'];
-						print_r($insert);exit;
+
 						if (self::findOne(['uYZUId' => $fansId])) {
 							if (isset($insert['uPhone']) && !$insert['uPhone']) {
 								unset($insert['uPhone']);
@@ -310,6 +310,7 @@ class YzUser extends ActiveRecord
 		}
 
 		$res = YouzanUtil::getData($method, $params);
+		print_r($res);exit;
 
 		$resStyle = [
 			"response" => [
