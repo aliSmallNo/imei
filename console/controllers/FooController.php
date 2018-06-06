@@ -1471,17 +1471,18 @@ class FooController extends Controller
 	{
 		//$token = YouzanUtil::getAccessToken();echo $token;
 
-		// 根据指定时间段批量查询微信粉丝用户信息
-		 //YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');
+		// 更新用户
+		//YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');
 
-		 //YzUser::UpdateUser();
+		// 更新用户
+		YzUser::UpdateUser();
 
-		 YzUser::getSalesManList();
+		// 更新分销员
+		//YzUser::getSalesManList();
 
 
 		// 更新
 		// YzUser::getSalesManList();
-
 
 		/*$st = '2018-03-27 13:36:58';
 		$et = '2018-06-05 23:59:59';
@@ -1495,7 +1496,6 @@ class FooController extends Controller
 			$total = $total + $total_results;
 			echo "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . $total_results . ' Total:' . $total . PHP_EOL;
 		}*/
-
 
 		/*$sql = " select uYZUId from im_yz_user where `uUpdatedOn` between '2018-06-06 11:37:00' and '2018-06-06 11:37:59' ";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();

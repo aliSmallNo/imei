@@ -86,4 +86,13 @@ class CrontabController extends Controller
 
 	}
 
+	public function actionYzuser()
+	{
+		// 更新有赞用户
+		$file = trim(AppUtil::logDir()) . '/' . 'youzan_user' . date('Y-m-d') . 'log';
+		file_put_contents($file, date('Y-m-d H:i:s') . PHP_EOL, 8);
+
+	}
+
+
 }
