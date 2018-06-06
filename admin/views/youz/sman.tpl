@@ -88,7 +88,7 @@
 
 				</td>
 				<td style="font-size: 12px">
-					添加时间:{{$item.uCreateOn}}
+					添加时间:{{$item.uCreateOn}}<br>
 					更新时间:{{$item.uUpdatedOn}}
 				</td>
 			</tr>
