@@ -1493,7 +1493,7 @@ class FooController extends Controller
 		}*/
 
 
-		$sql = " select uYZUId from im_yz_user where `uRawData`='' ";
+		$sql = " select uYZUId from im_yz_user where `uUpdatedOn` between '2018-06-06 11:37:00' and '2018-06-06 11:37:59' ";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as $v) {
 			echo '$fanid:' . $v['uYZUId'] . PHP_EOL;

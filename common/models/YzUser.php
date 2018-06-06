@@ -38,6 +38,9 @@ class YzUser extends ActiveRecord
 		'level_info' => 'uLevel',
 		'traded_num' => 'uTradeNum',
 		'trade_money' => 'uTradeMoney',
+
+		'weixin_openid' => 'uOpenId',
+		'tags' => 'uTags',
 	];
 
 
@@ -54,6 +57,8 @@ class YzUser extends ActiveRecord
 		$entity = self::findOne(['uYZUId' => $yzuid]);
 		if (!$entity) {
 			$entity = new self();
+		} else {
+			$data['uUpdatedOn'] = date('Y-m-d H:i:s');
 		}
 		foreach ($data as $k => $v) {
 			$entity->$k = is_array($v) ? json_encode($v, JSON_UNESCAPED_UNICODE) : $v;
