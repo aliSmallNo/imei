@@ -1469,16 +1469,15 @@ class FooController extends Controller
 
 	public function actionYz()
 	{
-		// $token = YouzanUtil::getAccessToken();echo $token;
+		 $token = YouzanUtil::getAccessToken();echo $token;
 
 		// 根据指定时间段批量查询微信粉丝用户信息
 		// YzUser::getUserBySETime();
 
 
-		$st = '2018-03-27 13:36:58';
+		/*$st = '2018-03-27 13:36:58';
 		$et = '2018-06-05 23:59:59';
 		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
-
 		$total = 0;
 		for ($d = 0; $d < $days; $d++) {
 			$stime = date('Y-m-d', strtotime($st) + $d * 86400);
@@ -1487,7 +1486,7 @@ class FooController extends Controller
 			$total_results = AppUtil::db()->createCommand($sql)->queryScalar();
 			$total = $total + $total_results;
 			echo "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . $total_results . ' Total:' . $total . PHP_EOL;
-		}
+		}*/
 
 	}
 

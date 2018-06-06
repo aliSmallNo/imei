@@ -70,8 +70,8 @@ class YzUser extends ActiveRecord
 
 		// 根据关注时间段批量查询微信粉丝用户信息
 		//$st = '2018-03-27 13:36:58';
-		$st = '2018-06-04 13:36:58';
-		$et = '2018-06-05 23:59:59';
+		$st = '2018-06-05 00:00:00';
+		$et = '2018-06-06 00:00:00';
 		$page = 1;
 		$page_size = 20;
 		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
@@ -130,7 +130,7 @@ class YzUser extends ActiveRecord
 		$results = $ret['response'] ?? 0;
 
 		AppUtil::logFile($results, 5, __FUNCTION__, __LINE__);
-		//echo "stime:" . $stime . ' == etime:' . $etime . ' == ' . 'page:' . $page . ' == ' . 'pagesize:' . $page_size . PHP_EOL;
+		echo "stime:" . $stime . ' == etime:' . $etime . ' == ' . 'page:' . $page . ' == ' . 'pagesize:' . $page_size . PHP_EOL;
 		return $results;
 
 	}
