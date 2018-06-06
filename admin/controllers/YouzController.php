@@ -52,16 +52,27 @@ class YouzController extends BaseController
 		$page = self::getParam("page", 1);
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
+		$fname = self::getParam("fname");
+		$fphone = self::getParam("fphone");
 
 		$criteria = $params = [];
 
 		if ($name) {
-			$criteria[] = " u.uName like :name ";
+			$criteria[] = " u1.uName like :name ";
 			$params[':name'] = '%' . trim($name) . '%';
 		}
 		if ($phone) {
-			$criteria[] = " u.uPhone like :phone ";
+			$criteria[] = " u1.uPhone like :phone ";
 			$params[':phone'] = trim($phone) . '%';
+		}
+
+		if ($fname) {
+			$criteria[] = " u2.uName like :fname ";
+			$params[':fname'] = '%' . trim($name) . '%';
+		}
+		if ($fphone) {
+			$criteria[] = " u2.uPhone like :fphone ";
+			$params[':fphone'] = trim($phone) . '%';
 		}
 
 		list($items, $count) = YzUser::items($criteria, $params, $page);

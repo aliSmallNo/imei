@@ -16,10 +16,10 @@
 			<input class="form-control" placeholder="严选师手机" type="text" name="phone"
 						 value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
 		</div>
-		<input class="form-control" placeholder="邀请方名称" type="text" name="sname"
-					 value="{{if isset($getInfo['sname'])}}{{$getInfo['sname']}}{{/if}}"/>
-		<input class="form-control" placeholder="邀请方手机" type="text" name="sphone"
-					 value="{{if isset($getInfo['sphone'])}}{{$getInfo['sphone']}}{{/if}}"/>
+		<input class="form-control" placeholder="邀请方名称" type="text" name="fname"
+					 value="{{if isset($getInfo['fname'])}}{{$getInfo['fname']}}{{/if}}"/>
+		<input class="form-control" placeholder="邀请方手机" type="text" name="fphone"
+					 value="{{if isset($getInfo['fphone'])}}{{$getInfo['fphone']}}{{/if}}"/>
 		<button class="btn btn-primary">查询</button>
 		<span class="space"></span>
 	</form>
