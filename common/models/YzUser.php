@@ -283,9 +283,13 @@ class YzUser extends ActiveRecord
 		}
 
 		$res = YouzanUtil::getData($method, $params);
+		echo '1 ' . PHP_EOL;
+		print_r($res);
 
 		if (isset($res['response']) && isset($res['response']['user'])) {
 			$user = $res['response']['user'];
+			echo '2 ' . PHP_EOL;
+			print_r($user);
 			return self::process($user);
 		}
 		return false;
