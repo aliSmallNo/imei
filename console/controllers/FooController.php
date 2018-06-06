@@ -1495,6 +1495,7 @@ class FooController extends Controller
 
 		$sql = " select uYZUId from im_yz_user where `uRawData`='' ";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		var_dump($res);
 		foreach ($res as $fanid) {
 			echo '$fanid:' . $fanid . PHP_EOL;
 			YzUser::getUserInfoByTag($fanid);
