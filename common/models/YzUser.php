@@ -218,7 +218,6 @@ class YzUser extends ActiveRecord
 							$addCount++;
 							self::getUserInfoByTag($fansId);
 						}
-						exit;
 					}
 				}
 			}
