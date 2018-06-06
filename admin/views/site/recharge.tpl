@@ -194,7 +194,6 @@
 <script>
 	$("a.modU").click(function () {
 		var self = $(this);
-
 		$("#modModal").modal("show")
 	});
 

@@ -460,4 +460,25 @@ class Admin extends ActiveRecord
 		return [];
 	}
 
+	public static function getAdmins($reset = false)
+	{
+		$res = RedisUtil::init(RedisUtil::KEY_ADMIN_LIST)->getCache();
+		if ($res && !$reset) {
+			return json_decode($res, 1);
+		}
+
+		$sql = "select aId as aid,aName as `name` from im_admin where aStatus=:st and aLevel>=:le ";
+		$res = AppUtil::db()->createCommand($sql)->bindValues([
+			':st' => self::STATUS_ACTIVE,
+			':le' => self::LEVEL_STAFF,
+		])->queryAll();
+		$ret = [];
+		foreach ($res as $v) {
+			$ret[$v['aid']] = $v['name'];
+		}
+
+		RedisUtil::init(RedisUtil::KEY_ADMIN_LIST)->setCache(json_encode($ret, JSON_UNESCAPED_UNICODE));
+		return $ret;
+	}
+
 }

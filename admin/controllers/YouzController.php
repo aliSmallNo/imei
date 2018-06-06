@@ -84,6 +84,7 @@ class YouzController extends BaseController
 				'pagination' => $pagination,
 				'items' => $items,
 				'getInfo' => $getInfo,
+				'admins' => Admin::getAdmins(),
 			]);
 	}
 

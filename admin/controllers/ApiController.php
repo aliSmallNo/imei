@@ -31,6 +31,7 @@ use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserTrans;
 use common\models\UserWechat;
+use common\models\YzUser;
 use common\service\CogService;
 use common\service\SessionService;
 use common\utils\AppUtil;
@@ -355,6 +356,25 @@ class ApiController extends Controller
 					'item' => $item,
 					'items' => $items,
 				]);
+			default:
+				break;
+		}
+		return self::renderAPI(129);
+	}
+
+	public function actionYouz()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		switch ($tag) {
+			case 'mod_admin_id':
+				$yzuid = self::postParam('uid');
+				$aid = self::postParam('aid');
+				if (!$yzuid || !$aid) {
+					return self::renderAPI(129, '参数错误');
+				}
+				YzUser::edit($yzuid, ['uAdminId' => $aid]);
+				return self::renderAPI(0, 'ok');
+				break;
 			default:
 				break;
 		}

@@ -255,6 +255,11 @@ class YzUser extends ActiveRecord
 			':type' => self::TYPE_YXS,
 		], $params))->queryAll();
 
+		$admins = Admin::getAdmins();
+		foreach ($res as $k => $v) {
+			$res[$k]['admin_txt'] = $admins[$v['uAdminId']] ?? '';
+		}
+
 
 		$sql = "select 
 				count(DISTINCT u1.uId)
