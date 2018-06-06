@@ -201,10 +201,6 @@ class YzUser extends ActiveRecord
 							self::edit($fansId, $insert);
 						} else {
 							// 添加
-							/*$insert['uYZUId'] = $fansId;
-							$insert['uTradeNum'] = $v['order_num'] ?? '';
-							$insert['uTradeMoney'] = $v['money'] ?? '';
-							self::edit($fansId, $insert);*/
 							$addCount++;
 							self::getUserInfoByTag($fansId);
 						}
@@ -288,11 +284,33 @@ class YzUser extends ActiveRecord
 		}
 
 		$res = YouzanUtil::getData($method, $params);
-		// echo '1 ' . PHP_EOL;print_r($res);
+
+		$resStyle = [
+			"response" => [
+				"user" => [
+					"is_follow" => true,
+					"city" => "盐城",
+					"sex" => "m",
+					"avatar" => "http://thirdwx.qlogo.cn/mmopen/pMNhp8zQy8vEKlbnX7hTxfZpZ3asyARUOQGXJoTWJtFUnVYXDmJhibFGDPaZicmiaWU99c18WvJf6RygicbGmavuHCkshuaARsNB/132",
+					"traded_num" => 2,
+					"points" => 220,
+					"tags" => [
+					],
+					"nick" => "饭先生",
+					"follow_time" => 1499842901,
+					"province" => "江苏",
+					"user_id" => 5305912017,
+					"union_id" => "oWYqJwQEwMPBKQ_qIJDGfwQscoWM",
+					"level_info" => [
+					],
+					"traded_money" => "11.49",
+					"weixin_openid" => "oj3YZwFKcXhyhq1vOLPO3YpfSMLY"
+				]
+			]
+		];
 
 		if (isset($res['response']) && isset($res['response']['user'])) {
 			$user = $res['response']['user'];
-			//echo '2 ' . PHP_EOL;print_r($user);
 			return self::process($user);
 		}
 		return false;

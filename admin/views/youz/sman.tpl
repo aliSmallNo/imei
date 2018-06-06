@@ -56,9 +56,11 @@
 		{{foreach from=$items item=item}}
 		<tr>
 			<td align="center">
+				{{if $item.uAvatar}}
 					<span>
 						<img src="{{$item.uAvatar}}" style="width: 65px;height: 65px;">
 					</span>
+				{{/if}}
 			</td>
 			<td>
 				{{$item.uName}}<br>
