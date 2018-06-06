@@ -1472,7 +1472,7 @@ class FooController extends Controller
 		 //$token = YouzanUtil::getAccessToken();echo $token;
 
 		// 根据指定时间段批量查询微信粉丝用户信息
-		 YzUser::getUserBySETime();
+		 //YzUser::getUserBySETime();
 
 
 		/*$st = '2018-03-27 13:36:58';
