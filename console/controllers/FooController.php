@@ -1419,16 +1419,6 @@ class FooController extends Controller
 			], QueueUtil::QUEUE_TUBE_CHAT, 30);
 	}
 
-	public function actionYz()
-	{
-		// $token = YouzanUtil::getAccessToken();
-
-		// 根据指定时间段批量查询微信粉丝用户信息
-		YzUser::getUserBySETime();
-
-
-	}
-
 	public function actionZp()
 	{
 
@@ -1473,6 +1463,17 @@ class FooController extends Controller
 		var_dump($ret);*/
 
 		var_dump(WechatUtil::createWechatMenus());
+
+
+	}
+
+	public function actionYz()
+	{
+		$token = YouzanUtil::getAccessToken();
+		echo $token;
+
+		// 根据指定时间段批量查询微信粉丝用户信息
+		//YzUser::getUserBySETime();
 
 
 	}
