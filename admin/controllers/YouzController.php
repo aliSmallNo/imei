@@ -68,11 +68,11 @@ class YouzController extends BaseController
 
 		if ($fname) {
 			$criteria[] = " u2.uName like :fname ";
-			$params[':fname'] = '%' . trim($name) . '%';
+			$params[':fname'] = '%' . trim($fname) . '%';
 		}
 		if ($fphone) {
-			$criteria[] = " u2.uPhone = :fphone ";
-			$params[':fphone'] = trim($phone);
+			$criteria[] = " u1.uPhone = :fphone ";
+			$params[':fphone'] = trim($fphone);
 		}
 
 		list($items, $count) = YzUser::items($criteria, $params, $page);
