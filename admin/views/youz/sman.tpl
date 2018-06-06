@@ -20,6 +20,8 @@
 					 value="{{if isset($getInfo['fname'])}}{{$getInfo['fname']}}{{/if}}"/>
 		<input class="form-control" placeholder="邀请方手机" type="text" name="fphone"
 					 value="{{if isset($getInfo['fphone'])}}{{$getInfo['fphone']}}{{/if}}"/>
+		<input class="form-control" placeholder="管理员名字" type="text" name="aname"
+					 value="{{if isset($getInfo['aname'])}}{{$getInfo['aname']}}{{/if}}"/>
 		<button class="btn btn-primary">查询</button>
 		<span class="space"></span>
 	</form>
@@ -86,7 +88,7 @@
 					更新时间:<br>{{$item.uUpdatedOn}}
 				</td>
 				<td>
-					{{$item.admin_txt}}
+					{{$item.aName}}
 					<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs">添加管理</a>
 				</td>
 			</tr>

@@ -244,9 +244,11 @@ class YzUser extends ActiveRecord
 
 
 		$sql = "select 
+				a.aId,a.aName,
 				u1.*,u2.uAvatar as favatar,u2.uName as fname,u2.uPhone as fphone,u2.uFollow as ffollow
 				from im_yz_user as u1
 				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone and u2.uPhone>0
+				left join im_admin as a on a.aId=u1.uAdminId 
 				where u1.uType=:type $criteriaStr
 				group by u1.uId
 				order by u1.`uCreateOn` desc $limit";
@@ -265,6 +267,7 @@ class YzUser extends ActiveRecord
 				count(DISTINCT u1.uId)
 				from im_yz_user as u1
 				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone and u2.uPhone>0
+				left join im_admin as a on a.aId=u1.uAdminId
 				where u1.uType=:type $criteriaStr  ";
 		$count = $conn->createCommand($sql)->bindValues(array_merge([
 			':type' => self::TYPE_YXS,

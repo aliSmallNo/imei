@@ -54,6 +54,7 @@ class YouzController extends BaseController
 		$phone = self::getParam("phone");
 		$fname = self::getParam("fname");
 		$fphone = self::getParam("fphone");
+		$aname = self::getParam("aname");
 
 		$criteria = $params = [];
 
@@ -73,6 +74,10 @@ class YouzController extends BaseController
 		if ($fphone) {
 			$criteria[] = " u2.uPhone = :fphone ";
 			$params[':fphone'] = trim($fphone);
+		}
+		if ($aname) {
+			$criteria[] = " a.aName like :aname ";
+			$params[':aname'] = '%' . trim($aname) . '%';
 		}
 
 		list($items, $count) = YzUser::items($criteria, $params, $page);
