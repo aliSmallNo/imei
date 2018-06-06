@@ -69,18 +69,25 @@ class YzUser extends ActiveRecord
 	{
 
 		// 根据关注时间段批量查询微信粉丝用户信息
-		//$st = '2018-03-27 13:36:58';
-		$st = '2018-06-04 13:36:58';
+		$st = '2018-03-27 13:36:58';
+		//$st = '2018-06-04 13:36:58';
 		$et = '2018-06-05 23:59:59';
 		$page = 1;
 		$page_size = 20;
 		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
 
+		$total = 0;
 		for ($d = 0; $d < $days; $d++) {
 			$stime = date('Y-m-d', strtotime($st) + $d * 86400);
 			$etime = date('Y-m-d', strtotime($st) + ($d + 1) * 86400);
 
 			$results = self::getTZUser($stime, $etime, $page, $page_size);
+
+			$total_results = $results['total_results'] ?? 0;
+			$total = $total + $total_results;
+			echo "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . $total_results . ' Total:' . $total . PHP_EOL;
+
+			continue;
 			if ($results && $results['total_results'] > 0) {
 				$total_results = $results['total_results'];
 				$page_count = ceil($total_results / $page_size);
@@ -104,7 +111,7 @@ class YzUser extends ActiveRecord
 		}
 
 		// 更新信息
-		self::getSalesManList();
+		//self::getSalesManList();
 	}
 
 	public function getTZUser($stime, $etime, $page, $page_size)
@@ -121,7 +128,7 @@ class YzUser extends ActiveRecord
 		$results = $ret['response'] ?? 0;
 
 		AppUtil::logFile($results, 5, __FUNCTION__, __LINE__);
-		echo "stime:" . $stime . ' == etime:' . $etime . ' == ' . 'page:' . $page . ' == ' . 'pagesize:' . $page_size . PHP_EOL;
+		//echo "stime:" . $stime . ' == etime:' . $etime . ' == ' . 'page:' . $page . ' == ' . 'pagesize:' . $page_size . PHP_EOL;
 		return $results;
 
 	}
@@ -199,7 +206,7 @@ class YzUser extends ActiveRecord
 	public static function items($criteria, $params, $page = 1, $pageSize = 10)
 	{
 		$conn = AppUtil::db();
-		$limit = 'limit '.($page - 1) * $pageSize . "," . $pageSize;
+		$limit = 'limit ' . ($page - 1) * $pageSize . "," . $pageSize;
 		$criteria = implode(" and ", $criteria);
 
 		$sql = "select 
