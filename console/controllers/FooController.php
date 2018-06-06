@@ -1493,7 +1493,7 @@ class FooController extends Controller
 		}*/
 
 
-		$sql = " select count(uYZUId) from im_yz_user where `uRawData`='' ";
+		$sql = " select uYZUId from im_yz_user where `uRawData`='' ";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as $fanid) {
 			echo '$fanid:' . $fanid . PHP_EOL;
