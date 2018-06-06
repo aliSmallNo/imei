@@ -76,6 +76,9 @@ class YzUser extends ActiveRecord
 				$insert[$val] = $v[$key];
 			}
 		}
+		if (isset($insert['uPhone']) && !$insert['uPhone']) {
+			unset($insert['uPhone']);
+		}
 		$insert['uRawData'] = json_encode($v, JSON_UNESCAPED_UNICODE);
 		// echo $uid;print_r($insert);exit;
 		return YzUser::edit($uid, $insert);
@@ -90,7 +93,8 @@ class YzUser extends ActiveRecord
 	}
 
 	/**
-	 * 获取指定时间段用户信息
+	 * 根据关注时间段批量查询微信粉丝用户信息（支持粉丝基础信息、积分、交易等数据查询，详见入参fields字段描述）。
+	 * 注意：循环拉取
 	 */
 	public static function getUserBySETime($st, $et)
 	{
@@ -130,10 +134,16 @@ class YzUser extends ActiveRecord
 			}
 		}
 
-		// 更新信息
-		//self::getSalesManList();
+		// 更新分销员信息
+		self::getSalesManList();
 	}
 
+	/**
+	 * 根据关注时间段批量查询微信粉丝用户信息（支持粉丝基础信息、积分、交易等数据查询，详见入参fields字段描述）。
+	 * 注意：
+	 * 1. 如果接口频繁抛异常，且入参无误，请减小page_size并重试。
+	 * 2.请尽量按需自定义入参“fields”字段获取数据。“fields”字段传入枚举值越多，查询数据耗费时间越长。
+	 */
 	public function getTZUser($stime, $etime, $page, $page_size)
 	{
 		$method = 'youzan.users.weixin.followers.info.search';
@@ -161,7 +171,7 @@ class YzUser extends ActiveRecord
 			$method = 'youzan.salesman.accounts.get';
 			$params = [
 				'page_no' => $page,
-				'page_size' => 20,
+				'page_size' => 100,
 			];
 			echo 'page:' . $page . PHP_EOL;
 
@@ -179,7 +189,7 @@ class YzUser extends ActiveRecord
 		$addCount = $editCount = 0;
 		if ($res) {
 			$total_results = $res[1];
-			$pages = ceil($total_results / 20);
+			$pages = ceil($total_results / 100);
 			echo '$total_results: ' . $total_results . ' $pages:' . $pages . PHP_EOL;
 
 			for ($p = 1; $p <= $pages; $p++) {
@@ -196,6 +206,9 @@ class YzUser extends ActiveRecord
 						];
 						$fansId = $v['fans_id'];
 						if (self::findOne(['uYZUId' => $fansId])) {
+							if (isset($insert['uPhone']) && !$insert['uPhone']) {
+								unset($insert['uPhone']);
+							}
 							// 修改
 							$editCount++;
 							self::edit($fansId, $insert);
