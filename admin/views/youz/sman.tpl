@@ -1,7 +1,7 @@
 {{include file="layouts/header.tpl"}}
 
 <div class="row">
-	<h4>反馈消息列表</h4>
+	<h4>分销员列表</h4>
 </div>
 <div class="row">
 	<form action="/youz/sman" method="get" class="form-inline">
@@ -33,7 +33,7 @@
 				严选师信息
 			</th>
 			<th>
-				行为
+				成交金额/笔数
 			</th>
 			<th class="col-sm-1">
 				邀请方
@@ -65,7 +65,7 @@
 				{{$item.uPhone}}
 			</td>
 			<td>
-
+				{{$item.uTradeMoney}}/{{$item.uTradeNum}}
 			</td>
 			<td>
 				<img src="{{$item.favatar}}" style="width: 65px;height: 65px;">
