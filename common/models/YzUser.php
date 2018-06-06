@@ -171,7 +171,7 @@ class YzUser extends ActiveRecord
 			$method = 'youzan.salesman.accounts.get';
 			$params = [
 				'page_no' => $page,
-				'page_size' => 10,
+				'page_size' => 20,
 			];
 			echo 'page:' . $page . PHP_EOL;
 
@@ -189,7 +189,7 @@ class YzUser extends ActiveRecord
 		$addCount = $editCount = 0;
 		if ($res) {
 			$total_results = $res[1];
-			$pages = ceil($total_results / 10);
+			$pages = ceil($total_results / 20);
 			echo '$total_results: ' . $total_results . ' $pages:' . $pages . PHP_EOL;
 
 			for ($p = 1; $p <= $pages; $p++) {
@@ -218,6 +218,7 @@ class YzUser extends ActiveRecord
 							$addCount++;
 							self::getUserInfoByTag($fansId);
 						}
+						exit;
 					}
 				}
 			}
@@ -310,7 +311,6 @@ class YzUser extends ActiveRecord
 		}
 
 		$res = YouzanUtil::getData($method, $params);
-		print_r($res);exit;
 
 		$resStyle = [
 			"response" => [
