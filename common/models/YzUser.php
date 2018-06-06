@@ -69,8 +69,8 @@ class YzUser extends ActiveRecord
 	{
 
 		// 根据关注时间段批量查询微信粉丝用户信息
-		$st = '2018-03-27 13:36:58';
-		//$st = '2018-06-04 13:36:58';
+		//$st = '2018-03-27 13:36:58';
+		$st = '2018-06-04 13:36:58';
 		$et = '2018-06-05 23:59:59';
 		$page = 1;
 		$page_size = 20;
@@ -83,11 +83,13 @@ class YzUser extends ActiveRecord
 
 			$results = self::getTZUser($stime, $etime, $page, $page_size);
 
+			/* 计算总共用户数
 			$total_results = $results['total_results'] ?? 0;
 			$total = $total + $total_results;
 			echo "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . $total_results . ' Total:' . $total . PHP_EOL;
-
 			continue;
+			*/
+
 			if ($results && $results['total_results'] > 0) {
 				$total_results = $results['total_results'];
 				$page_count = ceil($total_results / $page_size);

@@ -1472,8 +1472,22 @@ class FooController extends Controller
 		// $token = YouzanUtil::getAccessToken();echo $token;
 
 		// 根据指定时间段批量查询微信粉丝用户信息
-		YzUser::getUserBySETime();
+		// YzUser::getUserBySETime();
 
+
+		$st = '2018-03-27 13:36:58';
+		$et = '2018-06-05 23:59:59';
+		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
+
+		$total = 0;
+		for ($d = 0; $d < $days; $d++) {
+			$stime = date('Y-m-d', strtotime($st) + $d * 86400);
+			$etime = date('Y-m-d', strtotime($st) + ($d + 1) * 86400);
+			$sql = "select count(1) from im_yz_user as u  where from_unixtime(`uFollowTime`) between '$stime 00:00:00' and '$etime 00:00:00' ";
+			$total_results = AppUtil::db()->createCommand($sql)->queryScalar();
+			$total = $total + $total_results;
+			echo "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . $total_results . ' Total:' . $total . PHP_EOL;
+		}
 
 	}
 
