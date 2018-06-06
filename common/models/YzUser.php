@@ -171,7 +171,7 @@ class YzUser extends ActiveRecord
 			$method = 'youzan.salesman.accounts.get';
 			$params = [
 				'page_no' => $page,
-				'page_size' => 100,
+				'page_size' => 10,
 			];
 			echo 'page:' . $page . PHP_EOL;
 
@@ -189,7 +189,7 @@ class YzUser extends ActiveRecord
 		$addCount = $editCount = 0;
 		if ($res) {
 			$total_results = $res[1];
-			$pages = ceil($total_results / 100);
+			$pages = ceil($total_results / 10);
 			echo '$total_results: ' . $total_results . ' $pages:' . $pages . PHP_EOL;
 
 			for ($p = 1; $p <= $pages; $p++) {
@@ -205,6 +205,7 @@ class YzUser extends ActiveRecord
 							'uType' => self::TYPE_YXS,
 						];
 						$fansId = $v['fans_id'];
+						print_r($insert);exit;
 						if (self::findOne(['uYZUId' => $fansId])) {
 							if (isset($insert['uPhone']) && !$insert['uPhone']) {
 								unset($insert['uPhone']);
