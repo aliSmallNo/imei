@@ -240,7 +240,7 @@ class YzUser extends ActiveRecord
 		$criteria = implode(" and ", $criteria);
 
 		$sql = "select 
-				u1.*,u2.uAvatar as favatar,u2.uName as fname,u2.uPhone as fphone
+				u1.*,u2.uAvatar as favatar,u2.uName as fname,u2.uPhone as fphone,u2.uFollow as ffollow
 				from im_yz_user as u1
 				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone and u2.uPhone>0
 				where u1.uType=:type $criteria

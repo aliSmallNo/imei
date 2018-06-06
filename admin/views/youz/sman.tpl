@@ -64,7 +64,9 @@
 			</td>
 			<td>
 				{{$item.uName}}<br>
-				{{$item.uPhone}}
+				{{$item.uPhone}}<br>
+				{{if $item.uFollow==1}}关注{{/else}}{{/if}}
+
 			</td>
 			<td>
 				{{$item.uTradeMoney}}/{{$item.uTradeNum}}
@@ -76,7 +78,8 @@
 			</td>
 			<td>
 				{{$item.fname}}<br>
-				{{$item.fphone}}
+				{{$item.fphone}}<br>
+				{{if $item.ffollow==1}}关注{{/else}}{{/if}}
 			</td>
 			<td>
 
