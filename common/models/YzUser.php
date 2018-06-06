@@ -64,8 +64,8 @@ class YzUser extends ActiveRecord
 
 	public static function UpdateUser($st = '', $et = '')
 	{
-		$st = $st ? $st : date('Y-m-d 00:00:00', time() - 86400);
-		$et = $et ? $et : date('Y-m-d 00:00:00');
+		$st = $st ? $st : date('Y-m-d 00:00:00');
+		$et = $et ? $et : date('Y-m-d 00:00:00', time() + 86400);
 		self::getUserBySETime($st, $et);
 	}
 
@@ -165,9 +165,12 @@ class YzUser extends ActiveRecord
 		};
 
 		$res = $getSales(1);
+		$addCount = $editCount = 0;
 		if ($res) {
 			$total_results = $res[1];
 			$pages = ceil($total_results / 20);
+			echo '$total_results: ' . $total_results . ' $pages:' . $pages . PHP_EOL;
+
 			for ($p = 1; $p <= $pages; $p++) {
 				$ret = $getSales($p);
 				if ($ret) {
@@ -182,12 +185,22 @@ class YzUser extends ActiveRecord
 						];
 						$fansId = $v['fans_id'];
 						if (self::findOne(['uYZUId' => $fansId])) {
+							// 修改
+							$editCount++;
+							self::edit($fansId, $insert);
+						} else {
+							// 添加
+							$insert['uYZUId'] = $fansId;
+							$insert['uTradeNum'] = $v['order_num'] ?? '';
+							$insert['uTradeMoney'] = $v['money'] ?? '';
+							$addCount++;
 							self::edit($fansId, $insert);
 						}
 					}
 				}
 			}
 		}
+		echo '$addCount:' . $addCount . ' == $editCount:' . $editCount . PHP_EOL;
 
 		$resStyle = [
 			'response' => [
