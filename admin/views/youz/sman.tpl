@@ -68,7 +68,9 @@
 				{{$item.uTradeMoney}}/{{$item.uTradeNum}}
 			</td>
 			<td>
+				{{if $item.favatar}}
 				<img src="{{$item.favatar}}" style="width: 65px;height: 65px;">
+				{{/if}}
 			</td>
 			<td>
 				{{$item.fname}}<br>
