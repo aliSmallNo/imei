@@ -54,43 +54,44 @@
 		</thead>
 		<tbody>
 		{{foreach from=$items item=item}}
-		<tr>
-			<td align="center">
-				{{if $item.uAvatar}}
-					<span>
+			<tr>
+				<td align="center">
+					{{if $item.uAvatar}}
+						<span>
 						<img src="{{$item.uAvatar}}" style="width: 65px;height: 65px;">
 					</span>
-				{{/if}}
-			</td>
-			<td>
-				{{$item.uName}}<br>
-				{{$item.uPhone}}<br>
-				{{if $item.uFollow==1}}<span class="m-cert-1">关注</span>{{else}}<span class="m-sub-0">未关注</span>{{/if}}
+					{{/if}}
+				</td>
+				<td>
+					{{$item.uName}}<br>
+					{{$item.uPhone}}<br>
+					{{if $item.uFollow==1}}<span class="m-cert-1">关注</span>{{else}}<span class="m-sub-0">未关注</span>{{/if}}
 
-			</td>
-			<td>
-				{{$item.uTradeMoney}}/{{$item.uTradeNum}}
-			</td>
-			<td>
-				{{if $item.favatar}}
-				<img src="{{$item.favatar}}" style="width: 65px;height: 65px;">
-				{{/if}}
-			</td>
-			<td>
-				{{$item.fname}}<br>
-				{{$item.fphone}}<br>
-				{{if $item.ffollow==1}}<span class="m-cert-1">关注</span>{{else}}<span class="m-sub-0">未关注</span>{{/if}}
-			</td>
-			<td>
+				</td>
+				<td>
+					{{$item.uTradeMoney}}/{{$item.uTradeNum}}
+				</td>
+				<td>
+					{{if $item.favatar}}
+						<img src="{{$item.favatar}}" style="width: 65px;height: 65px;">
+					{{/if}}
+				</td>
+				<td>
+					{{$item.fname}}<br>
+					{{$item.fphone}}<br>
+					{{if $item.ffollow==1}}<span class="m-cert-1">关注</span>{{else}}<span class="m-sub-0">未关注</span>{{/if}}
+				</td>
+				<td>
 
-			</td>
-			<td>
+				</td>
+				<td>
 
-			</td>
-			<td>
-				{{$item.uCreateOn}}
-			</td>
-		</tr>
+				</td>
+				<td style="font-size: 12px">
+					添加时间:{{$item.uCreateOn}}
+					更新时间:{{$item.uUpdatedOn}}
+				</td>
+			</tr>
 		{{/foreach}}
 		</tbody>
 	</table>
