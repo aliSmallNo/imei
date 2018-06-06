@@ -237,7 +237,10 @@ class YzUser extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		$limit = 'limit ' . ($page - 1) * $pageSize . "," . $pageSize;
-		$criteria = implode(" and ", $criteria);
+		if ($criteria) {
+			$criteria = ' and ' . implode(" and ", $criteria);
+		}
+
 
 		$sql = "select 
 				u1.*,u2.uAvatar as favatar,u2.uName as fname,u2.uPhone as fphone,u2.uFollow as ffollow
