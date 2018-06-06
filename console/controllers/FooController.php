@@ -1476,7 +1476,7 @@ class FooController extends Controller
 
 
 		// 更新
-		YzUser::getSalesManList();
+		// YzUser::getSalesManList();
 
 
 		/*$st = '2018-03-27 13:36:58';
@@ -1491,6 +1491,14 @@ class FooController extends Controller
 			$total = $total + $total_results;
 			echo "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . $total_results . ' Total:' . $total . PHP_EOL;
 		}*/
+
+
+		$sql = " select count(uYZUId) from im_yz_user where `uRawData`='' ";
+		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		foreach ($res as $fanid) {
+			echo '$fanid:' . $fanid . PHP_EOL;
+			YzUser::getUserInfoByTag($fanid);
+		}
 
 	}
 

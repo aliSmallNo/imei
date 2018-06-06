@@ -33,6 +33,7 @@ class YzUser extends ActiveRecord
 		'follow_time' => 'uFollowTime',
 		'user_id' => 'uYZUId',
 		'weixin_open_id' => 'uOpenId',
+		'union_id' => 'uUnionId',
 		'points' => 'uPoint',
 		'level_info' => 'uLevel',
 		'traded_num' => 'uTradeNum',
@@ -59,6 +60,20 @@ class YzUser extends ActiveRecord
 		}
 		$entity->save();
 		return true;
+	}
+
+	public static function process($v)
+	{
+		$uid = $v['user_id'];
+		$insert = [];
+		foreach (YzUser::$fieldMap as $key => $val) {
+			if (isset($v[$key])) {
+				$insert[$val] = $v[$key];
+			}
+		}
+		$insert['uRawData'] = json_encode($v, JSON_UNESCAPED_UNICODE);
+		// echo $uid;print_r($insert);exit;
+		return YzUser::edit($uid, $insert);
 	}
 
 
@@ -104,16 +119,7 @@ class YzUser extends ActiveRecord
 				for ($i = 0; $i < $page_count; $i++) {
 					$users = self::getTZUser($stime, $etime, ($i + 1), $page_size)['users'];
 					foreach ($users as $v) {
-						$uid = $v['user_id'];
-						$insert = [];
-						foreach (YzUser::$fieldMap as $key => $val) {
-							if (isset($v[$key])) {
-								$insert[$val] = $v[$key];
-							}
-						}
-						$insert['uRawData'] = json_encode($v, JSON_UNESCAPED_UNICODE);
-						// echo $uid;print_r($insert);exit;
-						YzUser::edit($uid, $insert);
+						self::process($v);
 					}
 				}
 			}
@@ -190,11 +196,12 @@ class YzUser extends ActiveRecord
 							self::edit($fansId, $insert);
 						} else {
 							// 添加
-							$insert['uYZUId'] = $fansId;
+							/*$insert['uYZUId'] = $fansId;
 							$insert['uTradeNum'] = $v['order_num'] ?? '';
 							$insert['uTradeMoney'] = $v['money'] ?? '';
+							self::edit($fansId, $insert);*/
 							$addCount++;
-							self::edit($fansId, $insert);
+							self::getUserInfoByTag($fansId);
 						}
 					}
 				}
@@ -254,6 +261,34 @@ class YzUser extends ActiveRecord
 		], $params))->queryScalar();
 
 		return [$res, $count];
+
+	}
+
+
+	public static function getUserInfoByTag($id, $tag = 'fans_id')
+	{
+
+		$method = 'youzan.users.weixin.follower.get';
+		switch ($tag) {
+			case "fans_id":
+				$params = [
+					'fans_id' => $id,
+				];
+				break;
+			case "weixin_openid":
+				$params = [
+					'weixin_openid' => $id
+				];
+				break;
+		}
+
+		$res = YouzanUtil::getData($method, $params);
+
+		if (isset($res['response']) && isset($res['response']['user'])) {
+			$user = $res['response']['user'];
+			return self::process($user);
+		}
+		return false;
 
 	}
 
