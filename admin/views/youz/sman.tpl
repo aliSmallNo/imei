@@ -65,7 +65,7 @@
 			<td>
 				{{$item.uName}}<br>
 				{{$item.uPhone}}<br>
-				{{if $item.uFollow==1}}关注{{/else}}{{/if}}
+				{{if $item.uFollow==1}}关注{{else}}未关注{{/if}}
 
 			</td>
 			<td>
@@ -79,7 +79,7 @@
 			<td>
 				{{$item.fname}}<br>
 				{{$item.fphone}}<br>
-				{{if $item.ffollow==1}}关注{{/else}}{{/if}}
+				{{if $item.ffollow==1}}关注{{else}}未关注{{/if}}
 			</td>
 			<td>
 
