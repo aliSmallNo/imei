@@ -1,5 +1,9 @@
 {{include file="layouts/header.tpl"}}
-
+<style>
+	.font12 {
+		font-size: 12px;
+	}
+</style>
 <div class="row">
 	<h4>分销员列表</h4>
 </div>
@@ -41,11 +45,9 @@
 			<th>
 				邀请方信息
 			</th>
-			<th class="col-sm-2">
+			<th>
 				举报原因
 			</th>
-			<th class="col-sm-2">
-				描述
 			</th>
 			<th>
 				时间
@@ -84,10 +86,7 @@
 				<td>
 
 				</td>
-				<td>
-
-				</td>
-				<td style="font-size: 12px">
+				<td class="font12">
 					添加时间:{{$item.uCreateOn}}<br>
 					更新时间:{{$item.uUpdatedOn}}
 				</td>
