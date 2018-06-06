@@ -62,10 +62,17 @@ class YzUser extends ActiveRecord
 	}
 
 
+	public static function UpdateUser($st = '', $et = '')
+	{
+		$st = $st ? $st : date('Y-m-d 00:00:00', time() - 86400);
+		$et = $et ? $et : date('Y-m-d 00:00:00');
+		self::getUserBySETime($st, $et);
+	}
+
 	/**
 	 * 获取指定时间段用户信息
 	 */
-	public static function getUserBySETime()
+	public static function getUserBySETime($st, $et)
 	{
 
 		// 根据关注时间段批量查询微信粉丝用户信息
@@ -85,12 +92,10 @@ class YzUser extends ActiveRecord
 
 			$results = self::getTZUser($stime, $etime, $page, $page_size);
 
-			/* 计算总共用户数
+			/* 计算总共用户数 */
 			$total_results = $results['total_results'] ?? 0;
 			$total = $total + $total_results;
 			echo "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . $total_results . ' Total:' . $total . PHP_EOL;
-			continue;
-			*/
 
 			if ($results && $results['total_results'] > 0) {
 				$total_results = $results['total_results'];
