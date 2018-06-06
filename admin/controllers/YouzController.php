@@ -71,7 +71,7 @@ class YouzController extends BaseController
 			$params[':fname'] = '%' . trim($fname) . '%';
 		}
 		if ($fphone) {
-			$criteria[] = " u1.uPhone = :fphone ";
+			$criteria[] = " u2.uPhone = :fphone ";
 			$params[':fphone'] = trim($fphone);
 		}
 
