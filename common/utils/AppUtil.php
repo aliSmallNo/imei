@@ -1247,6 +1247,17 @@ class AppUtil
 		return $ret;
 	}
 
+	public static function logByFile($msg, $tag, $func = '', $line = 0)
+	{
+		$file = self::logDir() . $tag . date("Ymd") . '.log';
+
+		$msg = is_array($msg) ? json_encode($msg, JSON_UNESCAPED_UNICODE) : $msg;
+
+		$ret = @file_put_contents($file, date('ymd H:i:s') . PHP_EOL . $func . " - " . $line . PHP_EOL, $msg . PHP_EOL, 8);
+
+		return $ret;
+	}
+
 	public static function setCookie($name, $value, $duration)
 	{
 		$respCookies = \Yii::$app->response->cookies;

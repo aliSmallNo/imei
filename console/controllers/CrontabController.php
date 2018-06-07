@@ -14,6 +14,7 @@ use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserTag;
 use common\models\UserWechat;
+use common\models\YzUser;
 use common\service\TrendService;
 use common\utils\AppUtil;
 use yii\console\Controller;
@@ -89,8 +90,12 @@ class CrontabController extends Controller
 	public function actionYzuser()
 	{
 		// 更新有赞用户
-		$file = trim(AppUtil::logDir()) . '/' . 'youzan_user' . date('Y-m-d') . '.log';
-		file_put_contents($file, date('Y-m-d H:i:s') . PHP_EOL, 8);
+		/*$file = trim(AppUtil::logDir()) . '/' . 'youzan_user' . date('Y-m-d') . '.log';
+		file_put_contents($file, date('Y-m-d H:i:s') . PHP_EOL, 8);*/
+
+		AppUtil::logByFile(date('Y-m-d H:i:s'), 'youzan_user', __FUNCTION__, __LINE__);
+
+		YzUser::UpdateUser();
 
 	}
 
