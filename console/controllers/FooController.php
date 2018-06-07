@@ -1478,7 +1478,7 @@ class FooController extends Controller
 		//YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');
 
 		// 更新用户
-		YzUser::UpdateUser();
+		// YzUser::UpdateUser();
 
 		// 更新分销员
 		//YzUser::getSalesManList();
