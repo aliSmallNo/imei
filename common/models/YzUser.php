@@ -402,7 +402,6 @@ class YzUser extends ActiveRecord
 					echo $fansId . PHP_EOL;
 					AppUtil::logByFile($v, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 					self::process($v);
-					exit;
 				}
 			}
 			if ($last_fansId > 0) {
