@@ -174,7 +174,6 @@ class YzUser extends ActiveRecord
 
 	public static function getSalesManList()
 	{
-
 		$getSales = function ($page) {
 			//获取当前店铺分销员列表，需申请高级权限方可调用。
 			$method = 'youzan.salesman.accounts.get';
@@ -405,6 +404,9 @@ class YzUser extends ActiveRecord
 					self::process($v);
 					exit;
 				}
+			}
+			if ($last_fansId > 0) {
+				RedisUtil::init(RedisUtil::KEY_YOUZAN_LAST_FANSID)->setCache($last_fansId);
 			}
 			return $last_fansId;
 		}
