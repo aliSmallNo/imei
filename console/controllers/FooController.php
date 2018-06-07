@@ -1470,7 +1470,7 @@ class FooController extends Controller
 	public function actionYz()
 	{
 
-		YzUser::getYZUserByFansId(0);
+		YzUser::getYZUserByFansIdCycle();
 		// AppUtil::logByFile(date('Y-m-d H:i:s'), 'youzan_user', __FUNCTION__, __LINE__);
 
 		//$token = YouzanUtil::getAccessToken();echo $token;

@@ -399,8 +399,8 @@ class YzUser extends ActiveRecord
 			foreach ($users as $v) {
 				$fansId = $v['user_id'];
 				if (!self::findOne(['uYZUId' => $fansId])) {
-					echo $fansId . PHP_EOL;
-					AppUtil::logByFile($v, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
+					echo 'fans_id:' . $fansId . PHP_EOL;
+					AppUtil::logByFile('fans_id:' . $fansId, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 					self::process($v);
 				}
 			}
