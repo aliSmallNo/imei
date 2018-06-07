@@ -369,8 +369,13 @@ class YzUser extends ActiveRecord
 
 		$return_lastFansId = $last_fansId ? $last_fansId : 0;
 
+		$co = 0;
 		while ($return_lastFansId > 0) {
+			$co++;
 			$return_lastFansId = self::getYZUserByFansId($return_lastFansId);
+			if ($co > 100) {
+				break;
+			}
 		}
 
 	}
