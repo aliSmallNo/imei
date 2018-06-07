@@ -10,6 +10,7 @@ namespace common\models;
 use admin\models\Admin;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
+use common\utils\RedisUtil;
 use common\utils\YouzanUtil;
 use yii\db\ActiveRecord;
 
@@ -21,6 +22,8 @@ class YzUser extends ActiveRecord
 		self::TYPE_DEFAULT => '普通',
 		self::TYPE_YXS => '严选师',
 	];
+
+	const LOG_YOUZAN_TAG = 'youzan_user';
 
 	static $fieldMap = [
 		'country' => 'uCountry',
@@ -121,7 +124,7 @@ class YzUser extends ActiveRecord
 			$total = $total + $total_results;
 			$msg = "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . $total_results . ' Total:' . $total;
 			echo $msg . PHP_EOL;
-			AppUtil::logByFile($msg, 'youzan_user', __FUNCTION__, __LINE__);
+			AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 
 			if ($results && $results['total_results'] > 0) {
 				$total_results = $results['total_results'];
@@ -162,8 +165,8 @@ class YzUser extends ActiveRecord
 		$msg = "stime:" . $stime . ' == etime:' . $etime . ' == ' . 'page:' . $page . ' == ' . 'pagesize:' . $page_size;
 		echo $msg . PHP_EOL;
 
-		AppUtil::logByFile($results, 'youzan_user', __FUNCTION__, __LINE__);
-		AppUtil::logByFile($msg, 'youzan_user', __FUNCTION__, __LINE__);
+		AppUtil::logByFile($results, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
+		AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 
 		return $results;
 
@@ -181,7 +184,7 @@ class YzUser extends ActiveRecord
 			];
 			$msg = 'page:' . $page;
 			echo $msg . PHP_EOL;
-			AppUtil::logByFile($msg, 'youzan_user', __FUNCTION__, __LINE__);
+			AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 
 			$res = YouzanUtil::getData($method, $params);
 			if (isset($res['response'])) {
@@ -226,7 +229,7 @@ class YzUser extends ActiveRecord
 							$addCount++;
 							$msg = '$fansId:' . $fansId;
 							echo $msg . PHP_EOL;
-							AppUtil::logByFile('$fansId:' . $fansId, 'youzan_user', __FUNCTION__, __LINE__);
+							AppUtil::logByFile('$fansId:' . $fansId, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 							self::getUserInfoByTag($fansId);
 						}
 					}
@@ -235,7 +238,7 @@ class YzUser extends ActiveRecord
 		}
 		$msg = '$addCount:' . $addCount . ' == $editCount:' . $editCount;
 		echo $msg . PHP_EOL;
-		AppUtil::logByFile($msg, 'youzan_user', __FUNCTION__, __LINE__);
+		AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 
 		$resStyle = [
 			'response' => [
@@ -326,7 +329,7 @@ class YzUser extends ActiveRecord
 
 		$msg = is_array($res) ? json_encode($res) : $res;
 		echo $msg . PHP_EOL;
-		AppUtil::logByFile($msg, 'youzan_user', __FUNCTION__, __LINE__);
+		AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 
 		$resStyle = [
 			"response" => [
@@ -348,7 +351,7 @@ class YzUser extends ActiveRecord
 					],
 					"traded_money" => "11.49",
 					"weixin_openid" => "oj3YZwFKcXhyhq1vOLPO3YpfSMLY"
-				]
+				],
 			]
 		];
 
@@ -357,6 +360,85 @@ class YzUser extends ActiveRecord
 			return self::process($user);
 		}
 		return false;
+
+	}
+
+	public static function getYZUserByFansIdCycle()
+	{
+
+		$last_fansId = RedisUtil::init(RedisUtil::KEY_YOUZAN_LAST_FANSID)->getCache();
+
+		$return_lastFansId = $last_fansId ? $last_fansId : 0;
+
+		while ($return_lastFansId > 0) {
+			$return_lastFansId = self::getYZUserByFansId($return_lastFansId);
+		}
+
+	}
+
+	/**
+	 * 根据微信粉丝Id正序批量查询微信粉丝用户信息（不受关注时间限制。支持粉丝基础信息、积分、交易等数据查询，详见入参fields字段描述）
+	 * 注意：
+	 * 1. 如果接口频繁抛异常，且入参无误，请减小page_size并重试。
+	 * 2.请尽量按需自定义入参“fields”字段获取数据。“fields”字段传入枚举值越多，查询数据耗费时间越长。
+	 */
+	public static function getYZUserByFansId($last_fansId = 0)
+	{
+		$method = 'youzan.users.weixin.followers.info.pull';
+		$params = [
+			'after_fans_id' => $last_fansId,
+			'page_size' => 50,
+		];
+		$res = YouzanUtil::getData($method, $params);
+		if (isset($res['response'])
+			&& isset($res['response']['has_next'])
+			&& $res['response']['has_next'] == true) {
+
+			$users = $res['response']['users'];
+			$last_fansId = $res['response']['last_fans_id'];
+
+			foreach ($users as $v) {
+				$fansId = $v['user_id'];
+				if (!self::findOne(['uYZUId' => $fansId])) {
+					echo $fansId . PHP_EOL;
+					AppUtil::logByFile($v, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
+					self::process($v);
+					exit;
+				}
+			}
+			return $last_fansId;
+		}
+
+		$resSucessStyle = [
+			'response' => [
+				'has_next' => true,
+				'users' => [
+					[
+						"nick" => "日暮途远丶",
+						"country" => "中国",
+						"follow_time" => 1503647237,
+						"is_follow" => true,
+						"province" => "北京",
+						"city" => "",
+						"user_id" => 5305907746,
+						"weixin_open_id" => "oj3YZwN94DnNQ1K8KfsvlRnq9Wm4",
+						"sex" => "m",
+						"avatar" => "http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEKbQc8vO0yMapQLVxRMmgvaOFhQibPECyZy7G9IpkxwibnTNY2NYWakmgTYReaQKOPbib8JqFNvgaydA/132"
+					],
+					// ...
+				],
+				'last_fans_id' => 5305907747,
+			]
+		];
+		$resFailStyle = [
+			'response' => [
+				'has_next' => false,
+				'users' => [],
+				'last_fans_id' => -1,
+			]
+		];
+		return -1;
+
 
 	}
 
