@@ -373,7 +373,7 @@ class YzUser extends ActiveRecord
 		// $last_fansId = RedisUtil::init(RedisUtil::KEY_YOUZAN_LAST_FANSID)->getCache();
 
 		//$return_lastFansId = $last_fansId ? $last_fansId : 0;
-		$return_lastFansId = 0;
+		$return_lastFansId = 1;
 
 		$co = 0;
 		while ($return_lastFansId > 0) {
@@ -386,7 +386,7 @@ class YzUser extends ActiveRecord
 		}
 
 		// 更新分销员信息
-		self::getSalesManList();
+		// self::getSalesManList();
 	}
 
 	/**
