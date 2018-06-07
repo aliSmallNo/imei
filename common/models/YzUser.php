@@ -395,7 +395,7 @@ class YzUser extends ActiveRecord
 			if ($isDebugger) {
 				echo 'getYZUserByFansIdCycle:' . $co . PHP_EOL;
 			}
-			$return_lastFansId = self::getYZUserByFansId($return_lastFansId);
+			$return_lastFansId = self::getYZUserByFansId($return_lastFansId, $isDebugger);
 			if ($co > 100) {
 				break;
 			}
