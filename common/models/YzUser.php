@@ -83,9 +83,7 @@ class YzUser extends ActiveRecord
 			unset($insert['uPhone']);
 		}
 		$insert['uRawData'] = json_encode($v, JSON_UNESCAPED_UNICODE);
-		echo $uid;
-		print_r($insert);
-		exit;
+		// echo $uid;print_r($insert);exit;
 		return YzUser::edit($uid, $insert);
 	}
 
