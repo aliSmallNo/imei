@@ -1254,9 +1254,9 @@ class AppUtil
 		$msg = is_array($msg) ? json_encode($msg, JSON_UNESCAPED_UNICODE) : $msg;
 
 		echo $file . PHP_EOL;
-		echo date('ymd H:i:s') . PHP_EOL . $func . " - " . $line . PHP_EOL, $msg . PHP_EOL . PHP_EOL . PHP_EOL;
+		echo date('Y-m-d H:i:s') . PHP_EOL . $func . " - " . $line . PHP_EOL, $msg . PHP_EOL . PHP_EOL . PHP_EOL;
 
-		$ret = file_put_contents($file, date('ymd H:i:s') . PHP_EOL . $func . " - " . $line . PHP_EOL, $msg . PHP_EOL, 8);
+		$ret = file_put_contents($file, date('ymd H:i:s') . PHP_EOL . $func . " - " . $line . PHP_EOL, $msg . PHP_EOL, FILE_APPEND);
 
 		return $ret;
 	}
