@@ -99,7 +99,7 @@ class YzUser extends ActiveRecord
 	 * 根据关注时间段批量查询微信粉丝用户信息（支持粉丝基础信息、积分、交易等数据查询，详见入参fields字段描述）。
 	 * 注意：循环拉取
 	 */
-	public static function getUserBySETime($st, $et)
+	public static function getUserBySETime($st, $et, $isDebugger = false)
 	{
 
 		// 根据关注时间段批量查询微信粉丝用户信息
@@ -117,13 +117,15 @@ class YzUser extends ActiveRecord
 			$stime = date('Y-m-d', strtotime($st) + $d * 86400);
 			$etime = date('Y-m-d', strtotime($st) + ($d + 1) * 86400);
 
-			$results = self::getTZUser($stime, $etime, $page, $page_size);
+			$results = self::getTZUser($stime, $etime, $page, $page_size, $isDebugger);
 
 			/* 计算总共用户数 */
 			$total_results = $results['total_results'] ?? 0;
 			$total = $total + $total_results;
 			$msg = "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . $total_results . ' Total:' . $total;
-			echo $msg . PHP_EOL;
+			if ($isDebugger) {
+				echo $msg . PHP_EOL;
+			}
 			AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 
 			if ($results && $results['total_results'] > 0) {
@@ -131,7 +133,7 @@ class YzUser extends ActiveRecord
 				$page_count = ceil($total_results / $page_size);
 
 				for ($i = 0; $i < $page_count; $i++) {
-					$users = self::getTZUser($stime, $etime, ($i + 1), $page_size)['users'];
+					$users = self::getTZUser($stime, $etime, ($i + 1), $page_size, $isDebugger)['users'];
 					foreach ($users as $v) {
 						self::process($v);
 					}
@@ -140,7 +142,7 @@ class YzUser extends ActiveRecord
 		}
 
 		// 更新分销员信息
-		self::getSalesManList();
+		self::getSalesManList($isDebugger);
 	}
 
 	/**
@@ -149,7 +151,7 @@ class YzUser extends ActiveRecord
 	 * 1. 如果接口频繁抛异常，且入参无误，请减小page_size并重试。
 	 * 2.请尽量按需自定义入参“fields”字段获取数据。“fields”字段传入枚举值越多，查询数据耗费时间越长。
 	 */
-	public function getTZUser($stime, $etime, $page, $page_size)
+	public static function getTZUser($stime, $etime, $page, $page_size, $isDebugger = false)
 	{
 		$method = 'youzan.users.weixin.followers.info.search';
 		$params = [
@@ -163,7 +165,9 @@ class YzUser extends ActiveRecord
 		$results = $ret['response'] ?? 0;
 
 		$msg = "stime:" . $stime . ' == etime:' . $etime . ' == ' . 'page:' . $page . ' == ' . 'pagesize:' . $page_size;
-		echo $msg . PHP_EOL;
+		if ($isDebugger) {
+			echo $msg . PHP_EOL;
+		}
 
 		AppUtil::logByFile($results, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 		AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
@@ -172,9 +176,9 @@ class YzUser extends ActiveRecord
 
 	}
 
-	public static function getSalesManList()
+	public static function getSalesManList($isDebugger = false)
 	{
-		$getSales = function ($page) {
+		$getSales = function ($page, $isDebugger) {
 			//获取当前店铺分销员列表，需申请高级权限方可调用。
 			$method = 'youzan.salesman.accounts.get';
 			$params = [
@@ -182,7 +186,9 @@ class YzUser extends ActiveRecord
 				'page_size' => 20,
 			];
 			$msg = 'page:' . $page;
-			echo $msg . PHP_EOL;
+			if ($isDebugger) {
+				echo $msg . PHP_EOL;
+			}
 			AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 
 			$res = YouzanUtil::getData($method, $params);
@@ -195,15 +201,18 @@ class YzUser extends ActiveRecord
 			return 0;
 		};
 
-		$res = $getSales(1);
+		$res = $getSales(1, $isDebugger);
 		$addCount = $editCount = 0;
 		if ($res) {
 			$total_results = $res[1];
 			$pages = ceil($total_results / 20);
-			echo '$total_results: ' . $total_results . ' $pages:' . $pages . PHP_EOL;
+			$msg = '$total_results: ' . $total_results . ' $pages:' . $pages;
+			if ($isDebugger) {
+				echo $msg . PHP_EOL;
+			}
 
 			for ($p = 1; $p <= $pages; $p++) {
-				$ret = $getSales($p);
+				$ret = $getSales($p, $isDebugger);
 				if ($ret) {
 					$ret = $ret[0];
 					foreach ($ret as $k => $v) {
@@ -227,7 +236,10 @@ class YzUser extends ActiveRecord
 							// 添加
 							$addCount++;
 							$msg = '$fansId:' . $fansId;
-							echo $msg . PHP_EOL;
+
+							if ($isDebugger) {
+								echo $msg . PHP_EOL;
+							}
 							AppUtil::logByFile('$fansId:' . $fansId, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 							self::getUserInfoByTag($fansId);
 						}
@@ -236,7 +248,10 @@ class YzUser extends ActiveRecord
 			}
 		}
 		$msg = '$addCount:' . $addCount . ' == $editCount:' . $editCount;
-		echo $msg . PHP_EOL;
+		if ($isDebugger) {
+			echo $msg . PHP_EOL;
+		}
+
 		AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 
 		$resStyle = [
@@ -307,7 +322,7 @@ class YzUser extends ActiveRecord
 	}
 
 
-	public static function getUserInfoByTag($id, $tag = 'fans_id')
+	public static function getUserInfoByTag($id, $tag = 'fans_id', $isDebugger = false)
 	{
 
 		$method = 'youzan.users.weixin.follower.get';
@@ -327,7 +342,9 @@ class YzUser extends ActiveRecord
 		$res = YouzanUtil::getData($method, $params);
 
 		$msg = is_array($res) ? json_encode($res) : $res;
-		echo $msg . PHP_EOL;
+		if ($isDebugger) {
+			echo $msg . PHP_EOL;
+		}
 		AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 
 		$resStyle = [
@@ -365,18 +382,19 @@ class YzUser extends ActiveRecord
 	/**
 	 * 根据微信粉丝Id正序批量查询微信粉丝用户信息（不受关注时间限制。支持粉丝基础信息、积分、交易等数据查询，详见入参fields字段描述）
 	 */
-	public static function getYZUserByFansIdCycle()
+	public static function getYZUserByFansIdCycle($isDebugger = false)
 	{
 
-		// $last_fansId = RedisUtil::init(RedisUtil::KEY_YOUZAN_LAST_FANSID)->getCache();
+		$last_fansId = RedisUtil::init(RedisUtil::KEY_YOUZAN_LAST_FANSID)->getCache();
 
-		//$return_lastFansId = $last_fansId ? $last_fansId : 0;
-		$return_lastFansId = 1;
+		$return_lastFansId = $last_fansId ? $last_fansId : 0;
 
 		$co = 0;
 		while ($return_lastFansId > 0) {
 			$co++;
-			echo 'getYZUserByFansIdCycle:' . $co;
+			if ($isDebugger) {
+				echo 'getYZUserByFansIdCycle:' . $co . PHP_EOL;
+			}
 			$return_lastFansId = self::getYZUserByFansId($return_lastFansId);
 			if ($co > 100) {
 				break;
@@ -384,7 +402,7 @@ class YzUser extends ActiveRecord
 		}
 
 		// 更新分销员信息
-		// self::getSalesManList();
+		//self::getSalesManList($isDebugger);
 	}
 
 	/**
@@ -393,7 +411,7 @@ class YzUser extends ActiveRecord
 	 * 1. 如果接口频繁抛异常，且入参无误，请减小page_size并重试。
 	 * 2.请尽量按需自定义入参“fields”字段获取数据。“fields”字段传入枚举值越多，查询数据耗费时间越长。
 	 */
-	public static function getYZUserByFansId($last_fansId = 0)
+	public static function getYZUserByFansId($last_fansId = 0, $isDebugger = false)
 	{
 		$method = 'youzan.users.weixin.followers.info.pull';
 		$params = [
@@ -411,13 +429,11 @@ class YzUser extends ActiveRecord
 
 			foreach ($users as $v) {
 				$fansId = $v['user_id'];
-				if (!self::findOne(['uYZUId' => $fansId])) {
-					echo 'fans_id:' . $fansId . PHP_EOL;
-					AppUtil::logByFile('fans_id:' . $fansId, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
-					self::process($v);
-				} else {
-					self::process($v);
+				if ($isDebugger) {
+					echo 'add fans_id:' . $fansId . PHP_EOL;
 				}
+				AppUtil::logByFile('fans_id:' . $fansId, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
+				self::process($v);
 			}
 			if ($last_fansId > 0) {
 				RedisUtil::init(RedisUtil::KEY_YOUZAN_LAST_FANSID)->setCache($last_fansId);
