@@ -83,7 +83,9 @@ class YzUser extends ActiveRecord
 			unset($insert['uPhone']);
 		}
 		$insert['uRawData'] = json_encode($v, JSON_UNESCAPED_UNICODE);
-		// echo $uid;print_r($insert);exit;
+		echo $uid;
+		print_r($insert);
+		exit;
 		return YzUser::edit($uid, $insert);
 	}
 
@@ -362,22 +364,29 @@ class YzUser extends ActiveRecord
 
 	}
 
+	/**
+	 * 根据微信粉丝Id正序批量查询微信粉丝用户信息（不受关注时间限制。支持粉丝基础信息、积分、交易等数据查询，详见入参fields字段描述）
+	 */
 	public static function getYZUserByFansIdCycle()
 	{
 
-		$last_fansId = RedisUtil::init(RedisUtil::KEY_YOUZAN_LAST_FANSID)->getCache();
+		// $last_fansId = RedisUtil::init(RedisUtil::KEY_YOUZAN_LAST_FANSID)->getCache();
 
-		$return_lastFansId = $last_fansId ? $last_fansId : 0;
+		//$return_lastFansId = $last_fansId ? $last_fansId : 0;
+		$return_lastFansId = 0;
 
 		$co = 0;
 		while ($return_lastFansId > 0) {
 			$co++;
+			echo 'getYZUserByFansIdCycle:' . $co;
 			$return_lastFansId = self::getYZUserByFansId($return_lastFansId);
 			if ($co > 100) {
 				break;
 			}
 		}
 
+		// 更新分销员信息
+		self::getSalesManList();
 	}
 
 	/**
@@ -392,6 +401,7 @@ class YzUser extends ActiveRecord
 		$params = [
 			'after_fans_id' => $last_fansId,
 			'page_size' => 50,
+			'fields' => 'points,trade,level',
 		];
 		$res = YouzanUtil::getData($method, $params);
 		if (isset($res['response'])
@@ -406,6 +416,8 @@ class YzUser extends ActiveRecord
 				if (!self::findOne(['uYZUId' => $fansId])) {
 					echo 'fans_id:' . $fansId . PHP_EOL;
 					AppUtil::logByFile('fans_id:' . $fansId, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
+					self::process($v);
+				} else {
 					self::process($v);
 				}
 			}

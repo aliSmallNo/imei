@@ -1469,7 +1469,6 @@ class FooController extends Controller
 
 	public function actionYz()
 	{
-
 		YzUser::getYZUserByFansIdCycle();
 		// AppUtil::logByFile(date('Y-m-d H:i:s'), 'youzan_user', __FUNCTION__, __LINE__);
 
@@ -1479,7 +1478,7 @@ class FooController extends Controller
 		//YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');
 
 		// 更新用户
-		 //YzUser::UpdateUser();
+		//YzUser::UpdateUser();
 
 		// 更新分销员
 		//YzUser::getSalesManList();
