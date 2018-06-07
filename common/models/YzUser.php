@@ -119,7 +119,9 @@ class YzUser extends ActiveRecord
 			/* 计算总共用户数 */
 			$total_results = $results['total_results'] ?? 0;
 			$total = $total + $total_results;
-			echo "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . $total_results . ' Total:' . $total . PHP_EOL;
+			$msg = "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . $total_results . ' Total:' . $total;
+			echo $msg . PHP_EOL;
+			AppUtil::logByFile($msg, 'youzan_user', __FUNCTION__, __LINE__);
 
 			if ($results && $results['total_results'] > 0) {
 				$total_results = $results['total_results'];
@@ -157,8 +159,12 @@ class YzUser extends ActiveRecord
 		$ret = YouzanUtil::getData($method, $params);
 		$results = $ret['response'] ?? 0;
 
-		AppUtil::logFile($results, 5, __FUNCTION__, __LINE__);
-		echo "stime:" . $stime . ' == etime:' . $etime . ' == ' . 'page:' . $page . ' == ' . 'pagesize:' . $page_size . PHP_EOL;
+		$msg = "stime:" . $stime . ' == etime:' . $etime . ' == ' . 'page:' . $page . ' == ' . 'pagesize:' . $page_size;
+		echo $msg . PHP_EOL;
+
+		AppUtil::logByFile($results, 'youzan_user', __FUNCTION__, __LINE__);
+		AppUtil::logByFile($msg, 'youzan_user', __FUNCTION__, __LINE__);
+
 		return $results;
 
 	}
@@ -173,7 +179,9 @@ class YzUser extends ActiveRecord
 				'page_no' => $page,
 				'page_size' => 20,
 			];
-			echo 'page:' . $page . PHP_EOL;
+			$msg = 'page:' . $page;
+			echo $msg . PHP_EOL;
+			AppUtil::logByFile($msg, 'youzan_user', __FUNCTION__, __LINE__);
 
 			$res = YouzanUtil::getData($method, $params);
 			if (isset($res['response'])) {
@@ -216,13 +224,18 @@ class YzUser extends ActiveRecord
 						} else {
 							// 添加
 							$addCount++;
+							$msg = '$fansId:' . $fansId;
+							echo $msg . PHP_EOL;
+							AppUtil::logByFile('$fansId:' . $fansId, 'youzan_user', __FUNCTION__, __LINE__);
 							self::getUserInfoByTag($fansId);
 						}
 					}
 				}
 			}
 		}
-		echo '$addCount:' . $addCount . ' == $editCount:' . $editCount . PHP_EOL;
+		$msg = '$addCount:' . $addCount . ' == $editCount:' . $editCount;
+		echo $msg . PHP_EOL;
+		AppUtil::logByFile($msg, 'youzan_user', __FUNCTION__, __LINE__);
 
 		$resStyle = [
 			'response' => [
@@ -310,6 +323,10 @@ class YzUser extends ActiveRecord
 		}
 
 		$res = YouzanUtil::getData($method, $params);
+
+		$msg = is_array($res) ? json_encode($res) : $res;
+		echo $msg . PHP_EOL;
+		AppUtil::logByFile($msg, 'youzan_user', __FUNCTION__, __LINE__);
 
 		$resStyle = [
 			"response" => [
