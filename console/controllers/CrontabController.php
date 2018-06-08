@@ -8,6 +8,7 @@ namespace console\controllers;
  * Date: 11/5/2017
  * Time: 2:11 PM
  */
+use common\models\ChatMsg;
 use common\models\ChatRoom;
 use common\models\Stat;
 use common\models\UserMsg;
@@ -92,6 +93,17 @@ class CrontabController extends Controller
 		// 更新有赞用户
 		AppUtil::logByFile(date('Y-m-d H:i:s'), 'youzan_user', __FUNCTION__, __LINE__);
 		YzUser::UpdateUser();
+
+	}
+
+
+	public function actionMassmsg()
+	{
+		if (time() > strtotime('2018-06-09 10:00:00')) {
+			return;
+		}
+		AppUtil::logByFile('uid:' . 0 . ' === ' . ' cnt:' . 0, 'massmsg', __FUNCTION__, __LINE__);
+		ChatMsg::massmsg();
 
 	}
 

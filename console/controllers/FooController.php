@@ -799,7 +799,7 @@ class FooController extends Controller
 		$sql = "SELECT uId,uGender
  				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId 
- 				WHERE uGender in (10) and uPhone!='' and uPhone=17611629667
+ 				WHERE uGender in (11) and uPhone!='' 
   				  AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt')
   				  ORDER BY uId ASC ";
 
@@ -810,6 +810,7 @@ class FooController extends Controller
 //  					AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt') order by uId ASC ";
 		// AND w.wSubscribe=1
 		$ret = $conn->createCommand($sql)->queryAll();
+		print_r($ret);
 		/*$ret = [
 			[
 				'uId' => 131379,
@@ -825,11 +826,8 @@ class FooController extends Controller
 				'url' => "https://mp.weixin.qq.com/s/1q2ak1MmrQGUhKHyZaJcEg"
 			];*/
 			//$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1803141101019.jpg";
-			$content = "逛个街，去个酒吧，给自己买套衣服，买一件自己喜欢的东西，让自己的生活过的有价值，爱自己没毛病，点击链接进入：
-
-
-爱自己69特惠区，陪你过单身生活
-https://j.youzan.com/O0EeRY";
+			$content = "逛个街，去个酒吧，给自己买套衣服，买一件自己喜欢的东西，让自己的生活过的有价值，爱自己没毛病，点击链接进入：<br><br><br><br><br>爱自己69特惠区，陪你过单身生活
+<a href='https://j.youzan.com/O0EeRY' style='color:#007aff'>https://j.youzan.com/O0EeRY</a>";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
 			QueueUtil::loadJob('templateMsg',
@@ -1503,6 +1501,8 @@ https://j.youzan.com/O0EeRY";
 			echo '$fanid:' . $v['uYZUId'] . PHP_EOL;
 			YzUser::getUserInfoByTag($v['uYZUId']);
 		}*/
+
+		ChatMsg::massmsg();
 
 	}
 

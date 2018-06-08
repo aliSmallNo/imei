@@ -1766,4 +1766,58 @@ class ChatMsg extends ActiveRecord
 		return ($ret && $ret > 0) ? 0 : 1;
 
 	}
+
+	public static function massmsg()
+	{
+		$conn = AppUtil::db();
+		$dt = date('Y-m-d H:i:s', time() - 1200);
+		$sql = "SELECT uId,uGender
+ 				FROM im_user as u
+ 				JOIN im_user_wechat as w on w.wUId=u.uId 
+ 				WHERE uGender in (11,10) and uPhone!='' and uPhone=17611629667
+  				  AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt')
+  				  ORDER BY uId ASC ";
+
+		$ret = $conn->createCommand($sql)->queryAll();
+		/*$ret = [
+			[
+				'uId' => 131379,
+				'uGender' => 11,
+			]
+		];*/
+		$cnt = 0;
+		$senderId = User::SERVICE_UID;
+		foreach ($ret as $row) {
+			$uid = $row['uId'];
+			/*$content = [
+				'text' => '我好想和你一起过圣诞节喔~',
+				'url' => "https://mp.weixin.qq.com/s/1q2ak1MmrQGUhKHyZaJcEg"
+			];*/
+
+			//$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1803141101019.jpg";
+			$content = "逛个街，去个酒吧，给自己买套衣服，买一件自己喜欢的东西，让自己的生活过的有价值，爱自己没毛病，点击链接进入：<br><br><br>爱自己69特惠区，陪你过单身生活
+<a href='https://j.youzan.com/O0EeRY' style='color:#007aff'>https://j.youzan.com/O0EeRY</a>";
+			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
+			ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
+			QueueUtil::loadJob('templateMsg',
+				[
+					'tag' => WechatUtil::NOTICE_CHAT,
+					'receiver_uid' => $uid,
+					'title' => '有人密聊你啦',
+					'sub_title' => 'TA给你发了一条密聊消息，快去看看吧~',
+					'sender_uid' => $senderId,
+					'gid' => $gid
+				],
+				QueueUtil::QUEUE_TUBE_SMS);
+
+			$cnt++;
+			if ($cnt && $cnt % 50 == 0) {
+				var_dump($cnt . date('  m-d H:i:s'));
+			}
+			//echo date('  m-d H:i:s') . ' ' . $uid . PHP_EOL;
+			AppUtil::logByFile('uid:' . $uid . ' === ' . ' cnt:' . $cnt, 'massmsg', __FUNCTION__, __LINE__);
+		}
+		//var_dump($cnt);
+	}
+
 }
