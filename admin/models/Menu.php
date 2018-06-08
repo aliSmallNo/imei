@@ -137,6 +137,12 @@ class Menu
 						"revise" => 1,
 						"level" => 820
 					],
+					[
+						"name" => "有赞用户",
+						"url" => "/youz/users",
+						"revise" => 1,
+						"level" => 820
+					],
 				]
 			],
 			[
