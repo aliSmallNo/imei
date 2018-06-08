@@ -799,9 +799,10 @@ class FooController extends Controller
 		$sql = "SELECT uId,uGender
  				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId 
- 				WHERE uGender in (10) and uPhone!='' 
+ 				WHERE uGender in (10) and uPhone!='' and uPhone=17611629667
   				  AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt')
   				  ORDER BY uId ASC ";
+
 //		$sql = "SELECT uId,uGender
 // 				FROM im_user as u
 // 				JOIN im_user_wechat as w on w.wUId=u.uId
@@ -823,7 +824,12 @@ class FooController extends Controller
 				'text' => '我好想和你一起过圣诞节喔~',
 				'url' => "https://mp.weixin.qq.com/s/1q2ak1MmrQGUhKHyZaJcEg"
 			];*/
-			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1803141101019.jpg";
+			//$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1803141101019.jpg";
+			$content = "逛个街，去个酒吧，给自己买套衣服，买一件自己喜欢的东西，让自己的生活过的有价值，爱自己没毛病，点击链接进入：
+
+
+爱自己69特惠区，陪你过单身生活
+https://j.youzan.com/O0EeRY";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
 			QueueUtil::loadJob('templateMsg',
@@ -1460,7 +1466,7 @@ class FooController extends Controller
 
 	public function actionYz()
 	{
-		YzUser::getYZUserByFansIdCycle(1);
+
 		// AppUtil::logByFile(date('Y-m-d H:i:s'), 'youzan_user', __FUNCTION__, __LINE__);
 
 		//$token = YouzanUtil::getAccessToken();echo $token;

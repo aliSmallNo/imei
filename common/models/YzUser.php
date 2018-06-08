@@ -332,6 +332,7 @@ class YzUser extends ActiveRecord
 			$user = $res['response']['user'];
 			return self::process($user);
 		}
+
 		return false;
 
 	}
