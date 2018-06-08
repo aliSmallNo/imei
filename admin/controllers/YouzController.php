@@ -93,4 +93,37 @@ class YouzController extends BaseController
 			]);
 	}
 
+	public function actionUsers()
+	{
+		Admin::staffOnly();
+		$getInfo = \Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+
+		$criteria = $params = [];
+
+		if ($name) {
+			$criteria[] = " u1.uName like :name ";
+			$params[':name'] = '%' . trim($name) . '%';
+		}
+		if ($phone) {
+			$criteria[] = " u1.uPhone = :phone ";
+			$params[':phone'] = trim($phone);
+		}
+
+		list($items, $count) = YzUser::users($criteria, $params, $page);
+
+		$pagination = self::pagination($page, $count);
+		return $this->renderPage('users.tpl',
+			[
+				'page' => $page,
+				'pagination' => $pagination,
+				'items' => $items,
+				'getInfo' => $getInfo,
+				'count' => $count,
+				'admins' => Admin::getAdmins(),
+			]);
+	}
+
 }

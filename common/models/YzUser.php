@@ -18,8 +18,8 @@ class YzUser extends ActiveRecord
 {
 	const TYPE_DEFAULT = 1;
 	const TYPE_YXS = 3;
-	static $StatusDict = [
-		self::TYPE_DEFAULT => '普通',
+	static $typeDict = [
+		self::TYPE_DEFAULT => '普通用户',
 		self::TYPE_YXS => '严选师',
 	];
 
@@ -279,51 +279,6 @@ class YzUser extends ActiveRecord
 	}
 
 
-	public static function items($criteria, $params, $page = 1, $pageSize = 20)
-	{
-		$conn = AppUtil::db();
-		$limit = 'limit ' . ($page - 1) * $pageSize . "," . $pageSize;
-		$criteriaStr = '';
-		if ($criteria) {
-			$criteriaStr = ' and ' . implode(" and ", $criteria);
-		}
-
-
-		$sql = "select 
-				a.aId,a.aName,
-				u1.*,u2.uAvatar as favatar,u2.uName as fname,u2.uPhone as fphone,u2.uFollow as ffollow
-				from im_yz_user as u1
-				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone and u2.uPhone>0
-				left join im_admin as a on a.aId=u1.uAdminId 
-				where u1.uType=:type $criteriaStr
-				group by u1.uId
-				order by u1.`uCreateOn` desc $limit";
-
-		$res = $conn->createCommand($sql)->bindValues(array_merge([
-			':type' => self::TYPE_YXS,
-		], $params))->queryAll();
-
-		$admins = Admin::getAdmins();
-		foreach ($res as $k => $v) {
-			$res[$k]['admin_txt'] = $admins[$v['uAdminId']] ?? '';
-		}
-
-
-		$sql = "select 
-				count(DISTINCT u1.uId)
-				from im_yz_user as u1
-				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone and u2.uPhone>0
-				left join im_admin as a on a.aId=u1.uAdminId
-				where u1.uType=:type $criteriaStr  ";
-		$count = $conn->createCommand($sql)->bindValues(array_merge([
-			':type' => self::TYPE_YXS,
-		], $params))->queryScalar();
-
-		return [$res, $count];
-
-	}
-
-
 	public static function getUserInfoByTag($id, $tag = 'fans_id', $isDebugger = false)
 	{
 
@@ -473,6 +428,84 @@ class YzUser extends ActiveRecord
 		];
 		return -1;
 
+
+	}
+
+
+	public static function items($criteria, $params, $page = 1, $pageSize = 20)
+	{
+		$conn = AppUtil::db();
+		$limit = 'limit ' . ($page - 1) * $pageSize . "," . $pageSize;
+		$criteriaStr = '';
+		if ($criteria) {
+			$criteriaStr = ' and ' . implode(" and ", $criteria);
+		}
+
+
+		$sql = "select 
+				a.aId,a.aName,
+				u1.*,u2.uAvatar as favatar,u2.uName as fname,u2.uPhone as fphone,u2.uFollow as ffollow
+				from im_yz_user as u1
+				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone and u2.uPhone>0
+				left join im_admin as a on a.aId=u1.uAdminId 
+				where u1.uType=:type $criteriaStr
+				group by u1.uId
+				order by u1.`uCreateOn` desc $limit";
+
+		$res = $conn->createCommand($sql)->bindValues(array_merge([
+			':type' => self::TYPE_YXS,
+		], $params))->queryAll();
+
+		$admins = Admin::getAdmins();
+		foreach ($res as $k => $v) {
+			$res[$k]['admin_txt'] = $admins[$v['uAdminId']] ?? '';
+		}
+
+
+		$sql = "select 
+				count(DISTINCT u1.uId)
+				from im_yz_user as u1
+				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone and u2.uPhone>0
+				left join im_admin as a on a.aId=u1.uAdminId
+				where u1.uType=:type $criteriaStr  ";
+		$count = $conn->createCommand($sql)->bindValues(array_merge([
+			':type' => self::TYPE_YXS,
+		], $params))->queryScalar();
+
+		return [$res, $count];
+
+	}
+
+	public static function users($criteria, $params, $page = 1, $pageSize = 20)
+	{
+		$conn = AppUtil::db();
+		$limit = 'limit ' . ($page - 1) * $pageSize . "," . $pageSize;
+		$criteriaStr = '';
+		if ($criteria) {
+			$criteriaStr = ' and ' . implode(" and ", $criteria);
+		}
+
+
+		$sql = "select 
+				u1.*
+				from im_yz_user as u1 
+				where u1.uId>0 $criteriaStr
+				order by u1.`uYZUId` desc $limit";
+
+		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
+
+		foreach ($res as $k => $v) {
+			$res[$k]['type_txt'] = self::$typeDict[$v['uType']] ?? '';
+		}
+
+
+		$sql = "select 
+				count(DISTINCT u1.uId)
+				from im_yz_user as u1
+				where u1.uId>0 $criteriaStr  ";
+		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
+
+		return [$res, $count];
 
 	}
 

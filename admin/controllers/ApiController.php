@@ -306,6 +306,17 @@ class ApiController extends Controller
 				$ret = User::getFilter($openId, [], $page, 15);
 				return self::renderAPI(0, '', $ret);
 				break;
+			case "audit_pass":
+
+				// 修改所有的待审核=>通过
+				$sql = "update im_user set uStatus=:st1 where uStatus=:st2";
+				$ret = AppUtil::db()->createCommand($sql)->bindValues([
+					":st1" => User::STATUS_ACTIVE,
+					":st2" => User::STATUS_PENDING,
+				])->execute();
+
+				return self::renderAPI(0, '操作成功');
+				break;
 		}
 		return self::renderAPI($ret["code"], $ret["msg"]);
 	}

@@ -371,6 +371,9 @@
 			<span><b>媒婆</b><em>{{$stat.mp0}}</em> / {{$stat.mp}}</span>
 			<span><b>帅哥</b><em>{{$stat.male0}}</em> / {{$stat.male}}</span>
 			<span><b>美女</b><em>{{$stat.female0}}</em> / {{$stat.female}}</span>
+
+
+			<a href="javascript:;" class="append2active btn btn-primary btn-xs" target="_blank">全部审核通过</a>
 		</div>
 	</form>
 </div>
@@ -1162,6 +1165,31 @@
 			}
 		}, "json")
 	});
+
+
+
+  $("a.append2active").click(function () {
+	  var text = $(this).html();
+	  layer.confirm('您确定' + text, {
+		  btn: ['确定', '取消'],
+		  title: '审核'
+	  }, function () {
+		  toOpt();
+	  }, function () {
+
+	  });
+  });
+
+  function toOpt() {
+	  $.post("/api/user", {
+		  tag: "audit_pass",
+	  }, function (resp) {
+		  if (resp.code == 0) {
+			  location.reload();
+		  }
+		  layer.msg(resp.msg);
+	  }, "json");
+  }
 
 </script>
 {{include file="layouts/footer.tpl"}}
