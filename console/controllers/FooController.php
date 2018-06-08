@@ -1502,7 +1502,7 @@ class FooController extends Controller
 			YzUser::getUserInfoByTag($v['uYZUId']);
 		}*/
 
-		ChatMsg::massmsg();
+		// ChatMsg::massmsg();
 
 	}
 

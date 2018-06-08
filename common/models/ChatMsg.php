@@ -1767,6 +1767,10 @@ class ChatMsg extends ActiveRecord
 
 	}
 
+	/**
+	 * 客服群聊用户
+	 * @throws \yii\db\Exception
+	 */
 	public static function massmsg()
 	{
 		$conn = AppUtil::db();
@@ -1774,7 +1778,7 @@ class ChatMsg extends ActiveRecord
 		$sql = "SELECT uId,uGender
  				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId 
- 				WHERE uGender in (11,10) and uPhone!='' and uPhone=17611629667
+ 				WHERE uGender in (11,10) and uPhone!=''
   				  AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt')
   				  ORDER BY uId ASC ";
 
@@ -1812,7 +1816,7 @@ class ChatMsg extends ActiveRecord
 
 			$cnt++;
 			if ($cnt && $cnt % 50 == 0) {
-				var_dump($cnt . date('  m-d H:i:s'));
+				//var_dump($cnt . date('  m-d H:i:s'));
 			}
 			//echo date('  m-d H:i:s') . ' ' . $uid . PHP_EOL;
 			AppUtil::logByFile('uid:' . $uid . ' === ' . ' cnt:' . $cnt, 'massmsg', __FUNCTION__, __LINE__);
