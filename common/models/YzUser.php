@@ -75,13 +75,15 @@ class YzUser extends ActiveRecord
 		$uid = $v['user_id'];
 		$insert = [];
 		foreach (YzUser::$fieldMap as $key => $val) {
-			if (isset($v[$key])) {
+			if (isset($v[$key]) && $v[$key]) {
 				$insert[$val] = $v[$key];
 			}
 		}
+
 		if (isset($insert['uPhone']) && !$insert['uPhone']) {
 			unset($insert['uPhone']);
 		}
+
 		$insert['uRawData'] = json_encode($v, JSON_UNESCAPED_UNICODE);
 		// echo $uid;print_r($insert);exit;
 		return YzUser::edit($uid, $insert);
@@ -382,7 +384,7 @@ class YzUser extends ActiveRecord
 	/**
 	 * 根据微信粉丝Id正序批量查询微信粉丝用户信息（不受关注时间限制。支持粉丝基础信息、积分、交易等数据查询，详见入参fields字段描述）
 	 */
-	public static function getYZUserByFansIdCycle($isDebugger = false)
+	public static function getYZUserByFansIdAscCycle($isDebugger = false)
 	{
 
 		$last_fansId = RedisUtil::init(RedisUtil::KEY_YOUZAN_LAST_FANSID)->getCache();
@@ -393,16 +395,16 @@ class YzUser extends ActiveRecord
 		while ($return_lastFansId > 0) {
 			$co++;
 			if ($isDebugger) {
-				echo 'getYZUserByFansIdCycle:' . $co . PHP_EOL;
+				echo 'getYZUserByFansIdAscCycle:' . $co . PHP_EOL;
 			}
-			$return_lastFansId = self::getYZUserByFansId($return_lastFansId, $isDebugger);
+			$return_lastFansId = self::getYZUserByFansIdAsc($return_lastFansId, $isDebugger);
 			if ($co > 100) {
 				break;
 			}
 		}
 
 		// 更新分销员信息
-		//self::getSalesManList($isDebugger);
+		self::getSalesManList($isDebugger);
 	}
 
 	/**
@@ -411,7 +413,7 @@ class YzUser extends ActiveRecord
 	 * 1. 如果接口频繁抛异常，且入参无误，请减小page_size并重试。
 	 * 2.请尽量按需自定义入参“fields”字段获取数据。“fields”字段传入枚举值越多，查询数据耗费时间越长。
 	 */
-	public static function getYZUserByFansId($last_fansId = 0, $isDebugger = false)
+	public static function getYZUserByFansIdAsc($last_fansId = 0, $isDebugger = false)
 	{
 		$method = 'youzan.users.weixin.followers.info.pull';
 		$params = [
@@ -430,7 +432,7 @@ class YzUser extends ActiveRecord
 			foreach ($users as $v) {
 				$fansId = $v['user_id'];
 				if ($isDebugger) {
-					echo 'add fans_id:' . $fansId . PHP_EOL;
+					echo 'edit fans_id:' . $fansId . PHP_EOL;
 				}
 				AppUtil::logByFile('fans_id:' . $fansId, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 				self::process($v);
