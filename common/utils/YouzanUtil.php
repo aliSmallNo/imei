@@ -73,7 +73,7 @@ class YouzanUtil
 	public static function getAccessToken($reset = false)
 	{
 		$accessToken = RedisUtil::init(RedisUtil::KEY_YOUZAN_TOKEN)->getCache();
-		if ($accessToken || !$reset) {
+		if ($accessToken && !$reset) {
 			return $accessToken;
 		}
 		$accessToken = "";
