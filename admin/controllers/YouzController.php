@@ -122,7 +122,7 @@ class YouzController extends BaseController
 				'items' => $items,
 				'getInfo' => $getInfo,
 				'count' => $count,
-				'admins' => Admin::getAdmins(),
+				'admins' => Admin::getAdmins(1),
 			]);
 	}
 
