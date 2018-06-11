@@ -1504,6 +1504,8 @@ class FooController extends Controller
 
 		// ChatMsg::massmsg();
 
+		var_dump(YouzanUtil::getAccessToken());
+
 	}
 
 
