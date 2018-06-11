@@ -89,7 +89,7 @@ class YouzController extends BaseController
 				'pagination' => $pagination,
 				'items' => $items,
 				'getInfo' => $getInfo,
-				'admins' => Admin::getAdmins(),
+				'admins' => Admin::getAdmins(1),
 			]);
 	}
 
@@ -122,7 +122,7 @@ class YouzController extends BaseController
 				'items' => $items,
 				'getInfo' => $getInfo,
 				'count' => $count,
-				'admins' => Admin::getAdmins(1),
+				'admins' => Admin::getAdmins(),
 			]);
 	}
 
