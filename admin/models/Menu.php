@@ -143,6 +143,12 @@ class Menu
 						"revise" => 1,
 						"level" => 820
 					],
+					[
+						"name" => "随机数",
+						"url" => "/youz/create",
+						"revise" => 1,
+						"level" => 820
+					],
 				]
 			],
 			[

@@ -126,4 +126,28 @@ class YouzController extends BaseController
 			]);
 	}
 
+	public function actionCreate()
+	{
+		$sum = 100;
+		$units = [];
+		$getRandOnlyId = function () {
+			//新时间截定义,基于世界未日2012-12-21的时间戳。
+			$endtime = 1356019200;//2012-12-21时间戳
+			$curtime = time();//当前时间戳
+			$newtime = $curtime - $endtime;//新时间戳
+			$rand1 = rand(0, 999);//两位随机
+			$rand2 = rand(0, 999);//两位随机
+			$all = $rand1 . $rand2 . $newtime;
+			$onlyid = base_convert($all, 10, 36);//把10进制转为36进制的唯一ID
+			return $onlyid;
+		};
+		for ($i = 0; $i < $sum; $i++) {
+			//$units[] = session_create_id();
+			$units[] = $getRandOnlyId();
+		}
+
+		echo implode(' ', $units);
+		exit;
+	}
+
 }
