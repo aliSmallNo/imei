@@ -89,7 +89,7 @@ class YouzController extends BaseController
 				'pagination' => $pagination,
 				'items' => $items,
 				'getInfo' => $getInfo,
-				'admins' => Admin::getAdmins(),
+				'admins' => Admin::getAdmins(1),
 			]);
 	}
 
@@ -122,7 +122,7 @@ class YouzController extends BaseController
 				'items' => $items,
 				'getInfo' => $getInfo,
 				'count' => $count,
-				'admins' => Admin::getAdmins(),
+				'admins' => Admin::getAdmins(1),
 			]);
 	}
 
@@ -145,8 +145,7 @@ class YouzController extends BaseController
 			//$units[] = session_create_id();
 			$units[] = $getRandOnlyId();
 		}
-
-		echo implode(' ', $units);
+		echo '<h3>100个唯一ID：</h3>'.implode(' ', $units);
 		exit;
 	}
 
