@@ -98,7 +98,7 @@ class YzGoods extends ActiveRecord
 			$etime = (strtotime($st) + ($d + 1) * 86400 - 1) * 1000;
 
 			$page = 1;
-			$page_size = 20;
+			$page_size = 100;
 			do {
 				list($item, $count) = self::get_yz_goods_item($stime, $etime, $page, $page_size, $isDebugger);
 
@@ -109,15 +109,13 @@ class YzGoods extends ActiveRecord
 					AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 				}
 
-
 				foreach ($item as $v) {
 					self::process($v);
-					exit;
+
 				}
 				$page++;
 
-
-			} while ($count == $page_size && $page < 20);
+			} while ($count == $page_size && $page < 10);
 
 		}
 
