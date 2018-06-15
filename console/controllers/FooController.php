@@ -1512,16 +1512,13 @@ class FooController extends Controller
 
 		foreach ($res as $v) {
 			$id = $v['uId'];
-			$name = preg_replace('/./u', '', $v['uName']);
+			$name = YzUser::filterEmoji($v['uName']);
 			echo $name . PHP_EOL;
 			/*$upCMD->bindValues([
 				':uname' => $name,
 				':id' => $id,
 			])->execute();*/
 		}
-
-
-		echo YzUser::filterEmoji('💕 不会假装温柔💕');
 
 
 	}
