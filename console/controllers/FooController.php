@@ -1507,14 +1507,14 @@ class FooController extends Controller
 		$conn = AppUtil::db();
 		$sql = 'update im_yz_user set uName=:uname where uId =:id';
 		$upCMD = $conn->createCommand($sql);
-		$sql = 'select uId,uName from im_yz_user where uId < 172727 ';
+		$sql = 'select uId,uName from im_yz_user where uId >0 ';
 		$res = $conn->createCommand($sql)->queryAll();
 
 		foreach ($res as $v) {
 			$id = $v['uId'];
 			$name = YzUser::filterEmoji($v['uName']);
 			$upCMD->bindValues([
-				':uname' => $name,
+				':uname' => trim($name),
 				':id' => $id,
 			])->execute();
 		}
