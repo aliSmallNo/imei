@@ -15,11 +15,42 @@ use yii\db\ActiveRecord;
 
 class YzGoods extends ActiveRecord
 {
-	const TYPE_DEFAULT = 1;
-	const TYPE_YXS = 3;
+	/**
+	item_id     商品的数字id
+	alias       商品别名，是一串字符
+	title       商品标题
+	price       价格，单位分
+	item_type   商品类型
+	item_no     商家编码，商家给商品设置的商家编码。
+	quantity    总库存
+	post_type   运费类型，1 是统一运费，2是运费模板
+	post_fee    运费，单位分。当post_type为1时的运费
+	created_time 创建时间
+	update_time 更新时间
+	detail_url  商品详情链接
+	delivery_template 运费模板信息，当post_type为2时有值
+	num         商家排序字段
+	item_imgs   商品图片
+	origin      商品划线价
+	 */
+
+	// post_type 运费类型，1 是统一运费，2是运费模板
+	// post_fee: 运费，单位分。当post_type为1时的运费
+	// delivery_template，运费模板信息，当post_type为2时有值
+	const POST_TYPE_DEFAULT = 1;
+	const POST_TYPE_TEMPLATE = 2;
 	static $typeDict = [
-		self::TYPE_DEFAULT => '普通用户',
-		self::TYPE_YXS => '严选师',
+		self::POST_TYPE_DEFAULT => '统一运费',
+		self::POST_TYPE_TEMPLATE => '运费模板',
+	];
+
+	const ST_STORE_HOUSE = 6;
+	const ST_ON_SALE = 1;
+	const ST_SALE_OUT = 9;
+	static $stDict = [
+		self::ST_STORE_HOUSE => '仓库中',
+		self::ST_ON_SALE => '出售中',
+		self::ST_SALE_OUT => '已售罄',
 	];
 
 	const LOG_YOUZAN_TAG = 'youzan_user';
@@ -40,6 +71,7 @@ class YzGoods extends ActiveRecord
 		'item_imgs' => 'g_item_imgs',
 		'created_time' => 'g_created_time',
 		'update_time' => 'g_update_time',
+		'item_type' => 'g_item_type',
 
 	];
 
