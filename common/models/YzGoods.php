@@ -46,7 +46,7 @@ class YzGoods extends ActiveRecord
 
 	public static function tableName()
 	{
-		return '{{%yz_doods}}';
+		return '{{%yz_goods}}';
 	}
 
 	public static function edit($g_item_id, $data)
