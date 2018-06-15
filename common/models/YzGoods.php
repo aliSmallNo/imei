@@ -25,24 +25,22 @@ class YzGoods extends ActiveRecord
 	const LOG_YOUZAN_TAG = 'youzan_user';
 
 	static $fieldMap = [
-		'country' => 'uCountry',
-		'province' => 'uProvince',
-		'city' => 'uCity',
-		'is_follow' => 'uFollow',
-		'sex' => 'uSex',
-		'avatar' => 'uAvatar',
-		'nick' => 'uName',
-		'follow_time' => 'uFollowTime',
-		'user_id' => 'uYZUId',
-		'weixin_open_id' => 'uOpenId',
-		'union_id' => 'uUnionId',
-		'points' => 'uPoint',
-		'level_info' => 'uLevel',
-		'traded_num' => 'uTradeNum',
-		'trade_money' => 'uTradeMoney',
+		'item_id' => 'g_item_id',
+		'origin' => 'g_origin',
+		'num' => 'g_num',
+		'title' => 'g_title',
+		'item_no' => 'g_item_no',
+		'price' => 'g_price',
+		'post_fee' => 'g_post_fee',
+		'post_type' => 'g_post_type',
+		'detail_url' => 'g_detail_url',
+		'quantity' => 'g_quantity',
+		'alias' => 'g_alias',
+		'item_delivery_template' => 'g_item_delivery_template',
+		'item_imgs' => 'g_item_imgs',
+		'created_time' => 'g_created_time',
+		'update_time' => 'g_update_time',
 
-		'weixin_openid' => 'uOpenId',
-		'tags' => 'uTags',
 	];
 
 
@@ -51,16 +49,16 @@ class YzGoods extends ActiveRecord
 		return '{{%yz_doods}}';
 	}
 
-	public static function edit($yzuid, $data)
+	public static function edit($g_item_id, $data)
 	{
 		if (!$data) {
 			return 0;
 		}
-		$entity = self::findOne(['uYZUId' => $yzuid]);
+		$entity = self::findOne(['g_item_id' => $g_item_id]);
 		if (!$entity) {
 			$entity = new self();
 		} else {
-			$data['uUpdatedOn'] = date('Y-m-d H:i:s');
+			$data['g_up_time'] = date('Y-m-d H:i:s');
 		}
 		foreach ($data as $k => $v) {
 			$entity->$k = is_array($v) ? json_encode($v, JSON_UNESCAPED_UNICODE) : $v;
@@ -71,21 +69,17 @@ class YzGoods extends ActiveRecord
 
 	public static function process($v)
 	{
-		$uid = $v['user_id'];
+		$g_item_id = $v['item_id'];
 		$insert = [];
-		foreach (YzUser::$fieldMap as $key => $val) {
+		foreach (self::$fieldMap as $key => $val) {
 			if (isset($v[$key]) && $v[$key]) {
 				$insert[$val] = $v[$key];
 			}
 		}
-
-		if (isset($insert['uPhone']) && !$insert['uPhone']) {
-			unset($insert['uPhone']);
-		}
-
-		$insert['uRawData'] = json_encode($v, JSON_UNESCAPED_UNICODE);
-		// echo $uid;print_r($insert);exit;
-		return YzUser::edit($uid, $insert);
+		echo $g_item_id;
+		print_r($insert);
+		exit;
+		return YzUser::edit($g_item_id, $insert);
 	}
 
 	public static function get_goods_by_se_time($st = '', $et = '', $isDebugger = false)
@@ -94,39 +88,35 @@ class YzGoods extends ActiveRecord
 		// 根据关注时间段批量查询微信粉丝用户信息
 		$st = '2018-03-26 00:00:00';
 		$et = date('Y-m-d 23:23:59');
-		$page = 1;
-		$page_size = 20;
+
 		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
 
 		$total = 0;
 		for ($d = 0; $d < $days; $d++) {
-			$stime = date('Y-m-d H:i:s', strtotime($st) + $d * 86400);
-			$etime = date('Y-m-d H:i:s', strtotime($st) + ($d + 1) * 86400 - 1);
+			$stimeFmt = date('Y-m-d H:i:s', strtotime($st) + $d * 86400);
+			$etimeFmt = date('Y-m-d H:i:s', strtotime($st) + ($d + 1) * 86400 - 1);
 
-			// $results = self::getTZUser($stime, $etime, $page, $page_size, $isDebugger);
+			$stime = (strtotime($st) + $d * 86400) * 1000;
+			$etime = (strtotime($st) + ($d + 1) * 86400 - 1) * 1000;
 
-			/* 计算总共用户数 */
-			//$total_results = $results['total_results'] ?? 0;
-			//$total = $total + $total_results;
-			//$msg = "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . $total_results . ' Total:' . $total;
-			$msg = "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . 0 . ' Total:' . $total;
-
-			if ($isDebugger) {
-				echo $msg . PHP_EOL;
-			}
-			// AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
-
-			/*if ($results && $results['total_results'] > 0) {
-				$total_results = $results['total_results'];
-				$page_count = ceil($total_results / $page_size);
-
-				for ($i = 0; $i < $page_count; $i++) {
-					$users = self::getTZUser($stime, $etime, ($i + 1), $page_size, $isDebugger)['users'];
-					foreach ($users as $v) {
-						self::process($v);
-					}
+			$page = 1;
+			$page_size = 20;
+			do {
+				list($item, $count) = self::get_yz_goods_item($stime, $etime, $page, $page_size, $isDebugger);
+				foreach ($item as $v) {
+					self::process($v);
 				}
-			}*/
+				$page++;
+
+				if ($isDebugger) {
+					$total = $total + $count;
+					$msg = "stime:" . $stime . ':' . $stimeFmt . ' == etime:' . $etime . ':' . $etimeFmt . ' currentNum:' . $count . ' Total:' . $total;
+					echo $msg . PHP_EOL;
+					AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
+				}
+
+			} while ($count == $page_size);
+
 		}
 
 		// 更新分销员信息
