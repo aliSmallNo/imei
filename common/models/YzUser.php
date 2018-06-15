@@ -76,7 +76,7 @@ class YzUser extends ActiveRecord
 		foreach (YzUser::$fieldMap as $key => $val) {
 			if (isset($v[$key]) && $v[$key]) {
 				if ($key == "nick") {
-					// $v[$key] = self::filterEmoji($v[$key]);
+					 $v[$key] = self::filterEmoji($v[$key]);
 				}
 				$insert[$val] = $v[$key];
 			}
