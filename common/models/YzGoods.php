@@ -77,7 +77,7 @@ class YzGoods extends ActiveRecord
 			}
 		}
 		// echo $g_item_id;print_r($insert);exit;
-		return YzUser::edit($g_item_id, $insert);
+		return self::edit($g_item_id, $insert);
 	}
 
 	public static function get_goods_by_se_time($st = '', $et = '', $isDebugger = false)
