@@ -76,9 +76,7 @@ class YzGoods extends ActiveRecord
 				$insert[$val] = $v[$key];
 			}
 		}
-		echo $g_item_id;
-		print_r($insert);
-		exit;
+		// echo $g_item_id;print_r($insert);exit;
 		return YzUser::edit($g_item_id, $insert);
 	}
 
@@ -114,10 +112,12 @@ class YzGoods extends ActiveRecord
 
 				foreach ($item as $v) {
 					self::process($v);
+					exit;
 				}
 				$page++;
 
-			} while ($count == $page_size);
+
+			} while ($count == $page_size && $page < 20);
 
 		}
 
