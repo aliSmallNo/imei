@@ -133,12 +133,13 @@ class YzGoods extends ActiveRecord
 
 			$page = 1;
 			$page_size = 100;
+
 			do {
 				list($item, $count) = self::get_yz_goods_item($tag, $stime, $etime, $page, $page_size, $isDebugger);
 
 				if ($isDebugger) {
 					$total = $total + $count;
-					$msg = "stime:" . $stime . ':' . $stimeFmt . ' == etime:' . $etime . ':' . $etimeFmt . ' currentNum:' . $count . ' Total:' . $total;
+					$msg = "stime:" . $stime . ':' . $stimeFmt . ' == etime:' . $etime . ':' . $etimeFmt . ' currentNum:' . $count . 'countRes:' . $item . ' Total:' . $total;
 					echo $msg . PHP_EOL;
 					AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 				}
