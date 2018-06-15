@@ -138,7 +138,9 @@ class YzGoods extends ActiveRecord
 				list($item, $count) = self::get_yz_goods_item($tag, $stime, $etime, $page, $page_size, $isDebugger);
 
 				if ($isDebugger) {
-					$total = $total + $count;
+					if ($page == 1) {
+						$total = $total + $count;
+					}
 					$msg = "stime:" . $stime . ':' . $stimeFmt . ' == etime:' . $etime . ':' . $etimeFmt . ' currentNum:' . $count . 'countRes:' . count($item) . ' Total:' . $total;
 					echo $msg . PHP_EOL;
 					AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
@@ -147,11 +149,10 @@ class YzGoods extends ActiveRecord
 				foreach ($item as $v) {
 					$v['status'] = $tag;
 					self::process($v);
-
 				}
 				$page++;
 
-			} while ($count == $page_size && $page < 10);
+			} while (count($item) == $page_size && $page < 10);
 
 		}
 
