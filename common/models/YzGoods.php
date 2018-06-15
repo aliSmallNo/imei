@@ -98,6 +98,20 @@ class YzGoods extends ActiveRecord
 		$page_size = 20;
 		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
 
+		$st = strtotime('2018-03-26 00:00:00');
+		$n = 0;
+		while ($st < time()) {
+			$stime = (strtotime($st) + $n * 86400) * 1000;
+			$etime = (strtotime($st) + ($n + 1) * 86400) * 1000 - 1;
+			$n++;
+			$st = $stime / 1000;
+			$msg = "stime:" . date('Y-m-d H:i:s', floor($stime / 1000)) . ' == etime:' . date('Y-m-d H:i:s', floor($etime / 1000)) . ' currentNum:' . 0 . ' Total:' . 0;
+			if ($isDebugger) {
+				echo $msg . PHP_EOL;
+			}
+		}
+		exit;
+
 		$total = 0;
 		for ($d = 0; $d < $days; $d++) {
 			$stime = date('Y-m-d ', strtotime($st) + $d * 86400);
@@ -109,7 +123,7 @@ class YzGoods extends ActiveRecord
 			//$total_results = $results['total_results'] ?? 0;
 			//$total = $total + $total_results;
 			//$msg = "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . $total_results . ' Total:' . $total;
-			$msg = "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . 0 . ' Total:' . $total ;
+			$msg = "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . 0 . ' Total:' . $total;
 
 			if ($isDebugger) {
 				echo $msg . PHP_EOL;
