@@ -139,7 +139,7 @@ class YzGoods extends ActiveRecord
 
 				if ($isDebugger) {
 					$total = $total + $count;
-					$msg = "stime:" . $stime . ':' . $stimeFmt . ' == etime:' . $etime . ':' . $etimeFmt . ' currentNum:' . $count . 'countRes:' . $item . ' Total:' . $total;
+					$msg = "stime:" . $stime . ':' . $stimeFmt . ' == etime:' . $etime . ':' . $etimeFmt . ' currentNum:' . $count . 'countRes:' . count($item) . ' Total:' . $total;
 					echo $msg . PHP_EOL;
 					AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 				}
