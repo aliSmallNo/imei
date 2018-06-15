@@ -103,10 +103,6 @@ class YzGoods extends ActiveRecord
 			$page_size = 20;
 			do {
 				list($item, $count) = self::get_yz_goods_item($stime, $etime, $page, $page_size, $isDebugger);
-				foreach ($item as $v) {
-					self::process($v);
-				}
-				$page++;
 
 				if ($isDebugger) {
 					$total = $total + $count;
@@ -114,6 +110,12 @@ class YzGoods extends ActiveRecord
 					echo $msg . PHP_EOL;
 					AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 				}
+
+
+				foreach ($item as $v) {
+					self::process($v);
+				}
+				$page++;
 
 			} while ($count == $page_size);
 
@@ -204,13 +206,14 @@ class YzGoods extends ActiveRecord
 		$items = $results['items'] ?? [];
 		$count = $results['count'] ?? 0;
 
-		$msg = "stime:" . $stime . ' == etime:' . $etime . ' == ' . 'page:' . $page . ' == ' . 'pagesize:' . $page_size;
+		/*$msg = "stime:" . $stime . ' == etime:' . $etime . ' == ' . 'page:' . $page . ' == ' . 'pagesize:' . $page_size;
 		if ($isDebugger) {
 			echo $msg . PHP_EOL;
 		}
 		AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_GOODS, __FUNCTION__, __LINE__);
+		*/
 
-		return $results;
+		return [$items, $count];
 
 	}
 
