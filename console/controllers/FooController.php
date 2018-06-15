@@ -17,6 +17,7 @@ use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserTrans;
 use common\models\UserWechat;
+use common\models\YzGoods;
 use common\models\YzUser;
 use common\service\TrendService;
 use common\utils\AppUtil;
@@ -1467,7 +1468,7 @@ class FooController extends Controller
 
 		// AppUtil::logByFile(date('Y-m-d H:i:s'), 'youzan_user', __FUNCTION__, __LINE__);
 
-		$token = YouzanUtil::getAccessToken();echo $token;
+		// $token = YouzanUtil::getAccessToken();echo $token;
 
 		// 更新用户
 		//YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');
@@ -1499,6 +1500,9 @@ class FooController extends Controller
 			])->execute();
 		}*/
 
+		$st = '2018-03-26 00:00:00';
+		$et = date('Y-m-d 23:23:59');
+		YzGoods::get_goods_by_se_time($st, $et, 1);
 
 	}
 

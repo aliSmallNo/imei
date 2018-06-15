@@ -13,7 +13,7 @@ use common\utils\RedisUtil;
 use common\utils\YouzanUtil;
 use yii\db\ActiveRecord;
 
-class YzUser extends ActiveRecord
+class YzGoods extends ActiveRecord
 {
 	const TYPE_DEFAULT = 1;
 	const TYPE_YXS = 3;
@@ -22,8 +22,7 @@ class YzUser extends ActiveRecord
 		self::TYPE_YXS => '严选师',
 	];
 
-	const LOG_YOUZAN_USER = 'youzan_user';
-	const LOG_YOUZAN_GOODS = 'youzan_goods';
+	const LOG_YOUZAN_TAG = 'youzan_user';
 
 	static $fieldMap = [
 		'country' => 'uCountry',
@@ -49,7 +48,7 @@ class YzUser extends ActiveRecord
 
 	public static function tableName()
 	{
-		return '{{%yz_user}}';
+		return '{{%yz_doods}}';
 	}
 
 	public static function edit($yzuid, $data)
@@ -76,9 +75,6 @@ class YzUser extends ActiveRecord
 		$insert = [];
 		foreach (YzUser::$fieldMap as $key => $val) {
 			if (isset($v[$key]) && $v[$key]) {
-				if ($key == "nick") {
-					 $v[$key] = self::filterEmoji($v[$key]);
-				}
 				$insert[$val] = $v[$key];
 			}
 		}
@@ -92,16 +88,140 @@ class YzUser extends ActiveRecord
 		return YzUser::edit($uid, $insert);
 	}
 
-	public static function filterEmoji($str)
+	public static function get_goods_by_se_time($st = '', $et = '', $isDebugger = false)
 	{
-		$str = preg_replace_callback(
-			'/./u',
-			function (array $match) {
-				return strlen($match[0]) >= 4 ? '' : $match[0];
-			},
-			$str);
 
-		return $str;
+		// 根据关注时间段批量查询微信粉丝用户信息
+		$st = '2018-03-26 00:00:00';
+		$et = date('Y-m-d 23:23:59');
+		$page = 1;
+		$page_size = 20;
+		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
+
+		$total = 0;
+		for ($d = 0; $d < $days; $d++) {
+			$stime = date('Y-m-d ', strtotime($st) + $d * 86400);
+			$etime = date('Y-m-d', strtotime($st) + ($d + 1) * 86400);
+
+			// $results = self::getTZUser($stime, $etime, $page, $page_size, $isDebugger);
+
+			/* 计算总共用户数 */
+			//$total_results = $results['total_results'] ?? 0;
+			//$total = $total + $total_results;
+			//$msg = "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . $total_results . ' Total:' . $total;
+			$msg = "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . 0 . ' Total:' . $total ;
+
+			if ($isDebugger) {
+				echo $msg . PHP_EOL;
+			}
+			// AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
+
+			/*if ($results && $results['total_results'] > 0) {
+				$total_results = $results['total_results'];
+				$page_count = ceil($total_results / $page_size);
+
+				for ($i = 0; $i < $page_count; $i++) {
+					$users = self::getTZUser($stime, $etime, ($i + 1), $page_size, $isDebugger)['users'];
+					foreach ($users as $v) {
+						self::process($v);
+					}
+				}
+			}*/
+		}
+
+		// 更新分销员信息
+
+	}
+
+
+	public static function get_yz_goods_item($stime, $etime, $page, $page_size, $isDebugger = false)
+	{
+		$method = 'youzan.items.inventory.get';
+		$params = [
+			'page_no' => $page,
+			'page_size' => $page_size,
+			'order_by' => 'update_time:asc',
+			'update_time_start' => $stime,
+			'update_time_end' => $etime,
+		];
+		$ret = YouzanUtil::getData($method, $params);
+
+		$retStyle = [
+			'response' => [
+				'count' => 10,
+				'items' => [
+					[
+						"created_time" => "2018-04-21 09:47:35",
+						"detail_url" => "https://h5.youzan.com/v2/showcase/goods?alias=272v2kj9yy9q7",
+						"quantity" => 299,
+						"post_fee" => 0,
+						"item_id" => 415337119,
+						"item_type" => 0,
+						"origin" => "499",
+						"num" => 0,
+						"item_imgs" => [
+							[
+								"thumbnail" => "https://img.yzcdn.cn/upload_files/2018/04/21/Fq_cbYIZhtTDCw4dT_FHglXbvNJ7.jpeg?imageView2/2/w/290/h/290/q/75/format/jpg",
+								"created" => "2018-06-15 12:32:10",
+								"medium" => "https://img.yzcdn.cn/upload_files/2018/04/21/Fq_cbYIZhtTDCw4dT_FHglXbvNJ7.jpeg?imageView2/2/w/600/h/0/q/75/format/jpg",
+								"id" => 1082571015,
+								"url" => "https://img.yzcdn.cn/upload_files/2018/04/21/Fq_cbYIZhtTDCw4dT_FHglXbvNJ7.jpeg",
+								"combine" => "https://img.yzcdn.cn/upload_files/2018/04/21/Fq_cbYIZhtTDCw4dT_FHglXbvNJ7.jpeg?imageView2/2/w/600/h/0/q/75/format/jpg"
+							],
+							[
+								"thumbnail" => "https://img.yzcdn.cn/upload_files/2018/04/21/Fg9nLP1h8VjaB8R1hO1AE8joILfl.jpeg?imageView2/2/w/290/h/290/q/75/format/jpg",
+								"created" => "2018-06-15 12:32:10",
+								"medium" => "https://img.yzcdn.cn/upload_files/2018/04/21/Fg9nLP1h8VjaB8R1hO1AE8joILfl.jpeg?imageView2/2/w/600/h/0/q/75/format/jpg",
+								"id" => 1082570564,
+								"url" => "https://img.yzcdn.cn/upload_files/2018/04/21/Fg9nLP1h8VjaB8R1hO1AE8joILfl.jpeg",
+								"combine" => "https://img.yzcdn.cn/upload_files/2018/04/21/Fg9nLP1h8VjaB8R1hO1AE8joILfl.jpeg?imageView2/2/w/600/h/0/q/75/format/jpg"
+							],
+							[
+								"thumbnail" => "https://img.yzcdn.cn/upload_files/2018/04/21/FjecryC3A70On0eEkAKwFMX7Qlp4.jpeg?imageView2/2/w/290/h/290/q/75/format/jpg",
+								"created" => "2018-06-15 12:32:10",
+								"medium" => "https://img.yzcdn.cn/upload_files/2018/04/21/FjecryC3A70On0eEkAKwFMX7Qlp4.jpeg?imageView2/2/w/600/h/0/q/75/format/jpg",
+								"id" => 1082571016,
+								"url" => "https://img.yzcdn.cn/upload_files/2018/04/21/FjecryC3A70On0eEkAKwFMX7Qlp4.jpeg",
+								"combine" => "https://img.yzcdn.cn/upload_files/2018/04/21/FjecryC3A70On0eEkAKwFMX7Qlp4.jpeg?imageView2/2/w/600/h/0/q/75/format/jpg"
+							],
+							[
+								"thumbnail" => "https://img.yzcdn.cn/upload_files/2018/04/21/FmZKwRtoBq8ogVKrsSqWsViRKPOM.jpeg?imageView2/2/w/290/h/290/q/75/format/jpg",
+								"created" => "2018-06-15 12:32:10",
+								"medium" => "https://img.yzcdn.cn/upload_files/2018/04/21/FmZKwRtoBq8ogVKrsSqWsViRKPOM.jpeg?imageView2/2/w/600/h/0/q/75/format/jpg",
+								"id" => 1082571118,
+								"url" => "https://img.yzcdn.cn/upload_files/2018/04/21/FmZKwRtoBq8ogVKrsSqWsViRKPOM.jpeg",
+								"combine" => "https://img.yzcdn.cn/upload_files/2018/04/21/FmZKwRtoBq8ogVKrsSqWsViRKPOM.jpeg?imageView2/2/w/600/h/0/q/75/format/jpg"
+							]
+						],
+						"title" => "茶叶绿茶铁观音碧螺春茉莉花茶毛尖",
+						"item_no" => "",
+						"update_time" => "2018-06-09 10:30:08",
+						"price" => 15990,
+						"alias" => "272v2kj9yy9q7",
+						"post_type" => 2,
+						"delivery_template" => [
+							"delivery_template_fee" => "0.0",
+							"delivery_template_id" => 526124,
+							"delivery_template_valuation_type" => 1,
+							"delivery_template_name" => "部分地区可供"
+						],
+					],
+					// ...
+				],
+			],
+		];
+		$results = $ret['response'] ?? 0;
+		$items = $results['items'] ?? [];
+		$count = $results['count'] ?? 0;
+
+		$msg = "stime:" . $stime . ' == etime:' . $etime . ' == ' . 'page:' . $page . ' == ' . 'pagesize:' . $page_size;
+		if ($isDebugger) {
+			echo $msg . PHP_EOL;
+		}
+		AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_GOODS, __FUNCTION__, __LINE__);
+
+		return $results;
+
 	}
 
 
@@ -143,7 +263,7 @@ class YzUser extends ActiveRecord
 			if ($isDebugger) {
 				echo $msg . PHP_EOL;
 			}
-			AppUtil::logByFile($msg, self::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
+			AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 
 			if ($results && $results['total_results'] > 0) {
 				$total_results = $results['total_results'];
@@ -186,8 +306,8 @@ class YzUser extends ActiveRecord
 			echo $msg . PHP_EOL;
 		}
 
-		AppUtil::logByFile($results, self::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
-		AppUtil::logByFile($msg, self::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
+		AppUtil::logByFile($results, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
+		AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 
 		return $results;
 
@@ -206,7 +326,7 @@ class YzUser extends ActiveRecord
 			if ($isDebugger) {
 				echo $msg . PHP_EOL;
 			}
-			AppUtil::logByFile($msg, self::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
+			AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 
 			$res = YouzanUtil::getData($method, $params);
 			if (isset($res['response'])) {
@@ -257,7 +377,7 @@ class YzUser extends ActiveRecord
 							if ($isDebugger) {
 								echo $msg . PHP_EOL;
 							}
-							AppUtil::logByFile('$fansId:' . $fansId, self::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
+							AppUtil::logByFile('$fansId:' . $fansId, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 							self::getUserInfoByTag($fansId);
 						}
 					}
@@ -269,7 +389,7 @@ class YzUser extends ActiveRecord
 			echo $msg . PHP_EOL;
 		}
 
-		AppUtil::logByFile($msg, self::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
+		AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 
 		$resStyle = [
 			'response' => [
@@ -317,7 +437,7 @@ class YzUser extends ActiveRecord
 		if ($isDebugger) {
 			echo $msg . PHP_EOL;
 		}
-		AppUtil::logByFile($msg, self::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
+		AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 
 		$resStyle = [
 			"response" => [
@@ -405,7 +525,7 @@ class YzUser extends ActiveRecord
 				if ($isDebugger) {
 					echo 'edit fans_id:' . $fansId . PHP_EOL;
 				}
-				AppUtil::logByFile('fans_id:' . $fansId, self::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
+				AppUtil::logByFile('fans_id:' . $fansId, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
 				self::process($v);
 			}
 			if ($last_fansId > 0) {
