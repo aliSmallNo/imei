@@ -652,6 +652,7 @@ class User extends ActiveRecord
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
 		$offset = ($page - 1) * $pageSize;
+
 		$orderBy = ' order by uAddedOn desc ';
 		if (isset($params[':status']) && in_array($params[':status'],
 				[self::STATUS_INVALID, self::SUB_ST_NORMAL, self::STATUS_PENDING])) {

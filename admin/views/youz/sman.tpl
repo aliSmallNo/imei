@@ -9,7 +9,6 @@
 </div>
 <div class="row">
 	<form action="/youz/sman" method="get" class="form-inline">
-
 		<div class="form-group">
 			<input class="form-control" placeholder="严选师名称" type="text" name="name"
 						 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
@@ -25,6 +24,8 @@
 		<button class="btn btn-primary">查询</button>
 		<span class="space"></span>
 	</form>
+	<div style="height: 1em"></div>
+	<button class="btn btn-primary opExcel">导出管理</button>
 </div>
 
 <div class="row-divider"></div>
@@ -172,6 +173,12 @@
 				}
 			}, "json");
 	})
+
+	$(".opExcel").on("click", function () {
+		var aname = $("input[name=aname]").val();
+		var url = "/youz/export_yxs?aname=" + aname + "&sign=excel";
+		location.href = url;
+	});
 
 </script>
 {{include file="layouts/footer.tpl"}}

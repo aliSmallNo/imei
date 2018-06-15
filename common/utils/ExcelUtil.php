@@ -11,6 +11,7 @@
 namespace common\utils;
 require_once __DIR__ . '/../lib/Excel/PHPExcel.php';
 
+use admin\models\Admin;
 use yii\base\Exception;
 
 class ExcelUtil
@@ -194,7 +195,6 @@ class ExcelUtil
 
 	/**
 	 * 导出用户信息
-	 *
 	 * @param $fileName
 	 * @param $headArr
 	 * @param $data
@@ -471,5 +471,75 @@ class ExcelUtil
 		$sheet->getStyle($area)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 		$sheet->getStyle($area)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
 		$sheet->getStyle($area)->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00);
+	}
+
+	public static function getYZExcel($fileName, $headArr, $data, $widths = [])
+	{
+		if (empty($data) || !is_array($data)) {
+			die("data must be a array");
+		}
+		if (empty($fileName)) {
+			exit;
+		}
+		//创建新的PHPExcel对象
+		$objPHPExcel = new \PHPExcel();
+		$objPHPExcel->getDefaultStyle()->getFont()->setName(self::FONT_NAME);
+		$objPHPExcel->getDefaultStyle()->getFont()->setSize(self::FONT_SIZE);
+		$userInfo = Admin::userInfo();//当前登录后台用户权限信息
+		if ($userInfo) {
+			$objProps = $objPHPExcel->getProperties();
+			$objProps->setCreator($userInfo['aName']);//[aName] => 周攀
+			$objProps->setLastModifiedBy($userInfo['aLoginId']);//[aLoginId] => zhoup
+			$objProps->setKeywords($fileName);
+			$objProps->setTitle($fileName);
+			$objProps->setSubject($fileName);
+			$objProps->setCompany('北京奔跑吧货滴科技有限公司');
+		}
+		$activeSheet = $objPHPExcel->getActiveSheet();
+		//设置表头
+		$key = ord("A");//65
+		$tmpIndex = 0;
+		//$headArr表头数据
+		foreach ($headArr as $k => $v) {
+			$col = \PHPExcel_Cell::stringFromColumnIndex($k);
+			$tmpWidth = 20;
+			$activeSheet->getColumnDimension($col)->setWidth($tmpWidth);
+			$activeSheet->getStyle($col)->getAlignment()->setWrapText(true);//自动换行
+			$activeSheet->setCellValue($col . '1', $v);
+			$tmpIndex++;
+			$key += 1;
+		}
+		$rowIndex = 2;
+		// $data --> 表格的具体数据
+		foreach ($data as $key => $rows) {
+			$span = ord("A");
+			foreach ($rows as $keyName => $value) {
+				$col = \PHPExcel_Cell::stringFromColumnIndex($keyName);
+				$activeSheet->setCellValue($col . $rowIndex, $value);
+				$activeSheet->getStyle($col)->getAlignment()->setWrapText(true);
+				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+				if ($keyName == (count($rows) - 1)) {
+					$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+				}
+				$span++;
+			}
+			$rowIndex++;
+		}
+
+		if ($widths) {
+			foreach ($headArr as $k => $v) {
+				if (isset($widths[$k])) {
+					$col = \PHPExcel_Cell::stringFromColumnIndex($k);
+					$activeSheet->getColumnDimension($col)->setWidth($widths[$k]);
+					$activeSheet->getStyle($col . '1')->getFont()->setBold(true);//加粗
+					$activeSheet->getStyle($col . '1')->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+					$activeSheet->getStyle($col . '1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+				} else {
+					break;
+				}
+			}
+		}
+		self::exportExcel($fileName, $objPHPExcel);
 	}
 }

@@ -12,6 +12,8 @@ namespace admin\controllers;
 use admin\controllers\BaseController;
 use admin\models\Admin;
 use common\models\YzUser;
+use common\utils\AppUtil;
+use common\utils\ExcelUtil;
 use common\utils\YouzanUtil;
 
 class YouzController extends BaseController
@@ -93,6 +95,49 @@ class YouzController extends BaseController
 			]);
 	}
 
+	/**
+	 * 导出严选师及对应的管理员
+	 */
+	public function actionExport_yxs()
+	{
+		$manager_name = self::getParam("anmae");
+		$condition = '';
+		if ($manager_name) {
+			$condition = " and a.aName like '%$manager_name%' ";
+		}
+
+		$sql = "select 
+				a.aId,a.aName,
+				u1.uYZUId,u1.uName,u1.uPhone,u1.uPoint,u1.`uTradeNum`,u1.uTradeMoney,u1.uUpdatedOn,
+				u2.uName as fname,u2.uPhone as fphone
+				from im_yz_user as u1
+				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone and u2.uPhone>0
+				left join im_admin as a on a.aId=u1.uAdminId
+				where u1.uType=:ty and u1.uAdminId>1 $condition
+				order by u1.uAdminId asc ";
+		$conn = AppUtil::db();
+		$res = $conn->createCommand($sql)->bindValues([
+			':ty' => YzUser::TYPE_YXS,
+		])->queryAll();
+
+		$header = $content = [];
+		$header = ['ID', '严选师信息', '交易数量', '交易金额', '邀请方信息', '管理员', '更新时间'];
+		foreach ($res as $v) {
+			$content[] = [
+				$v['uYZUId'],
+				$v['uName'] . '(' . $v['uPhone'] .')',
+				$v['uTradeNum'],
+				$v['uTradeMoney'],
+				$v['fname'] . '(' . $v['fphone'] . ')',
+				$v['aName'],
+				$v['uUpdatedOn'],
+			];
+		}
+
+		ExcelUtil::getYZExcel('有赞管理员' . date("Y-m-d"), $header, $content, [12, 30, 12, 12, 30, 12, 30,]);
+		exit;
+	}
+
 	public function actionUsers()
 	{
 		Admin::staffOnly();
@@ -145,7 +190,7 @@ class YouzController extends BaseController
 			//$units[] = session_create_id();
 			$units[] = $getRandOnlyId();
 		}
-		echo '<h3>100个唯一ID：</h3>'.implode(' ', $units);
+		echo '<h3>100个唯一ID：</h3>' . implode(' ', $units);
 		exit;
 	}
 
