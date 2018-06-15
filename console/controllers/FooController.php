@@ -1467,7 +1467,7 @@ class FooController extends Controller
 
 		// AppUtil::logByFile(date('Y-m-d H:i:s'), 'youzan_user', __FUNCTION__, __LINE__);
 
-		//$token = YouzanUtil::getAccessToken();echo $token;
+		$token = YouzanUtil::getAccessToken();echo $token;
 
 		// 更新用户
 		//YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');
@@ -1478,33 +1478,13 @@ class FooController extends Controller
 		// 更新分销员
 		//YzUser::getSalesManList();
 
-
 		// 更新
 		// YzUser::getSalesManList();
 
-		/*$st = '2018-03-27 13:36:58';
-		$et = '2018-06-05 23:59:59';
-		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
-		$total = 0;
-		for ($d = 0; $d < $days; $d++) {
-			$stime = date('Y-m-d', strtotime($st) + $d * 86400);
-			$etime = date('Y-m-d', strtotime($st) + ($d + 1) * 86400);
-			$sql = "select count(1) from im_yz_user as u  where from_unixtime(`uFollowTime`) between '$stime 00:00:00' and '$etime 00:00:00' ";
-			$total_results = AppUtil::db()->createCommand($sql)->queryScalar();
-			$total = $total + $total_results;
-			echo "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . $total_results . ' Total:' . $total . PHP_EOL;
-		}*/
-
-		/*$sql = " select uYZUId from im_yz_user where `uUpdatedOn` between '2018-06-06 11:37:00' and '2018-06-06 11:37:59' ";
-		$res = AppUtil::db()->createCommand($sql)->queryAll();
-		foreach ($res as $v) {
-			echo '$fanid:' . $v['uYZUId'] . PHP_EOL;
-			YzUser::getUserInfoByTag($v['uYZUId']);
-		}*/
-
 		// ChatMsg::massmsg();
 
-		$conn = AppUtil::db();
+		/* 去掉昵称表情符号
+		 * $conn = AppUtil::db();
 		$sql = 'update im_yz_user set uName=:uname where uId =:id';
 		$upCMD = $conn->createCommand($sql);
 		$sql = 'select uId,uName from im_yz_user where uId >0 ';
@@ -1517,7 +1497,7 @@ class FooController extends Controller
 				':uname' => trim($name),
 				':id' => $id,
 			])->execute();
-		}
+		}*/
 
 
 	}

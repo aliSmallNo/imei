@@ -485,7 +485,7 @@ class ExcelUtil
 		$objPHPExcel = new \PHPExcel();
 		$objPHPExcel->getDefaultStyle()->getFont()->setName(self::FONT_NAME);
 		$objPHPExcel->getDefaultStyle()->getFont()->setSize(self::FONT_SIZE);
-		$userInfo = Admin::userInfo();//当前登录后台用户权限信息
+		$userInfo = Admin::userInfo();// 当前登录后台用户权限信息
 		if ($userInfo) {
 			$objProps = $objPHPExcel->getProperties();
 			$objProps->setCreator($userInfo['aName']);//[aName] => 周攀
