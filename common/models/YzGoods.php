@@ -16,22 +16,22 @@ use yii\db\ActiveRecord;
 class YzGoods extends ActiveRecord
 {
 	/**
-	item_id     商品的数字id
-	alias       商品别名，是一串字符
-	title       商品标题
-	price       价格，单位分
-	item_type   商品类型
-	item_no     商家编码，商家给商品设置的商家编码。
-	quantity    总库存
-	post_type   运费类型，1 是统一运费，2是运费模板
-	post_fee    运费，单位分。当post_type为1时的运费
-	created_time 创建时间
-	update_time 更新时间
-	detail_url  商品详情链接
-	delivery_template 运费模板信息，当post_type为2时有值
-	num         商家排序字段
-	item_imgs   商品图片
-	origin      商品划线价
+	 * item_id     商品的数字id
+	 * alias       商品别名，是一串字符
+	 * title       商品标题
+	 * price       价格，单位分
+	 * item_type   商品类型
+	 * item_no     商家编码，商家给商品设置的商家编码。
+	 * quantity    总库存
+	 * post_type   运费类型，1 是统一运费，2是运费模板
+	 * post_fee    运费，单位分。当post_type为1时的运费
+	 * created_time 创建时间
+	 * update_time 更新时间
+	 * detail_url  商品详情链接
+	 * delivery_template 运费模板信息，当post_type为2时有值
+	 * num         商家排序字段
+	 * item_imgs   商品图片
+	 * origin      商品划线价
 	 */
 
 	// post_type 运费类型，1 是统一运费，2是运费模板
@@ -73,6 +73,8 @@ class YzGoods extends ActiveRecord
 		'update_time' => 'g_update_time',
 		'item_type' => 'g_item_type',
 
+		'status' => 'g_status',
+
 	];
 
 
@@ -112,7 +114,7 @@ class YzGoods extends ActiveRecord
 		return self::edit($g_item_id, $insert);
 	}
 
-	public static function get_goods_by_se_time($st = '', $et = '', $isDebugger = false)
+	public static function get_goods_by_se_time($st = '', $et = '', $tag, $isDebugger = false)
 	{
 
 		// 根据关注时间段批量查询微信粉丝用户信息
@@ -132,7 +134,7 @@ class YzGoods extends ActiveRecord
 			$page = 1;
 			$page_size = 100;
 			do {
-				list($item, $count) = self::get_yz_goods_item($stime, $etime, $page, $page_size, $isDebugger);
+				list($item, $count) = self::get_yz_goods_item($tag, $stime, $etime, $page, $page_size, $isDebugger);
 
 				if ($isDebugger) {
 					$total = $total + $count;
@@ -142,6 +144,7 @@ class YzGoods extends ActiveRecord
 				}
 
 				foreach ($item as $v) {
+					$v['status'] = self::ST_STORE_HOUSE;
 					self::process($v);
 
 				}
@@ -156,9 +159,20 @@ class YzGoods extends ActiveRecord
 	}
 
 
-	public static function get_yz_goods_item($stime, $etime, $page, $page_size, $isDebugger = false)
+	public static function get_yz_goods_item($tag, $stime, $etime, $page, $page_size, $isDebugger = false)
 	{
-		$method = 'youzan.items.inventory.get';
+
+		switch ($tag) {
+			case self::ST_ON_SALE:
+				$method = 'youzan.items.onsale.get';
+				break;
+			case self::ST_STORE_HOUSE:
+				$method = 'youzan.items.inventory.get';
+				break;
+			case self::ST_SALE_OUT:
+				$method = '';
+				break;
+		}
 		$params = [
 			'page_no' => $page,
 			'page_size' => $page_size,
