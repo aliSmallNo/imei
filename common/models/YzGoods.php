@@ -144,7 +144,7 @@ class YzGoods extends ActiveRecord
 				}
 
 				foreach ($item as $v) {
-					$v['status'] = self::ST_STORE_HOUSE;
+					$v['status'] = $tag;
 					self::process($v);
 
 				}
