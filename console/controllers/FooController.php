@@ -1504,6 +1504,25 @@ class FooController extends Controller
 
 		// ChatMsg::massmsg();
 
+		$conn = AppUtil::db();
+		$sql = 'update im_yz_user set uName=:uname where uId =:id';
+		$upCMD = $conn->createCommand($sql);
+		$sql = 'select uId,uName from im_yz_user where uId < 172727 ';
+		$res = $conn->createCommand($sql)->queryAll();
+
+		foreach ($res as $v) {
+			$id = $v['uId'];
+			$name = preg_replace('/./u', '', $v['uName']);
+			echo $name . PHP_EOL;
+			/*$upCMD->bindValues([
+				':uname' => $name,
+				':id' => $id,
+			])->execute();*/
+		}
+
+
+		echo YzUser::filterEmoji('💕 不会假装温柔💕');
+
 
 	}
 

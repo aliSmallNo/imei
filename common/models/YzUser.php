@@ -75,6 +75,9 @@ class YzUser extends ActiveRecord
 		$insert = [];
 		foreach (YzUser::$fieldMap as $key => $val) {
 			if (isset($v[$key]) && $v[$key]) {
+				if ($key == "nick") {
+					// $v[$key] = self::filterEmoji($v[$key]);
+				}
 				$insert[$val] = $v[$key];
 			}
 		}
@@ -86,6 +89,18 @@ class YzUser extends ActiveRecord
 		$insert['uRawData'] = json_encode($v, JSON_UNESCAPED_UNICODE);
 		// echo $uid;print_r($insert);exit;
 		return YzUser::edit($uid, $insert);
+	}
+
+	public static function filterEmoji($str)
+	{
+		$str = preg_replace_callback(
+			'/./u',
+			function (array $match) {
+				return strlen($match[0]) >= 4 ? '' : $match[0];
+			},
+			$str);
+
+		return $str;
 	}
 
 
