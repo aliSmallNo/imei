@@ -46,12 +46,12 @@ class YzSkus extends ActiveRecord
 		return '{{%yz_skus}}';
 	}
 
-	public static function edit($s_item_id, $data)
+	public static function edit($s_sku_id, $data)
 	{
 		if (!$data) {
 			return 0;
 		}
-		$entity = self::findOne(['s_item_id' => $s_item_id]);
+		$entity = self::findOne(['s_sku_id' => $s_sku_id]);
 		if (!$entity) {
 			$entity = new self();
 		}
@@ -64,7 +64,10 @@ class YzSkus extends ActiveRecord
 
 	public static function process($v)
 	{
-		$s_item_id = $v['item_id'];
+		$s_sku_id = $v['sku_id'];
+		if (!$s_sku_id || !$v) {
+			return 0;
+		}
 		$insert = [];
 		foreach (self::$fieldMap as $key => $val) {
 			if (isset($v[$key])) {
@@ -72,7 +75,7 @@ class YzSkus extends ActiveRecord
 			}
 		}
 		// echo $s_item_id;print_r($insert);exit;
-		return self::edit($s_item_id, $insert);
+		return self::edit($s_sku_id, $insert);
 	}
 
 
