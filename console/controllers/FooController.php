@@ -1500,10 +1500,10 @@ class FooController extends Controller
 			])->execute();
 		}*/
 
-		/*$st = '2018-03-26 00:00:00';
+		$st = '2018-03-26 00:00:00';
 		$et = date('Y-m-d 23:23:59');
 		YzGoods::get_goods_by_se_time($st, $et, 6, 1);
-		YzGoods::get_goods_by_se_time($st, $et, 1, 1);*/
+		YzGoods::get_goods_by_se_time($st, $et, 1, 1);
 		YzGoods::update_all_goods_desc(1);
 
 		//
