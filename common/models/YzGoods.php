@@ -15,6 +15,52 @@ use yii\db\ActiveRecord;
 
 class YzGoods extends ActiveRecord
 {
+
+	/**
+	 * item_id 商品id
+	 * alias 短地址
+	 * title 标题
+	 * price 价格(分)
+	 * item_type 商品类型 0：普通商品 3：UMP降价拍 5：外卖商品 10：分销商品 20：会员卡商品 21：礼品卡商品 22：团购券 25：批发商品 30：收银台商品 31：知识付费商品 35：酒店商品 40：美业商品 60：虚拟商品 61：电子卡券
+	 * item_no 商品货号（商家为商品设置的外部编号，可与商家外部系统对接）
+	 * quantity 总库存
+	 * post_type 运费类型
+	 * post_fee 运费
+	 * detail_url 适合wap应用的商品详情url
+	 * delivery_template_info 运费模板信息
+	 * num 商家排序字段
+	 * item_imgs 图片信息
+	 * origin_price 商品划线价格，可以自定义。例如 促销价：888
+	 *
+	 *
+	 * kdt_id 店铺id
+	 * desc 商品内容
+	 * buy_quota 每人限购多少件。0代表无限购，默认为0
+	 * created 创建时间
+	 * cid 商品分类的叶子类目id
+	 * tag_ids 商品标签id列表
+	 * share_url 分享出去的商品详情url
+	 * pic_url 商品主图片地址
+	 * pic_thumb_url 商品主图片缩略图地址
+	 * sold_num 总销量
+	 * is_listing 商品上架状态。true 为已上架，false 为已下架
+	 * is_lock 商品是否锁定。true 为已锁定，false 为未锁定
+	 * auto_listing_time 商品定时上架（定时开售）的时间。没设置则为空
+	 * join_level_discount 是否参加会员折扣
+	 * purchase_right 是否设置商品购买权限
+	 * presale_extend 预售扩展信息
+	 * fenxiao_extend 分销扩展信息
+	 * hotel_extend 酒店扩展信息
+	 * virtual_extend 虚拟商品扩展信息
+	 * skus 商品规格库存信息
+	 * item_tags 商品分组列表
+	 * messages 商品留言
+	 * template 商品详情模板信息
+	 * purchase_rightList 购买权限信息
+	 * sku_images SKU图片列表
+
+	 */
+
 	/**
 	 * item_id     商品的数字id
 	 * alias       商品别名，是一串字符
@@ -25,9 +71,10 @@ class YzGoods extends ActiveRecord
 	 * quantity    总库存
 	 * post_type   运费类型，1 是统一运费，2是运费模板
 	 * post_fee    运费，单位分。当post_type为1时的运费
+	 * detail_url  商品详情链接
+	 *
 	 * created_time 创建时间
 	 * update_time 更新时间
-	 * detail_url  商品详情链接
 	 * delivery_template 运费模板信息，当post_type为2时有值
 	 * num         商家排序字段
 	 * item_imgs   商品图片
@@ -37,6 +84,7 @@ class YzGoods extends ActiveRecord
 	// post_type 运费类型，1 是统一运费，2是运费模板
 	// post_fee: 运费，单位分。当post_type为1时的运费
 	// delivery_template，运费模板信息，当post_type为2时有值
+
 	const POST_TYPE_DEFAULT = 1;
 	const POST_TYPE_TEMPLATE = 2;
 	static $typeDict = [
@@ -57,7 +105,10 @@ class YzGoods extends ActiveRecord
 
 	static $fieldMap = [
 		'item_id' => 'g_item_id',
+
 		'origin' => 'g_origin',
+		'origin_price' => 'g_origin',
+
 		'num' => 'g_num',
 		'title' => 'g_title',
 		'item_no' => 'g_item_no',
@@ -67,11 +118,42 @@ class YzGoods extends ActiveRecord
 		'detail_url' => 'g_detail_url',
 		'quantity' => 'g_quantity',
 		'alias' => 'g_alias',
-		'item_delivery_template' => 'g_item_delivery_template',
 		'item_imgs' => 'g_item_imgs',
+
+		'delivery_template' => 'g_delivery_template',
+		'delivery_template_info' => 'g_delivery_template',
+
 		'created_time' => 'g_created_time',
+		'created'=>'g_created_time',
+
 		'update_time' => 'g_update_time',
 		'item_type' => 'g_item_type',
+
+
+		'kdt_id'=>'g_kdt_id',
+		'desc'=>'g_desc',
+		'buy_quota'=>'g_buy_quota',
+		'cid'=>'g_cid',
+		'tag_ids'=>'g_tag_ids',
+		'share_url'=>'g_share_url',
+		'pic_url'=>'g_pic_url',
+		'pic_thumb_url'=>'g_pic_thumb_url',
+		'sold_num'=>'g_sold_num',
+		'is_listing'=>'g_is_listing',
+		'is_lock'=>'g_is_lock',
+		'auto_listing_time'=>'g_auto_listing_time',
+		'join_level_discount'=>'g_join_level_discount',
+		'purchase_right'=>'g_purchase_right',
+		'presale_extend'=>'g_presale_extend',
+		'fenxiao_extend'=>'g_fenxiao_extend',
+		'virtual_extend'=>'g_virtual_extend',
+		'skus'=>'g_skus',
+		'item_tags'=>'g_item_tags',
+		'messages'=>'g_messages',
+		'template'=>'g_template',
+		'purchase_rightList'=>'g_purchase_rightList',
+		'sku_images'=>'g_sku_images',
+		'hotel_extend'=>'g_hotel_extend',
 
 		'status' => 'g_status',
 
@@ -136,7 +218,6 @@ class YzGoods extends ActiveRecord
 
 			do {
 				list($item, $count) = self::get_yz_goods_item($tag, $stime, $etime, $page, $page_size, $isDebugger);
-
 				if ($isDebugger) {
 					if ($page == 1) {
 						$total = $total + $count;
