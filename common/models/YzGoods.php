@@ -352,7 +352,6 @@ class YzGoods extends ActiveRecord
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as $v) {
 			self::get_goods_desc_by_id($v['g_item_id'], $isDebugger);
-			exit;
 		}
 	}
 

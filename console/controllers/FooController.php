@@ -1506,6 +1506,7 @@ class FooController extends Controller
 		YzGoods::get_goods_by_se_time($st, $et, 1, 1);*/
 		YzGoods::update_all_goods_desc(1);
 
+		//
 
 	}
 
