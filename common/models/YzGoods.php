@@ -58,7 +58,6 @@ class YzGoods extends ActiveRecord
 	 * template 商品详情模板信息
 	 * purchase_rightList 购买权限信息
 	 * sku_images SKU图片列表
-
 	 */
 
 	/**
@@ -124,36 +123,36 @@ class YzGoods extends ActiveRecord
 		'delivery_template_info' => 'g_delivery_template',
 
 		'created_time' => 'g_created_time',
-		'created'=>'g_created_time',
+		'created' => 'g_created_time',
 
 		'update_time' => 'g_update_time',
 		'item_type' => 'g_item_type',
 
 
-		'kdt_id'=>'g_kdt_id',
-		'desc'=>'g_desc',
-		'buy_quota'=>'g_buy_quota',
-		'cid'=>'g_cid',
-		'tag_ids'=>'g_tag_ids',
-		'share_url'=>'g_share_url',
-		'pic_url'=>'g_pic_url',
-		'pic_thumb_url'=>'g_pic_thumb_url',
-		'sold_num'=>'g_sold_num',
-		'is_listing'=>'g_is_listing',
-		'is_lock'=>'g_is_lock',
-		'auto_listing_time'=>'g_auto_listing_time',
-		'join_level_discount'=>'g_join_level_discount',
-		'purchase_right'=>'g_purchase_right',
-		'presale_extend'=>'g_presale_extend',
-		'fenxiao_extend'=>'g_fenxiao_extend',
-		'virtual_extend'=>'g_virtual_extend',
-		'skus'=>'g_skus',
-		'item_tags'=>'g_item_tags',
-		'messages'=>'g_messages',
-		'template'=>'g_template',
-		'purchase_rightList'=>'g_purchase_rightList',
-		'sku_images'=>'g_sku_images',
-		'hotel_extend'=>'g_hotel_extend',
+		'kdt_id' => 'g_kdt_id',
+		'desc' => 'g_desc',
+		'buy_quota' => 'g_buy_quota',
+		'cid' => 'g_cid',
+		'tag_ids' => 'g_tag_ids',
+		'share_url' => 'g_share_url',
+		'pic_url' => 'g_pic_url',
+		'pic_thumb_url' => 'g_pic_thumb_url',
+		'sold_num' => 'g_sold_num',
+		'is_listing' => 'g_is_listing',
+		'is_lock' => 'g_is_lock',
+		'auto_listing_time' => 'g_auto_listing_time',
+		'join_level_discount' => 'g_join_level_discount',
+		'purchase_right' => 'g_purchase_right',
+		'presale_extend' => 'g_presale_extend',
+		'fenxiao_extend' => 'g_fenxiao_extend',
+		'virtual_extend' => 'g_virtual_extend',
+		'skus' => 'g_skus',
+		'item_tags' => 'g_item_tags',
+		'messages' => 'g_messages',
+		'template' => 'g_template',
+		'purchase_rightList' => 'g_purchase_rightList',
+		'sku_images' => 'g_sku_images',
+		'hotel_extend' => 'g_hotel_extend',
 
 		'status' => 'g_status',
 
@@ -188,7 +187,7 @@ class YzGoods extends ActiveRecord
 		$g_item_id = $v['item_id'];
 		$insert = [];
 		foreach (self::$fieldMap as $key => $val) {
-			if (isset($v[$key]) && $v[$key]) {
+			if (isset($v[$key])) {
 				$insert[$val] = $v[$key];
 			}
 		}
@@ -224,7 +223,7 @@ class YzGoods extends ActiveRecord
 					}
 					$msg = "stime:" . $stime . ':' . $stimeFmt . ' == etime:' . $etime . ':' . $etimeFmt . ' currentNum:' . $count . 'countRes:' . count($item) . ' Total:' . $total;
 					echo $msg . PHP_EOL;
-					AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
+					AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_GOODS, __FUNCTION__, __LINE__);
 				}
 
 				foreach ($item as $v) {
@@ -246,12 +245,15 @@ class YzGoods extends ActiveRecord
 	{
 
 		switch ($tag) {
+			// 出售中：1
 			case self::ST_ON_SALE:
 				$method = 'youzan.items.onsale.get';
 				break;
+			// 仓库中：6
 			case self::ST_STORE_HOUSE:
 				$method = 'youzan.items.inventory.get';
 				break;
+			// 售罄的
 			case self::ST_SALE_OUT:
 				$method = '';
 				break;
@@ -344,346 +346,287 @@ class YzGoods extends ActiveRecord
 
 	}
 
-
-	public static function UpdateUser($st = '', $et = '')
+	public static function update_all_goods_desc($isDebugger = false)
 	{
-		$st = $st ? $st : date('Y-m-d 00:00:00');
-		$et = $et ? $et : date('Y-m-d 00:00:00', time() + 86400);
-		self::getUserBySETime($st, $et);
-	}
-
-	/**
-	 * 根据关注时间段批量查询微信粉丝用户信息（支持粉丝基础信息、积分、交易等数据查询，详见入参fields字段描述）。
-	 * 注意：循环拉取
-	 */
-	public static function getUserBySETime($st, $et, $isDebugger = false)
-	{
-
-		// 根据关注时间段批量查询微信粉丝用户信息
-		//$st = '2018-03-26 00:00:00';
-		//$et = '2018-03-29 00:00:00';
-
-		//$st = '2018-06-05 00:00:00';
-		//$et = '2018-06-06 00:00:00';
-		$page = 1;
-		$page_size = 20;
-		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
-
-		$total = 0;
-		for ($d = 0; $d < $days; $d++) {
-			$stime = date('Y-m-d', strtotime($st) + $d * 86400);
-			$etime = date('Y-m-d', strtotime($st) + ($d + 1) * 86400);
-
-			$results = self::getTZUser($stime, $etime, $page, $page_size, $isDebugger);
-
-			/* 计算总共用户数 */
-			$total_results = $results['total_results'] ?? 0;
-			$total = $total + $total_results;
-			$msg = "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . $total_results . ' Total:' . $total;
-			if ($isDebugger) {
-				echo $msg . PHP_EOL;
-			}
-			AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
-
-			if ($results && $results['total_results'] > 0) {
-				$total_results = $results['total_results'];
-				$page_count = ceil($total_results / $page_size);
-
-				for ($i = 0; $i < $page_count; $i++) {
-					$users = self::getTZUser($stime, $etime, ($i + 1), $page_size, $isDebugger)['users'];
-					foreach ($users as $v) {
-						self::process($v);
-					}
-				}
-			}
+		$sql = "select g_item_id from im_yz_goods order by g_item_id desc ";
+		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		foreach ($res as $v) {
+			self::get_goods_desc_by_id($v['g_item_id'], $isDebugger);
+			exit;
 		}
-
-		// 更新分销员信息
-		self::getSalesManList($isDebugger);
 	}
 
+
 	/**
-	 * 根据关注时间段批量查询微信粉丝用户信息（支持粉丝基础信息、积分、交易等数据查询，详见入参fields字段描述）。
-	 * 注意：
-	 * 1. 如果接口频繁抛异常，且入参无误，请减小page_size并重试。
-	 * 2.请尽量按需自定义入参“fields”字段获取数据。“fields”字段传入枚举值越多，查询数据耗费时间越长。
+	 * @param $id
+	 * @param bool $isDebugger
+	 * @return bool|int
+	 * https://www.youzanyun.com/apilist/detail/group_item/item/youzan.item.get
 	 */
-	public static function getTZUser($stime, $etime, $page, $page_size, $isDebugger = false)
+	public static function get_goods_desc_by_id($id, $isDebugger = false)
 	{
-		$method = 'youzan.users.weixin.followers.info.search';
+
+		$method = 'youzan.item.get';
 		$params = [
-			'page_no' => $page,
-			'page_size' => $page_size,
-			'start_follow' => $stime,
-			'end_follow' => $etime,
-			'fields' => 'points,trade,level',
+			'item_id' => $id,
 		];
-		$ret = YouzanUtil::getData($method, $params);
-		$results = $ret['response'] ?? 0;
-
-		$msg = "stime:" . $stime . ' == etime:' . $etime . ' == ' . 'page:' . $page . ' == ' . 'pagesize:' . $page_size;
-		if ($isDebugger) {
-			echo $msg . PHP_EOL;
-		}
-
-		AppUtil::logByFile($results, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
-		AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
-
-		return $results;
-
-	}
-
-	public static function getSalesManList($isDebugger = false)
-	{
-		$getSales = function ($page, $isDebugger) {
-			//获取当前店铺分销员列表，需申请高级权限方可调用。
-			$method = 'youzan.salesman.accounts.get';
-			$params = [
-				'page_no' => $page,
-				'page_size' => 20,
-			];
-			$msg = 'page:' . $page;
-			if ($isDebugger) {
-				echo $msg . PHP_EOL;
-			}
-			AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
-
-			$res = YouzanUtil::getData($method, $params);
-			if (isset($res['response'])) {
-				$total_results = $res['response']['total_results'];
-				if ($total_results) {
-					return [$res['response']['accounts'], $total_results];
-				}
-			}
-			return 0;
-		};
-
-		$res = $getSales(1, $isDebugger);
-		$addCount = $editCount = 0;
-		if ($res) {
-			$total_results = $res[1];
-			$pages = ceil($total_results / 20);
-			$msg = '$total_results: ' . $total_results . ' $pages:' . $pages;
-			if ($isDebugger) {
-				echo $msg . PHP_EOL;
-			}
-
-			for ($p = 1; $p <= $pages; $p++) {
-				$ret = $getSales($p, $isDebugger);
-				if ($ret) {
-					$ret = $ret[0];
-					foreach ($ret as $k => $v) {
-						$insert = [
-							'uFromPhone' => $v['from_buyer_mobile'] ?? '',
-							'uPhone' => $v['mobile'] ?? '',
-							'uCreateOn' => $v['created_at'] ?? '',
-							'uSeller' => $v['seller'] ?? '',
-							'uType' => self::TYPE_YXS,
-						];
-						$fansId = $v['fans_id'];
-
-						if (self::findOne(['uYZUId' => $fansId])) {
-							if (isset($insert['uPhone']) && !$insert['uPhone']) {
-								unset($insert['uPhone']);
-							}
-							// 修改
-							$editCount++;
-							self::edit($fansId, $insert);
-						} else {
-							// 添加
-							$addCount++;
-							$msg = '$fansId:' . $fansId;
-
-							if ($isDebugger) {
-								echo $msg . PHP_EOL;
-							}
-							AppUtil::logByFile('$fansId:' . $fansId, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
-							self::getUserInfoByTag($fansId);
-						}
-					}
-				}
-			}
-		}
-		$msg = '$addCount:' . $addCount . ' == $editCount:' . $editCount;
-		if ($isDebugger) {
-			echo $msg . PHP_EOL;
-		}
-
-		AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
-
-		$resStyle = [
-			'response' => [
-				'accounts' => [
-					[
-						'seller' => '3JS1xT',
-						'from_buyer_mobile' => 15206373307,
-						'money' => 1.90,
-						'mobile' => 15153782763,
-						'nickname' => '鸿运当头',
-						'created_at' => '2018-06-04 18:00:35',
-						'order_num' => 1,
-						'fans_id' => 5650058353,
-					],
-					// .....
-				],
-				'total_results' => 730,
-			]
-		];
-
-
-	}
-
-
-	public static function getUserInfoByTag($id, $tag = 'fans_id', $isDebugger = false)
-	{
-
-		$method = 'youzan.users.weixin.follower.get';
-		switch ($tag) {
-			case "fans_id":
-				$params = [
-					'fans_id' => $id,
-				];
-				break;
-			case "weixin_openid":
-				$params = [
-					'weixin_openid' => $id
-				];
-				break;
-		}
 
 		$res = YouzanUtil::getData($method, $params);
 
 		$msg = is_array($res) ? json_encode($res) : $res;
 		if ($isDebugger) {
-			echo $msg . PHP_EOL;
+			echo $id . PHP_EOL;
 		}
-		AppUtil::logByFile($msg, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
+		AppUtil::logByFile($id, YzUser::LOG_YOUZAN_GOODS, __FUNCTION__, __LINE__);
 
 		$resStyle = [
 			"response" => [
-				"user" => [
-					"is_follow" => true,
-					"city" => "盐城",
-					"sex" => "m",
-					"avatar" => "http://thirdwx.qlogo.cn/mmopen/pMNhp8zQy8vEKlbnX7hTxfZpZ3asyARUOQGXJoTWJtFUnVYXDmJhibFGDPaZicmiaWU99c18WvJf6RygicbGmavuHCkshuaARsNB/132",
-					"traded_num" => 2,
-					"points" => 220,
-					"tags" => [
+				"item" => [
+					"template" => [
+						"template_title" => "含物流售后标准",
+						"template_id" => 60623202
 					],
-					"nick" => "饭先生",
-					"follow_time" => 1499842901,
-					"province" => "江苏",
-					"user_id" => 5305912017,
-					"union_id" => "oWYqJwQEwMPBKQ_qIJDGfwQscoWM",
-					"level_info" => [
+					"detail_url" => "https://h5.youzan.com/v2/showcase/goods?alias=271loqlnep7en&from=wsc&kdtfrom=wsc",
+					"skus" => [
+						[
+							"sku_unique_code" => "42045358436212802",
+							"with_hold_quantity" => 0,
+							"quantity" => 15,
+							"item_id" => 420453584,
+							"created" => "2018-06-01 13:35:03",
+							"price" => 300,
+							"properties_name_json" => '[{"vid":374,"v":"蓝","kid":1,"k":"颜色"}]',
+							"modified" => "2018-06-01 13:35:03",
+							"sku_id" => 36212802,
+							"sold_num" => 0,
+							"cost_price" => 150,
+							"item_no" => ""
+						],
+						[
+							"sku_unique_code" => "42045358436212800",
+							"with_hold_quantity" => 0,
+							"quantity" => 15,
+							"item_id" => 420453584,
+							"created" => "2018-06-01 13:35:03",
+							"price" => 300,
+							"properties_name_json" => '[{"vid":772,"v":"白","kid":1,"k":"颜色"}]',
+							"modified" => "2018-06-01 13:35:03",
+							"sku_id" => 36212800,
+							"sold_num" => 0,
+							"cost_price" => 150,
+							"item_no" => ""
+						],
+						[
+							"sku_unique_code" => "42045358436212801",
+							"with_hold_quantity" => 0,
+							"quantity" => 15,
+							"item_id" => 420453584,
+							"created" => "2018-06-01 13:35:03",
+							"price" => 300,
+							"properties_name_json" => '[{"vid":1221,"v":"灰","kid":1,"k":"颜色"}]',
+							"modified" => "2018-06-01 13:35:03",
+							"sku_id" => 36212801,
+							"sold_num" => 0,
+							"cost_price" => 150,
+							"item_no" => ""
+						],
+						[
+							"sku_unique_code" => "42045358436212803",
+							"with_hold_quantity" => 0,
+							"quantity" => 15,
+							"item_id" => 420453584,
+							"created" => "2018-06-01 13:35:03",
+							"price" => 300,
+							"properties_name_json" => '[{"vid":1281,"v":"粉","kid":1,"k":"颜色"}]',
+							"modified" => "2018-06-01 13:35:03",
+							"sku_id" => 36212803,
+							"sold_num" => 0,
+							"cost_price" => 150,
+							"item_no" => ""
+						],
+						[
+							"sku_unique_code" => "42045358436212799",
+							"with_hold_quantity" => 0,
+							"quantity" => 15,
+							"item_id" => 420453584,
+							"created" => "2018-06-01 13:35:03",
+							"price" => 300,
+							"properties_name_json" => '[{"vid":1664,"v":"黑","kid":1,"k":"颜色"}]',
+							"modified" => "2018-06-01 13:35:03",
+							"sku_id" => 36212799,
+							"sold_num" => 0,
+							"cost_price" => 150,
+							"item_no" => ""
+						]
 					],
-					"traded_money" => "11.49",
-					"weixin_openid" => "oj3YZwFKcXhyhq1vOLPO3YpfSMLY"
+					"post_fee" => 0,
+					"virtual_extend" => [
+						"effective_type" => 0
+					],
+					"buy_quota" => 0,
+					"item_type" => 0,
+					"num" => 0,
+					"title" => "2018夏爆款女士船袜双杠数字休闲袜子 硅胶防滑隐形袜子——买好货、想省钱，就去到家严选",
+					"join_level_discount" => true,
+					"item_no" => "",
+					"kdt_id" => 40552639,
+					"purchase_right" => false,
+					"price" => 300,
+					"sku_images" => [
+						[
+							"v_id" => 374,
+							"img_url" => "https://img.yzcdn.cn/upload_files/2018/06/01/Fvb9sJsXxC5xmTngKEt6lfv5TGtg.jpg",
+							"k_id" => 1
+						],
+						[
+							"v_id" => 772,
+							"img_url" => "https://img.yzcdn.cn/upload_files/2018/06/01/FobzzDYbPNhCVZnLQgZo8r_nEY62.jpg",
+							"k_id" => 1
+						],
+						[
+							"v_id" => 1221,
+							"img_url" => "https://img.yzcdn.cn/upload_files/2018/06/01/FiEuQdeaCE-Mbt1scHM1W2q9voLZ.jpg",
+							"k_id" => 1
+						],
+						[
+							"v_id" => 1281,
+							"img_url" => "https://img.yzcdn.cn/upload_files/2018/06/01/Fj4e0CJQHskScElFnJW-BlxYXRUh.jpg",
+							"k_id" => 1
+						],
+						[
+							"v_id" => 1664,
+							"img_url" => "https://img.yzcdn.cn/upload_files/2018/06/01/FgJpXSLBhXr9FZk86L7FCbMijEKe.jpg",
+							"k_id" => 1
+						]
+					],
+					"presale_extend" => [
+
+					],
+					"alias" => "271loqlnep7en",
+					"post_type" => 1,
+					"summary" => "",
+					"tag_ids" => [
+						101704852
+					],
+					"quantity" => 75,
+					"item_tags" => [
+						[
+							"created" => "2018-05-30 11:37:43",
+							"share_url" => "https://shop40744807.youzan.com/v2/showcase/tag?alias=13v5ama21",
+							"name" => "兼职录入商品",
+							"alias" => "13v5ama21",
+							"id" => 101704852,
+							"tag_url" => "https://shop40744807.youzan.com/v2/showcase/tag?alias=13v5ama21",
+							"type" => 0,
+							"item_num" => 163,
+							"desc" => ""
+						]
+					],
+					"item_id" => 420453584,
+					"created" => "2018-06-01 13:35:03",
+					"item_imgs" => [
+						[
+							"thumbnail" => "https://img.yzcdn.cn/upload_files/2018/06/01/FgJpXSLBhXr9FZk86L7FCbMijEKe.jpg?imageView2/2/w/290/h/290/q/75/format/jpg",
+							"created" => "2018-06-19 10:21:50",
+							"id" => 1108913685,
+							"medium" => "https://img.yzcdn.cn/upload_files/2018/06/01/FgJpXSLBhXr9FZk86L7FCbMijEKe.jpg?imageView2/2/w/600/h/0/q/75/format/jpg",
+							"url" => "https://img.yzcdn.cn/upload_files/2018/06/01/FgJpXSLBhXr9FZk86L7FCbMijEKe.jpg",
+							"combine" => "https://img.yzcdn.cn/upload_files/2018/06/01/FgJpXSLBhXr9FZk86L7FCbMijEKe.jpg?imageView2/2/w/600/h/0/q/75/format/jpg"
+						],
+						[
+							"thumbnail" => "https://img.yzcdn.cn/upload_files/2018/06/01/Fnuw7oQig9CH9RK8YD-B84HiO-2f.jpg?imageView2/2/w/290/h/290/q/75/format/jpg",
+							"created" => "2018-06-19 10:21:50",
+							"id" => 1108913492,
+							"medium" => "https://img.yzcdn.cn/upload_files/2018/06/01/Fnuw7oQig9CH9RK8YD-B84HiO-2f.jpg?imageView2/2/w/600/h/0/q/75/format/jpg",
+							"url" => "https://img.yzcdn.cn/upload_files/2018/06/01/Fnuw7oQig9CH9RK8YD-B84HiO-2f.jpg",
+							"combine" => "https://img.yzcdn.cn/upload_files/2018/06/01/Fnuw7oQig9CH9RK8YD-B84HiO-2f.jpg?imageView2/2/w/600/h/0/q/75/format/jpg"
+						],
+						[
+							"thumbnail" => "https://img.yzcdn.cn/upload_files/2018/06/01/FgJpXSLBhXr9FZk86L7FCbMijEKe.jpg?imageView2/2/w/290/h/290/q/75/format/jpg",
+							"created" => "2018-06-19 10:21:50",
+							"id" => 1108913687,
+							"medium" => "https://img.yzcdn.cn/upload_files/2018/06/01/FgJpXSLBhXr9FZk86L7FCbMijEKe.jpg?imageView2/2/w/600/h/0/q/75/format/jpg",
+							"url" => "https://img.yzcdn.cn/upload_files/2018/06/01/FgJpXSLBhXr9FZk86L7FCbMijEKe.jpg",
+							"combine" => "https://img.yzcdn.cn/upload_files/2018/06/01/FgJpXSLBhXr9FZk86L7FCbMijEKe.jpg?imageView2/2/w/600/h/0/q/75/format/jpg"
+						],
+						[
+							"thumbnail" => "https://img.yzcdn.cn/upload_files/2018/06/01/FuTytLwPmkqjG1_B_KSZaOKeAQTn.jpg?imageView2/2/w/290/h/290/q/75/format/jpg",
+							"created" => "2018-06-19 10:21:50",
+							"id" => 1108914120,
+							"medium" => "https://img.yzcdn.cn/upload_files/2018/06/01/FuTytLwPmkqjG1_B_KSZaOKeAQTn.jpg?imageView2/2/w/600/h/0/q/75/format/jpg",
+							"url" => "https://img.yzcdn.cn/upload_files/2018/06/01/FuTytLwPmkqjG1_B_KSZaOKeAQTn.jpg",
+							"combine" => "https://img.yzcdn.cn/upload_files/2018/06/01/FuTytLwPmkqjG1_B_KSZaOKeAQTn.jpg?imageView2/2/w/600/h/0/q/75/format/jpg"
+						],
+						[
+							"thumbnail" => "https://img.yzcdn.cn/upload_files/2018/06/01/Fr_XPrUyKQV74dZdWE1RTq_tCUyR.jpg?imageView2/2/w/290/h/290/q/75/format/jpg",
+							"created" => "2018-06-19 10:21:50",
+							"id" => 1108914955,
+							"medium" => "https://img.yzcdn.cn/upload_files/2018/06/01/Fr_XPrUyKQV74dZdWE1RTq_tCUyR.jpg?imageView2/2/w/600/h/0/q/75/format/jpg",
+							"url" => "https://img.yzcdn.cn/upload_files/2018/06/01/Fr_XPrUyKQV74dZdWE1RTq_tCUyR.jpg",
+							"combine" => "https://img.yzcdn.cn/upload_files/2018/06/01/Fr_XPrUyKQV74dZdWE1RTq_tCUyR.jpg?imageView2/2/w/600/h/0/q/75/format/jpg"
+						],
+						[
+							"thumbnail" => "https://img.yzcdn.cn/upload_files/2018/06/01/Fj4e0CJQHskScElFnJW-BlxYXRUh.jpg?imageView2/2/w/290/h/290/q/75/format/jpg",
+							"created" => "2018-06-19 10:21:50",
+							"id" => 1108913886,
+							"medium" => "https://img.yzcdn.cn/upload_files/2018/06/01/Fj4e0CJQHskScElFnJW-BlxYXRUh.jpg?imageView2/2/w/600/h/0/q/75/format/jpg",
+							"url" => "https://img.yzcdn.cn/upload_files/2018/06/01/Fj4e0CJQHskScElFnJW-BlxYXRUh.jpg",
+							"combine" => "https://img.yzcdn.cn/upload_files/2018/06/01/Fj4e0CJQHskScElFnJW-BlxYXRUh.jpg?imageView2/2/w/600/h/0/q/75/format/jpg"
+						],
+						[
+							"thumbnail" => "https://img.yzcdn.cn/upload_files/2018/06/01/Fvb9sJsXxC5xmTngKEt6lfv5TGtg.jpg?imageView2/2/w/290/h/290/q/75/format/jpg",
+							"created" => "2018-06-19 10:21:50",
+							"id" => 1108913691,
+							"medium" => "https://img.yzcdn.cn/upload_files/2018/06/01/Fvb9sJsXxC5xmTngKEt6lfv5TGtg.jpg?imageView2/2/w/600/h/0/q/75/format/jpg",
+							"url" => "https://img.yzcdn.cn/upload_files/2018/06/01/Fvb9sJsXxC5xmTngKEt6lfv5TGtg.jpg",
+							"combine" => "https://img.yzcdn.cn/upload_files/2018/06/01/Fvb9sJsXxC5xmTngKEt6lfv5TGtg.jpg?imageView2/2/w/600/h/0/q/75/format/jpg"
+						],
+						[
+							"thumbnail" => "https://img.yzcdn.cn/upload_files/2018/06/01/FiEuQdeaCE-Mbt1scHM1W2q9voLZ.jpg?imageView2/2/w/290/h/290/q/75/format/jpg",
+							"created" => "2018-06-19 10:21:50",
+							"id" => 1108913692,
+							"medium" => "https://img.yzcdn.cn/upload_files/2018/06/01/FiEuQdeaCE-Mbt1scHM1W2q9voLZ.jpg?imageView2/2/w/600/h/0/q/75/format/jpg",
+							"url" => "https://img.yzcdn.cn/upload_files/2018/06/01/FiEuQdeaCE-Mbt1scHM1W2q9voLZ.jpg",
+							"combine" => "https://img.yzcdn.cn/upload_files/2018/06/01/FiEuQdeaCE-Mbt1scHM1W2q9voLZ.jpg?imageView2/2/w/600/h/0/q/75/format/jpg"
+						],
+						[
+							"thumbnail" => "https://img.yzcdn.cn/upload_files/2018/06/01/FobzzDYbPNhCVZnLQgZo8r_nEY62.jpg?imageView2/2/w/290/h/290/q/75/format/jpg",
+							"created" => "2018-06-19 10:21:50",
+							"id" => 1108914770,
+							"medium" => "https://img.yzcdn.cn/upload_files/2018/06/01/FobzzDYbPNhCVZnLQgZo8r_nEY62.jpg?imageView2/2/w/600/h/0/q/75/format/jpg",
+							"url" => "https://img.yzcdn.cn/upload_files/2018/06/01/FobzzDYbPNhCVZnLQgZo8r_nEY62.jpg",
+							"combine" => "https://img.yzcdn.cn/upload_files/2018/06/01/FobzzDYbPNhCVZnLQgZo8r_nEY62.jpg?imageView2/2/w/600/h/0/q/75/format/jpg"
+						]
+					],
+					"fenxiao_extend" => [
+
+					],
+					"is_listing" => false,
+					"sold_num" => 0,
+					"hotel_extend" => [
+
+					],
+					"delivery_template_info" => [
+
+					],
+					"share_url" => "https://h5.youzan.com/v2/showcase/goods?alias=271loqlnep7en&from=wsc&kdtfrom=wsc",
+					"pic_thumb_url" => "https://img.yzcdn.cn/upload_files/2018/06/01/FgJpXSLBhXr9FZk86L7FCbMijEKe.jpg!120x120.jpg",
+					"is_lock" => false,
+					"messages" => "[]",
+					"origin_price" => "",
+					"pic_url" => "https://img.yzcdn.cn/upload_files/2018/06/01/FgJpXSLBhXr9FZk86L7FCbMijEKe.jpg",
+					"desc" => '<p><img data-origin-width="750" data-origin-height="2048" src="https://img.yzcdn.cn/upload_files/2018/06/01/FjLwbZhoPAYIPrQfJlKqyPMCyODN.jpg!730x0.jpg" /><img data-origin-width="750" data-origin-height="1220" src="https://img.yzcdn.cn/upload_files/2018/06/01/FlmJ4Tx085Msk-WFiI4TzGDmb72F.jpg!730x0.jpg" /><img data-origin-width="750" data-origin-height="1354" src="https://img.yzcdn.cn/upload_files/2018/06/01/FmggcYClba3mOJ1fMs9d61YlL2Mf.jpg!730x0.jpg" /><img data-origin-width="750" data-origin-height="1958" src="https://img.yzcdn.cn/upload_files/2018/06/01/FjdgdrQP2EM0ZGuJFjRxXIv1bRRX.jpg!730x0.jpg" /><img data-origin-width="750" data-origin-height="2290" src="https://img.yzcdn.cn/upload_files/2018/06/01/FovjA-ybNc6laE7c5cb-Tmlww_RB.jpg!730x0.jpg" /><img data-origin-width="750" data-origin-height="1159" src="https://img.yzcdn.cn/upload_files/2018/06/01/FrPmPrV87oHsZshQXxLM2fjPFYCa.jpg!730x0.jpg" /><img data-origin-width="790" data-origin-height="1532" src="https://img.yzcdn.cn/upload_files/2018/06/01/FqUw3zBigKKGhgbb-rf-W4xHCFWI.jpg!730x0.jpg" /><img data-origin-width="790" data-origin-height="958" src="https://img.yzcdn.cn/upload_files/2018/06/01/Fn9Hc18Cl5p2CQcboxK7oiD5M0-b.jpg!730x0.jpg" /><img data-origin-width="770" data-origin-height="1920" src="https://img.yzcdn.cn/upload_files/2018/06/01/FpO-2dRrO0A8sdhCrIaMvBAKOF33.jpg!730x0.jpg" /><img data-origin-width="790" data-origin-height="1546" src="https://img.yzcdn.cn/upload_files/2018/06/01/Fgy27lUyopTBgYAMVgBW_PMCUYmI.jpg!730x0.jpg" /><img data-origin-width="790" data-origin-height="1464" src="https://img.yzcdn.cn/upload_files/2018/06/01/FrJXpdfhlYBCvRC5mA2Xp005VXNc.jpg!730x0.jpg" /><img data-origin-width="790" data-origin-height="1460" src="https://img.yzcdn.cn/upload_files/2018/06/01/FvIZyYqrB_YpnDXuichVaJPnPDXq.jpg!730x0.jpg" /><img data-origin-width="790" data-origin-height="1460" src="https://img.yzcdn.cn/upload_files/2018/06/01/FjH9YTYjYOfH7t3kqLt_AnW1rKvA.jpg!730x0.jpg" /><img data-origin-width="790" data-origin-height="1678" src="https://img.yzcdn.cn/upload_files/2018/06/01/FtcXDfsnzFLn6ohcVjV1QSTaDq8Y.jpg!730x0.jpg" /><img data-origin-width="790" data-origin-height="1704" src="https://img.yzcdn.cn/upload_files/2018/06/01/Fv4mCGWxyXinexyTMz55SC67UfZF.jpg!730x0.jpg" /></p>',
+					"cid" => 1000000,
 				],
 			]
 		];
 
-		if (isset($res['response']) && isset($res['response']['user'])) {
-			$user = $res['response']['user'];
-			return self::process($user);
+		if (isset($res['response']) && isset($res['response']['item'])) {
+			$item = $res['response']['item'];
+			return self::process($item);
 		}
 
 		return false;
-
-	}
-
-	/**
-	 * 根据微信粉丝Id正序批量查询微信粉丝用户信息（不受关注时间限制。支持粉丝基础信息、积分、交易等数据查询，详见入参fields字段描述）
-	 */
-	public static function getYZUserByFansIdAscCycle($isDebugger = false)
-	{
-
-		$last_fansId = RedisUtil::init(RedisUtil::KEY_YOUZAN_LAST_FANSID)->getCache();
-
-		$return_lastFansId = $last_fansId ? $last_fansId : 0;
-
-		$co = 0;
-		while ($return_lastFansId > 0) {
-			$co++;
-			if ($isDebugger) {
-				echo 'getYZUserByFansIdAscCycle:' . $co . PHP_EOL;
-			}
-			$return_lastFansId = self::getYZUserByFansIdAsc($return_lastFansId, $isDebugger);
-			if ($co > 100) {
-				break;
-			}
-		}
-
-		// 更新分销员信息
-		self::getSalesManList($isDebugger);
-	}
-
-	/**
-	 * 根据微信粉丝Id正序批量查询微信粉丝用户信息（不受关注时间限制。支持粉丝基础信息、积分、交易等数据查询，详见入参fields字段描述）
-	 * 注意：
-	 * 1. 如果接口频繁抛异常，且入参无误，请减小page_size并重试。
-	 * 2.请尽量按需自定义入参“fields”字段获取数据。“fields”字段传入枚举值越多，查询数据耗费时间越长。
-	 */
-	public static function getYZUserByFansIdAsc($last_fansId = 0, $isDebugger = false)
-	{
-		$method = 'youzan.users.weixin.followers.info.pull';
-		$params = [
-			'after_fans_id' => $last_fansId,
-			'page_size' => 50,
-			'fields' => 'points,trade,level',
-		];
-		$res = YouzanUtil::getData($method, $params);
-		if (isset($res['response'])
-			&& isset($res['response']['has_next'])
-			&& $res['response']['has_next'] == true) {
-
-			$users = $res['response']['users'];
-			$last_fansId = $res['response']['last_fans_id'];
-
-			foreach ($users as $v) {
-				$fansId = $v['user_id'];
-				if ($isDebugger) {
-					echo 'edit fans_id:' . $fansId . PHP_EOL;
-				}
-				AppUtil::logByFile('fans_id:' . $fansId, self::LOG_YOUZAN_TAG, __FUNCTION__, __LINE__);
-				self::process($v);
-			}
-			if ($last_fansId > 0) {
-				RedisUtil::init(RedisUtil::KEY_YOUZAN_LAST_FANSID)->setCache($last_fansId);
-			}
-			return $last_fansId;
-		}
-
-		$resSucessStyle = [
-			'response' => [
-				'has_next' => true,
-				'users' => [
-					[
-						"nick" => "日暮途远丶",
-						"country" => "中国",
-						"follow_time" => 1503647237,
-						"is_follow" => true,
-						"province" => "北京",
-						"city" => "",
-						"user_id" => 5305907746,
-						"weixin_open_id" => "oj3YZwN94DnNQ1K8KfsvlRnq9Wm4",
-						"sex" => "m",
-						"avatar" => "http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEKbQc8vO0yMapQLVxRMmgvaOFhQibPECyZy7G9IpkxwibnTNY2NYWakmgTYReaQKOPbib8JqFNvgaydA/132"
-					],
-					// ...
-				],
-				'last_fans_id' => 5305907747,
-			]
-		];
-		$resFailStyle = [
-			'response' => [
-				'has_next' => false,
-				'users' => [],
-				'last_fans_id' => -1,
-			]
-		];
-		return -1;
-
 
 	}
 

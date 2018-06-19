@@ -1468,7 +1468,7 @@ class FooController extends Controller
 
 		// AppUtil::logByFile(date('Y-m-d H:i:s'), 'youzan_user', __FUNCTION__, __LINE__);
 
-		 $token = YouzanUtil::getAccessToken();echo $token;
+		// $token = YouzanUtil::getAccessToken();echo $token;
 
 		// 更新用户
 		//YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');
@@ -1502,7 +1502,9 @@ class FooController extends Controller
 
 		/*$st = '2018-03-26 00:00:00';
 		$et = date('Y-m-d 23:23:59');
+		YzGoods::get_goods_by_se_time($st, $et, 6, 1);
 		YzGoods::get_goods_by_se_time($st, $et, 1, 1);*/
+		YzGoods::update_all_goods_desc(1);
 
 
 	}
