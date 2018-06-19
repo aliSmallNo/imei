@@ -146,7 +146,7 @@ class YzGoods extends ActiveRecord
 		'presale_extend' => 'g_presale_extend',
 		'fenxiao_extend' => 'g_fenxiao_extend',
 		'virtual_extend' => 'g_virtual_extend',
-		'skus' => 'g_skus',
+		//'skus' => 'g_skus',
 		'item_tags' => 'g_item_tags',
 		'messages' => 'g_messages',
 		'template' => 'g_template',
@@ -622,10 +622,41 @@ class YzGoods extends ActiveRecord
 
 		if (isset($res['response']) && isset($res['response']['item'])) {
 			$item = $res['response']['item'];
+			$skus = $item['skus'] ?? [];
+			if ($skus) {
+				self::pocess_skus($skus, $isDebugger);
+			} else if (isset($item['skus'])) {
+				unset($item['skus']);
+			}
 			return self::process($item);
 		}
 
 		return false;
+
+	}
+
+	public static function pocess_skus($skus, $isDebugger = false)
+	{
+		$skusStyle = [
+			[
+				"sku_unique_code" => "42045358436212802",
+				"with_hold_quantity" => 0,
+				"quantity" => 15,
+				"item_id" => 420453584,
+				"created" => "2018-06-01 13:35:03",
+				"price" => 300,
+				"properties_name_json" => '[{"vid":374,"v":"蓝","kid":1,"k":"颜色"}]',
+				"modified" => "2018-06-01 13:35:03",
+				"sku_id" => 36212802,
+				"sold_num" => 0,
+				"cost_price" => 150,
+				"item_no" => ""
+			]
+			// ...
+		];
+		foreach ($skus as $sku) {
+			YzSkus::process($sku);
+		}
 
 	}
 
