@@ -126,7 +126,7 @@ class YzOrders extends ActiveRecord
 			if ($current_count) {
 				if ($isDebugger) {
 					$total = $total + $current_count;
-					echo 'current_page:' . $page . ' current_count:' . $current_count . ' total' . $total . PHP_EOL;
+					echo 'fans_id' . $params['fans_id'] . ' current_page:' . $page . ' current_count:' . $current_count . ' total' . $total . PHP_EOL;
 				}
 				foreach ($res as $v) {
 					$full_order_info = $v['full_order_info'] ?? [];
@@ -147,8 +147,7 @@ class YzOrders extends ActiveRecord
 	public static function trades_sold_get_all($isDebugger)
 	{
 
-		self::trades_sold_by_fans_id(['fans_id' => 5352476755], $isDebugger);
-		exit;
+		// self::trades_sold_by_fans_id(['fans_id' => 5352476755], $isDebugger);exit;
 
 		$sql = "select uYZUId from im_yz_user order by uId desc";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
