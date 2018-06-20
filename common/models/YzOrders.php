@@ -70,6 +70,7 @@ class YzOrders extends ActiveRecord
 	{
 
 		$buyer_info = $full_order_info['buyer_info'];
+		print_r($buyer_info);
 		$address_info = $full_order_info['address_info'];
 		$order_info = $full_order_info['order_info'];
 
