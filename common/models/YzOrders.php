@@ -99,53 +99,62 @@ class YzOrders extends ActiveRecord
 	}
 
 
-	public static function trades_sold_get($page)
+	public static function trades_sold_get($page, $params = [])
 	{
 		if ($page < 1) {
 			return [];
 		}
 		$method = 'youzan.trades.sold.get';
 		$api_version = '4.0.0';
-		$my_params = [
+		$my_params = array_merge([
 			'page_size' => self::PAGE_SIZE,
 			'page_no' => $page,
-		];
+		], $params);
 		$res = YouzanUtil::getData($method, $my_params, $api_version);
 
 		return $res['response'] ?? [];
 	}
 
-	public static function trades_sold_get_all($isDebugger = false)
+	public static function trades_sold_by_fans_id($params = [], $isDebugger = false)
 	{
 		$page = 1;
 		$total = 0;
 		do {
-			$res = self::trades_sold_get($page);
-
+			$res = self::trades_sold_get($page, $params);
 			$current_count = count($res);
 			echo '$current_count:' . $current_count . PHP_EOL;
 			if ($current_count >= self::PAGE_SIZE) {
-
 				if ($isDebugger) {
 					$total = $total + $current_count;
 					echo 'current_page:' . $page . ' current_count:' . $current_count . ' total' . $total . PHP_EOL;
 				}
-
 				foreach ($res as $v) {
 					$full_order_info = $v['full_order_info'] ?? [];
 					if ($full_order_info) {
 						self::process($full_order_info);
 					}
 				}
-
 				$page++;
 			} else {
 				$page = 0;
 			}
-
-		} while ($page > 1 && $page < 105);
+		} while ($page > 1 && $page <= 100);
 
 	}
 
+	public static function trades_sold_get_all($isDebugger)
+	{
+
+		self::trades_sold_by_fans_id(['fans_id' => 5352476755], $isDebugger);
+		exit;
+
+		$sql = "select uYZUId from im_yz_user order by uId desc";
+		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		foreach ($res as $v) {
+			if ($v['uYZUId']) {
+				self::trades_sold_by_fans_id(['fans_id' => $v['uYZUId']]);
+			}
+		}
+	}
 
 }
