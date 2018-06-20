@@ -88,6 +88,7 @@ class YzOrders extends ActiveRecord
 		if (!$tid || !$full_order_info) {
 			return 0;
 		}
+		YzAddr::process($address_info);
 		$insert = [];
 		foreach (self::$fieldMap as $key => $val) {
 			if (isset($full_order_info[$key]) && $full_order_info[$key]) {
