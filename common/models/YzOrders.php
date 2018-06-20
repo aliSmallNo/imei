@@ -122,7 +122,9 @@ class YzOrders extends ActiveRecord
 		do {
 			$res = self::trades_sold_get($page, $params);
 			$current_count = count($res);
-			echo '$current_count:' . $current_count . PHP_EOL;
+			if ($isDebugger) {
+				echo 'current_count:' . $current_count . PHP_EOL;
+			}
 			if ($current_count) {
 				if ($isDebugger) {
 					$total = $total + $current_count;
@@ -153,7 +155,7 @@ class YzOrders extends ActiveRecord
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as $v) {
 			if ($v['uYZUId']) {
-				self::trades_sold_by_fans_id(['fans_id' => $v['uYZUId']]);
+				self::trades_sold_by_fans_id(['fans_id' => $v['uYZUId']],$isDebugger);
 			}
 		}
 	}
