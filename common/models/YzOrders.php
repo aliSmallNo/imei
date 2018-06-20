@@ -103,7 +103,7 @@ class YzOrders extends ActiveRecord
 	public static function trades_sold_get($page)
 	{
 		if ($page < 1) {
-			return false;
+			return [];
 		}
 		$method = 'youzan.trades.sold.get';
 		$api_version = '4.0.0';
@@ -112,7 +112,8 @@ class YzOrders extends ActiveRecord
 			'page_no' => $page,
 		];
 		$res = YouzanUtil::getData($method, $my_params, $api_version);
-		return $res;
+
+		return $res['response'] ?? [];
 	}
 
 	public static function trades_sold_get_all($isDebugger = false)
@@ -124,7 +125,7 @@ class YzOrders extends ActiveRecord
 
 			$current_count = count($res);
 			echo '$current_count:' . $current_count . PHP_EOL;
-			if (is_array($res) && $current_count >= self::PAGE_SIZE) {
+			if ($current_count >= self::PAGE_SIZE) {
 
 				if ($isDebugger) {
 					$total = $total + $current_count;
