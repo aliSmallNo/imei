@@ -123,7 +123,7 @@ class YzOrders extends ActiveRecord
 			$res = self::trades_sold_get($page, $params);
 			$current_count = count($res);
 			echo '$current_count:' . $current_count . PHP_EOL;
-			if ($current_count >= self::PAGE_SIZE) {
+			if ($current_count) {
 				if ($isDebugger) {
 					$total = $total + $current_count;
 					echo 'current_page:' . $page . ' current_count:' . $current_count . ' total' . $total . PHP_EOL;
@@ -134,6 +134,8 @@ class YzOrders extends ActiveRecord
 						self::process($full_order_info);
 					}
 				}
+			}
+			if ($current_count >= self::PAGE_SIZE) {
 				$page++;
 			} else {
 				$page = 0;
