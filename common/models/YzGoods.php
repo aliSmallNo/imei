@@ -232,9 +232,7 @@ class YzGoods extends ActiveRecord
 				$page++;
 
 			} while (count($item) == $page_size && $page < 10);
-
 		}
-
 	}
 
 

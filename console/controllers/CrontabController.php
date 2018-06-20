@@ -96,7 +96,7 @@ class CrontabController extends Controller
 		AppUtil::logByFile(date('Y-m-d H:i:s'), 'youzan_user', __FUNCTION__, __LINE__);
 		YzUser::UpdateUser();
 		// 更新商品
-		YzGoods::update_goods();
+		//YzGoods::update_goods();
 		// 更新订单
 		YzOrders::Update_order();
 
