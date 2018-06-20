@@ -126,10 +126,14 @@ class YzOrders extends ActiveRecord
 				echo 'current_count:' . $current_count . PHP_EOL;
 			}
 			if ($current_count) {
+
+				$total = $total + $current_count;
+				$msg = 'fans_id' . $params['fans_id'] . ' current_page:' . $page . ' current_count:' . $current_count . ' total' . $total;
 				if ($isDebugger) {
-					$total = $total + $current_count;
-					echo 'fans_id' . $params['fans_id'] . ' current_page:' . $page . ' current_count:' . $current_count . ' total' . $total . PHP_EOL;
+					echo $msg . PHP_EOL;
 				}
+				AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_ORDERS, __FUNCTION__, __LINE__);
+
 				foreach ($res as $v) {
 					$full_order_info = $v['full_order_info'] ?? [];
 					if ($full_order_info) {
@@ -148,16 +152,29 @@ class YzOrders extends ActiveRecord
 
 	public static function trades_sold_get_all($isDebugger)
 	{
-
-		// self::trades_sold_by_fans_id(['fans_id' => 5352476755], $isDebugger);exit;
+		/*
+		self::trades_sold_by_fans_id(['fans_id' => 5352476755], $isDebugger);exit;
 
 		$sql = "select uYZUId from im_yz_user order by uId desc";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as $v) {
 			if ($v['uYZUId']) {
-				self::trades_sold_by_fans_id(['fans_id' => $v['uYZUId']],$isDebugger);
+				self::trades_sold_by_fans_id(['fans_id' => $v['uYZUId']], $isDebugger);
 			}
 		}
+		*/
+
+		$st = date('Y-m-d 00:00:00',strtotime('2018-03-27 00:00:00'));
+		$et = date('Y-m-d 00:00:00', time() + 86400);
+		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
+
+		for ($d = 0; $d < $days; $d++) {
+			$stime = date('Y-m-d 00:00:00', strtotime($st) + $d * 86400);
+			$etime = date('Y-m-d 23:59:59', strtotime($st) + ($d + 1) * 86400);
+			echo 'stime:' . $stime . ' etime:' . $etime;
+		}
+
+
 	}
 
 }
