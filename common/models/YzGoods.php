@@ -7,9 +7,7 @@
 namespace common\models;
 
 
-use admin\models\Admin;
 use common\utils\AppUtil;
-use common\utils\RedisUtil;
 use common\utils\YouzanUtil;
 use yii\db\ActiveRecord;
 
@@ -195,10 +193,9 @@ class YzGoods extends ActiveRecord
 		return self::edit($g_item_id, $insert);
 	}
 
-	public static function get_goods_by_se_time($st = '', $et = '', $tag, $isDebugger = false)
+	public static function get_goods_by_se_time($tag, $isDebugger = false)
 	{
 
-		// 根据关注时间段批量查询微信粉丝用户信息
 		$st = '2018-03-26 00:00:00';
 		$et = date('Y-m-d 23:23:59');
 
@@ -217,12 +214,14 @@ class YzGoods extends ActiveRecord
 
 			do {
 				list($item, $count) = self::get_yz_goods_item($tag, $stime, $etime, $page, $page_size, $isDebugger);
-				if ($isDebugger) {
+				if (1) {
 					if ($page == 1) {
 						$total = $total + $count;
 					}
 					$msg = "stime:" . $stime . ':' . $stimeFmt . ' == etime:' . $etime . ':' . $etimeFmt . ' currentNum:' . $count . 'countRes:' . count($item) . ' Total:' . $total;
-					echo $msg . PHP_EOL;
+					if ($isDebugger) {
+						echo $msg . PHP_EOL;
+					}
 					AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_GOODS, __FUNCTION__, __LINE__);
 				}
 
@@ -235,8 +234,6 @@ class YzGoods extends ActiveRecord
 			} while (count($item) == $page_size && $page < 10);
 
 		}
-
-		// 更新分销员信息
 
 	}
 
@@ -334,13 +331,6 @@ class YzGoods extends ActiveRecord
 		$results = $ret['response'] ?? 0;
 		$items = $results['items'] ?? [];
 		$count = $results['count'] ?? 0;
-
-		/*$msg = "stime:" . $stime . ' == etime:' . $etime . ' == ' . 'page:' . $page . ' == ' . 'pagesize:' . $page_size;
-		if ($isDebugger) {
-			echo $msg . PHP_EOL;
-		}
-		AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_GOODS, __FUNCTION__, __LINE__);
-		*/
 
 		return [$items, $count];
 
@@ -657,86 +647,17 @@ class YzGoods extends ActiveRecord
 		foreach ($skus as $sku) {
 			YzSkus::process($sku);
 		}
-
 	}
 
 
-	public static function items($criteria, $params, $page = 1, $pageSize = 20)
+	public static function update_goods($isDebugger = false)
 	{
-		$conn = AppUtil::db();
-		$limit = 'limit ' . ($page - 1) * $pageSize . "," . $pageSize;
-		$criteriaStr = '';
-		if ($criteria) {
-			$criteriaStr = ' and ' . implode(" and ", $criteria);
-		}
 
-
-		$sql = "select 
-				a.aId,a.aName,
-				u1.*,u2.uAvatar as favatar,u2.uName as fname,u2.uPhone as fphone,u2.uFollow as ffollow
-				from im_yz_user as u1
-				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone and u2.uPhone>0
-				left join im_admin as a on a.aId=u1.uAdminId 
-				where u1.uType=:type $criteriaStr
-				group by u1.uId
-				order by u1.`uCreateOn` desc $limit";
-
-		$res = $conn->createCommand($sql)->bindValues(array_merge([
-			':type' => self::TYPE_YXS,
-		], $params))->queryAll();
-
-		$admins = Admin::getAdmins();
-		foreach ($res as $k => $v) {
-			$res[$k]['admin_txt'] = $admins[$v['uAdminId']] ?? '';
-		}
-
-
-		$sql = "select 
-				count(DISTINCT u1.uId)
-				from im_yz_user as u1
-				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone and u2.uPhone>0
-				left join im_admin as a on a.aId=u1.uAdminId
-				where u1.uType=:type $criteriaStr  ";
-		$count = $conn->createCommand($sql)->bindValues(array_merge([
-			':type' => self::TYPE_YXS,
-		], $params))->queryScalar();
-
-		return [$res, $count];
-
+		// 更新仓库商品
+		YzGoods::get_goods_by_se_time(self::ST_STORE_HOUSE, $isDebugger);
+		// 更新在售
+		YzGoods::get_goods_by_se_time(self::ST_ON_SALE, $isDebugger);
+		// 更新所有商品详细信息
+		YzGoods::update_all_goods_desc(1);
 	}
-
-	public static function users($criteria, $params, $page = 1, $pageSize = 20)
-	{
-		$conn = AppUtil::db();
-		$limit = 'limit ' . ($page - 1) * $pageSize . "," . $pageSize;
-		$criteriaStr = '';
-		if ($criteria) {
-			$criteriaStr = ' and ' . implode(" and ", $criteria);
-		}
-
-
-		$sql = "select 
-				u1.*
-				from im_yz_user as u1 
-				where u1.uId>0 $criteriaStr
-				order by u1.`uYZUId` desc $limit";
-
-		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
-
-		foreach ($res as $k => $v) {
-			$res[$k]['type_txt'] = self::$typeDict[$v['uType']] ?? '';
-		}
-
-
-		$sql = "select 
-				count(DISTINCT u1.uId)
-				from im_yz_user as u1
-				where u1.uId>0 $criteriaStr  ";
-		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
-
-		return [$res, $count];
-
-	}
-
-
 }

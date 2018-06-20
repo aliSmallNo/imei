@@ -194,4 +194,32 @@ class YouzController extends BaseController
 		exit;
 	}
 
+	public function actionOrders()
+	{
+		// https://www.youzanyun.com/apilist/detail/group_ump/salesman/youzan.salesman.accounts.get
+		Admin::staffOnly();
+		$page = self::getParam("page", 1);
+
+		$method = 'youzan.salesman.accounts.get';
+		$params = [
+			'page_no' => $page,
+			'page_size' => 20,
+		];
+
+		$count = 0;
+		$items = [];
+		$res = YouzanUtil::getData($method, $params);
+		if (isset($res['response'])) {
+			$count = $res['response']['total_results'];
+			$items = $res['response']['accounts'];
+		}
+		$pagination = self::pagination($page, $count);
+		return $this->renderPage('salesman.tpl',
+			[
+				'page' => $page,
+				'pagination' => $pagination,
+				'items' => $items,
+			]);
+	}
+
 }

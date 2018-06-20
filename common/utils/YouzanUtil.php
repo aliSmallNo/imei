@@ -87,11 +87,11 @@ class YouzanUtil
 		return $accessToken;
 	}
 
-	public static function getData($method,$params)
+	public static function getData($method, $params, $api_version = self::API_VERSION)
 	{
 		$client = new YZTokenClient(self::getAccessToken());
 		$my_files = [];
-		return $client->post($method, self::API_VERSION, $params, $my_files);
+		return $client->post($method, $api_version, $params, $my_files);
 	}
 
 	// SignDemo
