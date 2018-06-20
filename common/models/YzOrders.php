@@ -164,14 +164,14 @@ class YzOrders extends ActiveRecord
 		}
 		*/
 
-		$st = date('Y-m-d 00:00:00',strtotime('2018-03-27 00:00:00'));
+		$st = date('Y-m-d 00:00:00', strtotime('2018-03-27 00:00:00'));
 		$et = date('Y-m-d 00:00:00', time() + 86400);
 		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
 
 		for ($d = 0; $d < $days; $d++) {
 			$stime = date('Y-m-d 00:00:00', strtotime($st) + $d * 86400);
 			$etime = date('Y-m-d 23:59:59', strtotime($st) + ($d + 1) * 86400);
-			echo 'stime:' . $stime . ' etime:' . $etime;
+			echo 'stime:' . $stime . ' etime:' . $etime . PHP_EOL;
 		}
 
 
