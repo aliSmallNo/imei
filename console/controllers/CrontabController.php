@@ -15,6 +15,7 @@ use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserTag;
 use common\models\UserWechat;
+use common\models\YzOrders;
 use common\models\YzUser;
 use common\service\TrendService;
 use common\utils\AppUtil;
@@ -93,6 +94,8 @@ class CrontabController extends Controller
 		// 更新有赞用户
 		AppUtil::logByFile(date('Y-m-d H:i:s'), 'youzan_user', __FUNCTION__, __LINE__);
 		YzUser::UpdateUser();
+		// 更新订单
+		YzOrders::Update_order();
 
 	}
 

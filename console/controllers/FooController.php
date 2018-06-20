@@ -1502,7 +1502,7 @@ class FooController extends Controller
 		}*/
 
 
-		YzOrders::Update_order();
+
 	}
 
 

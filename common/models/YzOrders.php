@@ -169,8 +169,8 @@ class YzOrders extends ActiveRecord
 		for ($d = 0; $d < $days; $d++) {
 			$stime = date('Y-m-d 00:00:00', strtotime($st) + $d * 86400);
 			$etime = date('Y-m-d 23:59:59', strtotime($st) + $d * 86400);
-			echo $stime . '===' . $etime . PHP_EOL;
-			// self::trades_sold_by_fans_id(['end_created' => $etime, 'start_created' => $stime], $isDebugger);
+			//echo $stime . '===' . $etime . PHP_EOL;
+			self::trades_sold_by_fans_id(['end_created' => $etime, 'start_created' => $stime], $isDebugger);
 		}
 
 
