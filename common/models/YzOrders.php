@@ -122,11 +122,7 @@ class YzOrders extends ActiveRecord
 		do {
 			$res = self::trades_sold_get($page, $params);
 			$current_count = count($res);
-			if ($isDebugger) {
-				echo 'current_count:' . $current_count . PHP_EOL;
-			}
 			if ($current_count) {
-
 				$total = $total + $current_count;
 				$msg = 'stime:' . $params['start_created'] . ' etime:' . $params['end_created'] . ' current_page:' . $page . ' current_count:' . $current_count . ' total' . $total;
 				if ($isDebugger) {
@@ -150,7 +146,7 @@ class YzOrders extends ActiveRecord
 
 	}
 
-	public static function trades_sold_get_all($isDebugger)
+	public static function trades_sold_get_all($st, $et, $isDebugger)
 	{
 		/*
 		self::trades_sold_by_fans_id(['fans_id' => 5352476755], $isDebugger);exit;
@@ -164,17 +160,27 @@ class YzOrders extends ActiveRecord
 		}
 		*/
 
-		$st = date('Y-m-d 00:00:00', strtotime('2018-03-27 00:00:00'));
-		$et = date('Y-m-d 00:00:00', time() + 86400);
+
+		/*$st = date('Y-m-d 00:00:00', strtotime('2018-03-27 00:00:00'));
+		$et = date('Y-m-d 00:00:00', time() + 86400);*/
+
 		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
 
 		for ($d = 0; $d < $days; $d++) {
 			$stime = date('Y-m-d 00:00:00', strtotime($st) + $d * 86400);
 			$etime = date('Y-m-d 23:59:59', strtotime($st) + $d * 86400);
-			self::trades_sold_by_fans_id(['end_created' => $etime, 'start_created' => $stime], $isDebugger);
+			echo $stime . '===' . $etime . PHP_EOL;
+			// self::trades_sold_by_fans_id(['end_created' => $etime, 'start_created' => $stime], $isDebugger);
 		}
 
 
+	}
+
+	public static function Update_order($st = '', $et = '', $isDebugger = false)
+	{
+		$st = $st ? $st : date('Y-m-d 00:00:00');
+		$et = $et ? $et : date('Y-m-d 00:00:00', time() + 86400);
+		self::trades_sold_get_all($st, $et, $isDebugger);
 	}
 
 }
