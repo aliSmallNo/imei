@@ -70,7 +70,6 @@ class YzOrders extends ActiveRecord
 	{
 
 		$buyer_info = $full_order_info['buyer_info'];
-		// 5663482396
 		$address_info = $full_order_info['address_info'];
 		$order_info = $full_order_info['order_info'];
 
@@ -143,7 +142,7 @@ class YzOrders extends ActiveRecord
 			} else {
 				$page = 0;
 			}
-			exit;
+
 		} while ($page > 1 && $page < 105);
 
 	}
