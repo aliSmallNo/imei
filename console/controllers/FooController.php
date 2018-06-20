@@ -1501,8 +1501,7 @@ class FooController extends Controller
 			])->execute();
 		}*/
 
-
-
+		YzGoods::update_goods(1);
 	}
 
 
