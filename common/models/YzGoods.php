@@ -364,7 +364,7 @@ class YzGoods extends ActiveRecord
 		if ($isDebugger) {
 			echo $id . PHP_EOL;
 		}
-		AppUtil::logByFile($id, YzUser::LOG_YOUZAN_GOODS, __FUNCTION__, __LINE__);
+		// AppUtil::logByFile($id, YzUser::LOG_YOUZAN_GOODS, __FUNCTION__, __LINE__);
 
 		$resStyle = [
 			"response" => [
