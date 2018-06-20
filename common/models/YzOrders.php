@@ -128,7 +128,7 @@ class YzOrders extends ActiveRecord
 			if ($current_count) {
 
 				$total = $total + $current_count;
-				$msg = 'fans_id' . $params['fans_id'] . ' current_page:' . $page . ' current_count:' . $current_count . ' total' . $total;
+				$msg = 'stime:' . $params['start_created'] . ' etime:' . $params['end_created'] . ' current_page:' . $page . ' current_count:' . $current_count . ' total' . $total;
 				if ($isDebugger) {
 					echo $msg . PHP_EOL;
 				}
@@ -171,7 +171,7 @@ class YzOrders extends ActiveRecord
 		for ($d = 0; $d < $days; $d++) {
 			$stime = date('Y-m-d 00:00:00', strtotime($st) + $d * 86400);
 			$etime = date('Y-m-d 23:59:59', strtotime($st) + $d * 86400);
-			echo 'stime:' . $stime . ' etime:' . $etime . PHP_EOL;
+			self::trades_sold_by_fans_id(['end_created' => $etime, 'start_created' => $stime], $isDebugger);
 		}
 
 
