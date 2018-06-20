@@ -70,16 +70,16 @@ class YzOrders extends ActiveRecord
 	{
 
 		$buyer_info = $full_order_info['buyer_info'];
-		print_r($buyer_info);
+		// 5663482396
 		$address_info = $full_order_info['address_info'];
 		$order_info = $full_order_info['order_info'];
 
 		$tid = $order_info['tid'];
 		$full_order_info['tid'] = $tid;
 
-		$full_order_info['fans_id'] = $buyer_info['fans_id'];
-		$full_order_info['buyer_phone'] = $buyer_info['buyer_phone'];
-		$full_order_info['receiver_tel'] = $address_info['receiver_tel'];
+		$full_order_info['fans_id'] = $buyer_info['fans_id'] ?? '';
+		$full_order_info['buyer_phone'] = $buyer_info['buyer_phone'] ?? '';
+		$full_order_info['receiver_tel'] = $address_info['receiver_tel'] ?? '';
 
 		$full_order_info['status'] = $order_info['status'];
 		$full_order_info['created'] = $order_info['created'];
@@ -94,9 +94,7 @@ class YzOrders extends ActiveRecord
 				$insert[$val] = $full_order_info[$key];
 			}
 		}
-		echo $tid;
-		print_r($insert);
-		exit;
+		// echo $tid;print_r($insert);exit;
 		return self::edit($tid, $insert);
 	}
 
@@ -144,6 +142,7 @@ class YzOrders extends ActiveRecord
 			} else {
 				$page = 0;
 			}
+			exit;
 		} while ($page > 1 && $page < 105);
 
 	}
