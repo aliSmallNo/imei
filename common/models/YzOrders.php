@@ -90,7 +90,7 @@ class YzOrders extends ActiveRecord
 		}
 		$insert = [];
 		foreach (self::$fieldMap as $key => $val) {
-			if (isset($full_order_info[$key])) {
+			if (isset($full_order_info[$key]) && $full_order_info[$key]) {
 				$insert[$val] = $full_order_info[$key];
 			}
 		}
