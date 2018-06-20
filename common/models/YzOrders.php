@@ -170,7 +170,7 @@ class YzOrders extends ActiveRecord
 
 		for ($d = 0; $d < $days; $d++) {
 			$stime = date('Y-m-d 00:00:00', strtotime($st) + $d * 86400);
-			$etime = date('Y-m-d 23:59:59', strtotime($st) + ($d + 1) * 86400);
+			$etime = date('Y-m-d 23:59:59', strtotime($st) + $d * 86400);
 			echo 'stime:' . $stime . ' etime:' . $etime . PHP_EOL;
 		}
 
