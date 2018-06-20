@@ -1502,7 +1502,7 @@ class FooController extends Controller
 		}*/
 
 
-		YzOrders::trades_sold_get_all();
+		YzOrders::trades_sold_get_all(1);
 	}
 
 
