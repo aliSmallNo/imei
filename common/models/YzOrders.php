@@ -246,7 +246,7 @@ class YzOrders extends ActiveRecord
 
 			if ($o_buyer_phone) {
 				// 订单表的下单者手机号 写到 用户表
-				YzUser::edit($o_fans_id, ['uPhone' => $o_buyer_phone, 'yzUId' => $o_fans_id]);
+				YzUser::edit($o_fans_id, ['uPhone' => $o_buyer_phone, 'uYZUId' => $o_fans_id]);
 			}
 			if ($uPhone && !$o_buyer_phone) {
 				// 用户表手机号 写到 订单表下单者手机号
