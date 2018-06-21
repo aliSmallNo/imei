@@ -223,7 +223,7 @@ class YzOrders extends ActiveRecord
 		$conn = AppUtil::db();
 		$res = $conn->createCommand("select o_tid,o_orders,o_buyer_phone,o_fans_id from im_yz_orders ")->queryAll();
 
-		$userCMD = $conn->createCommand("select uCreateOn,uPhone from im_yz_users where uYZUId=:fans_id");
+		$userCMD = $conn->createCommand("select uCreateOn,uPhone from im_yz_user where uYZUId=:fans_id");
 
 		foreach ($res as $k => $v) {
 			/*$orders = json_decode($v['o_orders'], 1)[0];
