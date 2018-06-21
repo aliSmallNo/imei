@@ -180,20 +180,14 @@ class YzOrders extends ActiveRecord
 		$st = $st ? $st : date('Y-m-d 00:00:00');
 		$et = $et ? $et : date('Y-m-d 00:00:00', time() + 86400);
 		self::trades_sold_get_all_by_create_time($st, $et, $isDebugger);
-	}
-
-	public static function Update_order_by_update_time($st = '', $et = '', $isDebugger = false)
-	{
-		$st = $st ? $st : date('Y-m-d 00:00:00');
-		$et = $et ? $et : date('Y-m-d 00:00:00', time() + 86400);
 		self::trades_sold_get_all_by_update_time($st, $et, $isDebugger);
 	}
 
 	public static function trades_sold_get_all_by_update_time($st, $et, $isDebugger)
 	{
 
-		$st = date('Y-m-d 00:00:00', strtotime('2018-03-27 00:00:00'));
-		$et = date('Y-m-d 00:00:00', time() + 86400);
+		/*$st = date('Y-m-d 00:00:00', strtotime('2018-03-27 00:00:00'));
+		$et = date('Y-m-d 00:00:00', time() + 86400);*/
 
 		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
 
