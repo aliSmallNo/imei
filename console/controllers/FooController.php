@@ -1501,7 +1501,7 @@ class FooController extends Controller
 			])->execute();
 		}*/
 
-		YzGoods::update_goods(1);
+		YzOrders::trades_sold_get_all_by_update_time('','',1);
 	}
 
 
