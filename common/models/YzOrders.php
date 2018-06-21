@@ -32,6 +32,7 @@ class YzOrders extends ActiveRecord
 		"status" => "o_status",
 		"created" => "o_created",
 		"pay_time" => "o_pay_time",
+		"update_time" => "o_update_time",
 
 		"address_info" => "o_address_info",
 		"remark_info" => "o_remark_info",
@@ -83,6 +84,7 @@ class YzOrders extends ActiveRecord
 		$full_order_info['status'] = $order_info['status'];
 		$full_order_info['created'] = $order_info['created'];
 		$full_order_info['pay_time'] = $order_info['pay_time'];
+		$full_order_info['update_time'] = $order_info['update_time'];
 
 		if (!$tid || !$full_order_info) {
 			return 0;
@@ -198,8 +200,8 @@ class YzOrders extends ActiveRecord
 		for ($d = 0; $d < $days; $d++) {
 			$stime = date('Y-m-d 00:00:00', strtotime($st) + $d * 86400);
 			$etime = date('Y-m-d 23:59:59', strtotime($st) + $d * 86400);
-			echo $stime . '===' . $etime . PHP_EOL;
-			//self::trades_sold_by_se_time(['end_update' => $etime, 'start_update' => $stime], $isDebugger);
+			//echo $stime . '===' . $etime . PHP_EOL;
+			self::trades_sold_by_se_time(['end_update' => $etime, 'start_update' => $stime], $isDebugger);
 		}
 	}
 
