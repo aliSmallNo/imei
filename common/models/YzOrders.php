@@ -115,7 +115,7 @@ class YzOrders extends ActiveRecord
 		return $res['response'] ?? [];
 	}
 
-	public static function trades_sold_by_fans_id($params = [], $isDebugger = false)
+	public static function trades_sold_by_se_time($params = [], $isDebugger = false)
 	{
 		$page = 1;
 		$total = 0;
@@ -149,13 +149,13 @@ class YzOrders extends ActiveRecord
 	public static function trades_sold_get_all($st, $et, $isDebugger)
 	{
 		/*
-		self::trades_sold_by_fans_id(['fans_id' => 5352476755], $isDebugger);exit;
+		self::trades_sold_by_se_time(['fans_id' => 5352476755], $isDebugger);exit;
 
 		$sql = "select uYZUId from im_yz_user order by uId desc";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as $v) {
 			if ($v['uYZUId']) {
-				self::trades_sold_by_fans_id(['fans_id' => $v['uYZUId']], $isDebugger);
+				self::trades_sold_by_se_time(['fans_id' => $v['uYZUId']], $isDebugger);
 			}
 		}
 		*/
@@ -170,7 +170,7 @@ class YzOrders extends ActiveRecord
 			$stime = date('Y-m-d 00:00:00', strtotime($st) + $d * 86400);
 			$etime = date('Y-m-d 23:59:59', strtotime($st) + $d * 86400);
 			//echo $stime . '===' . $etime . PHP_EOL;
-			self::trades_sold_by_fans_id(['end_created' => $etime, 'start_created' => $stime], $isDebugger);
+			self::trades_sold_by_se_time(['end_created' => $etime, 'start_created' => $stime], $isDebugger);
 		}
 
 
