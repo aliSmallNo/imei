@@ -220,24 +220,40 @@ class YzOrders extends ActiveRecord
 			"total_fee" => "o_total_fee",
 			"payment" => "o_payment",
 		];
-		$res = AppUtil::db()->createCommand("select o_tid,o_orders,o_buyer_phone,o_fans_id from im_yz_orders ")->queryAll();
+		$conn = AppUtil::db();
+		$res = $conn->createCommand("select o_tid,o_orders,o_buyer_phone,o_fans_id from im_yz_orders ")->queryAll();
+
+		$userCMD = $conn->createCommand("select uCreateOn,uPhone from im_yz_users where uYZUId=:fans_id");
+
 		foreach ($res as $k => $v) {
-			$orders = json_decode($v['o_orders'], 1)[0];
+			/*$orders = json_decode($v['o_orders'], 1)[0];
 			$insert = [];
 			foreach ($fmap as $field => $val) {
 				if (isset($orders[$field])) {
 					$insert[$val] = $orders[$field];
 				}
 				self::edit($v['o_tid'], $insert);
-			}
+			}*/
 
 			$o_fans_id = $v['o_fans_id'];
 			$o_buyer_phone = $v['o_buyer_phone'];
-			if ($o_buyer_phone) {
-				YzUser::edit($o_fans_id, ['uPhone' => $o_buyer_phone]);
+
+			$user = $userCMD->bindValues([':fans_id' => $o_fans_id])->queryOne();
+			$uPhone = $user['uPhone'];
+			if (!$user['uCreateOn']) {
+				YzUser::getUserInfoByTag($o_fans_id);
 			}
 
-			$msg = 'o_tid:' . $v['o_tid'] . '=>' . json_encode($insert) . ' o_fans_id:' . $o_fans_id . '=>' . 'uPhone:' . $o_buyer_phone;
+			if ($o_buyer_phone) {
+				// 订单表的下单者手机号 写到 用户表
+				YzUser::edit($o_fans_id, ['uPhone' => $o_buyer_phone, 'yzUId' => $o_fans_id]);
+			}
+			if ($uPhone && !$o_buyer_phone) {
+				// 用户表手机号 写到 订单表下单者手机号
+				self::edit($v['o_tid'], ['o_buyer_phone' => $uPhone]);
+			}
+
+			$msg = 'o_tid:' . $v['o_tid'] . '=>'  . ' o_fans_id:' . $o_fans_id . '=>' . 'uPhone:' . $o_buyer_phone;
 			echo $msg . PHP_EOL;
 			AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_ORDERS_UP_PHONE, __FUNCTION__, __LINE__);
 
