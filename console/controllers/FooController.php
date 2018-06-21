@@ -1501,7 +1501,8 @@ class FooController extends Controller
 			])->execute();
 		}*/
 
-		YzOrders::Update_order('','',1);
+		//YzOrders::Update_order('','',1);
+		YzOrders::process_price();
 	}
 
 

@@ -16,12 +16,30 @@ use yii\db\ActiveRecord;
 class YzOrders extends ActiveRecord
 {
 
-	const POST_TYPE_DEFAULT = 1;
-	const POST_TYPE_TEMPLATE = 2;
+	const TRADE_PAID = 'TRADE_PAID';
+
+	const WAIT_BUYER_PAY = 'WAIT_BUYER_PAY';
+	const WAIT_CONFIRM = 'WAIT_CONFIRM';
+	const WAIT_SELLER_SEND_GOODS = 'WAIT_SELLER_SEND_GOODS';
+	const WAIT_BUYER_CONFIRM_GOODS = 'WAIT_BUYER_CONFIRM_GOODS';
+	const TRADE_SUCCESS = 'TRADE_SUCCESS';
+	const TRADE_CLOSED = 'TRADE_CLOSED';
+
 	static $typeDict = [
-		self::POST_TYPE_DEFAULT => '统一运费',
-		self::POST_TYPE_TEMPLATE => '运费模板',
+		self::WAIT_BUYER_PAY => '等待买家付款',
+		self::WAIT_CONFIRM => '待确认，包含待成团、待接单',
+		self::WAIT_SELLER_SEND_GOODS => '等待卖家发货',
+		self::WAIT_BUYER_CONFIRM_GOODS => '等待买家确认收货',
+		self::TRADE_SUCCESS => '买家已签收以及订单成功',
+		self::TRADE_CLOSED => '交易关闭',
 	];
+
+	//WAIT_BUYER_PAY （等待买家付款）；
+	// WAIT_CONFIRM（待确认，包含待成团、待接单等等。即：买家已付款，等待成团或等待接单）；
+	// WAIT_SELLER_SEND_GOODS（等待卖家发货，即：买家已付款）；
+	// WAIT_BUYER_CONFIRM_GOODS (等待买家确认收货，即：卖家已发货) ；
+	// TRADE_SUCCESS（买家已签收以及订单成功）；
+	// TRADE_CLOSED（交易关闭）
 
 
 	static $fieldMap = [
@@ -33,6 +51,11 @@ class YzOrders extends ActiveRecord
 		"created" => "o_created",
 		"pay_time" => "o_pay_time",
 		"update_time" => "o_update_time",
+
+		"price" => "o_price",
+		"num" => "o_num",
+		"total_fee" => "o_total_fee",
+		"payment" => "o_payment",
 
 		"address_info" => "o_address_info",
 		"remark_info" => "o_remark_info",
@@ -150,17 +173,6 @@ class YzOrders extends ActiveRecord
 
 	public static function trades_sold_get_all_by_create_time($st, $et, $isDebugger)
 	{
-		/*
-		self::trades_sold_by_se_time(['fans_id' => 5352476755], $isDebugger);exit;
-
-		$sql = "select uYZUId from im_yz_user order by uId desc";
-		$res = AppUtil::db()->createCommand($sql)->queryAll();
-		foreach ($res as $v) {
-			if ($v['uYZUId']) {
-				self::trades_sold_by_se_time(['fans_id' => $v['uYZUId']], $isDebugger);
-			}
-		}
-		*/
 
 		/*$st = date('Y-m-d 00:00:00', strtotime('2018-03-27 00:00:00'));
 		$et = date('Y-m-d 00:00:00', time() + 86400);*/
@@ -197,6 +209,41 @@ class YzOrders extends ActiveRecord
 			//echo $stime . '===' . $etime . PHP_EOL;
 			self::trades_sold_by_se_time(['end_update' => $etime, 'start_update' => $stime], $isDebugger);
 		}
+	}
+
+
+	public static function process_price()
+	{
+		$fmap = [
+			"price" => "o_price",
+			"num" => "o_num",
+			"total_fee" => "o_total_fee",
+			"payment" => "o_payment",
+		];
+		$res = AppUtil::db()->createCommand("select o_tid,o_orders,o_buyer_phone,o_fans_id from im_yz_orders ")->queryAll();
+		foreach ($res as $k => $v) {
+			$orders = json_decode($v['o_orders'], 1)[0];
+			$insert = [];
+			foreach ($fmap as $field => $val) {
+				if (isset($orders[$field])) {
+					$insert[$val] = $orders[$field];
+				}
+				self::edit($v['o_tid'], $insert);
+			}
+
+			$o_fans_id = $v['o_fans_id'];
+			$o_buyer_phone = $v['o_buyer_phone'];
+			if ($o_buyer_phone) {
+				YzUser::edit($o_fans_id, ['uPhone' => $o_buyer_phone]);
+			}
+
+			$msg = 'o_tid:' . $v['o_tid'] . '=>' . json_encode($insert) . ' o_fans_id:' . $o_fans_id . '=>' . 'uPhone:' . $o_buyer_phone;
+			echo $msg . PHP_EOL;
+			AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_ORDERS_UP_PHONE, __FUNCTION__, __LINE__);
+
+		}
+
+
 	}
 
 }

@@ -25,6 +25,7 @@ class YzUser extends ActiveRecord
 	const LOG_YOUZAN_USER = 'youzan_user';
 	const LOG_YOUZAN_GOODS = 'youzan_goods';
 	const LOG_YOUZAN_ORDERS = 'youzan_orders';
+	const LOG_YOUZAN_ORDERS_UP_PHONE = 'youzan_orders_up_phone';
 
 	static $fieldMap = [
 		'country' => 'uCountry',
