@@ -144,6 +144,12 @@ class Menu
 						"level" => 820
 					],
 					[
+						"name" => "用户链",
+						"url" => "/youz/chain",
+						"revise" => 1,
+						"level" => 820
+					],
+					[
 						"name" => "随机数",
 						"url" => "/youz/create",
 						"revise" => 1,

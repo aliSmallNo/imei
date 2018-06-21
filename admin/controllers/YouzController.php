@@ -125,7 +125,7 @@ class YouzController extends BaseController
 		foreach ($res as $v) {
 			$content[] = [
 				$v['uYZUId'],
-				$v['uName'] . '(' . $v['uPhone'] .')',
+				$v['uName'] . '(' . $v['uPhone'] . ')',
 				$v['uTradeNum'],
 				$v['uTradeMoney'],
 				$v['fname'] . '(' . $v['fphone'] . ')',
@@ -194,31 +194,38 @@ class YouzController extends BaseController
 		exit;
 	}
 
-	public function actionOrders()
+	public function actionChain()
 	{
 		// https://www.youzanyun.com/apilist/detail/group_ump/salesman/youzan.salesman.accounts.get
 		Admin::staffOnly();
-		$page = self::getParam("page", 1);
+		$getInfo = \Yii::$app->request->get();
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
 
-		$method = 'youzan.salesman.accounts.get';
-		$params = [
-			'page_no' => $page,
-			'page_size' => 20,
-		];
+		$criteria = $params = [];
 
-		$count = 0;
-		$items = [];
-		$res = YouzanUtil::getData($method, $params);
-		if (isset($res['response'])) {
-			$count = $res['response']['total_results'];
-			$items = $res['response']['accounts'];
+		if ($phone) {
+			$criteria[] = 'u1.uFromPhone=:phone1';
+			$params[':phone1'] = $phone;
+		} else {
+			$criteria[] = 'u1.uFromPhone<:phone1';
+			$params[':phone1'] = 100;
+			$criteria[] = 'u1.uPhone>:phone2';
+			$params[':phone2'] = 100;
 		}
-		$pagination = self::pagination($page, $count);
-		return $this->renderPage('salesman.tpl',
+
+		if ($name) {
+			$criteria[] = " u1.uName like :name ";
+			$params[':name'] = '%' . trim($name) . '%';
+		}
+
+		$items = YzUser::chain_items($criteria, $params);
+
+		return $this->renderPage('chain.tpl',
 			[
-				'page' => $page,
-				'pagination' => $pagination,
+				'getInfo' => $getInfo,
 				'items' => $items,
+
 			]);
 	}
 

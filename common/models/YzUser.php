@@ -78,7 +78,7 @@ class YzUser extends ActiveRecord
 		foreach (YzUser::$fieldMap as $key => $val) {
 			if (isset($v[$key]) && $v[$key]) {
 				if ($key == "nick") {
-					 $v[$key] = self::filterEmoji($v[$key]);
+					$v[$key] = self::filterEmoji($v[$key]);
 				}
 				$insert[$val] = $v[$key];
 			}
@@ -526,5 +526,47 @@ class YzUser extends ActiveRecord
 
 	}
 
+	public static function chain_items($criteria, $params)
+	{
+		$conn = AppUtil::db();
+		$criteriaStr = '';
+		if ($criteria) {
+			$criteriaStr = ' and ' . implode(" and ", $criteria);
+		}
+
+		$sql = 'select u1.uName,u1.uPhone,
+				count(1) as co,
+				sum(case when u2.uPhone then 1 else 0 end) as amt
+				from im_yz_user as u1
+				left join  im_yz_user as u2 on u2.uFromPhone=u1.uPhone 
+				where u1.uId>0 ' . $criteriaStr . ' 
+				group by u1.uPhone order by amt desc ';
+		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		foreach ($res as $k => $v) {
+			$res[$k]['cls'] = $v['amt'] > 0 ? 'parent_li' : '';
+		}
+
+		$sql = "select 
+				u1.uName,u1.uPhone,
+				sum(case when u2.uPhone then 1 else 0 end) as amt
+				from im_yz_user as u1
+				left join im_yz_user as u2 on u2.uFromPhone=u1.uPhone 
+				where u1.uId>0 and u1.uFromPhone<100 and u1.uPhone>100
+				group by u1.uPhone order by amt desc ";
+
+		return $res;
+	}
+
+
+	public static function count_by_condition($criteria, $params)
+	{
+		$criteriaStr = '';
+		if ($criteria) {
+			$criteriaStr = ' and ' . implode(" and ", $criteria);
+		}
+		$sql = 'select count(1) from im_yz_user as u1 where uId>0  ' . $criteriaStr;
+		return AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
+
+	}
 
 }

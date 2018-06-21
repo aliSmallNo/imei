@@ -386,6 +386,15 @@ class ApiController extends Controller
 				YzUser::edit($yzuid, ['uAdminId' => $aid]);
 				return self::renderAPI(0, 'ok');
 				break;
+			case "chain_by_phone":
+				$phone = self::postParam('phone');
+				$criteria[] = 'u1.uFromPhone=:phone1';
+				$params[':phone1'] = $phone;
+				$res = YzUser::chain_items($criteria, $params);
+				return self::renderAPI(0, 'ok', [
+					'data' => $res,
+				]);
+				break;
 			default:
 				break;
 		}
