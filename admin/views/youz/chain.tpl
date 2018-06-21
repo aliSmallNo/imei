@@ -72,7 +72,7 @@
 	}
 </style>
 <div class="row">
-	<h4>有赞用户列表</h4>
+	<h4>用户关系链</h4>
 </div>
 <div class="row">
 	<form action="/youz/chain" method="get" class="form-inline">
