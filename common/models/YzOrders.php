@@ -212,28 +212,19 @@ class YzOrders extends ActiveRecord
 	}
 
 
-	public static function process_price()
+	/**
+	 * @throws \yii\db\Exception
+	 * 用户表、订单表 信息相互更新
+	 */
+	public static function orders_user_mix_update()
 	{
-		$fmap = [
-			"price" => "o_price",
-			"num" => "o_num",
-			"total_fee" => "o_total_fee",
-			"payment" => "o_payment",
-		];
+
 		$conn = AppUtil::db();
 		$res = $conn->createCommand("select o_tid,o_orders,o_buyer_phone,o_fans_id from im_yz_orders ")->queryAll();
 
 		$userCMD = $conn->createCommand("select uCreateOn,uPhone from im_yz_user where uYZUId=:fans_id");
 
 		foreach ($res as $k => $v) {
-			/*$orders = json_decode($v['o_orders'], 1)[0];
-			$insert = [];
-			foreach ($fmap as $field => $val) {
-				if (isset($orders[$field])) {
-					$insert[$val] = $orders[$field];
-				}
-				self::edit($v['o_tid'], $insert);
-			}*/
 
 			$o_fans_id = $v['o_fans_id'];
 			$o_buyer_phone = $v['o_buyer_phone'];
@@ -254,7 +245,7 @@ class YzOrders extends ActiveRecord
 			}
 
 			$msg = 'o_tid:' . $v['o_tid'] . '=>'  . ' o_fans_id:' . $o_fans_id . '=>' . 'uPhone:' . $o_buyer_phone;
-			echo $msg . PHP_EOL;
+			// echo $msg . PHP_EOL;
 			AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_ORDERS_UP_PHONE, __FUNCTION__, __LINE__);
 
 		}
