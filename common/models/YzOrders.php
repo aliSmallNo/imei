@@ -56,6 +56,7 @@ class YzOrders extends ActiveRecord
 		"num" => "o_num",
 		"total_fee" => "o_total_fee",
 		"payment" => "o_payment",
+		"receiver_name" => "o_receiver_name",
 
 		"address_info" => "o_address_info",
 		"remark_info" => "o_remark_info",
@@ -104,6 +105,7 @@ class YzOrders extends ActiveRecord
 		$full_order_info['fans_id'] = $fans_id;
 		$full_order_info['buyer_phone'] = $buyer_info['buyer_phone'] ?? '';
 		$full_order_info['receiver_tel'] = $address_info['receiver_tel'] ?? '';
+		$full_order_info['receiver_name'] = $address_info['receiver_name'] ?? '';
 
 		$full_order_info['status'] = $order_info['status'];
 		$full_order_info['created'] = $order_info['created'];
@@ -228,11 +230,15 @@ class YzOrders extends ActiveRecord
 		$conn = AppUtil::db();
 		$res = $conn->createCommand("select o_tid,o_orders,o_buyer_phone,o_fans_id from im_yz_orders ")->queryAll();
 
-		$userCMD = $conn->createCommand("select uCreateOn,uPhone from im_yz_user where uYZUId=:fans_id");
+		// $userCMD = $conn->createCommand("select uCreateOn,uPhone from im_yz_user where uYZUId=:fans_id");
 
 		foreach ($res as $k => $v) {
 
-			$o_fans_id = $v['o_fans_id'];
+			$o_receiver_name = json_decode($v['o_address_info'], 1)['receiver_name'];
+			echo $v['o_tid'] . '=>' . json_encode(['o_receiver_name' => $o_receiver_name]) . PHP_EOL;
+			self::edit($v['o_tid'], ['o_receiver_name' => $o_receiver_name]);
+
+			/*$o_fans_id = $v['o_fans_id'];
 			$o_buyer_phone = $v['o_buyer_phone'];
 
 			$user = $userCMD->bindValues([':fans_id' => $o_fans_id])->queryOne();
@@ -254,7 +260,7 @@ class YzOrders extends ActiveRecord
 			if ($debugger) {
 				echo $msg . PHP_EOL;
 			}
-			AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_ORDERS_UP_PHONE, __FUNCTION__, __LINE__);
+			AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_ORDERS_UP_PHONE, __FUNCTION__, __LINE__);*/
 
 		}
 
