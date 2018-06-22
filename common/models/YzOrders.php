@@ -246,7 +246,7 @@ class YzOrders extends ActiveRecord
 				"total_fee" => "o_total_fee",
 				"payment" => "o_payment"
 			];
-			$order = $v['o_orders'];
+			$order = json_decode($v['o_orders'], 1)[0];
 			$insert = [];
 			foreach ($map as $key => $val) {
 				if (isset($order[$key])) {
