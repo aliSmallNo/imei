@@ -559,24 +559,26 @@ class YzUser extends ActiveRecord
 	{
 		$ret = [];
 		$co = 0;
-		$cmd = AppUtil::db()->createCommand('select uYZUId,uName,uPhone,uFromPhone from im_yz_user where uYZUId=:fans_id');
+		$sql = 'select u2.uYZUId,u2.uName,u2.uPhone from im_yz_user as u1
+				left join  im_yz_user as u2 as u2.uPhone=u1.uFromPhone 
+				where u1.uYZUId=:fans_id and uFromPhone>1 ';
+		$cmd = AppUtil::db()->createCommand($sql);
 
 		do {
 			$res = $cmd->bindValues([':fans_id' => $fans_id])->queryOne();
 			if ($res) {
 				$fans_id = $res['uYZUId'];
-				$from_phone = $res['uFromPhone'];
+				$uPhone = $res['uPhone'];
 				$ret[] = [
 					'fans_id' => $fans_id,
 					'name' => $res['uName'],
-					'fromPhone' => $res['uFromPhone'],
-					'phone' => $res['uPhone'],
+					'phone' => $uPhone,
 				];
 			} else {
 				break;
 			}
 			$co++;
-		} while (!$from_phone && $co < 10);
+		} while (!$fans_id && $co < 10);
 
 		return $ret;
 	}
