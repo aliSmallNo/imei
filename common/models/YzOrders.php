@@ -228,7 +228,7 @@ class YzOrders extends ActiveRecord
 	{
 
 		$conn = AppUtil::db();
-		$res = $conn->createCommand("select o_tid,o_orders,o_buyer_phone,o_fans_id from im_yz_orders ")->queryAll();
+		$res = $conn->createCommand("select o_tid,o_orders,o_address_info,o_buyer_phone,o_fans_id from im_yz_orders ")->queryAll();
 
 		// $userCMD = $conn->createCommand("select uCreateOn,uPhone from im_yz_user where uYZUId=:fans_id");
 
