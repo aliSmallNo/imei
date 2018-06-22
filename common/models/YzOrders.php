@@ -234,7 +234,7 @@ class YzOrders extends ActiveRecord
 	{
 
 		$conn = AppUtil::db();
-		$res = $conn->createCommand("select o_tid,o_orders,o_buyer_phone,o_fans_id from im_yz_orders where o_num=0")->queryAll();
+		$res = $conn->createCommand("select * from im_yz_orders where o_num=0")->queryAll();
 
 		// $userCMD = $conn->createCommand("select uCreateOn,uPhone from im_yz_user where uYZUId=:fans_id");
 
@@ -253,6 +253,7 @@ class YzOrders extends ActiveRecord
 					$insert[$val] = $order[$key];
 				}
 			}
+			echo $v['o_tid'] . PHP_EOL;
 			self::edit($v['o_tid'], $insert);
 
 
