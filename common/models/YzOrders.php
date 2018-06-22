@@ -34,7 +34,7 @@ class YzOrders extends ActiveRecord
 		self::TRADE_CLOSED => '交易关闭',
 	];
 
-	//WAIT_BUYER_PAY （等待买家付款）；
+	//WAIT_BUYER_PAY （等待买家付款 ；
 	// WAIT_CONFIRM（待确认，包含待成团、待接单等等。即：买家已付款，等待成团或等待接单）；
 	// WAIT_SELLER_SEND_GOODS（等待卖家发货，即：买家已付款）；
 	// WAIT_BUYER_CONFIRM_GOODS (等待买家确认收货，即：卖家已发货) ；
@@ -100,7 +100,8 @@ class YzOrders extends ActiveRecord
 		$tid = $order_info['tid'];
 		$full_order_info['tid'] = $tid;
 
-		$full_order_info['fans_id'] = $buyer_info['fans_id'] ?? '';
+		$fans_id = $buyer_info['fans_id'] ?? '';
+		$full_order_info['fans_id'] = $fans_id;
 		$full_order_info['buyer_phone'] = $buyer_info['buyer_phone'] ?? '';
 		$full_order_info['receiver_tel'] = $address_info['receiver_tel'] ?? '';
 
@@ -112,7 +113,12 @@ class YzOrders extends ActiveRecord
 		if (!$tid || !$full_order_info) {
 			return 0;
 		}
+		// 更新地址信息
 		YzAddr::process($address_info);
+		// 更新下单用户信息
+		if (!YzUser::findOne(['uYZUId' => $fans_id])) {
+			YzUser::getUserInfoByTag($fans_id);
+		}
 		$insert = [];
 		foreach (self::$fieldMap as $key => $val) {
 			if (isset($full_order_info[$key]) && $full_order_info[$key]) {
@@ -244,13 +250,91 @@ class YzOrders extends ActiveRecord
 				self::edit($v['o_tid'], ['o_buyer_phone' => $uPhone]);
 			}
 
-			$msg = 'o_tid:' . $v['o_tid'] . '=>'  . ' o_fans_id:' . $o_fans_id . '=>' . 'uPhone:' . $o_buyer_phone;
+			$msg = 'o_tid:' . $v['o_tid'] . '=>' . ' o_fans_id:' . $o_fans_id . '=>' . 'uPhone:' . $o_buyer_phone;
 			// echo $msg . PHP_EOL;
 			AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_ORDERS_UP_PHONE, __FUNCTION__, __LINE__);
 
 		}
 
+	}
 
+
+	public static function orderStat($criteria = [], $params = [])
+	{
+		$strCriteria = '';
+		if ($criteria) {
+			$strCriteria = ' AND ' . implode(' AND ', $criteria);
+		}
+		$conn = AppUtil::db();
+		$sql = "SELECT u.uName as `name`,u.uPhone as phone,u.uYZUId as fans_id,u.uAvatar as thumb, 
+			Date_format(o.o_created, '%H') as hr,
+			SUM(case WHEN o_status in ('WAIT_BUYER_PAY','WAIT_CONFIRM','WAIT_SELLER_SEND_GOODS','WAIT_BUYER_CONFIRM_GOODS','TRADE_SUCCESS','TRADE_CLOSED') then 1 else 0 end) as amt,
+			SUM(case WHEN o_status=:st1 then 1 else 0 end) as wait_pay_amt,
+			SUM(case WHEN o_status=:st2 then 1 else 0 end) as wait_comfirm_amt,
+			SUM(case WHEN o_status=:st3 then 1 else 0 end) as wait_send_goods_amt,
+			SUM(case WHEN o_status=:st4 then 1 else 0 end) as wait_buyer_comfirm_goods_amt,
+			SUM(case WHEN o_status=:st5 then 1 else 0 end) as success_amt,
+			SUM(case WHEN o_status=:st6 then 1 else 0 end) as closed_amt
+			FROM im_yz_orders as o 
+			JOIN im_yz_user as u on u.uYZUId=o.o_fans_id
+			WHERE u.uType in (1,3) $strCriteria
+			GROUP BY o.o_fans_id,hr HAVING amt>0 ORDER BY amt DESC";
+		$params = array_merge($params, [
+			":st1" => self::WAIT_BUYER_PAY,
+			":st2" => self::WAIT_CONFIRM,
+			":st3" => self::WAIT_SELLER_SEND_GOODS,
+			":st4" => self::WAIT_BUYER_CONFIRM_GOODS,
+			":st5" => self::TRADE_SUCCESS,
+			":st6" => self::TRADE_CLOSED,
+		]);
+		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		$items = $baseData = [];
+		for ($k = 0; $k < 24; $k++) {
+			$baseData[] = [$k . '点', 0];
+		}
+		$timesSuccess[1] = $timesClosed[1] = [
+			'name' => '合计',
+			'data' => $baseData
+		];
+		$fields = ['wait_pay_amt', 'wait_comfirm_amt', 'wait_send_goods_amt', 'wait_buyer_comfirm_goods_amt', 'success_amt', 'closed_amt'];
+		foreach ($ret as $k => $row) {
+			$fans_id = $row['fans_id'];
+			$name = $row['name'];
+			if (!isset($items[$fans_id])) {
+				$items[$fans_id] = $row;
+				if (count(array_keys($timesSuccess)) < 9 && !isset($timesSuccess[$fans_id])) {
+					$timesSuccess[$fans_id] = $timesClosed[$fans_id] = [
+						'name' => $name,
+						'data' => $baseData
+					];
+				}
+				continue;
+			}
+			foreach ($fields as $field) {
+				$items[$fans_id][$field] += $row[$field];
+			}
+		}
+		foreach ($ret as $k => $row) {
+			$hr = intval($row['hr']);
+			$fans_id = $row['fans_id'];
+			if (isset($timesSuccess[$fans_id])) {
+				$timesSuccess[$fans_id]['data'][$hr][1] = intval($row['success_amt']);
+			}
+			if (isset($timesClosed[$fans_id])) {
+				$timesClosed[$fans_id]['data'][$hr][1] = intval($row['closed_amt']);
+			}
+			$timesSuccess[1]['data'][$hr][1] += intval($row['success_amt']);
+			$timesClosed[1]['data'][$hr][1] += intval($row['closed_amt']);
+		}
+
+		foreach ($items as $k => $item) {
+			$items[$k]['ratio'] = '';
+			if ($item['success_amt']) {
+				$items[$k]['ratio'] = sprintf('%.1f%%', 100.0 * $item['closed_amt'] / $item['success_amt']);
+			}
+		}
+		$items = array_slice($items, 0, 25);
+		return [array_values($items), array_values($timesSuccess), array_values($timesClosed)];
 	}
 
 }

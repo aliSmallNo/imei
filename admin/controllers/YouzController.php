@@ -11,6 +11,7 @@ namespace admin\controllers;
 
 use admin\controllers\BaseController;
 use admin\models\Admin;
+use common\models\YzOrders;
 use common\models\YzUser;
 use common\utils\AppUtil;
 use common\utils\ExcelUtil;
@@ -226,6 +227,39 @@ class YouzController extends BaseController
 				'getInfo' => $getInfo,
 				'items' => $items,
 
+			]);
+	}
+
+
+	public function actionOrderstat()
+	{
+		$getInfo = \Yii::$app->request->get();
+		$sdate = self::getParam("sdate");
+		$edate = self::getParam("edate");
+		$criteria = $params = [];
+		if ($sdate && $edate) {
+			$criteria[] = "o.o_created between :sdt and :edt ";
+			$params[':sdt'] = $sdate . ' 00:00:00';
+			$params[':edt'] = $edate . ' 23:59:50';
+		}
+
+		list($stat, $timesSuccess, $timesClosed) = YzOrders::orderStat($criteria, $params);
+		// print_r($stat);print_r($timesSuccess);print_r($timesClosed);exit;
+		list($wd, $monday, $sunday) = AppUtil::getWeekInfo();
+		list($md, $firstDay, $endDay) = AppUtil::getMonthInfo();
+
+		return $this->renderPage("orderstat.tpl",
+			[
+				'getInfo' => $getInfo,
+				'scanStat' => $stat,
+				'timesSub' => json_encode($timesSuccess, JSON_UNESCAPED_UNICODE),
+				'timesReg' => json_encode($timesClosed, JSON_UNESCAPED_UNICODE),
+				'today' => date('Y-m-d'),
+				'yesterday' => date('Y-m-d', time() - 86400),
+				'monday' => $monday,
+				'sunday' => $sunday,
+				'firstDay' => $firstDay,
+				'endDay' => $endDay,
 			]);
 	}
 

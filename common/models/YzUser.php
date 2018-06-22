@@ -552,6 +552,7 @@ class YzUser extends ActiveRecord
 		}
 
 		return $res;
+
 	}
 
 

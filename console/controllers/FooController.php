@@ -1502,6 +1502,9 @@ class FooController extends Controller
 		}*/
 
 		//YzOrders::Update_order('','',1);
+
+		YzOrders::orders_user_mix_update();
+
 	}
 
 
