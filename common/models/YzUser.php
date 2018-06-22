@@ -560,8 +560,8 @@ class YzUser extends ActiveRecord
 		$ret = [];
 		$co = 0;
 		$sql = 'select u2.uYZUId,u2.uName,u2.uPhone from im_yz_user as u1
-				left join  im_yz_user as u2 as u2.uPhone=u1.uFromPhone 
-				where u1.uYZUId=:fans_id and uFromPhone>1 ';
+				left join  im_yz_user as u2 on u2.uPhone=u1.uFromPhone 
+				where u1.uYZUId=:fans_id and u1.uFromPhone>1 ';
 		$cmd = AppUtil::db()->createCommand($sql);
 
 		do {
