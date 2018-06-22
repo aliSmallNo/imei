@@ -253,7 +253,7 @@ class YzOrders extends ActiveRecord
 					$insert[$val] = $order[$key];
 				}
 			}
-			echo $v['o_tid'] . PHP_EOL;
+			echo $v['o_tid'] . json_encode($insert) . PHP_EOL;
 			self::edit($v['o_tid'], $insert);
 
 
