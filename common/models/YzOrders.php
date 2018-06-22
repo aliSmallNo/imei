@@ -222,7 +222,7 @@ class YzOrders extends ActiveRecord
 	 * @throws \yii\db\Exception
 	 * 用户表、订单表 信息相互更新
 	 */
-	public static function orders_user_mix_update()
+	public static function orders_user_mix_update($debugger = false)
 	{
 
 		$conn = AppUtil::db();
@@ -251,7 +251,9 @@ class YzOrders extends ActiveRecord
 			}
 
 			$msg = 'o_tid:' . $v['o_tid'] . '=>' . ' o_fans_id:' . $o_fans_id . '=>' . 'uPhone:' . $o_buyer_phone;
-			// echo $msg . PHP_EOL;
+			if ($debugger) {
+				echo $msg . PHP_EOL;
+			}
 			AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_ORDERS_UP_PHONE, __FUNCTION__, __LINE__);
 
 		}
