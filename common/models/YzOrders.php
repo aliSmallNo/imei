@@ -375,13 +375,35 @@ class YzOrders extends ActiveRecord
 			$timesClosed[1]['data'][$hr][1] += intval($row['closed_amt']);
 		}
 
+		$all = [
+			'thumb' => '',
+			'phone' => '',
+			'fans_id' => '',
+			'uType' => '',
+			'type_str' => '',
+			'o_receiver_name' => '',
+			'o_receiver_tel' => '',
+			'name' => '合计',
+			'amt' => 0,
+			'wait_pay_amt' => 0,
+			'wait_comfirm_amt' => 0,
+			'wait_send_goods_amt' => 1,
+			'wait_buyer_comfirm_goods_amt' => 0,
+			'success_amt' => 0,
+			'closed_amt' => 0,
+			'pay_amt' => 0,
+		];
 		foreach ($items as $k => $item) {
 			$items[$k]['ratio'] = '';
 			if ($item['amt']) {
 				$items[$k]['ratio'] = sprintf('%.1f%%', 100.0 * $item['success_amt'] / $item['amt']);
 			}
+			foreach ($fields as $field) {
+				$all[$field] += $item[$field] ?? 0;
+			}
 		}
 		$items = array_slice($items, 0, 50);
+		$items[] = $all;
 		return [array_values($items), array_values($timesAmt), array_values($timesClosed)];
 	}
 

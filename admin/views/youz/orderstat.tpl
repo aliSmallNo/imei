@@ -126,6 +126,7 @@
 			{{foreach from=$scanStat item=stat}}
 				<tr data-id="{{$stat.fans_id}}" data-type="{{$stat.uType}}" data-name="{{$stat.name}}({{$stat.phone}})">
 					<td class="person">
+						{{if $stat.fans_id}}
 						<div class="avatar">
 							<img src="{{$stat.thumb}}">
 						</div>
@@ -135,6 +136,9 @@
 							</div>
 							<div><span>收货人: </span>{{$stat.o_receiver_name}}<span class="tip">{{$stat.o_receiver_tel}}</span></div>
 						</div>
+						{{else}}
+							合计
+						{{/if}}
 					</td>
 					<td align="right">
 						{{$stat.amt}}
