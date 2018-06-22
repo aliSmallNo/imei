@@ -64,7 +64,7 @@
 <div class="row">
 	<h4>下单统计</h4>
 </div>
-<form action="/site/netstat" class="form-inline">
+<form action="/youz/orderstat" class="form-inline">
 	<input class="form-control beginDate my-date-input" placeholder="开始时间" name="sdate"
 				 value="{{if isset($getInfo['sdate'])}}{{$getInfo['sdate']}}{{/if}}">
 	至

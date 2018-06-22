@@ -302,7 +302,7 @@ class YzOrders extends ActiveRecord
 			SUM(case WHEN o_status=:st4 then 1 else 0 end) as wait_buyer_comfirm_goods_amt,
 			SUM(case WHEN o_status=:st5 then 1 else 0 end) as success_amt,
 			SUM(case WHEN o_status=:st6 then 1 else 0 end) as closed_amt,
-			SUM(case WHEN o_payment>0 then o_payment else 0 end) as pay_amt
+			SUM(case WHEN o_status=:st6 then 0 else o_payment end) as pay_amt
 			FROM im_yz_orders as o 
 			JOIN im_yz_user as u on u.uYZUId=o.o_fans_id
 			WHERE u.uType in (1,3) $strCriteria
@@ -316,6 +316,9 @@ class YzOrders extends ActiveRecord
 			":st6" => self::TRADE_CLOSED,
 		]);
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		if ($strCriteria) {
+			// echo $conn->createCommand($sql)->bindValues($params)->getRawSql();exit;
+		}
 		$items = $baseData = [];
 		for ($k = 0; $k < 24; $k++) {
 			$baseData[] = [$k . '点', 0];
@@ -331,14 +334,14 @@ class YzOrders extends ActiveRecord
 
 			if (!isset($items[$fans_id])) {
 				$items[$fans_id] = $row;
-				$items[$fans_id]['type_str'] = '';
+				$items[$fans_id]['type_str'] = YzUser::$typeDict[$row['uType']];
 				/*if (count(array_keys($timesAmt)) < 9 && !isset($timesAmt[$fans_id])) {
 					$timesAmt[$fans_id] = $timesClosed[$fans_id] = [
 						'name' => $name,
 						'data' => $baseData
 					];
 				}*/
-				//continue;
+				continue;
 			}
 			foreach ($fields as $field) {
 				$items[$fans_id][$field] += $row[$field];
