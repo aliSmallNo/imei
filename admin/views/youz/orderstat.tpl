@@ -117,17 +117,13 @@
 			</thead>
 			<tbody>
 			{{foreach from=$scanStat item=stat}}
-				<tr data-id="{{$stat.fans_id}}">
+				<tr data-id="{{$stat.fans_id}}" data-type="{{$stat.uType}}">
 					<td class="person">
 						<div class="avatar">
 							<img src="{{$stat.thumb}}">
 						</div>
 						<div class="title">
-							<div>{{$stat.name}}
-								(
-								<button type="button" data-toggle="popover" title="用户关系链" data-content=""
-												class="user_chain btn btn-sm type_{{$stat.uType}}">{{$stat.type_str}}</button>
-								)
+							<div>{{$stat.name}}(<span class="user_chain type_{{$stat.uType}}">{{$stat.type_str}}</span>)
 								<span class="tip">{{$stat.phone}}</span>
 							</div>
 							<div><span>收货人: </span>{{$stat.o_receiver_name}}<span class="tip">{{$stat.o_receiver_tel}}</span></div>
@@ -250,26 +246,28 @@
 	$(document).on('click', ".user_chain", function () {
 		var self = $(this);
 		var fans_id = self.closest("tr").attr('data-id');
-
-		if (loadflag) {
-			return;
-		}
-		loadflag = 1;
-		$.post("/api/youz", {
-			tag: 'last_user_chain',
-			fans_id: fans_id
-		}, function (resp) {
-			loadflag = 0;
-			if (resp.code == 0) {
-				self.popover({
-					placement: 'top',
-					title: '用户链',
-					content: resp.data.data,
-				})
-			} else {
-				lay.msg(resp.msg);
+		var type = self.closest("tr").attr('data-type');
+		if (type == 3) {
+			if (loadflag) {
+				return;
 			}
-		});
+			loadflag = 1;
+			$.post("/api/youz", {
+				tag: 'last_user_chain',
+				fans_id: fans_id
+			}, function (resp) {
+				loadflag = 0;
+				if (resp.code == 0) {
+					self.popover({
+						placement: 'top',
+						title: '用户链',
+						content: resp.data.data,
+					})
+				} else {
+					lay.msg(resp.msg);
+				}
+			});
+		}
 
 
 	});
