@@ -117,7 +117,7 @@
 			</thead>
 			<tbody>
 			{{foreach from=$scanStat item=stat}}
-				<tr data-id="{{$stat.fans_id}}" data-type="{{$stat.uType}}">
+				<tr data-id="{{$stat.fans_id}}" data-type="{{$stat.uType}}" data-name="{{$stat.name}}({{$stat.phone}})">
 					<td class="person">
 						<div class="avatar">
 							<img src="{{$stat.thumb}}">
@@ -247,6 +247,7 @@
 		var self = $(this);
 		var fans_id = self.closest("tr").attr('data-id');
 		var type = self.closest("tr").attr('data-type');
+		var name = self.closest("tr").attr('data-name');
 		if (type == 3) {
 			if (loadflag) {
 				return;
@@ -261,7 +262,7 @@
 					self.popover({
 						placement: 'top',
 						title: '用户链',
-						content: resp.data.data,
+						content: resp.data.data + '>' + name,
 					})
 				} else {
 					lay.msg(resp.msg);
