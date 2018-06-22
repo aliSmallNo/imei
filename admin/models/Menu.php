@@ -150,6 +150,12 @@ class Menu
 						"level" => 820
 					],
 					[
+						"name" => "订单统计",
+						"url" => "/youz/orderstat",
+						"revise" => 1,
+						"level" => 820
+					],
+					[
 						"name" => "随机数",
 						"url" => "/youz/create",
 						"revise" => 1,
