@@ -228,17 +228,13 @@ class YzOrders extends ActiveRecord
 	{
 
 		$conn = AppUtil::db();
-		$res = $conn->createCommand("select o_tid,o_orders,o_address_info,o_buyer_phone,o_fans_id from im_yz_orders ")->queryAll();
+		$res = $conn->createCommand("select o_tid,o_orders,o_buyer_phone,o_fans_id from im_yz_orders ")->queryAll();
 
-		// $userCMD = $conn->createCommand("select uCreateOn,uPhone from im_yz_user where uYZUId=:fans_id");
+		$userCMD = $conn->createCommand("select uCreateOn,uPhone from im_yz_user where uYZUId=:fans_id");
 
 		foreach ($res as $k => $v) {
 
-			$o_receiver_name = json_decode($v['o_address_info'], 1)['receiver_name'];
-			echo $v['o_tid'] . '=>' . json_encode(['o_receiver_name' => $o_receiver_name]) . PHP_EOL;
-			self::edit($v['o_tid'], ['o_receiver_name' => $o_receiver_name]);
-
-			/*$o_fans_id = $v['o_fans_id'];
+			$o_fans_id = $v['o_fans_id'];
 			$o_buyer_phone = $v['o_buyer_phone'];
 
 			$user = $userCMD->bindValues([':fans_id' => $o_fans_id])->queryOne();
@@ -260,7 +256,7 @@ class YzOrders extends ActiveRecord
 			if ($debugger) {
 				echo $msg . PHP_EOL;
 			}
-			AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_ORDERS_UP_PHONE, __FUNCTION__, __LINE__);*/
+			AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_ORDERS_UP_PHONE, __FUNCTION__, __LINE__);
 
 		}
 
@@ -275,7 +271,7 @@ class YzOrders extends ActiveRecord
 		}
 		$conn = AppUtil::db();
 		$sql = "SELECT u.uName as `name`,u.uPhone as phone,u.uYZUId as fans_id,u.uAvatar as thumb, 
-			Date_format(o.o_created, '%H') as hr,
+			Date_format(o.o_created, '%H') as hr,o.o_receiver_tel,o.o_receiver_name,
 			SUM(case WHEN o_status in ('WAIT_BUYER_PAY','WAIT_CONFIRM','WAIT_SELLER_SEND_GOODS','WAIT_BUYER_CONFIRM_GOODS','TRADE_SUCCESS','TRADE_CLOSED') then 1 else 0 end) as amt,
 			SUM(case WHEN o_status=:st1 then 1 else 0 end) as wait_pay_amt,
 			SUM(case WHEN o_status=:st2 then 1 else 0 end) as wait_comfirm_amt,
@@ -300,18 +296,18 @@ class YzOrders extends ActiveRecord
 		for ($k = 0; $k < 24; $k++) {
 			$baseData[] = [$k . '点', 0];
 		}
-		$timesSuccess[1] = $timesClosed[1] = [
+		$timesAmt[1] = $timesClosed[1] = [
 			'name' => '合计',
 			'data' => $baseData
 		];
-		$fields = ['wait_pay_amt', 'wait_comfirm_amt', 'wait_send_goods_amt', 'wait_buyer_comfirm_goods_amt', 'success_amt', 'closed_amt'];
+		$fields = ['amt', 'wait_pay_amt', 'wait_comfirm_amt', 'wait_send_goods_amt', 'wait_buyer_comfirm_goods_amt', 'success_amt', 'closed_amt'];
 		foreach ($ret as $k => $row) {
 			$fans_id = $row['fans_id'];
-			$name = $row['name'];
+			$name = $row['o_receiver_name'];
 			if (!isset($items[$fans_id])) {
 				$items[$fans_id] = $row;
-				if (count(array_keys($timesSuccess)) < 9 && !isset($timesSuccess[$fans_id])) {
-					$timesSuccess[$fans_id] = $timesClosed[$fans_id] = [
+				if (count(array_keys($timesAmt)) < 9 && !isset($timesAmt[$fans_id])) {
+					$timesAmt[$fans_id] = $timesClosed[$fans_id] = [
 						'name' => $name,
 						'data' => $baseData
 					];
@@ -325,24 +321,24 @@ class YzOrders extends ActiveRecord
 		foreach ($ret as $k => $row) {
 			$hr = intval($row['hr']);
 			$fans_id = $row['fans_id'];
-			if (isset($timesSuccess[$fans_id])) {
-				$timesSuccess[$fans_id]['data'][$hr][1] = intval($row['success_amt']);
+			if (isset($timesAmt[$fans_id])) {
+				$timesAmt[$fans_id]['data'][$hr][1] = intval($row['amt']);
 			}
 			if (isset($timesClosed[$fans_id])) {
 				$timesClosed[$fans_id]['data'][$hr][1] = intval($row['closed_amt']);
 			}
-			$timesSuccess[1]['data'][$hr][1] += intval($row['success_amt']);
+			$timesAmt[1]['data'][$hr][1] += intval($row['amt']);
 			$timesClosed[1]['data'][$hr][1] += intval($row['closed_amt']);
 		}
 
 		foreach ($items as $k => $item) {
 			$items[$k]['ratio'] = '';
-			if ($item['success_amt']) {
-				$items[$k]['ratio'] = sprintf('%.1f%%', 100.0 * $item['closed_amt'] / $item['success_amt']);
+			if ($item['amt']) {
+				$items[$k]['ratio'] = sprintf('%.1f%%', 100.0 * $item['success_amt'] / $item['amt']);
 			}
 		}
-		$items = array_slice($items, 0, 25);
-		return [array_values($items), array_values($timesSuccess), array_values($timesClosed)];
+		$items = array_slice($items, 0, 50);
+		return [array_values($items), array_values($timesAmt), array_values($timesClosed)];
 	}
 
 }

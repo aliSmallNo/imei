@@ -243,7 +243,7 @@ class YouzController extends BaseController
 			$params[':edt'] = $edate . ' 23:59:50';
 		}
 
-		list($stat, $timesSuccess, $timesClosed) = YzOrders::orderStat($criteria, $params);
+		list($stat, $timesAmt, $timesClosed) = YzOrders::orderStat($criteria, $params);
 		// print_r($stat);print_r($timesSuccess);print_r($timesClosed);exit;
 		list($wd, $monday, $sunday) = AppUtil::getWeekInfo();
 		list($md, $firstDay, $endDay) = AppUtil::getMonthInfo();
@@ -252,8 +252,8 @@ class YouzController extends BaseController
 			[
 				'getInfo' => $getInfo,
 				'scanStat' => $stat,
-				'timesSub' => json_encode($timesSuccess, JSON_UNESCAPED_UNICODE),
-				'timesReg' => json_encode($timesClosed, JSON_UNESCAPED_UNICODE),
+				'timesAmt' => json_encode($timesAmt, JSON_UNESCAPED_UNICODE),
+				'timesClosed' => json_encode($timesClosed, JSON_UNESCAPED_UNICODE),
 				'today' => date('Y-m-d'),
 				'yesterday' => date('Y-m-d', time() - 86400),
 				'monday' => $monday,

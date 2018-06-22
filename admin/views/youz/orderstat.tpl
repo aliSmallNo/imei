@@ -69,18 +69,18 @@
 	<div class="col-sm-7">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<i class="fa fa-bar-chart-o fa-fw"></i> 关注用户按时段统计
+				<i class="fa fa-bar-chart-o fa-fw"></i> 下单用户按时段统计
 			</div>
 			<div class="panel-body">
-				<div id="sub_times" class="chart-wrapper"></div>
+				<div id="amt_times" class="chart-wrapper"></div>
 			</div>
 		</div>
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<i class="fa fa-bar-chart-o fa-fw"></i> 注册用户按时段统计
+				<i class="fa fa-bar-chart-o fa-fw"></i> 关闭订单用户按时段统计
 			</div>
 			<div class="panel-body">
-				<div id="reg_times" class="chart-wrapper"></div>
+				<div id="closed_times" class="chart-wrapper"></div>
 			</div>
 		</div>
 	</div>
@@ -113,8 +113,8 @@
 						<img src="{{$stat.thumb}}">
 					</div>
 					<div class="title">
-						<div>{{$stat.name}}</div>
-						<div class="tip">{{$stat.phone}}</div>
+						<div>{{$stat.o_receiver_name}}</div>
+						<div class="tip">{{$stat.o_receiver_tel}}</div>
 					</div>
 				</td>
 				<td align="right">
@@ -148,8 +148,8 @@
 </div>
 <script src="/js/highcharts/highcharts.js"></script>
 <script>
-	var mSubTimes ={{$timesSub}};
-	var mRegTimes ={{$timesReg}};
+	var mAmtTimes ={{$timesAmt}};
+	var mClosedTimes ={{$timesClosed}};
 	var mBeginDate = $('.beginDate');
 	var mEndDate = $('.endDate');
 	$('.j-scope').click(function () {
@@ -162,8 +162,8 @@
 	});
 
 	$(function () {
-		initChart('sub_times', mSubTimes);
-		initChart('reg_times', mRegTimes);
+		initChart('amt_times', mAmtTimes);
+		initChart('closed_times', mClosedTimes);
 	});
 
 	function initChart(pid, chatData) {
