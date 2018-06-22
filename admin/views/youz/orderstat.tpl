@@ -47,9 +47,22 @@
 		flex: 1
 		padding-left: 10px;
 	}
+
+	.type_1, .type_3 {
+		font-size: 12px;
+		font-weight: 800;
+		color: #777;
+		padding: 0;
+		background: initial
+	}
+
+	.type_3 {
+		color: #0f6cf2;
+		cursor: pointer;
+	}
 </style>
 <div class="row">
-	<h4>推广统计</h4>
+	<h4>下单统计</h4>
 </div>
 <form action="/site/netstat" class="form-inline">
 	<input class="form-control beginDate my-date-input" placeholder="开始时间" name="sdate"
@@ -66,7 +79,7 @@
 </form>
 <div class="row-divider"></div>
 <div class="row">
-	<div class="col-sm-7">
+	<div class="col-sm-6">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<i class="fa fa-bar-chart-o fa-fw"></i> 下单用户按时段统计
@@ -84,11 +97,11 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-5">
+	<div class="col-sm-6">
 		<table class="table table-striped table-bordered">
 			<thead>
 			<tr>
-				<th class="col-lg-5">
+				<th class="col-sm-7">
 					用户
 				</th>
 				<th>
@@ -100,46 +113,44 @@
 				<th>
 					交易关闭
 				</th>
-				<th>
-					等待买家付款
-				</th>
 			</tr>
 			</thead>
 			<tbody>
 			{{foreach from=$scanStat item=stat}}
-			<tr>
-				<td class="person">
-					<div class="avatar">
-						<img src="{{$stat.thumb}}">
-					</div>
-					<div class="title">
-						<div>{{$stat.o_receiver_name}}</div>
-						<div class="tip">{{$stat.o_receiver_tel}}</div>
-					</div>
-				</td>
-				<td align="right">
-					{{$stat.amt}}
-				</td>
-				<td align="right">
-					{{$stat.success_amt}}
-				</td>
-				<td align="right">
-					{{$stat.closed_amt}}
-				</td>
-				<td align="right">
-					{{$stat.wait_pay_amt}}
-				</td>
-				<!--
-			['wait_pay_amt', 'wait_comfirm_amt', 'wait_send_goods_amt', 'wait_buyer_comfirm_goods_amt', 'success_amt', 'closed_amt'];
-			-->
-			</tr>
+				<tr data-id="{{$stat.fans_id}}">
+					<td class="person">
+						<div class="avatar">
+							<img src="{{$stat.thumb}}">
+						</div>
+						<div class="title">
+							<div>{{$stat.name}}
+								(
+								<button type="button" data-toggle="popover" title="用户关系链" data-content=""
+												class="user_chain btn btn-sm type_{{$stat.uType}}">{{$stat.type_str}}</button>
+								)
+								<span class="tip">{{$stat.phone}}</span>
+							</div>
+							<div><span>收货人: </span>{{$stat.o_receiver_name}}<span class="tip">{{$stat.o_receiver_tel}}</span></div>
+						</div>
+					</td>
+					<td align="right">
+						{{$stat.amt}}
+					</td>
+					<td align="right">
+						{{$stat.success_amt}}
+					</td>
+					<td align="right">
+						{{$stat.closed_amt}}
+					</td>
+					<!--
+				['amt','wait_pay_amt', 'wait_comfirm_amt', 'wait_send_goods_amt', 'wait_buyer_comfirm_goods_amt', 'success_amt', 'closed_amt'];
+				-->
+				</tr>
 			{{/foreach}}
 			<tr>
 				<td colspan="6" class="tip">
-					1.每个人的扫码关注的数；
-					2.每个人关注 并注册的用户；
-					3.每个人注册成功（我们成为XX媒婆的数据）；
-					4.取消关注用户数
+					1.下单数(包括未支付，支付，关闭等状态的订单)；
+
 				</td>
 			</tr>
 			</tbody>
@@ -233,5 +244,34 @@
 			series: chatData
 		});
 	}
+
+
+	var loadflag = 0;
+	$(document).on('click', ".user_chain", function () {
+		var self = $(this);
+		var fans_id = self.closest("tr").attr('data-id');
+
+		if (loadflag) {
+			return;
+		}
+		loadflag = 1;
+		$.post("/api/youz", {
+			tag: 'last_user_chain',
+			fans_id: fans_id
+		}, function (resp) {
+			loadflag = 0;
+			if (resp.code == 0) {
+				self.popover({
+					placement: 'top',
+					title: '用户链',
+					content: resp.data.data,
+				})
+			} else {
+				lay.msg(resp.msg);
+			}
+		});
+
+
+	});
 </script>
 {{include file="layouts/footer.tpl"}}

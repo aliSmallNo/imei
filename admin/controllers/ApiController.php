@@ -395,6 +395,13 @@ class ApiController extends Controller
 					'data' => $res,
 				]);
 				break;
+			case "last_user_chain":
+				$fans_id = self::postParam("fans_id");
+				if (!$fans_id) {
+					return self::renderAPI(129, 'missing params fans_id');
+				}
+				YzUser::get_user_chain_by_fans_id($fans_id);
+				break;
 			default:
 				break;
 		}

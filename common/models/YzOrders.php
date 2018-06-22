@@ -270,7 +270,7 @@ class YzOrders extends ActiveRecord
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
 		$conn = AppUtil::db();
-		$sql = "SELECT u.uName as `name`,u.uPhone as phone,u.uYZUId as fans_id,u.uAvatar as thumb, 
+		$sql = "SELECT u.uName as `name`,u.uPhone as phone,u.uYZUId as fans_id,u.uAvatar as thumb,uType,
 			Date_format(o.o_created, '%H') as hr,o.o_receiver_tel,o.o_receiver_name,
 			SUM(case WHEN o_status in ('WAIT_BUYER_PAY','WAIT_CONFIRM','WAIT_SELLER_SEND_GOODS','WAIT_BUYER_CONFIRM_GOODS','TRADE_SUCCESS','TRADE_CLOSED') then 1 else 0 end) as amt,
 			SUM(case WHEN o_status=:st1 then 1 else 0 end) as wait_pay_amt,
@@ -304,20 +304,37 @@ class YzOrders extends ActiveRecord
 		foreach ($ret as $k => $row) {
 			$fans_id = $row['fans_id'];
 			$name = $row['o_receiver_name'];
+
 			if (!isset($items[$fans_id])) {
 				$items[$fans_id] = $row;
-				if (count(array_keys($timesAmt)) < 9 && !isset($timesAmt[$fans_id])) {
+				$items[$fans_id]['type_str'] = '';
+				/*if (count(array_keys($timesAmt)) < 9 && !isset($timesAmt[$fans_id])) {
 					$timesAmt[$fans_id] = $timesClosed[$fans_id] = [
 						'name' => $name,
 						'data' => $baseData
 					];
-				}
-				continue;
+				}*/
+				//continue;
 			}
 			foreach ($fields as $field) {
 				$items[$fans_id][$field] += $row[$field];
 			}
+			$items[$fans_id]['type_str'] = YzUser::$typeDict[$row['uType']];
 		}
+
+		// 排序
+		array_multisort(array_column($items, 'amt'), SORT_DESC, $items);
+		foreach ($items as $key => $item) {
+			$fans_id_sort = $item['fans_id'];
+			$name = $item['o_receiver_name'];
+			if (count($timesAmt) < 9 && !isset($timesAmt[$fans_id_sort])) {
+				$timesAmt[$fans_id_sort] = $timesClosed[$fans_id_sort] = [
+					'name' => $name,
+					'data' => $baseData
+				];
+			}
+		}
+
 		foreach ($ret as $k => $row) {
 			$hr = intval($row['hr']);
 			$fans_id = $row['fans_id'];

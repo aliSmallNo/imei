@@ -555,5 +555,31 @@ class YzUser extends ActiveRecord
 
 	}
 
+	public static function get_user_chain_by_fans_id($fans_id)
+	{
+		$res = [];
+		$co = 0;
+		$cmd = AppUtil::db()->createCommand('select uYZUId,uName,uPhone,uFromPhone from im_yz_user where uYZUId=:fans_id');
+
+		do {
+			$res = $cmd->bindValues([':fans_id' => $fans_id])->queryOne();
+			if ($res) {
+				$fans_id = $res['uYZUId'];
+				$from_phone = $res['uFromPhone'];
+				$res[] = [
+					'fans_id' => $fans_id,
+					'name' => $res['uName'],
+					'fromPhone' => $res['uFromPhone'],
+					'phone' => $res['uPhone'],
+				];
+			} else {
+				break;
+			}
+			$co++;
+		} while (!$from_phone && $co < 10);
+
+		return $res;
+	}
+
 
 }
