@@ -400,7 +400,16 @@ class ApiController extends Controller
 				if (!$fans_id) {
 					return self::renderAPI(129, 'missing params fans_id');
 				}
-				YzUser::get_user_chain_by_fans_id($fans_id);
+				$res = YzUser::get_user_chain_by_fans_id($fans_id);
+
+				$str = '';
+				foreach ($res as $v) {
+					$str = $v['name'] . '(.' . $v['phone'] . '.)' . '>' . $str;
+				}
+
+				return self::renderAPI(0, 'ok', [
+					'data' => trim($str, '>')
+				]);
 				break;
 			default:
 				break;
