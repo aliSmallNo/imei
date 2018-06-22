@@ -402,9 +402,9 @@ class ApiController extends Controller
 				}
 				$res = YzUser::get_user_chain_by_fans_id($fans_id);
 
-				$str = '';
+				$str = '无上级严选师';
 				foreach ($res as $v) {
-					$str = $v['name'] . '(.' . $v['phone'] . '.)' . '>' . $str;
+					$str = $v['name'] . '(' . $v['phone'] . ')' . '>' . $str;
 				}
 
 				return self::renderAPI(0, 'ok', [
