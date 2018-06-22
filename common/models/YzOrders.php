@@ -97,7 +97,7 @@ class YzOrders extends ActiveRecord
 		$buyer_info = $full_order_info['buyer_info'];
 		$address_info = $full_order_info['address_info'];
 		$order_info = $full_order_info['order_info'];
-		$orders = $full_order_info['orders'];
+		$orders = $full_order_info['orders'][0];
 
 		$tid = $order_info['tid'];
 		$full_order_info['tid'] = $tid;
@@ -113,10 +113,10 @@ class YzOrders extends ActiveRecord
 		$full_order_info['pay_time'] = $order_info['pay_time'];
 		$full_order_info['update_time'] = $order_info['update_time'];
 
-		$full_order_info['payment'] = $orders['payment'];
-		$full_order_info['price'] = $orders['price'];
-		$full_order_info['num'] = $orders['num'];
-		$full_order_info['total_fee'] = $orders['total_fee'];
+		$full_order_info['payment'] = $orders['payment'] ?? 0.00;
+		$full_order_info['price'] = $orders['price'] ?? 0.00;
+		$full_order_info['num'] = $orders['num'] ?? 0;
+		$full_order_info['total_fee'] = $orders['total_fee'] ?? 0.00;
 
 		if (!$tid || !$full_order_info) {
 			return 0;
@@ -234,13 +234,13 @@ class YzOrders extends ActiveRecord
 	{
 
 		$conn = AppUtil::db();
-		$res = $conn->createCommand("select * from im_yz_orders where o_num=0")->queryAll();
+		$res = $conn->createCommand("select * from im_yz_orders ")->queryAll();
 
 		// $userCMD = $conn->createCommand("select uCreateOn,uPhone from im_yz_user where uYZUId=:fans_id");
 
 		foreach ($res as $k => $v) {
 
-			$map = [
+			/*$map = [
 				"price" => "o_price",
 				"num" => "o_num",
 				"total_fee" => "o_total_fee",
@@ -254,7 +254,7 @@ class YzOrders extends ActiveRecord
 				}
 			}
 			echo $v['o_tid'] . json_encode($insert) . PHP_EOL;
-			self::edit($v['o_tid'], $insert);
+			self::edit($v['o_tid'], $insert);*/
 
 
 			/*$o_fans_id = $v['o_fans_id'];
