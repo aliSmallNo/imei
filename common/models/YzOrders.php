@@ -97,6 +97,7 @@ class YzOrders extends ActiveRecord
 		$buyer_info = $full_order_info['buyer_info'];
 		$address_info = $full_order_info['address_info'];
 		$order_info = $full_order_info['order_info'];
+		$orders = $full_order_info['orders'];
 
 		$tid = $order_info['tid'];
 		$full_order_info['tid'] = $tid;
@@ -111,6 +112,11 @@ class YzOrders extends ActiveRecord
 		$full_order_info['created'] = $order_info['created'];
 		$full_order_info['pay_time'] = $order_info['pay_time'];
 		$full_order_info['update_time'] = $order_info['update_time'];
+
+		$full_order_info['payment'] = $orders['payment'];
+		$full_order_info['price'] = $orders['price'];
+		$full_order_info['num'] = $orders['num'];
+		$full_order_info['total_fee'] = $orders['total_fee'];
 
 		if (!$tid || !$full_order_info) {
 			return 0;
@@ -228,13 +234,29 @@ class YzOrders extends ActiveRecord
 	{
 
 		$conn = AppUtil::db();
-		$res = $conn->createCommand("select o_tid,o_orders,o_buyer_phone,o_fans_id from im_yz_orders ")->queryAll();
+		$res = $conn->createCommand("select o_tid,o_orders,o_buyer_phone,o_fans_id from im_yz_orders where o_num=0")->queryAll();
 
-		$userCMD = $conn->createCommand("select uCreateOn,uPhone from im_yz_user where uYZUId=:fans_id");
+		// $userCMD = $conn->createCommand("select uCreateOn,uPhone from im_yz_user where uYZUId=:fans_id");
 
 		foreach ($res as $k => $v) {
 
-			$o_fans_id = $v['o_fans_id'];
+			$map = [
+				"price" => "o_price",
+				"num" => "o_num",
+				"total_fee" => "o_total_fee",
+				"payment" => "o_payment"
+			];
+			$order = $v['o_orders'];
+			$insert = [];
+			foreach ($map as $key => $val) {
+				if (isset($order[$key])) {
+					$insert[$val] = $order[$key];
+				}
+			}
+			self::edit($v['o_tid'], $insert);
+
+
+			/*$o_fans_id = $v['o_fans_id'];
 			$o_buyer_phone = $v['o_buyer_phone'];
 
 			$user = $userCMD->bindValues([':fans_id' => $o_fans_id])->queryOne();
@@ -256,7 +278,7 @@ class YzOrders extends ActiveRecord
 			if ($debugger) {
 				echo $msg . PHP_EOL;
 			}
-			AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_ORDERS_UP_PHONE, __FUNCTION__, __LINE__);
+			AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_ORDERS_UP_PHONE, __FUNCTION__, __LINE__);*/
 
 		}
 
@@ -278,7 +300,8 @@ class YzOrders extends ActiveRecord
 			SUM(case WHEN o_status=:st3 then 1 else 0 end) as wait_send_goods_amt,
 			SUM(case WHEN o_status=:st4 then 1 else 0 end) as wait_buyer_comfirm_goods_amt,
 			SUM(case WHEN o_status=:st5 then 1 else 0 end) as success_amt,
-			SUM(case WHEN o_status=:st6 then 1 else 0 end) as closed_amt
+			SUM(case WHEN o_status=:st6 then 1 else 0 end) as closed_amt,
+			SUM(case WHEN o_payment>0 then o_payment else 0 end) as pay_amt
 			FROM im_yz_orders as o 
 			JOIN im_yz_user as u on u.uYZUId=o.o_fans_id
 			WHERE u.uType in (1,3) $strCriteria
@@ -300,7 +323,7 @@ class YzOrders extends ActiveRecord
 			'name' => '合计',
 			'data' => $baseData
 		];
-		$fields = ['amt', 'wait_pay_amt', 'wait_comfirm_amt', 'wait_send_goods_amt', 'wait_buyer_comfirm_goods_amt', 'success_amt', 'closed_amt'];
+		$fields = ['amt', 'pay_amt', 'wait_pay_amt', 'wait_comfirm_amt', 'wait_send_goods_amt', 'wait_buyer_comfirm_goods_amt', 'success_amt', 'closed_amt'];
 		foreach ($ret as $k => $row) {
 			$fans_id = $row['fans_id'];
 			$name = $row['o_receiver_name'];

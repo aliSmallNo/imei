@@ -111,8 +111,15 @@
 					买家已签收|订单成功
 				</th>
 				<th>
+					待发货
+				</th>
+				<th>
 					交易关闭
 				</th>
+				<th>
+					实付金额
+				</th>
+
 			</tr>
 			</thead>
 			<tbody>
@@ -136,8 +143,15 @@
 						{{$stat.success_amt}}
 					</td>
 					<td align="right">
+						{{$stat.wait_send_goods_amt}}
+					</td>
+					<td align="right">
 						{{$stat.closed_amt}}
 					</td>
+					<td align="right">
+						{{$stat.pay_amt}}
+					</td>
+
 					<!--
 				['amt','wait_pay_amt', 'wait_comfirm_amt', 'wait_send_goods_amt', 'wait_buyer_comfirm_goods_amt', 'success_amt', 'closed_amt'];
 				-->
