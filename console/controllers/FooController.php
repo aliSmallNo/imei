@@ -1504,6 +1504,8 @@ class FooController extends Controller
 		//YzOrders::Update_order('','',1);
 
 		$res = YzUser::get_user_chain_by_fans_id(5352476755);
+		print_r($res);
+		exit;
 
 	}
 
