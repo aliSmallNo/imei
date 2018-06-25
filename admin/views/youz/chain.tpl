@@ -295,7 +295,7 @@
 			<em>{[uName]}</em>
 			<a href="javascript:;" data-tag="self" data-num="{[self_order_amt]}">订单数:{[self_order_amt]}</a>
 			<a href="javascript:;" data-tag="next" data-num="{[next_order_amt]}">下级订单数:{[next_order_amt]}</a>
-			<strong>支付总金额:{[item.sum_payment]}</strong>
+			<strong>支付总金额:{[sum_payment]}</strong>
 		</li>
 		{[/data]}
 	</ul>
