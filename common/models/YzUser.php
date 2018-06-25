@@ -567,12 +567,19 @@ class YzUser extends ActiveRecord
 			], $params))->getRawSql();
 			exit;*/
 		}
+		$sql = "select sum(o.o_payment)
+				from im_yz_user as u1 
+				left join im_yz_orders as o on o.o_fans_id=u1.uYZUId 
+				where u1.uType=:ty and (u1.uFromPhone=:phone or u1.uPhone=:phone) and o.o_id>0 $criteria_o ";
+		$CMD = $conn->createCommand($sql);
 		foreach ($res as $k => $v) {
 			$res[$k]['cls'] = $v['amt'] > 0 ? 'parent_li' : '';
+			$res[$k]['sum_payment'] = $CMD->bindValues([':phone' => $v['uPhone'], ':ty' => self::TYPE_YXS])->queryScalar();;
 		}
 
 		return $res;
 	}
+
 
 	public static function orders_by_phone($params_in, $page, $pageize = 20)
 	{

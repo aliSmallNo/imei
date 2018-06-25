@@ -196,7 +196,8 @@ class YzGoods extends ActiveRecord
 	public static function get_goods_by_se_time($tag, $isDebugger = false)
 	{
 
-		$st = '2018-03-26 00:00:00';
+		//$st = '2018-03-26 00:00:00';
+		$st = date("Y-m-d") . ' 00:00:00';
 		$et = date('Y-m-d 23:23:59');
 
 		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
@@ -228,6 +229,8 @@ class YzGoods extends ActiveRecord
 				foreach ($item as $v) {
 					$v['status'] = $tag;
 					self::process($v);
+					// 更新分成信息
+					self::update_rate_by_good_id($v['item_id']);
 				}
 				$page++;
 
@@ -681,9 +684,8 @@ class YzGoods extends ActiveRecord
 	{
 		$res = AppUtil::db()->createCommand("select g_item_id from im_yz_goods order by g_id desc ")->queryAll();
 		foreach ($res as $id) {
-			self::update_rate_by_good_id($id['g_item_id']);
+			// self::update_rate_by_good_id($id['g_item_id']);
 		}
-
 	}
 
 

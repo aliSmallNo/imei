@@ -112,6 +112,7 @@
 					<em>{{$item.uName}}</em>
 					<a href="javascript:;" data-tag="self">订单数:{{$item.self_order_amt}}</a>
 					<a href="javascript:;" data-tag="next">下级订单数:{{$item.next_order_amt}}</a>
+					<i>支付总金额:{{$item.sum_payment}}</i>
 				</li>
 			{{/foreach}}
 		</ul>
