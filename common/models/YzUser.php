@@ -561,6 +561,46 @@ class YzUser extends ActiveRecord
 		}
 
 		return $res;
+	}
+
+	public static function orders_by_phone($phone, $flag, $page, $pageize = 20)
+	{
+
+		$conn = AppUtil::db();
+		$limit = "limit " . ($page - 1) * $pageize . ',' . ($pageize + 1);
+		switch ($flag) {
+			case "self":
+				$criteriaStr = " and u1.uPhone=:phone ";
+				$params[':phone'] = $phone;
+				break;
+			case "next":
+				$criteriaStr = " and u1.uFromPhone=:phone ";
+				$params[':phone'] = $phone;
+				break;
+			default:
+				$criteriaStr = '';
+				$params = [];
+		}
+
+		$sql = "select u1.uName,u1.uPhone,u1.uFromPhone,o.*
+				from im_yz_user as u1 
+				left join im_yz_orders as o on o.o_fans_id=u1.uYZUId
+				where u1.uType=:ty $criteriaStr and o.o_id>0 order by o_created DESC $limit";
+		$res = $conn->createCommand($sql)->bindValues(array_merge([
+			':ty' => self::TYPE_YXS
+		], $params))->queryAll();
+		foreach ($res as $k => $v) {
+			$res[$k]['status_str'] = YzOrders::$typeDict[$v['o_status']] ?? '';
+			$res[$k]['orders'] = json_decode($v['o_orders'], 1)[0];
+			$res[$k]['_pic_path'] = $res[$k]['orders']['pic_path'];
+			$res[$k]['_title'] = $res[$k]['orders']['title'];
+			$res[$k]['_sku_properties_name'] = json_decode($res[$k]['orders']['sku_properties_name'], 1);
+
+		}
+
+		$nextpage = count($res) > $pageize ? ($page + 1) : 0;
+
+		return [$res, $nextpage];
 
 	}
 

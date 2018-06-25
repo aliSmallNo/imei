@@ -31,6 +31,7 @@ use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserTrans;
 use common\models\UserWechat;
+use common\models\YzOrders;
 use common\models\YzUser;
 use common\service\CogService;
 use common\service\SessionService;
@@ -412,6 +413,20 @@ class ApiController extends Controller
 				$str = $str ? $str : '无上级严选师';
 				return self::renderAPI(0, 'ok', [
 					'data' => trim($str, '>')
+				]);
+				break;
+			case "order_list_by_phone":
+				// 根据严选师手机号查询严选师订单
+				$flag = self::postParam("flag");
+				$phone = self::postParam("phone");
+				$page = self::postParam('page');
+				if (!in_array($flag, ['self', 'next']) || !AppUtil::checkPhone($phone) || !$page) {
+					return self::renderAPI(129, 'params error~');
+				}
+				list($res, $nextpage) = YzUser::orders_by_phone($phone, $flag, $page);
+				return self::renderAPI(0, 'ok', [
+					'data' => $res,
+					'nextpage' => $nextpage,
 				]);
 				break;
 			default:
