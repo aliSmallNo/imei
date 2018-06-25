@@ -90,6 +90,12 @@
 						 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
 			<input class="form-control" placeholder="严选师手机" type="text" name="phone"
 						 value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
+
+			<input class="form-control beginDate my-date-input" placeholder="订单开始时间" name="sdate"
+						 value="{{if isset($getInfo['sdate'])}}{{$getInfo['sdate']}}{{/if}}">
+			至
+			<input class="form-control endDate my-date-input" placeholder="订单截止时间" name="edate"
+						 value="{{if isset($getInfo['edate'])}}{{$getInfo['edate']}}{{/if}}">
 		</div>
 		<button class="btn btn-primary">查询</button>
 		<span class="space"></span>
@@ -163,6 +169,8 @@
 	$sls = {
 		loadflag: 0,
 		phone: 0,
+		sdate: $(".beginDate"),
+		edate: $(".endDate"),
 		page: 1,
 		modal: $("#orderModal"),
 		ul: $("#orderModal .modal-body tbody"),
@@ -200,7 +208,9 @@
 		$.post("/api/youz",
 			{
 				tag: 'chain_by_phone',
-				phone: $sls.phone
+				phone: $sls.phone,
+				sdate: $sls.sdate.val(),
+				edate: $sls.edate.val(),
 			},
 			function (resp) {
 				$sls.loadflag = 0;
@@ -235,6 +245,8 @@
 				flag: $sls.flag,
 				phone: $sls.phone,
 				page: $sls.page,
+				sdate: $sls.sdate.val(),
+				edate: $sls.edate.val(),
 			},
 			function (resp) {
 				$sls.loadflag = 0;

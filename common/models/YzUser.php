@@ -529,12 +529,23 @@ class YzUser extends ActiveRecord
 
 	}
 
-	public static function chain_items($criteria, $params)
+	public static function chain_items($criteria, $params, $se_date = [])
 	{
 		$conn = AppUtil::db();
 		$criteriaStr = '';
 		if ($criteria) {
 			$criteriaStr = ' and ' . implode(" and ", $criteria);
+		}
+
+		$orderby = ' order by amt desc ';
+
+		$criteria_o = $criteria_o2 = '';
+		if ($se_date['sdate'] && $se_date['edate']) {
+			$sdate = $se_date['sdate'] . ' 00:00:00';
+			$edate = $se_date['edate'] . ' 23:59:59';
+			$criteria_o = " and o.o_created between '$sdate' and '$edate' ";
+			$criteria_o2 = " and o2.o_created between '$sdate' and '$edate' ";
+			$orderby = " order by next_order_amt desc,self_order_amt desc";
 		}
 
 		$sql = "select u1.uName,u1.uPhone,
@@ -543,10 +554,10 @@ class YzUser extends ActiveRecord
 				count(DISTINCT o2.o_id) as next_order_amt 
 				from im_yz_user as u1
 				left join  im_yz_user as u2 on u2.uFromPhone=u1.uPhone
-				left join im_yz_orders as o on o.o_fans_id=u1.uYZUId
-				left join im_yz_orders as o2 on o2.o_fans_id=u2.uYZUId 
+				left join im_yz_orders as o on o.o_fans_id=u1.uYZUId $criteria_o
+				left join im_yz_orders as o2 on o2.o_fans_id=u2.uYZUId  $criteria_o2
 				where u1.uType=:ty  $criteriaStr  
-				group by u1.uYZUId order by amt desc ";
+				group by u1.uYZUId $orderby ";
 		$res = $conn->createCommand($sql)->bindValues(array_merge([
 			':ty' => self::TYPE_YXS,
 		], $params))->queryAll();
@@ -563,23 +574,28 @@ class YzUser extends ActiveRecord
 		return $res;
 	}
 
-	public static function orders_by_phone($phone, $flag, $page, $pageize = 20)
+	public static function orders_by_phone($params_in, $page, $pageize = 20)
 	{
-
 		$conn = AppUtil::db();
 		$limit = "limit " . ($page - 1) * $pageize . ',' . ($pageize + 1);
-		switch ($flag) {
+		switch ($params_in['flag']) {
 			case "self":
 				$criteriaStr = " and u1.uPhone=:phone ";
-				$params[':phone'] = $phone;
+				$params[':phone'] = $params_in['phone'];
 				break;
 			case "next":
 				$criteriaStr = " and u1.uFromPhone=:phone ";
-				$params[':phone'] = $phone;
+				$params[':phone'] = $params_in['phone'];
 				break;
 			default:
 				$criteriaStr = '';
 				$params = [];
+		}
+
+		if ($params_in['sdate'] && $params_in['edate']) {
+			$criteriaStr .= " and o.o_created between :sdate and :edate ";
+			$params[':sdate'] = $params_in['sdate'] . ' 00:00:00';
+			$params[':edate'] = $params_in['edate'] . ' 23:59:59';
 		}
 
 		$sql = "select u1.uName,u1.uPhone,u1.uFromPhone,o.*
@@ -589,6 +605,7 @@ class YzUser extends ActiveRecord
 		$res = $conn->createCommand($sql)->bindValues(array_merge([
 			':ty' => self::TYPE_YXS
 		], $params))->queryAll();
+
 		foreach ($res as $k => $v) {
 			$res[$k]['status_str'] = YzOrders::$typeDict[$v['o_status']] ?? '';
 			$res[$k]['orders'] = json_decode($v['o_orders'], 1)[0];

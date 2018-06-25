@@ -202,7 +202,13 @@ class YouzController extends BaseController
 		$getInfo = \Yii::$app->request->get();
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
+		$sdate = self::getParam("sdate");
+		$edate = self::getParam("edate");
 
+		$se_date = [
+			'sdate' => $sdate,
+			'edate' => $edate,
+		];
 		$criteria = $params = [];
 
 		if ($phone) {
@@ -215,12 +221,13 @@ class YouzController extends BaseController
 			$params[':phone2'] = 100;
 		}
 
+
 		if ($name) {
 			$criteria[] = " u1.uName like :name ";
 			$params[':name'] = '%' . trim($name) . '%';
 		}
 
-		$items = YzUser::chain_items($criteria, $params);
+		$items = YzUser::chain_items($criteria, $params, $se_date);
 
 		return $this->renderPage('chain.tpl',
 			[

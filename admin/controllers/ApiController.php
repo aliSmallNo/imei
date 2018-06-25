@@ -394,7 +394,15 @@ class ApiController extends Controller
 				}
 				$criteria[] = 'u1.uFromPhone=:phone1';
 				$params[':phone1'] = $phone;
-				$res = YzUser::chain_items($criteria, $params);
+
+				$sdate = self::postParam("sdate");
+				$edate = self::postParam("edate");
+				$se_date = [
+					'sdate' => $sdate,
+					'edate' => $edate,
+				];
+
+				$res = YzUser::chain_items($criteria, $params, $se_date);
 				return self::renderAPI(0, 'ok', [
 					'data' => $res,
 				]);
@@ -420,10 +428,18 @@ class ApiController extends Controller
 				$flag = self::postParam("flag");
 				$phone = self::postParam("phone");
 				$page = self::postParam('page');
+				$sdate = self::postParam("sdate");
+				$edate = self::postParam("edate");
+
 				if (!in_array($flag, ['self', 'next']) || !AppUtil::checkPhone($phone) || !$page) {
 					return self::renderAPI(129, 'params error~');
 				}
-				list($res, $nextpage) = YzUser::orders_by_phone($phone, $flag, $page);
+				list($res, $nextpage) = YzUser::orders_by_phone([
+					'phone' => $phone,
+					'flag' => $flag,
+					'sdate' => $sdate,
+					'edate' => $edate,
+				], $page);
 				return self::renderAPI(0, 'ok', [
 					'data' => $res,
 					'nextpage' => $nextpage,
