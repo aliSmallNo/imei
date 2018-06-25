@@ -673,7 +673,7 @@ class YzGoods extends ActiveRecord
 			]
 		];
 		echo $item_id . '==' . json_encode($res['response']['items']) . PHP_EOL;
-		self::edit($item_id, ['o_rate' => $res['response']['items']]);
+		self::edit($item_id, ['g_rate' => $res['response']['items']]);
 
 	}
 
