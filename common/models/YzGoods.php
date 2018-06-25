@@ -647,6 +647,45 @@ class YzGoods extends ActiveRecord
 		}
 	}
 
+	/**
+	 * 根据商品ID获取商品提成比例
+	 * @param $item_id
+	 * https://www.youzanyun.com/apilist/detail/group_ump/salesman/youzan.salesman.items.get
+	 */
+	public static function update_rate_by_good_id($item_id)
+	{
+		$method = 'youzan.salesman.items.get';
+		$params = [
+			'item_ids' => $item_id,
+		];
+
+		$res = YouzanUtil::getData($method, $params);
+		$resStyle = [
+			"response" => [
+				"items" => [
+					[
+						"is_join" => "1",           // is_join:商品是否参与推广0:不参与1参与
+						"num_iid" => "422796500",   // num_iid:商品ID
+						"i_rate" => "3.00",         // i_rate:商品提成比例(%)
+						"ii_rate" => "0.10"         // ii_rate:商品邀请奖励提成比例(%)
+					]
+				]
+			]
+		];
+		echo $item_id . '==' . json_encode($res['response']['items']) . PHP_EOL;
+		self::edit($item_id, ['o_rate' => $res['response']['items']]);
+
+	}
+
+	public static function update_goods_rate()
+	{
+		$res = AppUtil::db()->createCommand("select g_item_id from im_yz_goods order by g_id desc ")->queryAll();
+		foreach ($res as $id) {
+			self::update_rate_by_good_id($id['g_item_id']);
+		}
+
+	}
+
 
 	public static function update_goods($isDebugger = false)
 	{

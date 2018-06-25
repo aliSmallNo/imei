@@ -1503,7 +1503,7 @@ class FooController extends Controller
 
 		//YzOrders::Update_order('','',1);
 
-		$res = YzOrders::orders_user_mix_update();
+		YzGoods::update_goods_rate();
 
 	}
 
