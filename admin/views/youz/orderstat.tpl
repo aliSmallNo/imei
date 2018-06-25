@@ -162,7 +162,7 @@
 						{{$stat.closed_amt}}
 					</td>
 					<td align="right">
-						{{$stat.pay_amt}}
+						{{$stat.pay_amt|string_format:'%.2f'}}
 					</td>
 
 					<!--
