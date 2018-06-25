@@ -71,6 +71,26 @@
 		color: #000
 	}
 
+	[class^="icon-"], [class*=" icon-"] {
+		display: inline-block;
+		width: 14px;
+		height: 14px;
+		margin-top: 1px;
+		line-height: 14px;
+		vertical-align: text-top;
+		background-image: url(/images/glyphicons-halflings.png);
+		background-position: 14px 14px;
+		background-repeat: no-repeat;
+	}
+
+	.icon-minus-sign {
+		background-position: -24px -96px;
+	}
+
+	.icon-plus-sign {
+		background-position: 0 -96px;
+	}
+
 	tr td img {
 		width: 60px;
 		height: 60px;
@@ -122,7 +142,7 @@
 		<ul>
 			{{foreach from=$items item=item}}
 				<li class="{{$item.cls}}" data-phone="{{$item.uPhone}}">
-					<span data-phone="{{$item.uPhone}}"><i class="icon-folder-open"></i>{{$item.uPhone}}({{$item.amt}})</span>
+					<span data-phone="{{$item.uPhone}}"><i class="{{$item.cls_ico}}"></i>{{$item.uPhone}}({{$item.amt}})</span>
 					<em>{{$item.uname}}</em>
 					<a href="javascript:;" data-tag="self" data-num="{{$item.self_order_amt}}">订单数:{{$item.self_order_amt}}</a>
 					<a href="javascript:;" data-tag="next" data-um="{{$item.next_order_amt}}">下级订单数:{{$item.next_order_amt}}</a>
@@ -196,26 +216,30 @@
 		$('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
 
 		$(document).on('click', '.tree li.parent_li > span', function (e) {
-			var li = $(this).parent('li.parent_li');
+			var self = $(this);
+			var li = self.parent('li.parent_li');
 			var children = li.find(' > ul > li');
-			console.log(children.length);
 			if (children.length > 0) {
-				if (children.is(":visible")) {
-					children.hide('fast');
-					$(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
-				} else {
-					children.show('fast');
-					$(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
-				}
+				toggle_li(children, self);
 			} else {
 				$sls.phone = $(this).attr('data-phone');
-				reload(li);
+				reload(li, self);
 			}
 			e.stopPropagation();
 		});
 	});
 
-	function reload(li) {
+	function toggle_li(children, self) {
+		if (children.is(":visible")) {
+			children.hide('fast');
+			self.find(' > i').removeClass('icon-minus-sign').addClass('icon-plus-sign');
+		} else {
+			children.show('fast');
+			self.find(' > i').removeClass('icon-plus-sign').addClass('icon-minus-sign');
+		}
+	}
+
+	function reload(li, self) {
 		if ($sls.loadflag) {
 			return;
 		}
@@ -232,6 +256,7 @@
 				if (resp.code == 0) {
 					var html = Mustache.render($('#chain_tpl').html(), resp.data)
 					li.append(html);
+					self.find(' > i').removeClass('icon-plus-sign').addClass('icon-minus-sign');
 				} else {
 					layer.msg(resp.msg);
 				}
@@ -305,7 +330,7 @@
 	<ul>
 		{[#data]}
 		<li class="{[cls]}" data-phone="{[uPhone]}">
-			<span data-phone="{[uPhone]}"><i class="icon-leaf"></i>{[uPhone]}({[amt]})</span>
+			<span data-phone="{[uPhone]}"><i class="{[cls_ico]}"></i>{[uPhone]}({[amt]})</span>
 			<em>{[uname]}</em>
 			<a href="javascript:;" data-tag="self" data-num="{[self_order_amt]}">订单数:{[self_order_amt]}</a>
 			<a href="javascript:;" data-tag="next" data-num="{[next_order_amt]}">下级订单数:{[next_order_amt]}</a>
