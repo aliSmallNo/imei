@@ -288,6 +288,12 @@ class YzOrders extends ActiveRecord
 
 	public static function orderStat($criteria = [], $params = [])
 	{
+		$params_key = $params;
+		$res = RedisUtil::init(RedisUtil::KEY_YOUZAN_USER_ORDERS_STAT, md5(json_encode($params_key)))->getCache();
+		if ($res) {
+			return json_decode($res, 1);
+		}
+
 		$strCriteria = '';
 		if ($criteria) {
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
@@ -317,7 +323,7 @@ class YzOrders extends ActiveRecord
 		]);
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		if ($strCriteria) {
-			 // echo $conn->createCommand($sql)->bindValues($params)->getRawSql();exit;
+			// echo $conn->createCommand($sql)->bindValues($params)->getRawSql();exit;
 		}
 		$items = $baseData = [];
 		for ($k = 0; $k < 24; $k++) {
@@ -405,6 +411,7 @@ class YzOrders extends ActiveRecord
 		}
 		$items = array_slice($items, 0, 50);
 		$items[] = $all;
+		RedisUtil::init(RedisUtil::KEY_YOUZAN_USER_ORDERS_STAT, md5(json_encode($params_key)))->setCache(json_encode([array_values($items), array_values($timesAmt), array_values($timesClosed)]));
 		return [array_values($items), array_values($timesAmt), array_values($timesClosed)];
 	}
 
