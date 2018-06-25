@@ -79,34 +79,40 @@
 </form>
 <div class="row-divider"></div>
 <div class="row">
-	<div class="col-sm-6">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<i class="fa fa-bar-chart-o fa-fw"></i> 下单用户按时段统计
-			</div>
-			<div class="panel-body">
-				<div id="amt_times" class="chart-wrapper"></div>
-			</div>
-		</div>
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<i class="fa fa-bar-chart-o fa-fw"></i> 关闭订单用户按时段统计
-			</div>
-			<div class="panel-body">
-				<div id="closed_times" class="chart-wrapper"></div>
+	<div class="col-sm-12">
+		<div class="col-sm-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-bar-chart-o fa-fw"></i> 下单用户按时段统计
+				</div>
+				<div class="panel-body">
+					<div id="amt_times" class="chart-wrapper"></div>
+				</div>
 			</div>
 		</div>
+		<div class="col-sm-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-bar-chart-o fa-fw"></i> 关闭订单用户按时段统计
+				</div>
+				<div class="panel-body">
+					<div id="closed_times" class="chart-wrapper"></div>
+				</div>
+			</div>
+		</div>
+
 	</div>
-	<div class="col-sm-6">
+	<div class="col-sm-12">
 		<table class="table table-striped table-bordered">
 			<thead>
 			<tr>
-				<th class="col-sm-7">
+				<th class="col-sm-4">
 					用户
 				</th>
 				<th>
 					下单总数
 				</th>
+				<th>待付款</th>
 				<th>
 					买家已签收|订单成功
 				</th>
@@ -127,21 +133,24 @@
 				<tr data-id="{{$stat.fans_id}}" data-type="{{$stat.uType}}" data-name="{{$stat.name}}({{$stat.phone}})">
 					<td class="person">
 						{{if $stat.fans_id}}
-						<div class="avatar">
-							<img src="{{$stat.thumb}}">
-						</div>
-						<div class="title">
-							<div>{{$stat.name}}(<span class="user_chain type_{{$stat.uType}}">{{$stat.type_str}}</span>)
-								<span class="tip">{{$stat.phone}}</span>
+							<div class="avatar">
+								<img src="{{$stat.thumb}}">
 							</div>
-							<div><span>收货人: </span>{{$stat.o_receiver_name}}<span class="tip">{{$stat.o_receiver_tel}}</span></div>
-						</div>
+							<div class="title">
+								<div>{{$stat.name}}(<span class="user_chain type_{{$stat.uType}}">{{$stat.type_str}}</span>)
+									<span class="tip">{{$stat.phone}}</span>
+								</div>
+								<div><span>收货人: </span>{{$stat.o_receiver_name}}<span class="tip">{{$stat.o_receiver_tel}}</span></div>
+							</div>
 						{{else}}
 							合计
 						{{/if}}
 					</td>
 					<td align="right">
 						{{$stat.amt}}
+					</td>
+					<td align="right">
+						{{$stat.wait_pay_amt}}
 					</td>
 					<td align="right">
 						{{$stat.success_amt}}
@@ -162,7 +171,7 @@
 				</tr>
 			{{/foreach}}
 			<tr>
-				<td colspan="6" class="tip">
+				<td colspan="7" class="tip">
 					1.下单数(包括未支付，支付，关闭等状态的订单)；
 
 				</td>
