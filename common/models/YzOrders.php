@@ -302,7 +302,7 @@ class YzOrders extends ActiveRecord
 			SUM(case WHEN o_status=:st4 then 1 else 0 end) as wait_buyer_comfirm_goods_amt,
 			SUM(case WHEN o_status=:st5 then 1 else 0 end) as success_amt,
 			SUM(case WHEN o_status=:st6 then 1 else 0 end) as closed_amt,
-			SUM(case WHEN o_status=:st6 then 0 else o_payment end) as pay_amt
+			SUM(case WHEN o_status=:st6 or o_status=:st1 then 0 else o_payment end) as pay_amt
 			FROM im_yz_orders as o 
 			JOIN im_yz_user as u on u.uYZUId=o.o_fans_id
 			WHERE u.uType in (1,3) $strCriteria
@@ -317,7 +317,7 @@ class YzOrders extends ActiveRecord
 		]);
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		if ($strCriteria) {
-			// echo $conn->createCommand($sql)->bindValues($params)->getRawSql();exit;
+			 // echo $conn->createCommand($sql)->bindValues($params)->getRawSql();exit;
 		}
 		$items = $baseData = [];
 		for ($k = 0; $k < 24; $k++) {
@@ -348,6 +348,7 @@ class YzOrders extends ActiveRecord
 			}
 			$items[$fans_id]['type_str'] = YzUser::$typeDict[$row['uType']];
 		}
+
 
 		// 排序
 		array_multisort(array_column($items, 'amt'), SORT_DESC, $items);
@@ -387,7 +388,7 @@ class YzOrders extends ActiveRecord
 			'amt' => 0,
 			'wait_pay_amt' => 0,
 			'wait_comfirm_amt' => 0,
-			'wait_send_goods_amt' => 1,
+			'wait_send_goods_amt' => 0,
 			'wait_buyer_comfirm_goods_amt' => 0,
 			'success_amt' => 0,
 			'closed_amt' => 0,
