@@ -79,6 +79,20 @@
 	tr td div {
 		font-size: 12px;
 	}
+
+	.tree li em, .tree li a, .tree li strong {
+		display: inline-block;
+		width: 130px;
+	}
+
+	.tree li em {
+		width: 100px;
+	}
+
+	.tree li a {
+		width: 120px;
+	}
+
 </style>
 <div class="row">
 	<h4>用户关系链</h4>
@@ -109,7 +123,7 @@
 			{{foreach from=$items item=item}}
 				<li class="{{$item.cls}}" data-phone="{{$item.uPhone}}">
 					<span data-phone="{{$item.uPhone}}"><i class="icon-folder-open"></i>{{$item.uPhone}}({{$item.amt}})</span>
-					<em>{{$item.uName}}</em>
+					<em>{{$item.uname}}</em>
 					<a href="javascript:;" data-tag="self" data-num="{{$item.self_order_amt}}">订单数:{{$item.self_order_amt}}</a>
 					<a href="javascript:;" data-tag="next" data-um="{{$item.next_order_amt}}">下级订单数:{{$item.next_order_amt}}</a>
 					<strong>支付总金额:{{$item.sum_payment}}</strong>
@@ -292,7 +306,7 @@
 		{[#data]}
 		<li class="{[cls]}" data-phone="{[uPhone]}">
 			<span data-phone="{[uPhone]}"><i class="icon-leaf"></i>{[uPhone]}({[amt]})</span>
-			<em>{[uName]}</em>
+			<em>{[uname]}</em>
 			<a href="javascript:;" data-tag="self" data-num="{[self_order_amt]}">订单数:{[self_order_amt]}</a>
 			<a href="javascript:;" data-tag="next" data-num="{[next_order_amt]}">下级订单数:{[next_order_amt]}</a>
 			<strong>支付总金额:{[sum_payment]}</strong>

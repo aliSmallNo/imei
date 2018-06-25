@@ -580,6 +580,7 @@ class YzUser extends ActiveRecord
 		$CMD = $conn->createCommand($sql);
 		foreach ($res as $k => $v) {
 			$res[$k]['cls'] = $v['amt'] > 0 ? 'parent_li' : '';
+			$res[$k]['uname'] = mb_strlen($v['uName']) > 5 ? mb_substr($v['uName'], 0, 5) . '...' : $v['uName'];
 			$res[$k]['sum_payment'] = $CMD->bindValues([':phone' => $v['uPhone'], ':ty' => self::TYPE_YXS])->queryScalar() ?: 0;
 		}
 
