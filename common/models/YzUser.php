@@ -537,16 +537,25 @@ class YzUser extends ActiveRecord
 			$criteriaStr = ' and ' . implode(" and ", $criteria);
 		}
 
-		$sql = 'select u1.uName,u1.uPhone,
-				count(1) as co,
-				sum(case when u2.uPhone then 1 else 0 end) as amt
+		$sql = "select u1.uName,u1.uPhone,
+				COUNT(DISTINCT u2.uPhone) as amt, 
+				count(DISTINCT o.o_id) as self_order_amt ,
+				count(DISTINCT o2.o_id) as next_order_amt 
 				from im_yz_user as u1
-				left join  im_yz_user as u2 on u2.uFromPhone=u1.uPhone 
-				where u1.uType=:ty ' . $criteriaStr . ' 
-				group by u1.uPhone order by amt desc ';
+				left join  im_yz_user as u2 on u2.uFromPhone=u1.uPhone
+				left join im_yz_orders as o on o.o_fans_id=u1.uYZUId
+				left join im_yz_orders as o2 on o2.o_fans_id=u2.uYZUId 
+				where u1.uType=:ty  $criteriaStr  
+				group by u1.uYZUId order by amt desc ";
 		$res = $conn->createCommand($sql)->bindValues(array_merge([
 			':ty' => self::TYPE_YXS,
 		], $params))->queryAll();
+		if ($criteriaStr) {
+			/*echo $conn->createCommand($sql)->bindValues(array_merge([
+				':ty' => self::TYPE_YXS,
+			], $params))->getRawSql();
+			exit;*/
+		}
 		foreach ($res as $k => $v) {
 			$res[$k]['cls'] = $v['amt'] > 0 ? 'parent_li' : '';
 		}

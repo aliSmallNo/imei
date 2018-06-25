@@ -388,6 +388,9 @@ class ApiController extends Controller
 				break;
 			case "chain_by_phone":
 				$phone = self::postParam('phone');
+				if (!$phone || !AppUtil::checkPhone($phone)) {
+					return self::renderAPI(129, 'params error');
+				}
 				$criteria[] = 'u1.uFromPhone=:phone1';
 				$params[':phone1'] = $phone;
 				$res = YzUser::chain_items($criteria, $params);

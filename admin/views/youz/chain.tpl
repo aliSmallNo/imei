@@ -94,7 +94,9 @@
 			{{foreach from=$items item=item}}
 			<li class="{{$item.cls}}">
 				<span data-phone="{{$item.uPhone}}"><i class="icon-folder-open"></i>{{$item.uPhone}}({{$item.amt}})</span>
-				<a href="javascript:;">{{$item.uName}}</a>
+				<em>{{$item.uName}}</em>
+				<a href="javascript:;">订单数:{{$item.self_order_amt}}</a>
+				<a href="javascript:;">下级订单数:{{$item.next_order_amt}}</a>
 			</li>
 			{{/foreach}}
 		</ul>
@@ -159,7 +161,9 @@
 		{[#data]}
 		<li class="{[cls]}">
 			<span data-phone="{[uPhone]}"><i class="icon-leaf"></i>{[uPhone]}({[amt]})</span>
-			<a href="javascript:;">{[uName]}</a>
+			<em>{[uName]}</em>
+			<a href="javascript:;">订单数:{[self_order_amt]}</a>
+			<a href="javascript:;">下级订单数:{[next_order_amt]}</a>
 		</li>
 		{[/data]}
 	</ul>
