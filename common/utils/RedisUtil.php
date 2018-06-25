@@ -58,6 +58,7 @@ class RedisUtil
 	const KEY_YOUZAN_TOKEN = "youzan_token";
 	const KEY_ADMIN_LIST = "admin_list";
 	const KEY_YOUZAN_LAST_FANSID = "you_last_fansid";
+	const KEY_YOUZAN_USER_CHAIN = "you_user_chain";
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
@@ -96,6 +97,7 @@ class RedisUtil
 		self::KEY_YOUZAN_TOKEN => 86400 * 7,
 		self::KEY_ADMIN_LIST => 86400 * 7,
 		self::KEY_YOUZAN_LAST_FANSID => 86400 * 365,
+		self::KEY_YOUZAN_USER_CHAIN => 60 * 30,
 	];
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';

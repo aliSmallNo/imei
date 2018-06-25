@@ -531,6 +531,12 @@ class YzUser extends ActiveRecord
 
 	public static function chain_items($criteria, $params, $se_date = [])
 	{
+
+		$res = RedisUtil::init(RedisUtil::KEY_YOUZAN_USER_CHAIN, md5(json_encode($params) . json_encode($se_date)))->getCache();
+		if ($res) {
+			return json_decode($res, 1);
+		}
+
 		$conn = AppUtil::db();
 		$criteriaStr = '';
 		if ($criteria) {
@@ -577,6 +583,7 @@ class YzUser extends ActiveRecord
 			$res[$k]['sum_payment'] = $CMD->bindValues([':phone' => $v['uPhone'], ':ty' => self::TYPE_YXS])->queryScalar() ?: 0;
 		}
 
+		RedisUtil::init(RedisUtil::KEY_YOUZAN_USER_CHAIN, md5(json_encode($params) . json_encode($se_date)))->setCache(json_encode($res));
 		return $res;
 	}
 
