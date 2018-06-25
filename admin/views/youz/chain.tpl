@@ -110,9 +110,9 @@
 				<li class="{{$item.cls}}" data-phone="{{$item.uPhone}}">
 					<span data-phone="{{$item.uPhone}}"><i class="icon-folder-open"></i>{{$item.uPhone}}({{$item.amt}})</span>
 					<em>{{$item.uName}}</em>
-					<a href="javascript:;" data-tag="self">订单数:{{$item.self_order_amt}}</a>
-					<a href="javascript:;" data-tag="next">下级订单数:{{$item.next_order_amt}}</a>
-					<i>支付总金额:{{$item.sum_payment}}</i>
+					<a href="javascript:;" data-tag="self" data-num="{{$item.self_order_amt}}">订单数:{{$item.self_order_amt}}</a>
+					<a href="javascript:;" data-tag="next" data-um="{{$item.next_order_amt}}">下级订单数:{{$item.next_order_amt}}</a>
+					<strong>支付总金额:{{$item.sum_payment}}</strong>
 				</li>
 			{{/foreach}}
 		</ul>
@@ -227,9 +227,13 @@
 	$(document).on("click", "a[data-tag]", function () {
 		$sls.page = 1;
 		var self = $(this);
+		var num = parseInt(self.attr('data-num'));
+		if (!num) {
+			return;
+		}
 		$sls.phone = self.closest("li").attr('data-phone');
 		$sls.flag = self.attr('data-tag');
-		var flag_text = {self: '', next: '下家'};
+		var flag_text = {self: '', next: '下一级'};
 		var name = self.closest("li").find('em').html();
 		$sls.modal_title.html(name + flag_text[$sls.flag] + '的订单');
 		order_list();
@@ -289,8 +293,9 @@
 		<li class="{[cls]}" data-phone="{[uPhone]}">
 			<span data-phone="{[uPhone]}"><i class="icon-leaf"></i>{[uPhone]}({[amt]})</span>
 			<em>{[uName]}</em>
-			<a href="javascript:;" data-tag="self">订单数:{[self_order_amt]}</a>
-			<a href="javascript:;" data-tag="next">下级订单数:{[next_order_amt]}</a>
+			<a href="javascript:;" data-tag="self" data-num="{[self_order_amt]}">订单数:{[self_order_amt]}</a>
+			<a href="javascript:;" data-tag="next" data-num="{[next_order_amt]}">下级订单数:{[next_order_amt]}</a>
+			<strong>支付总金额:{[item.sum_payment]}</strong>
 		</li>
 		{[/data]}
 	</ul>
