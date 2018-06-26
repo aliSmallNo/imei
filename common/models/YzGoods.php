@@ -180,7 +180,10 @@ class YzGoods extends ActiveRecord
 		}
 		$entity->save();
 		if ($update_des_flag) {
+			// 更新商品详细信息
 			self::get_goods_desc_by_id($g_item_id);
+			// 更新分成信息
+			self::update_rate_by_good_id($v['item_id']);
 		}
 		return true;
 	}
@@ -273,8 +276,6 @@ class YzGoods extends ActiveRecord
 				foreach ($item as $v) {
 					$v['status'] = $tag;
 					self::process($v);
-					// 更新分成信息
-					self::update_rate_by_good_id($v['item_id']);
 				}
 				$page++;
 
