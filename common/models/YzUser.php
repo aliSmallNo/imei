@@ -317,7 +317,7 @@ class YzUser extends ActiveRecord
 							$editCount++;
 							self::edit($fansId, $insert);
 							if ($isDebugger) {
-								echo '$fansId:' . $fansId . __CLASS__ . __FUNCTION__ . __LINE__ . PHP_EOL;
+								echo '$fansId:' . $fansId . PHP_EOL;
 							}
 						}
 					}
