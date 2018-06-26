@@ -82,10 +82,6 @@ class YzUser extends ActiveRecord
 			}
 		}
 
-		if (isset($insert['uPhone']) && !$insert['uPhone']) {
-			unset($insert['uPhone']);
-		}
-
 		$insert['uRawData'] = json_encode($v, JSON_UNESCAPED_UNICODE);
 		// echo $uid;print_r($insert);exit;
 		return YzUser::edit($uid, $insert);
@@ -103,12 +99,49 @@ class YzUser extends ActiveRecord
 		return $str;
 	}
 
-
+	/**
+	 * 定时任务入口
+	 */
 	public static function UpdateUser($st = '', $et = '')
 	{
 		$st = $st ? $st : date('Y-m-d 00:00:00');
 		$et = $et ? $et : date('Y-m-d 00:00:00', time() + 86400);
-		self::getUserBySETime($st, $et);
+		//self::getUserBySETime($st, $et);
+		self::getUserBySETime_new($st, $et);
+	}
+
+	public static function getUserBySETime_new($st, $et, $isDebugger = false)
+	{
+		$dates = YouzanUtil::cal_se_date($st, $et);
+		$page = 1;
+		$page_size = 50;
+		$total = 0;
+		foreach ($dates as $date) {
+			$stime = $date['stime'];
+			$etime = $date['etime'];
+			$stimeFmt = $date['stimeFmt'];
+			$etimeFmt = $date['etimeFmt'];
+
+			do {
+				$results = self::getTZUser($stimeFmt, $etimeFmt, $page, $page_size, $isDebugger);
+				$total_results = $results['total_results'] ?? 0;
+				$users = $results['users'] ?? [];
+				if (1) {
+					if ($page == 1) {
+						$total = $total + $total_results;
+					}
+					$msg = "stime:" . $stime . ':' . $stimeFmt . ' == etime:' . $etime . ':' . $etimeFmt . ' currentNum:' . $total_results . 'countRes:' . count($users) . ' Total:' . $total;
+					if ($isDebugger) {
+						echo $msg . PHP_EOL;
+					}
+					AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_GOODS, __FUNCTION__, __LINE__);
+				}
+				foreach ($users as $v) {
+					self::process($v);
+				}
+				$page++;
+			} while (count($users) == $page_size && $page < 10);
+		}
 	}
 
 	/**
@@ -117,13 +150,11 @@ class YzUser extends ActiveRecord
 	 */
 	public static function getUserBySETime($st, $et, $isDebugger = false)
 	{
-
-		// 根据关注时间段批量查询微信粉丝用户信息
-		//$st = '2018-03-26 00:00:00';
-		//$et = '2018-03-29 00:00:00';
-
-		//$st = '2018-06-05 00:00:00';
-		//$et = '2018-06-06 00:00:00';
+		/*// 根据关注时间段批量查询微信粉丝用户信息
+		$st = '2018-03-26 00:00:00';
+		$et = '2018-03-29 00:00:00';
+		$st = '2018-06-05 00:00:00';
+		$et = '2018-06-06 00:00:00';*/
 		$page = 1;
 		$page_size = 20;
 		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
@@ -185,7 +216,7 @@ class YzUser extends ActiveRecord
 			echo $msg . PHP_EOL;
 		}
 
-		AppUtil::logByFile($results, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
+		//AppUtil::logByFile($results, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 		AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 
 		return $results;
@@ -234,6 +265,7 @@ class YzUser extends ActiveRecord
 					foreach ($ret as $k => $v) {
 						$insert = [
 							'uFromPhone' => $v['from_buyer_mobile'] ?? '',
+							'uFromPhoneBak' => $v['from_buyer_mobile'] ?? '',
 							'uPhone' => $v['mobile'] ?? '',
 							'uCreateOn' => $v['created_at'] ?? '',
 							'uSeller' => $v['seller'] ?? '',
