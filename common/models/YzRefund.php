@@ -85,6 +85,9 @@ class YzRefund extends ActiveRecord
 		}
 		foreach ($data as $k => $v) {
 			$entity->$k = is_array($v) ? json_encode($v, JSON_UNESCAPED_UNICODE) : $v;
+			if ($k == "return_goods") {
+				$entity->$k = $v ? 'true' : 'false';
+			}
 		}
 		$entity->save();
 		return true;
