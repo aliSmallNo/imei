@@ -309,21 +309,19 @@ class YzUser extends ActiveRecord
 							'uType' => self::TYPE_YXS,
 						];
 						$fansId = $v['fans_id'];
-						// 注：$fansId 有等于0 的情况，实际严选师大于拉取会俩的严选师
-
-
+						// 注：$fansId 有等于0 的情况，实际严选师大于拉取的严选师
 						if ($fansId && !self::findOne(['uYZUId' => $fansId])) {
 							$addCount++;
 							self::getUserInfoByTag($fansId);
 						} elseif (!$fansId && $insert['uPhone']) {
-							$editCount++;
-							$fansId = self::use_phone_get_user_info($insert['uPhone']);
+							// 没卵用
+							//$editCount++;
+							//$fansId = self::use_phone_get_user_info($insert['uPhone']);
 						}
 						self::edit($fansId, $insert);
 						if ($isDebugger) {
 							echo '$fansId:' . $fansId . PHP_EOL;
 						}
-
 					}
 				}
 			}
@@ -418,9 +416,7 @@ class YzUser extends ActiveRecord
 		if ($open_id) {
 			$fansId = self::getUserInfoByTag($open_id, 'weixin_openid');
 		}
-
-		echo '$phone:' . $phone . ' $open_id:' . $open_id . ' $fansId' . $fansId . PHP_EOL;
-
+		// echo '$phone:' . $phone . ' $open_id:' . $open_id . ' $fansId' . $fansId . PHP_EOL;
 		return $fansId;
 	}
 
