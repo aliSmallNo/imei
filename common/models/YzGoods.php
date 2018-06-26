@@ -230,8 +230,6 @@ class YzGoods extends ActiveRecord
 				foreach ($item as $v) {
 					$v['status'] = $tag;
 					self::process($v);
-					// 更新分成信息
-					self::update_rate_by_good_id($v['item_id']);
 				}
 				$page++;
 			} while (count($item) == $page_size && $page < 10);
