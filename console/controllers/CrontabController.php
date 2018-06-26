@@ -17,6 +17,7 @@ use common\models\UserTag;
 use common\models\UserWechat;
 use common\models\YzGoods;
 use common\models\YzOrders;
+use common\models\YzRefund;
 use common\models\YzUser;
 use common\service\TrendService;
 use common\utils\AppUtil;
@@ -98,6 +99,8 @@ class CrontabController extends Controller
 		YzOrders::Update_order();
 		// 更新商品
 		YzGoods::update_goods();
+		// 更新商家退款
+		YzRefund::get_goods_by_se_time();
 	}
 
 
