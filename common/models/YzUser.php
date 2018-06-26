@@ -63,7 +63,12 @@ class YzUser extends ActiveRecord
 			$data['uUpdatedOn'] = date('Y-m-d H:i:s');
 		}
 		foreach ($data as $k => $v) {
-			$entity->$k = is_array($v) ? json_encode($v, JSON_UNESCAPED_UNICODE) : $v;
+			if ($k == 'uFromPhone') {
+				// 不修改uFromPhone: 我们的合伙人会修改
+				$entity->$k = $entity->uFromPhone ? $entity->uFromPhone : $v;
+			} else {
+				$entity->$k = is_array($v) ? json_encode($v, JSON_UNESCAPED_UNICODE) : $v;
+			}
 		}
 		$entity->save();
 		return true;
@@ -107,10 +112,10 @@ class YzUser extends ActiveRecord
 		$st = $st ? $st : date('Y-m-d 00:00:00');
 		$et = $et ? $et : date('Y-m-d 00:00:00', time() + 86400);
 		//self::getUserBySETime($st, $et);
-		self::getUserBySETime_new($st, $et);
+		self::getUserBySETime($st, $et, 1);
 	}
 
-	public static function getUserBySETime_new($st, $et, $isDebugger = false)
+	public static function getUserBySETime($st, $et, $isDebugger = false)
 	{
 		$dates = YouzanUtil::cal_se_date($st, $et);
 		$page = 1;
@@ -134,27 +139,26 @@ class YzUser extends ActiveRecord
 					if ($isDebugger) {
 						echo $msg . PHP_EOL;
 					}
-					AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_GOODS, __FUNCTION__, __LINE__);
+					AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 				}
 				foreach ($users as $v) {
 					self::process($v);
 				}
 				$page++;
-			} while (count($users) == $page_size && $page < 10);
+			} while (count($users) == $page_size && $page < 20);
 		}
+
+		// 更新分销员信息
+		self::getSalesManList($isDebugger);
 	}
 
 	/**
-	 * 根据关注时间段批量查询微信粉丝用户信息（支持粉丝基础信息、积分、交易等数据查询，详见入参fields字段描述）。
-	 * 注意：循环拉取
+	 * 根据关注时间段批量查询微信粉丝用户信息
+	 * 支持粉丝基础信息、积分、交易等数据查询，详见入参fields字段描述
 	 */
-	public static function getUserBySETime($st, $et, $isDebugger = false)
+	/*public static function getUserBySETime_old($st, $et, $isDebugger = false)
 	{
-		/*// 根据关注时间段批量查询微信粉丝用户信息
-		$st = '2018-03-26 00:00:00';
-		$et = '2018-03-29 00:00:00';
-		$st = '2018-06-05 00:00:00';
-		$et = '2018-06-06 00:00:00';*/
+		// 根据关注时间段批量查询微信粉丝用户信息
 		$page = 1;
 		$page_size = 20;
 		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
@@ -166,7 +170,6 @@ class YzUser extends ActiveRecord
 
 			$results = self::getTZUser($stime, $etime, $page, $page_size, $isDebugger);
 
-			/* 计算总共用户数 */
 			$total_results = $results['total_results'] ?? 0;
 			$total = $total + $total_results;
 			$msg = "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . $total_results . ' Total:' . $total;
@@ -190,13 +193,11 @@ class YzUser extends ActiveRecord
 
 		// 更新分销员信息
 		self::getSalesManList($isDebugger);
-	}
+	}*/
 
 	/**
 	 * 根据关注时间段批量查询微信粉丝用户信息（支持粉丝基础信息、积分、交易等数据查询，详见入参fields字段描述）。
-	 * 注意：
-	 * 1. 如果接口频繁抛异常，且入参无误，请减小page_size并重试。
-	 * 2.请尽量按需自定义入参“fields”字段获取数据。“fields”字段传入枚举值越多，查询数据耗费时间越长。
+	 * https://www.youzanyun.com/apilist/detail/group_scrm/user/youzan.users.weixin.followers.info.search
 	 */
 	public static function getTZUser($stime, $etime, $page, $page_size, $isDebugger = false)
 	{
@@ -209,20 +210,44 @@ class YzUser extends ActiveRecord
 			'fields' => 'points,trade,level',
 		];
 		$ret = YouzanUtil::getData($method, $params);
+		$retStyle = [
+			'response' => [
+				'users' => [
+					[
+						"nick" => "美好时光",
+						"country" => "中国",
+						"follow_time" => 1529892658,
+						"is_follow" => true,
+						"province" => "山东",
+						"city" => "枣庄",
+						"user_id" => 5843399220,
+						"weixin_open_id" => "oj3YZwM-DA7_FQlGW5SnMPxAeNUA",
+						"sex" => "f",
+						"avatar" => "http=>//thirdwx.qlogo.cn/mmopen/AEyr0pyxIAyiaeTbR9CK5k55cpfjPnuGzxJyboNOmeOWa1p7P25t2orp2u1LuLj0PAiafFRiaW2DibnibfwRyicibz2YEtlF7BM5Y9H/132"
+					],
+					// ...
+				],
+				'total_results' => 6,
+			]
+		];
 		$results = $ret['response'] ?? 0;
 
 		$msg = "stime:" . $stime . ' == etime:' . $etime . ' == ' . 'page:' . $page . ' == ' . 'pagesize:' . $page_size;
 		if ($isDebugger) {
 			echo $msg . PHP_EOL;
 		}
-
-		//AppUtil::logByFile($results, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 		AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 
-		return $results;
+		$total_results = $results['total_results'] ?? 0;
+		$users = $results['users'] ?? [];
+
+		return [$users, $total_results];
 
 	}
 
+	/**
+	 * https://www.youzanyun.com/apilist/detail/group_ump/salesman/youzan.salesman.accounts.get
+	 */
 	public static function getSalesManList($isDebugger = false)
 	{
 		$getSales = function ($page, $isDebugger) {
@@ -239,6 +264,24 @@ class YzUser extends ActiveRecord
 			AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 
 			$res = YouzanUtil::getData($method, $params);
+			$resStyle = [
+				'response' => [
+					'accounts' => [
+						[
+							"seller" => "3NFNEE",
+							"from_buyer_mobile" => "15963761328",
+							"money" => "0.00",
+							"mobile" => "13176188080",
+							"nickname" => "金刚瓢瓢娃",
+							"created_at" => "2018-06-26 18:55:02",
+							"order_num" => 0,
+							"fans_id" => 5861354382
+						],
+						// ...
+					],
+					'total_results' => 979,
+				]
+			];
 			if (isset($res['response'])) {
 				$total_results = $res['response']['total_results'];
 				if ($total_results) {
@@ -272,8 +315,18 @@ class YzUser extends ActiveRecord
 							'uType' => self::TYPE_YXS,
 						];
 						$fansId = $v['fans_id'];
+						if (!self::findOne(['uYZUId' => $fansId])) {
+							$addCount++;
+							self::getUserInfoByTag($fansId);
+						}
+						$editCount++;
+						self::edit($fansId, $insert);
 
-						if (self::findOne(['uYZUId' => $fansId])) {
+						if ($isDebugger) {
+							echo '$fansId:' . $fansId . PHP_EOL;
+						}
+
+						/*if (self::findOne(['uYZUId' => $fansId])) {
 							if (isset($insert['uPhone']) && !$insert['uPhone']) {
 								unset($insert['uPhone']);
 							}
@@ -283,45 +336,24 @@ class YzUser extends ActiveRecord
 						} else {
 							// 添加
 							$addCount++;
-							$msg = '$fansId:' . $fansId;
 
 							if ($isDebugger) {
-								echo $msg . PHP_EOL;
+								echo '$fansId:' . $fansId . PHP_EOL;
 							}
 							AppUtil::logByFile('$fansId:' . $fansId, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 							self::getUserInfoByTag($fansId);
-						}
+						}*/
 					}
 				}
 			}
 		}
+
 		$msg = '$addCount:' . $addCount . ' == $editCount:' . $editCount;
 		if ($isDebugger) {
 			echo $msg . PHP_EOL;
 		}
 
 		AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
-
-		$resStyle = [
-			'response' => [
-				'accounts' => [
-					[
-						'seller' => '3JS1xT',
-						'from_buyer_mobile' => 15206373307,
-						'money' => 1.90,
-						'mobile' => 15153782763,
-						'nickname' => '鸿运当头',
-						'created_at' => '2018-06-04 18:00:35',
-						'order_num' => 1,
-						'fans_id' => 5650058353,
-					],
-					// .....
-				],
-				'total_results' => 730,
-			]
-		];
-
-
 	}
 
 
