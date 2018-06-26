@@ -625,7 +625,6 @@ class YzGoods extends ActiveRecord
 				unset($item['skus']);
 			}
 			self::process($item);
-			self::update_rate_by_good_id($item['item_id']);
 			return true;
 		}
 

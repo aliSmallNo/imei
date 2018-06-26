@@ -82,14 +82,23 @@ class YzOrders extends ActiveRecord
 		if (!$data) {
 			return 0;
 		}
+		$update_goods_flag = 0;
 		$entity = self::findOne(['o_tid' => $tid]);
 		if (!$entity) {
 			$entity = new self();
+			$update_goods_flag = 1;
 		}
 		foreach ($data as $k => $v) {
 			$entity->$k = is_array($v) ? json_encode($v, JSON_UNESCAPED_UNICODE) : $v;
 		}
 		$entity->save();
+
+		if ($update_goods_flag) {
+			$g_item_id = $data['g_item_id'] ?? 0;
+			if ($g_item_id && !YzGoods::findOne(['g_item_id' => $g_item_id])) {
+				YzGoods::get_goods_desc_by_id($g_item_id);
+			}
+		}
 		return true;
 	}
 
@@ -262,7 +271,6 @@ class YzOrders extends ActiveRecord
 				$co = $co + 1;
 				echo 'co:' . $co . ' item_id:' . $g_item_id . PHP_EOL;
 				YzGoods::get_goods_desc_by_id($g_item_id);
-				exit;
 			}
 
 			/*$o_fans_id = $v['o_fans_id'];
