@@ -1469,7 +1469,7 @@ class FooController extends Controller
 
 		// AppUtil::logByFile(date('Y-m-d H:i:s'), 'youzan_user', __FUNCTION__, __LINE__);
 
-		// $token = YouzanUtil::getAccessToken();echo $token;
+		 $token = YouzanUtil::getAccessToken();echo $token;
 
 		// 更新用户
 		//YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');
@@ -1504,7 +1504,6 @@ class FooController extends Controller
 		//YzOrders::Update_order('','',1);
 
 		//YzOrders::orders_user_mix_update();
-		print_r(YzUser::get_user_chain_by_fans_id(5384858205));
 
 	}
 
