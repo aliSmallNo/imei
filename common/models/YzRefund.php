@@ -79,7 +79,7 @@ class YzRefund extends ActiveRecord
 		if (!$data) {
 			return 0;
 		}
-		$entity = self::findOne(['o_refund_id' => $o_refund_id]);
+		$entity = self::findOne(['r_refund_id' => $o_refund_id]);
 		if (!$entity) {
 			$entity = new self();
 		}
