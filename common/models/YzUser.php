@@ -419,7 +419,7 @@ class YzUser extends ActiveRecord
 			$fansId = self::getUserInfoByTag($open_id, 'weixin_openid');
 		}
 
-		echo '$phone:' . $phone . ' $open_id:' . $open_id . ' $fansId' . $fansId;
+		echo '$phone:' . $phone . ' $open_id:' . $open_id . ' $fansId' . $fansId . PHP_EOL;
 
 		return $fansId;
 	}
