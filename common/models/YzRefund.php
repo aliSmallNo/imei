@@ -111,8 +111,8 @@ class YzRefund extends ActiveRecord
 
 		$method = 'youzan.trade.refund.search';
 		$params = [
-			'update_time_end' => $stime,
-			'update_time_start' => $etime,
+			'update_time_end' => $etime,
+			'update_time_start' => $stime,
 			'page_no' => $page,
 			'page_size' => $page_size,
 		];
