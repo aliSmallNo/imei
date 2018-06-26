@@ -56,16 +56,16 @@ class YzRefund extends ActiveRecord
 
 
 	static $fieldMap = [
-		"reason" => 'o_reason',
-		"kdt_id" => 'o_kdt_id',
-		"return_goods" => 'o_return_goods',
-		"created" => 'o_created',
-		"refund_fee" => 'o_refund_fee',
-		"modified" => "o_modified",
-		"cs_status" => 'o_cs_status',
-		"refund_id" => "o_refund_id",
-		"tid" => "o_tid",
-		"status" => "o_status"
+		"reason" => 'r_reason',
+		"kdt_id" => 'r_kdt_id',
+		"return_goods" => 'r_return_goods',
+		"created" => 'r_created',
+		"refund_fee" => 'r_refund_fee',
+		"modified" => "r_modified",
+		"cs_status" => 'r_cs_status',
+		"refund_id" => "r_refund_id",
+		"tid" => "r_tid",
+		"status" => "r_status"
 	];
 
 
