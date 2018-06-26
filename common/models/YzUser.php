@@ -315,34 +315,17 @@ class YzUser extends ActiveRecord
 							'uType' => self::TYPE_YXS,
 						];
 						$fansId = $v['fans_id'];
-						if (!self::findOne(['uYZUId' => $fansId])) {
-							$addCount++;
-							self::getUserInfoByTag($fansId);
-						}
-						$editCount++;
-						self::edit($fansId, $insert);
-
-						if ($isDebugger) {
-							echo '$fansId:' . $fansId . PHP_EOL;
-						}
-
-						/*if (self::findOne(['uYZUId' => $fansId])) {
-							if (isset($insert['uPhone']) && !$insert['uPhone']) {
-								unset($insert['uPhone']);
+						if ($fansId) {
+							if (!self::findOne(['uYZUId' => $fansId])) {
+								$addCount++;
+								self::getUserInfoByTag($fansId);
 							}
-							// 修改
 							$editCount++;
 							self::edit($fansId, $insert);
-						} else {
-							// 添加
-							$addCount++;
-
 							if ($isDebugger) {
 								echo '$fansId:' . $fansId . PHP_EOL;
 							}
-							AppUtil::logByFile('$fansId:' . $fansId, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
-							self::getUserInfoByTag($fansId);
-						}*/
+						}
 					}
 				}
 			}
