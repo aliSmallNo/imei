@@ -318,8 +318,6 @@ class YzUser extends ActiveRecord
 						} elseif (!$fansId && $insert['uPhone']) {
 							$editCount++;
 							$fansId = self::use_phone_get_user_info($insert['uPhone']);
-							echo $fansId;
-							exit;
 						}
 						self::edit($fansId, $insert);
 						if ($isDebugger) {
@@ -420,6 +418,9 @@ class YzUser extends ActiveRecord
 		if ($open_id) {
 			$fansId = self::getUserInfoByTag($open_id, 'weixin_openid');
 		}
+
+		echo '$phone:' . $phone . ' $open_id:' . $open_id . ' $fansId' . $fansId;
+		exit;
 		return $fansId;
 	}
 
