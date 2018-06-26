@@ -57,6 +57,8 @@ class YzOrders extends ActiveRecord
 		"total_fee" => "o_total_fee",
 		"payment" => "o_payment",
 		"receiver_name" => "o_receiver_name",
+		"item_id" => "o_item_id",
+		"sku_id" => "o_sku_id",
 
 		"address_info" => "o_address_info",
 		"remark_info" => "o_remark_info",
@@ -117,6 +119,8 @@ class YzOrders extends ActiveRecord
 		$full_order_info['price'] = $orders['price'] ?? 0.00;
 		$full_order_info['num'] = $orders['num'] ?? 0;
 		$full_order_info['total_fee'] = $orders['total_fee'] ?? 0.00;
+		$full_order_info['item_id'] = $orders['item_id'] ?? 0;
+		$full_order_info['sku_id'] = $orders['sku_id'] ?? 0;
 
 		if (!$tid || !$full_order_info) {
 			return 0;
@@ -240,11 +244,9 @@ class YzOrders extends ActiveRecord
 
 		foreach ($res as $k => $v) {
 
-			/*$map = [
-				"price" => "o_price",
-				"num" => "o_num",
-				"total_fee" => "o_total_fee",
-				"payment" => "o_payment"
+			$map = [
+				"item_id" => "o_item_id",
+				"sku_id" => "o_sku_id",
 			];
 			$order = json_decode($v['o_orders'], 1)[0];
 			$insert = [];
@@ -254,7 +256,7 @@ class YzOrders extends ActiveRecord
 				}
 			}
 			echo $v['o_tid'] . json_encode($insert) . PHP_EOL;
-			self::edit($v['o_tid'], $insert);*/
+			self::edit($v['o_tid'], $insert);
 
 
 			/*$o_fans_id = $v['o_fans_id'];
