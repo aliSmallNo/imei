@@ -31,7 +31,7 @@ class YzRefund extends ActiveRecord
 	const ST_WAIT_SELLER_CONFIRM_GOODS = 'WAIT_SELLER_CONFIRM_GOODS';
 	const ST_SELLER_REFUSE_BUYER = 'SELLER_REFUSE_BUYER';
 	const ST_CLOSED = 'CLOSED';
-	const ST_SUCCESS = 'CLOSED';
+	const ST_SUCCESS = 'SUCCESS';
 	static $stDict = [
 
 	];
@@ -90,6 +90,13 @@ class YzRefund extends ActiveRecord
 			}
 		}
 		$entity->save();
+
+		$status = $data['r_status'] ?? '';
+		$r_refund_fee = $data['r_refund_fee'] ?? 0;
+		$tid = $data['r_tid'] ?? 0;
+		if ($status && $status == self::ST_SUCCESS && $r_refund_fee && $tid) {
+			YzOrders::edit($tid, ['o_refund' => $r_refund_fee]);
+		}
 		return true;
 	}
 
