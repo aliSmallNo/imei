@@ -660,7 +660,7 @@ class YzUser extends ActiveRecord
 				break;
 			}
 			$co++;
-		} while (!$fans_id && $co < 10);
+		} while ($fans_id && $co < 10);
 
 		return $ret;
 	}

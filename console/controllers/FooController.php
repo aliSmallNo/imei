@@ -1503,7 +1503,8 @@ class FooController extends Controller
 
 		//YzOrders::Update_order('','',1);
 
-		YzOrders::orders_user_mix_update();
+		//YzOrders::orders_user_mix_update();
+		print_r(YzUser::get_user_chain_by_fans_id(5384858205));
 
 	}
 
