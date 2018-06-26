@@ -198,8 +198,47 @@ class YzGoods extends ActiveRecord
 		return self::edit($g_item_id, $insert);
 	}
 
+	public static function get_goods_by_se_time_new($tag, $isDebugger = false)
+	{
+		//$st = '2018-03-26 00:00:00';
+		$st = date("Y-m-d") . ' 00:00:00';
+		$et = date('Y-m-d 23:23:59');
+		$dates = YouzanUtil::cal_se_date($st, $et);
+		$total = 0;
+		foreach ($dates as $date) {
+			$stime = $date['stime'];
+			$etime = $date['etime'];
+			$stimeFmt = $date['stimeFmt'];
+			$etimeFmt = $date['etimeFmt'];
+			$page = 1;
+			$page_size = 100;
+			do {
+				list($item, $count) = self::get_yz_goods_item($tag, $stime, $etime, $page, $page_size, $isDebugger);
+				if (1) {
+					if ($page == 1) {
+						$total = $total + $count;
+					}
+					$msg = "stime:" . $stime . ':' . $stimeFmt . ' == etime:' . $etime . ':' . $etimeFmt . ' currentNum:' . $count . 'countRes:' . count($item) . ' Total:' . $total;
+					if ($isDebugger) {
+						echo $msg . PHP_EOL;
+					}
+					AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_GOODS, __FUNCTION__, __LINE__);
+				}
+				foreach ($item as $v) {
+					$v['status'] = $tag;
+					self::process($v);
+					// 更新分成信息
+					self::update_rate_by_good_id($v['item_id']);
+				}
+				$page++;
+			} while (count($item) == $page_size && $page < 10);
+
+		}
+	}
+
 	public static function get_goods_by_se_time($tag, $isDebugger = false)
 	{
+
 
 		//$st = '2018-03-26 00:00:00';
 		$st = date("Y-m-d") . ' 00:00:00';

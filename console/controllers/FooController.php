@@ -19,6 +19,7 @@ use common\models\UserTrans;
 use common\models\UserWechat;
 use common\models\YzGoods;
 use common\models\YzOrders;
+use common\models\YzRefund;
 use common\models\YzUser;
 use common\service\TrendService;
 use common\utils\AppUtil;
@@ -1469,7 +1470,7 @@ class FooController extends Controller
 
 		// AppUtil::logByFile(date('Y-m-d H:i:s'), 'youzan_user', __FUNCTION__, __LINE__);
 
-		 $token = YouzanUtil::getAccessToken();echo $token;
+		// $token = YouzanUtil::getAccessToken();echo $token;
 
 		// 更新用户
 		//YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');
@@ -1505,6 +1506,8 @@ class FooController extends Controller
 
 		//YzOrders::orders_user_mix_update();
 
+		//YzRefund::cal_se_date();
+		YzGoods::get_goods_by_se_time_new(self::ST_STORE_HOUSE, 1);
 	}
 
 

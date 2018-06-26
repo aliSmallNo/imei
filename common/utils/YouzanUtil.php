@@ -107,4 +107,23 @@ class YouzanUtil
 	}
 
 
+	public static function cal_se_date($st = '', $et = '')
+	{
+		$st = $st ? $st : date('Y-m-d 00:00:00');
+		$et = $et ? $et : date('Y-m-d 23:23:59');
+		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
+
+		for ($d = 0; $d < $days; $d++) {
+			$res[] = [
+				'stimeFmt' => date('Y-m-d H:i:s', strtotime($st) + $d * 86400),
+				'etimeFmt' => date('Y-m-d H:i:s', strtotime($st) + ($d + 1) * 86400 - 1),
+				'stime' => (strtotime($st) + $d * 86400) * 1000,
+				'etime' => (strtotime($st) + ($d + 1) * 86400 - 1) * 1000,
+			];
+		}
+
+		return $res;
+	}
+
+
 }
