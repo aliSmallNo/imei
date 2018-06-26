@@ -257,7 +257,7 @@ class YzOrders extends ActiveRecord
 			}
 			echo $v['o_tid'] . json_encode($insert) . PHP_EOL;
 			self::edit($v['o_tid'], $insert);*/
-			$g_item_id = $v['item_id'];
+			$g_item_id = $v['o_item_id'];
 			if (!YzGoods::findOne(['g_item_id' => $g_item_id])) {
 				$co = $co + 1;
 				echo 'co:' . $co . ' item_id:' . $g_item_id . PHP_EOL;
