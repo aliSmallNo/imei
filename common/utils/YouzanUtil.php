@@ -18,7 +18,6 @@ use YZTokenClient;
 
 class YouzanUtil
 {
-
 	//请填入你有赞店铺ID
 	const APPId = 40552639;
 	//要调用的api版本号
@@ -33,14 +32,11 @@ class YouzanUtil
 	//请填入开发者后台所填写的回调地址，本示例中回调地址应指向本文件。
 	//public $redirect_url = "https://admin.meipo100.com/";
 
-
-	public static function init($array)
-	{
-		$util = new self();
-		$util->api = $array['api'] ?? '';
-		$util->params = $array['params'] ?? [];
-		return $util;
-	}
+	const LOG_YOUZAN_USER = 'youzan_user';
+	const LOG_YOUZAN_GOODS = 'youzan_goods';
+	const LOG_YOUZAN_ORDERS = 'youzan_orders';
+	const LOG_YOUZAN_ORDERS_UP_PHONE = 'youzan_orders_up_phone';
+	const LOG_YOUZAN_REFUND = 'youzan_refund';
 
 	/**
 	 * @return mixed
@@ -53,8 +49,8 @@ class YouzanUtil
 			"kdt_id" => self::APPId,
 		];
 		$ret = $token->get_token(self::TYPE, $keys);
-		return $ret['access_token'] ?? '';
-		$ret = [
+
+		$retStyle = [
 			// 成功返回
 			'success' => [
 				'access_token' => '91e22b82a76e390ca66474a46002d729',
@@ -68,6 +64,7 @@ class YouzanUtil
 			]
 		];
 
+		return $ret['access_token'] ?? '';
 	}
 
 	public static function getAccessToken($reset = false)
@@ -94,19 +91,6 @@ class YouzanUtil
 		return $client->post($method, $api_version, $params, $my_files);
 	}
 
-	// SignDemo
-	private function sign()
-	{
-		$method = 'youzan.item.get';//要调用的api名称
-		$my_params = [
-			'item_id' => '888888',
-		];
-		$client = new YZSignClient(self::APPID, self::APPSECRET);
-		$ret = $client->post($method, self::API_VERSION, $my_params);
-		return $ret;
-	}
-
-
 	public static function cal_se_date($st = '', $et = '')
 	{
 		$st = $st ? $st : date('Y-m-d 00:00:00');
@@ -121,7 +105,6 @@ class YouzanUtil
 				'etime' => (strtotime($st) + ($d + 1) * 86400 - 1) * 1000,
 			];
 		}
-
 		return $res;
 	}
 

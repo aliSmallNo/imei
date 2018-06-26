@@ -201,10 +201,10 @@ class YzGoods extends ActiveRecord
 		return self::edit($g_item_id, $insert);
 	}
 
-	public static function get_goods_by_se_time_new($tag, $isDebugger = false)
+	public static function get_goods_by_se_time($tag, $isDebugger = false)
 	{
-		$st = '2018-06-24 00:00:00';
-		//$st = date("Y-m-d") . ' 00:00:00';
+		//$st = '2018-03-26 00:00:00';
+		$st = date("Y-m-d") . ' 00:00:00';
 		$et = date('Y-m-d 23:23:59');
 		$dates = YouzanUtil::cal_se_date($st, $et);
 		$total = 0;
@@ -225,7 +225,7 @@ class YzGoods extends ActiveRecord
 					if ($isDebugger) {
 						echo $msg . PHP_EOL;
 					}
-					AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_GOODS, __FUNCTION__, __LINE__);
+					AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_GOODS, __FUNCTION__, __LINE__);
 				}
 				foreach ($item as $v) {
 					$v['status'] = $tag;
@@ -237,49 +237,6 @@ class YzGoods extends ActiveRecord
 		}
 	}
 
-	public static function get_goods_by_se_time($tag, $isDebugger = false)
-	{
-
-
-		//$st = '2018-03-26 00:00:00';
-		$st = date("Y-m-d") . ' 00:00:00';
-		$et = date('Y-m-d 23:23:59');
-
-		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
-
-		$total = 0;
-		for ($d = 0; $d < $days; $d++) {
-			$stimeFmt = date('Y-m-d H:i:s', strtotime($st) + $d * 86400);
-			$etimeFmt = date('Y-m-d H:i:s', strtotime($st) + ($d + 1) * 86400 - 1);
-
-			$stime = (strtotime($st) + $d * 86400) * 1000;
-			$etime = (strtotime($st) + ($d + 1) * 86400 - 1) * 1000;
-
-			$page = 1;
-			$page_size = 100;
-
-			do {
-				list($item, $count) = self::get_yz_goods_item($tag, $stime, $etime, $page, $page_size, $isDebugger);
-				if (1) {
-					if ($page == 1) {
-						$total = $total + $count;
-					}
-					$msg = "stime:" . $stime . ':' . $stimeFmt . ' == etime:' . $etime . ':' . $etimeFmt . ' currentNum:' . $count . 'countRes:' . count($item) . ' Total:' . $total;
-					if ($isDebugger) {
-						echo $msg . PHP_EOL;
-					}
-					AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_GOODS, __FUNCTION__, __LINE__);
-				}
-
-				foreach ($item as $v) {
-					$v['status'] = $tag;
-					self::process($v);
-				}
-				$page++;
-
-			} while (count($item) == $page_size && $page < 10);
-		}
-	}
 
 
 	public static function get_yz_goods_item($tag, $stime, $etime, $page, $page_size, $isDebugger = false)

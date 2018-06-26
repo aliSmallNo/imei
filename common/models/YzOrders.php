@@ -180,7 +180,7 @@ class YzOrders extends ActiveRecord
 				if ($isDebugger) {
 					echo $msg . PHP_EOL;
 				}
-				AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_ORDERS, __FUNCTION__, __LINE__);
+				AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_ORDERS, __FUNCTION__, __LINE__);
 
 				foreach ($res as $v) {
 					$full_order_info = $v['full_order_info'] ?? [];

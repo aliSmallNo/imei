@@ -106,15 +106,59 @@ class YzRefund extends ActiveRecord
 		return self::edit($s_sku_id, $insert);
 	}
 
-	public static function refund_once($st, $et)
+	public static function refund_one($stime, $etime, $page, $page_size, $isDebugger)
 	{
 
 		$method = 'youzan.trade.refund.search';
 		$params = [
-			'update_time_end' => $et,
-			'update_time_start' => $st,
+			'update_time_end' => $stime,
+			'update_time_start' => $etime,
+			'page_no' => $page,
+			'page_size' => $page_size,
 		];
 		$res = YouzanUtil::getData($method, $params);
+
+		$refunds = $res['response']['refunds'] ?? [];
+		$total = $res['response']['total'] ?? 0;
+		return [$refunds, $total];
+
+	}
+
+
+	public static function get_goods_by_se_time($isDebugger = false)
+	{
+		$st = '2018-03-26 00:00:00';
+		//$st = date("Y-m-d") . ' 00:00:00';
+		$et = date('Y-m-d 23:23:59');
+		$dates = YouzanUtil::cal_se_date($st, $et);
+		$total = 0;
+		foreach ($dates as $date) {
+			$stime = $date['stime'] / 1000;
+			$etime = $date['etime'] / 1000;
+			$stimeFmt = $date['stimeFmt'];
+			$etimeFmt = $date['etimeFmt'];
+			$page = 1;
+			$page_size = 50;
+			do {
+				list($item, $count) = self::refund_one($stime, $etime, $page, $page_size, $isDebugger);
+				if (1) {
+					if ($page == 1) {
+						$total = $total + $count;
+					}
+					$msg = "stime:" . $stime . ':' . $stimeFmt . ' == etime:' . $etime . ':' . $etimeFmt . ' currentNum:' . $count . 'countRes:' . count($item) . ' Total:' . $total;
+					if ($isDebugger) {
+						echo $msg . PHP_EOL;
+					}
+					AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_REFUND, __FUNCTION__, __LINE__);
+				}
+				foreach ($item as $v) {
+					self::process($v);
+					exit;
+				}
+				$page++;
+			} while (count($item) == $page_size && $page < 10);
+
+		}
 	}
 
 

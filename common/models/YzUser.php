@@ -22,11 +22,6 @@ class YzUser extends ActiveRecord
 		self::TYPE_YXS => '严选师',
 	];
 
-	const LOG_YOUZAN_USER = 'youzan_user';
-	const LOG_YOUZAN_GOODS = 'youzan_goods';
-	const LOG_YOUZAN_ORDERS = 'youzan_orders';
-	const LOG_YOUZAN_ORDERS_UP_PHONE = 'youzan_orders_up_phone';
-
 	static $fieldMap = [
 		'country' => 'uCountry',
 		'province' => 'uProvince',
@@ -147,7 +142,7 @@ class YzUser extends ActiveRecord
 			if ($isDebugger) {
 				echo $msg . PHP_EOL;
 			}
-			AppUtil::logByFile($msg, self::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
+			AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 
 			if ($results && $results['total_results'] > 0) {
 				$total_results = $results['total_results'];
@@ -190,8 +185,8 @@ class YzUser extends ActiveRecord
 			echo $msg . PHP_EOL;
 		}
 
-		AppUtil::logByFile($results, self::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
-		AppUtil::logByFile($msg, self::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
+		AppUtil::logByFile($results, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
+		AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 
 		return $results;
 
@@ -210,7 +205,7 @@ class YzUser extends ActiveRecord
 			if ($isDebugger) {
 				echo $msg . PHP_EOL;
 			}
-			AppUtil::logByFile($msg, self::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
+			AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 
 			$res = YouzanUtil::getData($method, $params);
 			if (isset($res['response'])) {
@@ -261,7 +256,7 @@ class YzUser extends ActiveRecord
 							if ($isDebugger) {
 								echo $msg . PHP_EOL;
 							}
-							AppUtil::logByFile('$fansId:' . $fansId, self::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
+							AppUtil::logByFile('$fansId:' . $fansId, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 							self::getUserInfoByTag($fansId);
 						}
 					}
@@ -273,7 +268,7 @@ class YzUser extends ActiveRecord
 			echo $msg . PHP_EOL;
 		}
 
-		AppUtil::logByFile($msg, self::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
+		AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 
 		$resStyle = [
 			'response' => [
@@ -321,7 +316,7 @@ class YzUser extends ActiveRecord
 		if ($isDebugger) {
 			echo $msg . PHP_EOL;
 		}
-		AppUtil::logByFile($msg, self::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
+		AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 
 		$resStyle = [
 			"response" => [
@@ -409,7 +404,7 @@ class YzUser extends ActiveRecord
 				if ($isDebugger) {
 					echo 'edit fans_id:' . $fansId . PHP_EOL;
 				}
-				AppUtil::logByFile('fans_id:' . $fansId, self::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
+				AppUtil::logByFile('fans_id:' . $fansId, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 				self::process($v);
 			}
 			if ($last_fansId > 0) {
@@ -534,7 +529,7 @@ class YzUser extends ActiveRecord
 
 		$res = RedisUtil::init(RedisUtil::KEY_YOUZAN_USER_CHAIN, md5(json_encode($params) . json_encode($se_date)))->getCache();
 		if ($res) {
-			 return json_decode($res, 1);
+			return json_decode($res, 1);
 		}
 
 		$conn = AppUtil::db();
