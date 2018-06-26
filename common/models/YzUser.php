@@ -257,12 +257,6 @@ class YzUser extends ActiveRecord
 				'page_no' => $page,
 				'page_size' => 20,
 			];
-			$msg = 'page:' . $page;
-			if ($isDebugger) {
-				echo $msg . PHP_EOL;
-			}
-			AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
-
 			$res = YouzanUtil::getData($method, $params);
 			$resStyle = [
 				'response' => [
