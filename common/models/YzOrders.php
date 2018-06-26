@@ -242,9 +242,9 @@ class YzOrders extends ActiveRecord
 
 		// $userCMD = $conn->createCommand("select uCreateOn,uPhone from im_yz_user where uYZUId=:fans_id");
 
+		$co = 0;
 		foreach ($res as $k => $v) {
-
-			$map = [
+			/*$map = [
 				"item_id" => "o_item_id",
 				"sku_id" => "o_sku_id",
 			];
@@ -256,8 +256,14 @@ class YzOrders extends ActiveRecord
 				}
 			}
 			echo $v['o_tid'] . json_encode($insert) . PHP_EOL;
-			self::edit($v['o_tid'], $insert);
-
+			self::edit($v['o_tid'], $insert);*/
+			$g_item_id = $v['item_id'];
+			if (!YzGoods::findOne(['g_item_id' => $g_item_id])) {
+				$co = $co + 1;
+				echo 'co:' . $co . ' item_id:' . $g_item_id . PHP_EOL;
+				YzGoods::get_goods_desc_by_id($g_item_id);
+				exit;
+			}
 
 			/*$o_fans_id = $v['o_fans_id'];
 			$o_buyer_phone = $v['o_buyer_phone'];

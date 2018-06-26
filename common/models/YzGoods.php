@@ -167,9 +167,11 @@ class YzGoods extends ActiveRecord
 		if (!$data) {
 			return 0;
 		}
+		$update_des_flag = 0;
 		$entity = self::findOne(['g_item_id' => $g_item_id]);
 		if (!$entity) {
 			$entity = new self();
+			$update_des_flag = 1;
 		} else {
 			$data['g_up_time'] = date('Y-m-d H:i:s');
 		}
@@ -177,6 +179,9 @@ class YzGoods extends ActiveRecord
 			$entity->$k = is_array($v) ? json_encode($v, JSON_UNESCAPED_UNICODE) : $v;
 		}
 		$entity->save();
+		if ($update_des_flag) {
+			self::get_goods_desc_by_id($g_item_id);
+		}
 		return true;
 	}
 
@@ -619,7 +624,9 @@ class YzGoods extends ActiveRecord
 			} else if (isset($item['skus'])) {
 				unset($item['skus']);
 			}
-			return self::process($item);
+			self::process($item);
+			self::update_rate_by_good_id($item['item_id']);
+			return true;
 		}
 
 		return false;
@@ -691,12 +698,11 @@ class YzGoods extends ActiveRecord
 
 	public static function update_goods($isDebugger = false)
 	{
-
 		// 更新仓库商品
 		YzGoods::get_goods_by_se_time(self::ST_STORE_HOUSE, $isDebugger);
 		// 更新在售
 		YzGoods::get_goods_by_se_time(self::ST_ON_SALE, $isDebugger);
 		// 更新所有商品详细信息
-		YzGoods::update_all_goods_desc(1);
+		// YzGoods::update_all_goods_desc(1);
 	}
 }
