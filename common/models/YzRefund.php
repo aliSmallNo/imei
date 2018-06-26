@@ -156,7 +156,6 @@ class YzRefund extends ActiveRecord
 				}
 				foreach ($item as $v) {
 					self::process($v);
-					exit;
 				}
 				$page++;
 			} while (count($item) == $page_size && $page < 10);
