@@ -420,7 +420,7 @@ class YzUser extends ActiveRecord
 		}
 
 		echo '$phone:' . $phone . ' $open_id:' . $open_id . ' $fansId' . $fansId;
-		exit;
+
 		return $fansId;
 	}
 
