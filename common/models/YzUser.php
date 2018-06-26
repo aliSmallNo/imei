@@ -53,7 +53,7 @@ class YzUser extends ActiveRecord
 
 	public static function edit($yzuid, $data)
 	{
-		if (!$data) {
+		if (!$yzuid || !$data) {
 			return 0;
 		}
 		$entity = self::findOne(['uYZUId' => $yzuid]);
@@ -71,7 +71,7 @@ class YzUser extends ActiveRecord
 			}
 		}
 		$entity->save();
-		return true;
+		return $entity->uYZUId;
 	}
 
 	public static function process($v)
@@ -309,17 +309,23 @@ class YzUser extends ActiveRecord
 							'uType' => self::TYPE_YXS,
 						];
 						$fansId = $v['fans_id'];
-						if ($fansId) {
-							if (!self::findOne(['uYZUId' => $fansId])) {
-								$addCount++;
-								self::getUserInfoByTag($fansId);
-							}
+						// 注：$fansId 有等于0 的情况，实际严选师大于拉取会俩的严选师
+
+
+						if ($fansId && !self::findOne(['uYZUId' => $fansId])) {
+							$addCount++;
+							self::getUserInfoByTag($fansId);
+						} elseif (!$fansId && $insert['uPhone']) {
 							$editCount++;
-							self::edit($fansId, $insert);
-							if ($isDebugger) {
-								echo '$fansId:' . $fansId . PHP_EOL;
-							}
+							$fansId = self::use_phone_get_user_info($insert['uPhone']);
+							echo $fansId;
+							exit;
 						}
+						self::edit($fansId, $insert);
+						if ($isDebugger) {
+							echo '$fansId:' . $fansId . PHP_EOL;
+						}
+
 					}
 				}
 			}
@@ -388,8 +394,33 @@ class YzUser extends ActiveRecord
 			return self::process($user);
 		}
 
-		return false;
+		return 0;
 
+	}
+
+	public static function use_phone_get_user_info($phone)
+	{
+		// 根据用户手机号获取用户openID
+		// https://www.youzanyun.com/apilist/detail/group_scrm/user/youzan.user.weixin.openid.get
+
+		$method = 'youzan.user.weixin.openid.get';
+		$params = [
+			'mobile' => $phone,
+			'country_code' => '+86',
+		];
+		$res = YouzanUtil::getData($method, $params);
+		$resStyle = [
+			'response' => [
+				'open_id' => 'oF-_pwIxCPA-4732HyLafI51810A',
+			]
+		];
+		$open_id = isset($res['response']) ? $res['response']['open_id'] : '';
+
+		$fansId = 0;
+		if ($open_id) {
+			$fansId = self::getUserInfoByTag($open_id, 'weixin_openid');
+		}
+		return $fansId;
 	}
 
 	/**
