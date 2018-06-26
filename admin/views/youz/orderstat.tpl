@@ -137,7 +137,7 @@
 								<img src="{{$stat.thumb}}">
 							</div>
 							<div class="title">
-								<div>{{$stat.name}}(<span class="user_chain type_{{$stat.uType}}">{{$stat.type_str}}</span>)
+								<div>{{$stat.name}}(<span class="user_chain type_{{$stat.uType}}" data-original-title title>{{$stat.type_str}}</span>)
 									<span class="tip">{{$stat.phone}}</span>
 								</div>
 								<div><span>收货人: </span>{{$stat.o_receiver_name}}<span class="tip">{{$stat.o_receiver_tel}}</span></div>
@@ -289,7 +289,7 @@
 					self.popover({
 						placement: 'top',
 						title: '用户链',
-						content: resp.data.data + '>' + name,
+						content: resp.data.data + name,
 					})
 				} else {
 					lay.msg(resp.msg);

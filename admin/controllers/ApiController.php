@@ -417,11 +417,11 @@ class ApiController extends Controller
 
 				$str = '';
 				foreach ($res as $v) {
-					$str = $str . $v['name'] . '(' . $v['phone'] . ')' . '>';
+					$str = $v['name'] . '(' . $v['phone'] . ')' . ' => ' . $str;
 				}
-				$str = $str ? $str : '无上级严选师';
+				$str = $str ? $str : '无上级严选师 => ';
 				return self::renderAPI(0, 'ok', [
-					'data' => trim($str, '>')
+					'data' => $str
 				]);
 				break;
 			case "order_list_by_phone":
