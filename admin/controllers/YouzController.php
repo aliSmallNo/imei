@@ -195,15 +195,24 @@ class YouzController extends BaseController
 		exit;
 	}
 
-	public function actionChain()
+	public function actionChain_one()
+	{
+		return self::actionChain(1);
+	}
+
+	public function actionChain($is_partner = false)
 	{
 		// https://www.youzanyun.com/apilist/detail/group_ump/salesman/youzan.salesman.accounts.get
-		Admin::staffOnly();
+		$is_partner || Admin::staffOnly();
 		$getInfo = \Yii::$app->request->get();
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
 		$sdate = self::getParam("sdate");
 		$edate = self::getParam("edate");
+
+		if ($is_partner) {
+			$phone = Admin::$userInfo['aPhone'] ?? 0;
+		}
 
 		$se_date = [
 			'sdate' => $sdate,
@@ -221,7 +230,6 @@ class YouzController extends BaseController
 			$params[':phone2'] = 100;
 		}
 
-
 		if ($name) {
 			$criteria[] = " u1.uName like :name ";
 			$params[':name'] = '%' . trim($name) . '%';
@@ -233,6 +241,7 @@ class YouzController extends BaseController
 			[
 				'getInfo' => $getInfo,
 				'items' => $items,
+				'is_partner' => $is_partner,
 
 			]);
 	}

@@ -326,7 +326,7 @@ class Menu
 				"items" => [
 					[
 						"name" => "推广统计",
-						"url" => "/site/otherstat",
+						"url" => "/youz/chain_one",
 						"revise" => 1,
 						"level" => 810
 					],

@@ -112,6 +112,8 @@ class BaseController extends Controller
 			}
 			$params["adminInfo"]["menus"] = $menus;
 		}
+
+
 		return self::render($view, $params);
 	}
 

@@ -118,13 +118,14 @@
 	<h4>用户关系链</h4>
 </div>
 <div class="row">
-	<form action="/youz/chain" method="get" class="form-inline">
+	<form action="/youz/{{if $is_partner}}chain_one{{else}}chain{{/if}}" method="get" class="form-inline">
 		<div class="form-group">
+			{{if !$is_partner}}
 			<input class="form-control" placeholder="严选师名称" type="text" name="name"
 						 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
 			<input class="form-control" placeholder="严选师手机" type="text" name="phone"
 						 value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
-
+			{{/if}}
 			<input class="form-control beginDate my-date-input" placeholder="订单开始时间" name="sdate"
 						 value="{{if isset($getInfo['sdate'])}}{{$getInfo['sdate']}}{{/if}}">
 			至
@@ -145,7 +146,7 @@
 					<span data-phone="{{$item.uPhone}}"><i class="{{$item.cls_ico}}"></i>{{$item.uPhone}}({{$item.amt}})</span>
 					<em>{{$item.uname}}</em>
 					<a href="javascript:;" data-tag="self" data-num="{{$item.self_order_amt}}">订单数:{{$item.self_order_amt}}</a>
-					<a href="javascript:;" data-tag="next" data-um="{{$item.next_order_amt}}">下级订单数:{{$item.next_order_amt}}</a>
+					<a href="javascript:;" data-tag="next" data-num="{{$item.next_order_amt}}">下级订单数:{{$item.next_order_amt}}</a>
 					<strong>支付总金额:{{$item.sum_payment}}</strong>
 				</li>
 			{{/foreach}}

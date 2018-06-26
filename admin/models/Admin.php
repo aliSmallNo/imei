@@ -169,7 +169,6 @@ class Admin extends ActiveRecord
 		//$info = json_decode($redis->getCache(), 1);
 		$menuVer = Menu::VERSION;
 		//if (!isset($info['menu_ver']) || $info['menu_ver'] != $menuVer) {
-
 		//}
 
 		$userObj = self::findOne(['aId' => $uid, "aStatus" => 1]);

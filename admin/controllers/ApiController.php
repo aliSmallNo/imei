@@ -56,6 +56,7 @@ class ApiController extends Controller
 
 	protected $admin_id = 1;
 	protected $admin_name = '';
+	protected $admin_phone = '';
 
 	const CODE_MESSAGE = 159;
 
@@ -76,6 +77,7 @@ class ApiController extends Controller
 	{
 		$this->admin_id = Admin::getAdminId();
 		$this->admin_name = Admin::userInfo()['aName'];
+		$this->admin_phone = Admin::userInfo()['aPhone'];
 		return parent::beforeAction($action);
 	}
 
@@ -325,7 +327,6 @@ class ApiController extends Controller
 	protected function renderAPI($code, $msg = '', $data = [])
 	{
 		Yii::$app->response->format = Response::FORMAT_JSON;
-
 		return [
 			'code' => $code,
 			'msg' => $msg,
