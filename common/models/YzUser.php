@@ -649,6 +649,7 @@ class YzUser extends ActiveRecord
 		}
 
 		RedisUtil::init(RedisUtil::KEY_YOUZAN_USER_CHAIN, md5(json_encode($params) . json_encode($se_date)))->setCache(json_encode($res));
+
 		return $res;
 	}
 

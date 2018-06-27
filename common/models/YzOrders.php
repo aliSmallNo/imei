@@ -430,7 +430,9 @@ class YzOrders extends ActiveRecord
 		}
 		$items = array_slice($items, 0, 50);
 		$items[] = $all;
-		RedisUtil::init(RedisUtil::KEY_YOUZAN_USER_ORDERS_STAT, md5(json_encode($params_key)))->setCache(json_encode([array_values($items), array_values($timesAmt), array_values($timesClosed)]));
+
+		// RedisUtil::init(RedisUtil::KEY_YOUZAN_USER_ORDERS_STAT, md5(json_encode($params_key)))->setCache(json_encode([array_values($items), array_values($timesAmt), array_values($timesClosed)]));
+
 		return [array_values($items), array_values($timesAmt), array_values($timesClosed)];
 	}
 
