@@ -164,7 +164,8 @@ class YzOrders extends ActiveRecord
 		], $params);
 		$res = YouzanUtil::getData($method, $my_params, $api_version);
 
-		return $res['response'] ?? [];
+		$full_order_info_list = $res['response']['full_order_info_list'] ?? [];
+		return $full_order_info_list;
 	}
 
 	public static function trades_sold_by_se_time($params = [], $isDebugger = false)
