@@ -524,10 +524,11 @@ class YzUser extends ActiveRecord
 			$criteriaStr = ' and ' . implode(" and ", $criteria);
 		}
 
-
 		$sql = "select 
 				a.aId,a.aName,
-				u1.*,u2.uAvatar as favatar,u2.uName as fname,u2.uPhone as fphone,u2.uFollow as ffollow
+				u1.uId,u1.uYZUId,u1.uAvatar,u1.uName,u1.uPhone,u1.uFollow,u1.uCreateOn,u1.uUpdatedOn,u1.uAdminId,u1.uTradeMoney,
+				u1.uTradeNum,
+				u2.uAvatar as favatar,u2.uName as fname,u2.uPhone as fphone,u2.uFollow as ffollow
 				from im_yz_user as u1
 				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone and u2.uPhone>0
 				left join im_admin as a on a.aId=u1.uAdminId 
