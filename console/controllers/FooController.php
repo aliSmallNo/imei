@@ -1509,7 +1509,7 @@ class FooController extends Controller
 		// YzRefund::get_goods_by_se_time(1);
 		// YzGoods::get_goods_by_se_time_new(YzGoods::ST_STORE_HOUSE, 1);
 
-		YzUser::UpdateUser();
+		YzOrders::Update_order('', '', 1);
 	}
 
 
