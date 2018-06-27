@@ -25,7 +25,7 @@ class YzOrders extends ActiveRecord
 	const TRADE_SUCCESS = 'TRADE_SUCCESS';
 	const TRADE_CLOSED = 'TRADE_CLOSED';
 
-	static $typeDict = [
+	static $stDict = [
 		self::WAIT_BUYER_PAY => '等待买家付款',
 		self::WAIT_CONFIRM => '待确认，包含待成团、待接单',
 		self::WAIT_SELLER_SEND_GOODS => '等待卖家发货',
@@ -372,7 +372,7 @@ class YzOrders extends ActiveRecord
 			foreach ($fields as $field) {
 				$items[$fans_id][$field] += $row[$field];
 			}
-			$items[$fans_id]['type_str'] = YzUser::$typeDict[$row['uType']]??'';
+			$items[$fans_id]['type_str'] = YzUser::$typeDict[$row['uType']] ?? '';
 		}
 
 		// 排序
@@ -432,6 +432,38 @@ class YzOrders extends ActiveRecord
 		$items[] = $all;
 		RedisUtil::init(RedisUtil::KEY_YOUZAN_USER_ORDERS_STAT, md5(json_encode($params_key)))->setCache(json_encode([array_values($items), array_values($timesAmt), array_values($timesClosed)]));
 		return [array_values($items), array_values($timesAmt), array_values($timesClosed)];
+	}
+
+	public static function items($criteria, $params, $page = 1, $pageSize = 20)
+	{
+		$conn = AppUtil::db();
+		$limit = 'limit ' . ($page - 1) * $pageSize . "," . $pageSize;
+		$criteriaStr = '';
+		if ($criteria) {
+			$criteriaStr = ' and ' . implode(" and ", $criteria);
+		}
+
+		$sql = "select o_fans_id,o_id,o_tid,o_buyer_phone,o_receiver_tel,o_receiver_name,o_status,o_price,o_num,
+				o_total_fee,o_payment,o_refund,o_orders,o_created,o_update_time,
+				u1.uName as name,u1.uPhone as phone,u1.uAvatar as avatar
+				from im_yz_orders as o 
+				left join im_yz_user as u1 on u1.uYZUId=o.o_fans_id
+				where o.o_id>0 $criteriaStr order by o.o_update_time desc $limit ";
+		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		foreach ($res as $k => $v) {
+			$res[$k]['status_str'] = self::$stDict[$v['o_status']] ?? '';
+			$orders = json_decode($v['o_orders'], 1)['0'];
+			$res[$k]['pic_path'] = $orders['pic_path'];
+		}
+
+		$sql = "select count(*)
+				from im_yz_orders as o 
+				left join im_yz_user as u1 on u1.uYZUId=o.o_fans_id
+				where o.o_id>0 $criteriaStr";
+		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
+
+		return [$res, $count];
+
 	}
 
 }

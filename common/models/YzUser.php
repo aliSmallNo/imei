@@ -686,7 +686,7 @@ class YzUser extends ActiveRecord
 		], $params))->queryAll();
 
 		foreach ($res as $k => $v) {
-			$res[$k]['status_str'] = YzOrders::$typeDict[$v['o_status']] ?? '';
+			$res[$k]['status_str'] = YzOrders::$stDict[$v['o_status']] ?? '';
 			$res[$k]['orders'] = json_decode($v['o_orders'], 1)[0];
 			$res[$k]['_pic_path'] = $res[$k]['orders']['pic_path'];
 			$res[$k]['_title'] = $res[$k]['orders']['title'];

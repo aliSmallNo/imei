@@ -12,6 +12,7 @@ namespace admin\controllers;
 use admin\controllers\BaseController;
 use admin\models\Admin;
 use common\models\YzFt;
+use common\models\YzGoods;
 use common\models\YzOrders;
 use common\models\YzUser;
 use common\utils\AppUtil;
@@ -316,6 +317,76 @@ class YouzController extends BaseController
 				'sunday' => $sunday,
 				'firstDay' => $firstDay,
 				'endDay' => $endDay,
+			]);
+	}
+
+	public function actionOrders()
+	{
+		Admin::staffOnly();
+		$getInfo = \Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+		$st = self::getParam("st");
+
+		$criteria = $params = [];
+
+		if ($name) {
+			$criteria[] = " (u1.uName like :name or o.o_receiver_name like :name) ";
+			$params[':name'] = '%' . trim($name) . '%';
+		}
+		if ($phone) {
+			$criteria[] = " (u1.uPhone = :phone or o.o_receiver_tel=:phone) ";
+			$params[':phone'] = trim($phone);
+		}
+		if ($st) {
+			$criteria[] = " o.o_status = :st ";
+			$params[':st'] = trim($st);
+		}
+
+		list($items, $count) = YzOrders::items($criteria, $params, $page);
+
+		$pagination = self::pagination($page, $count);
+		$stDict = YzOrders::$stDict;
+		return $this->renderPage('orders.tpl',
+			[
+				'page' => $page,
+				'pagination' => $pagination,
+				'items' => $items,
+				'getInfo' => $getInfo,
+				'stDict' => $stDict,
+			]);
+	}
+
+	public function actionGoods()
+	{
+		Admin::staffOnly();
+		$getInfo = \Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$name = self::getParam("name");
+		$st = self::getParam("st");
+
+		$criteria = $params = [];
+
+		if ($name) {
+			$criteria[] = " g_title like :name  ";
+			$params[':name'] = '%' . trim($name) . '%';
+		}
+		if ($st) {
+			$criteria[] = " g_status = :st ";
+			$params[':st'] = trim($st);
+		}
+
+		list($items, $count) = YzGoods::items($criteria, $params, $page);
+
+		$pagination = self::pagination($page, $count);
+		return $this->renderPage('goods.tpl',
+			[
+				'page' => $page,
+				'pagination' => $pagination,
+				'items' => $items,
+				'getInfo' => $getInfo,
+				'stDict' => YzGoods::$stDict,
 			]);
 	}
 

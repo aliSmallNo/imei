@@ -702,4 +702,32 @@ class YzGoods extends ActiveRecord
 		// 更新所有商品详细信息
 		// YzGoods::update_all_goods_desc(1);
 	}
+
+
+	public static function items($criteria, $params, $page = 1, $pageSize = 20)
+	{
+		$conn = AppUtil::db();
+		$limit = 'limit ' . ($page - 1) * $pageSize . "," . $pageSize;
+		$criteriaStr = '';
+		if ($criteria) {
+			$criteriaStr = ' and ' . implode(" and ", $criteria);
+		}
+
+		$sql = "select g_item_id,g_pic_thumb_url,g_title,g_status,g_price,g_post_fee,g_detail_url,g_share_url,g_sold_num,g_quantity,
+				g_created_time,g_update_time
+				from im_yz_goods 
+				where g_id>0 $criteriaStr order by g_update_time desc $limit ";
+		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
+		foreach ($res as $k => $v) {
+			$res[$k]['status_str'] = self::$stDict[$v['g_status']] ?? '';
+		}
+
+		$sql = "select count(*)
+				from im_yz_goods 
+				where g_id>0 $criteriaStr";
+		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
+
+		return [$res, $count];
+
+	}
 }

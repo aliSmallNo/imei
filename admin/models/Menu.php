@@ -162,6 +162,18 @@ class Menu
 						"level" => 820
 					],
 					[
+						"name" => "商品列表",
+						"url" => "/youz/goods",
+						"revise" => 1,
+						"level" => 820
+					],
+					[
+						"name" => "订单列表",
+						"url" => "/youz/orders",
+						"revise" => 1,
+						"level" => 820
+					],
+					[
 						"name" => "随机数",
 						"url" => "/youz/create",
 						"revise" => 1,

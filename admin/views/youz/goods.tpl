@@ -10,10 +10,10 @@
 	}
 </style>
 <div class="row">
-	<h4>申请更换上级严选师列表</h4>
+	<h4>商品列表</h4>
 </div>
 <div class="row">
-	<form action="/youz/ft" method="get" class="form-inline">
+	<form action="/youz/goods" method="get" class="form-inline">
 
 		<div class="form-group">
 			<input class="form-control" placeholder="用户名称" type="text" name="name"
@@ -38,60 +38,50 @@
 		<thead>
 		<tr>
 			<th class="col-sm-1">
-				待添加上级的用户头像
+				商品图片
 			</th>
-			<th class="col-sm-2">
-				待添加上级的用户信息
-			</th>
-			<th class="col-sm-1">
-				上级用户头像
-			</th>
-			<th class="col-sm-2">
-				上级的用户信息
+			<th class="col-sm-3">
+				描述
 			</th>
 			<th class="col-sm-1">
 				状态
 			</th>
+			<th>
+				商品信息
+			</th>
+			<th class="col-sm-1">
+				商品详细信息
+			</th>
 			<th class="col-sm-3">
 				时间
-			</th>
-			<th>
-				操作
 			</th>
 		</tr>
 		</thead>
 		<tbody>
 		{{foreach from=$items item=item}}
-			<tr data-fid="{{$item.f_id}}" data-from-name="{{$item.from_name}}" data-to-name="{{$item.to_name}}">
+			<tr>
 				<td align="center">
-					{{if $item.to_avatar}}
-						<img src="{{$item.to_avatar}}" style="width: 65px;height: 65px;">
-					{{/if}}
+					<img src="{{$item.g_pic_thumb_url}}" style="width: 65px;height: 65px;">
 				</td>
 				<td>
-					{{$item.to_name}}<br>{{$item.to_phone}}
+					{{$item.g_title}}
+					<span class="font10">{{$item.g_item_id}}</span><br>
 				</td>
 				<td>
-					{{if $item.from_avatar}}
-						<img src="{{$item.from_avatar}}" style="width: 65px;height: 65px;">
-					{{/if}}
+					{{$item.status_str}}
 				</td>
 				<td>
-					{{$item.from_name}}<br>{{$item.from_phone}}
+					价格：{{$item.g_price/100}}<br>
+					邮费：{{$item.g_post_fee}}<br>
+					已售：{{$item.g_sold_num}}<br>
+					库存：{{$item.g_quantity}}<br>
 				</td>
 				<td>
-					<span class="m-status-{{$item.f_status}}">{{$item.status_str}}</span>
+					<a href="{{$item.g_detail_url}}">详细信息</a>
 				</td>
 				<td>
-					添加:{{$item.add_admin}}:{{$item.f_created}} <br>
-					{{if $item.comfirm_admin}}
-						审核:{{$item.comfirm_admin}}:{{$item.f_updated}}
-					{{/if}}
-				</td>
-				<td>
-					{{if $item.f_status==2}}
-						<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs">审核</a>
-					{{/if}}
+					添加时间:{{$item.g_created_time}}<br>
+					更新时间:{{$item.g_update_time}}
 				</td>
 			</tr>
 		{{/foreach}}
@@ -106,19 +96,17 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
 									aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title"></h4>
+				<h4 class="modal-title">管理员</h4>
 			</div>
 			<div class="modal-body" style="overflow:hidden">
 				<div class="col-sm-12 form-horizontal">
 
 					<div class="form-group">
-						<label class="col-sm-2 control-label">请选择:</label>
+						<label class="col-sm-2 control-label">管理员:</label>
 						<div class="col-sm-4">
-							<select class="form-control" data-field="st">
+							<select class="form-control" data-field="aid">
 								<option value="">-=请选择=-</option>
-								{{foreach from=$stDict item=item key=key}}
-									<option value="{{$key}}">{{$item}}</option>
-								{{/foreach}}
+
 							</select>
 						</div>
 					</div>
@@ -135,46 +123,45 @@
 
 <script>
 	$sls = {
-		loadflag: 0,
-		fid: '',
-		from_name: '',
-		to_name: '',
+		uid: '',
+		name: '',
 		titleObj: $("#modModal").find('.modal-title'),
 	};
 	$("a.modU").click(function () {
 		var self = $(this).closest("tr");
-		$sls.fid = self.attr('data-fid');
-		$sls.from_name = self.attr('data-from-name');
-		$sls.to_name = self.attr('data-to-name');
-		$sls.titleObj.html('审核【' + $sls.from_name + '】是' + '【' + $sls.to_name + '】' + '的上级');
+		$sls.uid = self.attr('data-uid');
+		$sls.name = self.attr('data-name');
+		$sls.titleObj.html('请选择【' + $sls.name + '】的管理员');
 		$("#modModal").modal("show")
 	});
 
+	var loadflag = 0;
 	$(document).on("click", "#btnSave", function () {
-		var postData = {tag: "mod_yxs_comfirm", fid: $sls.fid};
-		var st = $("[data-field=st]").val();
-		if (!st) {
-			layer.msg('请选择审核状态');
+		var err = 0;
+		var postData = {tag: "mod_admin_id", uid: $sls.uid};
+		var aid = $("[data-field=aid]").val();
+		if (!aid) {
+			layer.msg('请选择管理员');
 			return;
 		}
-		postData['st'] = st;
+		postData['aid'] = aid;
 		console.log(postData);
 
-		if ($sls.loadflag) {
+		if (loadflag) {
 			return;
 		}
-		$sls.loadflag = 1;
+		loadflag = 1;
 		$.post("/api/youz",
 			postData,
 			function (resp) {
-				$sls.loadflag = 0;
+				loadflag = 0;
 				if (resp.code == 0) {
 					location.reload();
 				} else {
 					layer.msg(resp.msg);
 				}
 			}, "json");
-	});
+	})
 
 </script>
 {{include file="layouts/footer.tpl"}}
