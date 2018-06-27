@@ -252,7 +252,8 @@
 		yxs_fans_id: '',
 	};
 
-	$("a.add_yxs_next").click(function () {
+	$(document).on('click', "a.add_yxs_next", function () {
+		return;
 		var self = $(this).closest("li");
 		$sls.yxs_phone = self.attr('data-phone');
 		$sls.yxs_name = self.find('em').html();
