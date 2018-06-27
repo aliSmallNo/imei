@@ -1510,7 +1510,7 @@ class FooController extends Controller
 		// YzGoods::get_goods_by_se_time_new(YzGoods::ST_STORE_HOUSE, 1);
 
 		//YzOrders::Update_order('2018-06-25 00:00:00', '', 1);
-		YzGoods::update_goods();
+		YzGoods::update_goods(1);
 	}
 
 
