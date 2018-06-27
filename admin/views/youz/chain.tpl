@@ -143,7 +143,7 @@
 	<div class="tree well">
 		<ul>
 			{{foreach from=$items item=item}}
-				<li class="{{$item.cls}}" data-phone="{{$item.uPhone}}">
+				<li class="{{$item.cls}}" data-phone="{{$item.uPhone}}" data-fans-id="{{$item.uYZUId}}">
 					<span data-phone="{{$item.uPhone}}"><i class="{{$item.cls_ico}}"></i>{{$item.uPhone}}({{$item.amt}})</span>
 					<em>{{$item.uname}}</em>
 					<a href="javascript:;" data-tag="self" data-num="{{$item.self_order_amt}}">订单数:{{$item.self_order_amt}}</a>
@@ -215,7 +215,7 @@
 
 					<div class="form-group">
 						<label class="col-sm-2 control-label">严选师:</label>
-						<div class="col-sm-4">
+						<div class="col-sm-8">
 							<select class="form-control" data-yxs="fans_id">
 								<option value="">-=请选择=-</option>
 								{{foreach from=$peak_yxs item=item }}
@@ -250,12 +250,13 @@
 		yxs_name: '',
 		yxs_phone: '',
 		yxs_fans_id: '',
+		from_fans_id: '',
 	};
 
 	$(document).on('click', "a.add_yxs_next", function () {
-		return;
 		var self = $(this).closest("li");
 		$sls.yxs_phone = self.attr('data-phone');
+		$sls.from_fans_id = self.attr('data-fans-id');
 		$sls.yxs_name = self.find('em').html();
 		$sls.yxs_title.html('请选择【' + $sls.yxs_name + $sls.yxs_phone + '】的下级严选师');
 		$("#yxsModal").modal("show");
@@ -264,23 +265,23 @@
 	$(document).on("click", "#yxs_btnSave", function () {
 		var err = 0;
 		var yxs_fans_id = $("[data-yxs=fans_id]").val();
-		var postData = {tag: "mod_yxs_fromphone", fans_id: yxs_fans_id, phone: $sls.yxs_phone};
+		var postData = {tag: "mod_yxs_from_fansid", fans_id: yxs_fans_id, from_fans_id: $sls.from_fans_id};
 		if (!yxs_fans_id) {
 			layer.msg('请选择严选师');
 			return;
 		}
 		console.log(postData);
-
-		if (loadflag) {
+		if ($sls.loadflag) {
 			return;
 		}
-		loadflag = 1;
+		$sls.loadflag = 1;
 		$.post("/api/youz",
 			postData,
 			function (resp) {
-				loadflag = 0;
+				$sls.loadflag = 0;
 				if (resp.code == 0) {
 					layer.msg('已提交审核~');
+					$("#yxsModal").modal("hide");
 				} else {
 					layer.msg(resp.msg);
 				}
@@ -404,7 +405,7 @@
 <script type="text/html" id="chain_tpl">
 	<ul>
 		{[#data]}
-		<li class="{[cls]}" data-phone="{[uPhone]}">
+		<li class="{[cls]}" data-phone="{[uPhone]}" data-fans-id="{[uYZUId]}">
 			<span data-phone="{[uPhone]}"><i class="{[cls_ico]}"></i>{[uPhone]}({[amt]})</span>
 			<em>{[uname]}</em>
 			<a href="javascript:;" data-tag="self" data-num="{[self_order_amt]}">订单数:{[self_order_amt]}</a>

@@ -11,6 +11,7 @@ namespace admin\controllers;
 
 use admin\controllers\BaseController;
 use admin\models\Admin;
+use common\models\YzFt;
 use common\models\YzOrders;
 use common\models\YzUser;
 use common\utils\AppUtil;
@@ -244,6 +245,44 @@ class YouzController extends BaseController
 				'is_partner' => $is_partner,
 				'peak_yxs' => YzUser::peak_yxs(),
 
+			]);
+	}
+
+	public function actionFt()
+	{
+		Admin::staffOnly();
+		$getInfo = \Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+		$st = self::getParam("st");
+
+		$criteria = $params = [];
+
+		if ($name) {
+			$criteria[] = " (u1.uName like :name or u2.uName like :name) ";
+			$params[':name'] = '%' . trim($name) . '%';
+		}
+		if ($phone) {
+			$criteria[] = " (u1.uPhone = :phone or u2.uPhone=:phone) ";
+			$params[':phone'] = trim($phone);
+		}
+		if ($st) {
+			$criteria[] = " f.f_status = :st ";
+			$params[':st'] = trim($st);
+		}
+
+		list($items, $count) = YzFt::items($criteria, $params, $page);
+
+		$pagination = self::pagination($page, $count);
+		$stDict = YzFt::$stDict;
+		return $this->renderPage('ft.tpl',
+			[
+				'page' => $page,
+				'pagination' => $pagination,
+				'items' => $items,
+				'getInfo' => $getInfo,
+				'stDict' => $stDict,
 			]);
 	}
 

@@ -617,7 +617,7 @@ class YzUser extends ActiveRecord
 			$orderby = " order by next_order_amt desc,self_order_amt desc";
 		}
 
-		$sql = "select u1.uName,u1.uPhone,
+		$sql = "select u1.uName,u1.uPhone,u1.uYZUId,
 				COUNT(DISTINCT u2.uPhone) as amt, 
 				count(DISTINCT o.o_id) as self_order_amt ,
 				count(DISTINCT o2.o_id) as next_order_amt 
@@ -730,7 +730,7 @@ class YzUser extends ActiveRecord
 
 	public static function peak_yxs()
 	{
-		$sql = 'select uYZUId,uName,uPhone from im_yz_user where uType=:ty and uFromPhone<100 ';
+		$sql = 'select uYZUId,uName,uPhone from im_yz_user where uType=:ty and uFromPhone<100 order by uPhone desc';
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			':ty' => self::TYPE_YXS,
 		])->queryAll();
