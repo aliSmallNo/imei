@@ -32,6 +32,7 @@ class YouzanUtil
 	//请填入开发者后台所填写的回调地址，本示例中回调地址应指向本文件。
 	//public $redirect_url = "https://admin.meipo100.com/";
 
+	const LOG_YOUZAN_EXEC = 'youzan_exec';
 	const LOG_YOUZAN_USER = 'youzan_user';
 	const LOG_YOUZAN_GOODS = 'youzan_goods';
 	const LOG_YOUZAN_ORDERS = 'youzan_orders';

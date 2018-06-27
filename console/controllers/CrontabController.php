@@ -21,6 +21,7 @@ use common\models\YzRefund;
 use common\models\YzUser;
 use common\service\TrendService;
 use common\utils\AppUtil;
+use common\utils\YouzanUtil;
 use yii\console\Controller;
 
 class CrontabController extends Controller
@@ -95,12 +96,20 @@ class CrontabController extends Controller
 	{
 		// 更新有赞用户
 		YzUser::UpdateUser();
+		AppUtil::logByFile('exec 1 YzUser::UpdateUser() success', YouzanUtil::LOG_YOUZAN_EXEC, __FUNCTION__, __LINE__);
+
 		// 更新订单
 		YzOrders::Update_order();
+		AppUtil::logByFile('exec 2 YzOrders::Update_order() success', YouzanUtil::LOG_YOUZAN_EXEC, __FUNCTION__, __LINE__);
+
 		// 更新商品
 		YzGoods::update_goods();
+		AppUtil::logByFile('exec 3 YzGoods::update_goods() success', YouzanUtil::LOG_YOUZAN_EXEC, __FUNCTION__, __LINE__);
+
 		// 更新商家退款
 		YzRefund::get_goods_by_se_time();
+		AppUtil::logByFile('exec 4 YzRefund::get_goods_by_se_time() success', YouzanUtil::LOG_YOUZAN_EXEC, __FUNCTION__, __LINE__);
+
 	}
 
 
