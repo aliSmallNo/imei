@@ -143,7 +143,7 @@
 								<div><span>收货人: </span>{{$stat.o_receiver_name}}<span class="tip">{{$stat.o_receiver_tel}}</span></div>
 							</div>
 						{{else}}
-							合计
+							&nbsp;
 						{{/if}}
 					</td>
 					<td align="right">

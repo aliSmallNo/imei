@@ -112,7 +112,7 @@ class YzOrders extends ActiveRecord
 
 		$tid = $order_info['tid'];
 		$full_order_info['tid'] = $tid;
-
+		// fans_id 居然有为0的 WTF
 		$fans_id = $buyer_info['fans_id'] ?? '';
 		$full_order_info['fans_id'] = $fans_id;
 		$full_order_info['buyer_phone'] = $buyer_info['buyer_phone'] ?? '';
@@ -311,7 +311,7 @@ class YzOrders extends ActiveRecord
 		$params_key = $params;
 		$res = RedisUtil::init(RedisUtil::KEY_YOUZAN_USER_ORDERS_STAT, md5(json_encode($params_key)))->getCache();
 		if ($res) {
-			return json_decode($res, 1);
+			// return json_decode($res, 1);
 		}
 
 		$strCriteria = '';
@@ -330,8 +330,8 @@ class YzOrders extends ActiveRecord
 			SUM(case WHEN o_status=:st6 then 1 else 0 end) as closed_amt,
 			SUM(case WHEN o_status=:st6 or o_status=:st1 then 0 else o_payment end) as pay_amt
 			FROM im_yz_orders as o 
-			JOIN im_yz_user as u on u.uYZUId=o.o_fans_id
-			WHERE u.uType in (1,3) $strCriteria
+			left JOIN im_yz_user as u on u.uYZUId=o.o_fans_id
+			WHERE o_id>0 $strCriteria
 			GROUP BY o.o_fans_id,hr HAVING amt>0 ORDER BY amt DESC";
 		$params = array_merge($params, [
 			":st1" => self::WAIT_BUYER_PAY,
@@ -343,7 +343,7 @@ class YzOrders extends ActiveRecord
 		]);
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		if ($strCriteria) {
-			// echo $conn->createCommand($sql)->bindValues($params)->getRawSql();exit;
+			//echo $conn->createCommand($sql)->bindValues($params)->getRawSql();exit;
 		}
 		$items = $baseData = [];
 		for ($k = 0; $k < 24; $k++) {
@@ -360,7 +360,7 @@ class YzOrders extends ActiveRecord
 
 			if (!isset($items[$fans_id])) {
 				$items[$fans_id] = $row;
-				$items[$fans_id]['type_str'] = YzUser::$typeDict[$row['uType']];
+				$items[$fans_id]['type_str'] = YzUser::$typeDict[$row['uType']] ?? '';
 				/*if (count(array_keys($timesAmt)) < 9 && !isset($timesAmt[$fans_id])) {
 					$timesAmt[$fans_id] = $timesClosed[$fans_id] = [
 						'name' => $name,
@@ -372,9 +372,8 @@ class YzOrders extends ActiveRecord
 			foreach ($fields as $field) {
 				$items[$fans_id][$field] += $row[$field];
 			}
-			$items[$fans_id]['type_str'] = YzUser::$typeDict[$row['uType']];
+			$items[$fans_id]['type_str'] = YzUser::$typeDict[$row['uType']]??'';
 		}
-
 
 		// 排序
 		array_multisort(array_column($items, 'amt'), SORT_DESC, $items);
