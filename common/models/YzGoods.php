@@ -238,7 +238,6 @@ class YzGoods extends ActiveRecord
 	}
 
 
-
 	public static function get_yz_goods_item($tag, $stime, $etime, $page, $page_size, $isDebugger = false)
 	{
 
@@ -676,8 +675,12 @@ class YzGoods extends ActiveRecord
 				]
 			]
 		];
-		echo $item_id . '==' . json_encode($res['response']['items']) . PHP_EOL;
-		self::edit($item_id, ['g_rate' => $res['response']['items'][0]]);
+		$ret = $res['response']['items'] ?? [];
+		echo $item_id . '==' . json_encode($ret) . PHP_EOL;
+		if ($ret) {
+			self::edit($item_id, ['g_rate' => $ret[0]]);
+		}
+
 
 	}
 
