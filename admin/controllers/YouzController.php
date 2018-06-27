@@ -242,6 +242,7 @@ class YouzController extends BaseController
 				'getInfo' => $getInfo,
 				'items' => $items,
 				'is_partner' => $is_partner,
+				'peak_yxs' => YzUser::peak_yxs(),
 
 			]);
 	}

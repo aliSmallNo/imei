@@ -111,7 +111,6 @@ class YzUser extends ActiveRecord
 	{
 		$st = $st ? $st : date('Y-m-d 00:00:00');
 		$et = $et ? $et : date('Y-m-d 00:00:00', time() + 86400);
-		//self::getUserBySETime($st, $et);
 		self::getUserBySETime($st, $et, 1);
 	}
 
@@ -729,5 +728,13 @@ class YzUser extends ActiveRecord
 		return $ret;
 	}
 
+	public static function peak_yxs()
+	{
+		$sql = 'select uYZUId,uName,uPhone from im_yz_user where uType=:ty and uFromPhone<100 ';
+		$res = AppUtil::db()->createCommand($sql)->bindValues([
+			':ty' => self::TYPE_YXS,
+		])->queryAll();
+		return $res;
+	}
 
 }

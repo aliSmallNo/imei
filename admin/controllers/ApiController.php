@@ -31,6 +31,7 @@ use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserTrans;
 use common\models\UserWechat;
+use common\models\YzFt;
 use common\models\YzOrders;
 use common\models\YzUser;
 use common\service\CogService;
@@ -445,6 +446,24 @@ class ApiController extends Controller
 					'data' => $res,
 					'nextpage' => $nextpage,
 				]);
+				break;
+			case "mod_yxs_fromphone":
+				$fans_id = self::postParam("fans_id");
+				$phone = self::postParam("phone");
+				$user = YzUser::findOne(['uYZUId' => $fans_id]);
+				if (!$user
+					|| !$user->uFromPhone = ''
+						|| !$user->uType == YzUser::TYPE_YXS
+						|| !AppUtil::checkPhone($phone)) {
+					return self::renderAPI(129, '参数错误~');
+				}
+				YzFt::edit(1, [
+					'f_fans_id' => $fans_id,
+					'f_phone' => $phone,
+					'f_status' => YzFt::ST_PENDING,
+					'f_created_by' => Admin::getAdminId(),
+				]);
+				return self::renderAPI(0, '已提交审核~');
 				break;
 			default:
 				break;

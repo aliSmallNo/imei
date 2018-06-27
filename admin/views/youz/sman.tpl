@@ -138,6 +138,7 @@
 		name: '',
 		titleObj: $("#modModal").find('.modal-title'),
 	};
+
 	$("a.modU").click(function () {
 		var self = $(this).closest("tr");
 		$sls.uid = self.attr('data-uid');
@@ -172,7 +173,7 @@
 					layer.msg(resp.msg);
 				}
 			}, "json");
-	})
+	});
 
 	$(".opExcel").on("click", function () {
 		var aname = $("input[name=aname]").val();

@@ -100,7 +100,7 @@
 		font-size: 12px;
 	}
 
-	.tree li em, .tree li a, .tree li strong {
+	/*.tree li em, .tree li a, .tree li strong {
 		display: inline-block;
 		width: 130px;
 	}
@@ -111,20 +111,21 @@
 
 	.tree li a {
 		width: 120px;
-	}
+	}*/
 
 </style>
 <div class="row">
-	<h4>用户关系链</h4>
+	<h4>用户关系链
+	</h4>
 </div>
 <div class="row">
 	<form action="/youz/{{if $is_partner}}chain_one{{else}}chain{{/if}}" method="get" class="form-inline">
 		<div class="form-group">
 			{{if !$is_partner}}
-			<input class="form-control" placeholder="严选师名称" type="text" name="name"
-						 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
-			<input class="form-control" placeholder="严选师手机" type="text" name="phone"
-						 value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
+				<input class="form-control" placeholder="严选师名称" type="text" name="name"
+							 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
+				<input class="form-control" placeholder="严选师手机" type="text" name="phone"
+							 value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
 			{{/if}}
 			<input class="form-control beginDate my-date-input" placeholder="订单开始时间" name="sdate"
 						 value="{{if isset($getInfo['sdate'])}}{{$getInfo['sdate']}}{{/if}}">
@@ -148,6 +149,7 @@
 					<a href="javascript:;" data-tag="self" data-num="{{$item.self_order_amt}}">订单数:{{$item.self_order_amt}}</a>
 					<a href="javascript:;" data-tag="next" data-num="{{$item.next_order_amt}}">下级订单数:{{$item.next_order_amt}}</a>
 					<strong>支付总金额:{{$item.sum_payment}}</strong>
+					<a href="javascript:;" class="add_yxs_next btn btn-primary btn-xs">添加关系</a>
 				</li>
 			{{/foreach}}
 		</ul>
@@ -200,6 +202,38 @@
 		</div>
 	</div>
 </div>
+<div class="modal fade" id="yxsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+									aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title"></h4>
+			</div>
+			<div class="modal-body" style="overflow:hidden">
+				<div class="col-sm-12 form-horizontal">
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">严选师:</label>
+						<div class="col-sm-4">
+							<select class="form-control" data-yxs="fans_id">
+								<option value="">-=请选择=-</option>
+								{{foreach from=$peak_yxs item=item }}
+									<option value="{{$item.uYZUId}}">{{$item.uName}}({{$item.uPhone}})</option>
+								{{/foreach}}
+							</select>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" data-tag="cat-chat" id="yxs_btnSave">确定保存</button>
+			</div>
+		</div>
+	</div>
+</div>
 <script>
 
 	$sls = {
@@ -211,7 +245,46 @@
 		modal: $("#orderModal"),
 		ul: $("#orderModal .modal-body tbody"),
 		modal_title: $("#orderModal .modal-title"),
+
+		yxs_title: $("#yxsModal").find('.modal-title'),
+		yxs_name: '',
+		yxs_phone: '',
+		yxs_fans_id: '',
 	};
+
+	$("a.add_yxs_next").click(function () {
+		var self = $(this).closest("li");
+		$sls.yxs_phone = self.attr('data-phone');
+		$sls.yxs_name = self.find('em').html();
+		$sls.yxs_title.html('请选择【' + $sls.yxs_name + $sls.yxs_phone + '】的下级严选师');
+		$("#yxsModal").modal("show");
+	});
+
+	$(document).on("click", "#yxs_btnSave", function () {
+		var err = 0;
+		var yxs_fans_id = $("[data-yxs=fans_id]").val();
+		var postData = {tag: "mod_yxs_fromphone", fans_id: yxs_fans_id, phone: $sls.yxs_phone};
+		if (!yxs_fans_id) {
+			layer.msg('请选择严选师');
+			return;
+		}
+		console.log(postData);
+
+		if (loadflag) {
+			return;
+		}
+		loadflag = 1;
+		$.post("/api/youz",
+			postData,
+			function (resp) {
+				loadflag = 0;
+				if (resp.code == 0) {
+					layer.msg('已提交审核~');
+				} else {
+					layer.msg(resp.msg);
+				}
+			}, "json");
+	});
 
 	$(function () {
 		$('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
@@ -336,6 +409,7 @@
 			<a href="javascript:;" data-tag="self" data-num="{[self_order_amt]}">订单数:{[self_order_amt]}</a>
 			<a href="javascript:;" data-tag="next" data-num="{[next_order_amt]}">下级订单数:{[next_order_amt]}</a>
 			<strong>支付总金额:{[sum_payment]}</strong>
+			<a href="javascript:;" class="add_yxs_next btn btn-primary btn-xs">添加关系</a>
 		</li>
 		{[/data]}
 	</ul>
