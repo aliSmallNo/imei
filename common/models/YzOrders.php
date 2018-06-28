@@ -271,7 +271,7 @@ class YzOrders extends ActiveRecord
 			echo $v['o_tid'] . json_encode($insert) . PHP_EOL;
 			self::edit($v['o_tid'], $insert);*/
 			$orders = json_decode($v['o_orders'], 1);
-			$order_info = json_decode($v['order_info'], 1);
+			$order_info = json_decode($v['o_order_info'], 1);
 
 			$order_num = 0;
 			$sku_num = 0;
