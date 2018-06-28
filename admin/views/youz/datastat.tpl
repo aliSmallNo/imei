@@ -60,9 +60,18 @@
 		color: #0f6cf2;
 		cursor: pointer;
 	}
+
+	h4 span {
+		font-size: 12px;
+		color: #777;
+		font-weight: 400;
+		padding: 10px 0;
+	}
 </style>
 <div class="row">
-	<h4>数据分析</h4>
+	<h4>数据分析
+		<span>(日期,新增严选师, 新合格严选师, 订单数, GMV, 访问-下单转化率, 动销率, 新品数, 服务)</span>
+	</h4>
 </div>
 <form action="/youz/datastat" class="form-inline">
 	<input type="hidden" name="flag" value="sign">
