@@ -730,8 +730,4 @@ class YzGoods extends ActiveRecord
 	}
 
 
-	public static function get_new_goods($st, $et)
-	{
-
-	}
 }

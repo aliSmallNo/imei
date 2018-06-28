@@ -688,11 +688,5 @@ class YzUser extends ActiveRecord
 		return $res;
 	}
 
-	public static function get_yxs_num($st, $et)
-	{
-		// 获取指定时间段内新增的分销员
-
-
-	}
 
 }

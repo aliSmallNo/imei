@@ -552,9 +552,4 @@ class YzOrders extends ActiveRecord
 		return [$res, $nextpage];
 	}
 
-	public static function GMV($st, $et)
-	{
-		;
-	}
-
 }

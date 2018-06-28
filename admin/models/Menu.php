@@ -174,6 +174,12 @@ class Menu
 						"level" => 820
 					],
 					[
+						"name" => "数据分析",
+						"url" => "/youz/datastat",
+						"revise" => 1,
+						"level" => 820
+					],
+					[
 						"name" => "随机数",
 						"url" => "/youz/create",
 						"revise" => 1,
