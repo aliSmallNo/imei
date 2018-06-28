@@ -732,7 +732,7 @@ class YzGoods extends ActiveRecord
 
 	public static function get_new_goods($st, $et)
 	{
-		$sql = "select count(1) from m_yz_goods where g_status=:status and g_created_time between :st and :et";
+		$sql = "select count(1) from im_yz_goods where g_status=:status and g_created_time between :st and :et";
 		return AppUtil::db()->createCommand($sql)->bindValues([
 			":status" => self::ST_STORE_HOUSE,
 			":st" => $st,
