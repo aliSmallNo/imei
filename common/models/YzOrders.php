@@ -123,7 +123,6 @@ class YzOrders extends ActiveRecord
 		$full_order_info['pay_time'] = $order_info['pay_time'];
 		$full_order_info['update_time'] = $order_info['update_time'];
 
-
 		$order_num = 0;
 		$sku_num = 0;
 		$order_payment = 0;
