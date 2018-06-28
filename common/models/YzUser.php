@@ -594,7 +594,7 @@ class YzUser extends ActiveRecord
 
 		$res = RedisUtil::init(RedisUtil::KEY_YOUZAN_USER_CHAIN, md5(json_encode($params) . json_encode($se_date)))->getCache();
 		if ($res) {
-			return json_decode($res, 1);
+			// return json_decode($res, 1);
 		}
 
 		$conn = AppUtil::db();
@@ -632,6 +632,7 @@ class YzUser extends ActiveRecord
 			], $params))->getRawSql();
 			exit;*/
 		}
+
 		$sql = "select sum(o.o_payment)
 				from im_yz_user as u1 
 				left join im_yz_orders as o on o.o_fans_id=u1.uYZUId 
@@ -644,7 +645,7 @@ class YzUser extends ActiveRecord
 			$res[$k]['sum_payment'] = $CMD->bindValues([':phone' => $v['uPhone'], ':ty' => self::TYPE_YXS])->queryScalar() ?: 0;
 		}
 
-		RedisUtil::init(RedisUtil::KEY_YOUZAN_USER_CHAIN, md5(json_encode($params) . json_encode($se_date)))->setCache(json_encode($res));
+		//RedisUtil::init(RedisUtil::KEY_YOUZAN_USER_CHAIN, md5(json_encode($params) . json_encode($se_date)))->setCache(json_encode($res));
 
 		return $res;
 	}

@@ -223,7 +223,7 @@ class YouzController extends BaseController
 		$criteria = $params = [];
 
 		if ($phone) {
-			$criteria[] = 'u1.uFromPhone=:phone1';
+			$criteria[] = 'u1.uPhone=:phone1';
 			$params[':phone1'] = $phone;
 		} else {
 			$criteria[] = 'u1.uFromPhone<:phone1';
