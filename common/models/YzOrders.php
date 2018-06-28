@@ -128,7 +128,9 @@ class YzOrders extends ActiveRecord
 		$order_payment = 0;
 		$total_fee = 0;
 		foreach ($orders as $order) {
-			$order_payment = $order_payment + $order['payment'];
+			if ($order_info['pay_time']) {
+				$order_payment = $order_payment + $order['payment'];
+			}
 			$sku_num = $sku_num + $order['num'];
 			$total_fee = $total_fee + $order['total_fee'];
 		}
@@ -285,13 +287,15 @@ class YzOrders extends ActiveRecord
 			$order_payment = 0;
 			$total_fee = 0;
 			foreach ($orders as $order) {
-				$g_item_id = $order['item_id'];
+				/*$g_item_id = $order['item_id'];
 				if (!YzGoods::findOne(['g_item_id' => $g_item_id])) {
 					$co = $co + 1;
 					echo 'co:' . $co . ' item_id:' . $g_item_id . PHP_EOL;
 					YzGoods::get_goods_desc_by_id($g_item_id);
+				}*/
+				if($order_info['pay_time']){
+					$order_payment = $order_payment + $order['payment'];
 				}
-				$order_payment = $order_payment + $order['payment'];
 				$sku_num = $sku_num + $order['num'];
 				$total_fee = $total_fee + $order['total_fee'];
 			}
@@ -346,7 +350,7 @@ class YzOrders extends ActiveRecord
 		$conn = AppUtil::db();
 		$sql = "SELECT u.uName as `name`,u.uPhone as phone,u.uYZUId as fans_id,u.uAvatar as thumb,uType,
 			Date_format(o.o_created, '%H') as hr,o.o_receiver_tel,o.o_receiver_name,
-			SUM(case WHEN o_status in ('WAIT_BUYER_PAY','WAIT_CONFIRM','WAIT_SELLER_SEND_GOODS','WAIT_BUYER_CONFIRM_GOODS','TRADE_SUCCESS','TRADE_CLOSED') then 1 else 0 end) as amt,
+			count(1) as amt,
 			SUM(case WHEN o_status=:st1 then 1 else 0 end) as wait_pay_amt,
 			SUM(case WHEN o_status=:st2 then 1 else 0 end) as wait_comfirm_amt,
 			SUM(case WHEN o_status=:st3 then 1 else 0 end) as wait_send_goods_amt,
