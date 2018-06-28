@@ -691,12 +691,7 @@ class YzUser extends ActiveRecord
 	public static function get_yxs_num($st, $et)
 	{
 		// 获取指定时间段内新增的分销员
-		$sql = "select count(1) from im_yz_user where uType=:ty and uCreateOn between :st and :et";
-		return AppUtil::db()->createCommand($sql)->bindValues([
-			":ty" => self::TYPE_YXS,
-			":st" => $st,
-			":et" => $et,
-		])->queryScalar();
+
 
 	}
 

@@ -554,11 +554,7 @@ class YzOrders extends ActiveRecord
 
 	public static function GMV($st, $et)
 	{
-		$sql = "select sum(o_payment) from im_yz_orders where  o_created between :st and :et";
-		return AppUtil::db()->createCommand($sql)->bindValues([
-			":st" => $st,
-			":et" => $et,
-		])->queryScalar();
+		;
 	}
 
 }
