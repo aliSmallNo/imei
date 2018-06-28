@@ -6,7 +6,7 @@
 	<h4>有赞分销员列表</h4>
 </div>
 <form action="/youz/salesman" class="form-inline">
-	<button class="btn btn-primary">查询</button>
+
 </form>
 <div class="row-divider"></div>
 <div class="row">
