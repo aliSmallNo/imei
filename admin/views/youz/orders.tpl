@@ -3,7 +3,8 @@
 	.font12 {
 		font-size: 12px;
 	}
-	.font10{
+
+	.font10 {
 		font-size: 10px;
 		color: #0d5ccf;
 	}
@@ -22,7 +23,8 @@
 			<select class="form-control" name="st">
 				<option value="">-=请选择=-</option>
 				{{foreach from=$stDict item=item key=key}}
-					<option value="{{$key}}" {{if isset($getInfo['st']) && $getInfo['st']==$key}}selected{{/if}}>{{$item}}</option>
+					<option value="{{$key}}"
+									{{if isset($getInfo['st']) && $getInfo['st']==$key}}selected{{/if}}>{{$item}}</option>
 				{{/foreach}}
 			</select>
 		</div>
@@ -39,54 +41,73 @@
 			<th class="col-sm-1">
 				用户头像
 			</th>
-			<th class="col-sm-3">
+			<th class="col-sm-2">
 				用户信息
 			</th>
-			<th class="col-sm-1">
-				状态
+			<th class="col-sm-2">
+				状态|汇总订单
 			</th>
 			<th class="col-sm-1">
 				商品图片
 			</th>
+			<th class="col-sm-2">
+				商品
+			</th>
 			<th>
 				订单信息
 			</th>
-			<th class="col-sm-3">
+			<th class="col-sm-2">
 				时间
 			</th>
 		</tr>
 		</thead>
 		<tbody>
 		{{foreach from=$items item=item}}
-			<tr>
-				<td align="center">
-					{{if $item.avatar}}
-						<span>
+			{{foreach from=$item.orders item=order key=okey}}
+				<tr>
+					{{if $okey==0}}
+						<td align="center" rowspan='{{$item.co}}'>
+							{{if $item.avatar}}
+								<span>
 						<img src="{{$item.avatar}}" style="width: 65px;height: 65px;">
 					</span>
+							{{/if}}
+						</td>
+						<td rowspan='{{$item.co}}'>
+							用户:{{$item.name}} {{if $item.phone}}{{$item.phone}}{{else}}{{$item.o_buyer_phone}}{{/if}}<br>
+							收货人:{{$item.o_receiver_name}} {{$item.o_receiver_tel}}<br>
+							<span class="font10">{{$item.o_fans_id}}</span><br>
+							<span class="font10">{{$item.o_tid}}</span><br>
+						</td>
+						<td rowspan='{{$item.co}}'>
+							{{$item.status_str}}<br><br>
+							订单: {{$item.o_sku_num}}件 | {{$item.o_total_fee}}<br>
+							支付: {{$item.o_payment}}元<br>
+						</td>
 					{{/if}}
-				</td>
-				<td>
-					用户:{{$item.name}} {{if $item.phone}}{{$item.phone}}{{else}}{{$item.o_buyer_phone}}{{/if}}<br>
-					收货人:{{$item.o_receiver_name}} {{$item.o_receiver_tel}}<br>
-					<span class="font10">{{$item.o_fans_id}}</span><br>
-					<span class="font10">{{$item.o_tid}}</span><br>
-				</td>
-				<td>
-					{{$item.status_str}}
-				</td>
-				<td>
-					<img src="{{$item.pic_path}}" style="width: 65px;height: 65px;">
-				</td>
-				<td>
-					订单: {{$item.o_price}}*{{$item.o_num}}={{$item.o_total_fee}} <br>
-					支付: {{$item.o_payment}} 退款:{{$item.o_refund}}
-				</td>
-				<td >
-					添加时间: {{$item.o_created}}<br>
-					更新时间: {{$item.o_update_time}}
-				</td>
-			</tr>
+					<td>
+						<img src="{{$order.pic_path}}" style="width: 65px;height: 65px;">
+					</td>
+					<td>
+						{{$order.title}}
+					</td>
+					<td>
+						<div>
+							订单: {{$order.price}}*{{$order.num}}={{$order.total_fee}}<br>
+							支付: {{$order.payment}}元<br>
+							{{foreach from=$order.sku_properties_name_arr item=$prop}}
+								{{$prop.k}}:{{$prop.v}}
+							{{/foreach}}
+						</div>
+					</td>
+					{{if $okey==0}}
+						<td rowspan='{{$item.co}}'>
+							添加时间: {{$item.o_created}}<br>
+							更新时间: {{$item.o_update_time}}
+						</td>
+					{{/if}}
+				</tr>
+			{{/foreach}}
 		{{/foreach}}
 		</tbody>
 	</table>

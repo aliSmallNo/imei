@@ -470,7 +470,7 @@ class YzOrders extends ActiveRecord
 			$criteriaStr = ' and ' . implode(" and ", $criteria);
 		}
 
-		$sql = "select o_fans_id,o_id,o_tid,o_buyer_phone,o_receiver_tel,o_receiver_name,o_status,o_price,o_num,
+		$sql = "select o_fans_id,o_id,o_tid,o_buyer_phone,o_receiver_tel,o_receiver_name,o_status,o_price,o_num,o_sku_num,
 				o_total_fee,o_payment,o_refund,o_orders,o_created,o_update_time,
 				u1.uName as name,u1.uPhone as phone,u1.uAvatar as avatar
 				from im_yz_orders as o 
@@ -479,8 +479,13 @@ class YzOrders extends ActiveRecord
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as $k => $v) {
 			$res[$k]['status_str'] = self::$stDict[$v['o_status']] ?? '';
-			$orders = json_decode($v['o_orders'], 1)['0'];
-			$res[$k]['pic_path'] = $orders['pic_path'];
+			$orders = json_decode($v['o_orders'], 1);
+			foreach ($orders as $ok => $ov) {
+				$orders[$ok]['sku_properties_name_arr'] = json_decode($ov['sku_properties_name'], 1);
+			}
+			$res[$k]['orders'] = $orders;
+			$res[$k]['co'] = count($orders);
+			// $res[$k]['pic_path'] = $orders['pic_path'];
 		}
 
 		$sql = "select count(*)
@@ -489,6 +494,7 @@ class YzOrders extends ActiveRecord
 				where o.o_id>0 $criteriaStr";
 		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
 
+		// print_r($res);exit;
 		return [$res, $count];
 
 	}
