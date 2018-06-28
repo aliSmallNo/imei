@@ -276,6 +276,7 @@ class YzOrders extends ActiveRecord
 			$order_num = 0;
 			$sku_num = 0;
 			$order_payment = 0;
+			$total_fee = 0;
 			foreach ($orders as $order) {
 				$g_item_id = $order['item_id'];
 				if (!YzGoods::findOne(['g_item_id' => $g_item_id])) {
@@ -285,11 +286,13 @@ class YzOrders extends ActiveRecord
 				}
 				$order_payment = $order_payment + $order['payment'];
 				$sku_num = $sku_num + $order['num'];
+				$total_fee = $total_fee + $order['total_fee'];
 			}
 			self::edit($order_info['tid'], [
 				'o_num' => 1,
 				'o_sku_num' => $sku_num,
 				'o_payment' => $order_payment,
+				'o_total_fee' => $total_fee,
 			]);
 
 			/*$o_fans_id = $v['o_fans_id'];
