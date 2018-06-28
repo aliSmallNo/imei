@@ -100,6 +100,11 @@
 		font-size: 12px;
 	}
 
+	.font10{
+		font-size: 8px;
+		color: #0f6cf2;
+	}
+
 	/*.tree li em, .tree li a, .tree li strong {
 		display: inline-block;
 		width: 130px;
@@ -169,6 +174,9 @@
 				<table class="table table-striped table-bordered">
 					<thead>
 					<tr>
+						<th>
+							收件人信息
+						</th>
 						<th class="col-sm-1">
 							商品
 						</th>
@@ -183,9 +191,6 @@
 						</th>
 						<th>
 							下单时间
-						</th>
-						<th>
-							收件人信息
 						</th>
 					</tr>
 					</thead>
@@ -420,34 +425,44 @@
 
 <script type="text/html" id="order_tpl">
 	{[#data]}
+	{[#orders]}
 	<tr>
-		<td>
-			<img src="{[_pic_path]}">
-		</td>
-		<td>
-			<div>{[_title]}</div>
-			<div>
-				{[#_sku_properties_name]}
-				{[k]}:{[v]}
-				{[/_sku_properties_name]}
-			</div>
-		</td>
-		<td>
-			<div>单价/数量:{[o_price]}({[o_num]}件)</div>
-			<div>实付金额:{[o_payment]}</div>
-		</td>
-		<td>
-			<div>{[status_str]}</div>
-		</td>
-		<td>
-			<div>{[o_created]}</div>
-		</td>
-		<td>
+		{[#key_flag]}
+		<td rowspan="{[#rowspan_flag]}{[co]}{[/rowspan_flag]}">
 			<div>{[uName]}</div>
 			<div>{[o_receiver_name]}</div>
 			<div>{[o_receiver_tel]}</div>
 		</td>
+		{[/key_flag]}
+		<td>
+			<img src="{[pic_path]}">
+		</td>
+		<td>
+			<div>{[title]}</div>
+			<div>
+				{[#sku_properties_name_arr]}
+				{[k]}:{[v]}
+				{[/sku_properties_name_arr]}
+			</div>
+			<div class="font10">
+				{[o_tid]}
+			</div>
+		</td>
+		<td>
+			<div>单价/数量:{[price]}*{[num]}={[total_fee]}</div>
+			<div>实付金额:{[#o_pay_time]}{[payment]}{[/o_pay_time]}{[^o_pay_time]}0.00{[/o_pay_time]}</div>
+		</td>
+
+		{[#key_flag]}
+		<td rowspan="{[#rowspan_flag]}{[co]}{[/rowspan_flag]}">
+			<div>{[status_str]}</div>
+		</td>
+		<td rowspan="{[#rowspan_flag]}{[co]}{[/rowspan_flag]}">
+			<div>{[o_created]}</div>
+		</td>
+		{[/key_flag]}
 	</tr>
+	{[/orders]}
 	{[/data]}
 </script>
 

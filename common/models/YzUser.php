@@ -604,7 +604,6 @@ class YzUser extends ActiveRecord
 		}
 
 		$orderby = ' order by amt desc ';
-
 		$criteria_o = $criteria_o2 = '';
 		if ($se_date['sdate'] && $se_date['edate']) {
 			$sdate = $se_date['sdate'] . ' 00:00:00';
@@ -619,11 +618,11 @@ class YzUser extends ActiveRecord
 				count(DISTINCT o.o_id) as self_order_amt ,
 				count(DISTINCT o2.o_id) as next_order_amt 
 				from im_yz_user as u1
-				left join  im_yz_user as u2 on u2.uFromPhone=u1.uPhone
+				left join im_yz_user as u2 on u2.uFromPhone=u1.uPhone
 				left join im_yz_orders as o on o.o_fans_id=u1.uYZUId $criteria_o
 				left join im_yz_orders as o2 on o2.o_fans_id=u2.uYZUId  $criteria_o2
 				where u1.uType=:ty  $criteriaStr  
-				group by u1.uYZUId $orderby ";
+				group by u1.uYZUId $orderby";
 		$res = $conn->createCommand($sql)->bindValues(array_merge([
 			':ty' => self::TYPE_YXS,
 		], $params))->queryAll();
@@ -650,53 +649,6 @@ class YzUser extends ActiveRecord
 		return $res;
 	}
 
-
-	public static function orders_by_phone($params_in, $page, $pageize = 20)
-	{
-		$conn = AppUtil::db();
-		$limit = "limit " . ($page - 1) * $pageize . ',' . ($pageize + 1);
-		switch ($params_in['flag']) {
-			case "self":
-				$criteriaStr = " and u1.uPhone=:phone ";
-				$params[':phone'] = $params_in['phone'];
-				break;
-			case "next":
-				$criteriaStr = " and u1.uFromPhone=:phone ";
-				$params[':phone'] = $params_in['phone'];
-				break;
-			default:
-				$criteriaStr = '';
-				$params = [];
-		}
-
-		if ($params_in['sdate'] && $params_in['edate']) {
-			$criteriaStr .= " and o.o_created between :sdate and :edate ";
-			$params[':sdate'] = $params_in['sdate'] . ' 00:00:00';
-			$params[':edate'] = $params_in['edate'] . ' 23:59:59';
-		}
-
-		$sql = "select u1.uName,u1.uPhone,u1.uFromPhone,o.*
-				from im_yz_user as u1 
-				left join im_yz_orders as o on o.o_fans_id=u1.uYZUId
-				where u1.uType=:ty $criteriaStr and o.o_id>0 order by o_created DESC $limit";
-		$res = $conn->createCommand($sql)->bindValues(array_merge([
-			':ty' => self::TYPE_YXS
-		], $params))->queryAll();
-
-		foreach ($res as $k => $v) {
-			$res[$k]['status_str'] = YzOrders::$stDict[$v['o_status']] ?? '';
-			$res[$k]['orders'] = json_decode($v['o_orders'], 1)[0];
-			$res[$k]['_pic_path'] = $res[$k]['orders']['pic_path'];
-			$res[$k]['_title'] = $res[$k]['orders']['title'];
-			$res[$k]['_sku_properties_name'] = json_decode($res[$k]['orders']['sku_properties_name'], 1);
-
-		}
-
-		$nextpage = count($res) > $pageize ? ($page + 1) : 0;
-
-		return [$res, $nextpage];
-
-	}
 
 	public static function get_user_chain_by_fans_id($fans_id)
 	{

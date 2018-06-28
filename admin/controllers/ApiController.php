@@ -436,7 +436,7 @@ class ApiController extends Controller
 				if (!in_array($flag, ['self', 'next']) || !AppUtil::checkPhone($phone) || !$page) {
 					return self::renderAPI(129, 'params error~');
 				}
-				list($res, $nextpage) = YzUser::orders_by_phone([
+				list($res, $nextpage) = YzOrders::orders_by_phone([
 					'phone' => $phone,
 					'flag' => $flag,
 					'sdate' => $sdate,

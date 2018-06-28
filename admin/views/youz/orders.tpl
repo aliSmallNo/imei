@@ -82,7 +82,7 @@
 						<td rowspan='{{$item.co}}'>
 							{{$item.status_str}}<br><br>
 							订单: {{$item.o_sku_num}}件 | {{$item.o_total_fee}}<br>
-							支付: {{$item.o_payment}}元<br>
+							支付: {{$item.o_payment}}元 退款: {{$item.o_refund}}<br>
 						</td>
 					{{/if}}
 					<td>
@@ -94,7 +94,7 @@
 					<td>
 						<div>
 							订单: {{$order.price}}*{{$order.num}}={{$order.total_fee}}<br>
-							支付: {{$order.payment}}元<br>
+							支付: {{if $item.o_pay_time}}{{$order.payment}}{{else}}0{{/if}}元<br>
 							{{foreach from=$order.sku_properties_name_arr item=$prop}}
 								{{$prop.k}}:{{$prop.v}}
 							{{/foreach}}

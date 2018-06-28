@@ -293,7 +293,7 @@ class YzOrders extends ActiveRecord
 					echo 'co:' . $co . ' item_id:' . $g_item_id . PHP_EOL;
 					YzGoods::get_goods_desc_by_id($g_item_id);
 				}*/
-				if($order_info['pay_time']){
+				if ($order_info['pay_time']) {
 					$order_payment = $order_payment + $order['payment'];
 				}
 				$sku_num = $sku_num + $order['num'];
@@ -475,21 +475,14 @@ class YzOrders extends ActiveRecord
 		}
 
 		$sql = "select o_fans_id,o_id,o_tid,o_buyer_phone,o_receiver_tel,o_receiver_name,o_status,o_price,o_num,o_sku_num,
-				o_total_fee,o_payment,o_refund,o_orders,o_created,o_update_time,
+				o_total_fee,o_payment,o_refund,o_orders,o_created,o_update_time,o_order_info,o_pay_time,
 				u1.uName as name,u1.uPhone as phone,u1.uAvatar as avatar
 				from im_yz_orders as o 
 				left join im_yz_user as u1 on u1.uYZUId=o.o_fans_id
 				where o.o_id>0 $criteriaStr order by o.o_update_time desc $limit ";
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as $k => $v) {
-			$res[$k]['status_str'] = self::$stDict[$v['o_status']] ?? '';
-			$orders = json_decode($v['o_orders'], 1);
-			foreach ($orders as $ok => $ov) {
-				$orders[$ok]['sku_properties_name_arr'] = json_decode($ov['sku_properties_name'], 1);
-			}
-			$res[$k]['orders'] = $orders;
-			$res[$k]['co'] = count($orders);
-			// $res[$k]['pic_path'] = $orders['pic_path'];
+			$res[$k] = array_merge($res[$k], self::fmt_order_row($v));
 		}
 
 		$sql = "select count(*)
@@ -501,6 +494,61 @@ class YzOrders extends ActiveRecord
 		// print_r($res);exit;
 		return [$res, $count];
 
+	}
+
+	public static function fmt_order_row($row)
+	{
+		$arr = [];
+		$arr['status_str'] = self::$stDict[$row['o_status']] ?? '';
+		$orders = json_decode($row['o_orders'], 1);
+		foreach ($orders as $ok => $ov) {
+			$orders[$ok]['sku_properties_name_arr'] = json_decode($ov['sku_properties_name'], 1);
+			$orders[$ok]['key_flag'] = $ok > 0 ? 0 : 1;
+		}
+		$arr['orders'] = $orders;
+		$arr['co'] = count($orders);
+		$arr['rowspan_flag'] = count($orders) > 1 ? 1 : 0;
+
+		return $arr;
+	}
+
+	public static function orders_by_phone($params_in, $page, $pageize = 20)
+	{
+		$conn = AppUtil::db();
+		$limit = "limit " . ($page - 1) * $pageize . ',' . ($pageize + 1);
+		switch ($params_in['flag']) {
+			case "self":
+				$criteriaStr = " and u1.uPhone=:phone ";
+				$params[':phone'] = $params_in['phone'];
+				break;
+			case "next":
+				$criteriaStr = " and u1.uFromPhone=:phone ";
+				$params[':phone'] = $params_in['phone'];
+				break;
+			default:
+				$criteriaStr = '';
+				$params = [];
+		}
+
+		if ($params_in['sdate'] && $params_in['edate']) {
+			$criteriaStr .= " and o.o_created between :sdate and :edate ";
+			$params[':sdate'] = $params_in['sdate'] . ' 00:00:00';
+			$params[':edate'] = $params_in['edate'] . ' 23:59:59';
+		}
+
+		$sql = "select u1.uName,u1.uPhone,u1.uFromPhone,o.*
+				from im_yz_user as u1 
+				left join im_yz_orders as o on o.o_fans_id=u1.uYZUId
+				where u1.uType=:ty $criteriaStr and o.o_id>0 order by o_created DESC $limit";
+		$res = $conn->createCommand($sql)->bindValues(array_merge([
+			':ty' => YzUser::TYPE_YXS
+		], $params))->queryAll();
+
+		foreach ($res as $k => $v) {
+			$res[$k] = array_merge($res[$k], self::fmt_order_row($v));
+		}
+		$nextpage = count($res) > $pageize ? ($page + 1) : 0;
+		return [$res, $nextpage];
 	}
 
 }
