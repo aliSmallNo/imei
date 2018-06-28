@@ -174,7 +174,8 @@ class YzOrders extends ActiveRecord
 		$res = YouzanUtil::getData($method, $my_params, $api_version);
 
 		$full_order_info_list = $res['response']['full_order_info_list'] ?? [];
-		return $full_order_info_list;
+		$co = $res['response']['total_results'] ?? 0;
+		return [$full_order_info_list, $co];
 	}
 
 	public static function trades_sold_by_se_time($params = [], $isDebugger = false)
@@ -182,7 +183,7 @@ class YzOrders extends ActiveRecord
 		$page = 1;
 		$total = 0;
 		do {
-			$res = self::trades_sold_get($page, $params);
+			list($res, $co) = self::trades_sold_get($page, $params);
 			$current_count = count($res);
 			if ($current_count) {
 				$total = $total + $current_count;
@@ -549,6 +550,15 @@ class YzOrders extends ActiveRecord
 		}
 		$nextpage = count($res) > $pageize ? ($page + 1) : 0;
 		return [$res, $nextpage];
+	}
+
+	public static function GMV($st, $et)
+	{
+		$sql = "select sum(o_payment) from m_yz_orders where  o_created between :st and :et";
+		return AppUtil::db()->createCommand($sql)->bindValues([
+			":st" => $st,
+			":et" => $et,
+		])->queryScalar();
 	}
 
 }

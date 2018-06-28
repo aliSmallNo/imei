@@ -98,6 +98,7 @@ class YouzanUtil
 		$et = $et ? $et : date('Y-m-d 23:23:59');
 		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
 
+		$res = [];
 		for ($d = 0; $d < $days; $d++) {
 			$res[] = [
 				'stimeFmt' => date('Y-m-d H:i:s', strtotime($st) + $d * 86400),

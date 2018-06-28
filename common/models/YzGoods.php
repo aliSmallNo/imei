@@ -692,7 +692,6 @@ class YzGoods extends ActiveRecord
 		}
 	}
 
-
 	public static function update_goods($isDebugger = false)
 	{
 		// 更新仓库商品
@@ -702,7 +701,6 @@ class YzGoods extends ActiveRecord
 		// 更新所有商品详细信息
 		// YzGoods::update_all_goods_desc(1);
 	}
-
 
 	public static function items($criteria, $params, $page = 1, $pageSize = 20)
 	{
@@ -729,5 +727,16 @@ class YzGoods extends ActiveRecord
 
 		return [$res, $count];
 
+	}
+
+
+	public static function get_new_goods($st, $et)
+	{
+		$sql = "select count(1) from m_yz_goods where g_status=:status and g_created_time between :st and :et";
+		return AppUtil::db()->createCommand($sql)->bindValues([
+			":status" => self::ST_STORE_HOUSE,
+			":st" => $st,
+			":et" => $et,
+		])->queryScalar();
 	}
 }

@@ -141,6 +141,60 @@ class YouzController extends BaseController
 		exit;
 	}
 
+	public function actionDatastat()
+	{
+		$getInfo = \Yii::$app->request->get();
+		$sdate = self::getParam("sdate");
+		$edate = self::getParam("edate");
+		$flag = self::getParam("flag");
+		$criteria = $params = [];
+		if ($sdate && $edate) {
+			$criteria[] = "o.o_created between :sdt and :edt ";
+			$params[':sdt'] = $sdate . ' 00:00:00';
+			$params[':edt'] = $edate . ' 23:59:50';
+		}
+
+		list($wd, $monday, $sunday) = AppUtil::getWeekInfo();
+		list($md, $firstDay, $endDay) = AppUtil::getMonthInfo();
+
+		if ($flag == 'sign') {
+			$content = [];
+			$header = ['时间', '新增严选师', '新合格严选师', '订单数', 'GMV', '访问-下单转化率', '动销率', '新品数', '服务'];
+			$dates = YouzanUtil::cal_se_date($sdate . ' 00:00:00', $edate . ' 23:23:59');
+			foreach ($dates as $date) {
+				$arr = [];
+				$st = $date['stimeFmt'];
+				$et = $date['etimeFmt'];
+				list($list, $co) = YzOrders::trades_sold_get(1, ['end_created' => $et, 'start_created' => $st]);
+				$arr = [
+					date('Y-m-d', strtotime($st)),
+					YzUser::get_yxs_num($st, $et),
+					0,
+					$co,
+					YzOrders::GMV($et, $st),
+					0,
+					0,
+					YzGoods::get_new_goods($st, $et),
+					''
+				];
+				$content[] = $arr;
+			}
+			ExcelUtil::getYZExcel('数据分析' . date("Y-m-d"), $header, $content, [30, 30, 20, 20, 30, 20, 30, 50]);
+			exit;
+		}
+
+		return $this->renderPage("datastat.tpl",
+			[
+				'getInfo' => $getInfo,
+				'today' => date('Y-m-d'),
+				'yesterday' => date('Y-m-d', time() - 86400),
+				'monday' => $monday,
+				'sunday' => $sunday,
+				'firstDay' => $firstDay,
+				'endDay' => $endDay,
+			]);
+	}
+
 	public function actionUsers()
 	{
 		Admin::staffOnly();
