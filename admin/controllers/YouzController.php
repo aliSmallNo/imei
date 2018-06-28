@@ -175,13 +175,13 @@ class YouzController extends BaseController
 				list($list, $co) = YzOrders::trades_sold_get(1, ['end_created' => $et, 'start_created' => $st]);
 				$arr = [
 					date('Y-m-d', strtotime($st)),
-					$yxs_num->bindValues([":ty" => self::TYPE_YXS, ":st" => $st, ":et" => $et])->queryScalar(),
+					$yxs_num->bindValues([":ty" => YzUser::TYPE_YXS, ":st" => $st, ":et" => $et])->queryScalar(),
 					0,
 					$co,
 					$GMV->bindValues([":st" => $st, ":et" => $et])->queryScalar(),
 					0,
 					0,
-					$new_goods->bindValues([":status" => self::ST_STORE_HOUSE, ":st" => $st, ":et" => $et,])->queryScalar(),
+					$new_goods->bindValues([":status" => YzGoods::ST_STORE_HOUSE, ":st" => $st, ":et" => $et,])->queryScalar(),
 					''
 				];
 				$content[] = $arr;
