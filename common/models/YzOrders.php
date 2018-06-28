@@ -251,7 +251,7 @@ class YzOrders extends ActiveRecord
 	{
 
 		$conn = AppUtil::db();
-		$res = $conn->createCommand("select * from im_yz_orders ")->queryAll();
+		$res = $conn->createCommand("select * from im_yz_orders order by o_tid desc")->queryAll();
 
 		// $userCMD = $conn->createCommand("select uCreateOn,uPhone from im_yz_user where uYZUId=:fans_id");
 
@@ -270,12 +270,27 @@ class YzOrders extends ActiveRecord
 			}
 			echo $v['o_tid'] . json_encode($insert) . PHP_EOL;
 			self::edit($v['o_tid'], $insert);*/
-			$g_item_id = $v['o_item_id'];
-			if (!YzGoods::findOne(['g_item_id' => $g_item_id])) {
-				$co = $co + 1;
-				echo 'co:' . $co . ' item_id:' . $g_item_id . PHP_EOL;
-				YzGoods::get_goods_desc_by_id($g_item_id);
+			$orders = json_decode($v['o_orders'], 1);
+			$order_info = json_decode($v['order_info'], 1);
+
+			$order_num = 0;
+			$sku_num = 0;
+			$order_payment = 0;
+			foreach ($orders as $order) {
+				$g_item_id = $order['item_id'];
+				if (!YzGoods::findOne(['g_item_id' => $g_item_id])) {
+					$co = $co + 1;
+					echo 'co:' . $co . ' item_id:' . $g_item_id . PHP_EOL;
+					YzGoods::get_goods_desc_by_id($g_item_id);
+				}
+				$order_payment = $order_payment + $order['payment'];
+				$sku_num = $sku_num + $order['num'];
 			}
+			self::edit($order_info['tid'], [
+				'o_num' => 1,
+				'o_sku_num' => $sku_num,
+				'o_payment' => $order_payment,
+			]);
 
 			/*$o_fans_id = $v['o_fans_id'];
 			$o_buyer_phone = $v['o_buyer_phone'];

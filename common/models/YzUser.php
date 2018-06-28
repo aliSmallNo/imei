@@ -511,7 +511,6 @@ class YzUser extends ActiveRecord
 		];
 		return -1;
 
-
 	}
 
 
@@ -545,7 +544,6 @@ class YzUser extends ActiveRecord
 			$res[$k]['admin_txt'] = $admins[$v['uAdminId']] ?? '';
 		}
 
-
 		$sql = "select 
 				count(DISTINCT u1.uId)
 				from im_yz_user as u1
@@ -569,7 +567,6 @@ class YzUser extends ActiveRecord
 			$criteriaStr = ' and ' . implode(" and ", $criteria);
 		}
 
-
 		$sql = "select 
 				u1.*
 				from im_yz_user as u1 
@@ -581,7 +578,6 @@ class YzUser extends ActiveRecord
 		foreach ($res as $k => $v) {
 			$res[$k]['type_txt'] = self::$typeDict[$v['uType']] ?? '';
 		}
-
 
 		$sql = "select 
 				count(DISTINCT u1.uId)
