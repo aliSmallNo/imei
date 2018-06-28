@@ -57,8 +57,7 @@ class YzOrders extends ActiveRecord
 		"total_fee" => "o_total_fee",
 		"payment" => "o_payment",
 		"receiver_name" => "o_receiver_name",
-		"item_id" => "o_item_id",
-		"sku_id" => "o_sku_id",
+		"sku_num" => "o_sku_num",
 
 		"address_info" => "o_address_info",
 		"remark_info" => "o_remark_info",
@@ -108,7 +107,7 @@ class YzOrders extends ActiveRecord
 		$buyer_info = $full_order_info['buyer_info'];
 		$address_info = $full_order_info['address_info'];
 		$order_info = $full_order_info['order_info'];
-		$orders = $full_order_info['orders'][0];
+		$orders = $full_order_info['orders'];
 
 		$tid = $order_info['tid'];
 		$full_order_info['tid'] = $tid;
@@ -124,12 +123,21 @@ class YzOrders extends ActiveRecord
 		$full_order_info['pay_time'] = $order_info['pay_time'];
 		$full_order_info['update_time'] = $order_info['update_time'];
 
-		$full_order_info['payment'] = $orders['payment'] ?? 0.00;
-		$full_order_info['price'] = $orders['price'] ?? 0.00;
-		$full_order_info['num'] = $orders['num'] ?? 0;
-		$full_order_info['total_fee'] = $orders['total_fee'] ?? 0.00;
-		$full_order_info['item_id'] = $orders['item_id'] ?? 0;
-		$full_order_info['sku_id'] = $orders['sku_id'] ?? 0;
+
+		$order_num = 0;
+		$sku_num = 0;
+		$order_payment = 0;
+		$total_fee = 0;
+		foreach ($orders as $order) {
+			$order_payment = $order_payment + $order['payment'];
+			$sku_num = $sku_num + $order['num'];
+			$total_fee = $total_fee + $order['total_fee'];
+		}
+		$full_order_info['payment'] = $order_payment;
+		$full_order_info['price'] = 0;
+		$full_order_info['num'] = $order_num;
+		$full_order_info['sku_num'] = $sku_num;
+		$full_order_info['total_fee'] = $total_fee;
 
 		if (!$tid || !$full_order_info) {
 			return 0;
