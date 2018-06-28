@@ -8,6 +8,42 @@
 		font-size: 10px;
 		color: #0d5ccf;
 	}
+
+	.st_WAIT_BUYER_PAY,
+	.st_WAIT_CONFIRM,
+	.st_WAIT_SELLER_SEND_GOODS,
+	.st_WAIT_BUYER_CONFIRM_GOODS,
+	.st_TRADE_SUCCESS,
+	.st_TRADE_CLOSED {
+		color: #fff;
+		border-radius: 3px;
+		display: inline-block;
+		font-size: 10px;
+		padding: 0 2px;
+		border: none;
+		margin: 0;
+	}
+
+	.st_WAIT_SELLER_SEND_GOODS {
+		background: #ee021b;
+	}
+
+	.st_WAIT_BUYER_PAY, .st_WAIT_CONFIRM {
+		background: #fbc02d;
+	}
+
+	.st_WAIT_BUYER_CONFIRM_GOODS {
+		background: #953b39;
+	}
+
+	.st_TRADE_SUCCESS {
+		background: #0f9d58;
+	}
+
+	.st_TRADE_CLOSED {
+		background: #777;
+	}
+
 </style>
 <div class="row">
 	<h4>订单列表</h4>
@@ -80,7 +116,7 @@
 							<span class="font10">{{$item.o_tid}}</span><br>
 						</td>
 						<td rowspan='{{$item.co}}'>
-							{{$item.status_str}}<br><br>
+							<span class="st_{{$item.o_status}}">{{$item.status_str}}</span><br><br>
 							订单: {{$item.o_sku_num}}件 | {{$item.o_total_fee}}<br>
 							支付: {{$item.o_payment}}元 退款: {{$item.o_refund}}<br>
 						</td>
