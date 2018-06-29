@@ -12,6 +12,10 @@ require_once __DIR__ . "/../lib/youzan/lib/YZSignClient.php";
 require_once __DIR__ . "/../lib/youzan/lib/YZGetTokenClient.php";
 require_once __DIR__ . '/../lib/youzan/lib/YZTokenClient.php';
 
+use common\models\YzGoods;
+use common\models\YzOrders;
+use common\models\YzRefund;
+use common\models\YzUser;
 use YZSignClient;
 use YZGetTokenClient;
 use YZTokenClient;
@@ -108,6 +112,33 @@ class YouzanUtil
 			];
 		}
 		return $res;
+
+
+	}
+
+	public static function update_data($tag)
+	{
+		switch ($tag) {
+			case 'goods':
+				YzGoods::update_goods();
+				return 1;
+				break;
+			case 'orders':
+				YzOrders::Update_order();
+				return 1;
+				break;
+			case 'user':
+				// 更新有赞用户
+				YzUser::UpdateUser();
+				return 1;
+				break;
+			case 'refund':
+				YzRefund::get_goods_by_se_time();
+				return 1;
+				break;
+		}
+		return 0;
+
 	}
 
 

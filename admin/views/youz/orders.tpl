@@ -66,6 +66,7 @@
 		</div>
 		<button class="btn btn-primary">查询</button>
 		<a class="btn btn-primary opExcel">导出未发货订单</a>
+		<a class="btn btn-primary update_data">刷新</a>
 	</form>
 
 </div>
@@ -227,6 +228,27 @@
 	$(".opExcel").on("click", function () {
 		var url = "/youz/orders?export=excel";
 		location.href = url;
+	});
+
+
+	$(".update_data").on("click", function () {
+		if (loadflag) {
+			return;
+		}
+		loadflag = 1;
+		$.post("/api/youz",
+			{
+				tag: 'update_admin_data',
+				subtag: 'orders',
+			},
+			function (resp) {
+				loadflag = 0;
+				if (resp.code == 0) {
+					location.reload();
+				} else {
+					layer.msg(resp.msg);
+				}
+			}, "json");
 	});
 
 </script>

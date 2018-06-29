@@ -41,6 +41,7 @@ use common\utils\COSUtil;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
+use common\utils\YouzanUtil;
 use console\utils\QueueUtil;
 use Yii;
 use yii\filters\Cors;
@@ -468,6 +469,14 @@ class ApiController extends Controller
 				list($code, $msg) = YzFt::yxs_comfirm($st, $fid);
 				return self::renderAPI($code, $msg);
 				break;
+			case "update_admin_data":
+				$subtag = self::postParam("subtag");
+				$res = YouzanUtil::update_data($subtag);
+				if ($res) {
+					return self::renderAPI(0, 'ok~');
+				} else {
+					return self::renderAPI(129, 'error~');
+				}
 			default:
 				break;
 		}
