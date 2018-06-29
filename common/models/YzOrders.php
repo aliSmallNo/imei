@@ -134,7 +134,7 @@ class YzOrders extends ActiveRecord
 			$sku_num = $sku_num + $order['num'];
 			$total_fee = $total_fee + $order['total_fee'];
 
-			YzOrdersDes::process(array_merge($order_info, $order));
+			YzOrdersDes::process(array_merge($order_info, $order, $buyer_info, $address_info));
 		}
 		$full_order_info['payment'] = $order_payment;
 		$full_order_info['price'] = 0;
@@ -285,6 +285,8 @@ class YzOrders extends ActiveRecord
 
 			$orders = json_decode($v['o_orders'], 1);
 			$order_info = json_decode($v['o_order_info'], 1);
+			$buyer_info = json_decode($v['buyer_info'], 1);
+			$address_info = json_decode($v['address_info'], 1);
 
 			/*$insert = [
 				'od_tid' => $order_info['tid'],
@@ -326,7 +328,7 @@ class YzOrders extends ActiveRecord
 				$insert['od_total_fee'] = $order['total_fee'] ?? '';
 				$insert['od_payment'] = $order['payment'] ?? '';*/
 
-				YzOrdersDes::process(array_merge($order_info, $order));
+				YzOrdersDes::process(array_merge($order_info, $order, $buyer_info, $address_info));
 
 			}
 			/*self::edit($order_info['tid'], [
