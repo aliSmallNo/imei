@@ -18,20 +18,20 @@ class YzOrders extends ActiveRecord
 
 	const TRADE_PAID = 'TRADE_PAID';
 
-	const WAIT_BUYER_PAY = 'WAIT_BUYER_PAY';
-	const WAIT_CONFIRM = 'WAIT_CONFIRM';
-	const WAIT_SELLER_SEND_GOODS = 'WAIT_SELLER_SEND_GOODS';
-	const WAIT_BUYER_CONFIRM_GOODS = 'WAIT_BUYER_CONFIRM_GOODS';
-	const TRADE_SUCCESS = 'TRADE_SUCCESS';
-	const TRADE_CLOSED = 'TRADE_CLOSED';
+	const ST_WAIT_BUYER_PAY = 'WAIT_BUYER_PAY';
+	const ST_WAIT_CONFIRM = 'WAIT_CONFIRM';
+	const ST_WAIT_SELLER_SEND_GOODS = 'WAIT_SELLER_SEND_GOODS';
+	const ST_WAIT_BUYER_CONFIRM_GOODS = 'WAIT_BUYER_CONFIRM_GOODS';
+	const ST_TRADE_SUCCESS = 'TRADE_SUCCESS';
+	const ST_TRADE_CLOSED = 'TRADE_CLOSED';
 
 	static $stDict = [
-		self::WAIT_BUYER_PAY => '等待买家付款',
-		self::WAIT_CONFIRM => '待确认，包含待成团、待接单',
-		self::WAIT_SELLER_SEND_GOODS => '等待卖家发货',
-		self::WAIT_BUYER_CONFIRM_GOODS => '等待买家确认收货',
-		self::TRADE_SUCCESS => '买家已签收以及订单成功',
-		self::TRADE_CLOSED => '交易关闭',
+		self::ST_WAIT_BUYER_PAY => '等待买家付款',
+		self::ST_WAIT_CONFIRM => '待确认，包含待成团、待接单',
+		self::ST_WAIT_SELLER_SEND_GOODS => '等待卖家发货',
+		self::ST_WAIT_BUYER_CONFIRM_GOODS => '等待买家确认收货',
+		self::ST_TRADE_SUCCESS => '买家已签收以及订单成功',
+		self::ST_TRADE_CLOSED => '交易关闭',
 	];
 
 	//WAIT_BUYER_PAY （等待买家付款 ；
@@ -395,12 +395,12 @@ class YzOrders extends ActiveRecord
 			WHERE o_id>0 $strCriteria
 			GROUP BY o.o_fans_id,hr HAVING amt>0 ORDER BY amt DESC";
 		$params = array_merge($params, [
-			":st1" => self::WAIT_BUYER_PAY,
-			":st2" => self::WAIT_CONFIRM,
-			":st3" => self::WAIT_SELLER_SEND_GOODS,
-			":st4" => self::WAIT_BUYER_CONFIRM_GOODS,
-			":st5" => self::TRADE_SUCCESS,
-			":st6" => self::TRADE_CLOSED,
+			":st1" => self::ST_WAIT_BUYER_PAY,
+			":st2" => self::ST_WAIT_CONFIRM,
+			":st3" => self::ST_WAIT_SELLER_SEND_GOODS,
+			":st4" => self::ST_WAIT_BUYER_CONFIRM_GOODS,
+			":st5" => self::ST_TRADE_SUCCESS,
+			":st6" => self::ST_TRADE_CLOSED,
 		]);
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		if ($strCriteria) {
