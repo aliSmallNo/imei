@@ -439,14 +439,14 @@ class YouzController extends BaseController
 					$v['od_total_fee'],
 					$v['od_payment'],
 					$v['od_created'],
-					'O' . $v['od_oid'],
+					'O'.$v['od_oid'],
 					'',
 					''
 				];
 				$content[] = $arr;
 			}
 			$title = '待发货订单' . date('Y-m-d');
-			ExcelUtil::getYZExcel($title, $header, $content, [150, 30, 80, 30, 30, 30, 30, 10, 10, 10, 10, 30, 30, 20, 30]);
+			ExcelUtil::getYZExcel($title, $header, $content, [50, 20, 10, 10, 10, 10, 10, 5, 5, 5, 5, 10, 10, 15, 20]);
 			exit;
 		}
 		$pagination = self::pagination($page, $count);

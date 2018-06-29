@@ -504,7 +504,7 @@ class ExcelUtil
 			$col = \PHPExcel_Cell::stringFromColumnIndex($k);
 			$tmpWidth = 20;
 			$activeSheet->getColumnDimension($col)->setWidth($tmpWidth);
-			$activeSheet->getStyle($col)->getAlignment()->setWrapText(true);//自动换行
+			$activeSheet->getStyle($col)->getAlignment()->setWrapText(false);//自动换行
 			$activeSheet->setCellValue($col . '1', $v);
 			$tmpIndex++;
 			$key += 1;
@@ -516,9 +516,13 @@ class ExcelUtil
 			foreach ($rows as $keyName => $value) {
 				$col = \PHPExcel_Cell::stringFromColumnIndex($keyName);
 				$activeSheet->setCellValue($col . $rowIndex, $value);
-				$activeSheet->getStyle($col)->getAlignment()->setWrapText(true);
+				$activeSheet->getStyle($col)->getAlignment()->setWrapText(false);
 				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
 				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+
+				$activeSheet->getStyle($col . $rowIndex)->getFont()->setName('Helvetica');
+				$activeSheet->getStyle($col . $rowIndex)->getFont()->setSize(12);
+
 				if ($keyName == (count($rows) - 1)) {
 					$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 				}
