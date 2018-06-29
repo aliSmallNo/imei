@@ -584,6 +584,31 @@ class YzOrders extends ActiveRecord
 	}
 
 
+	public static function youzan_express()
+	{
+		// 获取快递公司的列表
+		$method = 'youzan.logistics.express.get'; //要调用的api名称
+		$params = [];
+		$ret = YouzanUtil::getData($method, $params);
+		$retStyle = [
+			"response" => [
+				"allExpress" => [
+					[
+						"display" => 1,
+						"name" => "申通快递",
+						"id" => 1
+					],
+					// ...
+				]
+			]
+		];
+		$allExpress = $ret['response']['allExpress'];
+		foreach ($allExpress as $v) {
+			YzExpress::process($v);
+		}
+
+	}
+
 	public static function process_express($data)
 	{
 		// https://www.youzanyun.com/apilist/detail/group_trade/logistics/youzan.logistics.online.confirm
