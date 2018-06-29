@@ -583,4 +583,36 @@ class YzOrders extends ActiveRecord
 		return [$res, $nextpage];
 	}
 
+
+	public static function process_express($data)
+	{
+		// https://www.youzanyun.com/apilist/detail/group_trade/logistics/youzan.logistics.online.confirm
+		$dataStyle = [
+			'tid' => 'E20180517165500023600005',
+			'is_need_express' => '1',
+			'express_company_id' => '',
+			'express_id' => '123',
+		];
+
+		$method = 'youzan.logistics.online.confirm'; //要调用的api名称
+		$params = [
+			'tid' => $data['tid'],
+			'is_no_express' => $data['is_need_express'],    // 发货是否无需物流
+			'out_stype' => $data['express_company_id'],     // 物流公司编号
+			'out_sid' => $data['express_id'],               // 快递单号
+			// 'oids' => '',                                // 如果需要拆单发货，使用该字段指定要发货的商品交易明细编号
+		];
+
+		$ret = YouzanUtil::getData($method, $params);
+		$retStyle = [
+			"response" => [
+				"is_success" => true
+			]
+		];
+		if (isset($ret['response'])) {
+			return $ret['response']['is_success'];
+		}
+		return false;
+	}
+
 }

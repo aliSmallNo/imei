@@ -66,6 +66,7 @@
 		</div>
 		<button class="btn btn-primary">查询</button>
 		<span class="space"></span>
+		<button class="btn btn-primary opExcel">导出未发货订单</button>
 	</form>
 </div>
 
@@ -222,6 +223,11 @@
 				}
 			}, "json");
 	})
+
+  $(".opExcel").on("click", function () {
+	  var url = "/youz/orders?export=excel";
+	  location.href = url;
+  });
 
 </script>
 {{include file="layouts/footer.tpl"}}

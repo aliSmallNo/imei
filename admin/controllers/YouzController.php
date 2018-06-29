@@ -396,9 +396,9 @@ class YouzController extends BaseController
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
 		$st = self::getParam("st");
+		$export = self::getParam("export");
 
 		$criteria = $params = [];
-
 		if ($name) {
 			$criteria[] = " (u1.uName like :name or o.o_receiver_name like :name) ";
 			$params[':name'] = '%' . trim($name) . '%';
@@ -413,7 +413,37 @@ class YouzController extends BaseController
 		}
 
 		list($items, $count) = YzOrders::items($criteria, $params, $page);
-
+		if ($export == 'excel') {
+			$content = [];
+			$header = ['订单号', '标题', '规格', '单价', '数量', '总价', '实际支付', '下单时间', '明细编号', '快递公司', '快递单号'];
+			$sql = "select * from im_yz_order_des where od_status=:st order by od_created asc ";
+			$ret = AppUtil::db()->createCommand($sql)->bindValues([':st' => YzOrders::ST_WAIT_SELLER_SEND_GOODS])->queryAll();
+			foreach ($ret as $v) {
+				$arr = [];
+				$od_sku_properties_name = json_decode($v['od_sku_properties_name'], 1);
+				$prop_name = '';
+				foreach ($od_sku_properties_name as $prop_item) {
+					$prop_name .= $prop_item['k'] . ':' . $prop_item['v'] . ' ';
+				}
+				$arr = [
+					$v['od_tid'],
+					$v['od_title'],
+					trim($prop_name),
+					$v['od_price'],
+					$v['od_num'],
+					$v['od_total_fee'],
+					$v['od_payment'],
+					$v['od_created'],
+					$v['od_oid'],
+					'',
+					''
+				];
+				$content[] = $arr;
+			}
+			$title = '待发货订单' . date('Y-m-d');
+			ExcelUtil::getYZExcel($title, $header, $content, [30, 100, 30, 10, 10, 10, 10, 20, 30, 20, 30]);
+			exit;
+		}
 		$pagination = self::pagination($page, $count);
 		$stDict = YzOrders::$stDict;
 		return $this->renderPage('orders.tpl',
