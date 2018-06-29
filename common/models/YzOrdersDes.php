@@ -49,7 +49,7 @@ class YzOrdersDes extends ActiveRecord
 
 	public static function tableName()
 	{
-		return '{{%yz_orders_des}}';
+		return '{{%yz_order_des}}';
 	}
 
 	public static function edit($sku_id, $tid, $data)
