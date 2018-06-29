@@ -165,7 +165,7 @@ class YouzController extends BaseController
 			$sql = "select count(1) from im_yz_user where uType=:ty and uCreateOn between :st and :et";
 			$yxs_num = $conn->createCommand($sql);
 
-			$sql = "select count(1) as co from im_yz_orders where o_status not in (:status1,:status2) and o_created between :st and :et ";
+			$sql = "select count(1) as co from im_yz_orders where o_payment >0 and o_created between :st and :et ";
 			$pay_order_num = $conn->createCommand($sql);
 
 			$sql = "select sum(o_payment) from im_yz_orders where  o_created between :st and :et ";
@@ -183,7 +183,7 @@ class YouzController extends BaseController
 					date('Y-m-d', strtotime($st)),
 					$yxs_num->bindValues([":ty" => YzUser::TYPE_YXS, ":st" => $st, ":et" => $et])->queryScalar(),
 					0,
-					$pay_order_num->bindValues([':status1'=>YzOrders::ST_WAIT_BUYER_PAY,':status2'=>YzOrders::ST_TRADE_CLOSED,":st" => $st, ":et" => $et]),
+					$pay_order_num->bindValues([":st" => $st, ":et" => $et]),
 					$GMV->bindValues([":st" => $st, ":et" => $et])->queryScalar(),
 					0,
 					0,
