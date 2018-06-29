@@ -74,6 +74,7 @@ class BaseController extends Controller
 		$params["adminInfo"] = $adminInfo;
 		$params["adminInfoNews"] = []; //Info::listNotRead();
 		$params["adminBranchInfo"] = [];
+		$params["able_refresh_data"] = in_array(Admin::getAdminId(), [1002]);
 
 		$params["adminInfo"]["todo"] = [];
 		$params["adminWechatListUnread"] = 0;

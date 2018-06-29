@@ -28,7 +28,7 @@
 			</select>
 		</div>
 		<button class="btn btn-primary">查询</button>
-		<span class="space"></span>
+		{{if $able_refresh_data}}<a class="btn btn-primary update_data">刷新</a>{{/if}}
 	</form>
 </div>
 
@@ -162,6 +162,26 @@
 				}
 			}, "json");
 	})
+
+  $(".update_data").on("click", function () {
+	  if (loadflag) {
+		  return;
+	  }
+	  loadflag = 1;
+	  $.post("/api/youz",
+		  {
+			  tag: 'update_admin_data',
+			  subtag: 'orders',
+		  },
+		  function (resp) {
+			  loadflag = 0;
+			  if (resp.code == 0) {
+				  location.reload();
+			  } else {
+				  layer.msg(resp.msg);
+			  }
+		  }, "json");
+  });
 
 </script>
 {{include file="layouts/footer.tpl"}}

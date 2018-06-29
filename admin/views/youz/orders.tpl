@@ -66,7 +66,7 @@
 		</div>
 		<button class="btn btn-primary">查询</button>
 		<a class="btn btn-primary opExcel">导出未发货订单</a>
-		<a class="btn btn-primary update_data">刷新</a>
+		{{if $able_refresh_data}}<a class="btn btn-primary update_data">刷新</a>{{/if}}
 	</form>
 
 </div>
