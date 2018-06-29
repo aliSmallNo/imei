@@ -280,8 +280,17 @@ class YzOrders extends ActiveRecord
 			}
 			echo $v['o_tid'] . json_encode($insert) . PHP_EOL;
 			self::edit($v['o_tid'], $insert);*/
+
 			$orders = json_decode($v['o_orders'], 1);
 			$order_info = json_decode($v['o_order_info'], 1);
+
+			/*$insert = [
+				'od_tid' => $order_info['tid'],
+				'od_status' => $order_info['status'],
+				'od_created' => $order_info['created'],
+				'od_paytime' => $order_info['pay_time'],
+				'od_update_time' => $order_info['update_time'],
+			];*/
 
 			$order_num = 0;
 			$sku_num = 0;
@@ -294,18 +303,36 @@ class YzOrders extends ActiveRecord
 					echo 'co:' . $co . ' item_id:' . $g_item_id . PHP_EOL;
 					YzGoods::get_goods_desc_by_id($g_item_id);
 				}*/
-				if ($order_info['pay_time']) {
+
+				/*if ($order_info['pay_time']) {
 					$order_payment = $order_payment + $order['payment'];
 				}
 				$sku_num = $sku_num + $order['num'];
-				$total_fee = $total_fee + $order['total_fee'];
+				$total_fee = $total_fee + $order['total_fee'];*/
+
+				/*$insert['od_item_id'] = $order['item_id'] ?? '';
+				$insert['od_sku_id'] = $order['sku_id'] ?? '';
+				$insert['od_num'] = $order['num'] ?? '';
+				$insert['od_sku_properties_name'] = $order['sku_properties_name'] ?? '';
+				$insert['od_item_type'] = $order['item_type'] ?? '';
+				$insert['od_pic_path'] = $order['pic_path'] ?? '';
+				$insert['od_oid'] = $order['oid'] ?? '';
+				$insert['od_title'] = $order['title'] ?? '';
+				$insert['od_buyer_messages'] = $order['buyer_messages'] ?? '';
+				$insert['od_points_price'] = $order['points_price'] ?? '';
+				$insert['od_price'] = $order['price'] ?? '';
+				$insert['od_total_fee'] = $order['total_fee'] ?? '';
+				$insert['od_payment'] = $order['payment'] ?? '';*/
+
+				YzOrdersDes::process(array_merge($order_info, $order));
+				exit;
 			}
-			self::edit($order_info['tid'], [
+			/*self::edit($order_info['tid'], [
 				'o_num' => 1,
 				'o_sku_num' => $sku_num,
 				'o_payment' => $order_payment,
 				'o_total_fee' => $total_fee,
-			]);
+			]);*/
 
 			/*$o_fans_id = $v['o_fans_id'];
 			$o_buyer_phone = $v['o_buyer_phone'];

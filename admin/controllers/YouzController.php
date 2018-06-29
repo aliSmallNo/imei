@@ -159,14 +159,14 @@ class YouzController extends BaseController
 
 		if ($flag == 'sign') {
 			$content = [];
-			$header = ['时间', '新增严选师', '新合格严选师', '订单数', 'GMV', '访问-下单转化率', '动销率', '新品数', '服务'];
+			$header = ['时间', '新增严选师', '新合格严选师', '订单数', 'GMV', '访问-下单转化率', '动销率', '上新品数', '爆品(超过10单)', '服务'];
 			$dates = YouzanUtil::cal_se_date($sdate . ' 00:00:00', $edate . ' 23:23:59');
 			$conn = AppUtil::db();
 			$sql = "select count(1) from im_yz_user where uType=:ty and uCreateOn between :st and :et";
 			$yxs_num = $conn->createCommand($sql);
 			$sql = "select sum(o_payment) from im_yz_orders where  o_created between :st and :et ";
 			$GMV = $conn->createCommand($sql);
-			$sql = "select count(1) from im_yz_goods where g_status=:status and g_created_time between :st and :et";
+			$sql = "select count(1) from im_yz_goods where g_created_time between :st and :et";
 			$new_goods = $conn->createCommand($sql);
 			foreach ($dates as $date) {
 				$arr = [];
@@ -181,12 +181,13 @@ class YouzController extends BaseController
 					$GMV->bindValues([":st" => $st, ":et" => $et])->queryScalar(),
 					0,
 					0,
-					$new_goods->bindValues([":status" => YzGoods::ST_STORE_HOUSE, ":st" => $st, ":et" => $et,])->queryScalar(),
+					$new_goods->bindValues([":st" => $st, ":et" => $et,])->queryScalar(),
+					0,
 					''
 				];
 				$content[] = $arr;
 			}
-			ExcelUtil::getYZExcel('数据分析' . date("Y-m-d"), $header, $content, [30, 30, 20, 20, 30, 20, 30, 50]);
+			ExcelUtil::getYZExcel('数据分析' . $st . '-' . $et, $header, $content, [30, 20, 20, 20, 20, 20, 20, 20, 50]);
 			exit;
 		}
 
