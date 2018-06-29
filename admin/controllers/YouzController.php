@@ -192,10 +192,7 @@ class YouzController extends BaseController
 			}
 			$st = date('Y-m-d', strtotime($st));
 			$et = date('Y-m-d', strtotime($et));
-			$title = '数据分析' . $st . '-' . $et;
-			if ($et == $st) {
-				$title = '数据分析' . $st;
-			}
+			$title = '数据分析' . $sdate . '-' . $edate;
 			ExcelUtil::getYZExcel($title, $header, $content, [30, 20, 20, 20, 20, 20, 20, 20, 50]);
 			exit;
 		}
