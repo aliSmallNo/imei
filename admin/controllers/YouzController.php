@@ -189,7 +189,13 @@ class YouzController extends BaseController
 				];
 				$content[] = $arr;
 			}
-			ExcelUtil::getYZExcel('数据分析' . $st . '-' . $et, $header, $content, [30, 20, 20, 20, 20, 20, 20, 20, 50]);
+			$st = date('Y-m-d', strtotime($st));
+			$et = date('Y-m-d', strtotime($et));
+			$title = '数据分析' . $st . '-' . $et;
+			if ($et == $st) {
+				$title = '数据分析' . $st;
+			}
+			ExcelUtil::getYZExcel($title, $header, $content, [30, 20, 20, 20, 20, 20, 20, 20, 50]);
 			exit;
 		}
 
