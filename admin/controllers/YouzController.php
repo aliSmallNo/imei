@@ -164,10 +164,8 @@ class YouzController extends BaseController
 			$conn = AppUtil::db();
 			$sql = "select count(1) from im_yz_user where uType=:ty and uCreateOn between :st and :et";
 			$yxs_num = $conn->createCommand($sql);
-
 			$sql = "select count(1) as co from im_yz_orders where o_payment >0 and o_created between :st and :et ";
 			$pay_order_num = $conn->createCommand($sql);
-
 			$sql = "select sum(o_payment) from im_yz_orders where  o_created between :st and :et ";
 			$GMV = $conn->createCommand($sql);
 			$sql = "select count(1) from im_yz_goods where g_created_time between :st and :et";
