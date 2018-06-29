@@ -168,7 +168,7 @@ class YouzController extends BaseController
 			$GMV = $conn->createCommand($sql);
 			$sql = "select count(1) from im_yz_goods where g_created_time between :st and :et";
 			$new_goods = $conn->createCommand($sql);
-			$sql = "select sum(od_num) as co from im_yz_order_des where od_status!=:status od_created between :st and :et group by od_item_id having co >10 ";
+			$sql = "select sum(od_num) as co from im_yz_order_des where od_status!=:status and od_created between :st and :et group by od_item_id having co >10 ";
 			$bao_goods = $conn->createCommand($sql);
 			foreach ($dates as $date) {
 				$arr = [];
