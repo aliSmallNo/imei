@@ -133,6 +133,8 @@ class YzOrders extends ActiveRecord
 			}
 			$sku_num = $sku_num + $order['num'];
 			$total_fee = $total_fee + $order['total_fee'];
+
+			YzOrdersDes::process(array_merge($order_info, $order));
 		}
 		$full_order_info['payment'] = $order_payment;
 		$full_order_info['price'] = 0;
