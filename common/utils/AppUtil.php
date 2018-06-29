@@ -1253,9 +1253,8 @@ class AppUtil
 
 		$msg = is_array($msg) ? json_encode($msg, JSON_UNESCAPED_UNICODE) : $msg;
 
-		$ret = file_put_contents($file, date('Ymd H:i:s') . PHP_EOL . $func . " - " . $line . PHP_EOL . $msg . PHP_EOL . PHP_EOL, FILE_APPEND);
+		@file_put_contents($file, date('Ymd H:i:s') . PHP_EOL . $func . " - " . $line . PHP_EOL . $msg . PHP_EOL . PHP_EOL, FILE_APPEND);
 
-		return $ret;
 	}
 
 	public static function setCookie($name, $value, $duration)
