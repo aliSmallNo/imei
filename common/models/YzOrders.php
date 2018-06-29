@@ -325,7 +325,7 @@ class YzOrders extends ActiveRecord
 				$insert['od_payment'] = $order['payment'] ?? '';*/
 
 				YzOrdersDes::process(array_merge($order_info, $order));
-				exit;
+
 			}
 			/*self::edit($order_info['tid'], [
 				'o_num' => 1,
