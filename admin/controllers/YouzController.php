@@ -184,7 +184,7 @@ class YouzController extends BaseController
 					0,
 					0,
 					$new_goods->bindValues([":st" => $st, ":et" => $et,])->queryScalar(),
-					$bao_goods->bindValues([":st" => $st, ":et" => $et, ':status' => YzOrders::ST_TRADE_CLOSED])->queryScalar(),
+					count($bao_goods->bindValues([":st" => $st, ":et" => $et, ':status' => YzOrders::ST_TRADE_CLOSED])->queryScalar()),
 					''
 				];
 				$content[] = $arr;
