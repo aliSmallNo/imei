@@ -66,8 +66,8 @@
 		</div>
 		<button class="btn btn-primary">查询</button>
 		<span class="space"></span>
-		<button class="btn btn-primary opExcel">导出未发货订单</button>
 	</form>
+	<button class="btn btn-primary opExcel">导出未发货订单</button>
 </div>
 
 <div class="row-divider"></div>

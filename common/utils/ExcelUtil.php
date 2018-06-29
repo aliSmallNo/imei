@@ -518,7 +518,7 @@ class ExcelUtil
 				$activeSheet->setCellValue($col . $rowIndex, $value);
 				$activeSheet->getStyle($col)->getAlignment()->setWrapText(true);
 				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
-				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 				if ($keyName == (count($rows) - 1)) {
 					$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 				}

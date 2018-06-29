@@ -164,6 +164,10 @@ class YouzController extends BaseController
 			$conn = AppUtil::db();
 			$sql = "select count(1) from im_yz_user where uType=:ty and uCreateOn between :st and :et";
 			$yxs_num = $conn->createCommand($sql);
+
+			$sql = "select count(1) as co from im_yz_orders where o_status not in (:status1,:status2) and o_created between :st and :et ";
+			$pay_order_num = $conn->createCommand($sql);
+
 			$sql = "select sum(o_payment) from im_yz_orders where  o_created between :st and :et ";
 			$GMV = $conn->createCommand($sql);
 			$sql = "select count(1) from im_yz_goods where g_created_time between :st and :et";
@@ -174,13 +178,12 @@ class YouzController extends BaseController
 				$arr = [];
 				$st = $date['stimeFmt'];
 				$et = $date['etimeFmt'];
-				list($list, $co) = YzOrders::trades_sold_get(1, ['end_created' => $et, 'start_created' => $st]);
 				$bao = $bao_goods->bindValues([":st" => $st, ":et" => $et, ':status' => YzOrders::ST_TRADE_CLOSED])->queryScalar();
 				$arr = [
 					date('Y-m-d', strtotime($st)),
 					$yxs_num->bindValues([":ty" => YzUser::TYPE_YXS, ":st" => $st, ":et" => $et])->queryScalar(),
 					0,
-					$co,
+					$pay_order_num->bindValues([':status1'=>YzOrders::ST_WAIT_BUYER_PAY,':status2'=>YzOrders::ST_TRADE_CLOSED,":st" => $st, ":et" => $et]),
 					$GMV->bindValues([":st" => $st, ":et" => $et])->queryScalar(),
 					0,
 					0,
@@ -415,7 +418,7 @@ class YouzController extends BaseController
 		list($items, $count) = YzOrders::items($criteria, $params, $page);
 		if ($export == 'excel') {
 			$content = [];
-			$header = ['订单号', '标题', '规格', '单价', '数量', '总价', '实际支付', '下单时间', '明细编号', '快递公司', '快递单号'];
+			$header = ['订单号', '标题', '规格', '用户名', '用户手机', '收货人', '收货人手机', '单价', '数量', '总价', '实际支付', '下单时间', '明细编号', '快递公司', '快递单号'];
 			$sql = "select * from im_yz_order_des where od_status=:st order by od_created asc ";
 			$ret = AppUtil::db()->createCommand($sql)->bindValues([':st' => YzOrders::ST_WAIT_SELLER_SEND_GOODS])->queryAll();
 			foreach ($ret as $v) {
@@ -426,22 +429,26 @@ class YouzController extends BaseController
 					$prop_name .= $prop_item['k'] . ':' . $prop_item['v'] . ' ';
 				}
 				$arr = [
-					$v['od_tid'],
 					$v['od_title'],
+					$v['od_tid'],
 					trim($prop_name),
+					$v['od_fans_nickname'],
+					$v['od_buyer_phone'],
+					$v['od_receiver_name'],
+					$v['od_receiver_tel'],
 					$v['od_price'],
 					$v['od_num'],
 					$v['od_total_fee'],
 					$v['od_payment'],
 					$v['od_created'],
-					$v['od_oid'],
+					'O' . $v['od_oid'],
 					'',
 					''
 				];
 				$content[] = $arr;
 			}
 			$title = '待发货订单' . date('Y-m-d');
-			ExcelUtil::getYZExcel($title, $header, $content, [30, 100, 30, 10, 10, 10, 10, 20, 30, 20, 30]);
+			ExcelUtil::getYZExcel($title, $header, $content, [150, 30, 80, 30, 30, 30, 30, 10, 10, 10, 10, 30, 30, 20, 30]);
 			exit;
 		}
 		$pagination = self::pagination($page, $count);
