@@ -175,6 +175,7 @@ class YouzController extends BaseController
 				$st = $date['stimeFmt'];
 				$et = $date['etimeFmt'];
 				list($list, $co) = YzOrders::trades_sold_get(1, ['end_created' => $et, 'start_created' => $st]);
+				$bao = $bao_goods->bindValues([":st" => $st, ":et" => $et, ':status' => YzOrders::ST_TRADE_CLOSED])->queryScalar();
 				$arr = [
 					date('Y-m-d', strtotime($st)),
 					$yxs_num->bindValues([":ty" => YzUser::TYPE_YXS, ":st" => $st, ":et" => $et])->queryScalar(),
@@ -184,7 +185,7 @@ class YouzController extends BaseController
 					0,
 					0,
 					$new_goods->bindValues([":st" => $st, ":et" => $et,])->queryScalar(),
-					count($bao_goods->bindValues([":st" => $st, ":et" => $et, ':status' => YzOrders::ST_TRADE_CLOSED])->queryScalar()),
+					$bao ? count($bao) : 0,
 					''
 				];
 				$content[] = $arr;
