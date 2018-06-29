@@ -183,7 +183,7 @@ class YouzController extends BaseController
 					date('Y-m-d', strtotime($st)),
 					$yxs_num->bindValues([":ty" => YzUser::TYPE_YXS, ":st" => $st, ":et" => $et])->queryScalar(),
 					0,
-					$pay_order_num->bindValues([":st" => $st, ":et" => $et]),
+					$pay_order_num->bindValues([":st" => $st, ":et" => $et])->queryScalar(),
 					$GMV->bindValues([":st" => $st, ":et" => $et])->queryScalar(),
 					0,
 					0,
