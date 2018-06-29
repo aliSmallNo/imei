@@ -285,8 +285,8 @@ class YzOrders extends ActiveRecord
 
 			$orders = json_decode($v['o_orders'], 1);
 			$order_info = json_decode($v['o_order_info'], 1);
-			$buyer_info = json_decode($v['buyer_info'], 1);
-			$address_info = json_decode($v['address_info'], 1);
+			$buyer_info = json_decode($v['o_buyer_info'], 1);
+			$address_info = json_decode($v['o_address_info'], 1);
 
 			/*$insert = [
 				'od_tid' => $order_info['tid'],

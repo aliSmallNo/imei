@@ -31,6 +31,13 @@ class YzOrdersDes extends ActiveRecord
 		'paytime' => 'od_paytime',
 		'update_time' => 'od_update_time',
 
+		'receiver_name' => 'od_receiver_name',
+		'receiver_tel' => 'od_receiver_tel',
+
+		'buyer_phone' => 'od_buyer_phone',
+		'fans_id' => 'od_fans_id',
+		'fans_nickname' => 'od_fans_nickname',
+
 		"item_id" => 'od_item_id',
 		"item_type" => 'od_item_type',
 		"num" => 'od_num',
@@ -70,30 +77,6 @@ class YzOrdersDes extends ActiveRecord
 
 	public static function process($v)
 	{
-
-		$orders = [
-			"outer_sku_id" => "",
-			"item_id" => 423118679,
-			"outer_item_id" => "",
-			"item_type" => 0,
-			"num" => 1,
-			"sku_id" => 36219388,
-			"sku_properties_name" => "",
-			"pic_path" => "https://img.yzcdn.cn/upload_files/2018/06/27/FrmQbWqOLbzVD8V4Bh5bbT3iAOHy.jpg",
-			"oid" => "1457117972873613225",
-			"title" => "【628活动】良呈美魔芋凉皮低热量零食代餐饱腹零食速食 ——买好货、想省钱，就去到家严选",
-			"buyer_messages" => "",
-			"points_price" => "0",
-			"price" => "16.80",
-			"total_fee" => "13.80",
-			"payment" => "13.80",
-
-			"created" => "2018-06-28 11:55:19",
-			"tid" => "E20180628115519003100017",
-			"pay_time" => "",
-			"update_time" => "2018-06-28 12=>00=>26",
-			"status" => "TRADE_CLOSED",
-		];
 		$sku_id = $v['sku_id'] ?? '';
 		$tid = $v['tid'] ?? '';
 		if (!$sku_id || !$tid || !$v) {
