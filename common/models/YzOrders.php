@@ -675,9 +675,7 @@ class YzOrders extends ActiveRecord
 		if (!$order) {
 			return [129, '订单不存在2'];
 		}
-		print_r($order['order_info']);
-		exit;
-		$order_status = json_decode($order['order_info'], 1)['status'];
+		$order_status = $order['order_info']['status'];
 		if ($order_status !== self::ST_WAIT_SELLER_SEND_GOODS) {
 			return [129, '订单状态不对'];
 		}
