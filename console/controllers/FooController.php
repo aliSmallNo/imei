@@ -1522,7 +1522,7 @@ class FooController extends Controller
 		// 未知商品ID [418096436, 2147483647, 418492020,415342072];
 
 
-		$array = [
+		/*$array = [
 			[1, 'oa'],
 			[2, 'ob'],
 			[3, 'oa'],
@@ -1534,7 +1534,9 @@ class FooController extends Controller
 			return $val;
 		}, $array);
 
-		print_r($arr2);
+		print_r($arr2);*/
+
+		print_r(YzOrders::process_express());
 
 	}
 

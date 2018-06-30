@@ -659,12 +659,12 @@ class YzOrders extends ActiveRecord
 	public static function process_express($data)
 	{
 		// https://www.youzanyun.com/apilist/detail/group_trade/logistics/youzan.logistics.online.confirm
-		$dataStyle = [
-			'tid' => 'E20180517165500023600005',
+		$data = [
+			'tid' => 'E20180629224228001400002',
 			'is_need_express' => '1',
-			'express_company_id' => '',
-			'express_id' => '123',
-			'oids' => '123,234',
+			'express_company_id' => '百世快递',
+			'express_id' => '70049422664556',
+			'oids' => '',
 		];
 		// 验证订单
 		list($order) = self::trades_sold_get(1, ['tid' => $data['tid']]);
@@ -686,7 +686,7 @@ class YzOrders extends ActiveRecord
 		}
 		$data['express_company_id'] = $express->e_express_id;
 
-		exit;
+
 		$method = 'youzan.logistics.online.confirm'; //要调用的api名称
 		$params = [
 			'tid' => $data['tid'],
