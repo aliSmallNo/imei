@@ -444,7 +444,7 @@ class YouzController extends BaseController
 					$v['od_total_fee'],
 					$v['od_payment'],
 					$v['od_created'],
-					$v['od_oid'],
+					'O' . $v['od_oid'],
 					'',
 					''
 				];
@@ -510,7 +510,7 @@ class YouzController extends BaseController
 				foreach ($result as $key => $value) {
 					$tid = $value[1];
 					$express_id = $value[14];
-					$orders_items[$tid][][$express_id][] = $value;
+					$orders_items[$tid][$express_id][] = $value;
 				}
 				// list($success, $fail) = YzOrders::process_express_before($orders_items);
 				print_r($orders_items);
