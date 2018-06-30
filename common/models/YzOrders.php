@@ -621,6 +621,10 @@ class YzOrders extends ActiveRecord
 		$success_res = $fail_res = [];
 		foreach ($orders_items as $tid => $item) {
 			foreach ($item as $express_id => $orders) {
+				$orders = array_map(function ($val) {
+					$val[12] = str_replace("o", '', $val[12]);
+					return $val;
+				}, $orders);
 				$oids_str = implode(',', array_column($orders, 12));
 				if (count($orders) == 1) {
 					$res = self::process_express([
@@ -682,7 +686,7 @@ class YzOrders extends ActiveRecord
 		}
 		$data['express_company_id'] = $express->e_express_id;
 
-
+		exit;
 		$method = 'youzan.logistics.online.confirm'; //要调用的api名称
 		$params = [
 			'tid' => $data['tid'],

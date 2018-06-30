@@ -1523,11 +1523,18 @@ class FooController extends Controller
 
 
 		$array = [
-			[1, 'a'],
-			[2, 'b'],
-			[3, 'a'],
+			[1, 'oa'],
+			[2, 'ob'],
+			[3, 'oa'],
 		];
-		echo implode(',', array_column($array, 1));
+		//$arr = array_column($array, 1);
+
+		$arr2 = array_map(function ($val) {
+			$val[1] = str_replace("o", '', $val[1]);
+			return $val;
+		}, $array);
+
+		print_r($arr2);
 
 	}
 
