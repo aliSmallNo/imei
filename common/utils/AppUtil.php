@@ -894,7 +894,7 @@ class AppUtil
 		$filePath = "";
 		$key = "";
 		if (!$cate) {
-			$cate = self::UPLOAD_DEFAULT;
+			$cate = self::UPLOAD_EXCEL;
 		}
 		if (isset($_FILES[$fieldName])) {
 			$info = $_FILES[$fieldName];
