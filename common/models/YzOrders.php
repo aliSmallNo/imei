@@ -686,6 +686,7 @@ class YzOrders extends ActiveRecord
 		}
 		$data['express_company_id'] = $express->e_express_id;
 
+		exit;
 
 		$method = 'youzan.logistics.online.confirm'; //要调用的api名称
 		$params = [
