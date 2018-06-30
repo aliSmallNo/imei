@@ -17,6 +17,7 @@ use common\models\YzOrders;
 use common\models\YzUser;
 use common\utils\AppUtil;
 use common\utils\ExcelUtil;
+use common\utils\ImageUtil;
 use common\utils\YouzanUtil;
 
 class YouzController extends BaseController
@@ -318,6 +319,10 @@ class YouzController extends BaseController
 			]);
 	}
 
+	/**
+	 * 修改严选师上下级
+	 * @return string
+	 */
 	public function actionFt()
 	{
 		Admin::staffOnly();
@@ -439,7 +444,7 @@ class YouzController extends BaseController
 					$v['od_total_fee'],
 					$v['od_payment'],
 					$v['od_created'],
-					'O'.$v['od_oid'],
+					'O' . $v['od_oid'],
 					'',
 					''
 				];
@@ -458,6 +463,145 @@ class YouzController extends BaseController
 				'items' => $items,
 				'getInfo' => $getInfo,
 				'stDict' => $stDict,
+			]);
+	}
+
+	/**
+	 * 发货
+	 * @return string
+	 */
+	public function actionDeliver()
+	{
+		$getInfo = \Yii::$app->request->get();
+		$postInfo = \Yii::$app->request->post();
+		$sdate = self::getParam("sdate");
+		$edate = self::getParam("edate");
+		$flag = self::getParam("flag");
+		$criteria = $params = [];
+		if ($sdate && $edate) {
+			$criteria[] = "o.o_created between :sdt and :edt ";
+			$params[':sdt'] = $sdate . ' 00:00:00';
+			$params[':edt'] = $edate . ' 23:59:50';
+		}
+
+		list($wd, $monday, $sunday) = AppUtil::getWeekInfo();
+		list($md, $firstDay, $endDay) = AppUtil::getMonthInfo();
+
+		if (isset($postInfo['sign'])) {
+			$error = '';
+			// 上传表格
+			$filePath = '';
+			$ret = AppUtil::uploadFile('deliver_excel');
+			if ($ret["code"] > 0) {
+				$error = $ret["msg"];
+			} else {
+				$filePath = $ret["msg"];
+			}
+			echo $filePath.'=='.$error;
+			if (!$error) {
+				$result = ExcelUtil::parseProduct($filePath);
+				print_r($result);
+				exit;
+
+				/*$newResult = [];
+				$newResult2 = [];
+
+				$boxItems = UserTvbox::find()->where($cond)->asArray()->all();
+				$boxItems2 = [];
+				foreach ($boxItems as $k1 => $v1) {
+					$bPhone = $v1['bPhone'];
+					$boxItems2[$bPhone] = [
+						'bBossName' => $v1['bBossName'],
+						'bPhone' => $v1['bPhone'],
+						'bName' => $v1['bName'],
+						'bBoxNo' => $v1['bBoxNo'],
+						'bTvNo' => $v1['bTvNo'],
+						'bNote' => $v1['bNote'],
+					];
+				}
+				foreach ($result as $key => $value) {
+					unset($value[6]);
+					if (!$value[UserTvbox::EXCEL_INDEX_BPHONE]
+						|| !$value[UserTvbox::EXCEL_INDEX_BOSSNAME]
+						|| !$value[UserTvbox::EXCEL_INDEX_BNAME]
+						|| !$value[UserTvbox::EXCEL_INDEX_BBOXNO]
+						|| !$value[UserTvbox::EXCEL_INDEX_BTVNO]
+					) {
+						unset($result[$key]);
+						continue;
+					}
+
+					if ($key >= 1 && $value) {
+						$tempInfo = [
+							'bBossName' => $value[UserTvbox::EXCEL_INDEX_BOSSNAME],
+							'bPhone' => $value[UserTvbox::EXCEL_INDEX_BPHONE],
+							'bName' => $value[UserTvbox::EXCEL_INDEX_BNAME],
+							'bBoxNo' => $value[UserTvbox::EXCEL_INDEX_BBOXNO],
+							'bTvNo' => $value[UserTvbox::EXCEL_INDEX_BTVNO],
+							'bNote' => $value[UserTvbox::EXCEL_INDEX_BNOTE],
+						];
+						//print_r($tempInfo);echo '<br>';
+						if (!isset($boxItems2[$tempInfo['bPhone']])) {
+							foreach ($value as $k => $v) {
+								if (empty($v)) {
+									//unset($value[$k]);
+									continue;
+								}
+								$newResult[$cmpFields[$k]] = $v;
+							}
+							$newResult2[] = $tempInfo;
+							$newResult = [];
+						} else {
+							$res = array_diff_assoc($boxItems2[$tempInfo['bPhone']], $tempInfo);
+							if ($res) {
+								$modItems[] = $tempInfo;
+							}
+						}
+					}
+				}
+
+				if ($newResult2 || $modItems) {
+					$tplName = 'upload-items-ret.tpl';
+				} else {
+					if (!$error) {
+						$success = "上传成功！但是没有任何新增和修改，请检查您上传的文件是否有更改 ";
+					}
+				}
+
+
+				$key = time();
+				$upInfo = [];
+				$upInfo['new'] = $newResult2;
+				$upInfo['mod'] = $modItems;
+				//print_r($upInfo);exit;
+				$redis = objInstance::getRedisIns();
+
+				$redisKey = generalId::getUpitemsKey($this->branch_id, $key);
+				$redis->set($redisKey, json_encode($upInfo));
+				$redis->expire($redisKey, 60 * 20);
+
+				$redis->set('redis-unixtime', $key);
+				$redis->expire($key, 60 * 20);*/
+
+			}
+
+			/*if ($co = count($rets)) {
+				$success = "添加成功 $co 个 ";
+			}
+			if ($co2 = count($rets2)) {
+				$success .= " 修改成功 $co2 个";
+			}*/
+		}
+
+		return $this->renderPage("deliver.tpl",
+			[
+				'getInfo' => $getInfo,
+				'today' => date('Y-m-d'),
+				'yesterday' => date('Y-m-d', time() - 86400),
+				'monday' => $monday,
+				'sunday' => $sunday,
+				'firstDay' => $firstDay,
+				'endDay' => $endDay,
 			]);
 	}
 

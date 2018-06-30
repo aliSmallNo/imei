@@ -899,11 +899,12 @@ class AppUtil
 		if (isset($_FILES[$fieldName])) {
 			$info = $_FILES[$fieldName];
 			$uploads_dir = self::getUploadFolder($cate);
-
 			if ($info['error'] == UPLOAD_ERR_OK) {
 				$tmp_name = $info["tmp_name"];
 				$key = RedisUtil::getImageSeq();
-				$name = $key . '.xls';
+				$ext = pathinfo($_FILES[$fieldName]['tmp_name'] . '/' . $_FILES[$fieldName]['name'], PATHINFO_EXTENSION);
+				//$name = $key . '.xls';
+				$name = $key . '.' . $ext;
 				$filePath = "$uploads_dir/$name";
 				move_uploaded_file($tmp_name, $filePath);
 			}

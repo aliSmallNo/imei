@@ -263,7 +263,6 @@ class ExcelUtil
 
 	/**
 	 * 解析产品数据
-	 *
 	 * */
 	public static function parseProduct($fileName)
 	{
@@ -520,8 +519,8 @@ class ExcelUtil
 				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
 				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 
-				$activeSheet->getStyle($col . $rowIndex)->getFont()->setName('Helvetica');
-				$activeSheet->getStyle($col . $rowIndex)->getFont()->setSize(12);
+				$activeSheet->getStyle($col . $rowIndex)->getFont()->setName(self::FONT_NAME_BLACK);
+				$activeSheet->getStyle($col . $rowIndex)->getFont()->setSize(self::FONT_SIZE);
 
 				if ($keyName == (count($rows) - 1)) {
 					$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
