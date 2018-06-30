@@ -421,7 +421,7 @@ class YouzController extends BaseController
 		list($items, $count) = YzOrders::items($criteria, $params, $page);
 		if ($export == 'excel') {
 			$content = [];
-			$header = ['订单号', '标题', '规格', '用户名', '用户手机', '收货人', '收货人手机', '单价', '数量', '总价', '实际支付', '下单时间', '明细编号', '快递公司', '快递单号'];
+			$header = ['标题', '订单号', '规格', '用户名', '用户手机', '收货人', '收货人手机', '单价', '数量', '总价', '实际支付', '下单时间', '明细编号', '快递公司', '快递单号'];
 			$sql = "select * from im_yz_order_des where od_status=:st order by od_created asc ";
 			$ret = AppUtil::db()->createCommand($sql)->bindValues([':st' => YzOrders::ST_WAIT_SELLER_SEND_GOODS])->queryAll();
 			foreach ($ret as $v) {
@@ -444,7 +444,7 @@ class YouzController extends BaseController
 					$v['od_total_fee'],
 					$v['od_payment'],
 					$v['od_created'],
-					'O' . $v['od_oid'],
+					$v['od_oid'],
 					'',
 					''
 				];
@@ -497,100 +497,25 @@ class YouzController extends BaseController
 			} else {
 				$filePath = $ret["msg"];
 			}
-			echo $filePath.'=='.$error;
+			echo $filePath . '==' . $error;
 			if (!$error) {
 				$result = ExcelUtil::parseProduct($filePath);
-				print_r($result);
-				exit;
+				//print_r($result);
 
-				/*$newResult = [];
-				$newResult2 = [];
+				$excel_title = array_shift($result);
+				// [0]:标题,[1]:订单号,[2]:规格,[3]:用户名,[4]:用户手机,[5]:收货人,[6]:收货人手机,
+				// [7]:单价,[8]:数量,[9]:总价,[10]:实际支付,[11]:下单时间,[12]:明细编号,[13]:快递公司[14]:快递单号
 
-				$boxItems = UserTvbox::find()->where($cond)->asArray()->all();
-				$boxItems2 = [];
-				foreach ($boxItems as $k1 => $v1) {
-					$bPhone = $v1['bPhone'];
-					$boxItems2[$bPhone] = [
-						'bBossName' => $v1['bBossName'],
-						'bPhone' => $v1['bPhone'],
-						'bName' => $v1['bName'],
-						'bBoxNo' => $v1['bBoxNo'],
-						'bTvNo' => $v1['bTvNo'],
-						'bNote' => $v1['bNote'],
-					];
-				}
+				$orders_items = [];
 				foreach ($result as $key => $value) {
-					unset($value[6]);
-					if (!$value[UserTvbox::EXCEL_INDEX_BPHONE]
-						|| !$value[UserTvbox::EXCEL_INDEX_BOSSNAME]
-						|| !$value[UserTvbox::EXCEL_INDEX_BNAME]
-						|| !$value[UserTvbox::EXCEL_INDEX_BBOXNO]
-						|| !$value[UserTvbox::EXCEL_INDEX_BTVNO]
-					) {
-						unset($result[$key]);
-						continue;
-					}
-
-					if ($key >= 1 && $value) {
-						$tempInfo = [
-							'bBossName' => $value[UserTvbox::EXCEL_INDEX_BOSSNAME],
-							'bPhone' => $value[UserTvbox::EXCEL_INDEX_BPHONE],
-							'bName' => $value[UserTvbox::EXCEL_INDEX_BNAME],
-							'bBoxNo' => $value[UserTvbox::EXCEL_INDEX_BBOXNO],
-							'bTvNo' => $value[UserTvbox::EXCEL_INDEX_BTVNO],
-							'bNote' => $value[UserTvbox::EXCEL_INDEX_BNOTE],
-						];
-						//print_r($tempInfo);echo '<br>';
-						if (!isset($boxItems2[$tempInfo['bPhone']])) {
-							foreach ($value as $k => $v) {
-								if (empty($v)) {
-									//unset($value[$k]);
-									continue;
-								}
-								$newResult[$cmpFields[$k]] = $v;
-							}
-							$newResult2[] = $tempInfo;
-							$newResult = [];
-						} else {
-							$res = array_diff_assoc($boxItems2[$tempInfo['bPhone']], $tempInfo);
-							if ($res) {
-								$modItems[] = $tempInfo;
-							}
-						}
-					}
+					$tid = $value[1];
+					$express_id = $value[14];
+					$orders_items[$tid][][$express_id][] = $value;
 				}
-
-				if ($newResult2 || $modItems) {
-					$tplName = 'upload-items-ret.tpl';
-				} else {
-					if (!$error) {
-						$success = "上传成功！但是没有任何新增和修改，请检查您上传的文件是否有更改 ";
-					}
-				}
-
-
-				$key = time();
-				$upInfo = [];
-				$upInfo['new'] = $newResult2;
-				$upInfo['mod'] = $modItems;
-				//print_r($upInfo);exit;
-				$redis = objInstance::getRedisIns();
-
-				$redisKey = generalId::getUpitemsKey($this->branch_id, $key);
-				$redis->set($redisKey, json_encode($upInfo));
-				$redis->expire($redisKey, 60 * 20);
-
-				$redis->set('redis-unixtime', $key);
-				$redis->expire($key, 60 * 20);*/
-
+				// list($success, $fail) = YzOrders::process_express_before($orders_items);
+				print_r($orders_items);
+				exit;
 			}
-
-			/*if ($co = count($rets)) {
-				$success = "添加成功 $co 个 ";
-			}
-			if ($co2 = count($rets2)) {
-				$success .= " 修改成功 $co2 个";
-			}*/
 		}
 
 		return $this->renderPage("deliver.tpl",

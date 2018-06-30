@@ -606,8 +606,51 @@ class YzOrders extends ActiveRecord
 		foreach ($allExpress as $v) {
 			YzExpress::process($v);
 		}
-
 	}
+
+	/**
+	 * 商品批量发货预处理
+	 * @param $orders_items
+	 * @return array|int
+	 */
+	public static function process_express_before($orders_items)
+	{
+		if (!$orders_items || !is_array($orders_items)) {
+			return 0;
+		}
+		$success_res = $fail_res = [];
+		foreach ($orders_items as $tid => $item) {
+			foreach ($item as $express_id => $orders) {
+				$oids_str = implode(',', array_column($orders, 12));
+				if (count($orders) == 1) {
+					$res = self::process_express([
+						'tid' => $tid,
+						'is_need_express' => 1,
+						'express_company_id' => $orders[0][13],
+						'express_id' => $express_id,
+						'oids' => '',
+					]);
+				} else {
+					$res = self::process_express([
+						'tid' => $tid,
+						'is_need_express' => 1,
+						'express_company_id' => $orders[0][13],
+						'express_id' => $express_id,
+						'oids' => $oids_str,
+					]);
+				}
+				if ($res['code'] == 0) {
+					$success_res[] = ['res' => $res, 'tid' => $tid, 'express_id' => $express_id, 'oids' => $oids_str];
+					Log::add(['oCategory' => Log::CAT_YOUZAN_ORDER, 'oBefore' => $success_res]);
+				} else {
+					$fail_res[] = ['res' => $res, 'tid' => $tid, 'express_id' => $express_id, 'oids' => $oids_str];
+					Log::add(['oCategory' => Log::CAT_YOUZAN_ORDER, 'oBefore' => $fail_res]);
+				}
+			}
+		}
+		return [$success_res, $fail_res];
+	}
+
 
 	public static function process_express($data)
 	{
@@ -617,15 +660,36 @@ class YzOrders extends ActiveRecord
 			'is_need_express' => '1',
 			'express_company_id' => '',
 			'express_id' => '123',
+			'oids' => '123,234',
 		];
+		// 验证订单
+		list($order) = self::trades_sold_get(1, ['tid' => $data['tid']]);
+		if (!$order || !is_array($order)) {
+			return [129, '订单不存在1'];
+		}
+		$order = $order[0]['full_order_info'] ?? '';
+		if (!$order) {
+			return [129, '订单不存在2'];
+		}
+		$order_status = json_decode($order['order_info'], 1)['status'];
+		if ($order_status !== self::ST_WAIT_SELLER_SEND_GOODS) {
+			return [129, '订单状态不对'];
+		}
+		// 验证快递
+		$express = YzExpress::findOne(['e_name' => $data['express_company_id']]);
+		if (!$express) {
+			return [129, '快递名字填写错误'];
+		}
+		$data['express_company_id'] = $express->e_express_id;
+
 
 		$method = 'youzan.logistics.online.confirm'; //要调用的api名称
 		$params = [
 			'tid' => $data['tid'],
 			'is_no_express' => $data['is_need_express'],    // 发货是否无需物流
 			'out_stype' => $data['express_company_id'],     // 物流公司编号
-			'out_sid' => $data['express_id'],               // 快递单号
-			// 'oids' => '',                                // 如果需要拆单发货，使用该字段指定要发货的商品交易明细编号
+			'out_sid' => $data['express_id'],              // 快递单号
+			'oids' => $data['oids'],                       // 如果需要拆单发货，使用该字段指定要发货的商品交易明细编号
 		];
 
 		$ret = YouzanUtil::getData($method, $params);
@@ -635,9 +699,11 @@ class YzOrders extends ActiveRecord
 			]
 		];
 		if (isset($ret['response'])) {
-			return $ret['response']['is_success'];
+			return [0, 'ok'];
+		} elseif (isset($ret['error_response'])) {
+			return [129, $ret['error_response']['msg']];
 		}
-		return false;
+		return [129, '未知错误'];
 	}
 
 }

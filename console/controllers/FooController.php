@@ -1512,7 +1512,7 @@ class FooController extends Controller
 		//YzOrders::Update_order('', '', 1);
 
 		//YzOrders::orders_user_mix_update(1);
-		YzOrders::youzan_express();
+		//YzOrders::youzan_express();
 
 		//YzGoods::update_goods(1);
 
@@ -1520,6 +1520,14 @@ class FooController extends Controller
 
 
 		// 未知商品ID [418096436, 2147483647, 418492020,415342072];
+
+
+		$array = [
+			[1, 'a'],
+			[2, 'b'],
+			[3, 'a'],
+		];
+		echo implode(',', array_column($array, 1));
 
 	}
 
