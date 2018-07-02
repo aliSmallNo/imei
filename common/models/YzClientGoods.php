@@ -120,144 +120,7 @@ class YzClientGoods extends ActiveRecord
 		return $item->gId;
 	}
 
-	public static function addFromUser($uid, $adminId = 0)
-	{
-		$conn = AppUtil::db();
-		$sql = "select u.uId,u.uPhone,u.uName, u.uShopAddress, IFNULL(c.cId,0) as cid 
-			from im_user as u 
- 			left join im_yz_client as c on u.uPhone = c.cPhone
- 			where u.uId=$uid ";
-		$ret = $conn->createCommand($sql)->queryOne();
-		if ($ret && $ret["cid"] > 0) {
-			return [159, "手机号已经存在了，请勿重复添加"];
-		}
-
-		$address = $ret["uShopAddress"];
-		$address = json_decode($address, true);
-		$prov = $city = "";
-		if ($address && is_array($address)) {
-			$address = $address[0];
-			if (isset($address['address'])) {
-				list($city) = explode(" ", trim($address['address']));
-				$sql = "select distinct provinceName, cityName from im_chinazone WHERE cityName=:city";
-				$res = $conn->createCommand($sql)->bindValues([":city" => $city])->queryOne();
-				if ($res) {
-					$prov = $res["provinceName"];
-				}
-			}
-		}
-
-		$item = new self();
-		$item->cName = $ret["uName"];
-		$item->cPhone = $ret["uPhone"];
-		$item->cProvince = $prov;
-		$item->cCity = $city;
-		$item->cUId = $ret["uId"];
-		$item->cIntro = "从注册用户转化过来的";
-		$item->cSource = self::SRC_WEBSITE;
-		$item->cUpdatedDate = date("Y-m-d H:i:s");
-		$item->cUpdatedBy = $adminId;
-		$item->cAddedBy = $adminId;
-		$item->save();
-
-		CRMTrack::add($item->cId, [
-			"status" => self::STATUS_FRESH,
-			"note" => "从注册用户转化过来的"
-		], $adminId);
-		return [0, "添加客户线索成功！"];
-	}
-
-	public static function transfer()
-	{
-		$conn = AppUtil::db();
-		$sql = "delete from im_yz_client";
-		$conn->createCommand($sql)->execute();
-		$sql = "delete from im_crm_track";
-		$conn->createCommand($sql)->execute();
-
-		$sql = "insert into im_yz_client(cName,cPhone,cWechat,cEmail,cProvince,cCity,cIntro,cSource,cAddedDate,cUpdatedDate,cNote,cBDAssignDate,cBDAssign)
-			VALUES(:cName,:cPhone,:cWechat,:cEmail,:cProvince,:cCity,:cIntro,:cSource,:cAddedDate,:cAddedDate,:cNote,:cBDAssignDate,:cBDAssign)";
-		$cmd = $conn->createCommand($sql);
-
-
-		$sql = "select aId from im_admin where aName=:name";
-		$cmdSel = $conn->createCommand($sql);
-
-		$sql = "select * from im_message where mBranchId=1000 order by mPushDate";
-		$ret = $conn->createCommand($sql)->queryAll();
-		foreach ($ret as $row) {
-			$info = $row["mContent"];
-			$info = json_decode($info, true);
-
-			$note = [
-				"name" => $row["mName"],
-				"phone" => $row["mPhone"],
-				"wechat" => $info["wechat"],
-				"intro" => $info["message"],
-				"province" => $info["bigCat"],
-				"city" => $info["smallCat"],
-				"source" => self::SRC_WEBSITE,
-				"addedDate" => $row["mPushDate"]
-			];
-
-			$aid = 0;
-			$sel = $cmdSel->bindValues([":name" => $row["mAssignBD"]])->queryOne();
-			if ($sel) {
-				$aid = $sel["aId"];
-			}
-
-			$cmd->bindValues([
-				":cEmail" => $row["mId"],
-				":cName" => $row["mName"],
-				":cPhone" => $row["mPhone"],
-				":cWechat" => $info["wechat"],
-				":cIntro" => $info["message"],
-				":cProvince" => $info["bigCat"],
-				":cCity" => $info["smallCat"],
-				":cSource" => "website",
-				":cAddedDate" => $row["mPushDate"],
-				":cBDAssignDate" => $row["mAssignDate"],
-				":cBDAssign" => $aid,
-				":cNote" => json_encode($note)
-			])->execute();
-		}
-
-		$sql = "insert into im_crm_track(tCId, tNote,tStatus,tDate,tAddedDate,tAddedBy)
-  			SELECT cId,(case when cAddedBy>0 then '添加新的客户线索' else '客户在官网上填写的信息' END),100,
-   	    	cAddedDate, cAddedDate, cAddedBy from im_yz_client";
-		$conn->createCommand($sql)->execute();
-
-		$sql = "insert into im_crm_track(tCId,tNote,tDate,tAddedDate,tAddedBy)
-			SELECT c.cId,m.mBDNote,m.mBDNoteDate, m.mBDNoteDate, IFNULL(a.aId, 0)
-			FROM im_yz_client as c 
-			JOIN im_message as m on c.cEmail=m.mId AND m.mBDNote!='' 
-			LEFT JOIN im_admin as a on a.aName=m.mAssignBD ";
-		$conn->createCommand($sql)->execute();
-
-		$conn->createCommand("update im_yz_client set cEmail=''")->execute();
-	}
-
-	public static function counts($aid, $criteria, $params = [])
-	{
-		$strCriteria = "";
-		if ($criteria) {
-			$strCriteria = " AND " . implode(" AND ", $criteria);
-		}
-		$sql = "select 
-		count(case when cBDAssign=:aid then 1 else null end) as mine,
-		count(case when cBDAssign=0 then 1 else null end) as sea,
-		count(1) as cnt
- 		from im_yz_client where cDeletedFlag=0 $strCriteria";
-		$conn = AppUtil::db();
-		$params[":aid"] = $aid;
-		$ret = $conn->createCommand($sql)->bindValues($params)->queryOne();
-		if ($ret) {
-			return $ret;
-		}
-		return ["mine" => 0, "sea" => 0, "cnt" => 0];
-	}
-
-	public static function clients($criteria, $params = [], $sort = "dd", $page = 1, $pageSize = 20, $cFlag = false)
+	public static function clients($criteria, $params = [], $page = 1, $pageSize = 20)
 	{
 		$items = [];
 		$count = 0;
@@ -265,99 +128,34 @@ class YzClientGoods extends ActiveRecord
 		if ($criteria) {
 			$strCriteria = " AND " . implode(" AND ", $criteria);
 		}
-		$sorts = [
-			"dd" => "order by cUpdatedDate DESC",
-			"da" => "order by cUpdatedDate ASC",
-			"sd" => "order by cStatus DESC,cUpdatedDate DESC",
-			"sa" => "order by cStatus ASC,cUpdatedDate DESC"
-		];
-		$orderBy = isset($sorts[$sort]) ? $sorts[$sort] : $sorts["dd"];
-		$conn = AppUtil::db();
-		$category = self::CATEGORY_YANXUAN;
 
-		if ($cFlag) {
-			$category = self::CATEGORY_ADVERT;
-		}
+		$conn = AppUtil::db();
+
 		$sql = "select count(1) as cnt 
-				FROM im_yz_client 
-				WHERE cCategory=$category AND cDeletedFlag=0 $strCriteria";
-		$ret = $conn->createCommand($sql)->bindValues($params)->queryOne();
-		if ($ret) {
-			$count = $ret["cnt"];
-		}
+				FROM im_yz_client_goods as g 
+				LEFT JOIN im_yz_client AS c ON c.cId = g.gCId 
+				WHERE cDeletedFlag=0 $strCriteria";
+		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
 
 		$offset = ($page - 1) * $pageSize;
 		$limit = $pageSize + 1;
-		$sql = "select IFNULL(a.aName,'') as bdName,
-				c.cId,
-				c.cName,
-				c.cAge,
-				c.cGender,
-				c.cJob,
-				c.cPhone,
-				c.cWechat,
-				c.cEmail,
-				c.cCity,
-				c.cProvince,
-				c.cAddress,
-				c.cIntro,
-				c.cBDAssign,
-				c.cBDAssignDate,
-				c.cSource,
-				c.cStatus,
-				c.cAddedDate,
-				c.cUpdatedDate,
-				c.cAddedBy,
-				c.cUpdatedBy
- 				FROM im_yz_client as c 
-				LEFT JOIN im_admin AS a ON c.cBDAssign = a.aId
- 				WHERE cCategory=$category AND cDeletedFlag=0 $strCriteria 
- 				$orderBy limit $offset, $limit";
+
+		$sql = "select g.*,c.*
+ 				FROM im_yz_client_goods as g 
+				LEFT JOIN im_yz_client AS c ON c.cId = g.gCId
+ 				WHERE cDeletedFlag=0 $strCriteria 
+ 				order by gAddedDate desc limit $offset, $limit ";
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		$nextPage = 0;
 		if ($ret && count($ret) > $pageSize) {
 			array_pop($ret);
 			$nextPage = $page + 1;
 		}
-		foreach ($ret as $row) {
-			$row["status"] = $row["cStatus"];
-			if ($row["cStatus"] < 1) {
-				$row["status"] = self::STATUS_DISLIKE;
-			}
-			$row["statusText"] = self::$StatusMap[$row["status"]];
-			$row["genderText"] = self::$genderMap[$row["cGender"]] ?? '';
-			$row["ageText"] = self::$ageMap[$row["cAge"]] ?? '';
-			$row["percent"] = $row["status"] - 100;
-			//$row["addedDate"] = Utils::prettyDateTime($row["cAddedDate"]);
-			$row["addedDate"] = AppUtil::prettyDateTime($row["cAddedDate"]);
-			$row["src"] = isset(self::$SourceMap[$row["cSource"]]) ? self::$SourceMap[$row["cSource"]] : "";
-			$row["bdAbbr"] = $row["bdName"];
-			if (mb_strlen($row["bdAbbr"]) > 2) {
-				$row["bdAbbr"] = mb_substr($row["bdAbbr"], mb_strlen($row["bdAbbr"]) - 2, 2);
-			}
-			$row["assignDate"] = AppUtil::prettyDateTime($row["cBDAssignDate"]);
-			$items[$row["cId"]] = $row;
+		foreach ($ret as $key => $row) {
+			$ret[$key]['images'] = json_decode($row['gImage'], 1);
 		}
 
-
-		$ids = array_keys($items);
-		if ($ids) {
-			$sql = "SELECT t.* 
-					FROM im_crm_track as t
- 					JOIN (select max(tId) as lastId,tCId from im_crm_track 
- 					WHERE tDeletedFlag=0 AND tCId in (" . implode(",", $ids) . ") GROUP BY tCId) as c on c.lastId=t.tId";
-			$ret = $conn->createCommand($sql)->queryAll();
-			foreach ($ret as $row) {
-				$cid = $row["tCId"];
-				if (isset($items[$cid])) {
-					$items[$cid]["lastId"] = $row["tId"];
-					$items[$cid]["lastDate"] = AppUtil::prettyDateTime($row["tDate"]);
-					$items[$cid]["lastNote"] = $row["tNote"];
-				}
-			}
-		}
-
-		return [array_values($items), $count, $nextPage];
+		return [array_values($ret), $count, $nextPage];
 	}
 
 	public static function funnelStat($category, $beginDate, $endDate, $id = "", $conn = "")

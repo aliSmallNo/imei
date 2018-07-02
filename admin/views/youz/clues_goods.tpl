@@ -1,96 +1,15 @@
 {{include file="layouts/header.tpl"}}
 <style>
-	.alert {
-		padding-top: 5px;
-		padding-bottom: 5px;
-		margin-bottom: 10px;
-	}
-
-	.text-muted {
-		color: #999;
-		font-size: 13px;
-	}
-
-	.c-ic {
-		display: inline-block;
-		width: 17px;
-		text-align: center;
-		color: #888;
-	}
-
-	.w-progressBar {
-		padding-right: 15px;
-	}
-
-	.w-progressBar .txt {
-		margin-bottom: 3px;
-		font-size: 12px;
-		color: #999;
-	}
-
-	.w-progressBar .txt strong {
-		color: #f80;
-	}
-
-	.w-progressBar .wrap {
-		position: relative;
-		margin-bottom: 10px;
-		height: 5px;
-		border-radius: 5px;
-		background-color: #E4E4E4;
-		overflow: hidden;
-	}
-
-	.w-progressBar .bar {
-		overflow: hidden;
-	}
-
-	.w-progressBar .bar, .w-progressBar .color {
-		display: block;
-		height: 100%;
-		border-radius: 4px;
-	}
-
-	.w-progressBar .color {
-		width: 100%;
-		background: #2a8;
-		background: -webkit-gradient(linear, left top, right top, from(#8c5), to(#208850));
-		background: -moz-linear-gradient(left, #8c5, #208850);
-		background: -o-linear-gradient(left, #8c5, #208850);
-		background: -ms-linear-gradient(left, #8c5, #208850);
-	}
-
-	th a {
-		padding-left: 6px;
-		padding-right: 6px;
-		font-size: 12px;
-		color: #999;
-		font-weight: normal;
-	}
-
-	th a.active {
-		color: #f40;
-	}
-
-	th a:hover {
-		text-decoration: none;
-	}
-
-	td.cell-act a {
-		margin-bottom: 3px;
-	}
-
-	input.form-control[type=text] {
-		/*width: 10em;*/
+	.img_sm img{
+		width: 50px;
+		height: 50px;
 	}
 </style>
 <div class="row">
 	<h4>严选师线索商品
-		<a class="addClue btn btn-primary btn-xs">添加线索商品</a>
+		{{if $cid}}<a class="addClue btn btn-primary btn-xs">添加线索商品</a>{{/if}}
 	</h4>
 </div>
-
-<div class="row-divider"></div>
 
 <div class="row-divider"></div>
 <div class="row">
@@ -98,31 +17,66 @@
 		<thead>
 		<tr>
 			<th>地区</th>
-			<th class="col-sm-3">
-				姓名/手机/微信
+			<th class="col-sm-2">
+				姓名/手机
 			</th>
-			<th class="col-sm-3">
-				性别/年龄/职业
-			</th>
-			<th class="col-lg-3">
-				备注
+			<th class="col-sm-2">
+				商品名|品牌
 			</th>
 			<th>
-				BD负责人
+				规格
 			</th>
-			<th class="col-lg-4" style="display: none">
-				最新跟进
-
+			<th class="col-sm-1">
+				价格|库存
+			</th>
+			<th class="col-sm-2">
+				图片
+			</th>
+			<th >
+				周期
 			</th>
 			<th>
-				操作
+				时间
 			</th>
 		</tr>
 		</thead>
 		<tbody>
 
+		{{foreach from=$items item=prod}}
+			<tr>
+				<td>
+					{{$prod.cProvince}} - {{$prod.cCity}}
+				</td>
+				<td>
+					{{$prod.cName}}({{$prod.cPhone}})
+				</td>
+				<td>
+					{{$prod.gName}}<br>
+					{{$prod.gBrand}}<br>
+				</td>
+				<td>
+					{{$prod.gStandards}}<br>
+				</td>
+				<td>
+					{{$prod.gStore}}<br>
+					{{$prod.gPrice}}<br>
+				</td>
+				<td class="img_sm">
+					{{foreach from=$prod.images item=image}}
+						<img src="{{$image[1]}}">
+					{{/foreach}}
+				</td>
+				<td >
+					{{$prod.gCycle}}
+				</td>
+				<td>
+					{{$prod.gAddedDate}}
+				</td>
+			</tr>
+		{{/foreach}}
 		</tbody>
 	</table>
+	{{$pagination}}
 
 </div>
 

@@ -12,6 +12,7 @@ namespace admin\controllers;
 use admin\controllers\BaseController;
 use admin\models\Admin;
 use common\models\YzClient;
+use common\models\YzClientGoods;
 use common\models\YzFt;
 use common\models\YzGoods;
 use common\models\YzOrders;
@@ -738,18 +739,25 @@ class YouzController extends BaseController
 	/**
 	 * 严选师线索商品
 	 */
-	public function actionClues_goods()
+	public function actionClue_goods()
 	{
-		$cid = self::getParam("id", 120000);
+		$cid = self::getParam("id");
 		$page = self::getParam("page", 1);
-
+		$is_leader = Admin::isAssigner();
+		$item = YzClientGoods::findOne(['gCId' => $cid]);
 		$criteria = $params = [];
+		if ($cid && $item) {
+			$criteria[] = "gCId = :cid";
+			$params[":cid"] = $cid;
+		} elseif (!$cid && $is_leader) {
 
-		$count = 0;
-		$items = [];
-		//list($items, $count) = YzClient::clients($criteria, $params, $page);
+		} else {
+			$criteria[] = "gId = :gid";
+			$params[":gid"] = 0;
+		}
+
+		list($items, $count) = YzClientGoods::clients($criteria, $params, $page);
 		$pagination = self::pagination($page, $count);
-
 		return $this->renderPage('clues_goods.tpl',
 			[
 				'detailcategory' => self::getRequestUri(),
@@ -759,6 +767,5 @@ class YouzController extends BaseController
 
 			]);
 	}
-
 
 }

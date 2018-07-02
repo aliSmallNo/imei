@@ -199,7 +199,7 @@
 
 				</td>
 				<td class="cell-act" data-id="{{$prod.cId}}">
-					<a href="/youz/gdetail?id={{$prod.cId}}" class="btnDetail btn btn-outline btn-primary btn-xs">商品详情</a>
+					<a href="/youz/clue_goods?id={{$prod.cId}}" class="btnDetail btn btn-outline btn-primary btn-xs">商品详情</a>
 					{{if $cat=="sea" && $prod.cBDAssign==0}}
 						<a href="javascript:;" class="btnGrab btn btn-outline btn-success btn-xs">我来跟进</a>
 					{{/if}}
