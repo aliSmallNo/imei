@@ -180,6 +180,12 @@ class Menu
 						"level" => 820
 					],
 					[
+						"name" => "备案严选师",
+						"url" => "/youz/clues",
+						"revise" => 1,
+						"level" => 820
+					],
+					[
 						"name" => "随机数",
 						"url" => "/youz/create",
 						"revise" => 1,

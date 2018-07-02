@@ -85,7 +85,7 @@
 	}
 </style>
 <div class="row">
-	<h4>严选师线索
+	<h4>备案严选师
 	</h4>
 </div>
 <div class="row">
