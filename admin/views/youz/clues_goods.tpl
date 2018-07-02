@@ -1,6 +1,6 @@
 {{include file="layouts/header.tpl"}}
 <style>
-	.img_sm img{
+	.img_sm img {
 		width: 50px;
 		height: 50px;
 	}
@@ -32,7 +32,7 @@
 			<th class="col-sm-2">
 				图片
 			</th>
-			<th >
+			<th>
 				周期
 			</th>
 			<th>
@@ -66,7 +66,7 @@
 						<img src="{{$image[1]}}">
 					{{/foreach}}
 				</td>
-				<td >
+				<td>
 					{{$prod.gCycle}}
 				</td>
 				<td>
@@ -247,7 +247,7 @@
 			if ($sls.loadFlag) {
 				return;
 			}
-			//$sls.loadFlag = 1;
+			$sls.loadFlag = 1;
 			layer.load();
 			$.ajax({
 				url: url,
@@ -261,7 +261,7 @@
 					BpbhdUtil.clear();
 					if (resp.code < 1) {
 						console.log(resp);
-						//$cr.mod.modal('hide');
+						$('#modModal').modal('hide');
 					} else {
 						BpbhdUtil.showMsg(resp.msg);
 					}
