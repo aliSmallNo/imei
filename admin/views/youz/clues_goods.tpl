@@ -63,7 +63,7 @@
 				</td>
 				<td class="img_sm">
 					{{foreach from=$prod.images item=image}}
-						<img src="{{$image[1]}}" class="i-av" bsrc="{{$image[0]}}">
+						<img src="{{$image[0]}}" class="i-av" bsrc="{{$image[1]}}">
 					{{/foreach}}
 				</td>
 				<td>
