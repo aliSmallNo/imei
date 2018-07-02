@@ -31,6 +31,8 @@ use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserTrans;
 use common\models\UserWechat;
+use common\models\YzClient;
+use common\models\YzClientGoods;
 use common\models\YzFt;
 use common\models\YzOrders;
 use common\models\YzUser;
@@ -477,6 +479,45 @@ class ApiController extends Controller
 				} else {
 					return self::renderAPI(129, 'error~');
 				}
+			case 'yxs_clue_edit':
+				$adminId = Admin::getAdminId();
+				$id = self::postParam("id");
+				$phone = trim(self::postParam("phone"));
+				$msg = YzClient::validity($phone);
+				if (!$id && $msg) {
+					return self::renderAPI(self::CODE_MESSAGE, "添加失败！" . $msg);
+				}
+				YzClient::edit([
+					"name" => trim(self::postParam("name")),
+					"phone" => trim(self::postParam("phone")),
+					"wechat" => trim(self::postParam("wechat")),
+					"note" => trim(self::postParam("note")),
+					"prov" => trim(self::postParam("prov")),
+					"city" => trim(self::postParam("city")),
+					"addr" => trim(self::postParam("addr")),
+					"age" => intval(trim(self::postParam("age"))),
+					"gender" => trim(self::postParam("gender")),
+					"job" => trim(self::postParam("job")),
+					"category" => trim(self::postParam("cFlag")) ? CRMClient::CATEGORY_ADVERT : CRMClient::CATEGORY_YANXUAN,
+					"bd" => trim(self::postParam("bd")),
+					"src" => self::postParam("src", CRMClient::SRC_WEBSITE),
+				], $id, $adminId);
+				return self::renderAPI(0, "客户线索保存成功！");
+				break;
+			case "yxs_clue_goods_edit":
+				$adminId = Admin::getAdminId();
+				$id = self::postParam('id'); //gid
+				$data = json_decode(self::postParam("data"), 1);
+				$cid = $data['id'] ?? '';//gCId
+				if (!$cid || !YzClient::findOne(['cId' => $cid])) {
+					return self::renderAPI(self::CODE_MESSAGE, "添加失败！");
+				}
+				YzClientGoods::edit($data, $id, $adminId);
+				return self::renderAPI(0, "客户线索商品保存成功！", [
+					'data' => $data,
+					'file' => $_FILES['clue_goods_image'],
+				]);
+				break;
 			default:
 				break;
 		}

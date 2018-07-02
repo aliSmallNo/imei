@@ -423,11 +423,11 @@ class Admin extends ActiveRecord
 		return array_values($result);
 	}
 
-	public static function getBDs($category)
+	public static function getBDs($category, $table = 'im_crm_client')
 	{
 		$st = self::STATUS_ACTIVE;
 		$sql = "select DISTINCT a.aName as name, a.aId as id 
-				from im_crm_client c join im_admin as a on c.cBDAssign=a.aId and c.cDeletedFlag=0 and cCategory=$category 
+				from $table c join im_admin as a on c.cBDAssign=a.aId and c.cDeletedFlag=0 and cCategory=$category 
 				where a.aStatus=$st ";
 		$conn = AppUtil::db();
 		$result = $conn->createCommand($sql)->queryAll();
