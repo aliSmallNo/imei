@@ -249,6 +249,7 @@ class SiteController extends BaseController
 
 		return $this->renderPage('account.tpl',
 			[
+				'base_url' => 'site/account',
 				"userInfo" => json_encode($userInfo, JSON_UNESCAPED_UNICODE),
 				'provinces' => json_encode(City::provinces(), JSON_UNESCAPED_UNICODE),
 				"role" => User::$Role,

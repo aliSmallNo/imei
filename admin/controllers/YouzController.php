@@ -761,6 +761,7 @@ class YouzController extends BaseController
 		return $this->renderPage('clues_goods.tpl',
 			[
 				'detailcategory' => self::getRequestUri(),
+				'base_url' => 'youz/clues',
 				'items' => $items,
 				'pagination' => $pagination,
 				'cid' => $cid,
