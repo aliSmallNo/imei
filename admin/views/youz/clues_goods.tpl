@@ -63,7 +63,7 @@
 				</td>
 				<td class="img_sm">
 					{{foreach from=$prod.images item=image}}
-						<img src="{{$image[1]}}">
+						<img src="{{$image[1]}}" class="i-av" bsrc="{{$image[0]}}">
 					{{/foreach}}
 				</td>
 				<td>
@@ -282,6 +282,30 @@
 		$('#btnRemove').hide();
 		$('#modModal').modal('show');
 	});
+
+	$(document).on("click", ".i-av", function () {
+		var self = $(this);
+		var photos = {
+			title: '头像大图',
+			data: [{
+				src: self.attr("bsrc")
+			}]
+		};
+		showImages(photos);
+	});
+
+  function showImages(imagesJson, idx) {
+	  if (idx) {
+		  imagesJson.start = idx;
+	  }
+	  layer.photos({
+		  photos: imagesJson,
+		  shift: 5,
+		  tab: function (info) {
+			  console.log(info);
+		  }
+	  });
+  }
 
 </script>
 {{include file="layouts/footer.tpl"}}
