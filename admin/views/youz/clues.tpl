@@ -175,7 +175,7 @@
 				</td>
 				<td>
 					{{if $prod.cIntro}}{{$prod.cIntro}}{{else}}<span class="text-muted">（无）</span>{{/if}}
-					<div class="text-muted">{{$prod.addedDate}}<br>来源：{{$prod.src}}</div>
+					<div class="text-muted">{{$prod.addedDate}}<br>
 				</td>
 
 				<td>
@@ -469,7 +469,7 @@
 		$('div.modal-body').html(vHtml);
 		$('#myModalLabel').html('修改严选师线索');
 		$('#btnSaveMod').attr({
-			tag: "edit",
+			tag: "yxs_clue_edit",
 			cid: cid
 		});
 		$('#btnRemove').attr({
