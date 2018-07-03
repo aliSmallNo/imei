@@ -719,7 +719,6 @@ class YouzController extends BaseController
 				'items' => $items,
 				"strItems" => json_encode($items),
 
-
 				'pagination' => $pagination,
 				"alertMsg" => $alertMsg,
 				"urlParams" => implode("&", $urlParams),
@@ -733,6 +732,8 @@ class YouzController extends BaseController
 				"dNext" => $dNext,
 				"dIcon" => $dIcon,
 				"ageMap" => YzClient::$ageMap,
+				"stMap" => YzClient::$StatusMap,
+				"isRUN" => Admin::isGroupUser('', Admin::GROUP_RUN_MGR),
 			]);
 	}
 

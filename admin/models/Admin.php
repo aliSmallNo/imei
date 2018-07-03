@@ -304,7 +304,7 @@ class Admin extends ActiveRecord
 		return [$wxMessages, $unreadFlag];
 	}
 
-	private static function isGroupUser($adminId = "", $groupTag = 0)
+	public static function isGroupUser($adminId = "", $groupTag = 0)
 	{
 		switch ($groupTag) {
 			case self::GROUP_ACCOUNT:
@@ -322,8 +322,8 @@ class Admin extends ActiveRecord
 			case self::GROUP_DEMO:
 				$adminIDs = [1848979];
 				break;
-			case self::GROUP_RUN_MGR:
-				$adminIDs = [1453348809, 1453807803, 1467788165, 1464592894, 1464561266, 1468393621];
+			case self::GROUP_RUN_MGR: // 运营
+				$adminIDs = [1014, 1027, 1030, 1002, 1017, 1016];// 张梦莹 小刀 树苗 zp 道长 李泽鹏
 				break;
 			case self::GROUP_CRM_MGR:
 				$adminIDs = [1453348809, 1453807803, 1467788165, 1464592894, 1464561266];

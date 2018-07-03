@@ -18,50 +18,31 @@ class YzClient extends ActiveRecord
 	const CATEGORY_YANXUAN = 100;   // 到家严选
 	const CATEGORY_ADVERT = 110;    // 广告商客户
 
-	const STATUS_DISLIKE = 100;
-	const STATUS_FRESH = 110;
-	const STATUS_GREETING = 120;
+	const STATUS_PENDING = 100;
+	const STATUS_ACTIVE = 110;
+	const STATUS_FAIL = 120;
 	const STATUS_TALKING = 140;
 	const STATUS_TALKING_INTENT = 150;
 	const STATUS_MEETING = 160;
 	const STATUS_CONTRACT = 180;
 	const STATUS_PAID = 200;
 
-	const GENDER_FEMALE = 10;
-	const GENDER_MALE = 11;
-	static $genderMap = [
-		self::GENDER_FEMALE => '女',
-		self::GENDER_MALE => '男'
-	];
-
-	const AGE_LESS_20 = 20;
-	const AGE_20_30 = 25;
-	const AGE_30_40 = 35;
-	const AGE_40_50 = 45;
-	const AGE_MORE_50 = 50;
-	static $ageMap = [
-		self::AGE_LESS_20 => '小于20岁',
-		self::AGE_20_30 => '20岁~30岁',
-		self::AGE_30_40 => '30岁~40岁',
-		self::AGE_40_50 => '40岁~50岁',
-		self::AGE_MORE_50 => '50岁以上',
-	];
-
 	static $StatusMap = [
-		self::STATUS_DISLIKE => "无兴趣/失败",
-		self::STATUS_FRESH => "新增线索",
-		self::STATUS_GREETING => "首次沟通",
-		self::STATUS_TALKING => "多次沟通(低意向)",
+		self::STATUS_PENDING => "待审核",
+		self::STATUS_ACTIVE => "审核通过",
+		self::STATUS_FAIL => "审核失败",
+
+		/*self::STATUS_TALKING => "多次沟通(低意向)",
 		self::STATUS_TALKING_INTENT => "多次沟通(高意向)",
 		self::STATUS_MEETING => "开始合作",
 		self::STATUS_CONTRACT => "已产生收入",
-		self::STATUS_PAID => "月收入超过3k",
+		self::STATUS_PAID => "月收入超过3k",*/
 	];
 
 	static $StatusColors = [
-		self::STATUS_DISLIKE => "#a8a8a8",
-		self::STATUS_FRESH => "#BBDEFB",
-		self::STATUS_GREETING => "#64B5F6",
+		self::STATUS_PENDING => "#a8a8a8",
+		self::STATUS_ACTIVE => "#BBDEFB",
+		self::STATUS_FAIL => "#64B5F6",
 		self::STATUS_TALKING => "#2196F3",
 		self::STATUS_TALKING_INTENT => "#1976D2",
 		self::STATUS_MEETING => "#0D47A1",
@@ -92,6 +73,27 @@ class YzClient extends ActiveRecord
 	];
 
 
+	const GENDER_FEMALE = 10;
+	const GENDER_MALE = 11;
+	static $genderMap = [
+		self::GENDER_FEMALE => '女',
+		self::GENDER_MALE => '男'
+	];
+
+	const AGE_LESS_20 = 20;
+	const AGE_20_30 = 25;
+	const AGE_30_40 = 35;
+	const AGE_40_50 = 45;
+	const AGE_MORE_50 = 50;
+	static $ageMap = [
+		self::AGE_LESS_20 => '小于20岁',
+		self::AGE_20_30 => '20岁~30岁',
+		self::AGE_30_40 => '30岁~40岁',
+		self::AGE_40_50 => '40岁~50岁',
+		self::AGE_MORE_50 => '50岁以上',
+	];
+
+
 	public static function tableName()
 	{
 		return '{{%yz_client}}';
@@ -118,17 +120,13 @@ class YzClient extends ActiveRecord
 			return 0;
 		}
 		$newItem = self::findOne(["cId" => $cId]);
-
 		foreach ($values as $key => $val) {
 			$newItem->$key = $val;
 		}
-
 		if (isset($values["cBDAssign"])) {
 			$newItem->cUpdatedBy = $values["cBDAssign"];
 		}
 		$newItem->cUpdatedDate = date("Y-m-d H:i:s");
-
-
 		$newItem->save();
 		return $newItem->cId;
 
@@ -198,7 +196,7 @@ class YzClient extends ActiveRecord
 		} else {
 			$item->cAddedBy = $adminId;
 			$item->cNote = json_encode($params, JSON_UNESCAPED_UNICODE);
-			$item->cStatus = self::STATUS_DISLIKE;
+			$item->cStatus = self::STATUS_PENDING;
 			$addFlag = true;
 		}
 		$fieldMap = [
@@ -231,7 +229,7 @@ class YzClient extends ActiveRecord
 
 		if ($addFlag) {
 			CRMTrack::add($item->cId, [
-				"status" => self::STATUS_FRESH,
+				"status" => self::STATUS_ACTIVE,
 				"note" => $adminId > 0 ? "添加新的客户线索" : "未知来源"
 			], $adminId);
 		}
@@ -280,7 +278,7 @@ class YzClient extends ActiveRecord
 		$item->save();
 
 		CRMTrack::add($item->cId, [
-			"status" => self::STATUS_FRESH,
+			"status" => self::STATUS_ACTIVE,
 			"note" => "从注册用户转化过来的"
 		], $adminId);
 		return [0, "添加客户线索成功！"];
@@ -427,9 +425,14 @@ class YzClient extends ActiveRecord
 				c.cAddedDate,
 				c.cUpdatedDate,
 				c.cAddedBy,
-				c.cUpdatedBy
+				c.cUpdatedBy,
+				c.cAuditNote,
+				c.cAuditOn,
+				c.cAuditBy,
+				a2.aName as yy_name
  				FROM im_yz_client as c 
 				LEFT JOIN im_admin AS a ON c.cBDAssign = a.aId
+				LEFT JOIN im_admin AS a2 ON c.cAuditBy = a2.aId
  				WHERE cCategory=$category AND cDeletedFlag=0 $strCriteria 
  				$orderBy limit $offset, $limit";
 		$ret = $conn->createCommand($sql)->bindValues($params)->queryAll();
@@ -441,7 +444,7 @@ class YzClient extends ActiveRecord
 		foreach ($ret as $row) {
 			$row["status"] = $row["cStatus"];
 			if ($row["cStatus"] < 1) {
-				$row["status"] = self::STATUS_DISLIKE;
+				$row["status"] = self::STATUS_PENDING;
 			}
 			$row["statusText"] = self::$StatusMap[$row["status"]];
 			$row["genderText"] = self::$genderMap[$row["cGender"]] ?? '';
@@ -495,8 +498,8 @@ class YzClient extends ActiveRecord
 		$items = [];
 		foreach ($ret as $key => $row) {
 			$cnt = intval($row["cnt"]);
-			$title = isset(self::$StatusMap[$row["cStatus"]]) ? self::$StatusMap[$row["cStatus"]] : self::$StatusMap[self::STATUS_DISLIKE];
-			$color = isset(self::$StatusColors[$row["cStatus"]]) ? self::$StatusColors[$row["cStatus"]] : self::$StatusColors[self::STATUS_DISLIKE];
+			$title = isset(self::$StatusMap[$row["cStatus"]]) ? self::$StatusMap[$row["cStatus"]] : self::$StatusMap[self::STATUS_PENDING];
+			$color = isset(self::$StatusColors[$row["cStatus"]]) ? self::$StatusColors[$row["cStatus"]] : self::$StatusColors[self::STATUS_PENDING];
 			$items[] = [$title, $cnt, $color];
 		}
 		return $items;
@@ -557,8 +560,8 @@ class YzClient extends ActiveRecord
 			$src = $row["cSource"];
 			$source = isset(self::$SourceMap[$src]) ? self::$SourceMap[$src] : self::$SourceMap[self::SRC_OTHER];
 			$st = $row["cStatus"];
-			$status = isset(self::$StatusMap[$st]) ? self::$StatusMap[$st] : self::$StatusMap[self::STATUS_DISLIKE];
-			$color = isset(self::$StatusColors[$st]) ? self::$StatusColors[$st] : self::$StatusColors[self::STATUS_DISLIKE];
+			$status = isset(self::$StatusMap[$st]) ? self::$StatusMap[$st] : self::$StatusMap[self::STATUS_PENDING];
+			$color = isset(self::$StatusColors[$st]) ? self::$StatusColors[$st] : self::$StatusColors[self::STATUS_PENDING];
 			$cnt = intval($row["cnt"]);
 			if (!isset($statusItems[$st])) {
 				$statusItems[$st] = [
@@ -658,7 +661,7 @@ class YzClient extends ActiveRecord
 		$items = [];
 		foreach ($ret as $key => $row) {
 			$aid = $row["aId"];
-			$status = isset(self::$StatusMap[$row["cStatus"]]) ? self::$StatusMap[$row["cStatus"]] : self::$StatusMap[self::STATUS_DISLIKE];
+			$status = isset(self::$StatusMap[$row["cStatus"]]) ? self::$StatusMap[$row["cStatus"]] : self::$StatusMap[self::STATUS_PENDING];
 			if (!isset($items[$aid])) {
 				foreach (self::$StatusMap as $val) {
 					$items[$aid][$val] = 0;
@@ -681,7 +684,7 @@ class YzClient extends ActiveRecord
 			$titles[] = $item["title"];
 			foreach ($map as $k => $status) {
 				if (!isset($series[$status])) {
-					$color = isset(self::$StatusColors[$k]) ? self::$StatusColors[$k] : self::$StatusColors[self::STATUS_DISLIKE];
+					$color = isset(self::$StatusColors[$k]) ? self::$StatusColors[$k] : self::$StatusColors[self::STATUS_PENDING];
 					$series[$status] = [
 						"name" => $status,
 						"key" => $k,

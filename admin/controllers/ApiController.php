@@ -63,6 +63,7 @@ class ApiController extends Controller
 	protected $admin_phone = '';
 
 	const CODE_MESSAGE = 159;
+	const CODE_SUCCESS = 0;
 
 	public function behaviors()
 	{
@@ -517,6 +518,21 @@ class ApiController extends Controller
 					'data' => $data,
 					'file' => $_FILES['clue_goods_image'],
 				]);
+				break;
+			case "audit_yxs_clues":
+				$cid = self::postParam('cid'); //cid
+				$reason = self::postParam('reason');
+				$st = self::postParam('st');
+				if (!YzClient::findOne(['cId' => $cid]) || !in_array($st, array_keys(YzClient::$StatusMap))) {
+					return self::renderAPI(self::CODE_MESSAGE, "参数错误！");
+				}
+				YzClient::mod($cid, [
+					'cAuditOn' => date('Y-m-d H:i:s'),
+					'cAuditBy' => Admin::getAdminId(),
+					'cAuditNote' => $reason,
+					'cStatus' => $st,
+				]);
+				return self::renderAPI(self::CODE_SUCCESS, "OK");
 				break;
 			default:
 				break;

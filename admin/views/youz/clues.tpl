@@ -83,6 +83,34 @@
 	input.form-control[type=text] {
 		width: 10em;
 	}
+
+	.font10 {
+		font-size: 10px;
+	}
+
+	.st_100,
+	.st_110,
+	.st_120 {
+		color: #fff;
+		border-radius: 3px;
+		display: inline-block;
+		font-size: 10px;
+		padding: 0 2px;
+		border: none;
+		margin: 0;
+	}
+
+	.st_100 {
+		background: #f89406;
+	}
+
+	.st_110 {
+		background: #00aa00;
+	}
+
+	.st_120 {
+		background: #777;
+	}
 </style>
 <div class="row">
 	<h4>备案严选师
@@ -141,18 +169,14 @@
 			<th class="col-sm-2">
 				性别/年龄/职业
 			</th>
-			<th class="col-lg-3">
-				备注
+			<th class="col-sm-1">
+				严选师备注
 			</th>
 			<th>
 				BD负责人
 			</th>
-			<th class="col-lg-4"  style="display: none">
-				最新跟进
-				<a {{if $sort=='dd' || $sort=='da'}}class="active"{{/if}}
-					 href="/youz/clues?cat={{$cat}}&sort={{$dNext}}&{{$urlParams}}">跟进日期 <i class="fa {{$dIcon}}"></i></a>
-				<a {{if $sort=='sd' || $sort=='sa'}}class="active"{{/if}}
-					 href="/youz/clues?cat={{$cat}}&sort={{$sNext}}&{{$urlParams}}">跟进进度 <i class="fa {{$sIcon}}"></i></a>
+			<th class="col-sm-2">
+				运营审核
 			</th>
 			<th>
 				操作
@@ -161,7 +185,7 @@
 		</thead>
 		<tbody>
 		{{foreach from=$items item=prod}}
-			<tr>
+			<tr data-name="{{$prod.cName}}" data-id="{{$prod.cId}}">
 				<td>
 					{{$prod.cProvince}} - {{$prod.cCity}}
 				</td>
@@ -184,19 +208,15 @@
 						<div class="text-muted">{{$prod.assignDate}}</div>
 					{{/if}}
 				</td>
-				<td  style="display: none">
-					<div class="w-progressBar">
-						<p class="txt">{{$prod.statusText}} <strong>{{$prod.percent}}%</strong></p>
-						<p class="wrap">
-							<span class="bar" style="width:{{$prod.percent}}%;"><i class="color"></i></span>
-						</p>
-					</div>
-					{{if isset($prod.lastNote) && $prod.lastNote}}
-						{{$prod.lastNote}}
-						<br>
-						<div class="text-muted">{{$prod.lastDate}}</div>
+				<td>
+					{{if $prod.cStatus==100 && $isRUN}}
+						<a class="yy_audit btn btn-outline btn-success btn-xs">审核</a>
+					{{else}}
+						<div class="st_{{$prod.cStatus}}">{{$prod.statusText}}</div>
+						<div>{{$prod.yy_name}}</div>
+						<div class="font10">{{$prod.cAuditNote}}</div>
+						<div class="font10">{{$prod.cAuditOn}}</div>
 					{{/if}}
-
 				</td>
 				<td class="cell-act" data-id="{{$prod.cId}}">
 					<a href="/youz/clue_goods?id={{$prod.cId}}" class="btnDetail btn btn-outline btn-primary btn-xs">商品详情</a>
@@ -538,5 +558,84 @@
 	$(document).on('change', '.clue_province', function () {
 		updateArea($(this).val());
 	});
+
+
+	$yy = {
+		cid: '',
+		name: '',
+		titleObj: $("#auditModal modal .modal-title"),
+	};
+	$("a.yy_audit").click(function () {
+		var self = $(this).closest("tr");
+		$yy.cid = self.attr('data-id');
+		$yy.name = self.attr('data-name');
+		$yy.titleObj.html('审核【' + $yy.name + '】');
+		$("#auditModal").modal("show")
+	});
+	var loadflag = 0;
+	$(document).on("click", "#btnSave_YY", function () {
+		var err = 0;
+		var st = $("[data-field=st]").val();
+		var postData = {tag: "audit_yxs_clues", st: st};
+		if (!st) {
+			layer.msg('请选择审核状态');
+			return;
+		}
+		postData['cid'] = $yy.cid;
+		postData['reason'] = $("[data-field=reason]").val();
+		console.log(postData);
+		if (loadflag) {
+			return;
+		}
+		loadflag = 1;
+		$.post("/api/youz",
+			postData,
+			function (resp) {
+				loadflag = 0;
+				if (resp.code == 0) {
+					location.reload();
+				} else {
+					layer.msg(resp.msg);
+				}
+			}, "json");
+	});
+
 </script>
+<div class="modal fade" id="auditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+									aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">审核严选师</h4>
+			</div>
+			<div class="modal-body" style="overflow:hidden">
+				<div class="col-sm-12 form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-2 control-label">审核状态:</label>
+						<div class="col-sm-8">
+							<select class="form-control" data-field="st">
+								<option value="">-=请选择=-</option>
+								{{foreach from=$stMap item=name key=key}}
+									<option value="{{$key}}">{{$name}}</option>
+								{{/foreach}}
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">原因:</label>
+						<div class="col-sm-8">
+							<textarea data-field="reason" class="form-control" placeholder="选填(审核通过|不通过的原因)"></textarea>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="btnSave_YY">确定保存</button>
+			</div>
+		</div>
+	</div>
+</div>
 {{include file="layouts/footer.tpl"}}
