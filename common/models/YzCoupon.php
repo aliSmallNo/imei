@@ -16,12 +16,40 @@ use yii\db\ActiveRecord;
 class YzCoupon extends ActiveRecord
 {
 
-	const POST_TYPE_DEFAULT = 1;
-	const POST_TYPE_TEMPLATE = 2;
-	static $typeDict = [
-		self::POST_TYPE_DEFAULT => '统一运费',
-		self::POST_TYPE_TEMPLATE => '运费模板',
-	];
+	/**
+	id 活动ID
+	kdt_id 店铺ID
+	group_type 优惠券类型 7：优惠券 9：优惠码 - 一卡一码 10：优惠码 - 通用码
+	title 优惠券名称
+	preferential_type 优惠属性，1表示优惠，2表示折扣
+	denominations 面额（单位分）
+	value_random_to 面值随机上限。不随机为0
+	condition 满额条件
+	discount 折扣（88，8.8折）
+	is_limit 是否限制 1：一人一次 0：不限制
+	is_forbid_preference 是否仅原价购买商品时可用（1:是，0:否）
+	user_level 会员等级
+	date_type 优惠使用时间类型，1表示固定活动时间，2表示延迟类型，几天后几天内有效
+	fixed_term 固定时长
+	fixed_begin_term 延迟开始的时间
+	valid_start_time 有效开始时间
+	valid_end_time 有效结束时间
+	total_qty 总发放量
+	stock_qty 库存数量
+	range_type 使用范围类型
+	range_value 使用范围值
+	expire_notice 到期是否提醒 1是 0否
+	description 使用说明
+	meta_data 一些额外配置信息
+	is_share 到期是否可分享 1是 0否
+	is_sync_weixin 是否同步微信卡券 1是 0否
+	is_invalid 是否失效，默认0为没失效
+	total_fans_taked 粉丝领取总人数(去重)
+	total_used 已使用总数
+	total_take 领取次数
+	created_at 创建于
+	updated_at 更新时间
+	 */
 
 	static $fieldMap = [
 		"id" => "c_coupon_id",
