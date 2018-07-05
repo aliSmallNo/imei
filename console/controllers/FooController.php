@@ -17,6 +17,7 @@ use common\models\UserNet;
 use common\models\UserQR;
 use common\models\UserTrans;
 use common\models\UserWechat;
+use common\models\YzCoupon;
 use common\models\YzGoods;
 use common\models\YzOrders;
 use common\models\YzRefund;
@@ -1470,7 +1471,7 @@ class FooController extends Controller
 
 		// AppUtil::logByFile(date('Y-m-d H:i:s'), 'youzan_user', __FUNCTION__, __LINE__);
 
-		 $token = YouzanUtil::getAccessToken();echo $token;
+//		 $token = YouzanUtil::getAccessToken();echo $token;
 
 		// 更新用户
 		//YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');
@@ -1537,6 +1538,9 @@ class FooController extends Controller
 		print_r($arr2);*/
 
 		// print_r(YzOrders::process_express([]));
+
+
+		YzCoupon::coupon_search_item_all();
 
 
 	}
