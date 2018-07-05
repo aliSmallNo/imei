@@ -163,9 +163,6 @@ class YzCoupon extends ActiveRecord
 		do {
 			list($items, $total) = self::coupon_search_item(['page_no' => $page, 'page_size' => $pagesize]);
 			echo 'total:' . $total . '==current_num:' . count($items);
-			if (count($items) >= $pagesize) {
-				$page++;
-			}
 			$page = $page + 1;
 			foreach ($items as $v) {
 				self::process($v);
