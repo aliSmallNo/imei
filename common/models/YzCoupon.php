@@ -166,11 +166,11 @@ class YzCoupon extends ActiveRecord
 			if (count($items) >= $pagesize) {
 				$page++;
 			}
-			$page = count($items) >= $pagesize ? ($page + 1) : 0;
+			$page = $page + 1;
 			foreach ($items as $v) {
 				self::process($v);
 			}
-		} while ($page > 0 && $page < 10);
+		} while (count($items) >= $pagesize && $page < 10);
 	}
 
 }
