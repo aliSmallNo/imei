@@ -1470,7 +1470,7 @@ class FooController extends Controller
 
 		// AppUtil::logByFile(date('Y-m-d H:i:s'), 'youzan_user', __FUNCTION__, __LINE__);
 
-		// $token = YouzanUtil::getAccessToken();echo $token;
+		 $token = YouzanUtil::getAccessToken();echo $token;
 
 		// 更新用户
 		//YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');
