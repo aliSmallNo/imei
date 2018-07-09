@@ -33,7 +33,7 @@
 			<div class="micro-group">
 				<p class="group-txt">扫描二维码加入「千寻恋恋」公众号啊~</p>
 				<div class="group-img">
-					<div><img src="/images/qrcode344.jpg?v=1.1.1" alt="微信公众号" style="width: 180px"></div>
+					<div><img src="/images/qrcode344.jpg?v=1.1.2" alt="微信公众号" style="width: 180px"></div>
 				</div>
 			</div>
 		</div>
