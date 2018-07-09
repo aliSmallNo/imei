@@ -154,7 +154,7 @@
 					<a href="javascript:;" data-tag="self" data-num="{{$item.self_order_amt}}">订单数:{{$item.self_order_amt}}</a>
 					<a href="javascript:;" data-tag="next" data-num="{{$item.next_order_amt}}">下级订单数:{{$item.next_order_amt}}</a>
 					<strong>支付总金额:{{$item.sum_payment}}</strong>
-					<a href="javascript:;" class="add_yxs_next btn btn-primary btn-xs">添加关系</a>
+					{{if !$is_partner}}<a href="javascript:;" class="add_yxs_next btn btn-primary btn-xs">添加关系</a>{{/if}}
 				</li>
 			{{/foreach}}
 		</ul>
