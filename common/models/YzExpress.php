@@ -7,6 +7,7 @@
 namespace common\models;
 
 
+use common\utils\YouzanUtil;
 use yii\db\ActiveRecord;
 
 class YzExpress extends ActiveRecord
@@ -56,5 +57,47 @@ class YzExpress extends ActiveRecord
 		return self::edit($e_express_id, $insert);
 	}
 
+
+	public static function youzan_express()
+	{
+		// 获取快递公司的列表
+		$method = 'youzan.logistics.express.get'; //要调用的api名称
+		$params = [];
+		$ret = YouzanUtil::getData($method, $params);
+		$retStyle = [
+			"response" => [
+				"allExpress" => [
+					[
+						"display" => 1,
+						"name" => "申通快递",
+						"id" => 1
+					],
+					// ...
+				]
+			]
+		];
+		$allExpress = $ret['response']['allExpress'];
+		foreach ($allExpress as $v) {
+			YzExpress::process($v);
+		}
+	}
+
+
+	public static function get_expressInfo_by_expressId($express_id)
+	{
+		// 获取快递信息
+		$method = 'youzan.logistics.goodsexpress.get'; //要调用的api名称
+		$params = [
+			'express_id' => 38,
+			'express_no' => 900258799219,
+		];
+		$ret = YouzanUtil::getData($method, $params);
+		$retStyle = [
+			"response" => [
+				// ...
+			]
+		];
+		print_r($ret);
+	}
 
 }

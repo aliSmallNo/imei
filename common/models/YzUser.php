@@ -688,5 +688,29 @@ class YzUser extends ActiveRecord
 		return $res;
 	}
 
+	/**
+	 * 计算所有下级数
+	 */
+	public static function cal_all_next($phone, $conn)
+	{
+		static $count;
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$sql = 'select count(*) from where uFromPhone=:phone ';
+		$count = $count + $conn->createCommand($sql)->bindValues([':phone' => $phone])->queryScalar();
+
+		$sql = 'select uPhone from where uFromPhone=:phone ';
+		$res = $conn->createCommand($sql)->bindValues([':phone' => $phone])->queryAll();
+		if ($res) {
+			foreach ($res as $next_from_phone) {
+				self::cal_all_next($next_from_phone, $conn);
+			}
+		}
+
+		return $count;
+
+	}
+
 
 }

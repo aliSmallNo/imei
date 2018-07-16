@@ -18,6 +18,7 @@ use common\models\UserQR;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use common\models\YzCoupon;
+use common\models\YzExpress;
 use common\models\YzGoods;
 use common\models\YzOrders;
 use common\models\YzRefund;
@@ -1471,7 +1472,9 @@ class FooController extends Controller
 
 		// AppUtil::logByFile(date('Y-m-d H:i:s'), 'youzan_user', __FUNCTION__, __LINE__);
 
-//		 $token = YouzanUtil::getAccessToken();echo $token;
+		$token = YouzanUtil::getAccessToken();
+		echo $token;
+		YzExpress::get_expressInfo_by_expressId(1);
 
 		// 更新用户
 		//YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');
@@ -1540,10 +1543,32 @@ class FooController extends Controller
 		// print_r(YzOrders::process_express([]));
 
 
-		YzCoupon::coupon_search_item_all();
+		// YzCoupon::coupon_search_item_all();
 
+
+		// echo self::cal_all_next(18518082610);
 
 	}
+
+//	public static function cal_all_next($phone, $conn = '', $count = 0)
+//	{
+		/*if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$sql = 'select count(*) from im_yz_user where uFromPhone=:phone ';
+		$count = $count + $conn->createCommand($sql)->bindValues([':phone' => $phone])->queryScalar();
+		echo $count . PHP_EOL;
+
+		$sql = 'select uPhone from im_yz_user where uFromPhone=:phone ';
+		$res = $conn->createCommand($sql)->bindValues([':phone' => $phone])->queryAll();
+		if ($res) {
+			foreach ($res as $next_from_phone) {
+				self::cal_all_next($next_from_phone, $conn, $count);
+			}
+		}
+		return $count;*/
+
+//	}
 
 
 }
