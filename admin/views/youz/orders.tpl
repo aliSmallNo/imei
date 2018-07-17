@@ -130,7 +130,8 @@
 					<td>
 						{{$order.title}}
 					</td>
-					<td data-tid="{{$item.o_tid}}" data-gid="{{$order.item_id}}" data-skuid="{{$order.sku_id}}" data-title="{{$order.title}}"
+					<td data-tid="{{$item.o_tid}}" data-gid="{{$order.item_id}}" data-skuid="{{$order.sku_id}}"
+							data-title="{{$order.title}}"
 							data-payment="{{if $item.o_pay_time}}{{$order.payment}}{{else}}0{{/if}}">
 						<div>
 							订单: {{$order.price}}*{{$order.num}}={{$order.total_fee}}<br>
@@ -138,8 +139,7 @@
 							{{foreach from=$order.sku_properties_name_arr item=$prop}}
 							{{$prop.k}}:{{$prop.v}}
 							{{/foreach}}<br>
-
-							<a class="add_pay_info btn btn-outline btn-primary btn-xs">添加付款信息</a>
+							{{if $isZp}}<a class="add_pay_info btn btn-outline btn-primary btn-xs">添加付款信息</a>{{/if}}
 						</div>
 					</td>
 					{{if $okey==0}}
@@ -214,8 +214,8 @@
 <script>
 	$sls = {
 		loadflag: 0,
-	  tid: '',
-	  gid: '',
+		tid: '',
+		gid: '',
 		skuid: '',
 		title: '',
 		payment: '',

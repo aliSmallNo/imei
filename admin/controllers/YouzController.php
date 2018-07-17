@@ -466,6 +466,7 @@ class YouzController extends BaseController
 				'getInfo' => $getInfo,
 				'stDict' => $stDict,
 				'bds' => Admin::getAdmins(1),
+				'isZp' => Admin::getAdminId() == 1002,
 			]);
 	}
 
