@@ -13,6 +13,7 @@ use admin\controllers\BaseController;
 use admin\models\Admin;
 use common\models\YzClient;
 use common\models\YzClientGoods;
+use common\models\YzFinance;
 use common\models\YzFt;
 use common\models\YzGoods;
 use common\models\YzOrders;
@@ -459,6 +460,45 @@ class YouzController extends BaseController
 		$pagination = self::pagination($page, $count);
 		$stDict = YzOrders::$stDict;
 		return $this->renderPage('orders.tpl',
+			[
+				'page' => $page,
+				'pagination' => $pagination,
+				'items' => $items,
+				'getInfo' => $getInfo,
+				'stDict' => $stDict,
+				'bds' => Admin::getAdmins(1),
+				'isZp' => Admin::getAdminId() == 1002,
+			]);
+	}
+
+	public function actionFinance()
+	{
+		Admin::staffOnly();
+		$getInfo = \Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$name = self::getParam("name");
+		$stime = self::getParam("stime");
+		$stime = self::getParam("etime");
+		$st = self::getParam("st");
+
+		$criteria = $params = [];
+		if ($name) {
+			$criteria[] = " (u1.uName like :name or o.o_receiver_name like :name) ";
+			$params[':name'] = '%' . trim($name) . '%';
+		}
+		if ($stime && $stime) {
+			$criteria[] = " (u1.uPhone = :phone or o.o_receiver_tel=:phone) ";
+			$params[':phone'] = trim($stime);
+		}
+		if ($st) {
+			$criteria[] = " o.o_status = :st ";
+			$params[':st'] = trim($st);
+		}
+
+		list($items, $count) = YzFinance::items($criteria, $params, $page);
+		$pagination = self::pagination($page, $count);
+		$stDict = YzOrders::$stDict;
+		return $this->renderPage('finance.tpl',
 			[
 				'page' => $page,
 				'pagination' => $pagination,

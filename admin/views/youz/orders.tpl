@@ -44,6 +44,10 @@
 		background: #777;
 	}
 
+	.pay_pic_last img {
+		width: 50px;
+		margin-right: 5px;
+	}
 </style>
 <div class="row">
 	<h4>订单列表</h4>
@@ -126,6 +130,7 @@
 					{{/if}}
 					<td>
 						<img src="{{$order.pic_path}}" style="width: 65px;height: 65px;">
+						<span class="font10">{{$order.sku_id}}</span>
 					</td>
 					<td>
 						{{$order.title}}
@@ -178,6 +183,7 @@
 							<p data-payment="payment"></p>
 						</div>
 					</div>
+					<input type="hidden" class="form-control" data-f="fid">
 					<div class="form-group">
 						<label class="col-sm-2 control-label">付款人</label>
 						<div class="col-sm-7">
@@ -196,9 +202,21 @@
 						</div>
 					</div>
 					<div class="form-group">
+						<label class="col-sm-2 control-label">备注</label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control" data-f="pay_note">
+						</div>
+					</div>
+					<div class="form-group">
 						<label class="col-sm-2 control-label">付款截图</label>
 						<div class="col-sm-7">
 							<input type="file" data-f="pay_pic" multiple accept=".png,.jpg,.jpeg">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label"></label>
+						<div class="col-sm-7 pay_pic_last" id="pay_pic_last">
+
 						</div>
 					</div>
 				</div>
@@ -230,11 +248,27 @@
 		$sls.payment = self.attr('data-payment');
 		$('[data-title=title]').html($sls.title);
 		$('[data-payment=payment]').html($sls.payment);
-		$("#modModal").modal("show")
+		load_pay_info(function (resp) {
+			init_pay_info(resp);
+			$("#modModal").modal("show")
+		});
 	});
+
+	function init_pay_info(data) {
+		if (!data) {
+			data = {pay_aid: '', pay_amt: '', pay_note: '', id: ''}
+		}
+		$("[data-f=fid]").val(data.id);
+		$("[data-f=pay_aid]").val(data.pay_aid);
+		$("[data-f=pay_amt]").val(data.pay_amt);
+		$("[data-f=pay_note]").val(data.pay_note);
+		$("[data-f=pay_pic]").val('');
+		$("#pay_pic_last").html(Mustache.render('{[#pay_pic]}<img src="{[0]}" class="i-av" bsrc="{[1]}">{[/pay_pic]}', data));
+	}
 
 	$(document).on("click", "#btnSave", function () {
 		var err = 0;
+		var fid = $("[data-f=fid]").val();
 		var formData = new FormData();
 		formData.append("tag", 'edit_refinance_info');
 		formData.append("skuid", $sls.skuid);
@@ -244,7 +278,7 @@
 			var self = $(this);
 			var f = self.attr('data-f');
 			var v = self.val();
-			var t = self.closest('.form-group').find('.col-sm-2');
+			var t = self.closest('.form-group').find('.col-sm-2').html();
 			if ($.inArray(f, ['pay_aid', 'pay_amt']) > -1 && !v) {
 				layer.msg(t + '是必填项');
 				self.focus();
@@ -255,20 +289,21 @@
 			}
 			if (f == 'pay_pic') {
 				var files = self[0].files;
-				var img_len = self.length;
-				if (img_len) {
-					if (img_len < 1 || img_len > 10) {
-						layer.msg('图片至少1张，且不可超过10张');
-						err = 1;
-						return false;
-					}
-					$.each(files, function (k, v) {
-						formData.append("pay_pic[]", v)
-					});
+				console.log(files, fid);
+				var img_len = files.length;
+				if (!fid && (img_len < 1 || img_len > 10)) {
+					layer.msg('图片至少1张，且不可超过10张');
+					err = 1;
+					return false;
 				}
+				$.each(files, function (k, v) {
+					formData.append("pay_pic[]", v)
+				});
 			}
 		});
-
+		if (err) {
+			return;
+		}
 		if ($sls.loadflag) {
 			return;
 		}
@@ -283,13 +318,38 @@
 			success: function (resp) {
 				$sls.loadflag = 0;
 				if (resp.code < 1) {
-					console.log(resp);
+					init_pay_info({});
+					$("#modModal").modal("hide");
 				} else {
 					console.log(resp.msg);
 				}
 			}
 		});
 	});
+
+	function load_pay_info(cb) {
+		if ($sls.loadflag) {
+			return;
+		}
+		$sls.loadflag = 1;
+		layer.load();
+		$.post("/api/youz",
+			{
+				tag: 'get_refinance_info',
+				tid: $sls.tid,
+				skuid: $sls.skuid,
+				gid: $sls.gid,
+			},
+			function (resp) {
+				layer.closeAll();
+				$sls.loadflag = 0;
+				if (resp.code == 0) {
+					typeof cb == "function" && cb(resp.data);
+				} else {
+					layer.msg(resp.msg);
+				}
+			}, "json");
+	}
 
 	// 导出表格
 	$(".opExcel").on("click", function () {
@@ -309,6 +369,7 @@
 				subtag: 'orders',
 			},
 			function (resp) {
+				layer.clear();
 				$sls.loadflag = 0;
 				if (resp.code == 0) {
 					location.reload();
@@ -317,6 +378,30 @@
 				}
 			}, "json");
 	});
+
+	$(document).on("click", ".i-av", function () {
+		var self = $(this);
+		var photos = {
+			title: '头像大图',
+			data: [{
+				src: self.attr("bsrc")
+			}]
+		};
+		showImages(photos);
+	});
+
+	function showImages(imagesJson, idx) {
+		if (idx) {
+			imagesJson.start = idx;
+		}
+		layer.photos({
+			photos: imagesJson,
+			shift: 5,
+			tab: function (info) {
+				console.log(info);
+			}
+		});
+	}
 
 </script>
 {{include file="layouts/footer.tpl"}}

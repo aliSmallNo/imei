@@ -384,6 +384,7 @@ class ApiController extends Controller
 	public function actionYouz()
 	{
 		$tag = trim(strtolower(self::postParam('tag')));
+		$is_zp = Admin::getAdminId() == 1002;
 		switch ($tag) {
 			case 'mod_admin_id':
 				$yzuid = self::postParam('uid');
@@ -539,8 +540,15 @@ class ApiController extends Controller
 				foreach (YzFinance::$fields as $field) {
 					$data[$field] = self::postParam($field);
 				}
-				list($code, $msg) = YzFinance::check_fields($data);
-				return self::renderAPI($code, $msg);
+				list($code, $msg, $res) = YzFinance::check_fields($data);
+				return self::renderAPI($code, $msg, $is_zp ? $res : []);
+				break;
+			case "get_refinance_info":
+				foreach (YzFinance::$fields as $field) {
+					$data[$field] = self::postParam($field);
+				}
+				$res = YzFinance::get_one($data);
+				return self::renderAPI(0, "GET REFINANCE INFO OK", $res);
 				break;
 			default:
 				break;
