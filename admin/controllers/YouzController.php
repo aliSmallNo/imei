@@ -465,6 +465,7 @@ class YouzController extends BaseController
 				'items' => $items,
 				'getInfo' => $getInfo,
 				'stDict' => $stDict,
+				'bds' => Admin::getAdmins(1),
 			]);
 	}
 

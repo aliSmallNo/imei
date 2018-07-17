@@ -88,8 +88,8 @@ class YzExpress extends ActiveRecord
 		// 获取快递信息
 		$method = 'youzan.logistics.goodsexpress.get'; //要调用的api名称
 		$params = [
-			'express_id' => 38,
-			'express_no' => 900258799219,
+			'express_id' => 5,
+			'express_no' => 668691050770,
 		];
 		$ret = YouzanUtil::getData($method, $params);
 		$retStyle = [

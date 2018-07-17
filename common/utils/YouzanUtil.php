@@ -112,8 +112,6 @@ class YouzanUtil
 			];
 		}
 		return $res;
-
-
 	}
 
 	public static function update_data($tag)

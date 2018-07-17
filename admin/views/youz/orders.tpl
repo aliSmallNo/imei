@@ -121,6 +121,7 @@
 							<span class="st_{{$item.o_status}}">{{$item.status_str}}</span><br><br>
 							订单: {{$item.o_sku_num}}件 | {{$item.o_total_fee}}<br>
 							支付: {{$item.o_payment}}元 退款: {{$item.o_refund}}<br>
+							{{if $item.trade_memo}}<span class="st_WAIT_BUYER_PAY">备注：{{$item.trade_memo}}</span>{{/if}}
 						</td>
 					{{/if}}
 					<td>
@@ -129,13 +130,16 @@
 					<td>
 						{{$order.title}}
 					</td>
-					<td>
+					<td data-tid="{{$item.o_tid}}" data-gid="{{$order.item_id}}" data-skuid="{{$order.sku_id}}" data-title="{{$order.title}}"
+							data-payment="{{if $item.o_pay_time}}{{$order.payment}}{{else}}0{{/if}}">
 						<div>
 							订单: {{$order.price}}*{{$order.num}}={{$order.total_fee}}<br>
 							支付: {{if $item.o_pay_time}}{{$order.payment}}{{else}}0{{/if}}元<br>
 							{{foreach from=$order.sku_properties_name_arr item=$prop}}
-								{{$prop.k}}:{{$prop.v}}
-							{{/foreach}}
+							{{$prop.k}}:{{$prop.v}}
+							{{/foreach}}<br>
+
+							<a class="add_pay_info btn btn-outline btn-primary btn-xs">添加付款信息</a>
 						</div>
 					</td>
 					{{if $okey==0}}
@@ -158,21 +162,45 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
 									aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">管理员</h4>
+				<h4 class="modal-title">请填写支付信息</h4>
 			</div>
 			<div class="modal-body" style="overflow:hidden">
 				<div class="col-sm-12 form-horizontal">
-
 					<div class="form-group">
-						<label class="col-sm-2 control-label">管理员:</label>
-						<div class="col-sm-4">
-							<select class="form-control" data-field="aid">
+						<label class="col-sm-2 control-label">商品:</label>
+						<div class="col-sm-7">
+							<p data-title="title"></p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">买家支付:</label>
+						<div class="col-sm-7">
+							<p data-payment="payment"></p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">付款人</label>
+						<div class="col-sm-7">
+							<select class="form-control" data-f="pay_aid">
 								<option value="">-=请选择=-</option>
-
+								{{foreach from=$bds item=bd key=key}}
+									<option value="{{$key}}">{{$bd}}</option>
+								{{/foreach}}
 							</select>
 						</div>
 					</div>
-
+					<div class="form-group">
+						<label class="col-sm-2 control-label">付款金额</label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control" data-f="pay_amt">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">付款截图</label>
+						<div class="col-sm-7">
+							<input type="file" data-f="pay_pic" multiple accept=".png,.jpg,.jpeg">
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -185,64 +213,103 @@
 
 <script>
 	$sls = {
-		uid: '',
-		name: '',
+		loadflag: 0,
+	  tid: '',
+	  gid: '',
+		skuid: '',
+		title: '',
+		payment: '',
 		titleObj: $("#modModal").find('.modal-title'),
 	};
-	$("a.modU").click(function () {
-		var self = $(this).closest("tr");
-		$sls.uid = self.attr('data-uid');
-		$sls.name = self.attr('data-name');
-		$sls.titleObj.html('请选择【' + $sls.name + '】的管理员');
+	$("a.add_pay_info").click(function () {
+		var self = $(this).closest("td");
+		$sls.tid = self.attr('data-tid');
+		$sls.gid = self.attr('data-gid');
+		$sls.skuid = self.attr('data-skuid');
+		$sls.title = self.attr('data-title');
+		$sls.payment = self.attr('data-payment');
+		$('[data-title=title]').html($sls.title);
+		$('[data-payment=payment]').html($sls.payment);
 		$("#modModal").modal("show")
 	});
 
-	var loadflag = 0;
 	$(document).on("click", "#btnSave", function () {
 		var err = 0;
-		var postData = {tag: "mod_admin_id", uid: $sls.uid};
-		var aid = $("[data-field=aid]").val();
-		if (!aid) {
-			layer.msg('请选择管理员');
-			return;
-		}
-		postData['aid'] = aid;
-		console.log(postData);
-
-		if (loadflag) {
-			return;
-		}
-		loadflag = 1;
-		$.post("/api/youz",
-			postData,
-			function (resp) {
-				loadflag = 0;
-				if (resp.code == 0) {
-					location.reload();
-				} else {
-					layer.msg(resp.msg);
+		var formData = new FormData();
+		formData.append("tag", 'edit_refinance_info');
+		formData.append("skuid", $sls.skuid);
+		formData.append("gid", $sls.gid);
+		formData.append("tid", $sls.tid);
+		$("[data-f]").each(function () {
+			var self = $(this);
+			var f = self.attr('data-f');
+			var v = self.val();
+			var t = self.closest('.form-group').find('.col-sm-2');
+			if ($.inArray(f, ['pay_aid', 'pay_amt']) > -1 && !v) {
+				layer.msg(t + '是必填项');
+				self.focus();
+				err = 1;
+				return false;
+			} else {
+				formData.append(f, v)
+			}
+			if (f == 'pay_pic') {
+				var files = self[0].files;
+				var img_len = self.length;
+				if (img_len) {
+					if (img_len < 1 || img_len > 10) {
+						layer.msg('图片至少1张，且不可超过10张');
+						err = 1;
+						return false;
+					}
+					$.each(files, function (k, v) {
+						formData.append("pay_pic[]", v)
+					});
 				}
-			}, "json");
-	})
+			}
+		});
 
+		if ($sls.loadflag) {
+			return;
+		}
+		$sls.loadflag = 1;
+		$.ajax({
+			url: '/api/youz',
+			type: "POST",
+			data: formData,
+			cache: false,
+			processData: false,
+			contentType: false,
+			success: function (resp) {
+				$sls.loadflag = 0;
+				if (resp.code < 1) {
+					console.log(resp);
+				} else {
+					console.log(resp.msg);
+				}
+			}
+		});
+	});
+
+	// 导出表格
 	$(".opExcel").on("click", function () {
 		var url = "/youz/orders?export=excel";
 		location.href = url;
 	});
-
-
+	// 更新订单
 	$(".update_data").on("click", function () {
-		if (loadflag) {
+		if ($sls.loadflag) {
 			return;
 		}
-		loadflag = 1;
+		$sls.loadflag = 1;
+		layer.load();
 		$.post("/api/youz",
 			{
 				tag: 'update_admin_data',
 				subtag: 'orders',
 			},
 			function (resp) {
-				loadflag = 0;
+				$sls.loadflag = 0;
 				if (resp.code == 0) {
 					location.reload();
 				} else {

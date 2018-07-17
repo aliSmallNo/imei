@@ -33,6 +33,7 @@ use common\models\UserTrans;
 use common\models\UserWechat;
 use common\models\YzClient;
 use common\models\YzClientGoods;
+use common\models\YzFinance;
 use common\models\YzFt;
 use common\models\YzOrders;
 use common\models\YzUser;
@@ -533,6 +534,13 @@ class ApiController extends Controller
 					'cStatus' => $st,
 				]);
 				return self::renderAPI(self::CODE_SUCCESS, "OK");
+				break;
+			case "edit_refinance_info":
+				foreach (YzFinance::$fields as $field) {
+					$data[$field] = self::postParam($field);
+				}
+				list($code, $msg) = YzFinance::check_fields($data);
+				return self::renderAPI($code, $msg);
 				break;
 			default:
 				break;
