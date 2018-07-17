@@ -478,7 +478,8 @@ class YouzController extends BaseController
 		$page = self::getParam("page", 1);
 		$name = self::getParam("name");
 		$stime = self::getParam("stime");
-		$stime = self::getParam("etime");
+		$etime = self::getParam("etime");
+		$bd = self::getParam("bd");
 		$st = self::getParam("st");
 
 		$criteria = $params = [];
@@ -486,13 +487,14 @@ class YouzController extends BaseController
 			$criteria[] = " (u1.uName like :name or o.o_receiver_name like :name) ";
 			$params[':name'] = '%' . trim($name) . '%';
 		}
-		if ($stime && $stime) {
-			$criteria[] = " (u1.uPhone = :phone or o.o_receiver_tel=:phone) ";
-			$params[':phone'] = trim($stime);
+		if ($stime && $etime) {
+			$criteria[] = " (f.f_create_on between :stime and :etime) ";
+			$params[':stime'] = trim($stime . ' 00:00:00');
+			$params[':etime'] = trim($stime . ' 23:59:59');
 		}
-		if ($st) {
-			$criteria[] = " o.o_status = :st ";
-			$params[':st'] = trim($st);
+		if ($bd) {
+			$criteria[] = " f.f_pay_aid = :aid ";
+			$params[':aid'] = trim($bd);
 		}
 
 		list($items, $count) = YzFinance::items($criteria, $params, $page);
