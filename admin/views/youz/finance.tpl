@@ -140,7 +140,9 @@
 						{{/foreach}}
 					</div>
 					<div>上传截图时间：{{$item.f_create_on|date_format:'%y-%m-%d %H:%M'}}</div>
-					{{if $is_supply_chain}}<a class="add_pay_info btn btn-outline btn-primary btn-xs">编辑付款信息</a>{{/if}}
+					{{if $is_supply_chain && $item.f_status==3}}
+						<a class="add_pay_info btn btn-outline btn-primary btn-xs">编辑付款信息</a>
+					{{/if}}
 				</td>
 				<td>
 					{{if $item.f_status==3 && $is_finance}}
