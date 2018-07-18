@@ -317,6 +317,9 @@
 					init_pay_info({});
 					$("#modModal").modal("hide");
 					layer.msg('编辑成功~');
+					setTimeout(function () {
+						location.reload();
+					}, 800)
 				} else {
 					layer.msg(resp.msg);
 				}
