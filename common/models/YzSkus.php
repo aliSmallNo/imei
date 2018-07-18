@@ -108,8 +108,14 @@ class YzSkus extends ActiveRecord
 		];
 		if (!self::findOne(['s_sku_id' => $v['sku_id']])) {
 			self::process($data);
-			echo $v['sku_id'] . PHP_EOL;
+			echo 'sku_id:' . $v['sku_id'] . PHP_EOL;
 		}
+
+		if (!YzGoods::findOne(['g_item_id' => $v['item_id']])) {
+			YzGoods::get_goods_desc_by_id($v['item_id']);
+			echo 'item_id:' . $v['item_id'] . PHP_EOL;exit;
+		}
+
 	}
 
 
