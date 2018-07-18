@@ -136,7 +136,7 @@ class YzOrders extends ActiveRecord
 
 			YzOrdersDes::process(array_merge($order_info, $order, $buyer_info, $address_info));
 			// 更新订单商品的商品信息sku信息
-			 self::add_skus_goods($order);
+			self::add_skus_goods($order);
 		}
 		$full_order_info['payment'] = $order_payment;
 		$full_order_info['price'] = 0;
@@ -568,6 +568,12 @@ class YzOrders extends ActiveRecord
 		foreach ($orders as $ok => $ov) {
 			$orders[$ok]['sku_properties_name_arr'] = json_decode($ov['sku_properties_name'], 1);
 			$orders[$ok]['key_flag'] = $ok > 0 ? 0 : 1;
+			$finance_info = YzFinance::get_one([
+				'gid' => $ov['item_id'],
+				'tid' => $row['o_tid'],
+				'skuid' => $ov['sku_id'],
+			]);
+			$orders[$ok]['f_status'] = $finance_info ? $finance_info['status'] : 0;
 		}
 		$arr['orders'] = $orders;
 		$arr['co'] = count($orders);
