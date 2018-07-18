@@ -113,7 +113,7 @@ class YzSkus extends ActiveRecord
 
 		if (!YzGoods::findOne(['g_item_id' => $v['item_id']])) {
 			YzGoods::get_goods_desc_by_id($v['item_id']);
-			echo 'item_id:' . $v['item_id'] . PHP_EOL;exit;
+			echo 'item_id:' . $v['item_id'] . PHP_EOL;
 		}
 
 	}
