@@ -320,6 +320,7 @@
 				if (resp.code < 1) {
 					init_pay_info({});
 					$("#modModal").modal("hide");
+					layer.msg('编辑成功~');
 				} else {
 					layer.msg(resp.msg);
 				}
