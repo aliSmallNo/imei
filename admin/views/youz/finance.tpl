@@ -73,7 +73,7 @@
 	.prop_name {
 		background: #0075cf;
 		color: #fff;
-		font-size: 12px;
+		font-size: 10px;
 		padding: 2px 5px;
 		border-radius: 3px;
 	}
