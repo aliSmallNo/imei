@@ -198,14 +198,16 @@ class YzFinance extends ActiveRecord
 			$criteriaStr = ' and ' . implode(" and ", $criteria);
 		}
 
-		$sql = "select f.*,od.*,a.aName
+		$sql = "select f.*,od.*,a.aName,o.o_remark_info
 				from im_yz_finance as f
 				left join im_yz_order_des as od on od.od_id=f.f_od_id
 				left join im_admin as a on a.aId=f.f_pay_aid
+				left join im_yz_orders as o on o.o_tid=f.f_tid
 				where f_id>0 $criteriaStr order by f.f_create_on desc $limit ";
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as $k => $v) {
 			$res[$k] = array_merge($res[$k], [
+				'trade_memo' => json_decode($v['o_remark_info'], 1)['trade_memo'] ?? '',
 				'pay_pic' => json_decode($v['f_pay_pic'], 1),
 				'status_str' => YzOrders::$stDict[$v['od_status']] ?? '',
 				'f_status_str' => self::$stDict[$v['f_status']] ?? '',

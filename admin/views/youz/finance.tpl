@@ -143,7 +143,8 @@
 				<td data-tid="{{$item.od_tid}}" data-gid="{{$item.od_item_id}}" data-skuid="{{$item.od_sku_id}}"
 						data-title="{{$item.od_title}}"
 						data-payment="{{if $item.od_paytime}}{{$item.od_payment}}{{else}}0{{/if}}">
-					{{$item.aName}}支付：{{$item.f_pay_amt/100}}元({{$item.f_pay_note}})<br>
+					{{if $item.trade_memo}}<span class="st_WAIT_BUYER_PAY">备注：{{$item.trade_memo}}</span>{{/if}}
+					<div>{{$item.aName}}支付：{{$item.f_pay_amt/100}}元({{$item.f_pay_note}})</div>
 					<div>
 						{{foreach from=$item.pay_pic item=pic}}
 							<img src="{{$pic[0]}}" bsrc="{{$pic[1]}}" class="i-av small">
