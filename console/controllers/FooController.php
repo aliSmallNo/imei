@@ -1489,7 +1489,7 @@ class FooController extends Controller
 		// ChatMsg::massmsg();
 
 		/* 去掉昵称表情符号
-		 * $conn = AppUtil::db();
+		$conn = AppUtil::db();
 		$sql = 'update im_yz_user set uName=:uname where uId =:id';
 		$upCMD = $conn->createCommand($sql);
 		$sql = 'select uId,uName from im_yz_user where uId >0 ';
