@@ -135,7 +135,8 @@ class YzOrders extends ActiveRecord
 			$total_fee = $total_fee + $order['total_fee'];
 
 			YzOrdersDes::process(array_merge($order_info, $order, $buyer_info, $address_info));
-			// YzSkus::pre_process($order);
+			// 更新订单商品的商品信息sku信息
+			 self::add_skus_goods($order);
 		}
 		$full_order_info['payment'] = $order_payment;
 		$full_order_info['price'] = 0;
@@ -330,7 +331,7 @@ class YzOrders extends ActiveRecord
 				$insert['od_payment'] = $order['payment'] ?? '';*/
 
 				// YzOrdersDes::process(array_merge($order_info, $order, $buyer_info, $address_info));
-				YzSkus::pre_process($order);
+				self::add_skus_goods($order);
 
 			}
 			/*self::edit($order_info['tid'], [
@@ -366,6 +367,35 @@ class YzOrders extends ActiveRecord
 
 		}
 
+	}
+
+	/**
+	 * 在订单中的商品 商品表，SKU表 无此 商品信息 sku信息
+	 * 再此添加进去
+	 */
+	public static function add_skus_goods($v)
+	{
+		$data = [
+			"item_id" => $v['item_id'],
+			"sku_id" => $v['sku_id'],
+			"price" => $v['price'],
+			"properties_name_json" => $v['sku_properties_name'],
+			"sku_unique_code" => $v['item_id'] . $v['sku_id'],
+		];
+		if (!YzGoods::findOne(['g_item_id' => $v['item_id']])) {
+			YzGoods::get_goods_desc_by_id($v['item_id']);
+		}
+
+		if (!YzSkus::findOne(['s_sku_id' => $v['sku_id']])) {
+			YzSkus::process($data);
+		}
+		if (!YzGoods::findOne(['g_item_id' => $v['item_id']])) {
+			YzGoods::process([
+				"item_id" => $v['item_id'],
+				"title" => $v['title'],
+				"price" => $v['price'],
+			]);
+		}
 	}
 
 
