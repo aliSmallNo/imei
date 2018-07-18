@@ -174,6 +174,12 @@ class Menu
 						"level" => 820
 					],
 					[
+						"name" => "对账信息",
+						"url" => "/youz/finance",
+						"revise" => 1,
+						"level" => 820
+					],
+					[
 						"name" => "数据分析",
 						"url" => "/youz/datastat",
 						"revise" => 1,

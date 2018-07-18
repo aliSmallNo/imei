@@ -1,5 +1,5 @@
 {{include file="layouts/header.tpl"}}
-<style xmlns="">
+<style>
 	td img {
 		width: 64px;
 		height: 64px;
