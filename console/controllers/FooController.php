@@ -1514,7 +1514,8 @@ class FooController extends Controller
 		//YzOrders::Update_order('', '', 1);
 
 		//YzOrders::orders_user_mix_update(1);
-		//YzOrders::youzan_express();
+
+		YzOrders::orders_user_mix_update();
 
 		//YzGoods::update_goods(1);
 

@@ -78,5 +78,39 @@ class YzSkus extends ActiveRecord
 		return self::edit($s_sku_id, $insert);
 	}
 
+	public static function pre_process($v)
+	{
+		/**
+		 * "outer_sku_id":"",
+		 * "goods_url":"https://h5.youzan.com/v2/showcase/goods?alias=2xgiqyled5khb",
+		 * "item_id":423247562,
+		 * "outer_item_id":"",
+		 * "item_type":0,
+		 * "num":1,
+		 * "sku_id":36228235,
+		 * "sku_properties_name":"[]",
+		 * "pic_path":"https://img.yzcdn.cn/upload_files/2018/06/28/FrRupw-Q-q-SYeuXCRvymXNYniKl.jpg",
+		 * "oid":"1460653740664029187",
+		 * "title":"2018新款海澜之家正品【剪标】男士时尚自动扣皮带【卡扣款式随机发货】——买好货、想省钱，就去到家严选",
+		 * "buyer_messages":"",
+		 * "points_price":"0",
+		 * "price":"59.90",
+		 * "total_fee":"29.95",
+		 * "alias":"2xgiqyled5khb",
+		 * "payment":"29.95"
+		 */
+		$data = [
+			"item_id" => $v['item_id'],
+			"sku_id" => $v['sku_id'],
+			"price" => $v['price'],
+			"properties_name_json" => $v['sku_properties_name'],
+			"sku_unique_code" => $v['item_id'] . $v['sku_id'],
+		];
+		if (!self::findOne(['s_sku_id' => $v['sku_id']])) {
+			self::process($data);
+			echo $v['sku_id'] . PHP_EOL;exit;
+		}
+	}
+
 
 }
