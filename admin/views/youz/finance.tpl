@@ -70,6 +70,13 @@
 		margin-right: 5px;
 	}
 
+	.prop_name {
+		background: #0075cf;
+		color: #fff;
+		font-size: 12px;
+		padding: 2px 5px;
+		border-radius: 3px;
+	}
 </style>
 <div class="row">
 	<h4>对账信息: 总付款：{{$total_pay}}</h4>
@@ -123,6 +130,9 @@
 				<td>
 					<div class="order_title">
 						{{$item.od_title}}
+						{{if $item.prop_name}}
+							<span class="prop_name">{{foreach from=$item.prop_name item=prop}}{{$prop.k}}:{{$prop.v}} {{/foreach}}</span>
+						{{/if}}
 					</div>
 					<span class="st_{{$item.od_status}}">{{$item.status_str}}</span><br>
 					<div class="order_des">

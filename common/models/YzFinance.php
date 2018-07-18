@@ -209,6 +209,7 @@ class YzFinance extends ActiveRecord
 				'pay_pic' => json_decode($v['f_pay_pic'], 1),
 				'status_str' => YzOrders::$stDict[$v['od_status']] ?? '',
 				'f_status_str' => self::$stDict[$v['f_status']] ?? '',
+				'prop_name' => $v['od_sku_properties_name'] ? json_decode($v['od_sku_properties_name'], 1) : '',
 			]);
 		}
 
