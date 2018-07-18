@@ -502,13 +502,14 @@ class YouzController extends BaseController
 			$params[':st'] = trim($st);
 		}
 
-		list($items, $count) = YzFinance::items($criteria, $params, $page);
+		list($items, $count, $total_pay) = YzFinance::items($criteria, $params, $page);
 		$pagination = self::pagination($page, $count);
 		return $this->renderPage('finance.tpl',
 			[
 				'page' => $page,
 				'pagination' => $pagination,
 				'items' => $items,
+				'total_pay' => $total_pay,
 				'getInfo' => $getInfo,
 				'order_stDict' => YzOrders::$stDict,
 				'f_stDict' => YzFinance::$stDict,

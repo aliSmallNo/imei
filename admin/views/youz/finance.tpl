@@ -72,7 +72,7 @@
 
 </style>
 <div class="row">
-	<h4>对账信息</h4>
+	<h4>对账信息: 总付款：{{$total_pay}}</h4>
 </div>
 <div class="row">
 	<form action="/youz/finance" class="form-inline">
@@ -153,7 +153,6 @@
 						<div>审核于{{$item.f_audit_on|date_format:'%y-%m-%d %H:%M'}}</div>
 					{{/if}}
 				</td>
-
 			</tr>
 		{{/foreach}}
 		</tbody>

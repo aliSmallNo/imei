@@ -212,14 +212,19 @@ class YzFinance extends ActiveRecord
 			]);
 		}
 
-		$sql = "select count(*)
+		$sql = "select count(*),sum(f_pay_amt)
 				from im_yz_finance as f
 				left join im_yz_order_des as od on od.od_id=f.f_od_id
 				left join im_admin as a on a.aId=f.f_pay_aid
 				where f_id>0 $criteriaStr";
-		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
+		$stat = $conn->createCommand($sql)->bindValues($params)->queryOne();
+		$count = $total_pay = 0;
+		if ($stat) {
+			$stat = array_values($stat);
+			list($count, $total_pay) = $stat;
+		}
 
-		return [$res, $count];
+		return [$res, $count, sprintf('%.2f', $total_pay / 100)];
 
 	}
 }
