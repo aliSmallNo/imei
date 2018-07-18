@@ -106,15 +106,23 @@ class YzSkus extends ActiveRecord
 			"properties_name_json" => $v['sku_properties_name'],
 			"sku_unique_code" => $v['item_id'] . $v['sku_id'],
 		];
+		if (!YzGoods::findOne(['g_item_id' => $v['item_id']])) {
+			YzGoods::get_goods_desc_by_id($v['item_id']);
+		}
+
 		if (!self::findOne(['s_sku_id' => $v['sku_id']])) {
 			self::process($data);
 			echo 'sku_id:' . $v['sku_id'] . PHP_EOL;
 		}
-
 		if (!YzGoods::findOne(['g_item_id' => $v['item_id']])) {
-			YzGoods::get_goods_desc_by_id($v['item_id']);
+			YzGoods::process([
+				"item_id" => $v['item_id'],
+				"title" => $v['title'],
+				"price" => $v['price'],
+			]);
 			echo 'item_id:' . $v['item_id'] . PHP_EOL;
 		}
+
 
 	}
 
