@@ -317,7 +317,7 @@
 					init_pay_info({});
 					$("#modModal").modal("hide");
 				} else {
-					console.log(resp.msg);
+					layer.msg(resp.msg);
 				}
 			}
 		});
