@@ -108,7 +108,7 @@ class YzSkus extends ActiveRecord
 		];
 		if (!self::findOne(['s_sku_id' => $v['sku_id']])) {
 			self::process($data);
-			echo $v['sku_id'] . PHP_EOL;exit;
+			echo $v['sku_id'] . PHP_EOL;
 		}
 	}
 
