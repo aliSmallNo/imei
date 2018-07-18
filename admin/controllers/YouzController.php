@@ -468,6 +468,7 @@ class YouzController extends BaseController
 				'stDict' => $stDict,
 				'bds' => Admin::getAdmins(1),
 				'isZp' => Admin::getAdminId() == 1002,
+				'is_supply_chain' => Admin::isGroupUser(Admin::GROUP_SUPPLY_CHAIN),
 			]);
 	}
 
@@ -496,19 +497,25 @@ class YouzController extends BaseController
 			$criteria[] = " f.f_pay_aid = :aid ";
 			$params[':aid'] = trim($bd);
 		}
+		if ($st) {
+			$criteria[] = " f.f_status = :st ";
+			$params[':st'] = trim($st);
+		}
 
 		list($items, $count) = YzFinance::items($criteria, $params, $page);
 		$pagination = self::pagination($page, $count);
-		$stDict = YzOrders::$stDict;
 		return $this->renderPage('finance.tpl',
 			[
 				'page' => $page,
 				'pagination' => $pagination,
 				'items' => $items,
 				'getInfo' => $getInfo,
-				'stDict' => $stDict,
+				'order_stDict' => YzOrders::$stDict,
+				'f_stDict' => YzFinance::$stDict,
 				'bds' => Admin::getAdmins(1),
 				'isZp' => Admin::getAdminId() == 1002,
+				'is_finance' => Admin::isGroupUser(Admin::GROUP_FINANCE),
+				'is_supply_chain' => Admin::isGroupUser(Admin::GROUP_SUPPLY_CHAIN),
 			]);
 	}
 

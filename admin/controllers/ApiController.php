@@ -550,6 +550,14 @@ class ApiController extends Controller
 				$res = YzFinance::get_one($data);
 				return self::renderAPI(0, "GET REFINANCE INFO OK", $res);
 				break;
+			case "audit_refinance_info":
+				$data = [
+					'flag' => self::postParam("f"),
+					'fid' => self::postParam("fid"),
+				];
+				list($code, $msg, $res) = YzFinance::audit_one($data);
+				return self::renderAPI($code, $msg, $is_zp ? $res : []);
+				break;
 			default:
 				break;
 		}

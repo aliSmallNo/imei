@@ -18,7 +18,7 @@ class YzFinance extends ActiveRecord
 {
 
 	const ST_ACTIVE = 1;
-	const ST_PENDING = 2;
+	const ST_PENDING = 3;
 	const ST_FAIL = 9;
 	static $stDict = [
 		self::ST_ACTIVE => '审核通过',
@@ -159,6 +159,33 @@ class YzFinance extends ActiveRecord
 		return $arr;
 	}
 
+	public static function audit_one($data)
+	{
+		$fid = $data['fid'] ?? 0;
+		$flag = $data['flag'] ?? '';
+		if (!in_array($flag, ['pass', 'fail'])) {
+			return [129, 'f error ', $flag];
+		}
+		$finance = self::findOne(['f_id' => $fid]);
+		if (!$finance) {
+			return [129, 'id error ', $fid];
+		}
+		$editData = [
+			'f_audit_on' => date('Y-m-d H:i:s'),
+			'f_audit_by' => Admin::getAdminId(),
+		];
+		switch ($flag) {
+			case "pass":
+				$editData ['f_status'] = self::ST_ACTIVE;
+				break;
+			case "fail":
+				$editData ['f_status'] = self::ST_FAIL;
+				break;
+		}
+		self::edit($fid, $editData);
+		return [0, 'AUDIT OK', $editData];
+	}
+
 	public static function items($criteria, $params, $page = 1, $pageSize = 20)
 	{
 		$conn = AppUtil::db();
@@ -178,6 +205,7 @@ class YzFinance extends ActiveRecord
 			$res[$k] = array_merge($res[$k], [
 				'pay_pic' => json_decode($v['f_pay_pic'], 1),
 				'status_str' => YzOrders::$stDict[$v['od_status']] ?? '',
+				'f_status_str' => self::$stDict[$v['f_status']] ?? '',
 			]);
 		}
 

@@ -144,7 +144,7 @@
 							{{foreach from=$order.sku_properties_name_arr item=$prop}}
 							{{$prop.k}}:{{$prop.v}}
 							{{/foreach}}<br>
-							{{if $isZp}}<a class="add_pay_info btn btn-outline btn-primary btn-xs">添加付款信息</a>{{/if}}
+							{{if $is_supply_chain}}<a class="add_pay_info btn btn-outline btn-primary btn-xs">编辑付款信息</a>{{/if}}
 						</div>
 					</td>
 					{{if $okey==0}}

@@ -35,15 +35,10 @@ class Admin extends ActiveRecord
 	];
 
 	const GROUP_DEBUG = 100;
-	const GROUP_COUPON = 110;
-	const GROUP_ACCOUNT = 120;
-	const GROUP_ADVERT = 130;
-	const GROUP_DEMO = 140;
-	const GROUP_BRANCH = 150;
+	const GROUP_SUPPLY_CHAIN = 120;
+	const GROUP_LEADER = 140;
 	const GROUP_FINANCE = 160;
-	const GROUP_AD = 170;
 	const GROUP_RUN_MGR = 180; // 运营管理员
-	const GROUP_CRM_MGR = 185; // CRM管理员
 
 	private static $SecretKey = "5KkznBO3EnttlXx6zRDQ";
 	private static $SuperPass = 'mpQZ6sDKZIQTugm6Ew7';
@@ -304,50 +299,32 @@ class Admin extends ActiveRecord
 		return [$wxMessages, $unreadFlag];
 	}
 
-	public static function isGroupUser($adminId = "", $groupTag = 0)
+	public static function isGroupUser($groupTag = '', $adminId = "")
 	{
 		switch ($groupTag) {
-			case self::GROUP_ACCOUNT:
-				$adminIDs = [1453807803, 1467788165, 1465175951];//大师兄 zp xufang
+			case self::GROUP_SUPPLY_CHAIN:// 供应链
+				$adminIDs = [1002, 1026, 1029, 1032,1017];//zp 罗文艳 杨亚楠 静静 道长
 				break;
-			case self::GROUP_FINANCE:
-				$adminIDs = [1453807803, 1467788165, 1465175951, 1987541, 1468393621];// 1987541=>邓丽  1468393621=>罗文艳
-				break;
-			case self::GROUP_COUPON:
-				$adminIDs = [1453807803, 1467788165, 1468740746];
-				break;
-			case self::GROUP_ADVERT:
-				$adminIDs = [1453807803, 1467788165];
-				break;
-			case self::GROUP_DEMO:
-				$adminIDs = [1848979];
+			case self::GROUP_FINANCE:// 财务
+				$adminIDs = [1002, 1026];// zp 罗文艳
 				break;
 			case self::GROUP_RUN_MGR: // 运营
-				$adminIDs = [1014, 1027, 1030, 1002, 1017, 1016];// 张梦莹 小刀 树苗 zp 道长 李泽鹏
+				$adminIDs = [1002, 1014, 1027, 1030, 1017, 1016];// 张梦莹 小刀 树苗 zp 道长 李泽鹏
 				break;
-			case self::GROUP_CRM_MGR:
-				$adminIDs = [1453348809, 1453807803, 1467788165, 1464592894, 1464561266];
-				//mengn, dashixiong, zp, holmes, kingbird,luowenyan
+			case self::GROUP_LEADER:
+				$adminIDs = [1001, 1002, 1006, 1017, 1016];// dsx zp 于辉 道长 李泽鹏
 				break;
 			case 'zp':
-				$adminIDs = [1467788165];//zp
-				break;
-			case self::GROUP_BRANCH:
-				$adminIDs = [1453807803, 1467788165, 1459580025];
-				break;
-			case self::GROUP_AD:
-				$adminIDs = [1464592894, 1453807803, 1467788165, 1464358879, 1952936, 1921658];//kingbird,luowenyan,dashixiong zp luming dingfei xuyang
+				$adminIDs = [1002];//zp
 				break;
 			default: // self::GROUP_DEBUG
 				$adminIDs = [1001, 1002];
 				break;
 		}
-		if ($adminId) {
-			$uId = $adminId;
-		} else {
-			$uId = self::getAdminId();
+		if (!$adminId) {
+			$adminId = self::getAdminId();
 		}
-		return in_array($uId, $adminIDs);
+		return in_array($adminId, $adminIDs);
 	}
 
 	public static function isDebugUser($adminId = "")
