@@ -536,21 +536,21 @@ class ApiController extends Controller
 				]);
 				return self::renderAPI(self::CODE_SUCCESS, "OK");
 				break;
-			case "edit_refinance_info":
+			case "edit_finance_info":
 				foreach (YzFinance::$fields as $field) {
 					$data[$field] = self::postParam($field);
 				}
 				list($code, $msg, $res) = YzFinance::check_fields($data);
 				return self::renderAPI($code, $msg, $is_zp ? $res : []);
 				break;
-			case "get_refinance_info":
+			case "get_finance_info":
 				foreach (YzFinance::$fields as $field) {
 					$data[$field] = self::postParam($field);
 				}
 				$res = YzFinance::get_one($data);
-				return self::renderAPI(0, "GET REFINANCE INFO OK", $res);
+				return self::renderAPI(0, "GET FINANCE INFO OK", $res);
 				break;
-			case "audit_refinance_info":
+			case "audit_finance_info":
 				$data = [
 					'flag' => self::postParam("f"),
 					'fid' => self::postParam("fid"),

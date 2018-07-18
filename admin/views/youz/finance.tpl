@@ -278,7 +278,7 @@
 		var err = 0;
 		var fid = $("[data-f=fid]").val();
 		var formData = new FormData();
-		formData.append("tag", 'edit_refinance_info');
+		formData.append("tag", 'edit_finance_info');
 		formData.append("skuid", $sls.skuid);
 		formData.append("gid", $sls.gid);
 		formData.append("tid", $sls.tid);
@@ -347,7 +347,7 @@
 		layer.load();
 		$.post("/api/youz",
 			{
-				tag: 'get_refinance_info',
+				tag: 'get_finance_info',
 				tid: $sls.tid,
 				skuid: $sls.skuid,
 				gid: $sls.gid,
@@ -365,7 +365,7 @@
 
 
 	var auditData = {
-		tag: 'audit_refinance_info',
+		tag: 'audit_finance_info',
 		fid: 0,
 		f: '',
 	};
