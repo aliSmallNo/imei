@@ -473,7 +473,7 @@ class YouzController extends BaseController
 				'getInfo' => $getInfo,
 				'stDict' => $stDict,
 				'bds' => Admin::getAdmins(1),
-				'isZp' => Admin::getAdminId() == 1002,
+				'isDebugger' => Admin::isGroupUser(),
 				'is_supply_chain' => Admin::isGroupUser(Admin::GROUP_SUPPLY_CHAIN),
 			]);
 	}
@@ -525,7 +525,7 @@ class YouzController extends BaseController
 				'order_stDict' => YzOrders::$stDict,
 				'f_stDict' => YzFinance::$stDict,
 				'bds' => Admin::getAdmins(1),
-				'isZp' => Admin::getAdminId() == 1002,
+				'isDebugger' => Admin::isGroupUser(),
 				'is_finance' => Admin::isGroupUser(Admin::GROUP_FINANCE),
 				'is_supply_chain' => Admin::isGroupUser(Admin::GROUP_SUPPLY_CHAIN),
 			]);

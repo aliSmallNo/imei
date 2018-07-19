@@ -1,5 +1,11 @@
 {{include file="layouts/header.tpl"}}
 <style>
+
+	.font10 {
+		font-size: 10px;
+		color: #0d5ccf;
+	}
+
 	td img {
 		width: 64px;
 		height: 64px;
@@ -125,6 +131,7 @@
 				<td>
 					{{$item.od_fans_nickname}}<br>
 					{{$item.od_receiver_name}}({{$item.od_receiver_tel}})
+					{{if $isDebugger}}<span class="font10">{{$item.od_fans_id}}</span>{{/if}}
 				</td>
 				<td>
 					<img src="{{$item.od_pic_path}}" alt="">
@@ -141,6 +148,11 @@
 						订单: 价格{{$item.od_price}} X 数量{{$item.od_num}} = 应付: {{$item.od_total_fee}}<br>
 						买家支付：{{$item.od_payment}}
 					</div>
+					{{if $isDebugger}}
+						<span class="font10">{{$item.od_tid}}</span>
+						 - <span class="font10">{{$item.od_item_id}}</span>
+						 - <span class="font10">{{$item.od_sku_id}}</span>
+					{{/if}}
 				</td>
 				<td data-tid="{{$item.od_tid}}" data-gid="{{$item.od_item_id}}" data-skuid="{{$item.od_sku_id}}"
 						data-title="{{$item.od_title}}"

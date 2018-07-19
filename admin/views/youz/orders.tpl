@@ -56,7 +56,7 @@
 	<form action="/youz/orders" method="get" class="form-inline">
 
 		<div class="form-group">
-			<input class="form-control" placeholder="商品名称" type="text" name="title"
+			<input class="form-control" placeholder="名称" type="text" name="title"
 						 value="{{if isset($getInfo['title'])}}{{$getInfo['title']}}{{/if}}"/>
 			<input class="form-control" placeholder="用户名称" type="text" name="name"
 						 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
@@ -120,8 +120,10 @@
 						<td rowspan='{{$item.co}}'>
 							用户:{{$item.name}} {{if $item.phone}}{{$item.phone}}{{else}}{{$item.o_buyer_phone}}{{/if}}<br>
 							收货人:{{$item.o_receiver_name}} {{$item.o_receiver_tel}}<br>
+							{{if $isDebugger}}
 							<span class="font10">{{$item.o_fans_id}}</span><br>
 							<span class="font10">{{$item.o_tid}}</span><br>
+							{{/if}}
 						</td>
 						<td rowspan='{{$item.co}}'>
 							<span class="st_{{$item.o_status}}">{{$item.status_str}}</span><br><br>
@@ -132,7 +134,10 @@
 					{{/if}}
 					<td>
 						<img src="{{$order.pic_path}}" style="width: 65px;height: 65px;">
-						<span class="font10">{{$order.sku_id}}</span>
+						{{if $isDebugger}}
+							<div><span class="font10">{{$order.item_id}}</span></div>
+							<div><span class="font10">{{$order.sku_id}}</span></div>
+						{{/if}}
 					</td>
 					<td>
 						{{$order.title}}
