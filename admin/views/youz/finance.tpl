@@ -75,6 +75,9 @@
 		padding: 2px 5px;
 		border-radius: 3px;
 	}
+	.btn-outline{
+		margin: 2px 0;
+	}
 </style>
 <div class="row">
 	<h4>对账信息: 总付款：{{$total_pay}}</h4>
@@ -115,7 +118,7 @@
 			<th class="col-sm-2">商品信息</th>
 			<th class="col-sm-2">订单信息</th>
 			<th class="col-sm-3">截图信息</th>
-			<th class="col-sm-2">财务审核</th>
+			<th class="col-sm-2">操作</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -152,9 +155,7 @@
 						<div><span class="font10">{{$item.od_tid}}</span></div>
 					{{/if}}
 				</td>
-				<td data-tid="{{$item.od_tid}}" data-gid="{{$item.od_item_id}}" data-skuid="{{$item.od_sku_id}}"
-						data-title="{{$item.od_title}}"
-						data-payment="{{if $item.od_paytime}}{{$item.od_payment}}{{else}}0{{/if}}">
+				<td>
 					{{if $item.trade_memo}}<span class="st_WAIT_BUYER_PAY">备注：{{$item.trade_memo}}</span>{{/if}}
 					<div>{{$item.aName}}支付：{{$item.f_pay_amt/100}}元<span class="font_note"> ({{$item.f_pay_note}})</span></div>
 					<div>上传截图时间：{{$item.f_create_on|date_format:'%y-%m-%d %H:%M'}}</div>
@@ -163,18 +164,22 @@
 							<img src="{{$pic[0]}}" bsrc="{{$pic[1]}}" class="i-av small">
 						{{/foreach}}
 					</div>
-					{{if $is_supply_chain && $item.f_status==3}}
-						<a class="add_pay_info btn btn-outline btn-danger btn-xs">编辑付款信息</a>
-					{{/if}}
 				</td>
-				<td>
+				<td  data-tid="{{$item.od_tid}}" data-gid="{{$item.od_item_id}}" data-skuid="{{$item.od_sku_id}}"
+						 data-title="{{$item.od_title}}"
+						 data-payment="{{if $item.od_paytime}}{{$item.od_payment}}{{else}}0{{/if}}">
 					{{if $item.f_status==3 && $is_finance}}
 						<a href="javascript:;" class="operate btn btn-outline btn-primary btn-xs" data-tag="pass">审核通过</a>
 						<a href="javascript:;" class="operate btn btn-outline btn-danger btn-xs" data-tag="fail">审核失败</a>
 					{{else}}
 						<div><span class="f_st_{{$item.f_status}}">{{$item.f_status_str}}</span></div>
-						<div>审核于{{$item.f_audit_on|date_format:'%y-%m-%d %H:%M'}}</div>
+						<div>{{if $item.f_audit_on}}审核于{{$item.f_audit_on|date_format:'%y-%m-%d %H:%M'}}{{/if}}</div>
 					{{/if}}
+
+					{{if $is_supply_chain && $item.f_status==3}}
+						<a class="add_pay_info btn btn-outline btn-danger btn-xs">编辑付款信息</a>
+					{{/if}}
+
 				</td>
 			</tr>
 		{{/foreach}}
@@ -182,6 +187,7 @@
 	</table>
 	{{$pagination}}
 </div>
+
 <div class="modal fade" id="modModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
