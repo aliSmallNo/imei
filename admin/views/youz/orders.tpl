@@ -121,8 +121,10 @@
 							用户:{{$item.name}} {{if $item.phone}}{{$item.phone}}{{else}}{{$item.o_buyer_phone}}{{/if}}<br>
 							收货人:{{$item.o_receiver_name}} {{$item.o_receiver_tel}}<br>
 							{{if $isDebugger}}
-							<span class="font10">{{$item.o_fans_id}}</span><br>
-							<span class="font10">{{$item.o_tid}}</span><br>
+								<span class="font10">{{$item.o_fans_id}}</span>
+								<br>
+								<span class="font10">{{$item.o_tid}}</span>
+								<br>
 							{{/if}}
 						</td>
 						<td rowspan='{{$item.co}}'>
@@ -215,6 +217,12 @@
 						</div>
 					</div>
 					<div class="form-group">
+						<label class="col-sm-2 control-label">截图金额:</label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control" data-f="pic_pay_amt">
+						</div>
+					</div>
+					<div class="form-group">
 						<label class="col-sm-2 control-label">备注</label>
 						<div class="col-sm-7">
 							<input type="text" class="form-control" data-f="pay_note">
@@ -269,11 +277,12 @@
 
 	function init_pay_info(data) {
 		if (!data) {
-			data = {pay_aid: '', pay_amt: '', pay_note: '', id: ''}
+			data = {pay_aid: '', pay_amt: '', pic_pay_amt: '', pay_note: '', id: ''}
 		}
 		$("[data-f=fid]").val(data.id);
 		$("[data-f=pay_aid]").val(data.pay_aid);
 		$("[data-f=pay_amt]").val(data.pay_amt);
+		$("[data-f=pic_pay_amt]").val(data.pic_pay_amt);
 		$("[data-f=pay_note]").val(data.pay_note);
 		$("[data-f=pay_pic]").val('');
 		$("#pay_pic_last").html(Mustache.render('{[#pay_pic]}<img src="{[0]}" class="i-av" bsrc="{[1]}">{[/pay_pic]}', data));
@@ -292,7 +301,7 @@
 			var f = self.attr('data-f');
 			var v = self.val();
 			var t = self.closest('.form-group').find('.col-sm-2').html();
-			if ($.inArray(f, ['pay_aid', 'pay_amt']) > -1 && !v) {
+			if ($.inArray(f, ['pay_aid', 'pay_amt', 'pic_pay_amt']) > -1 && !v) {
 				layer.msg(t + '是必填项');
 				self.focus();
 				err = 1;

@@ -502,7 +502,7 @@ class YouzController extends BaseController
 		if ($stime && $etime) {
 			$criteria[] = " (f.f_create_on between :stime and :etime) ";
 			$params[':stime'] = trim($stime . ' 00:00:00');
-			$params[':etime'] = trim($stime . ' 23:59:59');
+			$params[':etime'] = trim($etime . ' 23:59:59');
 		}
 		if ($bd) {
 			$criteria[] = " f.f_pay_aid = :aid ";

@@ -6,10 +6,9 @@
 		color: #0d5ccf;
 	}
 
-	.font_note {
-		color: #e3a101;
+	.font_pic_note {
+		color: red;
 		font-size: 12px;
-		font-weight: 600;
 	}
 
 	td img {
@@ -75,7 +74,8 @@
 		padding: 2px 5px;
 		border-radius: 3px;
 	}
-	.btn-outline{
+
+	.btn-outline {
 		margin: 2px 0;
 	}
 </style>
@@ -86,11 +86,11 @@
 	<form action="/youz/finance" class="form-inline">
 		<input class="form-control" placeholder="商品名称" type="text" name="title"
 					 value="{{if isset($getInfo['title'])}}{{$getInfo['title']}}{{/if}}"/>
-		<input class="form-control beginDate my-date-input" placeholder="开始时间" name="sdate"
-					 value="{{if isset($getInfo['sdate'])}}{{$getInfo['sdate']}}{{/if}}">
+		<input class="form-control beginDate my-date-input" placeholder="开始时间" name="stime"
+					 value="{{if isset($getInfo['stime'])}}{{$getInfo['stime']}}{{/if}}">
 		至
-		<input class="form-control endDate my-date-input" placeholder="截止时间" name="edate"
-					 value="{{if isset($getInfo['edate'])}}{{$getInfo['edate']}}{{/if}}">
+		<input class="form-control endDate my-date-input" placeholder="截止时间" name="etime"
+					 value="{{if isset($getInfo['etime'])}}{{$getInfo['etime']}}{{/if}}">
 		<select class="form-control" name="bd">
 			<option value="">-=请选择=-</option>
 			{{foreach from=$bds item=bd key=key}}
@@ -136,8 +136,8 @@
 					<div class="order_title">
 						{{$item.od_title}}
 						{{if $item.prop_name}}
-							<div><span
-												class="prop_name">{{foreach from=$item.prop_name item=prop}}{{$prop.k}}:{{$prop.v}} {{/foreach}}</span>
+							<div>
+								<span class="prop_name">{{foreach from=$item.prop_name item=prop}}{{$prop.k}}:{{$prop.v}} {{/foreach}}</span>
 							</div>
 						{{/if}}
 					</div>
@@ -156,8 +156,12 @@
 					{{/if}}
 				</td>
 				<td>
-					{{if $item.trade_memo}}<span class="st_WAIT_BUYER_PAY">备注：{{$item.trade_memo}}</span>{{/if}}
-					<div>{{$item.aName}}支付：{{$item.f_pay_amt/100}}元<span class="font_note"> ({{$item.f_pay_note}})</span></div>
+					{{if $item.trade_memo}}<span class="st_WAIT_BUYER_PAY">有赞备注：{{$item.trade_memo}}</span>{{/if}}
+					<span class="st_WAIT_BUYER_PAY">备注：{{$item.f_pay_note}}</span>
+					<div>
+						{{$item.aName}}支付：{{$item.f_pay_amt/100}}元
+						<span class="font_pic_note">截图金额:{{$item.f_pic_pay_amt/100}}</span>
+					</div>
 					<div>上传截图时间：{{$item.f_create_on|date_format:'%y-%m-%d %H:%M'}}</div>
 					<div>
 						{{foreach from=$item.pay_pic item=pic}}
@@ -165,9 +169,9 @@
 						{{/foreach}}
 					</div>
 				</td>
-				<td  data-tid="{{$item.od_tid}}" data-gid="{{$item.od_item_id}}" data-skuid="{{$item.od_sku_id}}"
-						 data-title="{{$item.od_title}}"
-						 data-payment="{{if $item.od_paytime}}{{$item.od_payment}}{{else}}0{{/if}}">
+				<td data-tid="{{$item.od_tid}}" data-gid="{{$item.od_item_id}}" data-skuid="{{$item.od_sku_id}}"
+						data-title="{{$item.od_title}}"
+						data-payment="{{if $item.od_paytime}}{{$item.od_payment}}{{else}}0{{/if}}">
 					{{if $item.f_status==3 && $is_finance}}
 						<a href="javascript:;" class="operate btn btn-outline btn-primary btn-xs" data-tag="pass">审核通过</a>
 						<a href="javascript:;" class="operate btn btn-outline btn-danger btn-xs" data-tag="fail">审核失败</a>
@@ -179,7 +183,6 @@
 					{{if $is_supply_chain && $item.f_status==3}}
 						<a class="add_pay_info btn btn-outline btn-danger btn-xs">编辑付款信息</a>
 					{{/if}}
-
 				</td>
 			</tr>
 		{{/foreach}}
@@ -226,6 +229,12 @@
 						<label class="col-sm-2 control-label">付款金额</label>
 						<div class="col-sm-7">
 							<input type="text" class="form-control" data-f="pay_amt">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">截图金额:</label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control" data-f="pic_pay_amt">
 						</div>
 					</div>
 					<div class="form-group">
@@ -282,11 +291,12 @@
 
 	function init_pay_info(data) {
 		if (!data) {
-			data = {pay_aid: '', pay_amt: '', pay_note: '', id: ''}
+			data = {pay_aid: '', pay_amt: '', pic_pay_amt: '', pay_note: '', id: ''}
 		}
 		$("[data-f=fid]").val(data.id);
 		$("[data-f=pay_aid]").val(data.pay_aid);
 		$("[data-f=pay_amt]").val(data.pay_amt);
+		$("[data-f=pic_pay_amt]").val(data.pic_pay_amt);
 		$("[data-f=pay_note]").val(data.pay_note);
 		$("[data-f=pay_pic]").val('');
 		$("#pay_pic_last").html(Mustache.render('{[#pay_pic]}<img src="{[0]}" class="i-av" bsrc="{[1]}">{[/pay_pic]}', data));
@@ -305,7 +315,7 @@
 			var f = self.attr('data-f');
 			var v = self.val();
 			var t = self.closest('.form-group').find('.col-sm-2').html();
-			if ($.inArray(f, ['pay_aid', 'pay_amt']) > -1 && !v) {
+			if ($.inArray(f, ['pay_aid', 'pay_amt', 'pic_pay_amt']) > -1 && !v) {
 				layer.msg(t + '是必填项');
 				self.focus();
 				err = 1;

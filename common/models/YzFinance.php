@@ -29,6 +29,7 @@ class YzFinance extends ActiveRecord
 	static $fieldMap = [
 		'id' => 'f_id',
 		'pay_amt' => 'f_pay_amt',
+		'pic_pay_amt' => 'f_pic_pay_amt',
 		'pay_aid' => 'f_pay_aid',
 		'pay_note' => 'f_pay_note',
 		'gid' => 'f_gid',
@@ -37,7 +38,7 @@ class YzFinance extends ActiveRecord
 		'pay_pic' => 'f_pay_pic',
 	];
 
-	static $fields = ['pay_amt', 'pay_aid', 'gid', 'skuid', 'tid', 'fid', 'pay_note'];
+	static $fields = ['pay_amt', 'pic_pay_amt', 'pay_aid', 'gid', 'skuid', 'tid', 'fid', 'pay_note'];
 
 	public static function tableName()
 	{
@@ -91,6 +92,9 @@ class YzFinance extends ActiveRecord
 		if (!$data['pay_amt'] || floatval($data['pay_amt']) <= 0) {
 			return [129, '付款金额格式填写错误~', floatval($data['pay_amt'])];
 		}
+		if (!$data['pic_pay_amt'] || floatval($data['pic_pay_amt']) <= 0) {
+			return [129, '截图付款金额格式填写错误~', floatval($data['pic_pay_amt'])];
+		}
 		if (!$data['pay_aid']) {
 			return [129, '付款人填写错误~', $data['pay_aid']];
 		}
@@ -109,7 +113,7 @@ class YzFinance extends ActiveRecord
 		}
 		foreach (self::$fieldMap as $k => $v) {
 			if (isset($data[$k])) {
-				$insert[$v] = $k == "pay_amt" ? $data[$k] * 100 : $data[$k];
+				$insert[$v] = in_array($k, ['pay_amt', 'pic_pay_amt']) ? $data[$k] * 100 : $data[$k];
 			}
 		}
 		if (!$fid) {
@@ -155,7 +159,7 @@ class YzFinance extends ActiveRecord
 			$new_key = substr($k, 2);
 			if ($new_key == 'pay_pic')
 				$v = json_decode($v, 1);
-			if ($new_key == 'pay_amt')
+			if (in_array($new_key, ['pay_amt', 'pic_pay_amt']))
 				$v = sprintf('%.2f', $v / 100);
 			$arr[$new_key] = $v;
 		}
