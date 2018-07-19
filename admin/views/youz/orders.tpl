@@ -56,6 +56,8 @@
 	<form action="/youz/orders" method="get" class="form-inline">
 
 		<div class="form-group">
+			<input class="form-control" placeholder="商品名称" type="text" name="title"
+						 value="{{if isset($getInfo['title'])}}{{$getInfo['title']}}{{/if}}"/>
 			<input class="form-control" placeholder="用户名称" type="text" name="name"
 						 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
 			<input class="form-control" placeholder="用户手机" type="text" name="phone"

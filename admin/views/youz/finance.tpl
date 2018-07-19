@@ -83,6 +83,8 @@
 </div>
 <div class="row">
 	<form action="/youz/finance" class="form-inline">
+		<input class="form-control" placeholder="商品名称" type="text" name="title"
+					 value="{{if isset($getInfo['title'])}}{{$getInfo['title']}}{{/if}}"/>
 		<input class="form-control beginDate my-date-input" placeholder="开始时间" name="sdate"
 					 value="{{if isset($getInfo['sdate'])}}{{$getInfo['sdate']}}{{/if}}">
 		至
@@ -152,7 +154,7 @@
 					</div>
 					<div>上传截图时间：{{$item.f_create_on|date_format:'%y-%m-%d %H:%M'}}</div>
 					{{if $is_supply_chain && $item.f_status==3}}
-						<a class="add_pay_info btn btn-outline btn-primary btn-xs">编辑付款信息</a>
+						<a class="add_pay_info btn btn-outline btn-danger btn-xs">编辑付款信息</a>
 					{{/if}}
 				</td>
 				<td>

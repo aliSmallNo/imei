@@ -403,6 +403,7 @@ class YouzController extends BaseController
 		$getInfo = \Yii::$app->request->get();
 		$page = self::getParam("page", 1);
 		$name = self::getParam("name");
+		$title = self::getParam("title");
 		$phone = self::getParam("phone");
 		$st = self::getParam("st");
 		$export = self::getParam("export");
@@ -412,6 +413,11 @@ class YouzController extends BaseController
 			$criteria[] = " (u1.uName like :name or o.o_receiver_name like :name) ";
 			$params[':name'] = '%' . trim($name) . '%';
 		}
+		if ($title) {
+			$criteria[] = " o.o_orders like :title  ";
+			$params[':title'] = '%' . trim($title) . '%';
+		}
+
 		if ($phone) {
 			$criteria[] = " (u1.uPhone = :phone or o.o_receiver_tel=:phone) ";
 			$params[':phone'] = trim($phone);
@@ -478,6 +484,7 @@ class YouzController extends BaseController
 		$getInfo = \Yii::$app->request->get();
 		$page = self::getParam("page", 1);
 		$name = self::getParam("name");
+		$title = self::getParam("title");
 		$stime = self::getParam("stime");
 		$etime = self::getParam("etime");
 		$bd = self::getParam("bd");
@@ -487,6 +494,10 @@ class YouzController extends BaseController
 		if ($name) {
 			$criteria[] = " (u1.uName like :name or o.o_receiver_name like :name) ";
 			$params[':name'] = '%' . trim($name) . '%';
+		}
+		if ($title) {
+			$criteria[] = " od.od_title like :title  ";
+			$params[':title'] = '%' . trim($title) . '%';
 		}
 		if ($stime && $etime) {
 			$criteria[] = " (f.f_create_on between :stime and :etime) ";
