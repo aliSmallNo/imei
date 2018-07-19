@@ -6,6 +6,12 @@
 		color: #0d5ccf;
 	}
 
+	.font_note {
+		color: #e3a101;
+		font-size: 12px;
+		font-weight: 600;
+	}
+
 	td img {
 		width: 64px;
 		height: 64px;
@@ -57,27 +63,13 @@
 		background: #777;
 	}
 
-	td {
-		font-size: 13px;
-	}
-
-	.order_title {
-
-	}
-
-	.order_des {
-		font-size: 12px;
-		color: #032ea4;
-		font-weight: 500;
-	}
-
 	.pay_pic_last img {
 		width: 50px;
 		margin-right: 5px;
 	}
 
 	.prop_name {
-		background: #0075cf;
+		background: #919191;
 		color: #fff;
 		font-size: 10px;
 		padding: 2px 5px;
@@ -120,7 +112,8 @@
 		<tr>
 			<th class="col-sm-1">用户信息</th>
 			<th class="col-sm-1">商品图片</th>
-			<th class="col-sm-4">订单信息</th>
+			<th class="col-sm-2">商品信息</th>
+			<th class="col-sm-2">订单信息</th>
 			<th class="col-sm-3">截图信息</th>
 			<th class="col-sm-2">财务审核</th>
 		</tr>
@@ -140,31 +133,36 @@
 					<div class="order_title">
 						{{$item.od_title}}
 						{{if $item.prop_name}}
-							<span class="prop_name">{{foreach from=$item.prop_name item=prop}}{{$prop.k}}:{{$prop.v}} {{/foreach}}</span>
+							<div><span
+												class="prop_name">{{foreach from=$item.prop_name item=prop}}{{$prop.k}}:{{$prop.v}} {{/foreach}}</span>
+							</div>
 						{{/if}}
 					</div>
-					<span class="st_{{$item.od_status}}">{{$item.status_str}}</span><br>
-					<div class="order_des">
+					{{if $isDebugger}}
+						<div><span class="font10">{{$item.od_item_id}}</span> <span class="font10">{{$item.od_sku_id}}</span></div>
+					{{/if}}
+				</td>
+				<td>
+					<div>
 						订单: 价格{{$item.od_price}} X 数量{{$item.od_num}} = 应付: {{$item.od_total_fee}}<br>
 						买家支付：{{$item.od_payment}}
 					</div>
+					<span class="st_{{$item.od_status}}">{{$item.status_str}}</span>
 					{{if $isDebugger}}
-						<span class="font10">{{$item.od_tid}}</span>
-						 - <span class="font10">{{$item.od_item_id}}</span>
-						 - <span class="font10">{{$item.od_sku_id}}</span>
+						<div><span class="font10">{{$item.od_tid}}</span></div>
 					{{/if}}
 				</td>
 				<td data-tid="{{$item.od_tid}}" data-gid="{{$item.od_item_id}}" data-skuid="{{$item.od_sku_id}}"
 						data-title="{{$item.od_title}}"
 						data-payment="{{if $item.od_paytime}}{{$item.od_payment}}{{else}}0{{/if}}">
 					{{if $item.trade_memo}}<span class="st_WAIT_BUYER_PAY">备注：{{$item.trade_memo}}</span>{{/if}}
-					<div>{{$item.aName}}支付：{{$item.f_pay_amt/100}}元({{$item.f_pay_note}})</div>
+					<div>{{$item.aName}}支付：{{$item.f_pay_amt/100}}元<span class="font_note"> ({{$item.f_pay_note}})</span></div>
+					<div>上传截图时间：{{$item.f_create_on|date_format:'%y-%m-%d %H:%M'}}</div>
 					<div>
 						{{foreach from=$item.pay_pic item=pic}}
 							<img src="{{$pic[0]}}" bsrc="{{$pic[1]}}" class="i-av small">
 						{{/foreach}}
 					</div>
-					<div>上传截图时间：{{$item.f_create_on|date_format:'%y-%m-%d %H:%M'}}</div>
 					{{if $is_supply_chain && $item.f_status==3}}
 						<a class="add_pay_info btn btn-outline btn-danger btn-xs">编辑付款信息</a>
 					{{/if}}
