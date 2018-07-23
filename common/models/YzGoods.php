@@ -175,6 +175,12 @@ class YzGoods extends ActiveRecord
 		} else {
 			$data['g_up_time'] = date('Y-m-d H:i:s');
 		}
+		if (isset($data['g_sku_images'])) {
+			$g_sku_images = $data['g_sku_images'];
+			$g_sku_images['si_item_id'] = $g_item_id;
+			YzGoodsSkuimages::process($g_sku_images);
+			$data['g_sku_images'] = 'sku_images';
+		}
 		foreach ($data as $k => $v) {
 			$entity->$k = is_array($v) ? json_encode($v, JSON_UNESCAPED_UNICODE) : $v;
 		}
@@ -185,6 +191,7 @@ class YzGoods extends ActiveRecord
 			// 更新分成信息
 			self::update_rate_by_good_id($g_item_id);
 		}
+		exit;
 		return true;
 	}
 
