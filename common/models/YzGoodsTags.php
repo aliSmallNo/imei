@@ -11,31 +11,32 @@ use common\utils\AppUtil;
 use common\utils\YouzanUtil;
 use yii\db\ActiveRecord;
 
-class YzGoodsImgs extends ActiveRecord
+class YzGoodsTags extends ActiveRecord
 {
 	static $fieldMap = [
-		"thumbnail" => "i_thumbnail",
-		"medium" => "i_medium",
-		"combine" => "i_combine",
-		"url" => 'i_url',
-		"id" => 'i_img_id',
-		"item_id" => "i_item_id",
+		"item_id" => "t_item_id",
+		"id" => 't_tag_id',
+		"share_url" => 't_share_url',
+		"tag_url" => "t_tag_url",
+		"type" => "t_type",
+		"item_num" => "t_item_num",
+		"desc" => "t_desc",
 		"created" => "i_created",
 	];
 
 
 	public static function tableName()
 	{
-		return '{{%yz_goods_imgs}}';
+		return '{{%yz_goods_tags}}';
 	}
 
-	public static function edit($img_id, $data)
+	public static function edit($t_tag_id, $data)
 	{
 		if (!$data) {
 			return 0;
 		}
-		if ($img_id) {
-			$entity = self::findOne(['i_img_id' => $img_id, 'i_item_id' => $data['i_item_id']]);
+		if ($t_tag_id) {
+			$entity = self::findOne(['t_tag_id' => $t_tag_id, 't_item_id' => $data['i_item_id']]);
 			if (!$entity) {
 				$entity = new self();
 			}
@@ -52,7 +53,7 @@ class YzGoodsImgs extends ActiveRecord
 
 	public static function process($v)
 	{
-		$img_id = $v['id'] ?? 0;
+		$t_tag_id = $v['id'] ?? 0;
 		if (!$v) {
 			return 0;
 		}
@@ -62,7 +63,7 @@ class YzGoodsImgs extends ActiveRecord
 				$insert[$val] = $v[$key];
 			}
 		}
-		return self::edit($img_id, $insert);
+		return self::edit($t_tag_id, $insert);
 	}
 
 
