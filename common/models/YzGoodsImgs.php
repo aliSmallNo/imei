@@ -68,6 +68,7 @@ class YzGoodsImgs extends ActiveRecord
 
 	public static function pre_process($item_id, $data)
 	{
+		$flag = 0;
 		// 有的 $data 没有id => i_img_id
 		foreach ($data as $val) {
 			if (!isset($val['id'])) {
