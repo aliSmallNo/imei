@@ -141,8 +141,8 @@ class YzUser extends ActiveRecord
 					$msg = "stime:" . $stime . ':' . $stimeFmt . ' == etime:' . $etime . ':' . $etimeFmt . ' currentNum:' . $total_results . 'countRes:' . count($users) . ' Total:' . $total;
 					if ($isDebugger) {
 						echo $msg . PHP_EOL;
+						AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 					}
-					AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 				}
 				foreach ($users as $v) {
 					self::process($v);
@@ -195,8 +195,8 @@ class YzUser extends ActiveRecord
 		$msg = "stime:" . $stime . ' == etime:' . $etime . ' == ' . 'page:' . $page . ' == ' . 'pagesize:' . $page_size;
 		if ($isDebugger) {
 			echo $msg . PHP_EOL;
+			AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 		}
-		AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 
 		$total_results = $results['total_results'] ?? 0;
 		$users = $results['users'] ?? [];
@@ -290,9 +290,8 @@ class YzUser extends ActiveRecord
 		$msg = '$addCount:' . $addCount . ' == $editCount:' . $editCount;
 		if ($isDebugger) {
 			echo $msg . PHP_EOL;
+			AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 		}
-
-		AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 	}
 
 
@@ -318,8 +317,8 @@ class YzUser extends ActiveRecord
 		$msg = is_array($res) ? json_encode($res) : $res;
 		if ($isDebugger) {
 			echo $msg . PHP_EOL;
+			AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 		}
-		AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 
 		$resStyle = [
 			"response" => [
@@ -432,8 +431,8 @@ class YzUser extends ActiveRecord
 				$fansId = $v['user_id'];
 				if ($isDebugger) {
 					echo 'edit fans_id:' . $fansId . PHP_EOL;
+					AppUtil::logByFile('fans_id:' . $fansId, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 				}
-				AppUtil::logByFile('fans_id:' . $fansId, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 				self::process($v);
 			}
 			if ($last_fansId > 0) {

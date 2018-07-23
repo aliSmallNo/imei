@@ -158,8 +158,8 @@ class YzRefund extends ActiveRecord
 					$msg = "stime:" . $stime . ':' . $stimeFmt . ' == etime:' . $etime . ':' . $etimeFmt . ' currentNum:' . $count . 'countRes:' . count($item) . ' Total:' . $total;
 					if ($isDebugger) {
 						echo $msg . PHP_EOL;
+						AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_REFUND, __FUNCTION__, __LINE__);
 					}
-					AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_REFUND, __FUNCTION__, __LINE__);
 				}
 				foreach ($item as $v) {
 					self::process($v);

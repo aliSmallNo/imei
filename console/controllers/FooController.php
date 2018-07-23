@@ -1480,8 +1480,6 @@ class FooController extends Controller
 		// 更新用户
 		// YzUser::UpdateUser();
 
-		YzUser::getUserBySETime("2018-04-01 00:00:00", date('Y-m-d 00:00:00', time() + 86400), 1);
-
 		// 更新分销员
 		//YzUser::getSalesManList();
 

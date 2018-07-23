@@ -194,8 +194,9 @@ class YzOrders extends ActiveRecord
 				$msg = json_encode($params, JSON_UNESCAPED_UNICODE) . ' current_page:' . $page . ' current_count:' . $current_count . ' total' . $total;
 				if ($isDebugger) {
 					echo $msg . PHP_EOL;
+					AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_ORDERS, __FUNCTION__, __LINE__);
 				}
-				AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_ORDERS, __FUNCTION__, __LINE__);
+
 
 				foreach ($res as $v) {
 					$full_order_info = $v['full_order_info'] ?? [];

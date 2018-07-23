@@ -257,8 +257,8 @@ class YzGoods extends ActiveRecord
 					$msg = "stime:" . $stime . ':' . $stimeFmt . ' == etime:' . $etime . ':' . $etimeFmt . ' currentNum:' . $count . 'countRes:' . count($item) . ' Total:' . $total;
 					if ($isDebugger) {
 						echo $msg . PHP_EOL;
+						AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_GOODS, __FUNCTION__, __LINE__);
 					}
-					AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_GOODS, __FUNCTION__, __LINE__);
 				}
 				foreach ($item as $v) {
 					$v['status'] = $tag;
@@ -735,6 +735,7 @@ class YzGoods extends ActiveRecord
 		if (in_array(date("H"), [8, 12, 16, 20])) {
 			YzGoods::update_all_goods_desc(1);
 		}
+
 	}
 
 	public static function items($criteria, $params, $page = 1, $pageSize = 20)
