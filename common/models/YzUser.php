@@ -111,7 +111,11 @@ class YzUser extends ActiveRecord
 	{
 		$st = $st ? $st : date('Y-m-d 00:00:00');
 		$et = $et ? $et : date('Y-m-d 00:00:00', time() + 86400);
-		self::getUserBySETime($st, $et, 1);
+		self::getUserBySETime($st, $et);
+
+		if (in_array(date('H'), [8])) {
+			self::getUserBySETime("2018-04-01 00:00:00", $et);
+		}
 	}
 
 	public static function getUserBySETime($st, $et, $isDebugger = false)
@@ -150,49 +154,6 @@ class YzUser extends ActiveRecord
 		// 更新分销员信息
 		self::getSalesManList($isDebugger);
 	}
-
-	/**
-	 * 根据关注时间段批量查询微信粉丝用户信息
-	 * 支持粉丝基础信息、积分、交易等数据查询，详见入参fields字段描述
-	 */
-	/*public static function getUserBySETime_old($st, $et, $isDebugger = false)
-	{
-		// 根据关注时间段批量查询微信粉丝用户信息
-		$page = 1;
-		$page_size = 20;
-		$days = ceil((strtotime($et) - strtotime($st)) / 86400);
-
-		$total = 0;
-		for ($d = 0; $d < $days; $d++) {
-			$stime = date('Y-m-d', strtotime($st) + $d * 86400);
-			$etime = date('Y-m-d', strtotime($st) + ($d + 1) * 86400);
-
-			$results = self::getTZUser($stime, $etime, $page, $page_size, $isDebugger);
-
-			$total_results = $results['total_results'] ?? 0;
-			$total = $total + $total_results;
-			$msg = "stime:" . $stime . ' == etime:' . $etime . ' currentNum:' . $total_results . ' Total:' . $total;
-			if ($isDebugger) {
-				echo $msg . PHP_EOL;
-			}
-			AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
-
-			if ($results && $results['total_results'] > 0) {
-				$total_results = $results['total_results'];
-				$page_count = ceil($total_results / $page_size);
-
-				for ($i = 0; $i < $page_count; $i++) {
-					$users = self::getTZUser($stime, $etime, ($i + 1), $page_size, $isDebugger)['users'];
-					foreach ($users as $v) {
-						self::process($v);
-					}
-				}
-			}
-		}
-
-		// 更新分销员信息
-		self::getSalesManList($isDebugger);
-	}*/
 
 	/**
 	 * 根据关注时间段批量查询微信粉丝用户信息（支持粉丝基础信息、积分、交易等数据查询，详见入参fields字段描述）。

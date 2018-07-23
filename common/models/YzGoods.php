@@ -732,7 +732,9 @@ class YzGoods extends ActiveRecord
 		// 更新在售
 		YzGoods::get_goods_by_se_time(self::ST_ON_SALE, $isDebugger);
 		// 更新所有商品详细信息
-		//YzGoods::update_all_goods_desc(1);
+		if (in_array(date("H"), [8, 12, 16, 20])) {
+			YzGoods::update_all_goods_desc(1);
+		}
 	}
 
 	public static function items($criteria, $params, $page = 1, $pageSize = 20)

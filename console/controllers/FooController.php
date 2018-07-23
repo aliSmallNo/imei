@@ -1478,7 +1478,9 @@ class FooController extends Controller
 		//YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');
 
 		// 更新用户
-		//YzUser::UpdateUser();
+		// YzUser::UpdateUser();
+
+		YzUser::getUserBySETime("2018-04-01 00:00:00", date('Y-m-d 00:00:00', time() + 86400), 1);
 
 		// 更新分销员
 		//YzUser::getSalesManList();
@@ -1518,7 +1520,7 @@ class FooController extends Controller
 		//YzOrders::orders_user_mix_update();
 
 		// YzGoods::update_goods(1);
-		YzGoods::update_all_goods_desc(1);
+		// YzGoods::update_all_goods_desc(1);
 
 		//YzRefund::get_goods_by_se_time();
 
@@ -1552,21 +1554,21 @@ class FooController extends Controller
 
 //	public static function cal_all_next($phone, $conn = '', $count = 0)
 //	{
-		/*if (!$conn) {
-			$conn = AppUtil::db();
-		}
-		$sql = 'select count(*) from im_yz_user where uFromPhone=:phone ';
-		$count = $count + $conn->createCommand($sql)->bindValues([':phone' => $phone])->queryScalar();
-		echo $count . PHP_EOL;
+	/*if (!$conn) {
+		$conn = AppUtil::db();
+	}
+	$sql = 'select count(*) from im_yz_user where uFromPhone=:phone ';
+	$count = $count + $conn->createCommand($sql)->bindValues([':phone' => $phone])->queryScalar();
+	echo $count . PHP_EOL;
 
-		$sql = 'select uPhone from im_yz_user where uFromPhone=:phone ';
-		$res = $conn->createCommand($sql)->bindValues([':phone' => $phone])->queryAll();
-		if ($res) {
-			foreach ($res as $next_from_phone) {
-				self::cal_all_next($next_from_phone, $conn, $count);
-			}
+	$sql = 'select uPhone from im_yz_user where uFromPhone=:phone ';
+	$res = $conn->createCommand($sql)->bindValues([':phone' => $phone])->queryAll();
+	if ($res) {
+		foreach ($res as $next_from_phone) {
+			self::cal_all_next($next_from_phone, $conn, $count);
 		}
-		return $count;*/
+	}
+	return $count;*/
 
 //	}
 
