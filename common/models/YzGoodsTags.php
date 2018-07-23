@@ -23,7 +23,7 @@ class YzGoodsTags extends ActiveRecord
 		"type" => "t_type",
 		"item_num" => "t_item_num",
 		"desc" => "t_desc",
-		"created" => "i_created",
+		"created" => "t_created",
 	];
 
 
