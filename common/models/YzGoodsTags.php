@@ -73,6 +73,9 @@ class YzGoodsTags extends ActiveRecord
 	{
 		$flag = 0;
 		// 有的 $data 没有id => i_tag_id
+		if ($item_id == 425701113) {
+			var_dump($data);
+		}
 		foreach ($data as $val) {
 			if (!isset($val['id'])) {
 				$flag = 1;
