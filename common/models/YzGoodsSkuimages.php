@@ -31,10 +31,11 @@ class YzGoodsSkuimages extends ActiveRecord
 		if (!$data) {
 			return 0;
 		}
-		$entity = self::findOne(['si_v_id' => $v_id]);
+		/*$entity = self::findOne(['si_v_id' => $v_id]);
 		if (!$entity) {
 			$entity = new self();
-		}
+		}*/
+		$entity = new self();
 		foreach ($data as $k => $v) {
 			$entity->$k = is_array($v) ? json_encode($v, JSON_UNESCAPED_UNICODE) : $v;
 		}
@@ -44,7 +45,6 @@ class YzGoodsSkuimages extends ActiveRecord
 
 	public static function process($v)
 	{
-		print_r($v);
 		$v_id = $v['v_id'];
 		if (!$v_id || !$v) {
 			return 0;
