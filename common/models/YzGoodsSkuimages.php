@@ -31,7 +31,7 @@ class YzGoodsSkuimages extends ActiveRecord
 		if (!$data) {
 			return 0;
 		}
-		$entity = self::findOne(['si_v_id' => $v_id, 'si_item_id' => $data['item_id']]);
+		$entity = self::findOne(['si_v_id' => $v_id, 'si_item_id' => $data['si_item_id']]);
 
 		if (!$entity) {
 			$entity = new self();
