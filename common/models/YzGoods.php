@@ -182,6 +182,8 @@ class YzGoods extends ActiveRecord
 				YzGoodsSkuimages::process($g_sku_image);
 			}
 			$data['g_sku_images'] = 'info in table: im_sku_images';
+		} else {
+			$data['g_sku_images'] = '';
 		}
 		if (isset($data['g_item_imgs'])) {
 			$g_item_imgs = $data['g_item_imgs'];
@@ -191,6 +193,8 @@ class YzGoods extends ActiveRecord
 				YzGoodsImgs::process($g_item_img);
 			}
 			$data['g_item_imgs'] = 'info in table: im_goods_imgs';
+		} else {
+			$data['g_item_imgs'] = '';
 		}
 		if (isset($data['g_item_tags'])) {
 			$g_item_tags = $data['g_item_tags'];
@@ -200,6 +204,8 @@ class YzGoods extends ActiveRecord
 				YzGoodsTags::process($g_item_tag);
 			}
 			$data['g_item_tags'] = 'info in table: im_goods_tags';
+		} else {
+			$data['g_item_tags'] = '';
 		}
 		foreach ($data as $k => $v) {
 			$entity->$k = is_array($v) ? json_encode($v, JSON_UNESCAPED_UNICODE) : $v;
