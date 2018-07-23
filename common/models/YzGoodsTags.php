@@ -18,6 +18,8 @@ class YzGoodsTags extends ActiveRecord
 		"id" => 't_tag_id',
 		"share_url" => 't_share_url',
 		"tag_url" => "t_tag_url",
+		"alias" => "t_alias",
+		"name" => "t_name",
 		"type" => "t_type",
 		"item_num" => "t_item_num",
 		"desc" => "t_desc",
@@ -70,14 +72,14 @@ class YzGoodsTags extends ActiveRecord
 	public static function pre_process($item_id, $data)
 	{
 		$flag = 0;
-		// 有的 $data 没有id => i_img_id
+		// 有的 $data 没有id => i_tag_id
 		foreach ($data as $val) {
 			if (!isset($val['id'])) {
 				$flag = 1;
 			}
 		}
 		if ($flag == 1) {
-			$sql = "delete from im_yz_goods_imgs where i_item_id=:item_id ";
+			$sql = "delete from im_yz_goods_tags where t_item_id=:item_id ";
 			AppUtil::db()->createCommand($sql)->bindValues([':item_id' => $item_id])->execute();
 		}
 		return true;

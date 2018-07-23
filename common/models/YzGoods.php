@@ -192,6 +192,15 @@ class YzGoods extends ActiveRecord
 			}
 			$data['g_item_imgs'] = 'info in table: im_goods_imgs';
 		}
+		if (isset($data['g_item_tags'])) {
+			$g_item_tags = $data['g_item_imgs'];
+			YzGoodsTags::pre_process($g_item_id, $g_item_tags);
+			foreach ($g_item_tags as $g_item_tag) {
+				$g_item_tag['item_id'] = $g_item_id;
+				YzGoodsTags::process($g_item_tag);
+			}
+			$data['g_item_imgs'] = 'info in table: im_goods_tags';
+		}
 		foreach ($data as $k => $v) {
 			$entity->$k = is_array($v) ? json_encode($v, JSON_UNESCAPED_UNICODE) : $v;
 		}
