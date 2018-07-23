@@ -191,7 +191,7 @@ class YzGoods extends ActiveRecord
 			// 更新分成信息
 			self::update_rate_by_good_id($g_item_id);
 		}
-		exit;
+
 		return true;
 	}
 
