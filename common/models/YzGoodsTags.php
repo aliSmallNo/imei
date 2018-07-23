@@ -38,7 +38,7 @@ class YzGoodsTags extends ActiveRecord
 			return 0;
 		}
 		if ($t_tag_id) {
-			$entity = self::findOne(['t_tag_id' => $t_tag_id, 't_item_id' => $data['i_item_id']]);
+			$entity = self::findOne(['t_tag_id' => $t_tag_id, 't_item_id' => $data['t_item_id']]);
 			if (!$entity) {
 				$entity = new self();
 			}
