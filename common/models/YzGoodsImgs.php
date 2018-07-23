@@ -7,6 +7,7 @@
 namespace common\models;
 
 
+use common\utils\AppUtil;
 use common\utils\YouzanUtil;
 use yii\db\ActiveRecord;
 
@@ -33,11 +34,15 @@ class YzGoodsImgs extends ActiveRecord
 		if (!$data) {
 			return 0;
 		}
-		$entity = self::findOne(['i_img_id' => $img_id, 'i_item_id' => $data['i_item_id']]);
-
-		if (!$entity) {
+		if ($img_id) {
+			$entity = self::findOne(['i_img_id' => $img_id, 'i_item_id' => $data['i_item_id']]);
+			if (!$entity) {
+				$entity = new self();
+			}
+		} else {
 			$entity = new self();
 		}
+
 		foreach ($data as $k => $v) {
 			$entity->$k = is_array($v) ? json_encode($v, JSON_UNESCAPED_UNICODE) : $v;
 		}
@@ -47,8 +52,8 @@ class YzGoodsImgs extends ActiveRecord
 
 	public static function process($v)
 	{
-		$img_id = $v['id'];
-		if (!$img_id || !$v) {
+		$img_id = $v['id'] ?? 0;
+		if (!$img_id) {
 			return 0;
 		}
 		$insert = [];
@@ -60,5 +65,20 @@ class YzGoodsImgs extends ActiveRecord
 		return self::edit($img_id, $insert);
 	}
 
+
+	public static function pre_process($item_id, $data)
+	{
+		// 有的 $data 没有id => i_img_id
+		foreach ($data as $val) {
+			if (!isset($val['id'])) {
+				$flag = 1;
+			}
+		}
+		if ($flag == 1) {
+			$sql = "delete from im_yz_goods_imgs where i_item_id=:item_id ";
+			AppUtil::db()->createCommand($sql)->bindValues([':item_id' => $item_id])->execute();
+		}
+		return true;
+	}
 
 }

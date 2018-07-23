@@ -185,6 +185,7 @@ class YzGoods extends ActiveRecord
 		}
 		if (isset($data['g_item_imgs'])) {
 			$g_item_imgs = $data['g_item_imgs'];
+			YzGoodsImgs::pre_process($g_item_id, $g_item_imgs);
 			foreach ($g_item_imgs as $g_item_img) {
 				$g_item_img['item_id'] = $g_item_id;
 				YzGoodsImgs::process($g_item_img);
