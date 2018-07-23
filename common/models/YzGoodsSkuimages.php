@@ -39,7 +39,6 @@ class YzGoodsSkuimages extends ActiveRecord
 			$entity->$k = is_array($v) ? json_encode($v, JSON_UNESCAPED_UNICODE) : $v;
 		}
 		$entity->save();
-		exit;
 		return true;
 	}
 

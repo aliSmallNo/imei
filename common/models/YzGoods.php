@@ -178,7 +178,7 @@ class YzGoods extends ActiveRecord
 		if (isset($data['g_sku_images'])) {
 			$g_sku_images = $data['g_sku_images'];
 			foreach ($g_sku_images as $g_sku_image) {
-				$g_sku_image['si_item_id'] = $g_item_id;
+				$g_sku_image['item_id'] = $g_item_id;
 				YzGoodsSkuimages::process($g_sku_image);
 			}
 			$data['g_sku_images'] = 'sku_images';
