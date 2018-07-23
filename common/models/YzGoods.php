@@ -193,7 +193,7 @@ class YzGoods extends ActiveRecord
 			$data['g_item_imgs'] = 'info in table: im_goods_imgs';
 		}
 		if (isset($data['g_item_tags'])) {
-			$g_item_tags = $data['g_item_imgs'];
+			$g_item_tags = $data['g_item_tags'];
 			YzGoodsTags::pre_process($g_item_id, $g_item_tags);
 			foreach ($g_item_tags as $g_item_tag) {
 				$g_item_tag['item_id'] = $g_item_id;
