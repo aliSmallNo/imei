@@ -409,7 +409,6 @@ class ApiController extends Controller
 					'sdate' => $sdate,
 					'edate' => $edate,
 				];
-
 				$res = YzUser::chain_items($criteria, $params, $se_date);
 				return self::renderAPI(0, 'ok', [
 					'data' => $res,
@@ -439,10 +438,10 @@ class ApiController extends Controller
 				$sdate = self::postParam("sdate");
 				$edate = self::postParam("edate");
 
-				if (!in_array($flag, ['self', 'next']) || !AppUtil::checkPhone($phone) || !$page) {
+				if (!in_array($flag, ['self', 'next', 'all']) || !AppUtil::checkPhone($phone) || !$page) {
 					return self::renderAPI(129, 'params error~');
 				}
-				list($res, $nextpage) = YzOrders::orders_by_phone([
+				list($res, $nextpage, $stat) = YzOrders::orders_by_phone([
 					'phone' => $phone,
 					'flag' => $flag,
 					'sdate' => $sdate,
@@ -450,6 +449,7 @@ class ApiController extends Controller
 				], $page);
 				return self::renderAPI(0, 'ok', [
 					'data' => $res,
+					'stat' => $stat,
 					'nextpage' => $nextpage,
 				]);
 				break;

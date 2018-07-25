@@ -586,23 +586,100 @@ class YzUser extends ActiveRecord
 		$res = $conn->createCommand($sql)->bindValues(array_merge([
 			':ty' => self::TYPE_YXS,
 		], $params))->queryAll();
-		if ($criteriaStr) {
-			/*echo $conn->createCommand($sql)->bindValues(array_merge([
-				':ty' => self::TYPE_YXS,
-			], $params))->getRawSql();
-			exit;*/
-		}
 
 		$sql = "select sum(o.o_payment)
 				from im_yz_user as u1 
 				left join im_yz_orders as o on o.o_fans_id=u1.uYZUId 
 				where u1.uType=:ty and (u1.uFromPhone=:phone or u1.uPhone=:phone) and o.o_id>0 $criteria_o ";
 		$CMD = $conn->createCommand($sql);
+		$sql3 = "select count(1) as co ,sum(o_payment) as payment
+				from im_yz_user as u1 
+				left join im_yz_orders as o on o.o_fans_id=u1.uYZUId
+				where o.o_id>0 and o.o_saleman_mobile=:phone $criteria_o";
+		$stat3CMD = $conn->createCommand($sql3);
 		foreach ($res as $k => $v) {
 			$res[$k]['cls'] = $v['amt'] > 0 ? 'parent_li' : '';
 			$res[$k]['cls_ico'] = $v['amt'] > 0 ? 'icon-plus-sign' : '';
 			$res[$k]['uname'] = mb_strlen($v['uName']) > 5 ? mb_substr($v['uName'], 0, 5) . '...' : $v['uName'];
 			$res[$k]['sum_payment'] = $CMD->bindValues([':phone' => $v['uPhone'], ':ty' => self::TYPE_YXS])->queryScalar() ?: 0;
+			$res[$k]['all_order_amt'] = $stat3CMD->bindValues(array_merge([
+				":phone" => $v['uPhone']
+			]))->queryScalar();
+		}
+
+		// RedisUtil::init(RedisUtil::KEY_YOUZAN_USER_CHAIN, md5(json_encode($params) . json_encode($se_date)))->setCache(json_encode($res));
+
+		return $res;
+	}
+
+	public static function chain_items_new($criteria, $params, $se_date = [])
+	{
+
+		$res = RedisUtil::init(RedisUtil::KEY_YOUZAN_USER_CHAIN, md5(json_encode($params) . json_encode($se_date)))->getCache();
+		if ($res) {
+			// return json_decode($res, 1);
+		}
+
+		$conn = AppUtil::db();
+		$criteriaStr = '';
+		if ($criteria) {
+			$criteriaStr = ' and ' . implode(" and ", $criteria);
+		}
+
+		$orderby = ' order by amt desc ';
+
+		$sql = "select u1.uName,u1.uPhone,u1.uYZUId,
+				COUNT(DISTINCT u2.uPhone) as amt
+				from im_yz_user as u1
+				left join im_yz_user as u2 on u2.uFromPhone=u1.uPhone
+				where u1.uType=:ty  $criteriaStr  
+				group by u1.uYZUId $orderby";
+		$res = $conn->createCommand($sql)->bindValues(array_merge([
+			':ty' => self::TYPE_YXS,
+		], $params))->queryAll();
+
+
+		$params_stat = [];
+		$criteria_stat = '';
+		if ($se_date['sdate'] && $se_date['edate']) {
+			$sdate = $se_date['sdate'] . ' 00:00:00';
+			$edate = $se_date['edate'] . ' 23:59:59';
+			$criteria_stat = " and o.o_created between '$sdate' and '$edate' ";
+			$params_stat[':sdate'] = $sdate . ' 00:00:00';
+			$params_stat[':edate'] = $edate . ' 23:59:59';
+		}
+
+		$sql1 = "select count(1) as co
+				from im_yz_user as u1 
+				left join im_yz_orders as o on o.o_fans_id=u1.uYZUId
+				where o.o_id>0 and u1.uType=:ty and u1.uPhone=:phone $criteria_stat";
+		$stat1CMD = $conn->createCommand($sql1);
+		$sql2 = "select count(1) as co
+				from im_yz_user as u1 
+				left join im_yz_orders as o on o.o_fans_id=u1.uYZUId
+				where o.o_id>0 and u1.uType=:ty and u1.uPhone=:phone $criteria_stat";
+		$stat2CMD = $conn->createCommand($sql2);
+		$sql3 = "select count(1) as co ,sum(o_payment) as payment
+				from im_yz_user as u1 
+				left join im_yz_orders as o on o.o_fans_id=u1.uYZUId
+				where o.o_id>0 and o.o_saleman_mobile=:phone $criteria_stat";
+		$stat3CMD = $conn->createCommand($sql3);
+
+		foreach ($res as $k => $v) {
+			$res[$k]['cls'] = $v['amt'] > 0 ? 'parent_li' : '';
+			$res[$k]['cls_ico'] = $v['amt'] > 0 ? 'icon-plus-sign' : '';
+			$res[$k]['uname'] = mb_strlen($v['uName']) > 5 ? mb_substr($v['uName'], 0, 5) . '...' : $v['uName'];
+			$res[$k]['sum_payment'] = 0;
+
+			$res[$k]['self_order_amt'] = array_values($stat1CMD->bindValues(array_merge([
+				":ty" => self::TYPE_YXS, ":phone" => $v['uPhone']
+			], $params_stat))->queryScalar());
+			$res[$k]['next_order_amt'] = array_values($stat1CMD->bindValues(array_merge([
+				":ty" => self::TYPE_YXS, ":phone" => $v['uPhone']
+			], $params_stat))->queryScalar());
+			$res[$k]['all_order_amt'] = $stat3CMD->bindValues(array_merge([
+				":phone" => $v['uPhone']
+			], $params_stat))->queryScalar();
 		}
 
 		//RedisUtil::init(RedisUtil::KEY_YOUZAN_USER_CHAIN, md5(json_encode($params) . json_encode($se_date)))->setCache(json_encode($res));
@@ -610,6 +687,14 @@ class YzUser extends ActiveRecord
 		return $res;
 	}
 
+	public static function stat_item($params_in)
+	{
+		list($res, $nextpage, $stat) = YzOrders::orders_by_phone([
+			'phone' => $params_in['phone'], 'flag' => $params_in['flag'],
+			'sdate' => $params_in['sdate'], 'edate' => $params_in['edate']], 1);
+
+		return array_values($stat);
+	}
 
 	public static function get_user_chain_by_fans_id($fans_id)
 	{

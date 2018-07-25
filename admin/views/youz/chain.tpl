@@ -153,6 +153,7 @@
 					<em>{{$item.uname}}</em>
 					<a href="javascript:;" data-tag="self" data-num="{{$item.self_order_amt}}">订单数:{{$item.self_order_amt}}</a>
 					<a href="javascript:;" data-tag="next" data-num="{{$item.next_order_amt}}">下级订单数:{{$item.next_order_amt}}</a>
+					<a href="javascript:;" data-tag="all" data-num="{{$item.all_order_amt}}">客户订单数:{{$item.all_order_amt}}</a>
 					<strong>支付总金额:{{$item.sum_payment}}</strong>
 					{{if !$is_partner}}<a href="javascript:;" class="add_yxs_next btn btn-primary btn-xs">添加关系</a>{{/if}}
 				</li>
@@ -415,6 +416,7 @@
 			<em>{[uname]}</em>
 			<a href="javascript:;" data-tag="self" data-num="{[self_order_amt]}">订单数:{[self_order_amt]}</a>
 			<a href="javascript:;" data-tag="next" data-num="{[next_order_amt]}">下级订单数:{[next_order_amt]}</a>
+			<a href="javascript:;" data-tag="all" data-num="{[all_order_amt]}">客户订单数:{[all_order_amt]}</a>
 			<strong>支付总金额:{[sum_payment]}</strong>
 			{{if !$is_partner}}<a href="javascript:;" class="add_yxs_next btn btn-primary btn-xs">添加关系</a>{{/if}}
 		</li>

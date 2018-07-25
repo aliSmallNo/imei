@@ -97,8 +97,9 @@ class YzOrders extends ActiveRecord
 			if ($g_item_id && !YzGoods::findOne(['g_item_id' => $g_item_id])) {
 				YzGoods::get_goods_desc_by_id($g_item_id);
 			}
-
 		}
+		// 更新订单所属分销员
+		self::trades_account_get($tid);
 		return true;
 	}
 
@@ -201,7 +202,7 @@ class YzOrders extends ActiveRecord
 		$res = YouzanUtil::getData($method, $my_params, $api_version);
 		$saleman_mobile = $res['response']['mobile'] ?? '';
 
-		echo $order_no . ' saleman_mobile:' . $saleman_mobile . PHP_EOL;
+		// echo $order_no . ' saleman_mobile:' . $saleman_mobile . PHP_EOL;
 
 		$conn = AppUtil::db();
 		$sql = "update im_yz_orders set o_saleman_mobile=:phone where o_tid=:tid ";
@@ -540,13 +541,24 @@ class YzOrders extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		$limit = "limit " . ($page - 1) * $pageize . ',' . ($pageize + 1);
+
+		$criteriaStr = '';
+		$params = [];
 		switch ($params_in['flag']) {
 			case "self":
-				$criteriaStr = " and u1.uPhone=:phone ";
+				$criteriaStr .= " and u1.uType=:ty ";
+				$params[':ty'] = YzUser::TYPE_YXS;
+				$criteriaStr .= " and u1.uPhone=:phone ";
 				$params[':phone'] = $params_in['phone'];
 				break;
 			case "next":
-				$criteriaStr = " and u1.uFromPhone=:phone ";
+				$criteriaStr .= " and u1.uType=:ty ";
+				$params[':ty'] = YzUser::TYPE_YXS;
+				$criteriaStr .= " and u1.uFromPhone=:phone ";
+				$params[':phone'] = $params_in['phone'];
+				break;
+			case "all":
+				$criteriaStr .= " and o.o_saleman_mobile=:phone ";
 				$params[':phone'] = $params_in['phone'];
 				break;
 			default:
@@ -563,16 +575,20 @@ class YzOrders extends ActiveRecord
 		$sql = "select u1.uName,u1.uPhone,u1.uFromPhone,o.*
 				from im_yz_user as u1 
 				left join im_yz_orders as o on o.o_fans_id=u1.uYZUId
-				where u1.uType=:ty $criteriaStr and o.o_id>0 order by o_created DESC $limit";
-		$res = $conn->createCommand($sql)->bindValues(array_merge([
-			':ty' => YzUser::TYPE_YXS
-		], $params))->queryAll();
+				where o.o_id>0 $criteriaStr  order by o_created DESC $limit";
+		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
+
+		$sql = "select count(1) as co ,sum(o_payment) as payment
+				from im_yz_user as u1 
+				left join im_yz_orders as o on o.o_fans_id=u1.uYZUId
+				where o.o_id>0 $criteriaStr";
+		$stat = $conn->createCommand($sql)->bindValues($params)->queryOne();
 
 		foreach ($res as $k => $v) {
 			$res[$k] = array_merge($res[$k], self::fmt_order_row($v));
 		}
 		$nextpage = count($res) > $pageize ? ($page + 1) : 0;
-		return [$res, $nextpage];
+		return [$res, $nextpage, $stat];
 	}
 
 
