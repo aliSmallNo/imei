@@ -601,7 +601,8 @@ class YzUser extends ActiveRecord
 			$res[$k]['cls'] = $v['amt'] > 0 ? 'parent_li' : '';
 			$res[$k]['cls_ico'] = $v['amt'] > 0 ? 'icon-plus-sign' : '';
 			$res[$k]['uname'] = mb_strlen($v['uName']) > 5 ? mb_substr($v['uName'], 0, 5) . '...' : $v['uName'];
-			$res[$k]['sum_payment'] = $CMD->bindValues([':phone' => $v['uPhone'], ':ty' => self::TYPE_YXS])->queryScalar() ?: 0;
+			//$res[$k]['sum_payment'] = $CMD->bindValues([':phone' => $v['uPhone'], ':ty' => self::TYPE_YXS])->queryScalar() ?: 0;
+			$res[$k]['sum_payment'] = 0;
 			$res[$k]['all_order_amt'] = $stat3CMD->bindValues(array_merge([
 				":phone" => $v['uPhone']
 			]))->queryScalar();
