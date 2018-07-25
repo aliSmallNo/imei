@@ -1472,7 +1472,7 @@ class FooController extends Controller
 
 		// AppUtil::logByFile(date('Y-m-d H:i:s'), 'youzan_user', __FUNCTION__, __LINE__);
 
-		// $token = YouzanUtil::getAccessToken();echo $token;
+		 $token = YouzanUtil::getAccessToken();echo $token;
 
 		// 更新用户
 		//YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');
@@ -1522,9 +1522,7 @@ class FooController extends Controller
 
 		//YzRefund::get_goods_by_se_time();
 
-
 		// 未知商品ID [418096436, 2147483647, 418492020,415342072];
-
 
 		/*$array = [
 			[1, 'oa'],
@@ -1542,11 +1540,10 @@ class FooController extends Controller
 
 		// print_r(YzOrders::process_express([]));
 
-
 		// YzCoupon::coupon_search_item_all();
 
-
 		// echo self::cal_all_next(18518082610);
+
 
 	}
 
