@@ -97,6 +97,7 @@ class YzOrders extends ActiveRecord
 			if ($g_item_id && !YzGoods::findOne(['g_item_id' => $g_item_id])) {
 				YzGoods::get_goods_desc_by_id($g_item_id);
 			}
+
 		}
 		return true;
 	}
@@ -180,6 +181,41 @@ class YzOrders extends ActiveRecord
 		$full_order_info_list = $res['response']['full_order_info_list'] ?? [];
 		$co = $res['response']['total_results'] ?? 0;
 		return [$full_order_info_list, $co];
+	}
+
+	/**
+	 * 查询订单归属的分销员
+	 * @param $order_no 订单号
+	 * @return string 分销员手机号
+	 */
+	public static function trades_account_get($order_no)
+	{
+		if (!$order_no) {
+			return false;
+		}
+		$method = 'youzan.trades.account.get';
+		$api_version = '3.0.0';
+		$my_params = [
+			'order_no' => $order_no,
+		];
+		$res = YouzanUtil::getData($method, $my_params, $api_version);
+		$saleman_mobile = $res['response']['mobile'] ?? '';
+
+		echo $order_no . ' saleman_mobile:' . $saleman_mobile . PHP_EOL;
+
+		$conn = AppUtil::db();
+		$sql = "update im_yz_orders set o_saleman_mobile=:phone where o_tid=:tid ";
+		$conn->createCommand($sql)->bindValues([
+			":phone" => $saleman_mobile,
+			":tid" => $order_no,
+		])->execute();
+
+		$sql = "update im_yz_order_des set od_saleman_mobile=:phone where od_tid=:tid ";
+		$conn->createCommand($sql)->bindValues([
+			":phone" => $saleman_mobile,
+			":tid" => $order_no,
+		])->execute();
+		return true;
 	}
 
 	public static function trades_sold_by_se_time($params = [], $isDebugger = false)
@@ -272,100 +308,13 @@ class YzOrders extends ActiveRecord
 
 		$co = 0;
 		foreach ($res as $k => $v) {
-			/*$map = [
-				"item_id" => "o_item_id",
-				"sku_id" => "o_sku_id",
-			];
-			$order = json_decode($v['o_orders'], 1)[0];
-			$insert = [];
-			foreach ($map as $key => $val) {
-				if (isset($order[$key])) {
-					$insert[$val] = $order[$key];
-				}
-			}
-			echo $v['o_tid'] . json_encode($insert) . PHP_EOL;
-			self::edit($v['o_tid'], $insert);*/
 
-			$orders = json_decode($v['o_orders'], 1);
-			$order_info = json_decode($v['o_order_info'], 1);
-			$buyer_info = json_decode($v['o_buyer_info'], 1);
-			$address_info = json_decode($v['o_address_info'], 1);
+//			$orders = json_decode($v['o_orders'], 1);
+//			$order_info = json_decode($v['o_order_info'], 1);
+//			$buyer_info = json_decode($v['o_buyer_info'], 1);
+//			$address_info = json_decode($v['o_address_info'], 1);
 
-			/*$insert = [
-				'od_tid' => $order_info['tid'],
-				'od_status' => $order_info['status'],
-				'od_created' => $order_info['created'],
-				'od_paytime' => $order_info['pay_time'],
-				'od_update_time' => $order_info['update_time'],
-			];*/
-
-			$order_num = 0;
-			$sku_num = 0;
-			$order_payment = 0;
-			$total_fee = 0;
-			foreach ($orders as $order) {
-				/*$g_item_id = $order['item_id'];
-				if (!YzGoods::findOne(['g_item_id' => $g_item_id])) {
-					$co = $co + 1;
-					echo 'co:' . $co . ' item_id:' . $g_item_id . PHP_EOL;
-					YzGoods::get_goods_desc_by_id($g_item_id);
-				}*/
-
-				/*if ($order_info['pay_time']) {
-					$order_payment = $order_payment + $order['payment'];
-				}
-				$sku_num = $sku_num + $order['num'];
-				$total_fee = $total_fee + $order['total_fee'];*/
-
-				/*$insert['od_item_id'] = $order['item_id'] ?? '';
-				$insert['od_sku_id'] = $order['sku_id'] ?? '';
-				$insert['od_num'] = $order['num'] ?? '';
-				$insert['od_sku_properties_name'] = $order['sku_properties_name'] ?? '';
-				$insert['od_item_type'] = $order['item_type'] ?? '';
-				$insert['od_pic_path'] = $order['pic_path'] ?? '';
-				$insert['od_oid'] = $order['oid'] ?? '';
-				$insert['od_title'] = $order['title'] ?? '';
-				$insert['od_buyer_messages'] = $order['buyer_messages'] ?? '';
-				$insert['od_points_price'] = $order['points_price'] ?? '';
-				$insert['od_price'] = $order['price'] ?? '';
-				$insert['od_total_fee'] = $order['total_fee'] ?? '';
-				$insert['od_payment'] = $order['payment'] ?? '';*/
-
-				// YzOrdersDes::process(array_merge($order_info, $order, $buyer_info, $address_info));
-				self::add_skus_goods($order);
-
-			}
-			/*self::edit($order_info['tid'], [
-				'o_num' => 1,
-				'o_sku_num' => $sku_num,
-				'o_payment' => $order_payment,
-				'o_total_fee' => $total_fee,
-			]);*/
-
-			/*$o_fans_id = $v['o_fans_id'];
-			$o_buyer_phone = $v['o_buyer_phone'];
-
-			$user = $userCMD->bindValues([':fans_id' => $o_fans_id])->queryOne();
-			$uPhone = $user['uPhone'];
-			if (!$user['uCreateOn']) {
-				YzUser::getUserInfoByTag($o_fans_id);
-			}
-
-			if ($o_buyer_phone) {
-				// 订单表的下单者手机号 写到 用户表
-				YzUser::edit($o_fans_id, ['uPhone' => $o_buyer_phone, 'uYZUId' => $o_fans_id]);
-			}
-			if ($uPhone && !$o_buyer_phone) {
-				// 用户表手机号 写到 订单表下单者手机号
-				self::edit($v['o_tid'], ['o_buyer_phone' => $uPhone]);
-			}
-
-			$msg = 'o_tid:' . $v['o_tid'] . '=>' . ' o_fans_id:' . $o_fans_id . '=>' . 'uPhone:' . $o_buyer_phone;
-			if ($debugger) {
-				echo $msg . PHP_EOL;
-			}
-			AppUtil::logByFile($msg, YzUser::LOG_YOUZAN_ORDERS_UP_PHONE, __FUNCTION__, __LINE__);*/
-
+			self::trades_account_get($v['o_tid']);
 		}
 
 	}
