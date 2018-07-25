@@ -193,7 +193,7 @@ class YzOrders extends ActiveRecord
 		if (!$order_no) {
 			return false;
 		}
-		$method = 'youzan.trades.account.get';
+		$method = 'youzan.salesman.trades.account.get';
 		$api_version = '3.0.0';
 		$my_params = [
 			'order_no' => $order_no,
