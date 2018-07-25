@@ -158,6 +158,7 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 				<h4 class="modal-title">订单</h4>
+				<p>xxxx,xxx</p>
 			</div>
 			<div class="modal-body">
 				<table class="table table-striped table-bordered">
@@ -237,6 +238,7 @@
 		edate: $(".endDate"),
 		page: 1,
 		modal: $("#orderModal"),
+		stat: $("#orderModal .modal-header p"),
 		ul: $("#orderModal .modal-body tbody"),
 		modal_title: $("#orderModal .modal-title"),
 
@@ -366,6 +368,8 @@
 				$sls.loadflag = 0;
 				if (resp.code == 0) {
 					var html = Mustache.render($('#order_tpl').html(), resp.data)
+					var stat = resp.data.stat;
+					$sls.stat.html("订单数:" + stat.co + " 总共支付: " + stat.payment);
 					if ($sls.page == 1) {
 						$sls.ul.html(html);
 					} else {
