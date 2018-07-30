@@ -15,8 +15,8 @@ use yii\db\ActiveRecord;
 
 class CRMClient extends ActiveRecord
 {
-	const CATEGORY_YANXUAN = 100;   // 到家严选
-	const CATEGORY_ADVERT = 110;    // 广告商客户
+	const CATEGORY_YANXUAN = 100;
+	const CATEGORY_ADVERT = 110;
 
 	const STATUS_DISLIKE = 100;
 	const STATUS_FRESH = 110;
