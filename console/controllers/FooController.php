@@ -1518,7 +1518,7 @@ class FooController extends Controller
 		 YzGoods::update_goods(1);
 		// YzGoods::update_all_goods_desc(1);
 
-		//YzRefund::get_goods_by_se_time();
+		YzRefund::get_goods_by_se_time();
 
 		// 未知商品ID [418096436, 2147483647, 418492020,415342072];
 
