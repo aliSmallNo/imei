@@ -1478,7 +1478,7 @@ class FooController extends Controller
 		//YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');
 
 		// 更新用户
-		YzUser::UpdateUser('2018-06-25 00:00:00', '');
+		// YzUser::UpdateUser('2018-07-25 00:00:00', '');
 		//YzUser::getUserBySETime('2018-07-25 00:00:00', '', 1);
 
 		// 更新分销员
@@ -1505,7 +1505,7 @@ class FooController extends Controller
 			])->execute();
 		}*/
 
-		//YzOrders::Update_order('','',1);
+		YzOrders::Update_order('2018-07-25 00:00:00', '', 1);
 
 		//YzOrders::orders_user_mix_update();
 

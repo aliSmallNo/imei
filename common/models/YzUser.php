@@ -151,7 +151,7 @@ class YzUser extends ActiveRecord
 		}
 
 		// 更新分销员信息
-		// self::getSalesManList($isDebugger);
+		 self::getSalesManList($isDebugger);
 	}
 
 	/**
