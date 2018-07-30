@@ -139,7 +139,6 @@ class YzRefund extends ActiveRecord
 	{
 		//$st = '2018-04-26 00:00:00';
 		$st = date("Y-m-d") . ' 00:00:00';
-		$st = '2018-07-25 00:00:00';
 		$et = date('Y-m-d 23:23:59');
 		$dates = YouzanUtil::cal_se_date($st, $et);
 		$total = 0;
