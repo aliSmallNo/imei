@@ -1505,7 +1505,7 @@ class FooController extends Controller
 			])->execute();
 		}*/
 
-		YzOrders::Update_order('2018-07-25 00:00:00', '', 1);
+		//YzOrders::Update_order('2018-07-25 00:00:00', '', 1);
 
 		//YzOrders::orders_user_mix_update();
 
@@ -1515,7 +1515,7 @@ class FooController extends Controller
 		//YzOrders::Update_order('', '', 1);
 
 
-		// YzGoods::update_goods(1);
+		 YzGoods::update_goods(1);
 		// YzGoods::update_all_goods_desc(1);
 
 		//YzRefund::get_goods_by_se_time();
