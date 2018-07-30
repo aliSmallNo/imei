@@ -121,7 +121,6 @@ class YzUser extends ActiveRecord
 	public static function getUserBySETime($st, $et, $isDebugger = false)
 	{
 		$dates = YouzanUtil::cal_se_date($st, $et);
-		$page = 1;
 		$page_size = 50;
 		$total = 0;
 		foreach ($dates as $date) {
@@ -129,7 +128,7 @@ class YzUser extends ActiveRecord
 			$etime = $date['etime'];
 			$stimeFmt = $date['stimeFmt'];
 			$etimeFmt = $date['etimeFmt'];
-
+			$page = 1;
 			do {
 				$results = self::getTZUser($stimeFmt, $etimeFmt, $page, $page_size, $isDebugger);
 				$total_results = $results['total_results'] ?? 0;
