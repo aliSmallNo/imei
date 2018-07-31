@@ -123,9 +123,9 @@
 							{{if $isDebugger}}
 								<span class="font10">{{$item.o_fans_id}}</span>
 								<br>
-								<span class="font10">{{$item.o_tid}}</span>
-								<br>
 							{{/if}}
+							<span class="font10">{{$item.o_tid}}</span>
+							<br>
 						</td>
 						<td rowspan='{{$item.co}}'>
 							<span class="st_{{$item.o_status}}">{{$item.status_str}}</span><br><br>
