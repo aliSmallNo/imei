@@ -315,7 +315,7 @@ class YzOrders extends ActiveRecord
 		$co = 0;
 		foreach ($res as $k => $v) {
 
-			$orders = json_decode($v['o_orders'], 1);
+//			$orders = json_decode($v['o_orders'], 1);
 //			$order_info = json_decode($v['o_order_info'], 1);
 //			$buyer_info = json_decode($v['o_buyer_info'], 1);
 //			$address_info = json_decode($v['o_address_info'], 1);
