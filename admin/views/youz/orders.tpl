@@ -69,10 +69,15 @@
 									{{if isset($getInfo['st']) && $getInfo['st']==$key}}selected{{/if}}>{{$item}}</option>
 				{{/foreach}}
 			</select>
+			<input class="form-control" placeholder="推荐人手机" type="text" name="sphone"
+						 value="{{if isset($getInfo['sphone'])}}{{$getInfo['sphone']}}{{/if}}"/>
 		</div>
 		<button class="btn btn-primary">查询</button>
-		<a class="btn btn-primary opExcel">导出未发货订单</a>
-		{{if $able_refresh_data}}<a class="btn btn-primary update_data">刷新</a>{{/if}}
+
+		{{if $able_refresh_data}}
+			<a class="btn btn-primary opExcel">导出未发货订单</a>
+			<a class="btn btn-primary update_data">刷新</a>
+		{{/if}}
 	</form>
 
 </div>
@@ -83,7 +88,7 @@
 		<thead>
 		<tr>
 			<th class="col-sm-1">
-				用户头像
+				推荐人
 			</th>
 			<th class="col-sm-2">
 				用户信息
@@ -111,11 +116,7 @@
 				<tr>
 					{{if $okey==0}}
 						<td align="center" rowspan='{{$item.co}}'>
-							{{if $item.avatar}}
-								<span>
-						<img src="{{$item.avatar}}" style="width: 65px;height: 65px;">
-					</span>
-							{{/if}}
+							{{$item.name2}} {{$item.o_saleman_mobile}}
 						</td>
 						<td rowspan='{{$item.co}}'>
 							用户:{{$item.name}} {{if $item.phone}}{{$item.phone}}{{else}}{{$item.o_buyer_phone}}{{/if}}<br>

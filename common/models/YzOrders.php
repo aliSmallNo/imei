@@ -491,19 +491,23 @@ class YzOrders extends ActiveRecord
 		}
 
 		$sql = "select o_fans_id,o_id,o_tid,o_buyer_phone,o_receiver_tel,o_receiver_name,o_status,o_price,o_num,o_sku_num,
-				o_total_fee,o_payment,o_refund,o_orders,o_created,o_update_time,o_order_info,o_pay_time,o_remark_info,
-				u1.uName as `name`,u1.uPhone as phone,u1.uAvatar as avatar
+				o_total_fee,o_payment,o_refund,o_orders,o_created,o_update_time,o_order_info,o_pay_time,o_remark_info,o_saleman_mobile,
+				u1.uName as `name`,u1.uPhone as phone,u1.uAvatar as avatar,
+				u2.uName as `name2`,u2.uPhone as phone2,u2.uAvatar as avatar2
 				from im_yz_orders as o 
 				left join im_yz_user as u1 on u1.uYZUId=o.o_fans_id
+				left join im_yz_user as u2 on u2.uPhone=o.o_saleman_mobile and o.o_saleman_mobile>0
 				where o.o_id>0 $criteriaStr order by o.o_update_time desc $limit ";
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as $k => $v) {
 			$res[$k] = array_merge($res[$k], self::fmt_order_row($v));
 		}
 
+
 		$sql = "select count(*)
 				from im_yz_orders as o 
 				left join im_yz_user as u1 on u1.uYZUId=o.o_fans_id
+				left join im_yz_user as u2 on u2.uPhone=o.o_saleman_mobile and o.o_saleman_mobile>0
 				where o.o_id>0 $criteriaStr";
 		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
 

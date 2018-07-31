@@ -284,6 +284,7 @@ class YouzController extends BaseController
 		$phone = self::getParam("phone");
 		$sdate = self::getParam("sdate");
 		$edate = self::getParam("edate");
+		$tid = self::getParam("tid");
 
 		if ($is_partner) {
 			$phone = Admin::$userInfo['aPhone'] ?? 0;
@@ -304,12 +305,13 @@ class YouzController extends BaseController
 			$criteria[] = 'u1.uPhone>:phone2';
 			$params[':phone2'] = 100;
 		}
-
 		if ($name) {
 			$criteria[] = " u1.uName like :name ";
 			$params[':name'] = '%' . trim($name) . '%';
 		}
+		if ($tid) {
 
+		}
 		$items = YzUser::chain_items($criteria, $params, $se_date);
 
 		return $this->renderPage('chain.tpl',
@@ -404,6 +406,7 @@ class YouzController extends BaseController
 		$name = self::getParam("name");
 		$title = self::getParam("title");
 		$phone = self::getParam("phone");
+		$sphone = self::getParam("sphone");
 		$st = self::getParam("st");
 		$export = self::getParam("export");
 
@@ -424,6 +427,10 @@ class YouzController extends BaseController
 		if ($st) {
 			$criteria[] = " o.o_status = :st ";
 			$params[':st'] = trim($st);
+		}
+		if ($sphone) {
+			$criteria[] = " o.o_saleman_mobile = :sphone ";
+			$params[':sphone'] = trim($sphone);
 		}
 
 		list($items, $count) = YzOrders::items($criteria, $params, $page);
