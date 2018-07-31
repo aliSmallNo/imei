@@ -114,6 +114,7 @@ class YzUser extends ActiveRecord
 		self::getUserBySETime($st, $et);
 
 		if (in_array(date('H'), [8])) {
+			echo '~~~~~~~~~~~~~~~~~~~~~~~' . PHP_EOL;
 			self::getUserBySETime("2018-04-01 00:00:00", $et);
 		}
 	}
@@ -151,7 +152,7 @@ class YzUser extends ActiveRecord
 		}
 
 		// 更新分销员信息
-		 self::getSalesManList($isDebugger);
+		self::getSalesManList($isDebugger);
 	}
 
 	/**
