@@ -111,11 +111,10 @@ class YzUser extends ActiveRecord
 	{
 		$st = $st ? $st : date('Y-m-d 00:00:00');
 		$et = $et ? $et : date('Y-m-d 00:00:00', time() + 86400);
-		self::getUserBySETime($st, $et, 1);
+		self::getUserBySETime($st, $et);
 
-		if (in_array(date('H', strtotime('2018-07-31 08:00:00')), [8])) {
-			echo '~~~~~~~~~~~~~~~~~~~~~~~' . PHP_EOL;
-			self::getUserBySETime("2018-04-01 00:00:00", $et, 1);
+		if (in_array(date('H'), [8])) {
+			self::getUserBySETime("2018-04-01 00:00:00", $et);
 		}
 	}
 
@@ -152,7 +151,7 @@ class YzUser extends ActiveRecord
 		}
 
 		// 更新分销员信息
-		//self::getSalesManList($isDebugger);
+		self::getSalesManList($isDebugger);
 	}
 
 	/**
@@ -375,7 +374,7 @@ class YzUser extends ActiveRecord
 		if ($open_id) {
 			$fansId = self::getUserInfoByTag($open_id, 'weixin_openid');
 		}
-		// echo '$phone:' . $phone . ' $open_id:' . $open_id . ' $fansId' . $fansId . PHP_EOL;
+		 echo '$phone:' . $phone . ' $open_id:' . $open_id . ' $fansId' . $fansId . PHP_EOL;
 		return $fansId;
 	}
 

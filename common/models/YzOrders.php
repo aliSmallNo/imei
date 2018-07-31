@@ -204,6 +204,10 @@ class YzOrders extends ActiveRecord
 
 		// echo $order_no . ' saleman_mobile:' . $saleman_mobile . PHP_EOL;
 
+		if ($saleman_mobile) {
+			YzUser::use_phone_get_user_info($saleman_mobile);
+		}
+
 		$conn = AppUtil::db();
 		$sql = "update im_yz_orders set o_saleman_mobile=:phone where o_tid=:tid ";
 		$conn->createCommand($sql)->bindValues([
@@ -315,7 +319,7 @@ class YzOrders extends ActiveRecord
 //			$buyer_info = json_decode($v['o_buyer_info'], 1);
 //			$address_info = json_decode($v['o_address_info'], 1);
 
-			//self::trades_account_get($v['o_tid']);
+			self::trades_account_get($v['o_tid']);
 
 		}
 
