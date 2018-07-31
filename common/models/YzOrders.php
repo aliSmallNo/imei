@@ -307,7 +307,8 @@ class YzOrders extends ActiveRecord
 	{
 
 		$conn = AppUtil::db();
-		$res = $conn->createCommand("select * from im_yz_orders order by o_tid desc")->queryAll();
+		//$res = $conn->createCommand("select * from im_yz_orders order by o_tid desc")->queryAll();
+		$res = $conn->createCommand("select DISTINCT o_saleman_mobile from im_yz_orders")->queryAll();
 
 		// $userCMD = $conn->createCommand("select uCreateOn,uPhone from im_yz_user where uYZUId=:fans_id");
 
@@ -319,8 +320,12 @@ class YzOrders extends ActiveRecord
 //			$buyer_info = json_decode($v['o_buyer_info'], 1);
 //			$address_info = json_decode($v['o_address_info'], 1);
 
-			self::trades_account_get($v['o_tid']);
+			//self::trades_account_get($v['o_tid']);
 
+			$saleman_mobile = $v['o_saleman_mobile'];
+			if ($saleman_mobile) {
+				YzUser::use_phone_get_user_info($saleman_mobile);
+			}
 		}
 
 	}
