@@ -115,7 +115,7 @@ class YouzController extends BaseController
 
 		$sql = "select 
 				a.aId,a.aName,
-				u1.uYZUId,u1.uName,u1.uPhone,u1.uPoint,u1.`uTradeNum`,u1.uTradeMoney,u1.uUpdatedOn,
+				u1.uYZUId,u1.uName,u1.uPhone,u1.uPoint,u1.`uTradeNum`,u1.uTradeMoney,u1.uCreateOn,
 				u2.uName as fname,u2.uPhone as fphone
 				from im_yz_user as u1
 				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone and u2.uPhone>0
