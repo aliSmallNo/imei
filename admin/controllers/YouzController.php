@@ -121,7 +121,7 @@ class YouzController extends BaseController
 				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone and u2.uPhone>0
 				left join im_admin as a on a.aId=u1.uAdminId
 				where u1.uType=:ty and u1.uAdminId>1 $condition
-				order by u1.uAdminId asc ";
+				order by u1.uAdminId asc,u1.uCreateOn desc ";
 		$conn = AppUtil::db();
 		$res = $conn->createCommand($sql)->bindValues([
 			':ty' => YzUser::TYPE_YXS,
