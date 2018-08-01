@@ -384,6 +384,7 @@ class YzUser extends ActiveRecord
 			$fansId = self::getUserInfoByTag($open_id, 'weixin_openid', 1);
 		}
 		echo '$phone:' . $phone . ' $open_id:' . $open_id . ' $fansId' . $fansId . PHP_EOL;
+		self::salesman_account_score($phone);
 		return $fansId;
 	}
 
@@ -518,6 +519,17 @@ class YzUser extends ActiveRecord
 			]
 		];
 
+		$accumulations = $res['response']['accumulations'];
+		if (count($accumulations) == 1) {
+			$accumulation = $accumulations[0];
+			$self = self::findOne(["uPhone" => $phone, "uType" => self::TYPE_YXS]);
+			if ($self) {
+				$accumulation['user_id'] = $self->uYZUId;
+				self::process($accumulation);
+			}
+		} else {
+			echo '~~~~~~multi~~~~~~~' . $phone . PHP_EOL;
+		}
 	}
 
 
