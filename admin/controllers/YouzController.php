@@ -128,7 +128,7 @@ class YouzController extends BaseController
 		])->queryAll();
 
 		$header = $content = [];
-		$header = ['ID', '严选师信息', '交易数量', '交易金额', '邀请方信息', '管理员', '更新时间'];
+		$header = ['ID', '严选师信息', '交易数量', '交易金额', '邀请方信息', '管理员', '添加时间'];
 		foreach ($res as $v) {
 			$content[] = [
 				$v['uYZUId'],
@@ -137,7 +137,7 @@ class YouzController extends BaseController
 				$v['uTradeMoney'],
 				$v['fname'] . '(' . $v['fphone'] . ')',
 				$v['aName'],
-				$v['uUpdatedOn'],
+				$v['uCreateOn'],
 			];
 		}
 

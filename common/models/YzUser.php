@@ -539,9 +539,11 @@ class YzUser extends ActiveRecord
 		$res = YouzanUtil::getData($method, $my_params, $api_version);
 		print_r($res);
 		$resStyle = [
+			// 成功返回
 			"response" => [
 				"isSuccess" => true,
 			],
+			// 失败返回
 			"error_response" => [
 				"code" => 140400200,
 				"message" => "user not exist",
