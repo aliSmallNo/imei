@@ -1477,7 +1477,8 @@ class FooController extends Controller
 		echo $token . PHP_EOL;
 
 		YzUser::salesman_account_add(13810061446);
-		YzUser::use_phone_get_user_info(13406917349);
+		//YzUser::use_phone_get_user_info(13406917349);
+		YzUser::getSalesManList();
 
 		// 更新用户
 		//YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');

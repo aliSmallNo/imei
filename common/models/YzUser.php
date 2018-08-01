@@ -291,6 +291,9 @@ class YzUser extends ActiveRecord
 								self::use_phone_get_user_info($sman_phone);
 							}
 						}
+
+						self::use_phone_get_user_info($sman_phone);
+
 						self::edit($fansId, $insert);
 						if ($isDebugger) {
 							echo '$fansId:' . $fansId . PHP_EOL;
@@ -388,7 +391,7 @@ class YzUser extends ActiveRecord
 		if ($open_id) {
 			$fansId = self::getUserInfoByTag($open_id, 'weixin_openid', 1);
 		}
-		echo '$phone:' . $phone . ' $open_id:' . $open_id . ' $fansId' . $fansId . PHP_EOL;
+		// echo '$phone:' . $phone . ' $open_id:' . $open_id . ' $fansId' . $fansId . PHP_EOL;
 		self::salesman_account_score($phone);
 		return $fansId;
 	}
@@ -525,7 +528,6 @@ class YzUser extends ActiveRecord
 		];
 
 		$accumulations = $res['response']['accumulations'];
-		print_r($accumulations);
 		if (count($accumulations) == 1) {
 			$accumulation = $accumulations[0];
 			$self = self::findOne(["uPhone" => $phone, "uType" => self::TYPE_YXS]);
@@ -533,6 +535,7 @@ class YzUser extends ActiveRecord
 				$accumulation['user_id'] = $self->uYZUId;
 				self::process($accumulation);
 			}
+			echo 'one：' . $phone . PHP_EOL;
 		} else {
 			echo '~~~~~~multi~~~~~~~' . $phone . PHP_EOL;
 		}
