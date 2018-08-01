@@ -520,6 +520,7 @@ class YzUser extends ActiveRecord
 		];
 
 		$accumulations = $res['response']['accumulations'];
+		var_dump($accumulations);
 		if (count($accumulations) == 1) {
 			$accumulation = $accumulations[0];
 			$self = self::findOne(["uPhone" => $phone, "uType" => self::TYPE_YXS]);
