@@ -1477,11 +1477,13 @@ class FooController extends Controller
 		echo $token . PHP_EOL;
 		echo $token . PHP_EOL;
 
+		YzUser::salesman_account_add(13810061446);
+
 		// 更新用户
 		//YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');
 
 		// 更新用户
-		 //YzUser::UpdateUser('2018-07-31 08:00:00', '');
+		//YzUser::UpdateUser('2018-07-31 08:00:00', '');
 		//YzUser::getUserBySETime('2018-07-25 00:00:00', '', 1);
 
 		// 更新分销员
@@ -1510,7 +1512,7 @@ class FooController extends Controller
 
 		//YzOrders::Update_order('2018-07-25 00:00:00', '', 1);
 
-		YzOrders::orders_user_mix_update();
+		//YzOrders::orders_user_mix_update();
 
 		// YzRefund::get_goods_by_se_time(1);
 		// YzGoods::get_goods_by_se_time_new(YzGoods::ST_STORE_HOUSE, 1);
@@ -1547,26 +1549,6 @@ class FooController extends Controller
 
 
 	}
-
-//	public static function cal_all_next($phone, $conn = '', $count = 0)
-//	{
-	/*if (!$conn) {
-		$conn = AppUtil::db();
-	}
-	$sql = 'select count(*) from im_yz_user where uFromPhone=:phone ';
-	$count = $count + $conn->createCommand($sql)->bindValues([':phone' => $phone])->queryScalar();
-	echo $count . PHP_EOL;
-
-	$sql = 'select uPhone from im_yz_user where uFromPhone=:phone ';
-	$res = $conn->createCommand($sql)->bindValues([':phone' => $phone])->queryAll();
-	if ($res) {
-		foreach ($res as $next_from_phone) {
-			self::cal_all_next($next_from_phone, $conn, $count);
-		}
-	}
-	return $count;*/
-
-//	}
 
 
 }

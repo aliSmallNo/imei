@@ -482,6 +482,160 @@ class YzUser extends ActiveRecord
 	}
 
 
+	/**
+	 * 获取分销员业绩统计
+	 */
+	public static function salesman_account_score($phone = 13406917349)
+	{
+		// https://www.youzanyun.com/apilist/detail/group_ump/salesman/youzan.salesman.account.score.search
+		$method = 'youzan.salesman.account.score.search'; //要调用的api名称
+		$my_params = [
+			'fans_type' => '0',
+			'mobile' => $phone,
+			'fans_id' => '0',
+			'start_time' => '0',
+			'end_time' => '0',
+			'page_size' => '100',
+			'page_no' => '1',
+		];
+		$api_version = '3.0.0';
+		$res = YouzanUtil::getData($method, $my_params, $api_version);
+		$resStyle = [
+			"response" => [
+				"accumulations" => [
+					[
+						"manual_settle_order_amount" => "0.00", // 人工结算订单金额
+						"manual_settle_order_num" => "0",       // 人工结算订单数
+						"nickname" => "幸运人生",                // 手机号
+						"mobile" => "13406917349",              // 昵称
+						"wait_settle_money" => "6.08",          // 待结算佣金
+						"auto_settle_order_amount" => "6699.53",// 自动结算订单金额
+						"auto_settle_order_num" => "458",       // 自动结算订单数
+						"settle_money" => "670.25"              // 已结算佣金
+					]
+				],
+				"total_results" => 1
+			]
+		];
+
+	}
+
+
+	/**
+	 * 设置用户为严选师
+	 * https://www.youzanyun.com/apilist/detail/group_ump/salesman/youzan.salesman.account.add
+	 */
+	public static function salesman_account_add($phone = 13406917349)
+	{
+
+		$method = 'youzan.salesman.account.add'; //要调用的api名称
+		$api_version = '3.0.0'; //要调用的api版本号
+		$my_params = [
+			'fans_id' => '1',
+			'fans_type' => '1',
+			'mobile' => $phone,
+		];
+
+		$res = YouzanUtil::getData($method, $my_params, $api_version);
+		print_r($res);
+		$resStyle = [
+			"response" => [
+				"isSuccess" => true,
+			],
+			"error_response" => [
+				"code" => 140400200,
+				"message" => "user not exist",
+			]
+		];
+
+	}
+
+	/**
+	 * 获取分销员账户信息
+	 * https://www.youzanyun.com/apilist/detail/group_ump/salesman/youzan.salesman.account.get
+	 */
+	public static function salesman_account_get($phone = 13406917349)
+	{
+		$method = 'youzan.salesman.account.get'; //要调用的api名称
+		$api_version = '3.0.0'; //要调用的api版本号
+
+		$my_params = [
+			'mobile' => '13406917349',
+			'fans_type' => '1',
+			'fans_id' => '0',
+		];
+
+		$res = YouzanUtil::getData($method, $my_params, $api_version);
+		$resStyle = [
+			"response" => [
+				"seller" => "2nAhO7",
+				"from_buyer_mobile" => "",
+				"money" => "6699.53",
+				"mobile" => "13406917349",
+				"nickname" => "幸运人生",
+				"order_num" => 458,
+				"fans_id" => 5352476755,
+				"created_at" => "2018-08-01 17:02:21",
+			]
+		];
+
+	}
+
+
+	/**
+	 * 获取推广订单列表
+	 * https://www.youzanyun.com/apilist/detail/group_ump/salesman/youzan.salesman.trades.get
+	 */
+	public static function salesman_trades_get($phone = 13406917349)
+	{
+		$method = 'youzan.salesman.trades.get'; //要调用的api名称
+		$api_version = '3.0.0'; //要调用的api版本号
+		$my_params = [
+			'start_time' => '0',
+			'page_size' => '20',
+			'page_no' => '1',
+			'mobile' => $phone,
+			'fans_type' => '1',
+			'fans_id' => '1',
+			'end_time' => '0',
+		];
+
+		$res = YouzanUtil::getData($method, $my_params, $api_version);
+		$resStyle = [
+			"response" => [
+				"trades" => [
+					[
+						"created_at" => "2018-07-31 19:46:20",
+						"seller" => "2nAhO7",
+						"order_no" => "E20180731194620081100004",
+						"cps_money" => "1.69",
+						"settle_state" => 1,
+						"money" => "16.90",     // 支付
+						"phone" => "13406917349",
+						"auto_settle" => 1,
+						"state" => 5,
+						"items" => [
+							[
+								"ii_rate" => "0.00",
+								"i_cps_money" => "0.00",
+								"price" => "19.90",     // 单价
+								"is_join" => 1,
+								"num" => 1,             // 购买数量
+								"ii_cps_money" => "0.00",
+								"num_iid" => "425856108",
+								"i_rate" => "0.00",
+								"title" => "高质乳胶家用胶手套、防水防滑橡胶"
+							]
+						]
+					],
+				],
+				// ...
+				'total_results' => 569,
+			]
+		];
+
+	}
+
 	public static function items($criteria, $params, $page = 1, $pageSize = 20)
 	{
 		$conn = AppUtil::db();
