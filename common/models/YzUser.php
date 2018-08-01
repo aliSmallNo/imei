@@ -381,7 +381,7 @@ class YzUser extends ActiveRecord
 
 		$fansId = 0;
 		if ($open_id) {
-			$fansId = self::getUserInfoByTag($open_id, 'weixin_openid');
+			$fansId = self::getUserInfoByTag($open_id, 'weixin_openid', 1);
 		}
 		echo '$phone:' . $phone . ' $open_id:' . $open_id . ' $fansId' . $fansId . PHP_EOL;
 		return $fansId;
