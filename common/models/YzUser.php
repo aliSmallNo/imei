@@ -41,6 +41,11 @@ class YzUser extends ActiveRecord
 
 		'weixin_openid' => 'uOpenId',
 		'tags' => 'uTags',
+
+		"wait_settle_money" => "u_wait_settle_money",          // 待结算佣金
+		"auto_settle_order_amount" => "u_auto_settle_order_amount",// 自动结算订单金额
+		"auto_settle_order_num" => "u_auto_settle_order_num",       // 自动结算订单数
+		"settle_money" => "u_settle_money"              // 已结算佣金
 	];
 
 	// 一个手机号有多个账户（小程序用户，公众号用户）
@@ -520,7 +525,7 @@ class YzUser extends ActiveRecord
 		];
 
 		$accumulations = $res['response']['accumulations'];
-		var_dump($accumulations);
+		print_r($accumulations);
 		if (count($accumulations) == 1) {
 			$accumulation = $accumulations[0];
 			$self = self::findOne(["uPhone" => $phone, "uType" => self::TYPE_YXS]);
