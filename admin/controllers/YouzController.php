@@ -130,7 +130,7 @@ class YouzController extends BaseController
 		])->queryAll();
 
 		$header = $content = [];
-		$header = ['ID', '严选师信息', '交易数量', '交易金额', "结算订单数", '已结算佣金', '结算订单金额', '结算佣金', '邀请方信息', '管理员', '添加时间'];
+		$header = ['ID', '严选师信息', '交易数量', '交易金额', "结算订单数", '已结算佣金', '结算订单金额', '未结算佣金', '邀请方信息', '管理员', '添加时间'];
 		foreach ($res as $v) {
 			$content[] = [
 				$v['uYZUId'],
