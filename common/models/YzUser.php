@@ -291,9 +291,6 @@ class YzUser extends ActiveRecord
 								self::use_phone_get_user_info($sman_phone);
 							}
 						}
-
-						self::use_phone_get_user_info($sman_phone);
-
 						self::edit($fansId, $insert);
 						if ($isDebugger) {
 							echo '$fansId:' . $fansId . PHP_EOL;
@@ -535,9 +532,9 @@ class YzUser extends ActiveRecord
 				$accumulation['user_id'] = $self->uYZUId;
 				self::process($accumulation);
 			}
-			echo 'one：' . $phone . PHP_EOL;
+			//echo 'one：' . $phone . PHP_EOL;
 		} elseif (count($accumulations) > 1) {
-			echo '~~~~~~multi~~~~~~~' . $phone . PHP_EOL;
+			//echo '~~~~~~multi~~~~~~~' . $phone . PHP_EOL;
 		}
 	}
 

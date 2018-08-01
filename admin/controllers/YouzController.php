@@ -116,6 +116,8 @@ class YouzController extends BaseController
 		$sql = "select 
 				a.aId,a.aName,
 				u1.uYZUId,u1.uName,u1.uPhone,u1.uPoint,u1.`uTradeNum`,u1.uTradeMoney,u1.uCreateOn,
+				u1.u_auto_settle_order_num,u1.u_settle_money,
+				u1.u_auto_settle_order_amount,u1.u_wait_settle_money,
 				u2.uName as fname,u2.uPhone as fphone
 				from im_yz_user as u1
 				left join im_yz_user as u2 on u2.uPhone=u1.uFromPhone and u2.uPhone>0
@@ -128,20 +130,24 @@ class YouzController extends BaseController
 		])->queryAll();
 
 		$header = $content = [];
-		$header = ['ID', '严选师信息', '交易数量', '交易金额', '邀请方信息', '管理员', '添加时间'];
+		$header = ['ID', '严选师信息', '交易数量', '交易金额', "结算订单数", '已结算佣金', '结算订单金额', '结算佣金', '邀请方信息', '管理员', '添加时间'];
 		foreach ($res as $v) {
 			$content[] = [
 				$v['uYZUId'],
 				$v['uName'] . '(' . $v['uPhone'] . ')',
 				$v['uTradeNum'],
 				$v['uTradeMoney'],
+				$v['u_auto_settle_order_num'],
+				$v['u_settle_money'],
+				$v['u_auto_settle_order_amount'],
+				$v['u_wait_settle_money'],
 				$v['fname'] . '(' . $v['fphone'] . ')',
 				$v['aName'],
 				$v['uCreateOn'],
 			];
 		}
 
-		ExcelUtil::getYZExcel('严选师管理员' . date("Y-m-d"), $header, $content, [12, 30, 12, 12, 30, 12, 30,]);
+		ExcelUtil::getYZExcel('严选师管理员' . date("Y-m-d"), $header, $content, [12, 30, 12, 12, 12, 12, 12, 12, 30, 12, 30,]);
 		exit;
 	}
 
