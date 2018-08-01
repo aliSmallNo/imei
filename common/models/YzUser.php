@@ -493,10 +493,10 @@ class YzUser extends ActiveRecord
 
 	/**
 	 * 获取分销员业绩统计
+	 * https://www.youzanyun.com/apilist/detail/group_ump/salesman/youzan.salesman.account.score.search
 	 */
 	public static function salesman_account_score($phone = 13406917349)
 	{
-		// https://www.youzanyun.com/apilist/detail/group_ump/salesman/youzan.salesman.account.score.search
 		$method = 'youzan.salesman.account.score.search'; //要调用的api名称
 		$my_params = [
 			'fans_type' => '0',
@@ -536,7 +536,7 @@ class YzUser extends ActiveRecord
 				self::process($accumulation);
 			}
 			echo 'one：' . $phone . PHP_EOL;
-		} else {
+		} elseif (count($accumulations) > 1) {
 			echo '~~~~~~multi~~~~~~~' . $phone . PHP_EOL;
 		}
 	}
