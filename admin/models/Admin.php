@@ -318,14 +318,10 @@ class Admin extends ActiveRecord
 	public static function isGroupUser($groupTag = '', $adminId = "")
 	{
 		switch ($groupTag) {
-			case self::GROUP_SUPPLY_CHAIN:// 供应链
-				$adminIDs = [1002, 1026, 1029, 1032, 1017, 1033, 1016, 1036];//zp 罗文艳 杨亚楠 静静 道长 李泽鹏
-				break;
-			case self::GROUP_FINANCE:// 财务
-				$adminIDs = [1002, 1026];// zp 罗文艳
-				break;
-			case self::GROUP_RUN_MGR: // 运营
-				$adminIDs = [1002, 1014, 1027, 1030, 1017, 1016];// 张梦莹 小刀 树苗 zp 道长 李泽鹏
+			case self::GROUP_SUPPLY_CHAIN:  // 供应链
+			case self::GROUP_FINANCE:       // 财务
+			case self::GROUP_RUN_MGR:       // 运营
+				$adminIDs = self::getAIds($groupTag);
 				break;
 			case self::GROUP_LEADER:
 				$adminIDs = [1001, 1002, 1006, 1017, 1016];// dsx zp 于辉 道长 李泽鹏
