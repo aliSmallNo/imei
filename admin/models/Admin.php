@@ -303,7 +303,7 @@ class Admin extends ActiveRecord
 	{
 		switch ($groupTag) {
 			case self::GROUP_SUPPLY_CHAIN:// 供应链
-				$adminIDs = [1002, 1026, 1029, 1032, 1017, 1033, 1016];//zp 罗文艳 杨亚楠 静静 道长 李泽鹏
+				$adminIDs = [1002, 1026, 1029, 1032, 1017, 1033, 1016, 1036];//zp 罗文艳 杨亚楠 静静 道长 李泽鹏
 				break;
 			case self::GROUP_FINANCE:// 财务
 				$adminIDs = [1002, 1026];// zp 罗文艳
