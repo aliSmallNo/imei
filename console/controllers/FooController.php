@@ -8,6 +8,7 @@ namespace console\controllers;
  * Date: 11/5/2017
  * Time: 2:11 PM
  */
+use admin\models\Admin;
 use common\models\ChatMsg;
 use common\models\Img;
 use common\models\Log;
@@ -1465,6 +1466,12 @@ class FooController extends Controller
 		// var_dump(WechatUtil::createWechatMenus());
 
 
+		$res = Admin::getAIds(Admin::GROUP_SUPPLY_CHAIN);
+		print_r($res);
+		$res = Admin::getAIds(Admin::GROUP_FINANCE);
+		print_r($res);
+		$res = Admin::getAIds(Admin::GROUP_RUN_MGR);
+		print_r($res);
 	}
 
 	public function actionYz()
@@ -1476,9 +1483,9 @@ class FooController extends Controller
 		echo $token . PHP_EOL;
 		echo $token . PHP_EOL;
 
-		YzUser::salesman_account_add(13810061446);
+		//YzUser::salesman_account_add(13810061446);
 		//YzUser::use_phone_get_user_info(13406917349);
-		YzUser::getSalesManList();
+		//YzUser::getSalesManList();
 
 		// 更新用户
 		//YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');

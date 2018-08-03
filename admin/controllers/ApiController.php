@@ -149,6 +149,9 @@ class ApiController extends Controller
 					"aLevel" => self::postParam("level"),
 					"aName" => self::postParam("note"),
 					"aPhone" => self::postParam("phone"),
+					"aIsFinance" => self::postParam("isfinance"),
+					"aIsApply" => self::postParam("isapply"),
+					"aIsOperator" => self::postParam("isoperator"),
 				];
 				if ($id && !$pass) {
 					unset($data['aPass']);

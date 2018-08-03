@@ -70,10 +70,9 @@
 
 		<div class="form-group">
 			<label class="col-sm-4 control-label">登录密码:</label>
-
 			<div class="col-sm-8">
 				<input type="text" class="form-control" name="pass" autocomplete="off" {{if $userInfo}}
-							 placeholder="(选填)不填则不修改登录密码" {{else}} required {{/if}}>
+					placeholder="(选填)不填则不修改登录密码" {{else}} required {{/if}}>
 			</div>
 		</div>
 		<div class="form-group">
@@ -96,8 +95,38 @@
 				<select name="level" required="required" class="form-control">
 					<option>请选择</option>
 					{{foreach from=$levels key=k item=level}}
-					<option value="{{$k}}" {{if $userInfo && $userInfo['aLevel']==$k}}selected{{/if}}>{{$level}}</option>
+						<option value="{{$k}}" {{if $userInfo && $userInfo['aLevel']==$k}}selected{{/if}}>{{$level}}</option>
 					{{/foreach}}
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-4 control-label">是否是财务:</label>
+			<div class="col-sm-8">
+				<select name="isfinance" required="required" class="form-control">
+					<option>请选择</option>
+					<option value="0" {{if $userInfo && $userInfo['aIsFinance']==0}}selected{{/if}}>否</option>
+					<option value="1" {{if $userInfo && $userInfo['aIsFinance']==1}}selected{{/if}}>是</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-4 control-label">是否是供应链:</label>
+			<div class="col-sm-8">
+				<select name="isapply" required="required" class="form-control">
+					<option>请选择</option>
+					<option value="0" {{if $userInfo && $userInfo['aIsApply']==0}}selected{{/if}}>否</option>
+					<option value="1" {{if $userInfo && $userInfo['aIsApply']==1}}selected{{/if}}>是</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-4 control-label">是否是运营:</label>
+			<div class="col-sm-8">
+				<select name="isoperator" required="required" class="form-control">
+					<option>请选择</option>
+					<option value="0" {{if $userInfo && $userInfo['aIsOperator']==0}}selected{{/if}}>否</option>
+					<option value="1" {{if $userInfo && $userInfo['aIsOperator']==1}}selected{{/if}}>是</option>
 				</select>
 			</div>
 		</div>
@@ -108,12 +137,12 @@
 			<div class="col-sm-8">
 				<ul class="folders">
 					{{foreach from=$rights key=rId item=rItem}}
-					<li>
-						<label>
-							<input name="rights" class="ck-rights" type="checkbox" value="{{$rId}}" {{$rItem["checked"]}}>
-							{{$rItem["name"]}}
-						</label>
-					</li>
+						<li>
+							<label>
+								<input name="rights" class="ck-rights" type="checkbox" value="{{$rId}}" {{$rItem["checked"]}}>
+								{{$rItem["name"]}}
+							</label>
+						</li>
 					{{/foreach}}
 				</ul>
 			</div>
@@ -151,6 +180,9 @@
 			pass: $("input[name=pass]").val(),
 			note: $("input[name=note]").val(),
 			level: $("select[name=level]").val(),
+			isfinance: $("select[name=isfinance]").val(),
+			isapply: $("select[name=isapply]").val(),
+			isoperator: $("select[name=isoperator]").val(),
 			rights: JSON.stringify(rights)
 		}, function (resp) {
 			layer.closeAll();

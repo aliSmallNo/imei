@@ -299,6 +299,22 @@ class Admin extends ActiveRecord
 		return [$wxMessages, $unreadFlag];
 	}
 
+	public static function getAIds($groupTag)
+	{
+		$where = ["aStatus" => self::STATUS_ACTIVE];
+		if ($groupTag == self::GROUP_SUPPLY_CHAIN) {
+			$where = array_merge($where, ["aIsApply" => 1]);
+		} elseif ($groupTag == self::GROUP_FINANCE) {
+			$where = array_merge($where, ["aIsFinance" => 1]);
+		} elseif ($groupTag == self::GROUP_RUN_MGR) {
+			$where = array_merge($where, ["aIsOprerator" => 1]);
+		} else {
+			return [];
+		}
+		$res = self::find()->where($where)->asArray()->all();
+		return array_column($res, "aId");
+	}
+
 	public static function isGroupUser($groupTag = '', $adminId = "")
 	{
 		switch ($groupTag) {
