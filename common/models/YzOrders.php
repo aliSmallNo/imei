@@ -138,7 +138,7 @@ class YzOrders extends ActiveRecord
 
 			YzOrdersDes::process(array_merge($order_info, $order, $buyer_info, $address_info));
 			// 更新订单商品的商品信息sku信息
-			self::add_skus_goods($order);
+			self::update_goods_skus($order);
 		}
 		$full_order_info['payment'] = $order_payment;
 		$full_order_info['price'] = 0;
@@ -307,24 +307,27 @@ class YzOrders extends ActiveRecord
 	{
 
 		$conn = AppUtil::db();
-		//$res = $conn->createCommand("select * from im_yz_orders order by o_tid desc")->queryAll();
-		$res = $conn->createCommand("select DISTINCT o_saleman_mobile from im_yz_orders")->queryAll();
+		$res = $conn->createCommand("select * from im_yz_orders order by o_tid desc")->queryAll();
+		//$res = $conn->createCommand("select DISTINCT o_saleman_mobile from im_yz_orders")->queryAll();
 
 		// $userCMD = $conn->createCommand("select uCreateOn,uPhone from im_yz_user where uYZUId=:fans_id");
 
 		$co = 0;
 		foreach ($res as $k => $v) {
-
-//			$orders = json_decode($v['o_orders'], 1);
+			$orders = json_decode($v['o_orders'], 1);
 //			$order_info = json_decode($v['o_order_info'], 1);
 //			$buyer_info = json_decode($v['o_buyer_info'], 1);
 //			$address_info = json_decode($v['o_address_info'], 1);
 
 			//self::trades_account_get($v['o_tid']);
 
-			$saleman_mobile = $v['o_saleman_mobile'];
-			if ($saleman_mobile) {
-				YzUser::use_phone_get_user_info($saleman_mobile);
+//			$saleman_mobile = $v['o_saleman_mobile'];
+//			if ($saleman_mobile) {
+//				YzUser::use_phone_get_user_info($saleman_mobile);
+//			}
+			echo $v['tid'] . PHP_EOL;
+			foreach ($orders as $order) {
+				self::update_goods_skus($order);
 			}
 		}
 
@@ -334,7 +337,7 @@ class YzOrders extends ActiveRecord
 	 * 在订单中的商品 商品表，SKU表 无此 商品信息 sku信息
 	 * 再此添加进去
 	 */
-	public static function add_skus_goods($v)
+	public static function update_goods_skus($v)
 	{
 		$data = [
 			"item_id" => $v['item_id'],
@@ -343,9 +346,7 @@ class YzOrders extends ActiveRecord
 			"properties_name_json" => $v['sku_properties_name'],
 			"sku_unique_code" => $v['item_id'] . $v['sku_id'],
 		];
-		if (!YzGoods::findOne(['g_item_id' => $v['item_id']])) {
-			YzGoods::get_goods_desc_by_id($v['item_id']);
-		}
+		YzGoods::get_goods_desc_by_id($v['item_id']);
 
 		if (!YzSkus::findOne(['s_sku_id' => $v['sku_id']])) {
 			YzSkus::process($data);
