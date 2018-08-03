@@ -307,7 +307,7 @@ class Admin extends ActiveRecord
 		} elseif ($groupTag == self::GROUP_FINANCE) {
 			$where = array_merge($where, ["aIsFinance" => 1]);
 		} elseif ($groupTag == self::GROUP_RUN_MGR) {
-			$where = array_merge($where, ["aIsOprerator" => 1]);
+			$where = array_merge($where, ["aIsOperator" => 1]);
 		} else {
 			return [];
 		}
