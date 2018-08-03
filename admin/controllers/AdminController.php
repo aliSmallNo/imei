@@ -73,6 +73,7 @@ class AdminController extends BaseController
 		$page = self::getParam("page", 1);
 		$name = self::getParam('name');
 		$note = self::getParam('note');
+		$tag = self::getParam('tag');
 
 		$status = Admin::STATUS_ACTIVE;
 		$condition = " aStatus=$status ";
@@ -82,7 +83,17 @@ class AdminController extends BaseController
 		if ($note) {
 			$condition .= " and aName like '%" . $note . "%'";
 		}
-
+		if ($tag) {
+			if ($tag == "finance") {
+				$condition .= " and aIsFinance =1 ";
+			}
+			if ($tag == "operator") {
+				$condition .= " and aIsOperator =1 ";
+			}
+			if ($tag == "apply") {
+				$condition .= " and aIsApply =1 ";
+			}
+		}
 		$count = Admin::getCountByCondition($condition);
 		$list = Admin::getUsers($condition, $page, self::PAGE_SIZE);
 
@@ -94,6 +105,7 @@ class AdminController extends BaseController
 				'list' => $list,
 				'menus' => $menus,
 				"name" => $name,
+				"tag" => $tag,
 				'pagination' => $pagination,
 			]);
 	}

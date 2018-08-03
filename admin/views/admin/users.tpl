@@ -15,6 +15,7 @@
 	.user_tag.apply {
 		background: #00aa00;
 	}
+
 	.user_tag.oprerator {
 		background: red;
 	}
@@ -25,6 +26,12 @@
 <form class="form-inline" action="/admin/users" method="get">
 	<input class="form-control" name="note" placeholder="用户名" type="text" value="{{$note}}">
 	<input class="form-control" name="name" placeholder="登录ID" type="text" value="{{$name}}">
+	<select name="tag" class="form-control">
+		<option value="">-=请选择=-</option>
+		<option value="finance" {{if $tag=="finance"}}selected{{/if}}>财务</option>
+		<option value="apply" {{if $tag=="apply"}}selected{{/if}}>供应链</option>
+		<option value="operator" {{if $tag=="operator"}}selected{{/if}}>运营</option>
+	</select>
 	<input type="submit" class="btn btn-primary" value="查询">
 </form>
 <div class="row-divider"></div>
