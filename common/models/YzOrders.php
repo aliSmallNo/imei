@@ -325,7 +325,7 @@ class YzOrders extends ActiveRecord
 //			if ($saleman_mobile) {
 //				YzUser::use_phone_get_user_info($saleman_mobile);
 //			}
-			echo $v['tid'] . PHP_EOL;
+			echo $v['o_tid'] . PHP_EOL;
 			foreach ($orders as $order) {
 				self::update_goods_skus($order);
 			}
