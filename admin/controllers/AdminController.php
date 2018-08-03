@@ -83,6 +83,7 @@ class AdminController extends BaseController
 		if ($note) {
 			$condition .= " and aName like '%" . $note . "%'";
 		}
+
 		if ($tag) {
 			if ($tag == "finance") {
 				$condition .= " and aIsFinance =1 ";
