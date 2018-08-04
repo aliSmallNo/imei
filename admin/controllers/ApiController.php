@@ -555,7 +555,8 @@ class ApiController extends Controller
 				break;
 			case "audit_finance_info":
 				$data = [
-					'flag' => self::postParam("f"),
+					'reason' => self::postParam("reason"),
+					'st' => self::postParam("st"),
 					'fid' => self::postParam("fid"),
 				];
 				list($code, $msg, $res) = YzFinance::audit_one($data);

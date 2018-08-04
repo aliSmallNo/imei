@@ -169,9 +169,9 @@ class YzFinance extends ActiveRecord
 	public static function audit_one($data)
 	{
 		$fid = $data['fid'] ?? 0;
-		$flag = $data['flag'] ?? '';
-		if (!in_array($flag, ['pass', 'fail'])) {
-			return [129, 'f error ', $flag];
+		$st = $data['st'] ?? '';
+		if (!in_array($st, array_keys(self::$stDict))) {
+			return [129, 'st error ', $st];
 		}
 		$finance = self::findOne(['f_id' => $fid]);
 		if (!$finance) {
@@ -180,15 +180,10 @@ class YzFinance extends ActiveRecord
 		$editData = [
 			'f_audit_on' => date('Y-m-d H:i:s'),
 			'f_audit_by' => Admin::getAdminId(),
+			'f_status' => $data['st'],
+			'f_audit_reason' => $data['reason'],
 		];
-		switch ($flag) {
-			case "pass":
-				$editData ['f_status'] = self::ST_ACTIVE;
-				break;
-			case "fail":
-				$editData ['f_status'] = self::ST_FAIL;
-				break;
-		}
+
 		self::edit($fid, $editData);
 		return [0, 'AUDIT OK', $editData];
 	}

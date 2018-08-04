@@ -78,6 +78,11 @@
 	.btn-outline {
 		margin: 2px 0;
 	}
+
+	.audit_reson_str {
+		font-size: 10px;
+		color: #fc030a;
+	}
 </style>
 <div class="row">
 	<h4>对账信息: 总付款：{{$total_pay}}</h4>
@@ -168,19 +173,24 @@
 					</div>
 				</td>
 				<td data-tid="{{$item.od_tid}}" data-gid="{{$item.od_item_id}}" data-skuid="{{$item.od_sku_id}}"
-						data-title="{{$item.od_title}}"
+						data-title="{{$item.od_title}}" data-reason="{{$item.f_audit_reason}}" data-st="{{$item.f_status}}"
 						data-payment="{{if $item.od_paytime}}{{$item.od_payment}}{{else}}0{{/if}}">
-					{{if $item.f_status==3 && $is_finance}}
-						<a href="javascript:;" class="operate btn btn-outline btn-primary btn-xs" data-tag="pass">审核通过</a>
-						<a href="javascript:;" class="operate btn btn-outline btn-danger btn-xs" data-tag="fail">审核失败</a>
-					{{else}}
-						<div><span class="f_st_{{$item.f_status}}">{{$item.f_status_str}}</span></div>
-						<div>{{if $item.f_audit_on}}审核于{{$item.f_audit_on|date_format:'%y-%m-%d %H:%M'}}{{/if}}</div>
+					{{if $item.f_status!=1 && $is_finance}}
+						<a href="javascript:;" class="operate btn btn-outline btn-primary btn-xs">审核</a>
 					{{/if}}
-
-					{{if $is_supply_chain && $item.f_status==3}}
+					{{if $is_supply_chain && $item.f_status!=1}}
 						<a class="add_pay_info btn btn-outline btn-danger btn-xs">编辑付款信息</a>
 					{{/if}}
+					<div>
+						<span class="f_st_{{$item.f_status}}">{{$item.f_status_str}}</span>
+					</div>
+					<div class="audit_reson_str">{{if $item.f_audit_reason}}
+							{{if $item.f_status==1}}通过原因: {{/if}}
+							{{if $item.f_status==9}}失败原因: {{/if}}
+							{{$item.f_audit_reason}}
+						{{/if}}
+					</div>
+					<div>{{if $item.f_audit_on}}审核于{{$item.f_audit_on|date_format:'%y-%m-%d %H:%M'}}{{/if}}</div>
 				</td>
 			</tr>
 		{{/foreach}}
@@ -262,6 +272,45 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade" id="auditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+									aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">审核支付</h4>
+			</div>
+			<div class="modal-body" style="overflow:hidden">
+				<div class="col-sm-12 form-horizontal">
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">状态:</label>
+						<div class="col-sm-8">
+							<select class="form-control" data-field="st">
+								<option value="">-=请选择=-</option>
+								{{foreach from=$f_stDict item=ftext key=key}}
+									<option value="{{$key}}">{{$ftext}}</option>
+								{{/foreach}}
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">原因:</label>
+						<div class="col-sm-8">
+							<textarea class="form-control" data-field="reason"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="audit_save">确定保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 	$sls = {
 		loadflag: 0,
@@ -389,43 +438,6 @@
 			}, "json");
 	}
 
-
-	var auditData = {
-		tag: 'audit_finance_info',
-		fid: 0,
-		f: '',
-	};
-
-	$("a.operate").click(function () {
-		var self = $(this);
-		var cell = self.closest('tr');
-		auditData['fid'] = cell.attr("data-fid");
-		auditData['f'] = $(this).attr('data-tag');
-		var text = self.html();
-		layer.confirm('您确定' + text, {
-			btn: ['确定', '取消'],
-			title: '审核'
-		}, function () {
-			toAudit(auditData);
-		}, function () {
-		});
-	});
-
-	function toAudit(postData) {
-		$.post("/api/youz",
-			postData,
-			function (resp) {
-				if (resp.code < 1) {
-					BpbhdUtil.showMsg(resp.msg, 1);
-					setTimeout(function () {
-						location.reload();
-					}, 800);
-				} else {
-					BpbhdUtil.showMsg(resp.msg);
-				}
-			}, "json");
-	}
-
 	$(document).on("click", ".i-av", function () {
 		var self = $(this);
 		var photos = {
@@ -450,5 +462,48 @@
 			}
 		});
 	}
+
+
+	var audit = {
+		fid: '',
+		modal: $("#auditModal"),
+	};
+	$("a.operate").click(function () {
+		var self = $(this);
+		var cell = self.closest('tr');
+		var td = self.closest('td');
+		audit.fid = cell.attr("data-fid");
+		$("[data-field=st]").val(td.attr("data-st"));
+		$("[data-field=reason]").val(td.attr("data-reason"));
+		audit.modal.modal("show");
+	});
+
+	$(document).on("click", "#audit_save", function () {
+		var reason = $("[data-field=reason]").val();
+		var st = $("[data-field=st]").val();
+		if (!st) {
+			layer.msg("状态还没选择~");
+			return;
+		}
+		$.post("/api/youz",
+			{
+				tag: 'audit_finance_info',
+				fid: audit.fid,
+				st: st,
+				reason: reason
+			},
+			function (resp) {
+				if (resp.code < 1) {
+					BpbhdUtil.showMsg(resp.msg, 1);
+					setTimeout(function () {
+						location.reload();
+					}, 800);
+				} else {
+					BpbhdUtil.showMsg(resp.msg);
+				}
+			}, "json");
+	});
+
+
 </script>
 {{include file="layouts/footer.tpl"}}
