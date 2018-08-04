@@ -151,9 +151,7 @@
 						买家支付：{{$item.od_payment}}
 					</div>
 					<span class="st_{{$item.od_status}}">{{$item.status_str}}</span>
-					{{if $isDebugger}}
-						<div><span class="font10">{{$item.od_tid}}</span></div>
-					{{/if}}
+					<div><span class="font10">{{$item.od_tid}}</span></div>
 				</td>
 				<td>
 					{{if $item.trade_memo}}<span class="st_WAIT_BUYER_PAY">有赞备注：{{$item.trade_memo}}</span>{{/if}}
