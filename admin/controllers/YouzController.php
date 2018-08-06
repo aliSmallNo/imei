@@ -107,7 +107,7 @@ class YouzController extends BaseController
 	 */
 	public function actionExport_yxs()
 	{
-		$manager_name = self::getParam("anmae");
+		$manager_name = self::getParam("aname");
 		$condition = '';
 		if ($manager_name) {
 			$condition = " and a.aName like '%$manager_name%' ";
