@@ -358,6 +358,17 @@ class YzOrders extends ActiveRecord
 				"price" => $v['price'],
 			]);
 		}
+		$sku_info = YzSkus::findOne(['s_item_id' => $data['item_id'], 's_sku_id' => $data['sku_id']]);
+		if (!$sku_info) {
+			YzSkus::process([
+				"sku_id" => $data['sku_id'],
+				"item_id" => $data['item_id'],
+				"price" => $data['price'],
+				"properties_name_json" => $data['properties_name_json'],
+				"sku_unique_code" => $data['item_id'] . $data['sku_id'],
+			]);
+		}
+
 	}
 
 
