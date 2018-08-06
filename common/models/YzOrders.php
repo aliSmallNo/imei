@@ -307,7 +307,7 @@ class YzOrders extends ActiveRecord
 	{
 
 		$conn = AppUtil::db();
-		$res = $conn->createCommand("select * from im_yz_orders where o_created>'2018-07-01 00:00:00' order by o_tid asc ")->queryAll();
+		$res = $conn->createCommand("select * from im_yz_orders where o_created>'2018-05-01 00:00:00' order by o_tid asc ")->queryAll();
 		//$res = $conn->createCommand("select DISTINCT o_saleman_mobile from im_yz_orders")->queryAll();
 
 		// $userCMD = $conn->createCommand("select uCreateOn,uPhone from im_yz_user where uYZUId=:fans_id");
