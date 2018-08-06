@@ -1520,10 +1520,8 @@ class FooController extends Controller
 
 		//YzOrders::Update_order('2018-07-25 00:00:00', '', 1);
 
-		//YzOrders::orders_user_mix_update();
+		YzOrders::orders_user_mix_update();
 
-		$order = '[{"outer_sku_id":"","goods_url":"https:\/\/h5.youzan.com\/v2\/showcase\/goods?alias=2ou5wjfcp4r4f","item_id":424026658,"outer_item_id":"zc三土百货01","item_type":0,"num":1,"sku_id":36220547,"sku_properties_name":"[]","pic_path":"https:\/\/img.yzcdn.cn\/upload_files\/2018\/07\/05\/FoxDf1UDEhnYwkMo8ohHf-62U-Gl.jpg","oid":"1463782933353468811","title":"【免手洗懒人拖把】多功能滤净懒人拖把新款大号三代吸水好神拖把——买好货、想省钱，就去到家严选","buyer_messages":"","is_present":false,"points_price":"0","price":"24.90","total_fee":"24.90","alias":"2ou5wjfcp4r4f","payment":"24.90"}]';
-		YzOrders::update_goods_skus(json_decode($order, 1)[0]);
 
 		// YzRefund::get_goods_by_se_time(1);
 		// YzGoods::get_goods_by_se_time_new(YzGoods::ST_STORE_HOUSE, 1);
