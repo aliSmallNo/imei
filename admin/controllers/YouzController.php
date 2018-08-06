@@ -98,7 +98,7 @@ class YouzController extends BaseController
 				'pagination' => $pagination,
 				'items' => $items,
 				'getInfo' => $getInfo,
-				'admins' => Admin::getAdmins(1),
+				'admins' => Admin::getAdmins(Admin::GROUP_RUN_MGR),
 			]);
 	}
 
@@ -107,10 +107,18 @@ class YouzController extends BaseController
 	 */
 	public function actionExport_yxs()
 	{
-		$manager_name = self::getParam("aname");
+		$manager_aid = self::getParam("aid");
+		$sdate = self::getParam("sdate");
+		$edate = self::getParam("edate");
 		$condition = '';
-		if ($manager_name) {
-			$condition = " and a.aName like '%$manager_name%' ";
+		if ($manager_aid) {
+			//$condition .= " and a.aName like '%$manager_name%' ";
+			$condition .= " and a.aId=$manager_aid ";
+		}
+		if ($sdate && $edate) {
+			$sdate .= " 00:00:00";
+			$edate .= " 23:59:59";
+			$condition .= " and u1.uCreateOn between '$sdate' and '$edate' ";
 		}
 
 		$sql = "select 
@@ -249,7 +257,7 @@ class YouzController extends BaseController
 				'items' => $items,
 				'getInfo' => $getInfo,
 				'count' => $count,
-				'admins' => Admin::getAdmins(1),
+				'admins' => Admin::getAdmins(),
 			]);
 	}
 
@@ -484,7 +492,7 @@ class YouzController extends BaseController
 				'items' => $items,
 				'getInfo' => $getInfo,
 				'stDict' => $stDict,
-				'bds' => Admin::getAdmins(1),
+				'bds' => Admin::getAdmins(),
 				'isDebugger' => Admin::isGroupUser(),
 				'is_supply_chain' => Admin::isGroupUser(Admin::GROUP_SUPPLY_CHAIN),
 			]);
@@ -536,7 +544,7 @@ class YouzController extends BaseController
 				'getInfo' => $getInfo,
 				'order_stDict' => YzOrders::$stDict,
 				'f_stDict' => YzFinance::$stDict,
-				'bds' => Admin::getAdmins(1),
+				'bds' => Admin::getAdmins(),
 				'isDebugger' => Admin::isGroupUser(),
 				'is_finance' => Admin::isGroupUser(Admin::GROUP_FINANCE),
 				'is_supply_chain' => Admin::isGroupUser(Admin::GROUP_SUPPLY_CHAIN),

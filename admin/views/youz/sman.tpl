@@ -3,6 +3,11 @@
 	.font12 {
 		font-size: 12px;
 	}
+
+	.autoW {
+		width: auto;
+		display: inline-block;
+	}
 </style>
 <div class="row">
 	<h4>分销员列表</h4>
@@ -25,6 +30,15 @@
 		{{if $able_refresh_data}}<a class="btn btn-primary update_data">刷新</a>{{/if}}
 	</form>
 	<div style="height: 1em"></div>
+	<select class="form-control autoW" name="admin">
+		<option value="">-=管理员=-</option>
+		{{foreach from=$admins item=name key=key}}
+			<option value="{{$key}}">{{$name}}</option>
+		{{/foreach}}
+	</select>
+	<input class="form-control autoW beginDate my-date-input" placeholder="开始时间" name="sdate">
+	至
+	<input class="form-control autoW endDate my-date-input" placeholder="截止时间" name="edate">
 	<button class="btn btn-primary opExcel">导出管理</button>
 </div>
 
@@ -176,29 +190,31 @@
 	});
 
 	$(".opExcel").on("click", function () {
-		var aname = $("input[name=aname]").val();
-		var url = "/youz/export_yxs?aname=" + aname + "&sign=excel";
+		var admin = $("select[name=admin]").val();
+		var sdate = $("input[name=sdate]").val();
+		var edate = $("input[name=edate]").val();
+		var url = "/youz/export_yxs?aid=" + admin + "&sdate=" + sdate + "&edate=" + edate + "&sign=excel";
 		location.href = url;
 	});
-  $(".update_data").on("click", function () {
-	  if (loadflag) {
-		  return;
-	  }
-	  loadflag = 1;
-	  $.post("/api/youz",
-		  {
-			  tag: 'update_admin_data',
-			  subtag: 'orders',
-		  },
-		  function (resp) {
-			  loadflag = 0;
-			  if (resp.code == 0) {
-				  location.reload();
-			  } else {
-				  layer.msg(resp.msg);
-			  }
-		  }, "json");
-  });
+	$(".update_data").on("click", function () {
+		if (loadflag) {
+			return;
+		}
+		loadflag = 1;
+		$.post("/api/youz",
+			{
+				tag: 'update_admin_data',
+				subtag: 'orders',
+			},
+			function (resp) {
+				loadflag = 0;
+				if (resp.code == 0) {
+					location.reload();
+				} else {
+					layer.msg(resp.msg);
+				}
+			}, "json");
+	});
 
 </script>
 {{include file="layouts/footer.tpl"}}

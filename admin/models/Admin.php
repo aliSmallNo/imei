@@ -448,14 +448,13 @@ class Admin extends ActiveRecord
 		return [];
 	}
 
-	public static function getAdmins($reset = false)
+	public static function getAdmins($cat = "")
 	{
-		$res = RedisUtil::init(RedisUtil::KEY_ADMIN_LIST)->getCache();
-		if ($res && !$reset) {
-			return json_decode($res, 1);
+		$cond = "";
+		if ($cat == Admin::GROUP_RUN_MGR) {
+			$cond = " and aIsOperator=1 ";
 		}
-
-		$sql = "select aId as aid,aName as `name` from im_admin where aStatus=:st and aLevel>=:le ";
+		$sql = "select aId as aid,aName as `name` from im_admin where aStatus=:st and aLevel>=:le $cond ";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			':st' => self::STATUS_ACTIVE,
 			':le' => self::LEVEL_STAFF,
@@ -464,8 +463,6 @@ class Admin extends ActiveRecord
 		foreach ($res as $v) {
 			$ret[$v['aid']] = $v['name'];
 		}
-
-		RedisUtil::init(RedisUtil::KEY_ADMIN_LIST)->setCache(json_encode($ret, JSON_UNESCAPED_UNICODE));
 		return $ret;
 	}
 
