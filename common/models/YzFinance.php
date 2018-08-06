@@ -128,8 +128,8 @@ class YzFinance extends ActiveRecord
 			if (!$finance) {
 				return [129, 'f_id error ', $fid];
 			}
-			if ($finance->f_status != self::ST_PENDING) {
-				return [129, '财务已审核，不可修改~ ', $fid];
+			if ($finance->f_status == self::ST_ACTIVE) {
+				return [129, '财务已审核通过，不可修改~ ', $fid];
 			}
 			$pay_pic = array_merge(json_decode($finance->f_pay_pic, 1), $pay_pic);
 			if (count($pay_pic) < 10) {
