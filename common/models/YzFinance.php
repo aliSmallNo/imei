@@ -69,7 +69,6 @@ class YzFinance extends ActiveRecord
 		foreach ($data as $k => $v) {
 			$entity->$k = is_array($v) ? json_encode($v, JSON_UNESCAPED_UNICODE) : $v;
 		}
-		$entity->f_status = self::ST_PENDING;
 		$entity->f_update_on = date('Y-m-d H:i:s');
 		$entity->f_update_by = Admin::getAdminId();
 		$entity->save();
@@ -136,6 +135,7 @@ class YzFinance extends ActiveRecord
 			if (count($pay_pic) < 10) {
 				$insert['f_pay_pic'] = $pay_pic;
 			}
+			$insert['f_status'] = self::ST_PENDING;
 			self::edit($fid, $insert);
 			return [0, 'EDIT OKOK', $insert];
 		}
