@@ -112,7 +112,6 @@ class YouzController extends BaseController
 		$edate = self::getParam("edate");
 		$condition = '';
 		if ($manager_aid) {
-			//$condition .= " and a.aName like '%$manager_name%' ";
 			$condition .= " and a.aId=$manager_aid ";
 		}
 		if ($sdate && $edate) {

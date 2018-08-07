@@ -184,7 +184,8 @@
 					<div>
 						<span class="f_st_{{$item.f_status}}">{{$item.f_status_str}}</span>
 					</div>
-					<div class="audit_reson_str">{{if $item.f_audit_reason}}
+					<div class="audit_reson_str">
+						{{if $item.f_audit_reason}}
 							{{if $item.f_status==1}}通过原因: {{/if}}
 							{{if $item.f_status==9}}失败原因: {{/if}}
 							{{$item.f_audit_reason}}
