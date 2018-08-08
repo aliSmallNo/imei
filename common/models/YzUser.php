@@ -555,7 +555,7 @@ class YzUser extends ActiveRecord
 		];
 
 		$res = YouzanUtil::getData($method, $my_params, $api_version);
-		print_r($res);
+		return $res;
 		$resStyle = [
 			// 成功返回
 			"response" => [
@@ -567,7 +567,30 @@ class YzUser extends ActiveRecord
 				"message" => "user not exist",
 			]
 		];
+	}
 
+	public static function set_user_to_yxs($phone)
+	{
+		if (!$phone || !AppUtil::checkPhone($phone)) {
+			return [129, '手机号码格式不正确~'];
+		}
+		$res = self::salesman_account_add($phone);
+
+		$error_response = $res['error_response'] ?? '';
+		if ($error_response) {
+			$code = $error_response['code'] ?? 'unkown code';
+			$message = $error_response['message'] ?? 'unkown message';
+			return [129, $message . ' ' . $code];
+		}
+
+		$response = $res['response'] ?? '';
+		if ($response) {
+			$is_success = $response['isSuccess'] ?? 'unkown success msg';
+			
+			return [0, $is_success];
+		}
+
+		return [129, '未知错误~'];
 	}
 
 	/**

@@ -398,6 +398,11 @@ class ApiController extends Controller
 				YzUser::edit($yzuid, ['uAdminId' => $aid]);
 				return self::renderAPI(0, 'ok');
 				break;
+			case "set_user_to_yxs":
+				$phone = self::postParam('phone');
+				list($code, $msg) = YzUser::set_user_to_yxs($phone);
+				return self::renderAPI($code, $msg);
+				break;
 			case "chain_by_phone":
 				$phone = self::postParam('phone');
 				if (!$phone || !AppUtil::checkPhone($phone)) {

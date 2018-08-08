@@ -1520,7 +1520,7 @@ class FooController extends Controller
 
 		//YzOrders::Update_order('2018-07-25 00:00:00', '', 1);
 
-		YzOrders::orders_user_mix_update();
+		//YzOrders::orders_user_mix_update();
 
 		//$order = '[{"outer_sku_id":"","goods_url":"https:\/\/h5.youzan.com\/v2\/showcase\/goods?alias=2xcvsoqrf4x1b","item_id":422422370,"outer_item_id":"ZC-PDD-100478","item_type":0,"num":1,"sku_id":36212103,"sku_properties_name":"[{\"k\":\"规格\",\"k_id\":14,\"v\":\"2瓶装\",\"v_id\":416}]","pic_path":"https:\/\/img.yzcdn.cn\/upload_files\/2018\/06\/20\/Fj4VKD6yEvUlyL_TrIFYHFkiEkeT.jpg","oid":"1463796275690872643","title":"好太太洗洁精批发强效去残留 果蔬不伤手——买好货、想省钱，就去到家严选","buyer_messages":"","is_present":false,"points_price":"0","price":"19.90","total_fee":"19.90","alias":"2xcvsoqrf4x1b","payment":"16.61"}]';
 		//YzOrders::update_goods_skus(json_decode($order, 1)[0]);

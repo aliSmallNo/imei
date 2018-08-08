@@ -10,7 +10,9 @@
 	}
 </style>
 <div class="row">
-	<h4>分销员列表</h4>
+	<h4>分销员列表
+		{{if $is_run}}<a href="javascript:;" class="set_yxs btn btn-primary btn-xs ">设置严选师</a>{{/if}}
+	</h4>
 </div>
 <div class="row">
 	<form action="/youz/sman" method="get" class="form-inline">
@@ -146,7 +148,37 @@
 	</div>
 </div>
 
+<div class="modal fade" id="auditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+									aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">设置用户是分销员</h4>
+			</div>
+			<div class="modal-body" style="overflow:hidden">
+				<div class="col-sm-12 form-horizontal">
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">手机号:</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control audit_mobile">
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" data-tag="cat-chat" id="audit_btnSave">确定保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
+	var loadflag = 0;
+	/******************************************************/
 	$sls = {
 		uid: '',
 		name: '',
@@ -161,7 +193,6 @@
 		$("#modModal").modal("show")
 	});
 
-	var loadflag = 0;
 	$(document).on("click", "#btnSave", function () {
 		var err = 0;
 		var postData = {tag: "mod_admin_id", uid: $sls.uid};
@@ -188,7 +219,7 @@
 				}
 			}, "json");
 	});
-
+	/******************************************************/
 	$(".opExcel").on("click", function () {
 		var admin = $("select[name=admin]").val();
 		var sdate = $("input[name=sdate]").val();
@@ -196,6 +227,44 @@
 		var url = "/youz/export_yxs?aid=" + admin + "&sdate=" + sdate + "&edate=" + edate + "&sign=excel";
 		location.href = url;
 	});
+	/******************************************************/
+	$au = {
+		audit_mobile: $(".audit_mobile"),
+		audit: $("#auditModal"),
+	};
+
+	$("a.set_yxs").click(function () {
+		$au.audit_mobile.val('');
+		$au.audit.modal("show");
+	});
+
+	$(document).on("click", "#audit_btnSave", function () {
+		var err = 0;
+		var phone = $au.audit_mobile.val();
+		var postData = {tag: "set_user_to_yxs", phone: phone};
+		if (!phone) {
+			layer.msg('请填写手机号~');
+			return;
+		}
+		console.log(postData);
+
+		if (loadflag) {
+			return;
+		}
+		loadflag = 1;
+		$.post("/api/youz",
+			postData,
+			function (resp) {
+				loadflag = 0;
+				if (resp.code == 0) {
+					location.reload();
+				} else {
+					layer.msg(resp.msg);
+				}
+			}, "json");
+	});
+
+	/******************************************************/
 	$(".update_data").on("click", function () {
 		if (loadflag) {
 			return;
@@ -215,6 +284,6 @@
 				}
 			}, "json");
 	});
-
+	/******************************************************/
 </script>
 {{include file="layouts/footer.tpl"}}
