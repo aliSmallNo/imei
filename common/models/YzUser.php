@@ -581,6 +581,7 @@ class YzUser extends ActiveRecord
 
 	public static function set_user_to_yxs($phone)
 	{
+
 		if (!$phone || !AppUtil::checkPhone($phone)) {
 			$return = [129, '手机号码格式不正确~'];
 			Log::add(['oCategory' => Log::CAT_YOUZAN_AUDIT, 'oKey' => $phone, 'oBefore' => $return, "oAfter" => Admin::getAdminId()]);

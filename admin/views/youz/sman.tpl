@@ -10,8 +10,8 @@
 	}
 </style>
 <div class="row">
-	<h4>分销员列表
-		{{if $is_run}}<a href="javascript:;" class="set_yxs btn btn-primary btn-xs ">设置严选师</a>{{/if}}
+	<h4>严选师列表
+		{{if $is_run}}<a href="javascript:;" class="set_yxs btn btn-primary btn-xs ">审核严选师</a>{{/if}}
 	</h4>
 </div>
 <div class="row">
