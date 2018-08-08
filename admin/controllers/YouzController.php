@@ -137,24 +137,26 @@ class YouzController extends BaseController
 		])->queryAll();
 
 		$header = $content = [];
-		$header = ['ID', '严选师信息', '交易数量', '交易金额', "结算订单数", '已结算佣金', '结算订单金额', '未结算佣金', '邀请方信息', '管理员', '添加时间'];
+		$header = ['ID', '严选师', '严选师手机', '交易数量', '交易金额', "结算订单数", '已结算佣金', '结算订单金额', '未结算佣金', '邀请方', '邀请方手机', '管理员', '添加时间'];
 		foreach ($res as $v) {
 			$content[] = [
 				$v['uYZUId'],
-				$v['uName'] . '(' . $v['uPhone'] . ')',
+				$v['uName'],
+				$v['uPhone'],
 				$v['uTradeNum'],
 				$v['uTradeMoney'],
 				$v['u_auto_settle_order_num'],
 				$v['u_settle_money'],
 				$v['u_auto_settle_order_amount'],
 				$v['u_wait_settle_money'],
-				$v['fname'] . '(' . $v['fphone'] . ')',
+				$v['fname'],
+				$v['fphone'],
 				$v['aName'],
 				$v['uCreateOn'],
 			];
 		}
 
-		ExcelUtil::getYZExcel('严选师管理员' . date("Y-m-d"), $header, $content, [12, 30, 12, 12, 12, 12, 12, 12, 30, 12, 30,]);
+		ExcelUtil::getYZExcel('严选师管理员' . date("Y-m-d"), $header, $content, [12, 20, 20, 12, 12, 12, 12, 12, 12, 20, 20, 12, 30,]);
 		exit;
 	}
 
