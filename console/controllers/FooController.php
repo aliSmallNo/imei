@@ -1498,8 +1498,8 @@ class FooController extends Controller
 		//YzUser::getSalesManList();
 
 		// 更新
-		// YzUser::getSalesManList();
-		YzUser::set_user_to_yxs(18863781181);
+		YzUser::getSalesManList();
+		//YzUser::set_user_to_yxs(18863781181);
 
 		// ChatMsg::massmsg();
 
