@@ -582,7 +582,9 @@ class YzUser extends ActiveRecord
 	public static function set_user_to_yxs($phone)
 	{
 		if (!$phone || !AppUtil::checkPhone($phone)) {
-			return [129, '手机号码格式不正确~'];
+			$return = [129, '手机号码格式不正确~'];
+			Log::add(['oCategory' => Log::CAT_YOUZAN_AUDIT, 'oBefore' => $return, "oAfter" => Admin::getAdminId()]);
+			return $return;
 		}
 		$res = self::salesman_account_add($phone);
 
@@ -590,7 +592,9 @@ class YzUser extends ActiveRecord
 		if ($error_response) {
 			$code = $error_response['code'] ?? 'unkown code';
 			$message = $error_response['message'] ?? 'unkown message';
-			return [129, $message . ' ' . $code];
+			$return = [129, $message . ' ' . $code];
+			Log::add(['oCategory' => Log::CAT_YOUZAN_AUDIT, 'oBefore' => $return, "oAfter" => Admin::getAdminId()]);
+			return $return;
 		}
 
 		$response = $res['response'] ?? '';
@@ -600,10 +604,14 @@ class YzUser extends ActiveRecord
 			if (is_array($ret) && count($ret) == 2) {
 				self::after_get_saleman($ret[0], 1);
 			}
-			return [0, $is_success];
+			$return = [0, $is_success];
+			Log::add(['oCategory' => Log::CAT_YOUZAN_AUDIT, 'oBefore' => $return, "oAfter" => Admin::getAdminId()]);
+			return $return;
 		}
 
-		return [129, '未知错误~'];
+		$return = [129, '未知错误~'];
+		Log::add(['oCategory' => Log::CAT_YOUZAN_AUDIT, 'oBefore' => $return, "oAfter" => Admin::getAdminId()]);
+		return $return;
 	}
 
 	/**

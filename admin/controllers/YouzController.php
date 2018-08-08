@@ -99,7 +99,7 @@ class YouzController extends BaseController
 				'items' => $items,
 				'getInfo' => $getInfo,
 				'admins' => Admin::getAdmins(Admin::GROUP_RUN_MGR),
-				'is_run' => Admin::isGroupUser(Admin::GROUP_RUN_MGR) && 0,
+				'is_run' => Admin::isGroupUser(Admin::GROUP_RUN_MGR),
 			]);
 	}
 
