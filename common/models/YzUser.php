@@ -210,47 +210,13 @@ class YzUser extends ActiveRecord
 	}
 
 	/**
+	 * 获取当前店铺分销员列表
 	 * https://www.youzanyun.com/apilist/detail/group_ump/salesman/youzan.salesman.accounts.get
 	 */
 	public static function getSalesManList($isDebugger = false)
 	{
-		$getSales = function ($page, $isDebugger) {
-			//获取当前店铺分销员列表，需申请高级权限方可调用。
-			$method = 'youzan.salesman.accounts.get';
-			$params = [
-				'page_no' => $page,
-				'page_size' => 20,
-			];
-			$res = YouzanUtil::getData($method, $params);
-			$resStyle = [
-				'response' => [
-					'accounts' => [
-						[
-							"seller" => "3NFNEE",
-							"from_buyer_mobile" => "15963761328",
-							"money" => "0.00",
-							"mobile" => "13176188080",
-							"nickname" => "金刚瓢瓢娃",
-							"created_at" => "2018-06-26 18:55:02",
-							"order_num" => 0,
-							"fans_id" => 5861354382
-						],
-						// ...
-					],
-					'total_results' => 979,
-				]
-			];
-			if (isset($res['response'])) {
-				$total_results = $res['response']['total_results'];
-				if ($total_results) {
-					return [$res['response']['accounts'], $total_results];
-				}
-			}
-			return 0;
-		};
 
-		$res = $getSales(1, $isDebugger);
-		$addCount = $editCount = 0;
+		$res = self::salesman_accounts_get(1);
 		if ($res) {
 			$total_results = $res[1];
 			$pages = ceil($total_results / 20);
@@ -260,45 +226,89 @@ class YzUser extends ActiveRecord
 			}
 
 			for ($p = 1; $p <= $pages; $p++) {
-				$ret = $getSales($p, $isDebugger);
+				$ret = self::salesman_accounts_get($p);
 				if ($ret) {
 					$ret = $ret[0];
-					foreach ($ret as $k => $v) {
-						$insert = [
-							'uFromPhone' => $v['from_buyer_mobile'] ?? '',
-							'uFromPhoneBak' => $v['from_buyer_mobile'] ?? '',
-							'uPhone' => $v['mobile'] ?? '',
-							'uCreateOn' => $v['created_at'] ?? '',
-							'uSeller' => $v['seller'] ?? '',
-							'uType' => self::TYPE_YXS,
-						];
-						$fansId = $v['fans_id'];
-						$sman_phone = $v['mobile'];
-						// 注：$fansId 有等于0 的情况，实际严选师大于拉取的严选师
-						if ($fansId && !self::findOne(['uYZUId' => $fansId])) {
-							$addCount++;
-							self::getUserInfoByTag($fansId);
-						} elseif (!$fansId && $insert['uPhone']) {
-							// 没卵用
-							//$editCount++;
-							//$fansId = self::use_phone_get_user_info($insert['uPhone']);
-						}
-						if (in_array(date("H"), [8, 12, 16])) {
-							if ($fansId) {
-								self::getUserInfoByTag($fansId);
-							}
-							if ($sman_phone) {
-								self::use_phone_get_user_info($sman_phone);
-							}
-						}
-						self::edit($fansId, $insert);
-						if ($isDebugger) {
-							echo '$fansId:' . $fansId . PHP_EOL;
-						}
-					}
+					self::after_get_saleman($ret);
 				}
 			}
 		}
+
+	}
+
+	public static function salesman_accounts_get($page, $pagesize = 20)
+	{
+		//获取当前店铺分销员列表，需申请高级权限方可调用。
+		$method = 'youzan.salesman.accounts.get';
+		$params = [
+			'page_no' => $page,
+			'page_size' => $pagesize,
+		];
+		$res = YouzanUtil::getData($method, $params);
+		$resStyle = [
+			'response' => [
+				'accounts' => [
+					[
+						"seller" => "3NFNEE",
+						"from_buyer_mobile" => "15963761328",
+						"money" => "0.00",
+						"mobile" => "13176188080",
+						"nickname" => "金刚瓢瓢娃",
+						"created_at" => "2018-06-26 18:55:02",
+						"order_num" => 0,
+						"fans_id" => 5861354382
+					],
+					// ...
+				],
+				'total_results' => 979,
+			]
+		];
+		if (isset($res['response'])) {
+			$total_results = $res['response']['total_results'];
+			if ($total_results) {
+				return [$res['response']['accounts'], $total_results];
+			}
+		}
+		return 0;
+	}
+
+	public static function after_get_saleman($ret, $isDebugger = false)
+	{
+		$addCount = $editCount = 0;
+		foreach ($ret as $k => $v) {
+			$insert = [
+				'uFromPhone' => $v['from_buyer_mobile'] ?? '',
+				'uFromPhoneBak' => $v['from_buyer_mobile'] ?? '',
+				'uPhone' => $v['mobile'] ?? '',
+				'uCreateOn' => $v['created_at'] ?? '',
+				'uSeller' => $v['seller'] ?? '',
+				'uType' => self::TYPE_YXS,
+			];
+			$fansId = $v['fans_id'];
+			$sman_phone = $v['mobile'];
+			// 注：$fansId 有等于0 的情况，实际严选师大于拉取的严选师
+			if ($fansId && !self::findOne(['uYZUId' => $fansId])) {
+				$addCount++;
+				self::getUserInfoByTag($fansId);
+			} elseif (!$fansId && $insert['uPhone']) {
+				// 没卵用
+				//$editCount++;
+				//$fansId = self::use_phone_get_user_info($insert['uPhone']);
+			}
+			if (in_array(date("H"), [8, 12, 16])) {
+				if ($fansId) {
+					self::getUserInfoByTag($fansId);
+				}
+				if ($sman_phone) {
+					self::use_phone_get_user_info($sman_phone);
+				}
+			}
+			self::edit($fansId, $insert);
+			if ($isDebugger) {
+				echo '$fansId:' . $fansId . PHP_EOL;
+			}
+		}
+
 
 		$msg = '$addCount:' . $addCount . ' == $editCount:' . $editCount;
 		if ($isDebugger) {
@@ -586,7 +596,10 @@ class YzUser extends ActiveRecord
 		$response = $res['response'] ?? '';
 		if ($response) {
 			$is_success = $response['isSuccess'] ?? 'unkown success msg';
-			
+			$ret = self::salesman_accounts_get(1, 1);
+			if (is_array($ret) && count($ret) == 2) {
+				self::after_get_saleman($ret[0], 1);
+			}
 			return [0, $is_success];
 		}
 
