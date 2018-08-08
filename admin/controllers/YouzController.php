@@ -156,7 +156,7 @@ class YouzController extends BaseController
 			];
 		}
 
-		ExcelUtil::getYZExcel('严选师管理员' . date("Y-m-d"), $header, $content, [12, 20, 20, 12, 12, 12, 12, 12, 12, 20, 20, 12, 30,]);
+		ExcelUtil::getYZExcel('严选师管理员' . date("Y-m-d"), $header, $content, [12, 15, 15, 12, 12, 12, 12, 12, 12, 15, 15, 12, 24,]);
 		exit;
 	}
 
