@@ -602,7 +602,7 @@ class YzUser extends ActiveRecord
 			$is_success = $response['isSuccess'] ?? 'unkown success msg';
 			$ret = self::salesman_accounts_get(1, 1);
 			if (is_array($ret) && count($ret) == 2) {
-				self::after_get_saleman($ret[0], 1);
+				self::after_get_saleman($ret[0]);
 			}
 			$return = [0, $is_success];
 			Log::add(['oCategory' => Log::CAT_YOUZAN_AUDIT, 'oBefore' => $return, "oAfter" => Admin::getAdminId()]);
