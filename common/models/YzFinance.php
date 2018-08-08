@@ -77,18 +77,21 @@ class YzFinance extends ActiveRecord
 
 	public static function check_fields($data)
 	{
+		$order_info = YzOrders::findOne(['o_tid' => $data['tid']]);
+		if (!$order_info) {
+			return [129, '订单信息错误~', $order_info];
+		}
 		$goods_info = YzGoods::findOne(['g_item_id' => $data['gid']]);
 		if (!$goods_info) {
 			return [129, '商品信息错误~', $goods_info];
 		}
 		$sku_info = YzSkus::findOne(['s_item_id' => $data['gid'], 's_sku_id' => $data['skuid']]);
 		if (!$sku_info) {
-			return [129, 'sku信息错误~', $sku_info];
+			$return = [129, 'sku信息错误~'];
+			Log::add(['oCategory' => Log::CAT_YOUZAN_FINANCE, 'oKey' => $order_info->o_tid, 'oBefore' => $return,
+				"oAfter" => ['s_item_id' => $data['gid'], 's_sku_id' => $data['skuid']]]);
 		}
-		$order_info = YzOrders::findOne(['o_tid' => $data['tid']]);
-		if (!$order_info) {
-			return [129, '订单信息错误~', $order_info];
-		}
+
 		if (!$data['pay_amt'] || floatval($data['pay_amt']) <= 0) {
 			return [129, '付款金额格式填写错误~', floatval($data['pay_amt'])];
 		}

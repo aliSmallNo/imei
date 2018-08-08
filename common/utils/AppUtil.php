@@ -450,6 +450,16 @@ class AppUtil
 		return false;
 	}
 
+	public static function json_encode($data)
+	{
+		return is_array($data) ? json_encode($data, JSON_UNESCAPED_UNICODE) : $data;
+	}
+
+	public static function json_decode($data)
+	{
+		return is_string($data) ? json_decode($data, 1) : $data;
+	}
+
 	public static function hasHans($str)
 	{
 		return preg_match("/[\x7f-\xff]/", $str);
