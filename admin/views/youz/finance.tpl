@@ -110,6 +110,8 @@
 								{{if isset($getInfo['st']) && $getInfo['st']==$key}}selected{{/if}}>{{$ftext}}</option>
 			{{/foreach}}
 		</select>
+		<input class="form-control" placeholder="订单号" type="text" name="tid"
+					 value="{{if isset($getInfo['tid'])}}{{$getInfo['tid']}}{{/if}}"/>
 		<button class="btn btn-primary">查询</button>
 	</form>
 </div>

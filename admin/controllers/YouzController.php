@@ -423,6 +423,7 @@ class YouzController extends BaseController
 		$title = self::getParam("title");
 		$phone = self::getParam("phone");
 		$sphone = self::getParam("sphone");
+		$tid = self::getParam("tid");
 		$st = self::getParam("st");
 		$export = self::getParam("export");
 
@@ -443,6 +444,10 @@ class YouzController extends BaseController
 		if ($st) {
 			$criteria[] = " o.o_status = :st ";
 			$params[':st'] = trim($st);
+		}
+		if ($tid) {
+			$criteria[] = " o.o_tid = :tid ";
+			$params[':tid'] = trim($tid);
 		}
 		if ($sphone) {
 			$criteria[] = " o.o_saleman_mobile = :sphone ";
@@ -511,6 +516,7 @@ class YouzController extends BaseController
 		$etime = self::getParam("etime");
 		$bd = self::getParam("bd");
 		$st = self::getParam("st");
+		$tid = self::getParam("tid");
 
 		$criteria = $params = [];
 		if ($name) {
@@ -533,6 +539,10 @@ class YouzController extends BaseController
 		if ($st) {
 			$criteria[] = " f.f_status = :st ";
 			$params[':st'] = trim($st);
+		}
+		if ($tid) {
+			$criteria[] = " f.f_tid = :tid ";
+			$params[':tid'] = trim($tid);
 		}
 
 		list($items, $count, $total_pay) = YzFinance::items($criteria, $params, $page);

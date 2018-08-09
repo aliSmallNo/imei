@@ -72,6 +72,8 @@
 			<input class="form-control" placeholder="推荐人手机" type="text" name="sphone"
 						 value="{{if isset($getInfo['sphone'])}}{{$getInfo['sphone']}}{{/if}}"/>
 		</div>
+		<input class="form-control" placeholder="订单号" type="text" name="tid"
+					 value="{{if isset($getInfo['tid'])}}{{$getInfo['tid']}}{{/if}}"/>
 		<button class="btn btn-primary">查询</button>
 
 		{{if $able_refresh_data}}
