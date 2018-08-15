@@ -466,6 +466,7 @@ class UserWechat extends ActiveRecord
 						$params[':wSubscribeDate'] = date('Y-m-d H:i:s', $val);
 					}
 				}
+				print_r($params);
 				$cnt += $cmd->bindValues($params)->execute();
 			}
 			return $cnt;
@@ -474,10 +475,11 @@ class UserWechat extends ActiveRecord
 		$sql = 'UPDATE im_user_wechat SET wUpdatedOn=now(),wRawData=:raw,wSubscribeDate=:wSubscribeDate ' . $sql2
 			. ' WHERE wOpenId=:openid ';
 		$cmdUpdate = $conn->createCommand($sql);
-		/* $sql = 'UPDATE im_user_wechat SET wUpdatedOn=now(),wSubscribe=0,wSubscribeDate=null,wSubscribeTime=0,
-				wRawData = REPLACE(wRawData, \'"subscribe":1,\', \'"subscribe":0,\')
- 				WHERE wOpenId=:openid ';
-		$cmdUpdate2 = $conn->createCommand($sql); */
+		/* $sql = 'UPDATE im_user_wechat SET
+		wUpdatedOn=now(),wRawData=:raw,wSubscribeDate=:wSubscribeDate ,
+		wUnionId=:wUnionId,wNickname=:wNickname,wAvatar=:wAvatar,wSubscribeTime=:wSubscribeTime,wGender=:wGender,
+		wCity=:wCity,wProvince=:wProvince,wRemark=:wRemark,wCountry=:wCountry
+		WHERE wOpenId=:openid '*/
 		$updateCount = 0;
 		$items = [];
 		echo $sql . PHP_EOL;
