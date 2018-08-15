@@ -1444,7 +1444,7 @@ class FooController extends Controller
 		// UserTag::add(UserTag::CAT_CHAT_MONTH,120003);
 		//UserTrans::add(UserTag::CAT_CHAT_MONTH,120003);
 
-		UserWechat::refreshWXInfo('oYDJew5EFMuyrJdwRrXkIZLU2c58', 1);
+		UserWechat::refreshWXInfo('oYDJewwqr9m_nHTtJrv0Ifxg9CWg', 1);
 
 
 	}
