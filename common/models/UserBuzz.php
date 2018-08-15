@@ -181,7 +181,7 @@ class UserBuzz extends ActiveRecord
 					Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
 				}
 				// Rain: 添加或者更新微信用户信息
-				Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => '', "oAfter" => $fromUsername, 'oBefore' => $event]);
+				Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
 				UserWechat::refreshWXInfo($fromUsername);
 				UserWechat::getInfoByOpenId($fromUsername, true);
 				break;
