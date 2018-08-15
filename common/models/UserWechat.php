@@ -449,6 +449,7 @@ class UserWechat extends ActiveRecord
 				return $cnt;
 			}
 			$users = $res['user_info_list'];
+			print_r($users);
 			foreach ($users as $user) {
 				$params = [
 					':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
@@ -479,6 +480,7 @@ class UserWechat extends ActiveRecord
 		$cmdUpdate2 = $conn->createCommand($sql); */
 		$updateCount = 0;
 		$items = [];
+		echo $cmdUpdate . PHP_EOL;
 		foreach ($openIds as $id) {
 			$items[] = $id;
 			if (count($items) > 90) {

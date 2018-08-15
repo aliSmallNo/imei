@@ -147,21 +147,7 @@ class UserTag extends ActiveRecord
 				$expired = date('Y-m-d 23:59:56', time() + 86400 * 7);
 				break;
 			case self::CAT_CHAT_MONTH:
-				/*$expired = date('Y-m-d 23:59:56', time() + 86400 * 30);
-				$sql = 'SELECT tExpiredOn FROM im_user_tag
-						WHERE tUId=:uid AND tCategory=:cat AND tStatus=1 AND tExpiredOn>now() AND tDeletedFlag=0';
-				$lastExp = $conn->createCommand($sql)->bindValues([
-					':uid' => $uid,
-					':cat' => self::CAT_CHAT_MONTH,
-				])->queryScalar();
-				if ($lastExp) {
-					$expired = date('Y-m-d 23:59:56', strtotime($lastExp) + 86400 * 30);
-					$sql = 'UPDATE im_user_tag set tDeletedFlag=1,tDeletedOn=now() WHERE tUId=:uid AND tCategory=:cat';
-					$conn->createCommand($sql)->bindValues([
-						':uid' => $uid,
-						':cat' => $cat,
-					])->execute();
-				}*/
+			case self::CAT_MEMBER_VIP:
 				$expired = $last($conn, $uid, $cat);
 				break;
 			case self::CAT_CHAT_SEASON:
@@ -172,9 +158,6 @@ class UserTag extends ActiveRecord
 				break;
 			case self::CAT_CHAT_YEAR:
 				$expired = date('Y-m-d 23:59:56', time() + 86400 * 365);
-				break;
-			case self::CAT_MEMBER_VIP:
-				$expired = $last($conn, $uid, $cat);
 				break;
 		}
 		$ret = $cmd->bindValues([
@@ -378,7 +361,23 @@ class UserTag extends ActiveRecord
 		}
 		$expire = $cardInfo->tExpiredOn;
 
-		return strtotime($expire) > time() ? $expire : "";
+		return strtotime($expire) > time() ? $expire : '';
 
 	}
+
+	public static function song_mouth_card($uid)
+	{
+		//判断有误月卡
+		$has_mouth_card = self::hasCard($uid, self::CAT_CHAT_MONTH);
+		if ($has_mouth_card) {
+
+		}
+		// 七个朋友帮忙砍价 领月度卡
+
+		// 砍价者必须：1.关注，2.点击，3.提醒TA也可以领
+
+
+	}
+
+
 }

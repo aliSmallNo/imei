@@ -16,6 +16,7 @@ use common\models\Pin;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
+use common\models\UserTag;
 use common\models\UserTrans;
 use common\models\UserWechat;
 use common\models\YzCoupon;
@@ -1437,41 +1438,15 @@ class FooController extends Controller
 			SELECT :id1,:id2,9999,:uid FROM dual
 			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2)';
 		*/
+		// var_dump(WechatUtil::createWechatMenus());
 
 		// 添加月度畅聊卡
 		// UserTag::add(UserTag::CAT_CHAT_MONTH,120003);
+		//UserTrans::add(UserTag::CAT_CHAT_MONTH,120003);
 
-		// 新增临时素材
-		//$imgUrl = "https://img.meipo100.com/2018/327/218223134104.jpg";
-		//$imgUrl = "http://localhost.image:8080/2018/325/inv100004.jpg";
-		//var_dump(WechatUtil::uploadImageToWechat($imgUrl));
-
-		// echo UserQR::createInvitationForMarry(120003, 'sdssf', "sdddf", '');exit;
-
-		/*$name = "的发的发生的";
-		$first_name = mb_substr($name, 0, 1);
-		$last_name = mb_substr($name, 1);
-		$name = strtoupper(Pinyin::encode($first_name, "all")) . '/' . strtoupper(Pinyin::encode($last_name, "all"));
-		$name = str_replace(" ", "", $name);
-		// echo $name;exit;
-
-		$from = "北京";
-		$to = "发送";
-		$uId = 120003;
-
-		echo  UserQR::createAiricket($uId, $from, $to, $name);*/
-
-		// var_dump(WechatUtil::createWechatMenus());
-
-		// var_dump(WechatUtil::createWechatMenus());
+		UserWechat::refreshWXInfo('oYDJew5EFMuyrJdwRrXkIZLU2c58', 1);
 
 
-		$res = Admin::getAIds(Admin::GROUP_SUPPLY_CHAIN);
-		print_r($res);
-		$res = Admin::getAIds(Admin::GROUP_FINANCE);
-		print_r($res);
-		$res = Admin::getAIds(Admin::GROUP_RUN_MGR);
-		print_r($res);
 	}
 
 	public function actionYz()
