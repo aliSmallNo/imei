@@ -450,7 +450,7 @@ class UserWechat extends ActiveRecord
 				return $cnt;
 			}
 			$users = $res['user_info_list'];
-			print_r($users);
+			//print_r($users);
 			foreach ($users as $user) {
 				$params = [
 					':raw' => json_encode($user, JSON_UNESCAPED_UNICODE),
@@ -467,7 +467,7 @@ class UserWechat extends ActiveRecord
 						$params[':wSubscribeDate'] = date('Y-m-d H:i:s', $val);
 					}
 				}
-				print_r($params);
+				//print_r($params);
 				$cnt += $cmd->bindValues($params)->execute();
 			}
 			return $cnt;
@@ -483,7 +483,7 @@ class UserWechat extends ActiveRecord
 		WHERE wOpenId=:openid '*/
 		$updateCount = 0;
 		$items = [];
-		echo $sql . PHP_EOL;
+		//echo $sql . PHP_EOL;
 		foreach ($openIds as $id) {
 			$items[] = $id;
 			if (count($items) > 90) {
