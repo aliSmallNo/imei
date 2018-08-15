@@ -115,7 +115,7 @@ class UserBuzz extends ActiveRecord
 		$eventKey = strtolower($postData["EventKey"] ?? '');
 		$fromUsername = $postData["FromUserName"] ?? '';
 		$toUsername = $postData["ToUserName"] ?? '';
-		Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => AppUtil::json_encode($postData)]);
+
 		switch ($event) {
 			case 'click':
 				switch ($eventKey) {
@@ -155,14 +155,14 @@ class UserBuzz extends ActiveRecord
 			case "subscribe": // 关注操作
 				Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
 				if ($eventKey && strpos($eventKey, "qrscene_") === 0) {
-					//Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
+					Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
 					$qId = substr($eventKey, strlen("qrscene_"));
 					if (is_numeric($qId)) {
 						$qrInfo = UserQR::findOne(["qId" => $qId])->toArray();
-						//Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
+						Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
 						//UserLink::add($qrInfo["qFrom"], $wxOpenId, $qrInfo["qCategory"], $qrInfo["qSubCategory"]);
 						if ($qrInfo) {
-							//Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
+							Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
 							$content = $qrInfo["qCode"];
 							self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SUBSCRIBE, $qId);
 							$rid = "";
@@ -174,11 +174,11 @@ class UserBuzz extends ActiveRecord
 						}
 					}
 				} else {
-					//Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
+					Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
 					UserNet::addByOpenId($fromUsername, self::$IMEI_UID, UserNet::REL_SUBSCRIBE);
-					//Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
+					Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
 					$resp = self::welcomeMsg($fromUsername, $toUsername, $event);
-					//Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
+					Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
 				}
 				// Rain: 添加或者更新微信用户信息
 				//Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => '', "oAfter" => $fromUsername, 'oBefore' => $event]);
@@ -188,10 +188,10 @@ class UserBuzz extends ActiveRecord
 			case "unsubscribe":
 				Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
 				if ($fromUsername && strlen($fromUsername) > 20) {
-					//Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
+					Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
 					UserNet::addByOpenId($fromUsername, self::$IMEI_UID, UserNet::REL_UNSUBSCRIBE);
 					$debug .= $event . "**";
-					//Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => '', "oAfter" => $fromUsername, 'oBefore' => $event]);
+					Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => '', "oAfter" => $fromUsername, 'oBefore' => $event]);
 					// Rain: 添加或者更新微信用户信息
 					UserWechat::refreshWXInfo($fromUsername);
 					UserWechat::getInfoByOpenId($fromUsername, true);
