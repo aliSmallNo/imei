@@ -115,7 +115,8 @@ class UserBuzz extends ActiveRecord
 		$eventKey = strtolower($postData["EventKey"] ?? '');
 		$fromUsername = $postData["FromUserName"] ?? '';
 		$toUsername = $postData["ToUserName"] ?? '';
-
+		Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername,
+			'oBefore' => AppUtil::json_encode($postData)]);
 		switch ($event) {
 			case 'click':
 				switch ($eventKey) {
