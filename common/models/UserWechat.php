@@ -478,8 +478,9 @@ class UserWechat extends ActiveRecord
 		$cmdUpdate = $conn->createCommand($sql);
 		/* $sql = 'UPDATE im_user_wechat SET
 		wUpdatedOn=now(),wRawData=:raw,wSubscribeDate=:wSubscribeDate ,
-		wUnionId=:wUnionId,wNickname=:wNickname,wAvatar=:wAvatar,wSubscribeTime=:wSubscribeTime,wGender=:wGender,
-		wCity=:wCity,wProvince=:wProvince,wRemark=:wRemark,wCountry=:wCountry
+		wUnionId=:wUnionId,wNickname=:wNickname,wAvatar=:wAvatar,
+		wSubscribeTime=:wSubscribeTime,wSubscribe=:wSubscribe,
+		wGender=:wGender,wCity=:wCity,wProvince=:wProvince,wRemark=:wRemark,wCountry=:wCountry
 		WHERE wOpenId=:openid '*/
 		$updateCount = 0;
 		$items = [];

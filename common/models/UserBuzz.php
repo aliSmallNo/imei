@@ -115,7 +115,7 @@ class UserBuzz extends ActiveRecord
 		$eventKey = strtolower($postData["EventKey"] ?? '');
 		$fromUsername = $postData["FromUserName"] ?? '';
 		$toUsername = $postData["ToUserName"] ?? '';
-		//Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => AppUtil::json_encode($postData)]);
+		Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => AppUtil::json_encode($postData)]);
 		switch ($event) {
 			case 'click':
 				switch ($eventKey) {
@@ -153,7 +153,7 @@ class UserBuzz extends ActiveRecord
 				}
 				break;
 			case "subscribe": // 关注操作
-				//Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
+				Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
 				if ($eventKey && strpos($eventKey, "qrscene_") === 0) {
 					//Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
 					$qId = substr($eventKey, strlen("qrscene_"));
@@ -186,7 +186,7 @@ class UserBuzz extends ActiveRecord
 				UserWechat::getInfoByOpenId($fromUsername, true);
 				break;
 			case "unsubscribe":
-				//Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
+				Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
 				if ($fromUsername && strlen($fromUsername) > 20) {
 					//Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
 					UserNet::addByOpenId($fromUsername, self::$IMEI_UID, UserNet::REL_UNSUBSCRIBE);
