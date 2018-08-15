@@ -480,7 +480,7 @@ class UserWechat extends ActiveRecord
 		$cmdUpdate2 = $conn->createCommand($sql); */
 		$updateCount = 0;
 		$items = [];
-		echo $cmdUpdate . PHP_EOL;
+		echo $sql . PHP_EOL;
 		foreach ($openIds as $id) {
 			$items[] = $id;
 			if (count($items) > 90) {
