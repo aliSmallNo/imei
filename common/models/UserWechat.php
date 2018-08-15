@@ -421,6 +421,7 @@ class UserWechat extends ActiveRecord
 			'nickname' => 'wNickname',
 			'headimgurl' => 'wAvatar',
 			'subscribe_time' => 'wSubscribeTime',
+			'subscribe' => 'wSubscribe',
 			'sex' => 'wGender',
 			'city' => 'wCity',
 			'province' => 'wProvince',
