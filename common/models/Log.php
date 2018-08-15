@@ -94,6 +94,7 @@ class Log extends ActiveRecord
 	const CAT_YOUZAN_ORDER = 8002; // 拉取有赞订单
 	const CAT_YOUZAN_AUDIT = 8003; // 设置用为为严选师
 	const CAT_YOUZAN_FINANCE = 8004; // 对账信息
+	const CAT_USER_FOCUS = 8005; // 关注取消关注
 
 	public static function tableName()
 	{
