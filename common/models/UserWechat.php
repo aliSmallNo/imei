@@ -468,6 +468,7 @@ class UserWechat extends ActiveRecord
 					}
 				}
 				//print_r($params);
+				echo $cnt, '===>' . $user['openid'] . PHP_EOL;
 				$cnt += $cmd->bindValues($params)->execute();
 			}
 			return $cnt;
