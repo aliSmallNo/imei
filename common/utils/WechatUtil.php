@@ -1066,6 +1066,7 @@ class WechatUtil
 		$access_token = WechatUtil::accessToken();
 		$count = 0;
 		$result = [];
+		$name = '~~~';
 		foreach ($users as $userInfo) {
 			if (!$userInfo) {
 				continue;
