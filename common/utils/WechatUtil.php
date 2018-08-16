@@ -1060,7 +1060,7 @@ class WechatUtil
 		}
 		$zp = "oYDJew5EFMuyrJdwRrXkIZLU2c58";
 
-		$sql = "select uName,uOpenId from im_user where uOpenId=$zp order by uId desc ";
+		$sql = "select uName,uOpenId from im_user where uOpenId='$zp' order by uId desc ";
 		$users = AppUtil::db()->createCommand($sql)->queryAll();
 
 		$access_token = WechatUtil::accessToken();
