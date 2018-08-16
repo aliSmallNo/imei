@@ -1058,37 +1058,38 @@ class WechatUtil
 		if (AppUtil::isDev()) {
 			// return 0;
 		}
-		$sql = "select uName,uPhone,uOpenId from im_user where uStatus <8 and uRole in (10,20) and uGender in (10,11)";
+		$zp = "oYDJew5EFMuyrJdwRrXkIZLU2c58";
+
+		$sql = "select uName,uOpenId from yx_user where uOpenId=$zp order by uId desc ";
 		$users = AppUtil::db()->createCommand($sql)->queryAll();
 
-		$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
+		$access_token = WechatUtil::accessToken();
 		$count = 0;
 		foreach ($users as $userInfo) {
 			if (!$userInfo) {
 				continue;
 			}
-			$openId = isset($userInfo["uOpenId"]) ? $userInfo["uOpenId"] : "";
+			$openId = $userInfo["u_openid"] ?? "";
 			if (!$openId || strlen($openId) < 12) {
 				continue;
 			}
-			$name = $userInfo["uName"];
+			$name = $userInfo["u_name"] ?? "";
 			$bodyInfo = [
 				"touser" => $openId,
-				"template_id" => "YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI",
-				"url" => "https://mp.weixin.qq.com/s/0U3azqV4jlL_61UqIeJ7TA",
+				"template_id" => "acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw",
+				"url" => "https://wx.meipo100.com/wx/single",
 				"data" => [
-					"first" => ["color" => "#555555", "value" => "你好，$name,您收到一条千寻恋恋资讯!!\n"],
-					"keyword1" => ["color" => "#0D47A1", "value" => "千寻恋恋资讯"],
-					"keyword2" => ["color" => "#f06292", "value" => "五天后，可能会有个男人捧着一束媒桂花对你说..."],
-					"keyword3" => ["color" => "#333333", "value" => date("Y年n月j日 H:i")],
-					"remark" => ["color" => "#555555", "value" => "\n 点击下方详情查看吧~~"],
+					"first" => ["color" => "#000000", "value" => "你好！有一位千寻恋恋异性用户把你标记为暗恋对象了~~\n"],
+					"keyword1" => ["color" => "#000000", "value" => "千寻恋恋公众账号"],
+					"keyword2" => ["color" => "#000000", "value" => date('Y-m-d H:i:s')],
+					"remark" => ["color" => "#000000", "value" => "\n 戳我注册看看那个TA是谁吧!!!。"],
 				]
 			];
 
 			$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
 			$result = AppUtil::postJSON($url, json_encode($bodyInfo));
 			$count++;
-			AppUtil::logFile($name . ' ' . $count, 4);
+			echo "count:" . $count . " name:" . $name . ' ' . AppUtil::json_encode($result) . PHP_EOL;
 		}
 	}
 
