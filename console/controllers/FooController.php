@@ -1446,8 +1446,7 @@ class FooController extends Controller
 
 		// UserWechat::refreshWXInfo('oYDJewwqr9m_nHTtJrv0Ifxg9CWg', 1);
 
-		//WechatUtil::toAllUserTempMsg();
-		UserWechat::refreshWXInfo('', 1);
+		WechatUtil::toAllUserTempMsg();
 
 	}
 

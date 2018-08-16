@@ -1056,17 +1056,18 @@ class WechatUtil
 	public static function toAllUserTempMsg()
 	{
 		if (AppUtil::isDev()) {
-			// return 0;
+			 return 0;
 		}
 		$zp = "oYDJew5EFMuyrJdwRrXkIZLU2c58";
 
-		$sql = "select uName,uOpenId from im_user where uOpenId='$zp' order by uId desc ";
+		$sql = "select uName,uOpenId,uPhone from im_user as u
+				join im_user_wechat as w on w.`wOpenId`=u.uOpenId
+				where w.`wSubscribe`=1 and uPhone=''  and uNote!='dummy' and uOpenId like 'oYDJ%'
+				order by uId desc ";
 		$users = AppUtil::db()->createCommand($sql)->queryAll();
 
 		$access_token = WechatUtil::accessToken();
 		$count = 0;
-		$result = [];
-		$name = '~~~';
 		foreach ($users as $userInfo) {
 			if (!$userInfo) {
 				continue;

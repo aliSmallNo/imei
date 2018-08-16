@@ -493,7 +493,6 @@ class UserWechat extends ActiveRecord
 				if ($debug && $updateCount % 200 == 0) {
 					echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . PHP_EOL;
 				}
-				echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . PHP_EOL;
 				$items = [];
 			}
 		}
