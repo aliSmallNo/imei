@@ -1059,7 +1059,7 @@ class WechatUtil
 			 return 0;
 		}
 		$zp = "oYDJew5EFMuyrJdwRrXkIZLU2c58";
-
+		// 给 关注的 未注册的 千寻用户发送模板消息
 		$sql = "select uName,uOpenId,uPhone from im_user as u
 				join im_user_wechat as w on w.`wOpenId`=u.uOpenId
 				where w.`wSubscribe`=1 and uPhone=''  and uNote!='dummy' and uOpenId like 'oYDJ%'

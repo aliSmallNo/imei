@@ -2153,6 +2153,25 @@ class WxController extends BaseController
 			'bg-santa');
 	}
 
+	public function actionCut_price()
+	{
+		$is_share = self::getParam('is_share', 0);
+
+		$last_openid = self::getParam('lopenid');
+		$wxUserInfo = UserWechat::getInfoByOpenId($last_openid);
+
+		return self::renderPage("cut_price.tpl",
+			[
+				'uid' => $this->user_id,
+				'is_share' => $is_share,
+				'avatar' => $this->user_avatar,
+
+			],
+			'terse',
+			'砍价活动',
+			'');
+	}
+
 	public function actionSwallet()
 	{
 		$hid = self::getParam('id');
@@ -2424,4 +2443,6 @@ class WxController extends BaseController
 		header("location:https://bt.meipo100.com/wx/bt?openid=" . $openid);
 		exit;
 	}
+
+
 }
