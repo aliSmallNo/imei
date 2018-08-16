@@ -468,7 +468,7 @@ class UserWechat extends ActiveRecord
 					}
 				}
 				//print_r($params);
-				echo $cnt, '===>' . $user['openid'] . PHP_EOL;
+				//echo $cnt, '===>' . $user['openid'] . PHP_EOL;
 				$cnt += $cmd->bindValues($params)->execute();
 			}
 			return $cnt;
@@ -493,6 +493,7 @@ class UserWechat extends ActiveRecord
 				if ($debug && $updateCount % 200 == 0) {
 					echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . PHP_EOL;
 				}
+				echo $updateCount . date(" - Y-m-d H:i:s - ") . __LINE__ . PHP_EOL;
 				$items = [];
 			}
 		}
