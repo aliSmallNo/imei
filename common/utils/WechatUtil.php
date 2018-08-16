@@ -1065,6 +1065,7 @@ class WechatUtil
 
 		$access_token = WechatUtil::accessToken();
 		$count = 0;
+		$result = [];
 		foreach ($users as $userInfo) {
 			if (!$userInfo) {
 				continue;
@@ -1091,6 +1092,7 @@ class WechatUtil
 			$count++;
 			echo "count:" . $count . " name:" . $name . ' ' . AppUtil::json_encode($result) . PHP_EOL;
 		}
+		echo "count:" . $count . " name:" . $name . ' ' . AppUtil::json_encode($result) . PHP_EOL;
 	}
 
 
