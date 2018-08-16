@@ -1081,7 +1081,7 @@ class WechatUtil
 				"template_id" => "acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw",
 				"url" => "https://wx.meipo100.com/wx/single",
 				"data" => [
-					"first" => ["color" => "#000000", "value" => "你好！有一位千寻恋恋异性用户把你标记为暗恋对象了~~\n"],
+					"first" => ["color" => "#e893b2", "value" => "你好！有一位千寻恋恋异性用户把你标记为暗恋对象了~~\n"],
 					"keyword1" => ["color" => "#000000", "value" => "千寻恋恋公众账号"],
 					"keyword2" => ["color" => "#000000", "value" => date('Y-m-d H:i:s')],
 					"remark" => ["color" => "#000000", "value" => "\n 戳我注册看看那个TA是谁吧!!!。"],
@@ -1093,7 +1093,7 @@ class WechatUtil
 			$count++;
 			echo "count:" . $count . " name:" . $name . ' ' . AppUtil::json_encode($result) . PHP_EOL;
 		}
-		echo "count:" . $count . " name:" . $name . ' ' . AppUtil::json_encode($result) . PHP_EOL;
+		echo "send msg end" . PHP_EOL;
 	}
 
 
