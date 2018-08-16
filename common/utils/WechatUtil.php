@@ -1071,11 +1071,11 @@ class WechatUtil
 			if (!$userInfo) {
 				continue;
 			}
-			$openId = $userInfo["u_openid"] ?? "";
+			$openId = $userInfo["uOpenId"] ?? "";
 			if (!$openId || strlen($openId) < 12) {
 				continue;
 			}
-			$name = $userInfo["u_name"] ?? "";
+			$name = $userInfo["uName"] ?? "";
 			$bodyInfo = [
 				"touser" => $openId,
 				"template_id" => "acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw",
