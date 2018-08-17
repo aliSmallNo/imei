@@ -497,7 +497,10 @@ class Log extends ActiveRecord
 		$items = Log::find_cut_price_items($last_uid);
 
 		//后 判断是否够了赠送月卡的条件
-		$all_cut = self::find()->where($cond)->asArray()->all();
+		$all_cut = self::find()->where([
+			'oCategory' => $cat_cut_price,
+			'oKey' => self::KEY_DEFAULT, 'oUId' => $last_user_info->wUId,
+		])->asArray()->all();
 		if (count($all_cut) > (self::CUT_TIMES - 1)) {
 			// 送卡
 			UserTag::add($tag_mouth, $uid);
