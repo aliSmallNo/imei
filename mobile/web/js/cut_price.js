@@ -27,10 +27,23 @@ require(['jquery', 'mustache', "alpha"],
 				$(".btn_one_dao").on(kClick, function () {
 					util.cut_one_dao();
 				});
+				$('.cut_get_free').on(kClick, function () {
+					var html = '<i class="share-arrow">点击菜单分享</i>';
+					$sls.main.show();
+					$sls.main.html(html);
+					$sls.shade.fadeIn(160);
+					setTimeout(function () {
+						$sls.main.hide();
+						$sls.main.find('.share-arrow').remove();
+						$sls.shade.fadeOut(100);
+					}, 2000);
+				});
 			},
 			toggle: function (f) {
 				if (f) {
+					var html = $('#tpl_qr').html();
 					$sls.main.show();
+					$sls.main.html(html);
 					$sls.content.addClass("animate-pop-in");
 					$sls.shade.fadeIn(160);
 				} else {
@@ -54,7 +67,7 @@ require(['jquery', 'mustache', "alpha"],
 						var html = Mustache.render(util.tmp, resp);
 						util.UL.html(html);
 					} else if (resp.code == 128) {
-						alpha.toast(resp.msg, 1);
+						alpha.toast(resp.msg);
 						setTimeout(function () {
 							util.toggle(1);
 						}, 1000);

@@ -138,7 +138,7 @@
 		<div class="btn_one_dao"><span>帮好友砍一刀</span></div>
 	</div>
 	<div class="cut_get_free">
-		<div><span>我也要免费领</span></div>
+		<div class="cut_get_free"><span>我也要免费领</span></div>
 	</div>
 	<div class="cut_items">
 		<div class="cut_title">砍价帮</div>
@@ -151,6 +151,18 @@
 
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
+
+</div>
+
+<input type="hidden" id="LAST_OPENID" value="{{$last_user_info.openid}}">
+<input type="hidden" id="OPENID" value="{{$openid}}">
+<input type="hidden" id="IS_SHARE" value="{{$is_share}}">
+<script src="/assets/js/require.js"></script>
+<script type="text/template" id="tpl_wx_info">
+	{{$wxInfoString}}
+</script>
+
+<script type="text/html" id="tpl_qr">
 	<div class="m-popup-wrap">
 		<div class="m-popup-content" style="background: transparent;width: 25rem;left: 3.5rem;">
 			<div class="cut-alert">
@@ -165,14 +177,6 @@
 			</div>
 		</div>
 	</div>
-</div>
-
-<input type="hidden" id="LAST_OPENID" value="{{$last_user_info.openid}}">
-<input type="hidden" id="OPENID" value="{{$openid}}">
-<input type="hidden" id="IS_SHARE" value="{{$is_share}}">
-<script src="/assets/js/require.js"></script>
-<script type="text/template" id="tpl_wx_info">
-	{{$wxInfoString}}
 </script>
 <script type="text/html" id="tpl_item">
 	{[#data]}
@@ -186,7 +190,7 @@
 
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/cut_price.js?v=1.1.3']);
+		requirejs(['/js/cut_price.js?v=1.1.4']);
 	});
 	console.log({{$last_user_info_json}})
 </script>

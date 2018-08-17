@@ -450,6 +450,7 @@ class Log extends ActiveRecord
 
 	public static function cut_one_dao($openid, $last_openid)
 	{
+
 		if (!$last_openid) {
 			return [129, '为谁砍价呢？', ''];
 		}
