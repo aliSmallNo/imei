@@ -128,28 +128,25 @@
 		border-radius: 6rem;
 	}
 </style>
-{{if !$is_share}}
-	<div class="cut_content">
-		<div class="cut_card">
-			<img src="/images/cut_price/cut_card.png?v=1.1.1">
-			<div class="cut_price">价值￥19.90、邀请朋友砍价六次可获得</div>
-		</div>
-		<div class="cut_one_dao">
-			<div class="btn_one_dao"><span>帮好友砍一刀</span></div>
-		</div>
-		<div class="cut_get_free">
-			<div><span>我也要免费领</span></div>
-		</div>
-		<div class="cut_items">
-			<div class="cut_title">砍价帮</div>
-			<ul>
 
-			</ul>
-		</div>
+<div class="cut_content">
+	<div class="cut_card">
+		<img src="/images/cut_price/cut_card.png?v=1.1.1">
+		<div class="cut_price">价值￥19.90、邀请朋友砍价六次可获得</div>
 	</div>
-{{else}}
+	<div class="cut_one_dao">
+		<div class="btn_one_dao"><span>帮好友砍一刀</span></div>
+	</div>
+	<div class="cut_get_free">
+		<div><span>我也要免费领</span></div>
+	</div>
+	<div class="cut_items">
+		<div class="cut_title">砍价帮</div>
+		<ul>
 
-{{/if}}
+		</ul>
+	</div>
+</div>
 
 
 <div class="m-popup-shade"></div>
