@@ -673,7 +673,10 @@ class ChatMsg extends ActiveRecord
 		}
 
 		if ($costAmt) {
-			if (!$hasCard) {
+			if (!$hasCard
+				&& !User::isDummy($senderId)
+				&& !User::isDummy($receiverId)
+			) {
 				UserTrans::add($senderId, $gid, UserTrans::CAT_CHAT, '', $costAmt, UserTrans::UNIT_GIFT);
 			}
 			$sql = 'UPDATE im_chat_group SET gRound=9999 WHERE gId=:id';
