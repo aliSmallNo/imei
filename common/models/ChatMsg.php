@@ -665,7 +665,7 @@ class ChatMsg extends ActiveRecord
 
 		if ($giftCount) {
 			$amt = intval($giftCount * $ratio);
-			$sql = 'UPDATE im_chat_group set gRound=IFNULL(gRound,0)+' . $amt
+			$sql = 'UPDATE im_chat_group set gRound=' . $amt
 				. ' WHERE g.gId=:id';
 			$conn->createCommand($sql)->bindValues([
 				':id' => $gid
