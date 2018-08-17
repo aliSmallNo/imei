@@ -2169,8 +2169,6 @@ class WxController extends BaseController
 			$qr_uid = $this->user_id;
 			$qr = UserQR::getQRCode($qr_uid, UserQR::CATEGORY_CUT_PRICE);
 		}
-		echo $qr;
-		exit;
 
 		return self::renderPage("cut_price.tpl",
 			[
