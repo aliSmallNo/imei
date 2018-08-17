@@ -1454,10 +1454,12 @@ class FooController extends Controller
 		print_r($has_card);*/
 
 
-		Log::cut_one(120003, 174889);
-		Log::cut_one(120003, 174888);
-		Log::cut_one(120003, 174887);
-		Log::cut_one(120003, 174886);
+		// Log::cut_one(120003, 174889);
+
+		$all_cut = Log::find()->where([
+			'oCategory' => 8006,
+			'oKey' => 3, 'oUId' => 143807,])->asArray()->all();
+		echo count($all_cut);
 	}
 
 	public function actionYz()
