@@ -813,7 +813,7 @@ class FooController extends Controller
 		$sql = "SELECT uId,w.wSubscribe,uPhone,uRole
  				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId
- 				WHERE uPhone AND w.wSubscribe=1 and uRole in (10,20) and uId > 149072 order by uId  ";
+ 				WHERE uPhone AND w.wSubscribe=1 and uRole in (10,20) and uId > 170629 order by uId  ";
 
 		$ret = $conn->createCommand($sql)->queryAll();
 		//print_r($ret);
