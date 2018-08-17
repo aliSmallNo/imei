@@ -2163,7 +2163,7 @@ class WxController extends BaseController
 
 		$qr = '';
 		if ($is_share && $last_user_info) {
-			$qr_uid = $last_user_info['uid'];
+			$qr_uid = $last_user_info['uId'];
 			$qr = UserQR::getQRCode($qr_uid, UserQR::CATEGORY_CUT_PRICE);
 		} else if (!$is_share) {
 			$qr_uid = $this->user_id;
