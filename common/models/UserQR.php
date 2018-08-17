@@ -70,7 +70,7 @@ class UserQR extends ActiveRecord
 		return 0;
 	}
 
-	public static function getQRCode($uid, $category, $avatar = '', $resetFlag = false, $code = '')
+	public static function getQRCode($uid, $category, $avatar = '', $resetFlag = false)
 	{
 		if (!$resetFlag) {
 			$md5 = md5(json_encode([$uid, $category, $avatar], JSON_UNESCAPED_UNICODE));
@@ -79,7 +79,7 @@ class UserQR extends ActiveRecord
 				return $qrInfo['qUrl'];
 			}
 		}
-		return self::createQR($uid, $category, $code);
+		return self::createQR($uid, $category);
 	}
 
 	public static function createQR($uid, $category, $code = '', $bottomTitle = '微信扫一扫 关注千寻恋恋', $logoFlag = false)
@@ -100,8 +100,9 @@ class UserQR extends ActiveRecord
 		switch ($category) {
 			case self::CATEGORY_CUT_PRICE:
 				if (strpos($code, 'zan') === false) {
-					$code = 'zan-' . $code;
+
 				}
+				$code = 'zan';
 				$code = strtolower($code);
 				$qid = self::edit($info['uOpenId'], $category, $code, [
 					'qTitle' => $bottomTitle,

@@ -371,7 +371,7 @@ class UserBuzz extends ActiveRecord
 					$rommdes = '欢迎来到千寻恋恋交友网👏' . PHP_EOL .
 						'<a href="https://wx.meipo100.com/wx/groom?rid=' . $id . '#chat">👉点击进入❝' . $roomInfo->rTitle . '❞房间👈</a>';
 					return self::textMsg($fromUsername, $toUsername, $rommdes);
-				} else if ($extension == 'cut_price') {
+				} else if ($extension == 'zan') {
 					$last_openid = $id;
 					$rommdes = '欢迎关注千寻恋恋👏' . PHP_EOL .
 						'<a href="https://wx.meipo100.com/wx/cut_price?is_share=1&last_openid=' . $last_openid . '">👉点击这里继续帮他点赞吧~👈</a>';
