@@ -121,7 +121,8 @@ class BaseController extends Controller
 
 		$newActionId = $anchor = '';
 		$safeActions = ['share', 'invite', "pin8", "otherpart", 'vote', 'voted', 'trophy',
-			'reg0', 'sh', 'enroll', 'enroll2', 'expand', 'shares', 'groom', 'share28', 'share106', 'everyredpacket', 'jasmine'];
+			'reg0', 'sh', 'enroll', 'enroll2', 'expand', 'shares', 'groom', 'share28', 'share106',
+			'everyredpacket', 'jasmine', 'cut_price'];
 		if (in_array($actionId, $safeActions)) {
 			return;
 		}

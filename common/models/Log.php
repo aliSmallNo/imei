@@ -95,6 +95,7 @@ class Log extends ActiveRecord
 	const CAT_YOUZAN_AUDIT = 8003; // 设置用为为严选师
 	const CAT_YOUZAN_FINANCE = 8004; // 对账信息
 	const CAT_USER_FOCUS = 8005; // 关注取消关注
+	const CAT_USER_CUT_PRICE = 8006; // 关注取消关注
 
 	public static function tableName()
 	{
@@ -436,10 +437,124 @@ class Log extends ActiveRecord
 			$oid = Log::add(["oCategory" => self::CAT_SPRING_FESTIVAL, "oKey" => self::SF_KEY_REDPACKET,
 				"oUId" => $sendUid, "oAfter" => $receivUid, "oBefore" => $amt * 100]);
 
-			 UserTrans::add($sendUid, $oid, UserTrans::CAT_COIN_SPRING_F_SEND, UserTrans::$catDict[UserTrans::CAT_COIN_SPRING_F_SEND], $amt * 100, UserTrans::UNIT_COIN_FEN);
-			 UserTrans::add($receivUid, $oid, UserTrans::CAT_COIN_SPRING_F_RECEIVE, UserTrans::$catDict[UserTrans::CAT_COIN_SPRING_F_RECEIVE], $amt * 100, UserTrans::UNIT_COIN_FEN);
+			UserTrans::add($sendUid, $oid, UserTrans::CAT_COIN_SPRING_F_SEND, UserTrans::$catDict[UserTrans::CAT_COIN_SPRING_F_SEND], $amt * 100, UserTrans::UNIT_COIN_FEN);
+			UserTrans::add($receivUid, $oid, UserTrans::CAT_COIN_SPRING_F_RECEIVE, UserTrans::$catDict[UserTrans::CAT_COIN_SPRING_F_RECEIVE], $amt * 100, UserTrans::UNIT_COIN_FEN);
 		}
 
 		return $amt;
+	}
+
+
+	const KEY_DEFAULT = 3;
+	const KEY_TRANS_CARD = 1;
+
+	public static function cut_one_dao($openid, $last_openid)
+	{
+		if (!$last_openid) {
+			return [129, '为谁砍价呢？', ''];
+		}
+		if ($last_openid == $openid) {
+			return [129, '无法为自己砍价哦~', ''];
+		}
+		$last_user_info = UserWechat::findOne(['wOpenId' => $last_openid]);
+		$user_info = UserWechat::findOne(['wOpenId' => $openid]);
+		if (!$last_user_info || !$user_info) {
+			return [129, '用户信息有误', ''];
+		}
+		if ($user_info->wSubscribe != 1) {
+			return [128, '您还没有关注公众号，请您先关注、再来帮他砍价吧~~', ''];
+		}
+		if ($last_user_info->wSubscribe != 1) {
+			return [129, 'TA还没关注公众号、无法帮他砍价~~', ''];
+		}
+		$uid = $user_info->wUId;
+		$last_uid = $last_user_info->wUId;
+		$tag_mouth = UserTag::CAT_CHAT_MONTH;
+		$cat_cut_price = self::CAT_USER_CUT_PRICE;
+		//是否有月卡
+		$has_card = UserTag::find()
+			->where('tCategory=' . $tag_mouth . ' and tUId=' . $last_uid . ' and tExpiredOn>now() and tDeletedFlag=0 ')
+			->asArray()->one();
+		if ($has_card) {
+			return [129, 'TA还有月度畅聊卡~，砍价无效~', ''];
+		}
+		// 是否已经帮他砍过价
+		$cond = ['oCategory' => $cat_cut_price, 'oKey' => self::KEY_DEFAULT,
+			'oUId' => $last_user_info->wUId, 'oOpenId' => $uid];
+		$has_cut = self::findOne($cond);
+		if ($has_cut) {
+			return [129, '您已经帮他砍过价了~', ''];
+		}
+		// 砍价成功
+		self::add($cond);
+		// 先 获得砍价列表
+		$items = Log::find_cut_price_items($last_uid);
+		//后 判断是否够了赠送月卡的条件
+		$all_cut = self::find()->where($cond)->asArray()->all();
+		if (count($all_cut) > 5) {
+			// 送卡
+			UserTag::add($tag_mouth, $uid);
+			// 推送信息
+
+			// 修改oKey=1
+			self::edit_cut_price($uid);
+		}
+		return [0, '', $items];
+	}
+
+	public static function find_cut_price_items($uid)
+	{
+		$sql = "select l.*,uThumb,uName from im_log as l 
+				left join im_user as u on u.uId=l.oOpenId
+				where oUId=:uid and oKey=:k ";
+		return AppUtil::db()->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':k' => self::KEY_DEFAULT,
+		])->queryAll();
+	}
+
+	public static function load_cut_list($last_openid, $openid, $is_share = 0)
+	{
+		if ($is_share) {
+			if (!$last_openid) {
+				return [0, '参数错误？', ''];
+			}
+			$last_user_info = UserWechat::findOne(['wOpenId' => $last_openid]);
+			if (!$last_user_info) {
+				return [0, '用户信息有误', ''];
+			}
+			$uid = $last_user_info->wUId;
+		} else {
+			if (!$openid) {
+				return [0, '参数错误？', ''];
+			}
+			$user_info = UserWechat::findOne(['wOpenId' => $openid]);
+			if (!$user_info) {
+				return [0, '用户信息有误', ''];
+			}
+			$uid = $user_info->wUId;
+		}
+		// 千寻客服 是否已经帮他砍过价
+		$cond = ['oCategory' => self::CAT_USER_CUT_PRICE, 'oKey' => self::KEY_DEFAULT,
+			'oUId' => $uid, 'oOpenId' => 120000];
+		$has_cut = self::findOne($cond);
+		if (!$has_cut) {
+			self::add($cond);
+		}
+
+
+		return [0, '', self::find_cut_price_items($uid)];
+	}
+
+	public static function edit_cut_price($uid)
+	{
+		$sql = "update im_log set oKey=:k2 and oAfter=:dt
+				where oUId=:uid and oKey=:k ";
+		return AppUtil::db()->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':k' => self::KEY_DEFAULT,
+			':k2' => self::KEY_TRANS_CARD,
+			':dt' => date('Y-m-d H:i:s'),
+		])->execute();
 	}
 }

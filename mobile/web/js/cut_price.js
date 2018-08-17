@@ -9,22 +9,23 @@ require(['jquery', 'mustache', "alpha"],
 			shade: $(".m-popup-shade"),
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
+			last_openid: $("#LAST_OPENID").val(),
+			openid: $("#OPENID").val(),
+			is_share: $("#IS_SHARE").val(),
 		};
 
-
 		var CutUtil = {
-			alert: $(".santa-alert"),
-			content: $(".santa-alert .content"),
-			url: '',
-			gid: '',
-			desc: '',
+			tmp: $("#tpl_item").html(),
+			UL: $(".cut_items ul"),
+			loading: 0,
 			init: function () {
 				var util = this;
+				util.load_cut_list();
 				$sls.main.on(kClick, function () {
 					util.toggle(0);
 				});
 				$(".btn_one_dao").on(kClick, function () {
-					util.toggle(1);
+					util.cut_one_dao();
 				});
 			},
 			toggle: function (f) {
@@ -36,6 +37,53 @@ require(['jquery', 'mustache', "alpha"],
 					$sls.main.hide();
 					$sls.shade.fadeOut();
 				}
+			},
+			cut_one_dao: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post("/api/cut_price", {
+					tag: 'cut_one_dao',
+					openid: $sls.openid,
+					last_openid: $sls.last_openid,
+				}, function (resp) {
+					util.loading = 0;
+					if (resp.code == 0) {
+						var html = Mustache.render(util.tmp, resp);
+						util.UL.html(html);
+					} else if (resp.code == 128) {
+						alpha.toast(resp.msg, 1);
+						setTimeout(function () {
+							util.toggle(1);
+						}, 1000);
+					} else if (resp.code == 129) {
+						alpha.toast(resp.msg);
+					}
+				}, "json");
+
+			},
+			load_cut_list: function () {
+				var util = this;
+				if (util.loading) {
+					return;
+				}
+				util.loading = 1;
+				$.post("/api/cut_price", {
+					tag: 'load_cut_list',
+					last_openid: $sls.last_openid,
+					openid: $sls.openid,
+					is_share: $sls.is_share,
+				}, function (resp) {
+					util.loading = 0;
+					if (resp.code == 0) {
+						var html = Mustache.render(util.tmp, resp);
+						util.UL.html(html);
+					} else {
+						alpha.toast(resp.msg);
+					}
+				}, "json");
 			}
 		};
 		CutUtil.init();
@@ -53,9 +101,9 @@ require(['jquery', 'mustache', "alpha"],
 		}
 
 		function shareOptions(type) {
-			var linkUrl = "https://wx.meipo100.com/wx/santa";
-			var imgUrl = "https://img.meipo100.com/2017/1225/185307_t.jpg";
-			var title = '千寻恋恋，元旦圣诞并肩作战，快来看看吧！';
+			var linkUrl = "https://wx.meipo100.com/wx/cut_price?is_share=" + $sls.is_share + '&last_openid=' + $sls.last_openid;
+			var imgUrl = "https://mmbiz.qpic.cn/mmbiz_png/MTRtVaxOa9k3Zz628lgicCqklzxtfs3dnbUfBibMUjK9OvXnMDR9hn7rzpI2RsOBpnl1ROWEHmlsZwQcRLlQWmoA/0?wx_fmt=png";
+			var title = '快来帮我砍价得千寻恋恋会员卡啦~~';
 			var desc = '';
 			if (type === 'message') {
 				return {
@@ -66,7 +114,7 @@ require(['jquery', 'mustache', "alpha"],
 					type: '',
 					dataUrl: '',
 					success: function () {
-						shareLog('share', '/wx/santa');
+						//shareLog('share', '/wx/cut_price');
 					}
 				};
 			} else {
@@ -75,7 +123,7 @@ require(['jquery', 'mustache', "alpha"],
 					link: linkUrl,
 					imgUrl: imgUrl,
 					success: function () {
-						shareLog('moment', '/wx/santa');
+						//shareLog('moment', '/wx/cut_price');
 					}
 				};
 			}

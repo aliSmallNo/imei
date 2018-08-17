@@ -1921,6 +1921,29 @@ class ApiController extends Controller
 		return self::renderAPI(129, '操作无效');
 	}
 
+	public function actionCut_price()
+	{
+		$tag = trim(strtolower(self::postParam('tag')));
+		$openid = self::postParam('openid');
+		$last_openid = self::postParam('last_openid');
+		if (!$openid) {
+			$openid = AppUtil::getCookie(self::COOKIE_OPENID);
+		}
+		$wx_info = UserWechat::getInfoByOpenId($openid);
+		switch ($tag) {
+			case 'cut_one_dao':
+				list($code, $msg, $res) = Log::cut_one_dao($openid, $last_openid);
+				return self::renderAPI($code, $msg, $res);
+				break;
+			case "load_cut_list":
+				$is_share = self::postParam("is_share", 0);
+				list($code, $msg, $res) = Log::load_cut_list($last_openid, $openid, intval($is_share));
+				return self::renderAPI($code, $msg, $res);
+				break;
+		}
+		return self::renderAPI(129, '操作无效');
+	}
+
 	public function actionRedpacket()
 	{
 		$tag = trim(strtolower(self::postParam('tag')));

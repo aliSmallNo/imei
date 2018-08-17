@@ -2157,14 +2157,17 @@ class WxController extends BaseController
 	{
 		$is_share = self::getParam('is_share', 0);
 
-		$last_openid = self::getParam('lopenid');
-		$wxUserInfo = UserWechat::getInfoByOpenId($last_openid);
+		// 中央音乐学院
+		$last_openid = self::getParam('lopenid', 'oYDJew5MfQtAT12g3Ocso0OKLMyA');
+		$last_user_info = UserWechat::getInfoByOpenId($last_openid);
 
 		return self::renderPage("cut_price.tpl",
 			[
 				'uid' => $this->user_id,
+				'openid' => self::$WX_OpenId,
+				'last_user_info' => $last_user_info,
+				'last_user_info_json' => AppUtil::json_encode($last_user_info),
 				'is_share' => $is_share,
-				'avatar' => $this->user_avatar,
 
 			],
 			'terse',

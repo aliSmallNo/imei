@@ -1446,8 +1446,12 @@ class FooController extends Controller
 
 		// UserWechat::refreshWXInfo('oYDJewwqr9m_nHTtJrv0Ifxg9CWg', 1);
 
-		WechatUtil::toAllUserTempMsg();
+		// WechatUtil::toAllUserTempMsg();
 
+		$has_card = UserTag::find()
+			->where('tCategory='.UserTag::CAT_CHAT_MONTH.' and tUId=120003'.' and tExpiredOn>now() and tDeletedFlag=0 ')
+			->asArray()->one();
+		print_r($has_card);
 	}
 
 	public function actionYz()
