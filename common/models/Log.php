@@ -95,7 +95,7 @@ class Log extends ActiveRecord
 	const CAT_YOUZAN_AUDIT = 8003; // 设置用为为严选师
 	const CAT_YOUZAN_FINANCE = 8004; // 对账信息
 	const CAT_USER_FOCUS = 8005; // 关注取消关注
-	const CAT_USER_CUT_PRICE = 8006; // 关注取消关注
+	const CAT_USER_CUT_PRICE = 8006; // 点赞获取月度畅聊卡
 
 	public static function tableName()
 	{
@@ -447,6 +447,7 @@ class Log extends ActiveRecord
 
 	const KEY_DEFAULT = 3;
 	const KEY_TRANS_CARD = 1;
+	const KEY_EXCHANGE_CARD = 8;
 	//月卡19.9
 	const MOUTH_CARD_PRICE = 19.9;
 	// 砍价6次
@@ -476,7 +477,7 @@ class Log extends ActiveRecord
 		$last_uid = $last_user_info->wUId;
 		$tag_mouth = UserTag::CAT_CHAT_MONTH;
 		$cat_cut_price = self::CAT_USER_CUT_PRICE;
-		//是否有月卡
+		// 是否有月卡
 		$has_card = UserTag::find()
 			->where('tCategory=' . $tag_mouth . ' and tUId=' . $last_uid . ' and tExpiredOn>now() and tDeletedFlag=0 ')
 			->asArray()->one();
@@ -504,7 +505,11 @@ class Log extends ActiveRecord
 
 			// 修改oKey=1
 			self::edit_cut_price($last_uid);
-
+			self::add([
+				'oCategory' => self::CAT_USER_CUT_PRICE,
+				'oKey' => self::KEY_EXCHANGE_CARD,
+				'oUId' => $uid,
+			]);
 		}
 		return [0, '', $items];
 
