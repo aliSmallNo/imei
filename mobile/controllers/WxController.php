@@ -2161,6 +2161,12 @@ class WxController extends BaseController
 		$last_openid = self::getParam('last_openid', '');
 		$last_user_info = UserWechat::getInfoByOpenId($last_openid);
 
+		if ($is_share) {
+			$qr_uid = $last_user_info['uid'];
+		} else {
+			$qr_uid = $this->user_id;
+		}
+
 		return self::renderPage("cut_price.tpl",
 			[
 				'uid' => $this->user_id,
@@ -2168,7 +2174,7 @@ class WxController extends BaseController
 				'last_user_info' => $last_user_info,
 				'last_user_info_json' => AppUtil::json_encode($last_user_info),
 				'is_share' => $is_share,
-
+				'qr' => UserQR::getQRCode($qr_uid, UserQR::CATEGORY_CUT_PRICE),
 			],
 			'terse',
 			'砍价活动',

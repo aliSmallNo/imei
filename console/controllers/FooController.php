@@ -1459,7 +1459,6 @@ class FooController extends Controller
 		//Log::cut_one_dao('oYDJewwqr9m_nHTtJrv0Ifxg9CWg','oYDJew5MfQtAT12g3Ocso0OKLMyA');
 		// echo Log::edit_cut_price(143807);
 
-		echo UserQR::getQRCode(120003, UserQR::CATEGORY_CUT_PRICE);
 	}
 
 	public function actionYz()

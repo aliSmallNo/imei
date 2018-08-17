@@ -178,7 +178,7 @@
 				{{/if}}
 				<div class="title">长按关注公众号、我们一起免费领</div>
 				<div class="imgs">
-					<div><img src="/images/cut_price/cut_qr.png"></div>
+					<div><img src="{{if $qr}}{{$qr}}{{else}}/images/cut_price/cut_qr.png{{/if}}"></div>
 					<div><img src="/images/cut_price/cut_fingerprint.png"></div>
 				</div>
 			</div>
