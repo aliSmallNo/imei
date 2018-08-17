@@ -26,6 +26,7 @@ class UserQR extends ActiveRecord
 	const CATEGORY_180214 = 101; //Rain: 婚礼请帖
 	const CATEGORY_RED_103 = 103; //Rain: 分享红包103
 	const CATEGORY_ROOM = 200; //Rain: 房间号
+	const CATEGORY_CUT_PRICE = 206; //Rain: 点赞的聊天卡
 	const CATEGORY_AIR_TICKET = 300; // 机票
 
 	public static function tableName()
@@ -69,7 +70,7 @@ class UserQR extends ActiveRecord
 		return 0;
 	}
 
-	public static function getQRCode($uid, $category, $avatar = '', $resetFlag = false)
+	public static function getQRCode($uid, $category, $avatar = '', $resetFlag = false, $code = '')
 	{
 		if (!$resetFlag) {
 			$md5 = md5(json_encode([$uid, $category, $avatar], JSON_UNESCAPED_UNICODE));
@@ -78,7 +79,7 @@ class UserQR extends ActiveRecord
 				return $qrInfo['qUrl'];
 			}
 		}
-		return self::createQR($uid, $category, '');
+		return self::createQR($uid, $category, $code);
 	}
 
 	public static function createQR($uid, $category, $code = '', $bottomTitle = '微信扫一扫 关注千寻恋恋', $logoFlag = false)
@@ -97,6 +98,25 @@ class UserQR extends ActiveRecord
 		}
 		$md5 = md5(json_encode([$uid, $category, $thumb], JSON_UNESCAPED_UNICODE));
 		switch ($category) {
+			case self::CATEGORY_CUT_PRICE:
+				if (strpos($code, 'zan') === false) {
+					$code = 'zan-' . $code;
+				}
+				$code = strtolower($code);
+				$qid = self::edit($info['uOpenId'], $category, $code, [
+					'qTitle' => $bottomTitle,
+					'qSubTitle' => $code,
+					'qUId' => $uid,
+					'qMD5' => $md5
+				]);
+				list($accessUrl, $originUrl) = self::makeQR($qid, 'qr' . $qid, $code, $bottomTitle, $thumb);
+				if ($accessUrl) {
+					self::edit($info['uOpenId'], $category, $code, [
+						'qUrl' => $accessUrl,
+						'qRaw' => $originUrl,
+					]);
+				}
+				break;
 			case self::CATEGORY_ROOM:
 				if (!$code) {
 					$code = 'room-102';

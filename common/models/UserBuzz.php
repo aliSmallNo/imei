@@ -165,11 +165,17 @@ class UserBuzz extends ActiveRecord
 							Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
 							$content = $qrInfo["qCode"];
 							self::addRel($qrInfo["qOpenId"], $wxOpenId, UserNet::REL_QR_SUBSCRIBE, $qId);
-							$rid = "";
+							$rid = $qrInfo['qOpenId'] ?? '';
 							if (strpos($content, 'room') !== false) {
 								$rid = substr($content, 5);
 								$content = "room";
 							}
+							Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => [
+								'openid' => $fromUsername,
+								'event' => $event,
+								'content' => $content,
+								'rid' => $rid,
+							]]);
 							$resp = self::welcomeMsg($fromUsername, $toUsername, $event, $content, $rid);
 						}
 					}
@@ -364,6 +370,11 @@ class UserBuzz extends ActiveRecord
 					$roomInfo = ChatRoom::findOne(["rId" => $id]);
 					$rommdes = '欢迎来到千寻恋恋交友网👏' . PHP_EOL .
 						'<a href="https://wx.meipo100.com/wx/groom?rid=' . $id . '#chat">👉点击进入❝' . $roomInfo->rTitle . '❞房间👈</a>';
+					return self::textMsg($fromUsername, $toUsername, $rommdes);
+				} else if ($extension == 'cut_price') {
+					$last_openid = $id;
+					$rommdes = '欢迎关注千寻恋恋👏' . PHP_EOL .
+						'<a href="https://wx.meipo100.com/wx/cut_price?is_share=1&last_openid=' . $last_openid . '">👉点击这里继续帮他点赞吧~👈</a>';
 					return self::textMsg($fromUsername, $toUsername, $rommdes);
 				}
 				return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
