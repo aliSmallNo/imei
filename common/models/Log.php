@@ -499,11 +499,12 @@ class Log extends ActiveRecord
 		//后 判断是否够了赠送月卡的条件
 		if (count($items) > (self::CUT_TIMES - 1)) {
 			// 送卡
-			UserTag::add($tag_mouth, $uid);
+			$res = UserTag::add($tag_mouth, $last_uid);
 			// 推送信息
 
 			// 修改oKey=1
-			self::edit_cut_price($uid);
+			self::edit_cut_price($last_uid);
+
 		}
 		return [0, '', $items];
 

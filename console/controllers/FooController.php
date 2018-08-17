@@ -1456,10 +1456,7 @@ class FooController extends Controller
 
 		// Log::cut_one(120003, 174889);
 
-		$all_cut = Log::find()->where([
-			'oCategory' => 8006,
-			'oKey' => 3, 'oUId' => 143807,])->asArray()->all();
-		echo count($all_cut);
+		Log::cut_one_dao('oYDJewwqr9m_nHTtJrv0Ifxg9CWg','oYDJew5MfQtAT12g3Ocso0OKLMyA');
 	}
 
 	public function actionYz()
