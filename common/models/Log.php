@@ -456,10 +456,10 @@ class Log extends ActiveRecord
 	{
 
 		if (!$last_openid) {
-			return [129, '为谁砍价呢？', ''];
+			return [129, '为谁点赞呢？', ''];
 		}
 		if ($last_openid == $openid) {
-			return [129, '无法为自己砍价哦~', ''];
+			return [129, '无法为自己点赞哦~', ''];
 		}
 		$last_user_info = UserWechat::findOne(['wOpenId' => $last_openid]);
 		$user_info = UserWechat::findOne(['wOpenId' => $openid]);
@@ -467,10 +467,10 @@ class Log extends ActiveRecord
 			return [129, '用户信息有误', ''];
 		}
 		if ($user_info->wSubscribe != 1) {
-			return [128, '您还没有关注公众号，请您先关注、再来帮他砍价吧~~', ''];
+			return [128, '您还没有关注公众号，请您先关注、再来帮他点赞吧~~', ''];
 		}
 		if ($last_user_info->wSubscribe != 1) {
-			return [129, 'TA还没关注公众号、无法帮他砍价~~', ''];
+			return [129, 'TA还没关注公众号、无法帮他点赞~~', ''];
 		}
 		$uid = $user_info->wUId;
 		$last_uid = $last_user_info->wUId;
@@ -481,7 +481,7 @@ class Log extends ActiveRecord
 			->where('tCategory=' . $tag_mouth . ' and tUId=' . $last_uid . ' and tExpiredOn>now() and tDeletedFlag=0 ')
 			->asArray()->one();
 		if ($has_card) {
-			return [129, 'TA还有月度畅聊卡~，砍价无效~', ''];
+			return [129, 'TA还有月度畅聊卡~，点赞无效~', ''];
 		}
 
 		$cond = ['oCategory' => $cat_cut_price, 'oKey' => self::KEY_DEFAULT,
@@ -517,7 +517,7 @@ class Log extends ActiveRecord
 			'oUId' => $oUId, 'oOpenId' => $oOpenId];
 		$has_cut = self::findOne($cond);
 		if ($has_cut) {
-			return [129, '您已经帮他砍过价了~', ''];
+			return [129, '您已经帮他点过赞了~', ''];
 		}
 		// 砍价成功
 		$cond['oBefore'] = self::cal_cut_price_amt($oUId);

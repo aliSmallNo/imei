@@ -1,17 +1,21 @@
 <style>
 	.cut_content {
-		background: url('/images/cut_price/cut_bg.jpg?v=1.1.1') no-repeat center center;
+		background: url('/images/cut_price/cut_bg.jpg?v=1.1.2') no-repeat center center;
 		background-size: 100% 100%;
 		width: 100%;
 		padding-bottom: 3rem;
+		padding-top: 2rem;
 	}
 
-	.cut_card, .cut_price, .cut_one_dao, .cut_get_free {
+	.cut_cart_title, .cut_card, .cut_price, .cut_one_dao, .cut_get_free {
 		text-align: center;
 	}
 
+	.cut_cart_title img {
+		width: 85%;
+	}
+
 	.cut_card {
-		padding-top: 17rem;
 		position: relative;
 	}
 
@@ -130,18 +134,21 @@
 </style>
 
 <div class="cut_content">
+	<div class="cut_cart_title">
+		<img src="/images/cut_price/cut_cart_title.png">
+	</div>
 	<div class="cut_card">
 		<img src="/images/cut_price/cut_card.png?v=1.1.1">
-		<div class="cut_price">价值￥19.90、邀请朋友砍价六次可获得</div>
+		<div class="cut_price">价值￥19.90、邀请朋友点赞六次可获得</div>
 	</div>
 	<div class="cut_one_dao">
-		<div class="btn_one_dao"><span>帮好友砍一刀</span></div>
+		<div class="btn_one_dao"><span>帮好友点赞</span></div>
 	</div>
 	<div class="cut_get_free">
 		<div class="cut_get_free"><span>我也要免费领</span></div>
 	</div>
 	<div class="cut_items">
-		<div class="cut_title">砍价帮</div>
+		<div class="cut_title">点赞帮</div>
 		<ul>
 
 		</ul>
@@ -183,7 +190,7 @@
 	<li>
 		<div class="l"><img src="{[uThumb]}"></div>
 		<div class="m"><span>{[uName]}</span></div>
-		<div class="r"><span>帮你砍了{[oBefore]}元</span></div>
+		<div class="r"><span>帮你点赞了</span></div>
 	</li>
 	{[/data]}
 </script>
