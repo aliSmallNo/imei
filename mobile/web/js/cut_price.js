@@ -101,9 +101,9 @@ require(['jquery', 'mustache', "alpha"],
 		}
 
 		function shareOptions(type) {
-			var linkUrl = "https://wx.meipo100.com/wx/cut_price?is_share=" + $sls.is_share + '&last_openid=' + $sls.last_openid;
+			var linkUrl = "https://wx.meipo100.com/wx/cut_price?is_share=1" + '&last_openid=' + $sls.last_openid;
 			var imgUrl = "https://mmbiz.qpic.cn/mmbiz_png/MTRtVaxOa9k3Zz628lgicCqklzxtfs3dnbUfBibMUjK9OvXnMDR9hn7rzpI2RsOBpnl1ROWEHmlsZwQcRLlQWmoA/0?wx_fmt=png";
-			var title = '快来帮我砍价得千寻恋恋会员卡啦~~';
+			var title = '快来帮我砍价得千寻恋恋月度畅聊卡啦~~';
 			var desc = '';
 			if (type === 'message') {
 				return {
