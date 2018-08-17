@@ -447,6 +447,10 @@ class Log extends ActiveRecord
 
 	const KEY_DEFAULT = 3;
 	const KEY_TRANS_CARD = 1;
+	//月卡19.9
+	const MOUTH_CARD_PRICE = 19.9;
+	// 砍价6次
+	const CUT_TIMES = 6;
 
 	public static function cut_one_dao($openid, $last_openid)
 	{
@@ -479,20 +483,22 @@ class Log extends ActiveRecord
 		if ($has_card) {
 			return [129, 'TA还有月度畅聊卡~，砍价无效~', ''];
 		}
-		// 是否已经帮他砍过价
+
 		$cond = ['oCategory' => $cat_cut_price, 'oKey' => self::KEY_DEFAULT,
 			'oUId' => $last_user_info->wUId, 'oOpenId' => $uid];
-		$has_cut = self::findOne($cond);
-		if ($has_cut) {
-			return [129, '您已经帮他砍过价了~', ''];
+
+		// 去砍价
+		list($code, $msg) = self::cut_one($last_user_info->wUId, $uid);
+		if ($code == 129) {
+			return [$code, $msg, ''];
 		}
-		// 砍价成功
-		self::add($cond);
+
 		// 先 获得砍价列表
 		$items = Log::find_cut_price_items($last_uid);
+
 		//后 判断是否够了赠送月卡的条件
 		$all_cut = self::find()->where($cond)->asArray()->all();
-		if (count($all_cut) > 5) {
+		if (count($all_cut) > (self::CUT_TIMES - 1)) {
 			// 送卡
 			UserTag::add($tag_mouth, $uid);
 			// 推送信息
@@ -501,6 +507,35 @@ class Log extends ActiveRecord
 			self::edit_cut_price($uid);
 		}
 		return [0, '', $items];
+
+	}
+
+
+	public static function cut_one($oUId, $oOpenId)
+	{
+		$cond = ['oCategory' => self::CAT_USER_CUT_PRICE, 'oKey' => self::KEY_DEFAULT,
+			'oUId' => $oUId, 'oOpenId' => $oOpenId];
+		$has_cut = self::findOne($cond);
+		if ($has_cut) {
+			return [129, '您已经帮他砍过价了~', ''];
+		}
+		// 砍价成功
+		$cond['oBefore'] = self::cal_cut_price_amt($oUId);
+
+		self::add($cond);
+		return [0, '', ''];
+	}
+
+	public static function cal_cut_price_amt($uid)
+	{
+		$sql = "select count(1) as co,sum(oBefore) as amt from im_log where oUId=:uid and oKey=:k ";
+		$res = AppUtil::db()->createCommand($sql)->bindValues([
+			':uid' => $uid,
+			':k' => self::KEY_DEFAULT,
+		])->queryOne();
+		$left_amt = self::MOUTH_CARD_PRICE - (isset($res['amt']) ? $res['amt'] : 0);
+		$left_times = self::CUT_TIMES - (isset($res['co']) ? $res['co'] : 0);
+		return AppUtil::randnum($left_amt, $left_times, 1.5)[0];
 	}
 
 	public static function find_cut_price_items($uid)
@@ -535,14 +570,9 @@ class Log extends ActiveRecord
 			}
 			$uid = $user_info->wUId;
 		}
-		// 千寻客服 是否已经帮他砍过价
-		$cond = ['oCategory' => self::CAT_USER_CUT_PRICE, 'oKey' => self::KEY_DEFAULT,
-			'oUId' => $uid, 'oOpenId' => 120000];
-		$has_cut = self::findOne($cond);
-		if (!$has_cut) {
-			self::add($cond);
-		}
 
+		// 千寻客服 是否已经帮他砍过价
+		self::cut_one($uid, 120000);
 
 		return [0, '', self::find_cut_price_items($uid)];
 	}

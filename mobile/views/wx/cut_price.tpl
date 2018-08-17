@@ -183,7 +183,7 @@
 	<li>
 		<div class="l"><img src="{[uThumb]}"></div>
 		<div class="m"><span>{[uName]}</span></div>
-		<div class="r"><span>帮你砍了一刀</span></div>
+		<div class="r"><span>帮你砍了{[oBefore]}元</span></div>
 	</li>
 	{[/data]}
 </script>

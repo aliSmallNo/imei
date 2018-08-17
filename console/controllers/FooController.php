@@ -1448,14 +1448,16 @@ class FooController extends Controller
 
 		// WechatUtil::toAllUserTempMsg();
 
-		$has_card = UserTag::find()
+		/*$has_card = UserTag::find()
 			->where('tCategory=' . UserTag::CAT_CHAT_MONTH . ' and tUId=174878' . ' and tExpiredOn>now() and tDeletedFlag=0 ')
 			->asArray()->one();
-		print_r($has_card);
-		if (!$has_card) {
-			UserTag::add(UserTag::CAT_CHAT_MONTH, 174878);
-			echo "add UserTag::CAT_CHAT_MONTH OK~~~";
-		}
+		print_r($has_card);*/
+
+
+		Log::cut_one(120003, 174889);
+		Log::cut_one(120003, 174888);
+		Log::cut_one(120003, 174887);
+		Log::cut_one(120003, 174886);
 	}
 
 	public function actionYz()
