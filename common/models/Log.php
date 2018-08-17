@@ -580,11 +580,11 @@ class Log extends ActiveRecord
 
 	public static function edit_cut_price($uid)
 	{
-		$sql = "update im_log set oKey=:k2 and oAfter=:dt
-				where oUId=:uid and oKey=:k and oCategory=:cat ";
+		$sql = "update im_log set oKey=:k2,oAfter=:dt
+				where oUId=:uid and oKey=:k1 and oCategory=:cat ";
 		return AppUtil::db()->createCommand($sql)->bindValues([
 			':uid' => $uid,
-			':k' => self::KEY_DEFAULT,
+			':k1' => self::KEY_DEFAULT,
 			':k2' => self::KEY_TRANS_CARD,
 			':cat' => self::CAT_USER_CUT_PRICE,
 			':dt' => date('Y-m-d H:i:s'),
