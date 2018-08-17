@@ -932,7 +932,7 @@
 <a href="/wx/sw?id={{$encryptId}}#swallet" class="m-wallet-entry"></a>
 -->
 {{if $showTask}}
-	<a href="/wx/cut_price" class="m-wallet-entry"></a>
+	<a href="/wx/cut_price" class="m-wallet-entry" style="width: 5rem;height: 6rem"></a>
 {{/if}}
 
 <!----- zone start ------>
