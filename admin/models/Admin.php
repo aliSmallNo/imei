@@ -14,6 +14,30 @@ use common\utils\RedisUtil;
 use yii\db\ActiveRecord;
 use yii\db\Exception;
 
+
+/**
+ * This is the model class for table "im_admin".
+ *
+ * @property integer $aId
+ * @property string $aLoginId
+ * @property string $aPass
+ * @property string $aPhone
+ * @property string $aName
+ * @property string $aOpenId
+ * @property integer $aLevel
+ * @property string $aPrivileges
+ * @property string $aFolders
+ * @property integer $aStatus
+ * @property string $aAddedOn
+ * @property integer $aAddedBy
+ * @property string $aUpdatedOn
+ * @property integer $aUpdatedBy
+ * @property string $aDeletedOn
+ * @property integer $aDeletedBy
+ * @property integer $aIsFinance
+ * @property integer $aIsApply
+ * @property integer $aIsOperator
+ */
 class Admin extends ActiveRecord
 {
 	const LEVEL_ADVERT = 780;
