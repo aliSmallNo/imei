@@ -33,24 +33,25 @@
 		font-size: 1rem;
 	}
 
-	.cut_one_dao div {
+	.cut_one_dao a {
 		background: url('/images/cut_price/cut_get.png') no-repeat center center;
 	}
 
-	.cut_get_free div {
+	.cut_get_free a {
 		background: url('/images/cut_price/cut_invite.png') no-repeat center center;
 	}
 
-	.cut_one_dao div,
-	.cut_get_free div {
+	.cut_one_dao a,
+	.cut_get_free a {
+		display: block;
 		background-size: 100% 100%;
 		width: 24rem;
 		height: 5rem;
 		display: inline-block;
 	}
 
-	.cut_one_dao div span,
-	.cut_get_free div span {
+	.cut_one_dao a span,
+	.cut_get_free a span {
 		position: relative;
 		top: 1rem;
 	}
@@ -143,11 +144,11 @@
 	</div>
 	{{if $is_share}}
 		<div class="cut_one_dao">
-			<div class="btn_one_dao"><span>帮好友点赞</span></div>
+			<a href="javascript:;" class="btn_one_dao"><span>帮好友点赞</span></a>
 		</div>
 	{{/if}}
 	<div class="cut_get_free">
-		<div class="btn_get_free"><span>邀请好友帮你点赞</span></div>
+		<a href="javascript:;" class="btn_get_free"><span>邀请好友帮你点赞</span></a>
 	</div>
 	<div class="cut_items">
 		<div class="cut_title">点赞帮</div>
