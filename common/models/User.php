@@ -16,6 +16,84 @@ use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use yii\db\ActiveRecord;
 
+
+/**
+ * This is the model class for table "im_user".
+ *
+ * @property integer $uId
+ * @property integer $uRole
+ * @property string $uCert
+ * @property integer $uVIP
+ * @property string $uName
+ * @property string $uPhone
+ * @property string $uEmail
+ * @property string $uOpenId
+ * @property string $uUnionId
+ * @property string $uUniqid
+ * @property integer $uMPUId
+ * @property integer $uInvitedBy
+ * @property string $uPassword
+ * @property string $uThumb
+ * @property string $uAvatar
+ * @property integer $uMarital
+ * @property string $uLocation
+ * @property string $uHomeland
+ * @property string $uProvince
+ * @property string $uCity
+ * @property integer $uScope
+ * @property integer $uGender
+ * @property integer $uBirthYear
+ * @property integer $uHoros
+ * @property integer $uHeight
+ * @property integer $uWeight
+ * @property integer $uIncome
+ * @property integer $uEducation
+ * @property integer $uProfession
+ * @property string $uEstate
+ * @property integer $uCar
+ * @property integer $uSmoke
+ * @property integer $uAlcohol
+ * @property integer $uBelief
+ * @property integer $uFitness
+ * @property integer $uDiet
+ * @property integer $uRest
+ * @property integer $uPet
+ * @property string $uInterest
+ * @property string $uIntro
+ * @property string $uAlbum
+ * @property string $uNote
+ * @property integer $uStatus
+ * @property integer $uSubStatus
+ * @property string $uHint
+ * @property string $uFilter
+ * @property string $uCoord
+ * @property string $uWorkType
+ * @property string $uEmployer
+ * @property string $uParent
+ * @property string $uSibling
+ * @property string $uDwelling
+ * @property string $uHighSchool
+ * @property string $uUniversity
+ * @property string $uMusic
+ * @property string $uBook
+ * @property string $uMovie
+ * @property string $uRawData
+ * @property string $uCertImage
+ * @property integer $uCertStatus
+ * @property string $uCertDate
+ * @property string $uCertNote
+ * @property integer $uRank
+ * @property string $uRankDate
+ * @property integer $uRankTmp
+ * @property string $uSetting
+ * @property integer $uApprovedBy
+ * @property string $uApprovedOn
+ * @property string $uAddedOn
+ * @property integer $uAddedBy
+ * @property string $uUpdatedOn
+ * @property integer $uUpdatedBy
+ * @property string $uLogDate
+ */
 class User extends ActiveRecord
 {
 	const SERVICE_UID = 120000;
