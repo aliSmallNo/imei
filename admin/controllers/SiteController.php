@@ -760,6 +760,38 @@ class SiteController extends BaseController
 		);
 	}
 
+	public function actionCut_list()
+	{
+		$getInfo = Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$relation = self::getParam("relation");
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+		$condition = "";
+		$st = User::STATUS_ACTIVE;
+		if ($relation) {
+			$condition .= " and n.nRelation=$relation ";
+		}
+		if ($name) {
+			$name = str_replace("'", "", $name);
+			$condition .= " and (u.uName like '%$name%' or u1.uName like '%$name%')";
+		}
+		if ($phone) {
+			$phone = str_replace("'", "", $phone);
+			$condition .= " and (u.uPhone like '$phone%' or u1.uPhone like '$phone%')";
+		}
+		list($list, $count) = Log::cut_items($condition, $page);
+		$pagination = self::pagination($page, $count);
+		return $this->renderPage("cut_list.tpl",
+			[
+				'getInfo' => $getInfo,
+				'pagination' => $pagination,
+				'list' => $list,
+				'relations' => UserNet::$RelDict,
+			]
+		);
+	}
+
 	public function actionDate()
 	{
 		$getInfo = Yii::$app->request->get();
@@ -1744,5 +1776,6 @@ class SiteController extends BaseController
 			]
 		);
 	}
+
 
 }

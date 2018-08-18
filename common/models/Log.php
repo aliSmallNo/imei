@@ -595,4 +595,29 @@ class Log extends ActiveRecord
 			':dt' => date('Y-m-d H:i:s'),
 		])->execute();
 	}
+
+	public static function cut_items($condition, $page, $pageSize = 20)
+	{
+		$offset = ($page - 1) * $pageSize;
+		$conn = AppUtil::db();
+		$sql = "select o.*,
+				u1.uThumb as thumb1,u1.uName as name1,
+				u2.uThumb as thumb2,u2.uName as name2 
+				from im_log as o 
+				left join im_user as u1 on u1.uId=o.oUId
+				left join im_user as u2 on u2.uId=o.oOpenId
+				where oCategory=8006 $condition order by oDate desc limit $offset,$pageSize ";
+		$res = $conn->createCommand($sql)->bindValues([
+			":cat" => '',
+		])->queryAll();
+
+		$sql = "select count(1)
+				from im_log as o 
+				left join im_user as u1 on u1.uId=o.oUId
+				left join im_user as u2 on u2.uId=o.oOpenId
+				where oCategory=8006 $condition";
+		$res = $conn->createCommand($sql)->bindValues([])->queryAll();
+
+	}
+
 }
