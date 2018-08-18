@@ -141,9 +141,11 @@
 		<img src="/images/cut_price/cut_card.png?v=1.1.1">
 		<div class="cut_price">价值￥19.90、邀请朋友点赞六次可获得</div>
 	</div>
+	{{if $is_share}}
 	<div class="cut_one_dao">
 		<div class="btn_one_dao"><span>帮好友点赞</span></div>
 	</div>
+	{{/if}}
 	<div class="cut_get_free">
 		<div class="cut_get_free"><span>我也要免费领</span></div>
 	</div>
@@ -153,6 +155,9 @@
 
 		</ul>
 	</div>
+	<div style="text-align: center;"><a href='https://wx.meipo100.com/wx/single'
+					data-miniprogram-appid='wx866898cd348536a8'
+					data-miniprogram-path='pages/index/index' style="font-size: 1rem">到家严选</a></div>
 </div>
 
 
