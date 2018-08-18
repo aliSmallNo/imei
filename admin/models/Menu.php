@@ -354,7 +354,7 @@ class Menu
 					],
 					[
 						"name" => "点赞列表",
-						"url" => "/site/cut_price",
+						"url" => "/site/cut_list",
 						"revise" => 1,
 						"level" => 820
 					]
