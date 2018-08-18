@@ -472,10 +472,11 @@ class Log extends ActiveRecord
 		if (!$last_user_info || !$user_info) {
 			return [129, '用户信息有误', ''];
 		}
-		if ($user_info->wSubscribe != 1) {
+
+		if (UserWechat::is_subscribe($openid) != 1) {
 			return [128, '您还没有关注公众号，请您先关注、再来帮他点赞吧~~', ''];
 		}
-		if ($last_user_info->wSubscribe != 1) {
+		if (UserWechat::is_subscribe($last_openid) != 1) {
 			return [129, 'TA还没关注公众号、无法帮他点赞~~', ''];
 		}
 		$uid = $user_info->wUId;

@@ -192,7 +192,7 @@ class UserWechat extends ActiveRecord
 		$ret = WechatUtil::wxInfoByCode($code, $renewFlag);
 		if ($ret && isset($ret["openid"])) {
 			$ret = self::getInfoByOpenId($ret["openid"], $renewFlag);
-			UserWechat::edit($ret["openid"], ['wSubscribe' => 0]);
+			// UserWechat::edit($ret["openid"], ['wSubscribe' => 0]);
 			return $ret;
 		}
 		return 0;
@@ -552,5 +552,15 @@ class UserWechat extends ActiveRecord
 			$winfo = self::findOne(["wId" => $wid]);
 		}
 		return $winfo;
+	}
+
+	public static function is_subscribe($openid)
+	{
+		$info = self::findOne(['wOpenId' => $openid]);
+		$raw = AppUtil::json_decode($info->wRawData);
+		if (isset($raw['subscribe']) && $raw['subscribe'] == 1) {
+			return 1;
+		}
+		return 0;
 	}
 }
