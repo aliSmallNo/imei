@@ -351,6 +351,12 @@ class Menu
 						"url" => "/site/mtopic",
 						"revise" => 1,
 						"level" => 820
+					],
+					[
+						"name" => "点赞列表",
+						"url" => "/site/cut_list",
+						"revise" => 1,
+						"level" => 820
 					]
 				]
 			],

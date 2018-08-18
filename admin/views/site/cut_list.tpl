@@ -1,209 +1,126 @@
 {{include file="layouts/header.tpl"}}
+<style>
+	.note {
+		font-size: 14px;
+		font-weight: 300;
+	}
 
+	.note b {
+		padding-left: 2px;
+		padding-right: 2px;
+		font-size: 15px;
+		font-weight: 500;
+	}
+
+	td img {
+		width: 64px;
+		height: 64px;
+	}
+</style>
 <div class="row">
-	<h4>选题列表
-		<a class="btn btn-primary btn-xs" href="/site/question">添加选题</a>
-	</h4>
+	<h4>用户操作列表</h4>
 </div>
-<div class="row">
-	<form class="form-inline" action="/site/questions" method="get">
-		<select name="cat" class="form-control">
-			<option value="">-=类别=-</option>
-			{{foreach from=$cats key=k item=item}}
-			<option value="{{$k}}" {{if $k==$cat}}selected{{/if}}>{{$item}}</option>
-			{{/foreach}}
-		</select>
-		<input class="form-control" name="name" placeholder="题目" value="{{$name}}">
-		<input type="submit" class="btn btn-primary" value="查询">
-	</form>
-</div>
+<form action="/site/cut_list" class="form-inline">
+	<input class="form-control" placeholder="用户名称" name="name"
+				 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
+	<input class="form-control" placeholder="用户手机" name="phone"
+				 value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
+	<select class="form-control" name="key">
+		<option value="">-=请选择用户操作=-</option>
+		{{foreach from=$keys key=key item=item}}
+		<option value="{{$key}}"
+						{{if isset($getInfo["key"]) && $getInfo["key"]==$key}}selected{{/if}}>{{$item}}</option>
+		{{/foreach}}
+	</select>
+	<button class="btn btn-primary">查询</button>
+</form>
 <div class="row-divider"></div>
+<div class="row">
+	<table class="table table-striped table-bordered">
+		<thead>
+		<tr>
+			<th class="col-sm-1">
+				头像
+			</th>
+			<th>
+				用户
+			</th>
+			<th class="col-sm-3">
+				文字描述
+			</th>
+			<th class="col-sm-1">
+				头像
+			</th>
+			<th>
+				用户
+			</th>
+			<th>
+				状态
+			</th>
+			<th>
+				日期
+			</th>
+		</tr>
+		</thead>
+		<tbody>
+		{{foreach from=$list item=item}}
+		<tr>
+			<td align="center" data-id="{{$item.uid1}}">
+				<img src="{{$item.thumb1}}">
+			</td>
+			<td>
+				{{$item.name1}}<br>
 
-<table class="table table-striped table-bordered table-hover">
-	<thead>
-	<tr>
-		<th class="col-sm-3">
-			题目
-		</th>
-		<th class="col-sm-1">
-			分类
-		</th>
-		<th class="col-sm-5">
-			选项
-		</th>
-		<th class="col-sm-1">
-			答案
-		</th>
-		<th class="col-sm-2">
-			时间
-		</th>
-		<th class="col-sm-1">
-			操作
-		</th>
-	</tr>
-	</thead>
-	<tbody>
-	{{if $list}}
-	{{foreach from=$list item=prod}}
-	<tr>
-		<td>
-			{{$prod.qTitle}}
-		</td>
-		<td>
-			{{$prod.cat}}
-		</td>
-		<td class="options">
-			{{foreach from=$prod.options item=opt}}
-			<div>{{$opt.opt}} {{$opt.text}}</div>
-			{{/foreach}}
-		</td>
-		<td>
-			{{$prod.answer}}
-		</td>
-		<td>
-			<div>创建于{{$prod.qAddedOn|date_format:'%y-%m-%d %H:%M'}}</div>
-			<div>更新于{{$prod.qUpdatedOn|date_format:'%y-%m-%d %H:%M'}}</div>
-		</td>
-		<td>
-			<a href="javascript:;" class="modU btn btn-outline btn-primary btn-xs" data-id="{{$prod.qId}}"
-				 data-raw='{{$prod.qRaw}}' data-title='{{$prod.qTitle}}'>修改信息</a>
-		</td>
-	</tr>
-	{{/foreach}}
-	{{/if}}
-	</tbody>
-</table>
-{{$pagination}}
-
-<div class="modal fade" id="modModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-									aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">修改选题</h4>
-			</div>
-			<div class="modal-body" style="overflow:hidden">
-				<div class="col-sm-12 form-horizontal">
-					<div class="form-group">
-						<label class="col-sm-2 control-label">题干:</label>
-						<div class="col-sm-9">
-							<input data-tag="title" required class="form-control" value="" placeholder="(必填)">
-						</div>
-					</div>
-
+			</td>
+			<td>
+				<div class="note">
+					{{if $item.oKey==3}}
+						{{$item.name2}}<b>给</b>{{$item.name1}}<b>点赞</b>
+					{{/if}}
+					{{if $item.oKey==1}}
+						{{$item.name2}}<b>给</b>{{$item.name1}}<b>点赞</b><br>
+						已领卡
+					{{/if}}
+					{{if $item.oKey==8}}
+						领卡
+					{{/if}}
 				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-				<button type="button" class="btn btn-primary" data-tag="cat-chat" id="btnSave">确定保存</button>
-			</div>
-		</div>
-	</div>
+			</td>
+			<td class="modMp" data-id="{{$item.uid1}}" data-name="{{$item.name2}}">
+				{{if $item.thumb2}}<img src="{{$item.thumb2}}">{{/if}}
+			</td>
+			<td>
+				{{$item.name2}}<br>
+
+			</td>
+			<td>
+					<span class="co">
+					{{$item.key_text}}
+					</span>
+			</td>
+			<td>
+				{{$item.oDate}}
+			</td>
+		</tr>
+		{{/foreach}}
+		</tbody>
+	</table>
+	{{$pagination}}
 </div>
 <script>
-	var id = 0, loadflag = 0, postData ={};
-	$("a.modU").click(function () {
+	$sls = {
+		id: '',
+		name: '',
+		src: ''
+	};
+	$(document).on('click', '.modMp', function () {
+		return;
 		var self = $(this);
-		id = self.attr("data-id");
-		if (self.attr("data-raw")) {
-			self.attr("data-tag", "cat-vote");
-			var raw = JSON.parse(self.attr("data-raw"));
-			var vHtml = Mustache.render($("#tpl_mod").html(), raw);
-			$(".modal-body").html(vHtml);
-		} else {
-			$("[data-tag=title]").val(self.attr("data-title"));
-		}
-		$("#modModal").modal("show")
+		$sls.id = self.attr("data-id");
+		$sls.name = self.attr("data-name");
+		$sls.src = self.find("img").attr("src");
+		location.href = "/site/searchnet?id=" + $sls.id;
+		//$('#modModal').modal('show');
 	});
-
-	$(document).on("click", "#btnSave", function () {
-		var tag = $(this).attr("data-tag");
-		switch (tag) {
-			case "cat-chat":
-				postData["title"] = $("[data-tag=title]").val();
-				break;
-			case "cat-vote":
-				var options = [], err = 0;
-				var fields = ["title", "answer"];
-				var fieldsAlert = ["题干", "答案"];
-				for (var i = 0; i < fields.length; i++) {
-					var obj = $("[data-tag=" + fields[i] + "]");
-					var val = $.trim(obj.val());
-					if (!val) {
-						layer.msg(fieldsAlert[i] + "不能为空哦~");
-						obj.focus();
-						return;
-					}
-					postData[fields[i]] = val;
-				}
-				$("[data-option]").each(function () {
-					var opt = $(this).attr("data-option");
-					var text = $.trim($(this).val());
-					if (!text) {
-						layer.msg("必填项不能为空！");
-						err = 1;
-						$(this).focus();
-						return false;
-					}
-					var option ={opt:opt,text:text};
-					options.push(option);
-				});
-				if (err) {
-					return false;
-				}
-				postData["options"] = options;
-				console.log(postData);
-				break;
-		}
-
-		if (loadflag) {
-			return;
-		}
-		loadflag = 1;
-		$.post("/api/question", {
-			tag: "mod",
-			subtag: tag,
-			id: id,
-			data: JSON.stringify(postData)
-		}, function (resp) {
-			loadflag = 0;
-			if (resp.code == 0) {
-				location.reload();
-			} else {
-				layer.msg(resp.msg);
-			}
-		}, "json");
-
-	})
-
 </script>
-<script type="text/html" id="tpl_mod">
-	<div class="col-sm-12 form-horizontal">
-		<div class="form-group">
-			<label class="col-sm-2 control-label">题干:</label>
-			<div class="col-sm-9">
-				<input data-tag="title" required class="form-control" value="{[title]}" placeholder="(必填)">
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-2 control-label">选项:</label>
-			<div class="col-sm-9 opt-list">
-				{[#options]}
-				<div class="input-group">
-					<div class="input-group-addon">{[opt]}</div>
-					<input data-option="{[opt]}" required class="form-control" value="{[text]}" placeholder="(必填)">
-				</div>
-				{[/options]}
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-2 control-label">答案:</label>
-			<div class="col-sm-9">
-				<input data-tag="answer" required value="{[answer]}" class="form-control" placeholder="(必填)">
-			</div>
-		</div>
-	</div>
-</script>
-
 {{include file="layouts/footer.tpl"}}

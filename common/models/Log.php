@@ -448,6 +448,11 @@ class Log extends ActiveRecord
 	const KEY_DEFAULT = 3;
 	const KEY_TRANS_CARD = 1;
 	const KEY_EXCHANGE_CARD = 8;
+	static $cutKeyDict = [
+		self::KEY_DEFAULT => '待兑卡',
+		self::KEY_TRANS_CARD => '已兑卡',
+		self::KEY_EXCHANGE_CARD => '兑卡记录',
+	];
 	//月卡19.9
 	const MOUTH_CARD_PRICE = 19.9;
 	// 砍价6次
@@ -467,10 +472,11 @@ class Log extends ActiveRecord
 		if (!$last_user_info || !$user_info) {
 			return [129, '用户信息有误', ''];
 		}
-		if ($user_info->wSubscribe != 1) {
+
+		if (UserWechat::is_subscribe($openid) != 1) {
 			return [128, '您还没有关注公众号，请您先关注、再来帮他点赞吧~~', ''];
 		}
-		if ($last_user_info->wSubscribe != 1) {
+		if (UserWechat::is_subscribe($last_openid) != 1) {
 			return [129, 'TA还没关注公众号、无法帮他点赞~~', ''];
 		}
 		$uid = $user_info->wUId;
@@ -601,23 +607,27 @@ class Log extends ActiveRecord
 		$offset = ($page - 1) * $pageSize;
 		$conn = AppUtil::db();
 		$sql = "select o.*,
-				u1.uThumb as thumb1,u1.uName as name1,
-				u2.uThumb as thumb2,u2.uName as name2 
+				u1.uThumb as thumb1,u1.uName as name1,u1.uId as uid1,
+				u2.uThumb as thumb2,u2.uName as name2,u2.uId as uid2
 				from im_log as o 
 				left join im_user as u1 on u1.uId=o.oUId
 				left join im_user as u2 on u2.uId=o.oOpenId
 				where oCategory=8006 $condition order by oDate desc limit $offset,$pageSize ";
 		$res = $conn->createCommand($sql)->bindValues([
-			":cat" => '',
+			":cat" => self::CAT_USER_CUT_PRICE,
 		])->queryAll();
+		foreach ($res as $k => $v) {
+			$res[$k]['key_text'] = self::$cutKeyDict[$v['oKey']];
+		}
 
 		$sql = "select count(1)
 				from im_log as o 
 				left join im_user as u1 on u1.uId=o.oUId
 				left join im_user as u2 on u2.uId=o.oOpenId
-				where oCategory=8006 $condition";
-		$res = $conn->createCommand($sql)->bindValues([])->queryAll();
+				where oCategory=:cat $condition";
+		$count = $conn->createCommand($sql)->bindValues([":cat" => self::CAT_USER_CUT_PRICE,])->queryAll();
 
+		return [$res, $count];
 	}
 
 }

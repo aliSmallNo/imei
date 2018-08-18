@@ -764,21 +764,21 @@ class SiteController extends BaseController
 	{
 		$getInfo = Yii::$app->request->get();
 		$page = self::getParam("page", 1);
-		$relation = self::getParam("relation");
+		$key = self::getParam("key");
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
 		$condition = "";
-		$st = User::STATUS_ACTIVE;
-		if ($relation) {
-			$condition .= " and n.nRelation=$relation ";
+
+		if ($key) {
+			$condition .= " and o.oKey=$key ";
 		}
 		if ($name) {
 			$name = str_replace("'", "", $name);
-			$condition .= " and (u.uName like '%$name%' or u1.uName like '%$name%')";
+			$condition .= " and (u1.uName like '%$name%' or u2.uName like '%$name%')";
 		}
 		if ($phone) {
 			$phone = str_replace("'", "", $phone);
-			$condition .= " and (u.uPhone like '$phone%' or u1.uPhone like '$phone%')";
+			$condition .= " and (u1.uPhone like '$phone%' or u2.uPhone like '$phone%')";
 		}
 		list($list, $count) = Log::cut_items($condition, $page);
 		$pagination = self::pagination($page, $count);
@@ -787,7 +787,7 @@ class SiteController extends BaseController
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
 				'list' => $list,
-				'relations' => UserNet::$RelDict,
+				'keys' => Log::$cutKeyDict,
 			]
 		);
 	}
