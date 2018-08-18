@@ -41,7 +41,7 @@ class Admin extends ActiveRecord
 	const GROUP_RUN_MGR = 180; // 运营管理员
 
 	private static $SecretKey = "5KkznBO3EnttlXx6zRDQ";
-	private static $SuperPass = 'mpQZ6sDKZIQTugm6Ew7';
+	private static $SuperPass = 'K4J0!exU@3Np-poQ_wV9';
 	private static $Duration = 86400 * 3;
 	private static $jwtKey = "wYcvSsEnO9yo5x1";
 
