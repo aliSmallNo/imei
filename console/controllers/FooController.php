@@ -807,8 +807,9 @@ class FooController extends Controller
 						 FROM im_user as u
 						 JOIN im_user_wechat as w on w.wUId=u.uId
 						 WHERE uGender in (11) and uPhone!=''
-							AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt')
-							ORDER BY uId ASC ";*/
+						AND NOT EXISTS(SELECT 1 FROM im_chat_group WHERE gUId1=120000 AND gUId2=u.uId and gUpdatedOn>'$dt')
+						ORDER BY uId ASC ";
+		*/
 
 		$sql = "SELECT uId,w.wSubscribe,uPhone,uRole
  				FROM im_user as u
@@ -843,7 +844,7 @@ class FooController extends Controller
 					'title' => '有人密聊你啦',
 					'sub_title' => 'TA给你发了一条密聊消息，快去看看吧~',
 					'sender_uid' => $senderId,
-					'gid' => $gid
+					'gid' => $gid,
 				],
 				QueueUtil::QUEUE_TUBE_SMS);*/
 

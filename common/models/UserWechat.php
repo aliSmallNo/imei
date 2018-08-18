@@ -192,6 +192,7 @@ class UserWechat extends ActiveRecord
 		$ret = WechatUtil::wxInfoByCode($code, $renewFlag);
 		if ($ret && isset($ret["openid"])) {
 			$ret = self::getInfoByOpenId($ret["openid"], $renewFlag);
+			UserWechat::edit($ret["openid"], ['wSubscribe' => 0]);
 			return $ret;
 		}
 		return 0;
