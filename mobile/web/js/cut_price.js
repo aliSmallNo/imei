@@ -20,15 +20,16 @@ require(['jquery', 'mustache', "alpha"],
 			loading: 0,
 			init: function () {
 				var util = this;
+
 				util.load_cut_list();
 				$sls.main.on(kClick, function () {
-					util.toggle(0);
+					// util.toggle(0);
 				});
-				$(".btn_one_dao").on(kClick, function () {
+				$(document).on(kClick, '.btn_one_dao', function () {
 					util.cut_one_dao();
 				});
-				$('.cut_get_free').on(kClick, function () {
-					var html = '<i class="share-arrow">点击菜单分享</i>';
+				$(document).on(kClick, '.btn_get_free', function () {
+					var html = '<i class="share-arrow">点击分享给群聊</i>';
 					$sls.main.show();
 					$sls.main.html(html);
 					$sls.shade.fadeIn(160);
@@ -39,9 +40,8 @@ require(['jquery', 'mustache', "alpha"],
 					}, 2000);
 				});
 			},
-			toggle: function (f) {
+			toggle: function (f, html) {
 				if (f) {
-					var html = $('#tpl_qr').html();
 					$sls.main.show();
 					$sls.main.html(html);
 					$sls.content.addClass("animate-pop-in");
@@ -63,19 +63,32 @@ require(['jquery', 'mustache', "alpha"],
 					last_openid: $sls.last_openid,
 				}, function (resp) {
 					util.loading = 0;
+					var html;
 					if (resp.code == 0) {
-						var html = Mustache.render(util.tmp, resp);
+						html = Mustache.render(util.tmp, resp);
+						util.cal_left(resp.data);
 						util.UL.html(html);
+
+						html = Mustache.render($("#tpl_return").html(), {msg: resp.msg});
+						util.toggle(1, html);
+
 					} else if (resp.code == 128) {
 						alpha.toast(resp.msg);
 						setTimeout(function () {
-							util.toggle(1);
+							util.toggle(1, $('#tpl_qr').html());
 						}, 1000);
 					} else if (resp.code == 129) {
 						alpha.toast(resp.msg);
+					} else if (resp.code == 127) {
+						html = Mustache.render($("#tpl_return").html(), {msg: resp.msg});
+						util.toggle(1, html);
 					}
 				}, "json");
-
+			},
+			cal_left: function (data) {
+				var zan_times = data.length;
+				var left_times = 6 - parseInt(zan_times);
+				console.log(zan_times, left_times);
 			},
 			load_cut_list: function () {
 				var util = this;
@@ -93,6 +106,7 @@ require(['jquery', 'mustache', "alpha"],
 					if (resp.code == 0) {
 						var html = Mustache.render(util.tmp, resp);
 						util.UL.html(html);
+						util.cal_left(resp.data);
 					} else {
 						alpha.toast(resp.msg);
 					}

@@ -488,7 +488,7 @@ class Log extends ActiveRecord
 			->where('tCategory=' . $tag_mouth . ' and tUId=' . $last_uid . ' and tExpiredOn>now() and tDeletedFlag=0 ')
 			->asArray()->one();
 		if ($has_card) {
-			return [129, 'TA还有月度畅聊卡~，点赞无效~', ''];
+			return [127, 'TA有月度畅聊卡，点赞无效!', ''];
 		}
 
 		$cond = ['oCategory' => $cat_cut_price, 'oKey' => self::KEY_DEFAULT,
@@ -496,7 +496,7 @@ class Log extends ActiveRecord
 
 		// 去砍价
 		list($code, $msg) = self::cut_one($last_user_info->wUId, $uid);
-		if ($code == 129) {
+		if ($code == 127) {
 			return [$code, $msg, ''];
 		}
 
@@ -504,6 +504,7 @@ class Log extends ActiveRecord
 		$items = Log::find_cut_price_items($last_uid);
 
 		//后 判断是否够了赠送月卡的条件
+		$left = self::CUT_TIMES - count($items);
 		if (count($items) > (self::CUT_TIMES - 1)) {
 			// 送卡
 			$res = UserTag::add($tag_mouth, $last_uid);
@@ -517,7 +518,7 @@ class Log extends ActiveRecord
 				'oUId' => $uid,
 			]);
 		}
-		return [0, '', $items];
+		return [0, '点赞成功', $items];
 
 	}
 
@@ -528,7 +529,7 @@ class Log extends ActiveRecord
 			'oUId' => $oUId, 'oOpenId' => $oOpenId];
 		$has_cut = self::findOne($cond);
 		if ($has_cut) {
-			return [129, '您已经帮他点过赞了~', ''];
+			return [127, '您已经帮他点过赞了~', ''];
 		}
 		// 砍价成功
 		$cond['oBefore'] = self::cal_cut_price_amt($oUId);

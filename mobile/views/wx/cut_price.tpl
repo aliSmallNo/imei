@@ -34,11 +34,11 @@
 	}
 
 	.cut_one_dao div {
-		background: url('/images/cut_price/cut_invite.png') no-repeat center center;
+		background: url('/images/cut_price/cut_get.png') no-repeat center center;
 	}
 
 	.cut_get_free div {
-		background: url('/images/cut_price/cut_get.png') no-repeat center center;
+		background: url('/images/cut_price/cut_invite.png') no-repeat center center;
 	}
 
 	.cut_one_dao div,
@@ -142,12 +142,12 @@
 		<div class="cut_price">价值￥19.90、邀请朋友点赞六次可获得</div>
 	</div>
 	{{if $is_share}}
-	<div class="cut_one_dao">
-		<div class="btn_one_dao"><span>帮好友点赞</span></div>
-	</div>
+		<div class="cut_one_dao">
+			<div class="btn_one_dao"><span>帮好友点赞</span></div>
+		</div>
 	{{/if}}
 	<div class="cut_get_free">
-		<div class="cut_get_free"><span>我也要免费领</span></div>
+		<div class="btn_get_free"><span>邀请好友帮你点赞</span></div>
 	</div>
 	<div class="cut_items">
 		<div class="cut_title">点赞帮</div>
@@ -155,9 +155,7 @@
 
 		</ul>
 	</div>
-	<div style="text-align: center;display: none"><a href='javascript:;'
-					data-miniprogram-appid='wx866898cd348536a8'
-					data-miniprogram-path='pages/index/index' style="font-size: 1rem">到家严选</a></div>
+
 </div>
 
 
@@ -173,7 +171,17 @@
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>
-
+<script type="text/html" id="tpl_return">
+	<div class="m-popup-wrap">
+		<div class="m-popup-content" style="background: #fff;width: 25rem;left: 3.5rem;padding: 1rem">
+			<div style="font-size: 1.5rem;">赞</div>
+			<div style="font-size: 1.2rem;padding: 2rem 0">{[msg]}，您也可以免费去领哦~</div>
+			<div>
+				<a href="javascript:;" class="btn_get_free"
+					 style="font-size: 1.3rem;color: #50ab36;display: inline-block;padding: .5rem;">我也要拿</a></div>
+		</div>
+	</div>
+</script>
 <script type="text/html" id="tpl_qr">
 	<div class="m-popup-wrap">
 		<div class="m-popup-content" style="background: transparent;width: 25rem;left: 3.5rem;">
@@ -202,7 +210,7 @@
 
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/cut_price.js?v=1.1.4']);
+		requirejs(['/js/cut_price.js?v=1.1.8']);
 	});
 	console.log({{$last_user_info_json}})
 </script>

@@ -2155,10 +2155,10 @@ class WxController extends BaseController
 
 	public function actionCut_price()
 	{
-		$is_share = self::getParam('is_share', 0);
+		$is_share = self::getParam('is_share', 1);
 
 		// 中央音乐学院 oYDJew5MfQtAT12g3Ocso0OKLMyA
-		$last_openid = self::getParam('last_openid', '');
+		$last_openid = self::getParam('last_openid', 'oYDJew5MfQtAT12g3Ocso0OKLMyA');
 		$last_user_info = UserWechat::getInfoByOpenId($last_openid);
 
 		$qr = '';
