@@ -210,7 +210,7 @@
 
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/cut_price.js?v=1.1.8']);
+		requirejs(['/js/cut_price.js?v=1.1.9']);
 	});
 	console.log({{$last_user_info_json}})
 </script>
