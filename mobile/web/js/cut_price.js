@@ -25,10 +25,10 @@ require(['jquery', 'mustache', "alpha"],
 				$sls.main.on(kClick, function () {
 					// util.toggle(0);
 				});
-				$(document).on(kClick, '.btn_one_dao', function () {
+				$(".btn_one_dao").on(kClick, function () {
 					util.cut_one_dao();
 				});
-				$(document).on(kClick, '.btn_get_free', function () {
+				$(".btn_get_free").on(kClick, function () {
 					var html = '<i class="share-arrow">点击分享给群聊</i>';
 					$sls.main.show();
 					$sls.main.html(html);
