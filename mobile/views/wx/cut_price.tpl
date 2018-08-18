@@ -155,7 +155,7 @@
 
 		</ul>
 	</div>
-	<div style="text-align: center;"><a href='javascript:;'
+	<div style="text-align: center;display: none"><a href='javascript:;'
 					data-miniprogram-appid='wx866898cd348536a8'
 					data-miniprogram-path='pages/index/index' style="font-size: 1rem">到家严选</a></div>
 </div>
