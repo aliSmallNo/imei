@@ -7,3 +7,4 @@ cache/
 */runtime/logs/*
 */runtime
 .vscode
+*-local.php
