@@ -6,4 +6,4 @@ cache/
 */runtime/Smarty/*
 */runtime/logs/*
 */runtime
-
+.vscode
