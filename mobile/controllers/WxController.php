@@ -731,12 +731,14 @@ class WxController extends BaseController
 		$audit = UserAudit::invalid($uId, $conn);
 		$greeting = UserMsg::greeting($uId, $openId, $conn);
 		if (!$greeting) {
-			$greeting = [
-				"title" => "",
-				"cat" => "image",
-				"url" => "https://wx.meipo100.com/wx/cut_price",
-				"items" => [""],
-			];
+			if (!UserTag::has_card($this->user_id) || $this->user_id == 120003) {
+				$greeting = [
+					"title" => "月度畅聊卡免费领了~",
+					"cat" => "image",
+					"url" => "https://wx.meipo100.com/wx/cut_price",
+					"items" => ["https://img.meipo100.com/2018/815/235636_n.jpg"],
+				];
+			}
 		}
 		$service = "https://bpbhd-10063905.file.myqcloud.com/image/n1712051100397.jpg";
 		$service_sm = "https://bpbhd-10063905.file.myqcloud.com/image/n1712051100395.jpg";

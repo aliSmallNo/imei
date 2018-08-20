@@ -482,13 +482,10 @@ class Log extends ActiveRecord
 		}
 		$uid = $user_info->wUId;
 		$last_uid = $last_user_info->wUId;
-		$tag_mouth = UserTag::CAT_CHAT_MONTH;
 		$cat_cut_price = self::CAT_USER_CUT_PRICE;
 		// 是否有月卡
-		$has_card = UserTag::find()
-			->where('tCategory=' . $tag_mouth . ' and tUId=' . $last_uid . ' and tExpiredOn>now() and tDeletedFlag=0 ')
-			->asArray()->one();
-		if ($has_card) {
+
+		if (UserTag::has_card($last_uid)) {
 			return [127, 'TA有月度畅聊卡，点赞无效!', ''];
 		}
 
@@ -508,7 +505,7 @@ class Log extends ActiveRecord
 		$left = self::CUT_TIMES - count($items);
 		if (count($items) > (self::CUT_TIMES - 1)) {
 			// 送卡
-			$res = UserTag::add($tag_mouth, $last_uid);
+			$res = UserTag::add(UserTag::CAT_CHAT_MONTH, $last_uid);
 			// 推送信息
 
 			// 修改oKey=1

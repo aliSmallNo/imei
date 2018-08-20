@@ -365,18 +365,13 @@ class UserTag extends ActiveRecord
 
 	}
 
-	public static function song_mouth_card($uid)
+	public static function has_card($uid)
 	{
-		//判断有误月卡
-		$has_mouth_card = self::hasCard($uid, self::CAT_CHAT_MONTH);
-		if ($has_mouth_card) {
+		$has_card = UserTag::find()
+			->where('tCategory=' . UserTag::CAT_CHAT_MONTH . ' and tUId=' . $uid . ' and tExpiredOn>now() and tDeletedFlag=0 ')
+			->asArray()->one();
 
-		}
-		// 七个朋友帮忙砍价 领月度卡
-
-		// 砍价者必须：1.关注，2.点击，3.提醒TA也可以领
-
-
+		return $has_card ? 1 : 0;
 	}
 
 
