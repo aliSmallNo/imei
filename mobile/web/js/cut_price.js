@@ -143,11 +143,11 @@ require(['jquery', 'mustache', "alpha"],
 			var imgUrl = "https://mmbiz.qpic.cn/mmbiz_png/MTRtVaxOa9k3Zz628lgicCqklzxtfs3dnbUfBibMUjK9OvXnMDR9hn7rzpI2RsOBpnl1ROWEHmlsZwQcRLlQWmoA/0?wx_fmt=png";
 			var title = '快来帮我砍价得千寻恋恋月度畅聊卡啦~~';
 			if (parseInt($sls.gender) == 10) {
-				title = $sls.location + '附近有12位美女正在聊天，点击领取畅聊卡，与她们约会吧！';
-				imgUrl = "https://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9kibGrtR9tzeqPXYRspyGRSDzIR7MX2O6fXfz4cA8CIW1wP8kvypvCySB2aBMjIibaykL7lcaz5n3Cw/0?wx_fmt=jpeg";
-			} else {
 				title = $sls.location + '附近有12位帅哥正在聊天，点击领取畅聊卡，与他们约会吧！';
 				imgUrl = "https://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9kibGrtR9tzeqPXYRspyGRSDFXnt5ibzrtlmibN3xonuspQWI70wBibSBdibfTod0FAeDsuDll2UiagE5hA/0?wx_fmt=jpeg";
+			} else {
+				title = $sls.location + '附近有12位美女正在聊天，点击领取畅聊卡，与她们约会吧！';
+				imgUrl = "https://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9kibGrtR9tzeqPXYRspyGRSDzIR7MX2O6fXfz4cA8CIW1wP8kvypvCySB2aBMjIibaykL7lcaz5n3Cw/0?wx_fmt=jpeg";
 			}
 
 			var desc = '';
