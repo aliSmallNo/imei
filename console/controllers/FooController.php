@@ -815,7 +815,7 @@ class FooController extends Controller
 		$sql = "SELECT uId,w.wSubscribe,uPhone,uRole
  				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId
- 				WHERE uPhone AND w.wSubscribe=1 and uRole in (10,20) and uId > 170629 order by uId  ";
+ 				WHERE uPhone AND w.wSubscribe=1 and uRole in (10,20) and uId > 0 and uId=120003 and uPhone order by uId  asc";
 
 		$ret = $conn->createCommand($sql)->queryAll();
 		//print_r($ret);
@@ -833,12 +833,13 @@ class FooController extends Controller
 				'text' => '我好想和你一起过圣诞节喔~',
 				'url' => "https://mp.weixin.qq.com/s/1q2ak1MmrQGUhKHyZaJcEg"
 			];*/
-			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1808171235551.jpg";
+//			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1808171235551.jpg";
+			$content = "特大喜讯，千寻恋恋月度畅聊卡免费送啦。只需转发给3位好友点赞即可免费领取一张畅聊卡，与更多美女进行聊天约会！";
 //			$content = "逛个街，去个酒吧，给自己买套衣服，买一件自己喜欢的东西，让自己的生活过的有价值，爱自己没毛病，点击链接进入：<br><br><br><br><br>爱自己69特惠区，陪你过单身生活
 //<a href='https://j.youzan.com/O0EeRY' style='color:#007aff'>https://j.youzan.com/O0EeRY</a>";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
 			ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
-			/*QueueUtil::loadJob('templateMsg',
+			QueueUtil::loadJob('templateMsg',
 				[
 					'tag' => WechatUtil::NOTICE_CHAT,
 					'receiver_uid' => $uid,
@@ -847,7 +848,7 @@ class FooController extends Controller
 					'sender_uid' => $senderId,
 					'gid' => $gid,
 				],
-				QueueUtil::QUEUE_TUBE_SMS);*/
+				QueueUtil::QUEUE_TUBE_SMS);
 
 			$cnt++;
 			if ($cnt && $cnt % 50 == 0) {
@@ -1448,13 +1449,13 @@ class FooController extends Controller
 		// UserWechat::refreshWXInfo('oYDJewwqr9m_nHTtJrv0Ifxg9CWg', 1);
 
 		//WechatUtil::toAllUserTempMsg();
-		WechatUtil::templateMsg(
+		/*WechatUtil::templateMsg(
 			WechatUtil::NOTICE_CHAT,
 			120003,
 			'有人密聊你啦~~~~',
 			'TA给你发了一条密聊消息，快去看看吧~',
 			143807
-		);
+		);*/
 		/*NoticeUtil::init2(WechatUtil::NOTICE_CHAT, 120003, 143807)
 			->send([
 				'密聊消息',
@@ -1472,7 +1473,7 @@ class FooController extends Controller
 		//Log::cut_one_dao('oYDJewwqr9m_nHTtJrv0Ifxg9CWg','oYDJew5MfQtAT12g3Ocso0OKLMyA');
 		// echo Log::edit_cut_price(143807);
 
-		// ChatMsg::addChat(174891, 129104,'啥~~');
+//		 ChatMsg::addChat(174891, 129104,'啥~~');
 	}
 
 	public function actionYz()
