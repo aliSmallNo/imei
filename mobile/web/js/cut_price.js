@@ -16,9 +16,9 @@ require(['jquery', 'mustache', "alpha"],
 			gender: $("#GENDER").val(),// 10 nan
 		};
 
-		var location = JSON.parse($sls.location);
-		if (location && location.length > 0) {
-			$sls.location = location[location.length - 1]['text'];
+		if ($sls.location) {
+			$sls.location = JSON.parse($sls.location);
+			$sls.location = $sls.location[location.length - 1]['text'];
 			console.log('location:' + $sls.location);
 		} else {
 			$sls.location = '';
