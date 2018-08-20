@@ -371,7 +371,7 @@ class NoticeUtil
 			$kf_msg = "待办事项提醒" . PHP_EOL . PHP_EOL .
 				$this->first . PHP_EOL .
 				"事项: " . $bodyInfo['data']['keyword1']['value'] . PHP_EOL . PHP_EOL .
-				"时间: " . date('Y-m-d H:i') . PHP_EOL . PHP_EOL .
+				"时间: " . $bodyInfo['data']['keyword2']['value'] . PHP_EOL .
 				"<a href='" . $bodyInfo['url'] . "'>点击这里查看吧~</a>" . PHP_EOL;
 
 			WechatUtil::sendMsg($bodyInfo['touser'], $kf_msg);
