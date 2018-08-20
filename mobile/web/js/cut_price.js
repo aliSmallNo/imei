@@ -99,8 +99,10 @@ require(['jquery', 'mustache', "alpha"],
 			},
 			cal_left: function (data) {
 				var zan_times = data.length;
-				var left_times = 6 - parseInt(zan_times);
+				var left_times = 4 - parseInt(zan_times);
 				console.log(zan_times, left_times);
+				$(".card_has").html(zan_times);
+				$(".card_left").html(left_times);
 			},
 			load_cut_list: function () {
 				var util = this;

@@ -7,7 +7,7 @@
 		padding-top: 2rem;
 	}
 
-	.cut_cart_title, .cut_card, .cut_price, .cut_one_dao, .cut_get_free {
+	.cut_cart_title, .cut_card, .cut_card_new, .cut_price, .cut_one_dao, .cut_get_free {
 		text-align: center;
 	}
 
@@ -15,12 +15,12 @@
 		width: 85%;
 	}
 
-	.cut_card {
+	.cut_card, .cut_card_new {
 		position: relative;
 	}
 
-	.cut_card img {
-		width: 250px;
+	.cut_card img, .cut_card_new img {
+		width: 25rem;
 	}
 
 	.cut_card .cut_price {
@@ -132,15 +132,46 @@
 		height: 6rem;
 		border-radius: 6rem;
 	}
+
+	.cut_card_stat {
+		display: flex;
+		position: absolute;
+		bottom: 3rem;
+		left: 4rem;
+		right: 4rem;
+	}
+
+	.cut_card_stat .cut_card_stat_item {
+		flex: 1;
+		text-align: center;
+	}
+
+	.cut_card_stat .cut_card_stat_item div {
+		font-size: 1.2rem;
+	}
+
 </style>
 
 <div class="cut_content">
 	<div class="cut_cart_title">
 		<img src="/images/cut_price/cut_cart_title.png">
 	</div>
-	<div class="cut_card">
+	<div class="cut_card" style="display: none">
 		<img src="/images/cut_price/cut_card.png?v=1.1.1">
 		<div class="cut_price">价值￥19.90、邀请朋友点赞六次可获得</div>
+	</div>
+	<div class="cut_card_new">
+		<img src="/images/cut_price/cut_card_new.png?v=1.1.2">
+		<div class="cut_card_stat">
+			<div class="cut_card_stat_item">
+				<div>已点赞</div>
+				<div class="card_has">1</div>
+			</div>
+			<div class="cut_card_stat_item ">
+				<div>还需点赞</div>
+				<div class="card_left">2</div>
+			</div>
+		</div>
 	</div>
 	{{if $is_share}}
 		<div class="cut_one_dao">
@@ -215,7 +246,7 @@
 
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/cut_price.js?v=1.2.4']);
+		requirejs(['/js/cut_price.js?v=1.2.5']);
 	});
 	console.log({{$last_user_info_json}})
 </script>
