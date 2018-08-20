@@ -618,7 +618,8 @@ class WechatUtil
 		$msgCat = 0;
 		$text = '';
 //		$normTmpId = '7JsaLhnbxPprdROufN7QulRN7C-PwLJlHbrQ83WqtGw';
-		$normTmpId = 'acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw';
+//		$normTmpId = 'acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw';
+		$normTmpId = 'Uv_ndzfkqQc-z0__iHMG08PFix03gXbbXDVIDQd7BzA';
 		switch ($noticeTag) {
 			case self::NOTICE_REWARD_NEW:
 				$templateId = 'ZJVqVttar_9v9azyjydZzFiR8hF7pq-BpY_XBbugJDM';
@@ -672,7 +673,9 @@ class WechatUtil
 				$templateId = $normTmpId;
 				$url = $wxUrl . "/wx/single#scontacts";
 				$keywords['first'] = "hi，$nickname\n";
-				$keywords['keyword2'] = date("Y年n月j日 H:i");
+				$keywords['keyword1'] = "密聊消息";
+				$keywords['keyword2'] = $title;
+				$keywords['keyword3'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_MOMENT_OPT:
@@ -689,7 +692,9 @@ class WechatUtil
 				//"YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = $wxUrl . "/wx/single#scontacts";
 				$keywords['first'] = "hi，$nickname\n";
-				$keywords['keyword2'] = date("Y年n月j日 H:i");
+				$keywords['keyword1'] = "密聊消息";
+				$keywords['keyword2'] = $title;
+				$keywords['keyword3'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_AUDIT_PASS:
@@ -728,8 +733,9 @@ class WechatUtil
 				//"YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = $wxUrl . "/wx/single";
 				$keywords['first'] = "hi，$nickname\n";
-				$keywords['keyword1'] = '有人为你怦然心动了，快去看看吧';
-				$keywords['keyword2'] = date("Y年n月j日 H:i");
+				$keywords['keyword1'] = '怦然心动';
+				$keywords['keyword2'] = $title;
+				$keywords['keyword3'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_PRESENT:
@@ -767,8 +773,9 @@ class WechatUtil
 				//"YVxCVjPO7UduMhtgyIZ-J0nHawhkHRPyBUYs9yHD3jI";
 				$url = $wxUrl . "/wx/notice";
 				$keywords['first'] = "hi，$nickname\n";
-				$keywords['keyword1'] = $subTitle;
-				$keywords['keyword2'] = date("Y年n月j日 H:i");
+				$keywords['keyword1'] = "每日简报";
+				$keywords['keyword2'] = $subTitle;
+				$keywords['keyword3'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_DATE:
