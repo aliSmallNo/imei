@@ -1448,26 +1448,23 @@ class FooController extends Controller
 		// UserWechat::refreshWXInfo('oYDJewwqr9m_nHTtJrv0Ifxg9CWg', 1);
 
 		//WechatUtil::toAllUserTempMsg();
-		WechatUtil::templateMsg(
-
+		/*WechatUtil::templateMsg(
 			WechatUtil::NOTICE_CHAT,
 			120003,
 			'有人密聊你啦',
 			'TA给你发了一条密聊消息，快去看看吧~',
 			143807
-
-		);
-		/*NoticeUtil::init2(WechatUtil::NOTICE_CHAT, 120003, 143807)
+		);*/
+		NoticeUtil::init2(WechatUtil::NOTICE_CHAT, 120003, 143807)
 			->send([
 				'有人密聊你了' . '3次',
 				date("Y年n月j日 H:i")
-			]);*/
+			]);
 
 		/*$has_card = UserTag::find()
 			->where('tCategory=' . UserTag::CAT_CHAT_MONTH . ' and tUId=174878' . ' and tExpiredOn>now() and tDeletedFlag=0 ')
 			->asArray()->one();
 		print_r($has_card);*/
-
 
 		// Log::cut_one(120003, 174889);
 

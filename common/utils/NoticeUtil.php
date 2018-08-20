@@ -200,6 +200,9 @@ class NoticeUtil
 		$util->url = AppUtil::wechatUrl();
 //		$normTmpId = '7JsaLhnbxPprdROufN7QulRN7C-PwLJlHbrQ83WqtGw';
 		$normTmpId = 'acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw';
+		if ($receiverUId = 120003) {
+			$normTmpId = 'Uv_ndzfkqQc-z0__iHMG08PFix03gXbbXDVIDQd7BzA';
+		}
 		switch ($tag) {
 			case WechatUtil::NOTICE_REWARD_NEW:
 				$util->template_id = 'ZJVqVttar_9v9azyjydZzFiR8hF7pq-BpY_XBbugJDM';
