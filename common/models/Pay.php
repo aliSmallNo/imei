@@ -67,7 +67,7 @@ class Pay extends ActiveRecord
 		'chat_month' => [
 			'cat' => Pay::CAT_CHAT_MONTH,
 			'title' => '月度畅聊卡',
-			'price' => 15.90,
+			'price' => 29.90,
 			'pre_price' => 39.9,
 			'tip' => '包月畅聊，有效期内免费畅聊',
 			'num' => 1
@@ -75,7 +75,7 @@ class Pay extends ActiveRecord
 		'chat_season' => [
 			'cat' => Pay::CAT_CHAT_SEASON,
 			'title' => '季度畅聊卡',
-			'price' => 29.90,
+			'price' => 59.90,
 			'pre_price' => 99.9,
 			'tip' => '包季畅聊，有效期内免费畅聊',
 			'num' => 1
