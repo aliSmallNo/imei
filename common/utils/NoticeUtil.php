@@ -366,10 +366,11 @@ class NoticeUtil
 		$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
 
+		print_r($bodyInfo);
 		if ($bodyInfo['template_id'] == "acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw") {
 			$kf_msg = "待办事项提醒" . PHP_EOL . PHP_EOL .
 				$this->first . PHP_EOL .
-				"事项: " . $bodyInfo['data']['keyword1'] . PHP_EOL . PHP_EOL .
+				"事项: " . '有人密聊你了' . PHP_EOL . PHP_EOL .
 				"时间: " . date('Y-m-d H:i') . PHP_EOL . PHP_EOL .
 				"<a href='" . $bodyInfo['url'] . "'>点击这里查看吧~</a>" . PHP_EOL;
 
