@@ -730,6 +730,14 @@ class WxController extends BaseController
 		$noReadFlag = UserMsg::hasUnread($uId, $conn) ? 1 : 0;
 		$audit = UserAudit::invalid($uId, $conn);
 		$greeting = UserMsg::greeting($uId, $openId, $conn);
+		if (!$greeting) {
+			$greeting = [
+				"title" => "",
+				"cat" => "image",
+				"url" => "https://wx.meipo100.com/wx/cut_price",
+				"items" => [""],
+			];
+		}
 		$service = "https://bpbhd-10063905.file.myqcloud.com/image/n1712051100397.jpg";
 		$service_sm = "https://bpbhd-10063905.file.myqcloud.com/image/n1712051100395.jpg";
 		if ($uInfo["gender"] == User::GENDER_FEMALE) {

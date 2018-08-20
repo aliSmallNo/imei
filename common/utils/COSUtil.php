@@ -178,6 +178,7 @@ class COSUtil
 		if ($this->uploadFolder == 'image') {
 			$thumbSide = 200;
 			$defaultSide = 680;
+			echo $srcPath;exit;
 			list($srcWidth, $srcHeight) = getimagesize($srcPath);
 			if ($thumbFlag && ($srcWidth > $thumbSide || $srcHeight > $thumbSide)) {
 				$newWidth = $thumbSide;
