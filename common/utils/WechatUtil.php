@@ -40,6 +40,7 @@ class WechatUtil
 	const NOTICE_APPROVE = 'notice_approve';
 	const NOTICE_RETURN = 'notice_return';
 	const NOTICE_CHAT = 'notice_chat';
+	const NOTICE_CUT_PRICE = 'notice_cut_price';
 	const NOTICE_AUDIT_PASS = 'notice_audit_pass';
 	const NOTICE_AUDIT = 'notice_audit';
 	const NOTICE_PRESENT = 'notice_present';
@@ -676,6 +677,16 @@ class WechatUtil
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['keyword1'] = "密聊消息";
 				$keywords['keyword2'] = $title;
+				$keywords['keyword3'] = date("Y年n月j日 H:i");
+				$keywords['remark'] = "\n点击下方详情查看吧~";
+				break;
+			case self::NOTICE_CUT_PRICE:
+				$msgCat = UserMsg::CATEGORY_CHAT;
+				$templateId = $normTmpId;
+				$url = $wxUrl . "/wx/single#scontacts";
+				$keywords['first'] = "hi，$nickname\n";
+				$keywords['keyword1'] = "赠送月度畅聊卡";
+				$keywords['keyword2'] = "好友帮您点赞，千寻恋恋送您一张月度畅聊卡，快去愉快畅聊吧~";
 				$keywords['keyword3'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;

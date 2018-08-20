@@ -1449,13 +1449,10 @@ class FooController extends Controller
 		// UserWechat::refreshWXInfo('oYDJewwqr9m_nHTtJrv0Ifxg9CWg', 1);
 
 		//WechatUtil::toAllUserTempMsg();
-		/*WechatUtil::templateMsg(
-			WechatUtil::NOTICE_CHAT,
-			120003,
-			'有人密聊你啦~~~~',
-			'TA给你发了一条密聊消息，快去看看吧~',
-			143807
-		);*/
+		WechatUtil::templateMsg(
+			WechatUtil::NOTICE_CUT_PRICE,
+			120003
+		);
 		/*NoticeUtil::init2(WechatUtil::NOTICE_CHAT, 120003, 143807)
 			->send([
 				'密聊消息',
