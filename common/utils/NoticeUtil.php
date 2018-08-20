@@ -366,7 +366,6 @@ class NoticeUtil
 		$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
 
-		print_r($bodyInfo);
 		if ($bodyInfo['template_id'] == "acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw") {
 			$kf_msg = "待办事项提醒" . PHP_EOL . PHP_EOL .
 				$this->first . PHP_EOL .
