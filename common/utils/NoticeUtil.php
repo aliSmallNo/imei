@@ -370,8 +370,8 @@ class NoticeUtil
 		if ($bodyInfo['template_id'] == "acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw") {
 			$kf_msg = "待办事项提醒" . PHP_EOL . PHP_EOL .
 				$this->first . PHP_EOL .
-				"事项: " . $bodyInfo['data']['keyword1']['value'] . PHP_EOL . PHP_EOL .
-				"时间: " . $bodyInfo['data']['keyword2']['value'] . PHP_EOL .
+				"事项: " . $bodyInfo['data']['keyword1']['value'] . PHP_EOL .
+				"时间: " . $bodyInfo['data']['keyword2']['value'] . PHP_EOL . PHP_EOL .
 				"<a href='" . $bodyInfo['url'] . "'>点击这里查看吧~</a>" . PHP_EOL;
 
 			WechatUtil::sendMsg($bodyInfo['touser'], $kf_msg);

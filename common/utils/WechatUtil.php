@@ -286,7 +286,6 @@ class WechatUtil
 				]
 			];
 			$ret = AppUtil::postJSON($url, urldecode(json_encode($postData)));
-			echo AppUtil::json_encode($ret) . __LINE__ . PHP_EOL;
 		}
 		$ret = json_decode($ret, true);
 		return $ret['errcode'];
