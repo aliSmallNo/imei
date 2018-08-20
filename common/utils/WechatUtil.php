@@ -675,7 +675,6 @@ class WechatUtil
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['keyword2'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = "\n点击下方详情查看吧~";
-				print_r($keywords);
 				break;
 			case self::NOTICE_MOMENT_OPT:
 				$msgCat = 0;
@@ -848,6 +847,7 @@ class WechatUtil
 				]
 			];
 		}
+		print_r($bodyInfo);
 		$routineNotices = [self::NOTICE_FAVOR, self::NOTICE_CHAT, self::NOTICE_PRESENT];
 		if (!in_array($noticeTag, $routineNotices)) {
 			$access_token = self::getAccessToken(self::ACCESS_CODE);
