@@ -854,16 +854,16 @@ class WechatUtil
 				]
 			];
 		}
-		Log(['oCategory' => Log::CAT_YOUZAN_AUDIT, 'oUId' => $takerId, "oKey" => $noticeTag . __LINE__, "oBefore" => $bodyInfo]);
+		Log(['oCategory' => Log::CAT_WECHAT_TEMP_MSG, 'oUId' => $takerId, "oKey" => $noticeTag . __LINE__, "oBefore" => $bodyInfo]);
 		$routineNotices = [self::NOTICE_FAVOR, self::NOTICE_CHAT, self::NOTICE_PRESENT];
 		// acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw 此模板ID 因为滥用模板消息被腾讯封了
 		if (!in_array($noticeTag, $routineNotices)) {
 			$access_token = self::getAccessToken(self::ACCESS_CODE);
 			$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
 			AppUtil::postJSON($url, json_encode($bodyInfo));
-			Log(['oCategory' => Log::CAT_YOUZAN_AUDIT, 'oUId' => $takerId, "oKey" => $noticeTag . __LINE__, "oBefore" => $bodyInfo]);
+			Log(['oCategory' => Log::CAT_WECHAT_TEMP_MSG, 'oUId' => $takerId, "oKey" => $noticeTag . __LINE__, "oBefore" => $bodyInfo]);
 		}
-		Log(['oCategory' => Log::CAT_YOUZAN_AUDIT, 'oUId' => $takerId, "oKey" => $noticeTag . __LINE__, "oBefore" => $bodyInfo]);
+		Log(['oCategory' => Log::CAT_WECHAT_TEMP_MSG, 'oUId' => $takerId, "oKey" => $noticeTag . __LINE__, "oBefore" => $bodyInfo]);
 		if (!$text) {
 			$text = isset(UserMsg::$catDict[$msgCat]) ? UserMsg::$catDict[$msgCat] : '';
 		}
