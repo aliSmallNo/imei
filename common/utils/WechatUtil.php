@@ -850,7 +850,20 @@ class WechatUtil
 		if (!in_array($noticeTag, $routineNotices)) {
 			$access_token = self::getAccessToken(self::ACCESS_CODE);
 			$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
-			AppUtil::postJSON($url, json_encode($bodyInfo));
+			// acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw 此模板ID 因为滥用模板消息被腾讯封了
+			// 下面是折中方法： 改为发送客服消息
+			if ($bodyInfo['template_id'] == "acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw") {
+
+				$kf_msg = "待办事项提醒" . PHP_EOL . PHP_EOL .
+"hi，$nickname" . PHP_EOL .
+"事项: ".$keywords['keyword1'].$keywords['keyword2'] . PHP_EOL .
+"时间: ".date('Y-m-d H:i') . PHP_EOL . PHP_EOL .
+"<a href='$url'>点击详情查看吧~</a>";
+
+				self::sendMsg($bodyInfo['touser'], $kf_msg);
+			} else {
+				AppUtil::postJSON($url, json_encode($bodyInfo));
+			}
 		}
 		if (!$text) {
 			$text = isset(UserMsg::$catDict[$msgCat]) ? UserMsg::$catDict[$msgCat] : '';
