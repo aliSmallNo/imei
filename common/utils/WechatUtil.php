@@ -848,14 +848,11 @@ class WechatUtil
 		}
 
 		$routineNotices = [self::NOTICE_FAVOR, self::NOTICE_CHAT, self::NOTICE_PRESENT];
+		// acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw 此模板ID 因为滥用模板消息被腾讯封了
 		if (!in_array($noticeTag, $routineNotices)) {
 			$access_token = self::getAccessToken(self::ACCESS_CODE);
 			$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
-			// acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw 此模板ID 因为滥用模板消息被腾讯封了
-			// 下面是折中方法： 改为发送客服消息
-			if ($bodyInfo['template_id'] != "acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw") {
-				AppUtil::postJSON($url, json_encode($bodyInfo));
-			}
+			AppUtil::postJSON($url, json_encode($bodyInfo));
 		}
 
 
