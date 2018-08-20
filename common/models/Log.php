@@ -11,6 +11,7 @@ namespace common\models;
 
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
+use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
 
 class Log extends ActiveRecord
@@ -511,7 +512,10 @@ class Log extends ActiveRecord
 			// 送卡
 			$res = UserTag::add(UserTag::CAT_CHAT_MONTH, $last_uid);
 			// 推送信息
-
+			WechatUtil::templateMsg(
+				WechatUtil::NOTICE_CUT_PRICE,
+				$uid
+			);
 			// 修改oKey=1
 			self::edit_cut_price($last_uid);
 			self::add([
