@@ -271,6 +271,7 @@ class WechatUtil
 
 	public static function sendMsg($openId, $msg)
 	{
+		return 0;
 		$ret = [
 			"errcode" => 1,
 			"errmsg" => "default"
