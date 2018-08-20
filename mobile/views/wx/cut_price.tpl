@@ -148,7 +148,7 @@
 		</div>
 	{{/if}}
 	<div class="cut_get_free">
-		<a href="javascript:;" class="btn_get_free"><span>邀请好友帮你点赞</span></a>
+		<a href="javascript:;" class="btn_get_free"><span>免费领取</span></a>
 	</div>
 	<div class="cut_items">
 		<div class="cut_title">点赞帮</div>

@@ -147,10 +147,10 @@ require(['jquery', 'mustache', "alpha"],
 			var title = '快来帮我砍价得千寻恋恋月度畅聊卡啦~~';
 			if (parseInt($sls.gender) == 10) {
 				title = $sls.name + '推荐, ' + $sls.location + '附近有' + $sls.num + '位帅哥正在聊天';
-				imgUrl = "https://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9kibGrtR9tzeqPXYRspyGRSDxBMHQlemzhhNexI4wqEuokf9qyfRaWg6jCZ4YET6lZmEjMJavbicibdw/0?wx_fmt=jpeg";
+				imgUrl = "https://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9kibGrtR9tzeqPXYRspyGRSD5YSia7mYSRmqejBW1thYlElb93MLd11vRVVM5zzMaw5ZAkfriaYsgHYA/0?wx_fmt=jpeg";
 			} else {
 				title = $sls.name + '推荐, ' + $sls.location + '附近有' + $sls.num + '位美女正在聊天';
-				imgUrl = "https://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9kibGrtR9tzeqPXYRspyGRSDclgwSibWiafCyEJaiaLlcy1aLLiajt5IB242ZwMAXwagGq5S6RlCYwmfAg/0?wx_fmt=jpeg";
+				imgUrl = "https://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9kibGrtR9tzeqPXYRspyGRSDfg5EHh8vsWmbUtw1icA81TeURoSUvJ9lK6JQedXxUTLZxSCSErPzp5g/0?wx_fmt=jpeg";
 			}
 			desc = '免费领取畅聊卡，与他们约会吧！';
 

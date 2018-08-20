@@ -460,8 +460,8 @@ class Log extends ActiveRecord
 	];
 	//月卡19.9
 	const MOUTH_CARD_PRICE = 19.9;
-	// 砍价6次
-	const CUT_TIMES = 6;
+	// 砍价4次
+	const CUT_TIMES = 4;
 
 	public static function cut_one_dao($openid, $last_openid)
 	{
