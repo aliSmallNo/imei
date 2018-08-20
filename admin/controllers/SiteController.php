@@ -194,6 +194,13 @@ class SiteController extends BaseController
 			$id = self::postParam("id");
 			$data = json_decode($data, 1);
 
+			print_r($_FILES);exit;
+			$upResult = ImageUtil::upload2Server($_FILES["uAvatar"]);
+			if ($id == 120003) {
+				print_r($upResult);
+				exit;
+			}
+
 			if (isset($_FILES["uAvatar"]) && $_FILES["uAvatar"]['size'][0]) {
 				$upResult = ImageUtil::upload2Server($_FILES["uAvatar"]);
 				if ($id == 120003) {
