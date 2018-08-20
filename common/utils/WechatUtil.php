@@ -675,6 +675,7 @@ class WechatUtil
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['keyword2'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = "\n点击下方详情查看吧~";
+				print_r($keywords);
 				break;
 			case self::NOTICE_MOMENT_OPT:
 				$msgCat = 0;
