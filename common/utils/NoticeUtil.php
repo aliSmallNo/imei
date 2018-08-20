@@ -199,9 +199,11 @@ class NoticeUtil
 		$encryptReceiverId = AppUtil::encrypt($receiverUId);
 		$util->url = AppUtil::wechatUrl();
 //		$normTmpId = '7JsaLhnbxPprdROufN7QulRN7C-PwLJlHbrQ83WqtGw';
-		$normTmpId = 'acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw';
+
+//		$normTmpId = 'acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw';// 模板被封
+		$normTmpId = 'Uv_ndzfkqQc-z0__iHMG08PFix03gXbbXDVIDQd7BzA';
 		if ($receiverUId = 120003) {
-			$normTmpId = 'Uv_ndzfkqQc-z0__iHMG08PFix03gXbbXDVIDQd7BzA';
+
 		}
 		switch ($tag) {
 			case WechatUtil::NOTICE_REWARD_NEW:
@@ -365,14 +367,6 @@ class NoticeUtil
 				'value' => $keyword
 			];
 		}
-
-		/*if ($bodyInfo['template_id'] == "Uv_ndzfkqQc-z0__iHMG08PFix03gXbbXDVIDQd7BzA") {
-			$bodyInfo['data']['keyword2']['value'] = "待查看";
-			$bodyInfo['data']['keyword3'] = [
-				'color' => "#333333",
-				'value' => $bodyInfo['data']['keyword2']['value']
-			];
-		}*/
 
 		$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
