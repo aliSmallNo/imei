@@ -166,8 +166,8 @@
 </div>
 
 <input type="hidden" id="LAST_OPENID" value="{{$last_user_info.openid}}">
-<input type="hidden" id="GENDER" value="{{$last_user_info.uGender}}">
-<input type="hidden" id="LOCATION" value='{{$last_user_info.uLocation}}'>
+<input type="hidden" id="GENDER" value="{{$user_info.uGender}}">
+<input type="hidden" id="LOCATION" value='{{$user_info.uLocation}}'>
 <input type="hidden" id="OPENID" value="{{$openid}}">
 <input type="hidden" id="IS_SHARE" value="{{$is_share}}">
 <script src="/assets/js/require.js"></script>
