@@ -75,7 +75,6 @@ class COSUtil
 		$this->uploadFolder = self::getFolder($this->resExtension);
 		$saveAs = AppUtil::catDir(false, $this->uploadFolder) . $this->resRename;
 		file_put_contents($saveAs, $content);
-		echo $saveAs;exit;
 		return $saveAs;
 	}
 
