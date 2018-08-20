@@ -75,6 +75,7 @@ class COSUtil
 		$this->uploadFolder = self::getFolder($this->resExtension);
 		$saveAs = AppUtil::catDir(false, $this->uploadFolder) . $this->resRename;
 		file_put_contents($saveAs, $content);
+		echo $saveAs;exit;
 		return $saveAs;
 	}
 
@@ -178,7 +179,7 @@ class COSUtil
 		if ($this->uploadFolder == 'image') {
 			$thumbSide = 200;
 			$defaultSide = 680;
-			echo $srcPath;exit;
+
 			list($srcWidth, $srcHeight) = getimagesize($srcPath);
 			if ($thumbFlag && ($srcWidth > $thumbSide || $srcHeight > $thumbSide)) {
 				$newWidth = $thumbSide;
