@@ -2186,6 +2186,7 @@ class WxController extends BaseController
 				'uid' => $this->user_id,
 				'openid' => self::$WX_OpenId,
 				'last_user_info' => $last_user_info,
+				'user_info' => $user_info,
 				'last_user_info_json' => AppUtil::json_encode($last_user_info),
 				'is_share' => $is_share,
 				'qr' => $qr,

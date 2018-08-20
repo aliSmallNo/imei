@@ -18,7 +18,8 @@ require(['jquery', 'mustache', "alpha"],
 
 		if ($sls.location) {
 			$sls.location = JSON.parse($sls.location);
-			$sls.location = $sls.location[location.length - 1]['text'];
+			console.log($sls.location);
+			$sls.location = $sls.location[$sls.location.length - 1]['text'];
 			console.log('location:' + $sls.location);
 		} else {
 			$sls.location = '';
