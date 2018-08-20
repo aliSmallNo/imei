@@ -302,6 +302,7 @@ class ActiveRecord extends BaseActiveRecord
      */
     public static function find()
     {
+
         return Yii::createObject(ActiveQuery::className(), [get_called_class()]);
     }
 

@@ -75,6 +75,8 @@ class UserComment extends ActiveRecord
 			$entity->$k = $v;
 		}
 		$entity->save();
+
+
 		return true;
 	}
 
