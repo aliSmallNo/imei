@@ -13,7 +13,9 @@ require(['jquery', 'mustache', "alpha"],
 			openid: $("#OPENID").val(),
 			is_share: $("#IS_SHARE").val(),
 			location: $("#LOCATION").val(),
-			gender: $("#GENDER").val(),// 10 nan
+			gender: $("#GENDER").val(),// 10 nv
+			name: $("#NAME").val(),// 10 nv
+			num: $("#NUM").val(),// 10 nv
 		};
 
 		if ($sls.location) {
@@ -139,18 +141,20 @@ require(['jquery', 'mustache', "alpha"],
 		}
 
 		function shareOptions(type) {
+			var desc = '';
 			var linkUrl = "https://wx.meipo100.com/wx/cut_price?is_share=1&last_openid=" + $sls.openid;
 			var imgUrl = "https://mmbiz.qpic.cn/mmbiz_png/MTRtVaxOa9k3Zz628lgicCqklzxtfs3dnbUfBibMUjK9OvXnMDR9hn7rzpI2RsOBpnl1ROWEHmlsZwQcRLlQWmoA/0?wx_fmt=png";
 			var title = '快来帮我砍价得千寻恋恋月度畅聊卡啦~~';
 			if (parseInt($sls.gender) == 10) {
-				title = $sls.location + '附近有12位帅哥正在聊天，点击领取畅聊卡，与他们约会吧！';
+				title = $sls.name + '推荐' + $sls.location + '附近有' + $sls.num + '位帅哥正在聊天';
 				imgUrl = "https://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9kibGrtR9tzeqPXYRspyGRSDFXnt5ibzrtlmibN3xonuspQWI70wBibSBdibfTod0FAeDsuDll2UiagE5hA/0?wx_fmt=jpeg";
 			} else {
-				title = $sls.location + '附近有12位美女正在聊天，点击领取畅聊卡，与她们约会吧！';
+				title = $sls.name + '推荐' + $sls.location + '附近有' + $sls.num + '位美女正在聊天';
 				imgUrl = "https://mmbiz.qpic.cn/mmbiz_jpg/MTRtVaxOa9kibGrtR9tzeqPXYRspyGRSDzIR7MX2O6fXfz4cA8CIW1wP8kvypvCySB2aBMjIibaykL7lcaz5n3Cw/0?wx_fmt=jpeg";
 			}
+			desc = '点击领取畅聊卡，与他们约会吧！';
 
-			var desc = '';
+
 			if (type === 'message') {
 				return {
 					title: title,

@@ -168,6 +168,8 @@
 <input type="hidden" id="LAST_OPENID" value="{{$last_user_info.openid}}">
 <input type="hidden" id="GENDER" value="{{$user_info.uGender}}">
 <input type="hidden" id="LOCATION" value='{{$user_info.uLocation}}'>
+<input type="hidden" id="NAME" value='{{$user_info.uName}}'>
+<input type="hidden" id="NUM" value='{{$num}}'>
 <input type="hidden" id="OPENID" value="{{$openid}}">
 <input type="hidden" id="IS_SHARE" value="{{$is_share}}">
 <script src="/assets/js/require.js"></script>
@@ -213,7 +215,7 @@
 
 <script>
 	requirejs(['/js/config.js?v=1.1'], function () {
-		requirejs(['/js/cut_price.js?v=1.2.3']);
+		requirejs(['/js/cut_price.js?v=1.2.4']);
 	});
 	console.log({{$last_user_info_json}})
 </script>

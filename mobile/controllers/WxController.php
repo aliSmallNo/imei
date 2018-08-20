@@ -2168,7 +2168,7 @@ class WxController extends BaseController
 		$is_share = self::getParam('is_share');
 
 		// 中央音乐学院 oYDJew5MfQtAT12g3Ocso0OKLMyA
-		$last_openid = self::getParam('last_openid');
+		$last_openid = self::getParam('last_openid', 'oYDJew5MfQtAT12g3Ocso0OKLMyA');
 		$last_user_info = UserWechat::getInfoByOpenId($last_openid);
 		$user_info = UserWechat::getInfoByOpenId(self::$WX_OpenId);
 
@@ -2190,6 +2190,7 @@ class WxController extends BaseController
 				'last_user_info_json' => AppUtil::json_encode($last_user_info),
 				'is_share' => $is_share,
 				'qr' => $qr,
+				'num' => random_int(50, 99),
 			],
 			'terse',
 			'砍价活动',
