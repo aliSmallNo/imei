@@ -862,9 +862,9 @@ class WechatUtil
 		if ($bodyInfo['template_id'] == "acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw") {
 			$kf_msg = "待办事项提醒" . PHP_EOL . PHP_EOL .
 				"hi，$nickname" . PHP_EOL .
-				"事项: " . $keywords['keyword1'] . ",TA给你发了一条密聊消息，快去看看吧~" . PHP_EOL .
+				"事项: " . $keywords['keyword1'] . ",有一位千寻异性用户给你发了一条密聊消息，快去看看吧~" . PHP_EOL . PHP_EOL .
 				"时间: " . date('Y-m-d H:i') . PHP_EOL . PHP_EOL .
-				"<a href='" . $bodyInfo['url'] . "'>点击详情查看吧~</a>" . PHP_EOL;
+				"<a href='" . $bodyInfo['url'] . "'>点击这里查看吧~</a>" . PHP_EOL;
 
 			self::sendMsg($bodyInfo['touser'], $kf_msg);
 		}
