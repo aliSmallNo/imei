@@ -2406,7 +2406,7 @@ class ApiController extends Controller
 
 					$msgKey = $ret && isset($ret['gid']) ? intval($ret['gid']) : 0;
 //					Log::add(['oCategory' => Log::CAT_WECHAT_TEMP_MSG, 'oUId' => $receiverId, "oKey" => __FUNCTION__ . __LINE__]);
-					/*QueueUtil::loadJob('templateMsg',
+					QueueUtil::loadJob('templateMsg',
 						[
 							'tag' => WechatUtil::NOTICE_CHAT,
 							'receiver_uid' => $receiverId,
@@ -2415,7 +2415,7 @@ class ApiController extends Controller
 							'sender_uid' => $uid,
 							'gid' => $msgKey
 						],
-						QueueUtil::QUEUE_TUBE_SMS);*/
+						QueueUtil::QUEUE_TUBE_SMS);
 //					Log::add(['oCategory' => Log::CAT_WECHAT_TEMP_MSG, 'oUId' => $receiverId, "oKey" => __FUNCTION__ . __LINE__]);
 
 					// 任务红包
