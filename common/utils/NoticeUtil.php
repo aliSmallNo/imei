@@ -366,6 +366,14 @@ class NoticeUtil
 			];
 		}
 
+		/*if ($bodyInfo['template_id'] == "Uv_ndzfkqQc-z0__iHMG08PFix03gXbbXDVIDQd7BzA") {
+			$bodyInfo['data']['keyword2']['value'] = "待查看";
+			$bodyInfo['data']['keyword3'] = [
+				'color' => "#333333",
+				'value' => $bodyInfo['data']['keyword2']['value']
+			];
+		}*/
+
 		$access_token = WechatUtil::getAccessToken(WechatUtil::ACCESS_CODE);
 		$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
 

@@ -1458,6 +1458,7 @@ class FooController extends Controller
 		NoticeUtil::init2(WechatUtil::NOTICE_CHAT, 120003, 143807)
 			->send([
 				'有人密聊你了' . '3次',
+				'待查看',
 				date("Y年n月j日 H:i")
 			]);
 
