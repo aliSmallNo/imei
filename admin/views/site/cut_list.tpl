@@ -28,8 +28,8 @@
 	<select class="form-control" name="key">
 		<option value="">-=请选择用户操作=-</option>
 		{{foreach from=$keys key=key item=item}}
-		<option value="{{$key}}"
-						{{if isset($getInfo["key"]) && $getInfo["key"]==$key}}selected{{/if}}>{{$item}}</option>
+			<option value="{{$key}}"
+							{{if isset($getInfo["key"]) && $getInfo["key"]==$key}}selected{{/if}}>{{$item}}</option>
 		{{/foreach}}
 	</select>
 	<button class="btn btn-primary">查询</button>
@@ -64,44 +64,77 @@
 		</thead>
 		<tbody>
 		{{foreach from=$list item=item}}
-		<tr>
-			<td align="center" data-id="{{$item.uid1}}">
-				<img src="{{$item.thumb1}}">
-			</td>
-			<td>
-				{{$item.name1}}<br>
+			<tr>
+				<td align="center" data-id="{{$item.uid1}}">
+					<img src="{{$item.thumb1}}">
+				</td>
+				<td>
+					{{$item.name1}}<br>
 
-			</td>
-			<td>
-				<div class="note">
-					{{if $item.oKey==3}}
-						{{$item.name2}}<b>给</b>{{$item.name1}}<b>点赞</b>
-					{{/if}}
-					{{if $item.oKey==1}}
-						{{$item.name2}}<b>给</b>{{$item.name1}}<b>点赞</b><br>
-						已领卡
-					{{/if}}
-					{{if $item.oKey==8}}
-						领卡
-					{{/if}}
-				</div>
-			</td>
-			<td class="modMp" data-id="{{$item.uid1}}" data-name="{{$item.name2}}">
-				{{if $item.thumb2}}<img src="{{$item.thumb2}}">{{/if}}
-			</td>
-			<td>
-				{{$item.name2}}<br>
+				</td>
+				<td>
+					<div class="note">
+						{{if $item.oKey==3}}
+							{{$item.name2}}
+							<b>给</b>
+							{{$item.name1}}
+							<b>点赞</b>
+						{{/if}}
+						{{if $item.oKey==1}}
+							{{$item.name2}}
+							<b>给</b>
+							{{$item.name1}}
+							<b>点赞</b>
+							<br>
+							已领卡
+						{{/if}}
+						{{if $item.oKey==5}}
+							{{if $item.oOpenId}}
+								{{$item.name1}}
+								<b>把</b>
+								{{$item.name2}}的链接
+								<b>{{$item.key_text}}</b>
+							{{else}}
+								{{$item.name1}}
+								<b>把</b>
+								{{$item.name1}}的链接
+								<b>{{$item.key_text}}</b>
+							{{/if}}
+						{{/if}}
+						{{if $item.oKey==6 && $item.oOpenId}}
+							{{if $item.oOpenId}}
+								{{$item.name1}}
+								<b>把</b>
+								{{$item.name2}}的链接
+								<b>{{$item.key_text}}</b>
+							{{else}}
+								{{$item.name1}}
+								<b>把</b>
+								{{$item.name1}}的链接
+								<b>{{$item.key_text}}</b>
+							{{/if}}
+						{{/if}}
+						{{if $item.oKey==8}}
+							领卡
+						{{/if}}
+					</div>
+				</td>
+				<td class="modMp" data-id="{{$item.uid1}}" data-name="{{$item.name2}}">
+					{{if $item.thumb2}}<img src="{{$item.thumb2}}">{{/if}}
+				</td>
+				<td>
+					{{$item.name2}}<br>
 
-			</td>
-			<td>
+				</td>
+				<td>
 					<span class="co">
 					{{$item.key_text}}
 					</span>
-			</td>
-			<td>
-				{{$item.oDate}}
-			</td>
-		</tr>
+				</td>
+				<td>
+					{{$item.oDate}}
+				</td>
+			</tr>
 		{{/foreach}}
 		</tbody>
 	</table>
