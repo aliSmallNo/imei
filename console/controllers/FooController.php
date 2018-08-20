@@ -815,7 +815,7 @@ class FooController extends Controller
 		$sql = "SELECT uId,w.wSubscribe,uPhone,uRole
  				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId
- 				WHERE uPhone AND w.wSubscribe=1 and uRole in (10,20) and uId > 0 and uPhone order by uId  asc";
+ 				WHERE uPhone AND w.wSubscribe=1 and uRole in (10,20) and uId > 144073 and uPhone order by uId  asc";
 
 		$ret = $conn->createCommand($sql)->queryAll();
 		//print_r($ret);
@@ -855,6 +855,7 @@ class FooController extends Controller
 				var_dump($cnt . date('  m-d H:i:s'));
 			}
 			echo $cnt . '===' . date('  m-d H:i:s') . ' ' . $uid . PHP_EOL;
+
 		}
 		var_dump($cnt);
 	}
