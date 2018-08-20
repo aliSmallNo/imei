@@ -119,6 +119,7 @@ require(['jquery', 'mustache', "alpha"],
 			$.post("/api/share", {
 				tag: tag,
 				openid: $sls.openid,
+				last_openid: $sls.last_openid,
 				note: note
 			}, function (resp) {
 				if (resp.code < 1 && resp.msg) {

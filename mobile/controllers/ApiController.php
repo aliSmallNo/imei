@@ -3180,6 +3180,14 @@ class ApiController extends Controller
 	{
 		$tag = trim(strtolower(self::postParam('tag')));
 		$openId = self::postParam('openid');
+		$last_openid = self::postParam('last_openid');
+
+		$last_uid = '';
+		if ($last_openid) {
+			$last_wxinfo = UserWechat::getInfoByOpenId($last_openid);
+			$last_uid = $last_wxinfo['uId'];
+		}
+
 		if (!$openId) {
 			$openId = AppUtil::getCookie(self::COOKIE_OPENID);
 		}
@@ -3193,11 +3201,12 @@ class ApiController extends Controller
 			$subUId = AppUtil::decrypt($subUId);
 		}
 
+
 		switch ($tag) {
-			case 'share'://  分享到朋友
+			case 'share'://分享到朋友
 				$note = self::postParam('note');
 				if ($note == "/wx/cut_price") {
-					Log::add(['oCategory' => Log::CAT_USER_CUT_PRICE, 'oKey' => Log::KEY_TO_PEOPLE, 'oUId' => $uid]);
+					Log::add(['oCategory' => Log::CAT_USER_CUT_PRICE, 'oKey' => Log::KEY_TO_PEOPLE, 'oUId' => $uid, 'oOpenId' => $last_uid]);
 					return;
 				}
 				$nId = UserNet::addShare($uid, $subUId, UserNet::REL_QR_SHARE, $note);
@@ -3221,7 +3230,7 @@ class ApiController extends Controller
 				$amt = 16;
 				$note = self::postParam('note');
 				if ($note == "/wx/cut_price") {
-					Log::add(['oCategory' => Log::CAT_USER_CUT_PRICE, 'oKey' => Log::KEY_TO_MOMENT, 'oUId' => $uid]);
+					Log::add(['oCategory' => Log::CAT_USER_CUT_PRICE, 'oKey' => Log::KEY_TO_MOMENT, 'oUId' => $uid, 'oOpenId' => $last_uid]);
 					return;
 				}
 				if (!$subUId) {
