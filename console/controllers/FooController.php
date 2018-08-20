@@ -815,7 +815,7 @@ class FooController extends Controller
 		$sql = "SELECT uId,w.wSubscribe,uPhone,uRole
  				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId
- 				WHERE uPhone AND w.wSubscribe=1 and uRole in (10,20) and uId > 163470 and uPhone order by uId  asc";
+ 				WHERE uPhone AND w.wSubscribe=1 and uRole in (10,20) and uId > 174800 and uPhone order by uId  asc";
 
 		$ret = $conn->createCommand($sql)->queryAll();
 		//print_r($ret);
@@ -838,7 +838,12 @@ class FooController extends Controller
 //			$content = "逛个街，去个酒吧，给自己买套衣服，买一件自己喜欢的东西，让自己的生活过的有价值，爱自己没毛病，点击链接进入：<br><br><br><br><br>爱自己69特惠区，陪你过单身生活
 //<a href='https://j.youzan.com/O0EeRY' style='color:#007aff'>https://j.youzan.com/O0EeRY</a>";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
-			ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
+			try {
+				ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
+			} catch (\Exception $e) {
+				sleep(1);
+			}
+
 			QueueUtil::loadJob('templateMsg',
 				[
 					'tag' => WechatUtil::NOTICE_CHAT,
