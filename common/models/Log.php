@@ -448,10 +448,14 @@ class Log extends ActiveRecord
 
 	const KEY_DEFAULT = 3;
 	const KEY_TRANS_CARD = 1;
+	const KEY_TO_PEOPLE = 5;
+	const KEY_TO_MOMENT = 6;
 	const KEY_EXCHANGE_CARD = 8;
 	static $cutKeyDict = [
 		self::KEY_DEFAULT => '待兑卡',
 		self::KEY_TRANS_CARD => '已兑卡',
+		self::KEY_TO_PEOPLE => '转发给朋友',
+		self::KEY_TO_MOMENT => '转发给朋友圈',
 		self::KEY_EXCHANGE_CARD => '兑卡记录',
 	];
 	//月卡19.9

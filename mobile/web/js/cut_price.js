@@ -118,11 +118,11 @@ require(['jquery', 'mustache', "alpha"],
 		function shareLog(tag, note) {
 			$.post("/api/share", {
 				tag: tag,
-				id: '',
+				openid: $sls.openid,
 				note: note
 			}, function (resp) {
 				if (resp.code < 1 && resp.msg) {
-					alpha.toast(resp.msg, 1);
+					// alpha.toast(resp.msg, 1);
 				}
 			}, "json");
 		}
@@ -141,7 +141,7 @@ require(['jquery', 'mustache', "alpha"],
 					type: '',
 					dataUrl: '',
 					success: function () {
-						//shareLog('share', '/wx/cut_price');
+						shareLog('share', '/wx/cut_price');
 					}
 				};
 			} else {
@@ -150,7 +150,7 @@ require(['jquery', 'mustache', "alpha"],
 					link: linkUrl,
 					imgUrl: imgUrl,
 					success: function () {
-						//shareLog('moment', '/wx/cut_price');
+						shareLog('moment', '/wx/cut_price');
 					}
 				};
 			}

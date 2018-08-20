@@ -3212,12 +3212,18 @@ class ApiController extends Controller
 						"key" => $coinCat,
 					]);
 				}*/
+				if ($note == "/wx/cut_price") {
+					Log::add(['oCategory' => Log::CAT_USER_CUT_PRICE, 'oKey' => Log::KEY_TO_PEOPLE, 'oUId' => $uid]);
+				}
 				break;
 			case 'moment':// 分享到朋友圈
 				$amt = 16;
 				$note = self::postParam('note');
 				if (!$subUId) {
 					$subUId = 120003;
+				}
+				if ($note == "/wx/cut_price") {
+					Log::add(['oCategory' => Log::CAT_USER_CUT_PRICE, 'oKey' => Log::KEY_TO_MOMENT, 'oUId' => $uid]);
 				}
 				$nId = UserNet::addShare($uid, $subUId, UserNet::REL_QR_MOMENT, $note);
 				// 双旦活动
