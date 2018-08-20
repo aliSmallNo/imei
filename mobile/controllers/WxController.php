@@ -2168,7 +2168,7 @@ class WxController extends BaseController
 		$is_share = self::getParam('is_share');
 
 		// 中央音乐学院 oYDJew5MfQtAT12g3Ocso0OKLMyA
-		$last_openid = self::getParam('last_openid', '');
+		$last_openid = self::getParam('last_openid');
 		$last_user_info = UserWechat::getInfoByOpenId($last_openid);
 
 		$qr = '';
