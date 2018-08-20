@@ -632,7 +632,7 @@ class Log extends ActiveRecord
 				left join im_user as u1 on u1.uId=o.oUId
 				left join im_user as u2 on u2.uId=o.oOpenId
 				where oCategory=:cat $condition";
-		$count = $conn->createCommand($sql)->bindValues([":cat" => self::CAT_USER_CUT_PRICE,])->queryAll();
+		$count = $conn->createCommand($sql)->bindValues([":cat" => self::CAT_USER_CUT_PRICE,])->queryScalar();
 
 		return [$res, $count];
 	}
