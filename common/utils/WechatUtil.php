@@ -286,6 +286,7 @@ class WechatUtil
 				]
 			];
 			$ret = AppUtil::postJSON($url, urldecode(json_encode($postData)));
+			echo AppUtil::json_encode($ret) .__LINE__. PHP_EOL;
 		}
 		$ret = json_decode($ret, true);
 		return $ret['errcode'];
@@ -852,13 +853,14 @@ class WechatUtil
 			$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
 			// acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw 此模板ID 因为滥用模板消息被腾讯封了
 			// 下面是折中方法： 改为发送客服消息
+			print_r($bodyInfo);
 			if ($bodyInfo['template_id'] == "acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw") {
 
 				$kf_msg = "待办事项提醒" . PHP_EOL . PHP_EOL .
-"hi，$nickname" . PHP_EOL .
-"事项: ".$keywords['keyword1'].$keywords['keyword2'] . PHP_EOL .
-"时间: ".date('Y-m-d H:i') . PHP_EOL . PHP_EOL .
-"<a href='$url'>点击详情查看吧~</a>";
+					"hi，$nickname" . PHP_EOL .
+					"事项: " . $keywords['keyword1'] . $keywords['keyword2'] . PHP_EOL .
+					"时间: " . date('Y-m-d H:i') . PHP_EOL . PHP_EOL .
+					"<a href='$url'>点击详情查看吧~</a>";
 
 				self::sendMsg($bodyInfo['touser'], $kf_msg);
 			} else {
