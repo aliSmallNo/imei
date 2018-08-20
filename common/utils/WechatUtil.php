@@ -1084,7 +1084,8 @@ class WechatUtil
 			$name = $userInfo["uName"] ?? "";
 			$bodyInfo = [
 				"touser" => $openId,
-				"template_id" => "acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw",
+				//"template_id" => "acipK-tTIWO_Tkcp143ax0cbEsAEKKjylOYGOhXwTRw",
+				"template_id" => "j7phwuE3I5Z4wb6OKB4K8e6xAhAyaHYrY_-ujHxRbS0",
 				"url" => "https://wx.meipo100.com/wx/single",
 				"data" => [
 					"first" => ["color" => "#f50e9c", "value" => "你好！有一位千寻恋恋异性用户把你标记为暗恋对象了~~\n"],
