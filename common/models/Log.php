@@ -96,6 +96,7 @@ class Log extends ActiveRecord
 	const CAT_YOUZAN_FINANCE = 8004; // 对账信息
 	const CAT_USER_FOCUS = 8005; // 关注取消关注
 	const CAT_USER_CUT_PRICE = 8006; // 点赞获取月度畅聊卡
+	const CAT_WECHAT_TEMP_MSG = 8007; // 模板消息
 
 	public static function tableName()
 	{
