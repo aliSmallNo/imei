@@ -1247,7 +1247,7 @@ class WechatUtil
 		$criteria = "";
 		//$criteria = " AND uOpenId='oYDJew5EFMuyrJdwRrXkIZLU2c58' ";
 		if (!$criteria) {
-			$criteria = " AND u.uPhone='' ";
+			$criteria = " AND u.uPhone='' and DATE_FORMAT(uAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
 		}
 
 		$sql = "SELECT u.uId,u.uName,u.uOpenId,uPhone,uGender,wSubscribe
@@ -1256,6 +1256,7 @@ class WechatUtil
 			 WHERE w.wSubscribe=1 AND u.uOpenId LIKE 'oYDJew%'  "
 			. $criteria . " order by uId asc ";
 
+		echo $sql;exit;
 		$ret = $conn->createCommand($sql)->queryAll();
 		if ($cat == 'template') {
 			$userIds = array_column($ret, 'uId');
@@ -1278,8 +1279,7 @@ class WechatUtil
 					QueueUtil::QUEUE_TUBE_SMS);
 				echo 'tmp:' . $cnt . ' - ' . $k1 . '/' . count($userIds) . date('  m-d H:i:s');
 			}
-
-			return count($userIds);
+			// return count($userIds);
 		}
 
 
@@ -1299,9 +1299,7 @@ class WechatUtil
 			$openIds[] = $openid;
 		}*/
 		$cnt = count($openIds);
-		if ($debug) {
-			var_dump($cnt);
-		}
+
 		if ($cnt > 0) {
 			$content = '【微信红包】恭喜发财，大吉大利                                                                                                    
 
@@ -1320,7 +1318,6 @@ class WechatUtil
 						'text' => $content
 					],
 					QueueUtil::QUEUE_TUBE_SMS);
-
 
 				//$cnt += UserWechat::sendMsg($openId, $content);
 				$cnt++;
