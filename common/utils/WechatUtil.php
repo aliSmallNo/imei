@@ -51,6 +51,7 @@ class WechatUtil
 	const NOTICE_CERT_GRANT = 'notice_cert_grant';
 	const NOTICE_CERT_DENY = 'notice_cert_deny';
 	const NOTICE_DATE = 'notice_date';
+	const NOTICE_COMMENT = 'notice_comment';
 	const NOTICE_ROOM_CHAT = 'notice_room_chat';
 	const NOTICE_MOMENT_OPT = 'notice_moment_opt';
 
@@ -796,6 +797,14 @@ class WechatUtil
 				$u2 = User::findOne(["uId" => $giverId]);
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['keyword1'] = "平台用户" . $u2->uName . "邀请线下见面";
+				$keywords['remark'] = "\n点击下方详情查看吧~";
+				break;
+			case self::NOTICE_COMMENT:
+				$templateId = "SkGJ5mgC_T13WPGl8iTMl3KATgeQrD5PVe2Ry-loUds";
+				$url = $wxUrl . "/wx/comments";
+				$keywords['first'] = "hi，$nickname\n";
+				$keywords['keyword1'] = "有人评价你了" ;
+				$keywords['keyword2'] = date("Y年n月j日 H:i") ;
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_MAKE_FRIRENDS: //相亲交友活动支付通知 /wx/toparty
