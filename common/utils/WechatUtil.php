@@ -803,8 +803,8 @@ class WechatUtil
 				$templateId = "SkGJ5mgC_T13WPGl8iTMl3KATgeQrD5PVe2Ry-loUds";
 				$url = $wxUrl . "/wx/comments";
 				$keywords['first'] = "hi，$nickname\n";
-				$keywords['keyword1'] = "有人评价你了" ;
-				$keywords['keyword2'] = date("Y年n月j日 H:i") ;
+				$keywords['keyword1'] = "有人评价你了";
+				$keywords['keyword2'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_MAKE_FRIRENDS: //相亲交友活动支付通知 /wx/toparty
@@ -1269,7 +1269,7 @@ class WechatUtil
 			$senderId = User::SERVICE_UID;
 			$cnt = 0;
 			foreach ($userIds as $k1 => $userId) {
-				if ($k1 > 0 && $k1 % 15 == 0) {
+				if ($k1 > 0 && $k1 % 5 == 0) {
 					echo 'sleep:' . 2 . PHP_EOL;
 					sleep(random_int(1, 2));
 				}
@@ -1283,7 +1283,8 @@ class WechatUtil
 						'gid' => 0
 					],
 					QueueUtil::QUEUE_TUBE_SMS);
-				echo 'tmp:' . $cnt . ' - ' . $k1 . '/' . count($userIds) . date('  m-d H:i:s');
+				$cnt++;
+				echo 'tmp:' . $cnt . ' - ' . $cnt . '/' . count($userIds) . " UID:$userId " . date('  m-d H:i:s') . PHP_EOL;
 			}
 			// return count($userIds);
 		}
@@ -1327,11 +1328,11 @@ class WechatUtil
 
 				//$cnt += UserWechat::sendMsg($openId, $content);
 				$cnt++;
-				if ($k > 0 && $k % 8 == 0) {
+				if ($k > 0 && $k % 5 == 0) {
 					echo 'sleep:' . 2 . PHP_EOL;
 					sleep(random_int(1, 2));
 				}
-				echo 'text:' . $cnt . ' - ' . $k . '/' . count($openIds) . date('  m-d H:i:s') . PHP_EOL;
+				echo 'text:' . $cnt . ' - ' . $cnt . '/' . count($openIds) . date('  m-d H:i:s') . " openid:$openId " . PHP_EOL;
 			}
 		}
 		echo " send end";
