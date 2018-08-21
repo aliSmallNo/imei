@@ -1245,7 +1245,7 @@ class WechatUtil
 			 FROM im_user as u 
 			 JOIN im_user_wechat as w on u.uId = w.wUId
 			 WHERE w.wSubscribe=1 AND u.uOpenId LIKE 'oYDJew%'  "
-			. $criteria . " order by uId asc";
+			. $criteria . " order by uId asc ";
 
 		$ret = $conn->createCommand($sql)->queryAll();
 		if ($cat == 'template') {
@@ -1319,7 +1319,7 @@ class WechatUtil
 					echo 'sleep:' . 2 . PHP_EOL;
 					sleep(random_int(1, 2));
 				}
-				echo 'text:' . $cnt . ' - ' . $k . '/' . count($openIds) . date('  m-d H:i:s');
+				echo 'text:' . $cnt . ' - ' . $k . '/' . count($openIds) . date('  m-d H:i:s') . PHP_EOL;
 			}
 		}
 		echo " send end";
