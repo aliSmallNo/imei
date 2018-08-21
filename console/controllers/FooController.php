@@ -818,7 +818,7 @@ class FooController extends Controller
 		$sql = "SELECT uId,w.wSubscribe,uPhone,uRole
  				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId
- 				WHERE uPhone AND w.wSubscribe=1 and uRole in (10,20) and uId > 172994 $str and uPhone order by uId asc";
+ 				WHERE uPhone AND w.wSubscribe=1 and uRole in (10,20) and uId > 173505 $str and uPhone order by uId asc";
 
 		$ret = $conn->createCommand($sql)->queryAll();
 		//print_r($ret);
@@ -832,7 +832,6 @@ class FooController extends Controller
 		$senderId = User::SERVICE_UID;
 		foreach ($ret as $row) {
 			$uid = $row['uId'];
-			sleep(1);
 			/*$content = [
 				'text' => '我好想和你一起过圣诞节喔~',
 				'url' => "https://mp.weixin.qq.com/s/1q2ak1MmrQGUhKHyZaJcEg"
