@@ -975,13 +975,15 @@ class FooController extends Controller
 	{
 		$conn = AppUtil::db();
 
+		$str = " and uOpenId='oYDJew5MfQtAT12g3Ocso0OKLMyA' ";
+
 		$sql = "select uOpenId,uId,uName,uPhone,uMarital,uHeight,uEducation,uBirthYear,w.wSubscribe
 		from im_user as u join im_user_wechat as w on w.wUId=u.uId and w.wSubscribe=1
 		where uPhone!='' and (uMarital=0 or uHeight=0 or uEducation=0 or uBirthYear=0) and uGender>9 and uOpenId like 'oYDJew%' ";
 
 		$sql = "select u.uId,u.uName,u.uPhone,uOpenId
 				from im_user as u join im_user_wechat as w on w.wUId=u.uId
-				where uOpenId like 'oYDJew%' and uPhone!='' and uGender=10 and wSubscribe in (1) and uOpenId='oYDJew5MfQtAT12g3Ocso0OKLMyA' ";
+				where uOpenId like 'oYDJew%' and uPhone!='' and uGender=10 and wSubscribe in (1) order by uId asc ";
 
 		/*$strCats = implode(",", UserTrans::$CatMinus);
 		$sql = "select u.uId,u.uName,u.uOpenId,
@@ -1008,9 +1010,11 @@ class FooController extends Controller
 		foreach ($openIds as $k => $openId) {
 			$cnt += UserWechat::sendMsg($openId, $content);
 			if ($k > 0 && $k % 15 == 0) {
-				sleep(1);
+				$sl = random_int(1, 5);
+				echo 'sleep:' . $sl . PHP_EOL;
+				sleep($sl);
 			}
-			echo $cnt . ' - ' . $k . '/' . count($openIds) . date('  m-d H:i:s');
+			echo $cnt . ' - ' . $k . '/' . count($openIds) . date('  m-d H:i:s') . ' ' . $openId . PHP_EOL;
 		}
 
 	}
