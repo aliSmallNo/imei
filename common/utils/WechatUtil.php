@@ -880,7 +880,8 @@ class WechatUtil
 		if (!in_array($noticeTag, $routineNotices)) {
 			$access_token = self::getAccessToken(self::ACCESS_CODE);
 			$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
-			AppUtil::postJSON($url, json_encode($bodyInfo));
+			$ret = AppUtil::postJSON($url, json_encode($bodyInfo));
+			var_dump($ret);
 //			Log::add(['oCategory' => Log::CAT_WECHAT_TEMP_MSG, 'oUId' => $takerId, "oKey" => $noticeTag . __LINE__, "oBefore" => $bodyInfo]);
 		}
 //		Log::add(['oCategory' => Log::CAT_WECHAT_TEMP_MSG, 'oUId' => $takerId, "oKey" => $noticeTag . __LINE__, "oBefore" => $bodyInfo]);
@@ -1309,8 +1310,8 @@ class WechatUtil
 
 		if ($cnt > 0) {
 			$content = '【微信红包】恭喜发财，大吉大利                                                                                                    
-
 【88888元现金红包最后一天大派送】聊天立即获得现金大红包，先到先得送完为止🎉🎉🎉 👉<a href="https://wx.meipo100.com/wx/hi">点击链接</a>👈';
+
 			$content = '你的一位微信联系人在［千寻恋恋］上将你设置为“暗恋对象”。
 			由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。' . PHP_EOL .
 				'👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
