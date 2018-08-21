@@ -813,7 +813,7 @@ class FooController extends Controller
 		*/
 
 		$str = "";
-		$str = " and uOpenId='oYDJew5MfQtAT12g3Ocso0OKLMyA' ";
+		//$str = " and uOpenId='oYDJew5MfQtAT12g3Ocso0OKLMyA' ";
 
 		$sql = "SELECT uId,w.wSubscribe,uPhone,uRole
  				FROM im_user as u
@@ -832,7 +832,7 @@ class FooController extends Controller
 		$senderId = User::SERVICE_UID;
 		foreach ($ret as $row) {
 			$uid = $row['uId'];
-			if ($cnt % 1000 == 0) {
+			if ($cnt % 100 == 0) {
 				sleep(1);
 			}
 			/*$content = [
