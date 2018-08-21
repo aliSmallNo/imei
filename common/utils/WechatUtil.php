@@ -1241,11 +1241,18 @@ class WechatUtil
 		return $accessToken;
 	}
 
+	/**
+	 * 定时任务 每天晚上九点 推送模板消息给当天关注未注册的用户
+	 * @param bool $debug
+	 * @param string $cat
+	 * @return int
+	 * @throws \Exception
+	 */
 	public static function summonViewer($debug = false, $cat = 'template')
 	{
 		$conn = AppUtil::db();
 		$criteria = "";
-		//$criteria = " AND uOpenId='oYDJew5EFMuyrJdwRrXkIZLU2c58' ";
+		$criteria = " AND uOpenId='oYDJew5EFMuyrJdwRrXkIZLU2c58' ";
 		if (!$criteria) {
 			$criteria = " AND u.uPhone='' and DATE_FORMAT(uAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
 		}
@@ -1256,7 +1263,6 @@ class WechatUtil
 			 WHERE w.wSubscribe=1 AND u.uOpenId LIKE 'oYDJew%'  "
 			. $criteria . " order by uId asc ";
 
-		echo $sql;exit;
 		$ret = $conn->createCommand($sql)->queryAll();
 		if ($cat == 'template') {
 			$userIds = array_column($ret, 'uId');
