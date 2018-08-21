@@ -940,7 +940,7 @@ class FooController extends Controller
 
 	public function actionSummon()
 	{
-		$ret = WechatUtil::summonViewer(true);
+		$ret = WechatUtil::summonViewer(true, '');
 		var_dump($ret);
 	}
 
