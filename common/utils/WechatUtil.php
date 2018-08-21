@@ -1236,7 +1236,7 @@ class WechatUtil
 	{
 		$conn = AppUtil::db();
 		$criteria = "";
-		$criteria = " AND uOpenId='oYDJew5EFMuyrJdwRrXkIZLU2c58' ";
+		//$criteria = " AND uOpenId='oYDJew5EFMuyrJdwRrXkIZLU2c58' ";
 		if (!$criteria) {
 			$criteria = " AND u.uPhone='' ";
 		}
@@ -1245,17 +1245,17 @@ class WechatUtil
 			 FROM im_user as u 
 			 JOIN im_user_wechat as w on u.uId = w.wUId
 			 WHERE w.wSubscribe=1 AND u.uOpenId LIKE 'oYDJew%'  "
-			. $criteria;
+			. $criteria . " order by uId asc";
 
 		$ret = $conn->createCommand($sql)->queryAll();
 		if ($cat == 'template') {
 			$userIds = array_column($ret, 'uId');
 			$senderId = User::SERVICE_UID;
-
+			$cnt = 0;
 			foreach ($userIds as $k1 => $userId) {
-				if ($k1 > 0 && $k1 % 5 == 0) {
+				if ($k1 > 0 && $k1 % 15 == 0) {
 					echo 'sleep:' . 2 . PHP_EOL;
-					sleep(2);
+					sleep(random_int(1, 2));
 				}
 				QueueUtil::loadJob('templateMsg',
 					[
@@ -1267,7 +1267,9 @@ class WechatUtil
 						'gid' => 0
 					],
 					QueueUtil::QUEUE_TUBE_SMS);
+				echo 'tmp:' . $cnt . ' - ' . $k1 . '/' . count($userIds) . date('  m-d H:i:s');
 			}
+
 			return count($userIds);
 		}
 
@@ -1313,13 +1315,14 @@ class WechatUtil
 
 				//$cnt += UserWechat::sendMsg($openId, $content);
 				$cnt++;
-				if ($k > 0 && $k % 4 == 0) {
+				if ($k > 0 && $k % 8 == 0) {
 					echo 'sleep:' . 2 . PHP_EOL;
-					sleep(2);
+					sleep(random_int(1, 2));
 				}
-				echo $cnt . ' - ' . $k . '/' . count($openIds) . date('  m-d H:i:s');
+				echo 'text:' . $cnt . ' - ' . $k . '/' . count($openIds) . date('  m-d H:i:s');
 			}
 		}
+		echo " send end";
 		return $cnt;
 	}
 
