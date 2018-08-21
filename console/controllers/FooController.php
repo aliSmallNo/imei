@@ -978,7 +978,8 @@ class FooController extends Controller
 		where uPhone!='' and (uMarital=0 or uHeight=0 or uEducation=0 or uBirthYear=0) and uGender>9 and uOpenId like 'oYDJew%' ";
 
 		$sql = "select u.uId,u.uName,u.uPhone,uOpenId
- 			from im_user as u join im_user_wechat as w on w.wUId=u.uId where uOpenId like 'oYDJew%' and uPhone!='' ";
+				from im_user as u join im_user_wechat as w on w.wUId=u.uId
+				where uOpenId like 'oYDJew%' and uPhone!='' and uGender=10 and wSubscribe in (1) and uOpenId='oYDJew5MfQtAT12g3Ocso0OKLMyA' ";
 
 		/*$strCats = implode(",", UserTrans::$CatMinus);
 		$sql = "select u.uId,u.uName,u.uOpenId,
@@ -992,9 +993,9 @@ class FooController extends Controller
 
 		$openIds = array_column($ret, 'uOpenId');
 
-		$content = '🎉🎉福利来啦！晚6点免费微课，点击立刻报名
-打招呼技巧，让你一句话收到对方的回复
-👉<a href="https://m.qlchat.com/topic/2000000530303588.htm?shareKey=ed23936e3d30048eb312e3b83b15c8d6">点击进入 或 猛戳这里</a>👈';
+		$content = '🎉🎉福利来啦🎉🎉 ' . PHP_EOL .
+			'提现功能重新上线🎉🎉🎉🎉，做任务赚现金【红包】' . PHP_EOL . '
+👉<a href="https://wx.meipo100.com/wx/swallet#cash">点击进入 或 猛戳这里</a>👈';
 
 		/*$content = '🎉双十二活动🎉倒计时，错过就等明年喽，购月度畅聊卡送120朵媒桂花，互相心动送更多
 <a href="https://wx.meipo100.com/wx/sw#swallet">点击链接进入</a>';*/
@@ -1005,11 +1006,11 @@ class FooController extends Controller
 		foreach ($openIds as $k => $openId) {
 			$cnt += UserWechat::sendMsg($openId, $content);
 			if ($k > 0 && $k % 5 == 0) {
-				sleep(2);
-				var_dump($cnt . ' - ' . $k . '/' . count($openIds) . date('  m-d H:i:s'));
+				sleep(1);
 			}
+			echo $cnt . ' - ' . $k . '/' . count($openIds) . date('  m-d H:i:s');
 		}
-		var_dump($cnt);
+
 	}
 
 	public function actionRecharge()
