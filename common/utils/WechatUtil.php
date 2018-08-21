@@ -1300,7 +1300,7 @@ class WechatUtil
 				'👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
 //			$ret = UserWechat::sendMsg($openIds, $content, $debug);
 //			$cnt = 0;
-			var_dump($openIds);
+			$cnt = 0;
 			foreach ($openIds as $k => $openId) {
 
 				QueueUtil::loadJob('pushText',
@@ -1311,7 +1311,8 @@ class WechatUtil
 					QueueUtil::QUEUE_TUBE_SMS);
 
 
-				$cnt += UserWechat::sendMsg($openId, $content);
+				//$cnt += UserWechat::sendMsg($openId, $content);
+				$cnt++;
 				if ($k > 0 && $k % 4 == 0) {
 					echo 'sleep:' . 2 . PHP_EOL;
 					sleep(2);
