@@ -1476,10 +1476,10 @@ class FooController extends Controller
 		// UserWechat::refreshWXInfo('oYDJewwqr9m_nHTtJrv0Ifxg9CWg', 1);
 
 		//WechatUtil::toAllUserTempMsg();
-		WechatUtil::templateMsg(
+		/*WechatUtil::templateMsg(
 			WechatUtil::NOTICE_CUT_PRICE,
 			120003
-		);
+		);*/
 		/*NoticeUtil::init2(WechatUtil::NOTICE_CHAT, 120003, 143807)
 			->send([
 				'密聊消息',
@@ -1498,6 +1498,17 @@ class FooController extends Controller
 		// echo Log::edit_cut_price(143807);
 
 //		 ChatMsg::addChat(174891, 129104,'啥~~');
+
+		QueueUtil::loadJob('templateMsg',
+			[
+				'tag' => WechatUtil::NOTICE_SUMMON,
+				'receiver_uid' => 120003,
+				'title' => '有人对你怦然心动啦',
+				'sub_title' => '有一位你的微信好友对你怦然心动啦，快去看看吧~' . date('Y-m-d H:i:s'),
+				'sender_uid' => 120000,
+				'gid' => 0
+			],
+			QueueUtil::QUEUE_TUBE_SMS);
 	}
 
 	public function actionYz()
