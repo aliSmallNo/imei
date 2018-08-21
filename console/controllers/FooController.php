@@ -994,7 +994,7 @@ class FooController extends Controller
 		$openIds = array_column($ret, 'uOpenId');
 
 		$content = '🎉🎉福利来啦🎉🎉 ' . PHP_EOL . PHP_EOL .
-			'提现功能重新上线，做任务赚现金【红包】' . PHP_EOL . '
+			'提现功能重新上线，做任务赚【现金红包】' . PHP_EOL . '
 👉<a href="https://wx.meipo100.com/wx/swallet#cash">点击进入 或 猛戳这里</a>👈';
 
 		/*$content = '🎉双十二活动🎉倒计时，错过就等明年喽，购月度畅聊卡送120朵媒桂花，互相心动送更多
@@ -1005,7 +1005,7 @@ class FooController extends Controller
 		$cnt = 0;
 		foreach ($openIds as $k => $openId) {
 			$cnt += UserWechat::sendMsg($openId, $content);
-			if ($k > 0 && $k % 5 == 0) {
+			if ($k > 0 && $k % 15 == 0) {
 				sleep(1);
 			}
 			echo $cnt . ' - ' . $k . '/' . count($openIds) . date('  m-d H:i:s');

@@ -1235,12 +1235,16 @@ class WechatUtil
 	public static function summonViewer($debug = false, $cat = 'template')
 	{
 		$conn = AppUtil::db();
-//		$criteria = " AND uOpenId='oYDJew48Eghqvj-BFT1Ddb9b0Miw' ";
-		$criteria = '';
+		$criteria = "";
+		$criteria = " AND uOpenId='oYDJew5EFMuyrJdwRrXkIZLU2c58' ";
+		if (!$criteria) {
+			$criteria = " AND u.uPhone='' ";
+		}
+
 		$sql = "SELECT u.uId,u.uName,u.uOpenId,uPhone,uGender,wSubscribe
 			 FROM im_user as u 
 			 JOIN im_user_wechat as w on u.uId = w.wUId
-			 WHERE w.wSubscribe=1 AND u.uOpenId LIKE 'oYDJew%' AND u.uPhone='' "
+			 WHERE w.wSubscribe=1 AND u.uOpenId LIKE 'oYDJew%'  "
 			. $criteria;
 
 		$ret = $conn->createCommand($sql)->queryAll();
@@ -1248,7 +1252,11 @@ class WechatUtil
 			$userIds = array_column($ret, 'uId');
 			$senderId = User::SERVICE_UID;
 
-			foreach ($userIds as $userId) {
+			foreach ($userIds as $k1 => $userId) {
+				if ($k1 > 0 && $k1 % 5 == 0) {
+					echo 'sleep:' . 2 . PHP_EOL;
+					sleep(2);
+				}
 				QueueUtil::loadJob('templateMsg',
 					[
 						'tag' => WechatUtil::NOTICE_SUMMON,
@@ -1291,6 +1299,7 @@ class WechatUtil
 //			$ret = UserWechat::sendMsg($openIds, $content, $debug);
 //			$cnt = 0;
 			foreach ($openIds as $k => $openId) {
+
 				QueueUtil::loadJob('pushText',
 					[
 						'open_id' => $openId,
@@ -1299,11 +1308,12 @@ class WechatUtil
 					QueueUtil::QUEUE_TUBE_SMS);
 
 
-				/*$cnt += UserWechat::sendMsg($openId, $content);
+				$cnt += UserWechat::sendMsg($openId, $content);
 				if ($k > 0 && $k % 4 == 0) {
+					echo 'sleep:' . 2 . PHP_EOL;
 					sleep(2);
-					var_dump($cnt . ' - ' . $k . '/' . count($openIds) . date('  m-d H:i:s'));
-				}*/
+				}
+				echo $cnt . ' - ' . $k . '/' . count($openIds) . date('  m-d H:i:s');
 			}
 		}
 		return $cnt;
