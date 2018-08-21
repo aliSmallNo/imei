@@ -12,7 +12,16 @@ namespace common\models;
 use admin\models\Admin;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
+use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
+
+/**
+ * This is the model class for table "im_user_comments".
+ *
+ * @property integer $cId
+ * @property integer $cUId
+ * @property integer cCategory
+ */
 
 class UserComment extends ActiveRecord
 {
@@ -215,6 +224,10 @@ class UserComment extends ActiveRecord
 					"cUpdatedOn" => date("Y-m-d H:i:s"),
 					"cUpdatedBy" => Admin::getAdminId(),
 				]);
+				$comment = self::findOne(['cId' => $id]);
+				if ($comment) {
+					WechatUtil::templateMsg(WechatUtil::NOTICE_COMMENT, $comment->cUId);
+				}
 				break;
 		}
 		return $res;

@@ -943,7 +943,7 @@ class FooController extends Controller
 		//$ret = WechatUtil::summonViewer(true, '');
 		//var_dump($ret);
 
-		WechatUtil::templateMsg(WechatUtil::NOTICE_COMMENT, 120003);
+
 	}
 
 	public function actionMediamsg()
