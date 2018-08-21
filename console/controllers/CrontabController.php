@@ -21,6 +21,7 @@ use common\models\YzRefund;
 use common\models\YzUser;
 use common\service\TrendService;
 use common\utils\AppUtil;
+use common\utils\WechatUtil;
 use common\utils\YouzanUtil;
 use yii\console\Controller;
 
@@ -71,6 +72,9 @@ class CrontabController extends Controller
 	{
 		$ret = UserWechat::refreshPool();
 		var_dump(count($ret));
+		if (date("H") == 21) {
+			WechatUtil::summonViewer();
+		}
 	}
 
 	public function actionRecycle()

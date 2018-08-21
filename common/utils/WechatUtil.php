@@ -1287,7 +1287,9 @@ class WechatUtil
 				WechatUtil::templateMsg(WechatUtil::NOTICE_SUMMON, $userId, '有人对你怦然心动啦',
 					'有一位你的微信好友对你怦然心动啦，快去看看吧~', $senderId, 0);
 				$cnt++;
-				echo 'tmp:' . $cnt . ' - ' . $cnt . '/' . count($userIds) . " UID:$userId " . date('  m-d H:i:s') . PHP_EOL;
+				if ($debug) {
+					echo 'tmp:' . $cnt . ' - ' . $cnt . '/' . count($userIds) . " UID:$userId " . date('  m-d H:i:s') . PHP_EOL;
+				}
 			}
 			// return count($userIds);
 		}
@@ -1324,7 +1326,9 @@ class WechatUtil
 					echo 'sleep:' . 2 . PHP_EOL;
 					sleep(random_int(1, 2));
 				}
-				echo 'text:' . $cnt . ' - ' . $cnt . '/' . count($openIds) . date('  m-d H:i:s') . " openid:$openId " . PHP_EOL;
+				if ($debug) {
+					echo 'text:' . $cnt . ' - ' . $cnt . '/' . count($openIds) . date('  m-d H:i:s') . " openid:$openId " . PHP_EOL;
+				}
 			}
 		}
 		echo " send end";
