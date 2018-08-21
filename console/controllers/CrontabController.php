@@ -72,6 +72,7 @@ class CrontabController extends Controller
 	{
 		$ret = UserWechat::refreshPool();
 		var_dump(count($ret));
+		// 每天晚上九点【唤醒】当天关注未注册用户
 		if (date("H") == 21) {
 			WechatUtil::summonViewer();
 		}

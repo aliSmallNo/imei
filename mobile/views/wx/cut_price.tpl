@@ -161,7 +161,7 @@
 		<div class="cut_price">价值￥19.90、邀请朋友点赞六次可获得</div>
 	</div>
 	<div class="cut_card_new">
-		<img src="/images/cut_price/cut_card_new.png?v=1.1.2">
+		<img src="/images/cut_price/cut_card_new1.png?v=1.1.2">
 		<div class="cut_card_stat">
 			<div class="cut_card_stat_item">
 				<div>已点赞</div>
