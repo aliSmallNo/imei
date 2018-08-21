@@ -881,7 +881,6 @@ class WechatUtil
 			$access_token = self::getAccessToken(self::ACCESS_CODE);
 			$url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $access_token;
 			$ret = AppUtil::postJSON($url, json_encode($bodyInfo));
-			var_dump($ret);
 //			Log::add(['oCategory' => Log::CAT_WECHAT_TEMP_MSG, 'oUId' => $takerId, "oKey" => $noticeTag . __LINE__, "oBefore" => $bodyInfo]);
 		}
 //		Log::add(['oCategory' => Log::CAT_WECHAT_TEMP_MSG, 'oUId' => $takerId, "oKey" => $noticeTag . __LINE__, "oBefore" => $bodyInfo]);
@@ -1293,6 +1292,7 @@ class WechatUtil
 			// return count($userIds);
 		}
 
+		sleep(random_int(2, 9));
 
 		$openIds = array_column($ret, 'uOpenId');
 
