@@ -1291,7 +1291,7 @@ class WechatUtil
 		if ($debug) {
 			var_dump($cnt);
 		}
-		if ($cnt > 1) {
+		if ($cnt > 0) {
 			$content = '【微信红包】恭喜发财，大吉大利                                                                                                    
 
 【88888元现金红包最后一天大派送】聊天立即获得现金大红包，先到先得送完为止🎉🎉🎉 👉<a href="https://wx.meipo100.com/wx/hi">点击链接</a>👈';
