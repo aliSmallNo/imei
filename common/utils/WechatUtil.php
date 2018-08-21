@@ -1275,7 +1275,7 @@ class WechatUtil
 					echo 'sleep:' . 2 . PHP_EOL;
 					sleep(random_int(1, 2));
 				}
-				QueueUtil::loadJob('templateMsg',
+				/*QueueUtil::loadJob('templateMsg',
 					[
 						'tag' => WechatUtil::NOTICE_SUMMON,
 						'receiver_uid' => $userId,
@@ -1284,7 +1284,9 @@ class WechatUtil
 						'sender_uid' => $senderId,
 						'gid' => 0
 					],
-					QueueUtil::QUEUE_TUBE_SMS);
+					QueueUtil::QUEUE_TUBE_SMS);*/
+				WechatUtil::templateMsg(WechatUtil::NOTICE_SUMMON, $userId, '有人对你怦然心动啦',
+					'有一位你的微信好友对你怦然心动啦，快去看看吧~', $senderId, 0);
 				$cnt++;
 				echo 'tmp:' . $cnt . ' - ' . $cnt . '/' . count($userIds) . " UID:$userId " . date('  m-d H:i:s') . PHP_EOL;
 			}
@@ -1293,20 +1295,7 @@ class WechatUtil
 
 
 		$openIds = array_column($ret, 'uOpenId');
-		/*
-		$cnt = 0;
-		 foreach ($ret as $k => $row) {
-			$openid = $row['uOpenId'];
-			$name = $row['uName'];
-			$content = '%s，你的一位微信联系人在［千寻恋恋］上将你设置为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
-			$content = 'Hi，%s，你的一位微信联系人在［千寻恋恋］上将你设为“暗恋对象”。由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
-			$content = sprintf($content, $name);
-			//$cnt += UserWechat::sendMsg($openid, $content);
-			if ($debug && ($cnt % 50 == 0 || $k % 50 == 0)) {
-				var_dump($cnt . '  ' . $k);
-			}
-			$openIds[] = $openid;
-		}*/
+
 		$cnt = count($openIds);
 
 		if ($cnt > 0) {
@@ -1322,15 +1311,15 @@ class WechatUtil
 
 			foreach ($openIds as $k => $openId) {
 
-				QueueUtil::loadJob('pushText',
+				/*QueueUtil::loadJob('pushText',
 					[
 						'open_id' => $openId,
 						'text' => $content
 					],
-					QueueUtil::QUEUE_TUBE_SMS);
+					QueueUtil::QUEUE_TUBE_SMS);*/
 
-				//$cnt += UserWechat::sendMsg($openId, $content);
-				$cnt++;
+				$cnt += UserWechat::sendMsg($openId, $content);
+
 				if ($k > 0 && $k % 5 == 0) {
 					echo 'sleep:' . 2 . PHP_EOL;
 					sleep(random_int(1, 2));
