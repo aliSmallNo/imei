@@ -1267,7 +1267,7 @@ class WechatUtil
 		$ret = $conn->createCommand($sql)->queryAll();
 		if ($cat == 'template') {
 			$userIds = array_column($ret, 'uId');
-			var_dump($userIds);
+
 			$senderId = User::SERVICE_UID;
 			$cnt = 0;
 			foreach ($userIds as $k1 => $userId) {
@@ -1319,7 +1319,7 @@ class WechatUtil
 //			$ret = UserWechat::sendMsg($openIds, $content, $debug);
 //			$cnt = 0;
 			$cnt = 0;
-			var_dump($openIds);
+
 			foreach ($openIds as $k => $openId) {
 
 				QueueUtil::loadJob('pushText',
