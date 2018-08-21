@@ -940,15 +940,15 @@ class FooController extends Controller
 
 	public function actionSummon()
 	{
-		//$ret = WechatUtil::summonViewer(true);
-		$ret = WechatUtil::templateMsg(
+		$ret = WechatUtil::summonViewer(true);
+		/*$ret = WechatUtil::templateMsg(
 			 WechatUtil::NOTICE_SUMMON,
 			 120003,
 			'有人对你怦然心动啦',
 			'有一位你的微信好友对你怦然心动啦，快去看看吧~',
 			 120000,
 			 0
-		);
+		);*/
 		//var_dump($ret);
 
 
