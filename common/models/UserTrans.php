@@ -947,6 +947,10 @@ class UserTrans extends ActiveRecord
 		if (self::today_amt($conn, $uid) >= 5) {
 			return false;
 		}
+		// 关闭男的任务，保留女的做任务
+		if ($gender != User::GENDER_FEMALE) {
+			return false;
+		}
 
 		$sql = "select count(1) from im_user_trans where tUId=:uid and tPId=:pid ";
 		$cmd1 = $conn->createCommand($sql);

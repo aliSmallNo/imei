@@ -2204,6 +2204,7 @@ class WxController extends BaseController
 		if ($this->user_id) {
 			$avatar = $this->user_avatar;
 			$nickname = $this->user_name;
+			$gender = $this->user_gender;
 			$stat = UserTrans::getStat($this->user_id, true);
 		} else {
 			header('location:/wx/error?msg=用户不存在啊~');
@@ -2253,6 +2254,7 @@ class WxController extends BaseController
 			[
 				'avatar' => $avatar,
 				'nickname' => $nickname,
+				'gender' => $gender,
 				'prices' => $prices,
 				'hid' => $hid,
 				'stat' => $stat,

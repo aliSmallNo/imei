@@ -189,6 +189,7 @@
 </section>
 <input type="hidden" id="cUID" value="{{$hid}}">
 <input type="hidden" id="cCLOSETIME" value="{{$close_time}}">
+<input type="hidden" id="cGENDER" value="{{$gender}}">
 
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
@@ -235,6 +236,6 @@
 		document.location.hash = "#index";
 	}
 	requirejs(['/js/config.js'], function () {
-		requirejs(['/js/sw.js?v=1.4.8']);
+		requirejs(['/js/sw.js?v=1.4.9']);
 	});
 </script>
