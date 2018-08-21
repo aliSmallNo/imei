@@ -812,10 +812,13 @@ class FooController extends Controller
 						ORDER BY uId ASC ";
 		*/
 
+		$str = "";
+		$str = " and uOpenId='oYDJew5MfQtAT12g3Ocso0OKLMyA' ";
+
 		$sql = "SELECT uId,w.wSubscribe,uPhone,uRole
  				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId
- 				WHERE uPhone AND w.wSubscribe=1 and uRole in (10,20) and uId > 0 and uPhone order by uId asc";
+ 				WHERE uPhone AND w.wSubscribe=1 and uRole in (10,20) and uId > 0 $str and uPhone order by uId asc";
 
 		$ret = $conn->createCommand($sql)->queryAll();
 		//print_r($ret);
