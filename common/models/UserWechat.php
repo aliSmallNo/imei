@@ -575,7 +575,7 @@ class UserWechat extends ActiveRecord
 		$sql = "SELECT uId,uName,uPhone,uOpenId,uAddedOn,wSubscribe,wSubscribeTime,`wRawData`
 				FROM im_user as u
 				JOIN im_user_wechat as w on w.wUId=u.uId
-				WHERE uPhone ='' and uId > 0  and DATE_FORMAT(uAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
+				WHERE uPhone ='' and uId > 0  and uAddedOn>CURRENT_TIMESTAMP - INTERVAL 10 MINUTE";
 		$res = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
 		if ($res) {
