@@ -10,6 +10,7 @@ namespace console\controllers;
  */
 use common\models\ChatMsg;
 use common\models\ChatRoom;
+use common\models\Log;
 use common\models\Stat;
 use common\models\UserMsg;
 use common\models\UserNet;
@@ -75,9 +76,13 @@ class CrontabController extends Controller
 		// 每天晚上九点【唤醒】当天关注未注册用户
 		if (date("H") == 21) {
 			WechatUtil::summonViewer();
+			AppUtil::logFile("summonViewer", 5);
 		}
-
-
+		// 每天中午12点【推送】最近两天用户的点赞数
+		if (date("H") == 12) {
+			$cnt = Log::summon_2day_zan();
+			AppUtil::logFile("summon_2day_zan: $cnt", 5);
+		}
 	}
 
 	public function actionRecycle()
