@@ -637,6 +637,12 @@ class Log extends ActiveRecord
 		return [$res, $count];
 	}
 
+	/**
+	 * 每天中午12点【推送】最近两天用户的点赞数
+	 * @param string $uid
+	 * @return int
+	 * @throws \yii\db\Exception
+	 */
 	public static function summon_2day_zan($uid = '')
 	{
 		// 174878

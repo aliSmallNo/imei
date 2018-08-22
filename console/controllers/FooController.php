@@ -962,6 +962,8 @@ class FooController extends Controller
 
 		/*$cnt = Log::summon_2day_zan();
 		AppUtil::logFile("summon_2day_zan: $cnt", 5);*/
+
+		AppUtil::array_demo();
 	}
 
 	public function actionMediamsg()
