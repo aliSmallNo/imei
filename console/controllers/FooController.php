@@ -960,7 +960,8 @@ class FooController extends Controller
 		/*$cnt = UserWechat::summon_10min_subscribe();
 		AppUtil::logFile('every_10min:' . $cnt, 5);*/
 
-		Log::summon_2day_zan(174878);
+		$cnt = Log::summon_2day_zan();
+		AppUtil::logFile("summon_2day_zan: $cnt", 5);
 	}
 
 	public function actionMediamsg()
