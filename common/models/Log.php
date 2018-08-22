@@ -657,7 +657,7 @@ class Log extends ActiveRecord
 			foreach ($res as $v) {
 				$uid = $v['oUId'];
 				$co = intval($v['co']);
-				$title = "好友点赞: " . $co . "次，剩余: " . self::CUT_TIMES - $co . "次";
+				$title = "好友点赞: " . $co . "次，剩余: " . (self::CUT_TIMES - $co) . "次";
 				WechatUtil::templateMsg(WechatUtil::NOTICE_CUT_PRICE_SUMMON, $uid, $title);
 			}
 		}
