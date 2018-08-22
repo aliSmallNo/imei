@@ -648,7 +648,7 @@ class Log extends ActiveRecord
 		$sql = "select oUId,count(1) as co,oDate,uOpenId,uName
 				from im_log as o
 				left join im_user as u on u.uId=o.oUId  
-				where oCategory=':cat' and oKey=:k and DATEDIFF(oDate,NOW())=-2 $str group by oUId ";
+				where oCategory=:cat and oKey=:k and DATEDIFF(oDate,NOW())=-2 $str group by oUId ";
 		$res = AppUtil::db()->createCommand($sql)->bindValues([
 			':cat' => self::CAT_USER_CUT_PRICE,
 			':k' => self::KEY_DEFAULT,
