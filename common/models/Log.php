@@ -642,7 +642,7 @@ class Log extends ActiveRecord
 		// 174878
 		$str = '';
 		if ($uid) {
-			$str=" and oUId=$uid ";
+			$str = " and oUId=$uid ";
 		}
 		// 每天推送一条信息 提示用户点赞剩余数
 		$sql = "select oUId,count(1) as co,oDate,uOpenId,uName
@@ -656,7 +656,8 @@ class Log extends ActiveRecord
 		if ($res) {
 			foreach ($res as $v) {
 				$uid = $v['oUId'];
-				$title = "好友点赞: " . $v['co'] . "次，剩余: " . self::CUT_TIMES - $v['co'] . "次";
+				$co = intval($v['co']);
+				$title = "好友点赞: " . $co . "次，剩余: " . self::CUT_TIMES - $co . "次";
 				WechatUtil::templateMsg(WechatUtil::NOTICE_CUT_PRICE_SUMMON, $uid, $title);
 			}
 		}
