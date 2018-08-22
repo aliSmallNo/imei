@@ -156,6 +156,9 @@ require(['jquery', 'mustache', "alpha"],
 			}
 			desc = '免费领取畅聊卡，与他们约会吧！';
 
+			title = $sls.location + "婚恋平台，每天成功35对，查看我的匹配对象";
+			desc = "点击领取资料查看卡，查看我的匹配对象，与ta们约会吧！";
+			imgUrl = "https://img.meipo100.com/2017/1218/179684_t.png";
 
 			if (type === 'message') {
 				return {
