@@ -1252,7 +1252,7 @@ class WechatUtil
 	{
 		$conn = AppUtil::db();
 		$criteria = "";
-		$criteria = " AND uOpenId='oYDJew5EFMuyrJdwRrXkIZLU2c58' ";
+		//$criteria = " AND uOpenId='oYDJew5EFMuyrJdwRrXkIZLU2c58' ";
 		if (!$criteria) {
 			$criteria = " AND u.uPhone='' and DATE_FORMAT(uAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d') ";
 		}
