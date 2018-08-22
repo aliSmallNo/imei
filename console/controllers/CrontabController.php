@@ -76,6 +76,8 @@ class CrontabController extends Controller
 		if (date("H") == 21) {
 			WechatUtil::summonViewer();
 		}
+
+
 	}
 
 	public function actionRecycle()

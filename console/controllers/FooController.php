@@ -957,8 +957,10 @@ class FooController extends Controller
 		);*/
 		//var_dump($ret);
 
-		$cnt = UserWechat::summon_10min_subscribe();
-		AppUtil::logFile('every_10min:' . $cnt, 5);
+		/*$cnt = UserWechat::summon_10min_subscribe();
+		AppUtil::logFile('every_10min:' . $cnt, 5);*/
+
+		Log::summon_2day_zan(174878);
 	}
 
 	public function actionMediamsg()

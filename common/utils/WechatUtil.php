@@ -41,6 +41,7 @@ class WechatUtil
 	const NOTICE_RETURN = 'notice_return';
 	const NOTICE_CHAT = 'notice_chat';
 	const NOTICE_CUT_PRICE = 'notice_cut_price';
+	const NOTICE_CUT_PRICE_SUMMON = 'notice_cut_price_summon';
 	const NOTICE_AUDIT_PASS = 'notice_audit_pass';
 	const NOTICE_AUDIT = 'notice_audit';
 	const NOTICE_PRESENT = 'notice_present';
@@ -677,6 +678,16 @@ class WechatUtil
 				$url = $wxUrl . "/wx/single#scontacts";
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['keyword1'] = "密聊消息";
+				$keywords['keyword2'] = $title;
+				$keywords['keyword3'] = date("Y年n月j日 H:i");
+				$keywords['remark'] = "\n点击下方详情查看吧~";
+				break;
+			case self::NOTICE_CUT_PRICE_SUMMON:
+				$msgCat = UserMsg::CATEGORY_CHAT;
+				$templateId = $normTmpId;
+				$url = $wxUrl . "/wx/cut_price";
+				$keywords['first'] = "hi，$nickname\n";
+				$keywords['keyword1'] = "剩余点赞通知";
 				$keywords['keyword2'] = $title;
 				$keywords['keyword3'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = "\n点击下方详情查看吧~";

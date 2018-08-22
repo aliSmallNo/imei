@@ -637,4 +637,30 @@ class Log extends ActiveRecord
 		return [$res, $count];
 	}
 
+	public static function summon_2day_zan($uid = '')
+	{
+		// 174878
+		$str = '';
+		if ($uid) {
+			$str=" and oUId=$uid ";
+		}
+		// 每天推送一条信息 提示用户点赞剩余数
+		$sql = "select oUId,count(1) as co,oDate,uOpenId,uName
+				from im_log as o
+				left join im_user as u on u.uId=o.oUId  
+				where oCategory=':cat' and oKey=:k and DATEDIFF(oDate,NOW())=-2 $str group by oUId ";
+		$res = AppUtil::db()->createCommand($sql)->bindValues([
+			':cat' => self::CAT_USER_CUT_PRICE,
+			':k' => self::KEY_DEFAULT,
+		])->queryAll();
+		if ($res) {
+			foreach ($res as $v) {
+				$uid = $v['oUId'];
+				$title = "好友点赞: " . $v['co'] . "次，剩余: " . self::CUT_TIMES - $v['co'] . "次";
+				WechatUtil::templateMsg(WechatUtil::NOTICE_CUT_PRICE_SUMMON, $uid, $title);
+			}
+		}
+
+	}
+
 }
