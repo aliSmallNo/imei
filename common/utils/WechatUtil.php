@@ -1266,32 +1266,18 @@ class WechatUtil
 		$ret = $conn->createCommand($sql)->queryAll();
 		if ($cat == 'template') {
 			$userIds = array_column($ret, 'uId');
-
-			$senderId = User::SERVICE_UID;
 			$cnt = 0;
 			foreach ($userIds as $k1 => $userId) {
 				if ($k1 > 0 && $k1 % 5 == 0) {
 					echo 'sleep:' . 2 . PHP_EOL;
 					sleep(random_int(1, 2));
 				}
-				/*QueueUtil::loadJob('templateMsg',
-					[
-						'tag' => WechatUtil::NOTICE_SUMMON,
-						'receiver_uid' => $userId,
-						'title' => '有人对你怦然心动啦',
-						'sub_title' => '有一位你的微信好友对你怦然心动啦，快去看看吧~',
-						'sender_uid' => $senderId,
-						'gid' => 0
-					],
-					QueueUtil::QUEUE_TUBE_SMS);*/
-				WechatUtil::templateMsg(WechatUtil::NOTICE_SUMMON, $userId, '有人对你怦然心动啦',
-					'有一位你的微信好友对你怦然心动啦，快去看看吧~', $senderId, 0);
+				self::summon_template_msg($userId);
 				$cnt++;
 				if ($debug) {
 					echo 'tmp:' . $cnt . ' - ' . $cnt . '/' . count($userIds) . " UID:$userId " . date('  m-d H:i:s') . PHP_EOL;
 				}
 			}
-			// return count($userIds);
 		}
 
 		sleep(random_int(2, 9));
@@ -1301,27 +1287,9 @@ class WechatUtil
 		$cnt = count($openIds);
 
 		if ($cnt > 0) {
-			$content = '【微信红包】恭喜发财，大吉大利                                                                                                    
-【88888元现金红包最后一天大派送】聊天立即获得现金大红包，先到先得送完为止🎉🎉🎉 👉<a href="https://wx.meipo100.com/wx/hi">点击链接</a>👈';
-
-			$content = '你的一位微信联系人在［千寻恋恋］上将你设置为“暗恋对象”。
-			由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。' . PHP_EOL .
-				'👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
-//			$ret = UserWechat::sendMsg($openIds, $content, $debug);
-//			$cnt = 0;
 			$cnt = 0;
-
 			foreach ($openIds as $k => $openId) {
-
-				/*QueueUtil::loadJob('pushText',
-					[
-						'open_id' => $openId,
-						'text' => $content
-					],
-					QueueUtil::QUEUE_TUBE_SMS);*/
-
-				$cnt += UserWechat::sendMsg($openId, $content);
-
+				self::summon_kefu_msg($openId);
 				if ($k > 0 && $k % 5 == 0) {
 					echo 'sleep:' . 2 . PHP_EOL;
 					sleep(random_int(1, 2));
@@ -1333,6 +1301,38 @@ class WechatUtil
 		}
 		echo " send end";
 		return $cnt;
+	}
+
+	public static function summon_template_msg($userId, $senderId = User::SERVICE_UID)
+	{
+		/*QueueUtil::loadJob('templateMsg',
+					[
+						'tag' => WechatUtil::NOTICE_SUMMON,
+						'receiver_uid' => $userId,
+						'title' => '有人对你怦然心动啦',
+						'sub_title' => '有一位你的微信好友对你怦然心动啦，快去看看吧~',
+						'sender_uid' => $senderId,
+						'gid' => 0
+					],
+					QueueUtil::QUEUE_TUBE_SMS);*/
+		WechatUtil::templateMsg(WechatUtil::NOTICE_SUMMON, $userId, '有人对你怦然心动啦',
+			'有一位你的微信好友对你怦然心动啦，快去看看吧~', $senderId, 0);
+
+	}
+
+	public static function summon_kefu_msg($openId)
+	{
+		$content = '你的一位微信联系人在［千寻恋恋］上将你设置为“暗恋对象”。
+			由于你未使用千寻恋恋，你的好友发送了微信通知。如果你也“暗恋”Ta，你们将配对成功。' . PHP_EOL .
+			'👉<a href="https://wx.meipo100.com/wx/hi">点击马上注册</a>👈';
+		/*QueueUtil::loadJob('pushText',
+				[
+					'open_id' => $openId,
+					'text' => $content
+				],
+				QueueUtil::QUEUE_TUBE_SMS);*/
+		UserWechat::sendMsg($openId, $content);
+
 	}
 
 	public static function getMedia($type = 'image', $page = 1, $pageSize = 20)

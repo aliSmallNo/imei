@@ -563,4 +563,36 @@ class UserWechat extends ActiveRecord
 		}
 		return 0;
 	}
+
+	/**
+	 * 每十分钟唤醒【十分钟内】关注未注册的用户
+	 * @return int
+	 * @throws \yii\db\Exception
+	 */
+	public static function summon_10min_subscribe()
+	{
+		$conn = AppUtil::db();
+		$sql = "SELECT uId,uName,uPhone,uOpenId,uAddedOn,wSubscribe,wSubscribeTime,`wRawData`
+				FROM im_user as u
+				JOIN im_user_wechat as w on w.wUId=u.uId
+				WHERE uPhone ='' and uId > 0  and DATE_FORMAT(uAddedOn, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
+		$res = $conn->createCommand($sql)->queryAll();
+		$cnt = 0;
+		if ($res) {
+			foreach ($res as $v) {
+				$openid = $v['uOpenId'];
+				$uid = $v['uId'];
+				// 是否关注
+				if (self::is_subscribe($openid)) {
+					// 关注状态，推送一条唤醒消息
+					WechatUtil::summon_template_msg($uid);
+					WechatUtil::summon_kefu_msg($openid);
+					$cnt++;
+					AppUtil::logFile('every_10min_des ' . 'uid:' . $uid . ' openid:' . $openid, 5);
+				}
+			}
+		}
+		return $cnt;
+
+	}
 }
