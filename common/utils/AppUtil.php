@@ -1579,7 +1579,7 @@ class AppUtil
 			["array_key_first", 'Returns the first key of array if the array is not empty; NULL otherwise.'],
 		];
 
-		print_r(array_key_first(['a', 'b', 1]));
+		var_dump(array_key_first(['a', 'b', 1]));
 
 		//array_​fill
 		//array_​filter
