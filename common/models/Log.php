@@ -492,7 +492,7 @@ class Log extends ActiveRecord
 		// 是否有月卡
 
 		if (UserTag::hasCard($last_uid, UserTag::CAT_CHAT_MONTH)) {
-			return [127, 'TA有月度畅聊卡，点赞无效!', ''];
+			return [127, 'TA有此卡，点赞无效!', ''];
 		}
 
 		$cond = ['oCategory' => $cat_cut_price, 'oKey' => self::KEY_DEFAULT,
@@ -511,12 +511,13 @@ class Log extends ActiveRecord
 		$left = self::CUT_TIMES - count($items);
 		if (count($items) > (self::CUT_TIMES - 1)) {
 			// 送卡
-			$res = UserTag::add(UserTag::CAT_CHAT_MONTH, $last_uid);
+			//$res = UserTag::add(UserTag::CAT_CHAT_MONTH, $last_uid);
+			$res = UserTag::add(UserTag::CAT_CHAT_GROUP, $last_uid);
 			// 推送信息
 			WechatUtil::templateMsg(
 				WechatUtil::NOTICE_CUT_PRICE,
 				$last_uid,
-				"恭喜您！免费获得一月畅聊卡一张，即日生效！快去愉快和美女/帅哥约会吧！"
+				"恭喜您！免费获得一键群聊卡一张，即日生效！快去愉快和美女/帅哥约会吧！"
 			);
 			// 修改oKey=1
 			self::edit_cut_price($last_uid);
