@@ -1630,7 +1630,7 @@
 		color: #fff;
 	}
 
-	.tmp_group_chat a.tmp_group_chat {
+	.tmp_group_chat a.tmp_group_btn {
 		display: block;
 		background: #e0618c;
 		color: #fff;
@@ -1648,7 +1648,7 @@
 			<li><a href="javascript:;" class="{[cls]}">{[text]}</a></li>
 			{[/items]}
 		</ul>
-		<a href="javascript:;" class="tmp_group_chat">一键打招呼</a>
+		<a href="javascript:;" class="tmp_group_btn">一键打招呼</a>
 	</div>
 </script>
 <script type="text/template" id="tpl_wx_info">
