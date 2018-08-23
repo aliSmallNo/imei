@@ -1611,7 +1611,8 @@
 <style>
 	.tmp_group_chat ul li {
 		text-align: left;
-		padding: .5rem 2rem;
+		padding: .5rem 1rem;
+		margin: 0 1.5rem;
 	}
 
 	.tmp_group_chat ul li a {
@@ -1621,6 +1622,11 @@
 		border: 1px solid #ff6096;
 		border-radius: 3rem;
 		font-size: 1.2rem;
+	}
+
+	.tmp_group_chat ul li a.active {
+		background: #ff6096;
+		color: #fff;
 	}
 
 	.tmp_group_chat a.tmp_group_chat {
@@ -1638,7 +1644,7 @@
 		<h4 style="font-size: 1.8rem;padding: 1rem;">群打招呼</h4>
 		<ul>
 			{[#items]}
-			<li><a href="javascript:;">{[text]}</a></li>
+			<li><a href="javascript:;" class="{[cls]}">{[text]}</a></li>
 			{[/items]}
 		</ul>
 		<a href="javascript:;" class="tmp_group_chat">一键打招呼</a>

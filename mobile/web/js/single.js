@@ -89,14 +89,19 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					$sls.main.show();
 					var html = Mustache.render($("#tpl_group_chat").html(), {
 						items: [
-							{text: '你喜欢的另一半是什么类型？'},
-							{text: 'HI!最近有没有去旅游呀？'},
-							{text: '在干嘛呢？有没有想过什么时候结婚'},
-							{text: '你好？你喜欢吃完饭后运动吗？'},
+							{text: '你喜欢的另一半是什么类型？', cls: 'active'},
+							{text: 'HI!最近有没有去旅游呀？', cls: ''},
+							{text: '在干嘛呢？有没有想过什么时候结婚', cls: ''},
+							{text: '你好？你喜欢吃完饭后运动吗？', cls: ''},
 						]
 					});
 					$sls.content.html(html).addClass("animate-pop-in");
 					$sls.shade.fadeIn(160);
+				});
+				$(document).on(kClick, ".tmp_group_chat li a", function () {
+					var self = $(this);
+					self.closest("ul").find("a").removeClass("active");
+					self.addClass("active");
 				});
 			},
 		};
