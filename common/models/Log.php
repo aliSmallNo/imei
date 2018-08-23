@@ -514,7 +514,8 @@ class Log extends ActiveRecord
 			// 推送信息
 			WechatUtil::templateMsg(
 				WechatUtil::NOTICE_CUT_PRICE,
-				$last_uid
+				$last_uid,
+				"恭喜您！免费获得一月畅聊卡一张，即日生效！快去愉快和美女/帅哥约会吧！"
 			);
 			// 修改oKey=1
 			self::edit_cut_price($last_uid);

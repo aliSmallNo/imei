@@ -702,7 +702,7 @@ class WechatUtil
 				$url = $wxUrl . "/wx/single#scontacts";
 				$keywords['first'] = "hi，$nickname\n";
 				$keywords['keyword1'] = "月度畅聊卡领取成功！";
-				$keywords['keyword2'] = "恭喜您！免费获得一月畅聊卡一张，即日生效！快去愉快和美女/帅哥约会吧！";
+				$keywords['keyword2'] = $title;
 				$keywords['keyword3'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
