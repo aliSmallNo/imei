@@ -1832,7 +1832,7 @@ class ChatMsg extends ActiveRecord
 	const CHAT_GROUP_DAYS = 3;
 
 	// 用户群聊 有群聊卡 每天只能群聊【一次】 一次【最多50】名 【三天内没聊天的】异性
-	public static function user_mass_chat($uid)
+	public static function user_mass_chat($uid, $msg = "你好，可以认识一下吗？")
 	{
 		$conn = AppUtil::db();
 
@@ -1856,7 +1856,7 @@ class ChatMsg extends ActiveRecord
 		}
 
 
-		$sql = "select * from im_user as u
+		$sql = "select uId,uName,uPhone,uRole from im_user as u
 			left join im_user_wechat as w on `wUId`=uId
 			where uGender=:gender and uId not in (
 			select (case when gUId1=:uid then gUId2 when gUId2=:uid then gUId1 end) as uid from im_chat_group 
@@ -1868,11 +1868,17 @@ class ChatMsg extends ActiveRecord
 			":days" => -self::CHAT_GROUP_DAYS,
 		])->queryAll();
 
-		echo $conn->createCommand($sql)->bindValues([
-			":uid" => $uid,
-			":gender" => $_gender,
-			":days" => -self::CHAT_GROUP_DAYS,
-		])->getRawSql();
+		$cnt = 0;
+		foreach ($res as $k => $v) {
+			if ($uid = 120003) {
+				if (in_array($k, [0, (count($res) - 1)])) {
+					self::addChat($uid, $v['uId'], $msg);
+				}
+			}
+			$cnt++;
+
+		}
+		return [0, "群聊了" . $cnt . "名异性"];
 	}
 
 }
