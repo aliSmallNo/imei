@@ -1895,7 +1895,7 @@ class ChatMsg extends ActiveRecord
 					self::addChat($uid, $v['uId'], $msg);
 				}
 			} else {
-				// self::addChat($uid, $v['uId'], $msg);
+				self::addChat($uid, $v['uId'], $msg);
 			}
 			$uids[] = $v['uId'];
 			$cnt++;
