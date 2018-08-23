@@ -69,8 +69,10 @@
 					{{if isset($price.tip) && $price.tip}}
 					<div class="tip">{{$price.tip}}</div>{{/if}}
 				</div>
-				<div class="action"><a href="javascript:;" class="btn-recharge" data-id="{{$price.price}}"
-															 data-cat="{{$key}}"  data-title="{{$price.title}}">{{$price.price}}元</a></div>
+				<div class="action">
+					<a href="javascript:;" class="btn-recharge" data-id="{{$price.price}}"
+															 data-cat="{{$key}}"  data-title="{{$price.title}}">{{$price.price}}元</a>
+				</div>
 			</li>
 			{{/foreach}}
 			<li>
@@ -236,6 +238,6 @@
 		document.location.hash = "#index";
 	}
 	requirejs(['/js/config.js'], function () {
-		requirejs(['/js/sw.js?v=1.4.10']);
+		requirejs(['/js/sw.js?v=1.4.11']);
 	});
 </script>
