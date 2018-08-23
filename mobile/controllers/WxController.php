@@ -731,7 +731,7 @@ class WxController extends BaseController
 		$audit = UserAudit::invalid($uId, $conn);
 		$greeting = UserMsg::greeting($uId, $openId, $conn);
 		if (!$greeting) {
-			if (!UserTag::has_card($this->user_id) || $this->user_id == 120003) {
+			if (!UserTag::hasCard($this->user_id, UserTag::CAT_CHAT_MONTH)) {
 				$greeting = [
 					"title" => "月度畅聊卡免费领了~",
 					"cat" => "image",

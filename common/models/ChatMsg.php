@@ -1846,12 +1846,8 @@ class ChatMsg extends ActiveRecord
 		}
 		$_gender = $gender == User::GENDER_MALE ? User::GENDER_FEMALE : User::GENDER_MALE;
 
-		$cards = UserTag::chatCards($uid, $conn);
 		$card_text = UserTag::$CatDict[UserTag::CAT_CHAT_GROUP];
-		if (!$cards) {
-			return [129, "您还没有" . $card_text];
-		}
-		if (!in_array(UserTag::CAT_CHAT_GROUP, array_column($cards, "cat"))) {
+		if (!UserTag::hasCard($uid, UserTag::CAT_CHAT_GROUP)) {
 			return [129, "您还没有" . $card_text];
 		}
 
@@ -1869,14 +1865,22 @@ class ChatMsg extends ActiveRecord
 		])->queryAll();
 
 		$cnt = 0;
+		$uids = [];
 		foreach ($res as $k => $v) {
 			if ($uid = 120003) {
 				if (in_array($k, [0, (count($res) - 1)])) {
 					self::addChat($uid, $v['uId'], $msg);
 				}
+			} else {
+				// self::addChat($uid, $v['uId'], $msg);
 			}
+			$uids[] = $v['uId'];
 			$cnt++;
 		}
+		Log::add([
+			'oCategory' => Log::CAT_CAHT_GROUP_MSG,
+			'oKey' => 1, 'oUId' => $uid, 'oBefore' => $uids
+		]);
 		return [0, "群聊了" . $cnt . "名异性"];
 	}
 

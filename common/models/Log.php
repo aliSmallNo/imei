@@ -98,6 +98,7 @@ class Log extends ActiveRecord
 	const CAT_USER_FOCUS = 8005; // 关注取消关注
 	const CAT_USER_CUT_PRICE = 8006; // 点赞获取月度畅聊卡
 	const CAT_WECHAT_TEMP_MSG = 8007; // 模板消息
+	const CAT_CAHT_GROUP_MSG = 8008; // 群聊记录
 
 	public static function tableName()
 	{
@@ -490,7 +491,7 @@ class Log extends ActiveRecord
 		$cat_cut_price = self::CAT_USER_CUT_PRICE;
 		// 是否有月卡
 
-		if (UserTag::has_card($last_uid)) {
+		if (UserTag::hasCard($last_uid, UserTag::CAT_CHAT_MONTH)) {
 			return [127, 'TA有月度畅聊卡，点赞无效!', ''];
 		}
 

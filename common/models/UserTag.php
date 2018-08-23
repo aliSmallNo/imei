@@ -371,13 +371,20 @@ class UserTag extends ActiveRecord
 
 	}
 
-	public static function has_card($uid)
+	public static function has_card($uid, $cat = self::CAT_CHAT_MONTH)
 	{
-		$has_card = UserTag::find()
-			->where('tCategory=' . UserTag::CAT_CHAT_MONTH . ' and tUId=' . $uid . ' and tDeletedFlag=0 and tExpiredOn>now() and tDeletedFlag=0 ')
+		/*$has_card = UserTag::find()
+			->where('tCategory=' . $cat . ' and tUId=' . $uid . ' and tExpiredOn>now() and tDeletedFlag=0 ')
 			->asArray()->one();
 
-		return $has_card ? 1 : 0;
+		return $has_card ? 1 : 0;*/
+
+
+		$cards = self::chatCards($uid);
+		if ($cards && in_array($cat, array_column($cards, "cat"))) {
+			return 1;
+		}
+		return 0;
 	}
 
 
