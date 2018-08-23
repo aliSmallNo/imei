@@ -58,7 +58,7 @@
 	<ul class="m-top-users"></ul>
 	<div class="m-more">拼命加载中...</div>
 	{{if $has_group_chat_right || $uId==120003}}
-	<a href="javascript:;" class="group_chat_btn" style="background: url(../images/ico_group_chat.png?v=1.1.1) no-repeat center center;
+		<a href="javascript:;" class="group_chat_btn" style="background: url(../images/ico_group_chat.png?v=1.1.1) no-repeat center center;
 			background-size: 100% 100%;display: inline-block;position: fixed;width: 12rem;height: 4.2rem;bottom: 5rem;right: 10rem;"></a>
 	{{/if}}
 </section>
@@ -1608,9 +1608,27 @@
 		<a href="javascript:;" class="m-popup-close"></a>
 	</div>
 </script>
+<style>
+	.tmp_group_chat ul li {
+		text-align: left;
+	}
+
+	.tmp_group_chat ul li a {
+		display: inline-block;
+		padding: .2rem 1rem;
+		text-align: left;
+		border: 2px solid #ff6096;
+		border-radius: 3rem;
+		font-size: 1.2rem;
+	}
+
+	.tmp_group_chat a.tmp_group_chat {
+
+	}
+</style>
 <script type="text/template" id="tpl_group_chat">
-	<div class="tmp_group_chat">
-		<h4>群打招呼</h4>
+	<div class="tmp_group_chat" style="background: #fff;padding: 1rem;">
+		<h4 style="font-size: 1.8rem;padding: 1rem;">群打招呼</h4>
 		<ul>
 			{[#items]}
 			<li><a href="javascript:;">{[text]}</a></li>
