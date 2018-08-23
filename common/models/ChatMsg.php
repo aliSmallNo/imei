@@ -1855,13 +1855,13 @@ class ChatMsg extends ActiveRecord
 			return [129, "您还没有" . $card_text];
 		}
 
-
+		$limit = self::CHAT_GROUP_COUNT;
 		$sql = "select uId,uName,uPhone,uRole from im_user as u
 			left join im_user_wechat as w on `wUId`=uId
 			where uGender=:gender and uId not in (
 			select (case when gUId1=:uid then gUId2 when gUId2=:uid then gUId1 end) as uid from im_chat_group 
 			where (gUId1=:uid or gUId2=:uid) and DATEDIFF(`gUpdatedOn`,now())>:days 
-			) and uPhone!='' and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3) order by uId asc";
+			) and uPhone!='' and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3) order by rand() asc limit $limit";
 		$res = $conn->createCommand($sql)->bindValues([
 			":uid" => $uid,
 			":gender" => $_gender,
