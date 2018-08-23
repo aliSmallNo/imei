@@ -514,14 +514,14 @@ class Log extends ActiveRecord
 			// 推送信息
 			WechatUtil::templateMsg(
 				WechatUtil::NOTICE_CUT_PRICE,
-				$uid
+				$last_uid
 			);
 			// 修改oKey=1
 			self::edit_cut_price($last_uid);
 			self::add([
 				'oCategory' => self::CAT_USER_CUT_PRICE,
 				'oKey' => self::KEY_EXCHANGE_CARD,
-				'oUId' => $uid,
+				'oUId' => $last_uid,
 			]);
 		}
 		return [0, '点赞成功', $items];
