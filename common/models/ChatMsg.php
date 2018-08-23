@@ -1827,6 +1827,22 @@ class ChatMsg extends ActiveRecord
 		//var_dump($cnt);
 	}
 
+	public static function has_group_send_right($uid)
+	{
+		// 有群发卡
+		if (!UserTag::hasCard($uid, UserTag::CAT_CHAT_GROUP)) {
+			return 0;
+		}
+		// 今天群发过
+		$sql = "select * from im_log where oCategory=:cat and oUId=:uid and DATEDIFF(oDate,now())=0 ";
+		if (AppUtil::db()->createCommand($sql)->bindValues([
+			":uid" => $uid,
+			":cat" => UserTag::CAT_CHAT_GROUP,
+		])->queryOne()) {
+			return 0;
+		}
+		return 1;
+	}
 
 	const CHAT_GROUP_COUNT = 50;
 	const CHAT_GROUP_DAYS = 3;
@@ -1847,7 +1863,8 @@ class ChatMsg extends ActiveRecord
 		$_gender = $gender == User::GENDER_MALE ? User::GENDER_FEMALE : User::GENDER_MALE;
 
 		$card_text = UserTag::$CatDict[UserTag::CAT_CHAT_GROUP];
-		if (!UserTag::hasCard($uid, UserTag::CAT_CHAT_GROUP)) {
+		// 是否群发过
+		if (!self::has_group_send_right($uid)) {
 			return [129, "您还没有" . $card_text];
 		}
 
