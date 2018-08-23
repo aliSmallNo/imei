@@ -1837,7 +1837,7 @@ class ChatMsg extends ActiveRecord
 		$sql = "select * from im_log where oCategory=:cat and oUId=:uid and DATEDIFF(oDate,now())=0 ";
 		if (AppUtil::db()->createCommand($sql)->bindValues([
 			":uid" => $uid,
-			":cat" => UserTag::CAT_CHAT_GROUP,
+			":cat" => Log::CAT_CAHT_GROUP_MSG,
 		])->queryOne()) {
 			return 0;
 		}
