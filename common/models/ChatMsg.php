@@ -1868,7 +1868,11 @@ class ChatMsg extends ActiveRecord
 			":days" => -self::CHAT_GROUP_DAYS,
 		])->queryAll();
 
-		echo $sql;
+		echo $conn->createCommand($sql)->bindValues([
+			":uid" => $uid,
+			":gender" => $_gender,
+			":days" => -self::CHAT_GROUP_DAYS,
+		])->getRawSql();
 	}
 
 }
