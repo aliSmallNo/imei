@@ -926,7 +926,7 @@
 <div class="m-popup-shade"></div>
 <div class="m-popup-main" style="display: none">
 	<div class="m-popup-wrap">
-		<div class="m-popup-content"></div>
+		<div class="m-popup-content" style="background: transparent"></div>
 	</div>
 </div>
 <div class="m-notice off">
@@ -1611,19 +1611,26 @@
 <style>
 	.tmp_group_chat ul li {
 		text-align: left;
+		padding: .5rem 2rem;
 	}
 
 	.tmp_group_chat ul li a {
 		display: inline-block;
 		padding: .2rem 1rem;
 		text-align: left;
-		border: 2px solid #ff6096;
+		border: 1px solid #ff6096;
 		border-radius: 3rem;
 		font-size: 1.2rem;
 	}
 
 	.tmp_group_chat a.tmp_group_chat {
-
+		display: block;
+		background: #e0618c;
+		color: #fff;
+		margin: 1rem 2rem;
+		padding: 1rem;
+		font-size: 1.8rem;
+		border-radius: 2rem;
 	}
 </style>
 <script type="text/template" id="tpl_group_chat">
