@@ -1827,4 +1827,48 @@ class ChatMsg extends ActiveRecord
 		//var_dump($cnt);
 	}
 
+
+	const CHAT_GROUP_COUNT = 50;
+	const CHAT_GROUP_DAYS = 3;
+
+	// 用户群聊 有群聊卡 每天只能群聊【一次】 一次【最多50】名 【三天内没聊天的】异性
+	public static function user_mass_chat($uid)
+	{
+		$conn = AppUtil::db();
+
+		$user = User::findOne(['uId' => $uid]);
+		if (!$user) {
+			return [129, "用户信息错误~"];
+		}
+		$gender = $user->uGender;
+		if (!in_array($gender, [User::GENDER_FEMALE, User::GENDER_MALE])) {
+			return [129, "用户信息不全~"];
+		}
+		$_gender = $gender == User::GENDER_MALE ? User::GENDER_FEMALE : User::GENDER_MALE;
+
+		$cards = UserTag::chatCards($uid, $conn);
+		$card_text = UserTag::$CatDict[UserTag::CAT_CHAT_GROUP];
+		if (!$cards) {
+			return [129, "您还没有" . $card_text];
+		}
+		if (!in_array(UserTag::CAT_CHAT_GROUP, array_column($cards, "cat"))) {
+			return [129, "您还没有" . $card_text];
+		}
+
+
+		$sql = "select * from im_user as u
+			left join im_user_wechat as w on `wUId`=uId
+			where uGender=:gender and uId not in (
+			select (case when gUId1=:uid then gUId2 when gUId2=:uid then gUId1 end) as uid from im_chat_group 
+			where (gUId1=:uid or gUId2=:uid) and DATEDIFF(`gUpdatedOn`,now())>:days 
+			) and uPhone!='' and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3) order by uId asc";
+		$res = $conn->createCommand($sql)->bindValues([
+			":uid" => $uid,
+			":gender" => $_gender,
+			":days" => -self::CHAT_GROUP_DAYS,
+		])->queryAll();
+
+		echo $sql;
+	}
+
 }

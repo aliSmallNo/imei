@@ -963,7 +963,7 @@ class FooController extends Controller
 		/*$cnt = Log::summon_2day_zan();
 		AppUtil::logFile("summon_2day_zan: $cnt", 5);*/
 
-		AppUtil::array_demo();
+		print_r(ChatMsg::user_mass_chat(120003));
 	}
 
 	public function actionMediamsg()
