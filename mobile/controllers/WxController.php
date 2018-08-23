@@ -732,12 +732,13 @@ class WxController extends BaseController
 		$audit = UserAudit::invalid($uId, $conn);
 		$greeting = UserMsg::greeting($uId, $openId, $conn);
 		if (!$greeting) {
-			if (!UserTag::hasCard($this->user_id, UserTag::CAT_CHAT_MONTH)) {
+			//if (!UserTag::hasCard($this->user_id, UserTag::CAT_CHAT_MONTH)) {
+			if (!ChatMsg::has_group_send_right($this->user_id)) {
 				$greeting = [
 					"title" => "月度畅聊卡免费领了~",
 					"cat" => "image",
 					"url" => "https://wx.meipo100.com/wx/cut_price",
-					"items" => ["https://img.meipo100.com/2018/815/235636_n.jpg"],
+					"items" => ["https://img.meipo100.com/2018/823/236220_n.jpg"],
 				];
 			}
 		}
