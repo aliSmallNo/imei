@@ -18,6 +18,7 @@ class UserTrans extends ActiveRecord
 	const CAT_RECHARGE_MEMBER = 80;
 	const CAT_CHAT_MONTH = 82;
 	const CAT_CHAT_SEASON = 84;
+	const CAT_CHAT_GROUP = 85;
 	const CAT_CHAT_YEAR = 86;
 	const CAT_CHAT_DAY3 = 87;
 	const CAT_CHAT_DAY7 = 88;
@@ -65,6 +66,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_CHAT_DAY7,
 		self::CAT_CHAT_MONTH,
 		self::CAT_CHAT_SEASON,
+		self::CAT_CHAT_GROUP,
 		self::CAT_CHAT_YEAR,
 		self::CAT_MEMBER_VIP,
 		self::CAT_RECHARGE,
@@ -77,6 +79,7 @@ class UserTrans extends ActiveRecord
 		self::CAT_CHAT_DAY7 => "七天畅聊卡",
 		self::CAT_CHAT_MONTH => "月度畅聊卡",
 		self::CAT_CHAT_SEASON => "季度畅聊卡",
+		self::CAT_CHAT_GROUP => "一键群聊卡",
 		self::CAT_CHAT_YEAR => "年度畅聊卡",
 		self::CAT_MEMBER_VIP => "VIP会员",
 		self::CAT_RECHARGE => "充值",

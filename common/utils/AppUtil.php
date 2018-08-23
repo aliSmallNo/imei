@@ -1556,7 +1556,19 @@ class AppUtil
 
 	public static function array_demo()
 	{
+		$string_function = [
+			'addcslashes: 使用C样式的斜杠引用字符串,返回转义字符串',
+			'addslashes - 用斜杠引用字符串, 返回要转义的字符串',
+			'bin2hex - 将二进制数据转换为十六进制表示',
+			'bindec - 将二进制数据转换为十进制表示',
+			'dechex - 将十进制数据转换为十六进制表示',
+			'chr - 从数字生成单字节字符串',                // chr(-159) => a
+			'ord - 将字符串的第一个字节转换为0到255之间的值',// ord('a') => 97
+			"chunk_split - 将字符串拆分为较小的块",
+		];
 
 
+		var_dump(chunk_split('sdfdsfdsfdsfdsf', 3));
+		var_dump(chunk_split('sdfdsfdsfdsfdsf', 3, 2));
 	}
 }

@@ -20,6 +20,7 @@ class Pay extends ActiveRecord
 	const CAT_MEET = 400;
 	const CAT_MEMBER = 500;
 	const CAT_MEMBER_VIP = 550;
+	const CAT_CHAT_GROUP = 560;
 
 	const CAT_CHAT_MONTH = 600;
 	const CAT_CHAT_DAY3 = 603;
@@ -42,6 +43,7 @@ class Pay extends ActiveRecord
 		self::CAT_MEET => '约会',
 		self::CAT_MEMBER => '单身会员卡',
 		self::CAT_MEMBER_VIP => 'VIP会员卡',
+		self::CAT_CHAT_GROUP => '一键群聊卡',
 		self::CAT_CHAT_DAY3 => '三天畅聊卡',
 		self::CAT_CHAT_DAY7 => '七天畅聊卡',
 		self::CAT_CHAT_MONTH => '月度畅聊卡',
@@ -80,6 +82,15 @@ class Pay extends ActiveRecord
 			'tip' => '包季畅聊，有效期内免费畅聊',
 			'num' => 1
 		],
+		'chat_group' => [
+			'cat' => Pay::CAT_CHAT_GROUP,
+			'title' => '一键群聊卡',
+			'price' => 69.9,
+			'pre_price' => 99.9,
+			'tip' => '一键群发，聊天不费劲',
+			'ln' => 'line',
+			'num' => 1
+		],
 //		'member' => [
 //			'cat' => Pay::CAT_MEMBER,
 //			'title' => '单身俱乐部会员卡',
@@ -98,6 +109,7 @@ class Pay extends ActiveRecord
 			'ln' => 'line',
 			'num' => 1
 		],
+
 
 //		'rose2' => [
 //			'cat' => Pay::CAT_RECHARGE,

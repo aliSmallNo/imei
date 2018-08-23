@@ -552,6 +552,10 @@ class WechatUtil
 					UserTag::addByPId(UserTag::CAT_CHAT_SEASON, $pid);
 					$transCat = UserTrans::CAT_CHAT_SEASON;
 					break;
+				case Pay::CAT_CHAT_GROUP:
+					UserTag::addByPId(UserTag::CAT_CHAT_GROUP, $pid);
+					$transCat = UserTrans::CAT_CHAT_GROUP;
+					break;
 				case PAY::CAT_MEMBER_VIP:
 					UserTag::addByPId(UserTag::CAT_MEMBER_VIP, $pid);
 					$transCat = UserTrans::CAT_MEMBER_VIP;

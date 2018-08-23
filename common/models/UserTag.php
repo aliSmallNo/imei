@@ -21,6 +21,7 @@ class UserTag extends ActiveRecord
 	const CAT_CHAT_WEEK = 181;
 	const CAT_CHAT_MONTH = 182;
 	const CAT_CHAT_SEASON = 183;
+	const CAT_CHAT_GROUP = 184;
 	const CAT_CHAT_YEAR = 186;
 	const CAT_CHAT_DAY7 = 187;
 	const CAT_CHAT_DAY3 = 188;
@@ -35,6 +36,7 @@ class UserTag extends ActiveRecord
 		self::CAT_CHAT_WEEK => '一周畅聊卡',
 		self::CAT_CHAT_MONTH => '月度畅聊卡',
 		self::CAT_CHAT_SEASON => '季度畅聊卡',
+		self::CAT_CHAT_GROUP => '一键群聊卡',
 		self::CAT_CHAT_YEAR => '全年畅聊卡',
 		self::CAT_CHAT_DAY3 => '三天畅聊卡',
 		self::CAT_CHAT_DAY7 => '七天畅聊卡',
@@ -76,6 +78,7 @@ class UserTag extends ActiveRecord
 		}
 		$cats = implode(',',
 			[self::CAT_MEMBER_VIP, self::CAT_CHAT_WEEK, self::CAT_CHAT_MONTH, self::CAT_CHAT_SEASON,
+				self::CAT_CHAT_GROUP,
 				self::CAT_CHAT_YEAR, self::CAT_CHAT_DAY3, self::CAT_CHAT_DAY7]);
 		$sql = "SELECT tCategory as cat,tTitle as title, DATEDIFF(tExpiredOn,now()) as `left`
 			 	FROM im_user_tag 
@@ -118,6 +121,8 @@ class UserTag extends ActiveRecord
 				$seconds = 86400 * 30;
 			} elseif ($cat == self::CAT_MEMBER_VIP) {
 				$seconds = 86400 * 365;
+			} elseif ($cat == self::CAT_CHAT_GROUP) {
+				$seconds = 86400 * 3;
 			}
 			$expired = date('Y-m-d 23:59:56', time() + $seconds);
 			$sql = 'SELECT tExpiredOn FROM im_user_tag 
@@ -148,6 +153,7 @@ class UserTag extends ActiveRecord
 				break;
 			case self::CAT_CHAT_MONTH:
 			case self::CAT_MEMBER_VIP:
+			case self::CAT_CHAT_GROUP:
 				$expired = $last($conn, $uid, $cat);
 				break;
 			case self::CAT_CHAT_SEASON:
