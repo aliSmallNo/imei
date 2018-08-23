@@ -82,15 +82,15 @@ class Pay extends ActiveRecord
 			'tip' => '包季畅聊，有效期内免费畅聊',
 			'num' => 1
 		],
-//		'chat_group' => [
-//			'cat' => Pay::CAT_CHAT_GROUP,
-//			'title' => '一键群聊卡',
-//			'price' => 69.9,
-//			'pre_price' => 99.9,
-//			'tip' => '一键群发，聊天不费劲',
-//			'ln' => 'line',
-//			'num' => 1
-//		],
+		'chat_group' => [
+			'cat' => Pay::CAT_CHAT_GROUP,
+			'title' => '一键群聊卡',
+			'price' => 69.9,
+			'pre_price' => 99.9,
+			'tip' => '一键群发，聊天不费劲',
+			'ln' => 'line',
+			'num' => 1
+		],
 
 //		'member' => [
 //			'cat' => Pay::CAT_MEMBER,
