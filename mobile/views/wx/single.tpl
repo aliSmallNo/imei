@@ -57,6 +57,10 @@
 	{{/if}}
 	<ul class="m-top-users"></ul>
 	<div class="m-more">拼命加载中...</div>
+	{{if $has_group_chat_right || $uId==120003}}
+	<a href="javascript:;" class="group_chat_btn" style="background: url(../images/ico_group_chat.png?v=1.1.1) no-repeat center center;
+			background-size: 100% 100%;display: inline-block;position: fixed;width: 12rem;height: 4.2rem;bottom: 5rem;right: 10rem;"></a>
+	{{/if}}
 </section>
 
 <section id="matchCondition" data-title="筛选条件">
@@ -97,7 +101,7 @@
 			<div class="u-my-bar">
 				<div class="avatar single">
 					<div class="img {{if $uInfo.pending}}pending{{/if}}"
-					     style="background-image: url({{$avatar}})"></div>
+							 style="background-image: url({{$avatar}})"></div>
 					{{if $uInfo.cert}}<i class="i-cert"></i>{{/if}}
 					{{foreach from=$uInfo.tags item=tag}}<i class="i-tag{{$tag}}"></i>{{/foreach}}
 				</div>
@@ -125,7 +129,7 @@
 			<a href="#date"><span class="title">我的约会</span></i> <i class="i-mark-base i-mark-date"></i></a>
 			<a href="/wx/comments"><span class="title">对我的评论</span></a>
 			<a href="/wx/sw?id={{$encryptId}}#swallet"><span class="title">我的账户</span> <i
-						class="i-mark-base i-mark-rose"></i></a>
+								class="i-mark-base i-mark-rose"></i></a>
 			<a href="/wx/mshare"><span class="title">分享给朋友</span> <i class="i-mark-base i-mark-share"></i></a>
 			<a href="/wx/cert2?id={{$encryptId}}"><span class="title">实名认证</span> {{if $uInfo.cert}}
 					<span class="tip">已认证</span>
@@ -1240,7 +1244,7 @@
 	var catDes = {{$catDes}};
 </script>
 <script type="text/html" id="taskTmp">
-{[#data]}
+	{[#data]}
 	<div class="greeting pic">
 		<a href="javascript:;" class="redpacket close" data-key="{[key]}"></a>
 		<div class="redpacket_amt">
@@ -1248,7 +1252,7 @@
 			元
 		</div>
 	</div>
-{[/data]}
+	{[/data]}
 </script>
 <script type="text/html" id="heightTmp">
 	<div class="m-popup-options col3 clearfix" tag="height">
@@ -1315,16 +1319,18 @@
 	{[/data]}
 </script>
 <script type="text/html" id="tmp_vip_favor">
-<div class="vip_favor_default">
-	<div class="vip_favor_default_imgs">
-		{[#dummys]}<div><img src="{[thumb]}"></div>{[/dummys]}
+	<div class="vip_favor_default">
+		<div class="vip_favor_default_imgs">
+			{[#dummys]}
+			<div><img src="{[thumb]}"></div>
+			{[/dummys]}
+		</div>
+		<p>过去有<span>{[count_water]}</span>个异性心动过你</p>
+		<p>其中有<span>{[count_actual]}</span>个跟你很配哦~</p>
 	</div>
-	<p>过去有<span>{[count_water]}</span>个异性心动过你</p>
-	<p>其中有<span>{[count_actual]}</span>个跟你很配哦~</p>
-</div>
-<div class="vip_favor_default_btn">
-	<a href="/wx/vip">开通尊贵VIP可查看</a>
-</div>
+	<div class="vip_favor_default_btn">
+		<a href="/wx/vip">开通尊贵VIP可查看</a>
+	</div>
 </script>
 <script type="text/html" id="tmp_date">
 	{[#data]}
@@ -1370,7 +1376,7 @@
 	{[#secretId]}
 	<li>
 		<a href="javascript:;" data-eid="{[secretId]}" class="head j-profile"
-		   style="background-image: url({[avatar]}) ">
+			 style="background-image: url({[avatar]}) ">
 			{[#cert]}<i class="i-cert">已认证</i>{[/cert]}
 			{[#tags]}<i class="i-tag{[.]}"></i>{[/tags]}
 			<div class="u-info">
@@ -1600,6 +1606,17 @@
 			<a href="javascript:;">送花给TA，你会有意外惊喜哦~</a>
 		</div>
 		<a href="javascript:;" class="m-popup-close"></a>
+	</div>
+</script>
+<script type="text/template" id="tpl_group_chat">
+	<div class="tmp_group_chat">
+		<h4>群打招呼</h4>
+		<ul>
+			{[#items]}
+			<li><a href="javascript:;">{[text]}</a></li>
+			{[/items]}
+		</ul>
+		<a href="javascript:;" class="tmp_group_chat">一键打招呼</a>
 	</div>
 </script>
 <script type="text/template" id="tpl_wx_info">

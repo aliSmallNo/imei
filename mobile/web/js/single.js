@@ -83,6 +83,25 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			return $ele && $ele.length > 0 && $ele.offset().top + $offset < $(window).scrollTop() + $(window).height();
 		}
 
+		var groupChat = {
+			init: function () {
+				$(document).on(kClick, ".group_chat_btn", function () {
+					$sls.main.show();
+					var html = Mustache.render($("#tpl_group_chat").html(), {
+						items: [
+							{text: '你喜欢的另一半是什么类型？'},
+							{text: 'HI!最近有没有去旅游呀？'},
+							{text: '在干嘛呢？有没有想过什么时候结婚'},
+							{text: '你好？你喜欢吃完饭后运动吗？'},
+						]
+					});
+					$sls.content.html(html).addClass("animate-pop-in");
+					$sls.shade.fadeIn(160);
+				});
+			},
+		};
+		groupChat.init();
+
 		var SwipeUtil = {
 			pressedObj: null,
 			lastLeftObj: null,

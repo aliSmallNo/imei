@@ -8,6 +8,7 @@
 
 namespace mobile\controllers;
 
+use common\models\ChatMsg;
 use common\models\ChatRoom;
 use common\models\ChatRoomFella;
 use common\models\City;
@@ -809,7 +810,8 @@ class WxController extends BaseController
 			'taskFlag' => $taskflag,
 			'taskKey' => $taskKey,
 			'vipFlag' => $vipFlag,
-			'wsUrl' => AppUtil::wsUrl()
+			'wsUrl' => AppUtil::wsUrl(),
+			'has_group_chat_right' => ChatMsg::has_group_send_right($this->user_id) == 1 ?: 0,
 		]);
 	}
 

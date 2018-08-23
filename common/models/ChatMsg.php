@@ -1839,7 +1839,7 @@ class ChatMsg extends ActiveRecord
 			":uid" => $uid,
 			":cat" => Log::CAT_CAHT_GROUP_MSG,
 		])->queryOne()) {
-			return 0;
+			return -1;
 		}
 		return 1;
 	}
@@ -1864,8 +1864,11 @@ class ChatMsg extends ActiveRecord
 
 		$card_text = UserTag::$CatDict[UserTag::CAT_CHAT_GROUP];
 		// 是否群发过
-		if (!self::has_group_send_right($uid)) {
+		$i = self::has_group_send_right($uid);
+		if ($i == 0) {
 			return [129, "您还没有" . $card_text];
+		} elseif ($i == -1) {
+			return [129, "您今天已经群发过了，明天再来吧~"];
 		}
 
 		$limit = self::CHAT_GROUP_COUNT;
