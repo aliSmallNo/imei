@@ -1868,11 +1868,6 @@ class ChatMsg extends ActiveRecord
 			":days" => -self::CHAT_GROUP_DAYS,
 		])->queryAll();
 
-		echo $conn->createCommand($sql)->bindValues([
-			":uid" => $uid,
-			":gender" => $_gender,
-			":days" => -self::CHAT_GROUP_DAYS,
-		])->getRawSql();exit;
 		$cnt = 0;
 		foreach ($res as $k => $v) {
 			if ($uid = 120003) {
@@ -1881,7 +1876,6 @@ class ChatMsg extends ActiveRecord
 				}
 			}
 			$cnt++;
-
 		}
 		return [0, "群聊了" . $cnt . "名异性"];
 	}
