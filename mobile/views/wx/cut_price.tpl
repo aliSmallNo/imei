@@ -154,7 +154,7 @@
 
 <div class="cut_content">
 	<div class="cut_cart_title">
-		<img src="/images/cut_price/cut_cart_title.png">
+		<img src="/images/cut_price/cut_cart_title.jpg" style="width: 100%">
 	</div>
 	<div class="cut_card" style="display: none">
 		<img src="/images/cut_price/cut_card.png?v=1.1.1">
