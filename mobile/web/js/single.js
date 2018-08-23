@@ -84,7 +84,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 		}
 
 		var groupChat = {
+			loading: 0,
 			init: function () {
+				var util = this;
 				$(document).on(kClick, ".group_chat_btn", function () {
 					$sls.main.show();
 					var html = Mustache.render($("#tpl_group_chat").html(), {
@@ -102,6 +104,28 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					var self = $(this);
 					self.closest("ul").find("a").removeClass("active");
 					self.addClass("active");
+				});
+				$(document).on(kClick, ".tmp_group_chat", function () {
+					var msg = $(this).closest(".group_chat_btn").find("li a.active").html();
+					if (util.loading) {
+						return;
+					}
+					util.loading = 1;
+					$.post("/api/chat", {
+						tag: "group_chat",
+						id: $sls.user_id,
+						msg: msg,
+					}, function (resp) {
+						util.loading = 0;
+						if (resp.code < 1) {
+							$(".group_chat_btn").hide();
+							$sls.main.hide();
+							$sls.shade.fadeOut(160);
+							alpha.toast(resp.msg);
+						} else {
+							alpha.toast(resp.msg);
+						}
+					}, "json");
 				});
 			},
 		};

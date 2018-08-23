@@ -794,6 +794,11 @@ class ApiController extends Controller
 					'gid' => $ret['gid'],
 					'items' => $ret
 				]);
+			case "group_chat":
+				$msg = self::postParam("msg", "你好，可以认识一下吗？");
+				list($code, $msg) = ChatMsg::user_mass_chat($id, $msg);
+				return self::renderAPI($code, $msg);
+				break;
 		}
 		return self::renderAPI(129, "什么操作也没做啊！");
 	}
