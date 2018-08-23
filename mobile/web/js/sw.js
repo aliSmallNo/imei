@@ -209,9 +209,12 @@ require(['jquery', 'mustache', "alpha"],
 				var util = this;
 				if (util.userCoinFlag == 1) {
 					var remain = (util.deduct - util.amt).toFixed(2);
-					console.log('amt:' + util.amt)
-					console.log('deduce:' + util.deduct)
-					console.log('reamin:' + remain)
+					if (parseFloat(remain) < 0) {
+						remain = 0;
+					}
+					console.log('amt:' + util.amt);
+					console.log('deduce:' + util.deduct);
+					console.log('reamin:' + remain);
 					$(".sw_cash_items").find("p").find("span").html(remain);
 					$(".sw_exchange_cash").find("span").html(remain);
 					util.deduct = remain;
