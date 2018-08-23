@@ -6,6 +6,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			mainPage: $('main'),
 			curFrag: "slink",
 			user_id: parseInt($("#cUID").val()),
+			user_openid: $("#cOPENID").val(),
 			footer: $(".mav-foot"),
 			mobile: $("#cur_mobile").val(),
 			cork: $(".app-cork"),
@@ -113,7 +114,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					util.loading = 1;
 					$.post("/api/chat", {
 						tag: "group_chat",
-						id: $sls.user_id,
+						openid: $sls.user_openid,
 						msg: msg,
 					}, function (resp) {
 						util.loading = 0;

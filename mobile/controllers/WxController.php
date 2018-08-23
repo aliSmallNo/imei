@@ -812,6 +812,7 @@ class WxController extends BaseController
 			'vipFlag' => $vipFlag,
 			'wsUrl' => AppUtil::wsUrl(),
 			'has_group_chat_right' => ChatMsg::has_group_send_right($this->user_id) == 1 ?: 0,
+			"openId" => $openId,
 		]);
 	}
 

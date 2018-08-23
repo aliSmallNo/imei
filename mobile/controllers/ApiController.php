@@ -2311,7 +2311,6 @@ class ApiController extends Controller
 					return self::renderAPI($code, '', $msg);
 				}
 				return self::renderAPI($code, $msg);
-
 			case 'before-chat':
 				$receiverId = self::postParam('sid');
 				$receiverId = AppUtil::decrypt($receiverId);
@@ -2652,6 +2651,11 @@ class ApiController extends Controller
 					Feedback::addReport($wxInfo['uId'], $rptUId, "加入黑名单", $reason);
 					return self::renderAPI(0, '你已经成功拉黑TA了哦~');
 				}
+			case "group_chat":
+				$msg = self::postParam("msg", "你好，可以认识一下吗？");
+				list($code, $msg) = ChatMsg::user_mass_chat($uid, $msg);
+				return self::renderAPI($code, $msg);
+				break;
 		}
 		return self::renderAPI(129, '操作无效~');
 	}

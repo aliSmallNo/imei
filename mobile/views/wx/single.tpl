@@ -1235,6 +1235,7 @@
 <input type="hidden" id="cChatId" value="{{$chatId}}">
 <input type="hidden" id="cChatTitle" value="{{$chatTitle}}">
 <input type="hidden" id="cUID" value="{{$uId}}">
+<input type="hidden" id="cOPENID" value="{{$openId}}">
 <input type="hidden" id="ctaskFlag" value="{{$taskFlag}}">
 <input type="hidden" id="ctaskKey" value="{{$taskKey}}">
 <input type="hidden" id="cVIPFLAG" value="{{$vipFlag}}">
