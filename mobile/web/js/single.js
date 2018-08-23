@@ -108,6 +108,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				});
 				$(document).on(kClick, ".tmp_group_chat", function () {
 					var msg = $(this).closest(".group_chat_btn").find("li a.active").html();
+					console.log(msg)
 					if (util.loading) {
 						return;
 					}
