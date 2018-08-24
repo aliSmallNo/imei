@@ -1521,24 +1521,25 @@ class FooController extends Controller
  				where uPhone!='' and uGender=10 and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3)  
  				order by uId asc";
 
-		$sql = "select uId,uName,wSubscribe,tCategory,tTitle,tExpiredOn,tDeletedOn from im_user as u 
+		/*$sql = "select uId,uName,wSubscribe,tCategory,tTitle,tExpiredOn,tDeletedOn from im_user as u
 left join im_user_tag as t on `tUId`=uId
 left join im_user_wechat as w on `wUId`=uId
 where uPhone!=''  and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3) and uNote!='dummy' 
-and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";
+and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		$cnt = 0;
 		$amt = count($res);
 		foreach ($res as $v) {
 			$uid = $v['uId'];
-			$res = UserTag::add(UserTag::CAT_CHAT_GROUP, $uid);
+			//$res = UserTag::add(UserTag::CAT_CHAT_GROUP, $uid);
 			// 推送信息
 			WechatUtil::templateMsg(
 				WechatUtil::NOTICE_CUT_PRICE,
 				$uid,
 				//"恭喜您！免费获得一键群聊卡一张，即日生效！快去愉快和美女/帅哥密聊吧！"
-				"尊敬的VIP会员！免费赠送您一张一键群聊卡，即日生效！快去愉快的和美女/帅哥密聊吧！"
+				//"尊敬的VIP会员！免费赠送您一张一键群聊卡，即日生效！快去愉快的和美女/帅哥密聊吧！"
+				"尊敬的千寻会员！您有一张一键群聊卡还没使用，快去使用吧~！"
 			);
 			$cnt++;
 			echo $cnt . '/' . $amt . ' uid:' . $uid . PHP_EOL;
