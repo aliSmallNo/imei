@@ -15,6 +15,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			main: $(".m-popup-main"),
 			content: $(".m-popup-content"),
 			slook: $('#slook'),
+			scontacts: $('#scontacts'),
 			singleTop: 0,
 			heartbeat: $('#sfav'),
 			date: $('#date'),
@@ -33,6 +34,8 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			zone_items_first: 1,
 		};
 
+		// scontacts
+		// contacts()
 		$(window).on("scroll", function () {
 			var lastRow;
 			var sh = $(window).scrollTop();
@@ -55,6 +58,15 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				lastRow = $('#' + $sls.curFrag + ' .plist li:last');
 				if (lastRow && eleInScreen(lastRow, 80) && TabUtil.page > 0) {
 					// DateUtil.reload();
+					return false;
+				}
+			} else if ($sls.scontacts.css('display') === 'block') {
+				lastRow = $('#' + $sls.curFrag + ' .contacts li:last');
+				if (lastRow && eleInScreen(lastRow, 80) && ChatUtil.chat_page > 0) {
+					console.log(1);
+					if ($sls.user_id == 120003) {
+						ChatUtil.contacts();
+					}
 					return false;
 				}
 			}
@@ -699,6 +711,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			answerText: '',
 			answerflag: 0,
 			htag: '',
+			chat_page: 1,
 
 			init: function () {
 				var util = this;
@@ -1485,18 +1498,24 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				}
 				util.loading = 1;
 				$.post("/api/chat", {
-					tag: "contacts"
+					tag: "contacts",
+					page: util.chat_page,
 				}, function (resp) {
 					if (resp.code < 1) {
 						var html = Mustache.render(util.bookTmp, resp.data);
-						util.book.html(html);
-						if (resp.data.items.length < 1) {
+						if (util.chat_page == 1) {
+							util.book.html(html);
+						} else {
+							util.book.append(html);
+						}
+						/*if (resp.data.items.length < 1) {
 							util.bookEdit.hide();
 							util.booknoMore.show();
 						} else {
 							util.bookEdit.show();
 							util.booknoMore.hide();
-						}
+						}*/
+						util.chat_page = resp.data.nextPage;
 						setTimeout(function () {
 							util.topPL.get(0).scrollIntoView(true);
 						}, 300);
@@ -3043,6 +3062,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				case 'scontacts':
 					$sls.walletEntry.show();
 					$sls.groupChat.show();
+					ChatUtil.chat_page = 1;
 					ChatUtil.contacts();
 					ChatUtil.delChatBtn($(".contacts-edit"), "chat");
 					FootUtil.toggle(1);
