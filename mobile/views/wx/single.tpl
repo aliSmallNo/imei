@@ -1612,7 +1612,7 @@
 <style>
 	.tmp_group_chat ul li {
 		text-align: left;
-		padding: .5rem 1rem;
+		padding: .5rem 0;
 		margin: 0 1.5rem;
 	}
 
@@ -1641,7 +1641,7 @@
 	}
 </style>
 <script type="text/template" id="tpl_group_chat">
-	<div class="tmp_group_chat" style="background: #fff;padding: 1rem;">
+	<div class="tmp_group_chat" style="background: #fff;padding: 1rem;margin: 0 1rem">
 		<h4 style="font-size: 1.8rem;padding: 1rem;">群打招呼</h4>
 		<ul>
 			{[#items]}
