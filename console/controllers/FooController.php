@@ -1529,7 +1529,7 @@ class FooController extends Controller
 			WechatUtil::templateMsg(
 				WechatUtil::NOTICE_CUT_PRICE,
 				$uid,
-				"恭喜您！免费获得一键群聊卡一张，即日生效！快去愉快和美女/帅哥约会吧！"
+				"恭喜您！免费获得一键群聊卡一张，即日生效！快去愉快和美女/帅哥密聊吧！"
 			);
 			$cnt++;
 			echo $cnt . '/' . count($res) . ' uid:' . $uid . PHP_EOL;

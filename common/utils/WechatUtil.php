@@ -701,7 +701,7 @@ class WechatUtil
 				$templateId = $normTmpId;
 				$url = $wxUrl . "/wx/single#scontacts";
 				$keywords['first'] = "hi，$nickname\n";
-				$keywords['keyword1'] = "月度畅聊卡领取成功！";
+				$keywords['keyword1'] = "赠您一张千寻恋恋卡！";
 				$keywords['keyword2'] = $title;
 				$keywords['keyword3'] = date("Y年n月j日 H:i");
 				$keywords['remark'] = "\n点击下方详情查看吧~";
