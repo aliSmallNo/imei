@@ -19,6 +19,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			heartbeat: $('#sfav'),
 			date: $('#date'),
 			walletEntry: $('.m-wallet-entry'),
+			groupChat: $('.group_chat_btn'),
 			contionString: '',
 			contionVal: '',
 			chat_id: $('#cChatId').val(),
@@ -3000,6 +3001,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 			RankUtil.reset();
 			FavorUtil.reset();
 			$sls.walletEntry.hide();
+			$sls.groupChat.hide();
 			resetShare();
 			resetAddMessage();
 			switch (hashTag) {
@@ -3023,6 +3025,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					break;
 				case 'slook':
 					$sls.walletEntry.show();
+					$sls.groupChat.show();
 					if ($sls.firstLoadFlag) {
 						FilterUtil.loadFilter("", FilterUtil.sUserPage);
 						$sls.firstLoadFlag = 0;
@@ -3039,6 +3042,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					break;
 				case 'scontacts':
 					$sls.walletEntry.show();
+					$sls.groupChat.show();
 					ChatUtil.contacts();
 					ChatUtil.delChatBtn($(".contacts-edit"), "chat");
 					FootUtil.toggle(1);

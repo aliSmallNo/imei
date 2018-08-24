@@ -57,10 +57,6 @@
 	{{/if}}
 	<ul class="m-top-users"></ul>
 	<div class="m-more">拼命加载中...</div>
-	{{if $has_group_chat_right || $uId==120003}}
-		<a href="javascript:;" class="group_chat_btn" style="background: url(../images/ico_group_chat.png?v=1.1.1) no-repeat center center;
-			background-size: 100% 100%;display: inline-block;position: fixed;width: 12rem;height: 4.2rem;bottom: 5rem;right: 10rem;z-index: 9999"></a>
-	{{/if}}
 </section>
 
 <section id="matchCondition" data-title="筛选条件">
@@ -939,6 +935,10 @@
 	<a href="/wx/cut_price" class="m-wallet-entry" style="width: 5rem;height: 6rem"></a>
 {{/if}}
 
+{{if $has_group_chat_right || $uId==120003}}
+	<a href="javascript:;" class="group_chat_btn" style="background: url(../images/ico_group_chat.png?v=1.1.1) no-repeat center center;
+			background-size: 100% 100%;display: inline-block;position: fixed;width: 12rem;height: 4.2rem;bottom: 5rem;right: 10rem;z-index: 9999"></a>
+{{/if}}
 <!----- zone start ------>
 
 <section id="zone_items">
