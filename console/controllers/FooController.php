@@ -1524,7 +1524,7 @@ class FooController extends Controller
 		$sql = "select uId,uName,wSubscribe,tCategory,tTitle,tExpiredOn,tDeletedOn from im_user as u 
 left join im_user_tag as t on `tUId`=uId
 left join im_user_wechat as w on `wUId`=uId
-where uPhone!=''  and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3) and uNote!='dummy' and uId=146306
+where uPhone!=''  and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3) and uNote!='dummy' and uId=120003
 and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";
 
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
