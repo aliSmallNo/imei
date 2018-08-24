@@ -62,8 +62,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				}
 			} else if ($sls.scontacts.css('display') === 'block') {
 				lastRow = $('#' + $sls.curFrag + ' .contacts li:last');
+				console.log(lastRow, eleInScreen(lastRow, 100), ChatUtil.chat_page);
 				if (lastRow && eleInScreen(lastRow, 100) && ChatUtil.chat_page > 0) {
-					console.log(1);
+
 					if ($sls.user_id == 120003) {
 						ChatUtil.contacts();
 					}
