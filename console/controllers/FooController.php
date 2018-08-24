@@ -1538,7 +1538,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";
 				WechatUtil::NOTICE_CUT_PRICE,
 				$uid,
 				//"恭喜您！免费获得一键群聊卡一张，即日生效！快去愉快和美女/帅哥密聊吧！"
-				"尊敬的VIP会员！免费赠送您一张一键群聊卡，即日生效！快去愉快和美女/帅哥密聊吧！"
+				"尊敬的VIP会员！免费赠送您一张一键群聊卡，即日生效！快去愉快的和美女/帅哥密聊吧！"
 			);
 			$cnt++;
 			echo $cnt . '/' . $amt . ' uid:' . $uid . PHP_EOL;
