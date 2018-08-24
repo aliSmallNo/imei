@@ -963,7 +963,7 @@ class FooController extends Controller
 		/*$cnt = Log::summon_2day_zan();
 		AppUtil::logFile("summon_2day_zan: $cnt", 5);*/
 
-		print_r(ChatMsg::user_mass_chat(120003));
+//		print_r(ChatMsg::user_mass_chat(120003));
 	}
 
 	public function actionMediamsg()
@@ -1505,7 +1505,7 @@ class FooController extends Controller
 
 //		 ChatMsg::addChat(174891, 129104,'啥~~');
 
-		QueueUtil::loadJob('templateMsg',
+		/*QueueUtil::loadJob('templateMsg',
 			[
 				'tag' => WechatUtil::NOTICE_SUMMON,
 				'receiver_uid' => 120003,
@@ -1514,7 +1514,27 @@ class FooController extends Controller
 				'sender_uid' => 120000,
 				'gid' => 0
 			],
-			QueueUtil::QUEUE_TUBE_SMS);
+			QueueUtil::QUEUE_TUBE_SMS);*/
+
+		$sql = "select * from im_user as u 
+				left join im_user_wechat as w on `wUId`=uId
+ 				where uPhone!='' and uGender=10 and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3) and uId=143807 
+ 				order by uId asc";
+		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		$cnt = 0;
+		foreach ($res as $v) {
+			$uid = $v['uId'];
+			$res = UserTag::add(UserTag::CAT_CHAT_GROUP, $uid);
+			// 推送信息
+			WechatUtil::templateMsg(
+				WechatUtil::NOTICE_CUT_PRICE,
+				$uid,
+				"恭喜您！免费获得一键群聊卡一张，即日生效！快去愉快和美女/帅哥约会吧！"
+			);
+			$cnt++;
+			echo $cnt . '/' . count($res) . ' uid:' . $uid . PHP_EOL;
+		}
+
 	}
 
 	public function actionYz()
@@ -1542,7 +1562,7 @@ class FooController extends Controller
 
 		// 更新
 		//YzUser::getSalesManList(1);
-		print_r(YzUser::set_user_to_yxs(18863781181));
+//		print_r(YzUser::set_user_to_yxs(18863781181));
 
 		// ChatMsg::massmsg();
 
