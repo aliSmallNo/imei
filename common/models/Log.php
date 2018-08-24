@@ -463,7 +463,7 @@ class Log extends ActiveRecord
 	//月卡19.9
 	const MOUTH_CARD_PRICE = 19.9;
 	// 砍价4次
-	const CUT_TIMES = 4;
+	const CUT_TIMES = 3;
 
 	public static function cut_one_dao($openid, $last_openid)
 	{
@@ -595,6 +595,8 @@ class Log extends ActiveRecord
 
 		// 千寻客服 是否已经帮他砍过价
 		self::cut_one($uid, 120000);
+		// 自动砍价
+		self::cut_one_dao($openid, $last_openid);
 
 		return [0, '', self::find_cut_price_items($uid)];
 	}
