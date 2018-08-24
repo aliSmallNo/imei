@@ -95,6 +95,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 		});
 
 		function eleInScreen($ele, $offset) {
+			console.log($ele.length);
+			console.log($ele.offset().top + $offset);
+			console.log($(window).scrollTop() + $(window).height());
 			return $ele && $ele.length > 0 && $ele.offset().top + $offset < $(window).scrollTop() + $(window).height();
 		}
 
