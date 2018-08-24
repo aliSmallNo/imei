@@ -121,9 +121,13 @@ require(['jquery', 'mustache', "alpha"],
 				}, function (resp) {
 					util.loading = 0;
 					if (resp.code == 0) {
-						var html = Mustache.render(util.tmp, resp);
+						var html = Mustache.render(util.tmp, resp.data);
 						util.UL.html(html);
-						util.cal_left(resp.data);
+						util.cal_left(resp.data.data);
+						if (resp.data.is_subscribe != 1) {
+							// 展示关注二维码
+							util.toggle(1, $('#tpl_qr').html());
+						}
 					} else {
 						alpha.toast(resp.msg);
 					}

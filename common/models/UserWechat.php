@@ -558,7 +558,9 @@ class UserWechat extends ActiveRecord
 	{
 		$info = self::findOne(['wOpenId' => $openid]);
 		$raw = AppUtil::json_decode($info->wRawData);
-		if (isset($raw['subscribe']) && $raw['subscribe'] == 1) {
+		if (is_array($raw)
+			&& array_key_exists('subscribe', $raw)
+			&& $raw['subscribe'] == 1) {
 			return 1;
 		}
 		return 0;

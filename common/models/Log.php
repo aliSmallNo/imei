@@ -598,7 +598,10 @@ class Log extends ActiveRecord
 		// 自动砍价
 		self::cut_one_dao($openid, $last_openid);
 
-		return [0, '', self::find_cut_price_items($uid)];
+		return [0, '', [
+			"data" => self::find_cut_price_items($uid),
+			"is_subscribe" => UserWechat::is_subscribe($openid),
+		]];
 	}
 
 	public static function edit_cut_price($uid)
