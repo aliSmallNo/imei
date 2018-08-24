@@ -1467,6 +1467,18 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
+		$msglist = [
+			"你喜欢的另一半是什么类型?",
+			"HI!最近有没有去旅游呀?",
+			"在干嘛呢？有没有想过什么时候结婚?",
+			"你好？你喜欢吃完饭后运动吗?",
+			"在交往前期，大家同意AA吗?",
+			"你觉得在网上能找到真爱吗?",
+			"你老婆和你妈妈吵架了，你帮谁?",
+		];
+		$index = array_rand($msglist, 1);
+		echo $msglist[$index];
+		exit;
 
 		/*
 		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound,gAddedBy)

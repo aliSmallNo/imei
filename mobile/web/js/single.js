@@ -93,7 +93,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 					$sls.main.show();
 					var html = Mustache.render($("#tpl_group_chat").html(), {
 						items: [
-							{text: '你喜欢的另一半是什么类型？', cls: 'active'},
+							{text: '你喜欢的另一半是什么类型?', cls: 'active'},
 							{text: 'HI!最近有没有去旅游呀？', cls: ''},
 							{text: '在干嘛呢？有没有想过什么时候结婚', cls: ''},
 							{text: '你好？你喜欢吃完饭后运动吗？', cls: ''},
