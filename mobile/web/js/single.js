@@ -62,7 +62,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 				}
 			} else if ($sls.scontacts.css('display') === 'block') {
 				lastRow = $('#' + $sls.curFrag + ' .contacts li:last');
-				if (lastRow && eleInScreen(lastRow, 80) && ChatUtil.chat_page > 0) {
+				if (lastRow && eleInScreen(lastRow, 100) && ChatUtil.chat_page > 0) {
 					console.log(1);
 					if ($sls.user_id == 120003) {
 						ChatUtil.contacts();
@@ -1516,6 +1516,7 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 							util.booknoMore.hide();
 						}*/
 						util.chat_page = resp.data.nextPage;
+						console.log(util.chat_page);
 						setTimeout(function () {
 							util.topPL.get(0).scrollIntoView(true);
 						}, 300);
