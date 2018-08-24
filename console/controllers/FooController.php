@@ -1518,7 +1518,7 @@ class FooController extends Controller
 
 		$sql = "select * from im_user as u 
 				left join im_user_wechat as w on `wUId`=uId
- 				where uPhone!='' and uGender=10 and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3) and uId=143807 
+ 				where uPhone!='' and uGender=10 and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3)  
  				order by uId asc";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		$cnt = 0;
