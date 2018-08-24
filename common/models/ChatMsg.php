@@ -1891,8 +1891,7 @@ class ChatMsg extends ActiveRecord
 		$uids = [];
 		foreach ($res as $k => $v) {
 
-			return [0,''];
-			if ($uid = 120003) {
+			if ($uid == 120003) {
 				if (in_array($k, [0, (count($res) - 1)])) {
 					self::addChat($uid, $v['uId'], $msg);
 				}
