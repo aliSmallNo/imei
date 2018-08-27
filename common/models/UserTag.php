@@ -390,6 +390,7 @@ class UserTag extends ActiveRecord
 				$item['uId'],
 				"尊敬的千寻恋恋用户！您的一键群聊卡张有效期剩余" . $item['day'] . "天，请尽快使用!"
 			);
+			echo "has_card_days:" . $item['day'] . " 天 uid:" . $item['tUId'] . PHP_EOL;
 		}
 
 		$user_has_card = array_column($user_has_card, "tUId");
