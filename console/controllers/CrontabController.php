@@ -83,6 +83,10 @@ class CrontabController extends Controller
 			$cnt = Log::summon_2day_zan();
 			AppUtil::logFile("summon_2day_zan: $cnt", 5);
 		}
+		// 每天下午7点【推送】一键群聊卡剩余天数，随机发放400张一键群聊卡
+		if (date("H") == 18) {
+			UserTag::give_group_card_everyday();
+		}
 	}
 
 	public function actionRecycle()

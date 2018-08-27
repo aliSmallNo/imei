@@ -386,13 +386,13 @@ class UserTag extends ActiveRecord
 		$cnt = 0;
 		foreach ($user_has_card as $item) {
 			// 推送信息
-			/*WechatUtil::templateMsg(
+			WechatUtil::templateMsg(
 				WechatUtil::NOTICE_CUT_PRICE,
 				$item['tUId'],
 				"尊敬的千寻恋恋用户！您的一键群聊卡张有效期剩余" . $item['day'] . "天，请尽快使用!"
-			);*/
+			);
 			$cnt++;
-			echo "left_group_card_days:" . $item['day'] . " 天 uid:" . $item['tUId'] . PHP_EOL;
+			//echo "left_group_card_days:" . $item['day'] . " 天 uid:" . $item['tUId'] . PHP_EOL;
 		}
 		AppUtil::logFile("left_group_card_days: send_times:" . $cnt, 5);
 
@@ -406,15 +406,15 @@ class UserTag extends ActiveRecord
 		$user_will_has_card = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
 		foreach ($user_will_has_card as $v) {
-			/*$res = UserTag::add(UserTag::CAT_CHAT_GROUP, $v['uId']);
+			$res = UserTag::add(UserTag::CAT_CHAT_GROUP, $v['uId']);
 			// 推送信息
 			WechatUtil::templateMsg(
 				WechatUtil::NOTICE_CUT_PRICE,
 				$v['uId'],
 				"恭喜您！免费获得一键群聊卡一张，即日生效！快去愉快和美女/帅哥约会吧！"
-			);*/
+			);
 			$cnt++;
-			echo "give_group_card:" . $cnt . " uid:" . $v['uId'] . PHP_EOL;
+			//echo "give_group_card:" . $cnt . " uid:" . $v['uId'] . PHP_EOL;
 		}
 		AppUtil::logFile("give_group_card_num:" . $cnt, 5);
 
