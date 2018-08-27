@@ -1575,7 +1575,7 @@ class AppUtil
 		];
 
 
-		$hashed_password = crypt('mypassword');
+		$hashed_password = crypt('mypassword', 'rf');
 		if (hash_equals($hashed_password, crypt(123, $hashed_password))) {
 			echo "Password verified!";
 		}
