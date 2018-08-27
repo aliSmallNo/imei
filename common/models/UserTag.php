@@ -414,7 +414,7 @@ class UserTag extends ActiveRecord
 				"恭喜您！免费获得一键群聊卡一张，即日生效！快去愉快和美女/帅哥约会吧！"
 			);*/
 			$cnt++;
-			echo "give_group_card:" . $cnt . " uid:" . $item['tUId'] . PHP_EOL;
+			echo "give_group_card:" . $cnt . " uid:" . $v['uId'] . PHP_EOL;
 		}
 		AppUtil::logFile("give_group_card_num:" . $cnt, 5);
 
