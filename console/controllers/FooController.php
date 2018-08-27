@@ -1467,14 +1467,7 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		UserTag::add(UserTag::CAT_CHAT_GROUP, 120003);
-		// 推送信息
-		WechatUtil::templateMsg(
-			WechatUtil::NOTICE_CUT_PRICE,
-			120003,
-			"恭喜您！免费获得一键群聊卡一张，即日生效！快去愉快和美女/帅哥约会吧！"
-		);
-		exit;
+		AppUtil::new_fun();
 		/*$msglist = [
 			"你喜欢的另一半是什么类型?",
 			"HI!最近有没有去旅游呀?",
