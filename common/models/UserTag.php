@@ -374,6 +374,7 @@ class UserTag extends ActiveRecord
 
 	public static function give_group_card_everyday($uid = '')
 	{
+		$cri = "";
 		if ($uid) {
 			$cri = " and tUId=120003";
 		}

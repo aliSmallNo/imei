@@ -1467,7 +1467,7 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		UserTag::give_group_card_everyday();
+		UserTag::give_group_card_everyday(120003);
 		exit;
 		/*$msglist = [
 			"你喜欢的另一半是什么类型?",
