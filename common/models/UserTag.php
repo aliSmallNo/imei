@@ -387,7 +387,7 @@ class UserTag extends ActiveRecord
 			// 推送信息
 			WechatUtil::templateMsg(
 				WechatUtil::NOTICE_CUT_PRICE,
-				$item['uId'],
+				$item['tUId'],
 				"尊敬的千寻恋恋用户！您的一键群聊卡张有效期剩余" . $item['day'] . "天，请尽快使用!"
 			);
 			echo "has_card_days:" . $item['day'] . " 天 uid:" . $item['tUId'] . PHP_EOL;
