@@ -697,7 +697,7 @@ class WechatUtil
 				$keywords['remark'] = "\n点击下方详情查看吧~";
 				break;
 			case self::NOTICE_CUT_PRICE:
-				$msgCat = UserMsg::CATEGORY_CHAT;
+				$msgCat = 0;
 				$templateId = $normTmpId;
 				$url = $wxUrl . "/wx/single#scontacts";
 				$keywords['first'] = "hi，$nickname\n";
