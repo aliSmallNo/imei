@@ -376,32 +376,35 @@ class UserTag extends ActiveRecord
 	{
 		$cri = "";
 		if ($uid) {
-			$cri = " and tUId=120003";
+			$cri = " and tUId=$uid";
 		}
 		$conn = AppUtil::db();
 		// 有卡的用户
 		$sql = "select tUId,DATEDIFF(tExpiredOn,now())+1 as `day` from im_user_tag 
 				where tCategory in (184) and tDeletedFlag=0 and DATEDIFF(tExpiredOn,now())>-1 $cri ";
 		$user_has_card = $conn->createCommand($sql)->queryAll();
+		$cnt = 0;
 		foreach ($user_has_card as $item) {
 			// 推送信息
-			WechatUtil::templateMsg(
+			/*WechatUtil::templateMsg(
 				WechatUtil::NOTICE_CUT_PRICE,
 				$item['tUId'],
 				"尊敬的千寻恋恋用户！您的一键群聊卡张有效期剩余" . $item['day'] . "天，请尽快使用!"
-			);
-			echo "has_card_days:" . $item['day'] . " 天 uid:" . $item['tUId'] . PHP_EOL;
+			);*/
+			$cnt++;
+			echo "left_group_card_days:" . $item['day'] . " 天 uid:" . $item['tUId'] . PHP_EOL;
 		}
+		AppUtil::logFile("left_group_card_days: send_times:" . $cnt, 5);
 
 		$user_has_card = array_column($user_has_card, "tUId");
 		$user_has_card_str = implode(",", $user_has_card);
-		echo $user_has_card_str;
-		exit;
-		$sql = "select uId,uName,uPhone,uRole from im_user as u
-left join im_user_wechat as w on `wUId`=uId
-where uId not in ($user_has_card_str) and uPhone!='' and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3) order by rand() limit 400";
 
+		$sql = "select uId,uName,uPhone,uRole from im_user as u
+				left join im_user_wechat as w on `wUId`=uId
+				where uId not in ($user_has_card_str) and uPhone!='' 
+				and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3) order by rand() limit 400";
 		$user_will_has_card = $conn->createCommand($sql)->queryAll();
+		$cnt = 0;
 		foreach ($user_will_has_card as $v) {
 			/*$res = UserTag::add(UserTag::CAT_CHAT_GROUP, $v['uId']);
 			// 推送信息
@@ -410,7 +413,10 @@ where uId not in ($user_has_card_str) and uPhone!='' and uRole in (10,20) and wS
 				$v['uId'],
 				"恭喜您！免费获得一键群聊卡一张，即日生效！快去愉快和美女/帅哥约会吧！"
 			);*/
+			$cnt++;
+			echo "give_group_card:" . $cnt . " uid:" . $item['tUId'] . PHP_EOL;
 		}
+		AppUtil::logFile("give_group_card_num:" . $cnt, 5);
 
 	}
 
