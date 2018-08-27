@@ -9,6 +9,7 @@ namespace common\models;
 
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
+use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
 
 class UserTag extends ActiveRecord
@@ -122,7 +123,7 @@ class UserTag extends ActiveRecord
 			} elseif ($cat == self::CAT_MEMBER_VIP) {
 				$seconds = 86400 * 365;
 			} elseif ($cat == self::CAT_CHAT_GROUP) {
-				$seconds = 86400 * 3;
+				$seconds = 86400 * 2;
 			}
 			$expired = date('Y-m-d 23:59:56', time() + $seconds);
 			$sql = 'SELECT tExpiredOn FROM im_user_tag 
@@ -371,20 +372,44 @@ class UserTag extends ActiveRecord
 
 	}
 
-	public static function has_card($uid, $cat = self::CAT_CHAT_MONTH)
+	public static function give_group_card_everyday($uid = '')
 	{
-		/*$has_card = UserTag::find()
-			->where('tCategory=' . $cat . ' and tUId=' . $uid . ' and tExpiredOn>now() and tDeletedFlag=0 ')
-			->asArray()->one();
-
-		return $has_card ? 1 : 0;*/
-
-
-		$cards = self::chatCards($uid);
-		if ($cards && in_array($cat, array_column($cards, "cat"))) {
-			return 1;
+		if ($uid) {
+			$cri = " and tUId=120003";
 		}
-		return 0;
+		$conn = AppUtil::db();
+		// 有卡的用户
+		$sql = "select tUId,DATEDIFF(tExpiredOn,now())+1 as `day` from im_user_tag 
+				where tCategory in (184) and tDeletedFlag=0 and DATEDIFF(tExpiredOn,now())>-1 $cri ";
+		$user_has_card = $conn->createCommand($sql)->queryAll();
+		foreach ($user_has_card as $item) {
+			// 推送信息
+			WechatUtil::templateMsg(
+				WechatUtil::NOTICE_CUT_PRICE,
+				$item['uId'],
+				"尊敬的千寻恋恋用户！您的一键群聊卡张有效期剩余" . $item['day'] . "天，请尽快使用!"
+			);
+		}
+
+		$user_has_card = array_column($user_has_card, "tUId");
+		$user_has_card_str = implode(",", $user_has_card);
+		echo $user_has_card_str;
+		exit;
+		$sql = "select uId,uName,uPhone,uRole from im_user as u
+left join im_user_wechat as w on `wUId`=uId
+where uId not in ($user_has_card_str) and uPhone!='' and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3) order by rand() limit 400";
+
+		$user_will_has_card = $conn->createCommand($sql)->queryAll();
+		foreach ($user_will_has_card as $v) {
+			/*$res = UserTag::add(UserTag::CAT_CHAT_GROUP, $v['uId']);
+			// 推送信息
+			WechatUtil::templateMsg(
+				WechatUtil::NOTICE_CUT_PRICE,
+				$v['uId'],
+				"恭喜您！免费获得一键群聊卡一张，即日生效！快去愉快和美女/帅哥约会吧！"
+			);*/
+		}
+
 	}
 
 

@@ -1467,7 +1467,9 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		$msglist = [
+		UserTag::give_group_card_everyday();
+		exit;
+		/*$msglist = [
 			"你喜欢的另一半是什么类型?",
 			"HI!最近有没有去旅游呀?",
 			"在干嘛呢？有没有想过什么时候结婚?",
@@ -1478,7 +1480,7 @@ class FooController extends Controller
 		];
 		$index = array_rand($msglist, 1);
 		echo $msglist[$index];
-		exit;
+		exit;*/
 
 		/*
 		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound,gAddedBy)
@@ -1528,10 +1530,10 @@ class FooController extends Controller
 			],
 			QueueUtil::QUEUE_TUBE_SMS);*/
 
-		$sql = "select * from im_user as u 
-				left join im_user_wechat as w on `wUId`=uId
- 				where uPhone!='' and uGender=10 and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3)  
- 				order by uId asc";
+//		$sql = "select * from im_user as u
+//				left join im_user_wechat as w on `wUId`=uId
+// 				where uPhone!='' and uGender=10 and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3)
+// 				order by uId asc";
 
 		/*$sql = "select uId,uName,wSubscribe,tCategory,tTitle,tExpiredOn,tDeletedOn from im_user as u
 left join im_user_tag as t on `tUId`=uId
@@ -1539,7 +1541,7 @@ left join im_user_wechat as w on `wUId`=uId
 where uPhone!=''  and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3) and uNote!='dummy' 
 and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
-		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		/*$res = AppUtil::db()->createCommand($sql)->queryAll();
 		$cnt = 0;
 		$amt = count($res);
 		foreach ($res as $v) {
@@ -1555,7 +1557,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 			);
 			$cnt++;
 			echo $cnt . '/' . $amt . ' uid:' . $uid . PHP_EOL;
-		}
+		}*/
 
 	}
 

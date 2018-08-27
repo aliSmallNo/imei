@@ -1518,9 +1518,9 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
 						}*/
 						util.chat_page = resp.data.nextPage;
 						console.log(util.chat_page);
-						setTimeout(function () {
+						//setTimeout(function () {
 							// util.topPL.get(0).scrollIntoView(true);
-						}, 300);
+						//}, 300);
 					} else {
 						alpha.toast(resp.msg);
 					}
