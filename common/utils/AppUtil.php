@@ -1556,29 +1556,10 @@ class AppUtil
 
 	public static function new_fun()
 	{
-		$string_function = [
-			'addcslashes: 使用C样式的斜杠引用字符串,返回转义字符串',
-			'addslashes - 用斜杠引用字符串, 返回要转义的字符串',
-			'bin2hex - 将二进制数据转换为十六进制表示',
-			'bindec - 将二进制数据转换为十进制表示',
-			'dechex - 将十进制数据转换为十六进制表示',
-			'chr - 从数字生成单字节字符串',                // chr(-159) => a
-			'ord - 将字符串的第一个字节转换为0到255之间的值',// ord('a') => 97
-			"chunk_split - 将字符串拆分为较小的块",
-			"convert_uuencode() - 将所有字符串（包括二进制数据）转换为可打印字符，使其对网络传输安全 返回未编码的数据或FALSE",
-			"convert_uudecode()",
-			"count_chars() 计算每个字节值(0-255)的出现次数 string并以各种方式返回",
-			"crc32() 生成32位长度的循环冗余校验和多项式str。这通常用于验证传输数据的完整性",
-			"hash() ",
-			"md5() ",
-			"sha1() ",
-		];
 
 
-		$hashed_password = crypt('mypassword', 'rf');
-		if (hash_equals($hashed_password, crypt(123, $hashed_password))) {
-			echo "Password verified!";
-		}
 
 	}
+
+
 }

@@ -112,7 +112,7 @@ class CrontabController extends Controller
 		UserMsg::routineAlert();
 //		ChatRoom::roomAlert();
 
-		if (date("i") % 10 == 0) {
+		if (date("i") % 4 == 0) {
 			$cnt = UserWechat::summon_10min_subscribe();
 			AppUtil::logFile('every_10min:' . $cnt, 5);
 		}

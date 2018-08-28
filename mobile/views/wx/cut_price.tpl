@@ -136,7 +136,7 @@
 	.cut_card_stat {
 		display: flex;
 		position: absolute;
-		bottom: 2rem;
+		bottom: 3rem;
 		left: 4rem;
 		right: 4rem;
 	}
@@ -154,14 +154,14 @@
 
 <div class="cut_content">
 	<div class="cut_cart_title">
-		<img src="/images/cut_price/cut_cart_title.jpg" style="width: 100%">
+		<img src="/images/cut_price/cut_cart_title.png" style="width: 100%">
 	</div>
 	<div class="cut_card" style="display: none">
 		<img src="/images/cut_price/cut_card.png?v=1.1.1">
 		<div class="cut_price">价值￥19.90、邀请朋友点赞六次可获得</div>
 	</div>
 	<div class="cut_card_new">
-		<img src="/images/cut_price/cut_card_new2.png?v=1.1.2">
+		<img src="/images/cut_price/cut_card_new1.png?v=1.1.2">
 		<div class="cut_card_stat">
 			<div class="cut_card_stat_item">
 				<div>已点赞</div>
