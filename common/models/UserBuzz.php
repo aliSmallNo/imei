@@ -377,7 +377,8 @@ class UserBuzz extends ActiveRecord
 					Log::cut_one_dao($fromUsername, $last_openid);
 
 					$rommdes = '欢迎关注千寻恋恋👏' . PHP_EOL . PHP_EOL .
-						'<a href="https://wx.meipo100.com/wx/cut_price?is_share=1&last_openid=' . $last_openid . '">👉点击继续帮他点赞吧~👈</a>';
+						//'<a href="https://wx.meipo100.com/wx/cut_price?is_share=1&last_openid=' . $last_openid . '">👉点击这里领取福利吧~👈</a>';
+						'<a href="https://wx.meipo100.com/wx/reg0">👉点击这里领取福利吧~👈</a>';
 					return self::textMsg($fromUsername, $toUsername, $rommdes);
 				}
 				return self::textMsg($fromUsername, $toUsername, self::$WelcomeMsg);
