@@ -1467,7 +1467,34 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		AppUtil::new_fun();
+
+		//生成严选师分享链接 https://h5.youzan.com/v2/goods/2ok9lin1adohb?sls=3xaFKQ
+		$yxs_phone = 17611629667;
+		$goods_id = 432345340;
+		$yxs_alias = YzUser::findOne(['uPhone' => $yxs_phone])->uSeller;
+		$goods_alias = YzGoods::findOne(['g_item_id' => $goods_id])->g_alias;
+		$url = "https://h5.youzan.com/v2/" . $goods_alias . "?sls=" . $yxs_alias;
+		echo $url;
+		exit;
+
+		// 分析每天被群聊用户
+		/*$sql = "select uName,uGender,o.* from im_log as o
+				left join im_user as u on u.uId =o.oUId
+				where oCategory='8008' and DATEDIFF(oDate,now())=-1";
+		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		$uids = [];
+		foreach ($res as $v) {
+			$uids = array_merge($uids, AppUtil::json_decode($v['oBefore']));
+		}
+		$uids = array_count_values($uids);
+		asort($uids);
+		foreach ($uids as $uid => $num) {
+			$uids[$uid] = $num . "--" . User::findOne(['uId' => $uid])->uGender;
+		}
+		print_r([$uids, count($uids)]);*/
+
+
+		//AppUtil::new_fun();
 		/*$msglist = [
 			"你喜欢的另一半是什么类型?",
 			"HI!最近有没有去旅游呀?",
@@ -1557,6 +1584,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 			$cnt++;
 			echo $cnt . '/' . $amt . ' uid:' . $uid . PHP_EOL;
 		}*/
+
 
 	}
 
