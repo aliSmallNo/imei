@@ -375,7 +375,8 @@ class UserBuzz extends ActiveRecord
 					$last_openid = $id;
 					// 自动帮他点赞
 					Log::cut_one_dao($fromUsername, $last_openid);
-
+					// 送一张一键群聊卡
+					UserTag::add_group_card(User::findOne(['uOpenId' => $fromUsername])->uId);
 					$rommdes = '欢迎关注千寻恋恋👏' . PHP_EOL . PHP_EOL .
 						//'<a href="https://wx.meipo100.com/wx/cut_price?is_share=1&last_openid=' . $last_openid . '">👉点击这里领取福利吧~👈</a>';
 						'<a href="https://wx.meipo100.com/wx/reg0">👉点击这里领取福利吧~👈</a>';

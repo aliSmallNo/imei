@@ -765,5 +765,16 @@ class YzGoods extends ActiveRecord
 
 	}
 
+	public static function create_share_url($yxs_phone = 17611629667, $goods_id = 432345340)
+	{
+		//生成严选师分享链接 https://h5.youzan.com/v2/goods/2ok9lin1adohb?sls=3xaFKQ
+
+		$yxs_alias = YzUser::findOne(['uPhone' => $yxs_phone])->uSeller;
+		$goods_alias = YzGoods::findOne(['g_item_id' => $goods_id])->g_alias;
+
+		$url = sprintf("https://h5.youzan.com/v2/goods/%s?sls=%s", $goods_alias, $yxs_alias);
+		return $url;
+
+	}
 
 }

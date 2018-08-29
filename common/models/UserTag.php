@@ -406,18 +406,25 @@ class UserTag extends ActiveRecord
 		$user_will_has_card = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
 		foreach ($user_will_has_card as $v) {
-			$res = UserTag::add(UserTag::CAT_CHAT_GROUP, $v['uId']);
-			// 推送信息
-			WechatUtil::templateMsg(
-				WechatUtil::NOTICE_CUT_PRICE,
-				$v['uId'],
-				"恭喜您！免费获得一键群聊卡一张，即日生效！快去愉快和美女/帅哥约会吧！"
-			);
+			self::add_group_card($v['uId']);
+
 			$cnt++;
 			//echo "give_group_card:" . $cnt . " uid:" . $v['uId'] . PHP_EOL;
 		}
 		AppUtil::logFile("give_group_card_num:" . $cnt, 5);
 
+	}
+
+	public static function add_group_card($uid, $title = "恭喜您！免费获得一键群聊卡一张，即日生效！快去愉快和美女/帅哥约会吧！")
+	{
+
+		UserTag::add(UserTag::CAT_CHAT_GROUP, $uid);
+		// 推送信息
+		WechatUtil::templateMsg(
+			WechatUtil::NOTICE_CUT_PRICE,
+			$uid,
+			$title
+		);
 	}
 
 

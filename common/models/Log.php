@@ -512,13 +512,8 @@ class Log extends ActiveRecord
 		if (count($items) > (self::CUT_TIMES - 1)) {
 			// 送卡
 			//$res = UserTag::add(UserTag::CAT_CHAT_MONTH, $last_uid);
-			$res = UserTag::add(UserTag::CAT_CHAT_GROUP, $last_uid);
-			// 推送信息
-			WechatUtil::templateMsg(
-				WechatUtil::NOTICE_CUT_PRICE,
-				$last_uid,
-				"恭喜您！免费获得一键群聊卡一张，即日生效！快去愉快和美女/帅哥约会吧！"
-			);
+			UserTag::add_group_card($last_uid);
+
 			// 修改oKey=1
 			self::edit_cut_price($last_uid);
 			self::add([
