@@ -1844,7 +1844,7 @@ class ChatMsg extends ActiveRecord
 		return 1;
 	}
 
-	const CHAT_GROUP_COUNT = 50;
+	const CHAT_GROUP_COUNT = 100;
 	const CHAT_GROUP_DAYS = 3;
 
 	// 用户群聊 有群聊卡 每天只能群聊【一次】 一次【最多50】名 【三天内没聊天的】异性
@@ -1912,16 +1912,18 @@ class ChatMsg extends ActiveRecord
 		}
 
 		foreach ($res as $k => $v) {
-
-			if ($uid == 120003) {
-				if (in_array($k, [0, (count($res) - 1)])) {
+			// 男的群聊是10人，女的群聊是100人
+			if ($gender == User::GENDER_MALE) {
+				if ($k % 10 == 0) {
 					self::addChat($uid, $v['uId'], $msg);
+					$uids[] = $v['uId'];
+					$cnt++;
 				}
 			} else {
 				self::addChat($uid, $v['uId'], $msg);
+				$uids[] = $v['uId'];
+				$cnt++;
 			}
-			$uids[] = $v['uId'];
-			$cnt++;
 		}
 		Log::add([
 			'oCategory' => Log::CAT_CAHT_GROUP_MSG,
