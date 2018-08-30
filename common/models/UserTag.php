@@ -399,10 +399,15 @@ class UserTag extends ActiveRecord
 		$user_has_card = array_column($user_has_card, "tUId");
 		$user_has_card_str = implode(",", $user_has_card);
 
-		$sql = "select uId,uName,uPhone,uRole from im_user as u
+		$sql = "(select uId,uName,uPhone,uRole,uGender from im_user as u
 				left join im_user_wechat as w on `wUId`=uId
 				where uId not in ($user_has_card_str) and uPhone!='' 
-				and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3) order by rand() limit 400";
+				and uRole in (10,20) and wSubscribe=1 and uGender=10 and uStatus in (1,3) order by rand() limit 100)
+				union 
+				(select uId,uName,uPhone,uRole,uGender from im_user as u
+				left join im_user_wechat as w on `wUId`=uId
+				where uId not in ($user_has_card_str) and uPhone!='' 
+				and uRole in (10,20) and wSubscribe=1 and uGender=11 and uStatus in (1,3) order by rand() limit 300)";
 		$user_will_has_card = $conn->createCommand($sql)->queryAll();
 		$cnt = 0;
 		foreach ($user_will_has_card as $v) {
