@@ -12,8 +12,8 @@ namespace common\utils;
 class TencentAI
 {
 
-	protected const APPKEY = 'tosQ0vMuyCYOtHn3';
-	protected const APPID = '2108179267';
+	const APPKEY = 'tosQ0vMuyCYOtHn3';
+	const APPID = '2108179267';
 
 	static $error_map = [
 		9 => 'qps超过限制	,用户认证升级或者降低调用频率',
@@ -108,7 +108,6 @@ class TencentAI
 	public static function ckeck_error_type($error_code)
 	{
 		$error_code = intval($error_code);
-
 		switch ($error_code) {
 			case $error_code > 0:
 				return self::$error_type[self::ERR_TYPE_BUSINESS];
@@ -119,9 +118,7 @@ class TencentAI
 			default:
 				return self::$error_type[self::ERR_TYPE_OK];
 		}
-
 	}
-
 
 	/**
 	 * 根据 接口请求参数 和 应用密钥 计算 请求签名
@@ -191,6 +188,169 @@ class TencentAI
 		} while (0);
 
 		curl_close($curl);
+		return self::_respone($response);
+	}
+
+	public static function _respone($response)
+	{
+		if (!$response) {
+			return '系统错误';
+		}
+		$response = AppUtil::json_decode($response);
+		/*
+		 $responseStyle = [
+			"ret" => 0,
+			"msg" => 'msg',
+			'data' => []
+		];
+		*/
+
+		if (is_array($response)
+			&& array_key_exists('ret', $response)
+			&& $response['ret'] == 0) {
+			return $response['data'];
+		} elseif (is_array($response)
+			&& array_key_exists('ret', $response)
+			&& $response['ret'] > 0) {
+			return $response['msg'];
+		} else {
+			return '系统错误~';
+		}
+	}
+
+	/**
+	 * 自动回复
+	 * @param string $msg
+	 * @return bool|mixed
+	 */
+	public static function auto_reply($msg = '你叫啥')
+	{
+		// 文档: https://ai.qq.com/doc/nlpchat.shtml
+		// 设置请求数据
+		$params = array(
+			'app_id' => self::APPID,
+			'session' => RedisUtil::getIntSeq(),
+			'question' => $msg,
+			'time_stamp' => time(),
+			'nonce_str' => strval(rand()),
+			'sign' => '',
+		);
+		$params['sign'] = self::getReqSign($params);
+
+		// 执行API调用
+		$url = 'https://api.ai.qq.com/fcgi-bin/nlp/nlp_textchat';
+		$response = self::doHttpPost($params, $url);
+
+		if (is_string($response)) {
+			return $response;
+		}
+
+		return $response['answer'];
+		// error   ['ret'=>16389,'msg'=>'no auto','data'=>['session'=>'','answer'=>'']]
+		// sucess  ['ret'=>0,'msg'=>'ok','data'=>['session'=>'1104821','answer'=>'我叫千寻小妹，你觉得这个名字怎么样？']]
+
+	}
+
+	/**
+	 * 身份证正面信息识别
+	 * @param string $path 路片路径
+	 * @return bool|mixed
+	 */
+	public static function ID_identify($path = '')
+	{
+		// 文档: https://ai.qq.com/doc/ocridcardocr.shtml
+		// 设置请求数据
+		// 图片base64编码
+		$data = file_get_contents('/Users/b_tt/Downloads/ID_card/lzp_z.jpg');
+		$base64 = base64_encode($data);
+
+		// 设置请求数据
+		$params = array(
+			'app_id' => self::APPID,
+			'image' => $base64,
+			'card_type' => '0',
+			'time_stamp' => strval(time()),
+			'nonce_str' => strval(rand()),
+			'sign' => '',
+		);
+		$params['sign'] = self::getReqSign($params);
+
+		$url = 'https://api.ai.qq.com/fcgi-bin/ocr/ocr_idcardocr';
+		// 执行API调用
+		$response = self::doHttpPost($params, $url);
+
+		if (is_string($response)) {
+			return $response;
+		}
+		unset($response['frontimage']);
 		return $response;
+//{
+//"ret": 16415,
+//"msg": "image empty",
+//"data": {
+//	"name": "",
+//	"sex": "",
+//	"nation": "",
+//	"birth": "",
+//	"address": "",
+//	"id": "",
+//	"frontimage": "",
+//	"authority": "",
+//	"backimage": ""
+//	"valid_date": "",
+//}
+	}
+
+	public static function face_analysis($path = '')
+	{
+		// 文档 https://ai.qq.com/doc/detectface.shtml
+		// 图片base64编码
+		$path = '/Users/b_tt/Downloads/ID_card/ID_z.jpg';
+
+		$data = file_get_contents($path);
+		$base64 = base64_encode($data);
+
+		// 设置请求数据
+		$params = array(
+			'app_id' => self::APPID,
+			'image' => $base64,
+			'mode' => '0',
+			'time_stamp' => strval(time()),
+			'nonce_str' => strval(rand()),
+			'sign' => '',
+		);
+		$params['sign'] = self::getReqSign($params);
+
+		// 执行API调用
+		$url = 'https://api.ai.qq.com/fcgi-bin/face/face_detectface';
+		$response = self::doHttpPost($params, $url);
+
+		echo AppUtil::json_encode($response);
+	}
+
+
+	public static function voild_to_word()
+	{
+		// 语音base64编码
+		$path = '';
+		$data = file_get_contents("/data/res/imei/voice/1101313.amr");
+		$base64 = base64_encode($data);
+
+		// 设置请求数据
+		$params = array(
+			'app_id' => self::APPID,
+			'format' => '2',
+			'rate' => '16000',
+			'speech' => $base64,
+			'time_stamp' => strval(time()),
+			'nonce_str' => strval(rand()),
+			'sign' => '',
+		);
+		$params['sign'] = self::getReqSign($params);
+
+		// 执行API调用
+		$url = 'https://api.ai.qq.com/fcgi-bin/aai/aai_asr';
+		$response = self::doHttpPost($params, $url);
+		var_dump($response);
 	}
 }

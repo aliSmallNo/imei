@@ -36,6 +36,7 @@ use common\utils\NoticeUtil;
 use common\utils\Pinyin;
 use common\utils\PushUtil;
 use common\utils\RedisUtil;
+use common\utils\TencentAI;
 use common\utils\WechatUtil;
 use common\utils\YouzanUtil;
 use console\utils\QueueUtil;
@@ -1469,7 +1470,7 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		echo IDOCR::ID_identify();
+		TencentAI::face_analysis();
 		exit();
 		// 分析每天被群聊用户
 		/*$sql = "select uName,uGender,o.* from im_log as o
