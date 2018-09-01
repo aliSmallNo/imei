@@ -27,6 +27,7 @@ use common\models\YzRefund;
 use common\models\YzUser;
 use common\service\TrendService;
 use common\utils\AppUtil;
+use common\utils\AutoReplyUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
 use common\utils\ImageUtil;
@@ -1467,7 +1468,7 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		AppUtil::auto_reply();
+		AutoReplyUtil::auto_reply();
 		exit();
 		// 分析每天被群聊用户
 		/*$sql = "select uName,uGender,o.* from im_log as o
@@ -1666,8 +1667,6 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 
 	}
-
-
 
 
 }
