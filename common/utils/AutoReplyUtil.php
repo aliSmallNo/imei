@@ -36,7 +36,7 @@ class AutoReplyUtil extends TencentAI
 
 		// 执行API调用
 		$response = self::doHttpPost($params);
-		return after_respone($response);
+		return self::after_respone($response);
 
 		/** response DATA
 		 * ret    是    int    返回码； 0表示成功，非0表示出错
