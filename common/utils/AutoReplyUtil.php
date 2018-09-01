@@ -47,6 +47,13 @@ class AutoReplyUtil extends TencentAI
 		 */
 	}
 
+	/**
+	 * @param $response
+	 * error   ['ret'=>16389,'msg'=>'no auto','data'=>['session'=>'','answer'=>'']]
+	 * sucess  ['ret'=>0,'msg'=>'ok','data'=>['session'=>'1104821','answer'=>'我叫千寻小妹，你觉得这个名字怎么样？']]
+	 * @return string
+	 *
+	 */
 	public static function after_respone($response)
 	{
 		if (!$response) {
@@ -54,6 +61,16 @@ class AutoReplyUtil extends TencentAI
 		}
 		$response = AppUtil::json_decode($response);
 		print_r($response);
+		if (!is_array($response)
+			|| !array_key_exists('ret', $response)) {
+			return '系统错误~';
+		}
+
+		if ($response['ret'] == 0) {
+			return $response['data']['answer'] ?? '~~';
+		} else {
+			return self::$error_map[$response['ret']] ?? '--';
+		}
 
 	}
 
