@@ -30,6 +30,7 @@ use common\utils\AppUtil;
 use common\utils\AutoReplyUtil;
 use common\utils\COSUtil;
 use common\utils\ExcelUtil;
+use common\utils\IDOCR;
 use common\utils\ImageUtil;
 use common\utils\NoticeUtil;
 use common\utils\Pinyin;
@@ -1468,7 +1469,7 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		echo AutoReplyUtil::auto_reply();
+		echo IDOCR::ID_identify();
 		exit();
 		// 分析每天被群聊用户
 		/*$sql = "select uName,uGender,o.* from im_log as o

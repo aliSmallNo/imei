@@ -14,16 +14,31 @@ class AutoReplyUtil extends TencentAI
 
 	static $url = 'https://api.ai.qq.com/fcgi-bin/nlp/nlp_textchat';
 
+	/**
+	 * @param string $msg
+	 * @return string
+	 * $request_data=[
+	 *      app_id    是    int    正整数    1000001    应用标识（AppId）
+	 *      time_stamp    是    int    正整数    1493468759    请求时间戳（秒级）
+	 *      nonce_str    是    string    非空且长度上限32字节    fa577ce340859f9fe    随机字符串
+	 *      sign    是    string    非空且长度固定32字节    B250148B284956EC5218D4B0503E7F8A    签名信息，详见接口鉴权
+	 *      session    是    string    UTF-8编码，非空且长度上限32字节    10000    会话标识（应用内唯一）
+	 *      question    是    string
+	 * ]
+	 *
+	 * $response_data=[
+	 *      ret    是    int    返回码； 0表示成功，非0表示出错
+	 *      msg    是    string    返回信息；ret非0时表示出错时错误原因
+	 *      data    是    object    返回数据；ret为0时有意义
+	 *      session    是    string    UTF-8编码，非空且长度上限32字节
+	 *      answer    是    string    UTF-8编码，非空
+	 * ]
+	 */
 	public static function auto_reply($msg = '你叫啥')
 	{
 		// 文档: https://ai.qq.com/doc/nlpchat.shtml
 		// 设置请求数据
-		/*app_id	是	int	正整数	1000001	应用标识（AppId）
-		time_stamp	是	int	正整数	1493468759	请求时间戳（秒级）
-		nonce_str	是	string	非空且长度上限32字节	fa577ce340859f9fe	随机字符串
-		sign	是	string	非空且长度固定32字节	B250148B284956EC5218D4B0503E7F8A	签名信息，详见接口鉴权
-		session	是	string	UTF-8编码，非空且长度上限32字节	10000	会话标识（应用内唯一）
-		question	是	string*/
+
 		$params = array(
 			'app_id' => self::APPID,
 			'session' => RedisUtil::getIntSeq(),
@@ -35,16 +50,9 @@ class AutoReplyUtil extends TencentAI
 		$params['sign'] = self::getReqSign($params);
 
 		// 执行API调用
-		$response = self::doHttpPost($params);
+		$response = self::doHttpPost($params, self::$url);
 		return self::after_respone($response);
 
-		/** response DATA
-		 * ret    是    int    返回码； 0表示成功，非0表示出错
-		 * msg    是    string    返回信息；ret非0时表示出错时错误原因
-		 * data    是    object    返回数据；ret为0时有意义
-		 * session    是    string    UTF-8编码，非空且长度上限32字节
-		 * answer    是    string    UTF-8编码，非空
-		 */
 	}
 
 	/**
@@ -121,27 +129,5 @@ class AutoReplyUtil extends TencentAI
 		return $response;
 	}
 
-	/**
-	 * 根据 接口请求参数 和 应用密钥 计算 请求签名
-	 * @param $params 接口请求参数（特别注意：不同的接口，参数对一般不一样，请以具体接口要求为准）
-	 * @return string 返回签名结果
-	 */
-	public static function getReqSign($params)
-	{
-		// 1. 字典升序排序
-		ksort($params);
-		// 2. 拼按URL键值对
-		$str = '';
-		foreach ($params as $key => $value) {
-			if ($value !== '') {
-				$str .= $key . '=' . urlencode($value) . '&';
-			}
-		}
-		// 3. 拼接app_key
-		$str .= 'app_key=' . self::APPKEY;
-		// 4. MD5运算+转换大写，得到请求签名
-		$sign = strtoupper(md5($str));
-		return $sign;
-	}
 
 }
