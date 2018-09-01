@@ -1632,18 +1632,18 @@ class AppUtil
 		$appkey = 'tosQ0vMuyCYOtHn3';
 		$params = array(
 			'app_id' => '2108179267',
-			'session' => '10000',
+			'session' => RedisUtil::getIntSeq(),
 			'question' => '你叫啥',
 			'time_stamp' => time(),
 			'nonce_str' => strval(rand()),
 			'sign' => '',
 		);
-/*app_id	是	int	正整数	1000001	应用标识（AppId）
-time_stamp	是	int	正整数	1493468759	请求时间戳（秒级）
-nonce_str	是	string	非空且长度上限32字节	fa577ce340859f9fe	随机字符串
-sign	是	string	非空且长度固定32字节	B250148B284956EC5218D4B0503E7F8A	签名信息，详见接口鉴权
-session	是	string	UTF-8编码，非空且长度上限32字节	10000	会话标识（应用内唯一）
-question	是	string*/
+		/*app_id	是	int	正整数	1000001	应用标识（AppId）
+		time_stamp	是	int	正整数	1493468759	请求时间戳（秒级）
+		nonce_str	是	string	非空且长度上限32字节	fa577ce340859f9fe	随机字符串
+		sign	是	string	非空且长度固定32字节	B250148B284956EC5218D4B0503E7F8A	签名信息，详见接口鉴权
+		session	是	string	UTF-8编码，非空且长度上限32字节	10000	会话标识（应用内唯一）
+		question	是	string*/
 
 		$params['sign'] = self::getReqSign($params, $appkey);
 		// print_r($params);exit;
