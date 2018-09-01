@@ -1468,7 +1468,7 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		AutoReplyUtil::auto_reply();
+		echo AutoReplyUtil::auto_reply();
 		exit();
 		// 分析每天被群聊用户
 		/*$sql = "select uName,uGender,o.* from im_log as o
