@@ -1634,17 +1634,32 @@ class AppUtil
 			'app_id' => '2108179267',
 			'session' => '10000',
 			'question' => '你叫啥',
-			'time_stamp' => strval(time()),
+			'time_stamp' => time(),
 			'nonce_str' => strval(rand()),
 			'sign' => '',
 		);
+/*app_id	是	int	正整数	1000001	应用标识（AppId）
+time_stamp	是	int	正整数	1493468759	请求时间戳（秒级）
+nonce_str	是	string	非空且长度上限32字节	fa577ce340859f9fe	随机字符串
+sign	是	string	非空且长度固定32字节	B250148B284956EC5218D4B0503E7F8A	签名信息，详见接口鉴权
+session	是	string	UTF-8编码，非空且长度上限32字节	10000	会话标识（应用内唯一）
+question	是	string*/
+
 		$params['sign'] = self::getReqSign($params, $appkey);
+		// print_r($params);exit;
+
 
 		// 执行API调用
 		$url = 'https://api.ai.qq.com/fcgi-bin/nlp/nlp_textchat';
 		$response = self::doHttpPost($url, $params);
 		echo $response;
-
+		/**
+		 * ret    是    int    返回码； 0表示成功，非0表示出错
+		 * msg    是    string    返回信息；ret非0时表示出错时错误原因
+		 * data    是    object    返回数据；ret为0时有意义
+		 * session    是    string    UTF-8编码，非空且长度上限32字节
+		 * answer    是    string    UTF-8编码，非空
+		 */
 	}
 
 	// doHttpPost ：执行POST请求，并取回响应结果
