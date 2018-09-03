@@ -339,8 +339,7 @@ class TencentAI
 		// 设置请求数据
 		$params = array(
 			'app_id' => self::APPID,
-			'format' => '3',
-			//'rate' => '16000',
+			'format' => 3,
 			'rate' => 16000,
 			'speech' => $base64,
 			'time_stamp' => strval(time()),
