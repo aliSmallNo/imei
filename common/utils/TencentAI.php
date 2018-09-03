@@ -330,7 +330,7 @@ class TencentAI
 	}
 
 
-	public static function voild_to_word()
+	public static function voild_to_word($fomat = 2)
 	{
 		// 语音base64编码
 		$path = '';

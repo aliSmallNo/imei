@@ -1470,7 +1470,14 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		TencentAI::voild_to_word();
+		echo '11111111'.PHP_EOL;
+		TencentAI::voild_to_word(1);
+		echo '2222222'.PHP_EOL;
+		TencentAI::voild_to_word(2);
+		echo '33333333'.PHP_EOL;
+		TencentAI::voild_to_word(3);
+		echo '44444444'.PHP_EOL;
+		TencentAI::voild_to_word(4);
 		exit();
 		// 分析每天被群聊用户
 		/*$sql = "select uName,uGender,o.* from im_log as o
