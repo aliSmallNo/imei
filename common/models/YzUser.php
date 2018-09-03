@@ -69,8 +69,9 @@ class YzUser extends ActiveRecord
 		}
 		foreach ($data as $k => $v) {
 			if ($k == 'uFromPhone') {
-				// 不修改uFromPhone: 我们的合伙人会修改
-				$entity->$k = $entity->uFromPhone ? $entity->uFromPhone : $v;
+				// 不修改 uFromPhone: 我们的合伙人会修改
+				// $entity->$k = $entity->uFromPhone ? $entity->uFromPhone : $v;
+				$entity->$k = $v;
 			} else {
 				$entity->$k = is_array($v) ? json_encode($v, JSON_UNESCAPED_UNICODE) : $v;
 			}
@@ -241,6 +242,7 @@ class YzUser extends ActiveRecord
 
 	public static function salesman_accounts_get($page, $pagesize = 20)
 	{
+		echo "page:" . $page . ' ' . PHP_EOL;
 		//获取当前店铺分销员列表，需申请高级权限方可调用。
 		$method = 'youzan.salesman.accounts.get';
 		$params = [
