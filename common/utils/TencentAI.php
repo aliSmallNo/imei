@@ -193,6 +193,7 @@ class TencentAI
 
 	public static function _respone($response)
 	{
+		echo 'response:' . $response . PHP_EOL;
 		if (!$response) {
 			return '系统错误';
 		}
