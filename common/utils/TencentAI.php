@@ -355,7 +355,7 @@ class TencentAI
 	public static function voild_to_word()
 	{
 		// 语音base64编码
-		$path = "/data/res/imei/voice/2017/99/130876.slk";
+		$path = "/data/res/imei/voice/2017/98/130876.slk";
 		$fomat = self::get_voild_format($path);
 
 		$data = file_get_contents($path);
