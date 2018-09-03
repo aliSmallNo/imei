@@ -330,18 +330,42 @@ class TencentAI
 	}
 
 
-	public static function voild_to_word($fomat = 2)
+	// 语音压缩格式编码
+	const VOILD_FORMAT_PCM = 1;
+	const VOILD_FORMAT_WAV = 2;
+	const VOILD_FORMAT_AMR = 3;
+	const VOILD_FORMAT_SILK = 4;
+	// 格式编码 格式名称
+	static $voild_format_dict = [
+		self::VOILD_FORMAT_PCM => 'PCM',
+		self::VOILD_FORMAT_WAV => 'WAV',
+		self::VOILD_FORMAT_AMR => 'AMR',
+		self::VOILD_FORMAT_SILK => 'SILK',
+	];
+
+	// 语音采样率编码
+	const VOILD_RATE_8 = 8000;
+	const VOILD_RATE_16 = 16000;
+	// 采样率 编码
+	static $voild_rate_dict = [
+		self::VOILD_RATE_8 => '8KHz',
+		self::VOILD_RATE_16 => '16KHz',
+	];
+
+	public static function voild_to_word()
 	{
 		// 语音base64编码
-		$path = '';
-		$data = file_get_contents("/data/res/imei/voice/2017/99/131039.slk");
+		$path = "/data/res/imei/voice/2017/99/131040.slk";
+		$fomat = self::get_voild_format($path);
+
+		$data = file_get_contents($path);
 		$base64 = base64_encode($data);
 
 		// 设置请求数据
 		$params = array(
 			'app_id' => self::APPID,
 			'format' => $fomat,
-			'rate' => 16000,
+			'rate' => self::VOILD_RATE_16,
 			'speech' => $base64,
 			'time_stamp' => strval(time()),
 			'nonce_str' => strval(rand()),
@@ -354,4 +378,30 @@ class TencentAI
 		$response = self::doHttpPost($params, $url);
 		//var_dump($response);
 	}
+
+	public static function get_voild_format($path)
+	{
+		$format = self::VOILD_FORMAT_AMR;
+
+		$ext = pathinfo($path, PATHINFO_EXTENSION);
+		$ext = strtolower($ext);
+
+		switch ($ext) {
+			case "pcm":
+				$format = self::VOILD_FORMAT_PCM;
+				break;
+			case "amr":
+				$format = self::VOILD_FORMAT_AMR;
+				break;
+			case "wav":
+				$format = self::VOILD_FORMAT_WAV;
+				break;
+			case "slk":
+				$format = self::VOILD_FORMAT_SILK;
+				break;
+		}
+
+		return $format;
+	}
+
 }
