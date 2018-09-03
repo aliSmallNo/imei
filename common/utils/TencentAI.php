@@ -340,7 +340,8 @@ class TencentAI
 		$params = array(
 			'app_id' => self::APPID,
 			'format' => '2',
-			'rate' => '16000',
+			//'rate' => '16000',
+			'rate' => 8000,
 			'speech' => $base64,
 			'time_stamp' => strval(time()),
 			'nonce_str' => strval(rand()),
