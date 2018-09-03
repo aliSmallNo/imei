@@ -9,6 +9,8 @@
 namespace common\utils;
 
 
+use Codeception\Module\Redis;
+
 class TencentAI
 {
 
@@ -441,6 +443,10 @@ class TencentAI
 		// 执行API调用
 		$url = 'https://api.ai.qq.com/fcgi-bin/aai/aai_tts';
 		$response = self::doHttpPost($params, $url);
+
+		if (isset($response['speech']) && $response['speech']) {
+			file_put_contents('/data/res/imei/2018/630/120003.mp3', $response['speech']);
+		}
 
 	}
 

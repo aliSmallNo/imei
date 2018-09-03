@@ -1607,7 +1607,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 		//YzUser::getSalesManList();
 
 		// 更新
-		YzUser::getSalesManList(1);
+//		YzUser::getSalesManList(1);
 //		print_r(YzUser::set_user_to_yxs(18863781181));
 
 		// ChatMsg::massmsg();
