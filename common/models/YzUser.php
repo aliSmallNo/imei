@@ -225,13 +225,16 @@ class YzUser extends ActiveRecord
 				echo $msg . PHP_EOL;
 			}
 
+			$sunXing = [];
 			for ($p = 1; $p <= $pages; $p++) {
 				$ret = self::salesman_accounts_get($p);
 				if ($ret) {
 					$ret = $ret[0];
-					self::after_get_saleman($ret);
+					$_sunXing = self::after_get_saleman($ret);
+					$sunXing = array_merge($sunXing, $_sunXing);
 				}
 			}
+			print_r($sunXing);
 		}
 
 	}
@@ -260,7 +263,7 @@ class YzUser extends ActiveRecord
 					],
 					// ...
 				],
-				'total_results' => 979,
+				'total_results' => 1519,
 			]
 		];
 		if (isset($res['response'])) {
@@ -286,6 +289,12 @@ class YzUser extends ActiveRecord
 			];
 			$fansId = $v['fans_id'];
 			$sman_phone = $v['mobile'];
+
+			$sunXing = [];
+			$from_phone = $v['from_buyer_mobile'];
+			if ($from_phone == '15953730092') {
+				$sunXing[] = $v;
+			}
 			// 注：$fansId 有等于0 的情况，实际严选师大于拉取的严选师
 			if ($fansId && !self::findOne(['uYZUId' => $fansId])) {
 				$addCount++;
@@ -315,6 +324,7 @@ class YzUser extends ActiveRecord
 			echo $msg . PHP_EOL;
 			AppUtil::logByFile($msg, YouzanUtil::LOG_YOUZAN_USER, __FUNCTION__, __LINE__);
 		}
+		return $sunXing;
 	}
 
 

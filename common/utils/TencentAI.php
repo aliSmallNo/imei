@@ -354,6 +354,8 @@ class TencentAI
 
 	public static function voild_to_word()
 	{
+		// 文档 https://ai.qq.com/doc/aaiasr.shtml
+
 		// 语音base64编码
 		$path = "/data/res/imei/voice/2017/98/130876.slk";
 		$fomat = self::get_voild_format($path);
@@ -402,6 +404,44 @@ class TencentAI
 		}
 
 		return $format;
+	}
+
+
+	//语音发音人编码
+	//发音人	编码
+	const VOILD_SPRAKER_MALE = 1;           // 普通话男声
+	const VOILD_SPRAKER_FEMALE_JINQI = 5;   // 静琪女声
+	const VOILD_SPRAKER_FEMALE_HUANXIN = 6; // 欢馨女声
+	const VOILD_SPRAKER_FEMALE_BIXUAN = 7;  // 碧萱女声
+
+	//合成语音格式编码
+	const COMPOSE_VOILD_TYPE_PCM = 1;
+	const COMPOSE_VOILD_TYPE_WAV = 2;
+	const COMPOSE_VOILD_TYPE_MP3 = 3;
+
+	// 将文字转换为语音，返回文字的语音数据。
+	public static function word_to_voild()
+	{
+		// 设置请求数据
+		$params = array(
+			'app_id' => self::APPID,
+			'speaker' => self::VOILD_SPRAKER_MALE,
+			'format' => self::COMPOSE_VOILD_TYPE_MP3,
+			'volume' => '0',
+			'speed' => '100',
+			'text' => '腾讯，你好',
+			'aht' => '0',
+			'apc' => '58',
+			'time_stamp' => strval(time()),
+			'nonce_str' => strval(rand()),
+			'sign' => '',
+		);
+		$params['sign'] = self::getReqSign($params);
+
+		// 执行API调用
+		$url = 'https://api.ai.qq.com/fcgi-bin/aai/aai_tts';
+		$response = self::doHttpPost($params, $url);
+
 	}
 
 }

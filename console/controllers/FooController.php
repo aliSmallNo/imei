@@ -1471,7 +1471,7 @@ class FooController extends Controller
 	public function actionZp()
 	{
 
-		TencentAI::voild_to_word();
+		TencentAI::word_to_voild();
 
 		// 分析每天被群聊用户
 		/*$sql = "select uName,uGender,o.* from im_log as o
@@ -1607,7 +1607,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 		//YzUser::getSalesManList();
 
 		// 更新
-		//YzUser::getSalesManList(1);
+		YzUser::getSalesManList(1);
 //		print_r(YzUser::set_user_to_yxs(18863781181));
 
 		// ChatMsg::massmsg();
