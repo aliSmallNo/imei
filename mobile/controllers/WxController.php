@@ -2231,7 +2231,7 @@ class WxController extends BaseController
 
 		$cash = [
 			//["amt" => 2, "cls" => ""],
-			["amt" => 10, "cls" => ""], ["amt" => 30, "cls" => ""], ["amt" => 50, "cls" => ""], ["amt" => 80, "cls" => ""],
+			["amt" => 5, "cls" => ""], ["amt" => 30, "cls" => ""], ["amt" => 50, "cls" => ""], ["amt" => 80, "cls" => ""],
 			["amt" => 120, "cls" => "active"], ["amt" => 180, "cls" => ""], ["amt" => 240, "cls" => ""], ["amt" => 300, "cls" => ""],
 		];
 		// 今天是否提现了2元
@@ -2241,7 +2241,7 @@ class WxController extends BaseController
 //		}
 		$cash[0]["cls"] = "active";
 		$offet = 0;
-		$cash = array_slice($cash, $offet, 3);
+		$cash = array_slice($cash, $offet, 1);
 
 		$spring_festival = 0;
 		if (strtotime("2018-02-10 00:00:00") < time()
