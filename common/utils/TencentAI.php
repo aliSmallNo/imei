@@ -334,7 +334,7 @@ class TencentAI
 	{
 		// 语音base64编码
 		$path = '';
-		$data = file_get_contents("/data/res/imei/voice/2018/410/223182210819.amr");
+		$data = file_get_contents("/data/res/imei/voice/2017/99/131081.wav");
 		$base64 = base64_encode($data);
 
 		// 设置请求数据
@@ -352,6 +352,6 @@ class TencentAI
 		// 执行API调用
 		$url = 'https://api.ai.qq.com/fcgi-bin/aai/aai_asr';
 		$response = self::doHttpPost($params, $url);
-		var_dump($response);
+		//var_dump($response);
 	}
 }
