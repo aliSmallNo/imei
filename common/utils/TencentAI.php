@@ -334,7 +334,7 @@ class TencentAI
 	{
 		// 语音base64编码
 		$path = '';
-		$data = file_get_contents("/data/res/imei/voice/2017/99/131081.wav");
+		$data = file_get_contents("/data/res/imei/voice/2017/99/131072.wav");
 		$base64 = base64_encode($data);
 
 		// 设置请求数据
