@@ -427,11 +427,11 @@ class TencentAI
 		// 设置请求数据
 		$params = array(
 			'app_id' => self::APPID,
-			'speaker' => self::VOILD_SPRAKER_MALE,
+			'speaker' => self::VOILD_SPRAKER_FEMALE_JINQI,
 			'format' => self::COMPOSE_VOILD_TYPE_MP3,
 			'volume' => '0',
 			'speed' => '100',
-			'text' => '腾讯，你好',
+			'text' => '泽鹏，你干嘛呢',
 			'aht' => '0',
 			'apc' => '58',
 			'time_stamp' => strval(time()),
@@ -445,7 +445,8 @@ class TencentAI
 		$response = self::doHttpPost($params, $url);
 
 		if (isset($response['speech']) && $response['speech']) {
-			file_put_contents('/data/res/imei/2018/630/120003.mp3', $response['speech']);
+			//file_put_contents('/data/res/imei/2018/630/120003.mp3', $response['speech']);
+			file_put_contents('/Users/b_tt/Desktop/note/python/app/120003.mp3', base64_decode($response['speech']));
 		}
 
 	}

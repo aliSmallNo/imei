@@ -554,7 +554,6 @@ class SiteController extends BaseController
 			[
 				'dmales' => $dmales,
 				'dfemales' => $dfemales,
-
 			]);
 	}
 

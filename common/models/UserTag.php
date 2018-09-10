@@ -412,7 +412,6 @@ class UserTag extends ActiveRecord
 		$cnt = 0;
 		foreach ($user_will_has_card as $v) {
 			self::add_group_card($v['uId']);
-
 			$cnt++;
 			//echo "give_group_card:" . $cnt . " uid:" . $v['uId'] . PHP_EOL;
 		}

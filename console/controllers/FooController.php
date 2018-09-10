@@ -1471,7 +1471,7 @@ class FooController extends Controller
 	public function actionZp()
 	{
 
-		TencentAI::word_to_voild();
+		// TencentAI::word_to_voild();
 
 		// 分析每天被群聊用户
 		/*$sql = "select uName,uGender,o.* from im_log as o

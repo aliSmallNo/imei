@@ -80,12 +80,12 @@ class CrontabController extends Controller
 		}
 		// 每天中午12点【推送】最近两天用户的点赞数
 		if (date("H") == 12) {
-			$cnt = Log::summon_2day_zan();
-			AppUtil::logFile("summon_2day_zan: $cnt", 5);
+			//$cnt = Log::summon_2day_zan();
+			//AppUtil::logFile("summon_2day_zan: $cnt", 5);
 		}
 		// 每天下午7点【推送】一键群聊卡剩余天数，随机发放400张一键群聊卡
 		if (date("H") == 18) {
-			UserTag::give_group_card_everyday();
+			//UserTag::give_group_card_everyday();
 		}
 	}
 
@@ -112,9 +112,9 @@ class CrontabController extends Controller
 		UserMsg::routineAlert();
 //		ChatRoom::roomAlert();
 
-		if (date("i") % 4 == 0) {
-			$cnt = UserWechat::summon_10min_subscribe();
-			AppUtil::logFile('every_10min:' . $cnt, 5);
+		if (date("i") % 10 == 0) {
+			//$cnt = UserWechat::summon_10min_subscribe();
+			//AppUtil::logFile('every_10min:' . $cnt, 5);
 		}
 
 	}
@@ -145,8 +145,8 @@ class CrontabController extends Controller
 		if (time() > strtotime('2018-06-09 10:00:00')) {
 			return;
 		}
-		AppUtil::logByFile('uid:' . 0 . ' === ' . ' cnt:' . 0, 'massmsg', __FUNCTION__, __LINE__);
-		ChatMsg::massmsg();
+//		AppUtil::logByFile('uid:' . 0 . ' === ' . ' cnt:' . 0, 'massmsg', __FUNCTION__, __LINE__);
+//		ChatMsg::massmsg();
 
 	}
 
