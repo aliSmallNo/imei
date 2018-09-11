@@ -1470,7 +1470,8 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-
+		echo md5('123456');
+		exit;
 		// TencentAI::word_to_voild();
 
 		// 分析每天被群聊用户

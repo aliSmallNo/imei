@@ -177,9 +177,10 @@
 				<td data-tid="{{$item.od_tid}}" data-gid="{{$item.od_item_id}}" data-skuid="{{$item.od_sku_id}}"
 						data-title="{{$item.od_title}}" data-reason="{{$item.f_audit_reason}}" data-st="{{$item.f_status}}"
 						data-payment="{{if $item.od_paytime}}{{$item.od_payment}}{{else}}0{{/if}}">
-					{{if $item.f_status!=1 && $is_finance}}
+					{{if $is_finance}}
 						<a href="javascript:;" class="operate btn btn-outline btn-primary btn-xs">审核</a>
 					{{/if}}
+
 					{{if $is_supply_chain && $item.f_status!=1}}
 						<a class="add_pay_info btn btn-outline btn-danger btn-xs">编辑付款信息</a>
 					{{/if}}
