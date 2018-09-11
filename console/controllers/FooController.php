@@ -1629,7 +1629,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 			])->execute();
 		}*/
 
-		YzOrders::Update_order('2018-08-24 00:00:00', '', 1);
+		YzOrders::Update_order('2018-09-05 00:00:00', '', 1);
 
 		//YzOrders::orders_user_mix_update();
 
