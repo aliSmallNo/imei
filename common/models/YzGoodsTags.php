@@ -22,7 +22,7 @@ class YzGoodsTags extends ActiveRecord
 		"name" => "t_name",
 		"type" => "t_type",
 		"item_num" => "t_item_num",
-		"desc" => "t_desc",
+		//"desc" => "t_desc",
 		"created" => "t_created",
 	];
 
@@ -62,6 +62,7 @@ class YzGoodsTags extends ActiveRecord
 		$insert = [];
 		foreach (self::$fieldMap as $key => $val) {
 			if (isset($v[$key])) {
+
 				$insert[$val] = $v[$key];
 			}
 		}
