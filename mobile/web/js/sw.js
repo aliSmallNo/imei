@@ -44,12 +44,12 @@ require(['jquery', 'mustache', "alpha"],
 				$(document).on(kClick, ".sw_cash_btn_comfirm a", function () {
 					var self = $(this);
 					console.log(util.cash, util.num, $sls.gender);
-					if (parseInt($sls.gender) != 10) {
-						alpha.prompt('提示', '由于系统故障，现暂停提现，如提现请随时关注平台通知，敬请谅解！', ['我知道了'], function () {
-							alpha.clear();
-						});
-						return;
-					}
+
+					alpha.prompt('提示', '由于系统故障，现暂停提现，如提现请随时关注平台通知，敬请谅解！', ['我知道了'], function () {
+						alpha.clear();
+					});
+					return;
+
 					if (util.num < 2) {
 						alpha.toast("还没选择要提现金额~");
 						return;

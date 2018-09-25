@@ -933,6 +933,15 @@ class AppUtil
 			$uploads_dir = self::catDir(false, $cate);
 			$silkFlag = false;
 			$extension = '.webm';
+			/**
+			 * $info:
+			 * {  error:0,
+			 *    name:"tmp_1408909127o6zAJs7qWNihg_c18S2NUN0sDT4M88cdad736c5bb3e5773a7bac85c3bf4a.silk",
+			 *    size:43427,
+			 *    tmp_name:"/tmp/phpzSHUpC",
+			 *    type:"application/octet-stream"
+			 * }
+			 */
 			if ($info['error'] == UPLOAD_ERR_OK) {
 				$tmp_name = $info["tmp_name"];
 				AppUtil::logFile($info, 5, __FUNCTION__, __LINE__);

@@ -52,6 +52,10 @@ return [
 			'enablePrettyUrl' => true,
 			'showScriptName' => false,
 			'rules' => [
+				[
+					'pattern' => '/open/site/summary',
+					'route' => '/site/summary',
+				],
 			],
 		],
 	],
