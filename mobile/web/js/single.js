@@ -794,7 +794,6 @@ requirejs(['jquery', 'alpha', 'mustache', 'swiper', 'socket', 'layer'],
                     }, 250);
                 });
 
-
                 $(document).on(kClick, ".j-content-wrap", function() {
                     var url = $(this).find('i').attr('bsrc');
                     if (url) {
