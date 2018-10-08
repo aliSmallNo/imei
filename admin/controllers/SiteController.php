@@ -135,8 +135,7 @@ class SiteController extends BaseController
 		$hideChart = true;
 
 		if (in_array(Admin::getAdminId(), [1001, 1002])) {
-			echo PHP_VERSION . PHP_EOL;
-			exit;
+			//echo PHP_VERSION . PHP_EOL;exit;
 		}
 
 		//LogAction::add($adminId, LogAction::ACTION_ADMIN, '后台首页', Admin::getBranch());
