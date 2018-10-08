@@ -1672,5 +1672,13 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 	}
 
+	public function actionTest()
+	{
+		echo '千寻恋恋' . PHP_EOL;
+		echo PHP_VERSION . PHP_EOL;
+		exit;
+
+	}
+
 
 }
