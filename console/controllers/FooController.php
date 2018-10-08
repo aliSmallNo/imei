@@ -1677,7 +1677,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 		echo '千寻恋恋' . PHP_EOL;
 		echo PHP_VERSION . PHP_EOL;
 		echo phpversion() . PHP_EOL;
-		echo phpinfo();
+		// echo phpinfo();
 
 		exit;
 
