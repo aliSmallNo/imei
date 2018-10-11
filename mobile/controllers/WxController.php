@@ -692,11 +692,6 @@ class WxController extends BaseController
 	public function actionSingle()
 	{
 		$openId = self::$WX_OpenId;
-		var_dump([
-			'user_id' => $this->user_id,
-			'openId' => $openId,
-		]);
-		exit;
 		if ($this->user_id) {
 			if (!AppUtil::isDev() && !$this->user_subscribe) {
 				header('location:/wx/qrcode');
