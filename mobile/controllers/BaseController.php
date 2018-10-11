@@ -67,8 +67,6 @@ class BaseController extends Controller
 		$wxCode = self::getParam("code");
 		if (strlen($wxCode) >= 20) {
 			$wxUserInfo = UserWechat::getInfoByCode($wxCode, true);
-			var_dump($wxUserInfo);
-			exit;
 			if ($wxUserInfo && isset($wxUserInfo["openid"])) {
 				self::$WX_OpenId = $wxUserInfo["openid"];
 				AppUtil::setCookie(self::COOKIE_OPENID, self::$WX_OpenId, $duration);
