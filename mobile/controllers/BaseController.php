@@ -56,6 +56,8 @@ class BaseController extends Controller
 
 			return parent::beforeAction($action);
 		}
+		var_dump(self::isWechat());
+		exit;
 		if (!self::isWechat()) {
 			header("location:/wxerr.html");
 			exit;
