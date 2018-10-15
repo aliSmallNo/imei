@@ -733,7 +733,7 @@ class WxController extends BaseController
 		$noReadFlag = UserMsg::hasUnread($uId, $conn) ? 1 : 0;
 		$audit = UserAudit::invalid($uId, $conn);
 		$greeting = UserMsg::greeting($uId, $openId, $conn);
-		if (!$greeting) {
+		/*if (!$greeting) {
 			//if (!UserTag::hasCard($this->user_id, UserTag::CAT_CHAT_MONTH)) {
 			if (!ChatMsg::has_group_send_right($this->user_id)) {
 				$greeting = [
@@ -743,7 +743,7 @@ class WxController extends BaseController
 					"items" => ["https://img.meipo100.com/2018/823/236220_n.jpg"],
 				];
 			}
-		}
+		}*/
 		$service = "https://bpbhd-10063905.file.myqcloud.com/image/n1712051100397.jpg";
 		$service_sm = "https://bpbhd-10063905.file.myqcloud.com/image/n1712051100395.jpg";
 		if ($uInfo["gender"] == User::GENDER_FEMALE) {
