@@ -151,6 +151,7 @@ class UserBuzz extends ActiveRecord
 						$resp = self::welcomeMsg($fromUsername, $toUsername, $event, $content, $rid);
 					}
 				}
+				Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);
 				break;
 			case "subscribe": // 关注操作
 //				Log::add(["oCategory" => Log::CAT_USER_FOCUS, "oUId" => __LINE__, "oAfter" => $fromUsername, 'oBefore' => $event]);

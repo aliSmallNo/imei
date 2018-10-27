@@ -816,12 +816,12 @@ class FooController extends Controller
 		*/
 
 		$str = "";
-		//$str = " and uOpenId='oYDJew5MfQtAT12g3Ocso0OKLMyA' ";
+		$str = " and uOpenId='oYDJew5EFMuyrJdwRrXkIZLU2c58' ";
 
 		$sql = "SELECT uId,w.wSubscribe,uPhone,uRole
  				FROM im_user as u
  				JOIN im_user_wechat as w on w.wUId=u.uId
- 				WHERE uPhone AND w.wSubscribe=1 and uRole in (10,20) and uId > 173505 $str and uPhone order by uId asc";
+ 				WHERE uPhone AND w.wSubscribe=1 and uRole in (10,20) and uId >0 $str and uPhone order by uId asc";
 
 		$ret = $conn->createCommand($sql)->queryAll();
 		//print_r($ret);
@@ -839,9 +839,9 @@ class FooController extends Controller
 				'text' => '我好想和你一起过圣诞节喔~',
 				'url' => "https://mp.weixin.qq.com/s/1q2ak1MmrQGUhKHyZaJcEg"
 			];*/
-//			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1808171235551.jpg";
+			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1810151237571.jpeg";
 			$content = "特大喜讯，千寻恋恋月度畅聊卡免费送啦。只需转发给3位好友点赞即可免费领取一张畅聊卡，与更多美女进行聊天约会！";
-			$content = "想看你喜欢人的资料吗？现在推出一种可以查看高级资料的会员卡噢，只需分享给3个好友即可免费查看10个人的高级资料噢，还有80%可以看到手机号与微信号噢！心动不如行动，动动你的小手指快来免费领取吧！你心仪的TA在等你噢！";
+//			$content = "想看你喜欢人的资料吗？现在推出一种可以查看高级资料的会员卡噢，只需分享给3个好友即可免费查看10个人的高级资料噢，还有80%可以看到手机号与微信号噢！心动不如行动，动动你的小手指快来免费领取吧！你心仪的TA在等你噢！";
 //			$content = "逛个街，去个酒吧，给自己买套衣服，买一件自己喜欢的东西，让自己的生活过的有价值，爱自己没毛病，点击链接进入：<br><br><br><br><br>爱自己69特惠区，陪你过单身生活
 //<a href='https://j.youzan.com/O0EeRY' style='color:#007aff'>https://j.youzan.com/O0EeRY</a>";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
