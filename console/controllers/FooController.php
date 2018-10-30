@@ -842,8 +842,8 @@ class FooController extends Controller
 		];*/
 		$cnt = 0;
 		$senderId = User::SERVICE_UID;
-		foreach ($logs as $row) {
-			$uid = $row['oUId'];
+		foreach ($ret as $row) {
+			$uid = $row['uId'];
 			/*$content = [
 				'text' => '我好想和你一起过圣诞节喔~',
 				'url' => "https://mp.weixin.qq.com/s/1q2ak1MmrQGUhKHyZaJcEg"
@@ -855,7 +855,7 @@ class FooController extends Controller
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
 			try {
 				ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
-				//Log::add(['oCategory' => Log::CAT_SPREAD_MERMAIND, 'oUId' => $uid]);
+				Log::add(['oCategory' => Log::CAT_SPREAD_MERMAIND, 'oUId' => $uid]);
 			} catch (\Exception $e) {
 				sleep(1);
 				echo "Exception~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" . PHP_EOL;
