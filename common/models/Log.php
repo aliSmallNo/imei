@@ -100,6 +100,8 @@ class Log extends ActiveRecord
 	const CAT_WECHAT_TEMP_MSG = 8007; // 模板消息
 	const CAT_CAHT_GROUP_MSG = 8008; // 群聊记录
 
+	const CAT_SPREAD_MERMAIND = 8009; // 跨时空推广
+
 	public static function tableName()
 	{
 		return '{{%log}}';
