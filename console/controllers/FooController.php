@@ -842,20 +842,20 @@ class FooController extends Controller
 		];*/
 		$cnt = 0;
 		$senderId = User::SERVICE_UID;
-		foreach ($ret as $row) {
-			$uid = $row['uId'];
+		foreach ($logs as $row) {
+			$uid = $row['oUId'];
 			/*$content = [
 				'text' => '我好想和你一起过圣诞节喔~',
 				'url' => "https://mp.weixin.qq.com/s/1q2ak1MmrQGUhKHyZaJcEg"
 			];*/
-			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1810151237571.jpeg";
+			$content = "https://bpbhd-10063905.file.myqcloud.com/image/n1810301237892.jpeg";
 //			$content = "想看你喜欢人的资料吗？现在推出一种可以查看高级资料的会员卡噢，只需分享给3个好友即可免费查看10个人的高级资料噢，还有80%可以看到手机号与微信号噢！心动不如行动，动动你的小手指快来免费领取吧！你心仪的TA在等你噢！";
 //			$content = "逛个街，去个酒吧，给自己买套衣服，买一件自己喜欢的东西，让自己的生活过的有价值，爱自己没毛病，点击链接进入：<br><br><br><br><br>爱自己69特惠区，陪你过单身生活
 //<a href='https://j.youzan.com/O0EeRY' style='color:#007aff'>https://j.youzan.com/O0EeRY</a>";
 			list($gid) = ChatMsg::groupEdit($senderId, $uid, 9999, $conn);
 			try {
 				ChatMsg::addChat($senderId, $uid, $content, 0, 1001, '', $conn);
-				Log::add(['oCategory' => Log::CAT_SPREAD_MERMAIND, 'oUId' => $uid]);
+				//Log::add(['oCategory' => Log::CAT_SPREAD_MERMAIND, 'oUId' => $uid]);
 			} catch (\Exception $e) {
 				sleep(1);
 				echo "Exception~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" . PHP_EOL;
