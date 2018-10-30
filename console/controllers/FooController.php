@@ -816,7 +816,7 @@ class FooController extends Controller
 		*/
 
 		$str = "";
-		$str = " and uOpenId='oYDJew5EFMuyrJdwRrXkIZLU2c58' ";
+		//$str = " and uOpenId='oYDJew5EFMuyrJdwRrXkIZLU2c58' ";
 
 		$condition = '';
 		// $logs = Log::find()->where(['oCategory' => Log::CAT_SPREAD_MERMAIND])->asArray()->all();
