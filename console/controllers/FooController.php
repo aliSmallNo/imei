@@ -819,7 +819,9 @@ class FooController extends Controller
 		$str = " and uOpenId='oYDJew5EFMuyrJdwRrXkIZLU2c58' ";
 
 		$condition = '';
-		$logs = Log::find()->where(['oCategory' => Log::CAT_SPREAD_MERMAIND])->asArray()->all();
+		// $logs = Log::find()->where(['oCategory' => Log::CAT_SPREAD_MERMAIND])->asArray()->all();
+		$logs = $conn->createCommand('select * from im_log where oCategory=:cat')
+			->bindValues([':cat' => Log::CAT_SPREAD_MERMAIND])->queryAll();
 		if ($logs) {
 			$has_send_uids_str = implode(',', array_column($logs, 'oUId'));
 			$condition = " and u.uId not in ($has_send_uids_str) ";
