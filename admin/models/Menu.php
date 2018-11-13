@@ -120,6 +120,26 @@ class Menu
 				]
 			],
 			[
+				"name" => "配资CRM",
+				"id" => "stock",
+				"icon" => "fa-users",
+				"staff" => 1,
+				"items" => [
+					[
+						"name" => "客户线索",
+						"url" => "/stock/clients",
+						"revise" => 1,
+						"level" => 820
+					],
+					[
+						"name" => "跟进统计",
+						"url" => "/stock/stat",
+						"revise" => 1,
+						"level" => 820
+					],
+				]
+			],
+			[
 				"name" => "有赞数据",
 				"id" => "youzan",
 				"icon" => "fa-bar-chart",

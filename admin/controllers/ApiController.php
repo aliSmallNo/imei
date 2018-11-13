@@ -1197,6 +1197,79 @@ class ApiController extends Controller
 		return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
 	}
 
+	public function actionChart()
+	{
+		$tag = self::postParam("tag");
+		$tag = strtolower($tag);
+		$beginDate = self::postParam("beginDate", date("Y-m-01"));
+		$endDate = self::postParam("endDate", date("Y-m-d"));
+		$id = self::postParam("id");
+		$cFalg = self::postParam("cFalg");
+		$category = CRMClient::CATEGORY_YANXUAN;
+		if ($cFalg) {
+			$category = CRMClient::CATEGORY_ADVERT;
+		}
+		switch ($tag) {
+			case "stat":
+				$conn = AppUtil::db();
+				$funnelStat = CRMClient::funnelStat($category, $beginDate, $endDate, $id, $conn);
+				$srcStat = CRMClient::sourceStat($category, $beginDate, $endDate, $id, $conn);
+				list($clientSeries, $clientTitles) = CRMClient::clientStat($beginDate, $endDate, $category, $id, $conn);
+				list($donutInner, $donutOuter) = CRMClient::statusDonut($category, $beginDate, $endDate, $id, $conn);
+				$ret = [
+					"funnel" => $funnelStat,
+					"series" => $clientSeries,
+					"titles" => $clientTitles,
+					"sources" => $srcStat,//线索
+					"inners" => $donutInner,
+					"outers" => $donutOuter
+				];
+				if ($id) {
+					$trackStat = CRMTrack::trackStatDetail($category, $beginDate, $endDate, $id, $conn);
+					$newClientStat = CRMClient::newClientStatDetail($category, $beginDate, $endDate, $id, $conn);
+					$ret["track_titles"] = array_keys($trackStat);
+					$ret["new_titles"] = array_keys($newClientStat);
+					$ret["track"] = array_values($trackStat);
+					$ret["new"] = array_values($newClientStat);
+				} else {
+					$trackStat = CRMTrack::trackStat($category, $beginDate, $endDate, $id, $conn);
+					$newClientStat = CRMClient::newClientStat($category, $beginDate, $endDate, $id, $conn);
+					$ret["track"] = $trackStat;
+					$ret["new"] = $newClientStat;
+				}
+				return self::renderAPI(0, "", $ret);
+		}
+		return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
+	}
+
+	public function actionClue()
+	{
+		$tag = self::postParam("tag");
+		$tag = strtolower($tag);
+		$beginDate = self::postParam("beginDate", date("Y-m-01"));
+		$endDate = self::postParam("endDate", date("Y-m-d"));
+		$id = self::postParam("id");
+		$cFalg = self::postParam("cFalg");
+		$status = self::postParam("status");
+		$category = CRMClient::CATEGORY_YANXUAN;
+		if ($cFalg) {
+			$category = CRMClient::CATEGORY_ADVERT;
+		}
+		switch ($tag) {
+			case "stat":
+				$conn = \Yii::$app->db;
+				$srcStat = CRMClient::sourceStat($category, $beginDate, $endDate, $id, $conn, $status);
+				$ret = [
+					"sources" => $srcStat,//线索
+				];
+				if (!$srcStat) {
+					return self::renderAPI(self::CODE_MESSAGE, "无数据", $ret);
+				}
+				return self::renderAPI(0, "", $ret);
+		}
+		return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
+	}
+
 	public function actionStock_client()
 	{
 		$tag = self::postParam("tag");
@@ -1269,7 +1342,7 @@ class ApiController extends Controller
 		return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
 	}
 
-	public function actionChart()
+	public function actionStock_chart()
 	{
 		$tag = self::postParam("tag");
 		$tag = strtolower($tag);
@@ -1277,17 +1350,17 @@ class ApiController extends Controller
 		$endDate = self::postParam("endDate", date("Y-m-d"));
 		$id = self::postParam("id");
 		$cFalg = self::postParam("cFalg");
-		$category = CRMClient::CATEGORY_YANXUAN;
+		$category = CRMStockClient::CATEGORY_YANXUAN;
 		if ($cFalg) {
-			$category = CRMClient::CATEGORY_ADVERT;
+			$category = CRMStockClient::CATEGORY_ADVERT;
 		}
 		switch ($tag) {
 			case "stat":
 				$conn = AppUtil::db();
-				$funnelStat = CRMClient::funnelStat($category, $beginDate, $endDate, $id, $conn);
-				$srcStat = CRMClient::sourceStat($category, $beginDate, $endDate, $id, $conn);
-				list($clientSeries, $clientTitles) = CRMClient::clientStat($beginDate, $endDate, $category, $id, $conn);
-				list($donutInner, $donutOuter) = CRMClient::statusDonut($category, $beginDate, $endDate, $id, $conn);
+				$funnelStat = CRMStockClient::funnelStat($category, $beginDate, $endDate, $id, $conn);
+				$srcStat = CRMStockClient::sourceStat($category, $beginDate, $endDate, $id, $conn);
+				list($clientSeries, $clientTitles) = CRMStockClient::clientStat($beginDate, $endDate, $category, $id, $conn);
+				list($donutInner, $donutOuter) = CRMStockClient::statusDonut($category, $beginDate, $endDate, $id, $conn);
 				$ret = [
 					"funnel" => $funnelStat,
 					"series" => $clientSeries,
@@ -1297,15 +1370,15 @@ class ApiController extends Controller
 					"outers" => $donutOuter
 				];
 				if ($id) {
-					$trackStat = CRMTrack::trackStatDetail($category, $beginDate, $endDate, $id, $conn);
-					$newClientStat = CRMClient::newClientStatDetail($category, $beginDate, $endDate, $id, $conn);
+					$trackStat = CRMStockTrack::trackStatDetail($category, $beginDate, $endDate, $id, $conn);
+					$newClientStat = CRMStockClient::newClientStatDetail($category, $beginDate, $endDate, $id, $conn);
 					$ret["track_titles"] = array_keys($trackStat);
 					$ret["new_titles"] = array_keys($newClientStat);
 					$ret["track"] = array_values($trackStat);
 					$ret["new"] = array_values($newClientStat);
 				} else {
-					$trackStat = CRMTrack::trackStat($category, $beginDate, $endDate, $id, $conn);
-					$newClientStat = CRMClient::newClientStat($category, $beginDate, $endDate, $id, $conn);
+					$trackStat = CRMStockTrack::trackStat($category, $beginDate, $endDate, $id, $conn);
+					$newClientStat = CRMStockClient::newClientStat($category, $beginDate, $endDate, $id, $conn);
 					$ret["track"] = $trackStat;
 					$ret["new"] = $newClientStat;
 				}
@@ -1314,7 +1387,7 @@ class ApiController extends Controller
 		return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
 	}
 
-	public function actionClue()
+	public function actionStock_clue()
 	{
 		$tag = self::postParam("tag");
 		$tag = strtolower($tag);
@@ -1323,14 +1396,14 @@ class ApiController extends Controller
 		$id = self::postParam("id");
 		$cFalg = self::postParam("cFalg");
 		$status = self::postParam("status");
-		$category = CRMClient::CATEGORY_YANXUAN;
+		$category = CRMStockClient::CATEGORY_YANXUAN;
 		if ($cFalg) {
-			$category = CRMClient::CATEGORY_ADVERT;
+			$category = CRMStockClient::CATEGORY_ADVERT;
 		}
 		switch ($tag) {
 			case "stat":
 				$conn = \Yii::$app->db;
-				$srcStat = CRMClient::sourceStat($category, $beginDate, $endDate, $id, $conn, $status);
+				$srcStat = CRMStockClient::sourceStat($category, $beginDate, $endDate, $id, $conn, $status);
 				$ret = [
 					"sources" => $srcStat,//线索
 				];
