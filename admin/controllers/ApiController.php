@@ -1222,7 +1222,7 @@ class ApiController extends Controller
 				if (!$id && $msg) {
 					return self::renderAPI(self::CODE_MESSAGE, "添加失败！" . $msg);
 				}
-				CRMStockClient::edit([
+				$data = CRMStockClient::edit([
 					"name" => trim(self::postParam("name")),
 					"phone" => trim(self::postParam("phone")),
 					"wechat" => trim(self::postParam("wechat")),
@@ -1238,7 +1238,7 @@ class ApiController extends Controller
 					"bd" => trim(self::postParam("bd")),
 					"src" => self::postParam("src", CRMStockClient::SRC_WEBSITE),
 				], $id, $adminId);
-				return self::renderAPI(0, "客户线索保存成功！");
+				return self::renderAPI(0, "客户线索保存成功！", $data);
 			case 'change':
 				$bdID = trim(self::postParam("bd"));
 				CRMStockClient::edit([

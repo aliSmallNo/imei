@@ -59,11 +59,11 @@
 		</h4>
 	</div>
 	<div class="col-sm-4" style="text-align: right">
-		<a href="/crm/clients" style="font-size: 16px; ">< 返回客户列表</a>
+		<a href="/stock/clients" style="font-size: 16px; ">< 返回客户列表</a>
 	</div>
 </div>
 <div class="row">
-	<form class="form-horizontal form" method="post" action="/crm/detail" enctype="multipart/form-data">
+	<form class="form-horizontal form" method="post" action="/stock/detail" enctype="multipart/form-data">
 		<input type="hidden" name="cid" id="cid" value="{{$cid}}">
 		<div class="form-group">
 			<label class="control-label">跟进描述</label>
@@ -127,14 +127,14 @@
 	$(".del").on("click", function () {
 		var id = $(this).attr("data-id");
 		if (id) {
-			$.post("/api/crm/client", {
+			$.post("/api/stock/client", {
 				tag: "del",
 				id: id
 			}, function (resp) {
 				layer.closeAll();
 				layer.msg(resp.msg);
 				setTimeout(function () {
-					location.href = "/crm/detail?id={{$cid}}";
+					location.href = "/stock/detail?id={{$cid}}";
 				}, 400);
 			}, 'json');
 		}

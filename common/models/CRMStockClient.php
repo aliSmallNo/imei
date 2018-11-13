@@ -123,12 +123,6 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		self::SRC_WECHAT => "公众号",
 		self::SRC_OTHER => "其他",
 		self::SRC_GROUND => "地推",
-//		self::SRC_BROADCAST => "自己推广获取",
-//		self::SRC_CLIENT => "严选师介绍",
-
-		//self::SRC_MEETING => "外部展会",
-		//self::SRC_HOST => "公司招商会",
-
 	];
 
 
@@ -138,58 +132,6 @@ class CRMStockClient extends \yii\db\ActiveRecord
 	public static function tableName()
 	{
 		return '{{%crm_stock_client}}';
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function rules()
-	{
-//        return [
-//            [['cCategory', 'cAge', 'cGender', 'cBDAssign', 'cAddedBy', 'cUpdatedBy', 'cDeletedFlag'], 'integer'],
-//            [['cBDAssignDate', 'cAddedDate', 'cUpdatedDate', 'cDeletedDate'], 'safe'],
-//            [['cName', 'cPhone', 'cOpenId', 'cWechat', 'cProvince', 'cCity', 'cJob'], 'string', 'max' => 32],
-//            [['cEmail', 'cUId', 'cSource'], 'string', 'max' => 64],
-//            [['cAddress', 'cIntro', 'cTypes'], 'string', 'max' => 256],
-//            [['cStatus'], 'string', 'max' => 11],
-//            [['cNote'], 'string', 'max' => 1024],
-//        ];
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function attributeLabels()
-	{
-//        return [
-//            'cId' => 'C ID',
-//            'cCategory' => 'C Category',
-//            'cName' => 'C Name',
-//            'cPhone' => 'C Phone',
-//            'cOpenId' => 'C Open ID',
-//            'cWechat' => 'C Wechat',
-//            'cEmail' => 'C Email',
-//            'cProvince' => 'C Province',
-//            'cCity' => 'C City',
-//            'cAddress' => 'C Address',
-//            'cAge' => 'C Age',
-//            'cGender' => 'C Gender',
-//            'cJob' => 'C Job',
-//            'cIntro' => 'C Intro',
-//            'cUId' => 'C Uid',
-//            'cBDAssign' => 'C Bdassign',
-//            'cBDAssignDate' => 'C Bdassign Date',
-//            'cSource' => 'C Source',
-//            'cStatus' => 'C Status',
-//            'cNote' => 'C Note',
-//            'cTypes' => 'C Types',
-//            'cAddedDate' => 'C Added Date',
-//            'cAddedBy' => 'C Added By',
-//            'cUpdatedDate' => 'C Updated Date',
-//            'cUpdatedBy' => 'C Updated By',
-//            'cDeletedFlag' => 'C Deleted Flag',
-//            'cDeletedDate' => 'C Deleted Date',
-//        ];
 	}
 
 
@@ -313,6 +255,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 			"stock_age" => "cStockAge",
 			"job" => "cJob",
 		];
+
 		foreach ($params as $key => $val) {
 			if (isset($fieldMap[$key])) {
 				$field = $fieldMap[$key];
@@ -324,6 +267,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		}
 		$item->cUpdatedDate = date("Y-m-d H:i:s");
 		$item->cUpdatedBy = $adminId;
+
 		$item->save();
 
 		if ($addFlag) {
@@ -508,6 +452,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				c.cId,
 				c.cName,
 				c.cAge,
+				c.cStockAge,
 				c.cGender,
 				c.cJob,
 				c.cPhone,
