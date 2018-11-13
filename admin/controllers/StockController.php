@@ -11,12 +11,11 @@ namespace admin\controllers;
 
 use admin\controllers\BaseController;
 use admin\models\Admin;
-use common\models\CRMClient;
 use common\models\CRMStockClient;
-use common\models\CRMTrack;
+use common\models\CRMStockTrack;
 use common\utils\ImageUtil;
 
-class CrmController extends BaseController
+class StockController extends BaseController
 {
 
 	public function actionClients()
@@ -33,7 +32,7 @@ class CrmController extends BaseController
 		$bdassign = self::getParam("bdassign");
 		$perSize = 20;
 
-		$criteria = [" cCategory=" . CRMClient::CATEGORY_YANXUAN];
+		$criteria = [" cCategory=" . CRMStockClient::CATEGORY_YANXUAN];
 		$params = [];
 		$urlParams = [];
 		$alert = [];
@@ -73,30 +72,30 @@ class CrmController extends BaseController
 			$uInfo = Admin::findOne(["aId" => $bdassign]);
 			$alert[] = "【" . $uInfo["aName"] . "】";
 		}
-		$counters = CRMClient::counts($this->admin_id, $criteria, $params);
+		$counters = CRMStockClient::counts($this->admin_id, $criteria, $params);
 		$isAssigner = Admin::isAssigner();
 		$tabs = [
 			"my" => [
-				"title" => "我的严选师",
+				"title" => "我的客户",
 				"count" => $counters["mine"]
 			],
 			"sea" => [
-				"title" => "公海严选师",
+				"title" => "公海客户",
 				"count" => $counters["sea"]
 			]
 		];
 		if ($isAssigner) {
 			$tabs = [
 				"my" => [
-					"title" => "我的严选师",
+					"title" => "我的客户",
 					"count" => $counters["mine"]
 				],
 				"sea" => [
-					"title" => "公海严选师",
+					"title" => "公海客户",
 					"count" => $counters["sea"]
 				],
 				"all" => [
-					"title" => "全部严选师",
+					"title" => "全部客户",
 					"count" => $counters["cnt"]
 				],
 			];
@@ -111,14 +110,14 @@ class CrmController extends BaseController
 			$criteria[] = " cBDAssign=0 ";
 		}
 
-		list($items, $count) = CRMClient::clients($criteria, $params, $sort, $page, $perSize);
+		list($items, $count) = CRMStockClient::clients($criteria, $params, $sort, $page, $perSize);
 
 		$alertMsg = "";
 		if ($alert) {
 			$alertMsg = "搜索" . implode("，", $alert) . "，结果如下";
 		}
 		$pagination = self::pagination($page, $count);
-		$sources = CRMClient::$SourceMap;
+		$sources = CRMStockClient::$SourceMap;
 
 		$bdDefault = $isAssigner ? "" : $this->admin_id;
 
@@ -169,7 +168,7 @@ class CrmController extends BaseController
 				"cat" => $cat,
 				"tabs" => $tabs,
 				"staff" => Admin::getStaffs(),
-				"bds" => Admin::getBDs(CRMClient::CATEGORY_YANXUAN),
+				"bds" => Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN),
 				"bdassign" => $bdassign,
 				"sources" => $sources,
 				"bdDefault" => $bdDefault,
@@ -179,7 +178,8 @@ class CrmController extends BaseController
 				"sIcon" => $sIcon,
 				"dNext" => $dNext,
 				"dIcon" => $dIcon,
-				"ageMap" => CRMClient::$ageMap,
+				"ageMap" => CRMStockClient::$ageMap,
+				"stock_age_map" => CRMStockClient::$stock_age_map,
 			]);
 
 	}
@@ -203,15 +203,15 @@ class CrmController extends BaseController
 					}
 				}
 			}
-			CRMTrack::add($postId, [
+			CRMStockTrack::add($postId, [
 				"status" => trim(self::postParam("status")),
 				"note" => trim(self::postParam("note")),
 				"image" => json_encode($images),
 			], $this->admin_id);
 
 		}
-		list($items, $client) = CRMTrack::tracks($cid);
-		$options = CRMClient::$StatusMap;
+		list($items, $client) = CRMStockTrack::tracks($cid);
+		$options = CRMStockClient::$StatusMap;
 		foreach ($options as $key => $option) {
 			$options[$key] = ($key - 100) . "% " . $option;
 		}
@@ -224,7 +224,7 @@ class CrmController extends BaseController
 		}
 		return $this->renderPage('detail.tpl',
 			[
-				'detailcategory' => "crm/clients",
+				'detailcategory' => "stock/clients",
 				'items' => $items,
 				'client' => $client,
 				"cid" => $cid,
@@ -237,13 +237,13 @@ class CrmController extends BaseController
 	public function actionStat()
 	{
 		Admin::staffOnly();
-		$staff = Admin::getBDs(CRMClient::CATEGORY_YANXUAN);
+		$staff = Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN);
 		return $this->renderPage('stat.tpl',
 			[
 				"beginDate" => date("Y-m-d", time() - 15 * 86400),
 				"endDate" => date("Y-m-d"),
 				"staff" => $staff,
-				"colors" => json_encode(array_values(CRMClient::$StatusColors))
+				"colors" => json_encode(array_values(CRMStockClient::$StatusColors))
 			]);
 	}
 

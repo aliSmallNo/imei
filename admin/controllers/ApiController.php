@@ -15,6 +15,8 @@ use common\models\ChatRoom;
 use common\models\ChatRoomFella;
 use common\models\City;
 use common\models\CRMClient;
+use common\models\CRMStockClient;
+use common\models\CRMStockTrack;
 use common\models\CRMTrack;
 use common\models\Date;
 use common\models\Log;
@@ -1190,6 +1192,78 @@ class ApiController extends Controller
 				return self::renderAPI(0, "添加跟进状态描述成功！");
 			case "del":
 				CRMTrack::del($id, $adminId);
+				return self::renderAPI(0, "删除成功！");
+		}
+		return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
+	}
+
+	public function actionStock_client()
+	{
+		$tag = self::postParam("tag");
+		$tag = strtolower($tag);
+		$id = self::postParam("id");
+		$adminId = Admin::getAdminId();
+		switch ($tag) {
+			case "user-client":
+				if ($id) {
+					list($code, $msg) = CRMStockClient::addFromUser($id, $adminId);
+					return self::renderAPI($code, $msg);
+				}
+				break;
+			case "grab":
+				list($code, $msg) = CRMStockClient::grab($id, $adminId);
+				return self::renderAPI($code, ($code == 0 ? self::ICON_OK_HTML : self::ICON_ALERT_HTML) . $msg);
+			case "remove":
+				CRMStockClient::del($id, $adminId);
+				return self::renderAPI(0, "删除成功！");
+			case "edit":
+				$phone = trim(self::postParam("phone"));
+				$msg = CRMStockClient::validity($phone);
+				if (!$id && $msg) {
+					return self::renderAPI(self::CODE_MESSAGE, "添加失败！" . $msg);
+				}
+				CRMStockClient::edit([
+					"name" => trim(self::postParam("name")),
+					"phone" => trim(self::postParam("phone")),
+					"wechat" => trim(self::postParam("wechat")),
+					"note" => trim(self::postParam("note")),
+					"prov" => trim(self::postParam("prov")),
+					"city" => trim(self::postParam("city")),
+					"addr" => trim(self::postParam("addr")),
+					"age" => intval(trim(self::postParam("age"))),
+					"stock_age" => intval(trim(self::postParam("stock_age"))),
+					"gender" => trim(self::postParam("gender")),
+					"job" => trim(self::postParam("job")),
+					"category" => trim(self::postParam("cFlag")) ? CRMStockClient::CATEGORY_ADVERT : CRMStockClient::CATEGORY_YANXUAN,
+					"bd" => trim(self::postParam("bd")),
+					"src" => self::postParam("src", CRMStockClient::SRC_WEBSITE),
+				], $id, $adminId);
+				return self::renderAPI(0, "客户线索保存成功！");
+			case 'change':
+				$bdID = trim(self::postParam("bd"));
+				CRMStockClient::edit([
+					"bd" => $bdID,
+				], $id, $adminId);
+				$bdInfo = Admin::findOne(['aId' => $bdID]);
+				$note = '';
+				if ($bdInfo) {
+					$note = '转移给' . $bdInfo->aName;
+				} elseif ($bdID < 1) {
+					$note = '扔到公海里了';
+				}
+				CRMStockTrack::add($id, [
+					"status" => trim(self::postParam("status", 0)),
+					"note" => $note
+				], $adminId);
+				return self::renderAPI(0, "客户转移成功！");
+			case "track":
+				CRMStockTrack::add($id, [
+					"status" => trim(self::postParam("status")),
+					"note" => trim(self::postParam("note")),
+				], $adminId);
+				return self::renderAPI(0, "添加跟进状态描述成功！");
+			case "del":
+				CRMStockTrack::del($id, $adminId);
 				return self::renderAPI(0, "删除成功！");
 		}
 		return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");

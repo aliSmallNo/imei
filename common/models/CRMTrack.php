@@ -15,7 +15,7 @@ use yii\db\ActiveRecord;
 class CRMTrack extends ActiveRecord
 {
 
-//电话/微信 地推 客户到公司接待 客户考察
+	//电话/微信 地推 客户到公司接待 客户考察
 
 	const ACTION_LINE = 100;
 	const ACTION_VISIT = 104;
