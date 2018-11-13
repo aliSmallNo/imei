@@ -224,7 +224,7 @@ class CrmController extends BaseController
 		}
 		return $this->renderPage('detail.tpl',
 			[
-				'detailcategory' => "crm/clients",
+				'base_url' => 'crm/clients',
 				'items' => $items,
 				'client' => $client,
 				"cid" => $cid,

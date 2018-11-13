@@ -130,7 +130,7 @@
 		mChartNew.html("");
 		mChartClient.html("");
 		layer.load();
-		$.post("/api/chart", {
+		$.post("/api/stock_chart", {
 			tag: "stat",
 			beginDate: mBeginDate.val(),
 			endDate: mEndDate.val(),
@@ -165,7 +165,7 @@
 	function reloadClueData() {
 		mChartSrc.html('');
 		layer.load();
-		$.post("/api/clue", {
+		$.post("/api/stock_clue", {
 			tag: "stat",
 			beginDate: mBeginDate.val(),
 			endDate: mEndDate.val(),

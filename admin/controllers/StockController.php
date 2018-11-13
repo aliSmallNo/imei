@@ -224,7 +224,7 @@ class StockController extends BaseController
 		}
 		return $this->renderPage('detail.tpl',
 			[
-				'detailcategory' => "stock/clients",
+				'base_url' => 'stock/clients',
 				'items' => $items,
 				'client' => $client,
 				"cid" => $cid,
@@ -237,7 +237,7 @@ class StockController extends BaseController
 	public function actionStat()
 	{
 		Admin::staffOnly();
-		$staff = Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN);
+		$staff = Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN,'im_crm_stock_client');
 		return $this->renderPage('stat.tpl',
 			[
 				"beginDate" => date("Y-m-d", time() - 15 * 86400),
