@@ -63,14 +63,9 @@
 				<i class="fa fa-bar-chart-o fa-fw"></i> 跟进状态饼图
 				<select name="clue" id="clues">
 					<option value="0">-全部状态-</option>
-					<option value="100">无兴趣/失败</option>
-					<option value="110">新增线索</option>
-					<option value="120">初次见面沟通</option>
-					<option value="140">多次沟通(低意向)</option>
-					<option value="150">多次沟通(高意向)</option>
-					<option value="160">实地考察</option>
-					<option value="180">签订协议</option>
-					<option value="200">已经完款</option>
+					{{foreach from=$options key=k item=option}}
+						<option value="{{$k}}">{{$option}}</option>
+					{{/foreach}}
 				</select>
 			</div>
 			<div class="panel-body">

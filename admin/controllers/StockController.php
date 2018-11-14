@@ -20,7 +20,6 @@ class StockController extends BaseController
 
 	public function actionClients()
 	{
-		Admin::staffOnly();
 		$page = self::getParam("page", 1);
 		$name = trim(self::getParam("name"));
 		$prov = trim(self::getParam("prov"));
@@ -243,6 +242,7 @@ class StockController extends BaseController
 				"beginDate" => date("Y-m-d", time() - 15 * 86400),
 				"endDate" => date("Y-m-d"),
 				"staff" => $staff,
+				"options" => CRMStockClient::$StatusMap,
 				"colors" => json_encode(array_values(CRMStockClient::$StatusColors))
 			]);
 	}
