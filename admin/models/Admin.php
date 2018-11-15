@@ -425,7 +425,8 @@ class Admin extends ActiveRecord
 
 	public static function getStaffs()
 	{
-		$staffLevel = self::LEVEL_STAFF;
+		//$staffLevel = self::LEVEL_STAFF;
+		$staffLevel = self::LEVEL_MODIFY;
 		$st = self::STATUS_ACTIVE;
 		$sql = "SELECT aId as id, aName as `name`, aLoginId as loginId from im_admin where aLevel>=$staffLevel and aStatus=$st order by aName";
 		$conn = AppUtil::db();

@@ -250,9 +250,6 @@
 			<div class="col-sm-7">
 				<select class="form-control clue_bd">
 					<option value="0">放入公海</option>
-					<!-- {{foreach from=$staff item=bd}}
-						<option value="{{$bd.id}}" {{if $bd.id==$bdDefault}}selected{{/if}}>{{$bd.name}}</option>
-					{{/foreach}} -->
 					{{foreach from=$bds item=bd}}
 						<option value="{{$bd.id}}" {{if $bd.id==$bdassign}}selected{{/if}}>{{$bd.name}}</option>
 					{{/foreach}}
