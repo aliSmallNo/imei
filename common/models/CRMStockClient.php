@@ -764,4 +764,29 @@ class CRMStockClient extends \yii\db\ActiveRecord
 	}
 
 
+	/**
+	 *  配资CRM公海客户规则：
+	 * 1.30天内，转态未成为“80%充值”的用户
+	 * a)客户来源为“熟人”“熟人介绍”的客户除外
+	 * 2. 转态为“0%无兴趣/失败”的客户，自动放入“公海”
+	 */
+	public static function auto_client_2_sea()
+	{
+		$conn = AppUtil::db();
+		$st = self::STATUS_DISLIKE;
+		$src1 = self::SRC_FRIEND;
+		$src2 = self::SRC_FRIEND_INTROLDUCE;
+		$sql = "select * from im_crm_stock_client where cSource not in ($src1,$src2) and DATEDIFF(cAddedDate,NOW())<-29
+				UNION 
+				select * from im_crm_stock_client where cStatus =$st ";
+		$ret = $conn->createCommand($sql)->queryAll();
+		if (!$ret) {
+			return false;
+		}
+		foreach ($ret as $v) {
+			CRMStockClient::edit(["bd" => 0,], $v['cId']);
+		}
+		return true;
+	}
+
 }
