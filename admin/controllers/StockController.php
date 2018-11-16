@@ -185,7 +185,6 @@ class StockController extends BaseController
 
 	public function actionDetail()
 	{
-		Admin::staffOnly();
 		$cid = self::getParam("id", 0);
 		$postId = self::postParam("cid");
 		if ($postId) {
