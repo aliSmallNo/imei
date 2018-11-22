@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: weirui
- * Date: 15/12/2017
- * Time: 11:56 AM
- */
+
 
 namespace common\service;
 

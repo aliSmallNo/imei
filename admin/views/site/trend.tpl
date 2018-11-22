@@ -74,6 +74,7 @@
 <script>
 
 	var mTrends = $.parseJSON($('#cTrendsTmp').html());
+	console.log(mTrends);
 	var mTrend = null;
 	var mDate = $('.queryDate');
 
