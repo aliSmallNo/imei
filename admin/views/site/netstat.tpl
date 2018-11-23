@@ -116,35 +116,35 @@
 			</thead>
 			<tbody>
 			{{foreach from=$scanStat item=stat}}
-			<tr>
-				<td class="person">
-					<div class="avatar">
-						<img src="{{$stat.thumb}}">
-					</div>
-					<div class="title">
-						<div>{{$stat.name}}</div>
-						<div class="tip">{{$stat.phone}}</div>
-					</div>
-				</td>
-				<!--td align="right">
+				<tr>
+					<td class="person">
+						<div class="avatar">
+							<img src="{{$stat.thumb}}">
+						</div>
+						<div class="title">
+							<div>{{$stat.name}}</div>
+							<div class="tip">{{$stat.phone}}</div>
+						</div>
+					</td>
+					<!--td align="right">
 				{{$stat.scan}}
 			</td-->
-				<td align="right">
-					{{$stat.subscribe}}
-				</td>
-				<td align="right">
-					{{$stat.reg}}
-				</td>
-				<td align="right">
-					{{$stat.ratio}}
-				</td>
-				<td align="right">
-					{{$stat.unsubscribe}}
-				</td>
-				<!--td align="right">
+					<td align="right">
+						{{$stat.subscribe}}
+					</td>
+					<td align="right">
+						{{$stat.reg}}
+					</td>
+					<td align="right">
+						{{$stat.ratio}}
+					</td>
+					<td align="right">
+						{{$stat.unsubscribe}}
+					</td>
+					<!--td align="right">
 					{{$stat.mps}}
 				</td-->
-			</tr>
+				</tr>
 			{{/foreach}}
 			<tr>
 				<td colspan="6" class="tip">
@@ -162,6 +162,7 @@
 <script>
 	var mSubTimes ={{$timesSub}};
 	var mRegTimes ={{$timesReg}};
+	console.log(mSubTimes, mRegTimes);
 	var mBeginDate = $('.beginDate');
 	var mEndDate = $('.endDate');
 	$('.j-scope').click(function () {
