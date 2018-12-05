@@ -1409,7 +1409,6 @@ class SiteController extends BaseController
 				"eAddress" => [1, ""],
 				"eContact" => [1, ""],
 				// "eDetails" => [1, ""],
-
 				"eLocation" => [0, ""],
 				"eCategory" => [0, 100],
 			];

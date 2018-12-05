@@ -229,6 +229,12 @@ class ImageUtil
 			$fileExt = "." . $fileExt;
 		}
 		$imageName = self::imageName($fileExt);
+		print_r([
+			$cosInfo["url"] . "/$category/" . $imageName,
+			$data,
+			$header,
+		]);
+		exit;
 		$ret = self::curlUpload($cosInfo["url"] . "/$category/" . $imageName, $data, $header);
 		$ret = json_decode($ret, true);
 
@@ -743,7 +749,7 @@ class ImageUtil
 
 	public static function downImage($url)
 	{
-		$saveAs = AppUtil::imgDir().$key = RedisUtil::getImageSeq() . date('His');
+		$saveAs = AppUtil::imgDir() . $key = RedisUtil::getImageSeq() . date('His');
 		return self::downloadFile($url, $saveAs);
 	}
 
