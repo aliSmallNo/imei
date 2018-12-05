@@ -55,8 +55,10 @@ class ImageUtil
 	{
 		$app_id = "10063905";
 		$bucket = "bpbhd";
-		$url = "http://web.file.myqcloud.com/files/v2/$app_id/$bucket";
-		$host = "web.file.myqcloud.com";
+		//$host = "web.file.myqcloud.com";
+		$host = "sh.file.myqcloud.com";
+		$url = "http://$host/files/v2/$app_id/$bucket";
+
 		$redis = RedisUtil::init(RedisUtil::KEY_CLOUD_COS, $oneTimeFlag ? 1 : 0);
 		$signStr = $redis->getCache();
 		if (!$signStr) {
@@ -229,12 +231,12 @@ class ImageUtil
 			$fileExt = "." . $fileExt;
 		}
 		$imageName = self::imageName($fileExt);
-		print_r([
+		/*print_r([
 			$cosInfo["url"] . "/$category/" . $imageName,
 			$data,
 			$header,
 		]);
-		exit;
+		exit;*/
 		$ret = self::curlUpload($cosInfo["url"] . "/$category/" . $imageName, $data, $header);
 		$ret = json_decode($ret, true);
 
