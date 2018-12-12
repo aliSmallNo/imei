@@ -235,6 +235,13 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		if ($id) {
 			$item = self::findOne(["cId" => $id]);
 		} else {
+			// 根据微信号去重
+			if (isset($params['wechat'])
+				&& $params['wechat']
+				&& self::findOne(['cWechat' => $params['wechat']])
+			) {
+				return 0;
+			}
 			$item->cAddedBy = $adminId;
 			$item->cNote = json_encode($params, JSON_UNESCAPED_UNICODE);
 			$item->cStatus = self::STATUS_DISLIKE;
