@@ -1311,7 +1311,12 @@ class ApiController extends Controller
 					"bd" => trim(self::postParam("bd")),
 					"src" => self::postParam("src", CRMStockClient::SRC_WEBSITE),
 				], $id, $adminId);
-				return self::renderAPI(0, "客户线索保存成功！", $data);
+				if ($data) {
+					return self::renderAPI(0, "客户线索保存成功！", $data);
+				} else {
+					return self::renderAPI(129, "微信号重复！", '');
+				}
+
 			case 'change':
 				$bdID = trim(self::postParam("bd"));
 				CRMStockClient::edit([
