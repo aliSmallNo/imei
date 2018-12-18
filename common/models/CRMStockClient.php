@@ -113,6 +113,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 	const SRC_POST_BAR = "post_bar";
 	const SRC_QQ = "QQ";
 	const SRC_VOICE_TEL = "voice_tel";
+	const SRC_HIRE = "hire";
 	const SRC_WECHAT = "wechat";
 	const SRC_OTHER = "other";
 	const SRC_GROUND = "ground";
@@ -123,6 +124,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		self::SRC_POST_BAR => "贴吧",
 		self::SRC_QQ => "QQ",
 		self::SRC_VOICE_TEL => "语音电话",
+		self::SRC_HIRE => "招聘",
 		self::SRC_WECHAT => "公众号",
 		self::SRC_OTHER => "其他",
 		self::SRC_GROUND => "地推",
