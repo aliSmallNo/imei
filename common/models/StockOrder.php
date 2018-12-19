@@ -98,7 +98,7 @@ class StockOrder extends \yii\db\ActiveRecord
 				'oAddedOn' => date('Y-m-d H:i:s', strtotime($value[5])),
 			];
 			try {
-				$res = self::pre_add($phone, $insertData);
+				$res = self::add($insertData);
 			} catch (\Exception $e) {
 				$error++;
 			}

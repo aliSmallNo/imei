@@ -318,7 +318,7 @@ class StockController extends BaseController
 	public function actionUpload_excel()
 	{
 		$postInfo = \Yii::$app->request->post();
-		$error = '';
+		$error = $success = '';
 		$queryDate = self::postParam("queryDate", date('Y-m-d'));
 		if (self::postParam("sign")) {
 			$filepath = "";
@@ -339,13 +339,13 @@ class StockController extends BaseController
 			if (!$error) {
 				list($insertCount, $error) = StockOrder::add_by_excel($filepath);
 				if (!$error) {
-					$error = $queryDate . "上传成功！" . $insertCount . "行数据 ";
+					$success = $queryDate . "上传成功！" . $insertCount . "行数据 ";
 				} else {
 					$error = $error . " 行错误数据";
 				}
 			}
 		}
-		header("location:/stock/stock_order?msg=" . $error);
+		header("location:/stock/stock_order?error=" . $error . '&success=' . $success);
 	}
 
 }
