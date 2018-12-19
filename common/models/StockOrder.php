@@ -69,10 +69,10 @@ class StockOrder extends \yii\db\ActiveRecord
 
 	public static function pre_add($phone, $values)
 	{
-		if (self::findOne(['oPhone' => $phone])) {
-			return self::edit($phone, $values);
+		if (AppUtil::checkPhone($phone)) {
+			return self::add($values);
 		}
-		return self::add($values);
+		return false;
 	}
 
 	public static function add_by_excel($filepath)
@@ -98,8 +98,8 @@ class StockOrder extends \yii\db\ActiveRecord
 				'oAddedOn' => date('Y-m-d H:i:s', strtotime($value[5])),
 			];
 			try {
-				$res = self::add($insertData);
-				StockUser::pre_add($phone,[
+				$res = self::pre_add($phone, $insertData);
+				StockUser::pre_add($phone, [
 					'uPhone' => $phone,
 					'uName' => $value[1],
 				]);
