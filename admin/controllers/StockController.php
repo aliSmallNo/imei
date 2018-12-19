@@ -319,7 +319,6 @@ class StockController extends BaseController
 	{
 		$postInfo = \Yii::$app->request->post();
 		$error = $success = '';
-		$queryDate = self::postParam("queryDate", date('Y-m-d'));
 		if (self::postParam("sign")) {
 			$filepath = "";
 			$itemname = "excel";
@@ -334,12 +333,12 @@ class StockController extends BaseController
 				}
 			}
 			if (!$filepath) {
-				$error = $queryDate . "上传失败！请稍后重试";
+				$error = "上传失败！请稍后重试";
 			}
 			if (!$error) {
 				list($insertCount, $error) = StockOrder::add_by_excel($filepath);
 				if (!$error) {
-					$success = $queryDate . "上传成功！" . $insertCount . "行数据 ";
+					$success = "上传成功！" . $insertCount . "行数据 ";
 				} else {
 					$error = $error . " 行错误数据";
 				}

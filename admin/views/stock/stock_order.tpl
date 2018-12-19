@@ -39,6 +39,7 @@
 	<table class="table table-striped table-bordered">
 		<thead>
 		<tr>
+			<th>ID</th>
 			<th>用户名</th>
 			<th>手机</th>
 			<th>股票代码</th>
@@ -50,6 +51,7 @@
 		<tbody>
 		{{foreach from=$list item=item}}
 		<tr>
+			<td>{{$item.oId}}</td>
 			<td>{{$item.oName}}</td>
 			<td>{{$item.oPhone}}</td>
 			<td>{{$item.oStockId}}</td>
