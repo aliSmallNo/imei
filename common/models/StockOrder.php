@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use \yii\db\ActiveRecord;
 use common\utils\AppUtil;
 use common\utils\ExcelUtil;
 use Yii;
@@ -17,7 +18,7 @@ use Yii;
  * @property string $oLoan
  * @property string $oAddedOn
  */
-class StockOrder extends \yii\db\ActiveRecord
+class StockOrder extends ActiveRecord
 {
 
 	public static function tableName()
@@ -83,22 +84,33 @@ class StockOrder extends \yii\db\ActiveRecord
 			$result = [];
 		}
 		$insertCount = 0;
+
+		$conn = AppUtil::db();
+		$transaction = $conn->beginTransaction();
+
+		$sql = "insert into im_stock_order (oPhone,oName,oStockId,oStockAmt,oLoan,oAddedOn) 
+				values (:oPhone,:oName,:oStockId,:oStockAmt,:oLoan,:oAddedOn)";
+		$cmd = $conn->createCommand($sql);
+
 		foreach ($result as $key => $value) {
 			$res = 0;
 			if (!$key) {
 				continue;
 			}
 			$phone = $value[0];
-			$insertData = [
-				'oPhone' => $phone,
-				'oName' => $value[1],
-				'oStockId' => $value[2],
-				'oStockAmt' => $value[3],
-				'oLoan' => $value[4],
-				'oAddedOn' => date('Y-m-d H:i:s', strtotime($value[5])),
+			if (!AppUtil::checkPhone($phone)) {
+				continue;
+			}
+			$params = [
+				':oPhone' => $phone,
+				':oName' => $value[1],
+				':oStockId' => $value[2],
+				':oStockAmt' => $value[3],
+				':oLoan' => $value[4],
+				':oAddedOn' => date('Y-m-d H:i:s', strtotime($value[5])),
 			];
 			try {
-				$res = self::pre_add($phone, $insertData);
+				$res = $cmd->bindValues($params)->execute();
 				StockUser::pre_add($phone, [
 					'uPhone' => $phone,
 					'uName' => $value[1],
@@ -106,10 +118,16 @@ class StockOrder extends \yii\db\ActiveRecord
 			} catch (\Exception $e) {
 				$error++;
 			}
+
 			if ($res) {
 				$insertCount++;
 			}
+		}
 
+		if ($error) {
+			$transaction->rollBack();
+		} else {
+			$transaction->commit();
 		}
 
 		return [$insertCount, $error];

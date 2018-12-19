@@ -285,6 +285,7 @@ class ExcelUtil
 			$allRow = $currentSheet->getHighestRow();
 			$allColumn = \PHPExcel_Cell::columnIndexFromString($allColumn);
 			// echo '$allColumn:' . $allColumn . ' $allRow:' . $allRow . PHP_EOL;
+
 			$ret = [];
 			//循环读取数据，默认编码是utf8，这里转换成gbk输出
 			for ($currentRow = 1; $currentRow <= $allRow; $currentRow++) {
