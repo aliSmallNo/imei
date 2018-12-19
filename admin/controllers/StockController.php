@@ -337,35 +337,11 @@ class StockController extends BaseController
 				$error = $queryDate . "上传失败！请稍后重试";
 			}
 			if (!$error) {
-				$result = ExcelUtil::parseProduct($filepath);
-				print_r($result);
-				exit;
-
-				if (!$result) {
-					$result = [];
-				}
-				$insertData = [];
-				$insertCount = 0;
-				$allDate = '';
-				foreach ($result as $key => $value) {
-					if (!$key) {
-						continue;
-					}
-					$insertData[$key] = [
-						"hProductId" => $value[0],
-						"hPunit" => $value[2],
-						"hName" => $value[1],
-						"hDeliveryTime" => $value[3] . " 00:00:00",
-						"hSmallCat" => $value[4],
-						"hSmallCatDesc" => $value[5],
-					];
-
-					$insertCount++;
-				}
-
-
+				list($insertCount, $error) = StockOrder::add_by_excel($filepath);
 				if (!$error) {
 					$error = $queryDate . "上传成功！" . $insertCount . "行数据 ";
+				} else {
+					$error = $error . " 行错误数据";
 				}
 			}
 		}

@@ -284,12 +284,12 @@ class ExcelUtil
 			$allColumn = $currentSheet->getHighestColumn();
 			$allRow = $currentSheet->getHighestRow();
 			$allColumn = \PHPExcel_Cell::columnIndexFromString($allColumn);
-			echo '$allColumn:' . $allColumn . ' $allRow:' . $allRow . PHP_EOL;
+			// echo '$allColumn:' . $allColumn . ' $allRow:' . $allRow . PHP_EOL;
 			$ret = [];
 			//循环读取数据，默认编码是utf8，这里转换成gbk输出
 			for ($currentRow = 1; $currentRow <= $allRow; $currentRow++) {
 				$ret[$currentRow] = [];
-				for ($currentColumn = 0; $currentColumn <= $allColumn; $currentColumn++) {
+				for ($currentColumn = 0; $currentColumn <=$allColumn; $currentColumn++) {
 					$address = \PHPExcel_Cell::stringFromColumnIndex($currentColumn) . $currentRow;
 					$ret[$currentRow][] = trim($currentSheet->getCell($address)->getFormattedValue());
 				}
