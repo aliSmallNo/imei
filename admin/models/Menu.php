@@ -140,6 +140,26 @@ class Menu
 				]
 			],
 			[
+				"name" => "配资",
+				"id" => "stock_user",
+				"icon" => "fa-users",
+				"staff" => 1,
+				"items" => [
+					[
+						"name" => "客户列表",
+						"url" => "/stock/stock_user",
+						"revise" => 1,
+						"level" => 820
+					],
+					[
+						"name" => "订单列表",
+						"url" => "/stock/stock_order",
+						"revise" => 1,
+						"level" => 820
+					],
+				]
+			],
+			[
 				"name" => "有赞数据",
 				"id" => "youzan",
 				"icon" => "fa-bar-chart",

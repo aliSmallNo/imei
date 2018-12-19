@@ -26,6 +26,7 @@
 			</div>
 		</div>
 		<div class="row-divider"></div>
+		{{if 0}}
 		<div class="data-hd">
 			<h3>微信公众号</h3>
 		</div>
@@ -37,6 +38,7 @@
 				</div>
 			</div>
 		</div>
+		{{/if}}
 		<div class="row-divider"></div>
 	</div>
 </div>

@@ -13,6 +13,9 @@ use admin\controllers\BaseController;
 use admin\models\Admin;
 use common\models\CRMStockClient;
 use common\models\CRMStockTrack;
+use common\models\StockOrder;
+use common\models\StockUser;
+use common\utils\ExcelUtil;
 use common\utils\ImageUtil;
 
 class StockController extends BaseController
@@ -167,7 +170,7 @@ class StockController extends BaseController
 				"cat" => $cat,
 				"tabs" => $tabs,
 				"staff" => Admin::getStaffs(),
-				"bds" => Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN,'im_crm_stock_client'),
+				"bds" => Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN, 'im_crm_stock_client'),
 				"bdassign" => $bdassign,
 				"sources" => $sources,
 				"bdDefault" => $bdDefault,
@@ -235,7 +238,7 @@ class StockController extends BaseController
 	public function actionStat()
 	{
 		Admin::staffOnly();
-		$staff = Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN,'im_crm_stock_client');
+		$staff = Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN, 'im_crm_stock_client');
 		return $this->renderPage('stat.tpl',
 			[
 				"beginDate" => date("Y-m-d", time() - 15 * 86400),
@@ -246,5 +249,127 @@ class StockController extends BaseController
 			]);
 	}
 
+
+	public function actionStock_user()
+	{
+		$getInfo = \Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+
+		$criteria = [];
+		$params = [];
+		if ($name) {
+			$name = str_replace("'", "", $name);
+			$criteria[] = "  uName like :name ";
+			$params[':name'] = "%$name%";
+		}
+		if ($phone) {
+			$criteria[] = "  uPhone like :phone ";
+			$params[':phone'] = $phone;
+		}
+
+		list($list, $count) = StockUser::items($criteria, $params, $page);
+		$pagination = self::pagination($page, $count, 20);
+		return $this->renderPage("stock_user.tpl",
+			[
+				'getInfo' => $getInfo,
+				'pagination' => $pagination,
+				'list' => $list,
+			]
+		);
+	}
+
+	public function actionStock_order()
+	{
+		$getInfo = \Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$success = self::getParam("success");
+		$error = self::getParam("error");
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+
+		$criteria = [];
+		$params = [];
+		if ($name) {
+			$name = str_replace("'", "", $name);
+			$criteria[] = "  uName like :name ";
+			$params[':name'] = "%$name%";
+		}
+		if ($phone) {
+			$criteria[] = "  uPhone like :phone ";
+			$params[':phone'] = $phone;
+		}
+
+		list($list, $count) = StockOrder::items($criteria, $params, $page);
+		$pagination = self::pagination($page, $count, 20);
+		return $this->renderPage("stock_order.tpl",
+			[
+				'getInfo' => $getInfo,
+				'pagination' => $pagination,
+				'list' => $list,
+				'success' => $success,
+				'error' => $error,
+				'is_run' => Admin::isGroupUser(Admin::GROUP_RUN_MGR),
+			]
+		);
+	}
+
+	public function actionUpload_excel()
+	{
+		$postInfo = \Yii::$app->request->post();
+		$error = '';
+		$queryDate = self::postParam("queryDate", date('Y-m-d'));
+		if (self::postParam("sign")) {
+			$filepath = "";
+			$itemname = "excel";
+			if (isset($_FILES[$itemname])) {
+				$info = $_FILES[$itemname];
+				$uploads_dir = "/data/res/imei/excel/" . date("Y") . '/' . date('m');
+				if ($info['error'] == UPLOAD_ERR_OK) {
+					$tmp_name = $info["tmp_name"];
+					$name = uniqid() . '.xls';
+					$filepath = "$uploads_dir/$name";
+					move_uploaded_file($tmp_name, $filepath);
+				}
+			}
+			if (!$filepath) {
+				$error = $queryDate . "上传失败！请稍后重试";
+			}
+			if (!$error) {
+				$result = ExcelUtil::parseProduct($filepath);
+				print_r($result);
+				exit;
+
+				if (!$result) {
+					$result = [];
+				}
+				$insertData = [];
+				$insertCount = 0;
+				$allDate = '';
+				foreach ($result as $key => $value) {
+					if (!$key) {
+						continue;
+					}
+					$insertData[$key] = [
+						"hProductId" => $value[0],
+						"hPunit" => $value[2],
+						"hName" => $value[1],
+						"hDeliveryTime" => $value[3] . " 00:00:00",
+						"hSmallCat" => $value[4],
+						"hSmallCatDesc" => $value[5],
+					];
+
+					$insertCount++;
+				}
+
+
+				if (!$error) {
+					$error = $queryDate . "上传成功！" . $insertCount . "行数据 ";
+				}
+			}
+		}
+		header("location:/stock/stock_order?msg=" . $error);
+	}
 
 }
