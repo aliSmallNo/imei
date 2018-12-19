@@ -99,6 +99,10 @@ class StockOrder extends \yii\db\ActiveRecord
 			];
 			try {
 				$res = self::add($insertData);
+				StockUser::pre_add($phone,[
+					'uPhone' => $phone,
+					'uName' => $value[1],
+				]);
 			} catch (\Exception $e) {
 				$error++;
 			}

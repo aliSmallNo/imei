@@ -48,6 +48,17 @@ class StockUser extends \yii\db\ActiveRecord
 		return $entity->uId;
 	}
 
+	public static function pre_add($phone, $values)
+	{
+		if (self::findOne(['uPhone' => $phone])) {
+			return false;
+		}
+		if (isset($values['uName']) && isset($values['uPhone']) && AppUtil::checkPhone($values['uPhone'])) {
+			return self::add($values);
+		}
+		return false;
+	}
+
 	public static function items($criteria, $params, $page, $pageSize = 20)
 	{
 		$offset = ($page - 1) * $pageSize;
