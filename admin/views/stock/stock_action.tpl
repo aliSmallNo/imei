@@ -22,10 +22,8 @@
 	</div>
 </div>
 <div class="row">
-	<form action="/stock/stock_user" method="get" class="form-inline">
+	<form action="/stock/stock_action" method="get" class="form-inline">
 		<div class="form-group">
-			<input class="form-control" placeholder="用户名" type="text" name="name"
-						 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
 			<input class="form-control" placeholder="用户手机" type="text" name="phone"
 						 value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
 		</div>
