@@ -157,6 +157,12 @@ class Menu
 						"revise" => 1,
 						"level" => 820
 					],
+					[
+						"name" => "用户操作",
+						"url" => "/stock/stock_action",
+						"revise" => 1,
+						"level" => 820
+					],
 				]
 			],
 			[

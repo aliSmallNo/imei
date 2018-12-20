@@ -124,6 +124,24 @@ class Admin extends ActiveRecord
 		return ["code" => 159, "msg" => "删除失败！"];
 	}
 
+	public static function get_level()
+	{
+		$userInfo = self::userInfo();
+		if (!$userInfo) {
+			return self::LEVEL_VIEW;
+		}
+		return $userInfo['level'];
+	}
+
+	public static function get_phone()
+	{
+		$userInfo = self::userInfo();
+		if (!$userInfo) {
+			return '';
+		}
+		return $userInfo['aPhone'];
+	}
+
 	public static function getAdminId()
 	{
 		$jwt = AppUtil::getCookie("jwt");

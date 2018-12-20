@@ -2,7 +2,7 @@
 
 <div class="row">
 	<div class="col-sm-6">
-		<h4>订单列表
+		<h4>操作列表
 			{{if $is_run}}<a href="javascript:;" class="opImport btn btn-outline btn-primary btn-xs">导入</a>{{/if}}
 		</h4>
 	</div>
@@ -39,24 +39,16 @@
 	<table class="table table-striped table-bordered">
 		<thead>
 		<tr>
-			<th>ID</th>
-			<th>用户名</th>
 			<th>手机</th>
-			<th>股票代码</th>
-			<th>股数</th>
-			<th>初期借款</th>
+			<th>状态</th>
 			<th>时间</th>
 		</tr>
 		</thead>
 		<tbody>
 		{{foreach from=$list item=item}}
 		<tr>
-			<td>{{$item.oId}}</td>
-			<td>{{$item.oName}}</td>
 			<td>{{$item.oPhone}}</td>
-			<td>{{$item.oStockId}}</td>
-			<td>{{$item.oStockAmt}}</td>
-			<td>{{$item.oLoan}}</td>
+			<td>{{$item.oType}}</td>
 			<td>{{$item.oAddedOn}}</td>
 		</tr>
 		{{/foreach}}
@@ -70,11 +62,11 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel">上传订单汇总数据Excel</h4>
+				<h4 class="modal-title" id="myModalLabel">上传操作数据Excel</h4>
 			</div>
 			<div class="modal-body">
 				<form class="form-horizontal" action="/stock/upload_excel" method="post" enctype="multipart/form-data">
-					<input type="hidden" name="cat" value="order"/>
+					<input type="hidden" name="cat" value="action"/>
 					<input type="hidden" name="sign" value="up"/>
 
 					<div class="form-group">

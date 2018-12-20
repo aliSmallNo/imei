@@ -26,6 +26,7 @@ use common\models\MomentSub;
 use common\models\MomentTopic;
 use common\models\QuestionGroup;
 use common\models\QuestionSea;
+use common\models\StockUser;
 use common\models\User;
 use common\models\UserAudit;
 use common\models\UserComment;
@@ -1416,6 +1417,24 @@ class ApiController extends Controller
 					return self::renderAPI(self::CODE_MESSAGE, "无数据", $ret);
 				}
 				return self::renderAPI(0, "", $ret);
+		}
+		return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
+	}
+
+	public function actionStock()
+	{
+		$tag = self::postParam("tag");
+		$tag = strtolower($tag);
+		switch ($tag) {
+			case "edit_user":
+				$uName = self::postParam("uName");
+				$uPhone = self::postParam("uPhone");
+				$uPtPhone = self::postParam("uPtPhone");
+				$uNote = self::postParam("uNote");
+				$uRate = self::postParam("uRate");
+				$uType = self::postParam("uType");
+				list($code, $msg, $data) = StockUser::edit_admin($uName, $uPhone, $uPtPhone, $uRate, $uType, $uNote);
+				return self::renderAPI($code, $msg, $data);
 		}
 		return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
 	}

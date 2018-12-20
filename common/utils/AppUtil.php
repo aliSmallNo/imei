@@ -1635,6 +1635,7 @@ class AppUtil
 		print_r(genTree9($items));
 	}
 
+	// 发送短信息
 	public static function sendSMS($phone, $msg, $appendId = '1234', $type = 'real')
 	{
 		$formatMsg = $msg;

@@ -13,6 +13,7 @@ use admin\controllers\BaseController;
 use admin\models\Admin;
 use common\models\CRMStockClient;
 use common\models\CRMStockTrack;
+use common\models\StockAction;
 use common\models\StockOrder;
 use common\models\StockUser;
 use common\utils\ExcelUtil;
@@ -276,6 +277,7 @@ class StockController extends BaseController
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
 				'list' => $list,
+				'types' => StockUser::$types,
 			]
 		);
 	}
@@ -293,11 +295,11 @@ class StockController extends BaseController
 		$params = [];
 		if ($name) {
 			$name = str_replace("'", "", $name);
-			$criteria[] = "  uName like :name ";
+			$criteria[] = "  u.uName like :name ";
 			$params[':name'] = "%$name%";
 		}
 		if ($phone) {
-			$criteria[] = "  uPhone like :phone ";
+			$criteria[] = "  u.uPhone like :phone ";
 			$params[':phone'] = $phone;
 		}
 
@@ -310,16 +312,19 @@ class StockController extends BaseController
 				'list' => $list,
 				'success' => $success,
 				'error' => $error,
-				'is_run' => Admin::isGroupUser(Admin::GROUP_RUN_MGR),
+
 			]
 		);
 	}
 
 	public function actionUpload_excel()
 	{
-		$postInfo = \Yii::$app->request->post();
+		$cat = self::postParam("cat");
+		$sign = self::postParam("sign");
+
+		$redir = "stock_order";
 		$error = $success = '';
-		if (self::postParam("sign")) {
+		if ($sign && $cat) {
 			$filepath = "";
 			$itemname = "excel";
 			if (isset($_FILES[$itemname])) {
@@ -336,7 +341,19 @@ class StockController extends BaseController
 				$error = "上传失败！请稍后重试";
 			}
 			if (!$error) {
-				list($insertCount, $error) = StockOrder::add_by_excel($filepath);
+				switch ($cat) {
+					case 'order':
+						list($insertCount, $error) = StockOrder::add_by_excel($filepath);
+						break;
+					case 'action':
+						list($insertCount, $error) = StockAction::add_by_excel($filepath);
+						$redir = "stock_action";
+						break;
+					default:
+						$insertCount = 0;
+						$error = 'cat error';
+				}
+
 				if (!$error) {
 					$success = "上传成功！" . $insertCount . "行数据 ";
 				} else {
@@ -344,7 +361,42 @@ class StockController extends BaseController
 				}
 			}
 		}
-		header("location:/stock/stock_order?error=" . $error . '&success=' . $success);
+		header("location:/stock/" . $redir . "?error=" . $error . '&success=' . $success);
+	}
+
+	public function actionStock_action()
+	{
+		$getInfo = \Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$success = self::getParam("success");
+		$error = self::getParam("error");
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+
+		$criteria = [];
+		$params = [];
+		if ($name) {
+			$name = str_replace("'", "", $name);
+			$criteria[] = "  u.uName like :name ";
+			$params[':name'] = "%$name%";
+		}
+		if ($phone) {
+			$criteria[] = "  u.uPhone like :phone ";
+			$params[':phone'] = $phone;
+		}
+
+		list($list, $count) = StockAction::items($criteria, $params, $page);
+		$pagination = self::pagination($page, $count, 20);
+		return $this->renderPage("stock_action.tpl",
+			[
+				'getInfo' => $getInfo,
+				'pagination' => $pagination,
+				'list' => $list,
+				'success' => $success,
+				'error' => $error,
+
+			]
+		);
 	}
 
 }

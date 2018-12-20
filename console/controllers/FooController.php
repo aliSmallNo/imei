@@ -1698,7 +1698,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 		$phone = 17611629667;
 		AppUtil::sendSMS($phone, $content, '100001', 'yx');
-*/
+		*/
 		exit;
 
 	}

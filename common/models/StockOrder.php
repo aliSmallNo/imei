@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use admin\models\Admin;
 use \yii\db\ActiveRecord;
 use common\utils\AppUtil;
 use common\utils\ExcelUtil;
@@ -141,9 +142,17 @@ class StockOrder extends ActiveRecord
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
 
+		$level = Admin::get_level();
+		$phone = Admin::get_phone();
+		$cond = '';
+		if ($level < Admin::LEVEL_STAFF) {
+			$cond = " and u.uPtPhone=$phone ";
+		}
+
 		$sql = "select *
-				from im_stock_order  
-				where oId>0 $strCriteria
+				from im_stock_order as o
+				left join im_stock_user u on u.uPhone=o.oPhone
+				where oId>0 $strCriteria $cond
 				order by oAddedOn desc 
 				limit $offset,$pageSize";
 		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
@@ -151,8 +160,9 @@ class StockOrder extends ActiveRecord
 
 		}
 		$sql = "select count(1) as co
-				from im_stock_order  
-				 where oId>0 $strCriteria ";
+				from im_stock_order as o
+				left join im_stock_user u on u.uPhone=o.oPhone
+				where oId>0 $strCriteria $cond ";
 		$count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
 
 		return [$res, $count];

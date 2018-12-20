@@ -113,7 +113,8 @@ class BaseController extends Controller
 			}
 			$params["adminInfo"]["menus"] = $menus;
 		}
-
+		$params['is_run'] = Admin::isGroupUser(Admin::GROUP_RUN_MGR);
+		$params['is_staff'] = Admin::get_level() >= Admin::LEVEL_STAFF;
 
 		return self::render($view, $params);
 	}
@@ -159,13 +160,13 @@ class BaseController extends Controller
 	protected function getParam($field, $defaultVal = "")
 	{
 		$getInfo = \Yii::$app->request->get();
-		return $getInfo[$field] ?? $defaultVal;
+		return isset($getInfo[$field]) ? trim($getInfo[$field]) : $defaultVal;
 	}
 
 	protected function postParam($field, $defaultVal = "")
 	{
 		$postInfo = \Yii::$app->request->post();
-		return $postInfo[$field] ?? $defaultVal;
+		return isset($postInfo[$field]) ? trim($postInfo[$field]) : $defaultVal;
 	}
 
 	protected function getRequestUri()
