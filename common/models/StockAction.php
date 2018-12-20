@@ -78,7 +78,7 @@ class StockAction extends \yii\db\ActiveRecord
 			$phone = $value[0];
 			$typeT = $value[1];
 			$type = array_flip(self::$types)[$typeT] ?? '';
-			$time = $value[2] ? date('Y-m-d', strtotime($value[2])) : '';
+			$time = $value[2] ? date('Y-m-d H:i:s', strtotime($value[2])) : '';
 			if (!AppUtil::checkPhone($phone)) {
 				continue;
 			}
@@ -89,10 +89,11 @@ class StockAction extends \yii\db\ActiveRecord
 				':aTypeTxt' => $typeT,
 				':aAddedOn' => $time,
 			];
-			print_r($params);
-			exit;
+
 			try {
 				$res = $cmd->bindValues($params)->execute();
+				var_dump($cmd->bindValues($params)->getRawSql());
+				exit;
 			} catch (\Exception $e) {
 				$error++;
 			}
