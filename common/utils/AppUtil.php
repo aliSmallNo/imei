@@ -1638,9 +1638,9 @@ class AppUtil
 	public static function sendSMS($phone, $msg, $appendId = '1234', $type = 'real')
 	{
 		$formatMsg = $msg;
-		if (mb_strpos($msg, '【奔跑到家】') == false) {
-			$formatMsg = '【奔跑到家】' . $msg;
-		}
+//		if (mb_strpos($msg, '【奔跑到家】') == false) {
+//			$formatMsg = '【奔跑到家】' . $msg;
+//		}
 		$openId = "benpao";
 		$openPwd = "bpbHD2015";
 		if ($type != 'real') {
