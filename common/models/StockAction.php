@@ -84,7 +84,7 @@ class StockAction extends \yii\db\ActiveRecord
 			}
 
 			$params = [
-				':oPhone' => $phone,
+				':aPhone' => $phone,
 				':aType' => $type,
 				':aTypeTxt' => $typeT,
 				':aAddedOn' => $time,
