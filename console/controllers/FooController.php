@@ -1694,12 +1694,12 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 			if (!$phone || strlen($phone) != 11 || substr($phone, 0, 1) == 0) {
 				continue;
 			}
-			//AppUtil::sendSMS($phone, $content, '100001');
-			//echo $co++ . PHP_EOL;
+			AppUtil::sendSMS($phone, $content, '100001','yx');
+			echo $co++ . PHP_EOL;
 		}
 
-		$phone = 17611629667;
-		AppUtil::sendSMS($phone, $content, '100001', 'yx');
+//		$phone = 17611629667;
+//		AppUtil::sendSMS($phone, $content, '100001', 'yx');
 
 		exit;
 
