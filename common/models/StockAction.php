@@ -78,7 +78,7 @@ class StockAction extends \yii\db\ActiveRecord
 			$phone = $value[0];
 			$typeT = $value[1];
 			$type = array_flip(self::$types)[$typeT] ?? '';
-			$time = $value[2] ? date('Y-m-d', strtotime($value[2])) : '';
+			$time = $value[2] ? date('Y-m-d', strtotime($value[2])) : null;
 			if (!AppUtil::checkPhone($phone)) {
 				continue;
 			}
