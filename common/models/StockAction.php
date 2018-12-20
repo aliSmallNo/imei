@@ -22,9 +22,9 @@ class StockAction extends \yii\db\ActiveRecord
 	const TYPE_AUTH = 'auth';
 	const TYPE_OPT = 'opt';
 	static $types = [
-		self::TYPE_REG => '注册',
-		self::TYPE_AUTH => '认证',
-		self::TYPE_OPT => '操作',
+		self::TYPE_REG => '已注册',
+		self::TYPE_AUTH => '已认证',
+		self::TYPE_OPT => '已操作',
 	];
 
 	public static function tableName()
