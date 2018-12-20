@@ -1683,21 +1683,22 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 	public function actionTest()
 	{
+		/*
 		$co = 0;
 		$phones = [];
 		$content = '【每日9:15预测大盘暴跌，逃过暴跌就是赚】人工智能AI大数据，预测大盘暴跌概率，准确率90%以上，加V免费预订bpbwma5';
-		/*foreach ($phones as $phone) {
+		foreach ($phones as $phone) {
 			$phone = trim($phone);
 			if (!$phone || strlen($phone) != 11 || substr($phone, 0, 1) == 0) {
 				continue;
 			}
 			AppUtil::sendSMS($phone, $content, '100001','yx');
 			echo $co++ . PHP_EOL;
-		}*/
+		}
 
 		$phone = 17611629667;
 		AppUtil::sendSMS($phone, $content, '100001', 'yx');
-
+*/
 		exit;
 
 	}
