@@ -262,7 +262,7 @@ class ExcelUtil
 	}
 
 	/**
-	 * 解析产品数据
+	 * 解析excel 返回array
 	 * */
 	public static function parseProduct($fileName)
 	{

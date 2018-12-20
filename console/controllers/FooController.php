@@ -1683,10 +1683,23 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 	public function actionTest()
 	{
-		echo '千寻恋恋' . PHP_EOL;
-		echo PHP_VERSION . PHP_EOL;
-		// echo phpversion() . PHP_EOL;
-		// echo phpinfo();
+		$co = 0;
+		$phones = [
+			18810056120,
+			17611629667,
+		];
+		$content = '股市缺钱不用愁，只要你有好策略。牛股定期免费送。8倍资金，盈利随时提现，按日计费，超低费用专业配资联系：13810045714 同微信';
+		foreach ($phones as $phone) {
+			$phone = trim($phone);
+			if (!$phone || strlen($phone) != 11 || substr($phone, 0, 1) == 0) {
+				continue;
+			}
+			AppUtil::sendSMS($phone, $content, '100001');
+			echo $co++ . PHP_EOL;
+		}
+
+		//$phone = 17611629667;
+		//AppUtil::sendSMS($phone, $content, '100001', 'yx');
 
 		exit;
 
