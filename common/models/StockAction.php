@@ -18,9 +18,9 @@ use Yii;
 class StockAction extends \yii\db\ActiveRecord
 {
 
-	const TYPE_REG = 'reg';
-	const TYPE_AUTH = 'auth';
-	const TYPE_OPT = 'opt';
+	const TYPE_REG = 1;
+	const TYPE_AUTH = 3;
+	const TYPE_OPT = 5;
 	static $types = [
 		self::TYPE_REG => '已注册',
 		self::TYPE_AUTH => '已认证',
@@ -91,8 +91,6 @@ class StockAction extends \yii\db\ActiveRecord
 			];
 
 			try {
-				var_dump($cmd->bindValues($params)->getRawSql());
-				exit;
 				$res = $cmd->bindValues($params)->execute();
 			} catch (\Exception $e) {
 				$error++;
