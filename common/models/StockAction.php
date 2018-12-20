@@ -91,9 +91,9 @@ class StockAction extends \yii\db\ActiveRecord
 			];
 
 			try {
-				$res = $cmd->bindValues($params)->execute();
 				var_dump($cmd->bindValues($params)->getRawSql());
 				exit;
+				$res = $cmd->bindValues($params)->execute();
 			} catch (\Exception $e) {
 				$error++;
 			}
