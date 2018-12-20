@@ -57,6 +57,8 @@ class StockAction extends \yii\db\ActiveRecord
 	{
 		$error = 0;
 		$result = ExcelUtil::parseProduct($filepath);
+		print_r($result);
+		exit;
 		if (!$result) {
 			$result = [];
 		}
