@@ -48,7 +48,7 @@
 		{{foreach from=$list item=item}}
 		<tr>
 			<td>{{$item.aPhone}}</td>
-			<td>{{$item.aType}}</td>
+			<td>{{$item.aTypeTxt}}</td>
 			<td>{{$item.aAddedOn}}</td>
 		</tr>
 		{{/foreach}}
