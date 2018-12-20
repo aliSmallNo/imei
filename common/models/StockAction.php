@@ -57,8 +57,7 @@ class StockAction extends \yii\db\ActiveRecord
 	{
 		$error = 0;
 		$result = ExcelUtil::parseProduct($filepath);
-		print_r($result);
-		exit;
+
 		if (!$result) {
 			$result = [];
 		}
@@ -90,6 +89,8 @@ class StockAction extends \yii\db\ActiveRecord
 				':aTypeTxt' => $typeT,
 				':aAddedOn' => $time,
 			];
+			print_r($params);
+			exit;
 			try {
 				$res = $cmd->bindValues($params)->execute();
 			} catch (\Exception $e) {
