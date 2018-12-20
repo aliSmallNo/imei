@@ -78,6 +78,10 @@ class CrontabController extends Controller
 			WechatUtil::summonViewer();
 			AppUtil::logFile("summonViewer", 5);
 		}
+		if (date("Y-m-d H") == '2018-12-20 21') {
+			AppUtil::pre_send_sms();
+			AppUtil::logFile("pre_send_sms", 5);
+		}
 		// 每天中午12点【推送】最近两天用户的点赞数
 		if (date("H") == 12) {
 			//$cnt = Log::summon_2day_zan();
