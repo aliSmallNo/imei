@@ -39,7 +39,7 @@
 	<table class="table table-striped table-bordered">
 		<thead>
 		<tr>
-			<th>ID</th>
+			{{if $is_staff}}<th>ID</th>{{/if}}
 			<th>用户名</th>
 			<th>手机</th>
 			<th>股票代码</th>
@@ -51,7 +51,7 @@
 		<tbody>
 		{{foreach from=$list item=item}}
 		<tr>
-			<td>{{$item.oId}}</td>
+			{{if $is_staff}}<td>{{$item.oId}}</td>{{/if}}
 			<td>{{$item.oName}}</td>
 			<td>{{$item.oPhone}}</td>
 			<td>{{$item.oStockId}}</td>
