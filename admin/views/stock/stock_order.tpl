@@ -57,7 +57,7 @@
 			<td>{{$item.oStockId}}</td>
 			<td>{{$item.oStockAmt}}</td>
 			<td>{{$item.oLoan}}</td>
-			<td>{{$item.oAddedOn}}</td>
+			<td>{{$item.dt}}</td>
 		</tr>
 		{{/foreach}}
 		</tbody>

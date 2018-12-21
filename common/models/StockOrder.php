@@ -136,7 +136,7 @@ class StockOrder extends ActiveRecord
 
 	public static function items($criteria, $params, $page, $pageSize = 20)
 	{
-		$conn=AppUtil::db();
+		$conn = AppUtil::db();
 		$offset = ($page - 1) * $pageSize;
 		$strCriteria = '';
 		if ($criteria) {
@@ -157,8 +157,8 @@ class StockOrder extends ActiveRecord
 				order by oAddedOn desc 
 				limit $offset,$pageSize";
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
-		foreach ($res as $v) {
-
+		foreach ($res as $k => $v) {
+			$res[$k]['dt'] = date('Y-m-d', strtotime($v['oAddedOn']));
 		}
 
 
@@ -197,7 +197,7 @@ class StockOrder extends ActiveRecord
 				order by ym desc ";
 		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as $k => $v) {
-			$res[$k]['user_loan_amt'] = sprintf('%.2f', $v['user_loan_amt']);
+			$res[$k]['user_loan_amt'] = sprintf('%.0f', $v['user_loan_amt']);
 		}
 
 		return $res;
