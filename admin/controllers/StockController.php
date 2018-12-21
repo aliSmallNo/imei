@@ -258,7 +258,6 @@ class StockController extends BaseController
 		$page = self::getParam("page", 1);
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
-		$dt = self::getParam("dt");
 
 		$criteria = [];
 		$params = [];
@@ -270,11 +269,6 @@ class StockController extends BaseController
 		if ($phone) {
 			$criteria[] = "  uPhone like :phone ";
 			$params[':phone'] = $phone;
-		}
-		if ($dt) {
-			$criteria[] = "  o.oAddedOn between :st and :et ";
-			$params[':st'] = $dt . ' 00:00:00';
-			$params[':et'] = $dt . ' 23:00:00';
 		}
 
 		list($list, $count) = StockUser::items($criteria, $params, $page);
@@ -293,7 +287,7 @@ class StockController extends BaseController
 	{
 		$getInfo = \Yii::$app->request->get();
 		$page = self::getParam("page", 1);
-		$dt = self::getParam("dt");
+		$dt = self::getParam("dt", date('Ym'));
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
 
@@ -335,6 +329,7 @@ class StockController extends BaseController
 		$error = self::getParam("error");
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
+		$dt = self::getParam("dt");
 
 		$criteria = [];
 		$params = [];
@@ -346,6 +341,12 @@ class StockController extends BaseController
 		if ($phone) {
 			$criteria[] = "  u.uPhone like :phone ";
 			$params[':phone'] = $phone;
+		}
+		if ($dt) {
+			$dt = date('Y-m-d', strtotime($dt));
+			$criteria[] = "  o.oAddedOn between :st and :et ";
+			$params[':st'] = $dt . ' 00:00:00';
+			$params[':et'] = $dt . ' 23:59:59';
 		}
 
 		list($list, $count) = StockOrder::items($criteria, $params, $page);

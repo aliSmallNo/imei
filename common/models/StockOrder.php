@@ -136,6 +136,7 @@ class StockOrder extends ActiveRecord
 
 	public static function items($criteria, $params, $page, $pageSize = 20)
 	{
+		$conn=AppUtil::db();
 		$offset = ($page - 1) * $pageSize;
 		$strCriteria = '';
 		if ($criteria) {
@@ -155,15 +156,17 @@ class StockOrder extends ActiveRecord
 				where oId>0 $strCriteria $cond
 				order by oAddedOn desc 
 				limit $offset,$pageSize";
-		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
+		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as $v) {
 
 		}
+
+
 		$sql = "select count(1) as co
 				from im_stock_order as o
 				left join im_stock_user u on u.uPhone=o.oPhone
 				where oId>0 $strCriteria $cond ";
-		$count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
+		$count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
 
 		return [$res, $count];
 	}
