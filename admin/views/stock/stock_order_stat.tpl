@@ -18,7 +18,6 @@
 		<span class="space"></span>
 	</form>
 </div>
-<div class="row-divider"></div>
 <div class="row">
 	<ul class="nav nav-tabs">
 		{{foreach from=$mouths key=key item=mouth}}

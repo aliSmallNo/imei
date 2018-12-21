@@ -124,6 +124,15 @@ class Admin extends ActiveRecord
 		return ["code" => 159, "msg" => "删除失败！"];
 	}
 
+	public static function get_level_direct()
+	{
+		$userInfo = self::findOne(['aId' => self::getAdminId()]);
+		if (!$userInfo) {
+			return self::LEVEL_VIEW;
+		}
+		return $userInfo['aLevel'];
+	}
+
 	public static function get_level()
 	{
 		$userInfo = self::userInfo();
@@ -243,6 +252,8 @@ class Admin extends ActiveRecord
 
 	private static function resetMenus($userInfo)
 	{
+		$user_level = self::get_level_direct();
+
 		$leftMenus = [];
 		$disabledNodes = [];
 		$enabledNodes = [];
@@ -255,12 +266,17 @@ class Admin extends ActiveRecord
 				}
 				continue;
 			}
+
 			foreach ($menuFolder['items'] as $k => $menu) {
 				$tempUrl = str_replace("?r=", "", $menu['url']);
 				$tempUrl = trim($tempUrl, "/");
 				$menuFolder['items'][$k]["flag"] = $tempUrl;
 				$menuHidden = isset($menuFolder['items'][$k]["hidden"]) ? $menuFolder['items'][$k]["hidden"] : 0;
-				if ($menuHidden) {
+				$menuLevel = isset($menuFolder['items'][$k]["level"]) ? $menuFolder['items'][$k]["level"] : Admin::LEVEL_VIEW;
+
+				if ($menuHidden
+					|| $menuLevel > $user_level
+				) {
 					unset($menuFolder['items'][$k]);
 					$disabledNodes[] = $tempUrl;
 				} else {
@@ -269,6 +285,8 @@ class Admin extends ActiveRecord
 			}
 			$leftMenus[] = $menuFolder;
 		}
+
+		//print_r([$leftMenus, $disabledNodes, $enabledNodes]);exit;
 		return [$leftMenus, array_diff($disabledNodes, $enabledNodes)];
 	}
 

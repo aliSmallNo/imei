@@ -66,6 +66,7 @@ class BaseController extends Controller
 			exit;
 		}
 		$adminInfo = Admin::userInfo($adminId);
+		//print_r($adminInfo);exit;
 		if (!$adminInfo) {
 			header("location:/site/login");
 			exit;

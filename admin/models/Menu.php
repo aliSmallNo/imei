@@ -161,13 +161,13 @@ class Menu
 						"name" => "订单统计",
 						"url" => "/stock/stock_order_stat",
 						"revise" => 1,
-						"level" => 820
+						"level" => 810
 					],
 					[
 						"name" => "用户操作",
 						"url" => "/stock/stock_action",
 						"revise" => 1,
-						"level" => 820
+						"level" => 810
 					],
 				]
 			],
