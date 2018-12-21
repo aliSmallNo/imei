@@ -154,7 +154,7 @@ class StockOrder extends ActiveRecord
 				from im_stock_order as o
 				left join im_stock_user u on u.uPhone=o.oPhone
 				where oId>0 $strCriteria $cond
-				order by oAddedOn desc 
+				order by oId desc 
 				limit $offset,$pageSize";
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as $k => $v) {
