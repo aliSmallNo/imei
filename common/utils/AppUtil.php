@@ -881,6 +881,16 @@ class AppUtil
 		return [$day, $firstDate, $lastDate, $dt];
 	}
 
+	public static function getRecentMonth($n = 5)
+	{
+		$mouths = [];
+		for ($i = 0; $i < $n; $i++) {
+			$mouths[] = date("Ym", time() - 86400 * $i * 30);
+		}
+
+		return $mouths;
+	}
+
 	public static function getPeriodInfo($dt = "")
 	{
 		if (!$dt) {

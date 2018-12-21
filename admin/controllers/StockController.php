@@ -16,6 +16,7 @@ use common\models\CRMStockTrack;
 use common\models\StockAction;
 use common\models\StockOrder;
 use common\models\StockUser;
+use common\utils\AppUtil;
 use common\utils\ExcelUtil;
 use common\utils\ImageUtil;
 
@@ -257,6 +258,7 @@ class StockController extends BaseController
 		$page = self::getParam("page", 1);
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
+		$dt = self::getParam("dt");
 
 		$criteria = [];
 		$params = [];
@@ -269,6 +271,11 @@ class StockController extends BaseController
 			$criteria[] = "  uPhone like :phone ";
 			$params[':phone'] = $phone;
 		}
+		if ($dt) {
+			$criteria[] = "  o.oAddedOn between :st and :et ";
+			$params[':st'] = $dt . ' 00:00:00';
+			$params[':et'] = $dt . ' 23:00:00';
+		}
 
 		list($list, $count) = StockUser::items($criteria, $params, $page);
 		$pagination = self::pagination($page, $count, 20);
@@ -278,6 +285,44 @@ class StockController extends BaseController
 				'pagination' => $pagination,
 				'list' => $list,
 				'types' => StockUser::$types,
+			]
+		);
+	}
+
+	public function actionStock_order_stat()
+	{
+		$getInfo = \Yii::$app->request->get();
+		$page = self::getParam("page", 1);
+		$dt = self::getParam("dt");
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+
+		$criteria = [];
+		$params = [];
+		if ($name) {
+			$name = str_replace("'", "", $name);
+			$criteria[] = "  u.uName like :name ";
+			$params[':name'] = "%$name%";
+		}
+		if ($phone) {
+			$criteria[] = "  u.uPhone like :phone ";
+			$params[':phone'] = $phone;
+		}
+		if ($dt) {
+			$criteria[] = "  o.oAddedOn between :st and :et ";
+			list($day, $firstDate, $lastDate, $dt) = AppUtil::getMonthInfo($dt . '01 ');
+			$params[':st'] = $firstDate . ' 00:00:00';
+			$params[':et'] = $lastDate . ' 23:00:00';
+		}
+
+		$list = StockOrder::stat_items($criteria, $params);
+
+		return $this->renderPage("stock_order_stat.tpl",
+			[
+				'getInfo' => $getInfo,
+				'list' => $list,
+				'mouths' => AppUtil::getRecentMonth(),
+
 			]
 		);
 	}

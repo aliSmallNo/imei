@@ -168,4 +168,36 @@ class StockOrder extends ActiveRecord
 		return [$res, $count];
 	}
 
+	public static function stat_items($criteria, $params)
+	{
+
+		$strCriteria = '';
+		if ($criteria) {
+			$strCriteria = ' AND ' . implode(' AND ', $criteria);
+		}
+
+		$level = Admin::get_level();
+		$phone = Admin::get_phone();
+		$cond = '';
+		if ($level < Admin::LEVEL_STAFF) {
+			$cond = " and u.uPtPhone=$phone ";
+		}
+
+		$sql = "select 
+				Date_format(o.oAddedOn, '%Y%m%d') as ym,
+				count(DISTINCT oPhone) as user_amt,
+				sum(oLoan) as user_loan_amt
+				from im_stock_order as o
+				left join im_stock_user u on u.uPhone=o.oPhone
+				where oId>0 $strCriteria $cond
+				group by ym
+				order by ym desc ";
+		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
+		foreach ($res as $k => $v) {
+			$res[$k]['user_loan_amt'] = sprintf('%.2f', $v['user_loan_amt']);
+		}
+
+		return $res;
+	}
+
 }
