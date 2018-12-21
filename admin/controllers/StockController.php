@@ -285,8 +285,6 @@ class StockController extends BaseController
 
 	public function actionStock_order_stat()
 	{
-		$getInfo = \Yii::$app->request->get();
-		$page = self::getParam("page", 1);
 		$dt = self::getParam("dt", date('Ym'));
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
@@ -313,7 +311,8 @@ class StockController extends BaseController
 
 		return $this->renderPage("stock_order_stat.tpl",
 			[
-				'getInfo' => $getInfo,
+				'getInfo' => \Yii::$app->request->get(),
+				'dt' => $dt,
 				'list' => $list,
 				'mouths' => AppUtil::getRecentMonth(),
 

@@ -22,7 +22,7 @@
 <div class="row">
 	<ul class="nav nav-tabs">
 		{{foreach from=$mouths key=key item=mouth}}
-			<li class="ng-scope {{if isset($getInfo['dt']) && $getInfo['dt']== $mouth}} active{{/if}}">
+			<li class="ng-scope {{if $dt== $mouth}} active{{/if}}">
 				<a href="/stock/stock_order_stat?dt={{$mouth}}" class="ng-binding">{{$mouth}}</a>
 			</li>
 		{{/foreach}}
