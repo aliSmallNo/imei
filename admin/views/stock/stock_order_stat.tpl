@@ -7,7 +7,7 @@
 	</div>
 </div>
 <div class="row">
-	<form action="/stock/stock_order" method="get" class="form-inline">
+	<form action="/stock/stock_order" method="get" class="form-inline" style="display: none">
 		<div class="form-group">
 			<input class="form-control" placeholder="用户名" type="text" name="name"
 						 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>

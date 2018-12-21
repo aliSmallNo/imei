@@ -291,7 +291,7 @@ class StockController extends BaseController
 
 		$criteria = [];
 		$params = [];
-		if ($name) {
+		/*if ($name) {
 			$name = str_replace("'", "", $name);
 			$criteria[] = "  u.uName like :name ";
 			$params[':name'] = "%$name%";
@@ -299,7 +299,7 @@ class StockController extends BaseController
 		if ($phone) {
 			$criteria[] = "  u.uPhone like :phone ";
 			$params[':phone'] = $phone;
-		}
+		}*/
 		if ($dt) {
 			$criteria[] = "  o.oAddedOn between :st and :et ";
 			list($day, $firstDate, $lastDate) = AppUtil::getMonthInfo($dt . '01 ');
