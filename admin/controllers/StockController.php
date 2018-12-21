@@ -302,7 +302,7 @@ class StockController extends BaseController
 		}
 		if ($dt) {
 			$criteria[] = "  o.oAddedOn between :st and :et ";
-			list($day, $firstDate, $lastDate, $dt) = AppUtil::getMonthInfo($dt . '01 ');
+			list($day, $firstDate, $lastDate) = AppUtil::getMonthInfo($dt . '01 ');
 			$params[':st'] = $firstDate . ' 00:00:00';
 			$params[':et'] = $lastDate . ' 23:00:00';
 		}
