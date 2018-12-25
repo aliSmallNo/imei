@@ -1694,7 +1694,9 @@ class AppUtil
 	public static function getSMSLeft()
 	{
 		$ret = AppUtil::httpGet('http://221.179.180.158:8081/QxtSms_surplus/surplus?OperID=benpaoyx&OperPass=Cv3F_ClN');
-		var_dump($ret);
+		$ret = self::xml_to_data($ret);
+		print_r($ret);
+		exit;
 	}
 
 	public static function sendSMS_by_excel($filepath, $content = '')
