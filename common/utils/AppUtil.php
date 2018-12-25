@@ -1668,7 +1668,7 @@ class AppUtil
 	public static function pre_send_sms()
 	{
 		$co = $success = 0;
-		$phones = [17611629667, 17777777777, 12312121212];
+		$phones = [11122223333];
 		$content = '成功预测，今日盘中发生暴跌，想继续免费预订，请加V：bpbwma5';
 		foreach ($phones as $phone) {
 			$phone = trim($phone);
