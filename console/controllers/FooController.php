@@ -1683,8 +1683,20 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 	public function actionTest()
 	{
-		//AppUtil::pre_send_sms();
-		AppUtil::getSMSLeft();
+		// AppUtil::pre_send_sms();
+		// AppUtil::getSMSLeft();
+
+
+		$res = Log::find()->where(['oCategory' => Log::CAT_SEND_SMS, 'oKey' => Log::KEY_SEND_COMPLETE,])->asArray()->all();
+		if (!$res) {
+			return false;
+		}
+		foreach ($res as $v) {
+			list($send_count) = AppUtil::sendSMS_by_excel($v['oBefore'], $v['oAfter']);
+			if ($send_count > 0) {
+				Log::edit_sms_item($v['oId'], $send_count);
+			}
+		}
 
 	}
 
