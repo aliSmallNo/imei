@@ -1691,15 +1691,26 @@ class AppUtil
 
 	}
 
+	public static function getSMSLeft()
+	{
+		$ret = AppUtil::httpGet('http://221.179.180.158:8081/QxtSms_surplus/surplus?OperID=benpaoyx&OperPass=Cv3F_ClN');
+		var_dump($ret);
+	}
+
 	public static function sendSMS_by_excel($filepath, $content = '')
 	{
+		if (!$content || !$filepath) {
+			return [0, 0];
+		}
+
 		$error = 0;
 		$result = ExcelUtil::parseProduct($filepath);
 
 		if (!$result) {
 			$result = [];
 		}
-		$insertCount = $success = 0;
+		$sendCount = $success = 0;
+
 
 		foreach ($result as $key => $value) {
 			$res = 0;
@@ -1715,6 +1726,7 @@ class AppUtil
 			if (!$phone || strlen($phone) != 11 || substr($phone, 0, 1) == 0) {
 				continue;
 			}
+
 			$res = AppUtil::sendSMS($phone, $content, '100001', 'yx');
 
 			$res = self::xml_to_data($res);
@@ -1722,13 +1734,11 @@ class AppUtil
 				$success++;
 			}
 			if ($res) {
-				$insertCount++;
+				$sendCount++;
 			}
-
 		}
 
-
-		return [$insertCount, $error];
+		return [$sendCount, $error];
 	}
 
 

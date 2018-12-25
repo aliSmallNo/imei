@@ -1683,7 +1683,8 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 	public function actionTest()
 	{
-		AppUtil::pre_send_sms();
+		//AppUtil::pre_send_sms();
+		AppUtil::getSMSLeft();
 
 	}
 
