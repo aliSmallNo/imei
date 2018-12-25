@@ -1737,11 +1737,11 @@ class AppUtil
 			return [0, 0];
 		}
 
-		print_r([$phones, count($phones), $leftMsgCount]);
-		exit;
+//		print_r([$phones, count($phones), $leftMsgCount]);
+//		exit;
 		foreach ($phones as $key => $value) {
 			$res = 0;
-			$res = AppUtil::sendSMS($phone, $content, '100001', 'yx');
+			$res = AppUtil::sendSMS($value, $content, '100001', 'yx');
 
 			$res = self::xml_to_data($res);
 			if ($res && is_array($res) && isset($res['code']) && $res['code'] == '03') {
