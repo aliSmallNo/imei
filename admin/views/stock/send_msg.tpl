@@ -16,7 +16,27 @@
 	</div>
 </div>
 <div class="row">
-
+	<table class="table table-striped table-bordered">
+		<thead>
+		<tr>
+			<th class="col-sm-6">发送内容</th>
+			<th>发送状态</th>
+			<th>发送条数</th>
+			<th>时间</th>
+		</tr>
+		</thead>
+		<tbody>
+		{{foreach from=$list item=item}}
+			<tr>
+				<td>{{$item.oAfter}}</td>
+				<td>{{$item.st_txt}}</td>
+				<td>{{$item.oOpenId}}</td>
+				<td>{{$item.oDate}}</td>
+			</tr>
+		{{/foreach}}
+		</tbody>
+	</table>
+	{{$pagination}}
 </div>
 
 <div class="row-divider"></div>
@@ -25,7 +45,8 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+									aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="myModalLabel">发送短信</h4>
 			</div>
 			<div class="modal-body">

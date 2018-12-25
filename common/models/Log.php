@@ -681,6 +681,10 @@ class Log extends ActiveRecord
 	const CAT_SEND_SMS = 'send_sms';
 	const KEY_SEND_WAIT = 9;
 	const KEY_SEND_COMPLETE = 1;
+	static $keyDict = [
+		self::KEY_SEND_COMPLETE => '发送完成',
+		self::KEY_SEND_WAIT => '等待发送',
+	];
 
 	/*
 	 * oCategory
@@ -735,9 +739,29 @@ class Log extends ActiveRecord
 		return true;
 	}
 
-	public static function sms_items()
+	public static function sms_items($criteria, $params, $page, $pageSize = 20)
 	{
+		$offset = ($page - 1) * $pageSize;
+		$strCriteria = '';
+		if ($criteria) {
+			$strCriteria = ' AND ' . implode(' AND ', $criteria);
+		}
 
+		$sql = "select *
+				from im_log as l
+				where oId>0 $strCriteria
+				order by oDate desc 
+				limit $offset,$pageSize";
+		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
+		foreach ($res as $k => $v) {
+			$res[$k]['st_txt'] = self::$keyDict[$v['oKey']] ?? '';
+		}
+		$sql = "select count(1) as co
+				from im_log as l
+				where oId>0 $strCriteria  ";
+		$count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
+
+		return [$res, $count];
 	}
 
 
