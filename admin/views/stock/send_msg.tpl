@@ -1,8 +1,17 @@
 {{include file="layouts/header.tpl"}}
-
+<style>
+	.left {
+		display: inline-block;
+		font-size: 12px;
+		font-weight: 400;
+		color: #777;
+	}
+</style>
 <div class="row">
 	<div class="col-sm-6">
-		<h4>批量发送短信</h4>
+		<h4>批量发送短信
+			<p class="left">剩余{{$leftMsgCount}}条</p>
+		</h4>
 	</div>
 	<div class="col-sm-6">
 		{{if $success}}

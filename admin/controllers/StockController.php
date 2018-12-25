@@ -454,8 +454,11 @@ class StockController extends BaseController
 		$success = self::getParam("success");
 		$error = self::getParam("error");
 
+		$leftMsgCount = AppUtil::getSMSLeft();
+
 		return $this->renderPage("send_msg.tpl",
 			[
+				'leftMsgCount' => $leftMsgCount,
 				'getInfo' => $getInfo,
 				'success' => $success,
 				'error' => $error,

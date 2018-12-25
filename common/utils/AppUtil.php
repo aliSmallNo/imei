@@ -1668,7 +1668,7 @@ class AppUtil
 	public static function pre_send_sms()
 	{
 		$co = $success = 0;
-		$phones = [11122223333];
+		$phones = [];
 		$content = '成功预测，今日盘中发生暴跌，想继续免费预订，请加V：bpbwma5';
 		foreach ($phones as $phone) {
 			$phone = trim($phone);
@@ -1695,8 +1695,11 @@ class AppUtil
 	{
 		$ret = AppUtil::httpGet('http://221.179.180.158:8081/QxtSms_surplus/surplus?OperID=benpaoyx&OperPass=Cv3F_ClN');
 		$ret = self::xml_to_data($ret);
-		print_r($ret);
-		exit;
+		if (is_array($ret) && isset($ret['rcode']) && $ret['rcode']) {
+			return intval($ret['rcode']);
+		}
+		return 0;
+
 	}
 
 	public static function sendSMS_by_excel($filepath, $content = '')
@@ -1713,22 +1716,31 @@ class AppUtil
 		}
 		$sendCount = $success = 0;
 
-
-		foreach ($result as $key => $value) {
-			$res = 0;
-			if (!$key) {
+		$phones = [];
+		foreach ($result as $k => $v) {
+			if (!$k) {
 				continue;
 			}
-			$phone = $value[0];
-			if (!AppUtil::checkPhone($phone)) {
-				continue;
-			}
-
+			$phone = $v[0];
 			$phone = trim($phone);
-			if (!$phone || strlen($phone) != 11 || substr($phone, 0, 1) == 0) {
+			$phone = trim($phone, ',');
+			$phone = trim($phone, '，');
+			if (!AppUtil::checkPhone($phone) || strlen($phone) != 11) {
 				continue;
 			}
+			$phones[] = $phone;
+		}
+		// 查询剩余条数
+		$leftMsgCount = self::getSMSLeft();
+		// 直接不让发送
+		if (count($phones) > $leftMsgCount) {
+			return [0, 0];
+		}
 
+		print_r([$phones, count($phones), $leftMsgCount]);
+		exit;
+		foreach ($phones as $key => $value) {
+			$res = 0;
 			$res = AppUtil::sendSMS($phone, $content, '100001', 'yx');
 
 			$res = self::xml_to_data($res);
