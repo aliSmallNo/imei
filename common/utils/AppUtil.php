@@ -1705,7 +1705,7 @@ class AppUtil
 	public static function sendSMS_by_excel($filepath, $content = '')
 	{
 		if (!$content || !$filepath) {
-			return [0, 0];
+			return [0, '参数错误~'];
 		}
 
 		$error = 0;
@@ -1734,7 +1734,7 @@ class AppUtil
 		$leftMsgCount = self::getSMSLeft();
 		// 直接不让发送
 		if (count($phones) > $leftMsgCount) {
-			return [0, 0];
+			return [0, '条数不够~'];
 		}
 
 //		print_r([$phones, count($phones), $leftMsgCount]);
@@ -1752,9 +1752,8 @@ class AppUtil
 			}
 		}
 
-		return [$sendCount, $error];
+		return [$sendCount, '发送成功~'];
 	}
-
 
 
 }

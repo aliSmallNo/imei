@@ -678,6 +678,7 @@ class Log extends ActiveRecord
 		return $cnt;
 	}
 
+	const CAT_SEND_SMS_LOG = 'send_sms_log';
 	const CAT_SEND_SMS = 'send_sms';
 	const KEY_SEND_WAIT = 9;
 	const KEY_SEND_COMPLETE = 1;
@@ -731,9 +732,16 @@ class Log extends ActiveRecord
 			return false;
 		}
 		foreach ($res as $v) {
-			list($send_count) = AppUtil::sendSMS_by_excel($v['oBefore'], $v['oAfter']);
+			list($send_count, $msg) = AppUtil::sendSMS_by_excel($v['oBefore'], $v['oAfter']);
 			if ($send_count > 0) {
 				self::edit_sms_item($v['oId'], $send_count);
+			} else {
+				self::add(['oCategory' => self::CAT_SEND_SMS_LOG,
+					'oKey' => self::KEY_SEND_WAIT,
+					'oBefore' => $msg,
+					'oOpenId' => $v['oId'],
+					'oAfter' => __CLASS__ . '__' . __LINE__,
+				]);
 			}
 		}
 		return true;
