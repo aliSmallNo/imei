@@ -35,16 +35,15 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">发送内容</label>
 
-			<div class="col-sm-8">
+			<div class="col-sm-5">
 				<textarea name="content" rows="3" class="form-control"></textarea>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Excel文件</label>
-
 			<div class="col-sm-8">
 				<input type="file" name="excel" accept=".xls,.xlsx" class="form-control-static"/>
-				<p class="help-block">每次最好不要超过5000条</p>
+				<p class="help-block">每次最好不要超过2000条</p>
 			</div>
 		</div>
 		<div class="form-group">
