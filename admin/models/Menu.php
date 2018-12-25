@@ -139,7 +139,7 @@ class Menu
 					],
 					[
 						"name" => "发送短信",
-						"url" => "/stock/send_sms",
+						"url" => "/stock/send_msg",
 						"revise" => 1,
 						"level" => 820
 					],
