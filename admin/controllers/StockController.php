@@ -458,32 +458,15 @@ class StockController extends BaseController
 	public function actionSend_msg()
 	{
 		$getInfo = \Yii::$app->request->get();
-		$success = self::getParam("success");
-		$error = self::getParam("error");
-
 		$page = self::getParam("page", 1);
 		$success = self::getParam("success");
 		$error = self::getParam("error");
-		$name = self::getParam("name");
-		$phone = self::getParam("phone");
-		$dt = self::getParam("dt");
 
 		$criteria = [];
 		$params = [];
 		$criteria[] = "  oCategory = :cat ";
 		$params[':cat'] = Log::CAT_SEND_SMS;
 
-		if ($name) {
-			$name = str_replace("'", "", $name);
-			$criteria[] = "  u.uName like :name ";
-			$params[':name'] = "%$name%";
-		}
-		if ($dt) {
-			$dt = date('Y-m-d', strtotime($dt));
-			$criteria[] = "  o.oAddedOn between :st and :et ";
-			$params[':st'] = $dt . ' 00:00:00';
-			$params[':et'] = $dt . ' 23:59:59';
-		}
 
 		list($list, $count) = Log::sms_items($criteria, $params, $page);
 		$pagination = self::pagination($page, $count, 20);
