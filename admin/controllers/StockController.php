@@ -395,7 +395,8 @@ class StockController extends BaseController
 						$redir = "stock_action";
 						break;
 					case 'send_msg':
-						list($insertCount, $error) = AppUtil::sendSMS_by_excel($filepath);
+						$content = self::postParam('content', '');
+						list($insertCount, $error) = AppUtil::sendSMS_by_excel($filepath, $content);
 						$redir = "send_msg";
 						break;
 					default:

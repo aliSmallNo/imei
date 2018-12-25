@@ -32,7 +32,13 @@
 	<form class="form-horizontal" action="/stock/upload_excel" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="cat" value="send_msg"/>
 		<input type="hidden" name="sign" value="up"/>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">发送内容</label>
 
+			<div class="col-sm-8">
+				<textarea name="content" rows="3" class="form-control"></textarea>
+			</div>
+		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Excel文件</label>
 
