@@ -394,6 +394,10 @@ class StockController extends BaseController
 						list($insertCount, $error) = StockAction::add_by_excel($filepath);
 						$redir = "stock_action";
 						break;
+					case 'send_msg':
+						list($insertCount, $error) = AppUtil::sendSMS_by_excel($filepath);
+						$redir = "send_msg";
+						break;
 					default:
 						$insertCount = 0;
 						$error = 'cat error';
@@ -444,4 +448,19 @@ class StockController extends BaseController
 		);
 	}
 
+	public function actionSend_msg()
+	{
+		$getInfo = \Yii::$app->request->get();
+		$success = self::getParam("success");
+		$error = self::getParam("error");
+
+		return $this->renderPage("send_msg.tpl",
+			[
+				'getInfo' => $getInfo,
+				'success' => $success,
+				'error' => $error,
+
+			]
+		);
+	}
 }
