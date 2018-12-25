@@ -9,6 +9,7 @@
 namespace common\models;
 
 
+use admin\models\Admin;
 use common\utils\AppUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
@@ -676,5 +677,68 @@ class Log extends ActiveRecord
 		}
 		return $cnt;
 	}
+
+	const CAT_SEND_SMS = 'send_sms';
+	const KEY_SEND_WAIT = 9;
+	const KEY_SEND_COMPLETE = 1;
+
+	/*
+	 * oCategory
+	 * oKey    记录发送状态 1 发送完成  9 等待发送
+	 * oBefore 记录待发送的表格路径
+	 * oAfter  记录发送内容
+	 * oOpenId 记录发送人数
+	 * oUId    记录发送发送的管理员
+	 */
+
+	public static function add_sms_item($filepath, $content)
+	{
+		if (!$filepath || !$content) {
+			return false;
+		}
+		self::add(['oCategory' => self::CAT_SEND_SMS,
+			'oKey' => self::KEY_SEND_WAIT,
+			'oBefore' => $filepath,
+			'oAfter' => $content,
+			'oUId' => Admin::getAdminId(),
+		]);
+		return true;
+	}
+
+	public static function edit_sms_item($oId, $send_count = 0)
+	{
+		if (!$oId || !$send_count) {
+			return false;
+		}
+		$entity = self::findOne(['oId' => $oId]);
+		if (!$entity) {
+			return false;
+		}
+		$entity->oKey = self::KEY_SEND_COMPLETE;
+		$entity->oOpenId = $send_count;
+		$entity->save();
+		return true;
+	}
+
+	public static function send_sms_cycle()
+	{
+		$res = self::find()->where(['oCategory' => self::CAT_SEND_SMS, 'oKey' => self::KEY_SEND_WAIT,])->asArray()->all();
+		if (!$res) {
+			return false;
+		}
+		foreach ($res as $v) {
+			list($send_count) = AppUtil::sendSMS_by_excel($v['oBefore'], $v['oAfter']);
+			if ($send_count > 0) {
+				self::edit_sms_item($v['oId'], $send_count);
+			}
+		}
+		return true;
+	}
+
+	public static function sms_items()
+	{
+
+	}
+
 
 }

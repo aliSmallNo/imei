@@ -13,6 +13,7 @@ use admin\controllers\BaseController;
 use admin\models\Admin;
 use common\models\CRMStockClient;
 use common\models\CRMStockTrack;
+use common\models\Log;
 use common\models\StockAction;
 use common\models\StockOrder;
 use common\models\StockUser;
@@ -389,14 +390,19 @@ class StockController extends BaseController
 				switch ($cat) {
 					case 'order':
 						list($insertCount, $error) = StockOrder::add_by_excel($filepath);
+						$insertCount = $insertCount . "行数据 ";
 						break;
 					case 'action':
 						list($insertCount, $error) = StockAction::add_by_excel($filepath);
 						$redir = "stock_action";
+						$insertCount = $insertCount . "行数据 ";
 						break;
 					case 'send_msg':
 						$content = self::postParam('content', '');
-						list($insertCount, $error) = AppUtil::sendSMS_by_excel($filepath, $content);
+						// list($insertCount, $error) = AppUtil::sendSMS_by_excel($filepath, $content);
+						// 改为异步发送
+						Log::add_sms_item($filepath, $content);
+						$insertCount = "";
 						$redir = "send_msg";
 						break;
 					default:
@@ -405,7 +411,7 @@ class StockController extends BaseController
 				}
 
 				if (!$error) {
-					$success = "上传成功！" . $insertCount . "行数据 ";
+					$success = "上传成功！" . $insertCount;
 				} else {
 					$error = $error . " 行错误数据";
 				}
