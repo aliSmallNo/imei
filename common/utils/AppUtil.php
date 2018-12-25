@@ -1681,6 +1681,7 @@ class AppUtil
 
 		$phone = 17611629667;
 		$res = AppUtil::sendSMS($phone, $content, '100001', 'yx');
+		$res = self::xml_to_data($res);
 		print_r($res);
 		exit;
 
@@ -1711,8 +1712,6 @@ class AppUtil
 				continue;
 			}
 			$res = AppUtil::sendSMS($phone, $content, '100001', 'yx');
-
-			$res = self::xml_to_data($res);
 
 			if ($res) {
 				$insertCount++;
