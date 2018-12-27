@@ -182,8 +182,11 @@ class StockOrder extends ActiveRecord
 		$level = Admin::get_level();
 		$phone = Admin::get_phone();
 		$cond = '';
+		$rate = 0.3;
 		if ($level < Admin::LEVEL_STAFF) {
 			$cond = " and u.uPtPhone=$phone ";
+			$user = StockUser::findOne(['uPhone' => $phone]);
+			$rate = $user ? $user->uRate : 0;
 		}
 
 		$sql = "select 
@@ -196,11 +199,15 @@ class StockOrder extends ActiveRecord
 				group by ym
 				order by ym desc ";
 		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
+		$sum_income = 0;
 		foreach ($res as $k => $v) {
 			$res[$k]['user_loan_amt'] = sprintf('%.0f', $v['user_loan_amt']);
+			$income = sprintf('%.2f', ($v['user_loan_amt'] * $rate / 250));
+			$res[$k]['income'] = $income;
+			$sum_income += $income;
 		}
 
-		return $res;
+		return [$res, $sum_income];
 	}
 
 }

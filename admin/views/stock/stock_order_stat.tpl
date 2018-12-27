@@ -29,6 +29,10 @@
 </div>
 <div class="row-divider"></div>
 <div class="row">
+	<div>本月业务总收入：{{$sum_income}}</div>
+</div>
+<div class="row-divider"></div>
+<div class="row">
 	<table class="table table-striped table-bordered">
 		<thead>
 		<tr>
@@ -46,7 +50,7 @@
 			</td>
 			<td>{{$item.user_amt}}</td>
 			<td>{{$item.user_loan_amt}}</td>
-			<td>0</td>
+			<td>{{$item.income}}</td>
 		</tr>
 		{{/foreach}}
 		</tbody>

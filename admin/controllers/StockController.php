@@ -292,15 +292,6 @@ class StockController extends BaseController
 
 		$criteria = [];
 		$params = [];
-		/*if ($name) {
-			$name = str_replace("'", "", $name);
-			$criteria[] = "  u.uName like :name ";
-			$params[':name'] = "%$name%";
-		}
-		if ($phone) {
-			$criteria[] = "  u.uPhone like :phone ";
-			$params[':phone'] = $phone;
-		}*/
 		if ($dt) {
 			$criteria[] = "  o.oAddedOn between :st and :et ";
 			list($day, $firstDate, $lastDate) = AppUtil::getMonthInfo($dt . '01 ');
@@ -308,13 +299,14 @@ class StockController extends BaseController
 			$params[':et'] = $lastDate . ' 23:00:00';
 		}
 
-		$list = StockOrder::stat_items($criteria, $params);
+		list($list, $sum_income) = StockOrder::stat_items($criteria, $params);
 
 		return $this->renderPage("stock_order_stat.tpl",
 			[
 				'getInfo' => \Yii::$app->request->get(),
 				'dt' => $dt,
 				'list' => $list,
+				'sum_income' => $sum_income,
 				'mouths' => AppUtil::getRecentMonth(),
 
 			]
@@ -450,7 +442,6 @@ class StockController extends BaseController
 				'list' => $list,
 				'success' => $success,
 				'error' => $error,
-
 			]
 		);
 	}
@@ -466,7 +457,6 @@ class StockController extends BaseController
 		$params = [];
 		$criteria[] = "  oCategory = :cat ";
 		$params[':cat'] = Log::CAT_SEND_SMS;
-
 
 		list($list, $count) = Log::sms_items($criteria, $params, $page);
 		$pagination = self::pagination($page, $count, 20);
