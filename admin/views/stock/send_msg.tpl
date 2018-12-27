@@ -32,7 +32,7 @@
 				<td>{{$item.oAfter}}</td>
 				<td>{{$item.st_txt}}</td>
 				<td>{{$item.oOpenId}}</td>
-				<td>{{$item.url}}</td>
+				<td><a href="{{$item.url}}">下载表格</a></td>
 				<td>{{$item.oDate}}</td>
 			</tr>
 		{{/foreach}}
