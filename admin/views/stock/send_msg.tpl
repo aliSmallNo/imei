@@ -22,6 +22,7 @@
 			<th class="col-sm-6">发送内容</th>
 			<th>发送状态</th>
 			<th>发送条数</th>
+			<th>下载表格</th>
 			<th>时间</th>
 		</tr>
 		</thead>
@@ -31,6 +32,7 @@
 				<td>{{$item.oAfter}}</td>
 				<td>{{$item.st_txt}}</td>
 				<td>{{$item.oOpenId}}</td>
+				<td>{{$item.url}}</td>
 				<td>{{$item.oDate}}</td>
 			</tr>
 		{{/foreach}}

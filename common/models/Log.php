@@ -11,6 +11,7 @@ namespace common\models;
 
 use admin\models\Admin;
 use common\utils\AppUtil;
+use common\utils\ImageUtil;
 use common\utils\RedisUtil;
 use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
@@ -763,6 +764,8 @@ class Log extends ActiveRecord
 		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as $k => $v) {
 			$res[$k]['st_txt'] = self::$keyDict[$v['oKey']] ?? '';
+			$res[$k]['url'] = ImageUtil::getUrl($v['oBefore']);
+
 		}
 		$sql = "select count(1) as co
 				from im_log as l
