@@ -242,16 +242,24 @@ class CRMStockClient extends \yii\db\ActiveRecord
 			$item = self::findOne(["cId" => $id]);
 		} else {
 			// 根据微信号去重
-			if (isset($params['wechat'])
+			if (
+				isset($params['wechat'])
 				&& $params['wechat']
 				&& self::findOne(['cWechat' => $params['wechat']])
 			) {
-				return 0;
+				return [0, '微信号重复'];
+			} elseif (
+				isset($params['phone'])
+				&& $params['phone']
+				&& self::findOne(['cPhone' => $params['phone']])
+			) {
+				return [0, '手机号重复'];
+			} else {
+				$item->cAddedBy = $adminId;
+				$item->cNote = json_encode($params, JSON_UNESCAPED_UNICODE);
+				$item->cStatus = self::STATUS_DISLIKE;
+				$addFlag = true;
 			}
-			$item->cAddedBy = $adminId;
-			$item->cNote = json_encode($params, JSON_UNESCAPED_UNICODE);
-			$item->cStatus = self::STATUS_DISLIKE;
-			$addFlag = true;
 		}
 		$fieldMap = [
 			"name" => "cName",
@@ -291,7 +299,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 			], $adminId);
 		}
 
-		return $item->cId;
+		return [$item->cId, '操作成功'];
 	}
 
 	public static function addFromUser($uid, $adminId = 0)

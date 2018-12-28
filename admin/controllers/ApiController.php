@@ -1296,7 +1296,7 @@ class ApiController extends Controller
 				if (!$id && $msg) {
 					return self::renderAPI(self::CODE_MESSAGE, "添加失败！" . $msg);
 				}
-				$data = CRMStockClient::edit([
+				list($data, $msg) = CRMStockClient::edit([
 					"name" => trim(self::postParam("name")),
 					"phone" => trim(self::postParam("phone")),
 					"wechat" => trim(self::postParam("wechat")),
@@ -1315,7 +1315,7 @@ class ApiController extends Controller
 				if ($data) {
 					return self::renderAPI(0, "客户线索保存成功！", $data);
 				} else {
-					return self::renderAPI(129, "微信号重复！", '');
+					return self::renderAPI(129, $msg, '');
 				}
 
 			case 'change':

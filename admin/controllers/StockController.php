@@ -34,6 +34,7 @@ class StockController extends BaseController
 		$dt2 = trim(self::getParam("dt2"));
 		$cat = trim(self::getParam("cat"), "my");
 		$sort = self::getParam("sort", "dd");
+		$src = self::getParam("src");
 		$bdassign = self::getParam("bdassign");
 		$perSize = 20;
 
@@ -76,6 +77,12 @@ class StockController extends BaseController
 			$urlParams[] = "bdassign=" . $bdassign;
 			$uInfo = Admin::findOne(["aId" => $bdassign]);
 			$alert[] = "【" . $uInfo["aName"] . "】";
+		}
+		if ($src) {
+			$criteria[] = "cSource = :cSource";
+			$params[":cSource"] = $src;
+			$urlParams[] = "phone=" . $src;
+			$alert[] = "【" . CRMStockClient::$SourceMap[$src] . "】";
 		}
 		$counters = CRMStockClient::counts($this->admin_id, $criteria, $params);
 		$isAssigner = Admin::isAssigner();
@@ -175,6 +182,7 @@ class StockController extends BaseController
 				"staff" => Admin::getStaffs(),
 				"bds" => Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN, 'im_crm_stock_client'),
 				"bdassign" => $bdassign,
+				"src" => $src,
 				"sources" => $sources,
 				"bdDefault" => $bdDefault,
 				'isAssigner' => $isAssigner,
@@ -184,6 +192,7 @@ class StockController extends BaseController
 				"dNext" => $dNext,
 				"dIcon" => $dIcon,
 				"ageMap" => CRMStockClient::$ageMap,
+				"SourceMap" => CRMStockClient::$SourceMap,
 				"stock_age_map" => CRMStockClient::$stock_age_map,
 			]);
 
@@ -237,7 +246,6 @@ class StockController extends BaseController
 			]);
 	}
 
-
 	public function actionStat()
 	{
 		Admin::staffOnly();
@@ -251,7 +259,6 @@ class StockController extends BaseController
 				"colors" => json_encode(array_values(CRMStockClient::$StatusColors))
 			]);
 	}
-
 
 	public function actionStock_user()
 	{

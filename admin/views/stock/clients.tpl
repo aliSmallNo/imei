@@ -102,6 +102,12 @@
 				<option value="{{$bd.id}}" {{if $bd.id==$bdassign}}selected{{/if}}>{{$bd.name}}</option>
 			{{/foreach}}
 		</select>
+		<select class="form-control" name="src">
+			<option value="">请选择来源</option>
+			{{foreach from=$SourceMap item=source key=key}}
+				<option value="{{$key}}" {{if $key==$src}}selected{{/if}}>{{$source}}</option>
+			{{/foreach}}
+		</select>
 		<button type="submit" class="btn btn-primary">查询</button>
 		<a class="addClue btn btn-primary">添加线索</a>
 	</form>
@@ -199,7 +205,7 @@
 						<a href="javascript:;" class="btnGrab btn btn-outline btn-success btn-xs">我来跟进</a>
 					{{/if}}
 					{{if $isAssigner}}{{/if}}
-						<a href="javascript:;" class="btnModify btn btn-outline btn-danger btn-xs">修改信息</a>
+					<a href="javascript:;" class="btnModify btn btn-outline btn-danger btn-xs">修改信息</a>
 
 					{{if $cat=="my"}}
 						<a href="javascript:;" class="btnChange btn btn-outline btn-info btn-xs">转给他人</a>
@@ -432,10 +438,10 @@
 				};
 				console.log(postData);
 				if (!postData["name"]
-						|| !postData["src"]
-						|| !postData["prov"]
-						|| !postData["city"]
-						|| !postData["stock_age"]
+					|| !postData["src"]
+					|| !postData["prov"]
+					|| !postData["city"]
+					|| !postData["stock_age"]
 				) {
 					layer.msg("客户姓名、来源、省、市、炒股时长不能为空！");
 					return;
@@ -448,9 +454,11 @@
 			$.post(url, postData, function (resp) {
 				layer.closeAll();
 				layer.msg(resp.msg);
-				setTimeout(function () {
-					location.reload();
-				}, (resp.code == 0 ? 400 : 800));
+				if (resp.code == 0) {
+					setTimeout(function () {
+						location.reload();
+					}, 800);
+				}
 			}, 'json');
 		}
 
