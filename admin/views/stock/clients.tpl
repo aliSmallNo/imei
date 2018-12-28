@@ -86,6 +86,7 @@
 </style>
 <div class="row">
 	<h4>客户线索
+		<a class="addClue btn btn-xs btn-primary">添加线索</a>
 	</h4>
 </div>
 <div class="row">
@@ -109,7 +110,7 @@
 			{{/foreach}}
 		</select>
 		<button type="submit" class="btn btn-primary">查询</button>
-		<a class="addClue btn btn-primary">添加线索</a>
+
 	</form>
 </div>
 <div class="row-divider"></div>
