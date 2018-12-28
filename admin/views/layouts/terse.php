@@ -2,7 +2,7 @@
 	<!DOCTYPE html>
 	<html lang="zh-cmn-Hans">
 	<head>
-		<title>千寻恋恋-缘来是你</title>
+		<title>准点买后台</title>
 		<meta charset="utf-8">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		<meta http-equiv="Cache-Control" content="no-siteapp, no-cache">

@@ -120,7 +120,7 @@ class Menu
 				]
 			],
 			[
-				"name" => "配资CRM",
+				"name" => "准点买CRM",
 				"id" => "stock",
 				"icon" => "fa-users",
 				"staff" => 1,
@@ -146,7 +146,7 @@ class Menu
 				]
 			],
 			[
-				"name" => "配资",
+				"name" => "准点买",
 				"id" => "stock_user",
 				"icon" => "fa-users",
 				"staff" => 1,
