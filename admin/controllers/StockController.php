@@ -207,14 +207,16 @@ class StockController extends BaseController
 			$images = [];
 			$uploads = $_FILES["images"];
 			if ($uploads && isset($uploads["tmp_name"]) && isset($uploads["error"])) {
-				foreach ($uploads["tmp_name"] as $key => $file) {
+				/*foreach ($uploads["tmp_name"] as $key => $file) {
 					if ($uploads["error"][$key] == UPLOAD_ERR_OK) {
 						$upName = $uploads["name"][$key];
 						$fileExt = strtolower(pathinfo($upName, PATHINFO_EXTENSION));
 						$images[] = ImageUtil::upload2Cloud($file, "", ($fileExt ? $fileExt : ""), 800);
 						unlink($file);
 					}
-				}
+				}*/
+				$ret = ImageUtil::upload2Server($uploads);
+				$images = $ret ? array_column($ret, 1) : [];
 			}
 			CRMStockTrack::add($postId, [
 				"status" => trim(self::postParam("status")),
