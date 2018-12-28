@@ -392,7 +392,8 @@ class AppUtil
 		if (!is_dir($folder)) {
 			mkdir($folder);
 		}
-		$folder .= '/' . date('n') . mt_rand(10, 30);
+		//$folder .= '/' . date('n') . mt_rand(10, 30);
+		$folder .= '/' . date('m');
 
 
 		if (!is_dir($folder)) {
