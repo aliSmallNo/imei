@@ -480,8 +480,16 @@
 	});
 
 	var mItems = [];
-	if ($("#jsonItems").html()) {
+	// var jsonItems = $("#jsonItems").html();
+	// jsonItems = jsonItems.replace(/\s*/g, '');
+	// console.log(jsonItems,jsonItems.length);
+	// if (jsonItems.length) {
+	// 	mItems = JSON.parse(jsonItems);
+	// }
+	try {
 		mItems = JSON.parse($("#jsonItems").html());
+	} catch (err) {
+		mItems = [];
 	}
 
 	$(document).on('click', '.btnModify', function () {
