@@ -128,7 +128,7 @@
 	<ul class="nav nav-tabs">
 		{{foreach from=$tabs key=key item=tab}}
 			<li class="ng-scope {{if $cat== $key}} active{{/if}}">
-				<a href="/stock/clients?cat={{$key}}&sort={{$sort}}{{if $urlParams}}&{{$urlParams}}{{/if}}"
+				<a href="/stock/clients?cat={{$key}}&sort={{$sort}}&{{$urlParams}}"
 					 class="ng-binding">{{$tab.title}}{{if $tab.count > 0}}
 						<span class="badge">{{$tab.count}}</span>{{/if}}
 				</a>
@@ -479,7 +479,11 @@
 		}, "json")
 	});
 
-	var mItems = JSON.parse($("#jsonItems").html());
+	var mItems = [];
+	if ($("#jsonItems").html()) {
+		mItems = JSON.parse($("#jsonItems").html());
+	}
+
 	$(document).on('click', '.btnModify', function () {
 		var self = $(this);
 		var cid = self.closest("td").attr("data-id");
