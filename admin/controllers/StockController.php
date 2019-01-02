@@ -171,7 +171,7 @@ class StockController extends BaseController
 				'page' => $page,
 				'pagination' => $pagination,
 				"alertMsg" => $alertMsg,
-				"urlParams" => implode("&", $urlParams),
+				"urlParams" => trim(implode("&", $urlParams),'&'),
 				"name" => $name,
 				"phone" => $phone,
 				"prov" => $prov,
