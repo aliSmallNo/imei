@@ -126,7 +126,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		self::SRC_QQ => "QQ",
 		self::SRC_VOICE_TEL => "语音电话",
 		self::SRC_HIRE => "招聘",
-		self::SRC_SHORT_TERM_WANG => "短线王",
+		self::SRC_SHORT_TERM_WANG => "自己注册(原短线王)",
 		self::SRC_WECHAT => "公众号",
 		self::SRC_OTHER => "其他",
 		self::SRC_GROUND => "地推",
