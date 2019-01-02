@@ -128,7 +128,7 @@
 	<ul class="nav nav-tabs">
 		{{foreach from=$tabs key=key item=tab}}
 			<li class="ng-scope {{if $cat== $key}} active{{/if}}">
-				<a href="/stock/clients?cat={{$key}}&sort={{$sort}}&{{$urlParams}}"
+				<a href="/stock/clients?cat={{$key}}&sort={{$sort}}{{if $urlParams}}&{{$urlParams}}{{/if}}"
 					 class="ng-binding">{{$tab.title}}{{if $tab.count > 0}}
 						<span class="badge">{{$tab.count}}</span>{{/if}}
 				</a>
