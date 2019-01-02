@@ -46,6 +46,7 @@ class Admin extends ActiveRecord
 	const LEVEL_MONITOR = 815;
 	const LEVEL_MODIFY = 820;
 	const LEVEL_STAFF = 825;
+	const LEVEL_LEADER = 827;
 	const LEVEL_HIGH = 830;
 
 	static $accessLevels = [
@@ -55,6 +56,7 @@ class Admin extends ActiveRecord
 		self::LEVEL_MONITOR => "监视权限",
 		self::LEVEL_MODIFY => "修改权限",
 		self::LEVEL_STAFF => "微媒员工权限",
+		self::LEVEL_LEADER => "微媒领导权限",
 		self::LEVEL_HIGH => "高级权限"
 	];
 

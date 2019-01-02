@@ -135,13 +135,13 @@ class Menu
 						"name" => "跟进统计",
 						"url" => "/stock/stat",
 						"revise" => 1,
-						"level" => 820
+						"level" => 827
 					],
 					[
 						"name" => "发送短信",
 						"url" => "/stock/send_msg",
 						"revise" => 1,
-						"level" => 820
+						"level" => 827
 					],
 				]
 			],
