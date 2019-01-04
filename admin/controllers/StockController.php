@@ -438,7 +438,7 @@ class StockController extends BaseController
 			$params[':name'] = "%$name%";
 		}
 		if ($phone) {
-			$criteria[] = "  u.uPhone like :phone ";
+			$criteria[] = "  a.aPhone like :phone ";
 			$params[':phone'] = $phone;
 		}
 
@@ -452,6 +452,7 @@ class StockController extends BaseController
 				'list' => $list,
 				'success' => $success,
 				'error' => $error,
+				'count' => $count,
 			]
 		);
 	}

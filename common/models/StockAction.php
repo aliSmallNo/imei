@@ -134,7 +134,7 @@ class StockAction extends \yii\db\ActiveRecord
 				from im_stock_action as a
 				left join im_stock_user u on u.uPhone=a.aPhone
 				where aType=1 $strCriteria $cond
-				order by aAddedOn desc 
+				order by aId asc 
 				$limit ";
 		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as $v) {

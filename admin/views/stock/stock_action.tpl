@@ -34,6 +34,9 @@
 
 <div class="row-divider"></div>
 <div class="row">
+	<p>总共{{$count}}条记录</p>
+</div>
+<div class="row">
 	<table class="table table-striped table-bordered">
 		<thead>
 		<tr>
