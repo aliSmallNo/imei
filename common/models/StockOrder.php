@@ -146,7 +146,7 @@ class StockOrder extends ActiveRecord
 		$level = Admin::get_level();
 		$phone = Admin::get_phone();
 		$cond = '';
-		if (Admin::isGroupUser(Admin::GROUP_STOCK_LEADER)) {
+		if (!Admin::isGroupUser(Admin::GROUP_STOCK_LEADER)) {
 			$cond = " and u.uPtPhone=$phone ";
 		}
 
@@ -183,7 +183,7 @@ class StockOrder extends ActiveRecord
 		$phone = Admin::get_phone();
 		$cond = '';
 		$rate = 0.2;
-		if (Admin::isGroupUser(Admin::GROUP_STOCK_LEADER)) {
+		if (!Admin::isGroupUser(Admin::GROUP_STOCK_LEADER)) {
 			$cond = " and u.uPtPhone=$phone ";
 			$user = StockUser::findOne(['uPhone' => $phone]);
 			$rate = $user ? $user->uRate : 0;
