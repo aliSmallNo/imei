@@ -11,7 +11,8 @@
 	.type_2 {
 		background: #00aa00;
 	}
-	.rate{
+
+	.rate {
 		font-size: 12px;
 		color: red;
 	}
@@ -28,6 +29,12 @@
 						 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
 			<input class="form-control" placeholder="用户手机" type="text" name="phone"
 						 value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
+			<select class="form-control" name="type">
+				<option value="">-=用户身份=-</option>
+				{{foreach from=$types key=key item=item}}
+					<option value="{{$key}}">{{$item}}</option>
+				{{/foreach}}
+			</select>
 		</div>
 		<button class="btn btn-primary">查询</button>
 		<span class="space"></span>
@@ -42,13 +49,15 @@
 			<th>用户名</th>
 			<th>用户手机</th>
 			{{if $is_staff}}
-			<th>用户身份|佣金比例</th>
-			<th>渠道名</th>
-			<th>渠道手机</th>
-			<th>备注</th>
+				<th>用户身份|佣金比例</th>
+				<th>渠道名</th>
+				<th>渠道手机</th>
+				<th>备注</th>
 			{{/if}}
 			<th>时间</th>
-			{{if $is_staff}}<th>操作</th>{{/if}}
+			{{if $is_staff}}
+				<th>操作</th>
+			{{/if}}
 		</tr>
 		</thead>
 		<tbody>
@@ -60,19 +69,19 @@
 				<td>{{$item.uName}}</td>
 				<td>{{$item.uPhone}}</td>
 				{{if $is_staff}}
-				<td>
-					<span class="type_{{$item.uType}}">{{$item.type_t}}</span>
-					{{if $item.uRate}}<span class="rate">{{$item.uRate}}</span>{{/if}}
-				</td>
-				<td>{{$item.uPtName}}</td>
-				<td>{{$item.uPtPhone}}</td>
-				<td>{{$item.uNote}}</td>
+					<td>
+						<span class="type_{{$item.uType}}">{{$item.type_t}}</span>
+						{{if $item.uRate}}<span class="rate">{{$item.uRate}}</span>{{/if}}
+					</td>
+					<td>{{$item.uPtName}}</td>
+					<td>{{$item.uPtPhone}}</td>
+					<td>{{$item.uNote}}</td>
 				{{/if}}
 				<td>{{$item.uAddedOn}}</td>
 				{{if $is_staff}}
-				<td>
-					{{if $is_run}}<a href="javascript:;" class="edit_user btn btn-outline btn-primary btn-xs">修改用户</a>{{/if}}
-				</td>
+					<td>
+						{{if $is_run}}<a href="javascript:;" class="edit_user btn btn-outline btn-primary btn-xs">修改用户</a>{{/if}}
+					</td>
 				{{/if}}
 			</tr>
 		{{/foreach}}

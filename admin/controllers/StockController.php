@@ -268,6 +268,7 @@ class StockController extends BaseController
 		$page = self::getParam("page", 1);
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
+		$type = self::getParam("type");
 
 		$criteria = [];
 		$params = [];
@@ -279,6 +280,10 @@ class StockController extends BaseController
 		if ($phone) {
 			$criteria[] = "  uPhone like :phone ";
 			$params[':phone'] = $phone;
+		}
+		if ($type) {
+			$criteria[] = "  uType = :type ";
+			$params[':type'] = $type;
 		}
 
 		list($list, $count) = StockUser::items($criteria, $params, $page);
