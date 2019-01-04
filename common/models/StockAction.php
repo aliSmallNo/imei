@@ -18,13 +18,11 @@ use Yii;
 class StockAction extends \yii\db\ActiveRecord
 {
 
-	const TYPE_REG = 1;
-	const TYPE_AUTH = 3;
-	const TYPE_OPT = 5;
+	const TYPE_ACTIVE = 1;
+	const TYPE_DELETE = 9;
 	static $types = [
-		self::TYPE_REG => '已注册',
-		self::TYPE_AUTH => '已认证',
-		self::TYPE_OPT => '已操作',
+		self::TYPE_ACTIVE => '已添加',
+		self::TYPE_DELETE => '已删除',
 	];
 
 	public static function tableName()
@@ -77,21 +75,25 @@ class StockAction extends \yii\db\ActiveRecord
 			}
 			$phone = $value[0];
 			$typeT = $value[1];
-			$type = array_flip(self::$types)[$typeT] ?? '';
-			$time = $value[2] ? date('Y-m-d', strtotime($value[2])) : null;
+			$time = date('Y-m-d');
 			if (!AppUtil::checkPhone($phone)) {
 				continue;
 			}
 
+			$action = self::findOne(['aType' => self::TYPE_ACTIVE, 'aPhone' => $phone]);
+			if ($action) {
+				$action->aType = self::TYPE_DELETE;
+				$action->save();
+			}
+
 			$params = [
 				':aPhone' => $phone,
-				':aType' => $type,
+				':aType' => self::TYPE_ACTIVE,
 				':aTypeTxt' => $typeT,
 				':aAddedOn' => $time,
 			];
 
 			try {
-
 				$res = $cmd->bindValues($params)->execute();
 			} catch (\Exception $e) {
 				var_dump($cmd->bindValues($params)->getRawSql());
@@ -131,7 +133,7 @@ class StockAction extends \yii\db\ActiveRecord
 		$sql = "select *
 				from im_stock_action as a
 				left join im_stock_user u on u.uPhone=a.aPhone
-				where aId>0 $strCriteria $cond
+				where aType=1 $strCriteria $cond
 				order by aAddedOn desc 
 				limit $offset,$pageSize";
 		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
@@ -141,7 +143,7 @@ class StockAction extends \yii\db\ActiveRecord
 		$sql = "select count(1) as co
 				from im_stock_action as a
 				left join im_stock_user u on u.uPhone=a.aPhone
-				where aId>0 $strCriteria $cond ";
+				where aType=1 $strCriteria $cond ";
 		$count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
 
 		return [$res, $count];
