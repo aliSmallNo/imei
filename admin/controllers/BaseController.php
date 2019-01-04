@@ -116,6 +116,7 @@ class BaseController extends Controller
 		}
 		$params['is_run'] = Admin::isGroupUser(Admin::GROUP_RUN_MGR);
 		$params['is_staff'] = Admin::get_level() >= Admin::LEVEL_STAFF;
+		$params['is_stock_leader'] = Admin::isGroupUser(Admin::GROUP_STOCK_LEADER);
 
 		return self::render($view, $params);
 	}

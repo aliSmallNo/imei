@@ -3,7 +3,7 @@
 <div class="row">
 	<div class="col-sm-6">
 		<h4>订单列表
-			{{if $is_leader}}<a href="javascript:;" class="opImport btn btn-outline btn-primary btn-xs">导入</a>{{/if}}
+			{{if $is_stock_leader}}<a href="javascript:;" class="opImport btn btn-outline btn-primary btn-xs">导入</a>{{/if}}
 		</h4>
 	</div>
 	<div class="col-sm-6">
