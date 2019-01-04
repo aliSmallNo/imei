@@ -39,7 +39,7 @@
 		<tr>
 			<th>手机</th>
 			<th>状态</th>
-			<th>时间</th>
+
 		</tr>
 		</thead>
 		<tbody>
@@ -47,7 +47,6 @@
 		<tr>
 			<td>{{$item.aPhone}}</td>
 			<td>{{$item.aTypeTxt}}</td>
-			<td>{{$item.aAddedOn}}</td>
 		</tr>
 		{{/foreach}}
 		</tbody>
