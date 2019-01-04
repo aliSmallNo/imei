@@ -182,12 +182,13 @@ class StockOrder extends ActiveRecord
 		$level = Admin::get_level();
 		$phone = Admin::get_phone();
 		$cond = '';
-		$rate = 0.2;
+
 		if (!Admin::isGroupUser(Admin::GROUP_STOCK_LEADER)) {
 			$cond = " and u.uPtPhone=$phone ";
-			$user = StockUser::findOne(['uPhone' => $phone]);
-			$rate = $user ? $user->uRate : 0;
 		}
+
+		$user = StockUser::findOne(['uPhone' => $phone]);
+		$rate = $user ? $user->uRate : 0;
 
 		$sql = "select 
 				Date_format(o.oAddedOn, '%Y%m%d') as ym,
