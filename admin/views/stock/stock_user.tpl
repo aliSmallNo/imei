@@ -19,7 +19,7 @@
 </style>
 <div class="row">
 	<h4>用户列表
-		{{if $is_run}}<a href="javascript:;" class="add_user btn btn-outline btn-primary btn-xs">添加用户</a>{{/if}}
+		{{if $is_stock_leader}}<a href="javascript:;" class="add_user btn btn-outline btn-primary btn-xs">添加用户</a>{{/if}}
 	</h4>
 </div>
 <div class="row">
@@ -55,7 +55,7 @@
 				<th>备注</th>
 			{{/if}}
 			<th>时间</th>
-			{{if $is_staff}}
+			{{if $is_stock_leader}}
 				<th>操作</th>
 			{{/if}}
 		</tr>
