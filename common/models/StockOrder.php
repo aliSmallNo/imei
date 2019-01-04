@@ -146,7 +146,7 @@ class StockOrder extends ActiveRecord
 		$level = Admin::get_level();
 		$phone = Admin::get_phone();
 		$cond = '';
-		if ($level < Admin::LEVEL_STAFF) {
+		if ($level < Admin::LEVEL_HIGH) {
 			$cond = " and u.uPtPhone=$phone ";
 		}
 
