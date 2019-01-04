@@ -183,7 +183,7 @@ class StockOrder extends ActiveRecord
 		$phone = Admin::get_phone();
 		$cond = '';
 		$rate = 0.2;
-		if ($level < Admin::LEVEL_STAFF) {
+		if ($level < Admin::LEVEL_HIGH) {
 			$cond = " and u.uPtPhone=$phone ";
 			$user = StockUser::findOne(['uPhone' => $phone]);
 			$rate = $user ? $user->uRate : 0;
