@@ -68,6 +68,9 @@ class StockAction extends \yii\db\ActiveRecord
 				values (:aPhone,:aType,:aTypeTxt,:aAddedOn)";
 		$cmd = $conn->createCommand($sql);
 
+		$sql = "update im_stock_action set aType=9 where aType=1 and aPhone=:phone";
+		$cmdUpdate = $conn->createCommand($sql);
+
 		foreach ($result as $key => $value) {
 			$res = 0;
 			if (!$key) {
@@ -80,11 +83,7 @@ class StockAction extends \yii\db\ActiveRecord
 				continue;
 			}
 
-			$action = self::findOne(['aType' => self::TYPE_ACTIVE, 'aPhone' => $phone]);
-			if ($action) {
-				$action->aType = self::TYPE_DELETE;
-				$action->save();
-			}
+			$cmdUpdate->bindValues([':phone' => $phone])->execute();
 
 			$params = [
 				':aPhone' => $phone,
@@ -96,8 +95,8 @@ class StockAction extends \yii\db\ActiveRecord
 			try {
 				$res = $cmd->bindValues($params)->execute();
 			} catch (\Exception $e) {
-				var_dump($cmd->bindValues($params)->getRawSql());
-				exit;
+//				var_dump($cmd->bindValues($params)->getRawSql());
+//				exit;
 				$error++;
 			}
 
