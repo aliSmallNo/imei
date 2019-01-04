@@ -756,8 +756,9 @@ class Log extends ActiveRecord
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
 
-		$sql = "select *
+		$sql = "select l.*,a.aName
 				from im_log as l
+				left join im_admin as a on a.aId=l.oUId
 				where oId>0 $strCriteria
 				order by oDate desc 
 				limit $offset,$pageSize";
@@ -765,7 +766,6 @@ class Log extends ActiveRecord
 		foreach ($res as $k => $v) {
 			$res[$k]['st_txt'] = self::$keyDict[$v['oKey']] ?? '';
 			$res[$k]['url'] = ImageUtil::getUrl($v['oBefore']);
-
 		}
 		$sql = "select count(1) as co
 				from im_log as l
