@@ -240,6 +240,12 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		$addFlag = false;
 		if ($id) {
 			$item = self::findOne(["cId" => $id]);
+			if (isset($params['phone']) && !AppUtil::checkPhone($params['phone'])) {
+				unset($params['phone']);
+			}
+			if (isset($params['wechat']) && !AppUtil::checkPhone($params['wechat'])) {
+				unset($params['wechat']);
+			}
 		} else {
 			// 根据微信号去重
 			if (
