@@ -133,21 +133,21 @@ class StockController extends BaseController
 
 		$bdDefault = $isAssigner ? "" : $this->admin_id;
 
-		if (!$isAssigner && !in_array(Admin::getAdminId(), [2132486, 2136435])) {// huangxin panyue
-			foreach ($items as $key => $item) {
-				if ($item["cBDAssign"]) {
-					continue;
-				}
-				$len = strlen($item["cPhone"]);
-				if ($len > 4) {
-					$items[$key]["cPhone"] = substr($item["cPhone"], 0, $len - 4) . "****";
-				}
-				$len = strlen($item["cWechat"]);
-				if ($len > 4) {
-					$items[$key]["cWechat"] = substr($item["cWechat"], 0, $len - 4) . "****";
-				}
-			}
-		}
+//		if (!$isAssigner && !in_array(Admin::getAdminId(), [2132486, 2136435])) {// huangxin panyue
+//			foreach ($items as $key => $item) {
+//				if ($item["cBDAssign"]) {
+//					continue;
+//				}
+//				$len = strlen($item["cPhone"]);
+//				if ($len > 4) {
+//					$items[$key]["cPhone"] = substr($item["cPhone"], 0, $len - 4) . "****";
+//				}
+//				$len = strlen($item["cWechat"]);
+//				if ($len > 4) {
+//					$items[$key]["cWechat"] = substr($item["cWechat"], 0, $len - 4) . "****";
+//				}
+//			}
+//		}
 
 		$sorts = [
 			"dd" => ["da", "fa-angle-double-down"],
