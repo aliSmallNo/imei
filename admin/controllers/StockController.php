@@ -364,6 +364,7 @@ class StockController extends BaseController
 				'list' => $list,
 				'success' => $success,
 				'error' => $error,
+				'is_leader' => Admin::isGroupUser(Admin::GROUP_STOCK_LEADER),
 
 			]
 		);
