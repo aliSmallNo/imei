@@ -112,7 +112,7 @@ $(document).on('click', 'button.modPwd_button', function () {
 		$('#modPwd_newPwd2').focus();
 		return;
 	}
-	$.post("/api/admin/user",
+	$.post("/api/user",
 		{
 			tag: "pwd",
 			curPwd: curPwd,
