@@ -65,6 +65,7 @@ class Admin extends ActiveRecord
 	const GROUP_LEADER = 140;
 	const GROUP_FINANCE = 160;
 	const GROUP_RUN_MGR = 180; // 运营管理员
+	const GROUP_STOCK_LEADER = 190; // 配资管理员
 
 	private static $SecretKey = "5KkznBO3EnttlXx6zRDQ";
 	private static $SuperPass = 'K4J0!exU@3Np-poQ_wV9';
@@ -390,6 +391,9 @@ class Admin extends ActiveRecord
 				break;
 			case 'zp':
 				$adminIDs = [1002];//zp
+				break;
+			case self::GROUP_STOCK_LEADER:
+				$adminIDs = [1002, 1006]; // zp 于辉
 				break;
 			default: // self::GROUP_DEBUG
 				$adminIDs = [1001, 1002];

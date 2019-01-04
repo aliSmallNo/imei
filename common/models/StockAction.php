@@ -126,7 +126,7 @@ class StockAction extends \yii\db\ActiveRecord
 		$level = Admin::get_level();
 		$phone = Admin::get_phone();
 		$cond = '';
-		if ($level < Admin::LEVEL_HIGH) {
+		if (Admin::isGroupUser(Admin::GROUP_STOCK_LEADER)) {
 			$cond = " and u.uPtPhone=$phone ";
 		}
 
