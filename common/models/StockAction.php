@@ -116,7 +116,8 @@ class StockAction extends \yii\db\ActiveRecord
 
 	public static function items($criteria, $params, $page, $pageSize = 20)
 	{
-		$offset = ($page - 1) * $pageSize;
+		$limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
+		$limit = "";
 		$strCriteria = '';
 		if ($criteria) {
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
@@ -134,7 +135,7 @@ class StockAction extends \yii\db\ActiveRecord
 				left join im_stock_user u on u.uPhone=a.aPhone
 				where aType=1 $strCriteria $cond
 				order by aAddedOn desc 
-				limit $offset,$pageSize";
+				$limit ";
 		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as $v) {
 

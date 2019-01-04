@@ -171,7 +171,7 @@ class StockController extends BaseController
 				'page' => $page,
 				'pagination' => $pagination,
 				"alertMsg" => $alertMsg,
-				"urlParams" => trim(implode("&", $urlParams),'&'),
+				"urlParams" => trim(implode("&", $urlParams), '&'),
 				"name" => $name,
 				"phone" => $phone,
 				"prov" => $prov,
@@ -443,7 +443,8 @@ class StockController extends BaseController
 		}
 
 		list($list, $count) = StockAction::items($criteria, $params, $page);
-		$pagination = self::pagination($page, $count, 20);
+		//$pagination = self::pagination($page, $count, 20);
+		$pagination = "";
 		return $this->renderPage("stock_action.tpl",
 			[
 				'getInfo' => $getInfo,
