@@ -134,6 +134,18 @@ class StockOrder extends ActiveRecord
 		return [$insertCount, $error];
 	}
 
+	public static function delete_by_dt($dt)
+	{
+		if (date('Y', strtotime($dt)) < 2018) {
+			return [129, '日期格式不正确'];
+		}
+		$dt = date('Y-m-d', strtotime($dt));
+
+		$sql = "delete from im_stock_order where DATE_FORMAT(oAddedOn, '%Y-%m-%d') in ('$dt') ";
+		$res = AppUtil::db()->createCommand($sql)->execute();
+		return [0, '删除' . $res . '行数据'];
+	}
+
 	public static function items($criteria, $params, $page, $pageSize = 20)
 	{
 		$conn = AppUtil::db();

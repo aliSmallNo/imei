@@ -26,6 +26,7 @@ use common\models\MomentSub;
 use common\models\MomentTopic;
 use common\models\QuestionGroup;
 use common\models\QuestionSea;
+use common\models\StockOrder;
 use common\models\StockUser;
 use common\models\User;
 use common\models\UserAudit;
@@ -1435,6 +1436,10 @@ class ApiController extends Controller
 				$uType = self::postParam("uType");
 				list($code, $msg, $data) = StockUser::edit_admin($uName, $uPhone, $uPtPhone, $uRate, $uType, $uNote);
 				return self::renderAPI($code, $msg, $data);
+			case "delete_stock_order":
+				$dt = self::postParam("dt");
+				list($code, $msg) = StockOrder::delete_by_dt($dt);
+				return self::renderAPI($code, $msg);
 		}
 		return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
 	}
