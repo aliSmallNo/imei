@@ -165,7 +165,7 @@
 			if (resp.code == 0) {
 				setTimeout(function () {
 					location.reload();
-				}, 1000);
+				}, 2000);
 			}
 		}, 'json');
 	});
