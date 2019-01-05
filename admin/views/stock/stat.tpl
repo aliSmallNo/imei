@@ -41,7 +41,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<i class="fa fa-bar-chart-o fa-fw"></i> 跟进记录统计
-
+				<span></span>
 			</div>
 			<div class="panel-body">
 				<div id="track-chart" class="chart-wrapper"></div>
@@ -51,7 +51,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<i class="fa fa-bar-chart-o fa-fw"></i> 新线索开发
-
+				<span></span>
 			</div>
 			<div class="panel-body">
 				<div id="new-chart" class="chart-wrapper"></div>
@@ -121,8 +121,8 @@
 
 	function reloadData() {
 		mChartAmt.html("");
-		mChartCnt.html("");
 		mChartNew.html("");
+		mChartCnt.html("");
 		mChartClient.html("");
 		layer.load();
 		$.post("/api/stock_chart", {
@@ -261,6 +261,12 @@
 	}
 
 	function initChartDetail(cData, titles, pid) {
+		console.log('initChartDetail cData', cData);
+		var amt = 0;
+		cData.map(function (v, k) {
+			amt = amt + v;
+		});
+		$("#" + pid).closest(".col-lg-6").find("span").html('(总计: ' + amt + ')');
 		Highcharts.theme = {
 			colors: ["#6891d4"]
 		};
@@ -328,6 +334,12 @@
 	}
 
 	function initChart(cData, pid, title) {
+		console.log('cData', cData);
+		var amt = 0;
+		cData.map(function (v, k) {
+			amt = amt + v[1];
+		});
+		$("#" + pid).closest(".col-lg-6").find("span").html('(总计: ' + amt + ')');
 		Highcharts.theme = {
 			colors: ["#6891d4"]
 		};
