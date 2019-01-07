@@ -45,9 +45,9 @@ class CRMStockClient extends \yii\db\ActiveRecord
 
 	const STATUS_DISLIKE = 100;
 	const STATUS_FRESH = 110;
-	//const STATUS_GREETING = 120;
+	const STATUS_CONTACT = 120;
+	const STATUS_ADD_WX = 125;
 	const STATUS_TALKING = 130;
-	//const STATUS_TALKING_INTENT = 150;
 	const STATUS_MEETING = 160;
 	const STATUS_CONTRACT = 180;
 	const STATUS_PAID = 200;
@@ -86,9 +86,9 @@ class CRMStockClient extends \yii\db\ActiveRecord
 	static $StatusMap = [
 		self::STATUS_DISLIKE => "无兴趣/失败",
 		self::STATUS_FRESH => "新增线索",
-		//self::STATUS_GREETING => "首次沟通",
+		self::STATUS_CONTACT => "已联系",
+		self::STATUS_ADD_WX => "加上微信",
 		self::STATUS_TALKING => "多次沟通",
-		//self::STATUS_TALKING_INTENT => "多次沟通(高意向)",
 		self::STATUS_MEETING => "已注册",
 		self::STATUS_CONTRACT => "已充值",
 		self::STATUS_PAID => "买股",
@@ -97,9 +97,9 @@ class CRMStockClient extends \yii\db\ActiveRecord
 	static $StatusColors = [
 		self::STATUS_DISLIKE => "#a8a8a8",
 		self::STATUS_FRESH => "#BBDEFB",
-		//self::STATUS_GREETING => "#64B5F6",
+		self::STATUS_CONTACT => "#64B5F6",
+		self::STATUS_ADD_WX => "#1976D2",
 		self::STATUS_TALKING => "#2196F3",
-		//self::STATUS_TALKING_INTENT => "#1976D2",
 		self::STATUS_MEETING => "#0D47A1",
 		self::STATUS_CONTRACT => "#fb8c00",
 		self::STATUS_PAID => "#e65100",
