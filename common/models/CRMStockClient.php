@@ -132,7 +132,6 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		self::SRC_GROUND => "地推",
 	];
 
-
 	/**
 	 * @inheritdoc
 	 */

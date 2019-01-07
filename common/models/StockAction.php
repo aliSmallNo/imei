@@ -123,12 +123,7 @@ class StockAction extends \yii\db\ActiveRecord
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
 
-		$level = Admin::get_level();
-		$phone = Admin::get_phone();
-		$cond = '';
-		if (!Admin::isGroupUser(Admin::GROUP_STOCK_LEADER)) {
-			$cond = " and u.uPtPhone=$phone ";
-		}
+		$cond = StockOrder::channel_condition();
 
 		$sql = "select *
 				from im_stock_action as a

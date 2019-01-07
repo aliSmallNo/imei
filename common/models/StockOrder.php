@@ -134,6 +134,28 @@ class StockOrder extends ActiveRecord
 		return [$insertCount, $error];
 	}
 
+	// 渠道限制条件
+	public static function channel_condition()
+	{
+		$cond = "";
+		$phone = Admin::get_phone();
+		if (!Admin::isGroupUser(Admin::GROUP_STOCK_LEADER)) {
+			$cond = " and u.uPtPhone=$phone ";
+		}
+		return $cond;
+	}
+
+	public static function order_year_mouth()
+	{
+		$cond = StockOrder::channel_condition();
+		$sql = "select DISTINCT DATE_FORMAT(oAddedOn, '%Y%m') as dt 
+				from im_stock_order as o
+				left join im_stock_user u on u.uPhone=o.oPhone
+				where o.oId>0 $cond
+				order by dt desc limit 10";
+		return array_column(AppUtil::db()->createCommand($sql)->queryAll(), 'dt');
+	}
+
 	public static function delete_by_dt($dt)
 	{
 		if (date('Y', strtotime($dt)) < 2018) {
@@ -155,12 +177,7 @@ class StockOrder extends ActiveRecord
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
 
-		$level = Admin::get_level();
-		$phone = Admin::get_phone();
-		$cond = '';
-		if (!Admin::isGroupUser(Admin::GROUP_STOCK_LEADER)) {
-			$cond = " and u.uPtPhone=$phone ";
-		}
+		$cond = StockOrder::channel_condition();
 
 		$sql = "select *
 				from im_stock_order as o
@@ -191,13 +208,9 @@ class StockOrder extends ActiveRecord
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
 
-		$level = Admin::get_level();
-		$phone = Admin::get_phone();
-		$cond = '';
 
-		if (!Admin::isGroupUser(Admin::GROUP_STOCK_LEADER)) {
-			$cond = " and u.uPtPhone=$phone ";
-		}
+		$phone = Admin::get_phone();
+		$cond = StockOrder::channel_condition();
 
 		$user = StockUser::findOne(['uPhone' => $phone]);
 		$rate = $user ? $user->uRate : 0;

@@ -321,7 +321,7 @@ class StockController extends BaseController
 				'dt' => $dt,
 				'list' => $list,
 				'sum_income' => $sum_income,
-				'mouths' => AppUtil::getRecentMonth(),
+				'mouths' => StockOrder::order_year_mouth(),
 
 			]
 		);

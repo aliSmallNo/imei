@@ -135,12 +135,7 @@ class StockUser extends \yii\db\ActiveRecord
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
 
-		$level = Admin::get_level();
-		$phone = Admin::get_phone();
-		$cond = '';
-		if ($level < Admin::LEVEL_STAFF) {
-			$cond = " and uPtPhone=$phone ";
-		}
+		$cond = StockOrder::channel_condition();
 
 		$sql = "select *
 				from im_stock_user  
