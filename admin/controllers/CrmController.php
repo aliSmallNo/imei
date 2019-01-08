@@ -203,12 +203,12 @@ class CrmController extends BaseController
 					}
 				}*/
 
-				$ret = ImageUtil::upload2ServerOrigin($uploads);
+				$images = ImageUtil::upload2ServerOrigin($uploads);
 			}
 			CRMTrack::add($postId, [
 				"status" => trim(self::postParam("status")),
 				"note" => trim(self::postParam("note")),
-				"image" => json_encode($ret),
+				"image" => json_encode($images),
 			], $this->admin_id);
 
 		}
