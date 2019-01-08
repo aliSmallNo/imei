@@ -18,7 +18,6 @@ use common\models\StockAction;
 use common\models\StockOrder;
 use common\models\StockUser;
 use common\utils\AppUtil;
-use common\utils\ExcelUtil;
 use common\utils\ImageUtil;
 
 class StockController extends BaseController
@@ -489,4 +488,5 @@ class StockController extends BaseController
 			]
 		);
 	}
+
 }

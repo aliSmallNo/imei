@@ -110,6 +110,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 	const SRC_WEBSITE = "website";
 	const SRC_FRIEND = "friend";
 	const SRC_FRIEND_INTROLDUCE = "friend_introduce";
+	const SRC_SHORT_MSG = "short_msg";
 	const SRC_POST_BAR = "post_bar";
 	const SRC_QQ = "QQ";
 	const SRC_VOICE_TEL = "voice_tel";
@@ -122,6 +123,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		self::SRC_WEBSITE => "公司分配",
 		self::SRC_FRIEND => "熟人",
 		self::SRC_FRIEND_INTROLDUCE => "熟人介绍",
+		self::SRC_SHORT_MSG => "短信",
 		self::SRC_POST_BAR => "贴吧",
 		self::SRC_QQ => "QQ",
 		self::SRC_VOICE_TEL => "语音电话",
