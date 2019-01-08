@@ -202,8 +202,8 @@ class CrmController extends BaseController
 						unlink($file);
 					}
 				}*/
-				$ret = ImageUtil::upload2Server($uploads);
-				$images = $ret ? array_column($ret, 1) : [];
+				$ret = ImageUtil::upload2ServerOrigin($uploads);
+				$images = $ret ? array_column($ret, 0) : [];
 			}
 			CRMTrack::add($postId, [
 				"status" => trim(self::postParam("status")),
