@@ -76,7 +76,7 @@
 			</select>
 			<br>
 			<label class="control-label">相关图片</label>
-			<input type="file" multiple name="images[]" accept="image/jpg, image/jpeg, image/png">
+			<input type="file" multiple name="images[]" accept="image/jpg, image/jpeg, image/png, image/gif">
 			<div class="btn-divider2"></div>
 			<a class="btnSave btn btn-primary" href="javascript:;">确定保存</a>
 		</div>
