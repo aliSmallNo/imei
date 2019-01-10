@@ -1637,7 +1637,7 @@ class AppUtil
 	}
 
 	// 发送短信息
-	public static function sendSMS($phone, $msg, $appendId = '1234', $type = 'real')
+	public static function sendSMS($phone, $msg, $appendId = '1234', $type = 'real', $left_count = 0)
 	{
 		$formatMsg = $msg;
 //		if (mb_strpos($msg, '【奔跑到家】') == false) {
@@ -1652,7 +1652,7 @@ class AppUtil
 		$msg = urlencode(iconv("UTF-8", "gbk//TRANSLIT", $formatMsg));
 		$url = "http://221.179.180.158:9007/QxtSms/QxtFirewall?OperID=$openId&OperPass=$openPwd&SendTime=&ValidTime=&AppendID=$appendId&DesMobile=$phone&Content=$msg&ContentType=8";
 		$res = file_get_contents($url);
-		@file_put_contents("/data/logs/imei/send_msg_" . date("Y-m-d") . ".log", date(" [Y-m-d H:i:s] ") . $phone . " - " . $formatMsg . " >>>>>> " . $res . PHP_EOL, FILE_APPEND);
+		@file_put_contents("/data/logs/imei/send_msg_" . date("Y-m-d") . ".log", date(" [Y-m-d H:i:s] ") . $phone . " - " . $formatMsg . " >>>>>> " . $res . ' left_count: ' . $left_count . PHP_EOL, FILE_APPEND);
 		return $res;
 	}
 
@@ -1661,12 +1661,13 @@ class AppUtil
 		$co = $success = 0;
 		$phones = [];
 		$content = '成功预测，今日盘中发生暴跌，想继续免费预订，请加V：bpbwma5';
+		$left_count = self::getSMSLeft();
 		foreach ($phones as $phone) {
 			$phone = trim($phone);
 			if (!$phone || strlen($phone) != 11 || substr($phone, 0, 1) == 0) {
 				continue;
 			}
-			$res = AppUtil::sendSMS($phone, $content, '100001', 'yx');
+			$res = AppUtil::sendSMS($phone, $content, '100001', 'yx', $left_count);
 			$res = self::xml_to_data($res);
 			if ($res && is_array($res) && isset($res['code']) && $res['code'] == '03') {
 				$success++;
@@ -1732,7 +1733,8 @@ class AppUtil
 //		exit;
 		foreach ($phones as $key => $value) {
 			$res = 0;
-			$res = AppUtil::sendSMS($value, $content, '100001', 'yx');
+			$left_count = self::getSMSLeft();
+			$res = AppUtil::sendSMS($value, $content, '100001', 'yx', $left_count);
 
 			$res = self::xml_to_data($res);
 			if ($res && is_array($res) && isset($res['code']) && $res['code'] == '03') {
