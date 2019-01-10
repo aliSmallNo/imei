@@ -49,6 +49,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 	const STATUS_ADD_WX = 125;
 	const STATUS_TALKING = 130;
 	const STATUS_MEETING = 160;
+	const STATUS_CERTIFICATE = 170;
 	const STATUS_CONTRACT = 180;
 	const STATUS_PAID = 200;
 
@@ -90,6 +91,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		self::STATUS_ADD_WX => "加上微信",
 		self::STATUS_TALKING => "多次沟通",
 		self::STATUS_MEETING => "已注册",
+		self::STATUS_CERTIFICATE => "已认证",
 		self::STATUS_CONTRACT => "已充值",
 		self::STATUS_PAID => "买股",
 	];
@@ -101,6 +103,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		self::STATUS_ADD_WX => "#2196F3",
 		self::STATUS_TALKING => "#1976D2",
 		self::STATUS_MEETING => "#0D47A1",
+		self::STATUS_CERTIFICATE => "#002c6f",
 		self::STATUS_CONTRACT => "#fb8c00",
 		self::STATUS_PAID => "#e65100",
 	];
