@@ -32,7 +32,7 @@ class CrontabController extends Controller
 	// 6 */12 * * *  /usr/local/php/bin/php /data/code/imei/yii crontab/exp
 	// 8 1 */1 * *   /usr/local/php/bin/php /data/code/imei/yii crontab/refresh
 	// 1 */3 * * *   /usr/local/php/bin/php /data/code/imei/yii crontab/pool
-	// */2 * * * *   /usr/local/php/bin/php /data/code/imei/yii crontab/alert
+	// */5 * * * *   /usr/local/php/bin/php /data/code/imei/yii crontab/alert
 
 
 	public function actionRefresh($openId = '')

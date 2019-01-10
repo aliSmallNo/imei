@@ -681,11 +681,15 @@ class Log extends ActiveRecord
 
 	const CAT_SEND_SMS_LOG = 'send_sms_log';
 	const CAT_SEND_SMS = 'send_sms';
+	const KEY_SEND_FAIL = 2;
 	const KEY_SEND_WAIT = 9;
+	const KEY_SEND_ING = 3;
 	const KEY_SEND_COMPLETE = 1;
 	static $keyDict = [
 		self::KEY_SEND_COMPLETE => '发送完成',
+		self::KEY_SEND_ING => '发送中',
 		self::KEY_SEND_WAIT => '等待发送',
+		self::KEY_SEND_FAIL => '发送失败',
 	];
 
 	/*
@@ -711,7 +715,7 @@ class Log extends ActiveRecord
 		return true;
 	}
 
-	public static function edit_sms_item($oId, $send_count = 0)
+	public static function edit_sms_item($oId, $send_count = 0, $st = self::KEY_SEND_COMPLETE)
 	{
 		if (!$oId || !$send_count) {
 			return false;
@@ -720,7 +724,7 @@ class Log extends ActiveRecord
 		if (!$entity) {
 			return false;
 		}
-		$entity->oKey = self::KEY_SEND_COMPLETE;
+		$entity->oKey = $st;
 		$entity->oOpenId = $send_count;
 		$entity->save();
 		return true;
@@ -733,10 +737,12 @@ class Log extends ActiveRecord
 			return false;
 		}
 		foreach ($res as $v) {
+			self::edit_sms_item($v['oId'], 0, self::KEY_SEND_ING);
 			list($send_count, $msg) = AppUtil::sendSMS_by_excel($v['oBefore'], $v['oAfter']);
 			if ($send_count > 0) {
 				self::edit_sms_item($v['oId'], $send_count);
 			} else {
+				self::edit_sms_item($v['oId'], 0, self::KEY_SEND_FAIL);
 				self::add(['oCategory' => self::CAT_SEND_SMS_LOG,
 					'oKey' => self::KEY_SEND_WAIT,
 					'oBefore' => $msg,
