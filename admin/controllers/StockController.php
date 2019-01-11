@@ -26,6 +26,8 @@ class StockController extends BaseController
 	public function actionClients()
 	{
 		$page = self::getParam("page", 1);
+		$success = self::getParam("success");
+		$error = self::getParam("error");
 		$name = trim(self::getParam("name"));
 		$prov = trim(self::getParam("prov"));
 		$phone = trim(self::getParam("phone"));
@@ -193,6 +195,8 @@ class StockController extends BaseController
 				"ageMap" => CRMStockClient::$ageMap,
 				"SourceMap" => CRMStockClient::$SourceMap,
 				"stock_age_map" => CRMStockClient::$stock_age_map,
+				'success' => $success,
+				'error' => $error,
 			]);
 
 	}

@@ -85,10 +85,26 @@
 	}
 </style>
 <div class="row">
-	<h4>客户线索
-		<a class="addClue btn btn-xs btn-primary">添加线索</a>
-		<a class="addClueMore btn btn-xs btn-primary">批量导入线索</a>
-	</h4>
+	<div class="col-sm-6">
+		<h4>客户线索
+			<a class="addClue btn btn-xs btn-primary">添加线索</a>
+			<a class="addClueMore btn btn-xs btn-primary">批量导入线索</a>
+		</h4>
+	</div>
+	<div class="col-sm-6">
+		{{if $success}}
+			<div class="alert alert-success alert-dismissable">
+				<button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>
+				{{$success}}
+			</div>
+		{{/if}}
+		{{if $error}}
+			<div class="alert alert-danger alert-dismissable">
+				<button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>
+				{{$error}}
+			</div>
+		{{/if}}
+	</div>
 </div>
 <div class="row">
 	<form method="get" class="form-inline" action="/stock/clients">
@@ -615,8 +631,8 @@
 		updateArea($(this).val());
 	});
 
-  $(document).on('click', '.addClueMore', function () {
-	  $('#addClueMoreModal').modal('show');
-  });
+	$(document).on('click', '.addClueMore', function () {
+		$('#addClueMoreModal').modal('show');
+	});
 </script>
 {{include file="layouts/footer.tpl"}}
