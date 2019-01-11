@@ -216,8 +216,8 @@ class StockController extends BaseController
 				}*/
 				$ret = ImageUtil::upload2Server($uploads);
 				if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
-					print($ret);
-					print(array_column($ret, 1));
+					print_r($ret);
+					print_r(array_column($ret, 1));
 					exit;
 				}
 
