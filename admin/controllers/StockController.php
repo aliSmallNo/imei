@@ -428,7 +428,7 @@ class StockController extends BaseController
 				if (!$error) {
 					$success = "上传成功！" . $insertCount;
 				} else {
-					$error = $error . " 行错误数据";
+					$error = $error . " 行错误数据" . ' 上传' . $insertCount;
 				}
 			}
 		}
