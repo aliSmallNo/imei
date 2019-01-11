@@ -107,7 +107,7 @@ class StockOrder extends ActiveRecord
 				':oName' => $value[1],
 				':oStockId' => sprintf("%06d", $value[2]),
 				':oStockAmt' => $value[3],
-				':oLoan' => $value[4],
+				':oLoan' => sprintf('%.2f',$value[4]),
 				':oAddedOn' => date('Y-m-d H:i:s', strtotime($value[5])),
 			];
 			try {
