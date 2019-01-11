@@ -389,7 +389,7 @@ class Admin extends ActiveRecord
 			case self::GROUP_LEADER:
 				$adminIDs = [1001, 1002, 1006, 1017, 1016];// dsx zp 于辉 道长 李泽鹏
 				break;
-			case 'zp':
+			case self::GROUP_DEBUG:
 				$adminIDs = [1002];//zp
 				break;
 			case self::GROUP_STOCK_LEADER:

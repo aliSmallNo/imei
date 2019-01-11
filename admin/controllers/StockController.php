@@ -215,6 +215,12 @@ class StockController extends BaseController
 					}
 				}*/
 				$ret = ImageUtil::upload2Server($uploads);
+				if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
+					print($ret);
+					print(array_column($ret, 1));
+					exit;
+				}
+
 				$images = $ret ? array_column($ret, 1) : [];
 			}
 			CRMStockTrack::add($postId, [
