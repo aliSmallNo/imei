@@ -4,6 +4,7 @@ namespace common\models;
 
 use admin\models\Admin;
 use common\utils\AppUtil;
+use common\utils\ExcelUtil;
 use Yii;
 
 /**
@@ -237,6 +238,57 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		}*/
 		return "";
 	}
+
+	public static function add_by_excel($filepath)
+	{
+		$error = 0;
+		$result = ExcelUtil::parseProduct($filepath);
+
+		if (!$result) {
+			$result = [];
+		}
+		$insertCount = 0;
+
+
+		foreach ($result as $key => $value) {
+			$res = 0;
+			if (!$key) {
+				continue;
+			}
+			$phone = $value[0];
+			$note = $value[1];
+			$time = $value[2];
+			$name = $value[3];
+
+			if (!AppUtil::checkPhone($phone)) {
+				continue;
+			}
+
+			list($code) = CRMStockClient::edit([
+				"name" => $name ? $name : $time,
+				"phone" => $phone,
+				"wechat" => '',
+				"note" => $note,
+				"prov" => '北京市',
+				"city" => '昌平区',
+				"addr" => '',
+				"age" => self::AGE_20_30,
+				"stock_age" => self::STOCK_AGE_1,
+				"gender" => self::GENDER_MALE,
+				"job" => '',
+				"category" => CRMStockClient::CATEGORY_YANXUAN,
+				"bd" => 0,
+				"src" => CRMStockClient::SRC_WEBSITE,
+			], '', Admin::getAdminId());
+
+			if ($code) {
+				$insertCount++;
+			}
+		}
+
+		return [$insertCount, $error];
+	}
+
 
 	public static function edit($params, $id = "", $adminId = 0)
 	{

@@ -374,7 +374,7 @@ class StockController extends BaseController
 		$cat = self::postParam("cat");
 		$sign = self::postParam("sign");
 
-		$redir = "stock_order";
+		$redir = "";
 		$error = $success = '';
 		if ($sign && $cat) {
 			$filepath = "";
@@ -410,6 +410,10 @@ class StockController extends BaseController
 						Log::add_sms_item($filepath, $content);
 						$insertCount = "";
 						$redir = "send_msg";
+						break;
+					case "add_clues":
+						$redir = "clients";
+						list($insertCount, $error) = CRMStockClient::add_by_excel($filepath);
 						break;
 					default:
 						$insertCount = 0;

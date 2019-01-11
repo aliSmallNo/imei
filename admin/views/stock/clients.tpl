@@ -87,6 +87,7 @@
 <div class="row">
 	<h4>客户线索
 		<a class="addClue btn btn-xs btn-primary">添加线索</a>
+		<a class="addClueMore btn btn-xs btn-primary">批量导入线索</a>
 	</h4>
 </div>
 <div class="row">
@@ -369,6 +370,38 @@
 		</div>
 	</div>
 </script>
+
+<div class="modal fade" id="addClueMoreModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+									aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">批量导入客户线索</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" action="/stock/upload_excel" method="post" enctype="multipart/form-data">
+					<input type="hidden" name="cat" value="add_clues"/>
+					<input type="hidden" name="sign" value="up"/>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Excel文件</label>
+						<div class="col-sm-8">
+							<input type="file" name="excel" accept=".xls,.xlsx" class="form-control-static"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label"></label>
+						<div class="col-sm-8">
+							<input type="submit" class="btn btn-primary" id="btnUpload" value="发送"/>
+						</div>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script type="text/html" id="jsonItems">
 	{{$strItems}}
 </script>
@@ -581,5 +614,9 @@
 	$(document).on('change', '.clue_province', function () {
 		updateArea($(this).val());
 	});
+
+  $(document).on('click', '.addClueMore', function () {
+	  $('#addClueMoreModal').modal('show');
+  });
 </script>
 {{include file="layouts/footer.tpl"}}
