@@ -278,7 +278,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				"job" => '',
 				"category" => CRMStockClient::CATEGORY_YANXUAN,
 				"bd" => 0,
-				"src" => CRMStockClient::SRC_WEBSITE,
+				"src" => CRMStockClient::SRC_SHORT_TERM_WANG,
 			], '', Admin::getAdminId());
 
 			if ($code) {
