@@ -453,13 +453,13 @@ class ImageUtil
 		if (!isset($postData["error"]) || !isset($postData["tmp_name"])) {
 			return $result;
 		}
-		if (!$savedKey) {
-			$savedKey = RedisUtil::getImageSeq();
-		}
 
 		foreach ($postData['error'] as $key => $value) {
 			if ($value != UPLOAD_ERR_OK) {
 				continue;
+			}
+			if (!$savedKey) {
+				$savedKey = RedisUtil::getImageSeq();
 			}
 			$tmpName = $postData["tmp_name"][$key];
 			$upName = $postData["name"][$key];
