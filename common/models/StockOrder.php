@@ -117,8 +117,8 @@ class StockOrder extends ActiveRecord
 					'uName' => $value[1],
 				]);
 			} catch (\Exception $e) {
-				$error++;
 				Log::add(['oCategory' => Log::CAT_EXCEL, 'oKey' => $phone, 'oOpenId' => $value[1]]);
+				$error++;
 			}
 
 			if ($res) {
