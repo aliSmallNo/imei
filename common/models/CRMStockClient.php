@@ -249,7 +249,6 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		}
 		$insertCount = 0;
 
-
 		foreach ($result as $key => $value) {
 			$res = 0;
 			if (!$key) {

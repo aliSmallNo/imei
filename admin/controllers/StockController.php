@@ -399,6 +399,7 @@ class StockController extends BaseController
 			if (!$error) {
 				switch ($cat) {
 					case 'order':
+						$redir = "stock_order";
 						list($insertCount, $error) = StockOrder::add_by_excel($filepath);
 						$insertCount = $insertCount . "行数据 ";
 						break;
