@@ -118,6 +118,7 @@ class StockOrder extends ActiveRecord
 				]);
 			} catch (\Exception $e) {
 				$error++;
+				Log::add(['oCategory' => Log::CAT_EXCEL, 'oUId' => $phone, 'oOpenId' => $value[1]]);
 			}
 
 			if ($res) {
@@ -130,6 +131,7 @@ class StockOrder extends ActiveRecord
 		} else {
 			$transaction->commit();
 		}
+
 
 		return [$insertCount, $error];
 	}
