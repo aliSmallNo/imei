@@ -117,8 +117,12 @@ class StockOrder extends ActiveRecord
 					'uName' => $value[1],
 				]);
 			} catch (\Exception $e) {
-				Log::add(['oCategory' => Log::CAT_EXCEL, 'oKey' => $phone, 'oOpenId' => $value[1]]);
+
 				$error++;
+			}
+
+			if ($error) {
+				Log::add(['oCategory' => Log::CAT_EXCEL, 'oKey' => $phone, 'oOpenId' => $value[1]]);
 			}
 
 			if ($res) {
@@ -227,6 +231,10 @@ class StockOrder extends ActiveRecord
 				group by ym
 				order by ym desc ";
 		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
+		if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
+//			echo AppUtil::db()->createCommand($sql)->bindValues($params)->getRawSql();
+//			exit;
+		}
 		$sum_income = 0;
 		foreach ($res as $k => $v) {
 			$res[$k]['user_loan_amt'] = sprintf('%.0f', $v['user_loan_amt']);
