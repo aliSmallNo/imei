@@ -458,9 +458,9 @@ class ImageUtil
 			if ($value != UPLOAD_ERR_OK) {
 				continue;
 			}
-			if (!$savedKey) {
-				$savedKey = RedisUtil::getImageSeq();
-			}
+
+			$savedKey = RedisUtil::getImageSeq();
+
 
 			$tmpName = $postData["tmp_name"][$key];
 			$upName = $postData["name"][$key];
@@ -472,8 +472,6 @@ class ImageUtil
 			$fileName = $path . '.' . $fileExt;
 			$fileThumb = $path . '_t.' . $fileExt;
 			$fileNormal = $path . '_n.' . $fileExt;
-
-			echo $fileName . "<br>";
 
 			file_put_contents($fileName, $content);
 			$content = null;
