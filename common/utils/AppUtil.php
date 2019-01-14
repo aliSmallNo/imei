@@ -1742,7 +1742,7 @@ class AppUtil
 			$left_count = self::getSMSLeft();
 
 			// 5分钟内同一手机号不重复发送
-			if ($cmd) {
+			if ($cmd->bindValues([':phone' => $phone])->queryOne()) {
 				continue;
 			}
 
