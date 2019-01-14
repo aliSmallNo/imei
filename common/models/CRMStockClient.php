@@ -367,7 +367,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 			if (isset($params['phone']) && $params['phone'] && $log) {
 				CRMStockTrack::add($item->cId, [
 					"status" => self::STATUS_FRESH,
-					"note" => "发送过短信用户: " . $log->oBefore,
+					"note" => "发送过短信用户: " . $log['oBefore'],
 				], $adminId);
 			}
 
