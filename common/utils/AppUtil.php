@@ -1753,6 +1753,7 @@ class AppUtil
 				'oBefore' => $content,
 				'oOpenId' => $phone,
 				'oAfter' => $res,
+				'oUId' => $left_count,
 			]);
 
 			if ($res) {
