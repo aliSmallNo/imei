@@ -120,7 +120,6 @@ class StockOrder extends ActiveRecord
 				Log::add(['oCategory' => Log::CAT_EXCEL, 'oUId' => $phone, 'oOpenId' => $value[1]]);
 				$error++;
 			}
-
 			if ($res) {
 				$insertCount++;
 			}
@@ -131,7 +130,6 @@ class StockOrder extends ActiveRecord
 		} else {
 			$transaction->commit();
 		}
-
 
 		return [$insertCount, $error];
 	}

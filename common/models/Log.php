@@ -738,7 +738,12 @@ class Log extends ActiveRecord
 			return false;
 		}
 		foreach ($res as $v) {
-			self::edit_sms_item($v['oId'], 0, self::KEY_SEND_ING);
+			$log = self::findOne(['oId' => $v['oId']]);
+			if ($log->oKey == self::KEY_SEND_WAIT) {
+				self::edit_sms_item($v['oId'], 0, self::KEY_SEND_ING);
+			} else {
+				continue;
+			}
 			list($send_count, $msg) = AppUtil::sendSMS_by_excel($v['oBefore'], $v['oAfter']);
 			if ($send_count > 0) {
 				self::edit_sms_item($v['oId'], $send_count);
