@@ -358,6 +358,19 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				"status" => self::STATUS_FRESH,
 				"note" => $adminId > 0 ? "添加新的客户线索" : "未知来源"
 			], $adminId);
+			// 给发送短信用户 添加一条跟进信息
+
+			$log = Log::find()->where([
+				'oOpenId' => $params['phone'],
+				'oCategory' => Log::CAT_SEND_SMS_PHONE,
+			])->orderBy("oId desc")->limit(1)->asArray()->one();
+			if (isset($params['phone']) && $params['phone'] && $log) {
+				CRMStockTrack::add($item->cId, [
+					"status" => self::STATUS_FRESH,
+					"note" => "发送过短信用户: " . $log->oBefore,
+				], $adminId);
+			}
+
 		}
 
 		return [$item->cId, '操作成功'];
