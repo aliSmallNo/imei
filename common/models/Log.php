@@ -680,6 +680,7 @@ class Log extends ActiveRecord
 		return $cnt;
 	}
 
+	const CAT_SEND_SMS_PHONE = 'send_sms_phone';
 	const CAT_SEND_SMS_LOG = 'send_sms_log';
 	const CAT_SEND_SMS = 'send_sms';
 	const KEY_SEND_FAIL = 2;
@@ -744,10 +745,13 @@ class Log extends ActiveRecord
 			} else {
 				continue;
 			}
+			// 发送短信
 			list($send_count, $msg) = AppUtil::sendSMS_by_excel($v['oBefore'], $v['oAfter']);
 			if ($send_count > 0) {
+				// 发送成功
 				self::edit_sms_item($v['oId'], $send_count);
 			} else {
+				// 发送失败
 				self::edit_sms_item($v['oId'], 0, self::KEY_SEND_FAIL);
 				self::add(['oCategory' => self::CAT_SEND_SMS_LOG,
 					'oKey' => self::KEY_SEND_WAIT,

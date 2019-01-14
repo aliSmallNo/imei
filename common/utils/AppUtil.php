@@ -9,6 +9,7 @@
 
 namespace common\utils;
 
+use common\models\Log;
 use common\models\UserWechat;
 use Yii;
 use yii\web\Cookie;
@@ -1731,15 +1732,29 @@ class AppUtil
 
 //		print_r([$phones, count($phones), $leftMsgCount]);
 //		exit;
-		foreach ($phones as $key => $value) {
+
+		$cat_sms_phone = Log::CAT_SEND_SMS_PHONE;
+		$sql = "select * from im_log where oDate>=DATE_SUB(NOW(),INTERVAL 5 MINUTE) and oOpenId=:phone and oCategory='$cat_sms_phone' ";
+		$cmd = AppUtil::db()->createCommand($sql);
+
+		foreach ($phones as $key => $phone) {
 			$res = 0;
 			$left_count = self::getSMSLeft();
-			$res = AppUtil::sendSMS($value, $content, '100001', 'yx', $left_count);
 
-			$res = self::xml_to_data($res);
-			if ($res && is_array($res) && isset($res['code']) && $res['code'] == '03') {
-				$success++;
+			// 5分钟内同一手机号不重复发送
+			if ($cmd) {
+				continue;
 			}
+
+			$res = AppUtil::sendSMS($phone, $content, '100001', 'yx', $left_count);
+			$res = self::xml_to_data($res);
+
+			Log::add(['oCategory' => $cat_sms_phone,
+				'oBefore' => $content,
+				'oOpenId' => $phone,
+				'oAfter' => $res,
+			]);
+
 			if ($res) {
 				$sendCount++;
 			}
