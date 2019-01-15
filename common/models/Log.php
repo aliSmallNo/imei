@@ -746,7 +746,7 @@ class Log extends ActiveRecord
 				continue;
 			}
 			// 发送短信
-			list($send_count, $msg) = AppUtil::sendSMS_by_excel($v['oBefore'], $v['oAfter']);
+			list($send_count, $msg) = AppUtil::sendSMS_by_excel($v['oBefore'], $v['oAfter'], $v['oId']);
 			if ($send_count > 0) {
 				// 发送成功
 				self::edit_sms_item($v['oId'], $send_count);

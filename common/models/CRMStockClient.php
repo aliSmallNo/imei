@@ -358,8 +358,8 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				"status" => self::STATUS_FRESH,
 				"note" => $adminId > 0 ? "添加新的客户线索" : "未知来源"
 			], $adminId);
-			// 给发送短信用户 添加一条跟进信息
 
+			// 给发送短信用户 添加一条跟进信息
 			$log = Log::find()->where([
 				'oOpenId' => $params['phone'],
 				'oCategory' => Log::CAT_SEND_SMS_PHONE,

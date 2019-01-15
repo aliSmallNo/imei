@@ -1695,7 +1695,7 @@ class AppUtil
 
 	}
 
-	public static function sendSMS_by_excel($filepath, $content = '')
+	public static function sendSMS_by_excel($filepath, $content = '', $oId = '')
 	{
 		if (!$content || !$filepath) {
 			return [0, '参数错误~'];
@@ -1754,6 +1754,7 @@ class AppUtil
 				'oOpenId' => $phone,
 				'oAfter' => $res,
 				'oUId' => $left_count,
+				'oKey' => $oId,
 			]);
 
 			if ($res) {
