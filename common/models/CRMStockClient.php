@@ -310,7 +310,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 			if (
 				isset($params['wechat'])
 				&& $params['wechat']
-				&& self::findOne(['cWechat' => $params['wechat']])
+				&& self::findOne(['cWechat' => $params['wechat'], "cDeletedFlag" => 0])
 			) {
 				return [0, '微信号重复'];
 			}
@@ -318,7 +318,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 			if (
 				isset($params['phone'])
 				&& $params['phone']
-				&& self::findOne(['cPhone' => $params['phone']])
+				&& self::findOne(['cPhone' => $params['phone'], "cDeletedFlag" => 0])
 			) {
 				return [0, '手机号重复'];
 			}
