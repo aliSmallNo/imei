@@ -86,6 +86,10 @@ class ApiController extends Controller
 	public function beforeAction($action)
 	{
 		$this->admin_id = Admin::getAdminId();
+		if (!$this->admin_id) {
+			header("location:/site/login");
+			exit;
+		}
 		$this->admin_name = Admin::userInfo()['aName'];
 		$this->admin_phone = Admin::userInfo()['aPhone'];
 		return parent::beforeAction($action);
