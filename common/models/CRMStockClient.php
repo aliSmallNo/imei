@@ -295,32 +295,37 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		$addFlag = false;
 		if ($id) {
 			$item = self::findOne(["cId" => $id]);
-			if (isset($params['phone']) && !AppUtil::checkPhone($params['phone'])) {
+			if (isset($params['phone'])
+				&& !AppUtil::checkPhone($params['phone'])
+			) {
 				unset($params['phone']);
 			}
-			if (isset($params['wechat']) && !AppUtil::checkPhone($params['wechat'])) {
+			if (isset($params['wechat'])
+				&& !AppUtil::checkPhone($params['wechat'])
+			) {
 				unset($params['wechat']);
 			}
 		} else {
-			// 根据微信号去重
-			if (
-				isset($params['wechat'])
-				&& $params['wechat']
-				&& self::findOne(['cWechat' => $params['wechat']])
-			) {
-				return [0, '微信号重复'];
-			} elseif (
-				isset($params['phone'])
-				&& $params['phone']
-				&& self::findOne(['cPhone' => $params['phone']])
-			) {
-				return [0, '手机号重复'];
-			} else {
-				$item->cAddedBy = $adminId;
-				$item->cNote = json_encode($params, JSON_UNESCAPED_UNICODE);
-				$item->cStatus = self::STATUS_DISLIKE;
-				$addFlag = true;
-			}
+			$item->cAddedBy = $adminId;
+			$item->cNote = json_encode($params, JSON_UNESCAPED_UNICODE);
+			$item->cStatus = self::STATUS_DISLIKE;
+			$addFlag = true;
+		}
+		// 根据微信号
+		if (
+			isset($params['wechat'])
+			&& $params['wechat']
+			&& self::findOne(['cWechat' => $params['wechat']])
+		) {
+			return [0, '微信号重复'];
+		}
+		// 手机号去重
+		if (
+			isset($params['phone'])
+			&& $params['phone']
+			&& self::findOne(['cPhone' => $params['phone']])
+		) {
+			return [0, '手机号重复'];
 		}
 		$fieldMap = [
 			"name" => "cName",
