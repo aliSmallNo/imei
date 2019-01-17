@@ -306,27 +306,28 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				unset($params['wechat']);
 			}
 		} else {
+			// 根据微信号
+			if (
+				isset($params['wechat'])
+				&& $params['wechat']
+				&& self::findOne(['cWechat' => $params['wechat']])
+			) {
+				return [0, '微信号重复'];
+			}
+			// 手机号去重
+			if (
+				isset($params['phone'])
+				&& $params['phone']
+				&& self::findOne(['cPhone' => $params['phone']])
+			) {
+				return [0, '手机号重复'];
+			}
 			$item->cAddedBy = $adminId;
 			$item->cNote = json_encode($params, JSON_UNESCAPED_UNICODE);
 			$item->cStatus = self::STATUS_DISLIKE;
 			$addFlag = true;
 		}
-		// 根据微信号
-		if (
-			isset($params['wechat'])
-			&& $params['wechat']
-			&& self::findOne(['cWechat' => $params['wechat']])
-		) {
-			return [0, '微信号重复'];
-		}
-		// 手机号去重
-		if (
-			isset($params['phone'])
-			&& $params['phone']
-			&& self::findOne(['cPhone' => $params['phone']])
-		) {
-			return [0, '手机号重复'];
-		}
+
 		$fieldMap = [
 			"name" => "cName",
 			"phone" => "cPhone",
