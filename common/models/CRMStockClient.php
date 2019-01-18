@@ -274,7 +274,8 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		) {
 			return false;
 		}
-		$adminId = Admin::getAdminId() ? Admin::getAdminId() : 1002;
+		//$adminId = Admin::getAdminId() ? Admin::getAdminId() : 1002;
+		$adminId = 1002;
 		if (!$item) {
 			CRMStockClient::edit([
 				"name" => $phone,
