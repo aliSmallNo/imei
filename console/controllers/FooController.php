@@ -1690,9 +1690,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as $k => $v) {
 			CRMStockClient::add_by_stock_action($v['aPhone'], $v['aTypeTxt']);
-			if ($k > 2) {
-				exit;
-			}
+
 		}
 
 
